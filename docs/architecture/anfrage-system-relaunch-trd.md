@@ -56,7 +56,7 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 |---|---|---|
 | E3-Zahlen-Drift in Templates, Meta, Shortcodes und Docs. | Falsche Proof-Zahlen schwächen Vertrauen und koennen in Calls sofort auffallen. | `blocksy-child/inc/canon/e3-proof-canon.php` plus Lint; alle E3-Ausgaben auf Getter umstellen. |
 | `readiness`-Namen in Pfaden und Feature-Flag. | Interne Semantik kann Agenten und spaetere PRs wieder in die alte Diagnose-Logik ziehen. | Kurzfristig dokumentieren; mittelfristig `request-analysis`-Contract und Flag einfuehren. |
-| Analyse-App ist jetzt ein lokales 8-Schritt-Formular ohne Submit. | Der wichtigste Einstieg liefert eine erste Fit-Einordnung, aber noch keinen serverseitigen Befund. | Serverseitiges Scoring, Report-Spec, Consent-Block und Submit-Grenze als nächste Schicht bauen. |
+| Analyse-App ist jetzt ein lokales 8-Schritt-Formular ohne Submit. | Der wichtigste Einstieg liefert eine erste Fit-Einordnung, aber noch keinen serverseitigen Befund. | Report-Spec ist definiert; serverseitiges Scoring, Consent-Block und Submit-Grenze als nächste Schicht bauen. |
 | Kein serverseitiges Scoring fuer Analyse. | Client-Scoring allein ist manipulierbar und nicht als Befundbasis sauber. | `blocksy-child/inc/request-analysis-scoring.php` und REST-Route planen. |
 | Kein finaler Submit-Contract fuer neue Analyse-Semantik. | n8n kann nicht sauber, versioniert und privacy-konform angebunden werden. | `automations/n8n/data-models/request-analysis-payload.v1.contract.json` oder v2 nach Migrationsentscheidung. |
 | Kein `docs/architecture/TRACKING.md`. | Funnel-Events werden sonst adhoc in Templates verteilt. | Tracking-Spec fuer Demo und Analyse anlegen. |
@@ -141,7 +141,7 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 | `automations/n8n/data-models/request-analysis-payload.v1.contract.json` | Neuer Contract fuer Anfrage-System-Analyse. | P1 |
 | `blocksy-child/inc/request-analysis-scoring.php` | Serverseitige Fit-/Ampel-Logik. | P1 |
 | `blocksy-child/inc/request-analysis-api.php` | REST-Submit-Schicht hinter Feature-Flag. | P1 |
-| `docs/specs/anfrage-system-analyse-report-v1.md` | Struktur des schriftlichen Befunds. | P1 |
+| `docs/specs/anfrage-system-analyse-report-v1.md` | Struktur des schriftlichen Befunds. | definiert |
 
 ### 9.2 Files to Rewrite
 
@@ -201,7 +201,7 @@ Asset-Regel: React-Funnel-Apps bleiben unter `blocksy-child/<funnel-name>/`, Bui
 |---|---|---|
 | Sprint 1 | E3-Proof-Canon, Drift-Lint, Live/System-Docs bereinigen. | Trust-Risiko entfernt; Sales-Gespraeche nutzen konsistente Zahlen. |
 | Sprint 2 | Analyse-Form als echte 8-Schritt-React-App ohne Submit bauen. | Erledigt repo-seitig am 2026-05-04: Nutzer erlebt qualifizierenden Prozess; noch keine Backend-/Privacy-Komplexitaet. |
-| Sprint 3 | Serverseitiges Scoring und Report-Spec bauen. | Analyse liefert Fit-Entscheidung statt nur Formularabschluss. |
+| Sprint 3 | Serverseitiges Scoring und Report-Spec bauen. | Report-Spec definiert; serverseitige Scoring-Funktion bleibt offen. |
 | Sprint 4 | Submit-Contract, Consent-UI und REST-Schicht hinter Feature-Flag. | Verarbeitung ist versioniert, reversibel und privacy-konform. |
 | Sprint 5 | n8n-Branch ueber bestehenden `audit-consultation`-Webhook pruefen. | Manuelle/automatisierte Weiterverarbeitung ohne neuen oeffentlichen Webhook. |
 | Sprint 6 | Demo-Showroom haerten: Prozessvisualisierung, lokale PDF, CTA zur Analyse. | Interessent versteht aus Kaeufersicht, was umgesetzt wird. |

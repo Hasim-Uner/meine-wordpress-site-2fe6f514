@@ -4,6 +4,7 @@ Status: implemented-local-result
 Owner: Repo / Funnel
 Route: `/anfrage-system-analyse/`
 Legacy: `/readiness-diagnose/` leitet per 301 weiter
+Report-Spec: `docs/specs/anfrage-system-analyse-report-v1.md`
 
 ## Architektur-Leitplanken
 
