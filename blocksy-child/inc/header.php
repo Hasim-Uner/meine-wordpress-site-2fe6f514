@@ -65,6 +65,10 @@ function nexus_render_site_header() {
 		return;
 	}
 
+	if ( function_exists( 'hu_is_energy_demo_request_path' ) && hu_is_energy_demo_request_path() ) {
+		return;
+	}
+
 	$rendered = true;
 
 	get_template_part( 'template-parts/site-header' );
