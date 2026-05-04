@@ -1,27 +1,28 @@
 # Audit Funnel
 
-Stand: 2026-04-04.
+Stand: 2026-05-04.
 
-Diese Doku beschreibt den aktuell aktiven Funnel rund um den `Growth Audit`.
+Diese Doku beschreibt den technisch aktiven Legacy-/Sekundärpfad rund um den `Growth Audit`.
 
 Wichtig:
 
-- Der aktive Funnel fuer `/growth-audit/` ist jetzt ein Instant-Results-Flow.
+- Der aktive Funnel für `/growth-audit/` ist jetzt ein Instant-Results-Flow.
 - Die Route rendert den Shortcode `cja_audit` und sendet erst nach explizitem Nutzerklick eine URL an n8n.
-- Der fruehere 48h-Intake und `audit-live.js` liegen weiter im Repo, sind aber nicht mehr der aktive Default der Hauptroute.
+- Der frühere 48h-Intake und `audit-live.js` liegen weiter im Repo, sind aber nicht mehr der aktive Default der Hauptroute.
+- Der Growth Audit ist kein Hauptfunnel mehr. Der primäre Einstieg für kalten B2B-Traffic ist `/anfrage-system-analyse/`.
 
-## Zweck des Funnels
+## Zweck des Pfads
 
-Der `Growth Audit` ist der wichtigste Diagnose-Einstieg des Systems.
+Der `Growth Audit` ist ein technischer Legacy-/Sekundärpfad für schnelle URL-orientierte Orientierung. Er darf die Anfrage-System-Analyse nicht als Hauptfunnel ersetzen.
 
 Sein Job:
 
 - Reibung fuer Erstkontakt senken
-- die groessten Bremsen sofort sichtbar machen
-- Botschaft, Proof, CTA und Anfragefuehrung priorisieren
-- einen klaren naechsten Schritt nach `/kontakt/` oder Call vorbereiten
+- die größten Bremsen sofort sichtbar machen
+- Botschaft, Proof, CTA und Anfrageführung priorisieren
+- einen klaren nächsten Schritt in die Anfrage-System-Analyse oder einen warmen Anfragepfad vorbereiten
 
-Der Funnel verkauft nicht sofort. Er schafft Klarheit und Priorisierung.
+Der Pfad verkauft nicht sofort. Er schafft Klarheit und führt zurück in die neue Funnel-Ladder.
 
 ## Aktiver Flow
 
@@ -30,10 +31,10 @@ Der Funnel verkauft nicht sofort. Er schafft Klarheit und Priorisierung.
 3. Das Frontend zeigt ein einzelnes URL-Feld, einen kurzen Loading-State und danach ein Ergebnis-Dashboard.
 4. `blocksy-child/assets/js/cja-audit.js` bereinigt die URL, validiert sie clientseitig und startet bevorzugt `POST https://n8n.hasimuener.de/webhook/audit` mit JSON-Body `{ "url": "<bereinigte-url>" }`.
 5. Der Start-Webhook antwortet sofort mit `jobId + processing`; das Frontend pollt danach `GET https://n8n.hasimuener.de/webhook/audit-status?jobId=...`, bis das Ergebnis fertig ist.
-6. Falls der Async-Start-Endpoint nicht verfuegbar ist, faellt das Frontend kontrolliert auf den Legacy-Webhook `https://n8n.hasimuener.de/webhook/cja-analyze` zurueck.
+6. Falls der Async-Start-Endpoint nicht verfügbar ist, fällt das Frontend kontrolliert auf den Legacy-Webhook `https://n8n.hasimuener.de/webhook/cja-analyze` zurück.
 7. Das Frontend akzeptiert sowohl den aktuellen V3-Result-Contract aus dem Polling als auch den bisherigen Direkt-Payload mit `overall_score`, Modulen, Revenue-Summary und `quickWins`.
-8. Die Analyse rendert direkt auf der Seite und zeigt als naechsten Schritt einen CTA nach `/kontakt/`.
-9. Nachgelagerte persoenliche Qualifizierung laeuft nur noch ueber Kontakt-/Call-Pfade, nicht mehr ueber einen Pflicht-CRM-Intake auf der Hauptroute.
+8. Die Analyse rendert direkt auf der Seite und zeigt als nächsten Schritt einen qualifizierten Anfragepfad.
+9. Nachgelagerte persönliche Qualifizierung läuft nur noch über Kontakt-/Call-Pfade, nicht mehr über einen Pflicht-CRM-Intake auf der Hauptroute.
 
 ## Nutzerseitige Inputs
 

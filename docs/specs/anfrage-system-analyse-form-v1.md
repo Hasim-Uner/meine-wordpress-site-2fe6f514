@@ -1,9 +1,19 @@
 # Anfrage-System-Analyse Form v1
 
-Status: draft
+Status: implemented-local-result
 Owner: Repo / Funnel
 Route: `/anfrage-system-analyse/`
 Legacy: `/readiness-diagnose/` leitet per 301 weiter
+
+## Architektur-Leitplanken
+
+- WordPress bleibt das Hauptsystem für Seiten, SEO, Canon-Dateien, Routing und Consent-Grenzen.
+- Die Analyse läuft als React-Funnel-Mikro-App im Theme. `blocksy-child/readiness/` bleibt vorerst der interne Legacy-Name; customer-facing heißt der Pfad nur `Anfrage-System-Analyse`.
+- `/energie-fahrplan-demo/` ist Showroom für das Käufererlebnis, kein SaaS, kein Leadmagnet und kein Submit-Pfad.
+- `/anfrage-system-analyse/` ist der primäre Einstieg für kalten B2B-Traffic. `/growth-audit/` darf nicht als Hauptfunnel zurückkehren.
+- n8n, CRM und Befundzustellung werden erst nach versioniertem Contract, explizitem Consent und aktiviertem Feature-Flag angeschlossen.
+- Der Default-Pfad verarbeitet keine personenbezogenen Daten; E-Mail liegt nur im separaten Zustellungspfad.
+- E3-Proof-Zahlen dürfen in Analyse-Kontexten nur aus `blocksy-child/inc/canon/e3-proof-canon.php` kommen.
 
 ## Ziel
 
@@ -17,7 +27,10 @@ Die Anfrage-System-Analyse ist der 14-Tage-Fitcheck für passende Founding-Partn
 - Keine E-Mail, außer der Geschäftsführer wünscht den Befund per E-Mail und bestätigt den separaten Consent-Schritt.
 - Kein Payment-Flow in v1.
 - Kein n8n-Submit, solange `HU_FEATURE_READINESS_SUBMIT=false` ist.
+- Kein CRM-Write und keine n8n-Übertragung im Default-Pfad.
 - Keine öffentliche Tiefendiagnose als eigener Funnel-Schritt.
+- Kein Rücksprung auf den `Growth Audit` als Hauptfunnel oder primäre CTA-Logik.
+- Keine hardcodierten E3-Proof-Zahlen außerhalb des E3-Canons.
 
 ## Acht Formularschritte
 
@@ -33,6 +46,8 @@ Die Anfrage-System-Analyse ist der 14-Tage-Fitcheck für passende Founding-Partn
 | 8 Marktbild | Leadkosten-Korridor einordnen | Zielregion, Hauptkanal, Wettbewerbseindruck | nur als Korridor, nie als Garantie |
 
 ## Datenmodell
+
+Im Default-Pfad werden keine Namen, E-Mail-Adressen, Telefonnummern, Volladressen oder personenbezogenen Endkundendaten erhoben.
 
 Default-Pfad:
 
@@ -78,4 +93,4 @@ Optionaler Zustellungspfad:
 
 Der bestehende Payload-Contract `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt bis zur nächsten Contract-Version intern stabil.
 
-Submit bleibt deaktiviert, bis Formularlogik, Consent-UI und n8n-IF-Branch gegen die neue Analyse-Semantik geprüft sind.
+Submit bleibt deaktiviert, bis Formularlogik, serverseitiges Scoring, Consent-UI, REST-Contract, n8n-IF-Branch und CRM-Grenzen gegen die neue Analyse-Semantik geprüft sind.

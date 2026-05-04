@@ -1,6 +1,6 @@
 # System Map
 
-Stand: 2026-04-06. Diese Karte basiert auf dem Repo-Inhalt, nicht auf einer Live-Verifikation externer Systeme.
+Stand: 2026-05-04. Diese Karte basiert auf dem Repo-Inhalt, nicht auf einer Live-Verifikation externer Systeme.
 
 ## Hauptsysteme
 
@@ -8,7 +8,7 @@ Stand: 2026-04-06. Diese Karte basiert auf dem Repo-Inhalt, nicht auf einer Live
 | --- | --- | --- | --- | --- |
 | Website | deploybarer WordPress-Theme-Code | `blocksy-child/`, `.github/workflows/ci.yml`, `.github/workflows/deploy.yml`, `docs/architecture/DEPLOYMENT.md` | WordPress, Blocksy Parent Theme, ACF | live |
 | Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
-| Audit-Funnel | Diagnose-Einstieg, Instant-Results-Audit und nachgelagerte Qualifizierung | `blocksy-child/page-audit.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/review-funnel.js`, `blocksy-child/assets/js/energy-intake.js`, `blocksy-child/assets/js/cal-embed.js`, `blocksy-child/inc/review-crm.php`, `docs/systems/audit-funnel.md` | n8n Webhook, WordPress, Cal.com, optional WordPress CRM auf Legacy-/Branchenpfaden | live |
+| Growth-Audit-Legacypfad | sekundäre Instant-Diagnose und Rückführung in qualifizierte Anfragepfade, kein Hauptfunnel | `blocksy-child/page-audit.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/review-funnel.js`, `blocksy-child/assets/js/energy-intake.js`, `blocksy-child/assets/js/cal-embed.js`, `blocksy-child/inc/review-crm.php`, `docs/systems/audit-funnel.md` | n8n Webhook, WordPress, Cal.com, optional WordPress CRM auf Legacy-/Branchenpfaden | live als Sekundär-/Legacy-Route |
 | Nexus CRM & Blog Notify | gemeinsames CRM fuer Audit-, Folgeanalyse-, Umsetzungs- und Bestandskunden-Anfragen plus DOI- und Artikel-Mail-Logik | `blocksy-child/inc/crm.php`, `blocksy-child/inc/blog-notify.php`, `blocksy-child/template-parts/blog-notify.php`, `blocksy-child/page-blog-notify.php`, `docs/systems/blog-notify.md` | WordPress CPT/Meta, WordPress REST, wp_mail, Brevo | repo-seitig live, End-to-End offen |
 | SEO Cockpit | Search-Console-basiertes SEO-Dashboard mit optionalem Koko- und Audit-Lead-Layer | `blocksy-child/inc/seo-cockpit.php`, `blocksy-child/assets/css/seo-cockpit-admin.css`, `docs/systems/seo-cockpit.md` | Google Search Console API, optional Koko Analytics, Nexus CRM / Audit-CRM | repo-seitig vorbereitet, OAuth und Live-Daten offen |
 | Tracking | Tracking-ready Markup, CTA-Events, SEO-/Schema-Layer | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/seo-meta.php`, `blocksy-child/inc/org-schema.php`, Templates mit `data-track-*` | GTM, sGTM, GA4, Consent Mode v2, Meta CAPI | teils im Repo, teils extern |
@@ -16,9 +16,9 @@ Stand: 2026-04-06. Diese Karte basiert auf dem Repo-Inhalt, nicht auf einer Live
 | Public Proof Layer | zentraler oeffentlicher Proof- und Vokabular-Layer fuer kaufnahe Seiten | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/shortcodes.php`, `blocksy-child/front-page.php`, `blocksy-child/page-wordpress-agentur.php`, `blocksy-child/page-wgos.php`, `blocksy-child/page-kontakt.php`, `blocksy-child/inc/contact-page.php` | WordPress-Editor, oeffentliche Cases und Profile | live |
 | Content- und SEO-System | Blog, Pillar-Hubs, Cornerstone-Content, interne Verlinkung | `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/page-seo-cornerstone.php`, `content/blog-drafts/` | WordPress-Editor | live plus Ausbau |
 | Client Portal | Kunden-Cockpit mit Login, Upload und Roadmap-Slots | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, Media Library | live, aber aktuell mit Mock-Daten |
-| n8n-Automationen | Workflow-Logik fuer Analyse, Routing, Reporting, Nurture | `automations/n8n/`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/assets/js/audit-live.js` | n8n auf `n8n.hasimuener.de`, CRM, Mail, evtl. Sheets | aktiv, aber Export-/Doku-Layer unvollstaendig |
-| Anfrage-System-Analyse | evidenzbasierter Founding-Partner-Fitcheck mit Marktbild und Privacy-first Submit-Contract | `blocksy-child/readiness/`, `blocksy-child/page-readiness-diagnose.php`, `blocksy-child/inc/anfrage-system-analyse-page.php`, `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json`, `docs/architecture/PRIVACY.md` | n8n auf `n8n.hasimuener.de`, später manueller Zustellweg | repo-seitig vorbereitet, `/readiness-diagnose/` als Legacy-Redirect, Submit noch deaktiviert |
-| EnergieFahrplan Demo | interaktive Showroom-Demo für Anfrageprozess, lokale Berechnung und PDF-Ausgabe | `blocksy-child/energie-fahrplan/`, `blocksy-child/page-energie-fahrplan-demo.php`, `blocksy-child/inc/energy-demo-page.php` | Browser-PDF via `jspdf`/`html2canvas`; kein CRM-, E-Mail- oder n8n-Submit | repo-seitig eingebettet, virtuelle Route aktiv |
+| n8n-Automationen | Workflow-Logik für aktiven Legacy-Audit und spätere Analyse-/Routing-/Nurture-Schritte hinter Contract, Consent und Feature-Flag | `automations/n8n/`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/assets/js/audit-live.js` | n8n auf `n8n.hasimuener.de`, CRM, Mail, evtl. Sheets | Legacy-Audit aktiv; Anfrage-System-Analyse noch nicht angebunden |
+| Anfrage-System-Analyse | evidenzbasierter Founding-Partner-Fitcheck mit Marktbild, lokaler Auswertung und Privacy-first Submit-Grenze | `blocksy-child/readiness/`, `blocksy-child/page-readiness-diagnose.php`, `blocksy-child/inc/anfrage-system-analyse-page.php`, `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json`, `docs/architecture/PRIVACY.md` | WordPress, React-Mikro-App im Theme; n8n/CRM erst später hinter Contract, Consent und Feature-Flag | repo-seitig als 8-Schritt-Form aktiv, `/readiness-diagnose/` als Legacy-Redirect, Submit deaktiviert |
+| EnergieFahrplan Demo | interaktive Showroom-Demo für Anfrageprozess, lokale Berechnung und PDF-Ausgabe; kein SaaS | `blocksy-child/energie-fahrplan/`, `blocksy-child/page-energie-fahrplan-demo.php`, `blocksy-child/inc/energy-demo-page.php` | Browser-PDF via `jspdf`/`html2canvas`; kein CRM-, E-Mail- oder n8n-Submit | repo-seitig eingebettet, virtuelle Route aktiv |
 | Agenten- und Prompt-System | Kontext, Guardrails, Skills und minimale Legacy-Briefings | `AGENTS.md`, `agents/skills/`, `prompts/README.md` | keine direkte Laufzeitabhaengigkeit | in Aufbau |
 
 ## Website
@@ -62,10 +62,10 @@ Systemische Rolle:
 
 ## n8n-Automationen
 
-Im Repo liegen erste n8n-Artefakte, aber der aktive Contract ist noch nicht vollstaendig exportiert. Die Rolle von n8n ist bereits sichtbar:
+Im Repo liegen erste n8n-Artefakte, aber n8n ist nicht der Default-Backend-Pfad der Anfrage-System-Analyse. Die neue Analyse bleibt lokal, bis Contract, Consent-UI, WordPress-REST-Schicht und Feature-Flag freigegeben sind. Die Rolle von n8n ist aktuell getrennt:
 
-- aktiver Instant-Results-Layer fuer den Growth Audit ueber `https://n8n.hasimuener.de/webhook/audit` plus `https://n8n.hasimuener.de/webhook/audit-status`, mit `https://n8n.hasimuener.de/webhook/cja-analyze` als Legacy-Fallback
-- kuenftiges Lead-Routing und Nurture
+- aktiver Instant-Results-Layer für den Growth-Audit-Legacypfad über `https://n8n.hasimuener.de/webhook/audit` plus `https://n8n.hasimuener.de/webhook/audit-status`, mit `https://n8n.hasimuener.de/webhook/cja-analyze` als Legacy-Fallback
+- künftiges Lead-Routing und Nurture erst nach Contract-, Consent- und Feature-Flag-Freigabe
 - Reporting- oder CRM-Bridges, die in Texten und Angebotslogik bereits angedeutet werden
 
 Aktuell dokumentierter Workflow:
@@ -79,10 +79,10 @@ Anfrage-System-Analyse:
 - Route: `/anfrage-system-analyse/`
 - Legacy: `/readiness-diagnose/` leitet per 301 weiter
 - Contract: `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt bis zur nächsten Contract-Version intern stabil
-- n8n-Route: bestehender `audit-consultation`-Pfad mit `meta.intake_variant = readiness_diagnosis`
-- Produktions-Webhook: `https://n8n.hasimuener.de/webhook/audit-consultation`
+- Status: lokale 8-Schritt-React-App ohne Submit
+- n8n-Route: erst nach neuer Contract-/Consent-/Feature-Flag-Freigabe
 - Default: kein Klarname, keine Telefonnummer, keine E-Mail, keine personenbezogenen Endkundendaten
-- Retention: maximal 30 Tage in n8n
+- Retention: für den Default-Pfad nicht anwendbar, weil nichts an n8n gesendet wird
 
 Bekannte technische Touchpoints:
 
@@ -98,9 +98,9 @@ Fachliche Regel:
 - Jeder Workflow braucht zusaetzlich Doku, Flow-Map, Status und Risiko-Abschnitt.
 - Der aktuelle Audit-Workflow ist fachlich wertvoll, aber architektonisch refactor-beduerftig.
 
-## Audit-Funnel
+## Growth-Audit-Legacypfad
 
-Der Audit-Funnel ist nicht mehr der Primär-CTA des Systems. Er bleibt als Legacy-/Sekundärpfad bestehen, bis die Anfrage-System-Analyse und der Demo-Showroom vollständig conversion-fähig sind.
+Der Growth Audit ist nicht mehr der Primär-CTA des Systems und darf nicht als Hauptfunnel zurückkehren. Er bleibt als Legacy-/Sekundärpfad bestehen, während die Anfrage-System-Analyse der primäre Einstieg ist und die EnergieFahrplan-Demo als Showroom dient.
 
 Aktuelle Logik:
 
