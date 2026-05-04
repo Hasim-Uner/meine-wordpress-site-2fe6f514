@@ -55,8 +55,8 @@ Version: 7.1.1-FIXED
 :root {
     --theme-font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --theme-font-heading: 'Satoshi', 'Figtree', sans-serif;
-    --hasim-audit-orange: #b46a3c;
-    --hasim-audit-orange-hover: hsl(23 50% 54%);
+    --hasim-audit-orange: #c77932;
+    --hasim-audit-orange-hover: #a7632b;
     --theme-palette-color-1: var(--hasim-audit-orange);
     --nx-gold: var(--hasim-audit-orange);
     --nx-gold-hover: var(--hasim-audit-orange-hover);
@@ -65,12 +65,16 @@ Version: 7.1.1-FIXED
     --font-body: var(--theme-font-family);
     --font-display: var(--theme-font-heading);
     --brand-copper: var(--hasim-audit-orange);
-    --text-primary: hsl(30 4% 90%);
+    --text-primary: #162322;
     --nx-font-heading: var(--theme-font-heading);
 }
 
-:root[data-nx-theme='light'] {
-    --text-primary: hsl(30 10% 12%);
+/* Dark contrast sections */
+:root[data-nx-theme='dark'],
+.dark {
+    --text-primary: #fff8ec;
+    --hasim-audit-orange: #d99a62;
+    --hasim-audit-orange-hover: #e5af7c;
 }
 
 body,
@@ -80,7 +84,9 @@ body,
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--theme-font-heading);
-    letter-spacing: -0.01em;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
 }
 
 /* --- 1b. WORDMARK --- */

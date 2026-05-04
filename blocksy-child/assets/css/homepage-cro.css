@@ -1,8 +1,119 @@
 /* =========================================
    HOMEPAGE CRO LAYER
-   Champions-League visual layer for the front-page funnel.
+   Executive Energy Command – Hybrid light/dark sections.
    Builds on tokens from design-system.css / homepage.css.
    ========================================= */
+
+/* ---------- Dark contrast section ---------- */
+.cro-section-dark {
+    background: #0b2327;
+    color: #fff8ec;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.cro-section-dark .wp-section-h2,
+.cro-section-dark .cro-hero__title,
+.cro-section-dark h2,
+.cro-section-dark h3 {
+    color: #fff8ec;
+}
+
+.cro-section-dark .cro-hero__sub,
+.cro-section-dark .cro-pain__lead,
+.cro-section-dark p {
+    color: #cbd5d0;
+}
+
+.cro-section-dark .wp-badge {
+    background: rgba(255,255,255,0.06);
+    color: #d99a62;
+    border-color: rgba(217,154,98,0.3);
+}
+
+.cro-section-dark .cro-hero__kpi-ribbon {
+    border-color: rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.04);
+}
+
+.cro-section-dark .cro-hero__kpi-value {
+    color: #fff8ec;
+}
+
+.cro-section-dark .cro-hero__kpi-label {
+    color: #cbd5d0;
+}
+
+.cro-section-dark .cro-hero__kpi {
+    border-right-color: rgba(255,255,255,0.08);
+}
+
+.cro-section-dark .cro-hero__trust {
+    color: #8a9a95;
+}
+
+.cro-section-dark .cro-hero__trust-dot {
+    background: rgba(217,154,98,0.7);
+}
+
+/* Dark section cards */
+.cro-section-dark .cro-pain__card {
+    border-color: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+}
+
+.cro-section-dark .cro-pain__card:hover {
+    border-color: rgba(217,154,98,0.35);
+}
+
+.cro-section-dark .cro-pain__damage {
+    color: #d99a62;
+}
+
+.cro-section-dark .cro-pain__title {
+    color: #fff8ec;
+}
+
+.cro-section-dark .cro-pain__text {
+    color: #cbd5d0;
+}
+
+/* Dark section proof columns */
+.cro-section-dark .cro-proof__column {
+    border-color: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+}
+
+.cro-section-dark .cro-proof__col-tag {
+    color: #d99a62;
+}
+
+.cro-section-dark .cro-proof__col-title {
+    color: #fff8ec;
+}
+
+.cro-section-dark .cro-proof__col-list li {
+    color: #cbd5d0;
+}
+
+.cro-section-dark .cro-proof__counter-value {
+    color: #fff8ec;
+}
+
+.cro-section-dark .cro-proof__counter-label {
+    color: #cbd5d0;
+}
+
+/* Dark section CTA secondary */
+.cro-section-dark .cro-hero__cta-secondary {
+    color: #cbd5d0;
+    border-bottom-color: rgba(255,255,255,0.12);
+}
+
+.cro-section-dark .cro-hero__cta-secondary:hover {
+    color: #d99a62;
+    border-bottom-color: rgba(217,154,98,0.5);
+}
 
 /* ---------- Reveal-on-scroll (used across sections) ---------- */
 .cro-reveal {
