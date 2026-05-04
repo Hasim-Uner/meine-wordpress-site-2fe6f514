@@ -6,12 +6,12 @@
  * Kann per get_template_part() eingefügt werden.
  *
  * ACF-Felder (optional, falls registriert):
- *   - kpi_value   (Text: z.B. "-83%", "0.8s", "98")
+ *   - kpi_value   (Text: z.B. "-85,3%", "0.8s", "98")
  *   - kpi_label   (Text: z.B. "CPL-Reduktion")
  *   - kpi_context (Text: z.B. "via Server-Side Tracking")
  *
  * Alternativ: Variablen über set_query_var() übergeben:
- *   set_query_var( 'kpi_value', '-83%' );
+ *   set_query_var( 'kpi_value', '-85,3%' );
  *   set_query_var( 'kpi_label', 'CPL-Reduktion' );
  *   set_query_var( 'kpi_context', 'via Server-Side Tracking' );
  *   get_template_part( 'template-parts/kpi-block' );

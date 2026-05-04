@@ -19,6 +19,20 @@ $diagnose_anchor     = '#diagnose';
 $primary_cta_label   = 'System-Diagnose starten (60 Sek.)';
 $secondary_cta_label = 'Schon entschieden? Direkt anfragen.';
 
+$e3_canon                  = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_metrics                = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
+$e3_case_label             = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
+$e3_lead_count             = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_lead_count_target      = $e3_metrics['lead_count']['counter_target'] ?? '1750';
+$e3_sales_conversion       = $e3_metrics['sales_conversion']['display'] ?? '12 %';
+$e3_sales_conversion_value = $e3_metrics['sales_conversion']['counter_target'] ?? '12';
+$e3_cpl_reduction          = $e3_metrics['cpl_reduction']['display'] ?? '-85,3 %';
+$e3_cpl_reduction_target   = $e3_metrics['cpl_reduction']['counter_target'] ?? '-85.3';
+$e3_cpl_conservative       = $e3_metrics['cpl_reduction']['conservative_display'] ?? 'über 85 %';
+$e3_timeframe              = $e3_metrics['timeframe']['display'] ?? '9 Monate';
+$e3_timeframe_dative       = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten';
+$e3_timeframe_value        = $e3_metrics['timeframe']['counter_target'] ?? '9';
+
 $slots_total  = 4;
 $slots_booked = 3;
 
@@ -46,7 +60,7 @@ get_header();
 					<span class="wp-badge">Für Solar- und Wärmepumpen-Betriebe mit 10–25 Mitarbeitern</span>
 					<h1 class="wp-hero-title cro-hero__title">Schluss mit teuren Portal-Leads, die nicht ans Telefon gehen.</h1>
 					<p class="cro-hero__sub">
-						&minus;83 % Kosten pro Anfrage in 9 Monaten &mdash; Referenz E3 New Energy. Eigenes Anfrage-System statt Portal-Abhängigkeit.
+						<?php echo esc_html( sprintf( '%1$s weniger Kosten pro Anfrage in %2$s — Referenz %3$s. Eigenes Anfrage-System statt Portal-Abhängigkeit.', $e3_cpl_conservative, $e3_timeframe_dative, $e3_case_label ) ); ?>
 					</p>
 
 					<?php
@@ -62,15 +76,15 @@ get_header();
 
 					<div class="cro-hero__kpi-ribbon" role="list" aria-label="Kennzahlen aus der Referenz E3 New Energy">
 						<div class="cro-hero__kpi" role="listitem">
-							<span class="cro-hero__kpi-value">1.750+</span>
+							<span class="cro-hero__kpi-value"><?php echo esc_html( $e3_lead_count ); ?></span>
 							<span class="cro-hero__kpi-label">qualifizierte Anfragen</span>
 						</div>
 						<div class="cro-hero__kpi" role="listitem">
-							<span class="cro-hero__kpi-value">12&nbsp;%</span>
+							<span class="cro-hero__kpi-value"><?php echo esc_html( $e3_sales_conversion ); ?></span>
 							<span class="cro-hero__kpi-label">Abschlussquote</span>
 						</div>
 						<div class="cro-hero__kpi" role="listitem">
-							<span class="cro-hero__kpi-value">&minus;83&nbsp;%</span>
+							<span class="cro-hero__kpi-value"><?php echo esc_html( $e3_cpl_reduction ); ?></span>
 							<span class="cro-hero__kpi-label">Kosten pro Anfrage</span>
 						</div>
 					</div>
@@ -81,7 +95,7 @@ get_header();
 					</div>
 
 					<div class="cro-hero__trust" aria-label="Vertrauenssignale">
-						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span>9 Monate Track Record</span>
+						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span><?php echo esc_html( $e3_timeframe ); ?> Track Record</span>
 						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span>Privacy-first Tracking</span>
 						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span>Hannover &middot; remote</span>
 					</div>
@@ -147,7 +161,7 @@ get_header();
 					<div class="cro-proof__arrow" aria-hidden="true">→</div>
 
 					<article class="cro-proof__column cro-proof__column--after cro-reveal">
-						<span class="cro-proof__col-tag">Nach 9 Monaten</span>
+						<span class="cro-proof__col-tag">Nach <?php echo esc_html( $e3_timeframe_dative ); ?></span>
 						<h3 class="cro-proof__col-title">Eigenes, skalierbares System</h3>
 						<ul class="cro-proof__col-list">
 							<li>Vorqualifizierte Anfragen direkt im CRM</li>
@@ -160,19 +174,19 @@ get_header();
 
 				<div class="cro-proof__counters cro-reveal" role="list" aria-label="Ergebniskennzahlen">
 					<div class="cro-proof__counter" role="listitem">
-						<span class="cro-proof__counter-value" data-counter-target="9" data-counter-suffix=" Monate">9 Monate</span>
+						<span class="cro-proof__counter-value" data-counter-target="<?php echo esc_attr( $e3_timeframe_value ); ?>" data-counter-suffix=" Monate"><?php echo esc_html( $e3_timeframe ); ?></span>
 						<span class="cro-proof__counter-label">Dauer</span>
 					</div>
 					<div class="cro-proof__counter" role="listitem">
-						<span class="cro-proof__counter-value" data-counter-target="1750" data-counter-suffix="+">1.750+</span>
+						<span class="cro-proof__counter-value" data-counter-target="<?php echo esc_attr( $e3_lead_count_target ); ?>" data-counter-suffix="+"><?php echo esc_html( $e3_lead_count ); ?></span>
 						<span class="cro-proof__counter-label">qualifizierte Anfragen</span>
 					</div>
 					<div class="cro-proof__counter" role="listitem">
-						<span class="cro-proof__counter-value" data-counter-target="12" data-counter-suffix=" %">12 %</span>
+						<span class="cro-proof__counter-value" data-counter-target="<?php echo esc_attr( $e3_sales_conversion_value ); ?>" data-counter-suffix=" %"><?php echo esc_html( $e3_sales_conversion ); ?></span>
 						<span class="cro-proof__counter-label">Abschlussquote</span>
 					</div>
 					<div class="cro-proof__counter" role="listitem">
-						<span class="cro-proof__counter-value" data-counter-target="-83" data-counter-suffix=" %">&minus;83 %</span>
+						<span class="cro-proof__counter-value" data-counter-target="<?php echo esc_attr( $e3_cpl_reduction_target ); ?>" data-counter-suffix=" %" data-counter-decimals="1"><?php echo esc_html( $e3_cpl_reduction ); ?></span>
 						<span class="cro-proof__counter-label">Kosten pro Anfrage</span>
 					</div>
 				</div>
@@ -311,7 +325,7 @@ get_header();
 		<section class="cro-trust-strip" aria-label="Vertrauen">
 			<div class="wp-container wp-home-shell">
 				<div class="cro-trust-strip__inner">
-					<span class="cro-trust-strip__item"><span class="cro-trust-strip__icon" aria-hidden="true">✓</span>9 Monate Referenz mit E3 New Energy</span>
+					<span class="cro-trust-strip__item"><span class="cro-trust-strip__icon" aria-hidden="true">✓</span><?php echo esc_html( $e3_timeframe ); ?> Referenz mit <?php echo esc_html( $e3_case_label ); ?></span>
 					<span class="cro-trust-strip__item"><span class="cro-trust-strip__icon" aria-hidden="true">✓</span>Privacy-first Tracking-Setup</span>
 					<span class="cro-trust-strip__item"><span class="cro-trust-strip__icon" aria-hidden="true">✓</span>Eigene Assets &mdash; keine Mietmodelle</span>
 					<span class="cro-trust-strip__item"><span class="cro-trust-strip__icon" aria-hidden="true">✓</span>Hannover &middot; remote</span>

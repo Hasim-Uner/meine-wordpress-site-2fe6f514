@@ -15,6 +15,11 @@ get_header();
 $audit_url      = nexus_get_audit_url();
 $request_url    = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#energie-anfrage' );
 $request_cta    = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Anfrage stellen';
+$e3_cpl_before  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
+$e3_cpl_after   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
+$e3_cpl_delta   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', '-85,3 %' ) : '-85,3 %';
+$e3_lead_count  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
+$e3_sales_rate  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '12 %' ) : '12 %';
 ?>
 
 <main id="main" class="site-main results-hub" data-track-section="results_hub">
@@ -30,19 +35,19 @@ $request_cta    = function_exists( 'nexus_get_primary_request_cta_label' ) ? nex
 
 				<div class="results-metrics" role="list" aria-label="Kennzahlen im Überblick">
 					<div class="results-metric" role="listitem">
-						<strong>120 €</strong>
+						<strong><?php echo esc_html( $e3_cpl_before ); ?></strong>
 						<span>CPL vorher</span>
 					</div>
 					<div class="results-metric" role="listitem">
-						<strong>20 €</strong>
+						<strong><?php echo esc_html( $e3_cpl_after ); ?></strong>
 						<span>CPL nachher</span>
 					</div>
 					<div class="results-metric" role="listitem">
-						<strong>1.750+</strong>
+						<strong><?php echo esc_html( $e3_lead_count ); ?></strong>
 						<span>Leads</span>
 					</div>
 					<div class="results-metric" role="listitem">
-						<strong>12 %</strong>
+						<strong><?php echo esc_html( $e3_sales_rate ); ?></strong>
 						<span>Sales-Conversion</span>
 					</div>
 				</div>
@@ -67,9 +72,9 @@ $request_cta    = function_exists( 'nexus_get_primary_request_cta_label' ) ? nex
 					</p>
 
 					<div class="results-case-card__stats">
-						<span class="results-case-card__stat">1.750+ Leads</span>
-						<span class="results-case-card__stat">-83% CPL</span>
-						<span class="results-case-card__stat">12% Sales-Conversion</span>
+						<span class="results-case-card__stat"><?php echo esc_html( $e3_lead_count ); ?> Anfragen</span>
+						<span class="results-case-card__stat"><?php echo esc_html( $e3_cpl_delta ); ?> CPL</span>
+						<span class="results-case-card__stat"><?php echo esc_html( $e3_sales_rate ); ?> Sales-Conversion</span>
 					</div>
 
 					<ul class="results-bullet-list">
@@ -94,8 +99,8 @@ $request_cta    = function_exists( 'nexus_get_primary_request_cta_label' ) ? nex
 					</p>
 
 					<div class="results-case-card__stats">
-						<span class="results-case-card__stat">120 € → 20 € CPL</span>
-						<span class="results-case-card__stat">1.750+ Leads</span>
+						<span class="results-case-card__stat"><?php echo esc_html( sprintf( '%1$s → %2$s CPL', $e3_cpl_before, $e3_cpl_after ) ); ?></span>
+						<span class="results-case-card__stat"><?php echo esc_html( $e3_lead_count ); ?> Anfragen</span>
 						<span class="results-case-card__stat">Bitrix24 + GTM SS</span>
 					</div>
 

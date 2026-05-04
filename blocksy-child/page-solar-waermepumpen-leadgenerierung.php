@@ -14,6 +14,19 @@ $request_url = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_pr
 $request_cta = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Anfrage stellen';
 $page_url    = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
 $e3_url      = home_url( '/e3-new-energy/' );
+$e3_canon    = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_metrics  = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
+
+$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
+$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
+$e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? '-85,3 %';
+$e3_cpl_conservative = $e3_metrics['cpl_reduction']['conservative_display'] ?? 'über 85 %';
+$e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
+$e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
+$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
+$e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten';
+$e3_proof_sentence   = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' ) : sprintf( 'Referenz %1$s: %2$s qualifizierte Anfragen, %3$s Abschlussquote und %4$s weniger Kosten pro Anfrage.', $e3_case_label, $e3_lead_count, $e3_sales_conversion, $e3_cpl_conservative );
 
 $pain_cards = [
 	[
@@ -80,15 +93,15 @@ $journey_cards = [
 
 $proof_kpis = [
 	[
-		'value' => '1.750+',
+		'value' => $e3_lead_count,
 		'label' => 'qualifizierte Anfragen',
 	],
 	[
-		'value' => '–83 %',
+		'value' => $e3_cpl_reduction,
 		'label' => 'Kosten pro Anfrage',
 	],
 	[
-		'value' => '12 %',
+		'value' => $e3_sales_conversion,
 		'label' => 'Abschlussquote',
 	],
 ];
@@ -135,7 +148,7 @@ $service_schema = [
 	'name'        => 'Website als Vertriebssystem für Solar- und Wärmepumpen-Anbieter',
 	'serviceType' => 'Aufbau eigener Anfrage-Systeme zur Ablösung von Portal-Leads für Solar-, Wärmepumpen-, Speicher- und Energie-Anbieter',
 	'url'         => $page_url,
-	'description' => 'Eigenes Anfrage-System für Solar- und Wärmepumpen-Betriebe: Schluss mit teuren Portal-Leads. Referenz E3 New Energy — 83 % weniger Kosten pro Anfrage in 9 Monaten.',
+	'description' => sprintf( 'Eigenes Anfrage-System für Solar- und Wärmepumpen-Betriebe: Schluss mit teuren Portal-Leads. Referenz %1$s — %2$s weniger Kosten pro Anfrage in %3$s.', $e3_case_label, $e3_cpl_conservative, $e3_timeframe_dative ),
 	'provider'    => [
 		'@type' => 'Person',
 		'name'  => 'Haşim Üner',
@@ -189,7 +202,7 @@ get_header();
 						<span class="nx-badge nx-badge--gold">Für Solar- und Wärmepumpen-Betriebe mit 10–25 Mitarbeitern</span>
 						<h1 class="nx-hero__title">Bauen Sie ein eigenes Anfrage-System statt weiter teure Leads zu mieten.</h1>
 						<p class="nx-hero__subtitle">Ich helfe B2B-Betrieben, unabhängiger von Portal-Leads zu werden &mdash; mit eigener WordPress-Infrastruktur, sauberem Tracking, Vorqualifizierung und CRM-Anbindung.</p>
-						<p class="nx-cta-microcopy">Referenz E3 New Energy: 1.750+ qualifizierte Anfragen &middot; 12 % Abschlussquote &middot; &ndash;83 % Kosten pro Anfrage (von 150 € auf ~25 €)</p>
+						<p class="nx-cta-microcopy"><?php echo esc_html( sprintf( 'Referenz %1$s: %2$s qualifizierte Anfragen · %3$s Abschlussquote · %4$s Kosten pro Anfrage (%5$s auf %6$s)', $e3_case_label, $e3_lead_count, $e3_sales_conversion, $e3_cpl_reduction, $e3_cpl_before, $e3_cpl_after ) ); ?></p>
 						<div class="energy-hero__actions">
 							<a href="#energie-anfrage" class="nx-btn nx-btn--primary" data-track-action="cta_energy_hero_audit" data-track-category="lead_gen">Kostenlose System-Diagnose starten</a>
 							<a href="<?php echo esc_url( $e3_url ); ?>" class="energy-text-link" data-track-action="cta_energy_hero_case" data-track-category="trust">E3-Ergebnis ansehen →</a>
@@ -206,7 +219,7 @@ get_header();
 				<header class="energy-section__head energy-section__head--narrow">
 					<span class="nx-badge nx-badge--ghost">Zwei Wege</span>
 					<h2 id="modell-title">Nachfrage mieten — oder eigene Anfrage-Infrastruktur aufbauen.</h2>
-					<p>Zwei Modelle, zwei Wirtschaftlichkeiten. Das eine setzt jeden Monat neu auf Portal-Budget. Das andere baut ein Anfrage-System, das in 9 Monaten 83 % günstiger arbeitet.</p>
+					<p><?php echo esc_html( sprintf( 'Zwei Modelle, zwei Wirtschaftlichkeiten. Das eine setzt jeden Monat neu auf Portal-Budget. Das andere baut ein Anfrage-System, das in %1$s %2$s günstiger arbeitet.', $e3_timeframe_dative, $e3_cpl_conservative ) ); ?></p>
 				</header>
 
 				<div class="energy-compare" role="group" aria-label="Vergleich: Modell A Portal-Leads vs. Modell B eigenes Anfrage-System">
@@ -272,20 +285,20 @@ get_header();
 
 				<aside class="energy-compare__outcome" aria-label="Referenz E3 New Energy">
 					<div class="energy-compare__outcome-head">
-						<span class="nx-badge nx-badge--gold">Referenz E3 New Energy &middot; 9 Monate</span>
+						<span class="nx-badge nx-badge--gold">Referenz <?php echo esc_html( $e3_case_label ); ?> &middot; <?php echo esc_html( $e3_timeframe ); ?></span>
 						<h3>Was das in der Praxis bedeutet.</h3>
 					</div>
 					<div class="energy-compare__outcome-grid">
 						<div class="energy-compare__outcome-stat">
-							<strong>&minus;83 %</strong>
+							<strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong>
 							<span>Kosten pro Anfrage</span>
 						</div>
 						<div class="energy-compare__outcome-stat">
-							<strong>1.750+</strong>
+							<strong><?php echo esc_html( $e3_lead_count ); ?></strong>
 							<span>qualifizierte Anfragen</span>
 						</div>
 						<div class="energy-compare__outcome-stat">
-							<strong>12 %</strong>
+							<strong><?php echo esc_html( $e3_sales_conversion ); ?></strong>
 							<span>Abschlussquote</span>
 						</div>
 					</div>
@@ -342,9 +355,9 @@ get_header();
 					<div class="energy-proof__copy">
 						<span class="nx-badge nx-badge--gold">Proof / Case Study</span>
 						<h2>E3 New Energy.</h2>
-						<p><strong>Vorher:</strong> Hohe Abhängigkeit von externen Leadquellen (ø 150 €/Lead). Leads waren oft schwer erreichbar, nicht qualifiziert und es fehlte ein klarer Überblick, welche Kanäle tatsächlich Termine und Abschlüsse erzeugten.</p>
+						<p><strong>Vorher:</strong> Hohe Abhängigkeit von externen Leadquellen (ø <?php echo esc_html( $e3_cpl_before ); ?>/Lead). Leads waren oft schwer erreichbar, nicht qualifiziert und es fehlte ein klarer Überblick, welche Kanäle tatsächlich Termine und Abschlüsse erzeugten.</p>
 						<p><strong>Umsetzung:</strong> Tracking-Fundament aufgebaut, Anfragepfade optimiert, smarte Vorqualifizierung eingeführt und eine strukturierte CRM-Übergabe eingerichtet.</p>
-						<p><strong>Ergebnis nach 9 Monaten:</strong> 1.750+ qualifizierte Anfragen, 12 % Abschlussquote und &ndash;83 % Kosten pro Anfrage (auf ~25 € gesenkt).</p>
+						<p><strong>Ergebnis nach <?php echo esc_html( $e3_timeframe_dative ); ?>:</strong> <?php echo esc_html( sprintf( '%1$s qualifizierte Anfragen, %2$s Abschlussquote und %3$s Kosten pro Anfrage (auf %4$s gesenkt).', $e3_lead_count, $e3_sales_conversion, $e3_cpl_reduction, $e3_cpl_after ) ); ?></p>
 						<blockquote style="margin: 1.5rem 0; padding: 1rem 1.5rem; border-left: 3px solid var(--nx-gold); background: rgba(0,0,0,0.02); font-style: italic; font-size: 1.05rem; line-height: 1.5;">
 							„Seit dem System sehen wir endlich, welche Kanäle wirklich Anfragen und Abschlüsse bringen. Wir konnten den teuren Lead-Einkauf massiv reduzieren und haben jetzt eine eigene Pipeline.“
 						</blockquote>
@@ -484,7 +497,7 @@ get_header();
 				<div class="nx-cta-box energy-cta-box">
 					<span class="nx-badge nx-badge--gold">Nächster Schritt</span>
 					<h2>Eigene Infrastruktur statt geteilter Portal-Leads und gemieteter Agentur-Funnel.</h2>
-					<p class="nx-cta-microcopy">&minus;83 % CPL &middot; 1.750+ qualifizierte Anfragen &middot; 12 % Abschlussquote &mdash; Referenz E3 New Energy, 9 Monate</p>
+					<p class="nx-cta-microcopy"><?php echo esc_html( $e3_proof_sentence ); ?></p>
 					<div class="energy-cta-box__actions">
 						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_footer_request" data-track-category="lead_gen" data-track-section="energy_footer" data-track-funnel-stage="energy_footer">Standortbestimmung anfordern</a>
 					</div>

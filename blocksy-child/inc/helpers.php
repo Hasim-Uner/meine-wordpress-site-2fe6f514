@@ -79,20 +79,22 @@ function nexus_get_public_proof_data() {
 		return $proof;
 	}
 
+	$e3_metrics = function_exists( 'hu_e3_canon' ) ? hu_e3_canon()['metrics'] : [];
+
 	$proof = [
 		'metrics'             => [
 			'lead_count'       => [
-				'value'   => '1.750+',
+				'value'   => $e3_metrics['lead_count']['display'] ?? '1.750+',
 				'label'   => 'qualifizierte Anfragen',
 				'context' => 'im aufgebauten System',
 			],
 			'sales_conversion' => [
-				'value'   => '12 %',
+				'value'   => $e3_metrics['sales_conversion']['display'] ?? '12 %',
 				'label'   => 'Abschlussquote',
 				'context' => 'vom Lead bis zum Abschluss',
 			],
 			'cpl_reduction'    => [
-				'value'   => '-83 %',
+				'value'   => $e3_metrics['cpl_reduction']['display'] ?? '-85,3 %',
 				'label'   => 'Kosten pro Anfrage',
 				'context' => 'gegenüber Lead-Einkauf',
 			],

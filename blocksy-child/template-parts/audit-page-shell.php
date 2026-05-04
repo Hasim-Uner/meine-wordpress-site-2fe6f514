@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $request_url     = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#energie-anfrage' );
 $privacy_url     = nexus_get_page_url( [ 'datenschutz' ], home_url( '/datenschutz/' ) );
 $audit_cta_label = 'Audit starten';
+$e3_summary      = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' ) : 'E3 New Energy: eigene Anfragen, Abschlussquote und niedrigere Kosten pro Anfrage.';
 ?>
 
 <div class="audit-wrapper" id="audit-main-wrapper">
@@ -51,8 +52,7 @@ $audit_cta_label = 'Audit starten';
 					</div>
 
 					<p class="ga-proof__lead">
-						E3 New Energy: 83 % niedrigere Kosten pro Anfrage, 34x Return on Ad Spend,
-						1.750+ Leads im System.
+						<?php echo esc_html( $e3_summary ); ?>
 					</p>
 
 					<div class="ga-proof__foot">

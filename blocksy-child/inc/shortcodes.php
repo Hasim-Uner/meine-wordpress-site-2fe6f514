@@ -347,6 +347,12 @@ function hu_hero_section_shortcode() {
 	$public_proof  = function_exists( 'nexus_get_public_proof_data' ) ? nexus_get_public_proof_data() : [];
 	$primary_term  = function_exists( 'nexus_get_public_primary_term' ) ? nexus_get_public_primary_term() : 'WordPress als Nachfrage-System für B2B';
 	$ownership_copy = function_exists( 'nexus_get_public_ownership_sentence' ) ? nexus_get_public_ownership_sentence() : 'Code, Inhalte, Zugänge und Setups bleiben bei Ihnen. Laufende Zusammenarbeit bedeutet Weiterentwicklung, nicht Abhängigkeit.';
+	$lead_count    = $public_proof['metrics']['lead_count']['value'] ?? '1.750+';
+	$sales_rate    = $public_proof['metrics']['sales_conversion']['value'] ?? '12 %';
+	$cpl_reduction = $public_proof['metrics']['cpl_reduction']['value'] ?? '-85,3 %';
+	$lead_target   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'counter_target', '1750' ) : '1750';
+	$sales_target  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'counter_target', '12' ) : '12';
+	$cpl_target    = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'counter_target', '-85.3' ) : '-85.3';
 
 	ob_start();
 	?>
@@ -376,9 +382,9 @@ function hu_hero_section_shortcode() {
 						</p>
 						<p class="wp-hero-platform-note nx-reveal"><?php echo esc_html( $primary_term ); ?> statt digitaler Visitenkarte: Sichtbarkeit, Lead-Führung, Datensignale und kontrollierte Weiterentwicklung greifen als ein sauberes System zusammen.</p>
 						<div class="wp-hero-proof nx-reveal" role="list" aria-label="Vertrauenssignale">
-							<span class="wp-hero-proof-item" role="listitem"><?php echo esc_html( ( $public_proof['metrics']['lead_count']['value'] ?? '1.750+' ) . ' qualifizierte Leads im aufgebauten System' ); ?></span>
-							<span class="wp-hero-proof-item" role="listitem"><?php echo esc_html( ( $public_proof['metrics']['sales_conversion']['value'] ?? '12 %' ) . ' Sales-Conversion' ); ?></span>
-							<span class="wp-hero-proof-item" role="listitem"><?php echo esc_html( ( $public_proof['metrics']['cpl_reduction']['value'] ?? '-83 %' ) . ' CPL gegenüber Lead-Einkauf' ); ?></span>
+							<span class="wp-hero-proof-item" role="listitem"><?php echo esc_html( $lead_count . ' qualifizierte Anfragen im aufgebauten System' ); ?></span>
+							<span class="wp-hero-proof-item" role="listitem"><?php echo esc_html( $sales_rate . ' Sales-Conversion' ); ?></span>
+							<span class="wp-hero-proof-item" role="listitem"><?php echo esc_html( $cpl_reduction . ' CPL gegenüber Lead-Einkauf' ); ?></span>
 						</div>
 
 							<div class="wp-hero-actions nx-reveal">
@@ -423,15 +429,15 @@ function hu_hero_section_shortcode() {
 
 				<div class="vertical-metrics nx-reveal" role="group" aria-label="Erfolgsmetriken">
 					<div class="wp-metric">
-						<span class="wp-metric-value" data-value="1750">1.750+</span>
-						<span class="wp-metric-label">qualifizierte Leads</span>
+						<span class="wp-metric-value" data-value="<?php echo esc_attr( $lead_target ); ?>"><?php echo esc_html( $lead_count ); ?></span>
+						<span class="wp-metric-label">qualifizierte Anfragen</span>
 					</div>
 					<div class="wp-metric">
-						<span class="wp-metric-value" data-value="12">12%</span>
+						<span class="wp-metric-value" data-value="<?php echo esc_attr( $sales_target ); ?>"><?php echo esc_html( $sales_rate ); ?></span>
 						<span class="wp-metric-label">Sales-Conversion</span>
 					</div>
 					<div class="wp-metric">
-						<span class="wp-metric-value" data-value="-83">-83%</span>
+						<span class="wp-metric-value" data-value="<?php echo esc_attr( $cpl_target ); ?>"><?php echo esc_html( $cpl_reduction ); ?></span>
 						<span class="wp-metric-label">CPL gegenüber Lead-Einkauf</span>
 					</div>
 					<div class="wp-metric">
@@ -655,6 +661,7 @@ function hu_erfolge_section_shortcode() {
 	$urls             = hu_home_urls();
 	$proof            = hu_home_public_proof_data();
 	$canonical_metrics = function_exists( 'nexus_get_public_proof_metric_list' ) ? nexus_get_public_proof_metric_list( [ 'lead_count', 'cpl_reduction', 'sales_conversion' ] ) : [];
+	$e3_timeframe     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display', '9 Monate' ) : '9 Monate';
 
 	ob_start();
 	?>
@@ -668,7 +675,7 @@ function hu_erfolge_section_shortcode() {
 
 			<div class="homepage-proof-grid">
 				<article class="nx-card nx-reveal homepage-proof-card" style="border-top:3px solid var(--nx-success);">
-					<p class="nx-card__subtitle">Beispielhafte Wirkung des Systems · B2B Leadgen · WordPress System · 12 Monate</p>
+					<p class="nx-card__subtitle"><?php echo esc_html( sprintf( 'Beispielhafte Wirkung des Systems · B2B Leadgen · WordPress System · %s', $e3_timeframe ) ); ?></p>
 					<h3 class="nx-card__title">E3 New Energy</h3>
 					<p style="color:var(--nx-text-muted); margin:0.8rem 0 0;">Eingekaufte Leads, keine saubere Datenlage, hohe Reibung nach dem Klick. Nach systematischer Neuordnung von Positionierung, Tracking und Conversion-Pfad:</p>
 					<div class="nx-metrics" style="margin-top:1.5rem; display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">

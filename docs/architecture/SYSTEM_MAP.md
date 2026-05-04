@@ -100,18 +100,18 @@ Fachliche Regel:
 
 ## Audit-Funnel
 
-Der Audit-Funnel ist der Primaer-CTA des Systems.
+Der Audit-Funnel ist nicht mehr der Primär-CTA des Systems. Er bleibt als Legacy-/Sekundärpfad bestehen, bis die Anfrage-System-Analyse und der Demo-Showroom vollständig conversion-fähig sind.
 
 Aktuelle Logik:
 
-1. Besucher kommen ueber Homepage, WGOS, Service-Seiten, Blog oder Kategorie-Hubs.
-2. Primaerer CTA fuehrt in den `Growth Audit`.
-3. Die aktive Audit-Landingpage nimmt nur die URL auf, startet den n8n-Job erst nach explizitem Klick ueber `audit` und pollt den Status anschliessend ueber `audit-status`.
+1. Kalter B2B-Traffic führt primär zur `/anfrage-system-analyse/`.
+2. Die EnergieFahrplan-Demo bleibt Showroom-Asset und verweist auf die Analyse.
+3. Die aktive Audit-Landingpage nimmt nur die URL auf, startet den n8n-Job erst nach explizitem Klick über `audit` und pollt den Status anschließend über `audit-status`.
 4. Das Frontend rendert das Ergebnis direkt auf der Seite als Modul-Dashboard; der Client akzeptiert sowohl den neuen V3-Payload als auch den bisherigen Direkt-Payload und nutzt `cja-analyze` nur noch als Fallback.
-5. Die Branchen-Landingpage fuer Solar-/Waermepumpen-Anbieter nutzt weiter einen separaten Multi-Step-Intake mit WordPress-CRM-Stack und serverseitigem Fallback.
-6. Direkte Eskalation nach dem Ergebnis laeuft ueber `/kontakt/` oder je nach Kontext ueber `Cal.com`.
-7. Direkte Gespraechs-CTAs bleiben als normale Links erhalten, werden im Frontend aber per `blocksy-child/assets/js/cal-embed.js` event-typ-spezifisch zu einem Modal-Embed im Seitenkontext erweitert.
-8. Der fruehere 48h-Intake fuer die Hauptroute bleibt im Repo als Legacy-Layer, ist aber nicht mehr der Default-Flow.
+5. Die Branchen-Landingpage für Solar-/Wärmepumpen-Anbieter nutzt weiter einen separaten Multi-Step-Intake mit WordPress-CRM-Stack und serverseitigem Fallback.
+6. Direkte Eskalation nach dem Ergebnis läuft über `/kontakt/` oder je nach Kontext über `Cal.com`.
+7. Direkte Gesprächs-CTAs bleiben als normale Links erhalten, werden im Frontend aber per `blocksy-child/assets/js/cal-embed.js` event-typ-spezifisch zu einem Modal-Embed im Seitenkontext erweitert.
+8. Der frühere 48h-Intake für die Hauptroute bleibt im Repo als Legacy-Layer, ist aber nicht mehr der Default-Flow.
 
 ## Nexus CRM und Blog Notify
 
@@ -217,7 +217,7 @@ Risiko:
 
 ## Systemabhaengigkeiten
 
-- Website -> CTA-Layer -> Growth Audit -> persoenliche Rueckmeldung -> Folgeprozess / CRM / Sales
+- Website -> CTA-Layer -> EnergieFahrplan-Demo / Anfrage-System-Analyse -> Fitentscheidung -> Umsetzung / CRM / Sales
 - Website -> Tracking-Layer -> GTM / GA4 / Consent -> Reporting / Optimierung
 - Blog / SEO -> interne Verlinkung -> Service-Seiten / Audit -> Leadflow
 - WordPress-Editor -> Theme-Struktur -> Live-Seiten

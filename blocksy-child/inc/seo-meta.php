@@ -76,6 +76,8 @@ function hu_get_blog_archive_description() {
  * @return array<string, array<string, string>>
  */
 function hu_get_forced_singular_seo_map() {
+	$e3_cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', '-85,3 %' ) : '-85,3 %';
+
 	return (array) apply_filters(
 		'hu_forced_singular_seo_map',
 		[
@@ -103,11 +105,11 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'wordpress-agentur-hannover' => [
 				'title'       => 'WordPress Agentur Hannover – SEO, Wartung & Conversion',
-				'description' => 'WordPress Agentur in Hannover: technisches SEO, Wartungsvertrag, Tracking und Conversion für B2B-Websites als verbundenes System. Referenz E3 — -83 % Leadkosten.',
+				'description' => sprintf( 'WordPress Agentur in Hannover: technisches SEO, Wartungsvertrag, Tracking und Conversion für B2B-Websites als verbundenes System. Referenz E3 — %s Leadkosten.', $e3_cpl_reduction ),
 			],
 			'wordpress-agentur' => [
 				'title'       => 'WordPress Agentur Hannover – SEO, Wartung & Conversion',
-				'description' => 'WordPress Agentur in Hannover: technisches SEO, Wartungsvertrag, Tracking und Conversion für B2B-Websites als verbundenes System. Referenz E3 — -83 % Leadkosten.',
+				'description' => sprintf( 'WordPress Agentur in Hannover: technisches SEO, Wartungsvertrag, Tracking und Conversion für B2B-Websites als verbundenes System. Referenz E3 — %s Leadkosten.', $e3_cpl_reduction ),
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
@@ -134,11 +136,11 @@ function hu_get_forced_singular_seo_map() {
 			// /ki-integration-wordpress/ ist noindex. Keine eigenständigen SEO-Signale mehr nötig.
 			'solar-waermepumpen-leadgenerierung' => [
 				'title'       => 'Leadgenerierung für Solar & Wärmepumpen | Weniger Kosten, bessere Anfragen',
-				'description' => 'Schluss mit teuren Portal-Leads. Eigenes Anfrage-System für Solarteure und Wärmepumpen-Installateure. Referenz: –83 % Kosten pro Anfrage. Kostenloses Erstgespräch.',
+				'description' => sprintf( 'Schluss mit teuren Portal-Leads. Eigenes Anfrage-System für Solarteure und Wärmepumpen-Installateure. Referenz: %s Kosten pro Anfrage. Kostenloses Erstgespräch.', $e3_cpl_reduction ),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
 				'title'       => 'Leadgenerierung für Solar & Wärmepumpen | Weniger Kosten, bessere Anfragen',
-				'description' => 'Schluss mit teuren Portal-Leads. Eigenes Anfrage-System für Solarteure und Wärmepumpen-Installateure. Referenz: –83 % Kosten pro Anfrage. Kostenloses Erstgespräch.',
+				'description' => sprintf( 'Schluss mit teuren Portal-Leads. Eigenes Anfrage-System für Solarteure und Wärmepumpen-Installateure. Referenz: %s Kosten pro Anfrage. Kostenloses Erstgespräch.', $e3_cpl_reduction ),
 			],
 		]
 	);

@@ -127,7 +127,7 @@ function hu_register_acf_fields() {
 						'label'       => 'Wert',
 						'name'        => 'kpi_value',
 						'type'        => 'text',
-						'placeholder' => 'z.B. -83%, 0.8s, 98/100',
+						'placeholder' => 'z.B. -85,3%, 0.8s, 98/100',
 						'wrapper'     => [ 'width' => '25' ],
 					],
 					[

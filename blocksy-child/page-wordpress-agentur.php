@@ -29,6 +29,9 @@ $measurement_url = nexus_get_wgos_asset_anchor_url( 'tracking-audit' );
 $cro_url   = nexus_get_primary_public_url( 'cro', home_url( '/conversion-rate-optimization/' ) );
 $tools_url = nexus_get_primary_public_url( 'tools', home_url( '/kostenlose-tools/' ) );
 $proof_metrics = function_exists( 'nexus_get_public_proof_metric_list' ) ? nexus_get_public_proof_metric_list( [ 'lead_count', 'sales_conversion', 'cpl_reduction' ] ) : [];
+$e3_cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', '-85,3 %' ) : '-85,3 %';
+$e3_lead_count = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
+$e3_sales_conversion = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '12 %' ) : '12 %';
 $canonical_ownership_sentence = function_exists( 'nexus_get_public_ownership_sentence' ) ? nexus_get_public_ownership_sentence() : 'Code, Inhalte, Zugänge und Setups bleiben bei Ihnen. Laufende Zusammenarbeit bedeutet Weiterentwicklung, nicht Abhängigkeit.';
 $primary_term                = function_exists( 'nexus_get_public_primary_term' ) ? nexus_get_public_primary_term() : 'WordPress als Nachfrage-System für B2B';
 $audit_cta_label             = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'System-Diagnose starten';
@@ -394,15 +397,15 @@ get_header();
 						<h3>Mehr Wirkung aus denselben Kanälen</h3>
 						<div class="wp-agentur-case-card__metrics" role="list" aria-label="Case Kennzahlen">
 							<div role="listitem">
-								<strong>-83 %</strong>
+								<strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong>
 								<span>CPL</span>
 							</div>
 							<div role="listitem">
-								<strong>1.750+</strong>
+								<strong><?php echo esc_html( $e3_lead_count ); ?></strong>
 								<span>Leads im System</span>
 							</div>
 							<div role="listitem">
-								<strong>12%</strong>
+								<strong><?php echo esc_html( $e3_sales_conversion ); ?></strong>
 								<span>Sales-Conversion</span>
 							</div>
 						</div>

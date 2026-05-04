@@ -15,19 +15,22 @@ get_header();
 $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' ) ? nexus_get_whitelabel_calendar_url() : 'https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true';
 $proof_anchor_url   = '#proof';
 $mailto_url         = 'mailto:hallo@hasimuener.de';
+$e3_cpl_before      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
+$e3_cpl_after       = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
+$e3_lead_count      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
 
 $proof_metrics = [
 	[
 		'label' => 'CPL vorher',
-		'value' => '120 €',
+		'value' => $e3_cpl_before,
 	],
 	[
 		'label' => 'CPL nachher',
-		'value' => '20 €',
+		'value' => $e3_cpl_after,
 	],
 	[
 		'label' => 'Generierte Leads',
-		'value' => '1.750+',
+		'value' => $e3_lead_count,
 	],
 ];
 

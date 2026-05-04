@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $privacy_url = function_exists( 'nexus_get_page_url' ) ? nexus_get_page_url( [ 'datenschutz' ], home_url( '/datenschutz/' ) ) : home_url( '/datenschutz/' );
 $page_url    = function_exists( 'nexus_get_anfrage_url' ) ? nexus_get_anfrage_url() : home_url( '/anfrage/' );
 $flow_steps  = function_exists( 'nexus_get_energy_intake_flow_definition' ) ? nexus_get_energy_intake_flow_definition() : [];
+$e3_summary  = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' ) : 'Referenz E3 New Energy: eigene Anfragen, Abschlussquote und niedrigere Kosten pro Anfrage.';
 
 $form_values  = [];
 $form_error   = '';
@@ -101,7 +102,7 @@ get_header();
 					<span class="nx-badge nx-badge--gold">Standortbestimmung</span>
 					<h1 class="nx-hero__title">5 Fragen, ca. 90 Sekunden &mdash; Antwort innerhalb von 48 Stunden per E-Mail.</h1>
 					<p class="nx-hero__subtitle">Region, Lead-Volumen, CPL, Engpass, Kontakt. Keine Pflicht-Calls, keine Sales-Hotline im Nachgang. Wir prüfen, ob Infrastruktur statt Miete für Ihren Betrieb ein realistischer Hebel ist &mdash; bei Nicht-Eignung erhalten Sie einen ehrlichen Hinweis auf eine realistischere Alternative.</p>
-					<p class="nx-cta-microcopy">&minus;83 % CPL &middot; 1.750+ qualifizierte Anfragen &middot; 12 % Abschlussquote &mdash; Referenz E3 New Energy, 9 Monate</p>
+					<p class="nx-cta-microcopy"><?php echo esc_html( $e3_summary ); ?></p>
 				</div>
 			</div>
 		</section>

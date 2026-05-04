@@ -16,6 +16,16 @@ $cases_url   = nexus_get_results_url();
 $wgos_url    = nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-growth-operating-system/' ) );
 $local_wp_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
 $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
+$e3_canon    = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_metrics  = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
+
+$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
+$e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? '-85,3 %';
+$e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
+$e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
+$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
+$e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten';
 ?>
 
 <div class="cs-case-wrapper">
@@ -46,8 +56,8 @@ $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_ene
         <span class="nx-badge nx-badge--gold">Flagship Case Study</span>
 
         <h1 class="cs-case-hero__title">
-            Von 150&nbsp;€ CPL auf <span class="nx-text-gold">~25&nbsp;€</span>&nbsp;—<br>
-            1.750+ Leads im System.
+            Von <?php echo esc_html( $e3_cpl_before ); ?> CPL auf <span class="nx-text-gold"><?php echo esc_html( $e3_cpl_after ); ?></span>&nbsp;—<br>
+            <?php echo esc_html( $e3_lead_count ); ?> Anfragen im System.
         </h1>
 
         <p class="cs-case-hero__subtitle">
@@ -59,15 +69,15 @@ $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_ene
         <!-- KPI Snapshot (3 Tiles) -->
         <div class="cs-kpi-row">
             <div class="cs-kpi-tile">
-                <span class="cs-kpi-value nx-text-gold">1.750+</span>
-                <span class="cs-kpi-label">Qualif. Leads / Jahr</span>
+                <span class="cs-kpi-value nx-text-gold"><?php echo esc_html( $e3_lead_count ); ?></span>
+                <span class="cs-kpi-label">Qualif. Anfragen</span>
             </div>
             <div class="cs-kpi-tile cs-kpi-tile--center">
-                <span class="cs-kpi-value nx-text-gold">-83%</span>
+                <span class="cs-kpi-value nx-text-gold"><?php echo esc_html( $e3_cpl_reduction ); ?></span>
                 <span class="cs-kpi-label">Cost per Lead</span>
             </div>
             <div class="cs-kpi-tile">
-                <span class="cs-kpi-value nx-text-gold">12&nbsp;%</span>
+                <span class="cs-kpi-value nx-text-gold"><?php echo esc_html( $e3_sales_conversion ); ?></span>
                 <span class="cs-kpi-label">Sales-Conversion</span>
             </div>
         </div>
@@ -96,7 +106,7 @@ $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_ene
             <span class="cs-meta-sep">·</span>
             <span class="cs-meta-item">Fokus: Segmentierung + Qualifizierung + Automatisierung</span>
             <span class="cs-meta-sep">·</span>
-            <span class="cs-meta-item">Zeitraum: 12 Monate</span>
+            <span class="cs-meta-item">Zeitraum: <?php echo esc_html( $e3_timeframe ); ?></span>
             <span class="cs-meta-sep">·</span>
             <span class="cs-meta-item">Budget: 20.000&nbsp;€</span>
         </div>
@@ -126,7 +136,7 @@ $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_ene
                 </p>
                 <p>
                     Das Wachstum hing jedoch zu stark am externen Lead-Einkauf
-                    (ø 150&nbsp;€ pro Lead). Ziel war nicht mehr Reichweite um jeden Preis,
+                    (ø <?php echo esc_html( $e3_cpl_before ); ?> pro Lead). Ziel war nicht mehr Reichweite um jeden Preis,
                     sondern eine eigene Pipeline: eine Nachfragebasis, die kontinuierlich
                     qualifizierte Anfragen liefert und die Abhängigkeit von Drittanbietern senkt.
                 </p>
@@ -179,7 +189,7 @@ $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_ene
                     </li>
                     <li>
                         <span class="cs-fact-label">Zeitraum</span>
-                        <span class="cs-fact-value">12 Monate WGOS</span>
+                        <span class="cs-fact-value"><?php echo esc_html( $e3_timeframe ); ?> WGOS</span>
                     </li>
                     <li>
                         <span class="cs-fact-label">System</span>
@@ -231,7 +241,7 @@ $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_ene
 
             <div class="nx-card nx-card--flat cs-constraint-card cs-constraint-card--highlight">
                 <div class="cs-constraint-num">03</div>
-                <h3 class="nx-card__title">Leads zugekauft — ø 150&nbsp;€/Stück</h3>
+                <h3 class="nx-card__title">Leads zugekauft — ø <?php echo esc_html( $e3_cpl_before ); ?>/Stück</h3>
                 <p class="nx-card__text">
                     Externe Listen und Kauf-Leads waren teuer und heterogen.
                     Keine belastbare Vorqualifizierung nach Anlagengröße, Bedarf und
@@ -379,10 +389,10 @@ $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_ene
                         dafür, dass Leads vorqualifiziert und priorisiert im Vertrieb ankamen.
                     </p>
                     <ul class="cs-phase-outcomes">
-                        <li>✓ 1.750+ Leads im 5-Monats-Skalierungsfenster</li>
+                        <li>✓ <?php echo esc_html( $e3_lead_count ); ?> Anfragen im 5-Monats-Skalierungsfenster</li>
                         <li>✓ Vom Lead-Einkauf zur eigenen Pipeline</li>
-                        <li>✓ -83% Cost per Lead vs. Einkaufsleads</li>
-                        <li>✓ 12&nbsp;% Sales-Conversion-Rate</li>
+                        <li>✓ <?php echo esc_html( $e3_cpl_reduction ); ?> Cost per Lead vs. Einkaufsleads</li>
+                        <li>✓ <?php echo esc_html( $e3_sales_conversion ); ?> Sales-Conversion-Rate</li>
                         <li>✓ Segmentierte, vorqualifizierte Übergabe an Vertrieb</li>
                         <li>✓ CRM + n8n Automation für Follow-up und Datenqualität</li>
                     </ul>
@@ -458,7 +468,7 @@ $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_ene
         <div class="nx-section-header">
             <span class="nx-badge nx-badge--gold">Die Zahlen</span>
             <h2 class="nx-headline-section" style="margin-top:1rem;">
-                Ergebnis nach 12 Monaten: eigene Pipeline statt Lead-Einkauf
+                Ergebnis nach <?php echo esc_html( $e3_timeframe_dative ); ?>: eigene Pipeline statt Lead-Einkauf
             </h2>
             <p class="nx-subheadline" style="margin:1rem auto 0;">
                 Synergie aus technischem Setup und Performance-Skalierung:
@@ -470,19 +480,19 @@ $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_ene
         <div class="cs-results-grid" style="margin-top:3rem;">
 
             <div class="cs-result-card cs-result-card--primary">
-                <span class="cs-result-value">1.750+</span>
-                <span class="cs-result-label">Qualifizierte Leads</span>
+                <span class="cs-result-value"><?php echo esc_html( $e3_lead_count ); ?></span>
+                <span class="cs-result-label">Qualifizierte Anfragen</span>
                 <span class="cs-result-note">eigene Pipeline statt externer Zukauf</span>
             </div>
 
             <div class="cs-result-card">
-                <span class="cs-result-value">-83%</span>
+                <span class="cs-result-value"><?php echo esc_html( $e3_cpl_reduction ); ?></span>
                 <span class="cs-result-label">Cost per Lead</span>
-                <span class="cs-result-note">von ø 150&nbsp;€ auf ~25&nbsp;€</span>
+                <span class="cs-result-note">von ø <?php echo esc_html( $e3_cpl_before ); ?> auf <?php echo esc_html( $e3_cpl_after ); ?></span>
             </div>
 
             <div class="cs-result-card">
-                <span class="cs-result-value">12&nbsp;%</span>
+                <span class="cs-result-value"><?php echo esc_html( $e3_sales_conversion ); ?></span>
                 <span class="cs-result-label">Sales-Conversion-Rate</span>
                 <span class="cs-result-note">Lead → Abschluss</span>
             </div>
@@ -593,7 +603,7 @@ $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_ene
                 <summary>Wie lange dauert es bis zu ersten Leads?</summary>
                 <div class="nx-faq__content">
                     Das Fundament war in 4–6 Wochen stabil. Erste qualifizierte Inbound-Leads
-                    kamen bei E3 ab Woche 14. Das Hauptwachstum (1.750+ Leads) entstand im
+                    kamen bei E3 ab Woche 14. Das Hauptwachstum (<?php echo esc_html( $e3_lead_count ); ?> Anfragen) entstand im
                     anschließenden 5-Monats-Skalierungsfenster.
                 </div>
             </details>
