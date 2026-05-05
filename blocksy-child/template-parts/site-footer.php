@@ -15,14 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 $current_year = wp_date( 'Y' );
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $home_url     = $primary_urls['home'] ?? home_url( '/' );
-$audit_url    = $primary_urls['audit'] ?? nexus_get_audit_url();
-$request_url  = $primary_urls['request'] ?? ( function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#energie-anfrage' ) );
-$agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
+$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+$request_url  = $analysis_url;
+$demo_url     = home_url( '/energie-fahrplan-demo/' );
 $cases_url    = $primary_urls['results'] ?? nexus_get_results_url();
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
-$seo_url      = $primary_urls['seo'] ?? home_url( '/wordpress-seo-hannover/' );
-$cwv_url      = $primary_urls['cwv'] ?? home_url( '/core-web-vitals/' );
-$tools_url    = $primary_urls['tools'] ?? home_url( '/kostenlose-tools/' );
 $about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
 $contact_url  = $primary_urls['contact'] ?? nexus_get_contact_url();
 $project_request_url = add_query_arg(
@@ -31,7 +28,6 @@ $project_request_url = add_query_arg(
 	],
 	$contact_url
 );
-$whitelabel_url   = $primary_urls['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
 $imprint_url      = $primary_urls['impressum'] ?? home_url( '/impressum/' );
 $privacy_url      = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
 $hide_primary_cta = function_exists( 'nexus_should_hide_footer_primary_cta' ) && nexus_should_hide_footer_primary_cta();
@@ -50,7 +46,7 @@ $audit_footer_note = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_ge
 	<div class="ft__audit-shell">
 		<p class="ft__audit-note"><?php echo esc_html( $audit_footer_note ); ?></p>
 		<nav class="ft__audit-links" aria-label="System-Diagnose-Footer-Navigation">
-			<a href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_footer_request" data-track-category="lead_gen">Anfrage stellen</a>
+			<a href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_footer_analysis" data-track-category="lead_gen">Analyse starten</a>
 			<a href="<?php echo esc_url( $imprint_url ); ?>" rel="nofollow">Impressum</a>
 			<a href="<?php echo esc_url( $privacy_url ); ?>" rel="nofollow">Datenschutz</a>
 		</nav>
@@ -66,7 +62,7 @@ $audit_footer_note = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_ge
 				<a class="ft__logo site-logo site-logo--accent" href="<?php echo esc_url( $home_url ); ?>" aria-label="Startseite - HAŞIM ÜNER">HAŞIM ÜNER</a>
 				<p class="ft__energy-tag">Leadgenerierung für Solar- und Wärmepumpen-Betriebe.</p>
 			</div>
-			<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_energy_footer_request" data-track-category="lead_gen" data-track-section="footer_energy" data-track-funnel-stage="energy_footer">Anfrage stellen</a>
+			<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_energy_footer_analysis" data-track-category="lead_gen" data-track-section="footer_energy" data-track-funnel-stage="energy_footer">Analyse starten</a>
 			<nav class="ft__energy-legal" aria-label="Rechtliches">
 			<a href="<?php echo esc_url( $imprint_url ); ?>" rel="nofollow">Impressum</a>
 			<span aria-hidden="true">·</span>
@@ -90,9 +86,9 @@ $audit_footer_note = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_ge
 			<a class="ft__logo site-logo site-logo--accent" href="<?php echo esc_url( $home_url ); ?>" aria-label="Startseite - HAŞIM ÜNER">HAŞIM ÜNER</a>
 			<p class="ft__tag">Eigenes Anfrage-System für Solar- und Wärmepumpen-Anbieter.</p>
 			<?php if ( ! $hide_primary_cta ) : ?>
-			<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_footer_request" data-track-category="lead_gen">Anfrage stellen</a>
+			<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_footer_analysis" data-track-category="lead_gen">Analyse starten</a>
 			<?php else : ?>
-			<a class="ft__cta ft__cta--mobile-only" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_footer_request_mobile" data-track-category="lead_gen">Anfrage stellen</a>
+			<a class="ft__cta ft__cta--mobile-only" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_footer_analysis_mobile" data-track-category="lead_gen">Analyse starten</a>
 			<?php endif; ?>
 			<p class="ft__privacy-note">
 				<span class="ft__privacy-badge" aria-hidden="true">
@@ -111,8 +107,8 @@ $audit_footer_note = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_ge
 			<section class="ft__col" aria-labelledby="ft-einstieg">
 				<h3 id="ft-einstieg">Einstieg</h3>
 				<ul class="ft__list">
-					<li><a class="ft__link-strong" href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_footer_nav_agentur" data-track-category="navigation">WordPress Agentur Hannover</a></li>
-					<li><a href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="cta_footer_nav_whitelabel" data-track-category="navigation">Whitelabel &amp; Weiterentwicklung</a></li>
+					<li><a class="ft__link-strong" href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_footer_nav_analysis" data-track-category="lead_gen">Anfrage-System-Analyse</a></li>
+					<li><a href="<?php echo esc_url( $demo_url ); ?>" data-track-action="cta_footer_nav_energy_demo" data-track-category="navigation">EnergieFahrplan-Demo</a></li>
 				</ul>
 			</section>
 
@@ -121,8 +117,6 @@ $audit_footer_note = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_ge
 				<ul class="ft__list">
 					<li><a class="ft__link-strong" href="<?php echo esc_url( $cases_url ); ?>" data-track-action="cta_footer_nav_results" data-track-category="trust">Ergebnisse</a></li>
 					<li><a href="<?php echo esc_url( $blog_url ); ?>" data-track-action="cta_footer_nav_insights" data-track-category="navigation">Insights</a></li>
-					<li><a href="<?php echo esc_url( $cwv_url ); ?>" data-track-action="cta_footer_nav_cwv" data-track-category="navigation">Core Web Vitals</a></li>
-					<li><a href="<?php echo esc_url( $tools_url ); ?>" data-track-action="cta_footer_nav_tools" data-track-category="navigation">Kostenlose Tools</a></li>
 				</ul>
 			</section>
 

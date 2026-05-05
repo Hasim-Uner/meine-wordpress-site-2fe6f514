@@ -111,19 +111,19 @@ function nexus_is_primary_header_menu_args( $args ) {
  * @return array<int, array<string, mixed>>
  */
 function nexus_get_site_header_fallback_items() {
-	$solar_page_id = nexus_get_page_id( [ 'solar-waermepumpen-leadgenerierung' ] );
 	$about_page_id = nexus_get_page_id( [ 'uber-mich' ] );
 	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
-	$request_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#energie-anfrage' );
-	$request_cta  = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Anfrage stellen';
+	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+	$demo_url     = home_url( '/energie-fahrplan-demo/' );
+	$request_cta  = 'Analyse starten';
 
 	return [
 		[
-			'label'  => __( 'Solar & Wärmepumpen', 'blocksy-child' ),
-			'url'    => $solar_page_id ? get_permalink( $solar_page_id ) : home_url( '/solar-waermepumpen-leadgenerierung/' ),
-			'active' => $solar_page_id ? is_page( $solar_page_id ) : false,
+			'label'  => __( 'Demo', 'blocksy-child' ),
+			'url'    => $demo_url,
+			'active' => function_exists( 'hu_is_energy_demo_request_path' ) && hu_is_energy_demo_request_path(),
 			'class'  => '',
-			'track'  => 'solar',
+			'track'  => 'energy_demo',
 		],
 		[
 			'label'  => __( 'Ergebnisse', 'blocksy-child' ),
@@ -141,10 +141,10 @@ function nexus_get_site_header_fallback_items() {
 		],
 		[
 			'label'  => $request_cta,
-			'url'    => $request_url,
+			'url'    => $analysis_url,
 			'active' => false,
 			'class'  => 'nav-cta-button',
-			'track'  => 'request',
+			'track'  => 'analysis',
 		],
 	];
 }
@@ -226,6 +226,8 @@ function nexus_strip_side_funnel_nav_items( $items, $args ) {
 	$blocked_paths = [
 		'/whitelabel-retainer/',
 		'/wordpress-agentur-hannover/',
+		'/core-web-vitals/',
+		'/kostenlose-tools/',
 	];
 
 	$filtered_items = [];
@@ -250,8 +252,7 @@ function nexus_strip_side_funnel_nav_items( $items, $args ) {
 add_filter( 'wp_nav_menu_objects', 'nexus_strip_side_funnel_nav_items', 10, 2 );
 
 /**
- * Swap the nav CTA label on the energy systems landing page when a WordPress
- * menu is assigned (wp_nav_menu path).
+ * Swap legacy nav CTAs to the current analysis entry when a WordPress menu is assigned.
  *
  * @param array           $items Sorted menu item objects.
  * @param stdClass|string $args  Menu arguments.
@@ -262,11 +263,11 @@ function nexus_energy_nav_cta_label( $items, $args ) {
 		return $items;
 	}
 
-	$request_url = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#energie-anfrage' );
-	$request_cta = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Anfrage stellen';
+	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+	$request_cta = 'Analyse starten';
 
 	foreach ( $items as $item ) {
-		if ( in_array( $item->title, ['Audit starten', 'System-Diagnose', 'System-Diagnose starten', 'Audit', 'AI-Audit'], true ) ) {
+		if ( in_array( $item->title, [ 'Audit starten', 'System-Diagnose', 'System-Diagnose starten', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
 			$item->title = $request_cta;
 			$item->url   = $request_url;
 			break;
@@ -287,11 +288,5 @@ function nexus_get_site_header_eyebrow() {
 		return '';
 	}
 
-	$description = trim( (string) get_bloginfo( 'description' ) );
-
-	if ( '' !== $description ) {
-		return $description;
-	}
-
-	return __( 'Anfrage-Systeme für B2B. Spezialisiert auf Solar & Wärmepumpen.', 'blocksy-child' );
+	return __( 'Anfrage-Systeme für Solar & Wärmepumpe.', 'blocksy-child' );
 }

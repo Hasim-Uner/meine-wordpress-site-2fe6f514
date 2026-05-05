@@ -6,11 +6,11 @@
  * Tracking-ready mit data-track-* Attributen.
  *
  * Usage:
- *   set_query_var( 'cta_heading', 'Wo verbrennt Ihre Website Geld?' );
- *   set_query_var( 'cta_text', 'Der Audit prueft Tech, SEO und Conversion im Zusammenspiel.' );
- *   set_query_var( 'cta_url', '/kontakt/' );
- *   set_query_var( 'cta_button_text', 'Audit starten' );
- *   set_query_var( 'cta_action', 'cta_footer_audit' );
+ *   set_query_var( 'cta_heading', 'Passt Ihr Betrieb für ein eigenes Anfrage-System?' );
+ *   set_query_var( 'cta_text', 'Die Analyse prüft Fit, Marktbild und nächsten Schritt.' );
+ *   set_query_var( 'cta_url', '/anfrage-system-analyse/' );
+ *   set_query_var( 'cta_button_text', 'Analyse starten' );
+ *   set_query_var( 'cta_action', 'cta_footer_analysis' );
  *   get_template_part( 'template-parts/footer-cta' );
  *
  * [CRO] template-parts/footer-cta: Conversion-optimierter Bottom-CTA
@@ -22,11 +22,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$heading     = get_query_var( 'cta_heading', __( 'Wo verliert Ihre WordPress-Seite heute Anfragen?', 'blocksy-child' ) );
-$text        = get_query_var( 'cta_text', __( 'Der Audit zeigt, wo Sichtbarkeit, Vertrauen oder Conversion im Zusammenspiel wegbrechen.', 'blocksy-child' ) );
-$url         = get_query_var( 'cta_url', nexus_get_audit_url() );
-$button_text = get_query_var( 'cta_button_text', __( 'Audit starten', 'blocksy-child' ) );
-$action      = get_query_var( 'cta_action', 'cta_footer_audit' );
+$heading     = get_query_var( 'cta_heading', __( 'Passt Ihr Betrieb für ein eigenes Anfrage-System?', 'blocksy-child' ) );
+$text        = get_query_var( 'cta_text', __( 'Die Analyse prüft Fit, Marktbild und den nächsten sinnvollen Schritt.', 'blocksy-child' ) );
+$url         = get_query_var( 'cta_url', function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' ) );
+$button_text = get_query_var( 'cta_button_text', __( 'Analyse starten', 'blocksy-child' ) );
+$action      = get_query_var( 'cta_action', 'cta_footer_analysis' );
 $imprint_url = nexus_get_page_url( [ 'impressum' ], home_url( '/impressum/' ) );
 $privacy_url = nexus_get_page_url( [ 'datenschutz' ], home_url( '/datenschutz/' ) );
 

@@ -13,7 +13,7 @@ $brand_text   = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wor
 $eyebrow_text = nexus_get_site_header_eyebrow();
 $mobile_eyebrow_text = function_exists( 'nexus_get_public_primary_term' ) ? trim( (string) nexus_get_public_primary_term() ) : '';
 $panel_id     = 'nx-site-header-panel';
-$request_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#energie-anfrage' );
+$request_url  = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
 $audit_header_meta_items = function_exists( 'nexus_get_audit_header_meta_items' ) ? nexus_get_audit_header_meta_items() : [];
 $home_label   = sprintf(
 	/* translators: %s: site or brand name. */
@@ -22,7 +22,7 @@ $home_label   = sprintf(
 );
 
 if ( '' === $mobile_eyebrow_text ) {
-	$mobile_eyebrow_text = __( 'Anfrage-Systeme für B2B.', 'blocksy-child' );
+	$mobile_eyebrow_text = __( 'Anfrage-Systeme für Solar & Wärmepumpe.', 'blocksy-child' );
 }
 
 if ( empty( $audit_header_meta_items ) ) {
@@ -60,7 +60,7 @@ if ( empty( $audit_header_meta_items ) ) {
 			</div>
 
 			<div class="nx-site-header__audit-actions">
-				<a class="nx-site-header__audit-link" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_header_results" data-track-category="lead_gen" data-track-section="audit_header" data-track-funnel-stage="audit_header">Ergebnisse ansehen</a>
+				<a class="nx-site-header__audit-link" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_header_analysis" data-track-category="lead_gen" data-track-section="audit_header" data-track-funnel-stage="audit_header">Analyse starten</a>
 			</div>
 		</div>
 	</div>
