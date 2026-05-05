@@ -77,6 +77,14 @@ const steps = [
 
 const formatNumber = (value: number) => new Intl.NumberFormat('de-DE').format(Math.round(value));
 const formatMoney = (value: number) => `${formatNumber(value)} €`;
+const defaultAnalysisUrl = '/anfrage-system-analyse/';
+
+const getAnalysisUrl = () => {
+  const root = document.getElementById('energie-fahrplan-root');
+  const configuredUrl = root?.dataset.analysisUrl?.trim();
+
+  return configuredUrl || defaultAnalysisUrl;
+};
 
 const orientationLabel = (orientation: Orientation) => {
   const labels: Record<Orientation, string> = {
@@ -175,6 +183,7 @@ function App() {
   const [step, setStep] = useState(1);
   const [input, setInput] = useState<DemoInput>(initialInput);
   const [isExporting, setIsExporting] = useState(false);
+  const analysisUrl = getAnalysisUrl();
   const result = useMemo(() => calculateSolarSystem(input), [input]);
   const reportId = useMemo(
     () => `EFD-${input.region.replace(/\W+/g, '').slice(0, 3).toUpperCase()}-${Math.round(input.pvSize * 10)}-${Math.round(input.storageSize * 10)}`,
@@ -268,7 +277,7 @@ function App() {
           <h1 id="energy-demo-title">EnergieFahrplan aus Käufer-Sicht erleben.</h1>
           <p>
             Füllen Sie den Beispiel-Funnel aus und sehen Sie, wie daraus Ergebnis, PDF und Lead-Karte
-            entstehen. Alles läuft lokal im Browser: keine E-Mail, kein CRM-Submit, keine Speicherung.
+            entstehen. Alles läuft lokal im Browser: keine Speicherung, kein CRM-Submit, kein n8n-Workflow.
           </p>
           <div className="energy-demo-hero__actions">
             <button
@@ -283,12 +292,12 @@ function App() {
             </button>
             <a
               className="energy-demo-btn energy-demo-btn--ghost"
-              href="/anfrage-system-analyse/"
-              data-track-action="demo_cta_request_analysis"
+              href={analysisUrl}
+              data-track-action="demo_cta_request_analysis_hero"
               data-track-category="lead_gen"
               data-track-funnel-stage="request_analysis"
             >
-              Analyse anfragen
+              Analyse starten
             </a>
           </div>
         </div>
@@ -523,17 +532,18 @@ function App() {
                   <span className="energy-demo-kicker">Nächster Schritt</span>
                   <h3>So könnte Ihr eigener Anfrageprozess aussehen.</h3>
                   <p>
-                    In der Anfrage-System-Analyse klären wir, ob sich ein solcher Funnel für Ihren Betrieb lohnt,
-                    welcher Leadkosten-Korridor realistisch ist und wo CRM, n8n oder Tracking sinnvoll angeschlossen werden.
+                    Wenn Sie sehen möchten, ob ein solcher Funnel für Ihren Betrieb passt,
+                    ist die Anfrage-System-Analyse der nächste Schritt. Dort geht es um Fit, Marktbild,
+                    Anfragepfad und sinnvolle Systemgrenzen.
                   </p>
                   <a
                     className="energy-demo-btn energy-demo-btn--primary"
-                    href="/anfrage-system-analyse/"
-                    data-track-action="demo_cta_book_consult"
+                    href={analysisUrl}
+                    data-track-action="demo_cta_request_analysis_final"
                     data-track-category="lead_gen"
                     data-track-funnel-stage="request_analysis"
                   >
-                    Analyse anfragen
+                    Analyse starten
                   </a>
                 </div>
               </div>
