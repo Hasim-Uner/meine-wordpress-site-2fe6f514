@@ -73,43 +73,59 @@ const steps = [
   {
     title: 'Betrieb',
     purpose: 'ICP-Fit prüfen',
+    focus: 'Branche, Angebotsart und Teamgröße zeigen, ob der Fall in den aktuellen Founding-Partner-Rahmen passt.',
+    output: 'Fit-Rahmen',
   },
   {
     title: 'Region',
     purpose: 'Marktreichweite einschätzen',
+    focus: 'Der Zielmarkt muss groß genug sein, ohne außerhalb des DACH-Rahmens zu laufen.',
+    output: 'Marktraum',
   },
   {
     title: 'Angebot',
     purpose: 'Wirtschaftliche Relevanz prüfen',
+    focus: 'Auftragswert und Hauptleistung entscheiden, ob ein Anfrage-System die Akquisekosten tragen kann.',
+    output: 'Unit Economics',
   },
   {
     title: 'Werbebudget',
     purpose: 'Skalierungsfähigkeit prüfen',
+    focus: 'Budget ist kein Kaufdruck, sondern ein Signal, ob belastbare Nachfrage überhaupt getestet werden kann.',
+    output: 'Skalierungsfenster',
   },
   {
     title: 'Website',
     purpose: 'Anfragepfad einschätzen',
+    focus: 'Die Website zeigt, wie konkret der spätere Befund werden kann. Eine grobe URL reicht.',
+    output: 'Anfragepfad',
   },
   {
     title: 'Tracking',
     purpose: 'Messlage prüfen',
+    focus: 'Ohne Messbarkeit wird Wachstum zur Meinung. Unklarheit ist erlaubt, wird aber bewusst rot markiert.',
+    output: 'Datenreife',
   },
   {
     title: 'Anfrageprozess',
     purpose: 'Vertriebsfähigkeit prüfen',
+    focus: 'Bezahlte Anfragen verlieren Wert, wenn Reaktion, Verantwortung oder Nachverfolgung fehlen.',
+    output: 'Prozessreife',
   },
   {
     title: 'Marktbild',
     purpose: 'Leadkosten-Korridor einordnen',
+    focus: 'Region, Kanal und Wettbewerb ergeben nur einen Korridor, keine Garantie.',
+    output: 'Korridor',
   },
 ];
 
 const industryOptions: Option[] = [
-  {value: 'solar', label: 'Solar / PV'},
-  {value: 'heatpump', label: 'Wärmepumpe'},
-  {value: 'shk', label: 'SHK'},
-  {value: 'storage', label: 'Speicher / Energie'},
-  {value: 'other', label: 'Andere Branche'},
+  {value: 'solar', label: 'Solar / PV', note: 'Kernfokus'},
+  {value: 'heatpump', label: 'Wärmepumpe', note: 'Kernfokus'},
+  {value: 'shk', label: 'SHK', note: 'Kernfokus'},
+  {value: 'storage', label: 'Speicher / Energie', note: 'naher Fit'},
+  {value: 'other', label: 'Andere Branche', note: 'meist kein Fit'},
 ];
 
 const offerTypeOptions: Option[] = [
@@ -120,11 +136,11 @@ const offerTypeOptions: Option[] = [
 ];
 
 const employeeOptions: Option[] = [
-  {value: '1_5', label: '1-5'},
-  {value: '6_9', label: '6-9'},
-  {value: '10_25', label: '10-25'},
-  {value: '26_50', label: '26-50'},
-  {value: '50_plus', label: '50+'},
+  {value: '1_5', label: '1-5', note: 'oft zu früh'},
+  {value: '6_9', label: '6-9', note: 'Grenzfall'},
+  {value: '10_25', label: '10-25', note: 'starker Fit'},
+  {value: '26_50', label: '26-50', note: 'prüfbar'},
+  {value: '50_plus', label: '50+', note: 'prüfbar'},
 ];
 
 const countryOptions: Option[] = [
@@ -143,18 +159,18 @@ const offerFocusOptions: Option[] = [
 ];
 
 const orderValueOptions: Option[] = [
-  {value: 'under_5k', label: '< 5.000 EUR'},
-  {value: '5k_10k', label: '5.000-10.000 EUR'},
-  {value: '10k_25k', label: '10.000-25.000 EUR'},
-  {value: '25k_plus', label: '25.000 EUR+'},
+  {value: 'under_5k', label: '< 5.000 EUR', note: 'kritisch'},
+  {value: '5k_10k', label: '5.000-10.000 EUR', note: 'prüfen'},
+  {value: '10k_25k', label: '10.000-25.000 EUR', note: 'tragfähig'},
+  {value: '25k_plus', label: '25.000 EUR+', note: 'stark'},
 ];
 
 const budgetOptions: Option[] = [
-  {value: 'under_2500', label: '< 2.500 EUR / Monat'},
-  {value: '2500_4999', label: '2.500-4.999 EUR / Monat'},
-  {value: '5000_9999', label: '5.000-9.999 EUR / Monat'},
-  {value: '10000_19999', label: '10.000-19.999 EUR / Monat'},
-  {value: '20000_plus', label: '20.000 EUR+ / Monat'},
+  {value: 'under_2500', label: '< 2.500 EUR / Monat', note: 'kein Cohort-Fit'},
+  {value: '2500_4999', label: '2.500-4.999 EUR / Monat', note: 'kein Cohort-Fit'},
+  {value: '5000_9999', label: '5.000-9.999 EUR / Monat', note: 'Testfenster'},
+  {value: '10000_19999', label: '10.000-19.999 EUR / Monat', note: 'solides Fenster'},
+  {value: '20000_plus', label: '20.000 EUR+ / Monat', note: 'starkes Fenster'},
 ];
 
 const cmsOptions: Option[] = [
@@ -223,6 +239,8 @@ export function App() {
 
   const evaluation = useMemo(() => evaluateFit(form), [form]);
   const currentStep = steps[stepIndex];
+  const completedStepCount = showResult ? steps.length : stepIndex;
+  const progressPercent = showResult ? 100 : Math.round(((stepIndex + 1) / steps.length) * 100);
 
   function updateField(field: keyof FormState, value: string) {
     setForm((current) => ({
@@ -284,12 +302,28 @@ export function App() {
   return (
     <main className="readiness-shell" aria-labelledby="readiness-title" data-track-section="request_analysis_react_form">
       <section className="readiness-hero">
-        <div className="readiness-kicker">Anfrage-System-Analyse</div>
-        <h1 id="readiness-title">Prüfen, ob ein eigenes Anfrage-System wirtschaftlich Sinn macht.</h1>
-        <p>
-          Acht kurze Schritte für Founding-Partner-Fit, Marktbild, Anfragepfad, Messlage und Prozessreife.
-          Das Ergebnis bleibt lokal im Browser und sendet nichts an n8n, CRM oder E-Mail.
-        </p>
+        <div className="readiness-hero__copy">
+          <div className="readiness-kicker">Anfrage-System-Analyse</div>
+          <h1 id="readiness-title">Prüfen, ob ein eigenes Anfrage-System wirtschaftlich Sinn macht.</h1>
+          <p>
+            Acht kurze Schritte für Founding-Partner-Fit, Marktbild, Anfragepfad, Messlage und Prozessreife.
+            Das Ergebnis bleibt lokal im Browser und sendet nichts an n8n, CRM oder E-Mail.
+          </p>
+        </div>
+        <div className="readiness-hero__proof" aria-label="Analyse-Rahmen">
+          <div>
+            <strong>8</strong>
+            <span>Diagnosefelder</span>
+          </div>
+          <div>
+            <strong>0</strong>
+            <span>personenbezogene Pflichtdaten</span>
+          </div>
+          <div>
+            <strong>3</strong>
+            <span>Ergebnisfarben</span>
+          </div>
+        </div>
       </section>
 
       <div className="readiness-layout">
@@ -297,6 +331,9 @@ export function App() {
           <div className="readiness-progress-head">
             <span>8 Schritte</span>
             <strong>{showResult ? 'Ergebnis' : `${stepIndex + 1} / ${steps.length}`}</strong>
+          </div>
+          <div className="readiness-progress-meter" aria-hidden="true">
+            <span style={{width: `${progressPercent}%`}} />
           </div>
           <ol className="readiness-progress">
             {steps.map((step, index) => {
@@ -307,13 +344,21 @@ export function App() {
               return (
                 <li key={step.title} className={isActive ? 'is-active' : isDone ? 'is-done' : ''}>
                   <button type="button" disabled={isLocked} onClick={() => goToStep(index)}>
-                    <span>{String(index + 1).padStart(2, '0')}</span>
-                    <strong>{step.title}</strong>
+                    <span className="readiness-progress__number">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="readiness-progress__label">
+                      <strong>{step.title}</strong>
+                      <small>{step.output}</small>
+                    </span>
                   </button>
                 </li>
               );
             })}
           </ol>
+          <div className="readiness-side-note">
+            <span>{completedStepCount} von {steps.length} Bereichen bewertet</span>
+            <strong>Privacy-Default aktiv</strong>
+            <p>Keine E-Mail, kein CRM, kein Webhook. Die Ampel entsteht nur aus Ihren lokalen Angaben.</p>
+          </div>
         </aside>
 
         {showResult ? (
@@ -321,8 +366,17 @@ export function App() {
         ) : (
           <section className="readiness-panel" aria-labelledby="readiness-step-title">
             <div className="readiness-step-head">
-              <span>{currentStep.purpose}</span>
-              <h2 id="readiness-step-title">{currentStep.title}</h2>
+              <div>
+                <span>{currentStep.purpose}</span>
+                <h2 id="readiness-step-title">{currentStep.title}</h2>
+              </div>
+              <div className="readiness-step-index" aria-label={`Schritt ${stepIndex + 1} von ${steps.length}`}>
+                {String(stepIndex + 1).padStart(2, '0')}
+              </div>
+            </div>
+            <div className="readiness-step-brief">
+              <p>{currentStep.focus}</p>
+              <span>Ergebnis: {currentStep.output}</span>
             </div>
 
             {errors.length > 0 && (
@@ -384,7 +438,7 @@ function StepFields({
         <TextField
           label="PLZ-Region"
           value={form.plzRegion}
-          placeholder="z. B. 30, 31, Hannover, Region Sued"
+          placeholder="z. B. 30, 31, Hannover, Region Süd"
           hint="Keine volle Adresse eintragen. Eine grobe Region reicht."
           onChange={(value) => updateField('plzRegion', value)}
         />
@@ -427,7 +481,7 @@ function StepFields({
           label="Website-URL"
           value={form.websiteUrl}
           placeholder="beispiel.de"
-          hint="Optional. Ohne URL bleibt die Befundtiefe eingeschraenkt."
+          hint="Optional. Ohne URL bleibt die Befundtiefe eingeschränkt."
           onChange={(value) => updateField('websiteUrl', value)}
         />
         <OptionGroup legend="CMS-Selbstauskunft" value={form.cms} options={cmsOptions} onChange={(value) => updateField('cms', value)} />
@@ -525,6 +579,8 @@ function TextField({
 }
 
 function ResultView({evaluation, onBack, onReset}: {evaluation: Evaluation; onBack: () => void; onReset: () => void}) {
+  const actionPlan = getActionPlan(evaluation.signal);
+
   return (
     <section className="readiness-result" aria-labelledby="readiness-result-title" data-track-section="request_analysis_result">
       <div className={`readiness-result-head readiness-result-head--${evaluation.signal}`}>
@@ -533,11 +589,26 @@ function ResultView({evaluation, onBack, onReset}: {evaluation: Evaluation; onBa
         <p>{evaluation.nextStep}</p>
       </div>
 
+      <div className="readiness-result-summary" aria-label="Ergebniszusammenfassung">
+        <div>
+          <span>Ampel</span>
+          <strong>{signalLabels[evaluation.signal]}</strong>
+        </div>
+        <div>
+          <span>Punktzahl</span>
+          <strong>{evaluation.score} / 100</strong>
+        </div>
+        <div>
+          <span>Empfehlung</span>
+          <strong>{actionPlan.shortLabel}</strong>
+        </div>
+      </div>
+
       <div className="readiness-result-grid">
         <div className="readiness-score">
           <span className={`readiness-signal readiness-signal--${evaluation.signal}`}>{signalLabels[evaluation.signal]}</span>
           <strong>{evaluation.score} / 100</strong>
-          <p>Fit-Score aus den acht Formularschritten. Leadkosten bleiben ein Korridor, keine Garantie.</p>
+          <p>Punktzahl aus den acht Formularschritten. Leadkosten bleiben ein Korridor, keine Garantie.</p>
         </div>
 
         <div className="readiness-reasons">
@@ -558,6 +629,19 @@ function ResultView({evaluation, onBack, onReset}: {evaluation: Evaluation; onBa
             <p>{module.text}</p>
           </article>
         ))}
+      </div>
+
+      <div className="readiness-action-plan">
+        <div>
+          <span>Nächster sinnvoller Schritt</span>
+          <h3>{actionPlan.title}</h3>
+          <p>{actionPlan.text}</p>
+        </div>
+        <ol>
+          {actionPlan.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ol>
       </div>
 
       <div className="readiness-result-note">
@@ -708,7 +792,7 @@ function evaluateFit(form: FormState): Evaluation {
     reasons.push('Website-URL liegt vor; der Anfragepfad kann konkreter bewertet werden.');
   } else {
     score += 2;
-    reasons.push('Keine Website-URL: Ergebnis bleibt bewusst eingeschraenkt.');
+    reasons.push('Keine Website-URL: Ergebnis bleibt bewusst eingeschränkt.');
   }
 
   if (form.cms === 'wordpress') {
@@ -919,4 +1003,43 @@ function resolveNextStep(signal: Signal) {
   }
 
   return 'Nächster Schritt: nicht in einen Umsetzungs-Pitch springen; zuerst Branche, Budget, Prozess oder Messbarkeit korrigieren.';
+}
+
+function getActionPlan(signal: Signal) {
+  if (signal === 'green') {
+    return {
+      shortLabel: 'Analyse vertiefen',
+      title: 'Founding-Partner-Fit sauber prüfen',
+      text: 'Der Fall wirkt tragfähig genug, um aus der lokalen Ampel eine echte Anfrage-System-Analyse abzuleiten.',
+      items: [
+        'Website und Anfragepfad konkret prüfen.',
+        'Leadkosten-Korridor mit Region und Angebot abgleichen.',
+        'Erst danach über Umsetzung, Tracking und Automatisierung sprechen.',
+      ],
+    };
+  }
+
+  if (signal === 'yellow') {
+    return {
+      shortLabel: 'Lücken schließen',
+      title: 'Erst die gelben Signale klären',
+      text: 'Der Fall ist nicht ausgeschlossen, aber eine direkte Umsetzung wäre zu früh.',
+      items: [
+        'Messlage, Reaktionszeit oder Verantwortlichkeit schärfen.',
+        'Budget und Auftragswert gegen realistische Leadkosten halten.',
+        'Danach erneut bewerten, ob die Analyse belastbar genug ist.',
+      ],
+    };
+  }
+
+  return {
+    shortLabel: 'Nicht bauen',
+    title: 'Keine Umsetzung in diesem Zustand',
+    text: 'Die aktuelle Kombination erzeugt zu viel Risiko für einen seriösen Umsetzungs-Pitch.',
+    items: [
+      'Harten Stopper identifizieren und zuerst beheben.',
+      'Kein Budget in Funnel-Technik oder Ads skalieren.',
+      'Bei verbessertem Fit die Analyse neu starten.',
+    ],
+  };
 }
