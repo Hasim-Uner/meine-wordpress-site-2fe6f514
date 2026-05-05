@@ -31,6 +31,17 @@ type Option = {
   note?: string;
 };
 
+type Question = {
+  field: keyof FormState;
+  stepIndex: number;
+  label: string;
+  detail: string;
+  options?: Option[];
+  placeholder?: string;
+  hint?: string;
+  optional?: boolean;
+};
+
 type ModuleResult = {
   label: string;
   signal: Signal;
@@ -224,6 +235,150 @@ const competitionOptions: Option[] = [
   {value: 'unknown', label: 'Weiß ich nicht'},
 ];
 
+const questions: Question[] = [
+  {
+    field: 'industry',
+    stepIndex: 0,
+    label: 'In welcher Branche arbeitet der Betrieb hauptsächlich?',
+    detail: 'Das ist der wichtigste Fit-Filter für die Founding-Cohort.',
+    options: industryOptions,
+  },
+  {
+    field: 'offerType',
+    stepIndex: 0,
+    label: 'Welche Angebotsart beschreibt den Betrieb am besten?',
+    detail: 'Je klarer das Angebot, desto sauberer lässt sich der Anfragepfad bewerten.',
+    options: offerTypeOptions,
+  },
+  {
+    field: 'employeeRange',
+    stepIndex: 0,
+    label: 'Wie groß ist das Team ungefähr?',
+    detail: 'Zu klein ist oft zu früh. Zu groß braucht meist andere Systemgrenzen.',
+    options: employeeOptions,
+  },
+  {
+    field: 'country',
+    stepIndex: 1,
+    label: 'In welchem Markt soll die Nachfrage entstehen?',
+    detail: 'Der aktuelle Analyse-Rahmen ist auf DACH ausgelegt.',
+    options: countryOptions,
+  },
+  {
+    field: 'plzRegion',
+    stepIndex: 1,
+    label: 'Welche grobe PLZ-Region oder Stadt ist relevant?',
+    detail: 'Keine Adresse. Nur der Marktraum, damit der Korridor nicht beliebig wird.',
+    placeholder: 'z. B. 30, Hannover, Region Süd',
+  },
+  {
+    field: 'offerFocus',
+    stepIndex: 2,
+    label: 'Welche Leistung soll primär Anfragen erzeugen?',
+    detail: 'Ein Anfrage-System braucht einen klaren wirtschaftlichen Fokus.',
+    options: offerFocusOptions,
+  },
+  {
+    field: 'averageOrderValueRange',
+    stepIndex: 2,
+    label: 'Wie hoch ist der durchschnittliche Auftragswert?',
+    detail: 'Der Auftragswert entscheidet, ob bezahlte Nachfrage wirtschaftlich tragfähig sein kann.',
+    options: orderValueOptions,
+  },
+  {
+    field: 'adBudgetRange',
+    stepIndex: 3,
+    label: 'Welches monatliche Werbebudget ist realistisch?',
+    detail: 'Unter 5.000 EUR pro Monat wird eine belastbare Umsetzungsempfehlung meist zu dünn.',
+    options: budgetOptions,
+  },
+  {
+    field: 'websiteUrl',
+    stepIndex: 4,
+    label: 'Welche Website soll grob geprüft werden?',
+    detail: 'Optional. Ohne URL bleibt die Befundtiefe bewusst eingeschränkt.',
+    placeholder: 'beispiel.de',
+    optional: true,
+  },
+  {
+    field: 'cms',
+    stepIndex: 4,
+    label: 'Welches Website-System wird genutzt?',
+    detail: 'Das ist nur eine Selbstauskunft für den späteren Anfragepfad.',
+    options: cmsOptions,
+  },
+  {
+    field: 'pixelPresent',
+    stepIndex: 5,
+    label: 'Ist ein Werbe-Pixel sichtbar oder bekannt?',
+    detail: 'Unklar ist okay, wird aber als Messrisiko bewertet.',
+    options: yesNoUnknownOptions,
+  },
+  {
+    field: 'gtmPresent',
+    stepIndex: 5,
+    label: 'Ist Google Tag Manager vorhanden?',
+    detail: 'GTM ist kein Muss, macht saubere Messung aber deutlich einfacher.',
+    options: yesNoUnknownOptions,
+  },
+  {
+    field: 'consentMode',
+    stepIndex: 5,
+    label: 'Ist Consent Mode bekannt oder eingerichtet?',
+    detail: 'Consent entscheidet, ob spätere Messung rechtlich und technisch tragfähig wird.',
+    options: yesNoUnknownOptions,
+  },
+  {
+    field: 'metaCapi',
+    stepIndex: 5,
+    label: 'Ist Meta CAPI bekannt oder eingerichtet?',
+    detail: 'Nur als Reifegrad-Signal. Noch keine technische Integration.',
+    options: yesNoUnknownOptions,
+  },
+  {
+    field: 'responseTime',
+    stepIndex: 6,
+    label: 'Wie schnell werden neue Anfragen beantwortet?',
+    detail: 'Bezahlte Anfragen verlieren schnell Wert, wenn die Reaktion zu langsam ist.',
+    options: responseTimeOptions,
+  },
+  {
+    field: 'responsible',
+    stepIndex: 6,
+    label: 'Wer ist für neue Anfragen verantwortlich?',
+    detail: 'Ohne klare Verantwortung wird ein Funnel schnell zum Leck.',
+    options: responsibleOptions,
+  },
+  {
+    field: 'crmPresent',
+    stepIndex: 6,
+    label: 'Gibt es eine CRM- oder Nachverfolgungsstruktur?',
+    detail: 'Kein CRM-Submit. Nur die Frage, ob Nachverfolgung heute existiert.',
+    options: yesNoUnknownOptions,
+  },
+  {
+    field: 'targetRegion',
+    stepIndex: 7,
+    label: 'Wie groß ist die gewünschte Zielregion?',
+    detail: 'Das hilft, den Leadkosten-Korridor realistisch zu lesen.',
+    options: targetRegionOptions,
+  },
+  {
+    field: 'expectedChannelMix',
+    stepIndex: 7,
+    label: 'Welcher Kanal bringt heute am ehesten Nachfrage?',
+    detail: 'Der Kanal ist ein Marktbild-Signal, keine Media-Planung.',
+    options: channelOptions,
+  },
+  {
+    field: 'competition',
+    stepIndex: 7,
+    label: 'Wie fühlt sich der Wettbewerb in der Region an?',
+    detail: 'Hoher Wettbewerb ist kein Ausschluss, aber ein Risiko für den Korridor.',
+    options: competitionOptions,
+  },
+];
+
 const signalLabels: Record<Signal, string> = {
   green: 'Grün',
   yellow: 'Gelb',
@@ -232,15 +387,15 @@ const signalLabels: Record<Signal, string> = {
 
 export function App() {
   const [form, setForm] = useState<FormState>(initialForm);
-  const [stepIndex, setStepIndex] = useState(0);
-  const [maxStepIndex, setMaxStepIndex] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [errors, setErrors] = useState<string[]>([]);
   const [showResult, setShowResult] = useState(false);
 
   const evaluation = useMemo(() => evaluateFit(form), [form]);
-  const currentStep = steps[stepIndex];
-  const completedStepCount = showResult ? steps.length : stepIndex;
-  const progressPercent = showResult ? 100 : Math.round(((stepIndex + 1) / steps.length) * 100);
+  const currentQuestion = questions[questionIndex];
+  const currentStep = steps[currentQuestion.stepIndex];
+  const progressPercent = showResult ? 100 : Math.round(((questionIndex + 1) / questions.length) * 100);
+  const activeStepIndexes = new Set(questions.slice(0, questionIndex + 1).map((question) => question.stepIndex));
 
   function updateField(field: keyof FormState, value: string) {
     setForm((current) => ({
@@ -250,33 +405,29 @@ export function App() {
     setErrors([]);
   }
 
-  function goToStep(nextIndex: number) {
-    if (nextIndex > maxStepIndex) {
-      return;
-    }
-
-    setShowResult(false);
-    setStepIndex(nextIndex);
-    setErrors([]);
-  }
-
   function handleNext() {
-    const nextErrors = validateStep(stepIndex, form);
+    const nextErrors = validateQuestion(currentQuestion, form);
 
     if (nextErrors.length > 0) {
       setErrors(nextErrors);
       return;
     }
 
-    if (stepIndex < steps.length - 1) {
-      const nextIndex = stepIndex + 1;
-      setStepIndex(nextIndex);
-      setMaxStepIndex((current) => Math.max(current, nextIndex));
+    if (questionIndex < questions.length - 1) {
+      setQuestionIndex((current) => current + 1);
       setErrors([]);
       return;
     }
 
-    setMaxStepIndex(steps.length - 1);
+    const finalErrors = validateAllQuestions(form);
+
+    if (finalErrors.length > 0) {
+      const firstInvalidIndex = questions.findIndex((question) => validateQuestion(question, form).length > 0);
+      setQuestionIndex(firstInvalidIndex >= 0 ? firstInvalidIndex : questionIndex);
+      setErrors(finalErrors.slice(0, 2));
+      return;
+    }
+
     setShowResult(true);
     setErrors([]);
   }
@@ -287,257 +438,116 @@ export function App() {
       return;
     }
 
-    setStepIndex((current) => Math.max(0, current - 1));
+    setQuestionIndex((current) => Math.max(0, current - 1));
     setErrors([]);
   }
 
   function handleReset() {
     setForm(initialForm);
-    setStepIndex(0);
-    setMaxStepIndex(0);
+    setQuestionIndex(0);
     setErrors([]);
     setShowResult(false);
   }
 
   return (
     <main className="readiness-shell" aria-labelledby="readiness-title" data-track-section="request_analysis_react_form">
-      <section className="readiness-hero">
-        <div className="readiness-hero__copy">
-          <div className="readiness-kicker">Anfrage-System-Analyse</div>
-          <h1 id="readiness-title">Prüfen, ob ein eigenes Anfrage-System wirtschaftlich Sinn macht.</h1>
-          <p>
-            Acht kurze Schritte für Founding-Partner-Fit, Marktbild, Anfragepfad, Messlage und Prozessreife.
-            Das Ergebnis bleibt lokal im Browser und sendet nichts an n8n, CRM oder E-Mail.
-          </p>
-        </div>
-        <div className="readiness-hero__proof" aria-label="Analyse-Rahmen">
+      <section className="readiness-flow" aria-label="Anfrage-System-Analyse">
+        <div className="readiness-flow-top">
           <div>
-            <strong>8</strong>
-            <span>Diagnosefelder</span>
+            <div className="readiness-kicker">Anfrage-System-Analyse</div>
+            <h1 id="readiness-title">Ein ruhiger Fit-Check. Eine Frage nach der anderen.</h1>
           </div>
-          <div>
-            <strong>0</strong>
-            <span>personenbezogene Pflichtdaten</span>
-          </div>
-          <div>
-            <strong>3</strong>
-            <span>Ergebnisfarben</span>
+          <div className="readiness-flow-status" aria-label="Fortschritt">
+            <span>{showResult ? 'Ergebnis' : `Frage ${questionIndex + 1}`}</span>
+            <strong>{showResult ? '100%' : `${progressPercent}%`}</strong>
           </div>
         </div>
-      </section>
 
-      <div className="readiness-layout">
-        <aside className="readiness-progress-panel" aria-label="Analyse-Fortschritt">
-          <div className="readiness-progress-head">
-            <span>8 Schritte</span>
-            <strong>{showResult ? 'Ergebnis' : `${stepIndex + 1} / ${steps.length}`}</strong>
-          </div>
-          <div className="readiness-progress-meter" aria-hidden="true">
-            <span style={{width: `${progressPercent}%`}} />
-          </div>
-          <ol className="readiness-progress">
-            {steps.map((step, index) => {
-              const isActive = !showResult && index === stepIndex;
-              const isDone = showResult || index < stepIndex || index < maxStepIndex;
-              const isLocked = index > maxStepIndex;
+        <div className="readiness-progress-meter" aria-hidden="true">
+          <span style={{width: `${progressPercent}%`}} />
+        </div>
 
-              return (
-                <li key={step.title} className={isActive ? 'is-active' : isDone ? 'is-done' : ''}>
-                  <button type="button" disabled={isLocked} onClick={() => goToStep(index)}>
-                    <span className="readiness-progress__number">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="readiness-progress__label">
-                      <strong>{step.title}</strong>
-                      <small>{step.output}</small>
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
-          <div className="readiness-side-note">
-            <span>{completedStepCount} von {steps.length} Bereichen bewertet</span>
-            <strong>Privacy-Default aktiv</strong>
-            <p>Keine E-Mail, kein CRM, kein Webhook. Die Ampel entsteht nur aus Ihren lokalen Angaben.</p>
-          </div>
-        </aside>
+        <ol className="readiness-chapter-track" aria-label="Diagnosekapitel">
+          {steps.map((step, index) => (
+            <li
+              key={step.title}
+              className={
+                showResult || index < currentQuestion.stepIndex
+                  ? 'is-done'
+                  : activeStepIndexes.has(index)
+                    ? 'is-active'
+                    : ''
+              }
+            >
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <strong>{step.title}</strong>
+            </li>
+          ))}
+        </ol>
 
         {showResult ? (
           <ResultView evaluation={evaluation} onBack={handleBack} onReset={handleReset} />
         ) : (
-          <section className="readiness-panel" aria-labelledby="readiness-step-title">
+          <section className="readiness-panel readiness-flow-card" aria-labelledby="readiness-question-title">
             <div className="readiness-step-head">
-              <div>
-                <span>{currentStep.purpose}</span>
-                <h2 id="readiness-step-title">{currentStep.title}</h2>
-              </div>
-              <div className="readiness-step-index" aria-label={`Schritt ${stepIndex + 1} von ${steps.length}`}>
-                {String(stepIndex + 1).padStart(2, '0')}
-              </div>
-            </div>
-            <div className="readiness-step-brief">
-              <p>{currentStep.focus}</p>
-              <span>Ergebnis: {currentStep.output}</span>
+              <span>{currentStep.purpose}</span>
+              <strong>{currentStep.title}</strong>
             </div>
 
-            {errors.length > 0 && (
-              <div className="readiness-errors" role="alert">
+            <div className="readiness-question-stage">
+              <div className="readiness-question-count">
+                <span>{String(questionIndex + 1).padStart(2, '0')}</span>
+                <span>{questions.length}</span>
+              </div>
+
+              <div className="readiness-question-copy">
+                <h2 id="readiness-question-title">{currentQuestion.label}</h2>
+                <p>{currentQuestion.detail}</p>
+              </div>
+
+              <div className={`readiness-error-slot ${errors.length > 0 ? 'has-errors' : ''}`} role="alert" aria-live="polite">
                 {errors.map((error) => (
                   <p key={error}>{error}</p>
                 ))}
               </div>
-            )}
 
-            <StepFields stepIndex={stepIndex} form={form} updateField={updateField} />
+              <QuestionInput question={currentQuestion} value={form[currentQuestion.field]} onChange={(value) => updateField(currentQuestion.field, value)} />
+            </div>
 
             <div className="readiness-actions">
-              <button type="button" className="readiness-button readiness-button--secondary" onClick={handleBack} disabled={stepIndex === 0}>
+              <button type="button" className="readiness-button readiness-button--secondary" onClick={handleBack} disabled={questionIndex === 0}>
                 Zurück
               </button>
               <button
                 type="button"
                 className="readiness-button readiness-button--primary"
                 onClick={handleNext}
-                data-track-action={`request_analysis_step_${stepIndex + 1}_completed`}
+                data-track-action={`request_analysis_question_${questionIndex + 1}_completed`}
                 data-track-category="lead_funnel"
                 data-track-section="request_analysis"
-                data-track-funnel-stage={`request_analysis_step_${stepIndex + 1}`}
+                data-track-funnel-stage={`request_analysis_question_${questionIndex + 1}`}
               >
-                {stepIndex === steps.length - 1 ? 'Lokales Ergebnis anzeigen' : 'Weiter'}
+                {questionIndex === questions.length - 1 ? 'Lokales Ergebnis anzeigen' : 'Weiter'}
               </button>
             </div>
           </section>
         )}
-      </div>
+
+        <p className="readiness-flow-note">Keine E-Mail. Kein CRM. Kein Webhook. Die Ampel entsteht nur lokal aus den Angaben.</p>
+      </section>
     </main>
   );
 }
 
-function StepFields({
-  stepIndex,
-  form,
-  updateField,
-}: {
-  stepIndex: number;
-  form: FormState;
-  updateField: (field: keyof FormState, value: string) => void;
-}) {
-  if (stepIndex === 0) {
-    return (
-      <div className="readiness-fields">
-        <OptionGroup legend="Branche" value={form.industry} options={industryOptions} onChange={(value) => updateField('industry', value)} />
-        <OptionGroup legend="Angebotsart" value={form.offerType} options={offerTypeOptions} onChange={(value) => updateField('offerType', value)} />
-        <OptionGroup legend="Mitarbeitergröße" value={form.employeeRange} options={employeeOptions} onChange={(value) => updateField('employeeRange', value)} />
-      </div>
-    );
-  }
-
-  if (stepIndex === 1) {
-    return (
-      <div className="readiness-fields">
-        <OptionGroup legend="Land" value={form.country} options={countryOptions} onChange={(value) => updateField('country', value)} />
-        <TextField
-          label="PLZ-Region"
-          value={form.plzRegion}
-          placeholder="z. B. 30, 31, Hannover, Region Süd"
-          hint="Keine volle Adresse eintragen. Eine grobe Region reicht."
-          onChange={(value) => updateField('plzRegion', value)}
-        />
-      </div>
-    );
-  }
-
-  if (stepIndex === 2) {
-    return (
-      <div className="readiness-fields">
-        <OptionGroup legend="Hauptleistung" value={form.offerFocus} options={offerFocusOptions} onChange={(value) => updateField('offerFocus', value)} />
-        <OptionGroup
-          legend="Durchschnittlicher Auftragswert"
-          value={form.averageOrderValueRange}
-          options={orderValueOptions}
-          onChange={(value) => updateField('averageOrderValueRange', value)}
-        />
-      </div>
-    );
-  }
-
-  if (stepIndex === 3) {
-    return (
-      <div className="readiness-fields">
-        <OptionGroup
-          legend="Monatliches Werbebudget"
-          value={form.adBudgetRange}
-          options={budgetOptions}
-          onChange={(value) => updateField('adBudgetRange', value)}
-          hint="Unter 5.000 EUR pro Monat blockiert die Founding-Cohort-Empfehlung."
-        />
-      </div>
-    );
-  }
-
-  if (stepIndex === 4) {
-    return (
-      <div className="readiness-fields">
-        <TextField
-          label="Website-URL"
-          value={form.websiteUrl}
-          placeholder="beispiel.de"
-          hint="Optional. Ohne URL bleibt die Befundtiefe eingeschränkt."
-          onChange={(value) => updateField('websiteUrl', value)}
-        />
-        <OptionGroup legend="CMS-Selbstauskunft" value={form.cms} options={cmsOptions} onChange={(value) => updateField('cms', value)} />
-      </div>
-    );
-  }
-
-  if (stepIndex === 5) {
-    return (
-      <div className="readiness-fields readiness-fields--two">
-        <OptionGroup legend="Pixel sichtbar?" value={form.pixelPresent} options={yesNoUnknownOptions} onChange={(value) => updateField('pixelPresent', value)} />
-        <OptionGroup legend="GTM vorhanden?" value={form.gtmPresent} options={yesNoUnknownOptions} onChange={(value) => updateField('gtmPresent', value)} />
-        <OptionGroup legend="Consent Mode bekannt?" value={form.consentMode} options={yesNoUnknownOptions} onChange={(value) => updateField('consentMode', value)} />
-        <OptionGroup legend="Meta CAPI bekannt?" value={form.metaCapi} options={yesNoUnknownOptions} onChange={(value) => updateField('metaCapi', value)} />
-      </div>
-    );
-  }
-
-  if (stepIndex === 6) {
-    return (
-      <div className="readiness-fields">
-        <OptionGroup legend="Reaktionszeit auf Anfragen" value={form.responseTime} options={responseTimeOptions} onChange={(value) => updateField('responseTime', value)} />
-        <OptionGroup legend="Verantwortung" value={form.responsible} options={responsibleOptions} onChange={(value) => updateField('responsible', value)} />
-        <OptionGroup legend="CRM vorhanden?" value={form.crmPresent} options={yesNoUnknownOptions} onChange={(value) => updateField('crmPresent', value)} />
-      </div>
-    );
+function QuestionInput({question, value, onChange}: {question: Question; value: string; onChange: (value: string) => void}) {
+  if (!question.options) {
+    return <TextField label="Antwort" value={value} placeholder={question.placeholder} hint={question.hint} onChange={onChange} />;
   }
 
   return (
-    <div className="readiness-fields">
-      <OptionGroup legend="Zielregion" value={form.targetRegion} options={targetRegionOptions} onChange={(value) => updateField('targetRegion', value)} />
-      <OptionGroup legend="Hauptkanal heute" value={form.expectedChannelMix} options={channelOptions} onChange={(value) => updateField('expectedChannelMix', value)} />
-      <OptionGroup legend="Wettbewerbseindruck" value={form.competition} options={competitionOptions} onChange={(value) => updateField('competition', value)} />
-    </div>
-  );
-}
-
-function OptionGroup({
-  legend,
-  value,
-  options,
-  hint,
-  onChange,
-}: {
-  legend: string;
-  value: string;
-  options: Option[];
-  hint?: string;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <fieldset className="readiness-fieldset">
-      <legend>{legend}</legend>
-      {hint && <p className="readiness-hint">{hint}</p>}
+    <fieldset className="readiness-fieldset" aria-label={question.label}>
       <div className="readiness-options">
-        {options.map((option) => (
+        {question.options.map((option) => (
           <button
             key={option.value}
             type="button"
@@ -667,57 +677,23 @@ function ResultView({evaluation, onBack, onReset}: {evaluation: Evaluation; onBa
   );
 }
 
-function validateStep(index: number, form: FormState): string[] {
+function validateQuestion(question: Question, form: FormState): string[] {
   const errors: string[] = [];
+  const value = form[question.field].trim();
 
-  if (index === 0) {
-    requireField(errors, form.industry, 'Bitte Branche auswählen.');
-    requireField(errors, form.offerType, 'Bitte Angebotsart auswählen.');
-    requireField(errors, form.employeeRange, 'Bitte Mitarbeitergröße auswählen.');
+  if (!question.optional) {
+    requireField(errors, value, question.options ? 'Bitte eine Antwort auswählen.' : 'Bitte das Feld ausfüllen.');
   }
 
-  if (index === 1) {
-    requireField(errors, form.country, 'Bitte DACH-Land oder außerhalb DACH auswählen.');
-    requireField(errors, form.plzRegion.trim(), 'Bitte eine grobe PLZ-Region eintragen.');
-  }
-
-  if (index === 2) {
-    requireField(errors, form.offerFocus, 'Bitte Hauptleistung auswählen.');
-    requireField(errors, form.averageOrderValueRange, 'Bitte durchschnittlichen Auftragswert auswählen.');
-  }
-
-  if (index === 3) {
-    requireField(errors, form.adBudgetRange, 'Bitte Werbebudget-Range auswählen.');
-  }
-
-  if (index === 4) {
-    requireField(errors, form.cms, 'Bitte CMS-Selbstauskunft auswählen.');
-
-    if (form.websiteUrl.trim() && !isLikelyWebsite(form.websiteUrl)) {
-      errors.push('Bitte Website als Domain oder URL eintragen, z. B. beispiel.de.');
-    }
-  }
-
-  if (index === 5) {
-    requireField(errors, form.pixelPresent, 'Bitte Pixel-Selbstauskunft auswählen.');
-    requireField(errors, form.gtmPresent, 'Bitte GTM-Selbstauskunft auswählen.');
-    requireField(errors, form.consentMode, 'Bitte Consent-Mode-Selbstauskunft auswählen.');
-    requireField(errors, form.metaCapi, 'Bitte Meta-CAPI-Selbstauskunft auswählen.');
-  }
-
-  if (index === 6) {
-    requireField(errors, form.responseTime, 'Bitte Reaktionszeit auswählen.');
-    requireField(errors, form.responsible, 'Bitte Verantwortlichkeit auswählen.');
-    requireField(errors, form.crmPresent, 'Bitte CRM-Selbstauskunft auswählen.');
-  }
-
-  if (index === 7) {
-    requireField(errors, form.targetRegion, 'Bitte Zielregion auswählen.');
-    requireField(errors, form.expectedChannelMix, 'Bitte Hauptkanal auswählen.');
-    requireField(errors, form.competition, 'Bitte Wettbewerbseindruck auswählen.');
+  if (question.field === 'websiteUrl' && value && !isLikelyWebsite(value)) {
+    errors.push('Bitte Website als Domain oder URL eintragen, z. B. beispiel.de.');
   }
 
   return errors;
+}
+
+function validateAllQuestions(form: FormState): string[] {
+  return questions.flatMap((question) => validateQuestion(question, form));
 }
 
 function requireField(errors: string[], value: string, message: string) {
