@@ -20,6 +20,7 @@ $request_url  = $analysis_url;
 $demo_url     = home_url( '/energie-fahrplan-demo/' );
 $cases_url    = $primary_urls['results'] ?? nexus_get_results_url();
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
+$agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 $about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
 $contact_url  = $primary_urls['contact'] ?? nexus_get_contact_url();
 $project_request_url = add_query_arg(
@@ -124,6 +125,7 @@ $audit_footer_note = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_ge
 				<h3 id="ft-unternehmen">Unternehmen</h3>
 				<ul class="ft__list">
 					<li><a class="ft__link-strong" href="<?php echo esc_url( $project_request_url ); ?>" data-track-action="cta_footer_nav_project" data-track-category="lead_gen">Umsetzung / Optimierung</a></li>
+					<li><a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_footer_nav_agentur" data-track-category="navigation">WordPress Agentur Hannover</a></li>
 					<li><a href="<?php echo esc_url( $about_url ); ?>" data-track-action="cta_footer_nav_about" data-track-category="navigation">Über mich</a></li>
 					<li><a href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_footer_nav_contact" data-track-category="navigation">Kontakt</a></li>
 				</ul>
