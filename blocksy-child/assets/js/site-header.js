@@ -15,9 +15,11 @@
         var isFocusInside = false;
         var isNearTopEdge = false;
         var hideTimer = 0;
-        var revealAfter = 120;
-        var desktopHideDelay = 260;
-        var topEdgeThreshold = 40;
+        var initialHideDelay = 1700;
+        var idleHideDelay = 1700;
+        var scrollRevealDelta = 5;
+        var scrollHideDelta = 8;
+        var topEdgeThreshold = 76;
         var headerHeightRaf = 0;
         var scrollRaf = 0;
         var pointerMoveRaf = 0;
@@ -68,46 +70,56 @@
 
         // Cache scrollY um Forced Reflow nach DOM-Writes zu vermeiden.
         var cachedScrollY = window.scrollY;
+        var lastScrollY = cachedScrollY;
 
         function readScrollY() {
             cachedScrollY = window.scrollY;
             return cachedScrollY;
         }
 
-        function scheduleHide() {
+        function scheduleHide(delay) {
             clearHideTimer();
 
-            if (!desktopMedia.matches || shouldPinHeader() || cachedScrollY <= revealAfter) {
+            if (shouldPinHeader()) {
                 return;
             }
 
             hideTimer = window.setTimeout(function () {
                 readScrollY();
-                if (!shouldPinHeader() && cachedScrollY > revealAfter) {
+                if (!shouldPinHeader()) {
                     setHeaderVisibility(false);
                 }
-            }, desktopHideDelay);
+            }, delay || idleHideDelay);
+        }
+
+        function showHeader(autoHide, delay) {
+            setHeaderVisibility(true);
+
+            if (autoHide) {
+                scheduleHide(delay);
+                return;
+            }
+
+            clearHideTimer();
+        }
+
+        function hideHeader() {
+            clearHideTimer();
+
+            if (shouldPinHeader()) {
+                return;
+            }
+
+            setHeaderVisibility(false);
         }
 
         function updateVisibility(forceVisible) {
-            clearHideTimer();
-
             if (forceVisible || shouldPinHeader()) {
-                setHeaderVisibility(true);
+                showHeader(false);
                 return;
             }
 
-            if (cachedScrollY <= revealAfter) {
-                setHeaderVisibility(true);
-                return;
-            }
-
-            if (desktopMedia.matches) {
-                scheduleHide();
-                return;
-            }
-
-            setHeaderVisibility(true);
+            scheduleHide();
         }
 
         function setPanelState(isOpen) {
@@ -148,6 +160,8 @@
                 scrollRaf = 0;
                 // Batch-Read: scrollY einmal lesen, bevor DOM-Writes passieren.
                 readScrollY();
+                var scrollDelta = cachedScrollY - lastScrollY;
+                lastScrollY = cachedScrollY;
                 var nextCondensed = cachedScrollY > 36;
 
                 if (isCondensed !== nextCondensed) {
@@ -156,23 +170,41 @@
                     queueHeaderHeightSync();
                 }
 
-                updateVisibility(false);
+                if (shouldPinHeader()) {
+                    showHeader(false);
+                    return;
+                }
+
+                if (scrollDelta <= -scrollRevealDelta) {
+                    showHeader(true);
+                    return;
+                }
+
+                if (scrollDelta >= scrollHideDelta) {
+                    hideHeader();
+                }
             });
         }
 
         function applyPointerProximity(clientY) {
-            var nextNearTopEdge = desktopMedia.matches && cachedScrollY > revealAfter && clientY <= topEdgeThreshold;
+            var nextNearTopEdge = desktopMedia.matches && clientY <= topEdgeThreshold;
 
             if (isNearTopEdge === nextNearTopEdge) {
                 return;
             }
 
             isNearTopEdge = nextNearTopEdge;
-            updateVisibility(nextNearTopEdge);
+
+            if (nextNearTopEdge) {
+                showHeader(false);
+                return;
+            }
+
+            updateVisibility(false);
         }
 
         function queuePointerProximity(clientY) {
-            if (!desktopMedia.matches || cachedScrollY <= revealAfter) {
+            if (!desktopMedia.matches) {
                 if (isNearTopEdge) {
                     isNearTopEdge = false;
                     updateVisibility(false);
@@ -222,6 +254,10 @@
                         closePanel();
                     }
 
+                    if (!event.matches) {
+                        isNearTopEdge = false;
+                    }
+
                     updateVisibility(false);
                     queueHeaderHeightSync();
                 });
@@ -229,6 +265,10 @@
                 desktopMedia.addListener(function (event) {
                     if (event.matches) {
                         closePanel();
+                    }
+
+                    if (!event.matches) {
+                        isNearTopEdge = false;
                     }
 
                     updateVisibility(false);
@@ -239,7 +279,7 @@
 
         header.addEventListener('mouseenter', function () {
             isPointerInside = true;
-            updateVisibility(true);
+            showHeader(false);
         });
 
         header.addEventListener('mouseleave', function () {
@@ -249,7 +289,7 @@
 
         header.addEventListener('focusin', function () {
             isFocusInside = true;
-            updateVisibility(true);
+            showHeader(false);
         });
 
         header.addEventListener('focusout', function () {
@@ -273,8 +313,9 @@
         });
 
         readScrollY();
+        lastScrollY = cachedScrollY;
         updateFlightMode();
-        updateVisibility(false);
+        showHeader(true, initialHideDelay);
         syncHeaderHeight();
 
         window.addEventListener('scroll', queueScrollUpdate, { passive: true });

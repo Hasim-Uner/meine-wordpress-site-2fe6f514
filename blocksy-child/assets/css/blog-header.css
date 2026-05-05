@@ -10,8 +10,8 @@
     opacity: 0;
     transform: translateY(calc(-100% - 24px));
     transition:
-        opacity var(--nx-duration-fast) var(--nx-ease),
-        transform var(--nx-duration-fast) var(--nx-ease);
+        opacity 320ms var(--nx-ease),
+        transform 320ms var(--nx-ease);
     will-change: opacity, transform;
 }
 
