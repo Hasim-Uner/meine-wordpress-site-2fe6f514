@@ -18,7 +18,7 @@ $home_url     = $primary_urls['home'] ?? home_url( '/' );
 $analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
 $request_url  = $analysis_url;
 $demo_url     = home_url( '/energie-fahrplan-demo/' );
-$cases_url    = $primary_urls['results'] ?? nexus_get_results_url();
+$e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
 $agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 $about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
@@ -116,7 +116,7 @@ $audit_footer_note = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_ge
 			<section class="ft__col" aria-labelledby="ft-proof-wissen">
 				<h3 id="ft-proof-wissen">Proof &amp; Wissen</h3>
 				<ul class="ft__list">
-					<li><a class="ft__link-strong" href="<?php echo esc_url( $cases_url ); ?>" data-track-action="cta_footer_nav_results" data-track-category="trust">Ergebnisse</a></li>
+					<li><a class="ft__link-strong" href="<?php echo esc_url( $e3_url ); ?>" data-track-action="cta_footer_nav_e3_proof" data-track-category="trust">E3 New Energy</a></li>
 					<li><a href="<?php echo esc_url( $blog_url ); ?>" data-track-action="cta_footer_nav_insights" data-track-category="navigation">Insights</a></li>
 				</ul>
 			</section>

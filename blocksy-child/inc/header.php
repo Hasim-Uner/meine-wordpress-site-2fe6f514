@@ -115,6 +115,7 @@ function nexus_get_site_header_fallback_items() {
 	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
 	$demo_url     = home_url( '/energie-fahrplan-demo/' );
+	$e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 	$request_cta  = 'Analyse starten';
 
 	return [
@@ -126,11 +127,11 @@ function nexus_get_site_header_fallback_items() {
 			'track'  => 'energy_demo',
 		],
 		[
-			'label'  => __( 'Ergebnisse', 'blocksy-child' ),
-			'url'    => nexus_get_results_url(),
+			'label'  => __( 'E3 Proof', 'blocksy-child' ),
+			'url'    => $e3_url,
 			'active' => nexus_is_results_context(),
 			'class'  => '',
-			'track'  => 'results',
+			'track'  => 'e3_proof',
 		],
 		[
 			'label'  => __( 'Über mich', 'blocksy-child' ),
@@ -267,7 +268,7 @@ function nexus_energy_nav_cta_label( $items, $args ) {
 	$request_cta = 'Analyse starten';
 
 	foreach ( $items as $item ) {
-		if ( in_array( $item->title, [ 'Audit starten', 'System-Diagnose', 'System-Diagnose starten', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
+		if ( in_array( $item->title, [ 'Analyse starten', 'Anfrage-System-Analyse', 'Audit starten', 'System-Diagnose', 'System-Diagnose starten', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
 			$item->title = $request_cta;
 			$item->url   = $request_url;
 			break;

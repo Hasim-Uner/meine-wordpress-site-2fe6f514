@@ -3,7 +3,7 @@
  * NEXUS MENU SETUP
  *
  * Erstellt das fokussierte Hauptmenü für die Neukunden-Navigation:
- * Solar & Wärmepumpen | Ergebnisse | Über mich | Audit starten
+ * Solar & Wärmepumpen | E3 Proof | Über mich | Analyse starten
  *
  * Einmal-Setup: Wird beim Theme-Switch oder manuell via ?nexus_rebuild_menu=1 ausgelöst.
  *
@@ -69,6 +69,7 @@ function nexus_is_results_menu_item( $item ) {
 		'/case-studies/',
 		'/case-studies-e-commerce/',
 		'/ergebnisse/',
+		'/e3-new-energy/',
 	];
 
 	if ( $path && in_array( trailingslashit( $path ), $results_paths, true ) ) {
@@ -112,14 +113,15 @@ function nexus_setup_main_menu() {
 		'menu-item-status'    => 'publish',
 	] );
 
-	// ── 2. Ergebnisse (Top-Level) ──────────────────────────────────
-	$cases_id = nexus_get_results_page_id();
+	// ── 2. E3 Proof (Top-Level) ────────────────────────────────────
+	$e3_id  = nexus_get_page_id( [ 'e3-new-energy' ] );
+	$e3_url = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 	wp_update_nav_menu_item( $menu_id, 0, [
-		'menu-item-title'     => 'Ergebnisse',
+		'menu-item-title'     => 'E3 Proof',
 		'menu-item-object'    => 'page',
-		'menu-item-object-id' => $cases_id,
-		'menu-item-type'      => $cases_id ? 'post_type' : 'custom',
-		'menu-item-url'       => $cases_id ? '' : nexus_get_results_url(),
+		'menu-item-object-id' => $e3_id,
+		'menu-item-type'      => $e3_id ? 'post_type' : 'custom',
+		'menu-item-url'       => $e3_id ? '' : $e3_url,
 		'menu-item-status'    => 'publish',
 		'menu-item-classes'   => 'nav-results-link',
 	] );
@@ -135,14 +137,14 @@ function nexus_setup_main_menu() {
 		'menu-item-status'    => 'publish',
 	] );
 
-	// ── 4. Audit CTA (Top-Level) ───────────────────────────────────
-	$audit_id = nexus_get_audit_page_id();
+	// ── 4. Analyse CTA (Top-Level) ─────────────────────────────────
+	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
 	wp_update_nav_menu_item( $menu_id, 0, [
-		'menu-item-title'     => 'Audit starten',
-		'menu-item-object'    => 'page',
-		'menu-item-object-id' => $audit_id,
-		'menu-item-type'      => $audit_id ? 'post_type' : 'custom',
-		'menu-item-url'       => $audit_id ? '' : nexus_get_audit_url(),
+		'menu-item-title'     => 'Analyse starten',
+		'menu-item-object'    => 'custom',
+		'menu-item-object-id' => 0,
+		'menu-item-type'      => 'custom',
+		'menu-item-url'       => $analysis_url,
 		'menu-item-status'    => 'publish',
 		'menu-item-classes'   => 'nav-cta-button',
 	] );
@@ -249,14 +251,15 @@ add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
 	$is_primary_like_menu = in_array( $theme_location, [ 'primary', 'primary-slim' ], true )
 		|| in_array( $menu_name, [ 'Nexus Hauptmenü', 'Hauptmenü Slim' ], true );
 
-	$audit_url = nexus_get_audit_url();
+	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
 	$results_url = nexus_get_results_url();
+	$e3_url = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'e3', home_url( '/e3-new-energy/' ) ) : home_url( '/e3-new-energy/' );
 	$is_results_context = nexus_is_results_context();
 
 	foreach ( $items as $item ) {
 		if ( nexus_is_results_menu_item( $item ) ) {
-			$item->title = 'Ergebnisse';
-			$item->url   = $results_url;
+			$item->title = $is_primary_like_menu ? 'E3 Proof' : 'Ergebnisse';
+			$item->url   = $is_primary_like_menu ? $e3_url : $results_url;
 
 			if ( ! isset( $item->classes ) || ! is_array( $item->classes ) ) {
 				$item->classes = [];
@@ -281,8 +284,8 @@ add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
 			continue;
 		}
 
-		$item->title = 'Audit starten';
-		$item->url   = $audit_url;
+		$item->title = 'Analyse starten';
+		$item->url   = $analysis_url;
 
 		if ( ! isset( $item->classes ) || ! is_array( $item->classes ) ) {
 			$item->classes = [];
@@ -308,6 +311,8 @@ add_filter( 'nav_menu_link_attributes', function ( $atts, $item ) {
 	$track_map   = [
 		'solar & wärmepumpen' => 'solar',
 		'ergebnisse'          => 'results',
+		'e3 proof'            => 'e3_proof',
+		'e3 new energy'       => 'e3_proof',
 		'über mich'           => 'about',
 	];
 
@@ -320,7 +325,7 @@ add_filter( 'nav_menu_link_attributes', function ( $atts, $item ) {
 	}
 
 	if ( in_array( 'nav-cta-button', $item->classes, true ) ) {
-		$atts['data-track-action']   = 'nav_header_audit';
+		$atts['data-track-action']   = 'nav_header_analysis';
 		$atts['data-track-category'] = 'lead_gen';
 	}
 

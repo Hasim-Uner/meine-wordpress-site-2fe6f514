@@ -11,9 +11,9 @@
 
 get_header();
 
-$audit_url   = nexus_get_audit_url();
-$cases_url   = nexus_get_results_url();
-$wgos_url    = nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-growth-operating-system/' ) );
+$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+$demo_url     = home_url( '/energie-fahrplan-demo/' );
+$wgos_url     = nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-growth-operating-system/' ) );
 $local_wp_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
 $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
 $e3_canon    = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
@@ -84,15 +84,15 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
 
         <!-- Hero CTAs -->
         <div class="cs-hero-ctas">
-            <a href="<?php echo esc_url( $audit_url ); ?>"
+            <a href="<?php echo esc_url( $analysis_url ); ?>"
                class="nx-btn nx-btn--primary"
-               data-track-action="cta_case_hero_audit"
+               data-track-action="cta_case_hero_analysis"
                data-track-category="lead_gen">
-                <?php echo esc_html( nexus_get_audit_cta_label() ); ?>
+                Anfrage-System-Analyse starten
             </a>
-            <a href="<?php echo esc_url( $cases_url ); ?>"
+            <a href="<?php echo esc_url( $demo_url ); ?>"
                class="nx-btn nx-btn--ghost">
-                Alle Ergebnisse →
+                EnergieFahrplan-Demo ansehen →
             </a>
         </div>
 
@@ -329,7 +329,7 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
                 <div class="cs-phase-header">
                     <div class="nx-step__number">1</div>
                     <div>
-                        <span class="cs-phase-label">Monat 1–3</span>
+                        <span class="cs-phase-label">Monat 1–2</span>
                         <h3 class="cs-phase-title">Fundament: Tracking + Performance</h3>
                     </div>
                 </div>
@@ -352,7 +352,7 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
                 <div class="cs-phase-header">
                     <div class="nx-step__number">2</div>
                     <div>
-                        <span class="cs-phase-label">Monat 4–7</span>
+                        <span class="cs-phase-label">Monat 3–4</span>
                         <h3 class="cs-phase-title">Technical SEO &amp; Basis-Content</h3>
                     </div>
                 </div>
@@ -377,16 +377,16 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
                 <div class="cs-phase-header">
                     <div class="nx-step__number">3</div>
                     <div>
-                        <span class="cs-phase-label">Monat 8–12</span>
-                        <h3 class="cs-phase-title">Performance-Skalierung: Qualifizierung + Automation</h3>
+                        <span class="cs-phase-label">Monat 5–9</span>
+                        <h3 class="cs-phase-title">Performance-Skalierung: Qualifizierung + Übergabe</h3>
                     </div>
                 </div>
                 <div class="cs-phase-body">
                     <p class="nx-card__text">
                         Performance-Ads wurden auf das vorbereitete Fundament skaliert.
                         Qualifizierungs-Flows nach Branche, Bedarf und Projektgröße
-                        segmentierten Anfragen. n8n-Automatisierung und CRM-Routing sorgten
-                        dafür, dass Leads vorqualifiziert und priorisiert im Vertrieb ankamen.
+                        segmentierten Anfragen. Automations- und CRM-Anbindung kamen erst
+                        nach sauberer Daten-, Prozess- und Consent-Klärung dazu.
                     </p>
                     <ul class="cs-phase-outcomes">
                         <li>✓ <?php echo esc_html( $e3_lead_count ); ?> Anfragen im 5-Monats-Skalierungsfenster</li>
@@ -394,7 +394,7 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
                         <li>✓ <?php echo esc_html( $e3_cpl_reduction ); ?> Cost per Lead vs. Einkaufsleads</li>
                         <li>✓ <?php echo esc_html( $e3_sales_conversion ); ?> Sales-Conversion-Rate</li>
                         <li>✓ Segmentierte, vorqualifizierte Übergabe an Vertrieb</li>
-                        <li>✓ CRM + n8n Automation für Follow-up und Datenqualität</li>
+                        <li>✓ Automations- und CRM-Anbindung nach sauberer Consent-Klärung</li>
                     </ul>
                 </div>
             </div>
@@ -510,9 +510,9 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
             </div>
 
             <div class="cs-result-card">
-                <span class="cs-result-value">n8n + CRM</span>
-                <span class="cs-result-label">Automatisierte Lead-Übergabe</span>
-                <span class="cs-result-note">segmentiert und vorqualifiziert im Vertrieb</span>
+                <span class="cs-result-value">Saubere Übergabe</span>
+                <span class="cs-result-label">Qualifizierte Lead-Übergabe</span>
+                <span class="cs-result-note">erst nach geklärtem Daten- und Prozess-Setup</span>
             </div>
 
             <div class="cs-result-card">
@@ -558,8 +558,8 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
                 </li>
                 <li>
                     <strong>Vertriebseffekt:</strong> Leads werden heute segmentiert,
-                    vorqualifiziert und automatisiert an den Vertrieb übergeben&nbsp;—
-                    mit 12&nbsp;% Sales-Conversion-Rate im Closing.
+                    vorqualifiziert und strukturiert an den Vertrieb übergeben&nbsp;—
+                    mit <?php echo esc_html( $e3_sales_conversion ); ?> Sales-Conversion-Rate im Closing.
                 </li>
             </ul>
         </article>
@@ -585,7 +585,7 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
                     Die Ergebnisse entstanden in einem Setup für KMU + B2C mit
                     klarer Leistungsfähigkeit und belastbaren internen Prozessen.
                     Besonders relevant wird das Modell ab etwa &gt;5 Mio.&nbsp;€ Jahresumsatz.
-                    Ob ähnliche Hebel bei Ihnen vorhanden sind, zeigt die System-Diagnose
+                    Ob ähnliche Hebel bei Ihnen vorhanden sind, zeigt die Anfrage-System-Analyse
                     klar priorisiert und ohne Pitch.
                 </div>
             </details>
@@ -662,21 +662,21 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
                 Welche Hebel liegen bei Ihnen brach?
             </h2>
             <p style="color:var(--nx-text-muted);max-width:560px;margin:0 auto 2rem;line-height:1.6;">
-                In der System-Diagnose analysieren wir Ihre Website
-                auf die größten Wachstumspotenziale&nbsp;— klar priorisiert und ohne Pitch.
+                In der Anfrage-System-Analyse prüfen wir, ob Ihr Markt, Ihre Website
+                und Ihr Anfrageprozess genug Substanz für ein eigenes System haben.
             </p>
 
             <div class="cs-cta-buttons">
-                <a href="<?php echo esc_url( $audit_url ); ?>"
+                <a href="<?php echo esc_url( $analysis_url ); ?>"
                    class="nx-btn nx-btn--primary"
-                   data-track-action="cta_case_nextstep_audit"
+                   data-track-action="cta_case_nextstep_analysis"
                    data-track-category="lead_gen">
-                    <?php echo esc_html( nexus_get_audit_cta_label() ); ?>
+                    Analyse starten
                 </a>
             </div>
 
             <p style="font-size:0.75rem;color:#555;margin-top:1rem;">
-                Ergebnisse hängen von Ausgangslage ab&nbsp;— im Audit sehen Sie die größten Hebel.
+                Ergebnisse hängen von Ausgangslage ab&nbsp;— die Analyse zeigt den nächsten sinnvollen Schritt.
             </p>
 
             <!-- 3 Internal Links -->
@@ -684,8 +684,8 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
                 <a href="<?php echo esc_url( $wgos_url ); ?>" class="cs-internal-link">
                     WGOS: Die Systemlogik dahinter →
                 </a>
-                <a href="<?php echo esc_url( $cases_url ); ?>" class="cs-internal-link">
-                    Weitere Ergebnisse →
+                <a href="<?php echo esc_url( $demo_url ); ?>" class="cs-internal-link">
+                    EnergieFahrplan-Demo ansehen →
                 </a>
                 <a href="<?php echo esc_url( $local_wp_url ); ?>" class="cs-internal-link">
                     WordPress Agentur Hannover →

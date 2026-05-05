@@ -10,8 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$request_url = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/anfrage/#energie-anfrage' );
-$request_cta = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Anfrage stellen';
+$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+$request_cta = 'Anfrage-System-Analyse starten';
 $page_url    = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
 $e3_url      = home_url( '/e3-new-energy/' );
 $e3_canon    = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
@@ -137,7 +137,7 @@ $faq_items = [
 	],
 	[
 		'question' => 'Arbeiten Sie mit meinem bestehenden CRM?',
-		'answer'   => 'Ja, sofern technisch sinnvoll. Ziel ist nicht ein neues Tool um jeden Preis, sondern ein System, in dem Anfragen, Quellen und Status sauber messbar werden und Leads nicht manuell abgetippt werden müssen.',
+		'answer'   => 'Ja, sofern technisch sinnvoll. CRM- und Automations-Anbindung kommt aber erst nach sauberer Contract-, Consent- und Datenklärung. Der erste Schritt ist die Anfrage-System-Analyse ohne personenbezogene Daten im Default-Pfad.',
 	],
 ];
 
@@ -201,13 +201,13 @@ get_header();
 					<div class="energy-hero__copy">
 						<span class="nx-badge nx-badge--gold">Für Solar- und Wärmepumpen-Betriebe mit 10–25 Mitarbeitern</span>
 						<h1 class="nx-hero__title">Bauen Sie ein eigenes Anfrage-System statt weiter teure Leads zu mieten.</h1>
-						<p class="nx-hero__subtitle">Ich helfe B2B-Betrieben, unabhängiger von Portal-Leads zu werden &mdash; mit eigener WordPress-Infrastruktur, sauberem Tracking, Vorqualifizierung und CRM-Anbindung.</p>
+						<p class="nx-hero__subtitle">Ich helfe B2B-Betrieben, unabhängiger von Portal-Leads zu werden &mdash; mit eigener WordPress-Infrastruktur, sauberem Tracking, Vorqualifizierung und späterer CRM-Anbindung, wenn Contract und Consent geklärt sind.</p>
 						<p class="nx-cta-microcopy"><?php echo esc_html( sprintf( 'Referenz %1$s: %2$s qualifizierte Anfragen · %3$s Abschlussquote · %4$s Kosten pro Anfrage (%5$s auf %6$s)', $e3_case_label, $e3_lead_count, $e3_sales_conversion, $e3_cpl_reduction, $e3_cpl_before, $e3_cpl_after ) ); ?></p>
 						<div class="energy-hero__actions">
-							<a href="#energie-anfrage" class="nx-btn nx-btn--primary" data-track-action="cta_energy_hero_audit" data-track-category="lead_gen">Kostenlose System-Diagnose starten</a>
+							<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_hero_analysis" data-track-category="lead_gen"><?php echo esc_html( $request_cta ); ?></a>
 							<a href="<?php echo esc_url( $e3_url ); ?>" class="energy-text-link" data-track-action="cta_energy_hero_case" data-track-category="trust">E3-Ergebnis ansehen →</a>
 						</div>
-						<p class="nx-cta-microcopy" style="margin-top: 1rem;">3 Fragen. 60 Sekunden. Sofortige Einschätzung &mdash; ohne Verkaufsgespräch.</p>
+						<p class="nx-cta-microcopy" style="margin-top: 1rem;">8 Schritte. Lokales Ergebnis in grün, gelb oder rot. Keine E-Mail im Default-Pfad.</p>
 					</div>
 
 				</div>
@@ -303,8 +303,8 @@ get_header();
 						</div>
 					</div>
 					<div class="energy-compare__outcome-actions">
-						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_compare_request" data-track-category="lead_gen" data-track-section="energy_compare" data-track-funnel-stage="energy_compare">Standortbestimmung anfordern</a>
-						<span class="energy-compare__outcome-microcopy">5 Fragen &middot; ca. 90 Sekunden &middot; Antwort per E-Mail in 48 Stunden</span>
+						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_compare_analysis" data-track-category="lead_gen" data-track-section="energy_compare" data-track-funnel-stage="energy_compare">Analyse starten</a>
+						<span class="energy-compare__outcome-microcopy">Lokale Ampel-Einordnung &middot; keine CRM-Speicherung &middot; keine E-Mail-Abfrage</span>
 					</div>
 				</aside>
 			</div>
@@ -343,8 +343,8 @@ get_header();
 				<p class="energy-tco__pointe">Nach 24 Monaten haben Sie im Mietmodell rund 26.000 € ausgegeben und besitzen nichts. Im Infrastruktur-Modell haben Sie weniger ausgegeben und ein laufendes System in Ihrer Bilanz. Der Unterschied ist nicht der Preis &mdash; der Unterschied ist, was am Tag der Vertragskündigung übrig bleibt.</p>
 
 				<div class="energy-tco__cta">
-					<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_energy_tco_request" data-track-category="lead_gen" data-track-section="energy_tco" data-track-funnel-stage="energy_tco">TCO-Rechnung für Ihren Betrieb anfordern</a>
-					<span class="energy-tco__cta-microcopy">Sie erhalten eine Aufstellung mit den Annahmen für Ihre Region und Ihr aktuelles Lead-Volumen. Kein Vertriebsgespräch erforderlich.</span>
+					<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_energy_tco_analysis" data-track-category="lead_gen" data-track-section="energy_tco" data-track-funnel-stage="energy_tco">Analyse für Ihren Betrieb starten</a>
+					<span class="energy-tco__cta-microcopy">Die Einordnung bleibt im Default-Pfad lokal im Browser und führt nur zu einem nächsten Schritt, wenn der Fit stimmt.</span>
 				</div>
 			</div>
 		</section>
@@ -356,7 +356,7 @@ get_header();
 						<span class="nx-badge nx-badge--gold">Proof / Case Study</span>
 						<h2>E3 New Energy.</h2>
 						<p><strong>Vorher:</strong> Hohe Abhängigkeit von externen Leadquellen (ø <?php echo esc_html( $e3_cpl_before ); ?>/Lead). Leads waren oft schwer erreichbar, nicht qualifiziert und es fehlte ein klarer Überblick, welche Kanäle tatsächlich Termine und Abschlüsse erzeugten.</p>
-						<p><strong>Umsetzung:</strong> Tracking-Fundament aufgebaut, Anfragepfade optimiert, smarte Vorqualifizierung eingeführt und eine strukturierte CRM-Übergabe eingerichtet.</p>
+						<p><strong>Umsetzung:</strong> Tracking-Fundament aufgebaut, Anfragepfade optimiert, smarte Vorqualifizierung eingeführt und die spätere Übergabe sauber vorbereitet.</p>
 						<p><strong>Ergebnis nach <?php echo esc_html( $e3_timeframe_dative ); ?>:</strong> <?php echo esc_html( sprintf( '%1$s qualifizierte Anfragen, %2$s Abschlussquote und %3$s Kosten pro Anfrage (auf %4$s gesenkt).', $e3_lead_count, $e3_sales_conversion, $e3_cpl_reduction, $e3_cpl_after ) ); ?></p>
 						<blockquote style="margin: 1.5rem 0; padding: 1rem 1.5rem; border-left: 3px solid var(--nx-gold); background: rgba(0,0,0,0.02); font-style: italic; font-size: 1.05rem; line-height: 1.5;">
 							„Seit dem System sehen wir endlich, welche Kanäle wirklich Anfragen und Abschlüsse bringen. Wir konnten den teuren Lead-Einkauf massiv reduzieren und haben jetzt eine eigene Pipeline.“
@@ -411,8 +411,8 @@ get_header();
 						<p class="nx-card__text">Eine conversion-optimierte Seite sowie Proof- und Angebotsseiten, die langfristig in Ihrem Besitz bleiben.</p>
 					</div>
 					<div class="nx-card nx-card--flat">
-						<h3 class="nx-card__title">2. Vorqualifizierung &amp; CRM</h3>
-						<p class="nx-card__text">Smarte Formulare filtern unpassende Anfragen heraus und übergeben die Leads sauber an Ihr CRM-System.</p>
+						<h3 class="nx-card__title">2. Vorqualifizierung &amp; Übergabe</h3>
+						<p class="nx-card__text">Smarte Formulare filtern unpassende Anfragen heraus. CRM-Anbindung folgt erst nach Contract, Consent und klarer Datenlogik.</p>
 					</div>
 					<div class="nx-card nx-card--flat">
 						<h3 class="nx-card__title">3. Echtes Tracking</h3>
@@ -449,9 +449,9 @@ get_header();
 			<div class="nx-container">
 				<div class="nx-cta-box energy-cta-box">
 					<h2>Unsicher, ob Infrastruktur statt Miete für Ihren Betrieb passt?</h2>
-					<p>5 Fragen, ca. 90 Sekunden. Sie beschreiben Region, Lead-Volumen und aktuellen Engpass — ich melde mich innerhalb von 48 Stunden mit einer ehrlichen Einordnung per E-Mail. Bei Nicht-Eignung bekommen Sie einen konkreten Hinweis auf eine realistischere Alternative.</p>
+					<p>Starten Sie mit der Anfrage-System-Analyse. Sie bekommen zuerst eine lokale Ampel-Einordnung mit Begründung und nächstem Schritt. Bei Nicht-Eignung bremst der Funnel, statt Sie in ein generisches Gespräch zu drücken.</p>
 					<div class="energy-cta-box__actions">
-						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_erstgespraech" data-track-category="lead_gen" data-track-section="energy_midpage" data-track-funnel-stage="energy_midpage">Standortbestimmung anfordern</a>
+						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_midpage_analysis" data-track-category="lead_gen" data-track-section="energy_midpage" data-track-funnel-stage="energy_midpage">Analyse starten</a>
 					</div>
 				</div>
 			</div>
@@ -483,7 +483,7 @@ get_header();
 				</div>
 				<div class="nx-card nx-card--flat" style="max-width: 800px; margin: 3rem auto 0; padding: 3rem; text-align: center;">
 					<p style="font-size: 1.125rem; line-height: 1.6; margin-bottom: 1.5rem;">
-						Ich bin Haşim Üner und baue WordPress-basierte Anfrage-Systeme für Betriebe in der Erneuerbaren-Energien-Branche. Mein Fokus liegt nicht auf "schönem Webdesign", sondern auf echter Nachfrage-Architektur: Tracking, Vorqualifizierung, CRM-Anbindung und Conversion-Optimierung.
+						Ich bin Haşim Üner und baue WordPress-basierte Anfrage-Systeme für Betriebe in der Erneuerbaren-Energien-Branche. Mein Fokus liegt nicht auf "schönem Webdesign", sondern auf echter Nachfrage-Architektur: Tracking, Vorqualifizierung, saubere Übergabe und Conversion-Optimierung.
 					</p>
 					<p style="color: var(--nx-text-muted);">
 						<strong>Mit Sitz in Hannover. Spezialisiert auf Lead-Autonomie im B2B-Handwerk.</strong>
@@ -499,9 +499,9 @@ get_header();
 					<h2>Eigene Infrastruktur statt geteilter Portal-Leads und gemieteter Agentur-Funnel.</h2>
 					<p class="nx-cta-microcopy"><?php echo esc_html( $e3_proof_sentence ); ?></p>
 					<div class="energy-cta-box__actions">
-						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_footer_request" data-track-category="lead_gen" data-track-section="energy_footer" data-track-funnel-stage="energy_footer">Standortbestimmung anfordern</a>
+						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_footer_analysis" data-track-category="lead_gen" data-track-section="energy_footer" data-track-funnel-stage="energy_footer">Analyse starten</a>
 					</div>
-					<p class="energy-final-cta__microcopy">5 Fragen, ca. 90 Sekunden. Antwort innerhalb von 48 Stunden per E-Mail. Aktuell ehrlich kommuniziert: Einzelperson &mdash; begrenzte Slots pro Quartal.</p>
+					<p class="energy-final-cta__microcopy">Lokale Fit-Einordnung ohne personenbezogene Daten im Default-Pfad. Aktuell ehrlich kommuniziert: Einzelperson &mdash; begrenzte Slots pro Quartal.</p>
 				</div>
 			</div>
 		</section>

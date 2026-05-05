@@ -136,11 +136,11 @@ function hu_get_forced_singular_seo_map() {
 			// /ki-integration-wordpress/ ist noindex. Keine eigenständigen SEO-Signale mehr nötig.
 			'solar-waermepumpen-leadgenerierung' => [
 				'title'       => 'Leadgenerierung für Solar & Wärmepumpen | Weniger Kosten, bessere Anfragen',
-				'description' => sprintf( 'Schluss mit teuren Portal-Leads. Eigenes Anfrage-System für Solarteure und Wärmepumpen-Installateure. Referenz: %s Kosten pro Anfrage. Kostenloses Erstgespräch.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Schluss mit teuren Portal-Leads. Eigenes Anfrage-System für Solarteure und Wärmepumpen-Installateure. Referenz: %s Kosten pro Anfrage. Einstieg über die Anfrage-System-Analyse.', $e3_cpl_reduction ),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
 				'title'       => 'Leadgenerierung für Solar & Wärmepumpen | Weniger Kosten, bessere Anfragen',
-				'description' => sprintf( 'Schluss mit teuren Portal-Leads. Eigenes Anfrage-System für Solarteure und Wärmepumpen-Installateure. Referenz: %s Kosten pro Anfrage. Kostenloses Erstgespräch.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Schluss mit teuren Portal-Leads. Eigenes Anfrage-System für Solarteure und Wärmepumpen-Installateure. Referenz: %s Kosten pro Anfrage. Einstieg über die Anfrage-System-Analyse.', $e3_cpl_reduction ),
 			],
 		]
 	);
