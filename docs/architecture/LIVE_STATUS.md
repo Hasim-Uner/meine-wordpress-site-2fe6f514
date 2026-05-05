@@ -1,6 +1,6 @@
 # Live Status
 
-Stand: 2026-05-04.
+Stand: 2026-05-05.
 
 Basis dieses Status:
 
@@ -18,7 +18,7 @@ Nicht verifiziert:
 - `blocksy-child/` ist der deploybare Website-Code.
 - Das Theme laeuft jetzt ueber einen getrennten CI/CD-Pfad: `.github/workflows/ci.yml` prueft PHP-Syntax, Workflow-YAML und das deploybare Theme-Paket; `.github/workflows/deploy.yml` deployed erst nach erfolgreichem CI-Run fuer einen Push auf `main` oder optional manuell per Dry-Run bzw. `workflow_dispatch`.
 - Zentrale Theme-Module fuer Assets, SEO-Meta, Schema, Shortcodes, Portal und Snippets sind versioniert.
-- Die Product-Default-Logik führt kalten B2B-Traffic zur `/anfrage-system-analyse/`; die versionierte Homepage enthält noch einzelne Bestandsblöcke mit Diagnose-Ankern, nutzt für E3-Proof aber jetzt den zentralen Canon.
+- Die Product-Default-Logik fuehrt kalten B2B-Traffic zur `/anfrage-system-analyse/`; die versionierte Homepage ist repo-seitig als SHK-Hauptlandingpage auf Anfrage-System-Analyse ausgerichtet, nutzt die EnergieFahrplan-Demo nur als sekundaeren Showroom-Pfad und fuehrt E3-Proof-Zahlen ueber den zentralen Canon.
 - Die lokale Money Page `/wordpress-agentur-hannover/` folgt repo-seitig jetzt einem gestrafften CRO-Flow: Hero mit konservativem Proof, drei Problemkarten, gekürzte Vergleichstabelle, konkrete Leistungsbereiche statt 3-Step-Prozess, Fit-Check ohne Negativ-Absatz, E3-Proof, kurze Standort-Sektion für Hannover/DACH, reduzierte lokale FAQ, stärkere interne Anschlüsse zu SEO/GA4/CRO und bestehender finaler Audit-CTA.
 - Die versionierte Über-mich-Seite `/uber-mich/` ist repo-seitig auf `Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter` ausgerichtet; Editor- und Template-Copy müssen bei der E3-Canon-Bereinigung gegen `150 € -> 22 €`, `-85,3 %`, `1.750+`, `12 %` und `9 Monate` geprüft werden.
 - Service-Seiten, Tools-Hub, Blog, Kategorie-Hubs, Footer-CTA und Trust-Bausteine sind im Repo.

@@ -5,6 +5,25 @@
    ========================================= */
 
 /* ---------- Reveal-on-scroll (used across sections) ---------- */
+.homepage-template {
+    --cro-petrol: #07181b;
+    --cro-petrol-2: #0b2327;
+    --cro-petrol-3: #0c2f33;
+    --cro-ivory: #fffaf1;
+    --cro-ivory-2: #f7efe2;
+    --cro-ink: #142224;
+    --cro-muted: #5d625f;
+    --cro-copper: #c77932;
+    --cro-copper-2: #d99a62;
+    --accent-hsl: 27 58% 49%;
+    --accent: var(--cro-copper);
+    --nx-accent-text: var(--cro-copper);
+    --nx-gold: var(--cro-copper);
+    --nx-gold-hover: var(--cro-copper-2);
+    --nx-radius-lg: 8px;
+    --nx-radius-xl: 8px;
+}
+
 .cro-reveal {
     opacity: 0;
     transform: translateY(28px);
@@ -28,9 +47,52 @@
     position: relative;
     overflow: hidden;
 }
+.cro-hero--executive {
+    min-height: calc(100vh - var(--nx-header-height) - 56px);
+    padding: 0;
+    align-items: stretch;
+    background: var(--cro-petrol);
+    color: var(--cro-ivory);
+    isolation: isolate;
+}
+.cro-hero--executive::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image: url("../img/landing/shk-executive-command-hero.webp");
+    background-position: center;
+    background-size: cover;
+    opacity: 0.78;
+    filter: saturate(0.98) contrast(1.04);
+}
+.cro-hero--executive::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(90deg, rgba(7, 24, 27, 0.98) 0%, rgba(7, 24, 27, 0.86) 48%, rgba(7, 24, 27, 0.24) 100%),
+        linear-gradient(0deg, rgba(7, 24, 27, 0.98), rgba(7, 24, 27, 0.08) 46%, rgba(7, 24, 27, 0.52));
+}
 .cro-hero__shell {
     position: relative;
     padding: clamp(2rem, 4vw, 3rem) 0 clamp(2.5rem, 5vw, 3.5rem);
+}
+.cro-hero--executive .cro-hero__shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.72fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+    min-height: calc(100vh - var(--nx-header-height) - 56px);
+    padding-top: clamp(3.5rem, 7vw, 5.75rem);
+    padding-bottom: clamp(2.75rem, 5vw, 4.5rem);
+}
+@supports (height: 100svh) {
+    .cro-hero--executive,
+    .cro-hero--executive .cro-hero__shell {
+        min-height: calc(100svh - var(--nx-header-height) - 56px);
+    }
 }
 .cro-hero__shell::before {
     content: "";
@@ -48,8 +110,26 @@
     z-index: 1;
     max-width: 880px;
 }
+.cro-hero--executive .cro-hero__copy {
+    max-width: 760px;
+}
+.cro-hero--executive .wp-badge {
+    border-radius: 4px;
+    border-color: rgba(217, 154, 98, 0.38);
+    background: rgba(255, 250, 241, 0.08);
+    color: var(--cro-copper-2);
+    box-shadow: none;
+}
 .cro-hero__title {
     margin: 0.6rem 0 1.1rem;
+}
+.cro-hero--executive .cro-hero__title {
+    max-width: 14ch;
+    color: var(--cro-ivory);
+    font-size: clamp(2.85rem, 6.2vw, 6.1rem);
+    font-weight: 800;
+    line-height: 0.94;
+    letter-spacing: -0.035em;
 }
 .cro-hero__sub {
     color: var(--nx-text-secondary);
@@ -57,6 +137,10 @@
     line-height: 1.65;
     max-width: 60ch;
     margin: 0 0 2rem;
+}
+.cro-hero--executive .cro-hero__sub {
+    max-width: 62ch;
+    color: #d8dedb;
 }
 
 .cro-hero__kpi-ribbon {
@@ -73,12 +157,21 @@
     box-shadow: var(--nx-shadow-sm);
     backdrop-filter: blur(12px);
 }
+.cro-hero--executive .cro-hero__kpi-ribbon {
+    border-radius: 6px;
+    border-color: rgba(255, 250, 241, 0.14);
+    background: rgba(7, 24, 27, 0.68);
+    box-shadow: 0 34px 100px rgba(0, 0, 0, 0.28);
+}
 .cro-hero__kpi {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
     padding: 0.5rem 0.9rem;
     border-right: 1px solid var(--nx-border);
+}
+.cro-hero--executive .cro-hero__kpi {
+    border-right-color: rgba(255, 250, 241, 0.12);
 }
 .cro-hero__kpi:last-child { border-right: 0; }
 .cro-hero__kpi-value {
@@ -87,6 +180,13 @@
     line-height: 1;
     color: var(--nx-text);
     letter-spacing: -0.02em;
+}
+.cro-hero--executive .cro-hero__kpi-value {
+    color: var(--cro-ivory);
+}
+.cro-hero--executive .cro-hero__kpi-label,
+.cro-hero--executive .cro-hero__trust {
+    color: #cbd5d0;
 }
 .cro-hero__kpi-label {
     font-size: 0.78rem;
@@ -139,8 +239,98 @@
     background: hsl(var(--accent-hsl) / 0.7);
     flex-shrink: 0;
 }
+.cro-hero--executive .cro-hero__trust-dot {
+    border-radius: 0;
+    background: var(--cro-copper-2);
+}
+.cro-hero__control {
+    position: relative;
+    z-index: 1;
+    align-self: center;
+}
+.cro-control-card {
+    margin-left: auto;
+    max-width: 430px;
+    padding: clamp(1rem, 2vw, 1.35rem);
+    border: 1px solid rgba(255, 250, 241, 0.15);
+    border-radius: 6px;
+    background: rgba(7, 24, 27, 0.74);
+    box-shadow: 0 42px 120px rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(18px);
+}
+.cro-control-card__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 250, 241, 0.13);
+    color: #d8dedb;
+    font-family: var(--nx-font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+.cro-control-card__head strong {
+    color: var(--cro-copper-2);
+}
+.cro-control-card__rows {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1rem;
+}
+.cro-control-card__row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.65rem 1rem;
+    padding: 0.95rem;
+    border: 1px solid rgba(255, 250, 241, 0.11);
+    background: rgba(255, 250, 241, 0.065);
+}
+.cro-control-card__row span {
+    color: var(--cro-ivory);
+    font-weight: 700;
+}
+.cro-control-card__row strong {
+    color: var(--cro-copper-2);
+    font-family: var(--nx-font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+}
+.cro-control-card__row i {
+    grid-column: 1 / -1;
+    display: block;
+    height: 5px;
+    background: rgba(255, 250, 241, 0.13);
+}
+.cro-control-card__row i::before {
+    content: "";
+    display: block;
+    width: var(--bar-width);
+    height: 100%;
+    background: var(--cro-copper-2);
+}
 
 @media (max-width: 720px) {
+    .cro-hero--executive {
+        min-height: auto;
+    }
+    .cro-hero--executive::after {
+        background:
+            linear-gradient(180deg, rgba(7, 24, 27, 0.96) 0%, rgba(7, 24, 27, 0.88) 48%, rgba(7, 24, 27, 0.98) 100%);
+    }
+    .cro-hero--executive .cro-hero__shell {
+        display: block;
+        min-height: auto;
+    }
+    .cro-hero--executive .cro-hero__title {
+        max-width: 12ch;
+        font-size: clamp(2.55rem, 12vw, 4rem);
+    }
+    .cro-hero__control {
+        display: none;
+    }
     .cro-hero__kpi-ribbon {
         grid-template-columns: 1fr;
         gap: 0;
@@ -162,6 +352,25 @@
     border-top: 1px solid var(--nx-border);
     border-bottom: 1px solid var(--nx-border);
     background: linear-gradient(180deg, rgba(255, 90, 90, 0.03), transparent 60%);
+}
+.cro-pain,
+.cro-command,
+.cro-system {
+    color: var(--cro-ink);
+}
+.cro-pain {
+    background:
+        linear-gradient(180deg, var(--cro-ivory) 0%, var(--cro-ivory-2) 100%);
+}
+.cro-pain .wp-section-h2,
+.cro-pain__title,
+.cro-pain__text,
+.cro-pain__lead {
+    color: var(--cro-ink);
+}
+.cro-pain__lead,
+.cro-pain__text {
+    color: var(--cro-muted);
 }
 .cro-pain__head {
     text-align: center;
@@ -189,6 +398,11 @@
     background: var(--nx-card-gradient);
     overflow: hidden;
     transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.cro-pain__card {
+    border-color: rgba(13, 46, 51, 0.12);
+    background: #fffdf7;
+    box-shadow: 0 28px 90px rgba(13, 46, 51, 0.08);
 }
 .cro-pain__card:hover {
     transform: translateY(-4px);
@@ -232,6 +446,24 @@
    ========================================================= */
 .cro-proof {
     padding: clamp(4rem, 7vw, 6rem) 0;
+}
+.cro-proof {
+    position: relative;
+    overflow: hidden;
+    background: var(--cro-petrol);
+}
+.cro-proof::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(7, 24, 27, 0.98), rgba(7, 24, 27, 0.82), rgba(7, 24, 27, 0.92)),
+        url("../img/landing/shk-proof-architecture.webp") center / cover;
+    opacity: 0.78;
+}
+.cro-proof > .wp-container {
+    position: relative;
+    z-index: 1;
 }
 .cro-proof__head {
     text-align: center;
@@ -383,6 +615,111 @@
 }
 
 /* =========================================================
+   3b. COMMAND ROOM
+   ========================================================= */
+.cro-command {
+    padding: clamp(4.5rem, 8vw, 7rem) 0;
+    background: var(--cro-ivory);
+    border-top: 1px solid rgba(13, 46, 51, 0.1);
+    border-bottom: 1px solid rgba(13, 46, 51, 0.1);
+}
+.cro-command__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+}
+.cro-command__media {
+    position: relative;
+    border: 1px solid rgba(13, 46, 51, 0.12);
+    background: #fffdf7;
+    padding: 0.75rem;
+    box-shadow: 0 38px 120px rgba(13, 46, 51, 0.14);
+}
+.cro-command__media::before {
+    content: "";
+    position: absolute;
+    top: -1rem;
+    left: -1rem;
+    width: 7rem;
+    height: 7rem;
+    border-top: 1px solid rgba(199, 121, 50, 0.42);
+    border-left: 1px solid rgba(199, 121, 50, 0.42);
+}
+.cro-command__media img,
+.cro-system__media img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+}
+.cro-command__copy .wp-badge {
+    border-radius: 4px;
+    border-color: rgba(199, 121, 50, 0.25);
+    background: rgba(199, 121, 50, 0.1);
+    color: #a7632b;
+    box-shadow: none;
+}
+.cro-command__copy .wp-section-h2 {
+    color: var(--cro-petrol);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+}
+.cro-command__copy p {
+    max-width: 62ch;
+    color: var(--cro-muted);
+    font-size: 1.05rem;
+    line-height: 1.72;
+    margin: 0 0 1.35rem;
+}
+.cro-command__list {
+    display: grid;
+    gap: 0.7rem;
+    margin: 0 0 1.75rem;
+    padding: 0;
+    list-style: none;
+}
+.cro-command__list li {
+    position: relative;
+    padding: 0.9rem 1rem 0.9rem 2.35rem;
+    border: 1px solid rgba(13, 46, 51, 0.11);
+    background: #fffdf7;
+    color: var(--cro-ink);
+    font-weight: 700;
+    line-height: 1.5;
+}
+.cro-command__list li::before {
+    content: "";
+    position: absolute;
+    left: 1rem;
+    top: 1.35rem;
+    width: 0.55rem;
+    height: 0.55rem;
+    background: var(--cro-copper);
+}
+.cro-command__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.35rem;
+    align-items: center;
+}
+.cro-command .cro-hero__cta-secondary {
+    color: var(--cro-petrol);
+    border-bottom-color: rgba(13, 46, 51, 0.25);
+}
+.cro-command .cro-hero__cta-secondary:hover,
+.cro-command .cro-hero__cta-secondary:focus-visible {
+    color: var(--cro-copper);
+    border-bottom-color: rgba(199, 121, 50, 0.5);
+}
+
+@media (max-width: 900px) {
+    .cro-command__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
    4. MODELL A/B (overrides for crisper hierarchy)
    ========================================================= */
 .cro-models__card {
@@ -447,26 +784,57 @@
     padding: clamp(4rem, 7vw, 6rem) 0;
     border-top: 1px solid var(--nx-border);
 }
+.cro-system {
+    background:
+        linear-gradient(180deg, var(--cro-ivory-2), #fffdf7);
+    border-color: rgba(13, 46, 51, 0.1);
+}
 .cro-system__head {
     text-align: center;
     margin-bottom: 3rem;
 }
+.cro-system__head .wp-badge {
+    border-radius: 4px;
+    border-color: rgba(199, 121, 50, 0.25);
+    background: rgba(199, 121, 50, 0.1);
+    color: #a7632b;
+    box-shadow: none;
+}
+.cro-system__head .wp-section-h2 {
+    color: var(--cro-petrol);
+    font-weight: 800;
+}
+.cro-system__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    max-width: 1120px;
+    margin: 0 auto 2.5rem;
+}
+.cro-system__media {
+    border: 1px solid rgba(13, 46, 51, 0.12);
+    background: #fffdf7;
+    padding: 0.75rem;
+    box-shadow: 0 34px 100px rgba(13, 46, 51, 0.12);
+}
 .cro-timeline {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    max-width: 1100px;
-    margin: 0 auto 2.5rem;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    max-width: none;
+    margin: 0;
 }
 .cro-timeline::before {
     content: "";
     position: absolute;
-    top: 38px;
-    left: calc(100% / 6);
-    right: calc(100% / 6);
-    height: 2px;
-    background: linear-gradient(90deg,
+    top: 0;
+    bottom: 0;
+    left: 28px;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(180deg,
         hsl(var(--accent-hsl) / 0.4),
         hsl(var(--accent-hsl) / 0.7),
         hsl(var(--accent-hsl) / 0.4));
@@ -475,11 +843,15 @@
 .cro-timeline__step {
     position: relative;
     z-index: 1;
-    padding: 1.5rem 1.25rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    padding: 1.25rem;
     border-radius: var(--nx-radius-xl);
-    border: 1px solid var(--nx-border);
-    background: var(--nx-card-gradient);
-    text-align: center;
+    border: 1px solid rgba(13, 46, 51, 0.12);
+    background: #fffdf7;
+    text-align: left;
+    box-shadow: 0 20px 70px rgba(13, 46, 51, 0.07);
     transition: transform 0.3s ease, border-color 0.3s ease;
 }
 .cro-timeline__step:hover {
@@ -501,15 +873,22 @@
     box-shadow: 0 10px 24px hsl(var(--accent-hsl) / 0.28);
     line-height: 1;
 }
+.cro-timeline__num {
+    border-radius: 4px;
+    background: var(--cro-petrol);
+    color: var(--cro-copper-2);
+    box-shadow: none;
+    margin: 0;
+}
 .cro-timeline__title {
     font-size: 1.15rem;
     font-weight: 700;
-    color: var(--nx-text);
+    color: var(--cro-petrol);
     margin: 0 0 0.5rem;
     line-height: 1.3;
 }
 .cro-timeline__text {
-    color: var(--nx-text-secondary);
+    color: var(--cro-muted);
     font-size: 0.95rem;
     line-height: 1.6;
     margin: 0;
@@ -519,6 +898,9 @@
 }
 
 @media (max-width: 760px) {
+    .cro-system__layout {
+        grid-template-columns: 1fr;
+    }
     .cro-timeline {
         grid-template-columns: 1fr;
         gap: 1.25rem;

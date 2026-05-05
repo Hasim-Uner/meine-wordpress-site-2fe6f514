@@ -123,7 +123,7 @@
             if (keys.length < 3) {
                 result.classList.remove('is-active');
                 resultTitle.textContent = 'Beantworten Sie alle drei Fragen.';
-                resultText.textContent = 'Sie erhalten in 60 Sekunden eine ehrliche Diagnose, ob Sie ein System besitzen oder eines mieten.';
+                resultText.textContent = 'Sie erhalten eine erste Einordnung, ob die vollständige Anfrage-System-Analyse sinnvoll ist.';
                 return;
             }
 
@@ -133,14 +133,14 @@
             result.classList.add('is-active');
 
             if (bad === 0) {
-                resultTitle.textContent = 'Sie besitzen Ihr System.';
-                resultText.textContent = 'Code, CRM und Tracking gehören Ihnen. Sie brauchen mich vermutlich nicht — oder nur punktuell für Skalierung. Senden Sie mir einen Screenshot, ich gebe Ihnen ehrliches Feedback.';
+                resultTitle.textContent = 'Grünes Signal für die Analyse.';
+                resultText.textContent = 'Zielgebiet, Projektwert und Entscheidungsweg sind klar genug. Die Anfrage-System-Analyse kann prüfen, ob daraus ein Founding-Partner-Fall wird.';
             } else if (bad === 1) {
-                resultTitle.textContent = 'Eine Lücke — und sie kostet Sie.';
-                resultText.textContent = 'Ein einziger fremdgesteuerter Hebel reicht, um aus Ihren Leads schnell die Leads des Anbieters zu machen. Diagnose zeigt, welcher Schritt sich wirtschaftlich am schnellsten amortisiert.';
+                resultTitle.textContent = 'Gelbes Signal: erst sauber einordnen.';
+                resultText.textContent = 'Ein wichtiger Punkt ist noch unscharf. Genau dafür ist die Analyse gedacht: Fit, Marktbild und nächsten Schritt belastbar klären.';
             } else {
-                resultTitle.textContent = 'Sie mieten Ihr System.';
-                resultText.textContent = 'Code, CRM oder Tracking liegen außerhalb Ihrer Kontrolle. Bei Vertragsende oder Preiserhöhung haben Sie keine Hebel. Genau das löse ich — auf bestehender Infrastruktur, ohne Relaunch.';
+                resultTitle.textContent = 'Rotes Signal für eine direkte Umsetzung.';
+                resultText.textContent = 'Für einen Bau des Systems ist die Grundlage noch zu unklar. Die Analyse kann trotzdem zeigen, ob erst Positionierung, Region oder Angebot geschärft werden muss.';
             }
         }
 

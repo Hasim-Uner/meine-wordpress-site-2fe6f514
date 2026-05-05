@@ -14,10 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $urls = function_exists( 'hu_home_urls' ) ? hu_home_urls() : [];
 
-$request_url         = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#energie-anfrage' );
+$analysis_url        = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+$demo_url            = home_url( '/energie-fahrplan-demo/' );
+$request_url         = $analysis_url;
 $diagnose_anchor     = '#diagnose';
-$primary_cta_label   = 'System-Diagnose starten (60 Sek.)';
-$secondary_cta_label = 'Schon entschieden? Direkt anfragen.';
+$primary_cta_label   = 'Anfrage-System-Analyse starten';
+$secondary_cta_label = 'EnergieFahrplan-Demo ansehen';
+$landing_asset_url   = trailingslashit( get_stylesheet_directory_uri() ) . 'assets/img/landing/';
 
 $e3_canon                  = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics                = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
@@ -54,13 +57,13 @@ get_header();
 	<div class="cs-page homepage-template">
 
 		<!-- ============== HERO ============== -->
-		<section id="hero" class="wp-hero cro-hero" data-track-section="homepage_hero">
+		<section id="hero" class="wp-hero cro-hero cro-hero--executive" data-track-section="homepage_hero">
 			<div class="wp-container wp-home-shell cro-hero__shell">
 				<div class="cro-hero__copy">
-					<span class="wp-badge">Für Solar- und Wärmepumpen-Betriebe mit 10–25 Mitarbeitern</span>
-					<h1 class="wp-hero-title cro-hero__title">Schluss mit teuren Portal-Leads, die nicht ans Telefon gehen.</h1>
+					<span class="wp-badge">SHK Anfrage-System für Founding-Partner 2026</span>
+					<h1 class="wp-hero-title cro-hero__title">Solar- und Wärmepumpen-Anfragen, die Ihrem Betrieb gehören.</h1>
 					<p class="cro-hero__sub">
-						<?php echo esc_html( sprintf( '%1$s weniger Kosten pro Anfrage in %2$s — Referenz %3$s. Eigenes Anfrage-System statt Portal-Abhängigkeit.', $e3_cpl_conservative, $e3_timeframe_dative, $e3_case_label ) ); ?>
+						<?php echo esc_html( sprintf( '%1$s weniger Kosten pro Anfrage in %2$s — Referenz %3$s. Eigenes Anfrage-System statt Portal-Abhängigkeit, mit Analyse vor Umsetzung.', $e3_cpl_conservative, $e3_timeframe_dative, $e3_case_label ) ); ?>
 					</p>
 
 					<?php
@@ -90,14 +93,45 @@ get_header();
 					</div>
 
 					<div class="cro-hero__cta-stack">
-						<a href="<?php echo esc_url( $diagnose_anchor ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_hero_diagnose" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
-						<a href="<?php echo esc_url( $request_url ); ?>" class="cro-hero__cta-secondary" data-track-action="cta_home_hero_request" data-track-category="lead_gen"><?php echo esc_html( $secondary_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_hero_analysis" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $demo_url ); ?>" class="cro-hero__cta-secondary" data-track-action="cta_home_hero_demo" data-track-category="lead_gen"><?php echo esc_html( $secondary_cta_label ); ?></a>
 					</div>
 
 					<div class="cro-hero__trust" aria-label="Vertrauenssignale">
 						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span><?php echo esc_html( $e3_timeframe ); ?> Track Record</span>
-						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span>Privacy-first Tracking</span>
-						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span>Hannover &middot; remote</span>
+						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span>Ohne Kontaktdaten im ersten Schritt</span>
+						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span>Showroom zuerst, Übergabe später</span>
+					</div>
+				</div>
+
+				<div class="cro-hero__control" aria-label="Anfrage-System Status">
+					<div class="cro-control-card">
+						<div class="cro-control-card__head">
+							<span>Lead-Control</span>
+							<strong>Eigentum</strong>
+						</div>
+						<div class="cro-control-card__rows">
+							<div class="cro-control-card__row">
+								<span>Portal-Lead geteilt</span>
+								<strong>blockiert</strong>
+								<i style="--bar-width: 26%"></i>
+							</div>
+							<div class="cro-control-card__row">
+								<span>Budget unklar</span>
+								<strong>gebremst</strong>
+								<i style="--bar-width: 42%"></i>
+							</div>
+							<div class="cro-control-card__row">
+								<span>Solar + WP Hybrid</span>
+								<strong>priorisiert</strong>
+								<i style="--bar-width: 88%"></i>
+							</div>
+							<div class="cro-control-card__row">
+								<span>Entscheider bestätigt</span>
+								<strong>Analyse</strong>
+								<i style="--bar-width: 96%"></i>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -114,8 +148,8 @@ get_header();
 				<div class="cro-pain__grid">
 					<article class="cro-pain__card cro-reveal">
 						<span class="cro-pain__damage">~ 4.800&nbsp;&euro; / Monat</span>
-						<h3 class="cro-pain__title">Portal-Leads, die nicht ans Telefon gehen</h3>
-						<p class="cro-pain__text">60 Leads &times; 80 &euro; CPL &times; 50 % Erreichbarkeit &mdash; Geld, das ohne Termin verbrennt.</p>
+						<h3 class="cro-pain__title">Portal-Leads, die Ihrem Betrieb nicht gehören</h3>
+						<p class="cro-pain__text">Geteilte Kontakte, schwankende Qualität und kein eigener Kanal &mdash; Nachfrage bleibt gemietet.</p>
 					</article>
 
 					<article class="cro-pain__card cro-reveal">
@@ -132,7 +166,7 @@ get_header();
 				</div>
 
 				<div class="cro-pain__footer cro-reveal">
-					<a href="<?php echo esc_url( $diagnose_anchor ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_pain_diagnose" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
+					<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_pain_analysis" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
 				</div>
 			</div>
 		</section>
@@ -164,8 +198,8 @@ get_header();
 						<span class="cro-proof__col-tag">Nach <?php echo esc_html( $e3_timeframe_dative ); ?></span>
 						<h3 class="cro-proof__col-title">Eigenes, skalierbares System</h3>
 						<ul class="cro-proof__col-list">
-							<li>Vorqualifizierte Anfragen direkt im CRM</li>
-							<li>Privacy-first Tracking auf Kanal-Ebene</li>
+							<li>Vorqualifizierte Anfragewege unter eigener Kontrolle</li>
+							<li>Messbare Kanal-Ebene nach sauberem Consent-Setup</li>
 							<li>Money Pages und Proof als bleibende Assets</li>
 							<li>Skalierbar ohne CPL-Explosion</li>
 						</ul>
@@ -192,7 +226,30 @@ get_header();
 				</div>
 
 				<div class="cro-proof__footer cro-reveal">
-					<a href="<?php echo esc_url( $diagnose_anchor ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_proof_diagnose" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
+					<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_proof_analysis" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
+				</div>
+			</div>
+		</section>
+
+		<!-- ============== COMMAND ROOM ============== -->
+		<section class="cro-command" data-track-section="homepage_command">
+			<div class="wp-container wp-home-shell cro-command__grid">
+				<div class="cro-command__media cro-reveal">
+					<img src="<?php echo esc_url( $landing_asset_url . 'shk-owner-consultation.webp' ); ?>" alt="SHK Beratung zu Solar- und Wärmepumpe als hochwertiges Anfrage-System" loading="lazy" decoding="async">
+				</div>
+				<div class="cro-command__copy cro-reveal">
+					<span class="wp-badge">Eigener Akquise-Kontrollraum</span>
+					<h2 class="wp-section-h2">Es soll nicht wie eine schöne Website wirken. Es soll wie ein eigenes Vertriebssystem wirken.</h2>
+					<p>Die Landingpage verkauft nicht direkt in ein generisches Gespräch. Sie führt passende Betriebe in die Anfrage-System-Analyse und bremst unpassende Fälle, bevor Zeit im Vertrieb gebunden wird.</p>
+					<ul class="cro-command__list" aria-label="Systemprinzipien">
+						<li>Eigene Domain und eigene Positionierung statt Portal-Vergleich.</li>
+						<li>Qualifizierung vor Kontakt, Umsetzung erst nach grünem oder gelbem Fit.</li>
+						<li>Kontaktübergabe und Automationen erst nach Zustimmung und sauberem Setup.</li>
+					</ul>
+					<div class="cro-command__actions">
+						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_command_analysis" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $demo_url ); ?>" class="cro-hero__cta-secondary" data-track-action="cta_home_command_demo" data-track-category="lead_gen">Showroom ansehen</a>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -232,7 +289,7 @@ get_header();
 				</div>
 
 				<div class="homepage-problem-frame__cta text-center cro-reveal">
-					<a href="<?php echo esc_url( $diagnose_anchor ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_models_diagnose" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
+					<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_models_analysis" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
 				</div>
 			</div>
 		</section>
@@ -245,26 +302,31 @@ get_header();
 					<h2 class="wp-section-h2">Der 3-Schritt-Prozess</h2>
 				</div>
 
-				<div class="cro-timeline" role="list" aria-label="Drei aufeinander aufbauende Schritte">
-					<article class="cro-timeline__step cro-reveal" role="listitem">
-						<div class="cro-timeline__num" aria-hidden="true">1</div>
-						<h3 class="cro-timeline__title">Fundament ordnen</h3>
-						<p class="cro-timeline__text">Tracking und Datenebene aufsetzen. Quellen, Termine, CRM &mdash; sauber verknüpft.</p>
-					</article>
-					<article class="cro-timeline__step cro-reveal" role="listitem">
-						<div class="cro-timeline__num" aria-hidden="true">2</div>
-						<h3 class="cro-timeline__title">Conversion-Pfade schärfen</h3>
-						<p class="cro-timeline__text">Formular, Call und Buchung optimieren &mdash; aus Klicks werden qualifizierte Termine.</p>
-					</article>
-					<article class="cro-timeline__step cro-reveal" role="listitem">
-						<div class="cro-timeline__num" aria-hidden="true">3</div>
-						<h3 class="cro-timeline__title">Skalieren</h3>
-						<p class="cro-timeline__text">Money Pages, Proof und Unabhängigkeit aufbauen &mdash; Ads erst, wenn das Fundament steht.</p>
-					</article>
+				<div class="cro-system__layout">
+					<div class="cro-system__media cro-reveal">
+						<img src="<?php echo esc_url( $landing_asset_url . 'shk-system-board.webp' ); ?>" alt="Systemboard für SHK Anfrage-Qualifizierung" loading="lazy" decoding="async">
+					</div>
+					<div class="cro-timeline" role="list" aria-label="Drei aufeinander aufbauende Schritte">
+						<article class="cro-timeline__step cro-reveal" role="listitem">
+							<div class="cro-timeline__num" aria-hidden="true">1</div>
+							<h3 class="cro-timeline__title">Analysieren</h3>
+							<p class="cro-timeline__text">Markt, Region, Projektwert und bestehende Anfragewege einordnen &mdash; ohne personenbezogene Daten.</p>
+						</article>
+						<article class="cro-timeline__step cro-reveal" role="listitem">
+							<div class="cro-timeline__num" aria-hidden="true">2</div>
+							<h3 class="cro-timeline__title">Qualifizieren</h3>
+							<p class="cro-timeline__text">Fit-Ampel, Leadkosten-Korridor und nächster Schritt: grün, gelb oder rot statt Bauchgefühl.</p>
+						</article>
+						<article class="cro-timeline__step cro-reveal" role="listitem">
+							<div class="cro-timeline__num" aria-hidden="true">3</div>
+							<h3 class="cro-timeline__title">Umsetzen</h3>
+							<p class="cro-timeline__text">Nur passende Founding-Partner-Fälle gehen in den Aufbau des Anfrage-Systems.</p>
+						</article>
+					</div>
 				</div>
 
 				<div class="cro-system__footer cro-reveal">
-					<a href="<?php echo esc_url( $diagnose_anchor ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_system_diagnose" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
+					<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_system_analysis" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
 				</div>
 			</div>
 		</section>
@@ -274,9 +336,9 @@ get_header();
 			<div class="wp-container wp-home-shell">
 				<div class="cro-diagnose__head cro-reveal">
 					<span class="wp-badge">System-Diagnose</span>
-					<h2 class="wp-section-h2">Drei Fragen. Eine ehrliche Diagnose.</h2>
+					<h2 class="wp-section-h2">Drei Fragen. Eine ehrliche Vorprüfung.</h2>
 					<p class="cro-diagnose__sub">
-						Klären Sie in 60 Sekunden, ob Sie ein Lead-System <strong>besitzen</strong> oder <strong>mieten</strong>.
+						Klären Sie in 60 Sekunden, ob Ihr Fall in die Anfrage-System-Analyse gehört.
 					</p>
 				</div>
 
@@ -284,38 +346,38 @@ get_header();
 
 					<div class="cro-diagnose__question">
 						<span class="cro-diagnose__q-label">
-							<span class="cro-diagnose__q-num">1.</span>Wem gehört der Code Ihrer Landingpage?
+							<span class="cro-diagnose__q-num">1.</span>Haben Sie ein klares Zielgebiet für Solar- und Wärmepumpen-Projekte?
 						</span>
 						<div class="cro-diagnose__answers" role="radiogroup" aria-label="Frage 1">
-							<button type="button" class="cro-diagnose__answer" data-question="q1" data-value="good">Uns &mdash; eigener Code</button>
-							<button type="button" class="cro-diagnose__answer" data-question="q1" data-value="bad">Der Agentur / Plattform</button>
+							<button type="button" class="cro-diagnose__answer" data-question="q1" data-value="good">Ja &mdash; klar begrenzt</button>
+							<button type="button" class="cro-diagnose__answer" data-question="q1" data-value="bad">Nein &mdash; noch offen</button>
 						</div>
 					</div>
 
 					<div class="cro-diagnose__question">
 						<span class="cro-diagnose__q-label">
-							<span class="cro-diagnose__q-num">2.</span>Wem gehört das CRM, in dem Ihre Leads liegen?
+							<span class="cro-diagnose__q-num">2.</span>Geht es um hochwertige Projekte statt Kleinstanfragen?
 						</span>
 						<div class="cro-diagnose__answers" role="radiogroup" aria-label="Frage 2">
-							<button type="button" class="cro-diagnose__answer" data-question="q2" data-value="good">Uns &mdash; eigener Account</button>
-							<button type="button" class="cro-diagnose__answer" data-question="q2" data-value="bad">Der Agentur / Portal</button>
+							<button type="button" class="cro-diagnose__answer" data-question="q2" data-value="good">Ja &mdash; hohe Projektwerte</button>
+							<button type="button" class="cro-diagnose__answer" data-question="q2" data-value="bad">Nein &mdash; eher Menge</button>
 						</div>
 					</div>
 
 					<div class="cro-diagnose__question">
 						<span class="cro-diagnose__q-label">
-							<span class="cro-diagnose__q-num">3.</span>Wem gehört der Tracking-Account?
+							<span class="cro-diagnose__q-num">3.</span>Kann die Geschäftsführung über Positionierung und Systemaufbau entscheiden?
 						</span>
 						<div class="cro-diagnose__answers" role="radiogroup" aria-label="Frage 3">
-							<button type="button" class="cro-diagnose__answer" data-question="q3" data-value="good">Uns &mdash; eigener Account</button>
-							<button type="button" class="cro-diagnose__answer" data-question="q3" data-value="bad">Der Agentur / Plattform</button>
+							<button type="button" class="cro-diagnose__answer" data-question="q3" data-value="good">Ja &mdash; direkt</button>
+							<button type="button" class="cro-diagnose__answer" data-question="q3" data-value="bad">Nein &mdash; unklar</button>
 						</div>
 					</div>
 
 					<div class="cro-diagnose__result" data-cro-diagnose-result aria-live="polite">
 						<p class="cro-diagnose__result-title" data-cro-diagnose-result-title>Beantworten Sie alle drei Fragen.</p>
-						<p data-cro-diagnose-result-text>Sie erhalten in 60 Sekunden eine ehrliche Diagnose, ob Sie ein System besitzen oder eines mieten.</p>
-						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary cro-diagnose__result-cta" data-cro-diagnose-result-cta data-track-action="cta_home_diagnose_request" data-track-category="lead_gen"><?php echo esc_html( $secondary_cta_label ); ?></a>
+						<p data-cro-diagnose-result-text>Sie erhalten eine erste Einordnung, ob die vollständige Anfrage-System-Analyse sinnvoll ist.</p>
+						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary cro-diagnose__result-cta" data-cro-diagnose-result-cta data-track-action="cta_home_diagnose_analysis" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
 					</div>
 				</div>
 			</div>
@@ -356,8 +418,8 @@ get_header();
 			<div class="wp-container wp-home-shell">
 				<div class="cro-final__box cro-reveal">
 					<span class="nx-badge nx-badge--gold">Nächster Schritt</span>
-					<h2 class="cro-final__title">Direkt anfragen.</h2>
-					<p class="cro-final__lead">Gehen Sie direkt ins qualifizierte Formular &mdash; oder starten Sie zuerst die System-Diagnose.</p>
+					<h2 class="cro-final__title">Mit Analyse starten.</h2>
+					<p class="cro-final__lead">Der nächste Schritt ist kein generisches Verkaufsgespräch, sondern die Anfrage-System-Analyse mit lokaler Fit-Einordnung.</p>
 
 					<div class="cro-slot-bar" aria-label="Slot-Verfügbarkeit Q2 2026">
 						<div class="cro-slot-bar__label">
@@ -372,14 +434,14 @@ get_header();
 					</div>
 
 					<div class="cro-final__cta-row">
-						<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_home_final_request" data-track-category="lead_gen">Anfrage stellen</a>
+						<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_home_final_analysis" data-track-category="lead_gen">Analyse starten</a>
 						<a href="<?php echo esc_url( $diagnose_anchor ); ?>" class="cro-hero__cta-secondary" data-track-action="cta_home_final_diagnose" data-track-category="lead_gen">Erst System-Diagnose machen</a>
 					</div>
 
 					<p class="cro-final__risk-reversal">
-						<span>Kostenlos</span>
-						<span>60 Sek.</span>
-						<span>Keine Verkaufsmasche</span>
+						<span>Lokales Ergebnis</span>
+						<span>Ohne E-Mail im ersten Schritt</span>
+						<span>Grün, gelb oder rot</span>
 					</p>
 				</div>
 			</div>
@@ -392,10 +454,10 @@ get_header();
 <div class="cro-sticky-cta" aria-hidden="false">
 	<div class="cro-sticky-cta__inner">
 		<div class="cro-sticky-cta__copy">
-			Direkt anfragen?
-			<small><?php echo esc_html( $slots_booked ); ?>/<?php echo esc_html( $slots_total ); ?> Slots vergeben</small>
+			Analyse starten?
+			<small>Fit prüfen statt direkt verkaufen</small>
 		</div>
-		<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary cro-sticky-cta__btn" data-track-action="cta_home_sticky_request" data-track-category="lead_gen">Anfragen</a>
+		<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary cro-sticky-cta__btn" data-track-action="cta_home_sticky_analysis" data-track-category="lead_gen">Analyse</a>
 	</div>
 </div>
 
