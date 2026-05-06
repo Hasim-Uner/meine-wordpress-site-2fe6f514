@@ -988,6 +988,262 @@
     }
 }
 
+/* ── Superflow contact route ────────────────────────────── */
+
+.contact-page {
+    padding: clamp(4.8rem, 8vw, 6.2rem) var(--container-x) 3.5rem;
+    background: linear-gradient(180deg, hsl(30 6% 6%) 0%, hsl(30 5% 5%) 100%);
+}
+
+.contact-page::before {
+    display: none;
+}
+
+.contact-page__shell {
+    max-width: 820px;
+}
+
+.contact-hero__copy {
+    max-width: 760px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.contact-title,
+.contact-page--scoped .contact-title {
+    max-width: 16ch;
+    margin-top: 0.8rem;
+    color: var(--contact-text);
+    font-size: clamp(2rem, 2.75rem, 3.25rem);
+    line-height: 1.04;
+    letter-spacing: 0;
+}
+
+.contact-lead {
+    max-width: 46rem;
+    font-size: 0.98rem;
+    line-height: 1.62;
+}
+
+.contact-superflow {
+    width: 100%;
+    max-width: 760px;
+    margin: 1.1rem auto 0;
+    padding: clamp(1rem, 2.5vw, 1.35rem);
+    border-radius: 18px;
+    background: linear-gradient(180deg, hsl(30 5% 10% / 0.94), hsl(30 7% 7% / 0.98));
+}
+
+.contact-section-head {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+}
+
+.contact-section-head h2 {
+    margin: 0;
+    font-size: clamp(1.15rem, 1.32rem, 1.45rem);
+    letter-spacing: 0;
+}
+
+.contact-section-head p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.55;
+}
+
+.contact-flow-progress {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.55rem 0.8rem;
+    align-items: center;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--contact-border);
+    color: var(--contact-muted);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.contact-flow-progress strong {
+    color: var(--contact-text);
+}
+
+.contact-flow-progress__bar {
+    grid-column: 1 / -1;
+    height: 5px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: hsl(30 10% 100% / 0.08);
+}
+
+.contact-flow-progress__bar span {
+    display: block;
+    width: 25%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--accent-hover), var(--accent));
+    transition: width var(--nx-duration-normal) var(--nx-ease);
+}
+
+.contact-flow-stage {
+    position: relative;
+    min-height: clamp(340px, 48svh, 470px);
+}
+
+.contact-flow-step {
+    display: block;
+}
+
+.contact-form--superflow .contact-flow-step[hidden] {
+    display: none !important;
+}
+
+.contact-form--superflow .contact-flow-step.is-active {
+    min-height: clamp(340px, 48svh, 470px);
+    display: grid !important;
+    align-content: center;
+    gap: 0.95rem;
+}
+
+.contact-form--superflow .contact-flow-step[data-contact-step="identity"].is-active {
+    align-content: start;
+}
+
+.contact-intent__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+}
+
+.contact-intent__card {
+    min-height: 86px;
+    padding: 0.82rem 0.9rem;
+    border-radius: 14px;
+}
+
+.contact-intent__card strong {
+    font-size: 0.96rem;
+    line-height: 1.25;
+}
+
+.contact-intent__card span {
+    font-size: 0.84rem;
+    line-height: 1.45;
+}
+
+.contact-field label {
+    font-size: 0.95rem;
+}
+
+.contact-field__help {
+    font-size: 0.88rem;
+}
+
+.contact-field input,
+.contact-field textarea,
+.contact-field select {
+    min-height: 48px;
+    border-radius: 12px;
+    padding: 0.84rem 0.92rem;
+}
+
+.contact-field textarea {
+    min-height: 132px;
+}
+
+.contact-optional,
+.contact-consent {
+    border-radius: 12px;
+}
+
+.contact-consent {
+    padding: 0.85rem;
+    font-size: 0.9rem;
+}
+
+.contact-form__actions--flow {
+    display: grid;
+    grid-template-columns: auto minmax(160px, 1fr) auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--contact-border);
+}
+
+.contact-form__actions--flow .contact-btn,
+.contact-form__actions--flow .contact-submit {
+    min-height: 48px;
+    border-radius: 12px;
+}
+
+.contact-form__actions--flow .contact-submit,
+.contact-form__actions--flow .contact-btn--primary {
+    justify-self: stretch;
+}
+
+.contact-form__actions--flow .contact-form__aux-link {
+    justify-self: end;
+    font-size: 0.88rem;
+    white-space: nowrap;
+}
+
+.contact-form__postcopy {
+    margin-top: 0.95rem;
+    padding-top: 0.95rem;
+}
+
+.contact-postcopy__lead {
+    font-size: 0.9rem;
+    color: var(--contact-muted);
+    font-weight: 600;
+}
+
+@media (max-width: 720px) {
+    .contact-page {
+        padding-top: 5.2rem;
+    }
+
+    .contact-title,
+    .contact-page--scoped .contact-title {
+        max-width: 100%;
+        font-size: 2.15rem;
+    }
+
+    .contact-superflow {
+        border-radius: 16px;
+    }
+
+    .contact-flow-stage,
+    .contact-form--superflow .contact-flow-step.is-active {
+        min-height: clamp(360px, 58svh, 520px);
+    }
+
+    .contact-intent__grid,
+    .contact-form__row {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-intent__card {
+        min-height: 72px;
+    }
+
+    .contact-form__actions--flow {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-form__actions--flow .contact-btn,
+    .contact-form__actions--flow .contact-submit,
+    .contact-form__actions--flow .contact-form__aux-link {
+        width: 100%;
+        justify-self: stretch;
+        text-align: center;
+    }
+}
+
 /* ── Reduced motion ─────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {

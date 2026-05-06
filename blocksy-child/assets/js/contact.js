@@ -26,6 +26,15 @@
         var typeStatusBar = document.querySelector('[data-contact-type-status]');
         var typeExpandBtn = document.querySelector('[data-contact-type-expand]');
         var currentSubmitLabel = submitButton ? submitButton.textContent : '';
+        var flowSteps = Array.prototype.slice.call(form.querySelectorAll('[data-contact-step]'));
+        var flowNextButton = form.querySelector('[data-contact-next]');
+        var flowPrevButton = form.querySelector('[data-contact-prev]');
+        var flowStepLabel = form.querySelector('[data-contact-step-label]');
+        var flowProgressValue = form.querySelector('[data-contact-progress-value]');
+        var flowProgressFill = form.querySelector('[data-contact-progress-fill]');
+        var currentFlowIndex = 0;
+        var contactAutoAdvanceTimer = 0;
+        var CONTACT_AUTO_ADVANCE_DELAY = 180;
 
         if (!endpoint) {
             return;
@@ -67,13 +76,19 @@
         // ── Type status bar toggle (scoped landing) ──
         if (typeExpandBtn && intentFieldset) {
             typeExpandBtn.addEventListener('click', function () {
-                var isCollapsed = intentFieldset.classList.contains('contact-intent--collapsed');
-                intentFieldset.classList.toggle('contact-intent--collapsed', !isCollapsed);
-                typeExpandBtn.setAttribute('aria-expanded', isCollapsed ? 'true' : 'false');
+                var typeStep = form.querySelector('[data-contact-step="type"]');
+                intentFieldset.classList.remove('contact-intent--collapsed');
+                typeExpandBtn.setAttribute('aria-expanded', 'true');
 
-                if (isCollapsed && typeStatusBar) {
+                if (typeStep) {
+                    typeStep.setAttribute('data-contact-step-skip', 'false');
+                }
+
+                if (typeStatusBar) {
                     typeStatusBar.classList.add('is-hidden');
                 }
+
+                setContactFlowStep(0, { focus: true });
             });
         }
 
@@ -253,6 +268,205 @@
             errorSummary.classList.remove('is-hidden');
             errorSummary.scrollIntoView({ behavior: 'smooth', block: 'center' });
             errorSummary.focus();
+        }
+
+        function setDisplayed(node, isVisible, displayValue) {
+            if (!node) {
+                return;
+            }
+
+            node.hidden = !isVisible;
+            node.style.display = isVisible ? (displayValue || '') : 'none';
+
+            if (isVisible) {
+                node.removeAttribute('aria-hidden');
+            } else {
+                node.setAttribute('aria-hidden', 'true');
+            }
+        }
+
+        function cancelContactAutoAdvance() {
+            if (contactAutoAdvanceTimer) {
+                window.clearTimeout(contactAutoAdvanceTimer);
+                contactAutoAdvanceTimer = 0;
+            }
+        }
+
+        function getActiveContactFlowSteps() {
+            return flowSteps.filter(function (step) {
+                return step.getAttribute('data-contact-step-skip') !== 'true';
+            });
+        }
+
+        function getCurrentContactFlowStep() {
+            var activeSteps = getActiveContactFlowSteps();
+            return activeSteps[currentFlowIndex] || activeSteps[0] || null;
+        }
+
+        function focusContactFlowStep(step) {
+            if (!step) {
+                return;
+            }
+
+            var scrollTarget = form.querySelector('.contact-flow-progress') || step;
+            if (scrollTarget && typeof scrollTarget.scrollIntoView === 'function') {
+                scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            var target =
+                step.querySelector('input[type="radio"]:checked') ||
+                step.querySelector('select, textarea, input:not([type="hidden"])') ||
+                step;
+
+            if (target && typeof target.focus === 'function') {
+                target.focus({ preventScroll: true });
+            }
+        }
+
+        function updateContactFlowUi(options) {
+            options = options || {};
+
+            var activeSteps = getActiveContactFlowSteps();
+            if (!activeSteps.length) {
+                return;
+            }
+
+            currentFlowIndex = Math.max(0, Math.min(currentFlowIndex, activeSteps.length - 1));
+
+            flowSteps.forEach(function (step) {
+                var isVisibleStep = activeSteps.indexOf(step) !== -1;
+                var isActive = isVisibleStep && step === activeSteps[currentFlowIndex];
+
+                setDisplayed(step, isActive);
+                step.classList.toggle('is-active', isActive);
+                step.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+            });
+
+            var currentStep = activeSteps[currentFlowIndex];
+            var currentKey = currentStep ? currentStep.getAttribute('data-contact-step') : '';
+            var currentLabel = currentStep ? currentStep.getAttribute('data-contact-step-label') : '';
+            var total = activeSteps.length;
+            var percentage = Math.round(((currentFlowIndex + 1) / total) * 100);
+            var isLast = currentFlowIndex >= total - 1;
+            var needsManualNext = currentKey === 'message';
+
+            if (flowStepLabel) {
+                flowStepLabel.textContent = 'Schritt ' + (currentFlowIndex + 1) + ' von ' + total + (currentLabel ? ' - ' + currentLabel : '');
+            }
+
+            if (flowProgressValue) {
+                flowProgressValue.textContent = percentage + '%';
+            }
+
+            if (flowProgressFill) {
+                flowProgressFill.style.width = percentage + '%';
+            }
+
+            setDisplayed(flowPrevButton, currentFlowIndex > 0, 'inline-flex');
+            setDisplayed(flowNextButton, !isLast && needsManualNext, 'inline-flex');
+            setDisplayed(submitButton, isLast, 'inline-flex');
+
+            if (options.focus) {
+                focusContactFlowStep(currentStep);
+            }
+        }
+
+        function setContactFlowStep(index, options) {
+            cancelContactAutoAdvance();
+            currentFlowIndex = index;
+            updateContactFlowUi(options);
+        }
+
+        function validateContactFlowStep(step) {
+            clearFieldErrors();
+            setFeedback('', '');
+
+            if (!step) {
+                return true;
+            }
+
+            var stepKey = step.getAttribute('data-contact-step') || '';
+            var firstInvalid = null;
+
+            if (stepKey === 'type') {
+                var hasType = false;
+                Array.prototype.forEach.call(typeInputs, function (input) {
+                    if (input.checked) hasType = true;
+                });
+
+                if (!hasType) {
+                    firstInvalid = setFieldError('request_type', 'Bitte auswählen, worum es geht.');
+                }
+            } else if (stepKey === 'focus') {
+                if (focusSelect && !focusSelect.value) {
+                    firstInvalid = setFieldError('focus', 'Bitte ein passendes Thema auswählen.') || focusSelect;
+                }
+            } else if (stepKey === 'message') {
+                var content = typeContent[getSelectedType()];
+                var minLength = content ? content.messageMinlength : 24;
+                var messageValue = messageField ? messageField.value.trim() : '';
+
+                if (!messageValue || messageValue.length < minLength) {
+                    firstInvalid = setFieldError('message', 'Bitte Ihr Anliegen kurz und konkret beschreiben (mind. ' + minLength + ' Zeichen).') || messageField;
+                }
+            } else if (stepKey === 'identity') {
+                var nameField = form.querySelector('[name="name"]');
+                var emailField = form.querySelector('[name="email"]');
+                var consentInput = form.querySelector('input[name="consent"]');
+                var emailValue = emailField ? emailField.value.trim() : '';
+
+                if (nameField && !nameField.value.trim()) {
+                    firstInvalid = setFieldError('name', 'Bitte Ihren Namen angeben.') || nameField;
+                } else if (!emailValue || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+                    firstInvalid = setFieldError('email', 'Bitte eine gültige E-Mail-Adresse angeben.') || emailField;
+                } else if (consentInput && !consentInput.checked) {
+                    firstInvalid = setFieldError('consent', 'Bitte der Verarbeitung Ihrer Nachricht zustimmen.') || consentInput;
+                }
+            }
+
+            if (firstInvalid && firstInvalid.focus) {
+                firstInvalid.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        function goToNextContactFlowStep() {
+            var activeSteps = getActiveContactFlowSteps();
+            var currentStep = activeSteps[currentFlowIndex];
+
+            if (!validateContactFlowStep(currentStep)) {
+                return;
+            }
+
+            if (currentFlowIndex >= activeSteps.length - 1) {
+                return;
+            }
+
+            setContactFlowStep(currentFlowIndex + 1, { focus: true });
+        }
+
+        function goToPrevContactFlowStep() {
+            if (currentFlowIndex <= 0) {
+                return;
+            }
+
+            setContactFlowStep(currentFlowIndex - 1, { focus: true });
+        }
+
+        function scheduleContactAutoAdvance(expectedStepKey) {
+            cancelContactAutoAdvance();
+
+            var currentStep = getCurrentContactFlowStep();
+            if (!currentStep || currentStep.getAttribute('data-contact-step') !== expectedStepKey) {
+                return;
+            }
+
+            contactAutoAdvanceTimer = window.setTimeout(function () {
+                contactAutoAdvanceTimer = 0;
+                goToNextContactFlowStep();
+            }, CONTACT_AUTO_ADVANCE_DELAY);
         }
 
         function validateForm() {
@@ -495,16 +709,48 @@
         }
 
         Array.prototype.forEach.call(typeInputs, function (input) {
-            input.addEventListener('change', syncFormExperience);
+            input.addEventListener('change', function () {
+                syncFormExperience();
+                updateContactFlowUi();
+                scheduleContactAutoAdvance('type');
+            });
         });
 
+        if (focusSelect) {
+            focusSelect.addEventListener('change', function () {
+                clearFieldErrors();
+                if (focusSelect.value) {
+                    scheduleContactAutoAdvance('focus');
+                }
+            });
+        }
+
+        if (flowNextButton) {
+            flowNextButton.addEventListener('click', function () {
+                goToNextContactFlowStep();
+            });
+        }
+
+        if (flowPrevButton) {
+            flowPrevButton.addEventListener('click', function () {
+                goToPrevContactFlowStep();
+            });
+        }
+
         syncFormExperience();
+        updateContactFlowUi();
 
         // ── Submit handler ──
         form.addEventListener('submit', function (event) {
             event.preventDefault();
             clearFieldErrors();
             setFeedback('', '');
+
+            var activeSteps = getActiveContactFlowSteps();
+            if (currentFlowIndex < activeSteps.length - 1) {
+                goToNextContactFlowStep();
+                return;
+            }
 
             if (!validateForm()) {
                 return;
@@ -560,6 +806,7 @@
 
                     form.reset();
                     syncFormExperience();
+                    setContactFlowStep(0);
 
                     var successMessage = result.data.message
                         || (window.NexusContactConfig && window.NexusContactConfig.successMessage)

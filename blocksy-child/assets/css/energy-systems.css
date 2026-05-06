@@ -639,6 +639,168 @@
   }
 }
 
+/* ── Dedicated /anfrage/ superflow ─────────────────────── */
+
+.energy-page-wrapper--superflow {
+  background: linear-gradient(180deg, hsl(30 5% 7%) 0%, hsl(30 6% 5%) 100%);
+}
+
+.energy-page-wrapper--superflow .energy-hero {
+  padding-top: calc(var(--nx-header-height, 86px) + 1rem);
+  padding-bottom: 0.75rem;
+}
+
+.energy-page-wrapper--superflow .energy-hero__copy {
+  max-width: 760px;
+  margin-inline: auto;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.energy-page-wrapper--superflow .nx-hero__title {
+  max-width: 16ch;
+  margin: 0;
+  font-size: clamp(2rem, 2.7rem, 3rem);
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+
+.energy-page-wrapper--superflow .nx-hero__subtitle {
+  max-width: 46rem;
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.62;
+}
+
+.energy-page-wrapper--superflow .energy-form-section {
+  padding-top: 0.75rem;
+  padding-bottom: 3.5rem;
+}
+
+.energy-page-wrapper--superflow .energy-form-shell,
+.energy-page-wrapper--superflow .energy-form-shell__flow {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.energy-page-wrapper--superflow .energy-form-shell__flow {
+  grid-template-columns: 1fr;
+}
+
+.energy-page-wrapper--superflow .energy-form-shell__main {
+  padding: clamp(1rem, 1.25rem, 1.35rem);
+  border-radius: 18px;
+  background: linear-gradient(180deg, hsl(30 5% 10% / 0.94), hsl(30 7% 7% / 0.98));
+}
+
+.energy-page-wrapper--superflow .energy-form-shell__main::before,
+.energy-page-wrapper--superflow .energy-form-shell__aside,
+.energy-page-wrapper--superflow .review-mobile-summary,
+.energy-page-wrapper--superflow .energy-form-meta {
+  display: none;
+}
+
+.energy-page-wrapper--superflow .energy-progress {
+  gap: 0.55rem;
+  margin-bottom: 0;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--nx-border);
+}
+
+.energy-page-wrapper--superflow .energy-progress .review-progress-copy strong {
+  font-size: 0.92rem;
+}
+
+.energy-page-wrapper--superflow .energy-intake-form {
+  gap: 0.95rem;
+}
+
+.energy-page-wrapper--superflow .energy-intake-form.review-funnel--js .energy-step.is-active {
+  min-height: clamp(360px, 48svh, 500px);
+  display: grid !important;
+  align-content: center;
+  gap: 0.9rem;
+  padding: clamp(1rem, 1.2rem, 1.35rem);
+  border-radius: 16px;
+  box-shadow: none;
+  background: hsl(30 10% 100% / 0.025);
+}
+
+.energy-page-wrapper--superflow .energy-intake-form.review-funnel--js .energy-step[data-energy-step-id="contact"].is-active {
+  align-content: start;
+}
+
+.energy-page-wrapper--superflow .energy-step__title {
+  max-width: 100%;
+  margin: 0;
+  font-size: clamp(1.55rem, 1.95rem, 2.15rem);
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.energy-page-wrapper--superflow .energy-text-input-step,
+.energy-page-wrapper--superflow .energy-choice-block {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.energy-page-wrapper--superflow .energy-option-group {
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+  gap: 0.65rem;
+}
+
+.energy-page-wrapper--superflow .energy-option {
+  min-height: 72px;
+  padding: 0.85rem 2.4rem 0.85rem 0.9rem;
+  border-radius: 14px;
+}
+
+.energy-page-wrapper--superflow .energy-option strong {
+  font-size: 0.96rem;
+  line-height: 1.25;
+}
+
+.energy-page-wrapper--superflow .energy-option .review-option-copy span {
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.energy-page-wrapper--superflow .review-field input,
+.energy-page-wrapper--superflow .review-field textarea,
+.energy-page-wrapper--superflow .review-field select {
+  border-radius: 12px;
+}
+
+.energy-page-wrapper--superflow .energy-actions {
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--nx-border);
+}
+
+.energy-page-wrapper--superflow .energy-actions .review-prev-btn,
+.energy-page-wrapper--superflow .energy-actions .audit-submit-btn {
+  min-height: 48px;
+  border-radius: 12px;
+}
+
+@media (max-width: 720px) {
+  .energy-page-wrapper--superflow .energy-hero {
+    padding-top: calc(var(--nx-header-height, 76px) + 0.85rem);
+  }
+
+  .energy-page-wrapper--superflow .nx-hero__title {
+    max-width: 100%;
+    font-size: 2.15rem;
+  }
+
+  .energy-page-wrapper--superflow .energy-intake-form.review-funnel--js .energy-step.is-active {
+    min-height: clamp(390px, 58svh, 540px);
+  }
+
+  .energy-page-wrapper--superflow .energy-field-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .energy-page-wrapper *,
   .energy-page-wrapper *::before,

@@ -17,7 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 $privacy_url = function_exists( 'nexus_get_page_url' ) ? nexus_get_page_url( [ 'datenschutz' ], home_url( '/datenschutz/' ) ) : home_url( '/datenschutz/' );
 $page_url    = function_exists( 'nexus_get_anfrage_url' ) ? nexus_get_anfrage_url() : home_url( '/anfrage/' );
 $flow_steps  = function_exists( 'nexus_get_energy_intake_flow_definition' ) ? nexus_get_energy_intake_flow_definition() : [];
-$e3_summary  = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' ) : 'Referenz E3 New Energy: eigene Anfragen, Abschlussquote und niedrigere Kosten pro Anfrage.';
 
 $form_values  = [];
 $form_error   = '';
@@ -95,28 +94,16 @@ $get_summary_value = static function( $field_name ) use ( $get_value, $option_la
 get_header();
 ?>
 <main id="main" class="site-main">
-	<div class="energy-page-wrapper" data-track-section="energy_request" data-track-funnel-stage="energy_request">
+	<div class="energy-page-wrapper energy-page-wrapper--superflow" data-track-section="energy_request" data-track-funnel-stage="energy_request">
 		<section class="nx-section nx-hero energy-hero energy-hero--compact" id="hero">
 			<div class="nx-container">
 				<div class="energy-hero__copy energy-hero__copy--centered">
-					<span class="nx-badge nx-badge--gold">Standortbestimmung</span>
-					<h1 class="nx-hero__title">5 Fragen, ca. 90 Sekunden &mdash; Antwort innerhalb von 48 Stunden per E-Mail.</h1>
-					<p class="nx-hero__subtitle">Region, Lead-Volumen, CPL, Engpass, Kontakt. Keine Pflicht-Calls, keine Sales-Hotline im Nachgang. Wir prüfen, ob Infrastruktur statt Miete für Ihren Betrieb ein realistischer Hebel ist &mdash; bei Nicht-Eignung erhalten Sie einen ehrlichen Hinweis auf eine realistischere Alternative.</p>
-					<p class="nx-cta-microcopy"><?php echo esc_html( $e3_summary ); ?></p>
+					<span class="nx-badge nx-badge--gold">Anfrage</span>
+					<h1 class="nx-hero__title">Anfrage kurz einordnen.</h1>
+					<p class="nx-hero__subtitle">Ein kompakter Flow für Region, Nachfrage-Lage, Engpass und Kontakt. Auswahlantworten springen automatisch weiter.</p>
 				</div>
 			</div>
 		</section>
-
-		<?php
-		if ( function_exists( 'hu_render_founding_cohort_block' ) ) {
-			echo hu_render_founding_cohort_block(
-				[
-					'variant' => 'full',
-					'id'      => 'founding-cohort-anfrage',
-				]
-			); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		}
-		?>
 
 		<section class="nx-section energy-section energy-form-section" id="energie-anfrage">
 			<div class="nx-container">
@@ -379,21 +366,6 @@ get_header();
 							<?php endif; ?>
 						</div>
 
-						<aside class="energy-form-shell__aside" aria-labelledby="energy-aside-title">
-							<h3 id="energy-aside-title">Ihre Angaben im Überblick</h3>
-							<p>Region, Lead-Volumen, CPL und Engpass zusammen ergeben die Grundlage für eine ehrliche Einordnung &mdash; ohne Pflicht-Call und ohne generische Antwort.</p>
-							<dl class="review-brief-list">
-								<?php foreach ( $flow_steps as $step ) : ?>
-									<?php if ( empty( $step['name'] ) || empty( $step['summary_label'] ) ) : ?>
-										<?php continue; ?>
-									<?php endif; ?>
-									<div class="review-brief-row">
-										<dt><?php echo esc_html( $step['summary_label'] ); ?></dt>
-										<dd data-energy-summary="<?php echo esc_attr( $step['name'] ); ?>"><?php echo esc_html( $get_summary_value( $step['name'] ) ); ?></dd>
-									</div>
-								<?php endforeach; ?>
-							</dl>
-						</aside>
 					</div>
 				</div>
 			</div>

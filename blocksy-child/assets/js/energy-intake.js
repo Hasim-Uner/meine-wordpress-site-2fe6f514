@@ -237,16 +237,6 @@
       return;
     }
 
-    if (typeof radio.matches === 'function') {
-      try {
-        if (radio.matches(':focus-visible')) {
-          return;
-        }
-      } catch (error) {
-        // Ignore selector support mismatch.
-      }
-    }
-
     state.autoAdvanceTimer = window.setTimeout(function () {
       state.autoAdvanceTimer = null;
       goToNextStep();
@@ -405,13 +395,18 @@
     var submitButton = state.form.querySelector('[data-energy-submit]');
     var isLast = currentIndex >= activeSteps.length - 1;
     var nextLabel = activeSteps[currentIndex + 1] ? activeSteps[currentIndex + 1].label : 'Weiter';
+    var currentStep = activeSteps[currentIndex] ? activeSteps[currentIndex].el : null;
+    var isAutoAdvanceChoice = currentStep
+      && currentStep.getAttribute('data-energy-kind') === 'single_choice'
+      && currentStep.getAttribute('data-energy-auto-advance') === 'true'
+      && !prefersReducedMotionEnabled();
 
     if (prevButton) {
       setDisplayed(prevButton, currentIndex > 0, 'inline-flex');
     }
 
     if (nextButton) {
-      setDisplayed(nextButton, !isLast, 'inline-flex');
+      setDisplayed(nextButton, !isLast && !isAutoAdvanceChoice, 'inline-flex');
       nextButton.textContent = activeSteps[currentIndex + 1] ? ('Weiter: ' + nextLabel) : 'Weiter';
     }
 
