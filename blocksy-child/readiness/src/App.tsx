@@ -1,4 +1,4 @@
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 
 type Signal = 'green' | 'yellow' | 'red';
 
@@ -385,19 +385,42 @@ const signalLabels: Record<Signal, string> = {
   red: 'Rot',
 };
 
+const autoAdvanceDelayMs = 180;
+
 export function App() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [errors, setErrors] = useState<string[]>([]);
   const [showResult, setShowResult] = useState(false);
+  const advanceTimer = useRef<number | null>(null);
 
   const evaluation = useMemo(() => evaluateFit(form), [form]);
   const currentQuestion = questions[questionIndex];
   const currentStep = steps[currentQuestion.stepIndex];
+  const currentValue = form[currentQuestion.field].trim();
   const progressPercent = showResult ? 100 : Math.round(((questionIndex + 1) / questions.length) * 100);
   const activeStepIndexes = new Set(questions.slice(0, questionIndex + 1).map((question) => question.stepIndex));
+  const needsManualContinue = !currentQuestion.options || questionIndex === questions.length - 1;
+  const canContinue = currentQuestion.optional || currentValue !== '';
+  const nextButtonLabel = questionIndex === questions.length - 1
+    ? 'Lokales Ergebnis anzeigen'
+    : currentQuestion.optional && currentValue === ''
+      ? 'Überspringen'
+      : 'Weiter';
+
+  useEffect(() => () => clearAdvanceTimer(), []);
+
+  function clearAdvanceTimer() {
+    if (null === advanceTimer.current) {
+      return;
+    }
+
+    window.clearTimeout(advanceTimer.current);
+    advanceTimer.current = null;
+  }
 
   function updateField(field: keyof FormState, value: string) {
+    clearAdvanceTimer();
     setForm((current) => ({
       ...current,
       [field]: value,
@@ -405,7 +428,22 @@ export function App() {
     setErrors([]);
   }
 
+  function handleQuestionChange(value: string) {
+    updateField(currentQuestion.field, value);
+
+    if (!currentQuestion.options || questionIndex >= questions.length - 1) {
+      return;
+    }
+
+    advanceTimer.current = window.setTimeout(function () {
+      advanceTimer.current = null;
+      setQuestionIndex((current) => current === questionIndex ? current + 1 : current);
+      setErrors([]);
+    }, autoAdvanceDelayMs);
+  }
+
   function handleNext() {
+    clearAdvanceTimer();
     const nextErrors = validateQuestion(currentQuestion, form);
 
     if (nextErrors.length > 0) {
@@ -433,6 +471,8 @@ export function App() {
   }
 
   function handleBack() {
+    clearAdvanceTimer();
+
     if (showResult) {
       setShowResult(false);
       return;
@@ -443,6 +483,7 @@ export function App() {
   }
 
   function handleReset() {
+    clearAdvanceTimer();
     setForm(initialForm);
     setQuestionIndex(0);
     setErrors([]);
@@ -455,7 +496,7 @@ export function App() {
         <div className="readiness-flow-top">
           <div>
             <div className="readiness-kicker">Anfrage-System-Analyse</div>
-            <h1 id="readiness-title">Ein ruhiger Fit-Check. Eine Frage nach der anderen.</h1>
+            <h1 id="readiness-title">Fit-Check</h1>
           </div>
           <div className="readiness-flow-status" aria-label="Fortschritt">
             <span>{showResult ? 'Ergebnis' : `Frage ${questionIndex + 1}`}</span>
@@ -511,24 +552,34 @@ export function App() {
                 ))}
               </div>
 
-              <QuestionInput question={currentQuestion} value={form[currentQuestion.field]} onChange={(value) => updateField(currentQuestion.field, value)} />
+              <QuestionInput question={currentQuestion} value={form[currentQuestion.field]} onChange={handleQuestionChange} onContinue={handleNext} />
             </div>
 
-            <div className="readiness-actions">
-              <button type="button" className="readiness-button readiness-button--secondary" onClick={handleBack} disabled={questionIndex === 0}>
-                Zurück
-              </button>
-              <button
-                type="button"
-                className="readiness-button readiness-button--primary"
-                onClick={handleNext}
-                data-track-action={`request_analysis_question_${questionIndex + 1}_completed`}
-                data-track-category="lead_funnel"
-                data-track-section="request_analysis"
-                data-track-funnel-stage={`request_analysis_question_${questionIndex + 1}`}
-              >
-                {questionIndex === questions.length - 1 ? 'Lokales Ergebnis anzeigen' : 'Weiter'}
-              </button>
+            <div className={`readiness-actions ${needsManualContinue ? '' : 'readiness-actions--auto'}`}>
+              {questionIndex > 0 ? (
+                <button type="button" className="readiness-button readiness-button--secondary" onClick={handleBack}>
+                  Zurück
+                </button>
+              ) : (
+                <span className="readiness-actions__spacer" aria-hidden="true" />
+              )}
+
+              {needsManualContinue ? (
+                <button
+                  type="button"
+                  className="readiness-button readiness-button--primary"
+                  onClick={handleNext}
+                  disabled={!canContinue}
+                  data-track-action={`request_analysis_question_${questionIndex + 1}_completed`}
+                  data-track-category="lead_funnel"
+                  data-track-section="request_analysis"
+                  data-track-funnel-stage={`request_analysis_question_${questionIndex + 1}`}
+                >
+                  {nextButtonLabel}
+                </button>
+              ) : (
+                <span className="readiness-auto-hint">Antwort wählen, dann geht es automatisch weiter.</span>
+              )}
             </div>
           </section>
         )}
@@ -539,9 +590,19 @@ export function App() {
   );
 }
 
-function QuestionInput({question, value, onChange}: {question: Question; value: string; onChange: (value: string) => void}) {
+function QuestionInput({
+  question,
+  value,
+  onChange,
+  onContinue,
+}: {
+  question: Question;
+  value: string;
+  onChange: (value: string) => void;
+  onContinue: () => void;
+}) {
   if (!question.options) {
-    return <TextField label="Antwort" value={value} placeholder={question.placeholder} hint={question.hint} onChange={onChange} />;
+    return <TextField label="Antwort" value={value} placeholder={question.placeholder} hint={question.hint} onChange={onChange} onEnter={onContinue} />;
   }
 
   return (
@@ -570,12 +631,14 @@ function TextField({
   placeholder,
   hint,
   onChange,
+  onEnter,
 }: {
   label: string;
   value: string;
   placeholder?: string;
   hint?: string;
   onChange: (value: string) => void;
+  onEnter: () => void;
 }) {
   const inputId = label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
@@ -583,7 +646,21 @@ function TextField({
     <label className="readiness-text-field" htmlFor={inputId}>
       <span>{label}</span>
       {hint && <small>{hint}</small>}
-      <input id={inputId} type="text" value={value} placeholder={placeholder} onChange={(event) => onChange(event.currentTarget.value)} />
+      <input
+        id={inputId}
+        type="text"
+        value={value}
+        placeholder={placeholder}
+        onChange={(event) => onChange(event.currentTarget.value)}
+        onKeyDown={(event) => {
+          if (event.key !== 'Enter') {
+            return;
+          }
+
+          event.preventDefault();
+          onEnter();
+        }}
+      />
     </label>
   );
 }
