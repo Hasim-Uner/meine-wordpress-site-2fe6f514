@@ -1,7 +1,8 @@
 <?php
 /**
- * Native page template for the canonical slug:
  * /solar-waermepumpen-leadgenerierung/
+ *
+ * Ingenieur-Ästhetik. Kein Dekor. Nur Argument.
  *
  * @package Blocksy_Child
  */
@@ -11,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
-$request_cta = 'Anfrage-System-Analyse starten';
 $page_url    = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
 $e3_url      = home_url( '/e3-new-energy/' );
 $e3_canon    = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
@@ -21,240 +21,51 @@ $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['ca
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? '-85,3 %';
-$e3_cpl_conservative = $e3_metrics['cpl_reduction']['conservative_display'] ?? 'über 85 %';
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
 $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten';
-$e3_proof_sentence   = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' ) : sprintf( 'Referenz %1$s: %2$s qualifizierte Anfragen, %3$s Abschlussquote und %4$s weniger Kosten pro Anfrage.', $e3_case_label, $e3_lead_count, $e3_sales_conversion, $e3_cpl_conservative );
 
-$pain_cards = [
-	[
-		'title' => '80 € pro Lead — und die Hälfte geht nicht ans Telefon.',
-		'text'  => 'Sie kaufen Anfragen bei Aroundhome, Check24 oder DAA. Aber die Hälfte sind Mieter ohne Dach, Preisvergleicher ohne Budget oder Kontakte, die schon bei drei anderen Anbietern angefragt haben. Ihr Vertrieb verliert Stunden mit Leuten, die nie kaufen werden.',
-	],
-	[
-		'title' => 'Kein Überblick, welcher Kanal sich wirklich lohnt.',
-		'text'  => 'Google Ads, Portal-Leads, Empfehlungen — aber niemand kann sauber sagen, wo die guten Abschlüsse herkommen. Ohne diese Klarheit investieren Sie blind.',
-	],
-	[
-		'title' => 'Seit 2024 kommen die Anfragen nicht mehr von allein.',
-		'text'  => 'Der PV-Boom ist vorbei. Der Markt normalisiert sich. Wer jetzt keine eigene Anfrage-Infrastruktur hat, ist abhängig von Portalen — und deren Preisen.',
-	],
+$cost_rows = [
+	[ 'label' => 'Durchschnittspreis pro Lead (Portal)', 'value' => '80–150 €' ],
+	[ 'label' => 'Davon ans Telefon bekommen', 'value' => '~50 %' ],
+	[ 'label' => 'Zeitaufwand Vertrieb pro Lead (inkl. Nachfassen)', 'value' => '~45 min' ],
+	[ 'label' => 'Storno-Quote (falsche Erwartung, kein Budget)', 'value' => '20–30 %' ],
+	[ 'label' => 'Versteckte Monatskosten bei 30 Leads', 'value' => '~4.800 €' ],
 ];
 
-$tco_rows = [
-	[
-		'label'         => 'Initiales Setup',
-		'rental'        => 'ca. 2.000 €',
-		'ownership'     => '12.000–18.000 € einmalig',
-	],
-	[
-		'label'         => 'Monatlich (ohne Werbebudget)',
-		'rental'        => 'ca. 850 € Honorar + ca. 150 € SaaS / CRM',
-		'ownership'     => 'ca. 50 € Hochleistungs-Hosting',
-	],
-	[
-		'label'         => 'TCO über 24 Monate',
-		'rental'        => 'ca. 26.000 €',
-		'ownership'     => 'ca. 13.200–19.200 €',
-		'highlight'     => true,
-	],
-	[
-		'label'         => 'Bilanzwirkung',
-		'rental'        => 'OPEX — fließt durch die GuV ab',
-		'ownership'     => 'CAPEX — aktivierbares Asset',
-	],
-	[
-		'label'         => 'Eigentum nach Vertragsende',
-		'rental'        => '0 % (Funnel, CRM, Tracking abgeschaltet)',
-		'ownership'     => '100 % (Code, Tracking, Daten bleiben)',
-	],
-];
-
-
-$journey_cards = [
-	[
-		'label' => 'Phase 1',
-		'title' => '„Lohnt sich das überhaupt?"',
-		'text'  => 'Googelt Kosten, liest Vergleiche, ist skeptisch. Hier entscheidet sich in 8 Sekunden, ob Ihre Seite relevant wirkt.',
-	],
-	[
-		'label' => 'Phase 2',
-		'title' => '„Wer macht das bei uns in der Region?"',
-		'text'  => 'Sucht lokale Anbieter, vergleicht Bewertungen, will Referenzen sehen. Wenn Ihre Seite hier keinen Proof liefert, geht er zum Nächsten.',
-	],
-	[
-		'label' => 'Phase 3',
-		'title' => '„Ich will ein Angebot — aber einfach."',
-		'text'  => 'Will nicht 20 Felder ausfüllen. Will nicht 3 Tage auf einen Rückruf warten. Hier verlieren Sie die meisten Anfragen.',
-	],
-];
-
-$system_pipeline = [
-	[
-		'stage'   => '01',
-		'title'   => 'Landingpage',
-		'action'  => 'Besucher kommt über Google, Ads oder Empfehlung auf Ihre Seite.',
-		'tech'    => 'WordPress',
-		'outcome' => 'Erster Eindruck in 8 Sekunden',
-	],
-	[
-		'stage'   => '02',
-		'title'   => 'Qualifizierung',
-		'action'  => '60-Sekunden-Funnel prüft Budget, Betriebsgröße und Bedarf — automatisch.',
-		'tech'    => 'React-Funnel',
-		'outcome' => 'Nur passende ICPs kommen durch',
-	],
-	[
-		'stage'   => '03',
-		'title'   => 'Segmentierung',
-		'action'  => 'n8n kategorisiert den Lead nach Region, Gewerk und Dringlichkeit.',
-		'tech'    => 'n8n',
-		'outcome' => 'Lead landet im richtigen CRM-Topf',
-	],
-	[
-		'stage'   => '04',
-		'title'   => 'Benachrichtigung',
-		'action'  => 'Vertrieb bekommt Slack/Email mit Lead-Score und Kontaktdaten — in Echtzeit.',
-		'tech'    => 'CRM + Mail',
-		'outcome' => 'Kein Lead liegt länger als 5 Minuten',
-	],
-	[
-		'stage'   => '05',
-		'title'   => 'Bewertung',
-		'action'  => 'Lead-Scoring priorisiert: Heiß, warm oder kalt. Vertrieb sieht auf einen Blick, wen er zuerst anruft.',
-		'tech'    => 'Scoring-Engine',
-		'outcome' => 'Abschlussquote steigt messbar',
-	],
-];
-
-$competitor_archetypes = [
-	[
-		'label'    => 'Lead-Broker',
-		'examples' => 'Leadsnavigator, Aroundhome, Check24',
-		'model'    => 'Geteilte Leads (1:3–1:5), Arbitrage-Modell',
-		'weakness' => 'Ruinöser Preiskampf, hohe Storno-Raten, „Lead-Miete"',
-		'edge'     => 'Fokus auf exklusives Eigentum. Systematischer Aufbau eigener Kanäle.',
-	],
-	[
-		'label'    => 'Exklusiv-Lead-Agenturen',
-		'examples' => 'Leadsagentur.de, Coform',
-		'model'    => 'Exklusive Leads via Meta/Google Ads, GEO-Targeting',
-		'weakness' => 'Operationelle Abhängigkeit. Agentur behält Daten- und Pixelhoheit.',
-		'edge'     => 'Übergabe der Infrastruktur. „Build & Care"-Prinzip. Kunde behält den Code.',
-	],
-	[
-		'label'    => 'Hybrid- & Systembauer',
-		'examples' => 'Smart11, Fischer Digital Consulting',
-		'model'    => 'Blueprint-Systeme, Funnel-Bau, CRM & Vertriebscoaching',
-		'weakness' => 'Oft standardisierte Schablonen ohne tiefes technisches Foundation-Audit.',
-		'edge'     => '„Audit-first"-Ansatz. Tiefe technische Diagnose vor der Skalierung.',
-	],
-	[
-		'label'    => 'Nischen-SEO-Agenturen',
-		'examples' => 'Augustin Marketing, SEOoffensive',
-		'model'    => 'WärmepumpenSEO, Backlinks, lokales Content-Marketing',
-		'weakness' => 'Traffic ohne messbare Conversion-Führung. Schwaches Performance-Tracking.',
-		'edge'     => 'Verzahnung von SEO mit radikaler Conversion-Architektur und Server-Side Tracking.',
-	],
-];
-
-$tracking_advantages = [
-	[
-		'title' => 'First-Party-Kontext',
-		'text'  => 'Der Tracking-Server läuft auf Ihrer Subdomain. Ad-Blocker und ITP erkennen keine blockierbaren Drittanbieter-Skripte — Ihre Conversion-Daten bleiben vollständig.',
-	],
-	[
-		'title' => 'Algorithmisches Training',
-		'text'  => 'Saubere, serverseitige Conversion-Signale fließen direkt per Server-to-Server-API an Meta und Google Ads. Die Algorithmen lernen präziser — und senken Ihren CPL.',
-	],
-	[
-		'title' => 'DSGVO & Consent',
-		'text'  => 'IP-Adressen werden auf Ihrem Server anonymisiert, bevor Daten externe Netzwerke erreichen. Conversion-Pfade bleiben auch bei Cookie-Ablehnung statistisch valide messbar.',
-	],
-];
-
-$local_seo_cards = [
-	[
-		'title' => 'Google Business Profile',
-		'text'  => 'Ihr Profil wird zum primären Lead-Kanal im Local Pack — den Top-3-Kartenergebnissen, die 42 % der lokalen Klicks abgreifen.',
-	],
-	[
-		'title' => 'Dynamische GEO-Seiten',
-		'text'  => 'Separate URL-Strukturen für jeden Ort im 30–50-km-Radius. „Solarinstallation Hamburg", „PV-Anlage Installateur München" — jede Region bekommt ihre eigene Money Page.',
-	],
-	[
-		'title' => 'Hyperlokales Ad-Targeting',
-		'text'  => 'Keine Streuverluste. Google Ads und Meta Ads zielen mit regionalen Werbemitteln und lokalen Referenzanlagen exakt auf Ihr Einzugsgebiet.',
-	],
-];
-
-$related_links = [
-	[
-		'url'   => home_url( '/e3-new-energy/' ),
-		'title' => 'E3 New Energy: 1.750+ Anfragen, −85,3 % CPL',
-		'text'  => 'Die vollständige Case Study mit Vorher-Nachher-Vergleich und System-Architektur.',
-	],
-	[
-		'url'   => home_url( '/blog/' ),
-		'title' => 'Blog: Technisches SEO & Conversion-Wissen',
-		'text'  => 'Artikel zu Tracking-Infrastruktur, CPL-Berechnung und WordPress als Nachfrage-System.',
-	],
-	[
-		'url'   => home_url( '/ergebnisse/' ),
-		'title' => 'Ergebnisse & Referenzen',
-		'text'  => 'Weitere Proof Cases aus WordPress-, SEO- und CRO-Projekten im B2B-Umfeld.',
-	],
-];
-
-$proof_kpis = [
-	[
-		'value' => $e3_lead_count,
-		'label' => 'qualifizierte Anfragen',
-	],
-	[
-		'value' => $e3_cpl_reduction,
-		'label' => 'Kosten pro Anfrage',
-	],
-	[
-		'value' => $e3_sales_conversion,
-		'label' => 'Abschlussquote',
-	],
+$system_stages = [
+	[ 'num' => '01', 'title' => 'Landingpage', 'text' => 'Besucher qualifiziert sich selbst in 60 Sekunden. Kein langes Formular. Keine Pflichtfelder.' ],
+	[ 'num' => '02', 'title' => 'Segmentierung', 'text' => 'n8n routet den Lead nach Region, Gewerk und Dringlichkeit in den richtigen CRM-Topf.' ],
+	[ 'num' => '03', 'title' => 'Benachrichtigung', 'text' => 'Vertrieb sieht den Lead in Echtzeit — mit allen relevanten Daten aus der Qualifizierung.' ],
+	[ 'num' => '04', 'title' => 'Bewertung', 'text' => 'Scoring priorisiert: heiß, warm, kalt. Sie rufen zuerst den an, der heute kaufen will.' ],
+	[ 'num' => '05', 'title' => 'Übergabe', 'text' => 'CRM-ready. Keine Daten gehen verloren. Kein Lock-in. Alles in Ihrem Eigentum.' ],
 ];
 
 $faq_items = [
 	[
-		'question' => 'Was kostet das im Vergleich zur Performance-Agentur?',
-		'answer'   => 'Initiales Setup: 12.000–18.000 € einmalig. Laufend: ca. 50 €/Monat Hochleistungs-Hosting. TCO über 24 Monate: 13.200–19.200 € — und Sie besitzen Code, Tracking und Daten. Eine Performance-Agentur mit Paket „Regio+" kostet im gleichen Zeitraum rund 26.000 € und Sie besitzen am Ende nichts. Bilanziell: CAPEX statt OPEX.',
+		'question' => 'Was kostet der Aufbau?',
+		'answer'   => '12.000–18.000 € einmalig. Laufend ca. 50 €/Monat für Hosting. TCO über 24 Monate: 13.200–19.200 €. Eine Performance-Agentur mit Paket „Regio+" kostet im gleichen Zeitraum rund 26.000 € — und Sie besitzen am Ende nichts.',
 	],
 	[
-		'question' => 'Funktioniert das auch für kleinere Betriebe mit 5–10 Mitarbeitern?',
-		'answer'   => 'Belastbar ab 10 Mitarbeitern und mindestens 20 qualifizierten Anfragen pro Monat. Darunter trägt die Investition den TCO-Vorteil nicht — ehrlicher Hinweis: ein schlankerer Ansatz mit klarer Landingpage und sauberem Tracking ist dann der bessere Hebel.',
+		'question' => 'Funktioniert das auch für kleinere Betriebe?',
+		'answer'   => 'Belastbar ab 10 Mitarbeitern und mindestens 20 qualifizierten Anfragen pro Monat. Darunter trägt die Investition den TCO-Vorteil nicht.',
 	],
 	[
 		'question' => 'Warum nicht einfach mehr Google Ads schalten?',
-		'answer'   => 'Mehr Budget auf schlechte Seiten heißt mehr Geld für dieselben unqualifizierten Anfragen. Erst wenn Seite, Formular und serverseitiges Tracking sauber arbeiten, lohnt sich mehr Reichweite. Ohne eigene Datenebene bleiben Sie zudem bei den Performance-Daten der Plattform — und damit in deren Logik.',
+		'answer'   => 'Mehr Budget auf eine Seite ohne Qualifizierung und Tracking heißt: mehr Geld für dieselben unqualifizierten Anfragen. Erst wenn Seite, Funnel und serverseitiges Tracking sauber arbeiten, lohnt sich mehr Reichweite.',
 	],
 	[
-		'question' => 'Brauchen wir eine neue Website?',
-		'answer'   => 'Meistens nicht im Komplettumfang. Was Sie brauchen: hardcoded WordPress (kein Page-Builder, kein Plugin-Stack), serverseitiges Tracking auf eigenem Server, Conversion-Pfad ohne Mietsysteme. Ob das ein Teil-Umbau oder ein sauberer Erstaufbau wird, zeigt sich im ersten Schritt.',
+		'question' => 'Brauchen wir eine komplett neue Website?',
+		'answer'   => 'Meistens nicht. Was Sie brauchen: hardcoded WordPress, serverseitiges Tracking, Conversion-Pfad ohne Mietsysteme. Ob das ein Teil-Umbau oder ein sauberer Erstaufbau wird, zeigt der erste Schritt.',
 	],
 	[
-		'question' => 'Wir nutzen schon eine Performance-Agentur — warum sollten wir wechseln?',
-		'answer'   => 'Müssen Sie nicht. Drei Prüffragen: 1) Wem gehört der Code Ihrer Landingpage? 2) Wem gehört das CRM, in dem Ihre Leads liegen? 3) Wem gehört der Tracking-Account? Wenn die Antwort dreimal „uns" ist, brauchen Sie mich nicht. Wenn die Antwort dreimal „der Agentur" ist, mieten Sie ein System.',
+		'question' => 'Wir haben schon eine Agentur. Warum wechseln?',
+		'answer'   => 'Drei Prüffragen: Wem gehört der Code Ihrer Landingpage? Wem gehört das CRM mit Ihren Leads? Wem gehört der Tracking-Account? Wenn die Antwort dreimal „der Agentur" ist, mieten Sie ein System — Sie besitzen es nicht.',
 	],
 	[
 		'question' => 'Wie schnell sieht man Ergebnisse?',
-		'answer'   => 'Erste Verbesserungen entstehen oft nach den ersten Optimierungen an Tracking, Formularen und Conversion-Pfaden. Belastbare Skalierung braucht in der Regel mehrere Wochen bis Monate, weil Daten, Tests und Kanäle zusammenspielen müssen.',
-	],
-	[
-		'question' => 'Was unterscheidet Sie von Lead-Portalen?',
-		'answer'   => 'Portale vermieten Nachfrage. Sie zahlen für jeden Kontakt, den auch 3-4 Mitbewerber erhalten. Das System hier baut eigene Nachfrage-Infrastruktur auf, die Ihrem Betrieb gehört und langfristig für exklusive Anfragen sorgt.',
-	],
-	[
-		'question' => 'Arbeiten Sie mit meinem bestehenden CRM?',
-		'answer'   => 'Ja, sofern technisch sinnvoll. CRM- und Automations-Anbindung kommt aber erst nach sauberer Contract-, Consent- und Datenklärung. Der erste Schritt ist die Anfrage-System-Analyse ohne personenbezogene Daten im Default-Pfad.',
+		'answer'   => 'Erste Verbesserungen oft nach den ersten Optimierungen an Tracking und Conversion-Pfaden. Belastbare Skalierung braucht mehrere Wochen bis Monate — weil Daten, Tests und Kanäle zusammenspielen müssen.',
 	],
 ];
 
@@ -262,10 +73,10 @@ $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
 	'@id'         => trailingslashit( $page_url ) . '#service',
-	'name'        => 'Website als Vertriebssystem für Solar- und Wärmepumpen-Anbieter',
-	'serviceType' => 'Aufbau eigener Anfrage-Systeme zur Ablösung von Portal-Leads für Solar-, Wärmepumpen-, Speicher- und Energie-Anbieter',
+	'name'        => 'Aufbau eigener Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter',
+	'serviceType' => 'System-Architektur für eigene Lead-Infrastruktur: WordPress, Tracking, Qualifizierung, CRM-Übergabe',
 	'url'         => $page_url,
-	'description' => sprintf( 'Eigenes Anfrage-System für Solar- und Wärmepumpen-Betriebe: Schluss mit teuren Portal-Leads. Referenz %1$s — %2$s weniger Kosten pro Anfrage in %3$s.', $e3_case_label, $e3_cpl_conservative, $e3_timeframe_dative ),
+	'description' => sprintf( 'Eigenes Anfrage-System für Solar- und Wärmepumpen-Betriebe. Referenz %1$s: %2$s weniger Kosten pro Anfrage in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe_dative ),
 	'provider'    => [
 		'@type' => 'Person',
 		'name'  => 'Haşim Üner',
@@ -276,16 +87,13 @@ $service_schema = [
 		'audienceType' => 'Solar-, Wärmepumpen-, Speicher- und Energie-Anbieter im DACH-Raum',
 	],
 	'areaServed'  => [
-		[
-			'@type' => 'Country',
-			'name'  => 'Deutschland',
-		],
+		[ '@type' => 'Country', 'name' => 'Deutschland' ],
 	],
 	'offers'      => [
 		'@type'         => 'Offer',
 		'price'         => '0',
 		'priceCurrency' => 'EUR',
-		'description'   => 'Diagnostische System-Einordnung für Ihre Anfrage-Prozesse.',
+		'description'   => 'Diagnostische System-Einordnung. Keine E-Mail-Pflicht im Default-Pfad.',
 	],
 ];
 
@@ -311,439 +119,119 @@ foreach ( $faq_items as $faq_item ) {
 get_header();
 ?>
 <main id="main" class="site-main">
-	<div class="energy-page-wrapper" data-track-section="energy_service_landing" data-track-funnel-stage="energy_landing">
-		<section class="nx-section nx-hero energy-hero" id="hero">
-			<div class="nx-container">
-				<div class="energy-hero__grid">
-					<div class="energy-hero__copy">
-						<span class="nx-badge nx-badge--gold">Für Solar- und Wärmepumpen-Betriebe mit 10–25 Mitarbeitern</span>
-						<h1 class="nx-hero__title">Bauen Sie ein eigenes Anfrage-System statt weiter teure Leads zu mieten.</h1>
-						<p class="nx-hero__subtitle">Ich helfe B2B-Betrieben, unabhängiger von Portal-Leads zu werden &mdash; mit eigener WordPress-Infrastruktur, sauberem Tracking, Vorqualifizierung und späterer CRM-Anbindung, wenn Contract und Consent geklärt sind.</p>
-						<p class="nx-cta-microcopy"><?php echo esc_html( sprintf( 'Referenz %1$s: %2$s qualifizierte Anfragen · %3$s Abschlussquote · %4$s Kosten pro Anfrage (%5$s auf %6$s)', $e3_case_label, $e3_lead_count, $e3_sales_conversion, $e3_cpl_reduction, $e3_cpl_before, $e3_cpl_after ) ); ?></p>
-						<div class="energy-hero__actions">
-							<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_hero_analysis" data-track-category="lead_gen"><?php echo esc_html( $request_cta ); ?></a>
-							<a href="<?php echo esc_url( $e3_url ); ?>" class="energy-text-link" data-track-action="cta_energy_hero_case" data-track-category="trust">E3-Ergebnis ansehen →</a>
-						</div>
-						<p class="nx-cta-microcopy" style="margin-top: 1rem;">8 Schritte. Lokales Ergebnis in grün, gelb oder rot. Keine E-Mail im Default-Pfad.</p>
-					</div>
+	<div class="energy-page-wrapper" data-track-section="energy_service_landing">
 
+		<section class="nx-section energy-hero" id="hero">
+			<div class="nx-container">
+				<h1 class="energy-hero__title">Ihre Website kann mehr als eine Broschüre. Sie kann Anfragen produzieren.</h1>
+				<p class="energy-hero__subtitle">Ich baue Solar- und Wärmepumpen-Betrieben ein eigenes Anfrage-System. Kein Portal. Keine gemieteten Leads. Keine Agentur-Abhängigkeit. Eine Infrastruktur, die Ihnen gehört und die Ihre Vertriebskosten senkt — messbar.</p>
+				<div class="energy-hero__actions">
+					<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_hero" data-track-category="lead_gen">System prüfen</a>
 				</div>
+				<p class="energy-hero__micro">8 Schritte. Lokales Ergebnis. Keine E-Mail im Default-Pfad.</p>
 			</div>
 		</section>
 
-		<section class="nx-section energy-section energy-pipeline-section" id="system-pipeline" aria-labelledby="pipeline-title">
+		<section class="nx-section energy-section" id="kosten" aria-labelledby="kosten-title">
 			<div class="nx-container">
-				<header class="energy-section__head energy-section__head--narrow">
-					<span class="nx-badge nx-badge--gold">System-Architektur</span>
-					<h2 id="pipeline-title">Das ist keine Website. Das ist eine Lead-Verarbeitungsmaschine.</h2>
-					<p>Sehen Sie den kompletten Weg einer Anfrage — von der Landung bis zur priorisierten Vertriebsübergabe. Jede Stufe automatisiert. Jede Stufe in Ihrem Eigentum.</p>
-				</header>
+				<h2 id="kosten-title" class="energy-section__title">Was Portal-Leads wirklich kosten.</h2>
+				<p class="energy-section__lead">Die Rechnung, die Ihnen kein Portal zeigt.</p>
 
-				<div class="energy-pipeline" role="list" aria-label="Anfrage-Verarbeitungspipeline">
-					<?php foreach ( $system_pipeline as $index => $stage ) : ?>
-						<div class="energy-pipeline__stage" role="listitem">
-							<div class="energy-pipeline__stage-card">
-								<span class="energy-pipeline__stage-num"><?php echo esc_html( $stage['stage'] ); ?></span>
-								<h3 class="energy-pipeline__stage-title"><?php echo esc_html( $stage['title'] ); ?></h3>
-								<p class="energy-pipeline__stage-action"><?php echo esc_html( $stage['action'] ); ?></p>
-								<div class="energy-pipeline__stage-footer">
-									<span class="energy-pipeline__stage-tech"><?php echo esc_html( $stage['tech'] ); ?></span>
-									<span class="energy-pipeline__stage-outcome">→ <?php echo esc_html( $stage['outcome'] ); ?></span>
-								</div>
-							</div>
-							<?php if ( $index < count( $system_pipeline ) - 1 ) : ?>
-								<div class="energy-pipeline__connector" aria-hidden="true">
-									<svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-										<path d="M5 14h16M15 7l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-									</svg>
-								</div>
-							<?php endif; ?>
-						</div>
-					<?php endforeach; ?>
-				</div>
-
-				<p class="energy-pipeline__aha">Der <strong>Aha-Moment</strong>: Während Ihre Wettbewerber jeden Lead einzeln abtelefonieren und hoffen, dass er passt, sortiert Ihr System automatisch vor. Sie rufen nur noch die an, die wirklich kaufen wollen — und zwar in der richtigen Reihenfolge.</p>
-			</div>
-		</section>
-
-		<section class="nx-section energy-section energy-diagram-section" id="modell" aria-labelledby="modell-title">
-			<div class="nx-container">
-				<header class="energy-section__head energy-section__head--narrow">
-					<span class="nx-badge nx-badge--ghost">Zwei Wege</span>
-					<h2 id="modell-title">Nachfrage mieten — oder eigene Anfrage-Infrastruktur aufbauen.</h2>
-					<p><?php echo esc_html( sprintf( 'Zwei Modelle, zwei Wirtschaftlichkeiten. Das eine setzt jeden Monat neu auf Portal-Budget. Das andere baut ein Anfrage-System, das in %1$s %2$s günstiger arbeitet.', $e3_timeframe_dative, $e3_cpl_conservative ) ); ?></p>
-				</header>
-
-				<div class="energy-compare" role="group" aria-label="Vergleich: Modell A Portal-Leads vs. Modell B eigenes Anfrage-System">
-					<article class="energy-compare__card energy-compare__card--alt">
-						<header class="energy-compare__head">
-							<span class="energy-compare__label energy-compare__label--alt">Modell A</span>
-							<h3>Nachfrage mieten</h3>
-							<p class="energy-compare__sub">Aroundhome &middot; Check24 &middot; DAA</p>
-						</header>
-						<ul class="energy-compare__list">
-							<li>
-								<strong>bis 150 € pro Lead</strong>
-								<span>50 % gehen nicht ans Telefon</span>
-							</li>
-							<li>
-								<strong>Kein Überblick</strong>
-								<span>Welcher Kanal lohnt sich wirklich?</span>
-							</li>
-							<li>
-								<strong>Abhängigkeit</strong>
-								<span>Budget-Stopp = Nachfrage-Stopp</span>
-							</li>
-						</ul>
-						<footer class="energy-compare__verdict energy-compare__verdict--alt">
-							Status quo: teuer &amp; kurzlebig
-						</footer>
-					</article>
-
-					<article class="energy-compare__card energy-compare__card--success">
-						<header class="energy-compare__head">
-							<span class="energy-compare__label energy-compare__label--success">Modell B</span>
-							<h3>Eigenes Anfrage-System</h3>
-							<p class="energy-compare__sub">Fundament &middot; Conversion &middot; Skalierung</p>
-						</header>
-						<ol class="energy-compare__steps">
-							<li>
-								<span class="energy-compare__step-num">1</span>
-								<div>
-									<strong>Fundament ordnen</strong>
-									<span>Tracking &amp; Datenebene &middot; Privacy-first &middot; Entscheidungssignale</span>
-								</div>
-							</li>
-							<li>
-								<span class="energy-compare__step-num">2</span>
-								<div>
-									<strong>Conversion-Pfade schärfen</strong>
-									<span>Formular &middot; Call &middot; Buchung &middot; 8-Sekunden-Regel</span>
-								</div>
-							</li>
-							<li>
-								<span class="energy-compare__step-num">3</span>
-								<div>
-									<strong>Skalieren</strong>
-									<span>Money Pages &amp; Proof &middot; bleibende Assets &middot; Unabhängigkeit</span>
-								</div>
-							</li>
-						</ol>
-						<footer class="energy-compare__verdict energy-compare__verdict--success">
-							Bleibendes Anfrage-Asset
-						</footer>
-					</article>
-				</div>
-
-				<aside class="energy-compare__outcome" aria-label="Referenz E3 New Energy">
-					<div class="energy-compare__outcome-head">
-						<span class="nx-badge nx-badge--gold">Referenz <?php echo esc_html( $e3_case_label ); ?> &middot; <?php echo esc_html( $e3_timeframe ); ?></span>
-						<h3>Was das in der Praxis bedeutet.</h3>
-					</div>
-					<div class="energy-compare__outcome-grid">
-						<div class="energy-compare__outcome-stat">
-							<strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong>
-							<span>Kosten pro Anfrage</span>
-						</div>
-						<div class="energy-compare__outcome-stat">
-							<strong><?php echo esc_html( $e3_lead_count ); ?></strong>
-							<span>qualifizierte Anfragen</span>
-						</div>
-						<div class="energy-compare__outcome-stat">
-							<strong><?php echo esc_html( $e3_sales_conversion ); ?></strong>
-							<span>Abschlussquote</span>
-						</div>
-					</div>
-					<div class="energy-compare__outcome-actions">
-						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_compare_analysis" data-track-category="lead_gen" data-track-section="energy_compare" data-track-funnel-stage="energy_compare">Analyse starten</a>
-						<span class="energy-compare__outcome-microcopy">Lokale Ampel-Einordnung &middot; keine CRM-Speicherung &middot; keine E-Mail-Abfrage</span>
-					</div>
-				</aside>
-			</div>
-		</section>
-
-		<section class="nx-section energy-section energy-tco" id="tco" aria-labelledby="tco-title">
-			<div class="nx-container">
-				<header class="energy-section__head energy-section__head--narrow">
-					<span class="nx-badge nx-badge--ghost">CAPEX statt OPEX</span>
-					<h2 id="tco-title">Der gleiche Hebel, zwei Bilanzwirkungen: Miete oder Werkzeug.</h2>
-					<p>Performance-Agenturen verkaufen Ihnen Reichweite zur Miete: Funnel auf deren Server, CRM unter deren Lizenz, Tracking unter deren Account. Vertrag endet, Hebel weg. Der gleiche monatliche Betrag fließt 24 Monate lang in ein System, das Ihnen am Ende nicht gehört.</p>
-				</header>
-
-				<div class="energy-tco__table-wrap">
-					<table class="energy-tco__table" aria-describedby="tco-title">
-						<caption class="screen-reader-text">TCO-Vergleich über 24 Monate: Performance-Agentur (Miete) gegenüber Infrastruktur-Aufbau (Eigentum).</caption>
-						<thead>
+				<table class="energy-table" aria-describedby="kosten-title">
+					<caption class="screen-reader-text">Kostenaufstellung Portal-Leads pro Monat bei 30 Leads.</caption>
+					<tbody>
+						<?php foreach ( $cost_rows as $row ) : ?>
 							<tr>
-								<th scope="col">Kostenpunkt</th>
-								<th scope="col" class="energy-tco__col energy-tco__col--rental">Mietsystem<small>Performance-Agentur, Paket „Regio+"</small></th>
-								<th scope="col" class="energy-tco__col energy-tco__col--ownership">Infrastruktur-Aufbau<small>WGOS &middot; Code im Eigentum</small></th>
+								<th scope="row"><?php echo esc_html( $row['label'] ); ?></th>
+								<td><?php echo esc_html( $row['value'] ); ?></td>
 							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ( $tco_rows as $tco_row ) : ?>
-								<tr<?php echo ! empty( $tco_row['highlight'] ) ? ' class="is-highlight"' : ''; ?>>
-									<th scope="row"><?php echo esc_html( $tco_row['label'] ); ?></th>
-									<td class="energy-tco__col energy-tco__col--rental"><?php echo esc_html( $tco_row['rental'] ); ?></td>
-									<td class="energy-tco__col energy-tco__col--ownership"><?php echo esc_html( $tco_row['ownership'] ); ?></td>
-								</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				</div>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
 
-				<p class="energy-tco__pointe">Nach 24 Monaten haben Sie im Mietmodell rund 26.000 € ausgegeben und besitzen nichts. Im Infrastruktur-Modell haben Sie weniger ausgegeben und ein laufendes System in Ihrer Bilanz. Der Unterschied ist nicht der Preis &mdash; der Unterschied ist, was am Tag der Vertragskündigung übrig bleibt.</p>
-
-				<div class="energy-tco__cta">
-					<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_energy_tco_analysis" data-track-category="lead_gen" data-track-section="energy_tco" data-track-funnel-stage="energy_tco">Analyse für Ihren Betrieb starten</a>
-					<span class="energy-tco__cta-microcopy">Die Einordnung bleibt im Default-Pfad lokal im Browser und führt nur zu einem nächsten Schritt, wenn der Fit stimmt.</span>
-				</div>
+				<p class="energy-section__note">Die 4.800 € sind kein theoretischer Wert. Das ist der blinde Posten, den Betriebe monatlich in ineffiziente Vertriebszeit und verpasste Abschlüsse stecken — zusätzlich zu den Lead-Kosten.</p>
 			</div>
 		</section>
 
-		<section class="nx-section energy-section energy-proof" id="proof">
+		<section class="nx-section energy-section" id="system" aria-labelledby="system-title">
 			<div class="nx-container">
-				<div class="energy-proof__layout">
-					<div class="energy-proof__copy">
-						<span class="nx-badge nx-badge--gold">Proof / Case Study</span>
-						<h2>E3 New Energy.</h2>
-						<p><strong>Vorher:</strong> Hohe Abhängigkeit von externen Leadquellen (ø <?php echo esc_html( $e3_cpl_before ); ?>/Lead). Leads waren oft schwer erreichbar, nicht qualifiziert und es fehlte ein klarer Überblick, welche Kanäle tatsächlich Termine und Abschlüsse erzeugten.</p>
-						<p><strong>Umsetzung:</strong> Tracking-Fundament aufgebaut, Anfragepfade optimiert, smarte Vorqualifizierung eingeführt und die spätere Übergabe sauber vorbereitet.</p>
-						<p><strong>Ergebnis nach <?php echo esc_html( $e3_timeframe_dative ); ?>:</strong> <?php echo esc_html( sprintf( '%1$s qualifizierte Anfragen, %2$s Abschlussquote und %3$s Kosten pro Anfrage (auf %4$s gesenkt).', $e3_lead_count, $e3_sales_conversion, $e3_cpl_reduction, $e3_cpl_after ) ); ?></p>
-						<blockquote style="margin: 1.5rem 0; padding: 1rem 1.5rem; border-left: 3px solid var(--nx-gold); background: rgba(0,0,0,0.02); font-style: italic; font-size: 1.05rem; line-height: 1.5;">
-							„Seit dem System sehen wir endlich, welche Kanäle wirklich Anfragen und Abschlüsse bringen. Wir konnten den teuren Lead-Einkauf massiv reduzieren und haben jetzt eine eigene Pipeline.“
-						</blockquote>
-						<div class="energy-proof__actions" style="margin-top: 1.5rem;">
-							<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_proof_case" data-track-category="trust">Case Study lesen</a>
-						</div>
-					</div>
+				<h2 id="system-title" class="energy-section__title">Was ein eigenes Anfrage-System leistet.</h2>
+				<p class="energy-section__lead">Fünf Stufen. Keine Magie. Nur Technik, die funktioniert.</p>
 
-					<aside class="energy-proof__panel" aria-label="Ergebniskennzahlen">
-						<div class="energy-proof-kpi-grid">
-							<?php foreach ( $proof_kpis as $proof_kpi ) : ?>
-								<div class="energy-proof-kpi">
-									<strong><?php echo esc_html( $proof_kpi['value'] ); ?></strong>
-									<span><?php echo esc_html( $proof_kpi['label'] ); ?></span>
-								</div>
-							<?php endforeach; ?>
-						</div>
-					</aside>
-				</div>
-			</div>
-		</section>
-
-		<section class="nx-section energy-section energy-section--alt" id="reibung">
-			<div class="nx-container">
-				<div class="energy-section__head">
-					<span class="nx-badge nx-badge--ghost">Alltag im Vertrieb</span>
-					<h2>Kommt Ihnen das bekannt vor?</h2>
-				</div>
-				<div class="energy-pain-grid">
-					<?php foreach ( $pain_cards as $index => $pain_card ) : ?>
-						<article class="energy-pain-card">
-							<span class="energy-pain-card__index"><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-							<h3><?php echo esc_html( $pain_card['title'] ); ?></h3>
-							<p><?php echo esc_html( $pain_card['text'] ); ?></p>
-						</article>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
-
-		<section class="nx-section energy-section" id="was-sie-besitzen">
-			<div class="nx-container">
-				<div class="energy-section__head energy-section__head--narrow">
-					<span class="nx-badge nx-badge--gold">Keine Miet-Leads</span>
-					<h2>Was Ihr Betrieb danach besitzt</h2>
-					<p class="nx-subheadline" style="margin:1rem auto 0; text-align: center;">Kein Leadpaket. Keine gemietete Landingpage. Kein Agentur-Blindflug. Sie erhalten ein eigenes Anfrage-System.</p>
-				</div>
-				<div class="nx-grid nx-grid-2" style="margin-top:3rem;">
-					<div class="nx-card nx-card--flat">
-						<h3 class="nx-card__title">1. Eigene WordPress-Assets</h3>
-						<p class="nx-card__text">Eine conversion-optimierte Seite sowie Proof- und Angebotsseiten, die langfristig in Ihrem Besitz bleiben.</p>
-					</div>
-					<div class="nx-card nx-card--flat">
-						<h3 class="nx-card__title">2. Vorqualifizierung &amp; Übergabe</h3>
-						<p class="nx-card__text">Smarte Formulare filtern unpassende Anfragen heraus. CRM-Anbindung folgt erst nach Contract, Consent und klarer Datenlogik.</p>
-					</div>
-					<div class="nx-card nx-card--flat">
-						<h3 class="nx-card__title">3. Echtes Tracking</h3>
-						<p class="nx-card__text">Sie sehen genau, welche Kampagne Anfragen und Termine erzeugt — volle Messbarkeit der Leadquellen.</p>
-					</div>
-					<div class="nx-card nx-card--flat">
-						<h3 class="nx-card__title">4. Grundlage für Skalierung</h3>
-						<p class="nx-card__text">Mit diesem Fundament können Sie Google Ads, Meta Ads und SEO endlich wirtschaftlich skalieren.</p>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section class="nx-section energy-section" id="tracking-vorteil" aria-labelledby="tracking-title">
-			<div class="nx-container">
-				<header class="energy-section__head energy-section__head--narrow">
-					<span class="nx-badge nx-badge--gold">Unfairer Vorteil</span>
-					<h2 id="tracking-title">Server-Side Tracking: Der Unterschied zwischen Blindflug und messbarem Wachstum.</h2>
-					<p>Die meisten Agenturen tracken clientseitig — und verlieren bis zu 40 % der Conversion-Daten an Ad-Blocker, ITP und Firmen-Firewalls. Ihr System bekommt eine eigene Tracking-Infrastruktur auf einem Server in Frankfurt. Die Daten gehören Ihnen.</p>
-				</header>
-				<div class="energy-tracking-grid">
-					<?php foreach ( $tracking_advantages as $ta ) : ?>
-						<article class="energy-tracking-card">
-							<h3><?php echo esc_html( $ta['title'] ); ?></h3>
-							<p><?php echo esc_html( $ta['text'] ); ?></p>
-						</article>
-					<?php endforeach; ?>
-				</div>
-				<p class="energy-tco__pointe" style="margin-top: 2rem;">Wer im digitalen Jahr 2026 den Algorithmen von Meta und Google die saubersten Conversion-Signale liefert, gewinnt die automatisierten Auktionen um die günstigsten CPLs. Das ist kein technisches Detail — das ist Ihr geldwerter Wettbewerbsvorteil gegenüber lokalen Mitbewerbern, die weiter blind kaufen.</p>
-			</div>
-		</section>
-
-		<section class="nx-section energy-section energy-section--alt" id="branchenverstaendnis">
-			<div class="nx-container">
-				<div class="energy-section__head energy-section__head--narrow">
-					<span class="nx-badge nx-badge--gold">So denkt Ihr Kunde</span>
-					<h2>Was ein Hausbesitzer durchmacht, bevor er bei Ihnen anfragt.</h2>
-				</div>
-
-				<div class="energy-journey-shell" aria-label="Entscheidungsphasen">
-					<?php foreach ( $journey_cards as $journey_card ) : ?>
-						<article class="energy-journey-card">
-							<span class="energy-journey-card__label"><?php echo esc_html( $journey_card['label'] ); ?></span>
-							<h3><?php echo esc_html( $journey_card['title'] ); ?></h3>
-							<p><?php echo esc_html( $journey_card['text'] ); ?></p>
-						</article>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
-
-		<section class="nx-section energy-section energy-section--alt" id="wettbewerb" aria-labelledby="wettbewerb-title">
-			<div class="nx-container">
-				<header class="energy-section__head energy-section__head--narrow">
-					<span class="nx-badge nx-badge--ghost">Marktübersicht</span>
-					<h2 id="wettbewerb-title">Vier Modelle am Markt — und warum keines für sich allein reicht.</h2>
-					<p>Der Markt für B2B-Leadgenerierung in der Solar- und SHK-Branche ist fragmentiert. Jeder Anbieter-Typ hat eine strukturelle Schwachstelle. Hier sehen Sie, woran Sie die Modelle erkennen — und wo der Unterschied liegt.</p>
-				</header>
-				<div class="energy-competitor-grid">
-					<?php foreach ( $competitor_archetypes as $ca ) : ?>
-						<article class="energy-competitor-card">
-							<header class="energy-competitor-card__head">
-								<span class="energy-competitor-card__label"><?php echo esc_html( $ca['label'] ); ?></span>
-								<p class="energy-competitor-card__examples"><?php echo esc_html( $ca['examples'] ); ?></p>
-							</header>
-							<div class="energy-competitor-card__body">
-								<div class="energy-competitor-card__col">
-									<span class="energy-competitor-card__col-label">Deren Modell</span>
-									<p><?php echo esc_html( $ca['model'] ); ?></p>
-								</div>
-								<div class="energy-competitor-card__col energy-competitor-card__col--weakness">
-									<span class="energy-competitor-card__col-label">Schwachstelle</span>
-									<p><?php echo esc_html( $ca['weakness'] ); ?></p>
-								</div>
+				<ol class="energy-system-list">
+					<?php foreach ( $system_stages as $stage ) : ?>
+						<li class="energy-system-item">
+							<span class="energy-system-item__num"><?php echo esc_html( $stage['num'] ); ?></span>
+							<div>
+								<strong><?php echo esc_html( $stage['title'] ); ?></strong>
+								<span><?php echo esc_html( $stage['text'] ); ?></span>
 							</div>
-							<footer class="energy-competitor-card__edge">
-								<span>Unser Unterschied:</span> <?php echo esc_html( $ca['edge'] ); ?>
-							</footer>
-						</article>
+						</li>
 					<?php endforeach; ?>
-				</div>
+				</ol>
 			</div>
 		</section>
 
-		<section class="nx-section energy-section" id="local-seo" aria-labelledby="local-title">
+		<section class="nx-section energy-section" id="proof" aria-labelledby="proof-title">
 			<div class="nx-container">
-				<header class="energy-section__head energy-section__head--narrow">
-					<span class="nx-badge nx-badge--gold">Ihre Region</span>
-					<h2 id="local-title">So dominieren Sie Ihr Einzugsgebiet — nicht nur online.</h2>
-					<p>Solar- und Wärmepumpen-Leads sind ein lokales Geschäft. Hausbesitzer suchen nach „Solarinstallation in meiner Nähe". Ein Lead aus 200 km Entfernung rechnet sich nicht. Ihr System wird so gebaut, dass es genau dort sichtbar ist, wo Ihre Monteure hinfahren.</p>
-				</header>
-				<div class="energy-local-grid">
-					<?php foreach ( $local_seo_cards as $ls ) : ?>
-						<article class="energy-local-card">
-							<h3><?php echo esc_html( $ls['title'] ); ?></h3>
-							<p><?php echo esc_html( $ls['text'] ); ?></p>
-						</article>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
+				<h2 id="proof-title" class="energy-section__title">Das ist kein Konzept. Das lief bereits.</h2>
 
-		<section class="nx-section energy-section" id="erstgespraech">
-			<div class="nx-container">
-				<div class="nx-cta-box energy-cta-box">
-					<h2>Unsicher, ob Infrastruktur statt Miete für Ihren Betrieb passt?</h2>
-					<p>Starten Sie mit der Anfrage-System-Analyse. Sie bekommen zuerst eine lokale Ampel-Einordnung mit Begründung und nächstem Schritt. Bei Nicht-Eignung bremst der Funnel, statt Sie in ein generisches Gespräch zu drücken.</p>
-					<div class="energy-cta-box__actions">
-						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_midpage_analysis" data-track-category="lead_gen" data-track-section="energy_midpage" data-track-funnel-stage="energy_midpage">Analyse starten</a>
+				<div class="energy-proof-strip">
+					<div class="energy-proof-stat">
+						<strong><?php echo esc_html( $e3_lead_count ); ?></strong>
+						<span>qualifizierte Anfragen</span>
+					</div>
+					<div class="energy-proof-stat">
+						<strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong>
+						<span>Kosten pro Anfrage</span>
+					</div>
+					<div class="energy-proof-stat">
+						<strong><?php echo esc_html( $e3_sales_conversion ); ?></strong>
+						<span>Abschlussquote</span>
 					</div>
 				</div>
-			</div>
-		</section>
 
-		<section class="nx-section energy-section energy-section--alt" id="weiterlesen" aria-labelledby="related-title">
-			<div class="nx-container">
-				<header class="energy-section__head energy-section__head--narrow">
-					<span class="nx-badge nx-badge--ghost">Weiterlesen</span>
-					<h2 id="related-title">Vertiefen Sie Ihr Verständnis für Anfrage-Systeme.</h2>
-				</header>
-				<div class="energy-related-grid">
-					<?php foreach ( $related_links as $rl ) : ?>
-						<a href="<?php echo esc_url( $rl['url'] ); ?>" class="energy-related-card">
-							<strong><?php echo esc_html( $rl['title'] ); ?></strong>
-							<span><?php echo esc_html( $rl['text'] ); ?></span>
-							<span class="energy-related-card__arrow">→</span>
-						</a>
-					<?php endforeach; ?>
+				<div class="energy-proof-body">
+					<p><strong>Vorher:</strong> <?php echo esc_html( $e3_case_label ); ?> kaufte Leads für ø <?php echo esc_html( $e3_cpl_before ); ?>. Die Hälfte war nicht erreichbar. Kein Überblick, welcher Kanal Abschlüsse brachte.</p>
+					<p><strong>Nach <?php echo esc_html( $e3_timeframe_dative ); ?>:</strong> Tracking-Fundament aufgebaut. Anfragepfade optimiert. Vorqualifizierung eingeführt. Ergebnis: <?php echo esc_html( sprintf( '%1$s Anfragen, %2$s Abschlussquote, Kosten auf %3$s gesenkt.', $e3_lead_count, $e3_sales_conversion, $e3_cpl_after ) ); ?></p>
+
+					<blockquote class="energy-proof-quote">
+						„Seit dem System sehen wir endlich, welche Kanäle wirklich Anfragen und Abschlüsse bringen. Wir konnten den teuren Lead-Einkauf massiv reduzieren und haben jetzt eine eigene Pipeline."
+					</blockquote>
+
+					<a href="<?php echo esc_url( $e3_url ); ?>" class="energy-text-link" data-track-action="cta_energy_proof" data-track-category="trust">Vollständige Case Study →</a>
 				</div>
 			</div>
 		</section>
 
-		<section class="nx-section energy-section" id="faq">
+		<section class="nx-section energy-section" id="faq" aria-labelledby="faq-title">
 			<div class="nx-container">
-				<div class="energy-section__head energy-section__head--narrow">
-					<span class="nx-badge nx-badge--ghost">Häufige Fragen</span>
-					<h2>Was Solar- und Wärmepumpen-Betriebe vor dem Erstgespräch wissen wollen.</h2>
-				</div>
-				<div class="nx-faq energy-faq">
+				<h2 id="faq-title" class="energy-section__title">Fragen, die vor dem ersten Schritt kommen.</h2>
+
+				<div class="energy-faq">
 					<?php foreach ( $faq_items as $index => $faq_item ) : ?>
-						<details class="nx-faq__item"<?php echo 0 === $index ? ' open' : ''; ?>>
+						<details class="energy-faq__item"<?php echo 0 === $index ? ' open' : ''; ?>>
 							<summary><?php echo esc_html( $faq_item['question'] ); ?></summary>
-							<div class="nx-faq__content"><?php echo esc_html( $faq_item['answer'] ); ?></div>
+							<div class="energy-faq__content"><?php echo esc_html( $faq_item['answer'] ); ?></div>
 						</details>
 					<?php endforeach; ?>
 				</div>
 			</div>
 		</section>
 
-		<section class="nx-section energy-section energy-section--alt" id="trust-hasim">
+		<section class="nx-section energy-section" id="abschluss">
 			<div class="nx-container">
-				<div class="energy-section__head energy-section__head--narrow" style="text-align: center;">
-					<span class="nx-badge nx-badge--ghost">Über den Umsetzer</span>
-					<h2 style="margin-top: 1rem;">Messbare Infrastruktur statt digitaler Broschüren.</h2>
-				</div>
-				<div class="nx-card nx-card--flat" style="max-width: 800px; margin: 3rem auto 0; padding: 3rem; text-align: center;">
-					<p style="font-size: 1.125rem; line-height: 1.6; margin-bottom: 1.5rem;">
-						Ich bin Haşim Üner und baue WordPress-basierte Anfrage-Systeme für Betriebe in der Erneuerbaren-Energien-Branche. Mein Fokus liegt nicht auf "schönem Webdesign", sondern auf echter Nachfrage-Architektur: Tracking, Vorqualifizierung, saubere Übergabe und Conversion-Optimierung.
-					</p>
-					<p style="color: var(--nx-text-muted);">
-						<strong>Mit Sitz in Hannover. Spezialisiert auf Lead-Autonomie im B2B-Handwerk.</strong>
-					</p>
+				<div class="energy-cta-box">
+					<h2>Passt das für Ihren Betrieb?</h2>
+					<p>Die Anfrage-System-Analyse gibt Ihnen eine lokale Ampel-Einordnung mit Begründung und nächstem Schritt. Bei Nicht-Eignung bremst der Funnel — statt Sie in ein generisches Gespräch zu drücken.</p>
+					<div class="energy-cta-box__actions">
+						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_footer" data-track-category="lead_gen">Analyse starten</a>
+					</div>
+					<p class="energy-cta-box__micro">Lokale Fit-Einordnung. Keine personenbezogenen Daten im Default-Pfad. Begrenzte Slots pro Quartal.</p>
 				</div>
 			</div>
 		</section>
 
-		<section class="nx-section energy-section energy-final-cta" id="abschluss">
-			<div class="nx-container">
-				<div class="nx-cta-box energy-cta-box">
-					<span class="nx-badge nx-badge--gold">Nächster Schritt</span>
-					<h2>Eigene Infrastruktur statt geteilter Portal-Leads und gemieteter Agentur-Funnel.</h2>
-					<p class="nx-cta-microcopy"><?php echo esc_html( $e3_proof_sentence ); ?></p>
-					<div class="energy-cta-box__actions">
-						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_footer_analysis" data-track-category="lead_gen" data-track-section="energy_footer" data-track-funnel-stage="energy_footer">Analyse starten</a>
-					</div>
-					<p class="energy-final-cta__microcopy">Lokale Fit-Einordnung ohne personenbezogene Daten im Default-Pfad. Aktuell ehrlich kommuniziert: Einzelperson &mdash; begrenzte Slots pro Quartal.</p>
-				</div>
-			</div>
-		</section>
 	</div>
 </main>
 
