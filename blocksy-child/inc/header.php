@@ -114,17 +114,17 @@ function nexus_get_site_header_fallback_items() {
 	$about_page_id = nexus_get_page_id( [ 'uber-mich' ] );
 	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
-	$demo_url     = home_url( '/energie-fahrplan-demo/' );
+	$solar_url    = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 	$e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 	$request_cta  = 'Analyse starten';
 
 	return [
 		[
-			'label'  => __( 'Demo', 'blocksy-child' ),
-			'url'    => $demo_url,
-			'active' => function_exists( 'hu_is_energy_demo_request_path' ) && hu_is_energy_demo_request_path(),
+			'label'  => __( 'Solar & Wärmepumpen', 'blocksy-child' ),
+			'url'    => $solar_url,
+			'active' => function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context(),
 			'class'  => '',
-			'track'  => 'energy_demo',
+			'track'  => 'solar',
 		],
 		[
 			'label'  => __( 'E3 Proof', 'blocksy-child' ),
@@ -225,6 +225,7 @@ function nexus_strip_side_funnel_nav_items( $items, $args ) {
 	}
 
 	$blocked_paths = [
+		'/energie-fahrplan-demo/',
 		'/whitelabel-retainer/',
 		'/wordpress-agentur-hannover/',
 		'/core-web-vitals/',
@@ -236,12 +237,13 @@ function nexus_strip_side_funnel_nav_items( $items, $args ) {
 	foreach ( $items as $item ) {
 		$item_url  = isset( $item->url ) ? (string) $item->url : '';
 		$item_path = (string) wp_parse_url( $item_url, PHP_URL_PATH );
+		$item_classes = isset( $item->classes ) && is_array( $item->classes ) ? $item->classes : [];
 
 		if ( '' !== $item_path ) {
 			$item_path = trailingslashit( untrailingslashit( $item_path ) );
 		}
 
-		if ( in_array( $item_path, $blocked_paths, true ) ) {
+		if ( in_array( $item_path, $blocked_paths, true ) && ! in_array( 'nav-cta-button', $item_classes, true ) ) {
 			continue;
 		}
 
