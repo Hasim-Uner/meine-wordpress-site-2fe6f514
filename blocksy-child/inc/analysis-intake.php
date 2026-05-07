@@ -495,7 +495,7 @@ function hu_send_analysis_lead_confirmation( array $payload ) {
 				<div style="font-size:14px; line-height:1.85; color:#c5ced7;">
 					<strong style="color:#f7f3ee;">1.</strong> Ihre Analyse ist gespeichert — ich sehe alle Antworten und das Signal.<br>
 					<strong style="color:#f7f3ee;">2.</strong> Sie können direkt einen 30-Min-Slot buchen — ich bereite das Gespräch mit Ihren Daten vor.<br>
-					<strong style="color:#f7f3ee;">3.</strong> Falls Sie nichts buchen, melde ich mich persönlich innerhalb 24 Stunden.
+					<strong style="color:#f7f3ee;">3.</strong> Falls Sie nichts buchen, melde ich mich persönlich innerhalb von 48 Stunden.
 				</div>
 				<div style="margin-top:14px;">
 					<a href="%4$s" style="display:inline-block; background:#E08A3C; color:#1A0F05; padding:12px 22px; border-radius:999px; font-weight:600; text-decoration:none;">Termin buchen</a>
@@ -504,7 +504,7 @@ function hu_send_analysis_lead_confirmation( array $payload ) {
 		</table>',
 		esc_html( $payload['signal_label'] ),
 		(int) $payload['score'],
-		'' !== $payload['action_plan_label'] ? '<strong style="color:#f7f3ee;">Empfehlung:</strong> ' . esc_html( $payload['action_plan_label'] ) : '',
+		'',
 		esc_url( $calcom_url )
 	);
 
@@ -536,4 +536,3 @@ function hu_send_analysis_lead_confirmation( array $payload ) {
 		wp_mail( $payload['email'], $subject, $html, array_merge( [ 'Content-Type: text/html; charset=UTF-8' ], $headers ) );
 	}
 }
-
