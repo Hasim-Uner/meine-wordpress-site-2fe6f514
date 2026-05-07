@@ -74,9 +74,9 @@ get_header();
 			<div class="nx-container">
 				<div class="about-narrative__inner">
 					<h2 class="nx-headline-section">Wie ich arbeite.</h2>
-					<p>Wenn ein neuer Brunnen gebohrt werden soll, kommt zuerst der Geologe. Nicht der Bohrer. Wer ohne Geologie bohrt, trifft Stein oder zieht Schlamm. Die Arbeit, die der Geologe macht, sieht aus wie nichts: er liest Karten, klopft den Boden ab, redet mit Nachbarn, die schon gebohrt haben.</p>
+					<p>Wenn ein neuer Brunnen gebohrt werden soll, beginnt die Arbeit nicht mit dem Bohrer. Sie beginnt mit Geologie. Wer ohne Karte bohrt, trifft Stein oder zieht Schlamm. Diese Arbeit sieht aus wie nichts: Karten lesen, Boden prüfen, mit Nachbarn reden, die schon gebohrt haben.</p>
 					<p>Genau das ist die erste Phase mit mir. Bevor irgendetwas an Ihrer Website verändert wird, lese ich Ihren Untergrund: Welche Suchanfragen kommen wirklich an? An welchen Stellen versickert Aufmerksamkeit? Wo ist das Tracking taub? Wo erklärt die Seite Technik, statt Entscheidungen zu führen?</p>
-					<p>Erst danach kommt der Bohrer: sauber gebautes WordPress statt Page-Builder-Abhängigkeit. Serverseitiges Tracking unter Ihrer Kontrolle. Eine Pipeline, die zeigt, welcher Kontakt später wirklich wertvoll wurde.</p>
+					<p>Erst danach wird gebohrt: sauber gebautes WordPress statt Page-Builder-Abhängigkeit. Serverseitiges Tracking unter Ihrer Kontrolle. Eine Pipeline, die zeigt, welcher Kontakt später wirklich wertvoll wurde.</p>
 					<p>Und erst, wenn das Wasser sauber kommt, drehen wir die Pumpe hoch. Vorher Geld auf Anzeigen zu kippen, ist wie mehr Strom auf eine kaputte Pumpe geben. Es macht das Problem lauter, nicht besser.</p>
 				</div>
 			</div>
@@ -94,7 +94,7 @@ get_header();
 							<li><?php echo esc_html( $point ); ?></li>
 						<?php endforeach; ?>
 					</ul>
-					<p>Ich bin der, der prüft, ob auf Ihrem Grundstück überhaupt Wasser liegt. Manchmal ist die ehrliche Antwort: Nein, hier nicht. Dann sage ich das, und Sie sparen sich die Bohrung.</p>
+					<p>Ich bohre deshalb nicht blind. Ich prüfe zuerst, ob auf Ihrem Grundstück überhaupt Wasser liegt. Manchmal ist die ehrliche Antwort: Nein, hier nicht. Dann sage ich das, und Sie sparen sich die Bohrung.</p>
 				</div>
 			</div>
 		</section>
