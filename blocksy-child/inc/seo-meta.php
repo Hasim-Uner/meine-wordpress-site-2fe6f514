@@ -135,12 +135,12 @@ function hu_get_forced_singular_seo_map() {
 			// /wordpress-seo-hannover/ und /wordpress-wartung-hannover/ sind 301 auf die Agentur-Page (Anker-Sektionen);
 			// /ki-integration-wordpress/ ist noindex. Keine eigenständigen SEO-Signale mehr nötig.
 			'solar-waermepumpen-leadgenerierung' => [
-				'title'       => 'Leadgenerierung für Solar & Wärmepumpen | Weniger Kosten, bessere Anfragen',
-				'description' => sprintf( 'Schluss mit teuren Portal-Leads. Eigenes Anfrage-System für Solarteure und Wärmepumpen-Installateure. Referenz: %s Kosten pro Anfrage. Einstieg über die Anfrage-System-Analyse.', $e3_cpl_reduction ),
+				'title'       => 'Solar & Wärmepumpen Leadgenerierung: Eigenes Anfrage-System statt Leads kaufen | Haşim Üner',
+				'description' => sprintf( 'Leadgenerierung für Photovoltaik und Wärmepumpen: Bauen Sie ein eigenes Anfrage-System für exklusive Solar-Leads. Referenz E3 New Energy: %s Kosten pro Anfrage in 9 Monaten. Diagnose vor Umsetzung.', $e3_cpl_reduction ),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
-				'title'       => 'Leadgenerierung für Solar & Wärmepumpen | Weniger Kosten, bessere Anfragen',
-				'description' => sprintf( 'Schluss mit teuren Portal-Leads. Eigenes Anfrage-System für Solarteure und Wärmepumpen-Installateure. Referenz: %s Kosten pro Anfrage. Einstieg über die Anfrage-System-Analyse.', $e3_cpl_reduction ),
+				'title'       => 'Solar & Wärmepumpen Leadgenerierung: Eigenes Anfrage-System statt Leads kaufen | Haşim Üner',
+				'description' => sprintf( 'Leadgenerierung für Photovoltaik und Wärmepumpen: Bauen Sie ein eigenes Anfrage-System für exklusive Solar-Leads. Referenz E3 New Energy: %s Kosten pro Anfrage in 9 Monaten. Diagnose vor Umsetzung.', $e3_cpl_reduction ),
 			],
 		]
 	);

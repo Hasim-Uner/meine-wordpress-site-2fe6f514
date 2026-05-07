@@ -91,6 +91,85 @@ $journey_cards = [
 	],
 ];
 
+$competitor_archetypes = [
+	[
+		'label'    => 'Lead-Broker',
+		'examples' => 'Leadsnavigator, Aroundhome, Check24',
+		'model'    => 'Geteilte Leads (1:3–1:5), Arbitrage-Modell',
+		'weakness' => 'Ruinöser Preiskampf, hohe Storno-Raten, „Lead-Miete"',
+		'edge'     => 'Fokus auf exklusives Eigentum. Systematischer Aufbau eigener Kanäle.',
+	],
+	[
+		'label'    => 'Exklusiv-Lead-Agenturen',
+		'examples' => 'Leadsagentur.de, Coform',
+		'model'    => 'Exklusive Leads via Meta/Google Ads, GEO-Targeting',
+		'weakness' => 'Operationelle Abhängigkeit. Agentur behält Daten- und Pixelhoheit.',
+		'edge'     => 'Übergabe der Infrastruktur. „Build & Care"-Prinzip. Kunde behält den Code.',
+	],
+	[
+		'label'    => 'Hybrid- & Systembauer',
+		'examples' => 'Smart11, Fischer Digital Consulting',
+		'model'    => 'Blueprint-Systeme, Funnel-Bau, CRM & Vertriebscoaching',
+		'weakness' => 'Oft standardisierte Schablonen ohne tiefes technisches Foundation-Audit.',
+		'edge'     => '„Audit-first"-Ansatz. Tiefe technische Diagnose vor der Skalierung.',
+	],
+	[
+		'label'    => 'Nischen-SEO-Agenturen',
+		'examples' => 'Augustin Marketing, SEOoffensive',
+		'model'    => 'WärmepumpenSEO, Backlinks, lokales Content-Marketing',
+		'weakness' => 'Traffic ohne messbare Conversion-Führung. Schwaches Performance-Tracking.',
+		'edge'     => 'Verzahnung von SEO mit radikaler Conversion-Architektur und Server-Side Tracking.',
+	],
+];
+
+$tracking_advantages = [
+	[
+		'title' => 'First-Party-Kontext',
+		'text'  => 'Der Tracking-Server läuft auf Ihrer Subdomain. Ad-Blocker und ITP erkennen keine blockierbaren Drittanbieter-Skripte — Ihre Conversion-Daten bleiben vollständig.',
+	],
+	[
+		'title' => 'Algorithmisches Training',
+		'text'  => 'Saubere, serverseitige Conversion-Signale fließen direkt per Server-to-Server-API an Meta und Google Ads. Die Algorithmen lernen präziser — und senken Ihren CPL.',
+	],
+	[
+		'title' => 'DSGVO & Consent',
+		'text'  => 'IP-Adressen werden auf Ihrem Server anonymisiert, bevor Daten externe Netzwerke erreichen. Conversion-Pfade bleiben auch bei Cookie-Ablehnung statistisch valide messbar.',
+	],
+];
+
+$local_seo_cards = [
+	[
+		'title' => 'Google Business Profile',
+		'text'  => 'Ihr Profil wird zum primären Lead-Kanal im Local Pack — den Top-3-Kartenergebnissen, die 42 % der lokalen Klicks abgreifen.',
+	],
+	[
+		'title' => 'Dynamische GEO-Seiten',
+		'text'  => 'Separate URL-Strukturen für jeden Ort im 30–50-km-Radius. „Solarinstallation Hamburg", „PV-Anlage Installateur München" — jede Region bekommt ihre eigene Money Page.',
+	],
+	[
+		'title' => 'Hyperlokales Ad-Targeting',
+		'text'  => 'Keine Streuverluste. Google Ads und Meta Ads zielen mit regionalen Werbemitteln und lokalen Referenzanlagen exakt auf Ihr Einzugsgebiet.',
+	],
+];
+
+$related_links = [
+	[
+		'url'   => home_url( '/e3-new-energy/' ),
+		'title' => 'E3 New Energy: 1.750+ Anfragen, −85,3 % CPL',
+		'text'  => 'Die vollständige Case Study mit Vorher-Nachher-Vergleich und System-Architektur.',
+	],
+	[
+		'url'   => home_url( '/blog/' ),
+		'title' => 'Blog: Technisches SEO & Conversion-Wissen',
+		'text'  => 'Artikel zu Tracking-Infrastruktur, CPL-Berechnung und WordPress als Nachfrage-System.',
+	],
+	[
+		'url'   => home_url( '/ergebnisse/' ),
+		'title' => 'Ergebnisse & Referenzen',
+		'text'  => 'Weitere Proof Cases aus WordPress-, SEO- und CRO-Projekten im B2B-Umfeld.',
+	],
+];
+
 $proof_kpis = [
 	[
 		'value' => $e3_lead_count,
@@ -426,6 +505,25 @@ get_header();
 			</div>
 		</section>
 
+		<section class="nx-section energy-section" id="tracking-vorteil" aria-labelledby="tracking-title">
+			<div class="nx-container">
+				<header class="energy-section__head energy-section__head--narrow">
+					<span class="nx-badge nx-badge--gold">Unfairer Vorteil</span>
+					<h2 id="tracking-title">Server-Side Tracking: Der Unterschied zwischen Blindflug und messbarem Wachstum.</h2>
+					<p>Die meisten Agenturen tracken clientseitig — und verlieren bis zu 40 % der Conversion-Daten an Ad-Blocker, ITP und Firmen-Firewalls. Ihr System bekommt eine eigene Tracking-Infrastruktur auf einem Server in Frankfurt. Die Daten gehören Ihnen.</p>
+				</header>
+				<div class="energy-tracking-grid">
+					<?php foreach ( $tracking_advantages as $ta ) : ?>
+						<article class="energy-tracking-card">
+							<h3><?php echo esc_html( $ta['title'] ); ?></h3>
+							<p><?php echo esc_html( $ta['text'] ); ?></p>
+						</article>
+					<?php endforeach; ?>
+				</div>
+				<p class="energy-tco__pointe" style="margin-top: 2rem;">Wer im digitalen Jahr 2026 den Algorithmen von Meta und Google die saubersten Conversion-Signale liefert, gewinnt die automatisierten Auktionen um die günstigsten CPLs. Das ist kein technisches Detail — das ist Ihr geldwerter Wettbewerbsvorteil gegenüber lokalen Mitbewerbern, die weiter blind kaufen.</p>
+			</div>
+		</section>
+
 		<section class="nx-section energy-section energy-section--alt" id="branchenverstaendnis">
 			<div class="nx-container">
 				<div class="energy-section__head energy-section__head--narrow">
@@ -445,6 +543,57 @@ get_header();
 			</div>
 		</section>
 
+		<section class="nx-section energy-section energy-section--alt" id="wettbewerb" aria-labelledby="wettbewerb-title">
+			<div class="nx-container">
+				<header class="energy-section__head energy-section__head--narrow">
+					<span class="nx-badge nx-badge--ghost">Marktübersicht</span>
+					<h2 id="wettbewerb-title">Vier Modelle am Markt — und warum keines für sich allein reicht.</h2>
+					<p>Der Markt für B2B-Leadgenerierung in der Solar- und SHK-Branche ist fragmentiert. Jeder Anbieter-Typ hat eine strukturelle Schwachstelle. Hier sehen Sie, woran Sie die Modelle erkennen — und wo der Unterschied liegt.</p>
+				</header>
+				<div class="energy-competitor-grid">
+					<?php foreach ( $competitor_archetypes as $ca ) : ?>
+						<article class="energy-competitor-card">
+							<header class="energy-competitor-card__head">
+								<span class="energy-competitor-card__label"><?php echo esc_html( $ca['label'] ); ?></span>
+								<p class="energy-competitor-card__examples"><?php echo esc_html( $ca['examples'] ); ?></p>
+							</header>
+							<div class="energy-competitor-card__body">
+								<div class="energy-competitor-card__col">
+									<span class="energy-competitor-card__col-label">Deren Modell</span>
+									<p><?php echo esc_html( $ca['model'] ); ?></p>
+								</div>
+								<div class="energy-competitor-card__col energy-competitor-card__col--weakness">
+									<span class="energy-competitor-card__col-label">Schwachstelle</span>
+									<p><?php echo esc_html( $ca['weakness'] ); ?></p>
+								</div>
+							</div>
+							<footer class="energy-competitor-card__edge">
+								<span>Unser Unterschied:</span> <?php echo esc_html( $ca['edge'] ); ?>
+							</footer>
+						</article>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+
+		<section class="nx-section energy-section" id="local-seo" aria-labelledby="local-title">
+			<div class="nx-container">
+				<header class="energy-section__head energy-section__head--narrow">
+					<span class="nx-badge nx-badge--gold">Ihre Region</span>
+					<h2 id="local-title">So dominieren Sie Ihr Einzugsgebiet — nicht nur online.</h2>
+					<p>Solar- und Wärmepumpen-Leads sind ein lokales Geschäft. Hausbesitzer suchen nach „Solarinstallation in meiner Nähe". Ein Lead aus 200 km Entfernung rechnet sich nicht. Ihr System wird so gebaut, dass es genau dort sichtbar ist, wo Ihre Monteure hinfahren.</p>
+				</header>
+				<div class="energy-local-grid">
+					<?php foreach ( $local_seo_cards as $ls ) : ?>
+						<article class="energy-local-card">
+							<h3><?php echo esc_html( $ls['title'] ); ?></h3>
+							<p><?php echo esc_html( $ls['text'] ); ?></p>
+						</article>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+
 		<section class="nx-section energy-section" id="erstgespraech">
 			<div class="nx-container">
 				<div class="nx-cta-box energy-cta-box">
@@ -457,6 +606,23 @@ get_header();
 			</div>
 		</section>
 
+		<section class="nx-section energy-section energy-section--alt" id="weiterlesen" aria-labelledby="related-title">
+			<div class="nx-container">
+				<header class="energy-section__head energy-section__head--narrow">
+					<span class="nx-badge nx-badge--ghost">Weiterlesen</span>
+					<h2 id="related-title">Vertiefen Sie Ihr Verständnis für Anfrage-Systeme.</h2>
+				</header>
+				<div class="energy-related-grid">
+					<?php foreach ( $related_links as $rl ) : ?>
+						<a href="<?php echo esc_url( $rl['url'] ); ?>" class="energy-related-card">
+							<strong><?php echo esc_html( $rl['title'] ); ?></strong>
+							<span><?php echo esc_html( $rl['text'] ); ?></span>
+							<span class="energy-related-card__arrow">→</span>
+						</a>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
 
 		<section class="nx-section energy-section" id="faq">
 			<div class="nx-container">
