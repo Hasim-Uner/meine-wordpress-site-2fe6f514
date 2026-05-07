@@ -24,6 +24,7 @@ $e3_cpl_reduction  = $e3_metrics['cpl_reduction']['display']     ?? '−85,3 %';
 $e3_cpl_cons       = $e3_metrics['cpl_reduction']['conservative_display'] ?? 'über 85 %';
 $e3_timeframe      = $e3_metrics['timeframe']['display']         ?? '9 Monate';
 $e3_timeframe_dat  = $e3_metrics['timeframe']['display_dative']  ?? '9 Monaten';
+$contact_url       = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
 $portrait_url      = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 
 get_header();
@@ -688,11 +689,11 @@ get_header();
 							<div class="hu-cta-option__title">Online buchen</div>
 							<div class="hu-cta-option__desc">Cal.com — freier Slot, 30 Min.</div>
 						</a>
-						<a href="mailto:hello@hasimuener.de" class="hu-cta-option"
-						   data-track-action="cta_home_final_mail" data-track-category="lead_gen">
-							<div class="hu-cta-option__step">B · MAIL</div>
-							<div class="hu-cta-option__title">Direkt schreiben</div>
-							<div class="hu-cta-option__desc">Antwort innerhalb 24 h.</div>
+						<a href="<?php echo esc_url( $contact_url ); ?>" class="hu-cta-option"
+						   data-track-action="cta_home_final_contact" data-track-category="lead_gen">
+							<div class="hu-cta-option__step">B · NACHRICHT</div>
+							<div class="hu-cta-option__title">Kontaktformular</div>
+							<div class="hu-cta-option__desc">Kurz beschreiben — Antwort innerhalb 24 h.</div>
 						</a>
 					</div>
 				</div>
