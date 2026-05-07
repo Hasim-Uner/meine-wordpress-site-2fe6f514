@@ -35,7 +35,7 @@ get_header();
 						<span class="nx-badge nx-badge--gold">ÜBER MICH</span>
 						<h1 class="about-hero__title">Ich bohre Brunnen. Digital.</h1>
 						<p class="about-hero__lead">
-							Eigene Anfrage-Infrastruktur für Solar- und Wärmepumpen-Anbieter, statt Anfragen aus gemieteten Portalen zu kaufen.
+							Für Solar- und Wärmepumpen-Betriebe, die ihre Anfragen nicht dauerhaft über Portale mieten wollen — sondern eine eigene Nachfrage-Infrastruktur aufbauen.
 						</p>
 					</div>
 
@@ -63,7 +63,7 @@ get_header();
 				<div class="about-narrative__inner">
 					<h2 class="nx-headline-section">Warum jetzt.</h2>
 					<p>Solar- und Wärmepumpen-Anbieter verkaufen ihren Kunden eine einfache Idee: weg von der Versorgung, die jemand anderem gehört. Hin zur Anlage auf dem eigenen Dach.</p>
-					<p>Ich verkaufe Ihnen denselben Gedanken — eine Etage tiefer, im Vertrieb. Weg von Portal-Leads, die jemand anderem gehören. Hin zur Anfrage-Infrastruktur, die in Ihrem eigenen Server liegt.</p>
+					<p>Ich übertrage denselben Gedanken auf Ihren Vertrieb: weg von Portal-Leads, die jemand anderem gehören. Hin zu einer Anfrage-Infrastruktur auf Ihrer eigenen Website — mit Ihren Daten, Ihren Prozessen und Ihrer Kontrolle.</p>
 					<p>Bis 2023 lief der Markt von selbst. Wer eine Website hatte und ein Portal-Abo, bekam Anfragen. Seit dem Boom-Ende ist diese Logik gebrochen. Anfragen werden teurer, schlechter und unvorhersehbarer. Wer wachsen will, kann nicht mehr Wasser nachkaufen. Er braucht einen Brunnen.</p>
 				</div>
 			</div>
@@ -76,7 +76,7 @@ get_header();
 					<h2 class="nx-headline-section">Wie ich arbeite.</h2>
 					<p>Wenn ein neuer Brunnen gebohrt werden soll, kommt zuerst der Geologe. Nicht der Bohrer. Wer ohne Geologie bohrt, trifft Stein oder zieht Schlamm. Die Arbeit, die der Geologe macht, sieht aus wie nichts: er liest Karten, klopft den Boden ab, redet mit Nachbarn, die schon gebohrt haben.</p>
 					<p>Genau das ist die erste Phase mit mir. Bevor irgendetwas an Ihrer Website verändert wird, lese ich Ihren Untergrund: Welche Suchanfragen kommen wirklich an? An welchen Stellen versickert Aufmerksamkeit? Wo ist das Tracking taub? Wo erklärt die Seite Technik, statt Entscheidungen zu führen?</p>
-					<p>Erst danach kommt der Bohrer: hardcoded WordPress, kein Page-Builder. Serverseitiges Tracking auf Ihrem Server. Eine Pipeline, die zeigt, welcher Klick am Ende Umsatz wurde.</p>
+					<p>Erst danach kommt der Bohrer: sauber gebautes WordPress statt Page-Builder-Abhängigkeit. Serverseitiges Tracking unter Ihrer Kontrolle. Eine Pipeline, die zeigt, welcher Kontakt später wirklich wertvoll wurde.</p>
 					<p>Und erst, wenn das Wasser sauber kommt, drehen wir die Pumpe hoch. Vorher Geld auf Anzeigen zu kippen, ist wie mehr Strom auf eine kaputte Pumpe geben. Es macht das Problem lauter, nicht besser.</p>
 				</div>
 			</div>
@@ -104,8 +104,8 @@ get_header();
 			<div class="nx-container">
 				<div class="about-narrative__inner">
 					<h2 class="nx-headline-section">Wer ich bin.</h2>
-					<p>Mein Zugang zu dieser Arbeit ist Medienwissenschaft, nicht Webdesign. Ich denke zuerst über Sprache, Entscheidung und Signal nach — und erst danach über Code. Über Jahre habe ich Anfrage-Systeme für Maschinenbau und Dienstleistung gebaut. Die technische Schicht war selten das Problem. Das Problem war fast immer: jemand hat gebohrt, ohne vorher die Karte zu lesen.</p>
-					<p>Seit E3 New Energy als erstem Solar-Case weiß ich, wo die Methode am stärksten greift. Seitdem arbeite ich nur in dieser Nische.</p>
+					<p>Mein Zugang zu dieser Arbeit ist Medienwissenschaft, nicht Webdesign. Ich denke zuerst über Sprache, Entscheidung und Signal nach — und erst danach über Code. Über Jahre habe ich an digitalen Strukturen für erklärungsbedürftige B2B-Angebote gearbeitet. Die technische Schicht war selten das eigentliche Problem. Das Problem war fast immer: jemand hat gebohrt, ohne vorher die Karte zu lesen.</p>
+					<p>Seit E3 New Energy als erstem Solar-Case weiß ich, wo diese Methode am stärksten greift. Seitdem liegt mein Fokus auf Solar- und Wärmepumpen-Betrieben.</p>
 				</div>
 			</div>
 		</section>

@@ -90,7 +90,7 @@ function hu_get_forced_singular_seo_map() {
 				'description' => 'Projekt starten oder Frage stellen: Formular ausfuellen, Rueckmeldung in 48 h. Kein Pflicht-Call, kein Sales-Druck – nur eine fundierte Ersteinschaetzung.',
 			],
 			'uber-mich' => [
-				'title'       => 'Über Haşim Üner — Brunnenbauer für digitale Anfrage-Systeme',
+				'title'       => 'Über Hasim Üner – Anfrage-Infrastruktur für Solar & Wärmepumpe',
 				'description' => 'Ich baue Solar- und Wärmepumpen-Anbietern eigene Anfrage-Systeme. Weg von gemieteten Portal-Leads, hin zu Infrastruktur im eigenen Eigentum.',
 			],
 			// 'wgos' / 'wordpress-growth-operating-system' Meta-Einträge entfernt:
