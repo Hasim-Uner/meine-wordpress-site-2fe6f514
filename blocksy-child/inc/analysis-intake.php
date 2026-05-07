@@ -3,9 +3,7 @@
  * Anfrage-System-Analyse intake.
  *
  * Receives the React-Funnel result + lean contact block, persists into the
- * shared CRM (nexus_contact), notifies the admin and the lead via Brevo, and
- * forwards a fire-and-forget payload to n8n. WordPress remains the
- * source of truth — n8n is purely operational glue.
+ * shared CRM (nexus_contact) and notifies the admin and the lead via Brevo.
  *
  * @package Blocksy_Child
  */
@@ -44,21 +42,6 @@ const HU_ANALYSIS_SIGNAL_LABELS = [
 ];
 
 const HU_ANALYSIS_RATE_LIMIT_PER_HOUR = 6;
-
-/**
- * Resolve the n8n webhook URL for analysis submissions. Filterable.
- */
-function hu_get_analysis_n8n_webhook_url() {
-	$default = 'https://n8n.hasimuener.de/webhook/analysis-intake';
-
-	if ( defined( 'HU_ANALYSIS_N8N_WEBHOOK_URL' ) && '' !== (string) HU_ANALYSIS_N8N_WEBHOOK_URL ) {
-		$default = (string) HU_ANALYSIS_N8N_WEBHOOK_URL;
-	}
-
-	$url = (string) apply_filters( 'hu_analysis_n8n_webhook_url', $default );
-
-	return $url;
-}
 
 /**
  * Resolve the Cal.com URL used after a successful submission. Filterable.
@@ -177,7 +160,6 @@ function hu_handle_analysis_submit( WP_REST_Request $request ) {
 
 	hu_send_analysis_admin_notification( $validated, (int) $contact_id );
 	hu_send_analysis_lead_confirmation( $validated );
-	hu_dispatch_analysis_n8n_webhook( $validated, (int) $contact_id );
 
 	return new WP_REST_Response(
 		[
@@ -546,49 +528,3 @@ function hu_send_analysis_lead_confirmation( array $payload ) {
 	}
 }
 
-/**
- * Forward a fire-and-forget payload to the n8n webhook. Failures are silent —
- * WordPress remains the source of truth.
- */
-function hu_dispatch_analysis_n8n_webhook( array $payload, $contact_id ) {
-	$url = hu_get_analysis_n8n_webhook_url();
-	if ( '' === $url ) {
-		return;
-	}
-
-	$body = [
-		'event'       => 'request_analysis.submitted',
-		'occurred_at' => gmdate( 'c' ),
-		'site'        => home_url(),
-		'contact_id'  => (int) $contact_id,
-		'lead'        => [
-			'name'    => $payload['name'],
-			'company' => $payload['company'],
-			'email'   => $payload['email'],
-		],
-		'analysis'    => [
-			'signal'            => $payload['signal'],
-			'score'             => (int) $payload['score'],
-			'reasons'           => $payload['reasons'],
-			'action_plan_label' => $payload['action_plan_label'],
-			'answers'           => $payload['answers'],
-		],
-		'tracking'    => [
-			'ads_source'   => $payload['ads_source'],
-			'ads_keyword'  => $payload['ads_keyword'],
-			'utm_medium'   => $payload['utm_medium'],
-			'utm_campaign' => $payload['utm_campaign'],
-			'gclid'        => $payload['gclid'],
-		],
-	];
-
-	wp_remote_post(
-		$url,
-		[
-			'timeout'  => 1.5,
-			'blocking' => false,
-			'headers'  => [ 'Content-Type' => 'application/json; charset=utf-8' ],
-			'body'     => wp_json_encode( $body ),
-		]
-	);
-}
