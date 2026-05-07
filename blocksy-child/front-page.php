@@ -679,7 +679,8 @@ get_header();
 				<h2 class="hu-display">Bereit, den Anfrageweg zu besitzen?</h2>
 				<p>30 Minuten Analyse. Kein Pitch. Sie bekommen eine ehrliche Einordnung — und gehen mit Klarheit raus, egal wie wir uns entscheiden.</p>
 
-				<div class="hu-cta-options">
+				<div class="hu-cta-flow">
+
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-cta-option hu-cta-option--primary"
 					   data-track-action="cta_home_final_qualify" data-track-category="lead_gen">
 						<div class="hu-cta-option__step">SCHRITT 1</div>
@@ -691,7 +692,11 @@ get_header();
 						</div>
 					</a>
 
-					<div class="hu-cta-options__then">→ DANN</div>
+					<div class="hu-cta-flow__then" aria-hidden="true">
+						<span class="hu-cta-flow__line"></span>
+						<span class="hu-cta-flow__then-label hu-mono">DANN — wählen Sie den Folgekanal</span>
+						<span class="hu-cta-flow__line"></span>
+					</div>
 
 					<div class="hu-cta-option-group">
 						<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-cta-option"
@@ -720,51 +725,7 @@ get_header();
 		</div>
 	</section>
 
-	<!-- ═══════════════════════════════════════════════════
-	     FOOTER
-	     ═══════════════════════════════════════════════════ -->
-	<footer class="hu-footer">
-		<div class="hu-container">
-			<div class="hu-footer__grid">
-				<div>
-					<div class="hu-footer__brand">HAŞIM ÜNER</div>
-					<div class="hu-footer__rule"></div>
-					<p class="hu-footer__desc">Eigene Anfragewege für Solar- und Wärmepumpen-Anbieter im DACH-Mittelstand.</p>
-					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary hu-btn-sm"
-					   data-track-action="cta_home_footer_analysis" data-track-category="lead_gen">
-						Analyse starten
-						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-					</a>
-				</div>
-				<div class="hu-footer__col">
-					<h4>Einstieg</h4>
-					<a href="#fit">Passt es?</a>
-					<a href="<?php echo esc_url( $analysis_url ); ?>">Analyse buchen</a>
-					<a href="#system">Wie es funktioniert</a>
-				</div>
-				<div class="hu-footer__col">
-					<h4>Proof &amp; Wissen</h4>
-					<a href="<?php echo esc_url( $e3_case_url ); ?>">E3 New Energy</a>
-					<a href="#kostet">Was es kostet</a>
-					<a href="#faq">FAQ</a>
-				</div>
-				<div class="hu-footer__col">
-					<h4>Unternehmen</h4>
-					<a href="#about">Über mich</a>
-					<a href="<?php echo esc_url( home_url( '/kontakt/' ) ); ?>">Kontakt</a>
-					<a href="<?php echo esc_url( home_url( '/wordpress-agentur-hannover/' ) ); ?>">WordPress Agentur Hannover</a>
-				</div>
-			</div>
-			<div class="hu-footer__bottom">
-				<span>© 2026 Haşim Üner · Hannover, remote</span>
-				<span>
-					<a href="<?php echo esc_url( home_url( '/impressum/' ) ); ?>" style="color:inherit">Impressum</a>
-					·
-					<a href="<?php echo esc_url( home_url( '/datenschutz/' ) ); ?>" style="color:inherit">Datenschutz</a>
-				</span>
-			</div>
-		</div>
-	</footer>
+	<?php /* Eigener Footer entfernt — die Seite nutzt den globalen Blocksy-Footer (siehe get_footer()). */ ?>
 
 </div><!-- .hu-hp -->
 

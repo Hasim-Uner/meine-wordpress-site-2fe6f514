@@ -851,38 +851,65 @@
 .hu-hp .hu-final-cta__signature { margin-top: 18px; font-size: 14px; color: var(--fg-3); }
 .hu-hp .hu-final-cta__signature strong { color: var(--fg); font-weight: 600; }
 
-.hu-hp .hu-cta-options {
-  display: flex; align-items: stretch; gap: 18px;
-  margin: 36px 0 28px; text-align: left; flex-wrap: wrap; justify-content: center;
+/* Vertikaler CTA-Flow: Schritt 1 (zentriert, begrenzt) → DANN-Trenner → 3-Optionen-Grid */
+.hu-hp .hu-cta-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 24px;
+  max-width: 760px;
+  margin: 36px auto 28px;
+  text-align: left;
 }
-.hu-hp .hu-cta-options__then {
-  align-self: center; color: var(--fg-3);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 11px; letter-spacing: .2em;
+.hu-hp .hu-cta-flow__then {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0;
 }
-@media (max-width: 760px) {
-  .hu-hp .hu-cta-options { flex-direction: column; align-items: stretch; }
-  .hu-hp .hu-cta-options__then { text-align: center; padding: 6px 0; }
+.hu-hp .hu-cta-flow__line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-2), transparent);
 }
-.hu-hp .hu-cta-option-group { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; flex: 1; min-width: 300px; }
-@media (max-width: 560px) { .hu-hp .hu-cta-option-group { grid-template-columns: 1fr; } }
+.hu-hp .hu-cta-flow__then-label {
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: var(--fg-3);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.hu-hp .hu-cta-option-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+@media (max-width: 640px) {
+  .hu-hp .hu-cta-option-group { grid-template-columns: 1fr; }
+}
 .hu-hp .hu-cta-option {
-  display: flex; flex-direction: column; gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   padding: 22px;
   border: 1px solid var(--line-2);
   border-radius: 14px;
   background: var(--bg-3);
   transition: border-color .2s, transform .15s, background .2s;
   text-align: left;
-  min-width: 200px;
 }
 .hu-hp .hu-cta-option:hover { border-color: var(--accent); transform: translateY(-2px); background: rgba(224,138,60,.04); }
 .hu-hp .hu-cta-option--primary {
   border-color: var(--accent);
   background: linear-gradient(180deg, rgba(224,138,60,.10), rgba(224,138,60,.02));
-  flex: 1.1;
+  padding: 28px 28px 24px;
 }
 .hu-hp .hu-cta-option--primary:hover { background: linear-gradient(180deg, rgba(224,138,60,.16), rgba(224,138,60,.04)); }
+.hu-hp .hu-cta-option--primary .hu-cta-option__title { font-size: 22px; }
+.hu-hp .hu-cta-option--primary .hu-cta-option__desc { font-size: 14px; }
+
+/* Final-CTA box: schmaler & visueller Schwerpunkt */
+.hu-hp #cta .hu-final-cta { max-width: 880px; margin: 0 auto; }
 .hu-hp .hu-cta-option__step {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 10px; letter-spacing: .18em; color: var(--accent); font-weight: 600;
@@ -895,27 +922,4 @@
   display: inline-flex; align-items: center; gap: 8px;
 }
 
-/* =============================================================
-   FOOTER
-   ============================================================= */
-.hu-hp .hu-footer { padding: 80px 0 40px; border-top: 1px solid var(--line); }
-.hu-hp .hu-footer__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; }
-@media (max-width: 880px) { .hu-hp .hu-footer__grid { grid-template-columns: 1fr 1fr; gap: 36px; } }
-@media (max-width: 520px) { .hu-hp .hu-footer__grid { grid-template-columns: 1fr; } }
-.hu-hp .hu-footer__brand { font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
-.hu-hp .hu-footer__rule { height: 1px; background: linear-gradient(90deg, var(--accent), transparent); width: 80px; margin: 14px 0; }
-.hu-hp .hu-footer__desc { color: var(--fg-3); font-size: 14px; line-height: 1.55; max-width: 36ch; margin-bottom: 24px; }
-.hu-hp .hu-footer__col h4 {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
-  color: var(--fg-3); font-weight: 500; margin: 0 0 18px;
-}
-.hu-hp .hu-footer__col a { display: block; color: var(--fg); font-size: 15px; padding: 6px 0; }
-.hu-hp .hu-footer__col a:hover { color: var(--accent); }
-.hu-hp .hu-footer__bottom {
-  margin-top: 64px; padding-top: 24px;
-  border-top: 1px solid var(--line);
-  display: flex; justify-content: space-between;
-  font-size: 13px; color: var(--fg-3);
-}
-@media (max-width: 520px) { .hu-hp .hu-footer__bottom { flex-direction: column; gap: 10px; } }
+/* Footer-Styles entfernt — die Seite nutzt den globalen Blocksy-Footer. */
