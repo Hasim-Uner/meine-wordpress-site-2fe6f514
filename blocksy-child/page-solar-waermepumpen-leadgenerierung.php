@@ -91,6 +91,44 @@ $journey_cards = [
 	],
 ];
 
+$system_pipeline = [
+	[
+		'stage'   => '01',
+		'title'   => 'Landingpage',
+		'action'  => 'Besucher kommt über Google, Ads oder Empfehlung auf Ihre Seite.',
+		'tech'    => 'WordPress',
+		'outcome' => 'Erster Eindruck in 8 Sekunden',
+	],
+	[
+		'stage'   => '02',
+		'title'   => 'Qualifizierung',
+		'action'  => '60-Sekunden-Funnel prüft Budget, Betriebsgröße und Bedarf — automatisch.',
+		'tech'    => 'React-Funnel',
+		'outcome' => 'Nur passende ICPs kommen durch',
+	],
+	[
+		'stage'   => '03',
+		'title'   => 'Segmentierung',
+		'action'  => 'n8n kategorisiert den Lead nach Region, Gewerk und Dringlichkeit.',
+		'tech'    => 'n8n',
+		'outcome' => 'Lead landet im richtigen CRM-Topf',
+	],
+	[
+		'stage'   => '04',
+		'title'   => 'Benachrichtigung',
+		'action'  => 'Vertrieb bekommt Slack/Email mit Lead-Score und Kontaktdaten — in Echtzeit.',
+		'tech'    => 'CRM + Mail',
+		'outcome' => 'Kein Lead liegt länger als 5 Minuten',
+	],
+	[
+		'stage'   => '05',
+		'title'   => 'Bewertung',
+		'action'  => 'Lead-Scoring priorisiert: Heiß, warm oder kalt. Vertrieb sieht auf einen Blick, wen er zuerst anruft.',
+		'tech'    => 'Scoring-Engine',
+		'outcome' => 'Abschlussquote steigt messbar',
+	],
+];
+
 $competitor_archetypes = [
 	[
 		'label'    => 'Lead-Broker',
@@ -290,6 +328,41 @@ get_header();
 					</div>
 
 				</div>
+			</div>
+		</section>
+
+		<section class="nx-section energy-section energy-pipeline-section" id="system-pipeline" aria-labelledby="pipeline-title">
+			<div class="nx-container">
+				<header class="energy-section__head energy-section__head--narrow">
+					<span class="nx-badge nx-badge--gold">System-Architektur</span>
+					<h2 id="pipeline-title">Das ist keine Website. Das ist eine Lead-Verarbeitungsmaschine.</h2>
+					<p>Sehen Sie den kompletten Weg einer Anfrage — von der Landung bis zur priorisierten Vertriebsübergabe. Jede Stufe automatisiert. Jede Stufe in Ihrem Eigentum.</p>
+				</header>
+
+				<div class="energy-pipeline" role="list" aria-label="Anfrage-Verarbeitungspipeline">
+					<?php foreach ( $system_pipeline as $index => $stage ) : ?>
+						<div class="energy-pipeline__stage" role="listitem">
+							<div class="energy-pipeline__stage-card">
+								<span class="energy-pipeline__stage-num"><?php echo esc_html( $stage['stage'] ); ?></span>
+								<h3 class="energy-pipeline__stage-title"><?php echo esc_html( $stage['title'] ); ?></h3>
+								<p class="energy-pipeline__stage-action"><?php echo esc_html( $stage['action'] ); ?></p>
+								<div class="energy-pipeline__stage-footer">
+									<span class="energy-pipeline__stage-tech"><?php echo esc_html( $stage['tech'] ); ?></span>
+									<span class="energy-pipeline__stage-outcome">→ <?php echo esc_html( $stage['outcome'] ); ?></span>
+								</div>
+							</div>
+							<?php if ( $index < count( $system_pipeline ) - 1 ) : ?>
+								<div class="energy-pipeline__connector" aria-hidden="true">
+									<svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+										<path d="M5 14h16M15 7l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+								</div>
+							<?php endif; ?>
+						</div>
+					<?php endforeach; ?>
+				</div>
+
+				<p class="energy-pipeline__aha">Der <strong>Aha-Moment</strong>: Während Ihre Wettbewerber jeden Lead einzeln abtelefonieren und hoffen, dass er passt, sortiert Ihr System automatisch vor. Sie rufen nur noch die an, die wirklich kaufen wollen — und zwar in der richtigen Reihenfolge.</p>
 			</div>
 		</section>
 
