@@ -15,14 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 $urls = function_exists( 'hu_home_urls' ) ? hu_home_urls() : [];
 
 $analysis_url        = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
-$demo_url            = home_url( '/energie-fahrplan-demo/' );
 $request_url         = $analysis_url;
 $diagnose_anchor     = '#diagnose';
 $primary_cta_label   = 'Anfrage-System-Analyse starten';
-$secondary_cta_label = 'EnergieFahrplan-Demo ansehen';
-$landing_asset_url   = trailingslashit( get_stylesheet_directory_uri() ) . 'assets/img/landing/';
 
 $e3_canon                  = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_case_url               = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : home_url( '/e3-new-energy/' );
 $e3_metrics                = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_case_label             = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
 $e3_lead_count             = $e3_metrics['lead_count']['display'] ?? '1.750+';
@@ -36,8 +34,12 @@ $e3_timeframe              = $e3_metrics['timeframe']['display'] ?? '9 Monate';
 $e3_timeframe_dative       = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten';
 $e3_timeframe_value        = $e3_metrics['timeframe']['counter_target'] ?? '9';
 
-$slots_total  = 4;
-$slots_booked = 3;
+$founding_canon   = function_exists( 'hu_founding_canon' ) ? hu_founding_canon() : [];
+$slots_total      = isset( $founding_canon['slots_total'] ) ? (int) $founding_canon['slots_total'] : 3;
+$slots_remaining  = isset( $founding_canon['slots_remaining'] ) ? (int) $founding_canon['slots_remaining'] : 3;
+$slots_booked     = max( 0, $slots_total - $slots_remaining );
+$founding_label   = isset( $founding_canon['label'] ) ? (string) $founding_canon['label'] : 'Founding Cohort 2026';
+$founding_frame   = isset( $founding_canon['public_frame'] ) ? (string) $founding_canon['public_frame'] : '3 Plätze für 2026';
 
 $faq_items = [
 	[
@@ -60,22 +62,11 @@ get_header();
 		<section id="hero" class="wp-hero cro-hero cro-hero--executive" data-track-section="homepage_hero">
 			<div class="wp-container wp-home-shell cro-hero__shell">
 				<div class="cro-hero__copy">
-					<span class="wp-badge">SHK Anfrage-System für Founding-Partner 2026</span>
-					<h1 class="wp-hero-title cro-hero__title">Solar- und Wärmepumpen-Anfragen, die Ihrem Betrieb gehören.</h1>
+					<span class="wp-badge">Eigenes Anfrage-System für Founding-Partner 2026</span>
+					<h1 class="wp-hero-title cro-hero__title">Ein eigenes Anfrage-System statt Portal-Miete.</h1>
 					<p class="cro-hero__sub">
-						<?php echo esc_html( sprintf( '%1$s weniger Kosten pro Anfrage in %2$s — Referenz %3$s. Eigenes Anfrage-System statt Portal-Abhängigkeit, mit Analyse vor Umsetzung.', $e3_cpl_conservative, $e3_timeframe_dative, $e3_case_label ) ); ?>
+						<?php echo esc_html( sprintf( 'Für Solar- und Wärmepumpen-Betriebe, die Nachfrage nicht nur einkaufen, sondern besitzen wollen. Referenz %1$s: %2$s qualifizierte Anfragen, %3$s Abschlussquote und %4$s weniger Kosten pro Anfrage.', $e3_case_label, $e3_lead_count, $e3_sales_conversion, $e3_cpl_conservative ) ); ?>
 					</p>
-
-					<?php
-					if ( function_exists( 'hu_render_founding_cohort_block' ) ) {
-						echo hu_render_founding_cohort_block(
-							[
-								'variant' => 'compact',
-								'id'      => 'founding-cohort-home',
-							]
-						); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					}
-					?>
 
 					<div class="cro-hero__kpi-ribbon" role="list" aria-label="Kennzahlen aus der Referenz E3 New Energy">
 						<div class="cro-hero__kpi" role="listitem">
@@ -94,42 +85,83 @@ get_header();
 
 					<div class="cro-hero__cta-stack">
 						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_hero_analysis" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
-						<a href="<?php echo esc_url( $demo_url ); ?>" class="cro-hero__cta-secondary" data-track-action="cta_home_hero_demo" data-track-category="lead_gen"><?php echo esc_html( $secondary_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $e3_case_url ); ?>" class="cro-hero__cta-secondary" data-track-action="cta_home_hero_e3_case" data-track-category="lead_gen">E3 Proof ansehen</a>
 					</div>
 
 					<div class="cro-hero__trust" aria-label="Vertrauenssignale">
-						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span><?php echo esc_html( $e3_timeframe ); ?> Track Record</span>
+						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span><?php echo esc_html( $e3_timeframe ); ?> Referenzzeitraum</span>
 						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span>Ohne Kontaktdaten im ersten Schritt</span>
-						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span>Showroom zuerst, Übergabe später</span>
+						<span class="cro-hero__trust-item"><span class="cro-hero__trust-dot" aria-hidden="true"></span>Analyse vor Umsetzung</span>
 					</div>
 				</div>
 
-				<div class="cro-hero__control" aria-label="Anfrage-System Status">
-					<div class="cro-control-card">
-						<div class="cro-control-card__head">
-							<span>Lead-Control</span>
-							<strong>Eigentum</strong>
+				<div class="cro-hero__system" aria-label="Skizze eines eigenen Anfrage-Systems">
+					<div class="cro-system-visual">
+						<div class="cro-system-visual__head">
+							<span>Anfrage-System</span>
+							<strong>Vom Marktchaos zur qualifizierten Anfrage</strong>
 						</div>
-						<div class="cro-control-card__rows">
-							<div class="cro-control-card__row">
-								<span>Portal-Lead geteilt</span>
-								<strong>blockiert</strong>
-								<i style="--bar-width: 26%"></i>
+
+						<div class="cro-system-visual__map">
+							<div class="cro-system-visual__lane cro-system-visual__lane--market">
+								<span class="cro-system-visual__lane-label">Markt</span>
+								<div class="cro-system-visual__signal is-risk">
+									<strong>Portal-Lead</strong>
+									<span>kennt das Portal, nicht den Betrieb</span>
+								</div>
+								<div class="cro-system-visual__signal is-risk">
+									<strong>Google Ads</strong>
+									<span>Budget ohne klare Anfragequalität</span>
+								</div>
+								<div class="cro-system-visual__signal">
+									<strong>Empfehlung</strong>
+									<span>Vertrauen ohne skalierbaren Prozess</span>
+								</div>
 							</div>
-							<div class="cro-control-card__row">
-								<span>Budget unklar</span>
-								<strong>gebremst</strong>
-								<i style="--bar-width: 42%"></i>
+
+							<div class="cro-system-visual__node" aria-label="Anfrage-System-Analyse">
+								<span>Analyse</span>
+								<strong>Fit prüfen</strong>
+								<small>grün / gelb / rot</small>
 							</div>
-							<div class="cro-control-card__row">
-								<span>Solar + WP Hybrid</span>
-								<strong>priorisiert</strong>
-								<i style="--bar-width: 88%"></i>
+
+							<div class="cro-system-visual__lane cro-system-visual__lane--system">
+								<span class="cro-system-visual__lane-label">Eigenes System</span>
+								<div class="cro-system-visual__module">
+									<strong>Positionierung</strong>
+									<span>Region, Angebot, Zielkunde</span>
+								</div>
+								<div class="cro-system-visual__module">
+									<strong>Funnel</strong>
+									<span>Vorqualifizierung ohne Formularballast</span>
+								</div>
+								<div class="cro-system-visual__module">
+									<strong>Tracking</strong>
+									<span>Anfragequalität statt Klickberichte</span>
+								</div>
 							</div>
-							<div class="cro-control-card__row">
-								<span>Entscheider bestätigt</span>
-								<strong>Analyse</strong>
-								<i style="--bar-width: 96%"></i>
+						</div>
+
+						<div class="cro-system-visual__request">
+							<div>
+								<span>Qualifizierte Anfrage</span>
+								<strong>Solar + Wärmepumpe &middot; Region passt &middot; Projektwert klar</strong>
+							</div>
+							<small>CRM-ready erst nach Consent und Contract</small>
+						</div>
+
+						<div class="cro-system-visual__proof" role="list" aria-label="Proof aus E3 New Energy">
+							<div role="listitem">
+								<strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong>
+								<span>Kosten/Anfrage</span>
+							</div>
+							<div role="listitem">
+								<strong><?php echo esc_html( $e3_lead_count ); ?></strong>
+								<span>Anfragen</span>
+							</div>
+							<div role="listitem">
+								<strong><?php echo esc_html( $e3_sales_conversion ); ?></strong>
+								<span>Abschluss</span>
 							</div>
 						</div>
 					</div>
@@ -148,20 +180,20 @@ get_header();
 				<div class="cro-pain__grid">
 					<article class="cro-pain__card cro-reveal">
 						<span class="cro-pain__damage">~ 4.800&nbsp;&euro; / Monat</span>
-						<h3 class="cro-pain__title">Portal-Leads, die Ihrem Betrieb nicht gehören</h3>
-						<p class="cro-pain__text">Geteilte Kontakte, schwankende Qualität und kein eigener Kanal &mdash; Nachfrage bleibt gemietet.</p>
+						<h3 class="cro-pain__title">Portal-Leads, die keine Beziehung aufbauen</h3>
+						<p class="cro-pain__text">Der Interessent kennt den Marktplatz, nicht Ihre Firma. Ihr Vertrieb startet jedes Gespräch bei null.</p>
 					</article>
 
 					<article class="cro-pain__card cro-reveal">
 						<span class="cro-pain__damage">Blindflug</span>
-						<h3 class="cro-pain__title">Kein Kanal-Klarbild</h3>
-						<p class="cro-pain__text">Welche Kampagne bringt Termine, welche nur Klicks? Ohne Tracking entscheiden Sie nach Bauchgefühl &mdash; das skaliert nicht.</p>
+						<h3 class="cro-pain__title">Keine klare Anfragequalität</h3>
+						<p class="cro-pain__text">Klicks, Leads und Termine liegen oft in getrennten Systemen. Dadurch bleibt unklar, welcher Kanal echten Umsatz vorbereitet.</p>
 					</article>
 
 					<article class="cro-pain__card cro-reveal">
 						<span class="cro-pain__damage">Seit 2024</span>
-						<h3 class="cro-pain__title">Anfragen kommen nicht mehr von allein</h3>
-						<p class="cro-pain__text">Der Solar-Boom ist vorbei. Wer kein eigenes System hat, ist auf Portale angewiesen &mdash; mit jedem Quartal teurer.</p>
+						<h3 class="cro-pain__title">Der Boom trägt schwächere Systeme nicht mehr</h3>
+						<p class="cro-pain__text">Wenn Nachfrage härter umkämpft ist, reicht eine schöne Website nicht. Es braucht einen eigenen Qualifizierungsweg.</p>
 					</article>
 				</div>
 
@@ -201,7 +233,7 @@ get_header();
 							<li>Vorqualifizierte Anfragewege unter eigener Kontrolle</li>
 							<li>Messbare Kanal-Ebene nach sauberem Consent-Setup</li>
 							<li>Money Pages und Proof als bleibende Assets</li>
-							<li>Skalierbar ohne CPL-Explosion</li>
+							<li>Skalierbar ohne Kostenexplosion pro Anfrage</li>
 						</ul>
 					</article>
 				</div>
@@ -235,12 +267,43 @@ get_header();
 		<section class="cro-command" data-track-section="homepage_command">
 			<div class="wp-container wp-home-shell cro-command__grid">
 				<div class="cro-command__media cro-reveal">
-					<img src="<?php echo esc_url( $landing_asset_url . 'shk-owner-consultation.webp' ); ?>" alt="SHK Beratung zu Solar- und Wärmepumpe als hochwertiges Anfrage-System" loading="lazy" decoding="async">
+					<div class="cro-deliverable" aria-label="Bestandteile des Anfrage-Systems">
+						<div class="cro-deliverable__header">
+							<span>Was entsteht</span>
+							<strong>Eigener Anfrage-Motor</strong>
+						</div>
+						<div class="cro-deliverable__stack">
+							<div class="cro-deliverable__item">
+								<span>01</span>
+								<strong>Positionierung</strong>
+								<small>Region, Angebot, Zielkunde, Einwand</small>
+							</div>
+							<div class="cro-deliverable__item">
+								<span>02</span>
+								<strong>Money Page</strong>
+								<small>Proof, Nutzenbild, Entscheider-Logik</small>
+							</div>
+							<div class="cro-deliverable__item">
+								<span>03</span>
+								<strong>Funnel</strong>
+								<small>Vorqualifizierung statt Formularballast</small>
+							</div>
+							<div class="cro-deliverable__item">
+								<span>04</span>
+								<strong>Messung</strong>
+								<small>Anfragequalität, Kosten, Abschlussfähigkeit</small>
+							</div>
+						</div>
+						<div class="cro-deliverable__outcome">
+							<span>Output</span>
+							<strong>Qualifizierte Anfrage statt anonymer Lead</strong>
+						</div>
+					</div>
 				</div>
 				<div class="cro-command__copy cro-reveal">
 					<span class="wp-badge">Eigener Akquise-Kontrollraum</span>
-					<h2 class="wp-section-h2">Es soll nicht wie eine schöne Website wirken. Es soll wie ein eigenes Vertriebssystem wirken.</h2>
-					<p>Die Landingpage verkauft nicht direkt in ein generisches Gespräch. Sie führt passende Betriebe in die Anfrage-System-Analyse und bremst unpassende Fälle, bevor Zeit im Vertrieb gebunden wird.</p>
+					<h2 class="wp-section-h2">Der Nutzer soll nicht &bdquo;schöne Website&ldquo; denken. Er soll sehen, wie eigene Nachfrage entsteht.</h2>
+					<p>Die Startseite verkauft kein loses Webdesign. Sie zeigt ein Anfrage-System: Markt einordnen, Betrieb positionieren, Nachfrage vorqualifizieren und passende Fälle in die Analyse führen.</p>
 					<ul class="cro-command__list" aria-label="Systemprinzipien">
 						<li>Eigene Domain und eigene Positionierung statt Portal-Vergleich.</li>
 						<li>Qualifizierung vor Kontakt, Umsetzung erst nach grünem oder gelbem Fit.</li>
@@ -248,7 +311,7 @@ get_header();
 					</ul>
 					<div class="cro-command__actions">
 						<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_home_command_analysis" data-track-category="lead_gen"><?php echo esc_html( $primary_cta_label ); ?></a>
-						<a href="<?php echo esc_url( $demo_url ); ?>" class="cro-hero__cta-secondary" data-track-action="cta_home_command_demo" data-track-category="lead_gen">Showroom ansehen</a>
+						<a href="<?php echo esc_url( $e3_case_url ); ?>" class="cro-hero__cta-secondary" data-track-action="cta_home_command_e3_case" data-track-category="lead_gen">E3 Proof ansehen</a>
 					</div>
 				</div>
 			</div>
@@ -304,7 +367,30 @@ get_header();
 
 				<div class="cro-system__layout">
 					<div class="cro-system__media cro-reveal">
-						<img src="<?php echo esc_url( $landing_asset_url . 'shk-system-board.webp' ); ?>" alt="Systemboard für SHK Anfrage-Qualifizierung" loading="lazy" decoding="async">
+						<div class="cro-build-visual" aria-label="Ablauf vom Marktbild zur Umsetzung">
+							<div class="cro-build-visual__phase">
+								<span>Analyse</span>
+								<strong>Marktbild + Fit-Ampel</strong>
+							</div>
+							<div class="cro-build-visual__phase">
+								<span>Architektur</span>
+								<strong>Seite + Funnel + Tracking</strong>
+							</div>
+							<div class="cro-build-visual__phase">
+								<span>Umsetzung</span>
+								<strong>Eigenes Anfrage-System</strong>
+							</div>
+							<div class="cro-build-visual__metrics">
+								<div>
+									<strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong>
+									<span>Kosten pro Anfrage</span>
+								</div>
+								<div>
+									<strong><?php echo esc_html( $e3_timeframe ); ?></strong>
+									<span>Referenzzeitraum</span>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="cro-timeline" role="list" aria-label="Drei aufeinander aufbauende Schritte">
 						<article class="cro-timeline__step cro-reveal" role="listitem">
@@ -421,14 +507,14 @@ get_header();
 					<h2 class="cro-final__title">Mit Analyse starten.</h2>
 					<p class="cro-final__lead">Der nächste Schritt ist kein generisches Verkaufsgespräch, sondern die Anfrage-System-Analyse mit lokaler Fit-Einordnung.</p>
 
-					<div class="cro-slot-bar" aria-label="Slot-Verfügbarkeit Q2 2026">
+					<div class="cro-slot-bar" aria-label="Slot-Verfügbarkeit Founding Cohort 2026">
 						<div class="cro-slot-bar__label">
-							<span>Q2 2026 Slots</span>
-							<span><span class="cro-slot-bar__count"><?php echo esc_html( $slots_booked ); ?></span> von <?php echo esc_html( $slots_total ); ?> vergeben</span>
+							<span><?php echo esc_html( $founding_label ); ?></span>
+							<span><span class="cro-slot-bar__count"><?php echo esc_html( $slots_remaining ); ?></span> von <?php echo esc_html( $slots_total ); ?> frei</span>
 						</div>
 						<div class="cro-slot-bar__track" aria-hidden="true">
 							<?php for ( $i = 1; $i <= $slots_total; $i++ ) : ?>
-								<span class="cro-slot-bar__seg<?php echo $i <= $slots_booked ? ' is-booked' : ''; ?>"></span>
+								<span class="cro-slot-bar__seg<?php echo $i > $slots_booked ? ' is-available' : ''; ?>"></span>
 							<?php endfor; ?>
 						</div>
 					</div>
@@ -439,7 +525,7 @@ get_header();
 					</div>
 
 					<p class="cro-final__risk-reversal">
-						<span>Lokales Ergebnis</span>
+						<span><?php echo esc_html( $founding_frame ); ?></span>
 						<span>Ohne E-Mail im ersten Schritt</span>
 						<span>Grün, gelb oder rot</span>
 					</p>
