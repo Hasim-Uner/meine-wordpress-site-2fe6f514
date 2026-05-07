@@ -1,6 +1,6 @@
 # Live Status
 
-Stand: 2026-05-05.
+Stand: 2026-05-07.
 
 Basis dieses Status:
 
@@ -59,7 +59,7 @@ Nicht verifiziert:
 
 ## In Arbeit
 
-- `/anfrage-system-analyse/` ist repo-seitig als noindex React-Funnel-Form öffentlich aktiv (`HU_FEATURE_REQUEST_ANALYSIS_ROUTE=true`). `/readiness-diagnose/` wird als Legacy-Route per 301 weitergeleitet. Die App baut nach `blocksy-child/readiness/dist/` und führt lokal durch acht Diagnosekapitel mit Pflichtfeldprüfung, Fit-Scoring und Ergebnis grün/gelb/rot. Die UX läuft jetzt als kompakter Auto-Advance-Ein-Frage-Flow: Optionsantworten öffnen nach kurzer Auswahlbestätigung automatisch die nächste Frage, Buttons bleiben nur für Texteingaben und das lokale Ergebnis sichtbar. Der bestehende Submit-Contract `readiness-diagnosis-payload.v1` bleibt bis zur nächsten Contract-Version intern stabil; `HU_FEATURE_READINESS_SUBMIT=false` bleibt der Default. Es gibt keinen n8n-Submit, keinen CRM-Write und keine E-Mail-Abfrage im Default-Pfad.
+- `/anfrage-system-analyse/` ist repo-seitig als noindex React-Funnel-Form öffentlich aktiv (`HU_FEATURE_REQUEST_ANALYSIS_ROUTE=true`). `/readiness-diagnose/` wird als Legacy-Route per 301 weitergeleitet. Die App baut nach `blocksy-child/readiness/dist/` und führt lokal durch acht Diagnosekapitel mit Pflichtfeldprüfung, Fit-Scoring und Ergebnis grün/gelb/rot. Die UX läuft als kompakter Auto-Advance-Ein-Frage-Flow: Optionsantworten öffnen nach kurzer Auswahlbestätigung automatisch die nächste Frage, Buttons bleiben nur für Texteingaben und das lokale Ergebnis sichtbar. Der Kontakt-Schritt ist über `/wp-json/nexus/v1/analysis-submit` aktiv (`HU_FEATURE_READINESS_SUBMIT=true`): Nach Einwilligung werden Name, Firma, E-Mail, Ergebnis und Antworten in `nexus_contact` mit Segment `analysis_lead` gespeichert; die zentrale Brevo-/`wp_mail`-Schicht versendet Admin-Benachrichtigung und Lead-Bestätigung. n8n ist für diese Route weiterhin nicht angebunden. Live-Verifikation am 2026-05-07: Route `HTTP 200`, REST-`POST` validiert, öffentlicher Mail-Diagnose-Endpunkt meldet Brevo API aktiv.
 - Das Repo wird gerade von einem Theme-Repo zu einem Website Operating System erweitert.
 - `page-wgos.php` bleibt template-driven; eine spaetere Auslagerung des Content-Layers in Editor oder ACF ist weiter offen.
 - WGOS Asset-Detailseiten laufen jetzt ueber den hierarchischen CPT `wgos_asset` mit ACF-Meta und Single-Template; die redaktionelle Befuellung der Spokes passiert weiter im WordPress-Admin.

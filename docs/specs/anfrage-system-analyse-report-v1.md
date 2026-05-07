@@ -1,6 +1,6 @@
 # Anfrage-System-Analyse Report v1
 
-Status: defined-local-result
+Status: defined-local-result-with-contact-submit
 Owner: Repo / Funnel
 Input-Spec: `docs/specs/anfrage-system-analyse-form-v1.md`
 Runtime: `blocksy-child/readiness/src/App.tsx`
@@ -15,7 +15,8 @@ Der Report entscheidet nicht über einen Verkauf. Er ordnet ein, ob ein eigener 
 
 - WordPress bleibt das Hauptsystem für Route, SEO, Consent-Grenzen und spätere REST-Schicht.
 - React berechnet in v1 nur ein lokales Ergebnis im Browser.
-- Der Default-Pfad sendet keine Daten an n8n, CRM, E-Mail-Systeme oder externe Webhooks.
+- Der Default-Fragepfad sendet keine Daten an n8n, CRM, E-Mail-Systeme oder externe Webhooks.
+- Der separate Kontakt-Schritt sendet nach Einwilligung Name, Firma, E-Mail, Ergebnis und Antworten an WordPress REST, speichert in `nexus_contact` und triggert die zentrale Transaktionsmail-Schicht.
 - Der Report enthält keine Namen, E-Mail-Adressen, Telefonnummern, Volladressen oder personenbezogenen Endkundendaten.
 - E3-Proof-Zahlen dürfen in Report-Kontexten nur über `blocksy-child/inc/canon/e3-proof-canon.php` verwendet werden.
 
@@ -146,8 +147,8 @@ Diese Struktur ist die Zielstruktur für eine spätere REST- und n8n-Anbindung. 
   "privacy": {
     "default_path_contains_personal_data": false,
     "submitted_to_n8n": false,
-    "crm_write": false,
-    "email_requested": false
+    "crm_write_after_consent": true,
+    "transactional_email_after_consent": true
   }
 }
 ```

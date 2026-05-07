@@ -1,6 +1,6 @@
 # Privacy
 
-Stand: 2026-05-04
+Stand: 2026-05-07
 
 ## Anfrage-System-Analyse
 
@@ -8,7 +8,7 @@ Die Anfrage-System-Analyse ist ein eigener Verarbeitungsvorgang. Sie dient der e
 
 ## Verarbeitete Daten
 
-Der Default-Pfad verarbeitet nur grobe Betriebs- und Selbstauskunftsdaten:
+Der Default-Fragepfad verarbeitet im Browser nur grobe Betriebs- und Selbstauskunftsdaten:
 
 - Branche
 - Mitarbeiter-Range
@@ -18,10 +18,9 @@ Der Default-Pfad verarbeitet nur grobe Betriebs- und Selbstauskunftsdaten:
 - Werbebudget-Range
 - Selbstauskunft zu Tracking, CRM, Consent Mode, serverseitigem Tracking und Meta CAPI
 - Selbstauskunft zu Lead-Volumen, Lead-Qualität und Engpass
-- Session-basierte Attribution aus `NexusCore.getLeadAttributionPayload()`
 - UTM-Parameter, Referrer und Click-IDs, falls vorhanden
 
-## Nicht verarbeitete Daten im Default-Pfad
+## Nicht verarbeitete Daten im Default-Fragepfad
 
 - kein Klarname
 - keine Telefonnummer
@@ -32,40 +31,35 @@ Der Default-Pfad verarbeitet nur grobe Betriebs- und Selbstauskunftsdaten:
 
 ## Consent-Logik
 
-Der Submit-Schritt braucht eine sichtbare Zustimmung direkt im Analyse-Formular. Es gibt keinen globalen Banner als Ersatz für diese Zustimmung.
+Der Kontakt-Submit braucht eine sichtbare Zustimmung direkt im Analyse-Formular. Es gibt keinen globalen Banner als Ersatz für diese Zustimmung.
 
-Der Payload speichert:
+Der aktuelle WordPress-REST-Submit speichert nach Einwilligung:
 
-- `consent.privacy_processing_accepted`
-- `consent.timestamp`
-- `consent.text_version`
-- `consent.text_hash`
-- `consent.marketing`
-- `consent.analytics`
+- Name
+- Firma
+- E-Mail-Adresse
+- lokales Analyse-Ergebnis
+- Antworten aus dem Fragepfad
+- optionale Website-URL
+- UTM-Parameter und Click-IDs, falls vorhanden
 
-Marketing und Analytics bleiben im Default-Pfad `false`, solange keine eigene Zustimmung vorliegt.
+Marketing und Analytics bleiben im Default-Fragepfad ausgenommen, solange keine eigene Zustimmung vorliegt.
 
-## Optionale E-Mail-Zustellung
+## Transaktionsmail
 
-Eine E-Mail-Adresse ist nur erlaubt, wenn der Geschäftsführer den Befund per E-Mail wünscht. Dann wird das optionale `delivery`-Objekt gesendet.
+Nach erfolgreichem Kontakt-Submit versendet die zentrale Mail-Schicht:
 
-`delivery` braucht einen eigenen Consent mit:
+- eine interne Admin-Benachrichtigung
+- eine Lead-Bestätigung an die angegebene E-Mail-Adresse
 
-- `delivery.consent.email_delivery_accepted`
-- `delivery.consent.timestamp`
-- `delivery.consent.text_version`
-- `delivery.consent.text_hash`
-
-Telefonnummern und Klarnamen bleiben auch in diesem Pfad ausgeschlossen.
+Telefonnummern bleiben ausgeschlossen. Klarnamen sind nur im Kontakt-Schritt nach Einwilligung erlaubt.
 
 ## n8n-Retention
 
-Analyse-Intakes dürfen in n8n maximal 30 Tage gespeichert werden. Danach werden sie gelöscht oder so anonymisiert, dass kein Rückschluss auf den konkreten Betrieb möglich ist.
-
-Der aktive n8n-Branch darf nicht mehr Daten speichern, als im Contract `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` erlaubt sind.
+n8n ist für die Anfrage-System-Analyse aktuell nicht angebunden. Falls später ein n8n-Branch aktiviert wird, dürfen Analyse-Intakes dort maximal 30 Tage gespeichert werden. Danach werden sie gelöscht oder so anonymisiert, dass kein Rückschluss auf den konkreten Betrieb möglich ist.
 
 ## Auftragsverarbeitung
 
-n8n ist für diesen Prozess Workflow-Engine und technischer Empfänger des Payloads. Brevo, CRM oder weitere Systeme dürfen erst angebunden werden, wenn der konkrete Zustellweg dokumentiert ist.
+WordPress ist für diesen Prozess Website, REST-Empfänger und CRM-Speicher (`nexus_contact`). Brevo ist für Transaktionsmails angebunden. n8n ist kein aktiver Empfänger dieses Payloads.
 
 Kein neuer Drittland-Default wird durch die Anfrage-System-Analyse eingeführt.

@@ -1,6 +1,6 @@
 # System Map
 
-Stand: 2026-05-04. Diese Karte basiert auf dem Repo-Inhalt, nicht auf einer Live-Verifikation externer Systeme.
+Stand: 2026-05-07. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der Anfrage-System-Analyse-Route.
 
 ## Hauptsysteme
 
@@ -9,7 +9,7 @@ Stand: 2026-05-04. Diese Karte basiert auf dem Repo-Inhalt, nicht auf einer Live
 | Website | deploybarer WordPress-Theme-Code | `blocksy-child/`, `.github/workflows/ci.yml`, `.github/workflows/deploy.yml`, `docs/architecture/DEPLOYMENT.md` | WordPress, Blocksy Parent Theme, ACF | live |
 | Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
 | Growth-Audit-Legacypfad | sekundäre Instant-Diagnose und Rückführung in qualifizierte Anfragepfade, kein Hauptfunnel | `blocksy-child/page-audit.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/review-funnel.js`, `blocksy-child/assets/js/energy-intake.js`, `blocksy-child/assets/js/cal-embed.js`, `blocksy-child/inc/review-crm.php`, `docs/systems/audit-funnel.md` | n8n Webhook, WordPress, Cal.com, optional WordPress CRM auf Legacy-/Branchenpfaden | live als Sekundär-/Legacy-Route |
-| Nexus CRM & Blog Notify | gemeinsames CRM fuer Audit-, Folgeanalyse-, Umsetzungs- und Bestandskunden-Anfragen plus DOI- und Artikel-Mail-Logik | `blocksy-child/inc/crm.php`, `blocksy-child/inc/blog-notify.php`, `blocksy-child/template-parts/blog-notify.php`, `blocksy-child/page-blog-notify.php`, `docs/systems/blog-notify.md` | WordPress CPT/Meta, WordPress REST, wp_mail, Brevo | repo-seitig live, End-to-End offen |
+| Nexus CRM & Blog Notify | gemeinsames CRM für Analyse-Leads, Audit-, Folgeanalyse-, Umsetzungs- und Bestandskunden-Anfragen plus DOI- und Artikel-Mail-Logik | `blocksy-child/inc/crm.php`, `blocksy-child/inc/analysis-intake.php`, `blocksy-child/inc/blog-notify.php`, `blocksy-child/template-parts/blog-notify.php`, `blocksy-child/page-blog-notify.php`, `docs/systems/blog-notify.md` | WordPress CPT/Meta, WordPress REST, wp_mail, Brevo | repo-seitig live; Analyse-REST und Brevo-Konfiguration am 2026-05-07 verifiziert |
 | SEO Cockpit | Search-Console-basiertes SEO-Dashboard mit optionalem Koko- und Audit-Lead-Layer | `blocksy-child/inc/seo-cockpit.php`, `blocksy-child/assets/css/seo-cockpit-admin.css`, `docs/systems/seo-cockpit.md` | Google Search Console API, optional Koko Analytics, Nexus CRM / Audit-CRM | repo-seitig vorbereitet, OAuth und Live-Daten offen |
 | Tracking | Tracking-ready Markup, CTA-Events, SEO-/Schema-Layer | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/seo-meta.php`, `blocksy-child/inc/org-schema.php`, Templates mit `data-track-*` | GTM, sGTM, GA4, Consent Mode v2, Meta CAPI | teils im Repo, teils extern |
 | CTA- und Leadflow | CTA-Hierarchie vom ersten Besuch bis zur Diagnose, Folgeeinordnung und Qualifizierung | `blocksy-child/inc/shortcodes.php`, `blocksy-child/template-parts/footer-cta.php`, `blocksy-child/template-parts/trust-section.php`, Service-Templates | WordPress-Editor, Audit-Funnel, Cal.com, CRM | live |
@@ -17,7 +17,7 @@ Stand: 2026-05-04. Diese Karte basiert auf dem Repo-Inhalt, nicht auf einer Live
 | Content- und SEO-System | Blog, Pillar-Hubs, Cornerstone-Content, interne Verlinkung | `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/page-seo-cornerstone.php`, `content/blog-drafts/` | WordPress-Editor | live plus Ausbau |
 | Client Portal | Kunden-Cockpit mit Login, Upload und Roadmap-Slots | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, Media Library | live, aber aktuell mit Mock-Daten |
 | n8n-Automationen | Workflow-Logik für aktiven Legacy-Audit und spätere Analyse-/Routing-/Nurture-Schritte hinter Contract, Consent und Feature-Flag | `automations/n8n/`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/assets/js/audit-live.js` | n8n auf `n8n.hasimuener.de`, CRM, Mail, evtl. Sheets | Legacy-Audit aktiv; Anfrage-System-Analyse noch nicht angebunden |
-| Anfrage-System-Analyse | evidenzbasierter Founding-Partner-Fitcheck mit Marktbild, lokaler Auswertung und Privacy-first Submit-Grenze | `blocksy-child/readiness/`, `blocksy-child/page-readiness-diagnose.php`, `blocksy-child/inc/anfrage-system-analyse-page.php`, `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json`, `docs/architecture/PRIVACY.md` | WordPress, React-Mikro-App im Theme; n8n/CRM erst später hinter Contract, Consent und Feature-Flag | repo-seitig als 8-Schritt-Form aktiv, `/readiness-diagnose/` als Legacy-Redirect, Submit deaktiviert |
+| Anfrage-System-Analyse | evidenzbasierter Founding-Partner-Fitcheck mit Marktbild, lokaler Auswertung und Consent-basiertem Kontakt-Submit | `blocksy-child/readiness/`, `blocksy-child/page-readiness-diagnose.php`, `blocksy-child/inc/anfrage-system-analyse-page.php`, `blocksy-child/inc/analysis-intake.php`, `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json`, `docs/architecture/PRIVACY.md` | WordPress, React-Mikro-App im Theme, Nexus CRM, Brevo; n8n nicht angebunden | repo-seitig als 8-Schritt-Form aktiv, `/readiness-diagnose/` als Legacy-Redirect, WordPress-REST-Submit aktiv |
 | EnergieFahrplan Demo | interaktive Showroom-Demo für Anfrageprozess, lokale Berechnung und PDF-Ausgabe; kein SaaS | `blocksy-child/energie-fahrplan/`, `blocksy-child/page-energie-fahrplan-demo.php`, `blocksy-child/inc/energy-demo-page.php` | Browser-PDF via `jspdf`/`html2canvas`; kein CRM-, E-Mail- oder n8n-Submit | repo-seitig eingebettet, virtuelle Route aktiv |
 | Agenten- und Prompt-System | Kontext, Guardrails, Skills und minimale Legacy-Briefings | `AGENTS.md`, `agents/skills/`, `prompts/README.md` | keine direkte Laufzeitabhaengigkeit | in Aufbau |
 
@@ -62,7 +62,7 @@ Systemische Rolle:
 
 ## n8n-Automationen
 
-Im Repo liegen erste n8n-Artefakte, aber n8n ist nicht der Default-Backend-Pfad der Anfrage-System-Analyse. Die neue Analyse bleibt lokal, bis Contract, Consent-UI, WordPress-REST-Schicht und Feature-Flag freigegeben sind. Die Rolle von n8n ist aktuell getrennt:
+Im Repo liegen erste n8n-Artefakte, aber n8n ist nicht der Backend-Pfad der Anfrage-System-Analyse. Die neue Analyse nutzt lokal berechnetes Scoring und erst im separaten Kontakt-Schritt WordPress REST, Nexus CRM und Brevo. Die Rolle von n8n ist aktuell getrennt:
 
 - aktiver Instant-Results-Layer für den Growth-Audit-Legacypfad über `https://n8n.hasimuener.de/webhook/audit` plus `https://n8n.hasimuener.de/webhook/audit-status`, mit `https://n8n.hasimuener.de/webhook/cja-analyze` als Legacy-Fallback
 - künftiges Lead-Routing und Nurture erst nach Contract-, Consent- und Feature-Flag-Freigabe
@@ -79,10 +79,13 @@ Anfrage-System-Analyse:
 - Route: `/anfrage-system-analyse/`
 - Legacy: `/readiness-diagnose/` leitet per 301 weiter
 - Contract: `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt bis zur nächsten Contract-Version intern stabil
-- Status: lokale 8-Schritt-React-App ohne Submit
-- n8n-Route: erst nach neuer Contract-/Consent-/Feature-Flag-Freigabe
-- Default: kein Klarname, keine Telefonnummer, keine E-Mail, keine personenbezogenen Endkundendaten
-- Retention: für den Default-Pfad nicht anwendbar, weil nichts an n8n gesendet wird
+- Status: lokale 8-Schritt-React-App plus Kontakt-Submit nach Einwilligung
+- WordPress REST: `/wp-json/nexus/v1/analysis-submit`
+- CRM: `nexus_contact`, Segment `analysis_lead`
+- Mail: interne Admin-Benachrichtigung und Lead-Bestätigung über zentrale Brevo-/`wp_mail`-Schicht
+- n8n-Route: nicht angebunden; erst nach neuer Contract-/Consent-/Feature-Flag-Freigabe
+- Default-Fragepfad: kein Klarname, keine Telefonnummer, keine E-Mail, keine personenbezogenen Endkundendaten
+- Retention: für n8n nicht anwendbar, weil nichts an n8n gesendet wird
 
 Bekannte technische Touchpoints:
 

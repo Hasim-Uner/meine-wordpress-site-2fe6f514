@@ -56,7 +56,7 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 |---|---|---|
 | E3-Zahlen-Drift in Templates, Meta, Shortcodes und Docs. | Falsche Proof-Zahlen schwächen Vertrauen und koennen in Calls sofort auffallen. | `blocksy-child/inc/canon/e3-proof-canon.php` plus Lint; alle E3-Ausgaben auf Getter umstellen. |
 | `readiness`-Namen in Pfaden und Feature-Flag. | Interne Semantik kann Agenten und spaetere PRs wieder in die alte Diagnose-Logik ziehen. | Kurzfristig dokumentieren; mittelfristig `request-analysis`-Contract und Flag einfuehren. |
-| Analyse-App ist jetzt ein lokales 8-Schritt-Formular ohne Submit. | Der wichtigste Einstieg liefert eine erste Fit-Einordnung, aber noch keinen serverseitigen Befund. | Report-Spec ist definiert; serverseitiges Scoring, Consent-Block und Submit-Grenze als nächste Schicht bauen. |
+| Analyse-App ist jetzt ein lokales 8-Schritt-Formular mit separatem Kontakt-Submit. | Der wichtigste Einstieg liefert eine erste Fit-Einordnung und kann nach Einwilligung einen CRM-/Mail-Kontakt erzeugen, aber noch keinen serverseitigen Befund. | Serverseitiges Scoring und neuer n8n-Contract bleiben Folgearbeiten; WordPress-REST-Submit ist aktiv. |
 | Kein serverseitiges Scoring fuer Analyse. | Client-Scoring allein ist manipulierbar und nicht als Befundbasis sauber. | `blocksy-child/inc/request-analysis-scoring.php` und REST-Route planen. |
 | Kein finaler Submit-Contract fuer neue Analyse-Semantik. | n8n kann nicht sauber, versioniert und privacy-konform angebunden werden. | `automations/n8n/data-models/request-analysis-payload.v1.contract.json` oder v2 nach Migrationsentscheidung. |
 | Kein `docs/architecture/TRACKING.md`. | Funnel-Events werden sonst adhoc in Templates verteilt. | Tracking-Spec fuer Demo und Analyse anlegen. |
@@ -121,11 +121,11 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 | Layer | File / System | Requirement |
 |---|---|---|
 | Frontend | `blocksy-child/readiness/src/App.tsx` | 8-Schritt-Form, lokale Validierung, kein PII im Default-Pfad, data-track-Hooks. |
-| REST | `blocksy-child/inc/request-analysis-api.php` | Submit nur bei Feature-Flag; Server validiert Payload gegen Contract-Logik. |
+| REST | `blocksy-child/inc/analysis-intake.php` | Submit nur bei Feature-Flag; Server validiert Kontaktblock, Signal, Score und Antworten. |
 | Scoring | `blocksy-child/inc/request-analysis-scoring.php` | Serverseitige Fit-Scores und Ampeln; keine reine Client-Entscheidung. |
 | Contract | `automations/n8n/data-models/request-analysis-payload.v1.contract.json` | Neue Analyse-Semantik; bestehender `readiness-diagnosis-payload.v1` bleibt bis Migration stabil. |
 | n8n | `https://n8n.hasimuener.de/webhook/audit-consultation` | Nur mit bestehendem Webhook und `intake_variant`-Routing; kein neuer Webhook ohne Freigabe. |
-| CRM | Spaeter HubSpot/Bitrix24/Pipedrive | Kein CRM-Write in v1 Default; erst nach Consent und n8n-Strategie. |
+| CRM | WordPress `nexus_contact` | Kein CRM-Write im lokalen Fragepfad; Kontakt-Step schreibt nach Einwilligung Analyse-Leads. |
 | Tracking | `docs/architecture/TRACKING.md` | Definierte Events fuer Demo, Analyse, Founding-Block, Value-Vergleich. |
 | Privacy | `docs/architecture/PRIVACY.md` | Cookie-Default bleibt; Consent direkt am Zustell-/Submit-Schritt, nicht pauschal ueber Banner. |
 
@@ -200,9 +200,9 @@ Asset-Regel: React-Funnel-Apps bleiben unter `blocksy-child/<funnel-name>/`, Bui
 | Sprint | Scope | Result |
 |---|---|---|
 | Sprint 1 | E3-Proof-Canon, Drift-Lint, Live/System-Docs bereinigen. | Trust-Risiko entfernt; Sales-Gespraeche nutzen konsistente Zahlen. |
-| Sprint 2 | Analyse-Form als echte 8-Schritt-React-App ohne Submit bauen. | Erledigt repo-seitig am 2026-05-04: Nutzer erlebt qualifizierenden Prozess; noch keine Backend-/Privacy-Komplexitaet. |
+| Sprint 2 | Analyse-Form als echte 8-Schritt-React-App bauen. | Erledigt repo-seitig am 2026-05-04: Nutzer erlebt qualifizierenden Prozess mit lokalem Ergebnis. |
 | Sprint 3 | Serverseitiges Scoring und Report-Spec bauen. | Report-Spec definiert; serverseitige Scoring-Funktion bleibt offen. |
-| Sprint 4 | Submit-Contract, Consent-UI und REST-Schicht hinter Feature-Flag. | Verarbeitung ist versioniert, reversibel und privacy-konform. |
+| Sprint 4 | Consent-UI und WordPress-REST-Schicht hinter Feature-Flag. | Teilweise erledigt: Kontakt-Submit schreibt CRM und triggert Transaktionsmails; serverseitiges Scoring und n8n-Contract offen. |
 | Sprint 5 | n8n-Branch ueber bestehenden `audit-consultation`-Webhook pruefen. | Manuelle/automatisierte Weiterverarbeitung ohne neuen oeffentlichen Webhook. |
 | Sprint 6 | Demo-Showroom haerten: Prozessvisualisierung, lokale PDF, CTA zur Analyse. | Interessent versteht aus Kaeufersicht, was umgesetzt wird. |
 | Sprint 7 | Kontaktseite und warme Anfragepfade nachziehen. | Keine Nebenroute zieht zurueck in alten generischen Pitch. |
@@ -216,7 +216,7 @@ Asset-Regel: React-Funnel-Apps bleiben unter `blocksy-child/<funnel-name>/`, Bui
 | Proof integrity | Keine customer-facing Fundstelle nutzt E3 `-83 %`, `120 -> 20`, `~25 EUR` oder `12 Monate` fuer den finalen E3-Case. |
 | Funnel integrity | Analyse kann Fit grün/gelb/rot ausdruecken und rot als Nicht-Empfehlung ausgeben. |
 | API security | Kein n8n-Webhook steht im Analyse-Frontend; Submit laeuft ueber WP REST und Feature-Flag. |
-| Privacy | Default-Pfad enthaelt keinen Klarnamen, keine E-Mail, keine Telefonnummer und keine Endkundendaten. |
+| Privacy | Default-Fragepfad enthaelt keinen Klarnamen, keine E-Mail, keine Telefonnummer und keine Endkundendaten; Kontakt-Submit verarbeitet Name, Firma und E-Mail nur nach sichtbarer Einwilligung. |
 | Tracking | Demo- und Analyse-Events sind in `docs/architecture/TRACKING.md` definiert und im Markup ueber `data-track-*` abbildbar. |
 | Maintainability | Pricing, Founding, Messaging und E3-Proof kommen aus Canon-Dateien, nicht aus verstreuten Template-Strings. |
 | Deploy safety | `scripts/build-theme-dist.sh` baut alle aktiven Funnel-Apps; `.github/workflows/deploy.yml` bleibt unveraendert. |

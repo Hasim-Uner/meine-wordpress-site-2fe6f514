@@ -353,7 +353,7 @@ const questions: Question[] = [
     field: 'crmPresent',
     stepIndex: 6,
     label: 'Gibt es eine CRM- oder Nachverfolgungsstruktur?',
-    detail: 'Kein CRM-Submit. Nur die Frage, ob Nachverfolgung heute existiert.',
+    detail: 'Hier geht es nur darum, ob Nachverfolgung heute schon verbindlich existiert.',
     options: yesNoUnknownOptions,
   },
   {
@@ -584,7 +584,7 @@ export function App() {
           </section>
         )}
 
-        {!showResult && <p className="readiness-flow-note">Kein CRM. Kein Webhook. Die Ampel entsteht nur lokal aus den Angaben.</p>}
+        {!showResult && <p className="readiness-flow-note">Bis zum Kontakt-Schritt bleibt die Ampel lokal. Erst nach Einwilligung werden Ergebnis und Kontaktdaten gespeichert.</p>}
       </section>
     </main>
   );

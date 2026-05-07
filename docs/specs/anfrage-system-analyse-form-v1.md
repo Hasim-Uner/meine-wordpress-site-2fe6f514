@@ -1,6 +1,6 @@
 # Anfrage-System-Analyse Form v1
 
-Status: implemented-local-result
+Status: implemented-contact-submit
 Owner: Repo / Funnel
 Route: `/anfrage-system-analyse/`
 Legacy: `/readiness-diagnose/` leitet per 301 weiter
@@ -12,8 +12,8 @@ Report-Spec: `docs/specs/anfrage-system-analyse-report-v1.md`
 - Die Analyse läuft als React-Funnel-Mikro-App im Theme. `blocksy-child/readiness/` bleibt vorerst der interne Legacy-Name; customer-facing heißt der Pfad nur `Anfrage-System-Analyse`.
 - `/energie-fahrplan-demo/` ist Showroom für das Käufererlebnis, kein SaaS, kein Leadmagnet und kein Submit-Pfad.
 - `/anfrage-system-analyse/` ist der primäre Einstieg für kalten B2B-Traffic. `/growth-audit/` darf nicht als Hauptfunnel zurückkehren.
-- n8n, CRM und Befundzustellung werden erst nach versioniertem Contract, explizitem Consent und aktiviertem Feature-Flag angeschlossen.
-- Der Default-Pfad verarbeitet keine personenbezogenen Daten; E-Mail liegt nur im separaten Zustellungspfad.
+- n8n bleibt bis zu einem versionierten Contract und einer expliziten Workflow-Freigabe abgekoppelt.
+- Der Default-Pfad verarbeitet keine personenbezogenen Daten; Ergebnis und Kontaktdaten werden erst im separaten Kontakt-Schritt nach Einwilligung an WordPress REST übergeben.
 - E3-Proof-Zahlen dürfen in Analyse-Kontexten nur aus `blocksy-child/inc/canon/e3-proof-canon.php` kommen.
 
 ## Ziel
@@ -27,8 +27,8 @@ Die Anfrage-System-Analyse ist der 14-Tage-Fitcheck für passende Founding-Partn
 - Keine Telefonnummer im Default-Pfad.
 - Keine E-Mail, außer der Geschäftsführer wünscht den Befund per E-Mail und bestätigt den separaten Consent-Schritt.
 - Kein Payment-Flow in v1.
-- Kein n8n-Submit, solange `HU_FEATURE_READINESS_SUBMIT=false` ist.
-- Kein CRM-Write und keine n8n-Übertragung im Default-Pfad.
+- Kein n8n-Submit in v1.
+- Kein CRM-Write im lokalen Fragepfad; der separate Kontakt-Schritt schreibt nach Einwilligung in `nexus_contact`.
 - Keine öffentliche Tiefendiagnose als eigener Funnel-Schritt.
 - Kein Rücksprung auf den `Growth Audit` als Hauptfunnel oder primäre CTA-Logik.
 - Keine hardcodierten E3-Proof-Zahlen außerhalb des E3-Canons.
@@ -70,9 +70,19 @@ Default-Pfad:
 
 Optionaler Zustellungspfad:
 
+- `delivery.name`
+- `delivery.company`
 - `delivery.email`
 - `delivery.consent.timestamp`
 - `delivery.consent.text_hash`
+
+Aktiver WordPress-Submit nach Einwilligung:
+
+- Route: `/wp-json/nexus/v1/analysis-submit`
+- Feature-Flag: `HU_FEATURE_READINESS_SUBMIT`
+- CRM-Ziel: `nexus_contact` mit Segment `analysis_lead`
+- Mail-Ziel: interne Admin-Benachrichtigung und Lead-Bestätigung über zentrale `wp_mail`-/Brevo-Schicht
+- n8n: nicht angebunden
 
 ## Scoring-Regeln
 
@@ -88,10 +98,10 @@ Optionaler Zustellungspfad:
 |---|---|
 | View | `request_analysis_view` |
 | Step complete | `request_analysis_step_{n}_completed` |
-| Stub submit | `request_analysis_submit_disabled` |
+| Contact submit | `request_analysis_contact_submitted` |
 
 ## Folge-PR
 
 Der bestehende Payload-Contract `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt bis zur nächsten Contract-Version intern stabil.
 
-Submit bleibt deaktiviert, bis Formularlogik, serverseitiges Scoring, Consent-UI, REST-Contract, n8n-IF-Branch und CRM-Grenzen gegen die neue Analyse-Semantik geprüft sind.
+Der Kontakt-Submit ist als WordPress-REST-Pfad aktiv. Serverseitiges Scoring und n8n bleiben Folgearbeiten; der aktuelle Submit speichert das Client-Ergebnis plus Kontaktblock nach Einwilligung im WordPress-CRM und versendet Transaktionsmails.
