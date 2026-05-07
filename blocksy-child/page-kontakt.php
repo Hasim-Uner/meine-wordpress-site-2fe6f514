@@ -17,27 +17,40 @@ $focus_options        = function_exists( 'nexus_get_contact_focus_options' ) ? n
 $budget_options       = function_exists( 'nexus_get_contact_budget_options' ) ? nexus_get_contact_budget_options() : [];
 $timeline_options     = function_exists( 'nexus_get_contact_timeline_options' ) ? nexus_get_contact_timeline_options() : [];
 $calendar_url         = function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' );
+$public_type_keys     = [ 'audit', 'implementation', 'ongoing' ];
+$public_type_copy     = [
+	'audit'          => [
+		'label'       => 'System-Diagnose',
+		'description' => 'Klarheit vor Umsetzung.',
+	],
+	'implementation' => [
+		'label'       => 'Umsetzung',
+		'description' => 'Konkreter Bau oder Korrektur.',
+	],
+	'ongoing'        => [
+		'label'       => 'Weiterentwicklung',
+		'description' => 'Planbare Systemarbeit.',
+	],
+];
+$public_type_options  = array_intersect_key( $request_type_options, array_flip( $public_type_keys ) );
 $requested_focus      = isset( $_GET['focus'] ) ? sanitize_key( wp_unslash( $_GET['focus'] ) ) : '';
 $requested_type       = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
 $selected_focus       = isset( $focus_options[ $requested_focus ] ) ? $requested_focus : '';
-$selected_type        = isset( $request_type_options[ $requested_type ] ) ? $requested_type : '';
+$selected_type        = isset( $public_type_options[ $requested_type ] ) ? $requested_type : '';
 
-if ( '' === $selected_type && 'followup_scope' === $selected_focus ) {
-	$selected_type = 'analysis';
-}
-
-if ( '' === $selected_type && isset( $request_type_options['audit'] ) ) {
+if ( '' === $selected_type && isset( $public_type_options['audit'] ) ) {
 	$selected_type = 'audit';
 }
 
-$is_audit_type          = 'audit' === $selected_type;
-$is_analysis_type       = 'analysis' === $selected_type;
-$is_implementation_type = 'implementation' === $selected_type;
-$is_ongoing_type        = 'ongoing' === $selected_type;
-$is_general_type        = 'general' === $selected_type;
-$is_client_type         = 'client' === $selected_type;
-$has_explicit_type     = '' !== $requested_type && isset( $request_type_options[ $requested_type ] );
-$show_timeline_field   = in_array( $selected_type, [ 'analysis', 'implementation', 'ongoing', 'client' ], true );
+if ( '' !== $selected_focus ) {
+	$selected_focus_types = isset( $focus_options[ $selected_focus ]['types'] ) ? (array) $focus_options[ $selected_focus ]['types'] : [];
+	if ( ! in_array( $selected_type, $selected_focus_types, true ) ) {
+		$selected_focus = '';
+	}
+}
+
+$has_explicit_type     = '' !== $requested_type && isset( $public_type_options[ $requested_type ] );
+$show_timeline_field   = in_array( $selected_type, [ 'implementation', 'ongoing' ], true );
 $show_budget_field     = in_array( $selected_type, [ 'implementation', 'ongoing' ], true );
 $type_copy_map         = [
 	'audit'          => [
@@ -103,17 +116,17 @@ $message_help          = $current_type_copy['message_help'];
 $message_placeholder   = $current_type_copy['message_placeholder'];
 $submit_label          = $current_type_copy['submit_label'];
 $timeline_label        = $current_type_copy['timeline_label'];
-$message_minlength     = $is_general_type ? 18 : 24;
+$message_minlength     = 24;
 
-$is_scoped_landing     = $has_explicit_type && ! $is_general_type && ! $is_client_type;
-$current_type_label    = isset( $request_type_options[ $selected_type ]['label'] ) ? (string) $request_type_options[ $selected_type ]['label'] : 'Kontakt';
+$is_scoped_landing     = $has_explicit_type;
+$current_type_label    = isset( $public_type_copy[ $selected_type ]['label'] ) ? (string) $public_type_copy[ $selected_type ]['label'] : 'Kontakt';
 $preselected_type      = ( $has_explicit_type || '' !== $selected_focus ) ? $selected_type : '';
 
 $hero_eyebrow = $is_scoped_landing ? $current_type_label : 'Kontakt';
 $hero_title   = $is_scoped_landing ? $current_type_label : 'Kontakt kurz einordnen.';
 $hero_lead    = $is_scoped_landing
 	? 'Ein kompakter Flow für Ziel, Hürde, Kontakt und nächsten Schritt.'
-	: 'Ein kompakter Flow für Diagnose, Umsetzung, Weiterentwicklung oder allgemeine Rückfragen.';
+	: 'Ein kompakter Flow für Diagnose, Umsetzung oder Weiterentwicklung.';
 
 $auto_scroll  = false;
 ?>
@@ -134,7 +147,6 @@ $auto_scroll  = false;
 					<h2 id="contact-form-title">
 						<?php echo esc_html( $is_scoped_landing ? 'In wenigen Schritten zur sauberen Einordnung.' : 'Eine Frage nach der anderen.' ); ?>
 					</h2>
-					<p>Auswahlfragen springen automatisch weiter. Der Absenden-Button erscheint erst am Ende.</p>
 				</div>
 
 				<div class="contact-error-summary is-hidden" role="alert" aria-live="assertive" data-contact-error-summary>
@@ -185,10 +197,13 @@ $auto_scroll  = false;
 							<?php echo $is_scoped_landing ? 'data-contact-step-skip="true"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static boolean state ?>
 						>
 							<fieldset class="contact-intent<?php echo esc_attr( $is_scoped_landing ? ' contact-intent--collapsed' : '' ); ?>" data-contact-intent>
-								<legend>Worum geht es?</legend>
-								<p class="contact-field__help">Wählen Sie den passendsten Einstieg. Danach springt der Flow automatisch weiter.</p>
+								<legend>Anfrageart</legend>
 								<div class="contact-intent__grid">
-									<?php foreach ( $request_type_options as $type_key => $definition ) : ?>
+									<?php foreach ( $public_type_options as $type_key => $definition ) : ?>
+										<?php
+										$display_label       = isset( $public_type_copy[ $type_key ]['label'] ) ? (string) $public_type_copy[ $type_key ]['label'] : (string) $definition['label'];
+										$display_description = isset( $public_type_copy[ $type_key ]['description'] ) ? (string) $public_type_copy[ $type_key ]['description'] : (string) $definition['description'];
+										?>
 										<label class="contact-intent__option" for="<?php echo esc_attr( 'contact-type-' . $type_key ); ?>">
 											<input
 												id="<?php echo esc_attr( 'contact-type-' . $type_key ); ?>"
@@ -200,8 +215,8 @@ $auto_scroll  = false;
 												data-contact-type-input
 											>
 											<span class="contact-intent__card">
-												<strong><?php echo esc_html( $definition['label'] ); ?></strong>
-												<span><?php echo esc_html( $definition['description'] ); ?></span>
+												<strong><?php echo esc_html( $display_label ); ?></strong>
+												<span><?php echo esc_html( $display_description ); ?></span>
 											</span>
 										</label>
 									<?php endforeach; ?>

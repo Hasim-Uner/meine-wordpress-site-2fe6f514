@@ -692,18 +692,14 @@
 
             // Update type status bar if present
             if (typeStatusBar) {
-                var typeLabel = typeContent[requestType] ? typeContent[requestType].submitLabel : '';
                 var statusValue = typeStatusBar.querySelector('.contact-type-status__value');
                 if (statusValue) {
                     var labels = {
-                        audit: 'Erstdiagnose / System-Diagnose',
-                        analysis: 'Fokussierte Folgeanalyse',
-                        implementation: 'Umsetzung / Optimierung',
-                        ongoing: 'Laufende Weiterentwicklung',
-                        general: 'Allgemeine Anfrage',
-                        client: 'Bestandskunde'
+                        audit: 'System-Diagnose',
+                        implementation: 'Umsetzung',
+                        ongoing: 'Weiterentwicklung'
                     };
-                    statusValue.textContent = labels[requestType] || 'Erstdiagnose / System-Diagnose';
+                    statusValue.textContent = labels[requestType] || 'System-Diagnose';
                 }
             }
         }

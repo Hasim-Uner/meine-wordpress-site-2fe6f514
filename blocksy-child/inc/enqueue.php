@@ -202,7 +202,7 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js' ] );
 		$contact_requested_type = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
 		$contact_type_options   = function_exists( 'nexus_get_contact_request_type_options' ) ? nexus_get_contact_request_type_options() : [];
-		$contact_is_scoped_landing = in_array( $contact_requested_type, [ 'audit', 'analysis', 'implementation', 'ongoing' ], true )
+		$contact_is_scoped_landing = in_array( $contact_requested_type, [ 'audit', 'implementation', 'ongoing' ], true )
 			&& isset( $contact_type_options[ $contact_requested_type ] );
 
 		wp_localize_script(
