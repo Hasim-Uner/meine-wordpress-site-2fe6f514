@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useEffect, useMemo, useRef, useState, type FormEvent} from 'react';
 
 type Signal = 'green' | 'yellow' | 'red';
 
@@ -527,7 +527,7 @@ export function App() {
         </ol>
 
         {showResult ? (
-          <ResultView evaluation={evaluation} onBack={handleBack} onReset={handleReset} />
+          <ResultView evaluation={evaluation} form={form} onBack={handleBack} onReset={handleReset} />
         ) : (
           <section className="readiness-panel readiness-flow-card" aria-labelledby="readiness-question-title">
             <div className="readiness-step-head">
@@ -665,7 +665,7 @@ function TextField({
   );
 }
 
-function ResultView({evaluation, onBack, onReset}: {evaluation: Evaluation; onBack: () => void; onReset: () => void}) {
+function ResultView({evaluation, form, onBack, onReset}: {evaluation: Evaluation; form: FormState; onBack: () => void; onReset: () => void}) {
   const actionPlan = getActionPlan(evaluation.signal);
 
   return (
@@ -731,26 +731,306 @@ function ResultView({evaluation, onBack, onReset}: {evaluation: Evaluation; onBa
         </ol>
       </div>
 
-      <div className="readiness-result-note">
-        <strong>Privacy-Default:</strong> Dieses Ergebnis wurde nur im Browser berechnet. Es wurde kein n8n-Webhook gestartet, kein CRM-Datensatz erzeugt und keine E-Mail-Adresse abgefragt.
-      </div>
-
-      <div className="readiness-actions">
-        <button type="button" className="readiness-button readiness-button--secondary" onClick={onBack}>
-          Angaben bearbeiten
-        </button>
-        <button
-          type="button"
-          className="readiness-button readiness-button--primary"
-          onClick={onReset}
-          data-track-action="request_analysis_restart"
-          data-track-category="lead_funnel"
-          data-track-section="request_analysis_result"
-        >
-          Neu starten
-        </button>
-      </div>
+      <ConversionBlock evaluation={evaluation} form={form} onBack={onBack} onReset={onReset} />
     </section>
+  );
+}
+
+type AnalysisConfig = {
+  submitUrl?: string;
+  submitEnabled?: boolean;
+  calcomUrl?: string;
+  contactUrl?: string;
+  e3Stats?: Record<string, string>;
+};
+
+function getAnalysisConfig(): AnalysisConfig {
+  if (typeof window === 'undefined') {
+    return {};
+  }
+  return ((window as unknown as {HU_ANALYSIS_CONFIG?: AnalysisConfig}).HU_ANALYSIS_CONFIG) || {};
+}
+
+function readQueryParam(name: string): string {
+  if (typeof window === 'undefined') {
+    return '';
+  }
+  try {
+    return new URLSearchParams(window.location.search).get(name) || '';
+  } catch (e) {
+    return '';
+  }
+}
+
+function getSignalCta(signal: Signal) {
+  if (signal === 'green') {
+    return {
+      headline: 'Letzter Schritt — Termin sichern',
+      lead: 'Ihr Fit ist tragfähig. Buchen Sie einen 30-Min-Slot — ich bereite das Gespräch mit Ihren Angaben vor.',
+      primaryLabel: 'Termin buchen',
+      secondaryLabel: 'Lieber per Mail',
+    };
+  }
+
+  if (signal === 'yellow') {
+    return {
+      headline: 'Letzter Schritt — Lücken durchsprechen',
+      lead: 'Es gibt klärbare Signale. 30 Minuten reichen, um zu entscheiden, was vor einer Umsetzung steht.',
+      primaryLabel: 'Termin buchen — Lücken durchsprechen',
+      secondaryLabel: 'Per Mail klären',
+    };
+  }
+
+  return {
+    headline: 'Letzter Schritt — kostenfreies Erstgespräch',
+    lead: 'Eine Umsetzung wäre jetzt zu früh. In 30 Minuten klären wir, was zuerst steht — ohne Pitch.',
+    primaryLabel: 'Erstgespräch — kostenfrei',
+    secondaryLabel: 'Per Mail melden',
+  };
+}
+
+const FIELD_LABELS: Record<keyof FormState, string> = {
+  industry: 'Branche',
+  offerType: 'Angebotsart',
+  employeeRange: 'Teamgröße',
+  country: 'Land',
+  plzRegion: 'PLZ / Region',
+  offerFocus: 'Hauptleistung',
+  averageOrderValueRange: 'Auftragswert',
+  adBudgetRange: 'Werbebudget / Monat',
+  websiteUrl: 'Website',
+  cms: 'CMS',
+  pixelPresent: 'Werbepixel',
+  gtmPresent: 'Google Tag Manager',
+  consentMode: 'Consent Mode',
+  metaCapi: 'Meta CAPI',
+  crmPresent: 'CRM',
+  responseTime: 'Antwortzeit',
+  responsible: 'Verantwortlich',
+  targetRegion: 'Zielregion',
+  expectedChannelMix: 'Hauptkanal',
+  competition: 'Wettbewerb',
+};
+
+function answersAsLabels(form: FormState): Record<string, string> {
+  const result: Record<string, string> = {};
+  (Object.keys(FIELD_LABELS) as (keyof FormState)[]).forEach((field) => {
+    const raw = form[field];
+    if (!raw) {
+      return;
+    }
+    const question = questions.find((q) => q.field === field);
+    const option = question?.options?.find((o) => o.value === raw);
+    result[field] = option ? option.label : raw;
+  });
+  return result;
+}
+
+function ConversionBlock({evaluation, form, onBack, onReset}: {evaluation: Evaluation; form: FormState; onBack: () => void; onReset: () => void}) {
+  const config = getAnalysisConfig();
+  const signalCta = getSignalCta(evaluation.signal);
+  const submitEnabled = config.submitEnabled !== false && Boolean(config.submitUrl);
+  const calcomFallback = config.calcomUrl || 'https://cal.com/hasim-uener/30min?overlayCalendar=true';
+  const contactFallback = config.contactUrl || '/kontakt/';
+  const e3Stats = config.e3Stats || {};
+
+  const [name, setName] = useState('');
+  const [company, setCompany] = useState('');
+  const [email, setEmail] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [calcomUrl, setCalcomUrl] = useState(calcomFallback);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setErrorMessage('');
+
+    if (!submitEnabled || !config.submitUrl) {
+      setStatus('success');
+      setCalcomUrl(calcomFallback);
+      return;
+    }
+
+    if (!name.trim() || !company.trim() || !email.trim() || !consent) {
+      setErrorMessage('Bitte Name, Firma, E-Mail und Einwilligung ausfüllen.');
+      return;
+    }
+
+    setStatus('submitting');
+
+    const payload = {
+      name: name.trim(),
+      company: company.trim(),
+      email: email.trim(),
+      consent: true,
+      signal: evaluation.signal,
+      score: evaluation.score,
+      reasons: evaluation.reasons,
+      action_plan_label: getActionPlan(evaluation.signal).shortLabel,
+      answers: answersAsLabels(form),
+      company_website: honeypot,
+      ads_source: readQueryParam('ads_source') || readQueryParam('utm_source'),
+      ads_keyword: readQueryParam('ads_keyword') || readQueryParam('utm_term'),
+      utm_medium: readQueryParam('utm_medium'),
+      utm_campaign: readQueryParam('utm_campaign'),
+      gclid: readQueryParam('gclid'),
+    };
+
+    try {
+      const response = await fetch(config.submitUrl, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.ok) {
+        throw new Error(data?.error || 'Etwas ist schiefgelaufen. Bitte erneut versuchen.');
+      }
+      setCalcomUrl(typeof data.calcomUrl === 'string' && data.calcomUrl ? data.calcomUrl : calcomFallback);
+      setStatus('success');
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Bitte später erneut versuchen.';
+      setErrorMessage(message);
+      setStatus('error');
+    }
+  }
+
+  return (
+    <div className="readiness-conversion" data-track-section="request_analysis_conversion">
+      {Object.keys(e3Stats).length > 0 && (
+        <div className="readiness-proof" aria-label="Referenzergebnisse">
+          <span>Referenz · E3 New Energy</span>
+          <ul>
+            {e3Stats.lead_count && <li><strong>{e3Stats.lead_count}</strong>Anfragen / 9 Monate</li>}
+            {e3Stats.sales_conversion && <li><strong>{e3Stats.sales_conversion}</strong>Abschlussquote</li>}
+            {e3Stats.cpl_reduction && <li><strong>{e3Stats.cpl_reduction}</strong>Kosten / Anfrage</li>}
+          </ul>
+        </div>
+      )}
+
+      {status !== 'success' ? (
+        <form className="readiness-contact" onSubmit={handleSubmit} data-track-section="request_analysis_contact_form">
+          <div className="readiness-contact-head">
+            <span>Schritt 9</span>
+            <h3>{signalCta.headline}</h3>
+            <p>{signalCta.lead}</p>
+          </div>
+          <div className="readiness-contact-fields">
+            <label>
+              <span>Name</span>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                autoComplete="name"
+                required
+                disabled={status === 'submitting'}
+              />
+            </label>
+            <label>
+              <span>Firma</span>
+              <input
+                type="text"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                autoComplete="organization"
+                required
+                disabled={status === 'submitting'}
+              />
+            </label>
+            <label>
+              <span>E-Mail</span>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                required
+                disabled={status === 'submitting'}
+              />
+            </label>
+          </div>
+          <label className="readiness-contact-honeypot" aria-hidden="true">
+            Firma (Webadresse, leer lassen)
+            <input
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
+          </label>
+          <label className="readiness-contact-consent">
+            <input
+              type="checkbox"
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+              disabled={status === 'submitting'}
+              required
+            />
+            <span>Ich willige in die Verarbeitung meiner Angaben zur Vorbereitung des Gesprächs ein. Keine Newsletter, kein Verkauf an Dritte.</span>
+          </label>
+          {errorMessage && (
+            <div className="readiness-contact-error" role="alert">{errorMessage}</div>
+          )}
+          <div className="readiness-contact-actions">
+            <button type="button" className="readiness-button readiness-button--secondary" onClick={onBack}>
+              Angaben bearbeiten
+            </button>
+            <button
+              type="submit"
+              className="readiness-button readiness-button--primary"
+              disabled={status === 'submitting'}
+              data-track-action="request_analysis_contact_submitted"
+              data-track-category="lead_funnel"
+              data-track-section="request_analysis_contact_form"
+              data-track-funnel-stage="request_analysis_contact_submit"
+            >
+              {status === 'submitting' ? 'Wird gesendet …' : 'Ergebnis sichern & weiter'}
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div className={`readiness-final-cta readiness-final-cta--${evaluation.signal}`} data-track-section="request_analysis_final_cta">
+          <div className="readiness-final-cta-head">
+            <span>Eingegangen — danke, {name || 'Sie'}.</span>
+            <h3>{signalCta.headline}</h3>
+            <p>{signalCta.lead}</p>
+          </div>
+          <div className="readiness-final-cta-actions">
+            <a
+              href={calcomUrl}
+              className="readiness-button readiness-button--primary"
+              target="_blank"
+              rel="noopener"
+              data-track-action="request_analysis_cta_termin"
+              data-track-category="lead_funnel"
+              data-track-section="request_analysis_final_cta"
+              data-track-funnel-stage="request_analysis_cta_termin"
+            >
+              {signalCta.primaryLabel}
+            </a>
+            <a
+              href={contactFallback}
+              className="readiness-button readiness-button--secondary"
+              data-track-action="request_analysis_cta_mail"
+              data-track-category="lead_funnel"
+              data-track-section="request_analysis_final_cta"
+              data-track-funnel-stage="request_analysis_cta_mail"
+            >
+              {signalCta.secondaryLabel}
+            </a>
+          </div>
+          <div className="readiness-final-cta-foot">
+            <button type="button" className="readiness-link" onClick={onReset}>
+              Neu starten
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

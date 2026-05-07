@@ -48,8 +48,20 @@ if ( file_exists( $manifest_path ) ) {
 	}
 }
 
+$hu_analysis_config = [
+	'submitUrl'  => esc_url_raw( rest_url( 'nexus/v1/analysis-submit' ) ),
+	'submitEnabled' => defined( 'HU_FEATURE_READINESS_SUBMIT' ) && HU_FEATURE_READINESS_SUBMIT,
+	'calcomUrl'  => function_exists( 'hu_get_analysis_calcom_base_url' ) ? hu_get_analysis_calcom_base_url() : 'https://cal.com/hasim-uener/30min?overlayCalendar=true',
+	'contactUrl' => function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' ),
+	'e3Stats'    => function_exists( 'hu_e3_canon' ) ? array_map(
+		static function ( $metric ) { return is_array( $metric ) ? ( $metric['display'] ?? '' ) : ''; },
+		hu_e3_canon()['metrics'] ?? []
+	) : [],
+];
+
 get_header();
 ?>
+<script>window.HU_ANALYSIS_CONFIG = <?php echo wp_json_encode( $hu_analysis_config ); ?>;</script>
 
 <main id="main" class="site-main readiness-diagnosis-page" data-track-section="request_analysis">
 	<div id="readiness-root" data-track-action="request_analysis_view" data-track-category="lead_funnel" data-track-section="request_analysis" data-track-funnel-stage="request_analysis_view">

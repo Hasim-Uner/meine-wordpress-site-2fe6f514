@@ -25,10 +25,11 @@ function nexus_get_crm_menu_slug() {
  */
 function nexus_get_crm_contact_source_labels() {
 	return [
-		'blog_subscriber' => 'Blog-Abo',
-		'project_request' => 'Projektanfrage',
-		'general_inquiry' => 'Allgemeine Anfrage',
-		'client_request'  => 'Kundenanliegen',
+		'blog_subscriber'   => 'Blog-Abo',
+		'project_request'   => 'Projektanfrage',
+		'general_inquiry'   => 'Allgemeine Anfrage',
+		'client_request'    => 'Kundenanliegen',
+		'request_analysis'  => 'Anfrage-System-Analyse',
 	];
 }
 
@@ -59,6 +60,20 @@ function nexus_get_crm_contact_segment_labels() {
 		'project_request' => 'Projektanfrage',
 		'general_inquiry' => 'Allgemeine Anfrage',
 		'client_request'  => 'Kundenanliegen',
+		'analysis_lead'   => 'Analyse-Lead',
+	];
+}
+
+/**
+ * Return supported analysis signal labels.
+ *
+ * @return array<string, string>
+ */
+function nexus_get_crm_analysis_signal_labels() {
+	return [
+		'green'  => 'Grün',
+		'yellow' => 'Gelb',
+		'red'    => 'Rot',
 	];
 }
 
@@ -550,6 +565,66 @@ function nexus_render_contact_details_meta_box( $post ) {
 				</p>
 			</div>
 		<?php endif; ?>
+		<?php
+		$analysis_signal       = (string) get_post_meta( $post->ID, '_nexus_analysis_signal', true );
+		$analysis_score        = (string) get_post_meta( $post->ID, '_nexus_analysis_score', true );
+		$analysis_company      = (string) get_post_meta( $post->ID, '_nexus_analysis_company', true );
+		$analysis_completed_at = (int) get_post_meta( $post->ID, '_nexus_analysis_completed_at', true );
+		$analysis_answers      = get_post_meta( $post->ID, '_nexus_analysis_answers', true );
+		$analysis_reasons      = get_post_meta( $post->ID, '_nexus_analysis_reasons', true );
+		$analysis_action_plan  = (string) get_post_meta( $post->ID, '_nexus_analysis_action_plan', true );
+		$signal_labels         = nexus_get_crm_analysis_signal_labels();
+		?>
+		<?php if ( '' !== $analysis_signal || '' !== $analysis_company ) : ?>
+			<div class="nexus-review-meta-group">
+				<strong>Analyse-Ergebnis</strong>
+				<p>
+					<?php if ( '' !== $analysis_company ) : ?>
+						Firma: <?php echo esc_html( $analysis_company ); ?><br>
+					<?php endif; ?>
+					<?php if ( '' !== $analysis_signal ) : ?>
+						Signal:
+						<span class="nexus-analysis-signal nexus-analysis-signal--<?php echo esc_attr( $analysis_signal ); ?>"><?php echo esc_html( $signal_labels[ $analysis_signal ] ?? $analysis_signal ); ?></span>
+						<?php if ( '' !== $analysis_score ) : ?>
+							· Score: <?php echo esc_html( $analysis_score ); ?>/100
+						<?php endif; ?>
+						<br>
+					<?php endif; ?>
+					<?php if ( '' !== $analysis_action_plan ) : ?>
+						Empfehlung: <?php echo esc_html( $analysis_action_plan ); ?><br>
+					<?php endif; ?>
+					<?php if ( $analysis_completed_at ) : ?>
+						Abgeschlossen: <?php echo esc_html( wp_date( 'd.m.Y H:i', $analysis_completed_at ) ); ?>
+					<?php endif; ?>
+				</p>
+			</div>
+		<?php endif; ?>
+		<?php if ( is_array( $analysis_reasons ) && ! empty( $analysis_reasons ) ) : ?>
+			<div class="nexus-review-meta-group">
+				<strong>Begründung der Ampel</strong>
+				<ul style="margin:6px 0 0 18px;">
+					<?php foreach ( $analysis_reasons as $reason ) : ?>
+						<li><?php echo esc_html( (string) $reason ); ?></li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		<?php endif; ?>
+		<?php if ( is_array( $analysis_answers ) && ! empty( $analysis_answers ) ) : ?>
+			<div class="nexus-review-meta-group">
+				<strong>Analyse-Antworten</strong>
+				<table class="widefat striped" style="margin-top:6px;">
+					<tbody>
+					<?php foreach ( $analysis_answers as $field => $value ) : ?>
+						<?php if ( '' === (string) $value ) { continue; } ?>
+						<tr>
+							<th scope="row" style="width:40%;"><?php echo esc_html( (string) $field ); ?></th>
+							<td><?php echo esc_html( (string) $value ); ?></td>
+						</tr>
+					<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		<?php endif; ?>
 		<div class="nexus-review-meta-group">
 			<strong>Zeitstempel</strong>
 			<p>
@@ -558,6 +633,12 @@ function nexus_render_contact_details_meta_box( $post ) {
 			</p>
 		</div>
 	</div>
+	<style>
+		.nexus-analysis-signal { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
+		.nexus-analysis-signal--green  { background:#e2f1e6; color:#1f5b32; }
+		.nexus-analysis-signal--yellow { background:#fbf1cf; color:#7b5b00; }
+		.nexus-analysis-signal--red    { background:#f8d9d3; color:#8a2e1f; }
+	</style>
 	<?php
 }
 
@@ -638,14 +719,15 @@ add_action( 'save_post_nexus_contact', 'nexus_save_contact_workflow_meta' );
  */
 function nexus_filter_contact_columns( $columns ) {
 	return [
-		'cb'               => $columns['cb'],
-		'title'            => 'Kontakt',
-		'contact_email'    => 'E-Mail',
-		'contact_source'   => 'Quelle',
-		'contact_segments' => 'Segmente',
-		'contact_status'   => 'Status',
-		'contact_updated'  => 'Aktualisiert',
-		'date'             => $columns['date'],
+		'cb'                => $columns['cb'],
+		'title'             => 'Kontakt',
+		'contact_email'     => 'E-Mail',
+		'contact_source'    => 'Quelle',
+		'contact_segments'  => 'Segmente',
+		'contact_signal'    => 'Signal',
+		'contact_status'    => 'Status',
+		'contact_updated'   => 'Aktualisiert',
+		'date'              => $columns['date'],
 	];
 }
 add_filter( 'manage_nexus_contact_posts_columns', 'nexus_filter_contact_columns' );
@@ -684,6 +766,22 @@ function nexus_render_contact_columns( $column, $post_id ) {
 			echo esc_html( implode( ', ', array_map( static function ( $segment ) use ( $segment_labels ) { return $segment_labels[ $segment ] ?? $segment; }, $segments ) ) );
 			break;
 
+		case 'contact_signal':
+			$signal = (string) get_post_meta( $post_id, '_nexus_analysis_signal', true );
+			$score  = (string) get_post_meta( $post_id, '_nexus_analysis_score', true );
+			if ( '' === $signal ) {
+				echo '—';
+				break;
+			}
+			$signal_labels = nexus_get_crm_analysis_signal_labels();
+			printf(
+				'<span class="nexus-analysis-signal nexus-analysis-signal--%1$s">%2$s</span>%3$s',
+				esc_attr( $signal ),
+				esc_html( $signal_labels[ $signal ] ?? $signal ),
+				'' !== $score ? ' · ' . esc_html( $score ) . '/100' : ''
+			);
+			break;
+
 		case 'contact_status':
 			$status = (string) get_post_meta( $post_id, '_nexus_contact_status', true );
 			printf(
@@ -716,6 +814,7 @@ function nexus_render_contact_filters( $post_type ) {
 	$current_status  = isset( $_GET['nexus_contact_status'] ) ? sanitize_key( (string) wp_unslash( $_GET['nexus_contact_status'] ) ) : '';
 	$current_blog_status = isset( $_GET['nexus_contact_blog_status'] ) ? sanitize_key( (string) wp_unslash( $_GET['nexus_contact_blog_status'] ) ) : '';
 	$current_segment = isset( $_GET['nexus_contact_segment'] ) ? sanitize_key( (string) wp_unslash( $_GET['nexus_contact_segment'] ) ) : '';
+	$current_signal  = isset( $_GET['nexus_contact_signal'] ) ? sanitize_key( (string) wp_unslash( $_GET['nexus_contact_signal'] ) ) : '';
 	?>
 	<select name="nexus_contact_source">
 		<option value="">Alle Quellen</option>
@@ -739,6 +838,12 @@ function nexus_render_contact_filters( $post_type ) {
 		<option value="">Alle Segmente</option>
 		<?php foreach ( nexus_get_crm_contact_segment_labels() as $value => $label ) : ?>
 			<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current_segment, $value ); ?>><?php echo esc_html( $label ); ?></option>
+		<?php endforeach; ?>
+	</select>
+	<select name="nexus_contact_signal">
+		<option value="">Alle Signale</option>
+		<?php foreach ( nexus_get_crm_analysis_signal_labels() as $value => $label ) : ?>
+			<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current_signal, $value ); ?>>Signal: <?php echo esc_html( $label ); ?></option>
 		<?php endforeach; ?>
 	</select>
 	<?php
@@ -788,6 +893,13 @@ function nexus_filter_contact_admin_query( $query ) {
 		$meta_query[] = [
 			'key'   => '_nexus_contact_segment_' . $segment,
 			'value' => 1,
+		];
+	}
+
+	if ( ! empty( $_GET['nexus_contact_signal'] ) ) {
+		$meta_query[] = [
+			'key'   => '_nexus_analysis_signal',
+			'value' => sanitize_key( (string) wp_unslash( $_GET['nexus_contact_signal'] ) ),
 		];
 	}
 
