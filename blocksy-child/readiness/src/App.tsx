@@ -584,7 +584,7 @@ export function App() {
           </section>
         )}
 
-        <p className="readiness-flow-note">Keine E-Mail. Kein CRM. Kein Webhook. Die Ampel entsteht nur lokal aus den Angaben.</p>
+        {!showResult && <p className="readiness-flow-note">Kein CRM. Kein Webhook. Die Ampel entsteht nur lokal aus den Angaben.</p>}
       </section>
     </main>
   );

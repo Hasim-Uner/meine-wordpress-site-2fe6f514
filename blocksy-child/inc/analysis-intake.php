@@ -294,7 +294,7 @@ function hu_validate_analysis_payload( $payload ) {
 function hu_sync_analysis_to_crm( array $payload ) {
 	$title = trim( $payload['name'] . ' · ' . $payload['company'] );
 
-	$meta = [
+	$contact_meta = [
 		'_nexus_contact_name'                    => $payload['name'],
 		'_nexus_contact_request_type'            => 'analysis',
 		'_nexus_contact_request_type_label'      => 'Anfrage-System-Analyse',
@@ -303,16 +303,9 @@ function hu_sync_analysis_to_crm( array $payload ) {
 		'_nexus_contact_last_inquiry_at'         => current_time( 'timestamp' ),
 		'_nexus_contact_ads_source'              => $payload['ads_source'],
 		'_nexus_contact_ads_keyword'             => $payload['ads_keyword'],
-		'_nexus_analysis_company'                => $payload['company'],
-		'_nexus_analysis_signal'                 => $payload['signal'],
-		'_nexus_analysis_score'                  => (string) $payload['score'],
-		'_nexus_analysis_answers'                => $payload['answers'],
-		'_nexus_analysis_reasons'                => $payload['reasons'],
-		'_nexus_analysis_action_plan'            => $payload['action_plan_label'],
-		'_nexus_analysis_completed_at'           => current_time( 'timestamp' ),
 	];
 
-	return nexus_upsert_crm_contact(
+	$contact_id = nexus_upsert_crm_contact(
 		[
 			'email'         => $payload['email'],
 			'title'         => '' !== $title ? $title : $payload['email'],
@@ -321,9 +314,25 @@ function hu_sync_analysis_to_crm( array $payload ) {
 			'status'        => 'new',
 			'segments'      => [ 'analysis_lead' ],
 			'refresh_title' => true,
-			'meta'          => $meta,
+			'meta'          => $contact_meta,
 		]
 	);
+
+	if ( is_wp_error( $contact_id ) || ! $contact_id ) {
+		return $contact_id;
+	}
+
+	// nexus_upsert_crm_contact only writes _nexus_contact_* keys; persist
+	// analysis-specific meta directly.
+	update_post_meta( (int) $contact_id, '_nexus_analysis_company',      $payload['company'] );
+	update_post_meta( (int) $contact_id, '_nexus_analysis_signal',       $payload['signal'] );
+	update_post_meta( (int) $contact_id, '_nexus_analysis_score',        (string) $payload['score'] );
+	update_post_meta( (int) $contact_id, '_nexus_analysis_answers',      $payload['answers'] );
+	update_post_meta( (int) $contact_id, '_nexus_analysis_reasons',      $payload['reasons'] );
+	update_post_meta( (int) $contact_id, '_nexus_analysis_action_plan',  $payload['action_plan_label'] );
+	update_post_meta( (int) $contact_id, '_nexus_analysis_completed_at', current_time( 'timestamp' ) );
+
+	return $contact_id;
 }
 
 /**
