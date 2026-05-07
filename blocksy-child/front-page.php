@@ -183,23 +183,6 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     TRUST BAR
-	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-trust" aria-label="Referenz &amp; Fokus">
-		<div class="hu-container hu-trust__inner">
-			<div class="hu-trust__lead hu-mono">REFERENZ &amp; FOKUS</div>
-			<div class="hu-trust__row">
-				<div class="hu-mono">E3 NEW ENERGY</div>
-				<div class="hu-mono">SOLAR-MITTELSTAND</div>
-				<div class="hu-mono">WÄRMEPUMPEN-PARTNER</div>
-				<div class="hu-mono">DACH-REGION</div>
-				<div class="hu-mono">9 MONATE LIVE</div>
-				<div class="hu-mono">2026 FOUNDING COHORT</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- ═══════════════════════════════════════════════════
 	     01 / STATUS QUO
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--cream" id="kostet" data-track-section="homepage_pain">
