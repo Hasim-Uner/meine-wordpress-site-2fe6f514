@@ -694,12 +694,6 @@ get_header();
 							<div class="hu-cta-option__title">Direkt schreiben</div>
 							<div class="hu-cta-option__desc">Antwort innerhalb 24 h.</div>
 						</a>
-						<a href="tel:+4951190765432" class="hu-cta-option"
-						   data-track-action="cta_home_final_call" data-track-category="lead_gen">
-							<div class="hu-cta-option__step">C · ANRUF</div>
-							<div class="hu-cta-option__title">Direkt anrufen</div>
-							<div class="hu-cta-option__desc">Mo–Fr · 9–18 Uhr.</div>
-						</a>
 					</div>
 				</div>
 
