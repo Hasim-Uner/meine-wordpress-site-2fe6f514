@@ -1,6 +1,6 @@
 # Live Status
 
-Stand: 2026-05-07.
+Stand: 2026-05-08.
 
 Basis dieses Status:
 
@@ -22,7 +22,7 @@ Nicht verifiziert:
 - Die lokale Money Page `/wordpress-agentur-hannover/` folgt repo-seitig jetzt einem gestrafften CRO-Flow: Hero mit konservativem Proof, drei Problemkarten, gekürzte Vergleichstabelle, konkrete Leistungsbereiche statt 3-Step-Prozess, Fit-Check ohne Negativ-Absatz, E3-Proof, kurze Standort-Sektion für Hannover/DACH, reduzierte lokale FAQ, stärkere interne Anschlüsse zu SEO/GA4/CRO und bestehender finaler Audit-CTA.
 - Die versionierte Über-mich-Seite `/uber-mich/` ist repo-seitig auf `Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter` ausgerichtet; Editor- und Template-Copy müssen bei der E3-Canon-Bereinigung gegen `150 € -> 22 €`, `-85,3 %`, `1.750+`, `12 %` und `9 Monate` geprüft werden.
 - Service-Seiten, Tools-Hub, Blog, Kategorie-Hubs, Footer-CTA und Trust-Bausteine sind im Repo.
-- Die `/anfrage-system-analyse/` ist repo-seitig das Makro-Ziel für kalten B2B-Traffic; der `Growth Audit` bleibt Legacy-/Sekundärpfad.
+- Die `/anfrage-system-analyse/` ist repo-seitig das Makro-Ziel für kalten B2B-Traffic; der `Growth Audit` bleibt Legacy-/Sekundärpfad und `/anfrage/` leitet als retired Intake per 301 auf die Analyse.
 - Repo-seitig gibt es jetzt einen E3-Proof-Canon in `blocksy-child/inc/canon/e3-proof-canon.php`: `150 €` vorher, `22 €` nachher, `-85,3 %` Delta, `1.750+` qualifizierte Anfragen, `12 %` Abschlussquote und `9 Monate` Zeitraum.
 - Der versionierte Ergebnisse-Hub bleibt als vorhandener Proof-Hub erreichbar, ist aber nicht mehr die primaere Proof-Fläche in Header oder Footer. Der kaufnahe Proof wird ueber `/e3-new-energy/` direkt verlinkt und nutzt die kanonischen E3-Zahlen aus `blocksy-child/inc/canon/e3-proof-canon.php`.
 - Die aktive `Growth Audit`-Route `/growth-audit/` rendert repo-seitig jetzt einen shortcode-getriebenen Instant-Results-Flow: URL-Eingabe, asynchron gestartete 60-Sekunden-Diagnose mit Status-Polling, Hero-Trust fuer WordPress/B2B, Ergebnisvorschau vor dem ersten Klick, Ergebnis-Dashboard fuer Performance, Tracking, SEO, Content und je nach Payload ein als Orientierungswert gerahmtes Potenzial-Modul; der Ergebnis-CTA fuehrt direkt in den qualifizierten Solar-/Waermepumpen-Intake statt in Kontakt- oder Kalenderpfade.
@@ -42,7 +42,7 @@ Nicht verifiziert:
 - Direkte Gespraechs-CTAs fuer Audit-, Kontakt- und WGOS-Kontexte nutzen theme-seitig zentral `https://cal.com/hasim-uener/30min?overlayCalendar=true`; die Whitelabel-Seite nutzt fuer Partner- und Agentur-Fit jetzt zusaetzlich `https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true`.
 - Diese Gespraechs-CTAs oeffnen bei verfuegbarem JavaScript ein eingebettetes Cal.com-Popup im Seitenkontext; der direkte Kalender-Link bleibt pro Event-Typ als robuster Fallback erhalten.
 - Die Kontaktseite führt öffentlich jetzt nur noch über drei kaufnahe Anfragearten: `System-Diagnose`, `Umsetzung` und `Weiterentwicklung`; Bestandskunden und allgemeine Rückfragen werden nicht mehr als Hauptauswahl gerendert. Die Frontend-Ausgabe von `/kontakt/` ist repo-seitig am nativen Theme-Template verankert und als kompakter Superflow reduziert. Neben-Routing, Social-Links und Erklär-Rail sind entfernt; Auswahlfragen springen automatisch weiter, `?type=implementation` startet direkt im passenden Thema und der bestehende REST-Submit-Vertrag bleibt unverändert.
-- Die warme Anfrage-Seite `/anfrage/` ist repo-seitig ebenfalls auf Superflow ausgerichtet: kompakter Hero, kein vorgelagerter Founding-Cohort-/Proof-Block, keine Übersichts-Sidebar, Auto-Advance für Auswahlfragen und Submit erst im Kontakt-Schritt.
+- Der frühere warme Anfrage-Intake `/anfrage/` rendert kein eigenes Formular mehr. Repo-seitig ist `page-anfrage.php` nur noch ein Redirect-Template auf `/anfrage-system-analyse/`; die alte `energy-intake.js`-Strecke und der dedizierte `/anfrage/`-CSS-Block sind aus dem Deploy-Code entfernt.
 - Das Client Portal existiert technisch inklusive Login- und Upload-Logik.
 - Repo-seitig existiert jetzt ein gemeinsames `Nexus CRM` fuer Audit-Anfragen, Projektanfragen und Blog-Abos; die Blog-Benachrichtigungen inkl. DOI, Abmeldung und manuell anstossbarem Artikelversand liegen im Theme.
 - Repo-seitig existiert jetzt ein `SEO Cockpit` im WordPress-Admin: Search-Console-OAuth, Cache-Layer, Kernmetriken, Dashboard-Widget, Cron-Snapshot, optionaler Koko-Kontext und ein neuer Audit-Lead-Layer aus dem internen CRM sind im Theme vorbereitet.

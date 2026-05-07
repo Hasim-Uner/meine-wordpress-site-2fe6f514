@@ -26,7 +26,7 @@ Skills reference this file instead of duplicating brand rules.
 System-Diagnose -> Blueprint -> Umsetzung / Retainer
 ```
 
-- Primary CTA: Anfrage stellen (`/solar-waermepumpen-leadgenerierung/#energie-anfrage`)
+- Primary CTA: Anfrage-System-Analyse (`/anfrage-system-analyse/`)
 - Sekundärer Pfad: System-Diagnose (URL-Slug `/growth-audit/` bleibt aus SEO-Gründen; Label ist "System-Diagnose")
 - Die System-Diagnose ist diagnostischer Einstieg, kein gimmicky Gratis-Tool
 

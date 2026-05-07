@@ -49,7 +49,7 @@ function hu_enqueue_assets() {
 	// ── GLOBAL: Custom Header ──────────────────────────────────────
 	hu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-design-system' ] );
 
-	if ( is_front_page() || is_page( 'anfrage' ) || is_page_template( 'page-anfrage.php' ) || is_page_template( 'template-about.php' ) ) {
+	if ( is_front_page() || is_page_template( 'template-about.php' ) ) {
 		hu_enqueue_css( 'nexus-founding-cohort-css', 'founding-cohort.css', [ 'nexus-design-system' ] );
 	}
 
@@ -230,32 +230,6 @@ function hu_enqueue_assets() {
 	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) ) {
 		hu_enqueue_css( 'nexus-review-funnel-css', 'review-funnel.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-energy-systems-css', 'energy-systems.css', [ 'nexus-review-funnel-css' ] );
-	}
-
-	// ── F1b) Template: Anfrage (dedicated request form page) ─────
-	if ( is_page( 'anfrage' ) || is_page_template( 'page-anfrage.php' ) ) {
-		hu_enqueue_css( 'nexus-review-funnel-css', 'review-funnel.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-energy-systems-css', 'energy-systems.css', [ 'nexus-review-funnel-css' ] );
-		hu_enqueue_js( 'nexus-energy-intake-js', 'energy-intake.js', [ 'nexus-core-js' ] );
-		wp_localize_script(
-			'nexus-energy-intake-js',
-			'NexusEnergyFormConfig',
-			[
-				'restEndpoint'    => esc_url_raw( rest_url( 'nexus/v1/audit-request' ) ),
-				'submitLabel'     => 'Anfrage-Analyse einordnen',
-				'submittingLabel' => 'Wird gesendet …',
-				'errorMessage'    => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
-				'progressMessages' => [
-					'solution'     => 'Ihre Leistung — ca. 60 Sekunden bis zur Einordnung.',
-					'audience'     => 'Ihr Zielmarkt — kurz einsortieren.',
-					'challenge'    => 'Ihr Hauptengpass — wo klemmt es aktuell?',
-					'site-state'   => 'Ihr Status — noch 3 Schritte bis zur Einordnung.',
-					'timing'       => 'Ihr Timing — gleich folgen die Kontaktdaten.',
-					'contact-pref' => 'Rückmeldung — letzter Schritt vor Kontakt.',
-					'contact'      => 'Ihre Kontaktdaten — dann wird eingeordnet.',
-				],
-			]
-		);
 	}
 
 	// ── G) Template: WGOS System ──────────────────────────────────

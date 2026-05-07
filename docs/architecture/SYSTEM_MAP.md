@@ -1,6 +1,6 @@
 # System Map
 
-Stand: 2026-05-07. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der Anfrage-System-Analyse-Route.
+Stand: 2026-05-08. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der Anfrage-System-Analyse-Route.
 
 ## Hauptsysteme
 
@@ -8,7 +8,7 @@ Stand: 2026-05-07. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | --- | --- | --- | --- | --- |
 | Website | deploybarer WordPress-Theme-Code | `blocksy-child/`, `.github/workflows/ci.yml`, `.github/workflows/deploy.yml`, `docs/architecture/DEPLOYMENT.md` | WordPress, Blocksy Parent Theme, ACF | live |
 | Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
-| Growth-Audit-Legacypfad | sekundäre Instant-Diagnose und Rückführung in qualifizierte Anfragepfade, kein Hauptfunnel | `blocksy-child/page-audit.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/review-funnel.js`, `blocksy-child/assets/js/energy-intake.js`, `blocksy-child/assets/js/cal-embed.js`, `blocksy-child/inc/review-crm.php`, `docs/systems/audit-funnel.md` | n8n Webhook, WordPress, Cal.com, optional WordPress CRM auf Legacy-/Branchenpfaden | live als Sekundär-/Legacy-Route |
+| Growth-Audit-Legacypfad | sekundäre Instant-Diagnose und Rückführung in qualifizierte Anfragepfade, kein Hauptfunnel | `blocksy-child/page-audit.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/review-funnel.js`, `blocksy-child/assets/js/cal-embed.js`, `blocksy-child/inc/review-crm.php`, `docs/systems/audit-funnel.md` | n8n Webhook, WordPress, Cal.com, optional WordPress CRM auf Legacy-Pfaden | live als Sekundär-/Legacy-Route |
 | Nexus CRM & Blog Notify | gemeinsames CRM für Analyse-Leads, Audit-, Folgeanalyse-, Umsetzungs- und Bestandskunden-Anfragen plus DOI- und Artikel-Mail-Logik | `blocksy-child/inc/crm.php`, `blocksy-child/inc/analysis-intake.php`, `blocksy-child/inc/blog-notify.php`, `blocksy-child/template-parts/blog-notify.php`, `blocksy-child/page-blog-notify.php`, `docs/systems/blog-notify.md` | WordPress CPT/Meta, WordPress REST, wp_mail, Brevo | repo-seitig live; Analyse-REST und Brevo-Konfiguration am 2026-05-07 verifiziert |
 | SEO Cockpit | Search-Console-basiertes SEO-Dashboard mit optionalem Koko- und Audit-Lead-Layer | `blocksy-child/inc/seo-cockpit.php`, `blocksy-child/assets/css/seo-cockpit-admin.css`, `docs/systems/seo-cockpit.md` | Google Search Console API, optional Koko Analytics, Nexus CRM / Audit-CRM | repo-seitig vorbereitet, OAuth und Live-Daten offen |
 | Tracking | Tracking-ready Markup, CTA-Events, SEO-/Schema-Layer | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/seo-meta.php`, `blocksy-child/inc/org-schema.php`, Templates mit `data-track-*` | GTM, sGTM, GA4, Consent Mode v2, Meta CAPI | teils im Repo, teils extern |
@@ -17,7 +17,7 @@ Stand: 2026-05-07. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | Content- und SEO-System | Blog, Pillar-Hubs, Cornerstone-Content, interne Verlinkung | `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/page-seo-cornerstone.php`, `content/blog-drafts/` | WordPress-Editor | live plus Ausbau |
 | Client Portal | Kunden-Cockpit mit Login, Upload und Roadmap-Slots | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, Media Library | live, aber aktuell mit Mock-Daten |
 | n8n-Automationen | Workflow-Logik für aktiven Legacy-Audit und spätere Analyse-/Routing-/Nurture-Schritte hinter Contract, Consent und Feature-Flag | `automations/n8n/`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/assets/js/audit-live.js` | n8n auf `n8n.hasimuener.de`, CRM, Mail, evtl. Sheets | Legacy-Audit aktiv; Anfrage-System-Analyse noch nicht angebunden |
-| Anfrage-System-Analyse | evidenzbasierter Founding-Partner-Fitcheck mit Marktbild, lokaler Auswertung und Consent-basiertem Kontakt-Submit | `blocksy-child/readiness/`, `blocksy-child/page-readiness-diagnose.php`, `blocksy-child/inc/anfrage-system-analyse-page.php`, `blocksy-child/inc/analysis-intake.php`, `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json`, `docs/architecture/PRIVACY.md` | WordPress, React-Mikro-App im Theme, Nexus CRM, Brevo; n8n nicht angebunden | repo-seitig als 8-Schritt-Form aktiv, `/readiness-diagnose/` als Legacy-Redirect, WordPress-REST-Submit aktiv |
+| Anfrage-System-Analyse | evidenzbasierter Founding-Partner-Fitcheck mit Marktbild, lokaler Auswertung und Consent-basiertem Kontakt-Submit | `blocksy-child/readiness/`, `blocksy-child/page-readiness-diagnose.php`, `blocksy-child/inc/anfrage-system-analyse-page.php`, `blocksy-child/inc/analysis-intake.php`, `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json`, `docs/architecture/PRIVACY.md` | WordPress, React-Mikro-App im Theme, Nexus CRM, Brevo; n8n nicht angebunden | repo-seitig als 8-Schritt-Form aktiv, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects, WordPress-REST-Submit aktiv |
 | EnergieFahrplan Demo | interaktive Showroom-Demo für Anfrageprozess, lokale Berechnung und PDF-Ausgabe; kein SaaS | `blocksy-child/energie-fahrplan/`, `blocksy-child/page-energie-fahrplan-demo.php`, `blocksy-child/inc/energy-demo-page.php` | Browser-PDF via `jspdf`/`html2canvas`; kein CRM-, E-Mail- oder n8n-Submit | repo-seitig eingebettet, virtuelle Route aktiv |
 | Agenten- und Prompt-System | Kontext, Guardrails, Skills und minimale Legacy-Briefings | `AGENTS.md`, `agents/skills/`, `prompts/README.md` | keine direkte Laufzeitabhaengigkeit | in Aufbau |
 
@@ -181,7 +181,7 @@ Systemische Rolle:
 Die CTA-Hierarchie ist klar und sollte nicht verwischt werden.
 
 - Primärer CTA für kalten B2B-Traffic: `Anfrage-System-Analyse`
-- Warm-intent Intake: `/anfrage/`
+- Retired Warm-intent Intake: `/anfrage/` leitet auf `/anfrage-system-analyse/`
 - Proof- und Demo-Pfade: `/e3-new-energy/`, `/ergebnisse/`, `/energie-fahrplan-demo/`
 - Kein separater öffentlicher Tiefendiagnose-Schritt im Hauptfunnel
 - Umsetzungsnahe Kontaktwege: `Umsetzung / Optimierung`, `Laufende Weiterentwicklung`

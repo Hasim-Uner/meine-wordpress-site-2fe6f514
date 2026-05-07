@@ -26,6 +26,7 @@ function hu_get_request_analysis_request_path() {
 function hu_get_request_analysis_legacy_paths() {
 	return [
 		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/readiness-diagnose/' ), PHP_URL_PATH ), '/' ) ),
+		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/anfrage/' ), PHP_URL_PATH ), '/' ) ),
 	];
 }
 
@@ -39,7 +40,7 @@ function hu_is_request_analysis_request_path() {
 }
 
 /**
- * Redirect legacy English wording to the German route.
+ * Redirect legacy intake routes to the German analysis route.
  *
  * @return void
  */
@@ -52,8 +53,10 @@ function hu_redirect_legacy_request_analysis_paths() {
 		return;
 	}
 
+	$target_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+
 	nocache_headers();
-	wp_safe_redirect( home_url( '/anfrage-system-analyse/' ), 301 );
+	wp_safe_redirect( $target_url, 301 );
 	exit;
 }
 add_action( 'template_redirect', 'hu_redirect_legacy_request_analysis_paths', 5 );

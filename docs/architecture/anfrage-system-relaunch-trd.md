@@ -71,17 +71,18 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 | `/` | `front-page.php` | Positionierung, Proof, Founding-Partner-Fit | Index | `/anfrage-system-analyse/` |
 | `/energie-fahrplan-demo/` | `page-energie-fahrplan-demo.php`, `inc/energy-demo-page.php` | Showroom: Kaeufer erlebt Anfrageprozess und Ergebnis | Noindex, follow | `/anfrage-system-analyse/` |
 | `/anfrage-system-analyse/` | `page-readiness-diagnose.php`, `inc/anfrage-system-analyse-page.php` | Evidenzbasierter Fit- und Marktcheck | Noindex, follow bis Angebot final ist | Formularabschluss / spaeter Zustell-Consent |
-| `/anfrage/` | `page-anfrage.php` | Warm-intent intake | // ANNAHME, zu verifizieren: aktuelle Robots-Entscheidung im Live-HTML pruefen | Qualifizierte Anfrage stellen |
+| `/anfrage/` | `page-anfrage.php`, `inc/anfrage-system-analyse-page.php` | Retired Warm-intent intake | 301 auf `/anfrage-system-analyse/` | Anfrage-System-Analyse |
 | `/e3-new-energy/` | `page-case-e3.php` oder WP-Seite mit Template | Flagship-Proof | Index | Demo ansehen / Analyse starten |
 | `/ergebnisse/` | Results-Hub | Proof-Sammlung | Index | E3 ansehen / Analyse starten |
 | `/wordpress-agentur-hannover/` | `page-wordpress-agentur.php` | Money-/Legacy-SEO-Page | Index | Anfrage-System-Analyse statt Audit |
-| `/growth-audit/` | Audit-Route | Legacy-/Sekundaerpfad | // ANNAHME, zu verifizieren: Indexing live pruefen | Rueckfuehrung auf `/anfrage-system-analyse/` oder `/anfrage/` |
+| `/growth-audit/` | Audit-Route | Legacy-/Sekundärpfad | // ANNAHME, zu verifizieren: Indexing live prüfen | Rückführung auf `/anfrage-system-analyse/` |
 
 ## 5. Redirect, Noindex, and Deletion Plan
 
 | Old URL / Module | Target / Decision | Status | Reason |
 |---|---|---:|---|
 | `/readiness-diagnose/` | `/anfrage-system-analyse/` | 301 | Deutsche Analyse ersetzt Readiness-Frame. |
+| `/anfrage/` | `/anfrage-system-analyse/` | 301 | Die evidenzbasierte Analyse ersetzt den alten warmen Intake. |
 | `/energie-fahrplan-demo/` | Behalten | Noindex | Showroom-Asset, kein SEO-Landingpage-Ziel. |
 | `/anfrage-system-analyse/` | Behalten | Noindex vorerst | Angebot/Form noch nicht final genug fuer SEO-Traffic. |
 | `/growth-audit/` | Depriorisieren, nicht als Haupt-CTA | Pending | Bestehender Flow bleibt technisch real, aber nicht mehr Ladder-Stufe 1. |
@@ -151,7 +152,7 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 | `blocksy-child/readiness/src/index.css` | Form-, Ampel-, Ergebnis- und mobile States sauber abbilden. |
 | `blocksy-child/page-readiness-diagnose.php` | Tracking-, Root-IDs und Copy auf Anfrage-System-Analyse stabilisieren; Rename spaeter separat entscheiden. |
 | `blocksy-child/front-page.php` | E3-Canon, Analyse-CTA, Founding-Partner-Frame konsolidieren. |
-| `blocksy-child/page-anfrage.php` | Warm-intent-Route auf neue Ladder ausrichten; alte CPL-Zahlen entfernen. |
+| `blocksy-child/page-anfrage.php` | Erledigt: retired Redirect-Template auf `/anfrage-system-analyse/`. |
 | `blocksy-child/page-case-e3.php` | E3-Zahlen und Zeitraum korrigieren; Methodik und Beweisdichte erhoehen. |
 | `blocksy-child/page-solar-waermepumpen-leadgenerierung.php` | E3-Zahlen-Drift und alte CTA-Microcopy bereinigen. |
 | `blocksy-child/inc/helpers.php` | Public-Proof-Daten aus E3-Canon beziehen. |
@@ -191,7 +192,7 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 | `/energie-fahrplan-demo/` via `page-energie-fahrplan-demo.php` | `blocksy-child/energie-fahrplan/dist/assets/*.css` | `blocksy-child/energie-fahrplan/dist/assets/*.js` | Demo mode, CTA URL, no-submit flag. |
 | `/` via `front-page.php` | Theme CSS | Theme JS | Founding/pricing/proof canons. |
 | `/e3-new-energy/` | Theme CSS | Theme JS | E3 proof canon and schema data. |
-| `/anfrage/` | Existing page assets | Existing intake JS | Warm-intent CTA source and attribution. |
+| `/anfrage/` | keine eigenen Assets | keine eigene JS-Strecke | Legacy-Redirect auf `/anfrage-system-analyse/`. |
 
 Asset-Regel: React-Funnel-Apps bleiben unter `blocksy-child/<funnel-name>/`, Build-Output unter `dist/`. `scripts/build-theme-dist.sh` ist die Build-Grenze und darf multi-funnel-faehig bleiben, ohne `.github/workflows/deploy.yml` anzufassen.
 
@@ -212,7 +213,7 @@ Asset-Regel: React-Funnel-Apps bleiben unter `blocksy-child/<funnel-name>/`, Bui
 | Criterion | Must Be True |
 |---|---|
 | Strategy alignment | Primary CTA fuer kalten B2B-Traffic zeigt auf `/anfrage-system-analyse/`; Demo bleibt Showroom, nicht Leadmagnet. |
-| SEO safety | `/anfrage-system-analyse/` und `/energie-fahrplan-demo/` sind `noindex, follow`; `/readiness-diagnose/` leitet 301 weiter. |
+| SEO safety | `/anfrage-system-analyse/` und `/energie-fahrplan-demo/` sind `noindex, follow`; `/readiness-diagnose/` und `/anfrage/` leiten 301 weiter. |
 | Proof integrity | Keine customer-facing Fundstelle nutzt E3 `-83 %`, `120 -> 20`, `~25 EUR` oder `12 Monate` fuer den finalen E3-Case. |
 | Funnel integrity | Analyse kann Fit grün/gelb/rot ausdruecken und rot als Nicht-Empfehlung ausgeben. |
 | API security | Kein n8n-Webhook steht im Analyse-Frontend; Submit laeuft ueber WP REST und Feature-Flag. |
