@@ -753,7 +753,8 @@ get_header();
 				<div class="solar-about">
 					<div class="solar-about__media" data-reveal>
 						<div class="solar-about__portrait">
-							<div class="solar-about__portrait-inner"></div>
+							<img class="solar-about__portrait-img" src="https://hasimuener.de/wp-content/uploads/2026/04/Hasim_Uener_Portrait.png" alt="Haşim Üner — Umsetzer für Anfrage-Systeme" loading="lazy" decoding="async" />
+							<div class="solar-about__portrait-inner" aria-hidden="true"></div>
 							<div class="solar-about__portrait-stamp">
 								<span>Profil · 2026</span>
 							</div>

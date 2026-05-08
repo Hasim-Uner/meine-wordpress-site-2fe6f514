@@ -124,11 +124,16 @@
     var bar = document.querySelector('[data-solar-sticky]');
     if (!bar) return;
 
+    var finalCta = document.getElementById('abschluss');
+    var siteFooter = document.querySelector('footer.site-footer, footer[role="contentinfo"], .ct-footer, .site-footer');
+    var watch = [finalCta, siteFooter].filter(Boolean);
+    var inView = new WeakSet();
+    var nearFooter = false;
     var ticking = false;
 
     function update() {
       ticking = false;
-      var show = window.scrollY > STICKY_THRESHOLD;
+      var show = window.scrollY > STICKY_THRESHOLD && !nearFooter;
       bar.classList.toggle(STICKY_VISIBLE_CLASS, show);
       bar.setAttribute('aria-hidden', show ? 'false' : 'true');
     }
@@ -137,6 +142,19 @@
       if (ticking) return;
       ticking = true;
       window.requestAnimationFrame(update);
+    }
+
+    if (watch.length && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) inView.add(entry.target);
+          else inView.delete(entry.target);
+        });
+        nearFooter = watch.some(function (el) { return inView.has(el); });
+        update();
+      }, { threshold: 0.01, rootMargin: '0px 0px -80px 0px' });
+
+      watch.forEach(function (el) { io.observe(el); });
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
