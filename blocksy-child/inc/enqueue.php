@@ -230,6 +230,7 @@ function hu_enqueue_assets() {
 	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) ) {
 		hu_enqueue_css( 'nexus-review-funnel-css', 'review-funnel.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-energy-systems-css', 'energy-systems.css', [ 'nexus-review-funnel-css' ] );
+		hu_enqueue_js( 'nexus-solar-hero-js', 'solar-hero.js', [ 'nexus-core-js' ] );
 	}
 
 	// ── G) Template: WGOS System ──────────────────────────────────
