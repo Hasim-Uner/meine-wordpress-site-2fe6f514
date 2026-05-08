@@ -44,7 +44,7 @@ get_header();
 				<div class="hu-hero__eyebrow">
 					<span class="hu-tag">
 						<span class="hu-dot hu-dot--live"></span>
-						<span class="hu-mono">FÜR SOLAR- &amp; WÄRMEPUMPEN-BETRIEBE</span>
+						<span class="hu-mono">FÜR SOLAR- & WÄRMEPUMPEN-BETRIEBE</span>
 					</span>
 				</div>
 
@@ -160,7 +160,7 @@ get_header();
 							<div class="hu-eyebrow">Was am Ende ankommt</div>
 							<div class="hu-diagram__foot-title">Solar oder WP · Region passt · Projektwert klar</div>
 						</div>
-						<div class="hu-diagram__foot-r hu-mono">Daten erst nach Fit &amp; Consent</div>
+						<div class="hu-diagram__foot-r hu-mono">Daten erst nach Fit & Consent</div>
 					</div>
 
 					<div class="hu-diagram__metrics">
@@ -626,16 +626,20 @@ get_header();
 				</div>
 				<div class="hu-about-text hu-reveal">
 					<span class="hu-eyebrow">Wer steht dahinter</span>
-					<h2>Haşim Üner.<br>Performance &amp; Positionierung für Solar- und WP-Betriebe.</h2>
+					<h2>Ich bohre Brunnen.<br>Digital.</h2>
 					<p class="hu-lead" style="color:var(--ink-2)">
-						8 Jahre digitales Marketing — gestartet 2018 mit eigenem Shopify-Shop, 5 Jahre E-Commerce
-						auf der Performance-Seite, jetzt 3 Jahre Fokus auf Lead-Generierung für Solar- und
-						Wärmepumpen-Betriebe. Seit 2026 als Founder selbständig.
+						Für Solar- und Wärmepumpen-Betriebe, die ihre Anfragen nicht dauerhaft über Portale
+						mieten wollen — sondern eine eigene Nachfrage-Infrastruktur aufbauen.
+					</p>
+					<p style="color:var(--ink-2);margin-top:16px">
+						Mein Zugang ist Medienwissenschaft, nicht Webdesign. Ich denke zuerst über Sprache,
+						Entscheidung und Signal nach — und erst danach über Code. Seit E3 New Energy als
+						erstem Solar-Case weiß ich, wo diese Methode am stärksten greift.
 					</p>
 					<ul class="hu-about-bullets">
-						<li><span class="hu-about-bullet-dot"></span>Eigener Shopify-Shop · seit 2018</li>
-						<li><span class="hu-about-bullet-dot"></span>5 Jahre E-Commerce — Performance &amp; Conversion</li>
-						<li><span class="hu-about-bullet-dot"></span>3 Jahre Solar &amp; Wärmepumpen — Lead-Systeme im DACH-Mittelstand</li>
+						<li><span class="hu-about-bullet-dot"></span>Medienwissenschaftlicher Hintergrund — Sprache vor Code</li>
+						<li><span class="hu-about-bullet-dot"></span>Jahrelange Arbeit an digitalen Strukturen für erklärungsbedürftige B2B-Angebote</li>
+						<li><span class="hu-about-bullet-dot"></span>Fokus auf Solar & Wärmepumpen — seit dem E3-Case</li>
 						<li><span class="hu-about-bullet-dot"></span>Founder seit 2026 · Hannover, remote</li>
 						<li><span class="hu-about-bullet-dot"></span>Nimmt 2026 maximal 3 Founding-Partner auf</li>
 					</ul>
