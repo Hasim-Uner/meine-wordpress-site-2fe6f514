@@ -281,7 +281,7 @@ get_header();
 			<div class="solar-hero__inner">
 				<div class="solar-hero__eyebrow-row">
 					<span class="solar-hero__eyebrow">Für Solar- und Wärmepumpen-Betriebe · 10–25 Mitarbeiter</span>
-					<span class="solar-hero__meta">Hannover · DE · Q2 / 2026</span>
+					<span class="solar-hero__meta">Pattensen · Region Hannover · Q2 / 2026</span>
 				</div>
 
 				<h1 class="solar-hero__headline">
@@ -763,7 +763,7 @@ get_header();
 									<div class="solar-about__portrait-kicker">Umsetzer</div>
 									<div class="solar-about__portrait-name">Haşim Üner</div>
 								</div>
-								<div class="solar-about__portrait-loc">Hannover · DE</div>
+								<div class="solar-about__portrait-loc">Pattensen · Region Hannover</div>
 							</div>
 						</div>
 						<div class="solar-about__slot">
@@ -783,7 +783,7 @@ get_header();
 							Tracking, Vorqualifizierung, saubere Übergabe und Conversion-Optimierung.
 						</p>
 						<p class="solar-about__p solar-about__p--strong">
-							Mit Sitz in Hannover. Spezialisiert auf <em>Lead-Autonomie</em> im B2B-Handwerk.
+							Mit Sitz in Pattensen, Region Hannover. Spezialisiert auf <em>Lead-Autonomie</em> im B2B-Handwerk.
 						</p>
 						<div class="solar-about__metrics">
 							<?php foreach ( $about_metrics as $m ) : ?>
