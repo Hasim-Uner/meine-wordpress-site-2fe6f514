@@ -116,19 +116,120 @@ foreach ( $faq_items as $faq_item ) {
 	];
 }
 
+$arch_steps = [
+	[ 'n' => '01', 'lbl' => 'Landing',        'note' => 'Google → WordPress' ],
+	[ 'n' => '02', 'lbl' => 'Qualifizierung', 'note' => '60s-Funnel · React' ],
+	[ 'n' => '03', 'lbl' => 'Segmentierung',  'note' => 'n8n · Routing' ],
+	[ 'n' => '04', 'lbl' => 'Scoring',        'note' => 'Heiß / Warm / Kalt' ],
+	[ 'n' => '05', 'lbl' => 'Vertrieb',       'note' => 'Slack · CRM · 5 Min.' ],
+];
+
+add_action(
+	'wp_head',
+	static function () {
+		echo "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n";
+		echo "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n";
+		echo "<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap\">\n";
+	},
+	200
+);
+
 get_header();
 ?>
 <main id="main" class="site-main">
-	<div class="energy-page-wrapper" data-track-section="energy_service_landing">
+	<div class="energy-page-wrapper solar-page" data-track-section="energy_service_landing">
 
-		<section class="nx-section energy-hero" id="hero">
-			<div class="nx-container">
-				<h1 class="energy-hero__title">Ihre Website kann mehr als eine Broschüre. Sie kann Anfragen produzieren.</h1>
-				<p class="energy-hero__subtitle">Ich baue Solar- und Wärmepumpen-Betrieben ein eigenes Anfrage-System. Kein Portal. Keine gemieteten Leads. Keine Agentur-Abhängigkeit. Eine Infrastruktur, die Ihnen gehört und die Ihre Vertriebskosten senkt — messbar.</p>
-				<div class="energy-hero__actions">
-					<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_energy_hero" data-track-category="lead_gen">System prüfen</a>
+		<section class="nx-section solar-hero" id="hero">
+			<div class="solar-hero__inner">
+				<div class="solar-hero__eyebrow-row">
+					<span class="solar-hero__eyebrow">Für Solar- und Wärmepumpen-Betriebe · 10–25 Mitarbeiter</span>
+					<span class="solar-hero__meta">Hannover · DE · Q2 / 2026</span>
 				</div>
-				<p class="energy-hero__micro">8 Schritte. Lokales Ergebnis. Keine E-Mail im Default-Pfad.</p>
+
+				<h1 class="solar-hero__headline">
+					Hören Sie auf, <em>Anfragen zu mieten.</em><br />
+					Bauen Sie eine, <span class="solar-hero__nowrap">die <em>Ihnen gehört.</em></span>
+				</h1>
+
+				<div class="solar-hero__grid">
+					<div class="solar-hero__lede-col">
+						<p class="solar-hero__lede">
+							Portal-Leads kosten 80–150 €. Die Hälfte geht nicht ans Telefon.
+							Wir bauen Ihrem Betrieb stattdessen ein eigenes Anfrage-System &mdash;
+							mit WordPress-Infrastruktur, serverseitigem Tracking und Vorqualifizierung.
+							Das System gehört Ihnen. Die Anfragen sind exklusiv.
+						</p>
+
+						<div class="solar-hero__cta-row">
+							<a href="<?php echo esc_url( $request_url ); ?>" class="solar-hero__btn" data-track-action="cta_solar_hero_primary" data-track-category="lead_gen">
+								<span>Anfrage-System-Analyse starten</span>
+								<span class="solar-hero__btn-arrow" aria-hidden="true">
+									<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+										<path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+								</span>
+							</a>
+							<a href="#proof" class="solar-hero__btn solar-hero__btn--ghost" data-track-action="cta_solar_hero_proof" data-track-category="trust">
+								E3-Ergebnis ansehen
+							</a>
+						</div>
+
+						<p class="solar-hero__micro">
+							<span class="solar-hero__dot" aria-hidden="true"></span>
+							8 Schritte · lokales Ergebnis · keine E-Mail im Default-Pfad
+						</p>
+					</div>
+
+					<aside class="solar-arch" aria-label="System-Architektur — Vorschau">
+						<div class="solar-arch__head">
+							<span class="solar-arch__label">System · Live</span>
+							<span class="solar-arch__status">
+								<span class="solar-hero__dot solar-hero__dot--signal" aria-hidden="true"></span>
+								Routing OK
+							</span>
+						</div>
+
+						<div class="solar-arch__rows" data-solar-arch-rows>
+							<?php foreach ( $arch_steps as $i => $step ) : ?>
+								<div class="solar-arch__row<?php echo 0 === $i ? ' is-active' : ''; ?>">
+									<span class="solar-arch__num"><?php echo esc_html( $step['n'] ); ?></span>
+									<span class="solar-arch__name"><?php echo esc_html( $step['lbl'] ); ?></span>
+									<span class="solar-arch__note"><?php echo esc_html( $step['note'] ); ?></span>
+								</div>
+							<?php endforeach; ?>
+						</div>
+
+						<div class="solar-arch__foot">
+							<span class="solar-arch__label">Ø 4 Min · Anfrage → Anruf</span>
+							<span class="solar-arch__cpl"><?php echo esc_html( $e3_cpl_after ); ?><span>CPL</span></span>
+						</div>
+					</aside>
+				</div>
+
+				<div class="solar-hero__hairline" role="presentation"></div>
+
+				<div class="solar-proof">
+					<div class="solar-proof__cell">
+						<div class="solar-proof__num"><?php echo esc_html( $e3_lead_count ); ?></div>
+						<div class="solar-proof__lbl">qualifizierte Anfragen</div>
+						<div class="solar-proof__sub">in <?php echo esc_html( $e3_timeframe_dative ); ?></div>
+					</div>
+					<div class="solar-proof__cell">
+						<div class="solar-proof__num"><?php echo esc_html( $e3_sales_conversion ); ?></div>
+						<div class="solar-proof__lbl">Abschlussquote</div>
+						<div class="solar-proof__sub">von Anfrage zu Vertrag</div>
+					</div>
+					<div class="solar-proof__cell">
+						<div class="solar-proof__num"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
+						<div class="solar-proof__lbl">Kosten pro Anfrage</div>
+						<div class="solar-proof__sub"><?php echo esc_html( $e3_cpl_before ); ?> &rarr; <?php echo esc_html( $e3_cpl_after ); ?></div>
+					</div>
+					<div class="solar-proof__cell">
+						<div class="solar-proof__num">100&nbsp;%</div>
+						<div class="solar-proof__lbl">Eigentum am System</div>
+						<div class="solar-proof__sub">Code · Tracking · Daten</div>
+					</div>
+				</div>
 			</div>
 		</section>
 
