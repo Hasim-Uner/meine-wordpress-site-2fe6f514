@@ -20,7 +20,7 @@ $e3_metrics        = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metri
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
-$e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? '-85,3 %';
+$e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
@@ -172,7 +172,7 @@ $proof_phases = [
 	],
 	[
 		'k' => 'Ergebnis · 9 Monate',
-		'v' => '1.750+ qualifizierte Anfragen · 12 % Abschlussquote · −85,3 % CPL (auf 22 € gesenkt).',
+		'v' => '1.750+ qualifizierte Anfragen · 12 % Abschlussquote · über 85 % CPL-Reduktion (auf 22 € gesenkt).',
 	],
 ];
 

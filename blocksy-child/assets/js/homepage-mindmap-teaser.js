@@ -40,7 +40,7 @@
 			color: "#FB923C",
 			icon: "🚀",
 			modules: ["Paid Booster", "n8n Automation", "Lead Routing"],
-			stat: "−85,3%",
+			stat: "über 85 %",
 			statLabel: "Kosten pro Lead",
 		},
 	];

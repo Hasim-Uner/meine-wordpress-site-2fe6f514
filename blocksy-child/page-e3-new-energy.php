@@ -15,7 +15,7 @@ $diagnostic_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_requ
 $tracking_attrs = 'data-track-section="case_e3_methodology" data-track-funnel-stage="proof"';
 
 $metrics = [
-	'120 € → 20 € CPL',
+	'150 € → 22 € CPL',
 	'1.750+ Anfragen',
 	'12 % Abschlussquote',
 	'9 Monate Laufzeit',
@@ -78,7 +78,7 @@ $timeline_phases = [
 	],
 	[
 		'title' => 'Monate 4–9 — Optimierung',
-		'body'  => 'Auf Basis der nun belastbaren Daten wurden Audiences geschärft, Creatives iteriert, Formular-Felder gestrafft, Conversion-Pfade getestet. CPL stabilisierte sich bei ~20 € pro Anfrage. Conversion auf Auftrag erreichte 12 % — kein Viessmann-Niveau, aber deutlich über dem 1–5 %-Korridor der Portal-Leads.',
+		'body'  => 'Auf Basis der nun belastbaren Daten wurden Audiences geschärft, Creatives iteriert, Formular-Felder gestrafft, Conversion-Pfade getestet. CPL stabilisierte sich bei ~22 € pro Anfrage. Conversion auf Auftrag erreichte 12 % — kein Viessmann-Niveau, aber deutlich über dem 1–5 %-Korridor der Portal-Leads.',
 	],
 ];
 
@@ -90,7 +90,7 @@ $transferable = [
 ];
 
 $specific = [
-	'Konkrete Lead-Kosten hängen von Region, Produktmix und Werbedruck der Mitbewerber ab. 20 € CPL ist kein Versprechen, sondern ein Endpunkt einer 9-Monats-Optimierung.',
+	'Konkrete Lead-Kosten hängen von Region, Produktmix und Werbedruck der Mitbewerber ab. 22 € CPL ist kein Versprechen, sondern ein Endpunkt einer 9-Monats-Optimierung.',
 	'12 % Conversion auf Auftrag setzt einen funktionierenden Außendienst voraus. Ohne den nutzt das beste Anfrage-System nichts.',
 	'Hersteller-Partner-Programme wie das von Viessmann sind eine wertvolle Zusatzquelle, ersetzen aber kein eigenes System — Partner-Kontingente sind begrenzt und nicht steuerbar.',
 ];

@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'HU_E3_CASE_LABEL', 'E3 New Energy' );
 define( 'HU_E3_CPL_BEFORE', 150 );
 define( 'HU_E3_CPL_AFTER', 22 );
-define( 'HU_E3_CPL_REDUCTION_PERCENT', 85.3 );
+define( 'HU_E3_CPL_REDUCTION_PERCENT', 85 );
 define( 'HU_E3_LEAD_COUNT', 1750 );
 define( 'HU_E3_SALES_CONVERSION_PERCENT', 12 );
 define( 'HU_E3_TIMEFRAME_MONTHS', 9 );
@@ -39,9 +39,9 @@ function hu_e3_canon() {
 			],
 			'cpl_reduction'    => [
 				'value'                => HU_E3_CPL_REDUCTION_PERCENT,
-				'display'              => '-85,3 %',
+				'display'              => 'über 85 %',
 				'conservative_display' => 'über 85 %',
-				'counter_target'       => '-85.3',
+				'counter_target'       => '85',
 				'label'                => 'Kosten pro Anfrage',
 			],
 			'lead_count'       => [

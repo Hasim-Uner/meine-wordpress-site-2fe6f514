@@ -349,10 +349,10 @@ function hu_hero_section_shortcode() {
 	$ownership_copy = function_exists( 'nexus_get_public_ownership_sentence' ) ? nexus_get_public_ownership_sentence() : 'Code, Inhalte, Zugänge und Setups bleiben bei Ihnen. Laufende Zusammenarbeit bedeutet Weiterentwicklung, nicht Abhängigkeit.';
 	$lead_count    = $public_proof['metrics']['lead_count']['value'] ?? '1.750+';
 	$sales_rate    = $public_proof['metrics']['sales_conversion']['value'] ?? '12 %';
-	$cpl_reduction = $public_proof['metrics']['cpl_reduction']['value'] ?? '-85,3 %';
+	$cpl_reduction = $public_proof['metrics']['cpl_reduction']['value'] ?? 'über 85 %';
 	$lead_target   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'counter_target', '1750' ) : '1750';
 	$sales_target  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'counter_target', '12' ) : '12';
-	$cpl_target    = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'counter_target', '-85.3' ) : '-85.3';
+	$cpl_target    = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'counter_target', '85' ) : '85';
 
 	ob_start();
 	?>

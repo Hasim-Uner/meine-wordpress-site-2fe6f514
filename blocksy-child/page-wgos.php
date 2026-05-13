@@ -79,7 +79,7 @@ $hero_proof = [
 	],
 	[
 		'context' => 'E3 New Energy',
-		'value'   => $public_proof['metrics']['cpl_reduction']['value'] ?? '-85,3 %',
+		'value'   => $public_proof['metrics']['cpl_reduction']['value'] ?? 'über 85 %',
 		'label'   => 'CPL gegenüber Lead-Einkauf',
 	],
 ];
@@ -229,7 +229,7 @@ $proof_metrics = [
 	],
 	[
 		'case'  => 'E3 New Energy',
-		'value' => $public_proof['metrics']['cpl_reduction']['value'] ?? '-85,3 %',
+		'value' => $public_proof['metrics']['cpl_reduction']['value'] ?? 'über 85 %',
 		'label' => 'Kosten pro Lead',
 	],
 	[

@@ -76,7 +76,7 @@ function hu_get_blog_archive_description() {
  * @return array<string, array<string, string>>
  */
 function hu_get_forced_singular_seo_map() {
-	$e3_cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', '-85,3 %' ) : '-85,3 %';
+	$e3_cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', 'über 85 %' ) : 'über 85 %';
 
 	return (array) apply_filters(
 		'hu_forced_singular_seo_map',

@@ -94,7 +94,7 @@ function nexus_get_public_proof_data() {
 				'context' => 'vom Lead bis zum Abschluss',
 			],
 			'cpl_reduction'    => [
-				'value'   => $e3_metrics['cpl_reduction']['display'] ?? '-85,3 %',
+				'value'   => $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %',
 				'label'   => 'Kosten pro Anfrage',
 				'context' => 'gegenüber Lead-Einkauf',
 			],
