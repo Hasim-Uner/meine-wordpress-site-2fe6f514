@@ -296,12 +296,15 @@
   .hu-hp .hu-stat-divider { display: none; }
 }
 
-/* ─── Diagram ─────────────────────────────────────────────── */
+/* ─── Focused hero decision panel ─────────────────────────── */
 .hu-hp .hu-diagram {
-  padding: 24px;
-  background: var(--bg-2);
-  border: 1px solid var(--line);
+  padding: clamp(20px,2.5vw,28px);
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(224,138,60,.10), transparent 72%),
+    var(--bg-2);
+  border: 1px solid rgba(224,138,60,.22);
   border-radius: var(--radius-lg);
+  box-shadow: 0 24px 80px -56px rgba(224,138,60,.45);
 }
 .hu-hp .hu-diagram__head {
   display: flex;
@@ -309,89 +312,191 @@
   align-items: flex-end;
   padding-bottom: 18px;
   border-bottom: 1px solid var(--line);
-  margin-bottom: 22px;
+  margin-bottom: 18px;
   gap: 16px;
 }
-.hu-hp .hu-diagram__head-r { font-weight: 600; font-size: 14px; color: var(--fg); text-align: right; }
-.hu-hp .hu-diagram__body {
+.hu-hp .hu-diagram__head-r {
+  max-width: 22ch;
+  font-weight: 650;
+  font-size: 14px;
+  color: var(--fg);
+  text-align: right;
+  line-height: 1.35;
+}
+.hu-hp .hu-decision-flow {
   display: grid;
-  grid-template-columns: 1fr 0.7fr 1fr;
-  gap: 14px;
-  align-items: stretch;
+  gap: 12px;
   position: relative;
 }
-@media (max-width: 560px) { .hu-hp .hu-diagram__body { grid-template-columns: 1fr; } }
-.hu-hp .hu-diagram__col { display: flex; flex-direction: column; gap: 10px; }
-.hu-hp .hu-diagram__col-label { margin-bottom: 4px; }
-.hu-hp .hu-diagram__card {
-  padding: 14px 16px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--bg-3);
-  transition: border-color .3s, background .3s, transform .3s;
-}
-.hu-hp .hu-diagram__card.is-active.is-bad { border-color: rgba(199,112,95,.55); background: rgba(199,112,95,.08); }
-.hu-hp .hu-diagram__card.is-active.is-good { border-color: rgba(224,138,60,.5); background: rgba(224,138,60,.08); }
-.hu-hp .hu-diagram__card-title { font-weight: 600; font-size: 14px; color: var(--fg); }
-.hu-hp .hu-diagram__card-note { font-size: 12px; color: var(--fg-3); margin-top: 4px; line-height: 1.4; }
-.hu-hp .hu-diagram__center {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.hu-hp .hu-diagram__analyse {
-  padding: 18px 14px;
-  border: 1px solid var(--accent);
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(224,138,60,.10), rgba(224,138,60,.02));
-  text-align: center;
-  width: 100%;
-  position: relative;
-  z-index: 2;
-}
-.hu-hp .hu-diagram__analyse-title { font-size: 18px; font-weight: 700; margin: 6px 0; }
-.hu-hp .hu-diagram__analyse-tag { font-size: 11px; color: var(--fg-2); }
-.hu-hp .hu-diagram__lines {
+.hu-hp .hu-decision-flow::before {
+  content: "";
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+  top: 20px;
+  bottom: 20px;
+  left: 16px;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(199,112,95,.45), rgba(224,138,60,.75), rgba(107,161,122,.45));
 }
-.hu-hp .hu-diagram__lines path { stroke: var(--line-2); stroke-width: .4; fill: none; vector-effect: non-scaling-stroke; }
+.hu-hp .hu-decision-step {
+  position: relative;
+  padding: 18px 18px 18px 46px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(22,28,33,.86);
+}
+.hu-hp .hu-decision-step::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: 10px;
+  width: 13px;
+  height: 13px;
+  border: 2px solid var(--bg-2);
+  border-radius: 50%;
+  background: var(--fg-3);
+  box-shadow: 0 0 0 1px var(--line-2);
+}
+.hu-hp .hu-decision-step--muted {
+  color: var(--fg-2);
+  background: rgba(199,112,95,.055);
+}
+.hu-hp .hu-decision-step--muted::before { background: var(--bad); }
+.hu-hp .hu-decision-step--active {
+  border-color: rgba(224,138,60,.58);
+  background: linear-gradient(180deg, rgba(224,138,60,.13), rgba(224,138,60,.035));
+}
+.hu-hp .hu-decision-step--active::before {
+  background: var(--accent);
+  box-shadow: 0 0 0 5px rgba(224,138,60,.12);
+}
+.hu-hp .hu-decision-step__kicker {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.hu-hp .hu-decision-step--active .hu-decision-step__kicker { color: var(--accent); }
+.hu-hp .hu-decision-step__title {
+  margin-top: 6px;
+  color: var(--fg);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.hu-hp .hu-decision-step p {
+  max-width: 43ch;
+  margin: 8px 0 0;
+  color: var(--fg-2);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.hu-hp .hu-decision-step ul {
+  display: grid;
+  gap: 7px;
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  color: var(--fg-2);
+  font-size: 14px;
+}
+.hu-hp .hu-decision-step li {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.hu-hp .hu-decision-step li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: 0 0 auto;
+}
+.hu-hp .hu-decision-signal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.hu-hp .hu-decision-signal span {
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 999px;
+  background: rgba(255,255,255,.04);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+.hu-hp .hu-decision-signal span:first-child { color: #9EC9A8; }
+.hu-hp .hu-decision-signal span:nth-child(2) { color: #E0BE67; }
+.hu-hp .hu-decision-signal span:last-child { color: #D88673; }
 .hu-hp .hu-diagram__foot {
-  margin-top: 22px;
-  padding: 18px;
-  border: 1px solid var(--accent);
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid rgba(224,138,60,.36);
   border-radius: 12px;
   display: flex;
   justify-content: space-between;
   gap: 18px;
-  background: rgba(224,138,60,.04);
+  background: rgba(224,138,60,.045);
 }
-.hu-hp .hu-diagram__foot-title { font-weight: 700; margin-top: 6px; }
-.hu-hp .hu-diagram__foot-r { font-size: 12px; color: var(--fg-3); text-align: right; max-width: 40%; line-height: 1.5; }
+.hu-hp .hu-diagram__foot-title {
+  max-width: 34ch;
+  font-weight: 700;
+  margin-top: 6px;
+  line-height: 1.25;
+}
+.hu-hp .hu-diagram__foot-r {
+  max-width: 20ch;
+  font-size: 11px;
+  color: var(--fg-3);
+  text-align: right;
+  line-height: 1.5;
+}
 .hu-hp .hu-diagram__metrics {
-  margin-top: 14px;
+  margin-top: 12px;
   display: grid;
   grid-template-columns: repeat(3,1fr);
   gap: 10px;
 }
 .hu-hp .hu-diagram__metric {
-  padding: 14px;
+  min-width: 0;
+  padding: 13px;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: var(--bg-3);
+  background: rgba(22,28,33,.86);
 }
-.hu-hp .hu-diagram__metric-num { font-size: 22px; font-weight: 800; letter-spacing: -.03em; }
+.hu-hp .hu-diagram__metric-num {
+  font-size: 1.5rem;
+  font-weight: 820;
+  letter-spacing: 0;
+  line-height: 1;
+}
 .hu-hp .hu-diagram__metric-lbl {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--fg-3);
-  margin-top: 4px;
+  margin-top: 6px;
+}
+@media (max-width: 640px) {
+  .hu-hp .hu-diagram__head,
+  .hu-hp .hu-diagram__foot {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .hu-hp .hu-diagram__head-r,
+  .hu-hp .hu-diagram__foot-r {
+    max-width: none;
+    text-align: left;
+  }
+  .hu-hp .hu-diagram__metrics {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* =============================================================
@@ -859,7 +964,8 @@
   letter-spacing: .2em;
   color: var(--fg-3);
   text-transform: uppercase;
-  white-space: nowrap;
+  text-align: center;
+  white-space: normal;
 }
 .hu-hp .hu-cta-option-group {
   display: grid;
@@ -881,6 +987,12 @@
   text-align: left;
 }
 .hu-hp .hu-cta-option:hover { border-color: var(--accent); transform: translateY(-2px); background: rgba(224,138,60,.04); }
+.hu-hp .hu-cta-option--static { cursor: default; }
+.hu-hp .hu-cta-option--static:hover {
+  border-color: var(--line-2);
+  transform: none;
+  background: var(--bg-3);
+}
 .hu-hp .hu-cta-option--primary {
   border-color: var(--accent);
   background: linear-gradient(180deg, rgba(224,138,60,.10), rgba(224,138,60,.02));

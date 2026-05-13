@@ -55,15 +55,24 @@ get_header();
 				</h1>
 
 				<p class="hu-hero__sub">
-					Portale liefern dieselbe Anfrage an drei Wettbewerber. Sie zahlen — und müssen sich trotzdem rechtfertigen.
-					Bauen Sie stattdessen einen Anfrageweg, der Ihnen gehört.
-					<strong>Wie <?php echo esc_html( 'E3 New Energy' ); ?>: <?php echo esc_html( $e3_lead_count ); ?> Anfragen in <?php echo esc_html( $e3_timeframe_dat ); ?>, <?php echo esc_html( $e3_sales_conv ); ?> Abschluss, <?php echo esc_html( $e3_cpl_cons ); ?> weniger Kosten pro Anfrage.</strong>
+					Portale liefern dieselbe Anfrage an drei Wettbewerber. Ein eigener Anfrageweg macht Region,
+					Projektwert und Fit sichtbar, bevor Ihr Vertrieb Zeit in falsche Gespräche steckt.
 				</p>
+
+				<div class="hu-hero__ctas">
+					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
+					   data-track-action="cta_home_hero_analysis" data-track-category="lead_gen">
+						Prüfen, ob es passt
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+					</a>
+					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-link"
+					   data-track-action="cta_home_hero_e3_methodology" data-track-category="lead_gen">E3-Case ansehen</a>
+				</div>
 
 				<div class="hu-hero__stats">
 					<div>
 						<div class="hu-stat-num"><?php echo esc_html( $e3_lead_count ); ?></div>
-						<div class="hu-stat-label">Anfragen / 9 Monate</div>
+						<div class="hu-stat-label">Anfragen · E3</div>
 					</div>
 					<div class="hu-stat-divider"></div>
 					<div>
@@ -77,90 +86,56 @@ get_header();
 					</div>
 				</div>
 
-				<div class="hu-hero__ctas">
-					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
-					   data-track-action="cta_home_hero_analysis" data-track-category="lead_gen">
-						Prüfen, ob es passt
-						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-					</a>
-					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-link"
-					   data-track-action="cta_home_hero_e3_methodology" data-track-category="lead_gen">Methodik-Case lesen</a>
-				</div>
-
 				<ul class="hu-hero__bullets">
 					<li><span class="hu-bullet-dot"></span>Keine Kontaktdaten im ersten Schritt</li>
-					<li><span class="hu-bullet-dot"></span>Diagnose vor Angebot</li>
-					<li><span class="hu-bullet-dot"></span>Hannover · remote bundesweit</li>
+					<li><span class="hu-bullet-dot"></span>Grün, gelb oder rot statt Verkaufspitch</li>
+					<li><span class="hu-bullet-dot"></span>Für Solar, Wärmepumpe und Speicher</li>
 				</ul>
 			</div>
 
-			<!-- Right: diagram -->
-			<div aria-label="Skizze des eigenen Anfrage-Wegs">
-				<div class="hu-diagram">
+			<!-- Right: focused decision flow -->
+			<div aria-label="Ablauf vom Portalproblem zur eigenen Anfrage-Infrastruktur">
+				<div class="hu-diagram hu-diagram--decision">
 					<div class="hu-diagram__head">
-						<span class="hu-eyebrow">Anfrageweg</span>
-						<span class="hu-diagram__head-r">Vom Marktrauschen zur klaren Anfrage</span>
+						<span class="hu-eyebrow">System-Diagnose</span>
+						<span class="hu-diagram__head-r">Erst Fit klären. Dann bauen.</span>
 					</div>
 
-					<div class="hu-diagram__body">
-						<!-- Left col: Markt-Standard -->
-						<div class="hu-diagram__col">
-							<div class="hu-diagram__col-label hu-eyebrow">Markt-Standard</div>
-							<div class="hu-diagram__card">
-								<div class="hu-diagram__card-title">Portal-Lead</div>
-								<div class="hu-diagram__card-note">4 Anbieter erhalten dieselbe Anfrage</div>
-							</div>
-							<div class="hu-diagram__card">
-								<div class="hu-diagram__card-title">Generischer Funnel</div>
-								<div class="hu-diagram__card-note">Klickbericht ohne Projekt-Signal</div>
-							</div>
-							<div class="hu-diagram__card">
-								<div class="hu-diagram__card-title">Empfehlung</div>
-								<div class="hu-diagram__card-note">vertrauenswürdig, aber nicht skalierbar</div>
+					<div class="hu-decision-flow">
+						<div class="hu-decision-step hu-decision-step--muted">
+							<div class="hu-decision-step__kicker">Heute</div>
+							<div class="hu-decision-step__title">Portal-Abhängigkeit</div>
+							<p>Geteilte Leads, steigende Kosten, wenig Klarheit über echte Anfragequalität.</p>
+						</div>
+
+						<div class="hu-decision-step hu-decision-step--active">
+							<div class="hu-decision-step__kicker">Schritt 1</div>
+							<div class="hu-decision-step__title">Fit-Ampel</div>
+							<p>Markt, Region, Projektwert, Tracking und Vertrieb werden vor dem Gespräch bewertet.</p>
+							<div class="hu-decision-signal" aria-label="Fit-Ampel">
+								<span>grün</span>
+								<span>gelb</span>
+								<span>rot</span>
 							</div>
 						</div>
 
-						<!-- Center: Fit-Check -->
-						<div class="hu-diagram__center">
-							<div class="hu-diagram__analyse">
-								<div class="hu-eyebrow" style="color:var(--accent)">Fit-Check</div>
-								<div class="hu-diagram__analyse-title">grün · gelb · rot</div>
-								<div class="hu-diagram__analyse-tag hu-mono">vor Anruf</div>
-							</div>
-							<svg class="hu-diagram__lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-								<path d="M 0 18 L 50 50"/>
-								<path d="M 0 50 L 50 50"/>
-								<path d="M 0 82 L 50 50"/>
-								<path d="M 50 50 L 100 18"/>
-								<path d="M 50 50 L 100 50"/>
-								<path d="M 50 50 L 100 82"/>
-							</svg>
-						</div>
-
-						<!-- Right col: Eigener Weg -->
-						<div class="hu-diagram__col">
-							<div class="hu-diagram__col-label hu-eyebrow">Eigener Weg</div>
-							<div class="hu-diagram__card">
-								<div class="hu-diagram__card-title">Eigene Money Page</div>
-								<div class="hu-diagram__card-note">Region, Angebot, Beweis – sichtbar</div>
-							</div>
-							<div class="hu-diagram__card">
-								<div class="hu-diagram__card-title">Vorqualifizierung</div>
-								<div class="hu-diagram__card-note">60-Sek-Funnel statt Formular-Marathon</div>
-							</div>
-							<div class="hu-diagram__card">
-								<div class="hu-diagram__card-title">Privacy-first Tracking</div>
-								<div class="hu-diagram__card-note">Kanal sehen, ohne Datenchaos</div>
-							</div>
+						<div class="hu-decision-step">
+							<div class="hu-decision-step__kicker">Danach</div>
+							<div class="hu-decision-step__title">Eigener Anfrageweg</div>
+							<ul>
+								<li>Money Page mit regionalem Proof</li>
+								<li>Vorqualifizierung vor dem Anruf</li>
+								<li>Tracking ohne Cookie-Banner-Chaos</li>
+							</ul>
 						</div>
 					</div>
 
 					<div class="hu-diagram__foot">
 						<div>
-							<div class="hu-eyebrow">Was am Ende ankommt</div>
-							<div class="hu-diagram__foot-title">Solar oder WP · Region passt · Projektwert klar</div>
+							<div class="hu-eyebrow">Entscheidung am Ende</div>
+							<div class="hu-diagram__foot-title">Bauen, nachschärfen oder bewusst nicht bauen</div>
 						</div>
-						<div class="hu-diagram__foot-r hu-mono">Daten erst nach Fit & Consent</div>
+						<div class="hu-diagram__foot-r hu-mono">Keine Kontaktdaten im ersten Schritt</div>
 					</div>
 
 					<div class="hu-diagram__metrics">
@@ -528,11 +503,11 @@ get_header();
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
 				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 				   data-track-action="cta_home_fit_analysis" data-track-category="lead_gen">
-					Analyse-Termin sichern
+					Prüfen, ob es passt
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 				</a>
 				<div class="hu-mono" style="margin-top:16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)">
-					30 Minuten · keine Verkaufspräsentation · ehrliche Einordnung
+					Erst Formular · dann Entscheidung · keine Verkaufspräsentation
 				</div>
 			</div>
 		</div>
@@ -646,7 +621,7 @@ get_header();
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 					   style="margin-top:8px"
 					   data-track-action="cta_home_about_analysis" data-track-category="lead_gen">
-						Analyse-Termin sichern
+						Prüfen, ob es passt
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
 				</div>
@@ -664,16 +639,16 @@ get_header();
 					<img src="<?php echo esc_url( $portrait_url ); ?>" alt="Haşim Üner" width="72" height="72" loading="lazy">
 				</div>
 				<span class="hu-eyebrow" style="color:var(--accent)">09 / Nächster Schritt</span>
-				<h2 class="hu-display">Bereit, den Anfrageweg zu besitzen?</h2>
-				<p>30 Minuten Analyse. Kein Pitch. Sie bekommen eine ehrliche Einordnung — und gehen mit Klarheit raus, egal wie wir uns entscheiden.</p>
+				<h2 class="hu-display">Starten Sie mit der System-Diagnose.</h2>
+				<p>Kein Pitch, keine Kontaktdaten im ersten Schritt. Erst wird geklärt, ob ein eigener Anfrageweg für Ihren Markt überhaupt sinnvoll ist.</p>
 
 				<div class="hu-cta-flow">
 
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-cta-option hu-cta-option--primary"
 					   data-track-action="cta_home_final_qualify" data-track-category="lead_gen">
 						<div class="hu-cta-option__step">SCHRITT 1</div>
-						<div class="hu-cta-option__title">Kurz qualifizieren</div>
-						<div class="hu-cta-option__desc">3 Fragen — damit das Gespräch nicht bei Null startet.</div>
+						<div class="hu-cta-option__title">Fit prüfen</div>
+						<div class="hu-cta-option__desc">Markt, Region, Budget und Anfrageprozess werden sauber eingeordnet.</div>
 						<div class="hu-cta-option__cta">
 							Formular starten
 							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -682,22 +657,21 @@ get_header();
 
 					<div class="hu-cta-flow__then" aria-hidden="true">
 						<span class="hu-cta-flow__line"></span>
-						<span class="hu-cta-flow__then-label hu-mono">DANN — wählen Sie den Folgekanal</span>
+						<span class="hu-cta-flow__then-label hu-mono">DANACH — nur wenn der Fit passt</span>
 						<span class="hu-cta-flow__line"></span>
 					</div>
 
 					<div class="hu-cta-option-group">
-						<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-cta-option"
-						   data-track-action="cta_home_final_termin" data-track-category="lead_gen">
-							<div class="hu-cta-option__step">A · TERMIN</div>
-							<div class="hu-cta-option__title">Online buchen</div>
-							<div class="hu-cta-option__desc">Cal.com — freier Slot, 30 Min.</div>
-						</a>
+						<div class="hu-cta-option hu-cta-option--static">
+							<div class="hu-cta-option__step">A · BEFUND</div>
+							<div class="hu-cta-option__title">Klare Empfehlung</div>
+							<div class="hu-cta-option__desc">Grün, gelb oder rot — mit nächstem sinnvollen Schritt.</div>
+						</div>
 						<a href="<?php echo esc_url( $contact_url ); ?>" class="hu-cta-option"
 						   data-track-action="cta_home_final_contact" data-track-category="lead_gen">
 							<div class="hu-cta-option__step">B · NACHRICHT</div>
-							<div class="hu-cta-option__title">Kontaktformular</div>
-							<div class="hu-cta-option__desc">Kurz beschreiben — Antwort innerhalb 24 h.</div>
+							<div class="hu-cta-option__title">Vorab schreiben</div>
+							<div class="hu-cta-option__desc">Wenn Sie vor der Diagnose eine konkrete Frage klären möchten.</div>
 						</a>
 					</div>
 				</div>

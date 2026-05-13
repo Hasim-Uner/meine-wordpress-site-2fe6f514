@@ -15,22 +15,6 @@
     revealEls.forEach(function (el) { el.classList.add('in'); });
   }
 
-  /* ── Diagram animation ─────────────────────────────────── */
-  var cards = document.querySelectorAll('.hu-hp .hu-diagram__card');
-  if (cards.length) {
-    var active = 0;
-    var groups = 3;
-    function cycleDiagram() {
-      cards.forEach(function (c) { c.classList.remove('is-active', 'is-bad', 'is-good'); });
-      /* left cards: 0,1,2 → is-bad; right cards: 3,4,5 → is-good */
-      if (cards[active]) { cards[active].classList.add('is-active', 'is-bad'); }
-      if (cards[active + groups]) { cards[active + groups].classList.add('is-active', 'is-good'); }
-      active = (active + 1) % groups;
-    }
-    cycleDiagram();
-    setInterval(cycleDiagram, 2200);
-  }
-
   /* ── FAQ accordion ─────────────────────────────────────── */
   document.querySelectorAll('.hu-hp .hu-faq-item__q').forEach(function (btn) {
     btn.addEventListener('click', function () {
