@@ -93,64 +93,37 @@ get_header();
 				</ul>
 			</div>
 
-			<!-- Right: focused decision flow -->
-			<div aria-label="Ablauf vom Portalproblem zur eigenen Anfrage-Infrastruktur">
-				<div class="hu-diagram hu-diagram--decision">
-					<div class="hu-diagram__head">
-						<span class="hu-eyebrow">System-Diagnose</span>
-						<span class="hu-diagram__head-r">Erst Fit klären. Dann bauen.</span>
+			<!-- Right: quiet lead-system sketch -->
+			<div aria-label="Skizze eines eigenen Lead-Systems">
+				<div class="hu-diagram hu-lead-sketch">
+					<div class="hu-lead-sketch__head">
+						<span class="hu-eyebrow">Lead-System</span>
+						<span class="hu-lead-sketch__status">Eigene Strecke statt Portal-Miete</span>
 					</div>
 
-					<div class="hu-decision-flow">
-						<div class="hu-decision-step hu-decision-step--muted">
-							<div class="hu-decision-step__kicker">Heute</div>
-							<div class="hu-decision-step__title">Portal-Abhängigkeit</div>
-							<p>Geteilte Leads, steigende Kosten, wenig Klarheit über echte Anfragequalität.</p>
+					<div class="hu-lead-sketch__canvas">
+						<div class="hu-lead-node hu-lead-node--source">
+							<span>Nachfrage</span>
+							<strong>Region + Bedarf</strong>
 						</div>
 
-						<div class="hu-decision-step hu-decision-step--active">
-							<div class="hu-decision-step__kicker">Schritt 1</div>
-							<div class="hu-decision-step__title">Fit-Ampel</div>
-							<p>Markt, Region, Projektwert, Tracking und Vertrieb werden vor dem Gespräch bewertet.</p>
-							<div class="hu-decision-signal" aria-label="Fit-Ampel">
-								<span>grün</span>
-								<span>gelb</span>
-								<span>rot</span>
+						<div class="hu-lead-core" aria-label="Eigene Anfrage-Strecke">
+							<div class="hu-lead-core__ring" aria-hidden="true"></div>
+							<div class="hu-lead-core__content">
+								<span>Eigene Strecke</span>
+								<strong>Seite · Vorqualifizierung · Tracking</strong>
 							</div>
 						</div>
 
-						<div class="hu-decision-step">
-							<div class="hu-decision-step__kicker">Danach</div>
-							<div class="hu-decision-step__title">Eigener Anfrageweg</div>
-							<ul>
-								<li>Money Page mit regionalem Proof</li>
-								<li>Vorqualifizierung vor dem Anruf</li>
-								<li>Tracking ohne Cookie-Banner-Chaos</li>
-							</ul>
+						<div class="hu-lead-node hu-lead-node--outcome">
+							<span>Ergebnis</span>
+							<strong>Passende Anfrage</strong>
 						</div>
 					</div>
 
-					<div class="hu-diagram__foot">
-						<div>
-							<div class="hu-eyebrow">Entscheidung am Ende</div>
-							<div class="hu-diagram__foot-title">Bauen, nachschärfen oder bewusst nicht bauen</div>
-						</div>
-						<div class="hu-diagram__foot-r hu-mono">Keine Kontaktdaten im ersten Schritt</div>
-					</div>
-
-					<div class="hu-diagram__metrics">
-						<div class="hu-diagram__metric">
-							<div class="hu-diagram__metric-num" style="color:var(--accent)"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
-							<div class="hu-diagram__metric-lbl">Kosten / Anfrage</div>
-						</div>
-						<div class="hu-diagram__metric">
-							<div class="hu-diagram__metric-num"><?php echo esc_html( $e3_lead_count ); ?></div>
-							<div class="hu-diagram__metric-lbl">Anfragen</div>
-						</div>
-						<div class="hu-diagram__metric">
-							<div class="hu-diagram__metric-num"><?php echo esc_html( $e3_sales_conv ); ?></div>
-							<div class="hu-diagram__metric-lbl">Abschluss</div>
-						</div>
+					<div class="hu-lead-sketch__footer">
+						<span>Fit-Signal vor dem Anruf</span>
+						<span>Ohne Cookie-Banner-Setup</span>
 					</div>
 				</div>
 			</div>
