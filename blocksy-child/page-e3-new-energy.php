@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$diagnostic_url = home_url( '/solar-waermepumpen-leadgenerierung/#energie-anfrage' );
+$diagnostic_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
 
 $tracking_attrs = 'data-track-section="case_e3_methodology" data-track-funnel-stage="proof"';
 
