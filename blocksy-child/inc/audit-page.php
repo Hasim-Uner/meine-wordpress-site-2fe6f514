@@ -14,6 +14,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Redirect retired audit pages to the current Anfrage-System-Analyse.
+ *
+ * @return void
+ */
+function nexus_redirect_deprecated_audit_page() {
+	if ( is_admin() || wp_doing_ajax() || is_feed() || ! function_exists( 'nexus_is_audit_page' ) || ! nexus_is_audit_page() ) {
+		return;
+	}
+
+	$target_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/anfrage-system-analyse/' );
+	$target_path = trailingslashit( '/' . ltrim( (string) wp_parse_url( $target_url, PHP_URL_PATH ), '/' ) );
+
+	if ( function_exists( 'nexus_get_current_request_path' ) && nexus_get_current_request_path() === $target_path ) {
+		return;
+	}
+
+	nocache_headers();
+	wp_safe_redirect( $target_url, 301 );
+	exit;
+}
+add_action( 'template_redirect', 'nexus_redirect_deprecated_audit_page', 2 );
+
+/**
  * Render the active audit experience from the theme.
  *
  * @return string
