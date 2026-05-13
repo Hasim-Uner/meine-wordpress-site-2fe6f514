@@ -1,10 +1,10 @@
 # Haşim Üner
 
-> Audit-first WordPress Growth Architect für B2B in Hannover. Schwerpunkte: Technical SEO, GA4/Tracking, Core Web Vitals und Conversion-Optimierung. Primärer Einstieg ist der Growth Audit.
+> Architekt für eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter im DACH-Raum. Ablösung von Portal-Abhängigkeit durch Website, Tracking, Vorqualifizierung und Werbekanal-Steuerung als ein verbundenes System. Primärer Einstieg ist die Anfrage-System-Analyse.
 
 ## Primäre Einstiege
 - [Startseite](/) - Überblick über Positionierung, Proof und primäre Einstiege.
-- [Growth Audit](/growth-audit/) - Diagnose von SEO, Tracking, Performance und Conversion-Prioritäten.
+- [Anfrage-System-Analyse](/anfrage-system-analyse/) - Diagnose von Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss.
 - [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - Lokale B2B-Service-Seite für WordPress, Leadgenerierung und strukturierte Weiterentwicklung.
 - [WordPress Growth Operating System](/wordpress-growth-operating-system/) - Angebots- und Systemseite für Audit, Blueprint und Umsetzung.
 
@@ -22,4 +22,4 @@
 ## Wissen und Kontakt
 - [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und B2B-Wachstum.
 - [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
-- [Kontakt](/kontakt/) - Direkter Kontakt für Audit, Folgeanalyse oder Umsetzung.
+- [Kontakt](/kontakt/) - Direkter Kontakt für Folgeanalyse oder Umsetzung.

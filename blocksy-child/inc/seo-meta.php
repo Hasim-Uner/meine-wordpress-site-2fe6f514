@@ -93,16 +93,8 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Über Hasim Üner – Anfrage-Infrastruktur für Solar & Wärmepumpe',
 				'description' => 'Ich baue Solar- und Wärmepumpen-Anbietern eigene Anfrage-Systeme. Weg von gemieteten Portal-Leads, hin zu Infrastruktur im eigenen Eigentum.',
 			],
-			// 'wgos' / 'wordpress-growth-operating-system' Meta-Einträge entfernt:
-			// Seiten sind noindex, daher keine öffentlichen Meta-Signale mehr.
-			'tools' => [
-				'title'       => 'Kostenlose Website- und ROI-Tools | Haşim Üner',
-				'description' => 'Kostenlose Tools für ROI, Website-Analyse und Performance: schnelle Checks für Marketing-, Website- und WordPress-Entscheidungen.',
-			],
-			'kostenlose-tools' => [
-				'title'       => 'Kostenlose Website- und ROI-Tools | Haşim Üner',
-				'description' => 'Kostenlose Tools für ROI, Website-Analyse und Performance: schnelle Checks für Marketing-, Website- und WordPress-Entscheidungen.',
-			],
+			// 'wgos' / 'wordpress-growth-operating-system' sowie Tools-/Audit-Legacy-Routen:
+			// Seiten sind noindex oder 301, daher keine öffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
 				'title'       => 'WordPress Agentur Hannover – SEO, Wartung & Conversion',
 				'description' => sprintf( 'WordPress Agentur in Hannover: technisches SEO, Wartungsvertrag, Tracking und Conversion für B2B-Websites als verbundenes System. Referenz E3 — %s Leadkosten.', $e3_cpl_reduction ),
@@ -114,10 +106,6 @@ function hu_get_forced_singular_seo_map() {
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
 				'description' => 'Ergebnisse aus WordPress-, SEO-, Tracking- und CRO-Projekten: E3, DOMDAR und Whitelabel-Proof mit klarem naechsten Schritt.',
-			],
-			'growth-audit' => [
-				'title'       => 'System-Diagnose für Solar- und Wärmepumpen-Anbieter | Haşim Üner',
-				'description' => 'In 60 Sekunden sehen Sie, wo Ihre Website Anfragen verliert. Diagnose für Performance, Tracking, SEO und Content mit priorisierten Hebeln statt Tool-Score.',
 			],
 			'case-studies-e-commerce' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
@@ -742,6 +730,15 @@ function hu_get_seo_meta() {
 		'360-deep-dive',
 		'readiness-diagnose',
 		'anfrage-system-analyse',
+		'growth-audit',
+		'audit',
+		'customer-journey-audit',
+		'360-audit',
+		'wordpress-tech-audit',
+		'kostenlose-tools',
+		'tools',
+		'website-performance-analyse',
+		'roi-rechner',
 	];
 
 	if ( is_front_page() ) {
@@ -951,6 +948,7 @@ add_action( 'template_redirect', function () {
  * - ki-integration-wordpress / ki-integration: noindex (Legacy-Thema)
  * - loesungen: noindex (interne Angebotsübersicht, nicht mehr beworben)
  * - wordpress-seo-hannover / wordpress-wartung-hannover: 301 auf Agentur-Page-Anker
+ * - growth-audit / kostenlose-tools und Tool-Unterseiten: 301 auf Anfrage-System-Analyse
  *
  * @return array<int, string>
  */
@@ -965,6 +963,15 @@ function nexus_get_sitemap_excluded_slugs() {
 		'anfrage-system-analyse',
 		'wordpress-seo-hannover',
 		'wordpress-wartung-hannover',
+		'growth-audit',
+		'audit',
+		'customer-journey-audit',
+		'360-audit',
+		'wordpress-tech-audit',
+		'kostenlose-tools',
+		'tools',
+		'website-performance-analyse',
+		'roi-rechner',
 	];
 }
 

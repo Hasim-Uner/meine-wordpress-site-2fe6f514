@@ -597,53 +597,6 @@ function hu_output_schema()
             $schemas[] = $whitelabelPage;
         }
 
-        // Kostenlose Tools: CollectionPage
-        if ($slug === 'kostenlose-tools') {
-            $toolParts = [];
-
-            if (function_exists('nexus_get_tools_hub_items')) {
-                foreach ((array) nexus_get_tools_hub_items() as $toolItem) {
-                    $toolParts[] = [
-                        '@type' => $toolItem['schema_type'] ?? 'WebPage',
-                        'name'  => $toolItem['title'] ?? '',
-                        'description' => $toolItem['description'] ?? '',
-                        'url'   => $toolItem['url'] ?? home_url('/kostenlose-tools/'),
-                    ];
-                }
-            }
-
-            if (empty($toolParts)) {
-                $toolParts = [
-                    [
-                        '@type' => 'WebPage',
-                        'name'  => 'System-Diagnose',
-                        'description' => 'Persönlicher Diagnose-Einstieg für Nachfrage, Conversion, Tracking und Priorisierung.',
-                        'url'   => home_url('/kontakt/')
-                    ],
-                    [
-                        '@type' => 'WebPage',
-                        'name'  => 'Eigenes Anfrage-System für Solar- und Wärmepumpen-Anbieter',
-                        'description' => 'Aufbau eigener Anfrage-Systeme zur Ablösung von Portal-Leads für Solar-, Wärmepumpen- und Energie-Anbieter im DACH-Raum.',
-                        'url'   => home_url('/solar-waermepumpen-leadgenerierung/')
-                    ],
-                ];
-            }
-
-            $toolsPage = [
-                '@context' => 'https://schema.org',
-                '@type'    => 'CollectionPage',
-                '@id'      => home_url('/kostenlose-tools/#collection'),
-                'url'      => home_url('/kostenlose-tools/'),
-                'name'     => 'Kostenlose Tools für Nachfrage und Conversion',
-                'description' => 'Kuratiertes Hub für kostenlose Diagnose-Einstiege rund um Website-Performance, Systemverständnis und Nachfrage-Qualität.',
-                'hasPart'  => $toolParts,
-                'inLanguage' => 'de',
-                'publisher'  => ['@id' => home_url('/#organization')]
-            ];
-
-            $schemas[] = $toolsPage;
-        }
-
         /**
          * FAQ SCHEMA (NEU, robust):
          * - erkennt <details><summary>…</summary>…</details>

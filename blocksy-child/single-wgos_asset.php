@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$audit_url = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/kontakt/' );
+$audit_url = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/anfrage-system-analyse/' );
 $wgos_url  = function_exists( 'nexus_get_wgos_url' ) ? nexus_get_wgos_url() : home_url( '/wgos/' );
 $hub_url   = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : $wgos_url . '#module';
 ?>

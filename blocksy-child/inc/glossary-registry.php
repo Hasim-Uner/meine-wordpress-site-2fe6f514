@@ -525,7 +525,7 @@ function nexus_get_glossary_related_term_items( $term ) {
  */
 function nexus_get_glossary_term_content_html( $term ) {
 	$hub_url          = nexus_get_glossary_hub_url();
-	$audit_url        = nexus_get_primary_public_url( 'audit', home_url( '/kontakt/' ) );
+	$audit_url        = nexus_get_primary_public_url( 'audit', home_url( '/anfrage-system-analyse/' ) );
 	$primary_url      = nexus_get_glossary_primary_url( $term );
 	$primary_items    = nexus_get_glossary_related_primary_items( $term );
 	$asset_items      = nexus_get_glossary_related_asset_items( $term );

@@ -27,7 +27,6 @@ $tracking_url = nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracki
 $wartung_url = nexus_get_primary_public_url( 'wartung', home_url( '/wordpress-wartung-hannover/' ) );
 $measurement_url = nexus_get_wgos_asset_anchor_url( 'tracking-audit' );
 $cro_url   = nexus_get_primary_public_url( 'cro', home_url( '/conversion-rate-optimization/' ) );
-$tools_url = nexus_get_primary_public_url( 'tools', home_url( '/kostenlose-tools/' ) );
 $proof_metrics = function_exists( 'nexus_get_public_proof_metric_list' ) ? nexus_get_public_proof_metric_list( [ 'lead_count', 'sales_conversion', 'cpl_reduction' ] ) : [];
 $e3_cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', '-85,3 %' ) : '-85,3 %';
 $e3_lead_count = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
@@ -462,9 +461,6 @@ get_header();
 						<span aria-hidden="true"> · </span>
 						Für Betrieb und Stabilisierung:
 						<a href="<?php echo esc_url( $wartung_url ); ?>" data-track-action="cta_agentur_final_wartung" data-track-category="navigation">WordPress Wartung Hannover</a>
-						<span aria-hidden="true"> · </span>
-						Schneller Selbst-Check:
-						<a href="<?php echo esc_url( $tools_url ); ?>" data-track-action="cta_agentur_final_tools" data-track-category="navigation">Kostenlose Tools</a>
 					</p>
 				</div>
 			</div>

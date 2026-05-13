@@ -483,10 +483,12 @@ function nexus_get_primary_public_url_map() {
 		return $urls;
 	}
 
+	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+
 	$urls = [
 		'home'                 => home_url( '/' ),
 		'blog'                 => function_exists( 'nexus_get_blog_posts_url' ) ? nexus_get_blog_posts_url() : home_url( '/blog/' ),
-		'audit'                => function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/kontakt/' ),
+		'audit'                => $request_url,
 		'audit_linkedin'       => function_exists( 'nexus_get_audit_linkedin_url' ) ? nexus_get_audit_linkedin_url() : home_url( '/audit-linkedin/' ),
 		'results'              => function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/ergebnisse/' ),
 		'wgos'                 => nexus_get_page_url(
@@ -525,14 +527,8 @@ function nexus_get_primary_public_url_map() {
 			'performance-marketing',
 			home_url( '/performance-marketing/' )
 		),
-		'tools'                => nexus_get_page_url(
-			[ 'kostenlose-tools', 'tools' ],
-			home_url( '/kostenlose-tools/' )
-		),
-		'performance_analysis' => nexus_get_page_url(
-			[ 'website-performance-analyse', 'kostenlose-tools/website-performance-analyse' ],
-			home_url( '/website-performance-analyse/' )
-		),
+		'tools'                => $request_url,
+		'performance_analysis' => $request_url,
 		'about'                => nexus_get_page_url(
 			[ 'uber-mich' ],
 			home_url( '/uber-mich/' )
@@ -551,7 +547,7 @@ function nexus_get_primary_public_url_map() {
 			home_url( '/e3-new-energy/' )
 		),
 		'energy'               => function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' ),
-		'request'              => function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/anfrage-system-analyse/' ),
+		'request'              => $request_url,
 		'domdar'               => nexus_get_page_url(
 			[ 'case-study-domdar', 'domdar' ],
 			home_url( '/case-study-domdar/' )
@@ -600,14 +596,15 @@ function nexus_get_audit_page_id() {
 }
 
 /**
- * Resolve the primary audit page URL while supporting legacy slugs.
+ * Resolve the former audit page URL.
  *
- * Keep the legacy slug as fallback until a permalink migration is done in WordPress.
+ * The standalone Growth Audit is retired; keep this helper as a compatibility
+ * alias so older CTA surfaces route into the Anfrage-System-Analyse.
  *
  * @return string
  */
 function nexus_get_audit_url() {
-	return home_url( '/kontakt/' );
+	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
 }
 
 /**
@@ -883,24 +880,34 @@ add_action( 'init', 'nexus_maybe_ensure_energy_systems_page', 27 );
  */
 function nexus_get_legacy_offer_redirect_map() {
 	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
+	$request_url = nexus_get_primary_request_url();
 
 	return [
-		// /meta-ads/ ehemals WGOS-Landung. WGOS ist deprecated in der neuen Positionierung;
-		// Redirect zur System-Diagnose, damit Handwerker nicht im alten Systemlogik-Hub landen.
-		'/meta-ads/'                   => nexus_get_audit_url(),
+		// Audit- und Tool-Routen sind in der neuen Positionierung retired.
+		'/growth-audit/'               => $request_url,
+		'/audit/'                      => $request_url,
+		'/customer-journey-audit/'     => $request_url,
+		'/360-audit/'                  => $request_url,
+		'/wordpress-tech-audit/'       => $request_url,
+		'/meta-ads/'                   => $request_url,
+		'/kostenlose-tools/'           => $request_url,
+		'/tools/'                      => $request_url,
+		'/website-performance-analyse/' => $request_url,
+		'/kostenlose-tools/website-performance-analyse/' => $request_url,
+		'/tools/website-performance-analyse/' => $request_url,
+		'/roi-rechner/'                => $request_url,
 		// SEO- und Wartungs-Seiten konsolidiert auf die Agentur-Money-Page (Anker-Sektionen).
 		// Löst Kannibalisierung für "wordpress agentur hannover" + transferiert SEO-Equity.
 		'/wordpress-seo-hannover/'     => trailingslashit( $agentur_url ) . '#technisches-seo',
 		'/wordpress-wartung-hannover/' => trailingslashit( $agentur_url ) . '#wordpress-wartung',
 		'/seo/'                        => trailingslashit( $agentur_url ) . '#technisches-seo',
 		'/wordpress-agentur/'          => $agentur_url,
-		'/roi-rechner/'                => nexus_get_primary_public_url( 'tools', home_url( '/kostenlose-tools/' ) ),
 	];
 }
 
 add_action( 'template_redirect', 'nexus_redirect_legacy_offer_paths', 2 );
 /**
- * Redirect deprecated service and tool slugs to their canonical WGOS destinations.
+ * Redirect deprecated service and tool slugs to their current canonical destinations.
  *
  * @return void
  */

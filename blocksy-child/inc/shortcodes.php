@@ -133,7 +133,7 @@ function hu_home_urls() {
 	}
 
 	$urls = [
-		'audit'       => nexus_get_primary_public_url( 'audit', home_url( '/kontakt/' ) ),
+		'audit'       => nexus_get_primary_public_url( 'audit', home_url( '/anfrage-system-analyse/' ) ),
 		'wgos'        => nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-growth-operating-system/' ) ),
 		'cases'       => nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) ),
 		'agentur'     => nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ),

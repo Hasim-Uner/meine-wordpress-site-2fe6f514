@@ -24,7 +24,9 @@ add_shortcode( 'nexus_header_btn', function() {
  * Gold-Button für die Hauptnavigation.
  */
 add_shortcode( 'nexus_header_cta', function() {
-    return '<a href="' . esc_url( nexus_get_audit_url() ) . '" class="nexus-header-cta">Audit starten</a>';
+    $request_url = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/anfrage-system-analyse/' );
+
+    return '<a href="' . esc_url( $request_url ) . '" class="nexus-header-cta">Analyse starten</a>';
 } );
 
 /**
@@ -116,11 +118,13 @@ add_action( 'template_redirect', function() {
 	$gone_paths   = [
 		'/shopify-wartungsvertrag/',
 	];
+	$request_url = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/anfrage-system-analyse/' );
 	$redirects = [
-		'/audit/'                    => nexus_get_audit_url(),
-		'/customer-journey-audit/'   => nexus_get_audit_url(),
-		'/360-audit/'                => nexus_get_audit_url(),
-		'/wordpress-tech-audit/'     => nexus_get_audit_url(),
+		'/growth-audit/'             => $request_url,
+		'/audit/'                    => $request_url,
+		'/customer-journey-audit/'   => $request_url,
+		'/360-audit/'                => $request_url,
+		'/wordpress-tech-audit/'     => $request_url,
 		'/alle-loesungen-im-detail/' => nexus_get_page_url( [ 'alle-loesungen' ], home_url( '/alle-loesungen/' ) ),
 	];
 

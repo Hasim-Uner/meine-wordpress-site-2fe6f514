@@ -27,7 +27,7 @@ System-Diagnose -> Blueprint -> Umsetzung / Retainer
 ```
 
 - Primary CTA: Anfrage-System-Analyse (`/anfrage-system-analyse/`)
-- Sekundärer Pfad: System-Diagnose (URL-Slug `/growth-audit/` bleibt aus SEO-Gründen; Label ist "System-Diagnose")
+- Retired Pfade: `/growth-audit/`, `/kostenlose-tools/`, `/tools/`, `/roi-rechner/` und alte Audit-Aliasse leiten auf `/anfrage-system-analyse/`
 - Die System-Diagnose ist diagnostischer Einstieg, kein gimmicky Gratis-Tool
 
 ## Tone
