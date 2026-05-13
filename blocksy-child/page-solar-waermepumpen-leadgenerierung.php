@@ -47,6 +47,29 @@ $pain_items = [
 	],
 ];
 
+$negative_filters = [
+	[
+		'n' => '01',
+		't' => 'Weniger als 10 Mitarbeiter',
+		'd' => 'Ein eigenes Anfrage-System trägt sich wirtschaftlich erst ab einem Vertriebsvolumen, das den TCO-Vorteil über 24 Monate auffängt. Darunter ist ein schlanker Funnel mit sauberem Tracking der bessere Hebel — den biete ich hier aber nicht an.',
+	],
+	[
+		'n' => '02',
+		't' => 'Weniger als 20 qualifizierte Anfragen pro Monat',
+		'd' => 'Server-Side Tracking, Lead-Scoring und ein Multi-Step-Funnel rechnen sich nur bei ausreichendem Anfragevolumen. Unter dieser Schwelle optimieren Sie ein Auto, das Sie nur einmal pro Woche fahren.',
+	],
+	[
+		'n' => '03',
+		't' => 'Suche nach Leads in 2–4 Wochen',
+		'd' => 'Ein eigenes System braucht drei Monate Implementierung und sechs Monate Optimierung, bevor es seinen Vorteil ausspielt. Wer kurzfristig Termine braucht, ist bei einer Performance-Agentur oder bei Portal-Leads besser aufgehoben — auch wenn das teurer ist.',
+	],
+	[
+		'n' => '04',
+		't' => 'Keine Bereitschaft zur Daten-Offenlegung',
+		'd' => 'Eine Diagnose ohne Einblick in Anfrage-Quellen, Werbeaccounts und CRM-Daten ist ein Glücksspiel. Wenn diese Offenheit nicht da ist, hat eine Zusammenarbeit keinen Sinn.',
+	],
+];
+
 $arch_full = [
 	[
 		'n'   => '01',
@@ -372,12 +395,47 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 02 · Pain (dark) ──────────────────────────────────────── -->
-		<section class="solar-section solar-section--dark" id="pain" data-screen-label="02 Pain" aria-labelledby="pain-title">
+		<!-- 02 · Negativ-Filter (paper-2) ─────────────────────────── -->
+		<section class="solar-section solar-section--paper-2" id="negativ-filter" data-screen-label="02 Negativ-Filter" data-track-section="negative_filter" data-track-funnel-stage="qualification" aria-labelledby="negative-filter-title">
 			<div class="solar-section__inner">
 				<div class="solar-secthead">
 					<div class="solar-secthead__row">
-						<span class="solar-secnum">02 / Alltag im Vertrieb</span>
+						<span class="solar-secnum">02 / Ehrlichkeit zuerst</span>
+						<span class="solar-secthead__rule" aria-hidden="true"></span>
+					</div>
+					<h2 id="negative-filter-title" class="solar-h2">Für wen das System nicht geeignet ist.</h2>
+					<p class="solar-lede">
+						Bevor wir über Investition und Aufbau reden — vier Situationen, in denen
+						Sie hier falsch sind. Das spart uns beiden Zeit.
+					</p>
+				</div>
+
+				<div class="solar-owned solar-owned--filter">
+					<?php foreach ( $negative_filters as $item ) : ?>
+						<article class="solar-owned__cell" data-reveal>
+							<div class="solar-owned__head">
+								<span class="solar-owned__num"><?php echo esc_html( $item['n'] ); ?> / 04</span>
+								<span class="solar-dot solar-dot--warn" aria-hidden="true"></span>
+							</div>
+							<h3 class="solar-owned__t"><?php echo esc_html( $item['t'] ); ?></h3>
+							<p class="solar-owned__d"><?php echo esc_html( $item['d'] ); ?></p>
+						</article>
+					<?php endforeach; ?>
+				</div>
+
+				<p class="solar-grid-coda" data-reveal>
+					Trifft eines davon zu, sparen wir uns das Erstgespräch. Trifft keines davon zu,
+					weiter zum nächsten Punkt.
+				</p>
+			</div>
+		</section>
+
+		<!-- 03 · Pain (dark) ──────────────────────────────────────── -->
+		<section class="solar-section solar-section--dark" id="pain" data-screen-label="03 Pain" aria-labelledby="pain-title">
+			<div class="solar-section__inner">
+				<div class="solar-secthead">
+					<div class="solar-secthead__row">
+						<span class="solar-secnum">03 / Alltag im Vertrieb</span>
 						<span class="solar-secthead__rule" aria-hidden="true"></span>
 					</div>
 					<h2 id="pain-title" class="solar-h2">Kommt Ihnen das <em>bekannt vor?</em></h2>
@@ -395,12 +453,12 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 03 · Architektur (paper) ─────────────────────────────── -->
-		<section class="solar-section solar-section--paper" id="system" data-screen-label="03 System" aria-labelledby="system-title">
+		<!-- 04 · Architektur (paper) ─────────────────────────────── -->
+		<section class="solar-section solar-section--paper" id="system" data-screen-label="04 System" aria-labelledby="system-title">
 			<div class="solar-section__inner">
 				<div class="solar-secthead">
 					<div class="solar-secthead__row">
-						<span class="solar-secnum">03 / System-Architektur</span>
+						<span class="solar-secnum">04 / System-Architektur</span>
 						<span class="solar-secthead__rule" aria-hidden="true"></span>
 					</div>
 					<h2 id="system-title" class="solar-h2">Das ist keine Website. <em>Das ist eine Lead-Verarbeitungsmaschine.</em></h2>
@@ -436,12 +494,12 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 04 · Zwei Wege (paper, main comparison) ───────────────── -->
-		<section class="solar-section solar-section--paper-2" id="modelle" data-screen-label="04 Zwei Wege" aria-labelledby="modelle-title">
+		<!-- 05 · Zwei Wege (paper, main comparison) ───────────────── -->
+		<section class="solar-section solar-section--paper-2" id="modelle" data-screen-label="05 Zwei Wege" aria-labelledby="modelle-title">
 			<div class="solar-section__inner">
 				<div class="solar-secthead">
 					<div class="solar-secthead__row">
-						<span class="solar-secnum">04 / Zwei Wege</span>
+						<span class="solar-secnum">05 / Zwei Wege</span>
 						<span class="solar-secthead__rule" aria-hidden="true"></span>
 					</div>
 					<h2 id="modelle-title" class="solar-h2">Nachfrage <em>mieten</em> &mdash; oder <em>eigene Anfrage-Infrastruktur</em> aufbauen.</h2>
@@ -534,12 +592,12 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 05 · TCO (dark, CAPEX vs OPEX) ───────────────────────── -->
-		<section class="solar-section solar-section--dark" id="tco" data-screen-label="05 TCO" aria-labelledby="tco-title">
+		<!-- 06 · TCO (dark, CAPEX vs OPEX) ───────────────────────── -->
+		<section class="solar-section solar-section--dark" id="tco" data-screen-label="06 TCO" aria-labelledby="tco-title">
 			<div class="solar-section__inner">
 				<div class="solar-secthead">
 					<div class="solar-secthead__row">
-						<span class="solar-secnum">05 / CAPEX statt OPEX</span>
+						<span class="solar-secnum">06 / CAPEX statt OPEX</span>
 						<span class="solar-secthead__rule" aria-hidden="true"></span>
 					</div>
 					<h2 id="tco-title" class="solar-h2">Der gleiche Hebel &mdash; <em>zwei Bilanzwirkungen.</em></h2>
@@ -587,12 +645,12 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 06 · Owned Assets (paper-2) ──────────────────────────── -->
-		<section class="solar-section solar-section--paper-2" id="owned" data-screen-label="06 Owned" aria-labelledby="owned-title">
+		<!-- 07 · Owned Assets (paper-2) ──────────────────────────── -->
+		<section class="solar-section solar-section--paper-2" id="owned" data-screen-label="07 Owned" aria-labelledby="owned-title">
 			<div class="solar-section__inner">
 				<div class="solar-secthead">
 					<div class="solar-secthead__row">
-						<span class="solar-secnum">06 / Keine Miet-Leads</span>
+						<span class="solar-secnum">07 / Keine Miet-Leads</span>
 						<span class="solar-secthead__rule" aria-hidden="true"></span>
 					</div>
 					<h2 id="owned-title" class="solar-h2">Was Ihr Betrieb <em>danach besitzt.</em></h2>
@@ -614,12 +672,12 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 07 · Server-Side Tracking (dark) ─────────────────────── -->
-		<section class="solar-section solar-section--dark" id="tracking" data-screen-label="07 Tracking" aria-labelledby="tracking-title">
+		<!-- 08 · Server-Side Tracking (dark) ─────────────────────── -->
+		<section class="solar-section solar-section--dark" id="tracking" data-screen-label="08 Tracking" aria-labelledby="tracking-title">
 			<div class="solar-section__inner">
 				<div class="solar-secthead">
 					<div class="solar-secthead__row">
-						<span class="solar-secnum">07 / Unfairer Vorteil</span>
+						<span class="solar-secnum">08 / Unfairer Vorteil</span>
 						<span class="solar-secthead__rule" aria-hidden="true"></span>
 					</div>
 					<h2 id="tracking-title" class="solar-h2">
@@ -647,12 +705,12 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 08 · Proof / E3 Case (paper) ─────────────────────────── -->
-		<section class="solar-section solar-section--paper" id="proof" data-screen-label="08 Proof" aria-labelledby="proof-title">
+		<!-- 09 · Proof / E3 Case (paper) ─────────────────────────── -->
+		<section class="solar-section solar-section--paper" id="proof" data-screen-label="09 Proof" aria-labelledby="proof-title">
 			<div class="solar-section__inner">
 				<div class="solar-secthead">
 					<div class="solar-secthead__row">
-						<span class="solar-secnum">08 / Proof · Case Study</span>
+						<span class="solar-secnum">09 / Proof · Case Study</span>
 						<span class="solar-secthead__rule" aria-hidden="true"></span>
 					</div>
 					<h2 id="proof-title" class="solar-h2"><?php echo esc_html( $e3_case_label ); ?>. <em>Vorher → Nachher.</em></h2>
@@ -720,12 +778,12 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 09 · FAQ (paper-2, objection handler before CTA) ────── -->
-		<section class="solar-section solar-section--paper-2" id="faq" data-screen-label="09 FAQ" aria-labelledby="faq-title">
+		<!-- 10 · FAQ (paper-2, objection handler before CTA) ────── -->
+		<section class="solar-section solar-section--paper-2" id="faq" data-screen-label="10 FAQ" aria-labelledby="faq-title">
 			<div class="solar-section__inner">
 				<div class="solar-secthead">
 					<div class="solar-secthead__row">
-						<span class="solar-secnum">09 / Häufige Fragen</span>
+						<span class="solar-secnum">10 / Häufige Fragen</span>
 						<span class="solar-secthead__rule" aria-hidden="true"></span>
 					</div>
 					<h2 id="faq-title" class="solar-h2">Was Solar- und Wärmepumpen-Betriebe <em>vor dem Erstgespräch wissen wollen.</em></h2>
@@ -748,8 +806,8 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 10 · About Hasim (dark) ──────────────────────────────── -->
-		<section class="solar-section solar-section--dark" id="ueber" data-screen-label="10 About" aria-labelledby="about-title">
+		<!-- 11 · About Hasim (dark) ──────────────────────────────── -->
+		<section class="solar-section solar-section--dark" id="ueber" data-screen-label="11 About" aria-labelledby="about-title">
 			<div class="solar-section__inner">
 				<div class="solar-about">
 					<div class="solar-about__media" data-reveal>
@@ -774,7 +832,7 @@ get_header();
 					</div>
 
 					<div class="solar-about__body" data-reveal>
-						<div class="solar-secnum solar-secnum--bone">10 / Über den Umsetzer</div>
+						<div class="solar-secnum solar-secnum--bone">11 / Über den Umsetzer</div>
 						<h2 id="about-title" class="solar-h2 solar-h2--bone">
 							Messbare Infrastruktur statt <em>digitaler Broschüren.</em>
 						</h2>
@@ -799,8 +857,8 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 11 · Final CTA (paper-2) ─────────────────────────────── -->
-		<section class="solar-section solar-section--paper-2" id="abschluss" data-screen-label="11 CTA" aria-labelledby="cta-title">
+		<!-- 12 · Final CTA (paper-2) ─────────────────────────────── -->
+		<section class="solar-section solar-section--paper-2" id="abschluss" data-screen-label="12 CTA" aria-labelledby="cta-title">
 			<div class="solar-section__inner solar-cta">
 				<span class="solar-cta__eyebrow">Nächster Schritt · System-Diagnose</span>
 				<h2 id="cta-title" class="solar-cta__h">

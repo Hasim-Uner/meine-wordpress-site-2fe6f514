@@ -1619,6 +1619,14 @@
   line-height: 1.6;
 }
 
+.solar-grid-coda {
+  margin: 28px 0 0;
+  max-width: 74ch;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
 @media (max-width: 760px) {
   .solar-owned {
     grid-template-columns: 1fr;
