@@ -84,7 +84,7 @@ get_header();
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
 					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-link"
-					   data-track-action="cta_home_hero_e3" data-track-category="lead_gen">E3 Case ansehen</a>
+					   data-track-action="cta_home_hero_e3_methodology" data-track-category="lead_gen">Methodik-Case lesen</a>
 				</div>
 
 				<ul class="hu-hero__bullets">

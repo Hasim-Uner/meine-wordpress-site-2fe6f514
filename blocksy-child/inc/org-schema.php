@@ -503,6 +503,43 @@ function hu_output_schema()
             $schemas[] = $blog_posting;
         }
 
+        if ( function_exists( 'hu_is_e3_methodology_case_post' ) && hu_is_e3_methodology_case_post( $post_id ) ) {
+            $e3_article = [
+                '@context'         => 'https://schema.org',
+                '@type'            => 'Article',
+                '@id'              => home_url('/e3-new-energy/#article'),
+                'url'              => home_url('/e3-new-energy/'),
+                'mainEntityOfPage' => home_url('/e3-new-energy/'),
+                'headline'         => function_exists( 'hu_get_e3_methodology_case_title' ) ? hu_get_e3_methodology_case_title() : 'Methodik-Case E3 New Energy',
+                'description'      => function_exists( 'hu_get_e3_methodology_case_description' ) ? hu_get_e3_methodology_case_description() : '',
+                'inLanguage'       => 'de',
+                'author'           => [
+                    '@type' => 'Person',
+                    'name'  => 'Haşim Üner',
+                    'url'   => home_url('/uber-mich/'),
+                ],
+                'publisher'        => ['@id' => home_url('/#organization')],
+                'about'            => [
+                    [
+                        '@type' => 'Thing',
+                        'name'  => 'Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter',
+                    ],
+                    [
+                        '@type' => 'Organization',
+                        'name'  => 'E3 New Energy',
+                    ],
+                ],
+            ];
+
+            $modified_date = get_post_modified_time( DATE_W3C, true, $post_id );
+
+            if ( $modified_date ) {
+                $e3_article['dateModified'] = $modified_date;
+            }
+
+            $schemas[] = $e3_article;
+        }
+
         // Ergebnisse hub: CollectionPage schema
         if ($slug === 'case-studies' || $slug === 'case-studies-e-commerce' || $slug === 'ergebnisse') {
             $collection = [

@@ -670,8 +670,8 @@ get_header();
 							<footer class="solar-quote__cite">Geschäftsführung · <?php echo esc_html( $e3_case_label ); ?></footer>
 						</blockquote>
 
-						<a href="<?php echo esc_url( $e3_url ); ?>" class="solar-hero__btn solar-hero__btn--ghost" data-track-action="cta_solar_proof_case" data-track-category="trust">
-							<span>Vollständige Case Study lesen</span>
+						<a href="<?php echo esc_url( $e3_url ); ?>" class="solar-hero__btn solar-hero__btn--ghost" data-track-action="cta_solar_proof_e3_methodology" data-track-category="trust">
+							<span>Methodik im Detail lesen</span>
 							<span class="solar-hero__btn-arrow" aria-hidden="true">
 								<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 							</span>

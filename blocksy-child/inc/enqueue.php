@@ -226,8 +226,8 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-agentur-css', 'agentur.css', [ 'nexus-home-css' ] );
 	}
 
-	// ── F1) Template: Energy Systems Landing ──────────────────────
-	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) ) {
+	// ── F1) Template: Energy Systems Landing + E3 Methodik-Case ───
+	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page( 'e3-new-energy' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) || is_page_template( 'page-e3-new-energy.php' ) || is_page_template( 'page-case-e3.php' ) ) {
 		hu_enqueue_css( 'nexus-review-funnel-css', 'review-funnel.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-energy-systems-css', 'energy-systems.css', [ 'nexus-review-funnel-css' ] );
 		hu_enqueue_js( 'nexus-solar-hero-js', 'solar-hero.js', [ 'nexus-core-js' ] );
@@ -429,7 +429,7 @@ function hu_enqueue_assets() {
 	}
 
 	// ── Q) Template: Öffentliche Case Studies ──────────────────────
-	if ( is_page_template( 'page-case-e3.php' ) || is_page_template( 'page-case-study-domdar.php' ) || is_page( 'case-study-domdar' ) ) {
+	if ( is_page_template( 'page-case-study-domdar.php' ) || is_page( 'case-study-domdar' ) ) {
 		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-case-study-css', 'case-study.css', [ 'nexus-home-css' ] );
 	}

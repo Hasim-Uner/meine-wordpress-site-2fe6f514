@@ -1013,6 +1013,7 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-wordpress-agentur.php',
 		'page-wordpress-agentur-hannover.php',
 		'page-case-studies-e-commerce.php',
+		'page-e3-new-energy.php',
 		'page-case-e3.php',
 		'page-case-study-domdar.php',
 		'page-wgos.php',
