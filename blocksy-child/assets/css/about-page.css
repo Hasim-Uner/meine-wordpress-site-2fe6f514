@@ -268,13 +268,15 @@ body.page-template-template-about-php .nx-site-header__menu--mobile .nav-cta-but
   justify-content: flex-start;
 }
 
+body.page-template-template-about .ft__cta-group,
+body.page-template-template-about-php .ft__cta-group,
 body.page-template-template-about .ft__cta,
 body.page-template-template-about-php .ft__cta {
   display: none;
 }
 
-body.page-template-template-about .ft__privacy-note,
-body.page-template-template-about-php .ft__privacy-note {
+body.page-template-template-about .ft__trust-list,
+body.page-template-template-about-php .ft__trust-list {
   margin-top: 8px;
 }
 
