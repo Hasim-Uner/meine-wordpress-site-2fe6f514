@@ -127,6 +127,14 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
 				'description' => 'Ergebnisse aus WordPress-, SEO-, Tracking- und CRO-Projekten: E3, DOMDAR und Whitelabel-Proof mit klarem naechsten Schritt.',
 			],
+			'e3-new-energy' => [
+				'title'       => hu_get_e3_methodology_case_title(),
+				'description' => hu_get_e3_methodology_case_description(),
+			],
+			'case-e3' => [
+				'title'       => hu_get_e3_methodology_case_title(),
+				'description' => hu_get_e3_methodology_case_description(),
+			],
 			'audit-linkedin' => [
 				'title'       => 'Kostenloses Website Audit für mehr Anfragen | Haşim Üner',
 				'description' => 'Ich analysiere, wo Klarheit, Vertrauen, Struktur und Conversion-Logik auf deiner Website bremsen – mit fundierter Ersteinschätzung ohne Pflicht-Call.',
@@ -340,6 +348,57 @@ function hu_is_domdar_case_study_page() {
 	$slug = get_post_field( 'post_name', $post_id );
 
 	return in_array( $slug, [ 'case-study-domdar', 'domdar' ], true );
+}
+
+/**
+ * Check whether a post object is the E3 methodology case.
+ *
+ * @param int $post_id Post ID.
+ * @return bool
+ */
+function hu_is_e3_methodology_case_post( $post_id = 0 ) {
+	$post_id = absint( $post_id );
+
+	if ( $post_id <= 0 ) {
+		$post_id = absint( get_queried_object_id() );
+	}
+
+	if ( $post_id <= 0 ) {
+		return false;
+	}
+
+	$slug     = (string) get_post_field( 'post_name', $post_id );
+	$template = (string) get_page_template_slug( $post_id );
+
+	return in_array( $slug, [ 'e3-new-energy', 'case-e3' ], true )
+		|| in_array( $template, [ 'page-e3-new-energy.php', 'page-case-e3.php' ], true );
+}
+
+/**
+ * Check whether current query is the E3 methodology case.
+ *
+ * @return bool
+ */
+function hu_is_e3_methodology_case_page() {
+	return is_singular() && hu_is_e3_methodology_case_post();
+}
+
+/**
+ * Get the SEO title for the E3 methodology case.
+ *
+ * @return string
+ */
+function hu_get_e3_methodology_case_title() {
+	return 'Methodik-Case E3 New Energy: Wie ein eigenes Anfrage-System Portal-Abhängigkeit ablöst';
+}
+
+/**
+ * Get the SEO description for the E3 methodology case.
+ *
+ * @return string
+ */
+function hu_get_e3_methodology_case_description() {
+	return 'Solar- und Wärmepumpen-Anbieter E3 New Energy hatte zwei parallele Lead-Quellen — gekaufte Portal-Leads und kostenlose Viessmann-Partner-Anfragen. Eine Methodik-Story über strukturelle Anfrage-Architektur.';
 }
 
 /**
@@ -569,11 +628,12 @@ function hu_get_singular_post_seo_context( $post_id ) {
 	$legacy_robots_meta   = get_post_meta( $post_id, 'rank_math_robots', true );
 	$legacy_noindex       = is_array( $legacy_robots_meta ) ? in_array( 'noindex', $legacy_robots_meta, true ) : 'noindex' === $legacy_robots_meta;
 	$noindex              = (bool) ( $acf_noindex || $legacy_noindex );
+	$canonical            = hu_is_e3_methodology_case_post( $post_id ) ? home_url( '/e3-new-energy/' ) : (string) get_permalink( $post_id );
 
 	return [
 		'title'              => trim( wp_strip_all_tags( (string) $title ) ),
 		'description'        => trim( wp_strip_all_tags( (string) $description ) ),
-		'canonical'          => (string) get_permalink( $post_id ),
+		'canonical'          => $canonical,
 		'robots'             => $noindex ? 'noindex, nofollow' : 'index, follow',
 		'noindex'            => $noindex,
 		'title_source'       => $title_source,
@@ -829,6 +889,13 @@ function hu_get_seo_meta() {
 		// OG type
 		if ( is_singular( 'post' ) ) {
 			$meta['og_type'] = 'article';
+		}
+
+		if ( hu_is_e3_methodology_case_post( $post_id ) ) {
+			$meta['og_title']    = hu_get_e3_methodology_case_title();
+			$meta['description'] = hu_get_e3_methodology_case_description();
+			$meta['canonical']   = home_url( '/e3-new-energy/' );
+			$meta['og_type']     = 'article';
 		}
 
 	} elseif ( is_category() || is_tag() || is_tax() ) {
