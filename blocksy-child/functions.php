@@ -41,7 +41,6 @@ $modules = [
 	'contact-page.php',   // Kontakt-Route, schlanke Kontaktform und Mailversand
 	'anfrage-system-analyse-page.php', // Deutsche Analyse-Route plus Legacy-Redirect
 	'analysis-intake.php', // REST-Endpoint, CRM-Sync, Brevo-Mails und n8n-Webhook für die Analyse
-	'energy-demo-page.php', // EnergieFahrplan-Demo als stabile virtuelle Showroom-Route
 	'audit-linkedin-page.php', // LinkedIn Audit Landing Page (virtuelle Route, noindex)
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails
 	'robots-txt.php',     // Dynamische /robots.txt-Route für Search- und KI-Crawler

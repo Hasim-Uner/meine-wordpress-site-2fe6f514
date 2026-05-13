@@ -10,7 +10,7 @@ Report-Spec: `docs/specs/anfrage-system-analyse-report-v1.md`
 
 - WordPress bleibt das Hauptsystem für Seiten, SEO, Canon-Dateien, Routing und Consent-Grenzen.
 - Die Analyse läuft als React-Funnel-Mikro-App im Theme. `blocksy-child/readiness/` bleibt vorerst der interne Legacy-Name; customer-facing heißt der Pfad nur `Anfrage-System-Analyse`.
-- `/energie-fahrplan-demo/` ist Showroom für das Käufererlebnis, kein SaaS, kein Leadmagnet und kein Submit-Pfad.
+- Der frühere EnergieFahrplan-Showroom ist retired; der Hauptpfad läuft direkt über Landingpage, Branchen-Seite und Anfrage-System-Analyse.
 - `/anfrage-system-analyse/` ist der primäre Einstieg für kalten B2B-Traffic. `/growth-audit/` darf nicht als Hauptfunnel zurückkehren.
 - n8n bleibt bis zu einem versionierten Contract und einer expliziten Workflow-Freigabe abgekoppelt.
 - Der Default-Pfad verarbeitet keine personenbezogenen Daten; Ergebnis und Kontaktdaten werden erst im separaten Kontakt-Schritt nach Einwilligung an WordPress REST übergeben.

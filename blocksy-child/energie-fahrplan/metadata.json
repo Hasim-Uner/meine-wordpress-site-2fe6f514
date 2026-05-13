@@ -1,6 +1,0 @@
-{
-  "name": "EnergieFahrplan Demo",
-  "description": "Interaktive Showroom-Demo für einen lokal laufenden Energie-Anfrageprozess mit Berechnung, PDF-Ausgabe und Prozessvisualisierung ohne CRM- oder E-Mail-Submit.",
-  "requestFramePermissions": [],
-  "majorCapabilities": []
-}

@@ -12,7 +12,6 @@
 get_header();
 
 $analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
-$demo_url     = home_url( '/energie-fahrplan-demo/' );
 $wgos_url     = nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-growth-operating-system/' ) );
 $local_wp_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
 $energy_url  = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
@@ -89,10 +88,6 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
                data-track-action="cta_case_hero_analysis"
                data-track-category="lead_gen">
                 Anfrage-System-Analyse starten
-            </a>
-            <a href="<?php echo esc_url( $demo_url ); ?>"
-               class="nx-btn nx-btn--ghost">
-                EnergieFahrplan-Demo ansehen →
             </a>
         </div>
 
@@ -683,9 +678,6 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
             <div class="cs-internal-links">
                 <a href="<?php echo esc_url( $wgos_url ); ?>" class="cs-internal-link">
                     WGOS: Die Systemlogik dahinter →
-                </a>
-                <a href="<?php echo esc_url( $demo_url ); ?>" class="cs-internal-link">
-                    EnergieFahrplan-Demo ansehen →
                 </a>
                 <a href="<?php echo esc_url( $local_wp_url ); ?>" class="cs-internal-link">
                     WordPress Agentur Hannover →

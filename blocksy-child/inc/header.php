@@ -225,7 +225,6 @@ function nexus_strip_side_funnel_nav_items( $items, $args ) {
 	}
 
 	$blocked_paths = [
-		'/energie-fahrplan-demo/',
 		'/whitelabel-retainer/',
 		'/wordpress-agentur-hannover/',
 		'/core-web-vitals/',

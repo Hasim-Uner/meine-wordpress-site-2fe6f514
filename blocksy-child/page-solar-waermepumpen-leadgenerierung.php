@@ -307,9 +307,6 @@ get_header();
 									</svg>
 								</span>
 							</a>
-							<a href="#proof" class="solar-hero__btn solar-hero__btn--ghost" data-track-action="cta_solar_hero_proof" data-track-category="trust">
-								E3-Ergebnis ansehen
-							</a>
 						</div>
 
 						<p class="solar-hero__micro">

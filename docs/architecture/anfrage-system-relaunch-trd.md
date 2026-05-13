@@ -6,21 +6,21 @@
 **Target Positioning:** Anfrage-Systeme fuer Solar-, SHK- und Waermepumpenbetriebe mit Founding-Partner-Fitcheck  
 **Non-Goals:** SaaS, Multi-Tenant-App, oeffentlicher Growth-Audit-Hauptfunnel, oeffentliche Tiefendiagnose, neuer n8n-Webhook ohne Freigabe, PII im Default-Pfad
 
-> Core architecture decision: `hasimuener.de` wird ein proof-gefuehrter Anfrage-System-Funnel mit WordPress-Core und React-Funnel-Layer; die EnergieFahrplan-Demo verkauft das Erlebnis, die Anfrage-System-Analyse entscheidet den Fit.
+> Core architecture decision: `hasimuener.de` wird ein proof-geführter Anfrage-System-Funnel mit WordPress-Core und React-Funnel-Layer; E3, Methodik und die Anfrage-System-Analyse tragen die Beweisführung.
 
 ---
 
 ## 1. Executive Architecture Decision
 
-Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen Anfrage-System-Funnel wechseln. Der oeffentliche Pfad lautet: Proof ansehen, EnergieFahrplan-Demo erleben, Anfrage-System-Analyse starten, danach nur bei Fit in die Umsetzung gehen.
+Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen Anfrage-System-Funnel wechseln. Der öffentliche Pfad lautet: Proof ansehen, Branchen-Seite einordnen, Anfrage-System-Analyse starten, danach nur bei Fit in die Umsetzung gehen.
 
 | Area | Current State | Target State | Decision |
 |---|---|---|---|
 | Positioning | Pivot ist in `AGENTS.md` gesetzt, einzelne Live-Dokumente und Templates tragen noch Audit-/Readiness-/alte Proof-Sprache. | Ein Angebot: eigenes Anfrage-System fuer passende Solar-/SHK-/Waermepumpenbetriebe. | Canon in `blocksy-child/inc/canon/` bleibt fuehrend; alte Woerter werden per Lint und PRs reduziert. |
-| Funnel | `/anfrage-system-analyse/` aktiv, aber React-App und Template heissen intern noch `readiness`. | Demo -> Analyse -> Umsetzung -> optional Performance/Premium. | Deutsche Customer-Copy; interne Altpfade nur solange sie technisch guenstig sind. |
+| Funnel | `/anfrage-system-analyse/` aktiv, aber React-App und Template heissen intern noch `readiness`. | Landingpage -> Branchen-Seite -> Analyse -> Umsetzung -> optional Performance/Premium. | Deutsche Customer-Copy; interne Altpfade nur solange sie technisch guenstig sind. |
 | Trust | E3-Beweis ist sichtbar, aber Zahlen driften in PHP/Docs. | Ein E3-Canon mit `150 EUR -> 22 EUR`, `-85,3 %`, `1.750+`, `12 %`, `9 Monate`. | Proof-Drift ist P0, weil sie direkt Vertrauen und Sales-Sicherheit trifft. |
 | SEO | Analyse und Demo sind aktuell `noindex, follow`; Proof-Routen bleiben indexierbar. | Index nur fuer belastbare Proof- und Money-Pages. | `/anfrage-system-analyse/` bleibt bis Form/Offer-final noindex. |
-| Architecture | WP-Core mit React-Micro-Apps existiert bereits. | WordPress fuehrt Pages/SEO/Content; React fuehrt Funnel-Erlebnisse. | Mono-Repo bleibt; `blocksy-child/energie-fahrplan/` ist Schablone. |
+| Architecture | WP-Core mit React-Micro-Apps existiert bereits. | WordPress führt Pages/SEO/Content; React führt Funnel-Erlebnisse. | Mono-Repo bleibt; die Analyse-App ist der aktive Funnel-Layer. |
 
 ## 2. Deep Context Ingestion: Strategy and Repo Findings
 
@@ -33,15 +33,13 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 | Exclusions | Analyse ist kein kostenloser Massen-Leadmagnet und kein Admin-Audit. | Kein Admin-Zugang, keine PII im Default, keine Downloadpflicht als Lead-Hook. |
 | Offer architecture | Founding-Partner-Fit -> Umsetzung -> optional Performance/Premium. | Pricing- und Messaging-Canons muessen Templates treiben. |
 | Proof | E3 ist Anker-Case, nicht einziger Case. | `/e3-new-energy/` bleibt Proof-Route; Zahlen muessen canonisiert werden. |
-| Demo | EnergieFahrplan soll aus Kaeufersicht fuehlbar machen, was gebaut wird. | Demo braucht interaktive Eingabe, Ergebnisbuehne, Prozessvisualisierung und lokale PDF-Ausgabe. |
+| Demo | Der frühere EnergieFahrplan-Showroom erzeugte zu viel Bauaufwand für zu wenig Beweiswert. | Showroom-Pfad entfernen; Beweisführung über E3, Methodik und Analyse führen. |
 
 ### 2.2 Repository Findings
 
 | Component | Current Role | Relaunch Assessment |
 |---|---|---|
 | `front-page.php` | Homepage mit Pivot-Elementen, Proof und CTA. | Muss E3-Zahlen-Canon nutzen und Growth-/Audit-Sprache weiter reduzieren. |
-| `page-energie-fahrplan-demo.php` | Template fuer eingebettete Demo. | Passt zur Zielarchitektur; Demo braucht noch Showroom-Haertung und Tracking-Spec. |
-| `inc/energy-demo-page.php` | Virtuelle Demo-Route. | Behalten; noindex ist korrekt fuer Showroom ohne SEO-Ziel. |
 | `page-readiness-diagnose.php` | Technisches Template fuer `/anfrage-system-analyse/`. | Funktional ok, semantisch driftend; spaeter umbenennen oder klar als Legacy-Alias dokumentieren. |
 | `inc/anfrage-system-analyse-page.php` | Deutsche virtuelle Analyse-Route plus Legacy-Redirect. | Zielrichtig; bleibt Router-Schicht. |
 | `blocksy-child/readiness/` | React-App-Shell fuer Analyse. | Funktional weiter nutzbar, aber Customer-Copy darf nur `Anfrage-System-Analyse` nutzen. |
@@ -69,10 +67,9 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 | Target URL | Template / Router | Intent | Indexing | Primary CTA |
 |---|---|---|---|---|
 | `/` | `front-page.php` | Positionierung, Proof, Founding-Partner-Fit | Index | `/anfrage-system-analyse/` |
-| `/energie-fahrplan-demo/` | `page-energie-fahrplan-demo.php`, `inc/energy-demo-page.php` | Showroom: Kaeufer erlebt Anfrageprozess und Ergebnis | Noindex, follow | `/anfrage-system-analyse/` |
 | `/anfrage-system-analyse/` | `page-readiness-diagnose.php`, `inc/anfrage-system-analyse-page.php` | Evidenzbasierter Fit- und Marktcheck | Noindex, follow bis Angebot final ist | Formularabschluss / spaeter Zustell-Consent |
 | `/anfrage/` | `page-anfrage.php`, `inc/anfrage-system-analyse-page.php` | Retired Warm-intent intake | 301 auf `/anfrage-system-analyse/` | Anfrage-System-Analyse |
-| `/e3-new-energy/` | `page-case-e3.php` oder WP-Seite mit Template | Flagship-Proof | Index | Demo ansehen / Analyse starten |
+| `/e3-new-energy/` | `page-case-e3.php` oder WP-Seite mit Template | Flagship-Proof | Index | Analyse starten |
 | `/ergebnisse/` | Results-Hub | Proof-Sammlung | Index | E3 ansehen / Analyse starten |
 | `/wordpress-agentur-hannover/` | `page-wordpress-agentur.php` | Money-/Legacy-SEO-Page | Index | Anfrage-System-Analyse statt Audit |
 | `/growth-audit/` | Audit-Route | Legacy-/Sekundärpfad | // ANNAHME, zu verifizieren: Indexing live prüfen | Rückführung auf `/anfrage-system-analyse/` |
@@ -83,7 +80,7 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 |---|---|---:|---|
 | `/readiness-diagnose/` | `/anfrage-system-analyse/` | 301 | Deutsche Analyse ersetzt Readiness-Frame. |
 | `/anfrage/` | `/anfrage-system-analyse/` | 301 | Die evidenzbasierte Analyse ersetzt den alten warmen Intake. |
-| `/energie-fahrplan-demo/` | Behalten | Noindex | Showroom-Asset, kein SEO-Landingpage-Ziel. |
+| Früherer EnergieFahrplan-Showroom | Entfernen | Retired | Beweisführung läuft über E3-Case und Methodik-Authority. |
 | `/anfrage-system-analyse/` | Behalten | Noindex vorerst | Angebot/Form noch nicht final genug fuer SEO-Traffic. |
 | `/growth-audit/` | Depriorisieren, nicht als Haupt-CTA | Pending | Bestehender Flow bleibt technisch real, aber nicht mehr Ladder-Stufe 1. |
 | Legacy Audit-Slugs | Bestehende Redirects beibehalten | 301 | Kein neuer Growth-Hauptpfad. |
@@ -96,7 +93,6 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 |---|---|---|---|
 | `/` | `Organization`, `Service`, optional `FAQPage` | `inc/org-schema.php`, `inc/canon/*.php` | Keine hardcodierten E3-/Pricing-Werte in Schema. |
 | `/e3-new-energy/` | `CaseStudy`-nahe Struktur ueber `Article`/`CreativeWork`, `FAQPage` falls sichtbar | Neuer E3-Canon | Proof-Zahlen nur ueber Getter, keine Editor-Duplikate. |
-| `/energie-fahrplan-demo/` | Kein starkes SEO-Schema erforderlich | Route-Meta | Noindex; Schema minimal halten. |
 | `/anfrage-system-analyse/` | Kein SEO-Schema vor Index-Freigabe | Diagnose-Canon | Noindex; keine Leistungsversprechen als Schema. |
 | `/wordpress-agentur-hannover/` | `Service`, `FAQPage` | Pricing-/Messaging-Canon | Alte Agentur-Position nicht ausbauen, sondern auf Anfrage-System rueckbinden. |
 
@@ -104,9 +100,6 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 
 | Funnel Step | Field / Section | Type | Hard Rule / Behavior |
 |---|---|---|---|
-| Demo | Eingaben zum Haus-/Energie-Szenario | Interaktive React-Eingabe | Nutzer muss Prozess selbst bedienen koennen; kein Video-only-Beweis. |
-| Demo | Ergebnisbuehne | Visual + PDF lokal | PDF wird lokal erzeugt; kein automatischer Versand im Demo-Pfad. |
-| Demo | Prozesskarte | Visualisierung | Zeigt, was nach einem echten Submit passieren kann: Validierung, Routing, CRM, Follow-up. |
 | Analyse Schritt 1 | Branche / Angebotsart | Pflicht | Nicht-ICP erzeugt gelb/rot, nicht harte Formularsperre. |
 | Analyse Schritt 2 | Region | Pflicht | Ausserhalb DACH kann Nicht-Empfehlung ausloesen. |
 | Analyse Schritt 3 | Angebot / Auftragswert | Pflicht | Niedriger Auftragswert senkt Fit. |
@@ -189,7 +182,6 @@ Die Website muss von einer breiten WordPress-/Audit-Kommunikation zu einem engen
 | URL / Template | CSS | JS | Data Passed from PHP |
 |---|---|---|---|
 | `/anfrage-system-analyse/` via `page-readiness-diagnose.php` | `blocksy-child/readiness/dist/assets/*.css` | `blocksy-child/readiness/dist/assets/*.js` | Route, feature flags, consent version, tracking defaults. |
-| `/energie-fahrplan-demo/` via `page-energie-fahrplan-demo.php` | `blocksy-child/energie-fahrplan/dist/assets/*.css` | `blocksy-child/energie-fahrplan/dist/assets/*.js` | Demo mode, CTA URL, no-submit flag. |
 | `/` via `front-page.php` | Theme CSS | Theme JS | Founding/pricing/proof canons. |
 | `/e3-new-energy/` | Theme CSS | Theme JS | E3 proof canon and schema data. |
 | `/anfrage/` | keine eigenen Assets | keine eigene JS-Strecke | Legacy-Redirect auf `/anfrage-system-analyse/`. |
@@ -205,15 +197,15 @@ Asset-Regel: React-Funnel-Apps bleiben unter `blocksy-child/<funnel-name>/`, Bui
 | Sprint 3 | Serverseitiges Scoring und Report-Spec bauen. | Report-Spec definiert; serverseitige Scoring-Funktion bleibt offen. |
 | Sprint 4 | Consent-UI und WordPress-REST-Schicht hinter Feature-Flag. | Teilweise erledigt: Kontakt-Submit schreibt CRM und triggert Transaktionsmails; serverseitiges Scoring und n8n-Contract offen. |
 | Sprint 5 | n8n-Branch ueber bestehenden `audit-consultation`-Webhook pruefen. | Manuelle/automatisierte Weiterverarbeitung ohne neuen oeffentlichen Webhook. |
-| Sprint 6 | Demo-Showroom haerten: Prozessvisualisierung, lokale PDF, CTA zur Analyse. | Interessent versteht aus Kaeufersicht, was umgesetzt wird. |
+| Sprint 6 | Demo-Showroom entfernen und Funnel auf Proof -> Analyse kollabieren. | Weniger Bauaufwand; Beweisführung über E3 und Methodik. |
 | Sprint 7 | Kontaktseite und warme Anfragepfade nachziehen. | Keine Nebenroute zieht zurueck in alten generischen Pitch. |
 
 ## 13. Acceptance Criteria
 
 | Criterion | Must Be True |
 |---|---|
-| Strategy alignment | Primary CTA fuer kalten B2B-Traffic zeigt auf `/anfrage-system-analyse/`; Demo bleibt Showroom, nicht Leadmagnet. |
-| SEO safety | `/anfrage-system-analyse/` und `/energie-fahrplan-demo/` sind `noindex, follow`; `/readiness-diagnose/` und `/anfrage/` leiten 301 weiter. |
+| Strategy alignment | Primary CTA für kalten B2B-Traffic zeigt auf `/anfrage-system-analyse/`; der Demo-Showroom ist nicht mehr Funnel-Bestandteil. |
+| SEO safety | `/anfrage-system-analyse/` ist `noindex, follow`; `/readiness-diagnose/` und `/anfrage/` leiten 301 weiter. |
 | Proof integrity | Keine customer-facing Fundstelle nutzt E3 `-83 %`, `120 -> 20`, `~25 EUR` oder `12 Monate` fuer den finalen E3-Case. |
 | Funnel integrity | Analyse kann Fit grün/gelb/rot ausdruecken und rot als Nicht-Empfehlung ausgeben. |
 | API security | Kein n8n-Webhook steht im Analyse-Frontend; Submit laeuft ueber WP REST und Feature-Flag. |
