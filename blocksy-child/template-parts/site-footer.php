@@ -17,7 +17,6 @@ $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_ge
 $home_url     = $primary_urls['home'] ?? home_url( '/' );
 $analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
 $request_url  = $analysis_url;
-$demo_url     = home_url( '/energie-fahrplan-demo/' );
 $e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
 $agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
@@ -109,7 +108,6 @@ $audit_footer_note = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_ge
 				<h3 id="ft-einstieg">Einstieg</h3>
 				<ul class="ft__list">
 					<li><a class="ft__link-strong" href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_footer_nav_analysis" data-track-category="lead_gen">Anfrage-System-Analyse</a></li>
-					<li><a href="<?php echo esc_url( $demo_url ); ?>" data-track-action="cta_footer_nav_energy_demo" data-track-category="navigation">EnergieFahrplan-Demo</a></li>
 				</ul>
 			</section>
 

@@ -160,7 +160,7 @@ Diese Struktur ist die Zielstruktur für eine spätere REST- und n8n-Anbindung. 
 - Grün ist eine Prüfempfehlung, kein automatischer Umsetzungsabschluss.
 - Leadkosten nur als Korridor formulieren.
 - Keine Formulierung darf den Growth Audit wieder als Hauptfunnel setzen.
-- Keine Formulierung darf die EnergieFahrplan-Demo als SaaS oder Lead-Pflichtpfad rahmen.
+- Keine Formulierung darf den retired EnergieFahrplan-Showroom als SaaS oder Lead-Pflichtpfad rahmen.
 
 ## Nächste Implementierungsschritte
 

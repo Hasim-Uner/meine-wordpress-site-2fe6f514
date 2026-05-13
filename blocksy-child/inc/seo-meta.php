@@ -682,7 +682,6 @@ function hu_get_seo_meta() {
 		'360-deep-dive',
 		'readiness-diagnose',
 		'anfrage-system-analyse',
-		'energie-fahrplan-demo',
 	];
 
 	if ( is_front_page() ) {
@@ -705,12 +704,6 @@ function hu_get_seo_meta() {
 		$meta['description'] = 'Ich analysiere, wo Klarheit, Vertrauen, Struktur und Conversion-Logik auf deiner Website bremsen – mit fundierter Ersteinschätzung ohne Pflicht-Call.';
 		$meta['canonical']   = function_exists( 'nexus_get_audit_linkedin_url' ) ? nexus_get_audit_linkedin_url() : home_url( '/audit-linkedin/' );
 		$meta['og_image']    = function_exists( 'nexus_get_audit_linkedin_featured_image_url' ) ? nexus_get_audit_linkedin_featured_image_url() : content_url( '/uploads/2026/03/audit-linkedin-featured-1200x675-1.png' );
-		$meta['robots']      = 'noindex, follow';
-
-	} elseif ( function_exists( 'hu_is_energy_demo_request_path' ) && hu_is_energy_demo_request_path() ) {
-		$meta['og_title']    = 'EnergieFahrplan-Demo | Haşim Üner';
-		$meta['description'] = 'Interaktive Showroom-Demo für einen geführten Energie-Anfrageprozess mit lokaler Berechnung, PDF-Ausgabe und Prozesskarte.';
-		$meta['canonical']   = home_url( '/energie-fahrplan-demo/' );
 		$meta['robots']      = 'noindex, follow';
 
 	} elseif ( function_exists( 'hu_is_request_analysis_request_path' ) && hu_is_request_analysis_request_path() ) {
@@ -903,7 +896,6 @@ function nexus_get_sitemap_excluded_slugs() {
 		'loesungen',
 		'readiness-diagnose',
 		'anfrage-system-analyse',
-		'energie-fahrplan-demo',
 		'wordpress-seo-hannover',
 		'wordpress-wartung-hannover',
 	];

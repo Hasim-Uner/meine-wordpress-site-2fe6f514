@@ -18,7 +18,6 @@ Stand: 2026-05-08. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | Client Portal | Kunden-Cockpit mit Login, Upload und Roadmap-Slots | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, Media Library | live, aber aktuell mit Mock-Daten |
 | n8n-Automationen | Workflow-Logik für aktiven Legacy-Audit und spätere Analyse-/Routing-/Nurture-Schritte hinter Contract, Consent und Feature-Flag | `automations/n8n/`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/assets/js/audit-live.js` | n8n auf `n8n.hasimuener.de`, CRM, Mail, evtl. Sheets | Legacy-Audit aktiv; Anfrage-System-Analyse noch nicht angebunden |
 | Anfrage-System-Analyse | evidenzbasierter Founding-Partner-Fitcheck mit Marktbild, lokaler Auswertung und Consent-basiertem Kontakt-Submit | `blocksy-child/readiness/`, `blocksy-child/page-readiness-diagnose.php`, `blocksy-child/inc/anfrage-system-analyse-page.php`, `blocksy-child/inc/analysis-intake.php`, `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json`, `docs/architecture/PRIVACY.md` | WordPress, React-Mikro-App im Theme, Nexus CRM, Brevo; n8n nicht angebunden | repo-seitig als 8-Schritt-Form aktiv, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects, WordPress-REST-Submit aktiv |
-| EnergieFahrplan Demo | interaktive Showroom-Demo für Anfrageprozess, lokale Berechnung und PDF-Ausgabe; kein SaaS | `blocksy-child/energie-fahrplan/`, `blocksy-child/page-energie-fahrplan-demo.php`, `blocksy-child/inc/energy-demo-page.php` | Browser-PDF via `jspdf`/`html2canvas`; kein CRM-, E-Mail- oder n8n-Submit | repo-seitig eingebettet, virtuelle Route aktiv |
 | Agenten- und Prompt-System | Kontext, Guardrails, Skills und minimale Legacy-Briefings | `AGENTS.md`, `agents/skills/`, `prompts/README.md` | keine direkte Laufzeitabhaengigkeit | in Aufbau |
 
 ## Website
@@ -103,18 +102,17 @@ Fachliche Regel:
 
 ## Growth-Audit-Legacypfad
 
-Der Growth Audit ist nicht mehr der Primär-CTA des Systems und darf nicht als Hauptfunnel zurückkehren. Er bleibt als Legacy-/Sekundärpfad bestehen, während die Anfrage-System-Analyse der primäre Einstieg ist und die EnergieFahrplan-Demo als Showroom dient.
+Der Growth Audit ist nicht mehr der Primär-CTA des Systems und darf nicht als Hauptfunnel zurückkehren. Er bleibt als Legacy-/Sekundärpfad bestehen, während die Anfrage-System-Analyse der primäre Einstieg ist.
 
 Aktuelle Logik:
 
 1. Kalter B2B-Traffic führt primär zur `/anfrage-system-analyse/`.
-2. Die EnergieFahrplan-Demo bleibt Showroom-Asset und verweist auf die Analyse.
-3. Die aktive Audit-Landingpage nimmt nur die URL auf, startet den n8n-Job erst nach explizitem Klick über `audit` und pollt den Status anschließend über `audit-status`.
-4. Das Frontend rendert das Ergebnis direkt auf der Seite als Modul-Dashboard; der Client akzeptiert sowohl den neuen V3-Payload als auch den bisherigen Direkt-Payload und nutzt `cja-analyze` nur noch als Fallback.
-5. Die Branchen-Landingpage für Solar-/Wärmepumpen-Anbieter nutzt weiter einen separaten Multi-Step-Intake mit WordPress-CRM-Stack und serverseitigem Fallback.
-6. Direkte Eskalation nach dem Ergebnis läuft über `/kontakt/` oder je nach Kontext über `Cal.com`.
-7. Direkte Gesprächs-CTAs bleiben als normale Links erhalten, werden im Frontend aber per `blocksy-child/assets/js/cal-embed.js` event-typ-spezifisch zu einem Modal-Embed im Seitenkontext erweitert.
-8. Der frühere 48h-Intake für die Hauptroute bleibt im Repo als Legacy-Layer, ist aber nicht mehr der Default-Flow.
+2. Die aktive Audit-Landingpage nimmt nur die URL auf, startet den n8n-Job erst nach explizitem Klick über `audit` und pollt den Status anschließend über `audit-status`.
+3. Das Frontend rendert das Ergebnis direkt auf der Seite als Modul-Dashboard; der Client akzeptiert sowohl den neuen V3-Payload als auch den bisherigen Direkt-Payload und nutzt `cja-analyze` nur noch als Fallback.
+4. Die Branchen-Landingpage für Solar-/Wärmepumpen-Anbieter nutzt weiter einen separaten Multi-Step-Intake mit WordPress-CRM-Stack und serverseitigem Fallback.
+5. Direkte Eskalation nach dem Ergebnis läuft über `/kontakt/` oder je nach Kontext über `Cal.com`.
+6. Direkte Gesprächs-CTAs bleiben als normale Links erhalten, werden im Frontend aber per `blocksy-child/assets/js/cal-embed.js` event-typ-spezifisch zu einem Modal-Embed im Seitenkontext erweitert.
+7. Der frühere 48h-Intake für die Hauptroute bleibt im Repo als Legacy-Layer, ist aber nicht mehr der Default-Flow.
 
 ## Nexus CRM und Blog Notify
 
@@ -182,7 +180,7 @@ Die CTA-Hierarchie ist klar und sollte nicht verwischt werden.
 
 - Primärer CTA für kalten B2B-Traffic: `Anfrage-System-Analyse`
 - Retired Warm-intent Intake: `/anfrage/` leitet auf `/anfrage-system-analyse/`
-- Proof- und Demo-Pfade: `/e3-new-energy/`, `/ergebnisse/`, `/energie-fahrplan-demo/`
+- Proof-Pfade: `/e3-new-energy/`, `/ergebnisse/`
 - Kein separater öffentlicher Tiefendiagnose-Schritt im Hauptfunnel
 - Umsetzungsnahe Kontaktwege: `Umsetzung / Optimierung`, `Laufende Weiterentwicklung`
 - Partner-/Agentur-Einstieg auf der Whitelabel-Seite: `Whitelabel-Fit-Gespraech`
@@ -220,7 +218,7 @@ Risiko:
 
 ## Systemabhaengigkeiten
 
-- Website -> CTA-Layer -> EnergieFahrplan-Demo / Anfrage-System-Analyse -> Fitentscheidung -> Umsetzung / CRM / Sales
+- Website -> CTA-Layer -> Anfrage-System-Analyse -> Fitentscheidung -> Umsetzung / CRM / Sales
 - Website -> Tracking-Layer -> GTM / GA4 / Consent -> Reporting / Optimierung
 - Blog / SEO -> interne Verlinkung -> Service-Seiten / Audit -> Leadflow
 - WordPress-Editor -> Theme-Struktur -> Live-Seiten
