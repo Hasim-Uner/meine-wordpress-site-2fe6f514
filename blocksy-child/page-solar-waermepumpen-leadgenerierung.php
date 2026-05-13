@@ -199,6 +199,29 @@ $proof_phases = [
 	],
 ];
 
+$risk_reversals = [
+	[
+		'n' => '01',
+		't' => 'Diagnose wird verrechnet',
+		'd' => 'Die System-Diagnose kostet [Preis wird ergänzt]. Bei einer anschließenden Umsetzung wird der volle Betrag 1:1 angerechnet. Sie zahlen die Diagnose also de facto nur dann, wenn Sie sich gegen die Umsetzung entscheiden.',
+	],
+	[
+		'n' => '02',
+		't' => 'Keine Mindestlaufzeit auf CRO oder Ads',
+		'd' => 'Wenn nach der Implementierung ein laufendes CRO- oder Ads-Mandat folgt, ist das monatlich kündbar. Keine 12-Monats-Verträge, keine Auflösungsgebühren.',
+	],
+	[
+		'n' => '03',
+		't' => 'Vollständige Asset-Übergabe',
+		'd' => 'Code, Tracking, Daten, Werbeaccounts — alles auf Ihren Konten, in Ihrer Domain, in Ihrem Eigentum. Bei Vertragsende übergebe ich dokumentiert. Sie können das System mit jedem anderen Dienstleister weiterführen.',
+	],
+	[
+		'n' => '04',
+		't' => 'Drei Hebel, auch bei Abrat',
+		'd' => 'Wenn die Diagnose zum Ergebnis kommt, dass Sie das volle System nicht brauchen, bekommen Sie trotzdem drei priorisierte Hebel mit konkretem nächstem Schritt — auch wenn das heißt, dass Sie nicht mit mir weitermachen.',
+	],
+];
+
 $about_metrics = [
 	[ 'v' => '9',   'l' => 'Jahre WordPress' ],
 	[ 'v' => 'B2B', 'l' => 'Ausschließlich' ],
@@ -778,12 +801,40 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 10 · FAQ (paper-2, objection handler before CTA) ────── -->
-		<section class="solar-section solar-section--paper-2" id="faq" data-screen-label="10 FAQ" aria-labelledby="faq-title">
+		<!-- 10 · Risikoumkehr (paper-2) ──────────────────────────── -->
+		<section class="solar-section solar-section--paper-2" id="risikoumkehr" data-screen-label="10 Risikoumkehr" data-track-section="risk_reversal" data-track-funnel-stage="conversion" aria-labelledby="risk-title">
 			<div class="solar-section__inner">
 				<div class="solar-secthead">
 					<div class="solar-secthead__row">
-						<span class="solar-secnum">10 / Häufige Fragen</span>
+						<span class="solar-secnum">10 / Risikoverteilung</span>
+						<span class="solar-secthead__rule" aria-hidden="true"></span>
+					</div>
+					<h2 id="risk-title" class="solar-h2">Was passiert, wenn es nicht funktioniert.</h2>
+					<p class="solar-lede">Vier Bedingungen, unter denen Sie das Risiko an mich zurückgeben können:</p>
+				</div>
+
+				<!-- TODO: Preis für System-Diagnose finalisieren, dann hier und in CTA-Sektion ersetzen -->
+				<div class="solar-owned solar-owned--risk">
+					<?php foreach ( $risk_reversals as $item ) : ?>
+						<article class="solar-owned__cell" data-reveal>
+							<div class="solar-owned__head">
+								<span class="solar-owned__num"><?php echo esc_html( $item['n'] ); ?> / 04</span>
+								<span class="solar-dot solar-dot--signal" aria-hidden="true"></span>
+							</div>
+							<h3 class="solar-owned__t"><?php echo esc_html( $item['t'] ); ?></h3>
+							<p class="solar-owned__d"><?php echo esc_html( $item['d'] ); ?></p>
+						</article>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+
+		<!-- 11 · FAQ (paper-2, objection handler before CTA) ────── -->
+		<section class="solar-section solar-section--paper-2" id="faq" data-screen-label="11 FAQ" aria-labelledby="faq-title">
+			<div class="solar-section__inner">
+				<div class="solar-secthead">
+					<div class="solar-secthead__row">
+						<span class="solar-secnum">11 / Häufige Fragen</span>
 						<span class="solar-secthead__rule" aria-hidden="true"></span>
 					</div>
 					<h2 id="faq-title" class="solar-h2">Was Solar- und Wärmepumpen-Betriebe <em>vor dem Erstgespräch wissen wollen.</em></h2>
@@ -806,8 +857,8 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 11 · About Hasim (dark) ──────────────────────────────── -->
-		<section class="solar-section solar-section--dark" id="ueber" data-screen-label="11 About" aria-labelledby="about-title">
+		<!-- 12 · About Hasim (dark) ──────────────────────────────── -->
+		<section class="solar-section solar-section--dark" id="ueber" data-screen-label="12 About" aria-labelledby="about-title">
 			<div class="solar-section__inner">
 				<div class="solar-about">
 					<div class="solar-about__media" data-reveal>
@@ -832,7 +883,7 @@ get_header();
 					</div>
 
 					<div class="solar-about__body" data-reveal>
-						<div class="solar-secnum solar-secnum--bone">11 / Über den Umsetzer</div>
+						<div class="solar-secnum solar-secnum--bone">12 / Über den Umsetzer</div>
 						<h2 id="about-title" class="solar-h2 solar-h2--bone">
 							Messbare Infrastruktur statt <em>digitaler Broschüren.</em>
 						</h2>
@@ -857,8 +908,8 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 12 · Final CTA (paper-2) ─────────────────────────────── -->
-		<section class="solar-section solar-section--paper-2" id="abschluss" data-screen-label="12 CTA" aria-labelledby="cta-title">
+		<!-- 13 · Final CTA (paper-2) ─────────────────────────────── -->
+		<section class="solar-section solar-section--paper-2" id="abschluss" data-screen-label="13 CTA" aria-labelledby="cta-title">
 			<div class="solar-section__inner solar-cta">
 				<span class="solar-cta__eyebrow">Nächster Schritt · System-Diagnose</span>
 				<h2 id="cta-title" class="solar-cta__h">
