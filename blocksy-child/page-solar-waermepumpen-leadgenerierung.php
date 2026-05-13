@@ -11,11 +11,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
-$page_url    = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
-$e3_url      = home_url( '/e3-new-energy/' );
-$e3_canon    = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
-$e3_metrics  = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
+$diagnostic_anchor = '#energie-anfrage';
+$page_url          = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
+$e3_url            = home_url( '/e3-new-energy/' );
+$e3_canon          = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_metrics        = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
@@ -213,7 +213,7 @@ $faq_items = [
 	],
 	[
 		'question' => 'Arbeiten Sie mit unserem bestehenden CRM?',
-		'answer'   => 'Ja, sofern technisch sinnvoll. CRM- und Automations-Anbindung kommt aber erst nach sauberer Contract-, Consent- und Datenklärung. Der erste Schritt ist die Anfrage-System-Analyse ohne personenbezogene Daten im Default-Pfad.',
+		'answer'   => 'Ja, sofern technisch sinnvoll. CRM- und Automations-Anbindung kommt aber erst nach sauberer Contract-, Consent- und Datenklärung. Der erste Schritt ist die System-Diagnose.',
 	],
 ];
 
@@ -241,7 +241,7 @@ $service_schema = [
 		'@type'         => 'Offer',
 		'price'         => '0',
 		'priceCurrency' => 'EUR',
-		'description'   => 'Diagnostische System-Einordnung. Keine E-Mail-Pflicht im Default-Pfad.',
+		'description'   => 'System-Diagnose mit schriftlichem Befund nach 7 Werktagen.',
 	],
 ];
 
@@ -299,8 +299,8 @@ get_header();
 						</p>
 
 						<div class="solar-hero__cta-row">
-							<a href="<?php echo esc_url( $request_url ); ?>" class="solar-hero__btn" data-track-action="cta_solar_hero_primary" data-track-category="lead_gen">
-								<span>Anfrage-System-Analyse starten</span>
+							<a href="<?php echo esc_url( $diagnostic_anchor ); ?>" class="solar-hero__btn" data-track-action="cta_solar_to_diagnostic_request" data-track-category="lead_gen" data-track-funnel-stage="form_open">
+								<span>System-Diagnose anfragen</span>
 								<span class="solar-hero__btn-arrow" aria-hidden="true">
 									<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
 										<path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -311,7 +311,7 @@ get_header();
 
 						<p class="solar-hero__micro">
 							<span class="solar-hero__dot" aria-hidden="true"></span>
-							8 Schritte · lokales Ergebnis · keine E-Mail im Default-Pfad
+							4-Modul-Diagnose · schriftlicher Befund nach 7 Werktagen
 						</p>
 					</div>
 
@@ -520,8 +520,8 @@ get_header();
 							<span class="solar-ref__lbl">Abschluss</span>
 						</div>
 					</div>
-					<a href="<?php echo esc_url( $request_url ); ?>" class="solar-hero__btn" data-track-action="cta_solar_ref" data-track-category="lead_gen">
-						<span>Analyse starten</span>
+					<a href="<?php echo esc_url( $diagnostic_anchor ); ?>" class="solar-hero__btn" data-track-action="cta_solar_to_diagnostic_request" data-track-category="lead_gen" data-track-funnel-stage="form_open">
+						<span>System-Diagnose anfragen</span>
 						<span class="solar-hero__btn-arrow" aria-hidden="true">
 							<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 						</span>
@@ -798,27 +798,25 @@ get_header();
 		<!-- 11 · Final CTA (paper-2) ─────────────────────────────── -->
 		<section class="solar-section solar-section--paper-2" id="abschluss" data-screen-label="11 CTA" aria-labelledby="cta-title">
 			<div class="solar-section__inner solar-cta">
-				<span class="solar-cta__eyebrow">Nächster Schritt · Anfrage-System-Analyse</span>
+				<span class="solar-cta__eyebrow">Nächster Schritt · System-Diagnose</span>
 				<h2 id="cta-title" class="solar-cta__h">
 					Eigene Infrastruktur statt <em>geteilter Portal-Leads.</em>
 				</h2>
 				<p class="solar-cta__lede">
-					Starten Sie mit der 8-Schritte-Analyse. Sie bekommen zuerst eine lokale Ampel-Einordnung mit Begründung und nächstem Schritt.
+					Starten Sie mit der 4-Modul-Diagnose. Sie bekommen zuerst einen schriftlichen Befund nach 7 Werktagen mit Begründung und nächstem Schritt.
 					Bei Nicht-Eignung bremst der Funnel &mdash; statt Sie in ein generisches Gespräch zu drücken.
 				</p>
 				<div class="solar-cta__actions">
-					<a href="<?php echo esc_url( $request_url ); ?>" class="solar-hero__btn solar-cta__btn" data-track-action="cta_solar_final" data-track-category="lead_gen">
-						<span>Analyse starten</span>
+					<a href="<?php echo esc_url( $diagnostic_anchor ); ?>" class="solar-hero__btn solar-cta__btn" data-track-action="cta_solar_to_diagnostic_request" data-track-category="lead_gen" data-track-funnel-stage="form_open">
+						<span>System-Diagnose anfragen</span>
 						<span class="solar-hero__btn-arrow" aria-hidden="true">
 							<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 						</span>
 					</a>
 					<div class="solar-cta__micro">
-						<span><span class="solar-dot solar-dot--signal" aria-hidden="true"></span> 8 Schritte</span>
+						<span><span class="solar-dot solar-dot--signal" aria-hidden="true"></span> 4-Modul-Diagnose</span>
 						<span aria-hidden="true">·</span>
-						<span>Lokale Fit-Einordnung</span>
-						<span aria-hidden="true">·</span>
-						<span>Keine personenbezogenen Daten</span>
+						<span>Schriftlicher Befund nach 7 Werktagen</span>
 					</div>
 				</div>
 
@@ -838,11 +836,11 @@ get_header();
 	<div class="solar-sticky" data-solar-sticky aria-hidden="true">
 		<div class="solar-sticky__inner">
 			<div class="solar-sticky__copy">
-				<div class="solar-sticky__t">Anfrage-System-Analyse</div>
-				<div class="solar-sticky__s">8 Schritte · lokales Ergebnis · keine E-Mail</div>
+				<div class="solar-sticky__t">System-Diagnose</div>
+				<div class="solar-sticky__s">4 Module · schriftlicher Befund nach 7 Werktagen</div>
 			</div>
-			<a href="<?php echo esc_url( $request_url ); ?>" class="solar-hero__btn solar-sticky__btn" data-track-action="cta_solar_sticky" data-track-category="lead_gen">
-				<span>Analyse starten</span>
+			<a href="<?php echo esc_url( $diagnostic_anchor ); ?>" class="solar-hero__btn solar-sticky__btn" data-track-action="cta_solar_to_diagnostic_request" data-track-category="lead_gen" data-track-funnel-stage="form_open">
+				<span>System-Diagnose anfragen</span>
 				<span class="solar-hero__btn-arrow" aria-hidden="true">
 					<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 				</span>
