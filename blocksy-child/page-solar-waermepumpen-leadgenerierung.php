@@ -365,6 +365,10 @@ get_header();
 						<div class="solar-proof__sub">Code · Tracking · Daten</div>
 					</div>
 				</div>
+				<p class="solar-hero__proof-note">
+					Mandat E3 New Energy · 9 Monate · Implementierung 3 Monate, Optimierung 6 Monate.
+					<a href="<?php echo esc_url( $e3_url ); ?>" data-track-action="cta_solar_hero_e3_methodology" data-track-category="trust">Vollständige Methodik im E3-Case</a> &rarr;
+				</p>
 			</div>
 		</section>
 
