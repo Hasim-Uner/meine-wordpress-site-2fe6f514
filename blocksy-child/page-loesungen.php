@@ -42,7 +42,7 @@ get_header();
 					<a href="<?php echo esc_url( $audit_url ); ?>">
 						<h2>1. System-Diagnose</h2>
 						<p>Diagnose-Einstieg für Solar- und Wärmepumpen-Anbieter mit bestehender Website. Wir machen sichtbar, wo Sichtbarkeit, Vertrauen oder Conversion wegbrechen.</p>
-						<span class="cta-btn">System-Diagnose starten</span>
+						<span class="cta-btn">System-Diagnose anfragen</span>
 					</a>
 				</li>
 				<li class="solution-item">

@@ -3,7 +3,7 @@
  * NEXUS MENU SETUP
  *
  * Erstellt das fokussierte Hauptmenü für die Neukunden-Navigation:
- * Solar & Wärmepumpen | E3 Proof | Über mich | Analyse starten
+ * Solar & Wärmepumpen | E3 Proof | Über mich | System-Diagnose
  *
  * Einmal-Setup: Wird beim Theme-Switch oder manuell via ?nexus_rebuild_menu=1 ausgelöst.
  *
@@ -137,10 +137,10 @@ function nexus_setup_main_menu() {
 		'menu-item-status'    => 'publish',
 	] );
 
-	// ── 4. Analyse CTA (Top-Level) ─────────────────────────────────
+	// ── 4. System-Diagnose CTA (Top-Level) ─────────────────────────
 	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 	wp_update_nav_menu_item( $menu_id, 0, [
-		'menu-item-title'     => 'Analyse starten',
+		'menu-item-title'     => 'System-Diagnose',
 		'menu-item-object'    => 'custom',
 		'menu-item-object-id' => 0,
 		'menu-item-type'      => 'custom',
@@ -284,7 +284,7 @@ add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
 			continue;
 		}
 
-		$item->title = 'Analyse starten';
+		$item->title = 'System-Diagnose';
 		$item->url   = $analysis_url;
 
 		if ( ! isset( $item->classes ) || ! is_array( $item->classes ) ) {

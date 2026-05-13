@@ -30,7 +30,7 @@
  *         'actions' => [
  *           [
  *             'url'      => home_url( '/kontakt/' ),
- *             'label'    => 'System-Diagnose starten',
+ *             'label'    => 'System-Diagnose anfragen',
  *             'class'    => 'nx-btn nx-btn--primary',
  *             'action'   => 'cta_service_system_audit',
  *             'category' => 'lead_gen',

@@ -183,7 +183,7 @@ function nexus_get_audit_cta_copy() {
 	}
 
 	$copy = [
-		'label'             => 'System-Diagnose starten',
+		'label'             => 'System-Diagnose anfragen',
 		'compact_microcopy' => '60 Sek. · priorisierte Hebel · keine E-Mail',
 		'header_meta_items' => [
 			'60-Sekunden-Diagnose',
@@ -203,7 +203,7 @@ function nexus_get_audit_cta_copy() {
 function nexus_get_audit_cta_label() {
 	$copy = nexus_get_audit_cta_copy();
 
-	return isset( $copy['label'] ) ? (string) $copy['label'] : 'System-Diagnose starten';
+	return isset( $copy['label'] ) ? (string) $copy['label'] : 'System-Diagnose anfragen';
 }
 
 /**
@@ -679,7 +679,7 @@ function nexus_get_primary_request_url() {
  * @return string
  */
 function nexus_get_primary_request_cta_label() {
-	return 'System-Diagnose starten';
+	return 'System-Diagnose anfragen';
 }
 
 /**

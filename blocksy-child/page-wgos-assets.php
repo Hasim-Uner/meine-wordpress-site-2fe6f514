@@ -25,7 +25,7 @@ $asset_count     = isset( $summary['totalAssets'] ) ? (int) $summary['totalAsset
 $phase_count     = isset( $payload['wgosAssetPhases'] ) && is_array( $payload['wgosAssetPhases'] ) ? count( $payload['wgosAssetPhases'] ) : 0;
 $module_count    = isset( $payload['wgosAssetModules'] ) && is_array( $payload['wgosAssetModules'] ) ? count( $payload['wgosAssetModules'] ) : 0;
 $hub_sections    = function_exists( 'nexus_get_wgos_asset_hub_sections' ) ? nexus_get_wgos_asset_hub_sections() : [];
-$audit_cta_label = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'System-Diagnose starten';
+$audit_cta_label = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'System-Diagnose anfragen';
 $hero_subtitle   = sprintf(
 	'%1$d Assets in %2$d Modulen, nach Phasen geordnet. Jedes Asset direkt klickbar.',
 	$asset_count,

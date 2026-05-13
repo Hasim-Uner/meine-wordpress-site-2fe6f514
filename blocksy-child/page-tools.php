@@ -245,7 +245,7 @@ get_header();
 						<p>Unsere Tools zeigen erste Ansätze. Eine vollständige System-Diagnose liefert Ihnen detaillierte Empfehlungen für messbare Verbesserungen.</p>
 					</div>
 					<div class="tools-cta-actions">
-						<a class="tool-btn tool-btn--primary" href="<?php echo esc_url( function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/system-diagnose/' ) ); ?>" data-track-action="cta_tools_page_analysis" data-track-category="lead_gen" data-track-section="tools_cta">System-Diagnose starten</a>
+						<a class="tool-btn tool-btn--primary" href="<?php echo esc_url( function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/system-diagnose/' ) ); ?>" data-track-action="cta_tools_page_analysis" data-track-category="lead_gen" data-track-section="tools_cta">System-Diagnose anfragen</a>
 					</div>
 				</div>
 			</section>

@@ -321,7 +321,7 @@ function hu_home_system_section_markup() {
 					</ul>
 
 					<div class="homepage-system-economics__actions">
-						<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_system_map_audit" data-track-category="lead_gen">System-Diagnose starten</a>
+						<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_system_map_audit" data-track-category="lead_gen">System-Diagnose anfragen</a>
 					</div>
 
 					<p class="homepage-system-economics__note">
@@ -421,7 +421,7 @@ function hu_hero_section_shortcode() {
 								Kein Verkaufsgespräch. Klare Einschätzung. Sinnvolle nächste Entscheidung.
 							</div>
 							<div class="wp-btn-wrapper audit-card-premium__actions">
-								<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary full-width" data-track-action="cta_hero_audit" data-track-category="lead_gen">System-Diagnose starten</a>
+								<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary full-width" data-track-action="cta_hero_audit" data-track-category="lead_gen">System-Diagnose anfragen</a>
 							</div>
 						</div>
 					</div>
@@ -642,7 +642,7 @@ function hu_wgos_block_shortcode() {
 			<div id="homepage-mindmap-teaser-root" class="homepage-mindmap-section" aria-label="WGOS Mindmap Teaser"></div>
 
 			<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:2.5rem;">
-				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_wgos_audit" data-track-category="lead_gen">Mit der System-Diagnose starten</a>
+				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_wgos_audit" data-track-category="lead_gen">System-Diagnose anfragen</a>
 			</div>
 		</div>
 	</section>

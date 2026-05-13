@@ -26,7 +26,7 @@ add_shortcode( 'nexus_header_btn', function() {
 add_shortcode( 'nexus_header_cta', function() {
     $request_url = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/system-diagnose/' );
 
-    return '<a href="' . esc_url( $request_url ) . '" class="nexus-header-cta">Analyse starten</a>';
+    return '<a href="' . esc_url( $request_url ) . '" class="nexus-header-cta">System-Diagnose anfragen</a>';
 } );
 
 /**

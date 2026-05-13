@@ -80,7 +80,7 @@ get_template_part( 'template-parts/blog-header' );
 							  class="nexus-btn nexus-btn--primary nexus-inline-cta__btn"
 							  data-track-action="cta_blog_inline"
 							  data-track-category="lead_gen">
-							  System-Diagnose starten
+							  System-Diagnose anfragen
 						   </a>
 					   </div>
 				   </div>

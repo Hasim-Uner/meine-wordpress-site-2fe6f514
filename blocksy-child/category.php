@@ -24,7 +24,7 @@ $pillar_map = [
         'icon'        => '🧭',
         'badge'       => 'Strategie & Growth',
         'subtitle'    => 'Eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter. Keine Portal-Abhängigkeit, messbar niedrigere Leadkosten.',
-        'cta_label'   => 'System-Diagnose starten',
+        'cta_label'   => 'System-Diagnose anfragen',
         'cta_url'     => $audit_url,
         'cta_text'    => 'Die System-Diagnose zeigt in 60 Sekunden, wo Ihre Website Anfragen verliert und welche Hebel zuerst Wirkung versprechen.',
     ],
@@ -33,7 +33,7 @@ $pillar_map = [
         'title'       => 'SEO & Sichtbarkeit',
         'badge'       => 'SEO & Sichtbarkeit',
         'subtitle'    => 'Technisches SEO, CRO und Performance-Synergie — für planbare Sichtbarkeit, bessere Lead-Qualität und effizientere Akquisekosten.',
-        'cta_label'   => 'SEO-Analyse starten',
+        'cta_label'   => 'SEO-Diagnose anfragen',
         'cta_url'     => $primary_urls['seo'] ?? home_url( '/wordpress-seo-hannover/' ),
         'cta_text'    => 'Prüfen Sie zuerst das Fundament: Technik, Seitenstruktur, Tracking und Conversion-Reibung vor der nächsten Budgeterhöhung.',
     ],
@@ -260,7 +260,7 @@ if ($featured_query->have_posts()) {
                         <h4>Wo verbrennt Ihre Website Geld?</h4>
                         <p>Die System-Diagnose zeigt, wo Technik, SEO und Conversion im Zusammenspiel Reibung erzeugen.</p>
                         <a href="<?php echo esc_url($audit_url); ?>" class="nx-btn nx-btn--ghost nx-btn--full nx-btn--sm">
-                            System-Diagnose starten →
+                            System-Diagnose anfragen →
                         </a>
                     </div>
                 </aside>

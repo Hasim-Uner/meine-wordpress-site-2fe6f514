@@ -123,7 +123,7 @@ $e3_summary      = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' )
 
 							<div class="ga-form__actions">
 								<button type="submit" class="ga-btn ga-btn--primary ga-btn--full" data-track-action="cta_form_growth_audit" data-track-category="lead_gen" data-track-section="form">
-									<span class="ga-btn__label">System-Diagnose starten</span>
+									<span class="ga-btn__label">System-Diagnose anfragen</span>
 									<span class="ga-btn__spinner" aria-hidden="true"></span>
 								</button>
 								<p class="ga-form__microcopy">Schriftliche Rückmeldung in 48h. Kein Pflicht-Call.</p>

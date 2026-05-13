@@ -79,7 +79,7 @@ $audit_url = nexus_get_audit_url();
 	<section class="deepdive-alt-cta">
 			<p class="deepdive-alt-label">Wenn der Kontext doch noch sortiert werden soll:</p>
 			<a href="<?php echo esc_url( $audit_url ); ?>" class="deepdive-alt-link">
-			-> Erst die System-Diagnose starten
+			-> Erst die System-Diagnose anfragen
 			</a>
 		</section>
 

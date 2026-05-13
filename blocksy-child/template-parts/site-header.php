@@ -60,7 +60,7 @@ if ( empty( $audit_header_meta_items ) ) {
 			</div>
 
 			<div class="nx-site-header__audit-actions">
-				<a class="nx-site-header__audit-link" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_header_analysis" data-track-category="lead_gen" data-track-section="audit_header" data-track-funnel-stage="audit_header">Analyse starten</a>
+				<a class="nx-site-header__audit-link" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_header_analysis" data-track-category="lead_gen" data-track-section="audit_header" data-track-funnel-stage="audit_header">System-Diagnose</a>
 			</div>
 		</div>
 	</div>

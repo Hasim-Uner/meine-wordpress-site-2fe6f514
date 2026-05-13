@@ -162,7 +162,7 @@ get_header();
 							data-track-action="cta_blog_archive_end"
 							data-track-category="lead_gen"
 						>
-							System-Diagnose starten
+							System-Diagnose anfragen
 						</a>
 					</div>
 				</div>

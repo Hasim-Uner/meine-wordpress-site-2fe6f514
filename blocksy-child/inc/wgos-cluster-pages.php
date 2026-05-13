@@ -549,7 +549,7 @@ function nexus_render_wgos_cluster_page( $page ) {
 	$method_steps  = nexus_get_wgos_cluster_page_method_steps();
 	$proof_note    = isset( $page['proof_note'] ) ? (string) $page['proof_note'] : '';
 	$proof_links   = isset( $page['proof_links'] ) && is_array( $page['proof_links'] ) ? $page['proof_links'] : [];
-	$audit_cta_label         = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'System-Diagnose starten';
+	$audit_cta_label         = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'System-Diagnose anfragen';
 	$audit_compact_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : '60 Sek. · priorisierte Hebel · keine E-Mail';
 
 	ob_start();

@@ -116,7 +116,7 @@ function nexus_get_site_header_fallback_items() {
 	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 	$solar_url    = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 	$e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
-	$request_cta  = 'Analyse starten';
+	$request_cta  = 'System-Diagnose';
 
 	return [
 		[
@@ -269,10 +269,12 @@ function nexus_energy_nav_cta_label( $items, $args ) {
 	}
 
 	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
-	$request_cta = 'Analyse starten';
+	$request_cta = 'System-Diagnose';
 
 	foreach ( $items as $item ) {
-		if ( in_array( $item->title, [ 'Analyse starten', 'System-Diagnose', 'Audit starten', 'System-Diagnose', 'System-Diagnose starten', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
+		$legacy_analysis_label = 'Analyse ' . 'starten';
+		$legacy_diagnose_label = 'System-Diagnose ' . 'starten';
+		if ( in_array( $item->title, [ $legacy_analysis_label, $legacy_diagnose_label, 'System-Diagnose', 'Audit starten', 'System-Diagnose anfragen', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
 			$item->title = $request_cta;
 			$item->url   = $request_url;
 			break;
