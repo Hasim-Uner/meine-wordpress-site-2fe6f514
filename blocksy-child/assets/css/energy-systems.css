@@ -1627,6 +1627,71 @@
   line-height: 1.65;
 }
 
+.solar-diagnostic-blocks {
+  margin-top: clamp(32px, 4vw, 48px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.solar-diagnostic-box {
+  border: 1px solid var(--rule-strong);
+  padding: 28px;
+  background: rgba(255, 255, 255, 0.44);
+}
+
+.solar-diagnostic-box--highlight {
+  background: var(--ink);
+  color: var(--bone);
+}
+
+.solar-diagnostic-box h3 {
+  margin: 0 0 18px;
+  font-family: var(--serif);
+  font-size: clamp(24px, 2.4vw, 34px);
+  font-weight: 500;
+  line-height: 1.12;
+  color: inherit;
+}
+
+.solar-diagnostic-box ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.solar-diagnostic-box li {
+  position: relative;
+  padding-left: 22px;
+  color: inherit;
+  line-height: 1.55;
+}
+
+.solar-diagnostic-box li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 8px;
+  height: 1px;
+  background: var(--solar-deep);
+}
+
+.solar-diagnostic-box--highlight li::before {
+  background: var(--solar);
+}
+
+.solar-diagnostic-actions {
+  margin-top: 32px;
+}
+
+.solar-form-section .review-box {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
 @media (max-width: 760px) {
   .solar-owned {
     grid-template-columns: 1fr;
@@ -1637,6 +1702,10 @@
   }
   .solar-owned__cell:last-child {
     border-bottom: 0 !important;
+  }
+
+  .solar-diagnostic-blocks {
+    grid-template-columns: 1fr;
   }
 }
 

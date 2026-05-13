@@ -231,6 +231,16 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-review-funnel-css', 'review-funnel.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-energy-systems-css', 'energy-systems.css', [ 'nexus-review-funnel-css' ] );
 		hu_enqueue_js( 'nexus-solar-hero-js', 'solar-hero.js', [ 'nexus-core-js' ] );
+		hu_enqueue_js( 'nexus-review-funnel-js', 'review-funnel.js', [ 'nexus-core-js' ] );
+		wp_localize_script(
+			'nexus-review-funnel-js',
+			'NexusReviewConfig',
+			[
+				'auditLabel'   => 'System-Diagnose',
+				'submitLabel'  => 'System-Diagnose anfragen',
+				'restEndpoint' => esc_url_raw( rest_url( 'nexus/v1/audit-request' ) ),
+			]
+		);
 	}
 
 	// ── G) Template: WGOS System ──────────────────────────────────

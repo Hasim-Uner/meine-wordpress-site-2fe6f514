@@ -222,6 +222,43 @@ $risk_reversals = [
 	],
 ];
 
+$diagnostic_modules = [
+	[
+		'n' => '01',
+		't' => 'Anfrage-Quellen',
+		'd' => 'Wo kommen Ihre Anfragen heute her, was kosten sie tatsächlich (inkl. nicht gemessener Folgekosten), welche Quellen tragen sich, welche nicht.',
+	],
+	[
+		'n' => '02',
+		't' => 'Tracking und Daten',
+		'd' => 'Was wird aktuell gemessen, was nicht. Server-Side-Status, Consent-Setup, Attribution-Kette. Kernfrage: Können Sie überhaupt belastbar entscheiden, oder raten Sie?',
+	],
+	[
+		'n' => '03',
+		't' => 'Funnel',
+		'd' => 'Weg vom Klick zur Anfrage. Wo bricht es ab — technisch (Speed, Mobile) und inhaltlich (Versprechen, Form-Reibung).',
+	],
+	[
+		'n' => '04',
+		't' => 'Vertriebsanschluss',
+		'd' => 'Speed-to-Lead, CRM-Anbindung, Qualifizierungs-Prozess, Conversion-Raten je Quelle.',
+	],
+];
+
+$diagnostic_results = [
+	'Schriftlicher Befund nach 7 Werktagen',
+	'Drei priorisierte Hebel mit konkretem nächsten Schritt',
+	'Wirtschaftlichkeits-Einordnung (Investition vs. erwarteter Effekt)',
+	'Übergabe-Call (30 Minuten, optional)',
+];
+
+$diagnostic_conditions = [
+	'[Preis wird ergänzt] einmalig',
+	'Wird auf eine spätere Umsetzung 1:1 verrechnet',
+	'Keine Mindestlaufzeit, kein Pflicht-Termin',
+	'Schriftlicher Befund als Deliverable, kein Folien-Pitch',
+];
+
 $about_metrics = [
 	[ 'v' => '9',   'l' => 'Jahre WordPress' ],
 	[ 'v' => 'B2B', 'l' => 'Ausschließlich' ],
@@ -317,6 +354,9 @@ $arch_steps = [
 	[ 'n' => '04', 'lbl' => 'Scoring',        'note' => 'Heiß / Warm / Kalt' ],
 	[ 'n' => '05', 'lbl' => 'Vertrieb',       'note' => 'Slack · CRM · 5 Min.' ],
 ];
+
+$energy_intake_flow = function_exists( 'nexus_get_energy_intake_flow_definition' ) ? nexus_get_energy_intake_flow_definition() : [];
+$form_page_url      = $page_url;
 
 get_header();
 ?>
@@ -908,37 +948,209 @@ get_header();
 			</div>
 		</section>
 
-		<!-- 13 · Final CTA (paper-2) ─────────────────────────────── -->
-		<section class="solar-section solar-section--paper-2" id="abschluss" data-screen-label="13 CTA" aria-labelledby="cta-title">
-			<div class="solar-section__inner solar-cta">
-				<span class="solar-cta__eyebrow">Nächster Schritt · System-Diagnose</span>
-				<h2 id="cta-title" class="solar-cta__h">
-					Eigene Infrastruktur statt <em>geteilter Portal-Leads.</em>
-				</h2>
-				<p class="solar-cta__lede">
-					Starten Sie mit der 4-Modul-Diagnose. Sie bekommen zuerst einen schriftlichen Befund nach 7 Werktagen mit Begründung und nächstem Schritt.
-					Bei Nicht-Eignung bremst der Funnel &mdash; statt Sie in ein generisches Gespräch zu drücken.
-				</p>
-				<div class="solar-cta__actions">
-					<a href="<?php echo esc_url( $diagnostic_anchor ); ?>" class="solar-hero__btn solar-cta__btn" data-track-action="cta_solar_to_diagnostic_request" data-track-category="lead_gen" data-track-funnel-stage="form_open">
+		<!-- 13 · System-Diagnose im Detail (paper-2) ─────────────── -->
+		<section class="solar-section solar-section--paper-2" id="abschluss" data-screen-label="13 Diagnose-Angebot" data-track-section="diagnostic_offer" data-track-funnel-stage="form_open" aria-labelledby="diagnostic-offer-title">
+			<div class="solar-section__inner">
+				<div class="solar-secthead">
+					<div class="solar-secthead__row">
+						<span class="solar-secnum">13 / Einstieg</span>
+						<span class="solar-secthead__rule" aria-hidden="true"></span>
+					</div>
+					<h2 id="diagnostic-offer-title" class="solar-h2">System-Diagnose — schriftlicher Befund in sieben Werktagen.</h2>
+					<p class="solar-lede">
+						Bevor wir Code schreiben, schauen wir auf das System, das Sie schon haben.
+						In sieben Werktagen erhalten Sie einen schriftlichen Befund zu vier Modulen:
+					</p>
+				</div>
+
+				<div class="solar-owned solar-owned--diagnostic">
+					<?php foreach ( $diagnostic_modules as $item ) : ?>
+						<article class="solar-owned__cell" data-reveal>
+							<div class="solar-owned__head">
+								<span class="solar-owned__num"><?php echo esc_html( $item['n'] ); ?> / 04</span>
+								<span class="solar-dot solar-dot--signal" aria-hidden="true"></span>
+							</div>
+							<h3 class="solar-owned__t"><?php echo esc_html( $item['t'] ); ?></h3>
+							<p class="solar-owned__d"><?php echo esc_html( $item['d'] ); ?></p>
+						</article>
+					<?php endforeach; ?>
+				</div>
+
+				<div class="solar-diagnostic-blocks" data-reveal>
+					<div class="solar-diagnostic-box solar-diagnostic-box--highlight">
+						<h3>Sie erhalten:</h3>
+						<ul>
+							<?php foreach ( $diagnostic_results as $item ) : ?>
+								<li><?php echo esc_html( $item ); ?></li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+					<div class="solar-diagnostic-box">
+						<!-- TODO: Preis für System-Diagnose finalisieren, dann hier und in CTA-Sektion ersetzen -->
+						<ul>
+							<?php foreach ( $diagnostic_conditions as $item ) : ?>
+								<li><?php echo esc_html( $item ); ?></li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				</div>
+
+				<div class="solar-cta__actions solar-diagnostic-actions" data-reveal>
+					<a href="<?php echo esc_url( $diagnostic_anchor ); ?>" class="solar-hero__btn solar-cta__btn" data-track-action="cta_diagnostic_offer_to_form" data-track-category="lead_gen" data-track-funnel-stage="form_open">
 						<span>System-Diagnose anfragen</span>
 						<span class="solar-hero__btn-arrow" aria-hidden="true">
 							<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
 						</span>
 					</a>
-					<div class="solar-cta__micro">
-						<span><span class="solar-dot solar-dot--signal" aria-hidden="true"></span> 4-Modul-Diagnose</span>
-						<span aria-hidden="true">·</span>
-						<span>Schriftlicher Befund nach 7 Werktagen</span>
-					</div>
 				</div>
+			</div>
+		</section>
 
-				<div class="solar-cta__slots">
-					<span class="solar-cta__slots-chip" aria-hidden="true">HÜ</span>
-					<div class="solar-cta__slots-body">
-						<div class="solar-cta__slots-t">Einzelperson &mdash; begrenzte Slots pro Quartal.</div>
-						<div class="solar-cta__slots-s">Aktuell ehrlich kommuniziert · 3 Slots Q2 / 2026</div>
+		<!-- 14 · Formular (dark) ─────────────────────────────────── -->
+		<section class="solar-section solar-section--dark solar-form-section" id="energie-anfrage" data-screen-label="14 Anfrage-Formular" data-track-section="energy_request_form" data-track-funnel-stage="form_submit" aria-labelledby="energy-form-title">
+			<div class="solar-section__inner">
+				<div class="review-box">
+					<div class="review-form-frame-head">
+						<div>
+							<p class="review-form-kicker">System-Diagnose anfragen</p>
+							<h2 id="energy-form-title">Standortdaten für die erste Einordnung.</h2>
+						</div>
+						<div class="review-form-eta"><span>Antwort innerhalb 48 Werktagsstunden per E-Mail.</span></div>
 					</div>
+
+					<?php if ( ! empty( $energy_intake_flow ) ) : ?>
+						<form id="review-request-form" class="review-funnel" method="post" novalidate>
+							<input type="hidden" name="audit_type" value="growth_audit" />
+							<input type="hidden" name="page_url" value="<?php echo esc_url( $form_page_url ); ?>" />
+							<input type="hidden" name="landing_page_url" value="<?php echo esc_url( $form_page_url ); ?>" />
+							<input type="hidden" name="entry_page_url" value="<?php echo esc_url( $form_page_url ); ?>" />
+							<input type="hidden" name="started_at" value="" />
+							<input type="hidden" id="ads_source" name="ads_source" value="" />
+							<input type="hidden" id="ads_keyword" name="ads_keyword" value="" />
+
+							<div class="review-progress">
+								<div class="review-progress-head">
+									<div class="review-progress-copy">
+										<span class="review-progress-eyebrow">System-Diagnose</span>
+										<strong id="review-progress-current">Schritt 1 von <?php echo esc_html( (string) count( $energy_intake_flow ) ); ?>: <?php echo esc_html( (string) ( $energy_intake_flow[0]['title_short'] ?? 'Start' ) ); ?></strong>
+									</div>
+									<span class="review-progress-meta">4 Module · schriftlicher Befund</span>
+								</div>
+								<div class="review-progress-track" aria-hidden="true">
+									<div class="review-progress-fill" id="review-progress-fill"></div>
+								</div>
+								<ol class="review-progress-steps">
+									<?php foreach ( $energy_intake_flow as $step_index => $step ) : ?>
+										<li>
+											<button type="button" data-review-step-target="<?php echo esc_attr( (string) $step_index ); ?>"<?php echo 0 === $step_index ? ' aria-current="step"' : ''; ?>>
+												<span class="review-progress-step-index"><?php echo esc_html( str_pad( (string) ( $step_index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+												<span class="review-progress-step-label"><?php echo esc_html( (string) ( $step['title_short'] ?? $step['summary_label'] ?? ( $step_index + 1 ) ) ); ?></span>
+											</button>
+										</li>
+									<?php endforeach; ?>
+								</ol>
+							</div>
+
+							<?php foreach ( $energy_intake_flow as $step_index => $step ) : ?>
+								<?php
+								$step_kind = isset( $step['kind'] ) ? (string) $step['kind'] : 'single_choice';
+								?>
+								<section class="review-step" data-review-step="<?php echo esc_attr( (string) ( $step['id'] ?? $step_index ) ); ?>" data-review-radio-message="Bitte eine Option auswählen.">
+									<p class="review-step-kicker">Schritt <?php echo esc_html( (string) ( $step_index + 1 ) ); ?></p>
+									<h4><?php echo esc_html( (string) ( $step['question'] ?? '' ) ); ?></h4>
+									<?php if ( ! empty( $step['description'] ) ) : ?>
+										<p class="review-step-copy"><?php echo esc_html( (string) $step['description'] ); ?></p>
+									<?php endif; ?>
+
+									<?php if ( 'text_input' === $step_kind && ! empty( $step['field'] ) && is_array( $step['field'] ) ) : ?>
+										<?php $field = $step['field']; ?>
+										<div class="review-field">
+											<label for="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>"><?php echo esc_html( (string) ( $field['label'] ?? '' ) ); ?></label>
+											<input
+												id="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>"
+												name="<?php echo esc_attr( (string) $field['name'] ); ?>"
+												type="<?php echo esc_attr( (string) ( $field['type'] ?? 'text' ) ); ?>"
+												<?php echo ! empty( $field['inputmode'] ) ? 'inputmode="' . esc_attr( (string) $field['inputmode'] ) . '"' : ''; ?>
+												<?php echo ! empty( $field['autocomplete'] ) ? 'autocomplete="' . esc_attr( (string) $field['autocomplete'] ) . '"' : ''; ?>
+												<?php echo ! empty( $field['pattern'] ) ? 'pattern="' . esc_attr( (string) $field['pattern'] ) . '"' : ''; ?>
+												<?php echo ! empty( $field['maxlength'] ) ? 'maxlength="' . esc_attr( (string) $field['maxlength'] ) . '"' : ''; ?>
+												<?php echo ! empty( $field['placeholder'] ) ? 'placeholder="' . esc_attr( (string) $field['placeholder'] ) . '"' : ''; ?>
+												<?php echo ! empty( $field['required'] ) ? 'required' : ''; ?>
+											/>
+										</div>
+									<?php elseif ( 'single_choice' === $step_kind && ! empty( $step['options'] ) && is_array( $step['options'] ) ) : ?>
+										<fieldset class="review-choice-block">
+											<legend><?php echo esc_html( (string) ( $step['summary_label'] ?? $step['question'] ?? '' ) ); ?></legend>
+											<div class="review-option-group">
+												<?php foreach ( $step['options'] as $value => $option ) : ?>
+													<label class="review-option">
+														<input type="radio" name="<?php echo esc_attr( (string) ( $step['name'] ?? $step['id'] ?? '' ) ); ?>" value="<?php echo esc_attr( (string) $value ); ?>" required <?php echo ! empty( $step['auto_advance'] ) ? 'data-review-auto-advance="true"' : ''; ?> />
+														<span class="review-option-copy">
+															<strong><?php echo esc_html( (string) ( $option['label'] ?? $value ) ); ?></strong>
+															<?php if ( ! empty( $option['description'] ) ) : ?>
+																<span><?php echo esc_html( (string) $option['description'] ); ?></span>
+															<?php endif; ?>
+														</span>
+													</label>
+												<?php endforeach; ?>
+											</div>
+										</fieldset>
+									<?php elseif ( 'contact' === $step_kind && ! empty( $step['fields'] ) && is_array( $step['fields'] ) ) : ?>
+										<div class="review-field-grid">
+											<?php foreach ( $step['fields'] as $field ) : ?>
+												<?php if ( ! is_array( $field ) || empty( $field['name'] ) ) : ?>
+													<?php continue; ?>
+												<?php endif; ?>
+												<?php if ( 'checkbox' === ( $field['type'] ?? '' ) ) : ?>
+													<div class="review-consent-card review-field-full">
+														<label class="review-consent" for="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>">
+															<input id="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>" type="checkbox" name="<?php echo esc_attr( (string) $field['name'] ); ?>" value="<?php echo esc_attr( (string) ( $field['value'] ?? 'accepted' ) ); ?>" <?php echo ! empty( $field['required'] ) ? 'required' : ''; ?> />
+															<span><?php echo esc_html( (string) ( $field['label'] ?? '' ) ); ?></span>
+														</label>
+													</div>
+												<?php elseif ( 'textarea' === ( $field['type'] ?? '' ) ) : ?>
+													<div class="review-field review-field-full">
+														<label for="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>"><?php echo esc_html( (string) ( $field['label'] ?? '' ) ); ?></label>
+														<textarea id="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>" name="<?php echo esc_attr( (string) $field['name'] ); ?>" rows="<?php echo esc_attr( (string) ( $field['rows'] ?? 4 ) ); ?>" <?php echo ! empty( $field['maxlength'] ) ? 'maxlength="' . esc_attr( (string) $field['maxlength'] ) . '"' : ''; ?> <?php echo ! empty( $field['placeholder'] ) ? 'placeholder="' . esc_attr( (string) $field['placeholder'] ) . '"' : ''; ?> <?php echo ! empty( $field['required'] ) ? 'required' : ''; ?>></textarea>
+													</div>
+												<?php else : ?>
+													<div class="review-field">
+														<label for="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>"><?php echo esc_html( (string) ( $field['label'] ?? '' ) ); ?></label>
+														<input
+															id="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>"
+															name="<?php echo esc_attr( (string) $field['name'] ); ?>"
+															type="<?php echo esc_attr( (string) ( $field['type'] ?? 'text' ) ); ?>"
+															<?php echo ! empty( $field['inputmode'] ) ? 'inputmode="' . esc_attr( (string) $field['inputmode'] ) . '"' : ''; ?>
+															<?php echo ! empty( $field['autocomplete'] ) ? 'autocomplete="' . esc_attr( (string) $field['autocomplete'] ) . '"' : ''; ?>
+															<?php echo ! empty( $field['required'] ) ? 'required' : ''; ?>
+														/>
+														<?php if ( ! empty( $field['help'] ) ) : ?>
+															<p class="review-field-help"><?php echo esc_html( (string) $field['help'] ); ?></p>
+														<?php endif; ?>
+													</div>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										</div>
+									<?php endif; ?>
+								</section>
+							<?php endforeach; ?>
+
+							<div id="review-form-feedback" class="review-form-feedback" aria-live="polite" aria-atomic="true"></div>
+							<div class="review-actions">
+								<button class="review-prev-btn" type="button" data-review-prev>Zurück</button>
+								<button class="audit-submit-btn" type="button" data-review-next>Weiter</button>
+								<button class="audit-submit-btn" type="submit" data-review-submit hidden>System-Diagnose anfragen</button>
+							</div>
+						</form>
+
+						<div id="review-request-success" class="review-success" hidden>
+							<h3>Ihre Anfrage ist eingegangen.</h3>
+							<p id="review-success-message" class="review-success-copy">Danke. Sie erhalten eine Rückmeldung per E-Mail.</p>
+							<p id="review-success-url" class="review-output-note"></p>
+						</div>
+					<?php else : ?>
+						<p class="solar-lede">Das Formular ist aktuell nicht verfügbar.</p>
+					<?php endif; ?>
 				</div>
 			</div>
 		</section>
