@@ -682,7 +682,7 @@ function nexus_get_primary_request_url() {
  * @return string
  */
 function nexus_get_primary_request_cta_label() {
-	return 'Anfrage stellen';
+	return 'Anfrage-System-Analyse starten';
 }
 
 /**

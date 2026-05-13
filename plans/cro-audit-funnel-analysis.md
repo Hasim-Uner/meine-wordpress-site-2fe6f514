@@ -13,15 +13,15 @@ User Journey:
 │  /growth-audit/                                                  │
 │  - CJA Shortcode: URL-Eingabe, 60-Sekunden-Diagnose              │
 │  - Async n8n Webhook → Ergebnis-Dashboard                        │
-│  - CTA: "Anfrage stellen" → /solar-waermepumpen-leadgenerierung/ │
-│    #energie-anfrage                                              │
+│  - CTA: "Anfrage-System-Analyse starten" → /anfrage-system-      │
+│    analyse/                                                      │
 └──────────────────────────────┬──────────────────────────────────┘
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │  /solar-waermepumpen-leadgenerierung/                            │
 │  - Landing Page mit Pain Cards, Journey Cards, Proof             │
-│  - Multi-Step Formular (#energie-anfrage)                        │
+│  - Kontextseite ohne eigenen Formular-Submit                     │
 │  - 6 Schritte: Leistung → Zielmarkt → Engpass → Status → Timing  │
 │    → Kontaktweg → Kontaktdaten                                   │
 └─────────────────────────────────────────────────────────────────┘
@@ -194,7 +194,7 @@ function nexus_should_hide_footer_primary_cta() {
 Option 1: **Zwei separate Audit-Enden**
 - Der Audit erkennt anhand der URL oder einer zusätzlichen Frage, ob es sich um Solar/Wärmepumpen handelt
 - Entsprechend unterschiedliche CTAs:
-  - Solar/Wärmepumpen → `/solar-waermepumpen-leadgenerierung/#energie-anfrage`
+  - Solar/Wärmepumpen → `/anfrage-system-analyse/`
   - Andere B2B → `/kontakt/` oder generisches Formular
 
 Option 2: **CTA-Text generalisieren**
