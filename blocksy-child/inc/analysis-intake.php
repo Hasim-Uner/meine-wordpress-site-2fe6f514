@@ -1,6 +1,6 @@
 <?php
 /**
- * Anfrage-System-Analyse intake.
+ * System-Diagnose intake.
  *
  * Receives the React-Funnel result + lean contact block, persists into the
  * shared CRM (nexus_contact) and notifies the admin and the lead via Brevo.
@@ -64,7 +64,7 @@ function hu_build_analysis_calcom_url( array $payload ) {
 	$signal = (string) ( $payload['signal'] ?? '' );
 	$signal_label = HU_ANALYSIS_SIGNAL_LABELS[ $signal ] ?? '';
 	$notes  = sprintf(
-		'Anfrage-System-Analyse · Signal %s · Score %s/100',
+		'System-Diagnose · Signal %s · Score %s/100',
 		$signal_label,
 		(int) ( $payload['score'] ?? 0 )
 	);
@@ -297,7 +297,7 @@ function hu_sync_analysis_to_crm( array $payload ) {
 	$contact_meta = [
 		'_nexus_contact_name'                    => $payload['name'],
 		'_nexus_contact_request_type'            => 'analysis',
-		'_nexus_contact_request_type_label'      => 'Anfrage-System-Analyse',
+		'_nexus_contact_request_type_label'      => 'System-Diagnose',
 		'_nexus_contact_website_url'             => $payload['website_url'],
 		'_nexus_contact_consent_contact_request' => 1,
 		'_nexus_contact_last_inquiry_at'         => current_time( 'timestamp' ),
@@ -447,7 +447,7 @@ function hu_send_analysis_admin_notification( array $payload, $contact_id ) {
 		? nexus_get_contact_email_shell(
 			[
 				'preheader' => sprintf( 'Analyse · %s · %d/100 · %s', $payload['signal_label'], (int) $payload['score'], $payload['company'] ),
-				'eyebrow'   => 'Anfrage-System-Analyse',
+				'eyebrow'   => 'System-Diagnose',
 				'headline'  => 'Neuer qualifizierter Analyse-Lead',
 				'intro'     => 'Vorqualifiziert über alle 20 Funnel-Schritte. Reply-To geht direkt an die Person.',
 				'content'   => $content,
@@ -472,7 +472,7 @@ function hu_send_analysis_lead_confirmation( array $payload ) {
 	}
 
 	$subject = sprintf(
-		'[%s] Ihre Anfrage-System-Analyse — %s / %d Punkte',
+		'[%s] Ihre System-Diagnose — %s / %d Punkte',
 		wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
 		$payload['signal_label'],
 		(int) $payload['score']
@@ -512,7 +512,7 @@ function hu_send_analysis_lead_confirmation( array $payload ) {
 		? nexus_get_contact_email_shell(
 			[
 				'preheader' => 'Ihre Analyse ist eingegangen — nächster Schritt: Termin buchen.',
-				'eyebrow'   => 'Anfrage-System-Analyse',
+				'eyebrow'   => 'System-Diagnose',
 				'headline'  => 'Danke, ' . $payload['name'] . '.',
 				'intro'     => 'Ihre 20 Antworten sind eingegangen. Hier ist das Ergebnis und der direkte Weg in ein 30-Minuten-Gespräch.',
 				'content'   => $content,

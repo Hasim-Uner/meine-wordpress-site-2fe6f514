@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $current_year = wp_date( 'Y' );
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $home_url     = $primary_urls['home'] ?? home_url( '/' );
-$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 $request_url  = $analysis_url;
 $e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
@@ -107,7 +107,7 @@ $audit_footer_note = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_ge
 			<section class="ft__col" aria-labelledby="ft-einstieg">
 				<h3 id="ft-einstieg">Einstieg</h3>
 				<ul class="ft__list">
-					<li><a class="ft__link-strong" href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_footer_nav_analysis" data-track-category="lead_gen">Anfrage-System-Analyse</a></li>
+					<li><a class="ft__link-strong" href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_footer_nav_analysis" data-track-category="lead_gen">System-Diagnose</a></li>
 				</ul>
 			</section>
 

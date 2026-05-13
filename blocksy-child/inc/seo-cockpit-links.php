@@ -213,7 +213,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 		$cluster_page = nexus_get_wgos_cluster_page( $post );
 
 		if ( is_array( $cluster_page ) ) {
-			$links[] = $primary_urls['audit'] ?? home_url( '/anfrage-system-analyse/' );
+			$links[] = $primary_urls['audit'] ?? home_url( '/system-diagnose/' );
 			$links[] = $primary_urls['wgos'] ?? home_url( '/wordpress-growth-operating-system/' );
 			$links[] = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 			$links[] = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wgos-systemlandkarte/' );
@@ -253,7 +253,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 		$links = array_merge(
 			$links,
 			[
-				$primary_urls['audit'] ?? home_url( '/anfrage-system-analyse/' ),
+				$primary_urls['audit'] ?? home_url( '/system-diagnose/' ),
 				$primary_urls['results'] ?? home_url( '/ergebnisse/' ),
 				$primary_urls['wgos'] ?? home_url( '/wordpress-growth-operating-system/' ),
 				$primary_urls['about'] ?? home_url( '/uber-mich/' ),
@@ -274,7 +274,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 		$links = array_merge(
 			$links,
 			[
-				$primary_urls['audit'] ?? home_url( '/anfrage-system-analyse/' ),
+				$primary_urls['audit'] ?? home_url( '/system-diagnose/' ),
 				$primary_urls['wgos'] ?? home_url( '/wordpress-growth-operating-system/' ),
 				$contact_url,
 				$primary_urls['e3'] ?? home_url( '/e3-new-energy/' ),
@@ -288,7 +288,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 		$links = array_merge(
 			$links,
 			[
-				$primary_urls['audit'] ?? home_url( '/anfrage-system-analyse/' ),
+				$primary_urls['audit'] ?? home_url( '/system-diagnose/' ),
 				$contact_url,
 			]
 		);
@@ -409,7 +409,7 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 	$primary_urls     = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 	$home_url         = $primary_urls['home'] ?? home_url( '/' );
 	$blog_url         = $primary_urls['blog'] ?? home_url( '/blog/' );
-	$audit_url        = $primary_urls['audit'] ?? home_url( '/anfrage-system-analyse/' );
+	$audit_url        = $primary_urls['audit'] ?? home_url( '/system-diagnose/' );
 	$cases_url        = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 	$agentur_url      = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 	$wartung_url      = $primary_urls['wartung'] ?? home_url( '/wordpress-wartung-hannover/' );
@@ -420,7 +420,7 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 	$seo_url          = $primary_urls['seo'] ?? home_url( '/wordpress-seo-hannover/' );
 	$cwv_url          = $primary_urls['cwv'] ?? home_url( '/core-web-vitals/' );
 	$tracking_url     = $primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' );
-	$tools_url        = $primary_urls['tools'] ?? home_url( '/anfrage-system-analyse/' );
+	$tools_url        = $primary_urls['tools'] ?? home_url( '/system-diagnose/' );
 	$about_url        = $primary_urls['about'] ?? home_url( '/uber-mich/' );
 	$contact_url      = $primary_urls['contact'] ?? home_url( '/kontakt/' );
 	$implementation_url = add_query_arg(
@@ -549,7 +549,7 @@ function nexus_get_seo_cockpit_sitewide_shell_key_for_url( $url, $context = [] )
 	$context = is_array( $context ) ? $context : [];
 	$path    = '/' . ltrim( (string) wp_parse_url( $url, PHP_URL_PATH ), '/' );
 	$path    = trailingslashit( $path );
-	$audit   = nexus_normalize_seo_cockpit_internal_link_target( function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/anfrage-system-analyse/' ) );
+	$audit   = nexus_normalize_seo_cockpit_internal_link_target( function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/system-diagnose/' ) );
 	$audit_path = '/' . ltrim( (string) wp_parse_url( $audit, PHP_URL_PATH ), '/' );
 	$audit_path = trailingslashit( $audit_path );
 

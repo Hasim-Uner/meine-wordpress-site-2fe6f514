@@ -138,7 +138,7 @@ function nexus_setup_main_menu() {
 	] );
 
 	// ── 4. Analyse CTA (Top-Level) ─────────────────────────────────
-	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 	wp_update_nav_menu_item( $menu_id, 0, [
 		'menu-item-title'     => 'Analyse starten',
 		'menu-item-object'    => 'custom',
@@ -251,7 +251,7 @@ add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
 	$is_primary_like_menu = in_array( $theme_location, [ 'primary', 'primary-slim' ], true )
 		|| in_array( $menu_name, [ 'Nexus Hauptmenü', 'Hauptmenü Slim' ], true );
 
-	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 	$results_url = nexus_get_results_url();
 	$e3_url = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'e3', home_url( '/e3-new-energy/' ) ) : home_url( '/e3-new-energy/' );
 	$is_results_context = nexus_is_results_context();

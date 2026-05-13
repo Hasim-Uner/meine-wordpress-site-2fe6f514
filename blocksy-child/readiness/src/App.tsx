@@ -492,10 +492,10 @@ export function App() {
 
   return (
     <main className="readiness-shell" aria-labelledby="readiness-title" data-track-section="request_analysis_react_form">
-      <section className="readiness-flow" aria-label="Anfrage-System-Analyse">
+      <section className="readiness-flow" aria-label="System-Diagnose">
         <div className="readiness-flow-top">
           <div>
-            <div className="readiness-kicker">Anfrage-System-Analyse</div>
+            <div className="readiness-kicker">System-Diagnose</div>
             <h1 id="readiness-title">Fit-Check</h1>
           </div>
           <div className="readiness-flow-status" aria-label="Fortschritt">
@@ -1343,7 +1343,7 @@ function getActionPlan(signal: Signal) {
     return {
       shortLabel: 'Analyse vertiefen',
       title: 'Founding-Partner-Fit sauber prüfen',
-      text: 'Der Fall wirkt tragfähig genug, um aus der lokalen Ampel eine echte Anfrage-System-Analyse abzuleiten.',
+      text: 'Der Fall wirkt tragfähig genug, um aus der lokalen Ampel eine echte System-Diagnose abzuleiten.',
       items: [
         'Website und Anfragepfad konkret prüfen.',
         'Leadkosten-Korridor mit Region und Angebot abgleichen.',

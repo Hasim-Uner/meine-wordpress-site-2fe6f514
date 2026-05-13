@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Redirect retired tools hub pages to the current Anfrage-System-Analyse.
+ * Redirect retired tools hub pages to the current System-Diagnose.
  *
  * @return void
  */
@@ -21,7 +21,7 @@ function nexus_redirect_deprecated_tools_page() {
 		return;
 	}
 
-	$target_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/anfrage-system-analyse/' );
+	$target_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/system-diagnose/' );
 	$target_path = trailingslashit( '/' . ltrim( (string) wp_parse_url( $target_url, PHP_URL_PATH ), '/' ) );
 
 	if ( function_exists( 'nexus_get_current_request_path' ) && nexus_get_current_request_path() === $target_path ) {
@@ -41,7 +41,7 @@ add_action( 'template_redirect', 'nexus_redirect_deprecated_tools_page', 2 );
  */
 function nexus_get_tools_hub_items() {
 	$primary_urls   = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
-	$audit_url      = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/anfrage-system-analyse/' );
+	$audit_url      = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/system-diagnose/' );
 	$wgos_url       = $primary_urls['wgos'] ?? home_url( '/wordpress-growth-operating-system/' );
 	$asset_hub_url  = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wgos-systemlandkarte/' );
 	$core_web_url   = $primary_urls['cwv'] ?? home_url( '/core-web-vitals/' );

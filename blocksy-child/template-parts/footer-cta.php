@@ -8,7 +8,7 @@
  * Usage:
  *   set_query_var( 'cta_heading', 'Passt Ihr Betrieb für ein eigenes Anfrage-System?' );
  *   set_query_var( 'cta_text', 'Die Analyse prüft Fit, Marktbild und nächsten Schritt.' );
- *   set_query_var( 'cta_url', '/anfrage-system-analyse/' );
+ *   set_query_var( 'cta_url', '/system-diagnose/' );
  *   set_query_var( 'cta_button_text', 'Analyse starten' );
  *   set_query_var( 'cta_action', 'cta_footer_analysis' );
  *   get_template_part( 'template-parts/footer-cta' );
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $heading     = get_query_var( 'cta_heading', __( 'Passt Ihr Betrieb für ein eigenes Anfrage-System?', 'blocksy-child' ) );
 $text        = get_query_var( 'cta_text', __( 'Die Analyse prüft Fit, Marktbild und den nächsten sinnvollen Schritt.', 'blocksy-child' ) );
-$url         = get_query_var( 'cta_url', function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' ) );
+$url         = get_query_var( 'cta_url', function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' ) );
 $button_text = get_query_var( 'cta_button_text', __( 'Analyse starten', 'blocksy-child' ) );
 $action      = get_query_var( 'cta_action', 'cta_footer_analysis' );
 $imprint_url = nexus_get_page_url( [ 'impressum' ], home_url( '/impressum/' ) );

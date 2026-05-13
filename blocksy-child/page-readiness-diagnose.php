@@ -1,7 +1,7 @@
 <?php
 /**
- * Template Name: Anfrage-System-Analyse
- * Description: Staged React shell for the Anfrage-System-Analyse.
+ * Template Name: System-Diagnose
+ * Description: Staged React shell for the System-Diagnose.
  *
  * @package Blocksy_Child
  */
@@ -67,8 +67,8 @@ get_header();
 	<div id="readiness-root" data-track-action="request_analysis_view" data-track-category="lead_funnel" data-track-section="request_analysis" data-track-funnel-stage="request_analysis_view">
 		<section class="wp-section">
 			<div class="wp-container">
-				<span class="wp-badge"><?php esc_html_e( 'Anfrage-System-Analyse', 'blocksy-child' ); ?></span>
-				<h1><?php esc_html_e( 'Anfrage-System-Analyse wird geladen.', 'blocksy-child' ); ?></h1>
+				<span class="wp-badge"><?php esc_html_e( 'System-Diagnose', 'blocksy-child' ); ?></span>
+				<h1><?php esc_html_e( 'System-Diagnose wird geladen.', 'blocksy-child' ); ?></h1>
 			</div>
 		</section>
 	</div>

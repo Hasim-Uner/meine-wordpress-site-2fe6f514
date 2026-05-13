@@ -729,7 +729,7 @@ function hu_get_seo_meta() {
 		'kunden-login',
 		'360-deep-dive',
 		'readiness-diagnose',
-		'anfrage-system-analyse',
+		'system-diagnose',
 		'growth-audit',
 		'audit',
 		'customer-journey-audit',
@@ -764,9 +764,9 @@ function hu_get_seo_meta() {
 		$meta['robots']      = 'noindex, follow';
 
 	} elseif ( function_exists( 'hu_is_request_analysis_request_path' ) && hu_is_request_analysis_request_path() ) {
-		$meta['og_title']    = 'Anfrage-System-Analyse | Haşim Üner';
-		$meta['description'] = 'Evidenzbasierte Analyse für Solar-, SHK- und Wärmepumpenbetriebe: Marktbild, Anfragepfad, Leadkosten-Korridor und Empfehlung für oder gegen ein eigenes Anfrage-System.';
-		$meta['canonical']   = home_url( '/anfrage-system-analyse/' );
+		$meta['og_title']    = 'System-Diagnose | Haşim Üner';
+		$meta['description'] = 'System-Diagnose für Solar- und Wärmepumpen-Betriebe: Schriftlicher Befund in sieben Werktagen zu Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss. Drei priorisierte Hebel und Wirtschaftlichkeits-Einordnung.';
+		$meta['canonical']   = home_url( '/system-diagnose/' );
 		$meta['robots']      = 'noindex, follow';
 
 	} elseif ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) && '' !== nexus_get_current_wgos_cluster_route_slug() ) {
@@ -948,7 +948,7 @@ add_action( 'template_redirect', function () {
  * - ki-integration-wordpress / ki-integration: noindex (Legacy-Thema)
  * - loesungen: noindex (interne Angebotsübersicht, nicht mehr beworben)
  * - wordpress-seo-hannover / wordpress-wartung-hannover: 301 auf Agentur-Page-Anker
- * - growth-audit / kostenlose-tools und Tool-Unterseiten: 301 auf Anfrage-System-Analyse
+ * - growth-audit / kostenlose-tools und Tool-Unterseiten: 301 auf System-Diagnose
  *
  * @return array<int, string>
  */
@@ -960,7 +960,7 @@ function nexus_get_sitemap_excluded_slugs() {
 		'ki-integration',
 		'loesungen',
 		'readiness-diagnose',
-		'anfrage-system-analyse',
+		'system-diagnose',
 		'wordpress-seo-hannover',
 		'wordpress-wartung-hannover',
 		'growth-audit',

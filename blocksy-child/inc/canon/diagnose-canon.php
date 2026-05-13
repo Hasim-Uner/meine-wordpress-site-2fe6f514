@@ -15,10 +15,10 @@ define( 'HU_READINESS_DIAGNOSIS_OUTPUT_PAGES_MIN', 4 );
 define( 'HU_READINESS_DIAGNOSIS_OUTPUT_PAGES_MAX', 6 );
 define( 'HU_READINESS_DIAGNOSIS_FORM_MINUTES_MIN', 15 );
 define( 'HU_READINESS_DIAGNOSIS_FORM_MINUTES_MAX', 20 );
-define( 'HU_REQUEST_ANALYSIS_LABEL', 'Anfrage-System-Analyse' );
-define( 'HU_REQUEST_ANALYSIS_ROUTE', '/anfrage-system-analyse/' );
-define( 'HU_REQUEST_ANALYSIS_DAYS', 14 );
-define( 'HU_REQUEST_ANALYSIS_OUTPUT_LABEL', 'schriftlicher Befund mit Ampel, Marktbild, Leadkosten-Korridor und klarer Empfehlung' );
+define( 'HU_REQUEST_ANALYSIS_LABEL', 'System-Diagnose' );
+define( 'HU_REQUEST_ANALYSIS_ROUTE', '/system-diagnose/' );
+define( 'HU_REQUEST_ANALYSIS_DAYS', 7 );
+define( 'HU_REQUEST_ANALYSIS_OUTPUT_LABEL', 'schriftlicher Befund zu Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss' );
 define( 'HU_REQUEST_ANALYSIS_PRICE_LABEL', 'nur für passende Founding-Partner nach Potenzialcheck' );
 
 define( 'HU_DEEP_DIAGNOSIS_PRICE', 1500 );
@@ -52,7 +52,7 @@ function hu_diagnose_canon() {
 		'deep_days'                  => HU_DEEP_DIAGNOSIS_DAYS,
 		'deep_screenshare_minutes'   => HU_DEEP_DIAGNOSIS_SCREENSHARE_MINUTES,
 		'access_policy'              => 'Kein Admin-Zugang in der Diagnose.',
-		'credit_policy'              => 'Anrechenbar auf die Umsetzung, wenn aus der Analyse ein passender Founding-Partner-Fall wird.',
+		'credit_policy'              => 'Anrechenbar auf die Umsetzung, wenn aus der Diagnose ein passender Founding-Partner-Fall wird.',
 	];
 }
 

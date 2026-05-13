@@ -113,7 +113,7 @@ function nexus_is_primary_header_menu_args( $args ) {
 function nexus_get_site_header_fallback_items() {
 	$about_page_id = nexus_get_page_id( [ 'uber-mich' ] );
 	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
-	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 	$solar_url    = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 	$e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 	$request_cta  = 'Analyse starten';
@@ -268,11 +268,11 @@ function nexus_energy_nav_cta_label( $items, $args ) {
 		return $items;
 	}
 
-	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 	$request_cta = 'Analyse starten';
 
 	foreach ( $items as $item ) {
-		if ( in_array( $item->title, [ 'Analyse starten', 'Anfrage-System-Analyse', 'Audit starten', 'System-Diagnose', 'System-Diagnose starten', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
+		if ( in_array( $item->title, [ 'Analyse starten', 'System-Diagnose', 'Audit starten', 'System-Diagnose', 'System-Diagnose starten', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
 			$item->title = $request_cta;
 			$item->url   = $request_url;
 			break;

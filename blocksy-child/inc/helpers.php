@@ -483,7 +483,7 @@ function nexus_get_primary_public_url_map() {
 		return $urls;
 	}
 
-	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 
 	$urls = [
 		'home'                 => home_url( '/' ),
@@ -599,12 +599,12 @@ function nexus_get_audit_page_id() {
  * Resolve the former audit page URL.
  *
  * The standalone Growth Audit is retired; keep this helper as a compatibility
- * alias so older CTA surfaces route into the Anfrage-System-Analyse.
+ * alias so older CTA surfaces route into the System-Diagnose.
  *
  * @return string
  */
 function nexus_get_audit_url() {
-	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 }
 
 /**
@@ -655,13 +655,13 @@ function nexus_get_energy_systems_url() {
  * Resolve the canonical URL for the retired dedicated request page.
  *
  * The public /anfrage/ intake was retired in favor of the evidence-based
- * Anfrage-System-Analyse. Keep this helper as a compatibility alias so old
+ * System-Diagnose. Keep this helper as a compatibility alias so old
  * templates and editor links cannot route users back into the old form.
  *
  * @return string
  */
 function nexus_get_anfrage_url() {
-	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 }
 
 /**
@@ -670,7 +670,7 @@ function nexus_get_anfrage_url() {
  * @return string
  */
 function nexus_get_primary_request_url() {
-	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 }
 
 /**
@@ -679,7 +679,7 @@ function nexus_get_primary_request_url() {
  * @return string
  */
 function nexus_get_primary_request_cta_label() {
-	return 'Anfrage-System-Analyse starten';
+	return 'System-Diagnose starten';
 }
 
 /**

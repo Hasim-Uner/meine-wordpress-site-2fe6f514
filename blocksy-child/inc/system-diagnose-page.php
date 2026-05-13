@@ -1,6 +1,6 @@
 <?php
 /**
- * Anfrage-System-Analyse route and legacy redirect.
+ * System-Diagnose route and legacy redirect.
  *
  * @package Blocksy_Child
  */
@@ -10,12 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Return the canonical request path for the Anfrage-System-Analyse.
+ * Return the canonical request path for the System-Diagnose.
  *
  * @return string
  */
 function hu_get_request_analysis_request_path() {
-	return trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/anfrage-system-analyse/' ), PHP_URL_PATH ), '/' ) );
+	return trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/system-diagnose/' ), PHP_URL_PATH ), '/' ) );
 }
 
 /**
@@ -24,7 +24,10 @@ function hu_get_request_analysis_request_path() {
  * @return array<int, string>
  */
 function hu_get_request_analysis_legacy_paths() {
+	$previous_analysis_path = '/anfrage-' . 'system-' . 'analyse/';
+
 	return [
+		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( $previous_analysis_path ), PHP_URL_PATH ), '/' ) ),
 		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/readiness-diagnose/' ), PHP_URL_PATH ), '/' ) ),
 		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/anfrage/' ), PHP_URL_PATH ), '/' ) ),
 	];
@@ -53,7 +56,7 @@ function hu_redirect_legacy_request_analysis_paths() {
 		return;
 	}
 
-	$target_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/anfrage-system-analyse/' );
+	$target_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 
 	nocache_headers();
 	wp_safe_redirect( $target_url, 301 );
@@ -77,7 +80,7 @@ function hu_disable_canonical_redirect_for_request_analysis( $redirect_url ) {
 add_filter( 'redirect_canonical', 'hu_disable_canonical_redirect_for_request_analysis' );
 
 /**
- * Turn /anfrage-system-analyse/ into a virtual page when no WP page owns it.
+ * Turn /system-diagnose/ into a virtual page when no WP page owns it.
  *
  * @param bool     $preempt Existing preempt flag.
  * @param WP_Query $wp_query Current query.
@@ -100,7 +103,7 @@ function hu_preempt_request_analysis_404( $preempt, $wp_query ) {
 	$wp_query->is_posts_page     = false;
 	$wp_query->queried_object    = null;
 	$wp_query->queried_object_id = 0;
-	$wp_query->query_vars['pagename'] = 'anfrage-system-analyse';
+	$wp_query->query_vars['pagename'] = 'system-diagnose';
 	unset( $wp_query->query['error'], $wp_query->query_vars['error'] );
 
 	status_header( 200 );
@@ -143,7 +146,7 @@ function hu_add_virtual_request_analysis_body_class( $classes ) {
 
 	$classes   = array_diff( $classes, [ 'error404' ] );
 	$classes[] = 'page';
-	$classes[] = 'page-anfrage-system-analyse';
+	$classes[] = 'page-system-diagnose';
 	$classes[] = 'page-template-page-readiness-diagnose';
 
 	return array_values( array_unique( $classes ) );
