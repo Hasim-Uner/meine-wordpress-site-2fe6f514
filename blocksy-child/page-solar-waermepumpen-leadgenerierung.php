@@ -1,8 +1,9 @@
 <?php
 /**
- * /solar-waermepumpen-leadgenerierung/
- *
- * Ingenieur-Ästhetik. Kein Dekor. Nur Argument.
+ * Template Name: Solar & Wärmepumpen Leadgenerierung (SOLARA)
+ * Description: Premium · cinematic · minimalistisch. Hybrid-Theme (warm-cream + Copper).
+ *              Primärer CTA: /system-diagnose/. Zielgruppe: Solar-/Wärmepumpen-Anbieter
+ *              im DACH-Mittelstand (10–25 MA).
  *
  * @package Blocksy_Child
  */
@@ -11,258 +12,112 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$diagnostic_anchor = '#energie-anfrage';
-$page_url          = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
-$e3_url            = home_url( '/e3-new-energy/' );
-$e3_canon          = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
-$e3_metrics        = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
+// ── URLs ───────────────────────────────────────────────────────
+$page_url     = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
+$diagnose_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+$e3_url       = home_url( '/e3-new-energy/' );
 
+// ── E3-Proof-Metriken (Canon) ───────────────────────────────────
+$e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
-$e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
+$e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? '> 85 %';
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
 $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten';
 
-$pain_items = [
-	[
-		'n'    => '01',
-		'lbl'  => 'Lead-Einkauf',
-		'q'    => '80–150 € pro Lead — und die Hälfte geht nicht ans Telefon.',
-		'd'    => 'Sie kaufen bei Aroundhome, Check24 oder DAA. Aber: Mieter ohne Dach, Preisvergleicher ohne Budget, Kontakte, die schon bei drei Mitbewerbern angefragt haben. Ihr Vertrieb verbrennt Stunden mit Leuten, die nie kaufen werden.',
-	],
-	[
-		'n'    => '02',
-		'lbl'  => 'Blindflug',
-		'q'    => 'Kein Überblick, welcher Kanal sich wirklich lohnt.',
-		'd'    => 'Google Ads, Portal-Leads, Empfehlungen — niemand kann sauber sagen, woher die guten Abschlüsse kommen. Ohne diese Klarheit investieren Sie blind. Und skalieren falsch.',
-	],
-	[
-		'n'    => '03',
-		'lbl'  => 'Marktwende',
-		'q'    => 'Seit 2024 kommen Anfragen nicht mehr von allein.',
-		'd'    => 'Der PV-Boom ist vorbei. Der Markt normalisiert sich. Wer jetzt keine eigene Anfrage-Infrastruktur hat, ist abhängig von Portalen — und deren Preisen.',
-	],
+// ── Inhaltsmodelle ──────────────────────────────────────────────
+$hero_metrics = [
+	[ 'n' => $e3_cpl_after,    'l' => 'CPL nach 9 Monaten · ' . $e3_case_label ],
+	[ 'n' => '< 7',            'l' => 'Werktage · schriftlicher Befund' ],
+	[ 'n' => '100 %',          'l' => 'Asset-Eigentum · Code · Tracking · Daten' ],
 ];
 
-$negative_filters = [
+$trust_items = [
+	'B2B · DACH · Mittelstand',
+	'Server in Frankfurt · DSGVO',
+	'Server-Side-Tracking · CAPI',
+	'Hardcoded WordPress · kein Page-Builder',
+	'1:1 Senior · keine Junior-Kette',
+	'Diagnose verrechenbar',
+];
+
+$cta_card_items = [
+	[ 'n' => '01', 't' => 'Anfrage-Quellen',    's' => 'Was kosten Leads tatsächlich — inkl. Folgekosten.' ],
+	[ 'n' => '02', 't' => 'Tracking & Daten',   's' => 'Können Sie überhaupt belastbar entscheiden — oder raten Sie?' ],
+	[ 'n' => '03', 't' => 'Funnel',             's' => 'Wo bricht es ab — technisch und inhaltlich.' ],
+	[ 'n' => '04', 't' => 'Vertriebsanschluss','s' => 'Speed-to-Lead, CRM, Conversion je Quelle.' ],
+];
+
+$problem_cards = [
 	[
 		'n' => '01',
-		't' => 'Weniger als 10 Mitarbeiter',
-		'd' => 'Ein eigenes Anfrage-System trägt sich wirtschaftlich erst ab einem Vertriebsvolumen, das den TCO-Vorteil über 24 Monate auffängt. Darunter ist ein schlanker Funnel mit sauberem Tracking der bessere Hebel — den biete ich hier aber nicht an.',
+		'l' => 'Lead-Einkauf',
+		't' => 'Portal-Leads kosten 80–150 €. Die Hälfte geht nicht ans Telefon.',
+		's' => 'Aroundhome, Check24, DAA: Mieter ohne Dach, Preisvergleicher ohne Budget, Anfragen, die bei drei Wettbewerbern parallel landen. Ihr Vertrieb verbrennt Stunden mit Leuten, die nie kaufen werden.',
 	],
 	[
 		'n' => '02',
-		't' => 'Weniger als 20 qualifizierte Anfragen pro Monat',
-		'd' => 'Server-Side Tracking, Lead-Scoring und ein Multi-Step-Funnel rechnen sich nur bei ausreichendem Anfragevolumen. Unter dieser Schwelle optimieren Sie ein Auto, das Sie nur einmal pro Woche fahren.',
+		'l' => 'Blindflug',
+		't' => 'Kein Überblick, welcher Kanal sich wirklich lohnt.',
+		's' => 'Google Ads, Portal-Leads, Empfehlungen — niemand kann sauber sagen, woher die guten Abschlüsse kommen. Ohne diese Klarheit investieren Sie blind. Und skalieren falsch.',
 	],
 	[
 		'n' => '03',
-		't' => 'Suche nach Leads in 2–4 Wochen',
-		'd' => 'Ein eigenes System braucht drei Monate Implementierung und sechs Monate Optimierung, bevor es seinen Vorteil ausspielt. Wer kurzfristig Termine braucht, ist bei einer Performance-Agentur oder bei Portal-Leads besser aufgehoben — auch wenn das teurer ist.',
-	],
-	[
-		'n' => '04',
-		't' => 'Keine Bereitschaft zur Daten-Offenlegung',
-		'd' => 'Eine Diagnose ohne Einblick in Anfrage-Quellen, Werbeaccounts und CRM-Daten ist ein Glücksspiel. Wenn diese Offenheit nicht da ist, hat eine Zusammenarbeit keinen Sinn.',
+		'l' => 'Marktwende',
+		't' => 'Seit 2024 kommen Anfragen nicht mehr von allein.',
+		's' => 'Der PV-Boom ist vorbei. Der Markt normalisiert sich. Wer jetzt keine eigene Anfrage-Infrastruktur hat, ist abhängig von Portalen — und deren Preisen.',
 	],
 ];
 
-$arch_full = [
+$method_cards = [
 	[
-		'n'   => '01',
-		't'   => 'Landingpage',
-		'd'   => 'Besucher kommt über Google, Ads oder Empfehlung. WordPress mit hardcoded HTML, kein Page-Builder, kein Plugin-Sumpf.',
-		'tag' => '8-Sekunden-Regel',
+		'n'  => 'I',
+		'p'  => 'Phase 01',
+		't'  => 'Diagnose & Fundament',
+		's'  => 'Wir prüfen Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss. Daraus entsteht ein schriftlicher Befund mit drei priorisierten Hebeln — auch dann, wenn Sie nicht mit mir weitermachen.',
+		'b'  => [ 'Module: Quellen · Daten · Funnel · Sales', 'Schriftlicher Befund · keine Folien', 'Auf Umsetzung 1:1 verrechenbar' ],
 	],
 	[
-		'n'   => '02',
-		't'   => 'Qualifizierung',
-		'd'   => '60-Sekunden-Funnel prüft Budget, Betriebsgröße und Bedarf. Mieter ohne Dach werden vor dem Anruf aussortiert.',
-		'tag' => 'React-Funnel',
+		'n'  => 'II',
+		'p'  => 'Phase 02',
+		't'  => 'Eigenes Anfrage-System',
+		's'  => 'WordPress hardcoded — kein Page-Builder, kein Plugin-Stack. Server-Side-Tracking auf eigenem Server. Smarte Vorqualifizierung. Conversion-Pfad ohne Mietsysteme.',
+		'b'  => [ 'Money-Page · Proof- & Angebotsseiten', 'Frankfurt-Server · CAPI · DSGVO', '60-Sek-Funnel mit Lead-Scoring' ],
 	],
 	[
-		'n'   => '03',
-		't'   => 'Segmentierung',
-		'd'   => 'n8n routet die Anfrage nach Region, Gewerk und Dringlichkeit in den richtigen Topf — automatisch.',
-		'tag' => 'n8n · Routing',
-	],
-	[
-		'n'   => '04',
-		't'   => 'Benachrichtigung',
-		'd'   => 'Vertrieb bekommt Slack oder Mail mit Lead-Score und Kontakt — in Echtzeit. Kein Lead liegt länger als 5 Minuten.',
-		'tag' => 'Realtime · CRM',
-	],
-	[
-		'n'   => '05',
-		't'   => 'Bewertung',
-		'd'   => 'Lead-Scoring priorisiert: heiß, warm, kalt. Ihr Vertrieb sieht auf einen Blick, wen er zuerst anruft.',
-		'tag' => 'Scoring-Engine',
+		'n'  => 'III',
+		'p'  => 'Phase 03',
+		't'  => 'Skalieren & Übergeben',
+		's'  => 'Mit sauberem Fundament rechnen sich Google Ads, Meta Ads und SEO endlich. Wöchentliches Reporting. Bei Vertragsende: dokumentierte Übergabe — Code, Tracking, Daten bleiben bei Ihnen.',
+		'b'  => [ 'Google Ads · Meta Ads · SEO-Anteil', 'Wöchentliches Reporting', 'Monatlich kündbar · 100 % Asset-Übergabe' ],
 	],
 ];
 
-$twoways_a = [
-	[ 'k' => 'bis 150 €',     'v' => 'pro Lead — und 50 % gehen nicht ans Telefon.' ],
-	[ 'k' => 'Kein Überblick', 'v' => 'Welcher Kanal lohnt sich wirklich? Niemand sagt es Ihnen.' ],
-	[ 'k' => 'Abhängigkeit',   'v' => 'Budget-Stopp = Nachfrage-Stopp. Sie mieten — Sie besitzen nichts.' ],
+$results_qualifiers = [
+	[ 'k' => 'Anfrage-Quellen',     'v' => 'Beziffert' ],
+	[ 'k' => 'Tracking & CAPI',     'v' => 'Auditiert' ],
+	[ 'k' => 'Funnel-Hebel',        'v' => 'Drei priorisiert' ],
+	[ 'k' => 'Wirtschaftlichkeit',  'v' => 'Einordnung' ],
+	[ 'k' => 'Nächster Schritt',    'v' => 'Konkret' ],
 ];
 
-$twoways_b = [
-	[ 'n' => '01', 'k' => 'Fundament ordnen',           'v' => 'Tracking & Datenebene · Privacy-first · saubere Entscheidungssignale.' ],
-	[ 'n' => '02', 'k' => 'Conversion-Pfade schärfen',  'v' => 'Formular · Call · Buchung · 8-Sekunden-Regel auf jeder Money-Page.' ],
-	[ 'n' => '03', 'k' => 'Skalieren',                  'v' => 'Money Pages & Proof · bleibende Assets · Unabhängigkeit von Portalen.' ],
-];
-
-$tco_rows = [
+$guarantee_points = [
 	[
-		'lbl' => 'Initiales Setup',
-		'a'   => [ '~ 2.000 €', 'Setup-Pauschale, Funnel-Lizenz' ],
-		'b'   => [ '12.000 – 18.000 €', 'einmalig — eigene Code-Basis' ],
+		't' => 'Diagnose-Honorar wird verrechnet',
+		's' => 'Bei anschließender Umsetzung wird die Diagnose 1:1 angerechnet. Sie zahlen sie nur dann, wenn Sie sich gegen die Umsetzung entscheiden.',
 	],
 	[
-		'lbl' => 'Monatlich (ohne Werbebudget)',
-		'a'   => [ '~ 850 € + 150 €', 'Honorar + SaaS / CRM-Lizenz' ],
-		'b'   => [ '~ 50 €', 'Hochleistungs-Hosting' ],
+		't' => 'Drei Hebel — auch bei Abrat',
+		's' => 'Wenn die Diagnose zum Ergebnis kommt, dass Sie das volle System nicht brauchen, bekommen Sie trotzdem drei priorisierte Hebel mit konkretem nächstem Schritt.',
 	],
 	[
-		'lbl' => 'TCO über 24 Monate',
-		'a'   => [ '~ 26.000 €', 'fließt durch die GuV ab' ],
-		'b'   => [ '13.200 – 19.200 €', 'günstiger UND aktivierbar' ],
+		't' => 'Keine Mindestlaufzeit',
+		's' => 'Monatlich kündbar. Vollständige Asset-Übergabe — Code, Tracking, Daten, Werbeaccounts bleiben bei Ihnen.',
 	],
-	[
-		'lbl' => 'Bilanzwirkung',
-		'a'   => [ 'OPEX', 'fließt vollständig durch die GuV' ],
-		'b'   => [ 'CAPEX', 'aktivierbares Asset' ],
-	],
-	[
-		'lbl' => 'Eigentum nach Kündigung',
-		'a'   => [ '0 %', 'Funnel · CRM · Tracking abgeschaltet' ],
-		'b'   => [ '100 %', 'Code · Tracking · Daten bleiben' ],
-	],
-];
-
-$owned_items = [
-	[
-		'n' => '01',
-		't' => 'Eigene WordPress-Assets',
-		'd' => 'Eine conversion-optimierte Money-Page sowie Proof- und Angebotsseiten. Hardcoded — kein Page-Builder, kein Plugin-Stack. Bleibt langfristig in Ihrem Eigentum.',
-	],
-	[
-		'n' => '02',
-		't' => 'Vorqualifizierung & Übergabe',
-		'd' => 'Smarte Formulare filtern unpassende Anfragen automatisch heraus. CRM-Anbindung folgt erst nach Contract, Consent und klarer Datenlogik.',
-	],
-	[
-		'n' => '03',
-		't' => 'Echtes Tracking',
-		'd' => 'Sie sehen, welche Kampagne welche Anfragen und Termine erzeugt. Volle Messbarkeit der Leadquellen — auf Ihrem Server, in Ihrem Account.',
-	],
-	[
-		'n' => '04',
-		't' => 'Grundlage für Skalierung',
-		'd' => 'Mit diesem Fundament skalieren Sie Google Ads, Meta Ads und SEO endlich wirtschaftlich. Mehr Reichweite zahlt jetzt aufs eigene System ein.',
-	],
-];
-
-$tracking_items = [
-	[
-		'k' => 'Frankfurt · DSGVO',
-		't' => 'First-Party-Kontext',
-		'd' => 'Der Tracking-Server läuft auf Ihrer Subdomain. Ad-Blocker und ITP erkennen keine blockierbaren Drittanbieter-Skripte — Ihre Conversion-Daten bleiben vollständig.',
-	],
-	[
-		'k' => 'S2S · CAPI',
-		't' => 'Algorithmisches Training',
-		'd' => 'Saubere, serverseitige Conversion-Signale fließen direkt per Server-to-Server-API an Meta und Google Ads. Die Algorithmen lernen präziser — und senken Ihren CPL.',
-	],
-	[
-		'k' => 'Privacy-First',
-		't' => 'DSGVO & Consent',
-		'd' => 'IP-Adressen werden auf Ihrem Server anonymisiert, bevor Daten externe Netzwerke erreichen. Conversion-Pfade bleiben auch bei Cookie-Ablehnung statistisch valide messbar.',
-	],
-];
-
-$proof_phases = [
-	[
-		'k' => 'Vorher',
-		'v' => 'Hohe Abhängigkeit von externen Leadquellen (~150 €/Lead). Leads schwer erreichbar, kaum qualifiziert. Kein Überblick, welche Kanäle Termine und Abschlüsse erzeugen.',
-	],
-	[
-		'k' => 'Umsetzung',
-		'v' => 'Tracking-Fundament aufgebaut, Anfragepfade optimiert, smarte Vorqualifizierung eingeführt. Saubere CRM-Übergabe vorbereitet.',
-	],
-	[
-		'k' => 'Ergebnis · 9 Monate',
-		'v' => '1.750+ qualifizierte Anfragen · 12 % Abschlussquote · über 85 % CPL-Reduktion (auf 22 € gesenkt).',
-	],
-];
-
-$risk_reversals = [
-	[
-		'n' => '01',
-		't' => 'Diagnose wird verrechnet',
-		'd' => 'Die System-Diagnose kostet [Preis wird ergänzt]. Bei einer anschließenden Umsetzung wird der volle Betrag 1:1 angerechnet. Sie zahlen die Diagnose also de facto nur dann, wenn Sie sich gegen die Umsetzung entscheiden.',
-	],
-	[
-		'n' => '02',
-		't' => 'Keine Mindestlaufzeit auf CRO oder Ads',
-		'd' => 'Wenn nach der Implementierung ein laufendes CRO- oder Ads-Mandat folgt, ist das monatlich kündbar. Keine 12-Monats-Verträge, keine Auflösungsgebühren.',
-	],
-	[
-		'n' => '03',
-		't' => 'Vollständige Asset-Übergabe',
-		'd' => 'Code, Tracking, Daten, Werbeaccounts — alles auf Ihren Konten, in Ihrer Domain, in Ihrem Eigentum. Bei Vertragsende übergebe ich dokumentiert. Sie können das System mit jedem anderen Dienstleister weiterführen.',
-	],
-	[
-		'n' => '04',
-		't' => 'Drei Hebel, auch bei Abrat',
-		'd' => 'Wenn die Diagnose zum Ergebnis kommt, dass Sie das volle System nicht brauchen, bekommen Sie trotzdem drei priorisierte Hebel mit konkretem nächstem Schritt — auch wenn das heißt, dass Sie nicht mit mir weitermachen.',
-	],
-];
-
-$diagnostic_modules = [
-	[
-		'n' => '01',
-		't' => 'Anfrage-Quellen',
-		'd' => 'Wo kommen Ihre Anfragen heute her, was kosten sie tatsächlich (inkl. nicht gemessener Folgekosten), welche Quellen tragen sich, welche nicht.',
-	],
-	[
-		'n' => '02',
-		't' => 'Tracking und Daten',
-		'd' => 'Was wird aktuell gemessen, was nicht. Server-Side-Status, Consent-Setup, Attribution-Kette. Kernfrage: Können Sie überhaupt belastbar entscheiden, oder raten Sie?',
-	],
-	[
-		'n' => '03',
-		't' => 'Funnel',
-		'd' => 'Weg vom Klick zur Anfrage. Wo bricht es ab — technisch (Speed, Mobile) und inhaltlich (Versprechen, Form-Reibung).',
-	],
-	[
-		'n' => '04',
-		't' => 'Vertriebsanschluss',
-		'd' => 'Speed-to-Lead, CRM-Anbindung, Qualifizierungs-Prozess, Conversion-Raten je Quelle.',
-	],
-];
-
-$diagnostic_results = [
-	'Schriftlicher Befund nach 7 Werktagen',
-	'Drei priorisierte Hebel mit konkretem nächsten Schritt',
-	'Wirtschaftlichkeits-Einordnung (Investition vs. erwarteter Effekt)',
-	'Übergabe-Call (30 Minuten, optional)',
-];
-
-$diagnostic_conditions = [
-	'[Preis wird ergänzt] einmalig',
-	'Wird auf eine spätere Umsetzung 1:1 verrechnet',
-	'Keine Mindestlaufzeit, kein Pflicht-Termin',
-	'Schriftlicher Befund als Deliverable, kein Folien-Pitch',
-];
-
-$about_metrics = [
-	[ 'v' => '9',   'l' => 'Jahre WordPress' ],
-	[ 'v' => 'B2B', 'l' => 'Ausschließlich' ],
-	[ 'v' => '1:1', 'l' => 'Einzelperson' ],
 ];
 
 $faq_items = [
@@ -300,6 +155,7 @@ $faq_items = [
 	],
 ];
 
+// ── Schema.org (Service + FAQPage) ─────────────────────────────
 $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
@@ -347,831 +203,385 @@ foreach ( $faq_items as $faq_item ) {
 	];
 }
 
-$arch_steps = [
-	[ 'n' => '01', 'lbl' => 'Landing',        'note' => 'Google → WordPress' ],
-	[ 'n' => '02', 'lbl' => 'Qualifizierung', 'note' => '60s-Funnel · React' ],
-	[ 'n' => '03', 'lbl' => 'Segmentierung',  'note' => 'n8n · Routing' ],
-	[ 'n' => '04', 'lbl' => 'Scoring',        'note' => 'Heiß / Warm / Kalt' ],
-	[ 'n' => '05', 'lbl' => 'Vertrieb',       'note' => 'Slack · CRM · 5 Min.' ],
-];
-
-$energy_intake_flow = function_exists( 'nexus_get_energy_intake_flow_definition' ) ? nexus_get_energy_intake_flow_definition() : [];
-$form_page_url      = $page_url;
+// ── inline SVG-Pfeil ───────────────────────────────────────────
+$arrow_svg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
 
 get_header();
 ?>
+
 <main id="main" class="site-main">
-	<div class="energy-page-wrapper solar-page" data-track-section="energy_service_landing">
+	<div class="solara-landing" data-track-section="energy_service_landing">
 
-		<section class="nx-section solar-hero" id="hero">
-			<div class="solar-hero__inner">
-				<div class="solar-hero__eyebrow-row">
-					<span class="solar-hero__eyebrow">Für Solar- und Wärmepumpen-Betriebe · 10–25 Mitarbeiter</span>
-					<span class="solar-hero__meta">Pattensen · Region Hannover · Q2 / 2026</span>
-				</div>
-
-				<h1 class="solar-hero__headline">
-					Hören Sie auf, <em>Anfragen zu mieten.</em><br />
-					Bauen Sie eine, <span class="solar-hero__nowrap">die <em>Ihnen gehört.</em></span>
-				</h1>
-
-				<div class="solar-hero__grid">
-					<div class="solar-hero__lede-col">
-						<p class="solar-hero__lede">
-							Portal-Leads kosten 80–150 €. Die Hälfte geht nicht ans Telefon.
-							Wir bauen Ihrem Betrieb stattdessen ein eigenes Anfrage-System &mdash;
-							mit WordPress-Infrastruktur, serverseitigem Tracking und Vorqualifizierung.
-							Das System gehört Ihnen. Die Anfragen sind exklusiv.
-						</p>
-
-						<div class="solar-hero__cta-row">
-							<a href="<?php echo esc_url( $diagnostic_anchor ); ?>" class="solar-hero__btn" data-track-action="cta_solar_to_diagnostic_request" data-track-category="lead_gen" data-track-funnel-stage="form_open">
-								<span>System-Diagnose anfragen</span>
-								<span class="solar-hero__btn-arrow" aria-hidden="true">
-									<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
-										<path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-									</svg>
-								</span>
-							</a>
-						</div>
-
-						<p class="solar-hero__micro">
-							<span class="solar-hero__dot" aria-hidden="true"></span>
-							4-Modul-Diagnose · schriftlicher Befund nach 7 Werktagen
-						</p>
-					</div>
-
-					<aside class="solar-arch" aria-label="System-Architektur — Vorschau">
-						<div class="solar-arch__head">
-							<span class="solar-arch__label">System · Live</span>
-							<span class="solar-arch__status">
-								<span class="solar-hero__dot solar-hero__dot--signal" aria-hidden="true"></span>
-								Routing OK
-							</span>
-						</div>
-
-						<div class="solar-arch__rows" data-solar-arch-rows>
-							<?php foreach ( $arch_steps as $i => $step ) : ?>
-								<div class="solar-arch__row<?php echo 0 === $i ? ' is-active' : ''; ?>">
-									<span class="solar-arch__num"><?php echo esc_html( $step['n'] ); ?></span>
-									<span class="solar-arch__name"><?php echo esc_html( $step['lbl'] ); ?></span>
-									<span class="solar-arch__note"><?php echo esc_html( $step['note'] ); ?></span>
-								</div>
-							<?php endforeach; ?>
-						</div>
-
-						<div class="solar-arch__foot">
-							<span class="solar-arch__label">Ø 4 Min · Anfrage → Anruf</span>
-							<span class="solar-arch__cpl"><?php echo esc_html( $e3_cpl_after ); ?><span>CPL</span></span>
-						</div>
-					</aside>
-				</div>
-
-				<div class="solar-hero__hairline" role="presentation"></div>
-
-				<div class="solar-proof">
-					<div class="solar-proof__cell">
-						<div class="solar-proof__num"><?php echo esc_html( $e3_lead_count ); ?></div>
-						<div class="solar-proof__lbl">qualifizierte Anfragen</div>
-						<div class="solar-proof__sub">in <?php echo esc_html( $e3_timeframe_dative ); ?></div>
-					</div>
-					<div class="solar-proof__cell">
-						<div class="solar-proof__num"><?php echo esc_html( $e3_sales_conversion ); ?></div>
-						<div class="solar-proof__lbl">Abschlussquote</div>
-						<div class="solar-proof__sub">von Anfrage zu Vertrag</div>
-					</div>
-					<div class="solar-proof__cell">
-						<div class="solar-proof__num"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
-						<div class="solar-proof__lbl">Kosten pro Anfrage</div>
-						<div class="solar-proof__sub"><?php echo esc_html( $e3_cpl_before ); ?> &rarr; <?php echo esc_html( $e3_cpl_after ); ?></div>
-					</div>
-					<div class="solar-proof__cell">
-						<div class="solar-proof__num">100&nbsp;%</div>
-						<div class="solar-proof__lbl">Eigentum am System</div>
-						<div class="solar-proof__sub">Code · Tracking · Daten</div>
-					</div>
-				</div>
-				<p class="solar-hero__proof-note">
-					Mandat E3 New Energy · 9 Monate · Implementierung 3 Monate, Optimierung 6 Monate.
-					<a href="<?php echo esc_url( $e3_url ); ?>" data-track-action="cta_solar_hero_e3_methodology" data-track-category="trust">Vollständige Methodik im E3-Case</a> &rarr;
-				</p>
+		<!-- ════════════════════════════════════════════════════════════
+		     HERO
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-hero" id="hero" data-track-section="hero">
+			<div class="sol-hero-sky" aria-hidden="true"></div>
+			<div class="sol-hero-sun" aria-hidden="true">
+				<div class="sol-hero-sun-disc"></div>
+				<div class="sol-hero-sun-halo"></div>
+				<div class="sol-hero-sun-rays" data-sol-rays></div>
 			</div>
-		</section>
+			<div class="sol-hero-horizon" aria-hidden="true"></div>
 
-		<!-- 02 · Negativ-Filter (paper-2) ─────────────────────────── -->
-		<section class="solar-section solar-section--paper-2" id="negativ-filter" data-screen-label="02 Negativ-Filter" data-track-section="negative_filter" data-track-funnel-stage="qualification" aria-labelledby="negative-filter-title">
-			<div class="solar-section__inner">
-				<div class="solar-secthead">
-					<div class="solar-secthead__row">
-						<span class="solar-secnum">02 / Ehrlichkeit zuerst</span>
-						<span class="solar-secthead__rule" aria-hidden="true"></span>
-					</div>
-					<h2 id="negative-filter-title" class="solar-h2">Für wen das System nicht geeignet ist.</h2>
-					<p class="solar-lede">
-						Bevor wir über Investition und Aufbau reden — vier Situationen, in denen
-						Sie hier falsch sind. Das spart uns beiden Zeit.
+			<div class="sol-wrap sol-hero-inner">
+				<div class="sol-hero-left">
+					<div class="sol-eyebrow">Für Solar- &amp; Wärmepumpen-Anbieter · 10–25 MA · DACH</div>
+					<h1 class="sol-display sol-hero-h1">
+						Hören Sie auf,<br /><em>Anfragen zu mieten.</em><br />Bauen Sie eine,<br />die <em>Ihnen gehört.</em>
+					</h1>
+					<p class="sol-hero-sub">
+						Portal-Leads kosten 80–150 €. Die Hälfte geht nicht ans Telefon. Wir bauen Ihrem Betrieb ein eigenes Anfrage-System — WordPress hardcoded, Tracking auf eigenem Server, Vorqualifizierung mit Lead-Score. Das System gehört Ihnen. Die Anfragen sind exklusiv.
 					</p>
-				</div>
 
-				<div class="solar-owned solar-owned--filter">
-					<?php foreach ( $negative_filters as $item ) : ?>
-						<article class="solar-owned__cell" data-reveal>
-							<div class="solar-owned__head">
-								<span class="solar-owned__num"><?php echo esc_html( $item['n'] ); ?> / 04</span>
-								<span class="solar-dot solar-dot--warn" aria-hidden="true"></span>
+					<div class="sol-hero-metrics">
+						<?php foreach ( $hero_metrics as $m ) : ?>
+							<div class="sol-metric">
+								<div class="sol-metric-n sol-display"><?php echo esc_html( $m['n'] ); ?></div>
+								<div class="sol-metric-l sol-mono"><?php echo esc_html( $m['l'] ); ?></div>
 							</div>
-							<h3 class="solar-owned__t"><?php echo esc_html( $item['t'] ); ?></h3>
-							<p class="solar-owned__d"><?php echo esc_html( $item['d'] ); ?></p>
-						</article>
-					<?php endforeach; ?>
-				</div>
-
-				<p class="solar-grid-coda" data-reveal>
-					Trifft eines davon zu, sparen wir uns das Erstgespräch. Trifft keines davon zu,
-					weiter zum nächsten Punkt.
-				</p>
-			</div>
-		</section>
-
-		<!-- 03 · Pain (dark) ──────────────────────────────────────── -->
-		<section class="solar-section solar-section--dark" id="pain" data-screen-label="03 Pain" aria-labelledby="pain-title">
-			<div class="solar-section__inner">
-				<div class="solar-secthead">
-					<div class="solar-secthead__row">
-						<span class="solar-secnum">03 / Alltag im Vertrieb</span>
-						<span class="solar-secthead__rule" aria-hidden="true"></span>
-					</div>
-					<h2 id="pain-title" class="solar-h2">Kommt Ihnen das <em>bekannt vor?</em></h2>
-				</div>
-
-				<div class="solar-pain-grid">
-					<?php foreach ( $pain_items as $item ) : ?>
-						<article class="solar-pain-card" data-reveal>
-							<div class="solar-pain-card__num"><?php echo esc_html( $item['n'] ); ?></div>
-							<h3 class="solar-pain-card__q"><?php echo esc_html( $item['q'] ); ?></h3>
-							<p class="solar-pain-card__d"><?php echo esc_html( $item['d'] ); ?></p>
-						</article>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
-
-		<!-- 04 · Architektur (paper) ─────────────────────────────── -->
-		<section class="solar-section solar-section--paper" id="system" data-screen-label="04 System" aria-labelledby="system-title">
-			<div class="solar-section__inner">
-				<div class="solar-secthead">
-					<div class="solar-secthead__row">
-						<span class="solar-secnum">04 / System-Architektur</span>
-						<span class="solar-secthead__rule" aria-hidden="true"></span>
-					</div>
-					<h2 id="system-title" class="solar-h2">Das ist keine Website. <em>Das ist eine Lead-Verarbeitungsmaschine.</em></h2>
-					<p class="solar-lede">Sehen Sie den kompletten Weg einer Anfrage — von der Landung bis zur priorisierten Vertriebsübergabe. Jede Stufe automatisiert. Jede Stufe in Ihrem Eigentum.</p>
-				</div>
-
-				<div class="solar-arch-list" role="list">
-					<?php foreach ( $arch_full as $step ) : ?>
-						<div class="solar-arch-list__row" role="listitem" data-reveal>
-							<div class="solar-arch-list__num"><?php echo esc_html( $step['n'] ); ?></div>
-							<div class="solar-arch-list__body">
-								<h3 class="solar-arch-list__t"><?php echo esc_html( $step['t'] ); ?></h3>
-								<p class="solar-arch-list__d"><?php echo esc_html( $step['d'] ); ?></p>
-							</div>
-							<div class="solar-arch-list__tag">
-								<span class="solar-tag"><?php echo esc_html( $step['tag'] ); ?></span>
-							</div>
-						</div>
-					<?php endforeach; ?>
-				</div>
-
-				<div class="solar-aha" data-reveal>
-					<div class="solar-aha__icon" aria-hidden="true">↺</div>
-					<div class="solar-aha__body">
-						<div class="solar-aha__kicker">Der Aha-Moment</div>
-						<p class="solar-aha__text">
-							Wettbewerber telefonieren jeden Lead einzeln ab und hoffen, dass er passt.
-							Ihr System sortiert vor. Sie rufen <em>nur noch die an, die wirklich kaufen wollen</em> &mdash;
-							und zwar in der richtigen Reihenfolge.
-						</p>
+						<?php endforeach; ?>
 					</div>
 				</div>
-			</div>
-		</section>
 
-		<!-- 05 · Zwei Wege (paper, main comparison) ───────────────── -->
-		<section class="solar-section solar-section--paper-2" id="modelle" data-screen-label="05 Zwei Wege" aria-labelledby="modelle-title">
-			<div class="solar-section__inner">
-				<div class="solar-secthead">
-					<div class="solar-secthead__row">
-						<span class="solar-secnum">05 / Zwei Wege</span>
-						<span class="solar-secthead__rule" aria-hidden="true"></span>
-					</div>
-					<h2 id="modelle-title" class="solar-h2">Nachfrage <em>mieten</em> &mdash; oder <em>eigene Anfrage-Infrastruktur</em> aufbauen.</h2>
-					<p class="solar-lede">Zwei Modelle, zwei Wirtschaftlichkeiten. Das eine zahlt jeden Monat neu auf Portal-Konten ein. Das andere baut ein Anfrage-System, das in 9 Monaten über 85&nbsp;% günstiger arbeitet.</p>
-				</div>
-
-				<div class="solar-ways">
-					<!-- Modell A -->
-					<div class="solar-way solar-way--a" data-reveal>
-						<div class="solar-way__head">
-							<span class="solar-way__label">Modell A</span>
-							<span class="solar-way__status solar-way__status--warn">
-								<span class="solar-dot solar-dot--warn" aria-hidden="true"></span>
-								Status Quo
+				<aside class="sol-hero-right" aria-labelledby="sol-cta-title">
+					<div class="sol-cta-card">
+						<div class="sol-cta-head">
+							<span class="sol-cta-tag sol-mono">
+								<span class="sol-cta-tag-dot" aria-hidden="true"></span>
+								System-Diagnose · 4 Module
 							</span>
-						</div>
-						<h3 class="solar-way__title">Nachfrage mieten</h3>
-						<div class="solar-way__sub">Aroundhome · Check24 · DAA</div>
-
-						<div class="solar-way__items">
-							<?php foreach ( $twoways_a as $idx => $row ) : ?>
-								<div class="solar-way__item solar-way__item--a<?php echo 0 === $idx ? ' is-first' : ''; ?>">
-									<div class="solar-way__k"><?php echo esc_html( $row['k'] ); ?></div>
-									<div class="solar-way__v"><?php echo esc_html( $row['v'] ); ?></div>
-								</div>
-							<?php endforeach; ?>
+							<span class="sol-cta-head-right sol-mono">Verrechenbar</span>
 						</div>
 
-						<div class="solar-pill solar-pill--warn">
-							<span class="solar-dot solar-dot--warn" aria-hidden="true"></span>
-							<span>Teuer · Kurzlebig</span>
-						</div>
-					</div>
-
-					<!-- Modell B -->
-					<div class="solar-way solar-way--b" data-reveal>
-						<div class="solar-way__glow" aria-hidden="true"></div>
-						<div class="solar-way__head">
-							<span class="solar-way__label">Modell B</span>
-							<span class="solar-way__status solar-way__status--signal">
-								<span class="solar-dot solar-dot--signal" aria-hidden="true"></span>
-								Empfohlen
-							</span>
-						</div>
-						<h3 class="solar-way__title solar-way__title--bone">Eigenes Anfrage-System</h3>
-						<div class="solar-way__sub solar-way__sub--bone">Fundament · Conversion · Skalierung</div>
-
-						<div class="solar-way__items">
-							<?php foreach ( $twoways_b as $idx => $row ) : ?>
-								<div class="solar-way__item solar-way__item--b<?php echo 0 === $idx ? ' is-first' : ''; ?>">
-									<span class="solar-way__num"><?php echo esc_html( $row['n'] ); ?></span>
-									<div>
-										<div class="solar-way__k solar-way__k--bone"><?php echo esc_html( $row['k'] ); ?></div>
-										<div class="solar-way__v solar-way__v--bone"><?php echo esc_html( $row['v'] ); ?></div>
-									</div>
-								</div>
-							<?php endforeach; ?>
-						</div>
-
-						<div class="solar-pill solar-pill--solar">
-							<span class="solar-dot solar-dot--signal" aria-hidden="true"></span>
-							<span>Bleibendes Anfrage-Asset</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="solar-ref" data-reveal>
-					<div class="solar-ref__label">Referenz <?php echo esc_html( $e3_case_label ); ?> · <?php echo esc_html( $e3_timeframe ); ?></div>
-					<div class="solar-ref__stats">
-						<div class="solar-ref__stat">
-							<span class="solar-ref__num"><?php echo esc_html( $e3_cpl_reduction ); ?></span>
-							<span class="solar-ref__lbl">CPL</span>
-						</div>
-						<div class="solar-ref__stat">
-							<span class="solar-ref__num"><?php echo esc_html( $e3_lead_count ); ?></span>
-							<span class="solar-ref__lbl">Anfragen</span>
-						</div>
-						<div class="solar-ref__stat">
-							<span class="solar-ref__num"><?php echo esc_html( $e3_sales_conversion ); ?></span>
-							<span class="solar-ref__lbl">Abschluss</span>
-						</div>
-					</div>
-					<a href="<?php echo esc_url( $diagnostic_anchor ); ?>" class="solar-hero__btn" data-track-action="cta_solar_to_diagnostic_request" data-track-category="lead_gen" data-track-funnel-stage="form_open">
-						<span>System-Diagnose anfragen</span>
-						<span class="solar-hero__btn-arrow" aria-hidden="true">
-							<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-						</span>
-					</a>
-				</div>
-			</div>
-		</section>
-
-		<!-- 06 · TCO (dark, CAPEX vs OPEX) ───────────────────────── -->
-		<section class="solar-section solar-section--dark" id="tco" data-screen-label="06 TCO" aria-labelledby="tco-title">
-			<div class="solar-section__inner">
-				<div class="solar-secthead">
-					<div class="solar-secthead__row">
-						<span class="solar-secnum">06 / CAPEX statt OPEX</span>
-						<span class="solar-secthead__rule" aria-hidden="true"></span>
-					</div>
-					<h2 id="tco-title" class="solar-h2">Der gleiche Hebel &mdash; <em>zwei Bilanzwirkungen.</em></h2>
-					<p class="solar-lede">Performance-Agenturen verkaufen Ihnen Reichweite zur Miete: Funnel auf deren Server, CRM unter deren Lizenz, Tracking unter deren Account. Vertrag endet &mdash; Hebel weg. Der gleiche monatliche Betrag fließt 24 Monate in ein System, das Ihnen nicht gehört.</p>
-				</div>
-
-				<div class="solar-tco-wrap" data-reveal>
-					<table class="solar-tco">
-						<caption class="screen-reader-text">Kostenvergleich Mietsystem vs. Infrastruktur-Aufbau über 24 Monate.</caption>
-						<thead>
-							<tr>
-								<th scope="col" class="solar-tco__col-lbl">Kostenpunkt</th>
-								<th scope="col">
-									<span class="solar-tco__col-h">Mietsystem</span>
-									<span class="solar-tco__col-s">Performance-Agentur · Paket „Regio+"</span>
-								</th>
-								<th scope="col" class="solar-tco__col-own">
-									<span class="solar-tco__col-h">Infrastruktur-Aufbau</span>
-									<span class="solar-tco__col-s solar-tco__col-s--solar">WGOS · Code im Eigentum</span>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ( $tco_rows as $row ) : ?>
-								<tr>
-									<th scope="row" class="solar-tco__lbl"><?php echo esc_html( $row['lbl'] ); ?></th>
-									<td class="solar-tco__rent">
-										<span class="solar-tco__b"><?php echo esc_html( $row['a'][0] ); ?></span>
-										<span class="solar-tco__s"><?php echo esc_html( $row['a'][1] ); ?></span>
-									</td>
-									<td class="solar-tco__own">
-										<span class="solar-tco__b solar-tco__b--solar"><?php echo esc_html( $row['b'][0] ); ?></span>
-										<span class="solar-tco__s"><?php echo esc_html( $row['b'][1] ); ?></span>
-									</td>
-								</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				</div>
-
-				<p class="solar-tco-coda" data-reveal>
-					Nach 24 Monaten haben Sie im Mietmodell rund <span class="solar-tco-coda__warn">26.000&nbsp;€</span> ausgegeben und besitzen <em>nichts</em>.
-					Im Infrastruktur-Modell haben Sie <span class="solar-tco-coda__solar">weniger</span> ausgegeben und ein <em>laufendes System</em> in Ihrer Bilanz.
-				</p>
-			</div>
-		</section>
-
-		<!-- 07 · Owned Assets (paper-2) ──────────────────────────── -->
-		<section class="solar-section solar-section--paper-2" id="owned" data-screen-label="07 Owned" aria-labelledby="owned-title">
-			<div class="solar-section__inner">
-				<div class="solar-secthead">
-					<div class="solar-secthead__row">
-						<span class="solar-secnum">07 / Keine Miet-Leads</span>
-						<span class="solar-secthead__rule" aria-hidden="true"></span>
-					</div>
-					<h2 id="owned-title" class="solar-h2">Was Ihr Betrieb <em>danach besitzt.</em></h2>
-					<p class="solar-lede">Kein Lead-Paket. Keine gemietete Landingpage. Kein Agentur-Blindflug. Ein eigenes Anfrage-System &mdash; vier Bestandteile, alle in Ihrem Eigentum.</p>
-				</div>
-
-				<div class="solar-owned">
-					<?php foreach ( $owned_items as $item ) : ?>
-						<article class="solar-owned__cell" data-reveal>
-							<div class="solar-owned__head">
-								<span class="solar-owned__num"><?php echo esc_html( $item['n'] ); ?> / 04</span>
-								<span class="solar-dot solar-dot--signal" aria-hidden="true"></span>
-							</div>
-							<h3 class="solar-owned__t"><?php echo esc_html( $item['t'] ); ?></h3>
-							<p class="solar-owned__d"><?php echo esc_html( $item['d'] ); ?></p>
-						</article>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
-
-		<!-- 08 · Server-Side Tracking (dark) ─────────────────────── -->
-		<section class="solar-section solar-section--dark" id="tracking" data-screen-label="08 Tracking" aria-labelledby="tracking-title">
-			<div class="solar-section__inner">
-				<div class="solar-secthead">
-					<div class="solar-secthead__row">
-						<span class="solar-secnum">08 / Unfairer Vorteil</span>
-						<span class="solar-secthead__rule" aria-hidden="true"></span>
-					</div>
-					<h2 id="tracking-title" class="solar-h2">
-						Server-Side Tracking:<br>
-						Der Unterschied zwischen <em>Blindflug</em> und <em>messbarem Wachstum.</em>
-					</h2>
-					<p class="solar-lede">Die meisten Agenturen tracken clientseitig &mdash; und verlieren bis zu 40&nbsp;% der Conversion-Daten an Ad-Blocker, ITP und Firmen-Firewalls. Ihr System bekommt eine eigene Tracking-Infrastruktur auf einem Server in Frankfurt. Die Daten gehören Ihnen.</p>
-				</div>
-
-				<div class="solar-track-grid">
-					<?php foreach ( $tracking_items as $item ) : ?>
-						<article class="solar-track-card" data-reveal>
-							<div class="solar-track-card__k"><?php echo esc_html( $item['k'] ); ?></div>
-							<h3 class="solar-track-card__t"><?php echo esc_html( $item['t'] ); ?></h3>
-							<p class="solar-track-card__d"><?php echo esc_html( $item['d'] ); ?></p>
-						</article>
-					<?php endforeach; ?>
-				</div>
-
-				<p class="solar-track-coda" data-reveal>
-					Wer im Jahr 2026 den Algorithmen von Meta und Google die <em>saubersten</em> Conversion-Signale liefert,
-					gewinnt die automatisierten Auktionen um die <em>günstigsten CPLs</em>.
-					Das ist kein technisches Detail &mdash; das ist Ihr geldwerter Vorteil gegenüber lokalen Mitbewerbern, die weiter blind kaufen.
-				</p>
-			</div>
-		</section>
-
-		<!-- 09 · Proof / E3 Case (paper) ─────────────────────────── -->
-		<section class="solar-section solar-section--paper" id="proof" data-screen-label="09 Proof" aria-labelledby="proof-title">
-			<div class="solar-section__inner">
-				<div class="solar-secthead">
-					<div class="solar-secthead__row">
-						<span class="solar-secnum">09 / Proof · Case Study</span>
-						<span class="solar-secthead__rule" aria-hidden="true"></span>
-					</div>
-					<h2 id="proof-title" class="solar-h2"><?php echo esc_html( $e3_case_label ); ?>. <em>Vorher → Nachher.</em></h2>
-				</div>
-
-				<div class="solar-proof-grid">
-					<div class="solar-proof-grid__col" data-reveal>
-						<div class="solar-proof-phases">
-							<?php foreach ( $proof_phases as $phase ) : ?>
-								<div class="solar-proof-phase">
-									<div class="solar-proof-phase__k"><?php echo esc_html( $phase['k'] ); ?></div>
-									<p class="solar-proof-phase__v"><?php echo esc_html( $phase['v'] ); ?></p>
-								</div>
-							<?php endforeach; ?>
-						</div>
-
-						<blockquote class="solar-quote">
-							<p>„Seit dem System sehen wir endlich, welche Kanäle wirklich Anfragen und Abschlüsse bringen. Wir konnten den teuren Lead-Einkauf massiv reduzieren &mdash; und haben jetzt eine eigene Pipeline."</p>
-							<footer class="solar-quote__cite">Geschäftsführung · <?php echo esc_html( $e3_case_label ); ?></footer>
-						</blockquote>
-
-						<a href="<?php echo esc_url( $e3_url ); ?>" class="solar-hero__btn solar-hero__btn--ghost" data-track-action="cta_solar_proof_e3_methodology" data-track-category="trust">
-							<span>Methodik im Detail lesen</span>
-							<span class="solar-hero__btn-arrow" aria-hidden="true">
-								<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-							</span>
-						</a>
-					</div>
-
-					<div class="solar-proof-grid__col" data-reveal>
-						<div class="solar-proof-cells">
-							<div class="solar-proof-cells__cell">
-								<div class="solar-proof-cells__num"><?php echo esc_html( $e3_lead_count ); ?></div>
-								<div class="solar-proof-cells__lbl">Qualifizierte Anfragen</div>
-							</div>
-							<div class="solar-proof-cells__cell">
-								<div class="solar-proof-cells__num"><?php echo esc_html( $e3_sales_conversion ); ?></div>
-								<div class="solar-proof-cells__lbl">Abschlussquote</div>
-							</div>
-							<div class="solar-proof-cells__cell solar-proof-cells__cell--hl">
-								<div class="solar-proof-cells__num solar-proof-cells__num--solar"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
-								<div class="solar-proof-cells__lbl">CPL</div>
-							</div>
-							<div class="solar-proof-cells__cell">
-								<div class="solar-proof-cells__num"><?php echo esc_html( $e3_cpl_after ); ?></div>
-								<div class="solar-proof-cells__lbl">Ziel-CPL erreicht</div>
-							</div>
-						</div>
-
-						<div class="solar-cpl-curve">
-							<div class="solar-cpl-curve__lbl">CPL-Verlauf · <?php echo esc_html( $e3_timeframe ); ?></div>
-							<svg viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">
-								<line x1="20" y1="100" x2="380" y2="100" stroke="rgba(12,13,14,0.14)"/>
-								<path d="M 20 20 Q 120 25, 200 60 T 380 95" fill="none" stroke="#c97a1a" stroke-width="2.5"/>
-								<circle cx="20" cy="20" r="5" fill="#0c0d0e"/>
-								<circle cx="380" cy="95" r="5" fill="#f0b540" stroke="#0c0d0e" stroke-width="1"/>
-							</svg>
-							<div class="solar-cpl-curve__ends">
-								<span><?php echo esc_html( $e3_cpl_before ); ?></span>
-								<span><?php echo esc_html( $e3_cpl_after ); ?></span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- 10 · Risikoumkehr (paper-2) ──────────────────────────── -->
-		<section class="solar-section solar-section--paper-2" id="risikoumkehr" data-screen-label="10 Risikoumkehr" data-track-section="risk_reversal" data-track-funnel-stage="conversion" aria-labelledby="risk-title">
-			<div class="solar-section__inner">
-				<div class="solar-secthead">
-					<div class="solar-secthead__row">
-						<span class="solar-secnum">10 / Risikoverteilung</span>
-						<span class="solar-secthead__rule" aria-hidden="true"></span>
-					</div>
-					<h2 id="risk-title" class="solar-h2">Was passiert, wenn es nicht funktioniert.</h2>
-					<p class="solar-lede">Vier Bedingungen, unter denen Sie das Risiko an mich zurückgeben können:</p>
-				</div>
-
-				<!-- TODO: Preis für System-Diagnose finalisieren, dann hier und in CTA-Sektion ersetzen -->
-				<div class="solar-owned solar-owned--risk">
-					<?php foreach ( $risk_reversals as $item ) : ?>
-						<article class="solar-owned__cell" data-reveal>
-							<div class="solar-owned__head">
-								<span class="solar-owned__num"><?php echo esc_html( $item['n'] ); ?> / 04</span>
-								<span class="solar-dot solar-dot--signal" aria-hidden="true"></span>
-							</div>
-							<h3 class="solar-owned__t"><?php echo esc_html( $item['t'] ); ?></h3>
-							<p class="solar-owned__d"><?php echo esc_html( $item['d'] ); ?></p>
-						</article>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
-
-		<!-- 11 · FAQ (paper-2, objection handler before CTA) ────── -->
-		<section class="solar-section solar-section--paper-2" id="faq" data-screen-label="11 FAQ" aria-labelledby="faq-title">
-			<div class="solar-section__inner">
-				<div class="solar-secthead">
-					<div class="solar-secthead__row">
-						<span class="solar-secnum">11 / Häufige Fragen</span>
-						<span class="solar-secthead__rule" aria-hidden="true"></span>
-					</div>
-					<h2 id="faq-title" class="solar-h2">Was Solar- und Wärmepumpen-Betriebe <em>vor dem Erstgespräch wissen wollen.</em></h2>
-				</div>
-
-				<div class="solar-faq" data-solar-faq>
-					<?php foreach ( $faq_items as $idx => $faq_item ) : ?>
-						<details class="solar-faq__item"<?php echo 0 === $idx ? ' open' : ''; ?>>
-							<summary class="solar-faq__sum">
-								<span class="solar-faq__n"><?php echo esc_html( str_pad( (string) ( $idx + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-								<span class="solar-faq__q"><?php echo esc_html( $faq_item['question'] ); ?></span>
-								<span class="solar-faq__plus" aria-hidden="true">
-									<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
-								</span>
-							</summary>
-							<div class="solar-faq__a"><p><?php echo esc_html( $faq_item['answer'] ); ?></p></div>
-						</details>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
-
-		<!-- 12 · About Hasim (dark) ──────────────────────────────── -->
-		<section class="solar-section solar-section--dark" id="ueber" data-screen-label="12 About" aria-labelledby="about-title">
-			<div class="solar-section__inner">
-				<div class="solar-about">
-					<div class="solar-about__media" data-reveal>
-						<div class="solar-about__portrait">
-							<img class="solar-about__portrait-img" src="https://hasimuener.de/wp-content/uploads/2026/04/Hasim_Uener_Portrait.png" alt="Haşim Üner — Umsetzer für Anfrage-Systeme" loading="lazy" decoding="async" />
-							<div class="solar-about__portrait-inner" aria-hidden="true"></div>
-							<div class="solar-about__portrait-stamp">
-								<span>Profil · 2026</span>
-							</div>
-							<div class="solar-about__portrait-foot">
-								<div>
-									<div class="solar-about__portrait-kicker">Umsetzer</div>
-									<div class="solar-about__portrait-name">Haşim Üner</div>
-								</div>
-								<div class="solar-about__portrait-loc">Pattensen · Region Hannover</div>
-							</div>
-						</div>
-						<div class="solar-about__slot">
-							<div class="solar-about__slot-lbl">Verfügbare Slots</div>
-							<div class="solar-about__slot-num">3 / Q2</div>
-						</div>
-					</div>
-
-					<div class="solar-about__body" data-reveal>
-						<div class="solar-secnum solar-secnum--bone">12 / Über den Umsetzer</div>
-						<h2 id="about-title" class="solar-h2 solar-h2--bone">
-							Messbare Infrastruktur statt <em>digitaler Broschüren.</em>
+						<h2 id="sol-cta-title" class="sol-cta-title">
+							Wo verlieren Sie heute Anfragen — und wie viel kostet Sie das?
 						</h2>
-						<p class="solar-about__p">
-							Ich bin Haşim Üner und baue WordPress-basierte Anfrage-Systeme für Betriebe in der Erneuerbaren-Energien-Branche.
-							Mein Fokus liegt nicht auf „schönem Webdesign", sondern auf echter Nachfrage-Architektur:
-							Tracking, Vorqualifizierung, saubere Übergabe und Conversion-Optimierung.
+						<p class="sol-cta-hint">
+							Schriftlicher Befund nach 7 Werktagen. Drei priorisierte Hebel mit konkretem nächstem Schritt — auch wenn wir nicht zusammenarbeiten.
 						</p>
-						<p class="solar-about__p solar-about__p--strong">
-							Mit Sitz in Pattensen, Region Hannover. Spezialisiert auf <em>Lead-Autonomie</em> im B2B-Handwerk.
-						</p>
-						<div class="solar-about__metrics">
-							<?php foreach ( $about_metrics as $m ) : ?>
-								<div class="solar-about__metric">
-									<div class="solar-about__metric-v"><?php echo esc_html( $m['v'] ); ?></div>
-									<div class="solar-about__metric-l"><?php echo esc_html( $m['l'] ); ?></div>
-								</div>
+
+						<ul class="sol-cta-list">
+							<?php foreach ( $cta_card_items as $item ) : ?>
+								<li>
+									<span class="sol-cta-list-num"><?php echo esc_html( $item['n'] ); ?></span>
+									<span class="sol-cta-list-body">
+										<span class="sol-cta-list-t"><?php echo esc_html( $item['t'] ); ?></span>
+										<span class="sol-cta-list-s"><?php echo esc_html( $item['s'] ); ?></span>
+									</span>
+								</li>
 							<?php endforeach; ?>
-						</div>
+						</ul>
+
+						<a
+							class="sol-cta-submit"
+							href="<?php echo esc_url( $diagnose_url ); ?>"
+							data-track-action="cta_solar_to_diagnostic_request"
+							data-track-category="lead_funnel"
+							data-track-section="hero"
+							data-track-funnel-stage="diagnose_open"
+						>
+							<span>System-Diagnose starten</span>
+							<span class="sol-cta-submit-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						</a>
+
+						<p class="sol-cta-fineprint">Schriftlicher Befund · 7 Werktage · Verrechenbar auf Umsetzung</p>
 					</div>
+				</aside>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
+		     TRUST STRIP
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-trust" aria-label="Vertrauenssignale" data-track-section="trust_strip">
+			<div class="sol-wrap">
+				<div class="sol-trust-row">
+					<?php foreach ( $trust_items as $t ) : ?>
+						<span class="sol-trust-item sol-mono">
+							<span class="sol-trust-dot" aria-hidden="true"></span>
+							<?php echo esc_html( $t ); ?>
+						</span>
+					<?php endforeach; ?>
 				</div>
 			</div>
 		</section>
 
-		<!-- 13 · System-Diagnose im Detail (paper-2) ─────────────── -->
-		<section class="solar-section solar-section--paper-2" id="abschluss" data-screen-label="13 Diagnose-Angebot" data-track-section="diagnostic_offer" data-track-funnel-stage="form_open" aria-labelledby="diagnostic-offer-title">
-			<div class="solar-section__inner">
-				<div class="solar-secthead">
-					<div class="solar-secthead__row">
-						<span class="solar-secnum">13 / Einstieg</span>
-						<span class="solar-secthead__rule" aria-hidden="true"></span>
-					</div>
-					<h2 id="diagnostic-offer-title" class="solar-h2">System-Diagnose — schriftlicher Befund in sieben Werktagen.</h2>
-					<p class="solar-lede">
-						Bevor wir Code schreiben, schauen wir auf das System, das Sie schon haben.
-						In sieben Werktagen erhalten Sie einen schriftlichen Befund zu vier Modulen:
-					</p>
-				</div>
-
-				<div class="solar-owned solar-owned--diagnostic">
-					<?php foreach ( $diagnostic_modules as $item ) : ?>
-						<article class="solar-owned__cell" data-reveal>
-							<div class="solar-owned__head">
-								<span class="solar-owned__num"><?php echo esc_html( $item['n'] ); ?> / 04</span>
-								<span class="solar-dot solar-dot--signal" aria-hidden="true"></span>
-							</div>
-							<h3 class="solar-owned__t"><?php echo esc_html( $item['t'] ); ?></h3>
-							<p class="solar-owned__d"><?php echo esc_html( $item['d'] ); ?></p>
+		<!-- ════════════════════════════════════════════════════════════
+		     PROBLEM
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-section" id="problem" data-track-section="problem">
+			<div class="sol-wrap">
+				<div class="sol-eyebrow">Der Status Quo</div>
+				<h2 class="sol-display sol-problem-h">
+					Sie zahlen für <em>Anfragen, die nicht Ihnen gehören</em> — und Vertriebsstunden, die niemand kauft.
+				</h2>
+				<div class="sol-problem-grid">
+					<?php foreach ( $problem_cards as $c ) : ?>
+						<article class="sol-problem-card">
+							<div class="sol-problem-card-n"><?php echo esc_html( $c['n'] ); ?> · <?php echo esc_html( $c['l'] ); ?></div>
+							<div class="sol-problem-card-t"><?php echo esc_html( $c['t'] ); ?></div>
+							<p class="sol-problem-card-s"><?php echo esc_html( $c['s'] ); ?></p>
 						</article>
 					<?php endforeach; ?>
 				</div>
+			</div>
+		</section>
 
-				<div class="solar-diagnostic-blocks" data-reveal>
-					<div class="solar-diagnostic-box solar-diagnostic-box--highlight">
-						<h3>Sie erhalten:</h3>
-						<ul>
-							<?php foreach ( $diagnostic_results as $item ) : ?>
-								<li><?php echo esc_html( $item ); ?></li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-					<div class="solar-diagnostic-box">
-						<!-- TODO: Preis für System-Diagnose finalisieren, dann hier und in CTA-Sektion ersetzen -->
-						<ul>
-							<?php foreach ( $diagnostic_conditions as $item ) : ?>
-								<li><?php echo esc_html( $item ); ?></li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
+		<!-- ════════════════════════════════════════════════════════════
+		     METHOD / SYSTEM
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-section sol-method" id="system" data-track-section="method">
+			<div class="sol-wrap">
+				<div class="sol-method-head">
+					<div class="sol-eyebrow">Das System</div>
+					<h2 class="sol-display sol-method-h">
+						Diagnose. Aufbau. Eigentum.<br />Drei Phasen — <em>ein Ergebnis</em>: exklusive Anfragen.
+					</h2>
 				</div>
+				<div class="sol-method-grid">
+					<?php foreach ( $method_cards as $card ) : ?>
+						<article class="sol-method-card">
+							<div class="sol-method-card-top">
+								<div class="sol-method-card-n sol-display"><?php echo esc_html( $card['n'] ); ?></div>
+								<div class="sol-method-card-pill"><?php echo esc_html( $card['p'] ); ?></div>
+							</div>
+							<h3 class="sol-method-card-t"><?php echo esc_html( $card['t'] ); ?></h3>
+							<p class="sol-method-card-s"><?php echo esc_html( $card['s'] ); ?></p>
+							<ul class="sol-method-card-list">
+								<?php foreach ( $card['b'] as $b ) : ?>
+									<li><span class="sol-method-tick">+</span><?php echo esc_html( $b ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+						</article>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
 
-				<div class="solar-cta__actions solar-diagnostic-actions" data-reveal>
-					<a href="<?php echo esc_url( $diagnostic_anchor ); ?>" class="solar-hero__btn solar-cta__btn" data-track-action="cta_diagnostic_offer_to_form" data-track-category="lead_gen" data-track-funnel-stage="form_open">
-						<span>System-Diagnose anfragen</span>
-						<span class="solar-hero__btn-arrow" aria-hidden="true">
-							<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-						</span>
+		<!-- ════════════════════════════════════════════════════════════
+		     RESULTS — E3-Proof + Dashboard-Mock
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-section" id="ergebnisse" data-track-section="results">
+			<div class="sol-wrap sol-results-inner">
+				<div class="sol-results-text">
+					<div class="sol-eyebrow">Was Sie nach der Diagnose haben</div>
+					<h2 class="sol-display sol-results-h">
+						Klarheit, keine <em>Folien</em>.
+					</h2>
+					<p class="sol-results-sub">
+						Schriftlicher Befund nach 7 Werktagen. Vier Module, drei priorisierte Hebel, eine Wirtschaftlichkeits-Einordnung — als belastbare Entscheidungsgrundlage, nicht als Pitch-Deck.
+					</p>
+					<ul class="sol-results-list">
+						<?php foreach ( $results_qualifiers as $row ) : ?>
+							<li>
+								<span><?php echo esc_html( $row['k'] ); ?></span>
+								<span class="sol-mono sol-results-list-v"><?php echo esc_html( $row['v'] ); ?></span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+
+					<a
+						class="sol-btn sol-btn-ghost"
+						href="<?php echo esc_url( $e3_url ); ?>"
+						data-track-action="cta_solar_to_e3_case"
+						data-track-category="proof"
+						data-track-section="results"
+						style="margin-top:32px;"
+					>
+						Vollständige Methodik im <?php echo esc_html( $e3_case_label ); ?>-Case
+						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
 				</div>
-			</div>
-		</section>
 
-		<!-- 14 · Formular (dark) ─────────────────────────────────── -->
-		<section class="solar-section solar-section--dark solar-form-section" id="energie-anfrage" data-screen-label="14 Anfrage-Formular" data-track-section="energy_request_form" data-track-funnel-stage="form_submit" aria-labelledby="energy-form-title">
-			<div class="solar-section__inner">
-				<div class="review-box">
-					<div class="review-form-frame-head">
-						<div>
-							<p class="review-form-kicker">System-Diagnose anfragen</p>
-							<h2 id="energy-form-title">Standortdaten für die erste Einordnung.</h2>
+				<div class="sol-results-mock" aria-label="<?php echo esc_attr( $e3_case_label ); ?> — Methodik-Snapshot">
+					<div class="sol-results-mock-head">
+						<div class="sol-results-mock-dots" aria-hidden="true">
+							<span></span><span></span><span></span>
 						</div>
-						<div class="review-form-eta"><span>Antwort innerhalb 48 Werktagsstunden per E-Mail.</span></div>
+						<div class="sol-mono sol-results-mock-title"><?php echo esc_html( $e3_case_label ); ?> · Methodik-Snapshot</div>
+						<div class="sol-mono sol-results-mock-live">
+							<span class="sol-live-dot" aria-hidden="true"></span>
+							<?php echo esc_html( $e3_timeframe ); ?>
+						</div>
 					</div>
-
-					<?php if ( ! empty( $energy_intake_flow ) ) : ?>
-						<form id="review-request-form" class="review-funnel" method="post" novalidate>
-							<input type="hidden" name="audit_type" value="growth_audit" />
-							<input type="hidden" name="page_url" value="<?php echo esc_url( $form_page_url ); ?>" />
-							<input type="hidden" name="landing_page_url" value="<?php echo esc_url( $form_page_url ); ?>" />
-							<input type="hidden" name="entry_page_url" value="<?php echo esc_url( $form_page_url ); ?>" />
-							<input type="hidden" name="started_at" value="" />
-							<input type="hidden" id="ads_source" name="ads_source" value="" />
-							<input type="hidden" id="ads_keyword" name="ads_keyword" value="" />
-
-							<div class="review-progress">
-								<div class="review-progress-head">
-									<div class="review-progress-copy">
-										<span class="review-progress-eyebrow">System-Diagnose</span>
-										<strong id="review-progress-current">Schritt 1 von <?php echo esc_html( (string) count( $energy_intake_flow ) ); ?>: <?php echo esc_html( (string) ( $energy_intake_flow[0]['title_short'] ?? 'Start' ) ); ?></strong>
-									</div>
-									<span class="review-progress-meta">4 Module · schriftlicher Befund</span>
-								</div>
-								<div class="review-progress-track" aria-hidden="true">
-									<div class="review-progress-fill" id="review-progress-fill"></div>
-								</div>
-								<ol class="review-progress-steps">
-									<?php foreach ( $energy_intake_flow as $step_index => $step ) : ?>
-										<li>
-											<button type="button" data-review-step-target="<?php echo esc_attr( (string) $step_index ); ?>"<?php echo 0 === $step_index ? ' aria-current="step"' : ''; ?>>
-												<span class="review-progress-step-index"><?php echo esc_html( str_pad( (string) ( $step_index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-												<span class="review-progress-step-label"><?php echo esc_html( (string) ( $step['title_short'] ?? $step['summary_label'] ?? ( $step_index + 1 ) ) ); ?></span>
-											</button>
-										</li>
-									<?php endforeach; ?>
-								</ol>
+					<div class="sol-results-mock-body">
+						<div class="sol-results-mock-row">
+							<div class="sol-results-mock-stat">
+								<div class="sol-mono">Anfragen</div>
+								<div class="sol-display sol-results-mock-big"><?php echo esc_html( $e3_lead_count ); ?></div>
+								<div class="sol-results-mock-delta">qualifiziert · in <?php echo esc_html( $e3_timeframe_dative ); ?></div>
 							</div>
-
-							<?php foreach ( $energy_intake_flow as $step_index => $step ) : ?>
-								<?php
-								$step_kind = isset( $step['kind'] ) ? (string) $step['kind'] : 'single_choice';
-								?>
-								<section class="review-step" data-review-step="<?php echo esc_attr( (string) ( $step['id'] ?? $step_index ) ); ?>" data-review-radio-message="Bitte eine Option auswählen.">
-									<p class="review-step-kicker">Schritt <?php echo esc_html( (string) ( $step_index + 1 ) ); ?></p>
-									<h4><?php echo esc_html( (string) ( $step['question'] ?? '' ) ); ?></h4>
-									<?php if ( ! empty( $step['description'] ) ) : ?>
-										<p class="review-step-copy"><?php echo esc_html( (string) $step['description'] ); ?></p>
-									<?php endif; ?>
-
-									<?php if ( 'text_input' === $step_kind && ! empty( $step['field'] ) && is_array( $step['field'] ) ) : ?>
-										<?php $field = $step['field']; ?>
-										<div class="review-field">
-											<label for="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>"><?php echo esc_html( (string) ( $field['label'] ?? '' ) ); ?></label>
-											<input
-												id="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>"
-												name="<?php echo esc_attr( (string) $field['name'] ); ?>"
-												type="<?php echo esc_attr( (string) ( $field['type'] ?? 'text' ) ); ?>"
-												<?php echo ! empty( $field['inputmode'] ) ? 'inputmode="' . esc_attr( (string) $field['inputmode'] ) . '"' : ''; ?>
-												<?php echo ! empty( $field['autocomplete'] ) ? 'autocomplete="' . esc_attr( (string) $field['autocomplete'] ) . '"' : ''; ?>
-												<?php echo ! empty( $field['pattern'] ) ? 'pattern="' . esc_attr( (string) $field['pattern'] ) . '"' : ''; ?>
-												<?php echo ! empty( $field['maxlength'] ) ? 'maxlength="' . esc_attr( (string) $field['maxlength'] ) . '"' : ''; ?>
-												<?php echo ! empty( $field['placeholder'] ) ? 'placeholder="' . esc_attr( (string) $field['placeholder'] ) . '"' : ''; ?>
-												<?php echo ! empty( $field['required'] ) ? 'required' : ''; ?>
-											/>
-										</div>
-									<?php elseif ( 'single_choice' === $step_kind && ! empty( $step['options'] ) && is_array( $step['options'] ) ) : ?>
-										<fieldset class="review-choice-block">
-											<legend><?php echo esc_html( (string) ( $step['summary_label'] ?? $step['question'] ?? '' ) ); ?></legend>
-											<div class="review-option-group">
-												<?php foreach ( $step['options'] as $value => $option ) : ?>
-													<label class="review-option">
-														<input type="radio" name="<?php echo esc_attr( (string) ( $step['name'] ?? $step['id'] ?? '' ) ); ?>" value="<?php echo esc_attr( (string) $value ); ?>" required <?php echo ! empty( $step['auto_advance'] ) ? 'data-review-auto-advance="true"' : ''; ?> />
-														<span class="review-option-copy">
-															<strong><?php echo esc_html( (string) ( $option['label'] ?? $value ) ); ?></strong>
-															<?php if ( ! empty( $option['description'] ) ) : ?>
-																<span><?php echo esc_html( (string) $option['description'] ); ?></span>
-															<?php endif; ?>
-														</span>
-													</label>
-												<?php endforeach; ?>
-											</div>
-										</fieldset>
-									<?php elseif ( 'contact' === $step_kind && ! empty( $step['fields'] ) && is_array( $step['fields'] ) ) : ?>
-										<div class="review-field-grid">
-											<?php foreach ( $step['fields'] as $field ) : ?>
-												<?php if ( ! is_array( $field ) || empty( $field['name'] ) ) : ?>
-													<?php continue; ?>
-												<?php endif; ?>
-												<?php if ( 'checkbox' === ( $field['type'] ?? '' ) ) : ?>
-													<div class="review-consent-card review-field-full">
-														<label class="review-consent" for="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>">
-															<input id="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>" type="checkbox" name="<?php echo esc_attr( (string) $field['name'] ); ?>" value="<?php echo esc_attr( (string) ( $field['value'] ?? 'accepted' ) ); ?>" <?php echo ! empty( $field['required'] ) ? 'required' : ''; ?> />
-															<span><?php echo esc_html( (string) ( $field['label'] ?? '' ) ); ?></span>
-														</label>
-													</div>
-												<?php elseif ( 'textarea' === ( $field['type'] ?? '' ) ) : ?>
-													<div class="review-field review-field-full">
-														<label for="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>"><?php echo esc_html( (string) ( $field['label'] ?? '' ) ); ?></label>
-														<textarea id="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>" name="<?php echo esc_attr( (string) $field['name'] ); ?>" rows="<?php echo esc_attr( (string) ( $field['rows'] ?? 4 ) ); ?>" <?php echo ! empty( $field['maxlength'] ) ? 'maxlength="' . esc_attr( (string) $field['maxlength'] ) . '"' : ''; ?> <?php echo ! empty( $field['placeholder'] ) ? 'placeholder="' . esc_attr( (string) $field['placeholder'] ) . '"' : ''; ?> <?php echo ! empty( $field['required'] ) ? 'required' : ''; ?>></textarea>
-													</div>
-												<?php else : ?>
-													<div class="review-field">
-														<label for="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>"><?php echo esc_html( (string) ( $field['label'] ?? '' ) ); ?></label>
-														<input
-															id="review-field-<?php echo esc_attr( (string) $field['name'] ); ?>"
-															name="<?php echo esc_attr( (string) $field['name'] ); ?>"
-															type="<?php echo esc_attr( (string) ( $field['type'] ?? 'text' ) ); ?>"
-															<?php echo ! empty( $field['inputmode'] ) ? 'inputmode="' . esc_attr( (string) $field['inputmode'] ) . '"' : ''; ?>
-															<?php echo ! empty( $field['autocomplete'] ) ? 'autocomplete="' . esc_attr( (string) $field['autocomplete'] ) . '"' : ''; ?>
-															<?php echo ! empty( $field['required'] ) ? 'required' : ''; ?>
-														/>
-														<?php if ( ! empty( $field['help'] ) ) : ?>
-															<p class="review-field-help"><?php echo esc_html( (string) $field['help'] ); ?></p>
-														<?php endif; ?>
-													</div>
-												<?php endif; ?>
-											<?php endforeach; ?>
-										</div>
-									<?php endif; ?>
-								</section>
-							<?php endforeach; ?>
-
-							<div id="review-form-feedback" class="review-form-feedback" aria-live="polite" aria-atomic="true"></div>
-							<div class="review-actions">
-								<button class="review-prev-btn" type="button" data-review-prev>Zurück</button>
-								<button class="audit-submit-btn" type="button" data-review-next>Weiter</button>
-								<button class="audit-submit-btn" type="submit" data-review-submit hidden>System-Diagnose anfragen</button>
+							<div class="sol-results-mock-stat">
+								<div class="sol-mono">Abschlussquote</div>
+								<div class="sol-display sol-results-mock-big"><?php echo esc_html( $e3_sales_conversion ); ?></div>
+								<div class="sol-results-mock-delta">Anfrage → Vertrag</div>
 							</div>
-						</form>
-
-						<div id="review-request-success" class="review-success" hidden>
-							<h3>Ihre Anfrage ist eingegangen.</h3>
-							<p id="review-success-message" class="review-success-copy">Danke. Sie erhalten eine Rückmeldung per E-Mail.</p>
-							<p id="review-success-url" class="review-output-note"></p>
+							<div class="sol-results-mock-stat">
+								<div class="sol-mono">CPL</div>
+								<div class="sol-display sol-results-mock-big"><?php echo esc_html( $e3_cpl_after ); ?></div>
+								<div class="sol-results-mock-delta">von <?php echo esc_html( $e3_cpl_before ); ?> · <?php echo esc_html( $e3_cpl_reduction ); ?></div>
+							</div>
 						</div>
-					<?php else : ?>
-						<p class="solar-lede">Das Formular ist aktuell nicht verfügbar.</p>
-					<?php endif; ?>
+						<div class="sol-results-mock-chart" aria-hidden="true">
+							<svg viewBox="0 0 400 120" preserveAspectRatio="none" width="100%" height="120">
+								<defs>
+									<linearGradient id="sol-rg" x1="0" x2="0" y1="0" y2="1">
+										<stop offset="0%" stop-color="currentColor" stop-opacity=".25" />
+										<stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+									</linearGradient>
+								</defs>
+								<g style="color: var(--sol-accent);">
+									<path d="M0 96 L40 90 L80 80 L120 72 L160 66 L200 56 L240 46 L280 38 L320 30 L360 22 L400 16 L400 120 L0 120 Z" fill="url(#sol-rg)" />
+									<path d="M0 96 L40 90 L80 80 L120 72 L160 66 L200 56 L240 46 L280 38 L320 30 L360 22 L400 16" fill="none" stroke="currentColor" stroke-width="1.5" />
+									<circle cx="40"  cy="90" r="3" fill="currentColor" />
+									<circle cx="120" cy="72" r="3" fill="currentColor" />
+									<circle cx="200" cy="56" r="3" fill="currentColor" />
+									<circle cx="280" cy="38" r="3" fill="currentColor" />
+									<circle cx="360" cy="22" r="3" fill="currentColor" />
+								</g>
+							</svg>
+							<div class="sol-results-mock-axis sol-mono">
+								<span>Mon 1</span><span>Mon 3</span><span>Mon 5</span><span>Mon 7</span><span>Mon 9</span>
+							</div>
+						</div>
+						<div class="sol-results-mock-list">
+							<div class="sol-results-mock-item">
+								<span class="sol-results-mock-tag is-new">Neu</span>
+								<span>Anfrage-Quellen quantifiziert</span>
+								<span class="sol-results-mock-prod sol-mono">Modul 01</span>
+								<span class="sol-results-mock-time">7 d</span>
+							</div>
+							<div class="sol-results-mock-item">
+								<span class="sol-results-mock-tag is-call">Befund</span>
+								<span>Drei priorisierte Hebel</span>
+								<span class="sol-results-mock-prod sol-mono">Output</span>
+								<span class="sol-results-mock-time">7 d</span>
+							</div>
+							<div class="sol-results-mock-item">
+								<span class="sol-results-mock-tag is-booked">Übergabe</span>
+								<span>30-Min-Call · optional</span>
+								<span class="sol-results-mock-prod sol-mono">Wahlfrei</span>
+								<span class="sol-results-mock-time">+ 1 Wo</span>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
 
-	</div>
-
-	<!-- Sticky CTA bar (mobile) -->
-	<div class="solar-sticky" data-solar-sticky aria-hidden="true">
-		<div class="solar-sticky__inner">
-			<div class="solar-sticky__copy">
-				<div class="solar-sticky__t">System-Diagnose</div>
-				<div class="solar-sticky__s">4 Module · schriftlicher Befund nach 7 Werktagen</div>
+		<!-- ════════════════════════════════════════════════════════════
+		     GUARANTEE — Risiko-Umkehr
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-section sol-guarantee" id="garantie" data-track-section="guarantee">
+			<div class="sol-wrap sol-guarantee-inner">
+				<div class="sol-guarantee-glow" aria-hidden="true"></div>
+				<div class="sol-eyebrow" style="justify-content:center;">Risiko-Umkehr</div>
+				<h2 class="sol-display sol-guarantee-h">
+					Drei Hebel — auch wenn wir <em>nicht zusammenarbeiten</em>.
+				</h2>
+				<p class="sol-guarantee-sub">
+					Die Diagnose ist kein Verkaufsritual. Sie ist ein schriftlicher Befund. Wenn sich aus der Analyse keine Umsetzung ergibt, bekommen Sie trotzdem drei priorisierte Hebel mit konkretem nächstem Schritt — auch dann, wenn das heißt, dass Sie nicht mit mir weitermachen.
+				</p>
+				<div class="sol-guarantee-points">
+					<?php foreach ( $guarantee_points as $p ) : ?>
+						<div class="sol-guarantee-point">
+							<div class="sol-guarantee-point-mark" aria-hidden="true">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+									<path d="M5 12l5 5L20 7" />
+								</svg>
+							</div>
+							<div>
+								<div class="sol-guarantee-point-t"><?php echo esc_html( $p['t'] ); ?></div>
+								<div class="sol-guarantee-point-s"><?php echo esc_html( $p['s'] ); ?></div>
+							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
 			</div>
-			<a href="<?php echo esc_url( $diagnostic_anchor ); ?>" class="solar-hero__btn solar-sticky__btn" data-track-action="cta_solar_to_diagnostic_request" data-track-category="lead_gen" data-track-funnel-stage="form_open">
-				<span>System-Diagnose anfragen</span>
-				<span class="solar-hero__btn-arrow" aria-hidden="true">
-					<svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M3 9h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-				</span>
-			</a>
-		</div>
-	</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
+		     FAQ
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-section sol-faq" id="faq" data-track-section="faq">
+			<div class="sol-wrap sol-faq-inner">
+				<div class="sol-faq-left">
+					<div class="sol-eyebrow">Häufige Fragen</div>
+					<h2 class="sol-display sol-faq-h">
+						Bevor Sie <em>fragen</em>.
+					</h2>
+					<p class="sol-faq-sub">
+						Was hier nicht beantwortet wird, klären wir im Rahmen der System-Diagnose — schriftlich, nicht in einem Verkaufsgespräch.
+					</p>
+				</div>
+				<ul class="sol-faq-list">
+					<?php foreach ( $faq_items as $i => $item ) : ?>
+						<li class="sol-faq-item<?php echo 0 === $i ? ' is-open' : ''; ?>">
+							<button type="button" class="sol-faq-q" aria-expanded="<?php echo 0 === $i ? 'true' : 'false'; ?>">
+								<span class="sol-faq-q-n"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
+								<span class="sol-faq-q-t"><?php echo esc_html( $item['question'] ); ?></span>
+								<span class="sol-faq-q-mark" aria-hidden="true">
+									<span></span><span></span>
+								</span>
+							</button>
+							<div class="sol-faq-a-wrap">
+								<div class="sol-faq-a"><?php echo esc_html( $item['answer'] ); ?></div>
+							</div>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
+		     FINAL CTA
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-section sol-final" data-track-section="final_cta">
+			<div class="sol-wrap">
+				<div class="sol-final-inner">
+					<div class="sol-final-sun" aria-hidden="true">
+						<div class="sol-final-sun-disc"></div>
+					</div>
+					<div class="sol-eyebrow" style="justify-content:center;">Letzter Schritt</div>
+					<h2 class="sol-display sol-final-h">
+						Anfragen <em>besitzen</em>,<br />nicht mieten.
+					</h2>
+					<p class="sol-final-sub">
+						4-Modul-Diagnose · schriftlicher Befund nach 7 Werktagen · auf Umsetzung verrechenbar.
+					</p>
+					<a
+						class="sol-btn sol-btn-primary sol-final-btn"
+						href="<?php echo esc_url( $diagnose_url ); ?>"
+						data-track-action="cta_solar_to_diagnostic_request"
+						data-track-category="lead_funnel"
+						data-track-section="final_cta"
+						data-track-funnel-stage="diagnose_open"
+					>
+						<span>System-Diagnose starten</span>
+						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					</a>
+					<div class="sol-final-micro">Kein Pitch · kein Folien-Deck · konkreter nächster Schritt</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
+		     STICKY MOBILE CTA
+		     ════════════════════════════════════════════════════════════ -->
+		<a
+			class="sol-sticky-cta"
+			href="<?php echo esc_url( $diagnose_url ); ?>"
+			data-track-action="cta_solar_to_diagnostic_request"
+			data-track-category="lead_funnel"
+			data-track-section="sticky_mobile"
+			data-track-funnel-stage="diagnose_open"
+		>
+			<span>System-Diagnose starten</span>
+			<span class="sol-sticky-cta-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+		</a>
+
+	</div><!-- /.solara-landing -->
 </main>
 
 <script type="application/ld+json"><?php echo wp_json_encode( $service_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
