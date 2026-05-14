@@ -10,13 +10,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$audit_url = nexus_get_audit_url();
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $agentur_url = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 $wgos_url  = $primary_urls['wgos'] ?? trailingslashit( $agentur_url ) . '#wgos';
 $cases_url = nexus_get_results_url();
 $about_url = nexus_get_page_url( [ 'uber-mich' ] );
 $contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+$website_analysis_url = add_query_arg(
+	[
+		'type' => 'analysis',
+	],
+	$contact_url
+);
 $implementation_contact_url = add_query_arg(
 	[
 		'type' => 'implementation',
@@ -32,8 +37,8 @@ $e3_cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduc
 $e3_lead_count = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
 $e3_sales_conversion = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '12 %' ) : '12 %';
 $canonical_ownership_sentence = function_exists( 'nexus_get_public_ownership_sentence' ) ? nexus_get_public_ownership_sentence() : 'Code, Inhalte, Zugänge und Setups bleiben bei Ihnen. Laufende Zusammenarbeit bedeutet Weiterentwicklung, nicht Abhängigkeit.';
-$audit_cta_label             = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'System-Diagnose anfragen';
-$audit_compact_microcopy     = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : '60 Sek. · priorisierte Hebel · keine E-Mail';
+$website_analysis_cta_label = 'Website-Analyse anfragen';
+$website_analysis_microcopy = 'Klarheit vor Relaunch · SEO, Tracking, Conversion · direkter Kontakt';
 
 $pain_cards = [
 	[
@@ -114,10 +119,10 @@ get_header();
 						Angebotsseiten, SEO, Tracking und Conversion als ein System — damit Ihre WordPress-Website qualifizierte B2B-Leads liefert.
 					</p>
 					<div class="wp-agentur-actions wp-agentur-actions--hero">
-						<a href="<?php echo esc_url( $audit_url ); ?>" class="nx-btn nx-btn--primary wp-agentur-hero__primary" data-track-action="cta_agentur_hero_audit" data-track-category="lead_gen"><?php echo esc_html( $audit_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $website_analysis_url ); ?>" class="nx-btn nx-btn--primary wp-agentur-hero__primary" data-track-action="cta_agentur_hero_audit" data-track-category="lead_gen"><?php echo esc_html( $website_analysis_cta_label ); ?></a>
 						<a href="<?php echo esc_url( $cases_url ); ?>" class="wp-agentur-text-link" data-track-action="cta_agentur_hero_results" data-track-category="trust">Ergebnisse ansehen</a>
 					</div>
-					<p class="nx-cta-microcopy"><?php echo esc_html( $audit_compact_microcopy ); ?></p>
+					<p class="nx-cta-microcopy"><?php echo esc_html( $website_analysis_microcopy ); ?></p>
 					<div class="wp-agentur-hero__proof" role="list" aria-label="Proof-Signale">
 						<?php foreach ( $proof_metrics as $proof_metric ) : ?>
 							<span role="listitem"><?php echo esc_html( $proof_metric['value'] . ' ' . $proof_metric['label'] ); ?></span>
@@ -242,7 +247,7 @@ get_header();
 						<?php endforeach; ?>
 					</ul>
 					<div class="wp-agentur-actions wp-agentur-actions--center">
-						<a href="<?php echo esc_url( $audit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_services_audit" data-track-category="lead_gen">System-Diagnose starten</a>
+						<a href="<?php echo esc_url( $website_analysis_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_services_audit" data-track-category="lead_gen"><?php echo esc_html( $website_analysis_cta_label ); ?></a>
 						<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_services_wgos" data-track-category="navigation">Arbeitsweise ansehen</a>
 					</div>
 				</div>
@@ -332,7 +337,7 @@ get_header();
 			<div class="nx-container">
 				<div class="nx-section-header">
 					<span class="wp-agentur-eyebrow">Bausteine · Asset-Übersicht</span>
-					<h2 class="nx-headline-section">Welcher Baustein zuerst sinnvoll ist, klärt die Diagnose.</h2>
+					<h2 class="nx-headline-section">Welcher Baustein zuerst sinnvoll ist, klärt die Website-Analyse.</h2>
 					<p class="wp-agentur-section-intro">Jeder Baustein hat einen festen Platz im System. Die Übersicht zeigt nur publizierte Assets. Nicht alles wird in jedem Projekt gebaut, sondern das, was zuerst Wirkung erzeugt.</p>
 				</div>
 				<div class="asset-hybrid">
@@ -432,7 +437,7 @@ get_header();
 					</article>
 				</div>
 				<p class="seo-cta">
-					Ob technisches SEO bei Ihrer Website heute den größten Hebel hat, zeigt die <a href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_agentur_seo_audit" data-track-category="lead_gen">System-Diagnose</a> in ca. 60 Sekunden.
+					Ob technisches SEO bei Ihrer Website heute den größten Hebel hat, zeigt die <a href="<?php echo esc_url( $website_analysis_url ); ?>" data-track-action="cta_agentur_seo_audit" data-track-category="lead_gen">Website-Analyse</a>.
 				</p>
 			</div>
 		</section>
@@ -462,7 +467,7 @@ get_header();
 						<li><span class="check-icon">→</span><div>Für Unternehmen mit relevanter Website und regelmäßigem Traffic, nicht für Low-Traffic-Projekte.</div></li>
 					</ul>
 					<p class="wp-agentur-section-intro">
-						Wartungsvertrag anfragen: über den <a href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_agentur_wartung_contact" data-track-category="lead_gen">Kontaktpfad</a> oder direkt in der <a href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_agentur_wartung_audit" data-track-category="lead_gen">System-Diagnose</a> einordnen.
+						Wartungsvertrag anfragen: über den <a href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_agentur_wartung_contact" data-track-category="lead_gen">Kontaktpfad</a> oder direkt in der <a href="<?php echo esc_url( $website_analysis_url ); ?>" data-track-action="cta_agentur_wartung_audit" data-track-category="lead_gen">Website-Analyse</a> einordnen.
 					</p>
 				</div>
 			</div>
@@ -541,8 +546,8 @@ get_header();
 			<div class="nx-container">
 				<div class="nx-cta-box wp-agentur-cta-box">
 					<h2>Prüfen wir, an welcher Stelle Ihr WordPress-System heute Nachfrage verliert.</h2>
-					<p>Die System-Diagnose zeigt, ob Angebotsseiten, Datenlage, CTA-Führung oder technische Reibung zuerst angegangen werden sollten und ob ein tieferer Umbau überhaupt sinnvoll ist.</p>
-					<a href="<?php echo esc_url( $audit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_final_audit" data-track-category="lead_gen"><?php echo esc_html( $audit_cta_label ); ?></a>
+					<p>Die Website-Analyse zeigt, ob Angebotsseiten, Datenlage, CTA-Führung oder technische Reibung zuerst angegangen werden sollten und ob ein Relaunch überhaupt sinnvoll ist.</p>
+					<a href="<?php echo esc_url( $website_analysis_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_final_audit" data-track-category="lead_gen"><?php echo esc_html( $website_analysis_cta_label ); ?></a>
 					<p class="wp-cta-desc mt-1">Kein Pitch. Klare Priorisierung. Wenn fachlich sinnvoll, kann daraus als nächster Schritt eine vertiefte Analyse, eine fokussierte Korrektur oder eine laufende Weiterentwicklung entstehen.</p>
 					<p class="wp-cta-desc mb-0">
 						<a href="<?php echo esc_url( $about_url ); ?>" data-track-action="cta_agentur_final_about" data-track-category="navigation">Mehr über meine Arbeitsweise</a>

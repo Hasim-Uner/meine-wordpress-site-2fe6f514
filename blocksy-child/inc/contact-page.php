@@ -193,7 +193,7 @@ function nexus_maybe_ensure_contact_page() {
 						'post_title'   => 'Kontakt',
 						'post_name'    => 'kontakt',
 						'post_content' => '',
-						'post_excerpt' => 'Kontakt für System-Diagnose, Folgeanalyse, Umsetzung und laufende Weiterentwicklung.',
+						'post_excerpt' => 'Kontakt für System-Diagnose, Website-Analyse, Umsetzung und laufende Weiterentwicklung.',
 					]
 				),
 				true
@@ -217,7 +217,7 @@ function nexus_maybe_ensure_contact_page() {
 		wp_update_post(
 			[
 				'ID'           => $page_id,
-				'post_excerpt' => 'Kontakt für System-Diagnose, Folgeanalyse, Umsetzung und laufende Weiterentwicklung.',
+				'post_excerpt' => 'Kontakt für System-Diagnose, Website-Analyse, Umsetzung und laufende Weiterentwicklung.',
 			]
 		);
 	}
@@ -227,7 +227,7 @@ function nexus_maybe_ensure_contact_page() {
 	}
 
 	if ( '' === trim( (string) get_post_meta( $page_id, 'seo_description', true ) ) ) {
-		update_post_meta( $page_id, 'seo_description', 'Kontakt für System-Diagnose, Folgeanalyse, Umsetzung und laufende Weiterentwicklung: direkter Einstieg ohne Sales-Team.' );
+		update_post_meta( $page_id, 'seo_description', 'Kontakt für System-Diagnose, Website-Analyse, Umsetzung und laufende Weiterentwicklung: direkter Einstieg ohne Sales-Team.' );
 	}
 }
 add_action( 'init', 'nexus_maybe_ensure_contact_page', 28 );
@@ -244,8 +244,8 @@ function nexus_get_contact_request_type_options() {
 			'description' => 'Der saubere Diagnose-Einstieg, wenn zuerst Klarheit und Priorisierung gebraucht werden.',
 		],
 		'analysis' => [
-			'label'       => 'Fokussierte Folgeanalyse',
-			'description' => 'Für tiefere Prüfung eines klar abgegrenzten Engpasses nach erster Einordnung.',
+			'label'       => 'Website-Analyse',
+			'description' => 'Für B2B-Websites, bei denen vor Relaunch, SEO oder Optimierung zuerst die Priorität geklärt werden soll.',
 		],
 		'implementation' => [
 			'label'       => 'Umsetzung / Optimierung',
@@ -293,7 +293,7 @@ function nexus_get_contact_focus_options() {
 			'types' => [ 'audit' ],
 		],
 		'followup_scope'   => [
-			'label' => 'Fokussierte Folgeanalyse',
+			'label' => 'Website-Analyse / Priorisierung',
 			'types' => [ 'analysis' ],
 		],
 		'implementation_scope' => [
@@ -412,7 +412,7 @@ function nexus_get_contact_notification_email() {
 function nexus_get_contact_request_response_label( $request_type ) {
 	$labels = [
 		'audit'          => 'System-Diagnose Anfrage',
-		'analysis'       => 'Folgeanalyse',
+		'analysis'       => 'Website-Analyse',
 		'implementation' => 'Umsetzungsanfrage',
 		'ongoing'        => 'Weiterentwicklungsanfrage',
 		'general'        => 'Anfrage',
@@ -431,7 +431,7 @@ function nexus_get_contact_request_response_label( $request_type ) {
 function nexus_get_contact_request_mail_tags( $request_type ) {
 	$map = [
 		'audit'          => [ 'contact_request', 'growth_audit_request' ],
-		'analysis'       => [ 'contact_request', 'followup_analysis_request' ],
+		'analysis'       => [ 'contact_request', 'website_analysis_request' ],
 		'implementation' => [ 'contact_request', 'implementation_request' ],
 		'ongoing'        => [ 'contact_request', 'ongoing_development_request' ],
 		'general'        => [ 'contact_request', 'general_inquiry' ],
@@ -461,7 +461,7 @@ function nexus_get_contact_confirmation_step_three( $request_type ) {
 	}
 
 	if ( 'analysis' === $request_type ) {
-		return 'Wenn der Fit klar ist, verdichten wir die nächste Analysefrage sauber und ohne Scope-Nebel.';
+		return 'Wenn der Fit klar ist, verdichten wir die Website-Hebel und den sinnvollsten nächsten Schritt sauber.';
 	}
 
 	if ( 'ongoing' === $request_type ) {

@@ -17,11 +17,20 @@ $focus_options        = function_exists( 'nexus_get_contact_focus_options' ) ? n
 $budget_options       = function_exists( 'nexus_get_contact_budget_options' ) ? nexus_get_contact_budget_options() : [];
 $timeline_options     = function_exists( 'nexus_get_contact_timeline_options' ) ? nexus_get_contact_timeline_options() : [];
 $calendar_url         = function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' );
+$requested_focus      = isset( $_GET['focus'] ) ? sanitize_key( wp_unslash( $_GET['focus'] ) ) : '';
+$requested_type       = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
 $public_type_keys     = [ 'audit', 'implementation', 'ongoing' ];
+if ( 'analysis' === $requested_type ) {
+	$public_type_keys[] = 'analysis';
+}
 $public_type_copy     = [
 	'audit'          => [
 		'label'       => 'System-Diagnose',
 		'description' => 'Klarheit vor Umsetzung.',
+	],
+	'analysis'       => [
+		'label'       => 'Website-Analyse',
+		'description' => 'Klarheit vor Relaunch oder Optimierung.',
 	],
 	'implementation' => [
 		'label'       => 'Umsetzung',
@@ -33,8 +42,6 @@ $public_type_copy     = [
 	],
 ];
 $public_type_options  = array_intersect_key( $request_type_options, array_flip( $public_type_keys ) );
-$requested_focus      = isset( $_GET['focus'] ) ? sanitize_key( wp_unslash( $_GET['focus'] ) ) : '';
-$requested_type       = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
 $selected_focus       = isset( $focus_options[ $requested_focus ] ) ? $requested_focus : '';
 $selected_type        = isset( $public_type_options[ $requested_type ] ) ? $requested_type : '';
 
@@ -50,7 +57,7 @@ if ( '' !== $selected_focus ) {
 }
 
 $has_explicit_type     = '' !== $requested_type && isset( $public_type_options[ $requested_type ] );
-$show_timeline_field   = in_array( $selected_type, [ 'implementation', 'ongoing' ], true );
+$show_timeline_field   = in_array( $selected_type, [ 'analysis', 'implementation', 'ongoing' ], true );
 $show_budget_field     = in_array( $selected_type, [ 'implementation', 'ongoing' ], true );
 $type_copy_map         = [
 	'audit'          => [
@@ -63,12 +70,12 @@ $type_copy_map         = [
 		'timeline_label'      => 'Zeitfenster',
 	],
 	'analysis'       => [
-		'focus_label'         => 'Was soll vertieft werden?',
-		'focus_help'          => 'Wählen Sie den Bereich, der fachlich als Nächstes genauer geprüft werden soll.',
+		'focus_label'         => 'Was soll an der Website analysiert werden?',
+		'focus_help'          => 'Wählen Sie den Bereich, in dem aktuell die größte Unklarheit liegt.',
 		'message_label'       => 'Kurzbeschreibung',
-		'message_help'        => 'Welche Erkenntnis fehlt noch? Was soll genauer geprüft oder priorisiert werden?',
-		'message_placeholder' => "1. Fokus: Was soll vertieft werden?\n2. Hürde: Wo bleibt noch Unklarheit?\n3. Ziel: Welche Entscheidung soll danach leichter werden?",
-		'submit_label'        => 'Folgeanalyse anfragen',
+		'message_help'        => 'Welche URL ist relevant? Was bremst gerade? Welche Entscheidung soll die Analyse erleichtern?',
+		'message_placeholder' => "1. Seite: Welche URL ist relevant?\n2. Hürde: Was bremst gerade?\n3. Ziel: Welche Entscheidung soll danach leichter werden?",
+		'submit_label'        => 'Website-Analyse anfragen',
 		'timeline_label'      => 'Zeitfenster',
 	],
 	'implementation' => [

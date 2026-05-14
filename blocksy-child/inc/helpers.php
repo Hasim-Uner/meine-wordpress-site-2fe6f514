@@ -599,12 +599,12 @@ function nexus_get_agentur_faq_items() {
 			'answer'   => 'Ja. Die Arbeit umfasst WordPress-Entwicklung, technische SEO, GA4- und Tracking-Setups, Conversion-Führung und die Priorisierung kaufnaher Seiten. Diese Verbindung ist für B2B-Anfragen meist entscheidend.',
 		],
 		[
-			'question' => 'Wann ist die Agentur-Seite der richtige Einstieg und wann die System-Diagnose?',
-			'answer'   => 'Die Agentur-Seite ist richtig, wenn Sie den Gesamtkontext verstehen wollen. Die System-Diagnose ist der bessere nächste Schritt, wenn klar werden soll, ob zuerst SEO, Tracking, Performance oder Conversion den größten Hebel hat.',
+			'question' => 'Wann ist die Agentur-Seite der richtige Einstieg und wann die Website-Analyse?',
+			'answer'   => 'Die Agentur-Seite ist richtig, wenn Sie den Gesamtkontext verstehen wollen. Die Website-Analyse ist der bessere nächste Schritt, wenn klar werden soll, ob zuerst SEO, Tracking, Angebotsseiten, Performance oder Conversion den größten Hebel hat.',
 		],
 		[
 			'question' => 'Brauche ich für WordPress-Wachstum einen Relaunch?',
-			'answer'   => 'Meist nicht. Oft fehlt nicht der neue Look, sondern die richtige Reihenfolge zwischen Fundament, Daten, Sichtbarkeit und Conversion. Ein Relaunch ist nur sinnvoll, wenn die Diagnose zeigt, dass die bestehende Struktur nicht mehr trägt.',
+			'answer'   => 'Meist nicht. Oft fehlt nicht der neue Look, sondern die richtige Reihenfolge zwischen Fundament, Daten, Sichtbarkeit und Conversion. Ein Relaunch ist nur sinnvoll, wenn die Analyse zeigt, dass die bestehende Struktur nicht mehr trägt.',
 		],
 		[
 			'question' => 'Was unterscheidet WGOS von einem klassischen Agentur-Projekt?',

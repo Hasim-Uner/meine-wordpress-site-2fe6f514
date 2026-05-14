@@ -107,12 +107,12 @@
                 showBudget: false
             },
             analysis: {
-                focusLabel: 'Was soll vertieft werden?',
-                focusHelp: 'Wählen Sie den Bereich, der fachlich als Nächstes genauer geprüft werden soll.',
+                focusLabel: 'Was soll an der Website analysiert werden?',
+                focusHelp: 'Wählen Sie den Bereich, in dem aktuell die größte Unklarheit liegt.',
                 messageLabel: 'Kurzbeschreibung',
-                messageHelp: 'Welche Erkenntnis fehlt noch? Was soll genauer geprüft oder priorisiert werden?',
-                messagePlaceholder: '1. Fokus: Was soll vertieft werden?\n2. Hürde: Wo bleibt noch Unklarheit?\n3. Ziel: Welche Entscheidung soll danach leichter werden?',
-                submitLabel: 'Folgeanalyse anfragen',
+                messageHelp: 'Welche URL ist relevant? Was bremst gerade? Welche Entscheidung soll die Analyse erleichtern?',
+                messagePlaceholder: '1. Seite: Welche URL ist relevant?\n2. Hürde: Was bremst gerade?\n3. Ziel: Welche Entscheidung soll danach leichter werden?',
+                submitLabel: 'Website-Analyse anfragen',
                 messageMinlength: 24,
                 timelineLabel: 'Zeitfenster',
                 showTimeline: true,
@@ -696,6 +696,7 @@
                 if (statusValue) {
                     var labels = {
                         audit: 'System-Diagnose',
+                        analysis: 'Website-Analyse',
                         implementation: 'Umsetzung',
                         ongoing: 'Weiterentwicklung'
                     };
