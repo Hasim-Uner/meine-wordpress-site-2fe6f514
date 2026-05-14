@@ -2,8 +2,9 @@
 /**
  * Template Name: Solar & Wärmepumpen Leadgenerierung (SOLARA)
  * Description: Premium · cinematic · minimalistisch. Hybrid-Theme (warm-cream + Copper).
- *              Primärer CTA: /system-diagnose/. Zielgruppe: Solar-/Wärmepumpen-Anbieter
- *              im DACH-Mittelstand (10–25 MA).
+ *              Primärer Lead-Pfad: 60-Sek-Marktcheck im Hero (REST → CRM).
+ *              Sekundärer Pfad für qualifizierte Fälle: /system-diagnose/.
+ *              Zielgruppe: Solar-/Wärmepumpen-Anbieter im DACH-Mittelstand (10–25 MA).
  *
  * @package Blocksy_Child
  */
@@ -16,8 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 $page_url     = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
 $diagnose_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 $e3_url       = home_url( '/e3-new-energy/' );
+$privacy_url  = home_url( '/datenschutz/' );
+$cal_url      = function_exists( 'hu_get_analysis_calcom_base_url' )
+	? hu_get_analysis_calcom_base_url()
+	: 'https://cal.com/hasim-uener/30min?overlayCalendar=true';
 
-// ── E3-Proof-Metriken (Canon) ───────────────────────────────────
+// ── E3-Proof-Metriken (Canon) ──────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
@@ -29,11 +34,11 @@ $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
 $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten';
 
-// ── Inhaltsmodelle ──────────────────────────────────────────────
+// ── Inhaltsmodelle ─────────────────────────────────────────────
 $hero_metrics = [
-	[ 'n' => $e3_cpl_after,    'l' => 'CPL nach 9 Monaten · ' . $e3_case_label ],
-	[ 'n' => '< 7',            'l' => 'Werktage · schriftlicher Befund' ],
-	[ 'n' => '100 %',          'l' => 'Asset-Eigentum · Code · Tracking · Daten' ],
+	[ 'n' => $e3_cpl_after, 'l' => 'CPL nach 9 Monaten · ' . $e3_case_label ],
+	[ 'n' => '< 24 h',      'l' => 'Persönliche Antwort · keine Pitch-Mail' ],
+	[ 'n' => '100 %',       'l' => 'Asset-Eigentum · Code · Tracking · Daten' ],
 ];
 
 $trust_items = [
@@ -42,14 +47,7 @@ $trust_items = [
 	'Server-Side-Tracking · CAPI',
 	'Hardcoded WordPress · kein Page-Builder',
 	'1:1 Senior · keine Junior-Kette',
-	'Diagnose verrechenbar',
-];
-
-$cta_card_items = [
-	[ 'n' => '01', 't' => 'Anfrage-Quellen',    's' => 'Was kosten Leads tatsächlich — inkl. Folgekosten.' ],
-	[ 'n' => '02', 't' => 'Tracking & Daten',   's' => 'Können Sie überhaupt belastbar entscheiden — oder raten Sie?' ],
-	[ 'n' => '03', 't' => 'Funnel',             's' => 'Wo bricht es ab — technisch und inhaltlich.' ],
-	[ 'n' => '04', 't' => 'Vertriebsanschluss','s' => 'Speed-to-Lead, CRM, Conversion je Quelle.' ],
+	'Marktcheck kostenfrei',
 ];
 
 $problem_cards = [
@@ -78,7 +76,7 @@ $method_cards = [
 		'n'  => 'I',
 		'p'  => 'Phase 01',
 		't'  => 'Diagnose & Fundament',
-		's'  => 'Wir prüfen Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss. Daraus entsteht ein schriftlicher Befund mit drei priorisierten Hebeln — auch dann, wenn Sie nicht mit mir weitermachen.',
+		's'  => 'Anfrage-Quellen, Tracking, Funnel, Vertriebsanschluss — vier Module, schriftlicher Befund, drei priorisierte Hebel. Verrechenbar auf Umsetzung.',
 		'b'  => [ 'Module: Quellen · Daten · Funnel · Sales', 'Schriftlicher Befund · keine Folien', 'Auf Umsetzung 1:1 verrechenbar' ],
 	],
 	[
@@ -98,36 +96,40 @@ $method_cards = [
 ];
 
 $results_qualifiers = [
-	[ 'k' => 'Anfrage-Quellen',     'v' => 'Beziffert' ],
-	[ 'k' => 'Tracking & CAPI',     'v' => 'Auditiert' ],
-	[ 'k' => 'Funnel-Hebel',        'v' => 'Drei priorisiert' ],
-	[ 'k' => 'Wirtschaftlichkeit',  'v' => 'Einordnung' ],
-	[ 'k' => 'Nächster Schritt',    'v' => 'Konkret' ],
+	[ 'k' => 'Anfrage-Quellen',    'v' => 'Beziffert' ],
+	[ 'k' => 'Tracking & CAPI',    'v' => 'Auditiert' ],
+	[ 'k' => 'Funnel-Hebel',       'v' => 'Drei priorisiert' ],
+	[ 'k' => 'Wirtschaftlichkeit', 'v' => 'Einordnung' ],
+	[ 'k' => 'Nächster Schritt',   'v' => 'Konkret' ],
 ];
 
 $guarantee_points = [
 	[
-		't' => 'Diagnose-Honorar wird verrechnet',
-		's' => 'Bei anschließender Umsetzung wird die Diagnose 1:1 angerechnet. Sie zahlen sie nur dann, wenn Sie sich gegen die Umsetzung entscheiden.',
+		't' => 'Marktcheck ist kostenfrei',
+		's' => 'Fünf Fragen, 60 Sekunden. Sie bekommen eine persönliche Ersteinschätzung — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
 	],
 	[
 		't' => 'Drei Hebel — auch bei Abrat',
-		's' => 'Wenn die Diagnose zum Ergebnis kommt, dass Sie das volle System nicht brauchen, bekommen Sie trotzdem drei priorisierte Hebel mit konkretem nächstem Schritt.',
+		's' => 'Wenn die anschließende Diagnose zum Ergebnis kommt, dass Sie das volle System nicht brauchen, bekommen Sie trotzdem drei priorisierte Hebel mit konkretem nächstem Schritt.',
 	],
 	[
-		't' => 'Keine Mindestlaufzeit',
-		's' => 'Monatlich kündbar. Vollständige Asset-Übergabe — Code, Tracking, Daten, Werbeaccounts bleiben bei Ihnen.',
+		't' => 'Diagnose wird verrechnet',
+		's' => 'Bei Umsetzung wird die Diagnose 1:1 angerechnet. Sie zahlen sie nur dann, wenn Sie sich gegen die Umsetzung entscheiden. Keine Mindestlaufzeit, volle Asset-Übergabe.',
 	],
 ];
 
 $faq_items = [
 	[
+		'question' => 'Was passiert nach dem Marktcheck?',
+		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich innerhalb von 24 Stunden per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die kostenpflichtige Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
+	],
+	[
 		'question' => 'Was kostet das im Vergleich zur Performance-Agentur?',
 		'answer'   => 'Initiales Setup: 12.000–18.000 € einmalig. Laufend ca. 50 €/Monat für Hochleistungs-Hosting. TCO über 24 Monate: 13.200–19.200 € — und Sie besitzen Code, Tracking und Daten. Eine Performance-Agentur mit Paket „Regio+" kostet im gleichen Zeitraum rund 26.000 € und Sie besitzen am Ende nichts. Bilanziell: CAPEX statt OPEX.',
 	],
 	[
-		'question' => 'Welche Daten brauchen Sie für die System-Diagnose?',
-		'answer'   => 'Lesezugriff auf Google Analytics, Google Ads und Meta Ads Manager, Einblick in den CRM-Datenbestand der letzten 90 Tage und eine 15-Minuten-Bestandsaufnahme zu Vertriebsprozess und Lead-Quellen. Wenn Tracking-Daten fehlen, ist das oft schon das erste Diagnose-Ergebnis.',
+		'question' => 'Welche Daten brauchen Sie für die Diagnose?',
+		'answer'   => 'Für den Marktcheck reichen 5 Antworten. Für die Tiefendiagnose: Lesezugriff auf Google Analytics, Google Ads und Meta Ads Manager, Einblick in den CRM-Datenbestand der letzten 90 Tage und eine 15-Minuten-Bestandsaufnahme zu Vertriebsprozess und Lead-Quellen. Wenn Tracking-Daten fehlen, ist das oft schon das erste Diagnose-Ergebnis.',
 	],
 	[
 		'question' => 'Warum nicht einfach mehr Google Ads schalten?',
@@ -149,13 +151,9 @@ $faq_items = [
 		'question' => 'Was unterscheidet Sie von Lead-Portalen?',
 		'answer'   => 'Portale vermieten Nachfrage. Sie zahlen für jeden Kontakt, den auch 3–4 Mitbewerber erhalten. Das System hier baut eigene Nachfrage-Infrastruktur auf, die Ihrem Betrieb gehört und langfristig für exklusive Anfragen sorgt.',
 	],
-	[
-		'question' => 'Arbeiten Sie mit unserem bestehenden CRM?',
-		'answer'   => 'Ja, sofern technisch sinnvoll. CRM- und Automations-Anbindung kommt aber erst nach sauberer Contract-, Consent- und Datenklärung. Der erste Schritt ist die System-Diagnose.',
-	],
 ];
 
-// ── Schema.org (Service + FAQPage) ─────────────────────────────
+// ── Schema.org ─────────────────────────────────────────────────
 $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
@@ -180,7 +178,7 @@ $service_schema = [
 		'@type'         => 'Offer',
 		'price'         => '0',
 		'priceCurrency' => 'EUR',
-		'description'   => 'System-Diagnose mit schriftlichem Befund nach 7 Werktagen.',
+		'description'   => 'Marktcheck in 60 Sekunden, persönliche Ersteinschätzung innerhalb von 24 Stunden.',
 	],
 ];
 
@@ -213,7 +211,7 @@ get_header();
 	<div class="solara-landing" data-track-section="energy_service_landing">
 
 		<!-- ════════════════════════════════════════════════════════════
-		     HERO
+		     HERO mit Marktcheck-Quiz
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="sol-hero" id="hero" data-track-section="hero">
 			<div class="sol-hero-sky" aria-hidden="true"></div>
@@ -242,50 +240,70 @@ get_header();
 							</div>
 						<?php endforeach; ?>
 					</div>
+
+					<p class="sol-mono" style="margin-top:14px;color:var(--sol-fg-dim);font-size:11px;letter-spacing:.06em;">
+						Bereits qualifizierter Fall?
+						<a
+							href="<?php echo esc_url( $diagnose_url ); ?>"
+							style="color:var(--sol-accent);text-decoration:underline;text-underline-offset:3px;margin-left:6px;"
+							data-track-action="cta_solar_to_deep_diagnose"
+							data-track-category="lead_funnel"
+							data-track-section="hero_secondary"
+						>Direkt zur Tiefendiagnose →</a>
+					</p>
 				</div>
 
-				<aside class="sol-hero-right" aria-labelledby="sol-cta-title">
-					<div class="sol-cta-card">
-						<div class="sol-cta-head">
-							<span class="sol-cta-tag sol-mono">
-								<span class="sol-cta-tag-dot" aria-hidden="true"></span>
-								System-Diagnose · 4 Module
-							</span>
-							<span class="sol-cta-head-right sol-mono">Verrechenbar</span>
-						</div>
-
-						<h2 id="sol-cta-title" class="sol-cta-title">
-							Wo verlieren Sie heute Anfragen — und wie viel kostet Sie das?
-						</h2>
-						<p class="sol-cta-hint">
-							Schriftlicher Befund nach 7 Werktagen. Drei priorisierte Hebel mit konkretem nächstem Schritt — auch wenn wir nicht zusammenarbeiten.
-						</p>
-
-						<ul class="sol-cta-list">
-							<?php foreach ( $cta_card_items as $item ) : ?>
-								<li>
-									<span class="sol-cta-list-num"><?php echo esc_html( $item['n'] ); ?></span>
-									<span class="sol-cta-list-body">
-										<span class="sol-cta-list-t"><?php echo esc_html( $item['t'] ); ?></span>
-										<span class="sol-cta-list-s"><?php echo esc_html( $item['s'] ); ?></span>
+				<aside class="sol-hero-right" aria-labelledby="sol-quiz-title">
+					<div class="sol-cta-card" id="marktcheck">
+						<!--
+						  Quiz mount point. JS rendert hier das 5-Step-Quiz.
+						  Wenn JS fehlt, bleibt der SSR-Fallback unten als
+						  funktionierende Alternative.
+						-->
+						<div data-sol-quiz id="sol-quiz-mount">
+							<noscript>
+								<div class="sol-cta-head">
+									<span class="sol-cta-tag sol-mono">
+										<span class="sol-cta-tag-dot" aria-hidden="true"></span>
+										Marktcheck · 60 Sek
 									</span>
-								</li>
-							<?php endforeach; ?>
-						</ul>
+									<span class="sol-cta-head-right sol-mono">Kostenfrei</span>
+								</div>
+								<h2 id="sol-quiz-title" class="sol-cta-title">
+									Wo verlieren Sie heute Anfragen — und wie viel kostet Sie das?
+								</h2>
+								<p class="sol-cta-hint">
+									Aktivieren Sie JavaScript für den 60-Sek-Marktcheck oder schreiben Sie direkt an
+									<a href="mailto:hasim@hasimuener.de" style="color:var(--sol-accent);">hasim@hasimuener.de</a>.
+								</p>
+								<a
+									class="sol-cta-submit"
+									href="<?php echo esc_url( $diagnose_url ); ?>"
+									data-track-action="cta_solar_to_deep_diagnose"
+									data-track-category="lead_funnel"
+									data-track-section="hero_noscript"
+								>
+									<span>Zur Tiefendiagnose</span>
+									<span class="sol-cta-submit-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+								</a>
+							</noscript>
 
-						<a
-							class="sol-cta-submit"
-							href="<?php echo esc_url( $diagnose_url ); ?>"
-							data-track-action="cta_solar_to_diagnostic_request"
-							data-track-category="lead_funnel"
-							data-track-section="hero"
-							data-track-funnel-stage="diagnose_open"
-						>
-							<span>System-Diagnose starten</span>
-							<span class="sol-cta-submit-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-						</a>
-
-						<p class="sol-cta-fineprint">Schriftlicher Befund · 7 Werktage · Verrechenbar auf Umsetzung</p>
+							<!-- SSR-Fallback (sichtbar bis JS gemounted hat) -->
+							<div class="sol-cta-head">
+								<span class="sol-cta-tag sol-mono">
+									<span class="sol-cta-tag-dot" aria-hidden="true"></span>
+									Marktcheck · 60 Sek · 5 Fragen
+								</span>
+								<span class="sol-cta-head-right sol-mono">Kostenfrei</span>
+							</div>
+							<h2 id="sol-quiz-title" class="sol-cta-title">
+								Wo verlieren Sie heute Anfragen — und wie viel kostet Sie das?
+							</h2>
+							<p class="sol-cta-hint">
+								Fünf Fragen, 60 Sekunden. Persönliche Ersteinschätzung innerhalb von 24 h — keine Newsletter, keine Pitch-Mail.
+							</p>
+							<p class="sol-cta-fineprint" style="text-align:left;margin:0 0 14px;">Wird geladen …</p>
+						</div>
 					</div>
 				</aside>
 			</div>
@@ -360,17 +378,17 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     RESULTS — E3-Proof + Dashboard-Mock
+		     RESULTS — E3-Proof + Methodik-Snapshot
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="sol-section" id="ergebnisse" data-track-section="results">
 			<div class="sol-wrap sol-results-inner">
 				<div class="sol-results-text">
-					<div class="sol-eyebrow">Was Sie nach der Diagnose haben</div>
+					<div class="sol-eyebrow">Was die Diagnose liefert</div>
 					<h2 class="sol-display sol-results-h">
 						Klarheit, keine <em>Folien</em>.
 					</h2>
 					<p class="sol-results-sub">
-						Schriftlicher Befund nach 7 Werktagen. Vier Module, drei priorisierte Hebel, eine Wirtschaftlichkeits-Einordnung — als belastbare Entscheidungsgrundlage, nicht als Pitch-Deck.
+						Vier Module · schriftlicher Befund nach 7 Werktagen · drei priorisierte Hebel · eine Wirtschaftlichkeits-Einordnung — als belastbare Entscheidungsgrundlage, nicht als Pitch-Deck.
 					</p>
 					<ul class="sol-results-list">
 						<?php foreach ( $results_qualifiers as $row ) : ?>
@@ -471,7 +489,7 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     GUARANTEE — Risiko-Umkehr
+		     GUARANTEE
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="sol-section sol-guarantee" id="garantie" data-track-section="guarantee">
 			<div class="sol-wrap sol-guarantee-inner">
@@ -481,7 +499,7 @@ get_header();
 					Drei Hebel — auch wenn wir <em>nicht zusammenarbeiten</em>.
 				</h2>
 				<p class="sol-guarantee-sub">
-					Die Diagnose ist kein Verkaufsritual. Sie ist ein schriftlicher Befund. Wenn sich aus der Analyse keine Umsetzung ergibt, bekommen Sie trotzdem drei priorisierte Hebel mit konkretem nächstem Schritt — auch dann, wenn das heißt, dass Sie nicht mit mir weitermachen.
+					Der Marktcheck ist kein Verkaufsritual. Er ist eine ehrliche Ersteinschätzung. Wenn sich daraus keine Zusammenarbeit ergibt, bekommen Sie trotzdem drei priorisierte Hebel mit konkretem nächstem Schritt — auch dann, wenn das heißt, dass Sie nicht mit mir weitermachen.
 				</p>
 				<div class="sol-guarantee-points">
 					<?php foreach ( $guarantee_points as $p ) : ?>
@@ -512,7 +530,7 @@ get_header();
 						Bevor Sie <em>fragen</em>.
 					</h2>
 					<p class="sol-faq-sub">
-						Was hier nicht beantwortet wird, klären wir im Rahmen der System-Diagnose — schriftlich, nicht in einem Verkaufsgespräch.
+						Was hier nicht beantwortet wird, klären wir im Marktcheck — kurz, schriftlich, ohne Verkaufsgespräch.
 					</p>
 				</div>
 				<ul class="sol-faq-list">
@@ -535,7 +553,7 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     FINAL CTA
+		     FINAL CTA — zurück zum Marktcheck im Hero
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="sol-section sol-final" data-track-section="final_cta">
 			<div class="sol-wrap">
@@ -548,17 +566,17 @@ get_header();
 						Anfragen <em>besitzen</em>,<br />nicht mieten.
 					</h2>
 					<p class="sol-final-sub">
-						4-Modul-Diagnose · schriftlicher Befund nach 7 Werktagen · auf Umsetzung verrechenbar.
+						5 Fragen · 60 Sekunden · persönliche Antwort in 24 h.
 					</p>
 					<a
 						class="sol-btn sol-btn-primary sol-final-btn"
-						href="<?php echo esc_url( $diagnose_url ); ?>"
-						data-track-action="cta_solar_to_diagnostic_request"
+						href="#marktcheck"
+						data-track-action="cta_solar_final_to_marktcheck"
 						data-track-category="lead_funnel"
 						data-track-section="final_cta"
-						data-track-funnel-stage="diagnose_open"
+						data-track-funnel-stage="quiz_open"
 					>
-						<span>System-Diagnose starten</span>
+						<span>Marktcheck starten</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
 					<div class="sol-final-micro">Kein Pitch · kein Folien-Deck · konkreter nächster Schritt</div>
@@ -566,18 +584,16 @@ get_header();
 			</div>
 		</section>
 
-		<!-- ════════════════════════════════════════════════════════════
-		     STICKY MOBILE CTA
-		     ════════════════════════════════════════════════════════════ -->
+		<!-- Sticky Mobile-CTA -->
 		<a
 			class="sol-sticky-cta"
-			href="<?php echo esc_url( $diagnose_url ); ?>"
-			data-track-action="cta_solar_to_diagnostic_request"
+			href="#marktcheck"
+			data-track-action="cta_solar_sticky_to_marktcheck"
 			data-track-category="lead_funnel"
 			data-track-section="sticky_mobile"
-			data-track-funnel-stage="diagnose_open"
+			data-track-funnel-stage="quiz_open"
 		>
-			<span>System-Diagnose starten</span>
+			<span>Marktcheck starten · 60 Sek</span>
 			<span class="sol-sticky-cta-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 		</a>
 

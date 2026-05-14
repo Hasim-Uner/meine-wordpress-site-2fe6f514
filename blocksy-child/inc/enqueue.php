@@ -229,10 +229,25 @@ function hu_enqueue_assets() {
 	// ── F1a) Solar-/Wärmepumpen-Leadgenerierung (SOLARA Redesign) ──
 	// Eigene CSS/JS-Stack; legacy energy-systems / review-funnel werden hier
 	// bewusst NICHT geladen, weil das Template ein eigenes Visual-System hat
-	// und keinen In-Page-Funnel mehr enthält (CTA → /system-diagnose/).
+	// und einen 60-Sek-Marktcheck im Hero rendert (REST → CRM).
 	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) ) {
 		hu_enqueue_css( 'nexus-solar-leadgen-solara-css', 'solar-leadgenerierung-solara.css', [ 'nexus-design-system' ] );
 		hu_enqueue_js( 'nexus-solar-leadgen-solara-js', 'solar-leadgenerierung-solara.js', [ 'nexus-core-js' ] );
+
+		$marktcheck_cfg = [
+			'restEndpoint' => esc_url_raw( rest_url( 'nexus/v1/audit-request' ) ),
+			'calcomUrl'    => function_exists( 'hu_get_analysis_calcom_base_url' )
+				? hu_get_analysis_calcom_base_url()
+				: 'https://cal.com/hasim-uener/30min?overlayCalendar=true',
+			'diagnoseUrl'  => function_exists( 'hu_get_request_analysis_url' )
+				? hu_get_request_analysis_url()
+				: home_url( '/system-diagnose/' ),
+			'privacyUrl'   => home_url( '/datenschutz/' ),
+			'pageUrl'      => function_exists( 'nexus_get_energy_systems_url' )
+				? nexus_get_energy_systems_url()
+				: home_url( '/solar-waermepumpen-leadgenerierung/' ),
+		];
+		wp_localize_script( 'nexus-solar-leadgen-solara-js', 'NexusMarktcheckConfig', $marktcheck_cfg );
 	}
 
 	// ── F1b) Schwester-Templates (E3-Case, Service-Landing) ────────
