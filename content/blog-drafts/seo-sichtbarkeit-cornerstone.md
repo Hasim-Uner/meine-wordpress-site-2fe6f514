@@ -232,9 +232,9 @@ Er gewinnt bessere Lead-Qualität, stabilere Akquisekosten und mehr Kontrolle ü
 
 ## Interne Verlinkung (direkt einbauen)
 
-- [Technisches SEO Audit für WordPress](/wordpress-seo-hannover/)
+- [Technisches SEO Audit für WordPress](/wordpress-agentur-hannover/#technisches-seo)
 - [Growth Audit für bessere Conversion-Pfade](/growth-audit/)
-- [WGOS: Das System hinter nachhaltigem Wachstum](/wordpress-growth-operating-system/)
+- [WGOS: Das System hinter nachhaltigem Wachstum](/wordpress-agentur-hannover/#wgos)
 - [Ergebnisse mit messbaren Resultaten](/ergebnisse/)
 
 ## FAQ für den Artikel

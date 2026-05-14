@@ -32,8 +32,8 @@ Privacy-first bedeutet nicht weniger Steuerung. Es bedeutet, dass Tracking, Cons
 ## Primaere interne Links
 
 - `/ga4-tracking-setup/`
-- `/wordpress-growth-operating-system/`
-- `/conversion-rate-optimization/`
+- `/wordpress-agentur-hannover/#wgos`
+- `/wordpress-agentur-hannover/#wgos`
 - `/growth-audit/`
 
 ## Gliederung

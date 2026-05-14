@@ -32,8 +32,8 @@ Die eigentliche Entscheidung lautet nicht `WordPress oder HubSpot?`, sondern: We
 ## Primaere interne Links
 
 - `/wordpress-agentur-hannover/`
-- `/wordpress-growth-operating-system/`
-- `/wordpress-seo-hannover/`
+- `/wordpress-agentur-hannover/#wgos`
+- `/wordpress-agentur-hannover/#technisches-seo`
 - `/ga4-tracking-setup/`
 - `/growth-audit/`
 
