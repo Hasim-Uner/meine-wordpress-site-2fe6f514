@@ -149,6 +149,116 @@ function nexus_get_wgos_asset_registry() {
 }
 
 /**
+ * Normalize registry core-area labels to the public six-step keys.
+ *
+ * @param string $core_area Registry core area label.
+ * @return string
+ */
+function hue_get_wgos_kernbereich_key( $core_area ) {
+	$lookup = [
+		'strategie'               => 'strategie',
+		'technisches-fundament'   => 'fundament',
+		'fundament'               => 'fundament',
+		'messbarkeit'             => 'messbarkeit',
+		'sichtbarkeit'            => 'sichtbarkeit',
+		'conversion'              => 'conversion',
+		'weiterentwicklung'       => 'weiterentwicklung',
+	];
+
+	$key = sanitize_title( (string) $core_area );
+
+	return $lookup[ $key ] ?? $key;
+}
+
+/**
+ * Return the public label for one WGOS core-area key.
+ *
+ * @param string $area Core-area key.
+ * @return string
+ */
+function hue_kernbereich_label( $area ) {
+	$labels = [
+		'strategie'         => 'Strategie',
+		'fundament'         => 'Fundament',
+		'messbarkeit'       => 'Messbarkeit',
+		'sichtbarkeit'      => 'Sichtbarkeit',
+		'conversion'        => 'Conversion',
+		'weiterentwicklung' => 'Weiterentwicklung',
+	];
+
+	$key = sanitize_title( (string) $area );
+
+	return $labels[ $key ] ?? (string) $area;
+}
+
+/**
+ * Check whether a registry asset is public and has a public detail route.
+ *
+ * @param string $slug Registry asset slug.
+ * @return bool
+ */
+function hue_wgos_asset_exists_and_published( $slug ) {
+	$definition = nexus_get_wgos_asset_definition( $slug );
+
+	if ( empty( $definition['slug'] ) || 'publish' !== (string) ( $definition['status'] ?? '' ) ) {
+		return false;
+	}
+
+	$post = nexus_get_wgos_asset_registry_post( $definition );
+
+	return $post instanceof WP_Post && 'publish' === $post->post_status;
+}
+
+/**
+ * Return the preferred public URL for a WGOS asset or a fallback target.
+ *
+ * @param string $slug     Registry asset slug.
+ * @param string $fallback Fallback URL.
+ * @return string
+ */
+function hue_get_wgos_asset_redirect_url( $slug, $fallback = '' ) {
+	$slug = sanitize_title( (string) $slug );
+
+	if ( '' !== $slug && hue_wgos_asset_exists_and_published( $slug ) ) {
+		return trailingslashit( home_url( '/wgos-assets/' . $slug ) );
+	}
+
+	return $fallback ? $fallback : home_url( '/wordpress-agentur-hannover/#wgos' );
+}
+
+/**
+ * Compatibility wrapper for page templates that need a compact public registry.
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function hue_get_wgos_asset_registry() {
+	$public_registry = [];
+
+	foreach ( nexus_get_wgos_asset_registry() as $slug => $asset ) {
+		$asset_slug  = sanitize_title( (string) ( $asset['slug'] ?? $slug ) );
+		$status      = 'publish' === (string) ( $asset['status'] ?? '' ) ? 'published' : 'draft';
+		$area_key    = hue_get_wgos_kernbereich_key( (string) ( $asset['core_area'] ?? '' ) );
+		$detail_url  = 'published' === $status
+			? trailingslashit( home_url( '/wgos-assets/' . $asset_slug ) )
+			: nexus_get_wgos_asset_anchor_url( $asset_slug );
+
+		$public_registry[ $asset_slug ] = array_merge(
+			$asset,
+			[
+				'slug'        => $asset_slug,
+				'status'      => $status,
+				'status_raw'  => (string) ( $asset['status'] ?? '' ),
+				'kernbereich' => $area_key,
+				'short'       => (string) ( $asset['excerpt'] ?? '' ),
+				'url'         => $detail_url,
+			]
+		);
+	}
+
+	return $public_registry;
+}
+
+/**
  * Build a lookup map for registry slugs, legacy slugs and titles.
  *
  * @return array<string, array<string, mixed>>

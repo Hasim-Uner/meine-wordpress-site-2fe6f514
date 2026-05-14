@@ -484,6 +484,17 @@ function nexus_get_primary_public_url_map() {
 	}
 
 	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+	$agentur_url = nexus_get_page_url(
+		[ 'wordpress-agentur-hannover', 'wordpress-agentur' ],
+		home_url( '/wordpress-agentur-hannover/' )
+	);
+	$wgos_url    = trailingslashit( $agentur_url ) . '#wgos';
+	$asset_url   = trailingslashit( $agentur_url ) . '#asset-uebersicht';
+	$seo_url     = trailingslashit( $agentur_url ) . '#technisches-seo';
+	$cro_url     = trailingslashit( $agentur_url ) . '#wgos';
+	$cwv_url     = function_exists( 'hue_get_wgos_asset_redirect_url' )
+		? hue_get_wgos_asset_redirect_url( 'cwv-optimierung', trailingslashit( $agentur_url ) . '#wgos' )
+		: home_url( '/wgos-assets/cwv-optimierung/' );
 
 	$urls = [
 		'home'                 => home_url( '/' ),
@@ -491,22 +502,14 @@ function nexus_get_primary_public_url_map() {
 		'audit'                => $request_url,
 		'audit_linkedin'       => function_exists( 'nexus_get_audit_linkedin_url' ) ? nexus_get_audit_linkedin_url() : home_url( '/audit-linkedin/' ),
 		'results'              => function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/ergebnisse/' ),
-		'wgos'                 => nexus_get_page_url(
-			[ 'wordpress-growth-operating-system', 'wgos' ],
-			home_url( '/wordpress-growth-operating-system/' )
-		),
+		'wgos'                 => $wgos_url,
+		'wgos_assets'          => $asset_url,
 		'glossary'             => nexus_get_page_url(
 			[ 'glossar' ],
 			home_url( '/glossar/' )
 		),
-		'agentur'              => nexus_get_page_url(
-			[ 'wordpress-agentur-hannover', 'wordpress-agentur' ],
-			home_url( '/wordpress-agentur-hannover/' )
-		),
-		'seo'                  => nexus_get_wgos_cluster_route_url(
-			'wordpress-seo-hannover',
-			home_url( '/wordpress-seo-hannover/' )
-		),
+		'agentur'              => $agentur_url,
+		'seo'                  => $seo_url,
 		'wartung'              => nexus_get_wgos_cluster_route_url(
 			'wordpress-wartung-hannover',
 			home_url( '/wordpress-wartung-hannover/' )
@@ -515,14 +518,8 @@ function nexus_get_primary_public_url_map() {
 			'ga4-tracking-setup',
 			home_url( '/ga4-tracking-setup/' )
 		),
-		'cwv'                  => nexus_get_wgos_cluster_route_url(
-			'core-web-vitals',
-			home_url( '/core-web-vitals/' )
-		),
-		'cro'                  => nexus_get_wgos_cluster_route_url(
-			'conversion-rate-optimization',
-			home_url( '/conversion-rate-optimization/' )
-		),
+		'cwv'                  => $cwv_url,
+		'cro'                  => $cro_url,
 		'performance_marketing'=> nexus_get_wgos_cluster_route_url(
 			'performance-marketing',
 			home_url( '/performance-marketing/' )
@@ -578,6 +575,50 @@ function nexus_get_primary_public_url( $key, $fallback = '' ) {
 	}
 
 	return $fallback ? $fallback : home_url( '/' );
+}
+
+/**
+ * Return the FAQ set for the consolidated local WordPress agency page.
+ *
+ * Shared between the page template and centralized JSON-LD output.
+ *
+ * @return array<int, array{question: string, answer: string}>
+ */
+function nexus_get_agentur_faq_items() {
+	return [
+		[
+			'question' => 'Welche WordPress Agentur in Hannover hilft bei Leadgenerierung für B2B?',
+			'answer'   => 'Die passende Agentur verbindet nicht nur Design und Entwicklung, sondern auch Angebotsseiten, technische SEO, Tracking und Conversion-Führung. Genau darauf ist diese Seite ausgerichtet: WordPress als Nachfrage-System für B2B statt isolierter Einzelleistungen.',
+		],
+		[
+			'question' => 'Arbeiten Sie nur in Hannover oder auch in Pattensen und der Region Hannover?',
+			'answer'   => 'Der Standort ist Pattensen bei Hannover. Workshops, Reviews und persönliche Termine sind in Hannover und der Region möglich. Die Umsetzung funktioniert zusätzlich DACH-weit remote.',
+		],
+		[
+			'question' => 'Unterstützen Sie auch Tracking und Conversion-Optimierung oder nur WordPress-Entwicklung?',
+			'answer'   => 'Ja. Die Arbeit umfasst WordPress-Entwicklung, technische SEO, GA4- und Tracking-Setups, Conversion-Führung und die Priorisierung kaufnaher Seiten. Diese Verbindung ist für B2B-Anfragen meist entscheidend.',
+		],
+		[
+			'question' => 'Wann ist die Agentur-Seite der richtige Einstieg und wann die System-Diagnose?',
+			'answer'   => 'Die Agentur-Seite ist richtig, wenn Sie den Gesamtkontext verstehen wollen. Die System-Diagnose ist der bessere nächste Schritt, wenn klar werden soll, ob zuerst SEO, Tracking, Performance oder Conversion den größten Hebel hat.',
+		],
+		[
+			'question' => 'Brauche ich für WordPress-Wachstum einen Relaunch?',
+			'answer'   => 'Meist nicht. Oft fehlt nicht der neue Look, sondern die richtige Reihenfolge zwischen Fundament, Daten, Sichtbarkeit und Conversion. Ein Relaunch ist nur sinnvoll, wenn die Diagnose zeigt, dass die bestehende Struktur nicht mehr trägt.',
+		],
+		[
+			'question' => 'Was unterscheidet WGOS von einem klassischen Agentur-Projekt?',
+			'answer'   => 'WGOS ordnet Strategie, Technik, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängendes System. Code, Inhalte und Zugänge bleiben bei Ihnen; die Leistung liegt in der richtigen Reihenfolge und sauberen Umsetzung.',
+		],
+		[
+			'question' => 'Wie lange dauert SEO, bis es wirkt?',
+			'answer'   => 'Technische Korrekturen können Indexierung, Crawling und Geschwindigkeit kurzfristig verbessern. Inhaltliche Rankings brauchen meist drei bis sechs Monate. SEO ist Eigentum, nicht gemietete Reichweite wie Ads.',
+		],
+		[
+			'question' => 'Warum rankt eine WordPress-Seite, liefert aber keine Anfragen?',
+			'answer'   => 'Ranking und Anfragequalität sind zwei verschiedene Probleme. Oft rankt eine Seite für Informationssuchen, während Proof, CTA-Führung und kaufnahe Argumentation fehlen. Genau dort verbindet diese Arbeit SEO, Struktur und Conversion.',
+		],
+	];
 }
 
 /**
@@ -881,6 +922,9 @@ add_action( 'init', 'nexus_maybe_ensure_energy_systems_page', 27 );
 function nexus_get_legacy_offer_redirect_map() {
 	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
 	$request_url = nexus_get_primary_request_url();
+	$cwv_target  = function_exists( 'hue_get_wgos_asset_redirect_url' )
+		? hue_get_wgos_asset_redirect_url( 'cwv-optimierung', trailingslashit( $agentur_url ) . '#wgos' )
+		: trailingslashit( $agentur_url ) . '#wgos';
 
 	return [
 		// Audit- und Tool-Routen sind in der neuen Positionierung retired.
@@ -896,9 +940,12 @@ function nexus_get_legacy_offer_redirect_map() {
 		'/kostenlose-tools/website-performance-analyse/' => $request_url,
 		'/tools/website-performance-analyse/' => $request_url,
 		'/roi-rechner/'                => $request_url,
-		// SEO- und Wartungs-Seiten konsolidiert auf die Agentur-Money-Page (Anker-Sektionen).
-		// Löst Kannibalisierung für "wordpress agentur hannover" + transferiert SEO-Equity.
+		// Erklär- und Service-Ebenen konsolidiert auf die Agentur-Money-Page oder passende Assets.
+		'/wordpress-growth-operating-system/' => trailingslashit( $agentur_url ) . '#wgos',
+		'/wgos-systemlandkarte/'       => trailingslashit( $agentur_url ) . '#asset-uebersicht',
 		'/wordpress-seo-hannover/'     => trailingslashit( $agentur_url ) . '#technisches-seo',
+		'/core-web-vitals/'            => $cwv_target,
+		'/conversion-rate-optimization/' => trailingslashit( $agentur_url ) . '#wgos',
 		'/wordpress-wartung-hannover/' => trailingslashit( $agentur_url ) . '#wordpress-wartung',
 		'/seo/'                        => trailingslashit( $agentur_url ) . '#technisches-seo',
 		'/wordpress-agentur/'          => $agentur_url,
@@ -906,6 +953,90 @@ function nexus_get_legacy_offer_redirect_map() {
 }
 
 add_action( 'template_redirect', 'nexus_redirect_legacy_offer_paths', 2 );
+
+/**
+ * Return page slugs that are intentionally retired behind 301 redirects.
+ *
+ * @return array<int, string>
+ */
+function nexus_get_retired_money_page_slugs() {
+	return [
+		'wordpress-growth-operating-system',
+		'wgos-systemlandkarte',
+		'wordpress-seo-hannover',
+		'core-web-vitals',
+		'conversion-rate-optimization',
+		'wordpress-tech-audit',
+		'wordpress-wartung-hannover',
+	];
+}
+
+add_filter( 'wp_sitemaps_posts_query_args', 'nexus_exclude_retired_money_pages_from_native_sitemap', 20, 2 );
+/**
+ * Keep retired service pages out of the native WordPress sitemap.
+ *
+ * @param array<string, mixed> $args      WP_Query args.
+ * @param string              $post_type Sitemap post type.
+ * @return array<string, mixed>
+ */
+function nexus_exclude_retired_money_pages_from_native_sitemap( $args, $post_type ) {
+	if ( 'page' !== $post_type ) {
+		return $args;
+	}
+
+	$exclude_ids = [];
+
+	foreach ( nexus_get_retired_money_page_slugs() as $slug ) {
+		$page = get_page_by_path( $slug );
+
+		if ( $page instanceof WP_Post ) {
+			$exclude_ids[] = (int) $page->ID;
+		}
+	}
+
+	if ( empty( $exclude_ids ) ) {
+		return $args;
+	}
+
+	$args['post__not_in'] = array_values(
+		array_unique(
+			array_merge(
+				isset( $args['post__not_in'] ) ? (array) $args['post__not_in'] : [],
+				$exclude_ids
+			)
+		)
+	);
+
+	return $args;
+}
+
+/**
+ * Preserve the current request query string when redirecting legacy URLs.
+ *
+ * @param string $target_url Absolute redirect target.
+ * @return string
+ */
+function nexus_append_current_query_to_redirect_url( $target_url ) {
+	$query_string = isset( $_SERVER['QUERY_STRING'] ) ? trim( (string) wp_unslash( $_SERVER['QUERY_STRING'] ) ) : '';
+
+	if ( '' === $query_string ) {
+		return $target_url;
+	}
+
+	$fragment = '';
+	$base_url  = $target_url;
+
+	if ( false !== strpos( $target_url, '#' ) ) {
+		$parts    = explode( '#', $target_url, 2 );
+		$base_url = $parts[0];
+		$fragment = '#' . $parts[1];
+	}
+
+	$separator = false === strpos( $base_url, '?' ) ? '?' : '&';
+
+	return $base_url . $separator . $query_string . $fragment;
+}
+
 /**
  * Redirect deprecated service and tool slugs to their current canonical destinations.
  *
@@ -930,7 +1061,7 @@ function nexus_redirect_legacy_offer_paths() {
 		return;
 	}
 
-	wp_safe_redirect( $target_url, 301 );
+	wp_safe_redirect( nexus_append_current_query_to_redirect_url( $target_url ), 301 );
 	exit;
 }
 

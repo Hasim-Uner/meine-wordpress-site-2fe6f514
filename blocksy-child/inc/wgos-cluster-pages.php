@@ -22,7 +22,7 @@ function nexus_get_wgos_cluster_page_data() {
 	}
 
 	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
-	$seo_url     = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-seo-hannover/' ) );
+	$seo_url     = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) );
 
 	$pages = [
 		'wordpress-seo-hannover' => [
@@ -479,7 +479,7 @@ function nexus_get_wgos_cluster_page_asset_cards( $page ) {
 
 		$cards[] = [
 			'title'   => is_array( $asset ) && ! empty( $asset['title'] ) ? (string) $asset['title'] : ucwords( str_replace( '-', ' ', (string) $slug ) ),
-			'url'     => function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( (string) $slug ) : home_url( '/wgos-systemlandkarte/#asset-' . sanitize_title( (string) $slug ) ),
+			'url'     => function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( (string) $slug ) : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' ),
 			'context' => (string) $context,
 		];
 	}
@@ -539,8 +539,8 @@ function nexus_get_wgos_cluster_page_method_steps() {
  */
 function nexus_render_wgos_cluster_page( $page ) {
 	$audit_url     = nexus_get_audit_url();
-	$wgos_url      = function_exists( 'nexus_get_wgos_url' ) ? nexus_get_wgos_url() : home_url( '/wordpress-growth-operating-system/' );
-	$asset_hub_url = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wgos-systemlandkarte/' );
+	$wgos_url      = function_exists( 'nexus_get_wgos_url' ) ? nexus_get_wgos_url() : home_url( '/wordpress-agentur-hannover/#wgos' );
+	$asset_hub_url = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' );
 	$results_url   = nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) );
 	$cards         = nexus_get_wgos_cluster_page_asset_cards( $page );
 	$blogs         = isset( $page['blogs'] ) && is_array( $page['blogs'] ) ? $page['blogs'] : [];
@@ -772,10 +772,6 @@ function nexus_render_wgos_cluster_page( $page ) {
  */
 function nexus_get_wgos_cluster_route_templates() {
 	return [
-		'wordpress-seo-hannover'       => get_stylesheet_directory() . '/page-seo.php',
-		'wordpress-wartung-hannover'   => get_stylesheet_directory() . '/page-wordpress-wartung-hannover.php',
-		'core-web-vitals'              => get_stylesheet_directory() . '/page-cwv.php',
-		'conversion-rate-optimization' => get_stylesheet_directory() . '/page-cro.php',
 		'ga4-tracking-setup'           => get_stylesheet_directory() . '/page-ga4.php',
 		'performance-marketing'        => get_stylesheet_directory() . '/page-performance.php',
 	];
@@ -1008,10 +1004,10 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 	}
 
 	$agentur_url             = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
-	$seo_url                 = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-seo-hannover/' ) );
+	$seo_url                 = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) );
 	$tracking_url            = nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) );
-	$cwv_url                 = nexus_get_primary_public_url( 'cwv', home_url( '/core-web-vitals/' ) );
-	$cro_url                 = nexus_get_primary_public_url( 'cro', home_url( '/conversion-rate-optimization/' ) );
+	$cwv_url                 = nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) );
+	$cro_url                 = nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#wgos' ) );
 	$performance_marketing_url = nexus_get_primary_public_url( 'performance_marketing', home_url( '/performance-marketing/' ) );
 
 	$seo_foundation_bridge = [

@@ -11,7 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $audit_url = nexus_get_audit_url();
-$wgos_url  = nexus_get_page_url( [ 'wordpress-growth-operating-system', 'wgos' ] );
+$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+$agentur_url = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
+$wgos_url  = $primary_urls['wgos'] ?? trailingslashit( $agentur_url ) . '#wgos';
 $cases_url = nexus_get_results_url();
 $about_url = nexus_get_page_url( [ 'uber-mich' ] );
 $contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
@@ -22,17 +24,14 @@ $implementation_contact_url = add_query_arg(
 	$contact_url
 );
 $e3_url    = nexus_get_page_url( [ 'e3-new-energy' ] );
-$seo_url   = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-seo-hannover/' ) );
-$tracking_url = nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) );
 $wartung_url = nexus_get_primary_public_url( 'wartung', home_url( '/wordpress-wartung-hannover/' ) );
 $measurement_url = nexus_get_wgos_asset_anchor_url( 'tracking-audit' );
-$cro_url   = nexus_get_primary_public_url( 'cro', home_url( '/conversion-rate-optimization/' ) );
+$cro_url   = $primary_urls['cro'] ?? trailingslashit( $agentur_url ) . '#wgos';
 $proof_metrics = function_exists( 'nexus_get_public_proof_metric_list' ) ? nexus_get_public_proof_metric_list( [ 'lead_count', 'sales_conversion', 'cpl_reduction' ] ) : [];
 $e3_cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', 'über 85 %' ) : 'über 85 %';
 $e3_lead_count = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
 $e3_sales_conversion = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '12 %' ) : '12 %';
 $canonical_ownership_sentence = function_exists( 'nexus_get_public_ownership_sentence' ) ? nexus_get_public_ownership_sentence() : 'Code, Inhalte, Zugänge und Setups bleiben bei Ihnen. Laufende Zusammenarbeit bedeutet Weiterentwicklung, nicht Abhängigkeit.';
-$primary_term                = function_exists( 'nexus_get_public_primary_term' ) ? nexus_get_public_primary_term() : 'WordPress als Nachfrage-System für B2B';
 $audit_cta_label             = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'System-Diagnose anfragen';
 $audit_compact_microcopy     = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : '60 Sek. · priorisierte Hebel · keine E-Mail';
 
@@ -82,32 +81,23 @@ $service_items = [
 	'Laufende Weiterentwicklung mit klarer Priorisierung statt Relaunch-Zyklen',
 ];
 
-$faq_items = [
-	[
-		'question' => 'Welche WordPress Agentur in Hannover hilft bei Leadgenerierung für B2B?',
-		'answer'   => 'Die passende Agentur verbindet nicht nur Design und Entwicklung, sondern auch Angebotsseiten, technische SEO, Tracking und Conversion-Führung. Genau darauf ist diese Seite ausgerichtet: WordPress als Nachfrage-System für B2B statt isolierter Einzelleistungen.',
-	],
-	[
-		'question' => 'Arbeiten Sie nur in Hannover oder auch in Pattensen und der Region Hannover?',
-		'answer'   => 'Der Standort ist Pattensen bei Hannover. Workshops, Reviews und persönliche Termine sind in Hannover und der Region problemlos möglich. Die Umsetzung funktioniert zusätzlich DACH-weit remote.',
-	],
-	[
-		'question' => 'Unterstützen Sie auch Tracking und Conversion-Optimierung oder nur WordPress-Entwicklung?',
-		'answer'   => 'Ja. Die Arbeit umfasst nicht nur WordPress-Entwicklung, sondern auch technische SEO, GA4- und Tracking-Setups, Conversion Rate Optimierung und die Priorisierung kaufnaher Seiten. Genau diese Kombination ist für Leadgenerierung im B2B meist entscheidend.',
-	],
-	[
-		'question' => 'Wann ist die Agentur-Seite der richtige Einstieg und wann die System-Diagnose?',
-		'answer'   => 'Die Agentur-Seite ist richtig, wenn Sie den Gesamtkontext verstehen wollen. Die System-Diagnose ist der bessere nächste Schritt, wenn klar werden soll, ob zuerst SEO, Tracking, Performance oder Conversion den größten Hebel hat.',
-	],
-	[
-		'question' => 'Warum rankt eine WordPress-Seite, liefert aber keine Anfragen?',
-		'answer'   => 'Ranking und Konversion sind zwei verschiedene Probleme. Oft rankt eine Seite für Begriffe mit Informations-Intent, nicht für kaufnahe Suchen. Dazu kommen fehlende Proof-Signale, kein klarer nächster Schritt und Formulare, die zu spät im Seitenfluss erscheinen. Genau dort setzt die Kombination aus technischer SEO, Angebotsseiten-Struktur und Conversion-Führung an.',
-	],
-	[
-		'question' => 'Bieten Sie WordPress-Optimierung auch in Pattensen und der Region Hannover an?',
-		'answer'   => 'Ja. Der Standort ist Pattensen bei Hannover. Persönliche Termine, Workshops und Reviews sind in der gesamten Region Hannover möglich. Gleichzeitig funktioniert die Zusammenarbeit vollständig remote für Kunden in ganz Deutschland, Österreich und der Schweiz.',
-	],
-];
+$faq_items = function_exists( 'nexus_get_agentur_faq_items' ) ? nexus_get_agentur_faq_items() : [];
+$asset_registry = function_exists( 'hue_get_wgos_asset_registry' ) ? hue_get_wgos_asset_registry() : [];
+$published_assets = array_filter(
+	$asset_registry,
+	static function ( $asset ) {
+		return is_array( $asset ) && 'published' === (string) ( $asset['status'] ?? '' );
+	}
+);
+$grouped_assets = [];
+foreach ( $published_assets as $asset ) {
+	$area_key = isset( $asset['kernbereich'] ) ? (string) $asset['kernbereich'] : '';
+	if ( '' === $area_key ) {
+		continue;
+	}
+	$grouped_assets[ $area_key ][] = $asset;
+}
+$ordered_asset_areas = [ 'strategie', 'fundament', 'messbarkeit', 'sichtbarkeit', 'conversion', 'weiterentwicklung' ];
 
 get_header();
 ?>
@@ -177,7 +167,7 @@ get_header();
 			</div>
 		</section>
 
-		<section id="unterschied" class="nx-section">
+		<section id="vergleich" class="nx-section">
 			<div class="nx-container">
 				<div class="nx-section-header">
 					<h2 class="nx-headline-section">Was hier anders läuft.</h2>
@@ -211,7 +201,7 @@ get_header();
 								<tr>
 									<td>SEO</td>
 									<td>Plugin und Grundoptimierung</td>
-									<td>IA, Money Pages, Proof und Suchintention als Verbund</td>
+									<td>IA, kaufnahe Seiten, Proof und Suchintention als Verbund</td>
 								</tr>
 								<tr>
 									<td>Tracking</td>
@@ -240,7 +230,7 @@ get_header();
 			</div>
 		</section>
 
-		<section id="angebot" class="nx-section">
+		<section id="leistungen" class="nx-section">
 			<div class="nx-container">
 				<div class="nx-section-header">
 					<h2 class="nx-headline-section">Was ich für B2B-Unternehmen umsetze.</h2>
@@ -252,8 +242,8 @@ get_header();
 						<?php endforeach; ?>
 					</ul>
 					<div class="wp-agentur-actions wp-agentur-actions--center">
-						<a href="<?php echo esc_url( $audit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_services_audit" data-track-category="lead_gen">Audit starten</a>
-						<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_services_wgos" data-track-category="navigation">WGOS ansehen</a>
+						<a href="<?php echo esc_url( $audit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_services_audit" data-track-category="lead_gen">System-Diagnose starten</a>
+						<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_services_wgos" data-track-category="navigation">Arbeitsweise ansehen</a>
 					</div>
 				</div>
 			</div>
@@ -275,74 +265,141 @@ get_header();
 			</div>
 		</section>
 
-		<section id="wgos" class="nx-section">
+		<section id="wgos" class="nx-section wgos-explainer">
 			<div class="nx-container">
 				<div class="nx-section-header">
-					<h2 class="nx-headline-section">Mein Ansatz: Das WordPress Growth Operating System (WGOS)</h2>
+					<span class="wp-agentur-eyebrow">WGOS · Arbeitsweise</span>
+					<h2 class="nx-headline-section">Nicht mehr machen. Sondern das Richtige in der richtigen Reihenfolge.</h2>
+					<p class="wp-agentur-section-intro">WGOS ist kein Plugin und kein Seitenpaket, sondern eine Arbeitsweise: Strategie, Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung werden als ein zusammenhängendes System behandelt, nicht als isolierte Maßnahmen.</p>
 				</div>
-				<div class="nx-prose wp-agentur-prose">
-					<p>WGOS ist kein Plugin und kein Seitenpaket, sondern eine Arbeitsweise: Angebotsseiten, technische SEO, Tracking, Conversion und Betrieb werden als zusammenhängendes System behandelt, nicht als isolierte Maßnahmen. Für B2B-Unternehmen heißt das: Erst Diagnose, dann Priorisierung, dann kontrollierte Umsetzung auf die größten Hebel.</p>
-					<p>Jeder Baustein hat eine klare Reihenfolge und wird erst dann aktiviert, wenn das Fundament trägt. So entsteht kein Projektrisiko, sondern ein steuerbares Nachfrage-System.</p>
-					<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_wgos_detail" data-track-category="navigation">WGOS kennenlernen</a>
+				<ol class="wgos-steps" aria-label="Sechs Kernbereiche in fester Reihenfolge">
+					<li>
+						<span class="step-num">01</span>
+						<h3>Strategie</h3>
+						<p>Angebotslogik, Engpässe, Seitenrollen und Zielpfade klären, bevor Maßnahmen geplant werden.</p>
+					</li>
+					<li>
+						<span class="step-num">02</span>
+						<h3>Fundament</h3>
+						<p>Performance, Core Web Vitals, Sicherheit und Update-Logik als technische Basis, die trägt.</p>
+					</li>
+					<li>
+						<span class="step-num">03</span>
+						<h3>Messbarkeit</h3>
+						<p>GA4, Server-Side Tracking, Consent und KPI-Klarheit als saubere Entscheidungsgrundlage.</p>
+					</li>
+					<li>
+						<span class="step-num">04</span>
+						<h3>Sichtbarkeit</h3>
+						<p>Technisches SEO, Suchintention und Pillar-Logik auf kaufnahe Themen konzentrieren.</p>
+					</li>
+					<li>
+						<span class="step-num">05</span>
+						<h3>Conversion</h3>
+						<p>Argumentationsstruktur, Proof, CTA-Führung und Formulare vom Besuch zur Anfrage ordnen.</p>
+					</li>
+					<li>
+						<span class="step-num">06</span>
+						<h3>Weiterentwicklung</h3>
+						<p>Auswertung, Priorisierung und kontrollierte Iteration auf die größten Hebel ausrichten.</p>
+					</li>
+				</ol>
+
+				<div class="wgos-vs">
+					<div class="wgos-vs__side wgos-vs__side--muted">
+						<h3>Klassische Umsetzung</h3>
+						<ul>
+							<li>Leistungen werden einzeln beauftragt und nebeneinander umgesetzt</li>
+							<li>SEO, Tracking und Conversion folgen verschiedenen Logiken</li>
+							<li>Erfolg hängt an Einzelaktionen statt am System</li>
+							<li>Die Website bleibt Präsenz, nicht Nachfrage-Struktur</li>
+						</ul>
+					</div>
+					<div class="wgos-vs__side wgos-vs__side--accent">
+						<h3>WGOS</h3>
+						<ul>
+							<li>Alle Bausteine werden über ein gemeinsames Ziel geordnet</li>
+							<li>Die Reihenfolge ist Teil der Leistung, nicht nur die Umsetzung</li>
+							<li>Messbarkeit und Nutzerführung gehören zum Fundament</li>
+							<li>Die Website wird zu einem strukturierten Nachfrage-System</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</section>
 
-		<section id="leistungen" class="nx-section">
+		<section id="asset-uebersicht" class="nx-section wgos-asset-grid-section">
 			<div class="nx-container">
 				<div class="nx-section-header">
-					<h2 class="nx-headline-section">Spezialisierte Leistungen</h2>
+					<span class="wp-agentur-eyebrow">Bausteine · Asset-Übersicht</span>
+					<h2 class="nx-headline-section">Welcher Baustein zuerst sinnvoll ist, klärt die Diagnose.</h2>
+					<p class="wp-agentur-section-intro">Jeder Baustein hat einen festen Platz im System. Die Übersicht zeigt nur publizierte Assets. Nicht alles wird in jedem Projekt gebaut, sondern das, was zuerst Wirkung erzeugt.</p>
 				</div>
-				<div class="wp-agentur-spoke-grid">
-					<a href="#technisches-seo" class="wp-agentur-spoke-card" data-track-action="cta_agentur_spoke_seo" data-track-category="navigation">
-						<span class="wp-agentur-spoke-card__title">Technisches SEO</span>
-						<span class="wp-agentur-spoke-card__desc">Crawlability, Seitenstruktur, interne Verlinkung und technische Fixes für kaufnahe Rankings.</span>
-					</a>
-					<a href="<?php echo esc_url( $tracking_url ); ?>" class="wp-agentur-spoke-card" data-track-action="cta_agentur_spoke_tracking" data-track-category="navigation">
-						<span class="wp-agentur-spoke-card__title">GA4 Tracking Setup</span>
-						<span class="wp-agentur-spoke-card__desc">GA4, GTM, Consent und serverseitige Signale für belastbare Lead- und Nachfrage-Daten.</span>
-					</a>
-					<a href="<?php echo esc_url( $cro_url ); ?>" class="wp-agentur-spoke-card" data-track-action="cta_agentur_spoke_cro" data-track-category="navigation">
-						<span class="wp-agentur-spoke-card__title">Conversion Rate Optimierung für WordPress</span>
-						<span class="wp-agentur-spoke-card__desc">Angebotsseiten, Proof, CTA-Führung und Formulare so ordnen, dass aus Besuchern Anfragen werden.</span>
-					</a>
-					<a href="#wordpress-wartung" class="wp-agentur-spoke-card" data-track-action="cta_agentur_spoke_wartung" data-track-category="navigation">
-						<span class="wp-agentur-spoke-card__title">WordPress Wartung Hannover</span>
-						<span class="wp-agentur-spoke-card__desc">Updates, Sicherheit, Backups und stabile Betriebsroutinen als Fundament für alles andere.</span>
-					</a>
+				<div class="wgos-asset-grid">
+					<?php foreach ( $ordered_asset_areas as $area ) : ?>
+						<?php if ( empty( $grouped_assets[ $area ] ) ) : ?>
+							<?php continue; ?>
+						<?php endif; ?>
+						<section class="asset-area" aria-labelledby="<?php echo esc_attr( 'asset-area-' . $area ); ?>">
+							<h3 id="<?php echo esc_attr( 'asset-area-' . $area ); ?>" class="area-title"><?php echo esc_html( hue_kernbereich_label( $area ) ); ?></h3>
+							<ul class="asset-list">
+								<?php foreach ( $grouped_assets[ $area ] as $asset ) : ?>
+									<li>
+										<a href="<?php echo esc_url( (string) $asset['url'] ); ?>" data-track-action="cta_agentur_asset_detail" data-track-category="navigation">
+											<span class="asset-name"><?php echo esc_html( (string) $asset['title'] ); ?></span>
+											<?php if ( ! empty( $asset['short'] ) ) : ?>
+												<span class="asset-short"><?php echo esc_html( (string) $asset['short'] ); ?></span>
+											<?php endif; ?>
+										</a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</section>
+					<?php endforeach; ?>
 				</div>
 			</div>
 		</section>
 
-		<section id="technisches-seo" class="nx-section">
+		<section id="technisches-seo" class="nx-section seo-cluster">
 			<div class="nx-container">
 				<div class="nx-section-header">
+					<span class="wp-agentur-eyebrow">Sichtbarkeit · SEO</span>
 					<h2 class="nx-headline-section">Technisches WordPress-SEO für Hannover und DACH</h2>
-					<p class="wp-agentur-section-intro">
-						Technisches SEO ist hier kein Meta-Feintuning, sondern Arbeit an Crawlability, Seitenstruktur und interner Verlinkung — priorisiert für kaufnahe Seitentypen wie Angebotsseiten, Audit-Einstiege und zentrale Proof-Seiten.
-					</p>
+					<p class="wp-agentur-section-intro">SEO ist hier kein Meta-Feintuning, sondern Arbeit an Crawlability, Seitenstruktur, Local-Signalen und Rich-Result-fähigem Markup. Priorisiert wird nach kaufnahen Seitentypen.</p>
 				</div>
-				<div class="nx-prose wp-agentur-prose">
-					<h3>Was typischerweise klemmt</h3>
-					<ul class="premium-list">
-						<li><span class="check-icon">→</span><div>Kaufnahe Seiten indexieren schlecht, weil Crawlability und interne Verlinkung unklar sind.</div></li>
-						<li><span class="check-icon">→</span><div>Meta-Titel und Beschreibungen treffen die Suchintention nicht — Impressionen ohne Klicks.</div></li>
-						<li><span class="check-icon">→</span><div>Pillar- und Cluster-Logik fehlt: Inhalte bleiben Einzelseiten ohne Themen-Rückgrat.</div></li>
-						<li><span class="check-icon">→</span><div>Schema-Markup, Core Web Vitals und Server-Tuning sind isoliert statt als ein System verzahnt.</div></li>
-					</ul>
-
-					<h3>Wie ich das als WordPress-Agentur löse</h3>
-					<ul class="premium-list">
-						<li><span class="check-icon">✓</span><div>Technical SEO Audit mit priorisierter Hebel-Liste statt generischer Checkliste.</div></li>
-						<li><span class="check-icon">✓</span><div>Keyword-Strategie nach Suchintention und Seitentypen, nicht nach Suchvolumen.</div></li>
-						<li><span class="check-icon">✓</span><div>Pillar Pages und Content Hubs mit stringenter interner Verlinkung.</div></li>
-						<li><span class="check-icon">✓</span><div>On-Page-SEO: Snippets, Seitentitel und Headlines gegen die Suchintention geschärft.</div></li>
-						<li><span class="check-icon">✓</span><div>Local SEO für Hannover, wenn regionale Nachfrage relevant ist.</div></li>
-					</ul>
-					<p class="wp-agentur-section-intro">
-						Ob technisches SEO bei Ihrer Website heute den größten Hebel hat, zeigt die <a href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_agentur_seo_audit" data-track-category="lead_gen">System-Diagnose</a> in ca. 60 Sekunden.
-					</p>
+				<div class="seo-subclusters">
+					<article class="seo-sub" id="technisches-seo-foundation">
+						<h3>1 · Technisches Fundament</h3>
+						<ul>
+							<li>LCP-Ziel &lt; 2,5 s auf kaufnahen Seiten</li>
+							<li>Crawl-Budget auf relevante Angebotsseiten konzentrieren</li>
+							<li>Thin Content deindexieren, wenn er keine Such- oder Nutzerrolle hat</li>
+							<li>Interne Verlinkung als Themen-Graph statt Footer-Liste aufbauen</li>
+							<li>Server-Tuning prüfen, wenn Theme und Plugin-Setup an Grenzen stoßen</li>
+						</ul>
+					</article>
+					<article class="seo-sub" id="technisches-seo-local">
+						<h3>2 · Local SEO Hannover</h3>
+						<ul>
+							<li>Google Business Profile sauber kategorisieren und Service-Felder vollständig pflegen</li>
+							<li>Maps-Pack-Sichtbarkeit für „WordPress Agentur Hannover“ und verwandte Suchanfragen prüfen</li>
+							<li>Lokale Citations und NAP-Konsistenz auf relevanten Verzeichnissen absichern</li>
+							<li>Bewertungen als Trust-Layer nutzen, nicht als Schaufenster</li>
+						</ul>
+					</article>
+					<article class="seo-sub" id="technisches-seo-schema">
+						<h3>3 · Schema &amp; Rich Results</h3>
+						<ul>
+							<li>JSON-LD für <code>Organization</code>, <code>LocalBusiness</code>, <code>Service</code>, <code>FAQPage</code> und <code>BreadcrumbList</code></li>
+							<li>Markup für Reviews und Case Studies nur einsetzen, wenn der Inhalt das trägt</li>
+							<li>Schema-Validierung über den Rich Results Test statt über Plugin-Häkchen prüfen</li>
+							<li>Strukturierte Daten als Sichtbarkeits-Hebel einsetzen, nicht als Pflichtfeld</li>
+						</ul>
+					</article>
 				</div>
+				<p class="seo-cta">
+					Ob technisches SEO bei Ihrer Website heute den größten Hebel hat, zeigt die <a href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_agentur_seo_audit" data-track-category="lead_gen">System-Diagnose</a> in ca. 60 Sekunden.
+				</p>
 			</div>
 		</section>
 
@@ -377,7 +434,7 @@ get_header();
 			</div>
 		</section>
 
-		<section id="case-study" class="nx-section">
+		<section id="case-e3" class="nx-section">
 			<div class="nx-container">
 				<div class="nx-section-header">
 					<h2 class="nx-headline-section">WordPress Agentur Hannover: Was passiert, wenn die Reihenfolge stimmt</h2>
@@ -420,7 +477,7 @@ get_header();
 			</div>
 		</section>
 
-		<section id="hannover" class="nx-section">
+		<section id="standort" class="nx-section">
 			<div class="nx-container">
 				<div class="nx-section-header">
 					<h2 class="nx-headline-section">Standort Hannover. Arbeitsgebiet DACH.</h2>
@@ -446,7 +503,7 @@ get_header();
 			</div>
 		</section>
 
-		<section id="cta-final" class="nx-section">
+		<section id="cta" class="nx-section">
 			<div class="nx-container">
 				<div class="nx-cta-box wp-agentur-cta-box">
 					<h2>Prüfen wir, an welcher Stelle Ihr WordPress-System heute Nachfrage verliert.</h2>
@@ -468,34 +525,6 @@ get_header();
 
 	</div>
 </main>
-
-<?php
-$current_permalink = get_permalink();
-$faq_schema        = [
-	'@context'   => 'https://schema.org',
-	'@type'      => 'FAQPage',
-	'@id'        => trailingslashit( $current_permalink ) . '#faq',
-	'url'        => $current_permalink,
-	'inLanguage' => 'de',
-	'publisher'  => [ '@id' => home_url( '/#organization' ) ],
-	'mainEntity' => array_map(
-		static function ( $item ) {
-			return [
-				'@type'          => 'Question',
-				'name'           => $item['question'],
-				'acceptedAnswer' => [
-					'@type' => 'Answer',
-					'text'  => $item['answer'],
-				],
-			];
-		},
-		$faq_items
-	),
-];
-?>
-<script type="application/ld+json">
-<?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ); ?>
-</script>
 
 <?php
 get_footer();

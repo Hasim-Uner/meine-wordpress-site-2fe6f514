@@ -12,7 +12,7 @@ function hu_output_schema()
     // Organization / LocalBusiness schema
     $org = [
         '@context' => 'https://schema.org',
-        '@type'    => 'LocalBusiness',
+        '@type'    => ['Organization', 'LocalBusiness'],
         '@id'      => home_url('/#organization'),
         'name'     => 'Haşim Üner – Architekt für eigene Anfrage-Systeme',
         'alternateName' => 'Haşim Üner',
@@ -93,8 +93,8 @@ function hu_output_schema()
                 [
                     '@type'       => 'Offer',
                     'name'        => 'System-Diagnose',
-                    'description' => 'Kostenloser Ersteinstieg: persönliche Analyse der drei größten Anfragebremsen für Solar-, Wärmepumpen- und B2B-Websites.',
-                    'url'         => home_url('/kontakt/'),
+                    'description' => 'Evidenzbasierter Einstieg: Anfragebremsen, Datenlage, Sichtbarkeit und Conversion-Reihenfolge einordnen.',
+                    'url'         => home_url('/system-diagnose/'),
                 ],
                 [
                     '@type'       => 'Offer',
@@ -111,14 +111,14 @@ function hu_output_schema()
                 [
                     '@type'       => 'Offer',
                     'name'        => 'Speed & Core Web Vitals',
-                    'description' => 'Performance-Optimierung mit Fokus auf Ladezeit, INP/LCP und Nutzererlebnis.',
-                    'url'         => home_url('/core-web-vitals-optimierung/'),
+                    'description' => 'Performance-Arbeit mit Fokus auf LCP, INP, CLS, Server-Antwortzeiten und tragfähige WordPress-Basis.',
+                    'url'         => home_url('/wgos-assets/cwv-optimierung/'),
                 ],
                 [
                     '@type'       => 'Offer',
                     'name'        => 'Conversion-Optimierung',
                     'description' => 'Systematische Optimierung von Angebotsseiten und Nutzerpfaden für mehr qualifizierte Anfragen.',
-                    'url'         => home_url('/conversion-optimierung/'),
+                    'url'         => home_url('/wordpress-agentur-hannover/#wgos'),
                 ],
             ],
         ],
@@ -132,7 +132,31 @@ function hu_output_schema()
             'name'        => 'WordPress Agentur Hannover',
             'description' => 'WordPress Agentur in Hannover für B2B-Unternehmen: technisches SEO, Wartungsvertrag, Tracking, Conversion und Angebotsseiten als ein verbundenes System mit kontrollierter Weiterentwicklung.',
             'serviceType' => 'WordPress Agentur',
-            'serviceOutput' => 'Steuerbares WordPress-System mit Angebotsseiten, technischem SEO, Wartung, Datenebene, KPI-Klarheit und vollen Zugängen'
+            'serviceOutput' => 'Steuerbares WordPress-System mit Angebotsseiten, technischem SEO, Wartung, Datenebene, KPI-Klarheit und vollen Zugängen',
+            'hasOfferCatalog' => [
+                '@type'           => 'OfferCatalog',
+                'name'            => 'SEO-Subcluster der WordPress Agentur Hannover',
+                'itemListElement' => [
+                    [
+                        '@type'       => 'Offer',
+                        'name'        => 'Technisches SEO Fundament',
+                        'description' => 'Crawlability, LCP, interne Verlinkung, Indexierungslogik und technische WordPress-Basis für kaufnahe Seiten.',
+                        'url'         => home_url('/wordpress-agentur-hannover/#technisches-seo-foundation'),
+                    ],
+                    [
+                        '@type'       => 'Offer',
+                        'name'        => 'Local SEO Hannover',
+                        'description' => 'Google Business Profile, Maps-Pack-Signale, lokale Citations, NAP-Konsistenz und regionale Vertrauenssignale.',
+                        'url'         => home_url('/wordpress-agentur-hannover/#technisches-seo-local'),
+                    ],
+                    [
+                        '@type'       => 'Offer',
+                        'name'        => 'Schema & Rich Results',
+                        'description' => 'JSON-LD für Organization, LocalBusiness, Service, FAQPage und BreadcrumbList mit Validierung über den Rich Results Test.',
+                        'url'         => home_url('/wordpress-agentur-hannover/#technisches-seo-schema'),
+                    ],
+                ],
+            ],
         ],
 
         'customer-journey-audit' => [
@@ -189,25 +213,16 @@ function hu_output_schema()
 
         'core-web-vitals-optimierung' => [
             'name'        => 'Speed & Core Web Vitals Optimierung',
-            'description' => 'Performance-Optimierung mit Fokus auf Ladezeit, INP/LCP und Nutzererlebnis.',
+            'description' => 'Performance-Optimierung mit Fokus auf Ladezeit, LCP, INP, CLS und tragfähige WordPress-Basis.',
             'serviceType' => 'Performance Optimierung',
-            'serviceOutput' => 'Grüne Core Web Vitals und schnellere Ladezeiten',
-            'offers'      => [
-                [
-                    '@type'         => 'Offer',
-                    'name'          => 'Performance Architektur Paket',
-                    'price'         => 649,
-                    'priceCurrency' => 'EUR',
-                    'description'   => 'Umfassendes Audit & Strategieplan, tiefgreifende technische Optimierung, Caching & CDN-Setup, Live-Performance-Dashboard und 3 Monate Support'
-                ]
-            ]
+            'serviceOutput' => 'Stabilere Core Web Vitals, bessere Ladezeiten und priorisierte technische Korrekturen'
         ],
 
         'core-web-vitals' => [
             'name'        => 'Speed & Core Web Vitals Optimierung',
-            'description' => 'Performance-Optimierung mit Fokus auf Ladezeit, INP/LCP und Nutzererlebnis.',
+            'description' => 'Performance-Optimierung mit Fokus auf Ladezeit, LCP, INP, CLS und tragfähige WordPress-Basis.',
             'serviceType' => 'Performance Optimierung',
-            'serviceOutput' => 'Grüne Core Web Vitals und schnellere Ladezeiten'
+            'serviceOutput' => 'Stabilere Core Web Vitals, bessere Ladezeiten und priorisierte technische Korrekturen'
         ],
 
         'tracking-data' => [
@@ -219,9 +234,9 @@ function hu_output_schema()
 
         'conversion-optimierung' => [
             'name'        => 'Conversion Optimierung',
-            'description' => 'Optimierung der UX und CRO-Frameworks für maximale Lead-Konversionen.',
+            'description' => 'Optimierung von Angebotsseiten, Proof, CTA-Führung und Formularen für qualifiziertere Anfragen.',
             'serviceType' => 'Conversion Rate Optimization',
-            'serviceOutput' => 'Höhere Conversion Rates und Umsatz'
+            'serviceOutput' => 'Klarere Nutzerführung und belastbarere Anfragepfade'
         ],
 
         'wordpress-tech-audit' => [
@@ -399,7 +414,55 @@ function hu_output_schema()
                 $service['offers'] = $def['offers'];
             }
 
+            if (isset($def['hasOfferCatalog'])) {
+                $service['hasOfferCatalog'] = $def['hasOfferCatalog'];
+            }
+
             $schemas[] = $service;
+
+            if ('wordpress-agentur-hannover' === $slug) {
+                $schemas[] = [
+                    '@context'    => 'https://schema.org',
+                    '@type'       => 'WebPage',
+                    '@id'         => home_url('/wordpress-agentur-hannover/#webpage'),
+                    'url'         => home_url('/wordpress-agentur-hannover/'),
+                    'name'        => 'WordPress Agentur Hannover',
+                    'description' => $def['description'],
+                    'inLanguage'  => 'de',
+                    'isPartOf'    => ['@id' => home_url('/#website')],
+                    'about'       => ['@id' => home_url('/#organization')],
+                    'mainEntity'  => ['@id' => home_url('/wordpress-agentur-hannover/#service')],
+                ];
+            }
+        }
+
+        if ('wordpress-agentur-hannover' === $slug && function_exists('nexus_get_agentur_faq_items')) {
+            $agentur_faq_items = array_slice(nexus_get_agentur_faq_items(), 0, 8);
+            $faq_entities = array_map(
+                static function ($item) {
+                    return [
+                        '@type'          => 'Question',
+                        'name'           => (string) $item['question'],
+                        'acceptedAnswer' => [
+                            '@type' => 'Answer',
+                            'text'  => (string) $item['answer'],
+                        ],
+                    ];
+                },
+                $agentur_faq_items
+            );
+
+            if (!empty($faq_entities)) {
+                $schemas[] = [
+                    '@context'   => 'https://schema.org',
+                    '@type'      => 'FAQPage',
+                    '@id'        => home_url('/wordpress-agentur-hannover/#faq'),
+                    'url'        => home_url('/wordpress-agentur-hannover/'),
+                    'inLanguage' => 'de',
+                    'publisher'  => ['@id' => home_url('/#organization')],
+                    'mainEntity' => $faq_entities,
+                ];
+            }
         }
 
         if ( $slug && function_exists( 'nexus_get_wgos_cluster_page_faq_entities' ) ) {
@@ -826,7 +889,7 @@ function hu_output_schema()
 
     // Output each schema as JSON-LD
     foreach ($schemas as $schema) {
-        $json = wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+        $json = wp_json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
         if ($json) {
             echo '<script type="application/ld+json">' . $json . '</script>';
         }

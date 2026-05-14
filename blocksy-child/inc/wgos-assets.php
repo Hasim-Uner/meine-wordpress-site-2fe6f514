@@ -185,13 +185,11 @@ function nexus_get_wgos_page_id() {
  * @return string
  */
 function nexus_get_wgos_url() {
-	$page_id = nexus_get_wgos_page_id();
+	$agentur_url = function_exists( 'nexus_get_primary_public_url' )
+		? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) )
+		: home_url( '/wordpress-agentur-hannover/' );
 
-	if ( $page_id ) {
-		return get_permalink( $page_id );
-	}
-
-	return home_url( '/wgos/' );
+	return trailingslashit( $agentur_url ) . '#wgos';
 }
 
 /**
@@ -223,13 +221,11 @@ function nexus_get_wgos_asset_hub_page_id() {
  * @return string
  */
 function nexus_get_wgos_asset_hub_url() {
-	$page_id = nexus_get_wgos_asset_hub_page_id();
+	$agentur_url = function_exists( 'nexus_get_primary_public_url' )
+		? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) )
+		: home_url( '/wordpress-agentur-hannover/' );
 
-	if ( $page_id ) {
-		return get_permalink( $page_id );
-	}
-
-	return trailingslashit( nexus_get_wgos_url() ) . '#module';
+	return trailingslashit( $agentur_url ) . '#asset-uebersicht';
 }
 
 /**
@@ -244,38 +240,14 @@ function nexus_maybe_ensure_wgos_asset_hub_page() {
 
 	$page_id = nexus_get_wgos_asset_hub_page_id();
 
-	if ( $page_id ) {
-		$current_template = (string) get_post_meta( $page_id, '_wp_page_template', true );
-
-		if ( 'page-wgos-assets.php' !== $current_template ) {
-			update_post_meta( $page_id, '_wp_page_template', 'page-wgos-assets.php' );
-		}
-
+	if ( ! $page_id ) {
 		return;
 	}
 
-	$existing_page = get_page_by_path( 'wgos-systemlandkarte' );
+	$current_template = (string) get_post_meta( $page_id, '_wp_page_template', true );
 
-	if ( $existing_page instanceof WP_Post ) {
-		$page_id = (int) $existing_page->ID;
-	} else {
-		$page_id = wp_insert_post(
-			wp_slash(
-				[
-					'post_type'    => 'page',
-					'post_status'  => 'publish',
-					'post_title'   => 'WGOS Systemlandkarte',
-					'post_name'    => 'wgos-systemlandkarte',
-					'post_content' => '',
-					'post_excerpt' => 'Alle WGOS Assets auf einen Blick, nach Kernbereichen geordnet und direkt verlinkt.',
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $page_id ) ) {
-			return;
-		}
+	if ( 'page-wgos-assets.php' === $current_template ) {
+		return;
 	}
 
 	update_post_meta( (int) $page_id, '_wp_page_template', 'page-wgos-assets.php' );
@@ -380,7 +352,13 @@ function nexus_get_wgos_asset_anchor_url( $value ) {
 	$anchor_id = nexus_get_wgos_asset_anchor_id( $value );
 
 	if ( '' !== $anchor_id ) {
-		return trailingslashit( nexus_get_wgos_asset_hub_url() ) . '#' . $anchor_id;
+		$hub_url = nexus_get_wgos_asset_hub_url();
+
+		if ( false !== strpos( $hub_url, '#' ) ) {
+			return $hub_url;
+		}
+
+		return trailingslashit( $hub_url ) . '#' . $anchor_id;
 	}
 
 	return nexus_get_wgos_asset_hub_url();
@@ -729,7 +707,7 @@ function nexus_get_wgos_asset_explorer_links() {
 		'calendar' => $calendar_url,
 		'hub'      => nexus_get_wgos_asset_hub_url(),
 		'wgos'     => nexus_get_wgos_url(),
-		'pakete'   => trailingslashit( nexus_get_wgos_url() ) . '#pakete',
+		'pakete'   => nexus_get_wgos_url(),
 		'cases'    => $cases_url,
 	];
 }
