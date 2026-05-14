@@ -97,11 +97,11 @@ function hu_get_forced_singular_seo_map() {
 			// Seiten sind noindex oder 301, daher keine öffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
 				'title'       => 'WordPress Agentur Hannover – SEO, Wartung & Conversion',
-				'description' => sprintf( 'WordPress Agentur in Hannover: technisches SEO, Wartungsvertrag, Tracking und Conversion für B2B-Websites als verbundenes System. Referenz E3 — %s Leadkosten.', $e3_cpl_reduction ),
+				'description' => 'WordPress Agentur Hannover für B2B: technisches SEO, Wartung, Tracking und Conversion als System. Mit E3-Referenz und Website-Analyse.',
 			],
 			'wordpress-agentur' => [
 				'title'       => 'WordPress Agentur Hannover – SEO, Wartung & Conversion',
-				'description' => sprintf( 'WordPress Agentur in Hannover: technisches SEO, Wartungsvertrag, Tracking und Conversion für B2B-Websites als verbundenes System. Referenz E3 — %s Leadkosten.', $e3_cpl_reduction ),
+				'description' => 'WordPress Agentur Hannover für B2B: technisches SEO, Wartung, Tracking und Conversion als System. Mit E3-Referenz und Website-Analyse.',
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',

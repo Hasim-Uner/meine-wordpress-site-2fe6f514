@@ -114,9 +114,9 @@ get_header();
 			<div class="nx-container">
 				<div class="wp-agentur-hero__content">
 					<span class="nx-badge nx-badge--gold">Hannover · B2B · WordPress</span>
-					<h1 class="nx-hero__title">Anfragen statt nur Sichtbarkeit.</h1>
+					<h1 class="nx-hero__title">WordPress Agentur Hannover für B2B-Anfragen.</h1>
 					<p class="nx-hero__subtitle">
-						Angebotsseiten, SEO, Tracking und Conversion als ein System — damit Ihre WordPress-Website qualifizierte B2B-Leads liefert.
+						Angebotsseiten, technisches SEO, Tracking und Conversion als ein System — damit Ihre WordPress-Website nicht nur sichtbar ist, sondern qualifizierte Leads liefert.
 					</p>
 					<div class="wp-agentur-actions wp-agentur-actions--hero">
 						<a href="<?php echo esc_url( $website_analysis_url ); ?>" class="nx-btn nx-btn--primary wp-agentur-hero__primary" data-track-action="cta_agentur_hero_audit" data-track-category="lead_gen"><?php echo esc_html( $website_analysis_cta_label ); ?></a>
