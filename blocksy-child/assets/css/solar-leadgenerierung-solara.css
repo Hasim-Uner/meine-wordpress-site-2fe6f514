@@ -1,0 +1,1148 @@
+/* ══════════════════════════════════════════════════════════════
+   /solar-waermepumpen-leadgenerierung/ — SOLARA visual language
+   Premium · cinematic · minimalistisch mit AHA-Wirkung.
+   HYBRID-Theme: warm-cremes Grundtuch (B2B-Mittelstand-Vertrauen),
+   dunkle Sonne nur als zentrales Visual & Final-CTA-Anker.
+   Scope: alles unter .solara-landing.
+   Tokens: Satoshi · Figtree · JetBrains Mono · Copper #b46a3c.
+   ══════════════════════════════════════════════════════════════ */
+
+.solara-landing {
+  /* warm-cream Grundpalette (Mittelstand-credible) */
+  --sol-bg:       oklch(0.97 0.008 80);
+  --sol-bg-2:     oklch(0.95 0.010 78);
+  --sol-bg-3:     oklch(0.92 0.014 75);
+  --sol-bg-warm:  oklch(0.94 0.020 70);
+
+  --sol-line:     oklch(0.88 0.010 75);
+  --sol-line-2:   oklch(0.80 0.012 70);
+  --sol-line-3:   oklch(0.72 0.014 65);
+
+  --sol-fg:       oklch(0.18 0.012 60);
+  --sol-fg-mute:  oklch(0.42 0.014 60);
+  --sol-fg-dim:  oklch(0.58 0.014 60);
+
+  /* Copper-Akzent aus Hasim's Design-System */
+  --sol-accent:     #b46a3c;
+  --sol-accent-2:   #c97a1a;
+  --sol-accent-ink: #ffffff;
+  --sol-accent-tint:    rgba(180,106,60,.08);
+  --sol-accent-tint-2:  rgba(180,106,60,.18);
+
+  /* Status-Farben (semantisch) */
+  --sol-good:       oklch(0.52 0.16 145);
+  --sol-info:       oklch(0.48 0.14 230);
+
+  --sol-t-fast: 160ms;
+  --sol-t-med:  240ms;
+  --sol-gutter: clamp(20px, 4vw, 56px);
+  --sol-maxw:   1320px;
+  --sol-radius: 14px;
+
+  --sol-font-display: 'Satoshi', 'Figtree', -apple-system, BlinkMacSystemFont, sans-serif;
+  --sol-font-body:    'Figtree', -apple-system, BlinkMacSystemFont, sans-serif;
+  --sol-font-mono:    'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  position: relative;
+  background: var(--sol-bg);
+  color: var(--sol-fg);
+  font-family: var(--sol-font-body);
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* sehr feines Raster — Engineering-Atmosphäre statt Dekor */
+.solara-landing::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    linear-gradient(oklch(0.30 0.012 60 / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.30 0.012 60 / 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.5;
+}
+
+.solara-landing * { box-sizing: border-box; }
+
+/* ── Layout-Basis ─────────────────────────────────────────── */
+.solara-landing .sol-wrap {
+  max-width: var(--sol-maxw);
+  margin: 0 auto;
+  padding-left: var(--sol-gutter);
+  padding-right: var(--sol-gutter);
+  position: relative;
+  z-index: 3;
+}
+.solara-landing .sol-section {
+  padding: clamp(80px, 11vw, 160px) 0;
+  position: relative;
+  z-index: 3;
+}
+.solara-landing .sol-section--tinted { background: var(--sol-bg-2); }
+.solara-landing .sol-section--warm   { background: var(--sol-bg-warm); }
+
+/* ── Typo ─────────────────────────────────────────────────── */
+.solara-landing .sol-display {
+  font-family: var(--sol-font-display);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  color: var(--sol-fg);
+}
+.solara-landing .sol-display em {
+  font-style: normal;
+  color: var(--sol-accent);
+}
+.solara-landing .sol-mono {
+  font-family: var(--sol-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sol-fg-mute);
+}
+.solara-landing .sol-eyebrow {
+  font-family: var(--sol-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sol-accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+}
+.solara-landing .sol-eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.solara-landing .sol-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-family: var(--sol-font-body);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform var(--sol-t-fast), background var(--sol-t-fast), color var(--sol-t-fast), border-color var(--sol-t-fast), box-shadow var(--sol-t-fast);
+  white-space: nowrap;
+}
+.solara-landing .sol-btn-primary {
+  background: var(--sol-accent);
+  color: var(--sol-accent-ink);
+  box-shadow: 0 10px 24px -8px rgba(180,106,60,.45);
+}
+.solara-landing .sol-btn-primary:hover {
+  background: var(--sol-accent-2);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px -8px rgba(201,122,26,.5);
+}
+.solara-landing .sol-btn-ghost {
+  background: transparent;
+  color: var(--sol-fg);
+  border-color: var(--sol-line-2);
+}
+.solara-landing .sol-btn-ghost:hover {
+  background: var(--sol-accent-tint);
+  border-color: var(--sol-accent);
+  color: var(--sol-accent);
+}
+.solara-landing .sol-btn-arrow {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.solara-landing .sol-btn-primary .sol-btn-arrow {
+  background: rgba(255,255,255,.22);
+  color: var(--sol-accent-ink);
+}
+.solara-landing .sol-btn-arrow svg { width: 12px; height: 12px; }
+
+/* ── Selection & Focus ────────────────────────────────────── */
+.solara-landing ::selection { background: var(--sol-accent); color: var(--sol-accent-ink); }
+.solara-landing a:focus-visible,
+.solara-landing button:focus-visible {
+  outline: 2px solid var(--sol-accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HERO — warm-cremes Sonnenfeld (hybrid: helles AHA-Visual)
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-hero {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(40px, 6vw, 80px) 0 clamp(80px, 11vw, 140px);
+  overflow: hidden;
+  min-height: 86vh;
+}
+.solara-landing .sol-hero-sky {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 110%, oklch(0.86 0.16 65 / 0.55), transparent 55%),
+    linear-gradient(180deg, oklch(0.97 0.008 80) 0%, oklch(0.95 0.020 72) 55%, oklch(0.91 0.060 60) 100%);
+}
+.solara-landing .sol-hero-sun {
+  position: absolute;
+  left: 50%;
+  bottom: -28%;
+  z-index: -1;
+  width: min(1100px, 110vw);
+  aspect-ratio: 1;
+  transform: translate(-50%, 0);
+  pointer-events: none;
+}
+.solara-landing .sol-hero-sun-disc {
+  position: absolute;
+  inset: 22%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 45%,
+      oklch(0.95 0.16 80) 0%,
+      oklch(0.85 0.18 65) 38%,
+      oklch(0.70 0.20 50) 70%,
+      transparent 100%);
+  filter: blur(2px);
+  animation: sol-pulse 7s ease-in-out infinite;
+  opacity: 0.85;
+}
+.solara-landing .sol-hero-sun-halo {
+  position: absolute;
+  inset: -8%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,122,26,.22) 0%, transparent 60%);
+  filter: blur(28px);
+  animation: sol-pulse 9s ease-in-out infinite reverse;
+}
+.solara-landing .sol-hero-sun-rays {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0.18;
+  animation: sol-spin 240s linear infinite;
+}
+.solara-landing .sol-hero-sun-ray {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 56%;
+  background: linear-gradient(0deg, transparent 0%, var(--sol-accent) 60%, transparent 100%);
+  transform-origin: center top;
+}
+.solara-landing .sol-hero-horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22%;
+  z-index: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--sol-accent) 25%, var(--sol-accent) 75%, transparent);
+  opacity: 0.55;
+}
+
+@keyframes sol-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50%      { transform: scale(1.03); opacity: 1; }
+}
+@keyframes sol-spin { to { transform: rotate(360deg); } }
+@keyframes sol-pulse-dot { 50% { transform: scale(1.3); opacity: 0.6; } }
+
+.solara-landing .sol-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(420px, 0.9fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: start;
+  padding-top: clamp(40px, 7vw, 90px);
+}
+.solara-landing .sol-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.4vw, 32px);
+  padding-top: 12px;
+}
+.solara-landing .sol-hero-h1 {
+  font-size: clamp(44px, 7vw, 104px);
+  margin: 6px 0 0;
+}
+.solara-landing .sol-hero-sub {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--sol-fg-mute);
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.55;
+}
+.solara-landing .sol-hero-metrics {
+  display: flex;
+  gap: clamp(20px, 3vw, 44px);
+  margin-top: 12px;
+  padding-top: 24px;
+  border-top: 1px solid var(--sol-line);
+}
+.solara-landing .sol-metric { display: flex; flex-direction: column; }
+.solara-landing .sol-metric-n {
+  font-family: var(--sol-font-display);
+  font-size: clamp(28px, 3.2vw, 44px);
+  color: var(--sol-fg);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.solara-landing .sol-metric-l { margin-top: 6px; }
+.solara-landing .sol-hero-right { position: relative; z-index: 5; }
+
+@media (max-width: 960px) {
+  .solara-landing .sol-hero-inner { grid-template-columns: 1fr; }
+  .solara-landing .sol-hero-h1 { font-size: clamp(40px, 11vw, 72px); }
+  .solara-landing .sol-hero-metrics { flex-wrap: wrap; gap: 20px; }
+}
+
+/* ── Hero-CTA-Card ────────────────────────────────────────── */
+.solara-landing .sol-cta-card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
+  border: 1px solid var(--sol-line);
+  border-radius: 18px;
+  padding: clamp(24px, 2.4vw, 30px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.7) inset,
+    0 32px 60px -16px rgba(180,106,60,.16),
+    0 0 0 1px oklch(0.30 0.012 60 / 0.04);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+.solara-landing .sol-cta-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255,170,90,.08), transparent 40%);
+}
+.solara-landing .sol-cta-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.solara-landing .sol-cta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--sol-line);
+  border-radius: 999px;
+  background: rgba(255,255,255,.6);
+}
+.solara-landing .sol-cta-tag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sol-accent);
+  box-shadow: 0 0 0 4px rgba(180,106,60,.18);
+  animation: sol-pulse-dot 2s ease-in-out infinite;
+}
+.solara-landing .sol-cta-head-right {
+  color: var(--sol-accent);
+  font-weight: 600;
+}
+
+.solara-landing .sol-cta-title {
+  font-family: var(--sol-font-display);
+  font-size: clamp(22px, 2.4vw, 30px);
+  margin: 0 0 8px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  color: var(--sol-fg);
+}
+.solara-landing .sol-cta-hint {
+  color: var(--sol-fg-mute);
+  margin: 0 0 22px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.solara-landing .sol-cta-list {
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.solara-landing .sol-cta-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,.55);
+  border: 1px solid var(--sol-line);
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  transition: border-color var(--sol-t-fast), background var(--sol-t-fast);
+}
+.solara-landing .sol-cta-list li:hover {
+  border-color: var(--sol-accent);
+  background: rgba(255,255,255,.85);
+}
+.solara-landing .sol-cta-list-num {
+  color: var(--sol-accent);
+  font-family: var(--sol-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+  padding-top: 2px;
+  font-weight: 600;
+}
+.solara-landing .sol-cta-list-body { display: flex; flex-direction: column; gap: 2px; }
+.solara-landing .sol-cta-list-t { color: var(--sol-fg); font-weight: 500; }
+.solara-landing .sol-cta-list-s { color: var(--sol-fg-dim); font-size: 12px; }
+
+.solara-landing .sol-cta-submit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sol-accent);
+  color: var(--sol-accent-ink);
+  font: 600 15px/1 var(--sol-font-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--sol-t-fast), transform var(--sol-t-fast), box-shadow var(--sol-t-fast);
+  box-shadow: 0 12px 24px -10px rgba(180,106,60,.5);
+}
+.solara-landing .sol-cta-submit:hover {
+  background: var(--sol-accent-2);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px -10px rgba(201,122,26,.55);
+}
+.solara-landing .sol-cta-submit-arrow {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.22);
+  color: var(--sol-accent-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.solara-landing .sol-cta-submit-arrow svg { width: 14px; height: 14px; }
+
+.solara-landing .sol-cta-fineprint {
+  color: var(--sol-fg-dim);
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 10.5px !important;
+  letter-spacing: 0.06em;
+  font-family: var(--sol-font-mono);
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TRUST STRIP
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-trust {
+  padding: 28px 0;
+  border-top: 1px solid var(--sol-line);
+  border-bottom: 1px solid var(--sol-line);
+  background: var(--sol-bg-2);
+  position: relative;
+  z-index: 3;
+}
+.solara-landing .sol-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  row-gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.solara-landing .sol-trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--sol-fg-mute);
+  font-size: 10.5px !important;
+}
+.solara-landing .sol-trust-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--sol-accent);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PROBLEM
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-problem-h {
+  font-size: clamp(36px, 5.4vw, 84px);
+  max-width: 22ch;
+  margin: 18px 0 60px;
+}
+.solara-landing .sol-problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--sol-line);
+  border: 1px solid var(--sol-line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.solara-landing .sol-problem-card {
+  padding: clamp(28px, 3.6vw, 44px);
+  background: var(--sol-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.solara-landing .sol-problem-card-n {
+  color: var(--sol-accent);
+  font-size: 12px;
+  font-family: var(--sol-font-mono);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+.solara-landing .sol-problem-card-t {
+  font-family: var(--sol-font-display);
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--sol-fg);
+}
+.solara-landing .sol-problem-card-s {
+  color: var(--sol-fg-mute);
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+@media (max-width: 880px) {
+  .solara-landing .sol-problem-grid { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   METHOD / SYSTEM
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-method {
+  background: var(--sol-bg-2);
+  border-top: 1px solid var(--sol-line);
+  border-bottom: 1px solid var(--sol-line);
+}
+.solara-landing .sol-method-head {
+  max-width: 800px;
+  margin-bottom: clamp(48px, 6vw, 80px);
+}
+.solara-landing .sol-method-h {
+  font-size: clamp(40px, 5.6vw, 88px);
+  margin: 18px 0 0;
+}
+.solara-landing .sol-method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2vw, 24px);
+}
+@media (max-width: 880px) {
+  .solara-landing .sol-method-grid { grid-template-columns: 1fr; }
+}
+.solara-landing .sol-method-card {
+  position: relative;
+  padding: clamp(28px, 3.4vw, 40px);
+  background: var(--sol-bg);
+  border: 1px solid var(--sol-line);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+  transition: transform var(--sol-t-med), border-color var(--sol-t-med), box-shadow var(--sol-t-med);
+}
+.solara-landing .sol-method-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--sol-accent);
+  box-shadow: 0 30px 60px -28px rgba(180,106,60,.22);
+}
+.solara-landing .sol-method-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.solara-landing .sol-method-card-n {
+  font-family: var(--sol-font-display);
+  font-size: clamp(60px, 7vw, 96px);
+  color: var(--sol-accent);
+  line-height: 0.85;
+  margin-bottom: 24px;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+.solara-landing .sol-method-card-pill {
+  padding: 5px 10px;
+  border: 1px solid var(--sol-line);
+  border-radius: 999px;
+  color: var(--sol-fg-mute);
+  font-family: var(--sol-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--sol-bg-2);
+}
+.solara-landing .sol-method-card-t {
+  font-family: var(--sol-font-display);
+  font-size: clamp(22px, 2vw, 28px);
+  margin: 8px 0 12px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--sol-fg);
+}
+.solara-landing .sol-method-card-s {
+  color: var(--sol-fg-mute);
+  margin: 0 0 22px;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+.solara-landing .sol-method-card-list {
+  list-style: none;
+  padding: 18px 0 0;
+  margin: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--sol-line);
+}
+.solara-landing .sol-method-card-list li {
+  display: flex;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--sol-fg-mute);
+  align-items: center;
+}
+.solara-landing .sol-method-tick {
+  color: var(--sol-accent);
+  font-family: var(--sol-font-mono);
+  font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESULTS / DASHBOARD-MOCK
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-results-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(40px, 5vw, 80px);
+  align-items: center;
+}
+@media (max-width: 960px) {
+  .solara-landing .sol-results-inner { grid-template-columns: 1fr; }
+}
+.solara-landing .sol-results-h {
+  font-size: clamp(40px, 5.6vw, 84px);
+  margin: 14px 0 22px;
+}
+.solara-landing .sol-results-sub {
+  color: var(--sol-fg-mute);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 46ch;
+  margin: 0 0 32px;
+}
+.solara-landing .sol-results-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.solara-landing .sol-results-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--sol-line);
+  font-size: 15px;
+  color: var(--sol-fg);
+}
+.solara-landing .sol-results-list-v {
+  color: var(--sol-accent);
+  font-weight: 600;
+}
+
+.solara-landing .sol-results-mock {
+  background: var(--sol-bg);
+  border: 1px solid var(--sol-line);
+  border-radius: var(--sol-radius);
+  overflow: hidden;
+  box-shadow: 0 30px 60px -28px rgba(180,106,60,.22), 0 0 0 1px oklch(0.30 0.012 60 / 0.03);
+}
+.solara-landing .sol-results-mock-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--sol-line);
+  background: var(--sol-bg-2);
+}
+.solara-landing .sol-results-mock-dots {
+  display: flex;
+  gap: 5px;
+}
+.solara-landing .sol-results-mock-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--sol-line-2);
+}
+.solara-landing .sol-results-mock-title { color: var(--sol-fg-mute); }
+.solara-landing .sol-results-mock-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--sol-good);
+}
+.solara-landing .sol-live-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--sol-good);
+  border-radius: 50%;
+  animation: sol-pulse-dot 1.8s ease-in-out infinite;
+}
+.solara-landing .sol-results-mock-body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.solara-landing .sol-results-mock-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.solara-landing .sol-results-mock-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  background: var(--sol-bg-2);
+  border: 1px solid var(--sol-line);
+  border-radius: 10px;
+}
+.solara-landing .sol-results-mock-big {
+  font-family: var(--sol-font-display);
+  font-size: clamp(26px, 2.8vw, 36px);
+  color: var(--sol-fg);
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  line-height: 1;
+}
+.solara-landing .sol-results-mock-delta {
+  color: var(--sol-good);
+  font-size: 11px;
+  font-family: var(--sol-font-mono);
+  font-weight: 600;
+}
+.solara-landing .sol-results-mock-chart { position: relative; padding: 10px 0 0; }
+.solara-landing .sol-results-mock-axis {
+  display: flex;
+  justify-content: space-between;
+  color: var(--sol-fg-dim);
+  padding: 8px 4px 0;
+  font-size: 10px !important;
+  font-family: var(--sol-font-mono);
+}
+.solara-landing .sol-results-mock-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--sol-line);
+  border: 1px solid var(--sol-line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.solara-landing .sol-results-mock-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  background: var(--sol-bg);
+  font-size: 13px;
+}
+.solara-landing .sol-results-mock-tag {
+  font-family: var(--sol-font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.solara-landing .sol-results-mock-tag.is-new {
+  color: var(--sol-accent);
+  background: rgba(180,106,60,.1);
+  border: 1px solid rgba(180,106,60,.3);
+}
+.solara-landing .sol-results-mock-tag.is-call {
+  color: var(--sol-info);
+  background: oklch(0.48 0.14 230 / .1);
+  border: 1px solid oklch(0.48 0.14 230 / .3);
+}
+.solara-landing .sol-results-mock-tag.is-booked {
+  color: var(--sol-good);
+  background: oklch(0.52 0.16 145 / .1);
+  border: 1px solid oklch(0.52 0.16 145 / .3);
+}
+.solara-landing .sol-results-mock-prod {
+  color: var(--sol-fg-mute);
+  font-size: 11px;
+}
+.solara-landing .sol-results-mock-time {
+  color: var(--sol-fg-dim);
+  font-size: 11px;
+  font-family: var(--sol-font-mono);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GUARANTEE — warm-cremes Risiko-Umkehr
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-guarantee {
+  position: relative;
+  overflow: hidden;
+  background: var(--sol-bg-warm);
+}
+.solara-landing .sol-guarantee-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+.solara-landing .sol-guarantee-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 720px;
+  height: 720px;
+  background: radial-gradient(circle, rgba(201,122,26,.20) 0%, transparent 60%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: -1;
+}
+.solara-landing .sol-guarantee-h {
+  font-size: clamp(44px, 6.8vw, 100px);
+  margin: 22px 0 24px;
+}
+.solara-landing .sol-guarantee-sub {
+  color: var(--sol-fg-mute);
+  font-size: clamp(16px, 1.3vw, 19px);
+  line-height: 1.55;
+  max-width: 56ch;
+  margin: 0 auto 50px;
+}
+.solara-landing .sol-guarantee-points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2vw, 28px);
+  text-align: left;
+}
+@media (max-width: 760px) {
+  .solara-landing .sol-guarantee-points { grid-template-columns: 1fr; }
+}
+.solara-landing .sol-guarantee-point {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 24px;
+  border: 1px solid var(--sol-line);
+  border-radius: 14px;
+  background: var(--sol-bg);
+}
+.solara-landing .sol-guarantee-point-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(180,106,60,.1);
+  color: var(--sol-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(180,106,60,.3);
+  flex-shrink: 0;
+}
+.solara-landing .sol-guarantee-point-mark svg { width: 16px; height: 16px; }
+.solara-landing .sol-guarantee-point-t {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: var(--sol-fg);
+}
+.solara-landing .sol-guarantee-point-s {
+  color: var(--sol-fg-mute);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FAQ
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-faq {
+  border-top: 1px solid var(--sol-line);
+}
+.solara-landing .sol-faq-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: clamp(40px, 6vw, 100px);
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .solara-landing .sol-faq-inner { grid-template-columns: 1fr; }
+  .solara-landing .sol-faq-left { position: static; }
+}
+.solara-landing .sol-faq-left {
+  position: sticky;
+  top: 100px;
+}
+.solara-landing .sol-faq-h {
+  font-size: clamp(40px, 5.6vw, 80px);
+  margin: 14px 0 22px;
+}
+.solara-landing .sol-faq-sub {
+  color: var(--sol-fg-mute);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 36ch;
+}
+.solara-landing .sol-faq-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.solara-landing .sol-faq-item { border-top: 1px solid var(--sol-line); }
+.solara-landing .sol-faq-item:last-child { border-bottom: 1px solid var(--sol-line); }
+.solara-landing .sol-faq-q {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--sol-fg);
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  width: 100%;
+  text-align: left;
+  padding: 24px 0;
+  font: 500 clamp(16px, 1.5vw, 19px)/1.35 var(--sol-font-body);
+  cursor: pointer;
+}
+.solara-landing .sol-faq-q-n {
+  color: var(--sol-fg-dim);
+  flex-shrink: 0;
+  font-family: var(--sol-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+.solara-landing .sol-faq-q-t { flex: 1; }
+.solara-landing .sol-faq-q-mark {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+.solara-landing .sol-faq-q-mark span {
+  position: absolute;
+  background: var(--sol-fg-mute);
+  transition: transform var(--sol-t-fast), background var(--sol-t-fast);
+}
+.solara-landing .sol-faq-q-mark span:nth-child(1) {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1.5px;
+  transform: translateY(-50%);
+}
+.solara-landing .sol-faq-q-mark span:nth-child(2) {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1.5px;
+  transform: translateX(-50%);
+}
+.solara-landing .sol-faq-item.is-open .sol-faq-q-mark span:nth-child(2) {
+  transform: translateX(-50%) scaleY(0);
+}
+.solara-landing .sol-faq-item.is-open .sol-faq-q-mark span { background: var(--sol-accent); }
+.solara-landing .sol-faq-a-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 360ms cubic-bezier(.2,.7,.2,1);
+}
+.solara-landing .sol-faq-item.is-open .sol-faq-a-wrap { grid-template-rows: 1fr; }
+.solara-landing .sol-faq-a-wrap > .sol-faq-a {
+  overflow: hidden;
+  min-height: 0;
+}
+.solara-landing .sol-faq-a {
+  color: var(--sol-fg-mute);
+  font-size: 15px;
+  line-height: 1.65;
+  padding: 0 40px 24px calc(11px + 22px);
+  max-width: 60ch;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FINAL CTA — warmes Sonnenfeld als Reim auf den Hero
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-final {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 0;
+}
+.solara-landing .sol-final-inner {
+  position: relative;
+  padding: clamp(60px, 9vw, 140px) clamp(24px, 4vw, 64px);
+  text-align: center;
+  border: 1px solid var(--sol-line);
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--sol-bg-warm) 0%, oklch(0.90 0.060 60) 100%);
+  isolation: isolate;
+}
+.solara-landing .sol-final-sun {
+  position: absolute;
+  left: 50%;
+  top: 120%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 900px;
+  z-index: -1;
+  pointer-events: none;
+}
+.solara-landing .sol-final-sun-disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, oklch(0.92 0.16 80) 0%, oklch(0.78 0.18 55) 30%, transparent 60%);
+  filter: blur(2px);
+  animation: sol-pulse 7s ease-in-out infinite;
+}
+.solara-landing .sol-final-h {
+  font-size: clamp(44px, 7vw, 104px);
+  margin: 18px 0 22px;
+}
+.solara-landing .sol-final-sub {
+  color: var(--sol-fg-mute);
+  font-size: clamp(15px, 1.2vw, 17px);
+  margin: 0 0 36px;
+}
+.solara-landing .sol-final-btn {
+  padding: 18px 28px;
+  font-size: 16px;
+}
+.solara-landing .sol-final-btn .sol-btn-arrow {
+  width: 28px;
+  height: 28px;
+}
+.solara-landing .sol-final-btn .sol-btn-arrow svg {
+  width: 13px;
+  height: 13px;
+}
+.solara-landing .sol-final-micro {
+  margin-top: 24px;
+  color: var(--sol-fg-dim);
+  font-family: var(--sol-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STICKY MOBILE CTA
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-sticky-cta { display: none; }
+@media (max-width: 760px) {
+  .solara-landing .sol-sticky-cta {
+    display: flex;
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 50;
+    padding: 14px 18px;
+    border-radius: 999px;
+    background: var(--sol-accent);
+    color: var(--sol-accent-ink);
+    font: 600 15px/1 var(--sol-font-body);
+    text-decoration: none;
+    box-shadow: 0 12px 40px rgba(180,106,60,.35), 0 0 0 1px rgba(0,0,0,.05);
+    align-items: center;
+    justify-content: space-between;
+    opacity: 0;
+    transform: translateY(120%);
+    transition: opacity var(--sol-t-med), transform var(--sol-t-med);
+    pointer-events: none;
+  }
+  .solara-landing .sol-sticky-cta.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .solara-landing .sol-sticky-cta-arrow {
+    display: inline-flex;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.22);
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ── prefers-reduced-motion ───────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .solara-landing .sol-hero-sun-disc,
+  .solara-landing .sol-hero-sun-halo,
+  .solara-landing .sol-hero-sun-rays,
+  .solara-landing .sol-final-sun-disc,
+  .solara-landing .sol-cta-tag-dot,
+  .solara-landing .sol-live-dot {
+    animation: none !important;
+  }
+}
+
+/* ── Theme-Title-Bar verbergen (Hero füllt H1 selbst) ────── */
+body.page-template-page-solar-waermepumpen-leadgenerierung .entry-header,
+body.page-template-page-solar-waermepumpen-leadgenerierung .ct-page-title,
+body.page-template-page-solar-waermepumpen-leadgenerierung-php .entry-header,
+body.page-template-page-solar-waermepumpen-leadgenerierung-php .ct-page-title {
+  display: none !important;
+}

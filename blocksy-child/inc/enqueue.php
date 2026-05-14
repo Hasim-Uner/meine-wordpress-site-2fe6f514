@@ -226,8 +226,17 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-agentur-css', 'agentur.css', [ 'nexus-home-css' ] );
 	}
 
-	// ── F1) Template: Energy Systems Landing + E3 Methodik-Case ───
-	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page( 'e3-new-energy' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) || is_page_template( 'page-e3-new-energy.php' ) || is_page_template( 'page-case-e3.php' ) ) {
+	// ── F1a) Solar-/Wärmepumpen-Leadgenerierung (SOLARA Redesign) ──
+	// Eigene CSS/JS-Stack; legacy energy-systems / review-funnel werden hier
+	// bewusst NICHT geladen, weil das Template ein eigenes Visual-System hat
+	// und keinen In-Page-Funnel mehr enthält (CTA → /system-diagnose/).
+	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) ) {
+		hu_enqueue_css( 'nexus-solar-leadgen-solara-css', 'solar-leadgenerierung-solara.css', [ 'nexus-design-system' ] );
+		hu_enqueue_js( 'nexus-solar-leadgen-solara-js', 'solar-leadgenerierung-solara.js', [ 'nexus-core-js' ] );
+	}
+
+	// ── F1b) Schwester-Templates (E3-Case, Service-Landing) ────────
+	if ( is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page( 'e3-new-energy' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) || is_page_template( 'page-e3-new-energy.php' ) || is_page_template( 'page-case-e3.php' ) ) {
 		hu_enqueue_css( 'nexus-review-funnel-css', 'review-funnel.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-energy-systems-css', 'energy-systems.css', [ 'nexus-review-funnel-css' ] );
 		hu_enqueue_js( 'nexus-solar-hero-js', 'solar-hero.js', [ 'nexus-core-js' ] );
