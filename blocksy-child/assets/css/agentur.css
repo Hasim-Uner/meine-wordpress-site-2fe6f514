@@ -541,24 +541,125 @@
 .wgos-asset-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
+  gap: 1.15rem;
+  margin-top: 1.5rem;
+}
+
+.asset-hybrid {
+  display: grid;
+  gap: clamp(1.2rem, 3vw, 2rem);
   margin-top: 2rem;
+  padding: clamp(1.25rem, 3vw, 1.8rem);
+  border: 1px solid hsl(var(--accent-hsl) / 0.32);
+  border-radius: var(--nx-radius-xl);
+  background: linear-gradient(135deg, hsl(var(--accent-hsl) / 0.11), rgba(255, 255, 255, 0.02));
+}
+
+.asset-hybrid__kicker {
+  display: inline-flex;
+  margin-bottom: 0.7rem;
+  color: var(--nx-accent-text);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.asset-hybrid h3 {
+  margin: 0;
+  color: var(--nx-text);
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  line-height: 1.15;
+}
+
+.asset-hybrid p {
+  margin: 0.85rem 0 0;
+  color: var(--nx-text-secondary);
+  line-height: 1.65;
+}
+
+.asset-hybrid__checks {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.asset-hybrid__checks li {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  color: var(--nx-text);
+  line-height: 1.45;
+}
+
+.asset-hybrid__checks li::before {
+  content: "•";
+  color: var(--nx-accent-text);
+  font-weight: 800;
 }
 
 .asset-area {
+  position: relative;
+  overflow: hidden;
   min-height: 100%;
   padding: clamp(1.2rem, 3vw, 1.55rem);
   border: 1px solid var(--nx-border);
   border-radius: var(--nx-radius-xl);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  background: var(--nx-card-gradient);
+}
+
+.asset-area::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--nx-accent-text);
+  opacity: 0.76;
+}
+
+.asset-area:hover {
+  transform: translateY(-2px);
+  border-color: hsl(var(--accent-hsl) / 0.42);
+}
+
+.asset-area__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: start;
+  margin-bottom: 0.9rem;
+}
+
+.asset-area__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.62rem;
+  color: var(--nx-accent-text);
+  font-size: 0.86rem;
+  font-weight: 800;
+  border: 1px solid hsl(var(--accent-hsl) / 0.32);
+  border-radius: var(--nx-radius-md);
+  background: hsl(var(--accent-hsl) / 0.1);
 }
 
 .area-title {
+  margin: 0;
   font-size: clamp(1.15rem, 2vw, 1.35rem);
+}
+
+.asset-area__count {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--nx-text-muted);
+  font-size: 0.86rem;
 }
 
 .asset-list a {
   display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.3rem;
   min-height: 100%;
   padding: 0.9rem 0;
@@ -568,8 +669,7 @@
 }
 
 .asset-list li:first-child a {
-  border-top: 0;
-  padding-top: 0;
+  padding-top: 0.8rem;
 }
 
 .asset-list a:hover .asset-name,
@@ -586,9 +686,25 @@
 }
 
 .asset-short {
+  grid-column: 1;
   color: var(--nx-text-secondary);
   font-size: 0.92rem;
   line-height: 1.55;
+}
+
+.asset-arrow {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: var(--nx-accent-text);
+  font-weight: 800;
+  opacity: 0.72;
+}
+
+.asset-list a:hover .asset-arrow,
+.asset-list a:focus-visible .asset-arrow {
+  transform: translateX(0.18rem);
+  opacity: 1;
 }
 
 .seo-subclusters {
@@ -598,6 +714,7 @@
 }
 
 .seo-sub {
+  overflow: hidden;
   min-height: 100%;
   padding: clamp(1.25rem, 3vw, 1.65rem);
   border: 1px solid var(--nx-border);
@@ -609,9 +726,34 @@
   font-size: clamp(1.15rem, 2vw, 1.35rem);
 }
 
+.seo-sub li {
+  min-width: 0;
+  align-items: flex-start;
+}
+
+.seo-sub li > span {
+  min-width: 0;
+}
+
+.seo-code-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.45rem;
+}
+
 .seo-sub code {
+  display: inline-flex;
+  max-width: 100%;
+  padding: 0.18rem 0.42rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.38rem;
+  background: rgba(255, 255, 255, 0.055);
   color: var(--nx-text);
   font-size: 0.9em;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .seo-cta {
@@ -902,6 +1044,10 @@
     grid-template-columns: 1fr;
   }
 
+  .asset-hybrid {
+    padding: 1.1rem;
+  }
+
   .wp-agentur-case-card--cta .nx-btn {
     width: 100%;
   }
@@ -923,6 +1069,10 @@
 
   .wgos-vs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .asset-hybrid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
   }
 
   .wp-agentur-case-grid {

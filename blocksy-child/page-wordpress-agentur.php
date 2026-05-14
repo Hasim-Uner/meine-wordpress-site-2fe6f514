@@ -335,13 +335,35 @@ get_header();
 					<h2 class="nx-headline-section">Welcher Baustein zuerst sinnvoll ist, klärt die Diagnose.</h2>
 					<p class="wp-agentur-section-intro">Jeder Baustein hat einen festen Platz im System. Die Übersicht zeigt nur publizierte Assets. Nicht alles wird in jedem Projekt gebaut, sondern das, was zuerst Wirkung erzeugt.</p>
 				</div>
+				<div class="asset-hybrid">
+					<div class="asset-hybrid__copy">
+						<span class="asset-hybrid__kicker">Hybrid-Ansatz</span>
+						<h3>WordPress bleibt Bedienoberfläche. Die Systembausteine liegen im Repo.</h3>
+						<p>Redaktion, Formulare und Seitenpflege bleiben in WordPress. Wiederholbare Assets entstehen als versionierter Theme-Code: Templates, Helper, Schema-Logik, Tracking-Hooks und interne Verlinkung.</p>
+					</div>
+					<ul class="asset-hybrid__checks" aria-label="Arbeitsweise">
+						<li>WordPress als Schnittstelle für Betrieb und Pflege</li>
+						<li>Bausteine als prüfbarer Code statt lose Plugin-Konfiguration</li>
+						<li>Änderungen über Git, PHP-Lint und deploybaren Theme-Code</li>
+					</ul>
+				</div>
 				<div class="wgos-asset-grid">
-					<?php foreach ( $ordered_asset_areas as $area ) : ?>
+					<?php foreach ( $ordered_asset_areas as $area_position => $area ) : ?>
 						<?php if ( empty( $grouped_assets[ $area ] ) ) : ?>
 							<?php continue; ?>
 						<?php endif; ?>
+						<?php
+						$asset_count       = count( $grouped_assets[ $area ] );
+						$asset_count_label = 1 === $asset_count ? '1 Baustein' : sprintf( '%d Bausteine', $asset_count );
+						?>
 						<section class="asset-area" aria-labelledby="<?php echo esc_attr( 'asset-area-' . $area ); ?>">
-							<h3 id="<?php echo esc_attr( 'asset-area-' . $area ); ?>" class="area-title"><?php echo esc_html( hue_kernbereich_label( $area ) ); ?></h3>
+							<div class="asset-area__head">
+								<span class="asset-area__num" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', (int) $area_position + 1 ) ); ?></span>
+								<div>
+									<h3 id="<?php echo esc_attr( 'asset-area-' . $area ); ?>" class="area-title"><?php echo esc_html( hue_kernbereich_label( $area ) ); ?></h3>
+									<span class="asset-area__count"><?php echo esc_html( $asset_count_label ); ?></span>
+								</div>
+							</div>
 							<ul class="asset-list">
 								<?php foreach ( $grouped_assets[ $area ] as $asset ) : ?>
 									<li>
@@ -350,6 +372,7 @@ get_header();
 											<?php if ( ! empty( $asset['short'] ) ) : ?>
 												<span class="asset-short"><?php echo esc_html( (string) $asset['short'] ); ?></span>
 											<?php endif; ?>
+											<span class="asset-arrow" aria-hidden="true">→</span>
 										</a>
 									</li>
 								<?php endforeach; ?>
@@ -390,7 +413,18 @@ get_header();
 					<article class="seo-sub" id="technisches-seo-schema">
 						<h3>3 · Schema &amp; Rich Results</h3>
 						<ul>
-							<li>JSON-LD für <code>Organization</code>, <code>LocalBusiness</code>, <code>Service</code>, <code>FAQPage</code> und <code>BreadcrumbList</code></li>
+							<li>
+								<span>
+									JSON-LD sauber für die relevanten Typen:
+									<span class="seo-code-list" aria-label="Organization, LocalBusiness, Service, FAQPage und BreadcrumbList">
+										<code>Organization</code>
+										<code>LocalBusiness</code>
+										<code>Service</code>
+										<code>FAQPage</code>
+										<code>BreadcrumbList</code>
+									</span>
+								</span>
+							</li>
 							<li>Markup für Reviews und Case Studies nur einsetzen, wenn der Inhalt das trägt</li>
 							<li>Schema-Validierung über den Rich Results Test statt über Plugin-Häkchen prüfen</li>
 							<li>Strukturierte Daten als Sichtbarkeits-Hebel einsetzen, nicht als Pflichtfeld</li>
