@@ -38,7 +38,7 @@ export default function HomepageMindmapTeaser() {
     window.NexusHomeMindmapConfig &&
     window.NexusHomeMindmapConfig.wgosUrl
       ? String(window.NexusHomeMindmapConfig.wgosUrl)
-      : "/wordpress-growth-operating-system/";
+      : "/wordpress-agentur-hannover/#wgos";
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setMounted(true));

@@ -20,7 +20,7 @@ add_action( 'wp_head', static function () {
 }, 1 );
 
 $audit_url     = nexus_get_audit_url();
-$wgos_url      = nexus_get_page_url( [ 'wordpress-growth-operating-system', 'wgos' ] );
+$wgos_url      = nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#wgos' ) );
 $cases_url     = nexus_get_results_url();
 
 get_header();

@@ -57,7 +57,7 @@ $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_ge
 							</a>
 						</li>
 						<li>
-							<a href="<?php echo esc_url( $primary_urls['seo'] ?? home_url( '/wordpress-seo-hannover/' ) ); ?>"
+							<a href="<?php echo esc_url( $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' ) ); ?>"
 							   data-track-action="404_nav_seo"
 							   data-track-category="error_recovery">
 								<?php esc_html_e( 'WordPress SEO Hannover', 'blocksy-child' ); ?>

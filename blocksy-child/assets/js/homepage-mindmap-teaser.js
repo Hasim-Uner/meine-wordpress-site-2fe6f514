@@ -13,7 +13,7 @@
 	var wgosUrl =
 		window.NexusHomeMindmapConfig && window.NexusHomeMindmapConfig.wgosUrl
 			? String(window.NexusHomeMindmapConfig.wgosUrl)
-			: "/wordpress-growth-operating-system/";
+			: "/wordpress-agentur-hannover/#wgos";
 
 	var phases = [
 		{

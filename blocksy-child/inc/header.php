@@ -115,7 +115,8 @@ function nexus_get_site_header_fallback_items() {
 	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 	$solar_url    = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
-	$e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
+	$agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
+	$results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 	$request_cta  = 'System-Diagnose';
 
 	return [
@@ -127,11 +128,18 @@ function nexus_get_site_header_fallback_items() {
 			'track'  => 'solar',
 		],
 		[
-			'label'  => __( 'E3 Proof', 'blocksy-child' ),
-			'url'    => $e3_url,
+			'label'  => __( 'WordPress Agentur', 'blocksy-child' ),
+			'url'    => $agentur_url,
+			'active' => is_page( 'wordpress-agentur-hannover' ) || is_page_template( 'page-wordpress-agentur.php' ),
+			'class'  => '',
+			'track'  => 'agentur',
+		],
+		[
+			'label'  => __( 'Ergebnisse', 'blocksy-child' ),
+			'url'    => $results_url,
 			'active' => nexus_is_results_context(),
 			'class'  => '',
-			'track'  => 'e3_proof',
+			'track'  => 'results',
 		],
 		[
 			'label'  => __( 'Über mich', 'blocksy-child' ),
@@ -226,8 +234,11 @@ function nexus_strip_side_funnel_nav_items( $items, $args ) {
 
 	$blocked_paths = [
 		'/whitelabel-retainer/',
-		'/wordpress-agentur-hannover/',
 		'/core-web-vitals/',
+		'/conversion-rate-optimization/',
+		'/wordpress-seo-hannover/',
+		'/wordpress-growth-operating-system/',
+		'/wgos-systemlandkarte/',
 		'/kostenlose-tools/',
 		'/tools/',
 		'/website-performance-analyse/',

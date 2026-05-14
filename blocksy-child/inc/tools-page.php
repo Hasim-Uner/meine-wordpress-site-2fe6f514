@@ -42,9 +42,9 @@ add_action( 'template_redirect', 'nexus_redirect_deprecated_tools_page', 2 );
 function nexus_get_tools_hub_items() {
 	$primary_urls   = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 	$audit_url      = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/system-diagnose/' );
-	$wgos_url       = $primary_urls['wgos'] ?? home_url( '/wordpress-growth-operating-system/' );
-	$asset_hub_url  = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wgos-systemlandkarte/' );
-	$core_web_url   = $primary_urls['cwv'] ?? home_url( '/core-web-vitals/' );
+	$wgos_url       = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#wgos' );
+	$asset_hub_url  = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' );
+	$core_web_url   = $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' );
 
 	return [
 		[

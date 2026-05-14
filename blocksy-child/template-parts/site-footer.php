@@ -21,6 +21,9 @@ $e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 $results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
 $agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
+$wgos_url     = $primary_urls['wgos'] ?? trailingslashit( $agentur_url ) . '#wgos';
+$asset_url    = $primary_urls['wgos_assets'] ?? trailingslashit( $agentur_url ) . '#asset-uebersicht';
+$seo_url      = $primary_urls['seo'] ?? trailingslashit( $agentur_url ) . '#technisches-seo';
 $about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
 $contact_url  = $primary_urls['contact'] ?? nexus_get_contact_url();
 $project_request_url = add_query_arg(
@@ -130,7 +133,10 @@ $footer_trust_items  = array_values(
 				<h3 id="ft-wissen">Wissen</h3>
 				<ul class="ft__list">
 					<li><a class="ft__link-strong" href="<?php echo esc_url( $blog_url ); ?>" data-track-action="cta_footer_nav_insights" data-track-category="navigation" data-track-section="footer">Insights</a></li>
-					<li><a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_footer_nav_agentur" data-track-category="navigation" data-track-section="footer">Technische Umsetzung</a></li>
+					<li><a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_footer_nav_agentur" data-track-category="navigation" data-track-section="footer">WordPress Agentur Hannover</a></li>
+					<li><a href="<?php echo esc_url( $wgos_url ); ?>" data-track-action="cta_footer_nav_wgos" data-track-category="navigation" data-track-section="footer">WGOS-Arbeitsweise</a></li>
+					<li><a href="<?php echo esc_url( $seo_url ); ?>" data-track-action="cta_footer_nav_seo" data-track-category="navigation" data-track-section="footer">Technisches SEO</a></li>
+					<li><a href="<?php echo esc_url( $asset_url ); ?>" data-track-action="cta_footer_nav_assets" data-track-category="navigation" data-track-section="footer">WGOS-Assets</a></li>
 				</ul>
 			</section>
 

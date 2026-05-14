@@ -214,9 +214,9 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 
 		if ( is_array( $cluster_page ) ) {
 			$links[] = $primary_urls['audit'] ?? home_url( '/system-diagnose/' );
-			$links[] = $primary_urls['wgos'] ?? home_url( '/wordpress-growth-operating-system/' );
+			$links[] = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#wgos' );
 			$links[] = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
-			$links[] = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wgos-systemlandkarte/' );
+			$links[] = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' );
 			$links   = array_merge( $links, nexus_get_seo_cockpit_structured_internal_urls( (array) ( $cluster_page['blogs'] ?? [] ) ) );
 			$links   = array_merge( $links, nexus_get_seo_cockpit_structured_internal_urls( (array) ( $cluster_page['proof_links'] ?? [] ) ) );
 
@@ -255,14 +255,14 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 			[
 				$primary_urls['audit'] ?? home_url( '/system-diagnose/' ),
 				$primary_urls['results'] ?? home_url( '/ergebnisse/' ),
-				$primary_urls['wgos'] ?? home_url( '/wordpress-growth-operating-system/' ),
+				$primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#wgos' ),
 				$primary_urls['about'] ?? home_url( '/uber-mich/' ),
 				$contact_url,
 				$primary_urls['e3'] ?? home_url( '/e3-new-energy/' ),
-				$primary_urls['seo'] ?? home_url( '/wordpress-seo-hannover/' ),
+				$primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' ),
 				$primary_urls['wartung'] ?? home_url( '/wordpress-wartung-hannover/' ),
-				$primary_urls['cro'] ?? home_url( '/conversion-rate-optimization/' ),
-				function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( 'tracking-audit' ) : home_url( '/wgos-systemlandkarte/#asset-tracking-audit' ),
+				$primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#wgos' ),
+				function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( 'tracking-audit' ) : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' ),
 			]
 		);
 	}
@@ -275,7 +275,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 			$links,
 			[
 				$primary_urls['audit'] ?? home_url( '/system-diagnose/' ),
-				$primary_urls['wgos'] ?? home_url( '/wordpress-growth-operating-system/' ),
+				$primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#wgos' ),
 				$contact_url,
 				$primary_urls['e3'] ?? home_url( '/e3-new-energy/' ),
 				$primary_urls['domdar'] ?? home_url( '/case-study-domdar/' ),
@@ -413,12 +413,12 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 	$cases_url        = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 	$agentur_url      = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 	$wartung_url      = $primary_urls['wartung'] ?? home_url( '/wordpress-wartung-hannover/' );
-	$wgos_url         = $primary_urls['wgos'] ?? home_url( '/wordpress-growth-operating-system/' );
+	$wgos_url         = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#wgos' );
 	$e3_url           = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 	$domdar_url       = $primary_urls['domdar'] ?? home_url( '/case-study-domdar/' );
 	$whitelabel_url   = $primary_urls['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
-	$seo_url          = $primary_urls['seo'] ?? home_url( '/wordpress-seo-hannover/' );
-	$cwv_url          = $primary_urls['cwv'] ?? home_url( '/core-web-vitals/' );
+	$seo_url          = $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' );
+	$cwv_url          = $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' );
 	$tracking_url     = $primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' );
 	$tools_url        = $primary_urls['tools'] ?? home_url( '/system-diagnose/' );
 	$about_url        = $primary_urls['about'] ?? home_url( '/uber-mich/' );

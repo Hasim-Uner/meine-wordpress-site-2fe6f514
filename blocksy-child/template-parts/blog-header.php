@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $home_url     = $primary_urls['home'] ?? home_url( '/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
-$wgos_url     = $primary_urls['wgos'] ?? home_url( '/wordpress-growth-operating-system/' );
+$wgos_url     = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#wgos' );
 $cases_url    = $primary_urls['results'] ?? nexus_get_results_url();
 $about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
 $audit_url    = $primary_urls['audit'] ?? nexus_get_audit_url();

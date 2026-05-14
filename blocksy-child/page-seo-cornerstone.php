@@ -11,10 +11,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$seo_url          = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-seo-hannover/' ) );
-$cwv_url          = nexus_get_primary_public_url( 'cwv', home_url( '/core-web-vitals/' ) );
+$seo_url          = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) );
+$cwv_url          = nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) );
 $tracking_url     = nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) );
-$cro_url          = nexus_get_primary_public_url( 'cro', home_url( '/conversion-rate-optimization/' ) );
+$cro_url          = nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#wgos' ) );
 $seo_category_url = nexus_get_primary_public_url( 'seo_category', home_url( '/category/seo/' ) );
 
 get_header();

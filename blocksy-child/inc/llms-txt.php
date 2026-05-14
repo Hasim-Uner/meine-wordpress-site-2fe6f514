@@ -69,7 +69,7 @@ function nexus_get_llms_txt_sections() {
 				],
 				[
 					'label'       => 'WordPress Growth Operating System',
-					'url'         => $urls['wgos'] ?? home_url( '/wordpress-growth-operating-system/' ),
+					'url'         => $urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#wgos' ),
 					'description' => 'Angebots- und Systemseite für Audit, Blueprint und Umsetzung.',
 				],
 			],
@@ -79,7 +79,7 @@ function nexus_get_llms_txt_sections() {
 			'links'   => [
 				[
 					'label'       => 'WordPress SEO Hannover',
-					'url'         => $urls['seo'] ?? home_url( '/wordpress-seo-hannover/' ),
+					'url'         => $urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' ),
 					'description' => 'Technical SEO Audit, Informationsarchitektur und Suchnachfrage für B2B-Seiten.',
 				],
 				[
@@ -89,12 +89,12 @@ function nexus_get_llms_txt_sections() {
 				],
 				[
 					'label'       => 'Conversion Rate Optimierung',
-					'url'         => $urls['cro'] ?? home_url( '/conversion-rate-optimization/' ),
+					'url'         => $urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#wgos' ),
 					'description' => 'CRO für WordPress mit Fokus auf Leads, Reibung und Formularpfade.',
 				],
 				[
 					'label'       => 'Core Web Vitals',
-					'url'         => $urls['cwv'] ?? home_url( '/core-web-vitals/' ),
+					'url'         => $urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' ),
 					'description' => 'Performance-Analyse für langsame WordPress-Seiten und Web-Vitals-Probleme.',
 				],
 			],

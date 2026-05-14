@@ -45,7 +45,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) ) {
 		$primary_link_map = [
 			'seo' => [
 				'label' => __( 'WordPress SEO Hannover', 'blocksy-child' ),
-				'url'   => nexus_get_primary_public_url( 'seo', home_url( '/wordpress-seo-hannover/' ) ),
+				'url'   => nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) ),
 				'text'  => __( 'Passender Service-Einstieg zum Thema:', 'blocksy-child' ),
 			],
 			'tracking' => [
@@ -55,17 +55,17 @@ if ( 'post' === $related_type && is_singular( 'post' ) ) {
 			],
 			'cro' => [
 				'label' => __( 'Conversion Rate Optimization', 'blocksy-child' ),
-				'url'   => nexus_get_primary_public_url( 'cro', home_url( '/conversion-rate-optimization/' ) ),
+				'url'   => nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#wgos' ) ),
 				'text'  => __( 'Wenn der nächste Hebel in Angebotslogik und Nutzerführung liegt:', 'blocksy-child' ),
 			],
 			'wordpress-performance' => [
 				'label' => __( 'Core Web Vitals', 'blocksy-child' ),
-				'url'   => nexus_get_primary_public_url( 'cwv', home_url( '/core-web-vitals/' ) ),
+				'url'   => nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) ),
 				'text'  => __( 'Wenn Ladezeit und technische Reibung im Vordergrund stehen:', 'blocksy-child' ),
 			],
 			'strategie' => [
 				'label' => __( 'WordPress Growth Operating System', 'blocksy-child' ),
-				'url'   => nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-growth-operating-system/' ) ),
+				'url'   => nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#wgos' ) ),
 				'text'  => __( 'Wenn das Thema in ein größeres System aus Angebot, SEO, Tracking und Conversion eingeordnet werden soll:', 'blocksy-child' ),
 			],
 		];

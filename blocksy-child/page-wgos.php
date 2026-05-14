@@ -25,7 +25,7 @@ get_header();
 $audit_url                    = nexus_get_audit_url();
 $calendar_url                 = function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' );
 $cases_url                    = nexus_get_results_url();
-$asset_hub_url                = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wgos-systemlandkarte/' );
+$asset_hub_url                = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' );
 $page_url                     = get_permalink( get_queried_object_id() );
 $public_proof                 = function_exists( 'nexus_get_public_proof_data' ) ? nexus_get_public_proof_data() : [];
 $canonical_ownership_sentence = function_exists( 'nexus_get_public_ownership_sentence' ) ? nexus_get_public_ownership_sentence() : 'Code, Inhalte, Zugänge und Setups bleiben bei Ihnen. Laufende Zusammenarbeit bedeutet Weiterentwicklung, nicht Abhängigkeit.';
@@ -36,7 +36,7 @@ $diagram_svg_markup           = '';
 $diagram_svg_path             = get_stylesheet_directory() . '/assets/brand/wgos-system-diagram.svg';
 
 if ( ! $page_url ) {
-	$page_url = nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-growth-operating-system/' ) );
+	$page_url = nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#wgos' ) );
 }
 
 if ( file_exists( $diagram_svg_path ) ) {

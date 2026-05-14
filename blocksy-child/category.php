@@ -34,7 +34,7 @@ $pillar_map = [
         'badge'       => 'SEO & Sichtbarkeit',
         'subtitle'    => 'Technisches SEO, CRO und Performance-Synergie — für planbare Sichtbarkeit, bessere Lead-Qualität und effizientere Akquisekosten.',
         'cta_label'   => 'SEO-Diagnose anfragen',
-        'cta_url'     => $primary_urls['seo'] ?? home_url( '/wordpress-seo-hannover/' ),
+        'cta_url'     => $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' ),
         'cta_text'    => 'Prüfen Sie zuerst das Fundament: Technik, Seitenstruktur, Tracking und Conversion-Reibung vor der nächsten Budgeterhöhung.',
     ],
     'tracking' => [
@@ -50,7 +50,7 @@ $pillar_map = [
         'badge'       => 'Conversion (CRO) & UX',
         'subtitle'    => 'A/B-Tests, UX-Optimierung und Conversion-Führung — mehr qualifizierte Anfragen aus dem gleichen Traffic.',
         'cta_label'   => 'CRO-Einstieg ansehen',
-        'cta_url'     => $primary_urls['cro'] ?? home_url( '/conversion-rate-optimization/' ),
+        'cta_url'     => $primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#wgos' ),
         'cta_text'    => 'Die CRO-Seite zeigt, wie Angebotslogik, Proof und CTA-Hierarchie in den naechsten sinnvollen Schritt uebergehen.',
     ],
     'wordpress-performance' => [
@@ -58,7 +58,7 @@ $pillar_map = [
         'badge'       => 'WordPress Performance',
         'subtitle'    => 'Core Web Vitals, Caching, Hosting, Theme-/Plugin-Optimierung — Geschwindigkeit als Wettbewerbsvorteil.',
         'cta_label'   => 'Performance-Check starten',
-        'cta_url'     => $primary_urls['cwv'] ?? home_url( '/core-web-vitals/' ),
+        'cta_url'     => $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' ),
         'cta_text'    => 'Ihre Core Web Vitals entscheiden über Rankings und Conversions.',
     ],
 ];

@@ -3,7 +3,7 @@
  * NEXUS MENU SETUP
  *
  * Erstellt das fokussierte Hauptmenü für die Neukunden-Navigation:
- * Solar & Wärmepumpen | E3 Proof | Über mich | System-Diagnose
+ * Solar & Wärmepumpen | WordPress Agentur | Ergebnisse | Über mich | System-Diagnose
  *
  * Einmal-Setup: Wird beim Theme-Switch oder manuell via ?nexus_rebuild_menu=1 ausgelöst.
  *
@@ -113,20 +113,31 @@ function nexus_setup_main_menu() {
 		'menu-item-status'    => 'publish',
 	] );
 
-	// ── 2. E3 Proof (Top-Level) ────────────────────────────────────
-	$e3_id  = nexus_get_page_id( [ 'e3-new-energy' ] );
-	$e3_url = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
+	// ── 2. WordPress Agentur (Top-Level) ───────────────────────────
+	$agentur_id = nexus_get_page_id( [ 'wordpress-agentur-hannover' ] );
 	wp_update_nav_menu_item( $menu_id, 0, [
-		'menu-item-title'     => 'E3 Proof',
+		'menu-item-title'     => 'WordPress Agentur',
 		'menu-item-object'    => 'page',
-		'menu-item-object-id' => $e3_id,
-		'menu-item-type'      => $e3_id ? 'post_type' : 'custom',
-		'menu-item-url'       => $e3_id ? '' : $e3_url,
+		'menu-item-object-id' => $agentur_id,
+		'menu-item-type'      => $agentur_id ? 'post_type' : 'custom',
+		'menu-item-url'       => $agentur_id ? '' : ( $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ) ),
+		'menu-item-status'    => 'publish',
+	] );
+
+	// ── 3. Ergebnisse (Top-Level) ──────────────────────────────────
+	$results_id  = nexus_get_page_id( [ 'ergebnisse' ] );
+	$results_url = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
+	wp_update_nav_menu_item( $menu_id, 0, [
+		'menu-item-title'     => 'Ergebnisse',
+		'menu-item-object'    => 'page',
+		'menu-item-object-id' => $results_id,
+		'menu-item-type'      => $results_id ? 'post_type' : 'custom',
+		'menu-item-url'       => $results_id ? '' : $results_url,
 		'menu-item-status'    => 'publish',
 		'menu-item-classes'   => 'nav-results-link',
 	] );
 
-	// ── 3. Über mich (Top-Level) ──────────────────────────────────
+	// ── 4. Über mich (Top-Level) ──────────────────────────────────
 	$about_id = nexus_get_page_id( [ 'uber-mich' ] );
 	wp_update_nav_menu_item( $menu_id, 0, [
 		'menu-item-title'     => 'Über mich',
@@ -137,7 +148,7 @@ function nexus_setup_main_menu() {
 		'menu-item-status'    => 'publish',
 	] );
 
-	// ── 4. System-Diagnose CTA (Top-Level) ─────────────────────────
+	// ── 5. System-Diagnose CTA (Top-Level) ─────────────────────────
 	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 	wp_update_nav_menu_item( $menu_id, 0, [
 		'menu-item-title'     => 'System-Diagnose',
@@ -253,13 +264,12 @@ add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
 
 	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 	$results_url = nexus_get_results_url();
-	$e3_url = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'e3', home_url( '/e3-new-energy/' ) ) : home_url( '/e3-new-energy/' );
 	$is_results_context = nexus_is_results_context();
 
 	foreach ( $items as $item ) {
 		if ( nexus_is_results_menu_item( $item ) ) {
-			$item->title = $is_primary_like_menu ? 'E3 Proof' : 'Ergebnisse';
-			$item->url   = $is_primary_like_menu ? $e3_url : $results_url;
+			$item->title = 'Ergebnisse';
+			$item->url   = $results_url;
 
 			if ( ! isset( $item->classes ) || ! is_array( $item->classes ) ) {
 				$item->classes = [];
@@ -310,6 +320,7 @@ add_filter( 'nav_menu_link_attributes', function ( $atts, $item ) {
 	$title_lower = strtolower( wp_strip_all_tags( (string) $item->title ) );
 	$track_map   = [
 		'solar & wärmepumpen' => 'solar',
+		'wordpress agentur'   => 'agentur',
 		'ergebnisse'          => 'results',
 		'e3 proof'            => 'e3_proof',
 		'e3 new energy'       => 'e3_proof',
