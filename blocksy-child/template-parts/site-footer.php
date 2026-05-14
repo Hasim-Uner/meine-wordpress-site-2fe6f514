@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $current_year = wp_date( 'Y' );
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $home_url     = $primary_urls['home'] ?? home_url( '/' );
-$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $request_url  = $analysis_url;
 $e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 $results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
@@ -36,9 +36,9 @@ $imprint_url      = $primary_urls['impressum'] ?? home_url( '/impressum/' );
 $privacy_url      = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
 $hide_primary_cta    = function_exists( 'nexus_should_hide_footer_primary_cta' ) && nexus_should_hide_footer_primary_cta();
 $footer_class        = $hide_primary_cta ? 'ft ft--no-primary-cta ft--mobile-cta' : 'ft';
-$audit_cta_label     = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'System-Diagnose anfragen';
-$audit_cta_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : '60 Sek. · priorisierte Hebel · kein Pflicht-Call';
-$audit_footer_note   = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_get_audit_footer_note() : 'System-Diagnose: persönliche Ersteinschätzung, schriftliche Rückmeldung in 48 Stunden, kein Pflicht-Call.';
+$audit_cta_label     = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck starten';
+$audit_cta_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : '60 Sek. · 5 Fragen · Antwort in 24 h';
+$audit_footer_note   = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_get_audit_footer_note() : 'Marktcheck: persönliche Ersteinschätzung, schriftliche Rückmeldung in 24 Stunden, kein Pflicht-Call.';
 $diagnose_model      = function_exists( 'hu_diagnose_canon' ) ? hu_diagnose_canon() : [];
 $diagnose_access     = isset( $diagnose_model['access_policy'] ) ? (string) $diagnose_model['access_policy'] : 'Kein Admin-Zugang in der Diagnose.';
 $footer_trust_items  = array_values(
@@ -61,8 +61,8 @@ $footer_trust_items  = array_values(
 	<h2 id="ft-heading" class="ft__sr">Footer-Navigation</h2>
 	<div class="ft__audit-shell">
 		<p class="ft__audit-note"><?php echo esc_html( $audit_footer_note ); ?></p>
-		<nav class="ft__audit-links" aria-label="System-Diagnose-Footer-Navigation">
-			<a href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_footer_analysis" data-track-category="lead_gen">System-Diagnose anfragen</a>
+		<nav class="ft__audit-links" aria-label="Marktcheck-Footer-Navigation">
+			<a href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_footer_analysis" data-track-category="lead_gen">Marktcheck starten</a>
 			<a href="<?php echo esc_url( $imprint_url ); ?>" rel="nofollow">Impressum</a>
 			<a href="<?php echo esc_url( $privacy_url ); ?>" rel="nofollow">Datenschutz</a>
 		</nav>
@@ -78,7 +78,7 @@ $footer_trust_items  = array_values(
 				<a class="ft__logo site-logo site-logo--accent" href="<?php echo esc_url( $home_url ); ?>" aria-label="Startseite - HAŞIM ÜNER">HAŞIM ÜNER</a>
 				<p class="ft__energy-tag">Leadgenerierung für Solar- und Wärmepumpen-Betriebe.</p>
 			</div>
-			<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_energy_footer_analysis" data-track-category="lead_gen" data-track-section="footer_energy" data-track-funnel-stage="energy_footer">System-Diagnose anfragen</a>
+			<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_energy_footer_analysis" data-track-category="lead_gen" data-track-section="footer_energy" data-track-funnel-stage="energy_footer">Marktcheck starten</a>
 			<nav class="ft__energy-legal" aria-label="Rechtliches">
 			<a href="<?php echo esc_url( $imprint_url ); ?>" rel="nofollow">Impressum</a>
 			<span aria-hidden="true">·</span>

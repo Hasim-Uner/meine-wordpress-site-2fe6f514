@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$diagnostic_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+$diagnostic_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 
 $tracking_attrs = 'data-track-section="case_e3_methodology" data-track-funnel-stage="proof"';
 
@@ -96,10 +96,10 @@ $specific = [
 ];
 
 $cta_features = [
-	'Preis: [Preis wird ergänzt]',
-	'Wird auf eine spätere Umsetzung 1:1 verrechnet',
-	'Schriftlicher Befund nach 7 Werktagen',
-	'Keine Mindestlaufzeit, kein Pflicht-Termin',
+	'Kostenfreier Marktcheck in 5 Fragen',
+	'Persönliche Ersteinschätzung innerhalb von 24 Stunden',
+	'Einordnung von Anfrage-Quellen, Tracking und Vertriebsanschluss',
+	'Kein Pflicht-Termin, kein Pitch-Call',
 ];
 
 get_header();
@@ -242,11 +242,10 @@ get_header();
 		<section class="e3-section e3-section--cta" id="cta" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="cta-title">
 			<div class="e3-section__inner e3-cta" data-reveal>
 				<p class="e3-kicker">Nächster Schritt</p>
-				<h2 class="e3-section__title" id="cta-title">Wenn Sie eine ähnliche Asymmetrie zwischen Lead-Quellen sehen — oder vermuten — klären wir das in sieben Werktagen.</h2>
-				<p class="e3-section__lede">Die System-Diagnose prüft Ihre konkrete Situation in vier Modulen: Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss. Sie erhalten einen schriftlichen Befund mit drei priorisierten Hebeln, einem konkreten nächsten Schritt und einer Wirtschaftlichkeits-Einordnung. Kein Pitch-Call.</p>
+				<h2 class="e3-section__title" id="cta-title">Wenn Sie eine ähnliche Asymmetrie zwischen Lead-Quellen sehen — oder vermuten — klären wir das im Marktcheck.</h2>
+				<p class="e3-section__lede">Der Marktcheck prüft Ihre konkrete Situation kompakt: Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss. Sie erhalten eine erste schriftliche Einordnung mit priorisiertem nächstem Schritt. Kein Pitch-Call.</p>
 
 				<ul class="e3-feature-list">
-					<!-- TODO: Preis für System-Diagnose finalisieren, dann hier ersetzen -->
 					<?php foreach ( $cta_features as $feature ) : ?>
 						<li><?php echo esc_html( $feature ); ?></li>
 					<?php endforeach; ?>
@@ -254,12 +253,12 @@ get_header();
 
 				<div class="e3-cta__actions">
 					<a class="e3-btn" href="<?php echo esc_url( $diagnostic_url ); ?>" data-track-action="cta_e3_to_diagnostic_request" data-track-category="lead_gen" data-track-section="case_e3_methodology">
-						<span>Diagnose anfragen</span>
+						<span>Marktcheck starten</span>
 						<span class="e3-btn__arrow" aria-hidden="true">→</span>
 					</a>
 				</div>
 
-				<p class="e3-cta__micro">Antwort innerhalb 48 Werktagsstunden per E-Mail.</p>
+				<p class="e3-cta__micro">Antwort innerhalb von 24 Stunden per E-Mail.</p>
 			</div>
 		</section>
 	</div>

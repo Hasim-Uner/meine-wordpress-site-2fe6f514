@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function cja_audit_shortcode() {
 	$css_path            = get_stylesheet_directory() . '/assets/css/cja-audit.css';
 	$js_path             = get_stylesheet_directory() . '/assets/js/cja-audit.js';
-	$request_url         = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/system-diagnose/' );
+	$request_url         = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$legacy_webhook_url  = (string) apply_filters( 'cja_audit_webhook_url', 'https://n8n.hasimuener.de/webhook/cja-analyze' );
 	$default_start_url   = (string) preg_replace( '#/webhook/[^/?]+$#', '/webhook/audit', $legacy_webhook_url );
 	$default_status_url  = (string) preg_replace( '#/webhook/[^/?]+$#', '/webhook/audit-status', $legacy_webhook_url );
@@ -139,7 +139,7 @@ function cja_audit_shortcode() {
 				<div class="cja-cta-meta">2 Minuten · persönliche Rückmeldung · kein Pflicht-Call</div>
 			</div>
 
-			<div class="cja-footer-line">System-Diagnose für Solar- und Wärmepumpen-Anbieter.</div>
+			<div class="cja-footer-line">Marktcheck für Solar- und Wärmepumpen-Anbieter.</div>
 		</div>
 	</div>
 	<?php

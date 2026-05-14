@@ -24,9 +24,9 @@ add_shortcode( 'nexus_header_btn', function() {
  * Gold-Button für die Hauptnavigation.
  */
 add_shortcode( 'nexus_header_cta', function() {
-    $request_url = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/system-diagnose/' );
+    $request_url = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 
-    return '<a href="' . esc_url( $request_url ) . '" class="nexus-header-cta">System-Diagnose anfragen</a>';
+    return '<a href="' . esc_url( $request_url ) . '" class="nexus-header-cta">Marktcheck starten</a>';
 } );
 
 /**
@@ -118,7 +118,7 @@ add_action( 'template_redirect', function() {
 	$gone_paths   = [
 		'/shopify-wartungsvertrag/',
 	];
-	$request_url = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/system-diagnose/' );
+	$request_url = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$redirects = [
 		'/growth-audit/'             => $request_url,
 		'/audit/'                    => $request_url,

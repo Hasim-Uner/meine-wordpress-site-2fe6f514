@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$audit_url    = nexus_get_primary_public_url( 'audit', home_url( '/system-diagnose/' ) );
+$audit_url    = nexus_get_primary_public_url( 'audit', home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
 $glossary_url = function_exists( 'nexus_get_glossary_hub_url' ) ? nexus_get_glossary_hub_url() : home_url( '/glossar/' );
 ?>
 

@@ -19,7 +19,7 @@ function hu_get_request_analysis_request_path() {
 }
 
 /**
- * Return legacy paths that should redirect to the German analysis route.
+ * Return legacy paths that should redirect to the current marketcheck entry.
  *
  * @return array<int, string>
  */
@@ -43,7 +43,26 @@ function hu_is_request_analysis_request_path() {
 }
 
 /**
- * Redirect legacy intake routes to the German analysis route.
+ * Redirect the retired System-Diagnose route to the marketcheck on the
+ * Solar-/Wärmepumpen landing page.
+ *
+ * @return void
+ */
+function hu_redirect_request_analysis_route_to_marketcheck() {
+	if ( is_admin() || wp_doing_ajax() || ! hu_is_request_analysis_request_path() ) {
+		return;
+	}
+
+	$target_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+
+	nocache_headers();
+	wp_safe_redirect( $target_url, 301 );
+	exit;
+}
+add_action( 'template_redirect', 'hu_redirect_request_analysis_route_to_marketcheck', 4 );
+
+/**
+ * Redirect legacy intake routes to the current marketcheck entry.
  *
  * @return void
  */
@@ -56,7 +75,7 @@ function hu_redirect_legacy_request_analysis_paths() {
 		return;
 	}
 
-	$target_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+	$target_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 
 	nocache_headers();
 	wp_safe_redirect( $target_url, 301 );

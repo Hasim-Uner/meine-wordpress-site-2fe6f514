@@ -365,7 +365,7 @@ get_header();
 					<p>Wenn Sie wissen wollen, wie belastbar Ihr technisches Fundament heute ist, starten Sie mit einer strukturierten Analyse von Technik, Tracking, Conversion-Logik und Lead-Übergabe.</p>
 					<div class="seo-cornerstone__cta-buttons">
 						<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $seo_url ); ?>" data-track-action="cta_seo_cornerstone_audit" data-track-category="lead_gen">Technisches SEO Audit anfragen</a>
-						<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( nexus_get_audit_url() ); ?>" data-track-action="cta_seo_cornerstone_journey" data-track-category="lead_gen">System-Diagnose</a>
+							<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( nexus_get_audit_url() ); ?>" data-track-action="cta_seo_cornerstone_journey" data-track-category="lead_gen">Marktcheck</a>
 					</div>
 				</div>
 

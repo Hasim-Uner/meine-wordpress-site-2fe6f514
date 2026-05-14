@@ -113,11 +113,11 @@ function nexus_is_primary_header_menu_args( $args ) {
 function nexus_get_site_header_fallback_items() {
 	$about_page_id = nexus_get_page_id( [ 'uber-mich' ] );
 	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
-	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$solar_url    = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 	$agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 	$results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
-	$request_cta  = 'System-Diagnose';
+	$request_cta  = 'Marktcheck';
 
 	return [
 		[
@@ -279,13 +279,13 @@ function nexus_energy_nav_cta_label( $items, $args ) {
 		return $items;
 	}
 
-	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
-	$request_cta = 'System-Diagnose';
+	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+	$request_cta = 'Marktcheck';
 
 	foreach ( $items as $item ) {
 		$legacy_analysis_label = 'Analyse ' . 'starten';
 		$legacy_diagnose_label = 'System-Diagnose ' . 'starten';
-		if ( in_array( $item->title, [ $legacy_analysis_label, $legacy_diagnose_label, 'System-Diagnose', 'Audit starten', 'System-Diagnose anfragen', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
+		if ( in_array( $item->title, [ $legacy_analysis_label, $legacy_diagnose_label, 'System-Diagnose', 'Marktcheck', 'Audit starten', 'System-Diagnose anfragen', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
 			$item->title = $request_cta;
 			$item->url   = $request_url;
 			break;

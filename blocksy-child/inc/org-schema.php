@@ -92,9 +92,9 @@ function hu_output_schema()
             'itemListElement' => [
                 [
                     '@type'       => 'Offer',
-                    'name'        => 'System-Diagnose',
-                    'description' => 'Evidenzbasierter Einstieg: Anfragebremsen, Datenlage, Sichtbarkeit und Conversion-Reihenfolge einordnen.',
-                    'url'         => home_url('/system-diagnose/'),
+                    'name'        => 'Marktcheck',
+                    'description' => 'Kostenfreier Einstieg: Anfragebremsen, Datenlage, Sichtbarkeit und Conversion-Reihenfolge einordnen.',
+                    'url'         => function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
                 ],
                 [
                     '@type'       => 'Offer',
@@ -160,14 +160,14 @@ function hu_output_schema()
         ],
 
         'customer-journey-audit' => [
-            'name'        => 'System-Diagnose',
-            'description' => 'Persönliche System-Diagnose für Solar- und Wärmepumpen-Anbieter: drei priorisierte Anfragebremsen, eine klare Priorität und der nächste sinnvolle Schritt.',
-            'serviceType' => 'System-Diagnose',
+            'name'        => 'Marktcheck',
+            'description' => 'Persönlicher Marktcheck für Solar- und Wärmepumpen-Anbieter: erste Einordnung der Anfragebremsen, eine klare Priorität und der nächste sinnvolle Schritt.',
+            'serviceType' => 'Marktcheck',
             'serviceOutput' => 'Persönliche Einschätzung der größten Anfragebremsen auf einer Startseite oder kaufnahen Angebotsseite',
             'offers'      => [
                 [
                     '@type'         => 'Offer',
-                    'name'          => 'System-Diagnose',
+                    'name'          => 'Marktcheck',
                     'price'         => 0,
                     'priceCurrency' => 'EUR',
                     'isAccessibleForFree' => true,
@@ -177,14 +177,14 @@ function hu_output_schema()
         ],
 
         'growth-audit' => [
-            'name'        => 'System-Diagnose',
-            'description' => 'Persönliche System-Diagnose für Solar- und Wärmepumpen-Anbieter: drei priorisierte Anfragebremsen, eine klare Priorität und der nächste sinnvolle Schritt.',
-            'serviceType' => 'System-Diagnose',
+            'name'        => 'Marktcheck',
+            'description' => 'Persönlicher Marktcheck für Solar- und Wärmepumpen-Anbieter: erste Einordnung der Anfragebremsen, eine klare Priorität und der nächste sinnvolle Schritt.',
+            'serviceType' => 'Marktcheck',
             'serviceOutput' => 'Persönliche Einschätzung der größten Anfragebremsen auf einer Startseite oder kaufnahen Angebotsseite',
             'offers'      => [
                 [
                     '@type'         => 'Offer',
-                    'name'          => 'System-Diagnose',
+                    'name'          => 'Marktcheck',
                     'price'         => 0,
                     'priceCurrency' => 'EUR',
                     'isAccessibleForFree' => true,
@@ -194,16 +194,16 @@ function hu_output_schema()
         ],
 
         'audit' => [
-            'name'        => 'System-Diagnose',
-            'description' => 'Persönliche System-Diagnose für Solar- und Wärmepumpen-Anbieter: drei priorisierte Anfragebremsen, eine klare Priorität und der nächste sinnvolle Schritt.',
-            'serviceType' => 'System-Diagnose',
+            'name'        => 'Marktcheck',
+            'description' => 'Persönlicher Marktcheck für Solar- und Wärmepumpen-Anbieter: erste Einordnung der Anfragebremsen, eine klare Priorität und der nächste sinnvolle Schritt.',
+            'serviceType' => 'Marktcheck',
             'serviceOutput' => 'Persönliche Einschätzung der größten Anfragebremsen auf einer Startseite oder kaufnahen Angebotsseite'
         ],
 
         '360-deep-dive' => [
-            'name'        => 'Vertiefte Folgeanalyse nach der System-Diagnose',
+            'name'        => 'Vertiefte Folgeanalyse nach dem Marktcheck',
             'description' => 'Persönliche Folgeanalyse nach dem Audit mit priorisierter Entscheidungsvorlage für Positionierung, IA, Measurement und Conversion.',
-            'serviceType' => 'Folgeanalyse nach der System-Diagnose',
+            'serviceType' => 'Folgeanalyse nach dem Marktcheck',
             'serviceOutput' => 'Priorisierte Entscheidungsvorlage für die nächsten sinnvollen Struktur- und Umsetzungsentscheidungen'
         ],
 

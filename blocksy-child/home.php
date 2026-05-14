@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$audit_url = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/system-diagnose/' );
+$audit_url = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 
 get_header();
 ?>
@@ -149,7 +149,7 @@ get_header();
 				<?php endif; ?>
 
 				<!-- Diagnose CTA am Ende aller Artikel -->
-				<div class="blog-archive-infeed-cta" aria-label="Kostenlose System-Diagnose">
+				<div class="blog-archive-infeed-cta" aria-label="Kostenloser Marktcheck">
 					<div class="blog-archive-infeed-cta__inner">
 						<span class="blog-archive-infeed-cta__tag">Kostenlose Diagnose</span>
 						<h2 class="blog-archive-infeed-cta__headline">Lassen Sie es uns konkret machen.</h2>
@@ -162,7 +162,7 @@ get_header();
 							data-track-action="cta_blog_archive_end"
 							data-track-category="lead_gen"
 						>
-							System-Diagnose anfragen
+							Marktcheck starten
 						</a>
 					</div>
 				</div>

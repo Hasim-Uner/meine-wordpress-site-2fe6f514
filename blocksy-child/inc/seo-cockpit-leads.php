@@ -127,7 +127,7 @@ function nexus_get_seo_cockpit_empty_lead_metrics() {
  */
 function nexus_get_seo_cockpit_lead_source_label( $source ) {
 	$labels = [
-		'growth_audit_funnel'   => 'System-Diagnose',
+		'growth_audit_funnel'   => 'Marktcheck',
 		'energy_systems_landing' => 'Energie-Landing',
 	];
 

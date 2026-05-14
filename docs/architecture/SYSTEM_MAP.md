@@ -1,6 +1,6 @@
 # System Map
 
-Stand: 2026-05-13. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der System-Diagnose-Route.
+Stand: 2026-05-15. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der frueheren System-Diagnose-Route.
 
 ## Hauptsysteme
 
@@ -8,7 +8,7 @@ Stand: 2026-05-13. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | --- | --- | --- | --- | --- |
 | Website | deploybarer WordPress-Theme-Code | `blocksy-child/`, `.github/workflows/ci.yml`, `.github/workflows/deploy.yml`, `docs/architecture/DEPLOYMENT.md` | WordPress, Blocksy Parent Theme, ACF | live |
 | Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
-| Growth-Audit-Legacypfad | deaktivierter Instant-Diagnose-Legacycode; öffentliche Audit- und Tools-Routen führen zur System-Diagnose | `blocksy-child/page-audit.php`, `blocksy-child/inc/audit-page.php`, `blocksy-child/inc/tools-page.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `docs/systems/audit-funnel.md` | n8n Webhook nur für Legacy-Code, WordPress | öffentlich retired; 301 auf `/system-diagnose/` |
+| Growth-Audit-Legacypfad | deaktivierter Instant-Diagnose-Legacycode; öffentliche Audit- und Tools-Routen führen zum Marktcheck | `blocksy-child/page-audit.php`, `blocksy-child/inc/audit-page.php`, `blocksy-child/inc/tools-page.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `docs/systems/audit-funnel.md` | n8n Webhook nur für Legacy-Code, WordPress | öffentlich retired; 301 auf `/solar-waermepumpen-leadgenerierung/#marktcheck` |
 | Nexus CRM & Blog Notify | gemeinsames CRM für Analyse-Leads, Audit-, Folgeanalyse-, Umsetzungs- und Bestandskunden-Anfragen plus DOI- und Artikel-Mail-Logik | `blocksy-child/inc/crm.php`, `blocksy-child/inc/analysis-intake.php`, `blocksy-child/inc/blog-notify.php`, `blocksy-child/template-parts/blog-notify.php`, `blocksy-child/page-blog-notify.php`, `docs/systems/blog-notify.md` | WordPress CPT/Meta, WordPress REST, wp_mail, Brevo | repo-seitig live; Analyse-REST und Brevo-Konfiguration am 2026-05-07 verifiziert |
 | SEO Cockpit | Search-Console-basiertes SEO-Dashboard mit optionalem Koko- und Audit-Lead-Layer | `blocksy-child/inc/seo-cockpit.php`, `blocksy-child/assets/css/seo-cockpit-admin.css`, `docs/systems/seo-cockpit.md` | Google Search Console API, optional Koko Analytics, Nexus CRM / Audit-CRM | repo-seitig vorbereitet, OAuth und Live-Daten offen |
 | Tracking | Tracking-ready Markup, CTA-Events, SEO-/Schema-Layer | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/seo-meta.php`, `blocksy-child/inc/org-schema.php`, Templates mit `data-track-*` | GTM, sGTM, GA4, Consent Mode v2, Meta CAPI | teils im Repo, teils extern |
@@ -16,8 +16,8 @@ Stand: 2026-05-13. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | Public Proof Layer | zentraler oeffentlicher Proof- und Vokabular-Layer fuer kaufnahe Seiten | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/shortcodes.php`, `blocksy-child/front-page.php`, `blocksy-child/page-wordpress-agentur.php`, `blocksy-child/page-wgos.php`, `blocksy-child/page-kontakt.php`, `blocksy-child/inc/contact-page.php` | WordPress-Editor, oeffentliche Cases und Profile | live |
 | Content- und SEO-System | Blog, Pillar-Hubs, Cornerstone-Content, interne Verlinkung | `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/page-seo-cornerstone.php`, `content/blog-drafts/` | WordPress-Editor | live plus Ausbau |
 | Client Portal | Kunden-Cockpit mit Login, Upload und Roadmap-Slots | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, Media Library | live, aber aktuell mit Mock-Daten |
-| n8n-Automationen | Workflow-Logik für aktiven Legacy-Audit und spätere Analyse-/Routing-/Nurture-Schritte hinter Contract, Consent und Feature-Flag | `automations/n8n/`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/assets/js/audit-live.js` | n8n auf `n8n.hasimuener.de`, CRM, Mail, evtl. Sheets | Legacy-Audit aktiv; System-Diagnose noch nicht angebunden |
-| System-Diagnose | evidenzbasierter Founding-Partner-Fitcheck mit Marktbild, lokaler Auswertung und Consent-basiertem Kontakt-Submit | `blocksy-child/readiness/`, `blocksy-child/page-readiness-diagnose.php`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/analysis-intake.php`, `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json`, `docs/architecture/PRIVACY.md` | WordPress, React-Mikro-App im Theme, Nexus CRM, Brevo; n8n nicht angebunden | repo-seitig als 8-Schritt-Form aktiv, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects, WordPress-REST-Submit aktiv |
+| n8n-Automationen | Workflow-Logik für aktiven Legacy-Audit und spätere Analyse-/Routing-/Nurture-Schritte hinter Contract, Consent und Feature-Flag | `automations/n8n/`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/assets/js/audit-live.js` | n8n auf `n8n.hasimuener.de`, CRM, Mail, evtl. Sheets | Legacy-Audit-Code vorhanden; Marktcheck nutzt WordPress REST statt n8n |
+| Marktcheck / System-Diagnose-Legacy | aktiver 60-Sekunden-Marktcheck auf der Solar-Landingpage; fruehere System-Diagnose-Route bleibt als Redirect erhalten | `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/solar-leadgenerierung-solara.js`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/review-crm.php`, `blocksy-child/readiness/` | WordPress, Audit-CRM, Brevo/wp_mail, Cal.com; n8n nicht angebunden | Marktcheck aktiv über `/wp-json/nexus/v1/audit-request`; `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects |
 | Agenten- und Prompt-System | Kontext, Guardrails, Skills und minimale Legacy-Briefings | `AGENTS.md`, `agents/skills/`, `prompts/README.md` | keine direkte Laufzeitabhaengigkeit | in Aufbau |
 
 ## Website
@@ -61,7 +61,7 @@ Systemische Rolle:
 
 ## n8n-Automationen
 
-Im Repo liegen erste n8n-Artefakte, aber n8n ist nicht der Backend-Pfad der System-Diagnose. Die neue Analyse nutzt lokal berechnetes Scoring und erst im separaten Kontakt-Schritt WordPress REST, Nexus CRM und Brevo. Die Rolle von n8n ist aktuell getrennt:
+Im Repo liegen erste n8n-Artefakte, aber n8n ist nicht der Backend-Pfad des Marktchecks. Der aktive Marktcheck nutzt WordPress REST, Audit-CRM und Brevo/wp_mail. Die fruehere React-System-Diagnose bleibt als Legacy-Code im Repo. Die Rolle von n8n ist aktuell getrennt:
 
 - deaktivierter Instant-Results-Layer für den Growth-Audit-Legacycode über `https://n8n.hasimuener.de/webhook/audit` plus `https://n8n.hasimuener.de/webhook/audit-status`, mit `https://n8n.hasimuener.de/webhook/cja-analyze` als Legacy-Fallback
 - künftiges Lead-Routing und Nurture erst nach Contract-, Consent- und Feature-Flag-Freigabe
@@ -73,17 +73,17 @@ Aktuell dokumentierter Workflow:
 - Doku: `automations/n8n/docs/audit-funnel__customer-journey-audit__refactor.md`
 - Flow-Map: `automations/n8n/flow-maps/audit-funnel__customer-journey-audit__refactor.md`
 
-System-Diagnose:
+Marktcheck / System-Diagnose-Legacy:
 
-- Route: `/system-diagnose/`
-- Legacy: `/readiness-diagnose/` leitet per 301 weiter
+- Aktive Route: `/solar-waermepumpen-leadgenerierung/#marktcheck`
+- Legacy: `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` leiten per 301 weiter
 - Contract: `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt bis zur nächsten Contract-Version intern stabil
-- Status: lokale 8-Schritt-React-App plus Kontakt-Submit nach Einwilligung
-- WordPress REST: `/wp-json/nexus/v1/analysis-submit`
-- CRM: `nexus_contact`, Segment `analysis_lead`
+- Status: 60-Sekunden-Marktcheck im Hero der Solar-Landingpage; fruehere 8-Schritt-React-App bleibt Legacy-Code
+- WordPress REST: `/wp-json/nexus/v1/audit-request`
+- CRM: `nexus_review_request`, Audit-Typ `Marktcheck`
 - Mail: interne Admin-Benachrichtigung und Lead-Bestätigung über zentrale Brevo-/`wp_mail`-Schicht
 - n8n-Route: nicht angebunden; erst nach neuer Contract-/Consent-/Feature-Flag-Freigabe
-- Default-Fragepfad: kein Klarname, keine Telefonnummer, keine E-Mail, keine personenbezogenen Endkundendaten
+- Default-Fragepfad: 5 fachliche Antworten plus Firma, Name, E-Mail und optionale Telefonnummer im Submit; keine personenbezogenen Endkundendaten
 - Retention: für n8n nicht anwendbar, weil nichts an n8n gesendet wird
 
 Bekannte technische Touchpoints:
@@ -102,14 +102,14 @@ Fachliche Regel:
 
 ## Growth-Audit-Legacypfad
 
-Der Growth Audit ist nicht mehr der Primär-CTA des Systems und darf nicht als Hauptfunnel zurückkehren. Die öffentliche Route ist retired und leitet wie die kostenlosen Tool-Pfade auf die System-Diagnose.
+Der Growth Audit und die fruehere System-Diagnose-Seite sind nicht mehr der Primär-CTA des Systems und dürfen nicht als Hauptfunnel zurückkehren. Die öffentlichen Routen sind retired und leiten wie die kostenlosen Tool-Pfade auf den Marktcheck.
 
 Aktuelle Logik:
 
-1. Kalter B2B-Traffic führt primär zur `/system-diagnose/`.
-2. `/growth-audit/`, alte Audit-Aliasse, `/kostenlose-tools/`, `/tools/`, `/website-performance-analyse/` und `/roi-rechner/` leiten per 301 auf die Analyse.
+1. Kalter Solar-/SHK-Traffic führt primär zu `/solar-waermepumpen-leadgenerierung/#marktcheck`.
+2. `/system-diagnose/`, `/growth-audit/`, alte Audit-Aliasse, `/kostenlose-tools/`, `/tools/`, `/website-performance-analyse/` und `/roi-rechner/` leiten per 301 auf den Marktcheck.
 3. Der fruehere Instant-Results- und 48h-Audit-Code bleibt im Repo als Legacy-Layer, ist aber nicht mehr der Default-Flow.
-4. Die Branchen-Landingpage für Solar-/Wärmepumpen-Anbieter führt ihre großen CTA-Flächen ebenfalls zur `/system-diagnose/`.
+4. Die Branchen-Landingpage für Solar-/Wärmepumpen-Anbieter führt ihre großen CTA-Flächen zum eigenen `#marktcheck` im Hero.
 
 ## Nexus CRM und Blog Notify
 
@@ -175,8 +175,8 @@ Systemische Rolle:
 
 Die CTA-Hierarchie ist klar und sollte nicht verwischt werden.
 
-- Primärer CTA für kalten B2B-Traffic: `System-Diagnose`
-- Retired Warm-intent Intake: `/anfrage/` leitet auf `/system-diagnose/`
+- Primärer CTA für kalten Solar-/SHK-Traffic: `Marktcheck`
+- Retired Warm-intent Intake: `/anfrage/` leitet auf `/solar-waermepumpen-leadgenerierung/#marktcheck`
 - Proof-Pfade: `/e3-new-energy/`, `/ergebnisse/`
 - Kein separater öffentlicher Tiefendiagnose-Schritt im Hauptfunnel
 - Umsetzungsnahe Kontaktwege: `Umsetzung / Optimierung`, `Laufende Weiterentwicklung`
@@ -215,7 +215,7 @@ Risiko:
 
 ## Systemabhaengigkeiten
 
-- Website -> CTA-Layer -> System-Diagnose -> Fitentscheidung -> Umsetzung / CRM / Sales
+- Website -> CTA-Layer -> Marktcheck -> Fitentscheidung -> Umsetzung / CRM / Sales
 - Website -> Tracking-Layer -> GTM / GA4 / Consent -> Reporting / Optimierung
 - Blog / SEO -> interne Verlinkung -> Service-Seiten / Audit -> Leadflow
 - WordPress-Editor -> Theme-Struktur -> Live-Seiten

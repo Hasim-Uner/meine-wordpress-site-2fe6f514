@@ -17,10 +17,10 @@ $audit_url = nexus_get_audit_url();
 
 	<!-- 1. HERO SECTION -->
 	<section class="deepdive-hero">
-		<span class="deepdive-pill">Nur nach System-Diagnose und Kontakt</span>
-		<h1 class="deepdive-hero-title">Vertiefte Folgeanalyse nach der System-Diagnose</h1>
+		<span class="deepdive-pill">Nur nach Marktcheck und Kontakt</span>
+		<h1 class="deepdive-hero-title">Vertiefte Folgeanalyse nach dem Marktcheck</h1>
 		<p class="deepdive-hero-sub">
-			Sie kennen die groben Engpässe aus der System-Diagnose.<br>
+			Sie kennen die groben Engpässe aus dem Marktcheck.<br>
 			Mit wenigen gezielten Angaben verdichte ich das Bild zu einer persönlichen Analyse<br>
 			mit klarer Reihenfolge statt losem Maßnahmenstapel.
 		</p>
@@ -79,13 +79,13 @@ $audit_url = nexus_get_audit_url();
 	<section class="deepdive-alt-cta">
 			<p class="deepdive-alt-label">Wenn der Kontext doch noch sortiert werden soll:</p>
 			<a href="<?php echo esc_url( $audit_url ); ?>" class="deepdive-alt-link">
-			-> Erst die System-Diagnose anfragen
+			-> Erst den Marktcheck starten
 			</a>
 		</section>
 
 	<!-- 6. RÜCKLINK ZUM CJA -->
 	<section class="deepdive-cja-link">
-			<p class="deepdive-cja-label">Noch keine System-Diagnose gemacht?</p>
+			<p class="deepdive-cja-label">Noch keinen Marktcheck gemacht?</p>
 			<a href="<?php echo esc_url( $audit_url ); ?>" class="deepdive-cja-btn">
 			-> Erst mit dem Audit starten
 			</a>

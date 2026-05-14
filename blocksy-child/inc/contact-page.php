@@ -193,7 +193,7 @@ function nexus_maybe_ensure_contact_page() {
 						'post_title'   => 'Kontakt',
 						'post_name'    => 'kontakt',
 						'post_content' => '',
-						'post_excerpt' => 'Kontakt für System-Diagnose, Website-Analyse, Umsetzung und laufende Weiterentwicklung.',
+						'post_excerpt' => 'Kontakt für Marktcheck, Website-Analyse, Umsetzung und laufende Weiterentwicklung.',
 					]
 				),
 				true
@@ -217,7 +217,7 @@ function nexus_maybe_ensure_contact_page() {
 		wp_update_post(
 			[
 				'ID'           => $page_id,
-				'post_excerpt' => 'Kontakt für System-Diagnose, Website-Analyse, Umsetzung und laufende Weiterentwicklung.',
+				'post_excerpt' => 'Kontakt für Marktcheck, Website-Analyse, Umsetzung und laufende Weiterentwicklung.',
 			]
 		);
 	}
@@ -227,7 +227,7 @@ function nexus_maybe_ensure_contact_page() {
 	}
 
 	if ( '' === trim( (string) get_post_meta( $page_id, 'seo_description', true ) ) ) {
-		update_post_meta( $page_id, 'seo_description', 'Kontakt für System-Diagnose, Website-Analyse, Umsetzung und laufende Weiterentwicklung: direkter Einstieg ohne Sales-Team.' );
+		update_post_meta( $page_id, 'seo_description', 'Kontakt für Marktcheck, Website-Analyse, Umsetzung und laufende Weiterentwicklung: direkter Einstieg ohne Sales-Team.' );
 	}
 }
 add_action( 'init', 'nexus_maybe_ensure_contact_page', 28 );
@@ -240,8 +240,8 @@ add_action( 'init', 'nexus_maybe_ensure_contact_page', 28 );
 function nexus_get_contact_request_type_options() {
 	return [
 		'audit' => [
-			'label'       => 'Erstdiagnose / System-Diagnose',
-			'description' => 'Der saubere Diagnose-Einstieg, wenn zuerst Klarheit und Priorisierung gebraucht werden.',
+			'label'       => 'Marktcheck',
+			'description' => 'Der saubere Ersteinstieg, wenn zuerst Klarheit und Priorisierung gebraucht werden.',
 		],
 		'analysis' => [
 			'label'       => 'Website-Analyse',
@@ -289,7 +289,7 @@ function nexus_get_contact_request_type_labels() {
 function nexus_get_contact_focus_options() {
 	return [
 		'audit_scope'      => [
-			'label' => 'Erstdiagnose / System-Diagnose',
+			'label' => 'Marktcheck / Erstdiagnose',
 			'types' => [ 'audit' ],
 		],
 		'followup_scope'   => [
@@ -411,7 +411,7 @@ function nexus_get_contact_notification_email() {
  */
 function nexus_get_contact_request_response_label( $request_type ) {
 	$labels = [
-		'audit'          => 'System-Diagnose Anfrage',
+		'audit'          => 'Marktcheck',
 		'analysis'       => 'Website-Analyse',
 		'implementation' => 'Umsetzungsanfrage',
 		'ongoing'        => 'Weiterentwicklungsanfrage',

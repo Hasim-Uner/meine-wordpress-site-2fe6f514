@@ -416,9 +416,9 @@ while ( have_posts() ) :
 							<a href="https://www.brevo.com/blog/legal/privacypolicy/" target="_blank" rel="noopener noreferrer">Datenschutzhinweisen von Brevo</a>.
 						</p>
 
-						<h3>Growth-Audit-Anfrage</h3>
+							<h3>Marktcheck-Anfrage</h3>
 						<p>
-							Auf der Seite zur System-Diagnose können Sie eine Anfrage stellen. Dabei werden
+								Auf der Seite zum Marktcheck können Sie eine Anfrage stellen. Dabei werden
 							insbesondere Name, geschäftliche E-Mail-Adresse, Unternehmen, URL der zu
 							prüfenden Seite sowie Ihre inhaltlichen Angaben zur Anfrage verarbeitet.
 						</p>

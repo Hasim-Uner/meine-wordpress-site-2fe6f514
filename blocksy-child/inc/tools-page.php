@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Redirect retired tools hub pages to the current System-Diagnose.
+ * Redirect retired tools hub pages to the current marketcheck.
  *
  * @return void
  */
@@ -21,7 +21,7 @@ function nexus_redirect_deprecated_tools_page() {
 		return;
 	}
 
-	$target_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/system-diagnose/' );
+	$target_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$target_path = trailingslashit( '/' . ltrim( (string) wp_parse_url( $target_url, PHP_URL_PATH ), '/' ) );
 
 	if ( function_exists( 'nexus_get_current_request_path' ) && nexus_get_current_request_path() === $target_path ) {
@@ -41,7 +41,7 @@ add_action( 'template_redirect', 'nexus_redirect_deprecated_tools_page', 2 );
  */
 function nexus_get_tools_hub_items() {
 	$primary_urls   = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
-	$audit_url      = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/system-diagnose/' );
+	$audit_url      = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$wgos_url       = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#wgos' );
 	$asset_hub_url  = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' );
 	$core_web_url   = $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' );
@@ -49,7 +49,7 @@ function nexus_get_tools_hub_items() {
 	return [
 		[
 			'eyebrow'      => 'Diagnose',
-			'title'        => 'System-Diagnose',
+			'title'        => 'Marktcheck',
 			'description'  => 'Wenn zuerst klar werden soll, wo Positionierung, Proof, CTA oder Tracking auf einer konkreten Seite Nachfrage verlieren.',
 			'use_case'     => 'Eine Seite wirtschaftlich priorisieren statt mehrere Symptome parallel zu behandeln.',
 			'outcome'      => 'Schriftliche Rückmeldung in 48 Stunden mit stärkster Bremse, Priorität und nächstem sinnvollen Schritt.',

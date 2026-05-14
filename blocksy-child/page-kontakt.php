@@ -25,7 +25,7 @@ if ( 'analysis' === $requested_type ) {
 }
 $public_type_copy     = [
 	'audit'          => [
-		'label'       => 'System-Diagnose',
+		'label'       => 'Marktcheck',
 		'description' => 'Klarheit vor Umsetzung.',
 	],
 	'analysis'       => [
@@ -66,7 +66,7 @@ $type_copy_map         = [
 		'message_label'       => 'Kurzbeschreibung',
 		'message_help'        => 'Welche URL ist relevant? Was ist unklar? Welches Ergebnis wünschen Sie sich?',
 		'message_placeholder' => "1. Seite: Welche URL ist relevant?\n2. Unklarheit: Was bremst gerade?\n3. Ziel: Was soll sich verbessern?",
-		'submit_label'        => 'System-Diagnose anfragen',
+		'submit_label'        => 'Marktcheck starten',
 		'timeline_label'      => 'Zeitfenster',
 	],
 	'analysis'       => [

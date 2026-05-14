@@ -133,7 +133,7 @@ function hu_home_urls() {
 	}
 
 	$urls = [
-		'audit'       => nexus_get_primary_public_url( 'audit', home_url( '/system-diagnose/' ) ),
+		'audit'       => nexus_get_primary_public_url( 'audit', home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) ),
 		'wgos'        => nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#wgos' ) ),
 		'cases'       => nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) ),
 		'agentur'     => nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ),
@@ -321,7 +321,7 @@ function hu_home_system_section_markup() {
 					</ul>
 
 					<div class="homepage-system-economics__actions">
-						<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_system_map_audit" data-track-category="lead_gen">System-Diagnose anfragen</a>
+							<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_system_map_audit" data-track-category="lead_gen">Marktcheck starten</a>
 					</div>
 
 					<p class="homepage-system-economics__note">
@@ -405,7 +405,7 @@ function hu_hero_section_shortcode() {
 					<div class="wp-hero-panel nx-reveal">
 						<div class="audit-card-premium" id="audit">
 							<div class="audit-card-premium__intro">
-								<span class="audit-card-premium__eyebrow">System-Diagnose</span>
+								<span class="audit-card-premium__eyebrow">Marktcheck</span>
 							</div>
 							<h2 class="audit-card-premium__title">Erster Schritt: Diagnose statt Pitch</h2>
 							<p class="audit-card-premium__copy">
@@ -421,7 +421,7 @@ function hu_hero_section_shortcode() {
 								Kein Verkaufsgespräch. Klare Einschätzung. Sinnvolle nächste Entscheidung.
 							</div>
 							<div class="wp-btn-wrapper audit-card-premium__actions">
-								<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary full-width" data-track-action="cta_hero_audit" data-track-category="lead_gen">System-Diagnose anfragen</a>
+									<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary full-width" data-track-action="cta_hero_audit" data-track-category="lead_gen">Marktcheck starten</a>
 							</div>
 						</div>
 					</div>
@@ -624,7 +624,7 @@ function hu_wgos_block_shortcode() {
 			<div class="wp-process">
 				<div class="wp-step nx-reveal">
 					<div class="wp-step-num">1</div>
-					<h3>System-Diagnose</h3>
+					<h3>Marktcheck</h3>
 					<p>Der niedrigschwellige Einstieg. Wir machen sichtbar, wo Sichtbarkeit, Vertrauen, Datenqualität oder Lead-Capture wegbrechen und ob sich ein tieferer Eingriff lohnt.</p>
 				</div>
 				<div class="wp-step highlight-step nx-reveal">
@@ -642,7 +642,7 @@ function hu_wgos_block_shortcode() {
 			<div id="homepage-mindmap-teaser-root" class="homepage-mindmap-section" aria-label="WGOS Mindmap Teaser"></div>
 
 			<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:2.5rem;">
-				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_wgos_audit" data-track-category="lead_gen">System-Diagnose anfragen</a>
+				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_wgos_audit" data-track-category="lead_gen">Marktcheck starten</a>
 			</div>
 		</div>
 	</section>
@@ -817,7 +817,7 @@ function hu_faq_section_shortcode() {
 				</details>
 				<details class="nx-faq__item nx-reveal">
 					<summary>Wie startet die Zusammenarbeit?</summary>
-					<div class="nx-faq__content">Mit der System-Diagnose. Danach gibt es eine klare Priorität und den nächsten sinnvollen Schritt. Größere Folgeprojekte ergeben sich erst nach der Rückmeldung und persönlichem Kontakt.</div>
+					<div class="nx-faq__content">Mit dem Marktcheck. Danach gibt es eine klare Priorität und den nächsten sinnvollen Schritt. Größere Folgeprojekte ergeben sich erst nach der Rückmeldung und persönlichem Kontakt.</div>
 				</details>
 			</div>
 		</div>
@@ -920,7 +920,7 @@ function hu_cta_section_shortcode() {
 			<div class="nx-cta-box nx-reveal">
 				<span class="nx-badge nx-badge--gold" style="display:inline-block; margin-bottom:1.5rem;">Nächster Schritt</span>
 				<h2 id="cta-heading" style="font-size:clamp(1.8rem,3vw,2.4rem); margin-bottom:1rem; color:#fff;">Prüfen wir, wo Ihre WordPress-Seite Anfragen verliert.</h2>
-				<p>Im System-Diagnose sehen Sie, wo Sichtbarkeit, Vertrauen, Datensignale oder Conversion wegbrechen und ob Ihre Website heute schon als Plattform trägt.</p>
+					<p>Im Marktcheck sehen Sie, wo Sichtbarkeit, Vertrauen, Datensignale oder Conversion wegbrechen und ob Ihre Website heute schon als Plattform trägt.</p>
 
 				<div role="group" aria-label="Audit-Merkmale" style="display:flex; flex-wrap:wrap; justify-content:center; gap:0.75rem 1.5rem; margin-bottom:2rem;">
 					<span style="font-size:0.85rem; color:var(--nx-text-muted);">✓ klare Einschätzung statt Bauchgefühl</span>

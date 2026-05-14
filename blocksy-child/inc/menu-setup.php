@@ -3,7 +3,7 @@
  * NEXUS MENU SETUP
  *
  * Erstellt das fokussierte Hauptmenü für die Neukunden-Navigation:
- * Solar & Wärmepumpen | WordPress Agentur | Ergebnisse | Über mich | System-Diagnose
+ * Solar & Wärmepumpen | WordPress Agentur | Ergebnisse | Über mich | Marktcheck
  *
  * Einmal-Setup: Wird beim Theme-Switch oder manuell via ?nexus_rebuild_menu=1 ausgelöst.
  *
@@ -36,6 +36,7 @@ function nexus_is_audit_cta_menu_item( $item ) {
 		'/customer-journey-audit/',
 		'/growth-audit/',
 		'/360-audit/',
+		'/system-diagnose/',
 	];
 
 	if ( $path && in_array( trailingslashit( $path ), $audit_paths, true ) ) {
@@ -46,7 +47,9 @@ function nexus_is_audit_cta_menu_item( $item ) {
 
 	return false !== strpos( $title, 'journey audit' )
 		|| false !== strpos( $title, 'growth audit' )
-		|| false !== strpos( $title, 'free journey audit' );
+		|| false !== strpos( $title, 'free journey audit' )
+		|| false !== strpos( $title, 'system-diagnose' )
+		|| false !== strpos( $title, 'marktcheck' );
 }
 
 /**
@@ -148,10 +151,10 @@ function nexus_setup_main_menu() {
 		'menu-item-status'    => 'publish',
 	] );
 
-	// ── 5. System-Diagnose CTA (Top-Level) ─────────────────────────
-	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+	// ── 5. Marktcheck CTA (Top-Level) ──────────────────────────────
+	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	wp_update_nav_menu_item( $menu_id, 0, [
-		'menu-item-title'     => 'System-Diagnose',
+		'menu-item-title'     => 'Marktcheck',
 		'menu-item-object'    => 'custom',
 		'menu-item-object-id' => 0,
 		'menu-item-type'      => 'custom',
@@ -262,7 +265,7 @@ add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
 	$is_primary_like_menu = in_array( $theme_location, [ 'primary', 'primary-slim' ], true )
 		|| in_array( $menu_name, [ 'Nexus Hauptmenü', 'Hauptmenü Slim' ], true );
 
-	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$results_url = nexus_get_results_url();
 	$is_results_context = nexus_is_results_context();
 
@@ -294,7 +297,7 @@ add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
 			continue;
 		}
 
-		$item->title = 'System-Diagnose';
+		$item->title = 'Marktcheck';
 		$item->url   = $analysis_url;
 
 		if ( ! isset( $item->classes ) || ! is_array( $item->classes ) ) {

@@ -24,9 +24,9 @@ $pillar_map = [
         'icon'        => '🧭',
         'badge'       => 'Strategie & Growth',
         'subtitle'    => 'Eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter. Keine Portal-Abhängigkeit, messbar niedrigere Leadkosten.',
-        'cta_label'   => 'System-Diagnose anfragen',
+        'cta_label'   => 'Marktcheck starten',
         'cta_url'     => $audit_url,
-        'cta_text'    => 'Die System-Diagnose zeigt in 60 Sekunden, wo Ihre Website Anfragen verliert und welche Hebel zuerst Wirkung versprechen.',
+        'cta_text'    => 'Der Marktcheck zeigt in 60 Sekunden, wo Ihre Website Anfragen verliert und welche Hebel zuerst Wirkung versprechen.',
     ],
     'seo' => [
         'icon'        => '🔍',
@@ -68,7 +68,7 @@ $pillar = $pillar_map[$cat_slug] ?? [
     'icon'        => '📄',
     'badge'       => $cat_name,
     'subtitle'    => wp_strip_all_tags($cat_description) ?: 'Analysen und Insights zu ' . esc_html($cat_name) . '.',
-    'cta_label'   => 'System-Diagnose',
+    'cta_label'   => 'Marktcheck',
     'cta_url'     => $audit_url,
     'cta_text'    => 'Finden Sie heraus, wo Ihre Website Potenzial liegen lässt.',
 ];
@@ -258,9 +258,9 @@ if ($featured_query->have_posts()) {
                     <!-- Newsletter / Diagnose CTA -->
                     <div class="pillar-sidebar__audit">
                         <h4>Wo verbrennt Ihre Website Geld?</h4>
-                        <p>Die System-Diagnose zeigt, wo Technik, SEO und Conversion im Zusammenspiel Reibung erzeugen.</p>
+                        <p>Der Marktcheck zeigt, wo Technik, SEO und Conversion im Zusammenspiel Reibung erzeugen.</p>
                         <a href="<?php echo esc_url($audit_url); ?>" class="nx-btn nx-btn--ghost nx-btn--full nx-btn--sm">
-                            System-Diagnose anfragen →
+                            Marktcheck starten →
                         </a>
                     </div>
                 </aside>

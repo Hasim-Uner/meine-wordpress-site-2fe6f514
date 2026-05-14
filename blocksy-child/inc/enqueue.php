@@ -142,7 +142,7 @@ function hu_enqueue_assets() {
 			'nexus-home-mindmap-teaser-js',
 			'NexusHomeMindmapConfig',
 			[
-				// WGOS ist deprecated in der neuen Positionierung — CTA-Exit auf System-Diagnose umgeleitet
+				// WGOS ist deprecated in der neuen Positionierung — CTA-Exit auf den Marktcheck umgeleitet
 				'wgosUrl' => function_exists( 'nexus_get_audit_url' )
 					? nexus_get_audit_url()
 					: home_url( '/kontakt/' ),
@@ -241,7 +241,8 @@ function hu_enqueue_assets() {
 				: 'https://cal.com/hasim-uener/30min?overlayCalendar=true',
 			'diagnoseUrl'  => function_exists( 'hu_get_request_analysis_url' )
 				? hu_get_request_analysis_url()
-				: home_url( '/system-diagnose/' ),
+				: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
+			'caseUrl'      => home_url( '/e3-new-energy/' ),
 			'privacyUrl'   => home_url( '/datenschutz/' ),
 			'pageUrl'      => function_exists( 'nexus_get_energy_systems_url' )
 				? nexus_get_energy_systems_url()
@@ -260,8 +261,8 @@ function hu_enqueue_assets() {
 			'nexus-review-funnel-js',
 			'NexusReviewConfig',
 			[
-				'auditLabel'   => 'System-Diagnose',
-				'submitLabel'  => 'System-Diagnose anfragen',
+				'auditLabel'   => 'Marktcheck',
+				'submitLabel'  => 'Marktcheck starten',
 				'restEndpoint' => esc_url_raw( rest_url( 'nexus/v1/audit-request' ) ),
 			]
 		);

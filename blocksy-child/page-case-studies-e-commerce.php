@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$request_url    = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/system-diagnose/' );
+$request_url    = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $request_cta    = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Anfrage stellen';
 $e3_url         = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'e3', home_url( '/e3-new-energy/' ) ) : home_url( '/e3-new-energy/' );
 $e3_cpl_before  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
@@ -123,7 +123,7 @@ $e3_sales_rate  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conve
 			<div class="results-final-cta">
 				<h2 class="results-final-cta__title">Prüfen wir Ihren Status&nbsp;quo.</h2>
 				<p class="results-final-cta__copy">
-					Wenn der Proof passt, ist der nächste sinnvolle Schritt die System-Diagnose.
+						Wenn der Proof passt, ist der nächste sinnvolle Schritt der Marktcheck.
 				</p>
 				<div class="results-final-cta__actions">
 					<a href="<?php echo esc_url( $request_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_results_footer_request" data-track-category="lead_gen"><?php echo esc_html( $request_cta ); ?></a>

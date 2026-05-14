@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Redirect retired audit pages to the current System-Diagnose.
+ * Redirect retired audit pages to the current marketcheck.
  *
  * @return void
  */
@@ -23,7 +23,7 @@ function nexus_redirect_deprecated_audit_page() {
 		return;
 	}
 
-	$target_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/system-diagnose/' );
+	$target_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$target_path = trailingslashit( '/' . ltrim( (string) wp_parse_url( $target_url, PHP_URL_PATH ), '/' ) );
 
 	if ( function_exists( 'nexus_get_current_request_path' ) && nexus_get_current_request_path() === $target_path ) {

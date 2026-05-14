@@ -32,7 +32,7 @@ get_header();
 			<h1 style="margin:1rem 0 1rem;">Drei Schritte. Ein klarer Einstieg.</h1>
 			<p style="font-size:1.12rem; color:#64748b; line-height:1.7;">
 				Diese Seite ist keine Leistungsbibliothek. Sie zeigt den sinnvollen Weg,
-				mit dem aus Ihrer Website ein planbares Anfrage-System wird. Der öffentliche Fokus bleibt bewusst auf der System-Diagnose.
+					mit dem aus Ihrer Website ein planbares Anfrage-System wird. Der öffentliche Fokus bleibt bewusst auf dem Marktcheck.
 			</p>
 		</div>
 
@@ -40,15 +40,15 @@ get_header();
 			<ul style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; list-style:none; padding:0; margin:0;">
 				<li class="solution-item">
 					<a href="<?php echo esc_url( $audit_url ); ?>">
-						<h2>1. System-Diagnose</h2>
+							<h2>1. Marktcheck</h2>
 						<p>Diagnose-Einstieg für Solar- und Wärmepumpen-Anbieter mit bestehender Website. Wir machen sichtbar, wo Sichtbarkeit, Vertrauen oder Conversion wegbrechen.</p>
-						<span class="cta-btn">System-Diagnose anfragen</span>
+							<span class="cta-btn">Marktcheck starten</span>
 					</a>
 				</li>
 				<li class="solution-item">
 					<a href="<?php echo esc_url( $audit_url ); ?>">
 						<h2>2. Priorisierte Folgeentscheidung</h2>
-						<p>Kein öffentlicher Einstieg. Wenn der Fall tiefer geht, ergibt sich der nächste vertiefte Schritt erst nach System-Diagnose, Rückmeldung und persönlichem Kontakt.</p>
+							<p>Kein öffentlicher Einstieg. Wenn der Fall tiefer geht, ergibt sich der nächste vertiefte Schritt erst nach Marktcheck, Rückmeldung und persönlichem Kontakt.</p>
 						<span class="cta-btn">Ergibt sich nach der Diagnose</span>
 					</a>
 				</li>

@@ -100,7 +100,7 @@
                 messageLabel: 'Kurzbeschreibung',
                 messageHelp: 'Welche URL ist relevant? Was ist unklar? Welches Ergebnis wünschen Sie sich?',
                 messagePlaceholder: '1. Seite: Welche URL ist relevant?\n2. Unklarheit: Was bremst gerade?\n3. Ziel: Was soll sich verbessern?',
-                submitLabel: 'System-Diagnose anfragen',
+                submitLabel: 'Marktcheck starten',
                 messageMinlength: 24,
                 timelineLabel: 'Zeitfenster',
                 showTimeline: false,
@@ -695,12 +695,12 @@
                 var statusValue = typeStatusBar.querySelector('.contact-type-status__value');
                 if (statusValue) {
                     var labels = {
-                        audit: 'System-Diagnose',
+                        audit: 'Marktcheck',
                         analysis: 'Website-Analyse',
                         implementation: 'Umsetzung',
                         ongoing: 'Weiterentwicklung'
                     };
-                    statusValue.textContent = labels[requestType] || 'System-Diagnose';
+                    statusValue.textContent = labels[requestType] || 'Marktcheck';
                 }
             }
         }

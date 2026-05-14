@@ -55,7 +55,7 @@ function hu_render_founding_cohort_block( $args = [] ) {
 	$performance_founding    = hu_format_founding_money( $pricing['performance_founding_retainer'] ?? 1000 );
 	$performance_months      = (int) ( $pricing['performance_founding_months'] ?? 6 );
 	$discount_percent        = (int) ( $pricing['founding_discount_percent'] ?? 33 );
-	$analysis_url            = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+	$analysis_url            = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$section_id              = sanitize_html_class( (string) $args['id'] );
 	$slot_line               = sprintf( '%1$d von %2$d Plätzen offen', $slots_remaining, $slots_total );
 
@@ -99,7 +99,7 @@ function hu_render_founding_cohort_block( $args = [] ) {
 				<div class="hu-founding__about-inner">
 					<span class="hu-founding__eyebrow"><?php echo esc_html( $label ); ?></span>
 					<h2 id="<?php echo esc_attr( $section_id . '-title' ); ?>">E3 New Energy war der erste Case, nicht die Grenze.</h2>
-					<p>Die Cohort erweitert diese Arbeitsweise auf maximal drei passende Solar- oder Wärmepumpen-Betriebe. Der Einstieg bleibt die System-Diagnose, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.</p>
+					<p>Die Cohort erweitert diese Arbeitsweise auf maximal drei passende Solar- oder Wärmepumpen-Betriebe. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.</p>
 					<div class="hu-founding__about-footer">
 						<span><?php echo esc_html( $slot_line ); ?></span>
 						<a

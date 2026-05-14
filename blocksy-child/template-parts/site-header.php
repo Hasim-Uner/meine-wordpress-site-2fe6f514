@@ -13,7 +13,7 @@ $brand_text   = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wor
 $eyebrow_text = nexus_get_site_header_eyebrow();
 $mobile_eyebrow_text = function_exists( 'nexus_get_public_primary_term' ) ? trim( (string) nexus_get_public_primary_term() ) : '';
 $panel_id     = 'nx-site-header-panel';
-$request_url  = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+$request_url  = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $audit_header_meta_items = function_exists( 'nexus_get_audit_header_meta_items' ) ? nexus_get_audit_header_meta_items() : [];
 $home_label   = sprintf(
 	/* translators: %s: site or brand name. */
@@ -42,7 +42,7 @@ if ( empty( $audit_header_meta_items ) ) {
 	<div class="nx-container">
 		<div class="nx-site-header__shell nx-site-header__shell--audit">
 			<div class="nx-site-header__brand-block">
-				<span class="nx-site-header__eyebrow">System-Diagnose</span>
+				<span class="nx-site-header__eyebrow">Marktcheck</span>
 				<a
 					class="site-logo nx-site-header__brand"
 					href="<?php echo esc_url( home_url( '/' ) ); ?>"
@@ -60,7 +60,7 @@ if ( empty( $audit_header_meta_items ) ) {
 			</div>
 
 			<div class="nx-site-header__audit-actions">
-				<a class="nx-site-header__audit-link" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_header_analysis" data-track-category="lead_gen" data-track-section="audit_header" data-track-funnel-stage="audit_header">System-Diagnose</a>
+				<a class="nx-site-header__audit-link" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_header_analysis" data-track-category="lead_gen" data-track-section="audit_header" data-track-funnel-stage="audit_header">Marktcheck</a>
 			</div>
 		</div>
 	</div>

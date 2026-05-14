@@ -7,7 +7,7 @@
   'use strict';
 
   var config = window.NexusReviewConfig || {};
-  var auditLabel = config.auditLabel || 'System-Diagnose';
+  var auditLabel = config.auditLabel || 'Marktcheck';
   var submitLabel = config.submitLabel || (auditLabel + ' anfragen');
   var AUTO_ADVANCE_DELAY = 500;
   var FEEDBACK_ID = 'review-form-feedback';

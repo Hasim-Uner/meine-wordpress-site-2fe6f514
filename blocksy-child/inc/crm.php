@@ -29,7 +29,7 @@ function nexus_get_crm_contact_source_labels() {
 		'project_request'   => 'Projektanfrage',
 		'general_inquiry'   => 'Allgemeine Anfrage',
 		'client_request'    => 'Kundenanliegen',
-		'request_analysis'  => 'System-Diagnose',
+			'request_analysis'  => 'Marktcheck',
 	];
 }
 

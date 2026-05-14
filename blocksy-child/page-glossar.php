@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$audit_url   = nexus_get_primary_public_url( 'audit', home_url( '/system-diagnose/' ) );
+$audit_url   = nexus_get_primary_public_url( 'audit', home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
 $wgos_url    = nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#wgos' ) );
 $summary     = function_exists( 'nexus_get_glossary_hub_summary' ) ? nexus_get_glossary_hub_summary() : [];
 $hub_sections = function_exists( 'nexus_get_glossary_hub_sections' ) ? nexus_get_glossary_hub_sections() : [];
@@ -35,7 +35,7 @@ $hub_sections = function_exists( 'nexus_get_glossary_hub_sections' ) ? nexus_get
 						</ul>
 
 						<div class="wgos-hero__actions">
-							<a href="<?php echo esc_url( $audit_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_glossary_hub_audit" data-track-category="lead_gen">System-Diagnose anfragen</a>
+								<a href="<?php echo esc_url( $audit_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_glossary_hub_audit" data-track-category="lead_gen">Marktcheck starten</a>
 						</div>
 
 						<p class="wgos-hero__microcopy">Glossar bedeutet hier nicht „zweites Lexikon neben dem Angebot“, sondern ein kontrollierter Begriffs-Layer mit klarer Rückführung auf die richtige Seite.</p>

@@ -15,7 +15,7 @@ define( 'HU_READINESS_DIAGNOSIS_OUTPUT_PAGES_MIN', 4 );
 define( 'HU_READINESS_DIAGNOSIS_OUTPUT_PAGES_MAX', 6 );
 define( 'HU_READINESS_DIAGNOSIS_FORM_MINUTES_MIN', 15 );
 define( 'HU_READINESS_DIAGNOSIS_FORM_MINUTES_MAX', 20 );
-define( 'HU_REQUEST_ANALYSIS_LABEL', 'System-Diagnose' );
+define( 'HU_REQUEST_ANALYSIS_LABEL', 'Marktcheck' );
 define( 'HU_REQUEST_ANALYSIS_ROUTE', '/system-diagnose/' );
 define( 'HU_REQUEST_ANALYSIS_DAYS', 7 );
 define( 'HU_REQUEST_ANALYSIS_OUTPUT_LABEL', 'schriftlicher Befund zu Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss' );
@@ -33,7 +33,8 @@ define( 'HU_DEEP_DIAGNOSIS_SCREENSHARE_MINUTES', 30 );
 function hu_diagnose_canon() {
 	return [
 		'primary_label'              => HU_REQUEST_ANALYSIS_LABEL,
-		'primary_route'              => HU_REQUEST_ANALYSIS_ROUTE,
+		'primary_route'              => '/solar-waermepumpen-leadgenerierung/#marktcheck',
+		'legacy_primary_route'       => HU_REQUEST_ANALYSIS_ROUTE,
 		'primary_days'               => HU_REQUEST_ANALYSIS_DAYS,
 		'primary_output_label'       => HU_REQUEST_ANALYSIS_OUTPUT_LABEL,
 		'primary_price_label'        => HU_REQUEST_ANALYSIS_PRICE_LABEL,
@@ -57,10 +58,25 @@ function hu_diagnose_canon() {
 }
 
 /**
+ * Return the current public marketcheck URL.
+ *
+ * @return string
+ */
+function hu_get_request_marketcheck_url() {
+	$energy_url = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
+	$url_parts  = explode( '#', (string) $energy_url, 2 );
+
+	return trailingslashit( $url_parts[0] ) . '#marktcheck';
+}
+
+/**
  * Return the current public analysis URL.
+ *
+ * Kept as compatibility alias because older templates and editor-owned CTAs
+ * still call the System-Diagnose helper.
  *
  * @return string
  */
 function hu_get_request_analysis_url() {
-	return home_url( HU_REQUEST_ANALYSIS_ROUTE );
+	return hu_get_request_marketcheck_url();
 }

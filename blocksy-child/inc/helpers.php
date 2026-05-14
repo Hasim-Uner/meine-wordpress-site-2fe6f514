@@ -104,7 +104,7 @@ function nexus_get_public_proof_data() {
 		'framework_label'     => 'WGOS = WordPress Growth Operating System',
 		'framework_long'      => 'WordPress Growth Operating System',
 		'allowed_subterms'    => [
-			'System-Diagnose',
+			'Marktcheck',
 			'priorisierte Folgeanalyse',
 			'kontrollierte Weiterentwicklung',
 			'planbare Growth-Kapazität',
@@ -168,7 +168,7 @@ function nexus_get_public_framework_label() {
 }
 
 /**
- * Return the canonical entry CTA copy for the System-Diagnose.
+ * Return the canonical entry CTA copy for the solar marketcheck.
  *
  * Keep purchase-intent copy in one place so the primary CTA label and its
  * supporting promise stay aligned across key surfaces.
@@ -183,31 +183,31 @@ function nexus_get_audit_cta_copy() {
 	}
 
 	$copy = [
-		'label'             => 'System-Diagnose anfragen',
-		'compact_microcopy' => '60 Sek. · priorisierte Hebel · keine E-Mail',
+		'label'             => 'Marktcheck starten',
+		'compact_microcopy' => '60 Sek. · 5 Fragen · Antwort in 24 h',
 		'header_meta_items' => [
-			'60-Sekunden-Diagnose',
+			'60-Sekunden-Marktcheck',
 			'Fokus: Solar, Wärmepumpe, Speicher',
 		],
-		'footer_note'       => 'System-Diagnose: In ca. 60 Sekunden sehen, wo Performance, Tracking, SEO und Content Anfragen verlieren — mit priorisierten Hebeln statt generischem Score.',
+		'footer_note'       => 'Marktcheck: In ca. 60 Sekunden einordnen, wo Website, Tracking und Anfrageprozess Nachfrage verlieren — mit persönlicher Rückmeldung statt generischem Score.',
 	];
 
 	return $copy;
 }
 
 /**
- * Return the canonical primary CTA label for the System-Diagnose.
+ * Return the canonical primary CTA label for the marketcheck.
  *
  * @return string
  */
 function nexus_get_audit_cta_label() {
 	$copy = nexus_get_audit_cta_copy();
 
-	return isset( $copy['label'] ) ? (string) $copy['label'] : 'System-Diagnose anfragen';
+	return isset( $copy['label'] ) ? (string) $copy['label'] : 'Marktcheck starten';
 }
 
 /**
- * Return the compact System-Diagnose CTA microcopy.
+ * Return the compact marketcheck CTA microcopy.
  *
  * @return string
  */
@@ -218,7 +218,7 @@ function nexus_get_audit_compact_microcopy() {
 }
 
 /**
- * Return the compact metadata items used in the System-Diagnose header.
+ * Return the compact metadata items used in the marketcheck header.
  *
  * @return array<int, string>
  */
@@ -239,7 +239,7 @@ function nexus_get_audit_header_meta_items() {
 }
 
 /**
- * Return the full System-Diagnose footer note.
+ * Return the full marketcheck footer note.
  *
  * @return string
  */
@@ -483,7 +483,7 @@ function nexus_get_primary_public_url_map() {
 		return $urls;
 	}
 
-	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$agentur_url = nexus_get_page_url(
 		[ 'wordpress-agentur-hannover', 'wordpress-agentur' ],
 		home_url( '/wordpress-agentur-hannover/' )
@@ -639,13 +639,14 @@ function nexus_get_audit_page_id() {
 /**
  * Resolve the former audit page URL.
  *
- * The standalone Growth Audit is retired; keep this helper as a compatibility
- * alias so older CTA surfaces route into the System-Diagnose.
+ * The standalone Growth Audit and System-Diagnose page are retired; keep this
+ * helper as a compatibility alias so older CTA surfaces route into the
+ * marketcheck on the solar landing page.
  *
  * @return string
  */
 function nexus_get_audit_url() {
-	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 }
 
 /**
@@ -695,14 +696,14 @@ function nexus_get_energy_systems_url() {
 /**
  * Resolve the canonical URL for the retired dedicated request page.
  *
- * The public /anfrage/ intake was retired in favor of the evidence-based
- * System-Diagnose. Keep this helper as a compatibility alias so old
+ * The public /anfrage/ intake was retired in favor of the marketcheck.
+ * Keep this helper as a compatibility alias so old
  * templates and editor links cannot route users back into the old form.
  *
  * @return string
  */
 function nexus_get_anfrage_url() {
-	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 }
 
 /**
@@ -711,7 +712,7 @@ function nexus_get_anfrage_url() {
  * @return string
  */
 function nexus_get_primary_request_url() {
-	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
+	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 }
 
 /**
@@ -720,7 +721,7 @@ function nexus_get_primary_request_url() {
  * @return string
  */
 function nexus_get_primary_request_cta_label() {
-	return 'System-Diagnose anfragen';
+	return 'Marktcheck starten';
 }
 
 /**

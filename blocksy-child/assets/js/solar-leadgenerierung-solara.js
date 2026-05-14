@@ -383,6 +383,7 @@
     function renderSuccess() {
       var first = (state.answers.name || '').trim().split(' ')[0];
       var calcom = CFG.calcomUrl || 'https://cal.com/hasim-uener/30min';
+      var caseUrl = CFG.caseUrl || '/e3-new-energy/';
       return el('div', { className: 'sol-quiz-success' }, [
         el('div', { className: 'sol-quiz-success-icon', 'aria-hidden': 'true', html: CHECK_SVG }),
         el('h3', { className: 'sol-quiz-success-h' }, 'Danke' + (first ? ', ' + first : '') + '.'),
@@ -405,15 +406,15 @@
             el('span', { 'aria-hidden': 'true', html: ARROW_SVG })
           ]),
           el('a', {
-            href: CFG.diagnoseUrl || '/system-diagnose/',
+            href: caseUrl,
             className: 'is-ghost',
             dataset: {
-              trackAction: 'cta_solar_to_deep_diagnose',
-              trackCategory: 'lead_funnel',
+              trackAction: 'cta_solar_success_to_e3_case',
+              trackCategory: 'proof',
               trackSection: 'quiz_success'
             }
           }, [
-            el('span', null, 'Tiefendiagnose ansehen'),
+            el('span', null, 'E3 Case lesen'),
             el('span', { 'aria-hidden': 'true', html: ARROW_SVG })
           ])
         ]),

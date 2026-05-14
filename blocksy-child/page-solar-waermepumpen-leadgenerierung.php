@@ -3,7 +3,7 @@
  * Template Name: Solar & Wärmepumpen Leadgenerierung (SOLARA)
  * Description: Premium · cinematic · minimalistisch. Hybrid-Theme (warm-cream + Copper).
  *              Primärer Lead-Pfad: 60-Sek-Marktcheck im Hero (REST → CRM).
- *              Sekundärer Pfad für qualifizierte Fälle: /system-diagnose/.
+ *              Alte System-Diagnose-Links führen auf diesen Marktcheck.
  *              Zielgruppe: Solar-/Wärmepumpen-Anbieter im DACH-Mittelstand (10–25 MA).
  *
  * @package Blocksy_Child
@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // ── URLs ───────────────────────────────────────────────────────
 $page_url     = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
-$diagnose_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/system-diagnose/' );
 $e3_url       = home_url( '/e3-new-energy/' );
 $privacy_url  = home_url( '/datenschutz/' );
 $cal_url      = function_exists( 'hu_get_analysis_calcom_base_url' )
@@ -244,12 +243,12 @@ get_header();
 					<p class="sol-mono" style="margin-top:14px;color:var(--sol-fg-dim);font-size:11px;letter-spacing:.06em;">
 						Bereits qualifizierter Fall?
 						<a
-							href="<?php echo esc_url( $diagnose_url ); ?>"
+							href="<?php echo esc_url( $cal_url ); ?>"
 							style="color:var(--sol-accent);text-decoration:underline;text-underline-offset:3px;margin-left:6px;"
-							data-track-action="cta_solar_to_deep_diagnose"
+							data-track-action="cta_solar_to_calcom"
 							data-track-category="lead_funnel"
 							data-track-section="hero_secondary"
-						>Direkt zur Tiefendiagnose →</a>
+						>Direkt 30-Min-Gespräch buchen →</a>
 					</p>
 				</div>
 
@@ -278,12 +277,12 @@ get_header();
 								</p>
 								<a
 									class="sol-cta-submit"
-									href="<?php echo esc_url( $diagnose_url ); ?>"
-									data-track-action="cta_solar_to_deep_diagnose"
+									href="mailto:hasim@hasimuener.de"
+									data-track-action="cta_solar_noscript_mail"
 									data-track-category="lead_funnel"
 									data-track-section="hero_noscript"
 								>
-									<span>Zur Tiefendiagnose</span>
+									<span>Per E-Mail anfragen</span>
 									<span class="sol-cta-submit-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 								</a>
 							</noscript>

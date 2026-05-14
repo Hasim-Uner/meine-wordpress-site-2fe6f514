@@ -58,9 +58,9 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Überblick über Positionierung, Proof und primäre Einstiege.',
 				],
 				[
-					'label'       => 'System-Diagnose',
-					'url'         => $urls['audit'] ?? home_url( '/system-diagnose/' ),
-					'description' => 'Diagnose von SEO, Tracking, Performance und Conversion-Prioritäten.',
+					'label'       => 'Marktcheck',
+					'url'         => $urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
+					'description' => '60-Sekunden-Einstieg für Solar-, Wärmepumpen- und Speicher-Anbieter: Website, Tracking und Anfrageprozess einordnen.',
 				],
 				[
 					'label'       => 'WordPress Agentur Hannover',
@@ -151,7 +151,7 @@ function nexus_get_llms_txt_content() {
 	$lines = [
 		'# Haşim Üner',
 		'',
-		'> Architekt für eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter im DACH-Raum. Ablösung von Portal-Abhängigkeit durch Website, Tracking, Vorqualifizierung und Werbekanal-Steuerung als ein verbundenes System. Primärer Einstieg ist die System-Diagnose.',
+		'> Architekt für eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter im DACH-Raum. Ablösung von Portal-Abhängigkeit durch Website, Tracking, Vorqualifizierung und Werbekanal-Steuerung als ein verbundenes System. Primärer Einstieg ist der Marktcheck auf der Solar- und Wärmepumpen-Seite.',
 	];
 
 	foreach ( nexus_get_llms_txt_sections() as $section ) {
