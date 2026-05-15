@@ -133,6 +133,11 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.',
 				],
 				[
+					'label'       => 'Über mich',
+					'url'         => $urls['about'] ?? home_url( '/uber-mich/' ),
+					'description' => 'Personenprofil von Haşim Üner als Architekt für Anfrage-Systeme und Autor der Website.',
+				],
+				[
 					'label'       => 'Kontakt',
 					'url'         => $urls['contact'] ?? home_url( '/kontakt/' ),
 					'description' => 'Direkter Kontakt für Audit, Folgeanalyse oder Umsetzung.',

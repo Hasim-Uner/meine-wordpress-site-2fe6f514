@@ -54,6 +54,7 @@ Nicht verifiziert:
 - Zusaetzliche Homepage-JS-Optimierung: die Startseite zwingt jetzt auch Parent-Theme- und Core-Handles (`ct-scripts`, `nexus-core-js`, `nexus-site-header-js`) in den `defer`-Pfad; `nexus-core.js` initialisiert Smart-Nav-Scroll-Spy spaeter und bevorzugt `IntersectionObserver`.
 - Das globale Theme ist repo-seitig jetzt fest auf das dunkle Farbschema gesetzt; der fruehere Desktop-Hell/Dunkel-Toggle rendert nicht mehr und der Frontend-Boot setzt `data-theme` bzw. `data-nx-theme` konsistent auf `dark`.
 - Repo-seitige Branding-Ausgabe fuer Logo- und Favicon-Signale priorisiert jetzt das im WordPress-Admin gesetzte `custom_logo` bzw. `site_icon`; die Theme-SVGs unter `assets/brand/` bleiben nur noch Fallback, damit Frontend-Head-Tags und Organization-Schema dieselbe Quelle nutzen.
+- Schema-/Entity-Graph: Personenreferenzen laufen zentral auf `/uber-mich/#person`; `Person.sameAs` enthaelt LinkedIn, GitHub, `hasimuener.org` und Facebook. `Organization.hasMap`, Unternehmensname, Koordinaten und Oeffnungszeiten sind an das Google Business Profile angeglichen. `/wordpress-agentur-hannover/` gibt neben Service-, WebPage- und FAQPage-Schema jetzt zusaetzlich Article-Schema mit Haşim Üner als Autor aus.
 - Der frühere EnergieFahrplan-Showroom ist repo-seitig aus dem Funnel entfernt. Beweisführung läuft über E3, Methodik und die direkte Achse Landingpage -> Branchen-Seite -> Marktcheck.
 
 ## In Arbeit

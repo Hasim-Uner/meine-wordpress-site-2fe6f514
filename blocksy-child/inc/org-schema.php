@@ -7,6 +7,38 @@ if (!defined('ABSPATH')) {
  * Output organization and service schemas dynamically.
  * This file centralizes all structured data logic. Include it once in your child theme.
  */
+function hu_person_schema_id() {
+    return home_url('/uber-mich/#person');
+}
+
+function hu_person_profile_url() {
+    return home_url('/uber-mich/');
+}
+
+function hu_person_same_as_urls() {
+    return [
+        'https://www.linkedin.com/in/hasim-%C3%BCner/',
+        'https://github.com/Hasim-hannover/',
+        'https://hasimuener.org/',
+        'https://www.facebook.com/hasim.uner',
+    ];
+}
+
+function hu_person_schema_ref( $include_same_as = false, $name = 'Haşim Üner' ) {
+    $person = [
+        '@type' => 'Person',
+        '@id'   => hu_person_schema_id(),
+        'name'  => function_exists( 'hu_normalize_brand_text' ) ? hu_normalize_brand_text( (string) $name ) : (string) $name,
+        'url'   => hu_person_profile_url(),
+    ];
+
+    if ( $include_same_as ) {
+        $person['sameAs'] = hu_person_same_as_urls();
+    }
+
+    return $person;
+}
+
 function hu_output_schema()
 {
     // Organization / LocalBusiness schema
@@ -14,7 +46,7 @@ function hu_output_schema()
         '@context' => 'https://schema.org',
         '@type'    => ['Organization', 'LocalBusiness'],
         '@id'      => home_url('/#organization'),
-        'name'     => 'Haşim Üner – Architekt für eigene Anfrage-Systeme',
+        'name'     => 'Haşim Üner | Architekt für eigene Anfrage-Systeme',
         'alternateName' => 'Haşim Üner',
         'url'      => home_url(),
         'description' => 'Architekt für eigene Anfrage-Systeme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',
@@ -22,6 +54,7 @@ function hu_output_schema()
         'email'       => 'info@hasimuener.de',
         'logo'        => function_exists( 'hu_get_brand_logo_url' ) ? hu_get_brand_logo_url() : content_url( '/uploads/2025/08/cropped-Logo-hasim-uener-1.webp' ),
         'image'       => hu_get_profile_image_url(),
+        'founder'     => hu_person_schema_ref(),
         'address'     => [
             '@type' => 'PostalAddress',
             'streetAddress'   => 'Warschauer Str. 5',
@@ -32,8 +65,8 @@ function hu_output_schema()
         ],
         'geo' => [
             '@type'     => 'GeoCoordinates',
-            'latitude'  => '52.264',
-            'longitude' => '9.761'
+            'latitude'  => '52.2736456',
+            'longitude' => '9.7559953'
         ],
         'priceRange'  => '€€',
         'currenciesAccepted' => 'EUR',
@@ -45,17 +78,12 @@ function hu_output_schema()
                 'opens'     => '08:30',
                 'closes'    => '16:00'
             ],
-            [
-                '@type'    => 'OpeningHoursSpecification',
-                'dayOfWeek' => ['Friday'],
-                'opens'     => '08:30',
-                'closes'    => '13:00'
-            ]
         ],
         'sameAs' => [
             'https://www.linkedin.com/in/hasim-%C3%BCner/',
-            'https://github.com/Hasim-hannover/'
+            'https://github.com/Hasim-hannover/',
         ],
+        'hasMap' => 'https://www.google.com/maps?cid=7273014379384770345',
         'knowsAbout' => [
             'WordPress',
             'Technische SEO',
@@ -76,6 +104,10 @@ function hu_output_schema()
                 '@type'  => 'City',
                 'name'   => 'Pattensen',
                 'sameAs' => 'https://de.wikipedia.org/wiki/Pattensen'
+            ],
+            [
+                '@type' => 'AdministrativeArea',
+                'name'  => 'Region Hannover'
             ],
             [
                 '@type' => 'AdministrativeArea',
@@ -432,7 +464,40 @@ function hu_output_schema()
                     'isPartOf'    => ['@id' => home_url('/#website')],
                     'about'       => ['@id' => home_url('/#organization')],
                     'mainEntity'  => ['@id' => home_url('/wordpress-agentur-hannover/#service')],
+                    'author'      => hu_person_schema_ref(),
+                    'reviewedBy'  => hu_person_schema_ref(),
                 ];
+
+                $agentur_article = [
+                    '@context'         => 'https://schema.org',
+                    '@type'            => 'Article',
+                    '@id'              => home_url('/wordpress-agentur-hannover/#article'),
+                    'url'              => home_url('/wordpress-agentur-hannover/'),
+                    'mainEntityOfPage' => ['@id' => home_url('/wordpress-agentur-hannover/#webpage')],
+                    'headline'         => 'WordPress Agentur Hannover für B2B-Websites und Anfrage-Systeme',
+                    'description'      => $def['description'],
+                    'inLanguage'       => 'de',
+                    'articleSection'   => 'WordPress, technisches SEO und B2B-Anfrage-Systeme',
+                    'author'           => hu_person_schema_ref( true ),
+                    'publisher'        => ['@id' => home_url('/#organization')],
+                    'about'            => [
+                        ['@id' => home_url('/wordpress-agentur-hannover/#service')],
+                        ['@id' => home_url('/#organization')],
+                    ],
+                ];
+
+                $agentur_published_date = get_post_time( DATE_W3C, true, $post_id );
+                $agentur_modified_date  = get_post_modified_time( DATE_W3C, true, $post_id );
+
+                if ( $agentur_published_date ) {
+                    $agentur_article['datePublished'] = $agentur_published_date;
+                }
+
+                if ( $agentur_modified_date ) {
+                    $agentur_article['dateModified'] = $agentur_modified_date;
+                }
+
+                $schemas[] = $agentur_article;
             }
         }
 
@@ -488,16 +553,13 @@ function hu_output_schema()
             $person = [
                 '@context' => 'https://schema.org',
                 '@type'    => 'Person',
-                '@id'      => home_url('/uber-mich/#person'),
+                '@id'      => hu_person_schema_id(),
                 'name'     => 'Haşim Üner',
                 'jobTitle' => 'Architekt für eigene Anfrage-Systeme',
-                'url'      => home_url('/uber-mich/'),
+                'url'      => hu_person_profile_url(),
                 'image'    => hu_get_profile_image_url(),
                 'worksFor' => ['@id' => home_url('/#organization')],
-                'sameAs'   => [
-                    'https://www.linkedin.com/in/hasim-%C3%BCner/',
-                    'https://github.com/Hasim-hannover/'
-                ],
+                'sameAs'   => hu_person_same_as_urls(),
                 'description' => 'Architekt für eigene Anfrage-Systeme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum: Website, Tracking, Vorqualifizierung und Werbekanal-Steuerung als ein verbundenes System zur Ablösung von Portal-Abhängigkeit.'
             ];
 
@@ -505,23 +567,21 @@ function hu_output_schema()
                 '@context' => 'https://schema.org',
                 '@type'    => 'ProfilePage',
                 '@id'      => home_url('/uber-mich/#profile'),
-                'url'      => home_url('/uber-mich/'),
+                'url'      => hu_person_profile_url(),
                 'name'     => 'Über mich – Haşim Üner',
-                'mainEntity' => ['@id' => home_url('/uber-mich/#person')],
+                'mainEntity' => ['@id' => hu_person_schema_id()],
                 'inLanguage' => 'de',
-                'about'    => ['@id' => home_url('/uber-mich/#person')]
+                'about'    => ['@id' => hu_person_schema_id()]
             ];
 
             $schemas[] = $person;
             $schemas[] = $profilePage;
-            $schemas[0]['founder'] = ['@id' => home_url('/uber-mich/#person')];
         }
 
         if ( is_singular( 'post' ) && $post_id ) {
             $author_id         = (int) get_post_field( 'post_author', $post_id );
             $author_name       = $author_id ? get_the_author_meta( 'display_name', $author_id ) : 'Haşim Üner';
             $author_name       = hu_normalize_brand_text( $author_name );
-            $author_profile    = home_url( '/uber-mich/' );
             $post_permalink    = get_permalink( $post_id );
             $post_description  = get_the_excerpt( $post_id );
             $post_description  = $post_description ? wp_strip_all_tags( $post_description ) : wp_strip_all_tags( get_the_title( $post_id ) );
@@ -539,14 +599,7 @@ function hu_output_schema()
                 'datePublished'    => $published_date,
                 'dateModified'     => $modified_date,
                 'inLanguage'       => 'de',
-                'author'           => [
-                    '@type'  => 'Person',
-                    'name'   => $author_name,
-                    'url'    => $author_profile,
-                    'sameAs' => [
-                        'https://www.linkedin.com/in/hasim-%C3%BCner/',
-                    ],
-                ],
+                'author'           => hu_person_schema_ref( true, $author_name ),
                 'publisher'        => ['@id' => home_url('/#organization')],
                 'isPartOf'         => [
                     '@type' => 'Blog',
@@ -576,11 +629,7 @@ function hu_output_schema()
                 'headline'         => function_exists( 'hu_get_e3_methodology_case_title' ) ? hu_get_e3_methodology_case_title() : 'Methodik-Case E3 New Energy',
                 'description'      => function_exists( 'hu_get_e3_methodology_case_description' ) ? hu_get_e3_methodology_case_description() : '',
                 'inLanguage'       => 'de',
-                'author'           => [
-                    '@type' => 'Person',
-                    'name'  => 'Haşim Üner',
-                    'url'   => home_url('/uber-mich/'),
-                ],
+                'author'           => hu_person_schema_ref( true ),
                 'publisher'        => ['@id' => home_url('/#organization')],
                 'about'            => [
                     [
@@ -649,11 +698,7 @@ function hu_output_schema()
                 'description' => 'Anonymisierte Einblicke in Whitelabel-Projekte, laufende Weiterentwicklung und typische Eingriffstiefen für WordPress, SEO, Tracking und CRO.',
                 'inLanguage' => 'de',
                 'about'    => ['@id' => home_url('/#organization')],
-                'mainEntity' => [
-                    '@type' => 'Person',
-                    'name'  => 'Haşim Üner',
-                    'url'   => home_url('/uber-mich/')
-                ],
+                'mainEntity' => hu_person_schema_ref(),
                 'image' => hu_get_portrait_image_url(),
             ];
 

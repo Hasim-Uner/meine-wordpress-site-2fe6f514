@@ -420,10 +420,18 @@ get_header();
 		$modified_w3c        = get_the_modified_date( DATE_W3C );
 		$author_name         = get_the_author();
 		$home_url            = home_url( '/' );
+		$author_schema       = function_exists( 'hu_person_schema_ref' )
+			? hu_person_schema_ref( true, $author_name )
+			: [
+				'@type' => 'Person',
+				'name'  => $author_name,
+				'url'   => home_url( '/uber-mich/' ),
+			];
 
 		$article_schema = [
 			'@context'          => 'https://schema.org',
 			'@type'             => 'Article',
+			'@id'               => trailingslashit( $article_url ) . '#article',
 			'headline'          => $article_title,
 			'description'       => $article_description,
 			'datePublished'     => $published_w3c,
@@ -432,14 +440,8 @@ get_header();
 				'@type' => 'WebPage',
 				'@id'   => $article_url,
 			],
-			'author'            => [
-				'@type' => 'Person',
-				'name'  => $author_name,
-			],
-			'publisher'         => [
-				'@type' => 'Organization',
-				'name'  => get_bloginfo( 'name' ),
-			],
+			'author'            => $author_schema,
+			'publisher'         => [ '@id' => home_url( '/#organization' ) ],
 			'inLanguage'        => 'de-DE',
 			'articleSection'    => 'SEO und Sichtbarkeit',
 			'keywords'          => [
