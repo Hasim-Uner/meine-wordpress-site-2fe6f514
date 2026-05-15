@@ -1408,3 +1408,390 @@
   opacity: 0.8;
   line-height: 1.5;
 }
+
+/* =========================================
+   ACCORDION (Methodenbibliothek + FAQ)
+   Hybrid-safe: uses --nx-* tokens
+   ========================================= */
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.acc-item {
+  background: var(--nx-card-gradient);
+  border-radius: var(--nx-radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--nx-border);
+  box-shadow: var(--nx-shadow-sm);
+  transition: border-color var(--nx-duration) var(--nx-ease),
+              box-shadow var(--nx-duration) var(--nx-ease);
+}
+
+.acc-item:hover {
+  border-color: var(--nx-border-gold);
+  box-shadow: var(--nx-shadow);
+}
+
+.acc-trigger {
+  width: 100%;
+  padding: 2rem 3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  transition: background var(--nx-duration-fast) var(--nx-ease);
+  user-select: none;
+  color: var(--nx-text);
+}
+
+.acc-trigger:hover {
+  background: var(--nx-bg-glass-light);
+}
+
+.acc-trigger-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.acc-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  transition: transform var(--nx-duration) var(--nx-ease);
+}
+
+.acc-item:hover .acc-icon {
+  transform: scale(1.1);
+}
+
+.acc-info { flex: 1; min-width: 0; }
+
+.acc-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--nx-text);
+  margin-bottom: 0.25rem;
+}
+
+.acc-desc {
+  font-size: 0.9375rem;
+  color: var(--nx-text-secondary);
+}
+
+.acc-meta {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-shrink: 0;
+}
+
+.acc-count {
+  font-size: 0.875rem;
+  color: var(--nx-text-dim);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.acc-chevron {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--nx-bg-glass-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--nx-text-dim);
+  transition: all var(--nx-duration) var(--nx-ease);
+}
+
+.acc-item.is-open .acc-chevron {
+  background: var(--nx-accent-text);
+  color: var(--text-inverse);
+  transform: rotate(180deg);
+}
+
+.acc-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-slow) var(--nx-ease);
+}
+
+.acc-item.is-open .acc-body {
+  grid-template-rows: 1fr;
+}
+
+.acc-body-inner {
+  overflow: hidden;
+}
+
+/* ─── Asset Cards Grid ─── */
+.assets-grid {
+  padding: 0 3rem 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.asset-card {
+  background: var(--nx-bg-glass-light);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid var(--nx-border);
+  transition: all var(--nx-duration) var(--nx-ease);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.asset-card:hover {
+  border-color: var(--nx-accent-text);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px hsl(var(--accent-hsl) / 0.12);
+}
+
+.asset-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.asset-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+  background: var(--nx-bg-elevated);
+}
+
+.asset-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--nx-text);
+  line-height: 1.35;
+  flex: 1;
+}
+
+.asset-desc {
+  font-size: 0.9375rem;
+  color: var(--nx-text-secondary);
+  line-height: 1.55;
+}
+
+/* ─── FAQ Accordion ─── */
+.faq-list {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.faq-item {
+  background: var(--nx-card-gradient);
+  border-radius: 0.75rem;
+  border: 1px solid var(--nx-border);
+  overflow: hidden;
+  box-shadow: var(--nx-shadow-sm);
+  transition: border-color var(--nx-duration) var(--nx-ease),
+              box-shadow var(--nx-duration) var(--nx-ease);
+}
+
+.faq-item:hover {
+  border-color: var(--nx-border-gold);
+  box-shadow: var(--nx-shadow);
+}
+
+.faq-trigger {
+  width: 100%;
+  padding: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  user-select: none;
+  color: var(--nx-text);
+}
+
+.faq-question {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--nx-text);
+  flex: 1;
+  line-height: 1.4;
+}
+
+.faq-chevron {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--nx-bg-glass-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--nx-text-dim);
+  transition: all var(--nx-duration) var(--nx-ease);
+}
+
+.faq-item.is-open .faq-chevron {
+  background: var(--nx-accent-text);
+  color: var(--text-inverse);
+  transform: rotate(180deg);
+}
+
+.faq-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-slow) var(--nx-ease);
+}
+
+.faq-item.is-open .faq-body {
+  grid-template-rows: 1fr;
+}
+
+.faq-body-inner {
+  overflow: hidden;
+}
+
+.faq-answer {
+  padding: 0 1.5rem 1.5rem;
+  color: var(--nx-text-secondary);
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+/* ─── Final CTA Section (Dark BG) ─── */
+.cta-section {
+  background: linear-gradient(135deg, hsl(30 6% 5%) 0%, hsl(30 5% 10%) 100%);
+  color: var(--nx-text);
+  padding: 6rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 80% 20%, hsl(var(--accent-hsl) / 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, hsl(210 40% 55% / 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cta-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-family: var(--nx-font-heading);
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 1.5rem;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--nx-text);
+}
+
+.cta-subtitle {
+  font-size: 1.25rem;
+  color: var(--nx-text-secondary);
+  margin-bottom: 3rem;
+  line-height: 1.6;
+}
+
+.cta-btns {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 768px) {
+  .acc-trigger {
+    padding: 1.5rem 1rem;
+  }
+
+  .acc-trigger-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .acc-meta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .assets-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1rem 1.5rem;
+  }
+
+  .cta-section {
+    padding: 3rem 1rem;
+  }
+
+  .cta-btns {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .acc-icon { display: none; }
+}
+
+/* ─── Light-Mode Overrides for Card Surfaces ─── */
+[data-nx-theme="light"] .acc-item {
+  background: var(--nx-card-gradient);
+  border-color: var(--nx-border);
+}
+
+[data-nx-theme="light"] .asset-card {
+  background: var(--nx-surface-soft);
+}
+
+[data-nx-theme="light"] .faq-item {
+  background: var(--nx-card-gradient);
+}
+
+[data-nx-theme="light"] .acc-chevron,
+[data-nx-theme="light"] .faq-chevron {
+  background: var(--nx-surface-muted);
+}
+
+[data-nx-theme="light"] .cta-section::before {
+  opacity: 0.7;
+}
