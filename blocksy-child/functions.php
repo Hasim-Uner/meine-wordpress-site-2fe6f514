@@ -35,7 +35,6 @@ $modules = [
 	'acf.php',            // ACF Feldgruppen-Registrierung (SEO, KPI, Comparison)
 	'cja-shortcode.php',  // Instant-Results System-Diagnose als Shortcode
 	'audit-page.php',     // Audit-Shell-Fallback für die Audit-Landing-Page
-	'tools-page.php',     // Versionierter Tools-Hub + Fallback für die Tools-Seite
 	'header.php',         // Eigener globaler Header + Navigation
 	'review-crm.php',     // Growth-Audit-Intake + WordPress CRM
 	'contact-page.php',   // Kontakt-Route, schlanke Kontaktform und Mailversand

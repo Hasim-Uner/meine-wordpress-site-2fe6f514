@@ -22,11 +22,6 @@ add_action( 'wp_enqueue_scripts', 'hu_enqueue_assets', 20 );
  * @return void
  */
 function hu_enqueue_assets() {
-	// ── Q) Template: Alle Lösungen ───────────────────────────────
-	if ( is_page_template( 'page-loesungen.php' ) ) {
-		hu_enqueue_css( 'nexus-solutions-css', 'solutions.css', [ 'nexus-design-system' ] );
-	}
-
 	$css_dir = get_stylesheet_directory() . '/assets/css/';
 	$css_uri = get_stylesheet_directory_uri() . '/assets/css/';
 	$js_dir  = get_stylesheet_directory() . '/assets/js/';
@@ -289,27 +284,6 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-wgos-js', 'wgos.js', [ 'nexus-core-js' ] );
 	}
 
-	// ── G1b) Template: KI-Integration Dachseite ──────────────────
-	if ( is_page_template( 'page-ki-integration.php' ) || is_page( 'ki-integration-wordpress' ) ) {
-		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-wgos-css', 'wgos.css', [ 'nexus-home-css' ] );
-		hu_enqueue_js( 'nexus-wgos-js', 'wgos.js', [ 'nexus-core-js' ] );
-
-		wp_add_inline_style(
-			'blocksy-child-style',
-			'
-			.page-template-page-ki-integration .entry-header .entry-title,
-			.page-template-page-ki-integration .ct-page-title,
-			.page-template-page-ki-integration-php .entry-header .entry-title,
-			.page-template-page-ki-integration-php .ct-page-title,
-			.page-ki-integration-wordpress .entry-header .entry-title,
-			.page-ki-integration-wordpress .ct-page-title {
-				display: none !important;
-			}
-		'
-		);
-	}
-
 	// ── G2) Template: WGOS Asset Hub ──────────────────────────────
 	if ( is_page_template( 'page-wgos-assets.php' ) || is_page( 'wgos-systemlandkarte' ) || is_page( 'wgos-asset-hub' ) || is_page( 'systemlandkarte' ) ) {
 		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
@@ -441,27 +415,6 @@ function hu_enqueue_assets() {
 	// ── N) Template: Meta Ads (Facebook & Instagram) ──────────────
 	if ( is_page_template( 'page-meta-ads.php' ) || is_page( 'meta-ads' ) ) {
 		hu_enqueue_css( 'nexus-meta-ads-css', 'meta-ads.css', [ 'nexus-design-system' ] );
-	}
-
-	// ── O) Template: Kostenlose Tools Hub ─────────────────────────
-	if ( function_exists( 'nexus_is_tools_page' ) && nexus_is_tools_page() ) {
-		hu_enqueue_css( 'nexus-tools-css', 'tools.css', [ 'nexus-design-system' ] );
-		hu_enqueue_js( 'nexus-tools-js', 'tools.js', [ 'nexus-core-js' ] );
-		wp_add_inline_style(
-			'blocksy-child-style',
-			'
-			.page-template-page-tools .entry-header .entry-title,
-			.page-template-page-tools .ct-page-title,
-			.page-template-page-tools-php .entry-header .entry-title,
-			.page-template-page-tools-php .ct-page-title,
-			.page-kostenlose-tools .entry-header .entry-title,
-			.page-kostenlose-tools .ct-page-title,
-			.page-tools .entry-header .entry-title,
-			.page-tools .ct-page-title {
-				display: none !important;
-			}
-		'
-		);
 	}
 
 	// ── P) Template: Ergebnisse Hub + Whitelabel Proof ─────────────

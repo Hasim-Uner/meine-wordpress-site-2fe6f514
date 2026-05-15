@@ -725,38 +725,6 @@ function nexus_get_primary_request_cta_label() {
 }
 
 /**
- * Resolve the primary tools hub page ID while supporting legacy slugs.
- *
- * @return int
- */
-function nexus_get_tools_page_id() {
-	$template_page_id = nexus_get_page_id_by_template( 'page-tools.php' );
-
-	if ( $template_page_id ) {
-		return $template_page_id;
-	}
-
-	return nexus_get_page_id( [ 'kostenlose-tools', 'tools' ] );
-}
-
-/**
- * Determine whether the current request is the tools hub page.
- *
- * @return bool
- */
-function nexus_is_tools_page() {
-	$tools_page_id = nexus_get_tools_page_id();
-
-	if ( $tools_page_id && is_page( $tools_page_id ) ) {
-		return true;
-	}
-
-	return is_page_template( 'page-tools.php' )
-		|| is_page( 'kostenlose-tools' )
-		|| is_page( 'tools' );
-}
-
-/**
  * Resolve the primary results hub page ID.
  *
  * @return int
@@ -1148,7 +1116,6 @@ function nexus_should_hide_footer_primary_cta() {
 
 	$page_templates = [
 		'template-about.php',
-		'page-loesungen.php',
 		'page-wordpress-agentur.php',
 		'page-wordpress-agentur-hannover.php',
 		'page-case-studies-e-commerce.php',
@@ -1157,7 +1124,6 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-case-study-domdar.php',
 		'page-wgos.php',
 		'page-wgos-assets.php',
-		'page-ki-integration.php',
 		'page-solar-waermepumpen-leadgenerierung.php',
 	];
 
