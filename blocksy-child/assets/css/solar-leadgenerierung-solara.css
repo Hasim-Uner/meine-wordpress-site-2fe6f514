@@ -343,6 +343,48 @@
   pointer-events: none;
   background: linear-gradient(135deg, rgba(255,170,90,.08), transparent 40%);
 }
+/* Subtle copper glow behind the form — pulses slowly. */
+.solara-landing .sol-cta-card::after {
+  content: "";
+  position: absolute;
+  inset: -28px;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 65% 50% at 20% 20%, rgba(180,106,60,.22), transparent 65%),
+    radial-gradient(ellipse 70% 55% at 85% 75%, rgba(201,122,26,.18), transparent 65%);
+  filter: blur(38px);
+  animation: sol-cta-glow 8s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+@keyframes sol-cta-glow {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.04); }
+}
+/* Floating particles inside the card · 3 stück, slow drift */
+.solara-landing .sol-cta-card .sol-cta-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.solara-landing .sol-cta-card .sol-cta-particle {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(180,106,60,.28), transparent 65%);
+  filter: blur(8px);
+  animation: sol-cta-float 7s ease-in-out infinite;
+}
+.solara-landing .sol-cta-card .sol-cta-particle:nth-child(1) { top: 8%;  left: 6%;   animation-delay: 0s; }
+.solara-landing .sol-cta-card .sol-cta-particle:nth-child(2) { top: 32%; right: 8%;  animation-delay: 2.3s; width: 44px; height: 44px; }
+.solara-landing .sol-cta-card .sol-cta-particle:nth-child(3) { bottom: 14%; left: 18%; animation-delay: 4.6s; width: 36px; height: 36px; }
+@keyframes sol-cta-float {
+  0%, 100% { transform: translateY(0)   scale(1);   opacity: 0.55; }
+  50%      { transform: translateY(-14px) scale(1.08); opacity: 0.95; }
+}
 .solara-landing .sol-cta-head {
   display: flex;
   align-items: center;
@@ -494,11 +536,66 @@
   overflow: hidden;
 }
 .solara-landing .sol-quiz-progress-fill {
+  position: relative;
   height: 100%;
   width: 0%;
-  background: var(--sol-accent);
+  background: linear-gradient(90deg, var(--sol-accent), var(--sol-accent-2));
   transition: width var(--sol-t-med) cubic-bezier(.2,.7,.2,1);
   box-shadow: 0 0 12px rgba(180,106,60,.5);
+  overflow: hidden;
+  border-radius: 999px;
+}
+.solara-landing .sol-quiz-progress-shimmer {
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.65), transparent);
+  animation: sol-quiz-shimmer 2.4s linear infinite;
+  pointer-events: none;
+}
+@keyframes sol-quiz-shimmer {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(350%); }
+}
+
+/* Step-Dots unter dem Progress · ✓ bei erledigten */
+.solara-landing .sol-quiz-dots {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  justify-content: space-between;
+}
+.solara-landing .sol-quiz-dot {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.08);
+  border: 0;
+  cursor: default;
+  padding: 0;
+  position: relative;
+  transition: background var(--sol-t-fast), transform var(--sol-t-fast);
+}
+.solara-landing .sol-quiz-dot.is-done {
+  background: var(--sol-accent);
+  cursor: pointer;
+}
+.solara-landing .sol-quiz-dot.is-done:hover { transform: scaleY(1.4); }
+.solara-landing .sol-quiz-dot.is-active {
+  background: linear-gradient(90deg, var(--sol-accent), var(--sol-accent-2));
+  box-shadow: 0 0 8px rgba(180,106,60,.45);
+}
+.solara-landing .sol-quiz-dot-check {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .solara-landing .sol-quiz-body { min-height: 280px; display: flex; flex-direction: column; gap: 14px; }
@@ -538,6 +635,7 @@
 }
 .solara-landing .sol-quiz-opt {
   appearance: none;
+  position: relative;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -550,17 +648,37 @@
   color: var(--sol-fg);
   font: inherit;
   cursor: pointer;
-  transition: background var(--sol-t-fast), border-color var(--sol-t-fast), transform var(--sol-t-fast);
+  overflow: hidden;
+  transition: background var(--sol-t-fast), border-color var(--sol-t-fast), transform var(--sol-t-fast), box-shadow var(--sol-t-fast);
+  opacity: 0;
+  transform: translateX(-8px);
+  animation: sol-quiz-opt-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--sol-opt-delay, 0ms);
+}
+@keyframes sol-quiz-opt-in {
+  to { opacity: 1; transform: translateX(0); }
+}
+.solara-landing .sol-quiz-opt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(180,106,60,.10), transparent 55%);
+  opacity: 0;
+  transition: opacity var(--sol-t-fast);
+  pointer-events: none;
 }
 .solara-landing .sol-quiz-opt:hover {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.92);
   border-color: var(--sol-accent);
-  transform: translateX(2px);
+  transform: translateX(3px);
+  box-shadow: 0 8px 22px -12px rgba(180,106,60,.4);
 }
+.solara-landing .sol-quiz-opt:hover::before { opacity: 1; }
 .solara-landing .sol-quiz-opt.is-sel {
   border-color: var(--sol-accent);
-  background: rgba(180, 106, 60, 0.08);
-  box-shadow: inset 0 0 0 1px var(--sol-accent);
+  background: rgba(180, 106, 60, 0.10);
+  box-shadow: inset 0 0 0 1px var(--sol-accent), 0 10px 26px -14px rgba(180,106,60,.45);
+  transform: translateX(3px) scale(1.005);
 }
 .solara-landing .sol-quiz-opt-bullet {
   width: 18px;
@@ -592,6 +710,52 @@
   font-size: 10.5px;
   font-weight: 600;
   flex-shrink: 0;
+  transition: opacity var(--sol-t-fast);
+}
+.solara-landing .sol-quiz-opt:hover .sol-quiz-opt-idx { opacity: 0; }
+.solara-landing .sol-quiz-opt-icon {
+  position: relative;
+  z-index: 1;
+  font-size: 22px;
+  line-height: 1;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: rgba(255,255,255,.75);
+  border: 1px solid var(--sol-line);
+  border-radius: 10px;
+  filter: saturate(.9);
+  transition: transform var(--sol-t-fast), background var(--sol-t-fast), border-color var(--sol-t-fast);
+}
+.solara-landing .sol-quiz-opt:hover .sol-quiz-opt-icon {
+  transform: scale(1.08) rotate(-3deg);
+  background: #fff;
+  border-color: var(--sol-accent);
+  filter: saturate(1.15);
+}
+.solara-landing .sol-quiz-opt.is-sel .sol-quiz-opt-icon {
+  background: var(--sol-accent);
+  border-color: var(--sol-accent);
+  filter: saturate(1);
+}
+.solara-landing .sol-quiz-opt-arrow {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  color: var(--sol-accent);
+  opacity: 0;
+  transform: translate(-12px, -50%);
+  transition: opacity var(--sol-t-fast), transform var(--sol-t-fast);
+  pointer-events: none;
+}
+.solara-landing .sol-quiz-opt-arrow svg { width: 100%; height: 100%; }
+.solara-landing .sol-quiz-opt:hover .sol-quiz-opt-arrow {
+  opacity: 1;
+  transform: translate(0, -50%);
 }
 
 .solara-landing .sol-quiz-form {
@@ -1515,7 +1679,15 @@
   .solara-landing .sol-hero-sun-rays,
   .solara-landing .sol-final-sun-disc,
   .solara-landing .sol-cta-tag-dot,
-  .solara-landing .sol-live-dot {
+  .solara-landing .sol-live-dot,
+  .solara-landing .sol-cta-card::after,
+  .solara-landing .sol-cta-particle,
+  .solara-landing .sol-quiz-progress-shimmer {
+    animation: none !important;
+  }
+  .solara-landing .sol-quiz-opt {
+    opacity: 1 !important;
+    transform: none !important;
     animation: none !important;
   }
 }

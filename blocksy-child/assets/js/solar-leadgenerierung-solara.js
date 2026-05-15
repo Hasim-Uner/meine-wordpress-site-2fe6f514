@@ -18,10 +18,10 @@
       hint: 'Wir kalibrieren die Analyse auf Ihre Vertriebslogik.',
       kind: 'pick',
       options: [
-        { v: 'photovoltaik',     t: 'Photovoltaik',          s: 'Aufdach · Speicher · Direktinvest' },
-        { v: 'waermepumpen',     t: 'Wärmepumpen',           s: 'Sanierung & Neubau' },
-        { v: 'speicher',         t: 'Speicher',              s: 'Stand-alone oder Nachrüstung' },
-        { v: 'mehrere_loesungen', t: 'Mehrere Lösungen',     s: 'PV · WP · Speicher kombiniert' }
+        { v: 'photovoltaik',      t: 'Photovoltaik',      s: 'Aufdach · Speicher · Direktinvest', i: '☀️' },
+        { v: 'waermepumpen',      t: 'Wärmepumpen',       s: 'Sanierung & Neubau',                i: '🔥' },
+        { v: 'speicher',          t: 'Speicher',          s: 'Stand-alone oder Nachrüstung',      i: '🔋' },
+        { v: 'mehrere_loesungen', t: 'Mehrere Lösungen',  s: 'PV · WP · Speicher kombiniert',     i: '⚡' }
       ]
     },
     {
@@ -31,10 +31,10 @@
       hint: 'Qualifiziert + unqualifiziert zusammen — Bauchgefühl reicht.',
       kind: 'pick',
       options: [
-        { v: 'unter_20',    t: 'Unter 20',       s: 'Vertrieb hat Kapazität, aber Pipeline ist dünn' },
-        { v: '20_bis_50',   t: '20 – 50',        s: 'Volumen vorhanden, Qualität unklar' },
-        { v: '51_bis_120',  t: '51 – 120',       s: 'Stabiler Korridor — Hebel bei Qualität' },
-        { v: 'ueber_120',   t: 'Über 120',       s: 'Skalierung greift nur bei sauberem Fundament' }
+        { v: 'unter_20',    t: 'Unter 20',  s: 'Vertrieb hat Kapazität, aber Pipeline ist dünn', i: '📉' },
+        { v: '20_bis_50',   t: '20 – 50',   s: 'Volumen vorhanden, Qualität unklar',             i: '📊' },
+        { v: '51_bis_120',  t: '51 – 120',  s: 'Stabiler Korridor — Hebel bei Qualität',         i: '📈' },
+        { v: 'ueber_120',   t: 'Über 120',  s: 'Skalierung greift nur bei sauberem Fundament',   i: '🚀' }
       ]
     },
     {
@@ -44,10 +44,10 @@
       hint: 'Einer trifft fast immer am stärksten zu.',
       kind: 'pick',
       options: [
-        { v: 'lead_menge',            t: 'Lead-Menge',            s: 'Zu wenige Anfragen für die Kapazität' },
-        { v: 'lead_qualitaet',        t: 'Lead-Qualität',         s: 'Anfragen kommen, aber zu viel Streuverlust' },
-        { v: 'tracking_klarheit',     t: 'Tracking-Klarheit',     s: 'Welcher Kanal bringt Abschlüsse? Unklar.' },
-        { v: 'eigentum_abhaengigkeit', t: 'Eigentum / Abhängigkeit', s: 'Sie mieten — Portal oder Agentur hält den Hebel' }
+        { v: 'lead_menge',             t: 'Lead-Menge',             s: 'Zu wenige Anfragen für die Kapazität',                   i: '🪫' },
+        { v: 'lead_qualitaet',         t: 'Lead-Qualität',          s: 'Anfragen kommen, aber zu viel Streuverlust',             i: '🎯' },
+        { v: 'tracking_klarheit',      t: 'Tracking-Klarheit',      s: 'Welcher Kanal bringt Abschlüsse? Unklar.',               i: '🔍' },
+        { v: 'eigentum_abhaengigkeit', t: 'Eigentum / Abhängigkeit', s: 'Sie mieten — Portal oder Agentur hält den Hebel',       i: '🔓' }
       ]
     },
     {
@@ -57,10 +57,10 @@
       hint: 'Voll belastet (Portal-Gebühren + Ads + Folgekosten).',
       kind: 'pick',
       options: [
-        { v: 'unter_80',    t: 'Unter 80 €',     s: 'Organisch / Empfehlung-getrieben' },
-        { v: '80_bis_150',  t: '80 – 150 €',     s: 'Typischer Portal- / Performance-Korridor' },
-        { v: '151_bis_300', t: '151 – 300 €',    s: 'Spürbar hoher CPL — Streuverlust hoch' },
-        { v: 'ueber_300',   t: 'Über 300 €',     s: 'Akut unwirtschaftlich' }
+        { v: 'unter_80',    t: 'Unter 80 €',  s: 'Organisch / Empfehlung-getrieben',          i: '💰' },
+        { v: '80_bis_150',  t: '80 – 150 €',  s: 'Typischer Portal- / Performance-Korridor', i: '💸' },
+        { v: '151_bis_300', t: '151 – 300 €', s: 'Spürbar hoher CPL — Streuverlust hoch',     i: '⚠️' },
+        { v: 'ueber_300',   t: 'Über 300 €',  s: 'Akut unwirtschaftlich',                     i: '🔥' }
       ]
     },
     {
@@ -241,14 +241,42 @@
     // ── render helpers ────────────────────────────────────────
     function renderProgress() {
       var pct = Math.round((state.step / (totalSteps - 1)) * 100);
+      var dotsTrack = el('div', { className: 'sol-quiz-dots', 'aria-hidden': 'true' });
+      for (var i = 0; i < totalSteps; i++) {
+        var cls = 'sol-quiz-dot';
+        if (i === state.step) cls += ' is-active';
+        else if (i < state.step) cls += ' is-done';
+        var dotIdx = i; // capture
+        var dot = el('button', {
+          type: 'button',
+          className: cls,
+          tabindex: i < state.step ? '0' : '-1',
+          'aria-label': 'Zu Schritt ' + (i + 1),
+          onClick: (function (idx) {
+            return function () {
+              if (idx < state.step) {
+                state.step = idx;
+                render();
+                track('marktcheck_dot_jump', { to_step: idx + 1 });
+              }
+            };
+          })(dotIdx)
+        }, [
+          i < state.step ? el('span', { className: 'sol-quiz-dot-check', html: '✓' }) : null
+        ]);
+        dotsTrack.appendChild(dot);
+      }
       return el('div', { className: 'sol-quiz-progress' }, [
         el('div', { className: 'sol-quiz-progress-meta' }, [
           el('span', null, 'Schritt ' + String(state.step + 1).padStart(2, '0') + ' / ' + String(totalSteps).padStart(2, '0')),
           el('span', null, pct + ' %')
         ]),
         el('div', { className: 'sol-quiz-progress-track' }, [
-          el('div', { className: 'sol-quiz-progress-fill', style: 'width:' + pct + '%' })
-        ])
+          el('div', { className: 'sol-quiz-progress-fill', style: 'width:' + pct + '%' }, [
+            el('span', { className: 'sol-quiz-progress-shimmer', 'aria-hidden': 'true' })
+          ])
+        ]),
+        dotsTrack
       ]);
     }
 
@@ -256,23 +284,28 @@
       var picks = el('div', { className: 'sol-quiz-options', role: 'radiogroup', 'aria-label': step.title });
       step.options.forEach(function (o, i) {
         var sel = state.answers[step.key] === o.v;
+        var children = [];
+        children.push(el('span', { className: 'sol-quiz-opt-bullet', 'aria-hidden': 'true' }, [
+          el('span', { className: 'sol-quiz-opt-bullet-dot' })
+        ]));
+        if (o.i) {
+          children.push(el('span', { className: 'sol-quiz-opt-icon', 'aria-hidden': 'true' }, o.i));
+        }
+        children.push(el('span', { className: 'sol-quiz-opt-body' }, [
+          el('span', { className: 'sol-quiz-opt-t' }, o.t),
+          o.s ? el('span', { className: 'sol-quiz-opt-s' }, o.s) : null
+        ]));
+        children.push(el('span', { className: 'sol-quiz-opt-idx' }, '0' + (i + 1)));
+        children.push(el('span', { className: 'sol-quiz-opt-arrow', 'aria-hidden': 'true', html: ARROW_SVG }));
         var btn = el('button', {
           type: 'button',
           className: 'sol-quiz-opt' + (sel ? ' is-sel' : ''),
           role: 'radio',
           'aria-checked': sel ? 'true' : 'false',
+          style: '--sol-opt-delay:' + (i * 60) + 'ms',
           dataset: { trackAction: 'marktcheck_pick', trackCategory: 'lead_funnel', trackSection: 'quiz_step_' + (state.step + 1) },
           onClick: function () { pick(step.key, o.v); }
-        }, [
-          el('span', { className: 'sol-quiz-opt-bullet', 'aria-hidden': 'true' }, [
-            el('span', { className: 'sol-quiz-opt-bullet-dot' })
-          ]),
-          el('span', { className: 'sol-quiz-opt-body' }, [
-            el('span', { className: 'sol-quiz-opt-t' }, o.t),
-            o.s ? el('span', { className: 'sol-quiz-opt-s' }, o.s) : null
-          ]),
-          el('span', { className: 'sol-quiz-opt-idx' }, '0' + (i + 1))
-        ]);
+        }, children);
         picks.appendChild(btn);
       });
       return picks;
