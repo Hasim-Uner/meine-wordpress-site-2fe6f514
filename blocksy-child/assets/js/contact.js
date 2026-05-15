@@ -35,9 +35,31 @@
         var currentFlowIndex = 0;
         var contactAutoAdvanceTimer = 0;
         var CONTACT_AUTO_ADVANCE_DELAY = 180;
+        var lastTrackedFlowStep = '';
 
         if (!endpoint) {
             return;
+        }
+
+        function pushContactEvent(eventName, extra) {
+            if (typeof window === 'undefined' || !window.dataLayer || typeof window.dataLayer.push !== 'function') {
+                return;
+            }
+
+            var payload = {
+                event: eventName,
+                event_category: 'contact',
+                contact_request_type: getSelectedType(),
+                contact_focus: focusSelect ? focusSelect.value : ''
+            };
+
+            if (extra && typeof extra === 'object') {
+                Object.keys(extra).forEach(function (key) {
+                    payload[key] = extra[key];
+                });
+            }
+
+            window.dataLayer.push(payload);
         }
 
         // ── Attribution: direct URL param capture (no sessionStorage) ──
@@ -381,6 +403,17 @@
             if (options.focus) {
                 focusContactFlowStep(currentStep);
             }
+
+            if (currentKey && currentKey !== lastTrackedFlowStep) {
+                lastTrackedFlowStep = currentKey;
+                pushContactEvent('contact_form_step_view', {
+                    contact_flow_step: currentKey,
+                    contact_flow_step_label: currentLabel,
+                    contact_flow_step_index: currentFlowIndex + 1,
+                    contact_flow_step_total: total,
+                    contact_flow_progress: percentage
+                });
+            }
         }
 
         function setContactFlowStep(index, options) {
@@ -542,6 +575,9 @@
 
             if (errors.length > 0) {
                 showErrorSummary(errors);
+                pushContactEvent('contact_form_validation_error', {
+                    contact_error_fields: errors.map(function (err) { return err.field; }).join(',')
+                });
                 if (firstInvalid && firstInvalid.focus) {
                     firstInvalid.focus();
                 }
@@ -767,6 +803,7 @@
             }
 
             setPending(true);
+            pushContactEvent('contact_form_submit_started');
 
             window.fetch(endpoint, {
                 method: 'POST',
@@ -791,6 +828,7 @@
                         var errorMessage = result.data && result.data.error
                             ? result.data.error
                             : (window.NexusContactConfig && window.NexusContactConfig.errorMessage) || 'Die Anfrage konnte gerade nicht gesendet werden.';
+                        var errorCode = result.data && result.data.error_code ? result.data.error_code : 'server_error';
 
                         // Try to map server-side field errors
                         if (result.data && result.data.error_code) {
@@ -811,7 +849,13 @@
                             }
                         }
 
-                        throw new Error(errorMessage);
+                        pushContactEvent('contact_form_submit_failed', {
+                            contact_error_code: errorCode
+                        });
+
+                        var trackedError = new Error(errorMessage);
+                        trackedError.contactErrorTracked = true;
+                        throw trackedError;
                     }
 
                     form.reset();
@@ -823,8 +867,16 @@
                         || 'Danke. Ihre Anfrage ist eingegangen.';
 
                     setFeedback(successMessage, 'success');
+                    pushContactEvent('contact_form_submit_success', {
+                        contact_has_crm_id: !!result.data.contactId
+                    });
                 })
                 .catch(function (error) {
+                    if (!error || !error.contactErrorTracked) {
+                        pushContactEvent('contact_form_submit_failed', {
+                            contact_error_code: 'network_or_unknown'
+                        });
+                    }
                     setFeedback(error && error.message ? error.message : 'Die Anfrage konnte gerade nicht gesendet werden.', 'error');
                 })
                 .finally(function () {
