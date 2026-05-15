@@ -1,49 +1,35 @@
 # Skills Context
 
-Scope: `agents/skills/`
+Scope: `agents/skills/`.
 
-## Skill Contract
+## Contract
 
-- One skill per directory
-- Required file: `SKILL.md`
-- Optional helpers: `scripts/`, `references/`, `agents/`
-- No single-file root skills
+- One skill per directory.
+- Required: `SKILL.md`.
+- Optional: `scripts/`, `references/`, `agents/`.
+- Keep `SKILL.md` short: trigger, first command, hard rules, deliverable.
+- Move repeated checklists, scaffolds, and scans into scripts.
+- Do not duplicate brand/copy rules; reference `docs/standards/BRAND_AND_COPY.md`.
 
-## Rules
+## Routing
 
-- Keep `SKILL.md` short: when to use, what to run, what to deliver.
-- Push repeated checklist generation, diff detection, or scaffolding into `scripts/`.
-- Prefer scripts that consume repo state over long prose instructions.
-- If a skill replaces a playbook, update references and delete the old playbook.
+| Task | Skill |
+| --- | --- |
+| SEO triage or mixed SEO work | `seo-agent` |
+| Live SEO, canonicals, redirects, reindex | `seo-live-qa` |
+| SEO Cockpit modules or diagnostics | `seo-cockpit-hardening` |
+| Internal links, orphan pages, anchors | `internal-linking-audit` |
+| Cornerstone/pillar article packages | `pillar-cornerstone-writer` |
+| B2B CRO, page critique, CTA/proof hierarchy | `wordpress-cro-content-design-audit` |
+| Visual system, UI components, premium polish | `b2b-design-system` |
+| `/growth-audit/` legacy optimization | `growth-audit-optimizer` |
+| New paid landing page | `landing-page-builder` |
+| Core Web Vitals and page speed | `page-speed-audit` |
+| Lead routing, REST contracts, CRM, form architecture | `wordpress-growth-architecture` |
+| Pre-push smoke | `pre-deploy-smoke` |
+| Glossary/WGOS registry release QA | `registry-release-qa` |
+| Header/menu/admin follow-up | `navigation-migration` |
+| Homepage proof monitoring | `homepage-proof-monitoring` |
+| Full SEO+CRO+tracking audit | `wordpress-performance-marketing` |
 
-## Quick Reference
-
-See `SKILLS_MATRIX.md` for the full routing table with cost, triggers, and model hints.
-
-## Shared Standards
-
-All skills reference `docs/standards/BRAND_AND_COPY.md` for positioning, tone, and copy direction.
-Do not duplicate brand rules in individual `SKILL.md` files.
-
-## SEO Routing
-
-Use `seo-agent` as the entry point for any SEO task. It dispatches to the correct sub-skill.
-
-## Current Skills
-
-- `seo-agent` (dispatcher)
-- `seo-live-qa`
-- `seo-cockpit-hardening`
-- `internal-linking-audit`
-- `pillar-cornerstone-writer`
-- `wordpress-performance-marketing`
-- `homepage-proof-monitoring`
-- `registry-release-qa`
-- `navigation-migration`
-- `pre-deploy-smoke`
-- `landing-page-builder`
-- `page-speed-audit`
-- `b2b-design-system`
-- `growth-audit-optimizer`
-- `wordpress-growth-architecture`
-- `wordpress-cro-content-design-audit`
+Use scripts from the routed skill before opening long references.

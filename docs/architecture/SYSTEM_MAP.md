@@ -16,9 +16,9 @@ Stand: 2026-05-15. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | Public Proof Layer | zentraler oeffentlicher Proof- und Vokabular-Layer fuer kaufnahe Seiten | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/shortcodes.php`, `blocksy-child/front-page.php`, `blocksy-child/page-wordpress-agentur.php`, `blocksy-child/page-wgos.php`, `blocksy-child/page-kontakt.php`, `blocksy-child/inc/contact-page.php` | WordPress-Editor, oeffentliche Cases und Profile | live |
 | Content- und SEO-System | Blog, Pillar-Hubs, Cornerstone-Content, interne Verlinkung | `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/page-seo-cornerstone.php`, `content/blog-drafts/` | WordPress-Editor | live plus Ausbau |
 | Client Portal | Kunden-Cockpit mit Login, Upload und Roadmap-Slots | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, Media Library | live, aber aktuell mit Mock-Daten |
-| n8n-Automationen | Workflow-Logik für aktiven Legacy-Audit und spätere Analyse-/Routing-/Nurture-Schritte hinter Contract, Consent und Feature-Flag | `automations/n8n/`, `blocksy-child/assets/js/cja-audit.js`, `blocksy-child/assets/js/audit-live.js` | n8n auf `n8n.hasimuener.de`, CRM, Mail, evtl. Sheets | Legacy-Audit-Code vorhanden; Marktcheck nutzt WordPress REST statt n8n |
+| n8n-Automationen | optionale Workflow-Artefakte für spätere Analyse-/Routing-/Nurture-Schritte hinter Contract, Consent und Feature-Flag | `automations/n8n/` | n8n Cloud, CRM, Mail, evtl. Sheets | kein aktiver Marktcheck-Pfad; nur minimal pflegen |
 | Marktcheck / System-Diagnose-Legacy | aktiver 60-Sekunden-Marktcheck auf der Solar-Landingpage; fruehere System-Diagnose-Route bleibt als Redirect erhalten | `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/solar-leadgenerierung-solara.js`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/review-crm.php`, `blocksy-child/readiness/` | WordPress, Audit-CRM, Brevo/wp_mail, Cal.com; n8n nicht angebunden | Marktcheck aktiv über `/wp-json/nexus/v1/audit-request`; `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects |
-| Agenten- und Prompt-System | Kontext, Guardrails, Skills und minimale Legacy-Briefings | `AGENTS.md`, `agents/skills/`, `prompts/README.md` | keine direkte Laufzeitabhaengigkeit | in Aufbau |
+| Agenten- und Skill-System | Kontext, Guardrails und wiederholbare Skills | `AGENTS.md`, `agents/skills/` | keine direkte Laufzeitabhaengigkeit | aktiv verdichtet |
 
 ## Website
 
@@ -61,17 +61,13 @@ Systemische Rolle:
 
 ## n8n-Automationen
 
-Im Repo liegen erste n8n-Artefakte, aber n8n ist nicht der Backend-Pfad des Marktchecks. Der aktive Marktcheck nutzt WordPress REST, Audit-CRM und Brevo/wp_mail. Die fruehere React-System-Diagnose bleibt als Legacy-Code im Repo. Die Rolle von n8n ist aktuell getrennt:
+n8n ist aktuell nicht der Backend-Pfad des Marktchecks. Der aktive Marktcheck nutzt WordPress REST, Audit-CRM und Brevo/wp_mail. n8n-Artefakte bleiben nur als vorbereitende oder historische Arbeitsflaeche im Repo.
 
-- deaktivierter Instant-Results-Layer für den Growth-Audit-Legacycode über `https://n8n.hasimuener.de/webhook/audit` plus `https://n8n.hasimuener.de/webhook/audit-status`, mit `https://n8n.hasimuener.de/webhook/cja-analyze` als Legacy-Fallback
-- künftiges Lead-Routing und Nurture erst nach Contract-, Consent- und Feature-Flag-Freigabe
-- Reporting- oder CRM-Bridges, die in Texten und Angebotslogik bereits angedeutet werden
+Regel:
 
-Aktuell dokumentierter Workflow:
-
-- `automations/n8n/workflows/audit-funnel__customer-journey-audit__refactor.json`
-- Doku: `automations/n8n/docs/audit-funnel__customer-journey-audit__refactor.md`
-- Flow-Map: `automations/n8n/flow-maps/audit-funnel__customer-journey-audit__refactor.md`
+- keine neue n8n-Datei ohne konkreten Workflow-Bedarf
+- jedes aktive Workflow-Artefakt braucht Triplet aus JSON, Doku und Flow-Map
+- Workflow-JSONs sind keine Standard-Agentenlekture
 
 Marktcheck / System-Diagnose-Legacy:
 
@@ -91,14 +87,12 @@ Bekannte technische Touchpoints:
 - `blocksy-child/inc/cja-shortcode.php`
 - `blocksy-child/assets/js/cja-audit.js`
 - `blocksy-child/assets/js/audit-live.js`
-- aktive Webhooks `audit` und `audit-status`
-- Legacy-Fallback `cja-analyze`
+- historische Webhook-Namen `audit`, `audit-status`, `cja-analyze`
 
 Fachliche Regel:
 
 - n8n-JSONs gelten nie als selbsterklaerend.
-- Jeder Workflow braucht zusaetzlich Doku, Flow-Map, Status und Risiko-Abschnitt.
-- Der aktuelle Audit-Workflow ist fachlich wertvoll, aber architektonisch refactor-beduerftig.
+- Jeder aktive Workflow braucht Doku, Flow-Map, Status und Risiko-Abschnitt.
 
 ## Growth-Audit-Legacypfad
 

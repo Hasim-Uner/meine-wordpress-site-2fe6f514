@@ -1,13 +1,27 @@
+# Generated, dependency, and build artifacts
+node_modules/**
+vendor/**
+.build/**
+blocksy-child/readiness/node_modules/**
+package-lock.json
+composer.lock
+
 # Human-facing summaries and changelogs
 README.md
 **/README.md
 CHANGELOG.md
 .ai/**
 
+# Ephemeral or retired planning material
+plans/**
+
 # Historical audits and research notes
 docs/audits/**
 docs/cro-deep-research-audit-2026-03-15.md
 docs/references/**
+
+# Large workflow exports are read only when n8n work is explicit
+automations/n8n/workflows/*.json
 
 # Human operational notes replaced by skills or manual lookup
 docs/playbooks/**

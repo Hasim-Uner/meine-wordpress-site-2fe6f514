@@ -84,12 +84,10 @@ Nicht verifiziert:
 
 ## Geplant
 
-- weitere n8n-Workflow-Exporte unter `automations/n8n/workflows/`
-- weitere menschlich lesbare Workflow-Doku und Flow-Maps unter `automations/n8n/docs/` und `automations/n8n/flow-maps/`
-- sauberer Prompt- und Agenten-Layer fuer wiederverwendbare Arbeitskontexte
+- n8n nur bei konkretem Workflow-Bedarf weiterfuehren; jedes aktive Artefakt braucht JSON, Doku und Flow-Map
+- Agenten-Layer weiter ueber kurze Root-Regeln, lokale Kontexte und Skills fuehren; keine neue Root-Planablage
 - weitere Systemdoku fuer Tracking, CRM-Routing, Offer-Logik und CTA-Inventar
 - Ausbau des SEO Cockpits um echte Koko-Daten, Page-Level-Korrelationen und spaetere URL-Inspection-Sichten
-- weiterer Ausbau der n8n-Analyse inklusive dokumentierter Payload-Contracts, Monitoring und Workflow-Exporten
 - Ausbau des Decision Logs fuer strukturelle Repo- und Systementscheidungen
 
 ## Deprecated
