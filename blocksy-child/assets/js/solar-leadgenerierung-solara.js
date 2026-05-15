@@ -595,11 +595,113 @@
     }
   }
 
+  /* CAPEX vs OPEX · Timeframe-Picker.
+     Tauscht alle [data-sol-capex-out="key"] gegen die passende Zahl
+     für 12/24/36 Monate. Suffixe (" / Monat", " Stück") bleiben aus
+     dem statischen Markup erhalten. */
+  var CAPEX_DATA = {
+    12: {
+      portal_monthly: '~ 1.080 €',
+      portal_leads:   '~ 160',
+      portal_total:   '13.000 €',
+      portal_total2:  '13.000 €',
+      own_setup:      '12.000 – 18.000 €',
+      own_monthly:    '~ 50 €',
+      own_total:      '12.600 – 18.600 €',
+      own_total2:     '12.600 – 18.600 €'
+    },
+    24: {
+      portal_monthly: '~ 1.080 €',
+      portal_leads:   '~ 320',
+      portal_total:   '26.000 €',
+      portal_total2:  '26.000 €',
+      own_setup:      '12.000 – 18.000 €',
+      own_monthly:    '~ 50 €',
+      own_total:      '13.200 – 19.200 €',
+      own_total2:     '13.200 – 19.200 €'
+    },
+    36: {
+      portal_monthly: '~ 1.080 €',
+      portal_leads:   '~ 480',
+      portal_total:   '39.000 €',
+      portal_total2:  '39.000 €',
+      own_setup:      '12.000 – 18.000 €',
+      own_monthly:    '~ 50 €',
+      own_total:      '14.160 – 20.160 €',
+      own_total2:     '14.160 – 20.160 €'
+    }
+  };
+  var CAPEX_SUFFIX = {
+    portal_monthly: ' / Monat',
+    portal_leads:   ' Stück',
+    own_monthly:    ' / Monat'
+  };
+
+  function setupCapexPicker() {
+    var section = document.querySelector(ROOT_SELECTOR + ' [data-sol-capex-buttons]');
+    if (!section) return;
+    var btns = section.querySelectorAll('[data-sol-capex-tf]');
+    if (!btns.length) return;
+
+    function apply(tf) {
+      var data = CAPEX_DATA[tf];
+      if (!data) return;
+      btns.forEach(function (b) {
+        var on = String(b.getAttribute('data-sol-capex-tf')) === String(tf);
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      var outs = document.querySelectorAll(ROOT_SELECTOR + ' [data-sol-capex-out]');
+      outs.forEach(function (el) {
+        var key = el.getAttribute('data-sol-capex-out');
+        if (key === 'tf' || key === 'tf2' || key === 'tf3' || key === 'tf4') {
+          el.textContent = String(tf);
+          return;
+        }
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
+          el.textContent = data[key] + (CAPEX_SUFFIX[key] || '');
+        }
+      });
+    }
+
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var tf = b.getAttribute('data-sol-capex-tf');
+        apply(tf);
+        try { track('capex_timeframe_change', { tf: tf }); } catch (e) {}
+      });
+    });
+  }
+
+  /* Setzt --sol-nav-top auf die Höhe eines sticky Blocksy-Headers,
+     damit unsere In-Page-Section-Nav darunter andockt. Stiller no-op,
+     wenn kein sticky Header existiert. */
+  function setupSectionNavOffset() {
+    var landing = document.querySelector(ROOT_SELECTOR);
+    if (!landing) return;
+    var header = document.querySelector('header.ct-header, [data-header*="sticky"], #header, .ct-sticky-container');
+    function apply() {
+      var h = 0;
+      if (header) {
+        var rect = header.getBoundingClientRect();
+        var cs = window.getComputedStyle(header);
+        var isSticky = (cs.position === 'sticky' || cs.position === 'fixed') && rect.top <= 1;
+        if (isSticky) h = Math.round(rect.height);
+      }
+      landing.style.setProperty('--sol-nav-top', h + 'px');
+    }
+    apply();
+    window.addEventListener('resize', apply, { passive: true });
+    window.addEventListener('scroll', apply, { passive: true });
+  }
+
   ready(function () {
     mountSunRays();
     setupFaq();
     setupStickyCta();
     setupScrollAnchor();
     setupQuiz();
+    setupCapexPicker();
+    setupSectionNavOffset();
   });
 })();
