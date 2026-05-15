@@ -720,13 +720,24 @@ function hu_get_seo_meta() {
 	];
 
 	$noindex_slugs = [
+		'alle-loesungen',
+		'alle-loesungen-im-detail',
+		'anfrage',
+		'case-studies',
+		'case-studies-e-commerce',
+		'conversion-rate-optimization',
+		'core-web-vitals',
 		'danke',
 		'danke-anfage-audit',
 		'danke-anfrage-audit',
+		'energie-fahrplan-demo',
 		'thank-you',
 		'portal',
 		'login',
 		'kunden-login',
+		'kontaktiere-mich',
+		'loesungen',
+		'meta-ads',
 		'360-deep-dive',
 		'readiness-diagnose',
 		'system-diagnose',
@@ -738,7 +749,11 @@ function hu_get_seo_meta() {
 		'kostenlose-tools',
 		'tools',
 		'website-performance-analyse',
+		'website-fuer-solar-und-waermepumpen-anbieter',
+		'wgos-systemlandkarte',
+		'wordpress-agentur',
 		'roi-rechner',
+		'seo',
 	];
 
 	if ( is_front_page() ) {
@@ -946,7 +961,9 @@ add_action( 'template_redirect', function () {
  * Slugs deprecated in der neuen Positionierung:
  * - wgos / wordpress-growth-operating-system: noindex (Legacy-Hub)
  * - ki-integration-wordpress / ki-integration: noindex (Legacy-Thema)
- * - loesungen: noindex (interne Angebotsübersicht, nicht mehr beworben)
+ * - loesungen / alle-loesungen: noindex (interne Angebotsübersicht, nicht mehr beworben)
+ * - energie-fahrplan-demo: Showroom/Legacy-Demo, kein aktiver Leadpfad
+ * - case-studies* / alte Kontakt-, Agentur-, Solar- und Systempfade: 301 auf kanonische Ziele
  * - wordpress-seo-hannover / wordpress-wartung-hannover: 301 auf Agentur-Page-Anker
  * - growth-audit / kostenlose-tools und Tool-Unterseiten: 301 auf Marktcheck
  *
@@ -954,14 +971,27 @@ add_action( 'template_redirect', function () {
  */
 function nexus_get_sitemap_excluded_slugs() {
 	return [
+		'alle-loesungen',
+		'alle-loesungen-im-detail',
+		'anfrage',
+		'case-studies',
+		'case-studies-e-commerce',
+		'conversion-rate-optimization',
+		'core-web-vitals',
+		'energie-fahrplan-demo',
 		'wordpress-growth-operating-system',
 		'wgos',
+		'wgos-systemlandkarte',
 		'ki-integration-wordpress',
 		'ki-integration',
+		'kontaktiere-mich',
 		'loesungen',
+		'meta-ads',
 		'readiness-diagnose',
 		'system-diagnose',
+		'seo',
 		'wordpress-seo-hannover',
+		'wordpress-agentur',
 		'wordpress-wartung-hannover',
 		'growth-audit',
 		'audit',
@@ -971,6 +1001,7 @@ function nexus_get_sitemap_excluded_slugs() {
 		'kostenlose-tools',
 		'tools',
 		'website-performance-analyse',
+		'website-fuer-solar-und-waermepumpen-anbieter',
 		'roi-rechner',
 	];
 }
