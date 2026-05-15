@@ -98,7 +98,7 @@ get_header();
 					WordPress-Wachstumssystem für anspruchsvolle B2B-Angebote.
 				</h1>
 				<p class="nx-hero__subtitle wp-agentur-hero__subtitle">
-					Aus Hannover für den DACH-Raum. Ich verbinde WordPress-Entwicklung mit SEO, Tracking und Conversion-Führung — damit die Website nachvollziehbar qualifizierte Anfragen erzeugt, statt nur sichtbar zu sein.
+					Aus Hannover für den DACH-Raum. Ich verbinde WordPress-Entwicklung, SEO, Tracking, Ladezeiten-Optimierung und Conversion-Führung — damit die Website auf jedem Gerät (Mobile First) nachvollziehbar qualifizierte Anfragen erzeugt, statt nur sichtbar zu sein.
 				</p>
 
 				<!-- E3 Proof Pills -->
@@ -208,7 +208,7 @@ get_header();
 			<div class="wp-agentur-segment-card wp-agentur-segment-card--focus">
 				<span class="wp-agentur-segment-card__tag">Was</span>
 				<h3>WordPress-Systeme, die nachvollziehbar qualifizierte Anfragen erzeugen</h3>
-				<p>Angebotsseiten, technisches SEO, Tracking, GA4, Server-Side Tracking und Conversion Optimierung — WordPress als ein System.</p>
+				<p>Angebotsseiten, technisches SEO, Tracking, GA4, Server-Side Tracking, Conversion Optimierung, Wartung und Ladezeiten-Optimierung — WordPress als ein System, nicht als Baustellensammlung.</p>
 			</div>
 			<div class="wp-agentur-segment-card">
 				<span class="wp-agentur-segment-card__tag">Für wen</span>
