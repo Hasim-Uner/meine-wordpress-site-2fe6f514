@@ -408,12 +408,124 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     06 / WANN ES SICH LOHNT (Fit)
+	     06 / DAS SYSTEM — VISUELL
+	     Portal-Chaos vs. eigene Strecke — konkrete Zahlen.
+	     ═══════════════════════════════════════════════════ -->
+	<section class="hu-section hu-system-visual-section" id="flow" data-track-section="homepage_system_visual">
+		<div class="hu-container">
+			<div class="hu-proof-headline hu-reveal" style="margin-bottom:64px">
+				<span class="hu-eyebrow">06 / Das System — visuell</span>
+				<h2>Vom Portal-Chaos zur qualifizierten Anfrage.</h2>
+				<p style="color:var(--fg-2);font-weight:400">Ein klarer Weg. Messbar an jedem Punkt.</p>
+			</div>
+
+			<div class="hu-system-flow hu-reveal">
+				<!-- Linke Spalte: Portal-Chaos -->
+				<div class="hu-sf-col hu-sf-col--bad">
+					<div class="hu-sf-col-head">
+						<div class="hu-sf-col-label">AKTUELL</div>
+						<div class="hu-sf-col-title">Portal-Chaos</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon" aria-hidden="true">×</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">Portal-Lead</div>
+							<div class="hu-sf-row-d">160 € · 3 Wettbewerber</div>
+						</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon" aria-hidden="true">×</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">Ads ohne Fit-Signal</div>
+							<div class="hu-sf-row-d">240 € CPA · Blindflug</div>
+						</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon" aria-hidden="true">×</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">SEO ohne Conversion</div>
+							<div class="hu-sf-row-d">Traffic · 0 Anfragen</div>
+						</div>
+					</div>
+					<div class="hu-sf-cost">
+						<div class="hu-sf-cost-label">KOSTEN / MONAT</div>
+						<div class="hu-sf-cost-num">~ 4.800 €</div>
+					</div>
+				</div>
+
+				<!-- Pfeil -->
+				<div class="hu-sf-arrow" aria-hidden="true">
+					<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M5 12h14M13 6l6 6-6 6"/>
+					</svg>
+				</div>
+
+				<!-- Rechte Spalte: Eigene Strecke -->
+				<div class="hu-sf-col hu-sf-col--good">
+					<div class="hu-sf-col-head">
+						<div class="hu-sf-col-label">EIGENES SYSTEM</div>
+						<div class="hu-sf-col-title">Eigene Strecke</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon hu-sf-row-icon--good">1</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">Money Page</div>
+							<div class="hu-sf-row-d">Region · Angebot · Beweis</div>
+						</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon hu-sf-row-icon--good">2</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">Vorqualifizierung</div>
+							<div class="hu-sf-row-d">60 Sek. · ohne Formularballast</div>
+						</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon hu-sf-row-icon--good">3</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">Privacy-first Tracking</div>
+							<div class="hu-sf-row-d">Kanal-Ebene · Consent</div>
+						</div>
+					</div>
+					<div class="hu-sf-result">
+						<div class="hu-sf-result-label">ERGEBNIS</div>
+						<div class="hu-sf-result-stats">
+							<div><span class="hu-sf-result-num"><?php echo esc_html( $e3_lead_count ); ?></span> Anfragen</div>
+							<div><span class="hu-sf-result-num"><?php echo esc_html( $e3_sales_conv ); ?></span> Abschluss</div>
+							<div><span class="hu-sf-result-num hu-sf-result-num--accent"><?php echo esc_html( $e3_cpl_reduction ); ?></span> Kosten</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="hu-sf-footer hu-reveal">
+				<div class="hu-sf-footer-l">
+					<div class="hu-eyebrow">ZEITRAUM</div>
+					<div class="hu-sf-footer-t"><?php echo esc_html( $e3_timeframe ); ?> · E3 New Energy</div>
+				</div>
+				<div class="hu-sf-footer-r">
+					<div class="hu-eyebrow">SETUP</div>
+					<div class="hu-sf-footer-t">Ohne Cookie-Banner · Privacy-first</div>
+				</div>
+			</div>
+
+			<div style="text-align:center;margin-top:48px" class="hu-reveal">
+				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
+				   data-track-action="cta_home_flow_analysis" data-track-category="lead_gen">
+					Prüfen, ob es passt
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ═══════════════════════════════════════════════════
+	     07 / WANN ES SICH LOHNT (Fit)
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--cream" id="fit" data-track-section="homepage_fit">
 		<div class="hu-container">
 			<div class="hu-proof-headline hu-reveal" style="margin-bottom:48px">
-				<span class="hu-eyebrow">06 / Wann es sich lohnt</span>
+				<span class="hu-eyebrow">07 / Wann es sich lohnt</span>
 				<h2 style="color:var(--ink)">Ehrliche Vorauswahl, bevor wir reden.</h2>
 				<p>Lieber jetzt klären, ob es passt — als später ein Setup zu bauen, das ins Leere läuft.</p>
 			</div>
@@ -487,83 +599,8 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     07 / FAQ
-	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section" id="faq" data-track-section="homepage_faq">
-		<div class="hu-container" style="max-width:880px">
-			<div class="hu-proof-headline hu-reveal" style="margin-bottom:48px">
-				<span class="hu-eyebrow">07 / FAQ</span>
-				<h2>Was Geschäftsführer wirklich fragen.</h2>
-			</div>
-
-			<div class="hu-faq">
-
-				<div class="hu-faq-item is-open">
-					<button class="hu-faq-item__q" type="button">
-						<span>Bauen Sie nur eine Website oder kümmern Sie sich auch um den Traffic?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">−</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Beides. Die Website ist nur der Motor. Tracking, Vorqualifizierung und Steuerung der Werbekanäle gehören dazu — sonst hängen Sie weiter in Portal-Leads fest.</div>
-					</div>
-				</div>
-
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button">
-						<span>Arbeiten Sie auch mit bestehenden Websites?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Ja, wenn die Substanz reicht. Manchmal ist ein Money-Page-Slot auf einer bestehenden Domain der schnellere Hebel als ein kompletter Relaunch. Das klären wir in der Analyse.</div>
-					</div>
-				</div>
-
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button">
-						<span>Was kostet das Ganze?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-							<div class="hu-faq-item__a-inner">Der Marktcheck ist 0 €. Der Aufbau danach liegt — abhängig vom Setup — bei 13.200 – 19.200 € verteilt auf 24 Monate. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten ca. 26.000 €. Sie zahlen weniger und behalten das Asset.</div>
-					</div>
-				</div>
-
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button">
-						<span>Wie lange dauert es bis zu den ersten Anfragen?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Bei E3 New Energy: erste qualifizierte Anfragen nach 4–6 Wochen, voller Effekt nach 9 Monaten. Schnellere Versprechen sind unseriös — Leadkosten brauchen einen sauberen Trichter, nicht nur ein Logo-Update.</div>
-					</div>
-				</div>
-
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button">
-						<span>Bin ich gebunden?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Nein. Es gibt keinen Knebelvertrag. Wir starten mit einer Analyse, dann entscheiden beide — Sie, ob es sich lohnt; ich, ob ich passe. Founding-Cohort-Plätze sind aktuell auf drei pro Jahr begrenzt.</div>
-					</div>
-				</div>
-
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button">
-						<span>Was, wenn ich keine eigene Marke aufbauen will?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Dann ist ein eigener Anfrageweg nicht der richtige Hebel für Sie. Sagen Sie es mir früh — ich verkaufe Ihnen nichts, was Sie nicht brauchen.</div>
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</section>
-
-	<!-- ═══════════════════════════════════════════════════
 	     08 / ÜBER MICH
+	     Trust-Anker VOR Einwand-Behandlung — bessere CRO-Sequenz.
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--cream" id="about" data-track-section="homepage_about">
 		<div class="hu-container">
@@ -573,7 +610,7 @@ get_header();
 					<div class="hu-about-photo__tag hu-mono">HANNOVER · 2026</div>
 				</div>
 				<div class="hu-about-text hu-reveal">
-					<span class="hu-eyebrow">Wer steht dahinter</span>
+					<span class="hu-eyebrow">08 / Wer steht dahinter</span>
 					<h2>Ich bohre Brunnen.<br>Digital.</h2>
 					<p class="hu-lead" style="color:var(--ink-2)">
 						Für Solar- und Wärmepumpen-Betriebe, die ihre Anfragen nicht dauerhaft über Portale
@@ -603,7 +640,92 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     09 / FINAL CTA
+	     09 / FAQ
+	     Letzte Einwand-Behandlung direkt vor dem CTA.
+	     ═══════════════════════════════════════════════════ -->
+	<section class="hu-section" id="faq" data-track-section="homepage_faq">
+		<div class="hu-container" style="max-width:880px">
+			<div class="hu-proof-headline hu-reveal" style="margin-bottom:48px">
+				<span class="hu-eyebrow">09 / FAQ</span>
+				<h2>Was Geschäftsführer wirklich fragen.</h2>
+			</div>
+
+			<div class="hu-faq">
+
+				<div class="hu-faq-item is-open">
+					<button class="hu-faq-item__q" type="button" aria-expanded="true">
+						<span>Bauen Sie nur eine Website oder kümmern Sie sich auch um den Traffic?</span>
+						<span class="hu-faq-item__icon" aria-hidden="true">−</span>
+					</button>
+					<div class="hu-faq-item__a">
+						<div class="hu-faq-item__a-inner">Beides. Die Website ist nur der Motor. Tracking, Vorqualifizierung und Steuerung der Werbekanäle gehören dazu — sonst hängen Sie weiter in Portal-Leads fest.</div>
+					</div>
+				</div>
+
+				<div class="hu-faq-item">
+					<button class="hu-faq-item__q" type="button" aria-expanded="false">
+						<span>Was kostet das Ganze?</span>
+						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
+					</button>
+					<div class="hu-faq-item__a">
+							<div class="hu-faq-item__a-inner">Der Marktcheck ist 0 €. Der Aufbau danach liegt — abhängig vom Setup — bei 13.200 – 19.200 € verteilt auf 24 Monate. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten ca. 26.000 €. Sie zahlen weniger und behalten das Asset.</div>
+					</div>
+				</div>
+
+				<div class="hu-faq-item">
+					<button class="hu-faq-item__q" type="button" aria-expanded="false">
+						<span>Wie lange dauert es bis zu den ersten Anfragen?</span>
+						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
+					</button>
+					<div class="hu-faq-item__a">
+						<div class="hu-faq-item__a-inner">Bei E3 New Energy: erste qualifizierte Anfragen nach 4–6 Wochen, voller Effekt nach 9 Monaten. Schnellere Versprechen sind unseriös — Leadkosten brauchen einen sauberen Trichter, nicht nur ein Logo-Update.</div>
+					</div>
+				</div>
+
+				<div class="hu-faq-item">
+					<button class="hu-faq-item__q" type="button" aria-expanded="false">
+						<span>Bin ich gebunden?</span>
+						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
+					</button>
+					<div class="hu-faq-item__a">
+						<div class="hu-faq-item__a-inner">Nein. Es gibt keinen Knebelvertrag. Wir starten mit einer Analyse, dann entscheiden beide — Sie, ob es sich lohnt; ich, ob ich passe. Founding-Cohort-Plätze sind aktuell auf drei pro Jahr begrenzt.</div>
+					</div>
+				</div>
+
+				<div class="hu-faq-item">
+					<button class="hu-faq-item__q" type="button" aria-expanded="false">
+						<span>Arbeiten Sie auch mit bestehenden Websites?</span>
+						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
+					</button>
+					<div class="hu-faq-item__a">
+						<div class="hu-faq-item__a-inner">Ja, wenn die Substanz reicht. Manchmal ist ein Money-Page-Slot auf einer bestehenden Domain der schnellere Hebel als ein kompletter Relaunch. Das klären wir in der Analyse.</div>
+					</div>
+				</div>
+
+				<div class="hu-faq-item">
+					<button class="hu-faq-item__q" type="button" aria-expanded="false">
+						<span>Was, wenn ich keine eigene Marke aufbauen will?</span>
+						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
+					</button>
+					<div class="hu-faq-item__a">
+						<div class="hu-faq-item__a-inner">Dann ist ein eigener Anfrageweg nicht der richtige Hebel für Sie. Sagen Sie es mir früh — ich verkaufe Ihnen nichts, was Sie nicht brauchen.</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div style="text-align:center;margin-top:48px" class="hu-reveal">
+				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
+				   data-track-action="cta_home_faq_analysis" data-track-category="lead_gen">
+					Prüfen, ob es passt
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ═══════════════════════════════════════════════════
+	     10 / FINAL CTA
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section" id="cta" data-track-section="homepage_cta">
 		<div class="hu-container">
@@ -611,7 +733,7 @@ get_header();
 				<div class="hu-final-cta__avatar">
 					<img src="<?php echo esc_url( $portrait_url ); ?>" alt="Haşim Üner" width="72" height="72" loading="lazy">
 				</div>
-				<span class="hu-eyebrow" style="color:var(--accent)">09 / Nächster Schritt</span>
+				<span class="hu-eyebrow" style="color:var(--accent)">10 / Nächster Schritt</span>
 				<h2 class="hu-display">Starten Sie mit dem Marktcheck.</h2>
 				<p>Kein Pitch. Erst wird geklärt, ob ein eigener Anfrageweg für Ihren Markt überhaupt sinnvoll ist.</p>
 
