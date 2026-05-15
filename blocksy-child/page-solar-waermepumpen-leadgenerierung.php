@@ -117,6 +117,121 @@ $guarantee_points = [
 	],
 ];
 
+// ── Sticky In-Page Section Nav (CRO: orientation + jump to relevant block) ─────
+$section_nav = [
+	[ 'h' => '#problem',     'l' => 'Status quo' ],
+	[ 'h' => '#vergleich',   'l' => 'Vergleich' ],
+	[ 'h' => '#system-bild', 'l' => 'System' ],
+	[ 'h' => '#capex',       'l' => 'CAPEX vs OPEX' ],
+	[ 'h' => '#ergebnisse',  'l' => 'Referenz' ],
+	[ 'h' => '#fit',         'l' => 'Passt es?' ],
+	[ 'h' => '#faq',         'l' => 'FAQ' ],
+];
+
+// ── Markt-Standard vs Eigener Weg (Compare-Section) ───────────────────────────
+$compare_bad = [
+	[ 't' => 'Portal-Leads',      's' => 'Drei Wettbewerber bekommen dieselbe Anfrage. Sie bieten gegen den Preis.' ],
+	[ 't' => 'Klickberichte',     's' => 'Reportings über Impressionen — nicht über Projektwert.' ],
+	[ 't' => '5-Felder-Formular', 's' => 'Verliert Interessenten, bevor sie qualifiziert sind.' ],
+	[ 't' => 'Black-Box-Agentur', 's' => 'Niemand weiß, woher die nächste Anfrage kommt — oder warum sie ausbleibt.' ],
+];
+$compare_good = [
+	[ 't' => 'Eigene Anfragestrecke',    's' => 'Anfragen, die Ihrem Betrieb gehören — nicht dem Portal.' ],
+	[ 't' => 'Anfragequalität messbar',  's' => 'Region, Heizart, Dach, Projektwert — vor dem Anruf.' ],
+	[ 't' => '60-Sek-Vorqualifizierung', 's' => 'Daten erst, wenn der Fit klar ist. Kein 5-Felder-Hürdenlauf.' ],
+	[ 't' => 'Dokumentiertes System',    's' => 'Sie verstehen, warum es funktioniert. Code, Tracking, Daten bleiben bei Ihnen.' ],
+];
+
+// ── System-Diagramm: 4 Layer · was Kunden konkret bekommen ─────────────────────
+$system_layers = [
+	[
+		'n'      => '01',
+		'name'   => 'Fundament',
+		'status' => 'DSGVO · Frankfurt',
+		'cols'   => 2,
+		'items'  => [
+			[ 'i' => 'M3 12l9-9 9 9M5 10v10h14V10', 't' => 'WordPress hardcoded',  's' => 'Kein Page-Builder, kein Plugin-Stack.' ],
+			[ 'i' => 'M3 5h18v12H3zM3 21h18',       't' => 'Frankfurt-Server',     's' => 'DSGVO-konform · eigenes Hosting.' ],
+		],
+	],
+	[
+		'n'      => '02',
+		'name'   => 'Daten & Tracking',
+		'status' => 'Server-Side · CAPI',
+		'cols'   => 2,
+		'items'  => [
+			[ 'i' => 'M4 19V5m0 14h16m-12-7v7m4-12v12m4-9v9', 't' => 'Server-Side Tracking', 's' => 'GA4 · CAPI · eigener Container.' ],
+			[ 'i' => 'M10 14l4-4m-7-3a5 5 0 017-7l3 3m1 11a5 5 0 01-7 7l-3-3', 't' => 'Saubere Attribution', 's' => 'Welcher Kanal bringt zahlende Aufträge?' ],
+		],
+	],
+	[
+		'n'      => '03',
+		'name'   => 'Conversion-Pfad',
+		'status' => 'Vorqualifizierung · Score',
+		'cols'   => 3,
+		'items'  => [
+			[ 'i' => 'M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z', 't' => 'Money Page',           's' => 'Solar/WP-spezifisch · Proof.' ],
+			[ 'i' => 'M13 2L4 14h7v8l9-12h-7z',                              't' => '60-Sek-Qualifizierung', 's' => 'Region · Heizart · Projektwert.' ],
+			[ 'i' => 'M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14l-5-4.87 6.91-1.01z', 't' => 'Lead-Scoring', 's' => 'Grün, gelb, rot — vor dem Anruf.' ],
+		],
+	],
+	[
+		'n'      => '04',
+		'name'   => 'Skalierung',
+		'status' => 'Multi-Channel · messbar',
+		'cols'   => 3,
+		'items'  => [
+			[ 'i' => 'M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-5.2-5.2', 't' => 'Google Ads', 's' => 'Lokal · hoher Intent.' ],
+			[ 'i' => 'M7 2h10a2 2 0 012 2v16a2 2 0 01-2 2H7a2 2 0 01-2-2V4a2 2 0 012-2zm5 17v.01', 't' => 'Meta Ads', 's' => 'Facebook · Instagram · Retargeting.' ],
+			[ 'i' => 'M12 2a10 10 0 100 20 10 10 0 000-20zM2 12h20M12 2a15.3 15.3 0 010 20m0-20a15.3 15.3 0 000 20', 't' => 'SEO-Anteil', 's' => 'Basis-Optimierung · Indexierung.' ],
+		],
+	],
+];
+
+// ── CAPEX vs OPEX · Zahlen aus dem messaging-canon ─────────────────────────────
+$capex_timeframes = [
+	12 => [
+		'portal_monthly' => '~ 1.080 €',
+		'portal_leads'   => '~ 160',
+		'portal_total'   => '13.000 €',
+		'own_setup'      => '12.000 – 18.000 €',
+		'own_monthly'    => '~ 50 €',
+		'own_total'      => '12.600 – 18.600 €',
+	],
+	24 => [
+		'portal_monthly' => '~ 1.080 €',
+		'portal_leads'   => '~ 320',
+		'portal_total'   => '26.000 €',
+		'own_setup'      => '12.000 – 18.000 €',
+		'own_monthly'    => '~ 50 €',
+		'own_total'      => '13.200 – 19.200 €',
+	],
+	36 => [
+		'portal_monthly' => '~ 1.080 €',
+		'portal_leads'   => '~ 480',
+		'portal_total'   => '39.000 €',
+		'own_setup'      => '12.000 – 18.000 €',
+		'own_monthly'    => '~ 50 €',
+		'own_total'      => '14.160 – 20.160 €',
+	],
+];
+$capex_default = 24;
+
+// ── Fit-Check (passt / passt nicht) ────────────────────────────────────────────
+$fit_yes = [
+	[ 't' => 'Solar oder Wärmepumpe im DACH-Mittelstand', 's' => 'Mit eigenem Vertrieb, nicht reine Vermittlung.' ],
+	[ 't' => 'Klares Zielgebiet',                          's' => 'Region oder Bundesland definiert — kein „bundesweit, alles".' ],
+	[ 't' => 'Hohe Projektwerte',                          's' => 'B2C ab ~ 15 k €, B2B ab ~ 50 k € pro Projekt.' ],
+	[ 't' => 'Geschäftsführung entscheidet',               's' => 'Über Aufbau, Marke und Positionierung — kurze Wege.' ],
+	[ 't' => '24-Monate-Horizont',                         's' => 'Bereit, ein Asset aufzubauen statt nur Anfragen einzukaufen.' ],
+];
+$fit_no = [
+	[ 't' => 'Reines Vermittlungsgeschäft',                's' => 'Wer Leads weiterverkauft, braucht kein eigenes System.' ],
+	[ 't' => '„Nächste Woche brauchen wir Leads."',        's' => 'Tragfähige Pipelines wachsen über Monate, nicht Tage.' ],
+	[ 't' => 'Kein Vertrieb am Telefon',                   's' => 'Anfragen sterben, wenn niemand zurückruft.' ],
+	[ 't' => 'Keine Marke gewollt',                        's' => 'Eigener Anfrageweg lebt davon, dass Sie sichtbar werden.' ],
+];
+
 $faq_items = [
 	[
 		'question' => 'Was passiert nach dem Marktcheck?',
@@ -325,6 +440,33 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
+		     STICKY IN-PAGE SECTION NAV
+		     Wird nach dem Hero sticky · CRO: schnelle Orientierung,
+		     ohne den globalen Header zu ersetzen (SEO/Brand bleibt).
+		     ════════════════════════════════════════════════════════════ -->
+		<nav class="sol-section-nav" aria-label="Sektionen dieser Seite" data-track-section="section_nav">
+			<div class="sol-wrap">
+				<div class="sol-section-nav-inner">
+					<span class="sol-section-nav-label sol-mono" aria-hidden="true">Auf dieser Seite</span>
+					<ul class="sol-section-nav-list">
+						<?php foreach ( $section_nav as $n ) : ?>
+							<li><a href="<?php echo esc_attr( $n['h'] ); ?>" class="sol-mono"
+								data-track-action="section_nav_jump"
+								data-track-category="navigation"
+								data-track-section="section_nav"
+							><?php echo esc_html( $n['l'] ); ?></a></li>
+						<?php endforeach; ?>
+					</ul>
+					<a class="sol-section-nav-cta sol-mono" href="#marktcheck"
+						data-track-action="cta_solar_section_nav_to_marktcheck"
+						data-track-category="lead_funnel"
+						data-track-section="section_nav"
+					>Marktcheck →</a>
+				</div>
+			</div>
+		</nav>
+
+		<!-- ════════════════════════════════════════════════════════════
 		     PROBLEM
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="sol-section" id="problem" data-track-section="problem">
@@ -341,6 +483,117 @@ get_header();
 							<p class="sol-problem-card-s"><?php echo esc_html( $c['s'] ); ?></p>
 						</article>
 					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
+		     COMPARE — Markt-Standard vs Eigener Weg
+		     Konturiert die strategische Alternative zum Status quo.
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-section sol-compare-section" id="vergleich" data-track-section="compare">
+			<div class="sol-wrap">
+				<div class="sol-eyebrow">Markt vs Eigener Weg</div>
+				<h2 class="sol-display sol-compare-h">
+					Sie kaufen keine Leads mehr. Sie bauen <em>den Weg</em>, auf dem sie entstehen.
+				</h2>
+				<p class="sol-compare-sub">
+					Der Ausweg ist nicht ein besseres Portal. Es ist ein Anfrageweg, der Ihnen gehört — und sich messen lässt.
+				</p>
+
+				<div class="sol-compare">
+					<div class="sol-compare-col sol-compare-col--bad">
+						<div class="sol-compare-tag sol-mono" aria-hidden="true">Aktuell · kostet</div>
+						<div class="sol-compare-head">
+							<span class="sol-compare-icon sol-compare-icon--bad" aria-hidden="true">✕</span>
+							<span>Markt-Standard</span>
+						</div>
+						<?php foreach ( $compare_bad as $row ) : ?>
+							<div class="sol-compare-row">
+								<div class="sol-compare-row-t"><?php echo esc_html( $row['t'] ); ?></div>
+								<div class="sol-compare-row-d"><?php echo esc_html( $row['s'] ); ?></div>
+							</div>
+						<?php endforeach; ?>
+					</div>
+
+					<div class="sol-compare-divider" aria-hidden="true">
+						<span class="sol-compare-divider-icon"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					</div>
+
+					<div class="sol-compare-col sol-compare-col--good">
+						<div class="sol-compare-tag sol-mono sol-compare-tag--good" aria-hidden="true">Empfohlen · bleibt</div>
+						<div class="sol-compare-head">
+							<span class="sol-compare-icon sol-compare-icon--good" aria-hidden="true">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+							</span>
+							<span>Eigener Weg</span>
+						</div>
+						<?php foreach ( $compare_good as $row ) : ?>
+							<div class="sol-compare-row">
+								<div class="sol-compare-row-t"><?php echo esc_html( $row['t'] ); ?></div>
+								<div class="sol-compare-row-d"><?php echo esc_html( $row['s'] ); ?></div>
+							</div>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
+		     SYSTEM-DIAGRAMM — 4 Layer · was Kunden konkret bekommen
+		     "Ihr eigenes System — was Sie genau bekommen"
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-section sol-section--tinted sol-system-section" id="system-bild" data-track-section="system_diagram">
+			<div class="sol-wrap">
+				<div class="sol-system-head">
+					<span class="sol-system-badge sol-mono">
+						<span class="sol-system-badge-pulse" aria-hidden="true"></span>
+						Ihr eigenes System
+					</span>
+					<h2 class="sol-display sol-system-h">
+						Was Sie <em>genau</em> bekommen.
+					</h2>
+					<p class="sol-system-sub">
+						Kein Blackbox-Setup. Jede Komponente ist dokumentiert, gehört Ihnen und wird 1:1 übergeben — inklusive Zugang zu allen Accounts.
+					</p>
+				</div>
+
+				<div class="sol-system-canvas">
+					<?php foreach ( $system_layers as $layer_index => $layer ) : ?>
+						<article class="sol-system-layer<?php echo 3 === $layer['cols'] ? ' is-three' : ''; ?>" style="--sol-delay:<?php echo (float) ( $layer_index * 0.12 ); ?>s;">
+							<header class="sol-system-layer-head">
+								<div class="sol-system-layer-n sol-display"><?php echo esc_html( $layer['n'] ); ?></div>
+								<div class="sol-system-layer-name"><?php echo esc_html( $layer['name'] ); ?></div>
+								<div class="sol-system-layer-status sol-mono"><?php echo esc_html( $layer['status'] ); ?></div>
+							</header>
+							<div class="sol-system-grid">
+								<?php foreach ( $layer['items'] as $item ) : ?>
+									<div class="sol-system-comp">
+										<span class="sol-system-comp-icon" aria-hidden="true">
+											<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="<?php echo esc_attr( $item['i'] ); ?>"/></svg>
+										</span>
+										<div class="sol-system-comp-body">
+											<div class="sol-system-comp-t"><?php echo esc_html( $item['t'] ); ?></div>
+											<div class="sol-system-comp-s"><?php echo esc_html( $item['s'] ); ?></div>
+										</div>
+									</div>
+								<?php endforeach; ?>
+							</div>
+							<?php if ( $layer_index < count( $system_layers ) - 1 ) : ?>
+								<div class="sol-system-layer-connector" aria-hidden="true"></div>
+							<?php endif; ?>
+						</article>
+					<?php endforeach; ?>
+				</div>
+
+				<div class="sol-system-ownership" role="note">
+					<div class="sol-system-ownership-mark" aria-hidden="true">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+					</div>
+					<div class="sol-system-ownership-body">
+						<div class="sol-system-ownership-t">100 % Asset-Eigentum</div>
+						<div class="sol-system-ownership-s">Code, Tracking-Accounts, Server-Zugang, Datenhoheit — alles dokumentiert übergeben. Das System bleibt bei Ihnen, auch wenn die Zusammenarbeit endet.</div>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -372,6 +625,163 @@ get_header();
 							</ul>
 						</article>
 					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
+		     CAPEX vs OPEX — Bilanzielle Entscheidung
+		     Interaktiver Zeitraum-Picker (12 · 24 · 36 Monate).
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-section sol-capex-section" id="capex" data-track-section="capex_opex">
+			<div class="sol-wrap">
+				<div class="sol-capex-head">
+					<div class="sol-eyebrow">CAPEX statt OPEX</div>
+					<h2 class="sol-display sol-capex-h">
+						Mieten oder besitzen. Eine <em>Bilanz-Entscheidung</em>.
+					</h2>
+					<p class="sol-capex-sub">
+						Beide Wege kosten Geld. Nur einer hinterlässt am Ende ein Asset, das Ihnen gehört.
+					</p>
+				</div>
+
+				<div class="sol-capex-picker" role="tablist" aria-label="Zeitraum auswählen">
+					<span class="sol-capex-picker-label sol-mono">Zeitraum</span>
+					<div class="sol-capex-picker-buttons" data-sol-capex-buttons>
+						<?php foreach ( [ 12, 24, 36 ] as $tf ) : ?>
+							<button type="button"
+								class="sol-capex-picker-btn<?php echo $tf === $capex_default ? ' is-active' : ''; ?>"
+								data-sol-capex-tf="<?php echo esc_attr( (string) $tf ); ?>"
+								role="tab"
+								aria-selected="<?php echo $tf === $capex_default ? 'true' : 'false'; ?>"
+								data-track-action="capex_timeframe"
+								data-track-category="engagement"
+								data-track-section="capex_opex"
+							><?php echo esc_html( (string) $tf ); ?> Monate</button>
+						<?php endforeach; ?>
+					</div>
+				</div>
+
+				<div class="sol-capex-compare" data-sol-capex>
+					<!-- OPEX · Portal-Leads -->
+					<article class="sol-capex-col sol-capex-col--opex">
+						<header class="sol-capex-col-head">
+							<span class="sol-capex-col-badge sol-capex-col-badge--opex sol-mono">OPEX</span>
+							<h3 class="sol-capex-col-title">Portal-Leads mieten</h3>
+							<p class="sol-capex-col-sub">Monatlich zahlen, nichts besitzen.</p>
+						</header>
+						<div class="sol-capex-breakdown">
+							<div class="sol-capex-row">
+								<span class="sol-capex-row-l">Lead-Kosten (Ø 80 €/Stk)</span>
+								<span class="sol-capex-row-v" data-sol-capex-out="portal_monthly"><?php echo esc_html( $capex_timeframes[ $capex_default ]['portal_monthly'] ); ?> / Monat</span>
+							</div>
+							<div class="sol-capex-row">
+								<span class="sol-capex-row-l">Erwartete Leads</span>
+								<span class="sol-capex-row-v" data-sol-capex-out="portal_leads"><?php echo esc_html( $capex_timeframes[ $capex_default ]['portal_leads'] ); ?> Stück</span>
+							</div>
+							<div class="sol-capex-row sol-capex-row--issue">
+								<span class="sol-capex-row-l">Qualität</span>
+								<span class="sol-capex-row-v">~ 50 % gehen nicht ans Telefon</span>
+							</div>
+							<div class="sol-capex-row sol-capex-row--issue">
+								<span class="sol-capex-row-l">Exklusivität</span>
+								<span class="sol-capex-row-v">3–4 Wettbewerber parallel</span>
+							</div>
+						</div>
+						<div class="sol-capex-total">
+							<div class="sol-capex-total-l sol-mono">Gesamt (<span data-sol-capex-out="tf"><?php echo esc_html( (string) $capex_default ); ?></span> Monate)</div>
+							<div class="sol-capex-total-v sol-capex-total-v--opex sol-display" data-sol-capex-out="portal_total"><?php echo esc_html( $capex_timeframes[ $capex_default ]['portal_total'] ); ?></div>
+						</div>
+						<div class="sol-capex-result">
+							<div class="sol-capex-result-icon sol-capex-result-icon--bad" aria-hidden="true">✕</div>
+							<div class="sol-capex-result-body">
+								<strong>0 € Asset am Ende</strong>
+								<span>Budget aus = Anfragen aus.</span>
+							</div>
+						</div>
+						<ul class="sol-capex-list">
+							<li><span class="sol-capex-list-x" aria-hidden="true">✕</span>Portal behält die Daten</li>
+							<li><span class="sol-capex-list-x" aria-hidden="true">✕</span>Keine Kontrolle über Qualität</li>
+							<li><span class="sol-capex-list-x" aria-hidden="true">✕</span>Preiserhöhungen jederzeit möglich</li>
+							<li><span class="sol-capex-list-x" aria-hidden="true">✕</span>Vertrieb verbrennt Zeit mit Nicht-Käufern</li>
+						</ul>
+					</article>
+
+					<div class="sol-capex-divider" aria-hidden="true">
+						<span class="sol-capex-divider-line"></span>
+						<span class="sol-capex-divider-tag sol-mono">VS</span>
+						<span class="sol-capex-divider-line"></span>
+					</div>
+
+					<!-- CAPEX · Eigenes System -->
+					<article class="sol-capex-col sol-capex-col--capex">
+						<header class="sol-capex-col-head">
+							<span class="sol-capex-col-badge sol-capex-col-badge--capex sol-mono">CAPEX</span>
+							<h3 class="sol-capex-col-title">Eigenes System besitzen</h3>
+							<p class="sol-capex-col-sub">Einmalig investieren, langfristig skalieren.</p>
+						</header>
+						<div class="sol-capex-breakdown">
+							<div class="sol-capex-row">
+								<span class="sol-capex-row-l">Setup (einmalig)</span>
+								<span class="sol-capex-row-v" data-sol-capex-out="own_setup"><?php echo esc_html( $capex_timeframes[ $capex_default ]['own_setup'] ); ?></span>
+							</div>
+							<div class="sol-capex-row">
+								<span class="sol-capex-row-l">Hosting + Wartung</span>
+								<span class="sol-capex-row-v" data-sol-capex-out="own_monthly"><?php echo esc_html( $capex_timeframes[ $capex_default ]['own_monthly'] ); ?> / Monat</span>
+							</div>
+							<div class="sol-capex-row sol-capex-row--benefit">
+								<span class="sol-capex-row-l">Datenhoheit</span>
+								<span class="sol-capex-row-v">100 % bei Ihnen</span>
+							</div>
+							<div class="sol-capex-row sol-capex-row--benefit">
+								<span class="sol-capex-row-l">Vorqualifizierung</span>
+								<span class="sol-capex-row-v">Region · Projektwert · Fit-Score</span>
+							</div>
+						</div>
+						<div class="sol-capex-total">
+							<div class="sol-capex-total-l sol-mono">Gesamt (<span data-sol-capex-out="tf2"><?php echo esc_html( (string) $capex_default ); ?></span> Monate)</div>
+							<div class="sol-capex-total-v sol-capex-total-v--capex sol-display" data-sol-capex-out="own_total"><?php echo esc_html( $capex_timeframes[ $capex_default ]['own_total'] ); ?></div>
+						</div>
+						<div class="sol-capex-result sol-capex-result--good">
+							<div class="sol-capex-result-icon sol-capex-result-icon--good" aria-hidden="true">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M5 12l5 5L20 7"/></svg>
+							</div>
+							<div class="sol-capex-result-body">
+								<strong>Aktiviertes Asset</strong>
+								<span>Code, Tracking, Daten bleiben bei Ihnen.</span>
+							</div>
+						</div>
+						<ul class="sol-capex-list">
+							<li><span class="sol-capex-list-v" aria-hidden="true">✓</span>Exklusive Anfragen — nur für Sie</li>
+							<li><span class="sol-capex-list-v" aria-hidden="true">✓</span>Volle Transparenz über Herkunft</li>
+							<li><span class="sol-capex-list-v" aria-hidden="true">✓</span>Skaliert ohne Kostenexplosion</li>
+							<li><span class="sol-capex-list-v" aria-hidden="true">✓</span>System bleibt — auch ohne laufende Kosten</li>
+						</ul>
+					</article>
+				</div>
+
+				<aside class="sol-capex-summary">
+					<h3 class="sol-capex-summary-h">Bilanziell: CAPEX statt OPEX</h3>
+					<p>
+						Ein eigenes Anfrage-System ist eine <strong>aktivierbare Investition</strong> (CAPEX), kein wiederkehrender Kostenfaktor (OPEX). Portal-Leads sind Betriebsausgaben ohne Restwert.
+						Nach <span data-sol-capex-out="tf3"><?php echo esc_html( (string) $capex_default ); ?></span> Monaten haben Sie entweder
+						<strong><span data-sol-capex-out="portal_total2"><?php echo esc_html( $capex_timeframes[ $capex_default ]['portal_total'] ); ?></span> ausgegeben und besitzen nichts</strong> —
+						oder Sie haben <strong><span data-sol-capex-out="own_total2"><?php echo esc_html( $capex_timeframes[ $capex_default ]['own_total'] ); ?></span> investiert und ein skalierbares Asset</strong>
+						(Setup einmalig + <span data-sol-capex-out="tf4"><?php echo esc_html( (string) $capex_default ); ?></span> × Hosting/Wartung).
+					</p>
+				</aside>
+
+				<div class="sol-capex-cta">
+					<a class="sol-btn sol-btn-primary" href="#marktcheck"
+						data-track-action="cta_solar_capex_to_marktcheck"
+						data-track-category="lead_funnel"
+						data-track-section="capex_opex"
+						data-track-funnel-stage="quiz_open"
+					>
+						<span>Marktcheck starten · 60 Sek</span>
+						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					</a>
+					<div class="sol-capex-cta-micro sol-mono">TCO-Rechnung · 1:1 verrechenbar bei Umsetzung</div>
 				</div>
 			</div>
 		</section>
@@ -483,6 +893,69 @@ get_header();
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
+		     FIT — passt / passt nicht (ehrliche Vorauswahl)
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-section sol-section--tinted sol-fit-section" id="fit" data-track-section="fit_check">
+			<div class="sol-wrap">
+				<div class="sol-fit-head">
+					<div class="sol-eyebrow">Wann es sich lohnt</div>
+					<h2 class="sol-display sol-fit-h">
+						Ehrliche Vorauswahl, <em>bevor wir reden</em>.
+					</h2>
+					<p class="sol-fit-sub">
+						Lieber jetzt klären, ob es passt — als später ein Setup zu bauen, das ins Leere läuft.
+					</p>
+				</div>
+
+				<div class="sol-fit-grid">
+					<article class="sol-fit-col sol-fit-col--yes">
+						<header class="sol-fit-col-head">
+							<span class="sol-fit-col-badge sol-fit-col-badge--yes" aria-hidden="true">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M5 12l5 5L20 7"/></svg>
+							</span>
+							<span>Passt, wenn …</span>
+						</header>
+						<ul class="sol-fit-list">
+							<?php foreach ( $fit_yes as $row ) : ?>
+								<li>
+									<div class="sol-fit-list-t"><?php echo esc_html( $row['t'] ); ?></div>
+									<div class="sol-fit-list-d"><?php echo esc_html( $row['s'] ); ?></div>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</article>
+					<article class="sol-fit-col sol-fit-col--no">
+						<header class="sol-fit-col-head">
+							<span class="sol-fit-col-badge sol-fit-col-badge--no" aria-hidden="true">✕</span>
+							<span>Passt nicht, wenn …</span>
+						</header>
+						<ul class="sol-fit-list">
+							<?php foreach ( $fit_no as $row ) : ?>
+								<li>
+									<div class="sol-fit-list-t"><?php echo esc_html( $row['t'] ); ?></div>
+									<div class="sol-fit-list-d"><?php echo esc_html( $row['s'] ); ?></div>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</article>
+				</div>
+
+				<div class="sol-fit-cta">
+					<a class="sol-btn sol-btn-primary" href="#marktcheck"
+						data-track-action="cta_solar_fit_to_marktcheck"
+						data-track-category="lead_funnel"
+						data-track-section="fit_check"
+						data-track-funnel-stage="quiz_open"
+					>
+						<span>Prüfen, ob es passt</span>
+						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					</a>
+					<div class="sol-fit-cta-micro sol-mono">Erst Marktcheck · dann Entscheidung · keine Verkaufspräsentation</div>
 				</div>
 			</div>
 		</section>

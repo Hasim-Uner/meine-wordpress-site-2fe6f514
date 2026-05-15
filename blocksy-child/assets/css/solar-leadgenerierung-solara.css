@@ -1527,3 +1527,882 @@ body.page-template-page-solar-waermepumpen-leadgenerierung-php .entry-header,
 body.page-template-page-solar-waermepumpen-leadgenerierung-php .ct-page-title {
   display: none !important;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   CRO ADD-ON (2026-05-15) — Design-Import aus Solar Leadgen CRO
+   Neue Sektionen: Section-Nav · Compare · System-Diagramm ·
+   CAPEX vs OPEX · Fit-Check.
+   Stilistisch eingebettet in das warm-creme SOLARA-Vokabular
+   (kein dark-mode-Bruch zum Bestand).
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── In-Page Section Nav · sticky unter dem globalen Header ───
+   Position-Top wird durch sol-hero.js gesetzt (CSS-Var --sol-nav-top),
+   sodass der Blocksy-Sticky-Header nicht den In-Page-Nav verdeckt.
+   Fallback ohne JS: top:0. */
+.solara-landing .sol-section-nav {
+  position: sticky;
+  top: var(--sol-nav-top, 0px);
+  z-index: 28;
+  background: oklch(0.97 0.008 80 / 0.92);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid var(--sol-line);
+  font-size: 12px;
+}
+.solara-landing .sol-section-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+}
+.solara-landing .sol-section-nav-label {
+  color: var(--sol-fg-dim);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.solara-landing .sol-section-nav-list {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+  min-width: 0;
+}
+.solara-landing .sol-section-nav-list::-webkit-scrollbar { display: none; }
+.solara-landing .sol-section-nav-list a {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: var(--sol-fg-mute);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  transition: color var(--sol-t-fast), background var(--sol-t-fast);
+}
+.solara-landing .sol-section-nav-list a:hover {
+  color: var(--sol-accent);
+  background: var(--sol-accent-tint);
+}
+.solara-landing .sol-section-nav-cta {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--sol-accent);
+  color: var(--sol-accent-ink);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  transition: background var(--sol-t-fast), transform var(--sol-t-fast);
+}
+.solara-landing .sol-section-nav-cta:hover {
+  background: var(--sol-accent-2);
+  transform: translateY(-1px);
+}
+@media (max-width: 720px) {
+  .solara-landing .sol-section-nav-label { display: none; }
+}
+
+/* ── Compare · Markt-Standard vs Eigener Weg ────────────────── */
+.solara-landing .sol-compare-h {
+  font-size: clamp(34px, 4.5vw, 64px);
+  margin: 12px 0 14px;
+  max-width: 22ch;
+}
+.solara-landing .sol-compare-sub {
+  margin: 0 0 44px;
+  color: var(--sol-fg-mute);
+  max-width: 60ch;
+  font-size: clamp(15px, 1.1vw, 18px);
+}
+.solara-landing .sol-compare {
+  display: grid;
+  grid-template-columns: 1fr 64px 1fr;
+  align-items: stretch;
+  border: 1px solid var(--sol-line);
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+}
+.solara-landing .sol-compare-col {
+  padding: 36px 32px;
+  position: relative;
+}
+.solara-landing .sol-compare-col--bad {
+  background:
+    repeating-linear-gradient(135deg, transparent 0 18px, rgba(199,112,95,.03) 18px 19px),
+    linear-gradient(180deg, rgba(199,112,95,.05), transparent 60%);
+}
+.solara-landing .sol-compare-col--good {
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, var(--sol-accent-tint-2), transparent 70%),
+    linear-gradient(180deg, var(--sol-accent-tint), transparent 60%);
+  box-shadow: inset 0 0 0 1px var(--sol-accent-tint-2);
+}
+.solara-landing .sol-compare-tag {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: #c25a48;
+  opacity: 0.7;
+}
+.solara-landing .sol-compare-tag--good {
+  color: var(--sol-accent);
+  opacity: 1;
+  font-weight: 600;
+}
+.solara-landing .sol-compare-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--sol-fg);
+  margin-bottom: 26px;
+  font-family: var(--sol-font-display);
+}
+.solara-landing .sol-compare-icon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.solara-landing .sol-compare-icon--bad {
+  background: rgba(199,112,95,.18);
+  color: #c25a48;
+}
+.solara-landing .sol-compare-icon--good {
+  background: var(--sol-accent);
+  color: var(--sol-accent-ink);
+  box-shadow: 0 0 0 4px var(--sol-accent-tint);
+}
+.solara-landing .sol-compare-icon--good svg { width: 16px; height: 16px; }
+.solara-landing .sol-compare-row {
+  padding: 16px 0;
+  border-top: 1px solid var(--sol-line);
+}
+.solara-landing .sol-compare-row:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+.solara-landing .sol-compare-row-t {
+  font-weight: 600;
+  color: var(--sol-fg);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.solara-landing .sol-compare-row-t::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.solara-landing .sol-compare-col--bad .sol-compare-row-t::before { background: #c25a48; opacity: 0.7; }
+.solara-landing .sol-compare-col--good .sol-compare-row-t::before {
+  background: var(--sol-accent);
+  box-shadow: 0 0 0 3px var(--sol-accent-tint);
+}
+.solara-landing .sol-compare-row-d {
+  font-size: 14px;
+  color: var(--sol-fg-mute);
+  margin-top: 6px;
+  line-height: 1.55;
+  padding-left: 17px;
+}
+.solara-landing .sol-compare-divider {
+  background: var(--sol-bg-2);
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+.solara-landing .sol-compare-divider::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--sol-accent), transparent);
+  opacity: 0.5;
+}
+.solara-landing .sol-compare-divider-icon {
+  position: relative;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--sol-bg-2);
+  display: grid;
+  place-items: center;
+  color: var(--sol-accent);
+  border: 1px solid var(--sol-line);
+}
+.solara-landing .sol-compare-divider-icon svg { width: 16px; height: 16px; }
+@media (max-width: 880px) {
+  .solara-landing .sol-compare {
+    grid-template-columns: 1fr;
+  }
+  .solara-landing .sol-compare-col--bad {
+    border-bottom: 1px solid var(--sol-line);
+  }
+  .solara-landing .sol-compare-divider { display: none; }
+}
+
+/* ── System-Diagramm: 4 Layer (Fundament → Skalierung) ──────── */
+.solara-landing .sol-system-section { padding-top: clamp(80px, 11vw, 160px); }
+.solara-landing .sol-system-head {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 56px;
+}
+.solara-landing .sol-system-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--sol-accent-tint);
+  border: 1px solid var(--sol-accent-tint-2);
+  color: var(--sol-accent);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+.solara-landing .sol-system-badge-pulse {
+  width: 8px;
+  height: 8px;
+  background: var(--sol-accent);
+  border-radius: 50%;
+  animation: sol-pulse-dot 2s ease-in-out infinite;
+}
+.solara-landing .sol-system-h {
+  font-size: clamp(34px, 4.5vw, 58px);
+  margin: 18px 0 14px;
+}
+.solara-landing .sol-system-sub {
+  color: var(--sol-fg-mute);
+  font-size: clamp(15px, 1.1vw, 18px);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.solara-landing .sol-system-canvas {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.solara-landing .sol-system-layer {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--sol-line);
+  border-radius: 18px;
+  padding: 30px 32px;
+  transition: border-color var(--sol-t-med), box-shadow var(--sol-t-med), transform var(--sol-t-med);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: sol-layer-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--sol-delay, 0s);
+}
+@keyframes sol-layer-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+.solara-landing .sol-system-layer:hover {
+  border-color: var(--sol-accent-tint-2);
+  box-shadow: 0 20px 50px -30px rgba(180,106,60,.35);
+  transform: translateX(6px);
+}
+.solara-landing .sol-system-layer-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.solara-landing .sol-system-layer-n {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, var(--sol-accent), var(--sol-accent-2));
+  color: var(--sol-accent-ink);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  font-weight: 700;
+  flex-shrink: 0;
+  box-shadow: 0 6px 18px -8px rgba(180,106,60,.55);
+}
+.solara-landing .sol-system-layer-name {
+  flex: 1;
+  font-family: var(--sol-font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--sol-fg);
+  letter-spacing: -0.01em;
+}
+.solara-landing .sol-system-layer-status {
+  padding: 5px 11px;
+  border: 1px solid var(--sol-line);
+  border-radius: 6px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--sol-fg-dim);
+}
+.solara-landing .sol-system-layer:hover .sol-system-layer-status {
+  color: var(--sol-accent);
+  border-color: var(--sol-accent-tint-2);
+  background: var(--sol-accent-tint);
+}
+.solara-landing .sol-system-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.solara-landing .sol-system-layer.is-three .sol-system-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+.solara-landing .sol-system-comp {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px;
+  background: var(--sol-bg-2);
+  border: 1px solid var(--sol-line);
+  border-radius: 12px;
+  transition: background var(--sol-t-fast), border-color var(--sol-t-fast), transform var(--sol-t-fast);
+}
+.solara-landing .sol-system-comp:hover {
+  background: var(--sol-accent-tint);
+  border-color: var(--sol-accent-tint-2);
+  transform: translateY(-2px);
+}
+.solara-landing .sol-system-comp-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid var(--sol-line);
+  display: grid;
+  place-items: center;
+  color: var(--sol-accent);
+  flex-shrink: 0;
+}
+.solara-landing .sol-system-comp-icon svg { width: 18px; height: 18px; }
+.solara-landing .sol-system-comp-body { flex: 1; min-width: 0; }
+.solara-landing .sol-system-comp-t {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--sol-fg);
+  line-height: 1.3;
+}
+.solara-landing .sol-system-comp-s {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--sol-fg-mute);
+  line-height: 1.5;
+}
+.solara-landing .sol-system-layer-connector {
+  position: absolute;
+  left: 50%;
+  bottom: -22px;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 22px;
+  background: linear-gradient(180deg, var(--sol-accent), transparent);
+  border-radius: 1px;
+  pointer-events: none;
+}
+.solara-landing .sol-system-ownership {
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+  max-width: 980px;
+  margin: 36px auto 0;
+  padding: 26px 30px;
+  background: linear-gradient(135deg, var(--sol-accent-tint-2), var(--sol-accent-tint));
+  border: 1px solid var(--sol-accent-tint-2);
+  border-radius: 16px;
+}
+.solara-landing .sol-system-ownership-mark {
+  width: 50px;
+  height: 50px;
+  background: var(--sol-accent);
+  color: var(--sol-accent-ink);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 10px 24px -10px rgba(180,106,60,.5);
+}
+.solara-landing .sol-system-ownership-mark svg { width: 22px; height: 22px; }
+.solara-landing .sol-system-ownership-t {
+  font-family: var(--sol-font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--sol-fg);
+  margin-bottom: 6px;
+}
+.solara-landing .sol-system-ownership-s {
+  font-size: 14px;
+  color: var(--sol-fg-mute);
+  line-height: 1.6;
+}
+@media (max-width: 720px) {
+  .solara-landing .sol-system-grid,
+  .solara-landing .sol-system-layer.is-three .sol-system-grid {
+    grid-template-columns: 1fr;
+  }
+  .solara-landing .sol-system-layer { padding: 22px; }
+  .solara-landing .sol-system-ownership { padding: 22px; flex-direction: column; gap: 14px; }
+}
+
+/* ── CAPEX vs OPEX · Bilanz-Vergleich mit Timeframe-Picker ──── */
+.solara-landing .sol-capex-head {
+  max-width: 760px;
+  margin: 0 0 40px;
+}
+.solara-landing .sol-capex-h {
+  font-size: clamp(34px, 4.5vw, 64px);
+  margin: 14px 0 14px;
+  max-width: 18ch;
+}
+.solara-landing .sol-capex-sub {
+  margin: 0;
+  color: var(--sol-fg-mute);
+  font-size: clamp(15px, 1.1vw, 18px);
+  max-width: 60ch;
+}
+.solara-landing .sol-capex-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+.solara-landing .sol-capex-picker-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--sol-fg-dim);
+}
+.solara-landing .sol-capex-picker-buttons {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--sol-bg-3);
+  border: 1px solid var(--sol-line);
+  border-radius: 12px;
+}
+.solara-landing .sol-capex-picker-btn {
+  appearance: none;
+  border: 1px solid transparent;
+  padding: 10px 18px;
+  border-radius: 9px;
+  background: transparent;
+  font-family: var(--sol-font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sol-fg);
+  cursor: pointer;
+  transition: background var(--sol-t-fast), color var(--sol-t-fast), box-shadow var(--sol-t-fast);
+}
+.solara-landing .sol-capex-picker-btn:hover { background: var(--sol-bg-2); }
+.solara-landing .sol-capex-picker-btn.is-active {
+  background: #fff;
+  border-color: var(--sol-accent-tint-2);
+  color: var(--sol-accent);
+  box-shadow: 0 2px 8px -2px rgba(0,0,0,.08);
+}
+
+.solara-landing .sol-capex-compare {
+  display: grid;
+  grid-template-columns: 1fr 56px 1fr;
+  gap: 0;
+  align-items: stretch;
+  margin-bottom: 36px;
+}
+.solara-landing .sol-capex-col {
+  background: #fff;
+  border-radius: 20px;
+  padding: 36px 32px;
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.solara-landing .sol-capex-col--opex {
+  border-color: rgba(199,112,95,.45);
+  background: linear-gradient(180deg, rgba(199,112,95,.05), #fff);
+}
+.solara-landing .sol-capex-col--capex {
+  border-color: var(--sol-accent-tint-2);
+  background: linear-gradient(180deg, var(--sol-accent-tint), #fff);
+  box-shadow: 0 18px 50px -30px rgba(180,106,60,.4);
+}
+.solara-landing .sol-capex-col-head { margin-bottom: 4px; }
+.solara-landing .sol-capex-col-badge {
+  display: inline-block;
+  padding: 5px 13px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.solara-landing .sol-capex-col-badge--opex {
+  background: rgba(199,112,95,.15);
+  color: #c25a48;
+}
+.solara-landing .sol-capex-col-badge--capex {
+  background: var(--sol-accent-tint-2);
+  color: var(--sol-accent);
+}
+.solara-landing .sol-capex-col-title {
+  font-family: var(--sol-font-display);
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+  color: var(--sol-fg);
+}
+.solara-landing .sol-capex-col-sub {
+  color: var(--sol-fg-mute);
+  font-size: 15px;
+  margin: 0;
+}
+.solara-landing .sol-capex-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--sol-line);
+}
+.solara-landing .sol-capex-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 14px;
+  background: var(--sol-bg-2);
+  border: 1px solid var(--sol-line);
+  border-radius: 10px;
+}
+.solara-landing .sol-capex-row--issue {
+  background: rgba(199,112,95,.06);
+  border-color: rgba(199,112,95,.22);
+}
+.solara-landing .sol-capex-row--benefit {
+  background: var(--sol-accent-tint);
+  border-color: var(--sol-accent-tint-2);
+}
+.solara-landing .sol-capex-row-l {
+  font-size: 14px;
+  color: var(--sol-fg-mute);
+  flex: 1;
+}
+.solara-landing .sol-capex-row-v {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--sol-fg);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.solara-landing .sol-capex-total {
+  background: var(--sol-fg);
+  color: #fff;
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.solara-landing .sol-capex-total-l {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: oklch(0.78 0.014 60);
+  margin-bottom: 6px;
+}
+.solara-landing .sol-capex-total-v {
+  font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.solara-landing .sol-capex-total-v--opex { color: #e6a394; }
+.solara-landing .sol-capex-total-v--capex { color: var(--sol-accent); }
+.solara-landing .sol-capex-result {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: rgba(199,112,95,.08);
+  border: 1px solid rgba(199,112,95,.25);
+}
+.solara-landing .sol-capex-result--good {
+  background: var(--sol-accent-tint);
+  border-color: var(--sol-accent-tint-2);
+}
+.solara-landing .sol-capex-result-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.solara-landing .sol-capex-result-icon--bad {
+  background: rgba(199,112,95,.18);
+  color: #c25a48;
+}
+.solara-landing .sol-capex-result-icon--good {
+  background: var(--sol-accent);
+  color: var(--sol-accent-ink);
+}
+.solara-landing .sol-capex-result-icon--good svg { width: 18px; height: 18px; }
+.solara-landing .sol-capex-result-body strong {
+  display: block;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--sol-fg);
+  margin-bottom: 2px;
+}
+.solara-landing .sol-capex-result-body span {
+  font-size: 13px;
+  color: var(--sol-fg-mute);
+}
+.solara-landing .sol-capex-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.solara-landing .sol-capex-list li {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--sol-fg);
+  line-height: 1.55;
+}
+.solara-landing .sol-capex-list-x,
+.solara-landing .sol-capex-list-v {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.solara-landing .sol-capex-list-x {
+  background: rgba(199,112,95,.18);
+  color: #c25a48;
+}
+.solara-landing .sol-capex-list-v {
+  background: var(--sol-accent-tint-2);
+  color: var(--sol-accent);
+}
+
+.solara-landing .sol-capex-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.solara-landing .sol-capex-divider-line {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(180deg, transparent, var(--sol-line-2), transparent);
+}
+.solara-landing .sol-capex-divider-tag {
+  padding: 8px 14px;
+  background: var(--sol-fg);
+  color: var(--sol-accent);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.solara-landing .sol-capex-summary {
+  background: var(--sol-fg);
+  color: oklch(0.92 0.014 60);
+  border-radius: 18px;
+  padding: 32px 36px;
+  margin-bottom: 32px;
+}
+.solara-landing .sol-capex-summary-h {
+  font-family: var(--sol-font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--sol-accent);
+  margin: 0 0 12px;
+}
+.solara-landing .sol-capex-summary p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 72ch;
+}
+.solara-landing .sol-capex-summary strong {
+  color: #fff;
+  font-weight: 600;
+}
+.solara-landing .sol-capex-cta {
+  text-align: center;
+}
+.solara-landing .sol-capex-cta-micro {
+  margin-top: 14px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--sol-fg-dim);
+}
+@media (max-width: 920px) {
+  .solara-landing .sol-capex-compare {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .solara-landing .sol-capex-divider {
+    flex-direction: row;
+    width: 100%;
+  }
+  .solara-landing .sol-capex-divider-line {
+    width: auto;
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--sol-line-2), transparent);
+  }
+}
+@media (max-width: 560px) {
+  .solara-landing .sol-capex-col { padding: 26px 22px; }
+  .solara-landing .sol-capex-summary { padding: 24px 22px; }
+}
+
+/* ── Fit-Check (passt / passt nicht) ────────────────────────── */
+.solara-landing .sol-fit-section { padding-top: clamp(80px, 11vw, 160px); }
+.solara-landing .sol-fit-head {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 48px;
+}
+.solara-landing .sol-fit-head .sol-eyebrow { justify-content: center; }
+.solara-landing .sol-fit-h {
+  font-size: clamp(34px, 4.5vw, 58px);
+  margin: 16px 0 12px;
+}
+.solara-landing .sol-fit-sub {
+  color: var(--sol-fg-mute);
+  font-size: clamp(15px, 1.1vw, 18px);
+  margin: 0;
+}
+.solara-landing .sol-fit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+.solara-landing .sol-fit-col {
+  background: #fff;
+  border: 1px solid var(--sol-line);
+  border-radius: 16px;
+  padding: 30px;
+}
+.solara-landing .sol-fit-col--yes { border-top: 3px solid var(--sol-accent); }
+.solara-landing .sol-fit-col--no  { border-top: 3px solid #c25a48; background: var(--sol-bg-warm); }
+.solara-landing .sol-fit-col-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--sol-font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--sol-fg);
+  margin-bottom: 22px;
+}
+.solara-landing .sol-fit-col-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+.solara-landing .sol-fit-col-badge--yes {
+  background: var(--sol-accent);
+  color: var(--sol-accent-ink);
+}
+.solara-landing .sol-fit-col-badge--yes svg { width: 16px; height: 16px; }
+.solara-landing .sol-fit-col-badge--no {
+  background: #c25a48;
+  color: #fff;
+}
+.solara-landing .sol-fit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.solara-landing .sol-fit-list li {
+  padding: 14px 0;
+  border-top: 1px solid var(--sol-line);
+}
+.solara-landing .sol-fit-list li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.solara-landing .sol-fit-list-t {
+  font-weight: 600;
+  color: var(--sol-fg);
+  font-size: 15px;
+}
+.solara-landing .sol-fit-list-d {
+  margin-top: 4px;
+  color: var(--sol-fg-mute);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.solara-landing .sol-fit-cta {
+  text-align: center;
+  margin-top: 40px;
+}
+.solara-landing .sol-fit-cta-micro {
+  margin-top: 14px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--sol-fg-dim);
+}
+@media (max-width: 880px) {
+  .solara-landing .sol-fit-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Reduced-Motion · neue Sektionen ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .solara-landing .sol-system-layer {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+  .solara-landing .sol-system-badge-pulse { animation: none !important; }
+}
