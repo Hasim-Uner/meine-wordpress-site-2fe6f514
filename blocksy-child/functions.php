@@ -26,12 +26,12 @@ $modules = [
 	'components/founding-cohort-block.php', // Wiederverwendbarer Founding-Cohort-Block
 	'mail.php',           // Zentraler Brevo-Mail-Router für Transaktionsmails
 	'crm.php',            // Gemeinsame CRM-Grundlage für Kontakte, Blog-Abos und Projektanfragen
-	'wgos-assets.php',    // CPT + Helper für WGOS Asset-Spokes
-	'wgos-asset-registry.php', // Versionierte WGOS Asset-Registry + Sync
-	'glossary.php',       // Glossar-Hub + CPT für definitorische Begriffe
-	'glossary-registry.php', // Versionierte Glossar-Registry + Sync
-	'glossary-autolink.php', // Auto-Linking: Glossar-Begriffe in Blog-Posts verlinken
-	'wgos-cluster-pages.php', // Versionierte Cluster-/Pillar-Pages und Blog-Asset-Bridges
+	'wgos/wgos-assets.php',    // CPT + Helper für WGOS Asset-Spokes
+	'wgos/wgos-asset-registry.php', // Versionierte WGOS Asset-Registry + Sync
+	'glossary/glossary.php',       // Glossar-Hub + CPT für definitorische Begriffe
+	'glossary/glossary-registry.php', // Versionierte Glossar-Registry + Sync
+	'glossary/glossary-autolink.php', // Auto-Linking: Glossar-Begriffe in Blog-Posts verlinken
+	'wgos/wgos-cluster-pages.php', // Versionierte Cluster-/Pillar-Pages und Blog-Asset-Bridges
 	'acf.php',            // ACF Feldgruppen-Registrierung (SEO, KPI, Comparison)
 	'cja-shortcode.php',  // Instant-Results System-Diagnose als Shortcode
 	'audit-page.php',     // Audit-Shell-Fallback für die Audit-Landing-Page
@@ -44,7 +44,7 @@ $modules = [
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails
 	'robots-txt.php',     // Dynamische /robots.txt-Route für Search- und KI-Crawler
 	'llms-txt.php',       // Dynamische /llms.txt-Route für KI-Agenten und Entitätskontext
-	'seo-cockpit.php',    // Search Console basiertes SEO-Cockpit mit optionaler Koko-Erkennung
+	'seo-cockpit/seo-cockpit.php',    // Search Console basiertes SEO-Cockpit mit optionaler Koko-Erkennung
 	'enqueue.php',        // CSS/JS Asset-Management
 	'seo-meta.php',       // OG Tags, Canonical, Indexierungssteuerung
 	'org-schema.php',     // JSON-LD Structured Data
