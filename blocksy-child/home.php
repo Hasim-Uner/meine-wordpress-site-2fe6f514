@@ -14,7 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$audit_url = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+$audit_url    = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+$energy_url   = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
+$e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
+$solar_term   = get_category_by_slug( 'solar-waermepumpen-anfrage-systeme' );
+$solar_url    = $solar_term instanceof WP_Term ? get_category_link( $solar_term->term_id ) : $energy_url;
 
 get_header();
 ?>
@@ -24,12 +29,38 @@ get_header();
 	<section class="blog-archive-intro" aria-labelledby="blog-archive-heading">
 		<div class="blog-archive-intro__inner">
 			<h1 id="blog-archive-heading" class="blog-archive-intro__headline">
-				Was B2B-Websites wirklich bremst —
-				<span class="blog-archive-intro__headline-accent">und wie man es löst.</span>
+				Insights für eigene Anfrage-Systeme
+				<span class="blog-archive-intro__headline-accent">im Solar- und Wärmepumpenmarkt.</span>
 			</h1>
 			<p class="blog-archive-intro__sub">
-				Analysen zu SEO, Conversion und Tracking für WordPress-Websites.
+				Analysen zu SEO, Tracking, Angebotsseiten und Conversion — damit aus Traffic ein eigener Anfragekanal statt Portal-Abhängigkeit wird.
 			</p>
+			<div class="blog-archive-intro__actions" aria-label="Empfohlene Einstiege">
+				<a
+					href="<?php echo esc_url( $solar_url ); ?>"
+					class="blog-archive-intro__link blog-archive-intro__link--primary"
+					data-track-action="cta_blog_intro_solar_category"
+					data-track-category="navigation"
+				>
+					Solar-Insights lesen
+				</a>
+				<a
+					href="<?php echo esc_url( $energy_url ); ?>"
+					class="blog-archive-intro__link"
+					data-track-action="cta_blog_intro_money_page"
+					data-track-category="navigation"
+				>
+					Anfrage-Systeme ansehen
+				</a>
+				<a
+					href="<?php echo esc_url( $e3_url ); ?>"
+					class="blog-archive-intro__link"
+					data-track-action="cta_blog_intro_e3_case"
+					data-track-category="trust"
+				>
+					E3-Case lesen
+				</a>
+			</div>
 		</div>
 	</section>
 

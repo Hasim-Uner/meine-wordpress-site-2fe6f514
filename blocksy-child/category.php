@@ -17,9 +17,38 @@ $cat_name         = $current_category->name;
 $cat_description  = category_description();
 $cat_count        = $current_category->count;
 $primary_urls     = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+$energy_url       = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
+$agentur_url      = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 
 // --- Kategorie-Mapping: Kategorie → passende Zielseite + CTA ---
 $pillar_map = [
+    'solar-waermepumpen-anfrage-systeme' => [
+        'icon'        => '01',
+        'title'       => 'Solar & Wärmepumpen Anfrage-Systeme',
+        'badge'       => 'Solar & Wärmepumpen',
+        'subtitle'    => 'Beiträge zur Entwicklung eigener Anfrage-Infrastrukturen: Owned-Leads-Systeme, Angebotsdesign, Content- und Funnel-Strategien, Tracking und Conversion-Optimierung.',
+        'cta_label'   => 'Marktcheck starten',
+        'cta_url'     => $audit_url,
+        'cta_text'    => 'Der Marktcheck zeigt, ob Ihre Website heute an Angebot, Datenlage oder Anfrageführung Nachfrage verliert.',
+    ],
+    'sichtbarkeit-daten-conversion' => [
+        'icon'        => '02',
+        'title'       => 'Sichtbarkeit, Daten & Conversion',
+        'badge'       => 'SEO, Tracking & Conversion',
+        'subtitle'    => 'Beiträge zu SEO, Tracking, Datenanalyse und Conversion-Optimierung — damit WordPress-Seiten sichtbar werden, belastbare Entscheidungen ermöglichen und mehr Anfragen liefern.',
+        'cta_label'   => 'Anfrage-System ansehen',
+        'cta_url'     => $energy_url,
+        'cta_text'    => 'Die Branchen-Seite zeigt, wie Sichtbarkeit, Daten und Conversion in ein eigenes Anfrage-System für Solar- und Wärmepumpen-Anbieter übergehen.',
+    ],
+    'wordpress-growth-agentur' => [
+        'icon'        => '03',
+        'title'       => 'WordPress-Growth & Agentur',
+        'badge'       => 'WordPress-Growth',
+        'subtitle'    => 'Artikel zu WordPress-Agentur-Leistungen, Growth-Strategien und technischer Umsetzung: Websites, SEO, Performance, Tracking, Wartung und Conversion-Optimierung für B2B-Unternehmen.',
+        'cta_label'   => 'WordPress Agentur ansehen',
+        'cta_url'     => $agentur_url,
+        'cta_text'    => 'Die Agentur-Seite ordnet WordPress, SEO, Wartung, Tracking und Conversion als verbundenes System ein.',
+    ],
     'strategie' => [
         'icon'        => '🧭',
         'badge'       => 'Strategie & Growth',
@@ -226,7 +255,7 @@ if ($featured_query->have_posts()) {
                     
                     <!-- Service CTA -->
                     <div class="pillar-sidebar__cta">
-                        <span class="pillar-sidebar__cta-icon"><?php echo $pillar['icon']; // raw-ok -- SVG icon markup ?></span>
+                        <span class="pillar-sidebar__cta-icon"><?php echo esc_html( $pillar['icon'] ); ?></span>
                         <h3 class="pillar-sidebar__cta-title"><?php echo esc_html($pillar['cta_label']); ?></h3>
                         <p class="pillar-sidebar__cta-text"><?php echo esc_html($pillar['cta_text']); ?></p>
                         <a href="<?php echo esc_url($pillar['cta_url']); ?>" class="nx-btn nx-btn--primary nx-btn--full nx-btn--sm">
@@ -246,7 +275,7 @@ if ($featured_query->have_posts()) {
                             ?>
                                 <li>
                                     <a href="<?php echo esc_url(get_term_link($term)); ?>" class="pillar-sidebar__nav-link">
-                                        <span class="pillar-sidebar__nav-icon"><?php echo $data['icon']; // raw-ok -- SVG icon markup ?></span>
+                                        <span class="pillar-sidebar__nav-icon"><?php echo esc_html( $data['icon'] ); ?></span>
                                         <span class="pillar-sidebar__nav-name"><?php echo esc_html($data['badge']); ?></span>
                                         <span class="pillar-sidebar__nav-count"><?php echo (int) $term->count; ?></span>
                                     </a>

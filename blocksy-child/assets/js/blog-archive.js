@@ -14,8 +14,12 @@ document.addEventListener('DOMContentLoaded', function() {
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
             // Aktiven Status der Buttons verwalten
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
+            filterButtons.forEach(btn => {
+                btn.classList.remove('is-active');
+                btn.setAttribute('aria-pressed', 'false');
+            });
+            this.classList.add('is-active');
+            this.setAttribute('aria-pressed', 'true');
 
             const filter = this.dataset.filter;
 

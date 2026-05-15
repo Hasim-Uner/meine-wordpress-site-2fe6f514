@@ -29,10 +29,55 @@
 }
 
 .blog-archive-intro__sub {
-    margin: 0;
+    margin: 0 auto;
+    max-width: 720px;
     font-size: clamp(0.95rem, 2vw, 1.1rem);
     color: var(--text-secondary);
     line-height: 1.6;
+}
+
+.blog-archive-intro__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.65rem;
+    margin-top: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.blog-archive-intro__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 1rem;
+    border: 1px solid var(--border-default);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s, background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.blog-archive-intro__link:hover,
+.blog-archive-intro__link:focus-visible {
+    border-color: var(--accent);
+    color: var(--text-primary);
+    background: hsl(var(--accent-hsl) / 0.08);
+    transform: translateY(-1px);
+}
+
+.blog-archive-intro__link--primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--text-inverse);
+}
+
+.blog-archive-intro__link--primary:hover,
+.blog-archive-intro__link--primary:focus-visible {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: var(--text-inverse);
 }
 
 /* ── Shell & Grid ───────────────────────────────────────────── */
@@ -292,6 +337,11 @@
 @media (max-width: 600px) {
     .blog-archive-grid {
         grid-template-columns: 1fr;
+    }
+
+    .blog-archive-intro__actions,
+    .blog-archive-intro__link {
+        width: 100%;
     }
 
     .blog-archive-infeed-cta__btn {
