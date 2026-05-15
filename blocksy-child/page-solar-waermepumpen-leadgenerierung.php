@@ -369,6 +369,11 @@ get_header();
 
 				<aside class="sol-hero-right" aria-labelledby="sol-quiz-title">
 					<div class="sol-cta-card" id="marktcheck">
+						<div class="sol-cta-particles" aria-hidden="true">
+							<span class="sol-cta-particle"></span>
+							<span class="sol-cta-particle"></span>
+							<span class="sol-cta-particle"></span>
+						</div>
 						<!--
 						  Quiz mount point. JS rendert hier das 5-Step-Quiz.
 						  Wenn JS fehlt, bleibt der SSR-Fallback unten als
