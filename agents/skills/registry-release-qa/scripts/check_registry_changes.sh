@@ -6,8 +6,8 @@ base_ref="${1:-HEAD~1}"
 head_ref="${2:-HEAD}"
 
 files=(
-  "blocksy-child/inc/glossary-registry-data.php"
-  "blocksy-child/inc/wgos-asset-registry-data.php"
+  "blocksy-child/inc/glossary/glossary-registry-data.php"
+  "blocksy-child/inc/wgos/wgos-asset-registry-data.php"
 )
 
 changed="$(git diff --name-only "$base_ref" "$head_ref" -- "${files[@]}" || true)"

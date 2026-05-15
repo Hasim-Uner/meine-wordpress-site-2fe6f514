@@ -3,15 +3,15 @@
 set -euo pipefail
 
 files=(
-  "blocksy-child/inc/seo-cockpit.php"
-  "blocksy-child/inc/seo-cockpit-core.php"
-  "blocksy-child/inc/seo-cockpit-api.php"
-  "blocksy-child/inc/seo-cockpit-koko.php"
-  "blocksy-child/inc/seo-cockpit-links.php"
-  "blocksy-child/inc/seo-cockpit-sync.php"
-  "blocksy-child/inc/seo-cockpit-insights.php"
-  "blocksy-child/inc/seo-cockpit-diagnostics.php"
-  "blocksy-child/inc/seo-cockpit-ui.php"
+  "blocksy-child/inc/seo-cockpit/seo-cockpit.php"
+  "blocksy-child/inc/seo-cockpit/seo-cockpit-core.php"
+  "blocksy-child/inc/seo-cockpit/seo-cockpit-api.php"
+  "blocksy-child/inc/seo-cockpit/seo-cockpit-koko.php"
+  "blocksy-child/inc/seo-cockpit/seo-cockpit-links.php"
+  "blocksy-child/inc/seo-cockpit/seo-cockpit-sync.php"
+  "blocksy-child/inc/seo-cockpit/seo-cockpit-insights.php"
+  "blocksy-child/inc/seo-cockpit/seo-cockpit-diagnostics.php"
+  "blocksy-child/inc/seo-cockpit/seo-cockpit-ui.php"
   "docs/seo-cockpit-v2.md"
   "docs/systems/seo-cockpit.md"
 )
