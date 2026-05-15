@@ -587,36 +587,36 @@ function nexus_get_primary_public_url( $key, $fallback = '' ) {
 function nexus_get_agentur_faq_items() {
 	return [
 		[
-			'question' => 'Welche WordPress Agentur in Hannover hilft bei Leadgenerierung für B2B?',
-			'answer'   => 'Die passende Agentur verbindet nicht nur Design und Entwicklung, sondern auch Angebotsseiten, technische SEO, Tracking und Conversion-Führung. Genau darauf ist diese Seite ausgerichtet: WordPress als Nachfrage-System für B2B statt isolierter Einzelleistungen.',
+			'question' => 'Welche WordPress Agentur in Hannover passt für anspruchsvolle B2B-Angebote?',
+			'answer'   => 'Eine passende WordPress Agentur Hannover verbindet WordPress-Entwicklung, SEO, Tracking, GA4, Server-Side Tracking und Conversion-Führung. Genau darauf ist diese Seite ausgerichtet: WordPress als Nachfrage-System statt isolierter Einzelleistungen.',
 		],
 		[
-			'question' => 'Arbeiten Sie nur in Hannover oder auch in Pattensen und der Region Hannover?',
-			'answer'   => 'Der Standort ist Pattensen bei Hannover. Workshops, Reviews und persönliche Termine sind in Hannover und der Region möglich. Die Umsetzung funktioniert zusätzlich DACH-weit remote.',
+			'question' => 'Arbeiten Sie nur mit Unternehmen aus Hannover?',
+			'answer'   => 'Nein. Der Standort ist Pattensen bei Hannover, persönliche Termine sind in der Region möglich. Die Umsetzung ist auf den DACH-Raum ausgelegt; Hannover ist Standortanker, keine Zielgruppen-Grenze.',
 		],
 		[
-			'question' => 'Unterstützen Sie auch Tracking und Conversion-Optimierung oder nur WordPress-Entwicklung?',
-			'answer'   => 'Ja. Die Arbeit umfasst WordPress-Entwicklung, technische SEO, GA4- und Tracking-Setups, Conversion-Führung und die Priorisierung kaufnaher Seiten. Diese Verbindung ist für B2B-Anfragen meist entscheidend.',
+			'question' => 'Ist Solar oder Wärmepumpe Voraussetzung?',
+			'answer'   => 'Nein. Solar, Wärmepumpe und Speicher sind der Fokusmarkt, weil dort Anfragequalität, Vertriebsanschluss und Datenlage besonders schnell entscheidend werden. Die Arbeitsweise passt auch für anspruchsvolle B2B-Angebote mit ähnlicher Erklärungstiefe.',
 		],
 		[
-			'question' => 'Wann ist die Agentur-Seite der richtige Einstieg und wann die Website-Analyse?',
-			'answer'   => 'Die Agentur-Seite ist richtig, wenn Sie den Gesamtkontext verstehen wollen. Die Website-Analyse ist der bessere nächste Schritt, wenn klar werden soll, ob zuerst SEO, Tracking, Angebotsseiten, Performance oder Conversion den größten Hebel hat.',
+			'question' => 'Was passiert nach der Projektprüfung?',
+			'answer'   => 'Ich prüfe Angebot, Website-Rolle, Messbarkeit und naheliegende Priorität. Wenn der Fit passt, folgt daraus eine saubere Empfehlung: Korrektur, Umsetzung, Weiterentwicklung oder bewusst kein gemeinsamer nächster Schritt.',
 		],
 		[
-			'question' => 'Brauche ich für WordPress-Wachstum einen Relaunch?',
-			'answer'   => 'Meist nicht. Oft fehlt nicht der neue Look, sondern die richtige Reihenfolge zwischen Fundament, Daten, Sichtbarkeit und Conversion. Ein Relaunch ist nur sinnvoll, wenn die Analyse zeigt, dass die bestehende Struktur nicht mehr trägt.',
+			'question' => 'Brauche ich dafür einen Relaunch?',
+			'answer'   => 'Nicht automatisch. Oft fehlt nicht der neue Look, sondern die richtige Reihenfolge zwischen Fundament, Daten, Sichtbarkeit und Conversion. Ein Relaunch ist nur sinnvoll, wenn die bestehende Struktur nicht mehr trägt.',
 		],
 		[
 			'question' => 'Was unterscheidet WGOS von einem klassischen Agentur-Projekt?',
-			'answer'   => 'WGOS ordnet Strategie, Technik, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängendes System. Code, Inhalte und Zugänge bleiben bei Ihnen; die Leistung liegt in der richtigen Reihenfolge und sauberen Umsetzung.',
+			'answer'   => 'WGOS ordnet Strategie, Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängende Methode. Entscheidend ist die Reihenfolge: Welche Seite trägt welche Anfrage, welcher Kanal liefert echte Projekte und welche Änderung erzeugt als Nächstes Wirkung.',
 		],
 		[
-			'question' => 'Wie lange dauert SEO, bis es wirkt?',
-			'answer'   => 'Technische Korrekturen können Indexierung, Crawling und Geschwindigkeit kurzfristig verbessern. Inhaltliche Rankings brauchen meist drei bis sechs Monate. SEO ist Eigentum, nicht gemietete Reichweite wie Ads.',
+			'question' => 'Für wen passt diese Seite nicht?',
+			'answer'   => 'Nicht passend sind kleine One-Page-Visitenkarten, reine Design-Relaunches ohne Lead-Logik und E-Commerce-Projekte mit Shopify- oder WooCommerce-Fokus.',
 		],
 		[
 			'question' => 'Warum rankt eine WordPress-Seite, liefert aber keine Anfragen?',
-			'answer'   => 'Ranking und Anfragequalität sind zwei verschiedene Probleme. Oft rankt eine Seite für Informationssuchen, während Proof, CTA-Führung und kaufnahe Argumentation fehlen. Genau dort verbindet diese Arbeit SEO, Struktur und Conversion.',
+			'answer'   => 'Ranking und Anfragequalität sind zwei verschiedene Probleme. Oft rankt eine Seite für Informationssuchen, während Proof, CTA-Führung und kaufnahe Argumentation fehlen. Genau dort verbindet diese Arbeit SEO, Struktur, Tracking und Conversion.',
 		],
 	];
 }

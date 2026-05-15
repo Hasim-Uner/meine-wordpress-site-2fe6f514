@@ -223,7 +223,21 @@ function hu_enqueue_assets() {
 	// ── F) Template: Agentur Service ──────────────────────────────
 	if ( is_page_template( 'page-wordpress-agentur.php' ) || is_page_template( 'page-wordpress-agentur-hannover.php' ) || is_page( 'wordpress-agentur' ) || is_page( 'wordpress-agentur-hannover' ) ) {
 		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-agentur-css', 'agentur.css', [ 'nexus-home-css' ] );
+		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-design-system' ] );
+		hu_enqueue_css( 'nexus-agentur-css', 'agentur.css', [ 'nexus-home-css', 'nexus-contact-css' ] );
+		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js' ] );
+
+		wp_localize_script(
+			'nexus-contact-js',
+			'NexusContactConfig',
+			[
+				'restEndpoint'    => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
+				'successMessage'  => 'Danke. Ihre Projektprüfung ist eingegangen. Sie erhalten innerhalb von 24 Stunden eine Rückmeldung.',
+				'errorMessage'    => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
+				'callUrl'         => esc_url_raw( function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' ) ),
+				'isScopedLanding' => true,
+			]
+		);
 	}
 
 	// ── F1a) Solar-/Wärmepumpen-Leadgenerierung (SOLARA Redesign) ──

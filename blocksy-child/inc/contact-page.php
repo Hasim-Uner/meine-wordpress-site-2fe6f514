@@ -247,6 +247,10 @@ function nexus_get_contact_request_type_options() {
 			'label'       => 'Website-Analyse',
 			'description' => 'Für B2B-Websites, bei denen vor Relaunch, SEO oder Optimierung zuerst die Priorität geklärt werden soll.',
 		],
+		'project' => [
+			'label'       => 'Projektprüfung',
+			'description' => 'Für anspruchsvolle B2B-Projekte rund um WordPress, SEO, Tracking und Conversion.',
+		],
 		'implementation' => [
 			'label'       => 'Umsetzung / Optimierung',
 			'description' => 'Für konkrete Korrekturen, Optimierungen oder einen klar umrissenen Umsetzungsbedarf.',
@@ -294,11 +298,11 @@ function nexus_get_contact_focus_options() {
 		],
 		'followup_scope'   => [
 			'label' => 'Website-Analyse / Priorisierung',
-			'types' => [ 'analysis' ],
+			'types' => [ 'analysis', 'project' ],
 		],
 		'implementation_scope' => [
 			'label' => 'Umsetzung / Optimierung',
-			'types' => [ 'implementation' ],
+			'types' => [ 'implementation', 'project' ],
 		],
 		'ongoing_scope'    => [
 			'label' => 'Laufende Weiterentwicklung',
@@ -306,27 +310,27 @@ function nexus_get_contact_focus_options() {
 		],
 		'website_strategy' => [
 			'label' => 'Positionierung / Seitenbotschaft',
-			'types' => [ 'audit', 'analysis', 'implementation', 'ongoing', 'client' ],
+			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
 		'seo'              => [
 			'label' => 'SEO',
-			'types' => [ 'audit', 'analysis', 'implementation', 'ongoing', 'client' ],
+			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
 		'performance'      => [
 			'label' => 'Performance',
-			'types' => [ 'audit', 'analysis', 'implementation', 'ongoing', 'client' ],
+			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
 		'tracking'         => [
 			'label' => 'Tracking & Analytics',
-			'types' => [ 'audit', 'analysis', 'implementation', 'ongoing', 'client' ],
+			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
 		'conversion'       => [
 			'label' => 'Conversion & CRO',
-			'types' => [ 'audit', 'analysis', 'implementation', 'ongoing', 'client' ],
+			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
 		'relaunch'         => [
 			'label' => 'Relaunch / Neue Seite',
-			'types' => [ 'analysis', 'implementation' ],
+			'types' => [ 'analysis', 'project', 'implementation' ],
 		],
 		'support'          => [
 			'label' => 'Support / Weiterentwicklung',
@@ -413,6 +417,7 @@ function nexus_get_contact_request_response_label( $request_type ) {
 	$labels = [
 		'audit'          => 'Marktcheck',
 		'analysis'       => 'Website-Analyse',
+		'project'        => 'Projektprüfung',
 		'implementation' => 'Umsetzungsanfrage',
 		'ongoing'        => 'Weiterentwicklungsanfrage',
 		'general'        => 'Anfrage',
@@ -432,6 +437,7 @@ function nexus_get_contact_request_mail_tags( $request_type ) {
 	$map = [
 		'audit'          => [ 'contact_request', 'growth_audit_request' ],
 		'analysis'       => [ 'contact_request', 'website_analysis_request' ],
+		'project'        => [ 'contact_request', 'project_request' ],
 		'implementation' => [ 'contact_request', 'implementation_request' ],
 		'ongoing'        => [ 'contact_request', 'ongoing_development_request' ],
 		'general'        => [ 'contact_request', 'general_inquiry' ],
@@ -462,6 +468,10 @@ function nexus_get_contact_confirmation_step_three( $request_type ) {
 
 	if ( 'analysis' === $request_type ) {
 		return 'Wenn der Fit klar ist, verdichten wir die Website-Hebel und den sinnvollsten nächsten Schritt sauber.';
+	}
+
+	if ( 'project' === $request_type ) {
+		return 'Wenn der Fit klar ist, folgt daraus eine saubere Entscheidung: Korrektur, Umsetzung, Weiterentwicklung oder bewusst kein gemeinsamer nächster Schritt.';
 	}
 
 	if ( 'ongoing' === $request_type ) {
@@ -657,7 +667,7 @@ function nexus_validate_contact_request_payload( $payload ) {
 		return new WP_Error( 'invalid_focus_type', 'Bitte ein Thema wählen, das zu Ihrer Anfrage passt.' );
 	}
 
-	if ( in_array( $request_type, [ 'analysis', 'implementation', 'ongoing', 'client' ], true ) ) {
+	if ( in_array( $request_type, [ 'analysis', 'project', 'implementation', 'ongoing', 'client' ], true ) ) {
 		if ( '' !== $timeline && ! isset( $timeline_options[ $timeline ] ) ) {
 			return new WP_Error( 'invalid_timeline', 'Bitte ein gültiges Zeitfenster auswählen.' );
 		}

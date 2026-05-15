@@ -118,6 +118,18 @@
                 showTimeline: true,
                 showBudget: false
             },
+            project: {
+                focusLabel: 'Welcher Bereich soll zuerst geprüft werden?',
+                focusHelp: 'Wählen Sie den Bereich, in dem aktuell die größte geschäftliche Unklarheit liegt.',
+                messageLabel: 'Kurzbeschreibung',
+                messageHelp: 'Welche URL ist relevant? Was ist das Angebot? Wo verliert das System heute Anfragen oder Klarheit?',
+                messagePlaceholder: '1. Website: Welche URL ist relevant?\n2. Angebot: Was verkaufen Sie und an wen?\n3. Engpass: Was soll die Seite besser leisten?',
+                submitLabel: 'Projekt prüfen',
+                messageMinlength: 24,
+                timelineLabel: 'Zeitfenster',
+                showTimeline: true,
+                showBudget: false
+            },
             implementation: {
                 focusLabel: 'Was soll umgesetzt oder korrigiert werden?',
                 focusHelp: 'Wählen Sie den Hebel, der fachlich am nächsten an Ihrem Umsetzungsbedarf liegt.',
@@ -697,6 +709,7 @@
                     var labels = {
                         audit: 'Marktcheck',
                         analysis: 'Website-Analyse',
+                        project: 'Projektprüfung',
                         implementation: 'Umsetzung',
                         ongoing: 'Weiterentwicklung'
                     };
