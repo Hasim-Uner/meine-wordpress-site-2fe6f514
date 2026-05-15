@@ -1,6 +1,6 @@
 # Blog Notify
 
-Stand: 2026-03-13.
+Stand: 2026-05-15.
 
 Diese Doku beschreibt das repo-seitige System fuer `Neue Artikel per E-Mail`.
 
@@ -113,7 +113,7 @@ Warum diese Entscheidung:
 
 ## Risiken
 
-- ohne echten Live-Test bleibt offen, ob DOI und Artikelversand auf der Live-Instanz exakt wie erwartet laufen
+- der initiale Subscribe-Request wurde live am 2026-05-15 verifiziert; DOI-Bestaetigung und Artikelversand muessen weiter separat im Postfach bzw. Admin-Workflow geprueft werden
 - der Queue-Ansatz ist bewusst leichtgewichtig und fuer spaeteren Ausbau gedacht, nicht fuer sehr grosse Listen
 - bei identischen E-Mail-Adressen wird ein Kontakt CRM-seitig aktualisiert statt vervielfacht
 
