@@ -78,6 +78,25 @@ $trust_cards = [
 	],
 ];
 
+$project_check_cards = [
+	[
+		'title' => 'Angebot',
+		'text'  => 'Ist der Nutzen so klar, dass ein kaufnaher Besucher den nächsten Schritt versteht?',
+	],
+	[
+		'title' => 'Nachfrage',
+		'text'  => 'Welche Suchanfragen, Kampagnen oder Partnerpfade bringen Besucher mit echter Projektabsicht?',
+	],
+	[
+		'title' => 'Datenlage',
+		'text'  => 'Sind GA4, Consent, Tracking und Server-Side Tracking belastbar genug für Entscheidungen?',
+	],
+	[
+		'title' => 'Anfragepfad',
+		'text'  => 'Welche Information braucht der Besucher jetzt, damit aus Interesse ein qualifizierter Erstkontakt wird?',
+	],
+];
+
 $wgos_core_blocks = [
 	[
 		'area' => 'strategie',
@@ -122,6 +141,12 @@ $not_fit_items = [
 	'One-Page-Visitenkarten und Standard-Websites ohne relevanten Projektumfang.',
 	'E-Commerce-Projekte mit Shopify- oder WooCommerce-Fokus.',
 	'Reine Design-Relaunches ohne Lead-Logik, Tracking und kaufnahe Angebotsstruktur.',
+];
+
+$form_process_steps = [
+	'Kontext lesen: Angebot, URL, Engpass und Ziel der Anfrage.',
+	'Fit einschätzen: WordPress-System, Marktlogik und nächste Priorität.',
+	'Route klären: Projektgespräch, E3-Kontext oder präziser Energie-Marktcheck.',
 ];
 
 $faq_items      = function_exists( 'nexus_get_agentur_faq_items' ) ? nexus_get_agentur_faq_items() : [];
@@ -209,6 +234,28 @@ get_header();
 						</article>
 					<?php endforeach; ?>
 				</div>
+			</div>
+		</section>
+
+		<section id="projekt-fit" class="nx-section" data-track-section="agentur_project_fit">
+			<div class="nx-container">
+				<div class="nx-section-header">
+					<span class="wp-agentur-eyebrow">Projektprüfung</span>
+					<h2 class="nx-headline-section">Vor Umsetzung prüfe ich vier Kauf-Signale.</h2>
+					<p class="wp-agentur-section-intro">Ich prüfe nicht, ob eine neue Website schöner wäre. Ich prüfe, ob Angebot, Nachfrage, Daten und Anfragepfad als System zusammenpassen.</p>
+				</div>
+				<div class="wp-agentur-decision-grid" aria-label="Kauf-Signale der Projektprüfung">
+					<?php foreach ( $project_check_cards as $project_check_index => $project_check_card ) : ?>
+						<article class="wp-agentur-decision-card">
+							<span class="wp-agentur-decision-card__num" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', (int) $project_check_index + 1 ) ); ?></span>
+							<h3><?php echo esc_html( $project_check_card['title'] ); ?></h3>
+							<p><?php echo esc_html( $project_check_card['text'] ); ?></p>
+						</article>
+					<?php endforeach; ?>
+				</div>
+				<p class="wp-agentur-process-link">
+					<a href="<?php echo esc_url( $form_url ); ?>" data-track-action="cta_agentur_project_fit_form" data-track-category="lead_gen" data-track-section="project_fit"><?php echo esc_html( $project_cta_label ); ?></a>
+				</p>
 			</div>
 		</section>
 
@@ -415,6 +462,14 @@ get_header();
 						<a href="#agentur-projektformular" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_final_project" data-track-category="lead_gen" data-track-section="final_cta"><?php echo esc_html( $project_cta_label ); ?></a>
 						<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_final_e3" data-track-category="trust" data-track-section="final_cta"><?php echo esc_html( $e3_cta_label ); ?></a>
 					</div>
+				</div>
+				<div class="wp-agentur-form-steps" aria-label="Ablauf nach der Projektanfrage">
+					<p>Ihre Angaben landen nicht in einem allgemeinen Postfach. Ich prüfe sie entlang von Angebot, Website-Rolle und Datenlage.</p>
+					<ol>
+						<?php foreach ( $form_process_steps as $form_process_step ) : ?>
+							<li><?php echo esc_html( $form_process_step ); ?></li>
+						<?php endforeach; ?>
+					</ol>
 				</div>
 
 				<div id="agentur-projektformular" class="contact-form-panel contact-superflow wp-agentur-contact-form" aria-labelledby="agentur-form-title">

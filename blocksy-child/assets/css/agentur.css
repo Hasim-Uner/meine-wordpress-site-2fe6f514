@@ -470,6 +470,44 @@
   border-bottom-color: hsl(var(--accent-hsl) / 0.32);
 }
 
+.wp-agentur-decision-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.wp-agentur-decision-card {
+  display: grid;
+  gap: 0.75rem;
+  min-height: 100%;
+  padding: clamp(1.2rem, 3vw, 1.5rem);
+  border-radius: var(--nx-radius-xl);
+  border: 1px solid var(--nx-border);
+  background:
+    linear-gradient(180deg, hsl(var(--accent-hsl) / 0.08), rgba(255, 255, 255, 0.018)),
+    var(--nx-card-gradient);
+}
+
+.wp-agentur-decision-card__num {
+  color: var(--nx-accent-text);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.wp-agentur-decision-card h3 {
+  margin: 0;
+  color: var(--nx-text);
+  font-size: clamp(1.12rem, 1.8vw, 1.3rem);
+  line-height: 1.22;
+}
+
+.wp-agentur-decision-card p {
+  margin: 0;
+  color: var(--nx-text-secondary);
+  line-height: 1.68;
+}
+
 .wp-agentur-solution-card {
   display: grid;
   gap: 1rem;
@@ -1135,6 +1173,49 @@
   margin-bottom: 2rem;
 }
 
+.wp-agentur-form-steps {
+  max-width: 920px;
+  margin: 0 auto 1.5rem;
+  padding: clamp(1.2rem, 3vw, 1.45rem);
+  border-radius: var(--nx-radius-xl);
+  border: 1px solid var(--nx-border);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.wp-agentur-form-steps p {
+  margin: 0 0 1rem;
+  color: var(--nx-text-secondary);
+  line-height: 1.65;
+}
+
+.wp-agentur-form-steps ol {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: form-step;
+}
+
+.wp-agentur-form-steps li {
+  position: relative;
+  padding-left: 2.2rem;
+  color: var(--nx-text);
+  line-height: 1.5;
+  counter-increment: form-step;
+}
+
+.wp-agentur-form-steps li::before {
+  content: counter(form-step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.1rem;
+  color: var(--nx-accent-text);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
 .wp-agentur-contact-form {
   scroll-margin-top: calc(var(--nx-header-height, 80px) + 1rem);
 }
@@ -1178,7 +1259,8 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .wp-agentur-pain-grid {
+  .wp-agentur-pain-grid,
+  .wp-agentur-decision-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1215,7 +1297,8 @@
     grid-template-columns: 1fr;
   }
 
-  .wp-agentur-pain-grid {
+  .wp-agentur-pain-grid,
+  .wp-agentur-decision-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1250,6 +1333,10 @@
 
   .wp-agentur-pain-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .wp-agentur-decision-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .wp-agentur-segment-grid {
