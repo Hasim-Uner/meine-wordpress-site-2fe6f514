@@ -12,33 +12,50 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $agentur_url = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
-$wgos_url  = $primary_urls['wgos'] ?? trailingslashit( $agentur_url ) . '#wgos';
-$cases_url = nexus_get_results_url();
-$about_url = nexus_get_page_url( [ 'uber-mich' ] );
-$contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
-$website_analysis_url = add_query_arg(
-	[
-		'type' => 'analysis',
-	],
-	$contact_url
-);
+$wgos_url = $primary_urls['wgos'] ?? trailingslashit( $agentur_url ) . '#wgos';
+$asset_overview_url = $primary_urls['wgos_assets'] ?? trailingslashit( $agentur_url ) . '#asset-uebersicht';
+$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : ( $primary_urls['request'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
+$marketcheck_url = $analysis_url;
+$about_url = $primary_urls['about'] ?? nexus_get_page_url( [ 'uber-mich' ] );
+$contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : ( $primary_urls['contact'] ?? home_url( '/kontakt/' ) );
 $implementation_contact_url = add_query_arg(
 	[
 		'type' => 'implementation',
 	],
 	$contact_url
 );
-$e3_url    = nexus_get_page_url( [ 'e3-new-energy' ] );
+$e3_canon = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_url = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : ( $primary_urls['e3'] ?? nexus_get_page_url( [ 'e3-new-energy' ] ) );
 $wartung_url = nexus_get_primary_public_url( 'wartung', home_url( '/wordpress-wartung-hannover/' ) );
-$measurement_url = nexus_get_wgos_asset_anchor_url( 'tracking-audit' );
-$cro_url   = $primary_urls['cro'] ?? trailingslashit( $agentur_url ) . '#wgos';
-$proof_metrics = function_exists( 'nexus_get_public_proof_metric_list' ) ? nexus_get_public_proof_metric_list( [ 'lead_count', 'sales_conversion', 'cpl_reduction' ] ) : [];
+$measurement_url = function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( 'tracking-audit' ) : $wgos_url;
+$cro_url = $primary_urls['cro'] ?? $wgos_url;
+$e3_cpl_before = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
+$e3_cpl_after = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
 $e3_cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', 'über 85 %' ) : 'über 85 %';
 $e3_lead_count = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
 $e3_sales_conversion = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '12 %' ) : '12 %';
 $canonical_ownership_sentence = function_exists( 'nexus_get_public_ownership_sentence' ) ? nexus_get_public_ownership_sentence() : 'Code, Inhalte, Zugänge und Setups bleiben bei Ihnen. Laufende Zusammenarbeit bedeutet Weiterentwicklung, nicht Abhängigkeit.';
-$website_analysis_cta_label = 'Website-Analyse anfragen';
-$website_analysis_microcopy = 'Klarheit vor Relaunch · SEO, Tracking, Conversion · direkter Kontakt';
+$website_potential_cta_label = 'Website-Potenzial prüfen';
+$marketcheck_cta_label = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Marktcheck starten';
+$e3_cta_label = 'E3-Case ansehen';
+$hero_microcopy = 'Klarheit vor Relaunch · SEO, Tracking, Conversion · kein generischer Agentur-Pitch';
+$e3_cpl_delta_label = sprintf(
+	/* translators: 1: old CPL, 2: new CPL. */
+	'CPL von %1$s auf %2$s gesenkt',
+	$e3_cpl_before,
+	$e3_cpl_after
+);
+$e3_cpl_reduction_label = sprintf(
+	/* translators: %s: percentage reduction. */
+	'%s niedrigere Kosten pro Anfrage',
+	$e3_cpl_reduction
+);
+$hero_proof_items = [
+	$e3_cpl_delta_label,
+	$e3_cpl_reduction_label,
+	$e3_lead_count . ' qualifizierte Anfragen',
+	$e3_sales_conversion . ' Abschlussquote',
+];
 
 $pain_cards = [
 	[
@@ -61,13 +78,46 @@ $pain_cards = [
 $case_teaser_cards = [
 	[
 		'eyebrow' => 'Ausgangslage',
-		'title'   => 'Hoher CPL, schwache Daten, Reibung nach dem Klick',
+		'title'   => 'Hohe Kosten pro Anfrage, schwache Daten, Reibung nach dem Klick',
 		'text'    => 'E3 New Energy kaufte Leads teuer ein, ohne saubere Leadqualität und ohne robuste Conversion-Führung auf der Website.',
 	],
 	[
 		'eyebrow' => 'Maßnahme',
 		'title'   => 'Erst Fundament, dann Aktivierung',
 		'text'    => 'Speed, Tracking, Seitenstruktur und Conversion-Pfade wurden geordnet, bevor neue Skalierung auf das Setup geschaltet wurde.',
+	],
+];
+
+$wgos_core_blocks = [
+	[
+		'area'    => 'strategie',
+		'compact' => 'Welche Seite soll welche Anfrage erzeugen?',
+		'text'    => 'Angebot, Zielgruppe, Suchintention und nächster Schritt werden so geordnet, dass jede kaufnahe Seite eine klare Rolle hat.',
+	],
+	[
+		'area'    => 'fundament',
+		'compact' => 'Lädt, hält, lässt sich warten.',
+		'text'    => 'Performance, Sicherheit, Updates und Theme-Struktur müssen den Betrieb tragen, bevor mehr Traffic auf die Seite gelenkt wird.',
+	],
+	[
+		'area'    => 'messbarkeit',
+		'compact' => 'Welche Quellen erzeugen echte Anfragen?',
+		'text'    => 'Tracking, GA4, Consent und Server-Side Tracking werden so geprüft, dass aus Daten Entscheidungen statt Report-Rauschen entstehen.',
+	],
+	[
+		'area'    => 'sichtbarkeit',
+		'compact' => 'Welche Suchintentionen bringen kaufnahe Besucher?',
+		'text'    => 'WordPress SEO Hannover, DACH-Sichtbarkeit und interne Verlinkung werden auf Nachfrage ausgerichtet, nicht auf reine Themenbreite.',
+	],
+	[
+		'area'    => 'conversion',
+		'compact' => 'Warum sollte der Besucher jetzt handeln?',
+		'text'    => 'Proof, Einwandabbau, CTA-Reihenfolge und Formulare führen Besucher von Interesse zu einer qualifizierten Anfrage.',
+	],
+	[
+		'area'    => 'weiterentwicklung',
+		'compact' => 'Welche Änderung erzeugt als Nächstes Wirkung?',
+		'text'    => 'Nach dem ersten Eingriff wird priorisiert, welche Anpassung bei SEO, Tracking, Conversion oder Betrieb den nächsten Hebel liefert.',
 	],
 ];
 
@@ -79,10 +129,10 @@ $fit_items = [
 ];
 
 $service_items = [
-	'WordPress-Websites, die qualifizierte B2B-Anfragen generieren — nicht nur gut aussehen',
-	'Technische SEO für lokale und kaufnahe Sichtbarkeit in WordPress',
-	'GA4-, GTM- und Server-Side-Tracking-Setups, die DSGVO-konform echte Entscheidungen ermöglichen',
-	'Conversion Rate Optimierung für bestehende WordPress-Landingpages und Angebotsseiten',
+	'WordPress-Websites, die qualifizierte B2B-Anfragen erzeugen - nicht nur gut aussehen',
+	'Technisches WordPress SEO für lokale und kaufnahe Sichtbarkeit in Hannover und DACH',
+	'Tracking-, GA4-, GTM- und Server-Side-Tracking-Setups, die echte Entscheidungen ermöglichen',
+	'Conversion-Optimierung für WordPress-Landingpages, Angebotsseiten und Anfragepfade',
 	'Laufende Weiterentwicklung mit klarer Priorisierung statt Relaunch-Zyklen',
 ];
 
@@ -113,19 +163,22 @@ get_header();
 		<section id="hero" class="nx-section nx-hero wp-agentur-hero">
 			<div class="nx-container">
 				<div class="wp-agentur-hero__content">
-					<span class="nx-badge nx-badge--gold">Hannover · B2B · WordPress</span>
-					<h1 class="nx-hero__title">WordPress Agentur Hannover für B2B-Anfragen.</h1>
+					<span class="nx-badge nx-badge--gold">WordPress Agentur Hannover · SEO · Tracking · Conversion</span>
+					<h1 class="nx-hero__title">WordPress Agentur Hannover für Websites, die messbar Anfragen erzeugen.</h1>
 					<p class="nx-hero__subtitle">
-						Angebotsseiten, technisches SEO, Tracking und Conversion als ein System — damit Ihre WordPress-Website nicht nur sichtbar ist, sondern qualifizierte Leads liefert.
+						Ich verbinde WordPress-Entwicklung, technisches SEO, Tracking und Conversion-Führung — damit Ihre Website nicht nur sichtbar ist, sondern nachvollziehbar qualifizierte Anfragen bringt.
 					</p>
 					<div class="wp-agentur-actions wp-agentur-actions--hero">
-						<a href="<?php echo esc_url( $website_analysis_url ); ?>" class="nx-btn nx-btn--primary wp-agentur-hero__primary" data-track-action="cta_agentur_hero_audit" data-track-category="lead_gen"><?php echo esc_html( $website_analysis_cta_label ); ?></a>
-						<a href="<?php echo esc_url( $cases_url ); ?>" class="wp-agentur-text-link" data-track-action="cta_agentur_hero_results" data-track-category="trust">Ergebnisse ansehen</a>
+						<a href="<?php echo esc_url( $analysis_url ); ?>" class="nx-btn nx-btn--primary wp-agentur-hero__primary" data-track-action="cta_agentur_hero_potential" data-track-category="lead_gen"><?php echo esc_html( $website_potential_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $e3_url ); ?>" class="wp-agentur-text-link" data-track-action="cta_agentur_hero_e3" data-track-category="trust"><?php echo esc_html( $e3_cta_label ); ?></a>
 					</div>
-					<p class="nx-cta-microcopy"><?php echo esc_html( $website_analysis_microcopy ); ?></p>
+					<p class="nx-cta-microcopy"><?php echo esc_html( $hero_microcopy ); ?></p>
+					<p class="wp-agentur-hero-support">
+						Spezialisiert auf WordPress-Systeme für erklärungsbedürftige B2B-Angebote — mit besonderem Fokus auf Solar-, Wärmepumpen- und Energieanbieter.
+					</p>
 					<div class="wp-agentur-hero__proof" role="list" aria-label="Proof-Signale">
-						<?php foreach ( $proof_metrics as $proof_metric ) : ?>
-							<span role="listitem"><?php echo esc_html( $proof_metric['value'] . ' ' . $proof_metric['label'] ); ?></span>
+						<?php foreach ( $hero_proof_items as $hero_proof_item ) : ?>
+							<span role="listitem"><?php echo esc_html( $hero_proof_item ); ?></span>
 						<?php endforeach; ?>
 					</div>
 					<figure class="wp-agentur-hero-portrait">
@@ -139,6 +192,30 @@ get_header();
 						/>
 						<figcaption>Haşim Üner · Growth Architect · Hannover</figcaption>
 					</figure>
+				</div>
+			</div>
+		</section>
+
+		<section id="einstieg" class="nx-section wp-agentur-segment-switch" data-track-section="agentur_segment_switch">
+			<div class="nx-container">
+				<div class="nx-section-header">
+					<span class="wp-agentur-eyebrow">Einstieg wählen</span>
+					<h2 class="nx-headline-section">Der nächste Schritt hängt vom Markt ab.</h2>
+					<p class="wp-agentur-section-intro">Die Seite bedient den lokalen Intent WordPress Agentur Hannover. Der Einstieg bleibt trotzdem sauber getrennt: Fokusmarkt Solar und Wärmepumpe führt in den Marktcheck, andere B2B-Unternehmen in die Potenzialprüfung.</p>
+				</div>
+				<div class="wp-agentur-segment-grid">
+					<article class="wp-agentur-segment-card wp-agentur-segment-card--focus">
+						<span class="wp-agentur-segment-card__tag">Fokusmarkt</span>
+						<h3>Für Solar, Wärmepumpe &amp; Speicher</h3>
+						<p>Wenn Sie heute Portal-Leads kaufen oder nicht wissen, welcher Kanal echte Projekte bringt, führt der richtige Einstieg zum eigenen Anfrage-System.</p>
+						<a href="<?php echo esc_url( $marketcheck_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_segment_energy" data-track-category="lead_gen">Zum Anfrage-System</a>
+					</article>
+					<article class="wp-agentur-segment-card">
+						<span class="wp-agentur-segment-card__tag">B2B</span>
+						<h3>Für andere B2B-Unternehmen</h3>
+						<p>Wenn WordPress bereits ein relevanter Kanal ist, prüfe ich zuerst, ob SEO, Tracking, Angebotsseiten oder Conversion-Führung den größten Hebel liefern.</p>
+						<a href="<?php echo esc_url( $analysis_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_segment_b2b" data-track-category="lead_gen"><?php echo esc_html( $website_potential_cta_label ); ?></a>
+					</article>
 				</div>
 			</div>
 		</section>
@@ -184,7 +261,7 @@ get_header();
 								<tr>
 									<th></th>
 									<th>Agentur-Logik</th>
-									<th>Growth-Architect-Logik</th>
+									<th>WGOS-Logik</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -205,7 +282,7 @@ get_header();
 								</tr>
 								<tr>
 									<td>SEO</td>
-									<td>Plugin und Grundoptimierung</td>
+									<td>Basis-Setup und Grundoptimierung</td>
 									<td>IA, kaufnahe Seiten, Proof und Suchintention als Verbund</td>
 								</tr>
 								<tr>
@@ -220,7 +297,7 @@ get_header();
 								</tr>
 								<tr>
 									<td>Betrieb</td>
-									<td>Tool- und Plugin-Mix mit hoher Abhängigkeit</td>
+									<td>Lose Erweiterungen mit hoher Abhängigkeit</td>
 									<td>Kontrollierter Stack, nachvollziehbare Änderungen, Ownership</td>
 								</tr>
 								<tr>
@@ -247,7 +324,7 @@ get_header();
 						<?php endforeach; ?>
 					</ul>
 					<div class="wp-agentur-actions wp-agentur-actions--center">
-						<a href="<?php echo esc_url( $website_analysis_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_services_audit" data-track-category="lead_gen"><?php echo esc_html( $website_analysis_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $analysis_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_services_potential" data-track-category="lead_gen"><?php echo esc_html( $website_potential_cta_label ); ?></a>
 						<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_services_wgos" data-track-category="navigation">Arbeitsweise ansehen</a>
 					</div>
 				</div>
@@ -260,7 +337,7 @@ get_header();
 					<h2 class="nx-headline-section">Für wen ich arbeite.</h2>
 				</div>
 				<div class="nx-prose wp-agentur-prose">
-					<p>Die Zusammenarbeit passt für B2B-Unternehmen, die WordPress bereits einsetzen oder bewusst als Kernsystem nutzen wollen und deren Website Anfragen liefern soll, nicht nur Präsenz.</p>
+					<p>Die Zusammenarbeit passt für B2B-Unternehmen, die WordPress bereits einsetzen oder bewusst als Kernsystem nutzen wollen und deren Website Anfragen liefern soll, nicht nur Präsenz. Besonders klar ist der Fit bei Solar-, Wärmepumpen- und Energieanbietern, weil dort Kanalqualität, Anfragekosten und Vertriebsanschluss schnell entscheidend werden.</p>
 					<ul>
 						<?php foreach ( $fit_items as $fit_item ) : ?>
 							<li><?php echo esc_html( $fit_item ); ?></li>
@@ -275,39 +352,17 @@ get_header();
 				<div class="nx-section-header">
 					<span class="wp-agentur-eyebrow">WGOS · Arbeitsweise</span>
 					<h2 class="nx-headline-section">Nicht mehr machen. Sondern das Richtige in der richtigen Reihenfolge.</h2>
-					<p class="wp-agentur-section-intro">WGOS ist kein Plugin und kein Seitenpaket, sondern eine Arbeitsweise: Strategie, Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung werden als ein zusammenhängendes System behandelt, nicht als isolierte Maßnahmen.</p>
+					<p class="wp-agentur-section-intro">WGOS ist die Methode hinter der Umsetzung: WordPress, SEO, Tracking und Conversion werden nach der Frage geordnet, welche Änderung zuerst mehr qualifizierte Anfrageklarheit bringt.</p>
 				</div>
 				<ol class="wgos-steps" aria-label="Sechs Kernbereiche in fester Reihenfolge">
-					<li>
-						<span class="step-num">01</span>
-						<h3>Strategie</h3>
-						<p>Angebotslogik, Engpässe, Seitenrollen und Zielpfade klären, bevor Maßnahmen geplant werden.</p>
-					</li>
-					<li>
-						<span class="step-num">02</span>
-						<h3>Fundament</h3>
-						<p>Performance, Core Web Vitals, Sicherheit und Update-Logik als technische Basis, die trägt.</p>
-					</li>
-					<li>
-						<span class="step-num">03</span>
-						<h3>Messbarkeit</h3>
-						<p>GA4, Server-Side Tracking, Consent und KPI-Klarheit als saubere Entscheidungsgrundlage.</p>
-					</li>
-					<li>
-						<span class="step-num">04</span>
-						<h3>Sichtbarkeit</h3>
-						<p>Technisches SEO, Suchintention und Pillar-Logik auf kaufnahe Themen konzentrieren.</p>
-					</li>
-					<li>
-						<span class="step-num">05</span>
-						<h3>Conversion</h3>
-						<p>Argumentationsstruktur, Proof, CTA-Führung und Formulare vom Besuch zur Anfrage ordnen.</p>
-					</li>
-					<li>
-						<span class="step-num">06</span>
-						<h3>Weiterentwicklung</h3>
-						<p>Auswertung, Priorisierung und kontrollierte Iteration auf die größten Hebel ausrichten.</p>
-					</li>
+					<?php foreach ( $wgos_core_blocks as $block_position => $wgos_core_block ) : ?>
+						<li>
+							<span class="step-num"><?php echo esc_html( sprintf( '%02d', (int) $block_position + 1 ) ); ?></span>
+							<h3><?php echo esc_html( hue_kernbereich_label( $wgos_core_block['area'] ) ); ?></h3>
+							<p><strong><?php echo esc_html( $wgos_core_block['compact'] ); ?></strong></p>
+							<p><?php echo esc_html( $wgos_core_block['text'] ); ?></p>
+						</li>
+					<?php endforeach; ?>
 				</ol>
 
 				<div class="wgos-vs">
@@ -323,13 +378,16 @@ get_header();
 					<div class="wgos-vs__side wgos-vs__side--accent">
 						<h3>WGOS</h3>
 						<ul>
-							<li>Alle Bausteine werden über ein gemeinsames Ziel geordnet</li>
-							<li>Die Reihenfolge ist Teil der Leistung, nicht nur die Umsetzung</li>
+							<li>Alle Bausteine werden über das gewünschte Anfrage-System geordnet</li>
+							<li>Die Reihenfolge entscheidet, welcher Eingriff zuerst Wirkung erzeugen kann</li>
 							<li>Messbarkeit und Nutzerführung gehören zum Fundament</li>
-							<li>Die Website wird zu einem strukturierten Nachfrage-System</li>
+							<li>Die Website wird zu einem nachvollziehbaren Nachfrage-System</li>
 						</ul>
 					</div>
 				</div>
+				<p class="wp-agentur-process-link">
+					<a href="<?php echo esc_url( $asset_overview_url ); ?>" data-track-action="cta_agentur_wgos_assets" data-track-category="navigation">Asset-Übersicht ansehen</a>
+				</p>
 			</div>
 		</section>
 
@@ -337,20 +395,33 @@ get_header();
 			<div class="nx-container">
 				<div class="nx-section-header">
 					<span class="wp-agentur-eyebrow">Bausteine · Asset-Übersicht</span>
-					<h2 class="nx-headline-section">Welcher Baustein zuerst sinnvoll ist, klärt die Website-Analyse.</h2>
-					<p class="wp-agentur-section-intro">Jeder Baustein hat einen festen Platz im System. Die Übersicht zeigt nur publizierte Assets. Nicht alles wird in jedem Projekt gebaut, sondern das, was zuerst Wirkung erzeugt.</p>
+					<h2 class="nx-headline-section">6 Kernbausteine, eine klare Priorität.</h2>
+					<p class="wp-agentur-section-intro">Nicht jeder Baustein wird gebaut. Die Analyse entscheidet, welcher zuerst Wirkung erzeugt.</p>
+				</div>
+				<div class="asset-core-grid" aria-label="Kompakte Übersicht der WGOS-Kernbausteine">
+					<?php foreach ( $wgos_core_blocks as $block_position => $wgos_core_block ) : ?>
+						<article class="asset-core-card">
+							<span class="asset-core-card__num" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', (int) $block_position + 1 ) ); ?></span>
+							<h3><?php echo esc_html( hue_kernbereich_label( $wgos_core_block['area'] ) ); ?></h3>
+							<p><?php echo esc_html( $wgos_core_block['compact'] ); ?></p>
+						</article>
+					<?php endforeach; ?>
 				</div>
 				<div class="asset-hybrid">
 					<div class="asset-hybrid__copy">
-						<span class="asset-hybrid__kicker">Hybrid-Ansatz</span>
-						<h3>WordPress bleibt Bedienoberfläche. Die Systembausteine liegen im Repo.</h3>
-						<p>Redaktion, Formulare und Seitenpflege bleiben in WordPress. Wiederholbare Assets entstehen als versionierter Theme-Code: Templates, Helper, Schema-Logik, Tracking-Hooks und interne Verlinkung.</p>
+						<span class="asset-hybrid__kicker">Methodenbibliothek</span>
+						<h3>WordPress bleibt Bedienoberfläche. Die wiederholbaren Bausteine liegen im Repo.</h3>
+						<p>Die Liste darunter ist keine Einkaufsliste. Sie zeigt, welche geprüften Assets für Strategie, Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung bereitstehen, wenn die Analyse den Bedarf zeigt.</p>
 					</div>
 					<ul class="asset-hybrid__checks" aria-label="Arbeitsweise">
 						<li>WordPress als Schnittstelle für Betrieb und Pflege</li>
-						<li>Bausteine als prüfbarer Code statt lose Plugin-Konfiguration</li>
+						<li>Bausteine als prüfbarer Code statt lose Konfiguration</li>
 						<li>Änderungen über Git, PHP-Lint und deploybaren Theme-Code</li>
 					</ul>
+				</div>
+				<div class="asset-library-head">
+					<span class="wp-agentur-eyebrow">Publizierte Assets</span>
+					<h3>Methodenbibliothek für Detailseiten, Prüfungen und technische Eingriffe</h3>
 				</div>
 				<div class="wgos-asset-grid">
 					<?php foreach ( $ordered_asset_areas as $area_position => $area ) : ?>
@@ -393,7 +464,7 @@ get_header();
 				<div class="nx-section-header">
 					<span class="wp-agentur-eyebrow">Sichtbarkeit · SEO</span>
 					<h2 class="nx-headline-section">Technisches WordPress-SEO für Hannover und DACH</h2>
-					<p class="wp-agentur-section-intro">SEO ist hier kein Meta-Feintuning, sondern Arbeit an Crawlability, Seitenstruktur, Local-Signalen und Rich-Result-fähigem Markup. Priorisiert wird nach kaufnahen Seitentypen.</p>
+					<p class="wp-agentur-section-intro">SEO ist hier kein Meta-Feintuning, sondern Arbeit an Crawlability, Seitenstruktur, Local-Signalen und Rich-Result-fähigem Markup. WordPress SEO Hannover wird nach kaufnahen Seitentypen priorisiert.</p>
 				</div>
 				<div class="seo-subclusters">
 					<article class="seo-sub" id="technisches-seo-foundation">
@@ -403,7 +474,7 @@ get_header();
 							<li>Crawl-Budget auf relevante Angebotsseiten konzentrieren</li>
 							<li>Thin Content deindexieren, wenn er keine Such- oder Nutzerrolle hat</li>
 							<li>Interne Verlinkung als Themen-Graph statt Footer-Liste aufbauen</li>
-							<li>Server-Tuning prüfen, wenn Theme und Plugin-Setup an Grenzen stoßen</li>
+							<li>Server-Tuning prüfen, wenn Theme und Erweiterungssetup an Grenzen stoßen</li>
 						</ul>
 					</article>
 					<article class="seo-sub" id="technisches-seo-local">
@@ -431,13 +502,13 @@ get_header();
 								</span>
 							</li>
 							<li>Markup für Reviews und Case Studies nur einsetzen, wenn der Inhalt das trägt</li>
-							<li>Schema-Validierung über den Rich Results Test statt über Plugin-Häkchen prüfen</li>
+							<li>Schema-Validierung über die Rich Results-Prüfung statt über einzelne Häkchen absichern</li>
 							<li>Strukturierte Daten als Sichtbarkeits-Hebel einsetzen, nicht als Pflichtfeld</li>
 						</ul>
 					</article>
 				</div>
 				<p class="seo-cta">
-					Ob technisches SEO bei Ihrer Website heute den größten Hebel hat, zeigt die <a href="<?php echo esc_url( $website_analysis_url ); ?>" data-track-action="cta_agentur_seo_audit" data-track-category="lead_gen">Website-Analyse</a>.
+					Ob technisches SEO, Tracking oder Conversion-Optimierung bei Ihrer Website heute den größten Hebel hat, zeigt die <a href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_agentur_seo_potential" data-track-category="lead_gen">Potenzialprüfung</a>.
 				</p>
 			</div>
 		</section>
@@ -454,9 +525,9 @@ get_header();
 					<h3>Was ein belastbarer WordPress-Wartungsvertrag abdeckt</h3>
 					<ul class="premium-list">
 						<li><span class="check-icon">✓</span><div>Security Hardening: Zugriffe, Rechte und Wiederherstellungswege abgesichert.</div></li>
-						<li><span class="check-icon">✓</span><div>Update-Management: planbar, testbar, rollback-fähig — kein Ad-hoc-Risiko.</div></li>
+						<li><span class="check-icon">✓</span><div>Update-Management: planbar, prüfbar, rollback-fähig — kein Ad-hoc-Risiko.</div></li>
 						<li><span class="check-icon">✓</span><div>Backups und Monitoring mit verifizierter Wiederherstellung, nicht nur Dump-Dateien.</div></li>
-						<li><span class="check-icon">✓</span><div>Plugin-Audit: Reduktion von Wartungslast und Konflikten.</div></li>
+						<li><span class="check-icon">✓</span><div>Erweiterungsprüfung: Reduktion von Wartungslast und Konflikten.</div></li>
 						<li><span class="check-icon">✓</span><div>Performance-Diagnose und bei Bedarf Server-Tuning.</div></li>
 					</ul>
 
@@ -467,7 +538,7 @@ get_header();
 						<li><span class="check-icon">→</span><div>Für Unternehmen mit relevanter Website und regelmäßigem Traffic, nicht für Low-Traffic-Projekte.</div></li>
 					</ul>
 					<p class="wp-agentur-section-intro">
-						Wartungsvertrag anfragen: über den <a href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_agentur_wartung_contact" data-track-category="lead_gen">Kontaktpfad</a> oder direkt in der <a href="<?php echo esc_url( $website_analysis_url ); ?>" data-track-action="cta_agentur_wartung_audit" data-track-category="lead_gen">Website-Analyse</a> einordnen.
+						WordPress Wartung Hannover bleibt ein sekundärer Pfad: über den <a href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_agentur_wartung_contact" data-track-category="navigation">Kontaktpfad</a> oder direkt in der <a href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_agentur_wartung_potential" data-track-category="lead_gen">Potenzialprüfung</a> einordnen.
 					</p>
 				</div>
 			</div>
@@ -477,7 +548,7 @@ get_header();
 			<div class="nx-container">
 				<div class="nx-section-header">
 					<h2 class="nx-headline-section">WordPress Agentur Hannover: Was passiert, wenn die Reihenfolge stimmt</h2>
-					<p class="wp-agentur-section-intro">Kurzer Blick auf die gleiche Logik in der Praxis: Ausgangslage, Eingriff, Ergebnis und nächster sinnvoller Vertiefungsschritt.</p>
+					<p class="wp-agentur-section-intro">E3 New Energy zeigt, wie ein Anfrage-System wirkt, wenn WordPress-Fundament, Tracking und Conversion-Führung zusammenarbeiten. Die Zahlen sind Case-Kontext, keine Übertragbarkeitsgarantie.</p>
 				</div>
 				<div class="wp-agentur-case-grid">
 					<?php foreach ( $case_teaser_cards as $case_teaser_card ) : ?>
@@ -489,28 +560,32 @@ get_header();
 					<?php endforeach; ?>
 					<article class="wp-agentur-case-card wp-agentur-case-card--result">
 						<span class="wp-agentur-case-card__eyebrow">Ergebnis</span>
-						<h3>Mehr Wirkung aus denselben Kanälen</h3>
+						<h3><?php echo esc_html( $e3_cpl_delta_label ); ?></h3>
 						<div class="wp-agentur-case-card__metrics" role="list" aria-label="Case Kennzahlen">
 							<div role="listitem">
+								<strong><?php echo esc_html( $e3_cpl_before . ' auf ' . $e3_cpl_after ); ?></strong>
+								<span>Kosten pro Anfrage gesenkt</span>
+							</div>
+							<div role="listitem">
 								<strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong>
-								<span>CPL</span>
+								<span>niedrigere Kosten pro Anfrage</span>
 							</div>
 							<div role="listitem">
 								<strong><?php echo esc_html( $e3_lead_count ); ?></strong>
-								<span>Leads im System</span>
+								<span>qualifizierte Anfragen</span>
 							</div>
 							<div role="listitem">
 								<strong><?php echo esc_html( $e3_sales_conversion ); ?></strong>
-								<span>Sales-Conversion</span>
+								<span>Abschlussquote</span>
 							</div>
 						</div>
 					</article>
 					<article class="wp-agentur-case-card wp-agentur-case-card--cta">
-						<span class="wp-agentur-case-card__eyebrow">CTA</span>
+						<span class="wp-agentur-case-card__eyebrow">Vertiefung</span>
 						<h3>Die Fallstudie im Detail lesen</h3>
-						<p>Wenn Sie sehen wollen, wie Reihenfolge, Tracking und Conversion-Pfad zusammengewirkt haben, gehen Sie in die offene E3 Case Study.</p>
-						<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_case_e3" data-track-category="trust">Case Study lesen</a>
-						<p class="wp-agentur-case-card__support"><a href="<?php echo esc_url( $cases_url ); ?>" data-track-action="cta_agentur_case_results" data-track-category="trust">Weitere Ergebnisse ansehen</a></p>
+						<p>Wenn Sie sehen wollen, wie Reihenfolge, Tracking und Conversion-Pfad zusammengewirkt haben, gehen Sie in den offenen E3-Case.</p>
+						<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_case_e3" data-track-category="trust"><?php echo esc_html( $e3_cta_label ); ?></a>
+						<p class="wp-agentur-case-card__support"><a href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_agentur_case_marketcheck" data-track-category="lead_gen"><?php echo esc_html( $marketcheck_cta_label ); ?></a></p>
 					</article>
 				</div>
 			</div>
@@ -545,12 +620,17 @@ get_header();
 		<section id="cta" class="nx-section">
 			<div class="nx-container">
 				<div class="nx-cta-box wp-agentur-cta-box">
-					<h2>Prüfen wir, an welcher Stelle Ihr WordPress-System heute Nachfrage verliert.</h2>
-					<p>Die Website-Analyse zeigt, ob Angebotsseiten, Datenlage, CTA-Führung oder technische Reibung zuerst angegangen werden sollten und ob ein Relaunch überhaupt sinnvoll ist.</p>
-					<a href="<?php echo esc_url( $website_analysis_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_final_audit" data-track-category="lead_gen"><?php echo esc_html( $website_analysis_cta_label ); ?></a>
+					<h2>Ich prüfe, an welcher Stelle Ihr WordPress-System heute Nachfrage verliert.</h2>
+					<p>Der Marktcheck zeigt, ob Angebotsseiten, Datenlage, CTA-Führung oder technische Reibung zuerst angegangen werden sollten und ob ein Relaunch überhaupt sinnvoll ist.</p>
+					<div class="wp-agentur-actions wp-agentur-actions--center">
+						<a href="<?php echo esc_url( $analysis_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_final_marketcheck" data-track-category="lead_gen"><?php echo esc_html( $marketcheck_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_final_e3" data-track-category="trust"><?php echo esc_html( $e3_cta_label ); ?></a>
+					</div>
 					<p class="wp-cta-desc mt-1">Kein Pitch. Klare Priorisierung. Wenn fachlich sinnvoll, kann daraus als nächster Schritt eine vertiefte Analyse, eine fokussierte Korrektur oder eine laufende Weiterentwicklung entstehen.</p>
 					<p class="wp-cta-desc mb-0">
 						<a href="<?php echo esc_url( $about_url ); ?>" data-track-action="cta_agentur_final_about" data-track-category="navigation">Mehr über meine Arbeitsweise</a>
+						<span aria-hidden="true"> · </span>
+						<a href="<?php echo esc_url( $wgos_url ); ?>" data-track-action="cta_agentur_final_wgos" data-track-category="navigation">WGOS ansehen</a>
 						<span aria-hidden="true"> · </span>
 						Wenn der Scope schon klar ist:
 						<a href="<?php echo esc_url( $implementation_contact_url ); ?>" data-track-action="cta_agentur_final_contact" data-track-category="navigation">direkt Kontakt</a>

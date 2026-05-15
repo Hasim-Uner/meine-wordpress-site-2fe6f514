@@ -15,7 +15,7 @@
 }
 
 .wp-agentur-hero .nx-hero__title {
-  max-width: 22ch;
+  max-width: 25ch;
   margin-inline: 0;
   font-size: clamp(2rem, 3.8vw, 3.2rem);
 }
@@ -208,6 +208,27 @@
   line-height: 1.55;
 }
 
+.wp-agentur-hero__proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1rem 0 1.15rem;
+}
+
+.wp-agentur-hero__proof span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.35rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--nx-border);
+  border-radius: var(--nx-radius-pill);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  color: var(--nx-text);
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
 .wp-agentur-proof {
   padding-top: 0;
 }
@@ -322,6 +343,69 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.wp-agentur-segment-switch {
+  padding-top: clamp(2rem, 4vw, 3rem);
+}
+
+.wp-agentur-segment-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.wp-agentur-segment-card {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  padding: clamp(1.35rem, 3vw, 1.8rem);
+  border: 1px solid var(--nx-border);
+  border-radius: var(--nx-radius-xl);
+  background: var(--nx-card-gradient);
+  box-shadow: var(--nx-shadow-sm);
+}
+
+.wp-agentur-segment-card--focus {
+  border-color: hsl(var(--accent-hsl) / 0.34);
+  background:
+    linear-gradient(180deg, hsl(var(--accent-hsl) / 0.11), rgba(255, 255, 255, 0.02)),
+    var(--nx-card-gradient);
+}
+
+.wp-agentur-segment-card__tag {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 1.9rem;
+  padding: 0.32rem 0.7rem;
+  border: 1px solid hsl(var(--accent-hsl) / 0.22);
+  border-radius: var(--nx-radius-pill);
+  background: hsl(var(--accent-hsl) / 0.1);
+  color: var(--nx-accent-text);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.wp-agentur-segment-card h3 {
+  margin: 0;
+  color: var(--nx-text);
+  font-size: clamp(1.24rem, 2vw, 1.5rem);
+  line-height: 1.18;
+}
+
+.wp-agentur-segment-card p {
+  margin: 0;
+  color: var(--nx-text-secondary);
+  line-height: 1.7;
+}
+
+.wp-agentur-segment-card .nx-btn {
+  width: fit-content;
+  margin-top: 0.2rem;
 }
 
 .wp-agentur-pain-grid {
@@ -545,6 +629,49 @@
   margin-top: 1.5rem;
 }
 
+.asset-core-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.asset-core-card {
+  display: grid;
+  gap: 0.6rem;
+  min-height: 100%;
+  padding: clamp(1rem, 2.5vw, 1.35rem);
+  border: 1px solid var(--nx-border);
+  border-radius: var(--nx-radius-xl);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+}
+
+.asset-core-card__num {
+  color: var(--nx-accent-text);
+  font-family: var(--nx-font-heading, Outfit, sans-serif);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.asset-core-card h3,
+.asset-library-head h3 {
+  margin: 0;
+  color: var(--nx-text);
+  font-family: var(--nx-font-heading, Outfit, sans-serif);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.asset-core-card h3 {
+  font-size: clamp(1.08rem, 1.8vw, 1.25rem);
+}
+
+.asset-core-card p {
+  margin: 0;
+  color: var(--nx-text-secondary);
+  line-height: 1.58;
+}
+
 .asset-hybrid {
   display: grid;
   gap: clamp(1.2rem, 3vw, 2rem);
@@ -598,6 +725,23 @@
   content: "•";
   color: var(--nx-accent-text);
   font-weight: 800;
+}
+
+.asset-library-head {
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  max-width: 48rem;
+  margin: 2rem auto 0;
+  text-align: center;
+}
+
+.asset-library-head .wp-agentur-eyebrow {
+  margin-bottom: 0;
+}
+
+.asset-library-head h3 {
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
 }
 
 .asset-area {
@@ -1006,6 +1150,11 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .wp-agentur-segment-grid,
+  .asset-core-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .wgos-steps,
   .seo-subclusters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1038,6 +1187,15 @@
     grid-template-columns: 1fr;
   }
 
+  .wp-agentur-segment-grid,
+  .asset-core-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wp-agentur-segment-card .nx-btn {
+    width: 100%;
+  }
+
   .wgos-steps,
   .wgos-vs,
   .seo-subclusters {
@@ -1059,6 +1217,14 @@
   }
 
   .wp-agentur-pain-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .wp-agentur-segment-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .asset-core-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
