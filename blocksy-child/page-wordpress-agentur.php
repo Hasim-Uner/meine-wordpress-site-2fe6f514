@@ -14,10 +14,15 @@ $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_ge
 $agentur_url = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 $wgos_url = $primary_urls['wgos'] ?? trailingslashit( $agentur_url ) . '#wgos';
 $asset_overview_url = $primary_urls['wgos_assets'] ?? trailingslashit( $agentur_url ) . '#asset-uebersicht';
-$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : ( $primary_urls['request'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
-$marketcheck_url = $analysis_url;
+$marketcheck_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : ( $primary_urls['request'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
 $about_url = $primary_urls['about'] ?? nexus_get_page_url( [ 'uber-mich' ] );
 $contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : ( $primary_urls['contact'] ?? home_url( '/kontakt/' ) );
+$website_potential_url = add_query_arg(
+	[
+		'type' => 'analysis',
+	],
+	$contact_url
+);
 $implementation_contact_url = add_query_arg(
 	[
 		'type' => 'implementation',
@@ -36,7 +41,6 @@ $e3_lead_count = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count',
 $e3_sales_conversion = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '12 %' ) : '12 %';
 $canonical_ownership_sentence = function_exists( 'nexus_get_public_ownership_sentence' ) ? nexus_get_public_ownership_sentence() : 'Code, Inhalte, Zugänge und Setups bleiben bei Ihnen. Laufende Zusammenarbeit bedeutet Weiterentwicklung, nicht Abhängigkeit.';
 $website_potential_cta_label = 'Website-Potenzial prüfen';
-$marketcheck_cta_label = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Marktcheck starten';
 $e3_cta_label = 'E3-Case ansehen';
 $hero_microcopy = 'Klarheit vor Relaunch · SEO, Tracking, Conversion · kein generischer Agentur-Pitch';
 $e3_cpl_delta_label = sprintf(
@@ -169,7 +173,7 @@ get_header();
 						Ich verbinde WordPress-Entwicklung, technisches SEO, Tracking und Conversion-Führung — damit Ihre Website nicht nur sichtbar ist, sondern nachvollziehbar qualifizierte Anfragen bringt.
 					</p>
 					<div class="wp-agentur-actions wp-agentur-actions--hero">
-						<a href="<?php echo esc_url( $analysis_url ); ?>" class="nx-btn nx-btn--primary wp-agentur-hero__primary" data-track-action="cta_agentur_hero_potential" data-track-category="lead_gen"><?php echo esc_html( $website_potential_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $website_potential_url ); ?>" class="nx-btn nx-btn--primary wp-agentur-hero__primary" data-track-action="cta_agentur_hero_potential" data-track-category="lead_gen"><?php echo esc_html( $website_potential_cta_label ); ?></a>
 						<a href="<?php echo esc_url( $e3_url ); ?>" class="wp-agentur-text-link" data-track-action="cta_agentur_hero_e3" data-track-category="trust"><?php echo esc_html( $e3_cta_label ); ?></a>
 					</div>
 					<p class="nx-cta-microcopy"><?php echo esc_html( $hero_microcopy ); ?></p>
@@ -214,7 +218,7 @@ get_header();
 						<span class="wp-agentur-segment-card__tag">B2B</span>
 						<h3>Für andere B2B-Unternehmen</h3>
 						<p>Wenn WordPress bereits ein relevanter Kanal ist, prüfe ich zuerst, ob SEO, Tracking, Angebotsseiten oder Conversion-Führung den größten Hebel liefern.</p>
-						<a href="<?php echo esc_url( $analysis_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_segment_b2b" data-track-category="lead_gen"><?php echo esc_html( $website_potential_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $website_potential_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_segment_b2b" data-track-category="lead_gen"><?php echo esc_html( $website_potential_cta_label ); ?></a>
 					</article>
 				</div>
 			</div>
@@ -324,7 +328,7 @@ get_header();
 						<?php endforeach; ?>
 					</ul>
 					<div class="wp-agentur-actions wp-agentur-actions--center">
-						<a href="<?php echo esc_url( $analysis_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_services_potential" data-track-category="lead_gen"><?php echo esc_html( $website_potential_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $website_potential_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_services_potential" data-track-category="lead_gen"><?php echo esc_html( $website_potential_cta_label ); ?></a>
 						<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_services_wgos" data-track-category="navigation">Arbeitsweise ansehen</a>
 					</div>
 				</div>
@@ -508,7 +512,7 @@ get_header();
 					</article>
 				</div>
 				<p class="seo-cta">
-					Ob technisches SEO, Tracking oder Conversion-Optimierung bei Ihrer Website heute den größten Hebel hat, zeigt die <a href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_agentur_seo_potential" data-track-category="lead_gen">Potenzialprüfung</a>.
+					Ob technisches SEO, Tracking oder Conversion-Optimierung bei Ihrer Website heute den größten Hebel hat, zeigt die <a href="<?php echo esc_url( $website_potential_url ); ?>" data-track-action="cta_agentur_seo_potential" data-track-category="lead_gen">Potenzialprüfung</a>.
 				</p>
 			</div>
 		</section>
@@ -538,7 +542,7 @@ get_header();
 						<li><span class="check-icon">→</span><div>Für Unternehmen mit relevanter Website und regelmäßigem Traffic, nicht für Low-Traffic-Projekte.</div></li>
 					</ul>
 					<p class="wp-agentur-section-intro">
-						WordPress Wartung Hannover bleibt ein sekundärer Pfad: über den <a href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_agentur_wartung_contact" data-track-category="navigation">Kontaktpfad</a> oder direkt in der <a href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_agentur_wartung_potential" data-track-category="lead_gen">Potenzialprüfung</a> einordnen.
+						WordPress Wartung Hannover bleibt ein sekundärer Pfad: über den <a href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_agentur_wartung_contact" data-track-category="navigation">Kontaktpfad</a> oder direkt in der <a href="<?php echo esc_url( $website_potential_url ); ?>" data-track-action="cta_agentur_wartung_potential" data-track-category="lead_gen">Potenzialprüfung</a> einordnen.
 					</p>
 				</div>
 			</div>
@@ -585,7 +589,7 @@ get_header();
 						<h3>Die Fallstudie im Detail lesen</h3>
 						<p>Wenn Sie sehen wollen, wie Reihenfolge, Tracking und Conversion-Pfad zusammengewirkt haben, gehen Sie in den offenen E3-Case.</p>
 						<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_case_e3" data-track-category="trust"><?php echo esc_html( $e3_cta_label ); ?></a>
-						<p class="wp-agentur-case-card__support"><a href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_agentur_case_marketcheck" data-track-category="lead_gen"><?php echo esc_html( $marketcheck_cta_label ); ?></a></p>
+						<p class="wp-agentur-case-card__support"><a href="<?php echo esc_url( $marketcheck_url ); ?>" data-track-action="cta_agentur_case_marketcheck" data-track-category="lead_gen">Zum Anfrage-System für Solar &amp; Wärmepumpe</a></p>
 					</article>
 				</div>
 			</div>
@@ -621,9 +625,9 @@ get_header();
 			<div class="nx-container">
 				<div class="nx-cta-box wp-agentur-cta-box">
 					<h2>Ich prüfe, an welcher Stelle Ihr WordPress-System heute Nachfrage verliert.</h2>
-					<p>Der Marktcheck zeigt, ob Angebotsseiten, Datenlage, CTA-Führung oder technische Reibung zuerst angegangen werden sollten und ob ein Relaunch überhaupt sinnvoll ist.</p>
+					<p>Die Potenzialprüfung zeigt, ob Angebotsseiten, Datenlage, CTA-Führung oder technische Reibung zuerst angegangen werden sollten und ob ein Relaunch überhaupt sinnvoll ist.</p>
 					<div class="wp-agentur-actions wp-agentur-actions--center">
-						<a href="<?php echo esc_url( $analysis_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_final_marketcheck" data-track-category="lead_gen"><?php echo esc_html( $marketcheck_cta_label ); ?></a>
+						<a href="<?php echo esc_url( $website_potential_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_agentur_final_potential" data-track-category="lead_gen"><?php echo esc_html( $website_potential_cta_label ); ?></a>
 						<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_agentur_final_e3" data-track-category="trust"><?php echo esc_html( $e3_cta_label ); ?></a>
 					</div>
 					<p class="wp-cta-desc mt-1">Kein Pitch. Klare Priorisierung. Wenn fachlich sinnvoll, kann daraus als nächster Schritt eine vertiefte Analyse, eine fokussierte Korrektur oder eine laufende Weiterentwicklung entstehen.</p>
