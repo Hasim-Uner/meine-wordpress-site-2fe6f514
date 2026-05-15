@@ -79,7 +79,7 @@ function nexus_get_blog_posts_url() {
  * @return string
  */
 function nexus_get_blog_notify_intent_post_type() {
-	return 'nexus_blog_notify_intent';
+	return 'nexus_blog_notify';
 }
 
 /**

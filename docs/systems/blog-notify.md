@@ -27,7 +27,7 @@ Ziel:
 1. Besucher sieht auf Blog-Home, Kategorie-/Archivseiten oder unter einzelnen Artikeln das Formular `Neue Artikel per E-Mail`.
 2. `blocksy-child/assets/js/blog-notify.js` sendet `POST /wp-json/nexus/v1/blog-subscribe`.
 3. `blocksy-child/inc/blog-notify.php` prueft Honeypot, Rate Limit, Nonce und E-Mail-Adresse.
-4. WordPress speichert zuerst nur eine interne DOI-Intent-Notiz im versteckten CPT `nexus_blog_notify_intent`.
+4. WordPress speichert zuerst nur eine interne DOI-Intent-Notiz im versteckten CPT `nexus_blog_notify`.
 5. Eine DOI-Mail wird ueber `wp_mail` und den zentralen Brevo-Mail-Layer versendet.
 6. Erst beim Klick auf den Bestaetigungslink wird ein Kontakt im CPT `nexus_contact` angelegt oder ein bestehender CRM-Kontakt fuer `blog_notify` aktualisiert.
 7. Der Klick auf den Bestaetigungslink aktiviert das Abo ueber die Route `/neue-artikel-per-email/?action=confirm&token=...`.
@@ -37,7 +37,7 @@ Ziel:
 
 Pending vor DOI:
 
-- verstecktes CPT `nexus_blog_notify_intent`
+- verstecktes CPT `nexus_blog_notify`
 - `_nexus_blog_notify_email`
 - `_nexus_blog_notify_status` mit `pending|confirmed|unsubscribed`
 - `_nexus_blog_notify_confirm_token`
