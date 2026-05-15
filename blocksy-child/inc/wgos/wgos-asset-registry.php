@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function nexus_get_wgos_asset_registry_version() {
-	return '2026-03-21-wgos-assets-v5-publish-ki';
+	return '2026-05-15-wgos-assets-v6-cta-strategiegespraech';
 }
 
 /**
