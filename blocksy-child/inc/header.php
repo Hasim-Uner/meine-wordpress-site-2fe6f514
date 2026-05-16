@@ -242,7 +242,6 @@ function nexus_strip_side_funnel_nav_items( $items, $args ) {
 		'/kostenlose-tools/',
 		'/tools/',
 		'/website-performance-analyse/',
-		'/roi-rechner/',
 	];
 
 	$filtered_items = [];

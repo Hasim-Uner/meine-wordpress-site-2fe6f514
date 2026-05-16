@@ -776,7 +776,6 @@ function hu_get_seo_meta() {
 		'website-fuer-solar-und-waermepumpen-anbieter',
 		'wgos-systemlandkarte',
 		'wordpress-agentur',
-		'roi-rechner',
 		'seo',
 	];
 
@@ -1026,7 +1025,6 @@ function nexus_get_sitemap_excluded_slugs() {
 		'tools',
 		'website-performance-analyse',
 		'website-fuer-solar-und-waermepumpen-anbieter',
-		'roi-rechner',
 	];
 }
 

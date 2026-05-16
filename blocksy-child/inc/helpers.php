@@ -1100,6 +1100,41 @@ function nexus_maybe_ensure_kunden_gewinnen_solarteure_page() {
 add_action( 'init', 'nexus_maybe_ensure_kunden_gewinnen_solarteure_page', 27 );
 
 /**
+ * Move the legacy /roi-rechner/ page to the trash if it still exists.
+ *
+ * Idempotent: runs once via an option flag and leaves the page recoverable
+ * in the trash. The /roi-rechner/ slug stays as a 301 redirect via the
+ * legacy offer redirect map, so external backlinks are not broken.
+ *
+ * @return void
+ */
+function nexus_maybe_cleanup_legacy_roi_rechner_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$flag = 'nexus_legacy_roi_rechner_trashed';
+
+	if ( '1' === (string) get_option( $flag ) ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'roi-rechner' );
+
+	if ( ! ( $page instanceof WP_Post ) ) {
+		update_option( $flag, '1', false );
+		return;
+	}
+
+	if ( 'trash' !== $page->post_status ) {
+		wp_trash_post( (int) $page->ID );
+	}
+
+	update_option( $flag, '1', false );
+}
+add_action( 'init', 'nexus_maybe_cleanup_legacy_roi_rechner_page', 28 );
+
+/**
  * Map deprecated service, cluster and tool slugs to their canonical targets.
  *
  * @return array<string, string>
