@@ -3,6 +3,28 @@ body.nx-blog-header-active .ct-header {
     display: none !important;
 }
 
+/*
+ * Blocksy rendert die Offcanvas-Panels (Mobile-Burger-Inhalt) als Geschwister
+ * der .ct-header. Wenn der eigene Header aktiv ist, würde der alte
+ * Blocksy-Menüinhalt zusätzlich im Mobile-Burger erscheinen. Hier komplett
+ * ausblenden, inkl. Trigger-Buttons und Mega-Menü-Container.
+ */
+body.nx-custom-header-active .ct-panel,
+body.nx-blog-header-active .ct-panel,
+body.nx-custom-header-active .ct-panel-default,
+body.nx-blog-header-active .ct-panel-default,
+body.nx-custom-header-active .ct-header-trigger,
+body.nx-blog-header-active .ct-header-trigger,
+body.nx-custom-header-active [data-id="trigger"],
+body.nx-blog-header-active [data-id="trigger"],
+body.nx-custom-header-active .ct-toggle-close,
+body.nx-blog-header-active .ct-toggle-close,
+body.nx-custom-header-active .ct-mobile-menu,
+body.nx-blog-header-active .ct-mobile-menu {
+    display: none !important;
+    visibility: hidden !important;
+}
+
 .nx-site-header {
     --nx-site-header-shell-height: 85px;
     position: fixed;
@@ -129,6 +151,77 @@ body.nx-blog-header-active .ct-header {
     display: none !important;
 }
 
+/* ── Energy/Money-Page Minimal-Header ─────────────────────────── */
+/*
+ * Auf der Money-Page bleibt der Header dauerhaft eingeblendet — der CTA muss
+ * auch im unteren Drittel der 10-Sektionen-Seite jederzeit erreichbar sein.
+ * Hide-on-scroll-Logik aus site-header.js wird hier per CSS überstimmt.
+ */
+.nx-site-header--energy {
+    pointer-events: none;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+.nx-site-header__shell--energy {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    justify-items: start;
+    min-height: 74px;
+    column-gap: clamp(1rem, 2vw, 2rem);
+}
+
+.nx-site-header__shell--energy .nx-site-header__brand {
+    pointer-events: auto;
+}
+
+.nx-site-header__energy-cta {
+    pointer-events: auto;
+    justify-self: end;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--accent-hover) 0%, var(--accent) 100%);
+    color: var(--text-inverse);
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 16px 34px hsl(var(--accent-hsl) / 0.22);
+    transition: transform var(--nx-duration-fast) var(--nx-ease),
+                box-shadow var(--nx-duration-fast) var(--nx-ease),
+                background var(--nx-duration-fast) var(--nx-ease);
+}
+
+.nx-site-header__energy-cta:hover,
+.nx-site-header__energy-cta:focus-visible {
+    color: var(--text-inverse);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--accent-hover) 82%, white) 0%, var(--accent-hover) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 18px 38px hsl(var(--accent-hsl) / 0.28);
+}
+
+.nx-site-header__energy-cta-label {
+    font-size: 0.95rem;
+}
+
+.nx-site-header__energy-cta-microcopy {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    opacity: 0.78;
+    text-transform: uppercase;
+}
+
+.nx-site-header__energy-cta-microcopy::before {
+    content: "· ";
+    margin-right: 0.1rem;
+}
+
 .nx-site-header.nexus-flight-mode .nx-site-header__shell {
     min-height: 74px;
     transform: translateY(-4px);
@@ -151,6 +244,10 @@ body.nx-blog-header-active .ct-header {
     text-transform: uppercase;
     color: var(--nx-text-dim);
     white-space: nowrap;
+}
+
+.nx-site-header__eyebrow:empty {
+    display: none;
 }
 
 .nx-site-header__mobile-eyebrow {
@@ -360,12 +457,21 @@ body.nx-blog-header-active .ct-header {
         grid-template-columns: minmax(0, 1fr) auto;
     }
 
+    .nx-site-header__shell--energy {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
     .nx-site-header__nav {
         display: none;
     }
 
     .nx-site-header__toggle {
         display: inline-flex;
+    }
+
+    /* Auf der Money-Page wird die Hauptnav unterdrückt — kein Burger nötig. */
+    .nx-site-header--energy .nx-site-header__toggle {
+        display: none;
     }
 }
 
@@ -445,5 +551,24 @@ body.nx-blog-header-active .ct-header {
         min-height: 34px;
         padding: 0 12px;
         font-size: 0.78rem;
+    }
+
+    .nx-site-header__shell--energy {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.5rem;
+    }
+
+    .nx-site-header__energy-cta {
+        min-height: 36px;
+        padding: 0 14px;
+        font-size: 0.85rem;
+    }
+
+    .nx-site-header__energy-cta-label {
+        font-size: 0.85rem;
+    }
+
+    .nx-site-header__energy-cta-microcopy {
+        font-size: 0.62rem;
     }
 }

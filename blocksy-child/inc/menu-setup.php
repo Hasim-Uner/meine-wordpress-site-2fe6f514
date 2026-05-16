@@ -3,7 +3,7 @@
  * NEXUS MENU SETUP
  *
  * Erstellt das fokussierte Hauptmenü für die Neukunden-Navigation:
- * Solar & Wärmepumpen | WordPress Agentur | Ergebnisse | Über mich | Marktcheck
+ * Solar & Wärmepumpen | WordPress Agentur | Ergebnisse | Über Haşim | Marktcheck · 60 Sek.
  *
  * Einmal-Setup: Wird beim Theme-Switch oder manuell via ?nexus_rebuild_menu=1 ausgelöst.
  *
@@ -140,10 +140,10 @@ function nexus_setup_main_menu() {
 		'menu-item-classes'   => 'nav-results-link',
 	] );
 
-	// ── 4. Über mich (Top-Level) ──────────────────────────────────
+	// ── 4. Über Haşim (Top-Level) ─────────────────────────────────
 	$about_id = nexus_get_page_id( [ 'uber-mich' ] );
 	wp_update_nav_menu_item( $menu_id, 0, [
-		'menu-item-title'     => 'Über mich',
+		'menu-item-title'     => 'Über Haşim',
 		'menu-item-object'    => 'page',
 		'menu-item-object-id' => $about_id,
 		'menu-item-type'      => $about_id ? 'post_type' : 'custom',
@@ -154,7 +154,7 @@ function nexus_setup_main_menu() {
 	// ── 5. Marktcheck CTA (Top-Level) ──────────────────────────────
 	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	wp_update_nav_menu_item( $menu_id, 0, [
-		'menu-item-title'     => 'Marktcheck',
+		'menu-item-title'     => 'Marktcheck · 60 Sek.',
 		'menu-item-object'    => 'custom',
 		'menu-item-object-id' => 0,
 		'menu-item-type'      => 'custom',
@@ -293,11 +293,17 @@ add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
 			continue;
 		}
 
+		$item_title_raw = isset( $item->title ) ? wp_strip_all_tags( (string) $item->title ) : '';
+		if ( 'Über mich' === $item_title_raw ) {
+			$item->title = 'Über Haşim';
+			continue;
+		}
+
 		if ( ! nexus_is_audit_cta_menu_item( $item ) ) {
 			continue;
 		}
 
-		$item->title = 'Marktcheck';
+		$item->title = 'Marktcheck · 60 Sek.';
 		$item->url   = $analysis_url;
 
 		if ( ! isset( $item->classes ) || ! is_array( $item->classes ) ) {
@@ -328,6 +334,7 @@ add_filter( 'nav_menu_link_attributes', function ( $atts, $item ) {
 		'e3 proof'            => 'e3_proof',
 		'e3 new energy'       => 'e3_proof',
 		'über mich'           => 'about',
+		'über haşim'          => 'about',
 	];
 
 	foreach ( $track_map as $label => $track_key ) {

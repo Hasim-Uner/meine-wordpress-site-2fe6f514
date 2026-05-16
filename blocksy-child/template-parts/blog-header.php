@@ -94,7 +94,7 @@ $primary_items = [
 		'active' => nexus_is_results_context(),
 	],
 	[
-		'label'  => __( 'Über mich', 'blocksy-child' ),
+		'label'  => __( 'Über Haşim', 'blocksy-child' ),
 		'url'    => $about_url,
 		'active' => is_page( nexus_get_page_id( [ 'uber-mich' ] ) ),
 	],

@@ -117,7 +117,7 @@ function nexus_get_site_header_fallback_items() {
 	$solar_url    = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 	$agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 	$results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
-	$request_cta  = 'Marktcheck';
+	$request_cta  = 'Marktcheck · 60 Sek.';
 
 	return [
 		[
@@ -142,7 +142,7 @@ function nexus_get_site_header_fallback_items() {
 			'track'  => 'results',
 		],
 		[
-			'label'  => __( 'Über mich', 'blocksy-child' ),
+			'label'  => __( 'Über Haşim', 'blocksy-child' ),
 			'url'    => $primary_urls['about'] ?? home_url( '/uber-mich/' ),
 			'active' => $about_page_id ? is_page( $about_page_id ) : false,
 			'class'  => '',
@@ -280,12 +280,12 @@ function nexus_energy_nav_cta_label( $items, $args ) {
 	}
 
 	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-	$request_cta = 'Marktcheck';
+	$request_cta = 'Marktcheck · 60 Sek.';
 
 	foreach ( $items as $item ) {
 		$legacy_analysis_label = 'Analyse ' . 'starten';
 		$legacy_diagnose_label = 'System-Diagnose ' . 'starten';
-		if ( in_array( $item->title, [ $legacy_analysis_label, $legacy_diagnose_label, 'System-Diagnose', 'Marktcheck', 'Audit starten', 'System-Diagnose anfragen', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
+		if ( in_array( $item->title, [ $legacy_analysis_label, $legacy_diagnose_label, 'System-Diagnose', 'Marktcheck', 'Marktcheck · 60 Sek.', 'Audit starten', 'System-Diagnose anfragen', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
 			$item->title = $request_cta;
 			$item->url   = $request_url;
 			break;
@@ -303,6 +303,11 @@ add_filter( 'wp_nav_menu_objects', 'nexus_energy_nav_cta_label', 20, 2 );
  */
 function nexus_get_site_header_eyebrow() {
 	if ( function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context() ) {
+		return '';
+	}
+
+	// Auf der Homepage wiederholt der Hero die Positionierung — Tagline würde nur doppeln.
+	if ( is_front_page() ) {
 		return '';
 	}
 
