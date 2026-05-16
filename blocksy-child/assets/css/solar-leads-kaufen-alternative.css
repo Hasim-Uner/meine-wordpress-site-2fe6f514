@@ -1,0 +1,398 @@
+/* ==========================================================================
+   Intercept-Landingpage: /solar-leads-kaufen-alternative/
+   Suchintent: "Solar Leads kaufen", "Photovoltaik Leads kaufen",
+   "Wärmepumpen Leads kaufen". Stil: dark, cinematic, kantig.
+   ========================================================================== */
+
+.hu-intercept {
+	color: var(--nx-text, #f5f1ea);
+	background: var(--nx-bg, #0a0a0a);
+	font-family: var(--nx-font-sans, "Figtree", system-ui, sans-serif);
+}
+
+.hu-intercept__container {
+	width: min(100%, 1180px);
+	margin: 0 auto;
+	padding: 0 clamp(20px, 4vw, 56px);
+}
+
+.hu-intercept__container--centered {
+	text-align: center;
+}
+
+.hu-intercept__eyebrow {
+	font-size: 0.82rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--nx-accent, #c9974a);
+	margin: 0 0 18px;
+	font-weight: 600;
+}
+
+.hu-intercept__title {
+	font-size: clamp(2.2rem, 5vw, 3.6rem);
+	line-height: 1.08;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	margin: 0 0 24px;
+	max-width: 22ch;
+}
+
+.hu-intercept__title strong {
+	color: var(--nx-accent, #c9974a);
+}
+
+.hu-intercept__lead {
+	font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+	line-height: 1.6;
+	max-width: 62ch;
+	margin: 0 0 36px;
+	color: rgba(245, 241, 234, 0.86);
+}
+
+.hu-intercept__lead strong {
+	color: #fff;
+	font-weight: 700;
+}
+
+.hu-intercept__h2 {
+	font-size: clamp(1.7rem, 3.6vw, 2.4rem);
+	line-height: 1.18;
+	font-weight: 700;
+	letter-spacing: -0.015em;
+	margin: 0 0 32px;
+	max-width: 28ch;
+}
+
+.hu-intercept__section-lead {
+	font-size: clamp(1rem, 1.5vw, 1.15rem);
+	line-height: 1.6;
+	max-width: 58ch;
+	color: rgba(245, 241, 234, 0.78);
+	margin: -12px 0 36px;
+}
+
+.hu-intercept__hero,
+.hu-intercept__compare,
+.hu-intercept__why,
+.hu-intercept__system,
+.hu-intercept__faq,
+.hu-intercept__final {
+	padding: clamp(72px, 10vw, 130px) 0;
+	border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.hu-intercept__hero {
+	border-top: 0;
+	background:
+		radial-gradient(circle at 18% 12%, rgba(201, 151, 74, 0.12), transparent 55%),
+		radial-gradient(circle at 92% 88%, rgba(201, 151, 74, 0.05), transparent 60%),
+		var(--nx-bg, #0a0a0a);
+}
+
+.hu-intercept__cta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px;
+}
+
+.hu-intercept__cta-primary,
+.hu-intercept__cta-secondary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 16px 28px;
+	border-radius: 4px;
+	font-weight: 600;
+	font-size: 1rem;
+	letter-spacing: 0.01em;
+	text-decoration: none;
+	transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+	will-change: transform;
+}
+
+.hu-intercept__cta-primary {
+	background: var(--nx-accent, #c9974a);
+	color: #0a0a0a;
+}
+
+.hu-intercept__cta-primary:hover,
+.hu-intercept__cta-primary:focus-visible {
+	background: #e0ad5e;
+	transform: translateY(-1px);
+	color: #0a0a0a;
+}
+
+.hu-intercept__cta-secondary {
+	background: transparent;
+	color: #f5f1ea;
+	border: 1px solid rgba(245, 241, 234, 0.32);
+}
+
+.hu-intercept__cta-secondary:hover,
+.hu-intercept__cta-secondary:focus-visible {
+	border-color: var(--nx-accent, #c9974a);
+	color: var(--nx-accent, #c9974a);
+}
+
+/* ── Compare-Grid ───────────────────────────────────────── */
+
+.hu-intercept__grid {
+	display: grid;
+	gap: clamp(20px, 2.5vw, 32px);
+}
+
+.hu-intercept__grid--two {
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+}
+
+.hu-intercept__grid--four {
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+
+.hu-intercept__panel {
+	padding: clamp(28px, 3vw, 40px);
+	border-radius: 6px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	background: rgba(255, 255, 255, 0.02);
+}
+
+.hu-intercept__panel--negative {
+	border-color: rgba(200, 80, 80, 0.25);
+	background: rgba(200, 80, 80, 0.04);
+}
+
+.hu-intercept__panel--positive {
+	border-color: rgba(201, 151, 74, 0.32);
+	background: rgba(201, 151, 74, 0.05);
+}
+
+.hu-intercept__panel-title {
+	margin: 0 0 24px;
+	font-size: 1.25rem;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+}
+
+.hu-intercept__panel--negative .hu-intercept__panel-title {
+	color: #e88989;
+}
+
+.hu-intercept__panel--positive .hu-intercept__panel-title {
+	color: var(--nx-accent, #c9974a);
+}
+
+.hu-intercept__facts {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.hu-intercept__facts li {
+	display: grid;
+	grid-template-columns: minmax(110px, 140px) 1fr;
+	gap: 18px;
+	align-items: baseline;
+	padding-bottom: 18px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.hu-intercept__facts li:last-child {
+	border-bottom: 0;
+	padding-bottom: 0;
+}
+
+.hu-intercept__fact-key {
+	font-size: 1.4rem;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	color: #fff;
+	line-height: 1.1;
+}
+
+.hu-intercept__panel--negative .hu-intercept__fact-key {
+	color: #e88989;
+}
+
+.hu-intercept__panel--positive .hu-intercept__fact-key {
+	color: var(--nx-accent, #c9974a);
+}
+
+.hu-intercept__fact-label {
+	color: rgba(245, 241, 234, 0.78);
+	font-size: 0.95rem;
+	line-height: 1.5;
+}
+
+.hu-intercept__compare-note {
+	margin: 32px 0 0;
+	font-size: 0.95rem;
+	color: rgba(245, 241, 234, 0.66);
+}
+
+.hu-intercept__compare-note a {
+	color: var(--nx-accent, #c9974a);
+}
+
+/* ── Why-Cards ──────────────────────────────────────────── */
+
+.hu-intercept__card {
+	padding: 28px;
+	border-radius: 6px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	background: rgba(255, 255, 255, 0.02);
+}
+
+.hu-intercept__card-title {
+	margin: 0 0 12px;
+	font-size: 1.1rem;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	color: #fff;
+}
+
+.hu-intercept__card-text {
+	margin: 0;
+	font-size: 0.95rem;
+	line-height: 1.55;
+	color: rgba(245, 241, 234, 0.78);
+}
+
+/* ── System-Layers (ol) ─────────────────────────────────── */
+
+.hu-intercept__layers {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.hu-intercept__layer {
+	display: grid;
+	grid-template-columns: 72px 1fr;
+	gap: 28px;
+	padding: 24px 28px;
+	border-radius: 6px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	background: rgba(255, 255, 255, 0.02);
+}
+
+.hu-intercept__layer-index {
+	font-size: 1.3rem;
+	font-weight: 700;
+	color: var(--nx-accent, #c9974a);
+	letter-spacing: -0.01em;
+}
+
+.hu-intercept__layer-title {
+	margin: 0 0 8px;
+	font-size: 1.1rem;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	color: #fff;
+}
+
+.hu-intercept__layer-text {
+	margin: 0;
+	color: rgba(245, 241, 234, 0.78);
+	font-size: 0.97rem;
+	line-height: 1.55;
+}
+
+/* ── FAQ ────────────────────────────────────────────────── */
+
+.hu-intercept__faq-list {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	max-width: 820px;
+}
+
+.hu-intercept__faq-item {
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 6px;
+	padding: 18px 24px;
+	background: rgba(255, 255, 255, 0.02);
+}
+
+.hu-intercept__faq-item[open] {
+	border-color: rgba(201, 151, 74, 0.32);
+}
+
+.hu-intercept__faq-q {
+	font-size: 1rem;
+	font-weight: 600;
+	color: #fff;
+	cursor: pointer;
+	list-style: none;
+	padding-right: 24px;
+	position: relative;
+}
+
+.hu-intercept__faq-q::-webkit-details-marker {
+	display: none;
+}
+
+.hu-intercept__faq-q::after {
+	content: "+";
+	position: absolute;
+	right: 0;
+	top: -2px;
+	font-size: 1.4rem;
+	color: var(--nx-accent, #c9974a);
+	line-height: 1;
+}
+
+.hu-intercept__faq-item[open] .hu-intercept__faq-q::after {
+	content: "−";
+}
+
+.hu-intercept__faq-a {
+	margin: 14px 0 0;
+	font-size: 0.97rem;
+	line-height: 1.6;
+	color: rgba(245, 241, 234, 0.82);
+}
+
+/* ── Final-CTA ──────────────────────────────────────────── */
+
+.hu-intercept__final {
+	background:
+		radial-gradient(circle at 50% 0%, rgba(201, 151, 74, 0.1), transparent 55%),
+		var(--nx-bg, #0a0a0a);
+	border-top: 1px solid rgba(201, 151, 74, 0.2);
+}
+
+.hu-intercept__final .hu-intercept__h2 {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hu-intercept__final-text {
+	font-size: 1.1rem;
+	line-height: 1.6;
+	max-width: 56ch;
+	margin: 0 auto 32px;
+	color: rgba(245, 241, 234, 0.85);
+}
+
+.hu-intercept__final .hu-intercept__cta {
+	justify-content: center;
+}
+
+@media (max-width: 640px) {
+	.hu-intercept__facts li {
+		grid-template-columns: 1fr;
+		gap: 4px;
+	}
+
+	.hu-intercept__layer {
+		grid-template-columns: 1fr;
+		gap: 12px;
+	}
+}

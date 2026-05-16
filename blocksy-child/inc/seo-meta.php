@@ -96,12 +96,12 @@ function hu_get_forced_singular_seo_map() {
 			// 'wgos' / 'wordpress-growth-operating-system' sowie Tools-/Audit-Legacy-Routen:
 			// Seiten sind noindex oder 301, daher keine öffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
-				'title'       => 'WordPress Agentur Hannover – SEO, Wartung & Conversion',
-				'description' => 'WordPress Agentur Hannover für B2B: technisches SEO, Wartung, Tracking und Conversion als System. Mit E3-Referenz und Website-Analyse.',
+				'title'       => 'WordPress Agentur Hannover für B2B – Technisches SEO & Tracking',
+				'description' => 'B2B-WordPress-Agentur in Hannover für anspruchsvolle Mittelständler: technisches SEO, Core Web Vitals, Server-Side-Tracking und Conversion als System. E3-Referenz.',
 			],
 			'wordpress-agentur' => [
-				'title'       => 'WordPress Agentur Hannover – SEO, Wartung & Conversion',
-				'description' => 'WordPress Agentur Hannover für B2B: technisches SEO, Wartung, Tracking und Conversion als System. Mit E3-Referenz und Website-Analyse.',
+				'title'       => 'WordPress Agentur Hannover für B2B – Technisches SEO & Tracking',
+				'description' => 'B2B-WordPress-Agentur in Hannover für anspruchsvolle Mittelständler: technisches SEO, Core Web Vitals, Server-Side-Tracking und Conversion als System. E3-Referenz.',
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
@@ -131,12 +131,16 @@ function hu_get_forced_singular_seo_map() {
 			// /wordpress-seo-hannover/ und /wordpress-wartung-hannover/ sind 301 auf die Agentur-Page (Anker-Sektionen);
 			// /ki-integration-wordpress/ ist noindex. Keine eigenständigen SEO-Signale mehr nötig.
 			'solar-waermepumpen-leadgenerierung' => [
-				'title'       => 'Solar & Wärmepumpen Leadgenerierung: Portal-Alternative | Haşim Üner',
-				'description' => sprintf( 'Alternative zu Portal-Leads: eigenes Anfrage-System für Solar & Wärmepumpe statt gemietete Datensätze. E3-Referenz: %s CPL-Senkung in 9 Monaten. Diagnose vor Umsetzung.', $e3_cpl_reduction ),
+				'title'       => 'Photovoltaik & Wärmepumpen Leadgenerierung – Portal-Alternative',
+				'description' => sprintf( 'B2B-Leadgenerierung für Solar, Wärmepumpe und Speicher: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3-Referenz: %s niedrigere Cost per Lead in 9 Monaten.', $e3_cpl_reduction ),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
-				'title'       => 'Solar & Wärmepumpen Leadgenerierung: Portal-Alternative | Haşim Üner',
-				'description' => sprintf( 'Alternative zu Portal-Leads: eigenes Anfrage-System für Solar & Wärmepumpe statt gemietete Datensätze. E3-Referenz: %s CPL-Senkung in 9 Monaten. Diagnose vor Umsetzung.', $e3_cpl_reduction ),
+				'title'       => 'Photovoltaik & Wärmepumpen Leadgenerierung – Portal-Alternative',
+				'description' => sprintf( 'B2B-Leadgenerierung für Solar, Wärmepumpe und Speicher: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3-Referenz: %s niedrigere Cost per Lead in 9 Monaten.', $e3_cpl_reduction ),
+			],
+			'solar-leads-kaufen-alternative' => [
+				'title'       => 'Solar Leads kaufen? Warum eigene Anfragen den CPL senken',
+				'description' => sprintf( 'Portal-Leads für Photovoltaik und Wärmepumpe sind teuer und mehrfach verkauft. Eigene Anfrage-Systeme senken den Cost per Lead %s – wie bei E3 New Energy in 9 Monaten.', $e3_cpl_reduction ),
 			],
 		]
 	);
@@ -377,7 +381,7 @@ function hu_is_e3_methodology_case_page() {
  * @return string
  */
 function hu_get_e3_methodology_case_title() {
-	return 'Methodik-Case E3 New Energy: Wie ein eigenes Anfrage-System Portal-Abhängigkeit ablöst';
+	return 'E3 New Energy: Cost per Lead von 150 € auf 22 € – Solar-Case';
 }
 
 /**
@@ -386,7 +390,7 @@ function hu_get_e3_methodology_case_title() {
  * @return string
  */
 function hu_get_e3_methodology_case_description() {
-	return 'Solar- und Wärmepumpen-Anbieter E3 New Energy hatte zwei parallele Lead-Quellen — gekaufte Portal-Leads und kostenlose Viessmann-Partner-Anfragen. Eine Methodik-Story über strukturelle Anfrage-Architektur.';
+	return 'Wie E3 New Energy durch eigenes Anfrage-System statt Portal-Leads den CPL um über 85 % gesenkt hat: 1.750+ qualifizierte Photovoltaik- und Wärmepumpen-Anfragen, 12 % Abschlussquote, 9 Monate.';
 }
 
 /**

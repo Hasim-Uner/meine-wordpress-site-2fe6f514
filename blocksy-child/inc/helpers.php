@@ -884,6 +884,42 @@ function nexus_maybe_ensure_energy_systems_page() {
 add_action( 'init', 'nexus_maybe_ensure_energy_systems_page', 27 );
 
 /**
+ * Ensure the intercept landing page exists on /solar-leads-kaufen-alternative/.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_intercept_solar_leads_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$page_id = nexus_get_page_id( [ 'solar-leads-kaufen-alternative' ] );
+
+	if ( ! $page_id ) {
+		$page_id = wp_insert_post(
+			wp_slash(
+				[
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_title'   => 'Solar Leads kaufen – Alternative: eigenes Anfrage-System',
+					'post_name'    => 'solar-leads-kaufen-alternative',
+					'post_content' => '',
+					'post_excerpt' => 'Intercept-Landingpage für Suchintent „Solar Leads kaufen": Argumentation für eigene Anfrage-Systeme statt Portal-Leads.',
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $page_id ) ) {
+			return;
+		}
+	}
+
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-solar-leads-kaufen-alternative.php' );
+}
+add_action( 'init', 'nexus_maybe_ensure_intercept_solar_leads_page', 27 );
+
+/**
  * Map deprecated service, cluster and tool slugs to their canonical targets.
  *
  * @return array<string, string>
@@ -1125,6 +1161,7 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-wgos.php',
 		'page-wgos-assets.php',
 		'page-solar-waermepumpen-leadgenerierung.php',
+		'page-solar-leads-kaufen-alternative.php',
 	];
 
 	foreach ( $page_templates as $page_template ) {
@@ -1152,6 +1189,7 @@ function nexus_should_hide_footer_primary_cta() {
 			'ki-integration-wordpress',
 			'solar-waermepumpen-leadgenerierung',
 			'website-fuer-solar-und-waermepumpen-anbieter',
+			'solar-leads-kaufen-alternative',
 			'loesungen',
 		]
 	);
@@ -1265,6 +1303,7 @@ function nexus_force_energy_systems_route_template( $template ) {
 	$route_templates = [
 		'solar-waermepumpen-leadgenerierung'             => get_stylesheet_directory() . '/page-solar-waermepumpen-leadgenerierung.php',
 		'website-fuer-solar-und-waermepumpen-anbieter' => get_stylesheet_directory() . '/page-website-fuer-solar-und-waermepumpen-anbieter.php',
+		'solar-leads-kaufen-alternative'                 => get_stylesheet_directory() . '/page-solar-leads-kaufen-alternative.php',
 	];
 
 	foreach ( $route_templates as $slug => $forced_template ) {

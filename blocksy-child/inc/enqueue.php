@@ -260,6 +260,11 @@ function hu_enqueue_assets() {
 		wp_localize_script( 'nexus-solar-leadgen-solara-js', 'NexusMarktcheckConfig', $marktcheck_cfg );
 	}
 
+	// ── F1a-int) Intercept-Landingpage: Solar Leads kaufen Alternative ──
+	if ( is_page( 'solar-leads-kaufen-alternative' ) || is_page_template( 'page-solar-leads-kaufen-alternative.php' ) ) {
+		hu_enqueue_css( 'nexus-intercept-solar-leads-css', 'solar-leads-kaufen-alternative.css', [ 'nexus-design-system' ] );
+	}
+
 	// ── F1b) Schwester-Templates (E3-Case, Service-Landing) ────────
 	if ( is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page( 'e3-new-energy' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) || is_page_template( 'page-e3-new-energy.php' ) || is_page_template( 'page-case-e3.php' ) ) {
 		hu_enqueue_css( 'nexus-review-funnel-css', 'review-funnel.css', [ 'nexus-design-system' ] );
