@@ -1100,6 +1100,78 @@ function nexus_maybe_ensure_kunden_gewinnen_solarteure_page() {
 add_action( 'init', 'nexus_maybe_ensure_kunden_gewinnen_solarteure_page', 27 );
 
 /**
+ * Ensure the CPL deep-dive page exists on /cost-per-lead-photovoltaik/.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_cost_per_lead_photovoltaik_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$page_id = nexus_get_page_id( [ 'cost-per-lead-photovoltaik' ] );
+
+	if ( ! $page_id ) {
+		$page_id = wp_insert_post(
+			wp_slash(
+				[
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_title'   => 'Cost per Lead Photovoltaik – Was Solar-Anfragen wirklich kosten',
+					'post_name'    => 'cost-per-lead-photovoltaik',
+					'post_content' => '',
+					'post_excerpt' => 'CPL-Rechnung und drei Szenarien für Solar-, Wärmepumpen- und Speicher-Anbieter im Vergleich.',
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $page_id ) ) {
+			return;
+		}
+	}
+
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-cost-per-lead-photovoltaik.php' );
+}
+add_action( 'init', 'nexus_maybe_ensure_cost_per_lead_photovoltaik_page', 27 );
+
+/**
+ * Ensure the lead-quality page exists on /qualifizierte-pv-anfragen/.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_qualifizierte_pv_anfragen_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$page_id = nexus_get_page_id( [ 'qualifizierte-pv-anfragen' ] );
+
+	if ( ! $page_id ) {
+		$page_id = wp_insert_post(
+			wp_slash(
+				[
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_title'   => 'Qualifizierte PV-Anfragen – Vier Merkmale für hochwertige Leads',
+					'post_name'    => 'qualifizierte-pv-anfragen',
+					'post_content' => '',
+					'post_excerpt' => 'Vier Merkmale, an denen sich eine qualifizierte Photovoltaik-Anfrage erkennen lässt, plus Warnsignale.',
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $page_id ) ) {
+			return;
+		}
+	}
+
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-qualifizierte-pv-anfragen.php' );
+}
+add_action( 'init', 'nexus_maybe_ensure_qualifizierte_pv_anfragen_page', 27 );
+
+/**
  * Move the legacy /roi-rechner/ page to the trash if it still exists.
  *
  * Idempotent: runs once via an option flag and leaves the page recoverable
@@ -1382,6 +1454,8 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-eigene-leadgenerierung-vs-portale.php',
 		'page-lead-funnel-solar.php',
 		'page-kunden-gewinnen-solarteure.php',
+		'page-cost-per-lead-photovoltaik.php',
+		'page-qualifizierte-pv-anfragen.php',
 	];
 
 	foreach ( $page_templates as $page_template ) {
@@ -1415,6 +1489,8 @@ function nexus_should_hide_footer_primary_cta() {
 			'eigene-leadgenerierung-vs-portale',
 			'lead-funnel-solar',
 			'kunden-gewinnen-solarteure',
+			'cost-per-lead-photovoltaik',
+			'qualifizierte-pv-anfragen',
 			'loesungen',
 		]
 	);
@@ -1534,6 +1610,8 @@ function nexus_force_energy_systems_route_template( $template ) {
 		'eigene-leadgenerierung-vs-portale'              => get_stylesheet_directory() . '/page-eigene-leadgenerierung-vs-portale.php',
 		'lead-funnel-solar'                              => get_stylesheet_directory() . '/page-lead-funnel-solar.php',
 		'kunden-gewinnen-solarteure'                     => get_stylesheet_directory() . '/page-kunden-gewinnen-solarteure.php',
+		'cost-per-lead-photovoltaik'                     => get_stylesheet_directory() . '/page-cost-per-lead-photovoltaik.php',
+		'qualifizierte-pv-anfragen'                      => get_stylesheet_directory() . '/page-qualifizierte-pv-anfragen.php',
 	];
 
 	foreach ( $route_templates as $slug => $forced_template ) {

@@ -268,6 +268,8 @@ function hu_enqueue_assets() {
 		'eigene-leadgenerierung-vs-portale' => 'page-eigene-leadgenerierung-vs-portale.php',
 		'lead-funnel-solar'                 => 'page-lead-funnel-solar.php',
 		'kunden-gewinnen-solarteure'        => 'page-kunden-gewinnen-solarteure.php',
+		'cost-per-lead-photovoltaik'        => 'page-cost-per-lead-photovoltaik.php',
+		'qualifizierte-pv-anfragen'         => 'page-qualifizierte-pv-anfragen.php',
 	];
 
 	foreach ( $intercept_routes as $slug => $template ) {

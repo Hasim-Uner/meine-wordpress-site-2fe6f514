@@ -162,6 +162,14 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Kunden gewinnen für Solarteure – ohne Portal-Leads',
 				'description' => sprintf( 'Wie Solarteure und Wärmepumpen-Anbieter im DACH-Mittelstand systematisch Kunden gewinnen – ohne DAA, Aroundhome oder Check24. E3-Referenz: %s niedrigere Cost per Lead.', $e3_cpl_reduction ),
 			],
+			'cost-per-lead-photovoltaik' => [
+				'title'       => 'Cost per Lead Photovoltaik: Was Solar-Anfragen wirklich kosten',
+				'description' => sprintf( 'CPL-Rechnung für Photovoltaik- und Wärmepumpen-Anbieter: Portal-Leads vs. eigenes System. E3-Referenz: %s niedrigere Kosten pro Anfrage in 9 Monaten.', $e3_cpl_reduction ),
+			],
+			'qualifizierte-pv-anfragen' => [
+				'title'       => 'Qualifizierte PV-Anfragen: 4 Merkmale für hochwertige Solar-Leads',
+				'description' => 'Vier Merkmale, an denen sich eine qualifizierte Photovoltaik-Anfrage erkennen lässt: Intent, Exklusivität, Vorqualifizierung, Echtzeit. Mit Praxisbezug E3 New Energy.',
+			],
 		]
 	);
 }

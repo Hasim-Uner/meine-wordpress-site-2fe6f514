@@ -91,6 +91,44 @@ $why_portals_fail = [
 	],
 ];
 
+$market_models = [
+	[
+		't' => 'Geteilte Datensätze',
+		's' => 'Eine Endkundenanfrage wird parallel an 3–5 Solarteure verkauft. Marktbreit etablierte Mengenmodelle (z. B. Aroundhome, DAA, Wattfox in Teilen). Preis pro Datensatz niedriger, Wettbewerb höher.',
+	],
+	[
+		't' => 'Exklusive Datensätze',
+		's' => 'Anfrage wird nur an einen Anbieter weitergegeben. Selteneres Modell, höherer Preis pro Datensatz (oft 80 – 150 €). Faktor Geschwindigkeit weniger entscheidend, Abschlussquote tendenziell höher.',
+	],
+	[
+		't' => 'Regional erzeugte Leads',
+		's' => 'Anfragen werden über lokale Kampagnen oder Videowerbung im Namen des Fachbetriebs eingesammelt (z. B. Leadfluss-Modell). Markenwirkung bleibt beim Fachbetrieb, Volumen abhängig von der lokalen Kampagne.',
+	],
+	[
+		't' => 'Eigene Anfrage-Infrastruktur',
+		's' => 'Money Page, Server-Side-Tracking und Vorqualifizierung im eigenen Eigentum. Anfragen sind per Definition exklusiv. Setup einmalig, Asset im Betrieb. Vergleich: siehe E3-Referenz.',
+	],
+];
+
+$buyer_check_criteria = [
+	[
+		'k' => 'Intent-Stärke',
+		'l' => 'Was hat der Endkunde geklickt – ein Angebotsvergleich, eine Förder-Frage, eine konkrete Investitionsentscheidung? Je näher am Kauf, desto wertvoller die Anfrage.',
+	],
+	[
+		'k' => 'Exklusivität',
+		'l' => 'Wie viele Wettbewerber bekommen denselben Datensatz? Bei drei oder mehr ist die Anfrage faktisch ein Bieter-Wettlauf, kein Verkaufsgespräch.',
+	],
+	[
+		'k' => 'Vorqualifizierung',
+		'l' => 'Sind Region, Dachfläche, Heizart und Projektwert vor dem Anruf bekannt? Ohne diese Daten qualifizieren Sie selbst nach – und verlieren Zeit an Nicht-Passende.',
+	],
+	[
+		'k' => 'Echtzeit-Übermittlung',
+		'l' => 'Kommt die Anfrage innerhalb von Minuten nach Endkundenklick? Leads, die Stunden oder Tage alt sind, sind faktisch tot – der Endkunde hat längst andere Angebote.',
+	],
+];
+
 $own_system_layers = [
 	[
 		't' => 'Money Page mit Vorqualifizierung',
@@ -253,6 +291,42 @@ get_header();
 						<p class="hu-intercept__card-text"><?php echo esc_html( $item['s'] ); ?></p>
 					</article>
 				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+
+	<section class="hu-intercept__why" id="markt-modelle" aria-labelledby="hu-intercept-markt-title">
+		<div class="hu-intercept__container">
+			<h2 class="hu-intercept__h2" id="hu-intercept-markt-title">Anbieter-Modelle im Lead-Markt: sachliche Markteinordnung</h2>
+			<p class="hu-intercept__section-lead">
+				Der deutsche Markt für Photovoltaik- und Wärmepumpen-Anfragen unterteilt sich in vier strukturell unterschiedliche Modelle. Eigene Markteinordnung – keine Empfehlung, keine Wertung.
+			</p>
+			<div class="hu-intercept__grid hu-intercept__grid--four">
+				<?php foreach ( $market_models as $model ) : ?>
+					<article class="hu-intercept__card">
+						<h3 class="hu-intercept__card-title"><?php echo esc_html( $model['t'] ); ?></h3>
+						<p class="hu-intercept__card-text"><?php echo esc_html( $model['s'] ); ?></p>
+					</article>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+
+	<section class="hu-intercept__compare" id="qualitaet" aria-labelledby="hu-intercept-quality-title">
+		<div class="hu-intercept__container">
+			<h2 class="hu-intercept__h2" id="hu-intercept-quality-title">Vier Kriterien, an denen sich ein hochwertiger Lead erkennen lässt</h2>
+			<p class="hu-intercept__section-lead">
+				Unabhängig vom gewählten Modell – ob Portal, eigene Strecke oder regionale Kampagne – entscheiden vier Merkmale, ob eine Anfrage wirtschaftlich ist.
+			</p>
+			<div class="hu-intercept__panel hu-intercept__panel--positive">
+				<ul class="hu-intercept__facts">
+					<?php foreach ( $buyer_check_criteria as $crit ) : ?>
+						<li>
+							<span class="hu-intercept__fact-key"><?php echo esc_html( $crit['k'] ); ?></span>
+							<span class="hu-intercept__fact-label"><?php echo esc_html( $crit['l'] ); ?></span>
+						</li>
+					<?php endforeach; ?>
+				</ul>
 			</div>
 		</div>
 	</section>
