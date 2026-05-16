@@ -1481,6 +1481,92 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
+   Vertiefung — Themen-Hub für SEO-Sub-Pages
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-deeper {
+  background: var(--sol-bg-2);
+  border-top: 1px solid var(--sol-line);
+}
+.solara-landing .sol-deeper-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  text-align: center;
+}
+.solara-landing .sol-deeper-h {
+  font-size: clamp(36px, 5.4vw, 72px);
+  margin: 22px 0 18px;
+}
+.solara-landing .sol-deeper-sub {
+  color: var(--sol-fg-mute);
+  font-size: clamp(15px, 1.2vw, 18px);
+  line-height: 1.55;
+  max-width: 62ch;
+  margin: 0 auto 48px;
+}
+.solara-landing .sol-deeper-clusters {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(20px, 2.4vw, 32px);
+  text-align: left;
+}
+@media (max-width: 760px) {
+  .solara-landing .sol-deeper-clusters { grid-template-columns: 1fr; }
+}
+.solara-landing .sol-deeper-cluster {
+  padding: clamp(24px, 2.6vw, 36px);
+  border: 1px solid var(--sol-line);
+  border-radius: 16px;
+  background: var(--sol-bg);
+}
+.solara-landing .sol-deeper-cluster-h {
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 0 0 18px;
+  color: var(--sol-accent);
+}
+.solara-landing .sol-deeper-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.solara-landing .sol-deeper-item {
+  border-top: 1px solid var(--sol-line);
+  padding-top: 14px;
+}
+.solara-landing .sol-deeper-item:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.solara-landing .sol-deeper-link {
+  display: block;
+  text-decoration: none;
+  color: var(--sol-fg);
+  transition: color .18s ease;
+}
+.solara-landing .sol-deeper-link:hover,
+.solara-landing .sol-deeper-link:focus-visible {
+  color: var(--sol-accent);
+}
+.solara-landing .sol-deeper-link-t {
+  display: block;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.solara-landing .sol-deeper-link-s {
+  display: block;
+  color: var(--sol-fg-mute);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+/* ══════════════════════════════════════════════════════════════
    FAQ
    ══════════════════════════════════════════════════════════════ */
 .solara-landing .sol-faq {

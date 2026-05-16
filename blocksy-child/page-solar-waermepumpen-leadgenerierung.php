@@ -125,6 +125,7 @@ $section_nav = [
 	[ 'h' => '#capex',       'l' => 'CAPEX vs OPEX' ],
 	[ 'h' => '#ergebnisse',  'l' => 'Referenz' ],
 	[ 'h' => '#fit',         'l' => 'Passt es?' ],
+	[ 'h' => '#deeper',      'l' => 'Vertiefung' ],
 	[ 'h' => '#faq',         'l' => 'FAQ' ],
 ];
 
@@ -235,6 +236,38 @@ $fit_no = [
 	[ 't' => '„Nächste Woche brauchen wir Leads."',        's' => 'Tragfähige Pipelines wachsen über Monate, nicht Tage.' ],
 	[ 't' => 'Kein Vertrieb am Telefon',                   's' => 'Anfragen sterben, wenn niemand zurückruft.' ],
 	[ 't' => 'Keine Marke gewollt',                        's' => 'Eigener Anfrageweg lebt davon, dass Sie sichtbar werden.' ],
+];
+
+// ── Vertiefung: SEO-Sub-Pages-Cluster (Topical Authority) ──────
+$deeper_clusters = [
+	[
+		'group' => 'Strategie & Vergleich',
+		'items' => [
+			[ 't' => 'Solar Leads kaufen – Alternative',     's' => 'Markteinordnung der Lead-Anbieter und Modelle.',           'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
+			[ 't' => 'Eigene Leadgenerierung vs. Portale',   's' => 'TCO-Überschlag über 24/36 Monate und 8-Kriterien-Matrix.', 'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ) ],
+		],
+	],
+	[
+		'group' => 'Lead-Qualität & CPL',
+		'items' => [
+			[ 't' => 'Cost per Lead Photovoltaik',           's' => 'Drei Szenarien im CPL-Vergleich und versteckte Kostentreiber.',     'url' => home_url( '/cost-per-lead-photovoltaik/' ) ],
+			[ 't' => 'Qualifizierte PV-Anfragen',            's' => 'Vier Merkmale für hochwertige Solar-Anfragen plus Warnsignale.',   'url' => home_url( '/qualifizierte-pv-anfragen/' ) ],
+		],
+	],
+	[
+		'group' => 'Funnel & Tracking',
+		'items' => [
+			[ 't' => 'Lead-Funnel Solar',                    's' => 'Fünf Stufen einer belastbaren Solar-Funnel-Architektur.',          'url' => home_url( '/lead-funnel-solar/' ) ],
+			[ 't' => 'Server-Side Tracking für B2B',         's' => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server.',           'url' => home_url( '/server-side-tracking-b2b/' ) ],
+		],
+	],
+	[
+		'group' => 'Zielgruppen & Marktbild',
+		'items' => [
+			[ 't' => 'B2B Solar Leads (Gewerbe)',            's' => 'Buying-Center-Funnel für gewerbliche Photovoltaik-Projekte.',       'url' => home_url( '/b2b-solar-leads/' ) ],
+			[ 't' => 'Kunden gewinnen für Solarteure',       's' => 'Mythen-Aufklärung und fünf systematische Hebel im DACH-Mittelstand.', 'url' => home_url( '/kunden-gewinnen-solarteure/' ) ],
+		],
+	],
 ];
 
 $faq_items = [
@@ -1004,6 +1037,42 @@ get_header();
 								<div class="sol-guarantee-point-t"><?php echo esc_html( $p['t'] ); ?></div>
 								<div class="sol-guarantee-point-s"><?php echo esc_html( $p['s'] ); ?></div>
 							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
+		     Vertiefung — Themen-Hub für SEO-Sub-Pages
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-section sol-deeper" id="deeper" data-track-section="deeper">
+			<div class="sol-wrap sol-deeper-inner">
+				<div class="sol-eyebrow">Vertiefung</div>
+				<h2 class="sol-display sol-deeper-h">
+					Weiterführende Themen — wenn Sie tiefer einsteigen wollen
+				</h2>
+				<p class="sol-deeper-sub">
+					Acht thematische Vertiefungs-Seiten zu Strategie, Lead-Qualität, Funnel-Architektur und Markteinordnung. Jede Seite kann unabhängig gelesen werden, alle führen zurück zum Marktcheck.
+				</p>
+				<div class="sol-deeper-clusters">
+					<?php foreach ( $deeper_clusters as $cluster ) : ?>
+						<div class="sol-deeper-cluster">
+							<h3 class="sol-deeper-cluster-h"><?php echo esc_html( $cluster['group'] ); ?></h3>
+							<ul class="sol-deeper-list">
+								<?php foreach ( $cluster['items'] as $item ) : ?>
+									<li class="sol-deeper-item">
+										<a class="sol-deeper-link"
+										   href="<?php echo esc_url( $item['url'] ); ?>"
+										   data-track-action="deeper_cluster_link"
+										   data-track-category="solar_money_page"
+										   data-track-section="deeper">
+											<span class="sol-deeper-link-t"><?php echo esc_html( $item['t'] ); ?></span>
+											<span class="sol-deeper-link-s"><?php echo esc_html( $item['s'] ); ?></span>
+										</a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
 						</div>
 					<?php endforeach; ?>
 				</div>
