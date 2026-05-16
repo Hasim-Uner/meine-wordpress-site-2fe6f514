@@ -778,7 +778,40 @@
 
 .nexus-seo-cockpit__table code {
     font-size: 12px;
-    word-break: break-all;
+    overflow-wrap: anywhere;
+}
+
+.nexus-seo-cockpit__table--urls td,
+.nexus-seo-cockpit__table--urls th {
+    font-size: 13px;
+    padding: 8px 10px;
+}
+
+.nexus-seo-cockpit__cell--url {
+    max-width: 260px;
+}
+
+.nexus-seo-cockpit__cell--url a {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--nsc-info);
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.nexus-seo-cockpit__cell--url a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 1100px) {
+    .nexus-seo-cockpit__cell--url {
+        max-width: 200px;
+    }
 }
 
 .nexus-seo-cockpit__table-note {
@@ -825,6 +858,154 @@
     text-transform: none;
     letter-spacing: 0;
     font-size: 12px;
+}
+
+/* --- Collapsible tables (Top 5 + show more) ----------------------------- */
+
+.nexus-seo-cockpit__toggle:not(:checked) ~ .nexus-seo-cockpit__table-wrap .nexus-seo-cockpit__row--extra {
+    display: none;
+}
+
+.nexus-seo-cockpit__show-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 12px 0 0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--nsc-surface-muted);
+    border: 1px solid var(--nsc-border);
+    color: var(--nsc-ink);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.nexus-seo-cockpit__show-more:hover {
+    background: var(--nsc-surface);
+    border-color: var(--nsc-border-strong);
+}
+
+.nexus-seo-cockpit__show-more::before {
+    content: "+";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--nsc-ink);
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.nexus-seo-cockpit__toggle:checked ~ .nexus-seo-cockpit__show-more::before {
+    content: "\2212";
+}
+
+.nexus-seo-cockpit__toggle:not(:checked) ~ .nexus-seo-cockpit__show-more .nexus-seo-cockpit__when-expanded {
+    display: none;
+}
+
+.nexus-seo-cockpit__toggle:checked ~ .nexus-seo-cockpit__show-more .nexus-seo-cockpit__when-collapsed {
+    display: none;
+}
+
+/* --- Top-Mover (Gainer / Loser) ----------------------------------------- */
+
+.nexus-seo-cockpit__movers {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.nexus-seo-cockpit__movers-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+}
+
+.nexus-seo-cockpit__movers-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: var(--nsc-ink-soft);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.nexus-seo-cockpit__movers-head span:last-child {
+    color: var(--nsc-ink-muted);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.nexus-seo-cockpit__movers-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: mover;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nexus-seo-cockpit__movers-list li {
+    counter-increment: mover;
+    padding: 10px 12px 10px 36px;
+    border: 1px solid var(--nsc-border);
+    border-radius: var(--nsc-radius-sm);
+    background: var(--nsc-surface-muted);
+    position: relative;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.nexus-seo-cockpit__movers-list li::before {
+    content: counter(mover);
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--nsc-ink);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nexus-seo-cockpit__movers-list strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--nsc-ink);
+    font-size: 13px;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.nexus-seo-cockpit__movers-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    color: var(--nsc-ink-soft);
+    font-size: 11px;
+}
+
+@media (max-width: 860px) {
+    .nexus-seo-cockpit__movers {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* --- Disclosure (Technik / Verbindung) ---------------------------------- */

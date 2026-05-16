@@ -308,7 +308,7 @@ function nexus_render_seo_cockpit_lead_pages_table( $pages, $limit = 5, $window 
 		return;
 	}
 	?>
-	<table class="widefat striped nexus-seo-cockpit__table">
+	<table class="widefat striped nexus-seo-cockpit__table nexus-seo-cockpit__table--urls">
 		<thead>
 			<tr>
 				<th>Seite</th>
@@ -321,9 +321,14 @@ function nexus_render_seo_cockpit_lead_pages_table( $pages, $limit = 5, $window 
 		</thead>
 		<tbody>
 			<?php foreach ( $pages as $page ) : ?>
-				<?php $window_metrics = is_array( $page[ $window ] ?? null ) ? $page[ $window ] : []; ?>
+				<?php
+				$window_metrics = is_array( $page[ $window ] ?? null ) ? $page[ $window ] : [];
+				$page_url       = (string) ( $page['url'] ?? '' );
+				$page_label     = (string) ( $page['label'] ?? '' );
+				$page_display   = '' !== $page_label ? $page_label : ( '' !== $page_url ? nexus_get_seo_cockpit_short_url( $page_url ) : '—' );
+				?>
 				<tr>
-					<td><a href="<?php echo esc_url( (string) ( $page['detail_url'] ?? nexus_get_seo_cockpit_detail_url( (string) ( $page['url'] ?? '' ) ) ) ); ?>"><code><?php echo esc_html( (string) ( $page['label'] ?? $page['url'] ?? '—' ) ); ?></code></a></td>
+					<td class="nexus-seo-cockpit__cell--url"><a href="<?php echo esc_url( (string) ( $page['detail_url'] ?? nexus_get_seo_cockpit_detail_url( $page_url ) ) ); ?>" title="<?php echo esc_attr( $page_url ); ?>"><?php echo esc_html( $page_display ); ?></a></td>
 					<td><?php echo esc_html( (string) ( $page['page_role_label'] ?? '—' ) ); ?></td>
 					<td><?php echo esc_html( number_format_i18n( (int) ( $window_metrics['requests'] ?? 0 ) ) ); ?></td>
 					<td><?php echo esc_html( number_format_i18n( (int) ( $page['lifetime']['won'] ?? 0 ) ) ); ?></td>
@@ -1105,6 +1110,30 @@ function nexus_render_seo_cockpit_dashboard() {
 				</section>
 			</div>
 
+			<h3 class="nexus-seo-cockpit__section-title">Quick Wins & Bewegungen <span>Schnell erreichbare Chancen und größte Verschiebungen</span></h3>
+
+			<div class="nexus-seo-cockpit__grid nexus-seo-cockpit__grid--reports">
+				<section class="nexus-seo-cockpit__panel">
+					<div class="nexus-seo-cockpit__panel-head">
+						<div>
+							<h2>Quick Wins · Striking Distance</h2>
+							<p class="nexus-seo-cockpit__hint">Queries auf Pos. 4-20 mit Impressionen — kleine Optimierung, großer Hebel.</p>
+						</div>
+					</div>
+					<?php nexus_render_seo_cockpit_quick_wins_table( nexus_get_seo_cockpit_quick_wins( $snapshot, 20 ), 5 ); ?>
+				</section>
+
+				<section class="nexus-seo-cockpit__panel">
+					<div class="nexus-seo-cockpit__panel-head">
+						<div>
+							<h2>Top-Mover</h2>
+							<p class="nexus-seo-cockpit__hint">Queries mit größter Klick-Veränderung gegenüber Vorperiode.</p>
+						</div>
+					</div>
+					<?php nexus_render_seo_cockpit_query_movers( nexus_get_seo_cockpit_query_movers( $snapshot, 5 ) ); ?>
+				</section>
+			</div>
+
 			<h3 class="nexus-seo-cockpit__section-title">Trend <span>Tagesauflösung über den gewählten Zeitraum</span></h3>
 
 			<section class="nexus-seo-cockpit__panel">
@@ -1124,16 +1153,23 @@ function nexus_render_seo_cockpit_dashboard() {
 				<?php if ( empty( $snapshot['problem_pages'] ) ) : ?>
 					<p class="nexus-seo-cockpit__hint">Für dieses Zeitfenster wurden keine priorisierten Problemseiten erkannt.</p>
 				<?php else : ?>
+					<?php
+					$problem_pages       = array_values( (array) $snapshot['problem_pages'] );
+					$problem_visible     = 5;
+					$problem_hidden      = max( 0, count( $problem_pages ) - $problem_visible );
+					$problem_toggle_id   = 'nsc-problem-' . nexus_seo_cockpit_unique_id();
+					?>
+					<input type="checkbox" id="<?php echo esc_attr( $problem_toggle_id ); ?>" class="nexus-seo-cockpit__toggle" hidden>
 					<div class="nexus-seo-cockpit__table-wrap">
-						<table class="widefat striped nexus-seo-cockpit__table">
+						<table class="widefat striped nexus-seo-cockpit__table nexus-seo-cockpit__table--urls">
 							<thead>
 								<tr>
 									<th>Prio</th>
 									<th>Segment</th>
 									<th>URL</th>
 									<th>Typ</th>
-									<th>Impressionen</th>
-									<th>Position</th>
+									<th>Impr.</th>
+									<th>Pos.</th>
 									<th>SEO</th>
 									<th>Koko</th>
 									<th>Leads</th>
@@ -1141,13 +1177,13 @@ function nexus_render_seo_cockpit_dashboard() {
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach ( (array) $snapshot['problem_pages'] as $page ) : ?>
+								<?php foreach ( $problem_pages as $index => $page ) : ?>
 									<?php
 									$context = is_array( $page['context'] ?? null ) ? $page['context'] : [];
 									$primary = is_array( $page['primary'] ?? null ) ? $page['primary'] : [];
 									$lead_page = is_array( $lead_snapshot['page_map'][ (string) $page['url'] ] ?? null ) ? $lead_snapshot['page_map'][ (string) $page['url'] ] : [];
 									?>
-									<tr>
+									<tr<?php echo $index >= $problem_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; ?>>
 										<td>
 											<span class="nexus-seo-cockpit__badge is-<?php echo esc_attr( (string) ( $primary['priority_bucket'] ?? 'low' ) ); ?>">
 												<?php
@@ -1162,7 +1198,7 @@ function nexus_render_seo_cockpit_dashboard() {
 											</span>
 										</td>
 										<td><?php echo esc_html( (string) ( $primary['page_role_label'] ?? '—' ) ); ?></td>
-										<td><a href="<?php echo esc_url( (string) $page['detail_url'] ); ?>"><code><?php echo esc_html( (string) $page['url'] ); ?></code></a></td>
+										<td class="nexus-seo-cockpit__cell--url"><a href="<?php echo esc_url( (string) $page['detail_url'] ); ?>" title="<?php echo esc_attr( (string) $page['url'] ); ?>"><?php echo esc_html( nexus_get_seo_cockpit_short_url( (string) $page['url'] ) ); ?></a></td>
 										<td><?php echo esc_html( (string) ( $context['post_type'] ?? '—' ) ); ?></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( $page['row']['impressions'] ?? 0 ) ) ); ?></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( $page['row']['position'] ?? 0 ), 1 ) ); ?></td>
@@ -1170,7 +1206,7 @@ function nexus_render_seo_cockpit_dashboard() {
 											<?php
 											echo esc_html(
 												sprintf(
-													'Title: %s / Desc: %s / noindex: %s',
+													'T:%s D:%s NI:%s',
 													! empty( $context['seo_title_present'] ) ? 'Ja' : 'Nein',
 													! empty( $context['seo_description_present'] ) ? 'Ja' : 'Nein',
 													! empty( $context['noindex'] ) ? 'Ja' : 'Nein'
@@ -1211,6 +1247,7 @@ function nexus_render_seo_cockpit_dashboard() {
 							</tbody>
 						</table>
 					</div>
+					<?php nexus_render_seo_cockpit_show_more_label( $problem_toggle_id, $problem_hidden ); ?>
 				<?php endif; ?>
 			</section>
 
@@ -1251,29 +1288,36 @@ function nexus_render_seo_cockpit_dashboard() {
 			<div class="nexus-seo-cockpit__grid nexus-seo-cockpit__grid--reports">
 				<section class="nexus-seo-cockpit__panel">
 					<h2>Top Pages</h2>
+					<?php
+					$tp_rows      = array_values( (array) $snapshot['top_pages'] );
+					$tp_visible   = 5;
+					$tp_hidden    = max( 0, count( $tp_rows ) - $tp_visible );
+					$tp_toggle_id = 'nsc-tp-' . nexus_seo_cockpit_unique_id();
+					?>
+					<input type="checkbox" id="<?php echo esc_attr( $tp_toggle_id ); ?>" class="nexus-seo-cockpit__toggle" hidden>
 					<div class="nexus-seo-cockpit__table-wrap">
-						<table class="widefat striped nexus-seo-cockpit__table">
+						<table class="widefat striped nexus-seo-cockpit__table nexus-seo-cockpit__table--urls">
 							<thead>
 								<tr>
 									<th>URL</th>
 									<th>Klicks</th>
-									<th>Impressionen</th>
+									<th>Impr.</th>
 									<th>CTR</th>
-									<th>Position</th>
+									<th>Pos.</th>
 									<th>Koko</th>
 									<th>Leads</th>
-									<th>WP-Kontext</th>
+									<th>WP</th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach ( (array) $snapshot['top_pages'] as $row ) : ?>
+								<?php foreach ( $tp_rows as $index => $row ) : ?>
 									<?php
 									$url     = nexus_normalize_seo_cockpit_url( nexus_get_seo_cockpit_row_label( $row ) );
 									$context = $snapshot['page_contexts'][ $url ] ?? nexus_get_seo_cockpit_wp_context_for_url( $url );
 									$lead_page = is_array( $lead_snapshot['page_map'][ $url ] ?? null ) ? $lead_snapshot['page_map'][ $url ] : [];
 									?>
-									<tr>
-										<td><a href="<?php echo esc_url( nexus_get_seo_cockpit_detail_url( $url ) ); ?>"><code><?php echo esc_html( $url ); ?></code></a></td>
+									<tr<?php echo $index >= $tp_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; ?>>
+										<td class="nexus-seo-cockpit__cell--url"><a href="<?php echo esc_url( nexus_get_seo_cockpit_detail_url( $url ) ); ?>" title="<?php echo esc_attr( $url ); ?>"><?php echo esc_html( nexus_get_seo_cockpit_short_url( $url ) ); ?></a></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( $row['clicks'] ?? 0 ) ) ); ?></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( $row['impressions'] ?? 0 ) ) ); ?></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( ( $row['ctr'] ?? 0 ) * 100 ), 1 ) . '%' ); ?></td>
@@ -1305,31 +1349,39 @@ function nexus_render_seo_cockpit_dashboard() {
 											);
 											?>
 										</td>
-										<td><?php echo esc_html( (string) ( $context['post_type'] ?? 'nicht zugeordnet' ) ); ?></td>
+										<td><?php echo esc_html( (string) ( $context['post_type'] ?? '—' ) ); ?></td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>
 						</table>
 					</div>
+					<?php nexus_render_seo_cockpit_show_more_label( $tp_toggle_id, $tp_hidden ); ?>
 				</section>
 
 				<section class="nexus-seo-cockpit__panel">
 					<h2>Top Queries</h2>
+					<?php
+					$tq_rows      = array_values( (array) $snapshot['top_queries'] );
+					$tq_visible   = 5;
+					$tq_hidden    = max( 0, count( $tq_rows ) - $tq_visible );
+					$tq_toggle_id = 'nsc-tq-' . nexus_seo_cockpit_unique_id();
+					?>
+					<input type="checkbox" id="<?php echo esc_attr( $tq_toggle_id ); ?>" class="nexus-seo-cockpit__toggle" hidden>
 					<div class="nexus-seo-cockpit__table-wrap">
 						<table class="widefat striped nexus-seo-cockpit__table">
 							<thead>
 								<tr>
 									<th>Query</th>
 									<th>Klicks</th>
-									<th>Impressionen</th>
+									<th>Impr.</th>
 									<th>CTR</th>
-									<th>Position</th>
+									<th>Pos.</th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach ( (array) $snapshot['top_queries'] as $row ) : ?>
-									<tr>
-										<td><?php echo esc_html( nexus_get_seo_cockpit_row_label( $row ) ); ?></td>
+								<?php foreach ( $tq_rows as $index => $row ) : ?>
+									<tr<?php echo $index >= $tq_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; ?>>
+										<td><strong><?php echo esc_html( nexus_get_seo_cockpit_row_label( $row ) ); ?></strong></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( $row['clicks'] ?? 0 ) ) ); ?></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( $row['impressions'] ?? 0 ) ) ); ?></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( ( $row['ctr'] ?? 0 ) * 100 ), 1 ) . '%' ); ?></td>
@@ -1339,6 +1391,7 @@ function nexus_render_seo_cockpit_dashboard() {
 							</tbody>
 						</table>
 					</div>
+					<?php nexus_render_seo_cockpit_show_more_label( $tq_toggle_id, $tq_hidden ); ?>
 				</section>
 			</div>
 
@@ -1351,8 +1404,15 @@ function nexus_render_seo_cockpit_dashboard() {
 					<?php if ( ! empty( $koko_snapshot['available'] ) ) : ?>
 						<?php nexus_render_seo_cockpit_koko_metrics( (array) ( $koko_snapshot['overview']['current'] ?? [] ), (array) ( $koko_snapshot['overview']['previous'] ?? [] ) ); ?>
 						<?php if ( ! empty( $koko_snapshot['top_pages'] ) ) : ?>
+							<?php
+							$koko_pages_rows   = array_values( (array) $koko_snapshot['top_pages'] );
+							$koko_pages_visible = 5;
+							$koko_pages_hidden  = max( 0, count( $koko_pages_rows ) - $koko_pages_visible );
+							$koko_toggle_id     = 'nsc-koko-' . nexus_seo_cockpit_unique_id();
+							?>
+							<input type="checkbox" id="<?php echo esc_attr( $koko_toggle_id ); ?>" class="nexus-seo-cockpit__toggle" hidden>
 							<div class="nexus-seo-cockpit__table-wrap" style="margin-top:14px;">
-								<table class="widefat striped nexus-seo-cockpit__table">
+								<table class="widefat striped nexus-seo-cockpit__table nexus-seo-cockpit__table--urls">
 									<thead>
 										<tr>
 											<th>Seite</th>
@@ -1361,11 +1421,11 @@ function nexus_render_seo_cockpit_dashboard() {
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach ( (array) $koko_snapshot['top_pages'] as $row ) : ?>
-											<tr>
-												<td>
+										<?php foreach ( $koko_pages_rows as $index => $row ) : ?>
+											<tr<?php echo $index >= $koko_pages_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; ?>>
+												<td class="nexus-seo-cockpit__cell--url">
 													<?php if ( ! empty( $row['url'] ) ) : ?>
-														<a href="<?php echo esc_url( nexus_get_seo_cockpit_detail_url( (string) $row['url'] ) ); ?>"><code><?php echo esc_html( (string) ( $row['title'] ?: $row['url'] ) ); ?></code></a>
+														<a href="<?php echo esc_url( nexus_get_seo_cockpit_detail_url( (string) $row['url'] ) ); ?>" title="<?php echo esc_attr( (string) $row['url'] ); ?>"><?php echo esc_html( (string) ( ! empty( $row['title'] ) ? $row['title'] : nexus_get_seo_cockpit_short_url( (string) $row['url'] ) ) ); ?></a>
 													<?php else : ?>
 														<?php echo esc_html( (string) ( $row['title'] ?? '—' ) ); ?>
 													<?php endif; ?>
@@ -1377,6 +1437,7 @@ function nexus_render_seo_cockpit_dashboard() {
 									</tbody>
 								</table>
 							</div>
+							<?php nexus_render_seo_cockpit_show_more_label( $koko_toggle_id, $koko_pages_hidden ); ?>
 						<?php endif; ?>
 					<?php else : ?>
 						<p class="nexus-seo-cockpit__hint">
@@ -1562,4 +1623,183 @@ function nexus_render_seo_cockpit_settings_page() {
 		</form>
 	</div>
 	<?php
+}
+
+/**
+ * Return a per-request unique numeric id, safe across all WP versions.
+ *
+ * @return string
+ */
+function nexus_seo_cockpit_unique_id() {
+	static $counter = 0;
+	$counter++;
+	return (string) $counter;
+}
+
+/**
+ * Render the "show more" label for a collapsible table.
+ *
+ * Pair with a sibling checkbox input rendered BEFORE the table-wrap.
+ *
+ * @param string $id           Toggle input ID.
+ * @param int    $hidden_count Number of hidden rows.
+ * @return void
+ */
+function nexus_render_seo_cockpit_show_more_label( $id, $hidden_count ) {
+	$hidden_count = absint( $hidden_count );
+
+	if ( $hidden_count <= 0 ) {
+		return;
+	}
+	?>
+	<label for="<?php echo esc_attr( $id ); ?>" class="nexus-seo-cockpit__show-more">
+		<span class="nexus-seo-cockpit__when-collapsed">+<?php echo esc_html( (string) $hidden_count ); ?> weitere anzeigen</span>
+		<span class="nexus-seo-cockpit__when-expanded">Weniger anzeigen</span>
+	</label>
+	<?php
+}
+
+/**
+ * Render Quick-Win (Striking Distance) opportunities.
+ *
+ * @param array<int, array<string, mixed>> $rows  Quick-win rows.
+ * @param int                              $limit Initial visible rows before collapse.
+ * @return void
+ */
+function nexus_render_seo_cockpit_quick_wins_table( $rows, $limit = 5 ) {
+	$rows = array_values( (array) $rows );
+
+	if ( empty( $rows ) ) {
+		echo '<p class="nexus-seo-cockpit__hint">Aktuell keine Quick-Wins gefunden. Mehr Impressionen oder ein längeres Zeitfenster wählen.</p>';
+		return;
+	}
+
+	$toggle_id    = 'nsc-qw-' . nexus_seo_cockpit_unique_id();
+	$visible      = array_slice( $rows, 0, $limit );
+	$hidden_count = max( 0, count( $rows ) - $limit );
+	?>
+	<input type="checkbox" id="<?php echo esc_attr( $toggle_id ); ?>" class="nexus-seo-cockpit__toggle" hidden>
+	<div class="nexus-seo-cockpit__table-wrap">
+		<table class="widefat striped nexus-seo-cockpit__table nexus-seo-cockpit__table--urls">
+			<thead>
+				<tr>
+					<th>Query</th>
+					<th>Seite</th>
+					<th>Impr.</th>
+					<th>Klicks</th>
+					<th>CTR</th>
+					<th>Pos.</th>
+					<th>Δ Klicks</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ( $rows as $index => $row ) : ?>
+					<?php $delta = nexus_get_seo_cockpit_metric_delta( 'clicks', (float) ( $row['clicks'] ?? 0 ), (float) ( $row['prev_clicks'] ?? 0 ) ); ?>
+					<tr<?php echo $index >= $limit ? ' class="nexus-seo-cockpit__row--extra"' : ''; ?>>
+						<td><strong><?php echo esc_html( (string) $row['query'] ); ?></strong></td>
+						<td class="nexus-seo-cockpit__cell--url"><a href="<?php echo esc_url( (string) ( $row['detail_url'] ?? '' ) ); ?>"><?php echo esc_html( nexus_get_seo_cockpit_short_url( (string) $row['page'] ) ); ?></a></td>
+						<td><?php echo esc_html( number_format_i18n( (float) $row['impressions'] ) ); ?></td>
+						<td><?php echo esc_html( number_format_i18n( (float) $row['clicks'] ) ); ?></td>
+						<td><?php echo esc_html( number_format_i18n( (float) $row['ctr'] * 100, 1 ) . '%' ); ?></td>
+						<td><?php echo esc_html( number_format_i18n( (float) $row['position'], 1 ) ); ?></td>
+						<td><span class="nexus-seo-cockpit__delta-inline is-<?php echo esc_attr( $delta['class'] ); ?>"><?php echo esc_html( $delta['label'] ); ?></span></td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+	<?php nexus_render_seo_cockpit_show_more_label( $toggle_id, $hidden_count ); ?>
+	<?php
+	unset( $visible );
+}
+
+/**
+ * Render Top-Mover (Gainer/Loser) query lists.
+ *
+ * @param array{gainers:array<int, array<string, mixed>>, losers:array<int, array<string, mixed>>} $movers Movers payload.
+ * @return void
+ */
+function nexus_render_seo_cockpit_query_movers( $movers ) {
+	$gainers = (array) ( $movers['gainers'] ?? [] );
+	$losers  = (array) ( $movers['losers'] ?? [] );
+
+	if ( empty( $gainers ) && empty( $losers ) ) {
+		echo '<p class="nexus-seo-cockpit__hint">Keine signifikanten Query-Bewegungen im Zeitfenster.</p>';
+		return;
+	}
+	?>
+	<div class="nexus-seo-cockpit__movers">
+		<div class="nexus-seo-cockpit__movers-col">
+			<h3 class="nexus-seo-cockpit__movers-head">
+				<span class="nexus-seo-cockpit__badge is-low">Gainer</span>
+				<span>Mehr Klicks vs. Vorperiode</span>
+			</h3>
+			<?php if ( empty( $gainers ) ) : ?>
+				<p class="nexus-seo-cockpit__hint">Keine Gewinner im Zeitfenster.</p>
+			<?php else : ?>
+				<ol class="nexus-seo-cockpit__movers-list">
+					<?php foreach ( $gainers as $row ) : ?>
+						<li>
+							<strong><?php echo esc_html( (string) $row['query'] ); ?></strong>
+							<span class="nexus-seo-cockpit__movers-meta">
+								<span class="nexus-seo-cockpit__delta-inline is-positive">+<?php echo esc_html( number_format_i18n( (float) $row['delta'], 0 ) ); ?> Klicks</span>
+								<?php echo esc_html( number_format_i18n( (float) $row['previous_clicks'], 0 ) ); ?> → <?php echo esc_html( number_format_i18n( (float) $row['current_clicks'], 0 ) ); ?>
+								· Pos. <?php echo esc_html( number_format_i18n( (float) $row['position'], 1 ) ); ?>
+							</span>
+						</li>
+					<?php endforeach; ?>
+				</ol>
+			<?php endif; ?>
+		</div>
+		<div class="nexus-seo-cockpit__movers-col">
+			<h3 class="nexus-seo-cockpit__movers-head">
+				<span class="nexus-seo-cockpit__badge is-critical">Loser</span>
+				<span>Weniger Klicks vs. Vorperiode</span>
+			</h3>
+			<?php if ( empty( $losers ) ) : ?>
+				<p class="nexus-seo-cockpit__hint">Keine Verlierer im Zeitfenster.</p>
+			<?php else : ?>
+				<ol class="nexus-seo-cockpit__movers-list">
+					<?php foreach ( $losers as $row ) : ?>
+						<li>
+							<strong><?php echo esc_html( (string) $row['query'] ); ?></strong>
+							<span class="nexus-seo-cockpit__movers-meta">
+								<span class="nexus-seo-cockpit__delta-inline is-negative"><?php echo esc_html( number_format_i18n( (float) $row['delta'], 0 ) ); ?> Klicks</span>
+								<?php echo esc_html( number_format_i18n( (float) $row['previous_clicks'], 0 ) ); ?> → <?php echo esc_html( number_format_i18n( (float) $row['current_clicks'], 0 ) ); ?>
+								· Pos. <?php echo esc_html( number_format_i18n( (float) $row['position'], 1 ) ); ?>
+							</span>
+						</li>
+					<?php endforeach; ?>
+				</ol>
+			<?php endif; ?>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Shorten a URL for compact table display (keep host + path, drop scheme).
+ *
+ * @param string $url Full URL.
+ * @return string
+ */
+function nexus_get_seo_cockpit_short_url( $url ) {
+	$url = (string) $url;
+
+	if ( '' === $url ) {
+		return '—';
+	}
+
+	$parts = wp_parse_url( $url );
+	$host  = isset( $parts['host'] ) ? (string) $parts['host'] : '';
+	$path  = isset( $parts['path'] ) ? (string) $parts['path'] : '';
+
+	if ( '' === $host && '' === $path ) {
+		return $url;
+	}
+
+	$short = $host . $path;
+	$short = preg_replace( '#^www\.#', '', $short );
+
+	return '' !== $short ? $short : $url;
 }

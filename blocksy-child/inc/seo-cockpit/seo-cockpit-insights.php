@@ -1467,3 +1467,180 @@ function nexus_get_seo_cockpit_url_detail( $url, $force = false, $range_days = n
 
 	return $detail;
 }
+
+/**
+ * Compute Striking-Distance / Quick-Win opportunities from the snapshot.
+ *
+ * Returns rows that combine page + query with position 4-15, high impressions,
+ * and low CTR — the easiest traffic to win without ranking improvement effort.
+ *
+ * @param array<string, mixed> $snapshot Snapshot payload.
+ * @param int                  $limit    Max rows.
+ * @return array<int, array<string, mixed>>
+ */
+function nexus_get_seo_cockpit_quick_wins( $snapshot, $limit = 12 ) {
+	$rows = (array) ( $snapshot['query_page_rows'] ?? [] );
+
+	if ( empty( $rows ) ) {
+		return [];
+	}
+
+	$previous = [];
+	foreach ( (array) ( $snapshot['previous_query_page_rows'] ?? [] ) as $prev_row ) {
+		$prev_page  = (string) ( $prev_row['keys'][0] ?? '' );
+		$prev_query = (string) ( $prev_row['keys'][1] ?? '' );
+		if ( '' === $prev_page || '' === $prev_query ) {
+			continue;
+		}
+		$previous[ $prev_page . '|' . $prev_query ] = $prev_row;
+	}
+
+	$candidates = [];
+	foreach ( $rows as $row ) {
+		$page        = (string) ( $row['keys'][0] ?? '' );
+		$query       = (string) ( $row['keys'][1] ?? '' );
+		$impressions = (float) ( $row['impressions'] ?? 0 );
+		$position    = (float) ( $row['position'] ?? 0 );
+		$clicks      = (float) ( $row['clicks'] ?? 0 );
+
+		if ( '' === $page || '' === $query ) {
+			continue;
+		}
+
+		if ( $impressions < 20 ) {
+			continue;
+		}
+
+		if ( $position < 3.5 || $position > 20.0 ) {
+			continue;
+		}
+
+		// Opportunity score: more impressions + closer to page 1 = higher value.
+		// Position weight curve: pos 4 ≈ 1.0, pos 10 ≈ 0.6, pos 15 ≈ 0.35, pos 20 ≈ 0.15.
+		$position_weight = max( 0.0, 1.0 - ( ( $position - 3.0 ) / 18.0 ) );
+		$score           = $impressions * $position_weight;
+
+		$prev_row    = $previous[ $page . '|' . $query ] ?? [];
+		$prev_clicks = (float) ( $prev_row['clicks'] ?? 0 );
+
+		$candidates[] = [
+			'page'         => $page,
+			'query'        => $query,
+			'impressions'  => $impressions,
+			'clicks'       => $clicks,
+			'ctr'          => (float) ( $row['ctr'] ?? 0 ),
+			'position'     => $position,
+			'score'        => $score,
+			'prev_clicks'  => $prev_clicks,
+			'click_delta'  => $clicks - $prev_clicks,
+			'detail_url'   => nexus_get_seo_cockpit_detail_url( $page ),
+		];
+	}
+
+	usort(
+		$candidates,
+		static function ( $a, $b ) {
+			return ( $b['score'] ?? 0 ) <=> ( $a['score'] ?? 0 );
+		}
+	);
+
+	return array_slice( $candidates, 0, max( 1, absint( $limit ) ) );
+}
+
+/**
+ * Compute query-level gainers and losers between current and previous period.
+ *
+ * @param array<string, mixed> $snapshot Snapshot payload.
+ * @param int                  $limit    Max rows per side.
+ * @return array{gainers:array<int, array<string, mixed>>, losers:array<int, array<string, mixed>>}
+ */
+function nexus_get_seo_cockpit_query_movers( $snapshot, $limit = 5 ) {
+	$current  = [];
+	$previous = [];
+
+	foreach ( (array) ( $snapshot['query_page_rows'] ?? [] ) as $row ) {
+		$query = (string) ( $row['keys'][1] ?? '' );
+		if ( '' === $query ) {
+			continue;
+		}
+		if ( ! isset( $current[ $query ] ) ) {
+			$current[ $query ] = [ 'clicks' => 0.0, 'impressions' => 0.0, 'position_weighted' => 0.0 ];
+		}
+		$current[ $query ]['clicks']            += (float) ( $row['clicks'] ?? 0 );
+		$current[ $query ]['impressions']       += (float) ( $row['impressions'] ?? 0 );
+		$current[ $query ]['position_weighted'] += (float) ( $row['impressions'] ?? 0 ) * (float) ( $row['position'] ?? 0 );
+	}
+
+	foreach ( (array) ( $snapshot['previous_query_page_rows'] ?? [] ) as $row ) {
+		$query = (string) ( $row['keys'][1] ?? '' );
+		if ( '' === $query ) {
+			continue;
+		}
+		if ( ! isset( $previous[ $query ] ) ) {
+			$previous[ $query ] = [ 'clicks' => 0.0, 'impressions' => 0.0 ];
+		}
+		$previous[ $query ]['clicks']      += (float) ( $row['clicks'] ?? 0 );
+		$previous[ $query ]['impressions'] += (float) ( $row['impressions'] ?? 0 );
+	}
+
+	$movers = [];
+	$queries = array_unique( array_merge( array_keys( $current ), array_keys( $previous ) ) );
+
+	foreach ( $queries as $query ) {
+		$current_clicks  = (float) ( $current[ $query ]['clicks'] ?? 0 );
+		$previous_clicks = (float) ( $previous[ $query ]['clicks'] ?? 0 );
+		$delta           = $current_clicks - $previous_clicks;
+		$impressions     = (float) ( $current[ $query ]['impressions'] ?? 0 );
+		$position        = $impressions > 0
+			? ( (float) ( $current[ $query ]['position_weighted'] ?? 0 ) ) / $impressions
+			: 0.0;
+
+		// Skip insignificant movements.
+		if ( abs( $delta ) < 1 && $current_clicks < 3 && $previous_clicks < 3 ) {
+			continue;
+		}
+
+		$movers[] = [
+			'query'           => $query,
+			'current_clicks'  => $current_clicks,
+			'previous_clicks' => $previous_clicks,
+			'delta'           => $delta,
+			'impressions'     => $impressions,
+			'position'        => $position,
+		];
+	}
+
+	$gainers = array_filter(
+		$movers,
+		static function ( $row ) {
+			return $row['delta'] > 0;
+		}
+	);
+	$losers = array_filter(
+		$movers,
+		static function ( $row ) {
+			return $row['delta'] < 0;
+		}
+	);
+
+	usort(
+		$gainers,
+		static function ( $a, $b ) {
+			return ( $b['delta'] ?? 0 ) <=> ( $a['delta'] ?? 0 );
+		}
+	);
+
+	usort(
+		$losers,
+		static function ( $a, $b ) {
+			return ( $a['delta'] ?? 0 ) <=> ( $b['delta'] ?? 0 );
+		}
+	);
+
+	$limit = max( 1, absint( $limit ) );
+
+	return [
+		'gainers' => array_values( array_slice( $gainers, 0, $limit ) ),
+		'losers'  => array_values( array_slice( $losers, 0, $limit ) ),
+	];
+}
