@@ -154,6 +154,14 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Eigene Leadgenerierung vs. Portal-Leads – Vergleich für Solar & SHK',
 				'description' => sprintf( 'Eigene Anfrage-Systeme gegenüber DAA, Aroundhome und Check24: TCO, Exklusivität, Asset-Eigentum, CPL. E3-Referenz: %s niedrigere Cost per Lead in 9 Monaten.', $e3_cpl_reduction ),
 			],
+			'lead-funnel-solar' => [
+				'title'       => 'Lead-Funnel Solar & Wärmepumpe – Aufbau für B2B-Marketing',
+				'description' => 'Lead-Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter: vom Erstkontakt zur qualifizierten Anfrage. Vorqualifizierung, Lead-Scoring, CRM-Übergabe.',
+			],
+			'kunden-gewinnen-solarteure' => [
+				'title'       => 'Kunden gewinnen für Solarteure – ohne Portal-Leads',
+				'description' => sprintf( 'Wie Solarteure und Wärmepumpen-Anbieter im DACH-Mittelstand systematisch Kunden gewinnen – ohne DAA, Aroundhome oder Check24. E3-Referenz: %s niedrigere Cost per Lead.', $e3_cpl_reduction ),
+			],
 		]
 	);
 }

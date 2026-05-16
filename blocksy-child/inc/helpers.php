@@ -1028,6 +1028,78 @@ function nexus_maybe_ensure_eigene_vs_portale_page() {
 add_action( 'init', 'nexus_maybe_ensure_eigene_vs_portale_page', 27 );
 
 /**
+ * Ensure the lead-funnel pillar page exists on /lead-funnel-solar/.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_lead_funnel_solar_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$page_id = nexus_get_page_id( [ 'lead-funnel-solar' ] );
+
+	if ( ! $page_id ) {
+		$page_id = wp_insert_post(
+			wp_slash(
+				[
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_title'   => 'Lead-Funnel Solar – Pillar-Page',
+					'post_name'    => 'lead-funnel-solar',
+					'post_content' => '',
+					'post_excerpt' => 'Pillar-Page für die Lead-Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter.',
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $page_id ) ) {
+			return;
+		}
+	}
+
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-lead-funnel-solar.php' );
+}
+add_action( 'init', 'nexus_maybe_ensure_lead_funnel_solar_page', 27 );
+
+/**
+ * Ensure the kunden-gewinnen pillar page exists on /kunden-gewinnen-solarteure/.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_kunden_gewinnen_solarteure_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$page_id = nexus_get_page_id( [ 'kunden-gewinnen-solarteure' ] );
+
+	if ( ! $page_id ) {
+		$page_id = wp_insert_post(
+			wp_slash(
+				[
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_title'   => 'Kunden gewinnen für Solarteure – ohne Portal-Leads',
+					'post_name'    => 'kunden-gewinnen-solarteure',
+					'post_content' => '',
+					'post_excerpt' => 'Pillar-Page zur systematischen Kundengewinnung für Solarteure im DACH-Mittelstand.',
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $page_id ) ) {
+			return;
+		}
+	}
+
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-kunden-gewinnen-solarteure.php' );
+}
+add_action( 'init', 'nexus_maybe_ensure_kunden_gewinnen_solarteure_page', 27 );
+
+/**
  * Map deprecated service, cluster and tool slugs to their canonical targets.
  *
  * @return array<string, string>
@@ -1273,6 +1345,8 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-server-side-tracking-b2b.php',
 		'page-b2b-solar-leads.php',
 		'page-eigene-leadgenerierung-vs-portale.php',
+		'page-lead-funnel-solar.php',
+		'page-kunden-gewinnen-solarteure.php',
 	];
 
 	foreach ( $page_templates as $page_template ) {
@@ -1304,6 +1378,8 @@ function nexus_should_hide_footer_primary_cta() {
 			'server-side-tracking-b2b',
 			'b2b-solar-leads',
 			'eigene-leadgenerierung-vs-portale',
+			'lead-funnel-solar',
+			'kunden-gewinnen-solarteure',
 			'loesungen',
 		]
 	);
@@ -1421,6 +1497,8 @@ function nexus_force_energy_systems_route_template( $template ) {
 		'server-side-tracking-b2b'                       => get_stylesheet_directory() . '/page-server-side-tracking-b2b.php',
 		'b2b-solar-leads'                                => get_stylesheet_directory() . '/page-b2b-solar-leads.php',
 		'eigene-leadgenerierung-vs-portale'              => get_stylesheet_directory() . '/page-eigene-leadgenerierung-vs-portale.php',
+		'lead-funnel-solar'                              => get_stylesheet_directory() . '/page-lead-funnel-solar.php',
+		'kunden-gewinnen-solarteure'                     => get_stylesheet_directory() . '/page-kunden-gewinnen-solarteure.php',
 	];
 
 	foreach ( $route_templates as $slug => $forced_template ) {

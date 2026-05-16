@@ -266,6 +266,8 @@ function hu_enqueue_assets() {
 		'server-side-tracking-b2b'          => 'page-server-side-tracking-b2b.php',
 		'b2b-solar-leads'                   => 'page-b2b-solar-leads.php',
 		'eigene-leadgenerierung-vs-portale' => 'page-eigene-leadgenerierung-vs-portale.php',
+		'lead-funnel-solar'                 => 'page-lead-funnel-solar.php',
+		'kunden-gewinnen-solarteure'        => 'page-kunden-gewinnen-solarteure.php',
 	];
 
 	foreach ( $intercept_routes as $slug => $template ) {
