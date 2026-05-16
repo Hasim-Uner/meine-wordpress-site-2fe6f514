@@ -289,6 +289,17 @@
   font-size: clamp(44px, 7vw, 104px);
   margin: 6px 0 0;
 }
+.solara-landing .sol-hero-claim {
+  margin: 0;
+  max-width: 28ch;
+  color: var(--sol-fg);
+  font-family: var(--sol-font-display);
+  font-size: clamp(20px, 1.7vw, 28px);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  font-style: italic;
+  font-weight: 500;
+}
 .solara-landing .sol-hero-sub {
   margin: 0;
   max-width: 52ch;
@@ -318,6 +329,7 @@
 @media (max-width: 960px) {
   .solara-landing .sol-hero-inner { grid-template-columns: 1fr; }
   .solara-landing .sol-hero-h1 { font-size: clamp(40px, 11vw, 72px); }
+  .solara-landing .sol-hero-claim { font-size: clamp(18px, 3.6vw, 24px); max-width: 100%; }
   .solara-landing .sol-hero-metrics { flex-wrap: wrap; gap: 20px; }
 }
 
@@ -1175,6 +1187,19 @@
   font-size: 14.5px;
   line-height: 1.6;
 }
+.solara-landing .sol-method-card-s a {
+  color: var(--sol-fg);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--sol-accent) 50%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color .2s ease, color .2s ease;
+}
+.solara-landing .sol-method-card-s a:hover,
+.solara-landing .sol-method-card-s a:focus-visible {
+  color: var(--sol-accent);
+  text-decoration-color: var(--sol-accent);
+}
 .solara-landing .sol-method-card-list {
   list-style: none;
   padding: 18px 0 0;
@@ -2027,6 +2052,22 @@ body.page-template-page-solar-waermepumpen-leadgenerierung-php .ct-page-title {
   font-weight: 700;
   color: var(--sol-fg);
   letter-spacing: -0.01em;
+}
+.solara-landing .sol-system-layer-name-link {
+  color: inherit;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size .25s ease, color .25s ease;
+  padding-bottom: 2px;
+}
+.solara-landing .sol-system-layer:hover .sol-system-layer-name-link,
+.solara-landing .sol-system-layer-name-link:hover,
+.solara-landing .sol-system-layer-name-link:focus-visible {
+  color: var(--sol-accent);
+  background-size: 100% 1px;
 }
 .solara-landing .sol-system-layer-status {
   padding: 5px 11px;

@@ -19,8 +19,10 @@ $e3_url         = home_url( '/e3-new-energy/' );
 $marktcheck_url = home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 
 // ═══ E3 Proof Canon ═══
-$e3         = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
-$e3_metrics = $e3['metrics'] ?? [];
+$e3            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_metrics    = $e3['metrics'] ?? [];
+$e3_cpl_before = $e3_metrics['cpl_before']['display'] ?? '150 €';
+$e3_cpl_after  = $e3_metrics['cpl_after']['display'] ?? '22 €';
 
 // ═══ WGOS Asset Registry ═══
 $wgos_assets = function_exists( 'nexus_get_wgos_asset_registry' ) ? nexus_get_wgos_asset_registry() : [];
@@ -499,7 +501,7 @@ get_header();
 					Alle Zahlen, die Systemlogik und was sich daraus für Ihre Situation ableiten lässt: <a href="<?php echo esc_url( $e3_url ); ?>">E3 New Energy im Detail →</a>
 				</p>
 				<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_proof_e3_deep" data-track-category="navigation" data-track-section="proof">
-					E3-Case ansehen
+					E3-Case: CPL von <?php echo esc_html( $e3_cpl_before ); ?> auf <?php echo esc_html( $e3_cpl_after ); ?> ansehen
 				</a>
 			</div>
 		</div>

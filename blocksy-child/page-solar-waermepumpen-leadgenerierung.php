@@ -82,14 +82,14 @@ $method_cards = [
 		'n'  => 'II',
 		'p'  => 'Phase 02',
 		't'  => 'Eigenes Anfrage-System',
-		's'  => 'WordPress hardcoded — kein Page-Builder, kein Plugin-Stack. Server-Side-Tracking auf eigenem Server. Smarte Vorqualifizierung. Conversion-Pfad ohne Mietsysteme.',
+		's'  => 'WordPress hardcoded — kein Page-Builder, kein Plugin-Stack. <a href="' . esc_url( home_url( '/ga4-tracking-setup/' ) ) . '">Server-Side-Tracking</a> auf eigenem Server. Smarte Vorqualifizierung. <a href="' . esc_url( home_url( '/conversion-rate-optimization/' ) ) . '">Conversion-Pfad</a> ohne Mietsysteme.',
 		'b'  => [ 'Money-Page · Proof- & Angebotsseiten', 'Frankfurt-Server · CAPI · DSGVO', '60-Sek-Funnel mit Lead-Scoring' ],
 	],
 	[
 		'n'  => 'III',
 		'p'  => 'Phase 03',
 		't'  => 'Skalieren & Übergeben',
-		's'  => 'Mit sauberem Fundament rechnen sich Google Ads, Meta Ads und SEO endlich. Wöchentliches Reporting. Bei Vertragsende: dokumentierte Übergabe — Code, Tracking, Daten bleiben bei Ihnen.',
+		's'  => 'Mit sauberem <a href="' . esc_url( home_url( '/core-web-vitals/' ) ) . '">technischen Fundament</a> rechnen sich Google Ads, Meta Ads und <a href="' . esc_url( home_url( '/wordpress-seo-hannover/' ) ) . '">SEO</a> endlich. Wöchentliches Reporting. Bei Vertragsende: dokumentierte Übergabe — Code, Tracking, Daten bleiben bei Ihnen.',
 		'b'  => [ 'Google Ads · Meta Ads · SEO-Anteil', 'Wöchentliches Reporting', 'Monatlich kündbar · 100 % Asset-Übergabe' ],
 	],
 ];
@@ -143,10 +143,12 @@ $compare_good = [
 ];
 
 // ── System-Diagramm: 4 Layer · was Kunden konkret bekommen ─────────────────────
+// `url` (optional) verlinkt den Layer-Header auf den passenden WGOS-Cluster.
 $system_layers = [
 	[
 		'n'      => '01',
 		'name'   => 'Fundament',
+		'url'    => home_url( '/core-web-vitals/' ),
 		'status' => 'DSGVO · Frankfurt',
 		'cols'   => 2,
 		'items'  => [
@@ -157,6 +159,7 @@ $system_layers = [
 	[
 		'n'      => '02',
 		'name'   => 'Daten & Tracking',
+		'url'    => home_url( '/ga4-tracking-setup/' ),
 		'status' => 'Server-Side · CAPI',
 		'cols'   => 2,
 		'items'  => [
@@ -167,6 +170,7 @@ $system_layers = [
 	[
 		'n'      => '03',
 		'name'   => 'Conversion-Pfad',
+		'url'    => home_url( '/conversion-rate-optimization/' ),
 		'status' => 'Vorqualifizierung · Score',
 		'cols'   => 3,
 		'items'  => [
@@ -178,6 +182,7 @@ $system_layers = [
 	[
 		'n'      => '04',
 		'name'   => 'Skalierung',
+		'url'    => home_url( '/performance-marketing/' ),
 		'status' => 'Multi-Channel · messbar',
 		'cols'   => 3,
 		'items'  => [
@@ -340,8 +345,11 @@ get_header();
 				<div class="sol-hero-left">
 					<div class="sol-eyebrow">Für Solar- &amp; Wärmepumpen-Anbieter · 10–25 MA · DACH</div>
 					<h1 class="sol-display sol-hero-h1">
-						Hören Sie auf,<br /><em>Anfragen zu mieten.</em><br />Bauen Sie eine,<br />die <em>Ihnen gehört.</em>
+						Die Alternative<br />zu <em>Portal-Leads:</em><br />Ihr eigenes<br /><em>Anfrage-System.</em>
 					</h1>
+					<p class="sol-hero-claim">
+						Hören Sie auf, Anfragen zu mieten — bauen Sie eine, die Ihnen gehört.
+					</p>
 					<p class="sol-hero-sub">
 						Portal-Leads kosten 80–150 €. Die Hälfte geht nicht ans Telefon. Wir bauen Ihrem Betrieb ein eigenes Anfrage-System — WordPress hardcoded, Tracking auf eigenem Server, Vorqualifizierung mit Lead-Score. Das System gehört Ihnen. Die Anfragen sind exklusiv.
 					</p>
@@ -568,7 +576,13 @@ get_header();
 						<article class="sol-system-layer<?php echo 3 === $layer['cols'] ? ' is-three' : ''; ?>" style="--sol-delay:<?php echo (float) ( $layer_index * 0.12 ); ?>s;">
 							<header class="sol-system-layer-head">
 								<div class="sol-system-layer-n sol-display"><?php echo esc_html( $layer['n'] ); ?></div>
-								<div class="sol-system-layer-name"><?php echo esc_html( $layer['name'] ); ?></div>
+								<div class="sol-system-layer-name">
+									<?php if ( ! empty( $layer['url'] ) ) : ?>
+										<a href="<?php echo esc_url( $layer['url'] ); ?>" class="sol-system-layer-name-link" data-track-action="cluster_link_<?php echo esc_attr( sanitize_title( $layer['name'] ) ); ?>" data-track-category="internal_link" data-track-section="system_diagram"><?php echo esc_html( $layer['name'] ); ?></a>
+									<?php else : ?>
+										<?php echo esc_html( $layer['name'] ); ?>
+									<?php endif; ?>
+								</div>
 								<div class="sol-system-layer-status sol-mono"><?php echo esc_html( $layer['status'] ); ?></div>
 							</header>
 							<div class="sol-system-grid">
@@ -622,7 +636,7 @@ get_header();
 								<div class="sol-method-card-pill"><?php echo esc_html( $card['p'] ); ?></div>
 							</div>
 							<h3 class="sol-method-card-t"><?php echo esc_html( $card['t'] ); ?></h3>
-							<p class="sol-method-card-s"><?php echo esc_html( $card['s'] ); ?></p>
+							<p class="sol-method-card-s"><?php echo wp_kses_post( $card['s'] ); ?></p>
 							<ul class="sol-method-card-list">
 								<?php foreach ( $card['b'] as $b ) : ?>
 									<li><span class="sol-method-tick">+</span><?php echo esc_html( $b ); ?></li>
