@@ -36,9 +36,9 @@
   --ag-conversion:       #8B4789;
   --ag-weiterentwicklung:#1F8A5B;
 
-  /* Typo */
-  --ag-font-display: "Outfit", "Satoshi", Georgia, "Times New Roman", serif;
-  --ag-font-body:    "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  /* Typo — Brand-Stack uebernehmen (Satoshi Display, Figtree Body) */
+  --ag-font-display: var(--font-display, "Satoshi", "Figtree", sans-serif);
+  --ag-font-body:    var(--font-body, "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif);
 
   /* Spacing */
   --ag-space-xs:  0.5rem;
