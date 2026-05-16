@@ -2203,3 +2203,644 @@
     margin-top: var(--ag-space-sm);
   }
 }
+
+/* ===========================================================================
+   EDITORIAL UPGRADE — schoener, ruhiger
+   Hero ("ag-hero" + "ag-brief") und Final-CTA ("ag-close") als editorial
+   Lesefluss statt Dashboard-Optik. Keine Aurora-Blobs mehr.
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   E0. Buttons (eigenstaendig, da .nx-btn schon globale Variante ist)
+   --------------------------------------------------------------------------- */
+.wp-agentur-page-wrapper .ag-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.95rem 1.6rem;
+  border-radius: 999px;
+  font-family: var(--ag-font-body);
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform var(--ag-dur-base) var(--ag-ease),
+              background var(--ag-dur-base) var(--ag-ease),
+              border-color var(--ag-dur-base) var(--ag-ease),
+              box-shadow var(--ag-dur-base) var(--ag-ease),
+              color var(--ag-dur-base) var(--ag-ease);
+}
+
+.wp-agentur-page-wrapper .ag-btn--primary {
+  background: linear-gradient(180deg, #DD8666 0%, #C05D3F 100%);
+  color: #FFFFFF;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 12px 28px rgba(192, 93, 63, 0.38);
+}
+
+.wp-agentur-page-wrapper .ag-btn--primary:hover,
+.wp-agentur-page-wrapper .ag-btn--primary:focus-visible {
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.14) inset,
+    0 18px 36px rgba(192, 93, 63, 0.48);
+  color: #FFFFFF;
+}
+
+.wp-agentur-page-wrapper .ag-btn--ghost {
+  background: transparent;
+  color: rgba(246, 244, 239, 0.92);
+  border-color: rgba(244, 212, 200, 0.28);
+}
+
+.wp-agentur-page-wrapper .ag-btn--ghost:hover,
+.wp-agentur-page-wrapper .ag-btn--ghost:focus-visible {
+  border-color: rgba(244, 212, 200, 0.55);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.wp-agentur-page-wrapper .ag-btn--xl {
+  padding: 1.15rem 2.05rem;
+  font-size: 1.04rem;
+}
+
+/* ---------------------------------------------------------------------------
+   E1. HERO – editorial Layout
+   --------------------------------------------------------------------------- */
+.wp-agentur-hero--editorial {
+  position: relative;
+  padding: clamp(5.5rem, 11vw, 8.5rem) 1.5rem clamp(4rem, 8vw, 6rem);
+  background: #1A1714;
+  color: #F6F4EF;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: clamp(680px, 96vh, 920px);
+  display: flex;
+  align-items: center;
+}
+
+/* warme Schicht + Vignette + Grain ergeben ein magazin-haftes Papier-Gefuehl */
+.ag-hero-bg,
+.ag-close-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ag-hero-bg__warmth {
+  position: absolute;
+  inset: -10% -5%;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 10%, rgba(217, 119, 87, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 80% at 0% 100%, rgba(192, 93, 63, 0.16) 0%, transparent 60%),
+    linear-gradient(180deg, #1A1714 0%, #15120F 100%);
+}
+
+.ag-hero-bg__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 35%, transparent 0%, rgba(0, 0, 0, 0.32) 75%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.ag-hero-bg__grain,
+.ag-close-bg__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.42;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.7 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+}
+
+.wp-agentur-hero--editorial .nx-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.ag-hero {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* Editorial Top-Marker: kleine Linie + Markenkennzeichnung links, Status rechts */
+.ag-hero__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: clamp(1.25rem, 3vw, 2rem);
+  border-bottom: 1px solid rgba(244, 212, 200, 0.12);
+}
+
+.ag-hero__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: rgba(246, 244, 239, 0.78);
+  font-family: var(--ag-font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.ag-hero__mark-rule {
+  display: inline-block;
+  width: clamp(36px, 5vw, 56px);
+  height: 1px;
+  background: rgba(244, 212, 200, 0.45);
+}
+
+.ag-hero__meta-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(246, 244, 239, 0.72);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* 60/40 editorial split */
+.ag-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: end;
+}
+
+@media (max-width: 1024px) {
+  .ag-hero__grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+}
+
+.ag-hero__copy {
+  display: grid;
+  gap: clamp(1.25rem, 2vw, 1.75rem);
+  max-width: 22ch;
+  /* H1 darf breit, Subtitle eng — Steuerung pro Element */
+  max-width: none;
+}
+
+.ag-hero__title {
+  margin: 0;
+  font-family: var(--ag-font-display);
+  font-weight: 500;
+  font-size: clamp(3rem, 7.4vw, 6rem);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  color: #FFFFFF;
+}
+
+@media (min-width: 1320px) {
+  .ag-hero__title { font-size: 6.4rem; }
+}
+
+.ag-hero__title-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: agLineIn 0.7s var(--ag-ease) forwards;
+}
+
+.ag-hero__title-line:nth-child(1) { animation-delay: 0.10s; }
+.ag-hero__title-line:nth-child(2) { animation-delay: 0.20s; }
+.ag-hero__title-line:nth-child(3) { animation-delay: 0.32s; }
+
+.ag-hero__title-line--em {
+  font-style: italic;
+  font-weight: 400;
+  color: #F4D4C8;
+  background: linear-gradient(90deg, #F4D4C8 0%, #D97757 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes agLineIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ag-hero__lede {
+  margin: 0;
+  max-width: 56ch;
+  font-size: clamp(1.05rem, 1.4vw, 1.18rem);
+  line-height: 1.55;
+  color: rgba(246, 244, 239, 0.78);
+  opacity: 0;
+  animation: agLineIn 0.7s var(--ag-ease) 0.5s forwards;
+}
+
+.ag-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  margin-top: 0.5rem;
+  opacity: 0;
+  animation: agLineIn 0.7s var(--ag-ease) 0.62s forwards;
+}
+
+.ag-hero__fineprint {
+  margin: 0;
+  color: rgba(246, 244, 239, 0.52);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  animation: agLineIn 0.7s var(--ag-ease) 0.74s forwards;
+}
+
+/* ---------------------------------------------------------------------------
+   E2. CASE-BRIEF — editorial Daten-Karte rechts
+   --------------------------------------------------------------------------- */
+.ag-brief {
+  position: relative;
+  display: grid;
+  gap: clamp(1.25rem, 2vw, 1.6rem);
+  padding: clamp(1.5rem, 2.5vw, 2.1rem);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 100%);
+  border: 1px solid rgba(244, 212, 200, 0.16);
+  border-radius: 1.1rem;
+  color: #F6F4EF;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 28px 60px rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(18px);
+  animation: agLineIn 0.8s var(--ag-ease) 0.55s forwards;
+}
+
+.ag-brief::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse 80% 50% at 100% 0%, rgba(217, 119, 87, 0.18), transparent 60%);
+  pointer-events: none;
+}
+
+.ag-brief__head,
+.ag-brief__hero,
+.ag-brief__table,
+.ag-brief__foot {
+  position: relative;
+}
+
+.ag-brief__kicker {
+  display: inline-block;
+  color: rgba(246, 244, 239, 0.6);
+  font-family: var(--ag-font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.55rem;
+}
+
+.ag-brief__title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(244, 212, 200, 0.12);
+}
+
+.ag-brief__title h2 {
+  margin: 0;
+  font-family: var(--ag-font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  line-height: 1.1;
+}
+
+.ag-brief__sector {
+  font-size: 0.78rem;
+  color: rgba(246, 244, 239, 0.55);
+  letter-spacing: 0.03em;
+}
+
+/* number theatre */
+.ag-brief__hero {
+  display: grid;
+  gap: 0.55rem;
+  padding: clamp(0.5rem, 1vw, 0.75rem) 0 clamp(0.75rem, 1.5vw, 1rem);
+}
+
+.ag-brief__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(246, 244, 239, 0.55);
+}
+
+.ag-brief__numbers {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(0.85rem, 2vw, 1.4rem);
+  font-family: var(--ag-font-display);
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ag-brief__before {
+  font-size: clamp(1.5rem, 2.2vw, 1.85rem);
+  color: rgba(246, 244, 239, 0.42);
+  font-weight: 400;
+}
+
+.ag-brief__before s {
+  text-decoration: line-through;
+  text-decoration-color: rgba(246, 244, 239, 0.45);
+  text-decoration-thickness: 2px;
+}
+
+.ag-brief__arrow {
+  display: inline-flex;
+  align-items: center;
+  color: rgba(217, 119, 87, 0.85);
+  transform: translateY(-0.1em);
+}
+
+.ag-brief__after {
+  font-size: clamp(3rem, 5.2vw, 4.6rem);
+  font-weight: 600;
+  line-height: 1;
+  color: #FFFFFF;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F4D4C8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ag-brief__delta {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.32rem 0.6rem;
+  background: rgba(31, 138, 91, 0.16);
+  border: 1px solid rgba(31, 138, 91, 0.32);
+  border-radius: 999px;
+  color: #88E4B2;
+  font-family: var(--ag-font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* spec-table */
+.ag-brief__table {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(244, 212, 200, 0.12);
+}
+
+.ag-brief__table > div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.45rem 0;
+}
+
+.ag-brief__table > div + div {
+  border-top: 1px dashed rgba(244, 212, 200, 0.08);
+}
+
+.ag-brief__table dt {
+  font-family: var(--ag-font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(246, 244, 239, 0.6);
+}
+
+.ag-brief__table dd {
+  margin: 0;
+  font-family: var(--ag-font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: #FFFFFF;
+}
+
+.ag-brief__foot {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: rgba(246, 244, 239, 0.42);
+  padding-top: 0.35rem;
+  border-top: 1px solid rgba(244, 212, 200, 0.08);
+}
+
+/* ---------------------------------------------------------------------------
+   E3. FINAL CLOSE – editorial, eine Aufforderung
+   --------------------------------------------------------------------------- */
+.ag-close {
+  position: relative;
+  padding: clamp(5rem, 11vw, 9rem) 1.5rem clamp(3.5rem, 7vw, 5.5rem);
+  background: #15120F;
+  color: #F6F4EF;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.ag-close-bg__warmth {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 100%, rgba(217, 119, 87, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 100% 0%, rgba(192, 93, 63, 0.14) 0%, transparent 55%),
+    linear-gradient(180deg, #1A1714 0%, #100E0C 100%);
+}
+
+.ag-close-bg__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.35) 80%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.ag-close__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 920px;
+  margin: 0 auto;
+  text-align: left;
+  display: grid;
+  gap: clamp(1.4rem, 2.4vw, 1.85rem);
+}
+
+.ag-close__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: rgba(246, 244, 239, 0.78);
+  font-family: var(--ag-font-body);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.ag-close__kicker-rule {
+  display: inline-block;
+  width: clamp(36px, 5vw, 56px);
+  height: 1px;
+  background: rgba(244, 212, 200, 0.45);
+}
+
+.ag-close__title {
+  margin: 0;
+  font-family: var(--ag-font-display);
+  font-weight: 500;
+  font-size: clamp(2.4rem, 6.4vw, 5rem);
+  line-height: 1.0;
+  letter-spacing: -0.035em;
+  color: #FFFFFF;
+  max-width: 18ch;
+}
+
+@media (min-width: 1320px) {
+  .ag-close__title { font-size: 5.6rem; }
+}
+
+.ag-close__title-em {
+  display: block;
+  font-style: italic;
+  font-weight: 400;
+  color: #F4D4C8;
+  background: linear-gradient(90deg, #F4D4C8 0%, #D97757 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ag-close__lede {
+  margin: 0;
+  max-width: 60ch;
+  font-size: clamp(1.05rem, 1.4vw, 1.18rem);
+  line-height: 1.55;
+  color: rgba(246, 244, 239, 0.78);
+}
+
+.ag-close__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.ag-close__textlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: rgba(244, 212, 200, 0.82);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(244, 212, 200, 0.28);
+  padding-bottom: 0.15rem;
+  transition: color var(--ag-dur-base) var(--ag-ease),
+              border-color var(--ag-dur-base) var(--ag-ease);
+}
+
+.ag-close__textlink:hover,
+.ag-close__textlink:focus-visible {
+  color: #FFFFFF;
+  border-bottom-color: rgba(244, 212, 200, 0.7);
+}
+
+.ag-close__sig {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+  padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  border-top: 1px solid rgba(244, 212, 200, 0.10);
+  color: rgba(246, 244, 239, 0.65);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.ag-close__sig-line {
+  display: inline-block;
+  width: clamp(32px, 4vw, 56px);
+  height: 1px;
+  background: rgba(244, 212, 200, 0.4);
+  margin-right: 0.45rem;
+}
+
+.ag-close__sig-name {
+  color: #FFFFFF;
+  font-family: var(--ag-font-display);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.ag-close__sig-dot {
+  color: rgba(246, 244, 239, 0.4);
+}
+
+.ag-close__sig-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Inline-Variante des Status-Dots fuer den Signature-Footer */
+.ag-status-dot--inline {
+  background: #5BE3A6;
+  box-shadow: 0 0 0 0 rgba(91, 227, 166, 0.55);
+}
+
+/* ---------------------------------------------------------------------------
+   E4. Reduced motion + Mobile-Polish fuer die editorial Bloecke
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ag-hero__title-line,
+  .ag-hero__lede,
+  .ag-hero__actions,
+  .ag-hero__fineprint,
+  .ag-brief {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .ag-hero__top { gap: 0.75rem; }
+  .ag-hero__mark-rule { width: 28px; }
+  .ag-brief { padding: 1.25rem; }
+  .ag-brief__numbers { gap: 0.65rem; }
+  .ag-close__title { font-size: clamp(2.2rem, 9vw, 3.4rem); }
+  .ag-close__lede  { font-size: 1rem; }
+  .ag-close__actions { gap: 1rem; }
+  .ag-close__sig { font-size: 0.78rem; }
+}
