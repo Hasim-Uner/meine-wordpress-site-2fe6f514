@@ -2,8 +2,10 @@
 /**
  * Template Name: WordPress Agentur Hannover
  *
- * Hybrid Dark/Light Design – powered by nexus design-system.css + agentur.css.
- * WGOS-Assets werden dynamisch aus der Registry (39 Assets, publish-only) gerendert.
+ * Champions-League Light-Layout (Cream + Copper) mit dunklem Hero & finalem CTA.
+ * Design-Quelle: Bundle "monepage-wordpress-agentur-hannover" (Claude Design).
+ * Styles werden vollstaendig via `assets/css/agentur.css` geladen — kein eingebettetes CSS.
+ * WGOS-Assets werden dynamisch aus der Registry (publish-only) gerendert.
  *
  * @package Blocksy_Child
  */
@@ -17,7 +19,7 @@ $e3_url         = home_url( '/e3-new-energy/' );
 $marktcheck_url = home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 
 // ═══ E3 Proof Canon ═══
-$e3 = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3         = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics = $e3['metrics'] ?? [];
 
 // ═══ WGOS Asset Registry ═══
@@ -74,11 +76,19 @@ foreach ( $wgos_assets as $slug => $asset ) {
 	if ( isset( $asset_groups[ $core_area ] ) ) {
 		$asset_groups[ $core_area ][] = $asset;
 	} else {
-		// Fallback: falls ein Asset einen nicht-standard Kernbereich hat
 		$asset_groups[ $core_area ]   = isset( $asset_groups[ $core_area ] ) ? $asset_groups[ $core_area ] : [];
 		$asset_groups[ $core_area ][] = $asset;
 	}
 }
+
+// Gesamt-Anzahl Bausteine (publish) fuer Hero-Microcopy
+$total_assets = 0;
+foreach ( $asset_groups as $items ) {
+	$total_assets += count( $items );
+}
+
+// ═══ FAQ-Daten (canonical aus helpers.php; JSON-LD schema kommt via inc/org-schema.php) ═══
+$faqs = function_exists( 'nexus_get_agentur_faq_items' ) ? nexus_get_agentur_faq_items() : [];
 
 get_header();
 ?>
@@ -86,30 +96,29 @@ get_header();
 <div class="wp-agentur-page-wrapper">
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 01 — HERO (Dark)
+     SECTION 01 — HERO (Dark gradient, single column)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section wp-agentur-hero" data-nx-theme="dark" id="hero">
 	<div class="nx-container">
 		<div class="wp-agentur-hero__grid">
-
 			<div class="wp-agentur-hero__copy">
 				<p class="wp-agentur-eyebrow">WordPress · SEO · Tracking · Conversion · Hannover</p>
-				<h1 class="nx-hero__title wp-agentur-hero__title">
+				<h1 class="wp-agentur-hero__title">
 					WordPress-Wachstumssystem für anspruchsvolle B2B-Angebote.
 				</h1>
-				<p class="nx-hero__subtitle wp-agentur-hero__subtitle">
-					Aus Hannover für den DACH-Raum. Ich verbinde WordPress-Entwicklung, SEO, Tracking, Ladezeiten-Optimierung und Conversion-Führung — damit die Website auf jedem Gerät (Mobile First) nachvollziehbar qualifizierte Anfragen erzeugt, statt nur sichtbar zu sein.
+				<p class="wp-agentur-hero__subtitle">
+					Aus Hannover für den DACH-Raum. Ich verbinde WordPress-Entwicklung, SEO, Tracking und Conversion-Führung — damit die Website nachvollziehbar qualifizierte Anfragen erzeugt, statt nur sichtbar zu sein.
 				</p>
 
-				<!-- E3 Proof Pills -->
-				<div class="wp-agentur-hero__proof">
-					<span>150€ → 22€ CPL</span>
-					<span>1.750+ Anfragen</span>
-					<span>12% Abschlussquote</span>
+				<div class="wp-agentur-hero__proof" aria-label="Referenz-Kennzahlen E3 New Energy">
+					<span>150&nbsp;€ → 22&nbsp;€ CPL</span>
+					<span>1.750+ qualifizierte Anfragen</span>
+					<span>12&nbsp;% Abschlussquote</span>
+					<span>9&nbsp;Monate</span>
 				</div>
 
 				<div class="wp-agentur-actions wp-agentur-actions--hero">
-					<a href="#projekt-pruefen" class="nx-btn nx-btn--primary wp-agentur-hero__primary" data-track-action="cta_hero_projekt_pruefen" data-track-category="lead_gen" data-track-section="hero">
+					<a href="<?php echo esc_url( $contact_url ); ?>" class="nx-btn nx-btn--primary wp-agentur-hero__primary" data-track-action="cta_hero_projekt_pruefen" data-track-category="lead_gen" data-track-section="hero">
 						Projekt prüfen
 						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
 							<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -120,42 +129,14 @@ get_header();
 					</a>
 				</div>
 			</div>
-
-			<!-- Hero Card: was geprüft wird -->
-			<div class="wp-agentur-hero-card">
-				<span class="wp-agentur-hero-card__eyebrow">Vor Umsetzung</span>
-				<h2 class="wp-agentur-hero-card__title">Ich prüfe vier Kauf-Signale</h2>
-				<div class="wp-agentur-hero-card__items">
-					<div class="wp-agentur-hero-card__item">
-						<span class="wp-agentur-hero-card__label">01 Angebot</span>
-						<p>Ist der Nutzen so klar, dass ein kaufnaher Besucher den nächsten Schritt versteht?</p>
-					</div>
-					<div class="wp-agentur-hero-card__item">
-						<span class="wp-agentur-hero-card__label">02 Nachfrage</span>
-						<p>Welche Suchanfragen oder Partnerpfade bringen Besucher mit echter Projektabsicht?</p>
-					</div>
-					<div class="wp-agentur-hero-card__item">
-						<span class="wp-agentur-hero-card__label">03 Datenlage</span>
-						<p>Sind GA4, Consent und Tracking belastbar genug für Entscheidungen?</p>
-					</div>
-					<div class="wp-agentur-hero-card__item">
-						<span class="wp-agentur-hero-card__label">04 Anfragepfad</span>
-						<p>Welche Information braucht der Besucher jetzt für einen qualifizierten Erstkontakt?</p>
-					</div>
-				</div>
-				<p class="wp-agentur-hero-card__note">
-					Ich prüfe nicht, ob eine neue Website schöner wäre. Ich prüfe, ob Angebot, Nachfrage, Daten und Anfragepfad als System zusammenpassen.
-				</p>
-			</div>
-
 		</div>
 	</div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 02 — PROOF STRIP (Dark)
+     SECTION 02 — PROOF STRIP (white, 4 metrics)
      ═══════════════════════════════════════════════ -->
-<section class="nx-section wp-agentur-proof" data-nx-theme="dark">
+<section class="nx-section wp-agentur-proof" data-nx-theme="light" id="zahlen">
 	<div class="nx-container">
 		<div class="wp-agentur-proof-header">
 			<p class="wp-agentur-eyebrow">Proof · E3 New Energy</p>
@@ -163,21 +144,21 @@ get_header();
 			<p>Der E3-Case ist Referenz, keine pauschale Übertragbarkeitsgarantie. Er zeigt, warum Reihenfolge, Datenqualität und eigene Anfragepfade wichtiger sind als ein weiterer Relaunch.</p>
 		</div>
 
-		<div class="nx-grid nx-grid-4 wp-agentur-proof-grid">
-			<div class="nx-card wp-agentur-proof-item">
-				<div class="wp-agentur-proof-value">150€ → 22€</div>
-				<div class="wp-agentur-proof-label">CPL gesenkt</div>
+		<div class="wp-agentur-proof-grid">
+			<div class="wp-agentur-proof-item">
+				<div class="wp-agentur-proof-value">150&nbsp;€ → 22&nbsp;€</div>
+				<div class="wp-agentur-proof-label">Kosten pro Anfrage</div>
 			</div>
-			<div class="nx-card wp-agentur-proof-item">
+			<div class="wp-agentur-proof-item">
 				<div class="wp-agentur-proof-value">1.750+</div>
 				<div class="wp-agentur-proof-label">Qualifizierte Anfragen</div>
 			</div>
-			<div class="nx-card wp-agentur-proof-item">
-				<div class="wp-agentur-proof-value">12%</div>
+			<div class="wp-agentur-proof-item">
+				<div class="wp-agentur-proof-value">12&nbsp;%</div>
 				<div class="wp-agentur-proof-label">Abschlussquote</div>
 			</div>
-			<div class="nx-card wp-agentur-proof-item">
-				<div class="wp-agentur-proof-value">85%</div>
+			<div class="wp-agentur-proof-item">
+				<div class="wp-agentur-proof-value">85&nbsp;%</div>
 				<div class="wp-agentur-proof-label">Niedrigere Kosten pro Anfrage</div>
 			</div>
 		</div>
@@ -192,9 +173,9 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 03 — SPEZIALISIERUNG (Dark)
+     SECTION 03 — SPEZIALISIERUNG (3 cards)
      ═══════════════════════════════════════════════ -->
-<section class="nx-section wp-agentur-segment-switch" data-nx-theme="dark" id="spezialisierung">
+<section class="nx-section wp-agentur-segment-switch" data-nx-theme="light" id="spezialisierung">
 	<div class="nx-container">
 		<div class="nx-section-header">
 			<p class="wp-agentur-eyebrow">Spezialisierung</p>
@@ -204,11 +185,11 @@ get_header();
 			</p>
 		</div>
 
-		<div class="nx-grid nx-grid-3 wp-agentur-segment-grid">
+		<div class="wp-agentur-segment-grid">
 			<div class="wp-agentur-segment-card wp-agentur-segment-card--focus">
 				<span class="wp-agentur-segment-card__tag">Was</span>
 				<h3>WordPress-Systeme, die nachvollziehbar qualifizierte Anfragen erzeugen</h3>
-				<p>Angebotsseiten, technisches SEO, Tracking, GA4, Server-Side Tracking, Conversion Optimierung, Wartung und Ladezeiten-Optimierung — WordPress als ein System, nicht als Baustellensammlung.</p>
+				<p>Angebotsseiten, technisches SEO, Tracking, GA4, Server-Side Tracking, Conversion-Optimierung, Wartung und Ladezeiten-Optimierung — WordPress als ein System, nicht als Baustellensammlung.</p>
 			</div>
 			<div class="wp-agentur-segment-card">
 				<span class="wp-agentur-segment-card__tag">Für wen</span>
@@ -225,7 +206,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 04 — WGOS METHODE (Light)
+     SECTION 04 — WGOS METHODE (6 Phasen + Vorher/Nachher)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="wgos">
 	<div class="nx-container">
@@ -237,8 +218,7 @@ get_header();
 			</p>
 		</div>
 
-		<!-- 6 Kernbereiche als visuelles System-Diagramm -->
-		<div class="wgos-steps wp-agentur-process-grid">
+		<ol class="wgos-steps wp-agentur-process-grid">
 			<?php
 			$phase_labels = [
 				'Strategie'             => [ 'num' => '01', 'title' => 'Strategie', 'desc' => 'Welche Seite trägt welche Anfrage — und welche nicht.' ],
@@ -253,23 +233,61 @@ get_header();
 			?>
 				<li>
 					<span class="step-num"><?php echo esc_html( $p['num'] ); ?></span>
-					<h3><?php echo esc_html( $p['title'] ); ?> <small style="font-weight:400;color:var(--nx-text-dim)">· <?php echo (int) $count; ?> Bausteine</small></h3>
+					<h3>
+						<?php echo esc_html( $p['title'] ); ?>
+						<small><?php echo (int) $count; ?> Bausteine</small>
+					</h3>
 					<p><?php echo esc_html( $p['desc'] ); ?></p>
 				</li>
 			<?php endforeach; ?>
+		</ol>
+
+		<!-- Vorher / Nachher Vergleich -->
+		<div class="wp-agentur-vs" aria-label="Vorher Nachher Vergleich">
+			<div class="wp-agentur-vs__head">
+				<h3>Der Unterschied</h3>
+				<p>Was sich ändert, wenn WordPress als System funktioniert.</p>
+			</div>
+			<div class="wp-agentur-vs__cols">
+				<div class="wp-agentur-vs__col wp-agentur-vs__col--before">
+					<div class="wp-agentur-vs__col-head">
+						<span class="wp-agentur-vs__badge" aria-hidden="true">×</span>
+						<h4>Vorher</h4>
+					</div>
+					<ul class="wp-agentur-vs__list">
+						<li>Viele Besucher, wenig qualifizierte Anfragen.</li>
+						<li>Tracking unvollständig oder schlicht falsch.</li>
+						<li>Keine Klarheit darüber, welcher Kanal trägt.</li>
+						<li>Relaunch ohne messbare Verbesserung.</li>
+						<li>Jede Änderung ist Bauchgefühl.</li>
+					</ul>
+				</div>
+				<div class="wp-agentur-vs__col wp-agentur-vs__col--after">
+					<div class="wp-agentur-vs__col-head">
+						<span class="wp-agentur-vs__badge" aria-hidden="true">✓</span>
+						<h4>Nachher</h4>
+					</div>
+					<ul class="wp-agentur-vs__list">
+						<li>Qualifizierte Anfragen messbar gestiegen.</li>
+						<li>Saubere Datenbasis für Entscheidungen.</li>
+						<li>Klare Zuordnung: Kanal → Anfrage → Projekt.</li>
+						<li>Änderungen basieren auf Daten.</li>
+						<li>Kontinuierliche Optimierung statt Neubau.</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 
 		<p class="wp-agentur-process-link">
-			<a href="#asset-uebersicht">Alle 39 Bausteine in der Methodenbibliothek ansehen ↓</a>
+			<a href="#asset-uebersicht" data-track-action="cta_method_to_library" data-track-category="navigation" data-track-section="wgos">Alle <?php echo (int) $total_assets; ?> Bausteine in der Methodenbibliothek ansehen ↓</a>
 		</p>
 	</div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 05 — METHODENBIBLIOTHEK (Dark)
-     Dynamisch aus der WGOS Asset Registry
+     SECTION 05 — METHODENBIBLIOTHEK (Accordion, dynamisch)
      ═══════════════════════════════════════════════ -->
-<section class="nx-section" data-nx-theme="dark" id="asset-uebersicht">
+<section class="nx-section" data-nx-theme="light" id="asset-uebersicht">
 	<div class="nx-container">
 		<div class="nx-section-header">
 			<p class="wp-agentur-eyebrow">Methodenbibliothek</p>
@@ -284,24 +302,24 @@ get_header();
 				if ( empty( $assets ) ) {
 					continue;
 				}
-				$meta   = $area_meta[ $area ] ?? [ 'color' => '#b46a3c', 'icon' => '📦', 'desc' => '' ];
-				$count  = count( $assets );
-				$area_slug = sanitize_title( $area );
+				$meta       = $area_meta[ $area ] ?? [ 'color' => '#D97757', 'icon' => '📦', 'desc' => '' ];
+				$count      = count( $assets );
+				$area_slug  = sanitize_title( $area );
 				$area_label = function_exists( 'hue_kernbereich_label' )
 					? hue_kernbereich_label( hue_get_wgos_kernbereich_key( $area ) )
 					: $area;
 			?>
 				<div class="acc-item" data-acc="<?php echo esc_attr( $area_slug ); ?>">
-					<button class="acc-trigger" aria-expanded="false" aria-controls="body-<?php echo esc_attr( $area_slug ); ?>">
+					<button class="acc-trigger" aria-expanded="false" aria-controls="body-<?php echo esc_attr( $area_slug ); ?>" data-track-action="toggle_methodenbibliothek" data-track-category="engagement" data-track-section="<?php echo esc_attr( $area_slug ); ?>">
 						<div class="acc-trigger-left">
-							<div class="acc-icon" style="background: <?php echo esc_attr( $meta['color'] ); ?>1a; color: <?php echo esc_attr( $meta['color'] ); ?>;"><?php echo esc_html( $meta['icon'] ); ?></div>
+							<div class="acc-icon" style="background: <?php echo esc_attr( $meta['color'] ); ?>15; color: <?php echo esc_attr( $meta['color'] ); ?>;"><?php echo esc_html( $meta['icon'] ); ?></div>
 							<div class="acc-info">
 								<div class="acc-title"><?php echo esc_html( $area_label ); ?></div>
 								<div class="acc-desc"><?php echo esc_html( $meta['desc'] ); ?></div>
 							</div>
 						</div>
 						<div class="acc-meta">
-							<span class="acc-count"><?php echo (int) $count; ?> Bausteine</span>
+							<span class="acc-count"><?php echo (int) $count; ?> <?php echo 1 === $count ? 'Baustein' : 'Bausteine'; ?></span>
 							<div class="acc-chevron" aria-hidden="true">
 								<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
 									<path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -333,12 +351,12 @@ get_header();
 					</div>
 				</div>
 			<?php endforeach; ?>
-		</div><!-- /accordion -->
+		</div>
 	</div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 06 — PROJEKTPRÜFUNG (Light)
+     SECTION 06 — PROJEKTPRÜFUNG (4 Kauf-Signale)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section wp-agentur-project-form" data-nx-theme="light" id="projekt-pruefen">
 	<div class="nx-container">
@@ -350,7 +368,7 @@ get_header();
 			</p>
 		</div>
 
-		<div class="nx-grid nx-grid-4 wp-agentur-decision-grid">
+		<div class="wp-agentur-decision-grid">
 			<div class="wp-agentur-decision-card">
 				<span class="wp-agentur-decision-card__num">01</span>
 				<h3>Angebot</h3>
@@ -373,18 +391,21 @@ get_header();
 			</div>
 		</div>
 
-		<div class="wp-agentur-actions wp-agentur-actions--center" style="margin-top: 2rem;">
+		<div class="wp-agentur-actions wp-agentur-actions--center" style="margin-top: 2.5rem;">
 			<a href="<?php echo esc_url( $contact_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_projekt_pruefen_mid" data-track-category="lead_gen" data-track-section="projektpruefung">
 				Projekt prüfen
+				<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+					<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
 			</a>
 		</div>
 	</div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 07 — PROOF E3 DEEP DIVE (Dark)
+     SECTION 07 — PROOF E3 DEEP DIVE
      ═══════════════════════════════════════════════ -->
-<section class="nx-section" data-nx-theme="dark" id="proof">
+<section class="nx-section" data-nx-theme="light" id="proof">
 	<div class="nx-container">
 		<div class="nx-section-header">
 			<p class="wp-agentur-eyebrow">Proof · E3 New Energy</p>
@@ -400,9 +421,9 @@ get_header();
 			<div class="wp-agentur-case-card wp-agentur-case-card--result">
 				<span class="wp-agentur-case-card__eyebrow">Ergebnis</span>
 				<div class="wp-agentur-case-card__metrics">
-					<div><strong>150€ → 22€</strong><span>CPL gesenkt</span></div>
+					<div><strong>150&nbsp;€ → 22&nbsp;€</strong><span>Kosten pro Anfrage</span></div>
 					<div><strong>1.750+</strong><span>Qualifizierte Anfragen</span></div>
-					<div><strong>12%</strong><span>Abschlussquote</span></div>
+					<div><strong>12&nbsp;%</strong><span>Abschlussquote</span></div>
 				</div>
 			</div>
 			<div class="wp-agentur-case-card">
@@ -425,7 +446,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 08 — ABGRENZUNG (Light)
+     SECTION 08 — ABGRENZUNG (3 negative cards)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="abgrenzung">
 	<div class="nx-container">
@@ -438,18 +459,18 @@ get_header();
 		</div>
 
 		<div class="wp-agentur-pain-grid">
-			<div class="wp-agentur-pain-card nx-card">
-				<div class="wp-agentur-pain-card__icon">×</div>
+			<div class="wp-agentur-pain-card">
+				<div class="wp-agentur-pain-card__icon" aria-hidden="true">×</div>
 				<h3>One-Page-Visitenkarten</h3>
 				<p>Keine Standard-Websites ohne relevanten Projektumfang.</p>
 			</div>
-			<div class="wp-agentur-pain-card nx-card">
-				<div class="wp-agentur-pain-card__icon">×</div>
+			<div class="wp-agentur-pain-card">
+				<div class="wp-agentur-pain-card__icon" aria-hidden="true">×</div>
 				<h3>E-Commerce (Shopify / WooCommerce)</h3>
 				<p>Keine Projekte mit reinem Shop-Fokus ohne Lead-Logik.</p>
 			</div>
-			<div class="wp-agentur-pain-card nx-card">
-				<div class="wp-agentur-pain-card__icon">×</div>
+			<div class="wp-agentur-pain-card">
+				<div class="wp-agentur-pain-card__icon" aria-hidden="true">×</div>
 				<h3>Reine Design-Relaunches</h3>
 				<p>Keine Relaunches ohne Lead-Logik, Tracking und kaufnahe Angebotsstruktur.</p>
 			</div>
@@ -458,9 +479,9 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 09 — FOKUSMARKT ENERGIE (Dark)
+     SECTION 09 — FOKUSMARKT ENERGIE
      ═══════════════════════════════════════════════ -->
-<section class="nx-section" data-nx-theme="dark" id="fokusmarkt">
+<section class="nx-section" data-nx-theme="light" id="fokusmarkt">
 	<div class="nx-container">
 		<div class="nx-section-header">
 			<p class="wp-agentur-eyebrow">Fokusmarkt Energie</p>
@@ -471,14 +492,14 @@ get_header();
 		</div>
 		<div class="wp-agentur-actions wp-agentur-actions--center">
 			<a href="<?php echo esc_url( $marktcheck_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_fokusmarkt_marktcheck" data-track-category="lead_gen" data-track-section="fokusmarkt">
-				Zum Marktcheck für Solar & Wärmepumpe
+				Zum Marktcheck für Solar &amp; Wärmepumpe
 			</a>
 		</div>
 	</div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 10 — STANDORT (Light)
+     SECTION 10 — STANDORT (2 cards)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="standort">
 	<div class="nx-container">
@@ -490,12 +511,12 @@ get_header();
 			</p>
 		</div>
 
-		<div class="nx-grid nx-grid-2 wp-agentur-local-grid">
-			<div class="nx-card wp-agentur-local-card">
+		<div class="wp-agentur-local-grid">
+			<div class="wp-agentur-local-card">
 				<h3>Vor Ort in der Region Hannover</h3>
 				<p>Persönliche Reviews, Workshops und Strategie-Sessions in Pattensen bei Hannover — oder remote im DACH-Raum.</p>
 			</div>
-			<div class="nx-card wp-agentur-local-card">
+			<div class="wp-agentur-local-card">
 				<h3>Laufende WordPress-Betreuung</h3>
 				<p>Für Bestandskunden mit etabliertem WordPress-System: Wartung, Updates und Weiterentwicklung im Rahmen laufender Mandate.</p>
 			</div>
@@ -508,7 +529,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 11 — FAQ (Light)
+     SECTION 11 — FAQ (Accordion)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="faq">
 	<div class="nx-container">
@@ -518,141 +539,32 @@ get_header();
 		</div>
 
 		<div class="faq-list" id="faq-accordion">
-
-			<div class="faq-item">
-				<button class="faq-trigger" aria-expanded="false">
-					<span class="faq-question">Welche WordPress Agentur in Hannover passt für anspruchsvolle B2B-Angebote?</span>
-					<div class="faq-chevron" aria-hidden="true">
-						<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-							<path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-					</div>
-				</button>
-				<div class="faq-body">
-					<div class="faq-body-inner">
-						<p class="faq-answer">Eine passende WordPress Agentur Hannover verbindet WordPress-Entwicklung, SEO, Tracking, GA4, Server-Side Tracking und Conversion-Führung. Genau darauf ist diese Seite ausgerichtet: WordPress als Nachfrage-System statt isolierter Einzelleistungen.</p>
-					</div>
-				</div>
-			</div>
-
-			<div class="faq-item">
-				<button class="faq-trigger" aria-expanded="false">
-					<span class="faq-question">Arbeiten Sie nur mit Unternehmen aus Hannover?</span>
-					<div class="faq-chevron" aria-hidden="true">
-						<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-							<path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-					</div>
-				</button>
-				<div class="faq-body">
-					<div class="faq-body-inner">
-						<p class="faq-answer">Nein. Der Standort ist Pattensen bei Hannover, persönliche Termine sind in der Region möglich. Die Umsetzung ist auf den DACH-Raum ausgelegt; Hannover ist Standortanker, keine Zielgruppen-Grenze.</p>
+			<?php foreach ( $faqs as $idx => $faq ) :
+				$faq_q = $faq['question'] ?? ( $faq['q'] ?? '' );
+				$faq_a = $faq['answer']   ?? ( $faq['a'] ?? '' );
+			?>
+				<div class="faq-item">
+					<button class="faq-trigger" aria-expanded="false" data-track-action="toggle_faq" data-track-category="engagement" data-track-section="faq_<?php echo (int) $idx; ?>">
+						<span class="faq-question"><?php echo esc_html( $faq_q ); ?></span>
+						<div class="faq-chevron" aria-hidden="true">
+							<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+								<path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</div>
+					</button>
+					<div class="faq-body">
+						<div class="faq-body-inner">
+							<p class="faq-answer"><?php echo esc_html( $faq_a ); ?></p>
+						</div>
 					</div>
 				</div>
-			</div>
-
-			<div class="faq-item">
-				<button class="faq-trigger" aria-expanded="false">
-					<span class="faq-question">Ist Solar oder Wärmepumpe Voraussetzung?</span>
-					<div class="faq-chevron" aria-hidden="true">
-						<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-							<path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-					</div>
-				</button>
-				<div class="faq-body">
-					<div class="faq-body-inner">
-						<p class="faq-answer">Nein. Solar, Wärmepumpe und Speicher sind der Fokusmarkt, weil dort Anfragequalität, Vertriebsanschluss und Datenlage besonders schnell entscheidend werden. Die Arbeitsweise passt auch für anspruchsvolle B2B-Angebote mit ähnlicher Erklärungstiefe.</p>
-					</div>
-				</div>
-			</div>
-
-			<div class="faq-item">
-				<button class="faq-trigger" aria-expanded="false">
-					<span class="faq-question">Was passiert nach der Projektprüfung?</span>
-					<div class="faq-chevron" aria-hidden="true">
-						<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-							<path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-					</div>
-				</button>
-				<div class="faq-body">
-					<div class="faq-body-inner">
-						<p class="faq-answer">Ich prüfe Angebot, Website-Rolle, Messbarkeit und naheliegende Priorität. Wenn der Fit passt, folgt daraus eine saubere Empfehlung: Korrektur, Umsetzung, Weiterentwicklung oder bewusst kein gemeinsamer nächster Schritt.</p>
-					</div>
-				</div>
-			</div>
-
-			<div class="faq-item">
-				<button class="faq-trigger" aria-expanded="false">
-					<span class="faq-question">Brauche ich dafür einen Relaunch?</span>
-					<div class="faq-chevron" aria-hidden="true">
-						<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-							<path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-					</div>
-				</button>
-				<div class="faq-body">
-					<div class="faq-body-inner">
-						<p class="faq-answer">Nicht automatisch. Oft fehlt nicht der neue Look, sondern die richtige Reihenfolge zwischen Fundament, Daten, Sichtbarkeit und Conversion. Ein Relaunch ist nur sinnvoll, wenn die bestehende Struktur nicht mehr trägt.</p>
-					</div>
-				</div>
-			</div>
-
-			<div class="faq-item">
-				<button class="faq-trigger" aria-expanded="false">
-					<span class="faq-question">Was unterscheidet WGOS von einem klassischen Agentur-Projekt?</span>
-					<div class="faq-chevron" aria-hidden="true">
-						<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-							<path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-					</div>
-				</button>
-				<div class="faq-body">
-					<div class="faq-body-inner">
-						<p class="faq-answer">WGOS ordnet Strategie, Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängende Methode. Entscheidend ist die Reihenfolge: Welche Seite trägt welche Anfrage, welcher Kanal liefert echte Projekte und welche Änderung erzeugt als Nächstes Wirkung.</p>
-					</div>
-				</div>
-			</div>
-
-			<div class="faq-item">
-				<button class="faq-trigger" aria-expanded="false">
-					<span class="faq-question">Für wen passt diese Seite nicht?</span>
-					<div class="faq-chevron" aria-hidden="true">
-						<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-							<path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-					</div>
-				</button>
-				<div class="faq-body">
-					<div class="faq-body-inner">
-						<p class="faq-answer">Nicht passend sind kleine One-Page-Visitenkarten, reine Design-Relaunches ohne Lead-Logik und E-Commerce-Projekte mit Shopify- oder WooCommerce-Fokus.</p>
-					</div>
-				</div>
-			</div>
-
-			<div class="faq-item">
-				<button class="faq-trigger" aria-expanded="false">
-					<span class="faq-question">Warum rankt eine WordPress-Seite, liefert aber keine Anfragen?</span>
-					<div class="faq-chevron" aria-hidden="true">
-						<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-							<path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-					</div>
-				</button>
-				<div class="faq-body">
-					<div class="faq-body-inner">
-						<p class="faq-answer">Ranking und Anfragequalität sind zwei verschiedene Probleme. Oft rankt eine Seite für Informationssuchen, während Proof, CTA-Führung und kaufnahe Argumentation fehlen. Genau dort verbindet diese Arbeit SEO, Struktur, Tracking und Conversion.</p>
-					</div>
-				</div>
-			</div>
-
-		</div><!-- /faq-list -->
+			<?php endforeach; ?>
+		</div>
 	</div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 12 — FINAL CTA (Dark)
+     SECTION 12 — FINAL CTA (Dark gradient)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section cta-section" data-nx-theme="dark" id="cta">
 	<div class="cta-inner">
@@ -671,7 +583,22 @@ get_header();
 	</div>
 </section>
 
+<!-- Sticky Mobile CTA -->
+<div class="wp-agentur-sticky-cta" id="wp-agentur-sticky-cta" aria-hidden="true">
+	<div class="wp-agentur-sticky-cta__inner">
+		<div class="wp-agentur-sticky-cta__label">
+			<strong>WordPress als Anfrage-System</strong>
+			<span>Projektprüfung in 30 Min · kein Standard-Pitch</span>
+		</div>
+		<a href="<?php echo esc_url( $contact_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_sticky_projekt_pruefen" data-track-category="lead_gen" data-track-section="sticky_mobile">
+			Projekt prüfen
+		</a>
+	</div>
+</div>
+
 </div><!-- /wp-agentur-page-wrapper -->
+
+<?php /* FAQPage JSON-LD wird zentral in inc/org-schema.php aus nexus_get_agentur_faq_items() emittiert. */ ?>
 
 <script>
 	// ─── Generic accordion factory ───
@@ -694,6 +621,44 @@ get_header();
 
 	initAccordion('#asset-accordion', '.acc-item',  '.acc-trigger',  '.acc-body');
 	initAccordion('#faq-accordion',   '.faq-item',  '.faq-trigger',  '.faq-body');
+
+	// ─── Sticky Mobile CTA ───
+	(function () {
+		var sticky = document.getElementById('wp-agentur-sticky-cta');
+		var hero   = document.getElementById('hero');
+		var cta    = document.getElementById('cta');
+		if (!sticky || !hero) return;
+
+		function update() {
+			var heroBottom = hero.getBoundingClientRect().bottom;
+			var ctaTop     = cta ? cta.getBoundingClientRect().top : Infinity;
+			// Show after the hero is fully out of view, hide before the final CTA appears
+			var shouldShow = heroBottom < 0 && ctaTop > window.innerHeight - 80;
+			sticky.classList.toggle('is-visible', shouldShow);
+			sticky.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
+			document.body.classList.toggle('has-sticky-agentur-cta', shouldShow);
+		}
+
+		window.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', update);
+		update();
+	})();
+
+	// ─── Reveal-on-scroll for marked elements ───
+	(function () {
+		if (!('IntersectionObserver' in window)) return;
+		var els = document.querySelectorAll('.wp-agentur-reveal');
+		if (!els.length) return;
+		var io = new IntersectionObserver(function (entries) {
+			entries.forEach(function (entry) {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('is-revealed');
+					io.unobserve(entry.target);
+				}
+			});
+		}, { rootMargin: '0px 0px -80px 0px', threshold: 0.05 });
+		els.forEach(function (el) { io.observe(el); });
+	})();
 </script>
 
 <?php
