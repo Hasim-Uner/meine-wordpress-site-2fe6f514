@@ -21,9 +21,6 @@ $e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 $results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
 $agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
-$wgos_url     = $primary_urls['wgos'] ?? trailingslashit( $agentur_url ) . '#wgos';
-$asset_url    = $primary_urls['wgos_assets'] ?? trailingslashit( $agentur_url ) . '#asset-uebersicht';
-$seo_url      = $primary_urls['seo'] ?? trailingslashit( $agentur_url ) . '#technisches-seo';
 $about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
 $contact_url  = $primary_urls['contact'] ?? nexus_get_contact_url();
 $project_request_url = add_query_arg(
@@ -134,9 +131,6 @@ $footer_trust_items  = array_values(
 				<ul class="ft__list">
 					<li><a class="ft__link-strong" href="<?php echo esc_url( $blog_url ); ?>" data-track-action="cta_footer_nav_insights" data-track-category="navigation" data-track-section="footer">Insights</a></li>
 					<li><a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_footer_nav_agentur" data-track-category="navigation" data-track-section="footer">WordPress Agentur Hannover</a></li>
-					<li><a href="<?php echo esc_url( $wgos_url ); ?>" data-track-action="cta_footer_nav_wgos" data-track-category="navigation" data-track-section="footer">WGOS-Arbeitsweise</a></li>
-					<li><a href="<?php echo esc_url( $seo_url ); ?>" data-track-action="cta_footer_nav_seo" data-track-category="navigation" data-track-section="footer">Technisches SEO</a></li>
-					<li><a href="<?php echo esc_url( $asset_url ); ?>" data-track-action="cta_footer_nav_assets" data-track-category="navigation" data-track-section="footer">WGOS-Assets</a></li>
 				</ul>
 			</section>
 
@@ -163,10 +157,6 @@ $footer_trust_items  = array_values(
 			<a href="https://www.linkedin.com/in/hasim-%C3%BCner/" aria-label="LinkedIn-Profil" rel="me noopener noreferrer" target="_blank">
 				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
 				LinkedIn
-			</a>
-			<a href="https://github.com/Hasim-hannover" aria-label="GitHub-Profil" rel="me noopener noreferrer" target="_blank">
-				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.3a11 11 0 0 0-3.5 21.4c.5.1.7-.2.7-.5v-1.7C6 21.1 5.4 19 5.4 19a2.8 2.8 0 0 0-1.1-1.5c-.9-.6.1-.6.1-.6a2.1 2.1 0 0 1 1.5 1 2.1 2.1 0 0 0 2.9.8 2.1 2.1 0 0 1 .6-1.3c-2.2-.3-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7 3.6 3.6 0 0 1 .1-2.7s.8-.3 2.8 1a9.7 9.7 0 0 1 5.1 0c2-1.3 2.8-1 2.8-1a3.6 3.6 0 0 1 .1 2.7 3.9 3.9 0 0 1 1 2.7c0 3.9-2.4 4.7-4.6 5a2.4 2.4 0 0 1 .7 1.8v2.7c0 .3.2.6.7.5A11 11 0 0 0 12 1.3z"/></svg>
-				GitHub
 			</a>
 		</div>
 	</div>

@@ -67,6 +67,28 @@ if ( empty( $audit_header_meta_items ) ) {
 </header>
 <?php return; endif; ?>
 
+<?php if ( function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context() ) : ?>
+<header class="nx-site-header nx-site-header--energy" data-site-header role="banner">
+	<div class="nx-container">
+		<div class="nx-site-header__shell nx-site-header__shell--energy">
+			<a
+				class="site-logo nx-site-header__brand"
+				href="<?php echo esc_url( home_url( '/' ) ); ?>"
+				rel="home"
+				aria-label="<?php echo esc_attr( $home_label ); ?>"
+			>
+				<?php echo esc_html( $brand_text ); ?>
+			</a>
+
+			<a class="nx-site-header__energy-cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_energy_header_analysis" data-track-category="lead_gen" data-track-section="energy_header" data-track-funnel-stage="energy_header">
+				<span class="nx-site-header__energy-cta-label">Marktcheck</span>
+				<span class="nx-site-header__energy-cta-microcopy" aria-hidden="true">60 Sek.</span>
+			</a>
+		</div>
+	</div>
+</header>
+<?php return; endif; ?>
+
 <header class="nx-site-header" data-site-header role="banner">
 	<div class="nx-container">
 		<div class="nx-site-header__shell">
