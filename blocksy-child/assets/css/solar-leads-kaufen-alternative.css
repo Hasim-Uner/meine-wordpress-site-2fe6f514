@@ -385,6 +385,99 @@
 	justify-content: center;
 }
 
+/* ── Vergleichsmatrix (Tabelle ohne <table>) ───────────────── */
+
+.hu-intercept__matrix {
+	display: grid;
+	grid-template-columns: minmax(160px, 1.1fr) 1.4fr 1.4fr;
+	gap: 0;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 6px;
+	overflow: hidden;
+	background: rgba(255, 255, 255, 0.02);
+}
+
+.hu-intercept__matrix-head,
+.hu-intercept__matrix-row {
+	display: contents;
+}
+
+.hu-intercept__matrix-head > [role="columnheader"] {
+	padding: 16px 20px;
+	background: rgba(201, 151, 74, 0.1);
+	color: #fff;
+	font-weight: 700;
+	font-size: 0.92rem;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hu-intercept__matrix-row > [role="cell"] {
+	padding: 18px 20px;
+	font-size: 0.95rem;
+	line-height: 1.55;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+	color: rgba(245, 241, 234, 0.82);
+}
+
+.hu-intercept__matrix-row:last-child > [role="cell"] {
+	border-bottom: 0;
+}
+
+.hu-intercept__matrix-criterion {
+	font-weight: 700;
+	color: #fff;
+	background: rgba(255, 255, 255, 0.02);
+}
+
+.hu-intercept__matrix-rent {
+	color: rgba(232, 137, 137, 0.92);
+}
+
+.hu-intercept__matrix-own {
+	color: rgba(224, 173, 94, 0.95);
+	font-weight: 500;
+}
+
+@media (max-width: 760px) {
+	.hu-intercept__matrix {
+		grid-template-columns: 1fr;
+	}
+
+	.hu-intercept__matrix-head {
+		display: none;
+	}
+
+	.hu-intercept__matrix-row > [role="cell"] {
+		border-bottom: 0;
+		padding: 12px 20px;
+	}
+
+	.hu-intercept__matrix-criterion {
+		padding-top: 18px;
+		font-size: 1rem;
+	}
+
+	.hu-intercept__matrix-rent,
+	.hu-intercept__matrix-own {
+		padding-bottom: 18px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.hu-intercept__matrix-rent::before {
+		content: "Portal mieten: ";
+		color: rgba(245, 241, 234, 0.55);
+		font-weight: 600;
+	}
+
+	.hu-intercept__matrix-own::before {
+		content: "Eigenes System: ";
+		color: rgba(245, 241, 234, 0.55);
+		font-weight: 600;
+	}
+}
+
 @media (max-width: 640px) {
 	.hu-intercept__facts li {
 		grid-template-columns: 1fr;

@@ -260,9 +260,19 @@ function hu_enqueue_assets() {
 		wp_localize_script( 'nexus-solar-leadgen-solara-js', 'NexusMarktcheckConfig', $marktcheck_cfg );
 	}
 
-	// ── F1a-int) Intercept-Landingpage: Solar Leads kaufen Alternative ──
-	if ( is_page( 'solar-leads-kaufen-alternative' ) || is_page_template( 'page-solar-leads-kaufen-alternative.php' ) ) {
-		hu_enqueue_css( 'nexus-intercept-solar-leads-css', 'solar-leads-kaufen-alternative.css', [ 'nexus-design-system' ] );
+	// ── F1a-int) SEO-Sub-Pages mit gemeinsamem .hu-intercept-System ──
+	$intercept_routes = [
+		'solar-leads-kaufen-alternative'    => 'page-solar-leads-kaufen-alternative.php',
+		'server-side-tracking-b2b'          => 'page-server-side-tracking-b2b.php',
+		'b2b-solar-leads'                   => 'page-b2b-solar-leads.php',
+		'eigene-leadgenerierung-vs-portale' => 'page-eigene-leadgenerierung-vs-portale.php',
+	];
+
+	foreach ( $intercept_routes as $slug => $template ) {
+		if ( is_page( $slug ) || is_page_template( $template ) ) {
+			hu_enqueue_css( 'nexus-intercept-solar-leads-css', 'solar-leads-kaufen-alternative.css', [ 'nexus-design-system' ] );
+			break;
+		}
 	}
 
 	// ── F1b) Schwester-Templates (E3-Case, Service-Landing) ────────

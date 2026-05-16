@@ -142,6 +142,18 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Solar Leads kaufen? Warum eigene Anfragen den CPL senken',
 				'description' => sprintf( 'Portal-Leads für Photovoltaik und Wärmepumpe sind teuer und mehrfach verkauft. Eigene Anfrage-Systeme senken den Cost per Lead %s – wie bei E3 New Energy in 9 Monaten.', $e3_cpl_reduction ),
 			],
+			'server-side-tracking-b2b' => [
+				'title'       => 'Server-Side Tracking für B2B-Leadgenerierung – DSGVO & CAPI',
+				'description' => 'Server-Side Tracking für B2B-Anfrage-Systeme: GA4, Meta CAPI, Consent Mode v2 auf eigenem Server in Frankfurt. Saubere Attribution trotz Cookieless und Ad-Blockern.',
+			],
+			'b2b-solar-leads' => [
+				'title'       => 'B2B Solar Leads für gewerbliche PV-Projekte – kein Mengen-Lead',
+				'description' => 'B2B-Leadgenerierung für gewerbliche Photovoltaik: Hallendächer, Quartierskonzepte, PPA. Eigenes Anfrage-System für Buying-Center-Verkäufe, nicht für Mengen-Leads.',
+			],
+			'eigene-leadgenerierung-vs-portale' => [
+				'title'       => 'Eigene Leadgenerierung vs. Portal-Leads – Vergleich für Solar & SHK',
+				'description' => sprintf( 'Eigene Anfrage-Systeme gegenüber DAA, Aroundhome und Check24: TCO, Exklusivität, Asset-Eigentum, CPL. E3-Referenz: %s niedrigere Cost per Lead in 9 Monaten.', $e3_cpl_reduction ),
+			],
 		]
 	);
 }

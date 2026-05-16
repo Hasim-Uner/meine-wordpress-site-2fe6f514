@@ -920,6 +920,114 @@ function nexus_maybe_ensure_intercept_solar_leads_page() {
 add_action( 'init', 'nexus_maybe_ensure_intercept_solar_leads_page', 27 );
 
 /**
+ * Ensure the server-side tracking landing page exists on /server-side-tracking-b2b/.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_server_side_tracking_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$page_id = nexus_get_page_id( [ 'server-side-tracking-b2b' ] );
+
+	if ( ! $page_id ) {
+		$page_id = wp_insert_post(
+			wp_slash(
+				[
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_title'   => 'Server-Side Tracking für B2B-Leadgenerierung',
+					'post_name'    => 'server-side-tracking-b2b',
+					'post_content' => '',
+					'post_excerpt' => 'Server-Side Tracking auf eigenem Server: GA4, Meta CAPI, Consent Mode v2 für B2B-Anfrage-Systeme.',
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $page_id ) ) {
+			return;
+		}
+	}
+
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-server-side-tracking-b2b.php' );
+}
+add_action( 'init', 'nexus_maybe_ensure_server_side_tracking_page', 27 );
+
+/**
+ * Ensure the gewerbliche B2B Solar Leads landing page exists on /b2b-solar-leads/.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_b2b_solar_leads_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$page_id = nexus_get_page_id( [ 'b2b-solar-leads' ] );
+
+	if ( ! $page_id ) {
+		$page_id = wp_insert_post(
+			wp_slash(
+				[
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_title'   => 'B2B Solar Leads – gewerbliche Photovoltaik-Anfrage-Systeme',
+					'post_name'    => 'b2b-solar-leads',
+					'post_content' => '',
+					'post_excerpt' => 'Anfrage-Systeme für gewerbliche Photovoltaik, Speicher und PPA. Buying-Center-tauglicher Funnel statt B2C-Mengen-Leads.',
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $page_id ) ) {
+			return;
+		}
+	}
+
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-b2b-solar-leads.php' );
+}
+add_action( 'init', 'nexus_maybe_ensure_b2b_solar_leads_page', 27 );
+
+/**
+ * Ensure the comparison landing page exists on /eigene-leadgenerierung-vs-portale/.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_eigene_vs_portale_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$page_id = nexus_get_page_id( [ 'eigene-leadgenerierung-vs-portale' ] );
+
+	if ( ! $page_id ) {
+		$page_id = wp_insert_post(
+			wp_slash(
+				[
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_title'   => 'Eigene Leadgenerierung vs. Portal-Leads – Vergleich',
+					'post_name'    => 'eigene-leadgenerierung-vs-portale',
+					'post_content' => '',
+					'post_excerpt' => 'Vergleich Mieten vs. Besitzen für Solar-, Wärmepumpen- und Speicher-Anbieter: TCO, Exklusivität, Datenhoheit.',
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $page_id ) ) {
+			return;
+		}
+	}
+
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-eigene-leadgenerierung-vs-portale.php' );
+}
+add_action( 'init', 'nexus_maybe_ensure_eigene_vs_portale_page', 27 );
+
+/**
  * Map deprecated service, cluster and tool slugs to their canonical targets.
  *
  * @return array<string, string>
@@ -1162,6 +1270,9 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-wgos-assets.php',
 		'page-solar-waermepumpen-leadgenerierung.php',
 		'page-solar-leads-kaufen-alternative.php',
+		'page-server-side-tracking-b2b.php',
+		'page-b2b-solar-leads.php',
+		'page-eigene-leadgenerierung-vs-portale.php',
 	];
 
 	foreach ( $page_templates as $page_template ) {
@@ -1190,6 +1301,9 @@ function nexus_should_hide_footer_primary_cta() {
 			'solar-waermepumpen-leadgenerierung',
 			'website-fuer-solar-und-waermepumpen-anbieter',
 			'solar-leads-kaufen-alternative',
+			'server-side-tracking-b2b',
+			'b2b-solar-leads',
+			'eigene-leadgenerierung-vs-portale',
 			'loesungen',
 		]
 	);
@@ -1304,6 +1418,9 @@ function nexus_force_energy_systems_route_template( $template ) {
 		'solar-waermepumpen-leadgenerierung'             => get_stylesheet_directory() . '/page-solar-waermepumpen-leadgenerierung.php',
 		'website-fuer-solar-und-waermepumpen-anbieter' => get_stylesheet_directory() . '/page-website-fuer-solar-und-waermepumpen-anbieter.php',
 		'solar-leads-kaufen-alternative'                 => get_stylesheet_directory() . '/page-solar-leads-kaufen-alternative.php',
+		'server-side-tracking-b2b'                       => get_stylesheet_directory() . '/page-server-side-tracking-b2b.php',
+		'b2b-solar-leads'                                => get_stylesheet_directory() . '/page-b2b-solar-leads.php',
+		'eigene-leadgenerierung-vs-portale'              => get_stylesheet_directory() . '/page-eigene-leadgenerierung-vs-portale.php',
 	];
 
 	foreach ( $route_templates as $slug => $forced_template ) {
