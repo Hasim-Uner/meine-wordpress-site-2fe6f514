@@ -49,10 +49,14 @@ get_header();
 				</div>
 
 				<h1 class="hu-display hu-hero__title">
-					Hören Sie auf,<br>
-					Anfragen<br>
-					zu&nbsp;<span class="hu-hero__title-2">mieten.</span>
+					B2B Anfrage-Systeme<br>
+					statt gemietete<br>
+					<span class="hu-hero__title-2">Portal-Leads.</span>
 				</h1>
+
+				<p class="hu-hero__claim">
+					Hören Sie auf, Anfragen zu mieten — bauen Sie eine, die Ihnen gehört.
+				</p>
 
 				<p class="hu-hero__sub">
 					Portale liefern dieselbe Anfrage an drei Wettbewerber. Ein eigener Anfrageweg macht Region,
@@ -66,7 +70,7 @@ get_header();
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
 					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-link"
-					   data-track-action="cta_home_hero_e3_methodology" data-track-category="lead_gen">E3-Case ansehen</a>
+					   data-track-action="cta_home_hero_e3_methodology" data-track-category="lead_gen">E3-Case: <?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conv ); ?> Abschluss</a>
 				</div>
 
 				<div class="hu-hero__stats">

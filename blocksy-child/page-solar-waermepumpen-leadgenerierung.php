@@ -340,8 +340,11 @@ get_header();
 				<div class="sol-hero-left">
 					<div class="sol-eyebrow">Für Solar- &amp; Wärmepumpen-Anbieter · 10–25 MA · DACH</div>
 					<h1 class="sol-display sol-hero-h1">
-						Hören Sie auf,<br /><em>Anfragen zu mieten.</em><br />Bauen Sie eine,<br />die <em>Ihnen gehört.</em>
+						Die Alternative<br />zu <em>Portal-Leads:</em><br />Ihr eigenes<br /><em>Anfrage-System.</em>
 					</h1>
+					<p class="sol-hero-claim">
+						Hören Sie auf, Anfragen zu mieten — bauen Sie eine, die Ihnen gehört.
+					</p>
 					<p class="sol-hero-sub">
 						Portal-Leads kosten 80–150 €. Die Hälfte geht nicht ans Telefon. Wir bauen Ihrem Betrieb ein eigenes Anfrage-System — WordPress hardcoded, Tracking auf eigenem Server, Vorqualifizierung mit Lead-Score. Das System gehört Ihnen. Die Anfragen sind exklusiv.
 					</p>

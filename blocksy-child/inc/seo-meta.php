@@ -131,12 +131,12 @@ function hu_get_forced_singular_seo_map() {
 			// /wordpress-seo-hannover/ und /wordpress-wartung-hannover/ sind 301 auf die Agentur-Page (Anker-Sektionen);
 			// /ki-integration-wordpress/ ist noindex. Keine eigenständigen SEO-Signale mehr nötig.
 			'solar-waermepumpen-leadgenerierung' => [
-				'title'       => 'Solar & Wärmepumpen Leadgenerierung: Eigenes Anfrage-System statt Leads kaufen | Haşim Üner',
-				'description' => sprintf( 'Leadgenerierung für Photovoltaik und Wärmepumpen: Bauen Sie ein eigenes Anfrage-System für exklusive Solar-Leads. Referenz E3 New Energy: %s Kosten pro Anfrage in 9 Monaten. Diagnose vor Umsetzung.', $e3_cpl_reduction ),
+				'title'       => 'Solar & Wärmepumpen Leadgenerierung: Portal-Alternative | Haşim Üner',
+				'description' => sprintf( 'Alternative zu Portal-Leads: eigenes Anfrage-System für Solar & Wärmepumpe statt gemietete Datensätze. E3-Referenz: %s CPL-Senkung in 9 Monaten. Diagnose vor Umsetzung.', $e3_cpl_reduction ),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
-				'title'       => 'Solar & Wärmepumpen Leadgenerierung: Eigenes Anfrage-System statt Leads kaufen | Haşim Üner',
-				'description' => sprintf( 'Leadgenerierung für Photovoltaik und Wärmepumpen: Bauen Sie ein eigenes Anfrage-System für exklusive Solar-Leads. Referenz E3 New Energy: %s Kosten pro Anfrage in 9 Monaten. Diagnose vor Umsetzung.', $e3_cpl_reduction ),
+				'title'       => 'Solar & Wärmepumpen Leadgenerierung: Portal-Alternative | Haşim Üner',
+				'description' => sprintf( 'Alternative zu Portal-Leads: eigenes Anfrage-System für Solar & Wärmepumpe statt gemietete Datensätze. E3-Referenz: %s CPL-Senkung in 9 Monaten. Diagnose vor Umsetzung.', $e3_cpl_reduction ),
 			],
 		]
 	);
