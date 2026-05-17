@@ -290,4 +290,13 @@ get_header();
 </main>
 
 <?php
+get_template_part(
+	'template-parts/seo-subpage-sticky-cta',
+	null,
+	[
+		'marktcheck_url' => $marktcheck_url,
+		'track_category' => 'cost_per_lead_photovoltaik',
+	]
+);
+
 get_footer();

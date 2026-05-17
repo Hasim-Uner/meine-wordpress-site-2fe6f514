@@ -27,6 +27,38 @@ $e3_timeframe_dat  = $e3_metrics['timeframe']['display_dative']  ?? '9 Monaten';
 $contact_url       = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
 $portrait_url      = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 
+/* ── Homepage-Bridge: Themen-Cluster für SEO-Sub-Pages ───── */
+$homepage_deeper_clusters = [
+	[
+		'group' => 'Strategie & Vergleich',
+		'items' => [
+			[ 't' => 'Solar Leads kaufen – Alternative',     's' => 'Markteinordnung der Lead-Anbieter und Modelle.',           'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
+			[ 't' => 'Eigene Leadgenerierung vs. Portale',   's' => 'TCO-Überschlag über 24/36 Monate und 8-Kriterien-Matrix.', 'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ) ],
+		],
+	],
+	[
+		'group' => 'Lead-Qualität & CPL',
+		'items' => [
+			[ 't' => 'Cost per Lead Photovoltaik',           's' => 'Drei Szenarien im CPL-Vergleich und versteckte Kostentreiber.',     'url' => home_url( '/cost-per-lead-photovoltaik/' ) ],
+			[ 't' => 'Qualifizierte PV-Anfragen',            's' => 'Vier Merkmale für hochwertige Solar-Anfragen plus Warnsignale.',   'url' => home_url( '/qualifizierte-pv-anfragen/' ) ],
+		],
+	],
+	[
+		'group' => 'Funnel & Tracking',
+		'items' => [
+			[ 't' => 'Lead-Funnel Solar',                    's' => 'Fünf Stufen einer belastbaren Solar-Funnel-Architektur.',          'url' => home_url( '/lead-funnel-solar/' ) ],
+			[ 't' => 'Server-Side Tracking für B2B',         's' => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server.',           'url' => home_url( '/server-side-tracking-b2b/' ) ],
+		],
+	],
+	[
+		'group' => 'Zielgruppen & Marktbild',
+		'items' => [
+			[ 't' => 'B2B Solar Leads (Gewerbe)',            's' => 'Buying-Center-Funnel für gewerbliche Photovoltaik-Projekte.',       'url' => home_url( '/b2b-solar-leads/' ) ],
+			[ 't' => 'Kunden gewinnen für Solarteure',       's' => 'Mythen-Aufklärung und fünf systematische Hebel im DACH-Mittelstand.', 'url' => home_url( '/kunden-gewinnen-solarteure/' ) ],
+		],
+	],
+];
+
 get_header();
 ?>
 
@@ -729,7 +761,44 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     10 / FINAL CTA
+	     10 / VERTIEFUNG — Themen-Hub
+	     ═══════════════════════════════════════════════════ -->
+	<section class="hu-section hu-section--cream" id="deeper" data-track-section="homepage_deeper" aria-labelledby="hu-deeper-h">
+		<div class="hu-container">
+			<div class="hu-proof-headline hu-reveal" style="margin-bottom:48px;text-align:center">
+				<span class="hu-eyebrow">10 / Vertiefung</span>
+				<h2 id="hu-deeper-h">Themen-Hub für tiefere Recherche.</h2>
+				<p style="max-width:62ch;margin:16px auto 0;color:var(--muted)">
+					Acht thematische Seiten zu Strategie, Lead-Qualität, Funnel-Architektur und Markteinordnung. Jede Seite steht für sich, alle führen zurück zum Marktcheck.
+				</p>
+			</div>
+
+			<div class="hu-deeper-clusters hu-reveal">
+				<?php foreach ( $homepage_deeper_clusters as $cluster ) : ?>
+					<div class="hu-deeper-cluster">
+						<h3 class="hu-deeper-cluster__h"><?php echo esc_html( $cluster['group'] ); ?></h3>
+						<ul class="hu-deeper-list">
+							<?php foreach ( $cluster['items'] as $item ) : ?>
+								<li class="hu-deeper-item">
+									<a class="hu-deeper-link"
+									   href="<?php echo esc_url( $item['url'] ); ?>"
+									   data-track-action="homepage_deeper_link"
+									   data-track-category="lead_gen"
+									   data-track-section="homepage_deeper">
+										<span class="hu-deeper-link__t"><?php echo esc_html( $item['t'] ); ?></span>
+										<span class="hu-deeper-link__s"><?php echo esc_html( $item['s'] ); ?></span>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+
+	<!-- ═══════════════════════════════════════════════════
+	     11 / FINAL CTA
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section" id="cta" data-track-section="homepage_cta">
 		<div class="hu-container">
@@ -737,7 +806,7 @@ get_header();
 				<div class="hu-final-cta__avatar">
 					<img src="<?php echo esc_url( $portrait_url ); ?>" alt="Haşim Üner" width="72" height="72" loading="lazy">
 				</div>
-				<span class="hu-eyebrow" style="color:var(--accent)">10 / Nächster Schritt</span>
+				<span class="hu-eyebrow" style="color:var(--accent)">11 / Nächster Schritt</span>
 				<h2 class="hu-display">Starten Sie mit dem Marktcheck.</h2>
 				<p>Kein Pitch. Erst wird geklärt, ob ein eigener Anfrageweg für Ihren Markt überhaupt sinnvoll ist.</p>
 

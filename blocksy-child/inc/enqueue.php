@@ -275,6 +275,7 @@ function hu_enqueue_assets() {
 	foreach ( $intercept_routes as $slug => $template ) {
 		if ( is_page( $slug ) || is_page_template( $template ) ) {
 			hu_enqueue_css( 'nexus-intercept-solar-leads-css', 'solar-leads-kaufen-alternative.css', [ 'nexus-design-system' ] );
+			hu_enqueue_js( 'nexus-seo-subpage-sticky-cta-js', 'seo-subpage-sticky-cta.js', [] );
 			break;
 		}
 	}

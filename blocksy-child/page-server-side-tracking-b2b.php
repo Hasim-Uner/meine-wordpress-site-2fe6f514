@@ -293,4 +293,13 @@ get_header();
 </main>
 
 <?php
+get_template_part(
+	'template-parts/seo-subpage-sticky-cta',
+	null,
+	[
+		'marktcheck_url' => $marktcheck_url,
+		'track_category' => 'server_side_tracking_b2b',
+	]
+);
+
 get_footer();

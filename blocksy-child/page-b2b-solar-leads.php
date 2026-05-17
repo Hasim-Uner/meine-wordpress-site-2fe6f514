@@ -321,4 +321,13 @@ get_header();
 </main>
 
 <?php
+get_template_part(
+	'template-parts/seo-subpage-sticky-cta',
+	null,
+	[
+		'marktcheck_url' => $marktcheck_url,
+		'track_category' => 'b2b_solar_leads',
+	]
+);
+
 get_footer();
