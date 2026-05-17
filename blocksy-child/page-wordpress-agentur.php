@@ -18,6 +18,30 @@ $contact_url    = home_url( '/kontakt/' );
 $e3_url         = home_url( '/e3-new-energy/' );
 $marktcheck_url = home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 
+// ═══ Vertiefungs-Links für Fokusmarkt-Solar-Brücke ═══
+$agentur_solar_deeper = [
+	[
+		't'   => 'Solar Leads kaufen – Alternative',
+		's'   => 'Markteinordnung der Lead-Anbieter und warum eigene Anfrage-Systeme den CPL senken.',
+		'url' => home_url( '/solar-leads-kaufen-alternative/' ),
+	],
+	[
+		't'   => 'Server-Side Tracking für B2B',
+		's'   => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server – Grundlage sauberer Attribution.',
+		'url' => home_url( '/server-side-tracking-b2b/' ),
+	],
+	[
+		't'   => 'B2B Solar Leads für Gewerbe',
+		's'   => 'Buying-Center-Funnel für gewerbliche Photovoltaik-Projekte ab 50.000 €.',
+		'url' => home_url( '/b2b-solar-leads/' ),
+	],
+	[
+		't'   => 'Cost per Lead Photovoltaik',
+		's'   => 'Drei Szenarien im CPL-Vergleich und versteckte Kostentreiber bei Portal-Leads.',
+		'url' => home_url( '/cost-per-lead-photovoltaik/' ),
+	],
+];
+
 // ═══ E3 Proof Canon ═══
 $e3            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics    = $e3['metrics'] ?? [];
@@ -557,6 +581,26 @@ get_header();
 			<a href="<?php echo esc_url( $marktcheck_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_fokusmarkt_marktcheck" data-track-category="lead_gen" data-track-section="fokusmarkt">
 				Zum Marktcheck für Solar &amp; Wärmepumpe
 			</a>
+		</div>
+
+		<div class="wp-agentur-deeper" aria-label="Vertiefende Themen Solar und Wärmepumpe">
+			<p class="wp-agentur-deeper__lead">
+				Oder direkt in die Methodik einsteigen:
+			</p>
+			<ul class="wp-agentur-deeper__list">
+				<?php foreach ( $agentur_solar_deeper as $deeper_item ) : ?>
+					<li class="wp-agentur-deeper__item">
+						<a class="wp-agentur-deeper__link"
+						   href="<?php echo esc_url( $deeper_item['url'] ); ?>"
+						   data-track-action="cta_fokusmarkt_deeper_link"
+						   data-track-category="navigation"
+						   data-track-section="fokusmarkt">
+							<span class="wp-agentur-deeper__t"><?php echo esc_html( $deeper_item['t'] ); ?></span>
+							<span class="wp-agentur-deeper__s"><?php echo esc_html( $deeper_item['s'] ); ?></span>
+						</a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
 		</div>
 	</div>
 </section>
