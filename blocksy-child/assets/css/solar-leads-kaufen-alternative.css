@@ -59,17 +59,26 @@
 	display: inline-flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 8px;
-	margin: 0 0 28px;
+	gap: 10px;
+	margin: 0 0 32px;
+	padding: 8px 14px;
 	font-size: 0.88rem;
 	line-height: 1.4;
-	color: rgba(245, 241, 234, 0.62);
+	color: rgba(245, 241, 234, 0.82);
+	background: rgba(255, 255, 255, 0.025);
+	border: 1px solid rgba(255, 255, 255, 0.07);
+	border-radius: 999px;
+}
+
+.hu-intercept__byline-author {
+	color: rgba(245, 241, 234, 0.95);
 }
 
 .hu-intercept__byline-author-link {
-	color: rgba(245, 241, 234, 0.85);
+	color: #fff;
+	font-weight: 600;
 	text-decoration: none;
-	border-bottom: 1px solid rgba(245, 241, 234, 0.18);
+	border-bottom: 1px solid rgba(245, 241, 234, 0.28);
 	transition: color 0.18s ease, border-color 0.18s ease;
 }
 
@@ -79,12 +88,25 @@
 	border-color: var(--nx-accent, #c9974a);
 }
 
+.hu-intercept__byline-author-link:focus-visible {
+	outline: 2px solid var(--nx-accent, #c9974a);
+	outline-offset: 4px;
+	border-radius: 2px;
+}
+
 .hu-intercept__byline-sep {
-	color: rgba(245, 241, 234, 0.35);
+	color: rgba(245, 241, 234, 0.45);
 }
 
 .hu-intercept__byline-date {
-	color: rgba(245, 241, 234, 0.55);
+	color: rgba(245, 241, 234, 0.75);
+	font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-intercept__byline-author-link {
+		transition: none;
+	}
 }
 
 .hu-intercept__h2 {
@@ -284,6 +306,53 @@
 	font-weight: 700;
 	letter-spacing: -0.01em;
 	color: #fff;
+}
+
+.hu-intercept__card-title a {
+	color: #fff;
+	text-decoration: none;
+	background-image: linear-gradient(currentColor, currentColor);
+	background-position: 0 100%;
+	background-size: 0% 1px;
+	background-repeat: no-repeat;
+	transition: color 0.18s ease, background-size 0.22s ease;
+}
+
+.hu-intercept__card-title a:hover,
+.hu-intercept__card-title a:focus-visible {
+	color: var(--nx-accent, #c9974a);
+	background-size: 100% 1px;
+}
+
+.hu-intercept__card-title a:focus-visible {
+	outline: 2px solid var(--nx-accent, #c9974a);
+	outline-offset: 4px;
+	border-radius: 2px;
+}
+
+.hu-intercept__card {
+	transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+	            border-color 0.28s ease,
+	            box-shadow 0.28s ease;
+}
+
+.hu-intercept__card:hover {
+	transform: translateY(-2px);
+	border-color: rgba(201, 151, 74, 0.28);
+	box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.4),
+	            0 0 0 1px rgba(201, 151, 74, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-intercept__card {
+		transition: none;
+	}
+	.hu-intercept__card:hover {
+		transform: none;
+	}
+	.hu-intercept__card-title a {
+		transition: none;
+	}
 }
 
 .hu-intercept__card-text {
