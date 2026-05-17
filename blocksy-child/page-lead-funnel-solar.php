@@ -97,6 +97,11 @@ $faq = [
 	],
 ];
 
+$author_person     = function_exists( 'hu_get_canonical_author_person' ) ? hu_get_canonical_author_person() : [ '@type' => 'Person', 'name' => 'Haşim Üner', 'url' => home_url( '/' ) ];
+$breadcrumb_schema = function_exists( 'hu_get_solar_subpage_breadcrumb_schema' )
+	? hu_get_solar_subpage_breadcrumb_schema( $page_url, 'Lead-Funnel Solar' )
+	: [];
+
 $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
@@ -105,7 +110,8 @@ $service_schema = [
 	'serviceType' => 'Funnel-Aufbau von TOFU bis Sales-Anschluss',
 	'url'         => $page_url,
 	'description' => sprintf( 'Lead-Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter im DACH-Mittelstand. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
-	'provider'    => [ '@type' => 'Person', 'name' => 'Haşim Üner', 'url' => home_url( '/' ) ],
+	'provider'    => $author_person,
+	'author'      => $author_person,
 ];
 
 $faq_schema = [
@@ -138,6 +144,7 @@ get_header();
 			<p class="hu-intercept__lead">
 				Ein Lead-Funnel ist keine Sammlung von Tools – sondern eine durchgehende Strecke vom ersten Suchwort bis zum Auftragsabschluss. Diese Pillar-Page zeigt die Architektur, die im DACH-Mittelstand für Photovoltaik-, Wärmepumpen- und Speicher-Anbieter funktioniert.
 			</p>
+			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"
 				   href="<?php echo esc_url( $marktcheck_url ); ?>"
@@ -246,6 +253,9 @@ get_header();
 
 	<script type="application/ld+json"><?php echo wp_json_encode( $service_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
+	<?php if ( ! empty( $breadcrumb_schema ) ) : ?>
+	<script type="application/ld+json"><?php echo wp_json_encode( $breadcrumb_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
+	<?php endif; ?>
 </main>
 
 <?php

@@ -117,6 +117,11 @@ $faq = [
 ];
 
 // ── Schema.org ────────────────────────────────────────────────
+$author_person     = function_exists( 'hu_get_canonical_author_person' ) ? hu_get_canonical_author_person() : [ '@type' => 'Person', 'name' => 'Haşim Üner', 'url' => home_url( '/' ) ];
+$breadcrumb_schema = function_exists( 'hu_get_solar_subpage_breadcrumb_schema' )
+	? hu_get_solar_subpage_breadcrumb_schema( $page_url, 'B2B Solar Leads (Gewerbe)' )
+	: [];
+
 $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
@@ -125,11 +130,8 @@ $service_schema = [
 	'serviceType' => 'Anfrage-System für gewerbliche PV-, Speicher- und PPA-Anbieter',
 	'url'         => $page_url,
 	'description' => sprintf( 'Buying-Center-taugliche Anfrage-Architektur für gewerbliche Photovoltaik-Projekte. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
-	'provider'    => [
-		'@type' => 'Person',
-		'name'  => 'Haşim Üner',
-		'url'   => home_url( '/' ),
-	],
+	'provider'    => $author_person,
+	'author'      => $author_person,
 	'audience'    => [
 		'@type'        => 'Audience',
 		'audienceType' => 'Gewerbliche Photovoltaik-, Speicher- und EPC-Anbieter im DACH-Raum',
@@ -174,6 +176,7 @@ get_header();
 			<p class="hu-intercept__lead">
 				Gewerbliche Photovoltaik braucht keine B2C-Leadportale. Sie braucht eine Anfrage-Architektur, die <strong>Buying-Center</strong>, <strong>lange Sales-Zyklen</strong> und <strong>komplexe Förderlogik</strong> abbildet – und Anfragen liefert, die wirtschaftlich bleiben.
 			</p>
+			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"
 				   href="<?php echo esc_url( $marktcheck_url ); ?>"
@@ -312,6 +315,9 @@ get_header();
 
 	<script type="application/ld+json"><?php echo wp_json_encode( $service_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
+	<?php if ( ! empty( $breadcrumb_schema ) ) : ?>
+	<script type="application/ld+json"><?php echo wp_json_encode( $breadcrumb_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
+	<?php endif; ?>
 </main>
 
 <?php

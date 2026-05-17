@@ -117,6 +117,11 @@ $faq = [
 	],
 ];
 
+$author_person     = function_exists( 'hu_get_canonical_author_person' ) ? hu_get_canonical_author_person() : [ '@type' => 'Person', 'name' => 'Haşim Üner', 'url' => home_url( '/' ) ];
+$breadcrumb_schema = function_exists( 'hu_get_solar_subpage_breadcrumb_schema' )
+	? hu_get_solar_subpage_breadcrumb_schema( $page_url, 'Qualifizierte PV-Anfragen' )
+	: [];
+
 $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
@@ -125,7 +130,8 @@ $service_schema = [
 	'serviceType' => 'Lead-Qualität messen und steigern',
 	'url'         => $page_url,
 	'description' => sprintf( 'Vier Merkmale für qualifizierte PV-Anfragen. Referenz %1$s: %2$s Abschlussquote bei %3$s qualifizierten Anfragen in %4$s.', $e3_case_label, $e3_sales_conversion, $e3_lead_count, $e3_timeframe ),
-	'provider'    => [ '@type' => 'Person', 'name' => 'Haşim Üner', 'url' => home_url( '/' ) ],
+	'provider'    => $author_person,
+	'author'      => $author_person,
 ];
 
 $faq_schema = [
@@ -158,6 +164,7 @@ get_header();
 			<p class="hu-intercept__lead">
 				Zwischen einer hochwertigen und einer schwachen Photovoltaik-Anfrage liegen oft <strong>10 %-Punkte Abschlussquote</strong>. Diese Seite zeigt vier Merkmale, an denen sich die Qualität messen lässt – und welche Warnsignale ein toter Datensatz aussendet.
 			</p>
+			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"
 				   href="<?php echo esc_url( $marktcheck_url ); ?>"
@@ -280,6 +287,9 @@ get_header();
 
 	<script type="application/ld+json"><?php echo wp_json_encode( $service_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
+	<?php if ( ! empty( $breadcrumb_schema ) ) : ?>
+	<script type="application/ld+json"><?php echo wp_json_encode( $breadcrumb_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
+	<?php endif; ?>
 </main>
 
 <?php

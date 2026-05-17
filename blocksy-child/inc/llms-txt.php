@@ -144,6 +144,51 @@ function nexus_get_llms_txt_sections() {
 				],
 			],
 		],
+		[
+			'heading' => 'Solar- und Wärmepumpen-Leadgenerierung: Themen-Cluster',
+			'links'   => [
+				[
+					'label'       => 'Solar Leads kaufen – Alternative',
+					'url'         => home_url( '/solar-leads-kaufen-alternative/' ),
+					'description' => 'Intercept-Page für den Kauf-Suchintent: Markteinordnung der Lead-Anbieter und Argumentation für eigene Anfrage-Systeme.',
+				],
+				[
+					'label'       => 'Eigene Leadgenerierung vs. Portale',
+					'url'         => home_url( '/eigene-leadgenerierung-vs-portale/' ),
+					'description' => 'Vergleichsmatrix Mieten vs. Besitzen mit TCO-Überschlag über 24/36 Monate und 8 Kriterien.',
+				],
+				[
+					'label'       => 'Cost per Lead Photovoltaik',
+					'url'         => home_url( '/cost-per-lead-photovoltaik/' ),
+					'description' => 'CPL-Analyse mit drei Szenarien-Vergleich (Portal-Standard, Portal-Exklusiv, Eigenes System) und versteckten Kostentreibern.',
+				],
+				[
+					'label'       => 'Qualifizierte PV-Anfragen',
+					'url'         => home_url( '/qualifizierte-pv-anfragen/' ),
+					'description' => 'Vier-Merkmale-Modell für hochwertige Solar-Anfragen mit Warnsignalen und Messmethoden.',
+				],
+				[
+					'label'       => 'Lead-Funnel Solar (Pillar)',
+					'url'         => home_url( '/lead-funnel-solar/' ),
+					'description' => 'Fünf-Stufen-Funnel-Architektur von TOFU bis Sales-Anschluss für Photovoltaik- und Wärmepumpen-Anbieter.',
+				],
+				[
+					'label'       => 'Server-Side Tracking für B2B',
+					'url'         => home_url( '/server-side-tracking-b2b/' ),
+					'description' => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server in Frankfurt – DSGVO-konforme Tracking-Architektur.',
+				],
+				[
+					'label'       => 'B2B Solar Leads für Gewerbe',
+					'url'         => home_url( '/b2b-solar-leads/' ),
+					'description' => 'Anfrage-Systeme für gewerbliche Photovoltaik-Projekte mit Buying-Center-Funnel und langen Sales-Zyklen.',
+				],
+				[
+					'label'       => 'Kunden gewinnen für Solarteure',
+					'url'         => home_url( '/kunden-gewinnen-solarteure/' ),
+					'description' => 'Pillar-Page mit Mythen-Aufklärung und fünf systematischen Hebeln für Solar-Betriebe im DACH-Mittelstand.',
+				],
+			],
+		],
 	];
 }
 

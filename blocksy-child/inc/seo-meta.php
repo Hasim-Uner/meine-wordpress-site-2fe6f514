@@ -404,6 +404,100 @@ function hu_is_e3_methodology_case_page() {
 }
 
 /**
+ * Return the canonical Person entity used as author across the theme.
+ *
+ * @return array<string, mixed>
+ */
+function hu_get_canonical_author_person() {
+	return [
+		'@type' => 'Person',
+		'@id'   => home_url( '/uber-mich/#person' ),
+		'name'  => 'Haşim Üner',
+		'url'   => home_url( '/uber-mich/' ),
+	];
+}
+
+/**
+ * Build a BreadcrumbList schema array for a Solar/SHK sub-page.
+ *
+ * @param string $current_url   Absolute current URL.
+ * @param string $current_label Human-readable current page label.
+ * @return array<string, mixed>
+ */
+function hu_get_solar_subpage_breadcrumb_schema( $current_url, $current_label ) {
+	return [
+		'@context'        => 'https://schema.org',
+		'@type'           => 'BreadcrumbList',
+		'@id'             => trailingslashit( (string) $current_url ) . '#breadcrumb',
+		'itemListElement' => [
+			[
+				'@type'    => 'ListItem',
+				'position' => 1,
+				'name'     => 'Startseite',
+				'item'     => home_url( '/' ),
+			],
+			[
+				'@type'    => 'ListItem',
+				'position' => 2,
+				'name'     => 'Solar & Wärmepumpen Leadgenerierung',
+				'item'     => home_url( '/solar-waermepumpen-leadgenerierung/' ),
+			],
+			[
+				'@type'    => 'ListItem',
+				'position' => 3,
+				'name'     => (string) $current_label,
+				'item'     => (string) $current_url,
+			],
+		],
+	];
+}
+
+/**
+ * Return a localized last-updated date for a template-driven sub-page.
+ *
+ * @param string $template_path Absolute filesystem path to the template file.
+ * @return string ISO 8601 date string (YYYY-MM-DD) or empty string on failure.
+ */
+function hu_get_subpage_last_updated_iso( $template_path ) {
+	$mtime = @filemtime( (string) $template_path );
+
+	if ( ! $mtime ) {
+		return '';
+	}
+
+	return gmdate( 'Y-m-d', (int) $mtime );
+}
+
+/**
+ * Return a human-readable German last-updated label for a template-driven sub-page.
+ *
+ * @param string $template_path Absolute filesystem path to the template file.
+ * @return string e.g. "17. Mai 2026" or empty string on failure.
+ */
+function hu_get_subpage_last_updated_label( $template_path ) {
+	$mtime = @filemtime( (string) $template_path );
+
+	if ( ! $mtime ) {
+		return '';
+	}
+
+	$months = [
+		1 => 'Januar', 2 => 'Februar', 3 => 'März', 4 => 'April', 5 => 'Mai', 6 => 'Juni',
+		7 => 'Juli', 8 => 'August', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Dezember',
+	];
+
+	$day   = (int) gmdate( 'j', (int) $mtime );
+	$month = (int) gmdate( 'n', (int) $mtime );
+	$year  = (int) gmdate( 'Y', (int) $mtime );
+
+	if ( ! isset( $months[ $month ] ) ) {
+		return '';
+	}
+
+	return sprintf( '%d. %s %d', $day, $months[ $month ], $year );
+}
+
+/**
  * Get the SEO title for the E3 methodology case.
  *
  * @return string
