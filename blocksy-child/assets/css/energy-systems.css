@@ -3081,3 +3081,122 @@
     padding: 24px;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   E3 Vertiefungs-Block — Methodik-Sub-Pages-Hub
+   Light-Layout, paper-2 Background, copper Accents.
+   ══════════════════════════════════════════════════════════════ */
+.solar-page .e3-section--deeper .e3-section__head {
+  max-width: 720px;
+}
+
+.solar-page .e3-section--deeper .e3-section__lead {
+  margin-top: 14px;
+  color: var(--ink-soft);
+  font-size: clamp(16px, 1.25vw, 18px);
+  line-height: 1.55;
+  max-width: 62ch;
+}
+
+.solar-page .e3-deeper-list {
+  list-style: none;
+  margin: 48px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 1.8vw, 24px);
+}
+
+@media (max-width: 760px) {
+  .solar-page .e3-deeper-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.solar-page .e3-deeper-item {
+  margin: 0;
+}
+
+.solar-page .e3-deeper-link {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: clamp(20px, 2.2vw, 28px);
+  text-decoration: none;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.24s ease,
+              box-shadow 0.24s ease,
+              background-color 0.24s ease;
+}
+
+.solar-page .e3-deeper-link::after {
+  content: '→';
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink-mute);
+  transform: translateX(-2px);
+  transition: color 0.18s ease, transform 0.22s ease;
+}
+
+.solar-page .e3-deeper-link:hover,
+.solar-page .e3-deeper-link:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--solar-deep);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 16px 32px -20px rgba(201, 122, 26, 0.32),
+              0 0 0 1px rgba(201, 122, 26, 0.16);
+  color: var(--ink);
+}
+
+.solar-page .e3-deeper-link:hover::after,
+.solar-page .e3-deeper-link:focus-visible::after {
+  color: var(--solar-deep);
+  transform: translateX(0);
+}
+
+.solar-page .e3-deeper-link:focus-visible {
+  outline: 2px solid var(--solar-deep);
+  outline-offset: 3px;
+}
+
+.solar-page .e3-deeper-link__t {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(17px, 1.3vw, 19px);
+  line-height: 1.3;
+  margin-bottom: 6px;
+  color: var(--ink);
+  transition: color 0.18s ease;
+}
+
+.solar-page .e3-deeper-link:hover .e3-deeper-link__t,
+.solar-page .e3-deeper-link:focus-visible .e3-deeper-link__t {
+  color: var(--solar-deep);
+}
+
+.solar-page .e3-deeper-link__s {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .solar-page .e3-deeper-link,
+  .solar-page .e3-deeper-link::after,
+  .solar-page .e3-deeper-link__t {
+    transition: none;
+  }
+  .solar-page .e3-deeper-link:hover,
+  .solar-page .e3-deeper-link:focus-visible {
+    transform: none;
+  }
+}

@@ -102,6 +102,29 @@ $cta_features = [
 	'Kein Pflicht-Termin, kein Pitch-Call',
 ];
 
+$e3_deeper = [
+	[
+		't'   => 'Cost per Lead Photovoltaik',
+		's'   => 'Wie die CPL-Senkung von 150 € auf 22 € konkret zustande kommt – drei Szenarien im Vergleich.',
+		'url' => home_url( '/cost-per-lead-photovoltaik/' ),
+	],
+	[
+		't'   => 'Server-Side Tracking für B2B',
+		's'   => 'Die Tracking-Architektur, die die Attribution sauber gehalten hat – GA4, Meta CAPI, eigener Server.',
+		'url' => home_url( '/server-side-tracking-b2b/' ),
+	],
+	[
+		't'   => 'Lead-Funnel Solar',
+		's'   => 'Die fünf Funnel-Stufen vom Suchbegriff bis zum Auftrag – die Architektur hinter dem E3-Setup.',
+		'url' => home_url( '/lead-funnel-solar/' ),
+	],
+	[
+		't'   => 'Eigene Leadgenerierung vs. Portale',
+		's'   => 'Die Vergleichsmatrix Mieten vs. Besitzen mit TCO-Überschlag über 24 und 36 Monate.',
+		'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ),
+	],
+];
+
 get_header();
 ?>
 
@@ -236,6 +259,33 @@ get_header();
 						</ul>
 					</div>
 				</div>
+			</div>
+		</section>
+
+		<section class="e3-section e3-section--paper-2 e3-section--deeper" id="vertiefung" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="vertiefung-title">
+			<div class="e3-section__inner">
+				<div class="e3-section__head" data-reveal>
+					<p class="e3-kicker">Methodik im Detail</p>
+					<h2 class="e3-section__title" id="vertiefung-title">Vier Bausteine, die das E3-Ergebnis möglich gemacht haben.</h2>
+					<p class="e3-section__lead">
+						Wer den Case fachlich vertiefen will: hier die thematischen Seiten zu CPL-Rechnung, Tracking-Architektur, Funnel-Stufen und der TCO-Logik gegenüber Lead-Portalen.
+					</p>
+				</div>
+
+				<ul class="e3-deeper-list">
+					<?php foreach ( $e3_deeper as $deeper_item ) : ?>
+						<li class="e3-deeper-item" data-reveal>
+							<a class="e3-deeper-link"
+							   href="<?php echo esc_url( $deeper_item['url'] ); ?>"
+							   data-track-action="cta_e3_deeper_link"
+							   data-track-category="navigation"
+							   data-track-section="vertiefung">
+								<span class="e3-deeper-link__t"><?php echo esc_html( $deeper_item['t'] ); ?></span>
+								<span class="e3-deeper-link__s"><?php echo esc_html( $deeper_item['s'] ); ?></span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
 			</div>
 		</section>
 
