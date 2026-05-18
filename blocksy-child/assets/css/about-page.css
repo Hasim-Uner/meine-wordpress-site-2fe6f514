@@ -312,3 +312,130 @@ body.page-template-template-about-php .ft__trust-list {
     flex-direction: column;
   }
 }
+
+/* =========================================
+   Fachliche Schwerpunkte (Themen-Hub)
+   Solar/Waermepumpen-Sub-Pages als E-E-A-T-Anker
+   ========================================= */
+
+.about-expertise__inner {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.about-expertise__inner h2 {
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+.about-expertise__lead {
+  max-width: 62ch;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+  color: var(--nx-text-secondary);
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.65;
+}
+
+.about-expertise__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 1.6vw, 22px);
+}
+
+@media (max-width: 960px) {
+  .about-expertise__list { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .about-expertise__list { grid-template-columns: 1fr; }
+}
+
+.about-expertise__item { margin: 0; }
+
+.about-expertise__link {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px 24px;
+  text-decoration: none;
+  color: var(--nx-text);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  position: relative;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.22s ease,
+              background-color 0.22s ease,
+              box-shadow 0.22s ease;
+}
+
+.about-expertise__link::after {
+  content: '→';
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--nx-text-tertiary, rgba(245, 241, 234, 0.45));
+  transform: translateX(-2px);
+  transition: color 0.18s ease, transform 0.22s ease;
+}
+
+.about-expertise__link:hover,
+.about-expertise__link:focus-visible {
+  transform: translateY(-2px);
+  border-color: hsl(var(--accent-hsl) / 0.42);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 16px 32px -20px rgba(0, 0, 0, 0.45),
+              0 0 0 1px hsl(var(--accent-hsl) / 0.18);
+  color: var(--nx-text);
+}
+
+.about-expertise__link:hover::after,
+.about-expertise__link:focus-visible::after {
+  color: hsl(var(--accent-hsl));
+  transform: translateX(0);
+}
+
+.about-expertise__link:focus-visible {
+  outline: 2px solid hsl(var(--accent-hsl));
+  outline-offset: 3px;
+}
+
+.about-expertise__t {
+  display: block;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.3;
+  color: var(--nx-text);
+  padding-right: 22px;
+  transition: color 0.18s ease;
+}
+
+.about-expertise__link:hover .about-expertise__t,
+.about-expertise__link:focus-visible .about-expertise__t {
+  color: hsl(var(--accent-hsl));
+}
+
+.about-expertise__s {
+  display: block;
+  color: var(--nx-text-secondary);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-expertise__link,
+  .about-expertise__link::after,
+  .about-expertise__t {
+    transition: none;
+  }
+  .about-expertise__link:hover,
+  .about-expertise__link:focus-visible {
+    transform: none;
+  }
+}

@@ -21,6 +21,39 @@ $not_fit_points = [
 	'Setups, in denen Tracking gewünscht ist, aber Consent-Konsequenzen nicht akzeptiert werden.',
 ];
 
+$about_expertise = [
+	[
+		't'   => 'Lead-Funnel-Architektur',
+		's'   => 'Fünf Stufen vom Suchwort bis zum Auftrag, mit Vorqualifizierung und Sales-Anschluss.',
+		'url' => home_url( '/lead-funnel-solar/' ),
+	],
+	[
+		't'   => 'Server-Side Tracking',
+		's'   => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server – DSGVO-konform und cookieless-ready.',
+		'url' => home_url( '/server-side-tracking-b2b/' ),
+	],
+	[
+		't'   => 'Cost per Lead Photovoltaik',
+		's'   => 'CPL-Analyse mit drei Szenarien-Vergleich und versteckten Kostentreibern.',
+		'url' => home_url( '/cost-per-lead-photovoltaik/' ),
+	],
+	[
+		't'   => 'Qualifizierte PV-Anfragen',
+		's'   => 'Vier Merkmale, an denen sich eine hochwertige Solar-Anfrage erkennen lässt.',
+		'url' => home_url( '/qualifizierte-pv-anfragen/' ),
+	],
+	[
+		't'   => 'B2B Solar Leads (Gewerbe)',
+		's'   => 'Buying-Center-Funnel für gewerbliche Photovoltaik-Projekte ab 50.000 €.',
+		'url' => home_url( '/b2b-solar-leads/' ),
+	],
+	[
+		't'   => 'Mieten vs. Besitzen',
+		's'   => 'Vergleichsmatrix Portal-Leads gegen eigenes Anfrage-System mit TCO-Überschlag.',
+		'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ),
+	],
+];
+
 get_header();
 ?>
 
@@ -106,6 +139,33 @@ get_header();
 					<h2 class="nx-headline-section">Wer ich bin.</h2>
 					<p>Mein Zugang zu dieser Arbeit ist Medienwissenschaft, nicht Webdesign. Ich denke zuerst über Sprache, Entscheidung und Signal nach — und erst danach über Code. Über Jahre habe ich an digitalen Strukturen für erklärungsbedürftige B2B-Angebote gearbeitet. Die technische Schicht war selten das eigentliche Problem. Das Problem war fast immer: jemand hat gebohrt, ohne vorher die Karte zu lesen.</p>
 					<p>Seit E3 New Energy als erstem Solar-Case weiß ich, wo diese Methode am stärksten greift. Seitdem liegt mein Fokus auf Solar- und Wärmepumpen-Betrieben.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Fachliche Schwerpunkte. -->
+		<section id="about-expertise" class="nx-section about-section about-expertise" aria-labelledby="about-expertise-title">
+			<div class="nx-container">
+				<div class="about-expertise__inner">
+					<h2 id="about-expertise-title" class="nx-headline-section">Fachliche Schwerpunkte.</h2>
+					<p class="about-expertise__lead">
+						Sechs thematische Felder, in denen ich die Architektur eigener Anfrage-Systeme für Solar- und Wärmepumpen-Betriebe konkret aufgeschrieben habe.
+					</p>
+
+					<ul class="about-expertise__list">
+						<?php foreach ( $about_expertise as $field ) : ?>
+							<li class="about-expertise__item">
+								<a class="about-expertise__link"
+								   href="<?php echo esc_url( $field['url'] ); ?>"
+								   data-track-action="cta_about_expertise_link"
+								   data-track-category="navigation"
+								   data-track-section="about_expertise">
+									<span class="about-expertise__t"><?php echo esc_html( $field['t'] ); ?></span>
+									<span class="about-expertise__s"><?php echo esc_html( $field['s'] ); ?></span>
+								</a>
+							</li>
+						<?php endforeach; ?>
+					</ul>
 				</div>
 			</div>
 		</section>
