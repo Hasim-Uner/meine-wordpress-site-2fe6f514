@@ -1,441 +1,835 @@
-/* =========================================
-   About Page
-   Storytelling-Positionsseite Solar/Wärmepumpe
-   ========================================= */
+/* =============================================================
+   About Page — Redesign nach Claude-Design-Bundle (uber-mich.html)
+   Warm-cream + Copper Accent, Brunnen-Visual, Section-Number-Grid.
+   ============================================================= */
 
 .nexus-about {
-  position: relative;
-  isolation: isolate;
-  background:
-    radial-gradient(circle at 12% 0%, hsl(var(--accent-hsl) / 0.13), transparent 26%),
-    radial-gradient(circle at 88% 12%, hsl(28 12% 18% / 0.16), transparent 22%),
-    var(--nx-page-shell-gradient);
-  color: var(--nx-text);
-  overflow-x: hidden;
+	/* Warm-cream Theme-Tokens (lokal scoped, kein globaler Override) */
+	--about-bg:        #FAF7F2;
+	--about-bg-2:      #F4EDDD;
+	--about-bg-3:      #EFE5D0;
+	--about-surface:   #FFFFFF;
+
+	--about-ink:       #2A261B;
+	--about-ink-2:     #52483A;
+	--about-ink-3:     #6B5F4D;
+	--about-ink-4:     #8A7F6C;
+
+	--about-line:      #E5D9C3;
+	--about-line-2:    #D4C4AB;
+
+	--about-accent:    #E08A3C;
+	--about-accent-2:  #C0701F;
+	--about-accent-ink:#1A0F05;
+	--about-good:      #6BA17A;
+
+	--about-radius-md: 12px;
+	--about-radius-lg: 16px;
+	--about-radius-xl: 18px;
+	--about-radius-pill: 9999px;
+
+	--about-ease:      cubic-bezier(0.16, 1, 0.3, 1);
+
+	position: relative;
+	isolation: isolate;
+	background: var(--about-bg);
+	color: var(--about-ink);
+	font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	line-height: 1.55;
+	overflow-x: hidden;
 }
 
-.nexus-about::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(var(--nx-grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--nx-grid-line) 1px, transparent 1px);
-  background-size: 72px 72px;
-  opacity: 0.14;
-  mask-image: linear-gradient(180deg, var(--nx-grid-mask), transparent 88%);
-  z-index: 0;
+.nexus-about ::selection {
+	background: var(--about-accent);
+	color: #FAF7F2;
 }
 
-.nexus-about > * {
-  position: relative;
-  z-index: 1;
+.nexus-about .about-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 clamp(20px, 4vw, 56px);
 }
 
-.nexus-about a {
-  color: var(--nx-text);
-  text-decoration: none;
-  border-bottom: 1px solid var(--nx-link-divider);
-  transition: color var(--nx-duration-fast) var(--nx-ease), border-color var(--nx-duration-fast) var(--nx-ease);
+.nexus-about .about-container--centered {
+	text-align: center;
 }
 
-.nexus-about a:hover,
-.nexus-about a:focus-visible {
-  color: var(--nx-accent-text);
-  border-bottom-color: hsl(var(--accent-hsl) / 0.32);
+/* -----------------------------------------------------------
+   Typography
+----------------------------------------------------------- */
+.nexus-about .about-eyebrow {
+	font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--about-ink-3);
+	margin: 0 0 18px;
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
 }
 
-.nexus-about .nx-btn {
-  border-bottom: none;
+.nexus-about .about-h1 {
+	font-family: 'Satoshi', 'Figtree', -apple-system, BlinkMacSystemFont, sans-serif;
+	font-size: clamp(42px, 5.5vw, 68px);
+	font-weight: 800;
+	line-height: 0.95;
+	letter-spacing: -0.025em;
+	margin: 0 0 24px;
+	color: var(--about-ink);
+	text-wrap: balance;
 }
 
-.nexus-about .nx-btn:hover,
-.nexus-about .nx-btn:focus-visible {
-  border-bottom: none;
+.nexus-about .about-h2 {
+	font-family: 'Satoshi', 'Figtree', -apple-system, BlinkMacSystemFont, sans-serif;
+	font-size: clamp(32px, 4vw, 48px);
+	font-weight: 800;
+	line-height: 1.05;
+	letter-spacing: -0.025em;
+	margin: 0 0 14px;
+	color: var(--about-ink);
+	text-wrap: balance;
 }
 
-/* -----------------------------------------
+/* -----------------------------------------------------------
+   Live-Dot (Hero-Eyebrow)
+----------------------------------------------------------- */
+.nexus-about .about-live-dot {
+	display: inline-block;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--about-good);
+	box-shadow: 0 0 8px rgba(107, 161, 122, 0.6);
+	animation: aboutPulse 2s ease infinite;
+}
+
+@keyframes aboutPulse {
+	0%, 100% { box-shadow: 0 0 8px rgba(107, 161, 122, 0.6); }
+	50%      { box-shadow: 0 0 16px rgba(107, 161, 122, 0.9); }
+}
+
+/* -----------------------------------------------------------
    Hero
-   ----------------------------------------- */
-
-.about-hero {
-  padding-top: calc(var(--nx-space-section) + 2rem);
+----------------------------------------------------------- */
+.nexus-about .about-hero {
+	padding: clamp(64px, 9vw, 96px) 0;
 }
 
-.about-hero__grid {
-  display: grid;
-  gap: clamp(2rem, 5vw, 4rem);
-  align-items: start;
+.nexus-about .about-hero__grid {
+	display: grid;
+	grid-template-columns: 1.1fr 1fr;
+	gap: clamp(40px, 6vw, 80px);
+	align-items: center;
 }
 
-.about-hero__copy {
-  max-width: 720px;
+.nexus-about .about-hero__lead {
+	font-size: clamp(17px, 1.4vw, 19px);
+	line-height: 1.6;
+	color: var(--about-ink-2);
+	margin: 0 0 28px;
+	max-width: 540px;
 }
 
-.about-hero__copy .nx-badge {
-  margin-bottom: 1rem;
+/* -----------------------------------------------------------
+   Stat-Proof (E3-Referenz im Hero)
+----------------------------------------------------------- */
+.nexus-about .about-stat-proof {
+	background: var(--about-surface);
+	border: 1px solid var(--about-line);
+	border-radius: var(--about-radius-lg);
+	padding: 18px 22px;
+	display: inline-flex;
+	align-items: center;
+	gap: 18px;
+	margin: 0 0 28px;
+	box-shadow: 0 1px 3px rgba(42, 38, 27, 0.08);
 }
 
-.about-hero__title {
-  margin: 0 0 1.5rem;
-  max-width: 14ch;
-  font-size: clamp(2.9rem, 5.1vw, 5rem);
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-  color: var(--nx-text);
+.nexus-about .about-stat-proof__number {
+	font-family: 'Satoshi', 'Figtree', sans-serif;
+	font-size: clamp(28px, 3vw, 36px);
+	font-weight: 800;
+	color: var(--about-accent);
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
 }
 
-.about-hero__lead {
-  margin: 0;
-  max-width: 56ch;
-  color: var(--nx-text-secondary);
-  font-size: 1.08rem;
-  line-height: 1.8;
+.nexus-about .about-stat-proof__label {
+	font-size: 13px;
+	line-height: 1.4;
+	color: var(--about-ink-2);
+	max-width: 200px;
 }
 
-/* -----------------------------------------
-   Profile Card (Hero aside)
-   ----------------------------------------- */
-
-.about-profile-card {
-  display: grid;
-  gap: 1.35rem;
-  padding: clamp(1.2rem, 3vw, 1.5rem);
-  border-radius: var(--nx-radius-xl);
-  border: 1px solid var(--nx-border);
-  background:
-    radial-gradient(circle at 100% 0%, hsl(var(--accent-hsl) / 0.16), transparent 30%),
-    var(--nx-card-gradient);
-  box-shadow: var(--nx-shadow-sm);
-  max-width: 320px;
-  justify-self: start;
+/* -----------------------------------------------------------
+   Primary CTA + Mikro-Copy
+----------------------------------------------------------- */
+.nexus-about .about-cta-wrap {
+	display: inline-flex;
+	flex-direction: column;
+	gap: 12px;
 }
 
-.about-profile-card__media {
-  margin: 0;
+.nexus-about .about-cta-wrap--centered {
+	align-items: center;
+	margin: 0 auto;
 }
 
-.about-profile-card__media img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: calc(var(--nx-radius-xl) - 6px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: var(--nx-shadow);
+.nexus-about .about-cta-primary {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	background: var(--about-accent);
+	color: var(--about-accent-ink);
+	padding: 16px 30px;
+	border-radius: var(--about-radius-pill);
+	font-size: 17px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: transform 0.3s var(--about-ease), box-shadow 0.3s var(--about-ease), background-color 0.18s ease;
+	box-shadow: 0 4px 12px rgba(224, 138, 60, 0.3);
+	min-height: 44px;
+	width: fit-content;
 }
 
-.about-profile-card__body {
-  display: grid;
-  gap: 1rem;
+.nexus-about .about-cta-primary:hover,
+.nexus-about .about-cta-primary:focus-visible {
+	transform: translateY(-3px);
+	box-shadow: 0 8px 24px rgba(224, 138, 60, 0.5);
+	background: var(--about-accent);
+	color: var(--about-accent-ink);
 }
 
-.about-profile-card__eyebrow {
-  color: var(--nx-accent-text);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.nexus-about .about-cta-primary:focus-visible {
+	outline: 2px solid var(--about-ink);
+	outline-offset: 3px;
 }
 
-/* -----------------------------------------
-   Narrative sections (Warum / Wie / Wer)
-   ----------------------------------------- */
-
-.about-narrative__inner {
-  max-width: 720px;
-  margin: 0 auto;
+.nexus-about .about-cta-arrow {
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+	transition: transform 0.3s var(--about-ease);
 }
 
-.about-narrative__inner h2 {
-  margin: 0 0 1.25rem;
+.nexus-about .about-cta-primary:hover .about-cta-arrow,
+.nexus-about .about-cta-primary:focus-visible .about-cta-arrow {
+	transform: translateX(4px);
 }
 
-.about-narrative__inner p {
-  margin: 0 0 1.15rem;
-  color: var(--nx-text-secondary);
-  line-height: 1.8;
+.nexus-about .about-cta-meta {
+	margin: 0;
+	font-size: 13px;
+	color: var(--about-ink-3);
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
 }
 
-.about-narrative__inner p:last-child {
-  margin-bottom: 0;
+.nexus-about .about-cta-meta--centered {
+	justify-content: center;
 }
 
-/* -----------------------------------------
-   Bullet list (only inside "Was ich nicht bin.")
-   ----------------------------------------- */
-
-.about-not-fit__list {
-  list-style: none;
-  margin: 0 0 1.15rem;
-  padding: 0;
-  display: grid;
-  gap: 0.7rem;
+.nexus-about .about-cta-meta span {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
 }
 
-.about-not-fit__list li {
-  position: relative;
-  margin: 0;
-  padding: 0.85rem 1.1rem 0.85rem 1.9rem;
-  border-radius: var(--nx-radius-lg);
-  border: 1px solid var(--nx-border);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.018));
-  color: var(--nx-text-secondary);
-  line-height: 1.65;
+.nexus-about .about-cta-meta span + span::before {
+	content: '·';
+	color: var(--about-line-2);
+	margin-right: 4px;
 }
 
-.about-not-fit__list li::before {
-  content: "—";
-  position: absolute;
-  left: 1rem;
-  top: 0.85rem;
-  color: var(--nx-accent-text);
-  font-weight: 700;
+/* -----------------------------------------------------------
+   BRUNNEN — visueller AHA-Moment
+----------------------------------------------------------- */
+.nexus-about .about-hero__visual {
+	position: relative;
+	height: 460px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-/* -----------------------------------------
-   Final CTA (Der nächste Schritt.)
-   ----------------------------------------- */
-
-.about-close {
-  padding-top: 0;
+.nexus-about .about-well {
+	position: relative;
+	width: 100%;
+	max-width: 360px;
+	height: 400px;
 }
 
-.about-close__inner {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: clamp(1.6rem, 4vw, 2.4rem);
-  border-radius: var(--nx-radius-xl);
-  border: 1px solid var(--nx-border);
-  background:
-    radial-gradient(circle at 50% 0%, hsl(var(--accent-hsl) / 0.12), transparent 36%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
-  text-align: center;
-  box-shadow: var(--nx-shadow-sm);
+.nexus-about .about-well__surface {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 260px;
+	height: 36px;
+	background: var(--about-bg-2);
+	border: 2px solid var(--about-line-2);
+	border-radius: 12px 12px 0 0;
+	z-index: 3;
 }
 
-.about-close__inner h2 {
-  margin-bottom: 1rem;
+.nexus-about .about-well__surface::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 220px;
+	height: 8px;
+	background: var(--about-bg-3);
+	border-radius: 4px;
 }
 
-.about-close__inner p {
-  margin: 0 auto 1rem;
-  max-width: 60ch;
-  color: var(--nx-text-secondary);
-  line-height: 1.8;
+.nexus-about .about-well__shaft {
+	position: absolute;
+	top: 36px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 220px;
+	height: 320px;
+	background: linear-gradient(180deg, var(--about-bg-2) 0%, var(--about-bg-3) 100%);
+	border-left: 2px solid var(--about-line-2);
+	border-right: 2px solid var(--about-line-2);
+	overflow: hidden;
 }
 
-.about-close__actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-top: 1.4rem !important;
+.nexus-about .about-well__shaft::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background:
+		repeating-linear-gradient(180deg,
+			transparent 0,
+			transparent 22px,
+			rgba(42, 38, 27, 0.04) 22px,
+			rgba(42, 38, 27, 0.04) 23px);
+	pointer-events: none;
 }
 
-/* -----------------------------------------
-   Header / Footer overrides
-   ----------------------------------------- */
-
-body.page-template-template-about .nx-site-header__menu .nav-cta-button > a,
-body.page-template-template-about-php .nx-site-header__menu .nav-cta-button > a,
-body.page-template-template-about .nx-site-header__menu .nav-cta-button > a:hover,
-body.page-template-template-about-php .nx-site-header__menu .nav-cta-button > a:hover,
-body.page-template-template-about .nx-site-header__menu .nav-cta-button > a:focus-visible,
-body.page-template-template-about-php .nx-site-header__menu .nav-cta-button > a:focus-visible,
-body.page-template-template-about .nx-site-header__menu .nav-cta-button.current-menu-item > a,
-body.page-template-template-about-php .nx-site-header__menu .nav-cta-button.current-menu-item > a,
-body.page-template-template-about .nx-site-header__menu .nav-cta-button.current-menu-ancestor > a,
-body.page-template-template-about-php .nx-site-header__menu .nav-cta-button.current-menu-ancestor > a {
-  color: var(--nx-text-secondary) !important;
-  background: var(--nx-bg-glass-light) !important;
-  border-color: var(--nx-border) !important;
-  box-shadow: none !important;
+.nexus-about .about-well__water {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 0%;
+	background: linear-gradient(180deg, rgba(224, 138, 60, 0.18) 0%, var(--about-accent) 100%);
+	transition: height 1.2s var(--about-ease);
 }
 
-body.page-template-template-about .nx-site-header__menu .nav-cta-button > a:hover,
-body.page-template-template-about-php .nx-site-header__menu .nav-cta-button > a:hover,
-body.page-template-template-about .nx-site-header__menu .nav-cta-button > a:focus-visible,
-body.page-template-template-about-php .nx-site-header__menu .nav-cta-button > a:focus-visible {
-  color: var(--nx-text) !important;
+.nexus-about .about-well__water-surface {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	background: var(--about-accent);
+	box-shadow: 0 0 16px rgba(224, 138, 60, 0.6);
+	animation: aboutWaterRipple 3s ease-in-out infinite;
 }
 
-body.page-template-template-about .nx-site-header__menu--mobile .nav-cta-button > a,
-body.page-template-template-about-php .nx-site-header__menu--mobile .nav-cta-button > a {
-  justify-content: flex-start;
+@keyframes aboutWaterRipple {
+	0%, 100% { opacity: 0.85; }
+	50%      { opacity: 1; }
 }
 
-body.page-template-template-about .ft__cta-group,
-body.page-template-template-about-php .ft__cta-group,
-body.page-template-template-about .ft__cta,
-body.page-template-template-about-php .ft__cta {
-  display: none;
+.nexus-about .about-well__labels {
+	position: absolute;
+	right: -110px;
+	top: 80px;
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
 }
 
-body.page-template-template-about .ft__trust-list,
-body.page-template-template-about-php .ft__trust-list {
-  margin-top: 8px;
+.nexus-about .about-well__label {
+	font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+	font-size: 12px;
+	letter-spacing: 0.08em;
+	color: var(--about-ink-3);
+	font-weight: 500;
+	opacity: 0;
+	transform: translateX(-16px);
+	transition: opacity 0.6s var(--about-ease), transform 0.6s var(--about-ease), color 0.6s var(--about-ease);
+	white-space: nowrap;
 }
 
-/* -----------------------------------------
-   Responsive
-   ----------------------------------------- */
-
-@media (min-width: 1040px) {
-  .about-hero__grid {
-    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.6fr);
-  }
+.nexus-about .about-well__label.is-active {
+	opacity: 1;
+	transform: translateX(0);
 }
 
-@media (max-width: 767px) {
-  .about-hero {
-    padding-top: calc(var(--nx-space-section) - 1rem);
-  }
-
-  .about-hero__title {
-    max-width: 12ch;
-  }
-
-  .about-profile-card {
-    max-width: 100%;
-    padding-inline: 1.2rem;
-  }
-
-  .about-close__inner {
-    padding-inline: 1.2rem;
-  }
-
-  .about-close__actions {
-    flex-direction: column;
-  }
+.nexus-about .about-well__label.is-highlight.is-active {
+	color: var(--about-accent-2);
+	font-weight: 700;
 }
 
-/* =========================================
-   Fachliche Schwerpunkte (Themen-Hub)
-   Solar/Waermepumpen-Sub-Pages als E-E-A-T-Anker
-   ========================================= */
-
-.about-expertise__inner {
-  max-width: 1080px;
-  margin: 0 auto;
+/* -----------------------------------------------------------
+   Section-Base
+----------------------------------------------------------- */
+.nexus-about .about-section {
+	padding: clamp(64px, 9vw, 96px) 0;
+	background: var(--about-bg);
 }
 
-.about-expertise__inner h2 {
-  margin: 0 0 1rem;
-  text-align: center;
+.nexus-about .about-section--cream {
+	background: var(--about-bg-2);
 }
 
-.about-expertise__lead {
-  max-width: 62ch;
-  margin: 0 auto 2.5rem;
-  text-align: center;
-  color: var(--nx-text-secondary);
-  font-size: clamp(15px, 1.2vw, 17px);
-  line-height: 1.65;
+.nexus-about .about-section__head {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	gap: clamp(24px, 4vw, 56px);
+	margin-bottom: clamp(40px, 5vw, 56px);
+	padding-bottom: clamp(28px, 3vw, 36px);
+	border-bottom: 1px solid var(--about-line);
+	align-items: start;
 }
 
-.about-expertise__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(14px, 1.6vw, 22px);
+.nexus-about .about-section__number {
+	font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+	font-size: 11px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--about-accent-2);
+	font-weight: 600;
+	margin: 8px 0 0;
+}
+
+.nexus-about .about-section__lead {
+	font-size: clamp(15px, 1.2vw, 17px);
+	line-height: 1.6;
+	color: var(--about-ink-2);
+	max-width: 640px;
+	margin: 0;
+}
+
+/* -----------------------------------------------------------
+   Prose-Blocks
+----------------------------------------------------------- */
+.nexus-about .about-prose {
+	max-width: 720px;
+	margin: 0 auto;
+	font-size: 17px;
+	line-height: 1.7;
+	color: var(--about-ink);
+}
+
+.nexus-about .about-prose p {
+	margin: 0 0 22px;
+}
+
+.nexus-about .about-prose p:last-child {
+	margin-bottom: 0;
+}
+
+/* -----------------------------------------------------------
+   Fit-Check Card
+----------------------------------------------------------- */
+.nexus-about .about-fit-card {
+	max-width: 720px;
+	margin: 36px auto 0;
+	background: var(--about-surface);
+	border: 1px solid var(--about-line);
+	border-radius: var(--about-radius-xl);
+	padding: clamp(28px, 3vw, 40px);
+	box-shadow: 0 2px 8px rgba(42, 38, 27, 0.06);
+}
+
+.nexus-about .about-fit-card__head {
+	font-family: 'Satoshi', 'Figtree', sans-serif;
+	font-size: clamp(20px, 2vw, 24px);
+	font-weight: 800;
+	color: var(--about-ink);
+	margin: 0 0 24px;
+	letter-spacing: -0.01em;
+}
+
+.nexus-about .about-fit-card__list {
+	list-style: none;
+	margin: 0 0 24px;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.nexus-about .about-fit-card__item {
+	display: flex;
+	align-items: flex-start;
+	gap: 14px;
+	padding: 14px;
+	border-radius: var(--about-radius-md);
+	transition: background-color 0.22s var(--about-ease);
+}
+
+.nexus-about .about-fit-card__item:hover {
+	background: var(--about-bg-2);
+}
+
+.nexus-about .about-fit-card__icon {
+	flex-shrink: 0;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: var(--about-accent);
+	color: #FFFFFF;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 2px;
+}
+
+.nexus-about .about-fit-card__icon svg {
+	width: 14px;
+	height: 14px;
+}
+
+.nexus-about .about-fit-card__body {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	font-size: 15.5px;
+	line-height: 1.55;
+	color: var(--about-ink);
+}
+
+.nexus-about .about-fit-card__body strong {
+	font-weight: 700;
+	color: var(--about-ink);
+}
+
+.nexus-about .about-fit-card__body span {
+	color: var(--about-ink-2);
+}
+
+.nexus-about .about-fit-card__match {
+	margin: 0;
+	padding: 16px 22px;
+	border-radius: var(--about-radius-md);
+	background: var(--about-bg-3);
+	border: 1px solid var(--about-line);
+	color: var(--about-ink);
+	font-size: 15px;
+	line-height: 1.55;
+	font-weight: 500;
+	text-align: center;
+}
+
+/* -----------------------------------------------------------
+   Portrait Card
+----------------------------------------------------------- */
+.nexus-about .about-portrait-card {
+	max-width: 380px;
+	margin: 0 auto 36px;
+	background: var(--about-surface);
+	border: 1px solid var(--about-line);
+	border-radius: var(--about-radius-xl);
+	padding: 22px;
+	text-align: center;
+	box-shadow: 0 2px 8px rgba(42, 38, 27, 0.06);
+}
+
+.nexus-about .about-portrait-card__media {
+	margin: 0 0 14px;
+	border-radius: var(--about-radius-md);
+	overflow: hidden;
+	aspect-ratio: 4 / 5;
+	background: var(--about-bg-3);
+}
+
+.nexus-about .about-portrait-card__media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.nexus-about .about-portrait-card__caption {
+	font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+	font-size: 11px;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--about-ink-3);
+}
+
+/* -----------------------------------------------------------
+   Cohort Card
+----------------------------------------------------------- */
+.nexus-about .about-cohort-card {
+	max-width: 720px;
+	margin: 48px auto 0;
+	background: var(--about-surface);
+	border: 1px solid var(--about-line);
+	border-radius: var(--about-radius-xl);
+	padding: clamp(32px, 4vw, 48px);
+	text-align: center;
+	box-shadow: 0 4px 16px rgba(42, 38, 27, 0.08);
+}
+
+.nexus-about .about-cohort-card__eyebrow {
+	font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+	font-size: 11px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--about-accent-2);
+	font-weight: 600;
+	margin: 0 0 14px;
+}
+
+.nexus-about .about-cohort-card__title {
+	font-family: 'Satoshi', 'Figtree', sans-serif;
+	font-size: clamp(24px, 2.6vw, 30px);
+	font-weight: 800;
+	letter-spacing: -0.015em;
+	margin: 0 0 22px;
+	color: var(--about-ink);
+	text-wrap: balance;
+}
+
+.nexus-about .about-cohort-card__status {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	background: var(--about-bg-2);
+	border: 1px solid var(--about-line);
+	padding: 10px 20px;
+	border-radius: var(--about-radius-pill);
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--about-ink-2);
+	margin: 0 0 22px;
+}
+
+.nexus-about .about-cohort-card__dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--about-good);
+	box-shadow: 0 0 8px rgba(107, 161, 122, 0.55);
+}
+
+.nexus-about .about-cohort-card__text {
+	font-size: 15.5px;
+	line-height: 1.6;
+	color: var(--about-ink-2);
+	max-width: 56ch;
+	margin: 0 auto 26px;
+}
+
+.nexus-about .about-cohort-card .about-cta-primary {
+	margin: 0 auto;
+}
+
+/* -----------------------------------------------------------
+   Fachliche Schwerpunkte (Sub-Page-Cluster)
+----------------------------------------------------------- */
+.nexus-about .about-expertise-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: clamp(14px, 1.6vw, 22px);
 }
 
 @media (max-width: 960px) {
-  .about-expertise__list { grid-template-columns: repeat(2, 1fr); }
+	.nexus-about .about-expertise-list {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
 
 @media (max-width: 600px) {
-  .about-expertise__list { grid-template-columns: 1fr; }
+	.nexus-about .about-expertise-list {
+		grid-template-columns: 1fr;
+	}
 }
 
-.about-expertise__item { margin: 0; }
-
-.about-expertise__link {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 22px 24px;
-  text-decoration: none;
-  color: var(--nx-text);
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  position: relative;
-  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.22s ease,
-              background-color 0.22s ease,
-              box-shadow 0.22s ease;
+.nexus-about .about-expertise-item {
+	margin: 0;
 }
 
-.about-expertise__link::after {
-  content: '→';
-  position: absolute;
-  top: 22px;
-  right: 24px;
-  font-size: 16px;
-  line-height: 1;
-  color: var(--nx-text-tertiary, rgba(245, 241, 234, 0.45));
-  transform: translateX(-2px);
-  transition: color 0.18s ease, transform 0.22s ease;
+.nexus-about .about-expertise-link {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 22px 26px;
+	text-decoration: none;
+	color: var(--about-ink);
+	background: var(--about-surface);
+	border: 1px solid var(--about-line);
+	border-radius: var(--about-radius-lg);
+	position: relative;
+	min-height: 100%;
+	box-shadow: 0 1px 3px rgba(42, 38, 27, 0.05);
+	transition: transform 0.22s var(--about-ease),
+	            border-color 0.22s var(--about-ease),
+	            box-shadow 0.22s var(--about-ease),
+	            background-color 0.22s var(--about-ease);
 }
 
-.about-expertise__link:hover,
-.about-expertise__link:focus-visible {
-  transform: translateY(-2px);
-  border-color: hsl(var(--accent-hsl) / 0.42);
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: 0 16px 32px -20px rgba(0, 0, 0, 0.45),
-              0 0 0 1px hsl(var(--accent-hsl) / 0.18);
-  color: var(--nx-text);
+.nexus-about .about-expertise-link::after {
+	content: '→';
+	position: absolute;
+	top: 22px;
+	right: 24px;
+	font-size: 16px;
+	line-height: 1;
+	color: var(--about-ink-4);
+	transform: translateX(-2px);
+	transition: color 0.18s ease, transform 0.22s ease;
 }
 
-.about-expertise__link:hover::after,
-.about-expertise__link:focus-visible::after {
-  color: hsl(var(--accent-hsl));
-  transform: translateX(0);
+.nexus-about .about-expertise-link:hover,
+.nexus-about .about-expertise-link:focus-visible {
+	transform: translateY(-2px);
+	border-color: var(--about-line-2);
+	background: #FFFFFF;
+	box-shadow: 0 16px 32px -18px rgba(42, 38, 27, 0.18),
+	            0 0 0 1px rgba(224, 138, 60, 0.16);
+	color: var(--about-ink);
 }
 
-.about-expertise__link:focus-visible {
-  outline: 2px solid hsl(var(--accent-hsl));
-  outline-offset: 3px;
+.nexus-about .about-expertise-link:hover::after,
+.nexus-about .about-expertise-link:focus-visible::after {
+	color: var(--about-accent-2);
+	transform: translateX(0);
 }
 
-.about-expertise__t {
-  display: block;
-  font-weight: 600;
-  font-size: 17px;
-  line-height: 1.3;
-  color: var(--nx-text);
-  padding-right: 22px;
-  transition: color 0.18s ease;
+.nexus-about .about-expertise-link:focus-visible {
+	outline: 2px solid var(--about-accent-2);
+	outline-offset: 3px;
 }
 
-.about-expertise__link:hover .about-expertise__t,
-.about-expertise__link:focus-visible .about-expertise__t {
-  color: hsl(var(--accent-hsl));
+.nexus-about .about-expertise-link__t {
+	display: block;
+	font-weight: 600;
+	font-size: 17px;
+	line-height: 1.3;
+	color: var(--about-ink);
+	padding-right: 22px;
+	transition: color 0.18s ease;
 }
 
-.about-expertise__s {
-  display: block;
-  color: var(--nx-text-secondary);
-  font-size: 14px;
-  line-height: 1.55;
+.nexus-about .about-expertise-link:hover .about-expertise-link__t,
+.nexus-about .about-expertise-link:focus-visible .about-expertise-link__t {
+	color: var(--about-accent-2);
 }
 
+.nexus-about .about-expertise-link__s {
+	display: block;
+	color: var(--about-ink-2);
+	font-size: 14px;
+	line-height: 1.55;
+}
+
+/* -----------------------------------------------------------
+   Final CTA-Section
+----------------------------------------------------------- */
+.nexus-about .about-final .about-h2 {
+	margin: 0 auto 18px;
+	max-width: 22ch;
+}
+
+.nexus-about .about-final__lead {
+	font-size: clamp(16px, 1.3vw, 18px);
+	line-height: 1.6;
+	color: var(--about-ink-2);
+	max-width: 56ch;
+	margin: 0 auto 32px;
+}
+
+/* -----------------------------------------------------------
+   Scroll-Reveal
+----------------------------------------------------------- */
+.nexus-about [data-reveal] {
+	opacity: 0;
+	transform: translateY(20px);
+	transition: opacity 0.6s var(--about-ease), transform 0.6s var(--about-ease);
+}
+
+.nexus-about [data-reveal].is-revealed {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* -----------------------------------------------------------
+   Responsive
+----------------------------------------------------------- */
+@media (max-width: 960px) {
+	.nexus-about .about-hero__grid {
+		grid-template-columns: 1fr;
+		gap: 48px;
+	}
+
+	.nexus-about .about-hero__visual {
+		height: 380px;
+	}
+
+	.nexus-about .about-well__labels {
+		right: auto;
+		left: calc(100% + 16px);
+	}
+
+	.nexus-about .about-section__head {
+		grid-template-columns: 1fr;
+		gap: 18px;
+	}
+}
+
+@media (max-width: 640px) {
+	.nexus-about .about-stat-proof {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 6px;
+	}
+
+	.nexus-about .about-stat-proof__label {
+		max-width: none;
+	}
+
+	.nexus-about .about-well__labels {
+		display: none;
+	}
+
+	.nexus-about .about-well {
+		max-width: 280px;
+	}
+
+	.nexus-about .about-fit-card__icon {
+		width: 22px;
+		height: 22px;
+	}
+}
+
+/* -----------------------------------------------------------
+   Reduced Motion
+----------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .about-expertise__link,
-  .about-expertise__link::after,
-  .about-expertise__t {
-    transition: none;
-  }
-  .about-expertise__link:hover,
-  .about-expertise__link:focus-visible {
-    transform: none;
-  }
+	.nexus-about [data-reveal] {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.nexus-about .about-cta-primary,
+	.nexus-about .about-cta-arrow,
+	.nexus-about .about-expertise-link,
+	.nexus-about .about-expertise-link::after,
+	.nexus-about .about-well__water,
+	.nexus-about .about-well__label {
+		transition: none;
+	}
+
+	.nexus-about .about-live-dot,
+	.nexus-about .about-well__water-surface {
+		animation: none;
+	}
 }

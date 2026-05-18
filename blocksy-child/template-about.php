@@ -3,6 +3,14 @@
  * Template Name: Nexus Über Mich
  * Description: Storytelling-Positionsseite für Solar- und Wärmepumpen-Anbieter
  *
+ * Redesign nach Claude-Design-Bundle (uber-mich.html):
+ * - Warm-cream Farbschema (#FAF7F2 / #F4EDDD / #2A261B)
+ * - Brunnen-Visual als AHA-Element im Hero (scrollbasiert)
+ * - Section-Number-Grid (Eyebrow links, H2 rechts)
+ * - Inline Fit-Check-Card statt Negativ-Liste
+ * - Stat-Proof im Hero (E3-Referenz)
+ * - Mikro-Copy unter primären CTAs
+ *
  * @package Blocksy_Child
  */
 
@@ -12,15 +20,40 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $audit_url    = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $request_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-$request_cta  = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Anfrage stellen';
+$request_cta  = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Marktcheck starten';
+$portrait_url = function_exists( 'hu_get_profile_image_url' ) ? hu_get_profile_image_url() : get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 
-$not_fit_points = [
-	'Reinen Design-Relaunches ohne Vertriebsziel.',
-	'Betrieben, die ausschließlich auf Leadportale setzen wollen.',
-	'Projekten außerhalb von Solar und Wärmepumpe.',
-	'Setups, in denen Tracking gewünscht ist, aber Consent-Konsequenzen nicht akzeptiert werden.',
+// E3-Canon
+$e3_canon         = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_metrics       = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
+$e3_cpl_reduction = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
+$e3_timeframe     = $e3_metrics['timeframe']['display'] ?? '9 Monate';
+
+// Fit-Check: 3 Voraussetzungen statt Negativ-Liste (Positiv-Framing)
+$about_fit_points = [
+	[
+		't' => 'Solar, Wärmepumpe oder Speicher.',
+		's' => 'Ihr Angebot muss in diesem Markt liegen. Branchenübergreifend arbeite ich nicht.',
+	],
+	[
+		't' => 'Eigener Vertrieb mit Kapazität.',
+		's' => 'Sie haben ein Team, das Anfragen bearbeitet. Keine Ein-Mann-Betriebe, keine Konzern-Strukturen.',
+	],
+	[
+		't' => 'Bereitschaft für sauberes Tracking.',
+		's' => 'Consent-konforme Implementierung bedeutet Einschränkungen. Wer die nicht akzeptiert, bekommt keine belastbaren Daten.',
+	],
 ];
 
+// Brunnen-Labels: 4 Schichten von oberflächlich zu tief
+$about_well_labels = [
+	[ 'depth' => 20, 'label' => 'Portal-Leads',  'highlight' => false ],
+	[ 'depth' => 40, 'label' => 'Tracking',      'highlight' => false ],
+	[ 'depth' => 60, 'label' => 'Infrastruktur', 'highlight' => false ],
+	[ 'depth' => 80, 'label' => 'Eigene Quelle', 'highlight' => true  ],
+];
+
+// Fachliche Schwerpunkte (E-E-A-T-Anker → Sub-Page-Cluster)
 $about_expertise = [
 	[
 		't'   => 'Lead-Funnel-Architektur',
@@ -60,113 +93,231 @@ get_header();
 <main id="main" class="site-main">
 	<div class="nexus-about" data-track-section="about_page">
 
-		<!-- Hero -->
-		<section id="about-hero" class="nx-section about-hero">
-			<div class="nx-container">
+		<!-- ════════════════════════════════════════════════════════
+		     HERO — mit Brunnen-Visual und Stat-Proof
+		     ════════════════════════════════════════════════════════ -->
+		<section id="about-hero" class="about-hero">
+			<div class="about-container">
 				<div class="about-hero__grid">
 					<div class="about-hero__copy">
-						<span class="nx-badge nx-badge--gold">ÜBER MICH</span>
-						<h1 class="about-hero__title">Ich bohre Brunnen. Digital.</h1>
+						<p class="about-eyebrow">
+							<span class="about-live-dot" aria-hidden="true"></span>
+							ÜBER MICH
+						</p>
+						<h1 class="about-h1">Ich bohre Brunnen. Digital.</h1>
 						<p class="about-hero__lead">
 							Für Solar- und Wärmepumpen-Betriebe, die ihre Anfragen nicht dauerhaft über Portale mieten wollen — sondern eine eigene Nachfrage-Infrastruktur aufbauen.
 						</p>
+
+						<div class="about-stat-proof" role="figure" aria-label="E3-Referenz-Kennzahl">
+							<div class="about-stat-proof__number">−<?php echo esc_html( preg_replace( '/[^0-9]/', '', $e3_cpl_reduction ) ); ?>%</div>
+							<div class="about-stat-proof__label">Leadkosten bei E3 New Energy in <?php echo esc_html( $e3_timeframe ); ?></div>
+						</div>
+
+						<div class="about-cta-wrap">
+							<a href="<?php echo esc_url( $request_url ); ?>"
+							   class="about-cta-primary"
+							   data-track-action="cta_about_hero_marktcheck"
+							   data-track-category="lead_gen"
+							   data-track-section="about_hero">
+								<?php echo esc_html( $request_cta ); ?>
+								<svg class="about-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<path d="M5 12h14M13 6l6 6-6 6"/>
+								</svg>
+							</a>
+							<p class="about-cta-meta">
+								<span>60 Sek.</span>
+								<span>5 Fragen</span>
+								<span>Antwort in 24 h</span>
+							</p>
+						</div>
 					</div>
 
-					<aside class="about-profile-card" aria-label="Profil">
-						<figure class="about-profile-card__media">
-							<img
-								src="<?php echo esc_url( hu_get_profile_image_url() ); ?>"
-								alt="Porträt von Haşim Üner"
-								loading="eager"
-								width="340"
-								height="420"
-							/>
-						</figure>
-						<div class="about-profile-card__body">
-							<span class="about-profile-card__eyebrow">Haşim Üner</span>
+					<div class="about-hero__visual" aria-hidden="true">
+						<div class="about-well">
+							<div class="about-well__surface"></div>
+							<div class="about-well__shaft">
+								<div class="about-well__water" id="aboutWaterLevel">
+									<div class="about-well__water-surface"></div>
+								</div>
+							</div>
+							<div class="about-well__labels">
+								<?php foreach ( $about_well_labels as $label_item ) : ?>
+									<div class="about-well__label<?php echo $label_item['highlight'] ? ' is-highlight' : ''; ?>"
+									     data-depth="<?php echo (int) $label_item['depth']; ?>">
+										<?php echo esc_html( $label_item['label'] ); ?>
+									</div>
+								<?php endforeach; ?>
+							</div>
 						</div>
-					</aside>
+					</div>
 				</div>
 			</div>
 		</section>
 
-		<!-- Warum jetzt. -->
-		<section id="about-warum" class="nx-section about-section about-narrative">
-			<div class="nx-container">
-				<div class="about-narrative__inner">
-					<h2 class="nx-headline-section">Warum jetzt.</h2>
-					<p>Solar- und Wärmepumpen-Anbieter verkaufen ihren Kunden eine einfache Idee: weg von der Versorgung, die jemand anderem gehört. Hin zur Anlage auf dem eigenen Dach.</p>
-					<p>Ich übertrage denselben Gedanken auf Ihren Vertrieb: weg von Portal-Leads, die jemand anderem gehören. Hin zu einer Anfrage-Infrastruktur auf Ihrer eigenen Website — mit Ihren Daten, Ihren Prozessen und Ihrer Kontrolle.</p>
-					<p>Bis 2023 lief der Markt von selbst. Wer eine Website hatte und ein Portal-Abo, bekam Anfragen. Seit dem Boom-Ende ist diese Logik gebrochen. Anfragen werden teurer, schlechter und unvorhersehbarer. Wer wachsen will, kann nicht mehr Wasser nachkaufen. Er braucht einen Brunnen.</p>
+		<!-- ════════════════════════════════════════════════════════
+		     01 / INFRASTRUKTUR STATT MIETE (cream)
+		     ════════════════════════════════════════════════════════ -->
+		<section id="about-infrastruktur" class="about-section about-section--cream">
+			<div class="about-container">
+				<header class="about-section__head" data-reveal>
+					<p class="about-section__number">01 / Infrastruktur statt Miete</p>
+					<div class="about-section__head-body">
+						<h2 class="about-h2">Was Sie Ihren Kunden verkaufen, gilt auch für Ihren Vertrieb.</h2>
+						<p class="about-section__lead">Eigene Anlagen statt Netz-Abhängigkeit. Eigene Anfragen statt Portal-Miete.</p>
+					</div>
+				</header>
+
+				<div class="about-prose" data-reveal>
+					<p>Solar- und Wärmepumpen-Anbieter verkaufen Unabhängigkeit. Die Anlage auf dem eigenen Dach, nicht die Rechnung vom Versorger. Dieses Prinzip gilt genauso für Ihre Anfrage-Infrastruktur.</p>
+					<p>Portale liefern dieselbe Anfrage an drei Wettbewerber. Sie zahlen für Klicks, die nie konvertieren. Sie bauen Listen in fremden Systemen auf, ohne Kontrolle über Daten, Prozesse oder Qualität. Das funktioniert, solange der Markt läuft. Sobald er sich dreht, steigen die Kosten und sinkt die Qualität.</p>
+					<p>Eine eigene Anfrage-Infrastruktur macht Region, Projektwert und Fit sichtbar, bevor Ihr Vertrieb Zeit in falsche Gespräche steckt. Sie besitzen die Daten. Sie kontrollieren den Prozess. Sie entscheiden, welche Leads Ihr Team bearbeitet.</p>
 				</div>
 			</div>
 		</section>
 
-		<!-- Wie ich arbeite. -->
-		<section id="about-arbeit" class="nx-section about-section about-narrative">
-			<div class="nx-container">
-				<div class="about-narrative__inner">
-					<h2 class="nx-headline-section">Wie ich arbeite.</h2>
-					<p>Wenn ein neuer Brunnen gebohrt werden soll, beginnt die Arbeit nicht mit dem Bohrer. Sie beginnt mit Geologie. Wer ohne Karte bohrt, trifft Stein oder zieht Schlamm. Diese Arbeit sieht aus wie nichts: Karten lesen, Boden prüfen, mit Nachbarn reden, die schon gebohrt haben.</p>
-					<p>Genau das ist die erste Phase mit mir. Bevor irgendetwas an Ihrer Website verändert wird, lese ich Ihren Untergrund: Welche Suchanfragen kommen wirklich an? An welchen Stellen versickert Aufmerksamkeit? Wo ist das Tracking taub? Wo erklärt die Seite Technik, statt Entscheidungen zu führen?</p>
-					<p>Erst danach wird gebohrt: sauber gebautes WordPress statt Page-Builder-Abhängigkeit. Serverseitiges Tracking unter Ihrer Kontrolle. Eine Pipeline, die zeigt, welcher Kontakt später wirklich wertvoll wurde.</p>
-					<p>Und erst, wenn das Wasser sauber kommt, drehen wir die Pumpe hoch. Vorher Geld auf Anzeigen zu kippen, ist wie mehr Strom auf eine kaputte Pumpe geben. Es macht das Problem lauter, nicht besser.</p>
+		<!-- ════════════════════════════════════════════════════════
+		     02 / METHODE (main)
+		     ════════════════════════════════════════════════════════ -->
+		<section id="about-methode" class="about-section">
+			<div class="about-container">
+				<header class="about-section__head" data-reveal>
+					<p class="about-section__number">02 / Methode</p>
+					<div class="about-section__head-body">
+						<h2 class="about-h2">Diagnose vor Umsetzung.</h2>
+						<p class="about-section__lead">Wer bohrt, ohne den Untergrund zu kennen, trifft Stein oder zieht Schlamm.</p>
+					</div>
+				</header>
+
+				<div class="about-prose" data-reveal>
+					<p>Die Arbeit beginnt nicht mit WordPress oder Tracking-Code. Sie beginnt damit, Ihren Untergrund zu lesen: Welche Suchanfragen kommen an? Wo versickert Aufmerksamkeit? Wo ist das Tracking taub? An welchen Stellen erklärt die Seite Technik, statt Entscheidungen zu ermöglichen?</p>
+					<p>Erst wenn diese Fragen beantwortet sind, wird gebaut. Sauber strukturiertes WordPress. Serverseitiges Tracking unter Ihrer Kontrolle. Eine Pipeline, die zeigt, welcher Kontakt wertvoll wurde — nicht nur, wer auf einen Button geklickt hat.</p>
+					<p>Dann, wenn die Infrastruktur steht, wird skaliert. Vorher Budgets auf Anzeigen zu setzen, erzeugt nur teurere Fehler.</p>
 				</div>
 			</div>
 		</section>
 
-		<!-- Was ich nicht bin. -->
-		<section id="about-nicht" class="nx-section about-section about-narrative">
-			<div class="nx-container">
-				<div class="about-narrative__inner">
-					<h2 class="nx-headline-section">Was ich nicht bin.</h2>
-					<p>Ich bin nicht der, der Ihnen mehr Klicks verkauft. Ich bin nicht der, der jeden Monat einen neuen Funnel mietet. Ich bin nicht der, der einen Design-Relaunch verkauft, ohne zu fragen, was an der alten Seite eigentlich kaputt war.</p>
-					<p>Ich passe nicht zu:</p>
-					<ul class="about-not-fit__list">
-						<?php foreach ( $not_fit_points as $point ) : ?>
-							<li><?php echo esc_html( $point ); ?></li>
-						<?php endforeach; ?>
-					</ul>
-					<p>Ich bohre deshalb nicht blind. Ich prüfe zuerst, ob auf Ihrem Grundstück überhaupt Wasser liegt. Manchmal ist die ehrliche Antwort: Nein, hier nicht. Dann sage ich das, und Sie sparen sich die Bohrung.</p>
+		<!-- ════════════════════════════════════════════════════════
+		     03 / VORAUSSETZUNGEN (cream + Fit-Check-Card)
+		     ════════════════════════════════════════════════════════ -->
+		<section id="about-fit" class="about-section about-section--cream">
+			<div class="about-container">
+				<header class="about-section__head" data-reveal>
+					<p class="about-section__number">03 / Voraussetzungen</p>
+					<div class="about-section__head-body">
+						<h2 class="about-h2">Drei Dinge müssen stimmen.</h2>
+						<p class="about-section__lead">Nicht jedes Grundstück trägt Wasser. Manchmal ist die ehrliche Antwort: Hier nicht.</p>
+					</div>
+				</header>
+
+				<div class="about-prose" data-reveal>
+					<p>Damit die Zusammenarbeit funktioniert, müssen drei Voraussetzungen erfüllt sein:</p>
 				</div>
-			</div>
-		</section>
 
-		<!-- Wer ich bin. -->
-		<section id="about-wer" class="nx-section about-section about-narrative">
-			<div class="nx-container">
-				<div class="about-narrative__inner">
-					<h2 class="nx-headline-section">Wer ich bin.</h2>
-					<p>Mein Zugang zu dieser Arbeit ist Medienwissenschaft, nicht Webdesign. Ich denke zuerst über Sprache, Entscheidung und Signal nach — und erst danach über Code. Über Jahre habe ich an digitalen Strukturen für erklärungsbedürftige B2B-Angebote gearbeitet. Die technische Schicht war selten das eigentliche Problem. Das Problem war fast immer: jemand hat gebohrt, ohne vorher die Karte zu lesen.</p>
-					<p>Seit E3 New Energy als erstem Solar-Case weiß ich, wo diese Methode am stärksten greift. Seitdem liegt mein Fokus auf Solar- und Wärmepumpen-Betrieben.</p>
-				</div>
-			</div>
-		</section>
-
-		<!-- Fachliche Schwerpunkte. -->
-		<section id="about-expertise" class="nx-section about-section about-expertise" aria-labelledby="about-expertise-title">
-			<div class="nx-container">
-				<div class="about-expertise__inner">
-					<h2 id="about-expertise-title" class="nx-headline-section">Fachliche Schwerpunkte.</h2>
-					<p class="about-expertise__lead">
-						Sechs thematische Felder, in denen ich die Architektur eigener Anfrage-Systeme für Solar- und Wärmepumpen-Betriebe konkret aufgeschrieben habe.
-					</p>
-
-					<ul class="about-expertise__list">
-						<?php foreach ( $about_expertise as $field ) : ?>
-							<li class="about-expertise__item">
-								<a class="about-expertise__link"
-								   href="<?php echo esc_url( $field['url'] ); ?>"
-								   data-track-action="cta_about_expertise_link"
-								   data-track-category="navigation"
-								   data-track-section="about_expertise">
-									<span class="about-expertise__t"><?php echo esc_html( $field['t'] ); ?></span>
-									<span class="about-expertise__s"><?php echo esc_html( $field['s'] ); ?></span>
-								</a>
+				<div class="about-fit-card" data-reveal>
+					<p class="about-fit-card__head">Das muss passen:</p>
+					<ul class="about-fit-card__list">
+						<?php foreach ( $about_fit_points as $fit_item ) : ?>
+							<li class="about-fit-card__item">
+								<span class="about-fit-card__icon" aria-hidden="true">
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M5 12l5 5L20 7" />
+									</svg>
+								</span>
+								<div class="about-fit-card__body">
+									<strong><?php echo esc_html( $fit_item['t'] ); ?></strong>
+									<span><?php echo esc_html( $fit_item['s'] ); ?></span>
+								</div>
 							</li>
 						<?php endforeach; ?>
 					</ul>
+					<p class="about-fit-card__match">
+						Wenn diese drei Punkte zutreffen, macht der Marktcheck Sinn. Wenn nicht, spare ich Ihnen und mir die Zeit.
+					</p>
 				</div>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════
+		     04 / HINTERGRUND (main + Portrait + Cohort)
+		     ════════════════════════════════════════════════════════ -->
+		<section id="about-hintergrund" class="about-section">
+			<div class="about-container">
+				<header class="about-section__head" data-reveal>
+					<p class="about-section__number">04 / Hintergrund</p>
+					<div class="about-section__head-body">
+						<h2 class="about-h2">Wer ich bin.</h2>
+						<p class="about-section__lead">Medienwissenschaft, nicht Webdesign. Sprache und Signal vor Code.</p>
+					</div>
+				</header>
+
+				<div class="about-portrait-card" data-reveal>
+					<figure class="about-portrait-card__media">
+						<img src="<?php echo esc_url( $portrait_url ); ?>"
+						     alt="Porträt von Haşim Üner"
+						     loading="lazy"
+						     width="340"
+						     height="420">
+					</figure>
+					<figcaption class="about-portrait-card__caption">Haşim Üner · Hannover</figcaption>
+				</div>
+
+				<div class="about-prose" data-reveal>
+					<p>Mein Zugang zu dieser Arbeit ist Medienwissenschaft, nicht Webdesign. Ich denke zuerst über Sprache, Entscheidung und Signal nach — und erst danach über Code. Über Jahre habe ich an digitalen Strukturen für erklärungsbedürftige B2B-Angebote gearbeitet. Die technische Schicht war selten das eigentliche Problem. Das Problem war fast immer: jemand hat gebohrt, ohne vorher die Karte zu lesen.</p>
+					<p>Seit E3 New Energy als erstem Solar-Case weiß ich, wo diese Methode am stärksten greift. Seitdem liegt mein Fokus auf Solar- und Wärmepumpen-Betrieben.</p>
+				</div>
+
+				<div class="about-cohort-card" data-reveal>
+					<p class="about-cohort-card__eyebrow">FOUNDING COHORT 2026</p>
+					<h3 class="about-cohort-card__title">E3 New Energy war der erste Case, nicht die Grenze.</h3>
+					<p class="about-cohort-card__status">
+						<span class="about-cohort-card__dot" aria-hidden="true"></span>
+						3 von 3 Plätzen offen
+					</p>
+					<p class="about-cohort-card__text">
+						Die Cohort erweitert diese Arbeitsweise auf maximal drei passende Solar- oder Wärmepumpen-Betriebe. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.
+					</p>
+					<a href="<?php echo esc_url( $request_url ); ?>"
+					   class="about-cta-primary"
+					   data-track-action="cta_about_cohort_marktcheck"
+					   data-track-category="lead_gen"
+					   data-track-section="about_cohort">
+						Analyse anfragen
+						<svg class="about-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14M13 6l6 6-6 6"/>
+						</svg>
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════
+		     05 / FACHLICHE SCHWERPUNKTE (cream, Sub-Page-Cluster)
+		     ════════════════════════════════════════════════════════ -->
+		<section id="about-expertise" class="about-section about-section--cream" aria-labelledby="about-expertise-title">
+			<div class="about-container">
+				<header class="about-section__head" data-reveal>
+					<p class="about-section__number">05 / Fachliche Schwerpunkte</p>
+					<div class="about-section__head-body">
+						<h2 class="about-h2" id="about-expertise-title">Sechs Felder, an denen ich konkret arbeite.</h2>
+						<p class="about-section__lead">Jedes Feld ist als eigene Seite mit Methode, Beispielen und Bezug zum E3-Case aufgeschrieben.</p>
+					</div>
+				</header>
+
+				<ul class="about-expertise-list" data-reveal>
+					<?php foreach ( $about_expertise as $field ) : ?>
+						<li class="about-expertise-item">
+							<a class="about-expertise-link"
+							   href="<?php echo esc_url( $field['url'] ); ?>"
+							   data-track-action="cta_about_expertise_link"
+							   data-track-category="navigation"
+							   data-track-section="about_expertise">
+								<span class="about-expertise-link__t"><?php echo esc_html( $field['t'] ); ?></span>
+								<span class="about-expertise-link__s"><?php echo esc_html( $field['s'] ); ?></span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
 			</div>
 		</section>
 
@@ -181,22 +332,30 @@ get_header();
 		}
 		?>
 
-		<!-- Der nächste Schritt. -->
-		<section id="about-close" class="nx-section about-close">
-			<div class="nx-container">
-				<div class="about-close__inner">
-					<h2 class="nx-headline-section">Der nächste Schritt.</h2>
-					<p>Wenn Sie wissen, dass Sie bohren wollen, gehen Sie direkt ins qualifizierte Formular. Fünf Fragen, etwa 90 Sekunden. Antwort innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.</p>
-					<p class="about-close__actions">
-						<a
-							href="<?php echo esc_url( $request_url ); ?>"
-							class="nx-btn nx-btn--primary"
-							data-track-action="cta_anfrage_uber_mich"
-							data-track-category="cta"
-							data-track-section="final"
-						>
-							<?php echo esc_html( $request_cta ); ?>
-						</a>
+		<!-- ════════════════════════════════════════════════════════
+		     FINAL CTA
+		     ════════════════════════════════════════════════════════ -->
+		<section id="about-close" class="about-section about-section--cream about-final" data-reveal>
+			<div class="about-container about-container--centered">
+				<h2 class="about-h2">Der nächste Schritt.</h2>
+				<p class="about-final__lead">
+					Wenn Sie wissen, dass Sie bohren wollen, gehen Sie direkt ins qualifizierte Formular. Fünf Fragen, etwa 90 Sekunden. Antwort innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.
+				</p>
+				<div class="about-cta-wrap about-cta-wrap--centered">
+					<a href="<?php echo esc_url( $request_url ); ?>"
+					   class="about-cta-primary"
+					   data-track-action="cta_about_final_marktcheck"
+					   data-track-category="lead_gen"
+					   data-track-section="about_final">
+						<?php echo esc_html( $request_cta ); ?>
+						<svg class="about-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14M13 6l6 6-6 6"/>
+						</svg>
+					</a>
+					<p class="about-cta-meta about-cta-meta--centered">
+						<span>60 Sek.</span>
+						<span>5 Fragen</span>
+						<span>Antwort in 24 h</span>
 					</p>
 				</div>
 			</div>
