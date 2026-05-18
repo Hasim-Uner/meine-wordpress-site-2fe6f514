@@ -1014,12 +1014,13 @@
   gap: var(--ag-space-lg);
   max-width: var(--ag-max);
   margin: 0 auto;
+  align-items: stretch;
 }
 
 .wp-agentur-case-card {
   position: relative;
-  display: grid;
-  align-content: start;
+  display: flex;
+  flex-direction: column;
   gap: var(--ag-space-sm);
   padding: var(--ag-space-xl);
   background: var(--ag-bg);
@@ -1128,6 +1129,54 @@
   background: transparent;
   border-color: rgba(244, 212, 200, 0.5);
   color: var(--ag-bg);
+}
+
+/* CTA-Button: bricht innerhalb der Card sauber um, schiebt sich an den Card-Fuss */
+.wp-agentur-case-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: auto;
+  padding: 0.85rem 1.2rem;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.25;
+  font-size: 0.95rem;
+  font-weight: 600;
+  word-break: keep-all;
+  hyphens: auto;
+  width: 100%;
+}
+
+.wp-agentur-case-card__btn-icon {
+  display: inline-block;
+  flex-shrink: 0;
+  transform: translateX(-2px);
+  transition: transform var(--ag-dur-base) var(--ag-ease);
+}
+
+.wp-agentur-case-card--cta .wp-agentur-case-card__btn:hover .wp-agentur-case-card__btn-icon,
+.wp-agentur-case-card--cta .wp-agentur-case-card__btn:focus-visible .wp-agentur-case-card__btn-icon {
+  transform: translateX(0);
+}
+
+.wp-agentur-case-card--cta .wp-agentur-case-card__btn:hover,
+.wp-agentur-case-card--cta .wp-agentur-case-card__btn:focus-visible {
+  background: rgba(244, 212, 200, 0.08);
+  border-color: var(--ag-primary-light);
+  color: #FFFFFF;
+}
+
+.wp-agentur-case-card--cta .wp-agentur-case-card__btn:focus-visible {
+  outline: 2px solid var(--ag-primary-light);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-agentur-case-card__btn-icon {
+    transition: none;
+  }
 }
 
 .wp-agentur-case-card--cta .nx-btn--ghost:hover {

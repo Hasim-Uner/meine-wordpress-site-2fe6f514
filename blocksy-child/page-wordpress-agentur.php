@@ -522,10 +522,11 @@ get_header();
 				<span class="wp-agentur-case-card__eyebrow">Nächster Schritt</span>
 				<h3>Der ganze Case</h3>
 				<p class="wp-agentur-case-card__support">
-					Alle Zahlen, die Systemlogik und was sich daraus für Ihre Situation ableiten lässt: <a href="<?php echo esc_url( $e3_url ); ?>">E3 New Energy im Detail →</a>
+					Alle Zahlen, die Systemlogik und was sich daraus für Ihre Situation ableiten lässt.
 				</p>
-				<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_proof_e3_deep" data-track-category="navigation" data-track-section="proof">
-					E3-Case: CPL von <?php echo esc_html( $e3_cpl_before ); ?> auf <?php echo esc_html( $e3_cpl_after ); ?> ansehen
+				<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost wp-agentur-case-card__btn" data-track-action="cta_proof_e3_deep" data-track-category="navigation" data-track-section="proof">
+					Methodik im Detail
+					<span aria-hidden="true" class="wp-agentur-case-card__btn-icon">→</span>
 				</a>
 			</div>
 		</div>
