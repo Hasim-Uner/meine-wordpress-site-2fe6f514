@@ -592,6 +592,10 @@ function nexus_get_seo_cockpit_page_role( $context = [], $url = '' ) {
 		return 'system';
 	}
 
+	if ( function_exists( 'hu_is_solar_seo_subpage_path' ) && hu_is_solar_seo_subpage_path( $path ) ) {
+		return 'seo_subpage';
+	}
+
 	if ( in_array( $path, array_filter( [ $paths['impressum'] ?? '', $paths['datenschutz'] ?? '' ] ), true ) ) {
 		return 'legal';
 	}
@@ -623,20 +627,21 @@ function nexus_get_seo_cockpit_page_role( $context = [], $url = '' ) {
  */
 function nexus_get_seo_cockpit_page_role_label( $role ) {
 	$labels = [
-		'audit'   => 'Audit',
-		'service' => 'Service',
-		'results' => 'Proof',
-		'system'  => 'System',
-		'contact' => 'Kontakt',
-		'home'    => 'Startseite',
-		'hub'     => 'Hub',
-		'blog'    => 'Blog',
-		'about'   => 'About',
-		'legal'   => 'Rechtlich',
-		'utility' => 'Utility',
-		'page'    => 'Seite',
-		'legacy'  => 'Legacy',
-		'unknown' => 'Sonstiges',
+		'audit'       => 'Audit',
+		'service'     => 'Service',
+		'results'     => 'Proof',
+		'system'      => 'System',
+		'seo_subpage' => 'SEO-Sub-Page',
+		'contact'     => 'Kontakt',
+		'home'        => 'Startseite',
+		'hub'         => 'Hub',
+		'blog'        => 'Blog',
+		'about'       => 'About',
+		'legal'       => 'Rechtlich',
+		'utility'     => 'Utility',
+		'page'        => 'Seite',
+		'legacy'      => 'Legacy',
+		'unknown'     => 'Sonstiges',
 	];
 
 	return $labels[ sanitize_key( (string) $role ) ] ?? 'Sonstiges';
@@ -649,7 +654,7 @@ function nexus_get_seo_cockpit_page_role_label( $role ) {
  * @return bool
  */
 function nexus_is_seo_cockpit_high_value_role( $role ) {
-	return in_array( sanitize_key( (string) $role ), [ 'audit', 'service', 'results', 'system', 'contact', 'home' ], true );
+	return in_array( sanitize_key( (string) $role ), [ 'audit', 'service', 'results', 'system', 'seo_subpage', 'contact', 'home' ], true );
 }
 
 /**
@@ -660,20 +665,21 @@ function nexus_is_seo_cockpit_high_value_role( $role ) {
  */
 function nexus_get_seo_cockpit_page_role_scores( $role ) {
 	$map = [
-		'audit'   => [ 'business' => 20, 'funnel' => 15 ],
-		'service' => [ 'business' => 19, 'funnel' => 13 ],
-		'contact' => [ 'business' => 18, 'funnel' => 15 ],
-		'results' => [ 'business' => 16, 'funnel' => 12 ],
-		'system'  => [ 'business' => 15, 'funnel' => 11 ],
-		'home'    => [ 'business' => 14, 'funnel' => 10 ],
-		'hub'     => [ 'business' => 10, 'funnel' => 8 ],
-		'blog'    => [ 'business' => 7, 'funnel' => 5 ],
-		'about'   => [ 'business' => 4, 'funnel' => 2 ],
-		'page'    => [ 'business' => 6, 'funnel' => 4 ],
-		'utility' => [ 'business' => 2, 'funnel' => 1 ],
-		'legal'   => [ 'business' => 0, 'funnel' => 0 ],
-		'legacy'  => [ 'business' => 1, 'funnel' => 0 ],
-		'unknown' => [ 'business' => 5, 'funnel' => 3 ],
+		'audit'       => [ 'business' => 20, 'funnel' => 15 ],
+		'service'     => [ 'business' => 19, 'funnel' => 13 ],
+		'contact'     => [ 'business' => 18, 'funnel' => 15 ],
+		'results'     => [ 'business' => 16, 'funnel' => 12 ],
+		'system'      => [ 'business' => 15, 'funnel' => 11 ],
+		'seo_subpage' => [ 'business' => 13, 'funnel' => 10 ],
+		'home'        => [ 'business' => 14, 'funnel' => 10 ],
+		'hub'         => [ 'business' => 10, 'funnel' => 8 ],
+		'blog'        => [ 'business' => 7, 'funnel' => 5 ],
+		'about'       => [ 'business' => 4, 'funnel' => 2 ],
+		'page'        => [ 'business' => 6, 'funnel' => 4 ],
+		'utility'     => [ 'business' => 2, 'funnel' => 1 ],
+		'legal'       => [ 'business' => 0, 'funnel' => 0 ],
+		'legacy'      => [ 'business' => 1, 'funnel' => 0 ],
+		'unknown'     => [ 'business' => 5, 'funnel' => 3 ],
 	];
 
 	return $map[ sanitize_key( (string) $role ) ] ?? $map['unknown'];

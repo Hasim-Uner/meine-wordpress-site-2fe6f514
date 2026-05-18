@@ -453,6 +453,47 @@ function hu_get_solar_subpage_breadcrumb_schema( $current_url, $current_label ) 
 }
 
 /**
+ * Return the canonical list of SEO sub-page paths in the Solar/SHK cluster.
+ *
+ * These pages are deeper content assets that route into the marktcheck on
+ * /solar-waermepumpen-leadgenerierung/ and form the topical authority
+ * cluster around the Solar money page. Used by the SEO cockpit to classify
+ * them with a dedicated page role and priority score.
+ *
+ * @return array<int, string>
+ */
+function hu_get_solar_seo_subpage_paths() {
+	static $cache = null;
+
+	if ( null === $cache ) {
+		$cache = [
+			trailingslashit( '/solar-leads-kaufen-alternative' ),
+			trailingslashit( '/server-side-tracking-b2b' ),
+			trailingslashit( '/b2b-solar-leads' ),
+			trailingslashit( '/eigene-leadgenerierung-vs-portale' ),
+			trailingslashit( '/lead-funnel-solar' ),
+			trailingslashit( '/kunden-gewinnen-solarteure' ),
+			trailingslashit( '/cost-per-lead-photovoltaik' ),
+			trailingslashit( '/qualifizierte-pv-anfragen' ),
+		];
+	}
+
+	return $cache;
+}
+
+/**
+ * Check whether a URL path belongs to the Solar SEO sub-page cluster.
+ *
+ * @param string $path Normalized URL path (with leading and trailing slash).
+ * @return bool
+ */
+function hu_is_solar_seo_subpage_path( $path ) {
+	$path = '/' === substr( (string) $path, -1 ) ? (string) $path : trailingslashit( (string) $path );
+
+	return in_array( $path, hu_get_solar_seo_subpage_paths(), true );
+}
+
+/**
  * Return a localized last-updated date for a template-driven sub-page.
  *
  * @param string $template_path Absolute filesystem path to the template file.
