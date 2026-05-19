@@ -37,17 +37,9 @@ $footer_class        = $hide_primary_cta ? 'ft ft--no-primary-cta ft--mobile-cta
 $audit_cta_label     = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck starten';
 $audit_cta_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : '60 Sek. · 6 Fragen · Antwort in 24 h';
 $audit_footer_note   = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_get_audit_footer_note() : 'Marktcheck: persönliche Ersteinschätzung, schriftliche Rückmeldung in 24 Stunden, kein Pflicht-Call.';
-$diagnose_model      = function_exists( 'hu_diagnose_canon' ) ? hu_diagnose_canon() : [];
-$diagnose_access     = isset( $diagnose_model['access_policy'] ) ? (string) $diagnose_model['access_policy'] : 'Kein Admin-Zugang in der Diagnose.';
-$footer_trust_items  = array_values(
-	array_filter(
-		[
-			'Keine Cookies bei öffentlichen Seitenaufrufen.',
-			$diagnose_access,
-			'Diagnose vor Umsetzungs-Pitch.',
-		]
-	)
-);
+$footer_trust_items  = [
+	'Keine Cookies bei öffentlichen Seitenaufrufen.',
+];
 ?>
 
 <?php if ( function_exists( 'nexus_is_audit_linkedin_page' ) && nexus_is_audit_linkedin_page() ) : ?>
