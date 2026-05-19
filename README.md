@@ -1,61 +1,74 @@
-# Website Operating System
+# hasimuener.de — Source
 
-Versionierbare Source of Truth fuer hasimuener.de: WordPress-Child-Theme, Funnel-/CRM-Logik, Agentenregeln, Automationsvertraege und dauerhafte Systemdoku.
+Production-Codebase von [hasimuener.de](https://hasimuener.de). WordPress-Child-Theme,
+Funnel- und Tracking-Logik, Schema-Implementierung, REST-Endpunkte und Automation-Verträge.
 
-## Schnellstart
+**Warum öffentlich?**
+Transparenz statt Blackbox. Wer mit mir arbeitet — oder über das White-Label-Modell
+mit mir kollaboriert — kann jeden Commit, jedes Template, jede Tracking-Regel verifizieren.
+Code-Qualität ist nicht ein Versprechen, sondern überprüfbar.
 
-Menschen:
+➡️ **Für Agenturen:** [White-Label-Partner-Modell](https://hasimuener.de/whitelabel-retainer/)
+➡️ **Live-Site:** [hasimuener.de](https://hasimuener.de)
+➡️ **Über mich:** [hasimuener.de/uber-mich/](https://hasimuener.de/uber-mich/)
 
-1. `README.md`
-2. `docs/architecture/SYSTEM_MAP.md`
-3. `docs/architecture/LIVE_STATUS.md`
+---
 
-Agenten:
+## Was hier drin steckt
 
-1. `AGENTS.md`
-2. genau ein passendes lokales `CONTEXT.md`
-3. nur die Dateien, die fuer die konkrete Aenderung noetig sind
+| Bereich | Pfad | Inhalt |
+|---|---|---|
+| WordPress-Child-Theme | `blocksy-child/` | PHP-Templates, CSS, JS, REST-Endpunkte, Schema-Logik |
+| Architektur-Doku | `docs/architecture/` | Live-Status, System-Map, Entscheidungs-Logs |
+| Agenten-Workflows | `agents/skills/` | Wiederholbare Automatisierungs-Skills (Claude Code) |
+| n8n-Workflows | `automations/n8n/` | Versionierte Flow-Exports + Doku + Flow-Maps |
+| Inhalt | `content/blog-drafts/` | Vorbereitete Blog-Drafts (nicht live-autoritativ) |
 
-## Struktur
+## Stack
 
-```text
-.
-├── AGENTS.md
-├── README.md
-├── blocksy-child/          # deploybarer WordPress-Code
-├── docs/                   # dauerhafte Architektur, Entscheidungen, Systeme
-├── agents/skills/          # wiederholbare Agent-Workflows
-├── automations/n8n/        # Workflow-Exports + Doku + Flow-Maps, wenn aktiv
-├── content/blog-drafts/    # vorbereitete, nicht live autoritative Inhalte
-└── scripts/                # lokale Checks und Build-Helfer
+- **Frontend:** WordPress 6.x · Blocksy Parent Theme · eigenes Child-Theme · Vanilla JS
+- **Server:** PHP 8.x · MySQL · NGINX
+- **Tracking:** GA4 · GTM (Client + Server-Side via Stape/GCP) · Consent Mode V2 · Meta CAPI
+- **CRM:** Bitrix24 · HubSpot · Pipedrive (via n8n / Make)
+- **Deploy:** GitHub Actions · SSH-Rsync (`.github/workflows/deploy.yml`)
+- **Doku:** Markdown · ADR-style Entscheidungs-Logs · llms.txt
+
+## Engineering-Standards
+
+- Bedarfsgesteuertes Asset-Loading pro Template (siehe `blocksy-child/inc/enqueue.php`)
+- Zentrale Schema-Logik (`blocksy-child/inc/seo-meta.php`, `blocksy-child/inc/org-schema.php`)
+- WordPress-Escaping-Discipline (`esc_html`, `esc_attr`, `esc_url`)
+- Kein Page-Builder, keine bloat-anfälligen Plugin-Stacks
+- Jeder Tracking-CTA hat `data-track-action` / `data-track-category` / `data-track-section`
+- Conditional Loading nach Template/Seitentyp statt globalem CSS-/JS-Dump
+
+## Funnel-Architektur (Public)
+
+```
+Solar-/SHK-Audience              Agentur-Audience
+        │                                │
+        ▼                                ▼
+/solar-waermepumpen-leadgenerierung/   /whitelabel-retainer/
+        │                                │
+        ▼                                ▼
+   Marktcheck (60 Sek)              White-Label-Gespräch
+        │                                │
+        ▼                                ▼
+   System-Analyse                   Testprojekt (1–2 Wo)
+        │                                │
+        ▼                                ▼
+   Umsetzung                        Monats-Retainer
 ```
 
-## Ownership
+## Für Mitarbeit / Code-Review
 
-- Repo: Templates, PHP-Module, CSS, JS, Schema, REST-Endpunkte, Helper, Registries, technische Contracts.
-- WordPress-Editor: grosse Teile von Live-Copy, Medien und redaktionellen Inhalten.
-- Externe Systeme: GTM, sGTM, GA4, Consent, Brevo, Cal.com, n8n Cloud und WordPress-Admin-Konfiguration.
+Auf Sicht und für Bewertung öffentlich. Für aktive Mitarbeit / Forks bitte vorher per
+[Kontakt](https://hasimuener.de/kontakt/) abstimmen.
 
-## Aktuelle Leitplanken
+Internes Setup, Conventions und Agent-Regeln stehen in [`AGENTS.md`](./AGENTS.md) und
+in den lokalen `CONTEXT.md`-Dateien je Verzeichnis.
 
-- Primaerer kalter Solar-/SHK-Einstieg: `/solar-waermepumpen-leadgenerierung/#marktcheck`
-- Analyse-/Anfrage-Canon: `blocksy-child/inc/canon/`
-- Live-Status: `docs/architecture/LIVE_STATUS.md`
-- Systemgrenzen: `docs/architecture/SYSTEM_MAP.md`
-- Deploy-Code bleibt unter `blocksy-child/`; diesen Root nicht umbenennen oder verschieben.
+## Lizenz
 
-## Doku-Regel
-
-Kein neues Root-Markdown fuer Plaene, Session-Notizen oder Zwischenstaende. Kurzlebiges gehoert nach `.ai/memory/`; wiederholbare Ablaeufe werden Skills unter `agents/skills/`.
-
-## CLI
-
-```bash
-git status --short
-rg --files
-rg -n "pattern" path/
-php -l blocksy-child/path/to/file.php
-find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l
-sh scripts/check-german-copy.sh
-git diff --stat
-```
+Siehe [`LICENSE`](./LICENSE) — Source-Available, alle Rechte vorbehalten. Code ist
+einsehbar, aber nicht zur freien Wiederverwendung lizenziert.
