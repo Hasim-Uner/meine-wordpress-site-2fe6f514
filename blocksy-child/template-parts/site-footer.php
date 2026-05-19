@@ -37,9 +37,19 @@ $footer_class        = $hide_primary_cta ? 'ft ft--no-primary-cta ft--mobile-cta
 $audit_cta_label     = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck starten';
 $audit_cta_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : '60 Sek. · 6 Fragen · Antwort in 24 h';
 $audit_footer_note   = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_get_audit_footer_note() : 'Marktcheck: persönliche Ersteinschätzung, schriftliche Rückmeldung in 24 Stunden, kein Pflicht-Call.';
-$footer_trust_items  = [
-	'Keine Cookies bei öffentlichen Seitenaufrufen.',
-];
+
+$is_whitelabel_context = is_page_template( 'page-whitelabel-retainer.php' )
+	|| is_page( 'whitelabel-retainer' )
+	|| is_page( 'whitelabel-retainer-proof' )
+	|| is_page( 'whitelabel' );
+
+if ( $is_whitelabel_context ) {
+	$brand_tagline   = 'White-Label-Partner für Agenturen — SEO, WordPress, Tracking und Conversion. Unsichtbar im Hintergrund.';
+	$copyright_line  = 'Haşim Üner - White-Label-Partner für Agenturen';
+} else {
+	$brand_tagline   = 'Eigene Anfrage-Systeme für Solar-, Wärmepumpen- und Speicher-Anbieter, die Portal-Abhängigkeit messbar senken wollen.';
+	$copyright_line  = 'Haşim Üner - Anfrage-Systeme für Solar & Wärmepumpe';
+}
 ?>
 
 <?php if ( function_exists( 'nexus_is_audit_linkedin_page' ) && nexus_is_audit_linkedin_page() ) : ?>
@@ -90,7 +100,7 @@ $footer_trust_items  = [
 	<div class="ft__top">
 		<div class="ft__brand">
 			<a class="ft__logo site-logo site-logo--accent" href="<?php echo esc_url( $home_url ); ?>" aria-label="Startseite - HAŞIM ÜNER">HAŞIM ÜNER</a>
-			<p class="ft__tag">Eigene Anfrage-Systeme für Solar-, Wärmepumpen- und Speicher-Anbieter, die Portal-Abhängigkeit messbar senken wollen.</p>
+			<p class="ft__tag"><?php echo esc_html( $brand_tagline ); ?></p>
 			<?php if ( ! $hide_primary_cta ) : ?>
 			<div class="ft__cta-group">
 				<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_footer_analysis" data-track-category="lead_gen" data-track-section="footer" data-track-funnel-stage="footer_primary"><?php echo esc_html( $audit_cta_label ); ?></a>
@@ -102,12 +112,6 @@ $footer_trust_items  = [
 				<p class="ft__cta-note ft__cta-note--mobile-only"><?php echo esc_html( $audit_cta_microcopy ); ?></p>
 			</div>
 			<?php endif; ?>
-			<ul class="ft__trust-list" aria-label="Vertrauenshinweise">
-				<?php foreach ( $footer_trust_items as $footer_trust_item ) : ?>
-					<li><?php echo esc_html( $footer_trust_item ); ?></li>
-				<?php endforeach; ?>
-			</ul>
-			<p class="ft__privacy-link"><a href="<?php echo esc_url( $privacy_url ); ?>" rel="nofollow">Datenschutz ansehen</a></p>
 		</div>
 
 		<nav class="ft__cols" aria-label="Footer-Navigation">
@@ -146,7 +150,7 @@ $footer_trust_items  = [
 	</div>
 
 	<div class="ft__bottom">
-		<p>&copy; <time class="ft__year" datetime="<?php echo esc_attr( $current_year ); ?>"><?php echo esc_html( $current_year ); ?></time> Haşim Üner - Anfrage-Systeme für Solar &amp; Wärmepumpe</p>
+		<p>&copy; <time class="ft__year" datetime="<?php echo esc_attr( $current_year ); ?>"><?php echo esc_html( $current_year ); ?></time> <?php echo esc_html( $copyright_line ); ?></p>
 		<div class="ft__social" aria-label="Profile">
 			<a href="https://www.linkedin.com/in/hasim-%C3%BCner/" aria-label="LinkedIn-Profil" rel="me noopener noreferrer" target="_blank">
 				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
