@@ -623,7 +623,7 @@ function nexus_get_glossary_term_content_html( $term ) {
 	<section class="wgos-section wgos-section--gray">
 		<div class="wgos-container">
 			<div class="wgos-section-head">
-				<span class="wgos-principle-kicker">Im WGOS-Kontext</span>
+				<span class="wgos-principle-kicker">Im Anfrage-System-Kontext</span>
 				<h2 class="wgos-h2">Der Begriff ist nur dann sinnvoll, wenn er auf die richtige Primary URL zurückführt.</h2>
 			</div>
 
@@ -684,7 +684,7 @@ function nexus_get_glossary_term_content_html( $term ) {
 			<div class="wgos-final-cta__inner">
 				<span class="wgos-principle-kicker">Nächster Schritt</span>
 				<h2 class="wgos-h2">Begriff verstanden. Jetzt die richtige Priorität für Ihre Website setzen.</h2>
-				<p class="wgos-prose">Wenn klar ist, was der Begriff bedeutet, bleibt die eigentliche Frage offen: Ist das Thema für Ihre Website gerade wirklich der Engpass oder nur ein Symptom? Die System-Diagnose bringt die Reihenfolge zurück.</p>
+				<p class="wgos-prose">Wenn klar ist, was der Begriff bedeutet, bleibt die eigentliche Frage offen: Ist das Thema für Ihre Website gerade wirklich der Engpass oder nur ein Symptom? Der Marktcheck bringt die Reihenfolge zurück.</p>
 				<div class="wgos-hero__actions">
 					<a href="<?php echo esc_url( $hub_url ); ?>" class="wgos-btn wgos-btn--outline">Zurück zum Glossar</a>
 					<a href="<?php echo esc_url( $audit_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_glossary_term_audit" data-track-category="lead_gen"><?php echo esc_html( nexus_get_audit_cta_label() ); ?></a>

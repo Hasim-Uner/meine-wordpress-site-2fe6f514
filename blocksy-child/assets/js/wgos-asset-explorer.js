@@ -214,7 +214,7 @@
 			'div',
 			{
 				className: 'wgos-asset-explorer',
-				'aria-label': 'WGOS Asset Explorer',
+				'aria-label': 'Systembaustein Explorer',
 			},
 			h(
 				'div',

@@ -135,7 +135,7 @@ function nexus_get_wgos_asset_hover_text( $asset ) {
 }
 
 /**
- * Render a hub table label that links to the WGOS asset when available.
+ * Render a table label that links to the system building block when available.
  *
  * Falls back to plain text until a matching published asset exists.
  *
@@ -147,12 +147,12 @@ function nexus_render_wgos_asset_label( $label ) {
 	$asset = nexus_get_wgos_asset( $label );
 	$hint  = $asset instanceof WP_Post ? nexus_get_wgos_asset_hover_text( $asset ) : '';
 	$url   = nexus_get_wgos_asset_anchor_url( $asset instanceof WP_Post ? $asset : $label );
-	$cta   = $asset instanceof WP_Post ? __( 'Asset ansehen', 'blocksy-child' ) : __( 'Zur Asset-Landkarte', 'blocksy-child' );
+	$cta   = $asset instanceof WP_Post ? __( 'Baustein ansehen', 'blocksy-child' ) : __( 'In der Methode einordnen', 'blocksy-child' );
 
 	if ( '' === $hint ) {
 		$hint = $asset instanceof WP_Post
-			? __( 'Öffnet die passende WGOS-Asset-Seite mit Nutzen, Kontext und nächstem sinnvollen Schritt.', 'blocksy-child' )
-			: __( 'Dieses Asset wird im WGOS-Kontext priorisiert und in der Asset-Landkarte sauber eingeordnet.', 'blocksy-child' );
+			? __( 'Öffnet die passende Baustein-Seite mit Nutzen, Kontext und nächstem sinnvollen Schritt.', 'blocksy-child' )
+			: __( 'Dieses Asset wird im Anfrage-System priorisiert und in der Methode sauber eingeordnet.', 'blocksy-child' );
 	}
 
 	return sprintf(

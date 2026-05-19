@@ -68,9 +68,9 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Lokale B2B-Service-Seite für WordPress, Leadgenerierung und strukturierte Weiterentwicklung.',
 				],
 				[
-					'label'       => 'WordPress Growth Operating System',
+					'label'       => 'Anfrage-System-Methode',
 					'url'         => $urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#wgos' ),
-					'description' => 'Angebots- und Systemseite für Audit, Blueprint und Umsetzung.',
+					'description' => 'Methode für Anfrage-Systeme, Priorisierung und kontrollierte Umsetzung.',
 				],
 			],
 		],

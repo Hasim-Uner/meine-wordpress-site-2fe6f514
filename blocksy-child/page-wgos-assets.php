@@ -1,7 +1,7 @@
 <?php
 /**
- * Template Name: WGOS Asset Hub
- * Description: Klickbare WGOS Asset-Landkarte
+ * Template Name: Interne Baustein-Übersicht
+ * Description: Klickbare interne Baustein-Übersicht für dokumentierte Anfrage-Systeme
  *
  * @package Blocksy_Child
  */
@@ -13,7 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 $audit_url       = nexus_get_audit_url();
-$calendar_url    = function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' );
 $payload         = function_exists( 'nexus_get_wgos_asset_explorer_payload' ) ? nexus_get_wgos_asset_explorer_payload() : [
 	'wgosAssetPhases'  => [],
 	'wgosAssetModules' => [],
@@ -25,9 +24,9 @@ $asset_count     = isset( $summary['totalAssets'] ) ? (int) $summary['totalAsset
 $phase_count     = isset( $payload['wgosAssetPhases'] ) && is_array( $payload['wgosAssetPhases'] ) ? count( $payload['wgosAssetPhases'] ) : 0;
 $module_count    = isset( $payload['wgosAssetModules'] ) && is_array( $payload['wgosAssetModules'] ) ? count( $payload['wgosAssetModules'] ) : 0;
 $hub_sections    = function_exists( 'nexus_get_wgos_asset_hub_sections' ) ? nexus_get_wgos_asset_hub_sections() : [];
-$audit_cta_label = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'System-Diagnose anfragen';
+$audit_cta_label = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck starten';
 $hero_subtitle   = sprintf(
-	'%1$d Assets in %2$d Modulen, nach Phasen geordnet. Jedes Asset direkt klickbar.',
+	'%1$d Bausteine in %2$d Modulen, nach Phasen geordnet. Jeder Baustein direkt klickbar.',
 	$asset_count,
 	$module_count
 );
@@ -38,8 +37,8 @@ $hero_subtitle   = sprintf(
 		<section class="wgos-hero">
 			<div class="wgos-container">
 				<div class="wgos-hero-copy wgos-hero-copy--compact">
-					<span class="wgos-kicker">WGOS Systemlandkarte</span>
-					<h1 class="wgos-hero__title">Alle WGOS-Bausteine auf einen Blick.</h1>
+					<span class="wgos-kicker">Baustein-Übersicht</span>
+					<h1 class="wgos-hero__title">Alle Systembausteine auf einen Blick.</h1>
 					<p class="wgos-hero__subtitle"><?php echo esc_html( $hero_subtitle ); ?></p>
 
 					<div class="wgos-trust-strip wgos-trust-strip--hero" aria-label="Strukturelle Kennzahlen">
@@ -53,7 +52,7 @@ $hero_subtitle   = sprintf(
 						</div>
 						<div class="wgos-trust-item">
 							<span class="wgos-trust-value"><?php echo esc_html( (string) $asset_count ); ?></span>
-							<span class="wgos-trust-label">versionierte Assets</span>
+							<span class="wgos-trust-label">versionierte Bausteine</span>
 						</div>
 					</div>
 
@@ -68,24 +67,24 @@ $hero_subtitle   = sprintf(
 			<div class="wgos-container">
 				<div class="wgos-section-head">
 					<span class="wgos-principle-kicker">Explorer</span>
-					<h2 class="wgos-h2">Asset Explorer</h2>
+					<h2 class="wgos-h2">Baustein-Explorer</h2>
 				</div>
 
 				<div class="wgos-map-guide" aria-label="Explorer Nutzung">
 					<span>1. Phase lesen</span>
 					<span>2. Modul vergleichen</span>
-					<span>3. Asset vertiefen</span>
+					<span>3. Baustein vertiefen</span>
 				</div>
 
 				<div id="wgos-asset-explorer-root" class="wgos-asset-explorer-root"></div>
 				<noscript>
-					<p class="wgos-section-intro">Der Explorer benötigt JavaScript. <a href="#library">Zur statischen Asset-Übersicht springen</a>.</p>
+					<p class="wgos-section-intro">Der Explorer benötigt JavaScript. <a href="#library">Zur statischen Baustein-Übersicht springen</a>.</p>
 				</noscript>
 
 				<div id="library" class="wgos-hub-library">
 					<div class="wgos-section-head">
 						<span class="wgos-principle-kicker">Library</span>
-						<h2 class="wgos-h2">Alle Assets nach Modulen</h2>
+						<h2 class="wgos-h2">Alle Bausteine nach Modulen</h2>
 					</div>
 
 					<div class="wgos-hub-sections">
@@ -103,7 +102,7 @@ $hero_subtitle   = sprintf(
 									</div>
 									<div class="wgos-hub-section-card__side">
 										<p><?php echo esc_html( (string) $section['summary'] ); ?></p>
-										<span class="wgos-hub-section-card__count"><?php echo esc_html( (string) count( (array) $section['items'] ) ); ?> Assets</span>
+										<span class="wgos-hub-section-card__count"><?php echo esc_html( (string) count( (array) $section['items'] ) ); ?> Bausteine</span>
 									</div>
 								</summary>
 
@@ -113,7 +112,7 @@ $hero_subtitle   = sprintf(
 										$is_live         = 'publish' === (string) $item['status'];
 										$status_label    = $is_live ? 'Live' : 'Im Aufbau';
 										$asset_link      = $is_live ? (string) $item['url'] : '#audit';
-										$asset_cta_label = $is_live ? 'Asset im Detail' : 'Im Audit einordnen';
+										$asset_cta_label = $is_live ? 'Baustein im Detail' : 'Im Marktcheck einordnen';
 										?>
 										<article id="<?php echo esc_attr( (string) $item['id'] ); ?>" class="wgos-hub-asset-card">
 											<div class="wgos-hub-asset-card__top">
@@ -162,13 +161,12 @@ $hero_subtitle   = sprintf(
 		<section id="audit" class="wgos-section wgos-section--gray wgos-final-cta">
 			<div class="wgos-container">
 				<div class="wgos-final-cta__inner">
-					<span class="wgos-principle-kicker">Audit</span>
-					<h2 class="wgos-h2">Welches Asset zuerst?</h2>
-					<p class="wgos-prose">Die System-Diagnose klärt die Reihenfolge für Ihre Situation.</p>
+					<span class="wgos-principle-kicker">Marktcheck</span>
+					<h2 class="wgos-h2">Welcher Baustein zuerst?</h2>
+					<p class="wgos-prose">Der Marktcheck klärt die Reihenfolge für Ihre Situation.</p>
 
 					<div class="wgos-hero__actions">
 						<a href="<?php echo esc_url( $audit_url ); ?>" class="wgos-btn wgos-btn--primary" data-track="cta_click_audit" data-track-action="cta_click_audit" data-track-category="lead_gen" data-track-section="asset_hub_cta"><?php echo esc_html( $audit_cta_label ); ?></a>
-						<a href="<?php echo esc_url( $calendar_url ); ?>" class="wgos-btn wgos-btn--outline" data-track="cta_click_calendar" data-track-action="cta_click_calendar" data-track-category="lead_gen" data-track-section="asset_hub_cta">Strategiegespräch vereinbaren</a>
 					</div>
 				</div>
 			</div>

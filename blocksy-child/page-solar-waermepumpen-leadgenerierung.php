@@ -4,7 +4,8 @@
  * Description: Premium · cinematic · minimalistisch. Hybrid-Theme (warm-cream + Copper).
  *              Primärer Lead-Pfad: 60-Sek-Marktcheck im Hero (REST → CRM).
  *              Alte System-Diagnose-Links führen auf diesen Marktcheck.
- *              Zielgruppe: Solar-/Wärmepumpen-Anbieter im DACH-Mittelstand (10–25 MA).
+ *              Zielgruppe: Solar-/Wärmepumpen-Betriebe mit hohen Projektwerten,
+ *              klarem Zielgebiet und eigener Vertriebsverantwortung.
  *
  * @package Blocksy_Child
  */
@@ -42,7 +43,7 @@ $hero_metrics = [
 ];
 
 $trust_items = [
-	'B2B · DACH · Mittelstand',
+	'B2B · DACH · eigener Vertrieb',
 	'Server in Frankfurt · DSGVO',
 	'Server-Side-Tracking · CAPI',
 	'Hardcoded WordPress · kein Page-Builder',
@@ -145,7 +146,7 @@ $compare_good = [
 ];
 
 // ── System-Diagramm: 4 Layer · was Kunden konkret bekommen ─────────────────────
-// `url` (optional) verlinkt den Layer-Header auf den passenden WGOS-Cluster.
+// `url` (optional) verlinkt den Layer-Header auf passende technische Trust-Seiten.
 $system_layers = [
 	[
 		'n'      => '01',
@@ -226,17 +227,19 @@ $capex_default = 24;
 
 // ── Fit-Check (passt / passt nicht) ────────────────────────────────────────────
 $fit_yes = [
-	[ 't' => 'Solar oder Wärmepumpe im DACH-Mittelstand', 's' => 'Mit eigenem Vertrieb, nicht reine Vermittlung.' ],
-	[ 't' => 'Klares Zielgebiet',                          's' => 'Region oder Bundesland definiert — kein „bundesweit, alles".' ],
-	[ 't' => 'Hohe Projektwerte',                          's' => 'B2C ab ~ 15 k €, B2B ab ~ 50 k € pro Projekt.' ],
-	[ 't' => 'Geschäftsführung entscheidet',               's' => 'Über Aufbau, Marke und Positionierung — kurze Wege.' ],
-	[ 't' => '24-Monate-Horizont',                         's' => 'Bereit, ein Asset aufzubauen statt nur Anfragen einzukaufen.' ],
+	[ 't' => 'Solar, Wärmepumpe oder Speicher',             's' => 'Für Betriebe, bei denen Projektwert, Marge und Vertriebsfähigkeit stimmen.' ],
+	[ 't' => 'Eigener Vertrieb',                            's' => 'Ihr Vertriebsteam verkauft selbst — oder die Geschäftsführung übernimmt den Abschluss.' ],
+	[ 't' => 'Klares Zielgebiet',                           's' => 'Region oder Bundesland definiert — kein „bundesweit, alles".' ],
+	[ 't' => 'Hohe Projektwerte',                           's' => 'B2C ab ca. 15 k €, B2B ab ca. 50 k € pro Projekt.' ],
+	[ 't' => '12–24-Monate-Horizont',                       's' => 'Bereit, ein eigenes Anfrage-Asset aufzubauen statt nur Anfragen einzukaufen.' ],
+	[ 't' => 'Marke und Sichtbarkeit sind gewollt',          's' => 'Der eigene Anfrageweg funktioniert nur, wenn Ihr Betrieb sichtbar und unterscheidbar werden soll.' ],
 ];
 $fit_no = [
 	[ 't' => 'Reines Vermittlungsgeschäft',                's' => 'Wer Leads weiterverkauft, braucht kein eigenes System.' ],
 	[ 't' => '„Nächste Woche brauchen wir Leads."',        's' => 'Tragfähige Pipelines wachsen über Monate, nicht Tage.' ],
-	[ 't' => 'Kein Vertrieb am Telefon',                   's' => 'Anfragen sterben, wenn niemand zurückruft.' ],
+	[ 't' => 'Kein funktionierender Vertriebsprozess',     's' => 'Anfragen sterben, wenn niemand konsequent qualifiziert, zurückruft und nachfasst.' ],
 	[ 't' => 'Keine Marke gewollt',                        's' => 'Eigener Anfrageweg lebt davon, dass Sie sichtbar werden.' ],
+	[ 't' => 'Kein sauberer Daten- und Anfrageweg gewollt', 's' => 'Ohne Tracking, Vorqualifizierung und klare Zuständigkeit bleibt auch ein eigenes System blind.' ],
 ];
 
 // ── Vertiefung: SEO-Sub-Pages-Cluster (Topical Authority) ──────
@@ -377,7 +380,7 @@ get_header();
 
 			<div class="sol-wrap sol-hero-inner">
 				<div class="sol-hero-left">
-					<div class="sol-eyebrow">Für Solar- &amp; Wärmepumpen-Anbieter · 10–25 MA · DACH</div>
+					<div class="sol-eyebrow">Für Solar- &amp; Wärmepumpen-Anbieter mit eigenem Vertrieb · DACH</div>
 					<h1 class="sol-display sol-hero-h1">
 						Die Alternative<br />zu <em>Portal-Leads:</em><br />Ihr eigenes<br /><em>Anfrage-System.</em>
 					</h1>

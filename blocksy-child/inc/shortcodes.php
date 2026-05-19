@@ -639,7 +639,7 @@ function hu_wgos_block_shortcode() {
 				</div>
 			</div>
 
-			<div id="homepage-mindmap-teaser-root" class="homepage-mindmap-section" aria-label="WGOS Mindmap Teaser"></div>
+			<div id="homepage-mindmap-teaser-root" class="homepage-mindmap-section" aria-label="Anfrage-System Teaser"></div>
 
 			<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:2.5rem;">
 				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_wgos_audit" data-track-category="lead_gen">Marktcheck starten</a>

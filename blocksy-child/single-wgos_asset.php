@@ -1,6 +1,6 @@
 <?php
 /**
- * Single template for WGOS assets.
+ * Single template for system building blocks.
  *
  * @package Blocksy_Child
  */
@@ -33,14 +33,14 @@ $hub_url   = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_
 			<section class="wgos-hero">
 				<div class="wgos-container wgos-hero__inner">
 					<nav class="wgos-section-intro wgos-breadcrumb" aria-label="Breadcrumb">
-						<a class="wgos-link--arrow" href="<?php echo esc_url( $wgos_url ); ?>">WGOS Hub</a>
+						<a class="wgos-link--arrow" href="<?php echo esc_url( $wgos_url ); ?>">Anfrage-System</a>
 						<span aria-hidden="true"> / </span>
-						<a class="wgos-link--arrow" href="<?php echo esc_url( $hub_focus_url ); ?>">Asset-Landkarte</a>
+						<a class="wgos-link--arrow" href="<?php echo esc_url( $hub_focus_url ); ?>">Baustein-Übersicht</a>
 						<span aria-hidden="true"> / </span>
 						<span aria-current="page"><?php the_title(); ?></span>
 					</nav>
 
-					<span class="wgos-kicker">WGOS Asset</span>
+					<span class="wgos-kicker">Systembaustein</span>
 
 					<h1 class="wgos-hero__title"><?php the_title(); ?></h1>
 
@@ -49,11 +49,11 @@ $hub_url   = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_
 					<?php endif; ?>
 
 					<div class="wgos-hero__actions">
-						<a href="<?php echo esc_url( $hub_focus_url ); ?>" class="wgos-btn wgos-btn--outline">Zur Asset-Landkarte</a>
+						<a href="<?php echo esc_url( $wgos_url ); ?>" class="wgos-btn wgos-btn--outline">Methode ansehen</a>
 						<a href="<?php echo esc_url( $audit_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_wgos_asset_hero_audit" data-track-category="lead_gen"><?php echo esc_html( nexus_get_audit_cta_label() ); ?></a>
 					</div>
 
-					<p class="wgos-hero__microcopy">Dieses Asset ist Teil eines dokumentierten WGOS-Systems. Struktur, interne Verlinkung und Theme-Logik sind versioniert nachvollziehbar.</p>
+					<p class="wgos-hero__microcopy">Dieser Baustein ist Teil eines dokumentierten Anfrage-Systems. Struktur, interne Verlinkung und Theme-Logik sind versioniert nachvollziehbar.</p>
 				</div>
 			</section>
 

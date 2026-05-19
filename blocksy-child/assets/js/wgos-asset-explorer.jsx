@@ -157,7 +157,7 @@ function WGOSAssetExplorer({ links = {} }) {
 	}, [activeAsset]);
 
 	return (
-		<div className="wgos-asset-explorer" aria-label="WGOS Asset Explorer">
+		<div className="wgos-asset-explorer" aria-label="Systembaustein Explorer">
 			<div className="wgos-asset-explorer__legend" aria-hidden="true">
 				{wgosAssetPhases.map((phase) => {
 					const assetCount = wgosAssets.filter((asset) => asset.category === phase.label).length;

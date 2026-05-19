@@ -201,7 +201,7 @@ function hu_output_schema()
                     ],
                     [
                         '@type'       => 'Offer',
-                        'name'        => 'WGOS-Methode',
+                        'name'        => 'Anfrage-System-Methode',
                         'description' => 'Strategie, technisches Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängende Methode.',
                         'url'         => home_url('/wordpress-agentur-hannover/#wgos'),
                     ],
@@ -314,21 +314,21 @@ function hu_output_schema()
 
         'conversion-rate-optimization' => [
             'name'        => 'Conversion Rate Optimierung für WordPress',
-            'description' => 'WGOS-Cluster für Conversion Rate Optimierung auf WordPress: Angebotsseiten, Proof, CTA-Führung und Formulare für mehr qualifizierte B2B-Anfragen.',
+            'description' => 'Conversion Rate Optimierung auf WordPress: Angebotsseiten, Proof, CTA-Führung und Formulare für mehr qualifizierte B2B-Anfragen.',
             'serviceType' => 'Conversion Rate Optimierung für WordPress',
             'serviceOutput' => 'Klarere Angebotsseiten, bessere Anfragequalität und belastbarere Leadpfade auf B2B-WordPress-Websites'
         ],
 
         'ga4-tracking-setup' => [
             'name'        => 'GA4 Tracking Setup für B2B-WordPress-Websites',
-            'description' => 'WGOS-Cluster für GA4 Tracking Setup: Event-Logik, GTM, Consent Mode und Server Side Tracking für belastbare Leadsignale in WordPress.',
+            'description' => 'GA4 Tracking Setup: Event-Logik, GTM, Consent Mode und Server Side Tracking für belastbare Leadsignale in WordPress.',
             'serviceType' => 'GA4 Tracking Setup & Server Side Tracking',
             'serviceOutput' => 'Belastbare Lead- und Nachfrage-Signale mit GA4, GTM, Consent und serverseitiger Messung für B2B-Websites'
         ],
 
         'performance-marketing' => [
             'name'        => 'Performance Marketing für B2B-WordPress-Websites',
-            'description' => 'WGOS-Aktivierungslayer für bezahlte Nachfrage: erst Tracking, Technik und Zielseite, dann skalierbare Kampagnen.',
+            'description' => 'Aktivierungslayer für bezahlte Nachfrage: erst Tracking, Technik und Zielseite, dann skalierbare Kampagnen.',
             'serviceType' => 'Performance Marketing',
             'serviceOutput' => 'Kampagnenfähige Zielseiten und belastbare Tracking-Signale für effiziente Paid-Aktivierung'
         ],
@@ -439,7 +439,7 @@ function hu_output_schema()
                     'description'   => $description,
                     'url'           => get_permalink($post_id),
                     'provider'      => ['@id' => home_url('/#organization')],
-                    'serviceType'   => 'WGOS Asset',
+                    'serviceType'   => 'Systembaustein',
                     'serviceOutput' => (string) ($asset['result'] ?? ''),
                     'areaServed'    => ['@type' => 'AdministrativeArea', 'name' => 'DACH'],
                     // isPartOf-Referenz auf WGOS-Hub entfernt (noindex);

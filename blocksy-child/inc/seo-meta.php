@@ -722,7 +722,7 @@ function hu_document_title_overrides( $parts ) {
 		} elseif ( ! empty( $defaults['title'] ) ) {
 			$parts['title'] = (string) $defaults['title'];
 		} elseif ( in_array( $slug, [ 'wgos', 'wordpress-growth-operating-system' ], true ) ) {
-			$parts['title'] = 'WGOS - WordPress Wachstumssystem für messbare Nachfrage';
+			$parts['title'] = 'WGOS Client Dashboard | Haşim Üner';
 		}
 	}
 
@@ -1043,11 +1043,11 @@ function hu_get_seo_meta() {
 
 		if ( in_array( $slug, [ 'wgos', 'wordpress-growth-operating-system' ], true ) ) {
 			if ( empty( $meta['og_title'] ) ) {
-				$meta['og_title'] = 'WGOS - WordPress Wachstumssystem für messbare Nachfrage';
+				$meta['og_title'] = 'WGOS Client Dashboard | Haşim Üner';
 			}
 
 			if ( empty( $meta['description'] ) ) {
-				$meta['description'] = 'Das WordPress Growth Operating System verbindet Strategie, SEO, Tracking, Performance und Conversion zu einem strukturierten Nachfrage-System für Unternehmen.';
+				$meta['description'] = 'Internes Client- und Delivery-Dashboard für berechtigte WGOS-Projekte.';
 			}
 		}
 

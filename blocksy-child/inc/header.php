@@ -284,7 +284,8 @@ function nexus_energy_nav_cta_label( $items, $args ) {
 	foreach ( $items as $item ) {
 		$legacy_analysis_label = 'Analyse ' . 'starten';
 		$legacy_diagnose_label = 'System-Diagnose ' . 'starten';
-		if ( in_array( $item->title, [ $legacy_analysis_label, $legacy_diagnose_label, 'System-Diagnose', 'Marktcheck', 'Marktcheck · 60 Sek.', 'Audit starten', 'System-Diagnose anfragen', 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
+		$legacy_diagnose_request_label = 'System-Diagnose ' . 'anfragen';
+		if ( in_array( $item->title, [ $legacy_analysis_label, $legacy_diagnose_label, 'System-Diagnose', 'Marktcheck', 'Marktcheck · 60 Sek.', 'Audit starten', $legacy_diagnose_request_label, 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
 			$item->title = $request_cta;
 			$item->url   = $request_url;
 			break;

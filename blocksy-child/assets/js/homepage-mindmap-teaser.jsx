@@ -33,7 +33,7 @@ export const phases = [
 export default function HomepageMindmapTeaser() {
   const [mounted, setMounted] = useState(false);
   const [activeId, setActiveId] = useState(null);
-  const wgosUrl =
+  const systemUrl =
     typeof window !== "undefined" &&
     window.NexusHomeMindmapConfig &&
     window.NexusHomeMindmapConfig.wgosUrl
@@ -49,13 +49,13 @@ export default function HomepageMindmapTeaser() {
     <section className="hmt-root" aria-labelledby="hmt-title">
       <div className="hmt-shell">
         <p className="hmt-kicker">System-Vorschau</p>
-        <h3 id="hmt-title">WGOS in 3 Phasen</h3>
+        <h3 id="hmt-title">Anfrage-System in 3 Phasen</h3>
         <p className="hmt-subtitle">
           Fundament aufbauen, Wachstum stabilisieren, Skalierung kontrolliert
           hochfahren.
         </p>
 
-        <div className="hmt-map" aria-label="WGOS Teaser Mindmap">
+        <div className="hmt-map" aria-label="Anfrage-System Teaser">
           {phases.map((phase, index) => (
             <button
               key={phase.id}
@@ -98,8 +98,8 @@ export default function HomepageMindmapTeaser() {
           ))}
         </div>
 
-        <a className="hmt-cta" href={wgosUrl}>
-          Das vollständige System →
+        <a className="hmt-cta" href={systemUrl}>
+          Marktcheck starten →
         </a>
       </div>
 

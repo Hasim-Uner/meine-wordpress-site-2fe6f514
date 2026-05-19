@@ -202,7 +202,7 @@ $faq_items = [
 $author_points = [
 	'Ich optimiere keine hübschen Oberflächen, sondern Nachfrage-Systeme mit klarer wirtschaftlicher Funktion.',
 	'WordPress, CRO, Performance und Prozesse greifen bei mir als ein Verbund statt als getrennte Disziplinen.',
-	'Der Einstieg bleibt bewusst diagnosegetrieben: erst die System-Diagnose, dann Prioritäten und erst danach Umsetzung.',
+	'Der Einstieg bleibt bewusst diagnosegetrieben: erst der Marktcheck, dann Prioritäten und erst danach Umsetzung.',
 ];
 
 get_header();
@@ -497,7 +497,7 @@ get_header();
 						<?php echo esc_html( nexus_get_audit_cta_label() ); ?>
 					</a>
 					<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost">
-						WGOS ansehen
+						Anfrage-System ansehen
 					</a>
 				</div>
 			</div>
@@ -539,7 +539,7 @@ get_header();
 				Welche Reibung kostet Sie gerade Marge?
 			</h2>
 			<p style="color:var(--nx-text-muted);max-width:560px;margin:0 auto 2rem;line-height:1.6;">
-				Im System-Diagnose sehen Sie, wo Warenkorb, Conversion oder operative
+				Im Marktcheck sehen Sie, wo Warenkorb, Conversion oder operative
 				Prozesse aktuell Ertrag kosten und welche Reihenfolge für Ihr Setup
 				wirklich Sinn ergibt.
 			</p>
@@ -557,7 +557,7 @@ get_header();
 
 			<div class="cs-internal-links">
 				<a href="<?php echo esc_url( $cases_url ); ?>" class="cs-internal-link">Weitere Ergebnisse</a>
-				<a href="<?php echo esc_url( $wgos_url ); ?>" class="cs-internal-link">WGOS: Das System dahinter</a>
+				<a href="<?php echo esc_url( $wgos_url ); ?>" class="cs-internal-link">Anfrage-System dahinter</a>
 				<a href="<?php echo esc_url( $local_wp_url ); ?>" class="cs-internal-link">WordPress Agentur Hannover</a>
 			</div>
 		</div>

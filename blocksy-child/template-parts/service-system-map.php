@@ -30,7 +30,7 @@
  *         'actions' => [
  *           [
  *             'url'      => home_url( '/kontakt/' ),
- *             'label'    => 'System-Diagnose anfragen',
+ *             'label'    => 'Marktcheck starten',
  *             'class'    => 'nx-btn nx-btn--primary',
  *             'action'   => 'cta_service_system_audit',
  *             'category' => 'lead_gen',

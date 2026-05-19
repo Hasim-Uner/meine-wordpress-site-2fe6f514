@@ -1,6 +1,6 @@
 <?php
 /**
- * Versioned WGOS cluster pages and blog-to-asset bridges.
+ * Versioned service cluster pages and blog-to-asset bridges.
  *
  * @package Blocksy_Child
  */
@@ -26,17 +26,17 @@ function nexus_get_wgos_cluster_page_data() {
 
 	$pages = [
 		'wordpress-seo-hannover' => [
-			'eyebrow'          => 'Sichtbarkeit im WGOS',
+			'eyebrow'          => 'Sichtbarkeit im Anfrage-System',
 			'title'            => 'WordPress SEO Hannover – technisch sauber, messbar, B2B-ready',
 			'lead'             => 'Diese Seite ist der Einstieg für technisches WordPress SEO in Hannover: Crawlability, Seitenstruktur, interne Verlinkung und priorisierte Fixes, wenn Rankings an Technik und Seitentypen scheitern.',
 			'intro'            => [
 				'Viele B2B-Websites investieren in Inhalte, ohne zuerst die technischen Bremsen zu lösen. Dann entstehen Seiten, die zwar vorhanden sind, aber weder stabil ranken noch qualifizierte Anfragen sauber vorbereiten.',
 				'WordPress SEO wird dadurch schnell zur To-do-Liste aus Meta-Titeln, Plugins und Blogideen. Was oft fehlt, ist die Reihenfolge: Erst Crawlability, Struktur, interne Verlinkung und technische Sauberkeit, dann Themenarchitektur und conversion-nahe Seiten.',
 				'Für lokale B2B-Suchen in Hannover wird technisches SEO vor allem auf kaufnahen Seitentypen relevant: Angebotsseiten, Audit-Einstiege und zentrale Proof-Seiten müssen sauber indexierbar, intern angebunden und technisch stabil sein.',
-				'Genau dort setzt diese Seite an. Sie ist bewusst kein Sammelbegriff für eine komplette WordPress-Agenturleistung, WooCommerce-Umsetzung oder den laufenden Betriebs-Stack, sondern der technische SEO-Einstieg innerhalb des WGOS für sichtbare, belastbare Seitentypen.',
+				'Genau dort setzt diese Seite an. Sie ist bewusst kein Sammelbegriff für eine komplette WordPress-Agenturleistung, WooCommerce-Umsetzung oder den laufenden Betriebs-Stack, sondern der technische SEO-Einstieg für sichtbare, belastbare Seitentypen.',
 			],
 			'system'           => [
-				'Im WGOS ist SEO kein Solobaustein. Sichtbarkeit folgt auf ein tragfähiges Fundament aus Performance, Messbarkeit und klarer Angebotslogik.',
+				'SEO ist kein Solobaustein. Sichtbarkeit folgt auf ein tragfähiges Fundament aus Performance, Messbarkeit und klarer Angebotslogik.',
 				'Technisches WordPress SEO ist hier deshalb kein Meta-Feintuning, sondern Arbeit an Crawlability, interner Verlinkung, Seitentypen und der Frage, welche kaufnahen URLs überhaupt Rankings tragen sollen.',
 				'Statt eine einzige SEO-Leistung zu verkaufen, ordnen wir die richtigen Bausteine für Ihre Lage. Das kann mit einem Technical SEO Audit starten, mit einer Keyword-Strategie weitergehen und später in Pillar Pages, Content Hubs oder interne Verlinkung münden.',
 				'Wenn Angebotsseiten, Tracking, Conversion, WooCommerce oder der laufende Betrieb mit betroffen sind, ist die Agentur-Seite der bessere Einstieg als diese fokussierte SEO-Seite.',
@@ -79,21 +79,21 @@ function nexus_get_wgos_cluster_page_data() {
 				],
 			],
 			'meta_title'       => 'WordPress SEO Hannover für B2B | Technisches SEO & Audit',
-			'meta_description' => 'WordPress SEO in Hannover fuer B2B: technisches SEO, Crawlability und interne Verlinkung fuer kaufnahe Seiten. System-Diagnose als 60-Sekunden-Diagnose fuer priorisierte Hebel.',
+			'meta_description' => 'WordPress SEO in Hannover fuer B2B: technisches SEO, Crawlability und interne Verlinkung fuer kaufnahe Seiten. Marktcheck als 60-Sekunden-Einstieg fuer priorisierte Hebel.',
 			'schema_name'      => 'WordPress SEO Hannover – technisch sauber, messbar, B2B-ready',
-			'schema_description' => 'WGOS-Cluster für technisches SEO auf WordPress in Hannover: technische Basis, Seitenstruktur und conversion-nahe Sichtbarkeit für B2B-Websites.',
+			'schema_description' => 'Technisches SEO auf WordPress in Hannover: technische Basis, Seitenstruktur und conversion-nahe Sichtbarkeit für B2B-Websites.',
 		],
 		'wordpress-wartung-hannover' => [
-			'eyebrow'          => 'Betrieb im WGOS',
+			'eyebrow'          => 'Betrieb im Anfrage-System',
 			'title'            => 'WordPress Wartung Hannover',
 			'lead'             => 'WordPress-Wartung ist hier kein isolierter Wartungsvertrag, sondern der laufende Betriebsblock aus Updates, Sicherheit, Stabilität und klaren Rollback-Prozessen.',
 			'intro'            => [
 				'Viele Wartungsangebote versprechen Ruhe, meinen aber nur Plugin-Updates. Für Unternehmen mit relevanter Website reicht das nicht. Entscheidend ist, ob Updates, Sicherheit, Backups, Performance und Wiederherstellung zusammen als belastbarer Betriebszustand funktionieren.',
 				'Genau dort kippen viele WordPress-Setups: zu viele Plugins, unklare Zuständigkeiten, fehlende Rollback-Routinen und eine Website, die unter Last, nach Updates oder bei Vorfällen nicht kontrollierbar bleibt.',
-				'Im WGOS wird Wartung deshalb nicht als Nebenvertrag behandelt, sondern als Fundament. Erst wenn der Betrieb stabil ist, lohnen sich Investitionen in SEO, Conversion und bezahlte Nachfrage wirklich.',
+				'Wartung wird deshalb nicht als Nebenvertrag behandelt, sondern als Fundament. Erst wenn der Betrieb stabil ist, lohnen sich Investitionen in SEO, Conversion und bezahlte Nachfrage wirklich.',
 			],
 			'system'           => [
-				'Das Thema gehört im WGOS in den Betriebs- und Fundament-Layer. Statt nur Tickets abzuarbeiten, ordnen wir WordPress-Wartung in eine klare Reihenfolge aus Härtung, Update-Management, Plugin-Reduktion, Performance-Diagnose und verlässlicher Wiederherstellung ein.',
+				'Das Thema gehört in den Betriebs- und Fundament-Layer. Statt nur Tickets abzuarbeiten, ordnen wir WordPress-Wartung in eine klare Reihenfolge aus Härtung, Update-Management, Plugin-Reduktion, Performance-Diagnose und verlässlicher Wiederherstellung ein.',
 				'So entsteht kein Billig-Wartungsvertrag, sondern ein kontrollierbarer Betriebszustand. Genau das ist für kaufnahe Seiten, Lead-Gen-Setups und B2B-Websites relevanter als reine Checklistenpflege.',
 			],
 			'assets'           => [
@@ -128,16 +128,16 @@ function nexus_get_wgos_cluster_page_data() {
 			'meta_title'       => 'WordPress Wartung Hannover – B2B Wartungsvertrag',
 			'meta_description' => 'Sicherheits-Updates, Backups und Performance für B2B WordPress-Websites. Kein Ticket-System – direkter Ansprechpartner. Wartungspaket anfragen.',
 			'schema_name'      => 'WordPress Wartung Hannover',
-			'schema_description' => 'WGOS-Cluster für WordPress-Wartung in Hannover: Betrieb, Updates, Sicherheit und technische Stabilität für B2B-Websites.',
+			'schema_description' => 'WordPress-Wartung in Hannover: Betrieb, Updates, Sicherheit und technische Stabilität für B2B-Websites.',
 		],
 		'core-web-vitals' => [
-			'eyebrow'          => 'Technisches Fundament im WGOS',
+			'eyebrow'          => 'Technisches Fundament im Anfrage-System',
 			'title'            => 'Core Web Vitals',
 			'lead'             => 'Performance ist kein Kosmetikthema. Langsame WordPress-Seiten kosten Sichtbarkeit, Vertrauen und Anfragen.',
 			'intro'            => [
 				'Wenn wichtige Seiten zu langsam laden, verliert Ihre Website an drei Stellen gleichzeitig: Rankings, Nutzererlebnis und Conversion. Das Problem steckt selten in einem einzelnen Detail.',
 				'Meist ist es ein Mix aus Theme-Last, Plugins, Bildern, Dritt-Skripten, Server-Setup und unklarer Priorisierung. Genau deshalb greifen pauschale Speed-Tipps fast nie sauber.',
-				'Im WGOS wird Performance zuerst diagnostiziert und dann in der richtigen Reihenfolge korrigiert. So wird aus einem technischen Problem wieder eine betriebsrelevante Verbesserung.',
+				'Performance wird zuerst diagnostiziert und dann in der richtigen Reihenfolge korrigiert. So wird aus einem technischen Problem wieder eine betriebsrelevante Verbesserung.',
 			],
 			'system'           => [
 				'Core Web Vitals gehören klar ins technische Fundament. Erst wenn LCP, Stabilität und Reaktionszeit auf kaufnahen Seitentypen stimmen, lohnen sich größere Investitionen in SEO, Content und Landing Pages wirklich.',
@@ -173,13 +173,13 @@ function nexus_get_wgos_cluster_page_data() {
 				'url'    => $seo_url,
 				'text'   => 'Wenn langsame Seitentypen Rankings und organische Einstiege ausbremsen, fuehrt die SEO-Seite direkt in den Sichtbarkeits-Kontext.',
 			],
-			'meta_title'       => 'Core Web Vitals für WordPress | WGOS von Haşim Üner',
-			'meta_description' => 'Core Web Vitals als WGOS-Cluster: Audit, Optimierung, Server-Tuning und Stabilisierung für schnellere WordPress-Seiten.',
+			'meta_title'       => 'Core Web Vitals für WordPress | Haşim Üner',
+			'meta_description' => 'Core Web Vitals für WordPress: Audit, Optimierung, Server-Tuning und Stabilisierung für schnellere WordPress-Seiten.',
 			'schema_name'      => 'Core Web Vitals für WordPress',
-			'schema_description' => 'WGOS-Cluster für Core Web Vitals: Performance-Diagnose, Optimierung und technisches Fundament für B2B-WordPress-Websites.',
+			'schema_description' => 'Core Web Vitals: Performance-Diagnose, Optimierung und technisches Fundament für B2B-WordPress-Websites.',
 		],
 		'ga4-tracking-setup' => [
-			'eyebrow'          => 'GA4 Tracking Setup · Messbarkeit im WGOS',
+			'eyebrow'          => 'GA4 Tracking Setup · Messbarkeit im Anfrage-System',
 			'title'            => 'GA4 Tracking Setup für B2B-WordPress-Websites',
 			'lead'             => 'GA4 Tracking Setup heißt hier: Event-Logik, Consent, GTM und serverseitige Signale so bauen, dass Sie Anfragen, Einstiegsseiten und Leadqualität belastbar sehen.',
 			'intro'            => [
@@ -188,7 +188,7 @@ function nexus_get_wgos_cluster_page_data() {
 				'Sobald SEO, Paid und Vertrieb auf dieselben Daten schauen sollen, wird aus "Analytics installiert" schnell ein strukturelles Problem. Genau deshalb gehören GA4, GTM und Server Side Tracking in einen gemeinsamen Messbarkeits-Cluster.',
 			],
 			'system'           => [
-				'Im WGOS ist GA4 kein Report-Tool, sondern der Einstieg in belastbare Lead- und Nachfrage-Signale. Erst wenn Einstiegsseiten, Formulare und Conversion-Schritte sauber modelliert sind, werden Daten wirklich steuerbar.',
+				'GA4 ist kein Report-Tool, sondern der Einstieg in belastbare Lead- und Nachfrage-Signale. Erst wenn Einstiegsseiten, Formulare und Conversion-Schritte sauber modelliert sind, werden Daten wirklich steuerbar.',
 				'Wir koppeln das Setup deshalb an WordPress, nicht nur an Tags. Tracking Audit, Event-Blueprint, Consent Mode, serverseitige Signalverarbeitung und die Management-Sicht auf dieselben Daten gehören zusammen.',
 				'Wenn zusätzlich Angebotsseiten, Conversion-Führung oder lokale Money Pages bremsen, ist die Agentur-Seite der bessere Einstieg als ein isolierter Tracking-Fix.',
 			],
@@ -244,10 +244,10 @@ function nexus_get_wgos_cluster_page_data() {
 			'meta_title'       => 'GA4 Tracking Setup für B2B | Haşim Üner',
 			'meta_description' => 'GA4 Tracking Setup für B2B-WordPress: Google Analytics 4 einrichten, Consent Mode, GTM-Struktur und Server Side Tracking für belastbare Leadsignale.',
 			'schema_name'      => 'GA4 Tracking Setup für B2B-WordPress-Websites',
-			'schema_description' => 'WGOS-Cluster für GA4 Tracking Setup: Event-Logik, GTM, Consent Mode und Server Side Tracking für B2B-WordPress-Websites.',
+			'schema_description' => 'GA4 Tracking Setup: Event-Logik, GTM, Consent Mode und Server Side Tracking für B2B-WordPress-Websites.',
 		],
 		'conversion-rate-optimization' => [
-			'eyebrow'          => 'Conversion Rate Optimierung für WordPress · WGOS',
+			'eyebrow'          => 'Conversion Rate Optimierung für WordPress',
 			'title'            => 'Conversion Rate Optimierung für WordPress',
 			'lead'             => 'Conversion Rate Optimierung für WordPress bedeutet hier: Angebotsseiten, Proof, CTA-Führung und Formulare so ordnen, dass aus Besuchern qualifizierte B2B-Anfragen werden.',
 			'intro'            => [
@@ -256,7 +256,7 @@ function nexus_get_wgos_cluster_page_data() {
 				'Gerade im B2B entsteht Conversion nicht auf einer isolierten Landing Page. Sie entsteht im Zusammenspiel aus Angebotsseite, Tracking, Einwandabbau und einem klaren Weg in den richtigen Kontaktpunkt.',
 			],
 			'system'           => [
-				'Im WGOS folgt CRO auf Performance und Messbarkeit. Erst wenn Daten stimmen, lassen sich Landing Pages, Angebotsseiten und Formulare nach belastbaren Signalen statt nach Bauchgefühl priorisieren.',
+				'CRO folgt auf Performance und Messbarkeit. Erst wenn Daten stimmen, lassen sich Landing Pages, Angebotsseiten und Formulare nach belastbaren Signalen statt nach Bauchgefühl priorisieren.',
 				'Wir denken Conversion Rate Optimierung für WordPress deshalb als Seitenarchitektur. Message Match, Proof, CTA-Hierarchie, Formulare und interne Anschlüsse müssen als System zusammenarbeiten.',
 				'Wenn organische Einstiege schon da sind, aber zu wenig qualifizierte Leads entstehen, wird CRO zum Bindeglied zwischen SEO, Tracking und dem eigentlichen Anfragepfad.',
 			],
@@ -320,19 +320,19 @@ function nexus_get_wgos_cluster_page_data() {
 			'meta_title'       => 'Conversion Rate Optimierung für WordPress | Haşim Üner',
 			'meta_description' => 'Conversion Rate Optimierung für WordPress und B2B-Leadgenerierung: Landing Pages, Proof, CTA-Führung und Formulare für mehr qualifizierte Anfragen.',
 			'schema_name'      => 'Conversion Rate Optimierung für WordPress',
-			'schema_description' => 'WGOS-Cluster für Conversion Rate Optimierung: Angebotsseiten, Landing Pages, Proof und CTA-Führung für B2B-WordPress-Websites.',
+			'schema_description' => 'Conversion Rate Optimierung: Angebotsseiten, Landing Pages, Proof und CTA-Führung für B2B-WordPress-Websites.',
 		],
 		'performance-marketing' => [
-			'eyebrow'          => 'Paid-Kontext im WGOS',
+			'eyebrow'          => 'Paid-Kontext im Anfrage-System',
 			'title'            => 'Performance Marketing',
 			'lead'             => 'Paid darf Nachfrage verstärken, aber keine strukturellen Fehler verdecken. Ohne Fundament wird Budget nur schneller verbrannt.',
 			'intro'            => [
 				'Viele Teams starten mit Kampagnen, bevor technische Basis, Tracking und Angebotsseite stabil stehen. Dann werden Klicks eingekauft, aber Reibung bleibt unangetastet.',
 				'Das Ergebnis sind teure Leads, unsaubere Attribution und Landing Pages, die den Traffic nicht in qualifizierte Gespräche übersetzen.',
-				'Im WGOS ist Performance Marketing deshalb kein Startpunkt, sondern ein Aktivierungslayer. Erst wenn Seite und Messbarkeit tragen, lohnt sich Reichweite wirklich.',
+				'Performance Marketing ist deshalb kein Startpunkt, sondern ein Aktivierungslayer. Erst wenn Seite und Messbarkeit tragen, lohnt sich Reichweite wirklich.',
 			],
 			'system'           => [
-				'Performance Marketing sitzt im WGOS nie isoliert vor Technik und Messbarkeit. Die bezahlte Verstärkung kommt erst dann nach vorne, wenn die wichtigen Signale und Seitentypen bereits stabil laufen.',
+				'Performance Marketing sitzt nie isoliert vor Technik und Messbarkeit. Die bezahlte Verstärkung kommt erst dann nach vorne, wenn die wichtigen Signale und Seitentypen bereits stabil laufen.',
 				'Wir betrachten deshalb immer die Kombination aus Diagnose, Tracking, Angebot und Landing Page. Paid wird so zum Hebel für ein System, nicht zum Ersatz dafür.',
 			],
 			'assets'           => [
@@ -365,10 +365,10 @@ function nexus_get_wgos_cluster_page_data() {
 				'url'    => $seo_url,
 				'text'   => 'Wenn Paid auf technisch schwache oder schlecht verlinkte Seitentypen trifft, fuehrt die SEO-Seite direkt in den relevanten Fundament-Cluster.',
 			],
-			'meta_title'       => 'Performance Marketing im WGOS | Haşim Üner',
-			'meta_description' => 'Performance Marketing als WGOS-Aktivierungslayer: erst Tracking, Technik und Landing Page, dann Reichweite mit sauberer Priorisierung.',
+			'meta_title'       => 'Performance Marketing für B2B | Haşim Üner',
+			'meta_description' => 'Performance Marketing als Aktivierungslayer: erst Tracking, Technik und Landing Page, dann Reichweite mit sauberer Priorisierung.',
 			'schema_name'      => 'Performance Marketing für B2B-WordPress-Websites',
-			'schema_description' => 'WGOS-Cluster für Performance Marketing: Paid-Aktivierung erst nach technischem Fundament, Tracking und conversion-starken Zielseiten.',
+			'schema_description' => 'Performance Marketing: Paid-Aktivierung erst nach technischem Fundament, Tracking und conversion-starken Zielseiten.',
 		],
 	];
 
@@ -488,7 +488,7 @@ function nexus_get_wgos_cluster_page_asset_cards( $page ) {
 }
 
 /**
- * Return the shared public proof metrics for WGOS cluster pages.
+ * Return the shared public proof metrics for service cluster pages.
  *
  * @return array<int, array<string, string>>
  */
@@ -500,7 +500,7 @@ function nexus_get_wgos_cluster_page_proof_metrics() {
 		],
 		[
 			'value' => '60 Sek.',
-			'label' => 'Diagnose-Einstieg mit priorisierten Hebeln in der System-Diagnose',
+			'label' => 'Marktcheck-Einstieg mit priorisierten Hebeln',
 		],
 		[
 			'value' => '3 Proof-Routen',
@@ -522,7 +522,7 @@ function nexus_get_wgos_cluster_page_method_steps() {
 		],
 		[
 			'title' => '2. Bausteine nach Hebel ordnen',
-			'text'  => 'Im WGOS bekommt nicht jede Idee Priorität. Zuerst zählt, was Sichtbarkeit, Trust und Conversion auf den kaufnahen Seiten wirklich entsperrt.',
+			'text'  => 'Nicht jede Idee bekommt Priorität. Zuerst zählt, was Sichtbarkeit, Trust und Conversion auf den kaufnahen Seiten wirklich entsperrt.',
 		],
 		[
 			'title' => '3. Wirkung an echten Signalen messen',
@@ -532,7 +532,7 @@ function nexus_get_wgos_cluster_page_method_steps() {
 }
 
 /**
- * Render the shared WGOS cluster page layout.
+ * Render the shared service cluster page layout.
  *
  * @param array<string, mixed> $page Cluster page definition.
  * @return string
@@ -549,7 +549,7 @@ function nexus_render_wgos_cluster_page( $page ) {
 	$method_steps  = nexus_get_wgos_cluster_page_method_steps();
 	$proof_note    = isset( $page['proof_note'] ) ? (string) $page['proof_note'] : '';
 	$proof_links   = isset( $page['proof_links'] ) && is_array( $page['proof_links'] ) ? $page['proof_links'] : [];
-	$audit_cta_label         = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'System-Diagnose anfragen';
+	$audit_cta_label         = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck starten';
 	$audit_compact_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : '60 Sek. · priorisierte Hebel · keine E-Mail';
 
 	ob_start();
@@ -564,15 +564,15 @@ function nexus_render_wgos_cluster_page( $page ) {
 						<p class="nx-cluster-hero__lead"><?php echo esc_html( (string) $page['lead'] ); ?></p>
 						<div class="nx-cluster-hero__actions">
 							<a href="<?php echo esc_url( $audit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_cluster_audit" data-track-category="lead_gen"><?php echo esc_html( $audit_cta_label ); ?></a>
-							<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost">WGOS verstehen</a>
+							<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost">Methode ansehen</a>
 						</div>
 						<p class="nx-cta-microcopy"><?php echo esc_html( $audit_compact_microcopy ); ?></p>
 					</div>
 
 					<aside class="nx-card nx-card--flat nx-cluster-hero__card">
 						<span class="nx-cluster-hero__card-kicker">So ist die Seite gebaut</span>
-						<p>Diese Seite ist keine isolierte Service-Landingpage mehr. Sie ordnet das Thema in die WGOS-Logik ein und zeigt die passenden Bausteine für den nächsten sinnvollen Schritt.</p>
-						<p class="nx-cluster-hero__card-link"><a href="<?php echo esc_url( $asset_hub_url ); ?>">Zur Asset-Landkarte</a></p>
+						<p>Diese Seite ist keine isolierte Service-Landingpage mehr. Sie ordnet das Thema in die Anfrage-System-Logik ein und zeigt die passenden Bausteine für den nächsten sinnvollen Schritt.</p>
+						<p class="nx-cluster-hero__card-link"><a href="<?php echo esc_url( $results_url ); ?>">Ergebnisse ansehen</a></p>
 					</aside>
 				</div>
 			</div>
@@ -596,8 +596,8 @@ function nexus_render_wgos_cluster_page( $page ) {
 		<section class="nx-section nx-cluster-section nx-cluster-section--alt">
 			<div class="nx-container nx-cluster-stack">
 				<div class="nx-section-header">
-					<span class="nx-badge nx-badge--gold">WGOS-Logik</span>
-					<h2 class="nx-headline-section">Wie wir das im WGOS lösen</h2>
+					<span class="nx-badge nx-badge--gold">Systemlogik</span>
+					<h2 class="nx-headline-section">Wie das im Anfrage-System gelöst wird</h2>
 				</div>
 
 				<div class="nx-prose nx-cluster-prose">
@@ -650,7 +650,7 @@ function nexus_render_wgos_cluster_page( $page ) {
 						echo esc_html(
 							'' !== $proof_note
 								? $proof_note
-								: 'Wenn Sie die öffentlichen Beispiele und die Herleitung dazu sehen wollen, gehen Sie zuerst in die Ergebnisse. Die System-Diagnose klärt danach, welche dieser Hebel in Ihrer Lage wirklich zuerst zählen.'
+								: 'Wenn Sie die öffentlichen Beispiele und die Herleitung dazu sehen wollen, gehen Sie zuerst in die Ergebnisse. Der Marktcheck klärt danach, welche dieser Hebel in Ihrer Lage wirklich zuerst zählen.'
 						);
 						?>
 					</p>
@@ -694,7 +694,7 @@ function nexus_render_wgos_cluster_page( $page ) {
 			<div class="nx-container nx-cluster-stack">
 				<div class="nx-section-header">
 					<span class="nx-badge nx-badge--ghost">Cluster</span>
-					<h2 class="nx-headline-section">Die passenden WGOS-Bausteine</h2>
+					<h2 class="nx-headline-section">Die passenden Systembausteine</h2>
 					<p class="nx-subheadline">Jeder Baustein löst einen klaren Teil des Problems. Gemeinsam entsteht daraus ein belastbares Cluster statt einer losen Leistungssammlung.</p>
 				</div>
 
@@ -751,10 +751,10 @@ function nexus_render_wgos_cluster_page( $page ) {
 				<div class="nx-card nx-card--flat nx-cluster-cta">
 					<span class="nx-cluster-cta__kicker">Nächster Schritt</span>
 					<h2 class="nx-headline-section">Erst die Lage klären. Dann den richtigen Baustein priorisieren.</h2>
-					<p>Die System-Diagnose zeigt, ob dieses Cluster jetzt dran ist oder ob Fundament, Messbarkeit oder Angebotslogik zuerst korrigiert werden müssen.</p>
+					<p>Der Marktcheck zeigt, ob dieses Cluster jetzt dran ist oder ob Fundament, Messbarkeit oder Angebotslogik zuerst korrigiert werden müssen.</p>
 					<div class="nx-cluster-hero__actions">
 						<a href="<?php echo esc_url( $audit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_cluster_footer_audit" data-track-category="lead_gen"><?php echo esc_html( $audit_cta_label ); ?></a>
-						<a href="<?php echo esc_url( $asset_hub_url ); ?>" class="nx-btn nx-btn--ghost">Alle WGOS-Assets ansehen</a>
+						<a href="<?php echo esc_url( $results_url ); ?>" class="nx-btn nx-btn--ghost">Ergebnisse ansehen</a>
 					</div>
 				</div>
 			</div>
@@ -992,7 +992,7 @@ function nexus_maybe_ensure_cluster_route_pages() {
 add_action( 'init', 'nexus_maybe_ensure_cluster_route_pages', 28 );
 
 /**
- * Return the versioned mapping from blog articles to WGOS asset recommendations.
+ * Return the versioned mapping from blog articles to system-building-block recommendations.
  *
  * @return array<string, array<string, mixed>>
  */
@@ -1011,7 +1011,7 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 	$performance_marketing_url = nexus_get_primary_public_url( 'performance_marketing', home_url( '/performance-marketing/' ) );
 
 	$seo_foundation_bridge = [
-		'title' => 'Passende WGOS-Bausteine zu diesem Thema',
+		'title' => 'Passende Systembausteine zu diesem Thema',
 		'intro' => 'Wenn Performance Marketing an technischer Reibung und einer instabilen SEO-Basis scheitert, sind diese Bausteine meist der nächste sinnvolle Schritt:',
 		'assets' => [
 			'technical-seo-audit' => 'Macht technische Indexierungs-, Redirect- und Strukturprobleme sichtbar, die Rankings und Kampagnenwirkung ausbremsen.',
@@ -1029,7 +1029,7 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 		'technisches-seo-performance-fundament' => $seo_foundation_bridge,
 		'warum-performance-marketing-ohne-technisches-seo-geld-verbrennt' => $seo_foundation_bridge,
 		'owned-leads-statt-ad-miete' => [
-			'title' => 'Passende WGOS-Bausteine zu diesem Thema',
+			'title' => 'Passende Systembausteine zu diesem Thema',
 			'intro' => 'Wenn das Problem nicht nur mehr Traffic, sondern die falsche Nachfrage-Logik ist, sind das die nächsten sinnvollen Bausteine:',
 			'assets' => [
 				'growth-audit'             => 'Klärt zuerst, ob Angebot, Tracking oder Seitenlogik die Anfragequalität bremsen.',
@@ -1038,7 +1038,7 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 			],
 		],
 		'b2b-landingpage-optimieren' => [
-			'title' => 'Passende WGOS-Bausteine zu diesem Artikel',
+			'title' => 'Passende Systembausteine zu diesem Artikel',
 			'intro' => 'Wenn Sie die Gedanken aus dem Artikel konkret in Ihre Website übersetzen wollen, starten meist diese Bausteine:',
 			'assets' => [
 				'landing-page-optimierung' => 'Hebt bestehende Landing Pages an Headline, Struktur und Reibung an.',
@@ -1052,7 +1052,7 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 			],
 		],
 		'meta-ads-fuer-b2b' => [
-			'title' => 'WGOS-Bausteine für kampagnenfähige Zielseiten',
+			'title' => 'Systembausteine für kampagnenfähige Zielseiten',
 			'intro' => 'Kampagnenstrukturen wirken nur so gut wie Tracking und Zielseite. Diese Bausteine sind meist der nächste Hebel:',
 			'assets' => [
 				'landing-page-neu'         => 'Baut Seiten mit sauberem Message Match für bezahlte Nachfrage auf.',
@@ -1066,7 +1066,7 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 			],
 		],
 		'design-ist-mehr-als-aesthetik' => [
-			'title' => 'WGOS-Bausteine für Conversion-Architektur',
+			'title' => 'Systembausteine für Conversion-Architektur',
 			'intro' => 'Wenn Design die Orientierung und den nächsten Schritt verbessern soll, sind diese Bausteine die konkrete Übersetzung:',
 			'assets' => [
 				'angebotsseiten-architektur' => 'Ordnet Seiten, Botschaften und Proof in eine klare Angebotslogik.',
@@ -1079,7 +1079,7 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 			],
 		],
 		'server-side-tracking-gtm' => [
-			'title' => 'WGOS-Bausteine für belastbare Messbarkeit',
+			'title' => 'Systembausteine für belastbare Messbarkeit',
 			'intro' => 'Server-Side Tracking ist selten der erste Schritt. Diese Bausteine sorgen für die richtige Reihenfolge:',
 			'assets' => [
 				'server-side-tracking' => 'Setzt serverseitige Signalverarbeitung technisch sauber um.',
@@ -1093,7 +1093,7 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 			],
 		],
 		'core-web-vitals-wachstum-seo-und-roas' => [
-			'title' => 'WGOS-Bausteine für Performance als Hebel',
+			'title' => 'Systembausteine für Performance als Hebel',
 			'intro' => 'Wenn Performance nicht nur ein Symptom, sondern ein Wachstumshebel ist, greifen meist diese drei Bausteine ineinander:',
 			'assets' => [
 				'cwv-speed-audit' => 'Zeigt, welche technischen Bremsen auf den wichtigen Seitentypen wirklich Priorität haben.',
@@ -1150,7 +1150,7 @@ function nexus_render_wgos_blog_asset_bridge( $bridge ) {
 	?>
 	<section class="nx-asset-bridge" data-track-section="blog_asset_bridge">
 		<div class="nx-asset-bridge__inner">
-			<span class="nx-asset-bridge__kicker">WGOS-Anschluss</span>
+			<span class="nx-asset-bridge__kicker">Fachlicher Anschluss</span>
 			<h2 class="nx-asset-bridge__title"><?php echo esc_html( (string) $bridge['title'] ); ?></h2>
 			<p class="nx-asset-bridge__intro"><?php echo esc_html( (string) $bridge['intro'] ); ?></p>
 

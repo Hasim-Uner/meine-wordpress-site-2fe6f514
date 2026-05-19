@@ -13,7 +13,7 @@ Skills reference this file instead of duplicating brand rules.
 
 **Ich baue Solar- und Wärmepumpen-Anbietern im DACH-Raum eigene Anfrage-Systeme, die Portal-Abhängigkeit ablösen und Leadkosten messbar senken.**
 
-- Zielgruppe: Solar-, Wärmepumpen-, Speicher- und Energie-Anbieter mit eigenem Vertrieb (typ. 10–25 Mitarbeiter)
+- Zielgruppe: Solar-, Wärmepumpen-, Speicher- und Energie-Anbieter mit eigenem Vertrieb, hohen Projektwerten und klarem Zielgebiet
 - Wettbewerb: Lead-Portale (Aroundhome, Check24, DAA) — nicht Webdesign-Agenturen
 - Website, Tracking, Vorqualifizierung und Werbekanal-Steuerung sind ein verbundenes System
 - Eigene Nachfrage-Infrastruktur vor Portal-Zukauf
@@ -23,12 +23,12 @@ Skills reference this file instead of duplicating brand rules.
 ## Offer Ladder
 
 ```
-System-Diagnose -> Blueprint -> Umsetzung / Retainer
+Marktcheck -> Anfrage-System-Analyse -> Umsetzung / Retainer
 ```
 
 - Primary CTA: Anfrage-System-Analyse (`/anfrage-system-analyse/`)
 - Retired Pfade: `/growth-audit/`, `/kostenlose-tools/`, `/tools/`, `/roi-rechner/` und alte Audit-Aliasse leiten auf `/anfrage-system-analyse/`
-- Die System-Diagnose ist diagnostischer Einstieg, kein gimmicky Gratis-Tool
+- Der Marktcheck ist diagnostischer Einstieg, kein gimmicky Gratis-Tool
 
 ## Tone
 

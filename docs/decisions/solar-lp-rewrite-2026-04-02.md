@@ -6,7 +6,7 @@
 
 ## Zusammenfassung
 
-Copy-Rewrite der Solar-/Wärmepumpen-Landingpage von Berater-Sprache auf Handwerker-Sprache. Zielgruppe: Geschäftsführer und Vertriebsleiter von Installationsbetrieben mit 10–25 Mitarbeitern.
+Copy-Rewrite der Solar-/Wärmepumpen-Landingpage von Berater-Sprache auf Handwerker-Sprache. Zielgruppe: Geschäftsführer und Vertriebsleiter von Installationsbetrieben mit eigenem Vertrieb, hohen Projektwerten und klarem Zielgebiet.
 
 ## Geänderte Dateien
 

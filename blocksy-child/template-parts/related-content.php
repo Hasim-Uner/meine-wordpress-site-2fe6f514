@@ -64,7 +64,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) ) {
 				'text'  => __( 'Wenn Ladezeit und technische Reibung im Vordergrund stehen:', 'blocksy-child' ),
 			],
 			'strategie' => [
-				'label' => __( 'WordPress Growth Operating System', 'blocksy-child' ),
+				'label' => __( 'Anfrage-System-Methode', 'blocksy-child' ),
 				'url'   => nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#wgos' ) ),
 				'text'  => __( 'Wenn das Thema in ein größeres System aus Angebot, SEO, Tracking und Conversion eingeordnet werden soll:', 'blocksy-child' ),
 			],

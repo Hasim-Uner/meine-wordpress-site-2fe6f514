@@ -2,21 +2,21 @@
 
 return [
 	'growth-audit' => [
-		'title'           => 'System-Diagnose',
+		'title'           => 'Marktcheck',
 		'slug'            => 'growth-audit',
 		'status'          => 'publish',
 		'core_area'       => 'Strategie',
 		'credits'         => '10',
-		'keyword'         => 'System-Diagnose',
-		'excerpt'         => 'Die System-Diagnose zeigt, welche Bremsen Ihre WordPress-Seite zuerst lösen muss.',
+		'keyword'         => 'Marktcheck',
+		'excerpt'         => 'Der Marktcheck zeigt, welche Bremsen Ihre WordPress-Seite zuerst lösen muss.',
 		'goal'            => 'Prioritäten für Wachstum, Technik, Messbarkeit und Conversion sauber festlegen.',
 		'result'          => 'Sie erhalten eine priorisierte Einschätzung mit klaren nächsten Schritten.',
-		'prerequisite'    => 'Keine - Einstiegs-Asset',
-		'seo_title'       => 'System-Diagnose - WGOS Asset | Haşim Üner',
-		'seo_description' => 'System-Diagnose für B2B-WordPress-Seiten: Engpässe priorisieren, Reihenfolge klären und den richtigen nächsten Schritt wählen.',
+		'prerequisite'    => 'Keine - Einstiegsbaustein',
+		'seo_title'       => 'Marktcheck - Systembaustein | Haşim Üner',
+		'seo_description' => 'Marktcheck für B2B-WordPress-Seiten: Engpässe priorisieren, Reihenfolge klären und den richtigen nächsten Schritt wählen.',
 		'problem'         => [
 			'Viele Teams spüren, dass die Website nicht sauber liefert, können die Ursache aber nicht priorisieren. Dann laufen Technik, Tracking, Inhalte und Conversion nebeneinander her.',
-			'Die System-Diagnose schafft zuerst Ordnung. Sie sehen, welcher Engpass heute Leads, Datenqualität oder Sichtbarkeit am stärksten bremst.',
+			'Der Marktcheck schafft zuerst Ordnung. Sie sehen, welcher Engpass heute Leads, Datenqualität oder Sichtbarkeit am stärksten bremst.',
 		],
 		'deliverables'    => [
 			[
@@ -33,12 +33,12 @@ return [
 			],
 			[
 				'title'       => 'Nächsten Schritt festlegen',
-				'description' => 'Sie bekommen eine klare Empfehlung, welches WGOS-Asset jetzt wirklich zuerst dran ist. Das spart Zeit, Budget und interne Reibung.',
+				'description' => 'Sie bekommen eine klare Empfehlung, welcher Systembaustein jetzt wirklich zuerst dran ist. Das spart Zeit, Budget und interne Reibung.',
 			],
 		],
 		'system_context'  => [
-			'Die System-Diagnose steht ganz am Anfang der WGOS-Reihenfolge. Er schafft die gemeinsame Diagnose, auf der Positionierungs-Check, CWV Speed Audit oder Tracking Audit sinnvoll priorisiert werden können.',
-			'Ohne diese Vorarbeit werden Maßnahmen schnell politisch statt systemisch entschieden. Mit dem Audit wird aus einer losen Aufgabenliste eine belastbare Reihenfolge.',
+			'Der Marktcheck steht ganz am Anfang der Anfrage-System-Reihenfolge. Er schafft die gemeinsame Diagnose, auf der Positionierungs-Check, CWV Speed Audit oder Tracking Audit sinnvoll priorisiert werden können.',
+			'Ohne diese Vorarbeit werden Maßnahmen schnell politisch statt systemisch entschieden. Mit dem Marktcheck wird aus einer losen Aufgabenliste eine belastbare Reihenfolge.',
 		],
 		'priority'        => [
 			'Wenn viele Baustellen gleichzeitig sichtbar sind und niemand sicher sagen kann, was zuerst gelöst werden muss.',
@@ -62,8 +62,8 @@ return [
 		'excerpt'         => 'Der Positionierungs-Check prüft, ob Angebot, Zielgruppe und Nutzenversprechen auf der Website klar genug sind.',
 		'goal'            => 'Angebot, Nutzenversprechen und Zielgruppe so schärfen, dass die Website nicht beliebig wirkt.',
 		'result'          => 'Sie erhalten eine klare Positionierungsdiagnose mit konkreter Korrekturrichtung.',
-		'prerequisite'    => 'System-Diagnose ist sinnvoll, aber nicht zwingend',
-		'seo_title'       => 'Positionierungs-Check - WGOS Asset | Haşim Üner',
+		'prerequisite'    => 'Marktcheck ist sinnvoll, aber nicht zwingend',
+		'seo_title'       => 'Positionierungs-Check - Systembaustein | Haşim Üner',
 		'seo_description' => 'Positionierungs-Check für B2B-WordPress-Seiten: Angebot schärfen, Missverständnisse abbauen und Message-Match verbessern.',
 		'problem'         => [
 			'Viele B2B-Websites erklären Leistungen, ohne eine klare Kaufrelevanz aufzubauen. Besucher lesen mit, verstehen aber nicht schnell genug, warum gerade dieses Angebot die richtige Wahl ist.',
@@ -88,7 +88,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Der Positionierungs-Check gehört in der Strategiephase früh nach vorne, weil unklare Botschaften spätere SEO-, Landing-Page- und CRO-Arbeit ausbremsen. Er setzt nicht zwingend andere Assets voraus, ist aber nach der System-Diagnose deutlich zielgerichteter.',
+			'Der Positionierungs-Check gehört in der Strategiephase früh nach vorne, weil unklare Botschaften spätere SEO-, Landing-Page- und CRO-Arbeit ausbremsen. Er setzt nicht zwingend andere Assets voraus, ist aber nach der Marktcheck deutlich zielgerichteter.',
 			'Wenn die Positionierung steht, werden Seitenrollen-Mapping, Wettbewerbs-Analyse und Keyword-Strategie erheblich präziser. Erst dann greifen Inhalte, Proof und Conversion sauber ineinander.',
 		],
 		'priority'        => [
@@ -114,7 +114,7 @@ return [
 		'goal'            => 'Startseite, Angebotsseiten, Cases, Blog und Landing Pages klar auf ihre Aufgabe ausrichten.',
 		'result'          => 'Sie erhalten ein Rollenmodell für die wichtigsten Seitentypen Ihrer Website.',
 		'prerequisite'    => 'Positionierungs-Check sollte stehen',
-		'seo_title'       => 'Seitenrollen-Mapping - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Seitenrollen-Mapping - Systembaustein | Haşim Üner',
 		'seo_description' => 'Seitenrollen-Mapping für B2B-Websites: Seitentypen sauber ordnen, Kannibalisierung vermeiden und Conversion-Pfade schärfen.',
 		'problem'         => [
 			'Viele WordPress-Websites haben genug Seiten, aber keine klare Rollenverteilung. Startseite, Leistungsseiten, Blog und Landing Pages konkurrieren dann um dieselbe Aufgabe.',
@@ -165,7 +165,7 @@ return [
 		'goal'            => 'Relevante Muster, Lücken und Differenzierungshebel im digitalen Wettbewerbsumfeld sichtbar machen.',
 		'result'          => 'Sie erhalten Vergleichspunkte für Angebot, Inhalte, Proof und Nutzerführung.',
 		'prerequisite'    => 'Positionierungs-Check sollte stehen',
-		'seo_title'       => 'Wettbewerbs-Analyse - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Wettbewerbs-Analyse - Systembaustein | Haşim Üner',
 		'seo_description' => 'Digitale Wettbewerbs-Analyse für B2B-Websites: Muster erkennen, Differenzierung schärfen und Content- sowie Conversion-Chancen ableiten.',
 		'problem'         => [
 			'Viele Unternehmen kennen ihre Wettbewerber fachlich, aber nicht ihre digitale Umsetzung. Dadurch werden Seiten, Inhalte und CTAs oft gegen interne Vorlieben statt gegen reale Marktstandards gebaut.',
@@ -190,7 +190,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Die Wettbewerbs-Analyse kommt im WGOS früh nach Positionierung und Discovery, weil sie externe Muster gegen den eigenen Anspruch spiegelt. So werden Differenzierung und Priorisierung marktnah statt intern diskutiert.',
+			'Die Wettbewerbs-Analyse kommt im Anfrage-System früh nach Positionierung und Discovery, weil sie externe Muster gegen den eigenen Anspruch spiegelt. So werden Differenzierung und Priorisierung marktnah statt intern diskutiert.',
 			'Sie schafft anschließend bessere Grundlagen für Keyword-Strategie, Landing Page Neu und Social Proof. Erst mit diesem Spiegel wird klar, wo Sie bewusst anders sein sollten und wo Basiserwartungen fehlen.',
 		],
 		'priority'        => [
@@ -212,12 +212,12 @@ return [
 		'core_area'       => 'Strategie',
 		'credits'         => '10',
 		'keyword'         => 'Roadmap Priorisierung',
-		'excerpt'         => 'Roadmap & Priorisierung bringt WGOS-Assets in eine Reihenfolge, die wirklich wirkt.',
+		'excerpt'         => 'Roadmap & Priorisierung bringt Systembausteine in eine Reihenfolge, die wirklich wirkt.',
 		'goal'            => 'Die richtigen Bausteine nach Impact, Abhängigkeit und Umsetzbarkeit staffeln.',
 		'result'          => 'Sie erhalten eine abgestimmte Umsetzungsroadmap statt einer losen Wunschliste.',
-		'prerequisite'    => 'System-Diagnose oder klare Discovery sollte abgeschlossen sein',
-		'seo_title'       => 'Roadmap Priorisierung - WGOS Asset | Haşim Üner',
-		'seo_description' => 'Roadmap & Priorisierung für WGOS: Maßnahmen nach Impact, Abhängigkeiten und Teamkapazität sauber staffeln.',
+		'prerequisite'    => 'Marktcheck oder klare Discovery sollte abgeschlossen sein',
+		'seo_title'       => 'Roadmap Priorisierung - Systembaustein | Haşim Üner',
+		'seo_description' => 'Roadmap & Priorisierung für Anfrage-System: Maßnahmen nach Impact, Abhängigkeiten und Teamkapazität sauber staffeln.',
 		'problem'         => [
 			'Viele Website-Projekte scheitern nicht an Ideen, sondern an falscher Reihenfolge. Dann werden Sichtbarkeit, Tracking und Conversion gleichzeitig angefasst, obwohl das Fundament noch fehlt.',
 			'Roadmap & Priorisierung sorgt dafür, dass Entscheidungen systemisch getroffen werden. So wird Fortschritt planbar statt hektisch.',
@@ -241,7 +241,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Roadmap & Priorisierung steht in WGOS zwischen Diagnose und Umsetzung. Sie setzt meist auf System-Diagnose, Positionierungs-Check oder Discovery-Ergebnissen auf und übersetzt diese in einen belastbaren Arbeitsplan.',
+			'Roadmap & Priorisierung steht im Anfrage-System zwischen Diagnose und Umsetzung. Sie setzt meist auf Marktcheck, Positionierungs-Check oder Discovery-Ergebnissen auf und übersetzt diese in einen belastbaren Arbeitsplan.',
 			'Danach können einzelne Assets wie CWV Speed Audit, Tracking Audit oder Landing Page Neu ohne Richtungsverlust umgesetzt werden. Die Roadmap ist damit das Bindeglied zwischen Einsicht und Ausführung.',
 		],
 		'priority'        => [
@@ -266,8 +266,8 @@ return [
 		'excerpt'         => 'Der CWV Speed Audit zeigt, was Ihre WordPress-Seite langsam macht und wo der Hebel wirklich liegt.',
 		'goal'            => 'Performance-Bremsen sichtbar machen, die Ladezeit, Rankings und Nutzererlebnis schädigen.',
 		'result'          => 'Sie erhalten eine priorisierte Performance-Diagnose mit klaren Optimierungsfeldern.',
-		'prerequisite'    => 'System-Diagnose oder klare Priorisierung liegt vor',
-		'seo_title'       => 'CWV Speed Audit - WGOS Asset | Haşim Üner',
+		'prerequisite'    => 'Marktcheck oder klare Priorisierung liegt vor',
+		'seo_title'       => 'CWV Speed Audit - Systembaustein | Haşim Üner',
 		'seo_description' => 'CWV Speed Audit für WordPress: Ladezeitbremsen finden, Prioritäten setzen und die Basis für Rankings und Conversion stärken.',
 		'problem'         => [
 			'Langsame Ladezeiten und springende Layouts kosten Vertrauen, Leads und Rankings. Das Problem ist oft nicht ein einzelner Fehler, sondern ein Mix aus Theme, Plugins, Medien, Server und Dritt-Skripten.',
@@ -292,7 +292,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Der CWV Speed Audit gehört früh ins technische Fundament und kommt oft direkt nach System-Diagnose oder Roadmap. Er schafft die Diagnose, auf der CWV Optimierung und Server-Tuning sauber aufsetzen.',
+			'Der CWV Speed Audit gehört früh ins technische Fundament und kommt oft direkt nach Marktcheck oder Roadmap. Er schafft die Diagnose, auf der CWV Optimierung und Server-Tuning sauber aufsetzen.',
 			'Wenn die Performance-Basis steht, profitieren danach auch Technical SEO Audit, Landing Pages und Conversion-Arbeit. Langsame Seiten bremsen sonst jede spätere Investition aus.',
 		],
 		'priority'        => [
@@ -318,7 +318,7 @@ return [
 		'goal'            => 'Core Web Vitals und reale Ladezeit auf den wichtigsten Seitentypen messbar verbessern.',
 		'result'          => 'Sie erhalten eine spürbar schnellere Website mit dokumentierten Vorher-Nachher-Fixes.',
 		'prerequisite'    => 'CWV Speed Audit sollte abgeschlossen sein',
-		'seo_title'       => 'CWV Optimierung - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'CWV Optimierung - Systembaustein | Haşim Üner',
 		'seo_description' => 'CWV Optimierung für WordPress: echte Performance-Bremsen beseitigen, Ladezeit verbessern und Rankings wie Conversion entlasten.',
 		'problem'         => [
 			'Ein Diagnose-Report allein macht eine Website nicht schneller. Erst die Umsetzung an den richtigen Stellen verbessert LCP, CLS und Reaktionszeit wirklich.',
@@ -369,7 +369,7 @@ return [
 		'goal'            => 'TTFB, Caching und Infrastruktur so einstellen, dass WordPress stabil und schnell ausliefert.',
 		'result'          => 'Sie erhalten konkrete Server- und Cache-Anpassungen für eine tragfähigere Performance-Basis.',
 		'prerequisite'    => 'CWV Speed Audit oder Performance-Analyse liegt vor',
-		'seo_title'       => 'Server-Tuning - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Server-Tuning - Systembaustein | Haşim Üner',
 		'seo_description' => 'Server-Tuning für WordPress: TTFB, Cache und Infrastruktur verbessern, damit die Website stabiler und schneller ausliefert.',
 		'problem'         => [
 			'Wenn der Server langsam antwortet, verliert die Seite schon vor dem eigentlichen Rendern Zeit. Das betrifft nicht nur Performance-Scores, sondern auch Nutzererlebnis, Crawl-Effizienz und Conversion.',
@@ -420,7 +420,7 @@ return [
 		'goal'            => 'WordPress, Plugins, Zugriffe und Betriebsroutinen so härten, dass typische Schwachstellen geschlossen werden.',
 		'result'          => 'Sie erhalten einen gehärteten Basiszustand mit klaren Sicherheitsmassnahmen und Betriebsregeln.',
 		'prerequisite'    => 'Keine - kann früh priorisiert werden',
-		'seo_title'       => 'Security Hardening - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Security Hardening - Systembaustein | Haşim Üner',
 		'seo_description' => 'Security Hardening für WordPress: typische Angriffswege schließen, Zugriffe absichern und den Betrieb robuster machen.',
 		'problem'         => [
 			'WordPress wird oft erst dann sicher gedacht, wenn bereits etwas passiert ist. Dabei entstehen die meisten Risiken durch unklare Rechte, veraltete Komponenten, offene Standardpfade und fehlende Betriebsdisziplin.',
@@ -471,7 +471,7 @@ return [
 		'goal'            => 'Plugin-Last reduzieren und den Stack auf das wirklich nötige Maß zurückführen.',
 		'result'          => 'Sie erhalten eine priorisierte Liste für Behalten, Ersetzen, Entfernen und Zusammenlegen.',
 		'prerequisite'    => 'Keine - oft vor größeren Optimierungen sinnvoll',
-		'seo_title'       => 'Plugin Audit - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Plugin Audit - Systembaustein | Haşim Üner',
 		'seo_description' => 'Plugin Audit für WordPress: unnötige Erweiterungen erkennen, Risiko senken und Performance wie Wartbarkeit verbessern.',
 		'problem'         => [
 			'Viele WordPress-Seiten tragen Plugin-Entscheidungen aus mehreren Jahren mit sich herum. Das führt zu Doppelungen, Sicherheitsrisiken, Performance-Last und unklaren Abhängigkeiten.',
@@ -523,7 +523,7 @@ return [
 		'goal'            => 'Updates planbar, risikoärmer und dokumentiert in den laufenden Betrieb überführen.',
 		'result'          => 'Sie erhalten einen klaren Update-Prozess mit Testlogik, Reihenfolge und Verantwortlichkeit.',
 		'prerequisite'    => 'Plugin Audit oder Baseline zum Stack sollte vorliegen',
-		'seo_title'       => 'Update Management - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Update Management - Systembaustein | Haşim Üner',
 		'seo_description' => 'WordPress Update-Management: Updates planbar machen, Risiken senken und den laufenden Betrieb technisch ruhiger halten.',
 		'problem'         => [
 			'Updates werden in vielen Teams entweder zu spät oder aus Angst gar nicht gemacht. Beides führt zu Risiken: unsichere Systeme auf der einen, instabile Schnellschüsse auf der anderen Seite.',
@@ -573,8 +573,8 @@ return [
 		'excerpt'         => 'Der Tracking Audit zeigt, ob Ihre Datenbasis für Entscheidungen überhaupt belastbar ist.',
 		'goal'            => 'Fehler in Tracking, Events, Attribution und Consent sichtbar machen, bevor falsche Entscheidungen darauf aufbauen.',
 		'result'          => 'Sie erhalten eine priorisierte Tracking-Diagnose mit konkreten Fixes und Folgeempfehlungen.',
-		'prerequisite'    => 'System-Diagnose oder klare Priorisierung liegt vor',
-		'seo_title'       => 'Tracking Audit - WGOS Asset | Haşim Üner',
+		'prerequisite'    => 'Marktcheck oder klare Priorisierung liegt vor',
+		'seo_title'       => 'Tracking Audit - Systembaustein | Haşim Üner',
 		'seo_description' => 'Tracking Audit für B2B-Websites: Messfehler finden, Datenqualität absichern und die Basis für Reporting und Optimierung legen.',
 		'problem'         => [
 			'Daten helfen nur, wenn sie sauber erhoben werden. In vielen Setups feuern Events doppelt, Consent schneidet Signale ab oder wichtige Conversion-Schritte werden gar nicht erfasst.',
@@ -599,7 +599,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Der Tracking Audit steht in WGOS früh in der Messbarkeit, oft noch vor großer SEO- oder CRO-Arbeit. Ohne brauchbare Daten lassen sich spätere Maßnahmen nur schwer bewerten.',
+			'Der Tracking Audit steht im Anfrage-System früh in der Messbarkeit, oft noch vor großer SEO- oder CRO-Arbeit. Ohne brauchbare Daten lassen sich spätere Maßnahmen nur schwer bewerten.',
 			'Er bereitet GA4 Event Blueprint, Consent Mode v2 und Server-Side Tracking vor. Erst wenn die Diagnose steht, werden Messkonzepte und technische Setups wirklich tragfähig.',
 		],
 		'priority'        => [
@@ -625,7 +625,7 @@ return [
 		'goal'            => 'Aus einem allgemeinen Analytics-Setup ein belastbares Event- und KPI-Modell machen.',
 		'result'          => 'Sie erhalten ein sauberes Event-Konzept für GA4, Conversion-Pfade und Reporting.',
 		'prerequisite'    => 'Tracking Audit sollte abgeschlossen sein',
-		'seo_title'       => 'GA4 Event Blueprint - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'GA4 Event Blueprint - Systembaustein | Haşim Üner',
 		'seo_description' => 'GA4 Event Blueprint für B2B-Websites: Events, KPIs und Funnel-Schritte sauber definieren statt nur Standardmetriken zu sammeln.',
 		'problem'         => [
 			'GA4 liefert standardmäßig viele Daten, aber nicht automatisch die richtigen. Ohne klares Event-Modell misst das Team Seitenaufrufe, aber nicht die Geschäftslogik hinter Anfragen und kaufnahen Interaktionen.',
@@ -676,7 +676,7 @@ return [
 		'goal'            => 'Consent-Setup so konfigurieren, dass Signale regelkonform und technisch konsistent verarbeitet werden.',
 		'result'          => 'Sie erhalten ein valides Consent-Mode-v2-Setup mit klarer Signal- und Plausibilitätslogik.',
 		'prerequisite'    => 'Tracking Audit sollte abgeschlossen sein',
-		'seo_title'       => 'Consent Mode v2 - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Consent Mode v2 - Systembaustein | Haşim Üner',
 		'seo_description' => 'Consent Mode v2 für WordPress und GTM: Datenschutz sauber umsetzen, Signalverluste einordnen und Datenqualität verbessern.',
 		'problem'         => [
 			'Consent wird oft nur als Banner-Frage behandelt. Technisch entstehen dadurch aber gravierende Unterschiede in Signalfluss, Modellierung und Plattform-Verständnis.',
@@ -728,7 +728,7 @@ return [
 		'goal'            => 'Messsignale über einen stabileren technischen Layer führen und Browser-Limitierungen reduzieren.',
 		'result'          => 'Sie erhalten ein sauberes Konzept und Setup für sGTM oder Matomo-gestützte Server-Side-Messung.',
 		'prerequisite'    => 'Tracking Audit und Consent Mode v2 sollten eingeordnet sein',
-		'seo_title'       => 'Server-Side Tracking - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Server-Side Tracking - Systembaustein | Haşim Üner',
 		'seo_description' => 'Server-Side Tracking mit sGTM oder Matomo: Signale robuster verarbeiten, Browser-Limits reduzieren und Datenqualität stabilisieren.',
 		'problem'         => [
 			'Browserseitiges Tracking wird fragiler. Consent, ITP, Script-Blocker und komplexe Client-Setups sorgen dafür, dass wichtige Signale verloren gehen oder inkonsistent ankommen.',
@@ -753,7 +753,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Server-Side Tracking kommt in WGOS nach Tracking Audit, Event-Modell und Consent-Einordnung. Erst wenn klar ist, was gemessen werden soll und wie Datenschutz greift, lohnt sich die technische Vertiefung.',
+			'Server-Side Tracking kommt im Anfrage-System nach Tracking Audit, Event-Modell und Consent-Einordnung. Erst wenn klar ist, was gemessen werden soll und wie Datenschutz greift, lohnt sich die technische Vertiefung.',
 			'Danach profitieren KPI-Dashboard Setup, Reporting Dashboard und Kampagnensteuerung. Ein serverseitiger Layer ist kein Ersatz für Strategie, sondern ein robusterer Transport für eine saubere Messlogik.',
 		],
 		'priority'        => [
@@ -779,7 +779,7 @@ return [
 		'goal'            => 'Die wichtigsten Website- und Anfrage-KPIs in einer klaren, steuerbaren Sicht zusammenbringen.',
 		'result'          => 'Sie erhalten ein Dashboard, das Nachfrage, Engpässe und Entwicklung lesbar macht.',
 		'prerequisite'    => 'GA4 Event Blueprint sollte stehen',
-		'seo_title'       => 'KPI-Dashboard Setup - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'KPI-Dashboard Setup - Systembaustein | Haşim Üner',
 		'seo_description' => 'KPI-Dashboard Setup für B2B-Websites: Rohdaten in eine klare Management-Sicht für Nachfrage, Leads und Website-Leistung überführen.',
 		'problem'         => [
 			'Viele Unternehmen haben Daten in mehreren Tools, aber keine gemeinsame Sicht auf das Wesentliche. Dann wird viel reportet, aber wenig entschieden.',
@@ -830,7 +830,7 @@ return [
 		'goal'            => 'Quellen, Kampagnen und Attribution so strukturieren, dass Reports nicht an Chaos in den Parametern scheitern.',
 		'result'          => 'Sie erhalten ein klares Benennungs- und Attributionsmodell für Kampagnen und Lead-Wege.',
 		'prerequisite'    => 'Tracking Audit sollte erfolgt sein',
-		'seo_title'       => 'UTM-Framework - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'UTM-Framework - Systembaustein | Haşim Üner',
 		'seo_description' => 'UTM-Framework und Attribution für B2B-Websites: Kampagnen sauber benennen, Quellen vergleichen und Datenchaos vermeiden.',
 		'problem'         => [
 			'Ohne klares UTM-System werden Kampagnenquellen schnell unsauber benannt. Dann zerfallen Reports in Varianten, die eigentlich dasselbe meinen, und Attribution wird unzuverlässig.',
@@ -881,7 +881,7 @@ return [
 		'goal'            => 'Technische SEO-Probleme finden, die Sichtbarkeit, Crawling und Indexierung behindern.',
 		'result'          => 'Sie erhalten einen priorisierten Maßnahmenplan mit konkreten Fixes.',
 		'prerequisite'    => 'CWV Speed Audit sollte abgeschlossen sein',
-		'seo_title'       => 'Technical SEO Audit - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Technical SEO Audit - Systembaustein | Haşim Üner',
 		'seo_description' => 'Technical SEO Audit für WordPress: Indexierungsfehler, Canonicals, Redirects und Strukturprobleme priorisiert beheben.',
 		'problem'         => [
 			'Viele WordPress-Websites haben technische SEO-Probleme, obwohl genug Inhalte vorhanden wären. Kaputte Canonicals, schwache Indexierungslogik oder fehlerhafte Weiterleitungen verhindern dann Sichtbarkeit, bevor Content überhaupt wirken kann.',
@@ -906,7 +906,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Der Technical SEO Audit steht in WGOS im Bereich Sichtbarkeit, setzt aber oft voraus, dass Performance-Basisthemen wie CWV Speed Audit bereits geordnet wurden. Sonst überlagern sich technische Baustellen und SEO-Symptome.',
+			'Der Technical SEO Audit steht im Anfrage-System im Bereich Sichtbarkeit, setzt aber oft voraus, dass Performance-Basisthemen wie CWV Speed Audit bereits geordnet wurden. Sonst überlagern sich technische Baustellen und SEO-Symptome.',
 			'Er schafft die Grundlage für On-Page SEO, Schema Markup und interne Verlinkung. Erst wenn Crawling und Indexierung sauber laufen, lohnen sich tiefergehende Content- und Strukturinvestitionen voll.',
 		],
 		'priority'        => [
@@ -932,7 +932,7 @@ return [
 		'goal'            => 'Ein Suchthemen-System aufbauen, das Angebot, Nachfrage und Seitentypen zusammenbringt.',
 		'result'          => 'Sie erhalten eine priorisierte Content-Map für Hub-, Cluster- und Angebotsseiten.',
 		'prerequisite'    => 'Positionierungs-Check sollte stehen',
-		'seo_title'       => 'Keyword-Strategie - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Keyword-Strategie - Systembaustein | Haşim Üner',
 		'seo_description' => 'Keyword-Strategie und Content-Map für B2B-Websites: Nachfrage systematisch in Themen, Seitentypen und Prioritäten übersetzen.',
 		'problem'         => [
 			'Viele Websites produzieren Inhalte, ohne ein klares Nachfragebild dahinter zu haben. Dann konkurrieren Seiten um ähnliche Suchintentionen oder lassen wichtige Themen komplett aus.',
@@ -983,7 +983,7 @@ return [
 		'goal'            => 'Ein kaufnahes Kernthema so aufbauen, dass Sichtbarkeit, Orientierung und Conversion zusammenarbeiten.',
 		'result'          => 'Sie erhalten eine tragfähige Hauptseite mit klarer Struktur, Proof und interner Verlinkung.',
 		'prerequisite'    => 'Keyword-Strategie sollte stehen',
-		'seo_title'       => 'Pillar Page - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Pillar Page - Systembaustein | Haşim Üner',
 		'seo_description' => 'Pillar Page für B2B-Websites: Kernthema strategisch aufbauen, Nachfrage einsammeln und interne Verlinkung sauber tragen.',
 		'problem'         => [
 			'Viele Themen verteilen sich auf zu viele kleine Unterseiten oder Blogposts ohne klares Zentrum. Dadurch geht Autorität verloren und Nutzer finden keinen starken Einstieg in das Thema.',
@@ -1034,7 +1034,7 @@ return [
 		'goal'            => 'Ein Thema so strukturieren, dass mehrere Inhalte sichtbar auf eine klare Hauptlogik einzahlen.',
 		'result'          => 'Sie erhalten eine Hub-Struktur mit Themenrollen, Verlinkungen und Ausbaupfaden.',
 		'prerequisite'    => 'Keyword-Strategie und idealerweise eine Pillar Page sollten stehen',
-		'seo_title'       => 'Content Hub Aufbau - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Content Hub Aufbau - Systembaustein | Haşim Üner',
 		'seo_description' => 'Content Hub Aufbau für WordPress: Cluster-Inhalte, Hauptseiten und interne Verlinkung zu einem tragfähigen Themen-System verbinden.',
 		'problem'         => [
 			'Einzelne gute Inhalte reichen selten, wenn ihnen die gemeinsame Struktur fehlt. Ohne Hub-Logik entsteht kein Thema mit Tiefenwirkung, sondern nur eine Sammlung einzelner Seiten.',
@@ -1085,7 +1085,7 @@ return [
 		'goal'            => 'Wichtige Seiten inhaltlich und strukturell auf Suchintention, Relevanz und Klickstärke ausrichten.',
 		'result'          => 'Sie erhalten optimierte Titel, Strukturen und Inhaltsführung für priorisierte Seiten.',
 		'prerequisite'    => 'Technical SEO Audit oder Keyword-Strategie sollte stehen',
-		'seo_title'       => 'On-Page SEO - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'On-Page SEO - Systembaustein | Haşim Üner',
 		'seo_description' => 'On-Page SEO Optimierung für WordPress: Snippets, Strukturen und Inhalte an Suchintention und Klickqualität ausrichten.',
 		'problem'         => [
 			'Seiten können technisch indexierbar sein und trotzdem an Relevanz oder Klickstärke verlieren. Dann treffen Snippets, Aufbau und Suchintention nicht sauber zusammen.',
@@ -1110,7 +1110,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'On-Page SEO folgt in WGOS meist auf Keyword-Strategie, Technical SEO Audit oder eine bestehende Pillar-/Hub-Logik. Erst wenn Thema und technische Basis klar sind, lohnt sich die inhaltliche Feinarbeit wirklich.',
+			'On-Page SEO folgt im Anfrage-System meist auf Keyword-Strategie, Technical SEO Audit oder eine bestehende Pillar-/Hub-Logik. Erst wenn Thema und technische Basis klar sind, lohnt sich die inhaltliche Feinarbeit wirklich.',
 			'Das Asset ergänzt Pillar Page, interne Verlinkung und Schema Markup. Gemeinsam sorgen diese Ebenen dafür, dass gute Inhalte auch technisch und semantisch sauber verstärkt werden.',
 		],
 		'priority'        => [
@@ -1136,7 +1136,7 @@ return [
 		'goal'            => 'Seiten logisch verknüpfen, Themenpfade schärfen und wichtige Ziele besser erreichbar machen.',
 		'result'          => 'Sie erhalten eine klare Link- und Architektur-Logik für zentrale Seiten und Themenbereiche.',
 		'prerequisite'    => 'Keyword-Strategie oder Content-Hub-Logik sollte stehen',
-		'seo_title'       => 'Interne Verlinkung - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Interne Verlinkung - Systembaustein | Haşim Üner',
 		'seo_description' => 'Interne Verlinkung und Seitenarchitektur für WordPress: Themenpfade schärfen, Wertsseiten stärken und Nutzer besser führen.',
 		'problem'         => [
 			'Viele Websites haben gute Einzelseiten, aber schlechte Wege dazwischen. Nutzer finden dann den nächsten Schritt nicht, und Suchmaschinen erkennen Themenzusammenhänge nur unvollständig.',
@@ -1187,7 +1187,7 @@ return [
 		'goal'            => 'Relevante Seitentypen mit strukturierten Daten technisch sauber auszeichnen.',
 		'result'          => 'Sie erhalten ein priorisiertes Schema-Set mit sauberer Implementierungslogik.',
 		'prerequisite'    => 'Technical SEO Audit sollte eingeordnet sein',
-		'seo_title'       => 'Schema Markup - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Schema Markup - Systembaustein | Haşim Üner',
 		'seo_description' => 'Schema Markup für WordPress: strukturierte Daten sauber planen und implementieren, damit relevante Seitentypen klarer verstanden werden.',
 		'problem'         => [
 			'Strukturierte Daten werden oft entweder komplett vergessen oder unkontrolliert aus Plugins ausgespielt. Beides führt dazu, dass Seitentypen für Suchmaschinen schlechter lesbar oder technisch widersprüchlich werden.',
@@ -1238,7 +1238,7 @@ return [
 		'goal'            => 'Lokale Signale auf Website, Profilen und Seitentypen sauber abstimmen.',
 		'result'          => 'Sie erhalten ein klares Local-SEO-Setup für Standortseiten, Profile und Signale.',
 		'prerequisite'    => 'Technische Basis und Angebotslogik sollten stehen',
-		'seo_title'       => 'Local SEO Setup - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Local SEO Setup - Systembaustein | Haşim Üner',
 		'seo_description' => 'Local SEO Setup für B2B-Websites: regionale Relevanz sauber aufbauen, Profile abstimmen und Standortseiten strategisch nutzen.',
 		'problem'         => [
 			'Lokale Sichtbarkeit scheitert selten nur am Google-Business-Profil. Meist fehlen abgestimmte Standortsignale auf Website, Profilen, Schema und Inhalten.',
@@ -1289,7 +1289,7 @@ return [
 		'goal'            => 'Eine neue Landing Page so aufsetzen, dass Angebot, Zielgruppe und nächster Schritt sofort klar sind.',
 		'result'          => 'Sie erhalten eine neue Landing Page mit klarer Struktur, Proof und CTA-Logik.',
 		'prerequisite'    => 'Positionierungs-Check und Tracking-Basis sollten stehen',
-		'seo_title'       => 'Landing Page Neu - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Landing Page Neu - Systembaustein | Haşim Üner',
 		'seo_description' => 'Landing Page neu erstellen: Angebot, Message-Match, Proof und CTA für B2B-Anfragen sauber aufbauen.',
 		'problem'         => [
 			'Neu Landing Pages scheitern oft schon am Start, weil Zielgruppe, Botschaft und CTA nicht sauber zusammenpassen. Dann wird eine schicke Seite gebaut, die trotzdem keine klare Entscheidung auslöst.',
@@ -1340,7 +1340,7 @@ return [
 		'goal'            => 'Bestehende Landing Pages in Klarheit, Reibung und Conversion-Leistung gezielt verbessern.',
 		'result'          => 'Sie erhalten priorisierte Umbauten für Headline, Struktur, Proof und CTA auf bestehenden Seiten.',
 		'prerequisite'    => 'Tracking-Basis und bestehende Landing Page sollten vorhanden sein',
-		'seo_title'       => 'Landing Page Optimierung - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Landing Page Optimierung - Systembaustein | Haşim Üner',
 		'seo_description' => 'Landing Page Optimierung: bestehende Seiten klarer machen, Reibung abbauen und Conversion gezielt verbessern.',
 		'problem'         => [
 			'Viele Landing Pages haben bereits Traffic, aber ihre Wirkung bleibt hinter dem Potenzial zurück. Meist liegt das nicht an einem einzelnen Element, sondern an Message-Match, Reihenfolge und Reibung.',
@@ -1391,7 +1391,7 @@ return [
 		'goal'            => 'Buttons, Formulare und Erwartungsmanagement so verbessern, dass mehr qualifizierte Schritte abgeschlossen werden.',
 		'result'          => 'Sie erhalten konkrete Korrekturen für CTA-Texte, Formularaufbau und Abschlusslogik.',
 		'prerequisite'    => 'Bestehende Landing Page oder Angebotsseite sollte vorhanden sein',
-		'seo_title'       => 'CTA Formular Optimierung - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'CTA Formular Optimierung - Systembaustein | Haşim Üner',
 		'seo_description' => 'CTA- und Formular-Optimierung für B2B-Websites: Reibung abbauen, Abschlussraten verbessern und Erwartungen klarer steuern.',
 		'problem'         => [
 			'Viele Seiten verlieren Besucher erst im letzten Schritt. CTAs sind zu unklar, Formulare zu schwer oder die Folgeerwartung nach dem Klick bleibt diffus.',
@@ -1442,7 +1442,7 @@ return [
 		'goal'            => 'Aus einzelnen Leistungsseiten ein zusammenhängendes Angebots- und Nachfrage-System machen.',
 		'result'          => 'Sie erhalten eine belastbare Struktur für Hauptangebote, Unterseiten und Conversion-Pfade.',
 		'prerequisite'    => 'Seitenrollen-Mapping sollte vorliegen',
-		'seo_title'       => 'Angebotsseiten Architektur - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Angebotsseiten Architektur - Systembaustein | Haşim Üner',
 		'seo_description' => 'Angebotsseiten-Architektur für B2B-Websites: Leistungsseiten sauber ordnen, Proof integrieren und Anfragepfade klarer machen.',
 		'problem'         => [
 			'Viele Angebotsseiten entstehen einzeln, aber nicht als System. Dann wiederholen sie sich, sprechen aneinander vorbei oder lassen wichtige Übergänge zwischen Haupt- und Unterangeboten offen.',
@@ -1493,7 +1493,7 @@ return [
 		'goal'            => 'Vertrauenssignale so platzieren, dass sie Einwände abbauen und den Anfragepfad stärken.',
 		'result'          => 'Sie erhalten eine klare Proof-Logik für Landing Pages, Angebotsseiten und CTA-Nähe.',
 		'prerequisite'    => 'Angebotsseite oder Landing Page sollte bereits strukturiert sein',
-		'seo_title'       => 'Social Proof - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Social Proof - Systembaustein | Haşim Üner',
 		'seo_description' => 'Social Proof und Trust-Elemente für B2B-Websites: Glaubwürdigkeit zeigen, Einwände abbauen und Conversion stärken.',
 		'problem'         => [
 			'Besucher treffen nicht nur eine Fachentscheidung, sondern auch eine Vertrauensentscheidung. Fehlen Belege, Signale oder nachvollziehbare Nachweise, bleibt selbst ein gutes Angebot oft zu abstrakt.',
@@ -1540,11 +1540,11 @@ return [
 		'core_area'       => 'Conversion',
 		'credits'         => '15',
 		'keyword'         => 'Lead Magnet Konzeption',
-		'excerpt'         => 'Lead-Magnet Konzeption entwickelt einen Einstiegs-Asset, das für die richtige Zielgruppe echten Gegenwert liefert.',
+		'excerpt'         => 'Lead-Magnet Konzeption entwickelt einen Einstiegsbaustein, der für die richtige Zielgruppe echten Gegenwert liefert.',
 		'goal'            => 'Ein qualifizierendes Einstiegsoffer entwickeln, das Nachfrage aufnimmt und anschlussfähig in den Funnel führt.',
 		'result'          => 'Sie erhalten ein klares Lead-Magnet-Konzept mit Thema, Nutzenversprechen und Conversion-Logik.',
 		'prerequisite'    => 'Positionierung und Tracking-Basis sollten stehen',
-		'seo_title'       => 'Lead-Magnet Konzeption - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Lead-Magnet Konzeption - Systembaustein | Haşim Üner',
 		'seo_description' => 'Lead-Magnet Konzeption für B2B-Websites: Einstiegsoffer entwickeln, Nachfrage qualifizieren und saubere Folgepfade bauen.',
 		'problem'         => [
 			'Ein Lead-Magnet funktioniert nur, wenn er für die richtige Zielgruppe echten Wert hat und zum Angebot passt. Viele Downloads oder Checklisten scheitern, weil sie zwar Leads sammeln, aber keine qualifizierten Folgegespräche vorbereiten.',
@@ -1595,7 +1595,7 @@ return [
 		'goal'            => 'Performance, Nachfrage und offene Baustellen regelmäßig bewerten und priorisieren.',
 		'result'          => 'Sie erhalten einen monatlichen Entscheidungsrhythmus mit klaren nächsten Schritten.',
 		'prerequisite'    => 'KPI-Dashboard oder Reporting-Basis sollte stehen',
-		'seo_title'       => 'Monthly Review - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Monthly Review - Systembaustein | Haşim Üner',
 		'seo_description' => 'Monthly Performance Review: Daten monatlich in Entscheidungen übersetzen, Prioritäten schärfen und Fortschritt sichtbar machen.',
 		'problem'         => [
 			'Viele Teams sammeln Daten, reagieren aber nur situativ darauf. Ohne festen Review-Rhythmus gehen Muster, Engpässe und Folgeentscheidungen zwischen Tagesgeschäft und Einzelmassnahmen unter.',
@@ -1646,7 +1646,7 @@ return [
 		'goal'            => 'Prioritäten für das nächste Quartal auf Basis echter Ergebnisse und Engpässe neu ordnen.',
 		'result'          => 'Sie erhalten eine aktualisierte Roadmap für das kommende Quartal.',
 		'prerequisite'    => 'Monthly Reviews oder vergleichbare Laufdaten sollten vorliegen',
-		'seo_title'       => 'Quarterly Roadmap - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Quarterly Roadmap - Systembaustein | Haşim Üner',
 		'seo_description' => 'Quarterly Roadmap Update: Erkenntnisse aus Reviews, Projekten und Engpässen in eine neue Quartalsreihenfolge übersetzen.',
 		'problem'         => [
 			'Strategische Roadmaps veralten schnell, wenn sich reale Ergebnisse anders entwickeln als geplant. Dann arbeiten Teams nach einem Plan weiter, der den aktuellen Engpass gar nicht mehr trifft.',
@@ -1663,7 +1663,7 @@ return [
 			],
 			[
 				'title'       => 'Neu Reihenfolge definieren',
-				'description' => 'Wir ordnen die nächsten WGOS-Bausteine für das kommende Quartal neu. So bleiben Ressourcen auf die wirksamsten Themen fokussiert.',
+				'description' => 'Wir ordnen die nächsten Anfrage-System-Bausteine für das kommende Quartal neu. So bleiben Ressourcen auf die wirksamsten Themen fokussiert.',
 			],
 			[
 				'title'       => 'Kapazität und Entscheidungsfenster abstimmen',
@@ -1697,7 +1697,7 @@ return [
 		'goal'            => 'Ein Reporting-Setup aufbauen, das nicht nur Kennzahlen zeigt, sondern Entwicklungen und Fragen für Stakeholder lesbar macht.',
 		'result'          => 'Sie erhalten ein Reporting-Dashboard mit sauberer Verlaufssicht und Entscheidungsrelevanz.',
 		'prerequisite'    => 'KPI-Dashboard Setup sollte stehen',
-		'seo_title'       => 'Reporting Dashboard - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Reporting Dashboard - Systembaustein | Haşim Üner',
 		'seo_description' => 'Reporting Dashboard für B2B-Websites: KPI-Sicht, Verläufe und Stakeholder-Reporting in einem lesbaren System verbinden.',
 		'problem'         => [
 			'Zwischen operativen Dashboards und Management-Reporting klafft oft eine Lücke. Das Team sieht Rohdaten, Stakeholder bekommen aber keine klare Geschichte aus Entwicklung, Ursachen und nächsten Schritten.',
@@ -1748,7 +1748,7 @@ return [
 		'goal'            => 'Hypothesen für Conversion-Verbesserungen sauber priorisieren, testen und bewerten.',
 		'result'          => 'Sie erhalten einen Testing-Backlog mit Logik für Priorisierung, Umsetzung und Auswertung.',
 		'prerequisite'    => 'Landing- oder Angebotsseiten und eine belastbare Messbasis müssen stehen',
-		'seo_title'       => 'Conversion Testing - WGOS Asset | Haşim Üner',
+		'seo_title'       => 'Conversion Testing - Systembaustein | Haşim Üner',
 		'seo_description' => 'Conversion-Hypothesen und Testing: Verbesserungen sauber priorisieren, prüfbar machen und auf echte Lerneffekte ausrichten.',
 		'problem'         => [
 			'Viele Optimierungsideen klingen plausibel, werden aber nie sauber gegeneinander priorisiert oder bewertet. Dadurch entstehen Umsetzungen ohne Lerngewinn.',
@@ -1799,8 +1799,8 @@ return [
 		'goal'            => 'Besucher bekommen sofort relevante Antworten aus Ihren Inhalten, ohne zu suchen – ohne Datenabfluss an Dritte.',
 		'result'          => 'Sie erhalten einen DSGVO-konformen KI-Assistenten, der aus Ihren Inhalten antwortet und Vertrieb wie Support bei Standardfragen entlastet.',
 		'prerequisite'    => 'Saubere Inhalte als Wissensbasis und eine klare Positionierung müssen stehen',
-		'seo_title'       => 'KI-Chatbot für WordPress – DSGVO-konform | WGOS Asset',
-		'seo_description' => 'Ein KI-Assistent, der aus Ihren Inhalten antwortet – auf eigener Infrastruktur, ohne Datenabfluss. 30 Credits im WGOS-System.',
+		'seo_title'       => 'KI-Chatbot für WordPress – DSGVO-konform | Systembaustein',
+		'seo_description' => 'Ein KI-Assistent, der aus Ihren Inhalten antwortet – auf eigener Infrastruktur, ohne Datenabfluss. 30 Credits im Anfrage-System.',
 		'problem'         => [
 			'Besucher haben Fragen, finden aber die Antworten auf der Website nicht schnell genug. Support und Vertrieb beantworten dieselben Standardfragen immer wieder – das kostet Zeit und verzögert echte Qualifizierung.',
 			'Ein KI-Assistent löst dieses Problem, wenn er aus Ihren eigenen Inhalten antwortet statt aus dem offenen Internet. Entscheidend ist, dass keine Besucherdaten an US-Provider fließen und die Verarbeitung auf eigener Infrastruktur bleibt.',
@@ -1816,7 +1816,7 @@ return [
 			],
 			[
 				'title'       => 'WordPress-native Einbindung umsetzen',
-				'description' => 'Wir integrieren den Assistenten direkt in Ihre WordPress-Seite – consent-integriert, ohne externen Widget-Code, wartbar im WGOS-Stack.',
+				'description' => 'Wir integrieren den Assistenten direkt in Ihre WordPress-Seite – consent-integriert, ohne externen Widget-Code, wartbar im Anfrage-System-Stack.',
 			],
 			[
 				'title'       => 'Qualifizierungslogik und Grenzen definieren',
@@ -1824,7 +1824,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Der KI-Assistent gehört im aktualisierten WGOS in den Kernbereich Weiterentwicklung. Er baut auf Fundament, Messbarkeit und klaren Inhalten auf und erweitert ein bereits tragfähiges System um einen dialogbasierten KI-Baustein.',
+			'Der KI-Assistent gehört im aktualisierten Anfrage-System in den Kernbereich Weiterentwicklung. Er baut auf Fundament, Messbarkeit und klaren Inhalten auf und erweitert ein bereits tragfähiges System um einen dialogbasierten KI-Baustein.',
 			'In Kombination mit Lead-Qualifizierung, RAG-Wissenssuche und n8n-Workflows entsteht daraus eine kontrollierte KI- und Automatisierungsschicht. Der Assistent bleibt dabei ein versionierter Systembaustein und kein loses ChatGPT-Widget.',
 		],
 		'priority'        => [
@@ -1850,7 +1850,7 @@ return [
 		'goal'            => 'Eingehende Anfragen automatisch nach Relevanz und Passung bewerten, damit der Vertrieb sich auf die richtigen Leads konzentriert.',
 		'result'          => 'Sie erhalten einen automatisierten Qualifizierungsprozess, der Leads priorisiert weiterleitet und unpassende Anfragen freundlich umleitet.',
 		'prerequisite'    => 'Klare Angebotsstruktur, sauberes Tracking und definierte Qualifizierungskriterien müssen stehen',
-		'seo_title'       => 'KI-Lead-Qualifizierung für B2B – WGOS Asset | Haşim Üner',
+		'seo_title'       => 'KI-Lead-Qualifizierung für B2B – Systembaustein | Haşim Üner',
 		'seo_description' => 'Formulare, die verstehen statt nur sammeln. KI-gestützte Vorselektion nach Relevanz – DSGVO-konform, direkt in WordPress. 20 Credits.',
 		'problem'         => [
 			'Viele B2B-Websites sammeln Anfragen, ohne sie zu bewerten. Der Vertrieb arbeitet dann jede Anfrage gleich ab – unabhängig von Passung und Potenzial. Das kostet Zeit und verwässert den Fokus.',
@@ -1875,7 +1875,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'KI-gestützte Lead-Qualifizierung gehört im aktualisierten WGOS in den Kernbereich Weiterentwicklung. Sie setzt eine funktionierende Conversion-Basis voraus und ergänzt diese um eine server-seitige Automatisierungslogik für Routing und Priorisierung.',
+			'KI-gestützte Lead-Qualifizierung gehört im aktualisierten Anfrage-System in den Kernbereich Weiterentwicklung. Sie setzt eine funktionierende Conversion-Basis voraus und ergänzt diese um eine server-seitige Automatisierungslogik für Routing und Priorisierung.',
 			'Zusammen mit KI-Assistent, RAG-Wissenssuche und n8n-Workflows bildet sie die operative KI-Schicht oberhalb der klassischen Kernbereiche. Die Datenverarbeitung bleibt dabei server-seitig auf eigenem Server und DSGVO-konform.',
 		],
 		'priority'        => [
@@ -1901,8 +1901,8 @@ return [
 		'goal'            => 'Besuchern und Mitarbeitern semantische Antworten aus dem eigenen Content-Pool liefern, ohne Datenabfluss an Dritte.',
 		'result'          => 'Sie erhalten eine KI-gestützte Suche, die natürliche Fragen versteht und Antworten mit Quellenangabe aus Ihren Inhalten zurückgibt.',
 		'prerequisite'    => 'Umfangreicher Content-Pool (50+ Seiten) und saubere, aktuelle Inhalte als Quelldaten',
-		'seo_title'       => 'RAG-Wissenssuche für WordPress – DSGVO-konform | WGOS Asset',
-		'seo_description' => 'Mitarbeiter und Kunden finden Antworten in Ihren Inhalten – KI-gestützt, ohne externe Datenflüsse. 25 Credits im WGOS-System.',
+		'seo_title'       => 'RAG-Wissenssuche für WordPress – DSGVO-konform | Systembaustein',
+		'seo_description' => 'Mitarbeiter und Kunden finden Antworten in Ihren Inhalten – KI-gestützt, ohne externe Datenflüsse. 25 Credits im Anfrage-System.',
 		'problem'         => [
 			'Die eingebaute WordPress-Suche matcht Keywords, versteht aber keine Fragen. Besucher finden Ergebnisse, aber selten die Antwort, die sie tatsächlich suchen. Bei komplexen Angeboten oder umfangreichem Content wird das zum Conversion-Killer.',
 			'RAG-Wissenssuche durchsucht Ihre Inhalte semantisch: Besucher stellen eine Frage in natürlicher Sprache und bekommen eine Antwort mit Quellenangabe. Keine Halluzinationen, weil nur Ihr eigener Content als Basis dient.',
@@ -1926,7 +1926,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Die RAG-Wissenssuche gehört im aktualisierten WGOS in den Kernbereich Weiterentwicklung. Sie nutzt bestehende Inhalte und technische Stabilität als Grundlage und erweitert das System um eine semantische Wissensschicht.',
+			'Die RAG-Wissenssuche gehört im aktualisierten Anfrage-System in den Kernbereich Weiterentwicklung. Sie nutzt bestehende Inhalte und technische Stabilität als Grundlage und erweitert das System um eine semantische Wissensschicht.',
 			'Das Asset kann standalone laufen oder als Grundlage für den KI-Assistenten dienen, der dieselbe RAG-Architektur für dialogbasierte Interaktion nutzt. In beiden Fällen bleibt die Verarbeitung auf eigenem Server.',
 		],
 		'priority'        => [
@@ -1952,7 +1952,7 @@ return [
 		'goal'            => 'Wiederkehrende Geschäftsprozesse mit LLM-Schritten automatisieren, ohne SaaS-Abhängigkeit und ohne Datenabfluss.',
 		'result'          => 'Sie erhalten dokumentierte n8n-Workflows mit KI-Schritten, die auf Ihrem eigenen Server laufen und wartbar bleiben.',
 		'prerequisite'    => 'Klarer, definierter Prozess mit bekannter Ein- und Ausgabe muss stehen',
-		'seo_title'       => 'LLM-Workflow-Automatisierung mit n8n – WGOS Asset | Haşim Üner',
+		'seo_title'       => 'LLM-Workflow-Automatisierung mit n8n – Systembaustein | Haşim Üner',
 		'seo_description' => 'Geschäftsprozesse mit KI-Schritten automatisieren: Zusammenfassungen, Klassifikation, Routing – server-seitig auf n8n. 20 Credits.',
 		'problem'         => [
 			'Viele Aufgaben im Tagesgeschäft sind repetitiv und textlastig: Anfragen zusammenfassen, E-Mails klassifizieren, Content-Entwürfe vorbereiten, Leads routen. Manuell kosten diese Schritte Stunden pro Woche, ohne dass sie besonderen Sachverstand erfordern.',
@@ -1977,7 +1977,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'LLM-Workflow-Automatisierung gehört im WGOS zur Weiterentwicklung und kommt erst, wenn Fundament und Messbarkeit stehen. Automatisierung braucht einen sauberen Prozess als Grundlage – ohne definierten Ablauf entsteht nur automatisiertes Chaos.',
+			'LLM-Workflow-Automatisierung gehört im Anfrage-System zur Weiterentwicklung und kommt erst, wenn Fundament und Messbarkeit stehen. Automatisierung braucht einen sauberen Prozess als Grundlage – ohne definierten Ablauf entsteht nur automatisiertes Chaos.',
 			'Das Asset ergänzt die Lead-Qualifizierung und andere Conversion-Bausteine um prozessübergreifende Automatisierung. n8n als Self-hosted-Plattform auf eigenem Hetzner-Server hält die Datenhoheit im Haus.',
 		],
 		'priority'        => [

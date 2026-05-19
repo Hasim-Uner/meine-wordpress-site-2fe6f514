@@ -22,7 +22,7 @@ return [
 			'Tracking-, Consent- oder Theme-Skripte blockieren den Main Thread genau in kaufnahen Momenten.',
 		],
 		'wgos_context'       => [
-			'Im WGOS-Kontext ist INP kein Technik-Selbstzweck. Die Metrik entscheidet mit darüber, ob Nutzer überhaupt den nächsten sinnvollen Schritt gehen.',
+			'Im Anfrage-System-Kontext ist INP kein Technik-Selbstzweck. Die Metrik entscheidet mit darüber, ob Nutzer überhaupt den nächsten sinnvollen Schritt gehen.',
 			'Deshalb stützt ein sauberer INP sowohl die Core-Web-Vitals-Cluster-Seite als auch die Performance-Analyse als Lead-Magnet.',
 		],
 		'primary_url_key'    => 'cwv',
@@ -68,7 +68,7 @@ return [
 			'Teams optimieren nur Lab-Tests, aber nicht die reale Startwahrnehmung auf mobilen Verbindungen.',
 		],
 		'wgos_context'     => [
-			'LCP ist im WGOS-Fundament ein Frühsignal: Wenn der erste Eindruck nicht stimmt, bremsen spätere SEO- oder CRO-Maßnahmen direkt mit.',
+			'LCP ist im technischen Fundament ein Frühsignal: Wenn der erste Eindruck nicht stimmt, bremsen spätere SEO- oder CRO-Maßnahmen direkt mit.',
 			'Das Glossar liefert die Definition. Die Cluster- und Tool-Seiten übernehmen Einordnung, Audit und nächsten Schritt.',
 		],
 		'primary_url_key'  => 'cwv',
@@ -200,7 +200,7 @@ return [
 			'Mehrere Seiten zielen auf dieselbe Suchintention, während Canonicals nur kosmetisch statt strukturell eingesetzt werden.',
 		],
 		'wgos_context'     => [
-			'Im WGOS-System ist Canonical-Steuerung Teil der Primary-URL-Disziplin. Die eigentliche Arbeit besteht darin, Intent sauber auf die richtige Seite zu legen und Drift zu verhindern.',
+			'Im Anfrage-System ist Canonical-Steuerung Teil der Primary-URL-Disziplin. Die eigentliche Arbeit besteht darin, Intent sauber auf die richtige Seite zu legen und Drift zu verhindern.',
 			'Darum ist Canonical URL ein idealer Glossar-Sub-Term für technisches SEO, aber kein Ersatz für die Cluster- oder Angebotsseite selbst.',
 		],
 		'primary_url_key'  => 'seo',
@@ -214,7 +214,7 @@ return [
 			],
 			[
 				'key'    => 'wgos',
-				'label'  => 'WGOS',
+				'label'  => 'Anfrage-System',
 				'reason' => 'Zeigt, wie Canonical-Disziplin in die gesamte Seiten- und Intent-Architektur passt.',
 			],
 		],
@@ -242,7 +242,7 @@ return [
 			'Landing Pages sind kampagnenfähig, aber die Datenbasis bleibt unscharf, weil Parameter und Events nicht zusammen gedacht werden.',
 		],
 		'wgos_context'     => [
-			'UTM-Parameter gehören im WGOS nicht in eine isolierte Tracking-Ecke. Sie sind Teil einer Messbarkeitsschicht, die später Kampagnen, Dashboards und Conversion-Entscheidungen tragfähig macht.',
+			'UTM-Parameter gehören im Anfrage-System nicht in eine isolierte Tracking-Ecke. Sie sind Teil einer Messbarkeitsschicht, die später Kampagnen, Dashboards und Conversion-Entscheidungen tragfähig macht.',
 			'Die Glossar-Seite erklärt den Begriff. Das eigentliche Setup, die Datenlogik und die Governance bleiben auf der Tracking-Primary-URL.',
 		],
 		'primary_url_key'  => 'tracking',
@@ -284,7 +284,7 @@ return [
 		],
 		'wgos_context'     => [
 			'Message Match ist ein typischer Glossar-Sub-Term für CRO: hochrelevant, aber zu kleinteilig für die Head-Term-Seite selbst.',
-			'Im WGOS verbindet der Begriff Positionierung, Landing-Page-Struktur und Kampagnenfähigkeit zu einem gemeinsamen Conversion-Thema.',
+			'Im Anfrage-System verbindet der Begriff Positionierung, Landing-Page-Struktur und Kampagnenfähigkeit zu einem gemeinsamen Conversion-Thema.',
 		],
 		'primary_url_key'  => 'cro',
 		'primary_url_label'=> 'Conversion Rate Optimization',
@@ -325,21 +325,21 @@ return [
 			'Owned Leads werden als Branding-Idee verstanden, nicht als messbare Architekturfrage aus Seiten, Tracking und Conversion.',
 		],
 		'wgos_context'     => [
-			'Owned Leads ist bewusst ein Haşim-Lexikon-Begriff. Genau solche Begriffe differenzieren das Glossar von generischen SEO-Wörterbüchern und stärken gleichzeitig die WGOS-Pillar-Seite.',
-			'Der Glossar-Eintrag erklärt die Logik. Die eigentliche Angebots- und Systemargumentation bleibt auf der WGOS-Primary-URL.',
+			'Owned Leads ist bewusst ein Haşim-Lexikon-Begriff. Genau solche Begriffe differenzieren das Glossar von generischen SEO-Wörterbüchern und stärken gleichzeitig die Anfrage-System-Seite.',
+			'Der Glossar-Eintrag erklärt die Logik. Die eigentliche Angebots- und Systemargumentation bleibt auf der Anfrage-System-Primary-URL.',
 		],
 		'primary_url_key'  => 'wgos',
-		'primary_url_label'=> 'WordPress Growth Operating System',
-		'primary_url_reason' => 'Der strategische Head Term bleibt auf der WGOS-Pillar-Seite, während das Glossar die interne Sprache schärft.',
+		'primary_url_label'=> 'Anfrage-System-Methode',
+		'primary_url_reason' => 'Der strategische Head Term bleibt auf der Anfrage-System-Seite, während das Glossar die interne Sprache schärft.',
 		'related_primary_urls' => [
 			[
 				'key'    => 'wgos',
-				'label'  => 'WGOS',
+				'label'  => 'Anfrage-System',
 				'reason' => 'Führt vom Begriff direkt in die Systemlogik aus Fundament, Messbarkeit, Sichtbarkeit und Conversion.',
 			],
 			[
 				'key'    => 'audit',
-				'label'  => 'System-Diagnose',
+				'label'  => 'Marktcheck',
 				'reason' => 'Ist der richtige Einstieg, wenn Owned Leads gewünscht sind, das System aber noch keine saubere Reihenfolge hat.',
 			],
 		],
@@ -349,7 +349,7 @@ return [
 		],
 		'related_terms'    => [ 'utm-parameter', 'message-match' ],
 		'seo_title'        => 'Owned Leads: Bedeutung und strategische Einordnung | Haşim Üner',
-		'seo_description'  => 'Owned Leads einfach erklärt: Was mit kontrollierbarer Nachfrage gemeint ist und warum der Begriff eng mit WGOS, Tracking und Angebotslogik zusammenhängt.',
+		'seo_description'  => 'Owned Leads einfach erklärt: Was mit kontrollierbarer Nachfrage gemeint ist und warum der Begriff eng mit Tracking und Angebotslogik zusammenhängt.',
 	],
 	'core-web-vitals' => [
 		'title'              => 'Core Web Vitals',

@@ -5,7 +5,7 @@
  * Champions-League Light-Layout (Cream + Copper) mit dunklem Hero & finalem CTA.
  * Design-Quelle: Bundle "monepage-wordpress-agentur-hannover" (Claude Design).
  * Styles werden vollstaendig via `assets/css/agentur.css` geladen — kein eingebettetes CSS.
- * WGOS-Assets werden dynamisch aus der Registry (publish-only) gerendert.
+ * Methodenbausteine werden dynamisch aus der Registry (publish-only) gerendert.
  *
  * @package Blocksy_Child
  */
@@ -54,7 +54,7 @@ $e3_metrics    = $e3['metrics'] ?? [];
 $e3_cpl_before = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after  = $e3_metrics['cpl_after']['display'] ?? '22 €';
 
-// ═══ WGOS Asset Registry ═══
+// ═══ Methodenbausteine aus der Asset Registry ═══
 $wgos_assets = function_exists( 'nexus_get_wgos_asset_registry' ) ? nexus_get_wgos_asset_registry() : [];
 
 // Gruppiere Assets nach core_area (nur publish)
@@ -290,7 +290,7 @@ get_header();
 			</div>
 			<div class="wp-agentur-segment-card">
 				<span class="wp-agentur-segment-card__tag">Womit</span>
-				<h3>Mit der WGOS-Methode, validiert am E3-Case</h3>
+				<h3>Mit einer Anfrage-System-Methode, validiert am E3-Case</h3>
 				<p>CPL von 150 € auf 22 € gesenkt, 1.750+ qualifizierte Anfragen in 9 Monaten und 12 % Abschlussquote.</p>
 			</div>
 		</div>
@@ -298,16 +298,16 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 04 — WGOS METHODE (6 Phasen + Vorher/Nachher)
+     SECTION 04 — ANFRAGE-SYSTEM-METHODE (6 Phasen + Vorher/Nachher)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="wgos">
 	<div class="nx-container">
 		<span class="wp-agentur-anchor" id="technisches-seo" aria-hidden="true"></span>
 		<div class="nx-section-header">
-			<p class="wp-agentur-eyebrow">WGOS · Methode</p>
+			<p class="wp-agentur-eyebrow">Methode</p>
 			<h2 class="nx-headline-section">WordPress, SEO, Tracking und CRO in der richtigen Reihenfolge.</h2>
 			<p class="nx-subheadline wp-agentur-section-intro">
-				WGOS ist die Methode hinter dem eigenen Anfrage-System. Nicht die Asset-Liste entscheidet, sondern die Frage, welcher Eingriff zuerst mehr kaufnahe Klarheit erzeugt.
+				Die Methode hinter dem eigenen Anfrage-System ordnet WordPress, SEO, Tracking und CRO nach Wirkung. Nicht die Baustein-Liste entscheidet, sondern die Frage, welcher Eingriff zuerst mehr kaufnahe Klarheit erzeugt.
 			</p>
 		</div>
 
@@ -385,9 +385,9 @@ get_header();
 	<div class="nx-container">
 		<div class="nx-section-header">
 			<p class="wp-agentur-eyebrow">Methodenbibliothek</p>
-			<h2 class="nx-headline-section">Die Bausteine hinter der WGOS-Methode.</h2>
+			<h2 class="nx-headline-section">Die Bausteine hinter der Anfrage-System-Methode.</h2>
 			<p class="nx-subheadline wp-agentur-section-intro">
-				Diese Bausteine bilden die WGOS-Methode. Welche zuerst gebaut werden, entscheidet die Analyse — nicht der Katalog.
+				Diese Bausteine bilden die Anfrage-System-Methode. Welche zuerst gebaut werden, entscheidet die Analyse — nicht der Katalog.
 			</p>
 		</div>
 

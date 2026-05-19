@@ -298,14 +298,14 @@ function hu_enqueue_assets() {
 		);
 	}
 
-	// ── G) Template: WGOS System ──────────────────────────────────
+	// ── G) Template: WGOS Client Dashboard ─────────────────────────
 	if ( is_page_template( 'page-wgos.php' ) || is_page( 'wgos' ) || is_page( 'wordpress-growth-operating-system' ) ) {
 		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-wgos-css', 'wgos.css', [ 'nexus-home-css' ] );
 		hu_enqueue_js( 'nexus-wgos-js', 'wgos.js', [ 'nexus-core-js' ] );
 	}
 
-	// ── G2) Template: WGOS Asset Hub ──────────────────────────────
+	// ── G2) Template: Baustein-Übersicht ──────────────────────────
 	if ( is_page_template( 'page-wgos-assets.php' ) || is_page( 'wgos-systemlandkarte' ) || is_page( 'wgos-asset-hub' ) || is_page( 'systemlandkarte' ) ) {
 		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-wgos-css', 'wgos.css', [ 'nexus-home-css' ] );

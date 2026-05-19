@@ -1,5 +1,5 @@
 /*
- * Homepage WGOS Mindmap Teaser (runtime, no build step required)
+ * Homepage Anfrage-System Teaser (runtime, no build step required)
  * Mounts into #homepage-mindmap-teaser-root on the front page.
  */
 (function () {
@@ -10,7 +10,7 @@
 		return;
 	}
 
-	var wgosUrl =
+	var systemUrl =
 		window.NexusHomeMindmapConfig && window.NexusHomeMindmapConfig.wgosUrl
 			? String(window.NexusHomeMindmapConfig.wgosUrl)
 			: "/wordpress-agentur-hannover/#wgos";
@@ -117,12 +117,12 @@
 		'<section class="hmt-root" aria-labelledby="hmt-title">' +
 		'<div class="hmt-shell">' +
 		'<p class="hmt-kicker">System-Vorschau</p>' +
-		'<h3 id="hmt-title">WGOS in 3 Phasen</h3>' +
+		'<h3 id="hmt-title">Anfrage-System in 3 Phasen</h3>' +
 		'<p class="hmt-subtitle">Fundament aufbauen, Wachstum stabilisieren, Skalierung kontrolliert hochfahren.</p>' +
-		'<div class="hmt-map" aria-label="WGOS Teaser Mindmap">' +
+		'<div class="hmt-map" aria-label="Anfrage-System Teaser">' +
 		phases.map(renderNode).join("") +
 		"</div>" +
-		'<a class="hmt-cta" href="' + wgosUrl + '">Das vollständige System →</a>' +
+		'<a class="hmt-cta" href="' + systemUrl + '">Marktcheck starten →</a>' +
 		"</div>" +
 		"</section>";
 

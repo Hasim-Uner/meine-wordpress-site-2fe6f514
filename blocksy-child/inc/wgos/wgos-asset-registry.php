@@ -92,7 +92,7 @@ function nexus_get_wgos_asset_registry() {
 		$definition['prerequisite']    = isset( $definition['prerequisite'] ) ? (string) $definition['prerequisite'] : '';
 		$definition['keyword']         = isset( $definition['keyword'] ) ? (string) $definition['keyword'] : $definition['title'];
 		$definition['excerpt']         = isset( $definition['excerpt'] ) ? (string) $definition['excerpt'] : '';
-		$definition['seo_title']       = hu_normalize_brand_text( isset( $definition['seo_title'] ) ? (string) $definition['seo_title'] : $definition['title'] . ' - WGOS Asset | Haşim Üner' );
+		$definition['seo_title']       = hu_normalize_brand_text( isset( $definition['seo_title'] ) ? (string) $definition['seo_title'] : $definition['title'] . ' - Systembaustein | Haşim Üner' );
 		$definition['seo_description'] = isset( $definition['seo_description'] ) ? (string) $definition['seo_description'] : $definition['excerpt'];
 		$definition['schema_type']     = isset( $definition['schema_type'] ) ? (string) $definition['schema_type'] : 'Service';
 		$definition['legacy_slugs']    = array_values(
@@ -493,11 +493,11 @@ function nexus_get_wgos_asset_content_html( $asset ) {
 				<aside class="wgos-note-card">
 					<span class="wgos-principle-kicker">Trust-Signal</span>
 					<h3>Dieses Asset ist Teil eines dokumentierten Systems.</h3>
-					<p>Wir priorisieren nicht isoliert, sondern gegen Strategie, Fundament, Messbarkeit und Conversion. Die Systemlogik ist im WGOS beschrieben und im Theme versioniert.</p>
+					<p>Wir priorisieren nicht isoliert, sondern gegen Strategie, Fundament, Messbarkeit und Conversion. Die Systemlogik ist im Theme versioniert und fachlich nachvollziehbar.</p>
 					<p class="wgos-inline-cta">
-						<a href="<?php echo esc_url( $wgos_url ); ?>">WGOS Hub ansehen</a>
+						<a href="<?php echo esc_url( $wgos_url ); ?>">Anfrage-System ansehen</a>
 						<span aria-hidden="true"> / </span>
-						<a href="<?php echo esc_url( $hub_url ); ?>">Zur Asset-Landkarte</a>
+						<a href="<?php echo esc_url( $hub_url ); ?>">Bausteine einordnen</a>
 					</p>
 				</aside>
 			</div>
@@ -542,7 +542,7 @@ function nexus_get_wgos_asset_content_html( $asset ) {
 		<div class="wgos-container">
 			<div class="wgos-section-head">
 				<span class="wgos-principle-kicker">Systemlogik</span>
-				<h2 class="wgos-h2">Dieses Asset im WGOS-System</h2>
+				<h2 class="wgos-h2">Dieses Asset im Anfrage-System</h2>
 			</div>
 			<div class="wgos-principle-shell">
 				<div class="wgos-prose">
@@ -551,7 +551,7 @@ function nexus_get_wgos_asset_content_html( $asset ) {
 					<?php endforeach; ?>
 				</div>
 				<p class="wgos-inline-cta wgos-inline-cta--principle">
-					<a href="<?php echo esc_url( $hub_url ); ?>">Dieses Asset in der Landkarte einordnen</a>
+					<a href="<?php echo esc_url( $hub_url ); ?>">Dieses Asset in der Methode einordnen</a>
 				</p>
 			</div>
 		</div>
@@ -576,9 +576,9 @@ function nexus_get_wgos_asset_content_html( $asset ) {
 			<div class="wgos-asset-cta-card">
 				<span class="wgos-principle-kicker">Nächster Schritt</span>
 				<h2 class="wgos-h2">Prüfen, ob dieses Asset jetzt Priorität hat.</h2>
-				<p class="wgos-section-intro">Im Strategiegespräch klären wir, ob dieses Asset jetzt Priorität hat – oder ob ein anderer Baustein zuerst dran ist.</p>
+				<p class="wgos-section-intro">Im Marktcheck klären wir, ob dieses Asset jetzt Priorität hat - oder ob ein anderer Baustein zuerst dran ist.</p>
 				<div class="wgos-hero__actions">
-					<a href="<?php echo esc_url( $calendar_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_wgos_asset_content_calendar" data-track-category="lead_gen">Strategiegespräch vereinbaren</a>
+					<a href="<?php echo esc_url( $audit_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_wgos_asset_content_calendar" data-track-category="lead_gen">Marktcheck starten</a>
 				</div>
 			</div>
 		</div>
@@ -588,7 +588,7 @@ function nexus_get_wgos_asset_content_html( $asset ) {
 		<div class="wgos-container">
 			<div class="wgos-section-head">
 				<span class="wgos-principle-kicker">Interne Verlinkung</span>
-				<h2 class="wgos-h2">Verwandte WGOS-Bausteine</h2>
+				<h2 class="wgos-h2">Verwandte Systembausteine</h2>
 			</div>
 			<div class="wgos-asset-related-grid">
 				<?php foreach ( $related as $item ) : ?>

@@ -101,8 +101,8 @@ function nexus_get_public_proof_data() {
 		],
 		'ownership_sentence'  => 'Code, Inhalte, Zugänge und Setups bleiben bei Ihnen. Laufende Zusammenarbeit bedeutet Weiterentwicklung, nicht Abhängigkeit.',
 		'primary_term'        => 'Eigenes Anfrage-System für Solar- und Wärmepumpen-Anbieter',
-		'framework_label'     => 'WGOS = WordPress Growth Operating System',
-		'framework_long'      => 'WordPress Growth Operating System',
+		'framework_label'     => 'Anfrage-System-Methode',
+		'framework_long'      => 'Methode für eigene Anfrage-Systeme',
 		'allowed_subterms'    => [
 			'Marktcheck',
 			'priorisierte Folgeanalyse',
@@ -449,7 +449,7 @@ function nexus_get_category_url( $slug, $fallback = '' ) {
 }
 
 /**
- * Return the canonical public URL for one versioned WGOS cluster route.
+ * Return the canonical public URL for one versioned service cluster route.
  *
  * Cluster routes stay on stable public slugs even if legacy editor pages with
  * shorter aliases still exist in the database.
@@ -607,8 +607,8 @@ function nexus_get_agentur_faq_items() {
 			'answer'   => 'Nicht automatisch. Oft fehlt nicht der neue Look, sondern die richtige Reihenfolge zwischen Fundament, Daten, Sichtbarkeit und Conversion. Ein Relaunch ist nur sinnvoll, wenn die bestehende Struktur nicht mehr trägt.',
 		],
 		[
-			'question' => 'Was unterscheidet WGOS von einem klassischen Agentur-Projekt?',
-			'answer'   => 'WGOS ordnet Strategie, Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängende Methode. Entscheidend ist die Reihenfolge: Welche Seite trägt welche Anfrage, welcher Kanal liefert echte Projekte und welche Änderung erzeugt als Nächstes Wirkung.',
+			'question' => 'Was unterscheidet diese Methode von einem klassischen Agentur-Projekt?',
+			'answer'   => 'Die Methode ordnet Strategie, Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängenden Anfragepfad. Entscheidend ist die Reihenfolge: Welche Seite trägt welche Anfrage, welcher Kanal liefert echte Projekte und welche Änderung erzeugt als Nächstes Wirkung.',
 		],
 		[
 			'question' => 'Für wen passt diese Seite nicht?',

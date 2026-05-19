@@ -166,7 +166,7 @@ function hu_render_founding_cohort_block( $args = [] ) {
 								<tr>
 									<th scope="row">Selektion</th>
 									<td>Fit nach Diagnose</td>
-									<td>Solar/Wärmepumpe DACH, 10-25 MA, mind. 5.000 € Werbebudget / Mt</td>
+									<td>Solar/Wärmepumpe DACH, eigener Vertrieb, hohe Projektwerte, mind. 5.000 € Werbebudget / Mt</td>
 								</tr>
 							</tbody>
 						</table>
