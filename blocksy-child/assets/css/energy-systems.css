@@ -2821,6 +2821,19 @@
   line-height: 1.7;
 }
 
+.e3-coda a {
+  color: var(--solar-deep);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.e3-coda a:hover,
+.e3-coda a:focus-visible {
+  color: var(--solar-accent);
+}
+
 .e3-implementation-list {
   display: grid;
   gap: 0;

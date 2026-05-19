@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $diagnostic_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+$agentur_url    = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ) : home_url( '/wordpress-agentur-hannover/' );
 
 $tracking_attrs = 'data-track-section="case_e3_methodology" data-track-funnel-stage="proof"';
 
@@ -286,6 +287,11 @@ get_header();
 						</li>
 					<?php endforeach; ?>
 				</ul>
+
+				<p class="e3-coda e3-coda--agentur" data-reveal>
+					Wenn es nicht um Solar oder Wärmepumpe geht, sondern um ein erklärungsbedürftiges B2B-Angebot auf WordPress, ist der passendere Einstieg die
+					<a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_e3_to_agentur" data-track-category="navigation" data-track-section="vertiefung">WordPress Agentur Hannover</a>.
+				</p>
 			</div>
 		</section>
 

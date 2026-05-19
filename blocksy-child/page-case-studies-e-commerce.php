@@ -15,6 +15,7 @@ get_header();
 $request_url    = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $request_cta    = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Anfrage stellen';
 $e3_url         = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'e3', home_url( '/e3-new-energy/' ) ) : home_url( '/e3-new-energy/' );
+$agentur_url    = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ) : home_url( '/wordpress-agentur-hannover/' );
 $e3_cpl_before  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
 $e3_cpl_after   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
 $e3_lead_count  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
@@ -112,6 +113,26 @@ $e3_sales_rate  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conve
 						<li>Consent, Tracking und CRM-Attribution bis zum Abschluss verbunden</li>
 						<li>Die Seite lernt wieder, welche Anfrage tatsächlich Umsatz bringt</li>
 					</ul>
+				</div>
+			</article>
+		</div>
+	</section>
+
+	<!-- 4. B2B WordPress Bridge -->
+	<section class="nx-section results-case">
+		<div class="nx-container">
+			<article class="results-case-card results-case-card--highlight">
+				<div class="results-case-card__content">
+					<span class="results-case-card__kicker">Sekundärer Einstieg · WordPress Agentur Hannover</span>
+					<h2 class="results-case-card__title">Wenn es nicht um Solar geht, aber um ein erklärungsbedürftiges B2B-Angebot.</h2>
+					<p class="results-case-card__context">
+						Die Methodik hinter E3 ist nicht „mehr Leads kaufen", sondern WordPress, Tracking, SEO und Conversion als Anfrage-System zu ordnen. Für B2B-Websites außerhalb des Solar-Fokus ist die Agentur-Seite der passendere Einstieg.
+					</p>
+					<div class="results-case-card__actions">
+						<a href="<?php echo esc_url( $agentur_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_results_to_agentur" data-track-category="navigation" data-track-section="results_b2b_bridge">
+							WordPress Agentur Hannover ansehen
+						</a>
+					</div>
 				</div>
 			</article>
 		</div>
