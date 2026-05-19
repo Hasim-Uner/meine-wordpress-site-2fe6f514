@@ -1071,6 +1071,69 @@
 	body.has-sticky-wl-cta { padding-bottom: 84px; }
 }
 
+@media (max-width: 420px) {
+	.wl-page {
+		overflow-x: clip;
+	}
+
+	.wl-hero__title {
+		font-size: 2.35rem;
+		line-height: 1.04;
+		letter-spacing: 0;
+		overflow-wrap: anywhere;
+	}
+
+	.wl-hero__title-line {
+		overflow-wrap: anywhere;
+		hyphens: auto;
+	}
+
+	.wl-hero__actions {
+		align-items: stretch;
+	}
+
+	.wl-hero__actions .nx-btn {
+		width: 100%;
+		justify-content: center;
+		white-space: normal;
+		text-align: center;
+	}
+
+	.wl-sticky-cta {
+		padding-inline: 0.75rem;
+	}
+
+	.wl-sticky-cta__inner {
+		max-width: 100%;
+		gap: 0.625rem;
+	}
+
+	.wl-sticky-cta__label span {
+		display: none;
+	}
+
+	.wl-sticky-cta .nx-btn {
+		min-width: 0;
+		max-width: 50%;
+		padding: 0.6rem 0.8rem;
+		line-height: 1.1;
+		white-space: normal;
+		text-align: center;
+		justify-content: center;
+	}
+}
+
+@media (max-width: 360px) {
+	.wl-sticky-cta__label {
+		display: none;
+	}
+
+	.wl-sticky-cta .nx-btn {
+		width: 100%;
+		max-width: none;
+	}
+}
+
 /* =====================================================================
    Reduced Motion
    ===================================================================== */

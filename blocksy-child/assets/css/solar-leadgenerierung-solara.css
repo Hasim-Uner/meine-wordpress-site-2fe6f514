@@ -333,6 +333,31 @@
   .solara-landing .sol-hero-metrics { flex-wrap: wrap; gap: 20px; }
 }
 
+@media (max-width: 560px) {
+  .solara-landing {
+    overflow-x: clip;
+  }
+
+  .solara-landing .sol-wrap {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .solara-landing .sol-hero-h1 {
+    font-size: 2.5rem;
+    line-height: 1;
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .solara-landing .sol-btn {
+    width: 100%;
+    line-height: 1.15;
+    text-align: center;
+    white-space: normal;
+  }
+}
+
 /* ── Hero-CTA-Card ────────────────────────────────────────── */
 .solara-landing .sol-cta-card {
   position: relative;
@@ -1840,6 +1865,24 @@
     background: rgba(255,255,255,.22);
     align-items: center;
     justify-content: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .solara-landing .sol-sticky-cta {
+    left: 10px;
+    right: 10px;
+    padding: 12px 14px;
+    border-radius: 18px;
+    gap: 10px;
+    line-height: 1.15;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 360px) {
+  .solara-landing .sol-sticky-cta-arrow {
+    display: none;
   }
 }
 

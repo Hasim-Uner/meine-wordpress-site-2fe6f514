@@ -572,3 +572,44 @@ body.nx-blog-header-active .ct-mobile-menu {
         font-size: 0.62rem;
     }
 }
+
+@media (max-width: 420px) {
+    .nx-site-header > .nx-container {
+        padding-inline: 12px;
+    }
+
+    .nx-site-header__shell {
+        padding: 12px;
+    }
+
+    .nx-site-header__shell--energy {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .nx-site-header__energy-cta {
+        align-items: center;
+        justify-content: center;
+        max-width: 8.75rem;
+        min-width: 0;
+        padding: 0 10px;
+        line-height: 1.05;
+        letter-spacing: 0;
+        text-align: center;
+        white-space: normal;
+    }
+
+    .nx-site-header__energy-cta-microcopy {
+        display: none;
+    }
+}
+
+@media (max-width: 360px) {
+    .nx-site-header__brand.site-logo {
+        font-size: 0.74rem;
+    }
+
+    .nx-site-header__energy-cta {
+        max-width: 7.75rem;
+        font-size: 0.78rem;
+    }
+}

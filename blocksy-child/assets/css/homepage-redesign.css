@@ -306,6 +306,38 @@
   .hu-hp .hu-stat-divider { display: none; }
 }
 
+@media (max-width: 560px) {
+  .hu-hp {
+    overflow-x: clip;
+  }
+
+  .hu-hp .hu-container {
+    padding-inline: 18px;
+  }
+
+  .hu-hp .hu-display,
+  .hu-hp .hu-hero__title {
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .hu-hp .hu-tag {
+    white-space: normal;
+  }
+
+  .hu-hp .hu-hero__ctas {
+    align-items: stretch;
+  }
+
+  .hu-hp .hu-hero__ctas .hu-btn {
+    width: 100%;
+    justify-content: center;
+    line-height: 1.15;
+    text-align: center;
+    white-space: normal;
+  }
+}
+
 /* ─── Quiet lead-system sketch ────────────────────────────── */
 .hu-hp .hu-diagram {
   min-height: 430px;
