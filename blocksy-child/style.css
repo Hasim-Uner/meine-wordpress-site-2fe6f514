@@ -723,6 +723,70 @@ p.hero-stack,
 }
 .widget .ft { margin: 0; }
 
+/* --- Footer-Variante: Energy / Audit Minimal --- */
+.ft--energy-minimal { padding: 0; }
+.ft__energy-shell {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: clamp(3rem, 6vw, 4.5rem) 1.5rem clamp(2rem, 4vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+}
+.ft__energy-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+}
+.ft__energy-brand .ft__logo {
+    font-size: 1.65rem;
+    letter-spacing: 0.02em;
+}
+.ft__energy-tag {
+    color: var(--muted-strong);
+    font-size: 1rem;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 44ch;
+}
+.ft--energy-minimal .ft__cta {
+    min-width: 240px;
+}
+.ft__energy-legal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+}
+.ft__energy-legal a {
+    color: var(--muted-strong);
+    text-decoration: none;
+    transition: color .2s ease;
+}
+.ft__energy-legal a:hover,
+.ft__energy-legal a:focus-visible { color: var(--fg); }
+.ft__social--energy { margin-top: 0.25rem; }
+.ft__social--energy a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--muted-strong);
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: color .2s ease;
+}
+.ft__social--energy a:hover,
+.ft__social--energy a:focus-visible { color: var(--fg); }
+.ft__social--energy svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
 /* --- LEGAL PAGE MODAL --- */
 .legal-modal {
     position: fixed;
