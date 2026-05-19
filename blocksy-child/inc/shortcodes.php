@@ -146,7 +146,7 @@ function hu_home_urls() {
 		'blog'        => nexus_get_primary_public_url( 'blog', home_url( '/blog/' ) ),
 		'e3'          => nexus_get_primary_public_url( 'e3', home_url( '/e3-new-energy/' ) ),
 		'contact'     => nexus_get_primary_public_url( 'contact', home_url( '/kontakt/' ) ),
-		'github_repo' => 'https://github.com/Hasim-hannover/meine-wordpress-site',
+		'github_repo' => 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514',
 		'linkedin'    => 'https://www.linkedin.com/in/hasim-%C3%BCner/',
 	];
 

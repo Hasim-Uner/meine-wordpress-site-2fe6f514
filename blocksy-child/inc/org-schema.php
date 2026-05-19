@@ -18,7 +18,7 @@ function hu_person_profile_url() {
 function hu_person_same_as_urls() {
     return [
         'https://www.linkedin.com/in/hasim-%C3%BCner/',
-        'https://github.com/Hasim-hannover/',
+        'https://github.com/Hasim-Uner/',
         'https://hasimuener.org/',
         'https://www.facebook.com/hasim.uner',
     ];
@@ -81,7 +81,7 @@ function hu_output_schema()
         ],
         'sameAs' => [
             'https://www.linkedin.com/in/hasim-%C3%BCner/',
-            'https://github.com/Hasim-hannover/',
+            'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514',
         ],
         'hasMap' => 'https://www.google.com/maps?cid=7273014379384770345',
         'knowsAbout' => [
