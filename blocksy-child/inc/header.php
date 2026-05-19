@@ -310,5 +310,10 @@ function nexus_get_site_header_eyebrow() {
 		return '';
 	}
 
+	// Auf der Whitelabel-Seite ist die Zielgruppe Agenturen — Solar-Eyebrow wäre off-message.
+	if ( is_page_template( 'page-whitelabel-retainer.php' ) || is_page( 'whitelabel-retainer' ) || is_page( 'whitelabel' ) ) {
+		return '';
+	}
+
 	return __( 'Anfrage-Systeme für Solar & Wärmepumpe.', 'blocksy-child' );
 }

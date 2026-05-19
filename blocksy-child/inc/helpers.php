@@ -1456,6 +1456,7 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-kunden-gewinnen-solarteure.php',
 		'page-cost-per-lead-photovoltaik.php',
 		'page-qualifizierte-pv-anfragen.php',
+		'page-whitelabel-retainer.php',
 	];
 
 	foreach ( $page_templates as $page_template ) {
