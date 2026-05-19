@@ -5,13 +5,13 @@
 - Kategorie: Markteinordnung
 - Tags: Solar Leads, Aroundhome, Photovoltaik, Vergleichsportal, Markteinordnung
 - SEO-Titel (max. 60): Aroundhome für Solarteure: Markteinordnung
-- Meta-Description (max. 155): Aroundhome als Vergleichsportal-Modell für PV-Anfragen: Geschäftsmodell, Verteilungslogik und welche Faktoren über die Wirtschaftlichkeit entscheiden.
-- Excerpt: Sachliche Einordnung des Vergleichsportal-Modells am Beispiel Aroundhome – Verteilungslogik, Telefon-Vorqualifizierung und Bewertungskriterien für Solar-Anbieter.
+- Meta-Description (max. 155): Aroundhome als Vergleichsportal für PV-Anfragen: Modell, Verteilungslogik und wann eigene Anfrage-Systeme wirtschaftlicher sind.
+- Excerpt: Sachliche Einordnung des Vergleichsportal-Modells am Beispiel Aroundhome: Verteilungslogik, Vorqualifizierung, Markenwirkung und Alternative durch eigene Anfrage-Systeme.
 - Hero-Bild Alt-Text: Markteinordnung Aroundhome als Vergleichsportal für Photovoltaik-Anfragen.
-- Primärer CTA: `Solar-Marktcheck`
-- Status: Entwurf
+- Primärer CTA: `Solar-Marktcheck starten`
+- Status: Ready to Publish
 
-> Hinweis: Dieser Beitrag ist eine **eigene Markteinordnung aus Sicht eines Solar-/SHK-Dienstleisters** und stellt keinen Erfahrungsbericht oder vergleichende Anbieter-Bewertung im Sinne des UWG dar. Alle Angaben beruhen auf öffentlich zugänglichen Informationen und marktüblichen Spannen. Markenrechte verbleiben bei den jeweiligen Inhabern.
+> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfrage-Systeme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
 
 # Aroundhome für Solarteure: Markteinordnung des Vergleichsportal-Modells
 
@@ -19,36 +19,62 @@
 
 Aroundhome ist eines der bekanntesten **Vergleichsportale** im deutschen Endkunden-Markt für Handwerks- und Energieprojekte. Das Modell ist breit aufgestellt (PV, Wärmepumpe, Treppenlift, Garten, etc.) und nutzt typischerweise eine **telefonische Vorprüfung** der Endkundenanfragen, bevor sie an Fachbetriebe verteilt werden.
 
+Für Solarteure ist deshalb nicht die Frage, ob das Portal grundsätzlich Nachfrage erzeugen kann. Die wichtigere Frage lautet: **Bleibt daraus eine eigene Kundenbeziehung oder entsteht eine gemietete Lead-Abhängigkeit?**
+
+Vergleichsportale können kurzfristig Volumen liefern. Ein eigenes Anfrage-System baut dagegen ein Betriebs-Asset auf: eigene Sichtbarkeit, eigene Daten, eigene Vorqualifizierung und exklusive Anfragen auf der eigenen Plattform.
+
 ## Wer sucht das?
 
-- Solarteure, die das Angebot mehrerer Lead-Anbieter vergleichen wollen
-- Vertriebsleiter, die Vergleichsportale als Kanal evaluieren
-- Marketing-Verantwortliche im PV-Mittelstand, die zwischen Mengen-Leads und exklusiver Akquise abwägen
+- Solarteure, die das Angebot mehrerer Lead-Anbieter wirtschaftlich einordnen wollen
+- Vertriebsleiter, die Vergleichsportale als Kanal evaluieren und Abschlussquoten verbessern müssen
+- Inhaber von PV-Betrieben, die Portal-Leads mit eigener Leadgenerierung vergleichen
+- Marketing-Verantwortliche im PV-Mittelstand, die von gemieteten Datensätzen zu eigener Anfrage-Infrastruktur wechseln wollen
 
 ## Wie das Vergleichsportal-Modell funktioniert
 
-Vergleichsportale wie Aroundhome positionieren sich gegenüber dem Endkunden als **neutrale Vermittlungs-Instanz**. Der Endkunde gibt seinen Bedarf an, das Portal liefert mehrere Angebote von Fachbetrieben. Die Mechanik:
+Vergleichsportale wie Aroundhome positionieren sich gegenüber dem Endkunden als **neutrale Vermittlungs-Instanz**. Der Endkunde gibt seinen Bedarf an, das Portal stellt den Kontakt zu passenden Fachbetrieben her. Die konkrete Verteilung hängt vom jeweiligen Vertrag, der Region und dem Produkttyp ab. Die typische Mechanik aus Sicht des Fachbetriebs:
 
 - Endkunde füllt ein Formular oder telefoniert mit dem Portal
 - Portal qualifiziert grob vor (Region, Projekttyp, Budget-Range)
-- Anfrage wird an typischerweise **drei bis fünf Fachbetriebe** parallel weitergegeben
-- Fachbetriebe konkurrieren um den Auftrag
+- Anfrage wird je nach Modell an einen oder mehrere Fachbetriebe weitergegeben
+- Fachbetriebe konkurrieren um Kontaktgeschwindigkeit, Vertrauen, Angebot und Preis
 
-Wirtschaftlich heißt das für den Fachbetrieb: schnelle Reaktion ist kritisch, weil der Endkunde gezielt **mehrere Angebote** einholt – das ist sein primäres Motiv für die Portal-Nutzung.
+Wirtschaftlich heißt das: Der Fachbetrieb kauft nicht automatisch eine exklusive Kundenbeziehung. Er kauft zunächst einen Zugang zu einer Anfrage. Wie wertvoll dieser Zugang ist, entscheidet sich erst durch Exklusivität, technische Vorqualifizierung, Reaktionszeit, Abschlussquote und Marge.
 
 ## Drei Bewertungs-Dimensionen
 
 ### 1. Telefon-Vorprüfung
 
-Die telefonische Vorqualifizierung filtert offensichtlich unpassende Anfragen heraus. Das ist ein wirtschaftlicher Vorteil gegenüber reinen Online-Formular-Portalen. Die Tiefe der Vorqualifizierung variiert jedoch – konkrete Dachgrößen, Bestandsanlagen oder Investitionsbereitschaft werden selten abgefragt.
+Eine telefonische Vorprüfung kann offensichtlich unpassende Anfragen reduzieren. Das ist ein Vorteil gegenüber reinen Online-Formularen ohne menschliche Prüfung.
+
+Für Solarteure reicht eine grobe Vorprüfung aber selten aus. Wirtschaftlich entscheidend sind Fragen wie:
+
+- Passt die Region zum Vertriebsgebiet?
+- Ist die Immobilie grundsätzlich geeignet?
+- Gibt es eine belastbare Investitionsabsicht?
+- Ist der Ansprechpartner erreichbar und entscheidungsfähig?
+- Sind Projektwert und Marge hoch genug?
+
+Wenn diese Informationen fehlen, trägt der Vertrieb weiterhin einen großen Teil der Qualifizierungsarbeit selbst.
 
 ### 2. Mehrfach-Verteilung
 
-Die Verteilung an drei bis fünf Wettbewerber ist im Vergleichsportal-Modell strukturell angelegt. Wer den Auftrag gewinnen will, muss innerhalb weniger Stunden reagieren und ein konkurrenzfähiges Angebot vorlegen.
+Bei Vergleichsportalen ist Wettbewerb Teil des Nutzer-Versprechens: Der Endkunde erwartet mehrere Angebote oder zumindest eine neutrale Vorauswahl. Je stärker eine Anfrage verteilt wird, desto höher werden Reaktionsdruck und Vergleichbarkeit.
+
+Das muss nicht automatisch schlecht sein. Es wird aber problematisch, wenn der Fachbetrieb:
+
+- nicht innerhalb weniger Minuten reagieren kann
+- kein starkes Erstgespräch hat
+- keinen klaren Differenzierungsgrund liefert
+- im Angebot fast nur über den Preis verglichen wird
+
+Dann kann ein bezahlter Lead schnell zum Margenproblem werden.
 
 ### 3. Markenwirkung
 
-Endkunden assoziieren die positive Erfahrung mit dem Portal, nicht mit dem einzelnen Fachbetrieb. Wiederkehr- und Empfehlungseffekte für den Fachbetrieb sind dadurch strukturell begrenzt.
+Der Endkunde startet seine Reise beim Portal, nicht beim Fachbetrieb. Dadurch entsteht Vertrauen zunächst zur Vermittlungsplattform. Der Solarteur muss dieses Vertrauen im Erstkontakt nachträglich aufbauen.
+
+Das ist der zentrale Unterschied zu einem eigenen Anfrage-System: Bei eigener Sichtbarkeit entsteht die Kundenbeziehung direkt auf der eigenen Website. Die Marke, die Daten, die Anfragehistorie und die Optimierung bleiben beim Betrieb. Genau hier liegt der Unterschied zwischen **Lead-Miete** und **Ownership**.
 
 ## Warnsignale, auf die Solarteure achten sollten
 
@@ -56,19 +82,36 @@ Endkunden assoziieren die positive Erfahrung mit dem Portal, nicht mit dem einze
 - **Reaktionszeit > 4 Stunden** – Auftrag faktisch verloren
 - **Generische Projektbeschreibung** ohne klaren Kaufintent
 - **Vertrag mit Mindestabnahme** ohne Volumengarantie für qualifizierte Anfragen
+- **Keine klare Trennung zwischen exklusiven und geteilten Anfragen**
+- **Kein Zugriff auf die Datenbasis**, mit der Kampagnen und Abschlussquoten verbessert werden können
 
-## Alternative: Eigene Anfrage-Infrastruktur
+## Die strategische Alternative: Eigene Anfrage-Infrastruktur
 
-Eigene Anfrage-Systeme (Money Page, Server-Side-Tracking, Vorqualifizierung im eigenen Eigentum) liefern Anfragen, die per Definition **exklusiv** sind und vollständig **vorqualifiziert** beim Vertrieb ankommen. Der [Methodik-Case E3 New Energy](https://hasimuener.de/e3-new-energy/) zeigt: CPL 150 € → 22 € (über 85 %), 1.750+ qualifizierte Anfragen, 12 % Abschlussquote über 9 Monate.
+Die Alternative zu gemieteten Portal-Leads ist kein weiteres Tool, sondern eine eigene Anfrage-Infrastruktur:
+
+- eine such- und conversionstarke Money Page
+- klare Angebots- und Vertrauensführung
+- Vorqualifizierung nach Region, Projektwert und Vertriebsfit
+- Server-Side-Tracking auf eigener Datenbasis
+- Übergabe an CRM und Vertrieb mit sauberem Kontext
+
+So entsteht ein Betriebs-Asset. Die Anfrage kommt nicht aus einem fremden Portal, sondern aus einer Plattform, die dem Betrieb gehört.
+
+Der [Methodik-Case E3 New Energy](https://hasimuener.de/e3-new-energy/) zeigt diesen Hebel konkret: Der Cost per Lead sank von 150 € auf 22 € bei über 1.750 qualifizierten Anfragen, 12 % Abschlussquote und 9 Monaten Optimierungszeit. Das ist kein allgemeines Versprechen, aber ein belastbarer Beleg dafür, was möglich wird, wenn Website, Tracking, Vorqualifizierung und Vertrieb zusammengebaut werden.
 
 ## Wann das Vergleichsportal-Modell trotzdem Sinn ergibt
 
 - Übergangslösung beim **Markteintritt in einer neuen Region** ohne eigene Sichtbarkeit
 - **Volumen-Ergänzung** zu einer bereits funktionierenden eigenen Strecke
 - **Validierung** einer neuen Zielgruppe vor dem Aufbau eigener Funnels
+- kurzfristige Auslastung, wenn der Vertrieb sehr schnell reagieren kann
 
-Als alleinige Lead-Quelle ist das Modell im 2026er Markt für PV/Wärmepumpe wirtschaftlich schwer zu rechtfertigen – siehe [TCO-Vergleich Mieten vs. Besitzen](https://hasimuener.de/eigene-leadgenerierung-vs-portale/).
+Als alleinige Lead-Quelle ist das Modell im 2026er Markt für PV/Wärmepumpe jedoch riskant. Es macht Betriebe abhängig von externer Reichweite, fremder Datenbasis und schwankender Lead-Qualität. Eine ausführlichere System-Gegenüberstellung finden Sie im Vergleich [eigene Leadgenerierung vs. Lead-Portale](https://hasimuener.de/eigene-leadgenerierung-vs-portale/).
 
-## Nächster Schritt
+Für Betriebe mit eigener Vertriebsverantwortung, hohen Projektwerten und klarem Zielgebiet ist der strategisch stärkere Weg meist: Portal-Leads nicht blind abschalten, sondern parallel eine eigene Anfrage-Infrastruktur aufbauen. So wird aus kurzfristigem Volumen schrittweise ein eigenes Akquise-Asset.
 
-Im 60-Sekunden-Marktcheck wird einsortiert, ob Vergleichsportale für Ihren Betrieb wirtschaftlich sinnvoll sind oder ob ein eigenes Anfrage-System der bessere Hebel ist. → [Solar-Marktcheck starten](https://hasimuener.de/solar-waermepumpen-leadgenerierung/#marktcheck)
+## Nächster Schritt: Solar-Marktcheck
+
+Wenn Sie prüfen möchten, ob sich ein eigenes Anfrage-System für Ihren Solar-, Wärmepumpen- oder Speicherbetrieb wirtschaftlich lohnt, starten Sie mit dem kostenfreien Marktcheck. Dabei werden Projektwert, Region, Vertriebsprozess, aktuelle Lead-Kosten und Abhängigkeit von Portalen eingeordnet.
+
+→ [Solar-Marktcheck starten](https://hasimuener.de/solar-waermepumpen-leadgenerierung/#marktcheck)
