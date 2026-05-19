@@ -747,12 +747,20 @@
 }
 
 /* -----------------------------------------------------------
-   Scroll-Reveal
+   Scroll-Reveal — Progressive Enhancement
+   Standard: Content sichtbar. JS setzt .js-reveal als Marker,
+   erst dann wird der initial-Hidden-Zustand aktiv. Ohne JS
+   bleibt alles sichtbar (kein toter Content).
 ----------------------------------------------------------- */
 .nexus-about [data-reveal] {
+	opacity: 1;
+	transform: none;
+	transition: opacity 0.6s var(--about-ease), transform 0.6s var(--about-ease);
+}
+
+.nexus-about.js-reveal [data-reveal]:not(.is-revealed) {
 	opacity: 0;
 	transform: translateY(20px);
-	transition: opacity 0.6s var(--about-ease), transform 0.6s var(--about-ease);
 }
 
 .nexus-about [data-reveal].is-revealed {

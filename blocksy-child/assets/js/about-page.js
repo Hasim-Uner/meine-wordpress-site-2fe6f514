@@ -13,18 +13,28 @@
 	'use strict';
 
 	function initRevealObserver() {
+		var about          = document.querySelector( '.nexus-about' );
 		var revealElements = document.querySelectorAll( '.nexus-about [data-reveal]' );
 
-		if ( ! revealElements.length ) {
+		if ( ! about || ! revealElements.length ) {
 			return;
 		}
 
-		if ( ! ( 'IntersectionObserver' in window ) ) {
+		// Falls IntersectionObserver fehlt oder Reduced-Motion gewünscht ist,
+		// alle Elemente sofort als sichtbar markieren und Marker NICHT setzen.
+		var reducedMotion = window.matchMedia
+			? window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches
+			: false;
+
+		if ( reducedMotion || ! ( 'IntersectionObserver' in window ) ) {
 			revealElements.forEach( function ( el ) {
 				el.classList.add( 'is-revealed' );
 			} );
 			return;
 		}
+
+		// JS ist da: jetzt darf das initial-hidden-CSS greifen.
+		about.classList.add( 'js-reveal' );
 
 		var observer = new IntersectionObserver( function ( entries ) {
 			entries.forEach( function ( entry ) {

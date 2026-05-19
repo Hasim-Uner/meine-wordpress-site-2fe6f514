@@ -191,6 +191,7 @@ function hu_enqueue_assets() {
 	// ── E) Template: Über Mich ────────────────────────────────────
 	if ( is_page_template( 'template-about.php' ) ) {
 		hu_enqueue_css( 'nexus-about-css', 'about-page.css', [ 'nexus-design-system' ] );
+		hu_enqueue_js( 'nexus-about-js', 'about-page.js', [] );
 	}
 
 	// ── E2) Kontakt ───────────────────────────────────────────────
