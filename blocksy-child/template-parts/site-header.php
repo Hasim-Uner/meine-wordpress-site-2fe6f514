@@ -21,10 +21,6 @@ $home_label   = sprintf(
 	$brand_text
 );
 
-if ( '' === $mobile_eyebrow_text ) {
-	$mobile_eyebrow_text = __( 'Anfrage-Systeme für Solar & Wärmepumpe.', 'blocksy-child' );
-}
-
 if ( empty( $audit_header_meta_items ) ) {
 	$audit_header_meta_items = [
 		'60-Sekunden-Diagnose',
@@ -93,7 +89,9 @@ if ( empty( $audit_header_meta_items ) ) {
 	<div class="nx-container">
 		<div class="nx-site-header__shell">
 			<div class="nx-site-header__brand-block">
-				<span class="nx-site-header__eyebrow"><?php echo esc_html( $eyebrow_text ); ?></span>
+				<?php if ( '' !== $eyebrow_text ) : ?>
+					<span class="nx-site-header__eyebrow"><?php echo esc_html( $eyebrow_text ); ?></span>
+				<?php endif; ?>
 				<a
 					class="site-logo nx-site-header__brand"
 					href="<?php echo esc_url( home_url( '/' ) ); ?>"
@@ -102,7 +100,9 @@ if ( empty( $audit_header_meta_items ) ) {
 				>
 					<?php echo esc_html( $brand_text ); ?>
 				</a>
-				<span class="nx-site-header__mobile-eyebrow"><?php echo esc_html( $mobile_eyebrow_text ); ?></span>
+				<?php if ( '' !== $mobile_eyebrow_text ) : ?>
+					<span class="nx-site-header__mobile-eyebrow"><?php echo esc_html( $mobile_eyebrow_text ); ?></span>
+				<?php endif; ?>
 			</div>
 
 			<nav class="nx-site-header__nav" aria-label="<?php esc_attr_e( 'Primäre Navigation', 'blocksy-child' ); ?>">

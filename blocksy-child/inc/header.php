@@ -302,19 +302,5 @@ add_filter( 'wp_nav_menu_objects', 'nexus_energy_nav_cta_label', 20, 2 );
  * @return string
  */
 function nexus_get_site_header_eyebrow() {
-	if ( function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context() ) {
-		return '';
-	}
-
-	// Auf der Homepage wiederholt der Hero die Positionierung — Tagline würde nur doppeln.
-	if ( is_front_page() ) {
-		return '';
-	}
-
-	// Auf der Whitelabel-Seite ist die Zielgruppe Agenturen — Solar-Eyebrow wäre off-message.
-	if ( is_page_template( 'page-whitelabel-retainer.php' ) || is_page( 'whitelabel-retainer' ) || is_page( 'whitelabel' ) ) {
-		return '';
-	}
-
-	return __( 'Anfrage-Systeme für Solar & Wärmepumpe.', 'blocksy-child' );
+	return '';
 }
