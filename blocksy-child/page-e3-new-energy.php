@@ -17,7 +17,7 @@ $tracking_attrs = 'data-track-section="case_e3_methodology" data-track-funnel-st
 $metrics = [
 	'150 € → 22 € CPL',
 	'1.750+ Anfragen',
-	'12 % Abschlussquote',
+	'1 – 2 % → 12 % Abschlussquote',
 	'9 Monate Laufzeit',
 ];
 

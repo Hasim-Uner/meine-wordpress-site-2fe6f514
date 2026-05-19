@@ -24,10 +24,53 @@ $request_cta  = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus
 $portrait_url = function_exists( 'hu_get_profile_image_url' ) ? hu_get_profile_image_url() : get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 
 // E3-Canon
-$e3_canon         = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
-$e3_metrics       = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_cpl_reduction = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
-$e3_timeframe     = $e3_metrics['timeframe']['display'] ?? '9 Monate';
+$e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
+$e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
+$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
+$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 2 % → 12 %';
+$e3_conv_uplift_lbl  = $e3_metrics['sales_conversion_uplift']['label'] ?? 'Anstieg der Abschlussquote durch eigenes System';
+
+// Drei Vorteile-Strip: das Killer-Argument der Methodik
+$about_proof_strip = [
+	[
+		'k' => '100 %',
+		'l' => 'Asset-Eigentum statt Portal-Miete — Ihr Code, Ihr CRM, Ihre Daten.',
+	],
+	[
+		'k' => $e3_conv_uplift,
+		'l' => 'Abschlussquote bei E3 — von Portal-Leads zu eigenem System.',
+	],
+	[
+		'k' => '150 € → 22 €',
+		'l' => sprintf( 'Cost per Anfrage bei E3 in %s gesenkt.', $e3_timeframe ),
+	],
+];
+
+// Vorteile-Detail-Sektion: drei Argumente didaktisch ausgespielt
+$about_advantages = [
+	[
+		'eyebrow' => '01 / Asset-Eigentum',
+		'title'   => 'CAPEX statt OPEX.',
+		'metric'  => '100 %',
+		'metric_label' => 'Code, CRM, Tracking, Daten',
+		'body'    => 'Portal-Leads sind monatliche Miete: Sobald Sie kündigen, hört der Anfragestrom auf. Ein eigenes System ist eine bilanzierbare Investition. Code, CRM-Anbindung und Tracking-Infrastruktur bleiben bei Ihnen — auch wenn wir nicht mehr zusammenarbeiten.',
+	],
+	[
+		'eyebrow' => '02 / Abschlussquote',
+		'title'   => 'Aus 1 – 2 % werden 12 %.',
+		'metric'  => $e3_conv_uplift,
+		'metric_label' => 'Bei E3 — geteilte Portal-Leads vs. eigene Anfragen',
+		'body'    => 'Gekaufte Portal-Leads gehen parallel an drei bis fünf Anbieter. Der Endkunde ist bereits umworben, vergleicht Preise, verliert Interesse. Eigene Anfragen kommen vorqualifiziert und exklusiv — Region, Heizart, Projektwert und Budget sind bekannt, bevor Ihr Vertrieb das Telefon in die Hand nimmt. Das hebelt die Abschlussquote um den Faktor 6 bis 10.',
+	],
+	[
+		'eyebrow' => '03 / Cost per Anfrage',
+		'title'   => 'Von 150 € auf 22 €.',
+		'metric'  => $e3_cpl_reduction,
+		'metric_label' => sprintf( 'Senkung der Cost per Lead in %s bei E3', $e3_timeframe ),
+		'body'    => 'Die CPL-Senkung ist die direkte Folge der ersten beiden Vorteile: Ein Asset, das Anfragen erzeugt, kostet im Aufbau einmalig — danach skaliert es. Eine höhere Abschlussquote senkt zusätzlich die Cost per Auftrag, nicht nur die Cost per Lead. Beides zusammen verändert die Vertriebs-Ökonomie strukturell.',
+	],
+];
 
 // Fit-Check: 3 Voraussetzungen statt Negativ-Liste (Positiv-Framing)
 $about_fit_points = [
@@ -109,10 +152,14 @@ get_header();
 							Für Solar- und Wärmepumpen-Betriebe, die ihre Anfragen nicht dauerhaft über Portale mieten wollen — sondern eine eigene Nachfrage-Infrastruktur aufbauen.
 						</p>
 
-						<div class="about-stat-proof" role="figure" aria-label="E3-Referenz-Kennzahl">
-							<div class="about-stat-proof__number">−<?php echo esc_html( preg_replace( '/[^0-9]/', '', $e3_cpl_reduction ) ); ?>%</div>
-							<div class="about-stat-proof__label">Leadkosten bei E3 New Energy in <?php echo esc_html( $e3_timeframe ); ?></div>
-						</div>
+						<ul class="about-proof-strip" role="list" aria-label="Drei Vorteile eigener Anfrage-Systeme bei E3 New Energy">
+							<?php foreach ( $about_proof_strip as $proof_item ) : ?>
+								<li class="about-proof-strip__item">
+									<span class="about-proof-strip__k"><?php echo esc_html( $proof_item['k'] ); ?></span>
+									<span class="about-proof-strip__l"><?php echo esc_html( $proof_item['l'] ); ?></span>
+								</li>
+							<?php endforeach; ?>
+						</ul>
 
 						<div class="about-cta-wrap">
 							<a href="<?php echo esc_url( $request_url ); ?>"
@@ -151,6 +198,35 @@ get_header();
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════
+		     WARUM EIGENES SYSTEM — Drei Vorteile didaktisch
+		     ════════════════════════════════════════════════════════ -->
+		<section id="about-warum" class="about-section">
+			<div class="about-container">
+				<header class="about-section__head" data-reveal>
+					<p class="about-section__number">Warum eigene Infrastruktur</p>
+					<div class="about-section__head-body">
+						<h2 class="about-h2">Drei Hebel, die zusammen die Vertriebs-Ökonomie verändern.</h2>
+						<p class="about-section__lead">Asset-Eigentum, höhere Abschlussquote und niedrigerer CPL sind keine drei separaten Vorteile — sie folgen mathematisch aufeinander.</p>
+					</div>
+				</header>
+
+				<div class="about-advantages">
+					<?php foreach ( $about_advantages as $advantage ) : ?>
+						<article class="about-advantage" data-reveal>
+							<p class="about-advantage__eyebrow"><?php echo esc_html( $advantage['eyebrow'] ); ?></p>
+							<h3 class="about-advantage__title"><?php echo esc_html( $advantage['title'] ); ?></h3>
+							<p class="about-advantage__metric">
+								<span class="about-advantage__metric-value"><?php echo esc_html( $advantage['metric'] ); ?></span>
+								<span class="about-advantage__metric-label"><?php echo esc_html( $advantage['metric_label'] ); ?></span>
+							</p>
+							<p class="about-advantage__body"><?php echo esc_html( $advantage['body'] ); ?></p>
+						</article>
+					<?php endforeach; ?>
 				</div>
 			</div>
 		</section>

@@ -27,6 +27,7 @@ $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['met
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
+$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 2 % → 12 %';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? '> 85 %';
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
@@ -35,9 +36,9 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten'
 
 // ── Inhaltsmodelle ─────────────────────────────────────────────
 $hero_metrics = [
-	[ 'n' => $e3_cpl_after, 'l' => 'CPL nach 9 Monaten · ' . $e3_case_label ],
-	[ 'n' => '< 24 h',      'l' => 'Persönliche Antwort · keine Pitch-Mail' ],
-	[ 'n' => '100 %',       'l' => 'Asset-Eigentum · Code · Tracking · Daten' ],
+	[ 'n' => $e3_cpl_after,  'l' => 'CPL nach 9 Monaten · ' . $e3_case_label ],
+	[ 'n' => $e3_conv_uplift, 'l' => 'Abschlussquote · Portal-Leads vs. eigenes System' ],
+	[ 'n' => '100 %',         'l' => 'Asset-Eigentum · Code · Tracking · Daten' ],
 ];
 
 $trust_items = [

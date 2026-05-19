@@ -15,6 +15,8 @@ define( 'HU_E3_CPL_AFTER', 22 );
 define( 'HU_E3_CPL_REDUCTION_PERCENT', 85 );
 define( 'HU_E3_LEAD_COUNT', 1750 );
 define( 'HU_E3_SALES_CONVERSION_PERCENT', 12 );
+define( 'HU_E3_SALES_CONVERSION_BEFORE_LOW', 1 );
+define( 'HU_E3_SALES_CONVERSION_BEFORE_HIGH', 2 );
 define( 'HU_E3_TIMEFRAME_MONTHS', 9 );
 
 /**
@@ -56,6 +58,23 @@ function hu_e3_canon() {
 				'counter_target' => '12',
 				'label'          => 'Abschlussquote',
 			],
+			'sales_conversion_before' => [
+				'value'           => HU_E3_SALES_CONVERSION_BEFORE_LOW,
+				'value_high'      => HU_E3_SALES_CONVERSION_BEFORE_HIGH,
+				'display'         => '1 – 2 %',
+				'label'           => 'Abschlussquote vorher (gekaufte Portal-Leads)',
+			],
+			'sales_conversion_after' => [
+				'value'          => HU_E3_SALES_CONVERSION_PERCENT,
+				'display'        => '12 %',
+				'counter_target' => '12',
+				'label'          => 'Abschlussquote nachher (eigenes Anfrage-System)',
+			],
+			'sales_conversion_uplift' => [
+				'display' => '1 – 2 % → 12 %',
+				'short'   => '6× bis 12× höhere Abschlussquote',
+				'label'   => 'Anstieg der Abschlussquote durch eigenes System',
+			],
 			'timeframe'        => [
 				'value'          => HU_E3_TIMEFRAME_MONTHS,
 				'display'        => '9 Monate',
@@ -65,8 +84,9 @@ function hu_e3_canon() {
 			],
 		],
 		'summary'    => [
-			'compact' => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, 12 % Abschlussquote, 9 Monate.',
-			'proof'   => 'Referenz E3 New Energy: 1.750+ qualifizierte Anfragen, 12 % Abschlussquote und über 85 % weniger Kosten pro Anfrage.',
+			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 2 % auf 12 %, 9 Monate.',
+			'proof'      => 'Referenz E3 New Energy: 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 2 % auf 12 % und über 85 % weniger Kosten pro Anfrage.',
+			'conversion' => 'Die Abschlussquote stieg im selben Zeitraum von 1 – 2 % (gekaufte Portal-Leads) auf 12 % (eigenes Anfrage-System).',
 		],
 	];
 }
