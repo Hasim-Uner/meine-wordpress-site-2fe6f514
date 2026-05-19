@@ -1287,6 +1287,41 @@
   line-height: 1.6;
 }
 
+.wp-agentur-location-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  max-width: 1000px;
+  margin: var(--ag-space-lg) auto 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--ag-border);
+  border-radius: 1rem;
+  background: var(--ag-border);
+}
+
+.wp-agentur-location-facts div {
+  padding: 1rem 1.1rem;
+  background: var(--ag-surface-2);
+}
+
+.wp-agentur-location-facts dt {
+  margin: 0 0 0.3rem;
+  color: var(--ag-text-3);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.wp-agentur-location-facts dd {
+  margin: 0;
+  color: var(--ag-text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
 .wp-agentur-location-note {
   text-align: center;
   max-width: 60ch;
@@ -2893,6 +2928,9 @@
 @media (max-width: 720px) {
   .ag-hero__top { gap: 0.75rem; }
   .ag-hero__mark-rule { width: 28px; }
+  .wp-agentur-location-facts {
+    grid-template-columns: 1fr;
+  }
   .ag-hero__title {
     font-size: 2.55rem;
     line-height: 1;

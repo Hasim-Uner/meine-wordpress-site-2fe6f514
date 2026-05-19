@@ -637,6 +637,21 @@ get_header();
 			</div>
 		</div>
 
+		<dl class="wp-agentur-location-facts" aria-label="Standortsignale">
+			<div>
+				<dt>Standort</dt>
+				<dd>Pattensen bei Hannover</dd>
+			</div>
+			<div>
+				<dt>Region</dt>
+				<dd>Hannover · Niedersachsen</dd>
+			</div>
+			<div>
+				<dt>Arbeitsweise</dt>
+				<dd>Vor Ort oder remote im DACH-Raum</dd>
+			</div>
+		</dl>
+
 		<p class="wp-agentur-location-note">
 			Der Standort Hannover erleichtert persönliche Reviews, Workshops und Strategie-Sessions. Die Umsetzung ist nicht auf regionale Projekte begrenzt.
 		</p>

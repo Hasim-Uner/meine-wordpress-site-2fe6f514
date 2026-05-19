@@ -165,6 +165,30 @@ function hu_output_schema()
             'description' => 'WordPress Agentur in Hannover für B2B-Unternehmen: technisches SEO, Wartungsvertrag, Tracking, Conversion und Angebotsseiten als ein verbundenes System mit kontrollierter Weiterentwicklung.',
             'serviceType' => 'WordPress Agentur',
             'serviceOutput' => 'Steuerbares WordPress-System mit Angebotsseiten, technischem SEO, Wartung, Datenebene, KPI-Klarheit und vollen Zugängen',
+            'areaServed' => [
+                [
+                    '@type'  => 'City',
+                    'name'   => 'Hannover',
+                    'sameAs' => 'https://de.wikipedia.org/wiki/Hannover',
+                ],
+                [
+                    '@type'  => 'City',
+                    'name'   => 'Pattensen',
+                    'sameAs' => 'https://de.wikipedia.org/wiki/Pattensen',
+                ],
+                [
+                    '@type' => 'AdministrativeArea',
+                    'name'  => 'Region Hannover',
+                ],
+                [
+                    '@type' => 'AdministrativeArea',
+                    'name'  => 'Niedersachsen',
+                ],
+                [
+                    '@type' => 'AdministrativeArea',
+                    'name'  => 'DACH',
+                ],
+            ],
             'hasOfferCatalog' => [
                 '@type'           => 'OfferCatalog',
                 'name'            => 'Leistungsbereiche der WordPress Agentur Hannover',
@@ -439,7 +463,7 @@ function hu_output_schema()
                 'provider'   => ['@id' => home_url('/#organization')],
                 'serviceType'=> $def['serviceType'],
                 'serviceOutput' => $def['serviceOutput'],
-                'areaServed' => ['@type' => 'AdministrativeArea', 'name' => 'DACH'],
+                'areaServed' => $def['areaServed'] ?? ['@type' => 'AdministrativeArea', 'name' => 'DACH'],
             ];
 
             if (isset($def['offers'])) {
