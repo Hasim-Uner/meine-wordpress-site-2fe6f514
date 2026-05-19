@@ -20,8 +20,9 @@ $calendar_url         = function_exists( 'nexus_get_audit_calendar_url' ) ? nexu
 $requested_focus      = isset( $_GET['focus'] ) ? sanitize_key( wp_unslash( $_GET['focus'] ) ) : '';
 $requested_type       = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
 $public_type_keys     = [ 'audit', 'implementation', 'ongoing' ];
-if ( 'analysis' === $requested_type ) {
+if ( in_array( $requested_type, [ 'analysis', 'project' ], true ) ) {
 	$public_type_keys[] = 'analysis';
+	$public_type_keys[] = 'project';
 }
 $public_type_copy     = [
 	'audit'          => [
@@ -31,6 +32,10 @@ $public_type_copy     = [
 	'analysis'       => [
 		'label'       => 'Website-Analyse',
 		'description' => 'Klarheit vor Relaunch oder Optimierung.',
+	],
+	'project'        => [
+		'label'       => 'Projektprüfung',
+		'description' => 'B2B-Projekt sauber einordnen.',
 	],
 	'implementation' => [
 		'label'       => 'Umsetzung',
@@ -57,7 +62,7 @@ if ( '' !== $selected_focus ) {
 }
 
 $has_explicit_type     = '' !== $requested_type && isset( $public_type_options[ $requested_type ] );
-$show_timeline_field   = in_array( $selected_type, [ 'analysis', 'implementation', 'ongoing' ], true );
+$show_timeline_field   = in_array( $selected_type, [ 'analysis', 'project', 'implementation', 'ongoing' ], true );
 $show_budget_field     = in_array( $selected_type, [ 'implementation', 'ongoing' ], true );
 $type_copy_map         = [
 	'audit'          => [
@@ -76,6 +81,15 @@ $type_copy_map         = [
 		'message_help'        => 'Welche URL ist relevant? Was bremst gerade? Welche Entscheidung soll die Analyse erleichtern?',
 		'message_placeholder' => "1. Seite: Welche URL ist relevant?\n2. Hürde: Was bremst gerade?\n3. Ziel: Welche Entscheidung soll danach leichter werden?",
 		'submit_label'        => 'Website-Analyse anfragen',
+		'timeline_label'      => 'Zeitfenster',
+	],
+	'project'        => [
+		'focus_label'         => 'Welcher Bereich soll zuerst geprüft werden?',
+		'focus_help'          => 'Wählen Sie den Bereich, in dem aktuell die größte geschäftliche Unklarheit liegt.',
+		'message_label'       => 'Kurzbeschreibung',
+		'message_help'        => 'Welche URL ist relevant? Was ist das Angebot? Wo verliert das System heute Anfragen oder Klarheit?',
+		'message_placeholder' => "1. Website: Welche URL ist relevant?\n2. Angebot: Was verkaufen Sie und an wen?\n3. Engpass: Was soll die Seite besser leisten?",
+		'submit_label'        => 'Projekt prüfen',
 		'timeline_label'      => 'Zeitfenster',
 	],
 	'implementation' => [

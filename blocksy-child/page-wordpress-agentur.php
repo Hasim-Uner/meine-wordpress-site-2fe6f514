@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $contact_url    = add_query_arg(
 	[
-		'type'  => 'analysis',
+		'type'  => 'project',
 		'focus' => 'followup_scope',
 	],
 	home_url( '/kontakt/' )
