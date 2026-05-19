@@ -28,6 +28,8 @@ $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['met
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
+$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 2 % → 12 %';
+$e3_conv_before      = $e3_metrics['sales_conversion_before']['display'] ?? '1 – 2 %';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
@@ -44,8 +46,8 @@ $portal_facts = [
 		'l' => 'Mehrfachverkauf desselben Datensatzes an Wettbewerber',
 	],
 	[
-		'k' => 'sinkende Quote',
-		'l' => 'genervte Endkunden, fallende Conversion in der Telefonie',
+		'k' => $e3_conv_before,
+		'l' => 'typische Abschlussquote auf gekaufte Portal-Leads',
 	],
 	[
 		'k' => '0 % Asset',
@@ -63,8 +65,8 @@ $own_facts = [
 		'l' => 'exklusive Anfragen – kein Parallelversand an Wettbewerber',
 	],
 	[
-		'k' => $e3_sales_conversion,
-		'l' => 'Abschlussquote bei qualifizierten Anfragen (E3)',
+		'k' => $e3_conv_uplift,
+		'l' => 'Sprung der Abschlussquote — von Portal-Leads zu eigenem System (E3)',
 	],
 	[
 		'k' => '100 % Asset',
@@ -229,7 +231,7 @@ get_header();
 				Sie wollen Solar Leads kaufen? Eigene Anfragen senken den CPL um <?php echo esc_html( $e3_cpl_reduction ); ?>.
 			</h1>
 			<p class="hu-intercept__lead">
-				Portal-Leads für Photovoltaik und Wärmepumpe kosten heute <strong>60 – 120 €</strong> – und werden bis zu fünfmal an Wettbewerber weiterverkauft. Bei <?php echo esc_html( $e3_case_label ); ?> hat ein eigenes Anfrage-System den Cost per Lead von <strong><?php echo esc_html( $e3_cpl_before ); ?></strong> auf <strong><?php echo esc_html( $e3_cpl_after ); ?></strong> in <strong><?php echo esc_html( $e3_timeframe ); ?></strong> gesenkt.
+				Portal-Leads für Photovoltaik und Wärmepumpe kosten <strong>60 – 120 €</strong>, werden bis zu fünfmal an Wettbewerber weiterverkauft und schließen typischerweise nur bei <strong><?php echo esc_html( $e3_conv_before ); ?></strong>. Bei <?php echo esc_html( $e3_case_label ); ?> stieg die Abschlussquote im eigenen System auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> — der Cost per Lead fiel parallel von <strong><?php echo esc_html( $e3_cpl_before ); ?></strong> auf <strong><?php echo esc_html( $e3_cpl_after ); ?></strong> in <strong><?php echo esc_html( $e3_timeframe ); ?></strong>.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">

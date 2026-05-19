@@ -29,13 +29,15 @@ $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
+$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 2 % → 12 %';
+$e3_conv_before      = $e3_metrics['sales_conversion_before']['display'] ?? '1 – 2 %';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
 
 $cpl_quick_facts = [
 	[ 'k' => '25 – 150 €', 'l' => 'Marktbreite Preisspanne für einen einzelnen PV-Datensatz' ],
-	[ 'k' => $e3_cpl_before, 'l' => sprintf( 'Vorheriger CPL bei %s mit zugekauften Portal-Leads', $e3_case_label ) ],
-	[ 'k' => $e3_cpl_after, 'l' => 'Nachher-CPL im eigenen Anfrage-System (E3-Referenz)' ],
-	[ 'k' => $e3_cpl_reduction, 'l' => sprintf( 'Senkung der Kosten pro Anfrage in %s', $e3_timeframe ) ],
+	[ 'k' => $e3_cpl_reduction, 'l' => sprintf( 'Senkung Cost per Lead in %s bei %s', $e3_timeframe, $e3_case_label ) ],
+	[ 'k' => $e3_conv_uplift, 'l' => 'Sprung der Abschlussquote (Portal-Leads vs. eigenes System)' ],
+	[ 'k' => '~ 15× weniger', 'l' => 'Cost per Auftrag — CPL × Quote zusammen wirken multiplikativ' ],
 ];
 
 $scenarios = [
@@ -156,7 +158,7 @@ get_header();
 				Cost per Lead Photovoltaik: Was Solar-Anfragen wirklich kosten
 			</h1>
 			<p class="hu-intercept__lead">
-				Der reine Stückpreis für eine PV-Anfrage liegt zwischen <strong>25 €</strong> und <strong>150 €</strong>. Wirtschaftlich entscheidend ist jedoch der <strong>Cost per Auftrag</strong> – also CPL geteilt durch Abschlussquote. Diese Seite zeigt drei Szenarien im Vergleich und den realen Hebel zur CPL-Senkung.
+				Der reine Stückpreis für eine PV-Anfrage liegt zwischen <strong>25 €</strong> und <strong>150 €</strong>. Wirtschaftlich entscheidend ist aber der <strong>Cost per Auftrag</strong> — also CPL geteilt durch Abschlussquote. Bei <?php echo esc_html( $e3_case_label ); ?> wurde nicht nur der CPL gesenkt, sondern auch die Abschlussquote von <strong><?php echo esc_html( $e3_conv_before ); ?></strong> auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> gehoben. Beide Hebel zusammen multiplizieren sich.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">
