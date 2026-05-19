@@ -192,6 +192,24 @@ function nexus_get_energy_intake_field_options() {
 				'description' => 'Angrenzende Energielösungen oder ein hybrides Setup mit mehreren Angebotslinien.',
 			],
 		],
+		'business_fit' => [
+			'b2c_high_value_own_sales' => [
+				'label'       => 'B2C ab ca. 15k € mit eigenem Vertrieb',
+				'description' => 'Privatkundenprojekte mit tragfähigem Projektwert und eigenem Verkaufsprozess.',
+			],
+			'b2b_high_value_own_sales' => [
+				'label'       => 'B2B ab ca. 50k € mit eigenem Vertrieb',
+				'description' => 'Gewerbeprojekte mit definiertem Zielgebiet, höherem Beratungsbedarf und Abschlusswert.',
+			],
+			'founder_led_regional' => [
+				'label'       => 'Klein, aber vertriebsstark',
+				'description' => 'Geschäftsführung verkauft selbst; Region, Marge und Abschlusskraft stimmen.',
+			],
+			'resale_or_short_term' => [
+				'label'       => 'Eher Vermittlung oder kurzfristiger Lead-Bedarf',
+				'description' => 'Hinweis auf möglichen Nicht-Fit für ein eigenes Anfrage-Asset über 12–24 Monate.',
+			],
+		],
 		'sales_audience' => [
 			'privatkunden' => [
 				'label'       => 'Privatkunden',
@@ -374,7 +392,7 @@ function nexus_get_energy_intake_flow_definition() {
 			'question'      => 'In welcher Region arbeitet Ihr Betrieb?',
 			'description'   => 'Wir prüfen, ob Ihr Einzugsgebiet im aktuellen Kapazitätsfenster liegt. Eine PLZ reicht — Filialstandorte besprechen wir im Erstgespräch.',
 			'summary_label' => 'Region (PLZ)',
-			'next'          => 'lead-volume',
+			'next'          => 'business-fit',
 			'field'         => [
 				'name'         => 'postal_code',
 				'label'        => 'Postleitzahl',
@@ -386,6 +404,18 @@ function nexus_get_energy_intake_flow_definition() {
 				'placeholder'  => 'z. B. 30159',
 				'required'     => true,
 			],
+		],
+		[
+			'id'            => 'business-fit',
+			'name'          => 'business_fit',
+			'kind'          => 'single_choice',
+			'title_short'   => 'Fit',
+			'question'      => 'Passt das wirtschaftlich zu einem eigenen Anfrage-System?',
+			'description'   => 'Keine Mitarbeitergrenze: Projektwert, Zielgebiet und Vertriebsfähigkeit entscheiden.',
+			'summary_label' => 'Wirtschaftlicher Fit',
+			'auto_advance'  => true,
+			'next'          => 'lead-volume',
+			'options'       => $options['business_fit'],
 		],
 		[
 			'id'            => 'lead-volume',
@@ -1177,6 +1207,7 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 	$cpl_range             = isset( $payload['cpl_range'] ) ? sanitize_key( (string) $payload['cpl_range'] ) : '';
 	$primary_bottleneck    = isset( $payload['primary_bottleneck'] ) ? sanitize_key( (string) $payload['primary_bottleneck'] ) : '';
 	$solution_focus        = isset( $payload['solution_focus'] ) ? sanitize_key( (string) $payload['solution_focus'] ) : '';
+	$business_fit          = isset( $payload['business_fit'] ) ? sanitize_key( (string) $payload['business_fit'] ) : '';
 	$sales_audience        = isset( $payload['sales_audience'] ) ? sanitize_key( (string) $payload['sales_audience'] ) : '';
 	$region_scope          = isset( $payload['region_scope'] ) ? sanitize_key( (string) $payload['region_scope'] ) : '';
 	$primary_challenge     = isset( $payload['primary_challenge'] ) ? sanitize_key( (string) $payload['primary_challenge'] ) : '';
@@ -1192,10 +1223,9 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 	$email                 = isset( $payload['email'] ) ? sanitize_email( (string) $payload['email'] ) : '';
 	$phone                 = isset( $payload['phone'] ) ? sanitize_text_field( (string) $payload['phone'] ) : '';
 	$consent_privacy       = isset( $payload['consent_privacy'] ) ? sanitize_key( (string) $payload['consent_privacy'] ) : '';
-	// Solution focus, sales audience, site state, project timing, contact preference,
-	// measurement state, acquisition mix, improvement goal and region scope are
-	// not collected in the 5-step v1 flow. They remain optional in the payload
-	// so legacy entries and future variants stay compatible.
+	// Current hero flow collects solution focus and business fit. The remaining
+	// expanded fields stay optional so legacy entries and future variants remain
+	// compatible.
 
 	if ( '' === $postal_code || ! preg_match( '/^[0-9]{5}$/', $postal_code ) ) {
 		return new WP_Error( 'invalid_postal_code', 'Bitte eine gültige fünfstellige deutsche Postleitzahl angeben.' );
@@ -1219,6 +1249,10 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 
 	if ( '' !== $solution_focus && ! isset( $field_options['solution_focus'][ $solution_focus ] ) ) {
 		$solution_focus = '';
+	}
+
+	if ( '' !== $business_fit && ! isset( $field_options['business_fit'][ $business_fit ] ) ) {
+		$business_fit = '';
 	}
 
 	if ( '' !== $sales_audience && ! isset( $field_options['sales_audience'][ $sales_audience ] ) ) {
@@ -1338,6 +1372,8 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 		'primary_bottleneck_label'    => $lookup_label( 'primary_bottleneck', $primary_bottleneck ),
 		'solution_focus'              => $solution_focus,
 		'solution_focus_label'        => $lookup_label( 'solution_focus', $solution_focus ),
+		'business_fit'                => $business_fit,
+		'business_fit_label'          => $lookup_label( 'business_fit', $business_fit ),
 		'sales_audience'              => $sales_audience,
 		'sales_audience_label'        => $lookup_label( 'sales_audience', $sales_audience ),
 		'region_scope'                => $region_scope,
@@ -1432,6 +1468,8 @@ function nexus_create_review_request_post( $payload ) {
 		update_post_meta( $post_id, '_nexus_review_energy_primary_bottleneck_label', sanitize_text_field( (string) ( $payload['primary_bottleneck_label'] ?? '' ) ) );
 		update_post_meta( $post_id, '_nexus_review_energy_solution_focus', sanitize_key( (string) ( $payload['solution_focus'] ?? '' ) ) );
 		update_post_meta( $post_id, '_nexus_review_energy_solution_focus_label', sanitize_text_field( (string) ( $payload['solution_focus_label'] ?? '' ) ) );
+		update_post_meta( $post_id, '_nexus_review_energy_business_fit', sanitize_key( (string) ( $payload['business_fit'] ?? '' ) ) );
+		update_post_meta( $post_id, '_nexus_review_energy_business_fit_label', sanitize_text_field( (string) ( $payload['business_fit_label'] ?? '' ) ) );
 		update_post_meta( $post_id, '_nexus_review_energy_sales_audience', sanitize_key( (string) ( $payload['sales_audience'] ?? '' ) ) );
 		update_post_meta( $post_id, '_nexus_review_energy_sales_audience_label', sanitize_text_field( (string) ( $payload['sales_audience_label'] ?? '' ) ) );
 		update_post_meta( $post_id, '_nexus_review_energy_region_scope', sanitize_key( (string) ( $payload['region_scope'] ?? '' ) ) );
@@ -1698,6 +1736,10 @@ function nexus_get_review_request_detail_rows( $payload ) {
 			[
 				'label' => 'Leistung',
 				'value' => (string) ( $payload['solution_focus_label'] ?? '' ),
+			],
+			[
+				'label' => 'Wirtschaftlicher Fit',
+				'value' => (string) ( $payload['business_fit_label'] ?? '' ),
 			],
 			[
 				'label' => 'Zielmarkt',
@@ -2044,13 +2086,14 @@ function nexus_render_review_request_details_meta_box( $post ) {
 	$is_simple_intake  = nexus_is_growth_audit_simple_intake_variant( $intake_variant );
 	$has_new_intake    = $is_simple_intake || '' !== trim( $focus_area_label . $current_challenge . $primary_goal_label . $linkedin );
 	$is_energy_intake  = 'energy_systems' === $intake_variant;
-	$energy_solution   = (string) get_post_meta( $post->ID, '_nexus_review_energy_solution_focus_label', true );
-	$energy_audience   = (string) get_post_meta( $post->ID, '_nexus_review_energy_sales_audience_label', true );
-	$energy_region     = (string) get_post_meta( $post->ID, '_nexus_review_energy_region_scope_label', true );
-	$energy_measurement = (string) get_post_meta( $post->ID, '_nexus_review_energy_measurement_state_label', true );
-	$energy_acquisition = (string) get_post_meta( $post->ID, '_nexus_review_energy_acquisition_mix_label', true );
-	$energy_site_state  = (string) get_post_meta( $post->ID, '_nexus_review_energy_site_state_label', true );
-	$energy_timing      = (string) get_post_meta( $post->ID, '_nexus_review_energy_project_timing_label', true );
+	$energy_solution     = (string) get_post_meta( $post->ID, '_nexus_review_energy_solution_focus_label', true );
+	$energy_business_fit = (string) get_post_meta( $post->ID, '_nexus_review_energy_business_fit_label', true );
+	$energy_audience     = (string) get_post_meta( $post->ID, '_nexus_review_energy_sales_audience_label', true );
+	$energy_region       = (string) get_post_meta( $post->ID, '_nexus_review_energy_region_scope_label', true );
+	$energy_measurement  = (string) get_post_meta( $post->ID, '_nexus_review_energy_measurement_state_label', true );
+	$energy_acquisition  = (string) get_post_meta( $post->ID, '_nexus_review_energy_acquisition_mix_label', true );
+	$energy_site_state   = (string) get_post_meta( $post->ID, '_nexus_review_energy_site_state_label', true );
+	$energy_timing       = (string) get_post_meta( $post->ID, '_nexus_review_energy_project_timing_label', true );
 	?>
 	<div class="nexus-review-meta">
 		<div class="nexus-review-meta-group">
@@ -2143,6 +2186,10 @@ function nexus_render_review_request_details_meta_box( $post ) {
 				<div class="nexus-review-meta-group">
 					<strong>Leistung</strong>
 					<p><?php echo esc_html( $energy_solution ?: 'Nicht angegeben' ); ?></p>
+				</div>
+				<div class="nexus-review-meta-group">
+					<strong>Wirtschaftlicher Fit</strong>
+					<p><?php echo esc_html( $energy_business_fit ?: 'Nicht angegeben' ); ?></p>
 				</div>
 				<div class="nexus-review-meta-group">
 					<strong>Zielmarkt</strong>

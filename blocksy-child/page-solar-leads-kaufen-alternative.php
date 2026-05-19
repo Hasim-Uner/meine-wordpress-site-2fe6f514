@@ -374,7 +374,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-intercept-final-title">Statt Leads zu kaufen: Marktcheck starten</h2>
 			<p class="hu-intercept__final-text">
-				Fünf Fragen, 60 Sekunden. Sie bekommen eine persönliche Ersteinschätzung, ob ein eigenes Anfrage-System für Ihren Betrieb wirtschaftlicher ist als der Weiterkauf von Portal-Leads – ohne Pflicht-Call, ohne Newsletter.
+				Sechs Fragen, 60 Sekunden. Sie bekommen eine persönliche Ersteinschätzung, ob ein eigenes Anfrage-System für Ihren Betrieb wirtschaftlicher ist als der Weiterkauf von Portal-Leads – ohne Pflicht-Call, ohne Newsletter.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"

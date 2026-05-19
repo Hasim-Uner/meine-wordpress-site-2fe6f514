@@ -18,7 +18,7 @@ Der frühere `Growth Audit` ist kein öffentlicher Hauptfunnel mehr. Audit- und 
 - Mail: zentrale Mail-/Brevo-Schicht
 - n8n: nicht angebunden
 
-Der Marktcheck qualifiziert Founding-Partner-Fit. Er ist kein generischer Verkaufssprung.
+Der Marktcheck qualifiziert Founding-Partner-Fit. Er fragt Angebot, wirtschaftlichen Fit (`business_fit`), Anfragevolumen, CPL, Engpass und Kontakt ab. Der Fit basiert auf Projektwert, eigenem Vertrieb bzw. geschäftsführergeführtem Vertrieb und Zielgebiet, nicht auf Mitarbeiterzahl. Er ist kein generischer Verkaufssprung.
 
 ## Legacy-Code
 

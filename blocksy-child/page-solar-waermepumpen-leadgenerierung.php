@@ -107,7 +107,7 @@ $results_qualifiers = [
 $guarantee_points = [
 	[
 		't' => 'Marktcheck ist kostenfrei',
-		's' => 'Fünf Fragen, 60 Sekunden. Sie bekommen eine persönliche Ersteinschätzung — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
+		's' => 'Sechs Fragen, 60 Sekunden. Sie bekommen eine persönliche Ersteinschätzung — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
 	],
 	[
 		't' => 'Drei Hebel — auch bei Abrat',
@@ -285,7 +285,7 @@ $faq_items = [
 	],
 	[
 		'question' => 'Welche Daten brauchen Sie für die Diagnose?',
-		'answer'   => 'Für den Marktcheck reichen 5 Antworten. Für die Tiefendiagnose: Lesezugriff auf Google Analytics, Google Ads und Meta Ads Manager, Einblick in den CRM-Datenbestand der letzten 90 Tage und eine 15-Minuten-Bestandsaufnahme zu Vertriebsprozess und Lead-Quellen. Wenn Tracking-Daten fehlen, ist das oft schon das erste Diagnose-Ergebnis.',
+		'answer'   => 'Für den Marktcheck reichen 6 Antworten. Für die Tiefendiagnose: Lesezugriff auf Google Analytics, Google Ads und Meta Ads Manager, Einblick in den CRM-Datenbestand der letzten 90 Tage und eine 15-Minuten-Bestandsaufnahme zu Vertriebsprozess und Lead-Quellen. Wenn Tracking-Daten fehlen, ist das oft schon das erste Diagnose-Ergebnis.',
 	],
 	[
 		'question' => 'Warum nicht einfach mehr Google Ads schalten?',
@@ -420,7 +420,7 @@ get_header();
 							<span class="sol-cta-particle"></span>
 						</div>
 						<!--
-						  Quiz mount point. JS rendert hier das 5-Step-Quiz.
+						  Quiz mount point. JS rendert hier das 6-Step-Quiz.
 						  Wenn JS fehlt, bleibt der SSR-Fallback unten als
 						  funktionierende Alternative.
 						-->
@@ -456,7 +456,7 @@ get_header();
 							<div class="sol-cta-head">
 								<span class="sol-cta-tag sol-mono">
 									<span class="sol-cta-tag-dot" aria-hidden="true"></span>
-									Marktcheck · 60 Sek · 5 Fragen
+									Marktcheck · 60 Sek · 6 Fragen
 								</span>
 								<span class="sol-cta-head-right sol-mono">Kostenfrei</span>
 							</div>
@@ -464,7 +464,7 @@ get_header();
 								Wo verlieren Sie heute Anfragen — und wie viel kostet Sie das?
 							</h2>
 							<p class="sol-cta-hint">
-								Fünf Fragen, 60 Sekunden. Persönliche Ersteinschätzung innerhalb von 24 h — keine Newsletter, keine Pitch-Mail.
+								Sechs Fragen, 60 Sekunden. Persönliche Ersteinschätzung innerhalb von 24 h — keine Newsletter, keine Pitch-Mail.
 							</p>
 							<p class="sol-cta-fineprint" style="text-align:left;margin:0 0 14px;">Wird geladen …</p>
 						</div>
@@ -1130,7 +1130,7 @@ get_header();
 						Anfragen <em>besitzen</em>,<br />nicht mieten.
 					</h2>
 					<p class="sol-final-sub">
-						5 Fragen · 60 Sekunden · persönliche Antwort in 24 h.
+						6 Fragen · 60 Sekunden · persönliche Antwort in 24 h.
 					</p>
 					<a
 						class="sol-btn sol-btn-primary sol-final-btn"

@@ -18,4 +18,4 @@ Der neue Angebotsrahmen muss Zahlungsbereitschaft, Gegenleistung und begrenzte U
 - Founding-Konditionen werden über Canon-Dateien gepflegt.
 - Customer-Copy verwendet `Founding Cohort 2026`, `Founding-Partner` und `Founding-Konditionen`.
 - Verbotene Begriffe werden in `blocksy-child/inc/canon/messaging-canon.php` gepflegt und per Lint prüfbar.
-- Öffentliche Selektionskriterien sind: mindestens 5.000 EUR Monats-Werbebudget, offene Tracking-Realität, ICP Solar/Wärmepumpen DACH mit 10 bis 25 Mitarbeitenden.
+- Öffentliche Selektionskriterien sind: offene Tracking-Realität, ICP Solar/Wärmepumpen DACH, eigenes Vertriebsmodell oder geschäftsführergeführter Vertrieb, hohe Projektwerte und klares Zielgebiet.

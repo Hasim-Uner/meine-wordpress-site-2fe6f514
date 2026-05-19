@@ -1,5 +1,5 @@
 /* solar-leadgenerierung-solara.js
-   SOLARA Landing — interaktives 5-Step "Marktcheck"-Quiz im Hero.
+   SOLARA Landing — interaktives 6-Step "Marktcheck"-Quiz im Hero.
    Submit → /wp-json/nexus/v1/audit-request (intake_variant=energy_systems).
    Success-Screen mit Cal.com-Direktbuchung + 24h-Antwort-Pfad.
    Vanilla JS. Keine Dependencies. Touch- & Keyboard-accessible. */
@@ -25,9 +25,22 @@
       ]
     },
     {
+      key: 'business_fit',
+      label: 'Fit',
+      title: 'Passt das wirtschaftlich zu einem eigenen Anfrage-System?',
+      hint: 'Keine Mitarbeitergrenze: Projektwert, Zielgebiet und Vertriebsfähigkeit entscheiden.',
+      kind: 'pick',
+      options: [
+        { v: 'b2c_high_value_own_sales', t: 'B2C ab ca. 15k €',          s: 'Eigener Vertrieb oder Geschäftsführung verkauft selbst', i: '🏠' },
+        { v: 'b2b_high_value_own_sales', t: 'B2B ab ca. 50k €',          s: 'Definierte Region, hoher Beratungs- und Abschlusswert',   i: '🏭' },
+        { v: 'founder_led_regional',     t: 'Klein, aber vertriebsstark', s: 'Region, Marge und Abschlusskraft stimmen',              i: '🤝' },
+        { v: 'resale_or_short_term',     t: 'Eher Vermittlung / kurzfristig', s: 'Leads werden weitergegeben oder sofort gebraucht',  i: '⏱️' }
+      ]
+    },
+    {
       key: 'lead_volume',
       label: 'Volumen',
-      title: 'Wie viele Anfragen kommen aktuell pro Monat rein?',
+      title: 'Wie viele Anfragen erreichen Ihren Vertrieb aktuell pro Monat?',
       hint: 'Qualifiziert + unqualifiziert zusammen — Bauchgefühl reicht.',
       kind: 'pick',
       options: [
@@ -160,6 +173,7 @@
         intake_variant:      'energy_systems',
         audit_type:          'growth_audit',
         solution_focus:      state.answers.solution_focus || '',
+        business_fit:        state.answers.business_fit || '',
         lead_volume:         state.answers.lead_volume || '',
         cpl_range:           state.answers.cpl_range || '',
         primary_bottleneck:  state.answers.primary_bottleneck || '',
@@ -469,7 +483,7 @@
       var head = el('div', { className: 'sol-cta-head' }, [
         el('span', { className: 'sol-cta-tag sol-mono' }, [
           el('span', { className: 'sol-cta-tag-dot', 'aria-hidden': 'true' }),
-          'Marktcheck · 60 Sek · 5 Fragen'
+          'Marktcheck · 60 Sek · 6 Fragen'
         ]),
         el('span', { className: 'sol-cta-head-right sol-mono' }, 'Kostenfrei')
       ]);

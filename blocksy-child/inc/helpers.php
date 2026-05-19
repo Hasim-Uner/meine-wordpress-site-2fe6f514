@@ -184,7 +184,7 @@ function nexus_get_audit_cta_copy() {
 
 	$copy = [
 		'label'             => 'Marktcheck starten',
-		'compact_microcopy' => '60 Sek. · 5 Fragen · Antwort in 24 h',
+		'compact_microcopy' => '60 Sek. · 6 Fragen · Antwort in 24 h',
 		'header_meta_items' => [
 			'60-Sekunden-Marktcheck',
 			'Fokus: Solar, Wärmepumpe, Speicher',

@@ -97,7 +97,7 @@ $specific = [
 ];
 
 $cta_features = [
-	'Kostenfreier Marktcheck in 5 Fragen',
+	'Kostenfreier Marktcheck in 6 Fragen',
 	'Persönliche Ersteinschätzung innerhalb von 24 Stunden',
 	'Einordnung von Anfrage-Quellen, Tracking und Vertriebsanschluss',
 	'Kein Pflicht-Termin, kein Pitch-Call',

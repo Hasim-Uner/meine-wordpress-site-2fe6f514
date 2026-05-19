@@ -174,7 +174,7 @@ get_header();
 							</a>
 							<p class="about-cta-meta">
 								<span>60 Sek.</span>
-								<span>5 Fragen</span>
+								<span>6 Fragen</span>
 								<span>Antwort in 24 h</span>
 							</p>
 						</div>
@@ -415,7 +415,7 @@ get_header();
 			<div class="about-container about-container--centered">
 				<h2 class="about-h2">Der nächste Schritt.</h2>
 				<p class="about-final__lead">
-					Wenn Sie wissen, dass Sie bohren wollen, gehen Sie direkt ins qualifizierte Formular. Fünf Fragen, etwa 90 Sekunden. Antwort innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.
+					Wenn Sie wissen, dass Sie bohren wollen, gehen Sie direkt ins qualifizierte Formular. Sechs Fragen, etwa 90 Sekunden. Antwort innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.
 				</p>
 				<div class="about-cta-wrap about-cta-wrap--centered">
 					<a href="<?php echo esc_url( $request_url ); ?>"
@@ -430,7 +430,7 @@ get_header();
 					</a>
 					<p class="about-cta-meta about-cta-meta--centered">
 						<span>60 Sek.</span>
-						<span>5 Fragen</span>
+						<span>6 Fragen</span>
 						<span>Antwort in 24 h</span>
 					</p>
 				</div>

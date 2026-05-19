@@ -263,7 +263,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-cpl-final-title">Eigenen CPL im Marktcheck einordnen</h2>
 			<p class="hu-intercept__final-text">
-				Fünf Fragen, 60 Sekunden. Sie bekommen eine persönliche Einordnung Ihrer aktuellen Lead-Kosten und der Hebel, mit denen sich der CPL signifikant senken lässt.
+				Sechs Fragen, 60 Sekunden. Sie bekommen eine persönliche Einordnung Ihrer aktuellen Lead-Kosten und der Hebel, mit denen sich der CPL signifikant senken lässt.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"

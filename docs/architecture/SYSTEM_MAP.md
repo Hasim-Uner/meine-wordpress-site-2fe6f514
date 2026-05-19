@@ -75,7 +75,7 @@ Marktcheck / System-Diagnose-Legacy:
 - Aktive Route: `/solar-waermepumpen-leadgenerierung/#marktcheck`
 - Legacy: `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` leiten per 301 weiter
 - Contract: `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt bis zur nächsten Contract-Version intern stabil
-- Status: 60-Sekunden-Marktcheck im Hero der Solar-Landingpage; fruehere 8-Schritt-React-App bleibt Legacy-Code
+- Status: 60-Sekunden-Marktcheck im Hero der Solar-Landingpage; Fit-Qualifizierung läuft über Angebot, `business_fit`, Anfragevolumen, CPL und Engpass statt Mitarbeiterzahl; fruehere 8-Schritt-React-App bleibt Legacy-Code
 - WordPress REST: `/wp-json/nexus/v1/audit-request`
 - CRM: `nexus_review_request`, Audit-Typ `Marktcheck`
 - Mail: interne Admin-Benachrichtigung und Lead-Bestätigung über zentrale Brevo-/`wp_mail`-Schicht
