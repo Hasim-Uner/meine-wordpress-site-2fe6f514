@@ -167,25 +167,25 @@ function hu_output_schema()
             'serviceOutput' => 'Steuerbares WordPress-System mit Angebotsseiten, technischem SEO, Wartung, Datenebene, KPI-Klarheit und vollen Zugängen',
             'hasOfferCatalog' => [
                 '@type'           => 'OfferCatalog',
-                'name'            => 'SEO-Subcluster der WordPress Agentur Hannover',
+                'name'            => 'Leistungsbereiche der WordPress Agentur Hannover',
                 'itemListElement' => [
                     [
                         '@type'       => 'Offer',
-                        'name'        => 'Technisches SEO Fundament',
-                        'description' => 'Crawlability, LCP, interne Verlinkung, Indexierungslogik und technische WordPress-Basis für kaufnahe Seiten.',
-                        'url'         => home_url('/wordpress-agentur-hannover/#technisches-seo-foundation'),
+                        'name'        => 'Technisches SEO und Tracking',
+                        'description' => 'WordPress, technisches SEO, Tracking und Conversion in der richtigen Reihenfolge als verbundenes Anfrage-System.',
+                        'url'         => home_url('/wordpress-agentur-hannover/#technisches-seo'),
                     ],
                     [
                         '@type'       => 'Offer',
-                        'name'        => 'Local SEO Hannover',
-                        'description' => 'Google Business Profile, Maps-Pack-Signale, lokale Citations, NAP-Konsistenz und regionale Vertrauenssignale.',
-                        'url'         => home_url('/wordpress-agentur-hannover/#technisches-seo-local'),
+                        'name'        => 'WGOS-Methode',
+                        'description' => 'Strategie, technisches Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängende Methode.',
+                        'url'         => home_url('/wordpress-agentur-hannover/#wgos'),
                     ],
                     [
                         '@type'       => 'Offer',
-                        'name'        => 'Schema & Rich Results',
-                        'description' => 'JSON-LD für Organization, LocalBusiness, Service, FAQPage und BreadcrumbList mit Validierung über den Rich Results Test.',
-                        'url'         => home_url('/wordpress-agentur-hannover/#technisches-seo-schema'),
+                        'name'        => 'Laufende WordPress-Betreuung',
+                        'description' => 'Wartung, Updates und kontrollierte Weiterentwicklung für etablierte WordPress-Systeme im Rahmen laufender Mandate.',
+                        'url'         => home_url('/wordpress-agentur-hannover/#wordpress-wartung'),
                     ],
                 ],
             ],
@@ -240,7 +240,7 @@ function hu_output_schema()
         ],
 
         // Legacy-Services wordpress-wartung-hannover, wordpress-seo, wordpress-seo-hannover entfernt:
-        // Seiten sind 301 auf /wordpress-agentur-hannover/#wordpress-wartung bzw. #technisches-seo konsolidiert,
+        // Seiten sind 301 auf vorhandene Anker der Agentur-Money-Page konsolidiert,
         // daher keine eigenständigen Service-Schemas mehr — gehören jetzt in die Agentur-Service-Beschreibung.
 
         'core-web-vitals-optimierung' => [

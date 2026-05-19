@@ -302,6 +302,7 @@ get_header();
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="wgos">
 	<div class="nx-container">
+		<span class="wp-agentur-anchor" id="technisches-seo" aria-hidden="true"></span>
 		<div class="nx-section-header">
 			<p class="wp-agentur-eyebrow">WGOS · Methode</p>
 			<h2 class="nx-headline-section">WordPress, SEO, Tracking und CRO in der richtigen Reihenfolge.</h2>
@@ -630,7 +631,7 @@ get_header();
 				<h3>Vor Ort in der Region Hannover</h3>
 				<p>Persönliche Reviews, Workshops und Strategie-Sessions in Pattensen bei Hannover — oder remote im DACH-Raum.</p>
 			</div>
-			<div class="wp-agentur-local-card">
+			<div class="wp-agentur-local-card" id="wordpress-wartung">
 				<h3>Laufende WordPress-Betreuung</h3>
 				<p>Für Bestandskunden mit etabliertem WordPress-System: Wartung, Updates und Weiterentwicklung im Rahmen laufender Mandate.</p>
 			</div>

@@ -86,6 +86,13 @@
   scroll-margin-top: 96px;
 }
 
+.wp-agentur-anchor {
+  display: block;
+  block-size: 0;
+  scroll-margin-top: 96px;
+  visibility: hidden;
+}
+
 /* Section bg control — light sections sit on cream, surface sections on white */
 .wp-agentur-page-wrapper .nx-section {
   padding: var(--ag-section-pad);
