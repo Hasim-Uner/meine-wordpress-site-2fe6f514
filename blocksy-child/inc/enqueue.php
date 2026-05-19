@@ -438,17 +438,23 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-meta-ads-css', 'meta-ads.css', [ 'nexus-design-system' ] );
 	}
 
-	// ── P) Template: Ergebnisse Hub + Whitelabel Proof ─────────────
+	// ── P) Template: Ergebnisse Hub ────────────────────────────────
 	if (
 		is_page_template( 'page-case-studies-e-commerce.php' )
-		|| is_page_template( 'page-whitelabel-retainer.php' )
 		|| is_page( 'case-studies-e-commerce' )
 		|| is_page( 'ergebnisse' )
+	) {
+		hu_enqueue_css( 'nexus-results-css', 'results.css', [ 'nexus-design-system' ] );
+	}
+
+	// ── P2) Template: Whitelabel-Retainer ──────────────────────────
+	if (
+		is_page_template( 'page-whitelabel-retainer.php' )
 		|| is_page( 'whitelabel-retainer' )
 		|| is_page( 'whitelabel-retainer-proof' )
 		|| is_page( 'whitelabel' )
 	) {
-		hu_enqueue_css( 'nexus-results-css', 'results.css', [ 'nexus-design-system' ] );
+		hu_enqueue_css( 'nexus-whitelabel-css', 'whitelabel.css', [ 'nexus-design-system' ] );
 	}
 
 	// ── Q) Template: Öffentliche Case Studies ──────────────────────
