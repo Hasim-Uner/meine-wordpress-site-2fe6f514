@@ -660,28 +660,18 @@ function hu_output_schema()
                 '@id'      => home_url('/' . $slug . '/#collection'),
                 'url'      => home_url('/' . $slug . '/'),
                 'name'     => 'Ergebnisse',
-                'headline' => 'Ergebnisse, Case Studies und Whitelabel-Proof von Haşim Üner',
-                'description' => 'Öffentliche Case Studies, anonymisierte Whitelabel-Arbeit und laufende Weiterentwicklung als gemeinsamer Proof-Layer für WordPress-Systemarbeit.',
+                'headline' => 'Ergebnisse und Case Studies von Haşim Üner',
+                'description' => 'Öffentliche Case Studies und nachvollziehbare Systemlogik als Proof-Layer für WordPress-, SEO-, Tracking- und CRO-Arbeit.',
                 'inLanguage' => 'de',
                 'isPartOf' => ['@id' => home_url('/#website')],
                 'about' => ['@id' => home_url('/#organization')],
-                'hasPart' => array_values(array_filter([
+                'hasPart' => [
                     [
                         '@type' => 'Article',
                         'name'  => 'E3 New Energy',
                         'url'   => home_url('/e3-new-energy/')
                     ],
-                    nexus_get_page_id([ 'case-study-domdar', 'domdar' ]) ? [
-                        '@type' => 'Article',
-                        'name'  => 'DOMDAR',
-                        'url'   => nexus_get_page_url([ 'case-study-domdar', 'domdar' ], home_url('/case-study-domdar/'))
-                    ] : null,
-                    nexus_get_whitelabel_page_id() ? [
-                        '@type' => 'WebPage',
-                        'name'  => 'Whitelabel & Weiterentwicklung',
-                        'url'   => nexus_get_whitelabel_page_url()
-                    ] : null,
-                ])),
+                ],
             ];
 
             $schemas[] = $collection;

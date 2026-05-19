@@ -14,7 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$contact_url    = home_url( '/kontakt/' );
+$contact_url    = add_query_arg(
+	[
+		'type'  => 'analysis',
+		'focus' => 'followup_scope',
+	],
+	home_url( '/kontakt/' )
+);
 $e3_url         = home_url( '/e3-new-energy/' );
 $marktcheck_url = home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 
@@ -147,12 +153,12 @@ get_header();
 			<div class="ag-hero__grid">
 				<div class="ag-hero__copy">
 					<h1 class="ag-hero__title">
-						<span class="ag-hero__title-line">Mehr qualifizierte</span>
-						<span class="ag-hero__title-line">Anfragen.</span>
-						<span class="ag-hero__title-line ag-hero__title-line--em">Ohne neue Website.</span>
+						<span class="ag-hero__title-line">WordPress Agentur</span>
+						<span class="ag-hero__title-line">Hannover.</span>
+						<span class="ag-hero__title-line ag-hero__title-line--em">Für B2B-Anfragen.</span>
 					</h1>
 					<p class="ag-hero__lede">
-						WordPress-Wachstumssystem für anspruchsvolle B2B-Angebote — aus Hannover für den DACH-Raum. Strategie, technisches Fundament, Tracking und Conversion-Führung als ein System, nicht als Baustellensammlung.
+						WordPress-Wachstumssystem für anspruchsvolle B2B-Angebote — aus Hannover für den DACH-Raum. Technisches SEO, Core Web Vitals, Tracking und Conversion-Führung als ein System, nicht als lose Agenturleistung.
 					</p>
 
 					<div class="ag-hero__actions">
@@ -168,7 +174,7 @@ get_header();
 					</div>
 
 					<p class="ag-hero__fineprint">
-						30&nbsp;Min · kein Standard-Pitch · ehrliche Diagnose, auch wenn die Antwort „nein" ist.
+						30&nbsp;Min · kein Standard-Pitch · klare Priorität vor Relaunch, SEO oder Umsetzung.
 					</p>
 				</div>
 
@@ -265,9 +271,9 @@ get_header();
 	<div class="nx-container">
 		<div class="nx-section-header">
 			<p class="wp-agentur-eyebrow">Spezialisierung</p>
-			<h2 class="nx-headline-section">Kein lokaler Allrounder. Ein Spezialist mit Hannover-Anker.</h2>
+			<h2 class="nx-headline-section">Keine lokale Allround-Agentur. Ein Spezialist für WordPress als Anfrage-System.</h2>
 			<p class="nx-subheadline wp-agentur-section-intro">
-				Diese Seite ist der SEO-Anker für WordPress Agentur Hannover. Die Zielgruppe wird fachlich bestimmt: komplexe B2B-Angebote, klare Messbarkeit und ein eigenes Anfrage-System.
+				Für Unternehmen in Hannover und im DACH-Raum, deren WordPress-Website nicht nur gut aussehen, sondern kaufnahe Besucher in messbare Anfragen führen soll.
 			</p>
 		</div>
 
@@ -631,7 +637,7 @@ get_header();
 		</div>
 
 		<p class="wp-agentur-location-note">
-			WordPress Agentur Hannover ist der SEO-Anker dieser Seite — kein Hinweis auf eine regionale Begrenzung der Arbeitsweise.
+			Der Standort Hannover erleichtert persönliche Reviews, Workshops und Strategie-Sessions. Die Umsetzung ist nicht auf regionale Projekte begrenzt.
 		</p>
 	</div>
 </section>

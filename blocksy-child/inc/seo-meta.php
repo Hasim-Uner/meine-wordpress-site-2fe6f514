@@ -96,24 +96,24 @@ function hu_get_forced_singular_seo_map() {
 			// 'wgos' / 'wordpress-growth-operating-system' sowie Tools-/Audit-Legacy-Routen:
 			// Seiten sind noindex oder 301, daher keine öffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
-				'title'       => 'WordPress Agentur Hannover für B2B – Technisches SEO & Tracking',
-				'description' => 'B2B-WordPress-Agentur in Hannover für anspruchsvolle Mittelständler: technisches SEO, Core Web Vitals, Server-Side-Tracking und Conversion als System. E3-Referenz.',
+				'title'       => 'WordPress Agentur Hannover für B2B | SEO, Tracking & CRO',
+				'description' => 'WordPress Agentur Hannover für B2B-Websites: technisches SEO, Core Web Vitals, Server-Side-Tracking und Conversion-Führung mit E3-Referenz.',
 			],
 			'wordpress-agentur' => [
-				'title'       => 'WordPress Agentur Hannover für B2B – Technisches SEO & Tracking',
-				'description' => 'B2B-WordPress-Agentur in Hannover für anspruchsvolle Mittelständler: technisches SEO, Core Web Vitals, Server-Side-Tracking und Conversion als System. E3-Referenz.',
+				'title'       => 'WordPress Agentur Hannover für B2B | SEO, Tracking & CRO',
+				'description' => 'WordPress Agentur Hannover für B2B-Websites: technisches SEO, Core Web Vitals, Server-Side-Tracking und Conversion-Führung mit E3-Referenz.',
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus WordPress-, SEO-, Tracking- und CRO-Projekten: E3, DOMDAR und Whitelabel-Proof mit klarem naechsten Schritt.',
+				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: E3 New Energy, Systemlogik und konkrete nächste Schritte.',
 			],
 			'case-studies-e-commerce' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus WordPress-, SEO-, Tracking- und CRO-Projekten: E3, DOMDAR und Whitelabel-Proof mit klarem naechsten Schritt.',
+				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: E3 New Energy, Systemlogik und konkrete nächste Schritte.',
 			],
 			'case-studies' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus WordPress-, SEO-, Tracking- und CRO-Projekten: E3, DOMDAR und Whitelabel-Proof mit klarem naechsten Schritt.',
+				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: E3 New Energy, Systemlogik und konkrete nächste Schritte.',
 			],
 			'e3-new-energy' => [
 				'title'       => hu_get_e3_methodology_case_title(),
@@ -922,6 +922,12 @@ function hu_get_seo_meta() {
 		'seo',
 	];
 
+	$noindex_follow_slugs = [
+		'whitelabel',
+		'whitelabel-retainer',
+		'whitelabel-retainer-proof',
+	];
+
 	if ( is_front_page() ) {
 		$meta['og_title']    = hu_get_homepage_title();
 		$meta['description'] = hu_get_homepage_description();
@@ -972,6 +978,10 @@ function hu_get_seo_meta() {
 		$acf_noindex          = function_exists( 'get_field' ) ? get_field( 'seo_noindex', $post_id ) : false;
 		$legacy_robots_meta   = get_post_meta( $post_id, 'rank_math_robots', true );
 		$legacy_noindex       = is_array( $legacy_robots_meta ) ? in_array( 'noindex', $legacy_robots_meta, true ) : 'noindex' === $legacy_robots_meta;
+
+		if ( in_array( $slug, $noindex_follow_slugs, true ) ) {
+			$meta['robots'] = 'noindex, follow';
+		}
 
 		if ( in_array( $template, $noindex_templates, true ) || in_array( $slug, $noindex_slugs, true ) || $acf_noindex || $legacy_noindex ) {
 			$meta['robots'] = 'noindex, nofollow';
@@ -1132,6 +1142,7 @@ add_action( 'template_redirect', function () {
  * - case-studies* / alte Kontakt-, Agentur-, Solar- und Systempfade: 301 auf kanonische Ziele
  * - wordpress-seo-hannover / wordpress-wartung-hannover: 301 auf Agentur-Page-Anker
  * - growth-audit / kostenlose-tools und Tool-Unterseiten: 301 auf Marktcheck
+ * - whitelabel*: diskreter Akquisepfad, aber kein aktives SEO-Ziel
  *
  * @return array<int, string>
  */
@@ -1168,6 +1179,9 @@ function nexus_get_sitemap_excluded_slugs() {
 		'tools',
 		'website-performance-analyse',
 		'website-fuer-solar-und-waermepumpen-anbieter',
+		'whitelabel',
+		'whitelabel-retainer',
+		'whitelabel-retainer-proof',
 	];
 }
 
