@@ -539,7 +539,7 @@ function nexus_get_wgos_cluster_page_method_steps() {
  */
 function nexus_render_wgos_cluster_page( $page ) {
 	$audit_url     = nexus_get_audit_url();
-	$wgos_url      = function_exists( 'nexus_get_wgos_url' ) ? nexus_get_wgos_url() : home_url( '/wordpress-agentur-hannover/#wgos' );
+	$wgos_url      = function_exists( 'nexus_get_wgos_url' ) ? nexus_get_wgos_url() : home_url( '/wordpress-agentur-hannover/#methode' );
 	$asset_hub_url = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' );
 	$results_url   = nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) );
 	$cards         = nexus_get_wgos_cluster_page_asset_cards( $page );
@@ -1007,7 +1007,7 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 	$seo_url                 = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) );
 	$tracking_url            = nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) );
 	$cwv_url                 = nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) );
-	$cro_url                 = nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#wgos' ) );
+	$cro_url                 = nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) );
 	$performance_marketing_url = nexus_get_primary_public_url( 'performance_marketing', home_url( '/performance-marketing/' ) );
 
 	$seo_foundation_bridge = [

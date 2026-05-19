@@ -79,7 +79,7 @@ $pillar_map = [
         'badge'       => 'Conversion (CRO) & UX',
         'subtitle'    => 'A/B-Tests, UX-Optimierung und Conversion-Führung — mehr qualifizierte Anfragen aus dem gleichen Traffic.',
         'cta_label'   => 'CRO-Einstieg ansehen',
-        'cta_url'     => $primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#wgos' ),
+        'cta_url'     => $primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#methode' ),
         'cta_text'    => 'Die CRO-Seite zeigt, wie Angebotslogik, Proof und CTA-Hierarchie in den naechsten sinnvollen Schritt uebergehen.',
     ],
     'wordpress-performance' => [

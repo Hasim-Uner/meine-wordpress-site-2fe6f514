@@ -150,7 +150,7 @@ function hu_output_schema()
                     '@type'       => 'Offer',
                     'name'        => 'Conversion-Optimierung',
                     'description' => 'Systematische Optimierung von Angebotsseiten und Nutzerpfaden für mehr qualifizierte Anfragen.',
-                    'url'         => home_url('/wordpress-agentur-hannover/#wgos'),
+                    'url'         => home_url('/wordpress-agentur-hannover/#methode'),
                 ],
             ],
         ],
@@ -203,7 +203,7 @@ function hu_output_schema()
                         '@type'       => 'Offer',
                         'name'        => 'Anfrage-System-Methode',
                         'description' => 'Strategie, technisches Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängende Methode.',
-                        'url'         => home_url('/wordpress-agentur-hannover/#wgos'),
+                        'url'         => home_url('/wordpress-agentur-hannover/#methode'),
                     ],
                     [
                         '@type'       => 'Offer',

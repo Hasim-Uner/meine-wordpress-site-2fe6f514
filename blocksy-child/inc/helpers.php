@@ -488,12 +488,12 @@ function nexus_get_primary_public_url_map() {
 		[ 'wordpress-agentur-hannover', 'wordpress-agentur' ],
 		home_url( '/wordpress-agentur-hannover/' )
 	);
-	$wgos_url    = trailingslashit( $agentur_url ) . '#wgos';
+	$wgos_url    = trailingslashit( $agentur_url ) . '#methode';
 	$asset_url   = trailingslashit( $agentur_url ) . '#asset-uebersicht';
 	$seo_url     = trailingslashit( $agentur_url ) . '#technisches-seo';
-	$cro_url     = trailingslashit( $agentur_url ) . '#wgos';
+	$cro_url     = trailingslashit( $agentur_url ) . '#methode';
 	$cwv_url     = function_exists( 'hue_get_wgos_asset_redirect_url' )
-		? hue_get_wgos_asset_redirect_url( 'cwv-optimierung', trailingslashit( $agentur_url ) . '#wgos' )
+		? hue_get_wgos_asset_redirect_url( 'cwv-optimierung', trailingslashit( $agentur_url ) . '#methode' )
 		: home_url( '/wgos-assets/cwv-optimierung/' );
 
 	$urls = [
@@ -1215,8 +1215,8 @@ function nexus_get_legacy_offer_redirect_map() {
 	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
 	$request_url = nexus_get_primary_request_url();
 	$cwv_target  = function_exists( 'hue_get_wgos_asset_redirect_url' )
-		? hue_get_wgos_asset_redirect_url( 'cwv-optimierung', trailingslashit( $agentur_url ) . '#wgos' )
-		: trailingslashit( $agentur_url ) . '#wgos';
+		? hue_get_wgos_asset_redirect_url( 'cwv-optimierung', trailingslashit( $agentur_url ) . '#methode' )
+		: trailingslashit( $agentur_url ) . '#methode';
 
 	return [
 		// Audit- und Tool-Routen sind in der neuen Positionierung retired.
@@ -1233,11 +1233,11 @@ function nexus_get_legacy_offer_redirect_map() {
 		'/tools/website-performance-analyse/' => $request_url,
 		'/roi-rechner/'                => $request_url,
 		// Erklär- und Service-Ebenen konsolidiert auf die Agentur-Money-Page oder passende Assets.
-		'/wordpress-growth-operating-system/' => trailingslashit( $agentur_url ) . '#wgos',
+		'/wordpress-growth-operating-system/' => trailingslashit( $agentur_url ) . '#methode',
 		'/wgos-systemlandkarte/'       => trailingslashit( $agentur_url ) . '#asset-uebersicht',
 		'/wordpress-seo-hannover/'     => trailingslashit( $agentur_url ) . '#technisches-seo',
 		'/core-web-vitals/'            => $cwv_target,
-		'/conversion-rate-optimization/' => trailingslashit( $agentur_url ) . '#wgos',
+		'/conversion-rate-optimization/' => trailingslashit( $agentur_url ) . '#methode',
 		'/wordpress-wartung-hannover/' => trailingslashit( $agentur_url ) . '#wordpress-wartung',
 		'/seo/'                        => trailingslashit( $agentur_url ) . '#technisches-seo',
 		'/wordpress-agentur/'          => $agentur_url,

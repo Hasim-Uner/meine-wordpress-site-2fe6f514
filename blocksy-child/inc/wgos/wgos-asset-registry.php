@@ -223,7 +223,7 @@ function hue_get_wgos_asset_redirect_url( $slug, $fallback = '' ) {
 		return trailingslashit( home_url( '/wgos-assets/' . $slug ) );
 	}
 
-	return $fallback ? $fallback : home_url( '/wordpress-agentur-hannover/#wgos' );
+	return $fallback ? $fallback : home_url( '/wordpress-agentur-hannover/#methode' );
 }
 
 /**

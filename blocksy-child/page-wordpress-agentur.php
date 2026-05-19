@@ -300,7 +300,8 @@ get_header();
 <!-- ═══════════════════════════════════════════════
      SECTION 04 — ANFRAGE-SYSTEM-METHODE (6 Phasen + Vorher/Nachher)
      ═══════════════════════════════════════════════ -->
-<section class="nx-section" data-nx-theme="light" id="wgos">
+<span class="wp-agentur-anchor" id="wgos" aria-hidden="true"></span>
+<section class="nx-section" data-nx-theme="light" id="methode">
 	<div class="nx-container">
 		<span class="wp-agentur-anchor" id="technisches-seo" aria-hidden="true"></span>
 		<div class="nx-section-header">
@@ -373,7 +374,7 @@ get_header();
 		</div>
 
 		<p class="wp-agentur-process-link">
-			<a href="#asset-uebersicht" data-track-action="cta_method_to_library" data-track-category="navigation" data-track-section="wgos">Alle <?php echo (int) $total_assets; ?> Bausteine in der Methodenbibliothek ansehen ↓</a>
+			<a href="#asset-uebersicht" data-track-action="cta_method_to_library" data-track-category="navigation" data-track-section="methode">Alle <?php echo (int) $total_assets; ?> Bausteine in der Methodenbibliothek ansehen ↓</a>
 		</p>
 	</div>
 </section>

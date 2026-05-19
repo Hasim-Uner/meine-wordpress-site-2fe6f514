@@ -108,7 +108,7 @@ Nicht verifiziert:
 ## Deprecated
 
 - Legacy-Slugs `/system-diagnose/`, `/growth-audit/`, `/audit/`, `/customer-journey-audit/`, `/360-audit/` und `/wordpress-tech-audit/` werden auf `/solar-waermepumpen-leadgenerierung/#marktcheck` umgeleitet.
-- Die früheren Erklär- und Service-Slugs `/wordpress-growth-operating-system/`, `/wgos-systemlandkarte/`, `/wordpress-seo-hannover/`, `/core-web-vitals/` und `/conversion-rate-optimization/` sind repo-seitig als konsolidierte 301-Pfade angelegt. Die früheren WGOS-/Systemlandkarte-Pfade führen nicht mehr als öffentliche Sales-Ziele; SEO und CRO führen auf passende Anker der Agentur-Page; Core Web Vitals führt auf `/wgos-assets/cwv-optimierung/`, sofern das Asset publiziert existiert, sonst auf `/wordpress-agentur-hannover/#wgos`.
+- Die früheren Erklär- und Service-Slugs `/wordpress-growth-operating-system/`, `/wgos-systemlandkarte/`, `/wordpress-seo-hannover/`, `/core-web-vitals/` und `/conversion-rate-optimization/` sind repo-seitig als konsolidierte 301-Pfade angelegt. Die früheren WGOS-/Systemlandkarte-Pfade führen nicht mehr als öffentliche Sales-Ziele; SEO und CRO führen auf passende Anker der Agentur-Page; Core Web Vitals führt auf `/wgos-assets/cwv-optimierung/`, sofern das Asset publiziert existiert, sonst auf `/wordpress-agentur-hannover/#methode`.
 - Legacy-Slugs `/case-studies/` und `/case-studies-e-commerce/` werden auf `/ergebnisse/` umgeleitet.
 - Legacy-Slugs `/meta-ads/`, `/seo/`, `/wordpress-agentur/`, `/roi-rechner/`, `/kostenlose-tools/`, `/tools/` und `/website-performance-analyse/` werden auf ihre kanonischen Zielseiten umgeleitet.
 - Der Legacy-Pfad `/alle-loesungen-im-detail/` wird auf die aktuelle Loesungs-Uebersicht umgeleitet.

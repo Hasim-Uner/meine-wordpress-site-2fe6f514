@@ -69,7 +69,7 @@ function nexus_get_llms_txt_sections() {
 				],
 				[
 					'label'       => 'Anfrage-System-Methode',
-					'url'         => $urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#wgos' ),
+					'url'         => $urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#methode' ),
 					'description' => 'Methode für Anfrage-Systeme, Priorisierung und kontrollierte Umsetzung.',
 				],
 			],
@@ -89,7 +89,7 @@ function nexus_get_llms_txt_sections() {
 				],
 				[
 					'label'       => 'Conversion Rate Optimierung',
-					'url'         => $urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#wgos' ),
+					'url'         => $urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#methode' ),
 					'description' => 'CRO für WordPress mit Fokus auf Leads, Reibung und Formularpfade.',
 				],
 				[

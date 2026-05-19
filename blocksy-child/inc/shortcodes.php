@@ -134,14 +134,14 @@ function hu_home_urls() {
 
 	$urls = [
 		'audit'       => nexus_get_primary_public_url( 'audit', home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) ),
-		'wgos'        => nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#wgos' ) ),
+		'wgos'        => nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#methode' ) ),
 		'cases'       => nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) ),
 		'agentur'     => nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ),
 		'seo'         => nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) ),
 		'wartung'     => nexus_get_primary_public_url( 'wartung', home_url( '/wordpress-wartung-hannover/' ) ),
 		'tracking'    => nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) ),
 		'cwv'         => nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) ),
-		'cro'         => nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#wgos' ) ),
+		'cro'         => nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) ),
 		'about'       => nexus_get_primary_public_url( 'about', home_url( '/uber-mich/' ) ),
 		'blog'        => nexus_get_primary_public_url( 'blog', home_url( '/blog/' ) ),
 		'e3'          => nexus_get_primary_public_url( 'e3', home_url( '/e3-new-energy/' ) ),
