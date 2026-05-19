@@ -31,6 +31,7 @@ $project_request_url = add_query_arg(
 );
 $imprint_url      = $primary_urls['impressum'] ?? home_url( '/impressum/' );
 $privacy_url      = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
+$whitelabel_url   = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 $hide_primary_cta    = function_exists( 'nexus_should_hide_footer_primary_cta' ) && nexus_should_hide_footer_primary_cta();
 $footer_class        = $hide_primary_cta ? 'ft ft--no-primary-cta ft--mobile-cta' : 'ft';
 $audit_cta_label     = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck starten';
@@ -138,6 +139,7 @@ $footer_trust_items  = array_values(
 				<h3 id="ft-kontakt">Kontakt</h3>
 				<ul class="ft__list">
 					<li><a class="ft__link-strong" href="<?php echo esc_url( $project_request_url ); ?>" data-track-action="cta_footer_nav_project" data-track-category="lead_gen" data-track-section="footer">Umsetzung besprechen</a></li>
+					<li><a href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="cta_footer_nav_whitelabel" data-track-category="lead_gen" data-track-section="footer">Für Agenturen: White-Label</a></li>
 					<li><a href="<?php echo esc_url( $about_url ); ?>" data-track-action="cta_footer_nav_about" data-track-category="navigation" data-track-section="footer">Über Haşim</a></li>
 					<li><a href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_footer_nav_contact" data-track-category="navigation" data-track-section="footer">Direktkontakt</a></li>
 				</ul>
