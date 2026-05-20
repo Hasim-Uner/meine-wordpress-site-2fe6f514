@@ -15,7 +15,7 @@ Stand: 2026-05-19. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | CTA- und Leadflow | CTA-Hierarchie vom ersten Besuch bis zur Diagnose, Folgeeinordnung und Qualifizierung | `blocksy-child/inc/shortcodes.php`, `blocksy-child/template-parts/footer-cta.php`, `blocksy-child/template-parts/trust-section.php`, Service-Templates | WordPress-Editor, Audit-Funnel, Cal.com, CRM | live |
 | Public Proof Layer | zentraler oeffentlicher Proof- und Vokabular-Layer fuer kaufnahe Seiten | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/shortcodes.php`, `blocksy-child/front-page.php`, `blocksy-child/page-wordpress-agentur.php`, `blocksy-child/page-kontakt.php`, `blocksy-child/inc/contact-page.php` | WordPress-Editor, oeffentliche Cases und Profile | live |
 | WGOS Client Dashboard | internes Delivery-/Client-Dashboard mit minimaler Rolle und Capability | `blocksy-child/page-wgos.php`, `blocksy-child/inc/wgos/wgos-access.php` | WordPress-User-System | intern; noindex/nofollow; Zugriff nur fuer `manage_options` oder `view_wgos_dashboard` |
-| Content- und SEO-System | Blog, Pillar-Hubs, Cornerstone-Content, interne Verlinkung | `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/page-seo-cornerstone.php`, `content/blog-drafts/` | WordPress-Editor | live plus Ausbau |
+| Content- und SEO-System | Blog, Pillar-Hubs, Cornerstone-Content, interne Verlinkung | `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/page-seo-cornerstone.php`, `blocksy-child/inc/blog-provider-posts.php`, `content/blog-drafts/` | WordPress-Editor, einmalige Theme-Seeds | live plus Ausbau |
 | Client Portal | Kunden-Cockpit mit Login, Upload und Roadmap-Slots | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, Media Library | live, aber aktuell mit Mock-Daten |
 | n8n-Automationen | optionale Workflow-Artefakte für spätere Analyse-/Routing-/Nurture-Schritte hinter Contract, Consent und Feature-Flag | `automations/n8n/` | n8n Cloud, CRM, Mail, evtl. Sheets | kein aktiver Marktcheck-Pfad; nur minimal pflegen |
 | Marktcheck / System-Diagnose-Legacy | aktiver 60-Sekunden-Marktcheck auf der Solar-Landingpage; fruehere System-Diagnose-Route bleibt als Redirect erhalten | `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/solar-leadgenerierung-solara.js`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/review-crm.php`, `blocksy-child/readiness/` | WordPress, Audit-CRM, Brevo/wp_mail, Cal.com; n8n nicht angebunden | Marktcheck aktiv über `/wp-json/nexus/v1/audit-request`; `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects |
@@ -201,7 +201,7 @@ Bausteine:
 - `category.php`: Pillar-Hub mit Featured Entry Point
 - `single.php`: Artikel mit TOC, Related Content und Footer-CTA
 - `page-seo-cornerstone.php`: Cornerstone-Template mit starkem Entscheider-Fokus
-- `content/blog-drafts/`: Rohfassungen ausserhalb von WordPress
+- `content/blog-drafts/`: Rohfassungen ausserhalb von WordPress; Lead-Anbieter-Markteinordnungen werden zusätzlich einmalig über `blocksy-child/inc/blog-provider-posts.php` in WordPress veröffentlicht.
 
 Risiko:
 

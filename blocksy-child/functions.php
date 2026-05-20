@@ -43,6 +43,7 @@ $modules = [
 	'analysis-intake.php', // REST-Endpoint, CRM-Sync, Brevo-Mails und n8n-Webhook für die Analyse
 	'audit-linkedin-page.php', // LinkedIn Audit Landing Page (virtuelle Route, noindex)
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails
+	'blog-provider-posts.php', // Einmalige Live-Anlage der Lead-Anbieter-Markteinordnungen
 	'robots-txt.php',     // Dynamische /robots.txt-Route für Search- und KI-Crawler
 	'llms-txt.php',       // Dynamische /llms.txt-Route für KI-Agenten und Entitätskontext
 	'seo-cockpit/seo-cockpit.php',    // Search Console basiertes SEO-Cockpit mit optionaler Koko-Erkennung
