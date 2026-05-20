@@ -170,11 +170,22 @@ if ($featured_query->have_posts()) {
             </div>
             
             <a href="<?php the_permalink(); ?>" class="pillar-featured__card">
-                <?php if ($feat_thumb) : ?>
-                    <div class="pillar-featured__image">
+                <div class="pillar-featured__image<?php echo esc_attr( $feat_thumb ? '' : ' pillar-featured__image--generated' ); ?>">
+                    <?php if ($feat_thumb) : ?>
                         <img src="<?php echo esc_url($feat_thumb); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
-                    </div>
-                <?php endif; ?>
+                    <?php else : ?>
+                        <?php
+                        get_template_part(
+                            'template-parts/post-title-visual',
+                            null,
+                            [
+                                'post_id' => get_the_ID(),
+                                'variant' => 'wide',
+                            ]
+                        );
+                        ?>
+                    <?php endif; ?>
+                </div>
                 
                 <div class="pillar-featured__content">
                     <span class="pillar-featured__date"><?php echo get_the_date(); ?> · <?php echo function_exists('nexus_get_reading_time') ? nexus_get_reading_time() . ' Min.' : ''; ?></span>
@@ -215,11 +226,22 @@ if ($featured_query->have_posts()) {
                         ?>
                             <article class="pillar-card">
                                 <a class="pillar-card__linkwrap" href="<?php echo esc_url( get_permalink() ); ?>" aria-label="<?php echo esc_attr( sprintf( 'Analyse lesen: %s', get_the_title() ) ); ?>">
-                                    <?php if ($thumb) : ?>
-                                        <div class="pillar-card__image">
+                                    <div class="pillar-card__image<?php echo esc_attr( $thumb ? '' : ' pillar-card__image--generated' ); ?>">
+                                        <?php if ($thumb) : ?>
                                             <img src="<?php echo esc_url($thumb); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
-                                        </div>
-                                    <?php endif; ?>
+                                        <?php else : ?>
+                                            <?php
+                                            get_template_part(
+                                                'template-parts/post-title-visual',
+                                                null,
+                                                [
+                                                    'post_id' => get_the_ID(),
+                                                    'variant' => 'card',
+                                                ]
+                                            );
+                                            ?>
+                                        <?php endif; ?>
+                                    </div>
                                     
                                     <div class="pillar-card__body">
                                         <span class="pillar-card__date"><?php echo get_the_date(); ?></span>

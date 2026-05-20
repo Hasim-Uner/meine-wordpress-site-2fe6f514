@@ -54,7 +54,7 @@ function hu_get_homepage_description() {
 function hu_get_blog_archive_title() {
 	return (string) apply_filters(
 		'hu_blog_archive_seo_title',
-		'Insights zu WordPress und SEO | Haşim Üner'
+		'Blog: Solar Leadgenerierung, SEO & CRO | Haşim Üner'
 	);
 }
 
@@ -66,7 +66,7 @@ function hu_get_blog_archive_title() {
 function hu_get_blog_archive_description() {
 	return (string) apply_filters(
 		'hu_blog_archive_seo_description',
-		'Analysen zu WordPress, technischer SEO, Tracking und Conversion-Logik für B2B-Websites.'
+		'Analysen zu eigenen Anfrage-Systemen für Solar-/Wärmepumpen-Betriebe: Portal-Leads, SEO, Tracking, CRO und WordPress-Performance.'
 	);
 }
 

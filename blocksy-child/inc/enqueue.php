@@ -124,6 +124,10 @@ function hu_enqueue_assets() {
 		);
 	}
 
+	if ( is_home() || is_category() || is_singular( 'post' ) ) {
+		hu_enqueue_css( 'nexus-post-visual-css', 'post-visual.css', [ 'nexus-design-system' ] );
+	}
+
 	// ── A) Startseite (homepage.css nur auf Front, nicht Blog-Index) ──
 	if ( is_front_page() ) {
 		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );

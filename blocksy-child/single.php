@@ -69,13 +69,24 @@ get_template_part( 'template-parts/blog-header' );
 		}
 		?>
 
-		<header class="nexus-article-hero<?php echo esc_attr( $has_hero_image ? '' : ' nexus-article-hero--text-only' ); ?>" data-track-section="article_hero">
+		<header class="nexus-article-hero" data-track-section="article_hero">
 
-			<?php if ( $has_hero_image ) : ?>
-			<div class="nexus-hero-image">
+			<div class="nexus-hero-image<?php echo esc_attr( $has_hero_image ? '' : ' nexus-hero-image--generated' ); ?>">
+				<?php if ( $has_hero_image ) : ?>
 					<?php the_post_thumbnail( 'full' ); ?>
+				<?php else : ?>
+					<?php
+					get_template_part(
+						'template-parts/post-title-visual',
+						null,
+						[
+							'post_id' => get_the_ID(),
+							'variant' => 'hero',
+						]
+					);
+					?>
+				<?php endif; ?>
 			</div>
-			<?php endif; ?>
 
 			<div class="nexus-hero-content">
 
