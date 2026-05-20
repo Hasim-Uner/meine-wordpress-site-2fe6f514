@@ -2,11 +2,11 @@
  * About-Page — Brunnen-Animation und Scroll-Reveal.
  *
  * Verhalten:
- * - Wasserspiegel im Brunnen steigt scrollbasiert von 0 % auf 85 % der Schacht-Hoehe.
+ * - Wasserspiegel im Brunnen steigt scrollbasiert von 0 % auf 92 % der Schacht-Hoehe.
  * - Labels (Portal-Leads → Tracking → Infrastruktur → Eigene Quelle) erscheinen
  *   nacheinander, sobald der jeweilige Tiefen-Schwellwert erreicht ist.
  * - [data-reveal]-Elemente fade-in bei IntersectionObserver.
- * - prefers-reduced-motion: Wasser wird sofort auf 85 % gesetzt, Labels alle aktiv,
+ * - prefers-reduced-motion: Wasser wird sofort auf 92 % gesetzt, Labels alle aktiv,
  *   keine Scroll-/Fade-Animationen.
  */
 ( function () {
@@ -57,6 +57,7 @@
 		var waterLevel = document.getElementById( 'aboutWaterLevel' );
 		var hero       = document.getElementById( 'about-hero' );
 		var labels     = document.querySelectorAll( '.nexus-about .about-well__label' );
+		var maxWaterHeight = 92;
 
 		if ( ! waterLevel || ! hero ) {
 			return;
@@ -67,7 +68,7 @@
 			: false;
 
 		if ( reducedMotion ) {
-			waterLevel.style.height = '85%';
+			waterLevel.style.height = maxWaterHeight + '%';
 			labels.forEach( function ( label ) {
 				label.classList.add( 'is-active' );
 			} );
@@ -92,7 +93,7 @@
 				progress = 1;
 			}
 
-			var waterHeight = progress * 85;
+			var waterHeight = progress * maxWaterHeight;
 			waterLevel.style.height = waterHeight + '%';
 
 			labels.forEach( function ( label ) {

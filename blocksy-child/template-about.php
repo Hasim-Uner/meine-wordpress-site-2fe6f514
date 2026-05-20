@@ -8,7 +8,7 @@
  * - Brunnen-Visual als AHA-Element im Hero (scrollbasiert)
  * - Section-Number-Grid (Eyebrow links, H2 rechts)
  * - Inline Fit-Check-Card statt Negativ-Liste
- * - Stat-Proof im Hero (E3-Referenz)
+ * - Zahlen als Proof-Ebene nach der Arbeitsweise statt Hero-Dominanz
  * - Mikro-Copy unter primären CTAs
  *
  * @package Blocksy_Child
@@ -31,44 +31,57 @@ $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
 $e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 2 % → 12 %';
 $e3_conv_uplift_lbl  = $e3_metrics['sales_conversion_uplift']['label'] ?? 'Anstieg der Abschlussquote durch eigenes System';
 
-// Drei Vorteile-Strip: das Killer-Argument der Methodik
-$about_proof_strip = [
+// Hero-Pfad: erst Arbeitsweise, dann Beleg. Keine KPI-Dominanz im ersten Blick.
+$about_hero_path = [
 	[
-		'k' => '100 %',
-		'l' => 'Asset-Eigentum statt Portal-Miete — Ihr Code, Ihr CRM, Ihre Daten.',
+		't' => 'Untergrund lesen',
+		's' => 'Suchintention, Website, Tracking und Vertrieb als ein System verstehen.',
 	],
 	[
-		'k' => $e3_conv_uplift,
-		'l' => 'Abschlussquote bei E3 — von Portal-Leads zu eigenem System.',
+		't' => 'Quelle freilegen',
+		's' => 'Anfragen so führen, dass Fit, Region und Projektwert früh sichtbar werden.',
 	],
 	[
-		'k' => '150 € → 22 €',
-		'l' => sprintf( 'Cost per Anfrage bei E3 in %s gesenkt.', $e3_timeframe ),
+		't' => 'Pumpe hochdrehen',
+		's' => 'Erst skalieren, wenn Infrastruktur, Daten und Anschluss belastbar sind.',
 	],
 ];
 
-// Vorteile-Detail-Sektion: drei Argumente didaktisch ausgespielt
-$about_advantages = [
+// Arbeitsweise: erzählerischer Einstieg statt Zahlenwand.
+$about_work_principles = [
 	[
-		'eyebrow' => '01 / Asset-Eigentum',
-		'title'   => 'CAPEX statt OPEX.',
-		'metric'  => '100 %',
-		'metric_label' => 'Code, CRM, Tracking, Daten',
-		'body'    => 'Portal-Leads sind monatliche Miete: Sobald Sie kündigen, hört der Anfragestrom auf. Ein eigenes System ist eine bilanzierbare Investition. Code, CRM-Anbindung und Tracking-Infrastruktur bleiben bei Ihnen — auch wenn wir nicht mehr zusammenarbeiten.',
+		'eyebrow' => '01 / Lesen',
+		'title'   => 'Ich beginne nicht mit dem Bohrer.',
+		'body'    => 'Bevor eine Seite, ein Funnel oder Tracking-Code angefasst wird, schaue ich auf den Untergrund: Welche Nachfrage gibt es wirklich? Wo wird Vertrauen aufgebaut? Wo versickert Aufmerksamkeit? Und an welcher Stelle bekommt der Vertrieb falsche oder zu späte Signale?',
+		'detail'  => 'Diese Phase wirkt unspektakulär, entscheidet aber, ob später Wasser kommt oder nur mehr Bewegung entsteht.',
 	],
 	[
-		'eyebrow' => '02 / Abschlussquote',
-		'title'   => 'Aus 1 – 2 % werden 12 %.',
-		'metric'  => $e3_conv_uplift,
-		'metric_label' => 'Bei E3 — geteilte Portal-Leads vs. eigene Anfragen',
-		'body'    => 'Gekaufte Portal-Leads gehen parallel an drei bis fünf Anbieter. Der Endkunde ist bereits umworben, vergleicht Preise, verliert Interesse. Eigene Anfragen kommen vorqualifiziert und exklusiv — Region, Heizart, Projektwert und Budget sind bekannt, bevor Ihr Vertrieb das Telefon in die Hand nimmt. Das hebelt die Abschlussquote um den Faktor 6 bis 10.',
+		'eyebrow' => '02 / Führen',
+		'title'   => 'Ich baue keine schöne Oberfläche über ein unklares System.',
+		'body'    => 'Viele Websites erklären Technik, aber führen keine Entscheidung. Ich arbeite an Sprache, Struktur und Vorqualifizierung: Welche Frage muss beantwortet sein, bevor jemand anfragt? Welche Reibung ist sinnvoll? Welche Anfrage sollte gar nicht erst im Vertrieb landen?',
+		'detail'  => 'Das Ziel ist nicht mehr Formularvolumen, sondern weniger Blindleistung im Verkaufsprozess.',
 	],
 	[
-		'eyebrow' => '03 / Cost per Anfrage',
-		'title'   => 'Von 150 € auf 22 €.',
-		'metric'  => $e3_cpl_reduction,
-		'metric_label' => sprintf( 'Senkung der Cost per Lead in %s bei E3', $e3_timeframe ),
-		'body'    => 'Die CPL-Senkung ist die direkte Folge der ersten beiden Vorteile: Ein Asset, das Anfragen erzeugt, kostet im Aufbau einmalig — danach skaliert es. Eine höhere Abschlussquote senkt zusätzlich die Cost per Auftrag, nicht nur die Cost per Lead. Beides zusammen verändert die Vertriebs-Ökonomie strukturell.',
+		'eyebrow' => '03 / Bauen',
+		'title'   => 'Ich verbinde Website, Daten und Vertrieb.',
+		'body'    => 'Wenn die Karte stimmt, wird gebaut: sauberes WordPress, nachvollziehbare Tracking-Logik, CRM-Anschluss und Inhalte, die nicht nur ranken, sondern Gespräche vorbereiten. Erst danach lohnt sich mehr Budget auf Ads, SEO oder Kampagnen.',
+		'detail'  => 'So entsteht eine eigene Anfrage-Quelle statt ein weiterer Kanal, der monatlich neu gefüttert werden muss.',
+	],
+];
+
+// E3 bleibt als Beleg, aber nicht als Einstieg der Über-mich-Seite.
+$about_evidence = [
+	[
+		'k' => $e3_conv_uplift,
+		'l' => $e3_conv_uplift_lbl,
+	],
+	[
+		'k' => $e3_cpl_reduction,
+		'l' => sprintf( 'CPL-Senkung in %s bei E3 New Energy.', $e3_timeframe ),
+	],
+	[
+		'k' => '100 %',
+		'l' => 'Eigene Infrastruktur: Code, Daten, CRM-Anschluss und Tracking bleiben beim Betrieb.',
 	],
 ];
 
@@ -137,7 +150,7 @@ get_header();
 	<div class="nexus-about" data-track-section="about_page">
 
 		<!-- ════════════════════════════════════════════════════════
-		     HERO — mit Brunnen-Visual und Stat-Proof
+		     HERO — mit Brunnen-Visual und Arbeitsweise
 		     ════════════════════════════════════════════════════════ -->
 		<section id="about-hero" class="about-hero">
 			<div class="about-container">
@@ -152,11 +165,11 @@ get_header();
 							Für Solar- und Wärmepumpen-Betriebe, die ihre Anfragen nicht dauerhaft über Portale mieten wollen — sondern eine eigene Nachfrage-Infrastruktur aufbauen.
 						</p>
 
-						<ul class="about-proof-strip" role="list" aria-label="Drei Vorteile eigener Anfrage-Systeme bei E3 New Energy">
-							<?php foreach ( $about_proof_strip as $proof_item ) : ?>
-								<li class="about-proof-strip__item">
-									<span class="about-proof-strip__k"><?php echo esc_html( $proof_item['k'] ); ?></span>
-									<span class="about-proof-strip__l"><?php echo esc_html( $proof_item['l'] ); ?></span>
+						<ul class="about-hero-path" role="list" aria-label="Arbeitsweise von der Analyse bis zur Skalierung">
+							<?php foreach ( $about_hero_path as $path_item ) : ?>
+								<li class="about-hero-path__item">
+									<span class="about-hero-path__title"><?php echo esc_html( $path_item['t'] ); ?></span>
+									<span class="about-hero-path__text"><?php echo esc_html( $path_item['s'] ); ?></span>
 								</li>
 							<?php endforeach; ?>
 						</ul>
@@ -181,20 +194,35 @@ get_header();
 					</div>
 
 					<div class="about-hero__visual" aria-hidden="true">
-						<div class="about-well">
-							<div class="about-well__surface"></div>
-							<div class="about-well__shaft">
-								<div class="about-well__water" id="aboutWaterLevel">
-									<div class="about-well__water-surface"></div>
-								</div>
+						<div class="about-well-stage">
+							<div class="about-well-stage__strata">
+								<span></span>
+								<span></span>
+								<span></span>
+								<span></span>
 							</div>
-							<div class="about-well__labels">
-								<?php foreach ( $about_well_labels as $label_item ) : ?>
-									<div class="about-well__label<?php echo $label_item['highlight'] ? ' is-highlight' : ''; ?>"
-									     data-depth="<?php echo (int) $label_item['depth']; ?>">
-										<?php echo esc_html( $label_item['label'] ); ?>
+							<div class="about-well">
+								<div class="about-well__surface"></div>
+								<div class="about-well__shaft">
+									<div class="about-well__depth-marks">
+										<span></span>
+										<span></span>
+										<span></span>
+										<span></span>
 									</div>
-								<?php endforeach; ?>
+									<div class="about-well__water" id="aboutWaterLevel">
+										<div class="about-well__water-surface"></div>
+									</div>
+								</div>
+								<div class="about-well__base"></div>
+								<div class="about-well__labels">
+									<?php foreach ( $about_well_labels as $label_item ) : ?>
+										<div class="about-well__label<?php echo $label_item['highlight'] ? ' is-highlight' : ''; ?>"
+										     data-depth="<?php echo (int) $label_item['depth']; ?>">
+											<?php echo esc_html( $label_item['label'] ); ?>
+										</div>
+									<?php endforeach; ?>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -203,30 +231,43 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════
-		     WARUM EIGENES SYSTEM — Drei Vorteile didaktisch
+		     WIE ICH ARBEITE — Story vor Zahlen
 		     ════════════════════════════════════════════════════════ -->
-		<section id="about-warum" class="about-section">
+		<section id="about-arbeit" class="about-section">
 			<div class="about-container">
 				<header class="about-section__head" data-reveal>
-					<p class="about-section__number">Warum eigene Infrastruktur</p>
+					<p class="about-section__number">Wie ich arbeite</p>
 					<div class="about-section__head-body">
-						<h2 class="about-h2">Drei Hebel, die zusammen die Vertriebs-Ökonomie verändern.</h2>
-						<p class="about-section__lead">Asset-Eigentum, höhere Abschlussquote und niedrigerer CPL sind keine drei separaten Vorteile — sie folgen mathematisch aufeinander.</p>
+						<h2 class="about-h2">Erst verstehen, dann bauen, dann skalieren.</h2>
+						<p class="about-section__lead">Meine Arbeit ist keine schnelle Design-Schicht über einer alten Vertriebslogik. Sie beginnt mit der Frage, warum gute Nachfrage heute nicht zuverlässig bei Ihnen ankommt.</p>
 					</div>
 				</header>
 
-				<div class="about-advantages">
-					<?php foreach ( $about_advantages as $advantage ) : ?>
-						<article class="about-advantage" data-reveal>
-							<p class="about-advantage__eyebrow"><?php echo esc_html( $advantage['eyebrow'] ); ?></p>
-							<h3 class="about-advantage__title"><?php echo esc_html( $advantage['title'] ); ?></h3>
-							<p class="about-advantage__metric">
-								<span class="about-advantage__metric-value"><?php echo esc_html( $advantage['metric'] ); ?></span>
-								<span class="about-advantage__metric-label"><?php echo esc_html( $advantage['metric_label'] ); ?></span>
-							</p>
-							<p class="about-advantage__body"><?php echo esc_html( $advantage['body'] ); ?></p>
+				<div class="about-work-grid">
+					<?php foreach ( $about_work_principles as $principle ) : ?>
+						<article class="about-work-card" data-reveal>
+							<p class="about-work-card__eyebrow"><?php echo esc_html( $principle['eyebrow'] ); ?></p>
+							<h3 class="about-work-card__title"><?php echo esc_html( $principle['title'] ); ?></h3>
+							<p class="about-work-card__body"><?php echo esc_html( $principle['body'] ); ?></p>
+							<p class="about-work-card__detail"><?php echo esc_html( $principle['detail'] ); ?></p>
 						</article>
 					<?php endforeach; ?>
+				</div>
+
+				<div class="about-evidence-band" data-reveal>
+					<div class="about-evidence-band__intro">
+						<p class="about-evidence-band__eyebrow">Beleg, nicht Aufhänger</p>
+						<h3 class="about-evidence-band__title">Die Zahlen kommen nach der Karte.</h3>
+						<p>Beim E3-Case sieht man, warum diese Reihenfolge wichtig ist. Die Kennzahlen sind kein Versprechen für jeden Betrieb, sondern ein Beleg dafür, was möglich wird, wenn Nachfrage, Qualifizierung und Vertriebsanschluss zusammenpassen.</p>
+					</div>
+					<ul class="about-evidence-band__list" role="list" aria-label="Ausgewählte E3-Belege">
+						<?php foreach ( $about_evidence as $proof_item ) : ?>
+							<li class="about-evidence-band__item">
+								<span class="about-evidence-band__k"><?php echo esc_html( $proof_item['k'] ); ?></span>
+								<span class="about-evidence-band__l"><?php echo esc_html( $proof_item['l'] ); ?></span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
 				</div>
 			</div>
 		</section>
@@ -267,6 +308,7 @@ get_header();
 
 				<div class="about-prose" data-reveal>
 					<p>Die Arbeit beginnt nicht mit WordPress oder Tracking-Code. Sie beginnt damit, Ihren Untergrund zu lesen: Welche Suchanfragen kommen an? Wo versickert Aufmerksamkeit? Wo ist das Tracking taub? An welchen Stellen erklärt die Seite Technik, statt Entscheidungen zu ermöglichen?</p>
+					<p>Manchmal liegt das Problem in der Positionierung. Manchmal im Formular. Manchmal im CRM-Anschluss. Manchmal daran, dass die Website zwar informiert, aber keine Entscheidung vorbereitet. Ich trenne diese Dinge, bevor ich eine Lösung empfehle.</p>
 					<p>Erst wenn diese Fragen beantwortet sind, wird gebaut. Sauber strukturiertes WordPress. Serverseitiges Tracking unter Ihrer Kontrolle. Eine Pipeline, die zeigt, welcher Kontakt wertvoll wurde — nicht nur, wer auf einen Button geklickt hat.</p>
 					<p>Dann, wenn die Infrastruktur steht, wird skaliert. Vorher Budgets auf Anzeigen zu setzen, erzeugt nur teurere Fehler.</p>
 				</div>
@@ -340,6 +382,7 @@ get_header();
 
 				<div class="about-prose" data-reveal>
 					<p>Mein Zugang zu dieser Arbeit ist Medienwissenschaft, nicht Webdesign. Ich denke zuerst über Sprache, Entscheidung und Signal nach — und erst danach über Code. Über Jahre habe ich an digitalen Strukturen für erklärungsbedürftige B2B-Angebote gearbeitet. Die technische Schicht war selten das eigentliche Problem. Das Problem war fast immer: jemand hat gebohrt, ohne vorher die Karte zu lesen.</p>
+					<p>In der Zusammenarbeit heißt das: Ich höre nicht nur auf Klickzahlen, sondern auf die Fragen, die im Vertrieb wirklich wiederkommen. Ich schaue mir an, welche Einwände Kunden haben, welche Begriffe sie benutzen und welche Informationen fehlen, bevor ein Gespräch produktiv wird.</p>
 					<p>Seit E3 New Energy als erstem Solar-Case weiß ich, wo diese Methode am stärksten greift. Seitdem liegt mein Fokus auf Solar- und Wärmepumpen-Betrieben.</p>
 				</div>
 
