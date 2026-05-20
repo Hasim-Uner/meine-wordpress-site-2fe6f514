@@ -303,7 +303,45 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 04 — ANFRAGE-SYSTEM-METHODE (6 Phasen + Vorher/Nachher)
+     SECTION 04 — SUCHINTENTION (Hannover service fit)
+     ═══════════════════════════════════════════════ -->
+<section class="nx-section wp-agentur-intent" data-nx-theme="light" id="wordpress-agentur-hannover">
+	<div class="nx-container">
+		<div class="nx-section-header">
+			<p class="wp-agentur-eyebrow">WordPress Agentur Hannover</p>
+			<h2 class="nx-headline-section">Wenn die Website Anfragen tragen muss, nicht nur Inhalte.</h2>
+			<p class="nx-subheadline wp-agentur-section-intro">
+				Der sinnvollste Einstieg ist keine pauschale Relaunch-Schätzung. Zuerst wird geklärt, ob Suchintention, Proof, Tracking und Anfragepfad zusammenpassen.
+			</p>
+		</div>
+
+		<div class="wp-agentur-intent-grid" aria-label="Leistungsfokus WordPress Agentur Hannover">
+			<a class="wp-agentur-intent-card" href="#technisches-seo" data-track-action="cta_intent_technical_seo" data-track-category="navigation" data-track-section="wordpress_agentur_hannover">
+				<span class="wp-agentur-intent-card__kicker">SEO &amp; Technik</span>
+				<h3>Technisches SEO, Core Web Vitals und saubere Seitenarchitektur</h3>
+				<p>Für WordPress-Seiten, die bereits Nachfrage sehen, aber bei Position, Klickrate oder Seitentiefe hängen bleiben.</p>
+			</a>
+			<a class="wp-agentur-intent-card" href="<?php echo esc_url( home_url( '/server-side-tracking-b2b/' ) ); ?>" data-track-action="cta_intent_tracking" data-track-category="navigation" data-track-section="wordpress_agentur_hannover">
+				<span class="wp-agentur-intent-card__kicker">Messbarkeit</span>
+				<h3>GA4, Server-Side Tracking und belastbare Attribution</h3>
+				<p>Damit Entscheidungen nicht nur auf Rankings, sondern auf qualifizierten Anfragen und echten Projektchancen basieren.</p>
+			</a>
+			<a class="wp-agentur-intent-card" href="#projekt-pruefen" data-track-action="cta_intent_conversion" data-track-category="lead_gen" data-track-section="wordpress_agentur_hannover">
+				<span class="wp-agentur-intent-card__kicker">CRO &amp; Anfragepfad</span>
+				<h3>Conversion-Führung für erklärungsbedürftige B2B-Angebote</h3>
+				<p>Headline, Proof, Einwände und CTA werden so geordnet, dass kaufnahe Besucher den nächsten Schritt verstehen.</p>
+			</a>
+			<a class="wp-agentur-intent-card" href="#standort" data-track-action="cta_intent_hannover" data-track-category="navigation" data-track-section="wordpress_agentur_hannover">
+				<span class="wp-agentur-intent-card__kicker">Region</span>
+				<h3>Reviews in Hannover, Umsetzung remote im DACH-Raum</h3>
+				<p>Persönliche Workshops sind in Pattensen und der Region Hannover möglich; die Umsetzung bleibt systematisch und messbar.</p>
+			</a>
+		</div>
+	</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 05 — ANFRAGE-SYSTEM-METHODE (6 Phasen + Vorher/Nachher)
      ═══════════════════════════════════════════════ -->
 <span class="wp-agentur-anchor" id="wgos" aria-hidden="true"></span>
 <section class="nx-section" data-nx-theme="light" id="methode">
@@ -385,7 +423,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 05 — METHODENBIBLIOTHEK (Accordion, dynamisch)
+     SECTION 06 — METHODENBIBLIOTHEK (Accordion, dynamisch)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="asset-uebersicht">
 	<div class="nx-container">
@@ -456,7 +494,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 06 — PROJEKTPRÜFUNG (4 Kauf-Signale)
+     SECTION 07 — PROJEKTPRÜFUNG (4 Kauf-Signale)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section wp-agentur-project-form" data-nx-theme="light" id="projekt-pruefen">
 	<div class="nx-container">
@@ -503,7 +541,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 07 — PROOF E3 DEEP DIVE
+     SECTION 08 — PROOF E3 DEEP DIVE
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="proof">
 	<div class="nx-container">
@@ -547,7 +585,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 08 — ABGRENZUNG (3 negative cards)
+     SECTION 09 — ABGRENZUNG (3 negative cards)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="abgrenzung">
 	<div class="nx-container">
@@ -580,7 +618,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 09 — FOKUSMARKT ENERGIE
+     SECTION 10 — FOKUSMARKT ENERGIE
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="fokusmarkt">
 	<div class="nx-container">
@@ -620,7 +658,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 10 — STANDORT (2 cards)
+     SECTION 11 — STANDORT (2 cards)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="standort">
 	<div class="nx-container">
@@ -665,7 +703,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 11 — FAQ (Accordion)
+     SECTION 12 — FAQ (Accordion)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="faq">
 	<div class="nx-container">
@@ -700,7 +738,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 12 — FINAL CTA (Editorial, ruhig, eine Aufforderung)
+     SECTION 13 — FINAL CTA (Editorial, ruhig, eine Aufforderung)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section ag-close" data-nx-theme="dark" id="cta">
 	<div class="ag-close-bg" aria-hidden="true">
