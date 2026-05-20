@@ -97,7 +97,7 @@ Nicht verifiziert:
 - Der SEO-Cockpit-Linkgraph zählt jetzt auch die hardcodierten Themen-Hub-Links aus Homepage, Solar-Money-Page, E3-Case und Agentur-Seite in den Solar-/SHK-Subpage-Cluster. Dadurch fallen `/kunden-gewinnen-solarteure/` und `/server-side-tracking-b2b/` nicht mehr fälschlich als kontextlinklose Pages auf, sobald der neue Linkgraph nach Deploy/Sync neu aufgebaut ist.
 - Der Solar-Hauptfunnel fuehrt repo-seitig nicht mehr ueber `/kontakt/`, `/wordpress-agentur-hannover/` oder `/whitelabel-retainer/`; diese Nebenpfade bleiben in isolierten Kontexten bzw. im Footer erreichbar, nicht in der primaeren Header- oder CTA-Logik.
 - Kannibalisierungs-Hinweise im SEO-Cockpit zeigen jetzt direkt die staerksten konkurrierenden URLs mit Impressionen und Position an, statt nur auf den normalen URL-Drilldown der Primaer-URL zu verweisen.
-- Das Client Portal arbeitet aktuell mit Mock-Daten und ist noch kein voll dokumentiertes Produktivsystem.
+- Das Client Portal zeigt keine erfundenen KPI-/Roadmap-Daten mehr. Ressourcen, Kennzahlen und Roadmap werden nur ausgegeben, wenn sie pro Nutzer im Meta-Payload `nexus_client_portal` hinterlegt sind; sonst erscheinen explizite Empty-States. Login und Upload-Logik bleiben aktiv.
 - KI-Erweiterung: 4 Systembausteine (KI-Assistent/Chatbot 30 Cr, KI-Lead-Qualifizierung 20 Cr, RAG-Wissenssuche 25 Cr, LLM-Workflow-Automatisierung 20 Cr) stehen repo-seitig jetzt auf `publish` und sind dem Weiterentwicklungs-Layer zugeordnet. Dachseite `/ki-integration-wordpress/` als versioniertes Page-Template (`page-ki-integration.php`) mit Service- und FAQPage-Schema bleibt im Repo; die Live-Synchronisation der Asset-Posts ueber den Theme-Sync ist noch nicht verifiziert.
 
 ## Geplant

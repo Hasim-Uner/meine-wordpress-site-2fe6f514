@@ -23,15 +23,14 @@ $e3_summary      = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' )
 					<p class="ga-kicker">Marktcheck für Solar- und Wärmepumpen-Anbieter</p>
 					<h1 id="ga-hero-title">Wo Ihre Seite gerade Anfragen ausbremst.</h1>
 					<p class="ga-hero__sub">
-						Ich prüfe Ihre Startseite oder Angebotsseite manuell und KI-unterstützt.
-						Sie erhalten in 48 Stunden die 3 stärksten Bremsen, die wichtigste Priorität
-						und einen klaren nächsten Schritt.
+						Der Marktcheck ordnet Angebotsklarheit, Proof, Tracking und Anfragepfad.
+						Sie erhalten die 3 stärksten Bremsen, die wichtigste Priorität und einen klaren nächsten Schritt.
 					</p>
 
-						<div class="ga-trust-badges" aria-label="Marktcheck im Überblick">
+					<div class="ga-trust-badges" aria-label="Marktcheck im Überblick">
 						<span>0 € Einstieg</span>
-						<span>manuell geprüft</span>
-						<span>Rückmeldung in 48h</span>
+						<span>strukturierte Einordnung</span>
+						<span>klare Priorität</span>
 					</div>
 
 					<div class="ga-hero__actions">
@@ -150,8 +149,8 @@ $e3_summary      = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' )
 				</div>
 
 				<details>
-					<summary>Was genau bekomme ich innerhalb von 48 Stunden?</summary>
-					<div class="faq-ans">Eine manuell geprüfte Ersteinschätzung mit klarer Priorisierung und einem sinnvollen nächsten Schritt.</div>
+					<summary>Was genau bekomme ich?</summary>
+					<div class="faq-ans">Eine strukturierte Ersteinschätzung mit klarer Priorisierung und einem sinnvollen nächsten Schritt.</div>
 				</details>
 				<details>
 					<summary>Für welche Seiten ist der Audit gedacht?</summary>
@@ -168,7 +167,7 @@ $e3_summary      = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' )
 					<div class="ga-section-head ga-section-head--compact">
 						<p class="ga-section-kicker">Nächster Schritt</p>
 						<h2 id="ga-cta-title">Eine URL reicht für den Anfang.</h2>
-						<p>Schriftlich. Manuell geprüft. Innerhalb von 48 Stunden.</p>
+						<p>Schriftlich. Strukturiert eingeordnet. Mit klarer nächster Priorität.</p>
 					</div>
 
 					<div class="ga-cta-actions">

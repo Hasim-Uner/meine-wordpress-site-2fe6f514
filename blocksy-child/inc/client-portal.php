@@ -10,6 +10,19 @@ function hu_render_performance_cockpit() {
         return hu_render_custom_login_form();
     }
 
+    $current_user = wp_get_current_user();
+    $portal_meta  = get_user_meta( get_current_user_id(), 'nexus_client_portal', true );
+    $portal_meta  = is_array( $portal_meta ) ? $portal_meta : [];
+    $retainer     = is_array( $portal_meta['retainer'] ?? null ) ? $portal_meta['retainer'] : [];
+    $kpis         = is_array( $portal_meta['kpis'] ?? null ) ? array_filter( $portal_meta['kpis'], 'is_array' ) : [];
+    $roadmap      = is_array( $portal_meta['roadmap'] ?? null ) ? array_filter( $portal_meta['roadmap'], 'is_array' ) : [];
+
+    $portal_name = $current_user->display_name ? $current_user->display_name : $current_user->user_login;
+    $total_units = max( 0, (float) ( $retainer['total'] ?? 0 ) );
+    $used_units  = max( 0, (float) ( $retainer['used'] ?? 0 ) );
+    $percent     = $total_units > 0 ? min( 100, ( $used_units / $total_units ) * 100 ) : 0;
+    $has_retainer_data = $total_units > 0 || $used_units > 0 || ! empty( $retainer['label'] ) || ! empty( $retainer['focus'] );
+
     $upload_notice = '';
     $upload_notice_type = 'notice';
 
@@ -71,28 +84,13 @@ function hu_render_performance_cockpit() {
         }
     }
 
-    // Mock data (later dynamic).
-    $client_data = [
-        'name' => wp_get_current_user()->display_name,
-        'retainer' => [ 'total' => 40, 'used'  => 15, 'label' => 'Growth Retainer L', 'focus' => 'Conversion Checkout' ],
-        'kpis' => [
-            [ 'label' => 'Leads (30d)', 'value' => '42', 'trend' => '+12%' ],
-            [ 'label' => 'Core Web Vitals', 'value' => '98', 'trend' => 'Stabil' ],
-        ],
-        'roadmap' => [
-            [ 'status' => 'done', 'task' => 'GTM Setup', 'impact' => 'Data Integrity' ],
-            [ 'status' => 'active', 'task' => 'Checkout CRO', 'impact' => '-15% Abbruch' ],
-        ],
-    ];
-    $percent = ( $client_data['retainer']['used'] / $client_data['retainer']['total'] ) * 100;
-
     ob_start();
     ?>
     <div class="nexus-dashboard">
         <header class="nd-header">
             <div class="nd-welcome">
                 <span class="nd-badge">Insight Hub</span>
-                <h2>Moin, <?php echo esc_html( $client_data['name'] ); ?></h2>
+                <h2>Moin, <?php echo esc_html( $portal_name ); ?></h2>
             </div>
             <a href="<?php echo esc_url( wp_logout_url( home_url() ) ); ?>" class="btn btn-ghost btn-sm">Logout</a>
         </header>
@@ -100,28 +98,60 @@ function hu_render_performance_cockpit() {
         <div class="nd-grid">
             <div class="nd-card span-2">
                 <h3>Ressourcen</h3>
-                <div class="nd-progress-wrap">
-                    <div class="nd-progress-bar" style="width:<?php echo esc_attr( $percent ); ?>%"></div>
-                </div>
-                <div class="nd-stats">
-                    <span><?php echo esc_html( $client_data['retainer']['used'] ); ?> / <?php echo esc_html( $client_data['retainer']['total'] ); ?> Pkt</span>
-                </div>
+                <?php if ( $has_retainer_data ) : ?>
+                    <?php if ( ! empty( $retainer['label'] ) ) : ?>
+                        <p class="muted"><?php echo esc_html( (string) $retainer['label'] ); ?></p>
+                    <?php endif; ?>
+                    <?php if ( $total_units > 0 ) : ?>
+                        <div class="nd-progress-wrap">
+                            <div class="nd-progress-bar" style="width:<?php echo esc_attr( $percent ); ?>%"></div>
+                        </div>
+                        <div class="nd-stats">
+                            <span><?php echo esc_html( number_format_i18n( $used_units, 1 ) ); ?> / <?php echo esc_html( number_format_i18n( $total_units, 1 ) ); ?> Pkt</span>
+                            <?php if ( ! empty( $retainer['focus'] ) ) : ?>
+                                <span class="muted"><?php echo esc_html( (string) $retainer['focus'] ); ?></span>
+                            <?php endif; ?>
+                        </div>
+                    <?php elseif ( ! empty( $retainer['focus'] ) ) : ?>
+                        <p class="muted"><?php echo esc_html( (string) $retainer['focus'] ); ?></p>
+                    <?php else : ?>
+                        <p class="muted">Noch keine Punktplanung hinterlegt.</p>
+                    <?php endif; ?>
+                <?php else : ?>
+                    <p class="muted">Noch keine Ressourcenplanung hinterlegt.</p>
+                <?php endif; ?>
             </div>
-            <?php foreach ( $client_data['kpis'] as $k ) : ?>
-            <div class="nd-card kpi-card">
-                <span class="muted"><?php echo esc_html( $k['label'] ); ?></span>
-                <strong class="kpi-val"><?php echo esc_html( $k['value'] ); ?></strong>
-            </div>
-            <?php endforeach; ?>
+
+            <?php if ( ! empty( $kpis ) ) : ?>
+                <?php foreach ( $kpis as $k ) : ?>
+                    <div class="nd-card kpi-card">
+                        <span class="muted"><?php echo esc_html( (string) ( $k['label'] ?? 'Kennzahl' ) ); ?></span>
+                        <strong class="kpi-val"><?php echo esc_html( (string) ( $k['value'] ?? '—' ) ); ?></strong>
+                        <?php if ( ! empty( $k['trend'] ) ) : ?>
+                            <span class="muted"><?php echo esc_html( (string) $k['trend'] ); ?></span>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <div class="nd-card">
+                    <h3>Kennzahlen</h3>
+                    <p class="muted">Noch keine KPI-Daten hinterlegt.</p>
+                </div>
+            <?php endif; ?>
+
             <div class="nd-card span-full">
                 <h3>Roadmap</h3>
-                <?php foreach ( $client_data['roadmap'] as $r ) : ?>
-                <div class="nd-item status-<?php echo esc_attr( $r['status'] ); ?>">
-                    <span class="dot"></span>
-                    <span><?php echo esc_html( $r['task'] ); ?></span>
-                    <small class="muted"><?php echo esc_html( $r['impact'] ); ?></small>
-                </div>
-                <?php endforeach; ?>
+                <?php if ( ! empty( $roadmap ) ) : ?>
+                    <?php foreach ( $roadmap as $r ) : ?>
+                        <div class="nd-item status-<?php echo esc_attr( sanitize_html_class( (string) ( $r['status'] ?? 'open' ) ) ); ?>">
+                            <span class="dot"></span>
+                            <span><?php echo esc_html( (string) ( $r['task'] ?? 'Offener Punkt' ) ); ?></span>
+                            <small class="muted"><?php echo esc_html( (string) ( $r['impact'] ?? '' ) ); ?></small>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <p class="muted">Noch keine Roadmap-Punkte hinterlegt.</p>
+                <?php endif; ?>
             </div>
             <div class="nd-card span-full">
                 <h3>Uploads</h3>
