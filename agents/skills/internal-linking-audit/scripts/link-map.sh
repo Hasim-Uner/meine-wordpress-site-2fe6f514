@@ -6,11 +6,21 @@ THEME="blocksy-child"
 
 header() { printf '\n=== %s ===\n' "$1"; }
 
+count_lines() {
+  sed '/^[[:space:]]*$/d' | wc -l | tr -d '[:space:]'
+}
+
 # --- 1. Collect all page templates ---
 header "Page Templates"
 
-templates="$(find "$THEME" -maxdepth 1 -name 'page-*.php' -o -name 'front-page.php' -o -name 'home.php' -o -name 'template-*.php' | sort)"
-echo "$templates" | while IFS= read -r t; do
+templates="$(
+  rg --files "$THEME" \
+    | awk -F/ 'NF == 2 && ($2 == "front-page.php" || $2 == "home.php" || $2 ~ /^page-.*\.php$/ || $2 ~ /^template-.*\.php$/) { print }' \
+    | sort
+)"
+
+printf '%s\n' "$templates" | while IFS= read -r t; do
+  [[ -n "$t" ]] || continue
   slug="$(basename "$t" .php | sed 's/^page-/\//' | sed 's/^front-page/\//' | sed 's/^template-/\//' | sed 's/$/\//')"
   printf '  %s -> %s\n' "$t" "$slug"
 done
@@ -18,26 +28,36 @@ done
 # --- 2. Extract internal links from templates ---
 header "Link Matrix (template -> outbound links)"
 
-all_links=""
+template_parts=""
+if [[ -d "$THEME/template-parts" ]]; then
+  template_parts="$(rg --files "$THEME/template-parts" -g '*.php' | sort || true)"
+fi
 
-for tpl in $templates "$THEME"/template-parts/*.php; do
+scan_files="$(printf '%s\n%s\n' "$templates" "$template_parts" | sed '/^[[:space:]]*$/d')"
+
+printf '%s\n' "$scan_files" | while IFS= read -r tpl; do
   [[ -f "$tpl" ]] || continue
   name="$(basename "$tpl")"
 
-  # Extract home_url() targets
-  links="$(grep -oP "home_url\(\s*'([^']+)'" "$tpl" 2>/dev/null | grep -oP "'[^']+'" | tr -d "'" | sort -u || true)"
+  links="$(
+    rg -o --no-filename "home_url\(\s*'[^']+'" "$tpl" 2>/dev/null \
+      | sed -E "s/.*home_url\(\s*'([^']+)'.*/\1/" \
+      | sort -u || true
+  )"
 
-  # Extract hardcoded relative hrefs
-  rel_links="$(grep -oP 'href="\/[^"]*"' "$tpl" 2>/dev/null | grep -oP '\/[^"]+' | sort -u || true)"
+  rel_links="$(
+    rg -o --no-filename 'href="/[^"]*"' "$tpl" 2>/dev/null \
+      | sed -E 's/^href="([^"]*)"/\1/' \
+      | sort -u || true
+  )"
 
-  combined="$(printf '%s\n%s' "$links" "$rel_links" | sort -u | grep -v '^$' || true)"
+  combined="$(printf '%s\n%s\n' "$links" "$rel_links" | sort -u | sed '/^[[:space:]]*$/d')"
 
   if [[ -n "$combined" ]]; then
     echo
     echo "  $name:"
-    echo "$combined" | while IFS= read -r link; do
+    printf '%s\n' "$combined" | while IFS= read -r link; do
       printf '    -> %s\n' "$link"
-      all_links="$all_links $link"
     done
   fi
 done
@@ -46,17 +66,17 @@ done
 header "Hub Page Inbound Links"
 
 hubs=(
-  "/growth-audit/"
+  "/solar-waermepumpen-leadgenerierung/"
+  "/e3-new-energy/"
   "/ergebnisse/"
   "/blog/"
-  "/wordpress-growth-operating-system/"
+  "/wordpress-agentur-hannover/"
   "/uber-mich/"
 )
 
 for hub in "${hubs[@]}"; do
-  count="$(grep -rl "$hub" "$THEME/" --include='*.php' 2>/dev/null | wc -l)"
-  count="${count//[[:space:]]/}"
-  count="${count:-0}"
+  matches="$(rg -l -F "$hub" "$THEME" -g '*.php' 2>/dev/null || true)"
+  count="$(printf '%s\n' "$matches" | count_lines)"
   if (( count < 3 )); then
     icon="✗"
   elif (( count < 5 )); then
@@ -70,14 +90,20 @@ done
 # --- 4. Find orphan templates ---
 header "Potential Orphan Pages"
 
-for tpl in $templates; do
+printf '%s\n' "$templates" | while IFS= read -r tpl; do
+  [[ -n "$tpl" ]] || continue
   slug="$(basename "$tpl" .php | sed 's/^page-//')"
   [[ "$slug" == "front-page" ]] && continue
   [[ "$slug" == "datenschutz" || "$slug" == "impressum" ]] && continue
 
-  inbound="$(grep -rl "/$slug/" "$THEME/" --include='*.php' 2>/dev/null | grep -v "$(basename "$tpl")" | wc -l)"
-  inbound="${inbound//[[:space:]]/}"
+  matches="$(rg -l -F "/$slug/" "$THEME" -g '*.php' 2>/dev/null || true)"
+  inbound="$(
+    printf '%s\n' "$matches" \
+      | rg -v -F "$(basename "$tpl")" 2>/dev/null \
+      | count_lines || true
+  )"
   inbound="${inbound:-0}"
+
   if (( inbound == 0 )); then
     printf '  ⚠ /%s/ — no inbound links from templates\n' "$slug"
   fi

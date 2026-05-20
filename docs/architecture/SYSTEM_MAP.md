@@ -1,6 +1,6 @@
 # System Map
 
-Stand: 2026-05-19. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der frueheren System-Diagnose-Route.
+Stand: 2026-05-20. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der frueheren System-Diagnose-Route.
 
 ## Hauptsysteme
 
@@ -10,7 +10,7 @@ Stand: 2026-05-19. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
 | Growth-Audit-Legacypfad | deaktivierter Instant-Diagnose-Legacycode; öffentliche Audit- und Tools-Routen führen zum Marktcheck | `blocksy-child/page-audit.php`, `blocksy-child/inc/audit-page.php`, `blocksy-child/inc/tools-page.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `docs/systems/audit-funnel.md` | n8n Webhook nur für Legacy-Code, WordPress | öffentlich retired; 301 auf `/solar-waermepumpen-leadgenerierung/#marktcheck` |
 | Nexus CRM & Blog Notify | gemeinsames CRM für Analyse-Leads, Audit-, Folgeanalyse-, Umsetzungs- und Bestandskunden-Anfragen plus DOI- und Artikel-Mail-Logik | `blocksy-child/inc/crm.php`, `blocksy-child/inc/analysis-intake.php`, `blocksy-child/inc/blog-notify.php`, `blocksy-child/template-parts/blog-notify.php`, `blocksy-child/page-blog-notify.php`, `docs/systems/blog-notify.md` | WordPress CPT/Meta, WordPress REST, wp_mail, Brevo | repo-seitig live; Analyse-REST und Brevo-Konfiguration am 2026-05-07 verifiziert |
-| SEO Cockpit | Search-Console-basiertes SEO-Dashboard mit optionalem Koko- und Audit-Lead-Layer | `blocksy-child/inc/seo-cockpit.php`, `blocksy-child/assets/css/seo-cockpit-admin.css`, `docs/systems/seo-cockpit.md` | Google Search Console API, optional Koko Analytics, Nexus CRM / Audit-CRM | repo-seitig vorbereitet, OAuth und Live-Daten offen |
+| SEO Cockpit | Search-Console-basiertes SEO-Dashboard mit optionalem Koko- und Audit-Lead-Layer | `blocksy-child/inc/seo-cockpit.php`, `blocksy-child/assets/css/seo-cockpit-admin.css`, `docs/systems/seo-cockpit.md` | Google Search Console API, optional Koko Analytics, Nexus CRM / Audit-CRM | repo-seitig implementiert; OAuth/API-Livezustand admin-owned, Koko optional |
 | Tracking | Tracking-ready Markup, CTA-Events, SEO-/Schema-Layer | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/seo-meta.php`, `blocksy-child/inc/org-schema.php`, Templates mit `data-track-*` | GTM, sGTM, GA4, Consent Mode v2, Meta CAPI | teils im Repo, teils extern |
 | CTA- und Leadflow | CTA-Hierarchie vom ersten Besuch bis zur Diagnose, Folgeeinordnung und Qualifizierung | `blocksy-child/inc/shortcodes.php`, `blocksy-child/template-parts/footer-cta.php`, `blocksy-child/template-parts/trust-section.php`, Service-Templates | WordPress-Editor, Audit-Funnel, Cal.com, CRM | live |
 | Public Proof Layer | zentraler oeffentlicher Proof- und Vokabular-Layer fuer kaufnahe Seiten | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/shortcodes.php`, `blocksy-child/front-page.php`, `blocksy-child/page-wordpress-agentur.php`, `blocksy-child/page-kontakt.php`, `blocksy-child/inc/contact-page.php` | WordPress-Editor, oeffentliche Cases und Profile | live |

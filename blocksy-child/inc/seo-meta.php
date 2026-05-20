@@ -30,7 +30,7 @@ add_filter( 'document_title_parts', 'hu_document_title_overrides' );
 function hu_get_homepage_title() {
 	return (string) apply_filters(
 		'hu_homepage_seo_title',
-		'WordPress als Nachfrage-System für B2B | Haşim Üner'
+		'Anfrage-Systeme für Solar & Wärmepumpe | Haşim Üner'
 	);
 }
 
@@ -42,7 +42,7 @@ function hu_get_homepage_title() {
 function hu_get_homepage_description() {
 	return (string) apply_filters(
 		'hu_homepage_seo_description',
-		'Ich mache aus Ihrer WordPress-Website ein planbares Anfragesystem: Positionierung, technische SEO, Tracking und Conversion-Logik für B2B.'
+		'Eigene Anfragen statt gemieteter Portal-Leads: Marktcheck, Vorqualifizierung und Tracking für Solar-, Wärmepumpen- und Speicher-Anbieter.'
 	);
 }
 

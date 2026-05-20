@@ -28,7 +28,7 @@ $home_label   = sprintf(
 );
 
 $context_title = __( 'Insights Hub', 'blocksy-child' );
-$context_text  = __( 'Erst verstehen, dann priorisieren: Insights lesen, Proof sehen, Audit starten.', 'blocksy-child' );
+$context_text  = __( 'Erst verstehen, dann priorisieren: Insights lesen, Proof sehen, Marktcheck starten.', 'blocksy-child' );
 $context_links = [
 	[
 		'label'  => __( 'Alle Insights', 'blocksy-child' ),
@@ -139,7 +139,7 @@ $primary_items = [
 
 			<div class="nexus-blog-header__actions">
 				<a class="nexus-blog-header__cta nexus-blog-header__desktop-cta" href="<?php echo esc_url( $audit_url ); ?>">
-					<?php esc_html_e( 'Audit starten', 'blocksy-child' ); ?>
+					<?php esc_html_e( 'Marktcheck starten', 'blocksy-child' ); ?>
 				</a>
 
 				<button
@@ -177,7 +177,7 @@ $primary_items = [
 
 			<div class="nexus-blog-header__mobile-actions">
 				<a class="nexus-blog-header__cta" href="<?php echo esc_url( $audit_url ); ?>">
-					<?php esc_html_e( 'Audit starten', 'blocksy-child' ); ?>
+					<?php esc_html_e( 'Marktcheck starten', 'blocksy-child' ); ?>
 				</a>
 			</div>
 		</div>

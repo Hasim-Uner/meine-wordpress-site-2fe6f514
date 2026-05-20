@@ -24,8 +24,7 @@ echo "Mandatory smoke URLs:"
 cat <<'EOF'
 - /glossar/utm-parameter/
 - /glossar/owned-leads/
-- /wordpress-growth-operating-system/
-- /wgos-systemlandkarte/
-- /core-web-vitals/
+- /wgos-assets/
+- /wgos-assets/cwv-optimierung/
 - /ga4-tracking-setup/
 EOF

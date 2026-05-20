@@ -1,17 +1,17 @@
 # Anfrage-System-Analyse Form v1
 
-Status: implemented-contact-submit
+Status: superseded-by-marketcheck
 Owner: Repo / Funnel
-Route: `/anfrage-system-analyse/`
+Route: Legacy `/anfrage-system-analyse/` -> aktuell `/solar-waermepumpen-leadgenerierung/#marktcheck`
 Legacy: `/readiness-diagnose/` und `/anfrage/` leiten per 301 weiter
 Report-Spec: `docs/specs/anfrage-system-analyse-report-v1.md`
 
 ## Architektur-Leitplanken
 
 - WordPress bleibt das Hauptsystem für Seiten, SEO, Canon-Dateien, Routing und Consent-Grenzen.
-- Die Analyse läuft als React-Funnel-Mikro-App im Theme. `blocksy-child/readiness/` bleibt vorerst der interne Legacy-Name; customer-facing heißt der Pfad nur `Anfrage-System-Analyse`.
+- Die frühere Analyse läuft nicht mehr als öffentliche React-Funnel-Mikro-App. Customer-facing ist der Marktcheck auf der Solar-/Wärmepumpen-Seite.
 - Der frühere EnergieFahrplan-Showroom ist retired; der Hauptpfad läuft direkt über Landingpage, Branchen-Seite und Anfrage-System-Analyse.
-- `/anfrage-system-analyse/` ist der primäre Einstieg für kalten B2B-Traffic. `/growth-audit/` darf nicht als Hauptfunnel zurückkehren.
+- `/solar-waermepumpen-leadgenerierung/#marktcheck` ist der primäre Einstieg für kalten Solar-/SHK-Traffic. `/growth-audit/` und `/anfrage-system-analyse/` dürfen nicht als Hauptfunnel zurückkehren.
 - n8n bleibt bis zu einem versionierten Contract und einer expliziten Workflow-Freigabe abgekoppelt.
 - Der Default-Pfad verarbeitet keine personenbezogenen Daten; Ergebnis und Kontaktdaten werden erst im separaten Kontakt-Schritt nach Einwilligung an WordPress REST übergeben.
 - E3-Proof-Zahlen dürfen in Analyse-Kontexten nur aus `blocksy-child/inc/canon/e3-proof-canon.php` kommen.

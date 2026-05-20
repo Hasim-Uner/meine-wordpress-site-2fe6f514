@@ -83,53 +83,6 @@ function nexus_get_wgos_cluster_page_data() {
 			'schema_name'      => 'WordPress SEO Hannover – technisch sauber, messbar, B2B-ready',
 			'schema_description' => 'Technisches SEO auf WordPress in Hannover: technische Basis, Seitenstruktur und conversion-nahe Sichtbarkeit für B2B-Websites.',
 		],
-		'wordpress-wartung-hannover' => [
-			'eyebrow'          => 'Betrieb im Anfrage-System',
-			'title'            => 'WordPress Wartung Hannover',
-			'lead'             => 'WordPress-Wartung ist hier kein isolierter Wartungsvertrag, sondern der laufende Betriebsblock aus Updates, Sicherheit, Stabilität und klaren Rollback-Prozessen.',
-			'intro'            => [
-				'Viele Wartungsangebote versprechen Ruhe, meinen aber nur Plugin-Updates. Für Unternehmen mit relevanter Website reicht das nicht. Entscheidend ist, ob Updates, Sicherheit, Backups, Performance und Wiederherstellung zusammen als belastbarer Betriebszustand funktionieren.',
-				'Genau dort kippen viele WordPress-Setups: zu viele Plugins, unklare Zuständigkeiten, fehlende Rollback-Routinen und eine Website, die unter Last, nach Updates oder bei Vorfällen nicht kontrollierbar bleibt.',
-				'Wartung wird deshalb nicht als Nebenvertrag behandelt, sondern als Fundament. Erst wenn der Betrieb stabil ist, lohnen sich Investitionen in SEO, Conversion und bezahlte Nachfrage wirklich.',
-			],
-			'system'           => [
-				'Das Thema gehört in den Betriebs- und Fundament-Layer. Statt nur Tickets abzuarbeiten, ordnen wir WordPress-Wartung in eine klare Reihenfolge aus Härtung, Update-Management, Plugin-Reduktion, Performance-Diagnose und verlässlicher Wiederherstellung ein.',
-				'So entsteht kein Billig-Wartungsvertrag, sondern ein kontrollierbarer Betriebszustand. Genau das ist für kaufnahe Seiten, Lead-Gen-Setups und B2B-Websites relevanter als reine Checklistenpflege.',
-			],
-			'assets'           => [
-				'security-hardening' => 'Härtet WordPress, Zugriffe und Wiederherstellungswege so ab, dass der laufende Betrieb nicht an vermeidbaren Risiken scheitert.',
-				'update-management'  => 'Macht Updates planbar, testbar und rollback-fähig statt zu einem Risiko im Tagesgeschäft.',
-				'plugin-audit'       => 'Reduziert Wartungslast und Konflikte, indem unnötige oder problematische Plugins aus dem Stack verschwinden.',
-				'cwv-speed-audit'    => 'Prüft, ob technische Langsamkeit bereits Vertrauen, Rankings oder Conversion mit belastet.',
-				'server-tuning'      => 'Greift tiefer ein, wenn Hosting, TTFB, Cache oder Infrastruktur der eigentliche Engpass im Betrieb sind.',
-			],
-			'blogs'            => [
-				[
-					'title' => 'Performance ist Profit: Core Web Vitals',
-					'url'   => home_url( '/core-web-vitals-wachstum-seo-und-roas/' ),
-				],
-				[
-					'title' => 'Warum Performance Marketing ohne technisches SEO Geld verbrennt',
-					'url'   => home_url( '/technisches-seo-performance-fundament/' ),
-				],
-			],
-			'supporting_link'  => [
-				'kicker' => 'Breiterer Einstieg',
-				'label'  => 'WordPress Agentur Hannover',
-				'url'    => $agentur_url,
-				'text'   => 'Wenn Wartung nicht isoliert laufen soll, sondern mit Angebotsseiten, SEO, Tracking und Conversion zusammenspielen muss, ist die Agentur-Seite der bessere Gesamt-Einstieg.',
-			],
-			'adjacent_link'    => [
-				'kicker' => 'Angrenzendes Thema',
-				'label'  => 'WordPress SEO Hannover',
-				'url'    => $seo_url,
-				'text'   => 'Wenn Indexierung, interne Verlinkung oder technische Struktur mit dem Betriebszustand zusammenhaengen, fuehrt die SEO-Seite direkt in den passenden Cluster.',
-			],
-			'meta_title'       => 'WordPress Wartung Hannover – B2B Wartungsvertrag',
-			'meta_description' => 'Sicherheits-Updates, Backups und Performance für B2B WordPress-Websites. Kein Ticket-System – direkter Ansprechpartner. Wartungspaket anfragen.',
-			'schema_name'      => 'WordPress Wartung Hannover',
-			'schema_description' => 'WordPress-Wartung in Hannover: Betrieb, Updates, Sicherheit und technische Stabilität für B2B-Websites.',
-		],
 		'core-web-vitals' => [
 			'eyebrow'          => 'Technisches Fundament im Anfrage-System',
 			'title'            => 'Core Web Vitals',

@@ -18,6 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 $page_url     = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
 $e3_url       = home_url( '/e3-new-energy/' );
 $privacy_url  = home_url( '/datenschutz/' );
+$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+$tracking_url = $primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' );
+$cwv_url      = $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' );
+$cro_url      = $primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#methode' );
+$seo_url      = $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' );
+$paid_url     = $primary_urls['performance_marketing'] ?? home_url( '/performance-marketing/' );
 $cal_url      = function_exists( 'hu_get_analysis_calcom_base_url' )
 	? hu_get_analysis_calcom_base_url()
 	: 'https://cal.com/hasim-uener/30min?overlayCalendar=true';
@@ -84,14 +90,14 @@ $method_cards = [
 		'n'  => 'II',
 		'p'  => 'Phase 02',
 		't'  => 'Eigenes Anfrage-System',
-		's'  => 'WordPress hardcoded — kein Page-Builder, kein Plugin-Stack. <a href="' . esc_url( home_url( '/ga4-tracking-setup/' ) ) . '">Server-Side-Tracking</a> auf eigenem Server. Smarte Vorqualifizierung. <a href="' . esc_url( home_url( '/conversion-rate-optimization/' ) ) . '">Conversion-Pfad</a> ohne Mietsysteme.',
+		's'  => 'WordPress hardcoded — kein Page-Builder, kein Plugin-Stack. <a href="' . esc_url( $tracking_url ) . '">Server-Side-Tracking</a> auf eigenem Server. Smarte Vorqualifizierung. <a href="' . esc_url( $cro_url ) . '">Conversion-Pfad</a> ohne Mietsysteme.',
 		'b'  => [ 'Money-Page · Proof- & Angebotsseiten', 'Frankfurt-Server · CAPI · DSGVO', '60-Sek-Funnel mit Lead-Scoring' ],
 	],
 	[
 		'n'  => 'III',
 		'p'  => 'Phase 03',
 		't'  => 'Skalieren & Übergeben',
-		's'  => 'Mit sauberem <a href="' . esc_url( home_url( '/core-web-vitals/' ) ) . '">technischen Fundament</a> rechnen sich Google Ads, Meta Ads und <a href="' . esc_url( home_url( '/wordpress-seo-hannover/' ) ) . '">SEO</a> endlich. Wöchentliches Reporting. Bei Vertragsende: dokumentierte Übergabe — Code, Tracking, Daten bleiben bei Ihnen.',
+		's'  => 'Mit sauberem <a href="' . esc_url( $cwv_url ) . '">technischen Fundament</a> rechnen sich Google Ads, Meta Ads und <a href="' . esc_url( $seo_url ) . '">SEO</a> endlich. Wöchentliches Reporting. Bei Vertragsende: dokumentierte Übergabe — Code, Tracking, Daten bleiben bei Ihnen.',
 		'b'  => [ 'Google Ads · Meta Ads · SEO-Anteil', 'Wöchentliches Reporting', 'Monatlich kündbar · 100 % Asset-Übergabe' ],
 	],
 ];
@@ -151,7 +157,7 @@ $system_layers = [
 	[
 		'n'      => '01',
 		'name'   => 'Fundament',
-		'url'    => home_url( '/core-web-vitals/' ),
+		'url'    => $cwv_url,
 		'status' => 'DSGVO · Frankfurt',
 		'cols'   => 2,
 		'items'  => [
@@ -162,7 +168,7 @@ $system_layers = [
 	[
 		'n'      => '02',
 		'name'   => 'Daten & Tracking',
-		'url'    => home_url( '/ga4-tracking-setup/' ),
+		'url'    => $tracking_url,
 		'status' => 'Server-Side · CAPI',
 		'cols'   => 2,
 		'items'  => [
@@ -173,7 +179,7 @@ $system_layers = [
 	[
 		'n'      => '03',
 		'name'   => 'Conversion-Pfad',
-		'url'    => home_url( '/conversion-rate-optimization/' ),
+		'url'    => $cro_url,
 		'status' => 'Vorqualifizierung · Score',
 		'cols'   => 3,
 		'items'  => [
@@ -185,7 +191,7 @@ $system_layers = [
 	[
 		'n'      => '04',
 		'name'   => 'Skalierung',
-		'url'    => home_url( '/performance-marketing/' ),
+		'url'    => $paid_url,
 		'status' => 'Multi-Channel · messbar',
 		'cols'   => 3,
 		'items'  => [
@@ -426,16 +432,7 @@ get_header();
 						-->
 						<div data-sol-quiz id="sol-quiz-mount">
 							<noscript>
-								<div class="sol-cta-head">
-									<span class="sol-cta-tag sol-mono">
-										<span class="sol-cta-tag-dot" aria-hidden="true"></span>
-										Marktcheck · 60 Sek
-									</span>
-									<span class="sol-cta-head-right sol-mono">Kostenfrei</span>
-								</div>
-								<h2 id="sol-quiz-title" class="sol-cta-title">
-									Wo verlieren Sie heute Anfragen — und wie viel kostet Sie das?
-								</h2>
+								<style>.solara-landing .sol-cta-fineprint{display:none!important;}</style>
 								<p class="sol-cta-hint">
 									Aktivieren Sie JavaScript für den 60-Sek-Marktcheck oder schreiben Sie direkt an
 									<a href="mailto:hasim@hasimuener.de" style="color:var(--sol-accent);">hasim@hasimuener.de</a>.

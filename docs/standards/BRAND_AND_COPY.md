@@ -26,8 +26,8 @@ Skills reference this file instead of duplicating brand rules.
 Marktcheck -> Anfrage-System-Analyse -> Umsetzung / Retainer
 ```
 
-- Primary CTA: Anfrage-System-Analyse (`/anfrage-system-analyse/`)
-- Retired Pfade: `/growth-audit/`, `/kostenlose-tools/`, `/tools/`, `/roi-rechner/` und alte Audit-Aliasse leiten auf `/anfrage-system-analyse/`
+- Primary CTA: Marktcheck (`/solar-waermepumpen-leadgenerierung/#marktcheck`)
+- Retired Pfade: `/growth-audit/`, `/kostenlose-tools/`, `/tools/`, `/roi-rechner/`, `/anfrage-system-analyse/` und alte Audit-Aliasse leiten auf den Marktcheck
 - Der Marktcheck ist diagnostischer Einstieg, kein gimmicky Gratis-Tool
 
 ## Tone

@@ -20,7 +20,7 @@ The script prints the required file skeleton and section structure.
 - Landing pages live as `blocksy-child/page-<slug>.php`
 - Reuse existing template-parts from `blocksy-child/template-parts/`
 - Follow the b2b-design-system patterns (if active)
-- Primary CTA always points to `/growth-audit/`
+- Primary CTA always points to `/solar-waermepumpen-leadgenerierung/#marktcheck`
 - Add `data-track-action`, `data-track-category`, `data-track-section` attributes to every CTA
 - No cookies, no client-side tracking scripts — UTM params are handled via existing sessionStorage logic
 

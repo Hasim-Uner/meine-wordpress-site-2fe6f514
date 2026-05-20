@@ -138,7 +138,7 @@ function hu_home_urls() {
 		'cases'       => nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) ),
 		'agentur'     => nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ),
 		'seo'         => nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) ),
-		'wartung'     => nexus_get_primary_public_url( 'wartung', home_url( '/wordpress-wartung-hannover/' ) ),
+		'wartung'     => nexus_get_primary_public_url( 'wartung', home_url( '/wordpress-agentur-hannover/#wordpress-wartung' ) ),
 		'tracking'    => nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) ),
 		'cwv'         => nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) ),
 		'cro'         => nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) ),
@@ -321,7 +321,7 @@ function hu_home_system_section_markup() {
 					</ul>
 
 					<div class="homepage-system-economics__actions">
-							<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_system_map_audit" data-track-category="lead_gen">Marktcheck starten</a>
+							<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_system_map_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
 					</div>
 
 					<p class="homepage-system-economics__note">
@@ -388,15 +388,15 @@ function hu_hero_section_shortcode() {
 						</div>
 
 							<div class="wp-hero-actions nx-reveal">
-								<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_hero_primary_audit" data-track-category="lead_gen">Audit starten</a>
+								<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_hero_primary_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
 								<a href="<?php echo esc_url( $urls['cases'] ); ?>" class="wp-btn wp-btn-secondary">Ergebnisse ansehen</a>
 							</div>
 							<p class="wp-hero-supporting-link nx-reveal">Erst das Vorgehen verstehen? <a href="<?php echo esc_url( $urls['about'] ); ?>">Meine Arbeitsweise ansehen</a></p>
 							<p class="wp-hero-supporting-link nx-reveal">Lokaler Einstieg für Hannover: <a href="<?php echo esc_url( $urls['agentur'] ); ?>">WordPress Agentur Hannover</a></p>
 							<div class="wp-hero-direct-links nx-reveal" aria-label="Direkteinstiege zu zentralen Leistungen">
 								<span class="wp-hero-direct-links__label">Direkteinstiege</span>
-								<a href="<?php echo esc_url( $urls['seo'] ); ?>">WordPress SEO Hannover</a>
-								<a href="<?php echo esc_url( $urls['wartung'] ); ?>">WordPress Wartung Hannover</a>
+								<a href="<?php echo esc_url( $urls['seo'] ); ?>">Technisches SEO</a>
+								<a href="<?php echo esc_url( $urls['wartung'] ); ?>">Wartung & Betrieb</a>
 								<a href="<?php echo esc_url( $urls['tracking'] ); ?>">GA4 Tracking Setup</a>
 								<a href="<?php echo esc_url( $urls['cwv'] ); ?>">Core Web Vitals</a>
 							</div>
@@ -421,7 +421,7 @@ function hu_hero_section_shortcode() {
 								Kein Verkaufsgespräch. Klare Einschätzung. Sinnvolle nächste Entscheidung.
 							</div>
 							<div class="wp-btn-wrapper audit-card-premium__actions">
-									<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary full-width" data-track-action="cta_hero_audit" data-track-category="lead_gen">Marktcheck starten</a>
+									<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary full-width" data-track-action="cta_hero_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
 							</div>
 						</div>
 					</div>
@@ -544,7 +544,7 @@ function hu_owned_section_shortcode() {
 			</div>
 
 			<div class="text-center" style="margin-top:2rem;">
-				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-secondary" data-track-action="cta_owned_audit" data-track-category="lead_gen">Prüfen, wo Ihre Seite heute Reibung erzeugt</a>
+				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-secondary" data-track-action="cta_owned_marketcheck" data-track-category="lead_gen">Prüfen, wo Ihre Seite heute Reibung erzeugt</a>
 			</div>
 
 			<div class="homepage-github-proof nx-reveal" data-track-section="homepage_github_proof" aria-label="Öffentliches GitHub-Repo als Vertrauenssignal">
@@ -642,7 +642,7 @@ function hu_wgos_block_shortcode() {
 			<div id="homepage-mindmap-teaser-root" class="homepage-mindmap-section" aria-label="Anfrage-System Teaser"></div>
 
 			<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:2.5rem;">
-				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_wgos_audit" data-track-category="lead_gen">Marktcheck starten</a>
+				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_wgos_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
 			</div>
 		</div>
 	</section>
@@ -738,7 +738,7 @@ function hu_erfolge_section_shortcode() {
 			</div>
 
 			<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem;">
-				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_erfolge_audit" data-track-category="lead_gen">Audit starten</a>
+				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_erfolge_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
 				<a href="<?php echo esc_url( $urls['cases'] ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_erfolge_cases" data-track-category="lead_gen">Weitere Ergebnisse</a>
 			</div>
 		</div>
@@ -922,14 +922,14 @@ function hu_cta_section_shortcode() {
 				<h2 id="cta-heading" style="font-size:clamp(1.8rem,3vw,2.4rem); margin-bottom:1rem; color:#fff;">Prüfen wir, wo Ihre WordPress-Seite Anfragen verliert.</h2>
 					<p>Im Marktcheck sehen Sie, wo Sichtbarkeit, Vertrauen, Datensignale oder Conversion wegbrechen und ob Ihre Website heute schon als Plattform trägt.</p>
 
-				<div role="group" aria-label="Audit-Merkmale" style="display:flex; flex-wrap:wrap; justify-content:center; gap:0.75rem 1.5rem; margin-bottom:2rem;">
+				<div role="group" aria-label="Marktcheck-Merkmale" style="display:flex; flex-wrap:wrap; justify-content:center; gap:0.75rem 1.5rem; margin-bottom:2rem;">
 					<span style="font-size:0.85rem; color:var(--nx-text-muted);">✓ klare Einschätzung statt Bauchgefühl</span>
 					<span style="font-size:0.85rem; color:var(--nx-text-muted);">✓ Sichtbarkeit, Datensignale, Anfragepfade und Ownership gemeinsam betrachtet</span>
 					<span style="font-size:0.85rem; color:var(--nx-text-muted);">✓ sinnvoller nächster Schritt statt Leistungsverkauf</span>
 				</div>
 
 				<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem;">
-					<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $urls['audit'] ); ?>" data-track-action="cta_footer_audit" data-track-category="lead_gen">Audit starten</a>
+					<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $urls['audit'] ); ?>" data-track-action="cta_footer_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
 					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $urls['cases'] ); ?>" data-track-action="cta_footer_cases" data-track-category="lead_gen">Ergebnisse ansehen</a>
 				</div>
 
@@ -942,13 +942,13 @@ function hu_cta_section_shortcode() {
 			<div class="homepage-pilot-card nx-reveal">
 				<div class="homepage-pilot-card__copy">
 					<span class="nx-badge nx-badge--gold">Fokussierte Folgeanalyse</span>
-					<h2 id="followup-heading" class="homepage-pilot-card__title">Wenn nach dem Audit ein tieferer Blick sinnvoll ist</h2>
-					<p class="homepage-pilot-card__lead">Die Folgeanalyse ist kein öffentlicher Erstschritt. Sie entsteht erst, wenn der Audit zeigt, dass eine vertiefte Analyse oder eine fokussierte Korrektur fachlich sinnvoll ist.</p>
+					<h2 id="followup-heading" class="homepage-pilot-card__title">Wenn nach dem Marktcheck ein tieferer Blick sinnvoll ist</h2>
+					<p class="homepage-pilot-card__lead">Die Folgeanalyse ist kein öffentlicher Erstschritt. Sie entsteht erst, wenn der Marktcheck zeigt, dass eine vertiefte Analyse oder eine fokussierte Korrektur fachlich sinnvoll ist.</p>
 					<p class="homepage-pilot-card__lead">Dann wird nicht pauschal verkauft, sondern die kritischste Seite, der wichtigste Engpass oder die nächste fachlich sinnvolle Korrektur vertieft.</p>
 				</div>
 
 				<div class="homepage-pilot-card__details">
-					<div class="homepage-pilot-card__price">Nur nach Audit-Fit</div>
+					<div class="homepage-pilot-card__price">Nur nach Marktcheck-Fit</div>
 					<ul class="premium-list" style="margin:1.25rem 0 0;">
 						<li><span class="check-icon">✓</span> <div>kritischste Seite oder stärkster Engpass vertieft</div></li>
 						<li><span class="check-icon">✓</span> <div>klare Reihenfolge für den nächsten wirtschaftlich sinnvollen Schritt</div></li>
@@ -957,10 +957,10 @@ function hu_cta_section_shortcode() {
 					<a
 						class="wp-btn wp-btn-primary full-width"
 						href="<?php echo esc_url( $urls['audit'] ); ?>"
-						data-track-action="cta_followup_audit"
+						data-track-action="cta_followup_marketcheck"
 						data-track-category="lead_gen"
 					>
-						Erst mit dem Audit starten
+						Erst mit dem Marktcheck starten
 					</a>
 					<p class="homepage-pilot-card__note"><?php echo esc_html( $ownership_copy ); ?></p>
 				</div>

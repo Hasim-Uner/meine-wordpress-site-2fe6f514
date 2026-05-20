@@ -1,4 +1,4 @@
 interface:
   display_name: "Growth Audit Optimizer"
-  short_description: "CRO, positioning, and trust optimization for the active /growth-audit/ route"
-  default_prompt: "Use $growth-audit-optimizer to improve the active /growth-audit/ page for stronger starts, better perceived value, and cleaner next-step conversion without reviving legacy 48h intake logic."
+  short_description: "CRO, positioning, and trust optimization for the active Solar/SHK marketcheck"
+  default_prompt: "Use $growth-audit-optimizer to improve the active /solar-waermepumpen-leadgenerierung/#marktcheck flow for stronger starts, better perceived value, and cleaner next-step conversion without reviving legacy /growth-audit/ logic."

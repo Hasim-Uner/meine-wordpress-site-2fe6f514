@@ -40,11 +40,11 @@ get_header();
 <section class="lp-hero" data-track-section="hero">
   <h1><!-- Ad-aligned headline --></h1>
   <p><!-- Supporting subline --></p>
-  <a href="<?php echo esc_url(home_url('/growth-audit/')); ?>"
+  <a href="<?php echo esc_url(home_url('/solar-waermepumpen-leadgenerierung/#marktcheck')); ?>"
      class="btn btn-primary"
      data-track-action="cta_hero"
      data-track-category="landing_page">
-    Growth Audit anfordern
+    Marktcheck starten
   </a>
 </section>
 
@@ -62,11 +62,11 @@ get_header();
 
 <!-- Section: CTA -->
 <section class="lp-cta" data-track-section="cta_bottom">
-  <a href="<?php echo esc_url(home_url('/growth-audit/')); ?>"
+  <a href="<?php echo esc_url(home_url('/solar-waermepumpen-leadgenerierung/#marktcheck')); ?>"
      class="btn btn-primary"
      data-track-action="cta_bottom"
      data-track-category="landing_page">
-    Growth Audit anfordern
+    Marktcheck starten
   </a>
 </section>
 

@@ -44,7 +44,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) ) {
 
 		$primary_link_map = [
 			'seo' => [
-				'label' => __( 'WordPress SEO Hannover', 'blocksy-child' ),
+				'label' => __( 'Technisches SEO', 'blocksy-child' ),
 				'url'   => nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) ),
 				'text'  => __( 'Passender Service-Einstieg zum Thema:', 'blocksy-child' ),
 			],
@@ -54,7 +54,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) ) {
 				'text'  => __( 'Wenn Tracking, Consent oder Datenqualität das eigentliche Problem sind:', 'blocksy-child' ),
 			],
 			'cro' => [
-				'label' => __( 'Conversion Rate Optimization', 'blocksy-child' ),
+				'label' => __( 'Conversion-Pfad', 'blocksy-child' ),
 				'url'   => nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) ),
 				'text'  => __( 'Wenn der nächste Hebel in Angebotslogik und Nutzerführung liegt:', 'blocksy-child' ),
 			],

@@ -260,7 +260,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 				$contact_url,
 				$primary_urls['e3'] ?? home_url( '/e3-new-energy/' ),
 				$primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' ),
-				$primary_urls['wartung'] ?? home_url( '/wordpress-wartung-hannover/' ),
+				$primary_urls['wartung'] ?? home_url( '/wordpress-agentur-hannover/#wordpress-wartung' ),
 				$primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#methode' ),
 				function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( 'tracking-audit' ) : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' ),
 			]
@@ -299,7 +299,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 			$links,
 			[
 				$primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
-				$primary_urls['wartung'] ?? home_url( '/wordpress-wartung-hannover/' ),
+				$primary_urls['wartung'] ?? home_url( '/wordpress-agentur-hannover/#wordpress-wartung' ),
 				$primary_urls['results'] ?? home_url( '/ergebnisse/' ),
 			]
 		);
@@ -412,7 +412,7 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 	$audit_url        = $primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$cases_url        = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 	$agentur_url      = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
-	$wartung_url      = $primary_urls['wartung'] ?? home_url( '/wordpress-wartung-hannover/' );
+	$wartung_url      = $primary_urls['wartung'] ?? home_url( '/wordpress-agentur-hannover/#wordpress-wartung' );
 	$wgos_url         = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#methode' );
 	$e3_url           = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
 	$domdar_url       = $primary_urls['domdar'] ?? home_url( '/case-study-domdar/' );

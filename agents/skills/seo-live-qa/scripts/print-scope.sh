@@ -7,38 +7,47 @@ mode="${1:-all}"
 print_reindex() {
   cat <<'EOF'
 [REINDEX]
-- /shopify-wartungsvertrag/
-- /wordpress-wartung-hannover/
+- /solar-waermepumpen-leadgenerierung/
+- /e3-new-energy/
 - /wordpress-agentur-hannover/
-- /wordpress-seo-hannover/
+- /ergebnisse/
 - /ga4-tracking-setup/
 - /performance-marketing/
+- /blog/
 EOF
 }
 
 print_redirects() {
   cat <<'EOF'
 [REDIRECTS]
-- /audit/ -> /growth-audit/
-- /customer-journey-audit/ -> /growth-audit/
-- /360-audit/ -> /growth-audit/
-- /wordpress-tech-audit/ -> /growth-audit/
+- /growth-audit/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
+- /audit/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
+- /customer-journey-audit/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
+- /360-audit/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
+- /wordpress-tech-audit/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
+- /wordpress-seo-hannover/ -> /wordpress-agentur-hannover/#technisches-seo
+- /wordpress-wartung-hannover/ -> /wordpress-agentur-hannover/#wordpress-wartung
+- /conversion-rate-optimization/ -> /wordpress-agentur-hannover/#methode
+- /core-web-vitals/ -> /wgos-assets/cwv-optimierung/ or /wordpress-agentur-hannover/#methode
 - /case-studies/ -> /ergebnisse/
 - /case-studies-e-commerce/ -> /ergebnisse/
 - /meta-ads/ -> canonical target
 - /wordpress-agentur/ -> canonical target
 - /roi-rechner/ -> canonical target
+- /shopify-wartungsvertrag/ -> 410
 EOF
 }
 
 print_mapping() {
   cat <<'EOF'
 [PRIMARY URL MAP]
+- cold Solar/SHK demand -> /solar-waermepumpen-leadgenerierung/#marktcheck
+- proof -> /e3-new-energy/
 - wordpress agentur hannover -> /wordpress-agentur-hannover/
-- wordpress seo hannover -> /wordpress-seo-hannover/
-- wordpress wartung hannover -> /wordpress-wartung-hannover/
+- wordpress seo hannover -> /wordpress-agentur-hannover/#technisches-seo
+- wordpress wartung hannover -> /wordpress-agentur-hannover/#wordpress-wartung
 - ga4 tracking setup / server-side tracking / consent mode -> /ga4-tracking-setup/
-- core web vitals optimierung / pagespeed optimierung -> /core-web-vitals/
+- core web vitals optimierung / pagespeed optimierung -> /wgos-assets/cwv-optimierung/
 EOF
 }
 

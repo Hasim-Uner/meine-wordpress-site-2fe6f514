@@ -1,6 +1,7 @@
 # 0004 WGOS Cluster Pages And Results Canonical
 
 - Datum: 2026-03-12
+- Status: teilweise superseded am 2026-05-20 durch Marktcheck-/Service-Konsolidierung
 
 ## Entscheidung
 
@@ -8,8 +9,9 @@ Wichtige Legacy-Service-Seiten werden nicht mehr dem WordPress-Editor oder manue
 
 Stattdessen gilt jetzt:
 
-- zentrale Cluster-/Pillar-Definitionen liegen versioniert in `blocksy-child/inc/wgos-cluster-pages.php`
-- die Seiten `/wordpress-seo-hannover/`, `/core-web-vitals/`, `/conversion-rate-optimization/`, `/ga4-tracking-setup/` und `/performance-marketing/` werden theme-seitig auf versionierte Templates geroutet
+- zentrale Cluster-/Pillar-Definitionen liegen versioniert in `blocksy-child/inc/wgos/wgos-cluster-pages.php`
+- die Seiten `/ga4-tracking-setup/` und `/performance-marketing/` werden theme-seitig weiter auf versionierte Templates geroutet
+- die alten Service-Slugs `/wordpress-seo-hannover/`, `/core-web-vitals/`, `/conversion-rate-optimization/` und `/wordpress-wartung-hannover/` sind nachgelagert konsolidiert und bleiben nur als 301-/Asset-/Anker-Pfade abgesichert
 - der Ergebnisse-Hub ist repo-seitig kanonisch `/ergebnisse/`
 - alte Proof- und Audit-Slugs bleiben nur noch als 301-Aliase bestehen
 - Single Posts koennen passende WGOS-Assets automatisch als Anschlussblock ausgeben
@@ -22,7 +24,7 @@ Stattdessen gilt jetzt:
 
 ## Konsequenzen
 
-- Wichtige Clusterseiten sind wieder versioniert review- und deploybar.
+- Aktive Clusterseiten bleiben versioniert review- und deploybar; konsolidierte Legacy-Service-Slugs duerfen nicht wieder als primaere CTAs oder eigene Money Pages aufgebaut werden.
 - Navigation und Redirects laufen auf weniger historische Alias-Pfade.
 - Der Proof-Layer zeigt repo-seitig auf `/ergebnisse/`, nicht mehr auf alte Case-Slugs.
 - Weitere editorgetriebene Seiten bleiben moegliche Drift-Zonen und muessen separat geprueft oder spaeter ebenfalls versioniert werden.

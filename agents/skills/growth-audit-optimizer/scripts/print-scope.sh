@@ -5,14 +5,17 @@ Growth Audit Optimizer
 ======================
 
 Primary objective
-- Improve the active /growth-audit/ page so more qualified visitors start, trust the result, and take the next step.
+- Improve the active Solar/SHK marketcheck so more qualified visitors start, trust the result, and take the next step.
+- Treat /growth-audit/ as a retired legacy route unless the task explicitly asks for legacy cleanup.
 
 Active assumptions
-- Instant-results flow is the live truth.
+- /solar-waermepumpen-leadgenerierung/#marktcheck is the live truth.
+- /growth-audit/ redirects to the marketcheck.
 - Public timing copy should use 60 Sekunden.
 - Shopify is not active positioning and should only be treated as stale copy debt.
 
 Check first
+- blocksy-child/page-solar-waermepumpen-leadgenerierung.php
 - blocksy-child/page-audit.php
 - blocksy-child/inc/audit-page.php
 - blocksy-child/inc/cja-shortcode.php
@@ -31,5 +34,5 @@ Look for
 - weak hero, trust, or result CTA transitions
 
 Copy target
-- Fast, credible, strategic diagnosis entry point for WordPress B2B websites
+- Fast, credible, strategic diagnosis entry point for Solar-, Wärmepumpen- und Speicher-Anbieter
 EOF

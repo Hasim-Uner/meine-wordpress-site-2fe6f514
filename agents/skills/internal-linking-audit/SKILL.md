@@ -18,7 +18,7 @@ The script scans all PHP templates for internal links and prints a link matrix.
 ## What It Finds
 
 1. **Orphan pages** — templates with no incoming links from other templates
-2. **Hub gaps** — high-value pages (growth-audit, ergebnisse, blog) not linked from enough places
+2. **Hub gaps** — high-value pages (Marktcheck, E3, ergebnisse, blog, agentur) not linked from enough places
 3. **Broken internal links** — `home_url()` calls pointing to slugs without a matching template
 4. **Over-linked pages** — pages with too many outbound links diluting equity
 5. **Anchor text quality** — generic "hier klicken" vs descriptive anchors
@@ -27,8 +27,8 @@ The script scans all PHP templates for internal links and prints a link matrix.
 
 | Tier | Pages | Min inbound links |
 |------|-------|--------------------|
-| 1 | /growth-audit/ | 8+ |
-| 2 | /ergebnisse/, /blog/, /wordpress-growth-operating-system/ | 5+ |
+| 1 | /solar-waermepumpen-leadgenerierung/ | 8+ |
+| 2 | /e3-new-energy/, /ergebnisse/, /blog/, /wordpress-agentur-hannover/ | 5+ |
 | 3 | Service pages, cornerstone content | 3+ |
 | 4 | Glossary terms, blog posts | 1+ |
 

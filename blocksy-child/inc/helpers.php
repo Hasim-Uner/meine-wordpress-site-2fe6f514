@@ -492,6 +492,7 @@ function nexus_get_primary_public_url_map() {
 	$asset_url   = trailingslashit( $agentur_url ) . '#asset-uebersicht';
 	$seo_url     = trailingslashit( $agentur_url ) . '#technisches-seo';
 	$cro_url     = trailingslashit( $agentur_url ) . '#methode';
+	$wartung_url = trailingslashit( $agentur_url ) . '#wordpress-wartung';
 	$cwv_url     = function_exists( 'hue_get_wgos_asset_redirect_url' )
 		? hue_get_wgos_asset_redirect_url( 'cwv-optimierung', trailingslashit( $agentur_url ) . '#methode' )
 		: home_url( '/wgos-assets/cwv-optimierung/' );
@@ -510,10 +511,7 @@ function nexus_get_primary_public_url_map() {
 		),
 		'agentur'              => $agentur_url,
 		'seo'                  => $seo_url,
-		'wartung'              => nexus_get_wgos_cluster_route_url(
-			'wordpress-wartung-hannover',
-			home_url( '/wordpress-wartung-hannover/' )
-		),
+		'wartung'              => $wartung_url,
 		'tracking'             => nexus_get_wgos_cluster_route_url(
 			'ga4-tracking-setup',
 			home_url( '/ga4-tracking-setup/' )
