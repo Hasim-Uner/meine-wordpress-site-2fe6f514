@@ -82,8 +82,9 @@ function hu_output_schema()
         'sameAs' => [
             'https://www.linkedin.com/in/hasim-%C3%BCner/',
             'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514',
+            'https://maps.app.goo.gl/DZKgmFWREe2dCiRQ8',
         ],
-        'hasMap' => 'https://www.google.com/maps?cid=7273014379384770345',
+        'hasMap' => 'https://maps.app.goo.gl/DZKgmFWREe2dCiRQ8',
         'knowsAbout' => [
             'WordPress',
             'Technische SEO',
