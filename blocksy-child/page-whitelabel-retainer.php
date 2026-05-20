@@ -214,7 +214,7 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 							</span>
 						</div>
 						<span class="wl-dash__primary-delta">
-							<span class="wl-counter" data-counter-target="<?php echo esc_attr( $cpl_reduction_int ); ?>" data-counter-prefix="−" data-counter-suffix="&nbsp;%">0</span>
+							<span class="wl-counter" data-counter-target="<?php echo esc_attr( $cpl_reduction_int ); ?>" data-counter-prefix="−" data-counter-suffix="&nbsp;%"><?php echo esc_html( $cpl_reduction ); ?></span>
 							<span>&nbsp;in <?php echo esc_html( $timeframe ); ?></span>
 						</span>
 					</div>
@@ -235,19 +235,19 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 					<dl class="wl-dash__tiles">
 						<div class="wl-dash__tile">
 							<dt>Qualifizierte Leads</dt>
-							<dd><span class="wl-counter" data-counter-target="<?php echo esc_attr( $lead_count_int ); ?>" data-counter-suffix="+">0</span></dd>
+							<dd><span class="wl-counter" data-counter-target="<?php echo esc_attr( $lead_count_int ); ?>" data-counter-suffix="+"><?php echo esc_html( $lead_count ); ?></span></dd>
 						</div>
 						<div class="wl-dash__tile">
 							<dt>CPL-Senkung</dt>
-							<dd><span class="wl-counter" data-counter-target="<?php echo esc_attr( $cpl_reduction_int ); ?>" data-counter-prefix="−" data-counter-suffix=" %">0</span></dd>
+							<dd><span class="wl-counter" data-counter-target="<?php echo esc_attr( $cpl_reduction_int ); ?>" data-counter-prefix="−" data-counter-suffix=" %"><?php echo esc_html( $cpl_reduction ); ?></span></dd>
 						</div>
 						<div class="wl-dash__tile">
 							<dt>Zeitraum</dt>
-							<dd><span class="wl-counter" data-counter-target="9" data-counter-suffix=" Mon.">0</span></dd>
+							<dd><span class="wl-counter" data-counter-target="9" data-counter-suffix=" Mon.">9 Mon.</span></dd>
 						</div>
 						<div class="wl-dash__tile">
 							<dt>Abschlussquote</dt>
-							<dd><span class="wl-counter" data-counter-target="<?php echo esc_attr( $sales_conv_int ); ?>" data-counter-suffix=" %">0</span></dd>
+							<dd><span class="wl-counter" data-counter-target="<?php echo esc_attr( $sales_conv_int ); ?>" data-counter-suffix=" %"><?php echo esc_html( $sales_conv ); ?></span></dd>
 						</div>
 					</dl>
 

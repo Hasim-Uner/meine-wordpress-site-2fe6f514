@@ -343,6 +343,17 @@
 	padding: 0;
 }
 
+/* Counter-CLS-Schutz: tabular digits + reservierte Mindestbreiten,
+   damit JS-Animation von 0 hoch keinen Layout-Shift produziert. */
+.wl-counter {
+	display: inline-block;
+	font-variant-numeric: tabular-nums;
+	min-width: 2.5ch;
+}
+.wl-dash__primary-after .wl-counter { min-width: 3.2ch; }
+.wl-dash__primary-delta .wl-counter { min-width: 4.2ch; }
+.wl-dash__tile dd .wl-counter      { min-width: 5ch; }
+
 .wl-dash__tile {
 	background: hsl(30 5% 9% / 0.65);
 	border: 1px solid hsl(30 10% 100% / 0.05);
