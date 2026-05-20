@@ -43,6 +43,7 @@ $modules = [
 	'analysis-intake.php', // REST-Endpoint, CRM-Sync, Brevo-Mails und n8n-Webhook für die Analyse
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails
 	'blog-provider-posts.php', // Einmalige Live-Anlage der Lead-Anbieter-Markteinordnungen
+	'blog-pillar-posts.php', // Einmalige Live-Anlage strategischer Pillar-Beiträge
 	'robots-txt.php',     // Dynamische /robots.txt-Route für Search- und KI-Crawler
 	'llms-txt.php',       // Dynamische /llms.txt-Route für KI-Agenten und Entitätskontext
 	'seo-cockpit/seo-cockpit.php',    // Search Console basiertes SEO-Cockpit mit optionaler Koko-Erkennung
