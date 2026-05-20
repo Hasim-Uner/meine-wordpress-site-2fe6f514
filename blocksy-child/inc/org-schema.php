@@ -41,6 +41,8 @@ function hu_person_schema_ref( $include_same_as = false, $name = 'Haşim Üner' 
 
 function hu_output_schema()
 {
+    $google_maps_url = 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfrage-Systeme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
+
     // Organization / LocalBusiness schema
     $org = [
         '@context' => 'https://schema.org',
@@ -82,9 +84,9 @@ function hu_output_schema()
         'sameAs' => [
             'https://www.linkedin.com/in/hasim-%C3%BCner/',
             'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514',
-            'https://maps.app.goo.gl/DZKgmFWREe2dCiRQ8',
+            $google_maps_url,
         ],
-        'hasMap' => 'https://maps.app.goo.gl/DZKgmFWREe2dCiRQ8',
+        'hasMap' => $google_maps_url,
         'knowsAbout' => [
             'WordPress',
             'Technische SEO',
