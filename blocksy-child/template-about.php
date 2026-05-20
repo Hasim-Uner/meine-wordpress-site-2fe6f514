@@ -31,41 +31,41 @@ $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
 $e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 2 % → 12 %';
 $e3_conv_uplift_lbl  = $e3_metrics['sales_conversion_uplift']['label'] ?? 'Anstieg der Abschlussquote durch eigenes System';
 
-// Hero-Pfad: erst Arbeitsweise, dann Beleg. Keine KPI-Dominanz im ersten Blick.
+// Hero-Pfad: synchron mit den Brunnen-Schichten (Schichten-Analyse → Filter → Eigene Quelle).
 $about_hero_path = [
 	[
-		't' => 'Untergrund lesen',
-		's' => 'Suchintention, Website, Tracking und Vertrieb als ein System verstehen.',
+		't' => '1. Schichten-Analyse',
+		's' => 'Suchintention, Tracking und CRM-Anschluss als ein System verstehen.',
 	],
 	[
-		't' => 'Quelle freilegen',
-		's' => 'Anfragen so führen, dass Fit, Region und Projektwert früh sichtbar werden.',
+		't' => '2. Filter-Infrastruktur',
+		's' => 'Funnel und Vorqualifizierung, die Fit, Region und Projektwert früh sichtbar machen.',
 	],
 	[
-		't' => 'Pumpe hochdrehen',
-		's' => 'Erst skalieren, wenn Infrastruktur, Daten und Anschluss belastbar sind.',
+		't' => '3. Eigene Quelle',
+		's' => 'Skalieren erst, wenn Code, Daten und Vertriebsanschluss bei Ihnen liegen.',
 	],
 ];
 
-// Arbeitsweise: erzählerischer Einstieg statt Zahlenwand.
+// Arbeitsweise: konsistent mit den Brunnen-Labels (20 m / 40 m / 60 – 80 m).
 $about_work_principles = [
 	[
-		'eyebrow' => '01 / Lesen',
-		'title'   => 'Ich beginne nicht mit dem Bohrer.',
-		'body'    => 'Bevor eine Seite, ein Funnel oder Tracking-Code angefasst wird, schaue ich auf den Untergrund: Welche Nachfrage gibt es wirklich? Wo wird Vertrauen aufgebaut? Wo versickert Aufmerksamkeit? Und an welcher Stelle bekommt der Vertrieb falsche oder zu späte Signale?',
-		'detail'  => 'Diese Phase wirkt unspektakulär, entscheidet aber, ob später Wasser kommt oder nur mehr Bewegung entsteht.',
+		'eyebrow' => 'Schicht 1 / 20 Meter',
+		'title'   => 'Portal-Leads trockenlegen.',
+		'body'    => 'Wer Anfragen über Portale kauft, teilt sich denselben Kontakt mit drei Wettbewerbern und zahlt für Klicks ohne Fit. Ich schaue zuerst, wie viel Ihres Vertriebsaufwands in diesen geteilten Kontakten versickert — und wo eigene Nachfrage realistisch ist.',
+		'detail'  => 'Erst wenn klar ist, warum echte Anfragen heute nicht zuverlässig bei Ihnen ankommen, lohnt sich der nächste Schritt.',
 	],
 	[
-		'eyebrow' => '02 / Führen',
-		'title'   => 'Ich baue keine schöne Oberfläche über ein unklares System.',
-		'body'    => 'Viele Websites erklären Technik, aber führen keine Entscheidung. Ich arbeite an Sprache, Struktur und Vorqualifizierung: Welche Frage muss beantwortet sein, bevor jemand anfragt? Welche Reibung ist sinnvoll? Welche Anfrage sollte gar nicht erst im Vertrieb landen?',
-		'detail'  => 'Das Ziel ist nicht mehr Formularvolumen, sondern weniger Blindleistung im Verkaufsprozess.',
+		'eyebrow' => 'Schicht 2 / 40 Meter',
+		'title'   => 'Tracking, das Abschlüsse zeigt — nicht Klicks.',
+		'body'    => 'Standard-Tracking misst Bewegung. Was Sie brauchen, ist ein Signal, das zwischen Formular-Klick und unterschriebenem Vertrag unterscheidet. Server-seitiges GA4, Meta CAPI und Consent Mode v2 — DSGVO-konform, cookieless-ready, mit den Daten auf Ihrer Infrastruktur.',
+		'detail'  => 'Nur wer sauber misst, kann Budget auf die rentablen Anfragen lenken — und unrentable Kanäle abschalten, bevor sie wehtun.',
 	],
 	[
-		'eyebrow' => '03 / Bauen',
-		'title'   => 'Ich verbinde Website, Daten und Vertrieb.',
-		'body'    => 'Wenn die Karte stimmt, wird gebaut: sauberes WordPress, nachvollziehbare Tracking-Logik, CRM-Anschluss und Inhalte, die nicht nur ranken, sondern Gespräche vorbereiten. Erst danach lohnt sich mehr Budget auf Ads, SEO oder Kampagnen.',
-		'detail'  => 'So entsteht eine eigene Anfrage-Quelle statt ein weiterer Kanal, der monatlich neu gefüttert werden muss.',
+		'eyebrow' => 'Schicht 3 / 60 – 80 Meter',
+		'title'   => 'Eigene Quelle. Ihr Eigentum.',
+		'body'    => 'Wenn Karte und Messung stimmen, wird gebaut: sauberes WordPress, Vorqualifizierungs-Funnel, CRM-Anschluss und Inhalte, die Gespräche vorbereiten statt nur Klicks zu sammeln. Code, Daten und Tracking bleiben zu 100 % im Firmenbesitz.',
+		'detail'  => 'Eine Anfrage-Infrastruktur, die liefert — anstatt eines weiteren Kanals, der monatlich neu gefüttert werden muss.',
 	],
 ];
 
@@ -85,19 +85,19 @@ $about_evidence = [
 	],
 ];
 
-// Fit-Check: 3 Voraussetzungen statt Negativ-Liste (Positiv-Framing)
+// Fit-Check: 3 Voraussetzungen, schärfer auf Qualität und Asset-Verständnis.
 $about_fit_points = [
 	[
-		't' => 'Solar, Wärmepumpe oder Speicher.',
-		's' => 'Ihr Angebot muss in diesem Markt liegen. Branchenübergreifend arbeite ich nicht.',
+		't' => 'Fokus auf Solar, Wärmepumpe oder Speicher.',
+		's' => 'Echte Spezialisierung. Keine branchenübergreifenden Experimente, keine B2B-Generalisten-Lösungen.',
 	],
 	[
-		't' => 'Eigener Vertrieb mit Kapazität.',
-		's' => 'Sie haben ein Team, das Anfragen bearbeitet. Keine Ein-Mann-Betriebe, keine Konzern-Strukturen.',
+		't' => 'Fest angestelltes Vertriebsteam (min. 2 Personen).',
+		's' => 'Das System erzeugt exklusive, hochpreisige Anfragen. Das verlangt strukturierte Bearbeitung — keine Ein-Mann-Betriebe.',
 	],
 	[
-		't' => 'Bereitschaft für sauberes Tracking.',
-		's' => 'Consent-konforme Implementierung bedeutet Einschränkungen. Wer die nicht akzeptiert, bekommt keine belastbaren Daten.',
+		't' => 'Verständnis für Infrastruktur statt Landingpage.',
+		's' => 'Ein eigenes Anfrage-System ist ein digitaler Vermögenswert. Wer eine günstige Landingpage sucht, ist hier falsch.',
 	],
 ];
 
@@ -109,37 +109,43 @@ $about_well_labels = [
 	[ 'depth' => 80, 'label' => 'Eigene Quelle', 'highlight' => true  ],
 ];
 
-// Fachliche Schwerpunkte (E-E-A-T-Anker → Sub-Page-Cluster)
-$about_expertise = [
-	[
-		't'   => 'Lead-Funnel-Architektur',
-		's'   => 'Fünf Stufen vom Suchwort bis zum Auftrag, mit Vorqualifizierung und Sales-Anschluss.',
-		'url' => home_url( '/lead-funnel-solar/' ),
+// Fachliche Schwerpunkte: System-Architektur in 3 Cluster für besseres Scanning + E-E-A-T-Signal.
+$about_expertise_structured = [
+	'Infrastruktur & Funnel' => [
+		[
+			't'   => 'Lead-Funnel-Architektur',
+			's'   => 'Fünf Stufen vom Suchwort bis zum Auftrag, mit Vorqualifizierung und Sales-Anschluss.',
+			'url' => home_url( '/lead-funnel-solar/' ),
+		],
+		[
+			't'   => 'Mieten vs. Besitzen',
+			's'   => 'Vergleichsmatrix Portal-Leads gegen eigenes Anfrage-System mit TCO-Überschlag.',
+			'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ),
+		],
 	],
-	[
-		't'   => 'Server-Side Tracking',
-		's'   => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server – DSGVO-konform und cookieless-ready.',
-		'url' => home_url( '/server-side-tracking-b2b/' ),
+	'Daten & Tracking' => [
+		[
+			't'   => 'Server-Side Tracking',
+			's'   => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server – DSGVO-konform und cookieless-ready.',
+			'url' => home_url( '/server-side-tracking-b2b/' ),
+		],
+		[
+			't'   => 'Cost per Lead Photovoltaik',
+			's'   => 'CPL-Analyse mit drei Szenarien-Vergleich und versteckten Kostentreibern.',
+			'url' => home_url( '/cost-per-lead-photovoltaik/' ),
+		],
 	],
-	[
-		't'   => 'Cost per Lead Photovoltaik',
-		's'   => 'CPL-Analyse mit drei Szenarien-Vergleich und versteckten Kostentreibern.',
-		'url' => home_url( '/cost-per-lead-photovoltaik/' ),
-	],
-	[
-		't'   => 'Qualifizierte PV-Anfragen',
-		's'   => 'Vier Merkmale, an denen sich eine hochwertige Solar-Anfrage erkennen lässt.',
-		'url' => home_url( '/qualifizierte-pv-anfragen/' ),
-	],
-	[
-		't'   => 'B2B Solar Leads (Gewerbe)',
-		's'   => 'Buying-Center-Funnel für gewerbliche Photovoltaik-Projekte ab 50.000 €.',
-		'url' => home_url( '/b2b-solar-leads/' ),
-	],
-	[
-		't'   => 'Mieten vs. Besitzen',
-		's'   => 'Vergleichsmatrix Portal-Leads gegen eigenes Anfrage-System mit TCO-Überschlag.',
-		'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ),
+	'Qualität & Vertrieb' => [
+		[
+			't'   => 'Qualifizierte PV-Anfragen',
+			's'   => 'Vier Merkmale, an denen sich eine hochwertige Solar-Anfrage erkennen lässt.',
+			'url' => home_url( '/qualifizierte-pv-anfragen/' ),
+		],
+		[
+			't'   => 'B2B Solar Leads (Gewerbe)',
+			's'   => 'Buying-Center-Funnel für gewerbliche Photovoltaik-Projekte ab 50.000 €.',
+			'url' => home_url( '/b2b-solar-leads/' ),
+		],
 	],
 ];
 
@@ -160,9 +166,9 @@ get_header();
 							<span class="about-live-dot" aria-hidden="true"></span>
 							ÜBER MICH
 						</p>
-						<h1 class="about-h1">Ich bohre Brunnen. Digital.</h1>
+						<h1 class="about-h1">Ich bohre Brunnen. Für Ihre eigenen Anfragen.</h1>
 						<p class="about-hero__lead">
-							Für Solar- und Wärmepumpen-Betriebe, die ihre Anfragen nicht dauerhaft über Portale mieten wollen — sondern eine eigene Nachfrage-Infrastruktur aufbauen.
+							Für Solar- und Wärmepumpen-Betriebe, die unqualifizierte Portal-Leads durch eine herstellerunabhängige Nachfrage-Infrastruktur ersetzen.
 						</p>
 
 						<ul class="about-hero-path" role="list" aria-label="Arbeitsweise von der Analyse bis zur Skalierung">
@@ -186,8 +192,8 @@ get_header();
 								</svg>
 							</a>
 							<p class="about-cta-meta">
-								<span>60 Sek.</span>
-								<span>6 Fragen</span>
+								<span>Exklusive Erst-Analyse</span>
+								<span>Prüfung auf Regions-Verfügbarkeit</span>
 								<span>Antwort in 24 h</span>
 							</p>
 						</div>
@@ -238,8 +244,8 @@ get_header();
 				<header class="about-section__head" data-reveal>
 					<p class="about-section__number">Wie ich arbeite</p>
 					<div class="about-section__head-body">
-						<h2 class="about-h2">Erst verstehen, dann bauen, dann skalieren.</h2>
-						<p class="about-section__lead">Meine Arbeit ist keine schnelle Design-Schicht über einer alten Vertriebslogik. Sie beginnt mit der Frage, warum gute Nachfrage heute nicht zuverlässig bei Ihnen ankommt.</p>
+						<h2 class="about-h2">Drei Schichten. Eine eigene Quelle.</h2>
+						<p class="about-section__lead">Meine Arbeit ist keine Design-Schicht über einer alten Vertriebslogik. Sie folgt dem Aufbau eines Brunnens — von den geteilten Portal-Anfragen an der Oberfläche bis zur eigenen Nachfrage-Infrastruktur in der Tiefe.</p>
 					</div>
 				</header>
 
@@ -418,25 +424,32 @@ get_header();
 				<header class="about-section__head" data-reveal>
 					<p class="about-section__number">05 / Fachliche Schwerpunkte</p>
 					<div class="about-section__head-body">
-						<h2 class="about-h2" id="about-expertise-title">Sechs Felder, an denen ich konkret arbeite.</h2>
-						<p class="about-section__lead">Jedes Feld ist als eigene Seite mit Methode, Beispielen und Bezug zum E3-Case aufgeschrieben.</p>
+						<h2 class="about-h2" id="about-expertise-title">Sechs Felder. Drei System-Schichten.</h2>
+						<p class="about-section__lead">Jedes Feld ist als eigene Seite mit Methode, Beispielen und Bezug zum E3-Case aufgeschrieben — gruppiert entlang der Architektur, in der sie wirken.</p>
 					</div>
 				</header>
 
-				<ul class="about-expertise-list" data-reveal>
-					<?php foreach ( $about_expertise as $field ) : ?>
-						<li class="about-expertise-item">
-							<a class="about-expertise-link"
-							   href="<?php echo esc_url( $field['url'] ); ?>"
-							   data-track-action="cta_about_expertise_link"
-							   data-track-category="navigation"
-							   data-track-section="about_expertise">
-								<span class="about-expertise-link__t"><?php echo esc_html( $field['t'] ); ?></span>
-								<span class="about-expertise-link__s"><?php echo esc_html( $field['s'] ); ?></span>
-							</a>
-						</li>
+				<div class="about-expertise-cluster" data-reveal>
+					<?php foreach ( $about_expertise_structured as $expertise_category => $expertise_items ) : ?>
+						<div class="about-expertise-column">
+							<h3 class="about-expertise-column__title"><?php echo esc_html( $expertise_category ); ?></h3>
+							<ul class="about-expertise-list" role="list">
+								<?php foreach ( $expertise_items as $field ) : ?>
+									<li class="about-expertise-item">
+										<a class="about-expertise-link"
+										   href="<?php echo esc_url( $field['url'] ); ?>"
+										   data-track-action="cta_about_expertise_link"
+										   data-track-category="navigation"
+										   data-track-section="about_expertise">
+											<span class="about-expertise-link__t"><?php echo esc_html( $field['t'] ); ?></span>
+											<span class="about-expertise-link__s"><?php echo esc_html( $field['s'] ); ?></span>
+										</a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
 					<?php endforeach; ?>
-				</ul>
+				</div>
 			</div>
 		</section>
 
@@ -458,7 +471,7 @@ get_header();
 			<div class="about-container about-container--centered">
 				<h2 class="about-h2">Der nächste Schritt.</h2>
 				<p class="about-final__lead">
-					Wenn Sie wissen, dass Sie bohren wollen, gehen Sie direkt ins qualifizierte Formular. Sechs Fragen, etwa 90 Sekunden. Antwort innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.
+					Wenn Sie wissen, dass Sie bohren wollen, gehen Sie direkt ins qualifizierte Formular. Exklusive Erst-Analyse, Prüfung auf Regions-Verfügbarkeit, Antwort innerhalb von 24 Stunden per E-Mail. Kein Verkaufsgespräch.
 				</p>
 				<div class="about-cta-wrap about-cta-wrap--centered">
 					<a href="<?php echo esc_url( $request_url ); ?>"
@@ -472,8 +485,8 @@ get_header();
 						</svg>
 					</a>
 					<p class="about-cta-meta about-cta-meta--centered">
-						<span>60 Sek.</span>
-						<span>6 Fragen</span>
+						<span>Exklusive Erst-Analyse</span>
+						<span>Prüfung auf Regions-Verfügbarkeit</span>
 						<span>Antwort in 24 h</span>
 					</p>
 				</div>
