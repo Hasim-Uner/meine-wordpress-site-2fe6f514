@@ -135,7 +135,6 @@ get_header();
 		<div class="blog-hub-section-head">
 			<span class="blog-hub-eyebrow">Startpunkte</span>
 			<h2 id="blog-hub-start-heading">Schnell zum passenden Kontext.</h2>
-			<p>Der Blog soll nicht ablenken. Er führt von Informationsbedarf zu Proof, Vergleich und dem nächsten sinnvollen Schritt.</p>
 		</div>
 		<div class="blog-hub-start__grid">
 			<?php foreach ( $hub_links as $index => $link ) : ?>
@@ -199,8 +198,7 @@ get_header();
 			<div class="blog-archive-grid">
 
 				<?php
-				$post_index   = 0;
-				$notify_shown = false;
+				$post_index = 0;
 
 				if ( have_posts() ) :
 					while ( have_posts() ) :
@@ -211,33 +209,25 @@ get_header();
 						$cat_slugs   = wp_list_pluck( $cats, 'slug' );
 						$cat_names   = wp_list_pluck( $cats, 'name' );
 						$thumb_url   = get_the_post_thumbnail_url( get_the_ID(), 'medium_large' );
+						$has_thumb   = ! empty( $thumb_url );
 						$is_featured = ( 1 === $post_index );
 						$search_text = wp_strip_all_tags( get_the_title() . ' ' . get_the_excerpt() . ' ' . implode( ' ', $cat_names ) );
 						$search_text = function_exists( 'remove_accents' ) ? remove_accents( strtolower( $search_text ) ) : strtolower( $search_text );
-
-						if ( $post_index === 4 && ! $notify_shown ) :
-							$notify_shown = true;
-				?>
-					<div class="blog-archive-notify-slot">
-						<?php get_template_part( 'template-parts/blog-notify', null, [ 'variant' => 'compact' ] ); ?>
-					</div>
-				<?php
-						endif;
 				?>
 
 				<article
-					class="post-card<?php echo esc_attr( $is_featured ? ' post-card--featured' : '' ); ?>"
+					class="post-card<?php echo esc_attr( $is_featured ? ' post-card--featured' : '' ); ?><?php echo esc_attr( $has_thumb ? '' : ' post-card--no-thumb' ); ?>"
 					data-categories="<?php echo esc_attr( wp_json_encode( $cat_slugs ) ); ?>"
 					data-search="<?php echo esc_attr( $search_text ); ?>"
 				>
-					<a
-						href="<?php the_permalink(); ?>"
-						class="post-card__thumb-link"
-						tabindex="-1"
-						aria-hidden="true"
-					>
-						<div class="post-card__thumb<?php echo esc_attr( $thumb_url ? '' : ' post-card__thumb--generated' ); ?>">
-							<?php if ( $thumb_url ) : ?>
+					<?php if ( $has_thumb ) : ?>
+						<a
+							href="<?php the_permalink(); ?>"
+							class="post-card__thumb-link"
+							tabindex="-1"
+							aria-hidden="true"
+						>
+							<div class="post-card__thumb">
 								<img
 									src="<?php echo esc_url( $thumb_url ); ?>"
 									alt="<?php the_title_attribute(); ?>"
@@ -246,20 +236,9 @@ get_header();
 									width="600"
 									height="338"
 								>
-							<?php else : ?>
-								<?php
-								get_template_part(
-									'template-parts/post-title-visual',
-									null,
-									[
-										'post_id' => get_the_ID(),
-										'variant' => $is_featured ? 'wide' : 'card',
-									]
-								);
-								?>
-							<?php endif; ?>
-						</div>
-					</a>
+							</div>
+						</a>
+					<?php endif; ?>
 
 					<div class="post-card__body">
 
@@ -307,13 +286,7 @@ get_header();
 				<?php
 					endwhile;
 				endif;
-
-				if ( ! $notify_shown ) :
 				?>
-					<div class="blog-archive-notify-slot">
-						<?php get_template_part( 'template-parts/blog-notify', null, [ 'variant' => 'compact' ] ); ?>
-					</div>
-				<?php endif; ?>
 
 				<div class="blog-archive-empty" data-blog-empty hidden>
 					<strong>Keine passende Analyse gefunden.</strong>
