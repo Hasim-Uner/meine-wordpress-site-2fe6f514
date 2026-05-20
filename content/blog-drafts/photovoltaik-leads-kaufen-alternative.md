@@ -1,10 +1,10 @@
 ## WordPress Publish-Pack
 
-- Titel: Photovoltaik-Leads kaufen? Warum eigene Anfragen günstiger sind
+- Titel: Photovoltaik-Leads: Kaufen oder besitzen? Die ehrliche TCO-Rechnung für Fachbetriebe
 - Slug: `photovoltaik-leads-kaufen-alternative`
 - Kategorie: Leadgenerierung
 - Tags: Photovoltaik Leads, Solar Leads, Lead-Portale, Cost per Order, Server-Side Tracking, Anfrage-System
-- SEO-Titel (max. 60): Photovoltaik Leads kaufen? Eigene Anfragen statt Miete
+- SEO-Titel (max. 60): Photovoltaik-Leads: Kaufen oder besitzen?
 - Meta-Description (max. 155): PV-Leads kaufen wirkt billig. Entscheidend ist CPO: Abschlussquote, Tracking, Page Speed, Datenbesitz und eigene Anfrage-Infrastruktur.
 - Excerpt: Warum Photovoltaik-Betriebe nicht CPL, sondern Cost per Order rechnen müssen. Eine harte Einordnung zu Portal-Leads, gemieteten Agentur-Funnels, Tracking, Page Speed und eigener Nachfrage-Infrastruktur.
 - Hero-Bild: `content/blog-drafts/assets/photovoltaik-leads-kaufen-alternative-hero.png`
@@ -15,7 +15,7 @@
 
 > Hinweis: Dieser Beitrag ist eine wirtschaftliche und technische Markteinordnung für Photovoltaik-Betriebe mit eigenem Vertrieb oder geschäftsführergeführtem Abschlussprozess. Er ist keine Rechts-, Steuer- oder Anlageberatung. Bilanzielle und steuerliche Fragen zu Entwicklungskosten, Aktivierung und Betriebsausgaben gehören zum Steuerberater.
 
-# Photovoltaik-Leads kaufen? Warum eigene Anfragen günstiger sind
+# Photovoltaik-Leads: Kaufen oder besitzen? Die ehrliche TCO-Rechnung für Fachbetriebe
 
 ## Kurzfassung für Geschäftsführer
 
@@ -113,6 +113,10 @@ Der zweite Lead kostet pro Stück mehr als doppelt so viel. Trotzdem ist der Auf
 
 Und das ist noch konservativ gerechnet. Bei geteilten Portal-Leads rutscht die Abschlussquote in vielen Vertrieben nicht wegen schlechter Technik, sondern wegen Reaktanz: Der Kunde wurde bereits auf Vergleich, Rückruf, Angebot und Preis gedrillt. Er erwartet mehrere Anbieter. Er will "erstmal schauen". Der Solarteur tritt nicht als präferierter Fachbetrieb auf, sondern als einer von mehreren Rückrufern.
 
+Das Portal konditioniert den Hausbesitzer auf Preisvergleich. Nicht auf Vertrauen. Nicht auf technische Qualität. Nicht auf die Frage, welcher Betrieb die Anlage sauber plant und nach Inbetriebnahme erreichbar bleibt.
+
+Wenn Ihr Vertrieb 15 Minuten nach der Anfrage anruft, sind Sie nicht automatisch der Retter. Sie sind schnell der vierte nervige Anbieter am Telefon. Wieder dieselbe Frage. Wieder dieselbe Dachfläche. Wieder derselbe Speicher-Vergleich. Wieder die unausgesprochene Erwartung: Wer macht es billiger?
+
 Das drückt Abschlussquoten. Häufig nicht dramatisch auf den ersten Blick, aber massiv in der Ergebnisrechnung.
 
 ```text
@@ -135,13 +139,13 @@ Wenn ein Betrieb nur CPL berichtet, fehlt mindestens eine von drei Wahrheiten:
 
 Alle drei Fälle sind teuer.
 
-> **Inline-CTA: Verlustrechnung prüfen lassen**
+> **Stopp. Bevor Sie weiterlesen:**
 >
-> Portal-Leads, Agentur-Funnel und eigene Anfragen sehen in der CPL-Spalte oft vergleichbar aus. In der CPO-Rechnung nicht.
+> Der regionale Marktcheck prüft exklusiv, ob Zielgebiet, Projektvolumen und Vertriebsreife die Amortisation eines eigenen Anfrage-Systems in unter 90 Tagen plausibel machen.
 >
-> **Prüffrage:** Welche Leadquelle erzeugt wirklich Aufträge, welche nur Aktivität?
+> Keine Verkaufspräsentation. Keine Leadmagnet-Show. Daten-Validierung: TCO, CPO, Abschlussquote und Kanalabhängigkeit.
 >
-> Ziel: TCO, Abschlussquote, Vertriebszeit und Abhängigkeit je Kanal sauber nebeneinanderlegen. Einstieg über den [regionalen Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck).
+> [Regionalen Marktcheck starten](/solar-waermepumpen-leadgenerierung/#marktcheck)
 
 ## 3. Das Problem ist nicht das Portal. Das Problem ist fehlender Besitz.
 
@@ -167,14 +171,13 @@ Aber ein Portal sollte nicht die Nachfrage-Architektur des Betriebs ersetzen.
 
 Wenn ein Solarteur 12 Monate lang Portal-Leads kauft, hat er nach 12 Monaten Rechnungen, Gespräche, Angebote und einzelne Abschlüsse. Aber was bleibt als dauerhaftes Betriebsvermögen im Nachfrageprozess?
 
-Meistens zu wenig:
+Sie bauen keine eigene organische Sichtbarkeit auf kaufnahen Suchbegriffen auf.
 
-- keine eigene organische Sichtbarkeit auf kaufnahen Suchbegriffen
-- keine eigene Money Page mit getesteter Conversion-Logik
-- keine belastbare First-Party-Datenbasis
-- keine kanalgenaue CRM-Rückmeldung
-- keine eigene Historie aus Anfragen, Angeboten und Abschlüssen
-- keine technische Strecke, die bei Anbieterwechsel weiterläuft
+Ihre Website bleibt dumm. Sie lernt nicht, welche Suchintention verkauft. Sie lernt nicht, welche Argumente qualifizierte Anfragen erzeugen. Sie bleibt eine Broschüre, während das Portal die Nachfrage-Daten sammelt.
+
+Ihr CRM wird zum Datenfriedhof. Es enthält Kontakte, aber keine saubere Lernschleife zurück in Kampagnen, Tracking und Vorqualifizierung.
+
+Ihre Historie bleibt fragmentiert. Ein Teil liegt beim Portal. Ein Teil liegt in E-Mails. Ein Teil liegt im Kopf des Vertriebs. Bei Anbieterwechsel läuft nichts weiter, weil keine eigene Strecke existiert.
 
 Das ist die harte strategische Differenz.
 
@@ -261,13 +264,13 @@ Page Speed wirkt an drei Stellen gleichzeitig:
 
 Langsame Seiten beschädigen also nicht nur Conversion. Sie beschädigen die Lernfähigkeit des gesamten Systems.
 
-> **Inline-CTA: TCO der aktuellen Strecke prüfen**
+> **Marktcheck-Filter:**
 >
-> Ein Funnel kann billig wirken, solange nur Monatsrate und Leadpreis betrachtet werden. Teuer wird er durch langsame Seiten, schwache Abschlussquoten, verlorene Historie und fehlende Datenhoheit.
+> Wenn Ihre aktuelle Strecke aus Plattformmiete, Page-Speed-Verlusten und fremder Datenbasis besteht, ist der Monatsbeitrag nicht die Wahrheit.
 >
-> **Prüffrage:** Was kostet Ihre aktuelle Leadstrecke inklusive Plattformmiete, Werbebudget, Vertriebszeit, Streuverlust und nicht nutzbarer Daten?
+> Der Marktcheck prüft, ob Ihr Zielgebiet ein eigenes Anfrage-System trägt oder ob Portal-Zukauf als Übergang rationaler ist.
 >
-> Der [regionale Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) prüft, ob sich der Aufbau einer eigenen Anfrage-Strecke für Ihr Zielgebiet überhaupt lohnt.
+> [TCO und Zielgebiet prüfen](/solar-waermepumpen-leadgenerierung/#marktcheck)
 
 ## 6. Server-Side Tracking entscheidet, ob der Algorithmus Käufer findet oder Formularspieler
 

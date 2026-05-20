@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function hu_get_blog_pillar_posts_seed_version() {
-	return '2026-05-20-1';
+	return '2026-05-21-1';
 }
 
 /**
@@ -29,9 +29,9 @@ function hu_get_blog_pillar_posts_seed_version() {
 function hu_get_blog_pillar_posts_seed_data() {
 	return [
 		[
-			'title'             => 'Photovoltaik-Leads kaufen? Warum eigene Anfragen günstiger sind',
+			'title'             => 'Photovoltaik-Leads: Kaufen oder besitzen? Die ehrliche TCO-Rechnung für Fachbetriebe',
 			'slug'              => 'photovoltaik-leads-kaufen-alternative',
-			'seo_title'         => 'Photovoltaik Leads kaufen? Eigene Anfragen statt Miete',
+			'seo_title'         => 'Photovoltaik-Leads: Kaufen oder besitzen?',
 			'seo_description'   => 'PV-Leads kaufen wirkt billig. Entscheidend ist CPO: Abschlussquote, Tracking, Page Speed, Datenbesitz und eigene Anfrage-Infrastruktur.',
 			'excerpt'           => 'Warum Photovoltaik-Betriebe nicht CPL, sondern Cost per Order rechnen müssen. Eine harte Einordnung zu Portal-Leads, gemieteten Agentur-Funnels, Tracking, Page Speed und eigener Nachfrage-Infrastruktur.',
 			'categories'        => [
@@ -81,7 +81,17 @@ function hu_blog_pillar_markdown_to_html( $markdown ) {
 			return;
 		}
 
-		$html         .= '<blockquote>';
+		$first_line = '';
+
+		foreach ( $blockquote_lines as $quote_line ) {
+			if ( '' !== trim( $quote_line ) ) {
+				$first_line = trim( $quote_line );
+				break;
+			}
+		}
+
+		$is_cta = hu_blog_pillar_starts_with( $first_line, '**Stopp.' ) || hu_blog_pillar_starts_with( $first_line, '**Marktcheck-Filter:' );
+		$html  .= $is_cta ? '<aside class="hu-pillar-cta" data-track-section="blog_pillar_inline_cta">' : '<blockquote>';
 		$quote_section = [];
 
 		foreach ( $blockquote_lines as $quote_line ) {
@@ -100,7 +110,7 @@ function hu_blog_pillar_markdown_to_html( $markdown ) {
 			$html .= '<p>' . hu_blog_pillar_format_inline_markdown( implode( ' ', $quote_section ) ) . '</p>';
 		}
 
-		$html             .= '</blockquote>' . "\n";
+		$html             .= $is_cta ? '</aside>' . "\n" : '</blockquote>' . "\n";
 		$blockquote_lines = [];
 	};
 
@@ -243,7 +253,7 @@ function hu_blog_pillar_format_inline_markdown( $text ) {
 		static function( $matches ) use ( &$links ) {
 			$href = trim( (string) $matches[2] );
 
-			if ( ! preg_match( '#^(https?://|/|#)#', $href ) ) {
+			if ( ! preg_match( '~^(https?://|/|#)~', $href ) ) {
 				return (string) $matches[0];
 			}
 
@@ -277,9 +287,10 @@ function hu_blog_pillar_format_inline_markdown( $text ) {
  */
 function hu_blog_pillar_extract_article_markdown( $markdown ) {
 	$markdown = str_replace( [ "\r\n", "\r" ], "\n", (string) $markdown );
-	$start    = strpos( $markdown, '# Photovoltaik-Leads kaufen? Warum eigene Anfragen günstiger sind' );
 
-	if ( false !== $start ) {
+	if ( preg_match( '/^#\s+.+$/m', $markdown, $match, PREG_OFFSET_CAPTURE ) ) {
+		$start = (int) $match[0][1];
+
 		$markdown = substr( $markdown, $start );
 	}
 
