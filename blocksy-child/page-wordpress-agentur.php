@@ -605,8 +605,8 @@ get_header();
 			</div>
 			<div class="wp-agentur-pain-card">
 				<div class="wp-agentur-pain-card__icon" aria-hidden="true">×</div>
-				<h3>E-Commerce (Shopify / WooCommerce)</h3>
-				<p>Keine Projekte mit reinem Shop-Fokus ohne Lead-Logik.</p>
+				<h3>Reine Shop-Projekte</h3>
+				<p>Keine Projekte mit reinem Warenkorb-Fokus ohne Lead-Logik, Angebotsstruktur oder B2B-Anfragepfad.</p>
 			</div>
 			<div class="wp-agentur-pain-card">
 				<div class="wp-agentur-pain-card__icon" aria-hidden="true">×</div>

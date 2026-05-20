@@ -90,18 +90,18 @@ function hu_get_forced_singular_seo_map() {
 				'description' => 'Projekt starten oder Frage stellen: Formular ausfuellen, Rueckmeldung in 48 h. Kein Pflicht-Call, kein Sales-Druck – nur eine fundierte Ersteinschaetzung.',
 			],
 			'uber-mich' => [
-				'title'       => 'Über Haşim Üner | Anfrage-Systeme Solar & Wärmepumpe',
-				'description' => 'Ich baue Solar- und Wärmepumpen-Anbietern eigene Anfrage-Systeme. Weg von gemieteten Portal-Leads, hin zu Infrastruktur im eigenen Eigentum.',
+				'title'       => 'Über Haşim Üner | Solar-Anfrage-Systeme',
+				'description' => 'Haşim Üner baut eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter: weg von gemieteten Portal-Leads, hin zu eigener Infrastruktur.',
 			],
 			// 'wgos' / 'wordpress-growth-operating-system' sowie Tools-/Audit-Legacy-Routen:
 			// Seiten sind noindex oder 301, daher keine öffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
-				'title'       => 'WordPress Agentur Hannover für B2B-Anfragen | Haşim Üner',
-				'description' => 'WordPress Agentur Hannover: technische SEO, Tracking und Conversion-Führung für B2B-Websites. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
+				'title'       => 'WordPress Agentur Hannover | B2B SEO, Tracking & CRO',
+				'description' => 'WordPress Agentur Hannover für B2B-Websites: technisches SEO, Tracking, Core Web Vitals und CRO. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
 			],
 			'wordpress-agentur' => [
-				'title'       => 'WordPress Agentur Hannover für B2B-Anfragen | Haşim Üner',
-				'description' => 'WordPress Agentur Hannover: technische SEO, Tracking und Conversion-Führung für B2B-Websites. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
+				'title'       => 'WordPress Agentur Hannover | B2B SEO, Tracking & CRO',
+				'description' => 'WordPress Agentur Hannover für B2B-Websites: technisches SEO, Tracking, Core Web Vitals und CRO. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',

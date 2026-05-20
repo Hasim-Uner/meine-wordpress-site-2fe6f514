@@ -89,7 +89,7 @@ function hu_output_schema()
         'hasMap' => $google_maps_url,
         'knowsAbout' => [
             'WordPress',
-            'Technische SEO',
+            'Technisches SEO',
             'Core Web Vitals',
             'Conversion Rate Optimization',
             'GA4 Tracking',
