@@ -198,6 +198,79 @@ function hu_render_performance_cockpit() {
 }
 add_shortcode( 'hu_performance_cockpit', 'hu_render_performance_cockpit' );
 
+function nexus_render_client_portal_profile_fields( $user ) {
+    if ( ! ( $user instanceof WP_User ) || ! current_user_can( 'edit_user', $user->ID ) ) {
+        return;
+    }
+
+    $portal_meta = get_user_meta( (int) $user->ID, 'nexus_client_portal', true );
+    $portal_json = is_array( $portal_meta )
+        ? wp_json_encode( $portal_meta, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES )
+        : '';
+    ?>
+    <h2>Client Portal</h2>
+    <table class="form-table" role="presentation">
+        <tr>
+            <th><label for="nexus-client-portal-json">Portal-Daten</label></th>
+            <td>
+                <textarea
+                    id="nexus-client-portal-json"
+                    name="nexus_client_portal_json"
+                    rows="14"
+                    class="large-text code"
+                    placeholder='{"retainer":{"label":"Projekt","total":40,"used":12,"focus":"Tracking"},"kpis":[{"label":"Leads","value":"12","trend":"+3"}],"roadmap":[{"status":"active","task":"Tracking prüfen","impact":"Datenbasis"}]}'
+                ><?php echo esc_textarea( (string) $portal_json ); ?></textarea>
+                <p class="description">
+                    Optionales JSON für Ressourcen, KPI-Karten und Roadmap im Client Portal. Leer lassen, wenn das Portal nur Login, Uploads und Empty-States zeigen soll.
+                </p>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+add_action( 'show_user_profile', 'nexus_render_client_portal_profile_fields' );
+add_action( 'edit_user_profile', 'nexus_render_client_portal_profile_fields' );
+
+function nexus_validate_client_portal_profile_fields( $errors, $update, $user ) {
+    if ( ! isset( $_POST['nexus_client_portal_json'] ) || ! ( $user instanceof WP_User ) || ! current_user_can( 'edit_user', $user->ID ) ) {
+        return;
+    }
+
+    $raw = trim( (string) wp_unslash( $_POST['nexus_client_portal_json'] ) );
+
+    if ( '' === $raw ) {
+        return;
+    }
+
+    $decoded = json_decode( $raw, true );
+
+    if ( JSON_ERROR_NONE !== json_last_error() || ! is_array( $decoded ) ) {
+        $errors->add( 'nexus_client_portal_json_invalid', 'Client-Portal-Daten müssen gültiges JSON-Objekt oder leer sein.' );
+    }
+}
+add_action( 'user_profile_update_errors', 'nexus_validate_client_portal_profile_fields', 10, 3 );
+
+function nexus_save_client_portal_profile_fields( $user_id ) {
+    if ( ! current_user_can( 'edit_user', $user_id ) || ! isset( $_POST['nexus_client_portal_json'] ) ) {
+        return;
+    }
+
+    $raw = trim( (string) wp_unslash( $_POST['nexus_client_portal_json'] ) );
+
+    if ( '' === $raw ) {
+        delete_user_meta( $user_id, 'nexus_client_portal' );
+        return;
+    }
+
+    $decoded = json_decode( $raw, true );
+
+    if ( JSON_ERROR_NONE === json_last_error() && is_array( $decoded ) ) {
+        update_user_meta( $user_id, 'nexus_client_portal', $decoded );
+    }
+}
+add_action( 'personal_options_update', 'nexus_save_client_portal_profile_fields' );
+add_action( 'edit_user_profile_update', 'nexus_save_client_portal_profile_fields' );
+
 function hu_render_custom_login_form() {
     $form = wp_login_form(
         [

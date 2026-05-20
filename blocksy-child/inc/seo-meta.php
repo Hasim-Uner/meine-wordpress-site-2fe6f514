@@ -123,10 +123,6 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => hu_get_e3_methodology_case_title(),
 				'description' => hu_get_e3_methodology_case_description(),
 			],
-			'audit-linkedin' => [
-				'title'       => 'Kostenloses Website Audit für mehr Anfragen | Haşim Üner',
-				'description' => 'Ich analysiere, wo Klarheit, Vertrauen, Struktur und Conversion-Logik auf deiner Website bremsen – mit fundierter Ersteinschätzung ohne Pflicht-Call.',
-			],
 			// 'wordpress-wartung-hannover' + 'wordpress-seo-hannover' + 'ki-integration-wordpress' entfernt:
 			// /wordpress-seo-hannover/ und /wordpress-wartung-hannover/ sind 301 auf die Agentur-Page (Anker-Sektionen);
 			// /ki-integration-wordpress/ ist noindex. Keine eigenständigen SEO-Signale mehr nötig.
@@ -626,10 +622,6 @@ function hu_pre_get_document_title_override( $title ) {
 		return hu_get_contact_offer_title();
 	}
 
-	if ( function_exists( 'nexus_is_audit_linkedin_page' ) && nexus_is_audit_linkedin_page() ) {
-		return 'Kostenloses Website Audit für mehr Anfragen | Haşim Üner';
-	}
-
 	if ( hu_is_domdar_case_study_page() ) {
 		$post_id   = get_queried_object_id();
 		$seo_title = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
@@ -942,13 +934,6 @@ function hu_get_seo_meta() {
 		$meta['og_title']    = hu_get_contact_offer_title();
 		$meta['description'] = hu_get_contact_offer_description();
 		$meta['canonical']   = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
-
-	} elseif ( function_exists( 'nexus_is_audit_linkedin_page' ) && nexus_is_audit_linkedin_page() ) {
-		$meta['og_title']    = 'Kostenloses Website Audit für mehr Anfragen | Haşim Üner';
-		$meta['description'] = 'Ich analysiere, wo Klarheit, Vertrauen, Struktur und Conversion-Logik auf deiner Website bremsen – mit fundierter Ersteinschätzung ohne Pflicht-Call.';
-		$meta['canonical']   = function_exists( 'nexus_get_audit_linkedin_url' ) ? nexus_get_audit_linkedin_url() : home_url( '/audit-linkedin/' );
-		$meta['og_image']    = function_exists( 'nexus_get_audit_linkedin_featured_image_url' ) ? nexus_get_audit_linkedin_featured_image_url() : content_url( '/uploads/2026/03/audit-linkedin-featured-1200x675-1.png' );
-		$meta['robots']      = 'noindex, follow';
 
 	} elseif ( function_exists( 'hu_is_request_analysis_request_path' ) && hu_is_request_analysis_request_path() ) {
 		$meta['og_title']    = 'Marktcheck | Haşim Üner';

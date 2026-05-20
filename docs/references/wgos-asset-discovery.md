@@ -252,7 +252,7 @@ Repo-Status:
 
 | URL | Grund |
 | --- | --- |
-| `/wordpress-wartung-hannover/` | aktive versionierte Clusterseite, kein Legacy-Redirect mehr |
+| `/wordpress-wartung-hannover/` | konsolidierter Legacy-Slug; 301 auf `/wordpress-agentur-hannover/#wordpress-wartung` |
 | `/ga4-tracking-setup/` | aktive versionierte Clusterseite, kein Legacy-Redirect mehr |
 | `/performance-marketing/` | aktive versionierte Clusterseite, kein Legacy-Redirect mehr |
 | `/kostenlose-tools/` | Im Repo existiert weiter ein Tools-Hub, daher kein Zwangsredirect gesetzt |

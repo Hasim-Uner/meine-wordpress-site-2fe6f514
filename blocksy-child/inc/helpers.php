@@ -501,7 +501,7 @@ function nexus_get_primary_public_url_map() {
 		'home'                 => home_url( '/' ),
 		'blog'                 => function_exists( 'nexus_get_blog_posts_url' ) ? nexus_get_blog_posts_url() : home_url( '/blog/' ),
 		'audit'                => $request_url,
-		'audit_linkedin'       => function_exists( 'nexus_get_audit_linkedin_url' ) ? nexus_get_audit_linkedin_url() : home_url( '/audit-linkedin/' ),
+		'audit_linkedin'       => $request_url,
 		'results'              => function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/ergebnisse/' ),
 		'wgos'                 => $wgos_url,
 		'wgos_assets'          => $asset_url,
@@ -1220,6 +1220,7 @@ function nexus_get_legacy_offer_redirect_map() {
 		// Audit- und Tool-Routen sind in der neuen Positionierung retired.
 		'/growth-audit/'               => $request_url,
 		'/audit/'                      => $request_url,
+		'/audit-linkedin/'             => $request_url,
 		'/customer-journey-audit/'     => $request_url,
 		'/360-audit/'                  => $request_url,
 		'/wordpress-tech-audit/'       => $request_url,
@@ -1258,6 +1259,7 @@ function nexus_get_retired_money_page_slugs() {
 		'conversion-rate-optimization',
 		'wordpress-tech-audit',
 		'wordpress-wartung-hannover',
+		'audit-linkedin',
 	];
 }
 

@@ -484,6 +484,7 @@ function nexus_get_seo_cockpit_koko_snapshot_data( $ranges ) {
 		'top_pages'  => [],
 		'page_map'   => [],
 		'error'      => '',
+		'note'       => '',
 	];
 
 	if ( empty( $status['rest_available'] ) ) {
@@ -508,6 +509,15 @@ function nexus_get_seo_cockpit_koko_snapshot_data( $ranges ) {
 	$bundle['top_pages'] = $posts;
 	$bundle['page_map'] = $page_map;
 	$bundle['error'] = isset( $current['error'] ) ? (string) $current['error'] : '';
+
+	if (
+		'' === $bundle['error']
+		&& empty( $posts )
+		&& (float) ( $current['visitors'] ?? 0 ) <= 0
+		&& (float) ( $current['pageviews'] ?? 0 ) <= 0
+	) {
+		$bundle['note'] = 'Koko ist verbunden. Für den gewählten Zeitraum liefert Koko jedoch 0 Besucher und 0 Pageviews zurück.';
+	}
 
 	return $bundle;
 }
@@ -593,7 +603,7 @@ function nexus_get_seo_cockpit_koko_detail_data( $url, $context, $ranges ) {
 	}
 
 	if ( ! $detail['matched'] ) {
-		$detail['note'] = 'Für diese URL wurde im gewählten Zeitraum kein eindeutiger Koko-Eintrag gefunden.';
+		$detail['note'] = 'Koko ist verbunden, aber für diese URL wurde im gewählten Zeitraum kein eindeutiger Seiten-Eintrag gefunden. Das ist kein Search-Console-Fehler.';
 	}
 
 	return $detail;

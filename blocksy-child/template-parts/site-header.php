@@ -29,10 +29,6 @@ if ( empty( $audit_header_meta_items ) ) {
 }
 ?>
 
-<?php if ( function_exists( 'nexus_is_audit_linkedin_page' ) && nexus_is_audit_linkedin_page() ) : ?>
-<?php /* Header suppressed — logo rendered inline in audit-linkedin-shell.php */ ?>
-<?php return; endif; ?>
-
 <?php if ( function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page() ) : ?>
 <header class="nx-site-header nx-site-header--audit is-visible" data-site-header role="banner">
 	<div class="nx-container">
