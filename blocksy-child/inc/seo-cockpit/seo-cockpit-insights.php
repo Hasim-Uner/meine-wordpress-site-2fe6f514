@@ -70,6 +70,62 @@ function nexus_get_seo_cockpit_redirect_target_for_url( $url ) {
 }
 
 /**
+ * Return the canonical analysis URL used for scoring and query grouping.
+ *
+ * Search Console keeps historical rows for redirected URLs for a while after a
+ * route consolidation. For prioritization those rows should strengthen the
+ * canonical target, not create false cannibalization tasks.
+ *
+ * @param string $url Frontend URL.
+ * @return string
+ */
+function nexus_get_seo_cockpit_effective_insight_url( $url ) {
+	$url     = nexus_normalize_seo_cockpit_url( $url );
+	$context = nexus_get_seo_cockpit_wp_context_for_url( $url );
+
+	if ( 'legacy_redirect' === (string) ( $context['page_type'] ?? '' ) && ! empty( $context['canonical'] ) ) {
+		return nexus_normalize_seo_cockpit_url( (string) $context['canonical'] );
+	}
+
+	return $url;
+}
+
+/**
+ * Decide whether a query belongs outside the current acquisition strategy.
+ *
+ * These queries may still be interesting in Search Console, but they should not
+ * compete with Solar/SHK, B2B Anfrage-System and Hannover WordPress priorities.
+ *
+ * @param string $query Search query.
+ * @return bool
+ */
+function nexus_is_seo_cockpit_non_target_query( $query ) {
+	$normalized = nexus_normalize_seo_cockpit_query( $query );
+
+	if ( '' === $normalized ) {
+		return true;
+	}
+
+	$non_target_needles = [
+		'woocommerce',
+		'shopify',
+		'ecommerce',
+		'e commerce',
+		'onlineshop',
+		'online shop',
+		'webshop',
+	];
+
+	foreach ( $non_target_needles as $needle ) {
+		if ( false !== strpos( $normalized, $needle ) ) {
+			return (bool) apply_filters( 'nexus_seo_cockpit_non_target_query', true, $query, $normalized );
+		}
+	}
+
+	return (bool) apply_filters( 'nexus_seo_cockpit_non_target_query', false, $query, $normalized );
+}
+
+/**
  * Return a default internal-link payload.
  *
  * @param string $status Status key.
@@ -945,13 +1001,18 @@ function nexus_get_seo_cockpit_insights( $snapshot ) {
 	$seen         = [];
 
 	foreach ( (array) ( $snapshot['query_page_rows'] ?? [] ) as $row ) {
-		$url         = nexus_normalize_seo_cockpit_url( nexus_get_seo_cockpit_row_key( $row, 0 ) );
+		$raw_url     = nexus_normalize_seo_cockpit_url( nexus_get_seo_cockpit_row_key( $row, 0 ) );
+		$url         = nexus_get_seo_cockpit_effective_insight_url( $raw_url );
 		$query       = nexus_get_seo_cockpit_row_key( $row, 1 );
 		$impressions = (float) ( $row['impressions'] ?? 0 );
 		$ctr         = (float) ( $row['ctr'] ?? 0 );
 		$position    = (float) ( $row['position'] ?? 0 );
 
 		if ( '' === $url || '' === $query ) {
+			continue;
+		}
+
+		if ( nexus_is_seo_cockpit_non_target_query( $query ) ) {
 			continue;
 		}
 
@@ -1044,6 +1105,10 @@ function nexus_get_seo_cockpit_insights( $snapshot ) {
 		$outgoing_unique     = (int) ( $context_links['outgoing_unique_urls'] ?? 0 );
 		$indexing_flags      = [];
 		$is_virtual_context  = in_array( (string) ( $context['page_type'] ?? '' ), [ 'virtual_cluster', 'legacy_redirect' ], true );
+
+		if ( 'legacy' === $page_role ) {
+			continue;
+		}
 
 		if ( ( $previous_clicks >= 5 && $current_clicks < ( $previous_clicks * 0.7 ) ) || ( $previous_impressions >= 50 && $current_impressions < ( $previous_impressions * 0.7 ) ) ) {
 			$drop = $previous_clicks > 0 ? ( ( $current_clicks - $previous_clicks ) / $previous_clicks ) * 100 : 0;
@@ -1178,10 +1243,12 @@ function nexus_get_seo_cockpit_insights( $snapshot ) {
 	foreach ( (array) ( $snapshot['query_page_rows'] ?? [] ) as $row ) {
 		$query       = nexus_get_seo_cockpit_row_key( $row, 1 );
 		$normalized  = nexus_normalize_seo_cockpit_query( $query );
-		$url         = nexus_normalize_seo_cockpit_url( nexus_get_seo_cockpit_row_key( $row, 0 ) );
+		$raw_url     = nexus_normalize_seo_cockpit_url( nexus_get_seo_cockpit_row_key( $row, 0 ) );
+		$url         = nexus_get_seo_cockpit_effective_insight_url( $raw_url );
 		$impressions = (float) ( $row['impressions'] ?? 0 );
+		$position    = (float) ( $row['position'] ?? 0 );
 
-		if ( '' === $normalized || '' === $url || $impressions < 10 ) {
+		if ( '' === $normalized || '' === $url || $impressions < 10 || nexus_is_seo_cockpit_non_target_query( $query ) ) {
 			continue;
 		}
 
@@ -1194,11 +1261,19 @@ function nexus_get_seo_cockpit_insights( $snapshot ) {
 		}
 
 		$grouped_queries[ $normalized ]['total_impressions'] += $impressions;
-		$grouped_queries[ $normalized ]['urls'][ $url ] = [
-			'url'         => $url,
-			'impressions' => $impressions,
-			'position'    => (float) ( $row['position'] ?? 0 ),
-		];
+
+		if ( ! isset( $grouped_queries[ $normalized ]['urls'][ $url ] ) ) {
+			$grouped_queries[ $normalized ]['urls'][ $url ] = [
+				'url'          => $url,
+				'impressions'  => 0.0,
+				'position_sum' => 0.0,
+				'position'     => 0.0,
+			];
+		}
+
+		$grouped_queries[ $normalized ]['urls'][ $url ]['impressions'] += $impressions;
+		$grouped_queries[ $normalized ]['urls'][ $url ]['position_sum'] += $position * max( 1, $impressions );
+		$grouped_queries[ $normalized ]['urls'][ $url ]['position']      = $grouped_queries[ $normalized ]['urls'][ $url ]['position_sum'] / max( 1, $grouped_queries[ $normalized ]['urls'][ $url ]['impressions'] );
 	}
 
 	foreach ( $grouped_queries as $group ) {

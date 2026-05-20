@@ -185,6 +185,36 @@ function nexus_get_seo_cockpit_structured_internal_urls( $items ) {
 }
 
 /**
+ * Return the current Solar/SHK topic-cluster URLs.
+ *
+ * These links are rendered from hardcoded templates, not editor content, so the
+ * cockpit link graph needs the same canonical list to avoid false orphan flags.
+ *
+ * @return array<int, string>
+ */
+function nexus_get_seo_cockpit_solar_cluster_urls() {
+	if ( function_exists( 'hu_get_solar_seo_subpage_paths' ) ) {
+		return array_map(
+			static function ( $path ) {
+				return home_url( (string) $path );
+			},
+			(array) hu_get_solar_seo_subpage_paths()
+		);
+	}
+
+	return [
+		home_url( '/solar-leads-kaufen-alternative/' ),
+		home_url( '/server-side-tracking-b2b/' ),
+		home_url( '/b2b-solar-leads/' ),
+		home_url( '/eigene-leadgenerierung-vs-portale/' ),
+		home_url( '/lead-funnel-solar/' ),
+		home_url( '/kunden-gewinnen-solarteure/' ),
+		home_url( '/cost-per-lead-photovoltaik/' ),
+		home_url( '/qualifizierte-pv-anfragen/' ),
+	];
+}
+
+/**
  * Return template-driven internal links that are not visible in raw post_content.
  *
  * The cockpit graph already parses editor content. This helper adds links that are
@@ -208,6 +238,19 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 	$links        = [];
 	$contact_url  = $primary_urls['contact'] ?? home_url( '/kontakt/' );
+	$solar_cluster_urls = nexus_get_seo_cockpit_solar_cluster_urls();
+
+	if ( absint( get_option( 'page_on_front' ) ) === $post_id || 'front-page.php' === $template ) {
+		$links = array_merge(
+			$links,
+			[
+				$primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
+				$primary_urls['e3'] ?? home_url( '/e3-new-energy/' ),
+				$primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
+			],
+			$solar_cluster_urls
+		);
+	}
 
 	if ( function_exists( 'nexus_get_wgos_cluster_page' ) ) {
 		$cluster_page = nexus_get_wgos_cluster_page( $post );
@@ -263,6 +306,36 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 				$primary_urls['wartung'] ?? home_url( '/wordpress-agentur-hannover/#wordpress-wartung' ),
 				$primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#methode' ),
 				function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( 'tracking-audit' ) : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' ),
+			],
+			$solar_cluster_urls
+		);
+	}
+
+	if ( 'page-solar-waermepumpen-leadgenerierung.php' === $template || 'solar-waermepumpen-leadgenerierung' === $post_slug ) {
+		$links = array_merge(
+			$links,
+			[
+				$primary_urls['e3'] ?? home_url( '/e3-new-energy/' ),
+				$primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
+				$primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' ),
+				$primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' ),
+				$primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#methode' ),
+				$primary_urls['performance_marketing'] ?? home_url( '/performance-marketing/' ),
+			],
+			$solar_cluster_urls
+		);
+	}
+
+	if ( in_array( $template, [ 'page-e3-new-energy.php', 'page-case-e3.php' ], true ) || in_array( $post_slug, [ 'e3-new-energy', 'case-e3' ], true ) ) {
+		$links = array_merge(
+			$links,
+			[
+				$primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
+				$primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
+				home_url( '/cost-per-lead-photovoltaik/' ),
+				home_url( '/server-side-tracking-b2b/' ),
+				home_url( '/lead-funnel-solar/' ),
+				home_url( '/eigene-leadgenerierung-vs-portale/' ),
 			]
 		);
 	}
@@ -636,7 +709,7 @@ function nexus_get_seo_cockpit_sitewide_outgoing_context( $url, $context = [] ) 
  * @return array<string, mixed>
  */
 function nexus_get_seo_cockpit_internal_link_graph() {
-	$cache_key = nexus_get_seo_cockpit_cache_key( 'link_graph', [ home_url( '/' ), 'sitewide_v3' ] );
+	$cache_key = nexus_get_seo_cockpit_cache_key( 'link_graph', [ home_url( '/' ), 'sitewide_v4' ] );
 	$cached    = get_transient( $cache_key );
 
 	if ( is_array( $cached ) ) {

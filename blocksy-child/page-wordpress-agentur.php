@@ -46,6 +46,11 @@ $agentur_solar_deeper = [
 		's'   => 'Drei Szenarien im CPL-Vergleich und versteckte Kostentreiber bei Portal-Leads.',
 		'url' => home_url( '/cost-per-lead-photovoltaik/' ),
 	],
+	[
+		't'   => 'Kunden gewinnen für Solarteure',
+		's'   => 'Fünf systematische Hebel für Solar-, Wärmepumpen- und Speicher-Betriebe im DACH-Markt.',
+		'url' => home_url( '/kunden-gewinnen-solarteure/' ),
+	],
 ];
 
 // ═══ E3 Proof Canon ═══

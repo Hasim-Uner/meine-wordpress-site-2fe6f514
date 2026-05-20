@@ -1315,6 +1315,10 @@ function nexus_render_seo_cockpit_dashboard() {
 									$url     = nexus_normalize_seo_cockpit_url( nexus_get_seo_cockpit_row_label( $row ) );
 									$context = $snapshot['page_contexts'][ $url ] ?? nexus_get_seo_cockpit_wp_context_for_url( $url );
 									$lead_page = is_array( $lead_snapshot['page_map'][ $url ] ?? null ) ? $lead_snapshot['page_map'][ $url ] : [];
+									$wp_label = (string) ( $context['post_type'] ?? '' );
+									if ( '' === $wp_label && function_exists( 'nexus_get_seo_cockpit_page_role' ) ) {
+										$wp_label = nexus_get_seo_cockpit_page_role_label( nexus_get_seo_cockpit_page_role( $context, $url ) );
+									}
 									?>
 									<tr<?php echo $index >= $tp_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; ?>>
 										<td class="nexus-seo-cockpit__cell--url"><a href="<?php echo esc_url( nexus_get_seo_cockpit_detail_url( $url ) ); ?>" title="<?php echo esc_attr( $url ); ?>"><?php echo esc_html( nexus_get_seo_cockpit_short_url( $url ) ); ?></a></td>
@@ -1349,7 +1353,7 @@ function nexus_render_seo_cockpit_dashboard() {
 											);
 											?>
 										</td>
-										<td><?php echo esc_html( (string) ( $context['post_type'] ?? '—' ) ); ?></td>
+										<td><?php echo esc_html( '' !== $wp_label ? $wp_label : '—' ); ?></td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>
