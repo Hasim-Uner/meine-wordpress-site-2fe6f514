@@ -5,7 +5,7 @@
  *
  * Redesign nach Claude-Design-Bundle (uber-mich.html):
  * - Warm-cream Farbschema (#FAF7F2 / #F4EDDD / #2A261B)
- * - Brunnen-Visual als AHA-Element im Hero (scrollbasiert)
+ * - Infrastruktur-Blueprint als AHA-Element im Hero (scrollbasiert)
  * - Section-Number-Grid (Eyebrow links, H2 rechts)
  * - Inline Fit-Check-Card statt Negativ-Liste
  * - Zahlen als Proof-Ebene nach der Arbeitsweise statt Hero-Dominanz
@@ -31,41 +31,41 @@ $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
 $e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 2 % → 12 %';
 $e3_conv_uplift_lbl  = $e3_metrics['sales_conversion_uplift']['label'] ?? 'Anstieg der Abschlussquote durch eigenes System';
 
-// Hero-Pfad: synchron mit den Brunnen-Schichten (Schichten-Analyse → Filter → Eigene Quelle).
+// Hero-Pfad: synchron mit den Infrastruktur-Ebenen (Audit -> Signalführung -> Eigentum).
 $about_hero_path = [
 	[
-		't' => '1. Schichten-Analyse',
-		's' => 'Suchintention, Tracking und CRM-Anschluss als ein System verstehen.',
+		't' => '1. System-Auditing',
+		's' => 'Website, Tracking, Angebot und CRM-Anschluss werden gegen echte Vertriebssignale geprüft.',
 	],
 	[
-		't' => '2. Filter-Infrastruktur',
-		's' => 'Funnel und Vorqualifizierung, die Fit, Region und Projektwert früh sichtbar machen.',
+		't' => '2. Signal-Orchestrierung',
+		's' => 'Funnel, Server-Side Tracking und Vorqualifizierung trennen Kaufabsicht von bloßer Neugier.',
 	],
 	[
-		't' => '3. Eigene Quelle',
-		's' => 'Skalieren erst, wenn Code, Daten und Vertriebsanschluss bei Ihnen liegen.',
+		't' => '3. Asset-Ownership',
+		's' => 'Code, Daten und Anfrageprozess bleiben im Eigentum Ihres Betriebs statt in Portal-Miete.',
 	],
 ];
 
-// Arbeitsweise: konsistent mit den Brunnen-Labels (20 m / 40 m / 60 – 80 m).
+// Arbeitsweise: konsistent mit dem Infrastruktur-Stack im Hero-Blueprint.
 $about_work_principles = [
 	[
-		'eyebrow' => 'Schicht 1 / 20 Meter',
-		'title'   => 'Portal-Leads trockenlegen.',
-		'body'    => 'Wer Anfragen über Portale kauft, teilt sich denselben Kontakt mit drei Wettbewerbern und zahlt für Klicks ohne Fit. Ich schaue zuerst, wie viel Ihres Vertriebsaufwands in diesen geteilten Kontakten versickert — und wo eigene Nachfrage realistisch ist.',
-		'detail'  => 'Erst wenn klar ist, warum echte Anfragen heute nicht zuverlässig bei Ihnen ankommen, lohnt sich der nächste Schritt.',
+		'eyebrow' => 'Ebene 1 / Fundament-Check',
+		'title'   => 'Portal-Abhängigkeit beenden.',
+		'body'    => 'Wer dauerhaft Portal-Leads einkauft, mietet Nachfrage auf fremdem Grund und teilt Kaufinteressenten mit mehreren Wettbewerbern. Ich analysiere, wie viel Vertriebsbudget durch unqualifizierte Kontakte gebunden wird und wo ein eigenes Anfrage-System wirtschaftlich ansetzen muss.',
+		'detail'  => 'Erst wenn das digitale Fundament belastbar ist, macht zusätzlicher Traffic Sinn.',
 	],
 	[
-		'eyebrow' => 'Schicht 2 / 40 Meter',
-		'title'   => 'Tracking, das Abschlüsse zeigt — nicht Klicks.',
-		'body'    => 'Standard-Tracking misst Bewegung. Was Sie brauchen, ist ein Signal, das zwischen Formular-Klick und unterschriebenem Vertrag unterscheidet. Server-seitiges GA4, Meta CAPI und Consent Mode v2 — DSGVO-konform, cookieless-ready, mit den Daten auf Ihrer Infrastruktur.',
-		'detail'  => 'Nur wer sauber misst, kann Budget auf die rentablen Anfragen lenken — und unrentable Kanäle abschalten, bevor sie wehtun.',
+		'eyebrow' => 'Ebene 2 / Daten-Integrität',
+		'title'   => 'Messbarkeit, die Verträge zeigt, nicht Klicks.',
+		'body'    => 'Standard-Tracking misst Bewegung. Ein echtes Anfrage-System unterscheidet zwischen Formular-Abbruch, qualifizierter Anfrage und unterschriebenem Werksvertrag. Serverseitiges GA4, Meta CAPI und Consent Mode v2 schaffen eine attributionsfähige Datenebene auf Ihrer eigenen Infrastruktur.',
+		'detail'  => 'Belastbare First-Party-Daten machen Marketingbudgets steuerbar.',
 	],
 	[
-		'eyebrow' => 'Schicht 3 / 60 – 80 Meter',
-		'title'   => 'Eigene Quelle. Ihr Eigentum.',
-		'body'    => 'Wenn Karte und Messung stimmen, wird gebaut: sauberes WordPress, Vorqualifizierungs-Funnel, CRM-Anschluss und Inhalte, die Gespräche vorbereiten statt nur Klicks zu sammeln. Code, Daten und Tracking bleiben zu 100 % im Firmenbesitz.',
-		'detail'  => 'Eine Anfrage-Infrastruktur, die liefert — anstatt eines weiteren Kanals, der monatlich neu gefüttert werden muss.',
+		'eyebrow' => 'Ebene 3 / System-Architektur',
+		'title'   => 'Ein autarkes Anfrage-System.',
+		'body'    => 'Nach der Diagnose folgt die technische Umsetzung: ein geschlossenes WordPress-System, intelligente Vorqualifizierungs-Funnel und direkte CRM-Schnittstellen. Keine Standard-Templates, kein Plugin-Bloat. Code, Datenkontrolle und Eigentum liegen vollständig in Ihrer Hand.',
+		'detail'  => 'Ein digitaler Vermögenswert, der planbar exklusive Anfragen vorbereitet.',
 	],
 ];
 
@@ -101,12 +101,12 @@ $about_fit_points = [
 	],
 ];
 
-// Brunnen-Labels: 4 Schichten von oberflächlich zu tief
+// Blueprint-Labels: 4 Stationen vom Mietsignal zum eigenen Anfrage-System.
 $about_well_labels = [
-	[ 'depth' => 20, 'label' => 'Portal-Leads',  'highlight' => false ],
-	[ 'depth' => 40, 'label' => 'Tracking',      'highlight' => false ],
-	[ 'depth' => 60, 'label' => 'Infrastruktur', 'highlight' => false ],
-	[ 'depth' => 80, 'label' => 'Eigene Quelle', 'highlight' => true  ],
+	[ 'depth' => 20, 'label' => 'Miet-Leads (Verlustzone)', 'highlight' => false ],
+	[ 'depth' => 40, 'label' => 'First-Party-Datenebene',   'highlight' => false ],
+	[ 'depth' => 60, 'label' => 'Vorqualifizierungs-Funnel', 'highlight' => false ],
+	[ 'depth' => 80, 'label' => 'Autarkes Anfrage-System',   'highlight' => true  ],
 ];
 
 // Fachliche Schwerpunkte: System-Architektur in 3 Cluster für besseres Scanning + E-E-A-T-Signal.
@@ -156,7 +156,7 @@ get_header();
 	<div class="nexus-about" data-track-section="about_page">
 
 		<!-- ════════════════════════════════════════════════════════
-		     HERO — mit Brunnen-Visual und Arbeitsweise
+		     HERO — mit Infrastruktur-Blueprint und Arbeitsweise
 		     ════════════════════════════════════════════════════════ -->
 		<section id="about-hero" class="about-hero">
 			<div class="about-container">
@@ -166,9 +166,9 @@ get_header();
 							<span class="about-live-dot" aria-hidden="true"></span>
 							ÜBER MICH
 						</p>
-						<h1 class="about-h1">Ich bohre Brunnen. Für Ihre eigenen Anfragen.</h1>
+						<h1 class="about-h1">Ich baue Anfrage-Systeme, die Ihrem Betrieb gehören.</h1>
 						<p class="about-hero__lead">
-							Für Solar- und Wärmepumpen-Betriebe, die unqualifizierte Portal-Leads durch eine herstellerunabhängige Nachfrage-Infrastruktur ersetzen.
+							Für Solar- und Wärmepumpen-Betriebe, die Portal-Abhängigkeit durch eigene Daten, bessere Vorqualifizierung und sauberen CRM-Anschluss ersetzen.
 						</p>
 
 						<ul class="about-hero-path" role="list" aria-label="Arbeitsweise von der Analyse bis zur Skalierung">
@@ -200,28 +200,45 @@ get_header();
 					</div>
 
 					<div class="about-hero__visual" aria-hidden="true">
-						<div class="about-well-stage">
-							<div class="about-well-stage__strata">
-								<span></span>
-								<span></span>
-								<span></span>
-								<span></span>
-							</div>
-							<div class="about-well">
-								<div class="about-well__surface"></div>
-								<div class="about-well__shaft">
-									<div class="about-well__depth-marks">
-										<span></span>
-										<span></span>
-										<span></span>
-										<span></span>
-									</div>
-									<div class="about-well__water" id="aboutWaterLevel">
-										<div class="about-well__water-surface"></div>
-									</div>
+						<div class="about-well-stage about-blueprint-stage">
+							<div class="about-blueprint__grid"></div>
+							<div class="about-well about-blueprint" id="aboutDemandGrid">
+								<div class="about-blueprint__header">
+									<span>Nachfrage-Infrastruktur</span>
+									<strong>Eigentum statt Portal-Miete</strong>
 								</div>
-								<div class="about-well__base"></div>
-								<div class="about-well__labels">
+
+								<div class="about-blueprint__node about-blueprint__node--source">
+									<span>Traffic</span>
+									<small>SEO / Ads / Local</small>
+								</div>
+
+								<div class="about-blueprint__node about-blueprint__node--sales">
+									<span>CRM / Vertrieb</span>
+									<small>Fit, Region, Projektwert</small>
+								</div>
+
+								<svg class="about-blueprint__diagram" viewBox="0 0 520 420" focusable="false" aria-hidden="true">
+									<defs>
+										<filter id="aboutBlueprintGlow" x="-20%" y="-20%" width="140%" height="140%">
+											<feGaussianBlur stdDeviation="3.5" result="blur" />
+											<feMerge>
+												<feMergeNode in="blur" />
+												<feMergeNode in="SourceGraphic" />
+											</feMerge>
+										</filter>
+									</defs>
+									<path class="about-blueprint__line about-blueprint__line--base" d="M88 116 C150 116 163 86 238 86" />
+									<path class="about-blueprint__line about-blueprint__line--base" d="M88 116 C156 116 166 164 238 164" />
+									<path class="about-blueprint__line about-blueprint__line--base" d="M88 116 C156 116 166 242 238 242" />
+									<path class="about-blueprint__line about-blueprint__line--base" d="M88 116 C158 116 160 320 238 320 C330 320 354 282 432 282" />
+									<path class="about-blueprint__line" data-depth="20" d="M88 116 C150 116 163 86 238 86" />
+									<path class="about-blueprint__line" data-depth="40" d="M88 116 C156 116 166 164 238 164" />
+									<path class="about-blueprint__line" data-depth="60" d="M88 116 C156 116 166 242 238 242" />
+									<path class="about-blueprint__line" data-depth="80" d="M88 116 C158 116 160 320 238 320 C330 320 354 282 432 282" />
+								</svg>
+
+								<div class="about-well__labels about-blueprint__layers">
 									<?php foreach ( $about_well_labels as $label_item ) : ?>
 										<div class="about-well__label<?php echo $label_item['highlight'] ? ' is-highlight' : ''; ?>"
 										     data-depth="<?php echo (int) $label_item['depth']; ?>">
@@ -244,8 +261,8 @@ get_header();
 				<header class="about-section__head" data-reveal>
 					<p class="about-section__number">Wie ich arbeite</p>
 					<div class="about-section__head-body">
-						<h2 class="about-h2">Drei Schichten. Eine eigene Quelle.</h2>
-						<p class="about-section__lead">Meine Arbeit ist keine Design-Schicht über einer alten Vertriebslogik. Sie folgt dem Aufbau eines Brunnens — von den geteilten Portal-Anfragen an der Oberfläche bis zur eigenen Nachfrage-Infrastruktur in der Tiefe.</p>
+						<h2 class="about-h2">Drei Ebenen. Ein eigenes Anfrage-System.</h2>
+						<p class="about-section__lead">Meine Arbeit ist keine neue Oberfläche über einer alten Vertriebslogik. Sie folgt dem Aufbau einer kontrollierbaren Infrastruktur: von Portal-Abhängigkeit über Daten-Integrität bis zum eigenen Vertriebsanschluss.</p>
 					</div>
 				</header>
 
@@ -263,7 +280,7 @@ get_header();
 				<div class="about-evidence-band" data-reveal>
 					<div class="about-evidence-band__intro">
 						<p class="about-evidence-band__eyebrow">Beleg, nicht Aufhänger</p>
-						<h3 class="about-evidence-band__title">Die Zahlen kommen nach der Karte.</h3>
+						<h3 class="about-evidence-band__title">Die Zahlen kommen nach der Diagnose.</h3>
 						<p>Beim E3-Case sieht man, warum diese Reihenfolge wichtig ist. Die Kennzahlen sind kein Versprechen für jeden Betrieb, sondern ein Beleg dafür, was möglich wird, wenn Nachfrage, Qualifizierung und Vertriebsanschluss zusammenpassen.</p>
 					</div>
 					<ul class="about-evidence-band__list" role="list" aria-label="Ausgewählte E3-Belege">
@@ -308,15 +325,15 @@ get_header();
 					<p class="about-section__number">02 / Methode</p>
 					<div class="about-section__head-body">
 						<h2 class="about-h2">Diagnose vor Umsetzung.</h2>
-						<p class="about-section__lead">Wer bohrt, ohne den Untergrund zu kennen, trifft Stein oder zieht Schlamm.</p>
+						<p class="about-section__lead">Wer skaliert, bevor Angebot, Daten und Vertriebssystem verstanden sind, macht bestehende Fehler nur teurer.</p>
 					</div>
 				</header>
 
 				<div class="about-prose" data-reveal>
-					<p>Die Arbeit beginnt nicht mit WordPress oder Tracking-Code. Sie beginnt damit, Ihren Untergrund zu lesen: Welche Suchanfragen kommen an? Wo versickert Aufmerksamkeit? Wo ist das Tracking taub? An welchen Stellen erklärt die Seite Technik, statt Entscheidungen zu ermöglichen?</p>
-					<p>Manchmal liegt das Problem in der Positionierung. Manchmal im Formular. Manchmal im CRM-Anschluss. Manchmal daran, dass die Website zwar informiert, aber keine Entscheidung vorbereitet. Ich trenne diese Dinge, bevor ich eine Lösung empfehle.</p>
-					<p>Erst wenn diese Fragen beantwortet sind, wird gebaut. Sauber strukturiertes WordPress. Serverseitiges Tracking unter Ihrer Kontrolle. Eine Pipeline, die zeigt, welcher Kontakt wertvoll wurde — nicht nur, wer auf einen Button geklickt hat.</p>
-					<p>Dann, wenn die Infrastruktur steht, wird skaliert. Vorher Budgets auf Anzeigen zu setzen, erzeugt nur teurere Fehler.</p>
+					<p>Die Arbeit beginnt nicht mit WordPress oder Tracking-Code. Sie beginnt mit einer Systemdiagnose: Welche Suchanfragen kommen an? Wo bricht Kaufabsicht ab? Wo fehlt dem Vertrieb die Information, um gute Gespräche schnell zu erkennen?</p>
+					<p>Manchmal liegt das Problem in der Positionierung. Manchmal im Formular. Manchmal im CRM-Anschluss. Manchmal daran, dass die Website zwar informiert, aber keine Entscheidung vorbereitet. Ich trenne diese Ursachen, bevor ich eine Lösung empfehle.</p>
+					<p>Erst wenn diese Fragen beantwortet sind, wird gebaut. Sauber strukturiertes WordPress. Serverseitiges Tracking unter Ihrer Kontrolle. Eine Pipeline, die zeigt, welcher Kontakt wertvoll wurde, nicht nur, wer auf einen Button geklickt hat.</p>
+					<p>Dann, wenn die Infrastruktur steht, wird skaliert. Vorher Budgets auf Anzeigen zu setzen, macht die falschen Signale nur lauter.</p>
 				</div>
 			</div>
 		</section>
@@ -330,7 +347,7 @@ get_header();
 					<p class="about-section__number">03 / Voraussetzungen</p>
 					<div class="about-section__head-body">
 						<h2 class="about-h2">Drei Dinge müssen stimmen.</h2>
-						<p class="about-section__lead">Nicht jedes Grundstück trägt Wasser. Manchmal ist die ehrliche Antwort: Hier nicht.</p>
+						<p class="about-section__lead">Nicht jeder Betrieb braucht sofort ein eigenes Anfrage-System. Manchmal ist die ehrliche Antwort: noch nicht.</p>
 					</div>
 				</header>
 
@@ -387,9 +404,9 @@ get_header();
 				</div>
 
 				<div class="about-prose" data-reveal>
-					<p>Mein Zugang zu dieser Arbeit ist Medienwissenschaft, nicht Webdesign. Ich denke zuerst über Sprache, Entscheidung und Signal nach — und erst danach über Code. Über Jahre habe ich an digitalen Strukturen für erklärungsbedürftige B2B-Angebote gearbeitet. Die technische Schicht war selten das eigentliche Problem. Das Problem war fast immer: jemand hat gebohrt, ohne vorher die Karte zu lesen.</p>
-					<p>In der Zusammenarbeit heißt das: Ich höre nicht nur auf Klickzahlen, sondern auf die Fragen, die im Vertrieb wirklich wiederkommen. Ich schaue mir an, welche Einwände Kunden haben, welche Begriffe sie benutzen und welche Informationen fehlen, bevor ein Gespräch produktiv wird.</p>
-					<p>Seit E3 New Energy als erstem Solar-Case weiß ich, wo diese Methode am stärksten greift. Seitdem liegt mein Fokus auf Solar- und Wärmepumpen-Betrieben.</p>
+					<p>Mein Zugang zu dieser Arbeit ist Medienwissenschaft, nicht Standard-Webdesign. Ich analysiere zuerst die Logik von Signalen, Märkten und menschlichen Kaufentscheidungen und übersetze diese Erkenntnisse erst danach in hochperformanten Code.</p>
+					<p>Die meisten WordPress-Websites scheitern nicht am Design oder an fehlenden Plugins. Sie scheitern daran, dass die technische Architektur isoliert von der vertrieblichen Realität gebaut wurde. Sie informieren den Nutzer zu Tode, anstatt eine klare Kaufentscheidung vorzubereiten.</p>
+					<p>In der Zusammenarbeit bedeutet das: Ich entwickle Systeme auf Basis Ihrer echten Vertriebsgespräche. Wir gießen die Einwände, Sprachmuster und psychologischen Hürden Ihrer Endkunden direkt in die digitale Struktur Ihrer Landingpages. Das Ergebnis ist kein virtuelles Prospekt, sondern ein messbarer Filter, der Ihrem Vertrieb qualifizierte Anfragen zuspielt.</p>
 				</div>
 
 				<div class="about-cohort-card" data-reveal>
@@ -424,7 +441,7 @@ get_header();
 				<header class="about-section__head" data-reveal>
 					<p class="about-section__number">05 / Fachliche Schwerpunkte</p>
 					<div class="about-section__head-body">
-						<h2 class="about-h2" id="about-expertise-title">Sechs Felder. Drei System-Schichten.</h2>
+						<h2 class="about-h2" id="about-expertise-title">Sechs Felder. Drei System-Ebenen.</h2>
 						<p class="about-section__lead">Jedes Feld ist als eigene Seite mit Methode, Beispielen und Bezug zum E3-Case aufgeschrieben — gruppiert entlang der Architektur, in der sie wirken.</p>
 					</div>
 				</header>
@@ -471,7 +488,7 @@ get_header();
 			<div class="about-container about-container--centered">
 				<h2 class="about-h2">Der nächste Schritt.</h2>
 				<p class="about-final__lead">
-					Wenn Sie wissen, dass Sie bohren wollen, gehen Sie direkt ins qualifizierte Formular. Exklusive Erst-Analyse, Prüfung auf Regions-Verfügbarkeit, Antwort innerhalb von 24 Stunden per E-Mail. Kein Verkaufsgespräch.
+					Wenn Sie Portal-Abhängigkeit durch ein eigenes Anfrage-System ersetzen wollen, gehen Sie direkt ins qualifizierte Formular. Exklusive Erst-Analyse, Prüfung auf Regions-Verfügbarkeit, Antwort innerhalb von 24 Stunden per E-Mail. Kein Verkaufsgespräch.
 				</p>
 				<div class="about-cta-wrap about-cta-wrap--centered">
 					<a href="<?php echo esc_url( $request_url ); ?>"
