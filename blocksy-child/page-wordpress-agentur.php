@@ -183,47 +183,54 @@ get_header();
 					</p>
 				</div>
 
-				<aside class="ag-brief" aria-label="Referenzfall E3 New Energy">
-					<div class="ag-brief__head">
-						<span class="ag-brief__kicker">Referenzfall · verifiziert</span>
-						<div class="ag-brief__title">
-							<h2>E3 New Energy</h2>
-							<span class="ag-brief__sector">Solar · Wärmepumpe · Speicher</span>
-						</div>
-					</div>
+				<aside class="ag-hero-viz" aria-label="Referenzfall E3 New Energy – Kosten pro qualifizierter Anfrage">
+					<header class="ag-hero-viz__head">
+						<span class="ag-hero-viz__live">
+							<span class="ag-hero-viz__live-dot" aria-hidden="true"></span>
+							Verifizierter Referenzfall · E3 New Energy
+						</span>
+						<h2 class="ag-hero-viz__title">CPL-Senkung in 9 Monaten</h2>
+						<p class="ag-hero-viz__sub">Kosten pro qualifizierter B2B-Anfrage — vor und nach dem eigenen Anfrage-System.</p>
+					</header>
 
-					<div class="ag-brief__hero">
-						<span class="ag-brief__label">Kosten pro qualifizierter Anfrage</span>
-						<div class="ag-brief__numbers">
-							<span class="ag-brief__before"><s>150&nbsp;€</s></span>
-							<span class="ag-brief__arrow" aria-hidden="true">
-								<svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-									<path d="M4 11h14M14 6l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-								</svg>
+					<div class="ag-hero-viz__chart" role="img" aria-label="Balkenchart: Kosten pro qualifizierter Anfrage fielen von 150 Euro auf 22 Euro, ein Rückgang um 85 Prozent.">
+						<div class="ag-bar ag-bar--before">
+							<span class="ag-bar__num">150&nbsp;€</span>
+							<span class="ag-bar__track">
+								<span class="ag-bar__fill" style="--ag-bar-height: 92%;"></span>
 							</span>
-							<span class="ag-brief__after">22&nbsp;€</span>
+							<span class="ag-bar__label">Vorher · Portal-Leads</span>
 						</div>
-						<span class="ag-brief__delta">−85 % in 9 Monaten</span>
+						<div class="ag-bar__arrow" aria-hidden="true">
+							<span class="ag-bar__delta">−85 %</span>
+							<svg width="36" height="72" viewBox="0 0 36 72" fill="none">
+								<path class="ag-bar__arrow-path" d="M6 6 C 22 22, 6 40, 30 64" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="120" stroke-dashoffset="120" fill="none"/>
+								<path class="ag-bar__arrow-head" d="M22 58 L30 64 L24 70" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+							</svg>
+						</div>
+						<div class="ag-bar ag-bar--after">
+							<span class="ag-bar__num">22&nbsp;€</span>
+							<span class="ag-bar__track">
+								<span class="ag-bar__fill" style="--ag-bar-height: 14%;"></span>
+							</span>
+							<span class="ag-bar__label">Nachher · eigenes System</span>
+						</div>
 					</div>
 
-					<dl class="ag-brief__table">
+					<dl class="ag-hero-viz__foot" aria-label="Kennzahlen aus dem E3-Case">
 						<div>
-							<dt>Anfragen</dt>
-							<dd><span class="ag-counter" data-counter-target="1750" data-counter-suffix="+">0</span></dd>
+							<dt><span class="ag-counter" data-counter-target="1750" data-counter-suffix="+">0</span></dt>
+							<dd>Qualifizierte Anfragen</dd>
 						</div>
 						<div>
-							<dt>Abschlussquote</dt>
-							<dd><span class="ag-counter" data-counter-target="12" data-counter-suffix=" %">0</span></dd>
+							<dt><span class="ag-counter" data-counter-target="12" data-counter-suffix=" %">0</span></dt>
+							<dd>Abschlussquote</dd>
 						</div>
 						<div>
-							<dt>Zeitraum</dt>
-							<dd><span class="ag-counter" data-counter-target="9" data-counter-suffix="&nbsp;Mon.">0</span></dd>
+							<dt><span class="ag-counter" data-counter-target="9" data-counter-suffix=" Mon.">0</span></dt>
+							<dd>Zeitraum</dd>
 						</div>
 					</dl>
-
-					<footer class="ag-brief__foot">
-						<span>Stand 2024–2025 · keine pauschale Übertragbarkeitsgarantie.</span>
-					</footer>
 				</aside>
 			</div>
 		</div>
@@ -366,16 +373,24 @@ get_header();
 				'Weiterentwicklung'     => [ 'num' => '06', 'title' => 'Weiterentwicklung', 'icon' => '🚀', 'desc' => 'Welche Änderung erzeugt als Nächstes Wirkung — datenbasiert.' ],
 			];
 			foreach ( $phase_labels as $area => $p ) :
-				$count = count( $asset_groups[ $area ] ?? [] );
+				$count         = count( $asset_groups[ $area ] ?? [] );
+				$phase_slug    = sanitize_title( $area );
+				$track_section = 'methode_' . $phase_slug;
 			?>
 				<li>
-					<span class="step-num"><?php echo esc_html( $p['num'] ); ?></span>
-					<span class="step-icon" aria-hidden="true"><?php echo esc_html( $p['icon'] ?? '' ); ?></span>
-					<h3>
-						<?php echo esc_html( $p['title'] ); ?>
-						<small><?php echo (int) $count; ?> Bausteine</small>
-					</h3>
-					<p><?php echo esc_html( $p['desc'] ); ?></p>
+					<a class="wgos-steps__link" href="#acc-<?php echo esc_attr( $phase_slug ); ?>"
+					   data-track-action="cta_method_phase_open"
+					   data-track-category="navigation"
+					   data-track-section="<?php echo esc_attr( $track_section ); ?>">
+						<span class="step-num"><?php echo esc_html( $p['num'] ); ?></span>
+						<span class="step-icon" aria-hidden="true"><?php echo esc_html( $p['icon'] ?? '' ); ?></span>
+						<h3>
+							<?php echo esc_html( $p['title'] ); ?>
+							<small><?php echo (int) $count; ?> Bausteine</small>
+						</h3>
+						<p><?php echo esc_html( $p['desc'] ); ?></p>
+						<span class="wgos-steps__more" aria-hidden="true">Bausteine ansehen →</span>
+					</a>
 				</li>
 			<?php endforeach; ?>
 		</ol>
@@ -447,7 +462,7 @@ get_header();
 					? hue_kernbereich_label( hue_get_wgos_kernbereich_key( $area ) )
 					: $area;
 			?>
-				<div class="acc-item" data-acc="<?php echo esc_attr( $area_slug ); ?>">
+				<div class="acc-item" id="acc-<?php echo esc_attr( $area_slug ); ?>" data-acc="<?php echo esc_attr( $area_slug ); ?>">
 					<button class="acc-trigger" aria-expanded="false" aria-controls="body-<?php echo esc_attr( $area_slug ); ?>" data-track-action="toggle_methodenbibliothek" data-track-category="engagement" data-track-section="<?php echo esc_attr( $area_slug ); ?>">
 						<div class="acc-trigger-left">
 							<div class="acc-icon" style="background: <?php echo esc_attr( $meta['color'] ); ?>15; color: <?php echo esc_attr( $meta['color'] ); ?>;"><?php echo esc_html( $meta['icon'] ); ?></div>
@@ -529,9 +544,80 @@ get_header();
 			</div>
 		</div>
 
+		<div class="wp-agentur-quali" id="quali" aria-label="Schneller Kontextcheck zur Vorqualifizierung" data-quali-base="<?php echo esc_attr( $contact_url ); ?>">
+			<div class="wp-agentur-quali__step" data-quali-step="1" aria-hidden="false">
+				<p class="wp-agentur-quali__kicker">30-Sekunden-Vorqualifizierung · Schritt 1 von 2</p>
+				<h3 class="wp-agentur-quali__q">Über welchen Kanal generieren Sie aktuell die meisten qualifizierten B2B-Anfragen?</h3>
+				<div class="wp-agentur-quali__options">
+					<button type="button" class="wp-agentur-quali__opt" data-quali-channel="seo"
+					        data-track-action="quali_channel_seo" data-track-category="lead_gen" data-track-section="quali_step_1">
+						<strong>Organische Suche / SEO</strong>
+						<span>Google, technisches SEO, kaufnahe Suchanfragen</span>
+					</button>
+					<button type="button" class="wp-agentur-quali__opt" data-quali-channel="paid"
+					        data-track-action="quali_channel_paid" data-track-category="lead_gen" data-track-section="quali_step_1">
+						<strong>Bezahlte Kampagnen</strong>
+						<span>Google Ads, Meta Ads, LinkedIn Ads</span>
+					</button>
+					<button type="button" class="wp-agentur-quali__opt" data-quali-channel="portals"
+					        data-track-action="quali_channel_portals" data-track-category="lead_gen" data-track-section="quali_step_1">
+						<strong>Portale &amp; Lead-Anbieter</strong>
+						<span>Portal-Leads, Vermittler, Marktplätze</span>
+					</button>
+					<button type="button" class="wp-agentur-quali__opt" data-quali-channel="referral"
+					        data-track-action="quali_channel_referral" data-track-category="lead_gen" data-track-section="quali_step_1">
+						<strong>Empfehlung &amp; Netzwerk</strong>
+						<span>Bestandskunden, Partner, persönliches Netzwerk</span>
+					</button>
+				</div>
+				<p class="wp-agentur-quali__hint">Eine Klick-Antwort, kein Pflichtfeld. Im nächsten Schritt nur das, was Sinn ergibt.</p>
+			</div>
+
+			<div class="wp-agentur-quali__step" data-quali-step="2" aria-hidden="true" hidden>
+				<p class="wp-agentur-quali__kicker">Letzter Schritt · Schritt 2 von 2</p>
+				<h3 class="wp-agentur-quali__q">Was ist gerade der größte Engpass?</h3>
+				<div class="wp-agentur-quali__options">
+					<button type="button" class="wp-agentur-quali__opt" data-quali-pain="quantity"
+					        data-track-action="quali_pain_quantity" data-track-category="lead_gen" data-track-section="quali_step_2">
+						<strong>Zu wenige Anfragen</strong>
+						<span>Reichweite, Sichtbarkeit, Nachfrage</span>
+					</button>
+					<button type="button" class="wp-agentur-quali__opt" data-quali-pain="quality"
+					        data-track-action="quali_pain_quality" data-track-category="lead_gen" data-track-section="quali_step_2">
+						<strong>Anfragen, aber unqualifiziert</strong>
+						<span>Falsche Zielgruppe, hohe Absprungrate</span>
+					</button>
+					<button type="button" class="wp-agentur-quali__opt" data-quali-pain="cpl"
+					        data-track-action="quali_pain_cpl" data-track-category="lead_gen" data-track-section="quali_step_2">
+						<strong>Kosten pro Anfrage zu hoch</strong>
+						<span>CPL steigt, Skalierung wird unrentabel</span>
+					</button>
+					<button type="button" class="wp-agentur-quali__opt" data-quali-pain="tracking"
+					        data-track-action="quali_pain_tracking" data-track-category="lead_gen" data-track-section="quali_step_2">
+						<strong>Keine belastbaren Daten</strong>
+						<span>Tracking, Attribution, GA4 unklar</span>
+					</button>
+				</div>
+				<p class="wp-agentur-quali__hint">Letzte Antwort — direkt im Anschluss landen Sie auf einem vorausgefüllten Kontaktformular.</p>
+			</div>
+
+			<div class="wp-agentur-quali__step wp-agentur-quali__step--done" data-quali-step="3" aria-hidden="true" hidden>
+				<p class="wp-agentur-quali__kicker">Bereit zur Auswertung</p>
+				<h3 class="wp-agentur-quali__q">Ihr Kontext ist erfasst. Im letzten Schritt ordnet Haşim Üner persönlich ein.</h3>
+				<p class="wp-agentur-quali__hint">Ihre Antworten werden an das Formular übergeben. Nur geschäftliche E-Mail &amp; Name sind dort verpflichtend.</p>
+				<a href="<?php echo esc_url( $contact_url ); ?>" class="nx-btn nx-btn--primary wp-agentur-quali__cta"
+				   data-track-action="cta_quali_to_contact" data-track-category="lead_gen" data-track-section="quali_step_3">
+					Auswertung anfordern
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+						<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</a>
+			</div>
+		</div>
+
 		<div class="wp-agentur-actions wp-agentur-actions--center" style="margin-top: 2.5rem;">
-			<a href="<?php echo esc_url( $contact_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_projekt_pruefen_mid" data-track-category="lead_gen" data-track-section="projektpruefung">
-				Projekt prüfen
+			<a href="<?php echo esc_url( $contact_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_projekt_pruefen_mid" data-track-category="navigation" data-track-section="projektpruefung">
+				Lieber direkt zum klassischen Formular
 				<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
 					<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg>
@@ -828,6 +914,92 @@ get_header();
 
 	initAccordion('#asset-accordion', '.acc-item',  '.acc-trigger',  '.acc-body');
 	initAccordion('#faq-accordion',   '.faq-item',  '.faq-trigger',  '.faq-body');
+
+	// ─── Auto-open accordion target via hash (#acc-<slug>) ───
+	(function () {
+		function openFromHash() {
+			var hash = window.location.hash;
+			if (!hash || hash.indexOf('#acc-') !== 0) return;
+			var target = document.querySelector(hash);
+			if (!target || !target.classList.contains('acc-item')) return;
+			var trigger = target.querySelector('.acc-trigger');
+			if (!target.classList.contains('is-open')) {
+				target.classList.add('is-open');
+				if (trigger) trigger.setAttribute('aria-expanded', 'true');
+			}
+			// Smooth scroll respecting any sticky header offset
+			setTimeout(function () {
+				target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			}, 60);
+		}
+		window.addEventListener('hashchange', openFromHash);
+		if (window.location.hash.indexOf('#acc-') === 0) {
+			// Defer to allow layout to settle
+			setTimeout(openFromHash, 120);
+		}
+	})();
+
+	// ─── Multi-Step Vorqualifizierung (Micro-Commitment) ───
+	(function () {
+		var root = document.getElementById('quali');
+		if (!root) return;
+
+		var base   = root.getAttribute('data-quali-base') || '';
+		var state  = { channel: '', pain: '' };
+		var steps  = root.querySelectorAll('.wp-agentur-quali__step');
+
+		function show(stepNum) {
+			steps.forEach(function (el) {
+				var n        = el.getAttribute('data-quali-step');
+				var isActive = String(n) === String(stepNum);
+				el.hidden   = !isActive;
+				el.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+				if (isActive) {
+					var heading = el.querySelector('.wp-agentur-quali__q');
+					if (heading && typeof heading.focus === 'function') {
+						heading.setAttribute('tabindex', '-1');
+						try { heading.focus({ preventScroll: true }); } catch (e) { heading.focus(); }
+					}
+				}
+			});
+		}
+
+		function appendParam(url, key, val) {
+			if (!val) return url;
+			var sep = url.indexOf('?') === -1 ? '?' : '&';
+			return url + sep + encodeURIComponent(key) + '=' + encodeURIComponent(val);
+		}
+
+		function finalizeUrl() {
+			var url = base;
+			url = appendParam(url, 'channel', state.channel);
+			url = appendParam(url, 'pain', state.pain);
+			var ctaLink = root.querySelector('.wp-agentur-quali__cta');
+			if (ctaLink) ctaLink.setAttribute('href', url);
+			return url;
+		}
+
+		root.querySelectorAll('[data-quali-channel]').forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				state.channel = btn.getAttribute('data-quali-channel') || '';
+				root.querySelectorAll('[data-quali-channel]').forEach(function (b) {
+					b.classList.toggle('is-selected', b === btn);
+				});
+				show(2);
+			});
+		});
+
+		root.querySelectorAll('[data-quali-pain]').forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				state.pain = btn.getAttribute('data-quali-pain') || '';
+				root.querySelectorAll('[data-quali-pain]').forEach(function (b) {
+					b.classList.toggle('is-selected', b === btn);
+				});
+				finalizeUrl();
+				show(3);
+			});
+		});
+	})();
 
 	// ─── Sticky Mobile CTA ───
 	(function () {
