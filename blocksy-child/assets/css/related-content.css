@@ -1,90 +1,119 @@
 /* =========================================
-   RELATED CONTENT – Design für .related-content
+   Related content - editorial single-post support
    ========================================= */
 
 .related-content {
-  background: var(--nx-bg-card, #121212);
+  width: min(900px, calc(100vw - 2rem));
+  margin: clamp(3rem, 8vw, 5rem) auto 0;
+  padding: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+  border-top: 1px solid var(--nx-border, rgba(255, 255, 255, 0.12));
   color: var(--nx-text, #fff);
-  padding: 4rem 0 2rem 0;
-  margin: 3rem 0 0 0;
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+}
+
+.related-content__head {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+
+.related-content__eyebrow {
+  color: var(--nx-accent-text, #d9bd82);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
 
 .related-content__heading {
-  font-size: var(--nx-text-2xl, 2rem);
-  font-weight: 800;
-  color: var(--nx-gold, #FFB020);
-  margin-bottom: 2.5rem;
-  text-align: center;
-}
-
-.related-content__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-}
-
-.related-content__card {
-  background: var(--nx-bg-elevated, #0f0f0f);
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  padding: 2rem 1.2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  transition: box-shadow 0.2s;
-}
-
-.related-content__card:hover {
-  box-shadow: 0 8px 32px rgba(255,176,32,0.12);
-}
-
-.related-content__thumb {
-  display: block;
-  margin-bottom: 1.2rem;
-}
-
-.related-content__image {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.related-content__category {
-  font-size: var(--nx-text-sm, 0.875rem);
-  color: var(--nx-text-dim, #71717a);
-  margin-bottom: 0.5rem;
-}
-
-.related-content__title {
-  font-size: var(--nx-text-lg, 1.125rem);
-  font-weight: 700;
-  margin-bottom: 0.7rem;
-}
-
-.related-content__excerpt {
-  font-size: var(--nx-text-base, 1rem);
-  color: var(--nx-text-secondary, #d4d4d4);
-  margin-bottom: 0;
+  max-width: 18ch;
+  margin: 0;
+  color: var(--nx-text, #fff);
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 3vw, 2.15rem);
+  font-weight: 750;
+  letter-spacing: 0;
+  line-height: 1.12;
 }
 
 .related-content__primary-link {
-  margin: 1.75rem 0 0;
-  padding-top: 1.25rem;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  font-size: var(--nx-text-sm, 0.975rem);
+  max-width: 62ch;
+  margin: 0.25rem 0 0;
   color: var(--nx-text-secondary, #d4d4d4);
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 .related-content__primary-link a {
-  color: var(--nx-gold, #FFB020);
-  font-weight: 700;
+  color: var(--nx-accent-text, #d9bd82);
+  font-weight: 800;
   text-decoration: none;
 }
 
 .related-content__primary-link a:hover,
-.related-content__primary-link a:focus {
-  text-decoration: underline;
+.related-content__primary-link a:focus-visible {
+  color: var(--nx-text, #fff);
+}
+
+.related-content__list {
+  display: grid;
+}
+
+.related-content__item {
+  padding: clamp(1.25rem, 3vw, 1.8rem) 0;
+  border-bottom: 1px solid var(--nx-border, rgba(255, 255, 255, 0.1));
+}
+
+.related-content__body {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.related-content__category {
+  color: var(--nx-accent-text, #d9bd82);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.related-content__title {
+  max-width: 34ch;
+  margin: 0;
+  color: var(--nx-text, #fff);
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-weight: 750;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+.related-content__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.related-content__title a:hover,
+.related-content__title a:focus-visible {
+  color: var(--nx-accent-text, #d9bd82);
+}
+
+.related-content__excerpt {
+  max-width: 66ch;
+  margin: 0;
+  color: var(--nx-text-secondary, #d4d4d4);
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 640px) {
+  .related-content {
+    width: min(100% - 1rem, 900px);
+  }
+
+  .related-content__heading,
+  .related-content__title {
+    max-width: none;
+  }
 }

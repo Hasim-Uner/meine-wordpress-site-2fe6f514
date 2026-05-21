@@ -24,8 +24,16 @@ get_template_part( 'template-parts/blog-header' );
 		$audit_url       = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 		$energy_url      = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
 		$agentur_url     = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
+		$seo_url         = $primary_urls['seo'] ?? trailingslashit( $agentur_url ) . '#technisches-seo';
+		$cro_url         = $primary_urls['cro'] ?? trailingslashit( $agentur_url ) . '#methode';
+		$tracking_url    = home_url( '/server-side-tracking-b2b/' );
+		$portal_url      = home_url( '/eigene-leadgenerierung-vs-portale/' );
+		$cpl_url         = home_url( '/cost-per-lead-photovoltaik/' );
 		$post_categories = get_the_category();
 		$post_cat_slugs  = wp_list_pluck( $post_categories, 'slug' );
+		$primary_cat     = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
+		$category_url    = $primary_cat instanceof WP_Term ? get_category_link( $primary_cat->term_id ) : '';
+		$category_url    = is_wp_error( $category_url ) ? '' : $category_url;
 		$article_context = [
 			'eyebrow'         => __( 'Einordnung', 'blocksy-child' ),
 			'title'           => __( 'Dieser Artikel gehört in den größeren Anfrage-Kontext.', 'blocksy-child' ),
@@ -46,15 +54,45 @@ get_template_part( 'template-parts/blog-header' );
 				'secondary_label' => __( 'Marktcheck starten', 'blocksy-child' ),
 				'secondary_url'   => $audit_url,
 			];
+		} elseif ( array_intersect( [ 'markteinordnung', 'owned-leads' ], $post_cat_slugs ) ) {
+			$article_context = [
+				'eyebrow'         => __( 'Portal-Abhängigkeit', 'blocksy-child' ),
+				'title'           => __( 'Portal-Leads sind nur ein Kostenblock. Entscheidend ist der CPO.', 'blocksy-child' ),
+				'text'            => __( 'Dieser Artikel gehört in die Frage, ob Nachfrage dauerhaft gemietet oder als eigenes System aufgebaut werden sollte.', 'blocksy-child' ),
+				'primary_label'   => __( 'Portalvergleich lesen', 'blocksy-child' ),
+				'primary_url'     => $portal_url,
+				'secondary_label' => __( 'CPL/CPO-Rechnung ansehen', 'blocksy-child' ),
+				'secondary_url'   => $cpl_url,
+			];
 		} elseif ( in_array( 'sichtbarkeit-daten-conversion', $post_cat_slugs, true ) ) {
 			$article_context = [
 				'eyebrow'         => __( 'SEO · Daten · Conversion', 'blocksy-child' ),
 				'title'           => __( 'Sichtbarkeit wird erst mit Daten und Conversion kaufnah.', 'blocksy-child' ),
 				'text'            => __( 'Der Beitrag zeigt einen Hebel im System. Entscheidend ist, ob daraus ein belastbarer Anfragepfad für passende Solar- und Wärmepumpen-Anbieter entsteht.', 'blocksy-child' ),
-				'primary_label'   => __( 'Anfrage-System ansehen', 'blocksy-child' ),
-				'primary_url'     => $energy_url,
-				'secondary_label' => __( 'Marktcheck starten', 'blocksy-child' ),
-				'secondary_url'   => $audit_url,
+				'primary_label'   => __( 'Technisches SEO ansehen', 'blocksy-child' ),
+				'primary_url'     => $seo_url,
+				'secondary_label' => __( 'Server-Side Tracking ansehen', 'blocksy-child' ),
+				'secondary_url'   => $tracking_url,
+			];
+		} elseif ( in_array( 'tracking', $post_cat_slugs, true ) ) {
+			$article_context = [
+				'eyebrow'         => __( 'Tracking & Daten', 'blocksy-child' ),
+				'title'           => __( 'Tracking ist nur wertvoll, wenn daraus bessere Entscheidungen entstehen.', 'blocksy-child' ),
+				'text'            => __( 'Dieser Artikel gehört in die Datenebene: Consent, Server-Side Tracking, CRM-Rückführung und saubere Signale für Marketing-Algorithmen.', 'blocksy-child' ),
+				'primary_label'   => __( 'Server-Side Tracking ansehen', 'blocksy-child' ),
+				'primary_url'     => $tracking_url,
+				'secondary_label' => __( 'CRO-System ansehen', 'blocksy-child' ),
+				'secondary_url'   => $cro_url,
+			];
+		} elseif ( array_intersect( [ 'seo', 'cro', 'wordpress-performance', 'strategie' ], $post_cat_slugs ) ) {
+			$article_context = [
+				'eyebrow'         => __( 'WordPress-System', 'blocksy-child' ),
+				'title'           => __( 'Einzelhebel wirken erst im verbundenen System.', 'blocksy-child' ),
+				'text'            => __( 'Dieser Beitrag ordnet einen Hebel ein: Technik, Sichtbarkeit, Performance oder Conversion. Entscheidend ist die Reihenfolge im Gesamtsystem.', 'blocksy-child' ),
+				'primary_label'   => __( 'WordPress Agentur ansehen', 'blocksy-child' ),
+				'primary_url'     => $agentur_url,
+				'secondary_label' => __( 'Technisches SEO ansehen', 'blocksy-child' ),
+				'secondary_url'   => $seo_url,
 			];
 		} elseif ( in_array( 'wordpress-growth-agentur', $post_cat_slugs, true ) ) {
 			$article_context = [
@@ -67,6 +105,55 @@ get_template_part( 'template-parts/blog-header' );
 				'secondary_url'   => $audit_url,
 			];
 		}
+
+		$article_next_links = [
+			[
+				'label'    => $article_context['primary_label'],
+				'url'      => $article_context['primary_url'],
+				'category' => 'internal_link',
+			],
+			[
+				'label'    => $article_context['secondary_label'],
+				'url'      => $article_context['secondary_url'],
+				'category' => $audit_url === $article_context['secondary_url'] ? 'lead_gen' : 'internal_link',
+			],
+			[
+				'label'    => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
+				'url'      => $audit_url,
+				'category' => 'lead_gen',
+			],
+		];
+
+		if ( $category_url ) {
+			array_unshift(
+				$article_next_links,
+				[
+					'label'    => sprintf(
+						/* translators: %s: category name */
+						__( 'Mehr aus %s', 'blocksy-child' ),
+						$primary_cat->name
+					),
+					'url'      => $category_url,
+					'category' => 'internal_link',
+				]
+			);
+		}
+
+		$deduped_next_links = [];
+		$seen_next_urls     = [];
+
+		foreach ( $article_next_links as $next_link ) {
+			$url_key = isset( $next_link['url'] ) ? (string) $next_link['url'] : '';
+
+			if ( '' === $url_key || isset( $seen_next_urls[ $url_key ] ) ) {
+				continue;
+			}
+
+			$seen_next_urls[ $url_key ] = true;
+			$deduped_next_links[]      = $next_link;
+		}
+
+		$article_next_links = $deduped_next_links;
 		?>
 
 		<header class="nexus-article-hero" data-track-section="article_hero">
@@ -182,6 +269,30 @@ get_template_part( 'template-parts/blog-header' );
 				   ?>
 			   </article>
 		   </div>
+
+		<section class="nexus-article-next" data-track-section="article_next_steps" aria-labelledby="nexus-article-next-heading">
+			<span class="nexus-article-next__eyebrow"><?php esc_html_e( 'Weiterarbeiten', 'blocksy-child' ); ?></span>
+			<h2 id="nexus-article-next-heading" class="nexus-article-next__title"><?php esc_html_e( 'Nächster sinnvoller Schritt.', 'blocksy-child' ); ?></h2>
+			<p class="nexus-article-next__text">
+				<?php esc_html_e( 'Wenn der Kontext sitzt, geht es nicht um mehr Content, sondern um die richtige Anschlussentscheidung.', 'blocksy-child' ); ?>
+			</p>
+			<div class="nexus-article-next__links">
+				<?php foreach ( $article_next_links as $index => $next_link ) : ?>
+					<?php if ( empty( $next_link['url'] ) || empty( $next_link['label'] ) ) : ?>
+						<?php continue; ?>
+					<?php endif; ?>
+					<a
+						class="nexus-article-next__link"
+						href="<?php echo esc_url( $next_link['url'] ); ?>"
+						data-track-action="<?php echo esc_attr( 'article_next_step_' . ( $index + 1 ) ); ?>"
+						data-track-category="<?php echo esc_attr( $next_link['category'] ); ?>"
+						data-track-section="article_next_steps"
+					>
+						<?php echo esc_html( $next_link['label'] ); ?>
+					</a>
+				<?php endforeach; ?>
+			</div>
+		</section>
 
 		<?php get_template_part( 'template-parts/blog-notify', null, [ 'variant' => 'full' ] ); ?>
 

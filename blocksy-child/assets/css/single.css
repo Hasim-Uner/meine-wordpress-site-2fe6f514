@@ -653,6 +653,61 @@ button.nexus-share-btn {
     border-top: 1px solid var(--nx-border);
 }
 
+.nexus-article-next {
+    display: grid;
+    gap: 0.75rem;
+    max-width: min(820px, calc(100vw - 2rem));
+    margin: clamp(2.75rem, 7vw, 4.5rem) auto 0;
+    padding: clamp(1.4rem, 3vw, 2rem) 0;
+    border-top: 1px solid var(--nx-border);
+    border-bottom: 1px solid var(--nx-border);
+}
+
+.nexus-article-next__eyebrow {
+    color: var(--nx-accent-text);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.nexus-article-next__title {
+    max-width: 18ch;
+    margin: 0;
+    color: var(--nx-text);
+    font-family: var(--font-display);
+    font-size: clamp(1.45rem, 3vw, 2.15rem);
+    font-weight: 750;
+    letter-spacing: 0;
+    line-height: 1.12;
+}
+
+.nexus-article-next__text {
+    max-width: 62ch;
+    margin: 0;
+    color: var(--nx-text-secondary);
+    line-height: 1.65;
+}
+
+.nexus-article-next__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem 1rem;
+    margin-top: 0.2rem;
+}
+
+.nexus-article-next__link {
+    color: var(--nx-accent-text);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.nexus-article-next__link:hover,
+.nexus-article-next__link:focus-visible {
+    color: var(--nx-text);
+}
+
 .nexus-article-content .wp-block-table-of-contents,
 .nexus-article-content .ez-toc-container,
 .nexus-article-content .rank-math-toc-block,
@@ -961,6 +1016,10 @@ button.nexus-share-btn {
     .nexus-article-context__actions,
     .nexus-article-context__link {
         width: 100%;
+    }
+
+    .nexus-article-next {
+        max-width: calc(100vw - 1rem);
     }
 
     .nexus-author-row,
