@@ -1,10 +1,17 @@
 <?php
 /**
- * Front Page Template — Redesign
+ * Front Page Template — Sovereign Command Center
  *
- * Portiert aus dem Claude-Design-Export „Hasimuener Startseite.html".
- * Visuelle Sprache: dunkel (#0B0F12), warm-weiß, Kupfer-Akzent.
- * Alle PHP-Datenbindungen bleiben erhalten.
+ * Die Startseite ist Router, nicht Verkaufsfläche. Sie verteilt den
+ * B2B-Entscheider strikt über drei architektonische Gateways:
+ *   G1  Marktcheck      → /solar-waermepumpen-leadgenerierung/#marktcheck
+ *   G2  Agentur-Hub     → /wordpress-agentur-hannover/
+ *   G3  E3-Methodik     → /e3-new-energy/
+ *
+ * SEO-Title/Description werden zentral aus inc/seo-meta.php gesteuert
+ * (hu_get_homepage_title / hu_get_homepage_description). JSON-LD läuft
+ * zentral über inc/org-schema.php (Organization + hasOfferCatalog) —
+ * dieses Template injiziert bewusst kein konkurrierendes Schema.
  *
  * @package Blocksy_Child
  */
@@ -21,11 +28,61 @@ $e3_metrics        = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metri
 $e3_lead_count     = $e3_metrics['lead_count']['display']        ?? '1.750+';
 $e3_sales_conv     = $e3_metrics['sales_conversion']['display']  ?? '12 %';
 $e3_cpl_reduction  = $e3_metrics['cpl_reduction']['display']     ?? 'über 85 %';
-$e3_cpl_cons       = $e3_metrics['cpl_reduction']['conservative_display'] ?? 'über 85 %';
 $e3_timeframe      = $e3_metrics['timeframe']['display']         ?? '9 Monate';
 $e3_timeframe_dat  = $e3_metrics['timeframe']['display_dative']  ?? '9 Monaten';
+$e3_cpl_before     = $e3_metrics['cpl_before']['display']        ?? '150 €';
+$e3_cpl_after      = $e3_metrics['cpl_after']['display']         ?? '22 €';
 $contact_url       = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+$agentur_hub_url   = home_url( '/wordpress-agentur-hannover/' );
 $portrait_url      = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
+
+/* ── Routing-Tabelle: 3 Gateways ─────────────────────────── */
+$home_routing_gateways = [
+	'marktcheck' => [
+		'badge'   => 'G1',
+		'kicker'  => 'Kanal-Steuerung & Audit',
+		'title'   => 'Der 60-Sekunden-Marktcheck',
+		'desc'    => 'Identifiziert die unsichtbaren Anfragebremsen auf der aktuellen B2B-Website. Persönliche Rückmeldung statt automatisiertem Tool-Score.',
+		'url'     => $analysis_url,
+		'label'   => 'Infrastruktur prüfen',
+		'persona' => 'Für portalmüde Solar-/SHK-Anbieter',
+		'action'  => 'gateway_marktcheck',
+	],
+	'agentur' => [
+		'badge'   => 'G2',
+		'kicker'  => 'System-Architektur',
+		'title'   => 'WordPress Agentur Hannover',
+		'desc'    => 'Technisches Fundament für anspruchsvolle B2B-Systeme: Technisches SEO, Server-Side Tracking und kontrollierte Weiterentwicklung.',
+		'url'     => $agentur_hub_url,
+		'label'   => 'Agentur-Hub ansteuern',
+		'persona' => 'Für B2B-Unternehmen mit Infrastruktur-Bedarf',
+		'action'  => 'gateway_agentur',
+	],
+	'proof' => [
+		'badge'   => 'G3',
+		'kicker'  => 'Verifizierte Validierung',
+		'title'   => 'Die E3-New-Energy-Methodik',
+		'desc'    => sprintf(
+			'Wie ein eigener, autarker Nachfrage-Funnel die Cost-per-Lead von %s auf %s gesenkt hat — dokumentiert mit echten Vertriebs-Zahlen.',
+			$e3_cpl_before,
+			$e3_cpl_after
+		),
+		'url'     => $e3_case_url,
+		'label'   => 'Case Study analysieren',
+		'persona' => 'Für skeptische Zahlen-Prüfer',
+		'action'  => 'gateway_proof',
+	],
+];
+
+/* ── 6 System-Phasen (strukturgleich zu page-wordpress-agentur.php) ── */
+$home_system_phases = [
+	[ 'num' => '01', 'title' => 'Strategie',         'desc' => 'Welche Seite trägt welche Anfrage — und welche nicht.' ],
+	[ 'num' => '02', 'title' => 'Fundament',         'desc' => 'Schnell, stabil, wartbar — ohne dass jedes Plugin-Update zur Krise wird.' ],
+	[ 'num' => '03', 'title' => 'Messbarkeit',       'desc' => 'GA4, Server-Side Tracking und CRM-Rückführung in einer Logik.' ],
+	[ 'num' => '04', 'title' => 'Sichtbarkeit',      'desc' => 'Kaufnahe Suchintention abfangen — bevor der Wettbewerb antwortet.' ],
+	[ 'num' => '05', 'title' => 'Conversion',        'desc' => 'Klare Nutzerführung im Anfrageprozess — kein Formularballast.' ],
+	[ 'num' => '06', 'title' => 'Weiterentwicklung', 'desc' => 'Datenbasierte Skalierung statt Bauchgefühl und Pseudo-Relaunch.' ],
+];
 
 /* ── Homepage-Bridge: Themen-Cluster für SEO-Sub-Pages ───── */
 $homepage_deeper_clusters = [
@@ -65,45 +122,36 @@ get_header();
 <div class="hu-hp" id="top" data-track-section="homepage">
 
 	<!-- ═══════════════════════════════════════════════════
-	     HERO
+	     HERO — Sovereign Command Center
+	     Links: architektonisches Leitmotiv. Rechts: 3 Gateway-Karten.
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-hero" id="hero" data-track-section="homepage_hero">
-		<div class="hu-hero__grid-bg" aria-hidden="true"></div>
+	<section class="hu-hero hu-hero--command" id="hero" data-track-section="homepage_hero">
+		<div class="hu-hero__grid-bg hu-hero__grid-bg--blueprint" aria-hidden="true"></div>
 		<div class="hu-container hu-hero__container">
 
-			<!-- Left: copy -->
+			<!-- Left: architectural leitmotiv -->
 			<div>
 				<div class="hu-hero__eyebrow">
 					<span class="hu-tag">
 						<span class="hu-dot hu-dot--live"></span>
-						<span class="hu-mono">FÜR SOLAR- & WÄRMEPUMPEN-BETRIEBE</span>
+						<span class="hu-mono">INFRASTRUKTUR-ECOSYSTEM · HANNOVER · 2026</span>
 					</span>
 				</div>
 
 				<h1 class="hu-display hu-hero__title">
-					B2B Anfrage-Systeme<br>
-					statt gemietete<br>
-					<span class="hu-hero__title-2">Portal-Leads.</span>
+					Infrastruktur für<br>
+					eigene B2B-Anfragen.<br>
+					<span class="hu-hero__title-2">Drei Routen, eine Methodik.</span>
 				</h1>
 
 				<p class="hu-hero__claim">
-					Hören Sie auf, Anfragen zu mieten — bauen Sie eine, die Ihnen gehört.
+					Eine Startseite, die nicht verkauft — sondern routet.
 				</p>
 
 				<p class="hu-hero__sub">
-					Portale liefern dieselbe Anfrage an drei Wettbewerber. Ein eigener Anfrageweg macht Region,
-					Projektwert und Fit sichtbar, bevor Ihr Vertrieb Zeit in falsche Gespräche steckt.
+					Eigene Anfragen statt gemieteter Portal-Leads — für Solar-, Wärmepumpen- und Speicher-Anbieter.
+					Wählen Sie rechts den Einstieg, der zu Ihrem aktuellen Reifegrad passt: Audit, Architektur oder Validierung.
 				</p>
-
-				<div class="hu-hero__ctas">
-					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
-					   data-track-action="cta_home_hero_analysis" data-track-category="lead_gen">
-						Kostenfreien Marktcheck starten
-						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-					</a>
-					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-link"
-					   data-track-action="cta_home_hero_e3_methodology" data-track-category="lead_gen">E3-Case: <?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conv ); ?> Abschluss</a>
-				</div>
 
 				<div class="hu-hero__stats">
 					<div>
@@ -123,83 +171,88 @@ get_header();
 				</div>
 
 				<ul class="hu-hero__bullets">
-					<li><span class="hu-bullet-dot"></span>Manueller, tiefer Marktcheck statt Software-Einheitsbrei</li>
-					<li><span class="hu-bullet-dot"></span>Händische Analyse deiner Region innerhalb von 48 Stunden</li>
+					<li><span class="hu-bullet-dot"></span>Persönlich geprüfter Marktcheck statt Software-Score</li>
+					<li><span class="hu-bullet-dot"></span>Befund deiner Region innerhalb von 48 Stunden</li>
 					<li><span class="hu-bullet-dot"></span>Für Solar, Wärmepumpe und Speicher</li>
 				</ul>
 			</div>
 
-			<!-- Right: quiet lead-system sketch -->
-			<div aria-label="Skizze eines eigenen Lead-Systems">
-				<div class="hu-diagram hu-lead-sketch">
-					<div class="hu-lead-sketch__head">
-						<span class="hu-eyebrow">Lead-System</span>
-						<span class="hu-lead-sketch__status">Eigene Strecke statt Portal-Miete</span>
-					</div>
-
-					<div class="hu-lead-sketch__canvas">
-						<div class="hu-lead-node hu-lead-node--source">
-							<span>Nachfrage</span>
-							<strong>Region + Bedarf</strong>
+			<!-- Right: 3 Gateway routing cards -->
+			<div class="hu-gateways" aria-label="Drei Einstiege ins Infrastruktur-Ecosystem" data-track-section="homepage_gateway">
+				<?php foreach ( $home_routing_gateways as $key => $gw ) : ?>
+					<a class="hu-gateway hu-gateway--<?php echo esc_attr( $key ); ?>"
+					   href="<?php echo esc_url( $gw['url'] ); ?>"
+					   data-track-action="<?php echo esc_attr( $gw['action'] ); ?>"
+					   data-track-category="lead_gen"
+					   data-track-section="homepage_gateway">
+						<div class="hu-gateway__head">
+							<span class="hu-gateway__badge"><?php echo esc_html( $gw['badge'] ); ?></span>
+							<span class="hu-gateway__kicker hu-mono"><?php echo esc_html( $gw['kicker'] ); ?></span>
 						</div>
-
-						<div class="hu-lead-core" aria-label="Eigene Anfrage-Strecke">
-							<div class="hu-lead-core__ring" aria-hidden="true"></div>
-							<div class="hu-lead-core__content">
-								<span>Eigene Strecke</span>
-								<strong>Seite · Vorqualifizierung · Tracking</strong>
-							</div>
+						<h2 class="hu-gateway__title"><?php echo esc_html( $gw['title'] ); ?></h2>
+						<p class="hu-gateway__desc"><?php echo esc_html( $gw['desc'] ); ?></p>
+						<div class="hu-gateway__foot">
+							<span class="hu-gateway__persona"><?php echo esc_html( $gw['persona'] ); ?></span>
+							<span class="hu-gateway__cta">
+								<?php echo esc_html( $gw['label'] ); ?>
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+							</span>
 						</div>
-
-						<div class="hu-lead-node hu-lead-node--outcome">
-							<span>Ergebnis</span>
-							<strong>Passende Anfrage</strong>
-						</div>
-					</div>
-
-					<div class="hu-lead-sketch__footer">
-						<span>Fit-Signal vor dem Anruf</span>
-						<span>Ohne Cookie-Banner-Setup</span>
-					</div>
-				</div>
+					</a>
+				<?php endforeach; ?>
 			</div>
 
 		</div><!-- .hu-hero__container -->
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     01 / STATUS QUO
+	     01 / SYSTEM-VERLUST-RASTER
+	     Die drei Verlustpunkte, die die Zielgruppe selten in Euro misst.
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section hu-section--cream" id="kostet" data-track-section="homepage_pain">
+	<section class="hu-section hu-section--cream" id="verlust" data-track-section="homepage_loss_grid">
 		<div class="hu-container">
 			<div class="hu-proof-headline hu-reveal">
-				<span class="hu-eyebrow">01 / Status quo</span>
-				<h2 style="color:var(--ink)">Was Sie gerade jeden Monat verlieren.</h2>
-				<p>Drei Posten, die jeder Solar-Betrieb spürt — selten in Euro misst.</p>
+				<span class="hu-eyebrow">01 / System-Verlust-Raster</span>
+				<h2 style="color:var(--ink)">Drei Lecks, die jedes Wachstums-Budget aufzehren.</h2>
+				<p>Bevor mehr Reichweite hilft, müssen diese drei Stellen schließen — sonst skaliert nur der Verlust.</p>
 			</div>
 
-			<div class="hu-cost-grid">
-				<article class="hu-cost-card hu-reveal">
-					<div class="hu-cost-card__big">~ 4.800 € / Monat</div>
-					<div class="hu-cost-card__sub">Sie füttern Wettbewerber</div>
-					<p class="hu-cost-card__body">Portal-Leads kennen das Portal — nicht Sie. Ihr Vertrieb startet jedes Gespräch von null.</p>
+			<div class="hu-loss-grid">
+				<article class="hu-loss-card hu-reveal">
+					<div class="hu-loss-card__num hu-mono">VERLUSTPUNKT 01</div>
+					<div class="hu-loss-card__title">Taubes Tracking</div>
+					<div class="hu-loss-card__bracket">Die Daten-Lücke</div>
+					<p class="hu-loss-card__body">
+						Standard-Analytics zählt Klicks — aber nicht, welche Anfrage der Vertrieb am Ende wirklich abschließt.
+						Ergebnis: Budget wird blind auf falsche Kanäle verteilt.
+					</p>
 				</article>
-				<article class="hu-cost-card hu-reveal">
-					<div class="hu-cost-card__big">Blindflug</div>
-					<div class="hu-cost-card__sub">Klicks ≠ Anfragen ≠ Termine</div>
-					<p class="hu-cost-card__body">Drei getrennte Tools, kein gemeinsames Bild. Sie wissen nicht, welcher Kanal Umsatz produziert.</p>
+
+				<article class="hu-loss-card hu-reveal">
+					<div class="hu-loss-card__num hu-mono">VERLUSTPUNKT 02</div>
+					<div class="hu-loss-card__title">Gemieteter Grund</div>
+					<div class="hu-loss-card__bracket">Das Portal-Dilemma</div>
+					<p class="hu-loss-card__body">
+						Wer Leads exklusiv bei Drittanbieter-Portalen kauft, teilt sich den Kontakt mit drei Mitbewerbern,
+						steht unter Margendruck und besitzt keinen eigenen digitalen Vermögenswert.
+					</p>
 				</article>
-				<article class="hu-cost-card hu-reveal">
-					<div class="hu-cost-card__big">Seit 2024 härter</div>
-					<div class="hu-cost-card__sub">Boom trägt schwache Setups nicht mehr</div>
-					<p class="hu-cost-card__body">Der Markt wird teurer. Eine schöne Website reicht nicht. Es braucht einen eigenen Qualifizierungsweg.</p>
+
+				<article class="hu-loss-card hu-reveal">
+					<div class="hu-loss-card__num hu-mono">VERLUSTPUNKT 03</div>
+					<div class="hu-loss-card__title">Funnel-Bloat</div>
+					<div class="hu-loss-card__bracket">Die Conversion-Bremse</div>
+					<p class="hu-loss-card__body">
+						Komplexe Themes und unkoordinierte Plugins verlangsamen die WordPress-Performance (INP/LCP-Verfall)
+						und jagen kaufnahe Besucher in Sackgassen — statt Abschlüsse vorzubereiten.
+					</p>
 				</article>
 			</div>
 
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
 				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
-				   data-track-action="cta_home_pain_analysis" data-track-category="lead_gen">
-					Eigene Lead-Verluste stoppen
+				   data-track-action="cta_home_loss_grid_marktcheck" data-track-category="lead_gen" data-track-section="homepage_loss_grid">
+					Diese Lecks am eigenen System prüfen
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 				</a>
 			</div>
@@ -207,219 +260,47 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     02 / MARKT VS. EIGENER WEG
+	     02 / 6 SYSTEM-PHASEN
+	     Strukturgleich zu page-wordpress-agentur.php — kein redundanter Text.
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section" id="system" data-track-section="homepage_compare">
+	<section class="hu-section" id="phasen" data-track-section="homepage_phases">
 		<div class="hu-container">
 			<div class="hu-section-head hu-reveal">
-				<span class="hu-eyebrow">02 / Markt vs. eigener Weg</span>
+				<span class="hu-eyebrow">02 / System-Phasen</span>
 				<div>
-					<h2>Sie kaufen keine Leads mehr. Sie bauen den Weg, auf dem sie entstehen.</h2>
-					<p class="hu-lead">Der Ausweg ist nicht ein besseres Portal. Es ist ein Anfrageweg, der Ihnen gehört — und sich messen lässt.</p>
+					<h2>WordPress, SEO, Tracking und CRO — in der richtigen Reihenfolge.</h2>
+					<p class="hu-lead">Sechs Phasen, eine Methodik. Welche Phase zuerst greift, entscheidet der Marktcheck — nicht der Katalog.</p>
 				</div>
 			</div>
 
-			<div class="hu-compare hu-reveal">
-				<!-- Bad column -->
-				<div class="hu-compare__col hu-compare__col--bad">
-					<div class="hu-compare__head">
-						<span class="hu-compare__icon">✕</span>
-						<span>Markt-Standard</span>
-					</div>
-					<div class="hu-compare__row">
-						<div class="hu-compare__row-t">Portal-Leads</div>
-						<div class="hu-compare__row-d">Drei Wettbewerber bekommen dieselbe Anfrage. Sie bieten gegen den Preis.</div>
-					</div>
-					<div class="hu-compare__row">
-						<div class="hu-compare__row-t">Klickberichte</div>
-						<div class="hu-compare__row-d">Reportings über Impressionen — nicht über Projektwert.</div>
-					</div>
-					<div class="hu-compare__row">
-						<div class="hu-compare__row-t">5-Felder-Formular</div>
-						<div class="hu-compare__row-d">Verliert Interessenten, bevor sie qualifiziert sind.</div>
-					</div>
-					<div class="hu-compare__row">
-						<div class="hu-compare__row-t">Black-Box-Agentur</div>
-						<div class="hu-compare__row-d">Kein Mensch weiß, woher die nächste Anfrage kommt.</div>
-					</div>
-				</div>
+			<ol class="hu-phases hu-reveal">
+				<?php foreach ( $home_system_phases as $phase ) : ?>
+					<li class="hu-phase">
+						<span class="hu-phase__num hu-mono"><?php echo esc_html( $phase['num'] ); ?></span>
+						<h3 class="hu-phase__title"><?php echo esc_html( $phase['title'] ); ?></h3>
+						<p class="hu-phase__desc"><?php echo esc_html( $phase['desc'] ); ?></p>
+					</li>
+				<?php endforeach; ?>
+			</ol>
 
-				<!-- Divider -->
-				<div class="hu-compare__divider" aria-hidden="true">
-					<span class="hu-compare__divider-icon">→</span>
-				</div>
-
-				<!-- Good column -->
-				<div class="hu-compare__col hu-compare__col--good">
-					<div class="hu-compare__head">
-						<span class="hu-compare__icon hu-compare__icon--good">✓</span>
-						<span>Eigener Weg</span>
-					</div>
-					<div class="hu-compare__row">
-						<div class="hu-compare__row-t">Eigene Anfragestrecke</div>
-						<div class="hu-compare__row-d">Anfragen, die Ihrem Betrieb gehören — nicht dem Portal.</div>
-					</div>
-					<div class="hu-compare__row">
-						<div class="hu-compare__row-t">Anfragequalität messbar</div>
-						<div class="hu-compare__row-d">Region, Heizart, Dach, Projektwert — vor dem Anruf.</div>
-					</div>
-					<div class="hu-compare__row">
-						<div class="hu-compare__row-t">60-Sek-Vorqualifizierung</div>
-						<div class="hu-compare__row-d">Daten erst, wenn der Fit klar ist.</div>
-					</div>
-					<div class="hu-compare__row">
-						<div class="hu-compare__row-t">Dokumentiertes System</div>
-						<div class="hu-compare__row-d">Sie verstehen, warum es funktioniert. Sie können es weitergeben.</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- ═══════════════════════════════════════════════════
-	     03 / DER WEG (Process, 3 Schritte)
-	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section hu-section--cream" data-track-section="homepage_process">
-		<div class="hu-container">
-			<div class="hu-proof-headline hu-reveal">
-				<span class="hu-eyebrow">03 / Der Weg</span>
-				<h2 style="color:var(--ink)">Drei Schritte. Keine Reise.</h2>
-				<p>Sie starten mit Klarheit, nicht mit einem Vertrag.</p>
-			</div>
-
-			<div class="hu-process-grid">
-				<!-- Left: asset visual -->
-				<div class="hu-process-asset hu-reveal">
-					<div class="hu-process-asset__row">
-						<div class="hu-eyebrow">Analyse</div>
-						<div class="hu-process-asset__row-title">Marktbild + Fit-Ampel</div>
-					</div>
-					<div class="hu-process-asset__row">
-						<div class="hu-eyebrow">Architektur</div>
-						<div class="hu-process-asset__row-title">Money Page · Funnel · Tracking</div>
-					</div>
-					<div class="hu-process-asset__row">
-						<div class="hu-eyebrow">Output</div>
-						<div class="hu-process-asset__row-title">Eigener Anfrageweg</div>
-					</div>
-					<div class="hu-process-asset__metrics">
-						<div class="hu-process-asset__metric">
-							<div class="hu-process-asset__metric-num" style="color:var(--accent)"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
-							<div class="hu-process-asset__metric-lbl">Kosten / Anfrage</div>
-						</div>
-						<div class="hu-process-asset__metric">
-							<div class="hu-process-asset__metric-num"><?php echo esc_html( $e3_timeframe ); ?></div>
-							<div class="hu-process-asset__metric-lbl">Referenz-Zeitraum</div>
-						</div>
-					</div>
-				</div>
-
-				<!-- Right: steps -->
-				<div class="hu-steps hu-reveal">
-					<div class="hu-step">
-						<div class="hu-step__num">1</div>
-						<div class="hu-step__title">Analysieren</div>
-						<p class="hu-step__body">Markt, Region, Projektwert, bestehende Kanäle. Wir schauen ehrlich, ob ein eigener Weg sich rechnet — ohne Verkaufsgespräch.</p>
-						<div class="hu-step__out">→ Marktbild + Fit-Ampel</div>
-					</div>
-					<div class="hu-step">
-						<div class="hu-step__num">2</div>
-						<div class="hu-step__title">Qualifizieren</div>
-						<p class="hu-step__body">Wenn grün oder gelb: Fit-Ampel pro Anfrage, Leadkosten-Korridor, nächster Schritt. Bauchgefühl raus, Signal rein.</p>
-						<div class="hu-step__out">→ Klare Entscheidung statt Bauchgefühl</div>
-					</div>
-					<div class="hu-step">
-						<div class="hu-step__num">3</div>
-						<div class="hu-step__title">Umsetzen</div>
-						<p class="hu-step__body">Nur passende Founding-Partner gehen in den Aufbau: Money Page, Funnel, Tracking, Ads-Setup. 9 Monate Begleitung.</p>
-						<div class="hu-step__out">→ Eigener Anfrageweg — bleibt Ihnen.</div>
-					</div>
-				</div>
-			</div>
-
-			<div style="text-align:center;margin-top:48px" class="hu-reveal">
-				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
-				   data-track-action="cta_home_process_analysis" data-track-category="lead_gen">
-					Anfrage-System-Analyse anfordern
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+			<div class="hu-phases__cta hu-reveal">
+				<a href="<?php echo esc_url( $agentur_hub_url ); ?>" class="hu-btn hu-btn-link"
+				   data-track-action="cta_home_phases_agentur" data-track-category="lead_gen" data-track-section="homepage_phases">
+					Vollständige Methodenbibliothek im Agentur-Hub
 				</a>
 			</div>
 		</div>
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     04 / ZWEI WEGE (Models)
-	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section" data-track-section="homepage_models">
-		<div class="hu-container">
-			<div class="hu-section-head hu-reveal">
-				<span class="hu-eyebrow">04 / Zwei Wege</span>
-				<div>
-					<h2>Mieten oder besitzen.<br>Eine Entscheidung über 24 Monate.</h2>
-					<p class="hu-lead">Beide Wege kosten Geld. Nur einer hinterlässt am Ende ein Asset, das Ihnen gehört.</p>
-				</div>
-			</div>
-
-			<div class="hu-models hu-reveal">
-				<div class="hu-model hu-model--a">
-					<div class="hu-model__label">Modell A · Status quo</div>
-					<div class="hu-model__title">Nachfrage mieten</div>
-					<ul class="hu-model__list">
-						<li><span class="hu-model__bullet">✕</span><span>Klicks werden teurer, Ihre Seite konvertiert nicht mit.</span></li>
-						<li><span class="hu-model__bullet">✕</span><span>Reports ohne klares Entscheidungssignal.</span></li>
-						<li><span class="hu-model__bullet">✕</span><span>Budget aus = Anfragen aus.</span></li>
-					</ul>
-					<div class="hu-model__foot">24 Monate ≈ 26.000 € · 0 € Asset am Ende</div>
-					<span class="hu-model__pill">Kostet, ohne zu skalieren</span>
-				</div>
-				<div class="hu-model hu-model--b">
-					<div class="hu-model__label">Modell B · Empfohlen</div>
-					<div class="hu-model__title">Anfrageweg besitzen</div>
-					<ul class="hu-model__list">
-						<li><span class="hu-model__bullet">✓</span><span>Money Page und Proof werden bleibende Assets.</span></li>
-						<li><span class="hu-model__bullet">✓</span><span>Privacy-first Tracking liefert echte Entscheidungssignale.</span></li>
-						<li><span class="hu-model__bullet">✓</span><span>Skalieren, wenn das Fundament steht — nicht vorher.</span></li>
-					</ul>
-					<div class="hu-model__foot">24 Monate ≈ 13.200 – 19.200 € · aktiviertes Asset</div>
-					<span class="hu-model__pill">Asset, das bleibt</span>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- ═══════════════════════════════════════════════════
-	     05 / E3 PROOF
+	     03 / E3 PROOF — kompakt, validiert Gateway 3
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section" id="proof" data-track-section="homepage_proof">
 		<div class="hu-container">
 			<div class="hu-proof-headline hu-reveal">
-				<span class="hu-eyebrow">05 / E3 New Energy</span>
+				<span class="hu-eyebrow">03 / Validierung</span>
 				<h2>Vom Lead-Einkauf zur eigenen Pipeline.</h2>
-				<p><?php echo esc_html( $e3_timeframe ); ?>. Eine Referenz, die nicht auf Folien steht.</p>
-			</div>
-
-			<div class="hu-proof-cards hu-reveal">
-				<div class="hu-proof-card">
-					<div class="hu-proof-card__lbl">Vorher</div>
-					<div class="hu-proof-card__title">Portal-Lead-Welt</div>
-					<ul class="hu-proof-list">
-						<li><span class="x">✕</span> Hohe Lead-Kosten, schwankende Qualität</li>
-						<li><span class="x">✕</span> Hälfte der Leads geht nicht ans Telefon</li>
-						<li><span class="x">✕</span> Kein Überblick über konvertierende Kanäle</li>
-						<li><span class="x">✕</span> Wachstum nur durch mehr Budget möglich</li>
-					</ul>
-				</div>
-				<div class="hu-proof-arrow" aria-hidden="true">→</div>
-				<div class="hu-proof-card hu-proof-card--after">
-					<div class="hu-proof-card__lbl">Nach <?php echo esc_html( $e3_timeframe_dat ); ?></div>
-					<div class="hu-proof-card__title">Eigene, skalierbare Pipeline</div>
-					<ul class="hu-proof-list">
-						<li><span class="v">✓</span> Vorqualifizierte Anfragen unter eigener Kontrolle</li>
-						<li><span class="v">✓</span> Kanal-Ebene messbar — sauber per Consent</li>
-						<li><span class="v">✓</span> Money Page und Proof als bleibende Assets</li>
-						<li><span class="v">✓</span> Skaliert, ohne dass die Kosten explodieren</li>
-					</ul>
-				</div>
+				<p><?php echo esc_html( $e3_timeframe ); ?> · E3 New Energy. Eine Referenz, die nicht auf Folien steht.</p>
 			</div>
 
 			<div class="hu-proof-stats hu-reveal">
@@ -440,115 +321,11 @@ get_header();
 					<div class="hu-proof-stat__lbl">Kosten / Anfrage</div>
 				</div>
 			</div>
-		</div>
-	</section>
-
-	<!-- ═══════════════════════════════════════════════════
-	     06 / DAS SYSTEM — VISUELL
-	     Portal-Chaos vs. eigene Strecke — konkrete Zahlen.
-	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section hu-system-visual-section" id="flow" data-track-section="homepage_system_visual">
-		<div class="hu-container">
-			<div class="hu-proof-headline hu-reveal" style="margin-bottom:64px">
-				<span class="hu-eyebrow">06 / Das System — visuell</span>
-				<h2>Vom Portal-Chaos zur qualifizierten Anfrage.</h2>
-				<p style="color:var(--fg-2);font-weight:400">Ein klarer Weg. Messbar an jedem Punkt.</p>
-			</div>
-
-			<div class="hu-system-flow hu-reveal">
-				<!-- Linke Spalte: Portal-Chaos -->
-				<div class="hu-sf-col hu-sf-col--bad">
-					<div class="hu-sf-col-head">
-						<div class="hu-sf-col-label">AKTUELL</div>
-						<div class="hu-sf-col-title">Portal-Chaos</div>
-					</div>
-					<div class="hu-sf-row">
-						<div class="hu-sf-row-icon" aria-hidden="true">×</div>
-						<div class="hu-sf-row-content">
-							<div class="hu-sf-row-t">Portal-Lead</div>
-							<div class="hu-sf-row-d">160 € · 3 Wettbewerber</div>
-						</div>
-					</div>
-					<div class="hu-sf-row">
-						<div class="hu-sf-row-icon" aria-hidden="true">×</div>
-						<div class="hu-sf-row-content">
-							<div class="hu-sf-row-t">Ads ohne Fit-Signal</div>
-							<div class="hu-sf-row-d">240 € CPA · Blindflug</div>
-						</div>
-					</div>
-					<div class="hu-sf-row">
-						<div class="hu-sf-row-icon" aria-hidden="true">×</div>
-						<div class="hu-sf-row-content">
-							<div class="hu-sf-row-t">SEO ohne Conversion</div>
-							<div class="hu-sf-row-d">Traffic · 0 Anfragen</div>
-						</div>
-					</div>
-					<div class="hu-sf-cost">
-						<div class="hu-sf-cost-label">KOSTEN / MONAT</div>
-						<div class="hu-sf-cost-num">~ 4.800 €</div>
-					</div>
-				</div>
-
-				<!-- Pfeil -->
-				<div class="hu-sf-arrow" aria-hidden="true">
-					<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M5 12h14M13 6l6 6-6 6"/>
-					</svg>
-				</div>
-
-				<!-- Rechte Spalte: Eigene Strecke -->
-				<div class="hu-sf-col hu-sf-col--good">
-					<div class="hu-sf-col-head">
-						<div class="hu-sf-col-label">EIGENES SYSTEM</div>
-						<div class="hu-sf-col-title">Eigene Strecke</div>
-					</div>
-					<div class="hu-sf-row">
-						<div class="hu-sf-row-icon hu-sf-row-icon--good">1</div>
-						<div class="hu-sf-row-content">
-							<div class="hu-sf-row-t">Money Page</div>
-							<div class="hu-sf-row-d">Region · Angebot · Beweis</div>
-						</div>
-					</div>
-					<div class="hu-sf-row">
-						<div class="hu-sf-row-icon hu-sf-row-icon--good">2</div>
-						<div class="hu-sf-row-content">
-							<div class="hu-sf-row-t">Vorqualifizierung</div>
-							<div class="hu-sf-row-d">Händische Prüfung · ohne Formularballast</div>
-						</div>
-					</div>
-					<div class="hu-sf-row">
-						<div class="hu-sf-row-icon hu-sf-row-icon--good">3</div>
-						<div class="hu-sf-row-content">
-							<div class="hu-sf-row-t">Privacy-first Tracking</div>
-							<div class="hu-sf-row-d">Kanal-Ebene · Consent</div>
-						</div>
-					</div>
-					<div class="hu-sf-result">
-						<div class="hu-sf-result-label">ERGEBNIS</div>
-						<div class="hu-sf-result-stats">
-							<div><span class="hu-sf-result-num"><?php echo esc_html( $e3_lead_count ); ?></span> Anfragen</div>
-							<div><span class="hu-sf-result-num"><?php echo esc_html( $e3_sales_conv ); ?></span> Abschluss</div>
-							<div><span class="hu-sf-result-num hu-sf-result-num--accent"><?php echo esc_html( $e3_cpl_reduction ); ?></span> Kosten</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="hu-sf-footer hu-reveal">
-				<div class="hu-sf-footer-l">
-					<div class="hu-eyebrow">ZEITRAUM</div>
-					<div class="hu-sf-footer-t"><?php echo esc_html( $e3_timeframe ); ?> · E3 New Energy</div>
-				</div>
-				<div class="hu-sf-footer-r">
-					<div class="hu-eyebrow">SETUP</div>
-					<div class="hu-sf-footer-t">Ohne Cookie-Banner · Privacy-first</div>
-				</div>
-			</div>
 
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
-				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
-				   data-track-action="cta_home_flow_analysis" data-track-category="lead_gen">
-					Kostenfreien Marktcheck starten
+				<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-primary"
+				   data-track-action="cta_home_proof_case_study" data-track-category="lead_gen" data-track-section="homepage_proof">
+					Vollständigen E3-Case analysieren
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 				</a>
 			</div>
@@ -556,87 +333,7 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     07 / WANN ES SICH LOHNT (Fit)
-	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section hu-section--cream" id="fit" data-track-section="homepage_fit">
-		<div class="hu-container">
-			<div class="hu-proof-headline hu-reveal" style="margin-bottom:48px">
-				<span class="hu-eyebrow">07 / Wann es sich lohnt</span>
-				<h2 style="color:var(--ink)">Ehrliche Vorauswahl, bevor wir reden.</h2>
-				<p>Lieber jetzt klären, ob es passt — als später ein Setup zu bauen, das ins Leere läuft.</p>
-			</div>
-
-			<div class="hu-fit-grid hu-reveal">
-				<div class="hu-fit-col hu-fit-col--yes">
-					<div class="hu-fit-col__head">
-						<span class="hu-fit-col__badge hu-fit-col__badge--yes">✓</span>
-						<span>Passt, wenn …</span>
-					</div>
-					<ul class="hu-fit-list">
-						<li>
-							<div class="hu-fit-list__t">Solar oder Wärmepumpe im DACH-Mittelstand</div>
-							<div class="hu-fit-list__d">Mit eigenem Vertrieb, nicht reine Vermittlung.</div>
-						</li>
-						<li>
-							<div class="hu-fit-list__t">Klares Zielgebiet</div>
-							<div class="hu-fit-list__d">Region oder Bundesland definiert — kein „bundesweit, alles".</div>
-						</li>
-						<li>
-							<div class="hu-fit-list__t">Hohe Projektwerte</div>
-							<div class="hu-fit-list__d">B2C ab ~15 k €, B2B ab ~50 k € pro Projekt.</div>
-						</li>
-						<li>
-							<div class="hu-fit-list__t">Geschäftsführung entscheidet</div>
-							<div class="hu-fit-list__d">Über Aufbau, Marke und Positionierung — kurze Wege.</div>
-						</li>
-						<li>
-							<div class="hu-fit-list__t">24-Monate-Horizont</div>
-							<div class="hu-fit-list__d">Bereit, ein Asset aufzubauen statt nur Anfragen einzukaufen.</div>
-						</li>
-					</ul>
-				</div>
-				<div class="hu-fit-col hu-fit-col--no">
-					<div class="hu-fit-col__head">
-						<span class="hu-fit-col__badge hu-fit-col__badge--no">✕</span>
-						<span>Passt nicht, wenn …</span>
-					</div>
-					<ul class="hu-fit-list">
-						<li>
-							<div class="hu-fit-list__t">Reines Vermittlungsgeschäft</div>
-							<div class="hu-fit-list__d">Wer Leads weiterverkauft, braucht kein eigenes System.</div>
-						</li>
-						<li>
-							<div class="hu-fit-list__t">„Nächste Woche brauchen wir Leads."</div>
-							<div class="hu-fit-list__d">Tragfähige Pipelines wachsen über Monate, nicht Tage.</div>
-						</li>
-						<li>
-							<div class="hu-fit-list__t">Kein Vertrieb am Telefon</div>
-							<div class="hu-fit-list__d">Anfragen sterben, wenn niemand zurückruft.</div>
-						</li>
-						<li>
-							<div class="hu-fit-list__t">Keine Marke gewollt</div>
-							<div class="hu-fit-list__d">Eigener Anfrageweg lebt davon, dass Sie sichtbar werden.</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-
-			<div style="text-align:center;margin-top:48px" class="hu-reveal">
-				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
-				   data-track-action="cta_home_fit_analysis" data-track-category="lead_gen">
-					Eigene Region jetzt prüfen
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-				</a>
-				<div class="hu-mono" style="margin-top:16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)">
-					Erst Formular · dann Entscheidung · keine Verkaufspräsentation
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- ═══════════════════════════════════════════════════
-	     08 / ÜBER MICH
-	     Trust-Anker VOR Einwand-Behandlung — bessere CRO-Sequenz.
+	     04 / ÜBER MICH — Trust-Anker
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--cream" id="about" data-track-section="homepage_about">
 		<div class="hu-container">
@@ -646,7 +343,7 @@ get_header();
 					<div class="hu-about-photo__tag hu-mono">HANNOVER · 2026</div>
 				</div>
 				<div class="hu-about-text hu-reveal">
-					<span class="hu-eyebrow">08 / Wer steht dahinter</span>
+					<span class="hu-eyebrow">04 / Wer steht dahinter</span>
 					<h2>Ich bohre Brunnen.<br>Digital.</h2>
 					<p class="hu-lead" style="color:var(--ink-2)">
 						Für Solar- und Wärmepumpen-Betriebe, die ihre Anfragen nicht dauerhaft über Portale
@@ -659,14 +356,13 @@ get_header();
 					</p>
 					<ul class="hu-about-bullets">
 						<li><span class="hu-about-bullet-dot"></span>Medienwissenschaftlicher Hintergrund — Sprache vor Code</li>
-						<li><span class="hu-about-bullet-dot"></span>Jahrelange Arbeit an digitalen Strukturen für erklärungsbedürftige B2B-Angebote</li>
-						<li><span class="hu-about-bullet-dot"></span>Fokus auf Solar & Wärmepumpen — seit dem E3-Case</li>
+						<li><span class="hu-about-bullet-dot"></span>Fokus auf Solar &amp; Wärmepumpen seit dem E3-Case</li>
 						<li><span class="hu-about-bullet-dot"></span>Founder seit 2026 · Hannover, remote</li>
 						<li><span class="hu-about-bullet-dot"></span>Nimmt 2026 maximal 3 Founding-Partner auf</li>
 					</ul>
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 					   style="margin-top:8px"
-					   data-track-action="cta_home_about_analysis" data-track-category="lead_gen">
+					   data-track-action="cta_home_about_marktcheck" data-track-category="lead_gen" data-track-section="homepage_about">
 						Eigene Region jetzt prüfen
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
@@ -676,13 +372,12 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     09 / FAQ
-	     Letzte Einwand-Behandlung direkt vor dem CTA.
+	     05 / FAQ — Einwand-Behandlung vor dem letzten Routing.
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section" id="faq" data-track-section="homepage_faq">
 		<div class="hu-container" style="max-width:880px">
 			<div class="hu-proof-headline hu-reveal" style="margin-bottom:48px">
-				<span class="hu-eyebrow">09 / FAQ</span>
+				<span class="hu-eyebrow">05 / FAQ</span>
 				<h2>Was Geschäftsführer wirklich fragen.</h2>
 			</div>
 
@@ -694,7 +389,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">−</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Den ehrlichen, händisch geprüften Befund deiner Domain und Region erhältst du innerhalb von 48 Stunden per E-Mail. Keine automatischen Standard-PDFs, sondern eine echte strategische Einordnung.</div>
+						<div class="hu-faq-item__a-inner">Der händisch geprüfte Befund deiner Domain und Region kommt innerhalb von 48 Stunden per E-Mail. Keine automatischen Standard-PDFs, sondern eine strategische Einordnung.</div>
 					</div>
 				</div>
 
@@ -704,7 +399,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Beides. Die Website ist nur der Motor. Tracking, Vorqualifizierung und Steuerung der Werbekanäle gehören dazu — sonst hängen Sie weiter in Portal-Leads fest.</div>
+						<div class="hu-faq-item__a-inner">Beides. Die Website ist nur der Motor. Tracking, Vorqualifizierung und Steuerung der Werbekanäle gehören dazu — sonst bleibt der Betrieb in Portal-Leads gefangen.</div>
 					</div>
 				</div>
 
@@ -714,7 +409,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-							<div class="hu-faq-item__a-inner">Der Marktcheck ist 0 €. Der Aufbau danach liegt — abhängig vom Setup — bei 13.200 – 19.200 € verteilt auf 24 Monate. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten ca. 26.000 €. Sie zahlen weniger und behalten das Asset.</div>
+							<div class="hu-faq-item__a-inner">Der Marktcheck ist 0 €. Der Aufbau danach liegt — abhängig vom Setup — bei 13.200 – 19.200 € verteilt auf 24 Monate. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten ca. 26.000 €. Weniger Kosten, dafür ein Asset, das bleibt.</div>
 					</div>
 				</div>
 
@@ -744,41 +439,23 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Ja, wenn die Substanz reicht. Manchmal ist ein Money-Page-Slot auf einer bestehenden Domain der schnellere Hebel als ein kompletter Relaunch. Das klären wir in der Analyse.</div>
+						<div class="hu-faq-item__a-inner">Ja, wenn die Substanz reicht. Manchmal ist ein Money-Page-Slot auf einer bestehenden Domain der schnellere Hebel als ein kompletter Relaunch. Das klärt der Marktcheck.</div>
 					</div>
 				</div>
 
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button" aria-expanded="false">
-						<span>Was, wenn ich keine eigene Marke aufbauen will?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Dann ist ein eigener Anfrageweg nicht der richtige Hebel für Sie. Sagen Sie es mir früh — ich verkaufe Ihnen nichts, was Sie nicht brauchen.</div>
-					</div>
-				</div>
-
-			</div>
-
-			<div style="text-align:center;margin-top:48px" class="hu-reveal">
-				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
-				   data-track-action="cta_home_faq_analysis" data-track-category="lead_gen">
-					Kostenfreien Marktcheck starten
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-				</a>
 			</div>
 		</div>
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     10 / VERTIEFUNG — Themen-Hub
+	     06 / VERTIEFUNG — Themen-Hub für SEO-Sub-Pages
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--cream" id="deeper" data-track-section="homepage_deeper" aria-labelledby="hu-deeper-h">
 		<div class="hu-container">
 			<div class="hu-proof-headline hu-reveal" style="margin-bottom:48px;text-align:center">
-				<span class="hu-eyebrow">10 / Vertiefung</span>
+				<span class="hu-eyebrow">06 / Vertiefung</span>
 				<h2 id="hu-deeper-h">Themen-Hub für tiefere Recherche.</h2>
-				<p style="max-width:62ch;margin:16px auto 0;color:var(--muted)">
+				<p style="max-width:62ch;margin:16px auto 0;color:var(--ink-2)">
 					Acht thematische Seiten zu Strategie, Lead-Qualität, Funnel-Architektur und Markteinordnung. Jede Seite steht für sich, alle führen zurück zum Marktcheck.
 				</p>
 			</div>
@@ -808,58 +485,52 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     11 / FINAL CTA
+	     07 / FINAL ROUTING — die 3 Gateways noch einmal.
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section" id="cta" data-track-section="homepage_cta">
+	<section class="hu-section" id="cta" data-track-section="homepage_final_routing">
 		<div class="hu-container">
-			<div class="hu-final-cta hu-reveal">
-				<div class="hu-final-cta__avatar">
-					<img src="<?php echo esc_url( $portrait_url ); ?>" alt="Haşim Üner" width="72" height="72" loading="lazy">
+			<div class="hu-final-routing hu-reveal">
+				<div class="hu-final-routing__head">
+					<span class="hu-eyebrow" style="color:var(--accent)">07 / Nächster Schritt</span>
+					<h2 class="hu-display">Wählen Sie die Route, die zu Ihrem Reifegrad passt.</h2>
+					<p>Kein Pitch. Drei klare Einstiege — jede führt zu einem konkreten, prüfbaren Schritt.</p>
 				</div>
-				<span class="hu-eyebrow" style="color:var(--accent)">11 / Nächster Schritt</span>
-				<h2 class="hu-display">Manueller, tiefer Marktcheck statt Software-Einheitsbrei.</h2>
-				<p>Kein Pitch. Händische Analyse deiner Region und deines Anfrageprozesses — Befund per E-Mail innerhalb von 48 Stunden.</p>
 
-				<div class="hu-cta-flow">
-
-					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-cta-option hu-cta-option--primary"
-					   data-track-action="cta_home_final_qualify" data-track-category="lead_gen">
-						<div class="hu-cta-option__step">SCHRITT 1</div>
-						<div class="hu-cta-option__title">Fit prüfen</div>
-						<div class="hu-cta-option__desc">Markt, Region, Budget und Anfrageprozess werden sauber eingeordnet.</div>
-						<div class="hu-cta-option__cta">
-							Formular starten
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-						</div>
-					</a>
-
-					<div class="hu-cta-flow__then" aria-hidden="true">
-						<span class="hu-cta-flow__line"></span>
-						<span class="hu-cta-flow__then-label hu-mono">DANACH — nur wenn der Fit passt</span>
-						<span class="hu-cta-flow__line"></span>
-					</div>
-
-					<div class="hu-cta-option-group">
-						<div class="hu-cta-option hu-cta-option--static">
-							<div class="hu-cta-option__step">A · BEFUND</div>
-							<div class="hu-cta-option__title">Klare Empfehlung</div>
-							<div class="hu-cta-option__desc">Grün, gelb oder rot — mit nächstem sinnvollen Schritt.</div>
-						</div>
-						<a href="<?php echo esc_url( $contact_url ); ?>" class="hu-cta-option"
-						   data-track-action="cta_home_final_contact" data-track-category="lead_gen">
-							<div class="hu-cta-option__step">B · NACHRICHT</div>
-							<div class="hu-cta-option__title">Vorab schreiben</div>
-							<div class="hu-cta-option__desc">Wenn Sie vor der Diagnose eine konkrete Frage klären möchten.</div>
+				<div class="hu-gateways hu-gateways--final" data-track-section="homepage_final_routing">
+					<?php foreach ( $home_routing_gateways as $key => $gw ) : ?>
+						<a class="hu-gateway hu-gateway--<?php echo esc_attr( $key ); ?>"
+						   href="<?php echo esc_url( $gw['url'] ); ?>"
+						   data-track-action="final_<?php echo esc_attr( $gw['action'] ); ?>"
+						   data-track-category="lead_gen"
+						   data-track-section="homepage_final_routing">
+							<div class="hu-gateway__head">
+								<span class="hu-gateway__badge"><?php echo esc_html( $gw['badge'] ); ?></span>
+								<span class="hu-gateway__kicker hu-mono"><?php echo esc_html( $gw['kicker'] ); ?></span>
+							</div>
+							<h3 class="hu-gateway__title"><?php echo esc_html( $gw['title'] ); ?></h3>
+							<p class="hu-gateway__desc"><?php echo esc_html( $gw['desc'] ); ?></p>
+							<div class="hu-gateway__foot">
+								<span class="hu-gateway__persona"><?php echo esc_html( $gw['persona'] ); ?></span>
+								<span class="hu-gateway__cta">
+									<?php echo esc_html( $gw['label'] ); ?>
+									<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+								</span>
+							</div>
 						</a>
-					</div>
+					<?php endforeach; ?>
 				</div>
 
-				<div class="hu-final-cta__signature">— <strong>Haşim Üner</strong> · persönlich, nicht durch ein Vertriebsteam</div>
+				<div class="hu-final-routing__alt">
+					<a href="<?php echo esc_url( $contact_url ); ?>" class="hu-btn hu-btn-link"
+					   data-track-action="cta_home_final_contact" data-track-category="lead_gen" data-track-section="homepage_final_routing">
+						Lieber direkt schreiben? Kontakt mit konkreter Frage
+					</a>
+				</div>
+
+				<div class="hu-final-routing__signature">— <strong>Haşim Üner</strong> · persönlich, nicht durch ein Vertriebsteam</div>
 			</div>
 		</div>
 	</section>
-
-	<?php /* Eigener Footer entfernt — die Seite nutzt den globalen Blocksy-Footer (siehe get_footer()). */ ?>
 
 </div><!-- .hu-hp -->
 
