@@ -2808,3 +2808,224 @@ body.page-template-page-solar-waermepumpen-leadgenerierung-php .ct-page-title {
   }
   .solara-landing .sol-system-badge-pulse { animation: none !important; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   HERO · CPL-Kaskaden-Dashboard (Blueprint-Style)
+   Visualisiert die E3-Referenz-Reduktion 150 € → 22 € über
+   9 Monate. Technische Bildsprache (Grid, Mono, Achsenlabels).
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-hero-dashboard {
+  position: relative;
+  margin: 0;
+  padding: 18px 18px 16px;
+  border: 1px solid var(--sol-line);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.55)),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.025) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.025) 0 1px, transparent 1px 28px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.7) inset,
+    0 10px 26px rgba(0,0,0,.05);
+  color: var(--sol-accent);
+  overflow: hidden;
+}
+.solara-landing .sol-hero-dashboard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(180,106,60,.08), transparent 60%);
+}
+.solara-landing .sol-hero-dashboard-cap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 18px;
+  margin-bottom: 10px;
+}
+.solara-landing .sol-hero-dashboard-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(180,106,60,.10);
+  color: var(--sol-accent);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+.solara-landing .sol-hero-dashboard-tag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 4px rgba(180,106,60,.18);
+  animation: sol-cta-tag-pulse 2.2s ease-in-out infinite;
+}
+.solara-landing .sol-hero-dashboard-title {
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--sol-fg);
+  line-height: 1.1;
+}
+.solara-landing .sol-hero-dashboard-meta {
+  margin-left: auto;
+  color: var(--sol-fg-dim);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+.solara-landing .sol-hero-dashboard-frame {
+  position: relative;
+  background: rgba(255,255,255,.55);
+  border-radius: 10px;
+  padding: 4px 4px 0;
+}
+.solara-landing .sol-hero-dashboard-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--sol-accent);
+}
+.solara-landing .sol-hero-dashboard-line {
+  stroke-dasharray: 720;
+  stroke-dashoffset: 720;
+  animation: sol-cpl-draw 1.6s cubic-bezier(.5,.05,.25,1) 0.2s forwards;
+}
+.solara-landing .sol-hero-dashboard-area {
+  opacity: 0;
+  animation: sol-cpl-fade 1.4s ease-out 1.2s forwards;
+}
+.solara-landing .sol-hero-dashboard-pt {
+  opacity: 0;
+  animation: sol-cpl-pt-in 0.4s cubic-bezier(.2,.7,.25,1) forwards;
+  animation-delay: calc(0.5s + var(--sol-pt-delay, 0s));
+  transform-origin: center;
+}
+.solara-landing .sol-hero-dashboard-pt.is-anchor circle:nth-child(2) {
+  animation: sol-cpl-pulse 2.4s ease-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.solara-landing .sol-hero-dashboard-readout {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 6px 10px 5px;
+  border-radius: 8px;
+  background: rgba(180,106,60,.10);
+  color: var(--sol-accent);
+}
+.solara-landing .sol-hero-dashboard-readout-l {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+.solara-landing .sol-hero-dashboard-readout-v {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  margin-top: 2px;
+}
+.solara-landing .sol-hero-dashboard-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 16px;
+  margin-top: 10px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sol-fg-dim);
+}
+.solara-landing .sol-hero-dashboard-legend > span:first-child { color: var(--sol-fg-mute); }
+.solara-landing .sol-hero-dashboard-legend-mark {
+  display: inline-block;
+  width: 14px;
+  height: 2px;
+  margin-right: 6px;
+  vertical-align: middle;
+  background: var(--sol-accent);
+  border-radius: 1px;
+}
+
+@keyframes sol-cpl-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes sol-cpl-fade {
+  to { opacity: 1; }
+}
+@keyframes sol-cpl-pt-in {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes sol-cpl-pulse {
+  0%   { stroke-opacity: 0.45; r: 9; }
+  50%  { stroke-opacity: 0.10; r: 14; }
+  100% { stroke-opacity: 0.45; r: 9; }
+}
+
+@media (max-width: 560px) {
+  .solara-landing .sol-hero-dashboard { padding: 14px 12px; }
+  .solara-landing .sol-hero-dashboard-meta { margin-left: 0; }
+  .solara-landing .sol-hero-dashboard-readout { top: 8px; right: 8px; padding: 4px 8px; }
+  .solara-landing .sol-hero-dashboard-readout-v { font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .solara-landing .sol-hero-dashboard-line {
+    stroke-dasharray: 0 !important;
+    stroke-dashoffset: 0 !important;
+    animation: none !important;
+  }
+  .solara-landing .sol-hero-dashboard-area,
+  .solara-landing .sol-hero-dashboard-pt { opacity: 1 !important; animation: none !important; }
+  .solara-landing .sol-hero-dashboard-tag-dot,
+  .solara-landing .sol-hero-dashboard-pt.is-anchor circle:nth-child(2) { animation: none !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HERO · Risk-Reversal-Bullets unter dem System-Intake-CTA
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-cta-bullets {
+  list-style: none;
+  margin: 14px 0 12px;
+  padding: 10px 0 4px;
+  border-top: 1px dashed var(--sol-line);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--sol-fg-mute);
+}
+.solara-landing .sol-cta-bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+.solara-landing .sol-cta-bullets-tick {
+  flex: 0 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: rgba(180,106,60,.12);
+  color: var(--sol-accent);
+  font-size: 9px;
+  font-weight: 700;
+}

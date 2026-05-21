@@ -2,10 +2,11 @@
 /**
  * Template Name: Solar & Wärmepumpen Leadgenerierung (SOLARA)
  * Description: Premium · cinematic · minimalistisch. Hybrid-Theme (warm-cream + Copper).
- *              Primärer Lead-Pfad: 60-Sek-Marktcheck im Hero (REST → CRM).
- *              Alte System-Diagnose-Links führen auf diesen Marktcheck.
+ *              Primärer Lead-Pfad: B2B-System-Intake im Hero (REST → CRM).
  *              Zielgruppe: Solar-/Wärmepumpen-Betriebe mit hohen Projektwerten,
  *              klarem Zielgebiet und eigener Vertriebsverantwortung.
+ *
+ * Währungs-Doktrin: ausnahmslos EUR (€). Niemals $ oder generische Symbole.
  *
  * @package Blocksy_Child
  */
@@ -54,7 +55,7 @@ $trust_items = [
 	'Server-Side-Tracking · CAPI',
 	'Hardcoded WordPress · kein Page-Builder',
 	'1:1 Senior · keine Junior-Kette',
-	'Marktcheck kostenfrei',
+	'System-Intake kostenfrei',
 ];
 
 $problem_cards = [
@@ -91,7 +92,7 @@ $method_cards = [
 		'p'  => 'Phase 02',
 		't'  => 'Eigenes Anfrage-System',
 		's'  => 'WordPress hardcoded — kein Page-Builder, kein Plugin-Stack. <a href="' . esc_url( $tracking_url ) . '">Server-Side-Tracking</a> auf eigenem Server. Smarte Vorqualifizierung. <a href="' . esc_url( $cro_url ) . '">Conversion-Pfad</a> ohne Mietsysteme.',
-		'b'  => [ 'Money-Page · Proof- & Angebotsseiten', 'Frankfurt-Server · CAPI · DSGVO', '60-Sek-Funnel mit Lead-Scoring' ],
+		'b'  => [ 'Money-Page · Proof- & Angebotsseiten', 'Frankfurt-Server · CAPI · DSGVO', 'Lead-Scoring vor dem Erstkontakt' ],
 	],
 	[
 		'n'  => 'III',
@@ -112,8 +113,8 @@ $results_qualifiers = [
 
 $guarantee_points = [
 	[
-		't' => 'Marktcheck ist kostenfrei',
-		's' => 'Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
+		't' => 'System-Intake ist kostenfrei',
+		's' => 'Strukturierter, händisch geprüfter System-Intake statt automatisierter Standard-Auswertung. Befund Ihrer Domain und Region innerhalb von 24 Stunden per E-Mail — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
 	],
 	[
 		't' => 'Drei Hebel — auch bei Abrat',
@@ -147,7 +148,7 @@ $compare_bad = [
 $compare_good = [
 	[ 't' => 'Eigene Anfragestrecke',    's' => 'Anfragen, die Ihrem Betrieb gehören — nicht dem Portal.' ],
 	[ 't' => 'Anfragequalität messbar',  's' => 'Region, Heizart, Dach, Projektwert — vor dem Anruf.' ],
-	[ 't' => '60-Sek-Vorqualifizierung', 's' => 'Daten erst, wenn der Fit klar ist. Kein 5-Felder-Hürdenlauf.' ],
+	[ 't' => 'Progressive-Disclosure-Intake', 's' => 'Business-Daten erst nach problembasierter Vorqualifizierung. Kein 5-Felder-Hürdenlauf.' ],
 	[ 't' => 'Dokumentiertes System',    's' => 'Sie verstehen, warum es funktioniert. Code, Tracking, Daten bleiben bei Ihnen.' ],
 ];
 
@@ -184,7 +185,7 @@ $system_layers = [
 		'cols'   => 3,
 		'items'  => [
 			[ 'i' => 'M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z', 't' => 'Money Page',           's' => 'Solar/WP-spezifisch · Proof.' ],
-			[ 'i' => 'M13 2L4 14h7v8l9-12h-7z',                              't' => '60-Sek-Qualifizierung', 's' => 'Region · Heizart · Projektwert.' ],
+			[ 'i' => 'M13 2L4 14h7v8l9-12h-7z',                              't' => 'B2B-System-Intake',     's' => 'Region · Vertriebsstruktur · Projektwert.' ],
 			[ 'i' => 'M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14l-5-4.87 6.91-1.01z', 't' => 'Lead-Scoring', 's' => 'Grün, gelb, rot — vor dem Anruf.' ],
 		],
 	],
@@ -282,12 +283,12 @@ $deeper_clusters = [
 
 $faq_items = [
 	[
-		'question' => 'Wie läuft der Marktcheck konkret ab und wie lange dauert er?',
-		'answer'   => 'Den ehrlichen, händisch geprüften Befund deiner Domain und Region erhältst du innerhalb von 48 Stunden per E-Mail. Keine automatischen Standard-PDFs, sondern eine echte strategische Einordnung.',
+		'question' => 'Wie läuft der System-Intake konkret ab und wie lange dauert er?',
+		'answer'   => 'Drei strukturierte Schritte: Vertriebsteam-Größe, Portal-Streuverlust, geschäftliche Eckdaten. Den händisch geprüften Infrastruktur-Befund Ihrer Domain und Region erhalten Sie innerhalb von 24 Stunden per E-Mail. Keine automatisierten Standard-PDFs, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
 	],
 	[
-		'question' => 'Was passiert nach dem Marktcheck?',
-		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich innerhalb von 48 Stunden per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die kostenpflichtige Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
+		'question' => 'Was passiert nach dem System-Intake?',
+		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich innerhalb von 24 Stunden per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die kostenpflichtige Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
 	],
 	[
 		'question' => 'Was kostet das im Vergleich zur Performance-Agentur?',
@@ -295,7 +296,7 @@ $faq_items = [
 	],
 	[
 		'question' => 'Welche Daten brauchen Sie für die Diagnose?',
-		'answer'   => 'Für den Marktcheck reichen 6 Antworten. Für die Tiefendiagnose: Lesezugriff auf Google Analytics, Google Ads und Meta Ads Manager, Einblick in den CRM-Datenbestand der letzten 90 Tage und eine 15-Minuten-Bestandsaufnahme zu Vertriebsprozess und Lead-Quellen. Wenn Tracking-Daten fehlen, ist das oft schon das erste Diagnose-Ergebnis.',
+		'answer'   => 'Für den System-Intake reichen zwei Klick-Antworten plus geschäftliche Eckdaten (Firma, Position, geschäftliche E-Mail, Firmen-PLZ). Für die Tiefendiagnose: Lesezugriff auf Google Analytics, Google Ads und Meta Ads Manager, Einblick in den CRM-Datenbestand der letzten 90 Tage und eine 15-Minuten-Bestandsaufnahme zu Vertriebsprozess und Lead-Quellen. Wenn Tracking-Daten fehlen, ist das oft schon das erste Diagnose-Ergebnis.',
 	],
 	[
 		'question' => 'Warum nicht einfach mehr Google Ads schalten?',
@@ -317,34 +318,84 @@ $faq_items = [
 		'question' => 'Was unterscheidet Sie von Lead-Portalen?',
 		'answer'   => 'Portale vermieten Nachfrage. Sie zahlen für jeden Kontakt, den auch 3–4 Mitbewerber erhalten. Das System hier baut eigene Nachfrage-Infrastruktur auf, die Ihrem Betrieb gehört und langfristig für exklusive Anfragen sorgt.',
 	],
+	[
+		'question' => 'Was ist B2B Solar Leadgenerierung — und wie funktioniert sie ohne Portale wie Aroundhome, DAA oder Wattfox?',
+		'answer'   => 'B2B Solar Leadgenerierung ist der Aufbau einer eigenen Nachfrage-Infrastruktur für Solar-, Wärmepumpen- und Speicheranbieter. Anders als Portale (Aroundhome, DAA, Wattfox), die identische Anfragen parallel an 3–4 Wettbewerber verkaufen, gehören die Anfragen hier exklusiv Ihrem Betrieb. Die Infrastruktur besteht aus drei Schichten: einer hardcoded WordPress-Money-Page, serverseitigem Tracking (GA4 + Meta CAPI auf eigenem Server) und einem mehrstufigen Lead-Scoring vor dem Erstkontakt.',
+	],
+	[
+		'question' => 'Wie unterscheidet sich „eigene Solar Leads gewinnen" von Photovoltaik-Leadkauf?',
+		'answer'   => 'Beim Leadkauf zahlen Sie 80–150 € pro Kontakt — geteilt mit drei bis vier Wettbewerbern, oft ohne Telefonnummer, häufig ohne Budget. Eigene Solar Leads werden über Ihre eigene Domain generiert, über Ihre Vorqualifizierung gefiltert und landen exklusiv in Ihrem CRM. Über 24 Monate liegen die Gesamtkosten dabei rund 50 % unter dem reinen Portal-Modell — und Sie besitzen am Ende ein aktivierbares Asset.',
+	],
 ];
 
 // ── Schema.org ─────────────────────────────────────────────────
+$organization_id = trailingslashit( home_url( '/' ) ) . '#organization';
 $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
 	'@id'         => trailingslashit( $page_url ) . '#service',
-	'name'        => 'Aufbau eigener Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter',
-	'serviceType' => 'System-Architektur für eigene Lead-Infrastruktur: WordPress, Tracking, Qualifizierung, CRM-Übergabe',
+	'name'        => 'B2B Solar Leadgenerierung — Aufbau eigener Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter',
+	'alternateName' => [ 'Photovoltaik Leadgenerierung', 'Eigene Solar Leads gewinnen', 'B2B Solar Leads' ],
+	'serviceType' => 'Sovereign Demand Infrastructure · System-Architektur für eigene Lead-Infrastruktur (WordPress hardcoded, Server-Side-Tracking, Lead-Scoring, CRM-Übergabe)',
+	'category'    => 'B2B Lead Generation Infrastructure',
 	'url'         => $page_url,
-	'description' => sprintf( 'Eigenes Anfrage-System für Solar- und Wärmepumpen-Betriebe. Referenz %1$s: %2$s weniger Kosten pro Anfrage in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe_dative ),
+	'mainEntityOfPage' => $page_url,
+	'description' => sprintf( 'B2B-Leadgenerierung für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum. Souveräne Nachfrage-Infrastruktur statt geteilter Portal-Leads. Referenz %1$s: %2$s weniger Kosten pro Anfrage in %3$s (CPL von %4$s auf %5$s).', $e3_case_label, $e3_cpl_reduction, $e3_timeframe_dative, $e3_cpl_before, $e3_cpl_after ),
 	'provider'    => [
-		'@type' => 'Person',
-		'name'  => 'Haşim Üner',
-		'url'   => home_url( '/' ),
+		'@type'       => 'Organization',
+		'@id'         => $organization_id,
+		'name'        => 'Haşim Üner — WordPress-Agentur Hannover',
+		'url'         => home_url( '/' ),
+		'founder'     => [
+			'@type' => 'Person',
+			'name'  => 'Haşim Üner',
+			'url'   => home_url( '/' ),
+			'jobTitle' => 'B2B Solar Leadgenerierung Architekt',
+		],
 	],
 	'audience'    => [
-		'@type'        => 'Audience',
-		'audienceType' => 'Solar-, Wärmepumpen-, Speicher- und Energie-Anbieter im DACH-Raum',
+		'@type'        => 'BusinessAudience',
+		'audienceType' => 'Solar-, Wärmepumpen-, Speicher- und Energie-Anbieter im DACH-Mittelstand mit eigenem Vertrieb',
 	],
 	'areaServed'  => [
 		[ '@type' => 'Country', 'name' => 'Deutschland' ],
+		[ '@type' => 'Country', 'name' => 'Österreich' ],
+		[ '@type' => 'Country', 'name' => 'Schweiz' ],
+	],
+	'serviceOutput' => [
+		'@type' => 'Thing',
+		'name'  => 'Sovereign Demand Infrastructure',
+		'description' => 'Eigene, exklusive Nachfrage-Infrastruktur — WordPress hardcoded, Server-Side-Tracking, Lead-Scoring. Code, Tracking und Daten verbleiben beim Auftraggeber.',
+	],
+	'additionalProperty' => [
+		[
+			'@type' => 'PropertyValue',
+			'name'  => 'serviceOutput',
+			'value' => 'Sovereign Demand Infrastructure',
+		],
+		[
+			'@type' => 'PropertyValue',
+			'name'  => 'cplReduction',
+			'value' => $e3_cpl_reduction,
+		],
+		[
+			'@type' => 'PropertyValue',
+			'name'  => 'assetOwnership',
+			'value' => '100 % — Code, Tracking, Daten beim Auftraggeber',
+		],
 	],
 	'offers'      => [
 		'@type'         => 'Offer',
 		'price'         => '0',
 		'priceCurrency' => 'EUR',
-		'description'   => 'Manueller, tiefer Marktcheck. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.',
+		'description'   => 'System-Intake & händisch geprüfter Befund Ihrer Region innerhalb von 24 Stunden per E-Mail.',
+		'availability'  => 'https://schema.org/InStock',
+	],
+	'isRelatedTo' => [
+		[ '@type' => 'WebPage', 'url' => home_url( '/cost-per-lead-photovoltaik/' ),  'name' => 'Cost per Lead Photovoltaik' ],
+		[ '@type' => 'WebPage', 'url' => home_url( '/qualifizierte-pv-anfragen/' ),   'name' => 'Qualifizierte PV-Anfragen' ],
+		[ '@type' => 'WebPage', 'url' => home_url( '/b2b-solar-leads/' ),             'name' => 'B2B Solar Leads' ],
+		[ '@type' => 'WebPage', 'url' => home_url( '/lead-funnel-solar/' ),           'name' => 'Lead-Funnel Solar' ],
 	],
 ];
 
@@ -392,14 +443,101 @@ get_header();
 				<div class="sol-hero-left">
 					<div class="sol-eyebrow">Für Solar- &amp; Wärmepumpen-Anbieter mit eigenem Vertrieb · DACH</div>
 					<h1 class="sol-display sol-hero-h1">
-						Die Alternative<br />zu <em>Portal-Leads:</em><br />Ihr eigenes<br /><em>Anfrage-System.</em>
+						Schluss mit geteilten<br /><em>Portal-Leads.</em><br />Ihr eigenes, autarkes<br /><em>Nachfrage-Kraftwerk.</em>
 					</h1>
 					<p class="sol-hero-claim">
-						Hören Sie auf, Anfragen zu mieten — bauen Sie eine, die Ihnen gehört.
+						Eine Anfrage-Infrastruktur, die Ihrem Betrieb gehört — nicht Aroundhome, DAA oder Wattfox.
 					</p>
 					<p class="sol-hero-sub">
-						Portal-Leads kosten 80–150 €. Die Hälfte geht nicht ans Telefon. Wir bauen Ihrem Betrieb ein eigenes Anfrage-System — WordPress hardcoded, Tracking auf eigenem Server, Vorqualifizierung mit Lead-Score. Das System gehört Ihnen. Die Anfragen sind exklusiv.
+						Portal-Leads kosten 80–150 €. Die Hälfte geht nicht ans Telefon, der Rest liegt parallel bei drei Wettbewerbern. Wir errichten Ihrem Betrieb eine eigene Nachfrage-Infrastruktur — WordPress hardcoded, Server-Side-Tracking, Lead-Scoring vor dem Erstkontakt. Code, Tracking, Daten bleiben bei Ihnen.
 					</p>
+
+					<?php
+					// ── CPL-Kaskade · Blueprint-Dashboard (E3 New Energy Case) ──
+					// 9-Monats-Achse · 150 € → 22 € (animierte SVG-Visualisierung).
+					$cpl_cascade = [
+						[ 'm' => 1, 'v' => 150 ],
+						[ 'm' => 2, 'v' => 128 ],
+						[ 'm' => 3, 'v' => 104 ],
+						[ 'm' => 4, 'v' => 82 ],
+						[ 'm' => 5, 'v' => 64 ],
+						[ 'm' => 6, 'v' => 48 ],
+						[ 'm' => 7, 'v' => 36 ],
+						[ 'm' => 8, 'v' => 28 ],
+						[ 'm' => 9, 'v' => 22 ],
+					];
+					$cpl_max  = 160;
+					$cpl_chart_w = 480;
+					$cpl_chart_h = 200;
+					$cpl_pad_l   = 44;
+					$cpl_pad_r   = 28;
+					$cpl_pad_t   = 24;
+					$cpl_pad_b   = 36;
+					$cpl_inner_w = $cpl_chart_w - $cpl_pad_l - $cpl_pad_r;
+					$cpl_inner_h = $cpl_chart_h - $cpl_pad_t - $cpl_pad_b;
+					$cpl_points  = [];
+					foreach ( $cpl_cascade as $i => $p ) {
+						$x = $cpl_pad_l + ( $cpl_inner_w * $i / ( count( $cpl_cascade ) - 1 ) );
+						$y = $cpl_pad_t + ( $cpl_inner_h * ( 1 - $p['v'] / $cpl_max ) );
+						$cpl_points[] = [ 'x' => round( $x, 1 ), 'y' => round( $y, 1 ), 'm' => $p['m'], 'v' => $p['v'] ];
+					}
+					$cpl_path = '';
+					foreach ( $cpl_points as $i => $pt ) {
+						$cpl_path .= ( 0 === $i ? 'M' : ' L' ) . $pt['x'] . ' ' . $pt['y'];
+					}
+					$cpl_area = $cpl_path . ' L' . end( $cpl_points )['x'] . ' ' . ( $cpl_pad_t + $cpl_inner_h ) . ' L' . $cpl_points[0]['x'] . ' ' . ( $cpl_pad_t + $cpl_inner_h ) . ' Z';
+					?>
+					<figure class="sol-hero-dashboard" aria-labelledby="sol-cpl-dashboard-title" data-track-section="hero_dashboard">
+						<figcaption class="sol-hero-dashboard-cap">
+							<span class="sol-mono sol-hero-dashboard-tag">
+								<span class="sol-hero-dashboard-tag-dot" aria-hidden="true"></span>
+								Live-Telemetrie · E3 New Energy
+							</span>
+							<span id="sol-cpl-dashboard-title" class="sol-display sol-hero-dashboard-title">CPL-Kaskade · 9 Monate</span>
+							<span class="sol-hero-dashboard-meta sol-mono">Akquisitionskosten pro qualifizierter Anfrage</span>
+						</figcaption>
+						<div class="sol-hero-dashboard-frame">
+							<svg class="sol-hero-dashboard-svg" viewBox="0 0 <?php echo (int) $cpl_chart_w; ?> <?php echo (int) $cpl_chart_h; ?>" role="img" aria-label="CPL fällt in 9 Monaten von 150 € auf 22 € — Visualisierung der Kosten-Reduktion">
+								<defs>
+									<pattern id="sol-cpl-grid" width="40" height="20" patternUnits="userSpaceOnUse">
+										<path d="M40 0H0V20" fill="none" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.18"/>
+									</pattern>
+									<linearGradient id="sol-cpl-fill" x1="0" x2="0" y1="0" y2="1">
+										<stop offset="0%" stop-color="currentColor" stop-opacity="0.35"/>
+										<stop offset="100%" stop-color="currentColor" stop-opacity="0"/>
+									</linearGradient>
+								</defs>
+								<rect x="<?php echo (int) $cpl_pad_l; ?>" y="<?php echo (int) $cpl_pad_t; ?>" width="<?php echo (int) $cpl_inner_w; ?>" height="<?php echo (int) $cpl_inner_h; ?>" fill="url(#sol-cpl-grid)" />
+								<?php for ( $g = 0; $g <= 4; $g++ ) : $gy = $cpl_pad_t + ( $cpl_inner_h * $g / 4 ); $gv = (int) round( $cpl_max * ( 1 - $g / 4 ) ); ?>
+									<line x1="<?php echo (int) $cpl_pad_l; ?>" x2="<?php echo (int) ( $cpl_chart_w - $cpl_pad_r ); ?>" y1="<?php echo (float) $gy; ?>" y2="<?php echo (float) $gy; ?>" stroke="currentColor" stroke-opacity="0.22" stroke-dasharray="2 4" stroke-width="0.6"/>
+									<text x="<?php echo (int) ( $cpl_pad_l - 8 ); ?>" y="<?php echo (float) ( $gy + 3 ); ?>" text-anchor="end" font-size="9" fill="currentColor" fill-opacity="0.65" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"><?php echo (int) $gv; ?> €</text>
+								<?php endfor; ?>
+								<path class="sol-hero-dashboard-area" d="<?php echo esc_attr( $cpl_area ); ?>" fill="url(#sol-cpl-fill)"/>
+								<path class="sol-hero-dashboard-line" d="<?php echo esc_attr( $cpl_path ); ?>" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+								<?php foreach ( $cpl_points as $i => $pt ) : $is_anchor = ( 0 === $i || count( $cpl_points ) - 1 === $i ); ?>
+									<g class="sol-hero-dashboard-pt<?php echo $is_anchor ? ' is-anchor' : ''; ?>" style="--sol-pt-delay:<?php echo (float) ( $i * 0.12 ); ?>s;">
+										<circle cx="<?php echo (float) $pt['x']; ?>" cy="<?php echo (float) $pt['y']; ?>" r="<?php echo $is_anchor ? 4.5 : 2.5; ?>" fill="currentColor"/>
+										<?php if ( $is_anchor ) : ?>
+											<circle cx="<?php echo (float) $pt['x']; ?>" cy="<?php echo (float) $pt['y']; ?>" r="9" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="0.8"/>
+											<text x="<?php echo (float) ( $pt['x'] + ( 0 === $i ? 10 : -10 ) ); ?>" y="<?php echo (float) ( $pt['y'] - 10 ); ?>" text-anchor="<?php echo 0 === $i ? 'start' : 'end'; ?>" font-size="11" font-weight="600" fill="currentColor" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"><?php echo (int) $pt['v']; ?> €</text>
+										<?php endif; ?>
+									</g>
+								<?php endforeach; ?>
+								<?php foreach ( $cpl_points as $i => $pt ) : if ( 0 !== $i && count( $cpl_points ) - 1 !== $i && 0 !== $i % 2 ) continue; ?>
+									<text x="<?php echo (float) $pt['x']; ?>" y="<?php echo (int) ( $cpl_chart_h - 12 ); ?>" text-anchor="middle" font-size="9" fill="currentColor" fill-opacity="0.65" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">M<?php echo (int) $pt['m']; ?></text>
+								<?php endforeach; ?>
+								<line x1="<?php echo (int) $cpl_pad_l; ?>" x2="<?php echo (int) ( $cpl_chart_w - $cpl_pad_r ); ?>" y1="<?php echo (int) ( $cpl_pad_t + $cpl_inner_h ); ?>" y2="<?php echo (int) ( $cpl_pad_t + $cpl_inner_h ); ?>" stroke="currentColor" stroke-opacity="0.45" stroke-width="0.8"/>
+							</svg>
+							<div class="sol-hero-dashboard-readout sol-mono" aria-hidden="true">
+								<span class="sol-hero-dashboard-readout-l">Reduktion</span>
+								<span class="sol-hero-dashboard-readout-v">−85,3 %</span>
+							</div>
+						</div>
+						<div class="sol-hero-dashboard-legend sol-mono">
+							<span><span class="sol-hero-dashboard-legend-mark"></span>CPL · Eigene Anfrage-Infrastruktur</span>
+							<span>Quelle: E3 New Energy · 9-Monats-Zeitachse · DSGVO-konform</span>
+						</div>
+					</figure>
 
 					<div class="sol-hero-metrics">
 						<?php foreach ( $hero_metrics as $m ) : ?>
@@ -416,7 +554,7 @@ get_header();
 							href="<?php echo esc_url( $cal_url ); ?>"
 							style="color:var(--sol-accent);text-decoration:underline;text-underline-offset:3px;margin-left:6px;"
 							data-track-action="cta_solar_to_calcom"
-							data-track-category="lead_funnel"
+							data-track-category="lead_gen"
 							data-track-section="hero_secondary"
 						>Direkt 30-Min-Gespräch buchen →</a>
 					</p>
@@ -430,25 +568,25 @@ get_header();
 							<span class="sol-cta-particle"></span>
 						</div>
 						<!--
-						  Quiz mount point. JS rendert hier das 6-Step-Quiz.
-						  Wenn JS fehlt, bleibt der SSR-Fallback unten als
-						  funktionierende Alternative.
+						  System-Intake Mount-Point. JS rendert hier die
+						  3-stufige Progressive-Disclosure-Sequenz.
+						  Wenn JS fehlt, bleibt der SSR-Fallback aktiv.
 						-->
 						<div data-sol-quiz id="sol-quiz-mount">
 							<noscript>
 								<style>.solara-landing .sol-cta-fineprint{display:none!important;}</style>
 								<p class="sol-cta-hint">
-									Aktivieren Sie JavaScript für den 60-Sek-Marktcheck oder schreiben Sie direkt an
+									Aktivieren Sie JavaScript für den System-Intake oder schreiben Sie direkt an
 									<a href="mailto:hasim@hasimuener.de" style="color:var(--sol-accent);">hasim@hasimuener.de</a>.
 								</p>
 								<a
 									class="sol-cta-submit"
 									href="mailto:hasim@hasimuener.de"
 									data-track-action="cta_solar_noscript_mail"
-									data-track-category="lead_funnel"
+									data-track-category="lead_gen"
 									data-track-section="hero_noscript"
 								>
-									<span>Per E-Mail anfragen</span>
+									<span>Infrastruktur-Audit per E-Mail beantragen</span>
 									<span class="sol-cta-submit-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 								</a>
 							</noscript>
@@ -457,16 +595,21 @@ get_header();
 							<div class="sol-cta-head">
 								<span class="sol-cta-tag sol-mono">
 									<span class="sol-cta-tag-dot" aria-hidden="true"></span>
-									Marktcheck · händisch · Befund in 48 h
+									System-Intake · händisch geprüft · Befund in 24 h
 								</span>
 								<span class="sol-cta-head-right sol-mono">Kostenfrei</span>
 							</div>
 							<h2 id="sol-quiz-title" class="sol-cta-title">
-								Wo verlieren Sie heute Anfragen — und wie viel kostet Sie das?
+								Infrastruktur-Audit für Ihren Vertrieb beantragen.
 							</h2>
 							<p class="sol-cta-hint">
-								Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail — keine Newsletter, keine Pitch-Mail.
+								Dreistufiger System-Intake. Strukturierte Aufnahme Ihres Vertriebs- und Lead-Profils — Befund innerhalb von 24 Stunden per E-Mail. Kein Newsletter, kein Pitch-Deck.
 							</p>
+							<ul class="sol-cta-bullets sol-mono" aria-label="Was Sie nach dem Intake erhalten">
+								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Inklusive Regions-Verfügbarkeitsprüfung</li>
+								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Keine automatisierte Standard-Auswertung</li>
+								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Antwort innerhalb von 24 h per E-Mail</li>
+							</ul>
 							<p class="sol-cta-fineprint" style="text-align:left;margin:0 0 14px;">Wird geladen …</p>
 						</div>
 					</div>
@@ -509,10 +652,10 @@ get_header();
 						<?php endforeach; ?>
 					</ul>
 					<a class="sol-section-nav-cta sol-mono" href="#marktcheck"
-						data-track-action="cta_solar_section_nav_to_marktcheck"
-						data-track-category="lead_funnel"
+						data-track-action="cta_solar_section_nav_to_intake"
+						data-track-category="lead_gen"
 						data-track-section="section_nav"
-					>Marktcheck →</a>
+					>System-Intake →</a>
 				</div>
 			</div>
 		</nav>
@@ -830,15 +973,15 @@ get_header();
 
 				<div class="sol-capex-cta">
 					<a class="sol-btn sol-btn-primary" href="#marktcheck"
-						data-track-action="cta_solar_capex_to_marktcheck"
-						data-track-category="lead_funnel"
+						data-track-action="cta_solar_capex_to_intake"
+						data-track-category="lead_gen"
 						data-track-section="capex_opex"
-						data-track-funnel-stage="quiz_open"
+						data-track-funnel-stage="intake_open"
 					>
-						<span>Anfrage-System-Analyse anfordern</span>
+						<span>System-Intake starten</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
-					<div class="sol-capex-cta-micro sol-mono">Händische Analyse · Befund per E-Mail in 48 h</div>
+					<div class="sol-capex-cta-micro sol-mono">Inklusive Regions-Verfügbarkeitsprüfung · Antwort innerhalb von 24 h per E-Mail</div>
 				</div>
 			</div>
 		</section>
@@ -1004,15 +1147,15 @@ get_header();
 
 				<div class="sol-fit-cta">
 					<a class="sol-btn sol-btn-primary" href="#marktcheck"
-						data-track-action="cta_solar_fit_to_marktcheck"
-						data-track-category="lead_funnel"
+						data-track-action="cta_solar_fit_to_intake"
+						data-track-category="lead_gen"
 						data-track-section="fit_check"
-						data-track-funnel-stage="quiz_open"
+						data-track-funnel-stage="intake_open"
 					>
-						<span>Eigene Region jetzt prüfen</span>
+						<span>Infrastruktur-Audit beantragen</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
-					<div class="sol-fit-cta-micro sol-mono">Händische Prüfung · Befund per E-Mail in 48 h · keine Verkaufspräsentation</div>
+					<div class="sol-fit-cta-micro sol-mono">Inklusive Regions-Verfügbarkeitsprüfung · keine automatisierte Standard-Auswertung · Antwort innerhalb von 24 h per E-Mail</div>
 				</div>
 			</div>
 		</section>
@@ -1095,13 +1238,18 @@ get_header();
 						Bevor Sie <em>fragen</em>.
 					</h2>
 					<p class="sol-faq-sub">
-						Was hier nicht beantwortet wird, klären wir im Marktcheck — kurz, schriftlich, ohne Verkaufsgespräch.
+						Was hier nicht beantwortet wird, klären wir im System-Intake — strukturiert, schriftlich, ohne Verkaufsgespräch.
 					</p>
 				</div>
 				<ul class="sol-faq-list">
 					<?php foreach ( $faq_items as $i => $item ) : ?>
 						<li class="sol-faq-item<?php echo 0 === $i ? ' is-open' : ''; ?>">
-							<button type="button" class="sol-faq-q" aria-expanded="<?php echo 0 === $i ? 'true' : 'false'; ?>">
+							<button type="button" class="sol-faq-q" aria-expanded="<?php echo 0 === $i ? 'true' : 'false'; ?>"
+								data-track-action="faq_toggle"
+								data-track-category="engagement"
+								data-track-section="faq"
+								data-faq-index="<?php echo esc_attr( (string) ( $i + 1 ) ); ?>"
+							>
 								<span class="sol-faq-q-n"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span>
 								<span class="sol-faq-q-t"><?php echo esc_html( $item['question'] ); ?></span>
 								<span class="sol-faq-q-mark" aria-hidden="true">
@@ -1136,29 +1284,29 @@ get_header();
 					<a
 						class="sol-btn sol-btn-primary sol-final-btn"
 						href="#marktcheck"
-						data-track-action="cta_solar_final_to_marktcheck"
-						data-track-category="lead_funnel"
+						data-track-action="cta_solar_final_to_intake"
+						data-track-category="lead_gen"
 						data-track-section="final_cta"
-						data-track-funnel-stage="quiz_open"
+						data-track-funnel-stage="intake_open"
 					>
-						<span>Kostenfreien Marktcheck starten</span>
+						<span>System-Intake starten</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
-					<div class="sol-final-micro">Kein Pitch · kein Folien-Deck · konkreter nächster Schritt</div>
+					<div class="sol-final-micro">Inklusive Regions-Verfügbarkeitsprüfung · keine automatisierte Standard-Auswertung · Antwort innerhalb von 24 h per E-Mail</div>
 				</div>
 			</div>
 		</section>
 
-		<!-- Sticky Mobile-CTA -->
+		<!-- Sticky Mobile-CTA · Erscheint ab 20 % Scrolltiefe -->
 		<a
 			class="sol-sticky-cta"
 			href="#marktcheck"
-			data-track-action="cta_solar_sticky_to_marktcheck"
-			data-track-category="lead_funnel"
+			data-track-action="cta_solar_sticky_to_intake"
+			data-track-category="lead_gen"
 			data-track-section="sticky_mobile"
-			data-track-funnel-stage="quiz_open"
+			data-track-funnel-stage="intake_open"
 		>
-			<span>Kostenfreien Marktcheck starten</span>
+			<span>System-Intake starten</span>
 			<span class="sol-sticky-cta-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 		</a>
 
