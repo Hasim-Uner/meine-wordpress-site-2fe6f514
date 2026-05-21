@@ -199,7 +199,7 @@ Das Content-System ist auf Pillar- und Cluster-Logik aufgebaut.
 Bausteine:
 
 - `home.php`: reduziertes Editorial-Blogarchiv mit echten Kategorie-Links, bildloser Artikelliste und Marktcheck-Führung
-- `category.php`: bildloses Kategorie-Archiv mit dynamischer Kategorienavigation, zentralen SEO-Fallbacks und Marktcheck-Führung
+- `category.php`: bildloses Kategorie-Archiv mit dynamischer Kategorienavigation, zentralen SEO-Fallbacks, thematischen Vertiefungslinks und Marktcheck-Führung
 - `single.php`: Artikel mit TOC, Related Content und Footer-CTA
 - `template-parts/post-title-visual.php`: generierte Titelgrafik als Fallback für Beiträge ohne Featured Image
 - `page-seo-cornerstone.php`: Cornerstone-Template mit starkem Entscheider-Fokus

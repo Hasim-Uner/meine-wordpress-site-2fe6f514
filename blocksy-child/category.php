@@ -14,11 +14,19 @@ get_template_part( 'template-parts/blog-header' );
 
 $primary_urls      = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $audit_url         = $primary_urls['audit'] ?? ( function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
+$energy_url        = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
+$agentur_url       = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
+$seo_url           = $primary_urls['seo'] ?? trailingslashit( $agentur_url ) . '#technisches-seo';
+$cro_url           = $primary_urls['cro'] ?? trailingslashit( $agentur_url ) . '#methode';
+$tracking_url      = home_url( '/server-side-tracking-b2b/' );
+$portal_url        = home_url( '/eigene-leadgenerierung-vs-portale/' );
+$cpl_url           = home_url( '/cost-per-lead-photovoltaik/' );
 $posts_page_id     = (int) get_option( 'page_for_posts' );
 $blog_url          = $posts_page_id ? get_permalink( $posts_page_id ) : home_url( '/blog/' );
 $current_category  = get_queried_object();
 $current_term_id   = $current_category instanceof WP_Term ? (int) $current_category->term_id : 0;
 $current_term_name = $current_category instanceof WP_Term ? $current_category->name : get_the_archive_title();
+$current_term_slug = $current_category instanceof WP_Term ? $current_category->slug : '';
 $category_text     = $current_term_id ? wp_strip_all_tags( category_description( $current_term_id ) ) : '';
 $category_seo      = $current_category instanceof WP_Term && function_exists( 'hu_get_category_archive_seo' ) ? hu_get_category_archive_seo( $current_category ) : [];
 $category_intro    = $category_text ?: ( $category_seo['description'] ?? '' );
@@ -29,6 +37,62 @@ $categories        = get_categories(
 		'order'      => 'ASC',
 	]
 );
+$category_deep_link_map = [
+	'solar-waermepumpen-anfrage-systeme' => [
+		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
+		[ 'label' => 'Portalvergleich', 'url' => $portal_url ],
+		[ 'label' => 'CPL/CPO-Rechnung', 'url' => $cpl_url ],
+	],
+	'markteinordnung' => [
+		[ 'label' => 'Portalvergleich', 'url' => $portal_url ],
+		[ 'label' => 'CPL/CPO-Rechnung', 'url' => $cpl_url ],
+		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
+	],
+	'owned-leads' => [
+		[ 'label' => 'Portalvergleich', 'url' => $portal_url ],
+		[ 'label' => 'Anfrage-Systeme', 'url' => $energy_url ],
+		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
+	],
+	'sichtbarkeit-daten-conversion' => [
+		[ 'label' => 'Technisches SEO', 'url' => $seo_url ],
+		[ 'label' => 'Server-Side Tracking', 'url' => $tracking_url ],
+		[ 'label' => 'CRO-System', 'url' => $cro_url ],
+	],
+	'wordpress-growth-agentur' => [
+		[ 'label' => 'WordPress Agentur Hannover', 'url' => $agentur_url ],
+		[ 'label' => 'Technisches SEO', 'url' => $seo_url ],
+		[ 'label' => 'CRO-System', 'url' => $cro_url ],
+	],
+	'seo' => [
+		[ 'label' => 'Technisches SEO', 'url' => $seo_url ],
+		[ 'label' => 'WordPress Agentur Hannover', 'url' => $agentur_url ],
+		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
+	],
+	'tracking' => [
+		[ 'label' => 'Server-Side Tracking', 'url' => $tracking_url ],
+		[ 'label' => 'CRO-System', 'url' => $cro_url ],
+		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
+	],
+	'cro' => [
+		[ 'label' => 'CRO-System', 'url' => $cro_url ],
+		[ 'label' => 'Technisches SEO', 'url' => $seo_url ],
+		[ 'label' => 'WordPress Agentur Hannover', 'url' => $agentur_url ],
+	],
+	'wordpress-performance' => [
+		[ 'label' => 'Core Web Vitals', 'url' => $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' ) ],
+		[ 'label' => 'Technisches SEO', 'url' => $seo_url ],
+		[ 'label' => 'WordPress Agentur Hannover', 'url' => $agentur_url ],
+	],
+	'strategie' => [
+		[ 'label' => 'Anfrage-Systeme', 'url' => $energy_url ],
+		[ 'label' => 'Portalvergleich', 'url' => $portal_url ],
+		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
+	],
+];
+$category_deep_links = $category_deep_link_map[ $current_term_slug ] ?? [
+	[ 'label' => 'Alle Analysen', 'url' => $blog_url ],
+	[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
+];
 ?>
 
 <main id="main" class="site-main blog-editorial blog-editorial--category blog-editorial--with-blog-header">
@@ -48,6 +112,26 @@ $categories        = get_categories(
 				?>
 			</p>
 		</header>
+
+		<?php if ( ! empty( $category_deep_links ) ) : ?>
+			<nav class="blog-editorial-deep-links" aria-label="<?php esc_attr_e( 'Passende Vertiefungen', 'blocksy-child' ); ?>" data-track-section="category_archive_deep_links">
+				<span class="blog-editorial-deep-links__label"><?php esc_html_e( 'Vertiefen:', 'blocksy-child' ); ?></span>
+				<?php foreach ( $category_deep_links as $index => $deep_link ) : ?>
+					<?php if ( empty( $deep_link['url'] ) || empty( $deep_link['label'] ) ) : ?>
+						<?php continue; ?>
+					<?php endif; ?>
+					<a
+						class="blog-editorial-deep-links__link"
+						href="<?php echo esc_url( $deep_link['url'] ); ?>"
+						data-track-action="<?php echo esc_attr( 'category_deep_link_' . ( $index + 1 ) ); ?>"
+						data-track-category="internal_link"
+						data-track-section="category_archive_deep_links"
+					>
+						<?php echo esc_html( $deep_link['label'] ); ?>
+					</a>
+				<?php endforeach; ?>
+			</nav>
+		<?php endif; ?>
 
 		<nav class="blog-editorial-filter" aria-label="<?php esc_attr_e( 'Artikel nach Kategorie filtern', 'blocksy-child' ); ?>" data-track-section="category_archive_filter">
 			<a
