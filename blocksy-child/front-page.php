@@ -1,17 +1,18 @@
 <?php
 /**
- * Front Page Template — Sovereign Command Center
+ * Front Page Template — Sovereign Command Center (Operational Overhaul).
  *
- * Die Startseite ist Router, nicht Verkaufsfläche. Sie verteilt den
- * B2B-Entscheider strikt über drei architektonische Gateways:
- *   G1  Marktcheck      → /solar-waermepumpen-leadgenerierung/#marktcheck
- *   G2  Agentur-Hub     → /wordpress-agentur-hannover/
- *   G3  E3-Methodik     → /e3-new-energy/
+ * Architektur:
+ *   - Hero: Leitmotiv links + animierte SVG-Pipeline (Blueprint) rechts.
+ *   - Gateway-Band (3 Weichen) direkt unter dem Hero.
+ *   - Sektionen 02–10: Verlust-Raster, Prozess-Kaskade, System-Phasen,
+ *     E3-Proof, Portal-Chaos vs. WGOS-Integrität, About, FAQ,
+ *     Vertiefung, Final Routing.
  *
- * SEO-Title/Description werden zentral aus inc/seo-meta.php gesteuert
- * (hu_get_homepage_title / hu_get_homepage_description). JSON-LD läuft
- * zentral über inc/org-schema.php (Organization + hasOfferCatalog) —
- * dieses Template injiziert bewusst kein konkurrierendes Schema.
+ * Schema/SEO: Title + Description kommen aus inc/seo-meta.php
+ * (hu_get_homepage_title / hu_get_homepage_description). Organization +
+ * hasOfferCatalog werden zentral aus inc/org-schema.php injiziert —
+ * dieses Template emittiert kein eigenes JSON-LD.
  *
  * @package Blocksy_Child
  */
@@ -20,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/* ── PHP-Datenbindungen ──────────────────────────────────── */
+/* ── Datenbindungen ────────────────────────────────────── */
 $analysis_url      = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $e3_canon          = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_case_url       = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : home_url( '/e3-new-energy/' );
@@ -36,41 +37,41 @@ $contact_url       = function_exists( 'nexus_get_contact_url' ) ? nexus_get_cont
 $agentur_hub_url   = home_url( '/wordpress-agentur-hannover/' );
 $portrait_url      = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 
-/* ── Routing-Tabelle: 3 Gateways ─────────────────────────── */
+/* ── Routing-Tabelle: 3 Gateways ───────────────────────── */
 $home_routing_gateways = [
 	'marktcheck' => [
 		'badge'   => 'G1',
-		'kicker'  => 'Kanal-Steuerung & Audit',
+		'kicker'  => 'Sofort-Qualifizierung',
 		'title'   => 'Der 60-Sekunden-Marktcheck',
 		'desc'    => 'Identifiziert die unsichtbaren Anfragebremsen auf der aktuellen B2B-Website. Persönliche Rückmeldung statt automatisiertem Tool-Score.',
 		'url'     => $analysis_url,
-		'label'   => 'Infrastruktur prüfen',
+		'label'   => 'Infrastruktur prüfen (60-Sek-Marktcheck)',
 		'persona' => 'Für portalmüde Solar-/SHK-Anbieter',
 		'action'  => 'gateway_marktcheck',
 	],
 	'agentur' => [
 		'badge'   => 'G2',
-		'kicker'  => 'System-Architektur',
+		'kicker'  => 'Technischer Hub',
 		'title'   => 'WordPress Agentur Hannover',
-		'desc'    => 'Technisches Fundament für anspruchsvolle B2B-Systeme: Technisches SEO, Server-Side Tracking und kontrollierte Weiterentwicklung.',
+		'desc'    => 'Technisches Fundament für anspruchsvolle B2B-Systeme: Server-Side Tracking, technisches SEO und kontrollierte Weiterentwicklung.',
 		'url'     => $agentur_hub_url,
-		'label'   => 'Agentur-Hub ansteuern',
-		'persona' => 'Für B2B-Unternehmen mit Infrastruktur-Bedarf',
+		'label'   => 'B2B Agentur-Hub Hannover ansteuern',
+		'persona' => 'Für Unternehmen mit Infrastruktur-Bedarf',
 		'action'  => 'gateway_agentur',
 	],
 	'proof' => [
 		'badge'   => 'G3',
-		'kicker'  => 'Verifizierte Validierung',
+		'kicker'  => 'Zahlen-Validierung',
 		'title'   => 'Die E3-New-Energy-Methodik',
 		'desc'    => sprintf(
-			'Wie ein eigener, autarker Nachfrage-Funnel die Cost-per-Lead von %s auf %s gesenkt hat — dokumentiert mit echten Vertriebs-Zahlen.',
+			'Wie ein autarker Nachfrage-Funnel die Cost-per-Lead von %s auf %s gesenkt hat — dokumentiert mit echten Vertriebs-Zahlen.',
 			$e3_cpl_before,
 			$e3_cpl_after
 		),
 		'url'     => $e3_case_url,
-		'label'   => 'Case Study analysieren',
+		'label'   => 'Verifizierte E3-Case-Study analysieren',
 		'persona' => 'Für skeptische Zahlen-Prüfer',
-		'action'  => 'gateway_proof',
+		'action'  => 'gateway_e3',
 	],
 ];
 
@@ -80,41 +81,34 @@ $home_system_phases = [
 	[ 'num' => '02', 'title' => 'Fundament',         'desc' => 'Schnell, stabil, wartbar — ohne dass jedes Plugin-Update zur Krise wird.' ],
 	[ 'num' => '03', 'title' => 'Messbarkeit',       'desc' => 'GA4, Server-Side Tracking und CRM-Rückführung in einer Logik.' ],
 	[ 'num' => '04', 'title' => 'Sichtbarkeit',      'desc' => 'Kaufnahe Suchintention abfangen — bevor der Wettbewerb antwortet.' ],
-	[ 'num' => '05', 'title' => 'Conversion',        'desc' => 'Klare Nutzerführung im Anfrageprozess — kein Formularballast.' ],
-	[ 'num' => '06', 'title' => 'Weiterentwicklung', 'desc' => 'Datenbasierte Skalierung statt Bauchgefühl und Pseudo-Relaunch.' ],
+	[ 'num' => '05', 'title' => 'Conversion',        'desc' => 'Klare Nutzerführung im Anfrageprozess — effizienzoptimierter B2B-Datenpfad statt Tool-Standard.' ],
+	[ 'num' => '06', 'title' => 'Weiterentwicklung', 'desc' => 'Datenbasierte Skalierung statt Bauchgefühl oder Pseudo-Relaunch.' ],
 ];
 
-/* ── Homepage-Bridge: Themen-Cluster für SEO-Sub-Pages ───── */
-$homepage_deeper_clusters = [
+/* ── 3-stufige Prozess-Kaskade (Sektion 03) ────────────── */
+$home_process_cascade = [
 	[
-		'group' => 'Strategie & Vergleich',
-		'items' => [
-			[ 't' => 'Solar Leads kaufen – Alternative',     's' => 'Markteinordnung der Lead-Anbieter und Modelle.',           'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
-			[ 't' => 'Eigene Leadgenerierung vs. Portale',   's' => 'TCO-Überschlag über 24/36 Monate und 8-Kriterien-Matrix.', 'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ) ],
-		],
+		'num'    => '01',
+		'kicker' => 'Untergrund lesen',
+		'title'  => 'System-Auditing',
+		'desc'   => 'Der bestehende Anfrage-Stack wird auf Daten-Integrität, Performance und Attribution geprüft. Befund statt Bauchgefühl, Belege statt Vermutungen.',
 	],
 	[
-		'group' => 'Lead-Qualität & CPL',
-		'items' => [
-			[ 't' => 'Cost per Lead Photovoltaik',           's' => 'Drei Szenarien im CPL-Vergleich und versteckte Kostentreiber.',     'url' => home_url( '/cost-per-lead-photovoltaik/' ) ],
-			[ 't' => 'Qualifizierte PV-Anfragen',            's' => 'Vier Merkmale für hochwertige Solar-Anfragen plus Warnsignale.',   'url' => home_url( '/qualifizierte-pv-anfragen/' ) ],
-		],
+		'num'    => '02',
+		'kicker' => 'Filter setzen',
+		'title'  => 'Daten-Orchestrierung',
+		'desc'   => 'Server-Side Tracking, gezielte Vorqualifizierung (ohne Streuverlust) und kontrollierte Werbekanal-Steuerung greifen als ein System ineinander.',
 	],
 	[
-		'group' => 'Funnel & Tracking',
-		'items' => [
-			[ 't' => 'Lead-Funnel Solar',                    's' => 'Fünf Stufen einer belastbaren Solar-Funnel-Architektur.',          'url' => home_url( '/lead-funnel-solar/' ) ],
-			[ 't' => 'Server-Side Tracking für B2B',         's' => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server.',           'url' => home_url( '/server-side-tracking-b2b/' ) ],
-		],
-	],
-	[
-		'group' => 'Zielgruppen & Marktbild',
-		'items' => [
-			[ 't' => 'B2B Solar Leads (Gewerbe)',            's' => 'Buying-Center-Funnel für gewerbliche Photovoltaik-Projekte.',       'url' => home_url( '/b2b-solar-leads/' ) ],
-			[ 't' => 'Kunden gewinnen für Solarteure',       's' => 'Mythen-Aufklärung und fünf systematische Hebel im DACH-Mittelstand.', 'url' => home_url( '/kunden-gewinnen-solarteure/' ) ],
-		],
+		'num'    => '03',
+		'kicker' => 'Eigene Quelle besitzen',
+		'title'  => 'Asset-Ownership',
+		'desc'   => 'Money Page, Funnel und Tracking-Stack bleiben Eigentum des Betriebs — kein gemieteter Boden, kein Drittanbieter-Lock-in.',
 	],
 ];
+
+/* ── Themen-Hub: ausgelagertes Array (Token-Optimierung) ── */
+$homepage_deeper_clusters = include get_stylesheet_directory() . '/inc/wgos/home-deeper-clusters.php';
 
 get_header();
 ?>
@@ -122,14 +116,13 @@ get_header();
 <div class="hu-hp" id="top" data-track-section="homepage">
 
 	<!-- ═══════════════════════════════════════════════════
-	     HERO — Sovereign Command Center
-	     Links: architektonisches Leitmotiv. Rechts: 3 Gateway-Karten.
+	     01 / HERO — Architektonisches Leitmotiv + SVG-Pipeline
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-hero hu-hero--command" id="hero" data-track-section="homepage_hero">
+	<section class="hu-hero hu-hero--command" id="hero" data-track-section="01">
 		<div class="hu-hero__grid-bg hu-hero__grid-bg--blueprint" aria-hidden="true"></div>
 		<div class="hu-container hu-hero__container">
 
-			<!-- Left: architectural leitmotiv -->
+			<!-- Left: Leitmotiv -->
 			<div>
 				<div class="hu-hero__eyebrow">
 					<span class="hu-tag">
@@ -139,18 +132,15 @@ get_header();
 				</div>
 
 				<h1 class="hu-display hu-hero__title">
-					Infrastruktur für<br>
-					eigene B2B-Anfragen.<br>
-					<span class="hu-hero__title-2">Drei Routen, eine Methodik.</span>
+					Ich baue autarke<br>
+					Nachfrage-Kraftwerke.<br>
+					<span class="hu-hero__title-2">Für Ihren eigenen Vertrieb.</span>
 				</h1>
 
-				<p class="hu-hero__claim">
-					Eine Startseite, die nicht verkauft — sondern routet.
-				</p>
-
 				<p class="hu-hero__sub">
-					Eigene Anfragen statt gemieteter Portal-Leads — für Solar-, Wärmepumpen- und Speicher-Anbieter.
-					Wählen Sie rechts den Einstieg, der zu Ihrem aktuellen Reifegrad passt: Audit, Architektur oder Validierung.
+					Für Solar- und Wärmepumpen-Anbieter im DACH-Raum. Ablösung von Portal-Abhängigkeit durch ein
+					geschlossenes System aus Website, Tracking, intelligenter Vorqualifizierung und
+					Werbekanal-Steuerung.
 				</p>
 
 				<div class="hu-hero__stats">
@@ -171,20 +161,141 @@ get_header();
 				</div>
 
 				<ul class="hu-hero__bullets">
-					<li><span class="hu-bullet-dot"></span>Persönlich geprüfter Marktcheck statt Software-Score</li>
-					<li><span class="hu-bullet-dot"></span>Befund deiner Region innerhalb von 48 Stunden</li>
-					<li><span class="hu-bullet-dot"></span>Für Solar, Wärmepumpe und Speicher</li>
+					<li><span class="hu-bullet-dot"></span>Architektonischer System-Intake statt Software-Score</li>
+					<li><span class="hu-bullet-dot"></span>Persönliche Diagnose der Region innerhalb von 48 Stunden</li>
+					<li><span class="hu-bullet-dot"></span>Fokus: Solar, Wärmepumpe, Speicher</li>
 				</ul>
 			</div>
 
-			<!-- Right: 3 Gateway routing cards -->
-			<div class="hu-gateways" aria-label="Drei Einstiege ins Infrastruktur-Ecosystem" data-track-section="homepage_gateway">
+			<!-- Right: animated SVG infrastructure pipeline -->
+			<div class="hu-pipeline-wrap" aria-hidden="true">
+				<svg class="hu-pipeline" viewBox="0 0 420 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hu-pipeline-title hu-pipeline-desc" preserveAspectRatio="xMidYMid meet">
+					<title id="hu-pipeline-title">Nachfrage-Pipeline</title>
+					<desc id="hu-pipeline-desc">Schematische Darstellung des autarken Nachfrage-Kraftwerks: Marktnachfrage fließt durch die eigene Filterstrecke in den Vertrieb (CRM).</desc>
+
+					<defs>
+						<pattern id="hu-pipe-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+							<path d="M20 0 L0 0 0 20" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+						</pattern>
+						<pattern id="hu-pipe-grid-major" width="100" height="100" patternUnits="userSpaceOnUse">
+							<path d="M100 0 L0 0 0 100" fill="none" stroke="rgba(224,138,60,.10)" stroke-width="1"/>
+						</pattern>
+						<linearGradient id="hu-pipe-glow" x1="0" y1="0" x2="0" y2="1">
+							<stop offset="0%" stop-color="rgba(224,138,60,.6)"/>
+							<stop offset="100%" stop-color="rgba(224,138,60,0)"/>
+						</linearGradient>
+						<filter id="hu-pipe-dot-glow" x="-100%" y="-100%" width="300%" height="300%">
+							<feGaussianBlur stdDeviation="2.4" result="blur"/>
+							<feMerge>
+								<feMergeNode in="blur"/>
+								<feMergeNode in="SourceGraphic"/>
+							</feMerge>
+						</filter>
+					</defs>
+
+					<!-- Background grid (Millimeterpapier) -->
+					<rect width="420" height="560" fill="url(#hu-pipe-grid)"/>
+					<rect width="420" height="560" fill="url(#hu-pipe-grid-major)"/>
+
+					<!-- Schematic frame -->
+					<rect x="6" y="6" width="408" height="548" rx="10" fill="none" stroke="rgba(224,138,60,.18)" stroke-dasharray="1 4"/>
+					<text x="18" y="22" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="2" fill="rgba(224,138,60,.6)">SCHEMATIC · NACHFRAGE-PIPELINE · REV.2026</text>
+
+					<!-- Connectors with pin-terminals -->
+					<g stroke="rgba(224,138,60,.42)" stroke-width="1.4" fill="none" stroke-linecap="round">
+						<path d="M210 130 L210 218"/>
+						<path d="M210 358 L210 446"/>
+					</g>
+
+					<!-- Side rails (decorative pins) -->
+					<g stroke="rgba(255,255,255,.10)" stroke-width="1" stroke-dasharray="2 4">
+						<path d="M40 288 L78 288"/>
+						<path d="M342 288 L380 288"/>
+						<path d="M40 268 L66 268"/>
+						<path d="M354 268 L380 268"/>
+						<path d="M40 308 L66 308"/>
+						<path d="M354 308 L380 308"/>
+					</g>
+
+					<!-- Pin terminals -->
+					<g fill="rgba(224,138,60,.7)">
+						<circle cx="210" cy="130" r="3.5"/>
+						<circle cx="210" cy="218" r="3.5"/>
+						<circle cx="210" cy="358" r="3.5"/>
+						<circle cx="210" cy="446" r="3.5"/>
+					</g>
+
+					<!-- Animated flow dots (rendered BEFORE filter node so they pass under it) -->
+					<g class="hu-pipe-dots" filter="url(#hu-pipe-dot-glow)" fill="#E08A3C">
+						<circle r="3.4" cx="210" cy="130">
+							<animate attributeName="cy" from="130" to="446" dur="4s" repeatCount="indefinite"/>
+							<animate attributeName="opacity" values="0;1;1;1;0" dur="4s" repeatCount="indefinite"/>
+						</circle>
+						<circle r="3.4" cx="210" cy="130">
+							<animate attributeName="cy" from="130" to="446" begin="1.33s" dur="4s" repeatCount="indefinite"/>
+							<animate attributeName="opacity" values="0;1;1;1;0" begin="1.33s" dur="4s" repeatCount="indefinite"/>
+						</circle>
+						<circle r="3.4" cx="210" cy="130">
+							<animate attributeName="cy" from="130" to="446" begin="2.66s" dur="4s" repeatCount="indefinite"/>
+							<animate attributeName="opacity" values="0;1;1;1;0" begin="2.66s" dur="4s" repeatCount="indefinite"/>
+						</circle>
+					</g>
+
+					<!-- Filter glow ring (drawn behind filter rect for ambient effect) -->
+					<rect x="42" y="220" width="336" height="140" rx="12" fill="rgba(224,138,60,.05)" stroke="rgba(224,138,60,.14)"/>
+
+					<!-- Node 1: Quelle / Marktnachfrage -->
+					<g transform="translate(60 56)">
+						<rect width="300" height="74" rx="9" fill="rgba(11,15,18,.92)" stroke="rgba(255,255,255,.10)"/>
+						<rect x="0" y="0" width="6" height="74" rx="3" fill="rgba(224,138,60,.55)"/>
+						<text x="20" y="26" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="2" fill="#8A8478">QUELLE · 01</text>
+						<text x="20" y="48" font-family="'Figtree', 'Inter Tight', sans-serif" font-weight="700" font-size="16" fill="#F2EBDD">Marktnachfrage</text>
+						<text x="20" y="64" font-family="'JetBrains Mono', monospace" font-size="10" fill="#8A8478">Region · Bedarf · Projektwert</text>
+					</g>
+
+					<!-- Node 2: Filter / Eigene Strecke (central, accented) -->
+					<g transform="translate(50 220)">
+						<rect width="320" height="140" rx="11" fill="rgba(17,22,26,.98)" stroke="rgba(224,138,60,.55)" stroke-width="1.4"/>
+						<rect x="-1" y="-1" width="322" height="142" rx="12" fill="none" stroke="rgba(224,138,60,.14)"/>
+						<text x="22" y="30" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="2" fill="#E08A3C">FILTER · 02 · ACTIVE</text>
+						<text x="22" y="58" font-family="'Figtree', 'Inter Tight', sans-serif" font-weight="800" font-size="22" fill="#F2EBDD">Eigene Strecke</text>
+						<g font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#C8C0B0">
+							<text x="22" y="88">+ Money Page · Region · Beweis</text>
+							<text x="22" y="106">+ Architektonischer System-Intake</text>
+							<text x="22" y="124">+ Server-Side Tracking · Attribution</text>
+						</g>
+						<!-- Active LED -->
+						<circle cx="290" cy="26" r="4" fill="#6BA17A">
+							<animate attributeName="opacity" values="1;.3;1" dur="1.6s" repeatCount="indefinite"/>
+						</circle>
+					</g>
+
+					<!-- Node 3: Vertrieb / CRM -->
+					<g transform="translate(60 446)">
+						<rect width="300" height="74" rx="9" fill="rgba(224,138,60,.06)" stroke="rgba(224,138,60,.42)"/>
+						<rect x="0" y="0" width="6" height="74" rx="3" fill="var(--accent, #E08A3C)" fill-opacity="0.85"/>
+						<text x="20" y="26" font-family="'JetBrains Mono', monospace" font-size="9" letter-spacing="2" fill="#E08A3C">VERTRIEB · 03</text>
+						<text x="20" y="48" font-family="'Figtree', 'Inter Tight', sans-serif" font-weight="700" font-size="16" fill="#F2EBDD">CRM · Telefon · Termin</text>
+						<text x="20" y="64" font-family="'JetBrains Mono', monospace" font-size="10" fill="#8A8478">Attribuierte Anfrage · Fit-Score</text>
+					</g>
+				</svg>
+			</div>
+
+		</div><!-- .hu-hero__container -->
+	</section>
+
+	<!-- ═══════════════════════════════════════════════════
+	     01b / GATEWAY-BAND — Die 3 Routen
+	     ═══════════════════════════════════════════════════ -->
+	<section class="hu-section hu-section--gateways" id="gateways" data-track-section="01">
+		<div class="hu-container">
+			<div class="hu-gateways hu-gateways--band hu-reveal" data-track-section="01">
 				<?php foreach ( $home_routing_gateways as $key => $gw ) : ?>
 					<a class="hu-gateway hu-gateway--<?php echo esc_attr( $key ); ?>"
 					   href="<?php echo esc_url( $gw['url'] ); ?>"
 					   data-track-action="<?php echo esc_attr( $gw['action'] ); ?>"
-					   data-track-category="lead_gen"
-					   data-track-section="homepage_gateway">
+					   data-track-category="navigation"
+					   data-track-section="01">
 						<div class="hu-gateway__head">
 							<span class="hu-gateway__badge"><?php echo esc_html( $gw['badge'] ); ?></span>
 							<span class="hu-gateway__kicker hu-mono"><?php echo esc_html( $gw['kicker'] ); ?></span>
@@ -201,20 +312,18 @@ get_header();
 					</a>
 				<?php endforeach; ?>
 			</div>
-
-		</div><!-- .hu-hero__container -->
+		</div>
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     01 / SYSTEM-VERLUST-RASTER
-	     Die drei Verlustpunkte, die die Zielgruppe selten in Euro misst.
+	     02 / SYSTEM-VERLUST-RASTER
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section hu-section--cream" id="verlust" data-track-section="homepage_loss_grid">
+	<section class="hu-section hu-section--cream" id="verlust" data-track-section="02">
 		<div class="hu-container">
 			<div class="hu-proof-headline hu-reveal">
-				<span class="hu-eyebrow">01 / System-Verlust-Raster</span>
+				<span class="hu-eyebrow">02 / System-Verlust-Raster</span>
 				<h2 style="color:var(--ink)">Drei Lecks, die jedes Wachstums-Budget aufzehren.</h2>
-				<p>Bevor mehr Reichweite hilft, müssen diese drei Stellen schließen — sonst skaliert nur der Verlust.</p>
+				<p>Bevor mehr Reichweite hilft, müssen diese Stellen schließen — sonst skaliert nur der Verlust.</p>
 			</div>
 
 			<div class="hu-loss-grid">
@@ -223,8 +332,8 @@ get_header();
 					<div class="hu-loss-card__title">Taubes Tracking</div>
 					<div class="hu-loss-card__bracket">Die Daten-Lücke</div>
 					<p class="hu-loss-card__body">
-						Standard-Analytics zählt Klicks — aber nicht, welche Anfrage der Vertrieb am Ende wirklich abschließt.
-						Ergebnis: Budget wird blind auf falsche Kanäle verteilt.
+						Standard-Analytics zählt Klicks — kennt aber keine Abschlussquote durch attributionssichere
+						First-Party-Daten. Ergebnis: Budget wird blind auf falsche Kanäle verteilt.
 					</p>
 				</article>
 
@@ -233,8 +342,8 @@ get_header();
 					<div class="hu-loss-card__title">Gemieteter Grund</div>
 					<div class="hu-loss-card__bracket">Das Portal-Dilemma</div>
 					<p class="hu-loss-card__body">
-						Wer Leads exklusiv bei Drittanbieter-Portalen kauft, teilt sich den Kontakt mit drei Mitbewerbern,
-						steht unter Margendruck und besitzt keinen eigenen digitalen Vermögenswert.
+						Wer Leads exklusiv bei Drittanbieter-Portalen kauft, teilt sich den Kontakt mit drei
+						Mitbewerbern, steht unter Margendruck und besitzt keinen eigenen digitalen Vermögenswert.
 					</p>
 				</article>
 
@@ -243,15 +352,15 @@ get_header();
 					<div class="hu-loss-card__title">Funnel-Bloat</div>
 					<div class="hu-loss-card__bracket">Die Conversion-Bremse</div>
 					<p class="hu-loss-card__body">
-						Komplexe Themes und unkoordinierte Plugins verlangsamen die WordPress-Performance (INP/LCP-Verfall)
-						und jagen kaufnahe Besucher in Sackgassen — statt Abschlüsse vorzubereiten.
+						Komplexe Themes und unkoordinierte Plugins verlangsamen die WordPress-Performance
+						(INP/LCP-Verfall) und jagen kaufnahe Besucher in Sackgassen — statt Abschlüsse vorzubereiten.
 					</p>
 				</article>
 			</div>
 
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
 				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
-				   data-track-action="cta_home_loss_grid_marktcheck" data-track-category="lead_gen" data-track-section="homepage_loss_grid">
+				   data-track-action="cta_home_loss_grid_marktcheck" data-track-category="lead_gen" data-track-section="02">
 					Diese Lecks am eigenen System prüfen
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 				</a>
@@ -260,20 +369,45 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     02 / 6 SYSTEM-PHASEN
-	     Strukturgleich zu page-wordpress-agentur.php — kein redundanter Text.
+	     03 / PROZESS-KASKADE — Audit → Orchestrierung → Ownership
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section" id="phasen" data-track-section="homepage_phases">
+	<section class="hu-section" id="prozess" data-track-section="03">
 		<div class="hu-container">
 			<div class="hu-section-head hu-reveal">
-				<span class="hu-eyebrow">02 / System-Phasen</span>
+				<span class="hu-eyebrow">03 / Prozess-Kaskade</span>
 				<div>
-					<h2>WordPress, SEO, Tracking und CRO — in der richtigen Reihenfolge.</h2>
-					<p class="hu-lead">Sechs Phasen, eine Methodik. Welche Phase zuerst greift, entscheidet der Marktcheck — nicht der Katalog.</p>
+					<h2>Drei Schritte, die das Anfrage-System tragen.</h2>
+					<p class="hu-lead">Keine austauschbare Leistungsliste — die Reihenfolge entscheidet, ob aus Reichweite ein Asset wird.</p>
 				</div>
 			</div>
 
-			<ol class="hu-phases hu-reveal">
+			<ol class="hu-cascade hu-reveal">
+				<?php foreach ( $home_process_cascade as $step ) : ?>
+					<li class="hu-cascade__step">
+						<span class="hu-cascade__num hu-mono"><?php echo esc_html( $step['num'] ); ?></span>
+						<span class="hu-cascade__kicker hu-mono"><?php echo esc_html( $step['kicker'] ); ?></span>
+						<h3 class="hu-cascade__title"><?php echo esc_html( $step['title'] ); ?></h3>
+						<p class="hu-cascade__desc"><?php echo esc_html( $step['desc'] ); ?></p>
+					</li>
+				<?php endforeach; ?>
+			</ol>
+		</div>
+	</section>
+
+	<!-- ═══════════════════════════════════════════════════
+	     04 / 6 SYSTEM-PHASEN — strukturgleich Agentur-Hub
+	     ═══════════════════════════════════════════════════ -->
+	<section class="hu-section hu-section--cream" id="phasen" data-track-section="04">
+		<div class="hu-container">
+			<div class="hu-section-head hu-reveal">
+				<span class="hu-eyebrow" style="color:var(--ink-2)">04 / System-Phasen</span>
+				<div>
+					<h2 style="color:var(--ink)">WordPress, SEO, Tracking und CRO — in der richtigen Reihenfolge.</h2>
+					<p class="hu-lead" style="color:var(--ink-2)">Sechs Phasen, eine Methodik. Welche Phase zuerst greift, entscheidet der Marktcheck — nicht der Katalog.</p>
+				</div>
+			</div>
+
+			<ol class="hu-phases hu-phases--light hu-reveal">
 				<?php foreach ( $home_system_phases as $phase ) : ?>
 					<li class="hu-phase">
 						<span class="hu-phase__num hu-mono"><?php echo esc_html( $phase['num'] ); ?></span>
@@ -285,7 +419,7 @@ get_header();
 
 			<div class="hu-phases__cta hu-reveal">
 				<a href="<?php echo esc_url( $agentur_hub_url ); ?>" class="hu-btn hu-btn-link"
-				   data-track-action="cta_home_phases_agentur" data-track-category="lead_gen" data-track-section="homepage_phases">
+				   data-track-action="cta_home_phases_agentur" data-track-category="lead_gen" data-track-section="04">
 					Vollständige Methodenbibliothek im Agentur-Hub
 				</a>
 			</div>
@@ -293,12 +427,12 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     03 / E3 PROOF — kompakt, validiert Gateway 3
+	     05 / E3 PROOF — Validierungsschicht
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section" id="proof" data-track-section="homepage_proof">
+	<section class="hu-section" id="proof" data-track-section="05">
 		<div class="hu-container">
 			<div class="hu-proof-headline hu-reveal">
-				<span class="hu-eyebrow">03 / Validierung</span>
+				<span class="hu-eyebrow">05 / Validierung</span>
 				<h2>Vom Lead-Einkauf zur eigenen Pipeline.</h2>
 				<p><?php echo esc_html( $e3_timeframe ); ?> · E3 New Energy. Eine Referenz, die nicht auf Folien steht.</p>
 			</div>
@@ -324,7 +458,7 @@ get_header();
 
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
 				<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-primary"
-				   data-track-action="cta_home_proof_case_study" data-track-category="lead_gen" data-track-section="homepage_proof">
+				   data-track-action="cta_home_proof_case_study" data-track-category="lead_gen" data-track-section="05">
 					Vollständigen E3-Case analysieren
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 				</a>
@@ -333,9 +467,109 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     04 / ÜBER MICH — Trust-Anker
+	     06 / PORTAL-CHAOS vs. WGOS-INTEGRITÄT — visueller Schnitt
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section hu-section--cream" id="about" data-track-section="homepage_about">
+	<section class="hu-section hu-system-visual-section" id="vergleich" data-track-section="06">
+		<div class="hu-container">
+			<div class="hu-proof-headline hu-reveal" style="margin-bottom:64px">
+				<span class="hu-eyebrow">06 / Portal-Chaos vs. WGOS-Integrität</span>
+				<h2>Zwei Systeme. Zwei Ergebnisse.</h2>
+				<p style="color:var(--fg-2);font-weight:400">Eine Strecke, an jedem Punkt belegbar — gegen ein Setup, das nur Klicks zählt.</p>
+			</div>
+
+			<div class="hu-system-flow hu-reveal">
+				<div class="hu-sf-col hu-sf-col--bad">
+					<div class="hu-sf-col-head">
+						<div class="hu-sf-col-label">AKTUELL</div>
+						<div class="hu-sf-col-title">Portal-Chaos</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon" aria-hidden="true">×</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">Portal-Lead</div>
+							<div class="hu-sf-row-d"><?php echo esc_html( $e3_cpl_before ); ?> · 3 Wettbewerber</div>
+						</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon" aria-hidden="true">×</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">Ads ohne Fit-Signal</div>
+							<div class="hu-sf-row-d">240 € CPA · Blindflug ohne Attribution</div>
+						</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon" aria-hidden="true">×</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">SEO ohne Conversion</div>
+							<div class="hu-sf-row-d">Traffic · 0 attribuierte Anfragen</div>
+						</div>
+					</div>
+					<div class="hu-sf-cost">
+						<div class="hu-sf-cost-label">KOSTEN / MONAT</div>
+						<div class="hu-sf-cost-num">~ 4.800 €</div>
+					</div>
+				</div>
+
+				<div class="hu-sf-arrow" aria-hidden="true">
+					<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M5 12h14M13 6l6 6-6 6"/>
+					</svg>
+				</div>
+
+				<div class="hu-sf-col hu-sf-col--good">
+					<div class="hu-sf-col-head">
+						<div class="hu-sf-col-label">WGOS-INTEGRITÄT</div>
+						<div class="hu-sf-col-title">Eigene Strecke</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon hu-sf-row-icon--good">1</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">Money Page</div>
+							<div class="hu-sf-row-d">Region · Angebot · Beweis</div>
+						</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon hu-sf-row-icon--good">2</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">Gezielte Vorqualifizierung</div>
+							<div class="hu-sf-row-d">Effizienzoptimierter B2B-Datenpfad · ohne Streuverlust</div>
+						</div>
+					</div>
+					<div class="hu-sf-row">
+						<div class="hu-sf-row-icon hu-sf-row-icon--good">3</div>
+						<div class="hu-sf-row-content">
+							<div class="hu-sf-row-t">Attributionssicheres Tracking</div>
+							<div class="hu-sf-row-d">First-Party-Daten · Server-Side · Consent</div>
+						</div>
+					</div>
+					<div class="hu-sf-result">
+						<div class="hu-sf-result-label">ERGEBNIS</div>
+						<div class="hu-sf-result-stats">
+							<div><span class="hu-sf-result-num"><?php echo esc_html( $e3_lead_count ); ?></span> Anfragen</div>
+							<div><span class="hu-sf-result-num"><?php echo esc_html( $e3_sales_conv ); ?></span> Abschluss</div>
+							<div><span class="hu-sf-result-num hu-sf-result-num--accent"><?php echo esc_html( $e3_cpl_reduction ); ?></span> Kosten</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="hu-sf-footer hu-reveal">
+				<div class="hu-sf-footer-l">
+					<div class="hu-eyebrow">ZEITRAUM</div>
+					<div class="hu-sf-footer-t"><?php echo esc_html( $e3_timeframe ); ?> · E3 New Energy</div>
+				</div>
+				<div class="hu-sf-footer-r">
+					<div class="hu-eyebrow">SETUP</div>
+					<div class="hu-sf-footer-t">First-Party · Server-Side Tracking · Consent Mode v2</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ═══════════════════════════════════════════════════
+	     07 / ÜBER MICH — Trust-Anker (Metaphern-Leck korrigiert)
+	     ═══════════════════════════════════════════════════ -->
+	<section class="hu-section hu-section--cream" id="about" data-track-section="07">
 		<div class="hu-container">
 			<div class="hu-about-grid">
 				<div class="hu-about-photo hu-reveal">
@@ -343,26 +577,27 @@ get_header();
 					<div class="hu-about-photo__tag hu-mono">HANNOVER · 2026</div>
 				</div>
 				<div class="hu-about-text hu-reveal">
-					<span class="hu-eyebrow">04 / Wer steht dahinter</span>
-					<h2>Ich bohre Brunnen.<br>Digital.</h2>
+					<span class="hu-eyebrow">07 / Wer steht dahinter</span>
+					<h2>Ich entwickle autarke<br>Nachfrage-Kraftwerke. Digital.</h2>
 					<p class="hu-lead" style="color:var(--ink-2)">
 						Für Solar- und Wärmepumpen-Betriebe, die ihre Anfragen nicht dauerhaft über Portale
-						mieten wollen — sondern eine eigene Nachfrage-Infrastruktur aufbauen.
+						mieten wollen — sondern eine eigene Nachfrage-Infrastruktur als Asset besitzen.
 					</p>
 					<p style="color:var(--ink-2);margin-top:16px">
 						Mein Zugang ist Medienwissenschaft, nicht Webdesign. Ich denke zuerst über Sprache,
-						Entscheidung und Signal nach — und erst danach über Code. Seit E3 New Energy als
-						erstem Solar-Case weiß ich, wo diese Methode am stärksten greift.
+						Entscheidung und Signal — und erst danach über Code. Seit E3 New Energy als erstem
+						Solar-Case ist dokumentiert, wo diese Architektur am stärksten greift.
 					</p>
 					<ul class="hu-about-bullets">
-						<li><span class="hu-about-bullet-dot"></span>Medienwissenschaftlicher Hintergrund — Sprache vor Code</li>
-						<li><span class="hu-about-bullet-dot"></span>Fokus auf Solar &amp; Wärmepumpen seit dem E3-Case</li>
+						<li><span class="hu-about-bullet-dot"></span>Medienwissenschaftliche Architektur — Sprache, Signal, System vor Code</li>
+						<li><span class="hu-about-bullet-dot"></span>Fokus Solar &amp; Wärmepumpen — verifizierte Daten-Integrität seit dem E3-Case</li>
+						<li><span class="hu-about-bullet-dot"></span>Asset-Ownership statt Drittanbieter-Lock-in</li>
 						<li><span class="hu-about-bullet-dot"></span>Founder seit 2026 · Hannover, remote</li>
-						<li><span class="hu-about-bullet-dot"></span>Nimmt 2026 maximal 3 Founding-Partner auf</li>
+						<li><span class="hu-about-bullet-dot"></span>Maximal 3 Founding-Partner pro Jahr</li>
 					</ul>
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 					   style="margin-top:8px"
-					   data-track-action="cta_home_about_marktcheck" data-track-category="lead_gen" data-track-section="homepage_about">
+					   data-track-action="cta_home_about_marktcheck" data-track-category="lead_gen" data-track-section="07">
 						Eigene Region jetzt prüfen
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
@@ -372,12 +607,12 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     05 / FAQ — Einwand-Behandlung vor dem letzten Routing.
+	     08 / FAQ
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section" id="faq" data-track-section="homepage_faq">
+	<section class="hu-section" id="faq" data-track-section="08">
 		<div class="hu-container" style="max-width:880px">
 			<div class="hu-proof-headline hu-reveal" style="margin-bottom:48px">
-				<span class="hu-eyebrow">05 / FAQ</span>
+				<span class="hu-eyebrow">08 / FAQ</span>
 				<h2>Was Geschäftsführer wirklich fragen.</h2>
 			</div>
 
@@ -389,7 +624,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">−</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Der händisch geprüfte Befund deiner Domain und Region kommt innerhalb von 48 Stunden per E-Mail. Keine automatischen Standard-PDFs, sondern eine strategische Einordnung.</div>
+						<div class="hu-faq-item__a-inner">Der händisch geprüfte Befund Ihrer Domain und Region kommt innerhalb von 48 Stunden per E-Mail. Keine automatischen Standard-PDFs, sondern eine strategische Einordnung mit klarer Empfehlung.</div>
 					</div>
 				</div>
 
@@ -399,7 +634,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Beides. Die Website ist nur der Motor. Tracking, Vorqualifizierung und Steuerung der Werbekanäle gehören dazu — sonst bleibt der Betrieb in Portal-Leads gefangen.</div>
+						<div class="hu-faq-item__a-inner">Beides — als ein System. Die Website ist nur die Mechanik. Tracking, gezielte Vorqualifizierung und Werbekanal-Steuerung gehören zur selben Architektur, sonst bleibt der Betrieb in Portal-Leads gefangen.</div>
 					</div>
 				</div>
 
@@ -409,7 +644,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-							<div class="hu-faq-item__a-inner">Der Marktcheck ist 0 €. Der Aufbau danach liegt — abhängig vom Setup — bei 13.200 – 19.200 € verteilt auf 24 Monate. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten ca. 26.000 €. Weniger Kosten, dafür ein Asset, das bleibt.</div>
+						<div class="hu-faq-item__a-inner">Der Marktcheck ist 0 €. Der Aufbau danach liegt — abhängig vom Setup — bei 13.200 – 19.200 € verteilt auf 24 Monate. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten ca. 26.000 €. Weniger Kosten, dafür ein Asset, das bleibt.</div>
 					</div>
 				</div>
 
@@ -419,7 +654,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Bei E3 New Energy: erste qualifizierte Anfragen nach 4–6 Wochen, voller Effekt nach 9 Monaten. Schnellere Versprechen sind unseriös — Leadkosten brauchen einen sauberen Trichter, nicht nur ein Logo-Update.</div>
+						<div class="hu-faq-item__a-inner">Bei E3 New Energy: erste qualifizierte Anfragen nach 4–6 Wochen, voller Effekt nach 9 Monaten. Schnellere Versprechen sind unseriös — Abschlussquoten verlangen einen sauberen Trichter, nicht nur ein Logo-Update.</div>
 					</div>
 				</div>
 
@@ -429,7 +664,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Nein. Es gibt keinen Knebelvertrag. Wir starten mit einer Analyse, dann entscheiden beide — Sie, ob es sich lohnt; ich, ob ich passe. Founding-Cohort-Plätze sind aktuell auf drei pro Jahr begrenzt.</div>
+						<div class="hu-faq-item__a-inner">Nein. Kein Knebelvertrag. Wir starten mit einer Analyse, dann entscheiden beide — Sie, ob es sich lohnt; ich, ob die Architektur passt. Founding-Cohort-Plätze sind auf drei pro Jahr begrenzt.</div>
 					</div>
 				</div>
 
@@ -448,12 +683,12 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     06 / VERTIEFUNG — Themen-Hub für SEO-Sub-Pages
+	     09 / VERTIEFUNG — Themen-Hub (Array ausgelagert)
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section hu-section--cream" id="deeper" data-track-section="homepage_deeper" aria-labelledby="hu-deeper-h">
+	<section class="hu-section hu-section--cream" id="deeper" data-track-section="09" aria-labelledby="hu-deeper-h">
 		<div class="hu-container">
 			<div class="hu-proof-headline hu-reveal" style="margin-bottom:48px;text-align:center">
-				<span class="hu-eyebrow">06 / Vertiefung</span>
+				<span class="hu-eyebrow">09 / Vertiefung</span>
 				<h2 id="hu-deeper-h">Themen-Hub für tiefere Recherche.</h2>
 				<p style="max-width:62ch;margin:16px auto 0;color:var(--ink-2)">
 					Acht thematische Seiten zu Strategie, Lead-Qualität, Funnel-Architektur und Markteinordnung. Jede Seite steht für sich, alle führen zurück zum Marktcheck.
@@ -471,7 +706,7 @@ get_header();
 									   href="<?php echo esc_url( $item['url'] ); ?>"
 									   data-track-action="homepage_deeper_link"
 									   data-track-category="lead_gen"
-									   data-track-section="homepage_deeper">
+									   data-track-section="09">
 										<span class="hu-deeper-link__t"><?php echo esc_html( $item['t'] ); ?></span>
 										<span class="hu-deeper-link__s"><?php echo esc_html( $item['s'] ); ?></span>
 									</a>
@@ -485,24 +720,24 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     07 / FINAL ROUTING — die 3 Gateways noch einmal.
+	     10 / FINAL ROUTING — die 3 Gateways noch einmal.
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section" id="cta" data-track-section="homepage_final_routing">
+	<section class="hu-section" id="cta" data-track-section="10">
 		<div class="hu-container">
 			<div class="hu-final-routing hu-reveal">
 				<div class="hu-final-routing__head">
-					<span class="hu-eyebrow" style="color:var(--accent)">07 / Nächster Schritt</span>
+					<span class="hu-eyebrow" style="color:var(--accent)">10 / Nächster Schritt</span>
 					<h2 class="hu-display">Wählen Sie die Route, die zu Ihrem Reifegrad passt.</h2>
 					<p>Kein Pitch. Drei klare Einstiege — jede führt zu einem konkreten, prüfbaren Schritt.</p>
 				</div>
 
-				<div class="hu-gateways hu-gateways--final" data-track-section="homepage_final_routing">
+				<div class="hu-gateways hu-gateways--final" data-track-section="10">
 					<?php foreach ( $home_routing_gateways as $key => $gw ) : ?>
 						<a class="hu-gateway hu-gateway--<?php echo esc_attr( $key ); ?>"
 						   href="<?php echo esc_url( $gw['url'] ); ?>"
 						   data-track-action="final_<?php echo esc_attr( $gw['action'] ); ?>"
-						   data-track-category="lead_gen"
-						   data-track-section="homepage_final_routing">
+						   data-track-category="navigation"
+						   data-track-section="10">
 							<div class="hu-gateway__head">
 								<span class="hu-gateway__badge"><?php echo esc_html( $gw['badge'] ); ?></span>
 								<span class="hu-gateway__kicker hu-mono"><?php echo esc_html( $gw['kicker'] ); ?></span>
@@ -522,7 +757,7 @@ get_header();
 
 				<div class="hu-final-routing__alt">
 					<a href="<?php echo esc_url( $contact_url ); ?>" class="hu-btn hu-btn-link"
-					   data-track-action="cta_home_final_contact" data-track-category="lead_gen" data-track-section="homepage_final_routing">
+					   data-track-action="cta_home_final_contact" data-track-category="lead_gen" data-track-section="10">
 						Lieber direkt schreiben? Kontakt mit konkreter Frage
 					</a>
 				</div>
