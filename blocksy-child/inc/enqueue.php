@@ -183,6 +183,11 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-about-js', 'about-page.js', [] );
 	}
 
+	// ── E1) Template: Über Mich (Editorial Variante) ──────────────
+	if ( is_page_template( 'template-about-editorial.php' ) ) {
+		hu_enqueue_css( 'nexus-about-editorial-css', 'about-editorial.css', [ 'nexus-design-system' ] );
+	}
+
 	// ── E2) Kontakt ───────────────────────────────────────────────
 	if ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() ) {
 		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-design-system' ] );
