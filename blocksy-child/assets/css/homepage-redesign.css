@@ -1323,4 +1323,475 @@
   }
 }
 
+/* =============================================================
+   HERO — Blueprint / Millimeterpapier-Background-Variante
+   ============================================================= */
+.hu-hp .hu-hero__grid-bg--blueprint {
+  background-image:
+    linear-gradient(rgba(224,138,60,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(224,138,60,.045) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 160px 160px, 160px 160px, 32px 32px, 32px 32px;
+  mask-image: radial-gradient(ellipse 92% 70% at 50% 38%, #000 38%, transparent 82%);
+  opacity: .9;
+}
+
+/* =============================================================
+   GATEWAYS — 3 Routen-Karten (Hero + Final)
+   ============================================================= */
+.hu-hp .hu-gateways {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+@media (min-width: 1081px) {
+  .hu-hp .hu-hero__container .hu-gateways { gap: 14px; }
+}
+
+.hu-hp .hu-gateway {
+  position: relative;
+  display: block;
+  padding: 22px 24px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  background:
+    linear-gradient(160deg, rgba(224,138,60,.04) 0%, transparent 55%),
+    linear-gradient(180deg, #14181C 0%, #0E1216 100%);
+  color: var(--fg);
+  transition: transform .22s cubic-bezier(.22,1,.36,1),
+              border-color .22s ease,
+              box-shadow .22s ease,
+              background .22s ease;
+  text-decoration: none;
+  box-shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 18px 36px -28px rgba(0,0,0,.6);
+}
+.hu-hp .hu-gateway::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 18px; bottom: 18px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--accent);
+  opacity: .45;
+  transition: opacity .22s ease, transform .22s ease;
+}
+.hu-hp .hu-gateway:hover,
+.hu-hp .hu-gateway:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(224,138,60,.42);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.06) inset,
+    0 28px 48px -22px rgba(0,0,0,.65),
+    0 0 0 1px rgba(224,138,60,.24);
+  outline: none;
+}
+.hu-hp .hu-gateway:hover::before,
+.hu-hp .hu-gateway:focus-visible::before {
+  opacity: 1;
+  transform: scaleY(1.04);
+}
+.hu-hp .hu-gateway:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.hu-hp .hu-gateway__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.hu-hp .hu-gateway__badge {
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #1A0F05;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  box-shadow: 0 0 0 4px rgba(224,138,60,.12);
+}
+.hu-hp .hu-gateway__kicker {
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  font-weight: 600;
+}
+.hu-hp .hu-gateway__title {
+  font-size: clamp(20px, 1.7vw, 22px);
+  font-weight: 700;
+  letter-spacing: -.018em;
+  line-height: 1.18;
+  color: var(--fg);
+  margin: 0 0 8px;
+  text-wrap: balance;
+}
+.hu-hp .hu-gateway__desc {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--fg-2);
+  margin: 0 0 16px;
+}
+.hu-hp .hu-gateway__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.hu-hp .hu-gateway__persona {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.hu-hp .hu-gateway__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+  transition: gap .2s ease;
+}
+.hu-hp .hu-gateway:hover .hu-gateway__cta,
+.hu-hp .hu-gateway:focus-visible .hu-gateway__cta {
+  gap: 11px;
+}
+
+@media (max-width: 640px) {
+  .hu-hp .hu-gateway { padding: 18px 18px; }
+  .hu-hp .hu-gateway__foot { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+
+/* =============================================================
+   SYSTEM-VERLUST-RASTER — 3 Verlustpunkte (Diagnose-Karten)
+   Cream-Section, weiße Karten mit roter Diagnose-Spur.
+   ============================================================= */
+.hu-hp .hu-loss-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media (max-width: 900px) { .hu-hp .hu-loss-grid { grid-template-columns: 1fr; } }
+
+.hu-hp .hu-loss-card {
+  position: relative;
+  background: #fff;
+  border-radius: 14px;
+  padding: 32px;
+  color: var(--ink);
+  border-top: 3px solid #C25A48;
+  box-shadow: 0 1px 0 rgba(0,0,0,.04);
+}
+.hu-hp .hu-loss-card::before {
+  content: "";
+  position: absolute;
+  inset: auto 28px 22px auto;
+  width: 28px;
+  height: 1px;
+  background: #C25A48;
+  opacity: .35;
+}
+.hu-hp .hu-loss-card__num {
+  font-size: 10.5px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #C25A48;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.hu-hp .hu-loss-card__title {
+  font-size: clamp(24px, 2.2vw, 30px);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  color: var(--ink);
+  line-height: 1.12;
+}
+.hu-hp .hu-loss-card__bracket {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  font-style: italic;
+  color: #C25A48;
+}
+.hu-hp .hu-loss-card__body {
+  margin: 18px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* =============================================================
+   SYSTEM-PHASEN — 6 Phasen-Grid (dark section)
+   ============================================================= */
+.hu-hp .hu-phases {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  counter-reset: hu-phase;
+}
+@media (max-width: 900px) { .hu-hp .hu-phases { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .hu-hp .hu-phases { grid-template-columns: 1fr; } }
+
+.hu-hp .hu-phase {
+  position: relative;
+  padding: 28px 26px 26px;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #14181C 0%, #0E1216 100%);
+  transition: border-color .22s ease, transform .22s ease;
+}
+.hu-hp .hu-phase:hover {
+  border-color: rgba(224,138,60,.32);
+  transform: translateY(-2px);
+}
+.hu-hp .hu-phase__num {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: .22em;
+  color: var(--accent);
+  font-weight: 700;
+  padding: 5px 10px;
+  border: 1px solid rgba(224,138,60,.4);
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+.hu-hp .hu-phase__title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -.018em;
+  color: var(--fg);
+  margin: 0 0 10px;
+}
+.hu-hp .hu-phase__desc {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--fg-2);
+  margin: 0;
+}
+.hu-hp .hu-phases__cta {
+  margin-top: 36px;
+  text-align: center;
+}
+
+/* =============================================================
+   FINAL ROUTING — 3 Gateways im Final-CTA-Block
+   ============================================================= */
+.hu-hp .hu-final-routing {
+  position: relative;
+  padding: 60px;
+  border-radius: 24px;
+  border: 1px solid rgba(224,138,60,.4);
+  background:
+    radial-gradient(ellipse 80% 100% at 50% 0%, rgba(224,138,60,.16), transparent 60%),
+    var(--bg-2);
+}
+@media (max-width: 720px) { .hu-hp .hu-final-routing { padding: 40px 24px; } }
+
+.hu-hp .hu-final-routing__head { text-align: center; margin-bottom: 36px; }
+.hu-hp .hu-final-routing__head h2 {
+  font-size: clamp(32px, 4.4vw, 56px);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1.04;
+  margin: 14px 0 16px;
+  text-wrap: balance;
+}
+.hu-hp .hu-final-routing__head p {
+  color: var(--fg-2);
+  font-size: 17px;
+  max-width: 56ch;
+  margin: 0 auto;
+  line-height: 1.55;
+}
+
+.hu-hp .hu-gateways--final {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 980px) { .hu-hp .hu-gateways--final { grid-template-columns: 1fr; } }
+
+.hu-hp .hu-final-routing__alt {
+  margin-top: 28px;
+  text-align: center;
+}
+.hu-hp .hu-final-routing__signature {
+  margin-top: 22px;
+  font-size: 14px;
+  color: var(--fg-3);
+  text-align: center;
+}
+.hu-hp .hu-final-routing__signature strong { color: var(--fg); font-weight: 600; }
+
+/* =============================================================
+   SVG-PIPELINE (Blueprint) — Hero-Visual (rechts)
+   ============================================================= */
+.hu-hp .hu-pipeline-wrap {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 8px;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 42%, rgba(224,138,60,.06), transparent 70%),
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.005)),
+    var(--bg-2);
+  border: 1px solid rgba(255,255,255,.075);
+  box-shadow: 0 30px 90px -70px rgba(0,0,0,.85);
+}
+.hu-hp .hu-pipeline {
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.hu-hp .hu-pipeline-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+  background-size: 12px 12px;
+  pointer-events: none;
+  opacity: .6;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hu-hp .hu-pipeline .hu-pipe-dots circle { animation: none; }
+  .hu-hp .hu-pipeline animate { display: none; }
+}
+@media (max-width: 640px) {
+  .hu-hp .hu-pipeline-wrap { padding: 4px; }
+}
+
+/* =============================================================
+   GATEWAY-BAND — eigene Sektion direkt unter dem Hero
+   ============================================================= */
+.hu-hp .hu-section--gateways {
+  padding: clamp(36px,5vw,64px) 0 clamp(24px,3vw,36px);
+  border-top: 0;
+}
+.hu-hp .hu-gateways--band {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 980px) { .hu-hp .hu-gateways--band { grid-template-columns: 1fr; } }
+
+/* Gateway-Band-Karten brauchen etwas mehr Luft als die Hero-Stack-Variante */
+.hu-hp .hu-gateways--band .hu-gateway { padding: 26px 26px 22px; }
+.hu-hp .hu-gateways--band .hu-gateway__title { font-size: clamp(20px, 1.7vw, 24px); }
+
+/* =============================================================
+   PROZESS-KASKADE (Sektion 03) — 3 Schritte, dunkel
+   ============================================================= */
+.hu-hp .hu-cascade {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  counter-reset: hu-cascade;
+}
+@media (max-width: 900px) { .hu-hp .hu-cascade { grid-template-columns: 1fr; } }
+
+.hu-hp .hu-cascade__step {
+  position: relative;
+  padding: 28px 26px 26px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  background:
+    linear-gradient(160deg, rgba(224,138,60,.04) 0%, transparent 60%),
+    linear-gradient(180deg, #14181C 0%, #0E1216 100%);
+  transition: border-color .22s ease, transform .22s ease;
+}
+.hu-hp .hu-cascade__step:hover {
+  border-color: rgba(224,138,60,.32);
+  transform: translateY(-2px);
+}
+.hu-hp .hu-cascade__step::after {
+  content: "→";
+  position: absolute;
+  right: -22px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-size: 22px;
+  opacity: .45;
+  z-index: 2;
+}
+.hu-hp .hu-cascade__step:last-child::after { display: none; }
+@media (max-width: 900px) {
+  .hu-hp .hu-cascade__step::after {
+    right: 50%;
+    top: auto;
+    bottom: -22px;
+    transform: translateX(50%) rotate(90deg);
+  }
+}
+
+.hu-hp .hu-cascade__num {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: .22em;
+  color: var(--accent);
+  font-weight: 700;
+  padding: 5px 10px;
+  border: 1px solid rgba(224,138,60,.4);
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+.hu-hp .hu-cascade__kicker {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-bottom: 8px;
+}
+.hu-hp .hu-cascade__title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -.018em;
+  color: var(--fg);
+  margin: 0 0 10px;
+}
+.hu-hp .hu-cascade__desc {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--fg-2);
+  margin: 0;
+}
+
+/* =============================================================
+   PHASEN — Light-Variante (auf Cream-Section)
+   ============================================================= */
+.hu-hp .hu-phases--light .hu-phase {
+  background: #fff;
+  border: 1px solid #e5dcc4;
+}
+.hu-hp .hu-phases--light .hu-phase:hover {
+  border-color: rgba(224,138,60,.5);
+}
+.hu-hp .hu-phases--light .hu-phase__title { color: var(--ink); }
+.hu-hp .hu-phases--light .hu-phase__desc { color: var(--ink-2); }
+
 /* Footer-Styles entfernt — die Seite nutzt den globalen Blocksy-Footer. */
