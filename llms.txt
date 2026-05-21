@@ -1,25 +1,28 @@
 # Haşim Üner
 
-> Architekt für eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter im DACH-Raum. Ablösung von Portal-Abhängigkeit durch Website, Tracking, Vorqualifizierung und Werbekanal-Steuerung als ein verbundenes System. Primärer Einstieg ist die Anfrage-System-Analyse.
+> Architekt für eigene Anfrage-Systeme für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum. Fokus: Portal-Abhängigkeit durch eigene Website, Vorqualifizierung, Tracking und steuerbare Werbekanäle ersetzen. Primärer Einstieg ist der Marktcheck.
 
 ## Primäre Einstiege
-- [Startseite](/) - Überblick über Positionierung, Proof und primäre Einstiege.
-- [Anfrage-System-Analyse](/anfrage-system-analyse/) - Diagnose von Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss.
-- [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - Lokale B2B-Service-Seite für WordPress, Leadgenerierung und strukturierte Weiterentwicklung.
-- [WordPress Growth Operating System](/wordpress-growth-operating-system/) - Angebots- und Systemseite für Audit, Blueprint und Umsetzung.
+- [Startseite](/) - Überblick über Positionierung, Proof und aktuelle Einstiege.
+- [Solar- und Wärmepumpen-Leadgenerierung](/solar-waermepumpen-leadgenerierung/) - Branchen-Landingpage für eigene Anfrage-Systeme.
+- [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) - primärer Einstieg für kalten Solar-/SHK-Traffic.
+- [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - sekundäre lokale B2B-Service-Seite.
+- [Kontakt](/kontakt/) - Anfragepfad für Analyse, Umsetzung und Weiterentwicklung.
 
-## Service-Cluster
-- [WordPress SEO Hannover](/wordpress-seo-hannover/) - Technical SEO Audit, Informationsarchitektur und Suchnachfrage für B2B-Seiten.
-- [GA4 Tracking Setup](/ga4-tracking-setup/) - GA4, GTM und serverseitiges Tracking für saubere Messbarkeit.
-- [Conversion Rate Optimierung](/conversion-rate-optimization/) - CRO für WordPress mit Fokus auf Leads, Reibung und Formularpfade.
-- [Core Web Vitals](/core-web-vitals/) - Performance-Analyse für langsame WordPress-Seiten und Web-Vitals-Probleme.
+## Proof und Einordnung
+- [E3 New Energy](/e3-new-energy/) - kaufnaher Proof-Case für Nachfrageaufbau, Tracking und Conversion.
+- [Ergebnisse](/ergebnisse/) - kuratierter Proof-Hub mit Cases, Kennzahlen und Kontext.
+- [Solar Leads kaufen Alternative](/solar-leads-kaufen-alternative/) - Portalvergleich und Einordnung eigener Leadgenerierung.
 
-## Proof und Relevanz
-- [Ergebnisse](/ergebnisse/) - Kuratierter Proof-Hub mit Cases, Kennzahlen und Einordnung.
-- [E3 New Energy](/e3-new-energy/) - B2B-Case für Nachfrageaufbau, Tracking und Conversion-Verbesserung.
-- [Leadgenerierung für Energie-Systeme](/solar-waermepumpen-leadgenerierung/) - Branchen-Landingpage für Solar-, Wärmepumpen- und Speicher-Anbieter.
+## Solar- und Wärmepumpen-Leadgenerierung: Themen-Cluster
+- [Server-Side Tracking B2B](/server-side-tracking-b2b/) - GA4, Meta CAPI, Consent Mode v2 und Tracking-Fundament.
+- [B2B Solar Leads](/b2b-solar-leads/) - gewerbliche PV-Anfragen und Buying-Center-Logik.
+- [Eigene Leadgenerierung vs. Portale](/eigene-leadgenerierung-vs-portale/) - Vergleich von Portal-Leads und eigener Strecke.
+- [Lead-Funnel Solar](/lead-funnel-solar/) - Funnel-Architektur für interne Marketing- und Vertriebsleiter.
+- [Kunden gewinnen für Solarteure](/kunden-gewinnen-solarteure/) - systematische Nachfragegewinnung für Solarteure.
+- [Cost per Lead Photovoltaik](/cost-per-lead-photovoltaik/) - CPL-Analyse und Szenarienvergleich.
+- [Qualifizierte PV-Anfragen](/qualifizierte-pv-anfragen/) - Merkmale hochwertiger Solar-Anfragen.
 
-## Wissen und Kontakt
+## Wissen
 - [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und B2B-Wachstum.
 - [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
-- [Kontakt](/kontakt/) - Direkter Kontakt für Folgeanalyse oder Umsetzung.

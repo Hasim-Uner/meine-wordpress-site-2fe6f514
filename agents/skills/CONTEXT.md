@@ -13,23 +13,23 @@ Scope: `agents/skills/`.
 
 ## Routing
 
-| Task | Skill |
-| --- | --- |
-| SEO triage or mixed SEO work | `seo-agent` |
-| Live SEO, canonicals, redirects, reindex | `seo-live-qa` |
-| SEO Cockpit modules or diagnostics | `seo-cockpit-hardening` |
-| Internal links, orphan pages, anchors | `internal-linking-audit` |
-| Cornerstone/pillar article packages | `pillar-cornerstone-writer` |
-| B2B CRO, page critique, CTA/proof hierarchy | `wordpress-cro-content-design-audit` |
-| Visual system, UI components, premium polish | `b2b-design-system` |
-| `/growth-audit/` legacy optimization | `growth-audit-optimizer` |
-| New paid landing page | `landing-page-builder` |
-| Core Web Vitals and page speed | `page-speed-audit` |
-| Lead routing, REST contracts, CRM, form architecture | `wordpress-growth-architecture` |
-| Pre-push smoke | `pre-deploy-smoke` |
-| Glossary/WGOS registry release QA | `registry-release-qa` |
-| Header/menu/admin follow-up | `navigation-migration` |
-| Homepage proof monitoring | `homepage-proof-monitoring` |
-| Full SEO+CRO+tracking audit | `wordpress-performance-marketing` |
+| Skill-Ordner | Präziser Zweck | Trigger-Keywords |
+| --- | --- | --- |
+| `seo-agent` | SEO-Triage und gemischte SEO-Arbeiten | seo, meta, schema, sitemap, robots, llms |
+| `seo-live-qa` | Live-SEO, Canonicals, Redirects, Reindex | canonical, redirect, noindex, indexierung, search console |
+| `seo-cockpit-hardening` | SEO-Cockpit-Module und Diagnostik | cockpit, insights, queue, gsc, koko |
+| `internal-linking-audit` | Interne Links, Orphans, Ankerlogik | internal links, orphan, anchors, linkgraph |
+| `pillar-cornerstone-writer` | Cornerstone-/Pillar-Artikelpakete | cornerstone, pillar, article package, publish pack |
+| `wordpress-cro-content-design-audit` | B2B-CRO, Page-Kritik, CTA-/Proof-Hierarchie | cro, cta, proof, page critique, conversion |
+| `b2b-design-system` | Visual System, UI-Komponenten, Premium-Polish | design, ui, component, polish, visual |
+| `growth-audit-optimizer` | Legacy-Optimierung fuer `/growth-audit/` | growth audit, legacy audit, instant results |
+| `landing-page-builder` | Neue Paid-/Kampagnen-Landingpages | landing page, paid, campaign, ads |
+| `page-speed-audit` | Core Web Vitals und Page Speed | pagespeed, cwv, lcp, inp, cls |
+| `wordpress-growth-architecture` | Lead-Routing, REST, CRM, Formulararchitektur | routing, rest, crm, form, lead |
+| `pre-deploy-smoke` | Pre-Push-Smoke vor Deploy/Push | push, deploy, smoke, release |
+| `registry-release-qa` | Glossar-/WGOS-Registry Release-QA | registry, glossary, wgos assets, release qa |
+| `navigation-migration` | Header-, Menü- und Admin-Follow-up | navigation, menu, header, admin notice |
+| `homepage-proof-monitoring` | Homepage-Proof-Monitoring | homepage proof, proof metrics, monitoring |
+| `wordpress-performance-marketing` | Vollaudit aus SEO, CRO und Tracking | full audit, performance marketing, tracking |
 
 Use scripts from the routed skill before opening long references.

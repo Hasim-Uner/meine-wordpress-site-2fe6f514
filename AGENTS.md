@@ -9,7 +9,6 @@ Global contract for agents in this repo. Keep context small: read this file, the
    - Theme-wide work: `blocksy-child/CONTEXT.md`
    - PHP modules/registries: `blocksy-child/inc/CONTEXT.md`
    - Shared sections/CTA surfaces: `blocksy-child/template-parts/CONTEXT.md`
-   - n8n workflows/contracts: `automations/n8n/CONTEXT.md`
    - Durable docs: `docs/CONTEXT.md`
    - Draft content: `content/CONTEXT.md`
    - Skill work: `agents/skills/CONTEXT.md`
@@ -20,6 +19,7 @@ Global contract for agents in this repo. Keep context small: read this file, the
 - Start with `rg --files`; avoid broad `find .` unless excluding generated/ignored paths.
 - Do not load `node_modules`, `.build`, lockfiles, historical audits, references, plans, or workflow JSON unless the task explicitly needs them.
 - Prefer `rg -n "pattern" path/` over opening whole directories.
+- For pure layout/template work, keep searches scoped to templates/assets and avoid heavy backend modules such as `blocksy-child/inc/seo-cockpit/`, `blocksy-child/inc/wgos/`, and `blocksy-child/inc/glossary/` unless they are in scope.
 - Do not create root plans, fix logs, or temporary markdown. Use `.ai/memory/` for ephemeral notes.
 
 ## Stack
@@ -28,14 +28,13 @@ Global contract for agents in this repo. Keep context small: read this file, the
 - PHP templates/modules, CSS, vanilla JS, self-hosted fonts
 - ACF-backed metadata and WordPress REST integrations
 - GitHub Actions SSH-Rsync deploy via `.github/workflows/deploy.yml`
-- n8n artifacts under `automations/n8n/` only when a workflow is actually versioned with docs and flow map
+- n8n artifacts are inactive; ignore `automations/n8n/` unless the user explicitly asks for n8n work
 - No formal test suite is checked in
 
 ## Product Defaults
 
-- Primary cold Solar/SHK path: `/solar-waermepumpen-leadgenerierung/#marktcheck`
+- Canonical public routes, entry points, and business positioning live in `llms.txt`; use it as the route index before adding or changing public URLs.
 - Diagnosis/analysis canon: `blocksy-child/inc/canon/diagnose-canon.php`
-- Secondary paths: `/ergebnisse/`, `/wordpress-agentur-hannover/`, `/blog/`
 - Analyse before implementation pitch. Clarity before feature count.
 - Do not reintroduce broad agency wording when it weakens the diagnosis-first funnel.
 
@@ -53,7 +52,7 @@ Use `Founding Cohort 2026`, `Founding-Partner`, and `Founding-Konditionen` for t
 Internal URLs:
 
 ```php
-$analysis_url = home_url('/anfrage-system-analyse/');
+$analysis_url = function_exists('hu_get_request_analysis_url') ? hu_get_request_analysis_url() : home_url('/');
 echo esc_url($analysis_url);
 ```
 
@@ -63,14 +62,6 @@ Escaping:
 echo esc_html($label);
 echo esc_attr($id);
 echo esc_url($url);
-```
-
-n8n triplet:
-
-```text
-automations/n8n/workflows/<name>.json
-automations/n8n/docs/<name>.md
-automations/n8n/flow-maps/<name>.md
 ```
 
 Tracking hooks:
@@ -86,7 +77,7 @@ data-track-section=""
 - Do not change `.github/workflows/deploy.yml` unless deploy behavior is the task.
 - Do not move or rename `blocksy-child/`.
 - Do not duplicate SEO/meta/schema logic across templates, modules, and editor content.
-- Do not treat n8n JSON as self-explanatory; pair it with docs and a flow map.
+- Do not load or change n8n artifacts unless n8n is explicitly in scope.
 - Do not version editor-owned copy as if it were the live source of truth.
 - Do not write repetitive playbooks in `docs/`; create/update `agents/skills/<skill>/`.
 

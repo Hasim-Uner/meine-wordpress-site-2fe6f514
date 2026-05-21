@@ -1,6 +1,6 @@
 # Live Status
 
-Stand: 2026-05-20.
+Stand: 2026-05-21.
 
 Basis dieses Status:
 
@@ -63,7 +63,8 @@ Nicht verifiziert:
 - Repo-seitig existiert jetzt ein gemeinsames `Nexus CRM` fuer Audit-Anfragen, Projektanfragen und Blog-Abos; die Blog-Benachrichtigungen inkl. DOI, Abmeldung und manuell anstossbarem Artikelversand liegen im Theme.
 - Repo-seitig existiert jetzt ein `SEO Cockpit` im WordPress-Admin: Search-Console-OAuth, Cache-Layer, Kernmetriken, Dashboard-Widget, Cron-Snapshot, optionaler Koko-Kontext und ein neuer Audit-Lead-Layer aus dem internen CRM sind im Theme vorbereitet.
 - Das `SEO Cockpit` priorisiert repo-seitig jetzt nicht mehr nur nach Severity, sondern ueber eine business-aware Queue aus Page Role, Funnel-Naehe, Impressionen, Lead-Signal, Confidence und neuen Insight-Typen wie `Money Page Underperforming`, `Weak Funnel Bridge`, `Orphan Value Page` und `Indexing Mismatch`.
-- Die Crawl-Signale für Search- und KI-Crawler werden repo-seitig jetzt über eigene Theme-Routen für `/robots.txt` und `/llms.txt` ausgeliefert: `robots.txt` antwortet als `text/plain` mit expliziten Regeln für OAI-SearchBot, GPTBot, ChatGPT-User, ClaudeBot und PerplexityBot; `llms.txt` bündelt Audit-, Service-, Proof- und Kontaktpfade in einem erweiterten Markdown-Signal.
+- Die Crawl-Signale für Search- und KI-Crawler werden repo-seitig jetzt über eigene Theme-Routen für `/robots.txt` und `/llms.txt` ausgeliefert: `robots.txt` antwortet als `text/plain` mit expliziten Regeln für OAI-SearchBot, GPTBot, ChatGPT-User, ClaudeBot und PerplexityBot; `llms.txt` bündelt Marktcheck-, Solar-Cluster-, Proof- und Kontaktpfade in einem erweiterten Markdown-Signal und dient Agenten als kompakter Routen-/Positionierungsindex.
+- Technische SEO-Hygiene ist repo-seitig weiter konsolidiert: `/sitemap_index.xml` leitet per 301 auf `/wp-sitemap.xml`, nicht kuratierte Tag-/Custom-Taxonomy-/Author-/Date-Archive sind `noindex, follow`, die Taxonomy-Sitemap bleibt auf Kategorien beschränkt, Rank-Math-Frontend-Ausgaben werden bei aktivem Plugin unterdrückt und das Theme bleibt die zentrale Quelle für Meta, Canonical, Robots, Social Meta und Schema. OG-Bildmaße kommen jetzt aus Attachment-Metadaten statt aus festen Defaults; doppelte globale Breadcrumb-Schema-Ausgaben werden auf Seiten mit route-spezifischen Breadcrumbs vermieden.
 - Nicht-kritische Theme-Skripte werden zentral ueber `inc/enqueue.php` mit `defer` ausgeliefert; `nexus-core-js` und `nexus-site-header-js` bleiben fuer unmittelbare Boot- und Header-Interaktionen ausgenommen.
 - Zusaetzliche INP-Haertung: `nexus-core.js` verschiebt nicht-kritische Observer/TOC/Progress-Initialisierung auf `requestAnimationFrame` bzw. Idle-Zeit, der Header verarbeitet Scroll- und Pointer-Bewegungen nur noch RAF-gebuendelt und das Cal.com-Enhancement bindet Preload-Listener direkt an passende Buchungslinks statt global am gesamten Dokument.
 - Zusaetzliche Homepage-Performance: die Font-Faces liegen jetzt direkt in `style.css` statt in einer separaten `fonts.css`-Anfrage, `related-content.css` und `footer-cta.css` laden nur noch auf Blog-Singles und die Homepage zieht die Core-Block-Library nicht mehr in den kritischen CSS-Pfad.
@@ -73,6 +74,7 @@ Nicht verifiziert:
 - Repo-seitige Branding-Ausgabe fuer Logo- und Favicon-Signale priorisiert jetzt das im WordPress-Admin gesetzte `custom_logo` bzw. `site_icon`; die Theme-SVGs unter `assets/brand/` bleiben nur noch Fallback, damit Frontend-Head-Tags und Organization-Schema dieselbe Quelle nutzen.
 - Schema-/Entity-Graph: Personenreferenzen laufen zentral auf `/uber-mich/#person`; `Person.sameAs` enthaelt LinkedIn, GitHub, `hasimuener.org` und Facebook. `Organization.hasMap`, Unternehmensname, Koordinaten und Oeffnungszeiten sind an das Google Business Profile angeglichen. `/wordpress-agentur-hannover/` gibt neben Service-, WebPage- und FAQPage-Schema jetzt zusaetzlich Article-Schema mit Haşim Üner als Autor aus.
 - Der frühere EnergieFahrplan-Showroom ist repo-seitig aus dem Funnel entfernt. Beweisführung läuft über E3, Methodik und die direkte Achse Landingpage -> Branchen-Seite -> Marktcheck.
+- Die alte WGOS-Video-/Preview-Route `wgos-preview` und ihre statischen HTML-/Template-Artefakte sind aus dem deploybaren Code entfernt. Nicht runtime-referenzierte statische HTML-Referenzen wie das alte WGOS-Proof-Snippet und das Brand-Sheet sind ebenfalls entfernt. Das interne `page-wgos.php` bleibt davon unberührt und bleibt ein geschütztes Client-Dashboard.
 
 ## In Arbeit
 

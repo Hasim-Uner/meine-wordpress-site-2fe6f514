@@ -1,13 +1,13 @@
 # System Map
 
-Stand: 2026-05-20. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der frueheren System-Diagnose-Route.
+Stand: 2026-05-21. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der frueheren System-Diagnose-Route.
 
 ## Hauptsysteme
 
 | System | Zweck | Repo-Orte | Externe Abhaengigkeiten | Status |
 | --- | --- | --- | --- | --- |
 | Website | deploybarer WordPress-Theme-Code | `blocksy-child/`, `.github/workflows/ci.yml`, `.github/workflows/deploy.yml`, `docs/architecture/DEPLOYMENT.md` | WordPress, Blocksy Parent Theme, ACF | live |
-| Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
+| Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler; `llms.txt` ist der kompakte Routen- und Positionierungsindex fuer Agenten | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
 | Growth-Audit-Legacypfad | deaktivierter Instant-Diagnose-Legacycode; öffentliche Audit- und Tools-Routen führen zum Marktcheck | `blocksy-child/page-audit.php`, `blocksy-child/inc/audit-page.php`, `blocksy-child/inc/tools-page.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `docs/systems/audit-funnel.md` | n8n Webhook nur für Legacy-Code, WordPress | öffentlich retired; 301 auf `/solar-waermepumpen-leadgenerierung/#marktcheck` |
 | Nexus CRM & Blog Notify | gemeinsames CRM für Analyse-Leads, Audit-, Folgeanalyse-, Umsetzungs- und Bestandskunden-Anfragen plus DOI- und Artikel-Mail-Logik | `blocksy-child/inc/crm.php`, `blocksy-child/inc/analysis-intake.php`, `blocksy-child/inc/blog-notify.php`, `blocksy-child/template-parts/blog-notify.php`, `blocksy-child/page-blog-notify.php`, `docs/systems/blog-notify.md` | WordPress CPT/Meta, WordPress REST, wp_mail, Brevo | repo-seitig live; Analyse-REST und Brevo-Konfiguration am 2026-05-07 verifiziert |
 | SEO Cockpit | Search-Console-basiertes SEO-Dashboard mit optionalem Koko- und Audit-Lead-Layer | `blocksy-child/inc/seo-cockpit.php`, `blocksy-child/assets/css/seo-cockpit-admin.css`, `docs/systems/seo-cockpit.md` | Google Search Console API, optional Koko Analytics, Nexus CRM / Audit-CRM | repo-seitig implementiert; OAuth/API-Livezustand admin-owned, Koko optional; Legacy-/Nicht-Zielintent-Filter aktiv |
@@ -17,9 +17,9 @@ Stand: 2026-05-20. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | WGOS Client Dashboard | internes Delivery-/Client-Dashboard mit minimaler Rolle und Capability | `blocksy-child/page-wgos.php`, `blocksy-child/inc/wgos/wgos-access.php` | WordPress-User-System | intern; noindex/nofollow; Zugriff nur fuer `manage_options` oder `view_wgos_dashboard` |
 | Content- und SEO-System | Blog, Kategorie-Archive, Cornerstone-Content, interne Verlinkung | `blocksy-child/home.php`, `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/template-parts/post-title-visual.php`, `blocksy-child/page-seo-cornerstone.php`, `blocksy-child/inc/blog-provider-posts.php`, `content/blog-drafts/` | WordPress-Editor, einmalige Theme-Seeds | live plus Ausbau |
 | Client Portal | Kunden-Cockpit mit Login, Upload und optionalen Nutzer-Metadaten für Ressourcen, KPI und Roadmap | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, User Meta, Media Library | live; keine Mock-Daten mehr, Empty-State ohne gepflegtes `nexus_client_portal`; Pflege im Benutzerprofil |
-| n8n-Automationen | optionale Workflow-Artefakte für spätere Analyse-/Routing-/Nurture-Schritte hinter Contract, Consent und Feature-Flag | `automations/n8n/` | n8n Cloud, CRM, Mail, evtl. Sheets | kein aktiver Marktcheck-Pfad; nur minimal pflegen |
+| n8n-Automationen | inaktive optionale Workflow-Artefakte für spätere Analyse-/Routing-/Nurture-Schritte | `automations/n8n/` | n8n Cloud, CRM, Mail, evtl. Sheets | nicht in Operation; ignorieren, sofern n8n nicht explizit beauftragt ist |
 | Marktcheck / System-Diagnose-Legacy | aktiver 60-Sekunden-Marktcheck auf der Solar-Landingpage; fruehere System-Diagnose-Route bleibt als Redirect erhalten | `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/solar-leadgenerierung-solara.js`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/review-crm.php`, `blocksy-child/readiness/` | WordPress, Audit-CRM, Brevo/wp_mail, Cal.com; n8n nicht angebunden | Marktcheck aktiv über `/wp-json/nexus/v1/audit-request`; `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects |
-| Agenten- und Skill-System | Kontext, Guardrails und wiederholbare Skills | `AGENTS.md`, `agents/skills/` | keine direkte Laufzeitabhaengigkeit | aktiv verdichtet |
+| Agenten- und Skill-System | Kontext, Guardrails und wiederholbare Skills; konkrete public Routes werden an `llms.txt` delegiert | `AGENTS.md`, `agents/skills/`, `llms.txt` | keine direkte Laufzeitabhaengigkeit | aktiv verdichtet |
 
 ## Website
 

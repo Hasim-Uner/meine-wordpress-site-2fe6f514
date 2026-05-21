@@ -22,6 +22,38 @@ add_action( 'wp_head', 'hu_seo_meta_tags', 1 );
 add_filter( 'pre_get_document_title', 'hu_pre_get_document_title_override' );
 add_filter( 'document_title_parts', 'hu_document_title_overrides' );
 
+add_action( 'rank_math/head', 'hu_disable_rank_math_frontend_head', 0 );
+add_filter( 'rank_math/frontend/description', '__return_empty_string', 99 );
+add_filter( 'rank_math/frontend/canonical', '__return_empty_string', 99 );
+add_filter( 'rank_math/frontend/robots', 'hu_disable_rank_math_robots_output', 99 );
+add_filter( 'rank_math/json_ld', '__return_empty_array', 99 );
+add_filter( 'rank_math/json_ld/breadcrumbs_enabled', '__return_false', 99 );
+add_filter( 'rank_math/opengraph/twitter_card', '__return_false', 99 );
+
+/**
+ * Suppress Rank Math frontend head output if the plugin remains installed.
+ *
+ * The theme owns title, description, canonical, robots, social tags and JSON-LD.
+ * Rank Math metadata is read only as legacy storage fallback.
+ *
+ * @return void
+ */
+function hu_disable_rank_math_frontend_head() {
+	remove_all_actions( 'rank_math/head' );
+	remove_all_actions( 'rank_math/opengraph/facebook' );
+	remove_all_actions( 'rank_math/opengraph/twitter' );
+}
+
+/**
+ * Remove Rank Math robots directives from frontend output.
+ *
+ * @param array<string, string>|string $robots Rank Math robots directives.
+ * @return array<string, string>
+ */
+function hu_disable_rank_math_robots_output( $robots ) {
+	return [];
+}
+
 /**
  * Return the enforced homepage SEO title.
  *
@@ -394,6 +426,97 @@ function hu_get_stored_seo_value( $post_id, $acf_field, $legacy_meta_key = '' ) 
 	}
 
 	return trim( wp_strip_all_tags( $legacy_value ) );
+}
+
+/**
+ * Resolve image metadata for social previews.
+ *
+ * @param string $url           Image URL.
+ * @param int    $attachment_id Optional attachment ID.
+ * @param string $size          WordPress image size.
+ * @return array{url: string, width: int, height: int, type: string}
+ */
+function hu_get_social_image_meta( $url = '', $attachment_id = 0, $size = 'full' ) {
+	$url           = is_string( $url ) ? trim( $url ) : '';
+	$attachment_id = absint( $attachment_id );
+	$image         = [
+		'url'    => $url,
+		'width'  => 0,
+		'height' => 0,
+		'type'   => '',
+	];
+
+	if ( $attachment_id > 0 ) {
+		$src = wp_get_attachment_image_src( $attachment_id, $size );
+
+		if ( is_array( $src ) && ! empty( $src[0] ) ) {
+			$image['url']    = (string) $src[0];
+			$image['width']  = ! empty( $src[1] ) ? absint( $src[1] ) : 0;
+			$image['height'] = ! empty( $src[2] ) ? absint( $src[2] ) : 0;
+		}
+
+		$mime_type = get_post_mime_type( $attachment_id );
+		if ( is_string( $mime_type ) && '' !== $mime_type ) {
+			$image['type'] = $mime_type;
+		}
+	}
+
+	if ( '' !== $image['url'] && ( 0 === $image['width'] || 0 === $image['height'] || '' === $image['type'] ) ) {
+		$resolved_id = function_exists( 'attachment_url_to_postid' ) ? absint( attachment_url_to_postid( $image['url'] ) ) : 0;
+
+		if ( $resolved_id > 0 && $resolved_id !== $attachment_id ) {
+			$resolved = hu_get_social_image_meta( $image['url'], $resolved_id, $size );
+			$image    = array_merge(
+				$image,
+				array_filter(
+					$resolved,
+					static function ( $value ) {
+						return '' !== $value && 0 !== $value;
+					}
+				)
+			);
+		}
+	}
+
+	if ( '' !== $image['url'] && '' === $image['type'] ) {
+		$path      = (string) wp_parse_url( $image['url'], PHP_URL_PATH );
+		$file_type = wp_check_filetype( $path );
+
+		if ( ! empty( $file_type['type'] ) ) {
+			$image['type'] = (string) $file_type['type'];
+		}
+	}
+
+	return $image;
+}
+
+/**
+ * Merge social image metadata into an SEO meta array.
+ *
+ * @param array<string, mixed> $meta  Current meta array.
+ * @param array<string, mixed> $image Image metadata.
+ * @return array<string, mixed>
+ */
+function hu_apply_social_image_meta( $meta, $image ) {
+	if ( empty( $image['url'] ) ) {
+		return $meta;
+	}
+
+	$meta['og_image'] = (string) $image['url'];
+
+	if ( ! empty( $image['width'] ) ) {
+		$meta['og_image_width'] = absint( $image['width'] );
+	}
+
+	if ( ! empty( $image['height'] ) ) {
+		$meta['og_image_height'] = absint( $image['height'] );
+	}
+
+	if ( ! empty( $image['type'] ) ) {
+		$meta['og_image_type'] = (string) $image['type'];
+	}
+
+	return $meta;
 }
 
 
@@ -942,8 +1065,15 @@ function hu_seo_meta_tags() {
 	}
 	if ( ! empty( $meta['og_image'] ) ) {
 		printf( '<meta property="og:image" content="%s">' . "\n", esc_url( $meta['og_image'] ) );
-		echo '<meta property="og:image:width" content="1200">' . "\n";
-		echo '<meta property="og:image:height" content="630">' . "\n";
+		if ( ! empty( $meta['og_image_width'] ) ) {
+			printf( '<meta property="og:image:width" content="%d">' . "\n", absint( $meta['og_image_width'] ) );
+		}
+		if ( ! empty( $meta['og_image_height'] ) ) {
+			printf( '<meta property="og:image:height" content="%d">' . "\n", absint( $meta['og_image_height'] ) );
+		}
+		if ( ! empty( $meta['og_image_type'] ) ) {
+			printf( '<meta property="og:image:type" content="%s">' . "\n", esc_attr( $meta['og_image_type'] ) );
+		}
 	}
 	printf( '<meta property="og:type" content="%s">' . "\n", esc_attr( $meta['og_type'] ) );
 	echo '<meta property="og:locale" content="de_DE">' . "\n";
@@ -972,12 +1102,15 @@ function hu_seo_meta_tags() {
 function hu_get_seo_meta() {
 
 	$meta = [
-		'description' => '',
-		'canonical'   => '',
-		'robots'      => 'index, follow',
-		'og_title'    => '',
-		'og_image'    => '',
-		'og_type'     => 'website',
+		'description'     => '',
+		'canonical'       => '',
+		'robots'          => 'index, follow',
+		'og_title'        => '',
+		'og_image'        => '',
+		'og_image_width'  => 0,
+		'og_image_height' => 0,
+		'og_image_type'   => '',
+		'og_type'         => 'website',
 	];
 
 	// ── Utility-Seiten → noindex ──────────────────────────────────
@@ -1093,11 +1226,26 @@ function hu_get_seo_meta() {
 		}
 
 		if ( function_exists( 'get_field' ) ) {
-			$og_image_arr        = get_field( 'og_image', $post_id );
+			$og_image_arr = get_field( 'og_image', $post_id );
 			if ( is_array( $og_image_arr ) && ! empty( $og_image_arr['url'] ) ) {
-				$meta['og_image'] = $og_image_arr['url'];
+				$meta = hu_apply_social_image_meta(
+					$meta,
+					[
+						'url'    => (string) $og_image_arr['url'],
+						'width'  => isset( $og_image_arr['width'] ) ? absint( $og_image_arr['width'] ) : 0,
+						'height' => isset( $og_image_arr['height'] ) ? absint( $og_image_arr['height'] ) : 0,
+						'type'   => isset( $og_image_arr['mime_type'] ) ? (string) $og_image_arr['mime_type'] : '',
+					]
+				);
+
+				if ( empty( $meta['og_image_width'] ) || empty( $meta['og_image_height'] ) ) {
+					$meta = hu_apply_social_image_meta(
+						$meta,
+						hu_get_social_image_meta( (string) $og_image_arr['url'], absint( $og_image_arr['ID'] ?? 0 ), 'full' )
+					);
+				}
 			} elseif ( is_string( $og_image_arr ) && $og_image_arr ) {
-				$meta['og_image'] = $og_image_arr;
+				$meta = hu_apply_social_image_meta( $meta, hu_get_social_image_meta( $og_image_arr ) );
 			}
 		}
 
@@ -1111,7 +1259,7 @@ function hu_get_seo_meta() {
 		}
 
 		if ( 'technisches-seo-performance-fundament' === $slug ) {
-			$meta['og_title'] = 'Technisches SEO + Performance Marketing: Fundament fehlt';
+			$meta['og_title']    = 'Technisches SEO + Performance Marketing: Fundament fehlt';
 			$meta['description'] = 'Performance Marketing ohne technisches SEO-Fundament verbrennt Budget. So wirken Technik, CRO und Tracking zusammen - inklusive Entscheider-Checkliste.';
 		}
 
@@ -1157,9 +1305,9 @@ function hu_get_seo_meta() {
 		}
 
 		if ( empty( $meta['og_image'] ) ) {
-			$thumb = get_the_post_thumbnail_url( $post_id, 'large' );
-			if ( $thumb ) {
-				$meta['og_image'] = $thumb;
+			$thumb_id = get_post_thumbnail_id( $post_id );
+			if ( $thumb_id ) {
+				$meta = hu_apply_social_image_meta( $meta, hu_get_social_image_meta( '', $thumb_id, 'large' ) );
 			}
 		}
 
@@ -1187,6 +1335,7 @@ function hu_get_seo_meta() {
 				$meta['og_title']    = $category_seo['title'];
 				$meta['description'] = $category_seo['description'];
 			} else {
+				$meta['robots']  = 'noindex, follow';
 				$meta['og_title'] = single_term_title( '', false ) . ' · ' . get_bloginfo( 'name' );
 				if ( $term->description ) {
 					$meta['description'] = wp_trim_words( wp_strip_all_tags( $term->description ), 25, '…' );
@@ -1198,6 +1347,11 @@ function hu_get_seo_meta() {
 				$meta['canonical'] = $term_link;
 			}
 		}
+
+	} elseif ( is_author() || is_date() ) {
+
+		$meta['robots']  = 'noindex, follow';
+		$meta['og_title'] = wp_get_document_title();
 
 	} elseif ( is_search() ) {
 
@@ -1216,7 +1370,7 @@ function hu_get_seo_meta() {
 
 	// Global OG-Image Fallback: Profilbild als Default wenn kein seitenspezifisches Bild gesetzt ist.
 	if ( empty( $meta['og_image'] ) ) {
-		$meta['og_image'] = hu_get_profile_image_url();
+		$meta = hu_apply_social_image_meta( $meta, hu_get_social_image_meta( hu_get_profile_image_url() ) );
 	}
 
 	return $meta;
@@ -1345,3 +1499,27 @@ add_filter( 'rank_math/sitemap/exclude_posts', function ( $excluded ) {
 	$excluded = array_values( array_unique( array_merge( $excluded, nexus_get_sitemap_excluded_ids() ) ) );
 	return $excluded;
 } );
+
+/**
+ * Keep native taxonomy sitemaps focused on curated category archives.
+ *
+ * Tags and ad-hoc taxonomies are intentionally noindex/follow unless they are
+ * built as maintained landing pages with explicit SEO defaults.
+ *
+ * @param array<string, WP_Taxonomy> $taxonomies Public taxonomy objects.
+ * @return array<string, WP_Taxonomy>
+ */
+function hu_filter_indexable_sitemap_taxonomies( $taxonomies ) {
+	if ( ! is_array( $taxonomies ) ) {
+		return $taxonomies;
+	}
+
+	foreach ( array_keys( $taxonomies ) as $taxonomy ) {
+		if ( 'category' !== $taxonomy ) {
+			unset( $taxonomies[ $taxonomy ] );
+		}
+	}
+
+	return $taxonomies;
+}
+add_filter( 'wp_sitemaps_taxonomies', 'hu_filter_indexable_sitemap_taxonomies' );

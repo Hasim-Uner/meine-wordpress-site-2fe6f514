@@ -147,6 +147,38 @@ function hu_get_blog_archive_collection_schema() {
     return $collection;
 }
 
+/**
+ * Determine whether the global BreadcrumbList JSON-LD should be emitted.
+ *
+ * Some hardcoded templates output route-specific BreadcrumbList schema with a
+ * more precise hierarchy. Suppressing the generic fallback avoids duplicate
+ * breadcrumb graphs for the same URL.
+ *
+ * @return bool
+ */
+function hu_should_output_global_breadcrumb_schema() {
+    if ( is_front_page() ) {
+        return false;
+    }
+
+    $request_path = function_exists( 'nexus_get_current_request_path' ) ? nexus_get_current_request_path() : '';
+
+    if ( function_exists( 'hu_is_solar_seo_subpage_path' ) && hu_is_solar_seo_subpage_path( $request_path ) ) {
+        return false;
+    }
+
+    if ( is_singular() ) {
+        $post_id  = get_queried_object_id();
+        $template = $post_id ? (string) get_page_template_slug( $post_id ) : '';
+
+        if ( 'page-seo-cornerstone.php' === $template ) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 function hu_output_schema()
 {
     $google_maps_url = 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfrage-Systeme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
@@ -941,8 +973,8 @@ function hu_output_schema()
     }
 
     // ── BreadcrumbList Schema ─────────────────────────────────────
-    // Output on all pages except the homepage.
-    if ( ! is_front_page() ) {
+    // Output on pages that do not already provide route-specific breadcrumbs.
+    if ( hu_should_output_global_breadcrumb_schema() ) {
         $breadcrumb_items = [];
         $bc_position      = 1;
 

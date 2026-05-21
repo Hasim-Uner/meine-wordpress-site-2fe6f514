@@ -192,7 +192,17 @@ get_template_part( 'template-parts/blog-header' );
 
 			<div class="nexus-hero-image<?php echo esc_attr( $has_hero_image ? '' : ' nexus-hero-image--generated' ); ?>">
 				<?php if ( $has_hero_image ) : ?>
-					<?php the_post_thumbnail( 'full' ); ?>
+					<?php
+					the_post_thumbnail(
+						'full',
+						[
+							'loading'       => 'eager',
+							'fetchpriority' => 'high',
+							'decoding'      => 'async',
+							'sizes'         => '(max-width: 900px) 100vw, 50vw',
+						]
+					);
+					?>
 				<?php else : ?>
 					<?php
 					get_template_part(
