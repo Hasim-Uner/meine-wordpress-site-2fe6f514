@@ -161,6 +161,24 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-related-content-css', 'related-content.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-footer-cta-css', 'footer-cta.css', [ 'nexus-design-system' ] );
 		hu_enqueue_js( 'nexus-blog-inline-cta-js', 'blog-inline-cta.js', [ 'nexus-core-js' ] );
+
+		// Editorial layer: progress bar, share rail, FAQ, rating, author bio.
+		hu_enqueue_css( 'nexus-single-editorial-css', 'single-editorial.css', [ 'nexus-single-css' ] );
+		hu_enqueue_js( 'nexus-single-editorial-js', 'single-editorial.js', [ 'nexus-core-js' ] );
+
+		wp_localize_script(
+			'nexus-single-editorial-js',
+			'NexusSingleEditorial',
+			[
+				'restEndpoint' => esc_url_raw( rest_url( 'nexus/v1/post-rating' ) ),
+				'nonce'        => wp_create_nonce( 'wp_rest' ),
+				'postId'       => (int) get_the_ID(),
+				'successMsg'   => __( 'Danke für Ihr Feedback.', 'blocksy-child' ),
+				'errorMsg'     => __( 'Das hat gerade nicht funktioniert. Bitte erneut versuchen.', 'blocksy-child' ),
+				'shareUrl'     => esc_url_raw( get_permalink() ),
+				'shareTitle'   => wp_strip_all_tags( get_the_title() ),
+			]
+		);
 	}
 
 	if ( is_singular( 'post' ) || $is_seo_cornerstone_template ) {

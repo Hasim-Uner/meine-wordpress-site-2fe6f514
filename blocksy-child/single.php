@@ -14,7 +14,25 @@ get_header();
 get_template_part( 'template-parts/blog-header' );
 ?>
 
-<main id="main" class="site-main nexus-single-container nexus-single-container--with-blog-header">
+<div class="nexus-reading-progress" aria-hidden="true"></div>
+
+<aside class="nexus-share-rail" aria-label="<?php esc_attr_e( 'Artikel teilen', 'blocksy-child' ); ?>">
+	<span class="nexus-share-rail__label"><?php esc_html_e( 'Teilen', 'blocksy-child' ); ?></span>
+	<button class="nexus-share-rail__btn" type="button" data-nexus-share="linkedin" aria-label="LinkedIn">
+		<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+	</button>
+	<button class="nexus-share-rail__btn" type="button" data-nexus-share="x" aria-label="X">
+		<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+	</button>
+	<button class="nexus-share-rail__btn" type="button" data-nexus-share="email" aria-label="<?php esc_attr_e( 'Per E-Mail teilen', 'blocksy-child' ); ?>">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+	</button>
+	<button class="nexus-share-rail__btn" type="button" data-nexus-share="copy" aria-label="<?php esc_attr_e( 'Link kopieren', 'blocksy-child' ); ?>">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+	</button>
+</aside>
+
+<main id="main" class="site-main nexus-single-container nexus-single-container--with-blog-header nexus-single-container--editorial hu-hp">
 
 	<?php while ( have_posts() ) : the_post(); ?>
 
@@ -306,6 +324,40 @@ get_template_part( 'template-parts/blog-header' );
 			</div>
 		</section>
 
+		<?php if ( is_singular( 'post' ) ) : ?>
+		<section class="nexus-rating nexus-reveal" data-track-section="article_rating" aria-labelledby="nexus-rating-title">
+			<div class="nexus-rating__label"><?php esc_html_e( 'Feedback', 'blocksy-child' ); ?></div>
+			<h2 id="nexus-rating-title" class="nexus-rating__title"><?php esc_html_e( 'War dieser Artikel hilfreich?', 'blocksy-child' ); ?></h2>
+			<p class="nexus-rating__sub"><?php esc_html_e( 'Ihre Rückmeldung verbessert die nächsten Beiträge — kein Login nötig.', 'blocksy-child' ); ?></p>
+
+			<div class="nexus-rating__buttons">
+				<button class="nexus-rating__btn" type="button" data-rating="yes" data-track-action="post_rating_yes" data-track-category="engagement">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H7V10l5-8 1.74 1.16A2 2 0 0 1 14.5 5l.5.88z"/></svg>
+					<?php esc_html_e( 'Hilfreich', 'blocksy-child' ); ?>
+				</button>
+				<button class="nexus-rating__btn" type="button" data-rating="no" data-track-action="post_rating_no" data-track-category="engagement">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H17v12l-5 8-1.74-1.16A2 2 0 0 1 9.5 19l-.5-.88z"/></svg>
+					<?php esc_html_e( 'Nicht hilfreich', 'blocksy-child' ); ?>
+				</button>
+			</div>
+
+			<div class="nexus-rating__feedback" aria-live="polite">
+				<label class="screen-reader-text" for="nexus-rating-text"><?php esc_html_e( 'Optionale Rückmeldung', 'blocksy-child' ); ?></label>
+				<textarea id="nexus-rating-text" placeholder="<?php esc_attr_e( 'Was hat gefehlt? Welcher Punkt blieb unklar? (optional)', 'blocksy-child' ); ?>"></textarea>
+				<div class="nexus-rating__feedback-actions">
+					<button class="nexus-rating__skip" type="button"><?php esc_html_e( 'Überspringen', 'blocksy-child' ); ?></button>
+					<button class="nexus-rating__submit" type="button">
+						<?php esc_html_e( 'Feedback senden', 'blocksy-child' ); ?>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+					</button>
+				</div>
+			</div>
+
+			<p class="nexus-rating__thanks" role="status"><?php esc_html_e( '✓ Danke für Ihr Feedback.', 'blocksy-child' ); ?></p>
+			<p class="nexus-rating__error" role="alert"></p>
+		</section>
+		<?php endif; ?>
+
 		<?php get_template_part( 'template-parts/blog-notify', null, [ 'variant' => 'full' ] ); ?>
 
 		<?php if ( is_singular( 'post' ) ) : ?>
@@ -313,6 +365,80 @@ get_template_part( 'template-parts/blog-header' );
 			<h3><?php esc_html_e( 'Diesen Artikel teilen', 'blocksy-child' ); ?></h3>
 			<?php if ( function_exists( 'nexus_render_share_buttons' ) ) { nexus_render_share_buttons(); } ?>
 		</div>
+
+		<?php
+		$author_id          = get_the_author_meta( 'ID' );
+		$author_name        = get_the_author();
+		$author_description = get_the_author_meta( 'description' );
+		$author_avatar      = get_avatar( $author_id, 96, '', $author_name, [ 'class' => 'nexus-author-bio__avatar-img' ] );
+		$author_initials    = '';
+		if ( $author_name ) {
+			$parts = preg_split( '/\s+/', trim( wp_strip_all_tags( $author_name ) ) );
+			foreach ( (array) $parts as $part ) {
+				if ( '' === $part ) {
+					continue;
+				}
+				$author_initials .= function_exists( 'mb_substr' ) ? mb_substr( $part, 0, 1 ) : substr( $part, 0, 1 );
+				if ( strlen( $author_initials ) >= 2 ) {
+					break;
+				}
+			}
+		}
+		$author_role     = trim( (string) get_the_author_meta( 'hu_author_role' ) );
+		if ( '' === $author_role ) {
+			$author_role = __( 'Architekt für eigene Anfrage-Systeme · Hannover', 'blocksy-child' );
+		}
+		if ( '' === trim( (string) $author_description ) ) {
+			$author_description = __( 'Ich baue Solar- und Wärmepumpen-Anbietern im DACH-Raum eigene Anfrage-Systeme, die Portal-Abhängigkeit ablösen und Leadkosten messbar senken. Diagnose vor Pitch. Klarheit vor Feature-Count.', 'blocksy-child' );
+		}
+		?>
+		<section class="nexus-author-bio nexus-reveal" data-track-section="article_author_bio" aria-labelledby="nexus-author-bio-name">
+			<div class="nexus-author-bio__avatar" aria-hidden="true">
+				<?php if ( $author_avatar ) : ?>
+					<?php echo $author_avatar; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — get_avatar() returns safe HTML. ?>
+				<?php else : ?>
+					<?php echo esc_html( strtoupper( $author_initials ?: 'HÜ' ) ); ?>
+				<?php endif; ?>
+			</div>
+			<div class="nexus-author-bio__content">
+				<span class="nexus-author-bio__label"><?php esc_html_e( 'Über den Autor', 'blocksy-child' ); ?></span>
+				<h2 id="nexus-author-bio-name" class="nexus-author-bio__name"><?php echo esc_html( $author_name ); ?></h2>
+				<p class="nexus-author-bio__role"><?php echo esc_html( $author_role ); ?></p>
+				<p class="nexus-author-bio__text"><?php echo esc_html( $author_description ); ?></p>
+				<div class="nexus-author-bio__links">
+					<a
+						href="<?php echo esc_url( $audit_url ); ?>"
+						class="nexus-author-bio__link"
+						data-track-action="cta_author_bio_marktcheck"
+						data-track-category="lead_gen"
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+						<?php esc_html_e( 'Marktcheck starten', 'blocksy-child' ); ?>
+					</a>
+					<?php $about_url = function_exists( 'nexus_get_page_url' ) ? nexus_get_page_url( [ 'uber-mich', 'ueber-mich', 'ueber-hasim' ], home_url( '/uber-mich/' ) ) : home_url( '/uber-mich/' ); ?>
+					<a
+						href="<?php echo esc_url( $about_url ); ?>"
+						class="nexus-author-bio__link"
+						data-track-action="cta_author_bio_about"
+						data-track-category="internal_link"
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+						<?php esc_html_e( 'Mehr über Haşim', 'blocksy-child' ); ?>
+					</a>
+					<a
+						href="https://www.linkedin.com/in/hasim-uener"
+						class="nexus-author-bio__link"
+						rel="noopener"
+						target="_blank"
+						data-track-action="cta_author_bio_linkedin"
+						data-track-category="external_link"
+					>
+						<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+						<?php esc_html_e( 'LinkedIn', 'blocksy-child' ); ?>
+					</a>
+				</div>
+			</div>
+		</section>
 		<?php endif; ?>
 
 		<?php
@@ -328,6 +454,10 @@ get_template_part( 'template-parts/blog-header' );
 	<?php endwhile; ?>
 
 </main>
+
+<button class="nexus-back-to-top" type="button" aria-label="<?php esc_attr_e( 'Zum Seitenanfang', 'blocksy-child' ); ?>">
+	<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m18 15-6-6-6 6"/></svg>
+</button>
 
 <?php
 get_footer();

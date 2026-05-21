@@ -1,0 +1,1370 @@
+/* ============================================================
+   NEXUS Single Post — Editorial Layer
+   Adds the "Beitragseite Weltklasse" editorial shell on top of
+   the existing single.css base. Scope: .nexus-single-container
+   wrapped in .hu-hp so the homepage-redesign tokens (--hu-*)
+   apply without touching the global Nexus palette.
+
+   Author: Haşim Üner
+   ============================================================ */
+
+/* -------------------------------------------------------------
+   1. Local token bridge — map .hu-hp tokens onto the Nexus
+      container so existing single.css remains the visual base
+      while the editorial layer can rely on a stable accent.
+------------------------------------------------------------- */
+.nexus-single-container.hu-hp {
+    --hu-radius: 18px;
+    --hu-radius-sm: 12px;
+    --hu-shadow-card: 0 18px 48px hsl(30 25% 2% / 0.32);
+}
+
+/* -------------------------------------------------------------
+   2. Reading Progress Bar — fixed at the very top
+------------------------------------------------------------- */
+.nexus-reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    z-index: 1100;
+    background: linear-gradient(90deg, var(--hu-accent, #E08A3C) 0%, #F5A668 100%);
+    box-shadow: 0 0 12px hsl(var(--accent-hsl) / 0.55);
+    transition: width 100ms linear;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nexus-reading-progress {
+        transition: none;
+    }
+}
+
+/* -------------------------------------------------------------
+   3. Vertical Share Rail — sticky on the left while reading
+------------------------------------------------------------- */
+.nexus-share-rail {
+    position: fixed;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 60;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 10px;
+    border-radius: 9999px;
+    background: hsl(30 6% 6% / 0.72);
+    border: 1px solid var(--nx-border, #232A30);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.nexus-share-rail.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+@media (min-width: 1280px) {
+    .nexus-share-rail { display: flex; }
+}
+
+.nexus-share-rail__label {
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--hu-fg-4, #5C5A52);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    padding-bottom: 6px;
+    margin-bottom: 4px;
+}
+
+.nexus-share-rail__btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--hu-fg-2, #C8C0B0);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    padding: 0;
+}
+
+.nexus-share-rail__btn:hover,
+.nexus-share-rail__btn:focus-visible {
+    background: hsl(var(--accent-hsl) / 0.14);
+    color: var(--hu-accent, #E08A3C);
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.nexus-share-rail__btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* -------------------------------------------------------------
+   4. Back-to-top button
+------------------------------------------------------------- */
+.nexus-back-to-top {
+    position: fixed;
+    bottom: 112px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: hsl(30 6% 8% / 0.92);
+    border: 1px solid var(--nx-border, #232A30);
+    color: var(--hu-fg-2, #C8C0B0);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 80;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.nexus-back-to-top.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.nexus-back-to-top:hover,
+.nexus-back-to-top:focus-visible {
+    background: hsl(var(--accent-hsl) / 0.16);
+    color: var(--hu-accent, #E08A3C);
+    transform: translateY(-2px);
+    outline: none;
+}
+
+.nexus-back-to-top svg {
+    width: 18px;
+    height: 18px;
+}
+
+@media (max-width: 768px) {
+    .nexus-back-to-top { bottom: 96px; right: 16px; }
+}
+
+/* -------------------------------------------------------------
+   5. Hero "ghost" decorative stat — opt-in via data attribute
+      on the hero. Renders the big number top-right behind text.
+------------------------------------------------------------- */
+.nexus-article-hero[data-hero-stat] {
+    position: relative;
+    overflow: hidden;
+}
+
+.nexus-article-hero[data-hero-stat]::before {
+    content: attr(data-hero-stat-label);
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    font-family: var(--font-mono, monospace);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--hu-fg-3, #8A8478);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.nexus-article-hero[data-hero-stat]::after {
+    content: attr(data-hero-stat);
+    position: absolute;
+    top: 48px;
+    right: 32px;
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: clamp(4rem, 8vw, 8rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    color: var(--hu-accent, #E08A3C);
+    opacity: 0.10;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@media (max-width: 1100px) {
+    .nexus-article-hero[data-hero-stat]::before,
+    .nexus-article-hero[data-hero-stat]::after {
+        display: none;
+    }
+}
+
+/* -------------------------------------------------------------
+   6. Reveal-on-scroll
+------------------------------------------------------------- */
+.nexus-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.nexus-reveal.is-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nexus-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* =============================================================
+   EDITOR BLOCK CLASSES — usable inside the_content()
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   7. Lead paragraph + drop cap (.lead-para, .dropcap)
+      Set the first paragraph of an article visually apart.
+      Add both classes for max effect, or .dropcap alone.
+------------------------------------------------------------- */
+.nexus-article-content > p.lead-para {
+    font-size: clamp(1.18rem, 1.6vw, 1.35rem);
+    line-height: 1.55;
+    color: var(--nx-text);
+    font-weight: 500;
+    margin-bottom: 1.6rem;
+    text-wrap: pretty;
+}
+
+.nexus-article-content > p.dropcap::first-letter,
+.nexus-article-content > .dropcap::first-letter {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    float: left;
+    font-size: 4.4rem;
+    line-height: 0.85;
+    font-weight: 800;
+    margin: 6px 14px 0 0;
+    color: var(--hu-accent, #E08A3C);
+    letter-spacing: -0.04em;
+}
+
+/* -------------------------------------------------------------
+   8. Section divider with big numbered prefix
+      Usage in editor (Custom HTML block):
+      <div class="section-divider">
+        <div class="section-divider-num">01</div>
+        <div class="section-divider-content">
+          <h2 id="...">Section title</h2>
+          <p class="section-divider-dek">Optional one-line dek.</p>
+        </div>
+      </div>
+------------------------------------------------------------- */
+.nexus-article-content .section-divider {
+    margin: 4.5rem 0 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--nx-border, #232A30);
+    display: grid;
+    grid-template-columns: 80px minmax(0, 1fr);
+    gap: 24px;
+    align-items: baseline;
+}
+
+.nexus-article-content .section-divider-num {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: clamp(2.25rem, 4vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--hu-accent, #E08A3C);
+    opacity: 0.5;
+}
+
+.nexus-article-content .section-divider-content h2 {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+.nexus-article-content .section-divider-dek {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--hu-fg-3, #8A8478);
+    margin: 12px 0 0 !important;
+    max-width: 56ch;
+}
+
+@media (max-width: 768px) {
+    .nexus-article-content .section-divider {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin: 3rem 0 1rem;
+    }
+    .nexus-article-content .section-divider-num { font-size: 2.25rem; }
+}
+
+/* -------------------------------------------------------------
+   9. Pull-quote — bigger, with decorative quote mark + attribution
+      Usage: <blockquote class="pull-quote">...
+        <span class="pull-quote-attr">Kapitel · Markt</span>
+      </blockquote>
+------------------------------------------------------------- */
+.nexus-article-content blockquote.pull-quote {
+    margin: 3rem 0;
+    padding: 2.25rem 2.5rem;
+    border-left: 3px solid var(--hu-accent, #E08A3C);
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    border-radius: 0;
+    background: linear-gradient(90deg, hsl(var(--accent-hsl) / 0.08) 0%, transparent 100%);
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: clamp(1.3rem, 2.1vw, 1.65rem);
+    line-height: 1.4;
+    font-weight: 600;
+    color: var(--nx-text);
+    font-style: italic;
+    letter-spacing: -0.01em;
+    position: relative;
+    text-wrap: pretty;
+}
+
+.nexus-article-content blockquote.pull-quote::before {
+    content: "\201C";
+    position: absolute;
+    top: -8px;
+    left: 14px;
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: 6rem;
+    line-height: 1;
+    color: var(--hu-accent, #E08A3C);
+    opacity: 0.18;
+    pointer-events: none;
+}
+
+.nexus-article-content .pull-quote-attr {
+    display: block;
+    margin-top: 1rem;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--hu-fg-3, #8A8478);
+    font-style: normal;
+}
+
+.nexus-article-content .pull-quote-attr::before {
+    content: "— ";
+}
+
+@media (max-width: 768px) {
+    .nexus-article-content blockquote.pull-quote {
+        padding: 1.5rem 1.5rem;
+        font-size: 1.15rem;
+    }
+    .nexus-article-content blockquote.pull-quote::before {
+        font-size: 4rem;
+        left: 8px;
+        top: -6px;
+    }
+}
+
+/* -------------------------------------------------------------
+   10. Formula block — code-style framing for formulas / lists
+       Usage: <div class="formula-block">
+         <span class="comment"># comment</span>
+         <span class="accent">Formula</span> = ...
+       </div>
+       Inline color helpers: .accent (copper), .good, .bad,
+       .warn, .comment.
+------------------------------------------------------------- */
+.nexus-article-content .formula-block {
+    margin: 2rem 0;
+    padding: 1.5rem 1.75rem;
+    border: 1px solid var(--nx-border, #232A30);
+    border-radius: 12px;
+    background: hsl(30 6% 6%);
+    font-family: var(--font-mono, monospace);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--hu-fg, #F2EBDD);
+    white-space: pre-wrap;
+    overflow-x: auto;
+    text-shadow: none;
+}
+
+.nexus-article-content .formula-block .accent  { color: var(--hu-accent, #E08A3C); }
+.nexus-article-content .formula-block .good    { color: var(--hu-good, #6BA17A); }
+.nexus-article-content .formula-block .bad     { color: var(--hu-bad,  #C7705F); }
+.nexus-article-content .formula-block .warn    { color: var(--hu-warn, #D9B25A); }
+.nexus-article-content .formula-block .comment { color: var(--hu-fg-4, #5C5A52); }
+
+/* -------------------------------------------------------------
+   11. Stat row — 3-column big-number cards
+       Usage: <div class="stat-row">
+         <div class="stat-card">
+           <div class="stat-value">€ 1.500</div>
+           <div class="stat-label">...</div>
+         </div> ...
+       </div>
+------------------------------------------------------------- */
+.nexus-article-content .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 2rem 0;
+}
+
+.nexus-article-content .stat-row .stat-card {
+    padding: 1.5rem;
+    border: 1px solid var(--nx-border, #232A30);
+    border-radius: 14px;
+    background: hsl(30 5% 8%);
+}
+
+.nexus-article-content .stat-row .stat-value {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--hu-accent, #E08A3C);
+    margin-bottom: 0.5rem;
+}
+
+.nexus-article-content .stat-row .stat-label {
+    font-size: 0.85rem;
+    color: var(--hu-fg-3, #8A8478);
+    line-height: 1.4;
+}
+
+.nexus-article-content .stat-row .stat-label strong {
+    color: var(--nx-text);
+}
+
+@media (max-width: 768px) {
+    .nexus-article-content .stat-row { grid-template-columns: 1fr; }
+}
+
+/* -------------------------------------------------------------
+   12. Callout box — Stopp / Hinweis with inline CTA
+       Usage: <div class="callout">
+         <div class="callout-label">Stopp · Bevor Sie weiterlesen</div>
+         <div class="callout-title">...</div>
+         <p class="callout-text">...</p>
+         <a href="..." class="callout-cta">Aktion</a>
+       </div>
+------------------------------------------------------------- */
+.nexus-article-content .callout {
+    margin: 3rem 0;
+    padding: 2rem;
+    border: 1px solid hsl(var(--accent-hsl) / 0.4);
+    border-radius: 16px;
+    background:
+        radial-gradient(ellipse 70% 100% at 0% 0%, hsl(var(--accent-hsl) / 0.12) 0%, transparent 60%),
+        hsl(30 5% 8%);
+    position: relative;
+}
+
+.nexus-article-content .callout-label {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--hu-accent, #E08A3C);
+    margin-bottom: 0.75rem;
+}
+
+.nexus-article-content .callout-title {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+    font-weight: 700;
+    color: var(--nx-text);
+    margin: 0 0 0.75rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+
+.nexus-article-content .callout-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--hu-fg-2, #C8C0B0);
+    margin: 0 0 1.25rem !important;
+}
+
+.nexus-article-content .callout-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    background: var(--hu-accent, #E08A3C);
+    color: #1A0F05 !important;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none !important;
+    border-radius: 9999px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.nexus-article-content .callout-cta:hover,
+.nexus-article-content .callout-cta:focus-visible {
+    background: #F09A4C;
+    transform: translateY(-1px);
+}
+
+.nexus-article-content .callout-cta svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* -------------------------------------------------------------
+   13. Comparison table — 3-column (Dimension | A | B)
+       Usage:
+       <div class="comparison">
+         <div class="comparison-row header"><div>...</div><div>...</div><div>...</div></div>
+         <div class="comparison-row"><div>...</div><div>...</div><div>...</div></div>
+       </div>
+------------------------------------------------------------- */
+.nexus-article-content .comparison {
+    margin: 3rem 0;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--nx-border, #232A30);
+}
+
+.nexus-article-content .comparison-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    border-bottom: 1px solid var(--nx-border, #232A30);
+}
+
+.nexus-article-content .comparison-row:last-child { border-bottom: none; }
+
+.nexus-article-content .comparison-row.header {
+    background: hsl(30 5% 8%);
+}
+
+.nexus-article-content .comparison-row.header > div {
+    padding: 1.1rem 1.4rem;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.nexus-article-content .comparison-row.header > div:nth-child(1) { color: var(--hu-fg-3, #8A8478); }
+.nexus-article-content .comparison-row.header > div:nth-child(2) {
+    color: var(--hu-bad, #C7705F);
+    border-left: 1px solid var(--nx-border, #232A30);
+}
+.nexus-article-content .comparison-row.header > div:nth-child(3) {
+    color: var(--hu-good, #6BA17A);
+    border-left: 1px solid var(--nx-border, #232A30);
+}
+
+.nexus-article-content .comparison-row > div {
+    padding: 1rem 1.4rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--hu-fg-2, #C8C0B0);
+}
+
+.nexus-article-content .comparison-row > div:nth-child(1) {
+    color: var(--nx-text);
+    font-weight: 500;
+    background: hsl(30 5% 7%);
+}
+
+.nexus-article-content .comparison-row > div:nth-child(2),
+.nexus-article-content .comparison-row > div:nth-child(3) {
+    border-left: 1px solid var(--nx-border, #232A30);
+}
+
+@media (max-width: 768px) {
+    .nexus-article-content .comparison-row { grid-template-columns: 1fr; }
+    .nexus-article-content .comparison-row > div { border-left: none !important; padding: 0.75rem 1.1rem; }
+    .nexus-article-content .comparison-row.header > div { padding: 0.75rem 1.1rem; }
+}
+
+/* -------------------------------------------------------------
+   14. Case study card
+       Usage: <div class="casestudy">
+         <div class="casestudy-header">
+           <div>
+             <div class="casestudy-label">Fallstudie</div>
+             <div class="casestudy-name">E3 New Energy</div>
+           </div>
+           <div class="casestudy-meta">9 Monate · ...</div>
+         </div>
+         <div class="casestudy-stats">
+           <div class="casestudy-stat">
+             <div class="casestudy-stat-num">71 %</div>
+             <div class="casestudy-stat-from">CPO-Reduktion</div>
+             <div class="casestudy-stat-label">€ 5.000 → € 1.450</div>
+           </div> ...
+         </div>
+         <blockquote class="casestudy-quote">...</blockquote>
+       </div>
+------------------------------------------------------------- */
+.nexus-article-content .casestudy {
+    margin: 3rem 0;
+    padding: 2.5rem;
+    border-radius: 24px;
+    background:
+        radial-gradient(ellipse 60% 80% at 100% 0%, hsl(var(--accent-hsl) / 0.1) 0%, transparent 60%),
+        hsl(30 5% 8%);
+    border: 1px solid var(--nx-border, #232A30);
+    position: relative;
+    overflow: hidden;
+}
+
+.nexus-article-content .casestudy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    margin-bottom: 2rem;
+}
+
+.nexus-article-content .casestudy-label {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--hu-accent, #E08A3C);
+    margin-bottom: 0.5rem;
+}
+
+.nexus-article-content .casestudy-name {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--nx-text);
+    line-height: 1.05;
+}
+
+.nexus-article-content .casestudy-meta {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+    color: var(--hu-fg-3, #8A8478);
+    letter-spacing: 0.05em;
+    text-align: right;
+    line-height: 1.5;
+}
+
+.nexus-article-content .casestudy-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--nx-border, #232A30);
+}
+
+.nexus-article-content .casestudy-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nexus-article-content .casestudy-stat-num {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--hu-accent, #E08A3C);
+}
+
+.nexus-article-content .casestudy-stat-from {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    color: var(--hu-fg-3, #8A8478);
+    letter-spacing: 0.05em;
+}
+
+.nexus-article-content .casestudy-stat-label {
+    font-size: 0.8rem;
+    color: var(--hu-fg-3, #8A8478);
+    line-height: 1.4;
+}
+
+.nexus-article-content blockquote.casestudy-quote {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: clamp(1.1rem, 1.9vw, 1.35rem);
+    line-height: 1.45;
+    font-weight: 500;
+    color: var(--nx-text);
+    font-style: italic;
+    letter-spacing: -0.01em;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--hu-accent, #E08A3C);
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    background: transparent;
+    border-radius: 0;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .nexus-article-content .casestudy { padding: 1.5rem; }
+    .nexus-article-content .casestudy-header { flex-direction: column; gap: 12px; }
+    .nexus-article-content .casestudy-meta { text-align: left; }
+    .nexus-article-content .casestudy-stats { grid-template-columns: 1fr; gap: 20px; }
+}
+
+/* -------------------------------------------------------------
+   15. Highlight marker — yellow/copper "marker" on key phrase
+       Usage: <span class="highlight">key sentence</span>
+------------------------------------------------------------- */
+.nexus-article-content .highlight {
+    background: linear-gradient(180deg, transparent 60%, hsl(var(--accent-hsl) / 0.28) 60%);
+    padding: 0 3px;
+    color: var(--nx-text);
+}
+
+/* -------------------------------------------------------------
+   16. FAQ Accordion
+       Usage: <section class="nexus-faq">
+         <ul class="faq-list">
+           <li class="faq-item">
+             <button class="faq-question" type="button">
+               Question? <span class="faq-toggle"></span>
+             </button>
+             <div class="faq-answer"><div class="faq-answer-inner">Answer.</div></div>
+           </li> ...
+         </ul>
+       </section>
+
+       Behaviour added by single-editorial.js: clicking toggles
+       `.is-open` on the .faq-item. CSS opens the answer + rotates
+       the +/- icon.
+------------------------------------------------------------- */
+.nexus-article-content .nexus-faq {
+    margin: 4rem 0 2rem;
+}
+
+.nexus-article-content .faq-list {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-top: 1px solid var(--nx-border, #232A30);
+    display: flex;
+    flex-direction: column;
+}
+
+.nexus-article-content .faq-list > li {
+    margin: 0 !important;
+}
+
+.nexus-article-content .faq-item {
+    border-bottom: 1px solid var(--nx-border, #232A30);
+    list-style: none;
+}
+
+.nexus-article-content .faq-question {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 1.4rem 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--nx-text);
+    text-align: left;
+    letter-spacing: -0.01em;
+    transition: color 0.2s;
+}
+
+.nexus-article-content .faq-question:hover,
+.nexus-article-content .faq-question:focus-visible {
+    color: var(--hu-accent, #E08A3C);
+    outline: none;
+}
+
+.nexus-article-content .faq-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--nx-border, #232A30);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    transition: border-color 0.3s, background 0.3s, color 0.3s;
+    color: var(--hu-fg-3, #8A8478);
+}
+
+.nexus-article-content .faq-question:hover .faq-toggle {
+    border-color: var(--hu-accent, #E08A3C);
+    background: hsl(var(--accent-hsl) / 0.12);
+}
+
+.nexus-article-content .faq-toggle::before,
+.nexus-article-content .faq-toggle::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+    border-radius: 1px;
+}
+
+.nexus-article-content .faq-toggle::before {
+    width: 12px;
+    height: 1.5px;
+}
+
+.nexus-article-content .faq-toggle::after {
+    width: 1.5px;
+    height: 12px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nexus-article-content .faq-item.is-open .faq-toggle::after {
+    transform: rotate(90deg);
+}
+
+.nexus-article-content .faq-item.is-open .faq-toggle {
+    border-color: var(--hu-accent, #E08A3C);
+    color: var(--hu-accent, #E08A3C);
+}
+
+.nexus-article-content .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nexus-article-content .faq-item.is-open .faq-answer {
+    max-height: 1200px;
+}
+
+.nexus-article-content .faq-answer-inner {
+    padding: 0 0 1.6rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--hu-fg-2, #C8C0B0);
+    max-width: 64ch;
+}
+
+.nexus-article-content .faq-answer-inner p:first-child { margin-top: 0; }
+.nexus-article-content .faq-answer-inner p:last-child  { margin-bottom: 0; }
+
+/* -------------------------------------------------------------
+   17. Cover schematic (optional editor block)
+       Renders a "Modell A vs Modell B" flow diagram. Drop into
+       the_content() right after the lead paragraph or before
+       the first H2 to give the article an interactive opener.
+
+       Usage:
+       <div class="cover-schematic">
+         <div class="cover-grid">
+           <div class="cover-pane bad">
+             <div class="cover-pane-label">Modell A</div>
+             <div class="cover-pane-title">...</div>
+             <div class="cover-nodes">
+               <div class="cover-node"><span class="dot"></span>Node<span class="cover-node-meta">meta</span></div>
+             </div>
+             <div class="cover-cpo">
+               <div class="cover-cpo-label">Cost per Order</div>
+               <div class="cover-cpo-value">€ 2.500</div>
+             </div>
+           </div>
+           <div class="cover-divider">
+             <div class="cover-divider-line"></div>
+             <div class="cover-divider-vs">VS</div>
+             <div class="cover-divider-line"></div>
+           </div>
+           <div class="cover-pane good"> ... </div>
+         </div>
+       </div>
+------------------------------------------------------------- */
+.nexus-article-content .cover-schematic {
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    margin: 1.5rem 0 2.5rem;
+    border-radius: 18px;
+    background:
+        radial-gradient(ellipse 60% 100% at 25% 50%, hsl(15 35% 50% / 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 100% at 75% 50%, hsl(140 25% 45% / 0.06) 0%, transparent 60%),
+        linear-gradient(180deg, #11161A 0%, #0d1114 100%);
+    border: 1px solid var(--nx-border, #232A30);
+    position: relative;
+    overflow: hidden;
+    padding: 2.5rem;
+}
+
+.nexus-article-content .cover-schematic::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, hsl(0 0% 100% / 0.04) 1px, transparent 0);
+    background-size: 32px 32px;
+    pointer-events: none;
+}
+
+.nexus-article-content .cover-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 32px;
+    height: 100%;
+    align-items: stretch;
+}
+
+.nexus-article-content .cover-pane {
+    display: flex;
+    flex-direction: column;
+}
+
+.nexus-article-content .cover-pane-label {
+    font-family: var(--font-mono, monospace);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.nexus-article-content .cover-pane.bad  .cover-pane-label { color: var(--hu-bad,  #C7705F); }
+.nexus-article-content .cover-pane.good .cover-pane-label { color: var(--hu-good, #6BA17A); }
+
+.nexus-article-content .cover-pane-title {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--nx-text);
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+}
+
+.nexus-article-content .cover-nodes {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nexus-article-content .cover-node {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: hsl(30 6% 5% / 0.65);
+    border: 1px solid var(--nx-border, #232A30);
+    border-radius: 8px;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    color: var(--hu-fg-2, #C8C0B0);
+    letter-spacing: 0.04em;
+}
+
+.nexus-article-content .cover-node .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.nexus-article-content .cover-pane.bad  .cover-node .dot { background: var(--hu-bad, #C7705F); }
+.nexus-article-content .cover-pane.good .cover-node .dot { background: var(--hu-good, #6BA17A); box-shadow: 0 0 6px hsl(140 25% 45% / 0.5); }
+
+.nexus-article-content .cover-node-meta {
+    margin-left: auto;
+    color: var(--hu-fg-4, #5C5A52);
+    font-size: 10px;
+}
+
+.nexus-article-content .cover-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.nexus-article-content .cover-divider-line {
+    width: 1px;
+    flex: 1;
+    background: linear-gradient(180deg, transparent, var(--nx-border, #232A30) 30%, var(--nx-border, #232A30) 70%, transparent);
+}
+
+.nexus-article-content .cover-divider-vs {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--hu-fg-3, #8A8478);
+    background: hsl(30 5% 8%);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    border: 1px solid var(--nx-border, #232A30);
+}
+
+.nexus-article-content .cover-cpo {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--nx-border, #232A30);
+}
+
+.nexus-article-content .cover-cpo-label {
+    font-family: var(--font-mono, monospace);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--hu-fg-4, #5C5A52);
+    margin-bottom: 4px;
+}
+
+.nexus-article-content .cover-cpo-value {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.nexus-article-content .cover-pane.bad  .cover-cpo-value { color: var(--hu-bad,  #C7705F); }
+.nexus-article-content .cover-pane.good .cover-cpo-value { color: var(--hu-good, #6BA17A); }
+
+@media (max-width: 768px) {
+    .nexus-article-content .cover-schematic { padding: 1.25rem; aspect-ratio: 4/5; }
+    .nexus-article-content .cover-grid { grid-template-columns: 1fr; gap: 16px; }
+    .nexus-article-content .cover-divider { flex-direction: row; }
+    .nexus-article-content .cover-divider-line { width: 100%; height: 1px; flex: 0 0 1px; min-height: 1px; }
+}
+
+/* =============================================================
+   END EDITOR BLOCK CLASSES — start template-driven sections
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   18. Rating widget — Hilfreich / Nicht hilfreich
+------------------------------------------------------------- */
+.nexus-rating {
+    margin: 4rem 0 2rem;
+    padding: 2.75rem 2rem;
+    background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, hsl(var(--accent-hsl) / 0.06) 0%, transparent 60%),
+        var(--nx-card-gradient, hsl(30 5% 8%));
+    border: 1px solid var(--nx-border, #232A30);
+    border-radius: 20px;
+    text-align: center;
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nexus-rating__label {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--hu-accent, #E08A3C);
+    margin-bottom: 0.75rem;
+}
+
+.nexus-rating__title {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: clamp(1.4rem, 2.4vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--nx-text);
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+}
+
+.nexus-rating__sub {
+    font-size: 0.95rem;
+    color: var(--hu-fg-3, #8A8478);
+    margin: 0 0 1.75rem;
+}
+
+.nexus-rating__buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.nexus-rating__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-radius: 9999px;
+    border: 1px solid var(--nx-border, #232A30);
+    background: hsl(30 6% 5%);
+    color: var(--hu-fg-2, #C8C0B0);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.2s;
+    font-family: var(--font-body, 'Figtree', sans-serif);
+}
+
+.nexus-rating__btn:hover,
+.nexus-rating__btn:focus-visible {
+    border-color: var(--hu-accent, #E08A3C);
+    background: hsl(var(--accent-hsl) / 0.1);
+    color: var(--nx-text);
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.nexus-rating__btn.is-selected {
+    border-color: var(--hu-accent, #E08A3C);
+    background: var(--hu-accent, #E08A3C);
+    color: #1A0F05;
+}
+
+.nexus-rating__btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.nexus-rating__feedback {
+    display: none;
+    margin: 1.75rem auto 0;
+    text-align: left;
+    max-width: 480px;
+}
+
+.nexus-rating__feedback.is-shown { display: block; }
+
+.nexus-rating__feedback textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--nx-border, #232A30);
+    border-radius: 12px;
+    background: hsl(30 6% 5%);
+    color: var(--nx-text);
+    font-size: 0.95rem;
+    font-family: var(--font-body, 'Figtree', sans-serif);
+    resize: vertical;
+    min-height: 96px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.nexus-rating__feedback textarea:focus {
+    outline: none;
+    border-color: var(--hu-accent, #E08A3C);
+    box-shadow: 0 0 0 3px hsl(var(--accent-hsl) / 0.2);
+}
+
+.nexus-rating__feedback-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.nexus-rating__skip {
+    padding: 10px 20px;
+    border-radius: 9999px;
+    border: 1px solid var(--nx-border, #232A30);
+    background: transparent;
+    color: var(--hu-fg-2, #C8C0B0);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font-body, 'Figtree', sans-serif);
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.nexus-rating__skip:hover {
+    border-color: var(--hu-fg-3, #8A8478);
+    color: var(--nx-text);
+}
+
+.nexus-rating__submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 9999px;
+    border: none;
+    background: linear-gradient(135deg, var(--hu-accent, #E08A3C) 0%, #F5A668 100%);
+    color: #1A0F05;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-body, 'Figtree', sans-serif);
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 6px 16px hsl(var(--accent-hsl) / 0.28);
+}
+
+.nexus-rating__submit:hover,
+.nexus-rating__submit:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px hsl(var(--accent-hsl) / 0.4);
+    outline: none;
+}
+
+.nexus-rating__submit svg { width: 14px; height: 14px; }
+
+.nexus-rating__thanks {
+    display: none;
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+    color: var(--hu-good, #6BA17A);
+    font-weight: 500;
+}
+
+.nexus-rating__thanks.is-shown { display: block; }
+
+.nexus-rating__error {
+    display: none;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--hu-bad, #C7705F);
+}
+
+.nexus-rating__error.is-shown { display: block; }
+
+/* -------------------------------------------------------------
+   19. Author bio card
+------------------------------------------------------------- */
+.nexus-author-bio {
+    margin: 3rem auto 4rem;
+    padding: 2.5rem;
+    border-radius: 20px;
+    background: var(--nx-card-gradient, hsl(30 5% 8%));
+    border: 1px solid var(--nx-border, #232A30);
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+    max-width: 820px;
+}
+
+.nexus-author-bio__avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--hu-accent, #E08A3C) 0%, var(--hu-accent-2, #C0701F) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1A0F05;
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.nexus-author-bio__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.nexus-author-bio__label {
+    font-family: var(--font-mono, monospace);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--hu-fg-3, #8A8478);
+    margin-bottom: 8px;
+    display: block;
+}
+
+.nexus-author-bio__name {
+    font-family: var(--font-display, 'Satoshi', sans-serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--nx-text);
+    margin: 0 0 4px;
+    line-height: 1.2;
+}
+
+.nexus-author-bio__role {
+    font-size: 0.9rem;
+    color: var(--hu-fg-3, #8A8478);
+    margin: 0 0 1rem;
+}
+
+.nexus-author-bio__text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--hu-fg-2, #C8C0B0);
+    margin: 0 0 1.25rem;
+    max-width: 56ch;
+}
+
+.nexus-author-bio__links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.nexus-author-bio__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--nx-border, #232A30);
+    border-radius: 9999px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--hu-fg-2, #C8C0B0);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.nexus-author-bio__link:hover,
+.nexus-author-bio__link:focus-visible {
+    border-color: var(--hu-accent, #E08A3C);
+    color: var(--hu-accent, #E08A3C);
+    background: hsl(var(--accent-hsl) / 0.1);
+    outline: none;
+}
+
+.nexus-author-bio__link svg { width: 14px; height: 14px; }
+
+@media (max-width: 768px) {
+    .nexus-author-bio {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 1.75rem;
+    }
+    .nexus-author-bio__avatar { width: 72px; height: 72px; font-size: 28px; }
+}
+
+/* -------------------------------------------------------------
+   20. Polish: nicer headings + scroll margin inside the article
+       so #fragment links land below the fixed progress bar.
+------------------------------------------------------------- */
+.nexus-article-content h2,
+.nexus-article-content h3 {
+    scroll-margin-top: 96px;
+}
+
+/* Improve list bullets in editor lists when not in a special block */
+.nexus-article-content > ul:not(.faq-list) > li::marker {
+    color: var(--hu-accent, #E08A3C);
+}
