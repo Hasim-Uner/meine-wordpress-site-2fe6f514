@@ -1,7 +1,8 @@
 /* solar-leadgenerierung-solara.js
-   SOLARA Landing — interaktives 6-Step "Marktcheck"-Quiz im Hero.
+   SOLARA Landing — B2B System-Intake im Hero.
+   3-stufige Progressive-Disclosure-Sequenz (Sales-Team → Portal-Streuverlust → Business-Daten).
    Submit → /wp-json/nexus/v1/audit-request (intake_variant=energy_systems).
-   Success-Screen mit Cal.com-Direktbuchung + händischer 48h-Antwort.
+   Success-Screen mit Cal.com-Direktbuchung + händischer 24h-Antwort.
    Vanilla JS. Keine Dependencies. Touch- & Keyboard-accessible. */
 (function () {
   'use strict';
@@ -10,77 +11,42 @@
   var CFG = (window.NexusMarktcheckConfig && typeof window.NexusMarktcheckConfig === 'object')
     ? window.NexusMarktcheckConfig : {};
 
+  // ── Progressive Disclosure: 3-stufige B2B-Sequenz ─────────────
+  // Step 1 — Klickbasierter Einstieg ohne Datenrisiko.
+  // Step 2 — Problemverankerung mit Portal-Namen (Sunk-Cost-Trigger).
+  // Step 3 — Erst danach freigeschaltete Business-Datenfelder.
   var QUIZ_STEPS = [
     {
-      key: 'solution_focus',
-      label: 'Angebot',
-      title: 'Worauf liegt der Schwerpunkt Ihres Angebots?',
-      hint: 'Wir kalibrieren die Analyse auf Ihre Vertriebslogik.',
+      key: 'sales_team_size',
+      label: 'Vertriebsteam',
+      title: 'Wie viele fest angestellte Vertriebsmitarbeiter bearbeiten aktuell Ihre Anfragen?',
+      hint: 'Der Hebel eines eigenen Anfrage-Systems wirkt nur, wenn jemand die qualifizierten Anfragen auch konsequent abschließt.',
       kind: 'pick',
       options: [
-        { v: 'photovoltaik',      t: 'Photovoltaik',      s: 'Aufdach · Speicher · Direktinvest', i: '☀️' },
-        { v: 'waermepumpen',      t: 'Wärmepumpen',       s: 'Sanierung & Neubau',                i: '🔥' },
-        { v: 'speicher',          t: 'Speicher',          s: 'Stand-alone oder Nachrüstung',      i: '🔋' },
-        { v: 'mehrere_loesungen', t: 'Mehrere Lösungen',  s: 'PV · WP · Speicher kombiniert',     i: '⚡' }
+        { v: 'none',          t: 'Keine',            s: 'Geschäftsführung verkauft aktuell selbst — oder gar nicht.', i: '⊘' },
+        { v: 'one',           t: '1 Person',         s: 'Eine zentrale Anlaufstelle, klare Verantwortung.',          i: '①' },
+        { v: 'two_to_five',   t: '2 – 5 Personen',   s: 'Vertriebsteam vorhanden, Pipeline-Routing geregelt.',       i: '⑤' },
+        { v: 'more_than_five', t: 'Mehr als 5',      s: 'Strukturierter Vertrieb mit eigener Pipeline-Logik.',       i: '∞' }
       ]
     },
     {
-      key: 'business_fit',
-      label: 'Fit',
-      title: 'Passt das wirtschaftlich zu einem eigenen Anfrage-System?',
-      hint: 'Keine Mitarbeitergrenze: Projektwert, Zielgebiet und Vertriebsfähigkeit entscheiden.',
+      key: 'portal_streuverlust',
+      label: 'Streuverlust',
+      title: 'Wie hoch ist der geschätzte Streuverlust durch unqualifizierte Portal-Leads (z. B. Aroundhome, DAA, Wattfox) in Ihrem Betrieb?',
+      hint: 'Streuverlust = Anteil der eingekauften Anfragen, die nicht ans Telefon gehen, kein Budget haben oder bei drei Wettbewerbern parallel landen.',
       kind: 'pick',
       options: [
-        { v: 'b2c_high_value_own_sales', t: 'B2C ab ca. 15k €',          s: 'Eigener Vertrieb oder Geschäftsführung verkauft selbst', i: '🏠' },
-        { v: 'b2b_high_value_own_sales', t: 'B2B ab ca. 50k €',          s: 'Definierte Region, hoher Beratungs- und Abschlusswert',   i: '🏭' },
-        { v: 'founder_led_regional',     t: 'Klein, aber vertriebsstark', s: 'Region, Marge und Abschlusskraft stimmen',              i: '🤝' },
-        { v: 'resale_or_short_term',     t: 'Eher Vermittlung / kurzfristig', s: 'Leads werden weitergegeben oder sofort gebraucht',  i: '⏱️' }
-      ]
-    },
-    {
-      key: 'lead_volume',
-      label: 'Volumen',
-      title: 'Wie viele Anfragen erreichen Ihren Vertrieb aktuell pro Monat?',
-      hint: 'Qualifiziert + unqualifiziert zusammen — Bauchgefühl reicht.',
-      kind: 'pick',
-      options: [
-        { v: 'unter_20',    t: 'Unter 20',  s: 'Vertrieb hat Kapazität, aber Pipeline ist dünn', i: '📉' },
-        { v: '20_bis_50',   t: '20 – 50',   s: 'Volumen vorhanden, Qualität unklar',             i: '📊' },
-        { v: '51_bis_120',  t: '51 – 120',  s: 'Stabiler Korridor — Hebel bei Qualität',         i: '📈' },
-        { v: 'ueber_120',   t: 'Über 120',  s: 'Skalierung greift nur bei sauberem Fundament',   i: '🚀' }
-      ]
-    },
-    {
-      key: 'primary_bottleneck',
-      label: 'Engpass',
-      title: 'Wo ist Ihr größter Engpass — ehrlich?',
-      hint: 'Einer trifft fast immer am stärksten zu.',
-      kind: 'pick',
-      options: [
-        { v: 'lead_menge',             t: 'Lead-Menge',             s: 'Zu wenige Anfragen für die Kapazität',                   i: '🪫' },
-        { v: 'lead_qualitaet',         t: 'Lead-Qualität',          s: 'Anfragen kommen, aber zu viel Streuverlust',             i: '🎯' },
-        { v: 'tracking_klarheit',      t: 'Tracking-Klarheit',      s: 'Welcher Kanal bringt Abschlüsse? Unklar.',               i: '🔍' },
-        { v: 'eigentum_abhaengigkeit', t: 'Eigentum / Abhängigkeit', s: 'Sie mieten — Portal oder Agentur hält den Hebel',       i: '🔓' }
-      ]
-    },
-    {
-      key: 'cpl_range',
-      label: 'CPL',
-      title: 'Was kostet eine Anfrage heute im Schnitt?',
-      hint: 'Voll belastet (Portal-Gebühren + Ads + Folgekosten).',
-      kind: 'pick',
-      options: [
-        { v: 'unter_80',    t: 'Unter 80 €',  s: 'Organisch / Empfehlung-getrieben',          i: '💰' },
-        { v: '80_bis_150',  t: '80 – 150 €',  s: 'Typischer Portal- / Performance-Korridor', i: '💸' },
-        { v: '151_bis_300', t: '151 – 300 €', s: 'Spürbar hoher CPL — Streuverlust hoch',     i: '⚠️' },
-        { v: 'ueber_300',   t: 'Über 300 €',  s: 'Akut unwirtschaftlich',                     i: '🔥' }
+        { v: 'low',    t: 'Kaum spürbar',                 s: 'Portal-Leads sind wirtschaftlich vertretbar.',                  i: '◔' },
+        { v: 'medium', t: 'Sichtbarer Margendruck',       s: 'Die CPL-Kosten verdrängen die Marge in Grenzprojekten.',         i: '◐' },
+        { v: 'high',   t: 'Massive Vertriebs-Frustration', s: 'Vertrieb verbrennt Stunden mit Leuten, die nie kaufen werden.', i: '●' },
+        { v: 'none',   t: 'Wir nutzen keine Portale',     s: 'Eigene Akquise — Empfehlung, Bestand, organisch.',               i: '○' }
       ]
     },
     {
       key: 'contact',
-      label: 'Kontakt',
-      title: 'Wohin darf ich dir den händisch geprüften Befund schicken?',
-      hint: 'Manueller, tiefer Marktcheck statt Software-Einheitsbrei — händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.',
+      label: 'System-Intake',
+      title: 'Wohin darf ich Ihnen den geprüften Infrastruktur-Befund schicken?',
+      hint: 'Persönlich-händische Analyse Ihrer Domain und Region innerhalb von 24 Stunden — keine automatisierte Standard-Auswertung, kein Newsletter.',
       kind: 'form'
     }
   ];
@@ -118,7 +84,7 @@
     if (typeof window === 'undefined') return;
     try {
       if (window.dataLayer && typeof window.dataLayer.push === 'function') {
-        window.dataLayer.push(Object.assign({ event: action, event_category: 'lead_funnel' }, extra || {}));
+        window.dataLayer.push(Object.assign({ event: action, event_category: 'lead_gen' }, extra || {}));
       }
     } catch (e) { /* swallow */ }
   }
@@ -149,10 +115,15 @@
     function validateContact() {
       var a = state.answers;
       var errs = {};
-      if (!a.name || a.name.trim().length < 2) errs.name = 'Bitte Ihren Namen angeben.';
       if (!a.company || a.company.trim().length < 2) errs.company = 'Bitte Ihr Unternehmen angeben.';
-      if (!a.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a.email)) errs.email = 'Bitte eine gültige E-Mail angeben.';
-      if (!a.postal_code || !/^[0-9]{5}$/.test(String(a.postal_code).trim())) errs.postal_code = '5-stellige PLZ nötig.';
+      if (!a.name || a.name.trim().length < 2) errs.name = 'Bitte Ihren Namen angeben.';
+      if (!a.position || a.position.trim().length < 2) errs.position = 'Bitte Ihre Position im Betrieb angeben.';
+      if (!a.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a.email)) errs.email = 'Bitte eine gültige geschäftliche E-Mail angeben.';
+      // Konsumenten-Provider auf geschäftliche E-Mail-Felder ausschließen.
+      if (a.email && /^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(a.email)) {
+        errs.email = 'Bitte Ihre geschäftliche E-Mail-Adresse verwenden (keine Freemail-Adresse).';
+      }
+      if (!a.postal_code || !/^[0-9]{5}$/.test(String(a.postal_code).trim())) errs.postal_code = '5-stellige Firmen-PLZ nötig (für Regions-Verfügbarkeitsprüfung).';
       if (!a.consent_privacy) errs.consent_privacy = 'Bitte den Datenschutzhinweis bestätigen.';
       return errs;
     }
@@ -161,7 +132,7 @@
       if (state.submitting) return;
       var errs = validateContact();
       if (Object.keys(errs).length) {
-        state.touched = Object.assign({}, state.touched || {}, { name: true, company: true, email: true, postal_code: true, consent_privacy: true });
+        state.touched = Object.assign({}, state.touched || {}, { name: true, company: true, position: true, email: true, postal_code: true, consent_privacy: true });
         render();
         return;
       }
@@ -171,15 +142,13 @@
       var endpoint = CFG.restEndpoint || '/wp-json/nexus/v1/audit-request';
       var payload = {
         intake_variant:      'energy_systems',
-        audit_type:          'growth_audit',
-        solution_focus:      state.answers.solution_focus || '',
-        business_fit:        state.answers.business_fit || '',
-        lead_volume:         state.answers.lead_volume || '',
-        cpl_range:           state.answers.cpl_range || '',
-        primary_bottleneck:  state.answers.primary_bottleneck || '',
+        audit_type:          'b2b_system_intake',
+        sales_team_size:     state.answers.sales_team_size || '',
+        portal_streuverlust: state.answers.portal_streuverlust || '',
         postal_code:         (state.answers.postal_code || '').toString().replace(/\D/g, ''),
         name:                state.answers.name || '',
         company:             state.answers.company || '',
+        position:            state.answers.position || '',
         email:                state.answers.email || '',
         phone:                state.answers.phone || '',
         page_url:             CFG.pageUrl || window.location.href,
@@ -199,17 +168,17 @@
         return res.json().then(function (json) { return { ok: res.ok, json: json }; }).catch(function () { return { ok: res.ok, json: {} }; });
       }).then(function (r) {
         if (r.ok && r.json && r.json.ok) {
-          track('marktcheck_submit_success', { funnel_stage: 'lead_captured' });
+          track('system_intake_submit_success', { funnel_stage: 'lead_captured' });
           setState({ submitting: false, done: true, submitError: null });
         } else {
           var msg = (r.json && (r.json.message || r.json.error || r.json.code))
             ? (typeof r.json.message === 'string' ? r.json.message : 'Bitte Eingaben prüfen.')
             : 'Die Anfrage konnte gerade nicht gesendet werden. Bitte erneut versuchen.';
-          track('marktcheck_submit_error', { funnel_stage: 'submit_error' });
+          track('system_intake_submit_error', { funnel_stage: 'submit_error' });
           setState({ submitting: false, submitError: msg });
         }
       }).catch(function () {
-        track('marktcheck_submit_error', { funnel_stage: 'submit_network' });
+        track('system_intake_submit_error', { funnel_stage: 'submit_network' });
         setState({ submitting: false, submitError: 'Netzwerkfehler. Bitte erneut versuchen.' });
       });
     }
@@ -217,20 +186,20 @@
     function goNext() {
       if (state.step < totalSteps - 1) {
         setState({ step: state.step + 1 });
-        track('marktcheck_step_next', { step: state.step + 1 });
+        track('system_intake_step_next', { step: state.step + 1 });
       }
     }
 
     function goBack() {
       if (state.step > 0) {
         setState({ step: Math.max(0, state.step - 1) });
-        track('marktcheck_step_back', { step: state.step });
+        track('system_intake_step_back', { step: state.step });
       }
     }
 
     function pick(key, value) {
       setAnswer(key, value);
-      track('marktcheck_pick', { step: state.step + 1, field: key, value: value });
+      track('system_intake_pick', { step: state.step + 1, field: key, value: value });
       // auto-advance
       setTimeout(function () {
         if (state.step < totalSteps - 1) {
@@ -249,7 +218,7 @@
       state.done = false;
       state.touched = {};
       render();
-      track('marktcheck_reset');
+      track('system_intake_reset');
     }
 
     // ── render helpers ────────────────────────────────────────
@@ -271,7 +240,7 @@
               if (idx < state.step) {
                 state.step = idx;
                 render();
-                track('marktcheck_dot_jump', { to_step: idx + 1 });
+                track('system_intake_dot_jump', { to_step: idx + 1 });
               }
             };
           })(dotIdx)
@@ -317,7 +286,7 @@
           role: 'radio',
           'aria-checked': sel ? 'true' : 'false',
           style: '--sol-opt-delay:' + (i * 60) + 'ms',
-          dataset: { trackAction: 'marktcheck_pick', trackCategory: 'lead_funnel', trackSection: 'quiz_step_' + (state.step + 1) },
+          dataset: { trackAction: 'system_intake_pick', trackCategory: 'lead_gen', trackSection: 'intake_step_' + (state.step + 1) },
           onClick: function () { pick(step.key, o.v); }
         }, children);
         picks.appendChild(btn);
@@ -364,23 +333,30 @@
       });
 
       var rationale = el('div', { className: 'sol-quiz-rationale', role: 'note' }, [
-        el('p', { className: 'sol-quiz-rationale-h' }, 'Warum brauche ich deine Kontaktdaten?'),
+        el('p', { className: 'sol-quiz-rationale-h' }, 'Daten-Integrität · Drittes Modul des System-Intakes'),
         el('p', { className: 'sol-quiz-rationale-b' },
-          'Hier läuft kein automatisches Skript, das dir wertlose Standard-Tipps ausgibt. Ich analysiere deine Domain und deine Region in den nächsten 48 Stunden persönlich und händisch. Wohin darf ich dir den ehrlichen Befund schicken?')
+          'Sie haben Ihre Vertriebsstruktur und Portal-Streuverluste skizziert — jetzt brauche ich die Firmen-Eckdaten, um Ihre Domain und Region innerhalb von 24 Stunden persönlich-händisch zu prüfen und den Befund an den richtigen Entscheider zu senden.')
       ]);
       form.appendChild(rationale);
 
       form.appendChild(renderField({ k: 'company', t: 'Firma', type: 'text', ph: 'Mustermann Solar GmbH', req: true, ac: 'organization', full: true,
         validator: function (v) { return (!v || v.trim().length < 2) ? 'Bitte Firma angeben.' : null; }
       }));
-      form.appendChild(renderField({ k: 'name', t: 'Name', type: 'text', ph: 'Max Mustermann', req: true, ac: 'name',
+      form.appendChild(renderField({ k: 'name', t: 'Ihr Name', type: 'text', ph: 'Max Mustermann', req: true, ac: 'name',
         validator: function (v) { return (!v || v.trim().length < 2) ? 'Bitte Namen angeben.' : null; }
       }));
-      form.appendChild(renderField({ k: 'postal_code', t: 'PLZ', type: 'text', ph: '30853', req: true, ac: 'postal-code', im: 'numeric',
-        validator: function (v) { return (!/^[0-9]{5}$/.test(String(v || '').trim())) ? '5-stellige PLZ.' : null; }
+      form.appendChild(renderField({ k: 'position', t: 'Position im Betrieb', type: 'text', ph: 'Geschäftsführung, Vertriebsleitung …', req: true, ac: 'organization-title',
+        validator: function (v) { return (!v || v.trim().length < 2) ? 'Bitte Position angeben.' : null; }
       }));
-      form.appendChild(renderField({ k: 'email', t: 'E-Mail', type: 'email', ph: 'max@solar-betrieb.de', req: true, ac: 'email', full: true,
-        validator: function (v) { return (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || ''))) ? 'Gültige E-Mail nötig.' : null; }
+      form.appendChild(renderField({ k: 'postal_code', t: 'Firmen-PLZ', type: 'text', ph: '30853', req: true, ac: 'postal-code', im: 'numeric',
+        validator: function (v) { return (!/^[0-9]{5}$/.test(String(v || '').trim())) ? '5-stellige Firmen-PLZ.' : null; }
+      }));
+      form.appendChild(renderField({ k: 'email', t: 'Geschäftliche E-Mail', type: 'email', ph: 'max@solar-betrieb.de', req: true, ac: 'email', full: true,
+        validator: function (v) {
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || ''))) return 'Gültige E-Mail nötig.';
+          if (/^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(String(v || ''))) return 'Bitte geschäftliche E-Mail verwenden (keine Freemail).';
+          return null;
+        }
       }));
       form.appendChild(renderField({ k: 'phone', t: 'Telefon (optional)', type: 'tel', ph: '+49 ___ ____', ac: 'tel', im: 'tel', full: true }));
 
@@ -418,18 +394,18 @@
         className: 'sol-quiz-submit' + (canSubmit ? '' : ' is-dis') + (state.submitting ? ' is-loading' : ''),
         'aria-disabled': canSubmit ? 'false' : 'true',
         dataset: {
-          trackAction: 'cta_solar_to_diagnostic_request',
-          trackCategory: 'lead_funnel',
-          trackSection: 'quiz_submit',
+          trackAction: 'cta_solar_system_intake_submit',
+          trackCategory: 'lead_gen',
+          trackSection: 'intake_submit',
           trackFunnelStage: 'lead_capture_submit'
         }
       }, [
-        el('span', null, state.submitting ? 'Wird gesendet …' : 'Kostenfreien Marktcheck anfordern (48h)'),
+        el('span', null, state.submitting ? 'Wird gesendet …' : 'Infrastruktur-Audit beantragen (24 h)'),
         el('span', { className: 'sol-quiz-submit-arrow', 'aria-hidden': 'true', html: ARROW_SVG })
       ]);
       form.appendChild(submitBtn);
 
-      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Händische Analyse · Befund per E-Mail in 48 h · DSGVO'));
+      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Inklusive Regions-Verfügbarkeitsprüfung · keine automatisierte Standard-Auswertung · Antwort innerhalb von 24 h per E-Mail · DSGVO'));
 
       return form;
     }
@@ -442,7 +418,7 @@
         el('div', { className: 'sol-quiz-success-icon', 'aria-hidden': 'true', html: CHECK_SVG }),
         el('h3', { className: 'sol-quiz-success-h' }, 'Danke' + (first ? ', ' + first : '') + '.'),
         el('p', { className: 'sol-quiz-success-sub' },
-          'Deine Anfrage ist eingegangen. Ich analysiere deine Domain und deine Region in den nächsten 48 Stunden persönlich und händisch und sende dir den ehrlichen Befund per E-Mail.'),
+          'Ihr System-Intake ist eingegangen. Ich prüfe Ihre Domain und Region in den nächsten 24 Stunden persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.'),
         el('div', { className: 'sol-quiz-success-row' }, [
           el('a', {
             href: calcom,
@@ -451,8 +427,8 @@
             rel: 'noopener',
             dataset: {
               trackAction: 'cta_solar_calcom_book',
-              trackCategory: 'lead_funnel',
-              trackSection: 'quiz_success',
+              trackCategory: 'lead_gen',
+              trackSection: 'intake_success',
               trackFunnelStage: 'calendar_open'
             }
           }, [
@@ -465,7 +441,7 @@
             dataset: {
               trackAction: 'cta_solar_success_to_e3_case',
               trackCategory: 'proof',
-              trackSection: 'quiz_success'
+              trackSection: 'intake_success'
             }
           }, [
             el('span', null, 'E3 Case lesen'),
@@ -478,7 +454,7 @@
           className: 'sol-quiz-back',
           style: 'margin-top:4px;text-decoration:underline;text-underline-offset:3px;',
           onClick: reset
-        }, 'Marktcheck neu starten')
+        }, 'System-Intake neu starten')
       ]);
     }
 
@@ -490,7 +466,7 @@
       var head = el('div', { className: 'sol-cta-head' }, [
         el('span', { className: 'sol-cta-tag sol-mono' }, [
           el('span', { className: 'sol-cta-tag-dot', 'aria-hidden': 'true' }),
-          'Marktcheck · händisch · Befund in 48 h'
+          'System-Intake · händisch geprüft · Befund in 24 h'
         ]),
         el('span', { className: 'sol-cta-head-right sol-mono' }, 'Kostenfrei')
       ]);
@@ -605,21 +581,49 @@
     });
   }
 
+  /* Sticky Mobile-CTA · erscheint ab 20 % Scrolltiefe der Seite,
+     verschwindet wieder im obersten Viewport-Bereich oder wenn der
+     #marktcheck-Anker im Viewport ist (sonst doppeltes CTA). */
   function setupStickyCta() {
     var sticky = document.querySelector(ROOT_SELECTOR + ' .sol-sticky-cta');
-    var hero   = document.querySelector(ROOT_SELECTOR + ' .sol-hero');
-    if (!sticky || !hero) return;
-    if (!('IntersectionObserver' in window)) {
-      sticky.classList.add('is-visible');
-      return;
+    if (!sticky) return;
+    var marktcheck = document.querySelector('#marktcheck');
+    var fired = false;
+    var THRESHOLD = 0.20;
+
+    function update() {
+      var docH = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+      );
+      var winH = window.innerHeight || document.documentElement.clientHeight || 0;
+      var scrollable = Math.max(1, docH - winH);
+      var depth = (window.scrollY || window.pageYOffset || 0) / scrollable;
+
+      var intakeVisible = false;
+      if (marktcheck) {
+        var r = marktcheck.getBoundingClientRect();
+        intakeVisible = r.top < winH * 0.6 && r.bottom > winH * 0.4;
+      }
+
+      if (depth >= THRESHOLD && !intakeVisible) {
+        if (!sticky.classList.contains('is-visible')) {
+          sticky.classList.add('is-visible');
+          if (!fired) {
+            fired = true;
+            try { track('sticky_cta_visible', { depth: Math.round(depth * 100) }); } catch (e) {}
+          }
+        }
+      } else {
+        sticky.classList.remove('is-visible');
+      }
     }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) sticky.classList.remove('is-visible');
-        else if (entry.boundingClientRect.top < 0) sticky.classList.add('is-visible');
-      });
-    }, { threshold: 0 });
-    io.observe(hero);
+
+    update();
+    window.addEventListener('scroll',  update, { passive: true });
+    window.addEventListener('resize',  update, { passive: true });
   }
 
   function setupScrollAnchor() {
@@ -641,11 +645,11 @@
     if (!mount) return;
     try {
       QuizController(mount);
-      track('marktcheck_view');
+      track('system_intake_view');
     } catch (e) {
-      // Quiz failed to render — leave the SSR fallback in place so user can still see card & link.
+      // Intake failed to render — leave the SSR fallback in place so user can still see card & link.
       // (Mount is unchanged because we never cleared it.)
-      if (window && window.console) { window.console.warn('Marktcheck quiz failed:', e); }
+      if (window && window.console) { window.console.warn('System-Intake render failed:', e); }
     }
   }
 
