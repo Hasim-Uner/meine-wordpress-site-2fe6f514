@@ -157,6 +157,38 @@ get_template_part( 'template-parts/blog-header' );
 		?>
 
 		<header class="nexus-article-hero" data-track-section="article_hero">
+			<div class="nexus-hero-content">
+
+				<div class="nexus-meta-top">
+					<?php if ( $primary_cat instanceof WP_Term && $category_url ) : ?>
+						<a class="nexus-hero-category" href="<?php echo esc_url( $category_url ); ?>">
+							<?php echo esc_html( $primary_cat->name ); ?>
+						</a>
+					<?php endif; ?>
+					<span class="nexus-date"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></span>
+					<span class="separator">|</span>
+					<span class="nexus-reading-time"><?php
+						printf(
+							/* translators: %d: reading time in minutes */
+							esc_html__( '%d Min. Lesezeit', 'blocksy-child' ),
+							nexus_get_reading_time()
+						);
+					?></span>
+				</div>
+
+				<h1 class="nexus-title"><?php the_title(); ?></h1>
+
+				<div class="nexus-hero-footer">
+					<div class="nexus-author-row">
+						<?php echo get_avatar( get_the_author_meta( 'ID' ), 48 ); ?>
+						<div class="nexus-author-info">
+							<span class="by"><?php esc_html_e( 'Von', 'blocksy-child' ); ?></span>
+							<span class="name"><?php the_author(); ?></span>
+						</div>
+					</div>
+				</div>
+
+			</div>
 
 			<div class="nexus-hero-image<?php echo esc_attr( $has_hero_image ? '' : ' nexus-hero-image--generated' ); ?>">
 				<?php if ( $has_hero_image ) : ?>
@@ -173,36 +205,6 @@ get_template_part( 'template-parts/blog-header' );
 					);
 					?>
 				<?php endif; ?>
-			</div>
-
-			<div class="nexus-hero-content">
-
-				<div class="nexus-meta-top">
-					<span class="nexus-date"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></span>
-					<span class="separator">|</span>
-					<span class="nexus-reading-time"><?php
-						printf(
-							/* translators: %d: reading time in minutes */
-							esc_html__( '⏱ %d Min. Lesezeit', 'blocksy-child' ),
-							nexus_get_reading_time()
-						);
-					?></span>
-				</div>
-
-				<h1 class="nexus-title"><?php the_title(); ?></h1>
-
-				<div class="nexus-hero-footer">
-					<div class="nexus-author-row">
-						<?php echo get_avatar( get_the_author_meta( 'ID' ), 48 ); ?>
-						<div class="nexus-author-info">
-							<span class="by"><?php esc_html_e( 'Written by', 'blocksy-child' ); ?></span>
-							<span class="name"><?php the_author(); ?></span>
-						</div>
-					</div>
-
-					<?php if ( is_singular( 'post' ) && function_exists( 'nexus_render_share_buttons' ) ) { nexus_render_share_buttons(); } ?>
-				</div>
-
 			</div>
 		</header>
 

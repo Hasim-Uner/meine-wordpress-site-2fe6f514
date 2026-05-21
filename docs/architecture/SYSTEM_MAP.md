@@ -200,7 +200,7 @@ Bausteine:
 
 - `home.php`: reduziertes Editorial-Blogarchiv mit echten Kategorie-Links, bildloser Artikelliste, CollectionPage-/ItemList-Schema und Marktcheck-Führung
 - `category.php`: bildloses Kategorie-Archiv mit dynamischer Kategorienavigation, zentralen SEO-Fallbacks, thematischen Vertiefungslinks, CollectionPage-/ItemList-Schema und Marktcheck-Führung
-- `single.php`: Artikel mit TOC, strukturierter Next-Step-Zone, thematischem Related Content und Footer-CTA
+- `single.php`: Artikel mit reduziertem Editorial-Hero, TOC, strukturierter Next-Step-Zone, thematischem Related Content und Footer-CTA
 - `template-parts/post-title-visual.php`: generierte Titelgrafik als Fallback für Beiträge ohne Featured Image
 - `page-seo-cornerstone.php`: Cornerstone-Template mit starkem Entscheider-Fokus
 - `content/blog-drafts/`: Rohfassungen ausserhalb von WordPress; Lead-Anbieter-Markteinordnungen werden zusätzlich einmalig über `blocksy-child/inc/blog-provider-posts.php` in WordPress veröffentlicht.
