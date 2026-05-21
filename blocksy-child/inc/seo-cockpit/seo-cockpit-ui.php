@@ -86,9 +86,12 @@ function nexus_render_seo_cockpit_dashboard_widget() {
 				<p class="nexus-seo-widget__hint">
 					Koko: <?php echo esc_html( number_format_i18n( (float) ( $koko_data['overview']['current']['visitors'] ?? 0 ) ) ); ?> Besucher /
 					<?php echo esc_html( number_format_i18n( (float) ( $koko_data['overview']['current']['pageviews'] ?? 0 ) ) ); ?> Pageviews
+					<?php if ( ! empty( $koko_data['note'] ) ) : ?>
+						<br><?php echo esc_html( (string) $koko_data['note'] ); ?>
+					<?php endif; ?>
 				</p>
 			<?php elseif ( ! empty( $koko['active'] ) ) : ?>
-				<p class="nexus-seo-widget__hint">Koko ist aktiv, liefert im Cockpit aktuell aber noch keinen auswertbaren Datensatz.</p>
+				<p class="nexus-seo-widget__hint">Koko ist aktiv, aber die benötigte Cockpit-Datenroute liefert aktuell keinen auswertbaren Datensatz.</p>
 			<?php endif; ?>
 
 			<?php if ( ! empty( $lead_data['available'] ) ) : ?>
@@ -1407,6 +1410,9 @@ function nexus_render_seo_cockpit_dashboard() {
 					<p class="nexus-seo-cockpit__hint">Onsite-Nutzung für denselben Zeitraum. Kontextlayer für Nachfrage, kein Ersatz für Search Console.</p>
 					<?php if ( ! empty( $koko_snapshot['available'] ) ) : ?>
 						<?php nexus_render_seo_cockpit_koko_metrics( (array) ( $koko_snapshot['overview']['current'] ?? [] ), (array) ( $koko_snapshot['overview']['previous'] ?? [] ) ); ?>
+						<?php if ( ! empty( $koko_snapshot['note'] ) ) : ?>
+							<p class="nexus-seo-cockpit__hint" style="margin-top:12px;"><?php echo esc_html( (string) $koko_snapshot['note'] ); ?></p>
+						<?php endif; ?>
 						<?php if ( ! empty( $koko_snapshot['top_pages'] ) ) : ?>
 							<?php
 							$koko_pages_rows   = array_values( (array) $koko_snapshot['top_pages'] );

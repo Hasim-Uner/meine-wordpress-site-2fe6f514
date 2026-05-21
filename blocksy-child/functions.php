@@ -41,9 +41,9 @@ $modules = [
 	'contact-page.php',   // Kontakt-Route, schlanke Kontaktform und Mailversand
 	'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect
 	'analysis-intake.php', // REST-Endpoint, CRM-Sync, Brevo-Mails und n8n-Webhook für die Analyse
-	'audit-linkedin-page.php', // LinkedIn Audit Landing Page (virtuelle Route, noindex)
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails
 	'blog-provider-posts.php', // Einmalige Live-Anlage der Lead-Anbieter-Markteinordnungen
+	'blog-pillar-posts.php', // Einmalige Live-Anlage strategischer Pillar-Beiträge
 	'robots-txt.php',     // Dynamische /robots.txt-Route für Search- und KI-Crawler
 	'llms-txt.php',       // Dynamische /llms.txt-Route für KI-Agenten und Entitätskontext
 	'seo-cockpit/seo-cockpit.php',    // Search Console basiertes SEO-Cockpit mit optionaler Koko-Erkennung
@@ -420,7 +420,7 @@ add_action(
 		}
 
 		nocache_headers();
-		wp_safe_redirect( home_url( '/wp-sitemap.xml' ), 302 );
+		wp_safe_redirect( home_url( '/wp-sitemap.xml' ), 301 );
 		exit;
 	},
 	1
@@ -602,24 +602,3 @@ function nexus_render_share_buttons() {
 
 
 // Audit Live Assets: zentral in inc/enqueue.php (Section H) verwaltet.
-
-// ── WGOS VIDEO PREVIEW: Template + Zugriffsschutz ───────────────
-// Template programmatisch zuweisen (Gutenberg zeigt den Dropdown nicht)
-add_filter( 'page_template', function ( $template ) {
-	if ( is_page( 'wgos-preview' ) ) {
-		$custom = get_stylesheet_directory() . '/template-wgos-video.php';
-		if ( file_exists( $custom ) ) {
-			return $custom;
-		}
-	}
-	return $template;
-} );
-
-add_action( 'template_redirect', function () {
-	if ( is_page( 'wgos-preview' ) ) {
-		if ( ! is_user_logged_in() && ! isset( $_GET['preview'] ) ) {
-			wp_redirect( home_url() );
-			exit;
-		}
-	}
-} );

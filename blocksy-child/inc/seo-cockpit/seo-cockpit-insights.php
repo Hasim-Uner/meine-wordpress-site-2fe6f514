@@ -1584,7 +1584,7 @@ function nexus_get_seo_cockpit_quick_wins( $snapshot, $limit = 12 ) {
 		$position    = (float) ( $row['position'] ?? 0 );
 		$clicks      = (float) ( $row['clicks'] ?? 0 );
 
-		if ( '' === $page || '' === $query ) {
+		if ( '' === $page || '' === $query || nexus_is_seo_cockpit_non_target_query( $query ) ) {
 			continue;
 		}
 
@@ -1641,7 +1641,7 @@ function nexus_get_seo_cockpit_query_movers( $snapshot, $limit = 5 ) {
 
 	foreach ( (array) ( $snapshot['query_page_rows'] ?? [] ) as $row ) {
 		$query = (string) ( $row['keys'][1] ?? '' );
-		if ( '' === $query ) {
+		if ( '' === $query || nexus_is_seo_cockpit_non_target_query( $query ) ) {
 			continue;
 		}
 		if ( ! isset( $current[ $query ] ) ) {
@@ -1654,7 +1654,7 @@ function nexus_get_seo_cockpit_query_movers( $snapshot, $limit = 5 ) {
 
 	foreach ( (array) ( $snapshot['previous_query_page_rows'] ?? [] ) as $row ) {
 		$query = (string) ( $row['keys'][1] ?? '' );
-		if ( '' === $query ) {
+		if ( '' === $query || nexus_is_seo_cockpit_non_target_query( $query ) ) {
 			continue;
 		}
 		if ( ! isset( $previous[ $query ] ) ) {

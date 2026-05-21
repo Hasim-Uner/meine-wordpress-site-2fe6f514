@@ -28,7 +28,17 @@ get_header();
 
 			<div class="nexus-hero-image">
 				<?php if ( has_post_thumbnail() ) : ?>
-					<?php the_post_thumbnail( 'full' ); ?>
+					<?php
+					the_post_thumbnail(
+						'full',
+						[
+							'loading'       => 'eager',
+							'fetchpriority' => 'high',
+							'decoding'      => 'async',
+							'sizes'         => '(max-width: 900px) 100vw, 50vw',
+						]
+					);
+					?>
 				<?php else : ?>
 					<div class="seo-cornerstone__hero-placeholder" aria-hidden="true"></div>
 				<?php endif; ?>

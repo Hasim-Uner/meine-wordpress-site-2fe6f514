@@ -178,7 +178,7 @@ Technik:
 ### Bewusst offen gelassen
 
 - `/kostenlose-tools/` bleibt live, weil im Repo weiterhin ein Tools-Hub existiert
-- `/wordpress-wartung-hannover/`, `/ga4-tracking-setup/` und `/performance-marketing/` bleiben aktive versionierte Clusterseiten und werden nicht mehr als Legacy-Redirects behandelt
+- `/wordpress-wartung-hannover/` ist nachgelagert konsolidiert und wird per 301 auf `/wordpress-agentur-hannover/#wordpress-wartung` geführt; `/ga4-tracking-setup/` und `/performance-marketing/` bleiben aktive versionierte Clusterseiten
 
 ## 7. Blog -> WGOS-Asset Verlinkung
 

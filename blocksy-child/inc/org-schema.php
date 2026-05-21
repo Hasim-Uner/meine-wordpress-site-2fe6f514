@@ -39,8 +39,276 @@ function hu_person_schema_ref( $include_same_as = false, $name = 'Haşim Üner' 
     return $person;
 }
 
+/**
+ * Build CollectionPage + ItemList schema for blog archive surfaces.
+ *
+ * @return array<string, mixed>|null
+ */
+function hu_get_blog_archive_collection_schema() {
+    if ( ! is_home() && ! is_category() ) {
+        return null;
+    }
+
+    global $wp_query;
+
+    $posts = isset( $wp_query->posts ) && is_array( $wp_query->posts ) ? $wp_query->posts : [];
+
+    if ( is_home() ) {
+        $blog_page_id = (int) get_option( 'page_for_posts' );
+        $page_url     = $blog_page_id ? get_permalink( $blog_page_id ) : home_url( '/blog/' );
+        $page_name    = function_exists( 'hu_get_blog_archive_title' ) ? hu_get_blog_archive_title() : 'Blog';
+        $description  = function_exists( 'hu_get_blog_archive_description' ) ? hu_get_blog_archive_description() : get_bloginfo( 'description' );
+    } else {
+        $term = get_queried_object();
+
+        if ( ! ( $term instanceof WP_Term ) ) {
+            return null;
+        }
+
+        $term_link = get_term_link( $term );
+
+        if ( is_wp_error( $term_link ) ) {
+            return null;
+        }
+
+        $category_seo = function_exists( 'hu_get_category_archive_seo' ) ? hu_get_category_archive_seo( $term ) : [];
+        $page_url     = $term_link;
+        $page_name    = ! empty( $category_seo['title'] ) ? (string) $category_seo['title'] : single_term_title( '', false );
+        $description  = ! empty( $category_seo['description'] ) ? (string) $category_seo['description'] : wp_strip_all_tags( (string) $term->description );
+    }
+
+    $list_items = [];
+    $position   = 1;
+
+    foreach ( $posts as $post ) {
+        if ( ! ( $post instanceof WP_Post ) || 'post' !== $post->post_type ) {
+            continue;
+        }
+
+        $post_url   = get_permalink( $post );
+        $post_title = get_the_title( $post );
+
+        if ( ! $post_url || ! $post_title ) {
+            continue;
+        }
+
+        $post_excerpt = get_the_excerpt( $post );
+        $post_summary = '' !== trim( (string) $post_excerpt )
+            ? wp_trim_words( wp_strip_all_tags( $post_excerpt ), 24, '…' )
+            : wp_strip_all_tags( $post_title );
+
+        $list_items[] = [
+            '@type'    => 'ListItem',
+            'position' => $position++,
+            'url'      => $post_url,
+            'item'     => [
+                '@type'         => 'BlogPosting',
+                '@id'           => trailingslashit( $post_url ) . '#blogposting',
+                'url'           => $post_url,
+                'headline'      => $post_title,
+                'name'          => $post_title,
+                'description'   => $post_summary,
+                'datePublished' => get_post_time( DATE_W3C, true, $post ),
+                'dateModified'  => get_post_modified_time( DATE_W3C, true, $post ),
+                'author'        => hu_person_schema_ref( true ),
+                'publisher'     => [ '@id' => home_url( '/#organization' ) ],
+            ],
+        ];
+    }
+
+    $collection = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'CollectionPage',
+        '@id'         => trailingslashit( $page_url ) . '#collection',
+        'url'         => $page_url,
+        'name'        => $page_name,
+        'headline'    => $page_name,
+        'description' => $description,
+        'inLanguage'  => 'de',
+        'isPartOf'    => [ '@id' => home_url( '/#website' ) ],
+        'publisher'   => [ '@id' => home_url( '/#organization' ) ],
+        'mainEntity'  => [
+            '@type'           => 'ItemList',
+            '@id'             => trailingslashit( $page_url ) . '#itemlist',
+            'name'            => $page_name,
+            'itemListOrder'   => 'https://schema.org/ItemListOrderDescending',
+            'numberOfItems'   => count( $list_items ),
+            'itemListElement' => $list_items,
+        ],
+    ];
+
+    if ( is_category() ) {
+        $collection['about'] = [
+            '@type' => 'Thing',
+            'name'  => single_term_title( '', false ),
+        ];
+    }
+
+    return $collection;
+}
+
+/**
+ * Determine whether the global BreadcrumbList JSON-LD should be emitted.
+ *
+ * Some hardcoded templates output route-specific BreadcrumbList schema with a
+ * more precise hierarchy. Suppressing the generic fallback avoids duplicate
+ * breadcrumb graphs for the same URL.
+ *
+ * @return bool
+ */
+function hu_should_output_global_breadcrumb_schema() {
+    if ( is_front_page() ) {
+        return false;
+    }
+
+    $request_path = function_exists( 'nexus_get_current_request_path' ) ? nexus_get_current_request_path() : '';
+
+    if ( function_exists( 'hu_is_solar_seo_subpage_path' ) && hu_is_solar_seo_subpage_path( $request_path ) ) {
+        return false;
+    }
+
+    if ( is_singular() ) {
+        $post_id  = get_queried_object_id();
+        $template = $post_id ? (string) get_page_template_slug( $post_id ) : '';
+
+        if ( 'page-seo-cornerstone.php' === $template ) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Return the post-meta key used for cached FAQ schema entities.
+ *
+ * @return string
+ */
+function hu_get_faq_schema_cache_meta_key() {
+    return '_hu_faq_schema_entities_json';
+}
+
+/**
+ * Extract FAQ schema entities from post content.
+ *
+ * This runs on save_post so frontend requests can read cached JSON instead of
+ * parsing full post content with regex on every request.
+ *
+ * @param string $raw_content Raw post content.
+ * @return array<int, array<string, mixed>>
+ */
+function hu_extract_faq_schema_entities_from_content( $raw_content ) {
+    $raw_content = (string) $raw_content;
+
+    if (
+        false === stripos( $raw_content, 'faq-trigger' )
+        && false === stripos( $raw_content, 'faq-content' )
+        && false === stripos( $raw_content, '<details' )
+        && false === stripos( $raw_content, 'hu_faq' )
+        && false === stripos( $raw_content, 'faq-item' )
+    ) {
+        return [];
+    }
+
+    $content      = do_shortcode( $raw_content );
+    $faq_entities = [];
+    $dedupe       = [];
+
+    $add_qa = static function ( $q, $a ) use ( &$faq_entities, &$dedupe ) {
+        $q = trim( (string) $q );
+        $a = trim( (string) $a );
+        $q = preg_replace( '/\s*\+\s*$/u', '', $q );
+
+        if ( '' === $q || '' === $a ) {
+            return;
+        }
+
+        $key = mb_strtolower( preg_replace( '/\s+/u', ' ', $q ) );
+        if ( isset( $dedupe[ $key ] ) ) {
+            return;
+        }
+
+        $dedupe[ $key ] = true;
+
+        $faq_entities[] = [
+            '@type'          => 'Question',
+            'name'           => $q,
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text'  => $a,
+            ],
+        ];
+    };
+
+    if ( preg_match_all( '/<details[^>]*>.*?<summary[^>]*>(.*?)<\/summary>(.*?)<\/details>/is', $content, $details_matches, PREG_SET_ORDER ) ) {
+        foreach ( $details_matches as $match ) {
+            $add_qa( wp_strip_all_tags( $match[1] ), wp_strip_all_tags( $match[2] ) );
+        }
+    }
+
+    if ( preg_match_all( '/<button[^>]*class="[^"]*\bfaq-trigger\b[^"]*"[^>]*>(.*?)<\/button>\s*<div[^>]*class="[^"]*\bfaq-content\b[^"]*"[^>]*>(.*?)<\/div>/is', $content, $button_matches, PREG_SET_ORDER ) ) {
+        foreach ( $button_matches as $match ) {
+            $add_qa( wp_strip_all_tags( $match[1] ), wp_strip_all_tags( $match[2] ) );
+        }
+    }
+
+    return $faq_entities;
+}
+
+/**
+ * Cache FAQ schema entities whenever a post or page is saved.
+ *
+ * @param int     $post_id Post ID.
+ * @param WP_Post $post    Post object.
+ * @return void
+ */
+function hu_update_post_faq_schema_cache( $post_id, $post ) {
+    if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+        return;
+    }
+
+    if ( ! ( $post instanceof WP_Post ) || ! in_array( $post->post_type, [ 'post', 'page' ], true ) ) {
+        return;
+    }
+
+    $faq_entities = hu_extract_faq_schema_entities_from_content( (string) $post->post_content );
+    $meta_key     = hu_get_faq_schema_cache_meta_key();
+
+    if ( empty( $faq_entities ) ) {
+        delete_post_meta( $post_id, $meta_key );
+        return;
+    }
+
+	update_post_meta(
+		$post_id,
+		$meta_key,
+		wp_slash( wp_json_encode( $faq_entities, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) )
+	);
+}
+add_action( 'save_post', 'hu_update_post_faq_schema_cache', 20, 2 );
+
+/**
+ * Return cached FAQ schema entities for one post.
+ *
+ * @param int $post_id Post ID.
+ * @return array<int, array<string, mixed>>
+ */
+function hu_get_cached_post_faq_schema_entities( $post_id ) {
+    $json = get_post_meta( absint( $post_id ), hu_get_faq_schema_cache_meta_key(), true );
+
+    if ( ! is_string( $json ) || '' === trim( $json ) ) {
+        return [];
+    }
+
+    $decoded = json_decode( $json, true );
+
+    return is_array( $decoded ) ? $decoded : [];
+}
+
 function hu_output_schema()
 {
+    $google_maps_url = 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfrage-Systeme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
+
     // Organization / LocalBusiness schema
     $org = [
         '@context' => 'https://schema.org',
@@ -82,11 +350,12 @@ function hu_output_schema()
         'sameAs' => [
             'https://www.linkedin.com/in/hasim-%C3%BCner/',
             'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514',
+            $google_maps_url,
         ],
-        'hasMap' => 'https://www.google.com/maps?cid=7273014379384770345',
+        'hasMap' => $google_maps_url,
         'knowsAbout' => [
             'WordPress',
-            'Technische SEO',
+            'Technisches SEO',
             'Core Web Vitals',
             'Conversion Rate Optimization',
             'GA4 Tracking',
@@ -158,6 +427,11 @@ function hu_output_schema()
 
     $schemas = [$org];
 
+    $archive_collection = hu_get_blog_archive_collection_schema();
+    if ( is_array( $archive_collection ) ) {
+        $schemas[] = $archive_collection;
+    }
+
     // Service definitions (slug => data)
     $service_definitions = [
         'wordpress-agentur-hannover' => [
@@ -165,30 +439,6 @@ function hu_output_schema()
             'description' => 'WordPress Agentur in Hannover für B2B-Unternehmen: technisches SEO, Wartungsvertrag, Tracking, Conversion und Angebotsseiten als ein verbundenes System mit kontrollierter Weiterentwicklung.',
             'serviceType' => 'WordPress Agentur',
             'serviceOutput' => 'Steuerbares WordPress-System mit Angebotsseiten, technischem SEO, Wartung, Datenebene, KPI-Klarheit und vollen Zugängen',
-            'areaServed' => [
-                [
-                    '@type'  => 'City',
-                    'name'   => 'Hannover',
-                    'sameAs' => 'https://de.wikipedia.org/wiki/Hannover',
-                ],
-                [
-                    '@type'  => 'City',
-                    'name'   => 'Pattensen',
-                    'sameAs' => 'https://de.wikipedia.org/wiki/Pattensen',
-                ],
-                [
-                    '@type' => 'AdministrativeArea',
-                    'name'  => 'Region Hannover',
-                ],
-                [
-                    '@type' => 'AdministrativeArea',
-                    'name'  => 'Niedersachsen',
-                ],
-                [
-                    '@type' => 'AdministrativeArea',
-                    'name'  => 'DACH',
-                ],
-            ],
             'hasOfferCatalog' => [
                 '@type'           => 'OfferCatalog',
                 'name'            => 'Leistungsbereiche der WordPress Agentur Hannover',
@@ -441,7 +691,6 @@ function hu_output_schema()
                     'provider'      => ['@id' => home_url('/#organization')],
                     'serviceType'   => 'Systembaustein',
                     'serviceOutput' => (string) ($asset['result'] ?? ''),
-                    'areaServed'    => ['@type' => 'AdministrativeArea', 'name' => 'DACH'],
                     // isPartOf-Referenz auf WGOS-Hub entfernt (noindex);
                     // Asset wird via provider an Organization gebunden.
                 ];
@@ -463,7 +712,6 @@ function hu_output_schema()
                 'provider'   => ['@id' => home_url('/#organization')],
                 'serviceType'=> $def['serviceType'],
                 'serviceOutput' => $def['serviceOutput'],
-                'areaServed' => $def['areaServed'] ?? ['@type' => 'AdministrativeArea', 'name' => 'DACH'],
             ];
 
             if (isset($def['offers'])) {
@@ -720,113 +968,40 @@ function hu_output_schema()
         }
 
         /**
-         * FAQ SCHEMA (NEU, robust):
-         * - erkennt <details><summary>…</summary>…</details>
-         * - erkennt button.faq-trigger + div.faq-content (deine häufigste Struktur)
-         * - dedupliziert Fragen
+         * FAQ schema from save-time cache.
+         *
+         * Dynamic FAQ extraction is intentionally not run during frontend
+         * rendering; save_post fills _hu_faq_schema_entities_json once.
          */
         global $post;
-        if (isset($post)) {
+        if ( isset( $post ) && $post instanceof WP_Post ) {
+            $template_owns_faq_schema = (
+                in_array( $slug, [ 'wordpress-agentur-hannover', 'wgos', 'wordpress-growth-operating-system' ], true )
+                || ( function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page( $slug ) )
+            );
 
-            $raw = (string) $post->post_content;
+            if ( ! $template_owns_faq_schema ) {
+                $faq_entities = hu_get_cached_post_faq_schema_entities( $post->ID );
 
-            // Performance: nur wenn es nach FAQ aussieht
-            $maybe_has_faq =
-                (stripos($raw, 'faq-trigger') !== false) ||
-                (stripos($raw, 'faq-content') !== false) ||
-                (stripos($raw, '<details') !== false) ||
-                (stripos($raw, 'hu_faq') !== false) ||
-                (stripos($raw, 'faq-item') !== false);
-
-            // Einige Templates rendern ihr FAQPage JSON-LD bewusst direkt im Template.
-            if (
-                in_array($slug, ['wordpress-agentur-hannover', 'wgos', 'wordpress-growth-operating-system'], true) ||
-                ( function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page( $slug ) )
-            ) {
-                $maybe_has_faq = false;
-            }
-
-            if ($maybe_has_faq) {
-
-                // do_shortcode statt apply_filters('the_content') um Nebeneffekte
-                // durch andere Plugins oder Filter zu vermeiden.
-                $content = do_shortcode($raw);
-
-                $faq_entities = [];
-                $dedupe = [];
-
-                // Helper: add QA safely
-                $add_qa = function ($q, $a) use (&$faq_entities, &$dedupe) {
-                    $q = trim((string)$q);
-                    $a = trim((string)$a);
-
-                    // Entferne häufiges " + " am Ende (kommt durch <span>+</span> im Button)
-                    $q = preg_replace('/\s*\+\s*$/u', '', $q);
-
-                    if ($q === '' || $a === '') {
-                        return;
-                    }
-
-                    $key = mb_strtolower(preg_replace('/\s+/u', ' ', $q));
-                    if (isset($dedupe[$key])) {
-                        return;
-                    }
-                    $dedupe[$key] = true;
-
-                    $faq_entities[] = [
-                        '@type' => 'Question',
-                        'name'  => $q,
-                        'acceptedAnswer' => [
-                            '@type' => 'Answer',
-                            'text'  => $a,
-                        ],
+                if ( ! empty( $faq_entities ) ) {
+                    $faq_base  = is_front_page() ? home_url( '/' ) : home_url( '/' . ( $slug ?: '' ) . '/' );
+                    $schemas[] = [
+                        '@context'   => 'https://schema.org',
+                        '@type'      => 'FAQPage',
+                        '@id'        => $faq_base . '#faq',
+                        'url'        => $faq_base,
+                        'inLanguage' => 'de',
+                        'publisher'  => ['@id' => home_url('/#organization')],
+                        'mainEntity' => $faq_entities,
                     ];
-                };
-
-                // 1) DETAILS/SUMMARY Muster (flexibler)
-                if (preg_match_all('/<details[^>]*>.*?<summary[^>]*>(.*?)<\/summary>(.*?)<\/details>/is', $content, $m1, PREG_SET_ORDER)) {
-                    foreach ($m1 as $match) {
-                        $q = wp_strip_all_tags($match[1]);
-
-                        // Answer: alles innerhalb details nach summary, HTML raus
-                        $a = wp_strip_all_tags($match[2]);
-
-                        $add_qa($q, $a);
-                    }
-                }
-
-                // 2) BUTTON + FAQ-CONTENT Muster (dein Wartung-Layout)
-                if (preg_match_all('/<button[^>]*class="[^"]*\bfaq-trigger\b[^"]*"[^>]*>(.*?)<\/button>\s*<div[^>]*class="[^"]*\bfaq-content\b[^"]*"[^>]*>(.*?)<\/div>/is', $content, $m2, PREG_SET_ORDER)) {
-                    foreach ($m2 as $match) {
-                        $q = wp_strip_all_tags($match[1]);
-                        $a = wp_strip_all_tags($match[2]);
-
-                        $add_qa($q, $a);
-                    }
-                }
-
-                // Output FAQPage schema if found
-                if (!empty($faq_entities)) {
-                    // Auf der Startseite kein Seiten-Slug in der ID verwenden
-                    $faq_base = is_front_page() ? home_url('/') : home_url('/' . ($slug ?: '') . '/');
-                    $faq_schema = [
-                        '@context'    => 'https://schema.org',
-                        '@type'       => 'FAQPage',
-                        '@id'         => $faq_base . '#faq',
-                        'url'         => $faq_base,
-                        'inLanguage'  => 'de',
-                        'publisher'   => ['@id' => home_url('/#organization')],
-                        'mainEntity'  => $faq_entities,
-                    ];
-                    $schemas[] = $faq_schema;
                 }
             }
         }
     }
 
     // ── BreadcrumbList Schema ─────────────────────────────────────
-    // Output on all pages except the homepage.
-    if ( ! is_front_page() ) {
+    // Output on pages that do not already provide route-specific breadcrumbs.
+    if ( hu_should_output_global_breadcrumb_schema() ) {
         $breadcrumb_items = [];
         $bc_position      = 1;
 

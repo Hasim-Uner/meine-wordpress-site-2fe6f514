@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function nexus_get_glossary_registry_version() {
-	return '2026-03-14-glossary-v2';
+	return '2026-05-21-glossary-v3';
 }
 
 /**
@@ -190,6 +190,18 @@ function nexus_get_glossary_registry() {
 				array_map(
 					'strval',
 					(array) ( $definition['wgos_context'] ?? [] )
+				)
+			)
+		);
+		$definition['keywords_match']     = array_values(
+			array_unique(
+				array_filter(
+					array_map(
+						static function ( $phrase ) {
+							return trim( (string) $phrase );
+						},
+						(array) ( $definition['keywords_match'] ?? [] )
+					)
 				)
 			)
 		);

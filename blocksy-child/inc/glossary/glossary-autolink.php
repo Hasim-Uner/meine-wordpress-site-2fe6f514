@@ -98,17 +98,37 @@ function nexus_glossary_autolink( $content ) {
 		}
 
 		$title = trim( (string) ( $term['title'] ?? '' ) );
+		$slug  = sanitize_title( (string) ( $term['slug'] ?? $title ) );
 
 		if ( '' === $title || mb_strlen( $title ) < 3 ) {
 			continue;
 		}
 
-		$terms[ $title ] = [
-			'url'        => $url,
-			'title'      => sprintf( 'Glossar: %s', $title ),
-			'class'      => 'glossary-autolink',
-			'linked_key' => 'glossary:' . mb_strtolower( $title ),
-		];
+		$phrases = array_values(
+			array_unique(
+				array_filter(
+					array_merge( [ $title ], (array) ( $term['keywords_match'] ?? [] ) ),
+					static function ( $phrase ) {
+						return is_string( $phrase ) && mb_strlen( trim( $phrase ) ) >= 3;
+					}
+				)
+			)
+		);
+
+		foreach ( $phrases as $phrase ) {
+			$phrase = trim( (string) $phrase );
+
+			if ( isset( $terms[ $phrase ] ) ) {
+				continue;
+			}
+
+			$terms[ $phrase ] = [
+				'url'        => $url,
+				'title'      => sprintf( 'Glossar: %s', $title ),
+				'class'      => 'glossary-autolink',
+				'linked_key' => 'glossary:' . ( '' !== $slug ? $slug : mb_strtolower( $title ) ),
+			];
+		}
 	}
 
 	foreach ( nexus_get_solar_pillar_autolink_mappings() as $phrase => $url ) {

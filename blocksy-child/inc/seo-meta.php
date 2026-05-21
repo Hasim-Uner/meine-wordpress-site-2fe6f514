@@ -71,6 +71,97 @@ function hu_get_blog_archive_description() {
 }
 
 /**
+ * Return SEO defaults for public category archives.
+ *
+ * @return array<string, array<string, string>>
+ */
+function hu_get_category_archive_seo_map() {
+	return (array) apply_filters(
+		'hu_category_archive_seo_map',
+		[
+			'solar-waermepumpen-anfrage-systeme' => [
+				'title'       => 'Solar & SHK Anfrage-Systeme | Haşim Üner',
+				'description' => 'Analysen zu eigenen Anfrage-Systemen für Solar-/SHK-Betriebe: Portal-Leads, Marktcheck, Lead-Qualität, Tracking und Conversion statt gemieteter Nachfrage.',
+			],
+			'sichtbarkeit-daten-conversion' => [
+				'title'       => 'Sichtbarkeit, Daten & Conversion | Haşim Üner',
+				'description' => 'SEO, Tracking, Core Web Vitals und CRO für B2B-Websites: wie Sichtbarkeit belastbare Daten liefert und aus Traffic qualifizierte Anfragen entstehen.',
+			],
+			'wordpress-growth-agentur' => [
+				'title'       => 'WordPress Growth & Agentur | Haşim Üner',
+				'description' => 'WordPress-Growth für B2B: technische Website-Struktur, SEO, Performance, Tracking und CRO als eigenes System statt isolierter Agentur-Baustellen.',
+			],
+			'markteinordnung' => [
+				'title'       => 'Lead-Portal Markteinordnung | Haşim Üner',
+				'description' => 'Schonungslose Einordnung von Lead-Portalen, Kostenlogik und Nachfrage-Miete für Solar- und SHK-Betriebe mit Fokus auf CPO statt CPL.',
+			],
+			'owned-leads' => [
+				'title'       => 'Owned Leads statt Portal-Leads | Haşim Üner',
+				'description' => 'Beiträge zu eigener Leadgenerierung, First-Party-Daten und Nachfrage-Infrastruktur: weniger Portal-Abhängigkeit, mehr Kontrolle über Anfragequalität.',
+			],
+			'seo' => [
+				'title'       => 'Technisches SEO für B2B-Websites | Haşim Üner',
+				'description' => 'Technisches SEO für B2B-Websites: Struktur, Indexierung, Content-Architektur und interne Links als Fundament für qualifizierte Anfragen.',
+			],
+			'tracking' => [
+				'title'       => 'Tracking & Analytics für B2B | Haşim Üner',
+				'description' => 'GA4, Server-Side Tracking, Consent und CRM-Rückführung für B2B-Anfrage-Systeme: Daten, die Budgetsteuerung und Conversion-Lernen ermöglichen.',
+			],
+			'cro' => [
+				'title'       => 'CRO & UX für B2B-Anfragen | Haşim Üner',
+				'description' => 'Conversion-Optimierung für B2B-Websites: Angebotslogik, Reibungsverluste, Proof, Formulare und klare nächste Schritte für qualifizierte Anfragen.',
+			],
+			'wordpress-performance' => [
+				'title'       => 'WordPress Performance & CWV | Haşim Üner',
+				'description' => 'WordPress Performance, Core Web Vitals, Hosting und Frontend-Bloat: Ladezeit als SEO-, Ads- und Conversion-Hebel für B2B-Websites.',
+			],
+			'strategie' => [
+				'title'       => 'Strategie für eigene Anfrage-Systeme | Haşim Üner',
+				'description' => 'Strategische Beiträge zu eigenen Anfrage-Systemen: Zielmarkt, Angebot, Funnel-Logik, Budgetsteuerung und Priorisierung vor der Umsetzung.',
+			],
+		]
+	);
+}
+
+/**
+ * Resolve the effective SEO title and description for a category archive.
+ *
+ * @param WP_Term|null $term Category term.
+ * @return array{title: string, description: string}
+ */
+function hu_get_category_archive_seo( $term = null ) {
+	if ( null === $term ) {
+		$term = get_queried_object();
+	}
+
+	if ( ! ( $term instanceof WP_Term ) || 'category' !== $term->taxonomy ) {
+		return [
+			'title'       => '',
+			'description' => '',
+		];
+	}
+
+	$map = hu_get_category_archive_seo_map();
+
+	if ( ! empty( $map[ $term->slug ] ) && is_array( $map[ $term->slug ] ) ) {
+		return [
+			'title'       => isset( $map[ $term->slug ]['title'] ) ? trim( wp_strip_all_tags( (string) $map[ $term->slug ]['title'] ) ) : '',
+			'description' => isset( $map[ $term->slug ]['description'] ) ? trim( wp_strip_all_tags( (string) $map[ $term->slug ]['description'] ) ) : '',
+		];
+	}
+
+	$term_name        = trim( wp_strip_all_tags( (string) $term->name ) );
+	$term_description = trim( wp_strip_all_tags( (string) $term->description ) );
+
+	return [
+		'title'       => hu_build_compact_branded_title( $term_name . ' Blog' ),
+		'description' => '' !== $term_description
+			? wp_trim_words( $term_description, 24, '…' )
+			: sprintf( 'Analysen und Einordnungen zu %s: Sichtbarkeit, Daten, Conversion und eigene Anfrage-Systeme.', $term_name ),
+	];
+}
+
+/**
  * Return forced SEO overrides for singular pages that must ignore legacy DB meta.
  *
  * @return array<string, array<string, string>>
@@ -90,18 +181,18 @@ function hu_get_forced_singular_seo_map() {
 				'description' => 'Projekt starten oder Frage stellen: Formular ausfuellen, Rueckmeldung in 48 h. Kein Pflicht-Call, kein Sales-Druck – nur eine fundierte Ersteinschaetzung.',
 			],
 			'uber-mich' => [
-				'title'       => 'Über Haşim Üner | Anfrage-Systeme Solar & Wärmepumpe',
-				'description' => 'Ich baue Solar- und Wärmepumpen-Anbietern eigene Anfrage-Systeme. Weg von gemieteten Portal-Leads, hin zu Infrastruktur im eigenen Eigentum.',
+				'title'       => 'Über Haşim Üner | Solar-Anfrage-Systeme',
+				'description' => 'Haşim Üner baut eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter: weg von gemieteten Portal-Leads, hin zu eigener Infrastruktur.',
 			],
 			// 'wgos' / 'wordpress-growth-operating-system' sowie Tools-/Audit-Legacy-Routen:
 			// Seiten sind noindex oder 301, daher keine öffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
-				'title'       => 'WordPress Agentur Hannover für B2B-Anfragen | Haşim Üner',
-				'description' => 'WordPress Agentur Hannover: technische SEO, Tracking und Conversion-Führung für B2B-Websites. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
+				'title'       => 'WordPress Agentur Hannover | B2B SEO, Tracking & CRO',
+				'description' => 'WordPress Agentur Hannover für B2B-Websites: technisches SEO, Tracking, Core Web Vitals und CRO. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
 			],
 			'wordpress-agentur' => [
-				'title'       => 'WordPress Agentur Hannover für B2B-Anfragen | Haşim Üner',
-				'description' => 'WordPress Agentur Hannover: technische SEO, Tracking und Conversion-Führung für B2B-Websites. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
+				'title'       => 'WordPress Agentur Hannover | B2B SEO, Tracking & CRO',
+				'description' => 'WordPress Agentur Hannover für B2B-Websites: technisches SEO, Tracking, Core Web Vitals und CRO. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
@@ -122,10 +213,6 @@ function hu_get_forced_singular_seo_map() {
 			'case-e3' => [
 				'title'       => hu_get_e3_methodology_case_title(),
 				'description' => hu_get_e3_methodology_case_description(),
-			],
-			'audit-linkedin' => [
-				'title'       => 'Kostenloses Website Audit für mehr Anfragen | Haşim Üner',
-				'description' => 'Ich analysiere, wo Klarheit, Vertrauen, Struktur und Conversion-Logik auf deiner Website bremsen – mit fundierter Ersteinschätzung ohne Pflicht-Call.',
 			],
 			// 'wordpress-wartung-hannover' + 'wordpress-seo-hannover' + 'ki-integration-wordpress' entfernt:
 			// /wordpress-seo-hannover/ und /wordpress-wartung-hannover/ sind 301 auf die Agentur-Page (Anker-Sektionen);
@@ -307,6 +394,97 @@ function hu_get_stored_seo_value( $post_id, $acf_field, $legacy_meta_key = '' ) 
 	}
 
 	return trim( wp_strip_all_tags( $legacy_value ) );
+}
+
+/**
+ * Resolve image metadata for social previews.
+ *
+ * @param string $url           Image URL.
+ * @param int    $attachment_id Optional attachment ID.
+ * @param string $size          WordPress image size.
+ * @return array{url: string, width: int, height: int, type: string}
+ */
+function hu_get_social_image_meta( $url = '', $attachment_id = 0, $size = 'full' ) {
+	$url           = is_string( $url ) ? trim( $url ) : '';
+	$attachment_id = absint( $attachment_id );
+	$image         = [
+		'url'    => $url,
+		'width'  => 0,
+		'height' => 0,
+		'type'   => '',
+	];
+
+	if ( $attachment_id > 0 ) {
+		$src = wp_get_attachment_image_src( $attachment_id, $size );
+
+		if ( is_array( $src ) && ! empty( $src[0] ) ) {
+			$image['url']    = (string) $src[0];
+			$image['width']  = ! empty( $src[1] ) ? absint( $src[1] ) : 0;
+			$image['height'] = ! empty( $src[2] ) ? absint( $src[2] ) : 0;
+		}
+
+		$mime_type = get_post_mime_type( $attachment_id );
+		if ( is_string( $mime_type ) && '' !== $mime_type ) {
+			$image['type'] = $mime_type;
+		}
+	}
+
+	if ( '' !== $image['url'] && ( 0 === $image['width'] || 0 === $image['height'] || '' === $image['type'] ) ) {
+		$resolved_id = function_exists( 'attachment_url_to_postid' ) ? absint( attachment_url_to_postid( $image['url'] ) ) : 0;
+
+		if ( $resolved_id > 0 && $resolved_id !== $attachment_id ) {
+			$resolved = hu_get_social_image_meta( $image['url'], $resolved_id, $size );
+			$image    = array_merge(
+				$image,
+				array_filter(
+					$resolved,
+					static function ( $value ) {
+						return '' !== $value && 0 !== $value;
+					}
+				)
+			);
+		}
+	}
+
+	if ( '' !== $image['url'] && '' === $image['type'] ) {
+		$path      = (string) wp_parse_url( $image['url'], PHP_URL_PATH );
+		$file_type = wp_check_filetype( $path );
+
+		if ( ! empty( $file_type['type'] ) ) {
+			$image['type'] = (string) $file_type['type'];
+		}
+	}
+
+	return $image;
+}
+
+/**
+ * Merge social image metadata into an SEO meta array.
+ *
+ * @param array<string, mixed> $meta  Current meta array.
+ * @param array<string, mixed> $image Image metadata.
+ * @return array<string, mixed>
+ */
+function hu_apply_social_image_meta( $meta, $image ) {
+	if ( empty( $image['url'] ) ) {
+		return $meta;
+	}
+
+	$meta['og_image'] = (string) $image['url'];
+
+	if ( ! empty( $image['width'] ) ) {
+		$meta['og_image_width'] = absint( $image['width'] );
+	}
+
+	if ( ! empty( $image['height'] ) ) {
+		$meta['og_image_height'] = absint( $image['height'] );
+	}
+
+	if ( ! empty( $image['type'] ) ) {
+		$meta['og_image_type'] = (string) $image['type'];
+	}
+
+	return $meta;
 }
 
 
@@ -595,12 +773,11 @@ function hu_get_contact_offer_description() {
 
 
 /**
- * Override the document title where an exact title string is required.
+ * Resolve the effective document title for all title filters.
  *
- * @param string $title Existing title.
  * @return string
  */
-function hu_pre_get_document_title_override( $title ) {
+function hu_get_resolved_document_title() {
 	if ( is_front_page() ) {
 		return hu_get_homepage_title();
 	}
@@ -609,32 +786,25 @@ function hu_pre_get_document_title_override( $title ) {
 		return hu_get_blog_archive_title();
 	}
 
+	if ( is_category() ) {
+		$category_seo = hu_get_category_archive_seo();
+		if ( ! empty( $category_seo['title'] ) ) {
+			return (string) $category_seo['title'];
+		}
+	}
+
 	$forced_seo = hu_get_forced_singular_seo();
 	if ( ! empty( $forced_seo['title'] ) ) {
 		return (string) $forced_seo['title'];
 	}
 
-	if ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) ) {
-		$cluster_defaults = nexus_get_wgos_cluster_page_seo_defaults( nexus_get_current_wgos_cluster_route_slug() );
+	if ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) && function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ) {
+		$cluster_slug     = nexus_get_current_wgos_cluster_route_slug();
+		$cluster_defaults = '' !== $cluster_slug ? nexus_get_wgos_cluster_page_seo_defaults( $cluster_slug ) : null;
 
 		if ( ! empty( $cluster_defaults['title'] ) ) {
 			return (string) $cluster_defaults['title'];
 		}
-	}
-
-	if ( hu_is_contact_offer_page() ) {
-		return hu_get_contact_offer_title();
-	}
-
-	if ( function_exists( 'nexus_is_audit_linkedin_page' ) && nexus_is_audit_linkedin_page() ) {
-		return 'Kostenloses Website Audit für mehr Anfragen | Haşim Üner';
-	}
-
-	if ( hu_is_domdar_case_study_page() ) {
-		$post_id   = get_queried_object_id();
-		$seo_title = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
-
-		return '' !== $seo_title ? $seo_title : hu_get_domdar_case_study_title();
 	}
 
 	if ( hu_is_seo_cornerstone_article() ) {
@@ -645,70 +815,19 @@ function hu_pre_get_document_title_override( $title ) {
 		return hu_get_post_title_pattern( get_queried_object_id() );
 	}
 
-	return $title;
-}
-
-/**
- * Override document titles when no SEO plugin takes over.
- *
- * @param array $parts Current title parts.
- * @return array
- */
-function hu_document_title_overrides( $parts ) {
-	if ( is_front_page() ) {
-		$parts['title'] = hu_get_homepage_title();
-		return $parts;
-	}
-
-	if ( is_home() ) {
-		$parts['title'] = hu_get_blog_archive_title();
-		return $parts;
-	}
-
-	$forced_seo = hu_get_forced_singular_seo();
-	if ( ! empty( $forced_seo['title'] ) ) {
-		$parts['title'] = (string) $forced_seo['title'];
-		unset( $parts['page'] );
-		return $parts;
-	}
-
-	if ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) ) {
-		$cluster_defaults = nexus_get_wgos_cluster_page_seo_defaults( nexus_get_current_wgos_cluster_route_slug() );
-
-		if ( ! empty( $cluster_defaults['title'] ) ) {
-			$parts['title'] = (string) $cluster_defaults['title'];
-			unset( $parts['page'] );
-			return $parts;
-		}
-	}
-
-	if ( hu_is_seo_cornerstone_article() ) {
-		$parts['title'] = 'Technisches SEO + Performance Marketing: Fundament fehlt';
-		return $parts;
-	}
-
-	if ( is_singular( 'post' ) ) {
-		$parts['title'] = hu_get_post_title_pattern( get_queried_object_id() );
-		return $parts;
-	}
-
 	if ( hu_is_audit_offer_page() ) {
-		$parts['title'] = 'Kostenloser Marktcheck | Haşim Üner';
-		return $parts;
+		return 'Kostenloser Marktcheck | Haşim Üner';
 	}
 
 	if ( hu_is_contact_offer_page() ) {
-		$parts['title'] = hu_get_contact_offer_title();
-		return $parts;
+		return hu_get_contact_offer_title();
 	}
 
 	if ( hu_is_domdar_case_study_page() ) {
 		$post_id   = get_queried_object_id();
 		$seo_title = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
 
-		$parts['title'] = '' !== $seo_title ? $seo_title : hu_get_domdar_case_study_title();
-
-		return $parts;
+		return '' !== $seo_title ? $seo_title : hu_get_domdar_case_study_title();
 	}
 
 	if ( is_singular() ) {
@@ -718,12 +837,41 @@ function hu_document_title_overrides( $parts ) {
 		$defaults   = function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ? nexus_get_wgos_cluster_page_seo_defaults( get_post( $post_id ) ) : null;
 
 		if ( '' !== $seo_title ) {
-			$parts['title'] = $seo_title;
+			return $seo_title;
 		} elseif ( ! empty( $defaults['title'] ) ) {
-			$parts['title'] = (string) $defaults['title'];
+			return (string) $defaults['title'];
 		} elseif ( in_array( $slug, [ 'wgos', 'wordpress-growth-operating-system' ], true ) ) {
-			$parts['title'] = 'WGOS Client Dashboard | Haşim Üner';
+			return 'WGOS Client Dashboard | Haşim Üner';
 		}
+	}
+
+	return '';
+}
+
+/**
+ * Override the document title where an exact title string is required.
+ *
+ * @param string $title Existing title.
+ * @return string
+ */
+function hu_pre_get_document_title_override( $title ) {
+	$resolved_title = hu_get_resolved_document_title();
+
+	return '' !== $resolved_title ? $resolved_title : $title;
+}
+
+/**
+ * Override document titles when no SEO plugin takes over.
+ *
+ * @param array $parts Current title parts.
+ * @return array
+ */
+function hu_document_title_overrides( $parts ) {
+	$resolved_title = hu_get_resolved_document_title();
+
+	if ( '' !== $resolved_title ) {
+		$parts['title'] = $resolved_title;
+		unset( $parts['page'] );
 	}
 
 	return $parts;
@@ -843,8 +991,15 @@ function hu_seo_meta_tags() {
 	}
 	if ( ! empty( $meta['og_image'] ) ) {
 		printf( '<meta property="og:image" content="%s">' . "\n", esc_url( $meta['og_image'] ) );
-		echo '<meta property="og:image:width" content="1200">' . "\n";
-		echo '<meta property="og:image:height" content="630">' . "\n";
+		if ( ! empty( $meta['og_image_width'] ) ) {
+			printf( '<meta property="og:image:width" content="%d">' . "\n", absint( $meta['og_image_width'] ) );
+		}
+		if ( ! empty( $meta['og_image_height'] ) ) {
+			printf( '<meta property="og:image:height" content="%d">' . "\n", absint( $meta['og_image_height'] ) );
+		}
+		if ( ! empty( $meta['og_image_type'] ) ) {
+			printf( '<meta property="og:image:type" content="%s">' . "\n", esc_attr( $meta['og_image_type'] ) );
+		}
 	}
 	printf( '<meta property="og:type" content="%s">' . "\n", esc_attr( $meta['og_type'] ) );
 	echo '<meta property="og:locale" content="de_DE">' . "\n";
@@ -873,12 +1028,15 @@ function hu_seo_meta_tags() {
 function hu_get_seo_meta() {
 
 	$meta = [
-		'description' => '',
-		'canonical'   => '',
-		'robots'      => 'index, follow',
-		'og_title'    => '',
-		'og_image'    => '',
-		'og_type'     => 'website',
+		'description'     => '',
+		'canonical'       => '',
+		'robots'          => 'index, follow',
+		'og_title'        => '',
+		'og_image'        => '',
+		'og_image_width'  => 0,
+		'og_image_height' => 0,
+		'og_image_type'   => '',
+		'og_type'         => 'website',
 	];
 
 	// ── Utility-Seiten → noindex ──────────────────────────────────
@@ -943,13 +1101,6 @@ function hu_get_seo_meta() {
 		$meta['description'] = hu_get_contact_offer_description();
 		$meta['canonical']   = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
 
-	} elseif ( function_exists( 'nexus_is_audit_linkedin_page' ) && nexus_is_audit_linkedin_page() ) {
-		$meta['og_title']    = 'Kostenloses Website Audit für mehr Anfragen | Haşim Üner';
-		$meta['description'] = 'Ich analysiere, wo Klarheit, Vertrauen, Struktur und Conversion-Logik auf deiner Website bremsen – mit fundierter Ersteinschätzung ohne Pflicht-Call.';
-		$meta['canonical']   = function_exists( 'nexus_get_audit_linkedin_url' ) ? nexus_get_audit_linkedin_url() : home_url( '/audit-linkedin/' );
-		$meta['og_image']    = function_exists( 'nexus_get_audit_linkedin_featured_image_url' ) ? nexus_get_audit_linkedin_featured_image_url() : content_url( '/uploads/2026/03/audit-linkedin-featured-1200x675-1.png' );
-		$meta['robots']      = 'noindex, follow';
-
 	} elseif ( function_exists( 'hu_is_request_analysis_request_path' ) && hu_is_request_analysis_request_path() ) {
 		$meta['og_title']    = 'Marktcheck | Haşim Üner';
 		$meta['description'] = 'Manueller Marktcheck für Solar- und Wärmepumpen-Betriebe: händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.';
@@ -1001,11 +1152,26 @@ function hu_get_seo_meta() {
 		}
 
 		if ( function_exists( 'get_field' ) ) {
-			$og_image_arr        = get_field( 'og_image', $post_id );
+			$og_image_arr = get_field( 'og_image', $post_id );
 			if ( is_array( $og_image_arr ) && ! empty( $og_image_arr['url'] ) ) {
-				$meta['og_image'] = $og_image_arr['url'];
+				$meta = hu_apply_social_image_meta(
+					$meta,
+					[
+						'url'    => (string) $og_image_arr['url'],
+						'width'  => isset( $og_image_arr['width'] ) ? absint( $og_image_arr['width'] ) : 0,
+						'height' => isset( $og_image_arr['height'] ) ? absint( $og_image_arr['height'] ) : 0,
+						'type'   => isset( $og_image_arr['mime_type'] ) ? (string) $og_image_arr['mime_type'] : '',
+					]
+				);
+
+				if ( empty( $meta['og_image_width'] ) || empty( $meta['og_image_height'] ) ) {
+					$meta = hu_apply_social_image_meta(
+						$meta,
+						hu_get_social_image_meta( (string) $og_image_arr['url'], absint( $og_image_arr['ID'] ?? 0 ), 'full' )
+					);
+				}
 			} elseif ( is_string( $og_image_arr ) && $og_image_arr ) {
-				$meta['og_image'] = $og_image_arr;
+				$meta = hu_apply_social_image_meta( $meta, hu_get_social_image_meta( $og_image_arr ) );
 			}
 		}
 
@@ -1019,7 +1185,7 @@ function hu_get_seo_meta() {
 		}
 
 		if ( 'technisches-seo-performance-fundament' === $slug ) {
-			$meta['og_title'] = 'Technisches SEO + Performance Marketing: Fundament fehlt';
+			$meta['og_title']    = 'Technisches SEO + Performance Marketing: Fundament fehlt';
 			$meta['description'] = 'Performance Marketing ohne technisches SEO-Fundament verbrennt Budget. So wirken Technik, CRO und Tracking zusammen - inklusive Entscheider-Checkliste.';
 		}
 
@@ -1065,9 +1231,9 @@ function hu_get_seo_meta() {
 		}
 
 		if ( empty( $meta['og_image'] ) ) {
-			$thumb = get_the_post_thumbnail_url( $post_id, 'large' );
-			if ( $thumb ) {
-				$meta['og_image'] = $thumb;
+			$thumb_id = get_post_thumbnail_id( $post_id );
+			if ( $thumb_id ) {
+				$meta = hu_apply_social_image_meta( $meta, hu_get_social_image_meta( '', $thumb_id, 'large' ) );
 			}
 		}
 
@@ -1089,13 +1255,29 @@ function hu_get_seo_meta() {
 	} elseif ( is_category() || is_tag() || is_tax() ) {
 
 		$term = get_queried_object();
-		if ( $term ) {
-			$meta['og_title'] = single_term_title( '', false ) . ' · ' . get_bloginfo( 'name' );
-			if ( $term->description ) {
-				$meta['description'] = wp_trim_words( wp_strip_all_tags( $term->description ), 25, '…' );
+		if ( $term instanceof WP_Term ) {
+			if ( 'category' === $term->taxonomy ) {
+				$category_seo        = hu_get_category_archive_seo( $term );
+				$meta['og_title']    = $category_seo['title'];
+				$meta['description'] = $category_seo['description'];
+			} else {
+				$meta['robots']  = 'noindex, follow';
+				$meta['og_title'] = single_term_title( '', false ) . ' · ' . get_bloginfo( 'name' );
+				if ( $term->description ) {
+					$meta['description'] = wp_trim_words( wp_strip_all_tags( $term->description ), 25, '…' );
+				}
 			}
-			$meta['canonical'] = get_term_link( $term );
+
+			$term_link = get_term_link( $term );
+			if ( ! is_wp_error( $term_link ) ) {
+				$meta['canonical'] = $term_link;
+			}
 		}
+
+	} elseif ( is_author() || is_date() ) {
+
+		$meta['robots']  = 'noindex, follow';
+		$meta['og_title'] = wp_get_document_title();
 
 	} elseif ( is_search() ) {
 
@@ -1114,7 +1296,7 @@ function hu_get_seo_meta() {
 
 	// Global OG-Image Fallback: Profilbild als Default wenn kein seitenspezifisches Bild gesetzt ist.
 	if ( empty( $meta['og_image'] ) ) {
-		$meta['og_image'] = hu_get_profile_image_url();
+		$meta = hu_apply_social_image_meta( $meta, hu_get_social_image_meta( hu_get_profile_image_url() ) );
 	}
 
 	return $meta;
@@ -1232,14 +1414,25 @@ add_filter( 'wp_sitemaps_posts_query_args', function ( $args, $post_type ) {
 }, 10, 2 );
 
 /**
- * Exclude deprecated/noindex pages from Rank Math sitemap (sitemap_index.xml).
+ * Keep native taxonomy sitemaps focused on curated category archives.
  *
- * Rank Math erkennt noindex-Meta in der eigenen Settings-Oberfläche automatisch,
- * unser noindex wird aber per HTTP-Header + wp_head gesetzt — daher explizite
- * ID-basierte Exclusion als Safety-Net.
+ * Tags and ad-hoc taxonomies are intentionally noindex/follow unless they are
+ * built as maintained landing pages with explicit SEO defaults.
+ *
+ * @param array<string, WP_Taxonomy> $taxonomies Public taxonomy objects.
+ * @return array<string, WP_Taxonomy>
  */
-add_filter( 'rank_math/sitemap/exclude_posts', function ( $excluded ) {
-	$excluded = is_array( $excluded ) ? $excluded : [];
-	$excluded = array_values( array_unique( array_merge( $excluded, nexus_get_sitemap_excluded_ids() ) ) );
-	return $excluded;
-} );
+function hu_filter_indexable_sitemap_taxonomies( $taxonomies ) {
+	if ( ! is_array( $taxonomies ) ) {
+		return $taxonomies;
+	}
+
+	foreach ( array_keys( $taxonomies ) as $taxonomy ) {
+		if ( 'category' !== $taxonomy ) {
+			unset( $taxonomies[ $taxonomy ] );
+		}
+	}
+
+	return $taxonomies;
+}
+add_filter( 'wp_sitemaps_taxonomies', 'hu_filter_indexable_sitemap_taxonomies' );

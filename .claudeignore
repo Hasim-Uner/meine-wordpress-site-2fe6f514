@@ -6,9 +6,7 @@ blocksy-child/readiness/node_modules/**
 package-lock.json
 composer.lock
 
-# Human-facing summaries and changelogs
-README.md
-**/README.md
+# Human-facing changelogs
 CHANGELOG.md
 .ai/**
 

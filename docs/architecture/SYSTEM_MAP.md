@@ -1,13 +1,13 @@
 # System Map
 
-Stand: 2026-05-20. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der frueheren System-Diagnose-Route.
+Stand: 2026-05-21. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der frueheren System-Diagnose-Route.
 
 ## Hauptsysteme
 
 | System | Zweck | Repo-Orte | Externe Abhaengigkeiten | Status |
 | --- | --- | --- | --- | --- |
 | Website | deploybarer WordPress-Theme-Code | `blocksy-child/`, `.github/workflows/ci.yml`, `.github/workflows/deploy.yml`, `docs/architecture/DEPLOYMENT.md` | WordPress, Blocksy Parent Theme, ACF | live |
-| Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
+| Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler; `llms.txt` ist der kompakte Routen- und Positionierungsindex fuer Agenten | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
 | Growth-Audit-Legacypfad | deaktivierter Instant-Diagnose-Legacycode; öffentliche Audit- und Tools-Routen führen zum Marktcheck | `blocksy-child/page-audit.php`, `blocksy-child/inc/audit-page.php`, `blocksy-child/inc/tools-page.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `docs/systems/audit-funnel.md` | n8n Webhook nur für Legacy-Code, WordPress | öffentlich retired; 301 auf `/solar-waermepumpen-leadgenerierung/#marktcheck` |
 | Nexus CRM & Blog Notify | gemeinsames CRM für Analyse-Leads, Audit-, Folgeanalyse-, Umsetzungs- und Bestandskunden-Anfragen plus DOI- und Artikel-Mail-Logik | `blocksy-child/inc/crm.php`, `blocksy-child/inc/analysis-intake.php`, `blocksy-child/inc/blog-notify.php`, `blocksy-child/template-parts/blog-notify.php`, `blocksy-child/page-blog-notify.php`, `docs/systems/blog-notify.md` | WordPress CPT/Meta, WordPress REST, wp_mail, Brevo | repo-seitig live; Analyse-REST und Brevo-Konfiguration am 2026-05-07 verifiziert |
 | SEO Cockpit | Search-Console-basiertes SEO-Dashboard mit optionalem Koko- und Audit-Lead-Layer | `blocksy-child/inc/seo-cockpit.php`, `blocksy-child/assets/css/seo-cockpit-admin.css`, `docs/systems/seo-cockpit.md` | Google Search Console API, optional Koko Analytics, Nexus CRM / Audit-CRM | repo-seitig implementiert; OAuth/API-Livezustand admin-owned, Koko optional; Legacy-/Nicht-Zielintent-Filter aktiv |
@@ -15,11 +15,11 @@ Stand: 2026-05-20. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | CTA- und Leadflow | CTA-Hierarchie vom ersten Besuch bis zur Diagnose, Folgeeinordnung und Qualifizierung | `blocksy-child/inc/shortcodes.php`, `blocksy-child/template-parts/footer-cta.php`, `blocksy-child/template-parts/trust-section.php`, Service-Templates | WordPress-Editor, Audit-Funnel, Cal.com, CRM | live |
 | Public Proof Layer | zentraler oeffentlicher Proof- und Vokabular-Layer fuer kaufnahe Seiten | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/shortcodes.php`, `blocksy-child/front-page.php`, `blocksy-child/page-wordpress-agentur.php`, `blocksy-child/page-kontakt.php`, `blocksy-child/inc/contact-page.php` | WordPress-Editor, oeffentliche Cases und Profile | live |
 | WGOS Client Dashboard | internes Delivery-/Client-Dashboard mit minimaler Rolle und Capability | `blocksy-child/page-wgos.php`, `blocksy-child/inc/wgos/wgos-access.php` | WordPress-User-System | intern; noindex/nofollow; Zugriff nur fuer `manage_options` oder `view_wgos_dashboard` |
-| Content- und SEO-System | Blog, Pillar-Hubs, Cornerstone-Content, interne Verlinkung | `blocksy-child/home.php`, `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/template-parts/post-title-visual.php`, `blocksy-child/page-seo-cornerstone.php`, `blocksy-child/inc/blog-provider-posts.php`, `content/blog-drafts/` | WordPress-Editor, einmalige Theme-Seeds | live plus Ausbau |
-| Client Portal | Kunden-Cockpit mit Login, Upload und Roadmap-Slots | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, Media Library | live, aber aktuell mit Mock-Daten |
-| n8n-Automationen | optionale Workflow-Artefakte für spätere Analyse-/Routing-/Nurture-Schritte hinter Contract, Consent und Feature-Flag | `automations/n8n/` | n8n Cloud, CRM, Mail, evtl. Sheets | kein aktiver Marktcheck-Pfad; nur minimal pflegen |
+| Content- und SEO-System | Blog, Kategorie-Archive, Cornerstone-Content, Glossar-Registry und interne Verlinkung | `blocksy-child/home.php`, `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/template-parts/post-title-visual.php`, `blocksy-child/page-seo-cornerstone.php`, `blocksy-child/inc/glossary/`, `blocksy-child/inc/blog-provider-posts.php`, `content/blog-drafts/` | WordPress-Editor, einmalige Theme-Seeds | live plus Ausbau |
+| Client Portal | Kunden-Cockpit mit Login, Upload und optionalen Nutzer-Metadaten für Ressourcen, KPI und Roadmap | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, User Meta, Media Library | live; keine Mock-Daten mehr, Empty-State ohne gepflegtes `nexus_client_portal`; Pflege im Benutzerprofil |
+| n8n-Automationen | inaktive optionale Workflow-Artefakte für spätere Analyse-/Routing-/Nurture-Schritte | `automations/n8n/` | n8n Cloud, CRM, Mail, evtl. Sheets | nicht in Operation; ignorieren, sofern n8n nicht explizit beauftragt ist |
 | Marktcheck / System-Diagnose-Legacy | aktiver 60-Sekunden-Marktcheck auf der Solar-Landingpage; fruehere System-Diagnose-Route bleibt als Redirect erhalten | `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/solar-leadgenerierung-solara.js`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/review-crm.php`, `blocksy-child/readiness/` | WordPress, Audit-CRM, Brevo/wp_mail, Cal.com; n8n nicht angebunden | Marktcheck aktiv über `/wp-json/nexus/v1/audit-request`; `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects |
-| Agenten- und Skill-System | Kontext, Guardrails und wiederholbare Skills | `AGENTS.md`, `agents/skills/` | keine direkte Laufzeitabhaengigkeit | aktiv verdichtet |
+| Agenten- und Skill-System | Kontext, Guardrails und wiederholbare Skills; konkrete public Routes werden an `llms.txt` delegiert | `AGENTS.md`, `agents/skills/`, `llms.txt` | keine direkte Laufzeitabhaengigkeit | aktiv verdichtet |
 
 ## Website
 
@@ -131,7 +131,7 @@ Im Repo vorhanden:
 
 - `data-track-*` Attribute auf CTAs und Content-Bausteinen
 - noindex- und SEO-Meta-Logik
-- Schema-Ausgabe fuer Organisation, Services und Profile
+- Schema-Ausgabe fuer Organisation, Services und Profile; editorgetriebenes FAQPage-Schema wird per `save_post` in Post-Meta gecacht und im Frontend nur gelesen
 - neue Homepage-Actions fuer Trust und Einstiegsangebote: `cta_github_repo`, `cta_proof_linkedin`
 
 Ausserhalb des Repos:
@@ -198,11 +198,12 @@ Das Content-System ist auf Pillar- und Cluster-Logik aufgebaut.
 
 Bausteine:
 
-- `home.php`: Blog-Hub mit CRO-Hero, Startpunkt-Karten, Suche, Kategorie-Filter, Proof- und Marktcheck-Führung
-- `category.php`: Pillar-Hub mit Featured Entry Point
-- `single.php`: Artikel mit TOC, Related Content und Footer-CTA
+- `home.php`: reduziertes Editorial-Blogarchiv mit echten Kategorie-Links, bildloser Artikelliste, CollectionPage-/ItemList-Schema und Marktcheck-Führung
+- `category.php`: bildloses Kategorie-Archiv mit dynamischer Kategorienavigation, zentralen SEO-Fallbacks, thematischen Vertiefungslinks, CollectionPage-/ItemList-Schema und Marktcheck-Führung
+- `single.php`: Artikel mit reduziertem Editorial-Hero, TOC, strukturierter Next-Step-Zone, thematischem Related Content und Footer-CTA
 - `template-parts/post-title-visual.php`: generierte Titelgrafik als Fallback für Beiträge ohne Featured Image
 - `page-seo-cornerstone.php`: Cornerstone-Template mit starkem Entscheider-Fokus
+- `inc/glossary/`: Registry, Alias-Logik und Blog-Autolinking für Fachbegriffe, 90-Tage-Fokus-Keywords und Money-Page-Brücken
 - `content/blog-drafts/`: Rohfassungen ausserhalb von WordPress; Lead-Anbieter-Markteinordnungen werden zusätzlich einmalig über `blocksy-child/inc/blog-provider-posts.php` in WordPress veröffentlicht.
 
 Risiko:

@@ -17,6 +17,7 @@ changed_php="$(git diff --name-only HEAD -- '*.php' 2>/dev/null || true)"
 staged_php="$(git diff --cached --name-only -- '*.php' 2>/dev/null || true)"
 untracked_php="$(git ls-files --others --exclude-standard -- '*.php' 2>/dev/null || true)"
 all_php="$(printf '%s\n%s\n%s' "$changed_php" "$staged_php" "$untracked_php" | sort -u | grep -v '^$' || true)"
+theme_php="$(printf '%s\n' "$all_php" | grep "^$THEME/.*\\.php$" || true)"
 
 if [[ -z "$all_php" ]]; then
   pass "No changed PHP files"
@@ -36,34 +37,48 @@ fi
 # --- 2. Hardcoded domain check ---
 header "Hardcoded URLs"
 
-hardcoded="$(grep -rn 'https\?://hasimuener\.de' "$THEME/" --include='*.php' 2>/dev/null || true)"
-if [[ -n "$hardcoded" ]]; then
+hardcoded=""
+if [[ -n "$theme_php" ]]; then
+  while IFS= read -r f; do
+    [[ -f "$f" ]] || continue
+    found="$(grep -n 'https\?://hasimuener\.de' "$f" 2>/dev/null || true)"
+    [[ -n "$found" ]] && hardcoded+="${found/#/$f:}"$'\n'
+  done <<< "$theme_php"
+fi
+if [[ -n "${hardcoded%$'\n'}" ]]; then
   fail "Hardcoded domain found (use home_url() instead):"
   echo "$hardcoded"
 else
-  pass "No hardcoded domain URLs"
+  pass "No hardcoded domain URLs in changed PHP files"
 fi
 
 # --- 3. Raw echo check ---
 header "Escaping Hygiene"
 
-raw_echo="$(grep -rn 'echo \$' "$THEME/" --include='*.php' 2>/dev/null | grep -v 'esc_' | grep -v '// raw-ok' || true)"
-if [[ -n "$raw_echo" ]]; then
+raw_echo=""
+if [[ -n "$theme_php" ]]; then
+  while IFS= read -r f; do
+    [[ -f "$f" ]] || continue
+    found="$(grep -n 'echo \$' "$f" 2>/dev/null | grep -v 'esc_' | grep -v '// raw-ok' || true)"
+    [[ -n "$found" ]] && raw_echo+="${found/#/$f:}"$'\n'
+  done <<< "$theme_php"
+fi
+if [[ -n "${raw_echo%$'\n'}" ]]; then
   fail "Unescaped echo found (use esc_html/esc_attr/esc_url):"
   echo "$raw_echo" | head -20
 else
-  pass "No unescaped echo statements"
+  pass "No unescaped echo statements in changed PHP files"
 fi
 
 # --- 4. Asset existence ---
 header "Asset References"
 
 if [[ -f "$THEME/inc/enqueue.php" ]]; then
-  # Extract filenames from hu_enqueue_css/hu_enqueue_js and direct string concats
-  css_files="$(grep -oP "hu_enqueue_css\(\s*'[^']+'\s*,\s*'([^']+)'" "$THEME/inc/enqueue.php" | grep -oP "'[^']+'" | tail -1 | tr -d "'" || true)"
-  js_files="$(grep -oP "hu_enqueue_js\(\s*'[^']+'\s*,\s*'([^']+)'" "$THEME/inc/enqueue.php" | grep -oP "'[^']+'" | tail -1 | tr -d "'" || true)"
-  direct_css="$(grep -oP "\\\$css_uri\s*\.\s*'([^']+)'" "$THEME/inc/enqueue.php" | grep -oP "'[^']+'" | tr -d "'" || true)"
-  direct_js="$(grep -oP "\\\$js_uri\s*\.\s*'([^']+)'" "$THEME/inc/enqueue.php" | grep -oP "'[^']+'" | tr -d "'" || true)"
+  # Extract filenames from helper calls without GNU grep-only flags.
+  css_files="$(sed -nE "s/.*hu_enqueue_css\\([^,]+,[[:space:]]*'([^']+)'.*/\\1/p" "$THEME/inc/enqueue.php" || true)"
+  js_files="$(sed -nE "s/.*hu_enqueue_js\\([^,]+,[[:space:]]*'([^']+)'.*/\\1/p" "$THEME/inc/enqueue.php" || true)"
+  direct_css="$(sed -nE "s/.*\\\$css_uri[[:space:]]*\\.[[:space:]]*'([^']+)'.*/\\1/p" "$THEME/inc/enqueue.php" || true)"
+  direct_js="$(sed -nE "s/.*\\\$js_uri[[:space:]]*\\.[[:space:]]*'([^']+)'.*/\\1/p" "$THEME/inc/enqueue.php" || true)"
 
   all_assets="$(printf '%s\n%s\n%s\n%s' "$css_files" "$js_files" "$direct_css" "$direct_js" | sort -u | grep -v '^$' || true)"
   asset_ok=true

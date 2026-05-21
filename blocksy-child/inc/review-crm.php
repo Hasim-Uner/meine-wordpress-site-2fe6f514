@@ -832,7 +832,7 @@ function nexus_get_review_request_success_message( $payload ) {
 		return 'Die Rückmeldung kommt innerhalb von 48 Stunden per E-Mail.';
 	}
 
-	return 'Ich prüfe Ihre Seite manuell und ergänze die Einschätzung durch KI-gestützte Analyse. Sie erhalten innerhalb von 48 Stunden eine persönliche Rückmeldung.';
+	return 'Ihre Anfrage ist eingegangen. Ich ordne Seite, Angebot und Anfragepfad ein und melde mich mit einer konkreten nächsten Priorität per E-Mail.';
 }
 
 /**
@@ -1982,8 +1982,8 @@ function nexus_send_review_request_confirmation( $payload ) {
 					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:6px;">Was jetzt passiert</div>
 					<div style="font-size:14px; line-height:1.8; color:#c5ced7;">
 						<strong style="color:#f7f3ee;">1.</strong> Ihre Anfrage ist sauber im System.<br>
-						<strong style="color:#f7f3ee;">2.</strong> Ich prüfe die Seite manuell und ergänze die Einschätzung durch KI-Unterstützung.<br>
-						<strong style="color:#f7f3ee;">3.</strong> Innerhalb von 48 Stunden erhalten Sie die Rückmeldung per E-Mail.
+						<strong style="color:#f7f3ee;">2.</strong> Ich ordne Seite, Angebot und Anfragepfad gegen den nächsten sinnvollen Schritt ein.<br>
+						<strong style="color:#f7f3ee;">3.</strong> Sie erhalten die Rückmeldung per E-Mail.
 					</div>
 				</td>
 			</tr>
