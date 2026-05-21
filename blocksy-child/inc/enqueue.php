@@ -135,10 +135,9 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-home-redesign-js', 'homepage-redesign.js', [ 'nexus-core-js' ] );
 	}
 
-	// ── B) Blog-Archive Scripts ───────────────────────────────────
+	// ── B) Blog-Archive Styles ────────────────────────────────────
 	if ( is_home() ) {
 		hu_enqueue_css( 'nexus-blog-archive-css', 'blog-archive.css', [ 'nexus-design-system' ] );
-		hu_enqueue_js( 'nexus-archive-js', 'blog-archive.js', [ 'nexus-core-js' ] );
 	}
 
 	// ── C) Kategorie-Seiten (Pillar Hub) ──────────────────────────
