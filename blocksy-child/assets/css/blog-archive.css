@@ -2,8 +2,25 @@
    Blog Archive — "Bell" architecture
    Loaded on is_home() only. Scoped under .blog-bell to avoid
    colliding with category-hub.css (which keeps .blog-editorial-*).
-   Uses the .hu-hp design tokens defined in homepage-redesign.css.
+   Self-defines the HU token subset it uses, because homepage-redesign.css
+   is not loaded on the blog index.
 ============================================================= */
+
+.blog-bell,
+.blog-bell__bell,
+.blog-bell__modal {
+	--hu-bg: #0B0F12;
+	--hu-bg-2: #11161A;
+	--hu-bg-3: #161C21;
+	--hu-line: #232A30;
+	--hu-fg: #F2EBDD;
+	--hu-fg-2: #C8C0B0;
+	--hu-fg-3: #8A8478;
+	--hu-accent: #E08A3C;
+	--hu-accent-soft: rgba(224, 138, 60, 0.12);
+	--hu-good: #6BA17A;
+	--hu-bad: #C7705F;
+}
 
 .blog-bell {
 	background: var(--hu-bg);
