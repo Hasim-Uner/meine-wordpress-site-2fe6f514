@@ -39,6 +39,114 @@ function hu_person_schema_ref( $include_same_as = false, $name = 'Haşim Üner' 
     return $person;
 }
 
+/**
+ * Build CollectionPage + ItemList schema for blog archive surfaces.
+ *
+ * @return array<string, mixed>|null
+ */
+function hu_get_blog_archive_collection_schema() {
+    if ( ! is_home() && ! is_category() ) {
+        return null;
+    }
+
+    global $wp_query;
+
+    $posts = isset( $wp_query->posts ) && is_array( $wp_query->posts ) ? $wp_query->posts : [];
+
+    if ( is_home() ) {
+        $blog_page_id = (int) get_option( 'page_for_posts' );
+        $page_url     = $blog_page_id ? get_permalink( $blog_page_id ) : home_url( '/blog/' );
+        $page_name    = function_exists( 'hu_get_blog_archive_title' ) ? hu_get_blog_archive_title() : 'Blog';
+        $description  = function_exists( 'hu_get_blog_archive_description' ) ? hu_get_blog_archive_description() : get_bloginfo( 'description' );
+    } else {
+        $term = get_queried_object();
+
+        if ( ! ( $term instanceof WP_Term ) ) {
+            return null;
+        }
+
+        $term_link = get_term_link( $term );
+
+        if ( is_wp_error( $term_link ) ) {
+            return null;
+        }
+
+        $category_seo = function_exists( 'hu_get_category_archive_seo' ) ? hu_get_category_archive_seo( $term ) : [];
+        $page_url     = $term_link;
+        $page_name    = ! empty( $category_seo['title'] ) ? (string) $category_seo['title'] : single_term_title( '', false );
+        $description  = ! empty( $category_seo['description'] ) ? (string) $category_seo['description'] : wp_strip_all_tags( (string) $term->description );
+    }
+
+    $list_items = [];
+    $position   = 1;
+
+    foreach ( $posts as $post ) {
+        if ( ! ( $post instanceof WP_Post ) || 'post' !== $post->post_type ) {
+            continue;
+        }
+
+        $post_url   = get_permalink( $post );
+        $post_title = get_the_title( $post );
+
+        if ( ! $post_url || ! $post_title ) {
+            continue;
+        }
+
+        $post_excerpt = get_the_excerpt( $post );
+        $post_summary = '' !== trim( (string) $post_excerpt )
+            ? wp_trim_words( wp_strip_all_tags( $post_excerpt ), 24, '…' )
+            : wp_strip_all_tags( $post_title );
+
+        $list_items[] = [
+            '@type'    => 'ListItem',
+            'position' => $position++,
+            'url'      => $post_url,
+            'item'     => [
+                '@type'         => 'BlogPosting',
+                '@id'           => trailingslashit( $post_url ) . '#blogposting',
+                'url'           => $post_url,
+                'headline'      => $post_title,
+                'name'          => $post_title,
+                'description'   => $post_summary,
+                'datePublished' => get_post_time( DATE_W3C, true, $post ),
+                'dateModified'  => get_post_modified_time( DATE_W3C, true, $post ),
+                'author'        => hu_person_schema_ref( true ),
+                'publisher'     => [ '@id' => home_url( '/#organization' ) ],
+            ],
+        ];
+    }
+
+    $collection = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'CollectionPage',
+        '@id'         => trailingslashit( $page_url ) . '#collection',
+        'url'         => $page_url,
+        'name'        => $page_name,
+        'headline'    => $page_name,
+        'description' => $description,
+        'inLanguage'  => 'de',
+        'isPartOf'    => [ '@id' => home_url( '/#website' ) ],
+        'publisher'   => [ '@id' => home_url( '/#organization' ) ],
+        'mainEntity'  => [
+            '@type'           => 'ItemList',
+            '@id'             => trailingslashit( $page_url ) . '#itemlist',
+            'name'            => $page_name,
+            'itemListOrder'   => 'https://schema.org/ItemListOrderDescending',
+            'numberOfItems'   => count( $list_items ),
+            'itemListElement' => $list_items,
+        ],
+    ];
+
+    if ( is_category() ) {
+        $collection['about'] = [
+            '@type' => 'Thing',
+            'name'  => single_term_title( '', false ),
+        ];
+    }
+
+    return $collection;
+}
+
 function hu_output_schema()
 {
     $google_maps_url = 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfrage-Systeme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
@@ -160,6 +268,11 @@ function hu_output_schema()
     ];
 
     $schemas = [$org];
+
+    $archive_collection = hu_get_blog_archive_collection_schema();
+    if ( is_array( $archive_collection ) ) {
+        $schemas[] = $archive_collection;
+    }
 
     // Service definitions (slug => data)
     $service_definitions = [
