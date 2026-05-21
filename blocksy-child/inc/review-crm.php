@@ -76,6 +76,7 @@ function nexus_get_review_primary_goal_options() {
 function nexus_get_audit_request_type_options() {
 	return [
 		'growth_audit'     => 'Marktcheck',
+		'b2b_system_intake' => 'B2B-System-Intake',
 		'growth_blueprint' => 'Growth Blueprint',
 		'implementation'   => 'Umsetzung / Weiterentwicklung',
 	];
@@ -1202,10 +1203,13 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 	$type_options          = nexus_get_audit_request_type_options();
 	$field_options         = nexus_get_energy_intake_field_options();
 	$audit_type            = isset( $payload['audit_type'] ) ? sanitize_key( (string) $payload['audit_type'] ) : 'growth_audit';
+	$is_b2b_system_intake  = 'b2b_system_intake' === $audit_type;
 	$postal_code           = isset( $payload['postal_code'] ) ? preg_replace( '/\D/', '', (string) $payload['postal_code'] ) : '';
 	$lead_volume           = isset( $payload['lead_volume'] ) ? sanitize_key( (string) $payload['lead_volume'] ) : '';
 	$cpl_range             = isset( $payload['cpl_range'] ) ? sanitize_key( (string) $payload['cpl_range'] ) : '';
 	$primary_bottleneck    = isset( $payload['primary_bottleneck'] ) ? sanitize_key( (string) $payload['primary_bottleneck'] ) : '';
+	$sales_team_size       = isset( $payload['sales_team_size'] ) ? sanitize_key( (string) $payload['sales_team_size'] ) : '';
+	$portal_margin_loss    = isset( $payload['portal_margin_loss'] ) ? sanitize_key( (string) $payload['portal_margin_loss'] ) : '';
 	$solution_focus        = isset( $payload['solution_focus'] ) ? sanitize_key( (string) $payload['solution_focus'] ) : '';
 	$business_fit          = isset( $payload['business_fit'] ) ? sanitize_key( (string) $payload['business_fit'] ) : '';
 	$sales_audience        = isset( $payload['sales_audience'] ) ? sanitize_key( (string) $payload['sales_audience'] ) : '';
@@ -1220,6 +1224,7 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 	$current_challenge     = isset( $payload['current_challenge'] ) ? sanitize_textarea_field( (string) $payload['current_challenge'] ) : '';
 	$company               = isset( $payload['company'] ) ? sanitize_text_field( (string) $payload['company'] ) : '';
 	$name                  = isset( $payload['name'] ) ? sanitize_text_field( (string) $payload['name'] ) : '';
+	$position              = isset( $payload['position'] ) ? sanitize_text_field( (string) $payload['position'] ) : '';
 	$email                 = isset( $payload['email'] ) ? sanitize_email( (string) $payload['email'] ) : '';
 	$phone                 = isset( $payload['phone'] ) ? sanitize_text_field( (string) $payload['phone'] ) : '';
 	$consent_privacy       = isset( $payload['consent_privacy'] ) ? sanitize_key( (string) $payload['consent_privacy'] ) : '';
@@ -1227,24 +1232,62 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 	// expanded fields stay optional so legacy entries and future variants remain
 	// compatible.
 
-	if ( '' === $postal_code || ! preg_match( '/^[0-9]{5}$/', $postal_code ) ) {
-		return new WP_Error( 'invalid_postal_code', 'Bitte eine gültige fünfstellige deutsche Postleitzahl angeben.' );
-	}
+	$sales_team_options = [
+		'none'           => 'Noch kein eigenes Vertriebsteam / Einzelkämpfer',
+		'one'            => '1 Person',
+		'two_to_five'    => '2 bis 5 Personen',
+		'more_than_five' => 'Mehr als 5 Personen',
+	];
+	$portal_margin_loss_options = [
+		'low'    => 'Kaum spürbar',
+		'medium' => 'Spürbarer Margendruck im Vertrieb',
+		'high'   => 'Massive Frustration und verbranntes Budget',
+	];
 
-	if ( (int) $postal_code < 1000 || (int) $postal_code > 99999 ) {
-		return new WP_Error( 'invalid_postal_code_range', 'Bitte eine deutsche Postleitzahl im gültigen Bereich angeben.' );
-	}
+	if ( $is_b2b_system_intake ) {
+		if ( empty( $sales_team_size ) || ! isset( $sales_team_options[ $sales_team_size ] ) ) {
+			return new WP_Error( 'missing_sales_team_size', 'Bitte die Größe Ihres Vertriebsteams auswählen.' );
+		}
 
-	if ( empty( $lead_volume ) || ! isset( $field_options['lead_volume'][ $lead_volume ] ) ) {
-		return new WP_Error( 'missing_lead_volume', 'Bitte das aktuelle Lead-Volumen auswählen.' );
-	}
+		if ( empty( $portal_margin_loss ) || ! isset( $portal_margin_loss_options[ $portal_margin_loss ] ) ) {
+			return new WP_Error( 'missing_portal_margin_loss', 'Bitte den Margenverlust durch Portal-Leads einordnen.' );
+		}
 
-	if ( empty( $cpl_range ) || ! isset( $field_options['cpl_range'][ $cpl_range ] ) ) {
-		return new WP_Error( 'missing_cpl_range', 'Bitte den aktuellen CPL-Bereich auswählen.' );
-	}
+		if ( empty( $position ) ) {
+			return new WP_Error( 'missing_position', 'Bitte Ihre Position im Unternehmen angeben.' );
+		}
 
-	if ( empty( $primary_bottleneck ) || ! isset( $field_options['primary_bottleneck'][ $primary_bottleneck ] ) ) {
-		return new WP_Error( 'missing_primary_bottleneck', 'Bitte den größten aktuellen Engpass auswählen.' );
+		if ( empty( $phone ) ) {
+			return new WP_Error( 'missing_phone', 'Bitte eine Telefonnummer für Rückfragen angeben.' );
+		}
+
+		$lead_volume = in_array( $sales_team_size, [ 'more_than_five' ], true )
+			? '51_bis_120'
+			: ( 'two_to_five' === $sales_team_size ? '20_bis_50' : 'unter_20' );
+		$cpl_range = 'high' === $portal_margin_loss
+			? 'ueber_300'
+			: ( 'medium' === $portal_margin_loss ? '151_bis_300' : '80_bis_150' );
+		$primary_bottleneck = 'low' === $portal_margin_loss ? 'tracking_klarheit' : 'lead_qualitaet';
+	} else {
+		if ( '' === $postal_code || ! preg_match( '/^[0-9]{5}$/', $postal_code ) ) {
+			return new WP_Error( 'invalid_postal_code', 'Bitte eine gültige fünfstellige deutsche Postleitzahl angeben.' );
+		}
+
+		if ( (int) $postal_code < 1000 || (int) $postal_code > 99999 ) {
+			return new WP_Error( 'invalid_postal_code_range', 'Bitte eine deutsche Postleitzahl im gültigen Bereich angeben.' );
+		}
+
+		if ( empty( $lead_volume ) || ! isset( $field_options['lead_volume'][ $lead_volume ] ) ) {
+			return new WP_Error( 'missing_lead_volume', 'Bitte das aktuelle Lead-Volumen auswählen.' );
+		}
+
+		if ( empty( $cpl_range ) || ! isset( $field_options['cpl_range'][ $cpl_range ] ) ) {
+			return new WP_Error( 'missing_cpl_range', 'Bitte den aktuellen CPL-Bereich auswählen.' );
+		}
+
+		if ( empty( $primary_bottleneck ) || ! isset( $field_options['primary_bottleneck'][ $primary_bottleneck ] ) ) {
+			return new WP_Error( 'missing_primary_bottleneck', 'Bitte den größten aktuellen Engpass auswählen.' );
+		}
 	}
 
 	if ( '' !== $solution_focus && ! isset( $field_options['solution_focus'][ $solution_focus ] ) ) {
@@ -1352,6 +1395,7 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 		'primary_goal_label'          => $lookup_label( 'improvement_goal', $improvement_goal ),
 		'extra_context'               => '',
 		'name'                        => $name,
+		'position'                    => $position,
 		'email'                       => $email,
 		'phone'                       => $phone,
 		'linkedin'                    => '',
@@ -1364,6 +1408,10 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 		'referrer_url'                => $referrer_url,
 		'referrer_host'               => $referrer_url ? sanitize_text_field( strtolower( (string) wp_parse_url( $referrer_url, PHP_URL_HOST ) ) ) : '',
 		'postal_code'                 => $postal_code,
+		'sales_team_size'             => $sales_team_size,
+		'sales_team_size_label'       => $sales_team_options[ $sales_team_size ] ?? '',
+		'portal_margin_loss'          => $portal_margin_loss,
+		'portal_margin_loss_label'    => $portal_margin_loss_options[ $portal_margin_loss ] ?? '',
 		'lead_volume'                 => $lead_volume,
 		'lead_volume_label'           => $lookup_label( 'lead_volume', $lead_volume ),
 		'cpl_range'                   => $cpl_range,
@@ -1440,6 +1488,7 @@ function nexus_create_review_request_post( $payload ) {
 	update_post_meta( $post_id, '_nexus_review_name', $payload['name'] );
 	update_post_meta( $post_id, '_nexus_review_email', $payload['email'] );
 	update_post_meta( $post_id, '_nexus_review_company', $payload['company'] );
+	update_post_meta( $post_id, '_nexus_review_position', sanitize_text_field( (string) ( $payload['position'] ?? '' ) ) );
 	update_post_meta( $post_id, '_nexus_review_phone', sanitize_text_field( (string) ( $payload['phone'] ?? '' ) ) );
 	update_post_meta( $post_id, '_nexus_review_linkedin', $payload['linkedin'] );
 	update_post_meta( $post_id, '_nexus_review_consent_privacy', $payload['consent_privacy'] );
@@ -1460,6 +1509,10 @@ function nexus_create_review_request_post( $payload ) {
 
 	if ( 'energy_systems' === ( $payload['intake_variant'] ?? '' ) ) {
 		update_post_meta( $post_id, '_nexus_review_energy_postal_code', sanitize_text_field( (string) ( $payload['postal_code'] ?? '' ) ) );
+		update_post_meta( $post_id, '_nexus_review_energy_sales_team_size', sanitize_key( (string) ( $payload['sales_team_size'] ?? '' ) ) );
+		update_post_meta( $post_id, '_nexus_review_energy_sales_team_size_label', sanitize_text_field( (string) ( $payload['sales_team_size_label'] ?? '' ) ) );
+		update_post_meta( $post_id, '_nexus_review_energy_portal_margin_loss', sanitize_key( (string) ( $payload['portal_margin_loss'] ?? '' ) ) );
+		update_post_meta( $post_id, '_nexus_review_energy_portal_margin_loss_label', sanitize_text_field( (string) ( $payload['portal_margin_loss_label'] ?? '' ) ) );
 		update_post_meta( $post_id, '_nexus_review_energy_lead_volume', sanitize_key( (string) ( $payload['lead_volume'] ?? '' ) ) );
 		update_post_meta( $post_id, '_nexus_review_energy_lead_volume_label', sanitize_text_field( (string) ( $payload['lead_volume_label'] ?? '' ) ) );
 		update_post_meta( $post_id, '_nexus_review_energy_cpl_range', sanitize_key( (string) ( $payload['cpl_range'] ?? '' ) ) );
@@ -1716,52 +1769,77 @@ function nexus_get_review_request_detail_rows( $payload ) {
 			],
 		];
 	} elseif ( 'energy_systems' === $variant ) {
-		$rows = [
-			[
-				'label' => 'Region (PLZ)',
-				'value' => (string) ( $payload['postal_code'] ?? '' ),
-			],
-			[
-				'label' => 'Lead-Volumen',
-				'value' => (string) ( $payload['lead_volume_label'] ?? '' ),
-			],
-			[
-				'label' => 'CPL',
-				'value' => (string) ( $payload['cpl_range_label'] ?? '' ),
-			],
-			[
-				'label' => 'Engpass',
-				'value' => (string) ( $payload['primary_bottleneck_label'] ?? $payload['focus_area_label'] ?? '' ),
-			],
-			[
-				'label' => 'Leistung',
-				'value' => (string) ( $payload['solution_focus_label'] ?? '' ),
-			],
-			[
-				'label' => 'Wirtschaftlicher Fit',
-				'value' => (string) ( $payload['business_fit_label'] ?? '' ),
-			],
-			[
-				'label' => 'Zielmarkt',
-				'value' => (string) ( $payload['sales_audience_label'] ?? '' ),
-			],
-			[
-				'label' => 'Aktueller Status',
-				'value' => (string) ( $payload['site_state_label'] ?? '' ),
-			],
-			[
-				'label' => 'Timing',
-				'value' => (string) ( $payload['project_timing_label'] ?? '' ),
-			],
-			[
-				'label' => 'Website',
-				'value' => (string) ( $payload['page_url'] ?? '' ),
-			],
-			[
-				'label' => 'Anmerkung',
-				'value' => (string) ( $payload['current_challenge'] ?? '' ),
-			],
-		];
+		if ( 'b2b_system_intake' === (string) ( $payload['audit_type'] ?? '' ) ) {
+			$rows = [
+				[
+					'label' => 'Vertriebsteam',
+					'value' => (string) ( $payload['sales_team_size_label'] ?? '' ),
+				],
+				[
+					'label' => 'Portal-Margenverlust',
+					'value' => (string) ( $payload['portal_margin_loss_label'] ?? '' ),
+				],
+				[
+					'label' => 'Position',
+					'value' => (string) ( $payload['position'] ?? '' ),
+				],
+				[
+					'label' => 'Telefon',
+					'value' => (string) ( $payload['phone'] ?? '' ),
+				],
+				[
+					'label' => 'Website',
+					'value' => (string) ( $payload['page_url'] ?? '' ),
+				],
+			];
+		} else {
+			$rows = [
+				[
+					'label' => 'Region (PLZ)',
+					'value' => (string) ( $payload['postal_code'] ?? '' ),
+				],
+				[
+					'label' => 'Lead-Volumen',
+					'value' => (string) ( $payload['lead_volume_label'] ?? '' ),
+				],
+				[
+					'label' => 'CPL',
+					'value' => (string) ( $payload['cpl_range_label'] ?? '' ),
+				],
+				[
+					'label' => 'Engpass',
+					'value' => (string) ( $payload['primary_bottleneck_label'] ?? $payload['focus_area_label'] ?? '' ),
+				],
+				[
+					'label' => 'Leistung',
+					'value' => (string) ( $payload['solution_focus_label'] ?? '' ),
+				],
+				[
+					'label' => 'Wirtschaftlicher Fit',
+					'value' => (string) ( $payload['business_fit_label'] ?? '' ),
+				],
+				[
+					'label' => 'Zielmarkt',
+					'value' => (string) ( $payload['sales_audience_label'] ?? '' ),
+				],
+				[
+					'label' => 'Aktueller Status',
+					'value' => (string) ( $payload['site_state_label'] ?? '' ),
+				],
+				[
+					'label' => 'Timing',
+					'value' => (string) ( $payload['project_timing_label'] ?? '' ),
+				],
+				[
+					'label' => 'Website',
+					'value' => (string) ( $payload['page_url'] ?? '' ),
+				],
+				[
+					'label' => 'Anmerkung',
+					'value' => (string) ( $payload['current_challenge'] ?? '' ),
+				],
+			];
+		}
 	} else {
 		$rows = [
 			[
@@ -2078,6 +2156,7 @@ function nexus_render_review_request_details_meta_box( $post ) {
 	$name              = (string) get_post_meta( $post->ID, '_nexus_review_name', true );
 	$email             = (string) get_post_meta( $post->ID, '_nexus_review_email', true );
 	$company           = (string) get_post_meta( $post->ID, '_nexus_review_company', true );
+	$position          = (string) get_post_meta( $post->ID, '_nexus_review_position', true );
 	$phone             = (string) get_post_meta( $post->ID, '_nexus_review_phone', true );
 	$consent_privacy   = (string) get_post_meta( $post->ID, '_nexus_review_consent_privacy', true );
 	$offer             = (string) get_post_meta( $post->ID, '_nexus_review_offer', true );
@@ -2094,6 +2173,9 @@ function nexus_render_review_request_details_meta_box( $post ) {
 	$energy_acquisition  = (string) get_post_meta( $post->ID, '_nexus_review_energy_acquisition_mix_label', true );
 	$energy_site_state   = (string) get_post_meta( $post->ID, '_nexus_review_energy_site_state_label', true );
 	$energy_timing       = (string) get_post_meta( $post->ID, '_nexus_review_energy_project_timing_label', true );
+	$energy_sales_team   = (string) get_post_meta( $post->ID, '_nexus_review_energy_sales_team_size_label', true );
+	$energy_margin_loss  = (string) get_post_meta( $post->ID, '_nexus_review_energy_portal_margin_loss_label', true );
+	$is_b2b_energy_intake = '' !== trim( $energy_sales_team . $energy_margin_loss );
 	?>
 	<div class="nexus-review-meta">
 		<div class="nexus-review-meta-group">
@@ -2106,7 +2188,13 @@ function nexus_render_review_request_details_meta_box( $post ) {
 		</div>
 		<div class="nexus-review-meta-group">
 			<strong>Kontakt</strong>
-			<p><?php echo esc_html( $name ); ?><br><a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a></p>
+			<p>
+				<?php echo esc_html( $name ); ?>
+				<?php if ( '' !== $position ) : ?>
+					<br><?php echo esc_html( $position ); ?>
+				<?php endif; ?>
+				<br><a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a>
+			</p>
 		</div>
 		<?php if ( '' !== $phone ) : ?>
 			<div class="nexus-review-meta-group">
@@ -2183,40 +2271,51 @@ function nexus_render_review_request_details_meta_box( $post ) {
 				<?php endif; ?>
 			<?php endif; ?>
 			<?php if ( $is_energy_intake ) : ?>
-				<div class="nexus-review-meta-group">
-					<strong>Leistung</strong>
-					<p><?php echo esc_html( $energy_solution ?: 'Nicht angegeben' ); ?></p>
-				</div>
-				<div class="nexus-review-meta-group">
-					<strong>Wirtschaftlicher Fit</strong>
-					<p><?php echo esc_html( $energy_business_fit ?: 'Nicht angegeben' ); ?></p>
-				</div>
-				<div class="nexus-review-meta-group">
-					<strong>Zielmarkt</strong>
-					<p><?php echo esc_html( $energy_audience ?: 'Nicht angegeben' ); ?></p>
-				</div>
-				<div class="nexus-review-meta-group">
-					<strong>Region</strong>
-					<p><?php echo esc_html( $energy_region ?: 'Nicht angegeben' ); ?></p>
-				</div>
-				<?php if ( '' !== $energy_measurement ) : ?>
+				<?php if ( $is_b2b_energy_intake ) : ?>
 					<div class="nexus-review-meta-group">
-						<strong>Messbarkeit</strong>
-						<p><?php echo esc_html( $energy_measurement ); ?></p>
+						<strong>Vertriebsteam</strong>
+						<p><?php echo esc_html( $energy_sales_team ?: 'Nicht angegeben' ); ?></p>
+					</div>
+					<div class="nexus-review-meta-group">
+						<strong>Portal-Margenverlust</strong>
+						<p><?php echo esc_html( $energy_margin_loss ?: 'Nicht angegeben' ); ?></p>
+					</div>
+				<?php else : ?>
+					<div class="nexus-review-meta-group">
+						<strong>Leistung</strong>
+						<p><?php echo esc_html( $energy_solution ?: 'Nicht angegeben' ); ?></p>
+					</div>
+					<div class="nexus-review-meta-group">
+						<strong>Wirtschaftlicher Fit</strong>
+						<p><?php echo esc_html( $energy_business_fit ?: 'Nicht angegeben' ); ?></p>
+					</div>
+					<div class="nexus-review-meta-group">
+						<strong>Zielmarkt</strong>
+						<p><?php echo esc_html( $energy_audience ?: 'Nicht angegeben' ); ?></p>
+					</div>
+					<div class="nexus-review-meta-group">
+						<strong>Region</strong>
+						<p><?php echo esc_html( $energy_region ?: 'Nicht angegeben' ); ?></p>
+					</div>
+					<?php if ( '' !== $energy_measurement ) : ?>
+						<div class="nexus-review-meta-group">
+							<strong>Messbarkeit</strong>
+							<p><?php echo esc_html( $energy_measurement ); ?></p>
+						</div>
+					<?php endif; ?>
+					<div class="nexus-review-meta-group">
+						<strong>Anfragemix</strong>
+						<p><?php echo esc_html( $energy_acquisition ?: 'Nicht angegeben' ); ?></p>
+					</div>
+					<div class="nexus-review-meta-group">
+						<strong>Aktueller Status</strong>
+						<p><?php echo esc_html( $energy_site_state ?: 'Nicht angegeben' ); ?></p>
+					</div>
+					<div class="nexus-review-meta-group">
+						<strong>Timing</strong>
+						<p><?php echo esc_html( $energy_timing ?: 'Nicht angegeben' ); ?></p>
 					</div>
 				<?php endif; ?>
-				<div class="nexus-review-meta-group">
-					<strong>Anfragemix</strong>
-					<p><?php echo esc_html( $energy_acquisition ?: 'Nicht angegeben' ); ?></p>
-				</div>
-				<div class="nexus-review-meta-group">
-					<strong>Aktueller Status</strong>
-					<p><?php echo esc_html( $energy_site_state ?: 'Nicht angegeben' ); ?></p>
-				</div>
-				<div class="nexus-review-meta-group">
-					<strong>Timing</strong>
-					<p><?php echo esc_html( $energy_timing ?: 'Nicht angegeben' ); ?></p>
-				</div>
 			<?php endif; ?>
 		<?php else : ?>
 			<div class="nexus-review-meta-group">

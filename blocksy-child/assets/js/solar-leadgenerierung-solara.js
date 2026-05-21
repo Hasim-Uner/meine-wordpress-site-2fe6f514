@@ -2,7 +2,7 @@
    SOLARA Landing — B2B System-Intake im Hero.
    3-stufige Progressive-Disclosure-Sequenz (Sales-Team → Portal-Streuverlust → Business-Daten).
    Submit → /wp-json/nexus/v1/audit-request (intake_variant=energy_systems).
-   Success-Screen mit Cal.com-Direktbuchung + händischer 24h-Antwort.
+   Success-Screen mit Cal.com-Direktbuchung + händischer 48h-Antwort.
    Vanilla JS. Keine Dependencies. Touch- & Keyboard-accessible. */
 (function () {
   'use strict';
@@ -23,30 +23,29 @@
       hint: 'Der Hebel eines eigenen Anfrage-Systems wirkt nur, wenn jemand die qualifizierten Anfragen auch konsequent abschließt.',
       kind: 'pick',
       options: [
-        { v: 'none',          t: 'Keine',            s: 'Geschäftsführung verkauft aktuell selbst — oder gar nicht.', i: '⊘' },
-        { v: 'one',           t: '1 Person',         s: 'Eine zentrale Anlaufstelle, klare Verantwortung.',          i: '①' },
-        { v: 'two_to_five',   t: '2 – 5 Personen',   s: 'Vertriebsteam vorhanden, Pipeline-Routing geregelt.',       i: '⑤' },
-        { v: 'more_than_five', t: 'Mehr als 5',      s: 'Strukturierter Vertrieb mit eigener Pipeline-Logik.',       i: '∞' }
+        { v: 'none',           t: 'Noch kein eigenes Vertriebsteam / Einzelkämpfer', s: 'Geschäftsführung verkauft aktuell selbst — oder gar nicht.', i: '⊘' },
+        { v: 'one',            t: '1 Person',                                      s: 'Eine zentrale Anlaufstelle, klare Verantwortung.',          i: '①' },
+        { v: 'two_to_five',    t: '2 bis 5 Personen',                              s: 'Vertriebsteam vorhanden, Pipeline-Routing geregelt.',       i: '⑤' },
+        { v: 'more_than_five', t: 'Mehr als 5 Personen',                           s: 'Strukturierter Vertrieb mit eigener Pipeline-Logik.',       i: '∞' }
       ]
     },
     {
-      key: 'portal_streuverlust',
-      label: 'Streuverlust',
-      title: 'Wie hoch ist der geschätzte Streuverlust durch unqualifizierte Portal-Leads (z. B. Aroundhome, DAA, Wattfox) in Ihrem Betrieb?',
-      hint: 'Streuverlust = Anteil der eingekauften Anfragen, die nicht ans Telefon gehen, kein Budget haben oder bei drei Wettbewerbern parallel landen.',
+      key: 'portal_margin_loss',
+      label: 'Margenverlust',
+      title: 'Wie hoch schätzen Sie den jährlichen Margenverlust durch unqualifizierte oder geteilte Portal-Leads (z. B. Aroundhome, DAA, Wattfox) ein?',
+      hint: 'Margenverlust entsteht, wenn Vertrieb Zeit, Budget und Abschlusskraft in geteilte oder unpassende Kontakte investiert.',
       kind: 'pick',
       options: [
-        { v: 'low',    t: 'Kaum spürbar',                 s: 'Portal-Leads sind wirtschaftlich vertretbar.',                  i: '◔' },
-        { v: 'medium', t: 'Sichtbarer Margendruck',       s: 'Die CPL-Kosten verdrängen die Marge in Grenzprojekten.',         i: '◐' },
-        { v: 'high',   t: 'Massive Vertriebs-Frustration', s: 'Vertrieb verbrennt Stunden mit Leuten, die nie kaufen werden.', i: '●' },
-        { v: 'none',   t: 'Wir nutzen keine Portale',     s: 'Eigene Akquise — Empfehlung, Bestand, organisch.',               i: '○' }
+        { v: 'low',    t: 'Kaum spürbar',                                    s: 'Portal-Leads sind wirtschaftlich vertretbar.',                  i: '◔' },
+        { v: 'medium', t: 'Spürbarer Margendruck im Vertrieb',               s: 'Die CPL-Kosten verdrängen die Marge in Grenzprojekten.',         i: '◐' },
+        { v: 'high',   t: 'Massive Frustration und verbranntes Budget',       s: 'Vertrieb verbrennt Stunden mit Leuten, die nie kaufen werden.', i: '●' }
       ]
     },
     {
       key: 'contact',
       label: 'System-Intake',
-      title: 'Wohin darf ich Ihnen den geprüften Infrastruktur-Befund schicken?',
-      hint: 'Persönlich-händische Analyse Ihrer Domain und Region innerhalb von 24 Stunden — keine automatisierte Standard-Auswertung, kein Newsletter.',
+      title: 'Daten-Integrität & Kontakt',
+      hint: 'Erst nach den beiden Qualifikationsantworten öffnet sich der geschäftliche Datenpfad. Persönliche Rückmeldung garantiert in 48 Stunden.',
       kind: 'form'
     }
   ];
@@ -117,13 +116,13 @@
       var errs = {};
       if (!a.company || a.company.trim().length < 2) errs.company = 'Bitte Ihr Unternehmen angeben.';
       if (!a.name || a.name.trim().length < 2) errs.name = 'Bitte Ihren Namen angeben.';
-      if (!a.position || a.position.trim().length < 2) errs.position = 'Bitte Ihre Position im Betrieb angeben.';
+      if (!a.position || a.position.trim().length < 2) errs.position = 'Bitte Ihre Position im Unternehmen angeben.';
       if (!a.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a.email)) errs.email = 'Bitte eine gültige geschäftliche E-Mail angeben.';
       // Konsumenten-Provider auf geschäftliche E-Mail-Felder ausschließen.
       if (a.email && /^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(a.email)) {
         errs.email = 'Bitte Ihre geschäftliche E-Mail-Adresse verwenden (keine Freemail-Adresse).';
       }
-      if (!a.postal_code || !/^[0-9]{5}$/.test(String(a.postal_code).trim())) errs.postal_code = '5-stellige Firmen-PLZ nötig (für Regions-Verfügbarkeitsprüfung).';
+      if (!a.phone || a.phone.trim().length < 5) errs.phone = 'Bitte eine Telefonnummer für Rückfragen angeben.';
       if (!a.consent_privacy) errs.consent_privacy = 'Bitte den Datenschutzhinweis bestätigen.';
       return errs;
     }
@@ -132,7 +131,7 @@
       if (state.submitting) return;
       var errs = validateContact();
       if (Object.keys(errs).length) {
-        state.touched = Object.assign({}, state.touched || {}, { name: true, company: true, position: true, email: true, postal_code: true, consent_privacy: true });
+        state.touched = Object.assign({}, state.touched || {}, { name: true, company: true, position: true, email: true, phone: true, consent_privacy: true });
         render();
         return;
       }
@@ -144,8 +143,11 @@
         intake_variant:      'energy_systems',
         audit_type:          'b2b_system_intake',
         sales_team_size:     state.answers.sales_team_size || '',
-        portal_streuverlust: state.answers.portal_streuverlust || '',
-        postal_code:         (state.answers.postal_code || '').toString().replace(/\D/g, ''),
+        portal_margin_loss:  state.answers.portal_margin_loss || '',
+        portal_streuverlust: state.answers.portal_margin_loss || '',
+        lead_volume:         mapSalesTeamToLeadVolume(state.answers.sales_team_size),
+        cpl_range:           mapMarginLossToCplRange(state.answers.portal_margin_loss),
+        primary_bottleneck:  mapMarginLossToBottleneck(state.answers.portal_margin_loss),
         name:                state.answers.name || '',
         company:             state.answers.company || '',
         position:            state.answers.position || '',
@@ -221,6 +223,23 @@
       track('system_intake_reset');
     }
 
+    function mapSalesTeamToLeadVolume(value) {
+      if (value === 'more_than_five') return '51_bis_120';
+      if (value === 'two_to_five') return '20_bis_50';
+      return 'unter_20';
+    }
+
+    function mapMarginLossToCplRange(value) {
+      if (value === 'high') return 'ueber_300';
+      if (value === 'medium') return '151_bis_300';
+      return '80_bis_150';
+    }
+
+    function mapMarginLossToBottleneck(value) {
+      if (value === 'low') return 'tracking_klarheit';
+      return 'lead_qualitaet';
+    }
+
     // ── render helpers ────────────────────────────────────────
     function renderProgress() {
       var pct = Math.round((state.step / (totalSteps - 1)) * 100);
@@ -286,7 +305,7 @@
           role: 'radio',
           'aria-checked': sel ? 'true' : 'false',
           style: '--sol-opt-delay:' + (i * 60) + 'ms',
-          dataset: { trackAction: 'system_intake_pick', trackCategory: 'lead_gen', trackSection: 'intake_step_' + (state.step + 1) },
+          dataset: { trackAction: 'submit_solar_intake', trackCategory: 'lead_gen', trackSection: 'hero_intake', trackIntent: 'intake_step_' + (state.step + 1) },
           onClick: function () { pick(step.key, o.v); }
         }, children);
         picks.appendChild(btn);
@@ -329,36 +348,36 @@
       var form = el('form', {
         className: 'sol-quiz-form',
         novalidate: 'novalidate',
+        dataset: { trackAction: 'submit_solar_intake', trackCategory: 'lead_gen', trackSection: 'hero_intake' },
         onSubmit: function (e) { e.preventDefault(); submit(); }
       });
 
       var rationale = el('div', { className: 'sol-quiz-rationale', role: 'note' }, [
         el('p', { className: 'sol-quiz-rationale-h' }, 'Daten-Integrität · Drittes Modul des System-Intakes'),
         el('p', { className: 'sol-quiz-rationale-b' },
-          'Sie haben Ihre Vertriebsstruktur und Portal-Streuverluste skizziert — jetzt brauche ich die Firmen-Eckdaten, um Ihre Domain und Region innerhalb von 24 Stunden persönlich-händisch zu prüfen und den Befund an den richtigen Entscheider zu senden.')
+          'Sie haben Ihre Vertriebsstruktur und Portal-Margenverluste skizziert — jetzt brauche ich die Firmen-Eckdaten, um Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch zu prüfen und den Befund an den richtigen Entscheider zu senden.')
       ]);
       form.appendChild(rationale);
 
       form.appendChild(renderField({ k: 'company', t: 'Firma', type: 'text', ph: 'Mustermann Solar GmbH', req: true, ac: 'organization', full: true,
         validator: function (v) { return (!v || v.trim().length < 2) ? 'Bitte Firma angeben.' : null; }
       }));
-      form.appendChild(renderField({ k: 'name', t: 'Ihr Name', type: 'text', ph: 'Max Mustermann', req: true, ac: 'name',
+      form.appendChild(renderField({ k: 'name', t: 'Name des Ansprechpartners', type: 'text', ph: 'Max Mustermann', req: true, ac: 'name',
         validator: function (v) { return (!v || v.trim().length < 2) ? 'Bitte Namen angeben.' : null; }
       }));
-      form.appendChild(renderField({ k: 'position', t: 'Position im Betrieb', type: 'text', ph: 'Geschäftsführung, Vertriebsleitung …', req: true, ac: 'organization-title',
+      form.appendChild(renderField({ k: 'position', t: 'Position im Unternehmen', type: 'text', ph: 'Geschäftsführung, Vertriebsleitung …', req: true, ac: 'organization-title',
         validator: function (v) { return (!v || v.trim().length < 2) ? 'Bitte Position angeben.' : null; }
       }));
-      form.appendChild(renderField({ k: 'postal_code', t: 'Firmen-PLZ', type: 'text', ph: '30853', req: true, ac: 'postal-code', im: 'numeric',
-        validator: function (v) { return (!/^[0-9]{5}$/.test(String(v || '').trim())) ? '5-stellige Firmen-PLZ.' : null; }
-      }));
-      form.appendChild(renderField({ k: 'email', t: 'Geschäftliche E-Mail', type: 'email', ph: 'max@solar-betrieb.de', req: true, ac: 'email', full: true,
+      form.appendChild(renderField({ k: 'email', t: 'Geschäftliche E-Mail-Adresse', type: 'email', ph: 'max@solar-betrieb.de', req: true, ac: 'email', full: true,
         validator: function (v) {
           if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || ''))) return 'Gültige E-Mail nötig.';
           if (/^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(String(v || ''))) return 'Bitte geschäftliche E-Mail verwenden (keine Freemail).';
           return null;
         }
       }));
-      form.appendChild(renderField({ k: 'phone', t: 'Telefon (optional)', type: 'tel', ph: '+49 ___ ____', ac: 'tel', im: 'tel', full: true }));
+      form.appendChild(renderField({ k: 'phone', t: 'Telefonnummer für Rückfragen', type: 'tel', ph: '+49 ___ ____', req: true, ac: 'tel', im: 'tel', full: true,
+        validator: function (v) { return (!v || v.trim().length < 5) ? 'Bitte Telefonnummer angeben.' : null; }
+      }));
 
       // Honeypot
       var hp = el('input', {
@@ -394,18 +413,18 @@
         className: 'sol-quiz-submit' + (canSubmit ? '' : ' is-dis') + (state.submitting ? ' is-loading' : ''),
         'aria-disabled': canSubmit ? 'false' : 'true',
         dataset: {
-          trackAction: 'cta_solar_system_intake_submit',
+          trackAction: 'submit_solar_intake',
           trackCategory: 'lead_gen',
-          trackSection: 'intake_submit',
+          trackSection: 'hero_intake',
           trackFunnelStage: 'lead_capture_submit'
         }
       }, [
-        el('span', null, state.submitting ? 'Wird gesendet …' : 'Infrastruktur-Audit beantragen (24 h)'),
+        el('span', null, state.submitting ? 'Wird gesendet …' : 'Infrastruktur-Audit anfordern (System-Intake)'),
         el('span', { className: 'sol-quiz-submit-arrow', 'aria-hidden': 'true', html: ARROW_SVG })
       ]);
       form.appendChild(submitBtn);
 
-      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Inklusive Regions-Verfügbarkeitsprüfung · keine automatisierte Standard-Auswertung · Antwort innerhalb von 24 h per E-Mail · DSGVO'));
+      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Inklusive Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse statt automatisierter Tool-Bericht · Persönliche Rückmeldung garantiert in 48 Stunden · DSGVO'));
 
       return form;
     }
@@ -418,7 +437,7 @@
         el('div', { className: 'sol-quiz-success-icon', 'aria-hidden': 'true', html: CHECK_SVG }),
         el('h3', { className: 'sol-quiz-success-h' }, 'Danke' + (first ? ', ' + first : '') + '.'),
         el('p', { className: 'sol-quiz-success-sub' },
-          'Ihr System-Intake ist eingegangen. Ich prüfe Ihre Domain und Region in den nächsten 24 Stunden persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.'),
+          'Ihr System-Intake ist eingegangen. Ich prüfe Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.'),
         el('div', { className: 'sol-quiz-success-row' }, [
           el('a', {
             href: calcom,
@@ -466,7 +485,7 @@
       var head = el('div', { className: 'sol-cta-head' }, [
         el('span', { className: 'sol-cta-tag sol-mono' }, [
           el('span', { className: 'sol-cta-tag-dot', 'aria-hidden': 'true' }),
-          'System-Intake · händisch geprüft · Befund in 24 h'
+          'System-Intake · händisch geprüft · Befund in 48 h'
         ]),
         el('span', { className: 'sol-cta-head-right sol-mono' }, 'Kostenfrei')
       ]);
@@ -502,6 +521,7 @@
         type: 'button',
         className: 'sol-quiz-back' + (canBack ? '' : ' is-dis'),
         'aria-disabled': canBack ? 'false' : 'true',
+        dataset: { trackAction: 'submit_solar_intake', trackCategory: 'lead_gen', trackSection: 'hero_intake', trackIntent: 'intake_back' },
         onClick: goBack
       }, '← Zurück');
       nav.appendChild(backBtn);
@@ -521,6 +541,7 @@
           type: 'button',
           className: 'sol-quiz-next' + (canNext ? '' : ' is-dis'),
           'aria-disabled': canNext ? 'false' : 'true',
+          dataset: { trackAction: 'submit_solar_intake', trackCategory: 'lead_gen', trackSection: 'hero_intake', trackIntent: 'intake_next' },
           onClick: function () { if (canNext) goNext(); }
         }, 'Weiter →');
         nav.appendChild(nextBtn);

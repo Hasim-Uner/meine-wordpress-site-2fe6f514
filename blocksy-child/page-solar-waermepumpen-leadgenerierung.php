@@ -114,7 +114,7 @@ $results_qualifiers = [
 $guarantee_points = [
 	[
 		't' => 'System-Intake ist kostenfrei',
-		's' => 'Strukturierter, händisch geprüfter System-Intake statt automatisierter Standard-Auswertung. Befund Ihrer Domain und Region innerhalb von 24 Stunden per E-Mail — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
+		's' => 'Strukturierter, händisch geprüfter System-Intake statt automatisierter Tool-Bericht. Befund Ihrer Domain und Region innerhalb von 48 Stunden per E-Mail — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
 	],
 	[
 		't' => 'Drei Hebel — auch bei Abrat',
@@ -284,11 +284,11 @@ $deeper_clusters = [
 $faq_items = [
 	[
 		'question' => 'Wie läuft der System-Intake konkret ab und wie lange dauert er?',
-		'answer'   => 'Drei strukturierte Schritte: Vertriebsteam-Größe, Portal-Streuverlust, geschäftliche Eckdaten. Den händisch geprüften Infrastruktur-Befund Ihrer Domain und Region erhalten Sie innerhalb von 24 Stunden per E-Mail. Keine automatisierten Standard-PDFs, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
+		'answer'   => 'Drei strukturierte Schritte: Vertriebsteam-Größe, Portal-Margenverlust, geschäftliche Eckdaten. Den händisch geprüften Infrastruktur-Befund Ihrer Domain und Region erhalten Sie innerhalb von 48 Stunden per E-Mail. Keine automatisierten Standard-PDFs, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
 	],
 	[
 		'question' => 'Was passiert nach dem System-Intake?',
-		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich innerhalb von 24 Stunden per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die kostenpflichtige Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
+		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich innerhalb von 48 Stunden per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die kostenpflichtige Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
 	],
 	[
 		'question' => 'Was kostet das im Vergleich zur Performance-Agentur?',
@@ -388,7 +388,7 @@ $service_schema = [
 		'@type'         => 'Offer',
 		'price'         => '0',
 		'priceCurrency' => 'EUR',
-		'description'   => 'System-Intake & händisch geprüfter Befund Ihrer Region innerhalb von 24 Stunden per E-Mail.',
+		'description'   => 'System-Intake & händisch geprüfter Befund Ihrer Region innerhalb von 48 Stunden per E-Mail.',
 		'availability'  => 'https://schema.org/InStock',
 	],
 	'isRelatedTo' => [
@@ -443,13 +443,13 @@ get_header();
 				<div class="sol-hero-left">
 					<div class="sol-eyebrow">Für Solar- &amp; Wärmepumpen-Anbieter mit eigenem Vertrieb · DACH</div>
 					<h1 class="sol-display sol-hero-h1">
-						Schluss mit geteilten<br /><em>Portal-Leads.</em><br />Ihr eigenes, autarkes<br /><em>Nachfrage-Kraftwerk.</em>
+						Schluss mit geteilten Portal-Leads. Ihr eigenes, autarkes Nachfrage-Kraftwerk.
 					</h1>
 					<p class="sol-hero-claim">
 						Eine Anfrage-Infrastruktur, die Ihrem Betrieb gehört — nicht Aroundhome, DAA oder Wattfox.
 					</p>
 					<p class="sol-hero-sub">
-						Portal-Leads kosten 80–150 €. Die Hälfte geht nicht ans Telefon, der Rest liegt parallel bei drei Wettbewerbern. Wir errichten Ihrem Betrieb eine eigene Nachfrage-Infrastruktur — WordPress hardcoded, Server-Side-Tracking, Lead-Scoring vor dem Erstkontakt. Code, Tracking, Daten bleiben bei Ihnen.
+						Ablösung der Abhängigkeit von Drittanbietern. Ein geschlossenes WordPress-System aus qualifizierenden B2B-Datenpfaden, cookieless-ready Tracking und direkter CRM-Integration – zu 100 % in Ihrem Eigentum.
 					</p>
 
 					<?php
@@ -595,7 +595,7 @@ get_header();
 							<div class="sol-cta-head">
 								<span class="sol-cta-tag sol-mono">
 									<span class="sol-cta-tag-dot" aria-hidden="true"></span>
-									System-Intake · händisch geprüft · Befund in 24 h
+									System-Intake · händisch geprüft · Befund in 48 h
 								</span>
 								<span class="sol-cta-head-right sol-mono">Kostenfrei</span>
 							</div>
@@ -603,12 +603,12 @@ get_header();
 								Infrastruktur-Audit für Ihren Vertrieb beantragen.
 							</h2>
 							<p class="sol-cta-hint">
-								Dreistufiger System-Intake. Strukturierte Aufnahme Ihres Vertriebs- und Lead-Profils — Befund innerhalb von 24 Stunden per E-Mail. Kein Newsletter, kein Pitch-Deck.
+								Dreistufiger System-Intake. Strukturierte Aufnahme Ihres Vertriebs- und Lead-Profils — Befund innerhalb von 48 Stunden per E-Mail. Kein Newsletter, kein Pitch-Deck.
 							</p>
 							<ul class="sol-cta-bullets sol-mono" aria-label="Was Sie nach dem Intake erhalten">
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Inklusive Regions-Verfügbarkeitsprüfung</li>
-								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Keine automatisierte Standard-Auswertung</li>
-								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Antwort innerhalb von 24 h per E-Mail</li>
+								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Manuelle Erst-Analyse statt automatisierter Tool-Bericht</li>
+								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Persönliche Rückmeldung garantiert in 48 Stunden</li>
 							</ul>
 							<p class="sol-cta-fineprint" style="text-align:left;margin:0 0 14px;">Wird geladen …</p>
 						</div>
@@ -981,7 +981,7 @@ get_header();
 						<span>System-Intake starten</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
-					<div class="sol-capex-cta-micro sol-mono">Inklusive Regions-Verfügbarkeitsprüfung · Antwort innerhalb von 24 h per E-Mail</div>
+					<div class="sol-capex-cta-micro sol-mono">Inklusive Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse statt automatisierter Tool-Bericht · Persönliche Rückmeldung garantiert in 48 Stunden</div>
 				</div>
 			</div>
 		</section>
@@ -1155,7 +1155,7 @@ get_header();
 						<span>Infrastruktur-Audit beantragen</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
-					<div class="sol-fit-cta-micro sol-mono">Inklusive Regions-Verfügbarkeitsprüfung · keine automatisierte Standard-Auswertung · Antwort innerhalb von 24 h per E-Mail</div>
+					<div class="sol-fit-cta-micro sol-mono">Inklusive Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse statt automatisierter Tool-Bericht · Persönliche Rückmeldung garantiert in 48 Stunden</div>
 				</div>
 			</div>
 		</section>
@@ -1279,7 +1279,7 @@ get_header();
 						Anfragen <em>besitzen</em>,<br />nicht mieten.
 					</h2>
 					<p class="sol-final-sub">
-						Manueller, tiefer Marktcheck · händische Analyse deiner Region · Befund per E-Mail in 48 h.
+						Manueller, tiefer Marktcheck · händische Analyse Ihrer Region · Befund per E-Mail in 48 h.
 					</p>
 					<a
 						class="sol-btn sol-btn-primary sol-final-btn"
@@ -1292,7 +1292,7 @@ get_header();
 						<span>System-Intake starten</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
-					<div class="sol-final-micro">Inklusive Regions-Verfügbarkeitsprüfung · keine automatisierte Standard-Auswertung · Antwort innerhalb von 24 h per E-Mail</div>
+					<div class="sol-final-micro">Inklusive Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse statt automatisierter Tool-Bericht · Persönliche Rückmeldung garantiert in 48 Stunden</div>
 				</div>
 			</div>
 		</section>

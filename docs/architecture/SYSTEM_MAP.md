@@ -18,7 +18,7 @@ Stand: 2026-05-21. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | Content- und SEO-System | Blog, Kategorie-Archive, Cornerstone-Content, Glossar-Registry und interne Verlinkung | `blocksy-child/home.php`, `blocksy-child/category.php`, `blocksy-child/single.php`, `blocksy-child/template-parts/post-title-visual.php`, `blocksy-child/page-seo-cornerstone.php`, `blocksy-child/inc/glossary/`, `blocksy-child/inc/blog-provider-posts.php`, `content/blog-drafts/` | WordPress-Editor, einmalige Theme-Seeds | live plus Ausbau |
 | Client Portal | Kunden-Cockpit mit Login, Upload und optionalen Nutzer-Metadaten für Ressourcen, KPI und Roadmap | `blocksy-child/template-portal.php`, `blocksy-child/inc/client-portal.php`, `blocksy-child/inc/snippets.php` | WordPress-User-System, User Meta, Media Library | live; keine Mock-Daten mehr, Empty-State ohne gepflegtes `nexus_client_portal`; Pflege im Benutzerprofil |
 | n8n-Automationen | inaktive optionale Workflow-Artefakte für spätere Analyse-/Routing-/Nurture-Schritte | `automations/n8n/` | n8n Cloud, CRM, Mail, evtl. Sheets | nicht in Operation; ignorieren, sofern n8n nicht explizit beauftragt ist |
-| Marktcheck / System-Diagnose-Legacy | aktiver 60-Sekunden-Marktcheck auf der Solar-Landingpage; fruehere System-Diagnose-Route bleibt als Redirect erhalten | `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/solar-leadgenerierung-solara.js`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/review-crm.php`, `blocksy-child/readiness/` | WordPress, Audit-CRM, Brevo/wp_mail, Cal.com; n8n nicht angebunden | Marktcheck aktiv über `/wp-json/nexus/v1/audit-request`; `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects |
+| Marktcheck / System-Diagnose-Legacy | aktiver B2B-System-Intake auf der Solar-Landingpage; fruehere System-Diagnose-Route bleibt als Redirect erhalten | `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`, `blocksy-child/assets/js/solar-leadgenerierung-solara.js`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/review-crm.php`, `blocksy-child/readiness/` | WordPress, Audit-CRM, Brevo/wp_mail, Cal.com; n8n nicht angebunden | System-Intake aktiv über `/wp-json/nexus/v1/audit-request` mit `audit_type=b2b_system_intake`; `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` als Legacy-Redirects |
 | Agenten- und Skill-System | Kontext, Guardrails und wiederholbare Skills; konkrete public Routes werden an `llms.txt` delegiert | `AGENTS.md`, `agents/skills/`, `llms.txt` | keine direkte Laufzeitabhaengigkeit | aktiv verdichtet |
 
 ## Website
@@ -75,12 +75,12 @@ Marktcheck / System-Diagnose-Legacy:
 - Aktive Route: `/solar-waermepumpen-leadgenerierung/#marktcheck`
 - Legacy: `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` leiten per 301 weiter
 - Contract: `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt bis zur nächsten Contract-Version intern stabil
-- Status: 60-Sekunden-Marktcheck im Hero der Solar-Landingpage; Fit-Qualifizierung läuft über Angebot, `business_fit`, Anfragevolumen, CPL und Engpass statt Mitarbeiterzahl; fruehere 8-Schritt-React-App bleibt Legacy-Code
+- Status: dreistufiger B2B-System-Intake im Hero der Solar-Landingpage; Qualifizierung läuft über `sales_team_size`, `portal_margin_loss` und geschäftliche Kontaktdaten, ohne PLZ-Pflicht im neuen Intake; fruehere 8-Schritt-React-App bleibt Legacy-Code
 - WordPress REST: `/wp-json/nexus/v1/audit-request`
-- CRM: `nexus_review_request`, Audit-Typ `Marktcheck`
+- CRM: `nexus_review_request`, Audit-Typ `B2B-System-Intake`; Legacy-Energy-Intakes bleiben als `Marktcheck` rückwärtskompatibel
 - Mail: interne Admin-Benachrichtigung und Lead-Bestätigung über zentrale Brevo-/`wp_mail`-Schicht
 - n8n-Route: nicht angebunden; erst nach neuer Contract-/Consent-/Feature-Flag-Freigabe
-- Default-Fragepfad: 5 fachliche Antworten plus Firma, Name, E-Mail und optionale Telefonnummer im Submit; keine personenbezogenen Endkundendaten
+- Default-Fragepfad: Vertriebsteam-Größe, Portal-Margenverlust, Firma, Name, Position, geschäftliche E-Mail und Telefonnummer; keine personenbezogenen Endkundendaten
 - Retention: für n8n nicht anwendbar, weil nichts an n8n gesendet wird
 
 Bekannte technische Touchpoints:
