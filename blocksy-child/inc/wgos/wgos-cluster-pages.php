@@ -79,7 +79,7 @@ function nexus_get_wgos_cluster_page_data() {
 				],
 			],
 			'meta_title'       => 'WordPress SEO Hannover für B2B | Technisches SEO & Audit',
-			'meta_description' => 'WordPress SEO in Hannover fuer B2B: technisches SEO, Crawlability und interne Verlinkung fuer kaufnahe Seiten. Marktcheck als 60-Sekunden-Einstieg fuer priorisierte Hebel.',
+			'meta_description' => 'WordPress SEO in Hannover fuer B2B: technisches SEO, Crawlability und interne Verlinkung fuer kaufnahe Seiten. Marktcheck als manueller, in 48 h gelieferter Einstieg fuer priorisierte Hebel.',
 			'schema_name'      => 'WordPress SEO Hannover – technisch sauber, messbar, B2B-ready',
 			'schema_description' => 'Technisches SEO auf WordPress in Hannover: technische Basis, Seitenstruktur und conversion-nahe Sichtbarkeit für B2B-Websites.',
 		],
@@ -452,7 +452,7 @@ function nexus_get_wgos_cluster_page_proof_metrics() {
 			'label' => 'B2B-Fokus auf WordPress-, SEO-, Tracking- und CRO-Systeme',
 		],
 		[
-			'value' => '60 Sek.',
+			'value' => '48 h Befund',
 			'label' => 'Marktcheck-Einstieg mit priorisierten Hebeln',
 		],
 		[
@@ -502,8 +502,8 @@ function nexus_render_wgos_cluster_page( $page ) {
 	$method_steps  = nexus_get_wgos_cluster_page_method_steps();
 	$proof_note    = isset( $page['proof_note'] ) ? (string) $page['proof_note'] : '';
 	$proof_links   = isset( $page['proof_links'] ) && is_array( $page['proof_links'] ) ? $page['proof_links'] : [];
-	$audit_cta_label         = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck starten';
-	$audit_compact_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : '60 Sek. · priorisierte Hebel · keine E-Mail';
+	$audit_cta_label         = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Kostenfreien Marktcheck starten';
+	$audit_compact_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : 'Händische Analyse · Befund in 48 h · priorisierte Hebel';
 
 	ob_start();
 	?>

@@ -122,7 +122,7 @@
                 messageLabel: 'Kurzbeschreibung',
                 messageHelp: 'Welche URL ist relevant? Was ist unklar? Welches Ergebnis wünschen Sie sich?',
                 messagePlaceholder: '1. Seite: Welche URL ist relevant?\n2. Unklarheit: Was bremst gerade?\n3. Ziel: Was soll sich verbessern?',
-                submitLabel: 'Marktcheck starten',
+                submitLabel: 'Kostenfreien Marktcheck starten',
                 messageMinlength: 24,
                 timelineLabel: 'Zeitfenster',
                 showTimeline: false,

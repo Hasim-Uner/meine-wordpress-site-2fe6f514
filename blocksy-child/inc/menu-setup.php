@@ -3,7 +3,7 @@
  * NEXUS MENU SETUP
  *
  * Erstellt das fokussierte Hauptmenü für die Neukunden-Navigation:
- * Solar & Wärmepumpen | WordPress Agentur | Ergebnisse | Über Haşim | Marktcheck · 60 Sek.
+ * Solar & Wärmepumpen | WordPress Agentur | Ergebnisse | Über Haşim | Marktcheck · 48 h
  *
  * Einmal-Setup: Wird beim Theme-Switch oder manuell via ?nexus_rebuild_menu=1 ausgelöst.
  *
@@ -154,7 +154,7 @@ function nexus_setup_main_menu() {
 	// ── 5. Marktcheck CTA (Top-Level) ──────────────────────────────
 	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	wp_update_nav_menu_item( $menu_id, 0, [
-		'menu-item-title'     => 'Marktcheck · 60 Sek.',
+		'menu-item-title'     => 'Marktcheck · 48 h',
 		'menu-item-object'    => 'custom',
 		'menu-item-object-id' => 0,
 		'menu-item-type'      => 'custom',
@@ -303,7 +303,7 @@ add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
 			continue;
 		}
 
-		$item->title = 'Marktcheck · 60 Sek.';
+		$item->title = 'Marktcheck · 48 h';
 		$item->url   = $analysis_url;
 
 		if ( ! isset( $item->classes ) || ! is_array( $item->classes ) ) {

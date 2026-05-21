@@ -183,13 +183,13 @@ function nexus_get_audit_cta_copy() {
 	}
 
 	$copy = [
-		'label'             => 'Marktcheck starten',
-		'compact_microcopy' => '60 Sek. · 6 Fragen · Antwort in 24 h',
+		'label'             => 'Kostenfreien Marktcheck starten',
+		'compact_microcopy' => 'Händische Analyse · Befund per E-Mail in 48 h',
 		'header_meta_items' => [
-			'60-Sekunden-Marktcheck',
+			'Manueller Marktcheck',
 			'Fokus: Solar, Wärmepumpe, Speicher',
 		],
-		'footer_note'       => 'Marktcheck: In ca. 60 Sekunden einordnen, wo Website, Tracking und Anfrageprozess Nachfrage verlieren — mit persönlicher Rückmeldung statt generischem Score.',
+		'footer_note'       => 'Marktcheck: Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.',
 	];
 
 	return $copy;
@@ -203,7 +203,7 @@ function nexus_get_audit_cta_copy() {
 function nexus_get_audit_cta_label() {
 	$copy = nexus_get_audit_cta_copy();
 
-	return isset( $copy['label'] ) ? (string) $copy['label'] : 'Marktcheck starten';
+	return isset( $copy['label'] ) ? (string) $copy['label'] : 'Kostenfreien Marktcheck starten';
 }
 
 /**
@@ -719,7 +719,7 @@ function nexus_get_primary_request_url() {
  * @return string
  */
 function nexus_get_primary_request_cta_label() {
-	return 'Marktcheck starten';
+	return 'Kostenfreien Marktcheck starten';
 }
 
 /**

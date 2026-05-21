@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $audit_url    = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $request_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-$request_cta  = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Marktcheck starten';
+$request_cta  = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Kostenfreien Marktcheck starten';
 $portrait_url = function_exists( 'hu_get_profile_image_url' ) ? hu_get_profile_image_url() : get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 
 // E3-Canon
@@ -194,7 +194,7 @@ get_header();
 							<p class="about-cta-meta">
 								<span>Exklusive Erst-Analyse</span>
 								<span>Prüfung auf Regions-Verfügbarkeit</span>
-								<span>Antwort in 24 h</span>
+								<span>Händischer Befund in 48 h</span>
 							</p>
 						</div>
 					</div>
@@ -471,7 +471,7 @@ get_header();
 			<div class="about-container about-container--centered">
 				<h2 class="about-h2">Der nächste Schritt.</h2>
 				<p class="about-final__lead">
-					Wenn Sie wissen, dass Sie bohren wollen, gehen Sie direkt ins qualifizierte Formular. Exklusive Erst-Analyse, Prüfung auf Regions-Verfügbarkeit, Antwort innerhalb von 24 Stunden per E-Mail. Kein Verkaufsgespräch.
+					Wenn Sie wissen, dass Sie bohren wollen, gehen Sie direkt ins qualifizierte Formular. Manueller, tiefer Marktcheck, händische Prüfung der Regions-Verfügbarkeit, Befund innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.
 				</p>
 				<div class="about-cta-wrap about-cta-wrap--centered">
 					<a href="<?php echo esc_url( $request_url ); ?>"
@@ -487,7 +487,7 @@ get_header();
 					<p class="about-cta-meta about-cta-meta--centered">
 						<span>Exklusive Erst-Analyse</span>
 						<span>Prüfung auf Regions-Verfügbarkeit</span>
-						<span>Antwort in 24 h</span>
+						<span>Händischer Befund in 48 h</span>
 					</p>
 				</div>
 			</div>

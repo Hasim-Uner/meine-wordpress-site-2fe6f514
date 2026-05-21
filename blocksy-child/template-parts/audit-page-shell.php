@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $request_url     = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $privacy_url     = nexus_get_page_url( [ 'datenschutz' ], home_url( '/datenschutz/' ) );
-$audit_cta_label = 'Marktcheck starten';
+$audit_cta_label = 'Kostenfreien Marktcheck starten';
 $e3_summary      = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' ) : 'E3 New Energy: eigene Anfragen, Abschlussquote und niedrigere Kosten pro Anfrage.';
 ?>
 
@@ -66,7 +66,7 @@ $e3_summary      = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' )
 				<div class="ga-form-shell">
 					<div class="ga-form-intro">
 						<div class="ga-section-head ga-section-head--compact">
-							<p class="ga-section-kicker">Marktcheck starten</p>
+							<p class="ga-section-kicker">Kostenfreien Marktcheck starten</p>
 							<h2 id="ga-form-title">Seite einreichen.</h2>
 							<p>Startseite oder Angebotsseite genügt. Ich melde mich schriftlich zurück.</p>
 						</div>
@@ -123,7 +123,7 @@ $e3_summary      = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' )
 
 							<div class="ga-form__actions">
 								<button type="submit" class="ga-btn ga-btn--primary ga-btn--full" data-track-action="cta_form_growth_audit" data-track-category="lead_gen" data-track-section="form">
-									<span class="ga-btn__label">Marktcheck starten</span>
+									<span class="ga-btn__label">Kostenfreien Marktcheck starten</span>
 									<span class="ga-btn__spinner" aria-hidden="true"></span>
 								</button>
 								<p class="ga-form__microcopy">Schriftliche Rückmeldung in 48h. Kein Pflicht-Call.</p>

@@ -952,7 +952,7 @@ function hu_get_seo_meta() {
 
 	} elseif ( function_exists( 'hu_is_request_analysis_request_path' ) && hu_is_request_analysis_request_path() ) {
 		$meta['og_title']    = 'Marktcheck | Haşim Üner';
-		$meta['description'] = '60-Sekunden-Marktcheck für Solar- und Wärmepumpen-Betriebe: Website, Tracking und Anfrageprozess einordnen lassen.';
+		$meta['description'] = 'Manueller Marktcheck für Solar- und Wärmepumpen-Betriebe: händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.';
 		$meta['canonical']   = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 		$meta['robots']      = 'noindex, follow';
 
@@ -1025,7 +1025,7 @@ function hu_get_seo_meta() {
 
 		if ( hu_is_audit_offer_page() ) {
 			$meta['og_title']    = 'Marktcheck für Solar- und Wärmepumpen-Anbieter | Haşim Üner';
-			$meta['description'] = 'In 60 Sekunden einordnen, wo Website, Tracking oder Anfrageprozess Nachfrage verlieren. Persönliche Rückmeldung statt Tool-Score.';
+			$meta['description'] = 'Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.';
 		}
 
 		if ( hu_is_domdar_case_study_page() ) {

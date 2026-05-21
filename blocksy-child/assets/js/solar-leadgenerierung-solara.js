@@ -1,7 +1,7 @@
 /* solar-leadgenerierung-solara.js
    SOLARA Landing — interaktives 6-Step "Marktcheck"-Quiz im Hero.
    Submit → /wp-json/nexus/v1/audit-request (intake_variant=energy_systems).
-   Success-Screen mit Cal.com-Direktbuchung + 24h-Antwort-Pfad.
+   Success-Screen mit Cal.com-Direktbuchung + händischer 48h-Antwort.
    Vanilla JS. Keine Dependencies. Touch- & Keyboard-accessible. */
 (function () {
   'use strict';
@@ -79,8 +79,8 @@
     {
       key: 'contact',
       label: 'Kontakt',
-      title: 'Wohin senden wir Ihre Ersteinschätzung?',
-      hint: 'Persönliche Antwort innerhalb von 24 h — keine Newsletter, keine Pitch-Mails.',
+      title: 'Wohin darf ich dir den händisch geprüften Befund schicken?',
+      hint: 'Manueller, tiefer Marktcheck statt Software-Einheitsbrei — händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.',
       kind: 'form'
     }
   ];
@@ -363,6 +363,13 @@
         onSubmit: function (e) { e.preventDefault(); submit(); }
       });
 
+      var rationale = el('div', { className: 'sol-quiz-rationale', role: 'note' }, [
+        el('p', { className: 'sol-quiz-rationale-h' }, 'Warum brauche ich deine Kontaktdaten?'),
+        el('p', { className: 'sol-quiz-rationale-b' },
+          'Hier läuft kein automatisches Skript, das dir wertlose Standard-Tipps ausgibt. Ich analysiere deine Domain und deine Region in den nächsten 48 Stunden persönlich und händisch. Wohin darf ich dir den ehrlichen Befund schicken?')
+      ]);
+      form.appendChild(rationale);
+
       form.appendChild(renderField({ k: 'company', t: 'Firma', type: 'text', ph: 'Mustermann Solar GmbH', req: true, ac: 'organization', full: true,
         validator: function (v) { return (!v || v.trim().length < 2) ? 'Bitte Firma angeben.' : null; }
       }));
@@ -417,12 +424,12 @@
           trackFunnelStage: 'lead_capture_submit'
         }
       }, [
-        el('span', null, state.submitting ? 'Wird gesendet …' : 'Marktcheck abschicken'),
+        el('span', null, state.submitting ? 'Wird gesendet …' : 'Kostenfreien Marktcheck anfordern (48h)'),
         el('span', { className: 'sol-quiz-submit-arrow', 'aria-hidden': 'true', html: ARROW_SVG })
       ]);
       form.appendChild(submitBtn);
 
-      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Persönliche Antwort · 24 h · DSGVO'));
+      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Händische Analyse · Befund per E-Mail in 48 h · DSGVO'));
 
       return form;
     }
@@ -435,7 +442,7 @@
         el('div', { className: 'sol-quiz-success-icon', 'aria-hidden': 'true', html: CHECK_SVG }),
         el('h3', { className: 'sol-quiz-success-h' }, 'Danke' + (first ? ', ' + first : '') + '.'),
         el('p', { className: 'sol-quiz-success-sub' },
-          'Ihre Antworten sind eingegangen. Sie erhalten innerhalb von 24 h eine persönliche Ersteinschätzung per E-Mail.'),
+          'Deine Anfrage ist eingegangen. Ich analysiere deine Domain und deine Region in den nächsten 48 Stunden persönlich und händisch und sende dir den ehrlichen Befund per E-Mail.'),
         el('div', { className: 'sol-quiz-success-row' }, [
           el('a', {
             href: calcom,
@@ -483,7 +490,7 @@
       var head = el('div', { className: 'sol-cta-head' }, [
         el('span', { className: 'sol-cta-tag sol-mono' }, [
           el('span', { className: 'sol-cta-tag-dot', 'aria-hidden': 'true' }),
-          'Marktcheck · 60 Sek · 6 Fragen'
+          'Marktcheck · händisch · Befund in 48 h'
         ]),
         el('span', { className: 'sol-cta-head-right sol-mono' }, 'Kostenfrei')
       ]);

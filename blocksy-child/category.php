@@ -27,9 +27,9 @@ $pillar_map = [
         'title'       => 'Solar & Wärmepumpen Anfrage-Systeme',
         'badge'       => 'Solar & Wärmepumpen',
         'subtitle'    => 'Beiträge zur Entwicklung eigener Anfrage-Infrastrukturen: Owned-Leads-Systeme, Angebotsdesign, Content- und Funnel-Strategien, Tracking und Conversion-Optimierung.',
-        'cta_label'   => 'Marktcheck starten',
+        'cta_label'   => 'Kostenfreien Marktcheck starten',
         'cta_url'     => $audit_url,
-        'cta_text'    => 'Der Marktcheck zeigt, ob Ihre Website heute an Angebot, Datenlage oder Anfrageführung Nachfrage verliert.',
+        'cta_text'    => 'Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region und deines Anfrageprozesses innerhalb von 48 Stunden per E-Mail.',
     ],
     'sichtbarkeit-daten-conversion' => [
         'icon'        => '02',
@@ -53,9 +53,9 @@ $pillar_map = [
         'icon'        => '🧭',
         'badge'       => 'Strategie & Growth',
         'subtitle'    => 'Eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter. Keine Portal-Abhängigkeit, messbar niedrigere Leadkosten.',
-        'cta_label'   => 'Marktcheck starten',
+        'cta_label'   => 'Kostenfreien Marktcheck starten',
         'cta_url'     => $audit_url,
-        'cta_text'    => 'Der Marktcheck zeigt in 60 Sekunden, wo Ihre Website Anfragen verliert und welche Hebel zuerst Wirkung versprechen.',
+        'cta_text'    => 'Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.',
     ],
     'seo' => [
         'icon'        => '🔍',
@@ -311,7 +311,7 @@ if ($featured_query->have_posts()) {
                         <h4>Wo verbrennt Ihre Website Geld?</h4>
                         <p>Der Marktcheck zeigt, wo Technik, SEO und Conversion im Zusammenspiel Reibung erzeugen.</p>
                         <a href="<?php echo esc_url($audit_url); ?>" class="nx-btn nx-btn--ghost nx-btn--full nx-btn--sm">
-                            Marktcheck starten →
+                            Kostenfreien Marktcheck starten →
                         </a>
                     </div>
                 </aside>

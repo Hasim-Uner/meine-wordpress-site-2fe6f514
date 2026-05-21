@@ -45,7 +45,7 @@ $audit_url = nexus_get_audit_url();
 				<span class="deepdive-step-num">1</span>
 				<div class="deepdive-step-text">
 					<strong>Sie beantworten wenige gezielte Fragen</strong>
-					<span>(60 Sek.)</span>
+					<span>(händische Prüfung)</span>
 				</div>
 			</div>
 			<div class="deepdive-step">

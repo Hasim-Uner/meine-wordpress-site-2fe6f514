@@ -79,7 +79,7 @@ get_header();
 						data-track-category="lead_gen"
 						data-track-section="blog_hub_hero"
 					>
-						Solar-Marktcheck starten
+						Kostenfreien Marktcheck starten
 					</a>
 					<a
 						href="<?php echo esc_url( $e3_url ); ?>"
@@ -307,7 +307,7 @@ get_header();
 							data-track-category="lead_gen"
 							data-track-section="blog_archive_grid"
 						>
-							Marktcheck starten
+							Kostenfreien Marktcheck starten
 						</a>
 					</div>
 				</div>

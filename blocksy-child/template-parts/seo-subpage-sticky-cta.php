@@ -37,15 +37,15 @@ if ( '' === $hu_sticky_target ) {
        hidden>
 	<div class="hu-sticky-cta__inner">
 		<p class="hu-sticky-cta__text">
-			<span class="hu-sticky-cta__lead">60-Sekunden-Marktcheck</span>
-			<span class="hu-sticky-cta__sub">Persönliche Einordnung in 24 h</span>
+			<span class="hu-sticky-cta__lead">Manueller Marktcheck</span>
+			<span class="hu-sticky-cta__sub">Händische Analyse · Befund in 48 h</span>
 		</p>
 		<a class="hu-sticky-cta__primary"
 		   href="<?php echo esc_url( $hu_sticky_target ); ?>"
 		   data-track-action="cta_sticky_marktcheck"
 		   data-track-category="<?php echo esc_attr( $hu_sticky_category ); ?>"
 		   data-track-section="sticky_bar">
-			Jetzt starten
+			Eigene Region jetzt prüfen
 			<span class="hu-sticky-cta__primary-icon" aria-hidden="true">→</span>
 		</a>
 		<button class="hu-sticky-cta__close"

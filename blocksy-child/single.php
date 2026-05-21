@@ -32,7 +32,7 @@ get_template_part( 'template-parts/blog-header' );
 			'text'            => __( 'Lesen Sie den Beitrag als Baustein im Zusammenspiel aus Angebot, Sichtbarkeit, Daten und Conversion.', 'blocksy-child' ),
 			'primary_label'   => __( 'Anfrage-System ansehen', 'blocksy-child' ),
 			'primary_url'     => $energy_url,
-			'secondary_label' => __( 'Marktcheck starten', 'blocksy-child' ),
+			'secondary_label' => __( 'Kostenfreien Marktcheck starten', 'blocksy-child' ),
 			'secondary_url'   => $audit_url,
 		];
 
@@ -43,7 +43,7 @@ get_template_part( 'template-parts/blog-header' );
 				'text'            => __( 'Dieser Artikel ordnet einen Baustein ein: weniger Portal-Abhängigkeit, klarere Angebotsseiten, bessere Daten und ein Anfragepfad im eigenen Besitz.', 'blocksy-child' ),
 				'primary_label'   => __( 'Anfrage-System ansehen', 'blocksy-child' ),
 				'primary_url'     => $energy_url,
-				'secondary_label' => __( 'Marktcheck starten', 'blocksy-child' ),
+				'secondary_label' => __( 'Kostenfreien Marktcheck starten', 'blocksy-child' ),
 				'secondary_url'   => $audit_url,
 			];
 		} elseif ( in_array( 'sichtbarkeit-daten-conversion', $post_cat_slugs, true ) ) {
@@ -53,7 +53,7 @@ get_template_part( 'template-parts/blog-header' );
 				'text'            => __( 'Der Beitrag zeigt einen Hebel im System. Entscheidend ist, ob daraus ein belastbarer Anfragepfad für passende Solar- und Wärmepumpen-Anbieter entsteht.', 'blocksy-child' ),
 				'primary_label'   => __( 'Anfrage-System ansehen', 'blocksy-child' ),
 				'primary_url'     => $energy_url,
-				'secondary_label' => __( 'Marktcheck starten', 'blocksy-child' ),
+				'secondary_label' => __( 'Kostenfreien Marktcheck starten', 'blocksy-child' ),
 				'secondary_url'   => $audit_url,
 			];
 		} elseif ( in_array( 'wordpress-growth-agentur', $post_cat_slugs, true ) ) {
@@ -63,7 +63,7 @@ get_template_part( 'template-parts/blog-header' );
 				'text'            => __( 'Dieser Beitrag ist der allgemeinere WordPress-Kontext. Wenn es um lokale Umsetzung, Wartung, SEO und Conversion geht, ist die Agentur-Seite der passende Anschluss.', 'blocksy-child' ),
 				'primary_label'   => __( 'WordPress Agentur ansehen', 'blocksy-child' ),
 				'primary_url'     => $agentur_url,
-				'secondary_label' => __( 'Marktcheck starten', 'blocksy-child' ),
+				'secondary_label' => __( 'Kostenfreien Marktcheck starten', 'blocksy-child' ),
 				'secondary_url'   => $audit_url,
 			];
 		}
