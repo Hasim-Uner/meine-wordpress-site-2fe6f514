@@ -115,7 +115,7 @@ foreach ( $blog_posts as $blog_post ) {
 get_header();
 ?>
 
-<main id="main" class="site-main blog-home blog-editorial blog-editorial--index">
+<section class="blog-home blog-editorial blog-editorial--index" aria-labelledby="blog-archive-heading">
 	<div class="blog-editorial__inner">
 		<header class="blog-editorial-hero" aria-labelledby="blog-archive-heading" data-track-section="blog_archive_hero">
 			<span class="blog-editorial-kicker">Blog & Markteinordnung</span>
@@ -173,12 +173,12 @@ get_header();
 						<div class="blog-editorial-list">
 							<?php foreach ( $blog_posts_by_cluster[ $cluster_key ] as $cluster_post ) : ?>
 								<?php
-								setup_postdata( $cluster_post );
 								++$rendered_posts;
 
-								$post_categories  = get_the_category( $cluster_post->ID );
+								$cluster_post_id  = (int) $cluster_post->ID;
+								$post_categories  = get_the_category( $cluster_post_id );
 								$primary_category = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
-								$reading_time     = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time( $cluster_post->ID ) : 0;
+								$reading_time     = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time( $cluster_post_id ) : 0;
 								?>
 								<article class="blog-editorial-item">
 									<div class="blog-editorial-item__meta">
@@ -187,8 +187,8 @@ get_header();
 												<?php echo esc_html( $primary_category->name ); ?>
 											</a>
 										<?php endif; ?>
-										<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
-											<?php echo esc_html( get_the_date( 'd. M Y' ) ); ?>
+										<time datetime="<?php echo esc_attr( get_the_date( 'c', $cluster_post_id ) ); ?>">
+											<?php echo esc_html( get_the_date( 'd. M Y', $cluster_post_id ) ); ?>
 										</time>
 										<?php if ( $reading_time > 0 ) : ?>
 											<span><?php echo esc_html( sprintf( '%d Min. Lesezeit', $reading_time ) ); ?></span>
@@ -196,13 +196,13 @@ get_header();
 									</div>
 
 									<h3 class="blog-editorial-item__title">
-										<a href="<?php echo esc_url( get_permalink() ); ?>">
-											<?php echo esc_html( get_the_title() ); ?>
+										<a href="<?php echo esc_url( get_permalink( $cluster_post_id ) ); ?>">
+											<?php echo esc_html( get_the_title( $cluster_post_id ) ); ?>
 										</a>
 									</h3>
 
 									<p class="blog-editorial-item__excerpt">
-										<?php echo esc_html( wp_trim_words( get_the_excerpt(), 28, '...' ) ); ?>
+										<?php echo esc_html( wp_trim_words( get_the_excerpt( $cluster_post_id ), 28, '...' ) ); ?>
 									</p>
 								</article>
 
@@ -227,7 +227,6 @@ get_header();
 									</aside>
 								<?php endif; ?>
 							<?php endforeach; ?>
-							<?php wp_reset_postdata(); ?>
 						</div>
 					</section>
 				<?php endforeach; ?>
@@ -269,6 +268,6 @@ get_header();
 			</a>
 		</section>
 	</div>
-</main>
+</section>
 
 <?php get_footer(); ?>
