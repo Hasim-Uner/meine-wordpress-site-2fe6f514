@@ -26,10 +26,12 @@ function hu_person_same_as_urls() {
 
 function hu_person_schema_ref( $include_same_as = false, $name = 'Haşim Üner' ) {
     $person = [
-        '@type' => 'Person',
-        '@id'   => hu_person_schema_id(),
-        'name'  => function_exists( 'hu_normalize_brand_text' ) ? hu_normalize_brand_text( (string) $name ) : (string) $name,
-        'url'   => hu_person_profile_url(),
+        '@type'       => 'Person',
+        '@id'         => hu_person_schema_id(),
+        'name'        => function_exists( 'hu_normalize_brand_text' ) ? hu_normalize_brand_text( (string) $name ) : (string) $name,
+        'url'         => hu_person_profile_url(),
+        'jobTitle'    => 'Architekt für eigene Anfrage-Systeme',
+        'description' => 'Haşim Üner verbindet Vertriebsverständnis aus dem Bau- und Energiesektor mit Medienwissenschaft, WordPress-Technik, Tracking und CRO für eigene Anfrage-Systeme.',
     ];
 
     if ( $include_same_as ) {
@@ -131,13 +133,33 @@ function hu_get_blog_archive_collection_schema() {
             '@type'           => 'ItemList',
             '@id'             => trailingslashit( $page_url ) . '#itemlist',
             'name'            => $page_name,
-            'itemListOrder'   => 'https://schema.org/ItemListOrderDescending',
+            'itemListOrder'   => is_home() ? 'https://schema.org/ItemListUnordered' : 'https://schema.org/ItemListOrderDescending',
             'numberOfItems'   => count( $list_items ),
             'itemListElement' => $list_items,
         ],
     ];
 
-    if ( is_category() ) {
+    if ( is_home() ) {
+        $collection['author'] = hu_person_schema_ref( true );
+        $collection['about']  = [
+            [
+                '@type' => 'Thing',
+                'name'  => 'Portal-Leads und eigene Anfrage-Systeme',
+            ],
+            [
+                '@type' => 'Thing',
+                'name'  => 'Conversion-Optimierung',
+            ],
+            [
+                '@type' => 'Thing',
+                'name'  => 'Server-Side Tracking',
+            ],
+            [
+                '@type' => 'Thing',
+                'name'  => 'WordPress Performance',
+            ],
+        ];
+    } elseif ( is_category() ) {
         $collection['about'] = [
             '@type' => 'Thing',
             'name'  => single_term_title( '', false ),
@@ -952,7 +974,21 @@ function hu_output_schema()
                 'image'    => hu_get_profile_image_url(),
                 'worksFor' => ['@id' => home_url('/#organization')],
                 'sameAs'   => hu_person_same_as_urls(),
-                'description' => 'Architekt für eigene Anfrage-Systeme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum: Website, Tracking, Vorqualifizierung und Werbekanal-Steuerung als ein verbundenes System zur Ablösung von Portal-Abhängigkeit.'
+                'description' => 'Architekt für eigene Anfrage-Systeme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum. Haşim Üner verbindet Bauunternehmer-DNA, Vertriebspraxis und Medienwissenschaft mit WordPress, Tracking, Vorqualifizierung und Werbekanal-Steuerung.',
+                'alumniOf' => [
+                    '@type' => 'CollegeOrUniversity',
+                    'name'  => 'Universität Paderborn',
+                    'sameAs' => 'https://de.wikipedia.org/wiki/Universit%C3%A4t_Paderborn',
+                ],
+                'knowsAbout' => [
+                    'B2B-Vertrieb',
+                    'Solar- und Wärmepumpen-Leadgenerierung',
+                    'WordPress',
+                    'Technisches SEO',
+                    'Server-Side Tracking',
+                    'Conversion Rate Optimization',
+                    'Medienwissenschaft',
+                ],
             ];
 
             $profilePage = [

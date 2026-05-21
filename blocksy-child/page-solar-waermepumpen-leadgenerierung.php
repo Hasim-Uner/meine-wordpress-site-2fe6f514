@@ -336,7 +336,7 @@ $service_schema = [
 	'@id'         => trailingslashit( $page_url ) . '#service',
 	'name'        => 'B2B Solar Leadgenerierung — Aufbau eigener Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter',
 	'alternateName' => [ 'Photovoltaik Leadgenerierung', 'Eigene Solar Leads gewinnen', 'B2B Solar Leads' ],
-	'serviceType' => 'Sovereign Demand Infrastructure · System-Architektur für eigene Lead-Infrastruktur (WordPress hardcoded, Server-Side-Tracking, Lead-Scoring, CRM-Übergabe)',
+	'serviceType' => 'Eigene Anfrage-Infrastruktur für Solar- und Wärmepumpen-Anbieter: WordPress hardcoded, Server-Side-Tracking, Lead-Scoring und CRM-Übergabe',
 	'category'    => 'B2B Lead Generation Infrastructure',
 	'url'         => $page_url,
 	'mainEntityOfPage' => $page_url,
@@ -348,8 +348,9 @@ $service_schema = [
 		'url'         => home_url( '/' ),
 		'founder'     => [
 			'@type' => 'Person',
+			'@id'   => function_exists( 'hu_person_schema_id' ) ? hu_person_schema_id() : home_url( '/uber-mich/#person' ),
 			'name'  => 'Haşim Üner',
-			'url'   => home_url( '/' ),
+			'url'   => home_url( '/uber-mich/' ),
 			'jobTitle' => 'B2B Solar Leadgenerierung Architekt',
 		],
 	],
@@ -364,14 +365,14 @@ $service_schema = [
 	],
 	'serviceOutput' => [
 		'@type' => 'Thing',
-		'name'  => 'Sovereign Demand Infrastructure',
+		'name'  => 'Eigene Anfrage-Infrastruktur',
 		'description' => 'Eigene, exklusive Nachfrage-Infrastruktur — WordPress hardcoded, Server-Side-Tracking, Lead-Scoring. Code, Tracking und Daten verbleiben beim Auftraggeber.',
 	],
 	'additionalProperty' => [
 		[
 			'@type' => 'PropertyValue',
 			'name'  => 'serviceOutput',
-			'value' => 'Sovereign Demand Infrastructure',
+			'value' => 'Eigene Anfrage-Infrastruktur',
 		],
 		[
 			'@type' => 'PropertyValue',

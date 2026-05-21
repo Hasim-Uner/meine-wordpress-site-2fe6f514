@@ -588,10 +588,12 @@ function hu_is_e3_methodology_case_page() {
  */
 function hu_get_canonical_author_person() {
 	return [
-		'@type' => 'Person',
-		'@id'   => home_url( '/uber-mich/#person' ),
-		'name'  => 'Haşim Üner',
-		'url'   => home_url( '/uber-mich/' ),
+		'@type'       => 'Person',
+		'@id'         => home_url( '/uber-mich/#person' ),
+		'name'        => 'Haşim Üner',
+		'url'         => home_url( '/uber-mich/' ),
+		'jobTitle'    => 'Architekt für eigene Anfrage-Systeme',
+		'description' => 'Haşim Üner verbindet Vertriebsverständnis aus dem Bau- und Energiesektor mit Medienwissenschaft, WordPress-Technik, Tracking und CRO für eigene Anfrage-Systeme.',
 	];
 }
 

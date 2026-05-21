@@ -97,8 +97,45 @@
     background: #c8a45d;
 }
 
+.blog-editorial-clusters,
 .blog-editorial-list {
     display: grid;
+}
+
+.blog-editorial-clusters {
+    gap: clamp(2.4rem, 6vw, 4.5rem);
+}
+
+.blog-topic-cluster {
+    display: grid;
+    gap: clamp(1.1rem, 3vw, 1.9rem);
+    padding: clamp(1.3rem, 3vw, 2rem) 0 0;
+    border-top: 1px solid hsl(42 16% 88% / 0.14);
+}
+
+.blog-topic-cluster__head {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.blog-topic-cluster__title {
+    max-width: 18ch;
+    margin: 0;
+    color: #f8f5ee;
+    font-family: var(--font-display);
+    font-size: clamp(1.55rem, 3.2vw, 2.35rem);
+    font-weight: 750;
+    letter-spacing: 0;
+    line-height: 1.08;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.blog-topic-cluster__desc {
+    max-width: 66ch;
+    margin: 0;
+    color: hsl(42 16% 88% / 0.68);
+    line-height: 1.64;
 }
 
 .blog-editorial-item {
@@ -164,6 +201,60 @@
     margin: 0;
     padding: 2rem 0;
     color: hsl(42 16% 88% / 0.68);
+}
+
+.blog-editorial-inline-cta {
+    display: grid;
+    gap: 0.72rem;
+    margin: clamp(1.2rem, 3vw, 1.8rem) 0;
+    padding: clamp(1.3rem, 3.4vw, 2rem);
+    border: 1px solid hsl(39 50% 58% / 0.38);
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, hsl(38 42% 18% / 0.72), hsl(170 22% 13% / 0.62)),
+        #15130f;
+    box-shadow: 0 20px 50px -42px hsl(39 60% 55% / 0.75);
+}
+
+.blog-editorial-inline-cta__title {
+    max-width: 19ch;
+    margin: 0;
+    color: #f8f5ee;
+    font-family: var(--font-display);
+    font-size: clamp(1.28rem, 2.8vw, 1.9rem);
+    font-weight: 750;
+    letter-spacing: 0;
+    line-height: 1.12;
+}
+
+.blog-editorial-inline-cta__text {
+    max-width: 58ch;
+    margin: 0;
+    color: hsl(42 16% 88% / 0.74);
+    line-height: 1.62;
+}
+
+.blog-editorial-inline-cta__link {
+    width: fit-content;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 0.15rem;
+    padding: 0.72rem 1rem;
+    border: 1px solid hsl(39 50% 58% / 0.65);
+    border-radius: 6px;
+    color: #0b0b09;
+    background: #d9bd82;
+    font-size: 0.92rem;
+    font-weight: 850;
+    line-height: 1.1;
+    text-decoration: none;
+}
+
+.blog-editorial-inline-cta__link:hover,
+.blog-editorial-inline-cta__link:focus-visible {
+    color: #0b0b09;
+    background: #f1d99d;
 }
 
 .blog-editorial-pagination {
@@ -255,6 +346,11 @@
     }
 
     .blog-editorial-item__title {
+        max-width: none;
+    }
+
+    .blog-topic-cluster__title,
+    .blog-editorial-inline-cta__title {
         max-width: none;
     }
 }

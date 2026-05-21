@@ -6,7 +6,7 @@
  *   - Hero: Leitmotiv links + animierte SVG-Pipeline (Blueprint) rechts.
  *   - Gateway-Band (3 Weichen) direkt unter dem Hero.
  *   - Sektionen 02–10: Verlust-Raster, Prozess-Kaskade, System-Phasen,
- *     E3-Proof, Portal-Chaos vs. WGOS-Integrität, About, FAQ,
+ *     E3-Proof, Portal-Chaos vs. Daten-Integrität, About, FAQ,
  *     Vertiefung, Final Routing.
  *
  * Schema/SEO: Title + Description kommen aus inc/seo-meta.php
@@ -467,12 +467,12 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     06 / PORTAL-CHAOS vs. WGOS-INTEGRITÄT — visueller Schnitt
+	     06 / PORTAL-CHAOS vs. DATEN-INTEGRITÄT — visueller Schnitt
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-system-visual-section" id="vergleich" data-track-section="06">
 		<div class="hu-container">
 			<div class="hu-proof-headline hu-reveal" style="margin-bottom:64px">
-				<span class="hu-eyebrow">06 / Portal-Chaos vs. WGOS-Integrität</span>
+				<span class="hu-eyebrow">06 / Portal-Chaos vs. Daten-Integrität</span>
 				<h2>Zwei Systeme. Zwei Ergebnisse.</h2>
 				<p style="color:var(--fg-2);font-weight:400">Eine Strecke, an jedem Punkt belegbar — gegen ein Setup, das nur Klicks zählt.</p>
 			</div>
@@ -518,7 +518,7 @@ get_header();
 
 				<div class="hu-sf-col hu-sf-col--good">
 					<div class="hu-sf-col-head">
-						<div class="hu-sf-col-label">WGOS-INTEGRITÄT</div>
+						<div class="hu-sf-col-label">DATEN-INTEGRITÄT</div>
 						<div class="hu-sf-col-title">Eigene Strecke</div>
 					</div>
 					<div class="hu-sf-row">

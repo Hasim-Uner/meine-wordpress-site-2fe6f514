@@ -101,6 +101,24 @@ $about_fit_points = [
 	],
 ];
 
+$about_background_points = [
+	[
+		'k' => 'Bauunternehmer-DNA',
+		't' => 'Projektgeschäft ist kein abstraktes Marketingthema.',
+		's' => 'Aufgewachsen im Bauunternehmen meines Vaters. Margen, Verantwortung für Teams und der Druck echter Projektentscheidungen waren früh greifbar.',
+	],
+	[
+		'k' => 'Vertrieb',
+		't' => 'Eine Website muss Abschlüsse vorbereiten.',
+		's' => 'Der digitale Anfrageweg wird aus echten Einwänden, Entscheidungslogik und Vertriebsrealität gebaut — nicht aus Designgeschmack.',
+	],
+	[
+		'k' => 'Medienwissenschaft',
+		't' => 'Signal, Kontext und Aufmerksamkeit vor Code.',
+		's' => 'Komplexe Informationssysteme werden zerlegt, bis klar ist, wo Vertrauen entsteht, wo Kaufabsicht versickert und welche Daten fehlen.',
+	],
+];
+
 // Blueprint-Labels: 4 Stationen vom Mietsignal zum eigenen Anfrage-System.
 $about_well_labels = [
 	[ 'depth' => 20, 'label' => 'Miet-Leads (Verlustzone)', 'highlight' => false ],
@@ -388,9 +406,19 @@ get_header();
 					<p class="about-section__number">04 / Hintergrund</p>
 					<div class="about-section__head-body">
 						<h2 class="about-h2">Wer ich bin.</h2>
-						<p class="about-section__lead">Medienwissenschaft, nicht Webdesign. Sprache und Signal vor Code.</p>
+						<p class="about-section__lead">Bauunternehmer-DNA, Vertrieb und Medienwissenschaft. Sprache und Signal vor Code.</p>
 					</div>
 				</header>
+
+				<div class="about-background-grid" data-reveal>
+					<?php foreach ( $about_background_points as $point ) : ?>
+						<article class="about-background-card">
+							<p class="about-background-card__kicker"><?php echo esc_html( $point['k'] ); ?></p>
+							<h3 class="about-background-card__title"><?php echo esc_html( $point['t'] ); ?></h3>
+							<p class="about-background-card__text"><?php echo esc_html( $point['s'] ); ?></p>
+						</article>
+					<?php endforeach; ?>
+				</div>
 
 				<div class="about-portrait-card" data-reveal>
 					<figure class="about-portrait-card__media">
@@ -404,9 +432,9 @@ get_header();
 				</div>
 
 				<div class="about-prose" data-reveal>
-					<p>Mein Zugang zu dieser Arbeit ist Medienwissenschaft, nicht Standard-Webdesign. Ich analysiere zuerst die Logik von Signalen, Märkten und menschlichen Kaufentscheidungen und übersetze diese Erkenntnisse erst danach in hochperformanten Code.</p>
-					<p>Die meisten WordPress-Websites scheitern nicht am Design oder an fehlenden Plugins. Sie scheitern daran, dass die technische Architektur isoliert von der vertrieblichen Realität gebaut wurde. Sie informieren den Nutzer zu Tode, anstatt eine klare Kaufentscheidung vorzubereiten.</p>
-					<p>In der Zusammenarbeit bedeutet das: Ich entwickle Systeme auf Basis Ihrer echten Vertriebsgespräche. Wir gießen die Einwände, Sprachmuster und psychologischen Hürden Ihrer Endkunden direkt in die digitale Struktur Ihrer Landingpages. Das Ergebnis ist kein virtuelles Prospekt, sondern ein messbarer Filter, der Ihrem Vertrieb qualifizierte Anfragen zuspielt.</p>
+					<p>Mein Vater war Bauunternehmer. Ich bin mit dem Wissen aufgewachsen, was es bedeutet, Verantwortung für Projekte, Margen und ein fest angestelltes Team zu tragen. Vertrieb und Unternehmertum wurden mir nicht in Seminaren beigebracht — sie sind der Kontext, aus dem ich Websites bewerte.</p>
+					<p>Mein Studium der Medienwissenschaft an der Universität Paderborn war dafür der analytische Werkzeugkasten. Ich analysiere, wie Daten fließen, wo Aufmerksamkeit im Funnel versickert und welche unsichtbaren Signale zwischen digitaler Oberfläche und B2B-Entscheider übertragen werden müssen, damit Vertrauen entsteht.</p>
+					<p>Die meisten WordPress-Websites scheitern nicht am Design oder an fehlenden Plugins. Sie scheitern daran, dass die technische Architektur isoliert von der vertrieblichen Realität gebaut wurde. Ich entwickle Systeme auf Basis echter Vertriebsgespräche, damit Einwände, Sprachmuster und Entscheidungshürden direkt in Landingpages, Tracking und Anfragepfad übersetzt werden.</p>
 				</div>
 
 				<div class="about-cohort-card" data-reveal>

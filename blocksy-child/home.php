@@ -20,6 +20,98 @@ $categories    = get_categories(
 	]
 );
 
+$blog_topic_clusters = [
+	'portal-kritik' => [
+		'title'          => 'Portal-Kritik & Markteinordnung',
+		'desc'           => 'Einordnungen zu Lead-Portalen, geteilten Anfragen, CPL-Logik und der Frage, wann ein eigener Anfrageweg wirtschaftlicher wird.',
+		'category_slugs' => [ 'markteinordnung', 'owned-leads', 'solar-waermepumpen-anfrage-systeme' ],
+		'keywords'       => [ 'portal', 'portale', 'portal-leads', 'leads kaufen', 'photovoltaik leads', 'aroundhome', 'wattfox', 'daa', 'leadfluss' ],
+	],
+	'cro'           => [
+		'title'          => 'CRO & Anfragepfad',
+		'desc'           => 'Beiträge zu Angebotslogik, Entscheidungsführung, Formular-Reibung und dem Weg von Traffic zu qualifizierter Anfrage.',
+		'category_slugs' => [ 'cro', 'strategie' ],
+		'keywords'       => [ 'cro', 'conversion', 'formular', 'funnel', 'lead-funnel', 'anfragepfad', 'qualifiziert', 'qualifizierte' ],
+	],
+	'tracking'      => [
+		'title'          => 'Tracking & Datenqualität',
+		'desc'           => 'GA4, Server-Side Tracking, Consent, Attribution und CRM-Rückführung als Grundlage für bessere Budgetentscheidungen.',
+		'category_slugs' => [ 'tracking', 'sichtbarkeit-daten-conversion' ],
+		'keywords'       => [ 'tracking', 'ga4', 'analytics', 'server-side', 'capi', 'consent', 'attribution', 'daten' ],
+	],
+	'performance'   => [
+		'title'          => 'Performance & WordPress-Fundament',
+		'desc'           => 'Technisches SEO, Core Web Vitals, WordPress-Struktur und Ladezeit als Fundament für Sichtbarkeit und Anfragequalität.',
+		'category_slugs' => [ 'wordpress-performance', 'seo', 'wordpress-growth-agentur' ],
+		'keywords'       => [ 'performance', 'core web vitals', 'cwv', 'wordpress', 'seo', 'ladezeit', 'pagespeed', 'sichtbarkeit' ],
+	],
+];
+
+$blog_posts = [];
+global $wp_query;
+if ( isset( $wp_query->posts ) && is_array( $wp_query->posts ) ) {
+	$blog_posts = array_values(
+		array_filter(
+			$wp_query->posts,
+			static function ( $post ) {
+				return $post instanceof WP_Post && 'post' === $post->post_type;
+			}
+		)
+	);
+}
+
+$blog_posts_by_cluster = array_fill_keys( array_keys( $blog_topic_clusters ), [] );
+$resolve_blog_cluster  = static function ( WP_Post $post ) use ( $blog_topic_clusters ) {
+	$post_categories = get_the_category( $post->ID );
+	$category_slugs  = [];
+	$category_names  = [];
+
+	if ( ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ) {
+		foreach ( $post_categories as $category ) {
+			$category_slugs[] = (string) $category->slug;
+			$category_names[] = (string) $category->name;
+		}
+	}
+
+	foreach ( $blog_topic_clusters as $cluster_key => $cluster ) {
+		if ( array_intersect( $category_slugs, $cluster['category_slugs'] ) ) {
+			return $cluster_key;
+		}
+	}
+
+	$haystack = strtolower(
+		remove_accents(
+			wp_strip_all_tags(
+				get_the_title( $post )
+				. ' '
+				. get_the_excerpt( $post )
+				. ' '
+				. implode( ' ', $category_slugs )
+				. ' '
+				. implode( ' ', $category_names )
+			)
+		)
+	);
+
+	foreach ( $blog_topic_clusters as $cluster_key => $cluster ) {
+		foreach ( $cluster['keywords'] as $keyword ) {
+			if ( false !== strpos( $haystack, strtolower( remove_accents( $keyword ) ) ) ) {
+				return $cluster_key;
+			}
+		}
+	}
+
+	return 'performance';
+};
+
+foreach ( $blog_posts as $blog_post ) {
+	$cluster_key = $resolve_blog_cluster( $blog_post );
+	if ( ! isset( $blog_posts_by_cluster[ $cluster_key ] ) ) {
+		$cluster_key = 'performance';
+	}
+	$blog_posts_by_cluster[ $cluster_key ][] = $blog_post;
+}
+
 get_header();
 ?>
 
@@ -63,42 +155,82 @@ get_header();
 			<?php endforeach; ?>
 		</nav>
 
-		<section class="blog-editorial-list" aria-label="<?php esc_attr_e( 'Aktuelle Beiträge', 'blocksy-child' ); ?>" data-track-section="blog_archive_list">
-			<?php if ( have_posts() ) : ?>
-				<?php
-				while ( have_posts() ) :
-					the_post();
+		<section class="blog-editorial-clusters" aria-label="<?php esc_attr_e( 'Beiträge nach strategischen Themenclustern', 'blocksy-child' ); ?>" data-track-section="blog_archive_clusters">
+			<?php if ( ! empty( $blog_posts ) ) : ?>
+				<?php $rendered_posts = 0; ?>
+				<?php foreach ( $blog_topic_clusters as $cluster_key => $cluster ) : ?>
+					<?php if ( empty( $blog_posts_by_cluster[ $cluster_key ] ) ) : ?>
+						<?php continue; ?>
+					<?php endif; ?>
+					<section class="blog-topic-cluster" aria-labelledby="blog-cluster-<?php echo esc_attr( $cluster_key ); ?>" data-track-section="<?php echo esc_attr( 'blog_cluster_' . $cluster_key ); ?>">
+						<header class="blog-topic-cluster__head">
+							<h2 id="blog-cluster-<?php echo esc_attr( $cluster_key ); ?>" class="blog-topic-cluster__title">
+								<?php echo esc_html( $cluster['title'] ); ?>
+							</h2>
+							<p class="blog-topic-cluster__desc"><?php echo esc_html( $cluster['desc'] ); ?></p>
+						</header>
 
-					$post_categories = get_the_category();
-					$primary_category = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
-					$reading_time     = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time() : 0;
-					?>
-					<article class="blog-editorial-item">
-						<div class="blog-editorial-item__meta">
-							<?php if ( $primary_category instanceof WP_Term ) : ?>
-								<a class="blog-editorial-topic" href="<?php echo esc_url( get_category_link( $primary_category->term_id ) ); ?>">
-									<?php echo esc_html( $primary_category->name ); ?>
-								</a>
-							<?php endif; ?>
-							<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
-								<?php echo esc_html( get_the_date( 'd. M Y' ) ); ?>
-							</time>
-							<?php if ( $reading_time > 0 ) : ?>
-								<span><?php echo esc_html( sprintf( '%d Min. Lesezeit', $reading_time ) ); ?></span>
-							<?php endif; ?>
+						<div class="blog-editorial-list">
+							<?php foreach ( $blog_posts_by_cluster[ $cluster_key ] as $cluster_post ) : ?>
+								<?php
+								setup_postdata( $cluster_post );
+								++$rendered_posts;
+
+								$post_categories  = get_the_category( $cluster_post->ID );
+								$primary_category = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
+								$reading_time     = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time( $cluster_post->ID ) : 0;
+								?>
+								<article class="blog-editorial-item">
+									<div class="blog-editorial-item__meta">
+										<?php if ( $primary_category instanceof WP_Term ) : ?>
+											<a class="blog-editorial-topic" href="<?php echo esc_url( get_category_link( $primary_category->term_id ) ); ?>">
+												<?php echo esc_html( $primary_category->name ); ?>
+											</a>
+										<?php endif; ?>
+										<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
+											<?php echo esc_html( get_the_date( 'd. M Y' ) ); ?>
+										</time>
+										<?php if ( $reading_time > 0 ) : ?>
+											<span><?php echo esc_html( sprintf( '%d Min. Lesezeit', $reading_time ) ); ?></span>
+										<?php endif; ?>
+									</div>
+
+									<h3 class="blog-editorial-item__title">
+										<a href="<?php echo esc_url( get_permalink() ); ?>">
+											<?php echo esc_html( get_the_title() ); ?>
+										</a>
+									</h3>
+
+									<p class="blog-editorial-item__excerpt">
+										<?php echo esc_html( wp_trim_words( get_the_excerpt(), 28, '...' ) ); ?>
+									</p>
+								</article>
+
+								<?php if ( 3 === $rendered_posts ) : ?>
+									<aside class="blog-editorial-inline-cta" aria-labelledby="blog-inline-cta-heading" data-track-section="blog_archive_inline_cta">
+										<span class="blog-editorial-kicker">60-Sekunden-Marktcheck</span>
+										<h3 id="blog-inline-cta-heading" class="blog-editorial-inline-cta__title">
+											Genug gelesen. Prüfen, ob der Markt überhaupt trägt.
+										</h3>
+										<p class="blog-editorial-inline-cta__text">
+											Projektwert, Zielgebiet, Vertriebsreife und Website-Fundament werden händisch eingeordnet. Ergebnis: klare nächste Priorität statt weiterer Artikel-Warteschleife.
+										</p>
+										<a
+											class="blog-editorial-inline-cta__link"
+											href="<?php echo esc_url( $audit_url ); ?>"
+											data-track-action="cta_blog_archive_inline_marktcheck"
+											data-track-category="lead_gen"
+											data-track-section="blog_archive_inline_cta"
+										>
+											Marktcheck starten
+										</a>
+									</aside>
+								<?php endif; ?>
+							<?php endforeach; ?>
+							<?php wp_reset_postdata(); ?>
 						</div>
-
-						<h2 class="blog-editorial-item__title">
-							<a href="<?php echo esc_url( get_permalink() ); ?>">
-								<?php echo esc_html( get_the_title() ); ?>
-							</a>
-						</h2>
-
-						<p class="blog-editorial-item__excerpt">
-							<?php echo esc_html( wp_trim_words( get_the_excerpt(), 28, '...' ) ); ?>
-						</p>
-					</article>
-				<?php endwhile; ?>
+					</section>
+				<?php endforeach; ?>
 
 				<div class="blog-editorial-pagination">
 					<?php
