@@ -542,6 +542,10 @@ function nexus_get_primary_public_url_map() {
 			home_url( '/e3-new-energy/' )
 		),
 		'energy'               => function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' ),
+		'solar_leads_alternative' => nexus_get_page_url(
+			[ 'solar-leads-kaufen-alternative' ],
+			home_url( '/solar-leads-kaufen-alternative/' )
+		),
 		'request'              => $request_url,
 		'domdar'               => nexus_get_page_url(
 			[ 'case-study-domdar', 'domdar' ],

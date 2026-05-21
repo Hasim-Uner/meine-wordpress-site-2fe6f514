@@ -10,10 +10,14 @@ files=(
   "blocksy-child/inc/wgos/wgos-asset-registry-data.php"
 )
 
-changed="$(git diff --name-only "$base_ref" "$head_ref" -- "${files[@]}" || true)"
+if [[ "$head_ref" == "WORKTREE" ]]; then
+  changed="$(git diff --name-only "$base_ref" -- "${files[@]}" || true)"
+else
+  changed="$(git diff --name-only "$base_ref" "$head_ref" -- "${files[@]}" || true)"
+fi
 
 if [[ -z "$changed" ]]; then
-  echo "No glossary or WGOS registry changes detected between $base_ref and $head_ref."
+	echo "No glossary or WGOS registry changes detected between $base_ref and $head_ref."
   exit 0
 fi
 
@@ -24,6 +28,8 @@ echo "Mandatory smoke URLs:"
 cat <<'EOF'
 - /glossar/utm-parameter/
 - /glossar/owned-leads/
+- /solar-leads-kaufen-alternative/
+- /wordpress-agentur-hannover/
 - /wgos-assets/
 - /wgos-assets/cwv-optimierung/
 - /ga4-tracking-setup/
