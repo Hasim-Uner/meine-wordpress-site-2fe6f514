@@ -40,7 +40,7 @@ get_template_part( 'template-parts/blog-header' );
 			'text'            => __( 'Lesen Sie den Beitrag als Baustein im Zusammenspiel aus Angebot, Sichtbarkeit, Daten und Conversion.', 'blocksy-child' ),
 			'primary_label'   => __( 'Anfrage-System ansehen', 'blocksy-child' ),
 			'primary_url'     => $energy_url,
-			'secondary_label' => __( 'Marktcheck starten', 'blocksy-child' ),
+			'secondary_label' => __( 'Kostenfreien Marktcheck starten', 'blocksy-child' ),
 			'secondary_url'   => $audit_url,
 		];
 
@@ -51,7 +51,7 @@ get_template_part( 'template-parts/blog-header' );
 				'text'            => __( 'Dieser Artikel ordnet einen Baustein ein: weniger Portal-Abhängigkeit, klarere Angebotsseiten, bessere Daten und ein Anfragepfad im eigenen Besitz.', 'blocksy-child' ),
 				'primary_label'   => __( 'Anfrage-System ansehen', 'blocksy-child' ),
 				'primary_url'     => $energy_url,
-				'secondary_label' => __( 'Marktcheck starten', 'blocksy-child' ),
+				'secondary_label' => __( 'Kostenfreien Marktcheck starten', 'blocksy-child' ),
 				'secondary_url'   => $audit_url,
 			];
 		} elseif ( array_intersect( [ 'markteinordnung', 'owned-leads' ], $post_cat_slugs ) ) {
@@ -101,7 +101,7 @@ get_template_part( 'template-parts/blog-header' );
 				'text'            => __( 'Dieser Beitrag ist der allgemeinere WordPress-Kontext. Wenn es um lokale Umsetzung, Wartung, SEO und Conversion geht, ist die Agentur-Seite der passende Anschluss.', 'blocksy-child' ),
 				'primary_label'   => __( 'WordPress Agentur ansehen', 'blocksy-child' ),
 				'primary_url'     => $agentur_url,
-				'secondary_label' => __( 'Marktcheck starten', 'blocksy-child' ),
+				'secondary_label' => __( 'Kostenfreien Marktcheck starten', 'blocksy-child' ),
 				'secondary_url'   => $audit_url,
 			];
 		}
@@ -265,7 +265,7 @@ get_template_part( 'template-parts/blog-header' );
 							  class="nexus-btn nexus-btn--primary nexus-inline-cta__btn"
 							  data-track-action="cta_blog_inline"
 							  data-track-category="lead_gen">
-								  Marktcheck starten
+								  Kostenfreien Marktcheck starten
 						   </a>
 					   </div>
 				   </div>

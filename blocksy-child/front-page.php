@@ -98,7 +98,7 @@ get_header();
 				<div class="hu-hero__ctas">
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 					   data-track-action="cta_home_hero_analysis" data-track-category="lead_gen">
-						Prüfen, ob es passt
+						Kostenfreien Marktcheck starten
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
 					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-link"
@@ -123,8 +123,8 @@ get_header();
 				</div>
 
 				<ul class="hu-hero__bullets">
-					<li><span class="hu-bullet-dot"></span>Keine Kontaktdaten im ersten Schritt</li>
-					<li><span class="hu-bullet-dot"></span>Grün, gelb oder rot statt Verkaufspitch</li>
+					<li><span class="hu-bullet-dot"></span>Manueller, tiefer Marktcheck statt Software-Einheitsbrei</li>
+					<li><span class="hu-bullet-dot"></span>Händische Analyse deiner Region innerhalb von 48 Stunden</li>
 					<li><span class="hu-bullet-dot"></span>Für Solar, Wärmepumpe und Speicher</li>
 				</ul>
 			</div>
@@ -199,7 +199,7 @@ get_header();
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
 				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 				   data-track-action="cta_home_pain_analysis" data-track-category="lead_gen">
-					Prüfen, ob es passt
+					Eigene Lead-Verluste stoppen
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 				</a>
 			</div>
@@ -340,7 +340,7 @@ get_header();
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
 				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 				   data-track-action="cta_home_process_analysis" data-track-category="lead_gen">
-					Prüfen, ob es passt
+					Anfrage-System-Analyse anfordern
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 				</a>
 			</div>
@@ -513,7 +513,7 @@ get_header();
 						<div class="hu-sf-row-icon hu-sf-row-icon--good">2</div>
 						<div class="hu-sf-row-content">
 							<div class="hu-sf-row-t">Vorqualifizierung</div>
-							<div class="hu-sf-row-d">60 Sek. · ohne Formularballast</div>
+							<div class="hu-sf-row-d">Händische Prüfung · ohne Formularballast</div>
 						</div>
 					</div>
 					<div class="hu-sf-row">
@@ -548,7 +548,7 @@ get_header();
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
 				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 				   data-track-action="cta_home_flow_analysis" data-track-category="lead_gen">
-					Prüfen, ob es passt
+					Kostenfreien Marktcheck starten
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 				</a>
 			</div>
@@ -624,7 +624,7 @@ get_header();
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
 				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 				   data-track-action="cta_home_fit_analysis" data-track-category="lead_gen">
-					Prüfen, ob es passt
+					Eigene Region jetzt prüfen
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 				</a>
 				<div class="hu-mono" style="margin-top:16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)">
@@ -667,7 +667,7 @@ get_header();
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 					   style="margin-top:8px"
 					   data-track-action="cta_home_about_analysis" data-track-category="lead_gen">
-						Prüfen, ob es passt
+						Eigene Region jetzt prüfen
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
 				</div>
@@ -690,8 +690,18 @@ get_header();
 
 				<div class="hu-faq-item is-open">
 					<button class="hu-faq-item__q" type="button" aria-expanded="true">
-						<span>Bauen Sie nur eine Website oder kümmern Sie sich auch um den Traffic?</span>
+						<span>Wie läuft der Marktcheck konkret ab und wie lange dauert er?</span>
 						<span class="hu-faq-item__icon" aria-hidden="true">−</span>
+					</button>
+					<div class="hu-faq-item__a">
+						<div class="hu-faq-item__a-inner">Den ehrlichen, händisch geprüften Befund deiner Domain und Region erhältst du innerhalb von 48 Stunden per E-Mail. Keine automatischen Standard-PDFs, sondern eine echte strategische Einordnung.</div>
+					</div>
+				</div>
+
+				<div class="hu-faq-item">
+					<button class="hu-faq-item__q" type="button" aria-expanded="false">
+						<span>Bauen Sie nur eine Website oder kümmern Sie sich auch um den Traffic?</span>
+						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
 						<div class="hu-faq-item__a-inner">Beides. Die Website ist nur der Motor. Tracking, Vorqualifizierung und Steuerung der Werbekanäle gehören dazu — sonst hängen Sie weiter in Portal-Leads fest.</div>
@@ -753,7 +763,7 @@ get_header();
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
 				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 				   data-track-action="cta_home_faq_analysis" data-track-category="lead_gen">
-					Prüfen, ob es passt
+					Kostenfreien Marktcheck starten
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 				</a>
 			</div>
@@ -807,8 +817,8 @@ get_header();
 					<img src="<?php echo esc_url( $portrait_url ); ?>" alt="Haşim Üner" width="72" height="72" loading="lazy">
 				</div>
 				<span class="hu-eyebrow" style="color:var(--accent)">11 / Nächster Schritt</span>
-				<h2 class="hu-display">Starten Sie mit dem Marktcheck.</h2>
-				<p>Kein Pitch. Erst wird geklärt, ob ein eigener Anfrageweg für Ihren Markt überhaupt sinnvoll ist.</p>
+				<h2 class="hu-display">Manueller, tiefer Marktcheck statt Software-Einheitsbrei.</h2>
+				<p>Kein Pitch. Händische Analyse deiner Region und deines Anfrageprozesses — Befund per E-Mail innerhalb von 48 Stunden.</p>
 
 				<div class="hu-cta-flow">
 

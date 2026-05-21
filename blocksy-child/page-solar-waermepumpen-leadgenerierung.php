@@ -113,7 +113,7 @@ $results_qualifiers = [
 $guarantee_points = [
 	[
 		't' => 'Marktcheck ist kostenfrei',
-		's' => 'Sechs Fragen, 60 Sekunden. Sie bekommen eine persönliche Ersteinschätzung — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
+		's' => 'Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
 	],
 	[
 		't' => 'Drei Hebel — auch bei Abrat',
@@ -282,8 +282,12 @@ $deeper_clusters = [
 
 $faq_items = [
 	[
+		'question' => 'Wie läuft der Marktcheck konkret ab und wie lange dauert er?',
+		'answer'   => 'Den ehrlichen, händisch geprüften Befund deiner Domain und Region erhältst du innerhalb von 48 Stunden per E-Mail. Keine automatischen Standard-PDFs, sondern eine echte strategische Einordnung.',
+	],
+	[
 		'question' => 'Was passiert nach dem Marktcheck?',
-		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich innerhalb von 24 Stunden per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die kostenpflichtige Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
+		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich innerhalb von 48 Stunden per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die kostenpflichtige Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
 	],
 	[
 		'question' => 'Was kostet das im Vergleich zur Performance-Agentur?',
@@ -340,7 +344,7 @@ $service_schema = [
 		'@type'         => 'Offer',
 		'price'         => '0',
 		'priceCurrency' => 'EUR',
-		'description'   => 'Marktcheck in 60 Sekunden, persönliche Ersteinschätzung innerhalb von 24 Stunden.',
+		'description'   => 'Manueller, tiefer Marktcheck. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.',
 	],
 ];
 
@@ -453,7 +457,7 @@ get_header();
 							<div class="sol-cta-head">
 								<span class="sol-cta-tag sol-mono">
 									<span class="sol-cta-tag-dot" aria-hidden="true"></span>
-									Marktcheck · 60 Sek · 6 Fragen
+									Marktcheck · händisch · Befund in 48 h
 								</span>
 								<span class="sol-cta-head-right sol-mono">Kostenfrei</span>
 							</div>
@@ -461,7 +465,7 @@ get_header();
 								Wo verlieren Sie heute Anfragen — und wie viel kostet Sie das?
 							</h2>
 							<p class="sol-cta-hint">
-								Sechs Fragen, 60 Sekunden. Persönliche Ersteinschätzung innerhalb von 24 h — keine Newsletter, keine Pitch-Mail.
+								Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail — keine Newsletter, keine Pitch-Mail.
 							</p>
 							<p class="sol-cta-fineprint" style="text-align:left;margin:0 0 14px;">Wird geladen …</p>
 						</div>
@@ -831,10 +835,10 @@ get_header();
 						data-track-section="capex_opex"
 						data-track-funnel-stage="quiz_open"
 					>
-						<span>Marktcheck starten · 60 Sek</span>
+						<span>Anfrage-System-Analyse anfordern</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
-					<div class="sol-capex-cta-micro sol-mono">TCO-Rechnung · 1:1 verrechenbar bei Umsetzung</div>
+					<div class="sol-capex-cta-micro sol-mono">Händische Analyse · Befund per E-Mail in 48 h</div>
 				</div>
 			</div>
 		</section>
@@ -1005,10 +1009,10 @@ get_header();
 						data-track-section="fit_check"
 						data-track-funnel-stage="quiz_open"
 					>
-						<span>Prüfen, ob es passt</span>
+						<span>Eigene Region jetzt prüfen</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
-					<div class="sol-fit-cta-micro sol-mono">Erst Marktcheck · dann Entscheidung · keine Verkaufspräsentation</div>
+					<div class="sol-fit-cta-micro sol-mono">Händische Prüfung · Befund per E-Mail in 48 h · keine Verkaufspräsentation</div>
 				</div>
 			</div>
 		</section>
@@ -1127,7 +1131,7 @@ get_header();
 						Anfragen <em>besitzen</em>,<br />nicht mieten.
 					</h2>
 					<p class="sol-final-sub">
-						6 Fragen · 60 Sekunden · persönliche Antwort in 24 h.
+						Manueller, tiefer Marktcheck · händische Analyse deiner Region · Befund per E-Mail in 48 h.
 					</p>
 					<a
 						class="sol-btn sol-btn-primary sol-final-btn"
@@ -1137,7 +1141,7 @@ get_header();
 						data-track-section="final_cta"
 						data-track-funnel-stage="quiz_open"
 					>
-						<span>Marktcheck starten</span>
+						<span>Kostenfreien Marktcheck starten</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
 					<div class="sol-final-micro">Kein Pitch · kein Folien-Deck · konkreter nächster Schritt</div>
@@ -1154,7 +1158,7 @@ get_header();
 			data-track-section="sticky_mobile"
 			data-track-funnel-stage="quiz_open"
 		>
-			<span>Marktcheck starten · 60 Sek</span>
+			<span>Kostenfreien Marktcheck starten</span>
 			<span class="sol-sticky-cta-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 		</a>
 

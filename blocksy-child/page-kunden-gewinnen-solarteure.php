@@ -170,7 +170,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="kunden_gewinnen_solarteure"
 				   data-track-section="hero">
-					60-Sekunden-Marktcheck starten
+					Kostenfreien Marktcheck starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
@@ -279,7 +279,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-kg-final-title">Den passenden Hebel im Marktcheck identifizieren</h2>
 			<p class="hu-intercept__final-text">
-				Sechs Fragen, 60 Sekunden. Sie bekommen eine persönliche Einordnung, welcher der 5 Hebel für Ihren Betrieb den schnellsten Effekt hat – ohne Pflicht-Call, ohne Newsletter.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, welcher der 5 Hebel für Ihren Betrieb den schnellsten Effekt hat. Ohne Pflicht-Call, ohne Newsletter.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"
@@ -287,7 +287,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="kunden_gewinnen_solarteure"
 				   data-track-section="final">
-					60-Sekunden-Marktcheck starten
+					Kostenfreien Marktcheck starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $solar_money_url ); ?>"

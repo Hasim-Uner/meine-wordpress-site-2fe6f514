@@ -139,7 +139,7 @@ $primary_items = [
 
 			<div class="nexus-blog-header__actions">
 				<a class="nexus-blog-header__cta nexus-blog-header__desktop-cta" href="<?php echo esc_url( $audit_url ); ?>">
-					<?php esc_html_e( 'Marktcheck starten', 'blocksy-child' ); ?>
+					<?php esc_html_e( 'Kostenfreien Marktcheck starten', 'blocksy-child' ); ?>
 				</a>
 
 				<button
@@ -177,7 +177,7 @@ $primary_items = [
 
 			<div class="nexus-blog-header__mobile-actions">
 				<a class="nexus-blog-header__cta" href="<?php echo esc_url( $audit_url ); ?>">
-					<?php esc_html_e( 'Marktcheck starten', 'blocksy-child' ); ?>
+					<?php esc_html_e( 'Kostenfreien Marktcheck starten', 'blocksy-child' ); ?>
 				</a>
 			</div>
 		</div>
