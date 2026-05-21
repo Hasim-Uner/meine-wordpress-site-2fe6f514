@@ -1,6 +1,13 @@
 <?php
 /**
- * Template Name: Nexus Über Mich
+ * (DEACTIVATED) Former template "Nexus Über Mich".
+ * Template Name header removed on 2026-05-21 so WordPress no longer lists this
+ * file in the page-attributes template dropdown. Replaced by template-about-editorial.php.
+ *
+ * Re-activate by restoring the line:
+ *   Template Name: Nexus Über Mich
+ * directly under this docblock.
+ *
  * Description: Storytelling-Positionsseite für Solar- und Wärmepumpen-Anbieter
  *
  * Redesign nach Claude-Design-Bundle (uber-mich.html):
