@@ -60,7 +60,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Marktcheck',
 					'url'         => $urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
-					'description' => '60-Sekunden-Einstieg für Solar-, Wärmepumpen- und Speicher-Anbieter: Website, Tracking und Anfrageprozess einordnen.',
+					'description' => 'Manueller Marktcheck für Solar-, Wärmepumpen- und Speicher-Anbieter: händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.',
 				],
 				[
 					'label'       => 'WordPress Agentur Hannover',

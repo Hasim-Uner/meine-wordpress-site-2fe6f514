@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: System-Diagnose
- * Description: Landing Page für den instantanen System-Diagnose mit Sofort-Ergebnis
+ * Description: Landing Page für die manuelle 48h-Anfrage-System-Analyse
  *
  * SEO-Meta: zentral in inc/seo-meta.php (ACF-Felder: seo_title, seo_description, og_image)
  *

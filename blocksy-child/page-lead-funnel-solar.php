@@ -37,11 +37,11 @@ $stages = [
 	],
 	[
 		't' => 'MOFU – Vorqualifizierung',
-		's' => '60-Sekunden-Marktcheck statt 5-Felder-Formular. Region, Heizart, Dach, Projektwert werden abgefragt, bevor Kontaktdaten verlangt werden. Wer das Marktcheck nicht durchläuft, ist kein passendes Match.',
+		's' => 'Manueller Marktcheck statt 5-Felder-Formular. Region, Heizart, Dach, Projektwert werden vor der Kontaktaufnahme abgefragt — der Befund kommt händisch per E-Mail in 48 h. Wer das Marktcheck nicht durchläuft, ist kein passendes Match.',
 	],
 	[
 		't' => 'BOFU – Anfrage & Termin',
-		's' => 'Kontaktdaten kommen erst nach grünem Fit. Direkt im Anschluss: persönliche Antwort innerhalb von 24 Stunden, optionaler Cal.com-Termin, automatischer CRM-Eintrag inklusive Lead-Score.',
+		's' => 'Kontaktdaten kommen erst nach grünem Fit. Direkt im Anschluss: händisch geprüfter Befund per E-Mail innerhalb von 48 Stunden, optionaler Cal.com-Termin, automatischer CRM-Eintrag inklusive Lead-Score.',
 	],
 	[
 		't' => 'Vertrieb – Anschluss',
@@ -151,7 +151,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="lead_funnel_solar"
 				   data-track-section="hero">
-					60-Sekunden-Marktcheck starten
+					Kostenfreien Marktcheck starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
@@ -230,7 +230,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-funnel-final-title">Funnel-Setup im Marktcheck einordnen</h2>
 			<p class="hu-intercept__final-text">
-				Sechs Fragen, 60 Sekunden. Sie bekommen eine persönliche Einordnung, an welcher Funnel-Stufe Ihre größte Verlustquelle liegt – und welcher Hebel den schnellsten Effekt hat.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, an welcher Funnel-Stufe Ihre größte Verlustquelle liegt und welcher Hebel den schnellsten Effekt hat.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"
@@ -238,7 +238,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="lead_funnel_solar"
 				   data-track-section="final">
-					60-Sekunden-Marktcheck starten
+					Kostenfreien Marktcheck starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $solar_money_url ); ?>"

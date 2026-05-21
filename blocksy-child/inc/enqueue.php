@@ -197,7 +197,7 @@ function hu_enqueue_assets() {
 			'NexusContactConfig',
 			[
 				'restEndpoint'     => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
-				'successMessage'   => 'Danke. Ihre Anfrage ist eingegangen. Sie erhalten innerhalb von 24 Stunden eine Rückmeldung.',
+				'successMessage'   => 'Danke. Ihre Anfrage ist eingegangen. Ich analysiere Domain und Region in den nächsten 48 Stunden persönlich und händisch und sende den Befund per E-Mail.',
 				'errorMessage'     => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
 				'callUrl'          => esc_url_raw( function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' ) ),
 				'isScopedLanding'  => $contact_is_scoped_landing,
@@ -217,7 +217,7 @@ function hu_enqueue_assets() {
 			'NexusContactConfig',
 			[
 				'restEndpoint'    => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
-				'successMessage'  => 'Danke. Ihre Projektprüfung ist eingegangen. Sie erhalten innerhalb von 24 Stunden eine Rückmeldung.',
+				'successMessage'  => 'Danke. Ihre Projektprüfung ist eingegangen. Sie erhalten innerhalb von 48 Stunden eine händisch geprüfte Rückmeldung.',
 				'errorMessage'    => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
 				'callUrl'         => esc_url_raw( function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' ) ),
 				'isScopedLanding' => true,
@@ -281,7 +281,7 @@ function hu_enqueue_assets() {
 			'NexusReviewConfig',
 			[
 				'auditLabel'   => 'Marktcheck',
-				'submitLabel'  => 'Marktcheck starten',
+				'submitLabel'  => 'Kostenfreien Marktcheck starten',
 				'restEndpoint' => esc_url_raw( rest_url( 'nexus/v1/audit-request' ) ),
 			]
 		);

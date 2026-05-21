@@ -122,7 +122,7 @@
 		'<div class="hmt-map" aria-label="Anfrage-System Teaser">' +
 		phases.map(renderNode).join("") +
 		"</div>" +
-		'<a class="hmt-cta" href="' + systemUrl + '">Marktcheck starten →</a>' +
+		'<a class="hmt-cta" href="' + systemUrl + '">Kostenfreien Marktcheck starten →</a>' +
 		"</div>" +
 		"</section>";
 

@@ -134,7 +134,7 @@ $buyer_check_criteria = [
 $own_system_layers = [
 	[
 		't' => 'Money Page mit Vorqualifizierung',
-		's' => 'Solar/Wärmepumpen-spezifisch, mit 60-Sekunden-Strecke. Region, Heizart, Projektwert – vor dem Anruf.',
+		's' => 'Solar/Wärmepumpen-spezifisch, mit händischer Region-Analyse. Region, Heizart, Projektwert – vor dem Anruf.',
 	],
 	[
 		't' => 'Server-Side-Tracking (CAPI)',
@@ -240,7 +240,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="intercept_solar_leads"
 				   data-track-section="hero">
-					60-Sekunden-Marktcheck starten
+					Kostenfreien Marktcheck starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
@@ -372,9 +372,9 @@ get_header();
 
 	<section class="hu-intercept__final" id="final-cta" aria-labelledby="hu-intercept-final-title">
 		<div class="hu-intercept__container hu-intercept__container--centered">
-			<h2 class="hu-intercept__h2" id="hu-intercept-final-title">Statt Leads zu kaufen: Marktcheck starten</h2>
+			<h2 class="hu-intercept__h2" id="hu-intercept-final-title">Statt Leads zu kaufen: Kostenfreien Marktcheck starten</h2>
 			<p class="hu-intercept__final-text">
-				Sechs Fragen, 60 Sekunden. Sie bekommen eine persönliche Ersteinschätzung, ob ein eigenes Anfrage-System für Ihren Betrieb wirtschaftlicher ist als der Weiterkauf von Portal-Leads – ohne Pflicht-Call, ohne Newsletter.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, ob ein eigenes Anfrage-System für Ihren Betrieb wirtschaftlicher ist als der Weiterkauf von Portal-Leads. Ohne Pflicht-Call, ohne Newsletter.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"
@@ -382,7 +382,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="intercept_solar_leads"
 				   data-track-section="final">
-					60-Sekunden-Marktcheck starten
+					Kostenfreien Marktcheck starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $solar_money_url ); ?>"

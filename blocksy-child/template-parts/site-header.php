@@ -23,7 +23,7 @@ $home_label   = sprintf(
 
 if ( empty( $audit_header_meta_items ) ) {
 	$audit_header_meta_items = [
-		'60-Sekunden-Diagnose',
+		'Manueller Marktcheck',
 		'WordPress- und B2B-Fokus',
 	];
 }
@@ -74,7 +74,7 @@ if ( empty( $audit_header_meta_items ) ) {
 
 			<a class="nx-site-header__energy-cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_energy_header_analysis" data-track-category="lead_gen" data-track-section="energy_header" data-track-funnel-stage="energy_header">
 				<span class="nx-site-header__energy-cta-label">Marktcheck</span>
-				<span class="nx-site-header__energy-cta-microcopy" aria-hidden="true">60 Sek.</span>
+				<span class="nx-site-header__energy-cta-microcopy" aria-hidden="true">48 h Befund</span>
 			</a>
 		</div>
 	</div>

@@ -98,7 +98,7 @@ $specific = [
 
 $cta_features = [
 	'Kostenfreier Marktcheck in 6 Fragen',
-	'Persönliche Ersteinschätzung innerhalb von 24 Stunden',
+	'Händisch geprüfter Marktcheck innerhalb von 48 Stunden',
 	'Einordnung von Anfrage-Quellen, Tracking und Vertriebsanschluss',
 	'Kein Pflicht-Termin, kein Pitch-Call',
 ];
@@ -309,12 +309,12 @@ get_header();
 
 				<div class="e3-cta__actions">
 					<a class="e3-btn" href="<?php echo esc_url( $diagnostic_url ); ?>" data-track-action="cta_e3_to_diagnostic_request" data-track-category="lead_gen" data-track-section="case_e3_methodology">
-						<span>Marktcheck starten</span>
+						<span>Kostenfreien Marktcheck starten</span>
 						<span class="e3-btn__arrow" aria-hidden="true">→</span>
 					</a>
 				</div>
 
-				<p class="e3-cta__micro">Antwort innerhalb von 24 Stunden per E-Mail.</p>
+				<p class="e3-cta__micro">Händisch geprüfter Befund innerhalb von 48 Stunden per E-Mail.</p>
 			</div>
 		</section>
 	</div>

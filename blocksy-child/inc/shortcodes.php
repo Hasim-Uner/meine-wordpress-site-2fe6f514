@@ -321,7 +321,7 @@ function hu_home_system_section_markup() {
 					</ul>
 
 					<div class="homepage-system-economics__actions">
-							<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_system_map_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
+							<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_system_map_marketcheck" data-track-category="lead_gen">Kostenfreien Marktcheck starten</a>
 					</div>
 
 					<p class="homepage-system-economics__note">
@@ -388,7 +388,7 @@ function hu_hero_section_shortcode() {
 						</div>
 
 							<div class="wp-hero-actions nx-reveal">
-								<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_hero_primary_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
+								<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_hero_primary_marketcheck" data-track-category="lead_gen">Kostenfreien Marktcheck starten</a>
 								<a href="<?php echo esc_url( $urls['cases'] ); ?>" class="wp-btn wp-btn-secondary">Ergebnisse ansehen</a>
 							</div>
 							<p class="wp-hero-supporting-link nx-reveal">Erst das Vorgehen verstehen? <a href="<?php echo esc_url( $urls['about'] ); ?>">Meine Arbeitsweise ansehen</a></p>
@@ -421,7 +421,7 @@ function hu_hero_section_shortcode() {
 								Kein Verkaufsgespräch. Klare Einschätzung. Sinnvolle nächste Entscheidung.
 							</div>
 							<div class="wp-btn-wrapper audit-card-premium__actions">
-									<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary full-width" data-track-action="cta_hero_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
+									<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary full-width" data-track-action="cta_hero_marketcheck" data-track-category="lead_gen">Kostenfreien Marktcheck starten</a>
 							</div>
 						</div>
 					</div>
@@ -642,7 +642,7 @@ function hu_wgos_block_shortcode() {
 			<div id="homepage-mindmap-teaser-root" class="homepage-mindmap-section" aria-label="Anfrage-System Teaser"></div>
 
 			<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:2.5rem;">
-				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_wgos_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
+				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_wgos_marketcheck" data-track-category="lead_gen">Kostenfreien Marktcheck starten</a>
 			</div>
 		</div>
 	</section>
@@ -738,7 +738,7 @@ function hu_erfolge_section_shortcode() {
 			</div>
 
 			<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem;">
-				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_erfolge_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
+				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_erfolge_marketcheck" data-track-category="lead_gen">Kostenfreien Marktcheck starten</a>
 				<a href="<?php echo esc_url( $urls['cases'] ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_erfolge_cases" data-track-category="lead_gen">Weitere Ergebnisse</a>
 			</div>
 		</div>
@@ -929,7 +929,7 @@ function hu_cta_section_shortcode() {
 				</div>
 
 				<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem;">
-					<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $urls['audit'] ); ?>" data-track-action="cta_footer_marketcheck" data-track-category="lead_gen">Marktcheck starten</a>
+					<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $urls['audit'] ); ?>" data-track-action="cta_footer_marketcheck" data-track-category="lead_gen">Kostenfreien Marktcheck starten</a>
 					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $urls['cases'] ); ?>" data-track-action="cta_footer_cases" data-track-category="lead_gen">Ergebnisse ansehen</a>
 				</div>
 

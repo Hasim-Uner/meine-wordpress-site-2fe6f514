@@ -71,7 +71,7 @@ $type_copy_map         = [
 		'message_label'       => 'Kurzbeschreibung',
 		'message_help'        => 'Welche URL ist relevant? Was ist unklar? Welches Ergebnis wünschen Sie sich?',
 		'message_placeholder' => "1. Seite: Welche URL ist relevant?\n2. Unklarheit: Was bremst gerade?\n3. Ziel: Was soll sich verbessern?",
-		'submit_label'        => 'Marktcheck starten',
+		'submit_label'        => 'Kostenfreien Marktcheck starten',
 		'timeline_label'      => 'Zeitfenster',
 	],
 	'analysis'       => [
@@ -376,7 +376,7 @@ $auto_scroll  = false;
 				</form>
 
 				<div class="contact-form__postcopy">
-					<p class="contact-postcopy__lead">Antwort in der Regel innerhalb von 24 Stunden. Kein Vertriebsteam, sondern direkter Kontakt.</p>
+					<p class="contact-postcopy__lead">Antwort in der Regel innerhalb von 48 Stunden. Händisch geprüft, kein Vertriebsteam.</p>
 				</div>
 			</section>
 	</div>
