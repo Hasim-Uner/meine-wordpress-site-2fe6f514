@@ -292,3 +292,106 @@
         transition: none;
     }
 }
+
+/* =============================================================
+   Category Bell — aligned with the Blog Home architecture
+   ============================================================= */
+
+.blog-bell--category {
+    background: var(--hu-bg);
+}
+
+.category-bell__hero {
+    padding-top: calc(var(--nx-header-height, 76px) + 48px);
+}
+
+.category-bell__title {
+    max-width: 12ch;
+}
+
+.category-bell__lead {
+    max-width: 68ch;
+}
+
+.category-bell__deep-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 26px;
+    border-top: 1px solid var(--hu-line);
+}
+
+.category-bell__deep-label {
+    flex: 0 0 auto;
+    margin-right: 4px;
+    color: var(--hu-fg-3);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.category-bell__deep-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px 14px;
+    border: 1px solid hsl(28 72% 56% / 0.22);
+    border-radius: 999px;
+    background: hsl(28 72% 56% / 0.08);
+    color: var(--hu-fg);
+    font-size: 0.86rem;
+    font-weight: 700;
+    line-height: 1.1;
+    text-decoration: none;
+    transition:
+        transform 0.22s var(--ease-default, ease),
+        border-color 0.22s var(--ease-default, ease),
+        background 0.22s var(--ease-default, ease),
+        color 0.22s var(--ease-default, ease);
+}
+
+.category-bell__deep-link:hover,
+.category-bell__deep-link:focus-visible {
+    border-color: var(--hu-accent);
+    background: var(--hu-accent-soft);
+    color: var(--hu-accent);
+    transform: translateY(-1px);
+}
+
+.category-bell__grid .blog-bell__card.is-featured {
+    grid-column: span 2;
+}
+
+.category-bell__bottom-cta {
+    margin-top: clamp(56px, 8vw, 96px);
+}
+
+@media (max-width: 980px) {
+    .category-bell__grid .blog-bell__card.is-featured {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 720px) {
+    .category-bell__hero {
+        padding-top: calc(var(--nx-header-height, 76px) + 26px);
+    }
+
+    .category-bell__title {
+        max-width: none;
+    }
+
+    .category-bell__deep-links {
+        align-items: stretch;
+    }
+
+    .category-bell__deep-label {
+        flex-basis: 100%;
+    }
+}

@@ -135,15 +135,15 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-home-redesign-js', 'homepage-redesign.js', [ 'nexus-core-js' ] );
 	}
 
-	// ── B) Blog-Archive Styles ────────────────────────────────────
-	if ( is_home() ) {
+	// ── B) Blog archive surfaces ──────────────────────────────────
+	if ( is_home() || is_category() ) {
 		hu_enqueue_css( 'nexus-blog-archive-css', 'blog-archive.css', [ 'nexus-design-system' ] );
 		hu_enqueue_js( 'nexus-blog-archive-js', 'blog-archive.js', [ 'nexus-core-js' ] );
 	}
 
 	// ── C) Kategorie-Seiten (Pillar Hub) ──────────────────────────
 	if ( is_category() ) {
-		hu_enqueue_css( 'nexus-category-hub-css', 'category-hub.css', [ 'nexus-design-system' ] );
+		hu_enqueue_css( 'nexus-category-hub-css', 'category-hub.css', [ 'nexus-blog-archive-css' ] );
 	}
 
 	// ── C2) Sonstige Archiv-Seiten (Tag, Datum etc.) ──────────────

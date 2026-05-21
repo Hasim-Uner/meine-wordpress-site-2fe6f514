@@ -114,10 +114,9 @@ $primary_items = [
 					<?php echo esc_html( $brand_text ); ?>
 				</a>
 
-				<div class="nexus-blog-header__intro">
-					<span class="nexus-blog-header__eyebrow"><?php esc_html_e( 'Blog Navigation', 'blocksy-child' ); ?></span>
+				<div class="nexus-blog-header__intro" aria-label="<?php esc_attr_e( 'Blog-Kontext', 'blocksy-child' ); ?>">
+					<span class="nexus-blog-header__eyebrow"><?php esc_html_e( 'Insights', 'blocksy-child' ); ?></span>
 					<p class="nexus-blog-header__title"><?php echo esc_html( $context_title ); ?></p>
-					<p class="nexus-blog-header__text"><?php echo esc_html( $context_text ); ?></p>
 				</div>
 			</div>
 
@@ -138,8 +137,13 @@ $primary_items = [
 			</nav>
 
 			<div class="nexus-blog-header__actions">
-				<a class="nexus-blog-header__cta nexus-blog-header__desktop-cta" href="<?php echo esc_url( $audit_url ); ?>">
-					<?php esc_html_e( 'Kostenfreien Marktcheck starten', 'blocksy-child' ); ?>
+				<a
+					class="nexus-blog-header__cta nexus-blog-header__desktop-cta"
+					href="<?php echo esc_url( $audit_url ); ?>"
+					data-track-action="cta_blog_header_marktcheck"
+					data-track-category="lead_gen"
+				>
+					<?php esc_html_e( 'Marktcheck', 'blocksy-child' ); ?>
 				</a>
 
 				<button
@@ -176,8 +180,13 @@ $primary_items = [
 			</nav>
 
 			<div class="nexus-blog-header__mobile-actions">
-				<a class="nexus-blog-header__cta" href="<?php echo esc_url( $audit_url ); ?>">
-					<?php esc_html_e( 'Kostenfreien Marktcheck starten', 'blocksy-child' ); ?>
+				<a
+					class="nexus-blog-header__cta"
+					href="<?php echo esc_url( $audit_url ); ?>"
+					data-track-action="cta_blog_header_mobile_marktcheck"
+					data-track-category="lead_gen"
+				>
+					<?php esc_html_e( 'Marktcheck starten', 'blocksy-child' ); ?>
 				</a>
 			</div>
 		</div>

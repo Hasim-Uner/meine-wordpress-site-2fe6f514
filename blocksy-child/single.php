@@ -38,6 +38,11 @@ get_template_part( 'template-parts/blog-header' );
 
 		<?php
 		$has_hero_image = has_post_thumbnail();
+		$article_summary = wp_strip_all_tags( get_the_excerpt() );
+		if ( '' === $article_summary ) {
+			$article_summary = wp_trim_words( wp_strip_all_tags( get_the_content() ), 30, '...' );
+		}
+		$reading_time = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time() : 0;
 		$primary_urls    = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 		$audit_url       = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 		$energy_url      = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
@@ -174,7 +179,7 @@ get_template_part( 'template-parts/blog-header' );
 		$article_next_links = $deduped_next_links;
 		?>
 
-		<header class="nexus-article-hero" data-track-section="article_hero">
+		<header class="nexus-article-hero nexus-article-hero--editorial" data-track-section="article_hero" aria-labelledby="nexus-article-title">
 			<div class="nexus-hero-content">
 
 				<div class="nexus-meta-top">
@@ -185,29 +190,37 @@ get_template_part( 'template-parts/blog-header' );
 					<?php endif; ?>
 					<span class="nexus-date"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></span>
 					<span class="separator">|</span>
-					<span class="nexus-reading-time"><?php
-						printf(
-							/* translators: %d: reading time in minutes */
-							esc_html__( '%d Min. Lesezeit', 'blocksy-child' ),
-							nexus_get_reading_time()
-						);
-					?></span>
+					<?php if ( $reading_time > 0 ) : ?>
+						<span class="nexus-reading-time"><?php
+							printf(
+								/* translators: %d: reading time in minutes */
+								esc_html__( '%d Min. Lesezeit', 'blocksy-child' ),
+								$reading_time
+							);
+						?></span>
+					<?php endif; ?>
 				</div>
 
-				<h1 class="nexus-title"><?php the_title(); ?></h1>
+				<h1 id="nexus-article-title" class="nexus-title"><?php echo esc_html( get_the_title() ); ?></h1>
+
+				<?php if ( '' !== $article_summary ) : ?>
+					<p class="nexus-subtitle"><?php echo esc_html( $article_summary ); ?></p>
+				<?php endif; ?>
 
 				<div class="nexus-hero-footer">
 					<div class="nexus-author-row">
 						<?php echo get_avatar( get_the_author_meta( 'ID' ), 48 ); ?>
 						<div class="nexus-author-info">
-							<span class="by"><?php esc_html_e( 'Von', 'blocksy-child' ); ?></span>
-							<span class="name"><?php the_author(); ?></span>
+							<span class="by"><?php esc_html_e( 'Geschrieben von', 'blocksy-child' ); ?></span>
+							<span class="name"><?php echo esc_html( get_the_author() ); ?></span>
 						</div>
 					</div>
 				</div>
 
 			</div>
+		</header>
 
+		<figure class="nexus-article-cover nexus-reveal" data-track-section="article_cover">
 			<div class="nexus-hero-image<?php echo esc_attr( $has_hero_image ? '' : ' nexus-hero-image--generated' ); ?>">
 				<?php if ( $has_hero_image ) : ?>
 					<?php
@@ -234,9 +247,9 @@ get_template_part( 'template-parts/blog-header' );
 					?>
 				<?php endif; ?>
 			</div>
-		</header>
+		</figure>
 
-		<section class="nexus-article-context" data-track-section="article_context_bridge" aria-label="<?php echo esc_attr( $article_context['eyebrow'] ); ?>">
+		<section class="nexus-article-context nexus-reveal" data-track-section="article_context_bridge" aria-label="<?php echo esc_attr( $article_context['eyebrow'] ); ?>">
 			<div class="nexus-article-context__copy">
 				<span class="nexus-article-context__eyebrow"><?php echo esc_html( $article_context['eyebrow'] ); ?></span>
 				<h2 class="nexus-article-context__title"><?php echo esc_html( $article_context['title'] ); ?></h2>
@@ -262,33 +275,33 @@ get_template_part( 'template-parts/blog-header' );
 			</div>
 		</section>
 
-		   <div class="nexus-post-layout">
-			   <?php if ( is_singular('post') ) : ?>
-			   <aside class="nexus-sidebar">
-				   <div class="sticky-toc">
-					   <h3>Inhalt</h3>
-					   <ul id="toc-list"></ul>
-				   </div>
-			   </aside>
-			   <?php endif; ?>
-			   <article class="nexus-article-content" id="article-content" data-track-section="article_content">
-				   <?php the_content(); ?>
+		<div class="nexus-post-layout">
+			<?php if ( is_singular( 'post' ) ) : ?>
+				<aside class="nexus-sidebar" aria-label="<?php esc_attr_e( 'Inhaltsverzeichnis', 'blocksy-child' ); ?>">
+					<div class="sticky-toc">
+						<h2><?php esc_html_e( 'Inhalt', 'blocksy-child' ); ?></h2>
+						<ul id="toc-list"></ul>
+					</div>
+				</aside>
+			<?php endif; ?>
+			<article class="nexus-article-content nexus-reveal" id="article-content" data-track-section="article_content">
+				<?php the_content(); ?>
 
-				   <div class="nexus-inline-cta" id="nexus-inline-cta" hidden aria-hidden="true">
-					   <div class="nexus-inline-cta__inner">
-						   <span class="nexus-inline-cta__tag">Kostenlose Diagnose</span>
-						   <h3 class="nexus-inline-cta__headline">Was bremst Ihr Wachstum?</h3>
-						   <p class="nexus-inline-cta__sub">Persönliche Analyse Ihrer Website — schriftliche Rückmeldung in 48 Stunden.</p>
-						   <a href="<?php echo esc_url( $audit_url ); ?>"
-							  class="nexus-btn nexus-btn--primary nexus-inline-cta__btn"
-							  data-track-action="cta_blog_inline"
-							  data-track-category="lead_gen">
-								  Kostenfreien Marktcheck starten
-						   </a>
-					   </div>
-				   </div>
+				<div class="nexus-inline-cta" id="nexus-inline-cta" hidden aria-hidden="true">
+					<div class="nexus-inline-cta__inner">
+						<span class="nexus-inline-cta__tag">Kostenlose Diagnose</span>
+						<h3 class="nexus-inline-cta__headline">Was bremst Ihr Wachstum?</h3>
+						<p class="nexus-inline-cta__sub">Persönliche Analyse Ihrer Website - schriftliche Rückmeldung in 48 Stunden.</p>
+						<a href="<?php echo esc_url( $audit_url ); ?>"
+							class="nexus-btn nexus-btn--primary nexus-inline-cta__btn"
+							data-track-action="cta_blog_inline"
+							data-track-category="lead_gen">
+							Kostenfreien Marktcheck starten
+						</a>
+					</div>
+				</div>
 
-				   <?php
+				<?php
 					if ( function_exists( 'nexus_get_wgos_blog_asset_bridge' ) && function_exists( 'nexus_render_wgos_blog_asset_bridge' ) ) {
 						$bridge = nexus_get_wgos_blog_asset_bridge();
 
@@ -296,9 +309,9 @@ get_template_part( 'template-parts/blog-header' );
 							echo nexus_render_wgos_blog_asset_bridge( $bridge ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						}
 					}
-				   ?>
-			   </article>
-		   </div>
+				?>
+			</article>
+		</div>
 
 		<section class="nexus-article-next" data-track-section="article_next_steps" aria-labelledby="nexus-article-next-heading">
 			<span class="nexus-article-next__eyebrow"><?php esc_html_e( 'Weiterarbeiten', 'blocksy-child' ); ?></span>

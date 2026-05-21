@@ -1368,3 +1368,351 @@
 .nexus-article-content > ul:not(.faq-list) > li::marker {
     color: var(--hu-accent, #E08A3C);
 }
+
+/* =============================================================
+   21. Editorial v2 shell — aligns single posts with Blog Home
+   ============================================================= */
+
+.nexus-single-container.hu-hp {
+    --hu-bg: #0B0F12;
+    --hu-bg-2: #11161A;
+    --hu-bg-3: #161C21;
+    --hu-line: #232A30;
+    --hu-line-2: #2C353C;
+    --hu-fg: #F2EBDD;
+    --hu-fg-2: #C8C0B0;
+    --hu-fg-3: #8A8478;
+    --hu-fg-4: #5C5A52;
+    --hu-accent: #E08A3C;
+    --hu-accent-soft: rgba(224, 138, 60, 0.12);
+    --hu-good: #6BA17A;
+    --hu-warn: #D9B25A;
+    --hu-bad: #C7705F;
+
+    background: var(--hu-bg);
+    color: var(--hu-fg);
+    padding-top: calc(var(--nx-header-height, 76px) + 42px);
+}
+
+.nexus-single-container.hu-hp::before {
+    background:
+        radial-gradient(ellipse 60% 80% at 78% 0%, var(--hu-accent-soft), transparent 62%),
+        radial-gradient(ellipse 70% 70% at 8% 14%, hsl(28 12% 12% / 0.62), transparent 64%);
+}
+
+.nexus-single-container.hu-hp::after {
+    opacity: 0;
+}
+
+.nexus-article-hero--editorial {
+    display: block;
+    max-width: min(1180px, calc(100vw - 48px));
+    margin: 0 auto 36px;
+    padding: 54px 0 44px;
+    border: 0;
+}
+
+.nexus-article-hero--editorial .nexus-hero-content {
+    max-width: 1080px;
+    gap: 0;
+}
+
+.nexus-article-hero--editorial .nexus-meta-top {
+    gap: 18px;
+    margin-bottom: 28px;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--hu-fg-3);
+}
+
+.nexus-article-hero--editorial .nexus-hero-category {
+    color: var(--hu-accent);
+    border: 1px solid hsl(28 72% 56% / 0.42);
+    border-radius: 999px;
+    padding: 6px 12px;
+    line-height: 1;
+}
+
+.nexus-article-hero--editorial .separator {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--hu-fg-4);
+    color: transparent;
+}
+
+.nexus-article-hero--editorial .nexus-title {
+    max-width: 18ch;
+    color: var(--hu-fg);
+    font-size: 4.75rem;
+    font-weight: 800;
+    line-height: 0.96;
+    letter-spacing: 0;
+    hyphens: none;
+    text-wrap: balance;
+}
+
+.nexus-subtitle {
+    max-width: 760px;
+    margin: 30px 0 0;
+    color: var(--hu-fg-2);
+    font-size: 1.25rem;
+    line-height: 1.62;
+    text-wrap: pretty;
+}
+
+.nexus-article-hero--editorial .nexus-hero-footer {
+    max-width: 760px;
+    margin-top: 38px;
+    padding-top: 26px;
+    border-top: 1px solid var(--hu-line);
+}
+
+.nexus-article-hero--editorial .nexus-author-row img {
+    width: 44px;
+    height: 44px;
+    border-color: hsl(28 72% 56% / 0.32);
+    box-shadow: 0 0 0 4px hsl(28 72% 56% / 0.1);
+}
+
+.nexus-article-cover {
+    max-width: min(1180px, calc(100vw - 48px));
+    margin: 0 auto 46px;
+}
+
+.nexus-article-cover .nexus-hero-image {
+    min-height: 0;
+    aspect-ratio: 16 / 8.2;
+    border-radius: 22px;
+    border-color: hsl(28 72% 56% / 0.18);
+    background:
+        radial-gradient(ellipse 60% 90% at 82% 0%, hsl(28 72% 56% / 0.14), transparent 68%),
+        linear-gradient(135deg, var(--hu-bg-2), hsl(216 16% 8%));
+    box-shadow: 0 24px 70px hsl(30 25% 2% / 0.42);
+}
+
+.nexus-article-cover .nexus-hero-image img {
+    min-height: 0;
+    height: 100%;
+}
+
+.nexus-article-context {
+    max-width: min(1180px, calc(100vw - 48px));
+    margin-bottom: 64px;
+    padding: 28px 0;
+    border-color: var(--hu-line);
+}
+
+.nexus-article-context__eyebrow,
+.nexus-article-next__eyebrow,
+.nexus-rating__label,
+.nexus-author-bio__label {
+    color: var(--hu-accent);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    letter-spacing: 0.18em;
+}
+
+.nexus-article-context__title {
+    max-width: 18ch;
+    font-size: 1.85rem;
+    line-height: 1.12;
+    color: var(--hu-fg);
+}
+
+.nexus-article-context__text {
+    color: var(--hu-fg-2);
+}
+
+.nexus-article-context__link {
+    min-height: 52px;
+    padding: 0 22px;
+    border-radius: 999px;
+    border-color: var(--hu-line);
+    color: var(--hu-fg);
+}
+
+.nexus-article-context__link--primary {
+    background: linear-gradient(135deg, var(--hu-accent), #D97757);
+    border-color: var(--hu-accent);
+    color: #1A0F05 !important;
+    box-shadow: 0 10px 26px hsl(28 72% 56% / 0.28);
+}
+
+.nexus-post-layout {
+    grid-template-columns: minmax(230px, 280px) minmax(0, 860px);
+    gap: 56px;
+    max-width: min(1240px, calc(100vw - 48px));
+}
+
+.sticky-toc {
+    border-radius: 18px;
+    background:
+        linear-gradient(180deg, hsl(216 16% 8% / 0.92), hsl(216 16% 7% / 0.92)),
+        var(--hu-bg-2);
+    border-color: hsl(28 72% 56% / 0.18);
+    box-shadow: 0 18px 48px hsl(30 25% 2% / 0.28);
+}
+
+.sticky-toc h2,
+.sticky-toc h3 {
+    margin: 0 0 18px;
+    color: var(--hu-accent);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.sticky-toc ul li + li {
+    margin-top: 8px;
+}
+
+.sticky-toc ul li a {
+    padding: 8px 10px;
+    color: var(--hu-fg-3);
+    line-height: 1.45;
+}
+
+.sticky-toc ul li a:hover,
+.sticky-toc ul li a.active {
+    color: var(--hu-fg);
+    background: var(--hu-accent-soft);
+    transform: translateX(2px);
+}
+
+.nexus-article-content {
+    max-width: 860px;
+    padding: 58px 64px;
+    border-radius: 18px;
+    border-color: hsl(28 72% 56% / 0.14);
+    background:
+        linear-gradient(180deg, hsl(216 16% 8% / 0.98), hsl(216 16% 7% / 0.98)),
+        var(--hu-bg-2);
+    color: var(--hu-fg-2);
+    font-size: 1.08rem;
+    line-height: 1.82;
+    box-shadow: 0 24px 70px hsl(30 25% 2% / 0.34);
+}
+
+.nexus-article-content h2 {
+    color: var(--hu-fg);
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: 0;
+    margin: 3.4rem 0 1.1rem;
+    text-wrap: balance;
+}
+
+.nexus-article-content h3 {
+    color: var(--hu-fg);
+    font-size: 1.62rem;
+    line-height: 1.18;
+    letter-spacing: 0;
+}
+
+.nexus-article-content p,
+.nexus-article-content li {
+    color: var(--hu-fg-2);
+}
+
+.nexus-article-content strong {
+    color: var(--hu-fg);
+}
+
+.nexus-article-content a:not(.nexus-btn):not(.nexus-inline-cta__btn):not(.callout-cta) {
+    color: var(--hu-accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+}
+
+.nexus-article-next,
+.nexus-rating,
+.nexus-author-bio,
+.nexus-bottom-share {
+    max-width: min(860px, calc(100vw - 48px));
+}
+
+@media (max-width: 1100px) {
+    .nexus-post-layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .nexus-sidebar {
+        position: static;
+        display: none !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .nexus-single-container.hu-hp {
+        padding-top: calc(var(--nx-header-height, 76px) + 24px);
+    }
+
+    .nexus-article-hero--editorial {
+        max-width: min(100vw - 32px, 1180px);
+        padding: 34px 0 30px;
+    }
+
+    .nexus-article-hero--editorial .nexus-title {
+        font-size: 3.35rem;
+    }
+
+    .nexus-subtitle {
+        font-size: 1.12rem;
+    }
+
+    .nexus-article-cover,
+    .nexus-article-context,
+    .nexus-post-layout {
+        max-width: min(100vw - 32px, 1180px);
+    }
+
+    .nexus-article-content {
+        padding: 38px 30px;
+    }
+
+    .nexus-article-content h2 {
+        font-size: 2.15rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .nexus-article-hero--editorial .nexus-meta-top {
+        gap: 10px;
+        font-size: 0.64rem;
+    }
+
+    .nexus-article-hero--editorial .nexus-title {
+        font-size: 2.42rem;
+    }
+
+    .nexus-article-cover .nexus-hero-image {
+        aspect-ratio: 4 / 3.2;
+        border-radius: 16px;
+    }
+
+    .nexus-article-context {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .nexus-article-context__actions,
+    .nexus-article-context__link {
+        width: 100%;
+    }
+
+    .nexus-article-content {
+        padding: 30px 22px;
+        border-radius: 14px;
+    }
+
+    .nexus-article-content h2 {
+        font-size: 1.86rem;
+    }
+}
