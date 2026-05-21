@@ -38,6 +38,12 @@ Global contract for agents in this repo. Keep context small: read this file, the
 - Analyse before implementation pitch. Clarity before feature count.
 - Do not reintroduce broad agency wording when it weakens the diagnosis-first funnel.
 
+## Sonderrouten & Schatten-Templates
+
+- `blocksy-child/page-wordpress-agentur-hannover.php` is a native slug safety wrapper only.
+- Maintain the Hannover landing page layout and copy in `blocksy-child/page-wordpress-agentur.php`.
+- Do not duplicate Hannover page edits into the wrapper template.
+
 ## Funnel Ladder
 
 1. Marktcheck: qualifier for fit, not a generic sale.

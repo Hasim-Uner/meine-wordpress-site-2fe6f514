@@ -131,7 +131,7 @@ Im Repo vorhanden:
 
 - `data-track-*` Attribute auf CTAs und Content-Bausteinen
 - noindex- und SEO-Meta-Logik
-- Schema-Ausgabe fuer Organisation, Services und Profile
+- Schema-Ausgabe fuer Organisation, Services und Profile; editorgetriebenes FAQPage-Schema wird per `save_post` in Post-Meta gecacht und im Frontend nur gelesen
 - neue Homepage-Actions fuer Trust und Einstiegsangebote: `cta_github_repo`, `cta_proof_linkedin`
 
 Ausserhalb des Repos:

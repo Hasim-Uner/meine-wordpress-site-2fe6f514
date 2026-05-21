@@ -22,38 +22,6 @@ add_action( 'wp_head', 'hu_seo_meta_tags', 1 );
 add_filter( 'pre_get_document_title', 'hu_pre_get_document_title_override' );
 add_filter( 'document_title_parts', 'hu_document_title_overrides' );
 
-add_action( 'rank_math/head', 'hu_disable_rank_math_frontend_head', 0 );
-add_filter( 'rank_math/frontend/description', '__return_empty_string', 99 );
-add_filter( 'rank_math/frontend/canonical', '__return_empty_string', 99 );
-add_filter( 'rank_math/frontend/robots', 'hu_disable_rank_math_robots_output', 99 );
-add_filter( 'rank_math/json_ld', '__return_empty_array', 99 );
-add_filter( 'rank_math/json_ld/breadcrumbs_enabled', '__return_false', 99 );
-add_filter( 'rank_math/opengraph/twitter_card', '__return_false', 99 );
-
-/**
- * Suppress Rank Math frontend head output if the plugin remains installed.
- *
- * The theme owns title, description, canonical, robots, social tags and JSON-LD.
- * Rank Math metadata is read only as legacy storage fallback.
- *
- * @return void
- */
-function hu_disable_rank_math_frontend_head() {
-	remove_all_actions( 'rank_math/head' );
-	remove_all_actions( 'rank_math/opengraph/facebook' );
-	remove_all_actions( 'rank_math/opengraph/twitter' );
-}
-
-/**
- * Remove Rank Math robots directives from frontend output.
- *
- * @param array<string, string>|string $robots Rank Math robots directives.
- * @return array<string, string>
- */
-function hu_disable_rank_math_robots_output( $robots ) {
-	return [];
-}
-
 /**
  * Return the enforced homepage SEO title.
  *
@@ -805,12 +773,11 @@ function hu_get_contact_offer_description() {
 
 
 /**
- * Override the document title where an exact title string is required.
+ * Resolve the effective document title for all title filters.
  *
- * @param string $title Existing title.
  * @return string
  */
-function hu_pre_get_document_title_override( $title ) {
+function hu_get_resolved_document_title() {
 	if ( is_front_page() ) {
 		return hu_get_homepage_title();
 	}
@@ -831,12 +798,25 @@ function hu_pre_get_document_title_override( $title ) {
 		return (string) $forced_seo['title'];
 	}
 
-	if ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) ) {
-		$cluster_defaults = nexus_get_wgos_cluster_page_seo_defaults( nexus_get_current_wgos_cluster_route_slug() );
+	if ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) && function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ) {
+		$cluster_slug     = nexus_get_current_wgos_cluster_route_slug();
+		$cluster_defaults = '' !== $cluster_slug ? nexus_get_wgos_cluster_page_seo_defaults( $cluster_slug ) : null;
 
 		if ( ! empty( $cluster_defaults['title'] ) ) {
 			return (string) $cluster_defaults['title'];
 		}
+	}
+
+	if ( hu_is_seo_cornerstone_article() ) {
+		return 'Technisches SEO + Performance Marketing: Fundament fehlt';
+	}
+
+	if ( is_singular( 'post' ) ) {
+		return hu_get_post_title_pattern( get_queried_object_id() );
+	}
+
+	if ( hu_is_audit_offer_page() ) {
+		return 'Kostenloser Marktcheck | Haşim Üner';
 	}
 
 	if ( hu_is_contact_offer_page() ) {
@@ -850,15 +830,34 @@ function hu_pre_get_document_title_override( $title ) {
 		return '' !== $seo_title ? $seo_title : hu_get_domdar_case_study_title();
 	}
 
-	if ( hu_is_seo_cornerstone_article() ) {
-		return 'Technisches SEO + Performance Marketing: Fundament fehlt';
+	if ( is_singular() ) {
+		$post_id    = get_queried_object_id();
+		$slug       = $post_id ? get_post_field( 'post_name', $post_id ) : '';
+		$seo_title  = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
+		$defaults   = function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ? nexus_get_wgos_cluster_page_seo_defaults( get_post( $post_id ) ) : null;
+
+		if ( '' !== $seo_title ) {
+			return $seo_title;
+		} elseif ( ! empty( $defaults['title'] ) ) {
+			return (string) $defaults['title'];
+		} elseif ( in_array( $slug, [ 'wgos', 'wordpress-growth-operating-system' ], true ) ) {
+			return 'WGOS Client Dashboard | Haşim Üner';
+		}
 	}
 
-	if ( is_singular( 'post' ) ) {
-		return hu_get_post_title_pattern( get_queried_object_id() );
-	}
+	return '';
+}
 
-	return $title;
+/**
+ * Override the document title where an exact title string is required.
+ *
+ * @param string $title Existing title.
+ * @return string
+ */
+function hu_pre_get_document_title_override( $title ) {
+	$resolved_title = hu_get_resolved_document_title();
+
+	return '' !== $resolved_title ? $resolved_title : $title;
 }
 
 /**
@@ -868,84 +867,11 @@ function hu_pre_get_document_title_override( $title ) {
  * @return array
  */
 function hu_document_title_overrides( $parts ) {
-	if ( is_front_page() ) {
-		$parts['title'] = hu_get_homepage_title();
-		return $parts;
-	}
+	$resolved_title = hu_get_resolved_document_title();
 
-	if ( is_home() ) {
-		$parts['title'] = hu_get_blog_archive_title();
-		return $parts;
-	}
-
-	if ( is_category() ) {
-		$category_seo = hu_get_category_archive_seo();
-		if ( ! empty( $category_seo['title'] ) ) {
-			$parts['title'] = (string) $category_seo['title'];
-			unset( $parts['page'] );
-			return $parts;
-		}
-	}
-
-	$forced_seo = hu_get_forced_singular_seo();
-	if ( ! empty( $forced_seo['title'] ) ) {
-		$parts['title'] = (string) $forced_seo['title'];
+	if ( '' !== $resolved_title ) {
+		$parts['title'] = $resolved_title;
 		unset( $parts['page'] );
-		return $parts;
-	}
-
-	if ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) ) {
-		$cluster_defaults = nexus_get_wgos_cluster_page_seo_defaults( nexus_get_current_wgos_cluster_route_slug() );
-
-		if ( ! empty( $cluster_defaults['title'] ) ) {
-			$parts['title'] = (string) $cluster_defaults['title'];
-			unset( $parts['page'] );
-			return $parts;
-		}
-	}
-
-	if ( hu_is_seo_cornerstone_article() ) {
-		$parts['title'] = 'Technisches SEO + Performance Marketing: Fundament fehlt';
-		return $parts;
-	}
-
-	if ( is_singular( 'post' ) ) {
-		$parts['title'] = hu_get_post_title_pattern( get_queried_object_id() );
-		return $parts;
-	}
-
-	if ( hu_is_audit_offer_page() ) {
-		$parts['title'] = 'Kostenloser Marktcheck | Haşim Üner';
-		return $parts;
-	}
-
-	if ( hu_is_contact_offer_page() ) {
-		$parts['title'] = hu_get_contact_offer_title();
-		return $parts;
-	}
-
-	if ( hu_is_domdar_case_study_page() ) {
-		$post_id   = get_queried_object_id();
-		$seo_title = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
-
-		$parts['title'] = '' !== $seo_title ? $seo_title : hu_get_domdar_case_study_title();
-
-		return $parts;
-	}
-
-	if ( is_singular() ) {
-		$post_id    = get_queried_object_id();
-		$slug       = $post_id ? get_post_field( 'post_name', $post_id ) : '';
-		$seo_title  = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
-		$defaults   = function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ? nexus_get_wgos_cluster_page_seo_defaults( get_post( $post_id ) ) : null;
-
-		if ( '' !== $seo_title ) {
-			$parts['title'] = $seo_title;
-		} elseif ( ! empty( $defaults['title'] ) ) {
-			$parts['title'] = (string) $defaults['title'];
-		} elseif ( in_array( $slug, [ 'wgos', 'wordpress-growth-operating-system' ], true ) ) {
-			$parts['title'] = 'WGOS Client Dashboard | Haşim Üner';
-		}
 	}
 
 	return $parts;
@@ -1486,19 +1412,6 @@ add_filter( 'wp_sitemaps_posts_query_args', function ( $args, $post_type ) {
 
 	return $args;
 }, 10, 2 );
-
-/**
- * Exclude deprecated/noindex pages from Rank Math sitemap (sitemap_index.xml).
- *
- * Rank Math erkennt noindex-Meta in der eigenen Settings-Oberfläche automatisch,
- * unser noindex wird aber per HTTP-Header + wp_head gesetzt — daher explizite
- * ID-basierte Exclusion als Safety-Net.
- */
-add_filter( 'rank_math/sitemap/exclude_posts', function ( $excluded ) {
-	$excluded = is_array( $excluded ) ? $excluded : [];
-	$excluded = array_values( array_unique( array_merge( $excluded, nexus_get_sitemap_excluded_ids() ) ) );
-	return $excluded;
-} );
 
 /**
  * Keep native taxonomy sitemaps focused on curated category archives.
