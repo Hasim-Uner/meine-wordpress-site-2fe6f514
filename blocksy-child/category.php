@@ -20,6 +20,8 @@ $current_category  = get_queried_object();
 $current_term_id   = $current_category instanceof WP_Term ? (int) $current_category->term_id : 0;
 $current_term_name = $current_category instanceof WP_Term ? $current_category->name : get_the_archive_title();
 $category_text     = $current_term_id ? wp_strip_all_tags( category_description( $current_term_id ) ) : '';
+$category_seo      = $current_category instanceof WP_Term && function_exists( 'hu_get_category_archive_seo' ) ? hu_get_category_archive_seo( $current_category ) : [];
+$category_intro    = $category_text ?: ( $category_seo['description'] ?? '' );
 $categories        = get_categories(
 	[
 		'hide_empty' => false,
@@ -39,8 +41,8 @@ $categories        = get_categories(
 			<p class="blog-editorial-hero__lead">
 				<?php
 				echo esc_html(
-					$category_text
-						? $category_text
+					$category_intro
+						? $category_intro
 						: 'Beiträge mit klarem Fokus auf Analyse, Priorisierung und verwertbare Entscheidungen statt Content-Deko.'
 				);
 				?>

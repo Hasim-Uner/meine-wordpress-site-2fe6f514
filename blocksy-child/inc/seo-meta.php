@@ -71,6 +71,97 @@ function hu_get_blog_archive_description() {
 }
 
 /**
+ * Return SEO defaults for public category archives.
+ *
+ * @return array<string, array<string, string>>
+ */
+function hu_get_category_archive_seo_map() {
+	return (array) apply_filters(
+		'hu_category_archive_seo_map',
+		[
+			'solar-waermepumpen-anfrage-systeme' => [
+				'title'       => 'Solar & SHK Anfrage-Systeme | Haşim Üner',
+				'description' => 'Analysen zu eigenen Anfrage-Systemen für Solar-/SHK-Betriebe: Portal-Leads, Marktcheck, Lead-Qualität, Tracking und Conversion statt gemieteter Nachfrage.',
+			],
+			'sichtbarkeit-daten-conversion' => [
+				'title'       => 'Sichtbarkeit, Daten & Conversion | Haşim Üner',
+				'description' => 'SEO, Tracking, Core Web Vitals und CRO für B2B-Websites: wie Sichtbarkeit belastbare Daten liefert und aus Traffic qualifizierte Anfragen entstehen.',
+			],
+			'wordpress-growth-agentur' => [
+				'title'       => 'WordPress Growth & Agentur | Haşim Üner',
+				'description' => 'WordPress-Growth für B2B: technische Website-Struktur, SEO, Performance, Tracking und CRO als eigenes System statt isolierter Agentur-Baustellen.',
+			],
+			'markteinordnung' => [
+				'title'       => 'Lead-Portal Markteinordnung | Haşim Üner',
+				'description' => 'Schonungslose Einordnung von Lead-Portalen, Kostenlogik und Nachfrage-Miete für Solar- und SHK-Betriebe mit Fokus auf CPO statt CPL.',
+			],
+			'owned-leads' => [
+				'title'       => 'Owned Leads statt Portal-Leads | Haşim Üner',
+				'description' => 'Beiträge zu eigener Leadgenerierung, First-Party-Daten und Nachfrage-Infrastruktur: weniger Portal-Abhängigkeit, mehr Kontrolle über Anfragequalität.',
+			],
+			'seo' => [
+				'title'       => 'Technisches SEO für B2B-Websites | Haşim Üner',
+				'description' => 'Technisches SEO für B2B-Websites: Struktur, Indexierung, Content-Architektur und interne Links als Fundament für qualifizierte Anfragen.',
+			],
+			'tracking' => [
+				'title'       => 'Tracking & Analytics für B2B | Haşim Üner',
+				'description' => 'GA4, Server-Side Tracking, Consent und CRM-Rückführung für B2B-Anfrage-Systeme: Daten, die Budgetsteuerung und Conversion-Lernen ermöglichen.',
+			],
+			'cro' => [
+				'title'       => 'CRO & UX für B2B-Anfragen | Haşim Üner',
+				'description' => 'Conversion-Optimierung für B2B-Websites: Angebotslogik, Reibungsverluste, Proof, Formulare und klare nächste Schritte für qualifizierte Anfragen.',
+			],
+			'wordpress-performance' => [
+				'title'       => 'WordPress Performance & CWV | Haşim Üner',
+				'description' => 'WordPress Performance, Core Web Vitals, Hosting und Frontend-Bloat: Ladezeit als SEO-, Ads- und Conversion-Hebel für B2B-Websites.',
+			],
+			'strategie' => [
+				'title'       => 'Strategie für eigene Anfrage-Systeme | Haşim Üner',
+				'description' => 'Strategische Beiträge zu eigenen Anfrage-Systemen: Zielmarkt, Angebot, Funnel-Logik, Budgetsteuerung und Priorisierung vor der Umsetzung.',
+			],
+		]
+	);
+}
+
+/**
+ * Resolve the effective SEO title and description for a category archive.
+ *
+ * @param WP_Term|null $term Category term.
+ * @return array{title: string, description: string}
+ */
+function hu_get_category_archive_seo( $term = null ) {
+	if ( null === $term ) {
+		$term = get_queried_object();
+	}
+
+	if ( ! ( $term instanceof WP_Term ) || 'category' !== $term->taxonomy ) {
+		return [
+			'title'       => '',
+			'description' => '',
+		];
+	}
+
+	$map = hu_get_category_archive_seo_map();
+
+	if ( ! empty( $map[ $term->slug ] ) && is_array( $map[ $term->slug ] ) ) {
+		return [
+			'title'       => isset( $map[ $term->slug ]['title'] ) ? trim( wp_strip_all_tags( (string) $map[ $term->slug ]['title'] ) ) : '',
+			'description' => isset( $map[ $term->slug ]['description'] ) ? trim( wp_strip_all_tags( (string) $map[ $term->slug ]['description'] ) ) : '',
+		];
+	}
+
+	$term_name        = trim( wp_strip_all_tags( (string) $term->name ) );
+	$term_description = trim( wp_strip_all_tags( (string) $term->description ) );
+
+	return [
+		'title'       => hu_build_compact_branded_title( $term_name . ' Blog' ),
+		'description' => '' !== $term_description
+			? wp_trim_words( $term_description, 24, '…' )
+			: sprintf( 'Analysen und Einordnungen zu %s: Sichtbarkeit, Daten, Conversion und eigene Anfrage-Systeme.', $term_name ),
+	];
+}
+
+/**
  * Return forced SEO overrides for singular pages that must ignore legacy DB meta.
  *
  * @return array<string, array<string, string>>
@@ -605,6 +696,13 @@ function hu_pre_get_document_title_override( $title ) {
 		return hu_get_blog_archive_title();
 	}
 
+	if ( is_category() ) {
+		$category_seo = hu_get_category_archive_seo();
+		if ( ! empty( $category_seo['title'] ) ) {
+			return (string) $category_seo['title'];
+		}
+	}
+
 	$forced_seo = hu_get_forced_singular_seo();
 	if ( ! empty( $forced_seo['title'] ) ) {
 		return (string) $forced_seo['title'];
@@ -655,6 +753,15 @@ function hu_document_title_overrides( $parts ) {
 	if ( is_home() ) {
 		$parts['title'] = hu_get_blog_archive_title();
 		return $parts;
+	}
+
+	if ( is_category() ) {
+		$category_seo = hu_get_category_archive_seo();
+		if ( ! empty( $category_seo['title'] ) ) {
+			$parts['title'] = (string) $category_seo['title'];
+			unset( $parts['page'] );
+			return $parts;
+		}
 	}
 
 	$forced_seo = hu_get_forced_singular_seo();
@@ -1074,12 +1181,22 @@ function hu_get_seo_meta() {
 	} elseif ( is_category() || is_tag() || is_tax() ) {
 
 		$term = get_queried_object();
-		if ( $term ) {
-			$meta['og_title'] = single_term_title( '', false ) . ' · ' . get_bloginfo( 'name' );
-			if ( $term->description ) {
-				$meta['description'] = wp_trim_words( wp_strip_all_tags( $term->description ), 25, '…' );
+		if ( $term instanceof WP_Term ) {
+			if ( 'category' === $term->taxonomy ) {
+				$category_seo        = hu_get_category_archive_seo( $term );
+				$meta['og_title']    = $category_seo['title'];
+				$meta['description'] = $category_seo['description'];
+			} else {
+				$meta['og_title'] = single_term_title( '', false ) . ' · ' . get_bloginfo( 'name' );
+				if ( $term->description ) {
+					$meta['description'] = wp_trim_words( wp_strip_all_tags( $term->description ), 25, '…' );
+				}
 			}
-			$meta['canonical'] = get_term_link( $term );
+
+			$term_link = get_term_link( $term );
+			if ( ! is_wp_error( $term_link ) ) {
+				$meta['canonical'] = $term_link;
+			}
 		}
 
 	} elseif ( is_search() ) {
