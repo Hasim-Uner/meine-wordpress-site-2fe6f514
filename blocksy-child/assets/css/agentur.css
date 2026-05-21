@@ -3207,3 +3207,166 @@
     transform: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   H9. PHASEN-KARTEN ALS NAVIGATIONS-LINKS (Progressive Disclosure)
+   --------------------------------------------------------------------------- */
+.wgos-steps__link {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+  border-radius: inherit;
+}
+
+.wgos-steps__link:hover,
+.wgos-steps__link:focus-visible {
+  color: inherit;
+  text-decoration: none;
+}
+
+.wgos-steps__link:focus-visible {
+  outline: 2px solid var(--ag-primary);
+  outline-offset: 4px;
+}
+
+.wgos-steps__more {
+  display: inline-block;
+  margin-top: var(--ag-space-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ag-primary);
+  letter-spacing: 0.01em;
+  opacity: 0.85;
+  transition: opacity var(--ag-dur-base) var(--ag-ease),
+              transform var(--ag-dur-base) var(--ag-ease);
+}
+
+.wp-agentur-process-grid li:hover .wgos-steps__more,
+.wgos-steps__link:focus-visible .wgos-steps__more {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+/* ---------------------------------------------------------------------------
+   H10. MICRO-COMMITMENT VORQUALIFIZIERUNG (Multi-Step)
+   --------------------------------------------------------------------------- */
+.wp-agentur-quali {
+  max-width: 760px;
+  margin: var(--ag-space-2xl) auto 0;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: var(--ag-surface);
+  border: 1px solid var(--ag-border);
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 32px rgba(41, 38, 27, 0.06);
+}
+
+.wp-agentur-quali__step[hidden] {
+  display: none;
+}
+
+.wp-agentur-quali__kicker {
+  margin: 0 0 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ag-primary);
+}
+
+.wp-agentur-quali__q {
+  margin: 0 0 var(--ag-space-lg);
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ag-text);
+}
+
+.wp-agentur-quali__q:focus {
+  outline: none;
+}
+
+.wp-agentur-quali__options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--ag-space-md);
+  margin-bottom: var(--ag-space-md);
+}
+
+.wp-agentur-quali__opt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: var(--ag-space-md) var(--ag-space-lg);
+  background: #FFFFFF;
+  border: 1px solid var(--ag-border);
+  border-radius: 0.85rem;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color var(--ag-dur-base) var(--ag-ease),
+              transform var(--ag-dur-base) var(--ag-ease),
+              box-shadow var(--ag-dur-base) var(--ag-ease),
+              background-color var(--ag-dur-base) var(--ag-ease);
+}
+
+.wp-agentur-quali__opt:hover,
+.wp-agentur-quali__opt:focus-visible {
+  border-color: var(--ag-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(217, 119, 87, 0.12);
+  outline: none;
+}
+
+.wp-agentur-quali__opt.is-selected {
+  border-color: var(--ag-primary);
+  background: rgba(217, 119, 87, 0.06);
+  box-shadow: 0 0 0 3px rgba(217, 119, 87, 0.18);
+}
+
+.wp-agentur-quali__opt strong {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ag-text);
+  line-height: 1.3;
+}
+
+.wp-agentur-quali__opt span {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--ag-text-2);
+}
+
+.wp-agentur-quali__hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--ag-text-3);
+  line-height: 1.55;
+}
+
+.wp-agentur-quali__step--done {
+  text-align: center;
+}
+
+.wp-agentur-quali__step--done .wp-agentur-quali__q {
+  margin-bottom: var(--ag-space-md);
+}
+
+.wp-agentur-quali__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: var(--ag-space-md);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-agentur-quali__opt,
+  .wgos-steps__more {
+    transition: none;
+  }
+  .wp-agentur-quali__opt:hover,
+  .wp-agentur-quali__opt:focus-visible {
+    transform: none;
+  }
+}
