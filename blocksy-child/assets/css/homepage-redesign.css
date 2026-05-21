@@ -234,10 +234,10 @@
 }
 .hu-hp .hu-hero__eyebrow { margin-bottom: 16px; }
 .hu-hp .hu-hero__title {
-  font-size: clamp(40px,5.2vw,76px);
-  font-weight: 800;
-  letter-spacing: -0.035em;
-  line-height: .95;
+  font-size: clamp(36px,4.6vw,62px);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.02;
   text-wrap: balance;
   margin: 0;
 }
@@ -1603,10 +1603,10 @@
 
 .hu-hp .hu-final-routing__head { text-align: center; margin-bottom: 36px; }
 .hu-hp .hu-final-routing__head h2 {
-  font-size: clamp(32px, 4.4vw, 56px);
-  font-weight: 800;
-  letter-spacing: -.03em;
-  line-height: 1.04;
+  font-size: clamp(30px, 3.8vw, 48px);
+  font-weight: 700;
+  letter-spacing: -.024em;
+  line-height: 1.08;
   margin: 14px 0 16px;
   text-wrap: balance;
 }
@@ -1698,6 +1698,25 @@
 /* Gateway-Band-Karten brauchen etwas mehr Luft als die Hero-Stack-Variante */
 .hu-hp .hu-gateways--band .hu-gateway { padding: 26px 26px 22px; }
 .hu-hp .hu-gateways--band .hu-gateway__title { font-size: clamp(20px, 1.7vw, 24px); }
+
+/* In den 3-Spalten-Layouts (Band + Final) hat der Footer zu wenig
+   Horizontale, sodass Persona und CTA sich gegenseitig zerlegen.
+   Daher hier konsequent column. */
+.hu-hp .hu-gateways--band .hu-gateway__foot,
+.hu-hp .hu-gateways--final .hu-gateway__foot {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.hu-hp .hu-gateways--band .hu-gateway__persona,
+.hu-hp .hu-gateways--final .hu-gateway__persona {
+  max-width: none;
+  line-height: 1.5;
+}
+.hu-hp .hu-gateways--band .hu-gateway__cta,
+.hu-hp .hu-gateways--final .hu-gateway__cta {
+  white-space: normal;
+}
 
 /* =============================================================
    PROZESS-KASKADE (Sektion 03) — 3 Schritte, dunkel
