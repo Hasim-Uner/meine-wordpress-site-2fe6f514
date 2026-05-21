@@ -4,6 +4,21 @@ Template: blocksy
 Version: 7.3.2-CRO-SEO-SURFACES
 */
 
+/* ─── Global selection (brand copper, dark ink) ────────────
+   Standardisiert die Markierung-Farbe seitenweit. Verhindert,
+   dass dunkler Button-Text auf Kupfer beim Markieren unsichtbar
+   wird, und ersetzt das blaue Default-Highlight des Browsers. */
+::selection {
+	background: #b46a3c;
+	color: #1A0F05;
+	text-shadow: none;
+}
+::-moz-selection {
+	background: #b46a3c;
+	color: #1A0F05;
+	text-shadow: none;
+}
+
 @font-face {
     font-family: 'Figtree';
     font-style: normal;
