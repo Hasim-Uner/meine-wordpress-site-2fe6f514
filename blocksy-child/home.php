@@ -1,6 +1,15 @@
 <?php
 /**
- * Minimal editorial blog archive template.
+ * Blog Archive — "Bell" architecture.
+ *
+ * Replaces the editorial cluster layout with a card-grid + sticky filter +
+ * floating newsletter bell modal. All content comes from the WP_Query loop —
+ * no hard-coded post titles, dates, or numbers.
+ *
+ * Re-uses:
+ *  - template-parts/site-header.php (global)
+ *  - template-parts/site-footer.php (global)
+ *  - inc/blog-notify.php REST endpoint (DOI subscription, NexusBlogNotifyConfig)
  *
  * @package Blocksy_Child
  */
@@ -12,262 +21,265 @@ if ( ! defined( 'ABSPATH' ) ) {
 $audit_url     = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $posts_page_id = (int) get_option( 'page_for_posts' );
 $blog_url      = $posts_page_id ? get_permalink( $posts_page_id ) : home_url( '/blog/' );
-$categories    = get_categories(
+
+$blog_categories = get_categories(
 	[
-		'hide_empty' => false,
-		'orderby'    => 'name',
-		'order'      => 'ASC',
+		'hide_empty' => true,
+		'orderby'    => 'count',
+		'order'      => 'DESC',
+		'number'     => 8,
 	]
 );
 
-$blog_topic_clusters = [
-	'portal-kritik' => [
-		'title'          => 'Portal-Kritik & Markteinordnung',
-		'desc'           => 'Einordnungen zu Lead-Portalen, geteilten Anfragen, CPL-Logik und der Frage, wann ein eigener Anfrageweg wirtschaftlicher wird.',
-		'category_slugs' => [ 'markteinordnung', 'owned-leads', 'solar-waermepumpen-anfrage-systeme' ],
-		'keywords'       => [ 'portal', 'portale', 'portal-leads', 'leads kaufen', 'photovoltaik leads', 'aroundhome', 'wattfox', 'daa', 'leadfluss' ],
-	],
-	'cro'           => [
-		'title'          => 'CRO & Anfragepfad',
-		'desc'           => 'Beiträge zu Angebotslogik, Entscheidungsführung, Formular-Reibung und dem Weg von Traffic zu qualifizierter Anfrage.',
-		'category_slugs' => [ 'cro', 'strategie' ],
-		'keywords'       => [ 'cro', 'conversion', 'formular', 'funnel', 'lead-funnel', 'anfragepfad', 'qualifiziert', 'qualifizierte' ],
-	],
-	'tracking'      => [
-		'title'          => 'Tracking & Datenqualität',
-		'desc'           => 'GA4, Server-Side Tracking, Consent, Attribution und CRM-Rückführung als Grundlage für bessere Budgetentscheidungen.',
-		'category_slugs' => [ 'tracking', 'sichtbarkeit-daten-conversion' ],
-		'keywords'       => [ 'tracking', 'ga4', 'analytics', 'server-side', 'capi', 'consent', 'attribution', 'daten' ],
-	],
-	'performance'   => [
-		'title'          => 'Performance & WordPress-Fundament',
-		'desc'           => 'Technisches SEO, Core Web Vitals, WordPress-Struktur und Ladezeit als Fundament für Sichtbarkeit und Anfragequalität.',
-		'category_slugs' => [ 'wordpress-performance', 'seo', 'wordpress-growth-agentur' ],
-		'keywords'       => [ 'performance', 'core web vitals', 'cwv', 'wordpress', 'seo', 'ladezeit', 'pagespeed', 'sichtbarkeit' ],
-	],
-];
+$current_category_id = is_category() ? (int) get_queried_object_id() : 0;
 
-$blog_posts = [];
-global $wp_query;
-if ( isset( $wp_query->posts ) && is_array( $wp_query->posts ) ) {
-	$blog_posts = array_values(
-		array_filter(
-			$wp_query->posts,
-			static function ( $post ) {
-				return $post instanceof WP_Post && 'post' === $post->post_type;
-			}
-		)
-	);
-}
-
-$blog_posts_by_cluster = array_fill_keys( array_keys( $blog_topic_clusters ), [] );
-$resolve_blog_cluster  = static function ( WP_Post $post ) use ( $blog_topic_clusters ) {
-	$post_categories = get_the_category( $post->ID );
-	$category_slugs  = [];
-	$category_names  = [];
-
-	if ( ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ) {
-		foreach ( $post_categories as $category ) {
-			$category_slugs[] = (string) $category->slug;
-			$category_names[] = (string) $category->name;
-		}
-	}
-
-	foreach ( $blog_topic_clusters as $cluster_key => $cluster ) {
-		if ( array_intersect( $category_slugs, $cluster['category_slugs'] ) ) {
-			return $cluster_key;
-		}
-	}
-
-	$haystack = strtolower(
-		remove_accents(
-			wp_strip_all_tags(
-				get_the_title( $post )
-				. ' '
-				. get_the_excerpt( $post )
-				. ' '
-				. implode( ' ', $category_slugs )
-				. ' '
-				. implode( ' ', $category_names )
-			)
-		)
-	);
-
-	foreach ( $blog_topic_clusters as $cluster_key => $cluster ) {
-		foreach ( $cluster['keywords'] as $keyword ) {
-			if ( false !== strpos( $haystack, strtolower( remove_accents( $keyword ) ) ) ) {
-				return $cluster_key;
-			}
-		}
-	}
-
-	return 'performance';
-};
-
-foreach ( $blog_posts as $blog_post ) {
-	$cluster_key = $resolve_blog_cluster( $blog_post );
-	if ( ! isset( $blog_posts_by_cluster[ $cluster_key ] ) ) {
-		$cluster_key = 'performance';
-	}
-	$blog_posts_by_cluster[ $cluster_key ][] = $blog_post;
-}
+$blog_form_nonce  = wp_create_nonce( 'nexus_blog_notify_subscribe' );
+$blog_notify_copy = function_exists( 'nexus_get_blog_notify_copy' ) ? nexus_get_blog_notify_copy() : [];
+$privacy_url      = function_exists( 'nexus_get_page_url' )
+	? nexus_get_page_url( [ 'datenschutz' ], home_url( '/datenschutz/' ) )
+	: home_url( '/datenschutz/' );
 
 get_header();
 ?>
 
-<section class="blog-home blog-editorial blog-editorial--index" aria-labelledby="blog-archive-heading">
-	<div class="blog-editorial__inner">
-		<header class="blog-editorial-hero" aria-labelledby="blog-archive-heading" data-track-section="blog_archive_hero">
-			<span class="blog-editorial-kicker">Blog & Markteinordnung</span>
-			<h1 id="blog-archive-heading" class="blog-editorial-hero__title">
+<main id="main" class="site-main blog-bell hu-hp" data-track-section="blog_archive">
+	<section class="blog-bell__hero" aria-labelledby="blog-archive-heading">
+		<div class="blog-bell__container">
+			<span class="blog-bell__eyebrow">
+				<span class="blog-bell__eyebrow-dot" aria-hidden="true"></span>
+				Blog
+			</span>
+			<h1 id="blog-archive-heading" class="blog-bell__title">
 				Analysen für eigene Anfrage-Systeme.
 			</h1>
-			<p class="blog-editorial-hero__lead">
-				Keine Magazinoptik. Keine Stockfoto-Sammlung. Hier stehen die Themen, die bei Solar-, SHK- und B2B-Websites über Sichtbarkeit, Lead-Qualität und Abschlusskosten entscheiden.
+			<p class="blog-bell__lead">
+				Portal-Abhängigkeit, Leadkosten, Tracking und Vorqualifizierung — für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum, die eigene Nachfrage-Infrastruktur aufbauen wollen.
 			</p>
-		</header>
+		</div>
+	</section>
 
-		<nav class="blog-editorial-filter" aria-label="<?php esc_attr_e( 'Artikel nach Kategorie filtern', 'blocksy-child' ); ?>" data-track-section="blog_archive_filter">
-			<a
-				class="blog-editorial-filter__link is-active"
-				href="<?php echo esc_url( $blog_url ); ?>"
-				aria-current="page"
-				data-track-action="blog_filter_all"
-				data-track-category="navigation"
-				data-track-section="blog_archive_filter"
-			>
-				Alle
-			</a>
-			<?php foreach ( $categories as $category ) : ?>
-				<?php $category_url = get_category_link( $category->term_id ); ?>
-				<?php if ( is_wp_error( $category_url ) ) : ?>
-					<?php continue; ?>
-				<?php endif; ?>
+	<?php if ( ! empty( $blog_categories ) ) : ?>
+		<nav class="blog-bell__filter" aria-label="<?php esc_attr_e( 'Artikel nach Kategorie filtern', 'blocksy-child' ); ?>" data-track-section="blog_archive_filter">
+			<div class="blog-bell__filter-inner">
+				<span class="blog-bell__filter-label">Themen</span>
 				<a
-					class="blog-editorial-filter__link"
-					href="<?php echo esc_url( $category_url ); ?>"
-					data-track-action="<?php echo esc_attr( 'blog_filter_' . $category->slug ); ?>"
+					class="blog-bell__chip <?php echo $current_category_id ? '' : 'is-active'; ?>"
+					href="<?php echo esc_url( $blog_url ); ?>"
+					<?php echo $current_category_id ? '' : 'aria-current="page"'; ?>
+					data-track-action="blog_filter_all"
 					data-track-category="navigation"
-					data-track-section="blog_archive_filter"
 				>
-					<?php echo esc_html( $category->name ); ?>
+					Alle
 				</a>
-			<?php endforeach; ?>
-		</nav>
-
-		<section class="blog-editorial-clusters" aria-label="<?php esc_attr_e( 'Beiträge nach strategischen Themenclustern', 'blocksy-child' ); ?>" data-track-section="blog_archive_clusters">
-			<?php if ( ! empty( $blog_posts ) ) : ?>
-				<?php $rendered_posts = 0; ?>
-				<?php foreach ( $blog_topic_clusters as $cluster_key => $cluster ) : ?>
-					<?php if ( empty( $blog_posts_by_cluster[ $cluster_key ] ) ) : ?>
-						<?php continue; ?>
-					<?php endif; ?>
-					<section class="blog-topic-cluster" aria-labelledby="blog-cluster-<?php echo esc_attr( $cluster_key ); ?>" data-track-section="<?php echo esc_attr( 'blog_cluster_' . $cluster_key ); ?>">
-						<header class="blog-topic-cluster__head">
-							<h2 id="blog-cluster-<?php echo esc_attr( $cluster_key ); ?>" class="blog-topic-cluster__title">
-								<?php echo esc_html( $cluster['title'] ); ?>
-							</h2>
-							<p class="blog-topic-cluster__desc"><?php echo esc_html( $cluster['desc'] ); ?></p>
-						</header>
-
-						<div class="blog-editorial-list">
-							<?php foreach ( $blog_posts_by_cluster[ $cluster_key ] as $cluster_post ) : ?>
-								<?php
-								++$rendered_posts;
-
-								$cluster_post_id  = (int) $cluster_post->ID;
-								$post_categories  = get_the_category( $cluster_post_id );
-								$primary_category = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
-								$reading_time     = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time( $cluster_post_id ) : 0;
-								?>
-								<article class="blog-editorial-item">
-									<div class="blog-editorial-item__meta">
-										<?php if ( $primary_category instanceof WP_Term ) : ?>
-											<a class="blog-editorial-topic" href="<?php echo esc_url( get_category_link( $primary_category->term_id ) ); ?>">
-												<?php echo esc_html( $primary_category->name ); ?>
-											</a>
-										<?php endif; ?>
-										<time datetime="<?php echo esc_attr( get_the_date( 'c', $cluster_post_id ) ); ?>">
-											<?php echo esc_html( get_the_date( 'd. M Y', $cluster_post_id ) ); ?>
-										</time>
-										<?php if ( $reading_time > 0 ) : ?>
-											<span><?php echo esc_html( sprintf( '%d Min. Lesezeit', $reading_time ) ); ?></span>
-										<?php endif; ?>
-									</div>
-
-									<h3 class="blog-editorial-item__title">
-										<a href="<?php echo esc_url( get_permalink( $cluster_post_id ) ); ?>">
-											<?php echo esc_html( get_the_title( $cluster_post_id ) ); ?>
-										</a>
-									</h3>
-
-									<p class="blog-editorial-item__excerpt">
-										<?php echo esc_html( wp_trim_words( get_the_excerpt( $cluster_post_id ), 28, '...' ) ); ?>
-									</p>
-								</article>
-
-								<?php if ( 3 === $rendered_posts ) : ?>
-									<aside class="blog-editorial-inline-cta" aria-labelledby="blog-inline-cta-heading" data-track-section="blog_archive_inline_cta">
-										<span class="blog-editorial-kicker">60-Sekunden-Marktcheck</span>
-										<h3 id="blog-inline-cta-heading" class="blog-editorial-inline-cta__title">
-											Genug gelesen. Prüfen, ob der Markt überhaupt trägt.
-										</h3>
-										<p class="blog-editorial-inline-cta__text">
-											Projektwert, Zielgebiet, Vertriebsreife und Website-Fundament werden händisch eingeordnet. Ergebnis: klare nächste Priorität statt weiterer Artikel-Warteschleife.
-										</p>
-										<a
-											class="blog-editorial-inline-cta__link"
-											href="<?php echo esc_url( $audit_url ); ?>"
-											data-track-action="cta_blog_archive_inline_marktcheck"
-											data-track-category="lead_gen"
-											data-track-section="blog_archive_inline_cta"
-										>
-											Marktcheck starten
-										</a>
-									</aside>
-								<?php endif; ?>
-							<?php endforeach; ?>
-						</div>
-					</section>
+				<?php foreach ( $blog_categories as $category ) : ?>
+					<?php
+					$category_url = get_category_link( $category->term_id );
+					if ( is_wp_error( $category_url ) ) {
+						continue;
+					}
+					$is_active = $current_category_id === (int) $category->term_id;
+					?>
+					<a
+						class="blog-bell__chip <?php echo $is_active ? 'is-active' : ''; ?>"
+						href="<?php echo esc_url( $category_url ); ?>"
+						<?php echo $is_active ? 'aria-current="page"' : ''; ?>
+						data-track-action="<?php echo esc_attr( 'blog_filter_' . $category->slug ); ?>"
+						data-track-category="navigation"
+					>
+						<?php echo esc_html( $category->name ); ?>
+					</a>
 				<?php endforeach; ?>
+			</div>
+		</nav>
+	<?php endif; ?>
 
-				<div class="blog-editorial-pagination">
+	<section class="blog-bell__main" data-track-section="blog_archive_grid">
+		<div class="blog-bell__container">
+			<?php if ( have_posts() ) : ?>
+				<div class="blog-bell__grid">
+					<?php
+					$post_index = 0;
+					while ( have_posts() ) :
+						the_post();
+						$post_index++;
+
+						$post_id          = get_the_ID();
+						$post_categories  = get_the_category( $post_id );
+						$primary_category = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
+						$reading_time     = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time( $post_id ) : 0;
+						$excerpt          = wp_strip_all_tags( get_the_excerpt() );
+						$excerpt          = $excerpt ? wp_trim_words( $excerpt, 28, '…' ) : '';
+						$is_featured      = ( 1 === $post_index ) && ! is_paged() && ! $current_category_id;
+						$card_classes     = 'blog-bell__card' . ( $is_featured ? ' is-featured' : '' );
+						?>
+						<article
+							class="<?php echo esc_attr( $card_classes ); ?>"
+							data-reveal
+							<?php if ( $primary_category instanceof WP_Term ) : ?>
+								data-category="<?php echo esc_attr( $primary_category->slug ); ?>"
+							<?php endif; ?>
+						>
+							<a class="blog-bell__card-link" href="<?php the_permalink(); ?>" aria-labelledby="blog-bell-card-title-<?php echo esc_attr( (string) $post_id ); ?>">
+								<header class="blog-bell__card-meta">
+									<?php if ( $primary_category instanceof WP_Term ) : ?>
+										<span class="blog-bell__card-cat"><?php echo esc_html( $primary_category->name ); ?></span>
+									<?php endif; ?>
+									<time class="blog-bell__card-date" datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
+										<?php echo esc_html( get_the_date( 'd. M Y' ) ); ?>
+									</time>
+								</header>
+
+								<h2 id="blog-bell-card-title-<?php echo esc_attr( (string) $post_id ); ?>" class="blog-bell__card-title">
+									<?php the_title(); ?>
+								</h2>
+
+								<?php if ( '' !== $excerpt ) : ?>
+									<p class="blog-bell__card-excerpt"><?php echo esc_html( $excerpt ); ?></p>
+								<?php endif; ?>
+
+								<footer class="blog-bell__card-footer">
+									<?php if ( $reading_time > 0 ) : ?>
+										<span class="blog-bell__card-readtime"><?php echo esc_html( sprintf( '%d Min.', $reading_time ) ); ?></span>
+									<?php else : ?>
+										<span class="blog-bell__card-readtime">Lesen</span>
+									<?php endif; ?>
+									<svg class="blog-bell__card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+										<path d="M5 12h14M13 6l6 6-6 6"></path>
+									</svg>
+								</footer>
+							</a>
+						</article>
+					<?php endwhile; ?>
+				</div>
+
+				<nav class="blog-bell__pagination" aria-label="<?php esc_attr_e( 'Seiten', 'blocksy-child' ); ?>">
 					<?php
 					the_posts_pagination(
 						[
 							'mid_size'  => 1,
-							'prev_text' => __( 'Zurück', 'blocksy-child' ),
-							'next_text' => __( 'Weiter', 'blocksy-child' ),
+							'prev_text' => esc_html__( 'Zurück', 'blocksy-child' ),
+							'next_text' => esc_html__( 'Weiter', 'blocksy-child' ),
 						]
 					);
 					?>
-				</div>
+				</nav>
 			<?php else : ?>
-				<p class="blog-editorial-empty">
+				<p class="blog-bell__empty">
 					<?php esc_html_e( 'Aktuell sind keine Beiträge veröffentlicht.', 'blocksy-child' ); ?>
 				</p>
 			<?php endif; ?>
-		</section>
 
-		<section class="blog-editorial-cta" aria-labelledby="blog-archive-cta-heading" data-track-section="blog_archive_final_cta">
-			<span class="blog-editorial-kicker">Nächster Schritt</span>
-			<h2 id="blog-archive-cta-heading" class="blog-editorial-cta__title">
-				Nicht mehr Inhalte lesen, bevor das System geprüft ist.
-			</h2>
-			<p class="blog-editorial-cta__text">
-				Der regionale Marktcheck prüft Projektwert, Zielgebiet, Vertriebsreife und Website-Fundament. Wer nicht passt, bekommt keine Verkaufsstrecke, sondern eine klare Absage.
-			</p>
-			<a
-				class="blog-editorial-cta__link"
-				href="<?php echo esc_url( $audit_url ); ?>"
-				data-track-action="cta_blog_archive_marktcheck"
-				data-track-category="lead_gen"
-				data-track-section="blog_archive_final_cta"
+			<aside class="blog-bell__bottom-cta" aria-labelledby="blog-bell-bottom-cta-heading" data-track-section="blog_archive_final_cta">
+				<span class="blog-bell__eyebrow">Nächster Schritt</span>
+				<h2 id="blog-bell-bottom-cta-heading" class="blog-bell__bottom-cta-title">
+					Nicht mehr Inhalte lesen, bevor das System geprüft ist.
+				</h2>
+				<p class="blog-bell__bottom-cta-text">
+					Der regionale Marktcheck prüft Projektwert, Zielgebiet, Vertriebsreife und Website-Fundament. Wer nicht passt, bekommt keine Verkaufsstrecke, sondern eine klare Absage.
+				</p>
+				<a
+					class="blog-bell__bottom-cta-link"
+					href="<?php echo esc_url( $audit_url ); ?>"
+					data-track-action="cta_blog_archive_marktcheck"
+					data-track-category="lead_gen"
+				>
+					Marktcheck 48 h starten
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+						<path d="M5 12h14M13 6l6 6-6 6"></path>
+					</svg>
+				</a>
+			</aside>
+		</div>
+	</section>
+</main>
+
+<button
+	class="blog-bell__bell"
+	type="button"
+	id="blog-bell-trigger"
+	aria-label="<?php esc_attr_e( 'Neue Artikel per E-Mail abonnieren', 'blocksy-child' ); ?>"
+	aria-haspopup="dialog"
+	aria-expanded="false"
+	aria-controls="blog-bell-modal"
+>
+	<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+		<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+		<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+	</svg>
+	<span class="blog-bell__bell-label">E-Mail-Updates</span>
+</button>
+
+<div
+	class="blog-bell__modal"
+	id="blog-bell-modal"
+	role="dialog"
+	aria-modal="true"
+	aria-labelledby="blog-bell-modal-title"
+	hidden
+>
+	<div class="blog-bell__modal-backdrop" data-blog-bell-dismiss></div>
+
+	<div class="blog-bell__modal-panel" role="document">
+		<button
+			class="blog-bell__modal-close"
+			type="button"
+			data-blog-bell-dismiss
+			aria-label="<?php esc_attr_e( 'Schließen', 'blocksy-child' ); ?>"
+		>
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+				<path d="M18 6L6 18M6 6l12 12"></path>
+			</svg>
+		</button>
+
+		<span class="blog-bell__eyebrow">Blog-Benachrichtigungen</span>
+		<h2 id="blog-bell-modal-title" class="blog-bell__modal-title">
+			<?php echo esc_html( $blog_notify_copy['headline'] ?? 'Neue Artikel per E-Mail' ); ?>
+		</h2>
+		<p class="blog-bell__modal-body">
+			<?php echo esc_html( $blog_notify_copy['body'] ?? 'Ich schicke nur dann eine kurze Mail, wenn ein neuer Beitrag online ist. Kein Newsletter-Rauschen. Keine Sales-Mails.' ); ?>
+		</p>
+
+		<form class="blog-bell__form" data-blog-notify-form novalidate>
+			<div class="blog-bell__honeypot" aria-hidden="true">
+				<label for="blog-bell-website">Website</label>
+				<input id="blog-bell-website" type="text" name="website" tabindex="-1" autocomplete="off">
+			</div>
+
+			<input type="hidden" name="nonce" value="<?php echo esc_attr( $blog_form_nonce ); ?>">
+			<input type="hidden" name="contextPostId" value="0">
+
+			<label class="screen-reader-text" for="blog-bell-email"><?php esc_html_e( 'E-Mail-Adresse', 'blocksy-child' ); ?></label>
+			<input
+				id="blog-bell-email"
+				class="blog-bell__input"
+				type="email"
+				name="email"
+				placeholder="<?php echo esc_attr( $blog_notify_copy['placeholder'] ?? 'Ihre E-Mail-Adresse' ); ?>"
+				autocomplete="email"
+				required
 			>
-				Regionalen Marktcheck starten
-			</a>
-		</section>
+
+			<button type="submit" class="blog-bell__submit">
+				<?php echo esc_html( $blog_notify_copy['button'] ?? 'Artikel-Benachrichtigungen aktivieren' ); ?>
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+					<path d="M5 12h14M13 6l6 6-6 6"></path>
+				</svg>
+			</button>
+
+			<ul class="blog-bell__trust">
+				<li>Nur neue Artikel</li>
+				<li>Keine Werbemails</li>
+				<li>Jederzeit abmelden</li>
+			</ul>
+
+			<p class="blog-bell__hint">
+				<?php esc_html_e( 'Double-Opt-In über E-Mail.', 'blocksy-child' ); ?>
+				<a href="<?php echo esc_url( $privacy_url ); ?>"><?php esc_html_e( 'Datenschutz', 'blocksy-child' ); ?></a>
+			</p>
+
+			<div class="blog-bell__feedback" data-blog-notify-feedback aria-live="polite"></div>
+		</form>
 	</div>
-</section>
+</div>
 
 <?php get_footer(); ?>

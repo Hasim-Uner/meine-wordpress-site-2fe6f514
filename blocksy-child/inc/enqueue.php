@@ -138,6 +138,7 @@ function hu_enqueue_assets() {
 	// ── B) Blog-Archive Styles ────────────────────────────────────
 	if ( is_home() ) {
 		hu_enqueue_css( 'nexus-blog-archive-css', 'blog-archive.css', [ 'nexus-design-system' ] );
+		hu_enqueue_js( 'nexus-blog-archive-js', 'blog-archive.js', [ 'nexus-core-js' ] );
 	}
 
 	// ── C) Kategorie-Seiten (Pillar Hub) ──────────────────────────
