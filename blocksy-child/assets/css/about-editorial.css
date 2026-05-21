@@ -1,0 +1,429 @@
+/* =============================================================
+   About Editorial — Biografisch-editorial, Drop-Cap, Blueprint-Grid
+   Parallel zu about-page.css. Scoped auf .about-editorial.
+   ============================================================= */
+
+.about-editorial {
+	--ae-bg:        #fbfaf8;
+	--ae-bg-2:      #f7f5f0;
+	--ae-ink:       #1a1a1a;
+	--ae-ink-2:     rgba(26, 26, 26, 0.8);
+	--ae-ink-3:     rgba(26, 26, 26, 0.7);
+	--ae-accent:    #8c6239;
+	--ae-accent-2:  #734f2d;
+	--ae-line:      rgba(140, 98, 57, 0.2);
+	--ae-line-soft: rgba(140, 98, 57, 0.1);
+
+	--ae-radius:    10px;
+
+	position: relative;
+	isolation: isolate;
+	background-color: var(--ae-bg);
+	color: var(--ae-ink);
+	font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	line-height: 1.55;
+
+	background-image:
+		linear-gradient(to right, rgba(140, 98, 57, 0.03) 1px, transparent 1px),
+		linear-gradient(to bottom, rgba(140, 98, 57, 0.03) 1px, transparent 1px);
+	background-size: 40px 40px;
+}
+
+.about-editorial__inner {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 56px);
+}
+
+/* -----------------------------------------------------------
+   Section kicker (Eyebrow)
+----------------------------------------------------------- */
+.about-editorial__kicker,
+.about-editorial__section-kicker,
+.about-editorial__principle-eyebrow,
+.about-editorial__cta-eyebrow {
+	font-family: 'JetBrains Mono', ui-monospace, monospace;
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--ae-accent);
+}
+
+.about-editorial__section-kicker {
+	display: block;
+	margin: 0 0 32px;
+}
+
+.about-editorial__section-kicker--center {
+	text-align: center;
+	margin-bottom: 48px;
+}
+
+/* -----------------------------------------------------------
+   Hero
+----------------------------------------------------------- */
+.about-editorial__hero {
+	margin-bottom: clamp(56px, 8vw, 96px);
+	padding-bottom: clamp(40px, 6vw, 64px);
+	border-bottom: 1px solid var(--ae-line);
+}
+
+.about-editorial__h1 {
+	font-family: 'Satoshi', 'Figtree', -apple-system, sans-serif;
+	font-size: clamp(36px, 5vw, 60px);
+	font-weight: 800;
+	line-height: 1.05;
+	letter-spacing: -0.01em;
+	margin: 14px 0 24px;
+	color: var(--ae-ink);
+	text-wrap: balance;
+	max-width: 22ch;
+}
+
+.about-editorial__lead {
+	font-size: clamp(18px, 2.2vw, 22px);
+	line-height: 1.55;
+	color: var(--ae-ink-2);
+	font-weight: 300;
+	max-width: 60ch;
+	margin: 0;
+}
+
+/* -----------------------------------------------------------
+   Biographic Path + Portrait Card (Split)
+----------------------------------------------------------- */
+.about-editorial__split {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: clamp(40px, 6vw, 64px);
+	margin-bottom: clamp(80px, 12vw, 128px);
+	align-items: start;
+}
+
+@media (min-width: 900px) {
+	.about-editorial__split {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+	}
+}
+
+.about-editorial__path {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.about-editorial__path-item {
+	position: relative;
+	display: grid;
+	grid-template-columns: 40px 1fr;
+	gap: 22px;
+	align-items: start;
+}
+
+.about-editorial__path-item:not(:last-child)::before {
+	content: '';
+	position: absolute;
+	left: 19px;
+	top: 44px;
+	bottom: -40px;
+	width: 2px;
+	background-image: repeating-linear-gradient(
+		to bottom,
+		var(--ae-accent) 0,
+		var(--ae-accent) 4px,
+		transparent 4px,
+		transparent 8px
+	);
+}
+
+.about-editorial__path-num {
+	position: relative;
+	z-index: 1;
+	width: 40px;
+	height: 40px;
+	border-radius: 9999px;
+	border: 1px solid var(--ae-accent);
+	background: var(--ae-bg);
+	color: var(--ae-accent);
+	font-family: 'JetBrains Mono', ui-monospace, monospace;
+	font-size: 13px;
+	font-weight: 700;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.about-editorial__path-title {
+	font-family: 'Satoshi', 'Figtree', sans-serif;
+	font-size: 18px;
+	font-weight: 700;
+	margin: 4px 0 8px;
+	color: var(--ae-ink);
+}
+
+.about-editorial__path-text {
+	color: var(--ae-ink-3);
+	font-size: 15px;
+	line-height: 1.6;
+	margin: 0;
+}
+
+/* Portrait card */
+.about-editorial__portrait-card {
+	background: var(--ae-bg-2);
+	border: 1px solid var(--ae-line);
+	border-radius: var(--ae-radius);
+	padding: 24px;
+}
+
+@media (min-width: 900px) {
+	.about-editorial__portrait-card {
+		position: sticky;
+		top: 32px;
+	}
+}
+
+.about-editorial__portrait {
+	width: 100%;
+	height: auto;
+	display: block;
+	border-radius: 6px;
+	border: 1px solid var(--ae-line-soft);
+	margin-bottom: 22px;
+	filter: grayscale(100%);
+	transition: filter 0.5s ease;
+}
+
+.about-editorial__portrait-card:hover .about-editorial__portrait {
+	filter: grayscale(0%);
+}
+
+.about-editorial__meta {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.about-editorial__meta-row {
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 10px 0;
+	font-family: 'JetBrains Mono', ui-monospace, monospace;
+	font-size: 12px;
+	color: var(--ae-accent);
+}
+
+.about-editorial__meta-row + .about-editorial__meta-row {
+	border-top: 1px solid var(--ae-line-soft);
+}
+
+.about-editorial__meta-row dt {
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	margin: 0;
+}
+
+.about-editorial__meta-row dd {
+	margin: 0;
+	font-weight: 700;
+	text-align: right;
+}
+
+/* -----------------------------------------------------------
+   Manifest
+----------------------------------------------------------- */
+.about-editorial__manifest {
+	margin-bottom: clamp(80px, 12vw, 128px);
+	padding: clamp(48px, 8vw, 80px) 0;
+	border-top: 1px solid var(--ae-line);
+	border-bottom: 1px solid var(--ae-line);
+}
+
+.about-editorial__manifest-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 24px;
+}
+
+@media (min-width: 760px) {
+	.about-editorial__manifest-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.about-editorial__principle {
+	background: rgba(247, 245, 240, 0.5);
+	border: 1px solid var(--ae-line-soft);
+	border-radius: var(--ae-radius);
+	padding: 28px;
+	display: flex;
+	flex-direction: column;
+	transition: border-color 0.3s ease;
+}
+
+.about-editorial__principle:hover {
+	border-color: rgba(140, 98, 57, 0.4);
+}
+
+.about-editorial__principle-eyebrow {
+	display: block;
+	margin: 0 0 14px;
+}
+
+.about-editorial__principle-title {
+	font-family: 'Satoshi', 'Figtree', sans-serif;
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 1.25;
+	margin: 0 0 16px;
+	color: var(--ae-ink);
+}
+
+.about-editorial__principle-body {
+	color: var(--ae-ink-2);
+	font-size: 14.5px;
+	line-height: 1.65;
+	margin: 0 0 24px;
+}
+
+.about-editorial__principle-detail {
+	font-family: 'JetBrains Mono', ui-monospace, monospace;
+	font-size: 12px;
+	font-style: italic;
+	color: var(--ae-accent);
+	border-top: 1px solid var(--ae-line-soft);
+	padding-top: 16px;
+	margin: auto 0 0;
+}
+
+/* -----------------------------------------------------------
+   Biography prose (Drop-Cap)
+----------------------------------------------------------- */
+.about-editorial__bio {
+	max-width: 720px;
+	margin: 0 auto clamp(80px, 12vw, 128px);
+}
+
+.about-editorial__bio-prose {
+	font-family: 'Source Serif Pro', 'Georgia', serif;
+	color: rgba(26, 26, 26, 0.9);
+}
+
+.about-editorial__bio-prose p {
+	font-size: clamp(17px, 1.6vw, 20px);
+	line-height: 1.75;
+	margin: 0 0 28px;
+	text-align: justify;
+	hyphens: auto;
+}
+
+.about-editorial__dropcap::first-letter {
+	font-family: 'Satoshi', 'Outfit', 'Figtree', sans-serif;
+	font-size: 4.5rem;
+	font-weight: 700;
+	float: left;
+	line-height: 0.85;
+	margin: 6px 12px 0 0;
+	color: var(--ae-accent);
+}
+
+/* -----------------------------------------------------------
+   Final CTA Card
+----------------------------------------------------------- */
+.about-editorial__cta-card {
+	max-width: 760px;
+	margin: 0 auto;
+	background: var(--ae-bg-2);
+	border: 1px solid var(--ae-line);
+	border-radius: var(--ae-radius);
+	padding: clamp(40px, 6vw, 64px) clamp(24px, 5vw, 56px);
+	text-align: center;
+}
+
+.about-editorial__cta-eyebrow {
+	display: block;
+	margin-bottom: 10px;
+}
+
+.about-editorial__cta-title {
+	font-family: 'Satoshi', 'Figtree', sans-serif;
+	font-size: clamp(26px, 3.5vw, 36px);
+	font-weight: 800;
+	margin: 0 0 16px;
+	color: var(--ae-ink);
+}
+
+.about-editorial__cta-text {
+	color: var(--ae-ink-3);
+	font-size: 15.5px;
+	line-height: 1.65;
+	max-width: 52ch;
+	margin: 0 auto 28px;
+}
+
+.about-editorial__cta-btn {
+	display: inline-block;
+	background: var(--ae-accent);
+	color: #fff;
+	padding: 16px 32px;
+	border-radius: 6px;
+	font-weight: 700;
+	font-size: 14.5px;
+	letter-spacing: 0.02em;
+	text-decoration: none;
+	box-shadow: 0 6px 18px -8px rgba(140, 98, 57, 0.55);
+	transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.about-editorial__cta-btn:hover,
+.about-editorial__cta-btn:focus-visible {
+	background: var(--ae-accent-2);
+	transform: translateY(-1px);
+	color: #fff;
+}
+
+.about-editorial__cta-meta {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px 22px;
+	margin: 22px 0 0;
+	font-family: 'JetBrains Mono', ui-monospace, monospace;
+	font-size: 11.5px;
+	color: var(--ae-accent);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.about-editorial__cta-meta span + span {
+	position: relative;
+	padding-left: 22px;
+}
+
+.about-editorial__cta-meta span + span::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 4px;
+	height: 4px;
+	background: var(--ae-accent);
+	border-radius: 9999px;
+	transform: translateY(-50%);
+}
+
+/* -----------------------------------------------------------
+   Reduced motion
+----------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+	.about-editorial__portrait,
+	.about-editorial__cta-btn,
+	.about-editorial__principle {
+		transition: none;
+	}
+}

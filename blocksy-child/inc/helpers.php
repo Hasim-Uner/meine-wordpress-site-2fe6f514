@@ -1443,6 +1443,7 @@ function nexus_should_hide_footer_primary_cta() {
 
 	$page_templates = [
 		'template-about.php',
+		'template-about-editorial.php',
 		'page-wordpress-agentur.php',
 		'page-wordpress-agentur-hannover.php',
 		'page-case-studies-e-commerce.php',
