@@ -33,7 +33,7 @@ $e3_conv_before      = $e3_metrics['sales_conversion_before']['display'] ?? '1 �
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
-$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
+$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 
 // ── Inhalt: Portal vs. eigenes System (Problem → Lösung) ──────
 $portal_facts = [

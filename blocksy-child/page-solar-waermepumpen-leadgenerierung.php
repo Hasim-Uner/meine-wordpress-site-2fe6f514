@@ -39,12 +39,12 @@ $e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 �
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? '> 85 %';
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
-$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
-$e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '9 Monaten';
+$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
+$e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '6 Monaten';
 
 // ── Inhaltsmodelle ─────────────────────────────────────────────
 $hero_metrics = [
-	[ 'n' => $e3_cpl_after,  'l' => 'CPL nach 9 Monaten · ' . $e3_case_label ],
+	[ 'n' => $e3_cpl_after,  'l' => 'CPL nach 6 Monaten · ' . $e3_case_label ],
 	[ 'n' => $e3_conv_uplift, 'l' => 'Abschlussquote · Portal-Leads vs. eigenes System' ],
 	[ 'n' => '100 %',         'l' => 'Asset-Eigentum · Code · Tracking · Daten' ],
 ];
@@ -455,17 +455,14 @@ get_header();
 
 					<?php
 					// ── CPL-Kaskade · Blueprint-Dashboard (E3 New Energy Case) ──
-					// 9-Monats-Achse · 150 € → 22 € (animierte SVG-Visualisierung).
+					// 6-Monats-Achse · 150 € → 22 € (animierte SVG-Visualisierung).
 					$cpl_cascade = [
 						[ 'm' => 1, 'v' => 150 ],
-						[ 'm' => 2, 'v' => 128 ],
-						[ 'm' => 3, 'v' => 104 ],
-						[ 'm' => 4, 'v' => 82 ],
-						[ 'm' => 5, 'v' => 64 ],
-						[ 'm' => 6, 'v' => 48 ],
-						[ 'm' => 7, 'v' => 36 ],
-						[ 'm' => 8, 'v' => 28 ],
-						[ 'm' => 9, 'v' => 22 ],
+						[ 'm' => 2, 'v' => 95 ],
+						[ 'm' => 3, 'v' => 65 ],
+						[ 'm' => 4, 'v' => 42 ],
+						[ 'm' => 5, 'v' => 28 ],
+						[ 'm' => 6, 'v' => 22 ],
 					];
 					$cpl_max  = 160;
 					$cpl_chart_w = 480;
@@ -494,11 +491,11 @@ get_header();
 								<span class="sol-hero-dashboard-tag-dot" aria-hidden="true"></span>
 								Live-Telemetrie · E3 New Energy
 							</span>
-							<span id="sol-cpl-dashboard-title" class="sol-display sol-hero-dashboard-title">CPL-Kaskade · 9 Monate</span>
+							<span id="sol-cpl-dashboard-title" class="sol-display sol-hero-dashboard-title">CPL-Kaskade · 6 Monate</span>
 							<span class="sol-hero-dashboard-meta sol-mono">Akquisitionskosten pro qualifizierter Anfrage</span>
 						</figcaption>
 						<div class="sol-hero-dashboard-frame">
-							<svg class="sol-hero-dashboard-svg" viewBox="0 0 <?php echo (int) $cpl_chart_w; ?> <?php echo (int) $cpl_chart_h; ?>" role="img" aria-label="CPL fällt in 9 Monaten von 150 € auf 22 € — Visualisierung der Kosten-Reduktion">
+							<svg class="sol-hero-dashboard-svg" viewBox="0 0 <?php echo (int) $cpl_chart_w; ?> <?php echo (int) $cpl_chart_h; ?>" role="img" aria-label="CPL fällt in 6 Monaten von 150 € auf 22 € — Visualisierung der Kosten-Reduktion">
 								<defs>
 									<pattern id="sol-cpl-grid" width="40" height="20" patternUnits="userSpaceOnUse">
 										<path d="M40 0H0V20" fill="none" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.18"/>
@@ -536,7 +533,7 @@ get_header();
 						</div>
 						<div class="sol-hero-dashboard-legend sol-mono">
 							<span><span class="sol-hero-dashboard-legend-mark"></span>CPL · Eigene Anfrage-Infrastruktur</span>
-							<span>Quelle: E3 New Energy · 9-Monats-Zeitachse · DSGVO-konform</span>
+							<span>Quelle: E3 New Energy · 6-Monats-Zeitachse · DSGVO-konform</span>
 						</div>
 					</figure>
 

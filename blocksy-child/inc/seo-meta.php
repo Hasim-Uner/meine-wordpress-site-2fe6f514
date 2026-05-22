@@ -219,15 +219,15 @@ function hu_get_forced_singular_seo_map() {
 			// /ki-integration-wordpress/ ist noindex. Keine eigenständigen SEO-Signale mehr nötig.
 			'solar-waermepumpen-leadgenerierung' => [
 				'title'       => 'Photovoltaik & Wärmepumpen Leadgenerierung – Portal-Alternative',
-				'description' => sprintf( 'B2B-Leadgenerierung für Solar, Wärmepumpe und Speicher: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3-Referenz: %s niedrigere Cost per Lead in 9 Monaten.', $e3_cpl_reduction ),
+				'description' => sprintf( 'B2B-Leadgenerierung für Solar, Wärmepumpe und Speicher: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3-Referenz: %s niedrigere Cost per Lead in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
 				'title'       => 'Photovoltaik & Wärmepumpen Leadgenerierung – Portal-Alternative',
-				'description' => sprintf( 'B2B-Leadgenerierung für Solar, Wärmepumpe und Speicher: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3-Referenz: %s niedrigere Cost per Lead in 9 Monaten.', $e3_cpl_reduction ),
+				'description' => sprintf( 'B2B-Leadgenerierung für Solar, Wärmepumpe und Speicher: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3-Referenz: %s niedrigere Cost per Lead in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'solar-leads-kaufen-alternative' => [
 				'title'       => 'Solar Leads kaufen? Warum eigene Anfragen den CPL senken',
-				'description' => sprintf( 'Portal-Leads für Photovoltaik und Wärmepumpe sind teuer und mehrfach verkauft. Eigene Anfrage-Systeme senken den Cost per Lead %s – wie bei E3 New Energy in 9 Monaten.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Portal-Leads für Photovoltaik und Wärmepumpe sind teuer und mehrfach verkauft. Eigene Anfrage-Systeme senken den Cost per Lead %s – wie bei E3 New Energy in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'server-side-tracking-b2b' => [
 				'title'       => 'Server-Side Tracking für B2B-Leadgenerierung – DSGVO & CAPI',
@@ -239,7 +239,7 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'eigene-leadgenerierung-vs-portale' => [
 				'title'       => 'Eigene Leadgenerierung vs. Portal-Leads – Vergleich für Solar & SHK',
-				'description' => sprintf( 'Eigene Anfrage-Systeme gegenüber DAA, Aroundhome und Check24: TCO, Exklusivität, Asset-Eigentum, CPL. E3-Referenz: %s niedrigere Cost per Lead in 9 Monaten.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Eigene Anfrage-Systeme gegenüber DAA, Aroundhome und Check24: TCO, Exklusivität, Asset-Eigentum, CPL. E3-Referenz: %s niedrigere Cost per Lead in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'lead-funnel-solar' => [
 				'title'       => 'Lead-Funnel Solar & Wärmepumpe – Aufbau für B2B-Marketing',
@@ -251,7 +251,7 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'cost-per-lead-photovoltaik' => [
 				'title'       => 'Cost per Lead Photovoltaik: Was Solar-Anfragen wirklich kosten',
-				'description' => sprintf( 'CPL-Rechnung für Photovoltaik- und Wärmepumpen-Anbieter: Portal-Leads vs. eigenes System. E3-Referenz: %s niedrigere Kosten pro Anfrage in 9 Monaten.', $e3_cpl_reduction ),
+				'description' => sprintf( 'CPL-Rechnung für Photovoltaik- und Wärmepumpen-Anbieter: Portal-Leads vs. eigenes System. E3-Referenz: %s niedrigere Kosten pro Anfrage in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'qualifizierte-pv-anfragen' => [
 				'title'       => 'Qualifizierte PV-Anfragen: 4 Merkmale für hochwertige Solar-Leads',
@@ -733,7 +733,7 @@ function hu_get_e3_methodology_case_title() {
  * @return string
  */
 function hu_get_e3_methodology_case_description() {
-	return 'Wie E3 New Energy durch eigenes Anfrage-System statt Portal-Leads den CPL um über 85 % gesenkt hat: 1.750+ qualifizierte Photovoltaik- und Wärmepumpen-Anfragen, 12 % Abschlussquote, 9 Monate.';
+	return 'Wie E3 New Energy durch eigenes Anfrage-System statt Portal-Leads den CPL um über 85 % gesenkt hat: 1.750+ qualifizierte Photovoltaik- und Wärmepumpen-Anfragen, 12 % Abschlussquote, 6 Monate.';
 }
 
 /**

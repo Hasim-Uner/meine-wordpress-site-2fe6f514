@@ -29,8 +29,8 @@ $e3_metrics        = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metri
 $e3_lead_count     = $e3_metrics['lead_count']['display']        ?? '1.750+';
 $e3_sales_conv     = $e3_metrics['sales_conversion']['display']  ?? '12 %';
 $e3_cpl_reduction  = $e3_metrics['cpl_reduction']['display']     ?? 'über 85 %';
-$e3_timeframe      = $e3_metrics['timeframe']['display']         ?? '9 Monate';
-$e3_timeframe_dat  = $e3_metrics['timeframe']['display_dative']  ?? '9 Monaten';
+$e3_timeframe      = $e3_metrics['timeframe']['display']         ?? '6 Monate';
+$e3_timeframe_dat  = $e3_metrics['timeframe']['display_dative']  ?? '6 Monaten';
 $e3_cpl_before     = $e3_metrics['cpl_before']['display']        ?? '150 €';
 $e3_cpl_after      = $e3_metrics['cpl_after']['display']         ?? '22 €';
 $contact_url       = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
@@ -654,7 +654,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Bei E3 New Energy: erste qualifizierte Anfragen nach 4–6 Wochen, voller Effekt nach 9 Monaten. Schnellere Versprechen sind unseriös — Abschlussquoten verlangen einen sauberen Trichter, nicht nur ein Logo-Update.</div>
+						<div class="hu-faq-item__a-inner">Bei E3 New Energy: erste qualifizierte Anfragen nach 4–6 Wochen, voller Effekt nach 6 Monaten. Schnellere Versprechen sind unseriös — Abschlussquoten verlangen einen sauberen Trichter, nicht nur ein Logo-Update.</div>
 					</div>
 				</div>
 

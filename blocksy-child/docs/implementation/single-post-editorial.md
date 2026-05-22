@@ -112,7 +112,7 @@ Inline color helpers inside: `.accent` (copper), `.good`, `.bad`, `.warn`, `.com
       <div class="casestudy-label">Fallstudie</div>
       <div class="casestudy-name">E3 New Energy</div>
     </div>
-    <div class="casestudy-meta">9 Monate<br>Vollkostenbasiert</div>
+    <div class="casestudy-meta">6 Monate<br>Vollkostenbasiert</div>
   </div>
   <div class="casestudy-stats">
     <div class="casestudy-stat">

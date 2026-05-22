@@ -27,7 +27,7 @@ $portrait_url = function_exists( 'hu_get_profile_image_url' ) ? hu_get_profile_i
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
-$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
+$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 $e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 2 % → 12 %';
 $e3_conv_uplift_lbl  = $e3_metrics['sales_conversion_uplift']['label'] ?? 'Anstieg der Abschlussquote durch eigenes System';
 
