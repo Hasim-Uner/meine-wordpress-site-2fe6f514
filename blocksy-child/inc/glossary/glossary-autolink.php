@@ -147,7 +147,7 @@ function nexus_glossary_autolink( $content ) {
 			'url'        => $url,
 			'title'      => sprintf( 'Solar-Pillar: %s', $phrase ),
 			'class'      => 'glossary-autolink glossary-autolink--solar',
-			'linked_key' => 'solar_pillar',
+			'linked_key' => 'solar_pillar:' . sanitize_title( $phrase ),
 		];
 	}
 
