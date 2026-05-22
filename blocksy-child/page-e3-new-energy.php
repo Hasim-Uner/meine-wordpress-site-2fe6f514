@@ -19,7 +19,7 @@ $metrics = [
 	'150 € → 22 € CPL',
 	'1.750+ Anfragen',
 	'1 – 2 % → 12 % Abschlussquote',
-	'9 Monate Laufzeit',
+	'6 Monate Laufzeit',
 ];
 
 $hypotheses = [
@@ -78,7 +78,7 @@ $timeline_phases = [
 		'body'  => 'CRM-Anbindung produktiv, Lead-Score aktiv, Server-Side Tracking attribuiert sauber. Vertrieb arbeitet ausschließlich auf eigenen Anfragen, Portal-Einkauf wird heruntergefahren.',
 	],
 	[
-		'title' => 'Monate 4–9 — Optimierung',
+		'title' => 'Monate 4–6 — Optimierung',
 		'body'  => 'Auf Basis der nun belastbaren Daten wurden Audiences geschärft, Creatives iteriert, Formular-Felder gestrafft, Conversion-Pfade getestet. CPL stabilisierte sich bei ~22 € pro Anfrage. Conversion auf Auftrag erreichte 12 % — kein Viessmann-Niveau, aber deutlich über dem 1–5 %-Korridor der Portal-Leads.',
 	],
 ];
@@ -91,7 +91,7 @@ $transferable = [
 ];
 
 $specific = [
-	'Konkrete Lead-Kosten hängen von Region, Produktmix und Werbedruck der Mitbewerber ab. 22 € CPL ist kein Versprechen, sondern ein Endpunkt einer 9-Monats-Optimierung.',
+	'Konkrete Lead-Kosten hängen von Region, Produktmix und Werbedruck der Mitbewerber ab. 22 € CPL ist kein Versprechen, sondern ein Endpunkt einer 6-Monats-Strecke aus Implementierung und Optimierung.',
 	'12 % Conversion auf Auftrag setzt einen funktionierenden Außendienst voraus. Ohne den nutzt das beste Anfrage-System nichts.',
 	'Hersteller-Partner-Programme wie das von Viessmann sind eine wertvolle Zusatzquelle, ersetzen aber kein eigenes System — Partner-Kontingente sind begrenzt und nicht steuerbar.',
 ];
@@ -147,7 +147,7 @@ get_header();
 					<?php endforeach; ?>
 				</div>
 
-				<p class="e3-hero__micro" data-reveal>Mandat E3 New Energy. Implementierungsphase 3 Monate, Optimierung 6 Monate.</p>
+				<p class="e3-hero__micro" data-reveal>Mandat E3 New Energy. Implementierungsphase 3 Monate, Optimierung 3 Monate.</p>
 			</div>
 		</section>
 
@@ -187,7 +187,7 @@ get_header();
 					<?php endforeach; ?>
 				</div>
 
-				<p class="e3-coda" data-reveal>Die Hypothese war einfach: Wenn ein eigenes Anfrage-System diese vier Eigenschaften strukturell nachbaut, sollte die Conversion sich denen der Viessmann-Anfragen annähern. Das war das Ziel der nächsten neun Monate.</p>
+				<p class="e3-coda" data-reveal>Die Hypothese war einfach: Wenn ein eigenes Anfrage-System diese vier Eigenschaften strukturell nachbaut, sollte die Conversion sich denen der Viessmann-Anfragen annähern. Das war das Ziel der nächsten sechs Monate.</p>
 			</div>
 		</section>
 
@@ -217,7 +217,7 @@ get_header();
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
 					<p class="e3-kicker">Timeline</p>
-					<h2 class="e3-section__title" id="verlauf-title">Drei Monate Implementierung. Sechs Monate Optimierung.</h2>
+					<h2 class="e3-section__title" id="verlauf-title">Drei Monate Implementierung. Drei Monate Optimierung.</h2>
 				</div>
 
 				<div class="e3-timeline">

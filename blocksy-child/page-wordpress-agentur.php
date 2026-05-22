@@ -189,7 +189,7 @@ get_header();
 							<span class="ag-hero-viz__live-dot" aria-hidden="true"></span>
 							Verifizierter Referenzfall · E3 New Energy
 						</span>
-						<h2 class="ag-hero-viz__title">CPL-Senkung in 9 Monaten</h2>
+						<h2 class="ag-hero-viz__title">CPL-Senkung in 6 Monaten</h2>
 						<p class="ag-hero-viz__sub">Kosten pro qualifizierter B2B-Anfrage — vor und nach dem eigenen Anfrage-System.</p>
 					</header>
 
@@ -268,7 +268,7 @@ get_header();
 		</div>
 
 		<div class="wp-agentur-proof-cta">
-			<p>9 Monate, 1.750+ qualifizierte Anfragen, messbare Reduktion der Leadkosten.</p>
+			<p>6 Monate, 1.750+ qualifizierte Anfragen, messbare Reduktion der Leadkosten.</p>
 			<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_proof_strip_e3" data-track-category="navigation" data-track-section="proof_strip">
 				E3-Case im Detail ansehen
 			</a>
@@ -303,7 +303,7 @@ get_header();
 			<div class="wp-agentur-segment-card">
 				<span class="wp-agentur-segment-card__tag">Womit</span>
 				<h3>Mit einer Anfrage-System-Methode, validiert am E3-Case</h3>
-				<p>CPL von 150 € auf 22 € gesenkt, 1.750+ qualifizierte Anfragen in 9 Monaten und 12 % Abschlussquote.</p>
+				<p>CPL von 150 € auf 22 € gesenkt, 1.750+ qualifizierte Anfragen in 6 Monaten und 12 % Abschlussquote.</p>
 			</div>
 		</div>
 	</div>
@@ -652,8 +652,8 @@ get_header();
 			</div>
 			<div class="wp-agentur-case-card">
 				<span class="wp-agentur-case-card__eyebrow">Zeitraum</span>
-				<h3>9 Monate</h3>
-				<p>In neun Monaten von portalabhängiger Leadbeschaffung zu einem eigenen, messbaren Anfrage-System.</p>
+				<h3>6 Monate</h3>
+				<p>In sechs Monaten von portalabhängiger Leadbeschaffung zu einem eigenen, messbaren Anfrage-System.</p>
 			</div>
 			<div class="wp-agentur-case-card wp-agentur-case-card--cta">
 				<span class="wp-agentur-case-card__eyebrow">Nächster Schritt</span>

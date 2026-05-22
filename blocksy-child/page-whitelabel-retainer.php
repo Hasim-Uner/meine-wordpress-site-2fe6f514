@@ -22,7 +22,7 @@ $cpl_after      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after',
 $cpl_reduction  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', '−85 %' )   : '−85 %';
 $lead_count     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' )     : '1.750+';
 $sales_conv     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '12 %' ) : '12 %';
-$timeframe      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display', '9 Monate' )    : '9 Monate';
+$timeframe      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display', '6 Monate' )    : '6 Monate';
 
 $cpl_before_int    = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'cpl_before', 'counter_target', 150 ) : 150;
 $cpl_after_int     = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'cpl_after',  'counter_target', 22 )  : 22;

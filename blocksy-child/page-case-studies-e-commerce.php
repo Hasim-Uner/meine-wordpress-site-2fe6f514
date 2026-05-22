@@ -80,7 +80,7 @@ $e3_sales_rate  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conve
 					<ul class="results-bullet-list">
 						<li>Naturexperiment aus zwei Anfrage-Quellen</li>
 						<li>Vier Eigenschaften strukturell rekonstruiert</li>
-						<li>Drei Monate Implementierung, sechs Monate Optimierung</li>
+						<li>Drei Monate Implementierung, drei Monate Optimierung</li>
 					</ul>
 
 					<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_results_e3_methodology" data-track-category="trust">

@@ -73,7 +73,7 @@ Ein spezialisierter Anbieter kann ein guter Kanal sein. Strategisch bleibt aber 
 
 ## Die strategische Alternative: Ownership statt Lead-Miete
 
-Ein eigenes Anfrage-System mit Money Page, Server-Side-Tracking, Vorqualifizierung und CRM-Übergabe erzeugt Anfragen, die per Definition **exklusiv** sind. Der [Methodik-Case E3 New Energy](https://hasimuener.de/e3-new-energy/) zeigt eine CPL-Senkung von 150 € auf 22 € bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 9 Monaten Optimierungszeit.
+Ein eigenes Anfrage-System mit Money Page, Server-Side-Tracking, Vorqualifizierung und CRM-Übergabe erzeugt Anfragen, die per Definition **exklusiv** sind. Der [Methodik-Case E3 New Energy](https://hasimuener.de/e3-new-energy/) zeigt eine CPL-Senkung von 150 € auf 22 € bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
 
 Das ist kein allgemeines Versprechen, sondern ein Beleg für den Unterschied zwischen gemieteter Nachfrage und eigener Anfrage-Infrastruktur: Die Marke, die Daten und die Optimierung bleiben beim Betrieb.
 

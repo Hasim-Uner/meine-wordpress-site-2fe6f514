@@ -661,7 +661,7 @@ function hu_erfolge_section_shortcode() {
 	$urls             = hu_home_urls();
 	$proof            = hu_home_public_proof_data();
 	$canonical_metrics = function_exists( 'nexus_get_public_proof_metric_list' ) ? nexus_get_public_proof_metric_list( [ 'lead_count', 'cpl_reduction', 'sales_conversion' ] ) : [];
-	$e3_timeframe     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display', '9 Monate' ) : '9 Monate';
+	$e3_timeframe     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display', '6 Monate' ) : '6 Monate';
 
 	ob_start();
 	?>

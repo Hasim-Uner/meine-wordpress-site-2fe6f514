@@ -17,7 +17,7 @@ define( 'HU_E3_LEAD_COUNT', 1750 );
 define( 'HU_E3_SALES_CONVERSION_PERCENT', 12 );
 define( 'HU_E3_SALES_CONVERSION_BEFORE_LOW', 1 );
 define( 'HU_E3_SALES_CONVERSION_BEFORE_HIGH', 2 );
-define( 'HU_E3_TIMEFRAME_MONTHS', 9 );
+define( 'HU_E3_TIMEFRAME_MONTHS', 6 );
 
 /**
  * Return the canonical E3 proof data.
@@ -77,14 +77,14 @@ function hu_e3_canon() {
 			],
 			'timeframe'        => [
 				'value'          => HU_E3_TIMEFRAME_MONTHS,
-				'display'        => '9 Monate',
-				'display_dative' => '9 Monaten',
-				'counter_target' => '9',
+				'display'        => '6 Monate',
+				'display_dative' => '6 Monaten',
+				'counter_target' => '6',
 				'label'          => 'Zeitraum',
 			],
 		],
 		'summary'    => [
-			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 2 % auf 12 %, 9 Monate.',
+			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 2 % auf 12 %, 6 Monate.',
 			'proof'      => 'Referenz E3 New Energy: 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 2 % auf 12 % und über 85 % weniger Kosten pro Anfrage.',
 			'conversion' => 'Die Abschlussquote stieg im selben Zeitraum von 1 – 2 % (gekaufte Portal-Leads) auf 12 % (eigenes Anfrage-System).',
 		],

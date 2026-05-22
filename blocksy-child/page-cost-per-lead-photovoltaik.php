@@ -31,7 +31,7 @@ $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
 $e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 2 % → 12 %';
 $e3_conv_before      = $e3_metrics['sales_conversion_before']['display'] ?? '1 – 2 %';
-$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '9 Monate';
+$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 
 $cpl_quick_facts = [
 	[ 'k' => '25 – 150 €', 'l' => 'Marktbreite Preisspanne für einen einzelnen PV-Datensatz' ],

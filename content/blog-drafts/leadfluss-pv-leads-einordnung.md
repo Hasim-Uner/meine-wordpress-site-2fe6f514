@@ -68,7 +68,7 @@ Regionale Videokampagnen sind im Volumen durch Region, Angebot und Zielgruppe be
 
 Der nächstgrößere Schritt vom regionalen Videomarketing-Modell ist der Aufbau eines vollständig eigenen Anfrage-Systems: eigene Money Page, eigener Werbe-Account, eigene Tracking-Strecke, eigenes CRM und eigene Vorqualifizierung. Vorteil: Code, Daten und Strecke bleiben dauerhaft im Betrieb.
 
-Der [Methodik-Case E3 New Energy](https://hasimuener.de/e3-new-energy/) demonstriert das mit einer CPL-Senkung von 150 € auf 22 €, über 1.750 qualifizierten Anfragen, 12 % Abschlussquote und 9 Monaten Optimierungszeit. Das ist kein pauschales Ergebnisversprechen, aber ein belastbarer Beleg für den Wert eigener Anfrage-Infrastruktur.
+Der [Methodik-Case E3 New Energy](https://hasimuener.de/e3-new-energy/) demonstriert das mit einer CPL-Senkung von 150 € auf 22 €, über 1.750 qualifizierten Anfragen, 12 % Abschlussquote und 6 Monaten Projektlaufzeit. Das ist kein pauschales Ergebnisversprechen, aber ein belastbarer Beleg für den Wert eigener Anfrage-Infrastruktur.
 
 ## Wann das Videomarketing-Modell trotzdem Sinn ergibt
 

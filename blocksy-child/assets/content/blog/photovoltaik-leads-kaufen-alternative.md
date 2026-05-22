@@ -463,7 +463,7 @@ Die kanonischen Fakten reichen:
 22 EUR Kosten pro eigener Anfrage nachher
 1.750+ qualifizierte Anfragen
 12 % Abschlussquote nach Aufbau
-9 Monate Zeitraum
+6 Monate Zeitraum
 ```
 
 Rein rechnerisch könnte man daraus eine spektakulärere CPO-Story bauen. Mache ich hier bewusst nicht.

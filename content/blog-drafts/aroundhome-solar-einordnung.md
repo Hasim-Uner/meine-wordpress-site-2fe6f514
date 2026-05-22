@@ -97,7 +97,7 @@ Die Alternative zu gemieteten Portal-Leads ist kein weiteres Tool, sondern eine 
 
 So entsteht ein Betriebs-Asset. Die Anfrage kommt nicht aus einem fremden Portal, sondern aus einer Plattform, die dem Betrieb gehört.
 
-Der [Methodik-Case E3 New Energy](https://hasimuener.de/e3-new-energy/) zeigt diesen Hebel konkret: Der Cost per Lead sank von 150 € auf 22 € bei über 1.750 qualifizierten Anfragen, 12 % Abschlussquote und 9 Monaten Optimierungszeit. Das ist kein allgemeines Versprechen, aber ein belastbarer Beleg dafür, was möglich wird, wenn Website, Tracking, Vorqualifizierung und Vertrieb zusammengebaut werden.
+Der [Methodik-Case E3 New Energy](https://hasimuener.de/e3-new-energy/) zeigt diesen Hebel konkret: Der Cost per Lead sank von 150 € auf 22 € bei über 1.750 qualifizierten Anfragen, 12 % Abschlussquote und 6 Monaten Projektlaufzeit. Das ist kein allgemeines Versprechen, aber ein belastbarer Beleg dafür, was möglich wird, wenn Website, Tracking, Vorqualifizierung und Vertrieb zusammengebaut werden.
 
 ## Wann das Vergleichsportal-Modell trotzdem Sinn ergibt
 
