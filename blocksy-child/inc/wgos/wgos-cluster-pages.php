@@ -24,113 +24,11 @@ function nexus_get_wgos_cluster_page_data() {
 	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
 	$seo_url     = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) );
 
+	// Die Cluster wordpress-seo-hannover, core-web-vitals und conversion-rate-optimization
+	// sind in die Agentur-Page integriert; 301-Redirects sitzen in inc/helpers.php
+	// (nexus_redirect_legacy_offer_paths). Daten-Arrays wurden hier entfernt, damit
+	// kein verwaister Konfigurations-Ballast in jedem Request initialisiert wird.
 	$pages = [
-		'wordpress-seo-hannover' => [
-			'eyebrow'          => 'Sichtbarkeit im Anfrage-System',
-			'title'            => 'WordPress SEO Hannover – technisch sauber, messbar, B2B-ready',
-			'lead'             => 'Diese Seite ist der Einstieg für technisches WordPress SEO in Hannover: Crawlability, Seitenstruktur, interne Verlinkung und priorisierte Fixes, wenn Rankings an Technik und Seitentypen scheitern.',
-			'intro'            => [
-				'Viele B2B-Websites investieren in Inhalte, ohne zuerst die technischen Bremsen zu lösen. Dann entstehen Seiten, die zwar vorhanden sind, aber weder stabil ranken noch qualifizierte Anfragen sauber vorbereiten.',
-				'WordPress SEO wird dadurch schnell zur To-do-Liste aus Meta-Titeln, Plugins und Blogideen. Was oft fehlt, ist die Reihenfolge: Erst Crawlability, Struktur, interne Verlinkung und technische Sauberkeit, dann Themenarchitektur und conversion-nahe Seiten.',
-				'Für lokale B2B-Suchen in Hannover wird technisches SEO vor allem auf kaufnahen Seitentypen relevant: Angebotsseiten, Audit-Einstiege und zentrale Proof-Seiten müssen sauber indexierbar, intern angebunden und technisch stabil sein.',
-				'Genau dort setzt diese Seite an. Sie ist bewusst kein Sammelbegriff für eine komplette WordPress-Agenturleistung, WooCommerce-Umsetzung oder den laufenden Betriebs-Stack, sondern der technische SEO-Einstieg für sichtbare, belastbare Seitentypen.',
-			],
-			'system'           => [
-				'SEO ist kein Solobaustein. Sichtbarkeit folgt auf ein tragfähiges Fundament aus Performance, Messbarkeit und klarer Angebotslogik.',
-				'Technisches WordPress SEO ist hier deshalb kein Meta-Feintuning, sondern Arbeit an Crawlability, interner Verlinkung, Seitentypen und der Frage, welche kaufnahen URLs überhaupt Rankings tragen sollen.',
-				'Statt eine einzige SEO-Leistung zu verkaufen, ordnen wir die richtigen Bausteine für Ihre Lage. Das kann mit einem Technical SEO Audit starten, mit einer Keyword-Strategie weitergehen und später in Pillar Pages, Content Hubs oder interne Verlinkung münden.',
-				'Wenn Angebotsseiten, Tracking, Conversion, WooCommerce oder der laufende Betrieb mit betroffen sind, ist die Agentur-Seite der bessere Einstieg als diese fokussierte SEO-Seite.',
-			],
-			'assets'           => [
-				'technical-seo-audit' => 'Findet Indexierungs- und Strukturprobleme, die Rankings bereits heute ausbremsen.',
-				'keyword-strategie'   => 'Ordnet Nachfrage in Themen, Suchintentionen und priorisierte Seitentypen.',
-				'pillar-page'         => 'Baut die zentrale Money Page für ein Kernthema mit klarer interner Verlinkung.',
-				'content-hub'         => 'Verbindet Hauptseite und Cluster-Inhalte zu einem belastbaren Themen-System.',
-				'on-page-seo'         => 'Schärft Snippets, Seitentitel, Headlines und inhaltliche Führung an der Suchintention.',
-				'interne-verlinkung'  => 'Stärkt die wichtigsten Seiten über klare Pfade für Nutzer und Suchmaschine.',
-				'schema-markup'       => 'Ergänzt strukturierte Daten dort, wo sie Suchergebnisse und Verständnis verbessern.',
-				'local-seo'           => 'Sichert lokale Relevanz für Hannover und regionale Nachfragepfade ab.',
-			],
-			'blogs'            => [
-				[
-					'title' => 'Warum Performance Marketing ohne technisches SEO Geld verbrennt',
-					'url'   => home_url( '/technisches-seo-performance-fundament/' ),
-				],
-				[
-					'title' => 'Performance ist Profit: Core Web Vitals',
-					'url'   => home_url( '/core-web-vitals-wachstum-seo-und-roas/' ),
-				],
-			],
-			'supporting_link'  => [
-				'kicker' => 'Wenn der Scope breiter ist',
-				'label'  => 'WordPress Agentur Hannover',
-				'url'    => $agentur_url,
-				'text'   => 'Wenn der Bedarf über technisches SEO hinausgeht und auch Angebotsseiten, Tracking, Conversion, WooCommerce oder Betrieb umfasst, ist die Agentur-Seite der klarere Startpunkt.',
-			],
-			'proof_note'       => 'Technisches SEO wird erst dann kaufnah relevant, wenn Sichtbarkeit auf saubere Angebotsseiten, Audit-Einstiege und einen klaren Anfragepfad trifft. Genau das zeigen die offenen Ergebnisse und die E3 Case Study.',
-			'proof_links'      => [
-				[
-					'label' => 'E3 Case Study lesen',
-					'url'   => nexus_get_page_url( [ 'e3-new-energy' ] ),
-				],
-				[
-					'label' => 'Weitere Ergebnisse ansehen',
-					'url'   => nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) ),
-				],
-			],
-			'meta_title'       => 'WordPress SEO Hannover für B2B | Technisches SEO & Audit',
-			'meta_description' => 'WordPress SEO in Hannover fuer B2B: technisches SEO, Crawlability und interne Verlinkung fuer kaufnahe Seiten. Marktcheck als manueller, in 48 h gelieferter Einstieg fuer priorisierte Hebel.',
-			'schema_name'      => 'WordPress SEO Hannover – technisch sauber, messbar, B2B-ready',
-			'schema_description' => 'Technisches SEO auf WordPress in Hannover: technische Basis, Seitenstruktur und conversion-nahe Sichtbarkeit für B2B-Websites.',
-		],
-		'core-web-vitals' => [
-			'eyebrow'          => 'Technisches Fundament im Anfrage-System',
-			'title'            => 'Core Web Vitals',
-			'lead'             => 'Performance ist kein Kosmetikthema. Langsame WordPress-Seiten kosten Sichtbarkeit, Vertrauen und Anfragen.',
-			'intro'            => [
-				'Wenn wichtige Seiten zu langsam laden, verliert Ihre Website an drei Stellen gleichzeitig: Rankings, Nutzererlebnis und Conversion. Das Problem steckt selten in einem einzelnen Detail.',
-				'Meist ist es ein Mix aus Theme-Last, Plugins, Bildern, Dritt-Skripten, Server-Setup und unklarer Priorisierung. Genau deshalb greifen pauschale Speed-Tipps fast nie sauber.',
-				'Performance wird zuerst diagnostiziert und dann in der richtigen Reihenfolge korrigiert. So wird aus einem technischen Problem wieder eine betriebsrelevante Verbesserung.',
-			],
-			'system'           => [
-				'Core Web Vitals gehören klar ins technische Fundament. Erst wenn LCP, Stabilität und Reaktionszeit auf kaufnahen Seitentypen stimmen, lohnen sich größere Investitionen in SEO, Content und Landing Pages wirklich.',
-				'Wir behandeln Performance deshalb nicht als Plugin-Thema, sondern als Systemarbeit zwischen Audit, Optimierung, Server-Layer und laufender Stabilisierung.',
-			],
-			'assets'           => [
-				'cwv-speed-audit'  => 'Zeigt, welche Bremsen auf relevanten Seitentypen tatsächlich zuerst gelöst werden müssen.',
-				'cwv-optimierung'  => 'Setzt die Diagnose in konkrete technische Korrekturen für Ladezeit und Nutzererlebnis um.',
-				'server-tuning'    => 'Greift tiefer in Caching, TTFB und Infrastruktur ein, wenn das Hosting limitiert.',
-				'security-hardening' => 'Sichert den Betrieb ab, damit eine schnelle Seite nicht durch technische Risiken kippt.',
-				'plugin-audit'     => 'Räumt unnötige oder konfliktträchtige Plugins aus dem Stack, bevor sie weiter bremsen.',
-				'update-management' => 'Hält Performance-Gewinne stabil, weil Updates kontrolliert und testbar ausgerollt werden.',
-			],
-			'blogs'            => [
-				[
-					'title' => 'Performance ist Profit: Core Web Vitals',
-					'url'   => home_url( '/core-web-vitals-wachstum-seo-und-roas/' ),
-				],
-				[
-					'title' => 'Warum Performance Marketing ohne technisches SEO Geld verbrennt',
-					'url'   => home_url( '/technisches-seo-performance-fundament/' ),
-				],
-			],
-			'supporting_link'  => [
-				'kicker' => 'Breiterer Einstieg',
-				'label'  => 'WordPress Agentur Hannover',
-				'url'    => $agentur_url,
-				'text'   => 'Wenn Performance direkt auf Angebotsseiten, SEO und Conversion einzahlt, ist die Agentur-Seite der passendere Einstieg ins Gesamtsystem.',
-			],
-			'adjacent_link'    => [
-				'kicker' => 'Angrenzendes Thema',
-				'label'  => 'WordPress SEO Hannover',
-				'url'    => $seo_url,
-				'text'   => 'Wenn langsame Seitentypen Rankings und organische Einstiege ausbremsen, fuehrt die SEO-Seite direkt in den Sichtbarkeits-Kontext.',
-			],
-			'meta_title'       => 'Core Web Vitals für WordPress | Haşim Üner',
-			'meta_description' => 'Core Web Vitals für WordPress: Audit, Optimierung, Server-Tuning und Stabilisierung für schnellere WordPress-Seiten.',
-			'schema_name'      => 'Core Web Vitals für WordPress',
-			'schema_description' => 'Core Web Vitals: Performance-Diagnose, Optimierung und technisches Fundament für B2B-WordPress-Websites.',
-		],
 		'ga4-tracking-setup' => [
 			'eyebrow'          => 'GA4 Tracking Setup · Messbarkeit im Anfrage-System',
 			'title'            => 'GA4 Tracking Setup für B2B-WordPress-Websites',
@@ -198,82 +96,6 @@ function nexus_get_wgos_cluster_page_data() {
 			'meta_description' => 'GA4 Tracking Setup für B2B-WordPress: Google Analytics 4 einrichten, Consent Mode, GTM-Struktur und Server Side Tracking für belastbare Leadsignale.',
 			'schema_name'      => 'GA4 Tracking Setup für B2B-WordPress-Websites',
 			'schema_description' => 'GA4 Tracking Setup: Event-Logik, GTM, Consent Mode und Server Side Tracking für B2B-WordPress-Websites.',
-		],
-		'conversion-rate-optimization' => [
-			'eyebrow'          => 'Conversion Rate Optimierung für WordPress',
-			'title'            => 'Conversion Rate Optimierung für WordPress',
-			'lead'             => 'Conversion Rate Optimierung für WordPress bedeutet hier: Angebotsseiten, Proof, CTA-Führung und Formulare so ordnen, dass aus Besuchern qualifizierte B2B-Anfragen werden.',
-			'intro'            => [
-				'Viele WordPress-Seiten bekommen Sichtbarkeit, aber zu wenig qualifizierte Anfragen. Das Problem ist selten nur Design. Meist erklärt die Seite, statt zu führen.',
-				'Conversion Rate Optimierung für WordPress ist deshalb mehr als Button-Farbtesten. Entscheidend ist, ob Headline, Proof, Seitenstruktur und nächster Schritt zur Suchintention und zum Reifegrad des Besuchers passen.',
-				'Gerade im B2B entsteht Conversion nicht auf einer isolierten Landing Page. Sie entsteht im Zusammenspiel aus Angebotsseite, Tracking, Einwandabbau und einem klaren Weg in den richtigen Kontaktpunkt.',
-			],
-			'system'           => [
-				'CRO folgt auf Performance und Messbarkeit. Erst wenn Daten stimmen, lassen sich Landing Pages, Angebotsseiten und Formulare nach belastbaren Signalen statt nach Bauchgefühl priorisieren.',
-				'Wir denken Conversion Rate Optimierung für WordPress deshalb als Seitenarchitektur. Message Match, Proof, CTA-Hierarchie, Formulare und interne Anschlüsse müssen als System zusammenarbeiten.',
-				'Wenn organische Einstiege schon da sind, aber zu wenig qualifizierte Leads entstehen, wird CRO zum Bindeglied zwischen SEO, Tracking und dem eigentlichen Anfragepfad.',
-			],
-			'assets'           => [
-				'landing-page-neu'            => 'Baut neue Landing Pages mit sauberem Message Match und klarer Zielhandlung auf.',
-				'landing-page-optimierung'    => 'Hebt bestehende Seiten an den Engpässen aus Headline, Aufbau und Reibung an.',
-				'cta-formular-optimierung'    => 'Prüft Formulare, Hürden und CTA-Logik dort, wo Nachfrage verloren geht.',
-				'angebotsseiten-architektur'  => 'Ordnet Angebotsseiten so, dass Nutzen, Proof und nächster Schritt zusammenarbeiten.',
-				'social-proof'                => 'Setzt Vertrauenssignale gezielt ein, statt sie lose über die Seite zu verteilen.',
-				'lead-magnet'                 => 'Schafft risikoarme Einstiege für Besucher, die noch nicht direkt anfragen wollen.',
-			],
-			'blogs'            => [
-				[
-					'title' => 'B2B Landingpage optimieren',
-					'url'   => home_url( '/b2b-landingpage-optimieren/' ),
-				],
-				[
-					'title' => 'Design ist kein Geschmack. Es ist Architektur.',
-					'url'   => home_url( '/design-ist-mehr-als-aesthetik/' ),
-				],
-				[
-					'title' => 'Die 150-Euro-pro-Lead-Falle',
-					'url'   => home_url( '/owned-leads-statt-ad-miete/' ),
-				],
-			],
-			'supporting_link'  => [
-				'kicker' => 'Breiterer Einstieg',
-				'label'  => 'WordPress Agentur Hannover',
-				'url'    => $agentur_url,
-				'text'   => 'Wenn Nutzerfuehrung, Proof, Tracking und Seitenrollen zusammen korrigiert werden muessen, ist die Agentur-Seite der breitere Einstieg.',
-			],
-			'adjacent_link'    => [
-				'kicker' => 'Angrenzendes Thema',
-				'label'  => 'WordPress SEO Hannover',
-				'url'    => $seo_url,
-				'text'   => 'Wenn Sichtbarkeit vorhanden ist, aber organische Einstiege nicht sauber in Anfragen uebergehen, fuehrt die SEO-Seite in den passenden Service-Kontext.',
-			],
-			'proof_note'       => 'CRO ist hier keine Design-Politur. Relevant wird das Thema, wenn Angebotsseiten, Einwaende und CTA-Pfade spuerbar klarer werden und aus bestehendem Traffic mehr qualifizierte Anfragen entstehen.',
-			'faq_items'        => [
-				[
-					'question' => 'Was bedeutet Conversion Rate Optimierung bei WordPress konkret?',
-					'answer'   => 'Es bedeutet, Angebotsseiten, Landing Pages, Proof, CTA-Führung und Formulare so zu ordnen, dass Besucher schneller verstehen, warum sie hier richtig sind und welcher nächste Schritt sinnvoll ist.',
-				],
-				[
-					'question' => 'Ist CRO nur für Shops oder auch für B2B-Leadgenerierung relevant?',
-					'answer'   => 'CRO ist gerade für B2B-Leadgenerierung relevant. Dort geht es nicht um spontane Käufe, sondern um Klarheit, Vertrauen, Einwandabbau und einen sauberen Weg zur qualifizierten Anfrage.',
-				],
-				[
-					'question' => 'Ab wann lohnt sich Conversion Rate Optimierung statt eines Relaunchs?',
-					'answer'   => 'Oft früher als gedacht. Wenn die technische Basis trägt, lassen sich viele Bremsen in Headline, Seitenstruktur, Proof, CTA-Hierarchie und Formularen auch ohne kompletten Relaunch lösen.',
-				],
-				[
-					'question' => 'Wie hängt CRO mit Tracking und SEO zusammen?',
-					'answer'   => 'SEO bringt die richtigen Besucher, Tracking macht die Wirkung sichtbar und CRO sorgt dafür, dass aus Sichtbarkeit und Klicks qualifizierte Anfragen werden. Ohne dieses Zusammenspiel bleibt jede Einzeldisziplin begrenzt.',
-				],
-				[
-					'question' => 'Wie verbessert Conversion Rate Optimierung die Leadgenerierung auf einer B2B-Website?',
-					'answer'   => 'Indem die Seite nicht nur erklärt, sondern führt. Suchintention trifft auf klaren Nutzen, Proof und Einwandabbau bauen Vertrauen auf, und ein strukturierter CTA-Pfad führt zum richtigen nächsten Schritt – statt zu einem Formular, das am Seitenende versteckt ist.',
-				],
-			],
-			'meta_title'       => 'Conversion Rate Optimierung für WordPress | Haşim Üner',
-			'meta_description' => 'Conversion Rate Optimierung für WordPress und B2B-Leadgenerierung: Landing Pages, Proof, CTA-Führung und Formulare für mehr qualifizierte Anfragen.',
-			'schema_name'      => 'Conversion Rate Optimierung für WordPress',
-			'schema_description' => 'Conversion Rate Optimierung: Angebotsseiten, Landing Pages, Proof und CTA-Führung für B2B-WordPress-Websites.',
 		],
 		'performance-marketing' => [
 			'eyebrow'          => 'Paid-Kontext im Anfrage-System',
@@ -962,6 +784,9 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 	$cwv_url                 = nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) );
 	$cro_url                 = nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) );
 	$performance_marketing_url = nexus_get_primary_public_url( 'performance_marketing', home_url( '/performance-marketing/' ) );
+	$solar_pillar_url        = function_exists( 'nexus_get_energy_systems_url' )
+		? nexus_get_energy_systems_url()
+		: home_url( '/solar-waermepumpen-leadgenerierung/' );
 
 	$seo_foundation_bridge = [
 		'title' => 'Passende Systembausteine zu diesem Thema',
@@ -988,6 +813,11 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 				'growth-audit'             => 'Klärt zuerst, ob Angebot, Tracking oder Seitenlogik die Anfragequalität bremsen.',
 				'angebotsseiten-architektur' => 'Ordnet Angebotsseiten so, dass aus Nachfrage ein klar geführter nächster Schritt wird.',
 				'landing-page-neu'         => 'Baut den Einstieg neu auf, wenn bezahlte oder organische Nachfrage bisher auf die falsche Zielseite trifft.',
+			],
+			'supporting_link' => [
+				'label' => 'Solar- & Wärmepumpen-Leadgenerierung',
+				'url'   => $solar_pillar_url,
+				'text'  => 'Wenn der Kontext konkret Solar oder Wärmepumpen ist und aus Portal-Mietern Eigentümer der Nachfrage werden sollen, ist die Pillar-Seite der direkte Einstieg in das eigene Anfrage-System.',
 			],
 		],
 		'b2b-landingpage-optimieren' => [
