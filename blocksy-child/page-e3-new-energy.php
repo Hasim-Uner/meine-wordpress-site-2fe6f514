@@ -122,7 +122,8 @@ $tracking_repair_steps = [
 ];
 
 $insight_body = sprintf(
-	'Höheres Werbebudget skaliert bei taubem Tracking nur den Verlust. Erst als der Vertrieb (CRM) und der Werbe-Algorithmus über First-Party-Attribution dieselbe Sprache sprachen, konnte die KI der Werbekanäle kaufbereite Hausbesitzer von Klick-Touristen unterscheiden. Der CPL-Endpunkt von %s nach %s war keine Optimierungsleistung — er war die mathematische Folge sauberer Daten.',
+	'Höheres Werbebudget skaliert bei taubem Tracking nur den Verlust. Erst als der Vertrieb (CRM) und der Werbe-Algorithmus über First-Party-Attribution dieselbe Sprache sprachen, konnte die KI der Werbekanäle kaufbereite Hausbesitzer von Klick-Touristen unterscheiden. Der CPL-Sturz von %s auf %s in %s war keine Optimierungsleistung — er war die mathematische Folge sauberer Daten.',
+	function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before' ) : '150 €',
 	function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after' ) : '22 €',
 	function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative' ) : '6 Monaten'
 );
