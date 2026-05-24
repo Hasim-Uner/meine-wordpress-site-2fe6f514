@@ -2,6 +2,7 @@
 node_modules/**
 vendor/**
 .build/**
+.agents/skills/modern-web-guidance/guides/**
 blocksy-child/readiness/node_modules/**
 package-lock.json
 composer.lock
