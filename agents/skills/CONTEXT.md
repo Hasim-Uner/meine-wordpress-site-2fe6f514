@@ -6,9 +6,10 @@ Scope: `agents/skills/`.
 
 - One skill per directory.
 - Required: `SKILL.md`.
-- Optional: `scripts/`, `references/`, `agents/`.
+- Optional: `scripts/`, `references/`, `guides/`, `agents/`.
 - Keep `SKILL.md` short: trigger, first command, hard rules, deliverable.
 - Move repeated checklists, scaffolds, and scans into scripts.
+- Keep large `guides/` trees out of default context; retrieve or open only task-matching guides.
 - Do not duplicate brand/copy rules; reference `docs/standards/BRAND_AND_COPY.md`.
 
 ## Routing

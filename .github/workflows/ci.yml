@@ -3,6 +3,9 @@ name: CI
 on:
   push:
     paths:
+      - 'AGENTS.md'
+      - '.claudeignore'
+      - 'agents/skills/**'
       - 'blocksy-child/**'
       - '.github/workflows/**'
       - 'scripts/**'
@@ -12,6 +15,9 @@ on:
       - 'composer.lock'
   pull_request:
     paths:
+      - 'AGENTS.md'
+      - '.claudeignore'
+      - 'agents/skills/**'
       - 'blocksy-child/**'
       - '.github/workflows/**'
       - 'scripts/**'
@@ -39,6 +45,9 @@ jobs:
 
       - name: Validate GitHub Actions workflows
         uses: devops-actions/actionlint@v0.1.11
+
+      - name: Validate repository architecture
+        run: bash scripts/validate-architecture.sh
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build:theme": "bash scripts/build-theme-dist.sh",
+    "lint:architecture": "bash scripts/validate-architecture.sh",
     "lint:php": "find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l"
   },
   "devDependencies": {
