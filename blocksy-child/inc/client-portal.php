@@ -21,6 +21,7 @@ function hu_render_performance_cockpit() {
     $total_units = max( 0, (float) ( $retainer['total'] ?? 0 ) );
     $used_units  = max( 0, (float) ( $retainer['used'] ?? 0 ) );
     $percent     = $total_units > 0 ? min( 100, ( $used_units / $total_units ) * 100 ) : 0;
+    $percent_width = (string) round( $percent, 2 );
     $has_retainer_data = $total_units > 0 || $used_units > 0 || ! empty( $retainer['label'] ) || ! empty( $retainer['focus'] );
 
     $upload_notice = '';
@@ -104,7 +105,7 @@ function hu_render_performance_cockpit() {
                     <?php endif; ?>
                     <?php if ( $total_units > 0 ) : ?>
                         <div class="nd-progress-wrap">
-                            <div class="nd-progress-bar" style="width:<?php echo esc_attr( $percent ); ?>%"></div>
+                            <div class="nd-progress-bar" style="width:<?php echo esc_attr( $percent_width ); ?>%"></div>
                         </div>
                         <div class="nd-stats">
                             <span><?php echo esc_html( number_format_i18n( $used_units, 1 ) ); ?> / <?php echo esc_html( number_format_i18n( $total_units, 1 ) ); ?> Pkt</span>

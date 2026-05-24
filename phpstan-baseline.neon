@@ -16,11 +16,6 @@ parameters:
 			path: blocksy-child/category.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
-			count: 1
-			path: blocksy-child/inc/analysis-intake.php
-
-		-
 			message: "#^Result of \\|\\| is always true\\.$#"
 			count: 1
 			path: blocksy-child/inc/blog-pillar-posts.php
@@ -66,11 +61,6 @@ parameters:
 			path: blocksy-child/inc/blog-provider-posts.php
 
 		-
-			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, float\\|int given\\.$#"
-			count: 1
-			path: blocksy-child/inc/client-portal.php
-
-		-
 			message: "#^Offset 'class' on array\\{url\\: mixed, title\\: string, class\\: 'glossary\\-autolink'\\|'glossary\\-autolink…', linked_key\\: non\\-falsy\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: blocksy-child/inc/glossary/glossary-autolink.php
@@ -84,16 +74,6 @@ parameters:
 			message: "#^Offset 'title' on array\\{url\\: mixed, title\\: string, class\\: 'glossary\\-autolink'\\|'glossary\\-autolink…', linked_key\\: non\\-falsy\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
 			count: 1
 			path: blocksy-child/inc/glossary/glossary-autolink.php
-
-		-
-			message: "#^Parameter \\#1 \\$args of function wp_nav_menu expects array\\{menu\\?\\: int\\|string\\|WP_Term, menu_class\\?\\: string, menu_id\\?\\: string, container\\?\\: string, container_class\\?\\: string, container_id\\?\\: string, container_aria_label\\?\\: string, fallback_cb\\?\\: \\(callable\\(\\)\\: mixed\\)\\|false, \\.\\.\\.\\}, array\\{theme_location\\: non\\-falsy\\-string, container\\: false, menu_class\\: non\\-falsy\\-string, fallback_cb\\: false, depth\\: 2\\} given\\.$#"
-			count: 1
-			path: blocksy-child/inc/header.php
-
-		-
-			message: "#^Access to an undefined property object\\:\\:\\$title\\.$#"
-			count: 1
-			path: blocksy-child/inc/menu-setup.php
 
 		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
@@ -139,21 +119,6 @@ parameters:
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: blocksy-child/inc/seo-cockpit/seo-cockpit-ui.php
-
-		-
-			message: "#^Offset 'og_image_height' does not exist on array\\{description\\: string, canonical\\: string, robots\\: string, og_title\\: string, og_image\\: non\\-falsy\\-string, og_type\\: string\\}\\.$#"
-			count: 1
-			path: blocksy-child/inc/seo-meta.php
-
-		-
-			message: "#^Offset 'og_image_type' does not exist on array\\{description\\: string, canonical\\: string, robots\\: string, og_title\\: string, og_image\\: non\\-falsy\\-string, og_type\\: string\\}\\.$#"
-			count: 1
-			path: blocksy-child/inc/seo-meta.php
-
-		-
-			message: "#^Offset 'og_image_width' does not exist on array\\{description\\: string, canonical\\: string, robots\\: string, og_title\\: string, og_image\\: non\\-falsy\\-string, og_type\\: string\\}\\.$#"
-			count: 1
-			path: blocksy-child/inc/seo-meta.php
 
 		-
 			message: "#^Call to sprintf contains 0 placeholders, 1 value given\\.$#"

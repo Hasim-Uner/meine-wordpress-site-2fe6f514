@@ -184,7 +184,7 @@ function nexus_render_site_header_menu( $context = 'desktop' ) {
 		wp_nav_menu(
 			[
 				'theme_location' => $location,
-				'container'      => false,
+				'container'      => '',
 				'menu_class'     => $menu_class,
 				'fallback_cb'    => false,
 				'depth'          => 2,

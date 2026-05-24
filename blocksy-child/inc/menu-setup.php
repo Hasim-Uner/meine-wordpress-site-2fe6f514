@@ -326,7 +326,12 @@ add_filter( 'nav_menu_link_attributes', function ( $atts, $item ) {
 		return $atts;
 	}
 
-	$title_lower = strtolower( wp_strip_all_tags( (string) $item->title ) );
+	$title = isset( $item->title ) ? (string) $item->title : '';
+	if ( '' === $title ) {
+		return $atts;
+	}
+
+	$title_lower = strtolower( wp_strip_all_tags( $title ) );
 	$track_map   = [
 		'solar & wärmepumpen' => 'solar',
 		'wordpress agentur'   => 'agentur',

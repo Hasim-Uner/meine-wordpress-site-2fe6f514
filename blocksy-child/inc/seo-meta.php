@@ -1025,7 +1025,7 @@ function hu_seo_meta_tags() {
  *
  * Priority: ACF fields → Post/Page data → Auto-generated fallbacks.
  *
- * @return array{description: string, canonical: string, robots: string, og_title: string, og_image: string, og_type: string}
+ * @return array{description: string, canonical: string, robots: string, og_title: string, og_image: string, og_image_width: int, og_image_height: int, og_image_type: string, og_type: string}
  */
 function hu_get_seo_meta() {
 
