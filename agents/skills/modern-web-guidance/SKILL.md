@@ -24,9 +24,9 @@ Hard rules:
 - Keep implementation aligned with this repo stack: WordPress child theme, PHP-rendered HTML, vanilla JS, CSS, native browser APIs, self-hosted assets.
 - Do not add React, Vue, Angular, client-side routing, build-time frameworks, component libraries, polyfill packages, or analytics libraries unless the user explicitly asks and CI/build impact is accepted.
 - Prefer Baseline widely available browser features. For newer APIs, use feature detection and graceful fallback instead of dependency overhead.
-- Keep searches action-oriented and narrow. Do not open `.agents/skills/modern-web-guidance/guides/` wholesale; load one retrieved guide at a time.
+- Keep searches action-oriented and narrow. Do not open `agents/skills/modern-web-guidance/guides/` wholesale; load one retrieved or locally relevant guide at a time.
 - Keep CI compatible with `.github/workflows/ci.yml`: Node 20, `npm ci`, PHP syntax check, deploy-config validation, and `npm run build:theme`.
 
 Deliverable: cite the guide ID(s) used, explain any browser-support fallback, and keep changes scoped to task-relevant theme files.
 
-Installed upstream source: `.agents/skills/modern-web-guidance/`.
+Local guides are pruned to the relevant frontend categories: `accessibility`, `css`, `css-layout`, `forms`, `html`, `performance`, `privacy`, `security`, and `user-experience`.

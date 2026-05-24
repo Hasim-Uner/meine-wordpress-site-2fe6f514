@@ -33,4 +33,6 @@ Scope: `agents/skills/`.
 | `homepage-proof-monitoring` | Homepage-Proof-Monitoring | homepage proof, proof metrics, monitoring |
 | `wordpress-performance-marketing` | Vollaudit aus SEO, CRO und Tracking | full audit, performance marketing, tracking |
 
+Core rule: When a task touches `blocksy-child/assets/css/`, `blocksy-child/assets/js/`, or PHP templates that emit frontend HTML, load `modern-web-guidance` before implementation and retrieve only task-matching guides.
+
 Use scripts from the routed skill before opening long references.
