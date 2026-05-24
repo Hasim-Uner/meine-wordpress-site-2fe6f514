@@ -103,6 +103,30 @@ $cta_features = [
 	'Kein Pflicht-Termin, kein Pitch-Call',
 ];
 
+$tracking_repair_steps = [
+	[
+		'label' => 'Befund',
+		'title' => 'Safari-ITP löschte First-Party-Cookies nach 24 Stunden.',
+		'body'  => 'Im Ausgangszustand kam ein erheblicher Teil der Conversions nie in den Werbe-Konten an. Apples Intelligent Tracking Prevention beschneidet First-Party-Cookies, die per JavaScript gesetzt werden, auf 24 Stunden Lebensdauer. Wer am Donnerstag klickt und am Sonntag konvertiert, fehlt in der Attribution. Meta- und Google-Algorithmen optimierten dadurch gegen ein lückenhaftes Signal — sie lernten, falsche Klicker zu finden.',
+	],
+	[
+		'label' => 'Eingriff',
+		'title' => 'Server-Side-Setup auf eigener Subdomain.',
+		'body'  => 'Statt Browser-Tags wurde ein dediziertes Server-Side-Tracking auf einer eigenen Subdomain aufgesetzt. Conversion-Events laufen über GA4 Measurement Protocol und Meta Conversions API direkt aus dem CRM in die Werbe-Konten — vorbei an ITP, vorbei an Adblockern, mit Consent Mode v2 als rechtlichem Rahmen.',
+	],
+	[
+		'label' => 'Wirkung',
+		'title' => 'Algorithmen sahen erstmals echte Käufer.',
+		'body'  => 'Erst mit dieser First-Party-Attribution bekamen Meta und Google die belastbaren Kauf-Signale, die ihre Optimierung braucht. Der CPL-Sturz war ab Monat 3 keine Marketing-Magie, sondern eine zwingende Folge: Wer den Algorithmen sagt, wer wirklich gekauft hat, bekommt mehr von genau diesen Leuten — und weniger Klick-Touristen.',
+	],
+];
+
+$insight_body = sprintf(
+	'Höheres Werbebudget skaliert bei taubem Tracking nur den Verlust. Erst als der Vertrieb (CRM) und der Werbe-Algorithmus über First-Party-Attribution dieselbe Sprache sprachen, konnte die KI der Werbekanäle kaufbereite Hausbesitzer von Klick-Touristen unterscheiden. Der CPL-Endpunkt von %s nach %s war keine Optimierungsleistung — er war die mathematische Folge sauberer Daten.',
+	function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after' ) : '22 €',
+	function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative' ) : '6 Monaten'
+);
+
 $e3_deeper = [
 	[
 		't'   => 'Cost per Lead Photovoltaik',
@@ -213,6 +237,28 @@ get_header();
 			</div>
 		</section>
 
+		<section class="e3-section e3-section--paper-2" id="datenbereinigung" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="datenbereinigung-title">
+			<div class="e3-section__inner">
+				<div class="e3-section__head" data-reveal>
+					<p class="e3-kicker">Believability · Monat 1–2</p>
+					<h2 class="e3-section__title" id="datenbereinigung-title">Bereinigung der unsichtbaren Datenlecks.</h2>
+					<p class="e3-section__lede">Bevor irgendeine Optimierung greifen konnte, musste die Attribution stimmen. Ohne diesen Schritt wäre der CPL-Sturz von <?php echo esc_html( function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before' ) : '150 €' ); ?> auf <?php echo esc_html( function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after' ) : '22 €' ); ?> nicht reproduzierbar.</p>
+				</div>
+
+				<div class="e3-implementation-list">
+					<?php foreach ( $tracking_repair_steps as $step ) : ?>
+						<article class="e3-implementation" data-reveal>
+							<div class="e3-implementation__label"><?php echo esc_html( $step['label'] ); ?></div>
+							<div class="e3-implementation__body">
+								<h3><?php echo esc_html( $step['title'] ); ?></h3>
+								<p><?php echo esc_html( $step['body'] ); ?></p>
+							</div>
+						</article>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+
 		<section class="e3-section e3-section--paper" id="verlauf" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="verlauf-title">
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
@@ -260,6 +306,19 @@ get_header();
 						</ul>
 					</div>
 				</div>
+			</div>
+		</section>
+
+		<section class="e3-section e3-section--paper" id="insight" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="insight-title">
+			<div class="e3-section__inner">
+				<div class="e3-section__head" data-reveal>
+					<p class="e3-kicker">True Insight</p>
+					<h2 class="e3-section__title" id="insight-title">Die fundamentale Erkenntnis aus <?php echo esc_html( function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative' ) : '6 Monaten' ); ?> E3.</h2>
+				</div>
+
+				<aside class="e3-pullquote" data-reveal>
+					<p><?php echo esc_html( $insight_body ); ?></p>
+				</aside>
 			</div>
 		</section>
 

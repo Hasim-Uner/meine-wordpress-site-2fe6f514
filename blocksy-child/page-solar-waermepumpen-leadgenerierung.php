@@ -1264,6 +1264,38 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
+		     FOUNDING COHORT 2026 — Aufnahme-Protokoll
+		     ════════════════════════════════════════════════════════════ -->
+		<?php
+		$founding = function_exists( 'hu_founding_canon' ) ? hu_founding_canon() : [
+			'label'           => 'Founding Cohort 2026',
+			'slots_total'     => 3,
+			'slots_remaining' => 3,
+			'end_date'        => '2026-09-30',
+		];
+		$founding_end_iso = isset( $founding['end_date'] ) ? (string) $founding['end_date'] : '2026-09-30';
+		$founding_end_ts  = strtotime( $founding_end_iso );
+		$founding_end_de  = $founding_end_ts ? wp_date( 'd.m.Y', $founding_end_ts ) : '30.09.2026';
+		?>
+		<section class="sol-section" id="founding" data-track-section="founding_cohort">
+			<div class="sol-wrap" style="max-width:760px">
+				<div class="sol-eyebrow"><?php echo esc_html( $founding['label'] ); ?></div>
+				<h2 class="sol-display" style="margin-bottom:18px">
+					Aufnahme-Protokoll für <em><?php echo (int) $founding['slots_total']; ?> Solar- oder SHK-Betriebe</em>.
+				</h2>
+				<p style="color:var(--sol-fg-dim);font-size:18px;line-height:1.6;margin:0 0 28px">
+					Damit jede Region in Diagnose, Daten-Pipeline und Vertriebsanschluss persönlich abgebildet werden kann, nehme ich 2026 maximal <?php echo (int) $founding['slots_total']; ?> Betriebe als Founding-Partner auf. Stichtag für die Bewerbung ist der <?php echo esc_html( $founding_end_de ); ?>. Der System-Intake entscheidet, ob die Architektur zu Ihrer Region passt — keine Verkaufslogik, keine Lock-in-Klausel.
+				</p>
+				<ul class="sol-mono" style="display:grid;gap:12px;padding:0;margin:0 0 28px;list-style:none;color:var(--sol-fg);font-size:13px;letter-spacing:.04em">
+					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Plätze 2026: <?php echo (int) $founding['slots_remaining']; ?> von <?php echo (int) $founding['slots_total']; ?> noch offen</li>
+					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Bewerbungsfrist: <?php echo esc_html( $founding_end_de ); ?></li>
+					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Entscheidung: nach System-Intake · händisch · in 48 h</li>
+					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Bedingung: eigener Vertrieb · klares Zielgebiet · 12–24-Monate-Horizont</li>
+				</ul>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
 		     FINAL CTA — zurück zum Marktcheck im Hero
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="sol-section sol-final" data-track-section="final_cta">
