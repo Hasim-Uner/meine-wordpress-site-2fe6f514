@@ -567,6 +567,30 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
+	     06b / KATEGORIE-BRUCH — Architektur statt Webdesign
+	     ═══════════════════════════════════════════════════ -->
+	<section class="hu-section hu-section--cream" id="kategorie" data-track-section="06b">
+		<div class="hu-container" style="max-width:880px">
+			<div class="hu-proof-headline hu-reveal">
+				<span class="hu-eyebrow" style="color:var(--ink-2)">06b / Kategorie</span>
+				<h2 style="color:var(--ink)">Warum dies kein Webdesign-Projekt ist.</h2>
+			</div>
+
+			<div class="hu-category-prose hu-reveal" style="max-width:680px;margin:32px auto 0;color:var(--ink-2);font-size:18px;line-height:1.62">
+				<p style="margin:0 0 18px">
+					Eine Standard-Agentur klickt Plugins und Page-Builder im WordPress-Backend zusammen. Bei jedem Theme- oder Plugin-Update zerschießt eine fremde Hand die LCP-Performance — und kein Mensch im Betrieb kann nachvollziehen, warum die Anfragen plötzlich einbrechen.
+				</p>
+				<p style="margin:0 0 18px">
+					Hier wird anders gearbeitet: System-Logik und Daten-Pfade liegen versioniert im GitHub-Repository. WordPress dient nur als performantes Frontend — kein Page-Builder, kein Plugin-Stack als Software-Fassade. Jede Änderung ist nachvollziehbar, jedes Rollback in Minuten möglich.
+				</p>
+				<p style="margin:0">
+					Das Resultat für den Betrieb: Sie mieten keine Agentur-Software, Sie besitzen den Code. Server-Side Tracking, CRM-Anbindung und Conversion-Pfad gehören Ihnen — übergebbar, prüfbar, unabhängig von mir.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- ═══════════════════════════════════════════════════
 	     07 / ÜBER MICH — Trust-Anker (Metaphern-Leck korrigiert)
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--cream" id="about" data-track-section="07">
