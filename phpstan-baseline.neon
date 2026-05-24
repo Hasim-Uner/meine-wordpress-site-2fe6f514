@@ -1,0 +1,216 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Offset 'label' on array\\{label\\: 'Alle Analysen'\\|'Anfrage\\-Systeme'\\|'Core Web Vitals'\\|'CPL/CPO\\-Rechnung'\\|'CRO\\-System'\\|'Portalvergleich'\\|'Regionaler…'\\|'Server\\-Side Tracking'\\|'Technisches SEO'\\|'WordPress Agentur…', url\\: mixed\\} in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: blocksy-child/category.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: blocksy-child/category.php
+
+		-
+			message: "#^Variable \\$category_deep_links in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: blocksy-child/category.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: blocksy-child/inc/analysis-intake.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: blocksy-child/inc/blog-pillar-posts.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 3
+			path: blocksy-child/inc/blog-pillar-posts.php
+
+		-
+			message: "#^Variable \\$blockquote_lines in empty\\(\\) always exists and is always falsy\\.$#"
+			count: 1
+			path: blocksy-child/inc/blog-pillar-posts.php
+
+		-
+			message: "#^Variable \\$list_items in empty\\(\\) always exists and is always falsy\\.$#"
+			count: 1
+			path: blocksy-child/inc/blog-pillar-posts.php
+
+		-
+			message: "#^Variable \\$paragraph in empty\\(\\) always exists and is always falsy\\.$#"
+			count: 1
+			path: blocksy-child/inc/blog-pillar-posts.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: blocksy-child/inc/blog-provider-posts.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 2
+			path: blocksy-child/inc/blog-provider-posts.php
+
+		-
+			message: "#^Variable \\$list_items in empty\\(\\) always exists and is always falsy\\.$#"
+			count: 1
+			path: blocksy-child/inc/blog-provider-posts.php
+
+		-
+			message: "#^Variable \\$paragraph in empty\\(\\) always exists and is always falsy\\.$#"
+			count: 1
+			path: blocksy-child/inc/blog-provider-posts.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, float\\|int given\\.$#"
+			count: 1
+			path: blocksy-child/inc/client-portal.php
+
+		-
+			message: "#^Offset 'class' on array\\{url\\: mixed, title\\: string, class\\: 'glossary\\-autolink'\\|'glossary\\-autolink…', linked_key\\: non\\-falsy\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: blocksy-child/inc/glossary/glossary-autolink.php
+
+		-
+			message: "#^Offset 'linked_key' on array\\{url\\: mixed, title\\: string, class\\: 'glossary\\-autolink'\\|'glossary\\-autolink…', linked_key\\: non\\-falsy\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: blocksy-child/inc/glossary/glossary-autolink.php
+
+		-
+			message: "#^Offset 'title' on array\\{url\\: mixed, title\\: string, class\\: 'glossary\\-autolink'\\|'glossary\\-autolink…', linked_key\\: non\\-falsy\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: blocksy-child/inc/glossary/glossary-autolink.php
+
+		-
+			message: "#^Parameter \\#1 \\$args of function wp_nav_menu expects array\\{menu\\?\\: int\\|string\\|WP_Term, menu_class\\?\\: string, menu_id\\?\\: string, container\\?\\: string, container_class\\?\\: string, container_id\\?\\: string, container_aria_label\\?\\: string, fallback_cb\\?\\: \\(callable\\(\\)\\: mixed\\)\\|false, \\.\\.\\.\\}, array\\{theme_location\\: non\\-falsy\\-string, container\\: false, menu_class\\: non\\-falsy\\-string, fallback_cb\\: false, depth\\: 2\\} given\\.$#"
+			count: 1
+			path: blocksy-child/inc/header.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$title\\.$#"
+			count: 1
+			path: blocksy-child/inc/menu-setup.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 2
+			path: blocksy-child/inc/seo-cockpit/seo-cockpit-diagnostics.php
+
+		-
+			message: "#^Offset 'delta' on array\\{query\\: string, current_clicks\\: float, previous_clicks\\: float, delta\\: float, impressions\\: float, position\\: float\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 4
+			path: blocksy-child/inc/seo-cockpit/seo-cockpit-insights.php
+
+		-
+			message: "#^Offset 'score' on array\\{page\\: string, query\\: string, impressions\\: float, clicks\\: float, ctr\\: float, position\\: float, score\\: float, prev_clicks\\: float, \\.\\.\\.\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 2
+			path: blocksy-child/inc/seo-cockpit/seo-cockpit-insights.php
+
+		-
+			message: "#^Offset 'count' on array\\{label\\: string, count\\: int\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: blocksy-child/inc/seo-cockpit/seo-cockpit-links.php
+
+		-
+			message: "#^Offset 'label' on array\\{label\\: string, count\\: int\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: blocksy-child/inc/seo-cockpit/seo-cockpit-links.php
+
+		-
+			message: "#^Offset 'links' on array\\{key\\: 'audit_footer', label\\: 'Audit\\-Footer', links\\: array\\{mixed, mixed, mixed\\}\\}\\|array\\{key\\: 'audit_header', label\\: 'Audit\\-Header', links\\: array\\{mixed, mixed\\}\\}\\|array\\{key\\: 'blog_header', label\\: 'Blog\\-Header', links\\: array\\{mixed, mixed, mixed, mixed, mixed\\}\\}\\|array\\{key\\: 'site_footer', label\\: 'Footer', links\\: array\\{mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed, \\.\\.\\.\\}\\}\\|array\\{key\\: 'site_header', label\\: 'Header\\-Navigation', links\\: array\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: blocksy-child/inc/seo-cockpit/seo-cockpit-links.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 2
+			path: blocksy-child/inc/seo-cockpit/seo-cockpit-ui.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_html expects string, int given\\.$#"
+			count: 2
+			path: blocksy-child/inc/seo-cockpit/seo-cockpit-ui.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: blocksy-child/inc/seo-cockpit/seo-cockpit-ui.php
+
+		-
+			message: "#^Offset 'og_image_height' does not exist on array\\{description\\: string, canonical\\: string, robots\\: string, og_title\\: string, og_image\\: non\\-falsy\\-string, og_type\\: string\\}\\.$#"
+			count: 1
+			path: blocksy-child/inc/seo-meta.php
+
+		-
+			message: "#^Offset 'og_image_type' does not exist on array\\{description\\: string, canonical\\: string, robots\\: string, og_title\\: string, og_image\\: non\\-falsy\\-string, og_type\\: string\\}\\.$#"
+			count: 1
+			path: blocksy-child/inc/seo-meta.php
+
+		-
+			message: "#^Offset 'og_image_width' does not exist on array\\{description\\: string, canonical\\: string, robots\\: string, og_title\\: string, og_image\\: non\\-falsy\\-string, og_type\\: string\\}\\.$#"
+			count: 1
+			path: blocksy-child/inc/seo-meta.php
+
+		-
+			message: "#^Call to sprintf contains 0 placeholders, 1 value given\\.$#"
+			count: 1
+			path: blocksy-child/page-b2b-solar-leads.php
+
+		-
+			message: "#^Offset 'description' on array\\{label\\: 'Marktcheck', description\\: 'Klarheit vor…'\\}\\|array\\{label\\: 'Projektprüfung', description\\: 'B2B\\-Projekt sauber…'\\}\\|array\\{label\\: 'Umsetzung', description\\: 'Konkreter Bau oder…'\\}\\|array\\{label\\: 'Website\\-Analyse', description\\: 'Klarheit vor…'\\}\\|array\\{label\\: 'Weiterentwicklung', description\\: 'Planbare…'\\} in isset\\(\\) always exists and is not nullable\\.$#"
+			count: 1
+			path: blocksy-child/page-kontakt.php
+
+		-
+			message: "#^Ternary operator condition is always false\\.$#"
+			count: 1
+			path: blocksy-child/page-kontakt.php
+
+		-
+			message: "#^Call to sprintf contains 0 placeholders, 1 value given\\.$#"
+			count: 1
+			path: blocksy-child/page-qualifizierte-pv-anfragen.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 5
+			path: blocksy-child/page-whitelabel-retainer.php
+
+		-
+			message: "#^Parameter \\#3 \\$fallback of function hu_e3_metric expects string, int given\\.$#"
+			count: 5
+			path: blocksy-child/page-whitelabel-retainer.php
+
+		-
+			message: "#^Offset 'icon' on array\\{num\\: '01', title\\: 'Strategie', icon\\: '🎯', desc\\: 'Welche Seite trägt…'\\}\\|array\\{num\\: '02', title\\: 'Fundament', icon\\: '⚡', desc\\: 'Schnell, stabil,…'\\}\\|array\\{num\\: '03', title\\: 'Messbarkeit', icon\\: '📈', desc\\: 'Sie wissen, welcher…'\\}\\|array\\{num\\: '04', title\\: 'Sichtbarkeit', icon\\: '🔎', desc\\: 'Die Suchanfragen,…'\\}\\|array\\{num\\: '05', title\\: 'Conversion', icon\\: '💡', desc\\: 'Was auf der Seite…'\\}\\|array\\{num\\: '06', title\\: 'Weiterentwicklung', icon\\: '🚀', desc\\: 'Welche Änderung…'\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: blocksy-child/page-wordpress-agentur.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: blocksy-child/single.php
+
+		-
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 1
+			path: blocksy-child/template-parts/breadcrumb.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int\\<1, max\\> given\\.$#"
+			count: 1
+			path: blocksy-child/template-parts/breadcrumb.php
+
+		-
+			message: "#^Offset 'conversion'\\|'data'\\|'growth'\\|'solar'\\|'wordpress' on array\\{solar\\: array\\{eyebrow\\: 'Solar / SHK', title\\: 'Eigene Anfrage…', meta\\: 'Portal\\-Alternative', nodes\\: array\\{'SEO', 'Tracking', 'Vorqualifizierung'\\}\\}, data\\: array\\{eyebrow\\: 'SEO / Daten', title\\: 'Sichtbarkeit wird…', meta\\: 'Technik \\+…', nodes\\: array\\{'Crawl', 'Events', 'CRO'\\}\\}, conversion\\: array\\{eyebrow\\: 'CRO / UX', title\\: 'Aus Besuchern…', meta\\: 'Message Match', nodes\\: array\\{'Intent', 'Proof', 'CTA'\\}\\}, wordpress\\: array\\{eyebrow\\: 'WordPress', title\\: 'Website als Anfrage…', meta\\: 'Architektur \\+…', nodes\\: array\\{'Speed', 'SEO', 'Wartung'\\}\\}, growth\\: array\\{eyebrow\\: non\\-falsy\\-string, title\\: 'Strategischer…', meta\\: 'Einordnung', nodes\\: array\\{'Problem', 'Hebel', 'Priorität'\\}\\}\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: blocksy-child/template-parts/post-title-visual.php
+
+		-
+			message: "#^Offset 'cro'\\|'markteinordnung'\\|'owned\\-leads'\\|'seo'\\|'sichtbarkeit\\-daten…'\\|'solar\\-waermepumpen…'\\|'strategie'\\|'tracking'\\|'wordpress\\-growth…'\\|'wordpress…' on array\\{solar\\-waermepumpen\\-anfrage\\-systeme\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, markteinordnung\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, owned\\-leads\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, sichtbarkeit\\-daten\\-conversion\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, seo\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, tracking\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, cro\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, wordpress\\-performance\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, \\.\\.\\.\\} in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: blocksy-child/template-parts/related-content.php

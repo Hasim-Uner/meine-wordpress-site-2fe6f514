@@ -2,6 +2,7 @@
     "name": "hasim/meine-wordpress-site",
     "description": "WordPress Child Theme",
     "type": "wordpress-theme",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Hasim",
@@ -9,6 +10,10 @@
         }
     ],
     "require-dev": {
-        "php-stubs/wordpress-stubs": "^6.9"
+        "php-stubs/wordpress-stubs": "^6.9",
+        "phpstan/phpstan": "^1.12"
+    },
+    "scripts": {
+        "analyse:php": "phpstan analyse --no-progress --debug --memory-limit=2G"
     }
 }

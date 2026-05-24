@@ -1,0 +1,16 @@
+includes:
+  - phpstan-baseline.neon
+
+parameters:
+  level: 5
+  paths:
+    - blocksy-child
+  excludePaths:
+    analyse:
+      - blocksy-child/assets
+      - blocksy-child/fonts
+  scanFiles:
+    - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+    - stubs/acf-stubs.php
+    - stubs/theme-runtime-stubs.php
+  treatPhpDocTypesAsCertain: false

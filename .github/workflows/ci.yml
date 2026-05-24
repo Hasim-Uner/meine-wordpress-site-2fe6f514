@@ -13,6 +13,9 @@ on:
       - 'package-lock.json'
       - 'composer.json'
       - 'composer.lock'
+      - 'phpstan.neon'
+      - 'phpstan-baseline.neon'
+      - 'stubs/**'
   pull_request:
     paths:
       - 'AGENTS.md'
@@ -25,6 +28,9 @@ on:
       - 'package-lock.json'
       - 'composer.json'
       - 'composer.lock'
+      - 'phpstan.neon'
+      - 'phpstan-baseline.neon'
+      - 'stubs/**'
   workflow_dispatch:
 
 concurrency:
@@ -60,6 +66,12 @@ jobs:
 
       - name: PHP syntax check
         run: find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Install PHP analysis tooling
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: PHP static analysis
+        run: composer analyse:php
 
       - name: Validate deploy config fallback
         run: bash scripts/verify-deploy-config.sh 22 "www/wp-content/themes/blocksy-child/"
