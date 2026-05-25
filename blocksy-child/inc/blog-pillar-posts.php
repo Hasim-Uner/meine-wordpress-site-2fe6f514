@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function hu_get_blog_pillar_posts_seed_version() {
-	return '2026-05-21-1';
+	return '2026-05-25-1';
 }
 
 /**
@@ -42,6 +42,21 @@ function hu_get_blog_pillar_posts_seed_data() {
 			'markdown_file'     => 'assets/content/blog/photovoltaik-leads-kaufen-alternative.md',
 			'featured_image'    => 'assets/img/blog/photovoltaik-leads-kaufen-alternative-hero.png',
 			'featured_alt_text' => 'Vergleich von gemieteten Photovoltaik-Leads und eigener Anfrage-Infrastruktur mit CPO-Rechnung.',
+		],
+		[
+			'title'             => 'WordPress TTFB unter 200 ms: Wie Server-Antwortzeit den Google-Ads-Qualitätsfaktor entscheidet',
+			'slug'              => 'wordpress-ttfb-google-ads-ladezeit',
+			'seo_title'         => 'WordPress TTFB & Google Ads: Server-Antwortzeit senken',
+			'seo_description'   => 'TTFB über 600 ms zerlegt deinen Qualitätsfaktor, treibt den CPC und kostet Conversions. Welche Hebel wirklich wirken — und welche nur Aufwand erzeugen.',
+			'excerpt'           => 'Eine Sekunde mehr Ladezeit senkt die Conversion-Rate um rund 17 Prozent. TTFB über 600 ms zerlegt den Qualitätsfaktor in Google Ads, treibt den CPC und vernichtet Werbebudget. Warum Server-Antwortzeit das Fundament jeder bezahlten Kampagne ist — und welche Hebel im WordPress-Stack tatsächlich wirken.',
+			'categories'        => [
+				[ 'name' => 'Performance-Marketing', 'slug' => 'performance-marketing' ],
+				[ 'name' => 'WordPress Performance', 'slug' => 'wordpress-performance' ],
+			],
+			'tags'              => [ 'WordPress Performance', 'TTFB', 'Google Ads', 'Qualitätsfaktor', 'Page Speed', 'Conversion-Rate', 'Managed Hosting' ],
+			'markdown_file'     => 'assets/content/blog/wordpress-ttfb-google-ads-ladezeit.md',
+			'featured_image'    => 'assets/img/blog/wordpress-ttfb-google-ads-ladezeit-hero.png',
+			'featured_alt_text' => 'Server-Antwortzeit als Fundament des Google-Ads-Qualitätsfaktors und der Conversion-Rate.',
 		],
 	];
 }
