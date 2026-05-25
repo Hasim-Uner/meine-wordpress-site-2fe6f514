@@ -27,7 +27,7 @@ $marktcheck_url = home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 // ═══ Vertiefungs-Links für Fokusmarkt-Solar-Brücke ═══
 $agentur_solar_deeper = [
 	[
-		't'   => 'Solar Leads kaufen – Alternative',
+		't'   => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage',
 		's'   => 'Markteinordnung der Lead-Anbieter und warum eigene Anfrage-Systeme den CPL senken.',
 		'url' => home_url( '/solar-leads-kaufen-alternative/' ),
 	],

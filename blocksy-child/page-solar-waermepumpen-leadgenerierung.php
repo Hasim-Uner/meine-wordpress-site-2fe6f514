@@ -254,8 +254,8 @@ $deeper_clusters = [
 	[
 		'group' => 'Strategie & Vergleich',
 		'items' => [
-			[ 't' => 'Solar Leads kaufen – Alternative',     's' => 'Markteinordnung der Lead-Anbieter und Modelle.',           'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
-			[ 't' => 'Eigene Leadgenerierung vs. Portale',   's' => 'TCO-Überschlag über 24/36 Monate und 8-Kriterien-Matrix.', 'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ) ],
+			[ 't' => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage',  's' => 'Markteinordnung der Lead-Anbieter und Kosten pro Anfrage.',     'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
+			[ 't' => 'TCO 24/36 Monate: Portal vs. eigenes System',   's' => 'Strategischer 8-Kriterien-Vergleich mit Asset-Eigentum-Logik.', 'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ) ],
 		],
 	],
 	[

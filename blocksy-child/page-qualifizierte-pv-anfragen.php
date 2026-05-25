@@ -90,7 +90,7 @@ $how_to_measure = [
 $linked_assets = [
 	[ 't' => 'Cost per Lead Photovoltaik', 's' => 'Drei Szenarien im CPL-Vergleich und versteckte Kostentreiber.', 'url' => $cpl_url ],
 	[ 't' => 'Server-Side Tracking für B2B', 's' => 'Wie man Quelle-zu-Auftrag-Attribution sauber misst.', 'url' => $sst_url ],
-	[ 't' => 'Solar Leads kaufen – Alternative', 's' => 'Markteinordnung der Lead-Anbieter und Modelle.', 'url' => $intercept_url ],
+	[ 't' => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage', 's' => 'Markteinordnung der Lead-Anbieter und konkrete Kosten pro Anfrage.', 'url' => $intercept_url ],
 	[ 't' => 'E3 New Energy – Methodik-Case', 's' => sprintf( '%1$s, %2$s Abschlussquote in %3$s.', $e3_lead_count, $e3_sales_conversion, $e3_timeframe ), 'url' => $e3_url ],
 ];
 

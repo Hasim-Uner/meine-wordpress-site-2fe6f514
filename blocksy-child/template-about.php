@@ -136,8 +136,8 @@ $about_expertise_structured = [
 			'url' => home_url( '/lead-funnel-solar/' ),
 		],
 		[
-			't'   => 'Mieten vs. Besitzen',
-			's'   => 'Vergleichsmatrix Portal-Leads gegen eigenes Anfrage-System mit TCO-Überschlag.',
+			't'   => 'Vergleichsmatrix Portal-Leads vs. eigenes System',
+			's'   => '24-Monats-TCO, Exklusivität und Asset-Eigentum im strategischen Vergleich.',
 			'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ),
 		],
 	],

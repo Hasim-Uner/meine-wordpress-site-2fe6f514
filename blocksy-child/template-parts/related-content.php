@@ -50,12 +50,12 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 			'text'  => __( 'Passender System-Einstieg:', 'blocksy-child' ),
 		],
 		'markteinordnung' => [
-			'label' => __( 'Portalvergleich lesen', 'blocksy-child' ),
+			'label' => __( 'TCO-Vergleich Portal vs. eigenes System', 'blocksy-child' ),
 			'url'   => home_url( '/eigene-leadgenerierung-vs-portale/' ),
 			'text'  => __( 'Für die wirtschaftliche Einordnung:', 'blocksy-child' ),
 		],
 		'owned-leads' => [
-			'label' => __( 'Portalvergleich lesen', 'blocksy-child' ),
+			'label' => __( 'Asset-Eigentum: TCO über 24 Monate', 'blocksy-child' ),
 			'url'   => home_url( '/eigene-leadgenerierung-vs-portale/' ),
 			'text'  => __( 'Wenn es um Eigentum an Nachfrage geht:', 'blocksy-child' ),
 		],

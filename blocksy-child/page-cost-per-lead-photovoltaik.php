@@ -85,8 +85,8 @@ $hidden_cost_drivers = [
 
 $linked_assets = [
 	[ 't' => 'Qualifizierte PV-Anfragen – 4 Merkmale', 's' => 'Wie man hochwertige von schlechten Leads unterscheidet.', 'url' => $quality_url ],
-	[ 't' => 'Eigene Leadgenerierung vs. Portale', 's' => 'TCO-Überschlag über 24/36 Monate und 8-Kriterien-Matrix.', 'url' => $vs_url ],
-	[ 't' => 'Solar Leads kaufen – Alternative', 's' => 'Markteinordnung und Modelle im Lead-Markt.', 'url' => $intercept_url ],
+	[ 't' => 'TCO 24/36 Monate: Portal vs. eigenes System', 's' => 'Strategischer 8-Kriterien-Vergleich mit Asset-Eigentum-Logik.', 'url' => $vs_url ],
+	[ 't' => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage', 's' => 'Markteinordnung und konkrete Kosten pro Anfrage im Lead-Markt.', 'url' => $intercept_url ],
 	[ 't' => 'E3 New Energy – Methodik-Case', 's' => sprintf( '%1$s, %2$s Abschlussquote, %3$s.', $e3_lead_count, $e3_sales_conversion, $e3_timeframe ), 'url' => $e3_url ],
 ];
 

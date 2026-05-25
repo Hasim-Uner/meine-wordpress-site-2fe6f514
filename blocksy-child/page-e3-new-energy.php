@@ -145,8 +145,8 @@ $e3_deeper = [
 		'url' => home_url( '/lead-funnel-solar/' ),
 	],
 	[
-		't'   => 'Eigene Leadgenerierung vs. Portale',
-		's'   => 'Die Vergleichsmatrix Mieten vs. Besitzen mit TCO-Überschlag über 24 und 36 Monate.',
+		't'   => 'TCO-Überschlag 24/36 Monate: Portal-Leads vs. eigenes System',
+		's'   => 'Strategischer Vergleich mit CAPEX-vs-OPEX-Logik und 8-Kriterien-Matrix.',
 		'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ),
 	],
 ];

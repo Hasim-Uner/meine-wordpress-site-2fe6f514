@@ -82,7 +82,7 @@ get_template_part( 'template-parts/blog-header' );
 				'eyebrow'         => __( 'Portal-Abhängigkeit', 'blocksy-child' ),
 				'title'           => __( 'Portal-Leads sind nur ein Kostenblock. Entscheidend ist der CPO.', 'blocksy-child' ),
 				'text'            => __( 'Dieser Artikel gehört in die Frage, ob Nachfrage dauerhaft gemietet oder als eigenes System aufgebaut werden sollte.', 'blocksy-child' ),
-				'primary_label'   => __( 'Portalvergleich lesen', 'blocksy-child' ),
+				'primary_label'   => __( 'TCO-Vergleich Portal vs. eigenes System', 'blocksy-child' ),
 				'primary_url'     => $portal_url,
 				'secondary_label' => __( 'CPL/CPO-Rechnung ansehen', 'blocksy-child' ),
 				'secondary_url'   => $cpl_url,

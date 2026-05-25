@@ -88,8 +88,8 @@ $fit_no = [
 
 $linked_assets = [
 	[ 't' => 'Lead-Funnel Solar (Pillar)', 's' => 'Die 5 Funnel-Stufen und die häufigsten Fehler.', 'url' => home_url( '/lead-funnel-solar/' ) ],
-	[ 't' => 'Mieten vs. Besitzen – Vergleich', 's' => 'TCO-Überschlag und 8-Kriterien-Matrix gegenüber Portalen.', 'url' => $vs_url ],
-	[ 't' => 'Solar Leads kaufen – Alternative', 's' => 'Warum Portal-Leads das Wachstum bremsen.', 'url' => $intercept_url ],
+	[ 't' => 'TCO über 24 Monate: Portal-Leads vs. eigenes System', 's' => 'Strategische Vergleichsmatrix mit Asset-Eigentum-Logik.', 'url' => $vs_url ],
+	[ 't' => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage', 's' => 'Warum Portal-Leads das Wachstum bremsen — Kosten pro Anfrage im Detail.', 'url' => $intercept_url ],
 	[ 't' => 'E3-Methodik-Case', 's' => sprintf( '%1$s Anfragen, %2$s Abschlussquote.', $e3_lead_count, $e3_sales_conversion ), 'url' => $e3_url ],
 ];
 
