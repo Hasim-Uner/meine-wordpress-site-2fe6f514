@@ -44,6 +44,10 @@ Marktcheck -> Anfrage-System-Analyse -> Umsetzung / Retainer
 `System-Diagnose`, `Potenzial-Check`, `priorisierte Hebel`,
 `Solar`, `Wärmepumpe`, `Speicher`, `Energie-Anbieter`, `Handwerk`
 
+`Founding-Partner` darf im 2026-Angebotsframe verwendet werden, muss auf der
+ersten sichtbaren Nutzung aber als früher Umsetzungspartner erklärt werden:
+kein Mitgründer, kein Anteilseigner, keine gesellschaftsrechtliche Partnerschaft.
+
 ## Anti-Patterns (Hard Bans)
 
 - `Growth Audit` als user-facing Label (interne URL/IDs dürfen bleiben)

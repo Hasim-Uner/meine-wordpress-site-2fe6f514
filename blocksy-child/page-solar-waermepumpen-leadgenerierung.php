@@ -1279,15 +1279,16 @@ get_header();
 		?>
 		<section class="sol-section" id="founding" data-track-section="founding_cohort">
 			<div class="sol-wrap" style="max-width:760px">
-				<div class="sol-eyebrow"><?php echo esc_html( $founding['label'] ); ?></div>
+				<div class="sol-eyebrow"><?php echo esc_html( $founding['label'] ); ?> · frühe Umsetzungspartner</div>
 				<h2 class="sol-display" style="margin-bottom:18px">
 					Aufnahme-Protokoll für <em><?php echo (int) $founding['slots_total']; ?> Solar- oder SHK-Betriebe</em>.
 				</h2>
 				<p style="color:var(--sol-fg-dim);font-size:18px;line-height:1.6;margin:0 0 28px">
-					Damit jede Region in Diagnose, Daten-Pipeline und Vertriebsanschluss persönlich abgebildet werden kann, nehme ich 2026 maximal <?php echo (int) $founding['slots_total']; ?> Betriebe als Founding-Partner auf. Stichtag für die Bewerbung ist der <?php echo esc_html( $founding_end_de ); ?>. Der System-Intake entscheidet, ob die Architektur zu Ihrer Region passt — keine Verkaufslogik, keine Lock-in-Klausel.
+					Damit jede Region in Diagnose, Daten-Pipeline und Vertriebsanschluss persönlich abgebildet werden kann, nehme ich 2026 maximal <?php echo (int) $founding['slots_total']; ?> Betriebe als Founding-Partner auf. Founding-Partner heißt hier: früher Umsetzungspartner der 2026er Kohorte — kein Mitgründer, kein Anteilseigner und keine gesellschaftsrechtliche Partnerschaft. Stichtag für die Bewerbung ist der <?php echo esc_html( $founding_end_de ); ?>. Der System-Intake entscheidet, ob die Architektur zu Ihrer Region passt — keine Verkaufslogik, keine Lock-in-Klausel.
 				</p>
 				<ul class="sol-mono" style="display:grid;gap:12px;padding:0;margin:0 0 28px;list-style:none;color:var(--sol-fg);font-size:13px;letter-spacing:.04em">
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Plätze 2026: <?php echo (int) $founding['slots_remaining']; ?> von <?php echo (int) $founding['slots_total']; ?> noch offen</li>
+					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Rolle: früher Umsetzungspartner, keine Mitgründer- oder Beteiligungsrolle</li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Bewerbungsfrist: <?php echo esc_html( $founding_end_de ); ?></li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Entscheidung: nach System-Intake · händisch · in 48 h</li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Bedingung: eigener Vertrieb · klares Zielgebiet · 12–24-Monate-Horizont</li>

@@ -51,5 +51,8 @@ function hu_messaging_canon() {
 			'Founding-Konditionen',
 			'Baustein',
 		],
+		'term_definitions'          => [
+			'Founding-Partner' => 'Früher Umsetzungspartner der Founding Cohort 2026; kein Mitgründer, kein Anteilseigner und keine gesellschaftsrechtliche Partnerschaft.',
+		],
 	];
 }
