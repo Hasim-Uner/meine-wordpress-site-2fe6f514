@@ -1202,137 +1202,27 @@ function nexus_maybe_ensure_qualifizierte_pv_anfragen_page() {
 add_action( 'init', 'nexus_maybe_ensure_qualifizierte_pv_anfragen_page', 27 );
 
 /**
- * Move the legacy /roi-rechner/ page to the trash if it still exists.
- *
- * Idempotent: runs once via an option flag and leaves the page recoverable
- * in the trash. The /roi-rechner/ slug stays as a 301 redirect via the
- * legacy offer redirect map, so external backlinks are not broken.
- *
- * @return void
- */
-function nexus_maybe_cleanup_legacy_roi_rechner_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$flag = 'nexus_legacy_roi_rechner_trashed';
-
-	if ( '1' === (string) get_option( $flag ) ) {
-		return;
-	}
-
-	$page = get_page_by_path( 'roi-rechner' );
-
-	if ( ! ( $page instanceof WP_Post ) ) {
-		update_option( $flag, '1', false );
-		return;
-	}
-
-	if ( 'trash' !== $page->post_status ) {
-		wp_trash_post( (int) $page->ID );
-	}
-
-	update_option( $flag, '1', false );
-}
-add_action( 'init', 'nexus_maybe_cleanup_legacy_roi_rechner_page', 28 );
-
-/**
- * Map deprecated service, cluster and tool slugs to their canonical targets.
+ * Map protected legacy entry slugs to their canonical targets.
  *
  * @return array<string, string>
  */
 function nexus_get_legacy_offer_redirect_map() {
 	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
 	$request_url = nexus_get_primary_request_url();
-	$cwv_target  = function_exists( 'hue_get_wgos_asset_redirect_url' )
-		? hue_get_wgos_asset_redirect_url( 'cwv-optimierung', trailingslashit( $agentur_url ) . '#methode' )
-		: trailingslashit( $agentur_url ) . '#methode';
 
 	return [
-		// Audit- und Tool-Routen sind in der neuen Positionierung retired.
-		'/growth-audit/'               => $request_url,
-		'/audit/'                      => $request_url,
-		'/audit-linkedin/'             => $request_url,
-		'/customer-journey-audit/'     => $request_url,
-		'/360-audit/'                  => $request_url,
-		'/wordpress-tech-audit/'       => $request_url,
-		'/meta-ads/'                   => $request_url,
-		'/kostenlose-tools/'           => $request_url,
-		'/tools/'                      => $request_url,
-		'/website-performance-analyse/' => $request_url,
-		'/kostenlose-tools/website-performance-analyse/' => $request_url,
-		'/tools/website-performance-analyse/' => $request_url,
-		'/roi-rechner/'                => $request_url,
-		// Erklär- und Service-Ebenen konsolidiert auf die Agentur-Money-Page oder passende Assets.
-		'/wordpress-growth-operating-system/' => trailingslashit( $agentur_url ) . '#methode',
-		'/wgos-systemlandkarte/'       => trailingslashit( $agentur_url ) . '#asset-uebersicht',
-		'/wordpress-seo-hannover/'     => trailingslashit( $agentur_url ) . '#technisches-seo',
-		'/core-web-vitals/'            => $cwv_target,
-		'/conversion-rate-optimization/' => trailingslashit( $agentur_url ) . '#methode',
-		'/wordpress-wartung-hannover/' => trailingslashit( $agentur_url ) . '#wordpress-wartung',
-		'/seo/'                        => trailingslashit( $agentur_url ) . '#technisches-seo',
-		'/wordpress-agentur/'          => $agentur_url,
+		// High-probability external entry paths. Internal/historical tool,
+		// WGOS and service slugs are no longer forced through 301 redirects.
+		'/growth-audit/'           => $request_url,
+		'/audit/'                  => $request_url,
+		'/customer-journey-audit/' => $request_url,
+		'/360-audit/'              => $request_url,
+		'/wordpress-tech-audit/'   => $request_url,
+		'/wordpress-agentur/'      => $agentur_url,
 	];
 }
 
 add_action( 'template_redirect', 'nexus_redirect_legacy_offer_paths', 2 );
-
-/**
- * Return page slugs that are intentionally retired behind 301 redirects.
- *
- * @return array<int, string>
- */
-function nexus_get_retired_money_page_slugs() {
-	return [
-		'wordpress-growth-operating-system',
-		'wgos-systemlandkarte',
-		'wordpress-seo-hannover',
-		'core-web-vitals',
-		'conversion-rate-optimization',
-		'wordpress-tech-audit',
-		'wordpress-wartung-hannover',
-		'audit-linkedin',
-	];
-}
-
-add_filter( 'wp_sitemaps_posts_query_args', 'nexus_exclude_retired_money_pages_from_native_sitemap', 20, 2 );
-/**
- * Keep retired service pages out of the native WordPress sitemap.
- *
- * @param array<string, mixed> $args      WP_Query args.
- * @param string              $post_type Sitemap post type.
- * @return array<string, mixed>
- */
-function nexus_exclude_retired_money_pages_from_native_sitemap( $args, $post_type ) {
-	if ( 'page' !== $post_type ) {
-		return $args;
-	}
-
-	$exclude_ids = [];
-
-	foreach ( nexus_get_retired_money_page_slugs() as $slug ) {
-		$page = get_page_by_path( $slug );
-
-		if ( $page instanceof WP_Post ) {
-			$exclude_ids[] = (int) $page->ID;
-		}
-	}
-
-	if ( empty( $exclude_ids ) ) {
-		return $args;
-	}
-
-	$args['post__not_in'] = array_values(
-		array_unique(
-			array_merge(
-				isset( $args['post__not_in'] ) ? (array) $args['post__not_in'] : [],
-				$exclude_ids
-			)
-		)
-	);
-
-	return $args;
-}
 
 /**
  * Preserve the current request query string when redirecting legacy URLs.
@@ -1362,7 +1252,7 @@ function nexus_append_current_query_to_redirect_url( $target_url ) {
 }
 
 /**
- * Redirect deprecated service and tool slugs to their current canonical destinations.
+ * Redirect protected legacy entry slugs to their current canonical destinations.
  *
  * @return void
  */

@@ -184,8 +184,9 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Über Haşim Üner | Solar-Anfrage-Systeme',
 				'description' => 'Haşim Üner baut eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter: weg von gemieteten Portal-Leads, hin zu eigener Infrastruktur.',
 			],
-			// 'wgos' / 'wordpress-growth-operating-system' sowie Tools-/Audit-Legacy-Routen:
-			// Seiten sind noindex oder 301, daher keine öffentlichen Meta-Signale mehr.
+			// 'wgos' / 'wordpress-growth-operating-system' sowie Tool-/Audit-Legacy-Routen:
+			// Seiten sind noindex, sitemap-excluded oder geschuetzte 301-Einstiege,
+			// daher keine oeffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
 				'title'       => 'WordPress Agentur Hannover | B2B SEO, Tracking & CRO',
 				'description' => 'WordPress Agentur Hannover für B2B-Websites: technisches SEO, Tracking, Core Web Vitals und CRO. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
@@ -215,8 +216,8 @@ function hu_get_forced_singular_seo_map() {
 				'description' => hu_get_e3_methodology_case_description(),
 			],
 			// 'wordpress-wartung-hannover' + 'wordpress-seo-hannover' + 'ki-integration-wordpress' entfernt:
-			// /wordpress-seo-hannover/ und /wordpress-wartung-hannover/ sind 301 auf die Agentur-Page (Anker-Sektionen);
-			// /ki-integration-wordpress/ ist noindex. Keine eigenständigen SEO-Signale mehr nötig.
+			// alte Service-Slugs bleiben noindex/sitemap-excluded, aber ohne erzwungene 301-Pflicht;
+			// /ki-integration-wordpress/ ist noindex. Keine eigenstaendigen SEO-Signale mehr noetig.
 			'solar-waermepumpen-leadgenerierung' => [
 				'title'       => 'Photovoltaik & Wärmepumpen Leadgenerierung – Portal-Alternative',
 				'description' => sprintf( 'B2B-Leadgenerierung für Solar, Wärmepumpe und Speicher: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3-Referenz: %s niedrigere Cost per Lead in 6 Monaten.', $e3_cpl_reduction ),
@@ -1053,6 +1054,7 @@ function hu_get_seo_meta() {
 		'alle-loesungen',
 		'alle-loesungen-im-detail',
 		'anfrage',
+		'audit-linkedin',
 		'case-studies',
 		'case-studies-e-commerce',
 		'conversion-rate-optimization',
@@ -1080,8 +1082,13 @@ function hu_get_seo_meta() {
 		'tools',
 		'website-performance-analyse',
 		'website-fuer-solar-und-waermepumpen-anbieter',
+		'wordpress-growth-operating-system',
 		'wgos-systemlandkarte',
+		'wgos',
 		'wordpress-agentur',
+		'wordpress-seo-hannover',
+		'wordpress-wartung-hannover',
+		'roi-rechner',
 		'seo',
 	];
 
@@ -1326,9 +1333,9 @@ add_action( 'template_redirect', function () {
  * - ki-integration-wordpress / ki-integration: noindex (Legacy-Thema)
  * - loesungen / alle-loesungen: noindex (interne Angebotsübersicht, nicht mehr beworben)
  * - energie-fahrplan-demo: Showroom/Legacy-Demo, kein aktiver Leadpfad
- * - case-studies* / alte Kontakt-, Agentur-, Solar- und Systempfade: 301 auf kanonische Ziele
- * - wordpress-seo-hannover / wordpress-wartung-hannover: 301 auf Agentur-Page-Anker
- * - growth-audit / kostenlose-tools und Tool-Unterseiten: 301 auf Marktcheck
+ * - case-studies* / Agentur- und Solar-Aliasse: 301 auf kanonische Ziele
+ * - alte Service-, Tool- und WGOS-Slugs: keine erzwungenen 301 mehr; falls DB-Seiten existieren, noindex und aus Sitemap entfernen
+ * - growth-audit und generische Audit-Aliasse: 301 auf Marktcheck
  * - whitelabel*: diskreter Akquisepfad, aber kein aktives SEO-Ziel
  *
  * @return array<int, string>
@@ -1338,6 +1345,7 @@ function nexus_get_sitemap_excluded_slugs() {
 		'alle-loesungen',
 		'alle-loesungen-im-detail',
 		'anfrage',
+		'audit-linkedin',
 		'case-studies',
 		'case-studies-e-commerce',
 		'conversion-rate-optimization',
@@ -1365,6 +1373,7 @@ function nexus_get_sitemap_excluded_slugs() {
 		'kostenlose-tools',
 		'tools',
 		'website-performance-analyse',
+		'roi-rechner',
 		'website-fuer-solar-und-waermepumpen-anbieter',
 		'whitelabel',
 		'whitelabel-retainer',

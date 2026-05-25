@@ -1,6 +1,6 @@
 # System Map
 
-Stand: 2026-05-21. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der frueheren System-Diagnose-Route.
+Stand: 2026-05-25. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der frueheren System-Diagnose-Route.
 
 ## Hauptsysteme
 
@@ -8,7 +8,7 @@ Stand: 2026-05-21. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 | --- | --- | --- | --- | --- |
 | Website | deploybarer WordPress-Theme-Code | `blocksy-child/`, `.github/workflows/ci.yml`, `.github/workflows/deploy.yml`, `docs/architecture/DEPLOYMENT.md` | WordPress, Blocksy Parent Theme, ACF | live |
 | Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler; `llms.txt` ist der kompakte Routen- und Positionierungsindex fuer Agenten | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
-| Growth-Audit-Legacypfad | deaktivierter Instant-Diagnose-Legacycode; öffentliche Audit- und Tools-Routen führen zum Marktcheck | `blocksy-child/page-audit.php`, `blocksy-child/inc/audit-page.php`, `blocksy-child/inc/tools-page.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `docs/systems/audit-funnel.md` | n8n Webhook nur für Legacy-Code, WordPress | öffentlich retired; 301 auf `/solar-waermepumpen-leadgenerierung/#marktcheck` |
+| Growth-Audit-Legacypfad | deaktivierter Instant-Diagnose-Legacycode; geschuetzte Audit-Einstiege führen zum Marktcheck, alte Tools bleiben nur noindex/sitemap-excluded | `blocksy-child/page-audit.php`, `blocksy-child/inc/audit-page.php`, `blocksy-child/inc/tools-page.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `docs/systems/audit-funnel.md` | n8n Webhook nur für Legacy-Code, WordPress | öffentlich retired; selektive 301 auf `/solar-waermepumpen-leadgenerierung/#marktcheck` |
 | Nexus CRM & Blog Notify | gemeinsames CRM für Analyse-Leads, Audit-, Folgeanalyse-, Umsetzungs- und Bestandskunden-Anfragen plus DOI- und Artikel-Mail-Logik | `blocksy-child/inc/crm.php`, `blocksy-child/inc/analysis-intake.php`, `blocksy-child/inc/blog-notify.php`, `blocksy-child/template-parts/blog-notify.php`, `blocksy-child/page-blog-notify.php`, `docs/systems/blog-notify.md` | WordPress CPT/Meta, WordPress REST, wp_mail, Brevo | repo-seitig live; Analyse-REST und Brevo-Konfiguration am 2026-05-07 verifiziert |
 | SEO Cockpit | Search-Console-basiertes SEO-Dashboard mit optionalem Koko- und Audit-Lead-Layer | `blocksy-child/inc/seo-cockpit.php`, `blocksy-child/assets/css/seo-cockpit-admin.css`, `docs/systems/seo-cockpit.md` | Google Search Console API, optional Koko Analytics, Nexus CRM / Audit-CRM | repo-seitig implementiert; OAuth/API-Livezustand admin-owned, Koko optional; Legacy-/Nicht-Zielintent-Filter aktiv |
 | Tracking | Tracking-ready Markup, CTA-Events, SEO-/Schema-Layer | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/seo-meta.php`, `blocksy-child/inc/org-schema.php`, Templates mit `data-track-*` | GTM, sGTM, GA4, Consent Mode v2, Meta CAPI | teils im Repo, teils extern |
@@ -33,7 +33,7 @@ Wichtige Merkmale:
 - Ein Teil der Seiten ist editor-getrieben und nutzt `the_content()`.
 - Ein anderer Teil ist hart codiert und traegt Business-Logik direkt im Template.
 - Die kanonische Kontaktseite `/kontakt/` rendert im Frontend jetzt immer das versionierte Theme-Template statt editorgetriebener Altinhalte.
-- Die frühere WGOS-Erklärung ist öffentlich in Ergebnis-/Anfrage-System-Sprache auf der lokalen Money Page `/wordpress-agentur-hannover/#methode` konsolidiert. `page-wgos.php` ist kein Sales-Template mehr, sondern internes Client-Dashboard mit Login- und Capability-Schutz; die öffentliche Route `/wordpress-growth-operating-system/` führt per 301 auf den Agentur-Anker.
+- Die frühere WGOS-Erklärung ist öffentlich in Ergebnis-/Anfrage-System-Sprache auf der lokalen Money Page `/wordpress-agentur-hannover/#methode` konsolidiert. `page-wgos.php` ist kein Sales-Template mehr, sondern internes Client-Dashboard mit Login- und Capability-Schutz; alte WGOS-Erklärpfade sind keine erzwungenen 301-Ziele mehr und bleiben bei vorhandenen DB-Seiten noindex sowie sitemap-excluded.
 - Die Homepage-Shortcodes liefern jetzt einen versionierten Public-Proof-Layer aus konservativen Leistungsmetriken, GitHub-Transparenz und audit-first Folgelogik statt Pilotangebot.
 
 Kritische Dateien:
@@ -97,12 +97,12 @@ Fachliche Regel:
 
 ## Growth-Audit-Legacypfad
 
-Der Growth Audit und die fruehere System-Diagnose-Seite sind nicht mehr der Primär-CTA des Systems und dürfen nicht als Hauptfunnel zurückkehren. Die öffentlichen Routen sind retired und leiten wie die kostenlosen Tool-Pfade auf den Marktcheck.
+Der Growth Audit und die fruehere System-Diagnose-Seite sind nicht mehr der Primär-CTA des Systems und dürfen nicht als Hauptfunnel zurückkehren. Geschuetzte Legacy-Einstiege mit wahrscheinlicher externer Nutzung leiten auf den Marktcheck; interne Tool-, ROI-, WGOS- und Service-Altlasten werden nicht mehr als Redirect-Netz betrieben.
 
 Aktuelle Logik:
 
 1. Kalter Solar-/SHK-Traffic führt primär zu `/solar-waermepumpen-leadgenerierung/#marktcheck`.
-2. `/system-diagnose/`, `/growth-audit/`, alte Audit-Aliasse, `/kostenlose-tools/`, `/tools/`, `/website-performance-analyse/` und `/roi-rechner/` leiten per 301 auf den Marktcheck.
+2. `/system-diagnose/`, `/readiness-diagnose/`, `/anfrage/`, `/growth-audit/`, alte Audit-Aliasse und `/wordpress-tech-audit/` leiten per 301 auf den Marktcheck; `/kostenlose-tools/`, `/tools/`, `/website-performance-analyse/`, `/roi-rechner/` und alte Service-/WGOS-Slugs bleiben nur noindex/sitemap-excluded, falls sie als WordPress-Seiten existieren.
 3. Der fruehere Instant-Results- und 48h-Audit-Code bleibt im Repo als Legacy-Layer, ist aber nicht mehr der Default-Flow.
 4. Die Branchen-Landingpage für Solar-/Wärmepumpen-Anbieter führt ihre großen CTA-Flächen zum eigenen `#marktcheck` im Hero.
 

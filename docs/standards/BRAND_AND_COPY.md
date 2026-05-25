@@ -27,7 +27,7 @@ Marktcheck -> Anfrage-System-Analyse -> Umsetzung / Retainer
 ```
 
 - Primary CTA: Marktcheck (`/solar-waermepumpen-leadgenerierung/#marktcheck`)
-- Retired Pfade: `/growth-audit/`, `/kostenlose-tools/`, `/tools/`, `/roi-rechner/`, `/anfrage-system-analyse/` und alte Audit-Aliasse leiten auf den Marktcheck
+- Retired Pfade: `/growth-audit/`, `/anfrage-system-analyse/` und alte Audit-Aliasse leiten auf den Marktcheck; alte Tool-/ROI-/WGOS-/Service-Slugs bleiben noindex und sitemap-excluded statt als Redirect-Netz betrieben zu werden
 - Der Marktcheck ist diagnostischer Einstieg, kein gimmicky Gratis-Tool
 
 ## Tone
