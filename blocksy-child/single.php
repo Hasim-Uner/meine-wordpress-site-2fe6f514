@@ -63,7 +63,7 @@ get_template_part( 'template-parts/blog-header' );
 			'text'            => __( 'Lesen Sie den Beitrag als Baustein im Zusammenspiel aus Angebot, Sichtbarkeit, Daten und Conversion.', 'blocksy-child' ),
 			'primary_label'   => __( 'Anfrage-System ansehen', 'blocksy-child' ),
 			'primary_url'     => $energy_url,
-			'secondary_label' => __( 'Kostenfreien Marktcheck starten', 'blocksy-child' ),
+			'secondary_label' => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
 			'secondary_url'   => $audit_url,
 		];
 
@@ -74,7 +74,7 @@ get_template_part( 'template-parts/blog-header' );
 				'text'            => __( 'Dieser Artikel ordnet einen Baustein ein: weniger Portal-Abhängigkeit, klarere Angebotsseiten, bessere Daten und ein Anfragepfad im eigenen Besitz.', 'blocksy-child' ),
 				'primary_label'   => __( 'Anfrage-System ansehen', 'blocksy-child' ),
 				'primary_url'     => $energy_url,
-				'secondary_label' => __( 'Kostenfreien Marktcheck starten', 'blocksy-child' ),
+				'secondary_label' => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
 				'secondary_url'   => $audit_url,
 			];
 		} elseif ( array_intersect( [ 'markteinordnung', 'owned-leads' ], $post_cat_slugs ) ) {
@@ -289,14 +289,14 @@ get_template_part( 'template-parts/blog-header' );
 
 				<div class="nexus-inline-cta" id="nexus-inline-cta" hidden aria-hidden="true">
 					<div class="nexus-inline-cta__inner">
-						<span class="nexus-inline-cta__tag">Kostenlose Diagnose</span>
-						<h3 class="nexus-inline-cta__headline">Was bremst Ihr Wachstum?</h3>
-						<p class="nexus-inline-cta__sub">Persönliche Analyse Ihrer Website - schriftliche Rückmeldung in 48 Stunden.</p>
+						<span class="nexus-inline-cta__tag">System-Diagnose</span>
+						<h3 class="nexus-inline-cta__headline">Wo verliert Ihr Anfragepfad Wirkung?</h3>
+						<p class="nexus-inline-cta__sub">Prüfung von Website, Tracking und Vorqualifizierung - Befund per E-Mail in 48 Stunden.</p>
 						<a href="<?php echo esc_url( $audit_url ); ?>"
 							class="nexus-btn nexus-btn--primary nexus-inline-cta__btn"
 							data-track-action="cta_blog_inline"
 							data-track-category="lead_gen">
-							Kostenfreien Marktcheck starten
+							Regionalen Marktcheck starten
 						</a>
 					</div>
 				</div>

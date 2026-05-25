@@ -360,7 +360,7 @@ add_filter( 'body_class', 'nexus_add_virtual_blog_notify_body_class', 20 );
 function nexus_get_blog_notify_copy() {
 	return [
 		'headline'        => 'Neue Artikel per E-Mail',
-		'body'            => 'Ich schicke nur dann eine kurze Mail, wenn ein neuer Beitrag zu WordPress, SEO, Tracking oder digitalem Wachstum online ist. Kein Newsletter-Rauschen. Keine Sales-Mails.',
+		'body'            => 'Ich schicke nur dann eine kurze Mail, wenn ein neuer Beitrag zu Anfrage-Systemen, Portal-Kosten, Tracking oder Conversion online ist. Kein Newsletter-Rauschen. Keine Sales-Mails.',
 		'placeholder'     => 'Ihre E-Mail-Adresse',
 		'button'          => 'Neue Artikel erhalten',
 		'hint'            => 'Sie erhalten nur Benachrichtigungen zu neuen Artikeln. Keine unnötigen Werbemails. Abmeldung jederzeit möglich.',
