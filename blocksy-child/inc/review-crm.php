@@ -874,6 +874,77 @@ function nexus_compute_lead_qualification( $validated ) {
 }
 
 /**
+ * Compute the SLA deadline for a fresh intake (48 business hours from now).
+ *
+ * Weekends are skipped: an intake submitted Friday afternoon shifts into
+ * Tuesday afternoon, not Sunday. Public holidays are not considered.
+ *
+ * @param int|null $now_ts Optional override for the reference timestamp.
+ * @return array{iso:string,human:string}
+ */
+function nexus_compute_intake_response_deadline( $now_ts = null ) {
+	$tz_string = function_exists( 'wp_timezone_string' ) ? wp_timezone_string() : 'Europe/Berlin';
+	try {
+		$tz = new DateTimeZone( $tz_string );
+	} catch ( Exception $e ) {
+		$tz = new DateTimeZone( 'Europe/Berlin' );
+	}
+
+	$now = null === $now_ts ? new DateTimeImmutable( 'now', $tz ) : ( new DateTimeImmutable( '@' . (int) $now_ts ) )->setTimezone( $tz );
+
+	$hours_left = 48;
+	$cursor     = $now;
+	while ( $hours_left > 0 ) {
+		$cursor = $cursor->modify( '+1 hour' );
+		$dow    = (int) $cursor->format( 'N' );
+		if ( $dow < 6 ) {
+			$hours_left--;
+		}
+	}
+
+	$weekday_map = [
+		1 => 'Mo',
+		2 => 'Di',
+		3 => 'Mi',
+		4 => 'Do',
+		5 => 'Fr',
+		6 => 'Sa',
+		7 => 'So',
+	];
+	$month_map = [
+		1 => 'Jan', 2 => 'Feb', 3 => 'Mär', 4 => 'Apr', 5 => 'Mai', 6 => 'Jun',
+		7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Dez',
+	];
+
+	$human = sprintf(
+		'%s, %d. %s, %s Uhr',
+		$weekday_map[ (int) $cursor->format( 'N' ) ],
+		(int) $cursor->format( 'j' ),
+		$month_map[ (int) $cursor->format( 'n' ) ],
+		$cursor->format( 'H:i' )
+	);
+
+	return [
+		'iso'   => $cursor->format( DateTimeInterface::ATOM ),
+		'human' => $human,
+	];
+}
+
+/**
+ * Format a request post ID as a public-facing ticket reference.
+ *
+ * @param int $post_id WordPress post ID.
+ * @return string
+ */
+function nexus_format_intake_ticket_id( $post_id ) {
+	$post_id = (int) $post_id;
+	if ( $post_id <= 0 ) {
+		return '';
+	}
+	return 'INT-' . $post_id;
+}
+
+/**
  * Build the on-page success screen payload tailored to qualification status.
  *
  * The handwritten 48 h email response remains unchanged — this only varies the
@@ -882,9 +953,10 @@ function nexus_compute_lead_qualification( $validated ) {
  *
  * @param array $qualification Result of nexus_compute_lead_qualification().
  * @param array $validated     Validated payload.
+ * @param int   $post_id       Stored request post ID (for the public ticket reference).
  * @return array
  */
-function nexus_build_qualification_screen( $qualification, $validated ) {
+function nexus_build_qualification_screen( $qualification, $validated, $post_id = 0 ) {
 	$first_name = '';
 	$name       = isset( $validated['name'] ) ? trim( (string) $validated['name'] ) : '';
 	if ( '' !== $name ) {
@@ -893,13 +965,22 @@ function nexus_build_qualification_screen( $qualification, $validated ) {
 	}
 
 	$headline = 'Danke' . ( '' !== $first_name ? ', ' . $first_name : '' ) . '.';
+	$deadline = nexus_compute_intake_response_deadline();
+	$ticket   = nexus_format_intake_ticket_id( $post_id );
 
 	if ( 'qualified' === $qualification['status'] ) {
 		return [
-			'status'   => 'qualified',
-			'reason'   => $qualification['reason'],
-			'headline' => $headline,
-			'message'  => 'Ihr System-Intake ist eingegangen. Ich prüfe Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.',
+			'status'                  => 'qualified',
+			'reason'                  => $qualification['reason'],
+			'headline'                => $headline,
+			'message'                 => 'Ihr System-Intake ist eingegangen. Ich prüfe Ihre Domain und Region persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.',
+			'ticket_id'               => $ticket,
+			'response_deadline_iso'   => $deadline['iso'],
+			'response_deadline_human' => $deadline['human'],
+			'proof'                   => [
+				'label' => 'Echte Zahlen aus einem laufenden Setup',
+				'body'  => 'E3 New Energy — CPL von 150 € auf 22 € in 6 Monaten, +12 % Abschlussquote. Gleiche Methode, die für Ihren Betrieb geprüft wird.',
+			],
 		];
 	}
 
@@ -917,10 +998,14 @@ function nexus_build_qualification_screen( $qualification, $validated ) {
 	}
 
 	return [
-		'status'   => 'nurture',
-		'reason'   => $qualification['reason'],
-		'headline' => $headline,
-		'message'  => 'Ihr Intake ist eingegangen. Bei der ersten Sichtung sehe ich einen wahrscheinlichen Nicht-Fit für ein eigenes Anfrage-Asset über 12–24 Monate — ' . $reason_phrase . '. Sie bekommen in 48 Stunden trotzdem eine schriftliche Einordnung mit einer konkreten, ehrlichen Alternative für Ihre Situation. Wenn sich Ihre Situation ändert, gerne in 6 Monaten erneut.',
+		'status'                  => 'nurture',
+		'reason'                  => $qualification['reason'],
+		'headline'                => $headline,
+		'message'                 => 'Ihr Intake ist eingegangen. Bei der ersten Sichtung sehe ich einen wahrscheinlichen Nicht-Fit für ein eigenes Anfrage-Asset über 12–24 Monate — ' . $reason_phrase . '. Sie bekommen trotzdem eine schriftliche Einordnung mit einer konkreten, ehrlichen Alternative für Ihre Situation. Wenn sich Ihre Situation ändert, gerne in 6 Monaten erneut.',
+		'ticket_id'               => $ticket,
+		'response_deadline_iso'   => $deadline['iso'],
+		'response_deadline_human' => $deadline['human'],
+		'proof'                   => null,
 	];
 }
 
@@ -979,7 +1064,7 @@ function nexus_process_review_request_submission( $payload ) {
 		'status'        => 'received',
 		'statusLabel'   => 'Neu',
 		'auditType'     => $validated['audit_type'],
-		'qualification' => nexus_build_qualification_screen( $qualification, $validated ),
+		'qualification' => nexus_build_qualification_screen( $qualification, $validated, (int) $post_id ),
 		'http_status'   => 201,
 	];
 }

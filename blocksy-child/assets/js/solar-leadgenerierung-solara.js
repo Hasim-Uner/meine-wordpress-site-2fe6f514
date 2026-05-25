@@ -446,6 +446,9 @@
       var isNurture = qualification.status === 'nurture';
       var headline = qualification.headline || fallbackHeadline;
       var message = qualification.message || 'Ihr System-Intake ist eingegangen. Ich prüfe Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.';
+      var ticketId = qualification.ticket_id || '';
+      var deadlineHuman = qualification.response_deadline_human || '';
+      var proof = (!isNurture && qualification.proof && typeof qualification.proof === 'object') ? qualification.proof : null;
       var calcom = CFG.calcomUrl || 'https://cal.com/hasim-uener/30min';
       var caseUrl = CFG.caseUrl || '/e3-new-energy/';
 
@@ -498,19 +501,44 @@
         ]);
       }
 
-      return el('div', { className: 'sol-quiz-success' + (isNurture ? ' is-nurture' : '') }, [
+      var children = [
         el('div', { className: 'sol-quiz-success-icon', 'aria-hidden': 'true', html: CHECK_SVG }),
-        el('h3', { className: 'sol-quiz-success-h' }, headline),
-        el('p', { className: 'sol-quiz-success-sub' }, message),
-        ctaRow,
-        el('p', { className: 'sol-quiz-success-fineprint' }, 'Bestätigung an ' + (state.answers.email || 'Ihre E-Mail')),
-        el('button', {
-          type: 'button',
-          className: 'sol-quiz-back',
-          style: 'margin-top:4px;text-decoration:underline;text-underline-offset:3px;',
-          onClick: reset
-        }, 'System-Intake neu starten')
-      ]);
+        el('h3', { className: 'sol-quiz-success-h' }, headline)
+      ];
+
+      if (ticketId) {
+        children.push(el('p', { className: 'sol-quiz-success-ticket sol-mono' }, [
+          el('span', { className: 'sol-quiz-success-ticket-label' }, 'Vorgang '),
+          el('span', { className: 'sol-quiz-success-ticket-id' }, ticketId)
+        ]));
+      }
+
+      children.push(el('p', { className: 'sol-quiz-success-sub' }, message));
+
+      if (deadlineHuman) {
+        children.push(el('p', { className: 'sol-quiz-success-deadline' }, [
+          el('span', { className: 'sol-quiz-success-deadline-label' }, 'Schriftliche Antwort bis '),
+          el('strong', null, deadlineHuman)
+        ]));
+      }
+
+      if (proof) {
+        children.push(el('aside', { className: 'sol-quiz-success-proof' }, [
+          el('span', { className: 'sol-quiz-success-proof-label sol-mono' }, proof.label || 'Proof'),
+          el('p', { className: 'sol-quiz-success-proof-body' }, proof.body || '')
+        ]));
+      }
+
+      children.push(ctaRow);
+      children.push(el('p', { className: 'sol-quiz-success-fineprint' }, 'Bestätigung an ' + (state.answers.email || 'Ihre E-Mail')));
+      children.push(el('button', {
+        type: 'button',
+        className: 'sol-quiz-back',
+        style: 'margin-top:4px;text-decoration:underline;text-underline-offset:3px;',
+        onClick: reset
+      }, 'System-Intake neu starten'));
+
+      return el('div', { className: 'sol-quiz-success' + (isNurture ? ' is-nurture' : '') }, children);
     }
 
     function render() {
