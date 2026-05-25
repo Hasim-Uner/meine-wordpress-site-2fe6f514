@@ -123,7 +123,6 @@ if ( $is_whitelabel_context ) {
 				<h3 id="ft-wissen">Wissen</h3>
 				<ul class="ft__list">
 					<li><a class="ft__link-strong" href="<?php echo esc_url( $blog_url ); ?>" data-track-action="cta_footer_nav_insights" data-track-category="navigation" data-track-section="footer">Insights</a></li>
-					<li><a href="<?php echo esc_url( home_url( '/anfrage-system-stack/' ) ); ?>" data-track-action="cta_footer_nav_stack" data-track-category="navigation" data-track-section="footer">Anfrage-System-Stack</a></li>
 					<li><a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_footer_nav_agentur" data-track-category="navigation" data-track-section="footer">WordPress Agentur Hannover</a></li>
 				</ul>
 			</section>
