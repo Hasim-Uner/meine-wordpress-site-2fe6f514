@@ -22,6 +22,29 @@ $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
 $e3_url          = home_url( '/e3-new-energy/' );
 $contact_url     = home_url( '/kontakt/' );
 
+$linked_assets = [
+	[
+		't'   => 'Strategischer TCO-Vergleich über 24 Monate',
+		's'   => 'Portal-Leads gegen eigenes Anfrage-System mit CAPEX-vs-OPEX-Logik und Asset-Eigentum.',
+		'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ),
+	],
+	[
+		't'   => 'Lead-Funnel Solar (Pillar)',
+		's'   => 'Die 5 Funnel-Stufen vom Erstkontakt zur qualifizierten Anfrage — und die häufigsten Fehler.',
+		'url' => home_url( '/lead-funnel-solar/' ),
+	],
+	[
+		't'   => 'Cost per Lead Photovoltaik',
+		's'   => 'Drei CPL-Szenarien im Vergleich und welche versteckten Kostentreiber den CPL hochtreiben.',
+		'url' => home_url( '/cost-per-lead-photovoltaik/' ),
+	],
+	[
+		't'   => 'Kunden gewinnen für Solarteure',
+		's'   => 'Wie Solar- und Wärmepumpen-Anbieter im DACH-Mittelstand ohne DAA, Aroundhome und Check24 wachsen.',
+		'url' => home_url( '/kunden-gewinnen-solarteure/' ),
+	],
+];
+
 // ── E3-Proof-Canon ─────────────────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
@@ -360,6 +383,20 @@ get_header();
 					</li>
 				<?php endforeach; ?>
 			</ol>
+		</div>
+	</section>
+
+	<section class="hu-intercept__why" id="vertiefung" aria-labelledby="hu-intercept-linked-title">
+		<div class="hu-intercept__container">
+			<h2 class="hu-intercept__h2" id="hu-intercept-linked-title">Vertiefende Bausteine im Anfrage-System</h2>
+			<div class="hu-intercept__grid hu-intercept__grid--four">
+				<?php foreach ( $linked_assets as $item ) : ?>
+					<article class="hu-intercept__card">
+						<h3 class="hu-intercept__card-title"><a href="<?php echo esc_url( $item['url'] ); ?>"><?php echo esc_html( $item['t'] ); ?></a></h3>
+						<p class="hu-intercept__card-text"><?php echo esc_html( $item['s'] ); ?></p>
+					</article>
+				<?php endforeach; ?>
+			</div>
 		</div>
 	</section>
 
