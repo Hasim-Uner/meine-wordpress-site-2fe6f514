@@ -161,9 +161,13 @@ function nexus_glossary_autolink( $content ) {
 		// Callback für sicheres Ersetzen: nur außerhalb von geschützten Tags.
 		$content = preg_replace_callback(
 			'/(?<![<\/\w])(\b' . $escaped_title . '\b)(?![^<]*<\/(a|h[1-6]|code|pre|button|summary)>)/iu',
-			static function ( $matches ) use ( $url, $title, $config, &$linked, &$link_count ) {
+				static function ( $matches ) use ( $url, $config, &$linked, &$link_count ) {
 				$matched_text = $matches[1];
-				$key          = (string) ( $config['linked_key'] ?? mb_strtolower( $title ) );
+				$key          = (string) $config['linked_key'];
+				$class        = (string) $config['class'];
+				$tooltip      = isset( $config['tooltip'] ) && '' !== (string) $config['tooltip']
+					? (string) $config['tooltip']
+					: (string) $config['title'];
 
 				if ( isset( $linked[ $key ] ) ) {
 					return $matched_text;
@@ -175,8 +179,8 @@ function nexus_glossary_autolink( $content ) {
 				return sprintf(
 					'<a href="%s" class="%s" title="%s">%s</a>',
 					esc_url( $url ),
-					esc_attr( (string) ( $config['class'] ?? 'glossary-autolink' ) ),
-					esc_attr( (string) ( $config['tooltip'] ?? $config['title'] ?? sprintf( 'Glossar: %s', $title ) ) ),
+					esc_attr( $class ),
+					esc_attr( $tooltip ),
 					esc_html( $matched_text )
 				);
 			},

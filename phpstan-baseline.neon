@@ -61,21 +61,6 @@ parameters:
 			path: blocksy-child/inc/blog-provider-posts.php
 
 		-
-			message: "#^Offset 'class' on array\\{url\\: mixed, title\\: string, class\\: 'glossary\\-autolink'\\|'glossary\\-autolink…', linked_key\\: non\\-falsy\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: blocksy-child/inc/glossary/glossary-autolink.php
-
-		-
-			message: "#^Offset 'linked_key' on array\\{url\\: mixed, title\\: string, class\\: 'glossary\\-autolink'\\|'glossary\\-autolink…', linked_key\\: non\\-falsy\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: blocksy-child/inc/glossary/glossary-autolink.php
-
-		-
-			message: "#^Offset 'title' on array\\{url\\: mixed, title\\: string, class\\: 'glossary\\-autolink'\\|'glossary\\-autolink…', linked_key\\: non\\-falsy\\-string\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: blocksy-child/inc/glossary/glossary-autolink.php
-
-		-
 			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
 			count: 2
 			path: blocksy-child/inc/seo-cockpit/seo-cockpit-diagnostics.php
