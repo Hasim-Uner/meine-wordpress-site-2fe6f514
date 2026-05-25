@@ -17,6 +17,7 @@ $inc_dir = get_stylesheet_directory() . '/inc/';
 
 $modules = [
 	'helpers.php',        // Utility-Funktionen (muss zuerst geladen werden)
+	'affiliate-links.php', // Affiliate-URL-Registry und Disclosure-Helper
 	'feature-flags.php',  // Staged Rollout-Schalter fuer neue Funnel-Routen und Submits
 	'canon/e3-proof-canon.php', // Kanonische E3-Proof-Zahlen und Displaywerte
 	'canon/diagnose-canon.php', // Kanonische Diagnose-Stufen, Preise und Scope-Grenzen
