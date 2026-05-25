@@ -22,6 +22,29 @@ $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
 $e3_url          = home_url( '/e3-new-energy/' );
 
+$linked_assets = [
+	[
+		't'   => 'CPL pro Anfrage: Solar Leads kaufen oder eigenes System?',
+		's'   => 'Die konkrete Kosten-pro-Anfrage-Rechnung mit E3-Benchmark und Portal-Preisspannen.',
+		'url' => home_url( '/solar-leads-kaufen-alternative/' ),
+	],
+	[
+		't'   => 'Lead-Funnel Solar (Pillar)',
+		's'   => 'Funnel-Architektur fürs eigene Anfrage-System — was nach der Entscheidung gegen Portale folgt.',
+		'url' => home_url( '/lead-funnel-solar/' ),
+	],
+	[
+		't'   => 'Cost per Lead Photovoltaik',
+		's'   => 'CPL-Drill-down mit drei Szenarien — die Zahlen-Tiefe hinter dem strategischen TCO-Vergleich.',
+		'url' => home_url( '/cost-per-lead-photovoltaik/' ),
+	],
+	[
+		't'   => 'B2B Solar Leads für gewerbliche Projekte',
+		's'   => 'Buying-Center-Funnel für gewerbliche Photovoltaik ab 50.000 € — Pendant zum B2C-Vergleich.',
+		'url' => home_url( '/b2b-solar-leads/' ),
+	],
+];
+
 // ── E3-Canon ──────────────────────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
@@ -312,6 +335,20 @@ get_header();
 				<?php foreach ( $when_rent_makes_sense as $item ) : ?>
 					<article class="hu-intercept__card">
 						<h3 class="hu-intercept__card-title"><?php echo esc_html( $item['t'] ); ?></h3>
+						<p class="hu-intercept__card-text"><?php echo esc_html( $item['s'] ); ?></p>
+					</article>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+
+	<section class="hu-intercept__why" id="vertiefung" aria-labelledby="hu-vs-linked-title">
+		<div class="hu-intercept__container">
+			<h2 class="hu-intercept__h2" id="hu-vs-linked-title">Vertiefende Bausteine: vom Vergleich zur Umsetzung</h2>
+			<div class="hu-intercept__grid hu-intercept__grid--four">
+				<?php foreach ( $linked_assets as $item ) : ?>
+					<article class="hu-intercept__card">
+						<h3 class="hu-intercept__card-title"><a href="<?php echo esc_url( $item['url'] ); ?>"><?php echo esc_html( $item['t'] ); ?></a></h3>
 						<p class="hu-intercept__card-text"><?php echo esc_html( $item['s'] ); ?></p>
 					</article>
 				<?php endforeach; ?>
