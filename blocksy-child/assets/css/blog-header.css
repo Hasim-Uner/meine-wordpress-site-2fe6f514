@@ -7,12 +7,12 @@
     z-index: 1004;
     padding: 10px 0 0;
     pointer-events: none;
-    opacity: 0;
-    transform: translateY(calc(-100% - 24px));
+    opacity: 1;
+    transform: translateY(0);
     transition:
         opacity 320ms var(--nx-ease),
         transform 320ms var(--nx-ease);
-    will-change: opacity, transform;
+    will-change: transform;
 }
 
 .admin-bar .nexus-blog-header {
@@ -34,11 +34,11 @@
 .nexus-blog-header__context-links,
 .nexus-blog-header__mobile-panel {
     pointer-events: auto;
-    border: 1px solid hsl(28 72% 56% / 0.12);
-    background: hsl(216 16% 6% / 0.86);
+    border: 1px solid hsl(28 72% 56% / 0.16);
+    background: hsl(216 16% 6% / 0.92);
     backdrop-filter: blur(18px) saturate(155%);
     -webkit-backdrop-filter: blur(18px) saturate(155%);
-    box-shadow: 0 18px 52px hsl(30 25% 2% / 0.26);
+    box-shadow: 0 18px 48px hsl(30 25% 2% / 0.24);
 }
 
 .nexus-blog-header__shell {
@@ -60,9 +60,9 @@
 .nexus-blog-header.nexus-flight-mode .nexus-blog-header__shell {
     min-height: 58px;
     transform: translateY(-2px);
-    border-color: hsl(28 72% 56% / 0.18);
-    background: hsl(216 16% 6% / 0.92);
-    box-shadow: 0 18px 52px hsl(30 25% 2% / 0.34);
+    border-color: hsl(28 72% 56% / 0.22);
+    background: hsl(216 16% 6% / 0.95);
+    box-shadow: 0 18px 52px hsl(30 25% 2% / 0.3);
 }
 
 .nexus-blog-header.nexus-flight-mode .nexus-blog-header__context-links {

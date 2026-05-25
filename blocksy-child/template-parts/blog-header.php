@@ -12,26 +12,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
-$home_url     = $primary_urls['home'] ?? home_url( '/' );
-$blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
-$wgos_url     = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#methode' );
-$cases_url    = $primary_urls['results'] ?? nexus_get_results_url();
-$about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
-$audit_url    = $primary_urls['audit'] ?? nexus_get_audit_url();
-$brand_text   = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
-$panel_id     = 'nx-blog-header-panel';
-$home_label   = sprintf(
+$primary_urls       = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+$home_url           = $primary_urls['home'] ?? home_url( '/' );
+$blog_url           = $primary_urls['blog'] ?? home_url( '/blog/' );
+$energy_url         = $primary_urls['energy'] ?? ( function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' ) );
+$agentur_url        = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
+$cases_url          = $primary_urls['results'] ?? ( function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/ergebnisse/' ) );
+$about_url          = $primary_urls['about'] ?? home_url( '/uber-mich/' );
+$audit_url          = $primary_urls['audit'] ?? ( function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
+$brand_text         = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
+$panel_id           = 'nx-blog-header-panel';
+$about_page_id      = function_exists( 'nexus_get_page_id' ) ? nexus_get_page_id( [ 'uber-mich' ] ) : 0;
+$is_blog_area       = is_home() || is_archive() || is_singular( 'post' );
+$is_energy_context  = function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context();
+$is_agency_context  = is_page( 'wordpress-agentur-hannover' ) || is_page_template( 'page-wordpress-agentur.php' );
+$is_results_context = function_exists( 'nexus_is_results_context' ) && nexus_is_results_context();
+$home_label         = sprintf(
 	/* translators: %s: site or brand name. */
 	__( 'Startseite - %s', 'blocksy-child' ),
 	$brand_text
 );
 
-$context_title = __( 'Insights Hub', 'blocksy-child' );
-$context_text  = __( 'Erst verstehen, dann priorisieren: Insights lesen, Proof sehen, Marktcheck starten.', 'blocksy-child' );
+$context_title = __( 'Blog', 'blocksy-child' );
+$context_text  = __( 'Analysen zu Anfrage-Systemen, Portal-Kosten, Tracking und Conversion.', 'blocksy-child' );
 $context_links = [
 	[
-		'label'  => __( 'Alle Insights', 'blocksy-child' ),
+		'label'  => __( 'Alle Analysen', 'blocksy-child' ),
 		'url'    => $blog_url,
 		'active' => is_home(),
 	],
@@ -40,7 +46,7 @@ $context_links = [
 if ( is_category() ) {
 	$queried_term  = get_queried_object();
 	$context_title = $queried_term instanceof WP_Term && function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $queried_term ) : single_cat_title( '', false );
-	$context_text  = __( 'Kategorie-Ansicht mit direktem Weg zur Übersicht und zum nächsten sinnvollen Schritt.', 'blocksy-child' );
+	$context_text  = __( 'Beiträge zu einem Thema, mit Rückweg zur Übersicht und direktem nächsten Schritt.', 'blocksy-child' );
 	$context_links[] = [
 		'label'  => $context_title,
 		'url'    => get_category_link( get_queried_object_id() ),
@@ -48,7 +54,7 @@ if ( is_category() ) {
 	];
 } elseif ( is_tag() ) {
 	$context_title = single_tag_title( '', false );
-	$context_text  = __( 'Tag-Archiv mit Rückweg zur Blog-Übersicht und klarer Hauptnavigation.', 'blocksy-child' );
+	$context_text  = __( 'Tag-Archiv mit Rückweg zur Übersicht und klarer Hauptnavigation.', 'blocksy-child' );
 	$context_links[] = [
 		'label'  => single_tag_title( '', false ),
 		'url'    => get_tag_link( get_queried_object_id() ),
@@ -56,15 +62,15 @@ if ( is_category() ) {
 	];
 } elseif ( is_archive() && ! is_home() ) {
 	$context_title = get_the_archive_title();
-	$context_text  = __( 'Archivansicht mit Fokus auf Lesefluss, Überblick und nächstem Schritt.', 'blocksy-child' );
+	$context_text  = __( 'Archivansicht mit Überblick, Lesefluss und nächstem Schritt.', 'blocksy-child' );
 	$context_links[] = [
 		'label'  => get_the_archive_title(),
 		'url'    => get_post_type_archive_link( 'post' ) ?: $blog_url,
 		'active' => true,
 	];
 } elseif ( is_singular( 'post' ) ) {
-	$context_title = __( 'Artikel lesen', 'blocksy-child' );
-	$context_text  = __( 'Zurück zur Übersicht oder direkt in die passende Kategorie wechseln.', 'blocksy-child' );
+	$context_title = __( 'Artikel', 'blocksy-child' );
+	$context_text  = __( 'Zurück zur Übersicht, passende Kategorie öffnen oder Marktcheck starten.', 'blocksy-child' );
 
 	$post_categories = get_the_category();
 
@@ -80,24 +86,34 @@ if ( is_category() ) {
 
 $primary_items = [
 	[
-		'label'  => __( 'Start', 'blocksy-child' ),
-		'url'    => $home_url,
-		'active' => is_front_page(),
+		'label'   => __( 'Blog', 'blocksy-child' ),
+		'url'     => $blog_url,
+		'active'  => $is_blog_area,
+		'current' => is_home(),
 	],
 	[
-		'label'  => __( 'System', 'blocksy-child' ),
-		'url'    => $wgos_url,
-		'active' => is_page( nexus_get_page_id( [ 'wordpress-growth-operating-system', 'wgos' ] ) ),
+		'label'   => __( 'Solar & Wärmepumpen', 'blocksy-child' ),
+		'url'     => $energy_url,
+		'active'  => $is_energy_context,
+		'current' => $is_energy_context,
 	],
 	[
-		'label'  => __( 'Ergebnisse', 'blocksy-child' ),
-		'url'    => $cases_url,
-		'active' => nexus_is_results_context(),
+		'label'   => __( 'WordPress Agentur', 'blocksy-child' ),
+		'url'     => $agentur_url,
+		'active'  => $is_agency_context,
+		'current' => $is_agency_context,
 	],
 	[
-		'label'  => __( 'Über Haşim', 'blocksy-child' ),
-		'url'    => $about_url,
-		'active' => is_page( nexus_get_page_id( [ 'uber-mich' ] ) ),
+		'label'   => __( 'Ergebnisse', 'blocksy-child' ),
+		'url'     => $cases_url,
+		'active'  => $is_results_context,
+		'current' => $is_results_context,
+	],
+	[
+		'label'   => __( 'Über Haşim', 'blocksy-child' ),
+		'url'     => $about_url,
+		'active'  => $about_page_id ? is_page( $about_page_id ) : false,
+		'current' => $about_page_id ? is_page( $about_page_id ) : false,
 	],
 ];
 ?>
@@ -116,7 +132,7 @@ $primary_items = [
 				</a>
 
 				<div class="nexus-blog-header__intro" aria-label="<?php esc_attr_e( 'Blog-Kontext', 'blocksy-child' ); ?>">
-					<span class="nexus-blog-header__eyebrow"><?php esc_html_e( 'Insights', 'blocksy-child' ); ?></span>
+					<span class="nexus-blog-header__eyebrow"><?php esc_html_e( 'Analysen', 'blocksy-child' ); ?></span>
 					<p class="nexus-blog-header__title"><?php echo esc_html( $context_title ); ?></p>
 				</div>
 			</div>
@@ -124,11 +140,15 @@ $primary_items = [
 			<nav class="nexus-blog-header__nav" aria-label="<?php esc_attr_e( 'Primäre Blog-Navigation', 'blocksy-child' ); ?>">
 				<ul class="nexus-blog-header__menu">
 					<?php foreach ( $primary_items as $item ) : ?>
+						<?php
+						$is_active  = ! empty( $item['active'] );
+						$is_current = ! empty( $item['current'] );
+						?>
 						<li class="nexus-blog-header__menu-item">
 							<a
-								class="nexus-blog-header__menu-link<?php echo esc_attr( $item['active'] ? ' is-active' : '' ); ?>"
+								class="nexus-blog-header__menu-link<?php echo esc_attr( $is_active ? ' is-active' : '' ); ?>"
 								href="<?php echo esc_url( $item['url'] ); ?>"
-								<?php echo $item['active'] ? 'aria-current="page"' : ''; // raw-ok -- static attribute ?>
+								<?php echo $is_current ? 'aria-current="page"' : ''; // raw-ok -- static attribute ?>
 							>
 								<?php echo esc_html( $item['label'] ); ?>
 							</a>
@@ -170,10 +190,14 @@ $primary_items = [
 
 			<nav class="nexus-blog-header__mobile-nav" aria-label="<?php esc_attr_e( 'Mobiles Blog-Menü', 'blocksy-child' ); ?>">
 				<?php foreach ( $primary_items as $item ) : ?>
+					<?php
+					$is_active  = ! empty( $item['active'] );
+					$is_current = ! empty( $item['current'] );
+					?>
 					<a
-						class="nexus-blog-header__mobile-link<?php echo esc_attr( $item['active'] ? ' is-active' : '' ); ?>"
+						class="nexus-blog-header__mobile-link<?php echo esc_attr( $is_active ? ' is-active' : '' ); ?>"
 						href="<?php echo esc_url( $item['url'] ); ?>"
-						<?php echo $item['active'] ? 'aria-current="page"' : ''; // raw-ok -- static attribute ?>
+						<?php echo $is_current ? 'aria-current="page"' : ''; // raw-ok -- static attribute ?>
 					>
 						<?php echo esc_html( $item['label'] ); ?>
 					</a>
