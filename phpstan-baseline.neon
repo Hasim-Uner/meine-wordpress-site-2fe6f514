@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Offset 'label' on array\\{label\\: 'Alle Analysen'\\|'Anfrage\\-Systeme'\\|'Core Web Vitals'\\|'CPL/CPO\\-Rechnung'\\|'CRO\\-System'\\|'Portalvergleich'\\|'Regionaler…'\\|'Server\\-Side Tracking'\\|'Technisches SEO'\\|'WordPress Agentur…', url\\: mixed\\} in empty\\(\\) always exists and is not falsy\\.$#"
+			message: "#^Offset 'label' on array\\{label\\: 'Alle Analysen'\\|'Anfrage\\-Systeme'\\|'Asset\\-Eigentum…'\\|'Core Web Vitals'\\|'CPL/CPO\\-Rechnung'\\|'CRO\\-System'\\|'Portal vs\\. eigenes…'\\|'Regionaler…'\\|'Server\\-Side Tracking'\\|'Strategischer…'\\|'TCO\\-Vergleich 24…'\\|'Technisches SEO'\\|'WordPress Agentur…', url\\: mixed\\} in empty\\(\\) always exists and is not falsy\\.$#"
 			count: 1
 			path: blocksy-child/category.php
 
