@@ -25,7 +25,7 @@ function hu_get_affiliate_providers() {
 	return [
 		'hostpress' => [
 			'base'        => 'https://www.hostpress.de/wordpress-hosting/',
-			'ref_param'   => 'ref',
+			'ref_param'   => 'aff',
 			'ref_default' => defined( 'HU_HOSTPRESS_AFFILIATE_REF' ) ? (string) HU_HOSTPRESS_AFFILIATE_REF : '',
 			'label'       => 'HostPress',
 			'category'    => 'hostpress',
