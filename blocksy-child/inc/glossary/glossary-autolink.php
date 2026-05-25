@@ -69,6 +69,12 @@ function nexus_glossary_autolink( $content ) {
 			continue;
 		}
 
+		$tooltip = trim( wp_strip_all_tags( (string) ( $term['short_definition'] ?? $term['excerpt'] ?? '' ) ) );
+
+		if ( '' === $tooltip ) {
+			$tooltip = sprintf( 'Glossar: %s', $title );
+		}
+
 		$phrases = array_values(
 			array_unique(
 				array_filter(
@@ -90,6 +96,7 @@ function nexus_glossary_autolink( $content ) {
 			$terms[ $phrase ] = [
 				'url'        => $url,
 				'title'      => sprintf( 'Glossar: %s', $title ),
+				'tooltip'    => $tooltip,
 				'class'      => 'glossary-autolink',
 				'linked_key' => 'glossary:' . ( '' !== $slug ? $slug : mb_strtolower( $title ) ),
 			];
@@ -169,7 +176,7 @@ function nexus_glossary_autolink( $content ) {
 					'<a href="%s" class="%s" title="%s">%s</a>',
 					esc_url( $url ),
 					esc_attr( (string) ( $config['class'] ?? 'glossary-autolink' ) ),
-					esc_attr( (string) ( $config['title'] ?? sprintf( 'Glossar: %s', $title ) ) ),
+					esc_attr( (string) ( $config['tooltip'] ?? $config['title'] ?? sprintf( 'Glossar: %s', $title ) ) ),
 					esc_html( $matched_text )
 				);
 			},
