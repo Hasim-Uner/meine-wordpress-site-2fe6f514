@@ -95,7 +95,8 @@
       answers: {},
       submitting: false,
       submitError: null,
-      done: false
+      done: false,
+      qualification: null
     };
 
     var totalSteps = QUIZ_STEPS.length;
@@ -170,8 +171,16 @@
         return res.json().then(function (json) { return { ok: res.ok, json: json }; }).catch(function () { return { ok: res.ok, json: {} }; });
       }).then(function (r) {
         if (r.ok && r.json && r.json.ok) {
+          var qualification = (r.json.qualification && typeof r.json.qualification === 'object') ? r.json.qualification : null;
           track('system_intake_submit_success', { funnel_stage: 'lead_captured' });
-          setState({ submitting: false, done: true, submitError: null });
+          if (qualification && qualification.status) {
+            track('system_intake_qualification', {
+              funnel_stage: 'lead_qualified',
+              qualification_status: qualification.status,
+              qualification_reason: qualification.reason || ''
+            });
+          }
+          setState({ submitting: false, done: true, submitError: null, qualification: qualification });
         } else {
           var msg = (r.json && (r.json.message || r.json.error || r.json.code))
             ? (typeof r.json.message === 'string' ? r.json.message : 'Bitte Eingaben prüfen.')
@@ -218,6 +227,7 @@
       state.submitting = false;
       state.submitError = null;
       state.done = false;
+      state.qualification = null;
       state.touched = {};
       render();
       track('system_intake_reset');
@@ -431,14 +441,33 @@
 
     function renderSuccess() {
       var first = (state.answers.name || '').trim().split(' ')[0];
+      var fallbackHeadline = 'Danke' + (first ? ', ' + first : '') + '.';
+      var qualification = state.qualification || { status: 'qualified', reason: 'sweet_spot' };
+      var isNurture = qualification.status === 'nurture';
+      var headline = qualification.headline || fallbackHeadline;
+      var message = qualification.message || 'Ihr System-Intake ist eingegangen. Ich prüfe Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.';
       var calcom = CFG.calcomUrl || 'https://cal.com/hasim-uener/30min';
       var caseUrl = CFG.caseUrl || '/e3-new-energy/';
-      return el('div', { className: 'sol-quiz-success' }, [
-        el('div', { className: 'sol-quiz-success-icon', 'aria-hidden': 'true', html: CHECK_SVG }),
-        el('h3', { className: 'sol-quiz-success-h' }, 'Danke' + (first ? ', ' + first : '') + '.'),
-        el('p', { className: 'sol-quiz-success-sub' },
-          'Ihr System-Intake ist eingegangen. Ich prüfe Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.'),
-        el('div', { className: 'sol-quiz-success-row' }, [
+
+      var ctaRow;
+      if (isNurture) {
+        ctaRow = el('div', { className: 'sol-quiz-success-row' }, [
+          el('a', {
+            href: caseUrl,
+            className: 'is-primary',
+            dataset: {
+              trackAction: 'cta_solar_success_to_e3_case',
+              trackCategory: 'proof',
+              trackSection: 'intake_success_nurture',
+              trackFunnelStage: 'nurture_resource'
+            }
+          }, [
+            el('span', null, 'E3 New Energy Case lesen'),
+            el('span', { 'aria-hidden': 'true', html: ARROW_SVG })
+          ])
+        ]);
+      } else {
+        ctaRow = el('div', { className: 'sol-quiz-success-row' }, [
           el('a', {
             href: calcom,
             className: 'is-primary',
@@ -466,7 +495,14 @@
             el('span', null, 'E3 Case lesen'),
             el('span', { 'aria-hidden': 'true', html: ARROW_SVG })
           ])
-        ]),
+        ]);
+      }
+
+      return el('div', { className: 'sol-quiz-success' + (isNurture ? ' is-nurture' : '') }, [
+        el('div', { className: 'sol-quiz-success-icon', 'aria-hidden': 'true', html: CHECK_SVG }),
+        el('h3', { className: 'sol-quiz-success-h' }, headline),
+        el('p', { className: 'sol-quiz-success-sub' }, message),
+        ctaRow,
         el('p', { className: 'sol-quiz-success-fineprint' }, 'Bestätigung an ' + (state.answers.email || 'Ihre E-Mail')),
         el('button', {
           type: 'button',

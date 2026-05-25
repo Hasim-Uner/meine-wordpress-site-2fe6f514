@@ -837,6 +837,94 @@ function nexus_get_review_request_success_message( $payload ) {
 }
 
 /**
+ * Compute lead qualification from a validated payload.
+ *
+ * Hero flow (`b2b_system_intake`) gates on sales_team_size x portal_margin_loss
+ * because business_fit is not asked there. Standard audit flow gates on
+ * business_fit directly. Empty/legacy values default to qualified so older
+ * submissions are never silently downgraded.
+ *
+ * @param array $validated Validated payload.
+ * @return array{status:string,reason:string}
+ */
+function nexus_compute_lead_qualification( $validated ) {
+	$audit_type = isset( $validated['audit_type'] ) ? (string) $validated['audit_type'] : '';
+
+	if ( 'b2b_system_intake' === $audit_type ) {
+		$team   = isset( $validated['sales_team_size'] ) ? (string) $validated['sales_team_size'] : '';
+		$margin = isset( $validated['portal_margin_loss'] ) ? (string) $validated['portal_margin_loss'] : '';
+
+		$has_team = in_array( $team, [ 'one', 'two_to_five', 'more_than_five' ], true );
+		$has_pain = in_array( $margin, [ 'medium', 'high' ], true );
+
+		if ( ! $has_team ) {
+			return [ 'status' => 'nurture', 'reason' => 'no_sales_infrastructure' ];
+		}
+		if ( ! $has_pain ) {
+			return [ 'status' => 'nurture', 'reason' => 'no_urgency' ];
+		}
+		return [ 'status' => 'qualified', 'reason' => 'sweet_spot' ];
+	}
+
+	$business_fit = isset( $validated['business_fit'] ) ? (string) $validated['business_fit'] : '';
+	if ( 'resale_or_short_term' === $business_fit ) {
+		return [ 'status' => 'nurture', 'reason' => 'fit_mismatch' ];
+	}
+	return [ 'status' => 'qualified', 'reason' => 'sweet_spot' ];
+}
+
+/**
+ * Build the on-page success screen payload tailored to qualification status.
+ *
+ * The handwritten 48 h email response remains unchanged — this only varies the
+ * immediate post-submit screen so unqualified leads are not pushed into a
+ * Cal.com booking that would waste both sides' time.
+ *
+ * @param array $qualification Result of nexus_compute_lead_qualification().
+ * @param array $validated     Validated payload.
+ * @return array
+ */
+function nexus_build_qualification_screen( $qualification, $validated ) {
+	$first_name = '';
+	$name       = isset( $validated['name'] ) ? trim( (string) $validated['name'] ) : '';
+	if ( '' !== $name ) {
+		$parts      = preg_split( '/\s+/', $name );
+		$first_name = is_array( $parts ) && ! empty( $parts ) ? (string) $parts[0] : '';
+	}
+
+	$headline = 'Danke' . ( '' !== $first_name ? ', ' . $first_name : '' ) . '.';
+
+	if ( 'qualified' === $qualification['status'] ) {
+		return [
+			'status'   => 'qualified',
+			'reason'   => $qualification['reason'],
+			'headline' => $headline,
+			'message'  => 'Ihr System-Intake ist eingegangen. Ich prüfe Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.',
+		];
+	}
+
+	$reason_phrase = 'die aktuellen Angaben weisen auf einen wahrscheinlichen Nicht-Fit hin';
+	switch ( $qualification['reason'] ) {
+		case 'no_sales_infrastructure':
+			$reason_phrase = 'aktuell fehlt eine Vertriebsstruktur, die das System tragen würde';
+			break;
+		case 'no_urgency':
+			$reason_phrase = 'der wirtschaftliche Druck durch Portal-Leads ist aktuell zu gering, damit ein eigenes Anfrage-Asset wirtschaftlich wird';
+			break;
+		case 'fit_mismatch':
+			$reason_phrase = 'die aktuelle Geschäftsausrichtung deutet eher auf Vermittlung oder kurzfristigen Lead-Bedarf hin';
+			break;
+	}
+
+	return [
+		'status'   => 'nurture',
+		'reason'   => $qualification['reason'],
+		'headline' => $headline,
+		'message'  => 'Ihr Intake ist eingegangen. Bei der ersten Sichtung sehe ich einen wahrscheinlichen Nicht-Fit für ein eigenes Anfrage-Asset über 12–24 Monate — ' . $reason_phrase . '. Sie bekommen in 48 Stunden trotzdem eine schriftliche Einordnung mit einer konkreten, ehrlichen Alternative für Ihre Situation. Wenn sich Ihre Situation ändert, gerne in 6 Monaten erneut.',
+	];
+}
+
+/**
  * Process a public review request submission.
  *
  * Shared by the REST callback and page-level fallback handling.
@@ -876,18 +964,23 @@ function nexus_process_review_request_submission( $payload ) {
 		);
 	}
 
+	$qualification = nexus_compute_lead_qualification( $validated );
+	update_post_meta( $post_id, '_nexus_review_qualification_status', sanitize_key( $qualification['status'] ) );
+	update_post_meta( $post_id, '_nexus_review_qualification_reason', sanitize_key( $qualification['reason'] ) );
+
 	nexus_send_review_request_admin_notification( $post_id, $validated );
 	nexus_send_review_request_confirmation( $validated );
 
 	return [
-		'ok'          => true,
-		'requestId'   => $post_id,
-		'message'     => nexus_get_review_request_success_message( $validated ),
-		'editUrl'     => get_edit_post_link( $post_id, 'raw' ),
-		'status'      => 'received',
-		'statusLabel' => 'Neu',
-		'auditType'   => $validated['audit_type'],
-		'http_status' => 201,
+		'ok'            => true,
+		'requestId'     => $post_id,
+		'message'       => nexus_get_review_request_success_message( $validated ),
+		'editUrl'       => get_edit_post_link( $post_id, 'raw' ),
+		'status'        => 'received',
+		'statusLabel'   => 'Neu',
+		'auditType'     => $validated['audit_type'],
+		'qualification' => nexus_build_qualification_screen( $qualification, $validated ),
+		'http_status'   => 201,
 	];
 }
 
@@ -2176,12 +2269,38 @@ function nexus_render_review_request_details_meta_box( $post ) {
 	$energy_sales_team   = (string) get_post_meta( $post->ID, '_nexus_review_energy_sales_team_size_label', true );
 	$energy_margin_loss  = (string) get_post_meta( $post->ID, '_nexus_review_energy_portal_margin_loss_label', true );
 	$is_b2b_energy_intake = '' !== trim( $energy_sales_team . $energy_margin_loss );
+	$qualification_status = (string) get_post_meta( $post->ID, '_nexus_review_qualification_status', true );
+	$qualification_reason = (string) get_post_meta( $post->ID, '_nexus_review_qualification_reason', true );
+	$qualification_reason_labels = [
+		'sweet_spot'              => 'Sweet-Spot (Team + Margendruck passen)',
+		'no_sales_infrastructure' => 'Keine Vertriebsstruktur',
+		'no_urgency'              => 'Kein wirtschaftlicher Druck',
+		'fit_mismatch'            => 'Vermittlung / kurzfristiger Lead-Bedarf',
+	];
 	?>
 	<div class="nexus-review-meta">
 		<div class="nexus-review-meta-group">
 			<strong>Audit-Typ</strong>
 			<p><?php echo esc_html( $audit_type ?: 'Marktcheck' ); ?></p>
 		</div>
+		<?php if ( '' !== $qualification_status ) :
+			$is_qualified = 'qualified' === $qualification_status;
+			$badge_bg     = $is_qualified ? '#1f6f3f' : '#8a5a1f';
+			$badge_label  = $is_qualified ? 'Qualified' : 'Nurture';
+			$reason_label = isset( $qualification_reason_labels[ $qualification_reason ] )
+				? $qualification_reason_labels[ $qualification_reason ]
+				: $qualification_reason;
+			?>
+			<div class="nexus-review-meta-group">
+				<strong>Qualifikation</strong>
+				<p>
+					<span style="display:inline-block;padding:2px 10px;border-radius:10px;background:<?php echo esc_attr( $badge_bg ); ?>;color:#fff;font-weight:600;font-size:12px;letter-spacing:0.04em;text-transform:uppercase;"><?php echo esc_html( $badge_label ); ?></span>
+					<?php if ( '' !== $reason_label ) : ?>
+						<br><span style="color:#5b6470;font-size:12px;"><?php echo esc_html( $reason_label ); ?></span>
+					<?php endif; ?>
+				</p>
+			</div>
+		<?php endif; ?>
 		<div class="nexus-review-meta-group">
 			<strong>Unternehmen</strong>
 			<p><?php echo esc_html( $company ?: 'Nicht angegeben' ); ?></p>
