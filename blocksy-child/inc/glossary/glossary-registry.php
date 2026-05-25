@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function nexus_get_glossary_registry_version() {
-	return '2026-05-21-glossary-v3';
+	return '2026-05-26-glossary-v4';
 }
 
 /**

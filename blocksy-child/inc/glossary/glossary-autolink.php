@@ -15,55 +15,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_filter( 'the_content', 'nexus_glossary_autolink', 80 );
 
 /**
- * Return explicit non-glossary internal link mappings for the Solar/SHK pillar.
+ * Return explicit non-registry internal link mappings for the Solar/SHK pillar.
  *
- * The glossary registry owns definition pages. These mappings catch commercial
- * Solar core-keywords in blog copy and route them to the canonical Solar page.
+ * Default Solar mappings live in the glossary registry as alias terms so keyword
+ * ownership stays data-driven. This hook remains for runtime extensions.
  *
  * @return array<string, string> Map of exact keyword phrase => target URL.
  */
 function nexus_get_solar_pillar_autolink_mappings() {
-	$solar_url = function_exists( 'nexus_get_energy_systems_url' )
-		? nexus_get_energy_systems_url()
-		: home_url( '/solar-waermepumpen-leadgenerierung/' );
-
-	$mappings = [
-		'B2B-Leadgenerierung für Solar' => $solar_url,
-		'Leadgenerierung für Photovoltaik' => $solar_url,
-		'Leadgenerierung für Solar' => $solar_url,
-		'Leadgenerierung für Solarteure' => $solar_url,
-		'Photovoltaik Leadgenerierung' => $solar_url,
-		'Photovoltaik-Leadgenerierung' => $solar_url,
-		'Solar Leadgenerierung' => $solar_url,
-		'Solar-Leadgenerierung' => $solar_url,
-		'PV Leadgenerierung' => $solar_url,
-		'PV-Leadgenerierung' => $solar_url,
-		'Photovoltaik Leads' => $solar_url,
-		'Photovoltaik-Leads' => $solar_url,
-		'Solar Leads' => $solar_url,
-		'Solar-Leads' => $solar_url,
-		'PV Leads' => $solar_url,
-		'PV-Leads' => $solar_url,
-		'Wärmepumpen Leads' => $solar_url,
-		'Wärmepumpen-Leads' => $solar_url,
-		'qualifizierte PV-Anfragen' => $solar_url,
-		'qualifizierte Solar-Anfragen' => $solar_url,
-		'eigene Solar-Anfragen' => $solar_url,
-		'Anfrage-System für Solar' => $solar_url,
-		'Anfrage-Systeme für Solar' => $solar_url,
-		'Anfrage-System Solar' => $solar_url,
-		'Solar-Kundengewinnung' => $solar_url,
-		'Kundengewinnung für Solarteure' => $solar_url,
-		'Portal-Leads' => $solar_url,
-		'Leadportale' => $solar_url,
-	];
-
 	/**
-	 * Filter explicit Solar/SHK autolink mappings.
+	 * Filter explicit Solar/SHK autolink mappings outside the registry.
 	 *
 	 * @param array<string, string> $mappings Exact phrase => URL.
 	 */
-	return apply_filters( 'nexus_solar_pillar_autolink_mappings', $mappings );
+	return apply_filters( 'nexus_solar_pillar_autolink_mappings', [] );
 }
 
 /**

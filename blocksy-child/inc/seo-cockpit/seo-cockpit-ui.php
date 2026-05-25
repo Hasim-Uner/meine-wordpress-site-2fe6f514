@@ -1788,7 +1788,7 @@ function nexus_render_seo_cockpit_query_movers( $movers ) {
 }
 
 /**
- * Shorten a URL for compact table display (keep host + path, drop scheme).
+ * Shorten a URL for compact table display (drop scheme, keep query/fragments).
  *
  * @param string $url Full URL.
  * @return string
@@ -1801,14 +1801,16 @@ function nexus_get_seo_cockpit_short_url( $url ) {
 	}
 
 	$parts = wp_parse_url( $url );
-	$host  = isset( $parts['host'] ) ? (string) $parts['host'] : '';
-	$path  = isset( $parts['path'] ) ? (string) $parts['path'] : '';
+	$host     = isset( $parts['host'] ) ? (string) $parts['host'] : '';
+	$path     = isset( $parts['path'] ) ? (string) $parts['path'] : '';
+	$query    = isset( $parts['query'] ) && '' !== (string) $parts['query'] ? '?' . (string) $parts['query'] : '';
+	$fragment = isset( $parts['fragment'] ) && '' !== (string) $parts['fragment'] ? '#' . (string) $parts['fragment'] : '';
 
 	if ( '' === $host && '' === $path ) {
 		return $url;
 	}
 
-	$short = $host . $path;
+	$short = $host . $path . $query . $fragment;
 	$short = preg_replace( '#^www\.#', '', $short );
 
 	return '' !== $short ? $short : $url;

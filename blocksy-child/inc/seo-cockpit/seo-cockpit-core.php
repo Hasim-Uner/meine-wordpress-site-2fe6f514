@@ -359,18 +359,18 @@ function nexus_get_seo_cockpit_allowed_ranges() {
  * @return array<string, array<string, int|bool>>
  */
 function nexus_get_seo_cockpit_row_caps() {
-	return [
+	$caps = [
 		'top_pages'       => [
-			'limit'     => 20,
+			'limit'     => 150,
 			'page_size' => 100,
-			'max_pages' => 1,
-			'paginate'  => false,
+			'max_pages' => 2,
+			'paginate'  => true,
 		],
 		'top_queries'     => [
-			'limit'     => 20,
+			'limit'     => 250,
 			'page_size' => 100,
-			'max_pages' => 1,
-			'paginate'  => false,
+			'max_pages' => 3,
+			'paginate'  => true,
 		],
 		'top_devices'     => [
 			'limit'     => 10,
@@ -403,6 +403,15 @@ function nexus_get_seo_cockpit_row_caps() {
 			'paginate'  => false,
 		],
 	];
+
+	/**
+	 * Filter per-report Search Console row caps and paging defaults.
+	 *
+	 * @param array<string, array<string, int|bool>> $caps Report bucket configs.
+	 */
+	$filtered = apply_filters( 'nexus_seo_cockpit_row_caps', $caps );
+
+	return is_array( $filtered ) ? $filtered : $caps;
 }
 
 /**
@@ -472,8 +481,12 @@ function nexus_normalize_seo_cockpit_url( $url ) {
 
 	$normalized = $scheme . '://' . $host . $path;
 
-	if ( ! empty( $parts['query'] ) ) {
+	if ( isset( $parts['query'] ) && '' !== (string) $parts['query'] ) {
 		$normalized .= '?' . (string) $parts['query'];
+	}
+
+	if ( isset( $parts['fragment'] ) && '' !== (string) $parts['fragment'] ) {
+		$normalized .= '#' . (string) $parts['fragment'];
 	}
 
 	return $normalized;
