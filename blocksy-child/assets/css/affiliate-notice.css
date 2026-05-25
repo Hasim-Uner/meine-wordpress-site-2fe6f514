@@ -1,0 +1,69 @@
+/* ============================================================
+ * Affiliate Disclosure Notice
+ * Wiederverwendbare Werbekennzeichnung. Wird vor dem ersten
+ * Affiliate-Link einer Sektion gerendert.
+ * ============================================================ */
+
+.hu-affiliate-notice {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin: 1.5rem 0;
+	padding: 0.875rem 1rem;
+	border: 1px solid var(--ns-color-border, #e2e5ea);
+	border-left: 3px solid var(--ns-color-accent, #d97706);
+	background: var(--ns-color-surface-soft, #fafbfc);
+	border-radius: 6px;
+	font-size: 0.9375rem;
+	line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+	.hu-affiliate-notice {
+		flex-direction: row;
+		align-items: baseline;
+		gap: 0.875rem;
+	}
+}
+
+.hu-affiliate-notice__label {
+	flex-shrink: 0;
+	display: inline-block;
+	padding: 0.125rem 0.5rem;
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	background: var(--ns-color-accent, #d97706);
+	color: #ffffff;
+	border-radius: 3px;
+}
+
+.hu-affiliate-notice__text {
+	margin: 0;
+	color: var(--ns-color-text-muted, #4b5563);
+}
+
+.hu-affiliate-notice--inline {
+	margin: 0.75rem 0 1.25rem;
+	padding: 0.625rem 0.875rem;
+	font-size: 0.875rem;
+}
+
+/* Inline Partnerlink-Markierung im Layer-Body */
+.hu-intercept__layer-meta {
+	display: inline-block;
+	margin-left: 0.5rem;
+	padding: 0.0625rem 0.4375rem;
+	font-size: 0.75rem;
+	color: var(--ns-color-text-muted, #6b7280);
+	background: var(--ns-color-surface-soft, #f3f4f6);
+	border-radius: 3px;
+	letter-spacing: 0.02em;
+}
+
+.hu-intercept__inline-link {
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}

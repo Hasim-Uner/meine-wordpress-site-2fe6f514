@@ -252,7 +252,7 @@ Hardcodierte WordPress Money Page
 + CRM-Rückmeldung echter SQLs
 ```
 
-HostPress ist in dieser Architektur die bevorzugte Hosting-Basis. Der Anbieter adressiert Managed WordPress Hosting aus Deutschland, eigene Serverstandorte in Deutschland, NVMe-Storage, Redis Cache, CDN-Einrichtung, tägliche Backups und WordPress-Optimierung. Raidboxes ist die zweite sinnvolle DACH-nahe Option, wenn zentrale WordPress-Verwaltung, Backups, Staging und Managed-Betrieb stärker im Vordergrund stehen.
+**Werbung · Partnerlink:** [HostPress](https://www.hostpress.de/wordpress-hosting/) ist in dieser Architektur die bevorzugte Hosting-Basis und gleichzeitig ein Partner — wenn Sie über den Link abschließen, entsteht eine Vergütung, ohne Mehrkosten für Sie. Der Anbieter adressiert Managed WordPress Hosting aus Deutschland, eigene Serverstandorte in Deutschland, NVMe-Storage, Redis Cache, CDN-Einrichtung, tägliche Backups und WordPress-Optimierung. Raidboxes ist die zweite sinnvolle DACH-nahe Option, wenn zentrale WordPress-Verwaltung, Backups, Staging und Managed-Betrieb stärker im Vordergrund stehen. Den vollständigen Architektur-Kontext finden Sie im [Anfrage-System-Stack](/anfrage-system-stack/).
 
 Das ist weniger spektakulär als ein Agentur-Dashboard. Aber es ist näher an dem, was Aufträge erzeugt.
 
@@ -685,7 +685,7 @@ Für die aktuelle Kohorte gelten Founding-Partner-Kriterien. Wer passt, bekommt 
 ## Quellen und fachliche Referenzen
 
 - [§ 248 HGB - Gesetze im Internet](https://www.gesetze-im-internet.de/hgb/__248.html)
-- [HostPress WordPress Hosting](https://www.hostpress.de/wordpress-hosting/)
+- [HostPress WordPress Hosting](https://www.hostpress.de/wordpress-hosting/) (Partnerlink · Werbung)
 - [Raidboxes WordPress Management](https://raidboxes.io/en/platform/wordpress-management/)
 - Lokaler E3-Canon: `blocksy-child/inc/canon/e3-proof-canon.php`
 - Funnel-Specs: `docs/specs/anfrage-system-analyse-form-v1.md`, `docs/specs/anfrage-system-analyse-report-v1.md`
