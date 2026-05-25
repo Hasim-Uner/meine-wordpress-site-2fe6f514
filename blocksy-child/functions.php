@@ -44,6 +44,7 @@ $modules = [
 	'analysis-intake.php', // REST-Endpoint, CRM-Sync, Brevo-Mails und n8n-Webhook für die Analyse
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails
 	'post-rating.php',    // Artikel-Bewertung (Hilfreich/Nicht hilfreich) + Admin-Spalte
+	'cpo-calculator.php', // CPO-Rechner für Photovoltaik-Anfragen
 	'blog-provider-posts.php', // Einmalige Live-Anlage der Lead-Anbieter-Markteinordnungen
 	'blog-pillar-posts.php', // Einmalige Live-Anlage strategischer Pillar-Beiträge
 	'robots-txt.php',     // Dynamische /robots.txt-Route für Search- und KI-Crawler

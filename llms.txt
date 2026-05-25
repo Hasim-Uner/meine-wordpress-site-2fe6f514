@@ -13,6 +13,7 @@
 - [E3 New Energy](/e3-new-energy/) - kaufnaher Proof-Case für Nachfrageaufbau, Tracking und Conversion.
 - [Ergebnisse](/ergebnisse/) - kuratierter Proof-Hub mit Cases, Kennzahlen und Kontext.
 - [Solar Leads kaufen Alternative](/solar-leads-kaufen-alternative/) - Portalvergleich und Einordnung eigener Leadgenerierung.
+- [Photovoltaik-Leads TCO-Rechnung](/photovoltaik-leads-tco-rechnung/) - CPO-/TCO-Deep-Dive zu Leadmiete, Vertriebszeit, Datenbesitz und eigener Anfrage-Infrastruktur.
 
 ## Solar- und Wärmepumpen-Leadgenerierung: Themen-Cluster
 - [Server-Side Tracking B2B](/server-side-tracking-b2b/) - GA4, Meta CAPI, Consent Mode v2 und Tracking-Fundament.

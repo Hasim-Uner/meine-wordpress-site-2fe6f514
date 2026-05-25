@@ -166,6 +166,12 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-single-editorial-css', 'single-editorial.css', [ 'nexus-single-css' ] );
 		hu_enqueue_js( 'nexus-single-editorial-js', 'single-editorial.js', [ 'nexus-core-js' ] );
 
+		$post_content = $queried_id ? (string) get_post_field( 'post_content', $queried_id ) : '';
+		if ( has_shortcode( $post_content, 'hu_cpo_calculator' ) ) {
+			hu_enqueue_css( 'nexus-cpo-calculator-css', 'cpo-calculator.css', [ 'nexus-single-editorial-css' ] );
+			hu_enqueue_js( 'nexus-cpo-calculator-js', 'cpo-calculator.js', [ 'nexus-core-js' ] );
+		}
+
 		wp_localize_script(
 			'nexus-single-editorial-js',
 			'NexusSingleEditorial',

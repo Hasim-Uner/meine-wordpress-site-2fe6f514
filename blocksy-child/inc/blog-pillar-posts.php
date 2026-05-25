@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function hu_get_blog_pillar_posts_seed_version() {
-	return '2026-05-25-1';
+	return '2026-05-25-2';
 }
 
 /**
@@ -29,9 +29,9 @@ function hu_get_blog_pillar_posts_seed_version() {
 function hu_get_blog_pillar_posts_seed_data() {
 	return [
 		[
-			'title'             => 'Photovoltaik-Leads: Kaufen oder besitzen? Die ehrliche TCO-Rechnung für Fachbetriebe',
-			'slug'              => 'photovoltaik-leads-kaufen-alternative',
-			'seo_title'         => 'Photovoltaik-Leads: Kaufen oder besitzen?',
+			'title'             => 'Photovoltaik-Leads: Die TCO- und CPO-Rechnung für Fachbetriebe',
+			'slug'              => 'photovoltaik-leads-tco-rechnung',
+			'seo_title'         => 'Photovoltaik-Leads: TCO- und CPO-Rechnung',
 			'seo_description'   => 'PV-Leads kaufen wirkt billig. Entscheidend ist CPO: Abschlussquote, Tracking, Page Speed, Datenbesitz und eigene Anfrage-Infrastruktur.',
 			'excerpt'           => 'Warum Photovoltaik-Betriebe nicht CPL, sondern Cost per Order rechnen müssen. Eine harte Einordnung zu Portal-Leads, gemieteten Agentur-Funnels, Tracking, Page Speed und eigener Nachfrage-Infrastruktur.',
 			'categories'        => [
@@ -39,7 +39,7 @@ function hu_get_blog_pillar_posts_seed_data() {
 				[ 'name' => 'Solar-/Wärmepumpen Anfrage-Systeme', 'slug' => 'solar-waermepumpen-anfrage-systeme' ],
 			],
 			'tags'              => [ 'Photovoltaik Leads', 'Solar Leads', 'Lead-Portale', 'Cost per Order', 'Server-Side Tracking', 'Anfrage-System' ],
-			'markdown_file'     => 'assets/content/blog/photovoltaik-leads-kaufen-alternative.md',
+			'markdown_file'     => 'assets/content/blog/photovoltaik-leads-tco-rechnung.md',
 			'featured_image'    => 'assets/img/blog/photovoltaik-leads-kaufen-alternative-hero.png',
 			'featured_alt_text' => 'Vergleich von gemieteten Photovoltaik-Leads und eigener Anfrage-Infrastruktur mit CPO-Rechnung.',
 		],
@@ -47,7 +47,7 @@ function hu_get_blog_pillar_posts_seed_data() {
 			'title'             => 'WordPress TTFB unter 200 ms: Wie Server-Antwortzeit den Google-Ads-Qualitätsfaktor entscheidet',
 			'slug'              => 'wordpress-ttfb-google-ads-ladezeit',
 			'seo_title'         => 'WordPress TTFB & Google Ads: Server-Antwortzeit senken',
-			'seo_description'   => 'TTFB über 600 ms zerlegt deinen Qualitätsfaktor, treibt den CPC und kostet Conversions. Welche Hebel wirklich wirken — und welche nur Aufwand erzeugen.',
+			'seo_description'   => 'TTFB über 600 ms zerlegt Ihren Qualitätsfaktor, treibt den CPC und kostet Conversions. Welche Hebel wirklich wirken — und welche nur Aufwand erzeugen.',
 			'excerpt'           => 'Eine Sekunde mehr Ladezeit senkt die Conversion-Rate um rund 17 Prozent. TTFB über 600 ms zerlegt den Qualitätsfaktor in Google Ads, treibt den CPC und vernichtet Werbebudget. Warum Server-Antwortzeit das Fundament jeder bezahlten Kampagne ist — und welche Hebel im WordPress-Stack tatsächlich wirken.',
 			'categories'        => [
 				[ 'name' => 'Performance-Marketing', 'slug' => 'performance-marketing' ],
@@ -172,6 +172,14 @@ function hu_blog_pillar_markdown_to_html( $markdown ) {
 			continue;
 		}
 
+		if ( preg_match( '/^\[hu_cpo_calculator(?:\s[^\]]*)?\]$/', $line ) ) {
+			$flush_para();
+			$flush_list();
+			$flush_blockquote();
+			$html .= $line . "\n";
+			continue;
+		}
+
 		if ( hu_blog_pillar_starts_with( $line, '# ' ) ) {
 			$flush_para();
 			$flush_list();
@@ -267,15 +275,24 @@ function hu_blog_pillar_format_inline_markdown( $text ) {
 		'/\[([^\]]+)\]\(([^)]+)\)/',
 		static function( $matches ) use ( &$links ) {
 			$href = trim( (string) $matches[2] );
+			$attrs = '';
 
 			if ( ! preg_match( '~^(https?://|/|#)~', $href ) ) {
 				return (string) $matches[0];
 			}
 
+			if ( preg_match( '~^https://www\.hostpress\.de/wordpress-hosting/~', $href ) ) {
+				$href = function_exists( 'hu_get_affiliate_url' ) ? hu_get_affiliate_url( 'hostpress' ) : $href;
+				$attrs = function_exists( 'hu_render_affiliate_anchor_attrs' )
+					? hu_render_affiliate_anchor_attrs( 'hostpress', 'blog_pillar_inline' )
+					: ' rel="sponsored nofollow noopener" target="_blank"';
+			}
+
 			$key           = '%%HU_PILLAR_LINK_' . count( $links ) . '%%';
 			$links[ $key ] = sprintf(
-				'<a href="%s">%s</a>',
+				'<a href="%s"%s>%s</a>',
 				esc_url( $href ),
+				$attrs,
 				esc_html( $matches[1] )
 			);
 
@@ -394,6 +411,36 @@ function hu_blog_pillar_find_post_id_by_slug( $slug ) {
 }
 
 /**
+ * Move replaced repo-seeded posts out of public indexability.
+ *
+ * @return void
+ */
+function hu_blog_pillar_retire_replaced_seeded_posts() {
+	$replaced_slugs = [
+		'photovoltaik-leads-kaufen-alternative',
+	];
+
+	foreach ( $replaced_slugs as $slug ) {
+		$post_id = hu_blog_pillar_find_post_id_by_slug( $slug );
+
+		if ( ! $post_id || '1' !== (string) get_post_meta( $post_id, '_hu_blog_pillar_seeded', true ) ) {
+			continue;
+		}
+
+		if ( 'publish' !== (string) get_post_status( $post_id ) ) {
+			continue;
+		}
+
+		wp_update_post(
+			[
+				'ID'          => $post_id,
+				'post_status' => 'draft',
+			]
+		);
+	}
+}
+
+/**
  * Find an existing seeded attachment by source asset.
  *
  * @param string $asset_relative Theme-relative asset path.
@@ -496,6 +543,8 @@ function hu_maybe_seed_blog_pillar_posts() {
 
 	$author_id = hu_blog_pillar_seed_author_id();
 	$all_done  = true;
+
+	hu_blog_pillar_retire_replaced_seeded_posts();
 
 	foreach ( hu_get_blog_pillar_posts_seed_data() as $post ) {
 		$slug          = sanitize_title( (string) $post['slug'] );

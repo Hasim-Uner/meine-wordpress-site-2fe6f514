@@ -1,10 +1,10 @@
 ## WordPress Publish-Pack
 
-- Titel: Photovoltaik-Leads: Kaufen oder besitzen? Die ehrliche TCO-Rechnung für Fachbetriebe
-- Slug: `photovoltaik-leads-kaufen-alternative`
+- Titel: Photovoltaik-Leads: Die TCO- und CPO-Rechnung für Fachbetriebe
+- Slug: `photovoltaik-leads-tco-rechnung`
 - Kategorie: Leadgenerierung
 - Tags: Photovoltaik Leads, Solar Leads, Lead-Portale, Cost per Order, Server-Side Tracking, Anfrage-System
-- SEO-Titel (max. 60): Photovoltaik-Leads: Kaufen oder besitzen?
+- SEO-Titel (max. 60): Photovoltaik-Leads: TCO- und CPO-Rechnung
 - Meta-Description (max. 155): PV-Leads kaufen wirkt billig. Entscheidend ist CPO: Abschlussquote, Tracking, Page Speed, Datenbesitz und eigene Anfrage-Infrastruktur.
 - Excerpt: Warum Photovoltaik-Betriebe nicht CPL, sondern Cost per Order rechnen müssen. Eine harte Einordnung zu Portal-Leads, gemieteten Agentur-Funnels, Tracking, Page Speed und eigener Nachfrage-Infrastruktur.
 - Hero-Bild: `content/blog-drafts/assets/photovoltaik-leads-kaufen-alternative-hero.png`
@@ -15,7 +15,7 @@
 
 > Hinweis: Dieser Beitrag ist eine wirtschaftliche und technische Markteinordnung für Photovoltaik-Betriebe mit eigenem Vertrieb oder geschäftsführergeführtem Abschlussprozess. Er ist keine Rechts-, Steuer- oder Anlageberatung. Bilanzielle und steuerliche Fragen zu Entwicklungskosten, Aktivierung und Betriebsausgaben gehören zum Steuerberater.
 
-# Photovoltaik-Leads: Kaufen oder besitzen? Die ehrliche TCO-Rechnung für Fachbetriebe
+# Photovoltaik-Leads: Die TCO- und CPO-Rechnung für Fachbetriebe
 
 ## Kurzfassung für Geschäftsführer
 
@@ -37,7 +37,9 @@ Die eigentliche Frage lautet:
 Wie bauen wir eine eigene Anfrage-Infrastruktur, die dauerhaft Aufträge erzeugt, Daten besitzt und den Vertrieb nicht in Preisvergleiche zwingt?
 ```
 
-Dieser Artikel rechnet genau das durch: Portal-Leads, gemietete GoHighLevel-Funnels, eigene WordPress-Money-Pages, Server-Side Tracking, CRM-Rücksignale, Page Speed, CPO und Founding-Partner-Fit.
+Dieser Artikel rechnet genau das durch: Portal-Leads, gemietete GoHighLevel-Funnels, eigene WordPress-Money-Pages, Server-Side Tracking, CRM-Rücksignale, Page Speed, CPO und Founding-Partner-Fit. Founding-Partner meint hier einen frühen Umsetzungspartner der Founding Cohort 2026, keinen Mitgründer, Anteilseigner oder gesellschaftsrechtlichen Partner.
+
+Die kompakte Einordnung für den Kauf-Suchintent liegt auf der Seite [Solar Leads kaufen Alternative](/solar-leads-kaufen-alternative/). Dieser Beitrag geht tiefer in TCO, CPO, Vertriebszeit und Datenbesitz.
 
 Er ist bewusst auf Photovoltaik fokussiert. Wärmepumpe hat andere Projektlogik, andere Förderabhängigkeit, andere Beratungstiefe und andere Vertriebsrealität. Wer beide Märkte in einem Artikel vermischt, verwässert die Rechnung.
 
@@ -91,7 +93,7 @@ Ein Leadpreis von 180 Euro wirkt teuer.
 
 Diese Bewertung ist betriebswirtschaftlich unbrauchbar, solange die Abschlussquote fehlt.
 
-Die Formel ist simpel:
+Die Formel ist simpel. Die ausführliche CPL-Einordnung mit Szenarien steht auf [Cost per Lead Photovoltaik](/cost-per-lead-photovoltaik/); hier geht es um die Auftragsebene:
 
 ```text
 Cost per Order = Leadkosten / Abschlussquote
@@ -149,7 +151,7 @@ Alle drei Fälle sind teuer.
 
 ## 3. Das Problem ist nicht das Portal. Das Problem ist fehlender Besitz.
 
-Lead-Portale sind keine moralische Frage. Sie sind ein Geschäftsmodell.
+[Lead-Portale](/eigene-leadgenerierung-vs-portale/) sind keine moralische Frage. Sie sind ein Geschäftsmodell.
 
 Sie erzeugen Nachfrage, bündeln sie, qualifizieren sie grob und verkaufen Zugriff. Das ist legitim. Aber der Solarteur muss verstehen, auf welcher Seite der Bilanz er steht.
 
@@ -239,7 +241,7 @@ Für Photovoltaik-Money-Pages ist das eine schlechte Ausgangslage.
 
 Eine performante Anfrage-Strecke braucht keine überladene Tool-Kette. Sie braucht saubere Informationsarchitektur, harte Vorqualifizierung, schnelle Ladezeiten und eine Tracking-Logik, die auch bei mobilen Nutzern belastbar bleibt.
 
-Die technische Zielarchitektur ist nüchtern:
+Die technische Zielarchitektur ist nüchtern. Der dazugehörige Performance-Stack ist auf [Stack Solar](/stack-solar/) dokumentiert:
 
 ```text
 Hardcodierte WordPress Money Page
@@ -284,7 +286,7 @@ Das ist ein massiver Unterschied.
 
 Ein sauber gebautes Anfrage-System misst nicht nur den ersten Kontakt. Es verbindet den gesamten Weg: Klick, Landingpage, Formular, Qualifizierung, CRM-Status, Vertriebsergebnis und Auftrag. Erst dadurch entsteht eine Datenbasis, mit der Werbebudget präziser arbeiten kann.
 
-Der technische Kern ist Server-Side Tracking im First-Party-Context.
+Der technische Kern ist [Server-Side Tracking im First-Party-Context](/server-side-tracking-b2b/).
 
 Heißt konkret: Die Daten laufen nicht nur über fremde Browser-Pixel, die von Adblockern, Consent-Problemen, iOS-Restriktionen oder Browser-Schutzmechanismen beschädigt werden. Die relevanten Ereignisse laufen über eine eigene serverseitige Strecke. Der Betrieb behält mehr Kontrolle über Datenqualität, Verarbeitung und Weitergabe.
 
@@ -346,7 +348,7 @@ Nach [§ 248 Abs. 2 HGB](https://www.gesetze-im-internet.de/hgb/__248.html) best
 
 Für KMU kann es trotzdem sinnvoll sein, Entwicklungskosten sofort als Betriebsausgabe zu behandeln. Das entscheidet nicht ein Copywriter. Das entscheidet der Steuerberater anhand Gesellschaftsform, Bilanzpolitik, Abgrenzung und steuerlicher Wirkung.
 
-Der strategische Punkt bleibt: Wer monatlich für fremde Leads oder gemietete Funnels zahlt, besitzt nach Vertragsende oft wenig. Wer ein eigenes System baut, besitzt wenigstens die technische Strecke, die Datenstruktur, die Inhalte, die Tracking-Historie und die Lernkurve.
+Der strategische Punkt bleibt: Wer monatlich für fremde Leads oder gemietete Funnels zahlt, besitzt nach Vertragsende oft wenig. Wer ein eigenes System baut, besitzt wenigstens die technische Strecke, die Datenstruktur, die Inhalte, die Tracking-Historie und die Lernkurve. Der größere Vergleich zwischen Mietmodell und eigener Strecke ist im [Portal-vs.-Eigentum-Vergleich](/eigene-leadgenerierung-vs-portale/) aufgeschlüsselt.
 
 Das ist kein Bilanztrick. Das ist Kontrollgewinn.
 
@@ -368,87 +370,13 @@ Wenn derselbe Betrag eine eigene Nachfrage-Infrastruktur verbessert, hat jeder M
 
 ## 8. Der CPO-Rechner gehört in den Artikel, nicht in eine Excel-Datei
 
-An dieser Stelle darf der Leser nicht nur nicken. Er muss rechnen.
+An dieser Stelle darf der Leser nicht nur nicken. Er muss rechnen. Kein Download, keine Excel, keine versteckte Zahl hinter einer Anfrage.
 
-Der Artikel braucht hier ein eingebettetes Live-Widget im Fließtext. Kein Download. Keine Excel. Keine "Beratung anfragen, um die Zahl zu bekommen". Der Inhaber soll seine aktuelle Situation sofort gegenrechnen.
+Der Rechner trennt Leadkosten, Vertriebszeit und Plattformkosten. Genau dadurch wird sichtbar, ob der günstige Lead wirklich günstig ist oder nur billig eingekauft wurde.
 
-**Widget: CPO-Rechner für Photovoltaik-Anfragen**
+[hu_cpo_calculator]
 
-Eingaben:
-
-```text
-Leadquelle
-CPL in Euro
-Anzahl Leads pro Monat
-Abschlussquote in %
-Durchschnittlicher Auftragswert
-Deckungsbeitrag in %
-Vertriebszeit pro Lead in Minuten
-Interner Stundensatz Vertrieb
-Monatskosten Plattform / Agentur / Retainer
-```
-
-Ausgaben:
-
-```text
-Cost per Order
-Vertriebskosten pro Auftrag
-voller Akquisekostenblock pro Auftrag
-Deckungsbeitrag nach Akquise
-Break-even-Abschlussquote
-Differenz eigenes System vs. Leadmiete
-```
-
-Die harte Ausgabe ist nicht "Leadkosten". Die harte Ausgabe ist:
-
-```text
-Wie viele Euro bleiben nach Akquise pro Auftrag übrig?
-```
-
-Ein Beispiel:
-
-```text
-Portal:
-100 Leads x 90 EUR = 9.000 EUR
-Abschlussquote 5 % = 5 Aufträge
-CPO nur Leadkosten = 1.800 EUR
-
-Eigene Strecke:
-60 Leads x 170 EUR = 10.200 EUR
-Abschlussquote 15 % = 9 Aufträge
-CPO nur Leadkosten = 1.133 EUR
-```
-
-Der eigene Lead ist fast doppelt so teuer. Der Auftrag ist trotzdem günstiger.
-
-Jetzt kommen die Vertriebskosten hinzu.
-
-Wenn ein Portal-Lead im Schnitt 35 Minuten Vertriebszeit bindet und nur mit 5 Prozent abschließt, steckt in jedem Auftrag die Vertriebszeit von 20 Leads. Das sind 700 Minuten. Bei intern kalkulierten 60 Euro pro Stunde liegen allein die Vertriebskosten bei 700 Euro pro Auftrag.
-
-Wenn ein eigener First-Party-Lead 25 Minuten Vertriebszeit bindet und mit 15 Prozent abschließt, steckt in jedem Auftrag die Vertriebszeit von rund 6,7 Leads. Das sind 167 Minuten. Bei 60 Euro pro Stunde liegen die Vertriebskosten bei rund 167 Euro pro Auftrag.
-
-Der Unterschied ist nicht kosmetisch.
-
-```text
-Portal:
-1.800 EUR Lead-CPO
-+ 700 EUR Vertriebskosten pro Auftrag
-= 2.500 EUR Akquisekosten vor Plattformkosten
-
-Eigene Strecke:
-1.133 EUR Lead-CPO
-+ 167 EUR Vertriebskosten pro Auftrag
-= 1.300 EUR Akquisekosten vor Systemkosten
-```
-
-Genau deshalb muss Kapitel 8 interaktiv werden. Wer die Rechnung nicht mit seinen eigenen Zahlen macht, bleibt im CPL-Nebel.
-
-Der integrierte Rechner sollte zwei Szenarien nebeneinanderstellen:
-
-1. Aktuelle Leadquelle: Portal, Agentur-Funnel oder Mischkanal.
-2. Eigene Strecke: First-Party-Anfragen mit realistischer Abschlussquote.
-
-Das Ergebnis darf nicht weichgespült werden. Wenn die eigene Strecke bei einem Betrieb nicht trägt, muss der Rechner das zeigen. Wenn der Portal-Zukauf als Übergang wirtschaftlich sinnvoll ist, muss auch das sichtbar werden.
+Das Ergebnis darf nicht weichgespült werden. Wenn die eigene Strecke bei einem Betrieb nicht trägt, muss die Rechnung das zeigen. Wenn Portal-Zukauf als Übergang wirtschaftlich sinnvoll ist, muss auch das sichtbar werden.
 
 Ein Anfrage-System ist keine Glaubensfrage. Es ist eine Rechenfrage.
 
@@ -638,7 +566,7 @@ Weil nicht jeder Betrieb passt. Erst müssen Projektwert, Zielgebiet, Vertriebsr
 
 Wenn Sie nur "mehr Leads" wollen, ist das hier der falsche Einstieg.
 
-Der regionale Marktcheck prüft nicht, ob man Ihnen irgendeinen Funnel verkaufen kann. Er prüft, ob Ihr Photovoltaik-Betrieb aktuell als Founding-Partner in die Kohorte passt.
+Der regionale Marktcheck prüft nicht, ob man Ihnen irgendeinen Funnel verkaufen kann. Er prüft, ob Ihr Photovoltaik-Betrieb aktuell als Founding-Partner, also als früher Umsetzungspartner der Founding Cohort 2026, in die Kohorte passt.
 
 Geprüft werden drei Dinge:
 
@@ -668,24 +596,8 @@ Für die aktuelle Kohorte gelten Founding-Partner-Kriterien. Wer passt, bekommt 
 **Regionalen Marktcheck starten:**  
 [/solar-waermepumpen-leadgenerierung/#marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck)
 
-## Suggested Internal Links
-
-- Eigene Leadgenerierung vs. Portale -> `/eigene-leadgenerierung-vs-portale/`
-- Server-Side Tracking für Solarteure -> `/server-side-tracking-b2b/`
-- Cost per Lead Photovoltaik -> `/cost-per-lead-photovoltaik/`
-- E3 New Energy Methodik-Case -> `/e3-new-energy/`
-- Regionaler Marktcheck -> `/solar-waermepumpen-leadgenerierung/#marktcheck`
-
-## Optional Image Brief
-
-- Alt text: Vergleich von gemieteten Photovoltaik-Leads und eigener Anfrage-Infrastruktur mit CPO-Rechnung.
-- Title: Gemietete PV-Leads vs. eigenes Anfrage-System
-- Caption: Links: Nachfrage-Miete über Portale und gemietete Funnel. Rechts: eigene Money Page, Server-Side Tracking, CRM-Rücksignal und CPO-Steuerung.
-
 ## Quellen und fachliche Referenzen
 
 - [§ 248 HGB - Gesetze im Internet](https://www.gesetze-im-internet.de/hgb/__248.html)
 - [HostPress WordPress Hosting](https://www.hostpress.de/wordpress-hosting/) (Partnerlink · Werbung)
 - [Raidboxes WordPress Management](https://raidboxes.io/en/platform/wordpress-management/)
-- Lokaler E3-Canon: `blocksy-child/inc/canon/e3-proof-canon.php`
-- Funnel-Specs: `docs/specs/anfrage-system-analyse-form-v1.md`, `docs/specs/anfrage-system-analyse-report-v1.md`

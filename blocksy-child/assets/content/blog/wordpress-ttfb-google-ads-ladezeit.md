@@ -5,7 +5,7 @@
 - Kategorie: Performance-Marketing
 - Tags: WordPress Performance, TTFB, Google Ads, Qualitätsfaktor, Page Speed, Conversion-Rate, Managed Hosting
 - SEO-Titel (max. 60): WordPress TTFB & Google Ads: Server-Antwortzeit senken
-- Meta-Description (max. 155): TTFB über 600 ms zerlegt deinen Qualitätsfaktor, treibt den CPC und kostet Conversions. Welche Hebel wirklich wirken — und welche nur Aufwand erzeugen.
+- Meta-Description (max. 155): TTFB über 600 ms zerlegt Ihren Qualitätsfaktor, treibt den CPC und kostet Conversions. Welche Hebel wirklich wirken — und welche nur Aufwand erzeugen.
 - Excerpt: Eine Sekunde mehr Ladezeit senkt die Conversion-Rate um rund 17 Prozent. TTFB über 600 ms zerlegt den Qualitätsfaktor in Google Ads, treibt den CPC und vernichtet Werbebudget. Warum Server-Antwortzeit das Fundament jeder bezahlten Kampagne ist — und welche Hebel im WordPress-Stack tatsächlich wirken.
 - Hero-Bild: `content/blog-drafts/assets/wordpress-ttfb-google-ads-ladezeit-hero.png`
 - Hero-Bild Alt-Text: Server-Antwortzeit als Fundament des Google-Ads-Qualitätsfaktors und der Conversion-Rate.
@@ -13,11 +13,11 @@
 - Primäre CTA-URL: `/solar-waermepumpen-leadgenerierung/#marktcheck`
 - Status: Entwurf
 
-> Hinweis: Dieser Beitrag ist eine technische und ökonomische Einordnung für Marketing-Verantwortliche und Geschäftsführer in Solar-, Wärmepumpen- und SHK-Betrieben. Die genannten Hosting- und Software-Empfehlungen basieren auf eigenem Einsatz im Anfrage-System-Setup. Werbekennzeichnung für Partnerlinks ist im Text gesondert ausgewiesen.
+> Hinweis: Dieser Beitrag ist eine technische und ökonomische Einordnung für Geschäftsführer, Vertriebsleiter und technische Entscheider in Solar-, Wärmepumpen- und SHK-Betrieben. Die genannten Hosting- und Software-Empfehlungen basieren auf eigenem Einsatz im Anfrage-System-Setup. Werbekennzeichnung für Partnerlinks ist im Text gesondert ausgewiesen.
 
 # WordPress TTFB unter 200 ms: Wie Server-Antwortzeit den Google-Ads-Qualitätsfaktor entscheidet
 
-## Kurzfassung für Marketing-Verantwortliche
+## Kurzfassung für Entscheider
 
 Eine Sekunde mehr Ladezeit senkt die Conversion-Rate um rund 17 Prozent. Auf Mobilgeräten brechen 53 Prozent der Nutzer ab, wenn die Seite länger als drei Sekunden braucht. Die Bounce Rate verfünffacht sich zwischen zwei und fünf Sekunden Ladezeit.
 
@@ -35,7 +35,7 @@ Time to First Byte (TTFB)
 + System-Cron statt wp-cron
 ```
 
-Wenn TTFB über 600 Millisekunden liegt, fängt Google an, die Landingpage-Erfahrung schlechter zu bewerten. Der Qualitätsfaktor sinkt, der Klickpreis steigt, derselbe Werbeeuro liefert weniger Klicks. Conversion-Rate und CPC arbeiten gleichzeitig gegen dich.
+Wenn TTFB über 600 Millisekunden liegt, fängt Google an, die Landingpage-Erfahrung schlechter zu bewerten. Der Qualitätsfaktor sinkt, der Klickpreis steigt, derselbe Werbeeuro liefert weniger Klicks. Conversion-Rate und CPC arbeiten gleichzeitig gegen den Betrieb.
 
 Wer TTFB systematisch unter 200 Millisekunden bringt, gewinnt an drei Stellen gleichzeitig: mehr Nutzer kommen überhaupt an, mehr starten die Vorqualifizierung, und Google senkt den durchschnittlichen Klickpreis.
 
@@ -58,7 +58,7 @@ Die Mechanik wirkt doppelt:
 1. **Höherer CPC** durch sinkenden Qualitätsfaktor — der Werbeeuro liefert weniger Klicks.
 2. **Niedrigere Conversion-Rate** durch lange Ladezeit — von den Klicks kommt weniger an.
 
-Beides multipliziert sich. Wer den TTFB von 900 auf 200 Millisekunden senkt, sieht oft 20 bis 40 Prozent niedrigere Cost per Lead bei identischem Werbebudget. Im Solar- und Wärmepumpen-B2B ist das der Unterschied zwischen rentabler und unrentabler Kampagne.
+Beides multipliziert sich. Wer den TTFB von 900 auf 200 Millisekunden senkt, sieht oft 20 bis 40 Prozent niedrigere Cost per Lead bei identischem Werbebudget. Bei Solar- und Wärmepumpen-Anbietern mit eigenem Vertrieb ist das der Unterschied zwischen rentabler und unrentabler Kampagne.
 
 ## 3. Die echten Hebel — und die teuren Ablenkungen
 
@@ -88,7 +88,7 @@ Für die TTFB-Frage gibt es zwei seriöse Wege. Welcher passt, hängt nicht vom 
 
 Für Solar-, Wärmepumpen- und SHK-Betriebe, die eine produktive Anfrage-Site brauchen und keinen eigenen DevOps-Aufwand fahren wollen, ist Managed WordPress Hosting aus Deutschland der direkteste Weg.
 
-**Werbung · Partnerlink:** Ich empfehle in dieser Konstellation [HostPress](https://www.hostpress.de/wordpress-hosting/?aff=602) — Managed WordPress Hosting mit Server-Standort Deutschland, NVMe-Storage, Redis-Cache, CDN, täglichen Backups und WordPress-spezifischer Optimierung. Wenn du über diesen Link abschließt, entsteht eine Vergütung — der Preis für dich bleibt identisch. Den vollständigen Architektur-Kontext findest du auf der [Stack-Solar-Seite](/stack-solar/).
+**Werbung · Partnerlink:** Ich empfehle in dieser Konstellation [HostPress](https://www.hostpress.de/wordpress-hosting/?aff=602) — Managed WordPress Hosting mit Server-Standort Deutschland, NVMe-Storage, Redis-Cache, CDN, täglichen Backups und WordPress-spezifischer Optimierung. Wenn Sie über diesen Link abschließen, entsteht eine Vergütung — der Preis für Sie bleibt identisch. Den vollständigen Architektur-Kontext finden Sie auf der [Stack-Solar-Seite](/stack-solar/).
 
 Der Vorteil: 2 bis 4 Wochen bis zur produktiven Site, kein Server-Administrations-Overhead, integrierte Sicherheits- und Update-Routinen. Der Trade-off: weniger Kontrolle über System-Tuning, was für die meisten Solar-/SHK-Anbieter aber kein Engpass ist.
 
@@ -96,7 +96,7 @@ Der Vorteil: 2 bis 4 Wochen bis zur produktiven Site, kein Server-Administration
 
 Für Agenturen, die Multi-Site-Hosting für Care-Plan-Kunden brauchen, oder für High-Traffic-WooCommerce-Setups mit eigenen System-Optimierungen ist Managed Hosting prinzipbedingt zu eng. Hier passt ein eigener Root-Server bei Hetzner oder einem vergleichbaren Anbieter — mit voller Kontrolle über Nginx, PHP-OPcache, MySQL-Tuning und Deployment-Pipeline.
 
-Der Aufwand: höher. Die Skalierbarkeit: deutlich besser. Die TTFB-Werte: identisch oder besser, wenn richtig konfiguriert. Auf der [Stack-Agentur-Seite](/stack-agentur/) ist dieser Track im Detail dokumentiert; den Performance-Track für Solar-/SHK-Anbieter findest du auf der [Stack-Solar-Seite](/stack-solar/).
+Der Aufwand: höher. Die Skalierbarkeit: deutlich besser. Die TTFB-Werte: identisch oder besser, wenn richtig konfiguriert. Auf der [Stack-Agentur-Seite](/stack-agentur/) ist dieser Track im Detail dokumentiert; den Performance-Track für Solar-/SHK-Anbieter finden Sie auf der [Stack-Solar-Seite](/stack-solar/).
 
 ## 5. Was TTFB im CPL und CPO konkret bewegt
 
@@ -108,13 +108,13 @@ Aber Page Speed wirkt an drei Stellen gleichzeitig:
 2. **Mid Funnel:** Mehr Besucher starten die Vorqualifizierung, weil das Formular sofort reagiert.
 3. **Algorithmus:** Google senkt den CPC, weil der Qualitätsfaktor steigt — derselbe Euro bringt mehr Klicks.
 
-In Summe: 20 bis 40 Prozent niedrigere Cost per Lead bei identischem Werbebudget sind realistisch, sobald TTFB-Werte unter 200 Millisekunden liegen und die restliche Funnel-Architektur sauber gebaut ist.
+In Summe: 20 bis 40 Prozent niedrigere Cost per Lead bei identischem Werbebudget sind realistisch, sobald TTFB-Werte unter 200 Millisekunden liegen und die restliche Funnel-Architektur sauber gebaut ist. Wie sich daraus ein belastbarer Cost per Lead und Cost per Auftrag ableiten lässt, ist im [CPL-Szenarienvergleich für Photovoltaik](/cost-per-lead-photovoltaik/) aufgeschlüsselt.
 
 > **Marktcheck-Filter:**
 >
-> Wenn deine Money Page heute TTFB-Werte über 600 Millisekunden liefert, zahlst du beim Werbeeuro doppelt: höherer CPC und niedrigere Conversion-Rate.
+> Wenn Ihre Money Page heute TTFB-Werte über 600 Millisekunden liefert, zahlen Sie beim Werbeeuro doppelt: höherer CPC und niedrigere Conversion-Rate.
 >
-> Der Marktcheck prüft, ob dein aktueller Stack die TTFB-Ziele trägt oder ob ein Wechsel der Hosting-Basis und der Tracking-Architektur wirtschaftlich rationaler ist.
+> Der Marktcheck prüft, ob Ihr aktueller Stack die TTFB-Ziele trägt oder ob ein Wechsel der Hosting-Basis und der Tracking-Architektur wirtschaftlich rationaler ist.
 >
 > [Page-Speed und Funnel-Fit prüfen](/solar-waermepumpen-leadgenerierung/#marktcheck)
 
@@ -126,7 +126,7 @@ TTFB ist eine Seite der Performance-Gleichung. Die andere ist saubere Attributio
 
 Die rechtliche Komponente: Server in Deutschland, Consent Mode v2, IP-Maskierung vor dem Weiterleiten an Google oder Meta. Das ist DSGVO-konform und gleichzeitig schneller als jeder US-Cloud-Setup.
 
-## 7. Was du als Nächstes prüfen solltest
+## 7. Was Sie als Nächstes prüfen sollten
 
 Drei Schritte, in dieser Reihenfolge:
 
@@ -134,17 +134,11 @@ Drei Schritte, in dieser Reihenfolge:
 2. **Hosting-Standort prüfen.** Wenn der Server nicht in Deutschland steht, kostet jeder Klick aus dem DACH-Raum Latenz, die kein Cache zurückholt.
 3. **Cache-Hit-Rate prüfen.** Server-level Page Cache aktiv? Redis als Object Cache eingerichtet? Wenn nein, sind das die nächsten zwei Hebel.
 
-Wenn du diese drei Punkte beantwortet hast und unsicher bist, ob ein eigenes Anfrage-System die nächste sinnvolle Stufe ist, ist der [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) der direkteste Weg zur Einordnung. Händische Analyse, Befund per E-Mail in 48 Stunden, kein automatisches Software-Score.
+Wenn Sie diese drei Punkte beantwortet haben und unsicher sind, ob ein eigenes Anfrage-System die nächste sinnvolle Stufe ist, ist der [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) der direkteste Weg zur Einordnung. Händische Analyse, Befund per E-Mail in 48 Stunden, kein automatisches Software-Score.
 
 ---
 
-## Quellen und weiterführend
+## Quellen
 
-- [Stack Solar — Performance-Stack für Solar-/SHK-Anbieter](/stack-solar/)
-- [Stack Agentur — Dev-Stack für Agenturen und technische Inhaber](/stack-agentur/)
-- [Server-Side Tracking für B2B-Leadgenerierung](/server-side-tracking-b2b/)
-- [Cost per Lead Photovoltaik — Szenarienvergleich](/cost-per-lead-photovoltaik/)
-- [E3 New Energy — Proof-Case](/e3-new-energy/)
-- [HostPress WordPress Hosting](https://www.hostpress.de/wordpress-hosting/?aff=602) (Partnerlink · Werbung)
 - [Google: Was ist der Qualitätsfaktor](https://support.google.com/google-ads/answer/6167118)
 - [web.dev: Time to First Byte (TTFB)](https://web.dev/articles/ttfb)

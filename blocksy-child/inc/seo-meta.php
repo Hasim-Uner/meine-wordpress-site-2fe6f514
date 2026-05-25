@@ -814,7 +814,10 @@ function hu_get_resolved_document_title() {
 	}
 
 	if ( is_singular( 'post' ) ) {
-		return hu_get_post_title_pattern( get_queried_object_id() );
+		$post_id   = get_queried_object_id();
+		$seo_title = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
+
+		return '' !== $seo_title ? $seo_title : hu_get_post_title_pattern( $post_id );
 	}
 
 	if ( hu_is_audit_offer_page() ) {
