@@ -444,13 +444,13 @@ get_header();
 				<div class="sol-hero-left">
 					<div class="sol-eyebrow">Für Solar- &amp; Wärmepumpen-Anbieter mit eigenem Vertrieb · DACH</div>
 					<h1 class="sol-display sol-hero-h1">
-						Schluss mit geteilten Portal-Leads. Ihr eigenes, autarkes Nachfrage-Kraftwerk.
+						Eigene Solar-Anfragen statt geteilte Portal-Leads — exklusiv für Ihren Vertrieb.
 					</h1>
 					<p class="sol-hero-claim">
-						Eine Anfrage-Infrastruktur, die Ihrem Betrieb gehört — nicht Aroundhome, DAA oder Wattfox.
+						Aroundhome, DAA und Wattfox verkaufen jede Anfrage an bis zu fünf Wettbewerber. Sie zahlen für den Preiskampf.
 					</p>
 					<p class="sol-hero-sub">
-						Ablösung der Abhängigkeit von Drittanbietern. Ein geschlossenes WordPress-System aus qualifizierenden B2B-Datenpfaden, cookieless-ready Tracking und direkter CRM-Integration – zu 100 % in Ihrem Eigentum.
+						Ein geschlossenes Anfrage-System auf Ihrer Domain — Sie besitzen den Kanal, den Datensatz und jede Anfrage. Diagnose in 48 Stunden, kostenfrei.
 					</p>
 
 					<?php
