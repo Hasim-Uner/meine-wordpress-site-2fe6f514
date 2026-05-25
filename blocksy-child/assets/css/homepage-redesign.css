@@ -142,6 +142,15 @@
   border-radius: 0;
 }
 .hu-hp .hu-btn-link:hover { color: var(--accent); border-color: var(--accent); }
+.hu-hp .hu-section--cream .hu-btn-link {
+  color: var(--ink);
+  border-color: rgba(21,25,29,.38);
+}
+.hu-hp .hu-section--cream .hu-btn-link:hover,
+.hu-hp .hu-section--cream .hu-btn-link:focus-visible {
+  color: var(--accent-2);
+  border-color: var(--accent-2);
+}
 .hu-hp .hu-btn-sm { padding: 11px 18px; font-size: 14px; }
 
 /* ─── Tag / badge ─────────────────────────────────────────── */
