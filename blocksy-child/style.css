@@ -4,19 +4,28 @@ Template: blocksy
 Version: 7.3.5-blog-editorial-system
 */
 
+:root {
+	--hu-selection-bg: var(--accent, #b46a3c);
+	--hu-selection-ink: #1A0F05;
+}
+
 /* ─── Global selection (brand copper, dark ink) ────────────
    Standardisiert die Markierung-Farbe seitenweit. Verhindert,
-   dass dunkler Button-Text auf Kupfer beim Markieren unsichtbar
-   wird, und ersetzt das blaue Default-Highlight des Browsers. */
-::selection {
-	background: #b46a3c;
-	color: #1A0F05;
-	text-shadow: none;
+   dass Texte mit Gradient-/transparentem Fill beim Markieren
+   unsichtbar werden, und ersetzt das Browser-Default-Highlight. */
+::selection,
+*::selection {
+	background: var(--hu-selection-bg) !important;
+	color: var(--hu-selection-ink) !important;
+	-webkit-text-fill-color: var(--hu-selection-ink) !important;
+	text-shadow: none !important;
 }
-::-moz-selection {
-	background: #b46a3c;
-	color: #1A0F05;
-	text-shadow: none;
+
+::-moz-selection,
+*::-moz-selection {
+	background: var(--hu-selection-bg) !important;
+	color: var(--hu-selection-ink) !important;
+	text-shadow: none !important;
 }
 
 @font-face {
