@@ -45,16 +45,16 @@ $categories         = get_categories(
 $category_deep_link_map = [
 	'solar-waermepumpen-anfrage-systeme' => [
 		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
-		[ 'label' => 'Portalvergleich', 'url' => $portal_url ],
+		[ 'label' => 'Portal vs. eigenes System (TCO)', 'url' => $portal_url ],
 		[ 'label' => 'CPL/CPO-Rechnung', 'url' => $cpl_url ],
 	],
 	'markteinordnung' => [
-		[ 'label' => 'Portalvergleich', 'url' => $portal_url ],
+		[ 'label' => 'TCO-Vergleich 24 Monate', 'url' => $portal_url ],
 		[ 'label' => 'CPL/CPO-Rechnung', 'url' => $cpl_url ],
 		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
 	],
 	'owned-leads' => [
-		[ 'label' => 'Portalvergleich', 'url' => $portal_url ],
+		[ 'label' => 'Asset-Eigentum Vergleichsmatrix', 'url' => $portal_url ],
 		[ 'label' => 'Anfrage-Systeme', 'url' => $energy_url ],
 		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
 	],
@@ -90,7 +90,7 @@ $category_deep_link_map = [
 	],
 	'strategie' => [
 		[ 'label' => 'Anfrage-Systeme', 'url' => $energy_url ],
-		[ 'label' => 'Portalvergleich', 'url' => $portal_url ],
+		[ 'label' => 'Strategischer Portal-Vergleich', 'url' => $portal_url ],
 		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
 	],
 ];

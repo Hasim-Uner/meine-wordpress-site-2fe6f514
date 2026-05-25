@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function hu_get_lead_provider_posts_seed_version() {
-	return '2026-05-20-1';
+	return '2026-05-25-1';
 }
 
 /**
@@ -132,7 +132,7 @@ Der [Methodik-Case E3 New Energy](https://hasimuener.de/e3-new-energy/) zeigt di
 - **Validierung** einer neuen Zielgruppe vor dem Aufbau eigener Funnels
 - kurzfristige Auslastung, wenn der Vertrieb sehr schnell reagieren kann
 
-Als alleinige Lead-Quelle ist das Modell im 2026er Markt für PV/Wärmepumpe jedoch riskant. Es macht Betriebe abhängig von externer Reichweite, fremder Datenbasis und schwankender Lead-Qualität. Eine ausführlichere System-Gegenüberstellung finden Sie im Vergleich [eigene Leadgenerierung vs. Lead-Portale](https://hasimuener.de/eigene-leadgenerierung-vs-portale/).
+Als alleinige Lead-Quelle ist das Modell im 2026er Markt für PV/Wärmepumpe jedoch riskant. Es macht Betriebe abhängig von externer Reichweite, fremder Datenbasis und schwankender Lead-Qualität. Eine ausführlichere System-Gegenüberstellung finden Sie im [TCO-Vergleich Portal-Leads vs. eigenes Anfrage-System über 24 Monate](https://hasimuener.de/eigene-leadgenerierung-vs-portale/).
 
 Für Betriebe mit eigener Vertriebsverantwortung, hohen Projektwerten und klarem Zielgebiet ist der strategisch stärkere Weg meist: Portal-Leads nicht blind abschalten, sondern parallel eine eigene Anfrage-Infrastruktur aufbauen. So wird aus kurzfristigem Volumen schrittweise ein eigenes Akquise-Asset.
 
@@ -217,7 +217,7 @@ In drei Situationen können Portal-Leads übergangsweise sinnvoll sein:
 2. **Markteintritt ohne Marke**: neue Region, in der noch keine eigene Sichtbarkeit aufgebaut ist
 3. **Validierung**: Erprobung einer neuen Zielgruppe oder eines neuen Produkts vor dem Aufbau eigener Strecken
 
-Als alleinige Dauerstrategie ist Portal-Lead-Einkauf im 2026er Markt für PV/Wärmepumpe riskant. Eine ausführliche Gegenüberstellung finden Sie in der [Vergleichsmatrix eigene Leadgenerierung vs. Lead-Portale](https://hasimuener.de/eigene-leadgenerierung-vs-portale/).
+Als alleinige Dauerstrategie ist Portal-Lead-Einkauf im 2026er Markt für PV/Wärmepumpe riskant. Eine ausführliche Gegenüberstellung finden Sie im [CAPEX-vs-OPEX-Vergleich: Portal-Leads gegen eigenes Anfrage-System](https://hasimuener.de/eigene-leadgenerierung-vs-portale/).
 
 ## Nächster Schritt: Solar-Marktcheck
 
@@ -306,7 +306,7 @@ Das ist kein allgemeines Versprechen, sondern ein Beleg für den Unterschied zwi
 - **Kurzfristige Auslastungslücke** beim Vertrieb
 - **Validierung** einer neuen Region oder eines neuen Produkts
 
-Als alleinige Lead-Quelle ist auch das Branchen-Portal-Modell riskant, wenn keine eigene Strecke parallel aufgebaut wird. Die ausführliche System-Gegenüberstellung finden Sie im Vergleich [eigene Leadgenerierung vs. Lead-Portale](https://hasimuener.de/eigene-leadgenerierung-vs-portale/).
+Als alleinige Lead-Quelle ist auch das Branchen-Portal-Modell riskant, wenn keine eigene Strecke parallel aufgebaut wird. Die ausführliche System-Gegenüberstellung finden Sie in der [Vergleichsmatrix Portal-Leads vs. eigenes Anfrage-System mit 8-Kriterien-Bewertung](https://hasimuener.de/eigene-leadgenerierung-vs-portale/).
 
 ## Nächster Schritt: Solar-Marktcheck
 
@@ -388,7 +388,7 @@ Der [Methodik-Case E3 New Energy](https://hasimuener.de/e3-new-energy/) demonstr
 - **Übergangsphase** während des Aufbaus eigener Anfrage-Strecken
 - **Volumen-Booster** in definierten Regionen
 
-Strategisch lohnt es sich, parallel zum Videomarketing-Vertrag die eigene Infrastruktur aufzubauen, damit die Strecke langfristig im Eigentum des Betriebs liegt. Den Systemvergleich finden Sie in der Analyse [eigene Leadgenerierung vs. Lead-Portale](https://hasimuener.de/eigene-leadgenerierung-vs-portale/).
+Strategisch lohnt es sich, parallel zum Videomarketing-Vertrag die eigene Infrastruktur aufzubauen, damit die Strecke langfristig im Eigentum des Betriebs liegt. Den Systemvergleich finden Sie in der [Asset-Eigentum-Analyse: Portal-Leads vs. eigene Anfrage-Strecke](https://hasimuener.de/eigene-leadgenerierung-vs-portale/).
 
 ## Nächster Schritt: Solar-Marktcheck
 

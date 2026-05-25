@@ -74,7 +74,7 @@ $funnel_pitfalls = [
 
 $linked_assets = [
 	[ 't' => 'Server-Side Tracking für B2B', 's' => 'GA4, Meta CAPI, Consent Mode v2 – die Daten-Schicht unter dem Funnel.', 'url' => $sst_url ],
-	[ 't' => 'Mieten vs. Besitzen – Vergleich', 's' => 'TCO-Überschlag und 8-Kriterien-Matrix gegenüber Lead-Portalen.', 'url' => $vs_url ],
+	[ 't' => 'TCO über 24 Monate: Portal-Leads vs. eigenes System', 's' => 'Strategischer 8-Kriterien-Vergleich mit Asset-Eigentum-Logik.', 'url' => $vs_url ],
 	[ 't' => 'E3-Methodik-Case', 's' => sprintf( '%1$s qualifizierte Anfragen, %2$s Abschlussquote, %3$s niedrigere Cost per Lead.', $e3_lead_count, $e3_sales_conversion, $e3_cpl_reduction ), 'url' => $e3_url ],
 ];
 
