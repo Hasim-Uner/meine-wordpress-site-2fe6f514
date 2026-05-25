@@ -1046,6 +1046,56 @@
   text-transform: uppercase;
 }
 
+.solara-landing .sol-quiz-success-ticket {
+  margin: -4px 0 6px;
+  font-size: 11px;
+  color: var(--sol-fg-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.solara-landing .sol-quiz-success-ticket-id {
+  color: var(--sol-accent);
+  font-weight: 600;
+}
+
+.solara-landing .sol-quiz-success-deadline {
+  margin: 6px 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--sol-fg);
+}
+.solara-landing .sol-quiz-success-deadline-label {
+  color: var(--sol-fg-dim);
+}
+.solara-landing .sol-quiz-success-deadline strong {
+  color: var(--sol-fg);
+  font-weight: 600;
+}
+
+.solara-landing .sol-quiz-success-proof {
+  margin: 14px 0 4px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-left: 2px solid var(--sol-accent);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.02);
+  display: block;
+}
+.solara-landing .sol-quiz-success-proof-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sol-fg-dim);
+  margin-bottom: 4px;
+}
+.solara-landing .sol-quiz-success-proof-body {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--sol-fg);
+}
+
 @media (max-width: 560px) {
   .solara-landing .sol-quiz-form { grid-template-columns: 1fr; }
 }
