@@ -238,8 +238,8 @@ function hu_get_forced_singular_seo_map() {
 				'description' => 'B2B-Leadgenerierung für gewerbliche Photovoltaik: Hallendächer, Quartierskonzepte, PPA. Eigenes Anfrage-System für Buying-Center-Verkäufe, nicht für Mengen-Leads.',
 			],
 			'eigene-leadgenerierung-vs-portale' => [
-				'title'       => 'Eigene Leadgenerierung vs. Portal-Leads – Vergleich für Solar & SHK',
-				'description' => sprintf( 'Eigene Anfrage-Systeme gegenüber DAA, Aroundhome und Check24: TCO, Exklusivität, Asset-Eigentum, CPL. E3-Referenz: %s niedrigere Cost per Lead in 6 Monaten.', $e3_cpl_reduction ),
+				'title'       => 'Portal-Leads vs. eigenes Anfrage-System: 24-Monats-TCO für Solar & SHK',
+				'description' => sprintf( 'TCO-Vergleich über 24 Monate: Portal-Leads (DAA, Aroundhome, Check24) gegen eigenes Anfrage-System. CAPEX-Investment, Asset-Eigentum, Exklusivität. E3-Referenz: %s niedrigere Cost per Lead in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'lead-funnel-solar' => [
 				'title'       => 'Lead-Funnel Solar & Wärmepumpe – Aufbau für B2B-Marketing',
