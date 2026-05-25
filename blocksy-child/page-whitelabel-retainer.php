@@ -437,6 +437,10 @@ window.dataLayer.push({
 });</pre>
 				</figure>
 			</div>
+
+			<p class="wl-section-lede">
+				Vollständige Architektur — Root-Server, CI/CD via GitHub Actions, Restricted Deploy-Shell, Multi-Site-Hosting für Care-Plans — auf der <a href="<?php echo esc_url( home_url( '/stack-agentur/' ) ); ?>" data-track-action="cta_whitelabel_stack_agentur" data-track-category="navigation" data-track-section="technik">Stack-Agentur-Seite</a>.
+			</p>
 		</div>
 	</section>
 
