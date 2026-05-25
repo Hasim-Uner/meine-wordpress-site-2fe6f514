@@ -250,6 +250,13 @@ get_header();
 					E3-Case lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
 				</a>
 			</div>
+			<p class="hu-intercept__hero-related" style="margin-top:18px;font-size:13.5px;opacity:.75;">
+				Strategische Tiefe: <a
+					href="<?php echo esc_url( home_url( '/eigene-leadgenerierung-vs-portale/' ) ); ?>"
+					data-track-action="related_to_tco_strategy"
+					data-track-category="internal_link_hierarchy"
+					data-track-section="hero">Portal-Leads vs. eigenes Anfrage-System — TCO-Vergleich über 24 Monate</a>
+			</p>
 		</div>
 	</section>
 

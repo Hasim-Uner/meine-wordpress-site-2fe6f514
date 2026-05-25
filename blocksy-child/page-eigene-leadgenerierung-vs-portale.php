@@ -199,9 +199,9 @@ get_header();
 
 	<section class="hu-intercept__hero" id="hero" aria-labelledby="hu-vs-hero-title">
 		<div class="hu-intercept__container">
-			<p class="hu-intercept__eyebrow">Mieten vs. Besitzen · Solar, Wärmepumpe, Speicher</p>
+			<p class="hu-intercept__eyebrow">Strategischer Vergleich · CAPEX vs. OPEX · 24-Monats-Horizont</p>
 			<h1 class="hu-intercept__title" id="hu-vs-hero-title">
-				Eigene Leadgenerierung vs. Portal-Leads: TCO, Exklusivität, Asset-Eigentum
+				Portal-Leads vs. eigenes Anfrage-System — TCO-Vergleich über 24 Monate
 			</h1>
 			<p class="hu-intercept__lead">
 				Portal-Leads sind <strong>OPEX</strong> – laufende Miete für mehrfach verkaufte Datensätze mit typisch <strong><?php echo esc_html( $e3_conv_before ); ?></strong> Abschlussquote. Eigene Anfrage-Systeme sind <strong>CAPEX</strong> – investiv aufgebaute Infrastruktur, die im Betrieb bleibt. Bei <?php echo esc_html( $e3_case_label ); ?>: <strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong> niedrigerer CPL und Abschlussquote auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> in <strong><?php echo esc_html( $e3_timeframe ); ?></strong>.
@@ -223,6 +223,13 @@ get_header();
 					E3-Case ansehen
 				</a>
 			</div>
+			<p class="hu-intercept__hero-related" style="margin-top:18px;font-size:13.5px;opacity:.75;">
+				Konkrete CPL-Rechnung: <a
+					href="<?php echo esc_url( home_url( '/solar-leads-kaufen-alternative/' ) ); ?>"
+					data-track-action="related_to_cpl_rechnung"
+					data-track-category="internal_link_hierarchy"
+					data-track-section="hero">Solar Leads kaufen oder eigene Anfragen? CPL-Vergleich pro Anfrage</a>
+			</p>
 		</div>
 	</section>
 
