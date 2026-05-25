@@ -24,7 +24,7 @@
 - [Qualifizierte PV-Anfragen](/qualifizierte-pv-anfragen/) - Merkmale hochwertiger Solar-Anfragen.
 
 ## Wissen
-- [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und B2B-Wachstum.
+- [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und Anfrage-Systemen.
 - [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
 - [Stack Solar](/stack-solar/) - Performance-Stack für Solar-/SHK-Anbieter: Frontend, Managed Hosting (HostPress), Server-Side Tracking, CRM-Anbindung und Marktcheck-Vorqualifizierung. Mit Closed-Loop-Effekt aus SST + Marktcheck.
 - [Stack Agentur](/stack-agentur/) - Dev-Stack für Agenturen und technische Inhaber: Root-Server (DE), CI/CD via GitHub Actions + Rsync, Restricted Deploy-Shell, Multi-Site-Hosting für Care-Plans und White-Label.

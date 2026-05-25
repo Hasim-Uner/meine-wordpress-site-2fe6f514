@@ -23,14 +23,18 @@ $portal_url        = home_url( '/eigene-leadgenerierung-vs-portale/' );
 $cpl_url           = home_url( '/cost-per-lead-photovoltaik/' );
 $posts_page_id     = (int) get_option( 'page_for_posts' );
 $blog_url          = $posts_page_id ? get_permalink( $posts_page_id ) : home_url( '/blog/' );
-$current_category  = get_queried_object();
-$current_term_id   = $current_category instanceof WP_Term ? (int) $current_category->term_id : 0;
-$current_term_name = $current_category instanceof WP_Term ? $current_category->name : get_the_archive_title();
-$current_term_slug = $current_category instanceof WP_Term ? $current_category->slug : '';
-$category_text     = $current_term_id ? wp_strip_all_tags( category_description( $current_term_id ) ) : '';
-$category_seo      = $current_category instanceof WP_Term && function_exists( 'hu_get_category_archive_seo' ) ? hu_get_category_archive_seo( $current_category ) : [];
-$category_intro    = $category_text ?: ( $category_seo['description'] ?? '' );
-$categories        = get_categories(
+$current_category   = get_queried_object();
+$current_term_id    = $current_category instanceof WP_Term ? (int) $current_category->term_id : 0;
+$current_term_name  = $current_category instanceof WP_Term ? $current_category->name : get_the_archive_title();
+$current_term_slug  = $current_category instanceof WP_Term ? $current_category->slug : '';
+$current_term_label = function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $current_category instanceof WP_Term ? $current_category : $current_term_name ) : $current_term_name;
+$category_text      = $current_term_id ? wp_strip_all_tags( category_description( $current_term_id ) ) : '';
+$category_seo       = $current_category instanceof WP_Term && function_exists( 'hu_get_category_archive_seo' ) ? hu_get_category_archive_seo( $current_category ) : [];
+$category_intro     = $category_text ?: ( $category_seo['description'] ?? '' );
+if ( 'wordpress-growth-agentur' === $current_term_slug && ! empty( $category_seo['description'] ) ) {
+	$category_intro = $category_seo['description'];
+}
+$categories         = get_categories(
 	[
 		'hide_empty' => true,
 		'orderby'    => 'count',
@@ -104,7 +108,7 @@ $category_deep_links = $category_deep_link_map[ $current_term_slug ] ?? [
 				<?php esc_html_e( 'Kategorie', 'blocksy-child' ); ?>
 			</span>
 			<h1 id="category-archive-heading" class="blog-bell__title category-bell__title">
-				<?php echo esc_html( $current_term_name ); ?>
+				<?php echo esc_html( $current_term_label ); ?>
 			</h1>
 			<p class="blog-bell__lead category-bell__lead">
 				<?php
@@ -165,7 +169,7 @@ $category_deep_links = $category_deep_link_map[ $current_term_slug ] ?? [
 						data-track-action="<?php echo esc_attr( 'blog_filter_' . $category->slug ); ?>"
 						data-track-category="navigation"
 					>
-						<?php echo esc_html( $category->name ); ?>
+						<?php echo esc_html( function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $category ) : $category->name ); ?>
 					</a>
 				<?php endforeach; ?>
 			</div>
@@ -194,7 +198,7 @@ $category_deep_links = $category_deep_link_map[ $current_term_slug ] ?? [
 							<a class="blog-bell__card-link" href="<?php echo esc_url( get_permalink() ); ?>" aria-labelledby="category-card-title-<?php echo esc_attr( (string) $post_id ); ?>">
 								<header class="blog-bell__card-meta">
 									<?php if ( $primary_category instanceof WP_Term ) : ?>
-										<span class="blog-bell__card-cat"><?php echo esc_html( $primary_category->name ); ?></span>
+										<span class="blog-bell__card-cat"><?php echo esc_html( function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $primary_category ) : $primary_category->name ); ?></span>
 									<?php endif; ?>
 									<time class="blog-bell__card-date" datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
 										<?php echo esc_html( get_the_date( 'd. M Y' ) ); ?>

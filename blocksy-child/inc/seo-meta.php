@@ -85,11 +85,11 @@ function hu_get_category_archive_seo_map() {
 			],
 			'sichtbarkeit-daten-conversion' => [
 				'title'       => 'Sichtbarkeit, Daten & Conversion | Haşim Üner',
-				'description' => 'SEO, Tracking, Core Web Vitals und CRO für B2B-Websites: wie Sichtbarkeit belastbare Daten liefert und aus Traffic qualifizierte Anfragen entstehen.',
+				'description' => 'SEO, Tracking, Core Web Vitals und CRO für Anfrage-Systeme: wie Sichtbarkeit belastbare Daten liefert und aus Traffic qualifizierte Anfragen entstehen.',
 			],
 			'wordpress-growth-agentur' => [
-				'title'       => 'WordPress Growth & Agentur | Haşim Üner',
-				'description' => 'WordPress-Growth für B2B: technische Website-Struktur, SEO, Performance, Tracking und CRO als eigenes System statt isolierter Agentur-Baustellen.',
+				'title'       => 'WordPress-Systeme & Anfrage-Architektur | Haşim Üner',
+				'description' => 'WordPress als technische Basis für Anfrage-Systeme: Struktur, SEO, Performance, Tracking und CRO in der richtigen Reihenfolge.',
 			],
 			'markteinordnung' => [
 				'title'       => 'Lead-Portal Markteinordnung | Haşim Üner',
@@ -100,20 +100,20 @@ function hu_get_category_archive_seo_map() {
 				'description' => 'Beiträge zu eigener Leadgenerierung, First-Party-Daten und Nachfrage-Infrastruktur: weniger Portal-Abhängigkeit, mehr Kontrolle über Anfragequalität.',
 			],
 			'seo' => [
-				'title'       => 'Technisches SEO für B2B-Websites | Haşim Üner',
-				'description' => 'Technisches SEO für B2B-Websites: Struktur, Indexierung, Content-Architektur und interne Links als Fundament für qualifizierte Anfragen.',
+				'title'       => 'Technisches SEO für Anfrage-Systeme | Haşim Üner',
+				'description' => 'Technisches SEO für Anfrage-Systeme: Struktur, Indexierung, Content-Architektur und interne Links als Fundament für qualifizierte Anfragen.',
 			],
 			'tracking' => [
-				'title'       => 'Tracking & Analytics für B2B | Haşim Üner',
-				'description' => 'GA4, Server-Side Tracking, Consent und CRM-Rückführung für B2B-Anfrage-Systeme: Daten, die Budgetsteuerung und Conversion-Lernen ermöglichen.',
+				'title'       => 'Tracking & Analytics für Anfrage-Systeme | Haşim Üner',
+				'description' => 'GA4, Server-Side Tracking, Consent und CRM-Rückführung für Anfrage-Systeme: Daten, die Budgetsteuerung und Conversion-Lernen ermöglichen.',
 			],
 			'cro' => [
-				'title'       => 'CRO & UX für B2B-Anfragen | Haşim Üner',
-				'description' => 'Conversion-Optimierung für B2B-Websites: Angebotslogik, Reibungsverluste, Proof, Formulare und klare nächste Schritte für qualifizierte Anfragen.',
+				'title'       => 'CRO & UX für qualifizierte Anfragen | Haşim Üner',
+				'description' => 'Conversion-Optimierung für Anfrage-Systeme: Angebotslogik, Reibungsverluste, Proof, Formulare und klare nächste Schritte für qualifizierte Anfragen.',
 			],
 			'wordpress-performance' => [
 				'title'       => 'WordPress Performance & CWV | Haşim Üner',
-				'description' => 'WordPress Performance, Core Web Vitals, Hosting und Frontend-Bloat: Ladezeit als SEO-, Ads- und Conversion-Hebel für B2B-Websites.',
+				'description' => 'WordPress Performance, Core Web Vitals, Hosting und Frontend-Bloat: Ladezeit als SEO-, Ads- und Conversion-Hebel für Anfrage-Systeme.',
 			],
 			'strategie' => [
 				'title'       => 'Strategie für eigene Anfrage-Systeme | Haşim Üner',

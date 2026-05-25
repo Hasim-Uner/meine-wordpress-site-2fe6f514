@@ -169,7 +169,7 @@ if ( ! $related_query->have_posts() && empty( $primary_link ) ) {
 					$cats = get_the_category();
 					if ( $cats ) :
 					?>
-						<span class="related-content__category"><?php echo esc_html( $cats[0]->name ); ?></span>
+						<span class="related-content__category"><?php echo esc_html( function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $cats[0] ) : $cats[0]->name ); ?></span>
 					<?php endif; ?>
 
 					<h3 class="related-content__title">

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Blog SEO UX Optimizer"
+  short_description: "Blog UX, SEO, links, stale-copy cleanup"
+  default_prompt: "Use $blog-seo-ux-optimizer to audit and improve the blog index, categories, single-post UX, internal links, and stale positioning."
+
+policy:
+  allow_implicit_invocation: true

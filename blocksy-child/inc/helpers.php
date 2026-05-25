@@ -449,6 +449,34 @@ function nexus_get_category_url( $slug, $fallback = '' ) {
 }
 
 /**
+ * Return the public category label for legacy category slugs.
+ *
+ * Keep database slugs stable while avoiding retired Growth wording in visible
+ * blog navigation, cards and archive headings.
+ *
+ * @param WP_Term|string $category Category term or fallback label.
+ * @return string
+ */
+function hu_get_public_category_label( $category ) {
+	$slug = '';
+	$name = '';
+
+	if ( $category instanceof WP_Term ) {
+		$slug = (string) $category->slug;
+		$name = (string) $category->name;
+	} else {
+		$name = (string) $category;
+		$slug = sanitize_title( $name );
+	}
+
+	$labels = [
+		'wordpress-growth-agentur' => __( 'WordPress-Systeme', 'blocksy-child' ),
+	];
+
+	return $labels[ $slug ] ?? $name;
+}
+
+/**
  * Return the canonical public URL for one versioned service cluster route.
  *
  * Cluster routes stay on stable public slugs even if legacy editor pages with

@@ -73,7 +73,8 @@ get_header();
 				</a>
 				<?php foreach ( $blog_categories as $category ) : ?>
 					<?php
-					$category_url = get_category_link( $category->term_id );
+					$category_url   = get_category_link( $category->term_id );
+					$category_label = function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $category ) : $category->name;
 					if ( is_wp_error( $category_url ) ) {
 						continue;
 					}
@@ -86,7 +87,7 @@ get_header();
 						data-track-action="<?php echo esc_attr( 'blog_filter_' . $category->slug ); ?>"
 						data-track-category="navigation"
 					>
-						<?php echo esc_html( $category->name ); ?>
+						<?php echo esc_html( $category_label ); ?>
 					</a>
 				<?php endforeach; ?>
 			</div>
@@ -106,6 +107,9 @@ get_header();
 						$post_id          = get_the_ID();
 						$post_categories  = get_the_category( $post_id );
 						$primary_category = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
+						$primary_label    = $primary_category instanceof WP_Term
+							? ( function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $primary_category ) : $primary_category->name )
+							: '';
 						$reading_time     = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time( $post_id ) : 0;
 						$excerpt          = wp_strip_all_tags( get_the_excerpt() );
 						$excerpt          = $excerpt ? wp_trim_words( $excerpt, 28, '…' ) : '';
@@ -122,7 +126,7 @@ get_header();
 							<a class="blog-bell__card-link" href="<?php the_permalink(); ?>" aria-labelledby="blog-bell-card-title-<?php echo esc_attr( (string) $post_id ); ?>">
 								<header class="blog-bell__card-meta">
 									<?php if ( $primary_category instanceof WP_Term ) : ?>
-										<span class="blog-bell__card-cat"><?php echo esc_html( $primary_category->name ); ?></span>
+										<span class="blog-bell__card-cat"><?php echo esc_html( $primary_label ); ?></span>
 									<?php endif; ?>
 									<time class="blog-bell__card-date" datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
 										<?php echo esc_html( get_the_date( 'd. M Y' ) ); ?>

@@ -38,10 +38,11 @@ $context_links = [
 ];
 
 if ( is_category() ) {
-	$context_title = single_cat_title( '', false );
+	$queried_term  = get_queried_object();
+	$context_title = $queried_term instanceof WP_Term && function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $queried_term ) : single_cat_title( '', false );
 	$context_text  = __( 'Kategorie-Ansicht mit direktem Weg zur Übersicht und zum nächsten sinnvollen Schritt.', 'blocksy-child' );
 	$context_links[] = [
-		'label'  => single_cat_title( '', false ),
+		'label'  => $context_title,
 		'url'    => get_category_link( get_queried_object_id() ),
 		'active' => true,
 	];
@@ -70,7 +71,7 @@ if ( is_category() ) {
 	if ( ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ) {
 		$primary_category = $post_categories[0];
 		$context_links[]  = [
-			'label'  => $primary_category->name,
+			'label'  => function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $primary_category ) : $primary_category->name,
 			'url'    => get_category_link( $primary_category->term_id ),
 			'active' => false,
 		];

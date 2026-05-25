@@ -112,19 +112,19 @@ get_template_part( 'template-parts/blog-header' );
 				'eyebrow'         => __( 'WordPress-System', 'blocksy-child' ),
 				'title'           => __( 'Einzelhebel wirken erst im verbundenen System.', 'blocksy-child' ),
 				'text'            => __( 'Dieser Beitrag ordnet einen Hebel ein: Technik, Sichtbarkeit, Performance oder Conversion. Entscheidend ist die Reihenfolge im Gesamtsystem.', 'blocksy-child' ),
-				'primary_label'   => __( 'WordPress Agentur ansehen', 'blocksy-child' ),
+				'primary_label'   => __( 'Anfrage-Architektur ansehen', 'blocksy-child' ),
 				'primary_url'     => $agentur_url,
 				'secondary_label' => __( 'Technisches SEO ansehen', 'blocksy-child' ),
 				'secondary_url'   => $seo_url,
 			];
 		} elseif ( in_array( 'wordpress-growth-agentur', $post_cat_slugs, true ) ) {
 			$article_context = [
-				'eyebrow'         => __( 'WordPress-Growth', 'blocksy-child' ),
-				'title'           => __( 'WordPress als System statt als Einzelleistung.', 'blocksy-child' ),
-				'text'            => __( 'Dieser Beitrag ist der allgemeinere WordPress-Kontext. Wenn es um lokale Umsetzung, Wartung, SEO und Conversion geht, ist die Agentur-Seite der passende Anschluss.', 'blocksy-child' ),
-				'primary_label'   => __( 'WordPress Agentur ansehen', 'blocksy-child' ),
+				'eyebrow'         => __( 'WordPress-System', 'blocksy-child' ),
+				'title'           => __( 'WordPress ist die technische Basis, nicht das Angebot.', 'blocksy-child' ),
+				'text'            => __( 'Dieser Beitrag ordnet Technik, SEO, Performance oder Conversion in die Frage ein, ob daraus ein belastbarer Anfragepfad entsteht.', 'blocksy-child' ),
+				'primary_label'   => __( 'Anfrage-Architektur ansehen', 'blocksy-child' ),
 				'primary_url'     => $agentur_url,
-				'secondary_label' => __( 'Kostenfreien Marktcheck starten', 'blocksy-child' ),
+				'secondary_label' => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
 				'secondary_url'   => $audit_url,
 			];
 		}
@@ -154,7 +154,7 @@ get_template_part( 'template-parts/blog-header' );
 					'label'    => sprintf(
 						/* translators: %s: category name */
 						__( 'Mehr aus %s', 'blocksy-child' ),
-						$primary_cat->name
+						function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $primary_cat ) : $primary_cat->name
 					),
 					'url'      => $category_url,
 					'category' => 'internal_link',
@@ -185,7 +185,7 @@ get_template_part( 'template-parts/blog-header' );
 				<div class="nexus-meta-top">
 					<?php if ( $primary_cat instanceof WP_Term && $category_url ) : ?>
 						<a class="nexus-hero-category" href="<?php echo esc_url( $category_url ); ?>">
-							<?php echo esc_html( $primary_cat->name ); ?>
+							<?php echo esc_html( function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $primary_cat ) : $primary_cat->name ); ?>
 						</a>
 					<?php endif; ?>
 					<span class="nexus-date"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></span>
@@ -381,7 +381,8 @@ get_template_part( 'template-parts/blog-header' );
 
 		<?php
 		$author_id          = get_the_author_meta( 'ID' );
-		$author_name        = get_the_author();
+		$canonical_author   = function_exists( 'hu_get_canonical_author_person' ) ? hu_get_canonical_author_person() : [];
+		$author_name        = ! empty( $canonical_author['name'] ) ? (string) $canonical_author['name'] : get_the_author();
 		$author_description = get_the_author_meta( 'description' );
 		$author_avatar      = get_avatar( $author_id, 96, '', $author_name, [ 'class' => 'nexus-author-bio__avatar-img' ] );
 		$author_initials    = '';
@@ -397,12 +398,29 @@ get_template_part( 'template-parts/blog-header' );
 				}
 			}
 		}
-		$author_role     = trim( (string) get_the_author_meta( 'hu_author_role' ) );
+		$author_role = trim( (string) get_the_author_meta( 'hu_author_role' ) );
 		if ( '' === $author_role ) {
-			$author_role = __( 'Architekt für eigene Anfrage-Systeme · Hannover', 'blocksy-child' );
+			$author_role = ! empty( $canonical_author['jobTitle'] ) ? (string) $canonical_author['jobTitle'] . ' · Hannover' : __( 'Architekt für eigene Anfrage-Systeme · Hannover', 'blocksy-child' );
 		}
-		if ( '' === trim( (string) $author_description ) ) {
-			$author_description = __( 'Ich baue Solar- und Wärmepumpen-Anbietern im DACH-Raum eigene Anfrage-Systeme, die Portal-Abhängigkeit ablösen und Leadkosten messbar senken. Diagnose vor Pitch. Klarheit vor Feature-Count.', 'blocksy-child' );
+		$author_description_text = trim( wp_strip_all_tags( (string) $author_description ) );
+		$stale_author_patterns   = [
+			'Growth Partner',
+			'Growth Architect',
+			'Growth Audit',
+			'Shopify',
+			'Full-Stack Digital Marketer',
+			'Full Stack Digital Marketer',
+		];
+		foreach ( $stale_author_patterns as $stale_pattern ) {
+			if ( false !== stripos( $author_description_text, $stale_pattern ) ) {
+				$author_description_text = '';
+				break;
+			}
+		}
+		if ( '' === $author_description_text ) {
+			$author_description_text = ! empty( $canonical_author['description'] )
+				? (string) $canonical_author['description']
+				: __( 'Ich baue Solar- und Wärmepumpen-Anbietern im DACH-Raum eigene Anfrage-Systeme, die Portal-Abhängigkeit ablösen und Leadkosten messbar senken. Diagnose vor Pitch. Klarheit vor Feature-Count.', 'blocksy-child' );
 		}
 		?>
 		<section class="nexus-author-bio nexus-reveal" data-track-section="article_author_bio" aria-labelledby="nexus-author-bio-name">
@@ -417,7 +435,7 @@ get_template_part( 'template-parts/blog-header' );
 				<span class="nexus-author-bio__label"><?php esc_html_e( 'Über den Autor', 'blocksy-child' ); ?></span>
 				<h2 id="nexus-author-bio-name" class="nexus-author-bio__name"><?php echo esc_html( $author_name ); ?></h2>
 				<p class="nexus-author-bio__role"><?php echo esc_html( $author_role ); ?></p>
-				<p class="nexus-author-bio__text"><?php echo esc_html( $author_description ); ?></p>
+				<p class="nexus-author-bio__text"><?php echo esc_html( $author_description_text ); ?></p>
 				<div class="nexus-author-bio__links">
 					<a
 						href="<?php echo esc_url( $audit_url ); ?>"
