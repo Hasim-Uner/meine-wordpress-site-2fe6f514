@@ -52,7 +52,7 @@ $hero_metrics = [
 $trust_items = [
 	'B2B · DACH · eigener Vertrieb',
 	'Server in Frankfurt · DSGVO',
-	'Server-Side-Tracking · CAPI',
+	'Server-Side · CAPI im Stack',
 	'Hardcoded WordPress · kein Page-Builder',
 	'1:1 Senior · keine Junior-Kette',
 	'System-Intake kostenfrei',
