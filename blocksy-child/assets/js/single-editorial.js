@@ -21,7 +21,7 @@
 
     var config = window.NexusSingleEditorial || {};
 
-    document.addEventListener('DOMContentLoaded', function () {
+    function initEditorialLayer() {
         initProgressBar();
         initShareRail();
         initBackToTop();
@@ -29,7 +29,13 @@
         initReveal();
         initRating();
         initShareButtons();
-    });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initEditorialLayer);
+    } else {
+        initEditorialLayer();
+    }
 
     /* ----------------------------------------------------------
        Reading progress bar

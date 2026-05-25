@@ -284,7 +284,7 @@ get_template_part( 'template-parts/blog-header' );
 					</div>
 				</aside>
 			<?php endif; ?>
-			<article class="nexus-article-content nexus-reveal" id="article-content" data-track-section="article_content">
+			<article class="nexus-article-content" id="article-content" data-track-section="article_content">
 				<?php the_content(); ?>
 
 				<div class="nexus-inline-cta" id="nexus-inline-cta" hidden aria-hidden="true">
