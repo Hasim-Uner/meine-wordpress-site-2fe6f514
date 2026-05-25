@@ -1225,6 +1225,73 @@ function nexus_get_legacy_offer_redirect_map() {
 add_action( 'template_redirect', 'nexus_redirect_legacy_offer_paths', 2 );
 
 /**
+ * Return retired public paths that should disappear instead of redirecting.
+ *
+ * These were internal tool, ROI and service-era slugs. They are intentionally
+ * not part of the protected legacy redirect map because they should no longer
+ * collect public crawl demand or split canonical signals.
+ *
+ * @return array<int, string>
+ */
+function nexus_get_retired_gone_paths() {
+	return [
+		'/audit-linkedin/',
+		'/kostenlose-tools/',
+		'/tools/',
+		'/website-performance-analyse/',
+		'/kostenlose-tools/website-performance-analyse/',
+		'/tools/website-performance-analyse/',
+		'/roi-rechner/',
+		'/wordpress-seo-hannover/',
+		'/core-web-vitals/',
+		'/conversion-rate-optimization/',
+		'/wordpress-wartung-hannover/',
+		'/seo/',
+	];
+}
+
+add_action( 'template_redirect', 'nexus_send_retired_gone_paths', 3 );
+
+/**
+ * Serve 410 for retired public tool, ROI and service slugs.
+ *
+ * @return void
+ */
+function nexus_send_retired_gone_paths() {
+	if ( is_admin() || wp_doing_ajax() || is_feed() ) {
+		return;
+	}
+
+	$current_path = nexus_get_current_request_path();
+
+	if ( ! in_array( $current_path, nexus_get_retired_gone_paths(), true ) ) {
+		return;
+	}
+
+	global $wp_query;
+
+	if ( is_object( $wp_query ) && method_exists( $wp_query, 'set_404' ) ) {
+		$wp_query->set_404();
+	}
+
+	status_header( 410 );
+	nocache_headers();
+
+	if ( ! headers_sent() ) {
+		header( 'X-Robots-Tag: noindex, nofollow', true );
+	}
+
+	$template = get_query_template( '404' );
+
+	if ( $template ) {
+		include $template;
+		exit;
+	}
+
+	wp_die( esc_html__( 'Diese Seite ist nicht mehr verfügbar.', 'blocksy-child' ), esc_html__( 'Nicht mehr verfügbar', 'blocksy-child' ), [ 'response' => 410 ] );
+}
+
+/**
  * Preserve the current request query string when redirecting legacy URLs.
  *
  * @param string $target_url Absolute redirect target.

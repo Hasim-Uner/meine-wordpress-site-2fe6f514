@@ -1334,7 +1334,8 @@ add_action( 'template_redirect', function () {
  * - loesungen / alle-loesungen: noindex (interne Angebotsübersicht, nicht mehr beworben)
  * - energie-fahrplan-demo: Showroom/Legacy-Demo, kein aktiver Leadpfad
  * - case-studies* / Agentur- und Solar-Aliasse: 301 auf kanonische Ziele
- * - alte Service-, Tool- und WGOS-Slugs: keine erzwungenen 301 mehr; falls DB-Seiten existieren, noindex und aus Sitemap entfernen
+ * - alte Service-, Tool- und ROI-Slugs: 410 Gone und aus Sitemap entfernen
+ * - alte WGOS-Slugs: noindex/access-protected und aus Sitemap entfernen
  * - growth-audit und generische Audit-Aliasse: 301 auf Marktcheck
  * - whitelabel*: diskreter Akquisepfad, aber kein aktives SEO-Ziel
  *
