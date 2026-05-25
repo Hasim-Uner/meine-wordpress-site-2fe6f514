@@ -26,5 +26,6 @@
 ## Wissen
 - [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und B2B-Wachstum.
 - [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
-- [Anfrage-System-Stack](/anfrage-system-stack/) - Kuratierte Architektur-Empfehlung in zwei Tracks: Performance-Stack (Solar-/SHK, Hosting bei HostPress) und Dev-Stack (Agenturen, Root-Server, Git-Deploy).
+- [Stack Solar](/stack-solar/) - Performance-Stack für Solar-/SHK-Anbieter: Frontend, Managed Hosting (HostPress), Server-Side Tracking, CRM-Anbindung und Marktcheck-Vorqualifizierung. Mit Closed-Loop-Effekt aus SST + Marktcheck.
+- [Stack Agentur](/stack-agentur/) - Dev-Stack für Agenturen und technische Inhaber: Root-Server (DE), CI/CD via GitHub Actions + Rsync, Restricted Deploy-Shell, Multi-Site-Hosting für Care-Plans und White-Label.
 - [WordPress TTFB & Google Ads](/wordpress-ttfb-google-ads-ladezeit/) - Wie Server-Antwortzeit Qualitätsfaktor, CPC und Cost per Lead bewegt.

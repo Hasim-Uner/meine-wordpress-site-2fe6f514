@@ -284,7 +284,8 @@ function hu_enqueue_assets() {
 		'kunden-gewinnen-solarteure'        => 'page-kunden-gewinnen-solarteure.php',
 		'cost-per-lead-photovoltaik'        => 'page-cost-per-lead-photovoltaik.php',
 		'qualifizierte-pv-anfragen'         => 'page-qualifizierte-pv-anfragen.php',
-		'anfrage-system-stack'              => 'page-anfrage-system-stack.php',
+		'stack-solar'                       => 'page-stack-solar.php',
+		'stack-agentur'                     => 'page-stack-agentur.php',
 	];
 
 	foreach ( $intercept_routes as $slug => $template ) {
@@ -296,7 +297,7 @@ function hu_enqueue_assets() {
 	}
 
 	// ── F1a-int-aff) Affiliate-Disclosure-CSS auf Seiten mit Partnerlinks ──
-	if ( is_page( 'anfrage-system-stack' ) || is_page_template( 'page-anfrage-system-stack.php' ) ) {
+	if ( is_page( 'stack-solar' ) || is_page_template( 'page-stack-solar.php' ) ) {
 		hu_enqueue_css( 'nexus-affiliate-notice-css', 'affiliate-notice.css', [ 'nexus-intercept-solar-leads-css' ] );
 	}
 

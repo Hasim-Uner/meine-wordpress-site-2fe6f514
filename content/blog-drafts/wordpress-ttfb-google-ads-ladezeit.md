@@ -88,7 +88,7 @@ Für die TTFB-Frage gibt es zwei seriöse Wege. Welcher passt, hängt nicht vom 
 
 Für Solar-, Wärmepumpen- und SHK-Betriebe, die eine produktive Anfrage-Site brauchen und keinen eigenen DevOps-Aufwand fahren wollen, ist Managed WordPress Hosting aus Deutschland der direkteste Weg.
 
-**Werbung · Partnerlink:** Ich empfehle in dieser Konstellation [HostPress](https://www.hostpress.de/wordpress-hosting/?aff=602) — Managed WordPress Hosting mit Server-Standort Deutschland, NVMe-Storage, Redis-Cache, CDN, täglichen Backups und WordPress-spezifischer Optimierung. Wenn du über diesen Link abschließt, entsteht eine Vergütung — der Preis für dich bleibt identisch. Den vollständigen Architektur-Kontext findest du auf der [Anfrage-System-Stack-Seite](/anfrage-system-stack/).
+**Werbung · Partnerlink:** Ich empfehle in dieser Konstellation [HostPress](https://www.hostpress.de/wordpress-hosting/?aff=602) — Managed WordPress Hosting mit Server-Standort Deutschland, NVMe-Storage, Redis-Cache, CDN, täglichen Backups und WordPress-spezifischer Optimierung. Wenn du über diesen Link abschließt, entsteht eine Vergütung — der Preis für dich bleibt identisch. Den vollständigen Architektur-Kontext findest du auf der [Stack-Solar-Seite](/stack-solar/).
 
 Der Vorteil: 2 bis 4 Wochen bis zur produktiven Site, kein Server-Administrations-Overhead, integrierte Sicherheits- und Update-Routinen. Der Trade-off: weniger Kontrolle über System-Tuning, was für die meisten Solar-/SHK-Anbieter aber kein Engpass ist.
 
@@ -96,7 +96,7 @@ Der Vorteil: 2 bis 4 Wochen bis zur produktiven Site, kein Server-Administration
 
 Für Agenturen, die Multi-Site-Hosting für Care-Plan-Kunden brauchen, oder für High-Traffic-WooCommerce-Setups mit eigenen System-Optimierungen ist Managed Hosting prinzipbedingt zu eng. Hier passt ein eigener Root-Server bei Hetzner oder einem vergleichbaren Anbieter — mit voller Kontrolle über Nginx, PHP-OPcache, MySQL-Tuning und Deployment-Pipeline.
 
-Der Aufwand: höher. Die Skalierbarkeit: deutlich besser. Die TTFB-Werte: identisch oder besser, wenn richtig konfiguriert. Auf der [Anfrage-System-Stack-Seite](/anfrage-system-stack/) sind beide Tracks dokumentiert.
+Der Aufwand: höher. Die Skalierbarkeit: deutlich besser. Die TTFB-Werte: identisch oder besser, wenn richtig konfiguriert. Auf der [Stack-Agentur-Seite](/stack-agentur/) ist dieser Track im Detail dokumentiert; den Performance-Track für Solar-/SHK-Anbieter findest du auf der [Stack-Solar-Seite](/stack-solar/).
 
 ## 5. Was TTFB im CPL und CPO konkret bewegt
 
@@ -140,7 +140,8 @@ Wenn du diese drei Punkte beantwortet hast und unsicher bist, ob ein eigenes Anf
 
 ## Quellen und weiterführend
 
-- [Anfrage-System-Stack — Architektur-Übersicht](/anfrage-system-stack/)
+- [Stack Solar — Performance-Stack für Solar-/SHK-Anbieter](/stack-solar/)
+- [Stack Agentur — Dev-Stack für Agenturen und technische Inhaber](/stack-agentur/)
 - [Server-Side Tracking für B2B-Leadgenerierung](/server-side-tracking-b2b/)
 - [Cost per Lead Photovoltaik — Szenarienvergleich](/cost-per-lead-photovoltaik/)
 - [E3 New Energy — Proof-Case](/e3-new-energy/)
