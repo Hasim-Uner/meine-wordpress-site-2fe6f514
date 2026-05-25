@@ -27,3 +27,4 @@
 - [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und B2B-Wachstum.
 - [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
 - [Anfrage-System-Stack](/anfrage-system-stack/) - Kuratierte Architektur-Empfehlung in zwei Tracks: Performance-Stack (Solar-/SHK, Hosting bei HostPress) und Dev-Stack (Agenturen, Root-Server, Git-Deploy).
+- [WordPress TTFB & Google Ads](/wordpress-ttfb-google-ads-ladezeit/) - Wie Server-Antwortzeit Qualitätsfaktor, CPC und Cost per Lead bewegt.
