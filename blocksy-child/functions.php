@@ -56,6 +56,7 @@ $modules = [
 	'shortcodes.php',     // Startseiten-Shortcodes
 	'client-portal.php',  // Client Portal Dashboard
 	'admin-manager.php',  // Backend-Felder für Portal
+	'api-telemetry.php',  // Observability Light für Nexus API-Fehler
 	'snippets.php',       // Nav Button, Security, Login-Redirect
 	'menu-setup.php',     // Hauptmenü-Struktur (einmalig)
 ];
