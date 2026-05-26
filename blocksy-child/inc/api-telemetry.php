@@ -29,7 +29,7 @@ function nexus_api_telemetry_capture( $response, $server, $request ) {
 	if ( is_wp_error( $response ) ) {
 		$error_data = $response->get_error_data();
 		$status     = isset( $error_data['status'] ) ? (int) $error_data['status'] : 500;
-	} elseif ( $response instanceof WP_HTTP_Response || $response instanceof WP_REST_Response ) {
+	} elseif ( is_object( $response ) && method_exists( $response, 'get_status' ) ) {
 		$status = $response->get_status();
 	}
 
@@ -39,7 +39,7 @@ function nexus_api_telemetry_capture( $response, $server, $request ) {
 	}
 
 	$data = [];
-	if ( $response instanceof WP_HTTP_Response || $response instanceof WP_REST_Response ) {
+	if ( is_object( $response ) && method_exists( $response, 'get_data' ) ) {
 		$data = $response->get_data();
 	}
 
