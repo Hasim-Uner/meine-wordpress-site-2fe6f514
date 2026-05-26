@@ -265,6 +265,9 @@ function hu_enqueue_assets() {
 
 		$marktcheck_cfg = [
 			'restEndpoint' => esc_url_raw( rest_url( 'nexus/v1/audit-request' ) ),
+			'contractVersion' => function_exists( 'nexus_get_review_request_contract_version' )
+				? nexus_get_review_request_contract_version()
+				: '',
 			'calcomUrl'    => function_exists( 'hu_get_analysis_calcom_base_url' )
 				? hu_get_analysis_calcom_base_url()
 				: 'https://cal.com/hasim-uener/30min?overlayCalendar=true',

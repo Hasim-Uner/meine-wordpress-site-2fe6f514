@@ -9,6 +9,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+const NEXUS_REVIEW_REQUEST_CONTRACT_VERSION = '2026-05-26.audit-request.v1';
+
+/**
+ * Return the active public audit-request contract version.
+ *
+ * @return string
+ */
+function nexus_get_review_request_contract_version() {
+	return NEXUS_REVIEW_REQUEST_CONTRACT_VERSION;
+}
+
 /**
  * Return the internal review status map.
  *
@@ -807,14 +818,64 @@ function nexus_register_review_crm_rest_routes() {
 			'nexus/v1',
 			$route,
 			[
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => 'nexus_handle_review_request_submission',
-				'permission_callback' => '__return_true',
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => 'nexus_handle_review_request_submission',
+					'permission_callback' => '__return_true',
+				],
+				'schema' => 'nexus_get_review_request_rest_schema',
 			]
 		);
 	}
 }
 add_action( 'rest_api_init', 'nexus_register_review_crm_rest_routes' );
+
+/**
+ * Return the public JSON schema for the audit-request REST route.
+ *
+ * @return array<string, mixed>
+ */
+function nexus_get_review_request_rest_schema() {
+	return [
+		'$schema'    => 'http://json-schema.org/draft-04/schema#',
+		'title'      => 'nexus_audit_request',
+		'type'       => 'object',
+		'required'   => [ 'intake_variant', 'audit_type', 'name', 'email', 'consent_privacy' ],
+		'properties' => [
+			'contract_version'   => [
+				'type'        => 'string',
+				'enum'        => [ nexus_get_review_request_contract_version() ],
+				'description' => 'Optional client-declared contract version. If present, it must match the active server contract.',
+			],
+			'intake_variant'     => [
+				'type' => 'string',
+				'enum' => [ 'energy_systems', 'growth_audit_simple' ],
+			],
+			'audit_type'         => [
+				'type' => 'string',
+				'enum' => array_keys( nexus_get_audit_request_type_options() ),
+			],
+			'sales_team_size'    => [
+				'type' => 'string',
+				'enum' => [ 'none', 'one', 'two_to_five', 'more_than_five' ],
+			],
+			'portal_margin_loss' => [
+				'type' => 'string',
+				'enum' => [ 'low', 'medium', 'high' ],
+			],
+			'name'               => [ 'type' => 'string' ],
+			'company'            => [ 'type' => 'string' ],
+			'position'           => [ 'type' => 'string' ],
+			'email'              => [ 'type' => 'string', 'format' => 'email' ],
+			'phone'              => [ 'type' => 'string' ],
+			'page_url'           => [ 'type' => 'string', 'format' => 'uri' ],
+			'consent_privacy'    => [ 'type' => 'string', 'enum' => [ 'accepted' ] ],
+			'landing_page_url'   => [ 'type' => 'string', 'format' => 'uri' ],
+			'entry_page_url'     => [ 'type' => 'string', 'format' => 'uri' ],
+			'referrer_url'       => [ 'type' => 'string', 'format' => 'uri' ],
+		],
+	];
+}
 
 /**
  * Return the public success message for a validated request.
@@ -1014,21 +1075,31 @@ function nexus_build_qualification_screen( $qualification, $validated, $post_id 
  *
  * Shared by the REST callback and page-level fallback handling.
  *
- * @param array $payload Raw request payload.
+ * @param array  $payload  Raw request payload.
+ * @param string $trace_id Request trace ID.
  * @return array|WP_Error
  */
-function nexus_process_review_request_submission( $payload ) {
+function nexus_process_review_request_submission( $payload, $trace_id = '' ) {
+	$trace_id = '' !== $trace_id ? sanitize_key( $trace_id ) : nexus_generate_review_request_trace_id();
+
 	$honeypot = isset( $payload['company_website'] ) ? trim( (string) $payload['company_website'] ) : '';
 	if ( '' !== $honeypot ) {
 		return [
-			'ok'          => true,
-			'requestId'   => 0,
-			'message'     => 'Anfrage gespeichert.',
-			'status'      => 'ignored',
-			'statusLabel' => 'Gespeichert',
-			'auditType'   => isset( $payload['audit_type'] ) ? sanitize_key( (string) $payload['audit_type'] ) : 'growth_audit',
-			'http_status' => 200,
+			'ok'              => true,
+			'requestId'       => 0,
+			'message'         => 'Anfrage gespeichert.',
+			'status'          => 'ignored',
+			'statusLabel'     => 'Gespeichert',
+			'auditType'       => isset( $payload['audit_type'] ) ? sanitize_key( (string) $payload['audit_type'] ) : 'growth_audit',
+			'contractVersion' => nexus_get_review_request_contract_version(),
+			'traceId'         => $trace_id,
+			'http_status'     => 200,
 		];
+	}
+
+	$contract_error = nexus_validate_review_request_contract_version( $payload );
+	if ( is_wp_error( $contract_error ) ) {
+		return $contract_error;
 	}
 
 	$rate_limit_error = nexus_validate_review_request_rate_limit();
@@ -1040,6 +1111,9 @@ function nexus_process_review_request_submission( $payload ) {
 	if ( is_wp_error( $validated ) ) {
 		return $validated;
 	}
+
+	$validated['contract_version'] = nexus_get_review_request_contract_version();
+	$validated['trace_id']         = $trace_id;
 
 	$post_id = nexus_create_review_request_post( $validated );
 	if ( is_wp_error( $post_id ) ) {
@@ -1065,6 +1139,8 @@ function nexus_process_review_request_submission( $payload ) {
 		'statusLabel'   => 'Neu',
 		'auditType'     => $validated['audit_type'],
 		'qualification' => nexus_build_qualification_screen( $qualification, $validated, (int) $post_id ),
+		'contractVersion' => nexus_get_review_request_contract_version(),
+		'traceId'       => $trace_id,
 		'http_status'   => 201,
 	];
 }
@@ -1076,12 +1152,13 @@ function nexus_process_review_request_submission( $payload ) {
  * @return WP_REST_Response
  */
 function nexus_handle_review_request_submission( WP_REST_Request $request ) {
+	$trace_id = nexus_generate_review_request_trace_id();
 	$payload = $request->get_json_params();
 	if ( ! is_array( $payload ) || empty( $payload ) ) {
 		$payload = $request->get_body_params();
 	}
 
-	$result = nexus_process_review_request_submission( is_array( $payload ) ? $payload : [] );
+	$result = nexus_process_review_request_submission( is_array( $payload ) ? $payload : [], $trace_id );
 	if ( is_wp_error( $result ) ) {
 		$status = 400;
 
@@ -1091,19 +1168,137 @@ function nexus_handle_review_request_submission( WP_REST_Request $request ) {
 			$status = 500;
 		}
 
-		return new WP_REST_Response(
-			[
-				'ok'    => false,
-				'error' => $result->get_error_message(),
-			],
-			$status
+		return nexus_build_review_request_rest_response(
+			nexus_build_review_request_error_payload( $result, $trace_id ),
+			$status,
+			$trace_id
 		);
 	}
 
 	$response_status = isset( $result['http_status'] ) ? (int) $result['http_status'] : 201;
 	unset( $result['http_status'] );
 
-	return new WP_REST_Response( $result, $response_status );
+	return nexus_build_review_request_rest_response( $result, $response_status, $trace_id );
+}
+
+/**
+ * Generate a stable trace ID for one public review request.
+ *
+ * @return string
+ */
+function nexus_generate_review_request_trace_id() {
+	$uuid = function_exists( 'wp_generate_uuid4' ) ? (string) wp_generate_uuid4() : md5( uniqid( '', true ) );
+
+	return 'rr_' . sanitize_key( str_replace( '-', '', $uuid ) );
+}
+
+/**
+ * Validate an optional client-declared contract version.
+ *
+ * @param array $payload Raw request payload.
+ * @return true|WP_Error
+ */
+function nexus_validate_review_request_contract_version( $payload ) {
+	$client_version = isset( $payload['contract_version'] ) ? sanitize_text_field( (string) $payload['contract_version'] ) : '';
+
+	if ( '' === $client_version || nexus_get_review_request_contract_version() === $client_version ) {
+		return true;
+	}
+
+	return new WP_Error(
+		'unsupported_contract_version',
+		'Die Anfrage nutzt eine veraltete Formular-Version. Bitte die Seite neu laden und erneut senden.',
+		[
+			'field'    => 'contract_version',
+			'expected' => nexus_get_review_request_contract_version(),
+			'received' => $client_version,
+		]
+	);
+}
+
+/**
+ * Build a REST response with contract headers.
+ *
+ * @param array  $payload  Response payload.
+ * @param int    $status   HTTP status.
+ * @param string $trace_id Request trace ID.
+ * @return WP_REST_Response
+ */
+function nexus_build_review_request_rest_response( array $payload, $status, $trace_id = '' ) {
+	$response = new WP_REST_Response( $payload, (int) $status );
+	$response->header( 'X-Nexus-Contract-Version', nexus_get_review_request_contract_version() );
+
+	if ( '' !== $trace_id ) {
+		$response->header( 'X-Nexus-Trace-Id', $trace_id );
+	}
+
+	return $response;
+}
+
+/**
+ * Build a structured, backwards-compatible error response.
+ *
+ * @param WP_Error $error    Validation or processing error.
+ * @param string   $trace_id Request trace ID.
+ * @return array<string, mixed>
+ */
+function nexus_build_review_request_error_payload( WP_Error $error, $trace_id = '' ) {
+	$code    = $error->get_error_code();
+	$message = $error->get_error_message();
+	$data    = $error->get_error_data();
+	$field   = is_array( $data ) && ! empty( $data['field'] ) ? sanitize_key( (string) $data['field'] ) : nexus_get_review_request_error_field( $code );
+
+	return [
+		'ok'              => false,
+		'message'         => $message,
+		'error'           => $message,
+		'error_code'      => $code,
+		'error_details'   => array_filter(
+			[
+				'field'    => $field,
+				'expected' => is_array( $data ) && isset( $data['expected'] ) ? (string) $data['expected'] : '',
+				'received' => is_array( $data ) && isset( $data['received'] ) ? (string) $data['received'] : '',
+			],
+			static function ( $value ) {
+				return '' !== (string) $value;
+			}
+		),
+		'contractVersion' => nexus_get_review_request_contract_version(),
+		'traceId'         => $trace_id,
+		'retryable'       => in_array( $code, [ 'rate_limited', 'request_storage_failed' ], true ),
+	];
+}
+
+/**
+ * Map validation error codes to payload fields for client-side handling.
+ *
+ * @param string $code WP_Error code.
+ * @return string
+ */
+function nexus_get_review_request_error_field( $code ) {
+	$map = [
+		'missing_sales_team_size'     => 'sales_team_size',
+		'missing_portal_margin_loss'  => 'portal_margin_loss',
+		'missing_position'            => 'position',
+		'missing_phone'               => 'phone',
+		'invalid_postal_code'         => 'postal_code',
+		'invalid_postal_code_range'   => 'postal_code',
+		'missing_lead_volume'         => 'lead_volume',
+		'missing_cpl_range'           => 'cpl_range',
+		'missing_primary_bottleneck'  => 'primary_bottleneck',
+		'missing_page_url'            => 'page_url',
+		'invalid_page_url'            => 'page_url',
+		'invalid_scheme'              => 'page_url',
+		'missing_name'                => 'name',
+		'missing_company'             => 'company',
+		'invalid_email'               => 'email',
+		'missing_consent_privacy'     => 'consent_privacy',
+		'invalid_linkedin'            => 'linkedin',
+		'invalid_linkedin_scheme'     => 'linkedin',
+		'unsupported_contract_version' => 'contract_version',
+	];
+
+	return $map[ $code ] ?? '';
 }
 
 /**
@@ -1684,6 +1879,8 @@ function nexus_create_review_request_post( $payload ) {
 	update_post_meta( $post_id, '_nexus_review_previous_internal_url', sanitize_text_field( (string) ( $payload['previous_internal_url'] ?? '' ) ) );
 	update_post_meta( $post_id, '_nexus_review_referrer_url', sanitize_text_field( (string) ( $payload['referrer_url'] ?? '' ) ) );
 	update_post_meta( $post_id, '_nexus_review_referrer_host', sanitize_text_field( (string) ( $payload['referrer_host'] ?? '' ) ) );
+	update_post_meta( $post_id, '_nexus_review_contract_version', sanitize_text_field( (string) ( $payload['contract_version'] ?? '' ) ) );
+	update_post_meta( $post_id, '_nexus_review_trace_id', sanitize_key( (string) ( $payload['trace_id'] ?? '' ) ) );
 
 	if ( 'energy_systems' === ( $payload['intake_variant'] ?? '' ) ) {
 		update_post_meta( $post_id, '_nexus_review_energy_postal_code', sanitize_text_field( (string) ( $payload['postal_code'] ?? '' ) ) );

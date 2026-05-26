@@ -141,6 +141,7 @@
 
       var endpoint = CFG.restEndpoint || '/wp-json/nexus/v1/audit-request';
       var payload = {
+        contract_version:   CFG.contractVersion || '',
         intake_variant:      'energy_systems',
         audit_type:          'b2b_system_intake',
         sales_team_size:     state.answers.sales_team_size || '',
