@@ -1,0 +1,107 @@
+diff --git a/blocksy-child/front-page.php b/blocksy-child/front-page.php
+index 9a71e4a..COPY-PATCH 100644
+--- a/blocksy-child/front-page.php
++++ b/blocksy-child/front-page.php
+@@ -45,20 +45,20 @@ $home_routing_gateways = [
+ 	'marktcheck' => [
+ 		'badge'   => 'G1',
+ 		'kicker'  => 'Sofort-Qualifizierung',
+ 		'title'   => 'Der 60-Sekunden-Marktcheck',
+-		'desc'    => 'Identifiziert die unsichtbaren Anfragebremsen auf der aktuellen B2B-Website. Persönliche Rückmeldung statt automatisiertem Tool-Score.',
++		'desc'    => 'Prüft, wo Portal-Abhängigkeit, Website, Tracking oder Vorqualifizierung aktuell qualifizierte Anfragen kosten.',
+ 		'url'     => $analysis_url,
+-		'label'   => 'Infrastruktur prüfen (60-Sek-Marktcheck)',
++		'label'   => 'Leadkosten & Anfrage-System prüfen',
+ 		'persona' => 'Für portalmüde Solar-/SHK-Anbieter',
+ 		'action'  => 'gateway_marktcheck',
+ 	],
+ 	'agentur' => [
+ 		'badge'   => 'G2',
+ 		'kicker'  => 'Technischer Hub',
+-		'title'   => 'WordPress Agentur Hannover',
+-		'desc'    => 'Technisches Fundament für anspruchsvolle B2B-Systeme: Server-Side Tracking, technisches SEO und kontrollierte Weiterentwicklung.',
++		'title'   => 'Technische Umsetzung mit WordPress',
++		'desc'    => 'Für Unternehmen, bei denen WordPress, SEO, Tracking und Conversion-Führung technisch sauber zusammengeführt werden müssen.',
+ 		'url'     => $agentur_hub_url,
+-		'label'   => 'B2B Agentur-Hub Hannover ansteuern',
+-		'persona' => 'Für Unternehmen mit Infrastruktur-Bedarf',
++		'label'   => 'Technischen Umsetzungsweg ansehen',
++		'persona' => 'Für bestehende Websites mit Systembedarf',
+ 		'action'  => 'gateway_agentur',
+ 	],
+@@ -129,20 +129,20 @@ get_header();
+ 				<div class="hu-hero__eyebrow">
+ 					<span class="hu-tag">
+ 						<span class="hu-dot hu-dot--live"></span>
+-						<span class="hu-mono">INFRASTRUKTUR-ECOSYSTEM · HANNOVER · 2026</span>
++						<span class="hu-mono">ANFRAGE-SYSTEM · SOLAR · SHK · DACH</span>
+ 					</span>
+ 				</div>
+ 
+ 				<h1 class="hu-display hu-hero__title">
+-					Ich baue autarke<br>
+-					Nachfrage-Kraftwerke.<br>
+-					<span class="hu-hero__title-2">Für Ihren eigenen Vertrieb.</span>
++					Weniger Portal-Leads.<br>
++					Mehr eigene Anfragen.<br>
++					<span class="hu-hero__title-2">Für Ihren Vertrieb.</span>
+ 				</h1>
+ 
+ 				<p class="hu-hero__sub">
+-					Für Solar- und Wärmepumpen-Anbieter im DACH-Raum. Ablösung von Portal-Abhängigkeit durch ein
+-					geschlossenes System aus Website, Tracking, intelligenter Vorqualifizierung und
+-					Werbekanal-Steuerung.
++					Für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum, die weniger abhängig von Lead-Portalen werden wollen.
++					Ich prüfe, wo Website, Vorqualifizierung, Tracking und Werbekanäle aktuell Anfragen verlieren — und welche Hebel zuerst greifen.
+ 				</p>
+@@ -164,9 +164,9 @@ get_header();
+ 				</div>
+ 
+ 				<ul class="hu-hero__bullets">
+-					<li><span class="hu-bullet-dot"></span>Architektonischer System-Intake statt Software-Score</li>
+-					<li><span class="hu-bullet-dot"></span>Persönliche Diagnose der Region innerhalb von 48 Stunden</li>
+-					<li><span class="hu-bullet-dot"></span>Fokus: Solar, Wärmepumpe, Speicher</li>
++					<li><span class="hu-bullet-dot"></span>Portal-Abhängigkeit, Leadkosten und Anfragequalität prüfen</li>
++					<li><span class="hu-bullet-dot"></span>Website, Tracking und Vorqualifizierung als ein System bewerten</li>
++					<li><span class="hu-bullet-dot"></span>Fokus: Solar, Wärmepumpe, Speicher und hohe Projektwerte</li>
+ 				</ul>
+ 			</div>
+@@ -326,8 +326,8 @@ get_header();
+ 		<div class="hu-container">
+ 			<div class="hu-proof-headline hu-reveal">
+ 				<span class="hu-eyebrow">02 / System-Verlust-Raster</span>
+-				<h2 style="color:var(--ink)">Drei Lecks, die jedes Wachstums-Budget aufzehren.</h2>
+-				<p>Bevor mehr Reichweite hilft, müssen diese Stellen schließen — sonst skaliert nur der Verlust.</p>
++				<h2 style="color:var(--ink)">Drei Stellen, an denen Solar- und SHK-Betriebe qualifizierte Anfragen verlieren.</h2>
++				<p>Mehr Reichweite hilft wenig, wenn Tracking blind ist, Portal-Leads geteilt werden und kaufnahe Besucher keinen klaren nächsten Schritt finden.</p>
+ 			</div>
+@@ -464,8 +464,8 @@ get_header();
+ 		<div class="hu-container">
+ 			<div class="hu-proof-headline hu-reveal">
+ 				<span class="hu-eyebrow">05 / Validierung</span>
+-				<h2>Vom Lead-Einkauf zur eigenen Pipeline.</h2>
+-				<p><?php echo esc_html( $e3_timeframe ); ?> · E3 New Energy. Eine Referenz, die nicht auf Folien steht.</p>
++				<h2>E3 New Energy: von eingekauften Leads zu eigenen qualifizierten Anfragen.</h2>
++				<p>In <?php echo esc_html( $e3_timeframe_dat ); ?> sanken die Kosten pro Anfrage von <?php echo esc_html( $e3_cpl_before ); ?> auf <?php echo esc_html( $e3_cpl_after ); ?> — durch eigene Website-Strecke, Vorqualifizierung und belastbares Tracking.</p>
+ 			</div>
+@@ -604,10 +604,10 @@ get_header();
+ 				</div>
+ 				<div class="hu-about-text hu-reveal">
+ 					<span class="hu-eyebrow">07 / Wer steht dahinter</span>
+-					<h2>Ich entwickle autarke<br>Nachfrage-Kraftwerke. Digital.</h2>
++					<h2>Ich baue Anfrage-Systeme,<br>die Vertrieb und Daten verbinden.</h2>
+ 					<p class="hu-lead" style="color:var(--ink-2)">
+-						Für Solar- und Wärmepumpen-Betriebe, die ihre Anfragen nicht dauerhaft über Portale
+-						mieten wollen — sondern eine eigene Nachfrage-Infrastruktur als Asset besitzen.
++						Für Betriebe, die nicht dauerhaft Leads mieten wollen, sondern wissen müssen,
++						welcher Kanal echte Projekte bringt — und wem die Anfrage am Ende gehört.
+ 					</p>
+@@ -744,8 +744,8 @@ get_header();
+ 			<div class="hu-final-routing hu-reveal">
+ 				<div class="hu-final-routing__head">
+ 					<span class="hu-eyebrow" style="color:var(--accent)">10 / Nächster Schritt</span>
+-					<h2 class="hu-display">Wählen Sie die Route, die zu Ihrem Reifegrad passt.</h2>
+-					<p>Kein Pitch. Drei klare Einstiege — jede führt zu einem konkreten, prüfbaren Schritt.</p>
++					<h2 class="hu-display">Finden Sie heraus, wo Ihr Anfrage-System zuerst Geld verliert.</h2>
++					<p>Starten Sie mit dem Marktcheck, prüfen Sie den E3-Case oder gehen Sie direkt in die technische Umsetzung — je nachdem, wo Sie gerade stehen.</p>
+ 				</div>
