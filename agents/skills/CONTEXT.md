@@ -21,6 +21,7 @@ Scope: `agents/skills/`.
 | `seo-cockpit-hardening` | SEO-Cockpit-Module und Diagnostik | cockpit, insights, queue, gsc, koko |
 | `internal-linking-audit` | Interne Links, Orphans, Ankerlogik | internal links, orphan, anchors, linkgraph |
 | `pillar-cornerstone-writer` | Cornerstone-/Pillar-Artikelpakete | cornerstone, pillar, article package, publish pack |
+| `offer-funnel-intelligence` | Angebotslogik, Funnel, Marktcheck, Proof, Qualifizierung, WGOS-Grenze | offer, funnel, angebot, marktcheck, proof, qualifizierung, sales, wgos |
 | `wordpress-cro-content-design-audit` | B2B-CRO, Page-Kritik, CTA-/Proof-Hierarchie | cro, cta, proof, page critique, conversion |
 | `b2b-design-system` | Visual System, UI-Komponenten, Premium-Polish | design, ui, component, polish, visual |
 | `modern-web-guidance` | Moderne Web-Standards fuer WordPress-Frontend, CSS, Vanilla JS, Forms, A11y, CWV | frontend, html, css, javascript, vanilla js, forms, a11y, cwv, browser api |
