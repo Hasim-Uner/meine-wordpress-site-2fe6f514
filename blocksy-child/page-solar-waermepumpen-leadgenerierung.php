@@ -2,7 +2,7 @@
 /**
  * Template Name: Solar & Wärmepumpen Leadgenerierung (SOLARA)
  * Description: Premium · cinematic · minimalistisch. Hybrid-Theme (warm-cream + Copper).
- *              Primärer Lead-Pfad: B2B-System-Intake im Hero (REST → CRM).
+ *              Primärer Lead-Pfad: B2B-Marktcheck im Hero (REST → CRM).
  *              Zielgruppe: Solar-/Wärmepumpen-Betriebe mit hohen Projektwerten,
  *              klarem Zielgebiet und eigener Vertriebsverantwortung.
  *
@@ -55,7 +55,7 @@ $trust_items = [
 	'Server-Side · CAPI im Stack',
 	'Hardcoded WordPress · kein Page-Builder',
 	'1:1 Senior · keine Junior-Kette',
-	'System-Intake kostenfrei',
+	'Marktcheck kostenfrei',
 ];
 
 $problem_cards = [
@@ -113,8 +113,8 @@ $results_qualifiers = [
 
 $guarantee_points = [
 	[
-		't' => 'System-Intake ist kostenfrei',
-		's' => 'Strukturierter, händisch geprüfter System-Intake statt automatisierter Tool-Bericht. Befund Ihrer Domain und Region innerhalb von 48 Stunden per E-Mail — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
+		't' => 'Marktcheck ist kostenfrei',
+		's' => 'Strukturierter, händisch geprüfter Marktcheck statt automatisierter Tool-Bericht. Befund Ihrer Domain und Region innerhalb von 48 Stunden per E-Mail — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
 	],
 	[
 		't' => 'Drei Hebel — auch bei Abrat',
@@ -148,7 +148,7 @@ $compare_bad = [
 $compare_good = [
 	[ 't' => 'Eigene Anfragestrecke',    's' => 'Anfragen, die Ihrem Betrieb gehören — nicht dem Portal.' ],
 	[ 't' => 'Anfragequalität messbar',  's' => 'Region, Heizart, Dach, Projektwert — vor dem Anruf.' ],
-	[ 't' => 'Progressive-Disclosure-Intake', 's' => 'Business-Daten erst nach problembasierter Vorqualifizierung. Kein 5-Felder-Hürdenlauf.' ],
+	[ 't' => 'Vorqualifizierung zuerst', 's' => 'Geschäftliche Daten erst nach problembasierter Vorqualifizierung. Kein 5-Felder-Hürdenlauf.' ],
 	[ 't' => 'Dokumentiertes System',    's' => 'Sie verstehen, warum es funktioniert. Code, Tracking, Daten bleiben bei Ihnen.' ],
 ];
 
@@ -185,7 +185,7 @@ $system_layers = [
 		'cols'   => 3,
 		'items'  => [
 			[ 'i' => 'M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z', 't' => 'Money Page',           's' => 'Solar/WP-spezifisch · Proof.' ],
-			[ 'i' => 'M13 2L4 14h7v8l9-12h-7z',                              't' => 'B2B-System-Intake',     's' => 'Region · Vertriebsstruktur · Projektwert.' ],
+			[ 'i' => 'M13 2L4 14h7v8l9-12h-7z',                              't' => 'B2B-Marktcheck',     's' => 'Region · Vertriebsstruktur · Projektwert.' ],
 			[ 'i' => 'M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14l-5-4.87 6.91-1.01z', 't' => 'Lead-Scoring', 's' => 'Grün, gelb, rot — vor dem Anruf.' ],
 		],
 	],
@@ -283,11 +283,11 @@ $deeper_clusters = [
 
 $faq_items = [
 	[
-		'question' => 'Wie läuft der System-Intake konkret ab und wie lange dauert er?',
+		'question' => 'Wie läuft der Marktcheck konkret ab und wie lange dauert er?',
 		'answer'   => 'Drei strukturierte Schritte: Vertriebsteam-Größe, Portal-Margenverlust, geschäftliche Eckdaten. Den händisch geprüften Infrastruktur-Befund Ihrer Domain und Region erhalten Sie innerhalb von 48 Stunden per E-Mail. Keine automatisierten Standard-PDFs, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
 	],
 	[
-		'question' => 'Was passiert nach dem System-Intake?',
+		'question' => 'Was passiert nach dem Marktcheck?',
 		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich innerhalb von 48 Stunden per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die kostenpflichtige Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
 	],
 	[
@@ -296,7 +296,7 @@ $faq_items = [
 	],
 	[
 		'question' => 'Welche Daten brauchen Sie für die Diagnose?',
-		'answer'   => 'Für den System-Intake reichen zwei Klick-Antworten plus geschäftliche Eckdaten (Firma, Position, geschäftliche E-Mail, Firmen-PLZ). Für die Tiefendiagnose: Lesezugriff auf Google Analytics, Google Ads und Meta Ads Manager, Einblick in den CRM-Datenbestand der letzten 90 Tage und eine 15-Minuten-Bestandsaufnahme zu Vertriebsprozess und Lead-Quellen. Wenn Tracking-Daten fehlen, ist das oft schon das erste Diagnose-Ergebnis.',
+		'answer'   => 'Für den Marktcheck reichen zwei Klick-Antworten plus geschäftliche Eckdaten (Firma, Position, geschäftliche E-Mail, Firmen-PLZ). Für die Tiefendiagnose: Lesezugriff auf Google Analytics, Google Ads und Meta Ads Manager, Einblick in den CRM-Datenbestand der letzten 90 Tage und eine 15-Minuten-Bestandsaufnahme zu Vertriebsprozess und Lead-Quellen. Wenn Tracking-Daten fehlen, ist das oft schon das erste Diagnose-Ergebnis.',
 	],
 	[
 		'question' => 'Warum nicht einfach mehr Google Ads schalten?',
@@ -389,7 +389,7 @@ $service_schema = [
 		'@type'         => 'Offer',
 		'price'         => '0',
 		'priceCurrency' => 'EUR',
-		'description'   => 'System-Intake & händisch geprüfter Befund Ihrer Region innerhalb von 48 Stunden per E-Mail.',
+		'description'   => 'Marktcheck & händisch geprüfter Befund Ihrer Region innerhalb von 48 Stunden per E-Mail.',
 		'availability'  => 'https://schema.org/InStock',
 	],
 	'isRelatedTo' => [
@@ -566,7 +566,7 @@ get_header();
 							<span class="sol-cta-particle"></span>
 						</div>
 						<!--
-						  System-Intake Mount-Point. JS rendert hier die
+						  Marktcheck Mount-Point. JS rendert hier die
 						  3-stufige Progressive-Disclosure-Sequenz.
 						  Wenn JS fehlt, bleibt der SSR-Fallback aktiv.
 						-->
@@ -574,7 +574,7 @@ get_header();
 							<noscript>
 								<style>.solara-landing .sol-cta-fineprint{display:none!important;}</style>
 								<p class="sol-cta-hint">
-									Aktivieren Sie JavaScript für den System-Intake oder schreiben Sie direkt an
+									Aktivieren Sie JavaScript für den Marktcheck oder schreiben Sie direkt an
 									<a href="mailto:hasim@hasimuener.de" style="color:var(--sol-accent);">hasim@hasimuener.de</a>.
 								</p>
 								<a
@@ -584,7 +584,7 @@ get_header();
 									data-track-category="lead_gen"
 									data-track-section="hero_noscript"
 								>
-									<span>Infrastruktur-Audit per E-Mail beantragen</span>
+									<span>Marktcheck per E-Mail beantragen</span>
 									<span class="sol-cta-submit-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 								</a>
 							</noscript>
@@ -593,17 +593,17 @@ get_header();
 							<div class="sol-cta-head">
 								<span class="sol-cta-tag sol-mono">
 									<span class="sol-cta-tag-dot" aria-hidden="true"></span>
-									System-Intake · händisch geprüft · Befund in 48 h
+									Marktcheck · händisch geprüft · Befund in 48 h
 								</span>
 								<span class="sol-cta-head-right sol-mono">Kostenfrei</span>
 							</div>
 							<h2 id="sol-quiz-title" class="sol-cta-title">
-								Infrastruktur-Audit für Ihren Vertrieb beantragen.
+								Marktcheck für Ihren Vertrieb starten.
 							</h2>
 							<p class="sol-cta-hint">
-								Dreistufiger System-Intake. Strukturierte Aufnahme Ihres Vertriebs- und Lead-Profils — Befund innerhalb von 48 Stunden per E-Mail. Kein Newsletter, kein Pitch-Deck.
+								Dreistufiger Marktcheck. Strukturierte Aufnahme Ihres Vertriebs- und Lead-Profils — Befund innerhalb von 48 Stunden per E-Mail. Kein Newsletter, kein Pitch-Deck.
 							</p>
-							<ul class="sol-cta-bullets sol-mono" aria-label="Was Sie nach dem Intake erhalten">
+							<ul class="sol-cta-bullets sol-mono" aria-label="Was Sie nach dem Marktcheck erhalten">
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Inklusive Regions-Verfügbarkeitsprüfung</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Manuelle Erst-Analyse statt automatisierter Tool-Bericht</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Persönliche Rückmeldung garantiert in 48 Stunden</li>
@@ -653,7 +653,7 @@ get_header();
 						data-track-action="cta_solar_section_nav_to_intake"
 						data-track-category="lead_gen"
 						data-track-section="section_nav"
-					>System-Intake →</a>
+					>Marktcheck →</a>
 				</div>
 			</div>
 		</nav>
@@ -976,7 +976,7 @@ get_header();
 						data-track-section="capex_opex"
 						data-track-funnel-stage="intake_open"
 					>
-						<span>System-Intake starten</span>
+						<span>Marktcheck starten</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
 					<div class="sol-capex-cta-micro sol-mono">Inklusive Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse statt automatisierter Tool-Bericht · Persönliche Rückmeldung garantiert in 48 Stunden</div>
@@ -1150,7 +1150,7 @@ get_header();
 						data-track-section="fit_check"
 						data-track-funnel-stage="intake_open"
 					>
-						<span>Infrastruktur-Audit beantragen</span>
+						<span>Marktcheck beantragen</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
 					<div class="sol-fit-cta-micro sol-mono">Inklusive Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse statt automatisierter Tool-Bericht · Persönliche Rückmeldung garantiert in 48 Stunden</div>
@@ -1236,7 +1236,7 @@ get_header();
 						Bevor Sie <em>fragen</em>.
 					</h2>
 					<p class="sol-faq-sub">
-						Was hier nicht beantwortet wird, klären wir im System-Intake — strukturiert, schriftlich, ohne Verkaufsgespräch.
+						Was hier nicht beantwortet wird, klären wir im Marktcheck — strukturiert, schriftlich, ohne Verkaufsgespräch.
 					</p>
 				</div>
 				<ul class="sol-faq-list">
@@ -1284,13 +1284,13 @@ get_header();
 					Aufnahme-Protokoll für <em><?php echo (int) $founding['slots_total']; ?> Solar- oder SHK-Betriebe</em>.
 				</h2>
 				<p style="color:var(--sol-fg-dim);font-size:18px;line-height:1.6;margin:0 0 28px">
-					Damit jede Region in Diagnose, Daten-Pipeline und Vertriebsanschluss persönlich abgebildet werden kann, nehme ich 2026 maximal <?php echo (int) $founding['slots_total']; ?> Betriebe als Founding-Partner auf. Founding-Partner heißt hier: früher Umsetzungspartner der 2026er Kohorte — kein Mitgründer, kein Anteilseigner und keine gesellschaftsrechtliche Partnerschaft. Stichtag für die Bewerbung ist der <?php echo esc_html( $founding_end_de ); ?>. Der System-Intake entscheidet, ob die Architektur zu Ihrer Region passt — keine Verkaufslogik, keine Lock-in-Klausel.
+					Damit jede Region in Diagnose, Daten-Pipeline und Vertriebsanschluss persönlich abgebildet werden kann, nehme ich 2026 maximal <?php echo (int) $founding['slots_total']; ?> Betriebe als Founding-Partner auf. Founding-Partner heißt hier: früher Umsetzungspartner der 2026er Kohorte — kein Mitgründer, kein Anteilseigner und keine gesellschaftsrechtliche Partnerschaft. Stichtag für die Bewerbung ist der <?php echo esc_html( $founding_end_de ); ?>. Der Marktcheck entscheidet, ob die Architektur zu Ihrer Region passt — keine Verkaufslogik, keine Lock-in-Klausel.
 				</p>
 				<ul class="sol-mono" style="display:grid;gap:12px;padding:0;margin:0 0 28px;list-style:none;color:var(--sol-fg);font-size:13px;letter-spacing:.04em">
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Plätze 2026: <?php echo (int) $founding['slots_remaining']; ?> von <?php echo (int) $founding['slots_total']; ?> noch offen</li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Rolle: früher Umsetzungspartner, keine Mitgründer- oder Beteiligungsrolle</li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Bewerbungsfrist: <?php echo esc_html( $founding_end_de ); ?></li>
-					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Entscheidung: nach System-Intake · händisch · in 48 h</li>
+					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Entscheidung: nach Marktcheck · händisch · in 48 h</li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Bedingung: eigener Vertrieb · klares Zielgebiet · 12–24-Monate-Horizont</li>
 				</ul>
 			</div>
@@ -1320,7 +1320,7 @@ get_header();
 						data-track-section="final_cta"
 						data-track-funnel-stage="intake_open"
 					>
-						<span>System-Intake starten</span>
+						<span>Marktcheck starten</span>
 						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
 					<div class="sol-final-micro">Inklusive Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse statt automatisierter Tool-Bericht · Persönliche Rückmeldung garantiert in 48 Stunden</div>
@@ -1337,7 +1337,7 @@ get_header();
 			data-track-section="sticky_mobile"
 			data-track-funnel-stage="intake_open"
 		>
-			<span>System-Intake starten</span>
+			<span>Marktcheck starten</span>
 			<span class="sol-sticky-cta-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 		</a>
 

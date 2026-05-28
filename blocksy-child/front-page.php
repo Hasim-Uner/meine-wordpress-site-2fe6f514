@@ -260,7 +260,7 @@ get_header();
 						<text x="22" y="58" font-family="'Figtree', 'Inter Tight', sans-serif" font-weight="800" font-size="22" fill="#F2EBDD">Eigene Strecke</text>
 						<g font-family="'JetBrains Mono', monospace" font-size="10.5" fill="#C8C0B0">
 							<text x="22" y="88">+ Money Page · Region · Beweis</text>
-							<text x="22" y="106">+ Architektonischer System-Intake</text>
+							<text x="22" y="106">+ Architektonischer Marktcheck</text>
 							<text x="22" y="124">+ Server-Side Tracking · Attribution</text>
 						</g>
 						<!-- Active LED -->
