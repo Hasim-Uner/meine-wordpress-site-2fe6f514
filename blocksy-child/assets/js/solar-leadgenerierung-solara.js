@@ -263,6 +263,26 @@
       return 'lead_qualitaet';
     }
 
+    // Pre-fill the Cal.com booking URL with the data the buyer just typed
+    // into the Marktcheck, so the booking step is one click instead of a
+    // second round of name+email entry.
+    function buildCalcomUrl(baseUrl, answers) {
+      var name = (answers.name || '').trim();
+      var email = (answers.email || '').trim();
+      var company = (answers.company || '').trim();
+      var position = (answers.position || '').trim();
+      var noteParts = ['Aus Marktcheck'];
+      if (company) noteParts.push('Firma: ' + company);
+      if (position) noteParts.push('Position: ' + position);
+
+      var params = [];
+      if (name) params.push('name=' + encodeURIComponent(name));
+      if (email) params.push('email=' + encodeURIComponent(email));
+      params.push('notes=' + encodeURIComponent(noteParts.join(' · ')));
+
+      return baseUrl + (baseUrl.indexOf('?') === -1 ? '?' : '&') + params.join('&');
+    }
+
     // ── render helpers ────────────────────────────────────────
     function renderProgress() {
       var pct = Math.round((state.step / (totalSteps - 1)) * 100);
@@ -478,7 +498,7 @@
       var ticketId = qualification.ticket_id || '';
       var deadlineHuman = qualification.response_deadline_human || '';
       var proof = (!isNurture && qualification.proof && typeof qualification.proof === 'object') ? qualification.proof : null;
-      var calcom = CFG.calcomUrl || 'https://cal.com/hasim-uener/30min';
+      var calcom = buildCalcomUrl(CFG.calcomUrl || 'https://cal.com/hasim-uener/30min', state.answers);
       var caseUrl = CFG.caseUrl || '/e3-new-energy/';
 
       var ctaRow;
