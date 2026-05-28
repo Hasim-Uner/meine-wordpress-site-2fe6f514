@@ -135,6 +135,17 @@
       if (Object.keys(errs).length) {
         state.touched = Object.assign({}, state.touched || {}, { name: true, company: true, position: true, email: true, consent_privacy: true });
         render();
+        // Focus and scroll to the first invalid field so the user knows what to fix.
+        var firstKey = Object.keys(errs)[0];
+        setTimeout(function () {
+          var input = mount.querySelector('[name="' + firstKey + '"]');
+          if (!input) return;
+          var wrap = input.closest('.sol-quiz-field, .sol-quiz-consent') || input;
+          if (typeof wrap.scrollIntoView === 'function') {
+            wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); }
+        }, 0);
         return;
       }
 
@@ -404,16 +415,29 @@
       form.appendChild(hp);
 
       // Consent
-      var consentLbl = el('label', { className: 'sol-quiz-consent' });
+      var consentTouched = !!(state.touched || {}).consent_privacy;
+      var consentInvalid = consentTouched && !state.answers.consent_privacy;
+      var consentLbl = el('label', { className: 'sol-quiz-consent' + (consentInvalid ? ' is-err' : '') });
       var consentInput = el('input', {
         type: 'checkbox',
+        name: 'consent_privacy',
         checked: state.answers.consent_privacy ? 'checked' : null,
-        onChange: function (e) { setAnswer('consent_privacy', e.target.checked ? 'accepted' : ''); render(); }
+        'aria-invalid': consentInvalid ? 'true' : 'false',
+        onChange: function (e) {
+          setAnswer('consent_privacy', e.target.checked ? 'accepted' : '');
+          var touched = Object.assign({}, state.touched || {});
+          touched.consent_privacy = true;
+          state.touched = touched;
+          render();
+        }
       });
       consentLbl.appendChild(consentInput);
       var consentText = el('span', { html: 'Ich akzeptiere die <a href="' + (CFG.privacyUrl || '/datenschutz/') + '" target="_blank" rel="noopener">Datenschutzhinweise</a> und möchte zu meiner Anfrage kontaktiert werden.' });
       consentLbl.appendChild(consentText);
       form.appendChild(consentLbl);
+      if (consentInvalid) {
+        form.appendChild(el('span', { className: 'sol-quiz-field-err', role: 'alert' }, 'Bitte den Datenschutzhinweis bestätigen, um den Marktcheck zu starten.'));
+      }
 
       // Error banner
       if (state.submitError) {

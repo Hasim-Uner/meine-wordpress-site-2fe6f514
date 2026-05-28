@@ -851,6 +851,8 @@
   height: 16px;
 }
 .solara-landing .sol-quiz-consent a { color: var(--sol-accent); text-decoration: underline; text-underline-offset: 2px; }
+.solara-landing .sol-quiz-consent.is-err { color: oklch(0.55 0.20 25); }
+.solara-landing .sol-quiz-consent.is-err input[type="checkbox"] { outline: 2px solid oklch(0.55 0.20 25); outline-offset: 2px; }
 
 .solara-landing .sol-quiz-submit {
   display: flex;
