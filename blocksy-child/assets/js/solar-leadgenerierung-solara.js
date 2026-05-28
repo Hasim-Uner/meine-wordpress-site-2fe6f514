@@ -367,21 +367,45 @@
           opts.req ? el('span', { className: 'sol-quiz-field-lbl-req' }, ' *') : null
         ])
       ]);
-      var input = el('input', {
-        type: opts.type || 'text',
-        value: v,
-        placeholder: opts.ph || '',
-        autocomplete: opts.ac || 'off',
-        inputmode: opts.im || null,
-        name: opts.k,
-        onInput: function (e) { setAnswer(opts.k, e.target.value); },
-        onBlur: function () {
-          var touched = Object.assign({}, state.touched || {});
-          touched[opts.k] = true;
-          state.touched = touched;
-          render();
-        }
-      });
+
+      var input;
+      if (opts.kind === 'select') {
+        input = el('select', {
+          name: opts.k,
+          autocomplete: opts.ac || 'off',
+          'aria-invalid': errMsg ? 'true' : 'false',
+          onChange: function (e) {
+            setAnswer(opts.k, e.target.value);
+            var touched = Object.assign({}, state.touched || {});
+            touched[opts.k] = true;
+            state.touched = touched;
+            render();
+          }
+        });
+        (opts.options || []).forEach(function (o) {
+          var attrs = { value: o.v };
+          if (o.v === v) attrs.selected = 'selected';
+          if (o.disabled) attrs.disabled = 'disabled';
+          input.appendChild(el('option', attrs, o.t));
+        });
+      } else {
+        input = el('input', {
+          type: opts.type || 'text',
+          value: v,
+          placeholder: opts.ph || '',
+          autocomplete: opts.ac || 'off',
+          inputmode: opts.im || null,
+          name: opts.k,
+          onInput: function (e) { setAnswer(opts.k, e.target.value); },
+          onBlur: function () {
+            var touched = Object.assign({}, state.touched || {});
+            touched[opts.k] = true;
+            state.touched = touched;
+            render();
+          }
+        });
+      }
+
       wrap.appendChild(input);
       if (errMsg) wrap.appendChild(el('span', { className: 'sol-quiz-field-err' }, errMsg));
       return wrap;
@@ -408,8 +432,15 @@
       form.appendChild(renderField({ k: 'name', t: 'Name des Ansprechpartners', type: 'text', ph: 'Max Mustermann', req: true, ac: 'name',
         validator: function (v) { return (!v || v.trim().length < 2) ? 'Bitte Namen angeben.' : null; }
       }));
-      form.appendChild(renderField({ k: 'position', t: 'Position im Unternehmen', type: 'text', ph: 'Geschäftsführung, Vertriebsleitung …', req: true, ac: 'organization-title',
-        validator: function (v) { return (!v || v.trim().length < 2) ? 'Bitte Position angeben.' : null; }
+      form.appendChild(renderField({ k: 'position', t: 'Position im Unternehmen', kind: 'select', req: true, ac: 'organization-title',
+        options: [
+          { v: '',                              t: '— Bitte wählen —',              disabled: true },
+          { v: 'Geschäftsführung / Inhaber',    t: 'Geschäftsführung / Inhaber' },
+          { v: 'Vertriebsleitung',              t: 'Vertriebsleitung' },
+          { v: 'Marketing / Web-Verantwortung', t: 'Marketing / Web-Verantwortung' },
+          { v: 'Andere',                        t: 'Andere' }
+        ],
+        validator: function (v) { return !v ? 'Bitte Position auswählen.' : null; }
       }));
       form.appendChild(renderField({ k: 'email', t: 'Geschäftliche E-Mail-Adresse', type: 'email', ph: 'max@solar-betrieb.de', req: true, ac: 'email', full: true,
         validator: function (v) {

@@ -811,7 +811,8 @@
   font-weight: 600;
 }
 .solara-landing .sol-quiz-field-lbl-req { color: var(--sol-accent); margin-left: 2px; }
-.solara-landing .sol-quiz-field input {
+.solara-landing .sol-quiz-field input,
+.solara-landing .sol-quiz-field select {
   width: 100%;
   padding: 12px 14px;
   background: rgba(255, 255, 255, 0.75);
@@ -822,13 +823,25 @@
   outline: none;
   transition: border-color var(--sol-t-fast), background var(--sol-t-fast), box-shadow var(--sol-t-fast);
 }
+.solara-landing .sol-quiz-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%23b46a3c' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M1 1.5l5 5 5-5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px 8px;
+}
 .solara-landing .sol-quiz-field input::placeholder { color: var(--sol-fg-dim); }
-.solara-landing .sol-quiz-field input:focus {
+.solara-landing .sol-quiz-field input:focus,
+.solara-landing .sol-quiz-field select:focus {
   border-color: var(--sol-accent);
-  background: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 1);
   box-shadow: 0 0 0 3px rgba(180, 106, 60, 0.18);
 }
-.solara-landing .sol-quiz-field.is-err input { border-color: oklch(0.55 0.20 25); }
+.solara-landing .sol-quiz-field.is-err input,
+.solara-landing .sol-quiz-field.is-err select { border-color: oklch(0.55 0.20 25); }
 .solara-landing .sol-quiz-field-err { color: oklch(0.50 0.20 25); font-size: 11px; font-family: var(--sol-font-mono); letter-spacing: 0.04em; }
 .solara-landing .sol-quiz-hp { position: absolute; left: -9999px; top: -9999px; }
 
