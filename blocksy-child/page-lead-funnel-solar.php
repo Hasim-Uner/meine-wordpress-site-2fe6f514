@@ -230,7 +230,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-funnel-final-title">Funnel-Setup im Marktcheck einordnen</h2>
 			<p class="hu-intercept__final-text">
-				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, an welcher Funnel-Stufe Ihre größte Verlustquelle liegt und welcher Hebel den schnellsten Effekt hat.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse Ihrer Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, an welcher Funnel-Stufe Ihre größte Verlustquelle liegt und welcher Hebel den schnellsten Effekt hat.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"
