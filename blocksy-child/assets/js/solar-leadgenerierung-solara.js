@@ -31,14 +31,14 @@
     },
     {
       key: 'portal_margin_loss',
-      label: 'Margenverlust',
-      title: 'Wie hoch schätzen Sie den jährlichen Margenverlust durch unqualifizierte oder geteilte Portal-Leads (z. B. Aroundhome, DAA, Wattfox) ein?',
-      hint: 'Margenverlust entsteht, wenn Vertrieb Zeit, Budget und Abschlusskraft in geteilte oder unpassende Kontakte investiert.',
+      label: 'Portal-Belastung',
+      title: 'Wie stark belasten geteilte oder unqualifizierte Portal-Leads (z. B. Aroundhome, DAA, Wattfox) aktuell Ihre Vertriebsmarge?',
+      hint: 'Portal-Leads kosten Vertriebszeit, Budget und Abschlusskraft — auch wenn der Stundenpreis im CPL nicht direkt sichtbar wird.',
       kind: 'pick',
       options: [
-        { v: 'low',    t: 'Kaum spürbar',                                    s: 'Portal-Leads sind wirtschaftlich vertretbar.',                  i: '◔' },
-        { v: 'medium', t: 'Spürbarer Margendruck im Vertrieb',               s: 'Die CPL-Kosten verdrängen die Marge in Grenzprojekten.',         i: '◐' },
-        { v: 'high',   t: 'Massive Frustration und verbranntes Budget',       s: 'Vertrieb verbrennt Stunden mit Leuten, die nie kaufen werden.', i: '●' }
+        { v: 'low',    t: 'Gering',     s: 'Portal-Leads sind wirtschaftlich noch vertretbar.',                  i: '◔' },
+        { v: 'medium', t: 'Deutlich',   s: 'CPL und Anfragequalität drücken die Marge in Grenzprojekten.',       i: '◐' },
+        { v: 'high',   t: 'Erheblich',  s: 'Vertriebszeit und Budget gehen verloren in Anfragen, die nicht kaufen.', i: '●' }
       ]
     },
     {
@@ -123,7 +123,8 @@
       if (a.email && /^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(a.email)) {
         errs.email = 'Bitte Ihre geschäftliche E-Mail-Adresse verwenden (keine Freemail-Adresse).';
       }
-      if (!a.phone || a.phone.trim().length < 5) errs.phone = 'Bitte eine Telefonnummer für Rückfragen angeben.';
+      // Phone is optional — only validate format if provided.
+      if (a.phone && a.phone.trim().length > 0 && a.phone.trim().length < 5) errs.phone = 'Bitte eine vollständige Telefonnummer angeben.';
       if (!a.consent_privacy) errs.consent_privacy = 'Bitte den Datenschutzhinweis bestätigen.';
       return errs;
     }
@@ -132,7 +133,7 @@
       if (state.submitting) return;
       var errs = validateContact();
       if (Object.keys(errs).length) {
-        state.touched = Object.assign({}, state.touched || {}, { name: true, company: true, position: true, email: true, phone: true, consent_privacy: true });
+        state.touched = Object.assign({}, state.touched || {}, { name: true, company: true, position: true, email: true, consent_privacy: true });
         render();
         return;
       }
@@ -212,14 +213,14 @@
     function pick(key, value) {
       setAnswer(key, value);
       track('system_intake_pick', { step: state.step + 1, field: key, value: value });
-      // auto-advance
+      // auto-advance — long enough for the user to register the chosen option
       setTimeout(function () {
         if (state.step < totalSteps - 1) {
           setState({ step: state.step + 1 });
         } else {
           render();
         }
-      }, 240);
+      }, 600);
     }
 
     function reset() {
@@ -386,8 +387,11 @@
           return null;
         }
       }));
-      form.appendChild(renderField({ k: 'phone', t: 'Telefonnummer für Rückfragen', type: 'tel', ph: '+49 ___ ____', req: true, ac: 'tel', im: 'tel', full: true,
-        validator: function (v) { return (!v || v.trim().length < 5) ? 'Bitte Telefonnummer angeben.' : null; }
+      form.appendChild(renderField({ k: 'phone', t: 'Telefon (optional, für Rückfragen)', type: 'tel', ph: '+49 ___ ____', req: false, ac: 'tel', im: 'tel', full: true,
+        validator: function (v) {
+          if (!v || v.trim().length === 0) return null;
+          return v.trim().length < 5 ? 'Bitte vollständige Telefonnummer angeben.' : null;
+        }
       }));
 
       // Honeypot

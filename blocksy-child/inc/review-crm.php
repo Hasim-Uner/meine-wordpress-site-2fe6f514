@@ -1280,7 +1280,6 @@ function nexus_get_review_request_error_field( $code ) {
 		'missing_sales_team_size'     => 'sales_team_size',
 		'missing_portal_margin_loss'  => 'portal_margin_loss',
 		'missing_position'            => 'position',
-		'missing_phone'               => 'phone',
 		'invalid_postal_code'         => 'postal_code',
 		'invalid_postal_code_range'   => 'postal_code',
 		'missing_lead_volume'         => 'lead_volume',
@@ -1628,10 +1627,6 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 
 		if ( empty( $position ) ) {
 			return new WP_Error( 'missing_position', 'Bitte Ihre Position im Unternehmen angeben.' );
-		}
-
-		if ( empty( $phone ) ) {
-			return new WP_Error( 'missing_phone', 'Bitte eine Telefonnummer für Rückfragen angeben.' );
 		}
 
 		$lead_volume = in_array( $sales_team_size, [ 'more_than_five' ], true )
