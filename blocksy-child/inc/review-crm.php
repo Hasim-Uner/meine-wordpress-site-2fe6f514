@@ -1034,7 +1034,7 @@ function nexus_build_qualification_screen( $qualification, $validated, $post_id 
 			'status'                  => 'qualified',
 			'reason'                  => $qualification['reason'],
 			'headline'                => $headline,
-			'message'                 => 'Ihr System-Intake ist eingegangen. Ich prüfe Ihre Domain und Region persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.',
+			'message'                 => 'Ihr Marktcheck ist eingegangen. Ich prüfe Ihre Domain und Region persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.',
 			'ticket_id'               => $ticket,
 			'response_deadline_iso'   => $deadline['iso'],
 			'response_deadline_human' => $deadline['human'],

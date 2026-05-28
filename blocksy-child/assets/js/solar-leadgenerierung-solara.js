@@ -1,5 +1,5 @@
 /* solar-leadgenerierung-solara.js
-   SOLARA Landing — B2B System-Intake im Hero.
+   SOLARA Landing — B2B Marktcheck im Hero.
    3-stufige Progressive-Disclosure-Sequenz (Sales-Team → Portal-Streuverlust → Business-Daten).
    Submit → /wp-json/nexus/v1/audit-request (intake_variant=energy_systems).
    Success-Screen mit Cal.com-Direktbuchung + händischer 48h-Antwort.
@@ -43,7 +43,7 @@
     },
     {
       key: 'contact',
-      label: 'System-Intake',
+      label: 'Marktcheck',
       title: 'Daten-Integrität & Kontakt',
       hint: 'Erst nach den beiden Qualifikationsantworten öffnet sich der geschäftliche Datenpfad. Persönliche Rückmeldung garantiert in 48 Stunden.',
       kind: 'form'
@@ -364,7 +364,7 @@
       });
 
       var rationale = el('div', { className: 'sol-quiz-rationale', role: 'note' }, [
-        el('p', { className: 'sol-quiz-rationale-h' }, 'Daten-Integrität · Drittes Modul des System-Intakes'),
+        el('p', { className: 'sol-quiz-rationale-h' }, 'Daten-Integrität · Drittes Modul des Marktchecks'),
         el('p', { className: 'sol-quiz-rationale-b' },
           'Sie haben Ihre Vertriebsstruktur und Portal-Margenverluste skizziert — jetzt brauche ich die Firmen-Eckdaten, um Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch zu prüfen und den Befund an den richtigen Entscheider zu senden.')
       ]);
@@ -430,7 +430,7 @@
           trackFunnelStage: 'lead_capture_submit'
         }
       }, [
-        el('span', null, state.submitting ? 'Wird gesendet …' : 'Infrastruktur-Audit anfordern (System-Intake)'),
+        el('span', null, state.submitting ? 'Wird gesendet …' : 'Marktcheck anfordern'),
         el('span', { className: 'sol-quiz-submit-arrow', 'aria-hidden': 'true', html: ARROW_SVG })
       ]);
       form.appendChild(submitBtn);
@@ -446,7 +446,7 @@
       var qualification = state.qualification || { status: 'qualified', reason: 'sweet_spot' };
       var isNurture = qualification.status === 'nurture';
       var headline = qualification.headline || fallbackHeadline;
-      var message = qualification.message || 'Ihr System-Intake ist eingegangen. Ich prüfe Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.';
+      var message = qualification.message || 'Ihr Marktcheck ist eingegangen. Ich prüfe Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.';
       var ticketId = qualification.ticket_id || '';
       var deadlineHuman = qualification.response_deadline_human || '';
       var proof = (!isNurture && qualification.proof && typeof qualification.proof === 'object') ? qualification.proof : null;
@@ -537,7 +537,7 @@
         className: 'sol-quiz-back',
         style: 'margin-top:4px;text-decoration:underline;text-underline-offset:3px;',
         onClick: reset
-      }, 'System-Intake neu starten'));
+      }, 'Marktcheck neu starten'));
 
       return el('div', { className: 'sol-quiz-success' + (isNurture ? ' is-nurture' : '') }, children);
     }
@@ -550,7 +550,7 @@
       var head = el('div', { className: 'sol-cta-head' }, [
         el('span', { className: 'sol-cta-tag sol-mono' }, [
           el('span', { className: 'sol-cta-tag-dot', 'aria-hidden': 'true' }),
-          'System-Intake · händisch geprüft · Befund in 48 h'
+          'Marktcheck · händisch geprüft · Befund in 48 h'
         ]),
         el('span', { className: 'sol-cta-head-right sol-mono' }, 'Kostenfrei')
       ]);
@@ -735,7 +735,7 @@
     } catch (e) {
       // Intake failed to render — leave the SSR fallback in place so user can still see card & link.
       // (Mount is unchanged because we never cleared it.)
-      if (window && window.console) { window.console.warn('System-Intake render failed:', e); }
+      if (window && window.console) { window.console.warn('Marktcheck render failed:', e); }
     }
   }
 

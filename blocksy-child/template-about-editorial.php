@@ -146,7 +146,7 @@ get_header();
 
 			<!-- CTA -->
 			<footer class="about-editorial__cta-card">
-				<span class="about-editorial__cta-eyebrow">Exklusiver System-Intake</span>
+				<span class="about-editorial__cta-eyebrow">Exklusiver Marktcheck</span>
 				<h2 class="about-editorial__cta-title">Bereit für ein autarkes System?</h2>
 				<p class="about-editorial__cta-text">
 					Wir analysieren, wie viel Werbebudget aktuell in Portal-Lücken versickert und wie ein eigenes Anfrage-Kraftwerk für Ihren Betrieb aussehen muss.
