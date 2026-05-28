@@ -53,6 +53,8 @@ Global contract for agents in this repo. Keep context small: read this file, the
 
 Use `Founding Cohort 2026`, `Founding-Partner`, and `Founding-Konditionen` for the 2026 offer frame. Customer-facing forbidden terms live in `blocksy-child/inc/canon/messaging-canon.php`.
 
+For any task that touches offer logic, marketcheck framing, proof architecture, qualification, CTA economics, or the WGOS public/delivery boundary, load `agents/skills/offer-funnel-intelligence/SKILL.md` before changing copy or templates.
+
 ## Required Patterns
 
 Internal URLs:
