@@ -87,7 +87,7 @@ function nexus_get_review_primary_goal_options() {
 function nexus_get_audit_request_type_options() {
 	return [
 		'growth_audit'     => 'Marktcheck',
-		'b2b_system_intake' => 'B2B-System-Intake',
+		'b2b_system_intake' => 'Marktcheck',
 		'growth_blueprint' => 'Growth Blueprint',
 		'implementation'   => 'Umsetzung / Weiterentwicklung',
 	];
