@@ -190,7 +190,7 @@ get_header();
 				   data-track-action="cta_e3_case"
 				   data-track-category="b2b_solar_leads"
 				   data-track-section="hero">
-					E3-Case ansehen
+					E3-Case lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
 				</a>
 			</div>
 		</div>

@@ -137,12 +137,12 @@ get_header();
 
 	<section class="hu-intercept__hero" id="hero" aria-labelledby="hu-funnel-hero-title">
 		<div class="hu-intercept__container">
-			<p class="hu-intercept__eyebrow">Pillar-Page für interne Marketing- und Vertriebsleiter</p>
+			<p class="hu-intercept__eyebrow">Für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Mittelstand</p>
 			<h1 class="hu-intercept__title" id="hu-funnel-hero-title">
 				Lead-Funnel für Solar und Wärmepumpe: 5 Stufen, eine Strecke
 			</h1>
 			<p class="hu-intercept__lead">
-				Ein Lead-Funnel ist keine Sammlung von Tools – sondern eine durchgehende Strecke vom ersten Suchwort bis zum Auftragsabschluss. Diese Pillar-Page zeigt die Architektur, die im DACH-Mittelstand für Photovoltaik-, Wärmepumpen- und Speicher-Anbieter funktioniert.
+				Ein Lead-Funnel ist keine Sammlung von Tools – sondern eine durchgehende Strecke vom ersten Suchwort bis zum Auftragsabschluss. Die fünf Stufen unten zeigen die Architektur, die im DACH-Mittelstand für Photovoltaik-, Wärmepumpen- und Speicher-Anbieter funktioniert.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">
@@ -158,7 +158,7 @@ get_header();
 				   data-track-action="cta_e3_case"
 				   data-track-category="lead_funnel_solar"
 				   data-track-section="hero">
-					E3-Case ansehen
+					E3-Case lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
 				</a>
 			</div>
 		</div>

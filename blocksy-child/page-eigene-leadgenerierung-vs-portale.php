@@ -243,7 +243,7 @@ get_header();
 				   data-track-action="cta_e3_case"
 				   data-track-category="vergleich_portale"
 				   data-track-section="hero">
-					E3-Case ansehen
+					E3-Case lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
 				</a>
 			</div>
 			<p class="hu-intercept__hero-related" style="margin-top:18px;font-size:13.5px;opacity:.75;">
