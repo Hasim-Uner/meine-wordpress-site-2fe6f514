@@ -24,6 +24,8 @@ This is not a generic CRO checklist. It is the strategic revenue layer above cop
 bash agents/skills/offer-funnel-intelligence/scripts/scan-offer-funnel.sh
 ```
 
+The script ends with a traffic-light verdict per risk area. Treat any RED as a P0 blocker. Use `references/scoring-rubric.md` to score each of the ten dimensions from 0 to 10 before writing recommendations.
+
 ## Core Diagnosis
 
 Score the funnel as a business system, not as a page:
@@ -78,6 +80,10 @@ Score the funnel as a business system, not as a page:
 - Do not suggest A/B tests before identifying obvious clarity or qualification debt.
 - Do not create broad service catalogs. Preserve diagnosis-first funnel logic.
 - Do not change repo files unless explicitly asked. Prefer a P0/P1/P2 action plan first.
+
+## Scoring
+
+Before writing the report, score each of the ten dimensions from 0 to 10 using `references/scoring-rubric.md`. Show the score table at the top of the output. A score below 60/100 means stop paid traffic until P0s are fixed.
 
 ## Output Standard
 
