@@ -52,6 +52,7 @@ $modules = [
 	'seo-cockpit/seo-cockpit.php',    // Search Console basiertes SEO-Cockpit mit optionaler Koko-Erkennung
 	'enqueue.php',        // CSS/JS Asset-Management
 	'seo-meta.php',       // OG Tags, Canonical, Indexierungssteuerung
+	'seo-subpage-cluster-links.php', // Kontextuelle Querverlinkung des Solar/B2B-Clusters
 	'org-schema.php',     // JSON-LD Structured Data
 	'shortcodes.php',     // Startseiten-Shortcodes
 	'client-portal.php',  // Client Portal Dashboard
