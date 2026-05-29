@@ -378,6 +378,15 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 		);
 	}
 
+	// Solar/B2B-Cluster: gegenseitige Kontextlinks (siehe inc/seo-subpage-cluster-links.php).
+	if ( function_exists( 'hu_get_solar_cluster_related_links' ) ) {
+		foreach ( hu_get_solar_cluster_related_links( $post_slug ) as $cluster_link ) {
+			if ( ! empty( $cluster_link['url'] ) ) {
+				$links[] = (string) $cluster_link['url'];
+			}
+		}
+	}
+
 	return array_values(
 		array_unique(
 			nexus_normalize_seo_cockpit_internal_link_list( $links )
