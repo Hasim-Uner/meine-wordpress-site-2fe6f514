@@ -73,6 +73,15 @@ function hu_register_acf_fields() {
 				'default_value' => 0,
 				'ui'           => 1,
 			],
+			[
+				'key'           => 'field_enable_faq_schema',
+				'label'         => 'FAQ-Schema erzwingen',
+				'name'          => 'enable_faq_schema',
+				'type'          => 'true_false',
+				'instructions'  => 'Aktivieren, wenn der Beitrag F&A als Überschriften (H2–H4, die auf „?“ enden) statt als Akkordeon enthält. Erzeugt FAQPage-Schema auch ohne Standard-Markup. Nach dem Aktivieren einmal speichern.',
+				'default_value' => 0,
+				'ui'            => 1,
+			],
 		],
 		'location' => [
 			// Pages

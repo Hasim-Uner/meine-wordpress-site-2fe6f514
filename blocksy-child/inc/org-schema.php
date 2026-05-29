@@ -216,14 +216,16 @@ function hu_get_faq_schema_cache_meta_key() {
  * This runs on save_post so frontend requests can read cached JSON instead of
  * parsing full post content with regex on every request.
  *
- * @param string $raw_content Raw post content.
+ * @param string $raw_content        Raw post content.
+ * @param bool   $force_heading_faq  When true, also parse heading-based Q&A (H2–H4 ending with "?").
  * @return array<int, array<string, mixed>>
  */
-function hu_extract_faq_schema_entities_from_content( $raw_content ) {
+function hu_extract_faq_schema_entities_from_content( $raw_content, $force_heading_faq = false ) {
     $raw_content = (string) $raw_content;
 
     if (
-        false === stripos( $raw_content, 'faq-trigger' )
+        ! $force_heading_faq
+        && false === stripos( $raw_content, 'faq-trigger' )
         && false === stripos( $raw_content, 'faq-content' )
         && false === stripos( $raw_content, '<details' )
         && false === stripos( $raw_content, 'hu_faq' )
@@ -274,6 +276,19 @@ function hu_extract_faq_schema_entities_from_content( $raw_content ) {
         }
     }
 
+    // Opt-in: Überschrift-basierte FAQ (H2–H4, deren Text auf "?" endet → Frage, Folgeinhalt → Antwort).
+    if ( $force_heading_faq && preg_match_all( '/<h([2-4])[^>]*>(.*?)<\/h\1>(.*?)(?=<h[2-4][^>]*>|$)/is', $content, $heading_matches, PREG_SET_ORDER ) ) {
+        foreach ( $heading_matches as $match ) {
+            $question = trim( wp_strip_all_tags( $match[2] ) );
+
+            if ( '' === $question || ! preg_match( '/\?\s*$/u', $question ) ) {
+                continue;
+            }
+
+            $add_qa( $question, wp_strip_all_tags( $match[3] ) );
+        }
+    }
+
     return $faq_entities;
 }
 
@@ -293,8 +308,9 @@ function hu_update_post_faq_schema_cache( $post_id, $post ) {
         return;
     }
 
-    $faq_entities = hu_extract_faq_schema_entities_from_content( (string) $post->post_content );
-    $meta_key     = hu_get_faq_schema_cache_meta_key();
+    $force_heading_faq = (bool) get_post_meta( $post_id, 'enable_faq_schema', true );
+    $faq_entities      = hu_extract_faq_schema_entities_from_content( (string) $post->post_content, $force_heading_faq );
+    $meta_key          = hu_get_faq_schema_cache_meta_key();
 
     if ( empty( $faq_entities ) ) {
         delete_post_meta( $post_id, $meta_key );
