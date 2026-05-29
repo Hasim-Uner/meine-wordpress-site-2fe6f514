@@ -219,28 +219,28 @@ function hu_get_forced_singular_seo_map() {
 			// alte Service-Slugs bleiben noindex/sitemap-excluded, aber ohne erzwungene 301-Pflicht;
 			// /ki-integration-wordpress/ ist noindex. Keine eigenstaendigen SEO-Signale mehr noetig.
 			'solar-waermepumpen-leadgenerierung' => [
-				'title'       => 'Photovoltaik & Wärmepumpen Leadgenerierung – Portal-Alternative',
-				'description' => sprintf( 'B2B-Leadgenerierung für Solar, Wärmepumpe und Speicher: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3-Referenz: %s niedrigere Cost per Lead in 6 Monaten.', $e3_cpl_reduction ),
+				'title'       => 'Photovoltaik & Wärmepumpe: Leadgenerierung ohne Portale',
+				'description' => sprintf( 'B2B-Leadgenerierung für Solar & Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3: %s niedrigerer CPL in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
-				'title'       => 'Photovoltaik & Wärmepumpen Leadgenerierung – Portal-Alternative',
-				'description' => sprintf( 'B2B-Leadgenerierung für Solar, Wärmepumpe und Speicher: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3-Referenz: %s niedrigere Cost per Lead in 6 Monaten.', $e3_cpl_reduction ),
+				'title'       => 'Photovoltaik & Wärmepumpe: Leadgenerierung ohne Portale',
+				'description' => sprintf( 'B2B-Leadgenerierung für Solar & Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3: %s niedrigerer CPL in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'solar-leads-kaufen-alternative' => [
 				'title'       => 'Solar Leads kaufen? Warum eigene Anfragen den CPL senken',
-				'description' => sprintf( 'Portal-Leads für Photovoltaik und Wärmepumpe sind teuer und mehrfach verkauft. Eigene Anfrage-Systeme senken den Cost per Lead %s – wie bei E3 New Energy in 6 Monaten.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Portal-Leads für Photovoltaik & Wärmepumpe sind teuer und mehrfach verkauft. Eigene Anfrage-Systeme senken den CPL %s – Beispiel E3 in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'server-side-tracking-b2b' => [
 				'title'       => 'Server-Side Tracking für B2B-Leadgenerierung – DSGVO & CAPI',
-				'description' => 'Server-Side Tracking für B2B-Anfrage-Systeme: GA4, Meta CAPI, Consent Mode v2 auf eigenem Server in Frankfurt. Saubere Attribution trotz Cookieless und Ad-Blockern.',
+				'description' => 'Server-Side Tracking für B2B-Anfrage-Systeme: GA4, Meta CAPI & Consent Mode v2 auf eigenem Server. Saubere Attribution trotz Cookieless und Ad-Blockern.',
 			],
 			'b2b-solar-leads' => [
-				'title'       => 'B2B Solar Leads für gewerbliche PV-Projekte – kein Mengen-Lead',
-				'description' => 'B2B-Leadgenerierung für gewerbliche Photovoltaik: Hallendächer, Quartierskonzepte, PPA. Eigenes Anfrage-System für Buying-Center-Verkäufe, nicht für Mengen-Leads.',
+				'title'       => 'B2B Solar Leads: gewerbliche PV-Projekte statt Masse',
+				'description' => 'B2B-Leadgenerierung für gewerbliche Photovoltaik: Hallendächer, Quartierskonzepte, PPA. Eigenes Anfrage-System für Buying-Center, nicht Mengen-Leads.',
 			],
 			'eigene-leadgenerierung-vs-portale' => [
-				'title'       => 'Portal-Leads vs. eigenes Anfrage-System: 24-Monats-TCO für Solar & SHK',
-				'description' => sprintf( 'TCO-Vergleich über 24 Monate: Portal-Leads (DAA, Aroundhome, Check24) gegen eigenes Anfrage-System. CAPEX-Investment, Asset-Eigentum, Exklusivität. E3-Referenz: %s niedrigere Cost per Lead in 6 Monaten.', $e3_cpl_reduction ),
+				'title'       => 'Portal-Leads vs. eigenes System: TCO-Vergleich Solar/SHK',
+				'description' => sprintf( '24-Monats-TCO: Portal-Leads (DAA, Aroundhome, Check24) vs. eigenes Anfrage-System. E3: %s niedrigerer CPL in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'lead-funnel-solar' => [
 				'title'       => 'Lead-Funnel Solar & Wärmepumpe – Aufbau für B2B-Marketing',
@@ -248,15 +248,15 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'kunden-gewinnen-solarteure' => [
 				'title'       => 'Kunden gewinnen für Solarteure – ohne Portal-Leads',
-				'description' => sprintf( 'Wie Solarteure und Wärmepumpen-Anbieter im DACH-Mittelstand systematisch Kunden gewinnen – ohne DAA, Aroundhome oder Check24. E3-Referenz: %s niedrigere Cost per Lead.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Wie Solarteure & Wärmepumpen-Anbieter systematisch Kunden gewinnen – ohne DAA, Aroundhome oder Check24. E3: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'cost-per-lead-photovoltaik' => [
 				'title'       => 'Cost per Lead Photovoltaik: Was Solar-Anfragen wirklich kosten',
 				'description' => sprintf( 'CPL-Rechnung für Photovoltaik- und Wärmepumpen-Anbieter: Portal-Leads vs. eigenes System. E3-Referenz: %s niedrigere Kosten pro Anfrage in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'qualifizierte-pv-anfragen' => [
-				'title'       => 'Qualifizierte PV-Anfragen: 4 Merkmale für hochwertige Solar-Leads',
-				'description' => 'Vier Merkmale, an denen sich eine qualifizierte Photovoltaik-Anfrage erkennen lässt: Intent, Exklusivität, Vorqualifizierung, Echtzeit. Mit Praxisbezug E3 New Energy.',
+				'title'       => 'Qualifizierte PV-Anfragen: 4 Merkmale guter Solar-Leads',
+				'description' => 'Vier Merkmale einer qualifizierten Photovoltaik-Anfrage: Intent, Exklusivität, Vorqualifizierung, Echtzeit. Mit Praxisbezug E3 New Energy.',
 			],
 		]
 	);
@@ -734,7 +734,7 @@ function hu_get_e3_methodology_case_title() {
  * @return string
  */
 function hu_get_e3_methodology_case_description() {
-	return 'Wie E3 New Energy durch eigenes Anfrage-System statt Portal-Leads den CPL um über 85 % gesenkt hat: 1.750+ qualifizierte Photovoltaik- und Wärmepumpen-Anfragen, 12 % Abschlussquote, 6 Monate.';
+	return 'E3 New Energy senkte den CPL mit eigenem Anfrage-System statt Portal-Leads um über 85 %: 1.750+ qualifizierte PV- & Wärmepumpen-Anfragen, 12 % Abschluss.';
 }
 
 /**
