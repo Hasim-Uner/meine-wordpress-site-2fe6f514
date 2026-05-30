@@ -293,6 +293,7 @@ function hu_enqueue_assets() {
 		'kunden-gewinnen-solarteure'        => 'page-kunden-gewinnen-solarteure.php',
 		'cost-per-lead-photovoltaik'        => 'page-cost-per-lead-photovoltaik.php',
 		'qualifizierte-pv-anfragen'         => 'page-qualifizierte-pv-anfragen.php',
+		'solar-leads-kosten-studie'         => 'page-solar-leads-kosten-studie.php',
 		'stack-solar'                       => 'page-stack-solar.php',
 		'stack-agentur'                     => 'page-stack-agentur.php',
 	];

@@ -148,6 +148,11 @@ function nexus_get_llms_txt_sections() {
 			'heading' => 'Solar- und Wärmepumpen-Leadgenerierung: Themen-Cluster',
 			'links'   => [
 				[
+					'label'       => 'Was kosten Solar-Leads? (Marktstudie)',
+					'url'         => home_url( '/solar-leads-kosten-studie/' ),
+					'description' => 'Zitierfähige Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen je Modell, Cost-per-Order statt Cost-per-Lead, Methodik und Benchmark.',
+				],
+				[
 					'label'       => 'Solar Leads kaufen – Alternative',
 					'url'         => home_url( '/solar-leads-kaufen-alternative/' ),
 					'description' => 'Intercept-Page für den Kauf-Suchintent: Markteinordnung der Lead-Anbieter und Argumentation für eigene Anfrage-Systeme.',
