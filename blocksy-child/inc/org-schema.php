@@ -388,7 +388,7 @@ function hu_output_schema()
         'sameAs' => [
             'https://www.linkedin.com/in/hasim-%C3%BCner/',
             'https://www.facebook.com/hasim.uner',
-            'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514',
+            'https://github.com/Hasim-Uner/',
             $google_maps_url,
         ],
         'hasMap' => $google_maps_url,
