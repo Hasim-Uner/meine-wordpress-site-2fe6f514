@@ -465,6 +465,13 @@ get_header();
 			],
 		];
 
+		if ( function_exists( 'hu_get_post_schema_image_object' ) ) {
+			$cornerstone_article_image = hu_get_post_schema_image_object( get_the_ID() );
+			if ( is_array( $cornerstone_article_image ) ) {
+				$article_schema['image'] = $cornerstone_article_image;
+			}
+		}
+
 			$faq_schema = [
 				'@context'   => 'https://schema.org',
 				'@type'      => 'FAQPage',

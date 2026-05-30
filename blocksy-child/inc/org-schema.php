@@ -1159,6 +1159,11 @@ function hu_output_schema()
                     $agentur_article['dateModified'] = $agentur_modified_date;
                 }
 
+                $agentur_article_image = hu_get_post_schema_image_object( $post_id );
+                if ( is_array( $agentur_article_image ) ) {
+                    $agentur_article['image'] = $agentur_article_image;
+                }
+
                 $schemas[] = $agentur_article;
             }
         }
@@ -1293,6 +1298,11 @@ function hu_output_schema()
 
             if ( $modified_date ) {
                 $e3_article['dateModified'] = $modified_date;
+            }
+
+            $e3_article_image = hu_get_post_schema_image_object( $post_id );
+            if ( is_array( $e3_article_image ) ) {
+                $e3_article['image'] = $e3_article_image;
             }
 
             $schemas[] = $e3_article;
