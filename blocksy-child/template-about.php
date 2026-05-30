@@ -92,8 +92,8 @@ $about_fit_points = [
 		's' => 'Echte Spezialisierung. Keine branchenübergreifenden Experimente, keine B2B-Generalisten-Lösungen.',
 	],
 	[
-		't' => 'Fest angestelltes Vertriebsteam (min. 2 Personen).',
-		's' => 'Das System erzeugt exklusive, hochpreisige Anfragen. Das verlangt strukturierte Bearbeitung — keine Ein-Mann-Betriebe.',
+		't' => 'Eigener, funktionierender Vertrieb.',
+		's' => 'Das System erzeugt exklusive, hochpreisige Anfragen. Die müssen konsequent bearbeitet werden — durch ein Vertriebsteam oder eine abschlussstarke Geschäftsführung, nicht durch reine Vermittlung.',
 	],
 	[
 		't' => 'Verständnis für Infrastruktur statt Landingpage.',

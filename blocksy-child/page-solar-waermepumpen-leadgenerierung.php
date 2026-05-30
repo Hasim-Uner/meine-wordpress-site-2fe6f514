@@ -990,12 +990,12 @@ get_header();
 		<section class="sol-section" id="ergebnisse" data-track-section="results">
 			<div class="sol-wrap sol-results-inner">
 				<div class="sol-results-text">
-					<div class="sol-eyebrow">Was die Diagnose liefert</div>
+					<div class="sol-eyebrow">Schritt 2 · Tiefendiagnose (verrechenbar)</div>
 					<h2 class="sol-display sol-results-h">
 						Klarheit, keine <em>Folien</em>.
 					</h2>
 					<p class="sol-results-sub">
-						Vier Module · schriftlicher Befund nach 7 Werktagen · drei priorisierte Hebel · eine Wirtschaftlichkeits-Einordnung — als belastbare Entscheidungsgrundlage, nicht als Pitch-Deck.
+						Nach dem kostenlosen Marktcheck (Befund in 48 h) folgt optional die verrechenbare Tiefendiagnose: vier Module · schriftlicher Befund in 7 Werktagen · drei priorisierte Hebel · eine Wirtschaftlichkeits-Einordnung — belastbare Entscheidungsgrundlage statt Pitch-Deck.
 					</p>
 					<ul class="sol-results-list">
 						<?php foreach ( $results_qualifiers as $row ) : ?>

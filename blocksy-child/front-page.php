@@ -331,8 +331,8 @@ get_header();
 					<div class="hu-loss-card__title">Taubes Tracking</div>
 					<div class="hu-loss-card__bracket">Die Daten-Lücke</div>
 					<p class="hu-loss-card__body">
-						Standard-Analytics zählt Klicks — kennt aber keine Abschlussquote durch attributionssichere
-						First-Party-Daten. Ergebnis: Budget wird blind auf falsche Kanäle verteilt.
+						Standard-Analytics zählt Klicks — sagt aber nicht, welche Anfrage am Ende zum Auftrag wurde.
+						Ergebnis: Budget wird blind auf falsche Kanäle verteilt.
 					</p>
 				</article>
 
@@ -348,11 +348,11 @@ get_header();
 
 				<article class="hu-loss-card hu-reveal">
 					<div class="hu-loss-card__num hu-mono">VERLUSTPUNKT 03</div>
-					<div class="hu-loss-card__title">Funnel-Bloat</div>
+					<div class="hu-loss-card__title">Überladene Website</div>
 					<div class="hu-loss-card__bracket">Die Conversion-Bremse</div>
 					<p class="hu-loss-card__body">
-						Komplexe Themes und unkoordinierte Plugins verlangsamen die WordPress-Performance
-						(INP/LCP-Verfall) und jagen kaufnahe Besucher in Sackgassen — statt Abschlüsse vorzubereiten.
+						Komplexe Themes und unkoordinierte Plugins machen die Website langsam und träge —
+						und jagen kaufnahe Besucher in Sackgassen, statt Abschlüsse vorzubereiten.
 					</p>
 				</article>
 			</div>
