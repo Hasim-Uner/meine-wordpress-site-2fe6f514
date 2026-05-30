@@ -273,7 +273,13 @@
   align-items: center;
   gap: 18px;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+}
+.hu-hp .hu-hero__cta-note {
+  color: var(--fg-2);
+  font-size: 13px;
+  margin: 0 0 24px;
+  opacity: 0.85;
 }
 .hu-hp .hu-hero__bullets {
   list-style: none;
