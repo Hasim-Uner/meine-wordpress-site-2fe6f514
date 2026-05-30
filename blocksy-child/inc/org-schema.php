@@ -25,6 +25,27 @@ function hu_person_same_as_urls() {
 }
 
 /**
+ * Canonical Google Business Profile (Maps) place URL for the brand.
+ *
+ * @return string
+ */
+function hu_brand_map_url() {
+    return 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfrage-Systeme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
+}
+
+/**
+ * sameAs profile set for the business entities (Organization, LocalBusiness,
+ * ProfessionalService). Mirrors the person profiles and adds the Google
+ * Business Profile place, so every business node exposes one consistent set
+ * instead of drifting subsets.
+ *
+ * @return array<int, string>
+ */
+function hu_business_same_as_urls() {
+    return array_merge( hu_person_same_as_urls(), [ hu_brand_map_url() ] );
+}
+
+/**
  * Return a pure @id reference to the canonical Person node.
  *
  * The full Person node is emitted once site-wide by hu_output_schema(), so all
@@ -540,7 +561,7 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
 
 function hu_output_schema()
 {
-    $google_maps_url = 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfrage-Systeme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
+    $google_maps_url = hu_brand_map_url();
 
     // Organization / LocalBusiness schema
     $org = [
@@ -580,12 +601,7 @@ function hu_output_schema()
                 'closes'    => '16:00'
             ],
         ],
-        'sameAs' => [
-            'https://www.linkedin.com/in/hasim-%C3%BCner/',
-            'https://www.facebook.com/hasim.uner',
-            'https://github.com/Hasim-Uner/',
-            $google_maps_url,
-        ],
+        'sameAs' => hu_business_same_as_urls(),
         'hasMap' => $google_maps_url,
         'knowsAbout' => [
             'WordPress',
@@ -1083,12 +1099,7 @@ function hu_output_schema()
                         'B2B Lead Generation',
                     ],
                     'knowsLanguage' => ['de', 'en', 'tr'],
-                    'sameAs'        => [
-                        'https://www.linkedin.com/in/hasim-%C3%BCner/',
-                        'https://github.com/Hasim-Uner/',
-                        'https://hasimuener.org/',
-                        $google_maps_url,
-                    ],
+                    'sameAs'        => hu_business_same_as_urls(),
                     'openingHoursSpecification' => [
                         [
                             '@type'     => 'OpeningHoursSpecification',
