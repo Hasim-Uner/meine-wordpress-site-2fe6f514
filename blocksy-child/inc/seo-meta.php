@@ -587,19 +587,15 @@ function hu_is_e3_methodology_case_page() {
 }
 
 /**
- * Return the canonical Person entity used as author across the theme.
+ * Return a pure @id reference to the canonical Person entity used as author.
  *
- * @return array<string, mixed>
+ * The full Person node is emitted site-wide by hu_output_schema(), so callers
+ * only reference it by @id rather than repeating an inline Person object.
+ *
+ * @return array<string, string>
  */
 function hu_get_canonical_author_person() {
-	return [
-		'@type'       => 'Person',
-		'@id'         => home_url( '/uber-mich/#person' ),
-		'name'        => 'Haşim Üner',
-		'url'         => home_url( '/uber-mich/' ),
-		'jobTitle'    => 'Architekt für eigene Anfrage-Systeme',
-		'description' => 'Haşim Üner verbindet Vertriebsverständnis aus dem Bau- und Energiesektor mit Medienwissenschaft, WordPress-Technik, Tracking und CRO für eigene Anfrage-Systeme.',
-	];
+	return [ '@id' => home_url( '/uber-mich/#person' ) ];
 }
 
 /**

@@ -24,21 +24,58 @@ function hu_person_same_as_urls() {
     ];
 }
 
+/**
+ * Return a pure @id reference to the canonical Person node.
+ *
+ * The full Person node is emitted once site-wide by hu_output_schema(), so all
+ * author/founder/reviewedBy/mainEntity usages only need to reference it by @id
+ * instead of repeating an inline (and potentially divergent) Person object.
+ * Parameters are kept for backward compatibility with existing call sites; the
+ * canonical node owns every property.
+ *
+ * @param bool   $include_same_as Unused. Kept for backward compatibility.
+ * @param string $name            Unused. Kept for backward compatibility.
+ * @return array<string, string>
+ */
 function hu_person_schema_ref( $include_same_as = false, $name = 'Haşim Üner' ) {
-    $person = [
+    return [ '@id' => hu_person_schema_id() ];
+}
+
+/**
+ * Build the canonical Person node for the site.
+ *
+ * Emitted once per request (site-wide) so every @id reference resolves to a
+ * single authoritative entity.
+ *
+ * @return array<string, mixed>
+ */
+function hu_get_person_node() {
+    return [
+        '@context'    => 'https://schema.org',
         '@type'       => 'Person',
         '@id'         => hu_person_schema_id(),
-        'name'        => function_exists( 'hu_normalize_brand_text' ) ? hu_normalize_brand_text( (string) $name ) : (string) $name,
-        'url'         => hu_person_profile_url(),
+        'name'        => 'Haşim Üner',
         'jobTitle'    => 'Architekt für eigene Anfrage-Systeme',
-        'description' => 'Haşim Üner verbindet Vertriebsverständnis aus dem Bau- und Energiesektor mit Medienwissenschaft, WordPress-Technik, Tracking und CRO für eigene Anfrage-Systeme.',
+        'url'         => hu_person_profile_url(),
+        'image'       => hu_get_profile_image_url(),
+        'worksFor'    => [ '@id' => home_url( '/#organization' ) ],
+        'sameAs'      => hu_person_same_as_urls(),
+        'description' => 'Architekt für eigene Anfrage-Systeme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum. Haşim Üner verbindet Bauunternehmer-DNA, Vertriebspraxis und Medienwissenschaft mit WordPress, Tracking, Vorqualifizierung und Werbekanal-Steuerung.',
+        'alumniOf'    => [
+            '@type'  => 'CollegeOrUniversity',
+            'name'   => 'Universität Paderborn',
+            'sameAs' => 'https://de.wikipedia.org/wiki/Universit%C3%A4t_Paderborn',
+        ],
+        'knowsAbout'  => [
+            'B2B-Vertrieb',
+            'Solar- und Wärmepumpen-Leadgenerierung',
+            'WordPress',
+            'Technisches SEO',
+            'Server-Side Tracking',
+            'Conversion Rate Optimization',
+            'Medienwissenschaft',
+        ],
     ];
-
-    if ( $include_same_as ) {
-        $person['sameAs'] = hu_person_same_as_urls();
-    }
-
-    return $person;
 }
 
 /**
@@ -662,7 +699,9 @@ function hu_output_schema()
         ],
     ];
 
-    $schemas = [$org, $website];
+    // Canonical Person node — emitted site-wide so every author/founder @id
+    // reference resolves to one authoritative entity instead of inline copies.
+    $schemas = [$org, $website, hu_get_person_node()];
 
     $archive_collection = hu_get_blog_archive_collection_schema();
     if ( is_array( $archive_collection ) ) {
@@ -1160,35 +1199,9 @@ function hu_output_schema()
             }
         }
 
-        // Über mich: Person + ProfilePage
+        // Über mich: ProfilePage referencing the canonical Person node, which
+        // is emitted site-wide — no second inline Person needed here.
         if ($slug === 'uber-mich') {
-            $person = [
-                '@context' => 'https://schema.org',
-                '@type'    => 'Person',
-                '@id'      => hu_person_schema_id(),
-                'name'     => 'Haşim Üner',
-                'jobTitle' => 'Architekt für eigene Anfrage-Systeme',
-                'url'      => hu_person_profile_url(),
-                'image'    => hu_get_profile_image_url(),
-                'worksFor' => ['@id' => home_url('/#organization')],
-                'sameAs'   => hu_person_same_as_urls(),
-                'description' => 'Architekt für eigene Anfrage-Systeme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum. Haşim Üner verbindet Bauunternehmer-DNA, Vertriebspraxis und Medienwissenschaft mit WordPress, Tracking, Vorqualifizierung und Werbekanal-Steuerung.',
-                'alumniOf' => [
-                    '@type' => 'CollegeOrUniversity',
-                    'name'  => 'Universität Paderborn',
-                    'sameAs' => 'https://de.wikipedia.org/wiki/Universit%C3%A4t_Paderborn',
-                ],
-                'knowsAbout' => [
-                    'B2B-Vertrieb',
-                    'Solar- und Wärmepumpen-Leadgenerierung',
-                    'WordPress',
-                    'Technisches SEO',
-                    'Server-Side Tracking',
-                    'Conversion Rate Optimization',
-                    'Medienwissenschaft',
-                ],
-            ];
-
             $profilePage = [
                 '@context' => 'https://schema.org',
                 '@type'    => 'ProfilePage',
@@ -1200,7 +1213,6 @@ function hu_output_schema()
                 'about'    => ['@id' => hu_person_schema_id()]
             ];
 
-            $schemas[] = $person;
             $schemas[] = $profilePage;
         }
 
