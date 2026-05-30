@@ -119,7 +119,7 @@ $why_portals_fail = [
 $market_models = [
 	[
 		't' => 'Geteilte Datensätze',
-		's' => 'Eine Endkundenanfrage wird parallel an 3–5 Solarteure verkauft. Marktbreit etablierte Mengenmodelle (z. B. Aroundhome, DAA, Wattfox in Teilen). Preis pro Datensatz niedriger, Wettbewerb höher.',
+		's' => 'Eine Endkundenanfrage wird parallel an drei Solarteure verkauft. Marktbreit etablierte Mengenmodelle (z. B. Aroundhome, DAA, Wattfox in Teilen). Preis pro Datensatz niedriger, Wettbewerb höher.',
 	],
 	[
 		't' => 'Exklusive Datensätze',
@@ -254,7 +254,7 @@ get_header();
 				Sie wollen Solar Leads kaufen? Eigene Anfragen senken den CPL um <?php echo esc_html( $e3_cpl_reduction ); ?>.
 			</h1>
 			<p class="hu-intercept__lead">
-				Portal-Leads für Photovoltaik und Wärmepumpe kosten <strong>60 – 120 €</strong>, werden bis zu fünfmal an Wettbewerber weiterverkauft und schließen typischerweise nur bei <strong><?php echo esc_html( $e3_conv_before ); ?></strong>. Bei <?php echo esc_html( $e3_case_label ); ?> stieg die Abschlussquote im eigenen System auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> — der Cost per Lead fiel parallel von <strong><?php echo esc_html( $e3_cpl_before ); ?></strong> auf <strong><?php echo esc_html( $e3_cpl_after ); ?></strong> in <strong><?php echo esc_html( $e3_timeframe ); ?></strong>.
+				Portal-Leads für Photovoltaik und Wärmepumpe kosten <strong>60 – 120 €</strong>, werden parallel an drei Wettbewerber verkauft und schließen typischerweise nur bei <strong><?php echo esc_html( $e3_conv_before ); ?></strong>. Bei <?php echo esc_html( $e3_case_label ); ?> stieg die Abschlussquote im eigenen System auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> — der Cost per Lead fiel parallel von <strong><?php echo esc_html( $e3_cpl_before ); ?></strong> auf <strong><?php echo esc_html( $e3_cpl_after ); ?></strong> in <strong><?php echo esc_html( $e3_timeframe ); ?></strong>.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">

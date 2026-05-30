@@ -71,7 +71,7 @@ $hidden_cost_drivers = [
 	],
 	[
 		't' => 'Bieter-Wettlauf',
-		's' => 'Bei 3–5 parallel verkauften Datensätzen drücken Wettbewerber den Preis. Selbst wenn Sie zuschlagen, sinkt die Marge.',
+		's' => 'Bei drei parallel verkauften Datensätzen drücken Wettbewerber den Preis. Selbst wenn Sie zuschlagen, sinkt die Marge.',
 	],
 	[
 		't' => 'Nachqualifizierung',

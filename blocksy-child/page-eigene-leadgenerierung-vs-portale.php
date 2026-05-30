@@ -76,7 +76,7 @@ $own_facts = [
 $comparison_rows = [
 	[
 		'criterion' => 'Exklusivität der Anfrage',
-		'rent'      => '3 – 5 Wettbewerber bekommen denselben Datensatz',
+		'rent'      => 'drei Wettbewerber bekommen denselben Datensatz',
 		'own'       => '100 % exklusiv – nur Ihr Betrieb erhält die Anfrage',
 	],
 	[
