@@ -402,7 +402,7 @@ get_header();
 				<span class="hu-eyebrow" style="color:var(--ink-2)">04 / System-Phasen</span>
 				<div>
 					<h2 style="color:var(--ink)">WordPress, SEO, Tracking und CRO — in der richtigen Reihenfolge.</h2>
-					<p class="hu-lead" style="color:var(--ink-2)">Sechs Phasen, eine Methodik. Welche Phase zuerst greift, entscheidet der Marktcheck — nicht der Katalog.</p>
+					<p class="hu-lead" style="color:var(--ink-2)">Die drei Schritte oben sind das Prinzip — diese sechs Phasen das Handwerk dahinter. Welche zuerst greift, entscheidet der Marktcheck, nicht der Katalog.</p>
 				</div>
 			</div>
 
