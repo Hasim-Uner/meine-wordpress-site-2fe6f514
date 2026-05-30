@@ -343,6 +343,104 @@ function hu_get_cached_post_faq_schema_entities( $post_id ) {
     return is_array( $decoded ) ? $decoded : [];
 }
 
+/**
+ * Build a generic WebPage node that anchors a singular view in the graph.
+ *
+ * Pages that already emit a dedicated WebPage subtype (ProfilePage, AboutPage,
+ * CollectionPage, or the bespoke agentur WebPage) provide their own page node
+ * and are skipped here to avoid two page entities describing one URL.
+ *
+ * @param int    $post_id Queried post ID.
+ * @param string $slug    Post slug.
+ * @return array<string, mixed>|null
+ */
+function hu_build_generic_webpage_schema( $post_id, $slug ) {
+    if ( ! $post_id ) {
+        return null;
+    }
+
+    // Slugs whose templates already emit a WebPage-subtype page node.
+    $page_subtype_slugs = [
+        'uber-mich',                  // ProfilePage
+        'wordpress-agentur-hannover', // WebPage
+        'case-studies',               // CollectionPage
+        'case-studies-e-commerce',    // CollectionPage
+        'ergebnisse',                 // CollectionPage
+        'whitelabel-retainer',        // AboutPage
+        'whitelabel-retainer-proof',  // AboutPage
+        'whitelabel',                 // AboutPage
+    ];
+
+    if ( in_array( $slug, $page_subtype_slugs, true ) ) {
+        return null;
+    }
+
+    $permalink = get_permalink( $post_id );
+
+    if ( ! $permalink ) {
+        return null;
+    }
+
+    $base        = trailingslashit( $permalink );
+    $title       = get_the_title( $post_id );
+    $excerpt     = get_the_excerpt( $post_id );
+    $description = $excerpt ? wp_strip_all_tags( $excerpt ) : wp_strip_all_tags( $title );
+
+    $type = 'WebPage';
+    if ( in_array( $slug, [ 'kontakt', 'anfrage' ], true ) ) {
+        $type = 'ContactPage';
+    }
+
+    $webpage = [
+        '@context'    => 'https://schema.org',
+        '@type'       => $type,
+        '@id'         => $base . '#webpage',
+        'url'         => $permalink,
+        'name'        => $title,
+        'description' => $description,
+        'inLanguage'  => 'de',
+        'isPartOf'    => [ '@id' => home_url( '/#website' ) ],
+    ];
+
+    if ( is_front_page() ) {
+        $webpage['about'] = [ '@id' => home_url( '/#organization' ) ];
+    }
+
+    $published = get_post_time( DATE_W3C, true, $post_id );
+    $modified  = get_post_modified_time( DATE_W3C, true, $post_id );
+
+    if ( $published ) {
+        $webpage['datePublished'] = $published;
+    }
+
+    if ( $modified ) {
+        $webpage['dateModified'] = $modified;
+    }
+
+    $image = get_the_post_thumbnail_url( $post_id, 'full' );
+    if ( $image ) {
+        $webpage['primaryImageOfPage'] = [
+            '@type' => 'ImageObject',
+            'url'   => $image,
+        ];
+    }
+
+    // Reference the BreadcrumbList only when the global breadcrumb is actually
+    // emitted for this view; otherwise the reference would dangle.
+    if ( hu_should_output_global_breadcrumb_schema() ) {
+        $webpage['breadcrumb'] = [ '@id' => $base . '#breadcrumb' ];
+    }
+
+    // Link the page container to its primary content entity where one is
+    // deterministically emitted for this view. Additional links (e.g. service
+    // pages) are attached by the caller, which already knows what was emitted.
+    if ( is_singular( 'post' ) ) {
+        $webpage['mainEntity'] = [ '@id' => $base . '#blogposting' ];
+    }
+
+    return $webpage;
+}
+
 function hu_output_schema()
 {
     $google_maps_url = 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfrage-Systeme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
@@ -481,7 +579,30 @@ function hu_output_schema()
         ],
     ];
 
-    $schemas = [$org];
+    // WebSite schema — root node of the knowledge graph.
+    // Multiple schemas (blog/category CollectionPage, agentur WebPage,
+    // Ergebnisse CollectionPage) reference this node via isPartOf, so it must
+    // exist site-wide; otherwise those references dangle.
+    $website = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'WebSite',
+        '@id'         => home_url('/#website'),
+        'url'         => home_url('/'),
+        'name'        => 'Haşim Üner | Architekt für eigene Anfrage-Systeme',
+        'description' => 'Architekt für eigene Anfrage-Systeme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',
+        'inLanguage'  => 'de',
+        'publisher'   => ['@id' => home_url('/#organization')],
+        'potentialAction' => [
+            '@type'       => 'SearchAction',
+            'target'      => [
+                '@type'       => 'EntryPoint',
+                'urlTemplate' => home_url('/?s={search_term_string}'),
+            ],
+            'query-input' => 'required name=search_term_string',
+        ],
+    ];
+
+    $schemas = [$org, $website];
 
     $archive_collection = hu_get_blog_archive_collection_schema();
     if ( is_array( $archive_collection ) ) {
@@ -1038,7 +1159,7 @@ function hu_output_schema()
                 '@context'         => 'https://schema.org',
                 '@type'            => 'BlogPosting',
                 '@id'              => trailingslashit( $post_permalink ) . '#blogposting',
-                'mainEntityOfPage' => $post_permalink,
+                'mainEntityOfPage' => [ '@id' => trailingslashit( $post_permalink ) . '#webpage' ],
                 'headline'         => get_the_title( $post_id ),
                 'description'      => $post_description,
                 'datePublished'    => $published_date,
@@ -1170,6 +1291,17 @@ function hu_output_schema()
                 }
             }
         }
+
+        // Generic WebPage container — anchors this view in the knowledge graph
+        // for the long tail of pages without a dedicated page-type node.
+        $generic_webpage = hu_build_generic_webpage_schema( $post_id, $slug );
+        if ( is_array( $generic_webpage ) ) {
+            if ( empty( $generic_webpage['mainEntity'] ) && $slug && array_key_exists( $slug, $service_definitions ) ) {
+                $generic_webpage['mainEntity'] = [ '@id' => home_url( '/' . $slug . '/#service' ) ];
+            }
+
+            $schemas[] = $generic_webpage;
+        }
     }
 
     // ── BreadcrumbList Schema ─────────────────────────────────────
@@ -1286,11 +1418,23 @@ function hu_output_schema()
         }
 
         if ( count( $breadcrumb_items ) > 1 ) {
-            $schemas[] = [
+            $breadcrumb_schema = [
                 '@context'        => 'https://schema.org',
                 '@type'           => 'BreadcrumbList',
                 'itemListElement' => $breadcrumb_items,
             ];
+
+            // Stable @id so the generic WebPage node can reference this
+            // breadcrumb on singular views.
+            $bc_object_id = get_queried_object_id();
+            if ( is_singular() && $bc_object_id ) {
+                $bc_permalink = get_permalink( $bc_object_id );
+                if ( $bc_permalink ) {
+                    $breadcrumb_schema['@id'] = trailingslashit( $bc_permalink ) . '#breadcrumb';
+                }
+            }
+
+            $schemas[] = $breadcrumb_schema;
         }
     }
 
