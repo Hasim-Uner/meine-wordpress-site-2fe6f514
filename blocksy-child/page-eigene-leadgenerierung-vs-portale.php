@@ -188,7 +188,7 @@ $service_schema = [
 	'serviceType' => 'Anfrage-System für Solar, Wärmepumpe und Speicher – Alternative zu DAA, Aroundhome, Check24',
 	'url'         => $page_url,
 	'description' => sprintf( 'Vergleich Portal-Leads vs. eigenes Anfrage-System für Solar- und Wärmepumpen-Anbieter. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
-	'provider'    => $author_person,
+	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 	'areaServed'  => [
 		[ '@type' => 'Country', 'name' => 'Deutschland' ],

@@ -129,7 +129,7 @@ $service_schema = [
 	'serviceType' => 'Systematische Kundenakquise für Photovoltaik-, Wärmepumpen- und Speicher-Anbieter',
 	'url'         => $page_url,
 	'description' => sprintf( 'Anfrage-System für Solarteure im DACH-Mittelstand. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
-	'provider'    => $author_person,
+	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 ];
 

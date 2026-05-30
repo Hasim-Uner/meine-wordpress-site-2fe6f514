@@ -130,7 +130,7 @@ $service_schema = [
 	'serviceType' => 'Anfrage-System für gewerbliche PV-, Speicher- und PPA-Anbieter',
 	'url'         => $page_url,
 	'description' => sprintf( 'Buying-Center-taugliche Anfrage-Architektur für gewerbliche Photovoltaik-Projekte. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
-	'provider'    => $author_person,
+	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 	'audience'    => [
 		'@type'        => 'Audience',

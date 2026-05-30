@@ -214,7 +214,7 @@ $service_schema = [
 	'serviceType' => 'Alternative zu Lead-Portalen: Aufbau eigener B2B-Anfrage-Infrastruktur',
 	'url'         => $page_url,
 	'description' => sprintf( 'Aufbau eines eigenen Anfrage-Systems für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
-	'provider'    => $author_person,
+	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 	'areaServed'  => [
 		[ '@type' => 'Country', 'name' => 'Deutschland' ],
