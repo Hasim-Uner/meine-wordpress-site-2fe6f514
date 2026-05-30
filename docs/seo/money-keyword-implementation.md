@@ -1,6 +1,26 @@
 # Money-Keyword-Fit und Implementierungsstrategie
 
-Stand: 2026-04-06.
+Stand: 2026-04-06. Status-Korrektur: 2026-05-30.
+
+> **Hinweis — teilweise überholt.** Dieses Dokument entstand vor dem Schwenk auf die
+> Positionierung „Leadgenerierung für Solar-, Wärmepumpen- und Speicher-Anbieter". Die
+> Keyword-Logik (Money- vs. Mid-Funnel- vs. schwache Keywords, Entscheidungsregel für neue
+> URLs) bleibt als Methodik gültig. Mehrere konkrete Pfade und der Primärpfad sind aber
+> nicht mehr aktuell. Maßgeblich ist `docs/architecture/LIVE_STATUS.md`.
+>
+> Aktuelle Zuordnung statt der alten Service-Slugs:
+>
+> | Alt im Dokument | Aktueller Stand |
+> | --- | --- |
+> | Primärpfad `/growth-audit/` | Marktcheck auf `/solar-waermepumpen-leadgenerierung/#marktcheck` |
+> | `/wordpress-seo-hannover/` | `410 Gone`; SEO-Signale laufen über `/wordpress-agentur-hannover/` |
+> | `/conversion-rate-optimization/` | `410 Gone`; CRO-Semantik liegt in Money- und Sub-Pages |
+> | `/core-web-vitals/` | `410 Gone`; Performance bleibt technisches Fundament ohne eigene Money Page |
+> | `/server-side-tracking-gtm/` | aktiv als `/server-side-tracking-b2b/` |
+> | `/ga4-tracking-setup/`, `/performance-marketing/` | weiterhin aktive Service-Cluster |
+>
+> Neue primäre Money Pages: `/solar-waermepumpen-leadgenerierung/` (Solar-/SHK-Branche) und
+> `/wordpress-agentur-hannover/` (lokaler B2B-Anker), flankiert vom Solar-SEO-Sub-Page-Cluster.
 
 ## Zielbild
 
@@ -9,7 +29,7 @@ Die Website verkauft nicht "beliebige Agenturleistungen", sondern ein audit-firs
 - lokale Nachfrage über Hannover und Region Hannover
 - technisches Fundament aus SEO, Tracking und Performance
 - Conversion-Logik statt Einzelleistung ohne Kontext
-- klarer Primärpfad über `/growth-audit/`
+- klarer Primärpfad über den Marktcheck auf `/solar-waermepumpen-leadgenerierung/#marktcheck` (früher `/growth-audit/`)
 
 Deshalb müssen Money Keywords nicht nur Suchvolumen haben, sondern zum bestehenden Angebots- und CTA-System passen.
 
