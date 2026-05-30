@@ -99,22 +99,29 @@ function hu_get_blog_archive_collection_schema() {
             ? wp_trim_words( wp_strip_all_tags( $post_excerpt ), 24, '…' )
             : wp_strip_all_tags( $post_title );
 
+        $post_item = [
+            '@type'         => 'BlogPosting',
+            '@id'           => trailingslashit( $post_url ) . '#blogposting',
+            'url'           => $post_url,
+            'headline'      => $post_title,
+            'name'          => $post_title,
+            'description'   => $post_summary,
+            'datePublished' => get_post_time( DATE_W3C, true, $post ),
+            'dateModified'  => get_post_modified_time( DATE_W3C, true, $post ),
+            'author'        => hu_person_schema_ref( true ),
+            'publisher'     => [ '@id' => home_url( '/#organization' ) ],
+        ];
+
+        $post_item_image = hu_get_post_schema_image_object( $post->ID );
+        if ( is_array( $post_item_image ) ) {
+            $post_item['image'] = $post_item_image;
+        }
+
         $list_items[] = [
             '@type'    => 'ListItem',
             'position' => $position++,
             'url'      => $post_url,
-            'item'     => [
-                '@type'         => 'BlogPosting',
-                '@id'           => trailingslashit( $post_url ) . '#blogposting',
-                'url'           => $post_url,
-                'headline'      => $post_title,
-                'name'          => $post_title,
-                'description'   => $post_summary,
-                'datePublished' => get_post_time( DATE_W3C, true, $post ),
-                'dateModified'  => get_post_modified_time( DATE_W3C, true, $post ),
-                'author'        => hu_person_schema_ref( true ),
-                'publisher'     => [ '@id' => home_url( '/#organization' ) ],
-            ],
+            'item'     => $post_item,
         ];
     }
 
@@ -341,6 +348,59 @@ function hu_get_cached_post_faq_schema_entities( $post_id ) {
     $decoded = json_decode( $json, true );
 
     return is_array( $decoded ) ? $decoded : [];
+}
+
+/**
+ * Build a schema ImageObject for a post, with a brand fallback.
+ *
+ * Article-type schema (BlogPosting/Article) should always carry an image;
+ * Google flags entries without one. Prefer the featured image, fall back to
+ * the brand portrait so posts without a thumbnail still resolve. Dimensions
+ * are resolved via the shared social-image helper when available.
+ *
+ * @param int $post_id Post ID.
+ * @return array<string, mixed>|null
+ */
+function hu_get_post_schema_image_object( $post_id ) {
+    $post_id   = absint( $post_id );
+    $image_url = $post_id ? get_the_post_thumbnail_url( $post_id, 'full' ) : '';
+
+    if ( ! $image_url && function_exists( 'hu_get_portrait_image_url' ) ) {
+        $image_url = hu_get_portrait_image_url();
+    }
+
+    if ( ! $image_url ) {
+        return null;
+    }
+
+    // Memoize per URL: archive ItemLists resolve many posts in one request and
+    // the brand fallback URL repeats, so avoid redundant dimension lookups.
+    static $cache = [];
+
+    if ( isset( $cache[ $image_url ] ) ) {
+        return $cache[ $image_url ];
+    }
+
+    $image = [
+        '@type' => 'ImageObject',
+        'url'   => $image_url,
+    ];
+
+    if ( function_exists( 'hu_get_social_image_meta' ) ) {
+        $meta = hu_get_social_image_meta( $image_url );
+
+        if ( ! empty( $meta['width'] ) ) {
+            $image['width'] = absint( $meta['width'] );
+        }
+
+        if ( ! empty( $meta['height'] ) ) {
+            $image['height'] = absint( $meta['height'] );
+        }
+    }
+
+    $cache[ $image_url ] = $image;
+
+    return $image;
 }
 
 /**
@@ -1151,7 +1211,7 @@ function hu_output_schema()
             $post_permalink    = get_permalink( $post_id );
             $post_description  = get_the_excerpt( $post_id );
             $post_description  = $post_description ? wp_strip_all_tags( $post_description ) : wp_strip_all_tags( get_the_title( $post_id ) );
-            $post_image        = get_the_post_thumbnail_url( $post_id, 'full' );
+            $post_image        = hu_get_post_schema_image_object( $post_id );
             $published_date    = get_post_time( DATE_W3C, true, $post_id );
             $modified_date     = get_post_modified_time( DATE_W3C, true, $post_id );
 
@@ -1175,11 +1235,8 @@ function hu_output_schema()
                 ],
             ];
 
-            if ( $post_image ) {
-                $blog_posting['image'] = [
-                    '@type' => 'ImageObject',
-                    'url'   => $post_image,
-                ];
+            if ( is_array( $post_image ) ) {
+                $blog_posting['image'] = $post_image;
             }
 
             $schemas[] = $blog_posting;
