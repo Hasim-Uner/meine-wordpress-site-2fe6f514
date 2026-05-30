@@ -164,7 +164,7 @@ $article_schema = [
 	'dateModified'     => $study_updated,
 	'inLanguage'       => 'de-DE',
 	'author'           => $author_person,
-	'publisher'        => $author_person,
+	'publisher'        => [ '@id' => home_url( '/#organization' ) ],
 	'about'            => [ 'Lead-Kosten', 'Cost per Lead', 'Cost per Order', 'Photovoltaik', 'Wärmepumpe' ],
 	'description'      => 'Marktstudie zu den tatsächlichen Kosten von Solar-, Wärmepumpen- und Speicher-Leads im DACH-Raum: Preisspannen je Modell, Cost-per-Order statt Cost-per-Lead, versteckte Kosten und Benchmark eines eigenen Anfrage-Systems.',
 ];

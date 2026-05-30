@@ -110,7 +110,7 @@ $service_schema = [
 	'serviceType' => 'Funnel-Aufbau von TOFU bis Sales-Anschluss',
 	'url'         => $page_url,
 	'description' => sprintf( 'Lead-Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter im DACH-Mittelstand. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
-	'provider'    => $author_person,
+	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 ];
 

@@ -136,7 +136,7 @@ $service_schema = [
 	'serviceType' => 'Tracking-Architektur: GA4, Meta CAPI, Consent Mode v2 auf eigenem Server',
 	'url'         => $page_url,
 	'description' => sprintf( 'Aufbau Server-Side-Tracking für B2B-Anfrage-Systeme in Solar, Wärmepumpe und SHK. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
-	'provider'    => $author_person,
+	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 	'areaServed'  => [
 		[ '@type' => 'Country', 'name' => 'Deutschland' ],

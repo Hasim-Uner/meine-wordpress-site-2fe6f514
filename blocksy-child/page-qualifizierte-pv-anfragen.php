@@ -130,7 +130,7 @@ $service_schema = [
 	'serviceType' => 'Lead-Qualität messen und steigern',
 	'url'         => $page_url,
 	'description' => sprintf( 'Vier Merkmale für qualifizierte PV-Anfragen. Referenz %1$s: %2$s Abschlussquote bei %3$s qualifizierten Anfragen in %4$s.', $e3_case_label, $e3_sales_conversion, $e3_lead_count, $e3_timeframe ),
-	'provider'    => $author_person,
+	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 ];
 

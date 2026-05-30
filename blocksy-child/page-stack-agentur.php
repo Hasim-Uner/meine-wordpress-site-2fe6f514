@@ -88,7 +88,7 @@ $tech_article_schema = [
 	'url'              => $page_url,
 	'mainEntityOfPage' => $page_url,
 	'author'           => $author_person,
-	'publisher'        => $author_person,
+	'publisher'        => [ '@id' => home_url( '/#organization' ) ],
 	'inLanguage'       => 'de-DE',
 ];
 

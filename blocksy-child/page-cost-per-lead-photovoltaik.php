@@ -126,7 +126,7 @@ $service_schema = [
 	'serviceType' => 'Cost per Lead Senkung durch eigene Anfrage-Systeme',
 	'url'         => $page_url,
 	'description' => sprintf( 'Cost per Lead Analyse und Senkung für Solar-, Wärmepumpen- und Speicher-Anbieter. Referenz %1$s: %2$s niedrigere Kosten pro Anfrage in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
-	'provider'    => $author_person,
+	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 ];
 
