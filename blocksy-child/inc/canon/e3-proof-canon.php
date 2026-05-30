@@ -61,7 +61,7 @@ function hu_e3_canon() {
 			'sales_conversion_before' => [
 				'value'           => HU_E3_SALES_CONVERSION_BEFORE_LOW,
 				'value_high'      => HU_E3_SALES_CONVERSION_BEFORE_HIGH,
-				'display'         => '1 – 2 %',
+				'display'         => '1 – 5 %',
 				'label'           => 'Abschlussquote vorher (gekaufte Portal-Leads)',
 			],
 			'sales_conversion_after' => [
@@ -71,7 +71,7 @@ function hu_e3_canon() {
 				'label'          => 'Abschlussquote nachher (eigenes Anfrage-System)',
 			],
 			'sales_conversion_uplift' => [
-				'display' => '1 – 2 % → 12 %',
+				'display' => '1 – 5 % → 12 %',
 				'short'   => '6× bis 12× höhere Abschlussquote',
 				'label'   => 'Anstieg der Abschlussquote durch eigenes System',
 			],
@@ -84,9 +84,9 @@ function hu_e3_canon() {
 			],
 		],
 		'summary'    => [
-			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 2 % auf 12 %, 6 Monate.',
-			'proof'      => 'Referenz E3 New Energy: 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 2 % auf 12 % und über 85 % weniger Kosten pro Anfrage.',
-			'conversion' => 'Die Abschlussquote stieg im selben Zeitraum von 1 – 2 % (gekaufte Portal-Leads) auf 12 % (eigenes Anfrage-System).',
+			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 5 % auf 12 %, 6 Monate.',
+			'proof'      => 'Referenz E3 New Energy: 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 5 % auf 12 % und über 85 % weniger Kosten pro Anfrage.',
+			'conversion' => 'Die Abschlussquote stieg im selben Zeitraum von 1 – 5 % (gekaufte Portal-Leads) auf 12 % (eigenes Anfrage-System).',
 		],
 	];
 }
