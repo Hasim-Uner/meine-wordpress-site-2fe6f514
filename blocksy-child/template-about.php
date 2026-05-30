@@ -445,7 +445,7 @@ get_header();
 						3 von 3 Plätzen offen
 					</p>
 					<p class="about-cohort-card__text">
-						Die Cohort erweitert diese Arbeitsweise auf maximal drei passende Solar- oder Wärmepumpen-Betriebe. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.
+						Ein einzelner dokumentierter Case ist eine bewusste Entscheidung gegen die anonyme Logo-Wand — dafür liegt dieser eine vollständig offen, von der Lead-Quelle bis zur Abschlussquote. Was bei E3 funktioniert hat, war Methode, kein Zufall: dieselbe Vier-Eigenschaften-Logik lässt sich auf jeden Solar- oder Wärmepumpen-Betrieb mit eigenem Vertrieb übertragen. Genau diese Arbeitsweise öffnet die Cohort für maximal drei passende Betriebe. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.
 					</p>
 					<a href="<?php echo esc_url( $request_url ); ?>"
 					   class="about-cta-primary"

@@ -49,6 +49,10 @@ $hero_metrics = [
 	[ 'n' => '100 %',         'l' => 'Asset-Eigentum · Code · Tracking · Daten' ],
 ];
 
+$founding_strip = function_exists( 'hu_founding_canon' ) ? hu_founding_canon() : [];
+$founding_open  = isset( $founding_strip['slots_remaining'] ) ? (int) $founding_strip['slots_remaining'] : 3;
+$founding_seats = isset( $founding_strip['slots_total'] ) ? (int) $founding_strip['slots_total'] : 3;
+
 $trust_items = [
 	'B2B · DACH · eigener Vertrieb',
 	'Server in Frankfurt · DSGVO',
@@ -56,6 +60,7 @@ $trust_items = [
 	'Hardcoded WordPress · kein Page-Builder',
 	'1:1 Senior · keine Junior-Kette',
 	'Marktcheck kostenfrei',
+	sprintf( 'Founding Cohort 2026 · %d/%d Plätze', $founding_open, $founding_seats ),
 ];
 
 $problem_cards = [
