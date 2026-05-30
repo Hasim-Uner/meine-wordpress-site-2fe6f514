@@ -481,7 +481,30 @@ function hu_output_schema()
         ],
     ];
 
-    $schemas = [$org];
+    // WebSite schema — root node of the knowledge graph.
+    // Multiple schemas (blog/category CollectionPage, agentur WebPage,
+    // Ergebnisse CollectionPage) reference this node via isPartOf, so it must
+    // exist site-wide; otherwise those references dangle.
+    $website = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'WebSite',
+        '@id'         => home_url('/#website'),
+        'url'         => home_url('/'),
+        'name'        => 'Haşim Üner | Architekt für eigene Anfrage-Systeme',
+        'description' => 'Architekt für eigene Anfrage-Systeme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',
+        'inLanguage'  => 'de',
+        'publisher'   => ['@id' => home_url('/#organization')],
+        'potentialAction' => [
+            '@type'       => 'SearchAction',
+            'target'      => [
+                '@type'       => 'EntryPoint',
+                'urlTemplate' => home_url('/?s={search_term_string}'),
+            ],
+            'query-input' => 'required name=search_term_string',
+        ],
+    ];
+
+    $schemas = [$org, $website];
 
     $archive_collection = hu_get_blog_archive_collection_schema();
     if ( is_array( $archive_collection ) ) {
