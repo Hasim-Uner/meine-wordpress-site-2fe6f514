@@ -105,6 +105,28 @@ $area_meta = [
 	],
 ];
 
+// ═══ Icon-Set (SVG statt Emoji) — Stroke-Style konsistent zur übrigen Site ═══
+$wp_agentur_icon_paths = [
+	'Strategie'             => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>',
+	'Technisches Fundament' => '<path d="M13 2 4 14h6l-1 8 9-12h-6z"/>',
+	'Messbarkeit'           => '<path d="M4 4v16h16"/><path d="M8 13.5l3-3 3 2 4-6"/>',
+	'Sichtbarkeit'          => '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+	'Conversion'            => '<path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.5.4.8 1 .8 1.7h6c0-.7.3-1.3.8-1.7A6.5 6.5 0 0 0 12 2.5z"/>',
+	'Weiterentwicklung'     => '<path d="M3 16l6-6 4 4 8-8"/><path d="M17 6h4v4"/>',
+];
+
+if ( ! function_exists( 'hu_agentur_icon_svg' ) ) {
+	/**
+	 * Rendert ein Methoden-Icon als Inline-SVG (Stroke, currentColor).
+	 */
+	function hu_agentur_icon_svg( $inner, $size = 24 ) {
+		if ( '' === (string) $inner ) {
+			return '';
+		}
+		return '<svg width="' . (int) $size . '" height="' . (int) $size . '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . $inner . '</svg>';
+	}
+}
+
 foreach ( $wgos_assets as $slug => $asset ) {
 	if ( 'publish' !== ( $asset['status'] ?? '' ) ) {
 		continue;
@@ -383,7 +405,7 @@ get_header();
 					   data-track-category="navigation"
 					   data-track-section="<?php echo esc_attr( $track_section ); ?>">
 						<span class="step-num"><?php echo esc_html( $p['num'] ); ?></span>
-						<span class="step-icon" aria-hidden="true"><?php echo esc_html( $p['icon'] ?? '' ); ?></span>
+						<span class="step-icon" aria-hidden="true"><?php echo hu_agentur_icon_svg( $wp_agentur_icon_paths[ $area ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 						<h3>
 							<?php echo esc_html( $p['title'] ); ?>
 							<small><?php echo (int) $count; ?> Bausteine</small>
@@ -465,7 +487,7 @@ get_header();
 				<div class="acc-item" id="acc-<?php echo esc_attr( $area_slug ); ?>" data-acc="<?php echo esc_attr( $area_slug ); ?>">
 					<button class="acc-trigger" aria-expanded="false" aria-controls="body-<?php echo esc_attr( $area_slug ); ?>" data-track-action="toggle_methodenbibliothek" data-track-category="engagement" data-track-section="<?php echo esc_attr( $area_slug ); ?>">
 						<div class="acc-trigger-left">
-							<div class="acc-icon" style="background: <?php echo esc_attr( $meta['color'] ); ?>15; color: <?php echo esc_attr( $meta['color'] ); ?>;"><?php echo esc_html( $meta['icon'] ); ?></div>
+							<div class="acc-icon" style="background: <?php echo esc_attr( $meta['color'] ); ?>15; color: <?php echo esc_attr( $meta['color'] ); ?>;"><?php echo hu_agentur_icon_svg( $wp_agentur_icon_paths[ $area ] ?? '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 							<div class="acc-info">
 								<div class="acc-title"><?php echo esc_html( $area_label ); ?></div>
 								<div class="acc-desc"><?php echo esc_html( $meta['desc'] ); ?></div>
@@ -493,7 +515,7 @@ get_header();
 								?>
 									<a href="<?php echo $asset_url; ?>" class="asset-card" data-track-action="cta_asset_card" data-track-category="navigation" data-track-section="methodenbibliothek">
 										<div class="asset-header">
-											<div class="asset-icon" style="color: <?php echo esc_attr( $meta['color'] ); ?>;">📋</div>
+											<div class="asset-icon" style="color: <?php echo esc_attr( $meta['color'] ); ?>;"><?php echo hu_agentur_icon_svg( '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h5M9.5 15.5h5"/>', 20 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 											<div class="asset-title"><?php echo $asset_title; ?></div>
 										</div>
 										<p class="asset-desc"><?php echo $asset_desc; ?></p>

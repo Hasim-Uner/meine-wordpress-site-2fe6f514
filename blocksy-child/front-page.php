@@ -331,8 +331,8 @@ get_header();
 					<div class="hu-loss-card__title">Taubes Tracking</div>
 					<div class="hu-loss-card__bracket">Die Daten-Lücke</div>
 					<p class="hu-loss-card__body">
-						Standard-Analytics zählt Klicks — kennt aber keine Abschlussquote durch attributionssichere
-						First-Party-Daten. Ergebnis: Budget wird blind auf falsche Kanäle verteilt.
+						Standard-Analytics zählt Klicks — sagt aber nicht, welche Anfrage am Ende zum Auftrag wurde.
+						Ergebnis: Budget wird blind auf falsche Kanäle verteilt.
 					</p>
 				</article>
 
@@ -348,11 +348,11 @@ get_header();
 
 				<article class="hu-loss-card hu-reveal">
 					<div class="hu-loss-card__num hu-mono">VERLUSTPUNKT 03</div>
-					<div class="hu-loss-card__title">Funnel-Bloat</div>
+					<div class="hu-loss-card__title">Überladene Website</div>
 					<div class="hu-loss-card__bracket">Die Conversion-Bremse</div>
 					<p class="hu-loss-card__body">
-						Komplexe Themes und unkoordinierte Plugins verlangsamen die WordPress-Performance
-						(INP/LCP-Verfall) und jagen kaufnahe Besucher in Sackgassen — statt Abschlüsse vorzubereiten.
+						Komplexe Themes und unkoordinierte Plugins machen die Website langsam und träge —
+						und jagen kaufnahe Besucher in Sackgassen, statt Abschlüsse vorzubereiten.
 					</p>
 				</article>
 			</div>
@@ -402,7 +402,7 @@ get_header();
 				<span class="hu-eyebrow" style="color:var(--ink-2)">04 / System-Phasen</span>
 				<div>
 					<h2 style="color:var(--ink)">WordPress, SEO, Tracking und CRO — in der richtigen Reihenfolge.</h2>
-					<p class="hu-lead" style="color:var(--ink-2)">Sechs Phasen, eine Methodik. Welche Phase zuerst greift, entscheidet der Marktcheck — nicht der Katalog.</p>
+					<p class="hu-lead" style="color:var(--ink-2)">Die drei Schritte oben sind das Prinzip — diese sechs Phasen das Handwerk dahinter. Welche zuerst greift, entscheidet der Marktcheck, nicht der Katalog.</p>
 				</div>
 			</div>
 

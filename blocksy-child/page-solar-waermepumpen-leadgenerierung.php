@@ -49,6 +49,10 @@ $hero_metrics = [
 	[ 'n' => '100 %',         'l' => 'Asset-Eigentum · Code · Tracking · Daten' ],
 ];
 
+$founding_strip = function_exists( 'hu_founding_canon' ) ? hu_founding_canon() : [];
+$founding_open  = isset( $founding_strip['slots_remaining'] ) ? (int) $founding_strip['slots_remaining'] : 3;
+$founding_seats = isset( $founding_strip['slots_total'] ) ? (int) $founding_strip['slots_total'] : 3;
+
 $trust_items = [
 	'B2B · DACH · eigener Vertrieb',
 	'Server in Frankfurt · DSGVO',
@@ -56,6 +60,7 @@ $trust_items = [
 	'Hardcoded WordPress · kein Page-Builder',
 	'1:1 Senior · keine Junior-Kette',
 	'Marktcheck kostenfrei',
+	sprintf( 'Founding Cohort 2026 · %d/%d Plätze', $founding_open, $founding_seats ),
 ];
 
 $problem_cards = [
@@ -316,15 +321,15 @@ $faq_items = [
 	],
 	[
 		'question' => 'Was unterscheidet Sie von Lead-Portalen?',
-		'answer'   => 'Portale vermieten Nachfrage. Sie zahlen für jeden Kontakt, den auch 3–4 Mitbewerber erhalten. Das System hier baut eigene Nachfrage-Infrastruktur auf, die Ihrem Betrieb gehört und langfristig für exklusive Anfragen sorgt.',
+		'answer'   => 'Portale vermieten Nachfrage. Sie zahlen für jeden Kontakt, den auch drei Mitbewerber erhalten. Das System hier baut eigene Nachfrage-Infrastruktur auf, die Ihrem Betrieb gehört und langfristig für exklusive Anfragen sorgt.',
 	],
 	[
 		'question' => 'Was ist B2B Solar Leadgenerierung — und wie funktioniert sie ohne Portale wie Aroundhome, DAA oder Wattfox?',
-		'answer'   => 'B2B Solar Leadgenerierung ist der Aufbau einer eigenen Nachfrage-Infrastruktur für Solar-, Wärmepumpen- und Speicheranbieter. Anders als Portale (Aroundhome, DAA, Wattfox), die identische Anfragen parallel an 3–4 Wettbewerber verkaufen, gehören die Anfragen hier exklusiv Ihrem Betrieb. Die Infrastruktur besteht aus drei Schichten: einer hardcoded WordPress-Money-Page, serverseitigem Tracking (GA4 + Meta CAPI auf eigenem Server) und einem mehrstufigen Lead-Scoring vor dem Erstkontakt.',
+		'answer'   => 'B2B Solar Leadgenerierung ist der Aufbau einer eigenen Nachfrage-Infrastruktur für Solar-, Wärmepumpen- und Speicheranbieter. Anders als Portale (Aroundhome, DAA, Wattfox), die identische Anfragen parallel an drei Wettbewerber verkaufen, gehören die Anfragen hier exklusiv Ihrem Betrieb. Die Infrastruktur besteht aus drei Schichten: einer hardcoded WordPress-Money-Page, serverseitigem Tracking (GA4 + Meta CAPI auf eigenem Server) und einem mehrstufigen Lead-Scoring vor dem Erstkontakt.',
 	],
 	[
 		'question' => 'Wie unterscheidet sich „eigene Solar Leads gewinnen" von Photovoltaik-Leadkauf?',
-		'answer'   => 'Beim Leadkauf zahlen Sie 80–150 € pro Kontakt — geteilt mit drei bis vier Wettbewerbern, oft ohne Telefonnummer, häufig ohne Budget. Eigene Solar Leads werden über Ihre eigene Domain generiert, über Ihre Vorqualifizierung gefiltert und landen exklusiv in Ihrem CRM. Über 24 Monate liegen die Gesamtkosten dabei rund 50 % unter dem reinen Portal-Modell — und Sie besitzen am Ende ein aktivierbares Asset.',
+		'answer'   => 'Beim Leadkauf zahlen Sie 80–150 € pro Kontakt — geteilt mit drei Wettbewerbern, oft ohne Telefonnummer, häufig ohne Budget. Eigene Solar Leads werden über Ihre eigene Domain generiert, über Ihre Vorqualifizierung gefiltert und landen exklusiv in Ihrem CRM. Über 24 Monate liegen die Gesamtkosten dabei rund 50 % unter dem reinen Portal-Modell — und Sie besitzen am Ende ein aktivierbares Asset.',
 	],
 ];
 
@@ -447,7 +452,7 @@ get_header();
 						Eigene Solar-Anfragen statt geteilte Portal-Leads — exklusiv für Ihren Vertrieb.
 					</h1>
 					<p class="sol-hero-claim">
-						Aroundhome, DAA und Wattfox verkaufen jede Anfrage an bis zu fünf Wettbewerber. Sie zahlen für den Preiskampf.
+						Aroundhome, DAA und Wattfox verkaufen jede Anfrage an drei Wettbewerber. Sie zahlen für den Preiskampf.
 					</p>
 					<p class="sol-hero-sub">
 						Ein geschlossenes Anfrage-System auf Ihrer Domain — Sie besitzen den Kanal, den Datensatz und jede Anfrage. Diagnose in 48 Stunden, kostenfrei.
@@ -883,7 +888,7 @@ get_header();
 							</div>
 							<div class="sol-capex-row sol-capex-row--issue">
 								<span class="sol-capex-row-l">Exklusivität</span>
-								<span class="sol-capex-row-v">3–4 Wettbewerber parallel</span>
+								<span class="sol-capex-row-v">drei Wettbewerber parallel</span>
 							</div>
 						</div>
 						<div class="sol-capex-total">
@@ -990,12 +995,12 @@ get_header();
 		<section class="sol-section" id="ergebnisse" data-track-section="results">
 			<div class="sol-wrap sol-results-inner">
 				<div class="sol-results-text">
-					<div class="sol-eyebrow">Was die Diagnose liefert</div>
+					<div class="sol-eyebrow">Schritt 2 · Tiefendiagnose (verrechenbar)</div>
 					<h2 class="sol-display sol-results-h">
 						Klarheit, keine <em>Folien</em>.
 					</h2>
 					<p class="sol-results-sub">
-						Vier Module · schriftlicher Befund nach 7 Werktagen · drei priorisierte Hebel · eine Wirtschaftlichkeits-Einordnung — als belastbare Entscheidungsgrundlage, nicht als Pitch-Deck.
+						Nach dem kostenlosen Marktcheck (Befund in 48 h) folgt optional die verrechenbare Tiefendiagnose: vier Module · schriftlicher Befund in 7 Werktagen · drei priorisierte Hebel · eine Wirtschaftlichkeits-Einordnung — belastbare Entscheidungsgrundlage statt Pitch-Deck.
 					</p>
 					<ul class="sol-results-list">
 						<?php foreach ( $results_qualifiers as $row ) : ?>
@@ -1067,7 +1072,7 @@ get_header();
 								</g>
 							</svg>
 							<div class="sol-results-mock-axis sol-mono">
-								<span>Mon 1</span><span>Mon 3</span><span>Mon 5</span><span>Mon 7</span><span>Mon 9</span>
+								<span>Mon 1</span><span>Mon 2</span><span>Mon 3</span><span>Mon 4</span><span>Mon 5</span><span>Mon 6</span>
 							</div>
 						</div>
 						<div class="sol-results-mock-list">

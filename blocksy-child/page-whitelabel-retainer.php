@@ -243,7 +243,7 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 						</div>
 						<div class="wl-dash__tile">
 							<dt>Zeitraum</dt>
-							<dd><span class="wl-counter" data-counter-target="9" data-counter-suffix=" Mon.">9 Mon.</span></dd>
+							<dd><span class="wl-counter" data-counter-target="6" data-counter-suffix=" Mon.">6 Mon.</span></dd>
 						</div>
 						<div class="wl-dash__tile">
 							<dt>Abschlussquote</dt>

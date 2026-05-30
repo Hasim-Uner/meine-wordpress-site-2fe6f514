@@ -92,8 +92,8 @@ $about_fit_points = [
 		's' => 'Echte Spezialisierung. Keine branchenübergreifenden Experimente, keine B2B-Generalisten-Lösungen.',
 	],
 	[
-		't' => 'Fest angestelltes Vertriebsteam (min. 2 Personen).',
-		's' => 'Das System erzeugt exklusive, hochpreisige Anfragen. Das verlangt strukturierte Bearbeitung — keine Ein-Mann-Betriebe.',
+		't' => 'Eigener, funktionierender Vertrieb.',
+		's' => 'Das System erzeugt exklusive, hochpreisige Anfragen. Die müssen konsequent bearbeitet werden — durch ein Vertriebsteam oder eine abschlussstarke Geschäftsführung, nicht durch reine Vermittlung.',
 	],
 	[
 		't' => 'Verständnis für Infrastruktur statt Landingpage.',
@@ -432,6 +432,7 @@ get_header();
 				</div>
 
 				<div class="about-prose" data-reveal>
+					<p class="about-manifest"><strong>Ich glaube, ein Betrieb sollte seine Nachfrage besitzen — nicht mieten.</strong> Wer jede Anfrage mit Wettbewerbern teilt, hat kein Vertriebsproblem, sondern ein Eigentumsproblem. Genau das baue ich um.</p>
 					<p>Mein Vater war Bauunternehmer. Ich bin mit dem Wissen aufgewachsen, was es bedeutet, Verantwortung für Projekte, Margen und ein fest angestelltes Team zu tragen. Vertrieb und Unternehmertum wurden mir nicht in Seminaren beigebracht — sie sind der Kontext, aus dem ich Websites bewerte.</p>
 					<p>Mein Studium der Medienwissenschaft an der Universität Paderborn war dafür der analytische Werkzeugkasten. Ich analysiere, wie Daten fließen, wo Aufmerksamkeit im Funnel versickert und welche unsichtbaren Signale zwischen digitaler Oberfläche und B2B-Entscheider übertragen werden müssen, damit Vertrauen entsteht.</p>
 					<p>Die meisten WordPress-Websites scheitern nicht am Design oder an fehlenden Plugins. Sie scheitern daran, dass die technische Architektur isoliert von der vertrieblichen Realität gebaut wurde. Ich entwickle Systeme auf Basis echter Vertriebsgespräche, damit Einwände, Sprachmuster und Entscheidungshürden direkt in Landingpages, Tracking und Anfragepfad übersetzt werden.</p>
@@ -445,7 +446,7 @@ get_header();
 						3 von 3 Plätzen offen
 					</p>
 					<p class="about-cohort-card__text">
-						Die Cohort erweitert diese Arbeitsweise auf maximal drei passende Solar- oder Wärmepumpen-Betriebe. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.
+						Ein einzelner dokumentierter Case ist eine bewusste Entscheidung gegen die anonyme Logo-Wand — dafür liegt dieser eine vollständig offen, von der Lead-Quelle bis zur Abschlussquote. Was bei E3 funktioniert hat, war Methode, kein Zufall: dieselbe Vier-Eigenschaften-Logik lässt sich auf jeden Solar- oder Wärmepumpen-Betrieb mit eigenem Vertrieb übertragen. Genau diese Arbeitsweise öffnet die Cohort für maximal drei passende Betriebe. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.
 					</p>
 					<a href="<?php echo esc_url( $request_url ); ?>"
 					   class="about-cta-primary"
