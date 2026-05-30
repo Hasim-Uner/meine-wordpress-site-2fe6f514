@@ -432,6 +432,7 @@ get_header();
 				</div>
 
 				<div class="about-prose" data-reveal>
+					<p class="about-manifest"><strong>Ich glaube, ein Betrieb sollte seine Nachfrage besitzen — nicht mieten.</strong> Wer jede Anfrage mit Wettbewerbern teilt, hat kein Vertriebsproblem, sondern ein Eigentumsproblem. Genau das baue ich um.</p>
 					<p>Mein Vater war Bauunternehmer. Ich bin mit dem Wissen aufgewachsen, was es bedeutet, Verantwortung für Projekte, Margen und ein fest angestelltes Team zu tragen. Vertrieb und Unternehmertum wurden mir nicht in Seminaren beigebracht — sie sind der Kontext, aus dem ich Websites bewerte.</p>
 					<p>Mein Studium der Medienwissenschaft an der Universität Paderborn war dafür der analytische Werkzeugkasten. Ich analysiere, wie Daten fließen, wo Aufmerksamkeit im Funnel versickert und welche unsichtbaren Signale zwischen digitaler Oberfläche und B2B-Entscheider übertragen werden müssen, damit Vertrauen entsteht.</p>
 					<p>Die meisten WordPress-Websites scheitern nicht am Design oder an fehlenden Plugins. Sie scheitern daran, dass die technische Architektur isoliert von der vertrieblichen Realität gebaut wurde. Ich entwickle Systeme auf Basis echter Vertriebsgespräche, damit Einwände, Sprachmuster und Entscheidungshürden direkt in Landingpages, Tracking und Anfragepfad übersetzt werden.</p>
