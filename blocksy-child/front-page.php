@@ -142,6 +142,19 @@ get_header();
 					Ich prüfe, wo Website, Vorqualifizierung, Tracking und Werbekanäle aktuell Anfragen verlieren — und welche Hebel zuerst greifen.
 				</p>
 
+				<div class="hu-hero__ctas">
+					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
+					   data-track-action="cta_home_hero_marktcheck" data-track-category="lead_gen" data-track-section="01">
+						Marktcheck starten — 60 Sekunden
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+					</a>
+					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-link"
+					   data-track-action="cta_home_hero_proof" data-track-category="proof" data-track-section="01">
+						E3-Case ansehen
+					</a>
+				</div>
+				<p class="hu-hero__cta-note">Keine neue Website auf Verdacht. Erst Diagnose, dann Entscheidung.</p>
+
 				<div class="hu-hero__stats">
 					<div>
 						<div class="hu-stat-num"><?php echo esc_html( $e3_lead_count ); ?></div>
