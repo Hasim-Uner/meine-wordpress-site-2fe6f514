@@ -150,12 +150,12 @@ get_header();
 					<div class="hu-stat-divider"></div>
 					<div>
 						<div class="hu-stat-num"><?php echo esc_html( $e3_sales_conv ); ?></div>
-						<div class="hu-stat-label">Abschlussquote</div>
+						<div class="hu-stat-label">Abschlussquote · E3</div>
 					</div>
 					<div class="hu-stat-divider"></div>
 					<div>
 						<div class="hu-stat-num" style="color:var(--accent)"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
-						<div class="hu-stat-label">Kosten / Anfrage</div>
+						<div class="hu-stat-label">geringere Kosten/Anfrage · E3</div>
 					</div>
 				</div>
 

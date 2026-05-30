@@ -18,7 +18,7 @@ $tracking_attrs = 'data-track-section="case_e3_methodology" data-track-funnel-st
 $metrics = [
 	'150 € → 22 € CPL',
 	'1.750+ Anfragen',
-	'1 – 2 % → 12 % Abschlussquote',
+	'1 – 5 % → 12 % Abschlussquote',
 	'6 Monate Laufzeit',
 ];
 
@@ -31,7 +31,7 @@ $hypotheses = [
 	[
 		'number' => '2.',
 		'title'  => 'Exklusivität',
-		'body'   => 'Viessmann-Anfragen gehen exklusiv an einen Betrieb. Portal-Leads werden parallel an 3-5 Anbieter verkauft. Wer als zweiter anruft, hat verloren.',
+		'body'   => 'Viessmann-Anfragen gehen exklusiv an einen Betrieb. Portal-Leads werden parallel an drei Anbieter verkauft. Wer als zweiter anruft, hat verloren.',
 	],
 	[
 		'number' => '3.',

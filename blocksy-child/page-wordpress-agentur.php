@@ -227,7 +227,7 @@ get_header();
 							<dd>Abschlussquote</dd>
 						</div>
 						<div>
-							<dt><span class="ag-counter" data-counter-target="9" data-counter-suffix=" Mon.">0</span></dt>
+							<dt><span class="ag-counter" data-counter-target="6" data-counter-suffix=" Mon.">0</span></dt>
 							<dd>Zeitraum</dd>
 						</div>
 					</dl>
