@@ -136,11 +136,6 @@ parameters:
 			path: blocksy-child/page-whitelabel-retainer.php
 
 		-
-			message: "#^Offset 'icon' on array\\{num\\: '01', title\\: 'Strategie', icon\\: '🎯', desc\\: 'Welche Seite trägt…'\\}\\|array\\{num\\: '02', title\\: 'Fundament', icon\\: '⚡', desc\\: 'Schnell, stabil,…'\\}\\|array\\{num\\: '03', title\\: 'Messbarkeit', icon\\: '📈', desc\\: 'Sie wissen, welcher…'\\}\\|array\\{num\\: '04', title\\: 'Sichtbarkeit', icon\\: '🔎', desc\\: 'Die Suchanfragen,…'\\}\\|array\\{num\\: '05', title\\: 'Conversion', icon\\: '💡', desc\\: 'Was auf der Seite…'\\}\\|array\\{num\\: '06', title\\: 'Weiterentwicklung', icon\\: '🚀', desc\\: 'Welche Änderung…'\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: blocksy-child/page-wordpress-agentur.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: blocksy-child/single.php

@@ -405,7 +405,7 @@ get_header();
 					   data-track-category="navigation"
 					   data-track-section="<?php echo esc_attr( $track_section ); ?>">
 						<span class="step-num"><?php echo esc_html( $p['num'] ); ?></span>
-						<span class="step-icon" aria-hidden="true"><?php echo hu_agentur_icon_svg( $wp_agentur_icon_paths[ $area ] ?? '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						<span class="step-icon" aria-hidden="true"><?php echo hu_agentur_icon_svg( $wp_agentur_icon_paths[ $area ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 						<h3>
 							<?php echo esc_html( $p['title'] ); ?>
 							<small><?php echo (int) $count; ?> Bausteine</small>
