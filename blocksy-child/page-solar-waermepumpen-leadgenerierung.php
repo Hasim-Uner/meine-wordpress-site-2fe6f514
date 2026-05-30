@@ -353,11 +353,7 @@ $service_schema = [
 		'name'        => 'Haşim Üner — WordPress-Agentur Hannover',
 		'url'         => home_url( '/' ),
 		'founder'     => [
-			'@type' => 'Person',
-			'@id'   => function_exists( 'hu_person_schema_id' ) ? hu_person_schema_id() : home_url( '/uber-mich/#person' ),
-			'name'  => 'Haşim Üner',
-			'url'   => home_url( '/uber-mich/' ),
-			'jobTitle' => 'B2B Solar Leadgenerierung Architekt',
+			'@id' => function_exists( 'hu_person_schema_id' ) ? hu_person_schema_id() : home_url( '/uber-mich/#person' ),
 		],
 	],
 	'audience'    => [

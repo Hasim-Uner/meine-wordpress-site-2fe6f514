@@ -24,21 +24,79 @@ function hu_person_same_as_urls() {
     ];
 }
 
+/**
+ * Canonical Google Business Profile (Maps) place URL for the brand.
+ *
+ * @return string
+ */
+function hu_brand_map_url() {
+    return 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfrage-Systeme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
+}
+
+/**
+ * sameAs profile set for the business entities (Organization, LocalBusiness,
+ * ProfessionalService). Mirrors the person profiles and adds the Google
+ * Business Profile place, so every business node exposes one consistent set
+ * instead of drifting subsets.
+ *
+ * @return array<int, string>
+ */
+function hu_business_same_as_urls() {
+    return array_merge( hu_person_same_as_urls(), [ hu_brand_map_url() ] );
+}
+
+/**
+ * Return a pure @id reference to the canonical Person node.
+ *
+ * The full Person node is emitted once site-wide by hu_output_schema(), so all
+ * author/founder/reviewedBy/mainEntity usages only need to reference it by @id
+ * instead of repeating an inline (and potentially divergent) Person object.
+ * Parameters are kept for backward compatibility with existing call sites; the
+ * canonical node owns every property.
+ *
+ * @param bool   $include_same_as Unused. Kept for backward compatibility.
+ * @param string $name            Unused. Kept for backward compatibility.
+ * @return array<string, string>
+ */
 function hu_person_schema_ref( $include_same_as = false, $name = 'Haşim Üner' ) {
-    $person = [
+    return [ '@id' => hu_person_schema_id() ];
+}
+
+/**
+ * Build the canonical Person node for the site.
+ *
+ * Emitted once per request (site-wide) so every @id reference resolves to a
+ * single authoritative entity.
+ *
+ * @return array<string, mixed>
+ */
+function hu_get_person_node() {
+    return [
+        '@context'    => 'https://schema.org',
         '@type'       => 'Person',
         '@id'         => hu_person_schema_id(),
-        'name'        => function_exists( 'hu_normalize_brand_text' ) ? hu_normalize_brand_text( (string) $name ) : (string) $name,
-        'url'         => hu_person_profile_url(),
+        'name'        => 'Haşim Üner',
         'jobTitle'    => 'Architekt für eigene Anfrage-Systeme',
-        'description' => 'Haşim Üner verbindet Vertriebsverständnis aus dem Bau- und Energiesektor mit Medienwissenschaft, WordPress-Technik, Tracking und CRO für eigene Anfrage-Systeme.',
+        'url'         => hu_person_profile_url(),
+        'image'       => hu_get_profile_image_url(),
+        'worksFor'    => [ '@id' => home_url( '/#organization' ) ],
+        'sameAs'      => hu_person_same_as_urls(),
+        'description' => 'Architekt für eigene Anfrage-Systeme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum. Haşim Üner verbindet Bauunternehmer-DNA, Vertriebspraxis und Medienwissenschaft mit WordPress, Tracking, Vorqualifizierung und Werbekanal-Steuerung.',
+        'alumniOf'    => [
+            '@type'  => 'CollegeOrUniversity',
+            'name'   => 'Universität Paderborn',
+            'sameAs' => 'https://de.wikipedia.org/wiki/Universit%C3%A4t_Paderborn',
+        ],
+        'knowsAbout'  => [
+            'B2B-Vertrieb',
+            'Solar- und Wärmepumpen-Leadgenerierung',
+            'WordPress',
+            'Technisches SEO',
+            'Server-Side Tracking',
+            'Conversion Rate Optimization',
+            'Medienwissenschaft',
+        ],
     ];
-
-    if ( $include_same_as ) {
-        $person['sameAs'] = hu_person_same_as_urls();
-    }
-
-    return $person;
 }
 
 /**
@@ -503,7 +561,7 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
 
 function hu_output_schema()
 {
-    $google_maps_url = 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfrage-Systeme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
+    $google_maps_url = hu_brand_map_url();
 
     // Organization / LocalBusiness schema
     $org = [
@@ -543,12 +601,7 @@ function hu_output_schema()
                 'closes'    => '16:00'
             ],
         ],
-        'sameAs' => [
-            'https://www.linkedin.com/in/hasim-%C3%BCner/',
-            'https://www.facebook.com/hasim.uner',
-            'https://github.com/Hasim-Uner/',
-            $google_maps_url,
-        ],
+        'sameAs' => hu_business_same_as_urls(),
         'hasMap' => $google_maps_url,
         'knowsAbout' => [
             'WordPress',
@@ -662,7 +715,9 @@ function hu_output_schema()
         ],
     ];
 
-    $schemas = [$org, $website];
+    // Canonical Person node — emitted site-wide so every author/founder @id
+    // reference resolves to one authoritative entity instead of inline copies.
+    $schemas = [$org, $website, hu_get_person_node()];
 
     $archive_collection = hu_get_blog_archive_collection_schema();
     if ( is_array( $archive_collection ) ) {
@@ -1044,12 +1099,7 @@ function hu_output_schema()
                         'B2B Lead Generation',
                     ],
                     'knowsLanguage' => ['de', 'en', 'tr'],
-                    'sameAs'        => [
-                        'https://www.linkedin.com/in/hasim-%C3%BCner/',
-                        'https://github.com/Hasim-Uner/',
-                        'https://hasimuener.org/',
-                        $google_maps_url,
-                    ],
+                    'sameAs'        => hu_business_same_as_urls(),
                     'openingHoursSpecification' => [
                         [
                             '@type'     => 'OpeningHoursSpecification',
@@ -1160,35 +1210,9 @@ function hu_output_schema()
             }
         }
 
-        // Über mich: Person + ProfilePage
+        // Über mich: ProfilePage referencing the canonical Person node, which
+        // is emitted site-wide — no second inline Person needed here.
         if ($slug === 'uber-mich') {
-            $person = [
-                '@context' => 'https://schema.org',
-                '@type'    => 'Person',
-                '@id'      => hu_person_schema_id(),
-                'name'     => 'Haşim Üner',
-                'jobTitle' => 'Architekt für eigene Anfrage-Systeme',
-                'url'      => hu_person_profile_url(),
-                'image'    => hu_get_profile_image_url(),
-                'worksFor' => ['@id' => home_url('/#organization')],
-                'sameAs'   => hu_person_same_as_urls(),
-                'description' => 'Architekt für eigene Anfrage-Systeme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum. Haşim Üner verbindet Bauunternehmer-DNA, Vertriebspraxis und Medienwissenschaft mit WordPress, Tracking, Vorqualifizierung und Werbekanal-Steuerung.',
-                'alumniOf' => [
-                    '@type' => 'CollegeOrUniversity',
-                    'name'  => 'Universität Paderborn',
-                    'sameAs' => 'https://de.wikipedia.org/wiki/Universit%C3%A4t_Paderborn',
-                ],
-                'knowsAbout' => [
-                    'B2B-Vertrieb',
-                    'Solar- und Wärmepumpen-Leadgenerierung',
-                    'WordPress',
-                    'Technisches SEO',
-                    'Server-Side Tracking',
-                    'Conversion Rate Optimization',
-                    'Medienwissenschaft',
-                ],
-            ];
-
             $profilePage = [
                 '@context' => 'https://schema.org',
                 '@type'    => 'ProfilePage',
@@ -1200,7 +1224,6 @@ function hu_output_schema()
                 'about'    => ['@id' => hu_person_schema_id()]
             ];
 
-            $schemas[] = $person;
             $schemas[] = $profilePage;
         }
 
