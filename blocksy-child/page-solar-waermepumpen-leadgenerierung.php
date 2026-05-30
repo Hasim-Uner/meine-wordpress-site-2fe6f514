@@ -266,6 +266,7 @@ $deeper_clusters = [
 	[
 		'group' => 'Lead-Qualität & CPL',
 		'items' => [
+			[ 't' => 'Was kosten Solar-Leads? (Marktstudie)', 's' => 'DACH-Preise je Modell und warum Cost-per-Order statt Cost-per-Lead zählt.', 'url' => home_url( '/solar-leads-kosten-studie/' ) ],
 			[ 't' => 'Cost per Lead Photovoltaik',           's' => 'Drei Szenarien im CPL-Vergleich und versteckte Kostentreiber.',     'url' => home_url( '/cost-per-lead-photovoltaik/' ) ],
 			[ 't' => 'Qualifizierte PV-Anfragen',            's' => 'Vier Merkmale für hochwertige Solar-Anfragen plus Warnsignale.',   'url' => home_url( '/qualifizierte-pv-anfragen/' ) ],
 		],

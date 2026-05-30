@@ -258,6 +258,10 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Qualifizierte PV-Anfragen: 4 Merkmale guter Solar-Leads',
 				'description' => 'Vier Merkmale einer qualifizierten Photovoltaik-Anfrage: Intent, Exklusivität, Vorqualifizierung, Echtzeit. Mit Praxisbezug E3 New Energy.',
 			],
+			'solar-leads-kosten-studie' => [
+				'title'       => 'Was kosten Solar-Leads? Marktstudie DACH 2026 (CPL & CPO)',
+				'description' => 'Marktstudie: Photovoltaik- & Wärmepumpen-Leads kosten 40–150 € — doch der Cost-per-Order liegt um ein Vielfaches höher. Preise je Modell, Methodik, Benchmark.',
+			],
 		]
 	);
 }

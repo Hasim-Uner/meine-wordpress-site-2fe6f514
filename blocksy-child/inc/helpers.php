@@ -950,6 +950,42 @@ function nexus_maybe_ensure_intercept_solar_leads_page() {
 add_action( 'init', 'nexus_maybe_ensure_intercept_solar_leads_page', 27 );
 
 /**
+ * Ensure the lead-cost market study pillar exists on /solar-leads-kosten-studie/.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_solar_leads_kosten_studie_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$page_id = nexus_get_page_id( [ 'solar-leads-kosten-studie' ] );
+
+	if ( ! $page_id ) {
+		$page_id = wp_insert_post(
+			wp_slash(
+				[
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_title'   => 'Was kosten Solar-Leads? Marktstudie DACH',
+					'post_name'    => 'solar-leads-kosten-studie',
+					'post_content' => '',
+					'post_excerpt' => 'Marktstudie zu den tatsächlichen Kosten von Solar- und Wärmepumpen-Leads im DACH-Raum: Cost-per-Order statt Cost-per-Lead.',
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $page_id ) ) {
+			return;
+		}
+	}
+
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-solar-leads-kosten-studie.php' );
+}
+add_action( 'init', 'nexus_maybe_ensure_solar_leads_kosten_studie_page', 27 );
+
+/**
  * Ensure the server-side tracking landing page exists on /server-side-tracking-b2b/.
  *
  * @return void
