@@ -234,6 +234,13 @@
         var(--nsc-surface);
 }
 
+.nexus-seo-cockpit__panel--revenue {
+    border-color: rgba(15, 122, 60, 0.22);
+    background:
+        linear-gradient(180deg, rgba(231, 244, 236, 0.48) 0%, rgba(255, 255, 255, 1) 42%),
+        var(--nsc-surface);
+}
+
 .nexus-seo-cockpit__panel--compact {
     padding: 18px;
 }
@@ -823,6 +830,46 @@
 
 .nexus-seo-cockpit__table .nexus-seo-cockpit__insight-sublist {
     margin-top: 10px;
+}
+
+.nexus-seo-cockpit__table-wrap--revenue {
+    max-height: none;
+}
+
+.nexus-seo-cockpit__table--revenue {
+    min-width: 1180px;
+}
+
+.nexus-seo-cockpit__table--revenue th:nth-child(5),
+.nexus-seo-cockpit__table--revenue td:nth-child(5),
+.nexus-seo-cockpit__table--revenue th:nth-child(6),
+.nexus-seo-cockpit__table--revenue td:nth-child(6) {
+    min-width: 220px;
+}
+
+.nexus-seo-cockpit__table--revenue td:nth-child(7),
+.nexus-seo-cockpit__table--revenue td:nth-child(8) {
+    min-width: 120px;
+    color: var(--nsc-ink-muted);
+    font-size: 12px;
+}
+
+.nexus-seo-cockpit__status-form {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0 0;
+}
+
+.nexus-seo-cockpit__status-form select {
+    max-width: 116px;
+    min-height: 28px;
+    font-size: 12px;
+}
+
+.nexus-seo-cockpit__status-form .button {
+    min-height: 28px;
+    line-height: 1;
 }
 
 /* --- Settings form ------------------------------------------------------ */

@@ -400,6 +400,7 @@ function nexus_render_seo_cockpit_notice() {
 		'refresh_locked'        => [ 'warning', 'Es läuft bereits eine Synchronisierung. Bitte gleich erneut versuchen.' ],
 		'inspection_success'    => [ 'success', 'Die URL-Inspektion wurde aktualisiert.' ],
 		'inspection_failed'     => [ 'error', 'Die URL-Inspektion konnte nicht geladen werden.' ],
+		'revenue_status_saved'  => [ 'success', 'Der Revenue-Status wurde gespeichert.' ],
 	];
 
 	if ( empty( $messages[ $notice ] ) ) {
@@ -494,6 +495,212 @@ function nexus_render_seo_cockpit_trend_card( $series, $metric, $label ) {
 			<polyline points="<?php echo esc_attr( implode( ' ', $points ) ); ?>" />
 		</svg>
 	</article>
+	<?php
+}
+
+/**
+ * Render one Revenue Command Center status form.
+ *
+ * @param array<string, mixed> $row Command-center row.
+ * @return void
+ */
+function nexus_render_revenue_command_center_status_form( $row ) {
+	$labels = function_exists( 'nexus_get_revenue_command_center_status_labels' ) ? nexus_get_revenue_command_center_status_labels() : [];
+	$status = sanitize_key( (string) ( $row['status'] ?? 'new' ) );
+
+	if ( empty( $labels ) ) {
+		echo esc_html( $status );
+		return;
+	}
+
+	if ( ! nexus_current_user_can_manage_seo_cockpit() ) {
+		echo esc_html( $labels[ $status ] ?? $status );
+		return;
+	}
+	?>
+	<form class="nexus-seo-cockpit__status-form" method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_revenue_command_center_status' ) ); ?>">
+		<?php wp_nonce_field( 'nexus_revenue_command_center_status' ); ?>
+		<input type="hidden" name="item_id" value="<?php echo esc_attr( (string) ( $row['id'] ?? '' ) ); ?>">
+		<input type="hidden" name="redirect_to" value="<?php echo esc_attr( nexus_get_seo_cockpit_dashboard_url( [ 'range' => nexus_get_seo_cockpit_requested_range_days() ] ) ); ?>">
+		<select name="item_status" aria-label="Revenue-Status">
+			<?php foreach ( $labels as $value => $label ) : ?>
+				<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $status, $value ); ?>><?php echo esc_html( $label ); ?></option>
+			<?php endforeach; ?>
+		</select>
+		<button type="submit" class="button button-small">OK</button>
+	</form>
+	<?php
+}
+
+/**
+ * Render one Revenue Command Center table.
+ *
+ * @param array<int, array<string, mixed>> $rows  Queue rows.
+ * @param int                              $limit Max initially visible rows.
+ * @return void
+ */
+function nexus_render_revenue_command_center_table( $rows, $limit = 5 ) {
+	$rows = array_values( (array) $rows );
+
+	if ( empty( $rows ) ) {
+		echo '<p class="nexus-seo-cockpit__hint">Keine Einträge für diese Sektion. Wenn Daten fehlen, erscheinen hier nur belastbare manuelle Checks.</p>';
+		return;
+	}
+
+	$limit        = max( 1, absint( $limit ) );
+	$toggle_id    = 'nsc-rcc-' . nexus_seo_cockpit_unique_id();
+	$hidden_count = max( 0, count( $rows ) - $limit );
+	?>
+	<input type="checkbox" id="<?php echo esc_attr( $toggle_id ); ?>" class="nexus-seo-cockpit__toggle" hidden>
+	<div class="nexus-seo-cockpit__table-wrap nexus-seo-cockpit__table-wrap--revenue">
+		<table class="widefat striped nexus-seo-cockpit__table nexus-seo-cockpit__table--revenue">
+			<thead>
+				<tr>
+					<th>Prio</th>
+					<th>Typ / Status</th>
+					<th>URL oder Lead</th>
+					<th>Funnel-Rolle</th>
+					<th>Problem / Warum</th>
+					<th>Nächste Aktion</th>
+					<th>Hebel</th>
+					<th>Fix</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ( $rows as $index => $row ) : ?>
+					<?php
+					$score       = (int) ( $row['priority_score'] ?? 0 );
+					$bucket      = (string) ( $row['priority_bucket'] ?? 'low' );
+					$target_url  = (string) ( $row['target_url'] ?? '' );
+					$admin_url   = (string) ( $row['admin_url'] ?? '' );
+					$target      = (string) ( $row['target_label'] ?? '' );
+					$target      = '' !== $target ? $target : ( '' !== $target_url ? nexus_get_seo_cockpit_short_url( $target_url ) : '—' );
+					?>
+					<tr<?php if ( $index >= $limit ) : ?> class="nexus-seo-cockpit__row--extra"<?php endif; ?>>
+						<td>
+							<span class="nexus-seo-cockpit__badge is-<?php echo esc_attr( $bucket ); ?>">
+								<?php echo esc_html( sprintf( '%s · %d', function_exists( 'nexus_get_seo_cockpit_priority_label' ) ? nexus_get_seo_cockpit_priority_label( $bucket ) : strtoupper( $bucket ), $score ) ); ?>
+							</span>
+						</td>
+						<td>
+							<strong><?php echo esc_html( (string) ( $row['type'] ?? 'Manual' ) ); ?></strong>
+							<?php nexus_render_revenue_command_center_status_form( $row ); ?>
+						</td>
+						<td class="nexus-seo-cockpit__cell--url">
+							<?php if ( '' !== $admin_url ) : ?>
+								<a href="<?php echo esc_url( $admin_url ); ?>" title="<?php echo esc_attr( '' !== $target_url ? $target_url : $target ); ?>"><?php echo esc_html( $target ); ?></a>
+							<?php elseif ( '' !== $target_url ) : ?>
+								<a href="<?php echo esc_url( $target_url ); ?>" title="<?php echo esc_attr( $target_url ); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html( $target ); ?></a>
+							<?php else : ?>
+								<?php echo esc_html( $target ); ?>
+							<?php endif; ?>
+							<?php if ( '' !== $target_url ) : ?>
+								<p class="nexus-seo-cockpit__table-note"><code><?php echo esc_html( $target_url ); ?></code></p>
+							<?php endif; ?>
+						</td>
+						<td><?php echo esc_html( (string) ( $row['funnel_role'] ?? 'Unklar' ) ); ?></td>
+						<td>
+							<strong><?php echo esc_html( (string) ( $row['problem'] ?? '' ) ); ?></strong>
+							<p class="nexus-seo-cockpit__table-note"><?php echo esc_html( (string) ( $row['why_now'] ?? '' ) ); ?></p>
+							<?php if ( ! empty( $row['data_basis'] ) ) : ?>
+								<p class="nexus-seo-cockpit__table-note">Datenbasis: <?php echo esc_html( (string) $row['data_basis'] ); ?> · Confidence: <?php echo esc_html( (string) ( $row['confidence'] ?? 'niedrig' ) ); ?></p>
+							<?php endif; ?>
+						</td>
+						<td><?php echo esc_html( (string) ( $row['next_action'] ?? '' ) ); ?></td>
+						<td>
+							<?php echo esc_html( (string) ( $row['expected_leverage'] ?? 'unklar' ) ); ?>
+							<p class="nexus-seo-cockpit__table-note">
+								Aufwand: <?php echo esc_html( (string) ( $row['effort'] ?? 'M' ) ); ?> · Risiko: <?php echo esc_html( (string) ( $row['risk'] ?? 'mittel' ) ); ?>
+							</p>
+						</td>
+						<td>
+							Repo: <?php echo esc_html( (string) ( $row['repo_fixable'] ?? 'nein' ) ); ?><br>
+							Manuell: <?php echo esc_html( (string) ( $row['manual'] ?? 'ja' ) ); ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+	<?php nexus_render_seo_cockpit_show_more_label( $toggle_id, $hidden_count ); ?>
+	<?php
+}
+
+/**
+ * Render the Revenue Command Center V1.
+ *
+ * @param array<string, mixed> $command Command-center payload.
+ * @return void
+ */
+function nexus_render_revenue_command_center( $command ) {
+	if ( empty( $command ) || ! is_array( $command ) ) {
+		return;
+	}
+
+	$sections = is_array( $command['sections'] ?? null ) ? $command['sections'] : [];
+	$summary  = is_array( $command['summary'] ?? null ) ? $command['summary'] : [];
+	?>
+	<h3 class="nexus-seo-cockpit__section-title">Revenue Command Center <span>Anfrage- und Umsatzwirkung vor Traffic</span></h3>
+
+	<section class="nexus-seo-cockpit__panel nexus-seo-cockpit__panel--revenue">
+		<div class="nexus-seo-cockpit__panel-head">
+			<div>
+				<p class="nexus-seo-cockpit__eyebrow">Today Revenue Queue · Letzte <?php echo esc_html( (string) ( $command['range_days'] ?? 28 ) ); ?> Tage</p>
+				<h2>Heute zuerst</h2>
+				<p class="nexus-seo-cockpit__hint">Sortiert nach Lead-Signal, Funnel-Nähe, Business-Wert, Conversion-Gap, Assist-Wert, Proof-Nähe, Decay, Confidence und Risiko. Traffic allein reicht nicht für hohe Priorität.</p>
+			</div>
+			<div class="nexus-seo-cockpit__chips">
+				<span class="nexus-seo-cockpit__chip"><?php echo esc_html( sprintf( '%d aktiv', (int) ( $summary['active'] ?? 0 ) ) ); ?></span>
+				<span class="nexus-seo-cockpit__chip"><?php echo esc_html( sprintf( '%d Lead-Follow-ups', (int) ( $summary['lead_followup'] ?? 0 ) ) ); ?></span>
+				<span class="nexus-seo-cockpit__chip"><?php echo esc_html( sprintf( '%d Conversion Leaks', (int) ( $summary['conversion_leaks'] ?? 0 ) ) ); ?></span>
+			</div>
+		</div>
+		<?php nexus_render_revenue_command_center_table( (array) ( $sections['today_first'] ?? [] ), 5 ); ?>
+	</section>
+
+	<div class="nexus-seo-cockpit__grid nexus-seo-cockpit__grid--reports">
+		<section class="nexus-seo-cockpit__panel">
+			<div class="nexus-seo-cockpit__panel-head">
+				<div>
+					<h2>Lead-Follow-up</h2>
+					<p class="nexus-seo-cockpit__hint">Neue, offene, progressed, won und unmapped Marktcheck-Anfragen.</p>
+				</div>
+			</div>
+			<?php nexus_render_revenue_command_center_table( (array) ( $sections['lead_followup'] ?? [] ), 5 ); ?>
+		</section>
+
+		<section class="nexus-seo-cockpit__panel">
+			<div class="nexus-seo-cockpit__panel-head">
+				<div>
+					<h2>Page Revenue Queue</h2>
+					<p class="nexus-seo-cockpit__hint">URLs mit SEO-Signal, Funnel-Wert oder Lead-Attribution.</p>
+				</div>
+			</div>
+			<?php nexus_render_revenue_command_center_table( (array) ( $sections['page_queue'] ?? [] ), 5 ); ?>
+		</section>
+	</div>
+
+	<div class="nexus-seo-cockpit__grid nexus-seo-cockpit__grid--reports">
+		<section class="nexus-seo-cockpit__panel">
+			<div class="nexus-seo-cockpit__panel-head">
+				<div>
+					<h2>Conversion Leaks</h2>
+					<p class="nexus-seo-cockpit__hint">Funnelnahe Seiten mit Sichtbarkeit, aber ohne Lead-Signal oder mit schwacher CTA-/Proof-Brücke.</p>
+				</div>
+			</div>
+			<?php nexus_render_revenue_command_center_table( (array) ( $sections['conversion_leaks'] ?? [] ), 5 ); ?>
+		</section>
+
+		<section class="nexus-seo-cockpit__panel">
+			<div class="nexus-seo-cockpit__panel-head">
+				<div>
+					<h2>Manual Checks</h2>
+					<p class="nexus-seo-cockpit__hint">GSC, Tracking, WordPress-Admin und Attribution nur dort, wo Daten fehlen oder zu schwach sind.</p>
+				</div>
+			</div>
+			<?php nexus_render_revenue_command_center_table( (array) ( $sections['manual_checks'] ?? [] ), 5 ); ?>
+		</section>
+	</div>
 	<?php
 }
 
@@ -966,9 +1173,13 @@ function nexus_render_seo_cockpit_dashboard() {
 	$is_connected  = $setup['is_connected'];
 	$can_manage    = nexus_current_user_can_manage_seo_cockpit();
 	$snapshot      = nexus_get_seo_cockpit_snapshot( false, $range_days );
+	$snapshot_error = is_wp_error( $snapshot );
 	$site_list     = $is_connected ? nexus_get_seo_cockpit_sites() : new WP_Error( 'nexus_seo_not_connected', 'Die Search Console ist noch nicht verbunden.' );
 	$detail        = '' !== $detail_url ? nexus_get_seo_cockpit_url_detail( $detail_url, false, $range_days ) : null;
 	$diagnostics   = function_exists( 'nexus_get_seo_cockpit_diagnostics' ) ? nexus_get_seo_cockpit_diagnostics( $detail_url ) : [];
+	$revenue_command = function_exists( 'nexus_get_revenue_command_center_data' )
+		? nexus_get_revenue_command_center_data( $snapshot_error ? [] : (array) $snapshot, $range_days, $snapshot_error )
+		: [];
 	?>
 	<div class="wrap nexus-seo-cockpit">
 		<h1>SEO Cockpit</h1>
@@ -1049,10 +1260,11 @@ function nexus_render_seo_cockpit_dashboard() {
 		<?php endif; ?>
 
 		<?php if ( is_wp_error( $snapshot ) ) : ?>
+			<?php nexus_render_revenue_command_center( $revenue_command ); ?>
 			<section class="nexus-seo-cockpit__panel">
 				<h2>Noch kein SEO-Snapshot</h2>
 				<p><?php echo esc_html( $snapshot->get_error_message() ); ?></p>
-				<p>Lege zuerst die Search-Console-Property in den Einstellungen fest und verbinde danach Google.</p>
+				<p>Search Console nicht verbunden oder noch nicht synchronisiert. Das Revenue Command Center nutzt in diesem Zustand CRM- und Manual-Checks statt Fake-Metriken.</p>
 			</section>
 		<?php else : ?>
 			<?php
@@ -1061,6 +1273,8 @@ function nexus_render_seo_cockpit_dashboard() {
 			$koko_snapshot = is_array( $snapshot['koko'] ?? null ) ? $snapshot['koko'] : [];
 			$lead_snapshot = is_array( $snapshot['leads'] ?? null ) ? $snapshot['leads'] : [];
 			?>
+
+			<?php nexus_render_revenue_command_center( $revenue_command ); ?>
 
 			<section class="nexus-seo-cockpit__panel">
 				<div class="nexus-seo-cockpit__panel-head">

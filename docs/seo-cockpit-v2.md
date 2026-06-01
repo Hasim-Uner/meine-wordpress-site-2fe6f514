@@ -22,6 +22,8 @@ Das Cockpit ist aus der bisherigen Monolith-Datei in klar getrennte Layer aufget
   Insight-Regeln, WordPress-Kontext, URL-Zuordnung und Drilldown-Datenmodell.
 - `blocksy-child/inc/seo-cockpit-diagnostics.php`
   Runtime-Diagnostik fuer OAuth, Cron, Koko, Linkgraph und Drilldown.
+- `blocksy-child/inc/seo-cockpit-command-center.php`
+  Revenue Command Center V1: Score Helper, Next-Best-Action Resolver, Today Revenue Queue und minimaler Status-Layer.
 - `blocksy-child/inc/seo-cockpit-ui.php`
   Admin-Rendering fuer Uebersicht, Drilldown, Widget und Einstellungen.
 
@@ -86,6 +88,12 @@ Der Uebersichts-Snapshot kombiniert drei Ebenen:
   - Demand ueber Impressionen
   - Lead-Signal ueber intern attribuierte Audit-Leads
   - Confidence ueber Kontext und Koko-Signale
+- Revenue Command Center:
+  - Lead-Follow-up aus `nexus_review_request`
+  - Page Revenue Queue aus SEO-Insights plus CRM-Attribution
+  - Conversion Leaks für funnelnahe Seiten mit Sichtbarkeit, aber ohne Lead-Signal
+  - Manual Checks bei fehlender Search Console, fehlenden Lead-Daten oder unmapped Leads
+  - Statusspeicherung über `nexus_revenue_command_center_statuses`
 
 ### 3. Drilldown
 
