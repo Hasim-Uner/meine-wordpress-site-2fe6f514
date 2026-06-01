@@ -1,6 +1,6 @@
 # Live Status
 
-Stand: 2026-05-26.
+Stand: 2026-06-01.
 
 Basis dieses Status:
 
@@ -65,7 +65,8 @@ Nicht verifiziert:
 - Repo-seitig existiert jetzt ein gemeinsames `Nexus CRM` fuer Audit-Anfragen, Projektanfragen und Blog-Abos; die Blog-Benachrichtigungen inkl. DOI, Abmeldung und manuell anstossbarem Artikelversand liegen im Theme.
 - Repo-seitig existiert jetzt ein `SEO Cockpit` im WordPress-Admin: Search-Console-OAuth, Cache-Layer, Kernmetriken, Dashboard-Widget, Cron-Snapshot, optionaler Koko-Kontext und ein neuer Audit-Lead-Layer aus dem internen CRM sind im Theme vorbereitet.
 - Das `SEO Cockpit` priorisiert repo-seitig jetzt nicht mehr nur nach Severity, sondern ueber eine business-aware Queue aus Page Role, Funnel-Naehe, Impressionen, Lead-Signal, Confidence und neuen Insight-Typen wie `Money Page Underperforming`, `Weak Funnel Bridge`, `Orphan Value Page` und `Indexing Mismatch`.
-- Die Crawl-Signale für Search- und KI-Crawler werden repo-seitig jetzt über eigene Theme-Routen für `/robots.txt` und `/llms.txt` ausgeliefert: `robots.txt` antwortet als `text/plain` mit expliziten Regeln für OAI-SearchBot, GPTBot, ChatGPT-User, ClaudeBot und PerplexityBot; `llms.txt` bündelt Marktcheck-, Solar-Cluster-, Proof- und Kontaktpfade in einem erweiterten Markdown-Signal und dient Agenten als kompakter Routen-/Positionierungsindex.
+- Die Crawl-Signale für Search- und KI-Crawler werden repo-seitig jetzt über eigene Theme-Routen für `/robots.txt` und `/llms.txt` ausgeliefert: `robots.txt` antwortet als `text/plain` mit expliziten Regeln für OAI-SearchBot, GPTBot, ChatGPT-User, ClaudeBot und PerplexityBot und nennt `/llms.txt` sowie die native Sitemap als explizit erlaubte Crawl-Ziele; `llms.txt` bündelt Marktcheck-, Solar-Cluster-, Proof- und Kontaktpfade in einem erweiterten Markdown-Signal und dient Agenten als kompakter Routen-/Positionierungsindex.
+- Der Solar-Subpage-Cluster umfasst repo-seitig jetzt auch `/solar-leads-kosten-studie/` in der zentralen Cluster-/Cockpit-Erkennung und in der sichtbaren Kontextlink-Registry. Public/Legacy-`noindex`-Seiten werden zentral als `noindex, follow` geführt, geschützte/private Routen bleiben `noindex, nofollow`; SEO-Cockpit und Frontend-Meta nutzen denselben Resolver.
 - Technische SEO-Hygiene ist repo-seitig weiter konsolidiert: `/sitemap_index.xml` leitet per 301 auf `/wp-sitemap.xml`, nicht kuratierte Tag-/Custom-Taxonomy-/Author-/Date-Archive sind `noindex, follow`, die Taxonomy-Sitemap bleibt auf Kategorien beschränkt und das Theme bleibt ohne SEO-Plugin die zentrale Quelle für Meta, Canonical, Robots, Social Meta und Schema. Document-Title-Overrides laufen über eine zentrale Resolver-Funktion; OG-Bildmaße kommen aus Attachment-Metadaten statt aus festen Defaults; doppelte globale Breadcrumb-Schema-Ausgaben werden auf Seiten mit route-spezifischen Breadcrumbs vermieden.
 - FAQPage-Schema aus editorgetriebenen Posts/Pages wird repo-seitig nicht mehr per Regex auf jedem Frontend-Request extrahiert. `save_post` berechnet FAQ-Entities einmalig aus `<details>` bzw. `.faq-trigger`/`.faq-content`-Mustern und speichert sie als JSON in Post-Meta; das Frontend liest nur noch den Cache. Template-eigene FAQ-Schema-Ausgaben bleiben ausgenommen.
 - Nicht-kritische Theme-Skripte werden zentral ueber `inc/enqueue.php` mit `defer` ausgeliefert; `nexus-core-js` und `nexus-site-header-js` bleiben fuer unmittelbare Boot- und Header-Interaktionen ausgenommen.

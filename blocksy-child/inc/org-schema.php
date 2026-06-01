@@ -656,12 +656,12 @@ function hu_output_schema()
         ],
         'hasOfferCatalog' => [
             '@type'           => 'OfferCatalog',
-            'name'            => 'Leistungen für Solar-, Wärmepumpen- und B2B-Anbieter',
+            'name'            => 'Anfrage-Systeme für Solar-, Wärmepumpen- und Speicher-Anbieter',
             'itemListElement' => [
                 [
                     '@type'       => 'Offer',
                     'name'        => 'Marktcheck',
-                    'description' => 'Kostenfreier Einstieg: Anfragebremsen, Datenlage, Sichtbarkeit und Conversion-Reihenfolge einordnen.',
+                    'description' => 'Diagnostischer Einstieg: Anfragebremsen, Datenlage, Sichtbarkeit, Region und Conversion-Reihenfolge einordnen.',
                     'url'         => function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
                 ],
                 [
@@ -673,13 +673,13 @@ function hu_output_schema()
                 [
                     '@type'       => 'Offer',
                     'name'        => 'WordPress Agentur Hannover',
-                    'description' => 'WordPress-Entwicklung für B2B in Hannover: technisches SEO, Wartungsvertrag, Tracking und Conversion als verbundenes System.',
+                    'description' => 'Sekundäre lokale B2B-Seite in Hannover: WordPress-System, technisches SEO, Tracking und Conversion als verbundenes Anfrage-System.',
                     'url'         => home_url('/wordpress-agentur-hannover/'),
                 ],
                 [
                     '@type'       => 'Offer',
                     'name'        => 'Speed & Core Web Vitals',
-                    'description' => 'Performance-Arbeit mit Fokus auf LCP, INP, CLS, Server-Antwortzeiten und tragfähige WordPress-Basis.',
+                    'description' => 'Performance-Arbeit mit Fokus auf LCP, INP, CLS, Server-Antwortzeiten und tragfähige Anfrage-System-Basis.',
                     'url'         => home_url('/wgos-assets/cwv-optimierung/'),
                 ],
                 [
@@ -769,7 +769,7 @@ function hu_output_schema()
                     'price'         => 0,
                     'priceCurrency' => 'EUR',
                     'isAccessibleForFree' => true,
-                    'description'   => 'Kostenloser Ersteinstieg für Solar- und Wärmepumpen-Anbieter mit unklarer Lead-Performance'
+                    'description'   => 'Händischer Marktcheck für Solar- und Wärmepumpen-Anbieter mit unklarer Anfragequalität oder Portal-Abhängigkeit'
                 ]
             ]
         ],
@@ -786,7 +786,7 @@ function hu_output_schema()
                     'price'         => 0,
                     'priceCurrency' => 'EUR',
                     'isAccessibleForFree' => true,
-                    'description'   => 'Kostenloser Ersteinstieg für Solar- und Wärmepumpen-Anbieter mit unklarer Lead-Performance'
+                    'description'   => 'Händischer Marktcheck für Solar- und Wärmepumpen-Anbieter mit unklarer Anfragequalität oder Portal-Abhängigkeit'
                 ]
             ]
         ],

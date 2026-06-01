@@ -58,89 +58,44 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Überblick über Positionierung, Proof und primäre Einstiege.',
 				],
 				[
+					'label'       => 'Solar- und Wärmepumpen-Leadgenerierung',
+					'url'         => $urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ),
+					'description' => 'Branchen-Landingpage für eigene Anfrage-Systeme gegen Portal-Abhängigkeit: Website, Vorqualifizierung, Tracking und steuerbare Werbekanäle.',
+				],
+				[
 					'label'       => 'Marktcheck',
 					'url'         => $urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
-					'description' => 'Manueller Marktcheck für Solar-, Wärmepumpen- und Speicher-Anbieter: händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.',
+					'description' => 'Primärer Einstieg für kalten Solar-/SHK-Traffic: händische Einordnung von Region, Anfragebremsen, Datenlage und nächstem sinnvollen Schritt.',
 				],
 				[
-					'label'       => 'WordPress Agentur Hannover',
-					'url'         => $urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
-					'description' => 'Lokale B2B-Service-Seite für WordPress, Leadgenerierung und strukturierte Weiterentwicklung.',
-				],
-				[
-					'label'       => 'Anfrage-System-Methode',
-					'url'         => $urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#methode' ),
-					'description' => 'Methode für Anfrage-Systeme, Priorisierung und kontrollierte Umsetzung.',
+					'label'       => 'Kontakt',
+					'url'         => $urls['contact'] ?? home_url( '/kontakt/' ),
+					'description' => 'Direkter Kontakt für Analyse, Umsetzung und Weiterentwicklung nach Marktcheck-Fit.',
 				],
 			],
 		],
 		[
-			'heading' => 'Service-Cluster',
+			'heading' => 'Proof und zitierfähige Quellen',
 			'links'   => [
 				[
-					'label'       => 'WordPress SEO Hannover',
-					'url'         => $urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' ),
-					'description' => 'Technical SEO Audit, Informationsarchitektur und Suchnachfrage für B2B-Seiten.',
+					'label'       => 'E3 New Energy',
+					'url'         => $urls['e3'] ?? home_url( '/e3-new-energy/' ),
+					'description' => 'Kaufnaher Proof-Case: eigenes Anfrage-System, Vorqualifizierung, Tracking und Conversion statt Portal-Lead-Abhängigkeit.',
 				],
 				[
-					'label'       => 'GA4 Tracking Setup',
-					'url'         => $urls['tracking'] ?? home_url( '/ga4-tracking-setup/' ),
-					'description' => 'GA4, GTM und serverseitiges Tracking für saubere Messbarkeit.',
+					'label'       => 'Was kosten Solar-Leads? (Marktstudie)',
+					'url'         => $urls['solar_leads_cost_study'] ?? home_url( '/solar-leads-kosten-studie/' ),
+					'description' => 'Zitierfähige Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen je Modell, Cost-per-Order, Methodik und E3-Benchmark.',
 				],
-				[
-					'label'       => 'Conversion Rate Optimierung',
-					'url'         => $urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#methode' ),
-					'description' => 'CRO für WordPress mit Fokus auf Leads, Reibung und Formularpfade.',
-				],
-				[
-					'label'       => 'Core Web Vitals',
-					'url'         => $urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' ),
-					'description' => 'Performance-Analyse für langsame WordPress-Seiten und Web-Vitals-Probleme.',
-				],
-			],
-		],
-		[
-			'heading' => 'Proof und Relevanz',
-			'links'   => [
 				[
 					'label'       => 'Ergebnisse',
 					'url'         => $urls['results'] ?? home_url( '/ergebnisse/' ),
 					'description' => 'Kuratierter Proof-Hub mit Cases, Kennzahlen und Einordnung.',
 				],
 				[
-					'label'       => 'E3 New Energy',
-					'url'         => $urls['e3'] ?? home_url( '/e3-new-energy/' ),
-					'description' => 'B2B-Case für Nachfrageaufbau, Tracking und Conversion-Verbesserung.',
-				],
-				[
-					'label'       => 'Leadgenerierung für Energie-Systeme',
-					'url'         => $urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ),
-					'description' => 'Branchen-Landingpage für Solar-, Wärmepumpen- und Speicher-Anbieter.',
-				],
-			],
-		],
-		[
-			'heading' => 'Wissen und Kontakt',
-			'links'   => [
-				[
-					'label'       => 'Blog',
-					'url'         => $urls['blog'] ?? home_url( '/blog/' ),
-					'description' => 'Artikel zu SEO, Tracking, WordPress-Performance und B2B-Wachstum.',
-				],
-				[
-					'label'       => 'Glossar',
-					'url'         => $urls['glossary'] ?? home_url( '/glossar/' ),
-					'description' => 'Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.',
-				],
-				[
-					'label'       => 'Über mich',
+					'label'       => 'Über Haşim Üner',
 					'url'         => $urls['about'] ?? home_url( '/uber-mich/' ),
-					'description' => 'Personenprofil von Haşim Üner als Architekt für Anfrage-Systeme und Autor der Website.',
-				],
-				[
-					'label'       => 'Kontakt',
-					'url'         => $urls['contact'] ?? home_url( '/kontakt/' ),
-					'description' => 'Direkter Kontakt für Audit, Folgeanalyse oder Umsetzung.',
+					'description' => 'Personenprofil des Autors und Betreibers: Architekt für eigene Anfrage-Systeme.',
 				],
 			],
 		],
@@ -148,24 +103,19 @@ function nexus_get_llms_txt_sections() {
 			'heading' => 'Solar- und Wärmepumpen-Leadgenerierung: Themen-Cluster',
 			'links'   => [
 				[
-					'label'       => 'Was kosten Solar-Leads? (Marktstudie)',
-					'url'         => home_url( '/solar-leads-kosten-studie/' ),
-					'description' => 'Zitierfähige Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen je Modell, Cost-per-Order statt Cost-per-Lead, Methodik und Benchmark.',
-				],
-				[
 					'label'       => 'Solar Leads kaufen – Alternative',
-					'url'         => home_url( '/solar-leads-kaufen-alternative/' ),
-					'description' => 'Intercept-Page für den Kauf-Suchintent: Markteinordnung der Lead-Anbieter und Argumentation für eigene Anfrage-Systeme.',
+					'url'         => $urls['solar_leads_alternative'] ?? home_url( '/solar-leads-kaufen-alternative/' ),
+					'description' => 'Intercept-Page für Kauf-Suchintent: Lead-Anbieter einordnen und eigene Anfrage-Systeme als Alternative bewerten.',
 				],
 				[
 					'label'       => 'Eigene Leadgenerierung vs. Portale',
-					'url'         => home_url( '/eigene-leadgenerierung-vs-portale/' ),
-					'description' => 'Vergleichsmatrix Mieten vs. Besitzen mit TCO-Überschlag über 24/36 Monate und 8 Kriterien.',
+					'url'         => $urls['solar_leads_tco'] ?? home_url( '/eigene-leadgenerierung-vs-portale/' ),
+					'description' => 'Vergleich von Portal-Leads und eigenem Anfrage-System: Mieten vs. Besitzen, TCO und Datenbesitz.',
 				],
 				[
 					'label'       => 'Cost per Lead Photovoltaik',
-					'url'         => home_url( '/cost-per-lead-photovoltaik/' ),
-					'description' => 'CPL-Analyse mit drei Szenarien-Vergleich (Portal-Standard, Portal-Exklusiv, Eigenes System) und versteckten Kostentreibern.',
+					'url'         => $urls['solar_cpl'] ?? home_url( '/cost-per-lead-photovoltaik/' ),
+					'description' => 'CPL-Analyse mit Szenarienvergleich, versteckten Kostentreibern und Marktcheck-Anschluss.',
 				],
 				[
 					'label'       => 'Qualifizierte PV-Anfragen',
@@ -173,14 +123,14 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Vier-Merkmale-Modell für hochwertige Solar-Anfragen mit Warnsignalen und Messmethoden.',
 				],
 				[
-					'label'       => 'Lead-Funnel Solar (Pillar)',
-					'url'         => home_url( '/lead-funnel-solar/' ),
-					'description' => 'Fünf-Stufen-Funnel-Architektur von TOFU bis Sales-Anschluss für Photovoltaik- und Wärmepumpen-Anbieter.',
+					'label'       => 'Lead-Funnel Solar',
+					'url'         => $urls['solar_funnel'] ?? home_url( '/lead-funnel-solar/' ),
+					'description' => 'Funnel-Architektur von Erstkontakt bis Sales-Anschluss für Photovoltaik- und Wärmepumpen-Anbieter.',
 				],
 				[
 					'label'       => 'Server-Side Tracking für B2B',
-					'url'         => home_url( '/server-side-tracking-b2b/' ),
-					'description' => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server in Frankfurt – DSGVO-konforme Tracking-Architektur.',
+					'url'         => $urls['solar_tracking'] ?? home_url( '/server-side-tracking-b2b/' ),
+					'description' => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server als Messfundament für Anfrage-Systeme.',
 				],
 				[
 					'label'       => 'B2B Solar Leads für Gewerbe',
@@ -191,6 +141,31 @@ function nexus_get_llms_txt_sections() {
 					'label'       => 'Kunden gewinnen für Solarteure',
 					'url'         => home_url( '/kunden-gewinnen-solarteure/' ),
 					'description' => 'Pillar-Page mit Mythen-Aufklärung und fünf systematischen Hebeln für Solar-Betriebe im DACH-Mittelstand.',
+				],
+			],
+		],
+		[
+			'heading' => 'Sekundäre Einstiege und Wissen',
+			'links'   => [
+				[
+					'label'       => 'Blog',
+					'url'         => $urls['blog'] ?? home_url( '/blog/' ),
+					'description' => 'Artikel zu SEO, Tracking, WordPress-Performance und Anfrage-Systemen.',
+				],
+				[
+					'label'       => 'Glossar',
+					'url'         => $urls['glossary'] ?? home_url( '/glossar/' ),
+					'description' => 'Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.',
+				],
+				[
+					'label'       => 'Stack Solar',
+					'url'         => home_url( '/stack-solar/' ),
+					'description' => 'Performance-Stack für Solar-/SHK-Anbieter: Frontend, Managed Hosting, Server-Side Tracking, CRM-Anbindung und Marktcheck-Vorqualifizierung.',
+				],
+				[
+					'label'       => 'WordPress Agentur Hannover',
+					'url'         => $urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
+					'description' => 'Sekundäre lokale B2B-Seite für WordPress-Systeme, technisches SEO, Tracking und CRO in Hannover.',
 				],
 			],
 		],

@@ -656,6 +656,7 @@ function hu_get_solar_seo_subpage_paths() {
 			trailingslashit( '/kunden-gewinnen-solarteure' ),
 			trailingslashit( '/cost-per-lead-photovoltaik' ),
 			trailingslashit( '/qualifizierte-pv-anfragen' ),
+			trailingslashit( '/solar-leads-kosten-studie' ),
 		];
 	}
 
@@ -672,6 +673,127 @@ function hu_is_solar_seo_subpage_path( $path ) {
 	$path = '/' === substr( (string) $path, -1 ) ? (string) $path : trailingslashit( (string) $path );
 
 	return in_array( $path, hu_get_solar_seo_subpage_paths(), true );
+}
+
+/**
+ * Return page templates that should stay noindex/nofollow.
+ *
+ * @return array<int, string>
+ */
+function hu_get_noindex_nofollow_templates() {
+	return [
+		'template-portal.php',
+	];
+}
+
+/**
+ * Return slugs that should stay noindex/nofollow because they are protected or private.
+ *
+ * @return array<int, string>
+ */
+function hu_get_noindex_nofollow_slugs() {
+	return [
+		'portal',
+		'login',
+		'kunden-login',
+		'wgos',
+		'wordpress-growth-operating-system',
+	];
+}
+
+/**
+ * Return public/legacy slugs that should be noindex but still pass link equity.
+ *
+ * @return array<int, string>
+ */
+function hu_get_noindex_follow_slugs() {
+	return [
+		'alle-loesungen',
+		'alle-loesungen-im-detail',
+		'anfrage',
+		'audit-linkedin',
+		'case-studies',
+		'case-studies-e-commerce',
+		'conversion-rate-optimization',
+		'core-web-vitals',
+		'danke',
+		'danke-anfage-audit',
+		'danke-anfrage-audit',
+		'energie-fahrplan-demo',
+		'thank-you',
+		'kontaktiere-mich',
+		'loesungen',
+		'meta-ads',
+		'360-deep-dive',
+		'readiness-diagnose',
+		'system-diagnose',
+		'growth-audit',
+		'audit',
+		'customer-journey-audit',
+		'360-audit',
+		'wordpress-tech-audit',
+		'kostenlose-tools',
+		'tools',
+		'website-performance-analyse',
+		'website-fuer-solar-und-waermepumpen-anbieter',
+		'wgos-systemlandkarte',
+		'ki-integration-wordpress',
+		'ki-integration',
+		'wordpress-agentur',
+		'wordpress-seo-hannover',
+		'wordpress-wartung-hannover',
+		'roi-rechner',
+		'seo',
+		'whitelabel',
+		'whitelabel-retainer',
+		'whitelabel-retainer-proof',
+	];
+}
+
+/**
+ * Resolve the effective robots directive for a singular post/page.
+ *
+ * @param int $post_id Post ID.
+ * @return array{robots: string, noindex: bool}
+ */
+function hu_get_singular_robots_context( $post_id ) {
+	$post_id = absint( $post_id );
+	if ( $post_id <= 0 ) {
+		return [
+			'robots'  => 'index, follow',
+			'noindex' => false,
+		];
+	}
+
+	$template            = (string) get_page_template_slug( $post_id );
+	$slug                = (string) get_post_field( 'post_name', $post_id );
+	$acf_noindex         = function_exists( 'get_field' ) ? (bool) get_field( 'seo_noindex', $post_id ) : false;
+	$legacy_robots_meta  = get_post_meta( $post_id, 'rank_math_robots', true );
+	$legacy_noindex      = is_array( $legacy_robots_meta ) ? in_array( 'noindex', $legacy_robots_meta, true ) : 'noindex' === $legacy_robots_meta;
+	$is_noindex_nofollow = in_array( $template, hu_get_noindex_nofollow_templates(), true )
+		|| in_array( $slug, hu_get_noindex_nofollow_slugs(), true );
+	$is_noindex_follow   = in_array( $slug, hu_get_noindex_follow_slugs(), true )
+		|| $acf_noindex
+		|| $legacy_noindex;
+
+	if ( $is_noindex_nofollow ) {
+		return [
+			'robots'  => 'noindex, nofollow',
+			'noindex' => true,
+		];
+	}
+
+	if ( $is_noindex_follow ) {
+		return [
+			'robots'  => 'noindex, follow',
+			'noindex' => true,
+		];
+	}
+
+	return [
+		'robots'  => 'index, follow',
+		'noindex' => false,
+	];
 }
 
 /**
@@ -933,18 +1055,15 @@ function hu_get_singular_post_seo_context( $post_id ) {
 		$description = '' !== trim( $excerpt ) ? wp_trim_words( wp_strip_all_tags( $excerpt ), 25, '…' ) : '';
 	}
 
-	$acf_noindex          = function_exists( 'get_field' ) ? get_field( 'seo_noindex', $post_id ) : false;
-	$legacy_robots_meta   = get_post_meta( $post_id, 'rank_math_robots', true );
-	$legacy_noindex       = is_array( $legacy_robots_meta ) ? in_array( 'noindex', $legacy_robots_meta, true ) : 'noindex' === $legacy_robots_meta;
-	$noindex              = (bool) ( $acf_noindex || $legacy_noindex );
+	$robots_context       = hu_get_singular_robots_context( $post_id );
 	$canonical            = hu_is_e3_methodology_case_post( $post_id ) ? home_url( '/e3-new-energy/' ) : (string) get_permalink( $post_id );
 
 	return [
 		'title'              => trim( wp_strip_all_tags( (string) $title ) ),
 		'description'        => trim( wp_strip_all_tags( (string) $description ) ),
 		'canonical'          => $canonical,
-		'robots'             => $noindex ? 'noindex, nofollow' : 'index, follow',
-		'noindex'            => $noindex,
+		'robots'             => $robots_context['robots'],
+		'noindex'            => $robots_context['noindex'],
 		'title_source'       => $title_source,
 		'description_source' => $desc_source,
 	];
@@ -1045,59 +1164,6 @@ function hu_get_seo_meta() {
 		'og_type'         => 'website',
 	];
 
-	// ── Utility-Seiten → noindex ──────────────────────────────────
-	$noindex_templates = [
-		'template-portal.php',
-	];
-
-	$noindex_slugs = [
-		'alle-loesungen',
-		'alle-loesungen-im-detail',
-		'anfrage',
-		'audit-linkedin',
-		'case-studies',
-		'case-studies-e-commerce',
-		'conversion-rate-optimization',
-		'core-web-vitals',
-		'danke',
-		'danke-anfage-audit',
-		'danke-anfrage-audit',
-		'energie-fahrplan-demo',
-		'thank-you',
-		'portal',
-		'login',
-		'kunden-login',
-		'kontaktiere-mich',
-		'loesungen',
-		'meta-ads',
-		'360-deep-dive',
-		'readiness-diagnose',
-		'system-diagnose',
-		'growth-audit',
-		'audit',
-		'customer-journey-audit',
-		'360-audit',
-		'wordpress-tech-audit',
-		'kostenlose-tools',
-		'tools',
-		'website-performance-analyse',
-		'website-fuer-solar-und-waermepumpen-anbieter',
-		'wordpress-growth-operating-system',
-		'wgos-systemlandkarte',
-		'wgos',
-		'wordpress-agentur',
-		'wordpress-seo-hannover',
-		'wordpress-wartung-hannover',
-		'roi-rechner',
-		'seo',
-	];
-
-	$noindex_follow_slugs = [
-		'whitelabel',
-		'whitelabel-retainer',
-		'whitelabel-retainer-proof',
-	];
-
 	if ( is_front_page() ) {
 		$meta['og_title']    = hu_get_homepage_title();
 		$meta['description'] = hu_get_homepage_description();
@@ -1137,18 +1203,8 @@ function hu_get_seo_meta() {
 		$slug     = get_post_field( 'post_name', $post_id );
 		$forced_seo = hu_get_forced_singular_seo( $post_id );
 
-		// noindex check: Template/Slug-basiert, ACF-Feld oder Legacy-Meta
-		$acf_noindex          = function_exists( 'get_field' ) ? get_field( 'seo_noindex', $post_id ) : false;
-		$legacy_robots_meta   = get_post_meta( $post_id, 'rank_math_robots', true );
-		$legacy_noindex       = is_array( $legacy_robots_meta ) ? in_array( 'noindex', $legacy_robots_meta, true ) : 'noindex' === $legacy_robots_meta;
-
-		if ( in_array( $slug, $noindex_follow_slugs, true ) ) {
-			$meta['robots'] = 'noindex, follow';
-		}
-
-		if ( in_array( $template, $noindex_templates, true ) || in_array( $slug, $noindex_slugs, true ) || $acf_noindex || $legacy_noindex ) {
-			$meta['robots'] = 'noindex, nofollow';
-		}
+		$robots_context = hu_get_singular_robots_context( $post_id );
+		$meta['robots'] = $robots_context['robots'];
 
 		// ACF fields first (if ACF Pro is active)
 		$meta['description'] = hu_get_stored_seo_value( $post_id, 'seo_description', 'rank_math_description' );
@@ -1342,44 +1398,14 @@ add_action( 'template_redirect', function () {
  * @return array<int, string>
  */
 function nexus_get_sitemap_excluded_slugs() {
-	return [
-		'alle-loesungen',
-		'alle-loesungen-im-detail',
-		'anfrage',
-		'audit-linkedin',
-		'case-studies',
-		'case-studies-e-commerce',
-		'conversion-rate-optimization',
-		'core-web-vitals',
-		'energie-fahrplan-demo',
-		'wordpress-growth-operating-system',
-		'wgos',
-		'wgos-systemlandkarte',
-		'ki-integration-wordpress',
-		'ki-integration',
-		'kontaktiere-mich',
-		'loesungen',
-		'meta-ads',
-		'readiness-diagnose',
-		'system-diagnose',
-		'seo',
-		'wordpress-seo-hannover',
-		'wordpress-agentur',
-		'wordpress-wartung-hannover',
-		'growth-audit',
-		'audit',
-		'customer-journey-audit',
-		'360-audit',
-		'wordpress-tech-audit',
-		'kostenlose-tools',
-		'tools',
-		'website-performance-analyse',
-		'roi-rechner',
-		'website-fuer-solar-und-waermepumpen-anbieter',
-		'whitelabel',
-		'whitelabel-retainer',
-		'whitelabel-retainer-proof',
-	];
+	return array_values(
+		array_unique(
+			array_merge(
+				hu_get_noindex_follow_slugs(),
+				hu_get_noindex_nofollow_slugs()
+			)
+		)
+	);
 }
 
 /**

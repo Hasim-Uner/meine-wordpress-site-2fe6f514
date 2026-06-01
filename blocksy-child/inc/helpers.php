@@ -574,6 +574,26 @@ function nexus_get_primary_public_url_map() {
 			[ 'solar-leads-kaufen-alternative' ],
 			home_url( '/solar-leads-kaufen-alternative/' )
 		),
+		'solar_leads_cost_study' => nexus_get_page_url(
+			[ 'solar-leads-kosten-studie' ],
+			home_url( '/solar-leads-kosten-studie/' )
+		),
+		'solar_leads_tco'      => nexus_get_page_url(
+			[ 'eigene-leadgenerierung-vs-portale' ],
+			home_url( '/eigene-leadgenerierung-vs-portale/' )
+		),
+		'solar_cpl'            => nexus_get_page_url(
+			[ 'cost-per-lead-photovoltaik' ],
+			home_url( '/cost-per-lead-photovoltaik/' )
+		),
+		'solar_funnel'         => nexus_get_page_url(
+			[ 'lead-funnel-solar' ],
+			home_url( '/lead-funnel-solar/' )
+		),
+		'solar_tracking'       => nexus_get_page_url(
+			[ 'server-side-tracking-b2b' ],
+			home_url( '/server-side-tracking-b2b/' )
+		),
 		'request'              => $request_url,
 		'domdar'               => nexus_get_page_url(
 			[ 'case-study-domdar', 'domdar' ],

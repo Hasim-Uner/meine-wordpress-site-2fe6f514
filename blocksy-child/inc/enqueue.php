@@ -493,7 +493,51 @@ function hu_disable_core_block_styles_on_custom_templates() {
 		return;
 	}
 
-	if ( is_front_page() || is_home() ) {
+	$post_id  = get_queried_object_id();
+	$template = $post_id ? (string) get_page_template_slug( $post_id ) : '';
+	$hardcoded_templates = [
+		'page-solar-waermepumpen-leadgenerierung.php',
+		'page-solar-leads-kaufen-alternative.php',
+		'page-server-side-tracking-b2b.php',
+		'page-b2b-solar-leads.php',
+		'page-eigene-leadgenerierung-vs-portale.php',
+		'page-lead-funnel-solar.php',
+		'page-kunden-gewinnen-solarteure.php',
+		'page-cost-per-lead-photovoltaik.php',
+		'page-qualifizierte-pv-anfragen.php',
+		'page-solar-leads-kosten-studie.php',
+		'page-e3-new-energy.php',
+		'page-case-e3.php',
+		'page-wordpress-agentur.php',
+		'page-wordpress-agentur-hannover.php',
+		'page-kontakt.php',
+		'page-case-studies-e-commerce.php',
+		'page-stack-solar.php',
+		'page-stack-agentur.php',
+	];
+	$hardcoded_slugs = [
+		'solar-waermepumpen-leadgenerierung',
+		'solar-leads-kaufen-alternative',
+		'server-side-tracking-b2b',
+		'b2b-solar-leads',
+		'eigene-leadgenerierung-vs-portale',
+		'lead-funnel-solar',
+		'kunden-gewinnen-solarteure',
+		'cost-per-lead-photovoltaik',
+		'qualifizierte-pv-anfragen',
+		'solar-leads-kosten-studie',
+		'e3-new-energy',
+		'case-e3',
+		'wordpress-agentur',
+		'wordpress-agentur-hannover',
+		'kontakt',
+		'ergebnisse',
+		'case-studies-e-commerce',
+		'stack-solar',
+		'stack-agentur',
+	];
+
+	if ( is_front_page() || is_home() || in_array( $template, $hardcoded_templates, true ) || is_page( $hardcoded_slugs ) ) {
 		wp_dequeue_style( 'wp-block-library' );
 		wp_dequeue_style( 'wp-block-library-theme' );
 	}

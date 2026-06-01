@@ -466,17 +466,16 @@ function nexus_get_seo_cockpit_post_seo_context( $post_id ) {
 		$description = '' !== trim( $excerpt ) ? wp_trim_words( wp_strip_all_tags( $excerpt ), 25, '…' ) : '';
 	}
 
-	$acf_noindex          = function_exists( 'get_field' ) ? get_field( 'seo_noindex', $post_id ) : false;
-	$legacy_robots_meta   = get_post_meta( $post_id, 'rank_math_robots', true );
-	$legacy_noindex       = is_array( $legacy_robots_meta ) ? in_array( 'noindex', $legacy_robots_meta, true ) : 'noindex' === $legacy_robots_meta;
-	$noindex              = (bool) ( $acf_noindex || $legacy_noindex );
+	$robots_context = function_exists( 'hu_get_singular_robots_context' )
+		? hu_get_singular_robots_context( $post_id )
+		: [ 'robots' => 'index, follow', 'noindex' => false ];
 
 	return [
 		'title'              => trim( wp_strip_all_tags( (string) $title ) ),
 		'description'        => trim( wp_strip_all_tags( (string) $description ) ),
 		'canonical'          => (string) get_permalink( $post_id ),
-		'robots'             => $noindex ? 'noindex, nofollow' : 'index, follow',
-		'noindex'            => $noindex,
+		'robots'             => (string) $robots_context['robots'],
+		'noindex'            => (bool) $robots_context['noindex'],
 		'title_source'       => $title_source,
 		'description_source' => $desc_source,
 	];

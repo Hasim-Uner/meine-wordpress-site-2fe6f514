@@ -4,29 +4,28 @@
 
 ## Primäre Einstiege
 - [Startseite](/) - Überblick über Positionierung, Proof und aktuelle Einstiege.
-- [Solar- und Wärmepumpen-Leadgenerierung](/solar-waermepumpen-leadgenerierung/) - Branchen-Landingpage für eigene Anfrage-Systeme.
+- [Solar- und Wärmepumpen-Leadgenerierung](/solar-waermepumpen-leadgenerierung/) - Branchen-Landingpage für eigene Anfrage-Systeme gegen Portal-Abhängigkeit.
 - [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) - primärer Einstieg für kalten Solar-/SHK-Traffic.
-- [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - sekundäre lokale B2B-Service-Seite.
-- [Kontakt](/kontakt/) - Anfragepfad für Analyse, Umsetzung und Weiterentwicklung.
+- [Kontakt](/kontakt/) - Anfragepfad für Analyse, Umsetzung und Weiterentwicklung nach Marktcheck-Fit.
 
-## Proof und Einordnung
-- [E3 New Energy](/e3-new-energy/) - kaufnaher Proof-Case für Nachfrageaufbau, Tracking und Conversion.
+## Proof und zitierfähige Quellen
+- [E3 New Energy](/e3-new-energy/) - kaufnaher Proof-Case für Nachfrageaufbau, Vorqualifizierung, Tracking und Conversion.
+- [Was kosten Solar-Leads? Marktstudie](/solar-leads-kosten-studie/) - zitierfähige Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen, Cost-per-Order, Methodik und E3-Benchmark.
 - [Ergebnisse](/ergebnisse/) - kuratierter Proof-Hub mit Cases, Kennzahlen und Kontext.
-- [Solar Leads kaufen Alternative](/solar-leads-kaufen-alternative/) - Portalvergleich und Einordnung eigener Leadgenerierung.
-- [Photovoltaik-Leads TCO-Rechnung](/photovoltaik-leads-tco-rechnung/) - CPO-/TCO-Deep-Dive zu Leadmiete, Vertriebszeit, Datenbesitz und eigener Anfrage-Infrastruktur.
+- [Über Haşim Üner](/uber-mich/) - Personenprofil des Autors und Betreibers.
 
 ## Solar- und Wärmepumpen-Leadgenerierung: Themen-Cluster
+- [Solar Leads kaufen Alternative](/solar-leads-kaufen-alternative/) - Intercept-Page für Kauf-Suchintent und Alternative zu Lead-Anbietern.
+- [Eigene Leadgenerierung vs. Portale](/eigene-leadgenerierung-vs-portale/) - Vergleich von Portal-Leads und eigenem Anfrage-System.
+- [Cost per Lead Photovoltaik](/cost-per-lead-photovoltaik/) - CPL-Analyse mit Szenarienvergleich und versteckten Kostentreibern.
+- [Qualifizierte PV-Anfragen](/qualifizierte-pv-anfragen/) - Merkmale hochwertiger Solar-Anfragen und Warnsignale.
+- [Lead-Funnel Solar](/lead-funnel-solar/) - Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter.
 - [Server-Side Tracking B2B](/server-side-tracking-b2b/) - GA4, Meta CAPI, Consent Mode v2 und Tracking-Fundament.
 - [B2B Solar Leads](/b2b-solar-leads/) - gewerbliche PV-Anfragen und Buying-Center-Logik.
-- [Eigene Leadgenerierung vs. Portale](/eigene-leadgenerierung-vs-portale/) - Vergleich von Portal-Leads und eigener Strecke.
-- [Lead-Funnel Solar](/lead-funnel-solar/) - Funnel-Architektur für interne Marketing- und Vertriebsleiter.
 - [Kunden gewinnen für Solarteure](/kunden-gewinnen-solarteure/) - systematische Nachfragegewinnung für Solarteure.
-- [Cost per Lead Photovoltaik](/cost-per-lead-photovoltaik/) - CPL-Analyse und Szenarienvergleich.
-- [Qualifizierte PV-Anfragen](/qualifizierte-pv-anfragen/) - Merkmale hochwertiger Solar-Anfragen.
 
-## Wissen
+## Sekundäre Einstiege und Wissen
 - [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und Anfrage-Systemen.
 - [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
-- [Stack Solar](/stack-solar/) - Performance-Stack für Solar-/SHK-Anbieter: Frontend, Managed Hosting (HostPress), Server-Side Tracking, CRM-Anbindung und Marktcheck-Vorqualifizierung. Mit Closed-Loop-Effekt aus SST + Marktcheck.
-- [Stack Agentur](/stack-agentur/) - Dev-Stack für Agenturen und technische Inhaber: Root-Server (DE), CI/CD via GitHub Actions + Rsync, Restricted Deploy-Shell, Multi-Site-Hosting für Care-Plans und White-Label.
-- [WordPress TTFB & Google Ads](/wordpress-ttfb-google-ads-ladezeit/) - Wie Server-Antwortzeit Qualitätsfaktor, CPC und Cost per Lead bewegt.
+- [Stack Solar](/stack-solar/) - Performance-Stack für Solar-/SHK-Anbieter: Frontend, Managed Hosting, Server-Side Tracking, CRM-Anbindung und Marktcheck-Vorqualifizierung.
+- [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - sekundäre lokale B2B-Service-Seite.

@@ -32,6 +32,7 @@ function hu_get_solar_cluster_link_map() {
 		'kunden-gewinnen-solarteure'        => [ 'label' => 'Kunden gewinnen für Solarteure', 'path' => '/kunden-gewinnen-solarteure/' ],
 		'cost-per-lead-photovoltaik'        => [ 'label' => 'Cost per Lead Photovoltaik', 'path' => '/cost-per-lead-photovoltaik/' ],
 		'qualifizierte-pv-anfragen'         => [ 'label' => 'Qualifizierte PV-Anfragen erkennen', 'path' => '/qualifizierte-pv-anfragen/' ],
+		'solar-leads-kosten-studie'         => [ 'label' => 'Solar-Leads-Kosten: Marktstudie DACH', 'path' => '/solar-leads-kosten-studie/' ],
 	];
 }
 
@@ -43,14 +44,15 @@ function hu_get_solar_cluster_link_map() {
  */
 function hu_get_solar_cluster_related_slugs( $slug ) {
 	$relations = [
-		'solar-leads-kaufen-alternative'    => [ 'cost-per-lead-photovoltaik', 'eigene-leadgenerierung-vs-portale', 'b2b-solar-leads' ],
+		'solar-leads-kaufen-alternative'    => [ 'solar-leads-kosten-studie', 'cost-per-lead-photovoltaik', 'eigene-leadgenerierung-vs-portale' ],
 		'server-side-tracking-b2b'          => [ 'lead-funnel-solar', 'qualifizierte-pv-anfragen', 'cost-per-lead-photovoltaik' ],
 		'b2b-solar-leads'                   => [ 'qualifizierte-pv-anfragen', 'solar-leads-kaufen-alternative', 'kunden-gewinnen-solarteure' ],
-		'eigene-leadgenerierung-vs-portale' => [ 'cost-per-lead-photovoltaik', 'solar-leads-kaufen-alternative', 'b2b-solar-leads' ],
+		'eigene-leadgenerierung-vs-portale' => [ 'solar-leads-kosten-studie', 'cost-per-lead-photovoltaik', 'solar-leads-kaufen-alternative' ],
 		'lead-funnel-solar'                 => [ 'qualifizierte-pv-anfragen', 'server-side-tracking-b2b', 'kunden-gewinnen-solarteure' ],
 		'kunden-gewinnen-solarteure'        => [ 'solar-leads-kaufen-alternative', 'lead-funnel-solar', 'eigene-leadgenerierung-vs-portale' ],
-		'cost-per-lead-photovoltaik'        => [ 'eigene-leadgenerierung-vs-portale', 'solar-leads-kaufen-alternative', 'b2b-solar-leads' ],
-		'qualifizierte-pv-anfragen'         => [ 'lead-funnel-solar', 'server-side-tracking-b2b', 'b2b-solar-leads' ],
+		'cost-per-lead-photovoltaik'        => [ 'solar-leads-kosten-studie', 'eigene-leadgenerierung-vs-portale', 'solar-leads-kaufen-alternative' ],
+		'qualifizierte-pv-anfragen'         => [ 'cost-per-lead-photovoltaik', 'lead-funnel-solar', 'server-side-tracking-b2b' ],
+		'solar-leads-kosten-studie'         => [ 'cost-per-lead-photovoltaik', 'eigene-leadgenerierung-vs-portale', 'solar-leads-kaufen-alternative' ],
 	];
 
 	return isset( $relations[ $slug ] ) ? (array) $relations[ $slug ] : [];

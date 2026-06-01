@@ -58,6 +58,8 @@ function nexus_get_robots_txt_content() {
 	foreach ( nexus_get_robots_txt_user_agents() as $user_agent ) {
 		$lines[] = 'User-agent: ' . $user_agent;
 		$lines[] = 'Allow: /';
+		$lines[] = 'Allow: /llms.txt';
+		$lines[] = 'Allow: /wp-sitemap.xml';
 		$lines[] = 'Disallow: /wp-admin/';
 		$lines[] = 'Allow: /wp-admin/admin-ajax.php';
 		$lines[] = '';
