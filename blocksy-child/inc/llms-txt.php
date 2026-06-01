@@ -34,10 +34,18 @@ function nexus_is_llms_txt_request() {
  * @return string
  */
 function nexus_get_llms_txt_markdown_path( $url ) {
-	$path = wp_parse_url( (string) $url, PHP_URL_PATH );
-	$path = is_string( $path ) && '' !== $path ? $path : '/';
+	$url      = (string) $url;
+	$path     = wp_parse_url( $url, PHP_URL_PATH );
+	$fragment = wp_parse_url( $url, PHP_URL_FRAGMENT );
+	$path     = is_string( $path ) && '' !== $path ? $path : '/';
 
-	return '/' === $path ? '/' : trailingslashit( '/' . ltrim( $path, '/' ) );
+	$markdown_path = '/' === $path ? '/' : trailingslashit( '/' . ltrim( $path, '/' ) );
+
+	if ( is_string( $fragment ) && '' !== $fragment ) {
+		$markdown_path .= '#' . ltrim( $fragment, '#' );
+	}
+
+	return $markdown_path;
 }
 
 /**
