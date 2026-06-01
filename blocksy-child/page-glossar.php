@@ -12,8 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$audit_url   = nexus_get_primary_public_url( 'audit', home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
-$wgos_url    = nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#methode' ) );
+$audit_url   = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'audit', home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) ) : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+$wgos_url    = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#methode' ) ) : home_url( '/wordpress-agentur-hannover/#methode' );
 $summary     = function_exists( 'nexus_get_glossary_hub_summary' ) ? nexus_get_glossary_hub_summary() : [];
 $hub_sections = function_exists( 'nexus_get_glossary_hub_sections' ) ? nexus_get_glossary_hub_sections() : [];
 ?>

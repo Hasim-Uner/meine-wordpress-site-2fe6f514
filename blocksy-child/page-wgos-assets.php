@@ -12,7 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$audit_url       = nexus_get_audit_url();
+$audit_url       = function_exists( 'nexus_get_audit_url' )
+	? nexus_get_audit_url()
+	: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $payload         = function_exists( 'nexus_get_wgos_asset_explorer_payload' ) ? nexus_get_wgos_asset_explorer_payload() : [
 	'wgosAssetPhases'  => [],
 	'wgosAssetModules' => [],

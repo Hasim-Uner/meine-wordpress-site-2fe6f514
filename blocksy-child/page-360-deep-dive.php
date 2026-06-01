@@ -10,7 +10,9 @@
 
 get_header();
 
-$audit_url = nexus_get_audit_url();
+$audit_url = function_exists( 'nexus_get_audit_url' )
+	? nexus_get_audit_url()
+	: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 ?>
 
 <div class="deepdive-page" data-track-section="deepdive_landing">

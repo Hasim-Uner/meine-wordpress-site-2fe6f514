@@ -11,11 +11,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$seo_url          = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) );
-$cwv_url          = nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) );
-$tracking_url     = nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) );
-$cro_url          = nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) );
-$seo_category_url = nexus_get_primary_public_url( 'seo_category', home_url( '/category/seo/' ) );
+$seo_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) ) : home_url( '/wordpress-agentur-hannover/#technisches-seo' );
+$cwv_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) ) : home_url( '/wgos-assets/cwv-optimierung/' );
+$tracking_url     = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) ) : home_url( '/ga4-tracking-setup/' );
+$cro_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) ) : home_url( '/wordpress-agentur-hannover/#methode' );
+$seo_category_url = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo_category', home_url( '/category/seo/' ) ) : home_url( '/category/seo/' );
+$audit_url        = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+$audit_cta_label  = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Kostenfreien Marktcheck starten';
 
 get_header();
 ?>
@@ -138,8 +140,8 @@ get_header();
 
 				<div class="seo-cornerstone__inline-cta">
 					<p>Wie tragfähig ist Ihr Fundament heute?</p>
-					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( nexus_get_audit_url() ); ?>" data-track-action="cta_inline_cornerstone_journey" data-track-category="lead_gen">
-						<?php echo esc_html( nexus_get_audit_cta_label() ); ?>
+					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_inline_cornerstone_journey" data-track-category="lead_gen">
+						<?php echo esc_html( $audit_cta_label ); ?>
 					</a>
 				</div>
 
@@ -197,7 +199,7 @@ get_header();
 
 				<div class="seo-cornerstone__inline-cta">
 					<p>Sie wollen in 48 Stunden sehen, wo Ihre Lead-Reibung entsteht?</p>
-					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( nexus_get_audit_url() ); ?>" data-track-action="cta_inline_cornerstone_reibung" data-track-category="lead_gen">
+					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_inline_cornerstone_reibung" data-track-category="lead_gen">
 						Lead-Reibung analysieren
 					</a>
 				</div>
@@ -375,7 +377,7 @@ get_header();
 					<p>Wenn Sie wissen wollen, wie belastbar Ihr technisches Fundament heute ist, starten Sie mit einer strukturierten Analyse von Technik, Tracking, Conversion-Logik und Lead-Übergabe.</p>
 					<div class="seo-cornerstone__cta-buttons">
 						<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $seo_url ); ?>" data-track-action="cta_seo_cornerstone_audit" data-track-category="lead_gen">Technisches SEO Audit anfragen</a>
-							<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( nexus_get_audit_url() ); ?>" data-track-action="cta_seo_cornerstone_journey" data-track-category="lead_gen">Marktcheck</a>
+							<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_seo_cornerstone_journey" data-track-category="lead_gen">Marktcheck</a>
 					</div>
 				</div>
 

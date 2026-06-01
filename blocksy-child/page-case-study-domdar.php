@@ -13,10 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$audit_url    = nexus_get_audit_url();
-$cases_url    = nexus_get_results_url();
-$wgos_url     = nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#methode' ) );
-$local_wp_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
+$audit_url       = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+$audit_cta_label = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Kostenfreien Marktcheck starten';
+$cases_url       = function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/ergebnisse/' );
+$wgos_url        = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#methode' ) ) : home_url( '/wordpress-agentur-hannover/#methode' );
+$local_wp_url    = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ) : home_url( '/wordpress-agentur-hannover/' );
 $instagram_url = 'https://www.instagram.com/domdar.de/';
 $portrait_url = home_url( '/wp-content/uploads/2025/09/Wordpress_Bild_Hero.webp' );
 
@@ -254,7 +255,7 @@ get_header();
 				data-track-action="cta_domdar_hero_audit"
 				data-track-category="lead_gen"
 			>
-				<?php echo esc_html( nexus_get_audit_cta_label() ); ?>
+				<?php echo esc_html( $audit_cta_label ); ?>
 			</a>
 			<a href="#architektur" class="nx-btn nx-btn--ghost">
 				Profit-Architektur ansehen
@@ -494,7 +495,7 @@ get_header();
 						data-track-action="cta_domdar_partner_audit"
 						data-track-category="lead_gen"
 					>
-						<?php echo esc_html( nexus_get_audit_cta_label() ); ?>
+						<?php echo esc_html( $audit_cta_label ); ?>
 					</a>
 					<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost">
 						Anfrage-System ansehen
@@ -551,7 +552,7 @@ get_header();
 					data-track-action="cta_domdar_nextstep_audit"
 					data-track-category="lead_gen"
 				>
-					<?php echo esc_html( nexus_get_audit_cta_label() ); ?>
+					<?php echo esc_html( $audit_cta_label ); ?>
 				</a>
 			</div>
 
