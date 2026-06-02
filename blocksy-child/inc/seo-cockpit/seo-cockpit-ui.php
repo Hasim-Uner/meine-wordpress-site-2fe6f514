@@ -521,7 +521,8 @@ function nexus_render_revenue_command_center_status_form( $row ) {
 	<form class="nexus-seo-cockpit__status-form" method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_revenue_command_center_status' ) ); ?>">
 		<?php wp_nonce_field( 'nexus_revenue_command_center_status' ); ?>
 		<input type="hidden" name="item_id" value="<?php echo esc_attr( (string) ( $row['id'] ?? '' ) ); ?>">
-		<input type="hidden" name="redirect_to" value="<?php echo esc_attr( nexus_get_seo_cockpit_dashboard_url( [ 'range' => nexus_get_seo_cockpit_requested_range_days() ] ) ); ?>">
+		<input type="hidden" name="range" value="<?php echo esc_attr( (string) nexus_get_seo_cockpit_requested_range_days() ); ?>">
+		<input type="hidden" name="detail_url" value="<?php echo esc_attr( nexus_get_seo_cockpit_selected_detail_url() ); ?>">
 		<select name="item_status" aria-label="Revenue-Status">
 			<?php foreach ( $labels as $value => $label ) : ?>
 				<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $status, $value ); ?>><?php echo esc_html( $label ); ?></option>

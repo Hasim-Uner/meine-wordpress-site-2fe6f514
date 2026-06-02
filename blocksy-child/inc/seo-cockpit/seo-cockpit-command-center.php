@@ -75,7 +75,10 @@ function nexus_handle_revenue_command_center_status_action() {
 
 	$item_id  = isset( $_POST['item_id'] ) ? sanitize_key( (string) wp_unslash( $_POST['item_id'] ) ) : '';
 	$status   = isset( $_POST['item_status'] ) ? sanitize_key( (string) wp_unslash( $_POST['item_status'] ) ) : '';
-	$redirect = isset( $_POST['redirect_to'] ) ? esc_url_raw( (string) wp_unslash( $_POST['redirect_to'] ) ) : nexus_get_seo_cockpit_dashboard_url();
+	$range    = isset( $_POST['range'] ) ? absint( wp_unslash( $_POST['range'] ) ) : 28;
+	$range    = in_array( $range, nexus_get_seo_cockpit_allowed_ranges(), true ) ? $range : 28;
+	$detail   = isset( $_POST['detail_url'] ) ? nexus_normalize_seo_cockpit_url( (string) wp_unslash( $_POST['detail_url'] ) ) : '';
+	$redirect = '' !== $detail ? nexus_get_seo_cockpit_detail_url( $detail, [ 'range' => $range ] ) : nexus_get_seo_cockpit_dashboard_url( [ 'range' => $range ] );
 	$labels   = nexus_get_revenue_command_center_status_labels();
 
 	if ( '' !== $item_id && isset( $labels[ $status ] ) ) {
