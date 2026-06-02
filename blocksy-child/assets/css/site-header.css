@@ -152,15 +152,8 @@ body.nx-blog-header-active .ct-mobile-menu {
 }
 
 /* ── Energy/Money-Page Minimal-Header ─────────────────────────── */
-/*
- * Auf der Money-Page bleibt der Header dauerhaft eingeblendet — der CTA muss
- * auch im unteren Drittel der 10-Sektionen-Seite jederzeit erreichbar sein.
- * Hide-on-scroll-Logik aus site-header.js wird hier per CSS überstimmt.
- */
 .nx-site-header--energy {
     pointer-events: none;
-    opacity: 1 !important;
-    transform: translateY(0) !important;
 }
 
 .nx-site-header__shell--energy {
