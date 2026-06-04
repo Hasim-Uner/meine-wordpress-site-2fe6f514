@@ -103,10 +103,12 @@ require_text ".github/workflows/ci.yml" "^[[:space:]]+- '\\.github/workflows/\\*
 require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'blocksy-child/\\*\\*'" "CI watches theme changes"
 require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'AGENTS.md'" "CI watches AGENTS.md changes"
 require_text ".github/workflows/ci.yml" "^[[:space:]]+- '\\.claudeignore'" "CI watches .claudeignore changes"
+require_text ".github/workflows/ci.yml" 'fetch-depth:[[:space:]]*0' "CI fetches full history for diff guards"
+require_text ".github/workflows/ci.yml" 'id:[[:space:]]*refs' "CI computes diff refs"
 require_text ".github/workflows/ci.yml" 'bash scripts/validate-architecture\.sh' "CI runs architecture validation"
-require_text ".github/workflows/ci.yml" 'bash scripts/lint-canon-drift\.sh' "CI runs canon drift guard"
+require_text ".github/workflows/ci.yml" 'bash scripts/lint-canon-drift\.sh.*steps\.refs\.outputs\.base.*steps\.refs\.outputs\.head' "CI runs canon drift guard with diff refs"
 require_text ".github/workflows/ci.yml" 'bash scripts/lint-e3-canon\.sh' "CI runs E3 canon guard"
-require_text ".github/workflows/ci.yml" 'bash scripts/check-german-copy\.sh' "CI runs German copy guard"
+require_text ".github/workflows/ci.yml" 'bash scripts/check-german-copy\.sh.*steps\.refs\.outputs\.base.*steps\.refs\.outputs\.head' "CI runs German copy guard with diff refs"
 
 echo
 echo "=== n8n Scope Contract ==="
