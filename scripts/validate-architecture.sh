@@ -101,6 +101,9 @@ require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'agents/skills/\\*\\*'" 
 require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'AGENTS.md'" "CI watches AGENTS.md changes"
 require_text ".github/workflows/ci.yml" "^[[:space:]]+- '\\.claudeignore'" "CI watches .claudeignore changes"
 require_text ".github/workflows/ci.yml" 'bash scripts/validate-architecture\.sh' "CI runs architecture validation"
+require_text ".github/workflows/ci.yml" 'bash scripts/lint-canon-drift\.sh' "CI runs canon drift guard"
+require_text ".github/workflows/ci.yml" 'bash scripts/lint-e3-canon\.sh' "CI runs E3 canon guard"
+require_text ".github/workflows/ci.yml" 'bash scripts/check-german-copy\.sh' "CI runs German copy guard"
 
 echo
 echo "=== n8n Scope Contract ==="
