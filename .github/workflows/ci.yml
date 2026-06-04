@@ -48,12 +48,38 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine diff refs
+        id: refs
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "base=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
+            echo "head=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          elif [[ -n "${{ github.event.before }}" && "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]]; then
+            echo "base=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
+            echo "head=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "base=$(git rev-list --max-parents=0 HEAD | tail -n 1)" >> "$GITHUB_OUTPUT"
+            echo "head=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Validate GitHub Actions workflows
         uses: devops-actions/actionlint@v0.1.11
 
       - name: Validate repository architecture
         run: bash scripts/validate-architecture.sh
+
+      - name: Check canon drift
+        run: bash scripts/lint-canon-drift.sh "${{ steps.refs.outputs.base }}" "${{ steps.refs.outputs.head }}"
+
+      - name: Check E3 canon
+        run: bash scripts/lint-e3-canon.sh
+
+      - name: Check visible German copy
+        run: bash scripts/check-german-copy.sh "${{ steps.refs.outputs.base }}" "${{ steps.refs.outputs.head }}"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
