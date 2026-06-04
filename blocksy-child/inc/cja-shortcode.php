@@ -71,18 +71,18 @@ function cja_audit_shortcode() {
 
 		<div class="cja-phase cja-hero" id="cja-input">
 			<span class="cja-overline">Manueller Marktcheck für Solar- und Wärmepumpen-Anbieter</span>
-			<h1 class="cja-headline">Händische Analyse deiner Region innerhalb von 48 Stunden.</h1>
+			<h1 class="cja-headline">Händische Analyse deiner Region innerhalb von 2 Werktagen.</h1>
 			<p class="cja-subtitle">Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Ich prüfe Performance, Messbarkeit, Vertrauen, Anfragepfad und Vorqualifizierung deiner Domain händisch — und sende dir die priorisierten Hebel per E-Mail.</p>
 
 			<div class="cja-input-group">
 				<label class="screen-reader-text" for="cja-url-input">Website-URL</label>
 				<input type="text" id="cja-url-input" placeholder="ihre-domain.de" autocomplete="off" inputmode="url" autocapitalize="off" spellcheck="false" aria-describedby="cja-error">
-				<button id="cja-submit" type="button" data-track-action="cja_start_analysis" data-track-category="lead_gen" data-track-section="growth_audit_input" data-track-funnel-stage="audit_input">Kostenfreien Marktcheck starten</button>
+				<button id="cja-submit" type="button" data-track-action="cja_start_analysis" data-track-category="lead_gen" data-track-section="growth_audit_input" data-track-funnel-stage="audit_input">Marktcheck mit Fit-Entscheid starten</button>
 			</div>
-			<p class="cja-input-help">Starten Sie mit Ihrer Startseite oder der wichtigsten Angebotsseite. Ich analysiere Domain und Region in den nächsten 48 Stunden persönlich und händisch.</p>
+			<p class="cja-input-help">Starten Sie mit Ihrer Startseite oder der wichtigsten Angebotsseite. Ich analysiere Domain und Region innerhalb von 2 Werktagen persönlich und händisch.</p>
 
 			<div class="cja-trust-line" aria-label="Diagnose-Vertrauen">
-				<span>Händische Analyse · 48 h</span>
+				<span>Händische Analyse · 2 Werktage</span>
 				<span>Fokus: Solar, Wärmepumpe, Speicher</span>
 				<span>Priorisierte Hebel statt Tool-Score</span>
 			</div>

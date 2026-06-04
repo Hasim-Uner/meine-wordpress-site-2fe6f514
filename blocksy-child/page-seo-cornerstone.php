@@ -17,7 +17,7 @@ $tracking_url     = function_exists( 'nexus_get_primary_public_url' ) ? nexus_ge
 $cro_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) ) : home_url( '/wordpress-agentur-hannover/#methode' );
 $seo_category_url = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo_category', home_url( '/category/seo/' ) ) : home_url( '/category/seo/' );
 $audit_url        = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-$audit_cta_label  = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Kostenfreien Marktcheck starten';
+$audit_cta_label  = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
 
 get_header();
 ?>
@@ -198,7 +198,7 @@ get_header();
 				<p>Mit dieser Struktur wird aus "mehr Leads" ein steuerbarer Qualitätsprozess. Die operative Grundlage entsteht im Zusammenspiel aus <a href="<?php echo esc_url( $cro_url ); ?>">Conversion Rate Optimierung</a> und <a href="<?php echo esc_url( $tracking_url ); ?>">Tracking</a>.</p>
 
 				<div class="seo-cornerstone__inline-cta">
-					<p>Sie wollen in 48 Stunden sehen, wo Ihre Lead-Reibung entsteht?</p>
+					<p>Sie wollen innerhalb von 2 Werktagen sehen, wo Ihre Lead-Reibung entsteht?</p>
 					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_inline_cornerstone_reibung" data-track-category="lead_gen">
 						Lead-Reibung analysieren
 					</a>

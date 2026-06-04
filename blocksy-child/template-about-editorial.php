@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $request_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-$request_cta  = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Kostenfreien Marktcheck starten';
+$request_cta  = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
 $portrait_url = function_exists( 'hu_get_profile_image_url' ) ? hu_get_profile_image_url() : get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 $portrait_path = get_stylesheet_directory() . '/assets/img/hasim-portrait.png';
 
@@ -165,7 +165,7 @@ get_header();
 				<p class="about-editorial__cta-meta">
 					<span>Exklusive Erst-Analyse</span>
 					<span>Prüfung auf Regions-Verfügbarkeit</span>
-					<span>Händischer Befund in 48 h</span>
+					<span>Händischer Befund innerhalb von 2 Werktagen</span>
 				</p>
 			</footer>
 

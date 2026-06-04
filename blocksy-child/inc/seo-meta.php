@@ -174,11 +174,11 @@ function hu_get_forced_singular_seo_map() {
 		[
 			'kontakt' => [
 				'title'       => 'Kontakt & Projektanfrage | Haşim Üner',
-				'description' => 'Projekt starten oder Frage stellen: Formular ausfuellen, Rueckmeldung in 48 h. Kein Pflicht-Call, kein Sales-Druck – nur eine fundierte Ersteinschaetzung.',
+				'description' => 'Projekt starten oder Frage stellen: Formular ausfuellen, Rueckmeldung innerhalb von 2 Werktagen. Kein Pflicht-Call, kein Sales-Druck – nur eine fundierte Ersteinschaetzung.',
 			],
 			'kontaktiere-mich' => [
 				'title'       => 'Kontakt & Projektanfrage | Haşim Üner',
-				'description' => 'Projekt starten oder Frage stellen: Formular ausfuellen, Rueckmeldung in 48 h. Kein Pflicht-Call, kein Sales-Druck – nur eine fundierte Ersteinschaetzung.',
+				'description' => 'Projekt starten oder Frage stellen: Formular ausfuellen, Rueckmeldung innerhalb von 2 Werktagen. Kein Pflicht-Call, kein Sales-Druck – nur eine fundierte Ersteinschaetzung.',
 			],
 			'uber-mich' => [
 				'title'       => 'Über Haşim Üner | Solar-Anfrage-Systeme',
@@ -944,7 +944,7 @@ function hu_get_resolved_document_title() {
 	}
 
 	if ( hu_is_audit_offer_page() ) {
-		return 'Kostenloser Marktcheck | Haşim Üner';
+		return 'Marktcheck mit Fit-Entscheid | Haşim Üner';
 	}
 
 	if ( hu_is_contact_offer_page() ) {

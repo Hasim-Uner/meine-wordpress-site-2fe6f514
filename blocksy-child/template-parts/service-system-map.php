@@ -30,7 +30,7 @@
  *         'actions' => [
  *           [
  *             'url'      => home_url( '/kontakt/' ),
- *             'label'    => 'Kostenfreien Marktcheck starten',
+ *             'label'    => 'Marktcheck mit Fit-Entscheid starten',
  *             'class'    => 'nx-btn nx-btn--primary',
  *             'action'   => 'cta_service_system_audit',
  *             'category' => 'lead_gen',

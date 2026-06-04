@@ -291,7 +291,7 @@ get_template_part( 'template-parts/blog-header' );
 					<div class="nexus-inline-cta__inner">
 						<span class="nexus-inline-cta__tag">System-Diagnose</span>
 						<h3 class="nexus-inline-cta__headline">Wo verliert Ihr Anfragepfad Wirkung?</h3>
-						<p class="nexus-inline-cta__sub">Prüfung von Website, Tracking und Vorqualifizierung - Befund per E-Mail in 48 Stunden.</p>
+						<p class="nexus-inline-cta__sub">Prüfung von Website, Tracking und Vorqualifizierung - Befund per E-Mail innerhalb von 2 Werktagen.</p>
 						<a href="<?php echo esc_url( $audit_url ); ?>"
 							class="nexus-btn nexus-btn--primary nexus-inline-cta__btn"
 							data-track-action="cta_blog_inline"

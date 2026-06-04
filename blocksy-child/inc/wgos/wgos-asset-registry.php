@@ -578,7 +578,7 @@ function nexus_get_wgos_asset_content_html( $asset ) {
 				<h2 class="wgos-h2">Prüfen, ob dieses Asset jetzt Priorität hat.</h2>
 				<p class="wgos-section-intro">Im Marktcheck klären wir, ob dieses Asset jetzt Priorität hat - oder ob ein anderer Baustein zuerst dran ist.</p>
 				<div class="wgos-hero__actions">
-					<a href="<?php echo esc_url( $audit_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_wgos_asset_content_calendar" data-track-category="lead_gen">Kostenfreien Marktcheck starten</a>
+					<a href="<?php echo esc_url( $audit_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_wgos_asset_content_calendar" data-track-category="lead_gen">Marktcheck mit Fit-Entscheid starten</a>
 				</div>
 			</div>
 		</div>

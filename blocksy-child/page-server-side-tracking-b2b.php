@@ -185,7 +185,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="server_side_tracking_b2b"
 				   data-track-section="hero">
-					Kostenfreien Marktcheck starten
+					Marktcheck mit Fit-Entscheid starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
@@ -262,7 +262,7 @@ get_header();
 
 	<section class="hu-intercept__final" id="final-cta" aria-labelledby="hu-sst-final-title">
 		<div class="hu-intercept__container hu-intercept__container--centered">
-			<h2 class="hu-intercept__h2" id="hu-sst-final-title">Tracking-Lücken händisch einordnen — Befund in 48 h</h2>
+			<h2 class="hu-intercept__h2" id="hu-sst-final-title">Tracking-Lücken händisch einordnen — Befund innerhalb von 2 Werktagen</h2>
 			<p class="hu-intercept__final-text">
 				Im Marktcheck zeigt sich schnell, ob die heutige Attribution Ihrer Marketing-Kanäle belastbar ist – oder ob entscheidende Conversions im Standard-Setup verloren gehen.
 			</p>
@@ -272,7 +272,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="server_side_tracking_b2b"
 				   data-track-section="final">
-					Kostenfreien Marktcheck starten
+					Marktcheck mit Fit-Entscheid starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $solar_money_url ); ?>"

@@ -183,7 +183,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="b2b_solar_leads"
 				   data-track-section="hero">
-					Kostenfreien Marktcheck starten
+					Marktcheck mit Fit-Entscheid starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
@@ -300,7 +300,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="b2b_solar_leads"
 				   data-track-section="final">
-					Kostenfreien Marktcheck starten
+					Marktcheck mit Fit-Entscheid starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $solar_money_url ); ?>"

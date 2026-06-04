@@ -144,7 +144,7 @@ $faqs = [
 	],
 	[
 		'question' => 'Lohnt sich ein eigenes Anfrage-System gegenüber Lead-Kauf?',
-		'answer'   => 'Das hängt von Marktregion, Projektwert und Vertriebskapazität ab. Faustregel: Wer dauerhaft skaliert und exklusive, vorqualifizierte Anfragen braucht, fährt mit einem eigenen System pro Abschluss meist deutlich günstiger — bei gleichzeitigem Asset-Aufbau. Der kostenfreie Marktcheck prüft das für Ihre Region.',
+		'answer'   => 'Das hängt von Marktregion, Projektwert und Vertriebskapazität ab. Faustregel: Wer dauerhaft skaliert und exklusive, vorqualifizierte Anfragen braucht, fährt mit einem eigenen System pro Abschluss meist deutlich günstiger — bei gleichzeitigem Asset-Aufbau. Der Marktcheck mit Fit-Entscheid prüft das für Ihre Region.',
 	],
 ];
 
@@ -230,7 +230,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="study_solar_leads_kosten"
 				   data-track-section="hero">
-					Kostenfreien Marktcheck starten
+					Marktcheck mit Fit-Entscheid starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="#cpo"
@@ -367,7 +367,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-study-final-title">Was kostet ein Abschluss in Ihrer Region?</h2>
 			<p class="hu-intercept__final-text">
-				Manueller, tiefer Marktcheck statt Software-Einheitsbrei: händische Analyse Ihrer Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, ob ein eigenes Anfrage-System pro Abschluss wirtschaftlicher ist als der Weiterkauf von Portal-Leads. Ohne Pflicht-Call, ohne Newsletter.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei: händische Analyse Ihrer Region innerhalb von 2 Werktagen per E-Mail — mit klarer Aussage, ob ein eigenes Anfrage-System pro Abschluss wirtschaftlicher ist als der Weiterkauf von Portal-Leads. Ohne Pflicht-Call, ohne Newsletter.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"
@@ -375,7 +375,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="study_solar_leads_kosten"
 				   data-track-section="final">
-					Kostenfreien Marktcheck starten
+					Marktcheck mit Fit-Entscheid starten
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( home_url( '/solar-leads-kaufen-alternative/' ) ); ?>"

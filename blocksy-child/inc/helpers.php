@@ -183,13 +183,13 @@ function nexus_get_audit_cta_copy() {
 	}
 
 	$copy = [
-		'label'             => 'Kostenfreien Marktcheck starten',
-		'compact_microcopy' => 'Händische Analyse · Befund per E-Mail in 48 h',
+		'label'             => 'Marktcheck mit Fit-Entscheid starten',
+		'compact_microcopy' => 'Händische Analyse · Befund per E-Mail innerhalb von 2 Werktagen',
 		'header_meta_items' => [
 			'Manueller Marktcheck',
 			'Fokus: Solar, Wärmepumpe, Speicher',
 		],
-		'footer_note'       => 'Marktcheck: Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.',
+		'footer_note'       => 'Marktcheck: Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 2 Werktagen per E-Mail.',
 	];
 
 	return $copy;
@@ -203,7 +203,7 @@ function nexus_get_audit_cta_copy() {
 function nexus_get_audit_cta_label() {
 	$copy = nexus_get_audit_cta_copy();
 
-	return isset( $copy['label'] ) ? (string) $copy['label'] : 'Kostenfreien Marktcheck starten';
+	return isset( $copy['label'] ) ? (string) $copy['label'] : 'Marktcheck mit Fit-Entscheid starten';
 }
 
 /**
@@ -771,7 +771,7 @@ function nexus_get_primary_request_url() {
  * @return string
  */
 function nexus_get_primary_request_cta_label() {
-	return 'Kostenfreien Marktcheck starten';
+	return 'Marktcheck mit Fit-Entscheid starten';
 }
 
 /**

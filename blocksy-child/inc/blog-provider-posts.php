@@ -138,7 +138,7 @@ Für Betriebe mit eigener Vertriebsverantwortung, hohen Projektwerten und klarem
 
 ## Nächster Schritt: Solar-Marktcheck
 
-Wenn Sie prüfen möchten, ob sich ein eigenes Anfrage-System für Ihren Solar-, Wärmepumpen- oder Speicherbetrieb wirtschaftlich lohnt, starten Sie mit dem kostenfreien Marktcheck. Dabei werden Projektwert, Region, Vertriebsprozess, aktuelle Lead-Kosten und Abhängigkeit von Portalen eingeordnet.
+Wenn Sie prüfen möchten, ob sich ein eigenes Anfrage-System für Ihren Solar-, Wärmepumpen- oder Speicherbetrieb wirtschaftlich lohnt, starten Sie den Marktcheck mit Fit-Entscheid. Dabei werden Projektwert, Region, Vertriebsprozess, aktuelle Lead-Kosten und Abhängigkeit von Portalen eingeordnet.
 
 → [Solar-Marktcheck starten](https://hasimuener.de/solar-waermepumpen-leadgenerierung/#marktcheck)
 MD,
@@ -221,7 +221,7 @@ Als alleinige Dauerstrategie ist Portal-Lead-Einkauf im 2026er Markt für PV/Wä
 
 ## Nächster Schritt: Solar-Marktcheck
 
-Wenn Sie prüfen möchten, ob Ihr Betrieb wirtschaftlich besser mit Portal-Leads, einer Mischstrategie oder einem eigenen Anfrage-System fährt, starten Sie mit dem kostenfreien Marktcheck.
+Wenn Sie prüfen möchten, ob Ihr Betrieb wirtschaftlich besser mit Portal-Leads, einer Mischstrategie oder einem eigenen Anfrage-System fährt, starten Sie den Marktcheck mit Fit-Entscheid.
 
 → [Solar-Marktcheck starten](https://hasimuener.de/solar-waermepumpen-leadgenerierung/#marktcheck)
 MD,
@@ -310,7 +310,7 @@ Als alleinige Lead-Quelle ist auch das Branchen-Portal-Modell riskant, wenn kein
 
 ## Nächster Schritt: Solar-Marktcheck
 
-Wenn Sie prüfen möchten, ob branchenspezialisierte Portale, eine Mischstrategie oder ein eigenes Anfrage-System für Ihren Betrieb wirtschaftlich sinnvoller sind, starten Sie mit dem kostenfreien Marktcheck.
+Wenn Sie prüfen möchten, ob branchenspezialisierte Portale, eine Mischstrategie oder ein eigenes Anfrage-System für Ihren Betrieb wirtschaftlich sinnvoller sind, starten Sie den Marktcheck mit Fit-Entscheid.
 
 → [Solar-Marktcheck starten](https://hasimuener.de/solar-waermepumpen-leadgenerierung/#marktcheck)
 MD,
@@ -392,7 +392,7 @@ Strategisch lohnt es sich, parallel zum Videomarketing-Vertrag die eigene Infras
 
 ## Nächster Schritt: Solar-Marktcheck
 
-Wenn Sie prüfen möchten, welches Modell für Ihren Betrieb regional und wirtschaftlich am besten passt – Videomarketing-Dienstleister, eigene Infrastruktur oder eine Mischform –, starten Sie mit dem kostenfreien Marktcheck.
+Wenn Sie prüfen möchten, welches Modell für Ihren Betrieb regional und wirtschaftlich am besten passt – Videomarketing-Dienstleister, eigene Infrastruktur oder eine Mischform –, starten Sie den Marktcheck mit Fit-Entscheid.
 
 → [Solar-Marktcheck starten](https://hasimuener.de/solar-waermepumpen-leadgenerierung/#marktcheck)
 MD,
