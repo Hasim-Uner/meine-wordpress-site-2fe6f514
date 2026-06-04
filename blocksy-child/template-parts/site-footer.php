@@ -34,9 +34,9 @@ $privacy_url      = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
 $whitelabel_url   = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 $hide_primary_cta    = function_exists( 'nexus_should_hide_footer_primary_cta' ) && nexus_should_hide_footer_primary_cta();
 $footer_class        = $hide_primary_cta ? 'ft ft--no-primary-cta ft--mobile-cta' : 'ft';
-$audit_cta_label     = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Kostenfreien Marktcheck starten';
-$audit_cta_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : 'Händische Analyse · Befund per E-Mail in 48 h';
-$audit_footer_note   = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_get_audit_footer_note() : 'Marktcheck: Manueller, tiefer Marktcheck statt Software-Einheitsbrei — händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.';
+$audit_cta_label     = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
+$audit_cta_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : 'Region · Vertrieb · Anfragequalität prüfen';
+$audit_footer_note   = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_get_audit_footer_note() : 'Marktcheck: Manueller Fit-Befund statt Software-Einheitsbrei — händische Einordnung von Region, Vertrieb und Anfragequalität.';
 
 $is_whitelabel_context = is_page_template( 'page-whitelabel-retainer.php' )
 	|| is_page( 'whitelabel-retainer' )
@@ -58,7 +58,7 @@ if ( $is_whitelabel_context ) {
 	<div class="ft__audit-shell">
 		<p class="ft__audit-note"><?php echo esc_html( $audit_footer_note ); ?></p>
 		<nav class="ft__audit-links" aria-label="Marktcheck-Footer-Navigation">
-			<a href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_footer_analysis" data-track-category="lead_gen">Kostenfreien Marktcheck starten</a>
+			<a href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_footer_analysis" data-track-category="lead_gen">Marktcheck mit Fit-Entscheid starten</a>
 			<a href="<?php echo esc_url( $imprint_url ); ?>" rel="nofollow">Impressum</a>
 			<a href="<?php echo esc_url( $privacy_url ); ?>" rel="nofollow">Datenschutz</a>
 		</nav>
@@ -74,7 +74,7 @@ if ( $is_whitelabel_context ) {
 				<a class="ft__logo site-logo site-logo--accent" href="<?php echo esc_url( $home_url ); ?>" aria-label="Startseite - HAŞIM ÜNER">HAŞIM ÜNER</a>
 				<p class="ft__energy-tag">Leadgenerierung für Solar- und Wärmepumpen-Betriebe.</p>
 			</div>
-			<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_energy_footer_analysis" data-track-category="lead_gen" data-track-section="footer_energy" data-track-funnel-stage="energy_footer">Kostenfreien Marktcheck starten</a>
+			<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_energy_footer_analysis" data-track-category="lead_gen" data-track-section="footer_energy" data-track-funnel-stage="energy_footer">Marktcheck mit Fit-Entscheid starten</a>
 			<nav class="ft__energy-legal" aria-label="Rechtliches">
 			<a href="<?php echo esc_url( $imprint_url ); ?>" rel="nofollow">Impressum</a>
 			<span aria-hidden="true">·</span>
