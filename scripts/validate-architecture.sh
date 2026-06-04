@@ -98,6 +98,9 @@ require_text "agents/skills/CONTEXT.md" 'Core rule: When a task touches `blocksy
 echo
 echo "=== CI Coverage Contract ==="
 require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'agents/skills/\\*\\*'" "CI watches agents/skills changes"
+require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'scripts/\\*\\*'" "CI watches script changes"
+require_text ".github/workflows/ci.yml" "^[[:space:]]+- '\\.github/workflows/\\*\\*'" "CI watches workflow changes"
+require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'blocksy-child/\\*\\*'" "CI watches theme changes"
 require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'AGENTS.md'" "CI watches AGENTS.md changes"
 require_text ".github/workflows/ci.yml" "^[[:space:]]+- '\\.claudeignore'" "CI watches .claudeignore changes"
 require_text ".github/workflows/ci.yml" 'bash scripts/validate-architecture\.sh' "CI runs architecture validation"
