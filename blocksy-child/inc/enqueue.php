@@ -227,7 +227,7 @@ function hu_enqueue_assets() {
 			'NexusContactConfig',
 			[
 				'restEndpoint'     => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
-				'successMessage'   => 'Danke. Ihre Anfrage ist eingegangen. Ich analysiere Domain und Region innerhalb von 2 Werktagen persönlich und händisch und sende den Befund per E-Mail.',
+				'successMessage'   => 'Danke. Ihre Anfrage ist eingegangen. Ich analysiere Domain und Region in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, persönlich und händisch und sende den Befund per E-Mail.',
 				'errorMessage'     => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
 				'callUrl'          => esc_url_raw( function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' ) ),
 				'isScopedLanding'  => $contact_is_scoped_landing,
@@ -247,7 +247,7 @@ function hu_enqueue_assets() {
 			'NexusContactConfig',
 			[
 				'restEndpoint'    => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
-				'successMessage'  => 'Danke. Ihre Projektprüfung ist eingegangen. Sie erhalten innerhalb von 2 Werktagen eine händisch geprüfte Rückmeldung.',
+				'successMessage'  => 'Danke. Ihre Projektprüfung ist eingegangen. Sie erhalten in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, eine händisch geprüfte Rückmeldung.',
 				'errorMessage'    => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
 				'callUrl'         => esc_url_raw( function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' ) ),
 				'isScopedLanding' => true,

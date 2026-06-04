@@ -887,11 +887,11 @@ function nexus_get_review_request_success_message( $payload ) {
 	$variant = isset( $payload['intake_variant'] ) ? sanitize_key( (string) $payload['intake_variant'] ) : '';
 
 	if ( 'energy_systems' === $variant ) {
-		return 'Eingegangen. Ihre Standortbestimmung liegt in der Bearbeitung. Sie erhalten innerhalb von 2 Werktagen eine E-Mail von hasim@hasimuener.de — bei Eignung mit Vorschlag für ein 30-minütiges Erstgespräch, bei Nicht-Eignung mit konkretem Hinweis auf eine realistischere Alternative.';
+		return 'Eingegangen. Ihre Standortbestimmung liegt in der Bearbeitung. Sie erhalten in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, eine E-Mail von hasim@hasimuener.de — bei Eignung mit Vorschlag für ein 30-minütiges Erstgespräch, bei Nicht-Eignung mit konkretem Hinweis auf eine realistischere Alternative.';
 	}
 
 	if ( nexus_is_growth_audit_simple_intake_variant( $variant ) ) {
-		return 'Die Rückmeldung kommt innerhalb von 2 Werktagen per E-Mail.';
+		return 'Die Rückmeldung kommt in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, per E-Mail.';
 	}
 
 	return 'Ihre Anfrage ist eingegangen. Ich ordne Seite, Angebot und Anfragepfad ein und melde mich mit einer konkreten nächsten Priorität per E-Mail.';
@@ -2368,7 +2368,7 @@ function nexus_send_review_request_admin_notification( $post_id, $payload ) {
 		esc_html( $payload['name'] ),
 		$lead_meta_html,
 		esc_html( $payload['audit_type_label'] ),
-		esc_html( 'Persönliche Rückmeldung innerhalb von 2 Werktagen' ),
+		esc_html( 'Persönliche Rückmeldung in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage' ),
 		$detail_html,
 		esc_url( $edit_url ),
 		esc_url( $page_url ? $page_url : admin_url( 'post.php?post=' . $post_id . '&action=edit' ) )
@@ -2454,7 +2454,7 @@ function nexus_send_review_request_confirmation( $payload ) {
 			'preheader' => 'Ihre Anfrage für den ' . $payload['audit_type_label'] . ' ist eingegangen.',
 			'eyebrow'   => $payload['audit_type_label'],
 			'headline'  => 'Ihr ' . $payload['audit_type_label'] . ' ist im System.',
-			'intro'     => 'Danke, ' . $payload['name'] . '. Ich prüfe die Seite und melde mich innerhalb von 2 Werktagen per E-Mail.',
+			'intro'     => 'Danke, ' . $payload['name'] . '. Ich prüfe die Seite und melde mich in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, per E-Mail.',
 			'content'   => $content,
 			'footer'    => 'Viele Grüße, Haşim Üner',
 		]

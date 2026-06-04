@@ -184,12 +184,12 @@ function nexus_get_audit_cta_copy() {
 
 	$copy = [
 		'label'             => 'Marktcheck mit Fit-Entscheid starten',
-		'compact_microcopy' => 'Händische Analyse · Befund per E-Mail innerhalb von 2 Werktagen',
+		'compact_microcopy' => 'Händische Analyse · Befund per E-Mail innerhalb von 48 Stunden',
 		'header_meta_items' => [
 			'Manueller Marktcheck',
 			'Fokus: Solar, Wärmepumpe, Speicher',
 		],
-		'footer_note'       => 'Marktcheck: Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 2 Werktagen per E-Mail.',
+		'footer_note'       => 'Marktcheck: Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.',
 	];
 
 	return $copy;

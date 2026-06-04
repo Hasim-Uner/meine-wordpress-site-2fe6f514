@@ -595,7 +595,7 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
 			'ok'      => true,
 			'contactId' => $contact_id,
 			'message' => sprintf(
-				'Danke. Ihre %s ist eingegangen. Sie erhalten innerhalb von 2 Werktagen eine händisch geprüfte Rückmeldung.',
+				'Danke. Ihre %s ist eingegangen. Sie erhalten in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, eine händisch geprüfte Rückmeldung.',
 				nexus_get_contact_request_response_label( $validated['request_type'] )
 			),
 		],
@@ -974,7 +974,7 @@ function nexus_send_contact_request_confirmation( $payload ) {
 					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:8px;">Was jetzt passiert</div>
 					<div style="font-size:14px; line-height:1.8; color:#c5ced7;">
 						<strong style="color:#f7f3ee;">1.</strong> Ihre Nachricht ist sauber eingegangen.<br>
-						<strong style="color:#f7f3ee;">2.</strong> Sie erhalten innerhalb von 2 Werktagen eine händisch geprüfte, persönliche Rückmeldung.<br>
+						<strong style="color:#f7f3ee;">2.</strong> Sie erhalten in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, eine händisch geprüfte, persönliche Rückmeldung.<br>
 						<strong style="color:#f7f3ee;">3.</strong> %1$s
 					</div>
 				</td>

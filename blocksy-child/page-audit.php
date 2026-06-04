@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: System-Diagnose
- * Description: Landing Page für die manuelle 2 Werktage-Anfrage-System-Analyse
+ * Description: Landing Page für die manuelle 48h-Anfrage-System-Analyse
  *
  * SEO-Meta: zentral in inc/seo-meta.php (ACF-Felder: seo_title, seo_description, og_image)
  *

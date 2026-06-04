@@ -38,7 +38,7 @@ if ( '' === $hu_sticky_target ) {
 	<div class="hu-sticky-cta__inner">
 		<p class="hu-sticky-cta__text">
 			<span class="hu-sticky-cta__lead">Manueller Marktcheck</span>
-			<span class="hu-sticky-cta__sub">Händische Analyse · Befund innerhalb von 2 Werktagen</span>
+			<span class="hu-sticky-cta__sub">Händische Analyse · Befund innerhalb von 48 Stunden</span>
 		</p>
 		<a class="hu-sticky-cta__primary"
 		   href="<?php echo esc_url( $hu_sticky_target ); ?>"

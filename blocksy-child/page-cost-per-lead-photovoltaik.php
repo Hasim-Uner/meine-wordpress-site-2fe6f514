@@ -263,7 +263,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-cpl-final-title">Eigenen CPL im Marktcheck einordnen</h2>
 			<p class="hu-intercept__final-text">
-				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse Ihrer Region innerhalb von 2 Werktagen per E-Mail — mit klarer Einordnung Ihrer aktuellen Lead-Kosten und der Hebel, mit denen sich der CPL signifikant senken lässt.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse Ihrer Region innerhalb von 48 Stunden per E-Mail — mit klarer Einordnung Ihrer aktuellen Lead-Kosten und der Hebel, mit denen sich der CPL signifikant senken lässt.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"

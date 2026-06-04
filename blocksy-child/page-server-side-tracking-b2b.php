@@ -262,7 +262,7 @@ get_header();
 
 	<section class="hu-intercept__final" id="final-cta" aria-labelledby="hu-sst-final-title">
 		<div class="hu-intercept__container hu-intercept__container--centered">
-			<h2 class="hu-intercept__h2" id="hu-sst-final-title">Tracking-Lücken händisch einordnen — Befund innerhalb von 2 Werktagen</h2>
+			<h2 class="hu-intercept__h2" id="hu-sst-final-title">Tracking-Lücken händisch einordnen — Befund innerhalb von 48 Stunden</h2>
 			<p class="hu-intercept__final-text">
 				Im Marktcheck zeigt sich schnell, ob die heutige Attribution Ihrer Marketing-Kanäle belastbar ist – oder ob entscheidende Conversions im Standard-Setup verloren gehen.
 			</p>

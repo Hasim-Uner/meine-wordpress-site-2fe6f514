@@ -117,7 +117,7 @@ function nexus_get_site_header_fallback_items() {
 	$solar_url    = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 	$agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 	$results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
-	$request_cta  = 'Marktcheck · 2 Werktage';
+	$request_cta  = 'Marktcheck · 48 h';
 
 	return [
 		[
@@ -279,14 +279,15 @@ function nexus_energy_nav_cta_label( $items, $args ) {
 	}
 
 	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-	$request_cta = 'Marktcheck · 2 Werktage';
+	$request_cta = 'Marktcheck · 48 h';
 
 	foreach ( $items as $item ) {
 		$legacy_analysis_label = 'Analyse ' . 'starten';
 		$legacy_diagnose_label = 'System-Diagnose ' . 'starten';
 		$legacy_diagnose_request_label = 'System-Diagnose ' . 'anfragen';
 		$legacy_fast_marketcheck_label = implode( ' ', [ 'Marktcheck ·', '48', 'h' ] );
-		if ( in_array( $item->title, [ $legacy_analysis_label, $legacy_diagnose_label, 'System-Diagnose', 'Marktcheck', 'Marktcheck · 60 Sek.', $legacy_fast_marketcheck_label, 'Marktcheck · 2 Werktage', 'Audit starten', $legacy_diagnose_request_label, 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
+		$legacy_business_days_marketcheck_label = implode( ' ', [ 'Marktcheck ·', '2', 'Werktage' ] );
+		if ( in_array( $item->title, [ $legacy_analysis_label, $legacy_diagnose_label, 'System-Diagnose', 'Marktcheck', 'Marktcheck · 60 Sek.', $legacy_fast_marketcheck_label, $legacy_business_days_marketcheck_label, 'Marktcheck · 48 h', 'Audit starten', $legacy_diagnose_request_label, 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
 			$item->title = $request_cta;
 			$item->url   = $request_url;
 			break;

@@ -574,7 +574,7 @@
       var qualification = state.qualification || { status: 'qualified', reason: 'sweet_spot' };
       var isNurture = qualification.status === 'nurture';
       var headline = qualification.headline || fallbackHeadline;
-      var message = qualification.message || 'Ihr Marktcheck ist eingegangen. Ich prüfe Domain, Region und Fit persönlich-händisch und sende den Befund innerhalb von 2 Werktagen an Ihre geschäftliche E-Mail.';
+      var message = qualification.message || 'Ihr Marktcheck ist eingegangen. Ich prüfe Domain, Region und Fit persönlich-händisch und sende den Befund in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, an Ihre geschäftliche E-Mail.';
       var ticketId = qualification.ticket_id || '';
       var deadlineHuman = qualification.response_deadline_human || '';
       var proof = (!isNurture && qualification.proof && typeof qualification.proof === 'object') ? qualification.proof : null;

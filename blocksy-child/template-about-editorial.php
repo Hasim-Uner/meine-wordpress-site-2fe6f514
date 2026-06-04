@@ -165,7 +165,7 @@ get_header();
 				<p class="about-editorial__cta-meta">
 					<span>Exklusive Erst-Analyse</span>
 					<span>Prüfung auf Regions-Verfügbarkeit</span>
-					<span>Händischer Befund innerhalb von 2 Werktagen</span>
+					<span>Händischer Befund innerhalb von 48 Stunden</span>
 				</p>
 			</footer>
 

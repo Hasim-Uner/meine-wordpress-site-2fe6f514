@@ -367,7 +367,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-study-final-title">Was kostet ein Abschluss in Ihrer Region?</h2>
 			<p class="hu-intercept__final-text">
-				Manueller, tiefer Marktcheck statt Software-Einheitsbrei: händische Analyse Ihrer Region innerhalb von 2 Werktagen per E-Mail — mit klarer Aussage, ob ein eigenes Anfrage-System pro Abschluss wirtschaftlicher ist als der Weiterkauf von Portal-Leads. Ohne Pflicht-Call, ohne Newsletter.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei: händische Analyse Ihrer Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, ob ein eigenes Anfrage-System pro Abschluss wirtschaftlicher ist als der Weiterkauf von Portal-Leads. Ohne Pflicht-Call, ohne Newsletter.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"

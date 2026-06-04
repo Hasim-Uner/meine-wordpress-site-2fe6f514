@@ -134,7 +134,7 @@ Drei Schritte, in dieser Reihenfolge:
 2. **Hosting-Standort prüfen.** Wenn der Server nicht in Deutschland steht, kostet jeder Klick aus dem DACH-Raum Latenz, die kein Cache zurückholt.
 3. **Cache-Hit-Rate prüfen.** Server-level Page Cache aktiv? Redis als Object Cache eingerichtet? Wenn nein, sind das die nächsten zwei Hebel.
 
-Wenn Sie diese drei Punkte beantwortet haben und unsicher sind, ob ein eigenes Anfrage-System die nächste sinnvolle Stufe ist, ist der [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) der direkteste Weg zur Einordnung. Händische Analyse, Befund per E-Mail innerhalb von 2 Werktagen, kein automatisches Software-Score.
+Wenn Sie diese drei Punkte beantwortet haben und unsicher sind, ob ein eigenes Anfrage-System die nächste sinnvolle Stufe ist, ist der [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) der direkteste Weg zur Einordnung. Händische Analyse, Befund per E-Mail innerhalb von 48 Stunden, kein automatisches Software-Score.
 
 ---
 

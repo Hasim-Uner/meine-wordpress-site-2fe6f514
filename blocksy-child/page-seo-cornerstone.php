@@ -198,7 +198,7 @@ get_header();
 				<p>Mit dieser Struktur wird aus "mehr Leads" ein steuerbarer Qualitätsprozess. Die operative Grundlage entsteht im Zusammenspiel aus <a href="<?php echo esc_url( $cro_url ); ?>">Conversion Rate Optimierung</a> und <a href="<?php echo esc_url( $tracking_url ); ?>">Tracking</a>.</p>
 
 				<div class="seo-cornerstone__inline-cta">
-					<p>Sie wollen innerhalb von 2 Werktagen sehen, wo Ihre Lead-Reibung entsteht?</p>
+					<p>Sie wollen innerhalb von 48 Stunden sehen, wo Ihre Lead-Reibung entsteht?</p>
 					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_inline_cornerstone_reibung" data-track-category="lead_gen">
 						Lead-Reibung analysieren
 					</a>

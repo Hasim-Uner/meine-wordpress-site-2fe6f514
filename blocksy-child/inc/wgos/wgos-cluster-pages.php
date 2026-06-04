@@ -274,7 +274,7 @@ function nexus_get_wgos_cluster_page_proof_metrics() {
 			'label' => 'B2B-Fokus auf WordPress-, SEO-, Tracking- und CRO-Systeme',
 		],
 		[
-			'value' => '2 Werktage',
+			'value' => 'Befund in 48 h',
 			'label' => 'Marktcheck-Einstieg mit priorisierten Hebeln',
 		],
 		[
@@ -325,7 +325,7 @@ function nexus_render_wgos_cluster_page( $page ) {
 	$proof_note    = isset( $page['proof_note'] ) ? (string) $page['proof_note'] : '';
 	$proof_links   = isset( $page['proof_links'] ) && is_array( $page['proof_links'] ) ? $page['proof_links'] : [];
 	$audit_cta_label         = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
-	$audit_compact_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : 'Händische Analyse · Befund innerhalb von 2 Werktagen · priorisierte Hebel';
+	$audit_compact_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : 'Händische Analyse · Befund innerhalb von 48 Stunden · priorisierte Hebel';
 
 	ob_start();
 	?>

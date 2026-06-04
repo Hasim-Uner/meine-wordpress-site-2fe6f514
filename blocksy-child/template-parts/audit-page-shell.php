@@ -125,14 +125,14 @@ $e3_summary      = function_exists( 'hu_e3_summary' ) ? hu_e3_summary( 'proof' )
 									<span class="ga-btn__label">Marktcheck mit Fit-Entscheid starten</span>
 									<span class="ga-btn__spinner" aria-hidden="true"></span>
 								</button>
-								<p class="ga-form__microcopy">Schriftliche Rückmeldung innerhalb von 2 Werktagen. Kein Pflicht-Call.</p>
+								<p class="ga-form__microcopy">Schriftliche Rückmeldung in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage. Kein Pflicht-Call.</p>
 							</div>
 						</form>
 
 						<div id="ga-request-success" class="ga-success" role="status" aria-live="polite" aria-atomic="true" hidden>
 							<div class="ga-success__pill">Anfrage eingegangen.</div>
 							<h3>Ich prüfe die Seite.</h3>
-							<p id="ga-success-message">Die Rückmeldung kommt innerhalb von 2 Werktagen per E-Mail.</p>
+							<p id="ga-success-message">Die Rückmeldung kommt in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, per E-Mail.</p>
 							<div class="ga-success__next">
 								<p class="ga-success__next-label">In der Zwischenzeit:</p>
 								<a href="<?php echo esc_url( $request_url ); ?>" class="ga-success__link" data-track-action="cta_audit_success_request" data-track-category="lead_gen">Anfrage stellen</a>

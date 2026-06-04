@@ -264,7 +264,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-quality-final-title">Eigene Lead-Qualität einordnen lassen</h2>
 			<p class="hu-intercept__final-text">
-				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 2 Werktagen per E-Mail — mit klarer Aussage, wo Ihre aktuelle Lead-Qualität schwächelt und welche Hebel kurzfristig die Abschlussquote heben.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, wo Ihre aktuelle Lead-Qualität schwächelt und welche Hebel kurzfristig die Abschlussquote heben.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"

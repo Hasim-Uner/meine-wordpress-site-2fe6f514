@@ -119,7 +119,7 @@ $results_qualifiers = [
 $guarantee_points = [
 	[
 		't' => 'Marktcheck schafft Entscheidungsgrundlage',
-		's' => 'Strukturierter, händisch geprüfter Marktcheck statt automatisierter Tool-Bericht. Befund Ihrer Domain und Region innerhalb von 2 Werktagen per E-Mail — mit Fit-Einschätzung, drei priorisierten Hebeln und klarer Empfehlung für oder gegen den nächsten Schritt.',
+		's' => 'Strukturierter, händisch geprüfter Marktcheck statt automatisierter Tool-Bericht. Befund Ihrer Domain und Region innerhalb von 48 Stunden per E-Mail — mit Fit-Einschätzung, drei priorisierten Hebeln und klarer Empfehlung für oder gegen den nächsten Schritt.',
 	],
 	[
 		't' => 'Drei Hebel — auch bei Abrat',
@@ -290,11 +290,11 @@ $deeper_clusters = [
 $faq_items = [
 	[
 		'question' => 'Wie läuft der Marktcheck konkret ab und wie lange dauert er?',
-		'answer'   => 'Drei strukturierte Schritte: Vertriebsteam-Größe, Portal-Margenverlust, geschäftliche Eckdaten. Den händisch geprüften Infrastruktur-Befund Ihrer Domain und Region erhalten Sie innerhalb von 2 Werktagen per E-Mail. Keine automatisierten Standard-PDFs, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
+		'answer'   => 'Drei strukturierte Schritte: Vertriebsteam-Größe, Portal-Margenverlust, geschäftliche Eckdaten. Den händisch geprüften Infrastruktur-Befund Ihrer Domain und Region erhalten Sie in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, per E-Mail. Keine automatisierten Standard-PDFs, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
 	],
 	[
 		'question' => 'Was passiert nach dem Marktcheck?',
-		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich innerhalb von 2 Werktagen per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die verrechenbare Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
+		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die verrechenbare Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
 	],
 	[
 		'question' => 'Was kostet das im Vergleich zur Performance-Agentur?',
@@ -391,7 +391,7 @@ $service_schema = [
 		'@type'         => 'Offer',
 		'price'         => '0',
 		'priceCurrency' => 'EUR',
-		'description'   => 'Marktcheck mit händisch geprüftem Fit-Befund Ihrer Region innerhalb von 2 Werktagen per E-Mail.',
+		'description'   => 'Marktcheck mit händisch geprüftem Fit-Befund Ihrer Region innerhalb von 48 Stunden per E-Mail.',
 		'availability'  => 'https://schema.org/InStock',
 	],
 	'isRelatedTo' => [
@@ -997,7 +997,7 @@ get_header();
 						Klarheit, keine <em>Folien</em>.
 					</h2>
 					<p class="sol-results-sub">
-						Nach dem Marktcheck (Fit-Befund innerhalb von 2 Werktagen) folgt optional die verrechenbare Tiefendiagnose: vier Module · schriftlicher Befund in 7 Werktagen · drei priorisierte Hebel · eine Wirtschaftlichkeits-Einordnung — belastbare Entscheidungsgrundlage statt Pitch-Deck.
+						Nach dem Marktcheck (Fit-Befund innerhalb von 48 Stunden) folgt optional die verrechenbare Tiefendiagnose: vier Module · schriftlicher Befund in 7 Werktagen · drei priorisierte Hebel · eine Wirtschaftlichkeits-Einordnung — belastbare Entscheidungsgrundlage statt Pitch-Deck.
 					</p>
 					<ul class="sol-results-list">
 						<?php foreach ( $results_qualifiers as $row ) : ?>
@@ -1292,7 +1292,7 @@ get_header();
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Plätze 2026: <?php echo (int) $founding['slots_remaining']; ?> von <?php echo (int) $founding['slots_total']; ?> noch offen</li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Rolle: früher Umsetzungspartner, keine Mitgründer- oder Beteiligungsrolle</li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Bewerbungsfrist: <?php echo esc_html( $founding_end_de ); ?></li>
-					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Entscheidung: nach Marktcheck · händisch · innerhalb von 2 Werktagen</li>
+					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Entscheidung: nach Marktcheck · händisch · innerhalb von 48 Stunden</li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Bedingung: eigener Vertrieb · klares Zielgebiet · 12–24-Monate-Horizont</li>
 				</ul>
 			</div>
@@ -1312,7 +1312,7 @@ get_header();
 						Anfragen <em>besitzen</em>,<br />nicht mieten.
 					</h2>
 					<p class="sol-final-sub">
-						Manueller Marktcheck · Region, Vertrieb und Anfragequalität · Fit-Befund per E-Mail innerhalb von 2 Werktagen.
+						Manueller Marktcheck · Region, Vertrieb und Anfragequalität · Fit-Befund per E-Mail innerhalb von 48 Stunden.
 					</p>
 					<a
 						class="sol-btn sol-btn-primary sol-final-btn"

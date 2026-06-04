@@ -37,11 +37,11 @@ $stages = [
 	],
 	[
 		't' => 'MOFU – Vorqualifizierung',
-		's' => 'Manueller Marktcheck statt 5-Felder-Formular. Region, Heizart, Dach, Projektwert werden vor der Kontaktaufnahme abgefragt — der Befund kommt händisch per E-Mail innerhalb von 2 Werktagen. Wer das Marktcheck nicht durchläuft, ist kein passendes Match.',
+		's' => 'Manueller Marktcheck statt 5-Felder-Formular. Region, Heizart, Dach, Projektwert werden vor der Kontaktaufnahme abgefragt — der Befund kommt händisch per E-Mail innerhalb von 48 Stunden. Wer das Marktcheck nicht durchläuft, ist kein passendes Match.',
 	],
 	[
 		't' => 'BOFU – Anfrage & Termin',
-		's' => 'Kontaktdaten kommen erst nach grünem Fit. Direkt im Anschluss: händisch geprüfter Befund per E-Mail innerhalb von 2 Werktagen, optionaler Cal.com-Termin, automatischer CRM-Eintrag inklusive Lead-Score.',
+		's' => 'Kontaktdaten kommen erst nach grünem Fit. Direkt im Anschluss: händisch geprüfter Befund per E-Mail innerhalb von 48 Stunden, optionaler Cal.com-Termin, automatischer CRM-Eintrag inklusive Lead-Score.',
 	],
 	[
 		't' => 'Vertrieb – Anschluss',
@@ -230,7 +230,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-funnel-final-title">Funnel-Setup im Marktcheck einordnen</h2>
 			<p class="hu-intercept__final-text">
-				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse Ihrer Region innerhalb von 2 Werktagen per E-Mail — mit klarer Aussage, an welcher Funnel-Stufe Ihre größte Verlustquelle liegt und welcher Hebel den schnellsten Effekt hat.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse Ihrer Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, an welcher Funnel-Stufe Ihre größte Verlustquelle liegt und welcher Hebel den schnellsten Effekt hat.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"

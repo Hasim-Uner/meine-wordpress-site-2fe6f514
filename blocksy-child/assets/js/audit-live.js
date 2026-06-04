@@ -999,7 +999,7 @@
       loader.innerHTML =
         '<div class="loader-icon" id="loader-icon">🔍</div>' +
         '<div class="loader-text" id="loader-text">Anfrage wird übermittelt …</div>' +
-        '<div class="loader-sub" id="loader-sub">Manueller, tiefer Marktcheck — händische Analyse deiner Region innerhalb von 2 Werktagen per E-Mail.</div>' +
+        '<div class="loader-sub" id="loader-sub">Manueller, tiefer Marktcheck — händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.</div>' +
         '<div class="loader-progress-track"><div class="loader-progress-fill" id="loader-progress"></div></div>';
       loader.style.display = 'block';
       loader.classList.add('is-active');

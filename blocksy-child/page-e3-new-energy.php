@@ -98,7 +98,7 @@ $specific = [
 
 $cta_features = [
 	'Kostenfreier Marktcheck in 6 Fragen',
-	'Händisch geprüfter Marktcheck innerhalb von 2 Werktagen',
+	'Händisch geprüfter Marktcheck innerhalb von 48 Stunden',
 	'Einordnung von Anfrage-Quellen, Tracking und Vertriebsanschluss',
 	'Kein Pflicht-Termin, kein Pitch-Call',
 ];
@@ -374,7 +374,7 @@ get_header();
 					</a>
 				</div>
 
-				<p class="e3-cta__micro">Händisch geprüfter Befund innerhalb von 2 Werktagen per E-Mail.</p>
+				<p class="e3-cta__micro">Händisch geprüfter Befund innerhalb von 48 Stunden per E-Mail.</p>
 			</div>
 		</section>
 	</div>

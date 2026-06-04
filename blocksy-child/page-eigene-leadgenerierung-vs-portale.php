@@ -375,7 +375,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-vs-final-title">TCO im Marktcheck einordnen</h2>
 			<p class="hu-intercept__final-text">
-				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse Ihrer Region innerhalb von 2 Werktagen per E-Mail — mit klarer Aussage, ab welchem monatlichen Lead-Budget sich der Umstieg vom Portal-Modell auf ein eigenes Anfrage-System wirtschaftlich rechnet.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse Ihrer Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, ab welchem monatlichen Lead-Budget sich der Umstieg vom Portal-Modell auf ein eigenes Anfrage-System wirtschaftlich rechnet.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"

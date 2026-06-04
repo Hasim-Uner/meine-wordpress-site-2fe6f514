@@ -376,7 +376,7 @@ $auto_scroll  = false;
 				</form>
 
 				<div class="contact-form__postcopy">
-					<p class="contact-postcopy__lead">Antwort in der Regel innerhalb von 2 Werktagen. Händisch geprüft, kein Vertriebsteam.</p>
+					<p class="contact-postcopy__lead">Antwort in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage. Händisch geprüft, kein Vertriebsteam.</p>
 				</div>
 			</section>
 	</div>
