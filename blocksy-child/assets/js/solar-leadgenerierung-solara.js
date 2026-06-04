@@ -88,6 +88,52 @@
     } catch (e) { /* swallow */ }
   }
 
+  function normalizeInternalAttributionUrl(url) {
+    if (!url || !window.location || !window.location.origin) {
+      return '';
+    }
+
+    try {
+      var parsed = new URL(url, window.location.origin);
+      if (parsed.origin !== window.location.origin) {
+        return '';
+      }
+
+      var path = parsed.pathname || '/';
+      if (path !== '/' && path.slice(-1) !== '/') {
+        path += '/';
+      }
+
+      return parsed.origin + path;
+    } catch (error) {
+      return '';
+    }
+  }
+
+  function getLeadAttributionPayload() {
+    if (window.NexusCore && typeof window.NexusCore.getLeadAttributionPayload === 'function') {
+      return window.NexusCore.getLeadAttributionPayload();
+    }
+
+    var landingUrl = normalizeInternalAttributionUrl(window.location.href);
+    var referrerUrl = '';
+
+    if (document.referrer) {
+      try {
+        referrerUrl = String(new URL(document.referrer, window.location.origin)).split('#')[0];
+      } catch (error) {
+        referrerUrl = '';
+      }
+    }
+
+    return {
+      landing_page_url: landingUrl,
+      entry_page_url: landingUrl,
+      previous_internal_url: '',
+      referrer_url: referrerUrl
+    };
+  }
+
   // ── Quiz controller ──────────────────────────────────────────
   function QuizController(mount) {
     var state = {
@@ -152,6 +198,7 @@
       setState({ submitting: true, submitError: null });
 
       var endpoint = CFG.restEndpoint || '/wp-json/nexus/v1/audit-request';
+      var attribution = getLeadAttributionPayload();
       var payload = {
         contract_version:   CFG.contractVersion || '',
         intake_variant:      'energy_systems',
@@ -169,11 +216,13 @@
         phone:                state.answers.phone || '',
         page_url:             CFG.pageUrl || window.location.href,
         consent_privacy:      'accepted',
-        company_website:      state.answers.company_website || '',
-        landing_page_url:     window.location.pathname || '',
-        entry_page_url:       window.location.pathname || '',
-        referrer_url:         document.referrer || ''
+        company_website:      state.answers.company_website || ''
       };
+
+      Object.keys(attribution).forEach(function (key) {
+        if (!attribution[key]) return;
+        payload[key] = attribution[key];
+      });
 
       fetch(endpoint, {
         method: 'POST',

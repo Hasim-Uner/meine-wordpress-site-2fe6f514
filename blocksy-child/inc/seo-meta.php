@@ -188,12 +188,12 @@ function hu_get_forced_singular_seo_map() {
 			// Seiten sind noindex, sitemap-excluded oder geschuetzte 301-Einstiege,
 			// daher keine oeffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
-				'title'       => 'WordPress Agentur Hannover | B2B SEO, Tracking & CRO',
-				'description' => 'WordPress Agentur Hannover für B2B-Websites: technisches SEO, Tracking, Core Web Vitals und CRO. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
+				'title'       => 'WordPress Agentur Hannover für B2B-Anfragen',
+				'description' => 'WordPress Agentur Hannover für B2B-Websites, die Anfragen tragen müssen: technisches SEO, Tracking und CRO. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
 			],
 			'wordpress-agentur' => [
-				'title'       => 'WordPress Agentur Hannover | B2B SEO, Tracking & CRO',
-				'description' => 'WordPress Agentur Hannover für B2B-Websites: technisches SEO, Tracking, Core Web Vitals und CRO. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
+				'title'       => 'WordPress Agentur Hannover für B2B-Anfragen',
+				'description' => 'WordPress Agentur Hannover für B2B-Websites, die Anfragen tragen müssen: technisches SEO, Tracking und CRO. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
@@ -227,8 +227,8 @@ function hu_get_forced_singular_seo_map() {
 				'description' => sprintf( 'B2B-Leadgenerierung für Solar & Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3: %s niedrigerer CPL in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'solar-leads-kaufen-alternative' => [
-				'title'       => 'Solar Leads kaufen? Warum eigene Anfragen den CPL senken',
-				'description' => sprintf( 'Portal-Leads für Photovoltaik & Wärmepumpe sind teuer und mehrfach verkauft. Eigene Anfrage-Systeme senken den CPL %s – Beispiel E3 in 6 Monaten.', $e3_cpl_reduction ),
+				'title'       => 'Solar Leads kaufen? Alternative ohne Portal-Abhängigkeit',
+				'description' => sprintf( 'Solar Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads sind oft mehrfach verkauft. Der Marktcheck prüft, ob ein eigenes System den CPL senken kann – E3: %s.', $e3_cpl_reduction ),
 			],
 			'server-side-tracking-b2b' => [
 				'title'       => 'Server-Side Tracking für B2B-Leadgenerierung – DSGVO & CAPI',
@@ -1181,7 +1181,7 @@ function hu_get_seo_meta() {
 
 	} elseif ( function_exists( 'hu_is_request_analysis_request_path' ) && hu_is_request_analysis_request_path() ) {
 		$meta['og_title']    = 'Marktcheck | Haşim Üner';
-		$meta['description'] = 'Manueller Marktcheck für Solar- und Wärmepumpen-Betriebe: händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.';
+		$meta['description'] = 'Manueller Marktcheck für Solar- und Wärmepumpen-Betriebe: händische Einordnung von Region, Vertrieb und Anfragequalität mit klarem Fit-Entscheid.';
 		$meta['canonical']   = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 		$meta['robots']      = 'noindex, follow';
 
@@ -1259,7 +1259,7 @@ function hu_get_seo_meta() {
 
 		if ( hu_is_audit_offer_page() ) {
 			$meta['og_title']    = 'Marktcheck für Solar- und Wärmepumpen-Anbieter | Haşim Üner';
-			$meta['description'] = 'Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region innerhalb von 48 Stunden per E-Mail.';
+			$meta['description'] = 'Manueller Marktcheck statt Software-Einheitsbrei: Region, Vertrieb und Anfragequalität händisch einordnen und den nächsten sinnvollen Schritt klären.';
 		}
 
 		if ( hu_is_domdar_case_study_page() ) {

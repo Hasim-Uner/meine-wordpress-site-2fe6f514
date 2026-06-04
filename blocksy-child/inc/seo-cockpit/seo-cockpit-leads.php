@@ -160,6 +160,7 @@ function nexus_get_seo_cockpit_lead_mode_label( $mode ) {
 		'entry'    => 'Einstieg',
 		'previous' => 'Assist',
 		'landing'  => 'Landing',
+		'source'   => 'Quelle',
 	];
 
 	$mode = sanitize_key( (string) $mode );
@@ -173,12 +174,14 @@ function nexus_get_seo_cockpit_lead_mode_label( $mode ) {
  * @param string $entry_url    First internal page in session.
  * @param string $previous_url Previous internal page before form.
  * @param string $landing_url  Current form page.
+ * @param string $source       Review request source key.
  * @return array<string, string>
  */
-function nexus_get_seo_cockpit_review_request_attribution_target( $entry_url, $previous_url, $landing_url ) {
+function nexus_get_seo_cockpit_review_request_attribution_target( $entry_url, $previous_url, $landing_url, $source = '' ) {
 	$entry_url    = nexus_get_seo_cockpit_internal_attribution_url( $entry_url );
 	$previous_url = nexus_get_seo_cockpit_internal_attribution_url( $previous_url );
 	$landing_url  = nexus_get_seo_cockpit_internal_attribution_url( $landing_url );
+	$source       = sanitize_key( (string) $source );
 
 	if ( '' !== $entry_url ) {
 		return [
@@ -198,6 +201,20 @@ function nexus_get_seo_cockpit_review_request_attribution_target( $entry_url, $p
 		return [
 			'url'  => $landing_url,
 			'mode' => 'landing',
+		];
+	}
+
+	if ( 'energy_systems_landing' === $source ) {
+		return [
+			'url'  => function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' ),
+			'mode' => 'source',
+		];
+	}
+
+	if ( 'growth_audit_landing' === $source ) {
+		return [
+			'url'  => function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
+			'mode' => 'source',
 		];
 	}
 
@@ -244,6 +261,7 @@ function nexus_get_seo_cockpit_empty_lead_page_row( $url ) {
 			'entry'    => 0,
 			'previous' => 0,
 			'landing'  => 0,
+			'source'   => 0,
 		],
 		'sources'           => [],
 		'last_request_at'   => 0,
@@ -369,7 +387,7 @@ function nexus_get_seo_cockpit_lead_snapshot_data( $ranges ) {
 		$landing_page_url   = (string) get_post_meta( $post->ID, '_nexus_review_landing_page_url', true );
 		$entry_page_url     = (string) get_post_meta( $post->ID, '_nexus_review_entry_page_url', true );
 		$previous_page_url  = (string) get_post_meta( $post->ID, '_nexus_review_previous_internal_url', true );
-		$attribution_target = nexus_get_seo_cockpit_review_request_attribution_target( $entry_page_url, $previous_page_url, $landing_page_url );
+		$attribution_target = nexus_get_seo_cockpit_review_request_attribution_target( $entry_page_url, $previous_page_url, $landing_page_url, $source );
 		$attributed_url     = (string) ( $attribution_target['url'] ?? '' );
 		$attribution_mode   = sanitize_key( (string) ( $attribution_target['mode'] ?? '' ) );
 		$windows            = [ 'lifetime' ];

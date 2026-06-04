@@ -180,17 +180,16 @@ get_header();
 			<div class="ag-hero__grid">
 				<div class="ag-hero__copy">
 					<h1 class="ag-hero__title">
-						<span class="ag-hero__title-line">WordPress Agentur</span>
-						<span class="ag-hero__title-line">Hannover.</span>
-						<span class="ag-hero__title-line ag-hero__title-line--em">Für B2B-Anfragen.</span>
+						<span class="ag-hero__title-line">WordPress Agentur Hannover</span>
+						<span class="ag-hero__title-line ag-hero__title-line--em">für messbare B2B-Anfragen.</span>
 					</h1>
 					<p class="ag-hero__lede">
-						WordPress-Wachstumssystem für anspruchsvolle B2B-Angebote — aus Hannover für den DACH-Raum. Technisches SEO, Core Web Vitals, Tracking und Conversion-Führung als ein System, nicht als lose Agenturleistung.
+						Keine klassische Webdesign-Agentur und kein Relaunch auf Verdacht. Ich prüfe zuerst, ob Suchintention, Angebotsseite, Tracking und Anfragepfad belastbar genug sind — dann wird WordPress als technische Basis für qualifizierte Anfragen geordnet.
 					</p>
 
 					<div class="ag-hero__actions">
 						<a href="<?php echo esc_url( $contact_url ); ?>" class="ag-btn ag-btn--primary" data-track-action="cta_hero_projekt_pruefen" data-track-category="lead_gen" data-track-section="hero">
-							<span>Projekt prüfen</span>
+							<span>Anfrage-System prüfen</span>
 							<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
 								<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 							</svg>
@@ -201,7 +200,7 @@ get_header();
 					</div>
 
 					<p class="ag-hero__fineprint">
-						30&nbsp;Min · kein Standard-Pitch · klare Priorität vor Relaunch, SEO oder Umsetzung.
+						30&nbsp;Min · kein Standard-Pitch · klare Priorität vor Relaunch, SEO oder Umsetzung. Solar, Wärmepumpe oder Speicher? <a href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_hero_to_energy_marktcheck" data-track-category="lead_gen" data-track-section="hero">Direkt zum Marktcheck</a>.
 					</p>
 				</div>
 

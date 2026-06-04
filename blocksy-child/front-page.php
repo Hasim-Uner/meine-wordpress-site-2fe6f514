@@ -51,12 +51,12 @@ $home_routing_gateways = [
 	],
 	'agentur' => [
 		'badge'   => 'G2',
-		'kicker'  => 'Technischer Hub',
-		'title'   => 'WordPress Agentur Hannover',
-		'desc'    => 'Technisches Fundament für anspruchsvolle B2B-Systeme: Server-Side Tracking, technisches SEO und kontrollierte Weiterentwicklung.',
+		'kicker'  => 'Sekundärer Technik-Einstieg',
+		'title'   => 'WordPress Agentur Hannover für B2B-Anfragen',
+		'desc'    => 'Für bestehende WordPress-Seiten, bei denen technisches SEO, Tracking und Conversion-Pfad kaufnahe Anfragen nicht sauber tragen.',
 		'url'     => $agentur_hub_url,
-		'label'   => 'B2B Agentur-Hub Hannover ansteuern',
-		'persona' => 'Für Unternehmen mit Infrastruktur-Bedarf',
+		'label'   => 'WordPress-Anfrage-System prüfen',
+		'persona' => 'Für B2B-Unternehmen mit bestehender WordPress-Basis',
 		'action'  => 'gateway_agentur',
 	],
 	'proof' => [
@@ -660,7 +660,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">−</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Der händisch geprüfte Befund Ihrer Domain und Region kommt innerhalb von 48 Stunden per E-Mail. Keine automatischen Standard-PDFs, sondern eine strategische Einordnung mit klarer Empfehlung.</div>
+						<div class="hu-faq-item__a-inner">Der händisch geprüfte Befund ordnet Domain, Region, Vertrieb und Anfragequalität ein. Keine automatischen Standard-PDFs, sondern eine strategische Einordnung mit klarer Empfehlung für oder gegen den nächsten Schritt.</div>
 					</div>
 				</div>
 
