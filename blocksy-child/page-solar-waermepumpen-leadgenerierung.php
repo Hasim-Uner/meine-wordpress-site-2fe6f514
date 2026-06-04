@@ -59,7 +59,7 @@ $trust_items = [
 	'Server-Side · CAPI im Stack',
 	'Hardcoded WordPress · kein Page-Builder',
 	'1:1 Senior · keine Junior-Kette',
-	'Marktcheck kostenfrei',
+	'Marktcheck mit Fit-Entscheid',
 	sprintf( 'Founding Cohort 2026 · %d/%d Plätze', $founding_open, $founding_seats ),
 ];
 
@@ -118,8 +118,8 @@ $results_qualifiers = [
 
 $guarantee_points = [
 	[
-		't' => 'Marktcheck ist kostenfrei',
-		's' => 'Strukturierter, händisch geprüfter Marktcheck statt automatisierter Tool-Bericht. Befund Ihrer Domain und Region innerhalb von 48 Stunden per E-Mail — ohne Newsletter, ohne Pitch-Deck, ohne Folgekosten.',
+		't' => 'Marktcheck schafft Entscheidungsgrundlage',
+		's' => 'Strukturierter, händisch geprüfter Marktcheck statt automatisierter Tool-Bericht. Befund Ihrer Domain und Region innerhalb von 48 Werktagsstunden per E-Mail — mit Fit-Einschätzung, drei priorisierten Hebeln und klarer Empfehlung für oder gegen den nächsten Schritt.',
 	],
 	[
 		't' => 'Drei Hebel — auch bei Abrat',
@@ -290,11 +290,11 @@ $deeper_clusters = [
 $faq_items = [
 	[
 		'question' => 'Wie läuft der Marktcheck konkret ab und wie lange dauert er?',
-		'answer'   => 'Drei strukturierte Schritte: Vertriebsteam-Größe, Portal-Margenverlust, geschäftliche Eckdaten. Den händisch geprüften Infrastruktur-Befund Ihrer Domain und Region erhalten Sie innerhalb von 48 Stunden per E-Mail. Keine automatisierten Standard-PDFs, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
+		'answer'   => 'Drei strukturierte Schritte: Vertriebsteam-Größe, Portal-Margenverlust, geschäftliche Eckdaten. Den händisch geprüften Infrastruktur-Befund Ihrer Domain und Region erhalten Sie innerhalb von 48 Werktagsstunden per E-Mail. Keine automatisierten Standard-PDFs, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
 	],
 	[
 		'question' => 'Was passiert nach dem Marktcheck?',
-		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich innerhalb von 48 Stunden per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die kostenpflichtige Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
+		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich innerhalb von 48 Werktagsstunden per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die verrechenbare Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
 	],
 	[
 		'question' => 'Was kostet das im Vergleich zur Performance-Agentur?',
@@ -391,7 +391,7 @@ $service_schema = [
 		'@type'         => 'Offer',
 		'price'         => '0',
 		'priceCurrency' => 'EUR',
-		'description'   => 'Marktcheck & händisch geprüfter Befund Ihrer Region innerhalb von 48 Stunden per E-Mail.',
+		'description'   => 'Marktcheck mit händisch geprüftem Fit-Befund Ihrer Region innerhalb von 48 Werktagsstunden per E-Mail.',
 		'availability'  => 'https://schema.org/InStock',
 	],
 	'isRelatedTo' => [
@@ -452,7 +452,7 @@ get_header();
 						Aroundhome, DAA und Wattfox verkaufen jede Anfrage an drei Wettbewerber. Sie zahlen für den Preiskampf.
 					</p>
 					<p class="sol-hero-sub">
-						Ein geschlossenes Anfrage-System auf Ihrer Domain — Sie besitzen den Kanal, den Datensatz und jede Anfrage. Diagnose in 48 Stunden, kostenfrei.
+						Ein geschlossenes Anfrage-System auf Ihrer Domain — Sie besitzen den Kanal, den Datensatz und jede Anfrage. Der Marktcheck zeigt, ob Region, Vertrieb und Anfragequalität den nächsten Schritt tragen.
 					</p>
 
 					<?php
@@ -515,8 +515,8 @@ get_header();
 								<path class="sol-hero-dashboard-area" d="<?php echo esc_attr( $cpl_area ); ?>" fill="url(#sol-cpl-fill)"/>
 								<path class="sol-hero-dashboard-line" d="<?php echo esc_attr( $cpl_path ); ?>" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 								<?php foreach ( $cpl_points as $i => $pt ) : $is_anchor = ( 0 === $i || count( $cpl_points ) - 1 === $i ); ?>
-									<g class="sol-hero-dashboard-pt<?php echo $is_anchor ? ' is-anchor' : ''; ?>" style="--sol-pt-delay:<?php echo (float) ( $i * 0.12 ); ?>s;">
-										<circle cx="<?php echo (float) $pt['x']; ?>" cy="<?php echo (float) $pt['y']; ?>" r="<?php echo $is_anchor ? 4.5 : 2.5; ?>" fill="currentColor"/>
+										<g class="sol-hero-dashboard-pt<?php echo esc_attr( $is_anchor ? ' is-anchor' : '' ); ?>" style="--sol-pt-delay:<?php echo esc_attr( (string) (float) ( $i * 0.12 ) ); ?>s;">
+											<circle cx="<?php echo esc_attr( (string) (float) $pt['x'] ); ?>" cy="<?php echo esc_attr( (string) (float) $pt['y'] ); ?>" r="<?php echo esc_attr( (string) ( $is_anchor ? 4.5 : 2.5 ) ); ?>" fill="currentColor"/>
 										<?php if ( $is_anchor ) : ?>
 											<circle cx="<?php echo (float) $pt['x']; ?>" cy="<?php echo (float) $pt['y']; ?>" r="9" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="0.8"/>
 											<text x="<?php echo (float) ( $pt['x'] + ( 0 === $i ? 10 : -10 ) ); ?>" y="<?php echo (float) ( $pt['y'] - 10 ); ?>" text-anchor="<?php echo 0 === $i ? 'start' : 'end'; ?>" font-size="11" font-weight="600" fill="currentColor" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"><?php echo (int) $pt['v']; ?> €</text>
@@ -587,7 +587,7 @@ get_header();
 									data-track-section="hero_noscript"
 								>
 									<span>Marktcheck per E-Mail beantragen</span>
-									<span class="sol-cta-submit-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+									<span class="sol-cta-submit-arrow" aria-hidden="true"><?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 								</a>
 							</noscript>
 
@@ -595,20 +595,20 @@ get_header();
 							<div class="sol-cta-head">
 								<span class="sol-cta-tag sol-mono">
 									<span class="sol-cta-tag-dot" aria-hidden="true"></span>
-									Marktcheck · händisch geprüft · Befund in 48 h
+									Marktcheck · Fit geprüft · nächster Schritt
 								</span>
-								<span class="sol-cta-head-right sol-mono">Kostenfrei</span>
+								<span class="sol-cta-head-right sol-mono">Fit-Check</span>
 							</div>
 							<h2 id="sol-quiz-title" class="sol-cta-title">
 								Marktcheck für Ihren Vertrieb starten.
 							</h2>
 							<p class="sol-cta-hint">
-								Dreistufiger Marktcheck. Strukturierte Aufnahme Ihres Vertriebs- und Lead-Profils — Befund innerhalb von 48 Stunden per E-Mail. Kein Newsletter, kein Pitch-Deck.
+								Dreistufiger Marktcheck. Strukturierte Aufnahme Ihres Vertriebs- und Lead-Profils — mit Fit-Befund, drei priorisierten Hebeln und nächstem Schritt. Kein Newsletter, kein Pitch-Deck.
 							</p>
 							<ul class="sol-cta-bullets sol-mono" aria-label="Was Sie nach dem Marktcheck erhalten">
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Inklusive Regions-Verfügbarkeitsprüfung</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Manuelle Erst-Analyse statt automatisierter Tool-Bericht</li>
-								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Persönliche Rückmeldung garantiert in 48 Stunden</li>
+								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Persönliche Rückmeldung mit Fit-Entscheid</li>
 							</ul>
 							<p class="sol-cta-fineprint" style="text-align:left;margin:0 0 14px;">Wird geladen …</p>
 						</div>
@@ -711,7 +711,7 @@ get_header();
 					</div>
 
 					<div class="sol-compare-divider" aria-hidden="true">
-						<span class="sol-compare-divider-icon"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						<span class="sol-compare-divider-icon"><?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</div>
 
 					<div class="sol-compare-col sol-compare-col--good">
@@ -850,10 +850,10 @@ get_header();
 					<div class="sol-capex-picker-buttons" data-sol-capex-buttons>
 						<?php foreach ( [ 12, 24, 36 ] as $tf ) : ?>
 							<button type="button"
-								class="sol-capex-picker-btn<?php echo $tf === $capex_default ? ' is-active' : ''; ?>"
+								class="sol-capex-picker-btn<?php echo esc_attr( $tf === $capex_default ? ' is-active' : '' ); ?>"
 								data-sol-capex-tf="<?php echo esc_attr( (string) $tf ); ?>"
 								role="tab"
-								aria-selected="<?php echo $tf === $capex_default ? 'true' : 'false'; ?>"
+								aria-selected="<?php echo esc_attr( $tf === $capex_default ? 'true' : 'false' ); ?>"
 								data-track-action="capex_timeframe"
 								data-track-category="engagement"
 								data-track-section="capex_opex"
@@ -979,9 +979,9 @@ get_header();
 						data-track-funnel-stage="intake_open"
 					>
 						<span>Marktcheck starten</span>
-						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						<span class="sol-btn-arrow"><?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
-					<div class="sol-capex-cta-micro sol-mono">Inklusive Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse statt automatisierter Tool-Bericht · Persönliche Rückmeldung garantiert in 48 Stunden</div>
+					<div class="sol-capex-cta-micro sol-mono">Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln</div>
 				</div>
 			</div>
 		</section>
@@ -997,7 +997,7 @@ get_header();
 						Klarheit, keine <em>Folien</em>.
 					</h2>
 					<p class="sol-results-sub">
-						Nach dem kostenlosen Marktcheck (Befund in 48 h) folgt optional die verrechenbare Tiefendiagnose: vier Module · schriftlicher Befund in 7 Werktagen · drei priorisierte Hebel · eine Wirtschaftlichkeits-Einordnung — belastbare Entscheidungsgrundlage statt Pitch-Deck.
+						Nach dem Marktcheck (Fit-Befund innerhalb von 48 Werktagsstunden) folgt optional die verrechenbare Tiefendiagnose: vier Module · schriftlicher Befund in 7 Werktagen · drei priorisierte Hebel · eine Wirtschaftlichkeits-Einordnung — belastbare Entscheidungsgrundlage statt Pitch-Deck.
 					</p>
 					<ul class="sol-results-list">
 						<?php foreach ( $results_qualifiers as $row ) : ?>
@@ -1017,7 +1017,7 @@ get_header();
 						style="margin-top:32px;"
 					>
 						Vollständige Methodik im <?php echo esc_html( $e3_case_label ); ?>-Case
-						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						<span class="sol-btn-arrow"><?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
 				</div>
 
@@ -1153,9 +1153,9 @@ get_header();
 						data-track-funnel-stage="intake_open"
 					>
 						<span>Marktcheck beantragen</span>
-						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						<span class="sol-btn-arrow"><?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
-					<div class="sol-fit-cta-micro sol-mono">Inklusive Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse statt automatisierter Tool-Bericht · Persönliche Rückmeldung garantiert in 48 Stunden</div>
+					<div class="sol-fit-cta-micro sol-mono">Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln</div>
 				</div>
 			</div>
 		</section>
@@ -1292,7 +1292,7 @@ get_header();
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Plätze 2026: <?php echo (int) $founding['slots_remaining']; ?> von <?php echo (int) $founding['slots_total']; ?> noch offen</li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Rolle: früher Umsetzungspartner, keine Mitgründer- oder Beteiligungsrolle</li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Bewerbungsfrist: <?php echo esc_html( $founding_end_de ); ?></li>
-					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Entscheidung: nach Marktcheck · händisch · in 48 h</li>
+					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Entscheidung: nach Marktcheck · händisch · in 48 Werktagsstunden</li>
 					<li><span style="color:var(--sol-accent);margin-right:10px">·</span>Bedingung: eigener Vertrieb · klares Zielgebiet · 12–24-Monate-Horizont</li>
 				</ul>
 			</div>
@@ -1312,7 +1312,7 @@ get_header();
 						Anfragen <em>besitzen</em>,<br />nicht mieten.
 					</h2>
 					<p class="sol-final-sub">
-						Manueller, tiefer Marktcheck · händische Analyse Ihrer Region · Befund per E-Mail in 48 h.
+						Manueller Marktcheck · Region, Vertrieb und Anfragequalität · Fit-Befund per E-Mail in 48 Werktagsstunden.
 					</p>
 					<a
 						class="sol-btn sol-btn-primary sol-final-btn"
@@ -1323,9 +1323,9 @@ get_header();
 						data-track-funnel-stage="intake_open"
 					>
 						<span>Marktcheck starten</span>
-						<span class="sol-btn-arrow"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						<span class="sol-btn-arrow"><?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</a>
-					<div class="sol-final-micro">Inklusive Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse statt automatisierter Tool-Bericht · Persönliche Rückmeldung garantiert in 48 Stunden</div>
+					<div class="sol-final-micro">Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln</div>
 				</div>
 			</div>
 		</section>
@@ -1340,7 +1340,7 @@ get_header();
 			data-track-funnel-stage="intake_open"
 		>
 			<span>Marktcheck starten</span>
-			<span class="sol-sticky-cta-arrow" aria-hidden="true"><?php echo $arrow_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+			<span class="sol-sticky-cta-arrow" aria-hidden="true"><?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 		</a>
 
 	</div><!-- /.solara-landing -->

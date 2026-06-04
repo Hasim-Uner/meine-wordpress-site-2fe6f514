@@ -2,7 +2,7 @@
    SOLARA Landing — B2B Marktcheck im Hero.
    3-stufige Progressive-Disclosure-Sequenz (Sales-Team → Portal-Streuverlust → Business-Daten).
    Submit → /wp-json/nexus/v1/audit-request (intake_variant=energy_systems).
-   Success-Screen mit Cal.com-Direktbuchung + händischer 48h-Antwort.
+   Success-Screen mit Cal.com-Direktbuchung + händischer SLA-Antwort.
    Vanilla JS. Keine Dependencies. Touch- & Keyboard-accessible. */
 (function () {
   'use strict';
@@ -45,7 +45,7 @@
       key: 'contact',
       label: 'Marktcheck',
       title: 'Daten-Integrität & Kontakt',
-      hint: 'Erst nach den beiden Qualifikationsantworten öffnet sich der geschäftliche Datenpfad. Persönliche Rückmeldung garantiert in 48 Stunden.',
+      hint: 'Erst nach den beiden Qualifikationsantworten öffnet sich der geschäftliche Datenpfad. Sie erhalten eine persönliche Fit-Einschätzung nach händischer Prüfung.',
       kind: 'form'
     }
   ];
@@ -422,7 +422,7 @@
       var rationale = el('div', { className: 'sol-quiz-rationale', role: 'note' }, [
         el('p', { className: 'sol-quiz-rationale-h' }, 'Daten-Integrität · Drittes Modul des Marktchecks'),
         el('p', { className: 'sol-quiz-rationale-b' },
-          'Sie haben Ihre Vertriebsstruktur und Portal-Margenverluste skizziert — jetzt brauche ich die Firmen-Eckdaten, um Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch zu prüfen und den Befund an den richtigen Entscheider zu senden.')
+          'Sie haben Ihre Vertriebsstruktur und Portal-Margenverluste skizziert — jetzt brauche ich die Firmen-Eckdaten, um Domain, Region und Fit persönlich-händisch zu prüfen und den Befund an den richtigen Entscheider zu senden.')
       ]);
       form.appendChild(rationale);
 
@@ -514,7 +514,7 @@
       ]);
       form.appendChild(submitBtn);
 
-      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Inklusive Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse statt automatisierter Tool-Bericht · Persönliche Rückmeldung garantiert in 48 Stunden · DSGVO'));
+      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln · DSGVO'));
 
       return form;
     }
@@ -525,7 +525,7 @@
       var qualification = state.qualification || { status: 'qualified', reason: 'sweet_spot' };
       var isNurture = qualification.status === 'nurture';
       var headline = qualification.headline || fallbackHeadline;
-      var message = qualification.message || 'Ihr Marktcheck ist eingegangen. Ich prüfe Ihre Domain und Region innerhalb von 48 Stunden persönlich-händisch und sende den Befund an Ihre geschäftliche E-Mail.';
+      var message = qualification.message || 'Ihr Marktcheck ist eingegangen. Ich prüfe Domain, Region und Fit persönlich-händisch und sende den Befund innerhalb von 48 Werktagsstunden an Ihre geschäftliche E-Mail.';
       var ticketId = qualification.ticket_id || '';
       var deadlineHuman = qualification.response_deadline_human || '';
       var proof = (!isNurture && qualification.proof && typeof qualification.proof === 'object') ? qualification.proof : null;
@@ -629,9 +629,9 @@
       var head = el('div', { className: 'sol-cta-head' }, [
         el('span', { className: 'sol-cta-tag sol-mono' }, [
           el('span', { className: 'sol-cta-tag-dot', 'aria-hidden': 'true' }),
-          'Marktcheck · händisch geprüft · Befund in 48 h'
+          'Marktcheck · Fit geprüft · nächster Schritt'
         ]),
-        el('span', { className: 'sol-cta-head-right sol-mono' }, 'Kostenfrei')
+        el('span', { className: 'sol-cta-head-right sol-mono' }, 'Fit-Check')
       ]);
       mount.appendChild(head);
 
