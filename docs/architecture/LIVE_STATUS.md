@@ -1,6 +1,6 @@
 # Live Status
 
-Stand: 2026-06-01.
+Statusbasis: Repo-Inhalt zum jeweiligen Commit; kein händisch gepflegtes Tagesdatum.
 
 Basis dieses Status:
 

@@ -72,6 +72,9 @@ jobs:
       - name: Validate repository architecture
         run: bash scripts/validate-architecture.sh
 
+      - name: Smoke test lead path contract
+        run: bash scripts/smoke-lead-path-contract.sh
+
       - name: Check canon drift
         run: bash scripts/lint-canon-drift.sh "${{ steps.refs.outputs.base }}" "${{ steps.refs.outputs.head }}"
 

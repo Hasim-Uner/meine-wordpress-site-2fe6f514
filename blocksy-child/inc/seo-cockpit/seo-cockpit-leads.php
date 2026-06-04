@@ -113,6 +113,7 @@ function nexus_get_seo_cockpit_empty_lead_metrics() {
 		'requests'         => 0,
 		'mapped_requests'  => 0,
 		'unmapped_requests' => 0,
+		'inferred_requests' => 0,
 		'progressed'       => 0,
 		'won'              => 0,
 		'mapped_pages'     => 0,
@@ -160,7 +161,7 @@ function nexus_get_seo_cockpit_lead_mode_label( $mode ) {
 		'entry'    => 'Einstieg',
 		'previous' => 'Assist',
 		'landing'  => 'Landing',
-		'source'   => 'Quelle',
+		'source'   => 'Quelle (abgeleitet)',
 	];
 
 	$mode = sanitize_key( (string) $mode );
@@ -175,7 +176,7 @@ function nexus_get_seo_cockpit_lead_mode_label( $mode ) {
  * @param string $previous_url Previous internal page before form.
  * @param string $landing_url  Current form page.
  * @param string $source       Review request source key.
- * @return array<string, string>
+ * @return array<string, mixed>
  */
 function nexus_get_seo_cockpit_review_request_attribution_target( $entry_url, $previous_url, $landing_url, $source = '' ) {
 	$entry_url    = nexus_get_seo_cockpit_internal_attribution_url( $entry_url );
@@ -185,42 +186,48 @@ function nexus_get_seo_cockpit_review_request_attribution_target( $entry_url, $p
 
 	if ( '' !== $entry_url ) {
 		return [
-			'url'  => $entry_url,
-			'mode' => 'entry',
+			'url'      => $entry_url,
+			'mode'     => 'entry',
+			'inferred' => false,
 		];
 	}
 
 	if ( '' !== $previous_url ) {
 		return [
-			'url'  => $previous_url,
-			'mode' => 'previous',
+			'url'      => $previous_url,
+			'mode'     => 'previous',
+			'inferred' => false,
 		];
 	}
 
 	if ( '' !== $landing_url ) {
 		return [
-			'url'  => $landing_url,
-			'mode' => 'landing',
+			'url'      => $landing_url,
+			'mode'     => 'landing',
+			'inferred' => false,
 		];
 	}
 
 	if ( 'energy_systems_landing' === $source ) {
 		return [
-			'url'  => function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' ),
-			'mode' => 'source',
+			'url'      => function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' ),
+			'mode'     => 'source',
+			'inferred' => true,
 		];
 	}
 
 	if ( 'growth_audit_landing' === $source ) {
 		return [
-			'url'  => function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
-			'mode' => 'source',
+			'url'      => function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
+			'mode'     => 'source',
+			'inferred' => true,
 		];
 	}
 
 	return [
-		'url'  => '',
-		'mode' => '',
+		'url'      => '',
+		'mode'     => '',
+		'inferred' => false,
 	];
 }
 
@@ -234,6 +241,7 @@ function nexus_get_seo_cockpit_empty_page_lead_metrics() {
 		'requests'   => 0,
 		'progressed' => 0,
 		'won'        => 0,
+		'inferred_requests' => 0,
 	];
 }
 
@@ -390,6 +398,7 @@ function nexus_get_seo_cockpit_lead_snapshot_data( $ranges ) {
 		$attribution_target = nexus_get_seo_cockpit_review_request_attribution_target( $entry_page_url, $previous_page_url, $landing_page_url, $source );
 		$attributed_url     = (string) ( $attribution_target['url'] ?? '' );
 		$attribution_mode   = sanitize_key( (string) ( $attribution_target['mode'] ?? '' ) );
+		$attribution_inferred = ! empty( $attribution_target['inferred'] );
 		$windows            = [ 'lifetime' ];
 
 		if ( '' !== $bucket ) {
@@ -401,6 +410,9 @@ function nexus_get_seo_cockpit_lead_snapshot_data( $ranges ) {
 
 			if ( '' !== $attributed_url ) {
 				$overview[ $window ]['mapped_requests'] += 1;
+				if ( $attribution_inferred ) {
+					$overview[ $window ]['inferred_requests'] += 1;
+				}
 			} else {
 				$overview[ $window ]['unmapped_requests'] += 1;
 			}
@@ -443,6 +455,10 @@ function nexus_get_seo_cockpit_lead_snapshot_data( $ranges ) {
 
 			if ( 'won' === $status ) {
 				$page_map[ $attributed_url ][ $window ]['won'] += 1;
+			}
+
+			if ( $attribution_inferred ) {
+				$page_map[ $attributed_url ][ $window ]['inferred_requests'] += 1;
 			}
 		}
 

@@ -329,11 +329,17 @@ function nexus_render_seo_cockpit_lead_pages_table( $pages, $limit = 5, $window 
 				$page_url       = (string) ( $page['url'] ?? '' );
 				$page_label     = (string) ( $page['label'] ?? '' );
 				$page_display   = '' !== $page_label ? $page_label : ( '' !== $page_url ? nexus_get_seo_cockpit_short_url( $page_url ) : '—' );
+				$inferred_count = (int) ( $window_metrics['inferred_requests'] ?? 0 );
 				?>
 				<tr>
 					<td class="nexus-seo-cockpit__cell--url"><a href="<?php echo esc_url( (string) ( $page['detail_url'] ?? nexus_get_seo_cockpit_detail_url( $page_url ) ) ); ?>" title="<?php echo esc_attr( $page_url ); ?>"><?php echo esc_html( $page_display ); ?></a></td>
 					<td><?php echo esc_html( (string) ( $page['page_role_label'] ?? '—' ) ); ?></td>
-					<td><?php echo esc_html( number_format_i18n( (int) ( $window_metrics['requests'] ?? 0 ) ) ); ?></td>
+					<td>
+						<?php echo esc_html( number_format_i18n( (int) ( $window_metrics['requests'] ?? 0 ) ) ); ?>
+						<?php if ( $inferred_count > 0 ) : ?>
+							<span class="nexus-seo-cockpit__muted">(<?php echo esc_html( number_format_i18n( $inferred_count ) ); ?> abgeleitet)</span>
+						<?php endif; ?>
+					</td>
 					<td><?php echo esc_html( number_format_i18n( (int) ( $page['lifetime']['won'] ?? 0 ) ) ); ?></td>
 					<td><?php echo esc_html( nexus_get_seo_cockpit_lead_modes_summary( (array) ( $page['attribution_modes'] ?? [] ) ) ); ?></td>
 					<td><?php echo esc_html( ! empty( $page['last_request_at'] ) ? wp_date( 'd.m.Y', (int) $page['last_request_at'] ) : '—' ); ?></td>
@@ -1049,6 +1055,18 @@ function nexus_render_seo_cockpit_detail_view( $detail ) {
 					);
 					?>
 				</p>
+				<?php if ( (int) ( $lead_detail['lifetime']['inferred_requests'] ?? 0 ) > 0 ) : ?>
+					<p class="nexus-seo-cockpit__hint">
+						<?php
+						echo esc_html(
+							sprintf(
+								'%d Lead-Zuordnungen sind abgeleitet, nicht gemessen.',
+								(int) $lead_detail['lifetime']['inferred_requests']
+							)
+						);
+						?>
+					</p>
+				<?php endif; ?>
 				<?php if ( ! empty( $lead_detail['sources'] ) ) : ?>
 					<div class="nexus-seo-cockpit__chips">
 						<?php foreach ( nexus_get_seo_cockpit_lead_ranked_counts( (array) $lead_detail['sources'], 'nexus_get_seo_cockpit_lead_source_label', 4 ) as $source_row ) : ?>

@@ -648,6 +648,13 @@ function nexus_get_revenue_command_center_page_rows( $snapshot, $stored_statuses
 		}
 
 		$score = 55 + min( 25, function_exists( 'nexus_get_seo_cockpit_lead_signal_score' ) ? nexus_get_seo_cockpit_lead_signal_score( $lead_page ) : 0 );
+		$lifetime_requests = (int) ( $lead_page['lifetime']['requests'] ?? 0 );
+		$lifetime_inferred = (int) ( $lead_page['lifetime']['inferred_requests'] ?? 0 );
+		$data_basis        = sprintf( 'CRM-Attribution: %d aktuell / %d gesamt', (int) ( $lead_page['current']['requests'] ?? 0 ), $lifetime_requests );
+		if ( $lifetime_inferred > 0 ) {
+			$data_basis .= sprintf( ' / %d abgeleitet', $lifetime_inferred );
+		}
+
 		$rows[] = nexus_build_revenue_command_center_row(
 			[
 				'id'                => nexus_get_revenue_command_center_item_id( 'lead_page', $url ),
@@ -666,8 +673,8 @@ function nexus_get_revenue_command_center_page_rows( $snapshot, $stored_statuses
 				'risk'              => 'niedrig',
 				'repo_fixable'      => 'ja',
 				'manual'            => 'ja',
-				'confidence'        => 'hoch',
-				'data_basis'        => sprintf( 'CRM-Attribution: %d aktuell / %d gesamt', (int) ( $lead_page['current']['requests'] ?? 0 ), (int) ( $lead_page['lifetime']['requests'] ?? 0 ) ),
+				'confidence'        => $lifetime_requests > 0 && $lifetime_inferred >= $lifetime_requests ? 'mittel' : 'hoch',
+				'data_basis'        => $data_basis,
 				'section'           => 'page_queue',
 			],
 			$stored_statuses
