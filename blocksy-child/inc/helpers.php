@@ -1269,12 +1269,13 @@ function nexus_get_legacy_offer_redirect_map() {
 	return [
 		// High-probability external entry paths. Internal/historical tool,
 		// WGOS and service slugs are no longer forced through 301 redirects.
-		'/growth-audit/'           => $request_url,
-		'/audit/'                  => $request_url,
-		'/customer-journey-audit/' => $request_url,
-		'/360-audit/'              => $request_url,
-		'/wordpress-tech-audit/'   => $request_url,
-		'/wordpress-agentur/'      => $agentur_url,
+		'/growth-audit/'             => $request_url,
+		'/audit/'                    => $request_url,
+		'/customer-journey-audit/'   => $request_url,
+		'/360-audit/'                => $request_url,
+		'/wordpress-tech-audit/'     => $request_url,
+		'/wordpress-agentur/'        => $agentur_url,
+		'/alle-loesungen-im-detail/' => nexus_get_page_url( [ 'alle-loesungen' ], home_url( '/alle-loesungen/' ) ),
 	];
 }
 
@@ -1303,6 +1304,7 @@ function nexus_get_retired_gone_paths() {
 		'/conversion-rate-optimization/',
 		'/wordpress-wartung-hannover/',
 		'/seo/',
+		'/shopify-wartungsvertrag/',
 	];
 }
 

@@ -1291,7 +1291,9 @@ function hu_get_seo_meta() {
 			}
 		}
 
-		if ( empty( $meta['description'] ) ) {
+		// noindex pages need no public snippet; the auto-excerpt can surface
+		// raw editor markup (e.g. inline CSS on thank-you pages).
+		if ( empty( $meta['description'] ) && empty( $robots_context['noindex'] ) ) {
 			$excerpt = get_the_excerpt( $post_id );
 			if ( $excerpt ) {
 				$meta['description'] = wp_trim_words( wp_strip_all_tags( $excerpt ), 25, '…' );
