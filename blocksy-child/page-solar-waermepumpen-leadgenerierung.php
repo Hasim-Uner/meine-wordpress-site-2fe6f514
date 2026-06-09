@@ -96,7 +96,7 @@ $method_cards = [
 		'n'  => 'II',
 		'p'  => 'Phase 02',
 		't'  => 'Eigenes Anfrage-System',
-		's'  => 'WordPress hardcoded — kein Page-Builder, kein Plugin-Stack. <a href="' . esc_url( $tracking_url ) . '">Server-Side-Tracking</a> auf eigenem Server. Smarte Vorqualifizierung. <a href="' . esc_url( $cro_url ) . '">Conversion-Pfad</a> ohne Mietsysteme.',
+		's'  => 'WordPress hardcoded — kein Page-Builder, kein Plugin-Stack. <a href="' . esc_url( $tracking_url ) . '">Server-Side-Tracking</a>: Messdaten laufen über Ihren eigenen Server statt nur über den Browser — belastbare Zahlen trotz Ad-Blockern. Smarte Vorqualifizierung. <a href="' . esc_url( $cro_url ) . '">Conversion-Pfad</a> ohne Mietsysteme.',
 		'b'  => [ 'Money-Page · Proof- & Angebotsseiten', 'Frankfurt-Server · CAPI · DSGVO', 'Lead-Scoring vor dem Erstkontakt' ],
 	],
 	[
@@ -606,6 +606,7 @@ get_header();
 								Dreistufiger Marktcheck. Strukturierte Aufnahme Ihres Vertriebs- und Lead-Profils — mit Fit-Befund, drei priorisierten Hebeln und nächstem Schritt. Kein Newsletter, kein Pitch-Deck.
 							</p>
 							<ul class="sol-cta-bullets sol-mono" aria-label="Was Sie nach dem Marktcheck erhalten">
+								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Kostenlos &amp; unverbindlich — keine Zahlungsdaten, kein Abo</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Inklusive Regions-Verfügbarkeitsprüfung</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Manuelle Erst-Analyse statt automatisierter Tool-Bericht</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Persönliche Rückmeldung mit Fit-Entscheid</li>
