@@ -552,8 +552,14 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
     // Link the page container to its primary content entity where one is
     // deterministically emitted for this view. Additional links (e.g. service
     // pages) are attached by the caller, which already knows what was emitted.
+    // The SEO cornerstone template owns its own Article node, so the global
+    // BlogPosting is suppressed there and the reference must follow suit.
     if ( is_singular( 'post' ) ) {
-        $webpage['mainEntity'] = [ '@id' => $base . '#blogposting' ];
+        if ( function_exists( 'hu_is_seo_cornerstone_article' ) && hu_is_seo_cornerstone_article() ) {
+            $webpage['mainEntity'] = [ '@id' => $base . '#article' ];
+        } else {
+            $webpage['mainEntity'] = [ '@id' => $base . '#blogposting' ];
+        }
     }
 
     return $webpage;
@@ -1232,7 +1238,10 @@ function hu_output_schema()
             $schemas[] = $profilePage;
         }
 
-        if ( is_singular( 'post' ) && $post_id ) {
+        // The SEO cornerstone template emits its own Article node; a second
+        // BlogPosting for the same URL would duplicate the content entity.
+        if ( is_singular( 'post' ) && $post_id
+            && ! ( function_exists( 'hu_is_seo_cornerstone_article' ) && hu_is_seo_cornerstone_article() ) ) {
             $author_id         = (int) get_post_field( 'post_author', $post_id );
             $author_name       = $author_id ? get_the_author_meta( 'display_name', $author_id ) : 'Haşim Üner';
             $author_name       = hu_normalize_brand_text( $author_name );
@@ -1362,6 +1371,7 @@ function hu_output_schema()
             $template_owns_faq_schema = (
                 in_array( $slug, [ 'wordpress-agentur-hannover', 'wgos', 'wordpress-growth-operating-system' ], true )
                 || ( function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page( $slug ) )
+                || ( function_exists( 'hu_is_seo_cornerstone_article' ) && hu_is_seo_cornerstone_article() )
             );
 
             if ( ! $template_owns_faq_schema ) {

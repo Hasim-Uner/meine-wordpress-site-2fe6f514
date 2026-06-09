@@ -104,57 +104,5 @@ add_filter( 'login_redirect', function( $redirect_to, $request, $user ) {
     return $redirect_to;
 }, 10, 3 );
 
-/**
- * Redirect legacy routes to their current canonical targets.
- */
-add_action( 'template_redirect', function() {
-	if ( is_admin() || wp_doing_ajax() ) {
-		return;
-	}
-
-	$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/';
-	$request_path = wp_parse_url( $request_uri, PHP_URL_PATH );
-	$request_path = trailingslashit( '/' . ltrim( (string) $request_path, '/' ) );
-	$gone_paths   = [
-		'/shopify-wartungsvertrag/',
-	];
-	$request_url = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-	$redirects = [
-		'/growth-audit/'             => $request_url,
-		'/audit/'                    => $request_url,
-		'/customer-journey-audit/'   => $request_url,
-		'/360-audit/'                => $request_url,
-		'/wordpress-tech-audit/'     => $request_url,
-		'/alle-loesungen-im-detail/' => nexus_get_page_url( [ 'alle-loesungen' ], home_url( '/alle-loesungen/' ) ),
-	];
-
-	if ( in_array( $request_path, $gone_paths, true ) ) {
-		global $wp_query;
-
-		if ( $wp_query instanceof WP_Query ) {
-			$wp_query->set_404();
-		}
-
-		nocache_headers();
-		header( 'X-Robots-Tag: noindex, nofollow', true );
-		status_header( 410 );
-		include get_query_template( '404' );
-		exit;
-	}
-
-	if ( empty( $redirects[ $request_path ] ) ) {
-		return;
-	}
-
-	$target_url  = (string) $redirects[ $request_path ];
-	$target_path = wp_parse_url( $target_url, PHP_URL_PATH );
-	$target_path = trailingslashit( '/' . ltrim( (string) $target_path, '/' ) );
-
-	if ( $target_path === $request_path ) {
-		return;
-	}
-
-	nocache_headers();
-	wp_safe_redirect( $target_url, 301 );
-	exit;
-} );
+// Legacy route redirects and retired 410 paths live in inc/helpers.php:
+// nexus_get_legacy_offer_redirect_map() and nexus_get_retired_gone_paths().
