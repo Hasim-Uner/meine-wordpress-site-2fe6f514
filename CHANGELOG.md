@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 2026-06
+
+### CRO-Microcopy & CTA-Konsistenz
+
+- Trust-Microcopy „kostenlos & unverbindlich" für den Marktcheck am Homepage-Hero und in der Solar-Quiz-Card (SSR-Bullet + JS-Fineprint) — Kostenunsicherheit war der größte Reibungspunkt für kalten Traffic; die bezahlte Diagnose bleibt davon klar getrennt.
+- Server-Side-Tracking in Phase 02 der Solar-Methoden-Karte mit Klartext-Nutzen erklärt (eigener Server statt nur Browser, belastbare Zahlen trotz Ad-Blockern).
+- Freemail-Validierungstexte im Solar-Quiz begründen jetzt die Firmen-Domain-Anforderung und bieten einen direkten E-Mail-Ausweg statt harter Ablehnung.
+- CTA-Tap-Targets vereinheitlicht: Header-Audit-Link auf 44px, Sticky-CTA-Primary auf 48px.
+- Kontaktformular: Error-Summary mit kräftigerem Rahmen und Titel, Submit-Button mit Lade-Spinner inklusive `prefers-reduced-motion`-Fallback.
+
 ## 2026-05
 
 ### Public Release: White-Label-Partner-Modell

@@ -167,7 +167,7 @@
       if (!a.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a.email)) errs.email = 'Bitte eine gültige geschäftliche E-Mail angeben.';
       // Konsumenten-Provider auf geschäftliche E-Mail-Felder ausschließen.
       if (a.email && /^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(a.email)) {
-        errs.email = 'Bitte Ihre geschäftliche E-Mail-Adresse verwenden (keine Freemail-Adresse).';
+        errs.email = 'Bitte nutzen Sie Ihre geschäftliche E-Mail-Adresse (Firmen-Domain) — so kann ich Betrieb und Region eindeutig zuordnen. Keine eigene Domain? Schreiben Sie direkt an hasim@hasimuener.de.';
       }
       // Phone is optional — only validate format if provided.
       if (a.phone && a.phone.trim().length > 0 && a.phone.trim().length < 5) errs.phone = 'Bitte eine vollständige Telefonnummer angeben.';
@@ -494,7 +494,7 @@
       form.appendChild(renderField({ k: 'email', t: 'Geschäftliche E-Mail-Adresse', type: 'email', ph: 'max@solar-betrieb.de', req: true, ac: 'email', full: true,
         validator: function (v) {
           if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || ''))) return 'Gültige E-Mail nötig.';
-          if (/^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(String(v || ''))) return 'Bitte geschäftliche E-Mail verwenden (keine Freemail).';
+          if (/^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(String(v || ''))) return 'Bitte die E-Mail-Adresse Ihrer Firmen-Domain verwenden — sie ordnet Betrieb und Region eindeutig zu.';
           return null;
         }
       }));
@@ -563,7 +563,7 @@
       ]);
       form.appendChild(submitBtn);
 
-      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln · DSGVO'));
+      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Kostenlos & unverbindlich · Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse · DSGVO'));
 
       return form;
     }

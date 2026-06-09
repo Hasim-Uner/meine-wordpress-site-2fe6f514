@@ -281,6 +281,12 @@
   margin: 0 0 24px;
   opacity: 0.85;
 }
+.hu-hp .hu-hero__cta-note--trust {
+  color: var(--fg);
+  font-weight: 600;
+  opacity: 1;
+  margin-bottom: 6px;
+}
 .hu-hp .hu-hero__bullets {
   list-style: none;
   padding: 0;

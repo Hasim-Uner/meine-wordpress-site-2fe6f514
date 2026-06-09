@@ -135,6 +135,8 @@ body.nx-blog-header-active .ct-mobile-menu {
 }
 
 .nx-site-header__audit-link {
+    min-height: 44px;
+    padding: 0 18px;
     border-color: color-mix(in srgb, var(--accent) 18%, var(--nx-border));
     background: color-mix(in srgb, var(--accent) 7%, var(--nx-bg-glass-light));
 }

@@ -153,6 +153,7 @@ get_header();
 						E3-Case ansehen
 					</a>
 				</div>
+				<p class="hu-hero__cta-note hu-hero__cta-note--trust">Der Marktcheck ist kostenlos &amp; unverbindlich — 60 Sekunden Eingabe, persönlich geprüfte Rückmeldung. Kein Pitch-Deck, kein Newsletter.</p>
 				<p class="hu-hero__cta-note">Keine neue Website auf Verdacht. Erst Diagnose, dann Entscheidung.</p>
 
 				<div class="hu-hero__stats">

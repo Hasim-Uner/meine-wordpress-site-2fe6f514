@@ -425,9 +425,9 @@
 
 .contact-error-summary {
     padding: 1rem 1.15rem;
-    border: 1px solid hsl(0 65% 58% / 0.3);
+    border: 2px solid hsl(0 65% 58% / 0.55);
     border-radius: 16px;
-    background: hsl(0 65% 58% / 0.08);
+    background: hsl(0 65% 58% / 0.12);
 }
 
 .contact-error-summary:focus {
@@ -448,7 +448,7 @@
     margin: 0 0 0.5rem;
     color: #ffb0a2;
     font-weight: 700;
-    font-size: 0.94rem;
+    font-size: 1rem;
 }
 
 .contact-error-summary__list {
@@ -690,6 +690,31 @@
 .contact-submit[disabled] {
     cursor: wait;
     opacity: 0.72;
+}
+
+.contact-submit[disabled]::after {
+    content: "";
+    width: 1em;
+    height: 1em;
+    margin-left: 0.5em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: contact-spin 0.7s linear infinite;
+}
+
+@keyframes contact-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .contact-submit[disabled]::after {
+        animation: none;
+        border-right-color: currentColor;
+        opacity: 0.5;
+    }
 }
 
 .contact-form__aux-link {
