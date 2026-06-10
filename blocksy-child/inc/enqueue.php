@@ -256,11 +256,13 @@ function hu_enqueue_assets() {
 	}
 
 	// ── F1a) Solar-/Wärmepumpen-Leadgenerierung (SOLARA Redesign) ──
-	// Eigene CSS/JS-Stack; legacy energy-systems / review-funnel werden hier
-	// bewusst NICHT geladen, weil das Template ein eigenes Visual-System hat
-	// und einen 60-Sek-Marktcheck im Hero rendert (REST → CRM).
+	// Nutzt das geteilte .hu-hp-Brand-Kit (homepage-redesign.css) plus ein
+	// schlankes Page-Delta-Stylesheet; legacy energy-systems / review-funnel
+	// werden hier bewusst NICHT geladen — das Template rendert einen
+	// 3-Schritte-Marktcheck im Hero (REST → CRM).
 	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) ) {
-		hu_enqueue_css( 'nexus-solar-leadgen-solara-css', 'solar-leadgenerierung-solara.css', [ 'nexus-design-system' ] );
+		hu_enqueue_css( 'nexus-home-redesign-css', 'homepage-redesign.css', [ 'nexus-design-system' ] );
+		hu_enqueue_css( 'nexus-solar-leadgen-solara-css', 'solar-leadgenerierung-solara.css', [ 'nexus-home-redesign-css' ] );
 		hu_enqueue_js( 'nexus-solar-leadgen-solara-js', 'solar-leadgenerierung-solara.js', [ 'nexus-core-js' ] );
 
 		$marktcheck_cfg = [
