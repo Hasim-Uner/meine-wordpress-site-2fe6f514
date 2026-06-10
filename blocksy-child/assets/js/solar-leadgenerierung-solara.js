@@ -1,6 +1,6 @@
 /* solar-leadgenerierung-solara.js
    SOLARA Landing — B2B Marktcheck im Hero.
-   3-stufige Progressive-Disclosure-Sequenz (Sales-Team → Portal-Streuverlust → Business-Daten).
+   3-stufige Progressive-Disclosure-Sequenz (Vertrieb → Akquisekosten → Befund-Daten).
    Submit → /wp-json/nexus/v1/audit-request (intake_variant=energy_systems).
    Success-Screen mit Cal.com-Direktbuchung + händischer SLA-Antwort.
    Vanilla JS. Keine Dependencies. Touch- & Keyboard-accessible. */
@@ -13,39 +13,39 @@
 
   // ── Progressive Disclosure: 3-stufige B2B-Sequenz ─────────────
   // Step 1 — Klickbasierter Einstieg ohne Datenrisiko.
-  // Step 2 — Problemverankerung mit Portal-Namen (Sunk-Cost-Trigger).
+  // Step 2 — Problemverankerung über Akquisekosten (Sunk-Cost-Trigger).
   // Step 3 — Erst danach freigeschaltete Business-Datenfelder.
   var QUIZ_STEPS = [
     {
       key: 'sales_team_size',
-      label: 'Vertriebsteam',
-      title: 'Wie viele fest angestellte Vertriebsmitarbeiter bearbeiten aktuell Ihre Anfragen?',
-      hint: 'Der Hebel eines eigenen Anfrage-Systems wirkt nur, wenn jemand die qualifizierten Anfragen auch konsequent abschließt.',
+      label: 'Vertrieb',
+      title: 'Wer verkauft bei Ihnen?',
+      hint: 'Das System richtet sich an Betriebe mit eigenem Vertrieb — die Antwort entscheidet über den Fit.',
       kind: 'pick',
       options: [
-        { v: 'none',           t: 'Noch kein eigenes Vertriebsteam / Einzelkämpfer', s: 'Geschäftsführung verkauft aktuell selbst — oder gar nicht.', i: '⊘' },
-        { v: 'one',            t: '1 Person',                                      s: 'Eine zentrale Anlaufstelle, klare Verantwortung.',          i: '①' },
-        { v: 'two_to_five',    t: '2 bis 5 Personen',                              s: 'Vertriebsteam vorhanden, Pipeline-Routing geregelt.',       i: '⑤' },
-        { v: 'more_than_five', t: 'Mehr als 5 Personen',                           s: 'Strukturierter Vertrieb mit eigener Pipeline-Logik.',       i: '∞' }
+        { v: 'none',           t: 'Die Geschäftsführung verkauft selbst', s: 'Noch kein eigenes Vertriebsteam — Abschluss ist Chefsache.' },
+        { v: 'one',            t: '1 Person im Vertrieb',                 s: 'Eine zentrale Anlaufstelle, klare Verantwortung.' },
+        { v: 'two_to_five',    t: '2–5 Personen im Vertrieb',             s: 'Vertriebsteam vorhanden, Pipeline-Routing geregelt.' },
+        { v: 'more_than_five', t: 'Mehr als 5 Personen im Vertrieb',      s: 'Strukturierter Vertrieb mit eigener Pipeline-Logik.' }
       ]
     },
     {
       key: 'portal_margin_loss',
-      label: 'Portal-Belastung',
-      title: 'Wie stark belasten geteilte oder unqualifizierte Portal-Leads (z. B. Aroundhome, DAA, Wattfox) aktuell Ihre Vertriebsmarge?',
-      hint: 'Portal-Leads kosten Vertriebszeit, Budget und Abschlusskraft — auch wenn der Stundenpreis im CPL nicht direkt sichtbar wird.',
+      label: 'Akquisekosten',
+      title: 'Was kostet Sie Akquise heute?',
+      hint: 'Portal-Leads, Google Ads, Agentur — alles zusammengenommen, grob geschätzt. Es geht um den Druck auf Ihre Marge.',
       kind: 'pick',
       options: [
-        { v: 'low',    t: 'Gering',     s: 'Portal-Leads sind wirtschaftlich noch vertretbar.',                  i: '◔' },
-        { v: 'medium', t: 'Deutlich',   s: 'CPL und Anfragequalität drücken die Marge in Grenzprojekten.',       i: '◐' },
-        { v: 'high',   t: 'Erheblich',  s: 'Vertriebszeit und Budget gehen verloren in Anfragen, die nicht kaufen.', i: '●' }
+        { v: 'low',    t: 'Gering',    s: 'Portal-Leads und Werbekosten sind wirtschaftlich noch vertretbar.' },
+        { v: 'medium', t: 'Deutlich',  s: 'CPL und Anfragequalität drücken die Marge in Grenzprojekten.' },
+        { v: 'high',   t: 'Erheblich', s: 'Budget und Vertriebszeit verbrennen in Anfragen, die nicht kaufen.' }
       ]
     },
     {
       key: 'contact',
       label: 'Marktcheck',
-      title: 'Daten-Integrität & Kontakt',
-      hint: 'Erst nach den beiden Qualifikationsantworten öffnet sich der geschäftliche Datenpfad. Sie erhalten eine persönliche Fit-Einschätzung nach händischer Prüfung.',
+      title: 'Wohin darf der Befund?',
+      hint: 'Fünf Angaben — mehr braucht der Marktcheck nicht. Die Firmen-PLZ dient der Regions-Verfügbarkeitsprüfung.',
       kind: 'form'
     }
   ];
@@ -169,8 +169,7 @@
       if (a.email && /^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(a.email)) {
         errs.email = 'Bitte nutzen Sie Ihre geschäftliche E-Mail-Adresse (Firmen-Domain) — so kann ich Betrieb und Region eindeutig zuordnen. Keine eigene Domain? Schreiben Sie direkt an hasim@hasimuener.de.';
       }
-      // Phone is optional — only validate format if provided.
-      if (a.phone && a.phone.trim().length > 0 && a.phone.trim().length < 5) errs.phone = 'Bitte eine vollständige Telefonnummer angeben.';
+      if (!a.postal_code || !/^[0-9]{5}$/.test(String(a.postal_code).trim())) errs.postal_code = 'Bitte eine fünfstellige Firmen-PLZ angeben.';
       if (!a.consent_privacy) errs.consent_privacy = 'Bitte den Datenschutzhinweis bestätigen.';
       return errs;
     }
@@ -179,7 +178,7 @@
       if (state.submitting) return;
       var errs = validateContact();
       if (Object.keys(errs).length) {
-        state.touched = Object.assign({}, state.touched || {}, { name: true, company: true, position: true, email: true, consent_privacy: true });
+        state.touched = Object.assign({}, state.touched || {}, { name: true, company: true, position: true, email: true, postal_code: true, consent_privacy: true });
         render();
         // Focus and scroll to the first invalid field so the user knows what to fix.
         var firstKey = Object.keys(errs)[0];
@@ -214,6 +213,7 @@
         position:            state.answers.position || '',
         email:                state.answers.email || '',
         phone:                state.answers.phone || '',
+        postal_code:          (state.answers.postal_code || '').trim(),
         page_url:             CFG.pageUrl || window.location.href,
         consent_privacy:      'accepted',
         company_website:      state.answers.company_website || ''
@@ -320,9 +320,11 @@
       var email = (answers.email || '').trim();
       var company = (answers.company || '').trim();
       var position = (answers.position || '').trim();
+      var plz = (answers.postal_code || '').trim();
       var noteParts = ['Aus Marktcheck'];
       if (company) noteParts.push('Firma: ' + company);
       if (position) noteParts.push('Position: ' + position);
+      if (plz) noteParts.push('PLZ: ' + plz);
 
       var params = [];
       if (name) params.push('name=' + encodeURIComponent(name));
@@ -444,6 +446,7 @@
           placeholder: opts.ph || '',
           autocomplete: opts.ac || 'off',
           inputmode: opts.im || null,
+          maxlength: opts.maxlength || null,
           name: opts.k,
           onInput: function (e) { setAnswer(opts.k, e.target.value); },
           onBlur: function () {
@@ -469,19 +472,19 @@
       });
 
       var rationale = el('div', { className: 'sol-quiz-rationale', role: 'note' }, [
-        el('p', { className: 'sol-quiz-rationale-h' }, 'Daten-Integrität · Drittes Modul des Marktchecks'),
+        el('p', { className: 'sol-quiz-rationale-h' }, 'Daten-Integrität · Letzter Schritt des Marktchecks'),
         el('p', { className: 'sol-quiz-rationale-b' },
-          'Sie haben Ihre Vertriebsstruktur und Portal-Margenverluste skizziert — jetzt brauche ich die Firmen-Eckdaten, um Domain, Region und Fit persönlich-händisch zu prüfen und den Befund an den richtigen Entscheider zu senden.')
+          'Sie haben Vertrieb und Akquisekosten skizziert — jetzt brauche ich die Firmen-Eckdaten, um Domain, Region und Fit persönlich-händisch zu prüfen und den Befund an den richtigen Entscheider zu senden.')
       ]);
       form.appendChild(rationale);
 
       form.appendChild(renderField({ k: 'company', t: 'Firma', type: 'text', ph: 'Mustermann Solar GmbH', req: true, ac: 'organization', full: true,
         validator: function (v) { return (!v || v.trim().length < 2) ? 'Bitte Firma angeben.' : null; }
       }));
-      form.appendChild(renderField({ k: 'name', t: 'Name des Ansprechpartners', type: 'text', ph: 'Max Mustermann', req: true, ac: 'name',
+      form.appendChild(renderField({ k: 'name', t: 'Ansprechpartner', type: 'text', ph: 'Max Mustermann', req: true, ac: 'name',
         validator: function (v) { return (!v || v.trim().length < 2) ? 'Bitte Namen angeben.' : null; }
       }));
-      form.appendChild(renderField({ k: 'position', t: 'Position im Unternehmen', kind: 'select', req: true, ac: 'organization-title',
+      form.appendChild(renderField({ k: 'position', t: 'Position', kind: 'select', req: true, ac: 'organization-title',
         options: [
           { v: '',                              t: '— Bitte wählen —',              disabled: true },
           { v: 'Geschäftsführung / Inhaber',    t: 'Geschäftsführung / Inhaber' },
@@ -491,17 +494,17 @@
         ],
         validator: function (v) { return !v ? 'Bitte Position auswählen.' : null; }
       }));
-      form.appendChild(renderField({ k: 'email', t: 'Geschäftliche E-Mail-Adresse', type: 'email', ph: 'max@solar-betrieb.de', req: true, ac: 'email', full: true,
+      form.appendChild(renderField({ k: 'email', t: 'Geschäftliche E-Mail', type: 'email', ph: 'max@solar-betrieb.de', req: true, ac: 'email',
         validator: function (v) {
           if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || ''))) return 'Gültige E-Mail nötig.';
           if (/^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(String(v || ''))) return 'Bitte die E-Mail-Adresse Ihrer Firmen-Domain verwenden — sie ordnet Betrieb und Region eindeutig zu.';
           return null;
         }
       }));
-      form.appendChild(renderField({ k: 'phone', t: 'Telefon (optional, für Rückfragen)', type: 'tel', ph: '+49 ___ ____', req: false, ac: 'tel', im: 'tel', full: true,
+      form.appendChild(renderField({ k: 'postal_code', t: 'Firmen-PLZ', type: 'text', ph: '30159', req: true, ac: 'postal-code', im: 'numeric',
+        maxlength: '5',
         validator: function (v) {
-          if (!v || v.trim().length === 0) return null;
-          return v.trim().length < 5 ? 'Bitte vollständige Telefonnummer angeben.' : null;
+          return /^[0-9]{5}$/.test(String(v || '').trim()) ? null : 'Bitte eine fünfstellige PLZ angeben — sie steuert die Regions-Verfügbarkeitsprüfung.';
         }
       }));
 
@@ -558,7 +561,7 @@
           trackFunnelStage: 'lead_capture_submit'
         }
       }, [
-        el('span', null, state.submitting ? 'Wird gesendet …' : 'Marktcheck anfordern'),
+        el('span', null, state.submitting ? 'Wird gesendet …' : 'Befund in 48 h anfordern'),
         el('span', { className: 'sol-quiz-submit-arrow', 'aria-hidden': 'true', html: ARROW_SVG })
       ]);
       form.appendChild(submitBtn);
@@ -678,7 +681,7 @@
       var head = el('div', { className: 'sol-cta-head' }, [
         el('span', { className: 'sol-cta-tag sol-mono' }, [
           el('span', { className: 'sol-cta-tag-dot', 'aria-hidden': 'true' }),
-          'Marktcheck · Fit geprüft · nächster Schritt'
+          'Marktcheck · Fit geprüft · 48-h-Befund'
         ]),
         el('span', { className: 'sol-cta-head-right sol-mono' }, 'Fit-Check')
       ]);
@@ -751,22 +754,56 @@
   }
 
   // ── Page-wide setup ──────────────────────────────────────────
-  function mountSunRays() {
-    var hosts = document.querySelectorAll(ROOT_SELECTOR + ' [data-sol-rays]');
-    if (!hosts.length) return;
-    hosts.forEach(function (host) {
-      if (host.dataset.solRaysMounted === '1') return;
-      var frag = document.createDocumentFragment();
-      for (var i = 0; i < 24; i++) {
-        var ray = document.createElement('span');
-        ray.className = 'sol-hero-sun-ray';
-        ray.style.transform = 'rotate(' + (i * 15) + 'deg)';
-        ray.setAttribute('aria-hidden', 'true');
-        frag.appendChild(ray);
+
+  /* Count-up für die Hero-Stats. Liest den serverseitig gerenderten
+     Zieltext (z. B. "1.750+", "22 €", "12 %") direkt aus dem DOM,
+     zählt per rAF hoch und stellt am Ende exakt den Originaltext
+     wieder her — Canon-Werte bleiben damit die Quelle der Wahrheit. */
+  function setupCountUp() {
+    var nodes = document.querySelectorAll(ROOT_SELECTOR + ' [data-sol-countup]');
+    if (!nodes.length) return;
+    var reduced = false;
+    try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    if (reduced || typeof window.requestAnimationFrame !== 'function') return;
+
+    function animate(node) {
+      var original = node.textContent;
+      var match = /^([^0-9]*)([0-9][0-9.,]*)(.*)$/.exec(original.trim());
+      if (!match) return;
+      var target = parseInt(match[2].replace(/[.,]/g, ''), 10);
+      if (!isFinite(target) || target <= 0) return;
+      var prefix = match[1];
+      var suffix = match[3];
+      var t0 = null;
+      var duration = 1100;
+      function tick(now) {
+        if (t0 === null) t0 = now;
+        var p = Math.min(1, (now - t0) / duration);
+        var eased = 1 - Math.pow(1 - p, 3);
+        if (p < 1) {
+          node.textContent = prefix + Math.round(target * eased).toLocaleString('de-DE') + suffix;
+          window.requestAnimationFrame(tick);
+        } else {
+          node.textContent = original;
+        }
       }
-      host.appendChild(frag);
-      host.dataset.solRaysMounted = '1';
-    });
+      window.requestAnimationFrame(tick);
+    }
+
+    try {
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            io.unobserve(entry.target);
+            animate(entry.target);
+          });
+        }, { threshold: 0.4 });
+        nodes.forEach(function (node) { io.observe(node); });
+      } else {
+        nodes.forEach(animate);
+      }
+    } catch (e) { /* Stats bleiben statisch — kein Schaden. */ }
   }
 
   function setupFaq() {
@@ -968,7 +1005,7 @@
   }
 
   ready(function () {
-    mountSunRays();
+    setupCountUp();
     setupFaq();
     setupStickyCta();
     setupScrollAnchor();

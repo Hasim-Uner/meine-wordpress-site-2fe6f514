@@ -2,6 +2,14 @@
 
 ## 2026-06
 
+### Solar-Landingpage v2: Ink/Creme-Redesign + Marktcheck-CRO
+
+- `/solar-waermepumpen-leadgenerierung/` komplett auf das geteilte `.hu-hp`-Brand-System umgestellt (Ink `#0B0F12` im Wechsel mit Creme-Sektionen, Kupfer `#E08A3C`) — Basis ist der Claude-Design-Handoff „Solar-Leadgenerierung v2"; `homepage-redesign.css` wird wiederverwendet, das Page-CSS ist nur noch ein schlankes Delta (~3.100 → ~950 Zeilen).
+- Neuer Hero: Headline „Hören Sie auf, Anfragen zu mieten." mit Kupfer-Akzent, rotierende Kupfer-Sonne (32 Strahlen, SVG, `prefers-reduced-motion`-sicher), animiertes CPL-Balken-Chart (150 € → 22 € aus `hu_e3_canon`), Count-up-Stats; Marktcheck-Formular bleibt above the fold in der rechten Spalte (dunkle Card).
+- Marktcheck-CRO: Frage-Copy verkürzt („Wer verkauft bei Ihnen?" / „Was kostet Sie Akquise heute?" / „Wohin darf der Befund?"), Telefon-Feld entfernt, **Firmen-PLZ-Feld neu** (`postal_code`, fünfstellig validiert — speist die Regions-Verfügbarkeitsprüfung, Backend-Feld existierte bereits); REST-Kontrakt, Attribution, GA4-Events und Success-Logik unverändert (Smoke-Test grün).
+- Sektionen auf Kit-Komponenten umgezogen: Kostenkarten, Compare („Portal-Miete vs. eigener Anfrageweg"), Phasen mit Asset-Panel, CAPEX/OPEX als Modell-Karten (12/24/36-Toggle erhalten), E3-Proof als Vorher/Nachher + Stats, Fit-Grid, Risiko-Umkehr „Diagnose vor Pitch.", Vertiefung, FAQ (alle 11 Items + Schema erhalten); Founding-Cohort- und Final-CTA-Sektion zu einem `hu-final-cta`-Block gemerged.
+- System-Diagramm-Sektion (`#system-bild`) aufgelöst — Inhalt kondensiert ins Phasen-Asset-Panel; Canon-Fix: kundenseitige „Module" durchgängig zu „Bausteinen".
+
 ### CRO-Microcopy & CTA-Konsistenz
 
 - Trust-Microcopy „kostenlos & unverbindlich" für den Marktcheck am Homepage-Hero und in der Solar-Quiz-Card (SSR-Bullet + JS-Fineprint) — Kostenunsicherheit war der größte Reibungspunkt für kalten Traffic; die bezahlte Diagnose bleibt davon klar getrennt.
