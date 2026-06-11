@@ -755,8 +755,8 @@ function hu_output_schema()
                     ],
                     [
                         '@type'       => 'Offer',
-                        'name'        => 'Laufende WordPress-Betreuung',
-                        'description' => 'Wartung, Updates und kontrollierte Weiterentwicklung für etablierte WordPress-Systeme im Rahmen laufender Mandate.',
+                        'name'        => 'WordPress-Wartung in Hannover',
+                        'description' => 'Wartungsvertrag mit Updates, Monitoring und kontrollierter Weiterentwicklung für etablierte WordPress-Systeme im Rahmen laufender Mandate.',
                         'url'         => home_url('/wordpress-agentur-hannover/#wordpress-wartung'),
                     ],
                 ],

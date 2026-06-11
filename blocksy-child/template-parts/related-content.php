@@ -45,7 +45,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 
 	$primary_link_map = [
 		'solar-waermepumpen-anfrage-systeme' => [
-			'label' => __( 'Anfrage-Systeme ansehen', 'blocksy-child' ),
+			'label' => __( 'Leadgenerierung für Photovoltaik & Wärmepumpe', 'blocksy-child' ),
 			'url'   => function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' ),
 			'text'  => __( 'Passender System-Einstieg:', 'blocksy-child' ),
 		],

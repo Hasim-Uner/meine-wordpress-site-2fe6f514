@@ -171,6 +171,8 @@ function hu_get_category_archive_seo( $term = null ) {
  */
 function hu_get_forced_singular_seo_map() {
 	$e3_cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', 'über 85 %' ) : 'über 85 %';
+	$e3_cpl_before    = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
+	$e3_cpl_after     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
 
 	return (array) apply_filters(
 		'hu_forced_singular_seo_map',
@@ -192,11 +194,11 @@ function hu_get_forced_singular_seo_map() {
 			// daher keine oeffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
 				'title'       => 'WordPress Agentur Hannover für B2B-Anfragen',
-				'description' => 'WordPress Agentur Hannover für B2B-Websites, die Anfragen tragen müssen: technisches SEO, Tracking und CRO. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
+				'description' => sprintf( 'WordPress Agentur Hannover für B2B-Anfragen: technisches SEO, Tracking, CRO. Erst Projektprüfung, dann Umsetzung — belegt am E3-Case (CPL %s → %s).', $e3_cpl_before, $e3_cpl_after ),
 			],
 			'wordpress-agentur' => [
 				'title'       => 'WordPress Agentur Hannover für B2B-Anfragen',
-				'description' => 'WordPress Agentur Hannover für B2B-Websites, die Anfragen tragen müssen: technisches SEO, Tracking und CRO. Mit E3-Proof und Projektprüfung statt Standard-Relaunch.',
+				'description' => sprintf( 'WordPress Agentur Hannover für B2B-Anfragen: technisches SEO, Tracking, CRO. Erst Projektprüfung, dann Umsetzung — belegt am E3-Case (CPL %s → %s).', $e3_cpl_before, $e3_cpl_after ),
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
@@ -231,7 +233,7 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'solar-leads-kaufen-alternative' => [
 				'title'       => 'Solar Leads kaufen? Alternative ohne Portal-Abhängigkeit',
-				'description' => sprintf( 'Solar Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads sind oft mehrfach verkauft. Der Marktcheck prüft, ob ein eigenes System den CPL senken kann – E3: %s.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Solar Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft. Der Vergleich pro Anfrage — E3-Case: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'server-side-tracking-b2b' => [
 				'title'       => 'Server-Side Tracking für B2B-Leadgenerierung – DSGVO & CAPI',

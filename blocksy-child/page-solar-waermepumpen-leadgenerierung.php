@@ -230,7 +230,7 @@ $deeper_clusters = [
 		'group' => 'Funnel & Tracking',
 		'items' => [
 			[ 't' => 'Lead-Funnel Solar',                    's' => 'Fünf Stufen einer belastbaren Solar-Funnel-Architektur.',          'url' => home_url( '/lead-funnel-solar/' ) ],
-			[ 't' => 'Server-Side Tracking für B2B',         's' => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server.',           'url' => home_url( '/server-side-tracking-b2b/' ) ],
+			[ 't' => 'Server-Side Tracking für B2B',         's' => 'GA4, Meta CAPI und Consent Mode v2 — DSGVO-konform auf eigenem Server.', 'url' => home_url( '/server-side-tracking-b2b/' ) ],
 		],
 	],
 	[
