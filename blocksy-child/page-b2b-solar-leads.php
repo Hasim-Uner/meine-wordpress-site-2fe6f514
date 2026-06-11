@@ -307,7 +307,7 @@ get_header();
 				   data-track-action="cta_money_page"
 				   data-track-category="b2b_solar_leads"
 				   data-track-section="final">
-					System & Methode ansehen
+					Leadgenerierung für Photovoltaik &amp; Wärmepumpe ansehen
 				</a>
 			</div>
 		</div>

@@ -120,6 +120,10 @@ $faq = [
 		'question' => 'Welche CRMs werden unterstützt?',
 		'answer'   => 'Standardmäßig HubSpot, Brevo, Pipedrive und das hauseigene Nexus-CRM. Andere CRMs mit REST-API oder Webhook-Endpunkt lassen sich integrieren – das ist Teil der Integrationsphase.',
 	],
+	[
+		'question' => 'Server-Side-Tracking-Agentur oder Anbieter — worauf kommt es bei der Auswahl an?',
+		'answer'   => 'Auf drei Fragen: Läuft der sGTM-Container auf Ihrer eigenen Subdomain oder beim Dienstleister? Gehören GA4-, Meta- und Server-Zugänge Ihrem Betrieb? Gibt es eine dokumentierte Übergabe? Wer dreimal mit „beim Anbieter" antwortet, mietet seine eigene Datenebene. Hier gilt: Setup auf Ihrer Infrastruktur, alle Zugänge bei Ihnen, Dokumentation inklusive.',
+	],
 ];
 
 // ── Schema.org: Service + FAQPage + BreadcrumbList ───────────
@@ -176,7 +180,7 @@ get_header();
 				Server-Side Tracking: Volle Attribution trotz Cookieless, ITP und Ad-Blockern
 			</h1>
 			<p class="hu-intercept__lead">
-				Klassisches Client-Tracking verliert <strong>40 – 60 %</strong> der Conversions. Server-Side Tracking auf eigenem Server in Frankfurt liefert vollständige Daten an GA4 und Meta CAPI – DSGVO-konform mit Consent Mode v2. Grundlage für jede ehrliche Marketing-Entscheidung im B2B.
+				Klassisches Client-Tracking verliert <strong>30 – 60 %</strong> der Conversions. Server-Side Tracking auf eigenem Server in Frankfurt liefert vollständige Daten an GA4 und Meta CAPI – DSGVO-konform mit Consent Mode v2. Grundlage für jede ehrliche Marketing-Entscheidung im B2B.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">
@@ -248,7 +252,7 @@ get_header();
 
 	<section class="hu-intercept__faq" id="faq" aria-labelledby="hu-sst-faq-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-sst-faq-title">Häufige Fragen zu Server-Side Tracking</h2>
+			<h2 class="hu-intercept__h2" id="hu-sst-faq-title">Häufige Fragen: DSGVO, Kosten und Anbieter-Auswahl</h2>
 			<div class="hu-intercept__faq-list">
 				<?php foreach ( $faq as $item ) : ?>
 					<details class="hu-intercept__faq-item">

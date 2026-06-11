@@ -33,7 +33,7 @@ $agentur_solar_deeper = [
 	],
 	[
 		't'   => 'Server-Side Tracking für B2B',
-		's'   => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server – Grundlage sauberer Attribution.',
+		's'   => 'GA4, Meta CAPI und Consent Mode v2 — DSGVO-konform auf eigenem Server, Grundlage sauberer Attribution.',
 		'url' => home_url( '/server-side-tracking-b2b/' ),
 	],
 	[
@@ -356,7 +356,7 @@ get_header();
 			<a class="wp-agentur-intent-card" href="#technisches-seo" data-track-action="cta_intent_technical_seo" data-track-category="navigation" data-track-section="wordpress_agentur_hannover">
 				<span class="wp-agentur-intent-card__kicker">SEO &amp; Technik</span>
 				<h3>Technisches SEO, Core Web Vitals und saubere Seitenarchitektur</h3>
-				<p>Für WordPress-Seiten, die bereits Nachfrage sehen, aber bei Position, Klickrate oder Seitentiefe hängen bleiben.</p>
+				<p>WordPress-Suchmaschinenoptimierung für Seiten, die bereits Nachfrage sehen, aber bei Position, Klickrate oder Seitentiefe hängen bleiben.</p>
 			</a>
 			<a class="wp-agentur-intent-card" href="<?php echo esc_url( home_url( '/server-side-tracking-b2b/' ) ); ?>" data-track-action="cta_intent_tracking" data-track-category="navigation" data-track-section="wordpress_agentur_hannover">
 				<span class="wp-agentur-intent-card__kicker">Messbarkeit</span>
@@ -792,8 +792,8 @@ get_header();
 				<p>Persönliche Reviews, Workshops und Strategie-Sessions in Pattensen bei Hannover — oder remote im DACH-Raum.</p>
 			</div>
 			<div class="wp-agentur-local-card" id="wordpress-wartung">
-				<h3>Laufende WordPress-Betreuung</h3>
-				<p>Für Bestandskunden mit etabliertem WordPress-System: Wartung, Updates und Weiterentwicklung im Rahmen laufender Mandate.</p>
+				<h3>WordPress-Wartung in Hannover</h3>
+				<p>Für Bestandskunden mit etabliertem WordPress-System: Wartungsvertrag mit Updates, Monitoring und Weiterentwicklung im Rahmen laufender Mandate.</p>
 			</div>
 		</div>
 
