@@ -2,6 +2,8 @@
 
 This directory contains the repo-specific agent skills. Use `agents/skills/CONTEXT.md` as the routing table before opening individual skills.
 
+All skills are also exposed to Claude Code via symlinks in `.claude/skills/`, so Claude Code auto-discovers them as invocable skills. `agents/skills/` stays the single source of truth; edit skills here, never in `.claude/skills/`.
+
 ## High-priority routing
 
 - `offer-funnel-intelligence` — offer logic, funnel strategy, marketcheck, proof, qualification, sales-fit, WGOS boundary
