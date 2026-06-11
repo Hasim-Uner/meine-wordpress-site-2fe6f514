@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Broschüre · Eigene Anfrage-Systeme · hasimuener.de</title>
+<style>
+  /* ── Fonts ─────────────────────────────────────────── */
+  @font-face { font-family: 'Satoshi'; src: url('assets/Satoshi-Regular.woff') format('woff'); font-weight: 400; }
+  @font-face { font-family: 'Satoshi'; src: url('assets/Satoshi-Medium.woff2') format('woff2'); font-weight: 500; }
+  @font-face { font-family: 'Satoshi'; src: url('assets/Satoshi-Bold.woff') format('woff'); font-weight: 700; }
+  @font-face { font-family: 'Satoshi'; src: url('assets/Satoshi-Black.woff2') format('woff2'); font-weight: 900; }
+  @font-face { font-family: 'JetBrains Mono'; src: url('assets/jbm.woff2') format('woff2'); font-weight: 500; }
+  @font-face { font-family: 'JetBrains Mono'; src: url('assets/jbm-bold.woff2') format('woff2'); font-weight: 700; }
+
+  /* ── Tokens (Ink / Creme / Kupfer — wie hasimuener.de) ─ */
+  :root {
+    --paper:      #f3efe5;
+    --paper-2:    #ece6d6;
+    --paper-3:    #e3dcc8;
+    --ink:        #0c0d0e;
+    --ink-dark:   #14161a;
+    --ink-soft:   rgba(12, 13, 14, 0.66);
+    --ink-mute:   rgba(12, 13, 14, 0.46);
+    --ink-faint:  rgba(12, 13, 14, 0.16);
+    --copper:     #b46a3c;
+    --copper-lt:  #d08a55;            /* Kupfer auf Ink-Panels */
+    --cream-soft: rgba(243, 239, 229, 0.72);
+    --cream-mute: rgba(243, 239, 229, 0.50);
+    --cream-faint:rgba(243, 239, 229, 0.16);
+  }
+
+  @page { size: 297mm 210mm; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: 'Satoshi', sans-serif; color: var(--ink); }
+
+  .sheet {
+    width: 297mm; height: 210mm;
+    display: flex;
+    page-break-after: always;
+    background: var(--paper);
+  }
+  .panel {
+    width: 99mm; height: 210mm;
+    padding: 13mm 11mm 12mm;
+    position: relative;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .panel--ink { background: var(--ink); color: var(--paper); }
+  .panel--shade { background: var(--paper-2); }
+
+  /* Falzlinien-Andeutung (nur Innenseiten der Bögen) */
+  .fold { position: absolute; top: 0; bottom: 0; width: 0.2mm; background: var(--ink-faint); }
+  .panel--ink + .panel .fold-l,
+  .fold--on-ink { background: var(--cream-faint); }
+
+  /* ── Typo-Bausteine ────────────────────────────────── */
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .eyebrow {
+    font-size: 7pt; color: var(--copper);
+    margin-bottom: 6mm;
+  }
+  .panel--ink .eyebrow { color: var(--copper-lt); }
+  .rule {
+    height: 0.5mm; width: 12mm; background: var(--copper);
+    margin: 4.5mm 0 6mm;
+  }
+  h1, h2, h3 { font-weight: 900; letter-spacing: -0.015em; }
+  .body {
+    font-size: 9pt; line-height: 1.55; color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .panel--ink .body { color: var(--cream-soft); }
+  .accent { color: var(--copper); }
+  .panel--ink .accent { color: var(--copper-lt); }
+
+  .wordmark { font-size: 11pt; font-weight: 700; letter-spacing: -0.01em; }
+  .wordmark::after {
+    content: ""; display: block; width: 9mm; height: 0.6mm;
+    background: var(--copper); margin-top: 2.2mm;
+  }
+
+  /* ════ AUSSENSEITE ════ */
+
+  /* Rückseite */
+  .back .positioning {
+    font-size: 12.5pt; line-height: 1.45; font-weight: 700;
+    margin-top: 9mm; letter-spacing: -0.01em;
+  }
+  .back .positioning em { font-style: normal; color: var(--copper); }
+  .trust { list-style: none; margin-top: 7mm; }
+  .trust li {
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+    font-size: 6.6pt; letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--ink-mute);
+    padding: 2.4mm 0;
+    border-top: 0.2mm solid var(--ink-faint);
+  }
+  .trust li:last-child { border-bottom: 0.2mm solid var(--ink-faint); }
+  .contact { margin-top: auto; }
+  .contact .name { font-size: 10.5pt; font-weight: 700; }
+  .contact .role { font-size: 8.5pt; color: var(--copper); font-weight: 700; margin-top: 0.8mm; }
+  .contact .lines { margin-top: 4mm; font-size: 8.5pt; line-height: 1.8; color: var(--ink-soft); font-weight: 500; }
+  .contact .lines strong { color: var(--ink); font-weight: 700; }
+
+  /* Klappe (Proof, Ink) */
+  .flap .metric { margin-top: 2mm; }
+  .flap .metric + .metric { margin-top: 7mm; padding-top: 7mm; border-top: 0.2mm solid var(--cream-faint); }
+  .flap .num {
+    font-size: 27pt; font-weight: 900; letter-spacing: -0.03em;
+    color: var(--copper-lt); line-height: 1.05;
+  }
+  .flap .num--big { font-size: 30pt; color: var(--paper); }
+  .flap .num--big .arrow { color: var(--copper-lt); }
+  .flap .lbl { font-size: 8.5pt; font-weight: 700; color: var(--paper); margin-top: 2mm; }
+  .flap .sub { font-size: 7.8pt; color: var(--cream-mute); margin-top: 0.8mm; line-height: 1.5; font-weight: 500; }
+  .flap .more {
+    margin-top: auto; padding-top: 5mm;
+    border-top: 0.2mm solid var(--cream-faint);
+    font-size: 7.5pt; color: var(--cream-mute); font-weight: 500; line-height: 1.6;
+  }
+  .flap .more strong { color: var(--paper); font-weight: 700; }
+
+  /* Titelseite */
+  .cover { background: var(--paper); }
+  .cover .audience {
+    margin-top: 16mm;
+    font-size: 7pt; color: var(--copper);
+  }
+  .cover h1 {
+    font-size: 26pt; line-height: 1.08; margin-top: 5mm;
+  }
+  .cover h1 .alt { color: var(--copper); }
+  .cover .sub {
+    margin-top: 6mm; max-width: 70mm;
+    font-size: 9.5pt; line-height: 1.55; color: var(--ink-soft); font-weight: 500;
+  }
+  .cover .open-hint {
+    position: absolute; left: 11mm; right: 11mm; bottom: 13mm; z-index: 2;
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+    font-size: 6.8pt; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .cover .open-hint strong { color: var(--ink); font-weight: 700; }
+  /* Kupfer-Sonne über Horizontlinie (Motiv der Website) */
+  .cover .horizon {
+    position: absolute; left: 11mm; right: 11mm; bottom: 26mm;
+    height: 0.35mm; background: var(--ink-faint);
+  }
+  .cover .sun {
+    position: absolute; right: 16mm; bottom: 26.2mm;
+    width: 30mm; height: 15mm; overflow: hidden;
+  }
+  .cover .sun::before {
+    content: ""; display: block;
+    width: 30mm; height: 30mm; border-radius: 50%;
+    background: var(--copper);
+  }
+
+  /* ════ INNENSEITE ════ */
+
+  .head { font-size: 15.5pt; line-height: 1.18; }
+  .head .alt { color: var(--copper); }
+
+  /* Problem-Panel */
+  .price-tag { margin-top: 7mm; }
+  .price-tag .num { font-size: 25pt; font-weight: 900; letter-spacing: -0.03em; }
+  .price-tag .lbl { font-size: 8.5pt; font-weight: 700; color: var(--copper); margin-top: 1mm; }
+  .problem .body { margin-top: 4mm; }
+  .alt-block {
+    margin-top: auto;
+    background: var(--paper-2);
+    border-left: 1mm solid var(--copper);
+    padding: 6mm 6mm 6.5mm;
+  }
+  .alt-block .tag { font-size: 6.8pt; margin-bottom: 3mm; display: block; color: var(--copper); }
+  .alt-block p { font-size: 8.8pt; line-height: 1.55; color: var(--ink-soft); font-weight: 500; }
+  .alt-block p strong { color: var(--ink); font-weight: 700; }
+
+  /* Weg-Panel */
+  .step { display: flex; gap: 4.5mm; margin-top: 5.5mm; }
+  .step .n {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 8pt; color: var(--copper); padding-top: 0.6mm;
+  }
+  .step h3 { font-size: 10.5pt; font-weight: 700; letter-spacing: -0.01em; }
+  .step p { font-size: 8.4pt; line-height: 1.5; color: var(--ink-soft); margin-top: 1.4mm; font-weight: 500; }
+  .step p strong { color: var(--ink); font-weight: 700; }
+  .case {
+    margin-top: auto;
+    border-left: 1mm solid var(--copper);
+    background: var(--paper-2);
+    padding: 5.5mm 6mm 6mm;
+  }
+  .case .tag { font-size: 6.8pt; color: var(--copper); display: block; margin-bottom: 3.5mm; }
+  .case table { width: 100%; border-collapse: collapse; }
+  .case td { padding: 1.6mm 0; vertical-align: baseline; }
+  .case td.v { font-size: 12pt; font-weight: 900; letter-spacing: -0.02em; white-space: nowrap; }
+  .case td.k { font-size: 7.6pt; color: var(--ink-mute); text-align: right; font-weight: 500; }
+  .case tr + tr td { border-top: 0.2mm solid var(--ink-faint); }
+  .case .note { font-size: 7.2pt; color: var(--ink-mute); margin-top: 3mm; font-weight: 500; }
+
+  /* Aktions-Panel (Ink) */
+  .action h2 { font-size: 17pt; line-height: 1.15; }
+  .action .checks { list-style: none; margin-top: 6mm; }
+  .action .checks li {
+    display: flex; gap: 3mm;
+    font-size: 8.6pt; line-height: 1.45; color: var(--cream-soft); font-weight: 500;
+    padding: 2.6mm 0;
+    border-top: 0.2mm solid var(--cream-faint);
+  }
+  .action .checks li:last-child { border-bottom: 0.2mm solid var(--cream-faint); }
+  .action .checks .arr { color: var(--copper-lt); font-weight: 700; }
+  .action .honest {
+    margin-top: 5mm; font-size: 8.4pt; line-height: 1.5;
+    color: var(--cream-mute); font-weight: 500;
+  }
+  .qr-row {
+    margin-top: auto;
+    display: flex; gap: 6mm; align-items: center;
+    background: var(--paper);
+    padding: 5.5mm;
+  }
+  .qr-row img { width: 24mm; height: 24mm; display: block; }
+  .qr-row .go .url { font-size: 9.5pt; font-weight: 900; color: var(--ink); letter-spacing: -0.01em; }
+  .qr-row .go .url .alt { color: var(--copper); }
+  .qr-row .go p { font-size: 7.6pt; line-height: 1.5; color: var(--ink-soft); margin-top: 1.6mm; font-weight: 500; }
+  .qr-row .go p strong { color: var(--ink); font-weight: 700; }
+  .action .foot {
+    margin-top: 5mm; font-size: 7.4pt; line-height: 1.65;
+    color: var(--cream-mute); font-weight: 500;
+  }
+  .action .foot strong { color: var(--paper); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- ════════════ BOGEN 1 · AUSSENSEITE: Rückseite | Klappe | Titel ════════════ -->
+<div class="sheet">
+
+  <!-- Rückseite -->
+  <div class="panel back">
+    <div class="wordmark">hasimuener.de</div>
+    <p class="positioning">Ich baue Solar- und Wärmepumpen-Anbietern im DACH-Raum <em>eigene Anfrage-Systeme</em>, die Portal&#8209;Abhängigkeit ablösen und Leadkosten messbar senken.</p>
+    <ul class="trust">
+      <li>B2B · DACH · eigener Vertrieb</li>
+      <li>Server in Frankfurt · DSGVO</li>
+      <li>Server-Side-Tracking · saubere Attribution</li>
+      <li>1:1 Senior — keine Junior-Kette</li>
+      <li>Diagnose vor Pitch</li>
+    </ul>
+    <div class="contact">
+      <p class="name">Haşim Üner</p>
+      <p class="role">Architekt für eigene Anfrage-Systeme</p>
+      <div class="lines">
+        Hannover · DACH-weit tätig<br>
+        <strong>hasimuener.de</strong><br>
+        kontakt@hasimuener.de<br>
+        Termin: cal.com/hasim-uener/30min
+      </div>
+    </div>
+  </div>
+
+  <!-- Einschlagklappe: Proof -->
+  <div class="panel panel--ink flap">
+    <div class="eyebrow mono">Ein echtes Projekt · E3 New Energy</div>
+    <div class="metric">
+      <div class="num num--big">150&nbsp;€ <span class="arrow">→</span> 22&nbsp;€</div>
+      <p class="lbl">Kosten pro Anfrage.</p>
+      <p class="sub">Vorher gekaufte Portal-Leads, nachher eigene qualifizierte Anfragen. Gemessen, nicht versprochen.</p>
+    </div>
+    <div class="metric">
+      <div class="num">1&#8202;–&#8202;5&nbsp;% → 12&nbsp;%</div>
+      <p class="lbl">Abschlussquote im Vertrieb.</p>
+      <p class="sub">Weil Region, Projektart und Budget vor dem ersten Anruf geklärt sind.</p>
+    </div>
+    <div class="metric">
+      <div class="num">1.750+</div>
+      <p class="lbl">Qualifizierte Anfragen in 6 Monaten.</p>
+      <p class="sub">Über das eigene System — nicht über geteilte Portal-Kontakte.</p>
+    </div>
+    <p class="more">Der vollständige Fall mit Zahlen und Vorgehen:<br><strong>hasimuener.de/e3-new-energy</strong></p>
+  </div>
+
+  <!-- Titelseite -->
+  <div class="panel cover">
+    <div class="wordmark">hasimuener.de</div>
+    <div class="audience mono">Solar · Wärmepumpe · Speicher — DACH</div>
+    <h1>Ihre Anfragen gehören Ihnen.<br><span class="alt">Nicht dem Portal.</span></h1>
+    <p class="sub">Warum Sie für Kontakte zahlen, die drei Mitbewerber gleichzeitig anrufen — und wie ein eigenes Anfrage&#8209;System die Abhängigkeit ablöst.</p>
+    <div class="horizon"></div>
+    <div class="sun"></div>
+    <p class="open-hint">Innen: der Marktcheck — <strong>Fit-Befund in 48 Stunden</strong></p>
+  </div>
+</div>
+
+<!-- ════════════ BOGEN 2 · INNENSEITE: Problem | Weg | Erster Schritt ════════════ -->
+<div class="sheet">
+
+  <!-- Innen links: Das Problem -->
+  <div class="panel problem">
+    <div class="eyebrow mono">Das Problem</div>
+    <h2 class="head">Gekaufte Leads sind <span class="alt">nie exklusiv.</span></h2>
+    <div class="price-tag">
+      <div class="num">80&#8202;–&#8202;150&nbsp;€</div>
+      <p class="lbl">pro Portal-Lead — geteilt.</p>
+    </div>
+    <p class="body" style="margin-top:4.5mm;">Dieselbe Anfrage landet am selben Tag bei drei Wettbewerbern. Die Hälfte geht nicht ans Telefon, der Rest vergleicht nur den Preis. Der Preis wird zum einzigen Hebel — die Marge stirbt.</p>
+    <p class="body" style="margin-top:3.5mm;">Dazu der Blindflug: Google&nbsp;Ads, Portale, Empfehlungen — niemand kann sauber sagen, woher die guten Abschlüsse kommen. Wer das nicht misst, investiert blind.</p>
+    <div class="alt-block">
+      <span class="tag mono">Die Alternative</span>
+      <p><strong>Eine eigene Nachfrage-Infrastruktur:</strong> Website, Vorqualifizierung, Tracking und Werbekanäle als ein verbundenes System. Anfragen, die Ihrem Betrieb gehören — Code, Tracking und Daten bleiben bei Ihnen.</p>
+    </div>
+  </div>
+
+  <!-- Innen Mitte: Der Weg -->
+  <div class="panel panel--shade way">
+    <div class="eyebrow mono">Der Weg — Diagnose vor Pitch</div>
+    <h2 class="head">Erst der Befund.<br>Dann das System.</h2>
+    <div class="step">
+      <span class="n">01</span>
+      <div>
+        <h3>Marktcheck</h3>
+        <p>Zwei Klick-Antworten plus geschäftliche Eckdaten. <strong>Händisch geprüfter Fit-Befund</strong> für Ihre Region — innerhalb von 48 Stunden per E-Mail.</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="n">02</span>
+      <div>
+        <h3>System-Diagnose</h3>
+        <p>Anfrage-Quellen, Tracking, Funnel, Vertriebsanschluss: ein schriftlicher Befund mit <strong>drei priorisierten Hebeln</strong>. Auf die Umsetzung 1:1 verrechenbar.</p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="n">03</span>
+      <div>
+        <h3>Umsetzung &amp; Weiterentwicklung</h3>
+        <p>Ihr eigenes Anfrage-System: Vorqualifizierung vor dem Anruf, <strong>messbare Kosten pro Anfrage</strong>, steuerbare Werbekanäle. Gebaut wird erst nach grünem Fit.</p>
+      </div>
+    </div>
+    <div class="case">
+      <span class="tag mono">Fallstudie · E3 New Energy</span>
+      <table>
+        <tr><td class="v">150&nbsp;€ → 22&nbsp;€</td><td class="k">Kosten pro Anfrage</td></tr>
+        <tr><td class="v">1&#8202;–&#8202;5&nbsp;% → 12&nbsp;%</td><td class="k">Abschlussquote</td></tr>
+        <tr><td class="v">1.750+</td><td class="k">qualifizierte Anfragen · 6 Monate</td></tr>
+      </table>
+      <p class="note">Eigene Messung im Projekt — kein Versprechen, ein Referenzwert.</p>
+    </div>
+  </div>
+
+  <!-- Innen rechts: Der erste Schritt -->
+  <div class="panel panel--ink action">
+    <div class="eyebrow mono">Der erste Schritt</div>
+    <h2>Wo steht Ihr Vertrieb heute?</h2>
+    <ul class="checks">
+      <li><span class="arr">→</span><span>Trägt Ihre Region genug Suchnachfrage für Ihre Leistung?</span></li>
+      <li><span class="arr">→</span><span>Wie sichtbar sind Sie gegenüber Ihren Mitbewerbern?</span></li>
+      <li><span class="arr">→</span><span>Rechnet sich ein eigenes Anfrage-System für Ihren Betrieb?</span></li>
+    </ul>
+    <p class="honest">Der Marktcheck ist kein Verkaufsritual — er ist eine ehrliche Ersteinschätzung. Auch dann, wenn sie heißt: nicht mit mir.</p>
+    <div class="qr-row">
+      <img src="assets/qr-marktcheck.png" alt="QR-Code zum Marktcheck">
+      <div class="go">
+        <div class="url">hasimuener.de <span class="alt">→ Marktcheck</span></div>
+        <p>Zwei Klick-Antworten, geschäftliche Eckdaten — <strong>händisch geprüfter Fit-Befund in 48 Stunden</strong> per E-Mail.</p>
+      </div>
+    </div>
+    <p class="foot"><strong>Founding Cohort 2026</strong> — drei Plätze für frühe Umsetzungspartner zu Founding-Konditionen.<br>Lieber direkt reden? <strong>cal.com/hasim-uener/30min</strong></p>
+  </div>
+</div>
+
+</body>
+</html>
