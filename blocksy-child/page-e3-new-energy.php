@@ -15,11 +15,17 @@ $agentur_url    = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_
 
 $tracking_attrs = 'data-track-section="case_e3_methodology" data-track-funnel-stage="proof"';
 
+$e3_cpl_before  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
+$e3_cpl_after   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
+$e3_lead_count  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
+$e3_conv_uplift = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion_uplift', 'display', '1 – 5 % → 12 %' ) : '1 – 5 % → 12 %';
+$e3_timeframe   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display', '6 Monate' ) : '6 Monate';
+
 $metrics = [
-	'150 € → 22 € CPL',
-	'1.750+ Anfragen',
-	'1 – 5 % → 12 % Abschlussquote',
-	'6 Monate Laufzeit',
+	sprintf( '%s → %s CPL', $e3_cpl_before, $e3_cpl_after ),
+	sprintf( '%s Anfragen', $e3_lead_count ),
+	sprintf( '%s Abschlussquote', $e3_conv_uplift ),
+	sprintf( '%s Laufzeit', $e3_timeframe ),
 ];
 
 $hypotheses = [
@@ -97,8 +103,8 @@ $specific = [
 ];
 
 $cta_features = [
-	'Kostenfreier Marktcheck in 6 Fragen',
-	'Händisch geprüfter Marktcheck innerhalb von 48 Stunden',
+	'Marktcheck in drei Schritten — rund 60 Sekunden Eingabe',
+	'Händisch geprüfter Befund innerhalb von 48 Stunden per E-Mail',
 	'Einordnung von Anfrage-Quellen, Tracking und Vertriebsanschluss',
 	'Kein Pflicht-Termin, kein Pitch-Call',
 ];
@@ -155,8 +161,8 @@ get_header();
 ?>
 
 <main id="main" class="site-main">
-	<div class="energy-page-wrapper solar-page e3-methodology" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-		<section class="e3-hero" id="hero" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="e3-hero-title">
+	<div class="energy-page-wrapper solar-page e3-methodology" <?php echo $tracking_attrs; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+		<section class="e3-hero" id="hero" <?php echo $tracking_attrs; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="e3-hero-title">
 			<div class="e3-section__inner e3-hero__inner">
 				<div class="e3-hero__content" data-reveal>
 					<p class="e3-kicker">Methodik-Case · Solar &amp; Wärmepumpe</p>
@@ -176,7 +182,7 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3-section e3-section--paper" id="diagnose" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="diagnose-title">
+		<section class="e3-section e3-section--paper" id="diagnose" <?php echo $tracking_attrs; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="diagnose-title">
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
 					<p class="e3-kicker">Ausgangslage</p>
@@ -195,7 +201,7 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3-section e3-section--dark" id="hypothese" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="hypothese-title">
+		<section class="e3-section e3-section--dark" id="hypothese" <?php echo $tracking_attrs; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="hypothese-title">
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
 					<p class="e3-kicker">Arbeitshypothese</p>
@@ -216,7 +222,7 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3-section e3-section--paper-2" id="massnahmen" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="massnahmen-title">
+		<section class="e3-section e3-section--paper-2" id="massnahmen" <?php echo $tracking_attrs; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="massnahmen-title">
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
 					<p class="e3-kicker">Umsetzung</p>
@@ -238,10 +244,10 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3-section e3-section--paper-2" id="datenbereinigung" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="datenbereinigung-title">
+		<section class="e3-section e3-section--paper-2" id="datenbereinigung" <?php echo $tracking_attrs; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="datenbereinigung-title">
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
-					<p class="e3-kicker">Believability · Monat 1–2</p>
+					<p class="e3-kicker">Datenfundament · Monat 1–2</p>
 					<h2 class="e3-section__title" id="datenbereinigung-title">Bereinigung der unsichtbaren Datenlecks.</h2>
 					<p class="e3-section__lede">Bevor irgendeine Optimierung greifen konnte, musste die Attribution stimmen. Ohne diesen Schritt wäre der CPL-Sturz von <?php echo esc_html( function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before' ) : '150 €' ); ?> auf <?php echo esc_html( function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after' ) : '22 €' ); ?> nicht reproduzierbar.</p>
 				</div>
@@ -260,7 +266,7 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3-section e3-section--paper" id="verlauf" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="verlauf-title">
+		<section class="e3-section e3-section--paper" id="verlauf" <?php echo $tracking_attrs; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="verlauf-title">
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
 					<p class="e3-kicker">Timeline</p>
@@ -281,7 +287,7 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3-section e3-section--dark" id="lessons" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="lessons-title">
+		<section class="e3-section e3-section--dark" id="lessons" <?php echo $tracking_attrs; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="lessons-title">
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
 					<p class="e3-kicker">Was generalisierbar ist</p>
@@ -310,10 +316,10 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3-section e3-section--paper" id="insight" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="insight-title">
+		<section class="e3-section e3-section--paper" id="insight" <?php echo $tracking_attrs; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="insight-title">
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
-					<p class="e3-kicker">True Insight</p>
+					<p class="e3-kicker">Kernerkenntnis</p>
 					<h2 class="e3-section__title" id="insight-title">Die fundamentale Erkenntnis aus <?php echo esc_html( function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative' ) : '6 Monaten' ); ?> E3.</h2>
 				</div>
 
@@ -323,7 +329,7 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3-section e3-section--paper-2 e3-section--deeper" id="vertiefung" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="vertiefung-title">
+		<section class="e3-section e3-section--paper-2 e3-section--deeper" id="vertiefung" <?php echo $tracking_attrs; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="vertiefung-title">
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
 					<p class="e3-kicker">Methodik im Detail</p>
@@ -355,7 +361,7 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3-section e3-section--cta" id="cta" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="cta-title">
+		<section class="e3-section e3-section--cta" id="cta" <?php echo $tracking_attrs; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-labelledby="cta-title">
 			<div class="e3-section__inner e3-cta" data-reveal>
 				<p class="e3-kicker">Nächster Schritt</p>
 				<h2 class="e3-section__title" id="cta-title">Wenn Sie eine ähnliche Asymmetrie zwischen Lead-Quellen sehen — oder vermuten — klären wir das im Marktcheck.</h2>
@@ -374,7 +380,7 @@ get_header();
 					</a>
 				</div>
 
-				<p class="e3-cta__micro">Händisch geprüfter Befund innerhalb von 48 Stunden per E-Mail.</p>
+				<p class="e3-cta__micro">Keine Zahlungsdaten, kein Abo — der Marktcheck prüft zuerst, ob der Fit überhaupt passt.</p>
 			</div>
 		</section>
 	</div>

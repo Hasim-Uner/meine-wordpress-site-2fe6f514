@@ -40,9 +40,12 @@ function hu_get_homepage_title() {
  * @return string
  */
 function hu_get_homepage_description() {
+	$cpl_before = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
+	$cpl_after  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
+
 	return (string) apply_filters(
 		'hu_homepage_seo_description',
-		'Eigene Anfragen statt gemieteter Portal-Leads: Marktcheck, Vorqualifizierung und Tracking für Solar-, Wärmepumpen- und Speicher-Anbieter.'
+		sprintf( 'Eigene Anfragen statt Portal-Leads: Marktcheck, Vorqualifizierung und Tracking für Solar- und Wärmepumpen-Anbieter. E3-Case: CPL von %s auf %s.', $cpl_before, $cpl_after )
 	);
 }
 
@@ -174,11 +177,11 @@ function hu_get_forced_singular_seo_map() {
 		[
 			'kontakt' => [
 				'title'       => 'Kontakt & Projektanfrage | Haşim Üner',
-				'description' => 'Projekt starten oder Frage stellen: Formular ausfuellen, Rueckmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Sales-Druck – nur eine fundierte Ersteinschaetzung.',
+				'description' => 'Projekt oder Frage kurz einordnen: ein Formular, händisch geprüfte Rückmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Vertriebsteam.',
 			],
 			'kontaktiere-mich' => [
 				'title'       => 'Kontakt & Projektanfrage | Haşim Üner',
-				'description' => 'Projekt starten oder Frage stellen: Formular ausfuellen, Rueckmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Sales-Druck – nur eine fundierte Ersteinschaetzung.',
+				'description' => 'Projekt oder Frage kurz einordnen: ein Formular, händisch geprüfte Rückmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Vertriebsteam.',
 			],
 			'uber-mich' => [
 				'title'       => 'Über Haşim Üner | Solar-Anfrage-Systeme',
@@ -883,7 +886,7 @@ function hu_get_domdar_case_study_description() {
  * @return string
  */
 function hu_get_contact_offer_title() {
-	return 'Kontakt für WordPress, SEO und CRO | Haşim Üner';
+	return 'Kontakt & Projektanfrage | Haşim Üner';
 }
 
 /**
@@ -892,7 +895,7 @@ function hu_get_contact_offer_title() {
  * @return string
  */
 function hu_get_contact_offer_description() {
-	return 'Projektanfrage für WordPress, SEO, Tracking und CRO: kurzer Einstieg, klare nächste Schritte und Rückmeldung für neue Projekte und bestehende Kunden.';
+	return 'Projekt oder Frage kurz einordnen: ein Formular, händisch geprüfte Rückmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Vertriebsteam.';
 }
 
 

@@ -144,10 +144,10 @@ $current_type_label    = isset( $public_type_copy[ $selected_type ]['label'] ) ?
 $preselected_type      = ( $has_explicit_type || '' !== $selected_focus ) ? $selected_type : '';
 
 $hero_eyebrow = $is_scoped_landing ? $current_type_label : 'Kontakt';
-$hero_title   = $is_scoped_landing ? $current_type_label : 'Kontakt kurz einordnen.';
+$hero_title   = $is_scoped_landing ? $current_type_label : 'Sagen Sie kurz, worum es geht.';
 $hero_lead    = $is_scoped_landing
-	? 'Ein kompakter Flow für Ziel, Hürde, Kontakt und nächsten Schritt.'
-	: 'Ein kompakter Flow für Diagnose, Umsetzung oder Weiterentwicklung.';
+	? 'Vier kurze Schritte: Ziel, Hürde, Kontakt — händisch geprüfte Rückmeldung innerhalb von 48 Stunden.'
+	: 'Anliegen wählen, drei Fragen beantworten — händisch geprüfte Rückmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Vertriebsteam.';
 
 $auto_scroll  = false;
 ?>
@@ -215,7 +215,7 @@ $auto_scroll  = false;
 							class="contact-flow-step"
 							data-contact-step="type"
 							data-contact-step-label="Anfragetyp"
-							<?php echo $is_scoped_landing ? 'data-contact-step-skip="true"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static boolean state ?>
+							<?php echo $is_scoped_landing ? 'data-contact-step-skip="true"' : ''; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static boolean state ?>
 						>
 							<fieldset class="contact-intent<?php echo esc_attr( $is_scoped_landing ? ' contact-intent--collapsed' : '' ); ?>" data-contact-intent>
 								<legend>Anfrageart</legend>

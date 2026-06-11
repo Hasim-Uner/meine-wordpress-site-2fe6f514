@@ -566,7 +566,7 @@
       ]);
       form.appendChild(submitBtn);
 
-      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Kostenlos & unverbindlich · Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse · DSGVO'));
+      form.appendChild(el('p', { className: 'sol-quiz-fineprint' }, 'Keine Zahlungsdaten, kein Abo · Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse · DSGVO'));
 
       return form;
     }

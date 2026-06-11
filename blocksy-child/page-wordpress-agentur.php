@@ -54,10 +54,19 @@ $agentur_solar_deeper = [
 ];
 
 // ═══ E3 Proof Canon ═══
-$e3            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
-$e3_metrics    = $e3['metrics'] ?? [];
-$e3_cpl_before = $e3_metrics['cpl_before']['display'] ?? '150 €';
-$e3_cpl_after  = $e3_metrics['cpl_after']['display'] ?? '22 €';
+$e3                = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_metrics        = $e3['metrics'] ?? [];
+$e3_cpl_before     = $e3_metrics['cpl_before']['display'] ?? '150 €';
+$e3_cpl_after      = $e3_metrics['cpl_after']['display'] ?? '22 €';
+$e3_cpl_reduction  = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
+$e3_cpl_red_count  = $e3_metrics['cpl_reduction']['counter_target'] ?? '85';
+$e3_lead_count     = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_lead_counter   = $e3_metrics['lead_count']['counter_target'] ?? '1750';
+$e3_sales_conv     = $e3_metrics['sales_conversion']['display'] ?? '12 %';
+$e3_conv_counter   = $e3_metrics['sales_conversion']['counter_target'] ?? '12';
+$e3_timeframe      = $e3_metrics['timeframe']['display'] ?? '6 Monate';
+$e3_timeframe_dat  = $e3_metrics['timeframe']['display_dative'] ?? '6 Monaten';
+$e3_time_counter   = $e3_metrics['timeframe']['counter_target'] ?? '6';
 
 // ═══ Methodenbausteine aus der Asset Registry ═══
 $wgos_assets = function_exists( 'nexus_get_wgos_asset_registry' ) ? nexus_get_wgos_asset_registry() : [];
@@ -210,27 +219,27 @@ get_header();
 							<span class="ag-hero-viz__live-dot" aria-hidden="true"></span>
 							Verifizierter Referenzfall · E3 New Energy
 						</span>
-						<h2 class="ag-hero-viz__title">CPL-Senkung in 6 Monaten</h2>
+						<h2 class="ag-hero-viz__title">CPL-Senkung in <?php echo esc_html( $e3_timeframe_dat ); ?></h2>
 						<p class="ag-hero-viz__sub">Kosten pro qualifizierter B2B-Anfrage — vor und nach dem eigenen Anfrage-System.</p>
 					</header>
 
 					<div class="ag-hero-viz__chart" role="img" aria-label="Balkenchart: Kosten pro qualifizierter Anfrage fielen von 150 Euro auf 22 Euro, ein Rückgang um 85 Prozent.">
 						<div class="ag-bar ag-bar--before">
-							<span class="ag-bar__num">150&nbsp;€</span>
+							<span class="ag-bar__num"><?php echo esc_html( $e3_cpl_before ); ?></span>
 							<span class="ag-bar__track">
 								<span class="ag-bar__fill" style="--ag-bar-height: 92%;"></span>
 							</span>
 							<span class="ag-bar__label">Vorher · Portal-Leads</span>
 						</div>
 						<div class="ag-bar__arrow" aria-hidden="true">
-							<span class="ag-bar__delta">−85 %</span>
+							<span class="ag-bar__delta">−<?php echo esc_html( $e3_cpl_red_count ); ?> %</span>
 							<svg width="36" height="72" viewBox="0 0 36 72" fill="none">
 								<path class="ag-bar__arrow-path" d="M6 6 C 22 22, 6 40, 30 64" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="120" stroke-dashoffset="120" fill="none"/>
 								<path class="ag-bar__arrow-head" d="M22 58 L30 64 L24 70" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
 							</svg>
 						</div>
 						<div class="ag-bar ag-bar--after">
-							<span class="ag-bar__num">22&nbsp;€</span>
+							<span class="ag-bar__num"><?php echo esc_html( $e3_cpl_after ); ?></span>
 							<span class="ag-bar__track">
 								<span class="ag-bar__fill" style="--ag-bar-height: 14%;"></span>
 							</span>
@@ -240,15 +249,15 @@ get_header();
 
 					<dl class="ag-hero-viz__foot" aria-label="Kennzahlen aus dem E3-Case">
 						<div>
-							<dt><span class="ag-counter" data-counter-target="1750" data-counter-suffix="+">0</span></dt>
+							<dt><span class="ag-counter" data-counter-target="<?php echo esc_attr( $e3_lead_counter ); ?>" data-counter-suffix="+">0</span></dt>
 							<dd>Qualifizierte Anfragen</dd>
 						</div>
 						<div>
-							<dt><span class="ag-counter" data-counter-target="12" data-counter-suffix=" %">0</span></dt>
+							<dt><span class="ag-counter" data-counter-target="<?php echo esc_attr( $e3_conv_counter ); ?>" data-counter-suffix=" %">0</span></dt>
 							<dd>Abschlussquote</dd>
 						</div>
 						<div>
-							<dt><span class="ag-counter" data-counter-target="6" data-counter-suffix=" Mon.">0</span></dt>
+							<dt><span class="ag-counter" data-counter-target="<?php echo esc_attr( $e3_time_counter ); ?>" data-counter-suffix=" Mon.">0</span></dt>
 							<dd>Zeitraum</dd>
 						</div>
 					</dl>
@@ -271,25 +280,25 @@ get_header();
 
 		<div class="wp-agentur-proof-grid">
 			<div class="wp-agentur-proof-item">
-				<div class="wp-agentur-proof-value">150&nbsp;€ → 22&nbsp;€</div>
+				<div class="wp-agentur-proof-value"><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></div>
 				<div class="wp-agentur-proof-label">Kosten pro Anfrage</div>
 			</div>
 			<div class="wp-agentur-proof-item">
-				<div class="wp-agentur-proof-value">1.750+</div>
+				<div class="wp-agentur-proof-value"><?php echo esc_html( $e3_lead_count ); ?></div>
 				<div class="wp-agentur-proof-label">Qualifizierte Anfragen</div>
 			</div>
 			<div class="wp-agentur-proof-item">
-				<div class="wp-agentur-proof-value">12&nbsp;%</div>
+				<div class="wp-agentur-proof-value"><?php echo esc_html( $e3_sales_conv ); ?></div>
 				<div class="wp-agentur-proof-label">Abschlussquote</div>
 			</div>
 			<div class="wp-agentur-proof-item">
-				<div class="wp-agentur-proof-value">85&nbsp;%</div>
+				<div class="wp-agentur-proof-value"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
 				<div class="wp-agentur-proof-label">Niedrigere Kosten pro Anfrage</div>
 			</div>
 		</div>
 
 		<div class="wp-agentur-proof-cta">
-			<p>6 Monate, 1.750+ qualifizierte Anfragen, messbare Reduktion der Leadkosten.</p>
+			<p><?php echo esc_html( sprintf( '%s, %s qualifizierte Anfragen, %s niedrigere Kosten pro Anfrage.', $e3_timeframe, $e3_lead_count, $e3_cpl_reduction ) ); ?></p>
 			<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_proof_strip_e3" data-track-category="navigation" data-track-section="proof_strip">
 				E3-Case im Detail ansehen
 			</a>
@@ -324,7 +333,7 @@ get_header();
 			<div class="wp-agentur-segment-card">
 				<span class="wp-agentur-segment-card__tag">Womit</span>
 				<h3>Mit einer Anfrage-System-Methode, validiert am E3-Case</h3>
-				<p>CPL von 150 € auf 22 € gesenkt, 1.750+ qualifizierte Anfragen in 6 Monaten und 12 % Abschlussquote.</p>
+				<p><?php echo esc_html( sprintf( 'CPL von %s auf %s gesenkt, %s qualifizierte Anfragen in %s und %s Abschlussquote.', $e3_cpl_before, $e3_cpl_after, $e3_lead_count, $e3_timeframe_dat, $e3_sales_conv ) ); ?></p>
 			</div>
 		</div>
 	</div>
@@ -512,12 +521,12 @@ get_header();
 										: '#asset-uebersicht'
 									);
 								?>
-									<a href="<?php echo $asset_url; ?>" class="asset-card" data-track-action="cta_asset_card" data-track-category="navigation" data-track-section="methodenbibliothek">
+									<a href="<?php echo $asset_url; // raw-ok pre-escaped via esc_url at assignment ?>" class="asset-card" data-track-action="cta_asset_card" data-track-category="navigation" data-track-section="methodenbibliothek">
 										<div class="asset-header">
 											<div class="asset-icon" style="color: <?php echo esc_attr( $meta['color'] ); ?>;"><?php echo hu_agentur_icon_svg( '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h5M9.5 15.5h5"/>', 20 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-											<div class="asset-title"><?php echo $asset_title; ?></div>
+											<div class="asset-title"><?php echo $asset_title; // raw-ok pre-escaped via esc_html at assignment ?></div>
 										</div>
-										<p class="asset-desc"><?php echo $asset_desc; ?></p>
+										<p class="asset-desc"><?php echo $asset_desc; // raw-ok pre-escaped via esc_html at assignment ?></p>
 									</a>
 								<?php endforeach; ?>
 							</div>
@@ -661,20 +670,20 @@ get_header();
 			<div class="wp-agentur-case-card">
 				<span class="wp-agentur-case-card__eyebrow">Referenz</span>
 				<h3>E3 New Energy</h3>
-				<p>Der E3-Case ist Referenz, keine pauschale Übertragbarkeitsgarantie. Er zeigt, warum Reihenfolge, Datenqualität und eigene Anfragepfade wichtiger sind als ein weiterer Relaunch.</p>
+				<p>Ein Energie-Anbieter, der von eingekauften Portal-Leads auf ein eigenes Anfrage-System umgestellt hat — WordPress, Server-Side Tracking und Vorqualifizierung als ein zusammenhängendes System statt als Einzelmaßnahmen.</p>
 			</div>
 			<div class="wp-agentur-case-card wp-agentur-case-card--result">
 				<span class="wp-agentur-case-card__eyebrow">Ergebnis</span>
 				<div class="wp-agentur-case-card__metrics">
-					<div><strong>150&nbsp;€ → 22&nbsp;€</strong><span>Kosten pro Anfrage</span></div>
-					<div><strong>1.750+</strong><span>Qualifizierte Anfragen</span></div>
-					<div><strong>12&nbsp;%</strong><span>Abschlussquote</span></div>
+					<div><strong><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></strong><span>Kosten pro Anfrage</span></div>
+					<div><strong><?php echo esc_html( $e3_lead_count ); ?></strong><span>Qualifizierte Anfragen</span></div>
+					<div><strong><?php echo esc_html( $e3_sales_conv ); ?></strong><span>Abschlussquote</span></div>
 				</div>
 			</div>
 			<div class="wp-agentur-case-card">
 				<span class="wp-agentur-case-card__eyebrow">Zeitraum</span>
-				<h3>6 Monate</h3>
-				<p>In sechs Monaten von portalabhängiger Leadbeschaffung zu einem eigenen, messbaren Anfrage-System.</p>
+				<h3><?php echo esc_html( $e3_timeframe ); ?></h3>
+				<p>In <?php echo esc_html( $e3_timeframe_dat ); ?> von portalabhängiger Leadbeschaffung zu einem eigenen, messbaren Anfrage-System.</p>
 			</div>
 			<div class="wp-agentur-case-card wp-agentur-case-card--cta">
 				<span class="wp-agentur-case-card__eyebrow">Nächster Schritt</span>
@@ -816,7 +825,7 @@ get_header();
 	<div class="nx-container">
 		<div class="nx-section-header">
 			<p class="wp-agentur-eyebrow">FAQ</p>
-			<h2 class="nx-headline-section">Häufige Fragen</h2>
+			<h2 class="nx-headline-section">Häufige Fragen vor der Projektprüfung.</h2>
 		</div>
 
 		<div class="faq-list" id="faq-accordion">

@@ -69,7 +69,7 @@ $home_routing_gateways = [
 			$e3_cpl_after
 		),
 		'url'     => $e3_case_url,
-		'label'   => 'Verifizierte E3-Case-Study analysieren',
+		'label'   => 'E3-Case mit allen Zahlen lesen',
 		'persona' => 'Für skeptische Zahlen-Prüfer',
 		'action'  => 'gateway_e3',
 	],
@@ -153,7 +153,7 @@ get_header();
 						E3-Case ansehen
 					</a>
 				</div>
-				<p class="hu-hero__cta-note hu-hero__cta-note--trust">Der Marktcheck ist kostenlos &amp; unverbindlich — 60 Sekunden Eingabe, persönlich geprüfte Rückmeldung. Kein Pitch-Deck, kein Newsletter.</p>
+				<p class="hu-hero__cta-note hu-hero__cta-note--trust">Der Marktcheck kostet Sie 60 Sekunden — keine Zahlungsdaten, kein Newsletter, kein Pitch-Deck. Die Rückmeldung kommt persönlich geprüft innerhalb von 48 Stunden.</p>
 				<p class="hu-hero__cta-note">Keine neue Website auf Verdacht. Erst Diagnose, dann Entscheidung.</p>
 
 				<div class="hu-hero__stats">
@@ -493,7 +493,7 @@ get_header();
 			<div class="hu-system-flow hu-reveal">
 				<div class="hu-sf-col hu-sf-col--bad">
 					<div class="hu-sf-col-head">
-						<div class="hu-sf-col-label">AKTUELL</div>
+						<div class="hu-sf-col-label">TYPISCHES SETUP</div>
 						<div class="hu-sf-col-title">Portal-Chaos</div>
 					</div>
 					<div class="hu-sf-row">
@@ -518,7 +518,7 @@ get_header();
 						</div>
 					</div>
 					<div class="hu-sf-cost">
-						<div class="hu-sf-cost-label">KOSTEN / MONAT</div>
+						<div class="hu-sf-cost-label">BEISPIELRECHNUNG / MONAT</div>
 						<div class="hu-sf-cost-num">~ 4.800 €</div>
 					</div>
 				</div>
@@ -629,7 +629,7 @@ get_header();
 						<li><span class="hu-about-bullet-dot"></span>Medienwissenschaftliche Architektur — Sprache, Signal, System vor Code</li>
 						<li><span class="hu-about-bullet-dot"></span>Fokus Solar &amp; Wärmepumpen — verifizierte Daten-Integrität seit dem E3-Case</li>
 						<li><span class="hu-about-bullet-dot"></span>Asset-Ownership statt Drittanbieter-Lock-in</li>
-						<li><span class="hu-about-bullet-dot"></span>Founder seit 2026 · Hannover, remote</li>
+						<li><span class="hu-about-bullet-dot"></span>Gegründet 2026 · Hannover, vor Ort und remote</li>
 						<li><span class="hu-about-bullet-dot"></span>Maximal 3 Founding-Partner pro Jahr</li>
 					</ul>
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
@@ -661,7 +661,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">−</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Der händisch geprüfte Befund ordnet Domain, Region, Vertrieb und Anfragequalität ein. Keine automatischen Standard-PDFs, sondern eine strategische Einordnung mit klarer Empfehlung für oder gegen den nächsten Schritt.</div>
+						<div class="hu-faq-item__a-inner">Drei Klick-Schritte, rund 60 Sekunden Eingabe. Den händisch geprüften Befund zu Domain, Region, Vertrieb und Anfragequalität erhalten Sie in der Regel innerhalb von 48 Stunden, spätestens 2 Werktagen, per E-Mail. Kein automatisches Standard-PDF, sondern eine Einordnung mit klarer Empfehlung für oder gegen den nächsten Schritt.</div>
 					</div>
 				</div>
 
