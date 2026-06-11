@@ -253,7 +253,7 @@ $faq_items = [
 	],
 	[
 		'question' => 'Was kostet das im Vergleich zur Performance-Agentur?',
-		'answer'   => 'Initiales Setup: 12.000–18.000 € einmalig. Laufend ca. 50 €/Monat für Hochleistungs-Hosting. TCO über 24 Monate: 13.200–19.200 € — und Sie besitzen Code, Tracking und Daten. Eine Performance-Agentur mit Paket „Regio+" kostet im gleichen Zeitraum rund 26.000 € und Sie besitzen am Ende nichts. Bilanziell: CAPEX statt OPEX.',
+		'answer'   => 'Initiales Setup: 12.000–18.000 € einmalig. Laufend ca. 50 €/Monat für Hochleistungs-Hosting. TCO über 24 Monate: 13.200–19.200 € — und Sie besitzen Code, Tracking und Daten. Ein vergleichbares Agentur-Mietmodell kostet im gleichen Zeitraum rund 26.000 € — und Sie besitzen am Ende nichts. Bilanziell: CAPEX statt OPEX.',
 	],
 	[
 		'question' => 'Welche Daten brauchen Sie für die Diagnose?',
@@ -305,7 +305,7 @@ $service_schema = [
 	'provider'    => [
 		'@type'       => 'Organization',
 		'@id'         => $organization_id,
-		'name'        => 'Haşim Üner — WordPress-Agentur Hannover',
+		'name'        => 'Haşim Üner — Anfrage-Systeme für Solar & Wärmepumpe',
 		'url'         => home_url( '/' ),
 		'founder'     => [
 			'@id' => function_exists( 'hu_person_schema_id' ) ? hu_person_schema_id() : home_url( '/uber-mich/#person' ),
@@ -455,7 +455,7 @@ get_header();
 					?>
 					<figure class="hu-diagram sol-cpl" aria-labelledby="sol-cpl-title" data-track-section="hero_dashboard">
 						<div class="hu-lead-sketch__head">
-							<span class="hu-eyebrow">Live-Telemetrie · <?php echo esc_html( $e3_case_label ); ?></span>
+							<span class="hu-eyebrow">CPL-Verlauf · <?php echo esc_html( $e3_case_label ); ?></span>
 							<span class="hu-lead-sketch__status" id="sol-cpl-title">Kosten pro qualifizierter Anfrage · <?php echo esc_html( $e3_timeframe ); ?></span>
 						</div>
 						<svg viewBox="0 0 <?php echo (int) $cpl_w; ?> <?php echo (int) $cpl_h; ?>" role="img"
@@ -575,7 +575,7 @@ get_header();
 								Kein Newsletter, kein Pitch-Deck.
 							</p>
 							<ul class="sol-cta-bullets sol-mono" aria-label="Was Sie nach dem Marktcheck erhalten">
-								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Kostenlos &amp; unverbindlich — keine Zahlungsdaten, kein Abo</li>
+								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Keine Zahlungsdaten, kein Abo, keine Verpflichtung</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Regions-Verfügbarkeitsprüfung über Ihre Firmen-PLZ</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Manuelle Erst-Analyse statt automatisierter Tool-Bericht</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Befund in 48 h per E-Mail · kein Pflicht-Call</li>
@@ -882,7 +882,7 @@ get_header();
 					</div>
 					<div class="hu-proof-stat">
 						<div class="hu-proof-stat__num"><?php echo esc_html( $e3_timeframe ); ?></div>
-						<div class="hu-proof-stat__lbl">Live-Telemetrie · DSGVO</div>
+						<div class="hu-proof-stat__lbl">Zeitraum · dokumentiert</div>
 					</div>
 				</div>
 				<div class="sol-proof-foot">
