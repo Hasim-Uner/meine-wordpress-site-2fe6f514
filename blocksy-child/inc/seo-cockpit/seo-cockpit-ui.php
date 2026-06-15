@@ -1240,7 +1240,15 @@ function nexus_render_seo_cockpit_dashboard() {
 			</div>
 			<div class="nexus-seo-cockpit__strip-cell">
 				<strong>Cache bis</strong>
-				<span><?php echo esc_html( ! empty( $runtime['cache_expires_at'] ) ? wp_date( 'd.m.Y H:i', (int) $runtime['cache_expires_at'] ) : 'n/a' ); ?></span>
+				<span><?php
+				if ( ! empty( $runtime['cache_expires_at'] ) ) {
+					echo esc_html( wp_date( 'd.m.Y H:i', (int) $runtime['cache_expires_at'] ) );
+				} elseif ( 'error' === (string) ( $runtime['last_sync_status'] ?? '' ) ) {
+					echo esc_html( 'letzter Sync fehlgeschlagen' );
+				} else {
+					echo esc_html( 'n/a' );
+				}
+				?></span>
 			</div>
 			<div class="nexus-seo-cockpit__strip-cell">
 				<strong>Koko Analytics</strong>
@@ -1419,7 +1427,7 @@ function nexus_render_seo_cockpit_dashboard() {
 									$primary = is_array( $page['primary'] ?? null ) ? $page['primary'] : [];
 									$lead_page = is_array( $lead_snapshot['page_map'][ (string) $page['url'] ] ?? null ) ? $lead_snapshot['page_map'][ (string) $page['url'] ] : [];
 									?>
-									<tr<?php echo $index >= $problem_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; ?>>
+									<tr<?php echo $index >= $problem_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; // raw-ok static class string ?>>
 										<td>
 											<span class="nexus-seo-cockpit__badge is-<?php echo esc_attr( (string) ( $primary['priority_bucket'] ?? 'low' ) ); ?>">
 												<?php
@@ -1556,7 +1564,7 @@ function nexus_render_seo_cockpit_dashboard() {
 										$wp_label = nexus_get_seo_cockpit_page_role_label( nexus_get_seo_cockpit_page_role( $context, $url ) );
 									}
 									?>
-									<tr<?php echo $index >= $tp_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; ?>>
+									<tr<?php echo $index >= $tp_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; // raw-ok static class string ?>>
 										<td class="nexus-seo-cockpit__cell--url"><a href="<?php echo esc_url( nexus_get_seo_cockpit_detail_url( $url ) ); ?>" title="<?php echo esc_attr( $url ); ?>"><?php echo esc_html( nexus_get_seo_cockpit_short_url( $url ) ); ?></a></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( $row['clicks'] ?? 0 ) ) ); ?></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( $row['impressions'] ?? 0 ) ) ); ?></td>
@@ -1620,7 +1628,7 @@ function nexus_render_seo_cockpit_dashboard() {
 							</thead>
 							<tbody>
 								<?php foreach ( $tq_rows as $index => $row ) : ?>
-									<tr<?php echo $index >= $tq_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; ?>>
+									<tr<?php echo $index >= $tq_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; // raw-ok static class string ?>>
 										<td><strong><?php echo esc_html( nexus_get_seo_cockpit_row_label( $row ) ); ?></strong></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( $row['clicks'] ?? 0 ) ) ); ?></td>
 										<td><?php echo esc_html( number_format_i18n( (float) ( $row['impressions'] ?? 0 ) ) ); ?></td>
@@ -1665,7 +1673,7 @@ function nexus_render_seo_cockpit_dashboard() {
 									</thead>
 									<tbody>
 										<?php foreach ( $koko_pages_rows as $index => $row ) : ?>
-											<tr<?php echo $index >= $koko_pages_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; ?>>
+											<tr<?php echo $index >= $koko_pages_visible ? ' class="nexus-seo-cockpit__row--extra"' : ''; // raw-ok static class string ?>>
 												<td class="nexus-seo-cockpit__cell--url">
 													<?php if ( ! empty( $row['url'] ) ) : ?>
 														<a href="<?php echo esc_url( nexus_get_seo_cockpit_detail_url( (string) $row['url'] ) ); ?>" title="<?php echo esc_attr( (string) $row['url'] ); ?>"><?php echo esc_html( (string) ( ! empty( $row['title'] ) ? $row['title'] : nexus_get_seo_cockpit_short_url( (string) $row['url'] ) ) ); ?></a>
@@ -1938,7 +1946,7 @@ function nexus_render_seo_cockpit_quick_wins_table( $rows, $limit = 5 ) {
 			<tbody>
 				<?php foreach ( $rows as $index => $row ) : ?>
 					<?php $delta = nexus_get_seo_cockpit_metric_delta( 'clicks', (float) ( $row['clicks'] ?? 0 ), (float) ( $row['prev_clicks'] ?? 0 ) ); ?>
-					<tr<?php echo $index >= $limit ? ' class="nexus-seo-cockpit__row--extra"' : ''; ?>>
+					<tr<?php echo $index >= $limit ? ' class="nexus-seo-cockpit__row--extra"' : ''; // raw-ok static class string ?>>
 						<td><strong><?php echo esc_html( (string) $row['query'] ); ?></strong></td>
 						<td class="nexus-seo-cockpit__cell--url"><a href="<?php echo esc_url( (string) ( $row['detail_url'] ?? '' ) ); ?>"><?php echo esc_html( nexus_get_seo_cockpit_short_url( (string) $row['page'] ) ); ?></a></td>
 						<td><?php echo esc_html( number_format_i18n( (float) $row['impressions'] ) ); ?></td>

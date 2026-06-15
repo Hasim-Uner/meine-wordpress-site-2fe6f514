@@ -2,6 +2,13 @@
 
 ## 2026-06
 
+### Solar-Proof früher, Cluster-Hublink & Koko-Cockpit-Beobachtbarkeit
+
+- `/solar-waermepumpen-leadgenerierung/`: kompakter **Proof-Bar** direkt unter Hero/Trust-Strip (E3-Kennzahlen 150 €→22 €, 1.750+, 12 %, über 85 % als Teaser → `#ergebnisse`), damit der Umsatzbeleg nicht erst bei ~73 % Scrolltiefe sichtbar wird; Kontextzeile macht die CPL-Zahl belegbar statt kontextlos. Funnel und Marktcheck-Formular unverändert.
+- Sekundärer, risikoärmerer CTA an der Fit-Sektion („Erst den E3-Case ansehen" → `#ergebnisse`) neben dem primären Marktcheck-CTA — für Besucher, die noch nicht intake-bereit sind.
+- Kannibalisierung „leadgenerierung photovoltaik": Cluster-Subpages setzen jetzt einen term-nahen **Einbahn-Hublink** zurück auf die Money Page (`hu_render_solar_cluster_links()`), um das Signal auf dem Hub zu bündeln (Hub → Cluster bestand bereits über die Vertiefung-Sektion).
+- SEO-Cockpit / Koko: **Live-Selbsttest** in der Diagnostik (HTTP-Status + Roh-Body + normalisiertes Ergebnis für die aktuelle Range), Koko-Fehler werden **nicht mehr als 0/0 gecacht** (kein eingefrorener Cron-Fehler überdeckt echte Daten), und „Cache bis n/a" zeigt bei Sync-Fehler einen interpretierbaren Status. Macht den 0/0-Bug diagnostizierbar — die sichtbare „0 zurück"-Note belegt ein erfolgreiches 200→0/0 (Range/Param/Shape), keinen Permission-Fehler.
+
 ### Solar-Landingpage v2: Ink/Creme-Redesign + Marktcheck-CRO
 
 - `/solar-waermepumpen-leadgenerierung/` komplett auf das geteilte `.hu-hp`-Brand-System umgestellt (Ink `#0B0F12` im Wechsel mit Creme-Sektionen, Kupfer `#E08A3C`) — Basis ist der Claude-Design-Handoff „Solar-Leadgenerierung v2"; `homepage-redesign.css` wird wiederverwendet, das Page-CSS ist nur noch ein schlankes Delta (~3.100 → ~950 Zeilen).

@@ -125,6 +125,39 @@ function nexus_get_seo_cockpit_diagnostics( $detail_url = '' ) {
 		(string) ( $koko['label'] ?? 'Koko-Status unbekannt.' )
 	);
 
+	// Live-Selbsttest: zeigt, was Koko für genau die Cockpit-Range zurückgibt.
+	// Entlarvt, ob 0/0 ein erfolgreiches leeres 200 (Range/Param/Shape) oder
+	// ein Fehler ist — nur für berechtigte Verwalter, da uncached.
+	if (
+		nexus_current_user_can_manage_seo_cockpit()
+		&& ! empty( $koko['rest_available'] )
+		&& function_exists( 'nexus_seo_cockpit_koko_probe' )
+		&& function_exists( 'nexus_get_seo_cockpit_date_ranges' )
+		&& function_exists( 'nexus_get_seo_cockpit_requested_range_days' )
+	) {
+		$probe_ranges = nexus_get_seo_cockpit_date_ranges( nexus_get_seo_cockpit_requested_range_days() );
+		$probe        = nexus_seo_cockpit_koko_probe( (string) $probe_ranges['current_start'], (string) $probe_ranges['current_end'] );
+		$probe_views  = (float) ( $probe['normalized']['pageviews'] ?? 0 );
+		$probe_vis    = (float) ( $probe['normalized']['visitors'] ?? 0 );
+		$probe_raw    = (string) ( $probe['raw'] ?? '' );
+		$probe_raw    = function_exists( 'mb_substr' ) ? mb_substr( $probe_raw, 0, 200 ) : substr( $probe_raw, 0, 200 );
+
+		$checks[] = nexus_build_seo_cockpit_diagnostic(
+			'koko',
+			'Koko-Selbsttest (live)',
+			( ! empty( $probe['ok'] ) && ( $probe_views > 0 || $probe_vis > 0 ) ) ? 'ok' : 'warning',
+			sprintf(
+				'HTTP %d · Range %s–%s · normalisiert: %s Besucher / %s Aufrufe · Roh-Body: %s',
+				(int) ( $probe['status_code'] ?? 0 ),
+				(string) $probe_ranges['current_start'],
+				(string) $probe_ranges['current_end'],
+				(string) round( $probe_vis ),
+				(string) round( $probe_views ),
+				'' !== $probe_raw ? $probe_raw : '(leer)'
+			)
+		);
+	}
+
 	$checks[] = nexus_build_seo_cockpit_diagnostic(
 		'links',
 		'Interner Linkgraph',

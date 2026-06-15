@@ -622,6 +622,77 @@
   flex-shrink: 0;
 }
 
+/* ─── 5b) Proof-Bar (E3-Kennzahlen früh, Teaser → #ergebnisse) ─ */
+.solara-landing .sol-proofbar {
+  border-bottom: 1px solid var(--line);
+  padding: 22px 0;
+  background: var(--bg);
+}
+.solara-landing .sol-proofbar-inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+  justify-content: space-between;
+}
+.solara-landing .sol-proofbar-eyebrow {
+  flex-shrink: 0;
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.solara-landing .sol-proofbar-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  justify-content: center;
+}
+.solara-landing .sol-proofbar-stats li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.solara-landing .sol-proofbar-num {
+  font-family: 'Satoshi', 'Figtree', sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+.solara-landing .sol-proofbar-num-accent { color: var(--accent); }
+.solara-landing .sol-proofbar-lbl {
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.solara-landing .sol-proofbar-link {
+  flex-shrink: 0;
+  font-size: 11.5px;
+  letter-spacing: .04em;
+  color: var(--accent);
+  white-space: nowrap;
+  transition: opacity .15s;
+}
+.solara-landing .sol-proofbar-link:hover { opacity: .78; }
+.solara-landing .sol-proofbar-context {
+  margin: 12px 0 0;
+  font-size: 10.5px;
+  letter-spacing: .04em;
+  color: var(--fg-4);
+  text-align: center;
+}
+@media (max-width: 820px) {
+  .solara-landing .sol-proofbar-inner { justify-content: center; }
+  .solara-landing .sol-proofbar-stats { justify-content: center; }
+}
+
 /* ─── 6) Sticky Section-Nav ─────────────────────────────────── */
 .solara-landing .sol-section-nav {
   position: sticky;
@@ -744,6 +815,12 @@
   align-items: flex-start;
   gap: 12px;
   margin-top: 30px;
+}
+.solara-landing .sol-section-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
 }
 .solara-landing .sol-section-cta-micro {
   font-size: 10.5px;

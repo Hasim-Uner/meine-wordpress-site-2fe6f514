@@ -604,6 +604,41 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
+		     PROOF-BAR — E3-Kennzahlen früh sichtbar (Teaser → #ergebnisse)
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="sol-proofbar" aria-label="Belegte Ergebnisse aus dem <?php echo esc_attr( $e3_case_label ); ?>-Case" data-track-section="proof_bar">
+			<div class="hu-container">
+				<div class="sol-proofbar-inner">
+					<span class="sol-proofbar-eyebrow sol-mono">Belegt · <?php echo esc_html( $e3_case_label ); ?></span>
+					<ul class="sol-proofbar-stats">
+						<li>
+							<span class="sol-proofbar-num"><?php echo esc_html( $e3_cpl_before ); ?> → <span class="sol-proofbar-num-accent"><?php echo esc_html( $e3_cpl_after ); ?></span></span>
+							<span class="sol-proofbar-lbl">CPL pro Anfrage</span>
+						</li>
+						<li>
+							<span class="sol-proofbar-num"><?php echo esc_html( $e3_lead_count ); ?></span>
+							<span class="sol-proofbar-lbl">Qualifizierte Anfragen</span>
+						</li>
+						<li>
+							<span class="sol-proofbar-num"><?php echo esc_html( $e3_sales_conversion ); ?></span>
+							<span class="sol-proofbar-lbl">Abschluss · Anfrage → Vertrag</span>
+						</li>
+						<li>
+							<span class="sol-proofbar-num sol-proofbar-num-accent"><?php echo esc_html( $e3_cpl_reduction ); ?></span>
+							<span class="sol-proofbar-lbl">Weniger Kosten pro Anfrage</span>
+						</li>
+					</ul>
+					<a class="sol-proofbar-link sol-mono" href="#ergebnisse"
+						data-track-action="cta_solar_proofbar_to_results"
+						data-track-category="proof"
+						data-track-section="proof_bar"
+					>Wie die Zahlen zustande kommen →</a>
+				</div>
+				<p class="sol-proofbar-context sol-mono">Ein realer Fall über <?php echo esc_html( $e3_timeframe ); ?>, eigener Anfrageweg statt Portal-Leads — dokumentiert, keine pauschale Übertragbarkeitsgarantie.</p>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
 		     STICKY IN-PAGE SECTION NAV
 		     Wird nach dem Hero sticky · CRO: schnelle Orientierung,
 		     ohne den globalen Header zu ersetzen (SEO/Brand bleibt).
@@ -948,15 +983,25 @@ get_header();
 					</article>
 				</div>
 				<div class="sol-section-cta">
-					<a class="hu-btn hu-btn-primary" href="#marktcheck"
-						data-track-action="cta_solar_fit_to_intake"
-						data-track-category="lead_gen"
-						data-track-section="fit_check"
-						data-track-funnel-stage="intake_open"
-					>
-						<span>Marktcheck beantragen</span>
-						<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					</a>
+					<div class="sol-section-cta-actions">
+						<a class="hu-btn hu-btn-primary" href="#marktcheck"
+							data-track-action="cta_solar_fit_to_intake"
+							data-track-category="lead_gen"
+							data-track-section="fit_check"
+							data-track-funnel-stage="intake_open"
+						>
+							<span>Marktcheck beantragen</span>
+							<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</a>
+						<a class="hu-btn hu-btn-ghost" href="#ergebnisse"
+							data-track-action="cta_solar_fit_to_results"
+							data-track-category="proof"
+							data-track-section="fit_check"
+						>
+							Erst den <?php echo esc_html( $e3_case_label ); ?>-Case ansehen
+							<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</a>
+					</div>
 					<div class="sol-section-cta-micro sol-mono">Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln</div>
 				</div>
 			</div>
