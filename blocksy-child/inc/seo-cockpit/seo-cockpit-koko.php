@@ -379,13 +379,19 @@ function nexus_get_seo_cockpit_koko_totals( $start, $end ) {
 		]
 	);
 
-	$totals = is_wp_error( $response ) ? [
-		'visitors'  => 0.0,
-		'pageviews' => 0.0,
-		'pages'     => 0,
-		'error'     => $response->get_error_message(),
-	] : nexus_normalize_seo_cockpit_koko_totals( $response );
+	if ( is_wp_error( $response ) ) {
+		// Fehler bewusst NICHT cachen: sonst friert ein im Cron (ohne
+		// User-Kontext) entstandener Fehler die 0/0-Antwort für eine Stunde
+		// ein und überdeckt echte Daten beim nächsten Admin-Aufruf.
+		return [
+			'visitors'  => 0.0,
+			'pageviews' => 0.0,
+			'pages'     => 0,
+			'error'     => $response->get_error_message(),
+		];
+	}
 
+	$totals = nexus_normalize_seo_cockpit_koko_totals( $response );
 	set_transient( $cache_key, $totals, HOUR_IN_SECONDS );
 
 	return $totals;
@@ -414,8 +420,11 @@ function nexus_get_seo_cockpit_koko_series( $start, $end ) {
 		]
 	);
 
-	$series = is_wp_error( $response ) ? nexus_normalize_seo_cockpit_koko_date_series( $start, $end, [] ) : nexus_normalize_seo_cockpit_koko_date_series( $start, $end, $response );
+	if ( is_wp_error( $response ) ) {
+		return nexus_normalize_seo_cockpit_koko_date_series( $start, $end, [] );
+	}
 
+	$series = nexus_normalize_seo_cockpit_koko_date_series( $start, $end, $response );
 	set_transient( $cache_key, $series, HOUR_IN_SECONDS );
 
 	return $series;
@@ -450,8 +459,11 @@ function nexus_get_seo_cockpit_koko_posts( $start, $end, $limit = 10, $params = 
 		)
 	);
 
-	$posts = is_wp_error( $response ) ? [] : nexus_normalize_seo_cockpit_koko_posts( $response, $limit );
+	if ( is_wp_error( $response ) ) {
+		return [];
+	}
 
+	$posts = nexus_normalize_seo_cockpit_koko_posts( $response, $limit );
 	set_transient( $cache_key, $posts, HOUR_IN_SECONDS );
 
 	return $posts;
@@ -607,4 +619,56 @@ function nexus_get_seo_cockpit_koko_detail_data( $url, $context, $ranges ) {
 	}
 
 	return $detail;
+}
+
+/**
+ * Run an uncached, live Koko totals probe for cockpit diagnostics.
+ *
+ * Spiegelt exakt die Parameter der regulären Totals-Abfrage, damit der
+ * Selbsttest sichtbar macht, was Koko für genau diese Range zurückgibt
+ * (HTTP-Status + Roh-Body + normalisiertes Ergebnis) — ohne den
+ * Stunden-Cache zu treffen. Nur für berechtigte Admins gedacht.
+ *
+ * @param string $start Start date (Y-m-d).
+ * @param string $end   End date (Y-m-d).
+ * @return array<string, mixed>
+ */
+function nexus_seo_cockpit_koko_probe( $start, $end ) {
+	$status = nexus_get_koko_analytics_status();
+	$route  = nexus_get_seo_cockpit_koko_route( 'totals' );
+	$params = [
+		'start_date' => (string) $start,
+		'end_date'   => (string) $end,
+	];
+
+	$result = [
+		'ok'          => false,
+		'status_code' => 0,
+		'route'       => $route,
+		'params'      => $params,
+		'raw'         => '',
+		'normalized'  => [
+			'visitors'  => 0.0,
+			'pageviews' => 0.0,
+			'pages'     => 0,
+		],
+		'message'     => (string) ( $status['label'] ?? '' ),
+	];
+
+	if ( empty( $status['rest_available'] ) || '' === $route || ! function_exists( 'rest_do_request' ) ) {
+		return $result;
+	}
+
+	$request = new WP_REST_Request( 'GET', $route );
+	$request->set_query_params( $params );
+
+	$response               = rest_do_request( $request );
+	$result['status_code']  = (int) $response->get_status();
+	$data                   = $response->get_data();
+	$result['ok']           = $result['status_code'] >= 200 && $result['status_code'] < 300;
+	$result['raw']          = (string) wp_json_encode( $data );
+	$result['normalized']   = nexus_normalize_seo_cockpit_koko_totals( $data );
+	$result['message']      = '';
+
+	return $result;
 }

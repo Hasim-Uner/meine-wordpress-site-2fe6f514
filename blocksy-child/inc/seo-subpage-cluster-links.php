@@ -122,6 +122,13 @@ function hu_render_solar_cluster_links() {
 	if ( empty( $links ) ) {
 		return;
 	}
+
+	// Einbahn-Hublink: jede Cluster-Seite verweist mit term-nahem Anker
+	// zurück auf die Money Page, um „leadgenerierung photovoltaik" dort zu
+	// bündeln (Hub → Cluster existiert bereits über die Vertiefung-Sektion).
+	$hub_url = function_exists( 'nexus_get_energy_systems_url' )
+		? nexus_get_energy_systems_url()
+		: home_url( '/solar-waermepumpen-leadgenerierung/' );
 	?>
 	<section class="related-content seo-cluster-links" aria-label="Weiterführende Themen im Solar-Cluster" data-track-section="solar_cluster_links">
 		<div class="related-content__head">
@@ -129,6 +136,14 @@ function hu_render_solar_cluster_links() {
 			<h2 class="related-content__heading"><?php esc_html_e( 'Passende Themen im Solar- & Wärmepumpen-Cluster', 'blocksy-child' ); ?></h2>
 		</div>
 		<ul class="seo-cluster-links__list">
+			<li class="seo-cluster-links__item seo-cluster-links__item--hub">
+				<a class="seo-cluster-links__link seo-cluster-links__link--hub"
+				   href="<?php echo esc_url( $hub_url ); ?>"
+				   data-track-action="solar_cluster_to_hub_click"
+				   data-track-category="internal_link">
+					<?php esc_html_e( 'Leadgenerierung für Photovoltaik & Wärmepumpe', 'blocksy-child' ); ?>
+				</a>
+			</li>
 			<?php foreach ( $links as $link ) : ?>
 				<li class="seo-cluster-links__item">
 					<a class="seo-cluster-links__link"
