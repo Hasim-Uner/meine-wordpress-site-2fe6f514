@@ -1265,6 +1265,7 @@ add_action( 'init', 'nexus_maybe_ensure_qualifizierte_pv_anfragen_page', 27 );
 function nexus_get_legacy_offer_redirect_map() {
 	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
 	$request_url = nexus_get_primary_request_url();
+	$energy_url  = nexus_get_energy_systems_url();
 
 	return [
 		// High-probability external entry paths. Internal/historical tool,
@@ -1276,6 +1277,10 @@ function nexus_get_legacy_offer_redirect_map() {
 		'/wordpress-tech-audit/'     => $request_url,
 		'/wordpress-agentur/'        => $agentur_url,
 		'/alle-loesungen-im-detail/' => nexus_get_page_url( [ 'alle-loesungen' ], home_url( '/alle-loesungen/' ) ),
+		// Retired (Entwurf) Blog-Slug: 301 auf die Solar-Money-Page, damit
+		// nachlaufende Impressionen/Backlinks das Hub-Signal stützen statt zu
+		// kannibalisieren oder ins Leere (404) zu laufen.
+		'/photovoltaik-leads-kaufen-alternative/' => $energy_url,
 	];
 }
 

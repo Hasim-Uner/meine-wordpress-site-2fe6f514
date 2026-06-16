@@ -1,5 +1,9 @@
 # Plan: WordPress Agentur Hannover – Champions-League Relaunch
 
+> ✅ **UMGESETZT (Stand 2026-06-16).** Dieser Plan ist vollständig ausgeführt und nur noch historisch — **nicht erneut ausführen.**
+> Ist-Zustand der Live-Seite: WGOS-Bibliothek dynamisch aus der Registry (`blocksy-child/page-wordpress-agentur.php`), kein eingebettetes Light-Mode-CSS mehr (globales Dark-Design-System), vollständiges LocalBusiness/ProfessionalService-Schema mit Hannover-Geo/NAP (`blocksy-child/inc/org-schema.php`), H1 trifft „WordPress Agentur Hannover", Standort-Sektion, dynamische FAQ, Sticky-CTA.
+> Der verbleibende Hebel für „wordpress agentur hannover" ist **Offpage** — siehe `docs/seo/offpage-authority-playbook.md` (lokaler Track).
+
 Stand: 2026-05-15 | Mode: Architect | Ziel: Code-Implementierung vorbereiten
 
 ---
