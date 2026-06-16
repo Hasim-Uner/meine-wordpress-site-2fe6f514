@@ -102,6 +102,39 @@ Ziel: bestehende Assets aktiv für Linkaufbau nutzen, Crawl-Frequenz erhöhen.
 
 ---
 
+## Lokaler Track — „WordPress Agentur Hannover" (parallel zum Solar-Track)
+
+Für das lokale Commercial-Keyword **„wordpress agentur hannover"** (aktuell Pos ~32) wirkt ein anderer Hebel als bei den Solar-Begriffen: nicht topische Solar-Links, sondern **lokale Entitäts- und Citation-Signale**. Die Money-Page (`/wordpress-agentur-hannover/`) ist on-page fertig (LocalBusiness-Schema mit Geo/NAP, H1 trifft den Term, Standort-Sektion). Es fehlt die **externe lokale Bestätigung**.
+
+### L1 — Google Business Profil (lokal, höchste Priorität)
+
+- Dasselbe GBP wie in Phase 1.1, aber **lokal optimiert**: Primärkategorie „Webdesigner" bzw. „Internetmarketing-Dienst", Sekundär „Werbeagentur".
+- Als Service-Area-Business: **Hannover + Region Hannover** explizit als Einzugsgebiet hinterlegen (deckt sich mit `areaServed` im Schema).
+- Beschreibung mit „WordPress-Agentur in Hannover für B2B-Anfrage-Systeme", Link auf `/wordpress-agentur-hannover/` (nicht nur die Solar-Page).
+- Erste 3–5 echte Kunden-/Partner-Bewertungen — lokaler Trust-Faktor Nr. 1.
+
+### L2 — Lokale & Branchen-Citations (NAP zeichengenau aus `/impressum/`)
+
+Dieselbe kanonische NAP-Schreibweise (Firmierung · Pattensen/Region Hannover · `/wordpress-agentur-hannover/`) in:
+
+- **Regional:** Branchenbuch Region Hannover, Das Örtliche / Gelbe Seiten Hannover, regionale B2B-/Mittelstandsverzeichnisse.
+- **IHK Hannover:** Mitglieds-/Firmenverzeichnis-Eintrag (starkes lokales Entitätssignal).
+- **B2B-Standard DACH:** wlw.de, 11880, Cylex, Yelp DE — mit identischer NAP.
+- **NAP-Disziplin gilt absolut:** eine Schreibweise überall, identisch zum Impressum (siehe Phase 1.2). Solar- und Agentur-Citations nutzen dieselbe Entität — **nicht** zwei konkurrierende Profile anlegen.
+
+### L3 — Lokale Relevanz-Links
+
+- Hannover-/Niedersachsen-Unternehmensnetzwerke, lokale Gründer-/Mittelstands-Initiativen, Co-Working-/Startup-Verzeichnisse der Region.
+- Lokale Kunden/Partner um eine Referenz-Erwähnung mit Link auf `/wordpress-agentur-hannover/` bitten (ein einziger themen- **und** ortsrelevanter Link wiegt schwer).
+- Gastbeitrag/Interview in einem regionalen Wirtschafts-/Gründer-Medium (Angle: „B2B-Website als Anfrage-System statt Schaufenster" — die E3-Datenstory trägt auch lokal).
+
+### Erwartung & Messung (lokal)
+
+- Frühindikator: GBP live + 5 konsistente Citations → „wordpress agentur hannover" sollte als Erstes aus Pos 30+ Richtung Pos 10–20 wandern (lokale Terme reagieren schneller auf Citations als breite Solar-Terme auf topische Links).
+- Monatlich in der Search Console: Position „wordpress agentur hannover" + „wordpress hannover", lokale Impressionen, Brand-Suchen „haşim üner".
+
+---
+
 ## Was NICHT tun (Anti-Pattern für junge Domains)
 
 - **Keine** gekauften Link-Pakete / PBNs / Massenverzeichnisse — bei junger Domain
