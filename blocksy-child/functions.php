@@ -51,6 +51,7 @@ $modules = [
 	'llms-txt.php',       // Dynamische /llms.txt-Route für KI-Agenten und Entitätskontext
 	'seo-cockpit/seo-cockpit.php',    // Search Console basiertes SEO-Cockpit mit optionaler Koko-Erkennung
 	'enqueue.php',        // CSS/JS Asset-Management
+	'homepage-wow.php',   // Noindex-Testseite fuer visuelle Homepage-Variante
 	'seo-meta.php',       // OG Tags, Canonical, Indexierungssteuerung
 	'seo-subpage-cluster-links.php', // Kontextuelle Querverlinkung des Solar/B2B-Clusters
 	'org-schema.php',     // JSON-LD Structured Data
@@ -84,7 +85,8 @@ add_action( 'wp_head', 'hu_preload_self_hosted_fonts', 1 );
 function hu_preload_self_hosted_fonts() {
 	$font_dir = get_stylesheet_directory();
 	$font_uri = get_stylesheet_directory_uri() . '/fonts';
-	$critical_figtree_font = is_front_page() ? 'figtree-600.woff2' : 'figtree-400.woff2';
+	$is_visual_homepage_test = function_exists( 'hu_is_homepage_wow_request' ) && hu_is_homepage_wow_request();
+	$critical_figtree_font = ( is_front_page() || $is_visual_homepage_test ) ? 'figtree-600.woff2' : 'figtree-400.woff2';
 
 	if ( file_exists( $font_dir . '/fonts/Satoshi-Variable.woff2' ) ) {
 		printf(

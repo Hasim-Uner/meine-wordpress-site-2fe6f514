@@ -1,0 +1,809 @@
+/* =============================================================
+   Homepage WOW Test
+   Scoped to .hu-wow and layered on homepage-redesign.css.
+   ============================================================= */
+
+.hu-wow {
+  --accent: #b46a3c;
+  --accent-2: #e08a3c;
+  --bg: #0b0f12;
+  --bg-2: #11161a;
+  --bg-3: #161c21;
+  --fg: #f2ebdd;
+  --fg-2: #c8c0b0;
+  --fg-3: #8a8478;
+  --ink: #15191d;
+  --ink-2: #41464b;
+  --cream: #f4eddd;
+  --cream-2: #ede4cf;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(180, 106, 60, 0.42);
+  --panel: rgba(17, 22, 26, 0.86);
+  --radius: 8px;
+  --shadow: 0 34px 76px rgba(0, 0, 0, 0.34);
+  background: var(--bg);
+}
+
+.hu-wow .hu-display,
+.hu-wow h1,
+.hu-wow h2,
+.hu-wow h3 {
+  letter-spacing: 0;
+}
+
+.hu-wow .hu-eyebrow,
+.hu-wow .hu-mono,
+.hu-wow .hu-tag,
+.hu-wow small {
+  letter-spacing: 0;
+}
+
+.hu-wow .hu-btn {
+  min-block-size: 3.25rem;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+.hu-wow .hu-btn:focus-visible,
+.hu-wow a:focus-visible,
+.hu-wow [tabindex]:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 4px;
+}
+
+.hu-wow [data-wow-reveal] {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hu-wow [data-wow-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hu-wow-hero {
+  position: relative;
+  min-block-size: min(54rem, 100dvh);
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  isolation: isolate;
+  border-bottom: 1px solid var(--line);
+}
+
+.hu-wow-hero__system {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(11, 15, 18, 0.26), rgba(11, 15, 18, 0.92)),
+    linear-gradient(90deg, rgba(11, 15, 18, 0.18), rgba(11, 15, 18, 0.02) 48%, rgba(11, 15, 18, 0.72));
+}
+
+.hu-wow-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(180, 106, 60, 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180, 106, 60, 0.11) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 10rem 10rem, 10rem 10rem, 2rem 2rem, 2rem 2rem;
+  opacity: 0.72;
+}
+
+.hu-wow-circuit,
+.hu-wow-rail {
+  position: absolute;
+  border: 1px solid rgba(180, 106, 60, 0.28);
+}
+
+.hu-wow-circuit--a {
+  inset: 11% 8% 22% 42%;
+  clip-path: polygon(0 0, 100% 0, 100% 60%, 70% 60%, 70% 100%, 0 100%);
+}
+
+.hu-wow-circuit--b {
+  inset: 18% 20% 13% 56%;
+  border-color: rgba(242, 235, 221, 0.12);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 25% 100%, 25% 40%, 0 40%);
+}
+
+.hu-wow-rail {
+  block-size: 1px;
+  inline-size: min(34rem, 44vw);
+  border-width: 0;
+  background: linear-gradient(90deg, transparent, rgba(180, 106, 60, 0.66), transparent);
+}
+
+.hu-wow-rail--top {
+  inset-block-start: 22%;
+  inset-inline-end: 8%;
+}
+
+.hu-wow-rail--bottom {
+  inset-block-end: 24%;
+  inset-inline-end: 16%;
+}
+
+.hu-wow-signal {
+  position: absolute;
+  inline-size: 0.75rem;
+  block-size: 0.38rem;
+  border-radius: 2px;
+  background: var(--accent-2);
+  animation: hu-wow-signal 4.8s linear infinite;
+}
+
+.hu-wow-signal--one {
+  inset-block-start: 22%;
+  inset-inline-end: 38%;
+}
+
+.hu-wow-signal--two {
+  inset-block-start: 48%;
+  inset-inline-end: 18%;
+  animation-delay: 1.4s;
+}
+
+.hu-wow-signal--three {
+  inset-block-end: 24%;
+  inset-inline-end: 44%;
+  animation-delay: 2.8s;
+}
+
+.hu-wow-hero__inner {
+  position: relative;
+  display: grid;
+  gap: 2rem;
+  padding-block: clamp(7rem, 16vh, 11rem) 2.25rem;
+}
+
+.hu-wow-hero__copy {
+  max-inline-size: 58rem;
+}
+
+.hu-wow-hero__title {
+  max-inline-size: 12ch;
+  margin: 0;
+  font-size: 5.25rem;
+  line-height: 0.96;
+  text-wrap: balance;
+}
+
+.hu-wow-hero__lead {
+  max-inline-size: 45rem;
+  margin: 1.5rem 0 0;
+  color: var(--fg-2);
+  font-size: 1.2rem;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.hu-wow-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-block-start: 2rem;
+}
+
+.hu-wow-hero__note {
+  margin: 0.85rem 0 0;
+  color: var(--fg-3);
+  font-size: 0.92rem;
+}
+
+.hu-wow-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  background: rgba(17, 22, 26, 0.76);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+}
+
+.hu-wow-kpi {
+  min-block-size: 8.25rem;
+  display: grid;
+  align-content: center;
+  gap: 0.35rem;
+  padding: 1.25rem;
+  border-inline-start: 1px solid var(--line);
+}
+
+.hu-wow-kpi:first-child {
+  border-inline-start: 0;
+}
+
+.hu-wow-kpi strong {
+  color: var(--fg);
+  font-size: 2.1rem;
+  line-height: 1;
+}
+
+.hu-wow-kpi span {
+  color: var(--fg-2);
+  font-weight: 700;
+}
+
+.hu-wow-kpi small {
+  color: var(--fg-3);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.hu-wow-section {
+  padding-block: 7rem;
+  border-top: 1px solid var(--line);
+}
+
+.hu-wow-section--cream {
+  background: var(--cream);
+  color: var(--ink);
+  border-top: 0;
+}
+
+.hu-wow-section-head {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.68fr) minmax(0, 1.6fr);
+  gap: 3rem;
+  align-items: end;
+  margin-block-end: 3.5rem;
+}
+
+.hu-wow-section-head h2 {
+  margin: 0;
+  color: var(--fg);
+  font-size: 3.35rem;
+  line-height: 1.03;
+  text-wrap: balance;
+}
+
+.hu-wow-section-head p {
+  max-inline-size: 44rem;
+  margin: 1rem 0 0;
+  color: var(--fg-2);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.hu-wow-section-head--dark h2 {
+  color: var(--ink);
+}
+
+.hu-wow-section-head--dark p {
+  color: var(--ink-2);
+}
+
+.hu-wow-engine {
+  display: grid;
+  grid-template-columns: minmax(22rem, 1fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.hu-wow-engine__visual {
+  position: relative;
+  min-block-size: 38rem;
+  border: 1px solid var(--line-strong);
+  background:
+    linear-gradient(135deg, rgba(180, 106, 60, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
+    var(--bg-2);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  contain: layout paint;
+}
+
+.hu-wow-engine__visual::before {
+  content: "";
+  position: absolute;
+  inset: 1.5rem;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.hu-wow-engine__lane {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 72%;
+  inset-block-start: 14%;
+  background: linear-gradient(180deg, transparent, rgba(180, 106, 60, 0.72), transparent);
+}
+
+.hu-wow-engine__lane--one {
+  inset-inline-start: 34%;
+}
+
+.hu-wow-engine__lane--two {
+  inset-inline-end: 34%;
+}
+
+.hu-wow-engine__core {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  transform: translate(-50%, -50%);
+  inline-size: min(20rem, calc(100% - 3rem));
+  min-block-size: 12.5rem;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 0.55rem;
+  padding: 1.5rem;
+  border: 1px solid var(--accent);
+  background: rgba(11, 15, 18, 0.92);
+  text-align: center;
+}
+
+.hu-wow-engine__core span {
+  color: var(--accent-2);
+  font-size: 0.72rem;
+  letter-spacing: 0;
+}
+
+.hu-wow-engine__core strong {
+  color: var(--fg);
+  font-size: 2rem;
+  line-height: 1.05;
+}
+
+.hu-wow-engine__core small {
+  max-inline-size: 16rem;
+  color: var(--fg-2);
+  line-height: 1.5;
+}
+
+.hu-wow-engine__node {
+  position: absolute;
+  min-inline-size: 8.75rem;
+  padding: 0.78rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: rgba(22, 28, 33, 0.86);
+  color: var(--fg);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.hu-wow-engine__node--demand {
+  inset-block-start: 11%;
+  inset-inline-start: 11%;
+}
+
+.hu-wow-engine__node--proof {
+  inset-block-start: 16%;
+  inset-inline-end: 10%;
+}
+
+.hu-wow-engine__node--fit {
+  inset-block-end: 15%;
+  inset-inline-start: 11%;
+}
+
+.hu-wow-engine__node--crm {
+  inset-block-end: 10%;
+  inset-inline-end: 12%;
+  border-color: var(--line-strong);
+  color: var(--accent-2);
+}
+
+.hu-wow-engine__steps {
+  list-style: none;
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.hu-wow-step {
+  display: grid;
+  grid-template-columns: 4.2rem minmax(0, 1fr);
+  gap: 1.15rem;
+  padding: 1.35rem;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.hu-wow-step:hover,
+.hu-wow-step:focus-visible,
+.hu-wow-step.is-active {
+  transform: translateY(-0.18rem);
+  border-color: var(--line-strong);
+  background: rgba(180, 106, 60, 0.08);
+}
+
+.hu-wow-step__num {
+  display: grid;
+  place-items: center;
+  inline-size: 3.4rem;
+  block-size: 3.4rem;
+  border: 1px solid var(--line-strong);
+  color: var(--accent-2);
+  font-size: 0.8rem;
+}
+
+.hu-wow-step__kicker {
+  display: block;
+  color: var(--fg-3);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.hu-wow-step h3 {
+  margin: 0.35rem 0 0;
+  color: var(--fg);
+  font-size: 1.25rem;
+  line-height: 1.22;
+}
+
+.hu-wow-step p {
+  margin: 0.65rem 0 0;
+  color: var(--fg-2);
+  line-height: 1.62;
+}
+
+.hu-wow-loss-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.hu-wow-loss {
+  min-block-size: 19rem;
+  padding: 1.75rem;
+  border: 1px solid rgba(21, 25, 29, 0.16);
+  background: #fff;
+  box-shadow: 0 20px 42px rgba(21, 25, 29, 0.08);
+}
+
+.hu-wow-loss__label {
+  display: inline-flex;
+  margin-block-end: 2.25rem;
+  color: #9b4f37;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.hu-wow-loss h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.45rem;
+  line-height: 1.18;
+}
+
+.hu-wow-loss p {
+  margin: 1rem 0 0;
+  color: var(--ink-2);
+  line-height: 1.64;
+}
+
+.hu-wow-proof {
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(22rem, 1fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.hu-wow-proof__copy h2,
+.hu-wow-route__copy h2 {
+  margin: 0.9rem 0 0;
+  color: var(--fg);
+  font-size: 3.35rem;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.hu-wow-proof__copy p,
+.hu-wow-route__copy p {
+  max-inline-size: 43rem;
+  margin: 1.1rem 0 1.7rem;
+  color: var(--fg-2);
+  font-size: 1.05rem;
+  line-height: 1.72;
+}
+
+.hu-wow-proof__board {
+  border: 1px solid var(--line-strong);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 3.5rem, rgba(255, 255, 255, 0.03) 3.5rem calc(3.5rem + 1px)),
+    var(--bg-2);
+  box-shadow: var(--shadow);
+}
+
+.hu-wow-proof__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.45rem 1.6rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.hu-wow-proof__row span {
+  color: var(--fg-2);
+  font-weight: 700;
+}
+
+.hu-wow-proof__row strong {
+  color: var(--fg);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.hu-wow-proof__row--active {
+  background: rgba(180, 106, 60, 0.11);
+}
+
+.hu-wow-proof__row--active strong {
+  color: var(--accent-2);
+}
+
+.hu-wow-proof__result {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1.65rem;
+}
+
+.hu-wow-proof__result span {
+  color: var(--accent-2);
+  font-size: 0.72rem;
+  letter-spacing: 0;
+}
+
+.hu-wow-proof__result strong {
+  color: var(--fg);
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.hu-wow-proof__result small {
+  color: var(--fg-3);
+}
+
+.hu-wow-route {
+  display: grid;
+  grid-template-columns: 22rem minmax(0, 1fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.hu-wow-route__person {
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(21, 25, 29, 0.14);
+  background: var(--ink);
+  box-shadow: 0 24px 52px rgba(21, 25, 29, 0.16);
+}
+
+.hu-wow-route__person img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.hu-wow-route__copy h2 {
+  color: var(--ink);
+}
+
+.hu-wow-route__copy p {
+  color: var(--ink-2);
+}
+
+.hu-wow-route__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  align-items: center;
+}
+
+.hu-wow-route .hu-btn-ghost {
+  color: var(--ink);
+  border-color: rgba(21, 25, 29, 0.22);
+}
+
+.hu-wow-route .hu-btn-link {
+  color: var(--ink);
+  border-color: rgba(21, 25, 29, 0.28);
+}
+
+.hu-wow-deep-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-block-start: 4rem;
+}
+
+.hu-wow-deep-links a {
+  min-block-size: 9.75rem;
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+  padding: 1.35rem;
+  border: 1px solid rgba(21, 25, 29, 0.14);
+  background: rgba(255, 255, 255, 0.62);
+  color: var(--ink);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.hu-wow-deep-links a:hover,
+.hu-wow-deep-links a:focus-visible {
+  transform: translateY(-0.18rem);
+  border-color: rgba(180, 106, 60, 0.48);
+  background: #fff;
+}
+
+.hu-wow-deep-links strong {
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.hu-wow-deep-links span {
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+
+@keyframes hu-wow-signal {
+  0% {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  12%,
+  72% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(8rem);
+  }
+}
+
+@media (max-width: 1080px) {
+  .hu-wow-hero__title {
+    font-size: 4.15rem;
+  }
+
+  .hu-wow-kpi-strip,
+  .hu-wow-loss-grid,
+  .hu-wow-deep-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hu-wow-engine,
+  .hu-wow-proof,
+  .hu-wow-route {
+    grid-template-columns: 1fr;
+  }
+
+  .hu-wow-route__person {
+    max-inline-size: 22rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .hu-wow-hero {
+    min-block-size: auto;
+  }
+
+  .hu-wow-hero__inner {
+    padding-block-start: 6.5rem;
+  }
+
+  .hu-wow-hero__title,
+  .hu-wow-section-head h2,
+  .hu-wow-proof__copy h2,
+  .hu-wow-route__copy h2 {
+    font-size: 2.75rem;
+    line-height: 1.04;
+  }
+
+  .hu-wow-hero__lead,
+  .hu-wow-section-head p,
+  .hu-wow-proof__copy p,
+  .hu-wow-route__copy p {
+    font-size: 1rem;
+  }
+
+  .hu-wow-hero__actions,
+  .hu-wow-route__actions {
+    align-items: stretch;
+  }
+
+  .hu-wow-hero__actions .hu-btn,
+  .hu-wow-route__actions .hu-btn {
+    inline-size: 100%;
+    justify-content: center;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .hu-wow-kpi-strip,
+  .hu-wow-loss-grid,
+  .hu-wow-deep-links {
+    grid-template-columns: 1fr;
+  }
+
+  .hu-wow-kpi {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--line);
+  }
+
+  .hu-wow-kpi:first-child {
+    border-block-start: 0;
+  }
+
+  .hu-wow-section {
+    padding-block: 4.75rem;
+  }
+
+  .hu-wow-section-head {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .hu-wow-engine__visual {
+    min-block-size: 30rem;
+  }
+
+  .hu-wow-engine__node {
+    min-inline-size: 7.25rem;
+    font-size: 0.78rem;
+  }
+
+  .hu-wow-step {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 460px) {
+  .hu-wow-hero__title,
+  .hu-wow-section-head h2,
+  .hu-wow-proof__copy h2,
+  .hu-wow-route__copy h2 {
+    font-size: 2.35rem;
+  }
+
+  .hu-wow-engine__core {
+    inline-size: calc(100% - 2rem);
+  }
+
+  .hu-wow-engine__node--demand,
+  .hu-wow-engine__node--fit {
+    inset-inline-start: 1.2rem;
+  }
+
+  .hu-wow-engine__node--proof,
+  .hu-wow-engine__node--crm {
+    inset-inline-end: 1.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hu-wow [data-wow-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .hu-wow-signal {
+    animation: none;
+  }
+
+  .hu-wow-step,
+  .hu-wow-deep-links a {
+    transition: none;
+  }
+}
