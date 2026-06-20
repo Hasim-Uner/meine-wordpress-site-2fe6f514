@@ -335,14 +335,6 @@
 	margin: 0.85rem -0.25rem 0.25rem;
 }
 
-.wl-dash__tiles {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 0.65rem;
-	margin: 0.75rem 0 0;
-	padding: 0;
-}
-
 /* Counter-CLS-Schutz: tabular digits + reservierte Mindestbreiten,
    damit JS-Animation von 0 hoch keinen Layout-Shift produziert. */
 .wl-counter {
@@ -352,32 +344,6 @@
 }
 .wl-dash__primary-after .wl-counter { min-width: 3.2ch; }
 .wl-dash__primary-delta .wl-counter { min-width: 4.2ch; }
-.wl-dash__tile dd .wl-counter      { min-width: 5ch; }
-
-.wl-dash__tile {
-	background: hsl(30 5% 9% / 0.65);
-	border: 1px solid hsl(30 10% 100% / 0.05);
-	border-radius: 10px;
-	padding: 0.85rem 0.95rem;
-	min-width: 0;
-}
-
-.wl-dash__tile dt {
-	font-size: 0.68rem;
-	text-transform: uppercase;
-	letter-spacing: 0.14em;
-	color: hsl(30 6% 90% / 0.55);
-	margin-bottom: 0.35rem;
-}
-
-.wl-dash__tile dd {
-	margin: 0;
-	font-family: var(--nx-font-heading);
-	font-size: clamp(1.15rem, 1.7vw, 1.4rem);
-	font-weight: 600;
-	color: var(--nx-text);
-	letter-spacing: -0.01em;
-}
 
 .wl-dash__chips {
 	display: flex;

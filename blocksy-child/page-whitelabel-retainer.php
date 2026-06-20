@@ -22,12 +22,10 @@ $cpl_after      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after',
 $cpl_reduction  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', '−85 %' )   : '−85 %';
 $lead_count     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' )     : '1.750+';
 $sales_conv     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '12 %' ) : '12 %';
-$timeframe      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display', '6 Monate' )    : '6 Monate';
+$timeframe      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative', '6 Monaten' ) : '6 Monaten';
+$roas           = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'roas', 'display', '34×' )              : '34×';
 
-$cpl_before_int    = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'cpl_before', 'counter_target', 150 ) : 150;
 $cpl_after_int     = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'cpl_after',  'counter_target', 22 )  : 22;
-$lead_count_int    = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'lead_count', 'counter_target', 1750 ) : 1750;
-$sales_conv_int    = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'sales_conversion', 'counter_target', 12 ) : 12;
 $cpl_reduction_int = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'cpl_reduction', 'counter_target', 85 ) : 85;
 
 $problem_cards = [
@@ -51,7 +49,7 @@ $problem_cards = [
 $solution_steps = [
 	[
 		'step'  => '01',
-		'title' => 'Ihr briefed',
+		'title' => 'Ihr brieft',
 		'copy'  => 'Kurzes Setup-Gespräch mit eurem Projektleiter. NDA möglich. Keine direkte Kundenansprache.',
 	],
 	[
@@ -232,25 +230,6 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 						</svg>
 					</div>
 
-					<dl class="wl-dash__tiles">
-						<div class="wl-dash__tile">
-							<dt>Qualifizierte Leads</dt>
-							<dd><span class="wl-counter" data-counter-target="<?php echo esc_attr( $lead_count_int ); ?>" data-counter-suffix="+"><?php echo esc_html( $lead_count ); ?></span></dd>
-						</div>
-						<div class="wl-dash__tile">
-							<dt>CPL-Senkung</dt>
-							<dd><span class="wl-counter" data-counter-target="<?php echo esc_attr( $cpl_reduction_int ); ?>" data-counter-prefix="−" data-counter-suffix=" %"><?php echo esc_html( $cpl_reduction ); ?></span></dd>
-						</div>
-						<div class="wl-dash__tile">
-							<dt>Zeitraum</dt>
-							<dd><span class="wl-counter" data-counter-target="6" data-counter-suffix=" Mon.">6 Mon.</span></dd>
-						</div>
-						<div class="wl-dash__tile">
-							<dt>Abschlussquote</dt>
-							<dd><span class="wl-counter" data-counter-target="<?php echo esc_attr( $sales_conv_int ); ?>" data-counter-suffix=" %"><?php echo esc_html( $sales_conv ); ?></span></dd>
-						</div>
-					</dl>
-
 					<div class="wl-dash__chips" role="list" aria-label="Stack-Komponenten">
 						<?php foreach ( $hero_chips as $chip ) : ?>
 							<span class="wl-chip" role="listitem"><?php echo esc_html( $chip ); ?></span>
@@ -385,8 +364,8 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 					<div class="wl-proof__label">Qualifizierte Anfragen</div>
 				</div>
 				<div class="wl-proof__item" role="listitem">
-					<div class="wl-proof__value"><?php echo esc_html( $cpl_reduction ); ?></div>
-					<div class="wl-proof__label">Niedrigere Kosten pro Anfrage</div>
+					<div class="wl-proof__value"><?php echo esc_html( $roas ); ?></div>
+					<div class="wl-proof__label">Return on Ad Spend (ROAS)</div>
 				</div>
 				<div class="wl-proof__item" role="listitem">
 					<div class="wl-proof__value"><?php echo esc_html( $sales_conv ); ?></div>
