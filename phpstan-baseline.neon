@@ -127,12 +127,12 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
-			count: 5
+			count: 2
 			path: blocksy-child/page-whitelabel-retainer.php
 
 		-
 			message: "#^Parameter \\#3 \\$fallback of function hu_e3_metric expects string, int given\\.$#"
-			count: 5
+			count: 2
 			path: blocksy-child/page-whitelabel-retainer.php
 
 		-
