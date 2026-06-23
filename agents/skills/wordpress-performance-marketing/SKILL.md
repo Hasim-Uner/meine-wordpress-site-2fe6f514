@@ -9,6 +9,21 @@ Use this skill for repo work where SEO, UX, content, offer logic, lead generatio
 
 This is the main planning skill for the Hasim Üner website repo. It is not a generic plugin checklist.
 
+## When NOT to Use This Skill
+
+This is the broad full-audit and planning skill (SEO + CRO + content + tracking + offers). For deep, single-domain work, route to the specialist instead:
+
+- SEO Cockpit modules, diagnostics, Koko, link-graph internals → `seo-cockpit-hardening`
+- Canonicals, redirects, reindex, Search Console follow-up → `seo-live-qa`
+- Internal links, orphans, anchor logic → `internal-linking-audit`
+- Offer logic, funnel, Marktcheck, proof, qualification → `offer-funnel-intelligence`
+- Page critique, CTA/proof hierarchy, conversion-copy rewrites → `wordpress-cro-content-design-audit`
+- New paid/campaign landing pages → `landing-page-builder`
+- Lead routing, REST endpoints, CRM, form architecture → `wordpress-growth-architecture`
+- Core Web Vitals, LCP/CLS/INP → `page-speed-audit`
+
+Use this skill when the task spans several of these at once or needs a repo-wide plan. For pure SEO triage, start from `seo-agent` and let it route.
+
 ## Run First
 
 ```bash
@@ -19,8 +34,9 @@ Supported modes: `full`, `seo`, `cro`, `content`, `tracking`, `offers`.
 
 ## Project Defaults
 
+- For positioning, tone, and copy direction, reference `docs/standards/BRAND_AND_COPY.md` — do not inline brand/copy rules here.
 - Treat the repo as the source for theme logic, templates, service pages, funnels, schema helpers, seeded content, and internal-link architecture.
-- Do not assume RankMath. The repo uses a custom WordPress SEO Cockpit plugin/workflow where applicable.
+- Do not treat RankMath as active. It survives only as legacy `rank_math_*` post-meta fallback in `blocksy-child/inc/seo-meta.php`; new content uses ACF plus the custom WordPress SEO Cockpit.
 - Do not assume cookie-based tracking as default. The current direction is privacy-first and may start without advertising or heavy tracking.
 - Do not add consent banners, ad pixels, or GA4/GTM runtime changes unless the task explicitly asks for them.
 - Google Analytics for WordPress may exist, but measurement notes must stay separate from code changes unless instructed otherwise.

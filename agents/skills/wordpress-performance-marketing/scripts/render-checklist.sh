@@ -9,7 +9,7 @@ print_seo() {
 [SEO]
 - Confirm one H1 and coherent heading order.
 - Check title, description, canonical, robots, indexability, and schema ownership.
-- Do not assume RankMath; account for the custom WP SEO Cockpit workflow.
+- RankMath is legacy-only (rank_math_* fallback); new SEO data flows through ACF + the custom WP SEO Cockpit.
 - Map money pages, supporting pages, internal links, and primary search intent.
 - Verify canonical internal links point to primary URLs only.
 - Review Core Web Vitals risks: hero media, blocking CSS/JS, layout shifts.
