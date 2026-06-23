@@ -4,6 +4,12 @@ You are working in Hasim Üner's WordPress performance-marketing repository.
 
 Use this file as the project entry point for Claude Code / Opus-class agents. Do not treat it as a replacement for the repo skills. Route into the relevant skill first, then inspect files.
 
+For the deeper Opus behavior profile, also read:
+
+```text
+agents/model-profiles/claude-opus-performance-marketing.md
+```
+
 ## First steps
 
 1. Read `agents/skills/CONTEXT.md`.
