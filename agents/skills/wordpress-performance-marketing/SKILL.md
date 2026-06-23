@@ -25,21 +25,6 @@ For deep, single-domain work, route to the specialist instead — do not re-deri
 
 Use this skill when the task spans several of these at once or needs a repo-wide plan. For pure SEO triage, start from `seo-agent` and let it route.
 
-## When NOT to Use This Skill
-
-This is the broad full-audit and planning skill (SEO + CRO + content + tracking + offers). For deep, single-domain work, route to the specialist instead:
-
-- SEO Cockpit modules, diagnostics, Koko, link-graph internals → `seo-cockpit-hardening`
-- Canonicals, redirects, reindex, Search Console follow-up → `seo-live-qa`
-- Internal links, orphans, anchor logic → `internal-linking-audit`
-- Offer logic, funnel, Marktcheck, proof, qualification → `offer-funnel-intelligence`
-- Page critique, CTA/proof hierarchy, conversion-copy rewrites → `wordpress-cro-content-design-audit`
-- New paid/campaign landing pages → `landing-page-builder`
-- Lead routing, REST endpoints, CRM, form architecture → `wordpress-growth-architecture`
-- Core Web Vitals, LCP/CLS/INP → `page-speed-audit`
-
-Use this skill when the task spans several of these at once or needs a repo-wide plan. For pure SEO triage, start from `seo-agent` and let it route.
-
 ## Run First
 
 ```bash
