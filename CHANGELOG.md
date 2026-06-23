@@ -2,6 +2,13 @@
 
 ## 2026-06
 
+### Über-mich (Editorial) auf CRO-Rückgrat umgebaut
+
+- `/uber-mich/` (Editorial-Template): Hero führt jetzt mit Outcome-H1 („Ich beende Portal-Abhängigkeit …") statt der Küchentisch-Story; primärer Marktcheck-CTA + Trust-Microcopy + eine E3-Proof-Zeile stehen above the fold.
+- Neuer **Proof-Strip** direkt unter dem Hero mit E3-Canon (150 €→22 €, 1.750+, 12 %, 6 Monate) aus `hu_e3_canon()`; **veraltete Zahlen entfernt** (vorher hardcodet „−83 %" / „neun Monaten").
+- Biografischer Pfad als Kompetenz-Beleg geschärft; neue **Fit-/Qualifizierungs-Sektion** (3 Voraussetzungen) und interner **Experten-Link-Cluster** (6 Sub-Pages, 3 System-Ebenen) für E-E-A-T und `#person`-Signal.
+- Editorial-natives **Founding-Cohort-Band** aus `hu_founding_canon()` (Scarcity/Offer-Frame) und wiederverwendeter mobiler **Sticky-CTA** (`template-parts/seo-subpage-sticky-cta.php` + JS) ergänzt; Styles im bestehenden Cream/Kupfer-System (`about-editorial.css`), `prefers-reduced-motion` respektiert.
+
 ### Solar-Proof früher, Cluster-Hublink & Koko-Cockpit-Beobachtbarkeit
 
 - `/solar-waermepumpen-leadgenerierung/`: kompakter **Proof-Bar** direkt unter Hero/Trust-Strip (E3-Kennzahlen 150 €→22 €, 1.750+, 12 %, über 85 % als Teaser → `#ergebnisse`), damit der Umsatzbeleg nicht erst bei ~73 % Scrolltiefe sichtbar wird; Kontextzeile macht die CPL-Zahl belegbar statt kontextlos. Funnel und Marktcheck-Formular unverändert.
