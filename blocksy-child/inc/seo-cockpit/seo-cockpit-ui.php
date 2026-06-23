@@ -404,6 +404,8 @@ function nexus_render_seo_cockpit_notice() {
 		'refresh_success'       => [ 'success', 'Das SEO-Cockpit wurde frisch synchronisiert.' ],
 		'refresh_failed'        => [ 'error', 'Die Synchronisierung ist fehlgeschlagen. Bitte Verbindung und Property prüfen.' ],
 		'refresh_locked'        => [ 'warning', 'Es läuft bereits eine Synchronisierung. Bitte gleich erneut versuchen.' ],
+		'export_failed'         => [ 'error', 'Der CSV-Export konnte nicht erstellt werden. Bitte zuerst synchronisieren.' ],
+		'export_empty'          => [ 'warning', 'Für den gewählten Zeitraum liegen keine Query-Page-Daten zum Export vor.' ],
 		'inspection_success'    => [ 'success', 'Die URL-Inspektion wurde aktualisiert.' ],
 		'inspection_failed'     => [ 'error', 'Die URL-Inspektion konnte nicht geladen werden.' ],
 		'revenue_status_saved'  => [ 'success', 'Der Revenue-Status wurde gespeichert.' ],
@@ -1219,6 +1221,11 @@ function nexus_render_seo_cockpit_dashboard() {
 						<input type="hidden" name="range" value="<?php echo esc_attr( (string) $range_days ); ?>">
 						<input type="hidden" name="detail_url" value="<?php echo esc_attr( $detail_url ); ?>">
 						<button type="submit" class="button button-primary">Jetzt synchronisieren</button>
+					</form>
+					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_seo_cockpit_export' ) ); ?>">
+						<?php wp_nonce_field( 'nexus_seo_cockpit_export' ); ?>
+						<input type="hidden" name="range" value="<?php echo esc_attr( (string) $range_days ); ?>">
+						<button type="submit" class="button">Export CSV</button>
 					</form>
 				<?php elseif ( $can_manage ) : ?>
 					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_seo_cockpit_connect' ) ); ?>">
