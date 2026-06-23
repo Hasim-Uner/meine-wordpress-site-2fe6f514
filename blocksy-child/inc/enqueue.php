@@ -211,6 +211,7 @@ function hu_enqueue_assets() {
 	// ── E1) Template: Über Mich (Editorial Variante) ──────────────
 	if ( is_page_template( 'template-about-editorial.php' ) ) {
 		hu_enqueue_css( 'nexus-about-editorial-css', 'about-editorial.css', [ 'nexus-design-system' ] );
+		hu_enqueue_js( 'nexus-seo-subpage-sticky-cta-js', 'seo-subpage-sticky-cta.js', [] );
 	}
 
 	// ── E2) Kontakt ───────────────────────────────────────────────
