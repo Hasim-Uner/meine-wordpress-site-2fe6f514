@@ -482,22 +482,122 @@ function nexus_get_seo_cockpit_post_seo_context( $post_id ) {
 }
 
 /**
- * Return estimated word count for one post.
+ * Count word-like tokens in a raw or rendered HTML blob.
  *
- * @param int $post_id Post ID.
+ * @param string $html Raw or rendered HTML.
  * @return int
  */
-function nexus_get_seo_cockpit_post_word_count( $post_id ) {
-	$content = (string) get_post_field( 'post_content', $post_id );
-	$text    = wp_strip_all_tags( strip_shortcodes( $content ) );
+function nexus_count_seo_cockpit_words( $html ) {
+	$text = wp_strip_all_tags( strip_shortcodes( (string) $html ) );
 
-	if ( '' === $text ) {
+	if ( '' === trim( $text ) ) {
 		return 0;
 	}
 
 	preg_match_all( '/[\p{L}\p{N}\']+/u', $text, $matches );
 
 	return ! empty( $matches[0] ) ? count( $matches[0] ) : 0;
+}
+
+/**
+ * Derive a visible word count from a post's rendered frontend output.
+ *
+ * Template-driven money pages keep their copy in PHP, not post_content, so a
+ * direct count reads 0. This fetches the permalink once (the caller caches the
+ * result), strips non-content chrome (script/style/header/footer/nav), and
+ * counts the remaining text. Returns 0 on any failure so callers never regress
+ * below the previous behavior.
+ *
+ * @param int $post_id Post ID.
+ * @return int
+ */
+function nexus_get_seo_cockpit_rendered_word_count( $post_id ) {
+	$permalink = get_permalink( $post_id );
+
+	if ( ! $permalink ) {
+		return 0;
+	}
+
+	$response = wp_remote_get(
+		$permalink,
+		[
+			'timeout'     => 5,
+			'redirection' => 2,
+			'headers'     => [ 'Accept' => 'text/html' ],
+			'user-agent'  => 'NexusSeoCockpit/1.0 (+wordcount)',
+		]
+	);
+
+	if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
+		return 0;
+	}
+
+	$body = (string) wp_remote_retrieve_body( $response );
+
+	if ( '' === trim( $body ) ) {
+		return 0;
+	}
+
+	// Limit to the document body when present (regex keeps raw UTF-8 intact,
+	// unlike DOMDocument which mangles umlauts in textContent).
+	if ( preg_match( '#<body\b[^>]*>(.*?)</body>#is', $body, $body_match ) ) {
+		$body = $body_match[1];
+	}
+
+	// Drop non-content chrome (with their inner markup) before counting; keep
+	// the original on PCRE failure so we never lose the whole page.
+	$stripped = preg_replace( '#<(script|style|noscript|template|header|footer|nav)\b[^>]*>.*?</\1>#is', ' ', $body );
+	if ( null !== $stripped ) {
+		$body = $stripped;
+	}
+
+	// Convert remaining tags to spaces so adjacent block text is not merged into
+	// a single token (e.g. "</h1><p>" must yield two words, not one).
+	$body = preg_replace( '#<[^>]+>#', ' ', (string) $body );
+
+	return nexus_count_seo_cockpit_words( (string) $body );
+}
+
+/**
+ * Return estimated word count for one post.
+ *
+ * Editor/block pages are counted directly from post_content (unchanged). For
+ * template-driven pages with empty post_content the count is derived once from
+ * the rendered permalink and cached per post + modified time. Any failure
+ * degrades safely to 0 — the previous behavior.
+ *
+ * @param int $post_id Post ID.
+ * @return int
+ */
+function nexus_get_seo_cockpit_post_word_count( $post_id ) {
+	$post_id = absint( $post_id );
+
+	if ( $post_id < 1 ) {
+		return 0;
+	}
+
+	// 1. Direct post_content (unchanged behavior for editor/blog pages).
+	$count = nexus_count_seo_cockpit_words( get_post_field( 'post_content', $post_id ) );
+
+	if ( $count > 0 ) {
+		return (int) apply_filters( 'nexus_seo_cockpit_word_count', $count, $post_id );
+	}
+
+	// 2. Cached render fallback for template-driven pages (empty post_content).
+	$modified  = (int) get_post_modified_time( 'U', true, $post_id );
+	$cache_key = 'nexus_seo_wc_' . $post_id . '_' . $modified;
+	$cached    = get_transient( $cache_key );
+
+	if ( false !== $cached ) {
+		return (int) apply_filters( 'nexus_seo_cockpit_word_count', (int) $cached, $post_id );
+	}
+
+	$count = nexus_get_seo_cockpit_rendered_word_count( $post_id );
+
+	// Cache hits for a day; cache misses briefly so a transient blip retries soon.
+	set_transient( $cache_key, $count, $count > 0 ? DAY_IN_SECONDS : 15 * MINUTE_IN_SECONDS );
+
+	return (int) apply_filters( 'nexus_seo_cockpit_word_count', $count, $post_id );
 }
 
 /**
