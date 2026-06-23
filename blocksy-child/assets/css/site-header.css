@@ -245,10 +245,6 @@ body.nx-blog-header-active .ct-mobile-menu {
     display: none;
 }
 
-.nx-site-header__mobile-eyebrow {
-    display: none;
-}
-
 .nx-site-header__brand.site-logo {
     font-size: 0.96rem;
     letter-spacing: 0.2em;
@@ -524,18 +520,6 @@ body.nx-blog-header-active .ct-mobile-menu {
 
     .nx-site-header__eyebrow {
         display: none;
-    }
-
-    .nx-site-header__mobile-eyebrow {
-        display: block;
-        max-width: min(48vw, 19rem);
-        color: color-mix(in srgb, var(--nx-text-dim) 86%, var(--nx-text) 14%);
-        font-size: 0.58rem;
-        font-weight: 700;
-        letter-spacing: 0.03em;
-        line-height: 1.25;
-        text-wrap: balance;
-        white-space: normal;
     }
 
     .nx-site-header__shell {
