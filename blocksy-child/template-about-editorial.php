@@ -1,10 +1,11 @@
 <?php
 /**
  * Template Name: Über Mich (Editorial)
- * Description: Biografisch-editoriale Über-Mich-Seite mit CRO-Rückgrat.
- *              Outcome-Hero + früher CTA + E3-Proof above the fold, biografischer
- *              Pfad als Kompetenz-Beleg, Manifest, Fit-Qualifizierung, interner
- *              Experten-Cluster (E-E-A-T), Founding-Cohort-Band, mobiler Sticky-CTA.
+ * Description: Biografisch-editoriale Über-Mich-Seite, person-first.
+ *              Outcome-Hero mit ruhigem Textlink (kein Button), Biografie als
+ *              Kompetenz-Beleg, Manifest, Fit-Standards, interner Experten-Cluster
+ *              (E-E-A-T). Proof/CTA-Last bewusst bei den Money-Pages, hier nur EIN
+ *              primärer CTA am Seitenende. E3 erscheint einmal im Text + Link zum Case.
  *
  * Parallel zu template-about.php. Auswahl pro Page im WP-Admin.
  *
@@ -19,43 +20,15 @@ $request_url   = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_
 $request_cta   = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
 $portrait_url  = function_exists( 'hu_get_profile_image_url' ) ? hu_get_profile_image_url() : get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 $portrait_path = get_stylesheet_directory() . '/assets/img/hasim-portrait.png';
+$e3_case_url   = home_url( '/e3-new-energy/' );
 
-// ── E3-Canon (Proof immer aus der zentralen Quelle, nie hardcodet) ──
+// ── E3-Canon: nur die eine, korrekte Erwähnung im Bio-Text (kein Zahlen-Band) ──
 $e3_canon     = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics   = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_cpl_before = $e3_metrics['cpl_before']['display'] ?? '150 €';
-$e3_cpl_after  = $e3_metrics['cpl_after']['display'] ?? '22 €';
-$e3_cpl_red    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
-$e3_leads      = $e3_metrics['lead_count']['display'] ?? '1.750+';
-$e3_conv       = $e3_metrics['sales_conversion']['display'] ?? '12 %';
-$e3_timeframe  = $e3_metrics['timeframe']['display'] ?? '6 Monate';
-$e3_tf_dative  = $e3_metrics['timeframe']['display_dative'] ?? '6 Monaten';
-
-// ── Founding-Canon (für das native Cohort-Band) ──
-$founding        = function_exists( 'hu_founding_canon' ) ? hu_founding_canon() : [];
-$f_label         = (string) ( $founding['label'] ?? 'Founding Cohort 2026' );
-$f_total         = max( 1, (int) ( $founding['slots_total'] ?? 3 ) );
-$f_remaining     = max( 0, min( $f_total, (int) ( $founding['slots_remaining'] ?? $f_total ) ) );
-$f_end_timestamp = strtotime( (string) ( $founding['end_date'] ?? '2026-09-30' ) );
-$f_end_label     = $f_end_timestamp ? date_i18n( 'd.m.Y', $f_end_timestamp ) : (string) ( $founding['end_date'] ?? '' );
-$f_slot_line     = sprintf( '%1$d von %2$d Plätzen offen', $f_remaining, $f_total );
-
-// Hero-Proof-Zeile (ein Trust-Signal above the fold).
-$hero_proof_line = sprintf(
-	'E3 New Energy: %1$s → %2$s pro Anfrage · %3$s qualifizierte Anfragen · %4$s',
-	$e3_cpl_before,
-	$e3_cpl_after,
-	$e3_leads,
-	$e3_timeframe
-);
-
-// Proof-Strip (kompaktes E3-Band früh auf der Seite).
-$about_proof = [
-	[ 'k' => sprintf( '%s → %s', $e3_cpl_before, $e3_cpl_after ), 'l' => 'Kosten pro Anfrage (vorher gekaufte Portal-Leads → eigenes System)' ],
-	[ 'k' => $e3_leads,    'l' => 'qualifizierte Anfragen im E3-Case' ],
-	[ 'k' => $e3_conv,     'l' => 'Abschlussquote (vorher 1 – 5 %)' ],
-	[ 'k' => $e3_timeframe, 'l' => 'Zeitraum bis zum belastbaren Ergebnis' ],
-];
+$e3_cpl_red   = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
+$e3_leads     = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_tf_dative = $e3_metrics['timeframe']['display_dative'] ?? '6 Monaten';
+$e3_bio_line  = sprintf( '%1$s weniger Kosten pro Anfrage, %2$s qualifizierte Anfragen in %3$s', $e3_cpl_red, $e3_leads, $e3_tf_dative );
 
 // Biografischer Pfad — Herkunft als Kompetenz-Beleg, nicht als weiche Story.
 $about_hero_path = [
@@ -95,7 +68,7 @@ $about_work_principles = [
 	],
 ];
 
-// Fit-Check: drei Voraussetzungen, damit schwache Leads gar nicht erst anfragen.
+// Fit-Standards: mit wem die Zusammenarbeit Sinn ergibt.
 $about_fit_points = [
 	[
 		't' => 'Fokus auf Solar, Wärmepumpe oder Speicher.',
@@ -158,43 +131,22 @@ get_header();
 	<div class="about-editorial" data-track-section="about_editorial_page">
 		<div class="about-editorial__inner">
 
-			<!-- HERO — Outcome + früher CTA + ein Proof-Signal -->
+			<!-- HERO — Outcome + ein ruhiger Textlink (kein Button) -->
 			<header class="about-editorial__hero">
 				<span class="about-editorial__kicker">Architekt für eigene Anfrage-Systeme</span>
 				<h1 class="about-editorial__h1">Ich beende Portal-Abhängigkeit — mit Anfrage-Systemen, die Ihrem Betrieb gehören.</h1>
 				<p class="about-editorial__lead">
 					Für inhabergeführte Solar- und Wärmepumpen-Betriebe, die geteilte Portal-Leads durch eigene Daten, saubere Vorqualifizierung und direkten CRM-Anschluss ersetzen wollen.
 				</p>
-
-				<div class="about-editorial__hero-actions">
+				<p class="about-editorial__hero-link">
 					<a
 						href="<?php echo esc_url( $request_url ); ?>"
-						class="about-editorial__cta-btn"
-						data-track-action="cta_about_editorial_hero"
+						data-track-action="link_about_editorial_hero"
 						data-track-category="lead_gen"
 						data-track-section="about_editorial_hero"
-					>
-						<?php echo esc_html( $request_cta ); ?>
-					</a>
-					<p class="about-editorial__cta-meta about-editorial__cta-meta--start">
-						<span>Exklusive Erst-Analyse</span>
-						<span>Prüfung auf Regions-Verfügbarkeit</span>
-						<span>Händischer Befund innerhalb von 48 Stunden</span>
-					</p>
-				</div>
-
-				<p class="about-editorial__hero-proof"><?php echo esc_html( $hero_proof_line ); ?></p>
+					>Passt das zu Ihrem Betrieb? Marktcheck mit Fit-Entscheid <span aria-hidden="true">→</span></a>
+				</p>
 			</header>
-
-			<!-- PROOF-STRIP — E3-Canon früh, nicht erst am Seitenende -->
-			<section class="about-editorial__proof" aria-label="Belege aus dem E3-Case">
-				<?php foreach ( $about_proof as $proof_item ) : ?>
-					<div class="about-editorial__proof-item">
-						<span class="about-editorial__proof-k"><?php echo esc_html( $proof_item['k'] ); ?></span>
-						<span class="about-editorial__proof-l"><?php echo esc_html( $proof_item['l'] ); ?></span>
-					</div>
-				<?php endforeach; ?>
-			</section>
 
 			<!-- BIOGRAFISCHER PFAD + PORTRAIT-CARD -->
 			<section class="about-editorial__split">
@@ -266,15 +218,15 @@ get_header();
 					<p>Vertrieb habe ich danach nicht in Seminaren gelernt, sondern in acht Jahren B2B-Beratung: Bedarf strukturiert aufnehmen, mit Entscheidern verbindlich kommunizieren, langfristige Beziehungen über zuverlässige Follow-ups halten.</p>
 					<p>Dann habe ich selbst gegründet — einen eigenen Online-Shop, von der ersten Zeile Code bis zur letzten Conversion. Dort habe ich am eigenen Geld erlebt, was es bedeutet, seine Nachfrage selbst zu erzeugen, statt sie von Plattformen zu mieten. Genau diese Erfahrung ist der Kern dessen, was ich heute baue.</p>
 					<p>Mein Studium der Medienwissenschaft an der Universität Paderborn war dabei der analytische Werkzeugkasten: Ich schaue nicht darauf, was auf einer Website schön aussieht, sondern wie Daten fließen, wo Aufmerksamkeit versickert und welche Signale zwischen Oberfläche und B2B-Entscheider übertragen werden müssen, damit Vertrauen entsteht.</p>
-					<p>Die meisten WordPress-Websites scheitern, weil sie von Designern gebaut wurden, die nie ein echtes Verkaufsgespräch geführt haben. Sie informieren den Nutzer zu Tode, statt Entscheidungen zu provozieren. Ich verbinde acht Jahre Vertriebs-Pragmatismus mit analytischer Präzision — und seit dem Case bei E3 New Energy (<?php echo esc_html( sprintf( '%1$s weniger Kosten pro Anfrage, %2$s qualifizierte Anfragen in %3$s', $e3_cpl_red, $e3_leads, $e3_tf_dative ) ); ?>) wende ich diese Methode exklusiv auf den Solar- und Wärmepumpen-Mittelstand an.</p>
+					<p>Die meisten WordPress-Websites scheitern, weil sie von Designern gebaut wurden, die nie ein echtes Verkaufsgespräch geführt haben. Sie informieren den Nutzer zu Tode, statt Entscheidungen zu provozieren. Ich verbinde acht Jahre Vertriebs-Pragmatismus mit analytischer Präzision — und seit dem Case bei <a class="about-editorial__inline-link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="link_about_editorial_e3" data-track-category="navigation" data-track-section="about_editorial_bio">E3 New Energy</a> (<?php echo esc_html( $e3_bio_line ); ?>) wende ich diese Methode exklusiv auf den Solar- und Wärmepumpen-Mittelstand an.</p>
 				</div>
 			</section>
 
-			<!-- FIT / QUALIFIZIERUNG -->
+			<!-- FIT / STANDARDS -->
 			<section class="about-editorial__fit" aria-labelledby="about-editorial-fit-title">
 				<div class="about-editorial__fit-head">
-					<h2 id="about-editorial-fit-title" class="about-editorial__section-kicker">Wann eine Zusammenarbeit Sinn ergibt</h2>
-					<p class="about-editorial__fit-intro">Nicht jeder Betrieb braucht sofort ein eigenes Anfrage-System. Drei Dinge müssen stimmen — sonst spare ich Ihnen und mir die Zeit.</p>
+					<h2 id="about-editorial-fit-title" class="about-editorial__section-kicker">Mit wem ich arbeite</h2>
+					<p class="about-editorial__fit-intro">Nicht jeder Betrieb braucht ein eigenes Anfrage-System. Drei Dinge müssen stimmen — sonst ist die ehrliche Antwort: noch nicht.</p>
 				</div>
 				<ul class="about-editorial__fit-list" role="list">
 					<?php foreach ( $about_fit_points as $fit_item ) : ?>
@@ -307,7 +259,7 @@ get_header();
 										<a
 											class="about-editorial__expertise-link"
 											href="<?php echo esc_url( $field['url'] ); ?>"
-											data-track-action="cta_about_editorial_expertise"
+											data-track-action="link_about_editorial_expertise"
 											data-track-category="navigation"
 											data-track-section="about_editorial_expertise"
 										>
@@ -322,20 +274,7 @@ get_header();
 				</div>
 			</section>
 
-			<!-- FOUNDING-COHORT-BAND — Scarcity + Offer-Frame (editorial-nativ) -->
-			<section class="about-editorial__cohort" aria-labelledby="about-editorial-cohort-title">
-				<span class="about-editorial__cta-eyebrow"><?php echo esc_html( $f_label ); ?></span>
-				<h2 id="about-editorial-cohort-title" class="about-editorial__cohort-title">E3 New Energy war der erste Case, nicht die Grenze.</h2>
-				<p class="about-editorial__cohort-text">
-					Dieselbe Arbeitsweise öffne ich für maximal drei passende Solar- oder Wärmepumpen-Betriebe. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.
-				</p>
-				<p class="about-editorial__cohort-status">
-					<span class="about-editorial__cohort-dot" aria-hidden="true"></span>
-					<?php echo esc_html( $f_slot_line ); ?><?php if ( '' !== $f_end_label ) : ?> · Founding-Konditionen bis <?php echo esc_html( $f_end_label ); ?><?php endif; ?>
-				</p>
-			</section>
-
-			<!-- FINAL CTA -->
+			<!-- FINAL CTA — der einzige primäre Button der Seite -->
 			<footer class="about-editorial__cta-card">
 				<span class="about-editorial__cta-eyebrow">Exklusiver Marktcheck</span>
 				<h2 class="about-editorial__cta-title">Bereit für ein eigenes Anfrage-System?</h2>
@@ -360,17 +299,6 @@ get_header();
 
 		</div>
 	</div>
-
-	<?php
-	get_template_part(
-		'template-parts/seo-subpage-sticky-cta',
-		null,
-		[
-			'marktcheck_url' => $request_url,
-			'track_category' => 'about_editorial_sticky',
-		]
-	);
-	?>
 </main>
 
 <?php

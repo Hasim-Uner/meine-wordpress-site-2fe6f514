@@ -2,12 +2,12 @@
 
 ## 2026-06
 
-### Über-mich (Editorial) auf CRO-Rückgrat umgebaut
+### Über-mich (Editorial) geschärft — person-first, ohne Money-Page-Redundanz
 
-- `/uber-mich/` (Editorial-Template): Hero führt jetzt mit Outcome-H1 („Ich beende Portal-Abhängigkeit …") statt der Küchentisch-Story; primärer Marktcheck-CTA + Trust-Microcopy + eine E3-Proof-Zeile stehen above the fold.
-- Neuer **Proof-Strip** direkt unter dem Hero mit E3-Canon (150 €→22 €, 1.750+, 12 %, 6 Monate) aus `hu_e3_canon()`; **veraltete Zahlen entfernt** (vorher hardcodet „−83 %" / „neun Monaten").
-- Biografischer Pfad als Kompetenz-Beleg geschärft; neue **Fit-/Qualifizierungs-Sektion** (3 Voraussetzungen) und interner **Experten-Link-Cluster** (6 Sub-Pages, 3 System-Ebenen) für E-E-A-T und `#person`-Signal.
-- Editorial-natives **Founding-Cohort-Band** aus `hu_founding_canon()` (Scarcity/Offer-Frame) und wiederverwendeter mobiler **Sticky-CTA** (`template-parts/seo-subpage-sticky-cta.php` + JS) ergänzt; Styles im bestehenden Cream/Kupfer-System (`about-editorial.css`), `prefers-reduced-motion` respektiert.
+- `/uber-mich/` (Editorial-Template): Hero führt jetzt mit Outcome-H1 („Ich beende Portal-Abhängigkeit …") statt der Küchentisch-Story; darunter nur **ein ruhiger Textlink** zum Marktcheck (kein Hero-Button).
+- Biografischer Pfad als Kompetenz-Beleg geschärft; **Fit-/Standards-Sektion** („Mit wem ich arbeite") und interner **Experten-Link-Cluster** (6 Sub-Pages, 3 System-Ebenen) für E-E-A-T und `#person`-Signal.
+- **Veraltete E3-Zahlen entfernt** (vorher hardcodet „−83 %" / „neun Monaten"); E3 erscheint nur noch als **ein** Satz im Bio-Text mit korrektem Canon (über 85 % / 6 Monate aus `hu_e3_canon()`) plus Link zum E3-Case — kein dupliziertes Zahlen-Band.
+- Bewusst **schlank** gehalten: Proof-Zahlen-Band, Founding-Cohort-/Scarcity-Band und mobiler Sticky-CTA gehören auf die Money-Pages, nicht auf die Personen-Seite — daher hier nicht gerendert. **Ein** primärer Marktcheck-CTA am Seitenende; Styles im Cream/Kupfer-System (`about-editorial.css`), `prefers-reduced-motion` respektiert.
 
 ### Solar-Proof früher, Cluster-Hublink & Koko-Cockpit-Beobachtbarkeit
 
