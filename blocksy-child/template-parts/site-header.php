@@ -9,11 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$brand_text   = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
-$eyebrow_text = nexus_get_site_header_eyebrow();
-$mobile_eyebrow_text = function_exists( 'nexus_get_public_primary_term' ) ? trim( (string) nexus_get_public_primary_term() ) : '';
-$panel_id     = 'nx-site-header-panel';
-$request_url  = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+$brand_text          = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
+$eyebrow_text        = nexus_get_site_header_eyebrow();
+$mobile_eyebrow_text = ( ! is_front_page() && function_exists( 'nexus_get_public_primary_term' ) ) ? trim( (string) nexus_get_public_primary_term() ) : '';
+$panel_id            = 'nx-site-header-panel';
+$request_url         = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $audit_header_meta_items = function_exists( 'nexus_get_audit_header_meta_items' ) ? nexus_get_audit_header_meta_items() : [];
 $home_label   = sprintf(
 	/* translators: %s: site or brand name. */

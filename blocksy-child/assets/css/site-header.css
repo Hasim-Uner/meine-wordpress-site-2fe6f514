@@ -404,6 +404,9 @@ body.nx-blog-header-active .ct-mobile-menu {
     margin-top: 12px;
     padding: 18px;
     border-radius: 24px;
+    background: color-mix(in srgb, var(--nx-bg-elevated) 98%, black 2%);
+    border-color: color-mix(in srgb, var(--nx-border) 70%, var(--nx-text) 14%);
+    box-shadow: 0 28px 72px hsl(30 16% 6% / 0.46);
 }
 
 .nx-site-header__panel[hidden] {
@@ -421,6 +424,26 @@ body.nx-blog-header-active .ct-mobile-menu {
     min-height: 52px;
     padding: 0 16px;
     border-radius: 18px;
+    color: color-mix(in srgb, var(--nx-text) 94%, white 6%);
+    background: color-mix(in srgb, var(--nx-bg-elevated) 88%, white 5%);
+    border-color: color-mix(in srgb, var(--nx-border) 74%, var(--nx-text) 18%);
+    font-weight: 750;
+}
+
+.nx-site-header__menu--mobile a:hover,
+.nx-site-header__menu--mobile a:focus-visible {
+    color: var(--nx-text);
+    background: color-mix(in srgb, var(--accent) 18%, var(--nx-bg-elevated) 82%);
+    border-color: color-mix(in srgb, var(--accent) 56%, var(--nx-border) 44%);
+    transform: none;
+}
+
+.nx-site-header__menu--mobile .current-menu-item > a,
+.nx-site-header__menu--mobile .current-menu-ancestor > a,
+.nx-site-header__menu--mobile a[aria-current="page"] {
+    color: var(--nx-text);
+    background: color-mix(in srgb, var(--accent) 14%, var(--nx-bg-elevated) 86%);
+    border-color: color-mix(in srgb, var(--accent) 52%, var(--nx-border) 48%);
 }
 
 .nx-site-header__menu--mobile .nav-cta-button > a {
@@ -440,6 +463,13 @@ body.nx-blog-header-active .ct-mobile-menu {
     background: color-mix(in srgb, var(--nx-bg-elevated) 94%, transparent);
     border-color: var(--nx-border);
     box-shadow: var(--nx-shadow-sm);
+}
+
+:root[data-nx-theme='light'] .nx-site-header__menu--mobile a,
+:root[data-theme='light'] .nx-site-header__menu--mobile a {
+    color: var(--nx-text);
+    background: color-mix(in srgb, var(--nx-bg-elevated) 92%, white 8%);
+    border-color: color-mix(in srgb, var(--nx-border) 70%, var(--nx-text) 16%);
 }
 
 @media (max-width: 1100px) {
