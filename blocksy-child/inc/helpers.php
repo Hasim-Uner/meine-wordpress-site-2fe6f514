@@ -1266,6 +1266,7 @@ function nexus_get_legacy_offer_redirect_map() {
 	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
 	$request_url = nexus_get_primary_request_url();
 	$energy_url  = nexus_get_energy_systems_url();
+	$portal_url  = home_url( '/eigene-leadgenerierung-vs-portale/' );
 
 	return [
 		// High-probability external entry paths. Internal/historical tool,
@@ -1281,6 +1282,9 @@ function nexus_get_legacy_offer_redirect_map() {
 		// nachlaufende Impressionen/Backlinks das Hub-Signal stützen statt zu
 		// kannibalisieren oder ins Leere (404) zu laufen.
 		'/photovoltaik-leads-kaufen-alternative/' => $energy_url,
+		// Historische Kategorie, die im Live-Log weiterhin von Googlebot
+		// gecrawlt wurde, aber aktuell als 404 endet.
+		'/category/owned-leads/'                  => $portal_url,
 	];
 }
 

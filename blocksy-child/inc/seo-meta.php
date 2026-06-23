@@ -193,12 +193,12 @@ function hu_get_forced_singular_seo_map() {
 			// Seiten sind noindex, sitemap-excluded oder geschuetzte 301-Einstiege,
 			// daher keine oeffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
-				'title'       => 'WordPress Agentur Hannover für B2B-Anfragen',
-				'description' => sprintf( 'WordPress Agentur Hannover für B2B-Anfragen: technisches SEO, Tracking, CRO. Erst Projektprüfung, dann Umsetzung — belegt am E3-Case (CPL %s → %s).', $e3_cpl_before, $e3_cpl_after ),
+				'title'       => 'WordPress Agentur Hannover: SEO, Tracking & CRO',
+				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking und CRO. Erst Projektprüfung, dann Umsetzung — E3: CPL %s → %s.', $e3_cpl_before, $e3_cpl_after ),
 			],
 			'wordpress-agentur' => [
-				'title'       => 'WordPress Agentur Hannover für B2B-Anfragen',
-				'description' => sprintf( 'WordPress Agentur Hannover für B2B-Anfragen: technisches SEO, Tracking, CRO. Erst Projektprüfung, dann Umsetzung — belegt am E3-Case (CPL %s → %s).', $e3_cpl_before, $e3_cpl_after ),
+				'title'       => 'WordPress Agentur Hannover: SEO, Tracking & CRO',
+				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking und CRO. Erst Projektprüfung, dann Umsetzung — E3: CPL %s → %s.', $e3_cpl_before, $e3_cpl_after ),
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
@@ -224,24 +224,24 @@ function hu_get_forced_singular_seo_map() {
 			// alte Service-Slugs bleiben noindex/sitemap-excluded, aber ohne erzwungene 301-Pflicht;
 			// /ki-integration-wordpress/ ist noindex. Keine eigenstaendigen SEO-Signale mehr noetig.
 			'solar-waermepumpen-leadgenerierung' => [
-				'title'       => 'Photovoltaik & Wärmepumpe: Leadgenerierung ohne Portale',
-				'description' => sprintf( 'B2B-Leadgenerierung für Solar & Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3: %s niedrigerer CPL in 6 Monaten.', $e3_cpl_reduction ),
+				'title'       => 'Leadgenerierung Photovoltaik & Wärmepumpe ohne Portale',
+				'description' => sprintf( 'Leadgenerierung für Photovoltaik, Solar und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus E3-Beleg: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
-				'title'       => 'Photovoltaik & Wärmepumpe: Leadgenerierung ohne Portale',
-				'description' => sprintf( 'B2B-Leadgenerierung für Solar & Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. E3: %s niedrigerer CPL in 6 Monaten.', $e3_cpl_reduction ),
+				'title'       => 'Leadgenerierung Photovoltaik & Wärmepumpe ohne Portale',
+				'description' => sprintf( 'Leadgenerierung für Photovoltaik, Solar und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus E3-Beleg: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'solar-leads-kaufen-alternative' => [
 				'title'       => 'Solar Leads kaufen? Alternative ohne Portal-Abhängigkeit',
 				'description' => sprintf( 'Solar Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft. Der Vergleich pro Anfrage — E3-Case: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'server-side-tracking-b2b' => [
-				'title'       => 'Server-Side Tracking für B2B-Leadgenerierung – DSGVO & CAPI',
-				'description' => 'Server-Side Tracking für B2B-Anfrage-Systeme: GA4, Meta CAPI & Consent Mode v2 auf eigenem Server. Saubere Attribution trotz Cookieless und Ad-Blockern.',
+				'title'       => 'Server-Side Tracking Agentur: DSGVO, GA4 & CAPI',
+				'description' => 'Server-Side Tracking für B2B-Anfrage-Systeme: GA4, Meta CAPI und Consent Mode v2 auf eigenem Server. Attribution für qualifizierte Anfragen statt Klickberichte.',
 			],
 			'b2b-solar-leads' => [
-				'title'       => 'B2B Solar Leads: gewerbliche PV-Projekte statt Masse',
-				'description' => 'B2B-Leadgenerierung für gewerbliche Photovoltaik: Hallendächer, Quartierskonzepte, PPA. Eigenes Anfrage-System für Buying-Center, nicht Mengen-Leads.',
+				'title'       => 'Photovoltaik B2B Leads: Gewerbe-PV statt Masse',
+				'description' => 'B2B-Leadgenerierung für gewerbliche Photovoltaik: Hallendächer, Quartierskonzepte und PPA. Eigenes Anfrage-System für Buying-Center statt Mengen-Leads.',
 			],
 			'eigene-leadgenerierung-vs-portale' => [
 				'title'       => 'Portal-Leads vs. eigenes System: TCO-Vergleich Solar/SHK',
@@ -264,8 +264,8 @@ function hu_get_forced_singular_seo_map() {
 				'description' => 'Vier Merkmale einer qualifizierten Photovoltaik-Anfrage: Intent, Exklusivität, Vorqualifizierung, Echtzeit. Mit Praxisbezug E3 New Energy.',
 			],
 			'solar-leads-kosten-studie' => [
-				'title'       => 'Was kosten Solar-Leads? Marktstudie DACH 2026 (CPL & CPO)',
-				'description' => 'Marktstudie: Photovoltaik- & Wärmepumpen-Leads kosten 40–150 € — doch der Cost-per-Order liegt um ein Vielfaches höher. Preise je Modell, Methodik, Benchmark.',
+				'title'       => 'Solar-Leads Kosten 2026: CPL, CPO & Portal-Vergleich',
+				'description' => 'Was kosten Solar-Leads wirklich? Marktstudie mit Photovoltaik- und Wärmepumpen-CPL, Cost-per-Order, Portal-Modellen, Methodik und E3-Benchmark.',
 			],
 		]
 	);
