@@ -2,16 +2,16 @@
 
 - Titel: Photovoltaik-Leads: Die TCO- und CPO-Rechnung für Fachbetriebe
 - Slug: `photovoltaik-leads-tco-rechnung`
-- Kategorie: Leadgenerierung
+- Kategorie: Leadgenerierung; Solar-/Wärmepumpen Anfrage-Systeme
 - Tags: Photovoltaik Leads, Solar Leads, Lead-Portale, Cost per Order, Server-Side Tracking, Anfrage-System
 - SEO-Titel (max. 60): Photovoltaik-Leads: TCO- und CPO-Rechnung
 - Meta-Description (max. 155): PV-Leads kaufen wirkt billig. Entscheidend ist CPO: Abschlussquote, Tracking, Page Speed, Datenbesitz und eigene Anfrage-Infrastruktur.
 - Excerpt: Warum Photovoltaik-Betriebe nicht CPL, sondern Cost per Order rechnen müssen. Eine harte Einordnung zu Portal-Leads, gemieteten Agentur-Funnels, Tracking, Page Speed und eigener Nachfrage-Infrastruktur.
-- Hero-Bild: `content/blog-drafts/assets/photovoltaik-leads-kaufen-alternative-hero.png`
+- Hero-Bild: `assets/img/blog/photovoltaik-leads-kaufen-alternative-hero.png`
 - Hero-Bild Alt-Text: Vergleich von gemieteten Photovoltaik-Leads und eigener Anfrage-Infrastruktur mit CPO-Rechnung.
 - Primärer CTA: `Regionalen Marktcheck starten`
 - Primäre CTA-URL: `/solar-waermepumpen-leadgenerierung/#marktcheck`
-- Status: Entwurf
+- Status: Freigegeben zur Veröffentlichung — Go-Live & Verifikation: `docs/seo/tco-pillar-go-live.md`
 
 > Hinweis: Dieser Beitrag ist eine wirtschaftliche und technische Markteinordnung für Photovoltaik-Betriebe mit eigenem Vertrieb oder geschäftsführergeführtem Abschlussprozess. Er ist keine Rechts-, Steuer- oder Anlageberatung. Bilanzielle und steuerliche Fragen zu Entwicklungskosten, Aktivierung und Betriebsausgaben gehören zum Steuerberater.
 
