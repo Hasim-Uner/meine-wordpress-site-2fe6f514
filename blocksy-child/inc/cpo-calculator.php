@@ -159,7 +159,7 @@ function hu_cpo_calculator_shortcode() {
 			   data-track-action="cta_marktcheck"
 			   data-track-category="cpo_calculator"
 			   data-track-section="cpo_calculator">
-				Marktcheck mit eigenen Zahlen starten
+				Jetzt Region prüfen
 			</a>
 		</div>
 	</section>

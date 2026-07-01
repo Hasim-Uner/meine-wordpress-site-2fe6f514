@@ -13,6 +13,14 @@ Stand: 2026-07-01 (Rewrite auf Handwerker-Klartext, neue Überschrift, Slug-Wech
 > umgeschrieben, die Überschrift auf Such-/Schmerz-Ebene gebracht, der Slug auf `solar-leads-kaufen-lohnt-sich`
 > geändert (301 via `hu_blog_pillar_redirect_legacy_slugs`), und der CPO-Rechner von 18 auf 3 sichtbare
 > Felder pro Seite reduziert. Go-Live läuft über den Seed-Version-Bump (`2026-07-01-1`).
+>
+> **Update 2026-07-01 (Bugfix-Release, Seed `2026-07-01-2`):** Markdown-Konverter-Bug behoben —
+> `$flush_para` flushte Blockquotes und Listen pro Zeile, wodurch CTA-Kästen zerhackt (leere Boxen,
+> Link ohne Button) und Aufzählungen als Ein-Punkt-Listen renderten; per lokalem Test-Harness
+> verifiziert. Zusätzlich: alle `pre/code`-Kästen aus dem Beitrag entfernt (Klartext/Listen statt
+> Monospace), Rechner-Summary-Button gekürzt und zentriert, FAQ um Suchfragen erweitert
+> („Was kosten Solar-Leads?" u. a.). Outreach-Paket: `content/blog-drafts/gastbeitrag-waermepumpe-shk-anfragen.md`
+> + `docs/seo/outreach-plan-2026.md`.
 
 ## 1. Publish-Readiness-Audit (repo-seitig verifiziert)
 
