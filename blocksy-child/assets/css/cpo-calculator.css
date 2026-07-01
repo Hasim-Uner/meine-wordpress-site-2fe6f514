@@ -10,7 +10,7 @@
 
 .hu-cpo-calculator__intro {
 	max-width: 760px;
-	margin-bottom: 22px;
+	margin-bottom: 20px;
 }
 
 .hu-cpo-calculator__eyebrow {
@@ -32,6 +32,16 @@
 .hu-cpo-calculator__text {
 	margin: 0;
 	color: rgba(247, 240, 232, 0.78);
+}
+
+/* Gemeinsame Annahme (Auftragswert) */
+.hu-cpo-calculator__shared {
+	max-width: 340px;
+	margin-bottom: 20px;
+	padding: 12px 14px;
+	border: 1px dashed rgba(216, 154, 112, 0.4);
+	border-radius: 8px;
+	background: rgba(216, 154, 112, 0.06);
 }
 
 .hu-cpo-calculator__scenarios {
@@ -56,7 +66,7 @@
 .hu-cpo-calculator__scenario-head h4 {
 	margin: 0;
 	color: #fff7ee;
-	font-size: 1rem;
+	font-size: 1.05rem;
 }
 
 .hu-cpo-calculator input {
@@ -79,10 +89,28 @@
 	outline-offset: 2px;
 }
 
+/* Slider entkleiden und einfärben */
+.hu-cpo-calculator input[type="range"] {
+	min-height: auto;
+	margin-top: 2px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	accent-color: #cf7c49;
+	cursor: pointer;
+}
+
+/* Kernfelder gestapelt = ruhiger */
 .hu-cpo-calculator__fields {
 	display: grid;
+	grid-template-columns: 1fr;
+	gap: 14px;
+}
+
+.hu-cpo-calculator__fields--advanced {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 12px;
+	margin-top: 12px;
 }
 
 .hu-cpo-calculator label {
@@ -97,11 +125,89 @@
 	font-weight: 650;
 }
 
+/* Feld-Label mit Live-Wert rechts */
+.hu-cpo-calculator .hu-cpo-calculator__field-label {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 8px;
+}
+
+.hu-cpo-calculator__field-label b {
+	color: #e6a878;
+	font-size: 1rem;
+	font-weight: 800;
+}
+
+.hu-cpo-calculator__hint {
+	display: block;
+	margin-top: 6px;
+	color: rgba(247, 240, 232, 0.55);
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Hero-Ergebnis */
+.hu-cpo-calculator__hero {
+	margin-top: 16px;
+	padding: 14px 16px;
+	border: 1px solid rgba(216, 154, 112, 0.45);
+	border-radius: 8px;
+	background: linear-gradient(135deg, rgba(207, 124, 73, 0.18), rgba(0, 0, 0, 0.25));
+}
+
+.hu-cpo-calculator__hero span {
+	display: block;
+	color: rgba(247, 240, 232, 0.7);
+	font-size: 0.76rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.hu-cpo-calculator__hero strong {
+	display: block;
+	margin-top: 4px;
+	color: #fff7ee;
+	font-size: clamp(1.7rem, 3vw, 2.1rem);
+	line-height: 1.1;
+}
+
+/* Eingeklappte Details */
+.hu-cpo-calculator__details {
+	margin-top: 14px;
+	border-top: 1px solid rgba(247, 240, 232, 0.1);
+	padding-top: 4px;
+}
+
+.hu-cpo-calculator__details summary {
+	cursor: pointer;
+	padding: 8px 0;
+	color: #d89a70;
+	font-size: 0.85rem;
+	font-weight: 700;
+	list-style: none;
+}
+
+.hu-cpo-calculator__details summary::-webkit-details-marker {
+	display: none;
+}
+
+.hu-cpo-calculator__details summary::before {
+	content: '▸ ';
+}
+
+.hu-cpo-calculator__details[open] summary::before {
+	content: '▾ ';
+}
+
 .hu-cpo-calculator__results {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 10px;
-	margin-top: 16px;
+	margin-top: 14px;
 }
 
 .hu-cpo-calculator__results div,
@@ -180,7 +286,7 @@
 }
 
 @media (max-width: 560px) {
-	.hu-cpo-calculator__fields,
+	.hu-cpo-calculator__fields--advanced,
 	.hu-cpo-calculator__results {
 		grid-template-columns: 1fr;
 	}

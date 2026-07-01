@@ -1,12 +1,18 @@
 # TCO-Pillar Go-Live & Verifikation
 
-Stand: 2026-06-30. Verantwortlich: Haşim Üner (Go-Live im WordPress-Editor, außerhalb des Repos — kein Admin-Zugang, siehe `docs/decisions/0006-kein-admin-zugang-policy.md`).
+Stand: 2026-07-01 (Rewrite auf Handwerker-Klartext, neue Überschrift, Slug-Wechsel + 301, Rechner entschlackt). Verantwortlich: Haşim Üner (Go-Live im WordPress-Editor, außerhalb des Repos — kein Admin-Zugang, siehe `docs/decisions/0006-kein-admin-zugang-policy.md`).
 
-> **Zweck.** Der Beitrag *„Photovoltaik-Leads: Die TCO- und CPO-Rechnung für Fachbetriebe"*
-> (`/blog/photovoltaik-leads-tco-rechnung/`) ist das **kanonische Off-Page-Anker-Asset** für die
-> SHK-/Solar-Backlink-Strecke (u. a. SBZ). Bevor ein Pitch rausgeht, muss dieser Pillar live,
-> indexiert und sauber sein. Dieses Dokument hält fest, was repo-seitig verifiziert wurde und welche
-> Schritte manuell im WordPress-Editor + Search Console folgen.
+> **Zweck.** Der Beitrag *„Solar-Leads kaufen: Warum die billigen Anfragen am Ende die teuersten sind"*
+> (neuer Slug `solar-leads-kaufen-lohnt-sich`, alter Slug `photovoltaik-leads-tco-rechnung` → 301)
+> ist das **kanonische Off-Page-Anker-Asset** für die SHK-/Solar-Backlink-Strecke (u. a. SBZ). Bevor
+> ein Pitch rausgeht, muss dieser Pillar live, indexiert und sauber sein. Dieses Dokument hält fest,
+> was repo-seitig verifiziert wurde und welche Schritte manuell im WordPress-Editor + Search Console
+> folgen.
+>
+> **Update 2026-07-01:** Der Beitrag wurde von Marketer-Sprache (TCO/CPO/CPL) auf Handwerker-Klartext
+> umgeschrieben, die Überschrift auf Such-/Schmerz-Ebene gebracht, der Slug auf `solar-leads-kaufen-lohnt-sich`
+> geändert (301 via `hu_blog_pillar_redirect_legacy_slugs`), und der CPO-Rechner von 18 auf 3 sichtbare
+> Felder pro Seite reduziert. Go-Live läuft über den Seed-Version-Bump (`2026-07-01-1`).
 
 ## 1. Publish-Readiness-Audit (repo-seitig verifiziert)
 
@@ -15,7 +21,7 @@ Stand: 2026-06-30. Verantwortlich: Haşim Üner (Go-Live im WordPress-Editor, au
 | Tiefe & Argumentation (CPL→CPO, Mehrfachverkauf, GHL-Falle, Tracking, E3, §248 HGB) | ✓ | `assets/content/blog/photovoltaik-leads-tco-rechnung.md` |
 | Alle 7 internen Links lösen auf echte Public-URLs auf | ✓ | gegen `llms.txt` geprüft |
 | Externe Links gültig (HGB, HostPress [als „Werbung" deklariert], Raidboxes) | ✓ | Body-Quellenblock |
-| SEO-Title 41 Zeichen (≤ 60) · Meta-Description 135 Zeichen (≤ 155) | ✓ | Seed `blog-pillar-posts.php` |
+| SEO-Title 53 Zeichen (≤ 60) · Meta-Description ~148 Zeichen (≤ 155) | ✓ | Seed `blog-pillar-posts.php` |
 | BlogPosting-Schema (headline, Autor, datePublished, Bild, publisher) | ✓ | `org-schema.php` (zentral, ab Z. 1255) |
 | Autoren-E-E-A-T (Byline, Bio, Rolle, Avatar) | ✓ | `single.php` (ab Z. 383) |
 | CPO-Rechner-Shortcode `[hu_cpo_calculator]` registriert | ✓ | `inc/cpo-calculator.php` |
@@ -40,7 +46,8 @@ Stand: 2026-06-30. Verantwortlich: Haşim Üner (Go-Live im WordPress-Editor, au
 
 ## 3. Indexierung (Search Console)
 
-- URL-Prüfung für `/blog/photovoltaik-leads-tco-rechnung/` → **Indexierung beantragen**.
+- URL-Prüfung für die **neue** URL (`…/solar-leads-kaufen-lohnt-sich/`) → **Indexierung beantragen**.
+- Alte URL (`…/photovoltaik-leads-tco-rechnung/`) prüfen: muss **301** auf die neue URL liefern.
 - BlogPosting- + (optional) FAQ-Schema im **Rich-Results-Test** gegenprüfen.
 - In der Sitemap auftauchen lassen, intern bereits verlinkt (Cluster-Quervernetzung vorhanden).
 
