@@ -46,7 +46,7 @@ Eine Portal-Anfrage für 60 Euro kann teuer sein. Eine eigene Anfrage für 180 E
 
 Wer Solar-Leads kauft, kauft in der Regel keine Nachfrage. Er kauft Zugriff auf einen Kontakt, den ein anderer kontrolliert. Das Portal besitzt die Werbung, das Formular, die Daten und die Erfahrung. Sie bekommen den Ausschnitt, für den Sie bezahlen.
 
-Das kann kurzfristig sinnvoll sein: neue Region, Auslastungslücke, schneller Test. Kein Thema.
+Das kann kurzfristig sinnvoll sein: neue Region, Auslastungslücke, akuter Zusatzbedarf. Kein Thema.
 
 Aber als Dauerlösung ist es schwach. Denn jeder Euro fließt zuerst in das Geschäft des Portals, nicht in Ihres. Ihre Marke wird nicht bekannter. Ihre Website lernt nichts dazu. Ihre eigene Kundenliste bleibt dünn. Und wenn das Portal die Preise erhöht, das Volumen senkt oder die Qualität kippt, stehen Sie wieder am Anfang.
 
@@ -93,7 +93,7 @@ Wenn Ihr Vertrieb 15 Minuten nach der Anfrage anruft, sind Sie nicht automatisch
 Das drückt die Abschlussquote. Auf den ersten Blick nicht dramatisch, in der Ergebnisrechnung aber massiv:
 
 ```text
-60 € pro Anfrage / 4 % Abschluss = 1.500 € pro Auftrag
+72 € pro Anfrage / 4 % Abschluss = 1.800 € pro Auftrag
 120 € pro Anfrage / 7 % Abschluss = 1.714 € pro Auftrag
 180 € pro Anfrage / 15 % Abschluss = 1.200 € pro Auftrag
 ```
@@ -304,7 +304,7 @@ Das ist keine Wertung, das ist Passung. Ein eigener Anfrage-Weg verstärkt einen
 
 ### Sind gekaufte Solar-Leads grundsätzlich schlecht?
 
-Nein. Kurzfristig können sie sinnvoll sein: neue Region, Auslastungslücke, schneller Test. Gefährlich werden sie als Dauerlösung, wenn Sie nie einen eigenen Anfrage-Weg aufbauen und jeden Monat fremde Reichweite mieten.
+Nein. Kurzfristig können sie sinnvoll sein: neue Region, Auslastungslücke, akuter Zusatzbedarf. Gefährlich werden sie als Dauerlösung, wenn Sie nie einen eigenen Anfrage-Weg aufbauen und jeden Monat fremde Reichweite mieten.
 
 ### Welche Zahl ist wichtiger als der Preis pro Anfrage?
 
