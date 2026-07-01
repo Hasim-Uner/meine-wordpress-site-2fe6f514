@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function hu_get_blog_pillar_posts_seed_version() {
-	return '2026-05-25-2';
+	return '2026-07-01-1';
 }
 
 /**
@@ -29,19 +29,19 @@ function hu_get_blog_pillar_posts_seed_version() {
 function hu_get_blog_pillar_posts_seed_data() {
 	return [
 		[
-			'title'             => 'Photovoltaik-Leads: Die TCO- und CPO-Rechnung für Fachbetriebe',
-			'slug'              => 'photovoltaik-leads-tco-rechnung',
-			'seo_title'         => 'Photovoltaik-Leads: TCO- und CPO-Rechnung',
-			'seo_description'   => 'PV-Leads kaufen wirkt billig. Entscheidend ist CPO: Abschlussquote, Tracking, Page Speed, Datenbesitz und eigene Anfrage-Infrastruktur.',
-			'excerpt'           => 'Warum Photovoltaik-Betriebe nicht CPL, sondern Cost per Order rechnen müssen. Eine harte Einordnung zu Portal-Leads, gemieteten Agentur-Funnels, Tracking, Page Speed und eigener Nachfrage-Infrastruktur.',
+			'title'             => 'Solar-Leads kaufen: Warum die billigen Anfragen am Ende die teuersten sind',
+			'slug'              => 'solar-leads-kaufen-lohnt-sich',
+			'seo_title'         => 'Solar-Leads kaufen: Lohnt sich das für Ihren Betrieb?',
+			'seo_description'   => 'Gekaufte Solar-Leads wirken günstig. Warum die billigen Anfragen am Ende die teuersten sind – und wie Sie an eigene Anfragen kommen, die abschließen.',
+			'excerpt'           => 'Gekaufte Portal-Anfragen wirken günstig, bringen aber selten Aufträge. Warum nicht der Preis pro Anfrage zählt, sondern was ein fertiger Auftrag kostet – und wie Sie eigene Anfragen gewinnen.',
 			'categories'        => [
 				[ 'name' => 'Leadgenerierung', 'slug' => 'leadgenerierung' ],
 				[ 'name' => 'Solar-/Wärmepumpen Anfrage-Systeme', 'slug' => 'solar-waermepumpen-anfrage-systeme' ],
 			],
-			'tags'              => [ 'Photovoltaik Leads', 'Solar Leads', 'Lead-Portale', 'Cost per Order', 'Server-Side Tracking', 'Anfrage-System' ],
+			'tags'              => [ 'Solar Leads kaufen', 'Photovoltaik Leads', 'Lead-Portale', 'Anfragen kaufen', 'eigene Leadgenerierung', 'Anfrage-System' ],
 			'markdown_file'     => 'assets/content/blog/photovoltaik-leads-tco-rechnung.md',
 			'featured_image'    => 'assets/img/blog/photovoltaik-leads-kaufen-alternative-hero.png',
-			'featured_alt_text' => 'Vergleich von gemieteten Photovoltaik-Leads und eigener Anfrage-Infrastruktur mit CPO-Rechnung.',
+			'featured_alt_text' => 'Vergleich von gekauften Solar-Leads und eigenen Anfragen mit ehrlicher Kosten-pro-Auftrag-Rechnung.',
 		],
 		[
 			'title'             => 'WordPress TTFB unter 200 ms: Wie Server-Antwortzeit den Google-Ads-Qualitätsfaktor entscheidet',
@@ -418,6 +418,7 @@ function hu_blog_pillar_find_post_id_by_slug( $slug ) {
 function hu_blog_pillar_retire_replaced_seeded_posts() {
 	$replaced_slugs = [
 		'photovoltaik-leads-kaufen-alternative',
+		'photovoltaik-leads-tco-rechnung',
 	];
 
 	foreach ( $replaced_slugs as $slug ) {
@@ -439,6 +440,48 @@ function hu_blog_pillar_retire_replaced_seeded_posts() {
 		);
 	}
 }
+
+/**
+ * 301-redirect retired pillar slugs to their current permalink.
+ *
+ * Matches the last path segment, so it works regardless of the blog base
+ * (`/slug/` or `/blog/slug/`). Used when a seeded pillar changes its slug.
+ *
+ * @return void
+ */
+function hu_blog_pillar_redirect_legacy_slugs() {
+	if ( is_admin() || wp_doing_ajax() ) {
+		return;
+	}
+
+	$slug_map = [
+		'photovoltaik-leads-tco-rechnung' => 'solar-leads-kaufen-lohnt-sich',
+	];
+
+	$segments = array_values( array_filter( explode( '/', trim( nexus_get_current_request_path(), '/' ) ) ) );
+
+	if ( empty( $segments ) ) {
+		return;
+	}
+
+	$last_segment = end( $segments );
+
+	if ( ! isset( $slug_map[ $last_segment ] ) ) {
+		return;
+	}
+
+	$target_id  = hu_blog_pillar_find_post_id_by_slug( $slug_map[ $last_segment ] );
+	$target_url = $target_id ? get_permalink( $target_id ) : '';
+
+	if ( ! $target_url ) {
+		return;
+	}
+
+	nocache_headers();
+	wp_safe_redirect( $target_url, 301 );
+	exit;
+}
+add_action( 'template_redirect', 'hu_blog_pillar_redirect_legacy_slugs', 6 );
 
 /**
  * Find an existing seeded attachment by source asset.
