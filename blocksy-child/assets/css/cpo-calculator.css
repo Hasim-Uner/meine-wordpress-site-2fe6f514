@@ -242,7 +242,7 @@
 
 .hu-cpo-calculator__summary {
 	display: grid;
-	grid-template-columns: minmax(180px, 0.55fr) minmax(240px, 1fr) auto;
+	grid-template-columns: minmax(180px, 0.55fr) minmax(240px, 1fr);
 	gap: 16px;
 	align-items: center;
 	margin-top: 18px;
@@ -258,14 +258,18 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	grid-column: 1 / -1;
+	justify-self: center;
 	min-height: 44px;
-	padding: 0 16px;
+	max-width: 100%;
+	padding: 0.6em 22px;
 	border-radius: 6px;
 	background: #b46a3c;
 	color: #fff7ee;
 	font-weight: 800;
+	text-align: center;
 	text-decoration: none;
-	white-space: nowrap;
+	white-space: normal;
 }
 
 .hu-cpo-calculator__cta:hover,

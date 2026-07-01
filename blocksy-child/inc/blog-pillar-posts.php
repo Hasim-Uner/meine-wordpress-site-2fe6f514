@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function hu_get_blog_pillar_posts_seed_version() {
-	return '2026-07-01-1';
+	return '2026-07-01-2';
 }
 
 /**
@@ -129,10 +129,12 @@ function hu_blog_pillar_markdown_to_html( $markdown ) {
 		$blockquote_lines = [];
 	};
 
-	$flush_para = static function() use ( &$html, &$paragraph, $flush_list, $flush_blockquote ) {
-		$flush_list();
-		$flush_blockquote();
-
+	// Flushes ONLY the pending paragraph. The list and quote branches call this
+	// while still accumulating their own items; flushing lists/blockquotes here
+	// split every multi-line list into one-item lists and every multi-line
+	// quote/CTA into one box per line (plus empty boxes for `>` separators).
+	// Call sites flush lists and blockquotes explicitly where a break is wanted.
+	$flush_para = static function() use ( &$html, &$paragraph ) {
 		if ( empty( $paragraph ) ) {
 			return;
 		}
