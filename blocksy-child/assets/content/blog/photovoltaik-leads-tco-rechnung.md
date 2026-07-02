@@ -88,11 +88,11 @@ Der Einkauf sieht die billige Anfrage. Sie als Chef müssen den teuren Auftrag s
 
 Bei Photovoltaik mit hohen Auftragswerten ist nicht der Anfragepreis der Hebel. Der Hebel ist die Kombination aus Exklusivität, Tempo, Vertrauen, Vorprüfung und Abschlusswahrscheinlichkeit.
 
-> **Stopp. Bevor Sie weiterlesen:**
+> **Rechnen wir das für Ihren Betrieb?**
 >
-> Der regionale Marktcheck prüft, ob Zielgebiet, Auftragsvolumen und Vertriebsreife die Kosten eines eigenen Anfrage-Systems in unter 90 Tagen wieder einspielen.
+> Der regionale Marktcheck zeigt Ihnen mit echten Zahlen, ob sich ein eigener Anfrage-Weg in Ihrem Zielgebiet trägt: Kosten pro Auftrag, Abschlussquote und wie unabhängig Sie von einzelnen Quellen werden können.
 >
-> Keine Verkaufsshow. Nur die harten Zahlen: Kosten pro Auftrag, Abschlussquote und wie abhängig Sie aktuell von einer Quelle sind.
+> Sie bekommen eine ehrliche Einschätzung – auch wenn sie „noch nicht" lautet.
 >
 > [Regionalen Marktcheck starten](/solar-waermepumpen-leadgenerierung/#marktcheck)
 
@@ -164,14 +164,6 @@ Der passende technische Aufbau ist auf [Stack Solar](/stack-solar/) im Detail do
 **Werbung · Partnerlink:** [HostPress](https://www.hostpress.de/wordpress-hosting/) ist in diesem Aufbau die bevorzugte Hosting-Basis und zugleich ein Partner – wenn Sie über den Link abschließen, entsteht eine Vergütung, ohne Mehrkosten für Sie. Der Anbieter setzt auf schnelles, gemanagtes WordPress-Hosting mit Serverstandorten in Deutschland und täglichen Backups. [Raidboxes](https://raidboxes.io/en/platform/wordpress-management/) ist die zweite sinnvolle Option, wenn zentrale Verwaltung, Backups und Staging im Vordergrund stehen.
 
 Weniger spektakulär als ein Agentur-Dashboard. Aber näher an dem, was Aufträge bringt.
-
-> **Marktcheck-Filter:**
->
-> Wenn Ihre aktuelle Lösung aus gemieteter Plattform, langsamer Ladezeit und fremden Daten besteht, ist der Monatsbeitrag nicht die ganze Wahrheit.
->
-> Der Marktcheck prüft, ob Ihr Zielgebiet einen eigenen Anfrage-Weg trägt – oder ob Zukauf als Übergang gerade der klügere Weg ist.
->
-> [Zielgebiet und Kosten prüfen](/solar-waermepumpen-leadgenerierung/#marktcheck)
 
 ## 6. Wenn die Werbung die Falschen findet
 
@@ -312,9 +304,9 @@ Weil nicht jeder Betrieb passt. Erst werden Auftragswert, Zielgebiet, Vertriebsr
 
 ## Ihr nächster Schritt
 
-Wenn Sie einfach nur „mehr Leads" wollen, ist das hier der falsche Einstieg.
+Wenn Sie bis hier gelesen haben, wissen Sie: Es geht nicht um „mehr Leads", sondern um bessere Aufträge zu ehrlichen Kosten.
 
-Der regionale Marktcheck prüft nicht, ob man Ihnen irgendeinen Funnel verkaufen kann. Er prüft drei Dinge:
+Der regionale Marktcheck ist dafür der einfachste Einstieg. Er prüft nicht, ob man Ihnen irgendeinen Funnel verkaufen kann, sondern drei Dinge:
 
 - **Auftragswert:** Trägt Ihr durchschnittlicher Auftrag die Kosten eines eigenen Systems?
 - **Vertriebsreife:** Können Sie Anfragen schnell und sauber nachfassen?
