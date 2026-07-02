@@ -15,10 +15,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Return the current seed version for pillar posts.
  *
+ * Bumping this only triggers a new seed pass. Which posts actually get
+ * replayed from repo markdown is decided per entry via its 'seed_version':
+ * published posts already carrying their entry version are skipped, so a
+ * release touching one article no longer overwrites editor-owned content
+ * of the untouched ones.
+ *
  * @return string
  */
 function hu_get_blog_pillar_posts_seed_version() {
-	return '2026-07-01-2';
+	return '2026-07-01-3';
 }
 
 /**
@@ -31,6 +37,7 @@ function hu_get_blog_pillar_posts_seed_data() {
 		[
 			'title'             => 'Solar-Leads kaufen: Warum die billigen Anfragen am Ende die teuersten sind',
 			'slug'              => 'solar-leads-kaufen-lohnt-sich',
+			'seed_version'      => '2026-07-01-3',
 			'seo_title'         => 'Solar-Leads kaufen: Lohnt sich das für Ihren Betrieb?',
 			'seo_description'   => 'Gekaufte Solar-Leads wirken günstig. Warum die billigen Anfragen am Ende die teuersten sind – und wie Sie an eigene Anfragen kommen, die abschließen.',
 			'excerpt'           => 'Gekaufte Portal-Anfragen wirken günstig, bringen aber selten Aufträge. Warum nicht der Preis pro Anfrage zählt, sondern was ein fertiger Auftrag kostet – und wie Sie eigene Anfragen gewinnen.',
@@ -46,6 +53,7 @@ function hu_get_blog_pillar_posts_seed_data() {
 		[
 			'title'             => 'WordPress TTFB unter 200 ms: Wie Server-Antwortzeit den Google-Ads-Qualitätsfaktor entscheidet',
 			'slug'              => 'wordpress-ttfb-google-ads-ladezeit',
+			'seed_version'      => '2026-07-01-2',
 			'seo_title'         => 'WordPress TTFB & Google Ads: Server-Antwortzeit senken',
 			'seo_description'   => 'TTFB über 600 ms zerlegt Ihren Qualitätsfaktor, treibt den CPC und kostet Conversions. Welche Hebel wirklich wirken — und welche nur Aufwand erzeugen.',
 			'excerpt'           => 'Eine Sekunde mehr Ladezeit senkt die Conversion-Rate um rund 17 Prozent. TTFB über 600 ms zerlegt den Qualitätsfaktor in Google Ads, treibt den CPC und vernichtet Werbebudget. Warum Server-Antwortzeit das Fundament jeder bezahlten Kampagne ist — und welche Hebel im WordPress-Stack tatsächlich wirken.',
@@ -105,7 +113,9 @@ function hu_blog_pillar_markdown_to_html( $markdown ) {
 			}
 		}
 
-		$is_cta = hu_blog_pillar_starts_with( $first_line, '**Stopp.' ) || hu_blog_pillar_starts_with( $first_line, '**Marktcheck-Filter:' );
+		$is_cta = hu_blog_pillar_starts_with( $first_line, '**Rechnen wir' )
+			|| hu_blog_pillar_starts_with( $first_line, '**Stopp.' )
+			|| hu_blog_pillar_starts_with( $first_line, '**Marktcheck-Filter:' );
 		$html  .= $is_cta ? '<aside class="hu-pillar-cta" data-track-section="blog_pillar_inline_cta">' : '<blockquote>';
 		$quote_section = [];
 
@@ -593,6 +603,19 @@ function hu_maybe_seed_blog_pillar_posts() {
 
 	foreach ( hu_get_blog_pillar_posts_seed_data() as $post ) {
 		$slug          = sanitize_title( (string) $post['slug'] );
+		$entry_version = isset( $post['seed_version'] ) ? (string) $post['seed_version'] : $version;
+		$existing_id   = hu_blog_pillar_find_post_id_by_slug( $slug );
+
+		// A published post that already carries this entry's seed version is
+		// left untouched: replaying it from repo markdown would overwrite any
+		// edits made in the WordPress editor, which owns unchanged content.
+		if ( $existing_id
+			&& '1' === (string) get_post_meta( $existing_id, '_hu_blog_pillar_seeded', true )
+			&& 'publish' === (string) get_post_status( $existing_id )
+			&& $entry_version === (string) get_post_meta( $existing_id, '_hu_blog_pillar_seed_version', true ) ) {
+			continue;
+		}
+
 		$markdown_path = get_stylesheet_directory() . '/' . ltrim( (string) $post['markdown_file'], '/' );
 
 		if ( ! is_readable( $markdown_path ) ) {
@@ -602,7 +625,6 @@ function hu_maybe_seed_blog_pillar_posts() {
 
 		$markdown      = hu_blog_pillar_extract_article_markdown( (string) file_get_contents( $markdown_path ) );
 		$content       = hu_blog_pillar_markdown_to_html( $markdown );
-		$existing_id   = hu_blog_pillar_find_post_id_by_slug( $slug );
 		$category_ids  = [];
 		$post_data     = [
 			'post_type'     => 'post',
@@ -660,7 +682,7 @@ function hu_maybe_seed_blog_pillar_posts() {
 		update_post_meta( $post_id, 'seo_title', sanitize_text_field( (string) $post['seo_title'] ) );
 		update_post_meta( $post_id, 'seo_description', sanitize_text_field( (string) $post['seo_description'] ) );
 		update_post_meta( $post_id, '_hu_blog_pillar_seeded', '1' );
-		update_post_meta( $post_id, '_hu_blog_pillar_seed_version', $version );
+		update_post_meta( $post_id, '_hu_blog_pillar_seed_version', $entry_version );
 
 		$image_id = hu_blog_pillar_ensure_featured_image(
 			$post_id,
