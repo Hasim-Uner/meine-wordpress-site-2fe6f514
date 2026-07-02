@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function hu_get_blog_pillar_posts_seed_version() {
-	return '2026-07-01-2';
+	return '2026-07-01-3';
 }
 
 /**
@@ -105,7 +105,9 @@ function hu_blog_pillar_markdown_to_html( $markdown ) {
 			}
 		}
 
-		$is_cta = hu_blog_pillar_starts_with( $first_line, '**Stopp.' ) || hu_blog_pillar_starts_with( $first_line, '**Marktcheck-Filter:' );
+		$is_cta = hu_blog_pillar_starts_with( $first_line, '**Rechnen wir' )
+			|| hu_blog_pillar_starts_with( $first_line, '**Stopp.' )
+			|| hu_blog_pillar_starts_with( $first_line, '**Marktcheck-Filter:' );
 		$html  .= $is_cta ? '<aside class="hu-pillar-cta" data-track-section="blog_pillar_inline_cta">' : '<blockquote>';
 		$quote_section = [];
 
