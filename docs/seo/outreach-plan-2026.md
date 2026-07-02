@@ -13,6 +13,7 @@ Aufbauend auf `docs/seo/offpage-authority-playbook.md` (Phase 2: themenrelevante
 | --- | --- | --- |
 | Kanonischer Pillar (live) | `blocksy-child/assets/content/blog/photovoltaik-leads-tco-rechnung.md` | Byline-Ziel, Beweis der Substanz |
 | Gastbeitrag SHK/Wärmepumpe | `content/blog-drafts/gastbeitrag-waermepumpe-shk-anfragen.md` | Fachmedien-Pitch (SBZ u. a.) |
+| Versandfertige SBZ-Mail (+ Nachfass + Checkliste) | `docs/seo/sbz-pitch-mail.md` | Ziel Nr. 1 direkt abschicken |
 | Proof-Zahlen (E3, kanonisch) | 150 € → 22 € pro Anfrage, 1.750+ Anfragen, 12 % Abschluss | Daten-Aufhänger im Pitch |
 
 ## Zielliste (Reihenfolge = Priorität)
