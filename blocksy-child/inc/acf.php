@@ -2,8 +2,12 @@
 /**
  * NEXUS ACF Feldgruppen-Registrierung
  *
- * Registriert alle ACF-Feldgruppen programmatisch (Owned, kein JSON-Import nötig).
+ * Registriert alle Feldgruppen programmatisch (Owned, kein JSON-Import nötig).
  * Felder erscheinen im WordPress-Editor unter den jeweiligen Sektionen.
+ *
+ * Läuft live über Secure Custom Fields (SCF, freier ACF-Fork) — die API
+ * (acf/init, acf_add_local_field_group, get_field) ist identisch zu ACF.
+ * Die Repeater-Felder (KPI, Comparison) benötigen SCF oder ACF PRO.
  *
  * [SEO] inc/acf: SEO-Felder, KPI-Blöcke, Comparison-Daten, Related Pages
  *

@@ -88,7 +88,7 @@ Nicht verifiziert:
 - `/system-diagnose/` ist repo-seitig kein eigener öffentlicher Funnel mehr. Die Route bleibt als Legacy-Einstieg erhalten und leitet per 301 auf den Marktcheck der Branchen-Landingpage. Der frühere React-Funnel unter `blocksy-child/readiness/` bleibt als Legacy-Code im Repo, ist aber nicht mehr der aktive Solar-Lead-Pfad. Der aktive Marktcheck nutzt `/wp-json/nexus/v1/audit-request`, speichert im Audit-CRM und nutzt die bestehende Mail-/Brevo-Schicht.
 - Das Repo wird gerade von einem Theme-Repo zu einem Website Operating System erweitert; WGOS bleibt dabei internes Delivery-/Client-System und ist nicht mehr öffentlicher Verkaufsrahmen.
 - `page-wgos.php` bleibt template-driven als internes Dashboard; eine spaetere Auslagerung dynamischer Projektwerte muss serverseitig nach `client_user_id = current_user_id` filtern.
-- Systembaustein-Detailseiten laufen weiter ueber den hierarchischen CPT `wgos_asset` mit ACF-Meta und Single-Template; die redaktionelle Befuellung der Spokes passiert weiter im WordPress-Admin.
+- Systembaustein-Detailseiten laufen weiter ueber den hierarchischen CPT `wgos_asset` mit ACF-kompatiblem Feld-Meta (live via Secure Custom Fields statt ACF PRO) und Single-Template; die redaktionelle Befuellung der Spokes passiert weiter im WordPress-Admin.
 - Systembausteine sind jetzt zusaetzlich als versionierte Registry im Theme definiert: 39 Assets stehen repo-seitig auf `publish`, inklusive 4 KI-/Automatisierungs-Assets im Kernbereich `Weiterentwicklung`.
 - Die neue Systembaustein-Struktur rendert versionierte SEO-Meta, Related-Links und `Service`-Schema aus derselben Registry.
 - Die frühere Systemlandkarte wird bei Bedarf weiter als Baustein-Übersicht angelegt, ist aber kein öffentlicher CTA- oder Sales-Pfad mehr.

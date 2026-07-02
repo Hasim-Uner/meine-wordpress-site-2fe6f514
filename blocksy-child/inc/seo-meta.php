@@ -1211,7 +1211,7 @@ function hu_get_seo_meta() {
 		$robots_context = hu_get_singular_robots_context( $post_id );
 		$meta['robots'] = $robots_context['robots'];
 
-		// ACF fields first (if ACF Pro is active)
+		// ACF-style fields first (if SCF/ACF is active)
 		$meta['description'] = hu_get_stored_seo_value( $post_id, 'seo_description', 'rank_math_description' );
 		$meta['og_title']    = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
 		$cluster_defaults    = function_exists( 'nexus_get_wgos_cluster_page_seo_defaults' ) ? nexus_get_wgos_cluster_page_seo_defaults( get_post( $post_id ) ) : null;

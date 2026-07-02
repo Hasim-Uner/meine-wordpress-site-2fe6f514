@@ -50,7 +50,7 @@ blocksy-child/
 │   ├── related-content.php    ← Verwandte Inhalte (Flywheel)
 │   └── footer-cta.php         ← Conversion-optimierter Bottom-CTA
 ├── inc/
-│   ├── helpers.php            ← Utility-Funktionen (Reading Time, ACF Fallback, CTA)
+│   ├── helpers.php            ← Utility-Funktionen (Reading Time, SCF/ACF Fallback, CTA)
 │   ├── enqueue.php            ← CSS/JS Asset-Management (filemtime Cache-Busting)
 │   ├── seo-meta.php           ← OG Tags, Canonical, Indexierungssteuerung
 │   ├── org-schema.php         ← JSON-LD Structured Data (LocalBusiness, Service, FAQ)
@@ -108,7 +108,7 @@ Pillar Pages, Content-Cluster, interne Verlinkung, Proof-Assets, Nurture-Flows.
 
 ## SEO-Architektur
 
-- **Meta Tags:** Zentral in `inc/seo-meta.php` (Fallback-Kette: ACF → Post-Daten → Auto-Generate)
+- **Meta Tags:** Zentral in `inc/seo-meta.php` (Fallback-Kette: SCF/ACF-Felder → Post-Daten → Auto-Generate)
 - **Schema:** JSON-LD in `inc/org-schema.php` (LocalBusiness, Service, FAQPage, Article)
 - **Breadcrumbs:** `template-parts/breadcrumb.php` mit BreadcrumbList Schema
 - **Indexierung:** noindex für Utility-Seiten (Portal, Danke, Login) via `inc/seo-meta.php`
