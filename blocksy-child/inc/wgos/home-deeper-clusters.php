@@ -22,7 +22,7 @@ return [
 	[
 		'group' => 'Strategie & Vergleich',
 		'items' => [
-			[ 't' => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage',  's' => 'Markteinordnung der Lead-Anbieter und Kosten pro Anfrage.',                     'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
+			[ 't' => 'Photovoltaik Leads kaufen? CPL-Rechnung pro Anfrage',  's' => 'Markteinordnung der Lead-Anbieter und Kosten pro Anfrage.',                     'url' => home_url( '/solar-leads-kaufen-alternative/' ) ],
 			[ 't' => 'TCO 24/36 Monate: Portal vs. eigenes System',   's' => 'Strategischer 8-Kriterien-Vergleich mit Asset-Eigentum-Logik.',                 'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ) ],
 		],
 	],

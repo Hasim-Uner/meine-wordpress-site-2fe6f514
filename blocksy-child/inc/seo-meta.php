@@ -232,8 +232,8 @@ function hu_get_forced_singular_seo_map() {
 				'description' => sprintf( 'Leadgenerierung für Photovoltaik, Solar und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus E3-Beleg: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'solar-leads-kaufen-alternative' => [
-				'title'       => 'Solar Leads kaufen? Alternative ohne Portal-Abhängigkeit',
-				'description' => sprintf( 'Solar Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft. Der Vergleich pro Anfrage — E3-Case: %s niedrigerer CPL.', $e3_cpl_reduction ),
+				'title'       => 'Photovoltaik & Solar Leads kaufen? Alternative ohne Portale',
+				'description' => sprintf( 'Photovoltaik-, PV- oder Solar-Leads kaufen — oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft. Der Vergleich pro Anfrage — E3-Case: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'server-side-tracking-b2b' => [
 				'title'       => 'Server-Side Tracking Agentur: DSGVO, GA4 & CAPI',
