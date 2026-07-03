@@ -42,6 +42,9 @@ function hu_person_same_as_urls() {
         'https://github.com/Hasim-Uner/',
         'https://hasimuener.org/',
         'https://www.facebook.com/hasim.uner',
+        'https://orcid.org/0009-0008-7500-2015',
+        'https://www.youtube.com/@Hasimuener',
+        'https://x.com/_0239983326111',
     ];
 }
 
