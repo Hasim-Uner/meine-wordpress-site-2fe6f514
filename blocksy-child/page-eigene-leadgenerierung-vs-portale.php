@@ -252,7 +252,7 @@ get_header();
 					href="<?php echo esc_url( home_url( '/solar-leads-kaufen-alternative/' ) ); ?>"
 					data-track-action="related_to_cpl_rechnung"
 					data-track-category="internal_link_hierarchy"
-					data-track-section="hero">Solar Leads kaufen oder eigene Anfragen? CPL-Vergleich pro Anfrage</a>
+					data-track-section="hero">Photovoltaik-Leads kaufen oder eigene Anfragen? CPL-Vergleich pro Anfrage</a>
 			</p>
 		</div>
 	</section>

@@ -175,6 +175,14 @@ $own_system_layers = [
 
 $objections = [
 	[
+		'question' => 'Was kosten Photovoltaik-Leads im Einkauf?',
+		'answer'   => 'Geteilte Datensätze liegen im Markt typischerweise bei 60 – 120 € pro Anfrage, exklusive bei 80 – 150 €. Entscheidend ist aber der Preis pro Abschluss: Bei 1 – 5 % Abschlussquote kostet ein gewonnener Auftrag schnell das Zwanzigfache des Lead-Preises. Die vollständige Rechnung steht in der Solar-Leads-Kosten-Studie und der Cost-per-Lead-Analyse weiter unten.',
+	],
+	[
+		'question' => 'Wo kann man PV-Leads kaufen – und worauf ist zu achten?',
+		'answer'   => 'Der Markt unterteilt sich in geteilte Datensätze, exklusive Datensätze, regional erzeugte Kampagnen-Leads und eigene Anfrage-Infrastruktur. Unabhängig vom Anbieter entscheiden vier Kriterien über die Wirtschaftlichkeit: Intent-Stärke, Exklusivität, Vorqualifizierung und Echtzeit-Übermittlung. Wer länger als eine Saison plant, rechnet den Zukauf gegen ein eigenes System – die Markteinordnung weiter oben zeigt beide Wege ohne Wertung.',
+	],
+	[
 		'question' => 'Aber Portal-Leads liefern doch sofort Anfragen.',
 		'answer'   => 'Sofort ja, aber teuer und mehrfach verkauft. Ein eigenes System braucht 6–12 Wochen Aufbau, liefert dann jedoch exklusive Anfragen zu deutlich niedrigeren Stückkosten. Wer dauerhaft skalieren will, kommt am eigenen System nicht vorbei.',
 	],
@@ -251,10 +259,10 @@ get_header();
 		<div class="hu-intercept__container">
 			<p class="hu-intercept__eyebrow">Für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Mittelstand</p>
 			<h1 class="hu-intercept__title" id="hu-intercept-hero-title">
-				Sie wollen Solar Leads kaufen? Eigene Anfragen senken den CPL um <?php echo esc_html( $e3_cpl_reduction ); ?>.
+				Sie wollen Photovoltaik- oder Solar-Leads kaufen? Eigene Anfragen senken den CPL um <?php echo esc_html( $e3_cpl_reduction ); ?>.
 			</h1>
 			<p class="hu-intercept__lead">
-				Portal-Leads für Photovoltaik und Wärmepumpe kosten <strong>60 – 120 €</strong>, werden parallel an drei Wettbewerber verkauft und schließen typischerweise nur bei <strong><?php echo esc_html( $e3_conv_before ); ?></strong>. Bei <?php echo esc_html( $e3_case_label ); ?> stieg die Abschlussquote im eigenen System auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> — der Cost per Lead fiel parallel von <strong><?php echo esc_html( $e3_cpl_before ); ?></strong> auf <strong><?php echo esc_html( $e3_cpl_after ); ?></strong> in <strong><?php echo esc_html( $e3_timeframe ); ?></strong>.
+				Gekaufte Photovoltaik- und Wärmepumpen-Leads kosten <strong>60 – 120 €</strong>, werden parallel an drei Wettbewerber verkauft und schließen typischerweise nur bei <strong><?php echo esc_html( $e3_conv_before ); ?></strong>. Bei <?php echo esc_html( $e3_case_label ); ?> stieg die Abschlussquote im eigenen System auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> — der Cost per Lead fiel parallel von <strong><?php echo esc_html( $e3_cpl_before ); ?></strong> auf <strong><?php echo esc_html( $e3_cpl_after ); ?></strong> in <strong><?php echo esc_html( $e3_timeframe ); ?></strong>.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">
@@ -285,7 +293,7 @@ get_header();
 
 	<section class="hu-intercept__compare" id="vergleich" aria-labelledby="hu-intercept-compare-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-compare-title">Portal-Leads kaufen vs. eigenes Anfrage-System</h2>
+			<h2 class="hu-intercept__h2" id="hu-intercept-compare-title">Photovoltaik-Leads kaufen vs. eigenes Anfrage-System</h2>
 			<div class="hu-intercept__grid hu-intercept__grid--two">
 				<div class="hu-intercept__panel hu-intercept__panel--negative">
 					<h3 class="hu-intercept__panel-title">Portal-Leads kaufen</h3>
@@ -332,7 +340,7 @@ get_header();
 
 	<section class="hu-intercept__why" id="markt-modelle" aria-labelledby="hu-intercept-markt-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-markt-title">Anbieter-Modelle im Lead-Markt: sachliche Markteinordnung</h2>
+			<h2 class="hu-intercept__h2" id="hu-intercept-markt-title">Photovoltaik-Leads-Anbieter im Vergleich: sachliche Markteinordnung</h2>
 			<p class="hu-intercept__section-lead">
 				Der deutsche Markt für Photovoltaik- und Wärmepumpen-Anfragen unterteilt sich in vier strukturell unterschiedliche Modelle. Eigene Markteinordnung – keine Empfehlung, keine Wertung.
 			</p>
@@ -402,7 +410,7 @@ get_header();
 
 	<section class="hu-intercept__faq" id="faq" aria-labelledby="hu-intercept-faq-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-faq-title">Häufige Fragen zur Alternative zum Lead-Kauf</h2>
+			<h2 class="hu-intercept__h2" id="hu-intercept-faq-title">Häufige Fragen zu Photovoltaik- und Solar-Leads</h2>
 			<div class="hu-intercept__faq-list">
 				<?php foreach ( $objections as $item ) : ?>
 					<details class="hu-intercept__faq-item">
