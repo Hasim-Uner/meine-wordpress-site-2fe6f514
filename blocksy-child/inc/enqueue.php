@@ -288,6 +288,7 @@ function hu_enqueue_assets() {
 	// ── F1a-int) SEO-Sub-Pages mit gemeinsamem .hu-intercept-System ──
 	$intercept_routes = [
 		'solar-leads-kaufen-alternative'    => 'page-solar-leads-kaufen-alternative.php',
+		'waermepumpen-leads'                => 'page-waermepumpen-leads.php',
 		'server-side-tracking-b2b'          => 'page-server-side-tracking-b2b.php',
 		'b2b-solar-leads'                   => 'page-b2b-solar-leads.php',
 		'eigene-leadgenerierung-vs-portale' => 'page-eigene-leadgenerierung-vs-portale.php',
@@ -500,6 +501,7 @@ function hu_disable_core_block_styles_on_custom_templates() {
 	$hardcoded_templates = [
 		'page-solar-waermepumpen-leadgenerierung.php',
 		'page-solar-leads-kaufen-alternative.php',
+		'page-waermepumpen-leads.php',
 		'page-server-side-tracking-b2b.php',
 		'page-b2b-solar-leads.php',
 		'page-eigene-leadgenerierung-vs-portale.php',
@@ -520,6 +522,7 @@ function hu_disable_core_block_styles_on_custom_templates() {
 	$hardcoded_slugs = [
 		'solar-waermepumpen-leadgenerierung',
 		'solar-leads-kaufen-alternative',
+		'waermepumpen-leads',
 		'server-side-tracking-b2b',
 		'b2b-solar-leads',
 		'eigene-leadgenerierung-vs-portale',
