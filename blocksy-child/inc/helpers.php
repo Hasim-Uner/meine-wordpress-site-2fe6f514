@@ -970,6 +970,42 @@ function nexus_maybe_ensure_intercept_solar_leads_page() {
 add_action( 'init', 'nexus_maybe_ensure_intercept_solar_leads_page', 27 );
 
 /**
+ * Ensure the intercept landing page exists on /waermepumpen-leads/.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_intercept_waermepumpen_leads_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$page_id = nexus_get_page_id( [ 'waermepumpen-leads' ] );
+
+	if ( ! $page_id ) {
+		$page_id = wp_insert_post(
+			wp_slash(
+				[
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_title'   => 'Wärmepumpen Leads – Alternative: eigenes Anfrage-System',
+					'post_name'    => 'waermepumpen-leads',
+					'post_content' => '',
+					'post_excerpt' => 'Intercept-Landingpage für Suchintent „Wärmepumpen Leads kaufen": Argumentation für eigene Anfrage-Systeme statt Portal-Leads.',
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $page_id ) ) {
+			return;
+		}
+	}
+
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-waermepumpen-leads.php' );
+}
+add_action( 'init', 'nexus_maybe_ensure_intercept_waermepumpen_leads_page', 27 );
+
+/**
  * Ensure the lead-cost market study pillar exists on /solar-leads-kosten-studie/.
  *
  * @return void

@@ -235,6 +235,10 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Photovoltaik & Solar Leads kaufen? Alternative ohne Portale',
 				'description' => sprintf( 'Photovoltaik-, PV- oder Solar-Leads kaufen — oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft. Der Vergleich pro Anfrage — E3-Case: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
+			'waermepumpen-leads' => [
+				'title'       => 'Wärmepumpen Leads kaufen? Alternative ohne Portale',
+				'description' => sprintf( 'Wärmepumpen-Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft und schließen selten ab. Der Vergleich pro Anfrage — E3-Case: %s niedrigerer CPL.', $e3_cpl_reduction ),
+			],
 			'server-side-tracking-b2b' => [
 				'title'       => 'Server-Side Tracking Agentur: DSGVO, GA4 & CAPI',
 				'description' => 'Server-Side Tracking für B2B-Anfrage-Systeme: GA4, Meta CAPI und Consent Mode v2 auf eigenem Server. Attribution für qualifizierte Anfragen statt Klickberichte.',
@@ -654,6 +658,7 @@ function hu_get_solar_seo_subpage_paths() {
 	if ( null === $cache ) {
 		$cache = [
 			trailingslashit( '/solar-leads-kaufen-alternative' ),
+			trailingslashit( '/waermepumpen-leads' ),
 			trailingslashit( '/server-side-tracking-b2b' ),
 			trailingslashit( '/b2b-solar-leads' ),
 			trailingslashit( '/eigene-leadgenerierung-vs-portale' ),

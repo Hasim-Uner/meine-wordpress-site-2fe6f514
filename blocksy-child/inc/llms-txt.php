@@ -111,9 +111,14 @@ function nexus_get_llms_txt_sections() {
 			'heading' => 'Solar- und Wärmepumpen-Leadgenerierung: Themen-Cluster',
 			'links'   => [
 				[
-					'label'       => 'Solar Leads kaufen – Alternative',
+					'label'       => 'Photovoltaik & Solar Leads kaufen – Alternative',
 					'url'         => $urls['solar_leads_alternative'] ?? home_url( '/solar-leads-kaufen-alternative/' ),
 					'description' => 'Intercept-Page für Kauf-Suchintent: Lead-Anbieter einordnen und eigene Anfrage-Systeme als Alternative bewerten.',
+				],
+				[
+					'label'       => 'Wärmepumpen Leads kaufen – Alternative',
+					'url'         => home_url( '/waermepumpen-leads/' ),
+					'description' => 'Intercept-Page für Wärmepumpen-Lead-Kauf: Marktmodelle, wärmepumpen-spezifische Vorqualifizierung und eigenes Anfrage-System als Alternative.',
 				],
 				[
 					'label'       => 'Eigene Leadgenerierung vs. Portale',

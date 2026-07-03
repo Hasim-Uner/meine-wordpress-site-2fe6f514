@@ -44,6 +44,7 @@ return [
 	[
 		'group' => 'Zielgruppen & Marktbild',
 		'items' => [
+			[ 't' => 'Wärmepumpen Leads kaufen? Die Alternative',  's' => 'Marktmodelle, Vorqualifizierung und CPL-Vergleich für den Heizungstausch.', 'url' => home_url( '/waermepumpen-leads/' ) ],
 			[ 't' => 'B2B Solar Leads (Gewerbe)',            's' => 'Buying-Center-Funnel für gewerbliche Photovoltaik-Projekte.',          'url' => home_url( '/b2b-solar-leads/' ) ],
 			[ 't' => 'Kunden gewinnen für Solarteure',       's' => 'Mythen-Aufklärung und fünf systematische Hebel im DACH-Mittelstand.',  'url' => home_url( '/kunden-gewinnen-solarteure/' ) ],
 		],
