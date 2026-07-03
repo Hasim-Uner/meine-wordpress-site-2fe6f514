@@ -1,0 +1,17 @@
+{
+  "report": "domain_organic",
+  "domain": "hasimuener.de",
+  "database": "de",
+  "type": "live",
+  "retrieved": "2026-07-03",
+  "display_limit": 200,
+  "rows_returned": 4,
+  "columns": ["keyword", "position", "previous_position", "position_diff", "volume", "cpc", "url", "traffic_pct", "traffic_cost_pct", "competition", "results", "trends"],
+  "keywords": [
+    {"keyword": "wordpress agentur hannover", "position": 11, "previous_position": 11, "volume": 480, "cpc": 6.75, "url": "https://hasimuener.de/wordpress-agentur-hannover/", "traffic_pct": 100.0, "competition": 0.36},
+    {"keyword": "pv leads kaufen", "position": 48, "previous_position": 48, "volume": 90, "cpc": 14.45, "url": "https://hasimuener.de/solar-leads-kaufen-alternative/", "traffic_pct": 0.0, "competition": 0.72},
+    {"keyword": "wordpress hannover", "position": 34, "previous_position": 34, "volume": 320, "cpc": 0.0, "url": "https://hasimuener.de/wordpress-agentur-hannover/", "traffic_pct": 0.0, "competition": 0.10},
+    {"keyword": "e3 new energy", "position": 24, "previous_position": 24, "volume": 390, "cpc": 2.16, "url": "https://hasimuener.de/e3-new-energy/", "traffic_pct": 0.0, "competition": 0.03}
+  ],
+  "notes": "Sehr schmale organische Basis: 4 Keywords, Traffic praktisch nur ueber 'wordpress agentur hannover'. /solar-leads-kaufen-alternative/ rankt bereits fuer 'pv leads kaufen' (Pos. 48) - Optimierungskandidat statt Neubau."
+}

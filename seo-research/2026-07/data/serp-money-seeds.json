@@ -1,0 +1,53 @@
+{
+  "report": "phrase_organic",
+  "database": "de",
+  "type": "live",
+  "retrieved": "2026-07-03",
+  "serps": {
+    "photovoltaik leads kaufen": {
+      "volume": 110,
+      "results": [
+        {"pos": 1, "domain": "shop.enpal.pro", "url": "https://shop.enpal.pro/products/pv-leads-haushalte"},
+        {"pos": 2, "domain": "www.powerleads.de", "url": "https://www.powerleads.de/leads/photovoltaik-leads/"},
+        {"pos": 3, "domain": "leadsnavigator.de", "url": "https://leadsnavigator.de/photovoltaik-leads"},
+        {"pos": 4, "domain": "www.pvleads.com", "url": "https://www.pvleads.com/"},
+        {"pos": 5, "domain": "www.leadfluss.de", "url": "https://www.leadfluss.de/blog/solar-leads-kaufen"},
+        {"pos": 6, "domain": "www.anfragenfluss.de", "url": "https://www.anfragenfluss.de/"},
+        {"pos": 7, "domain": "energy-leads.com", "url": "https://energy-leads.com/freiflaechen-leads/"},
+        {"pos": 8, "domain": "www.leadscraper.de", "url": "https://www.leadscraper.de/blog/gewerbliche-pv-leads-kaufen"},
+        {"pos": 9, "domain": "www.pv-leadkauf.de", "url": "https://www.pv-leadkauf.de/"},
+        {"pos": 11, "domain": "www.hntmedia.de", "url": "https://www.hntmedia.de/post/wo-kannst-du-die-besten-pv-leads-kaufen"},
+        {"pos": 12, "domain": "andreas-may.com", "url": "https://andreas-may.com/photovoltaik-leads-kaufen/"},
+        {"pos": 13, "domain": "www.coform.de", "url": "https://www.coform.de/pv-leads/"},
+        {"pos": 14, "domain": "leadskaufen24.de", "url": "https://leadskaufen24.de/products/solar-leads-kaufen"},
+        {"pos": 15, "domain": "leadsagentur.de", "url": "https://leadsagentur.de/branchen/handwerker-leads/solar/"},
+        {"pos": 16, "domain": "www.krauss-gmbh.com", "url": "https://www.krauss-gmbh.com/blog/solaranlagen-leads-kaufen-effektive-strategien-zur-kundengewinnung"},
+        {"pos": 17, "domain": "online-adressen-kaufen.de", "url": "https://online-adressen-kaufen.de/photovoltaik-leads/"},
+        {"pos": 18, "domain": "www.handelsblatt.com", "url": "https://www.handelsblatt.com/adv/firmen/photovoltaik-leads-kaufen.html"},
+        {"pos": 19, "domain": "www.bild.de", "url": "https://www.bild.de/energieloesungen/partner-werden"}
+      ]
+    },
+    "pv leads": {
+      "volume": 170,
+      "results": [
+        {"pos": 1, "domain": "www.pvleads.com", "url": "https://www.pvleads.com/"},
+        {"pos": 2, "domain": "shop.enpal.pro", "url": "https://shop.enpal.pro/products/pv-leads-haushalte"},
+        {"pos": 3, "domain": "www.leadfluss.de", "url": "https://www.leadfluss.de/blog/7-wege-fuer-photovoltaik-leads"},
+        {"pos": 4, "domain": "www.pv-magazine.de", "url": "https://www.pv-magazine.de/unternehmensmeldungen/worauf-sollte-man-beim-kauf-von-pv-leads-achten/"},
+        {"pos": 5, "domain": "www.leadscraper.de", "url": "https://www.leadscraper.de/blog/gewerbliche-pv-leads-kaufen"},
+        {"pos": 6, "domain": "leadsnavigator.de", "url": "https://leadsnavigator.de/photovoltaik-leads"},
+        {"pos": 7, "domain": "deinephotovoltaikleads.de", "url": "https://deinephotovoltaikleads.de/"},
+        {"pos": 8, "domain": "www.powerleads.de", "url": "https://www.powerleads.de/leads/photovoltaik-leads/"},
+        {"pos": 10, "domain": "www.check-direkt.de", "url": "https://www.check-direkt.de/photovoltaik-leads/"},
+        {"pos": 12, "domain": "pv.de", "url": "https://pv.de/leistungen/kontaktvermittlung/"},
+        {"pos": 13, "domain": "www.hntmedia.de", "url": "https://www.hntmedia.de/post/wo-kannst-du-die-besten-pv-leads-kaufen"},
+        {"pos": 14, "domain": "www.smart11.de", "url": "https://www.smart11.de/photovoltaik-leads"},
+        {"pos": 17, "domain": "www.krauss-gmbh.com", "url": "https://www.krauss-gmbh.com/blog/pv-leads-erfahrungen-effektive-strategien-zur-kundengewinnung"},
+        {"pos": 18, "domain": "www.coform.de", "url": "https://www.coform.de/pv-leads/"},
+        {"pos": 19, "domain": "energy-leads.com", "url": "https://energy-leads.com/"},
+        {"pos": 20, "domain": "www.mega-leads.de", "url": "https://www.mega-leads.de/"}
+      ]
+    }
+  },
+  "failed_serps_nothing_found": ["solar leads kaufen", "wärmepumpe leads kaufen", "leads für solarteure", "leadgenerierung photovoltaik", "wattfox alternative", "photovoltaik kunden gewinnen", "solar marketing agentur", "aroundhome erfahrungen handwerker"]
+}

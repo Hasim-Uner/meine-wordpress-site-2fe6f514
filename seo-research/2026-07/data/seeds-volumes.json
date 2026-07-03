@@ -1,0 +1,36 @@
+{
+  "report": "phrase_these",
+  "database": "de",
+  "type": "live",
+  "retrieved": "2026-07-03",
+  "seeds_queried": 23,
+  "rows_returned": 9,
+  "seeds_with_data": [
+    {"keyword": "solar leads kaufen", "volume": 20, "cpc": 14.86, "competition": 0.89, "cluster": "money"},
+    {"keyword": "photovoltaik leads kaufen", "volume": 110, "cpc": 13.81, "competition": 0.88, "cluster": "money"},
+    {"keyword": "pv leads", "volume": 170, "cpc": 9.56, "competition": 0.59, "cluster": "money"},
+    {"keyword": "leadgenerierung photovoltaik", "volume": 70, "cpc": 0.0, "competition": 0.0, "cluster": "money"},
+    {"keyword": "wattfox erfahrungen", "volume": 110, "cpc": 2.41, "competition": 0.18, "cluster": "portal-alternative"},
+    {"keyword": "aroundhome erfahrungen handwerker", "volume": 50, "cpc": 0.72, "competition": 0.15, "cluster": "portal-alternative"},
+    {"keyword": "selfmade energy erfahrungen", "volume": 20, "cpc": 3.8, "competition": 0.83, "cluster": "portal-alternative"},
+    {"keyword": "photovoltaik kunden gewinnen", "volume": 0, "cpc": 0.0, "competition": 0.0, "cluster": "problem-aware", "note": "In DB vorhanden, aber Volumen 0"},
+    {"keyword": "solar marketing agentur", "volume": 0, "cpc": 6.07, "competition": 0.19, "cluster": "problem-aware", "note": "Volumen 0, aber CPC 6.07 - Ads existieren, Nachfrage vermutlich unter Messschwelle"}
+  ],
+  "seeds_without_data": [
+    {"keyword": "wärmepumpe leads kaufen", "cluster": "money"},
+    {"keyword": "solarleads anbieter", "cluster": "money"},
+    {"keyword": "leads für solarteure", "cluster": "money"},
+    {"keyword": "leadgenerierung wärmepumpe", "cluster": "money"},
+    {"keyword": "wattfox alternative", "cluster": "portal-alternative"},
+    {"keyword": "daa leads erfahrungen", "cluster": "portal-alternative"},
+    {"keyword": "solar leads anbieter vergleich", "cluster": "portal-alternative"},
+    {"keyword": "photovoltaik portal erfahrungen", "cluster": "portal-alternative"},
+    {"keyword": "werbung solarfirma", "cluster": "problem-aware"},
+    {"keyword": "wärmepumpe aufträge bekommen", "cluster": "problem-aware"},
+    {"keyword": "mehr anfragen photovoltaik", "cluster": "problem-aware"},
+    {"keyword": "white label leadgenerierung", "cluster": "white-label"},
+    {"keyword": "performance marketing white label", "cluster": "white-label"},
+    {"keyword": "solar marketing hannover", "cluster": "local"}
+  ],
+  "notes": "14 von 23 Seeds ohne messbares Volumen in Semrush de. Gesamte Waermepumpen-Leadgen-Nachfrage, White-Label und Local liegen unter der Messschwelle. Kaufintention konzentriert sich auf PV-Begriffe mit sehr hohen CPCs (bis 14.86 EUR)."
+}
