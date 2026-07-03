@@ -1,0 +1,187 @@
+keyword,volume,kd,cpc,intent,cluster,quelle
+leads kaufen,390,6,7.91,transactional,a-money,domain:coform.de|domain:leadfluss.de
+hochpreis leadquelle,260,30,5.55,transactional,a-money,domain:anfragenfluss.de|domain:smart11.de
+photovoltaik leads,210,9,11.71,commercial,a-money,domain:anfragenfluss.de|domain:coform.de|domain:hntmedia.de|domain:leadfluss.de|domain:smart11.de|phrase_fullsearch:photovoltaik leads|phrase_related:photovoltaik leads kaufen|phrase_related:pv leads
+pv leads,170,3,9.56,commercial,a-money,domain:andreas-may.com|domain:anfragenfluss.de|domain:coform.de|domain:hntmedia.de|domain:leadfluss.de|domain:smart11.de|phrase_related:photovoltaik leads kaufen|seed:phrase_these
+photovoltaik leads kaufen,110,1,13.81,transactional,a-money,domain:andreas-may.com|domain:anfragenfluss.de|domain:coform.de|domain:hntmedia.de|domain:leadfluss.de|domain:smart11.de|phrase_fullsearch:photovoltaik leads|phrase_related:pv leads|seed:phrase_these
+pv leads kaufen,90,1,14.45,transactional,a-money,domain:andreas-may.com|domain:anfragenfluss.de|domain:coform.de|domain:hasimuener.de|domain:hntmedia.de|domain:leadfluss.de|domain:smart11.de|phrase_related:photovoltaik leads kaufen|phrase_related:pv leads
+solar leads,90,7,12.33,commercial,a-money,domain:andreas-may.com|domain:anfragenfluss.de|domain:coform.de|domain:hntmedia.de|domain:leadfluss.de|domain:smart11.de|phrase_fullsearch:solar leads|phrase_related:photovoltaik leads kaufen|phrase_related:pv leads
+wärmepumpen leads,90,0,11.83,commercial,a-money,phrase_fullsearch:wärmepumpe leads
+buy solar leads,70,,0.0,commercial,a-money,domain:andreas-may.com|domain:anfragenfluss.de|domain:hntmedia.de|domain:leadfluss.de|domain:smart11.de|phrase_fullsearch:solar leads|phrase_related:photovoltaik leads kaufen
+leadgenerierung photovoltaik,70,0,0.0,transactional,a-money,phrase_fullsearch:leadgenerierung|seed:phrase_these
+solar lead generation,70,16,9.06,commercial,a-money,domain:andreas-may.com|domain:coform.de|domain:leadfluss.de|domain:smart11.de|phrase_fullsearch:solar leads|phrase_related:photovoltaik leads kaufen|phrase_related:pv leads
+deine photovoltaik leads,20,,0.0,commercial,a-money,phrase_fullsearch:photovoltaik leads
+leads für photovoltaik,20,0,16.25,commercial,a-money,phrase_fullsearch:photovoltaik leads
+leads kaufen photovoltaik,20,,11.12,transactional,a-money,phrase_fullsearch:photovoltaik leads
+leads photovoltaik,20,,15.64,commercial,a-money,phrase_fullsearch:photovoltaik leads
+leads photovoltaik kaufen,20,,15.3,transactional,a-money,phrase_fullsearch:photovoltaik leads
+photovoltaik leads generieren,20,0,14.13,commercial,a-money,phrase_fullsearch:photovoltaik leads
+photovoltaik leads kaufen kosten,20,0,15.96,transactional,a-money,phrase_fullsearch:photovoltaik leads
+solar leads deutschland,20,,0.0,commercial,a-money,phrase_fullsearch:solar leads
+solar leads kaufen,20,0,14.86,transactional,a-money,phrase_fullsearch:solar leads|seed:phrase_these
+wärmepumpen leads kaufen,20,0,10.29,transactional,a-money,phrase_fullsearch:wärmepumpe leads
+photovoltaik lead generator,10,,0.0,commercial,a-money,phrase_fullsearch:photovoltaik leads
+solar lead generation companies,10,,0.0,commercial,a-money,phrase_fullsearch:solar leads
+solar lead generator,10,,12.33,commercial,a-money,phrase_fullsearch:solar leads
+solar leads generation,10,,12.33,commercial,a-money,phrase_fullsearch:solar leads
+b2b leads photovoltaik,0,,0.0,commercial,a-money,phrase_fullsearch:photovoltaik leads
+exklusive photovoltaik leads,0,,0.0,commercial,a-money,phrase_fullsearch:photovoltaik leads
+lead portale wärmepumpen,0,,0.0,commercial,a-money,phrase_fullsearch:wärmepumpe leads
+leadgenerierung wärmepumpe,0,,0.0,transactional,a-money,seed:kein-volumen
+leads für solarteure,0,,0.0,commercial,a-money,seed:kein-volumen
+photovoltaik leads kosten,0,,0.0,transactional,a-money,phrase_fullsearch:photovoltaik leads
+photovoltaik leads regional,0,,0.0,commercial,a-money,phrase_fullsearch:photovoltaik leads
+solar leads anbieter vergleich,0,,0.0,transactional,a-money,seed:kein-volumen
+solarleads anbieter,0,,0.0,transactional,a-money,seed:kein-volumen
+warme photovoltaik leads,0,,0.0,commercial,a-money,phrase_fullsearch:photovoltaik leads
+wärmepumpe leads,0,,0.0,commercial,a-money,phrase_fullsearch:wärmepumpe leads
+wärmepumpe leads kaufen,0,,0.0,transactional,a-money,seed:kein-volumen
+aroundhome,8100,,0.54,navigational,b-portal-alternativen,phrase_fullsearch:aroundhome
+checkfox,1900,22,4.34,navigational,b-portal-alternativen,phrase_fullsearch:checkfox
+wattfox,880,39,2.79,navigational,b-portal-alternativen,phrase_fullsearch:wattfox|phrase_related:wattfox erfahrungen
+checkfox erfahrungen,590,20,3.13,commercial,b-portal-alternativen,phrase_fullsearch:checkfox|phrase_related:wattfox erfahrungen
+checkfox seriös,590,16,3.24,commercial,b-portal-alternativen,phrase_fullsearch:checkfox|phrase_related:wattfox erfahrungen
+aroundhome erfahrungen,480,19,0.51,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+selfmade energy,480,37,2.68,navigational,b-portal-alternativen,phrase_fullsearch:selfmade energy
+aroundhome erfahrung,320,22,0.51,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+photovoltaik angebotsvergleich,320,30,6.3,commercial,b-portal-alternativen,phrase_related:wattfox erfahrungen
+aroundhome seriös,260,22,0.55,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+wattfox gmbh,260,30,3.51,navigational,b-portal-alternativen,phrase_fullsearch:wattfox|phrase_related:wattfox erfahrungen
+photovoltaikanlage angebotsvergleich,210,,7.41,commercial,b-portal-alternativen,phrase_related:wattfox erfahrungen
+aroundhome kosten,170,35,0.72,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+checkfox solar,170,16,6.63,navigational,b-portal-alternativen,phrase_fullsearch:checkfox|phrase_related:wattfox erfahrungen
+aroundhome bewertung,140,,0.34,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+rezensionen für aroundhome,140,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+aroundhome bewertungen,110,,0.34,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+checkfox erfahrung,110,,5.05,commercial,b-portal-alternativen,phrase_fullsearch:checkfox|phrase_related:wattfox erfahrungen
+photovoltaik angebotsvergleich seriös,110,,5.74,commercial,b-portal-alternativen,phrase_related:wattfox erfahrungen
+wattfox erfahrungen,110,19,2.41,commercial,b-portal-alternativen,phrase_fullsearch:wattfox|seed:phrase_these
+daa leads,90,11,9.94,commercial,b-portal-alternativen,domain:leadfluss.de|phrase_fullsearch:daa leads|phrase_related:photovoltaik leads kaufen
+aroundhome de,70,,1.35,navigational,b-portal-alternativen,phrase_fullsearch:aroundhome
+aroundhome deutschland,70,,0.0,navigational,b-portal-alternativen,phrase_fullsearch:aroundhome
+aroundhome kosten für handwerker,70,0,0.92,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+checkfox photovoltaik seriös,70,,4.55,commercial,b-portal-alternativen,phrase_fullsearch:checkfox|phrase_related:wattfox erfahrungen
+ist checkfox seriös,70,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:checkfox
+aroundhome erfahrungen handwerker,50,0,0.72,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome|seed:phrase_these
+aroundhome solaranlage,50,,5.19,navigational,b-portal-alternativen,phrase_fullsearch:aroundhome
+checkfox wärmepumpe,50,0,3.49,navigational,b-portal-alternativen,phrase_fullsearch:checkfox
+selfmade-energy,50,,3.87,navigational,b-portal-alternativen,phrase_fullsearch:selfmade energy
+was ist checkfox,40,,0.0,navigational,b-portal-alternativen,phrase_fullsearch:checkfox
+aroundhome.de,30,,1.35,navigational,b-portal-alternativen,phrase_fullsearch:aroundhome
+checkfox photovoltaik,30,,3.76,navigational,b-portal-alternativen,phrase_fullsearch:checkfox
+rezensionen für wattfox,30,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+aroundhome alternative,20,0,1.17,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+aroundhome de bewertung,20,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+aroundhome de erfahrungen,20,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+aroundhome erfahrungsberichte,20,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:aroundhome
+checkfox arbeitgeber erfahrungen,20,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:checkfox
+checkfox bewertung,20,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:checkfox
+selfmade energy erfahrungen,20,0,3.8,commercial,b-portal-alternativen,phrase_fullsearch:selfmade energy|seed:phrase_these
+selfmade energy solarrechner,20,,2.9,navigational,b-portal-alternativen,phrase_fullsearch:selfmade energy
+wattfox bewertung,20,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+wattfox gmbh bewertung,20,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+wattfox gmbh erfahrungen,20,,4.1,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+wattfox gmbh rezensionen,20,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+wattfox gmbh seriös,20,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+wattfox kosten,20,0,0.98,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+wattfox leads,20,0,6.0,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+wattfox leads erfahrungen,20,0,10.04,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+wattfox leads kaufen,20,0,8.03,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+wattfox photovoltaik,20,,6.02,navigational,b-portal-alternativen,phrase_fullsearch:wattfox
+wattfox seriös,20,0,0.0,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+wattfox stiftung warentest,20,,1.99,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+selfmade-energy.com,10,,0.0,navigational,b-portal-alternativen,phrase_fullsearch:selfmade energy
+wattfox rezensionen,10,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:wattfox
+construction daa leads,0,,0.0,commercial,b-portal-alternativen,phrase_fullsearch:daa leads
+daa leads erfahrungen,0,,0.0,commercial,b-portal-alternativen,seed:kein-volumen
+photovoltaik portal erfahrungen,0,,0.0,commercial,b-portal-alternativen,seed:kein-volumen
+wattfox alternative,0,,0.0,commercial,b-portal-alternativen,seed:kein-volumen
+kunden gewinnen,1000,18,5.09,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+neue kunden gewinnen,480,17,3.85,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+online kunden gewinnen,320,10,9.66,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+mehr kunden gewinnen,170,,5.92,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+kunden für sich gewinnen,170,,4.66,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+b2b kunden gewinnen,140,18,8.46,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+photovoltaik vertrieb,140,19,2.31,informational,c-problem-aware,phrase_related:wärmepumpe vertrieb
+kunden neu gewinnen,140,,3.85,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+wärmepumpe vertrieb,110,,2.32,informational,c-problem-aware,domain:leadfluss.de
+maßnahme um kunden zu gewinnen,110,,2.94,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+kunden gewinnen im internet,90,,0.0,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+wärmepumpen vertrieb,90,8,2.32,informational,c-problem-aware,phrase_related:wärmepumpe vertrieb
+kunden online gewinnen,90,,8.12,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+als dienstleister kunden gewinnen,70,9,3.22,commercial,c-problem-aware,phrase_fullsearch:kunden gewinnen
+kunden gewinnen handwerk,70,5,4.92,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+kunden gewinnung,70,,5.09,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+photovoltaik marketing,70,0,5.75,informational,c-problem-aware,phrase_fullsearch:photovoltaik marketing
+wie gewinne ich kunden,70,,3.6,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+vertrieb kunden gewinnen,40,,5.02,informational,c-problem-aware,phrase_fullsearch:kunden gewinnen
+mehr anfragen photovoltaik,0,,0.0,informational,c-problem-aware,seed:kein-volumen
+photovoltaik kunden gewinnen,0,,0.0,informational,c-problem-aware,seed:phrase_these
+solar marketing agentur,0,,6.07,commercial,c-problem-aware,seed:phrase_these
+werbung solarfirma,0,,0.0,informational,c-problem-aware,seed:kein-volumen
+wärmepumpe aufträge bekommen,0,,0.0,informational,c-problem-aware,seed:kein-volumen
+leadgenerierung,1900,42,5.81,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung agentur,880,12,7.01,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+b2b leadgenerierung,720,18,12.22,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+b2b leadgenerierung agentur,480,17,15.09,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung b2b,480,18,13.14,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+b2b leads,260,,8.82,transactional,d-white-label-agentur,phrase_related:leads kaufen
+agentur leadgenerierung,170,,6.69,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+b2b leads kaufen,170,,8.77,transactional,d-white-label-agentur,phrase_related:leads kaufen
+leadgenerierung b2b agentur,170,,0.0,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+automatisierte leadgenerierung,140,17,4.31,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung bedeutung,140,,1.07,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung social media,140,,0.0,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+online leadgenerierung,140,,9.5,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+was ist leadgenerierung,140,,1.66,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+agentur für leadgenerierung,110,14,6.51,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+digitale leadgenerierung,110,,4.3,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung b2c,110,,4.76,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung maßnahmen,110,,0.0,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung online,110,,9.5,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung software,110,,8.01,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leads b2b,110,,8.82,transactional,d-white-label-agentur,phrase_related:leads kaufen
+b2b leadgenerierung hamburg,90,,0.0,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung definition,90,,0.86,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung marketing,90,,8.31,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung online marketing,90,,0.0,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung strategie,90,,0.0,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung was ist das,90,,2.02,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung webagentur,90,,0.0,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+agentur leadgenerierung b2b,70,,15.55,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+facebook leadgenerierung,70,,0.0,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+google ads leadgenerierung,70,,0.0,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgeneration,70,,5.62,informational,d-white-label-agentur,domain:coform.de
+leadgenerator,70,,6.16,informational,d-white-label-agentur,domain:coform.de
+leadgenerierung dienstleister,70,12,0.0,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung dsgvo,70,,0.0,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung facebook,70,,0.0,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung linkedin,70,,4.66,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung mit ki,70,0,7.05,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung münchen,70,,0.0,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung tool,70,,5.51,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung tools,70,,10.19,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung vertrieb,70,,0.0,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+b2b leadgenerierung berater,50,,0.0,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung agentur b2b,50,,8.19,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung agentur industrie,50,,0.0,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+leadgenerierung b2b online,50,,0.0,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+seo leadgenerierung,50,,0.0,informational,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+b2b-leadgenerierung,40,,15.55,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+dienstleister für leadgenerierung,40,,0.0,transactional,d-white-label-agentur,phrase_fullsearch:leadgenerierung
+performance marketing white label,0,,0.0,transactional,d-white-label-agentur,seed:kein-volumen
+white label leadgenerierung,0,,0.0,informational,d-white-label-agentur,seed:kein-volumen
+wordpress agentur hannover,480,10,6.75,transactional,e-local,domain:hasimuener.de
+wordpress hannover,320,7,0.0,transactional,e-local,domain:hasimuener.de
+solar marketing hannover,0,,0.0,transactional,e-local,seed:kein-volumen
+e3 new energy,390,26,2.16,navigational,f-brand-proof,domain:hasimuener.de
+lead gen,590,,6.88,informational,z-sonstige,domain:coform.de
+lead generator,590,,5.62,informational,z-sonstige,domain:coform.de
+pv planer,390,,2.59,informational,z-sonstige,domain:leadfluss.de
+anfragenfluss,320,,9.0,navigational,z-sonstige,phrase_related:photovoltaik leads kaufen|phrase_related:pv leads
+lead-generierung formulare,170,,0.0,informational,z-sonstige,domain:leadfluss.de
+leads for b2b,170,,10.83,informational,z-sonstige,phrase_related:leads kaufen
+anfragenfluss gmbh,110,,6.07,navigational,z-sonstige,phrase_related:photovoltaik leads kaufen|phrase_related:pv leads
+fe leads,110,,6.63,informational,z-sonstige,domain:leadfluss.de
+leads generator,90,,6.88,informational,z-sonstige,domain:coform.de
+photovoltaik planung online kostenlos,90,,1.45,informational,z-sonstige,domain:leadfluss.de

@@ -1,0 +1,21 @@
+{
+  "report": "phrase_organic",
+  "phrase": "wattfox erfahrungen",
+  "database": "de",
+  "type": "live",
+  "retrieved": "2026-07-03",
+  "volume": 110,
+  "results": [
+    {"pos": 1, "domain": "de.trustpilot.com", "url": "https://de.trustpilot.com/review/wattfox.de"},
+    {"pos": 2, "domain": "www.finanztip.de", "url": "https://www.finanztip.de/erfahrungen/photovoltaik-angebotsvergleich/"},
+    {"pos": 3, "domain": "www.wattfox.de", "url": "https://www.wattfox.de/"},
+    {"pos": 4, "domain": "www.kununu.com", "url": "https://www.kununu.com/de/wattfox/kommentare"},
+    {"pos": 5, "domain": "www.facebook.com", "url": "https://www.facebook.com/photo.php?fbid=1093004496211609"},
+    {"pos": 6, "domain": "www.diebewertung.de", "url": "https://www.diebewertung.de/vorsicht-datensammlerwattfox-gmbh-aus-freiburg/"},
+    {"pos": 7, "domain": "www.wattfox.de", "url": "https://www.wattfox.de/verbraucher"},
+    {"pos": 8, "domain": "www.provenexpert.com", "url": "https://www.provenexpert.com/de-de/wattfox-gmbh/"},
+    {"pos": 9, "domain": "www.immobilien-profi.de", "url": "https://www.immobilien-profi.de/leadkauf-2-was-macht-eigentlich-wattfox/"},
+    {"pos": 10, "domain": "www.instagram.com", "url": "https://www.instagram.com/p/DLr5idyo7ue/"}
+  ],
+  "insight": "SERP komplett von Bewertungsportalen, Social und Wattfox selbst besetzt. KEIN Leadgen-Dienstleister rankt hier. Einziger inhaltlicher Beitrag aus Anbietersicht: immobilien-profi.de (Pos. 9). Eine 'Wattfox Erfahrungen aus Anbietersicht + Alternative'-Seite hat realistische Chancen auf Top 10, da kaum Wettbewerb um die B2B-Perspektive."
+}
