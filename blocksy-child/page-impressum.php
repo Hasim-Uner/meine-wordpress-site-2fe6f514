@@ -390,7 +390,7 @@ while ( have_posts() ) :
 					<div class="imprint-quickfacts" aria-label="Anbieter und Kontakt">
 						<div class="imprint-quickfact">
 							<span class="imprint-quickfact__label">Anbieter</span>
-							<span class="imprint-quickfact__value">Haşim Üner</span>
+							<span class="imprint-quickfact__value">Hasim Üner</span>
 						</div>
 
 						<div class="imprint-quickfact">
@@ -417,10 +417,14 @@ while ( have_posts() ) :
 						<span class="imprint-copy-chip">Angaben gemäß § 5 DDG</span>
 						<h2 id="imprint-ddg">1. Diensteanbieter</h2>
 						<p>
-							Haşim Üner<br>
+							Hasim Üner<br>
 							Warschauer Str. 5<br>
 							30982 Pattensen<br>
 							Deutschland
+						</p>
+						<p>
+							Die Namensangabe folgt der Schreibweise im Ausweisdokument.
+							Die Eigenschreibweise lautet Haşim Üner.
 						</p>
 						<div class="imprint-note">
 							<strong>Geschäftlicher Zweck der Website:</strong>
@@ -446,7 +450,7 @@ while ( have_posts() ) :
 						<span class="imprint-copy-chip">Redaktionelle Verantwortung</span>
 						<h2 id="imprint-editorial">3. Verantwortlich i.S.d. § 18 Abs. 2 MStV</h2>
 						<p>
-							Haşim Üner<br>
+							Hasim Üner<br>
 							Warschauer Str. 5<br>
 							30982 Pattensen<br>
 							Deutschland
