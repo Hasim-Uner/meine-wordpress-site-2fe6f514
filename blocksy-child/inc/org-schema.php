@@ -15,6 +15,27 @@ function hu_person_profile_url() {
     return home_url('/uber-mich/');
 }
 
+/**
+ * Alternate spellings of the personal brand name.
+ *
+ * The canonical spelling is "Haşim Üner" (Turkish ş). Search engines learned
+ * the entity for years under the pre-rebrand spelling "Hasim Üner" and its
+ * ASCII transliterations, so Person, Organization and WebSite nodes must
+ * declare these as alternateName until the knowledge graph has re-learned
+ * the canonical form. Do not remove them while brand queries without ş
+ * still carry search volume.
+ *
+ * @return array<int, string>
+ */
+function hu_brand_alternate_names() {
+    return [
+        'Hasim Üner',
+        'Hasim Uner',
+        'Hasim Uener',
+        'Haşim Uner',
+    ];
+}
+
 function hu_person_same_as_urls() {
     return [
         'https://www.linkedin.com/in/hasim-%C3%BCner/',
@@ -76,6 +97,7 @@ function hu_get_person_node() {
         '@type'       => 'Person',
         '@id'         => hu_person_schema_id(),
         'name'        => 'Haşim Üner',
+        'alternateName' => hu_brand_alternate_names(),
         'jobTitle'    => 'Architekt für eigene Anfrage-Systeme',
         'url'         => hu_person_profile_url(),
         'image'       => hu_get_profile_image_url(),
@@ -575,7 +597,7 @@ function hu_output_schema()
         '@type'    => ['Organization', 'LocalBusiness'],
         '@id'      => home_url('/#organization'),
         'name'     => 'Haşim Üner | Architekt für eigene Anfrage-Systeme',
-        'alternateName' => 'Haşim Üner',
+        'alternateName' => array_merge( [ 'Haşim Üner' ], hu_brand_alternate_names() ),
         'url'      => home_url(),
         'description' => 'Architekt für eigene Anfrage-Systeme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',
         'telephone'   => '+49 176 81407134',
@@ -708,6 +730,7 @@ function hu_output_schema()
         '@id'         => home_url('/#website'),
         'url'         => home_url('/'),
         'name'        => 'Haşim Üner | Architekt für eigene Anfrage-Systeme',
+        'alternateName' => array_merge( [ 'Haşim Üner' ], hu_brand_alternate_names() ),
         'description' => 'Architekt für eigene Anfrage-Systeme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',
         'inLanguage'  => 'de',
         'publisher'   => ['@id' => home_url('/#organization')],
