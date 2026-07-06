@@ -33,6 +33,15 @@ Das Problem ist nicht CTR, sondern Position: Fast alles rankt auf Seite 2–7. I
 - /ga4-tracking-setup/, /design-ist-mehr-als-aesthetik/: Altlasten mit ~0 Signal — liegen lassen.
 - Alle Non-Target-Queries aus Punkt 5: ignorieren.
 
+## Nachtrag: Semrush KI-Sichtbarkeit (2026-07-03)
+
+Semrush AI-SEO zeigt: ChatGPT **zitiert bereits `/b2b-solar-leads/` als Quelle** für den Prompt
+„Welche Strategien und Tools helfen beim Verkauf von PV-Systemen…" (Thema „Photovoltaik Vertrieb",
+KI-Suchvolumen 1.179; Marke selbst noch nicht namentlich erwähnt). Dritter unabhängiger Beleg für
+dieselbe Seite (nach GSC-Pos. 9,65 „pv termine b2b"). Ableitung: llms.txt-/Schema-/E-E-A-T-Strategie
+wirkt; sachliche, strukturierte Markteinordnungen sind das zitierfähigste Format → stützt die
+Portal-Post-Priorität zusätzlich. Mitzitierte Quellen: leadscraper.de, sbvertrieb.com, ASEW + Tool-Anbieter.
+
 ## Fokus-Ableitung (Reihenfolge)
 
 1. **Portal-Posts (P1 #3–5) starten** — durch GSC bestätigt (wattfox-Klick, aroundhome-/einfachsolar-Impressionen). EinfachSolar als fünften Kandidaten aufnehmen.
