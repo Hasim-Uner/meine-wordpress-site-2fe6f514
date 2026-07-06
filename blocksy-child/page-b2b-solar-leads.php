@@ -95,6 +95,10 @@ $fit_no = [
 
 $faq = [
 	[
+		'question' => 'Was ist von gekauften PV-Terminen für den B2B-Vertrieb zu halten?',
+		'answer'   => 'Termin-Anbieter verkaufen fertig gelegte Vertriebstermine statt Datensätze – klingt bequem, verlagert aber die Qualifizierung nach hinten: Ob Anschlussleistung, Entscheiderrolle und Investitionsabsicht stimmen, zeigt sich erst im Gespräch. Für Gewerbe-PV mit Buying-Center-Logik gilt dieselbe Rechnung wie beim Lead-Kauf: Kosten pro Auftrag zählen, nicht Kosten pro Termin. Ein eigenes System qualifiziert vor dem Termin – nicht danach.',
+	],
+	[
 		'question' => 'Warum reicht eine B2C-Solar-Seite nicht für Gewerbe-PV?',
 		'answer'   => 'B2C- und B2B-PV haben unterschiedliche Sprache, unterschiedliche Entscheider und unterschiedliche Vertragsstrukturen. Ein gewerblicher Einkäufer mit 800 kWp Anschlussleistung und PPA-Bedarf erkennt sich in einer Hausbesitzer-Seite mit „CO₂-Fußabdruck" nicht wieder. Die Anfragequalität fällt drastisch.',
 	],
