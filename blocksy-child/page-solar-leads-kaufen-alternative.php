@@ -352,6 +352,9 @@ get_header();
 					</article>
 				<?php endforeach; ?>
 			</div>
+			<p class="hu-intercept__section-lead" style="margin-top:24px;">
+				Einzelne Anbieter im Detail: <a href="<?php echo esc_url( home_url( '/aroundhome-solar-einordnung/' ) ); ?>" data-track-action="provider_aroundhome" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Aroundhome-Erfahrungen für Handwerker</a> · <a href="<?php echo esc_url( home_url( '/wattfox-solar-leads-einordnung/' ) ); ?>" data-track-action="provider_wattfox" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Wattfox-Erfahrungen &amp; Kosten</a> · <a href="<?php echo esc_url( home_url( '/daa-photovoltaik-leads-einordnung/' ) ); ?>" data-track-action="provider_daa" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">DAA Leads</a> · <a href="<?php echo esc_url( home_url( '/checkfox-solar-waermepumpe-einordnung/' ) ); ?>" data-track-action="provider_checkfox" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Checkfox: seriös?</a> · <a href="<?php echo esc_url( home_url( '/leadfluss-pv-leads-einordnung/' ) ); ?>" data-track-action="provider_leadfluss" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Leadfluss</a>
+			</p>
 		</div>
 	</section>
 
