@@ -309,6 +309,13 @@ function hu_enqueue_assets() {
 		}
 	}
 
+	// ── F1a-int-pilot) Light-Body-Design-Pilot NUR auf /waermepumpen-leads/ ──
+	// Lädt nach dem gemeinsamen Intercept-CSS und überschreibt scoped
+	// (data-track-page). Isoliert – berührt keine andere Intercept-Seite.
+	if ( is_page( 'waermepumpen-leads' ) || is_page_template( 'page-waermepumpen-leads.php' ) ) {
+		hu_enqueue_css( 'nexus-waermepumpen-leads-css', 'waermepumpen-leads.css', [ 'nexus-intercept-solar-leads-css' ] );
+	}
+
 	// ── F1a-int-aff) Affiliate-Disclosure-CSS auf Seiten mit Partnerlinks ──
 	if ( is_page( 'stack-solar' ) || is_page_template( 'page-stack-solar.php' ) ) {
 		hu_enqueue_css( 'nexus-affiliate-notice-css', 'affiliate-notice.css', [ 'nexus-intercept-solar-leads-css' ] );
