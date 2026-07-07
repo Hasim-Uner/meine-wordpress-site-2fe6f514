@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Pilot-Design: /waermepumpen-leads/  —  Light-Body + Dark-Anchor
+   --------------------------------------------------------------------------
+   Lädt NUR auf dieser Seite, überschreibt scoped via
+   [data-track-page="waermepumpen-leads"]. Kann keine andere Intercept-Seite
+   beeinflussen. Basis: solar-leads-kaufen-alternative.css (dark).
+
+   Idee: Header (global) → dunkler Hero → heller, ruhiger Paper-Body →
+   dunkler Final-CTA → dunkler Footer (global). Die "Vertrauens-Fläche" in
+   der Mitte ist hell und gut lesbar für SHK-/Handwerks-Entscheider, die
+   Premium-Rahmen bleibt dunkel. Warme Neutraltöne + Marken-Copper.
+   ========================================================================== */
+
+.hu-intercept[data-track-page="waermepumpen-leads"] {
+	/* Dunkle Anker auf das warme Schwarz von Startseite/Blog ziehen */
+	--nx-bg: hsl(30 7% 5%);
+	--nx-text: hsl(37 24% 92%);
+
+	/* Helle Paper-Palette (Pillar-konsistent, warm) */
+	--paper: hsl(37 33% 95%);
+	--surface: hsl(42 45% 99%);
+	--ink: hsl(28 16% 15%);
+	--ink-soft: hsl(28 10% 32%);
+	--line: hsl(33 24% 86%);
+	--copper: #b46a3c;
+	--copper-ink: #8f4f24;
+	--red-ink: #b0392a;
+	--card-shadow: 0 1px 2px hsl(28 20% 40% / 0.06), 0 10px 26px -14px hsl(28 30% 28% / 0.14);
+	--card-shadow-hover: 0 2px 5px hsl(28 20% 40% / 0.09), 0 20px 44px -18px hsl(23 45% 32% / 0.24);
+}
+
+/* ── Helle Sektionen (alles zwischen Hero und Final) ──────────────────────
+   Hero (.hu-intercept__hero) und Final (.hu-intercept__final) bleiben dunkel
+   und werden hier bewusst NICHT angefasst. */
+.hu-intercept[data-track-page="waermepumpen-leads"] :is(
+	.hu-intercept__compare,
+	.hu-intercept__why,
+	.hu-intercept__system,
+	.hu-intercept__faq
+) {
+	background: var(--paper);
+	border-top: 1px solid var(--line);
+	color: var(--ink-soft);
+}
+
+/* Erste helle Sektion nach dem dunklen Hero: sanfter Tiefen-Übergang,
+   damit der Wechsel dunkel→hell bewusst wirkt statt hart. */
+.hu-intercept[data-track-page="waermepumpen-leads"] #vergleich {
+	box-shadow: inset 0 16px 30px -22px hsl(28 30% 16% / 0.30);
+}
+
+/* ── Typografie hell ──────────────────────────────────────────────────── */
+.hu-intercept[data-track-page="waermepumpen-leads"] :is(
+	.hu-intercept__compare,
+	.hu-intercept__why,
+	.hu-intercept__system,
+	.hu-intercept__faq
+) .hu-intercept__h2 {
+	color: var(--ink);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] :is(
+	.hu-intercept__compare,
+	.hu-intercept__why,
+	.hu-intercept__system,
+	.hu-intercept__faq
+) .hu-intercept__section-lead {
+	color: var(--ink-soft);
+}
+
+/* Anbieter-Detail-Links (Interne Verlinkung) im hellen Body */
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__section-lead a {
+	color: var(--copper-ink);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	text-decoration-thickness: 1px;
+	transition: color 0.18s ease;
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__section-lead a:hover,
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__section-lead a:focus-visible {
+	color: var(--copper);
+}
+
+/* ── Compare-Panels ───────────────────────────────────────────────────── */
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__panel {
+	background: var(--surface);
+	border-color: var(--line);
+	box-shadow: var(--card-shadow);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__panel--negative {
+	border-color: hsl(8 45% 82%);
+	background: hsl(10 50% 98%);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__panel--positive {
+	border-color: hsl(28 55% 80%);
+	background: hsl(34 55% 97%);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__panel--positive .hu-intercept__panel-title,
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__panel--positive .hu-intercept__fact-key {
+	color: var(--copper-ink);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__panel--negative .hu-intercept__panel-title,
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__panel--negative .hu-intercept__fact-key {
+	color: var(--red-ink);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__fact-key {
+	color: var(--ink);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__fact-label {
+	color: var(--ink-soft);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__facts li {
+	border-bottom-color: var(--line);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__compare-note {
+	color: var(--ink-soft);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__compare-note a {
+	color: var(--copper-ink);
+}
+
+/* ── Cards (Why / Markt-Modelle / Vertiefung) ─────────────────────────── */
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__card {
+	background: var(--surface);
+	border-color: var(--line);
+	box-shadow: var(--card-shadow);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__card:hover {
+	border-color: var(--copper);
+	box-shadow: var(--card-shadow-hover);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__card-title,
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__card-title a {
+	color: var(--ink);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__card-title a:hover,
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__card-title a:focus-visible {
+	color: var(--copper);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__card-text {
+	color: var(--ink-soft);
+}
+
+/* ── System-Layers ────────────────────────────────────────────────────── */
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__layer {
+	background: var(--surface);
+	border-color: var(--line);
+	box-shadow: var(--card-shadow);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__layer-index {
+	color: var(--copper-ink);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__layer-title {
+	color: var(--ink);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__layer-text {
+	color: var(--ink-soft);
+}
+
+/* ── FAQ ──────────────────────────────────────────────────────────────── */
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__faq-item {
+	background: var(--surface);
+	border-color: var(--line);
+	box-shadow: var(--card-shadow);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__faq-item[open] {
+	border-color: var(--copper);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__faq-q {
+	color: var(--ink);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__faq-q::after {
+	color: var(--copper-ink);
+}
+
+.hu-intercept[data-track-page="waermepumpen-leads"] .hu-intercept__faq-a {
+	color: var(--ink-soft);
+}
