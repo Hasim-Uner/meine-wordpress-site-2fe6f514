@@ -1201,7 +1201,10 @@ function hu_output_schema()
         }
 
         if ('wordpress-agentur-hannover' === $slug && function_exists('nexus_get_agentur_faq_items')) {
-            $agentur_faq_items = array_slice(nexus_get_agentur_faq_items(), 0, 8);
+            // Alle sichtbaren FAQ-Items ins Schema spiegeln (Seite rendert den
+            // vollen Satz aus nexus_get_agentur_faq_items()); Schema == sichtbarer
+            // Inhalt bleibt so konsistent.
+            $agentur_faq_items = nexus_get_agentur_faq_items();
             $faq_entities = array_map(
                 static function ($item) {
                     return [

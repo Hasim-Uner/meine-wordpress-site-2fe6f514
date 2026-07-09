@@ -668,6 +668,14 @@ function nexus_get_agentur_faq_items() {
 			'question' => 'Warum rankt eine WordPress-Seite, liefert aber keine Anfragen?',
 			'answer'   => 'Ranking und Anfragequalität sind zwei verschiedene Probleme. Oft rankt eine Seite für Informationssuchen, während Proof, CTA-Führung und kaufnahe Argumentation fehlen. Genau dort verbindet diese Arbeit SEO, Struktur, Tracking und Conversion.',
 		],
+		[
+			'question' => 'Seid ihr eine Webdesign-Agentur oder Internetagentur in Hannover?',
+			'answer'   => 'Technisch überschneidet sich die Arbeit mit dem, was eine Webdesign-Agentur oder Internetagentur in Hannover leistet: WordPress-Umsetzung, Design und Seitenstruktur. Der Unterschied liegt im Ziel — nicht die schönste Website, sondern eine, die kaufnahe Besucher messbar in qualifizierte Anfragen führt. Design ist hier Mittel zum Zweck, nicht das Ergebnis.',
+		],
+		[
+			'question' => 'Was unterscheidet Sie von einer klassischen Webagentur in Hannover?',
+			'answer'   => 'Eine klassische Webagentur in Hannover liefert meist eine Website und übergibt sie. Hier ist die Website Teil eines Anfrage-Systems: technisches SEO, Server-Side Tracking und Conversion-Führung gehören zusammen, damit am Ende nicht nur Besucher, sondern nachvollziehbar qualifizierte Anfragen entstehen. Reine Webentwicklung ohne diese Lead-Logik ist bewusst nicht der Fokus.',
+		],
 	];
 }
 
