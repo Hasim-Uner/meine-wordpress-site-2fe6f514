@@ -47,9 +47,9 @@ set_query_var( 'nexus_hide_footer_primary_cta', true );
 
 		<p class="nexus-footer-cta__legal">
 			Keine Cookies bei öffentlichen Seitenaufrufen.
-			<a href="<?php echo esc_url( $privacy_url ); ?>" rel="nofollow">Datenschutz</a>
+			<a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutz</a>
 			<span aria-hidden="true">·</span>
-			<a href="<?php echo esc_url( $imprint_url ); ?>" rel="nofollow">Impressum</a>
+			<a href="<?php echo esc_url( $imprint_url ); ?>">Impressum</a>
 		</p>
 
 		<?php get_template_part( 'template-parts/trust-section' ); ?>

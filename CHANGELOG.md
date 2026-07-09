@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 2026-07
+
+### Semrush Site-Audit: Meta-Descriptions & interne Link-Hygiene
+
+- **Fehlende/doppelte Meta-Descriptions behoben** (`inc/seo-meta.php`, Forced-SEO-Map): `/stack-solar/` hatte keine Meta-Description; `/owned-leads-statt-ad-miete/` und `/meta-ads-fuer-b2b/` teilten sich eine identische. Jeder Slug bekommt jetzt eine eigene, eindeutige Description (nur `description` gesetzt, Titel bleiben unberührt).
+- **`rel="nofollow"` von internen Impressum-/Datenschutz-Links entfernt** (`template-parts/site-footer.php`, `template-parts/footer-cta.php`): nofollow auf internen Links widerspricht Googles Empfehlung und war Auslöser für ~168 Semrush-Warnungen. Die Seiten bleiben über `noindex`/robots aus dem Index — der nofollow war redundant. Sponsored-/Affiliate-Links (HostPress) bleiben korrekt `sponsored nofollow`.
+- **Nicht im Repo behebbar** (als manuelle WordPress-Admin-Aufgabe dokumentiert): 161 „Broken internal links" mit Zielen `?page_id=13035` / `?page_id=14283` (beide 404) stammen aus Menü/Widgets in der WordPress-DB, nicht aus dem Theme. Ebenso: fehlendes HSTS auf `www.hasimuener.de` (Server/Hosting).
+
 ## 2026-06
 
 ### Über-mich (Editorial) geschärft — person-first, ohne Money-Page-Redundanz

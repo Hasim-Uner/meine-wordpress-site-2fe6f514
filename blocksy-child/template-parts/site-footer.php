@@ -59,8 +59,8 @@ if ( $is_whitelabel_context ) {
 		<p class="ft__audit-note"><?php echo esc_html( $audit_footer_note ); ?></p>
 		<nav class="ft__audit-links" aria-label="Marktcheck-Footer-Navigation">
 			<a href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_footer_analysis" data-track-category="lead_gen">Marktcheck mit Fit-Entscheid starten</a>
-			<a href="<?php echo esc_url( $imprint_url ); ?>" rel="nofollow">Impressum</a>
-			<a href="<?php echo esc_url( $privacy_url ); ?>" rel="nofollow">Datenschutz</a>
+			<a href="<?php echo esc_url( $imprint_url ); ?>">Impressum</a>
+			<a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutz</a>
 		</nav>
 	</div>
 </footer>
@@ -76,9 +76,9 @@ if ( $is_whitelabel_context ) {
 			</div>
 			<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_energy_footer_analysis" data-track-category="lead_gen" data-track-section="footer_energy" data-track-funnel-stage="energy_footer">Marktcheck mit Fit-Entscheid starten</a>
 			<nav class="ft__energy-legal" aria-label="Rechtliches">
-			<a href="<?php echo esc_url( $imprint_url ); ?>" rel="nofollow">Impressum</a>
+			<a href="<?php echo esc_url( $imprint_url ); ?>">Impressum</a>
 			<span aria-hidden="true">·</span>
-			<a href="<?php echo esc_url( $privacy_url ); ?>" rel="nofollow">Datenschutz</a>
+			<a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutz</a>
 		</nav>
 		<div class="ft__social ft__social--energy" aria-label="Profile">
 			<a href="https://www.linkedin.com/in/hasim-%C3%BCner/" aria-label="LinkedIn-Profil" rel="me noopener noreferrer" target="_blank">
@@ -137,9 +137,9 @@ if ( $is_whitelabel_context ) {
 				</ul>
 
 				<nav class="ft__legal" aria-label="Rechtliches">
-					<a href="<?php echo esc_url( $imprint_url ); ?>" rel="nofollow">Impressum</a>
+					<a href="<?php echo esc_url( $imprint_url ); ?>">Impressum</a>
 					<span aria-hidden="true">·</span>
-					<a href="<?php echo esc_url( $privacy_url ); ?>" rel="nofollow">Datenschutz</a>
+					<a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutz</a>
 				</nav>
 			</section>
 		</nav>
