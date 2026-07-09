@@ -8,6 +8,12 @@
 - **`rel="nofollow"` von internen Impressum-/Datenschutz-Links entfernt** (`template-parts/site-footer.php`, `template-parts/footer-cta.php`): nofollow auf internen Links widerspricht Googles Empfehlung und war Auslöser für ~168 Semrush-Warnungen. Die Seiten bleiben über `noindex`/robots aus dem Index — der nofollow war redundant. Sponsored-/Affiliate-Links (HostPress) bleiben korrekt `sponsored nofollow`.
 - **Nicht im Repo behebbar** (als manuelle WordPress-Admin-Aufgabe dokumentiert): 161 „Broken internal links" mit Zielen `?page_id=13035` / `?page_id=14283` (beide 404) stammen aus Menü/Widgets in der WordPress-DB, nicht aus dem Theme. Ebenso: fehlendes HSTS auf `www.hasimuener.de` (Server/Hosting).
 
+### WordPress-Agentur-Seite: benachbarte lokale Suchintents via FAQ
+
+- Datengrundlage (Semrush DE): `/wordpress-agentur-hannover/` rankt #11 für „wordpress agentur hannover" (480/Monat); die Seite ist On-Page/intern (24 Link-Quellen, `ProfessionalService`-Schema) bereits ausgereizt. Benachbarte lokale Begriffe mit realem Volumen bleiben ungenutzt: „webdesign hannover" (1.600), „internetagentur hannover" (590), „webagentur hannover" (480).
+- Zwei FAQ-Items in `nexus_get_agentur_faq_items()` (`inc/helpers.php`) ergänzt, die diese Zweitbegriffe **als Abgrenzung** aufgreifen (Webdesign-/Internet-/Webagentur vs. Anfrage-System) — Positionierung wird gestärkt, nicht verwässert. Items fließen automatisch in Seite und `FAQPage`-JSON-LD.
+- `inc/org-schema.php`: FAQ-Schema-Cap (`array_slice(..., 0, 8)`) entfernt, damit das Schema den vollen sichtbaren FAQ-Satz spiegelt (Schema == sichtbarer Inhalt).
+
 ## 2026-06
 
 ### Über-mich (Editorial) geschärft — person-first, ohne Money-Page-Redundanz
