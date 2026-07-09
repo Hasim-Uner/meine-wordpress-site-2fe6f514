@@ -14,6 +14,13 @@
 - Zwei FAQ-Items in `nexus_get_agentur_faq_items()` (`inc/helpers.php`) ergänzt, die diese Zweitbegriffe **als Abgrenzung** aufgreifen (Webdesign-/Internet-/Webagentur vs. Anfrage-System) — Positionierung wird gestärkt, nicht verwässert. Items fließen automatisch in Seite und `FAQPage`-JSON-LD.
 - `inc/org-schema.php`: FAQ-Schema-Cap (`array_slice(..., 0, 8)`) entfernt, damit das Schema den vollen sichtbaren FAQ-Satz spiegelt (Schema == sichtbarer Inhalt).
 
+### Kontaktformular: stille `invalid_focus_type`-400er behoben (verlorene Leads)
+
+- **Ursache:** `/kontakt/` rendert das `focus`-Dropdown aus dem vollen `nexus_get_contact_focus_options()`-Satz, bietet standardmäßig aber nur die Anfragetypen `audit`/`implementation`/`ongoing` an. Vier Themen (`followup_scope`, `existing_client`, `question`, `cooperation`) passen zu keinem davon und wurden vom REST-Contract (`nexus_validate_contact_request_payload`) zwangsläufig mit `invalid_focus_type` (400) abgelehnt. Einziger Schutz war der JS-Optionsfilter — bei Cache-/JS-Aussetzern oder Flow-Races rutschte die Kombi durch: stiller 400, **keine Bestätigungs-/Benachrichtigungsmail, verlorener Lead** (u. a. Ads-Traffic mit `gclid`).
+- `page-kontakt.php`: `focus`-Optionen serverseitig auf Themen gefiltert, die zu mindestens einem angebotenen Anfragetyp passen (`$public_focus_options`). Deep-Links wie `?type=project&focus=followup_scope` bleiben funktionsfähig, weil dort `analysis`/`project` angeboten werden.
+- `assets/js/contact.js`: zusätzlicher Combo-Guard in `validateForm()` — eine inkompatible Thema/Typ-Kombination wird jetzt clientseitig mit klarer Meldung blockiert statt als stiller 400 gesendet.
+- REST-Contract und CRM-Payload unverändert.
+
 ## 2026-06
 
 ### Über-mich (Editorial) geschärft — person-first, ohne Money-Page-Redundanz

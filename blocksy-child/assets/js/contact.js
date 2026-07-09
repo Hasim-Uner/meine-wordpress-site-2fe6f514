@@ -535,6 +535,17 @@
                 var ctrl = setFieldError('focus', 'Bitte ein passendes Thema auswählen.');
                 errors.push({ field: 'focus', message: 'Bitte ein passendes Thema auswählen.' });
                 if (!firstInvalid) firstInvalid = ctrl || focusSelect;
+            } else if (focusSelect) {
+                // Combo-Guard: blockt inkompatible Thema/Typ-Kombinationen, falls der
+                // Options-Filter (syncFocusOptions) durch Cache/Race umgangen wurde —
+                // sonst quittiert das Backend das mit einem stillen invalid_focus_type-400.
+                var selectedFocusOption = focusSelect.selectedOptions && focusSelect.selectedOptions[0];
+                var allowedTypes = selectedFocusOption ? (selectedFocusOption.getAttribute('data-types') || '').split(',') : [];
+                if (allowedTypes.indexOf(getSelectedType()) === -1) {
+                    var ctrlCombo = setFieldError('focus', 'Bitte ein Thema wählen, das zu Ihrer Anfrage passt.');
+                    errors.push({ field: 'focus', message: 'Bitte ein passendes Thema auswählen.' });
+                    if (!firstInvalid) firstInvalid = ctrlCombo || focusSelect;
+                }
             }
 
             // message
