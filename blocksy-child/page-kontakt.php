@@ -47,7 +47,21 @@ $public_type_copy     = [
 	],
 ];
 $public_type_options  = array_intersect_key( $request_type_options, array_flip( $public_type_keys ) );
-$selected_focus       = isset( $focus_options[ $requested_focus ] ) ? $requested_focus : '';
+
+// Nur Themen anbieten, die zu mindestens einem der angebotenen Anfragetypen
+// passen. Sonst ist ein Thema wählbar, das der Backend-Contract
+// (nexus_validate_contact_request_payload) zwangsläufig mit invalid_focus_type
+// ablehnt — der bislang einzige Schutz war der JS-Filter, der bei Cache-/JS-
+// Aussetzern versagt und zu stillen 400ern (verlorene Leads) führt.
+$offered_type_keys    = array_keys( $public_type_options );
+$public_focus_options = array_filter(
+	$focus_options,
+	static function ( $focus_definition ) use ( $offered_type_keys ) {
+		$focus_types = isset( $focus_definition['types'] ) ? (array) $focus_definition['types'] : [];
+		return ! empty( array_intersect( $focus_types, $offered_type_keys ) );
+	}
+);
+$selected_focus       = isset( $public_focus_options[ $requested_focus ] ) ? $requested_focus : '';
 $selected_type        = isset( $public_type_options[ $requested_type ] ) ? $requested_type : '';
 
 if ( '' === $selected_type && isset( $public_type_options['audit'] ) ) {
@@ -251,7 +265,7 @@ $auto_scroll  = false;
 								<p id="contact-focus-help" class="contact-field__help" data-contact-focus-help><?php echo esc_html( $focus_help ); ?></p>
 								<select id="contact-focus" name="focus" required data-contact-focus-select aria-describedby="contact-focus-help contact-focus-error">
 									<option value="" <?php selected( '', $selected_focus ); ?> disabled>Bitte auswählen</option>
-									<?php foreach ( $focus_options as $focus_key => $focus_definition ) : ?>
+									<?php foreach ( $public_focus_options as $focus_key => $focus_definition ) : ?>
 										<option
 											value="<?php echo esc_attr( $focus_key ); ?>"
 											data-types="<?php echo esc_attr( implode( ',', array_map( 'sanitize_key', (array) $focus_definition['types'] ) ) ); ?>"
