@@ -177,6 +177,18 @@ function hu_get_forced_singular_seo_map() {
 	return (array) apply_filters(
 		'hu_forced_singular_seo_map',
 		[
+			// Eindeutige Meta-Descriptions für Seiten/Beiträge, die sonst ohne
+			// bzw. mit doppelter Description ausgeliefert wurden (Semrush Site
+			// Audit 2026-07-08). Nur 'description' gesetzt: Titel bleiben unberührt.
+			'stack-solar' => [
+				'description' => 'Der Performance-Stack für Solar- und SHK-Anbieter: Frontend, Managed Hosting, Server-Side Tracking, CRM und Marktcheck-Vorqualifizierung in fünf Schichten.',
+			],
+			'owned-leads-statt-ad-miete' => [
+				'description' => 'Von gemieteter Ad-Nachfrage zu eigenen Leads: Warum Owned-Lead-Infrastruktur B2B-Anbieter unabhängiger macht als Dauer-Budget bei Meta und Google Ads.',
+			],
+			'meta-ads-fuer-b2b' => [
+				'description' => 'Meta Ads für B2B: fünf Kampagnenstrukturen für planbare Anfragen statt teurer Reichweite — mit Consent, sauberem Tracking und CRM-Rückführung.',
+			],
 			'kontakt' => [
 				'title'       => 'Kontakt & Projektanfrage | Haşim Üner',
 				'description' => 'Projekt oder Frage kurz einordnen: ein Formular, händisch geprüfte Rückmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Vertriebsteam.',
