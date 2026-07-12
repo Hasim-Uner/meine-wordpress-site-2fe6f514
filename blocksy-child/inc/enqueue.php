@@ -481,6 +481,7 @@ function hu_enqueue_assets() {
 		|| is_page( 'whitelabel' )
 	) {
 		hu_enqueue_css( 'nexus-whitelabel-css', 'whitelabel.css', [ 'nexus-design-system' ] );
+		hu_enqueue_js( 'nexus-whitelabel-js', 'whitelabel.js', [ 'nexus-core-js' ] );
 	}
 
 	// ── Q) Template: Öffentliche Case Studies ──────────────────────

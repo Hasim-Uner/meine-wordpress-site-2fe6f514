@@ -17,6 +17,11 @@ $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 	: 'https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true';
 $mailto_url = 'mailto:hallo@hasimuener.de';
 
+$e3_case_url  = function_exists( 'hu_e3_canon' ) ? (string) ( hu_e3_canon()['url'] ?? home_url( '/e3-new-energy/' ) ) : home_url( '/e3-new-energy/' );
+$portrait_url = function_exists( 'hu_get_portrait_image_url' )
+	? hu_get_portrait_image_url()
+	: home_url( '/wp-content/uploads/2026/01/Hasim-Uener-Prtraeit_Startseite.webp' );
+
 $cpl_before     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' )      : '150 €';
 $cpl_after      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after',  'display', '22 €' )       : '22 €';
 $cpl_reduction  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', '−85 %' )   : '−85 %';
@@ -27,6 +32,9 @@ $roas           = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'roas', 'dis
 
 $cpl_after_int     = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'cpl_after',  'counter_target', 22 )  : 22;
 $cpl_reduction_int = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'cpl_reduction', 'counter_target', 85 ) : 85;
+$lead_count_int    = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'lead_count', 'counter_target', '1750' ) : 1750;
+$roas_int          = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'roas', 'counter_target', '34' )         : 34;
+$sales_conv_int    = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'sales_conversion', 'counter_target', '12' ) : 12;
 
 $problem_cards = [
 	[
@@ -46,21 +54,46 @@ $problem_cards = [
 	],
 ];
 
-$solution_steps = [
-	[
-		'step'  => '01',
-		'title' => 'Ihr brieft',
-		'copy'  => 'Kurzes Setup-Gespräch mit eurem Projektleiter. NDA möglich. Keine direkte Kundenansprache.',
+$solution_modes = [
+	'hintergrund' => [
+		'label' => 'Im Hintergrund',
+		'steps' => [
+			[
+				'step'  => '01',
+				'title' => 'Ihr brieft',
+				'copy'  => 'Kurzes Setup mit eurem Projektlead. NDA standardmäßig. Scope, Zugänge, Deadlines — einmal sauber geklärt.',
+			],
+			[
+				'step'  => '02',
+				'title' => 'Ich liefere',
+				'copy'  => 'Umsetzung im Hintergrund: Code, Tracking, Doku. Kommunikation läuft über euch, in eurem Ton, unter eurem Branding.',
+			],
+			[
+				'step'  => '03',
+				'title' => 'Ihr präsentiert',
+				'copy'  => 'Übergabe unter eurem Namen: Reports, Code-Doku und Files, fertig aufbereitet für euren Kunden.',
+			],
+		],
 	],
-	[
-		'step'  => '02',
-		'title' => 'Ich liefere',
-		'copy'  => 'Umsetzung im Hintergrund: Code, Tracking, Doku. Kommunikation läuft ausschließlich über euch.',
-	],
-	[
-		'step'  => '03',
-		'title' => 'Ihr präsentiert',
-		'copy'  => 'Übergabe unter eurem Branding. Reports, Code-Doku und Übergabe-Files passend für euren Kunden.',
+	'kundencall'  => [
+		'label' => 'Mit im Kunden-Call',
+		'steps' => [
+			[
+				'step'  => '01',
+				'title' => 'Ihr brieft',
+				'copy'  => 'Gleiches Setup, ein Unterschied: Ihr stellt mich als Teil eures Teams vor — unter eurem Branding, in eurer Mail-Signatur, wenn ihr wollt.',
+			],
+			[
+				'step'  => '02',
+				'title' => 'Wir liefern',
+				'copy'  => 'Ich sitze mit im Kunden-Call, beantworte Technikfragen direkt und nehme euch die Übersetzungsarbeit zwischen Kunde und Umsetzung ab.',
+			],
+			[
+				'step'  => '03',
+				'title' => 'Ihr bleibt Owner',
+				'copy'  => 'Kundenbeziehung, Vertrag und Folgegeschäft bleiben bei euch. Ich bleibe euer Mann im Team — nicht der neue Ansprechpartner.',
+			],
+		],
 	],
 ];
 
@@ -106,9 +139,9 @@ $stack_cards = [
 $contract_cards = [
 	[
 		'eyebrow' => '01',
-		'title'   => 'Unsichtbar',
-		'copy'    => 'NDA Standard. Keine Ansprache eurer Kunden, kein Branding in Reports. Kommunikation ausschließlich über euren Projektleiter.',
-		'bullets' => [ 'NDA inkludiert', 'Kein Branding', 'Keine Kunden-DM' ],
+		'title'   => 'Diskret',
+		'copy'    => 'NDA standardmäßig, kein eigenes Branding, keine Akquise in eurem Kundenstamm. Wie sichtbar ich gegenüber eurem Kunden bin, legt ihr fest — vom unsichtbaren Backoffice bis zum Technik-Lead in eurem Call.',
+		'bullets' => [ 'NDA inkludiert', 'Kein eigenes Branding', 'Sichtbarkeit: ihr entscheidet' ],
 	],
 	[
 		'eyebrow' => '02',
@@ -121,6 +154,104 @@ $contract_cards = [
 		'title'   => 'Planbar',
 		'copy'    => 'Monats-Retainer mit festem Stundenkontingent oder feste Tagessätze für Projektarbeit. Saubere Doku statt Black Box.',
 		'bullets' => [ 'Feste Tagessätze', 'Klare Doku', 'Keine Surprise-Rechnung' ],
+	],
+];
+
+$comparison_columns = [ 'Senior einstellen', 'Freelancer-Pool', 'White-Label-Partner' ];
+
+$comparison_rows = [
+	[
+		'label' => 'Verfügbar ab',
+		'cells' => [
+			'Monate: Suche, Kündigungsfrist, Einarbeitung',
+			'Tage bis Wochen — wenn gerade jemand frei ist',
+			'Nach einem Fit-Gespräch und NDA',
+		],
+	],
+	[
+		'label' => 'Fixkostenrisiko',
+		'cells' => [
+			'Volles Gehalt, auch in schwachen Monaten',
+			'Keins — aber auch keine Verbindlichkeit',
+			'Retainer oder Tagessatz — skaliert mit eurer Auslastung',
+		],
+	],
+	[
+		'label' => 'Skill-Breite',
+		'cells' => [
+			'Eine Person, ein Schwerpunkt',
+			'Pro Skill ein neues Briefing',
+			'SEO, WordPress, Tracking, CRO, Automation aus einer Hand',
+		],
+	],
+	[
+		'label' => 'Qualität',
+		'cells' => [
+			'Zeigt sich nach der Probezeit',
+			'Wechselnde Standards, wechselnde Doku',
+			'Ein Standard — prüfbar am Erstprojekt',
+		],
+	],
+	[
+		'label' => 'Diskretion',
+		'cells' => [
+			'Intern — Know-how geht mit der Person',
+			'Oft ungeklärt, selten mit NDA',
+			'NDA standardmäßig, Sichtbarkeit wählbar',
+		],
+	],
+	[
+		'label' => 'Verantwortung',
+		'cells' => [
+			'Führung und QA liegen bei euch',
+			'Koordination liegt bei euch',
+			'Lieferung inklusive Doku und Abnahme',
+		],
+	],
+];
+
+$founder_chips = [ 'Hannover', 'NDA standardmäßig', 'Antwort < 4 h werktags' ];
+
+$faq_items = [
+	[
+		'key' => 'abrechnung',
+		'q'   => 'Wie rechnet ihr ab — Retainer oder Projekt?',
+		'a'   => 'Beides: Monats-Retainer mit festem Stundenkontingent für laufende Arbeit oder feste Tagessätze für abgegrenzte Projekte. Konkrete Konditionen klären wir im Fit-Gespräch — abhängig von Volumen und Reaktionszeit. Jede Position ist dokumentiert, keine Surprise-Rechnung.',
+	],
+	[
+		'key' => 'sichtbarkeit',
+		'q'   => 'Was passiert, wenn unser Kunde fragt, wer die Technik macht?',
+		'a'   => 'Das legt ihr vorab fest. Standard: Ich bin euer Backoffice, ihr antwortet als Team. Auf Wunsch stellt ihr mich als euren Technik-Lead vor, und ich beantworte die Fragen direkt im Call — unter eurem Branding. Was nie passiert: Akquise in eurem Kundenstamm. Das ist Teil des Kontrakts.',
+	],
+	[
+		'key' => 'zugaenge',
+		'q'   => 'Wie laufen Zugänge zu GA4, GTM, Server & Co.?',
+		'a'   => 'Über eure Accounts, nie über meine. Ihr legt mich als Nutzer an, mit eigener E-Mail und 2FA — und könnt jeden Zugriff jederzeit entziehen. Properties, Container und Server-Setups gehören euch oder eurem Kunden. Ich baue darin, nicht daneben.',
+	],
+	[
+		'key' => 'kapazitaet',
+		'q'   => 'Wie schnell reagierst du — und was ist mit Kapazität?',
+		'a'   => 'Reaktionszeit unter 4 Stunden werktags, wöchentliches Delivery-Fenster, klare Abnahme. Ich nehme bewusst wenige Mandate parallel an, statt ein Junior-Team dazwischenzuschalten. Wenn die Kapazität nicht reicht, sage ich das im Fit-Gespräch — nicht drei Wochen nach Kickoff.',
+	],
+	[
+		'key' => 'ownership',
+		'q'   => 'Wem gehören Code, Setups und Daten?',
+		'a'   => 'Euch beziehungsweise eurem Kunden. Versionierter Code, dokumentierte Übergabe, Zugänge in euren Accounts. Es gibt keine Black Box, die euch an mich bindet — das ist Absicht.',
+	],
+	[
+		'key' => 'exit',
+		'q'   => 'Wie kommen wir wieder raus?',
+		'a'   => 'Projekte enden mit der Abnahme, Retainer ohne Verlängerungsfalle. Durch Doku und Ownership in euren Accounts könnt ihr jederzeit intern übernehmen oder wechseln. Partner bleiben, weil die Lieferung stimmt — nicht, weil der Ausstieg wehtut.',
+	],
+	[
+		'key' => 'start',
+		'q'   => 'Wie schnell können wir starten?',
+		'a'   => 'Onboarding in unter 14 Tagen — so steht es im Kontrakt. Nach dem Fit-Gespräch: NDA, Zugänge, Erstprojekt mit fixem Scope. Typisch 1–2 Wochen Laufzeit, danach entscheidet ihr über mehr.',
+	],
+	[
+		'key' => 'recht',
+		'q'   => 'Arbeitest du als Subunternehmer — und wie sauber ist das rechtlich?',
+		'a'   => 'Ja, klassisches Subunternehmer-Verhältnis: Vertrag mit eurer Agentur, nicht mit eurem Kunden. NDA gehört zum Standard, Auftragsverarbeitung nach DSGVO, wo personenbezogene Daten im Spiel sind. Rechnung an euch — eure Marge bleibt eure Sache.',
 	],
 ];
 
@@ -140,6 +271,13 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 
 <main id="main" class="site-main wl-page" data-track-section="whitelabel_proof">
 
+	<noscript>
+		<style>
+			.wl-page .nx-reveal,
+			.wl-page .reveal-stagger > * { opacity: 1; transform: none; }
+		</style>
+	</noscript>
+
 	<!-- ═══════════════════════════════════════════════
 	     SECTION 01 — HERO (dark, KPI-Dashboard rechts)
 	     ═══════════════════════════════════════════════ -->
@@ -154,7 +292,7 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 			<header class="wl-hero__top">
 				<span class="wl-hero__mark">
 					<span class="wl-hero__mark-rule" aria-hidden="true"></span>
-					White-Label · Partner im Hintergrund
+					White-Label-Partner für Agenturen
 				</span>
 				<span class="wl-hero__status">
 					<span class="wl-status-dot" aria-hidden="true"></span>
@@ -165,11 +303,12 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 			<div class="wl-hero__grid">
 				<div class="wl-hero__copy">
 					<h1 class="wl-hero__title">
-						<span class="wl-hero__title-line">White-Label SEO, WordPress &amp; Tracking</span>
-						<span class="wl-hero__title-line wl-hero__title-line--em">für Agenturen, die sauber liefern wollen.</span>
+						<span class="wl-hero__title-line">Ihr verkauft es.</span>
+						<span class="wl-hero__title-line">Ich baue es.</span>
+						<span class="wl-hero__title-line wl-hero__title-line--em">Euer Name steht drauf.</span>
 					</h1>
 					<p class="wl-hero__lede">
-						Ich unterstütze euch im Hintergrund bei technischer SEO, WordPress-Performance, Tracking-Setups und conversionstarken Landingpages — ohne Kundenzugriff, ohne Branding, ohne Theater.
+						Technical SEO, WordPress &amp; Core Web Vitals, GA4, Server-Side-Tracking, Landingpages, Automation — senior umgesetzt, unter eurem Branding. Standardmäßig unsichtbar im Hintergrund. Wenn ihr wollt, sitze ich als Teil eures Teams mit im Kunden-Call.
 					</p>
 
 					<div class="wl-hero__actions">
@@ -180,12 +319,12 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 							</svg>
 						</a>
 						<a href="#proof" class="nx-btn nx-btn--ghost" data-track-action="cta_whitelabel_hero_proof" data-track-category="navigation" data-track-section="hero">
-							Live-Beleg ansehen
+							Case &amp; Zahlen ansehen
 						</a>
 					</div>
 
 					<p class="wl-hero__fineprint">
-						30&nbsp;Min · NDA möglich · keine Verkaufsshow.
+						30&nbsp;Min direkt mit mir · NDA möglich · keine Verkaufsshow.
 					</p>
 				</div>
 
@@ -225,8 +364,8 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 									<stop offset="100%" stop-color="hsl(23 50% 47% / 0)"/>
 								</linearGradient>
 							</defs>
-							<path d="M0,12 L32,18 L64,16 L96,28 L128,34 L160,40 L192,46 L224,52 L256,56 L288,60 L320,62 L320,70 L0,70 Z" fill="url(#wl-spark-fill)"/>
-							<path d="M0,12 L32,18 L64,16 L96,28 L128,34 L160,40 L192,46 L224,52 L256,56 L288,60 L320,62" fill="none" stroke="hsl(23 50% 54%)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+							<path class="wl-spark__fill" d="M0,12 L32,18 L64,16 L96,28 L128,34 L160,40 L192,46 L224,52 L256,56 L288,60 L320,62 L320,70 L0,70 Z" fill="url(#wl-spark-fill)"/>
+							<path class="wl-spark__line" pathLength="100" d="M0,12 L32,18 L64,16 L96,28 L128,34 L160,40 L192,46 L224,52 L256,56 L288,60 L320,62" fill="none" stroke="hsl(23 50% 54%)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 						</svg>
 					</div>
 
@@ -245,13 +384,13 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-problem" id="problem">
 		<div class="nx-container">
-			<div class="wl-section-header">
+			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Problem</span>
 				<h2 class="nx-headline-section">Ihr verkauft SEO, Tracking oder Websites — und intern fehlt die Tiefe.</h2>
 				<p class="wl-section-lede">Drei Engpässe tauchen bei fast jeder Performance- und Webdesign-Agentur auf. Keiner davon ist eure Schuld — alle drei sind lösbar, ohne dass ihr eigenes Personal hochziehen müsst.</p>
 			</div>
 
-			<div class="wl-problem__grid">
+			<div class="wl-problem__grid reveal-stagger">
 				<?php foreach ( $problem_cards as $card ) : ?>
 					<article class="wl-problem-card">
 						<span class="wl-eyebrow"><?php echo esc_html( $card['eyebrow'] ); ?></span>
@@ -264,24 +403,55 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 03 — LÖSUNG (Solution Flow)
+	     SECTION 03 — LÖSUNG (Arbeitsmodus-Toggle)
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-solution" data-nx-theme="dark" id="loesung">
 		<div class="nx-container">
-			<div class="wl-section-header wl-section-header--center">
-				<span class="wl-eyebrow">Lösung</span>
+			<div class="wl-section-header wl-section-header--center nx-reveal">
+				<span class="wl-eyebrow">Lösung · Arbeitsmodus</span>
 				<h2 class="nx-headline-section">Ich docke an. Ihr liefert weiter unter eurem Namen.</h2>
+				<p class="wl-section-lede">Wie sichtbar ich für euren Kunden bin, entscheidet ihr — pro Projekt. Beides ist Whitelabel: euer Branding, eure Kundenbeziehung, euer Folgegeschäft.</p>
 			</div>
 
-			<ol class="wl-solution__flow" aria-label="Drei-Schritt-Prozess">
-				<?php foreach ( $solution_steps as $step ) : ?>
-					<li class="wl-solution__step">
-						<span class="wl-solution__num"><?php echo esc_html( $step['step'] ); ?></span>
-						<h3 class="wl-solution__title"><?php echo esc_html( $step['title'] ); ?></h3>
-						<p class="wl-solution__copy"><?php echo esc_html( $step['copy'] ); ?></p>
-					</li>
-				<?php endforeach; ?>
-			</ol>
+			<div class="wl-mode" id="wl-mode" data-wl-mode="hintergrund">
+				<div class="wl-mode__control nx-reveal">
+					<fieldset class="wl-mode__switch">
+						<legend class="wl-visually-hidden">Arbeitsmodus wählen</legend>
+						<?php foreach ( $solution_modes as $mode_key => $mode ) : ?>
+							<input
+								type="radio"
+								name="wl-mode"
+								id="wl-mode-<?php echo esc_attr( $mode_key ); ?>"
+								class="wl-mode__radio"
+								value="<?php echo esc_attr( $mode_key ); ?>"
+								<?php checked( 'hintergrund' === $mode_key ); ?>
+							/>
+							<label
+								for="wl-mode-<?php echo esc_attr( $mode_key ); ?>"
+								class="wl-mode__label"
+								data-track-action="toggle_whitelabel_mode_<?php echo esc_attr( $mode_key ); ?>"
+								data-track-category="engagement"
+								data-track-section="loesung"
+							><?php echo esc_html( $mode['label'] ); ?></label>
+						<?php endforeach; ?>
+					</fieldset>
+					<p class="wl-mode__hint">Pro Projekt wählbar, jederzeit umstellbar.</p>
+				</div>
+
+				<div class="wl-mode__panels">
+					<?php foreach ( $solution_modes as $mode_key => $mode ) : ?>
+						<ol class="wl-solution__flow wl-mode__panel" data-mode-panel="<?php echo esc_attr( $mode_key ); ?>" aria-label="<?php echo esc_attr( 'Drei-Schritt-Prozess: ' . $mode['label'] ); ?>">
+							<?php foreach ( $mode['steps'] as $step ) : ?>
+								<li class="wl-solution__step">
+									<span class="wl-solution__num"><?php echo esc_html( $step['step'] ); ?></span>
+									<h3 class="wl-solution__title"><?php echo esc_html( $step['title'] ); ?></h3>
+									<p class="wl-solution__copy"><?php echo esc_html( $step['copy'] ); ?></p>
+								</li>
+							<?php endforeach; ?>
+						</ol>
+					<?php endforeach; ?>
+				</div>
+			</div>
 		</div>
 	</section>
 
@@ -290,13 +460,13 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-stack" id="leistungen">
 		<div class="nx-container">
-			<div class="wl-section-header">
+			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Stack · Leistungen</span>
 				<h2 class="nx-headline-section">Was ich für euch im Hintergrund baue.</h2>
 				<p class="wl-section-lede">Sechs Bereiche, alle senior umgesetzt. Kombinierbar zum Retainer, einzeln als Projekt buchbar.</p>
 			</div>
 
-			<div class="wl-stack__grid">
+			<div class="wl-stack__grid reveal-stagger">
 				<?php foreach ( $stack_cards as $card ) : ?>
 					<article class="wl-stack-card">
 						<header class="wl-stack-card__head">
@@ -320,13 +490,13 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-contract" id="kontrakt">
 		<div class="nx-container">
-			<div class="wl-section-header">
+			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Whitelabel-Kontrakt</span>
-				<h2 class="nx-headline-section">Unsichtbar. Schnell. Planbar.</h2>
+				<h2 class="nx-headline-section">Diskret. Schnell. Planbar.</h2>
 				<p class="wl-section-lede">Drei Regeln, die ich von der ersten Minute an einhalte. Schriftlich, prüfbar, ohne Sternchen.</p>
 			</div>
 
-			<div class="wl-contract__grid">
+			<div class="wl-contract__grid reveal-stagger">
 				<?php foreach ( $contract_cards as $card ) : ?>
 					<article class="wl-contract-card">
 						<span class="wl-contract-card__num"><?php echo esc_html( $card['eyebrow'] ); ?></span>
@@ -344,51 +514,135 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 06 — PROOF (Live-Beleg)
+	     SECTION 06 — VERGLEICH (Einordnung)
+	     ═══════════════════════════════════════════════ -->
+	<section class="nx-section wl-compare-section" id="vergleich">
+		<div class="nx-container">
+			<div class="wl-section-header nx-reveal">
+				<span class="wl-eyebrow">Einordnung</span>
+				<h2 class="nx-headline-section">Senior einstellen, Freelancer suchen — oder andocken?</h2>
+				<p class="wl-section-lede">Drei Wege zu Senior-Kapazität. Ohne Fantasiezahlen — die Unterschiede liegen in Anlaufzeit, Risiko und Tiefe.</p>
+			</div>
+
+			<div class="wl-compare-wrap nx-reveal">
+				<table class="wl-compare">
+					<caption class="wl-visually-hidden">Vergleich der drei Wege zu Senior-Kapazität: Senior einstellen, Freelancer-Pool, White-Label-Partner</caption>
+					<thead>
+						<tr>
+							<th scope="col" class="wl-compare__crit"><span class="wl-visually-hidden">Kriterium</span></th>
+							<?php foreach ( $comparison_columns as $i => $column ) : ?>
+								<th scope="col"<?php echo 2 === $i ? ' class="wl-compare__col--hl"' : ''; ?>>
+									<?php echo esc_html( $column ); ?>
+									<?php if ( 2 === $i ) : ?>
+										<span class="wl-compare__chip">Dieses Modell</span>
+									<?php endif; ?>
+								</th>
+							<?php endforeach; ?>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $comparison_rows as $row ) : ?>
+							<tr>
+								<th scope="row"><?php echo esc_html( $row['label'] ); ?></th>
+								<?php foreach ( $row['cells'] as $i => $cell ) : ?>
+									<td data-label="<?php echo esc_attr( $comparison_columns[ $i ] ); ?>"<?php echo 2 === $i ? ' class="wl-compare__cell--hl"' : ''; ?>><?php echo esc_html( $cell ); ?></td>
+								<?php endforeach; ?>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+
+	<!-- ═══════════════════════════════════════════════
+	     SECTION 07 — PROOF (offengelegter Case)
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-proof" data-nx-theme="dark" id="proof">
 		<div class="nx-container">
-			<div class="wl-section-header">
-				<span class="wl-eyebrow">Live-Beleg · laufendes Whitelabel-Mandat</span>
-				<h2 class="nx-headline-section">Ergebnis aus einem aktiven Whitelabel-Mandat.</h2>
-				<p class="wl-section-lede">Nische: erneuerbare Energien. Hebel: Server-Side, Consent Mode V2, CRM-Attribution. Geliefert im Namen der Agentur — ohne Sichtbarkeit nach außen.</p>
+			<div class="wl-section-header nx-reveal">
+				<span class="wl-eyebrow">Beleg · offengelegter Case</span>
+				<h2 class="nx-headline-section">Die meisten Mandate bleiben unter NDA. Eines ist offengelegt.</h2>
+				<p class="wl-section-lede">Genau dafür ist Whitelabel da. E3 New Energy ist der offengelegte Ausschnitt derselben Arbeitsweise: Nische erneuerbare Energien, Hebel Server-Side-Tracking, Consent Mode V2, CRM-Attribution.</p>
 			</div>
 
-			<div class="wl-proof__grid" role="list" aria-label="Proof-Kennzahlen">
+			<div class="wl-proof__grid reveal-stagger" role="list" aria-label="Proof-Kennzahlen">
 				<div class="wl-proof__item" role="listitem">
 					<div class="wl-proof__value"><?php echo esc_html( $cpl_before ); ?>&nbsp;→&nbsp;<?php echo esc_html( $cpl_after ); ?></div>
 					<div class="wl-proof__label">Kosten pro Anfrage</div>
 				</div>
 				<div class="wl-proof__item" role="listitem">
-					<div class="wl-proof__value"><?php echo esc_html( $lead_count ); ?></div>
+					<div class="wl-proof__value"><span class="wl-counter wl-counter--proof-leads" data-counter-target="<?php echo esc_attr( (string) $lead_count_int ); ?>" data-counter-suffix="+"><?php echo esc_html( $lead_count ); ?></span></div>
 					<div class="wl-proof__label">Qualifizierte Anfragen</div>
 				</div>
 				<div class="wl-proof__item" role="listitem">
-					<div class="wl-proof__value"><?php echo esc_html( $roas ); ?></div>
+					<div class="wl-proof__value"><span class="wl-counter wl-counter--proof-roas" data-counter-target="<?php echo esc_attr( (string) $roas_int ); ?>" data-counter-suffix="×"><?php echo esc_html( $roas ); ?></span></div>
 					<div class="wl-proof__label">Return on Ad Spend (ROAS)</div>
 				</div>
 				<div class="wl-proof__item" role="listitem">
-					<div class="wl-proof__value"><?php echo esc_html( $sales_conv ); ?></div>
+					<div class="wl-proof__value"><span class="wl-counter wl-counter--proof-conv" data-counter-target="<?php echo esc_attr( (string) $sales_conv_int ); ?>" data-counter-suffix="&nbsp;%"><?php echo esc_html( $sales_conv ); ?></span></div>
 					<div class="wl-proof__label">Abschlussquote</div>
 				</div>
 			</div>
+
+			<p class="wl-proof__case-link nx-reveal">
+				<a href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="link_whitelabel_case_e3" data-track-category="navigation" data-track-section="proof">
+					Case im Detail ansehen
+					<svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+						<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</a>
+			</p>
 
 			<p class="wl-proof__disclaimer">Stand 2024–2025 · keine pauschale Übertragbarkeitsgarantie.</p>
 		</div>
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 07 — TECHNISCHER BELEG
+	     SECTION 08 — WER LIEFERT (Founder-Strip)
+	     ═══════════════════════════════════════════════ -->
+	<section class="nx-section wl-founder" id="person">
+		<div class="nx-container">
+			<div class="wl-founder__grid nx-reveal">
+				<figure class="wl-founder__media">
+					<img
+						class="wl-founder__photo"
+						src="<?php echo esc_url( $portrait_url ); ?>"
+						alt="Haşim Üner, White-Label-Partner für Agenturen"
+						width="640"
+						height="800"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+				<div class="wl-founder__body">
+					<span class="wl-eyebrow">Wer liefert</span>
+					<h2 class="nx-headline-section">Ihr arbeitet direkt mit mir.</h2>
+					<p class="wl-founder__copy">
+						Kein anonymes Delivery-Team, keine Vermittlungsplattform. Ich bin Haşim Üner — Technical SEO, WordPress &amp; Core Web Vitals, GA4, Server-Side-Tracking, Landingpages, Automation. Der Case oben ist meine Arbeit: Architektur, Umsetzung und Messung aus einer Hand — im Call sitzt ihr mit der Person, die nachher euren Code schreibt.
+					</p>
+					<ul class="wl-founder__chips" aria-label="Rahmendaten">
+						<?php foreach ( $founder_chips as $chip ) : ?>
+							<li><span class="wl-chip"><?php echo esc_html( $chip ); ?></span></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ═══════════════════════════════════════════════
+	     SECTION 09 — TECHNISCHER BELEG
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-tech" id="technik">
 		<div class="nx-container">
-			<div class="wl-section-header">
+			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Technischer Beleg</span>
 				<h2 class="nx-headline-section">Sauberer Code statt Plugin-Stack.</h2>
 				<p class="wl-section-lede">Eigene Templates, bedarfsgesteuertes Asset-Loading, dokumentierte Übergabe. Keine Page-Builder-Wand, kein generisches Theme-Bloat.</p>
 			</div>
 
-			<div class="wl-tech__split">
+			<div class="wl-tech__split nx-reveal">
 				<ul class="wl-tech__bullets">
 					<?php foreach ( $tech_bullets as $bullet ) : ?>
 						<li><?php echo esc_html( $bullet ); ?></li>
@@ -405,7 +659,7 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 <pre class="wl-tech__code-body"><span class="wl-tech__c">// Bedarfsgesteuertes Asset-Loading pro Template</span>
 <span class="wl-tech__k">if</span> ( is_page_template( <span class="wl-tech__s">'page-whitelabel.php'</span> ) ) {
     hu_enqueue_css( <span class="wl-tech__s">'whitelabel'</span>, <span class="wl-tech__s">'whitelabel.css'</span>, [ <span class="wl-tech__s">'design-system'</span> ] );
-    hu_enqueue_js(  <span class="wl-tech__s">'wl-counters'</span>,  <span class="wl-tech__s">'wl-counters.js'</span> );
+    hu_enqueue_js(  <span class="wl-tech__s">'whitelabel'</span>,  <span class="wl-tech__s">'whitelabel.js'</span> );
 }
 
 <span class="wl-tech__c">// Server-Side Event auf Lead-Submit</span>
@@ -420,31 +674,31 @@ window.dataLayer.push({
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 08 — EINSTIEG (Testprojekt-Scope)
+	     SECTION 10 — EINSTIEG (Erstprojekt-Scope)
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-entry" id="einstieg">
 		<div class="nx-container">
-			<div class="wl-section-header">
+			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Einstieg</span>
-				<h2 class="nx-headline-section">Kein sofortiger Retainer. Erst ein kleines Testprojekt.</h2>
+				<h2 class="nx-headline-section">Kein sofortiger Retainer. Erst ein Erstprojekt mit fixem Scope.</h2>
 			</div>
 
-			<article class="wl-entry__card">
+			<article class="wl-entry__card nx-reveal">
 				<header class="wl-entry__head">
-					<span class="wl-entry__kicker">Scope · Testprojekt</span>
-					<h3 class="wl-entry__title">Ein klar umrissenes Mini-Projekt, bevor irgendwer „Retainer" sagt.</h3>
+					<span class="wl-entry__kicker">Scope · Erstprojekt</span>
+					<h3 class="wl-entry__title">Ein klar umrissenes Erstprojekt, bevor irgendwer „Retainer" sagt.</h3>
 				</header>
 				<p class="wl-entry__copy">
-					Wir starten mit einem fixen, abgegrenzten Scope — typischerweise ein Tracking-Audit, ein Server-Side-Setup oder eine Landingpage. 1–2&nbsp;Wochen Laufzeit, NDA, fixe Lieferung. Erst danach entscheidet ihr, ob daraus ein Retainer wird.
+					Wir starten mit einem fixen, abgegrenzten Scope — typischerweise ein Tracking-Audit, ein Server-Side-Setup oder eine Landingpage. 1–2&nbsp;Wochen Laufzeit, NDA, fixe Lieferung, Preis vorab vereinbart. Danach entscheidet ihr: Retainer, nächstes Projekt oder sauberer Abschluss.
 				</p>
-				<ul class="wl-entry__bullets" aria-label="Rahmen Testprojekt">
+				<ul class="wl-entry__bullets" aria-label="Rahmen Erstprojekt">
 					<?php foreach ( $entry_bullets as $bullet ) : ?>
 						<li><span class="wl-entry__bullet-dot" aria-hidden="true"></span><?php echo esc_html( $bullet ); ?></li>
 					<?php endforeach; ?>
 				</ul>
 				<div class="wl-entry__actions">
 					<a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_whitelabel_entry_fit_call" data-track-category="lead_gen" data-track-section="entry">
-						Testprojekt besprechen
+						Erstprojekt besprechen
 					</a>
 				</div>
 			</article>
@@ -452,7 +706,40 @@ window.dataLayer.push({
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 09 — FINAL CTA
+	     SECTION 11 — FAQ (Einwände vor dem Gespräch)
+	     nexus-core initFaqAccordion() wirkt dokument-weit auf <details>:
+	     diese FAQ muss die einzige <details>-Gruppe der Seite bleiben.
+	     ═══════════════════════════════════════════════ -->
+	<section class="nx-section wl-faq-section" id="faq">
+		<div class="nx-container">
+			<div class="wl-section-header nx-reveal">
+				<span class="wl-eyebrow">FAQ · Zusammenarbeit</span>
+				<h2 class="nx-headline-section">Was Agenturen vor dem ersten Projekt wissen wollen.</h2>
+			</div>
+
+			<div class="wl-faq reveal-stagger">
+				<?php foreach ( $faq_items as $item ) : ?>
+					<details class="wl-faq__item">
+						<summary class="wl-faq__summary" data-track-action="faq_whitelabel_open" data-track-label="<?php echo esc_attr( $item['key'] ); ?>" data-track-category="engagement" data-track-section="faq">
+							<span class="wl-faq__q"><?php echo esc_html( $item['q'] ); ?></span>
+							<span class="wl-faq__icon" aria-hidden="true"></span>
+						</summary>
+						<div class="wl-faq__answer">
+							<p><?php echo esc_html( $item['a'] ); ?></p>
+						</div>
+					</details>
+				<?php endforeach; ?>
+			</div>
+
+			<p class="wl-faq__more">
+				Eure Frage fehlt? Direkter Draht:
+				<a href="<?php echo esc_url( $mailto_url ); ?>" data-track-action="mail_whitelabel_faq" data-track-category="contact" data-track-section="faq">hallo@hasimuener.de</a>
+			</p>
+		</div>
+	</section>
+
+	<!-- ═══════════════════════════════════════════════
+	     SECTION 12 — FINAL CTA
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-cta" data-nx-theme="dark" id="cta">
 		<div class="wl-cta__bg" aria-hidden="true">
@@ -460,11 +747,11 @@ window.dataLayer.push({
 			<div class="wl-hero__bg-vignette"></div>
 		</div>
 		<div class="nx-container">
-			<div class="wl-cta__shell">
+			<div class="wl-cta__shell nx-reveal">
 				<div class="wl-cta__copy">
 					<span class="wl-eyebrow">Nächster Schritt</span>
 					<h2 class="wl-cta__title">Passt das zu eurem Setup?</h2>
-					<p class="wl-cta__lede">30&nbsp;Min, kein Pitch-Deck, keine Verkaufsshow. Wir prüfen, ob ich technisch und vertraglich zu eurer Agentur passe.</p>
+					<p class="wl-cta__lede">30&nbsp;Min, kein Pitch-Deck, keine Verkaufsshow. Wir klären Stack, Kapazität und wie sichtbar ich für euren Kunden sein soll — danach wisst ihr, ob es passt.</p>
 				</div>
 				<div class="wl-cta__actions">
 					<a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_whitelabel_footer_fit_call" data-track-category="lead_gen" data-track-section="cta">
@@ -492,73 +779,5 @@ window.dataLayer.push({
 	</div>
 
 </main>
-
-<script>
-(function () {
-	// ─── Sticky Mobile CTA visibility ───
-	var sticky = document.getElementById('wl-sticky-cta');
-	var hero   = document.getElementById('hero');
-	var cta    = document.getElementById('cta');
-	if (sticky && hero) {
-		function update() {
-			var heroBottom = hero.getBoundingClientRect().bottom;
-			var ctaTop     = cta ? cta.getBoundingClientRect().top : Infinity;
-			var shouldShow = heroBottom < 0 && ctaTop > window.innerHeight - 80;
-			sticky.classList.toggle('is-visible', shouldShow);
-			sticky.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
-			document.body.classList.toggle('has-sticky-wl-cta', shouldShow);
-		}
-		window.addEventListener('scroll', update, { passive: true });
-		window.addEventListener('resize', update);
-		update();
-	}
-
-	// ─── Animated Counters ───
-	var counters = document.querySelectorAll('.wl-counter');
-	if (!counters.length) return;
-	var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-	function format(n, target) {
-		var s = String(Math.round(n));
-		if (target >= 1000) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-		return s;
-	}
-
-	function run(el) {
-		var target = parseInt(el.getAttribute('data-counter-target') || '0', 10);
-		var suffix = el.getAttribute('data-counter-suffix') || '';
-		var prefix = el.getAttribute('data-counter-prefix') || '';
-		if (reduceMotion || !('requestAnimationFrame' in window)) {
-			el.innerHTML = prefix + format(target, target) + suffix;
-			return;
-		}
-		var duration = 1400;
-		var start = null;
-		function tick(t) {
-			if (start === null) start = t;
-			var p = Math.min(1, (t - start) / duration);
-			var eased = 1 - Math.pow(1 - p, 3);
-			el.innerHTML = prefix + format(target * eased, target) + suffix;
-			if (p < 1) requestAnimationFrame(tick);
-			else el.innerHTML = prefix + format(target, target) + suffix;
-		}
-		requestAnimationFrame(tick);
-	}
-
-	if (!('IntersectionObserver' in window)) {
-		counters.forEach(run);
-		return;
-	}
-	var io = new IntersectionObserver(function (entries) {
-		entries.forEach(function (entry) {
-			if (entry.isIntersecting) {
-				run(entry.target);
-				io.unobserve(entry.target);
-			}
-		});
-	}, { threshold: 0.2 });
-	counters.forEach(function (el) { io.observe(el); });
-})();
-</script>
 
 <?php get_footer(); ?>

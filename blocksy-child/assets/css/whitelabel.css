@@ -1112,6 +1112,646 @@
 }
 
 /* =====================================================================
+   11. UTILITY — visually hidden
+   ===================================================================== */
+
+.wl-visually-hidden {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	border: 0;
+	white-space: nowrap;
+}
+
+/* =====================================================================
+   12. ARBEITSMODUS-TOGGLE (Lösung)
+   ===================================================================== */
+
+.wl-mode__control {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.55rem;
+	margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.wl-mode__switch {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	margin: 0;
+	padding: 0.3rem;
+	border: 1px solid hsl(30 10% 100% / 0.12);
+	border-radius: 999px;
+	background: hsl(30 5% 9% / 0.85);
+	box-shadow:
+		0 1px 0 hsl(30 10% 100% / 0.04) inset,
+		0 14px 34px -18px rgba(0, 0, 0, 0.5);
+}
+
+/* Radios bleiben fokussierbar (Tastatur/AT) — deshalb opacity statt display:none. */
+.wl-mode__radio {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.wl-mode__label {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.55rem 1.15rem;
+	border-radius: 999px;
+	font-family: var(--nx-font);
+	font-size: 0.9rem;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	color: hsl(30 6% 90% / 0.66);
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-select: none;
+	transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wl-mode__label:hover {
+	color: var(--nx-text);
+}
+
+.wl-mode__radio:checked + .wl-mode__label {
+	color: var(--nx-text);
+	background: linear-gradient(180deg, hsl(23 50% 47% / 0.32), hsl(23 50% 40% / 0.22));
+	box-shadow:
+		0 0 0 1px hsl(23 50% 47% / 0.55) inset,
+		0 6px 18px -8px hsl(23 50% 40% / 0.55);
+}
+
+.wl-mode__radio:focus-visible + .wl-mode__label {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 2px;
+}
+
+.wl-mode__hint {
+	margin: 0;
+	font-size: 0.8rem;
+	color: hsl(30 6% 90% / 0.5);
+}
+
+/* Panels als Grid-Stack: beide teilen dieselbe Zelle, der Wrapper reserviert
+   die Höhe des höheren Panels — kein Höhensprung beim Umschalten. */
+.wl-mode__panels {
+	display: grid;
+}
+
+.wl-mode__panel {
+	grid-area: 1 / 1;
+	visibility: hidden;
+	opacity: 0;
+	transform: translateY(8px);
+	transition:
+		opacity 0.22s ease,
+		transform 0.22s ease,
+		visibility 0s linear 0.22s;
+}
+
+/* Primärer Pfad: whitelabel.js spiegelt den Radio-Zustand nach data-wl-mode. */
+.wl-mode[data-wl-mode="hintergrund"] .wl-mode__panel[data-mode-panel="hintergrund"],
+.wl-mode[data-wl-mode="kundencall"] .wl-mode__panel[data-mode-panel="kundencall"] {
+	visibility: visible;
+	opacity: 1;
+	transform: none;
+	transition:
+		opacity 0.24s ease 0.06s,
+		transform 0.24s ease 0.06s,
+		visibility 0s;
+}
+
+/* No-JS-Fallback: Radio-Zustand steuert direkt via :has() und überschreibt
+   den serverseitig gesetzten data-wl-mode (höhere Spezifität durch #id). */
+.wl-mode:has(#wl-mode-kundencall:checked) .wl-mode__panel[data-mode-panel="hintergrund"],
+.wl-mode:has(#wl-mode-hintergrund:checked) .wl-mode__panel[data-mode-panel="kundencall"] {
+	visibility: hidden;
+	opacity: 0;
+	transform: translateY(8px);
+	transition:
+		opacity 0.22s ease,
+		transform 0.22s ease,
+		visibility 0s linear 0.22s;
+}
+
+.wl-mode:has(#wl-mode-hintergrund:checked) .wl-mode__panel[data-mode-panel="hintergrund"],
+.wl-mode:has(#wl-mode-kundencall:checked) .wl-mode__panel[data-mode-panel="kundencall"] {
+	visibility: visible;
+	opacity: 1;
+	transform: none;
+	transition:
+		opacity 0.24s ease 0.06s,
+		transform 0.24s ease 0.06s,
+		visibility 0s;
+}
+
+/* =====================================================================
+   13. VERGLEICH (Einordnung)
+   ===================================================================== */
+
+.wl-compare-section {
+	background: linear-gradient(180deg, hsl(30 6% 5%) 0%, hsl(30 6% 7%) 100%);
+}
+
+.wl-compare-wrap {
+	border: 1px solid hsl(30 10% 100% / 0.08);
+	border-radius: 14px;
+	background: linear-gradient(180deg, hsl(30 5% 9% / 0.6), hsl(28 8% 6% / 0.7));
+	overflow-x: auto;
+}
+
+.wl-compare {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.92rem;
+}
+
+.wl-compare th,
+.wl-compare td {
+	padding: 0.95rem 1.1rem;
+	text-align: left;
+	vertical-align: top;
+	border-bottom: 1px solid hsl(30 10% 100% / 0.06);
+}
+
+.wl-compare tbody tr:last-child th,
+.wl-compare tbody tr:last-child td {
+	border-bottom: 0;
+}
+
+.wl-compare thead th {
+	font-family: var(--nx-font);
+	font-size: 0.74rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: hsl(30 6% 90% / 0.62);
+	background: hsl(30 6% 7% / 0.85);
+	border-bottom: 1px solid hsl(30 10% 100% / 0.08);
+	white-space: nowrap;
+}
+
+.wl-compare tbody th[scope="row"] {
+	font-family: var(--nx-font-heading);
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: var(--nx-text);
+	width: 17%;
+}
+
+.wl-compare td {
+	color: var(--nx-text-secondary);
+	line-height: 1.5;
+}
+
+@media (min-width: 761px) {
+	.wl-compare tbody tr:hover th,
+	.wl-compare tbody tr:hover td {
+		background: hsl(30 10% 100% / 0.02);
+	}
+
+	.wl-compare tbody tr:hover td.wl-compare__cell--hl {
+		background: hsl(23 50% 47% / 0.1);
+	}
+}
+
+.wl-compare__col--hl,
+.wl-compare__cell--hl {
+	background: hsl(23 50% 47% / 0.07);
+	border-left: 1px solid hsl(23 50% 47% / 0.28);
+	border-right: 1px solid hsl(23 50% 47% / 0.28);
+}
+
+thead .wl-compare__col--hl {
+	color: hsl(23 50% 70%);
+	border-top: 2px solid var(--accent);
+}
+
+.wl-compare__cell--hl {
+	color: hsl(30 6% 92%);
+}
+
+.wl-compare tbody tr:last-child .wl-compare__cell--hl {
+	border-bottom: 2px solid hsl(23 50% 47% / 0.5);
+}
+
+.wl-compare__chip {
+	display: inline-flex;
+	align-items: center;
+	margin-left: 0.5rem;
+	padding: 0.18rem 0.5rem;
+	border-radius: 999px;
+	background: hsl(23 50% 47% / 0.16);
+	border: 1px solid hsl(23 50% 47% / 0.4);
+	color: hsl(23 60% 72%);
+	font-size: 0.64rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+@media (max-width: 760px) {
+	.wl-compare thead {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+	}
+
+	.wl-compare,
+	.wl-compare tbody,
+	.wl-compare tr,
+	.wl-compare th,
+	.wl-compare td {
+		display: block;
+	}
+
+	.wl-compare tr {
+		padding: 1.05rem 1.1rem;
+		border-bottom: 1px solid hsl(30 10% 100% / 0.08);
+	}
+
+	.wl-compare tbody tr:last-child {
+		border-bottom: 0;
+	}
+
+	.wl-compare tbody th[scope="row"] {
+		width: auto;
+		padding: 0 0 0.55rem;
+		border-bottom: 0;
+		font-size: 1.02rem;
+	}
+
+	.wl-compare td {
+		padding: 0.4rem 0;
+		border-bottom: 0;
+	}
+
+	.wl-compare td::before {
+		content: attr(data-label);
+		display: block;
+		margin-bottom: 0.12rem;
+		font-size: 0.68rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: hsl(30 6% 90% / 0.48);
+	}
+
+	.wl-compare__cell--hl {
+		margin-top: 0.4rem;
+		padding: 0.55rem 0.75rem;
+		border: 1px solid hsl(23 50% 47% / 0.28);
+		border-left: 2px solid var(--accent);
+		border-radius: 8px;
+	}
+
+	.wl-compare__cell--hl::before {
+		color: hsl(23 50% 70%);
+	}
+}
+
+@media (max-width: 420px) {
+	.wl-compare th,
+	.wl-compare td {
+		hyphens: auto;
+		overflow-wrap: anywhere;
+	}
+}
+
+/* =====================================================================
+   14. WER LIEFERT (Founder-Strip)
+   ===================================================================== */
+
+.wl-founder {
+	background: hsl(30 6% 5%);
+}
+
+.wl-founder__grid {
+	display: grid;
+	grid-template-columns: minmax(240px, 320px) 1fr;
+	gap: clamp(1.75rem, 4vw, 3.5rem);
+	align-items: center;
+}
+
+@media (max-width: 760px) {
+	.wl-founder__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.wl-founder__media {
+		max-width: 300px;
+	}
+}
+
+.wl-founder__media {
+	position: relative;
+	margin: 0;
+}
+
+.wl-founder__media::after {
+	content: "";
+	position: absolute;
+	right: -12px;
+	bottom: -12px;
+	width: 46%;
+	height: 46%;
+	border-right: 1px solid hsl(23 50% 47% / 0.5);
+	border-bottom: 1px solid hsl(23 50% 47% / 0.5);
+	border-radius: 0 0 16px 0;
+	pointer-events: none;
+}
+
+.wl-founder__photo {
+	display: block;
+	width: 100%;
+	/* height:auto nötig, sonst gewinnt das height-Attribut des <img>
+	   und aspect-ratio wird ignoriert (width + height beide definit). */
+	height: auto;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+	border-radius: 14px;
+	border: 1px solid hsl(30 10% 100% / 0.1);
+	box-shadow:
+		0 30px 70px -30px rgba(0, 0, 0, 0.6),
+		0 0 0 1px hsl(23 50% 47% / 0.08);
+	filter: saturate(0.92);
+}
+
+.wl-founder__copy {
+	margin: 1rem 0 1.25rem;
+	font-size: 1.02rem;
+	line-height: 1.65;
+	color: hsl(30 6% 90% / 0.85);
+	max-width: 62ch;
+}
+
+.wl-founder__chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+/* =====================================================================
+   15. FAQ (Zusammenarbeit)
+   ===================================================================== */
+
+.wl-faq-section {
+	background: linear-gradient(180deg, hsl(30 6% 6%) 0%, hsl(30 6% 5%) 100%);
+}
+
+.wl-faq {
+	max-width: 860px;
+	border: 1px solid hsl(30 10% 100% / 0.08);
+	border-radius: 14px;
+	background: linear-gradient(180deg, hsl(30 5% 9% / 0.55), hsl(28 8% 6% / 0.65));
+	overflow: hidden;
+}
+
+.wl-faq__item {
+	border-bottom: 1px solid hsl(30 10% 100% / 0.06);
+	scroll-margin-bottom: 110px;
+}
+
+.wl-faq__item:last-child {
+	border-bottom: 0;
+}
+
+.wl-faq__summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1.05rem 1.25rem;
+	cursor: pointer;
+	list-style: none;
+	transition: background-color 0.2s ease;
+}
+
+.wl-faq__summary::-webkit-details-marker {
+	display: none;
+}
+
+.wl-faq__summary::marker {
+	content: "";
+}
+
+.wl-faq__summary:hover {
+	background: hsl(30 10% 100% / 0.03);
+}
+
+.wl-faq__summary:focus-visible {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: -2px;
+}
+
+.wl-faq__q {
+	font-family: var(--nx-font-heading);
+	font-size: 1.02rem;
+	font-weight: 600;
+	line-height: 1.4;
+	color: var(--nx-text);
+}
+
+.wl-faq__icon {
+	position: relative;
+	flex-shrink: 0;
+	width: 22px;
+	height: 22px;
+	border: 1px solid hsl(23 50% 47% / 0.4);
+	border-radius: 50%;
+	transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.wl-faq__icon::before,
+.wl-faq__icon::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	background: var(--accent);
+	transform: translate(-50%, -50%);
+}
+
+.wl-faq__icon::before {
+	width: 10px;
+	height: 1.5px;
+}
+
+.wl-faq__icon::after {
+	width: 1.5px;
+	height: 10px;
+}
+
+.wl-faq__item[open] .wl-faq__icon {
+	transform: rotate(45deg);
+	background: hsl(23 50% 47% / 0.12);
+}
+
+.wl-faq__item[open] .wl-faq__summary {
+	background: hsl(30 10% 100% / 0.02);
+}
+
+.wl-faq__answer {
+	padding: 0 1.25rem 1.15rem;
+}
+
+.wl-faq__item[open] .wl-faq__answer {
+	animation: wl-faq-in 0.22s ease;
+}
+
+@keyframes wl-faq-in {
+	from {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+.wl-faq__answer p {
+	margin: 0;
+	max-width: 64ch;
+	font-size: 0.96rem;
+	line-height: 1.65;
+	color: var(--nx-text-secondary);
+}
+
+.wl-faq__more {
+	margin: 1.25rem 0 0;
+	font-size: 0.92rem;
+	color: hsl(30 6% 90% / 0.6);
+}
+
+.wl-faq__more a {
+	color: hsl(23 50% 70%);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	transition: color 0.2s ease;
+}
+
+.wl-faq__more a:hover {
+	color: hsl(23 60% 78%);
+}
+
+.wl-faq__more a:focus-visible {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 2px;
+}
+
+@media (max-width: 420px) {
+	.wl-faq__q,
+	.wl-faq__answer p {
+		hyphens: auto;
+		overflow-wrap: anywhere;
+	}
+}
+
+/* FAQ-Kinder 7+8: design-system.css staggert nur bis :nth-child(6). */
+.wl-faq.reveal-stagger.is-visible > :nth-child(7) {
+	transition-delay: 480ms;
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.wl-faq.reveal-stagger.is-visible > :nth-child(8) {
+	transition-delay: 560ms;
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* =====================================================================
+   16. PROOF-ERGÄNZUNGEN (Case-Link, Counter-CLS-Guards, Sparkline)
+   ===================================================================== */
+
+.wl-proof__case-link {
+	margin: 1.5rem 0 0;
+	text-align: center;
+}
+
+.wl-proof__case-link a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	padding-bottom: 2px;
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: hsl(23 50% 70%);
+	text-decoration: none;
+	border-bottom: 1px solid hsl(23 50% 47% / 0.4);
+	transition: color 0.2s ease, border-color 0.2s ease, gap 0.2s ease;
+}
+
+.wl-proof__case-link a:hover {
+	color: hsl(23 60% 78%);
+	border-color: hsl(23 50% 60% / 0.7);
+	gap: 0.6rem;
+}
+
+.wl-proof__case-link a:focus-visible {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 3px;
+}
+
+/* Counter-CLS-Schutz für die Proof-Kacheln (Muster wie im Hero-Dash). */
+.wl-proof__value .wl-counter {
+	display: inline-block;
+	font-variant-numeric: tabular-nums;
+}
+
+.wl-counter--proof-leads { min-width: 6.2ch; }
+.wl-counter--proof-roas  { min-width: 3.4ch; }
+.wl-counter--proof-conv  { min-width: 4.4ch; }
+
+/* Sparkline zeichnet sich beim Laden ein (Hero ist above the fold). */
+.wl-spark__line {
+	stroke-dasharray: 100;
+	stroke-dashoffset: 100;
+	animation: wl-spark-draw 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+}
+
+.wl-spark__fill {
+	opacity: 0;
+	animation: wl-spark-fill-in 0.6s ease 1.25s forwards;
+}
+
+@keyframes wl-spark-draw {
+	to { stroke-dashoffset: 0; }
+}
+
+@keyframes wl-spark-fill-in {
+	to { opacity: 1; }
+}
+
+/* =====================================================================
+   17. POLISH — Kontrakt-Hover
+   ===================================================================== */
+
+.wl-contract-card {
+	transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.wl-contract-card:hover {
+	transform: translateY(-2px);
+	border-color: hsl(23 50% 47% / 0.35);
+}
+
+/* =====================================================================
    Reduced Motion
    ===================================================================== */
 
@@ -1120,5 +1760,26 @@
 	.wl-dash__dot { animation: none; }
 	.wl-sticky-cta { transition: none; }
 	.wl-problem-card,
-	.wl-stack-card { transition: none; }
+	.wl-stack-card,
+	.wl-contract-card { transition: none; }
+
+	.wl-mode__label,
+	.wl-faq__summary,
+	.wl-faq__icon { transition: none; }
+
+	/* !important nötig: die aktiven Panel-Regeln (data-attr + :has) haben
+	   höhere Spezifität als ein einfacher Klassen-Selektor. */
+	.wl-mode__panel { transition: none !important; }
+
+	.wl-faq__item[open] .wl-faq__answer { animation: none; }
+
+	.wl-spark__line {
+		animation: none;
+		stroke-dashoffset: 0;
+	}
+
+	.wl-spark__fill {
+		animation: none;
+		opacity: 1;
+	}
 }
