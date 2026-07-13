@@ -1675,6 +1675,12 @@ thead .wl-compare__col--hl {
 	transform: translateY(0);
 }
 
+.wl-faq.reveal-stagger.is-visible > :nth-child(9) {
+	transition-delay: 640ms;
+	opacity: 1;
+	transform: translateY(0);
+}
+
 /* =====================================================================
    16. PROOF-ERGÄNZUNGEN (Case-Link, Counter-CLS-Guards, Sparkline)
    ===================================================================== */
