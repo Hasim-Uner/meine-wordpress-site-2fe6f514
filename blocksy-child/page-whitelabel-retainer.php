@@ -38,19 +38,19 @@ $sales_conv_int    = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'sa
 
 $problem_cards = [
 	[
-		'eyebrow' => 'Zeit',
-		'title'   => 'Kalender voll, Pipeline auch.',
-		'copy'    => 'Eure Kapazität ist auf Akquise, Strategie und Kunden gebunden. Die technische Umsetzung rutscht in den Abend oder verzögert das Projekt.',
+		'eyebrow' => 'Kapazität',
+		'title'   => 'Deadline steht. Team ist voll.',
+		'copy'    => 'Akquise, Strategie, Kundentermine — euer Kalender ist dicht. Die technische Umsetzung rutscht in den Abend, und die Deadline rückt trotzdem näher.',
 	],
 	[
-		'eyebrow' => 'Technische Tiefe',
-		'title'   => 'Server-Side, Consent V2, Core Web Vitals.',
-		'copy'    => 'Themen, die euch Kunden bezahlen — die intern aber niemand sauber liefert. Halbgare Setups werden zur Reklamation, nicht zur Referenz.',
+		'eyebrow' => 'Tiefe',
+		'title'   => 'Der Kunde zahlt Senior. Intern liefert der Junior.',
+		'copy'    => 'Server-Side, Consent Mode V2, Core Web Vitals: verkauft als Expertise, gebaut auf Anschlag. Halbgare Setups kommen als Reklamation zurück — nicht als Referenz.',
 	],
 	[
-		'eyebrow' => 'Umsetzungskapazität',
-		'title'   => 'Senior-Stunden fehlen.',
-		'copy'    => 'Junioren brauchen Aufsicht, Freelancer brauchen Briefing, Agenturen-Backups brauchen Marge. Ihr braucht jemanden, der einfach liefert.',
+		'eyebrow' => 'Marge',
+		'title'   => 'Senior einstellen frisst die Marge.',
+		'copy'    => 'Ein Senior kostet Gehalt, Suche und Auslastungsrisiko. Freelancer kosten Briefing und Nerven. Whitelabel dreht die Rechnung: Ihr verkauft zu eurem Satz, die Umsetzung bleibt darunter.',
 	],
 ];
 
@@ -65,8 +65,8 @@ $solution_modes = [
 			],
 			[
 				'step'  => '02',
-				'title' => 'Ich liefere',
-				'copy'  => 'Umsetzung im Hintergrund: Code, Tracking, Doku. Kommunikation läuft über euch, in eurem Ton, unter eurem Branding.',
+				'title' => 'Delivery läuft',
+				'copy'  => 'Code, Tracking, Doku — sauber umgesetzt im Hintergrund. Kommunikation läuft über euch: euer Ton, euer Branding.',
 			],
 			[
 				'step'  => '03',
@@ -81,17 +81,17 @@ $solution_modes = [
 			[
 				'step'  => '01',
 				'title' => 'Ihr brieft',
-				'copy'  => 'Gleiches Setup, ein Unterschied: Ihr stellt mich als Teil eures Teams vor — unter eurem Branding, in eurer Mail-Signatur, wenn ihr wollt.',
+				'copy'  => 'Gleiches Setup, ein Unterschied: Ihr stellt euren neuen Technik-Lead vor — unter eurem Branding, auf Wunsch mit eurer Mail-Signatur.',
 			],
 			[
 				'step'  => '02',
 				'title' => 'Wir liefern',
-				'copy'  => 'Ich sitze mit im Kunden-Call, beantworte Technikfragen direkt und nehme euch die Übersetzungsarbeit zwischen Kunde und Umsetzung ab.',
+				'copy'  => 'Technikfragen? Direkt im Call beantwortet — ohne Übersetzungsschleife zwischen Kunde, PM und Umsetzung. Der Kunde hört Kompetenz, ihr erntet sie.',
 			],
 			[
 				'step'  => '03',
 				'title' => 'Ihr bleibt Owner',
-				'copy'  => 'Kundenbeziehung, Vertrag und Folgegeschäft bleiben bei euch. Ich bleibe euer Mann im Team — nicht der neue Ansprechpartner.',
+				'copy'  => 'Kundenbeziehung, Vertrag und Folgegeschäft bleiben bei euch. Der Technik-Lead gehört zu eurem Team — und wird nie zum neuen Ansprechpartner.',
 			],
 		],
 	],
@@ -140,14 +140,14 @@ $contract_cards = [
 	[
 		'eyebrow' => '01',
 		'title'   => 'Diskret',
-		'copy'    => 'NDA standardmäßig, kein eigenes Branding, keine Akquise in eurem Kundenstamm. Wie sichtbar ich gegenüber eurem Kunden bin, legt ihr fest — vom unsichtbaren Backoffice bis zum Technik-Lead in eurem Call.',
+		'copy'    => 'NDA standardmäßig, kein eigenes Branding, keine Akquise in eurem Kundenstamm. Die Sichtbarkeit legt ihr fest — vom unsichtbaren Backoffice bis zum Technik-Lead in eurem Call.',
 		'bullets' => [ 'NDA inkludiert', 'Kein eigenes Branding', 'Sichtbarkeit: ihr entscheidet' ],
 	],
 	[
 		'eyebrow' => '02',
 		'title'   => 'Schnell',
-		'copy'    => 'Onboarding in unter 14 Tagen. Reaktionszeit unter 4 Stunden (werktags). Wöchentliches Delivery-Fenster, klare Abnahme.',
-		'bullets' => [ '< 14 Tage Onboarding', '< 4 h Reaktion', 'Wöchentlich Delivery' ],
+		'copy'    => 'Onboarding in unter 14 Tagen, Reaktion in unter 4 Stunden (werktags). Und wenn ein Projekt brennt: Eskalation ist eingepreist, kein Sonderfall.',
+		'bullets' => [ '< 14 Tage Onboarding', '< 4 h Reaktion', 'Eskalation eingepreist' ],
 	],
 	[
 		'eyebrow' => '03',
@@ -221,22 +221,27 @@ $faq_items = [
 	[
 		'key' => 'sichtbarkeit',
 		'q'   => 'Was passiert, wenn unser Kunde fragt, wer die Technik macht?',
-		'a'   => 'Das legt ihr vorab fest. Standard: Ich bin euer Backoffice, ihr antwortet als Team. Auf Wunsch stellt ihr mich als euren Technik-Lead vor, und ich beantworte die Fragen direkt im Call — unter eurem Branding. Was nie passiert: Akquise in eurem Kundenstamm. Das ist Teil des Kontrakts.',
+		'a'   => 'Das legt ihr vorab fest. Standard: Backoffice — ihr antwortet als Team. Auf Wunsch stellt ihr euren Technik-Lead vor, und die Fragen werden direkt im Call beantwortet, unter eurem Branding. Was nie passiert: Akquise in eurem Kundenstamm. Das steht im Kontrakt.',
+	],
+	[
+		'key' => 'pitch',
+		'q'   => 'Gibt es Support schon im Pitch — bevor der Kunde unterschrieben hat?',
+		'a'   => 'Ja. Scope, Aufwandsschätzung, technische Machbarkeit — ihr bekommt belastbare Zahlen für euer Angebot, bevor ihr etwas verkauft, das nachher niemand bauen kann. Den Rahmen dafür klären wir im Fit-Gespräch.',
 	],
 	[
 		'key' => 'zugaenge',
 		'q'   => 'Wie laufen Zugänge zu GA4, GTM, Server & Co.?',
-		'a'   => 'Über eure Accounts, nie über meine. Ihr legt mich als Nutzer an, mit eigener E-Mail und 2FA — und könnt jeden Zugriff jederzeit entziehen. Properties, Container und Server-Setups gehören euch oder eurem Kunden. Ich baue darin, nicht daneben.',
+		'a'   => 'Über eure Accounts — nie andersherum. Ihr vergebt den Zugang (eigene E-Mail, 2FA) und entzieht ihn, wann ihr wollt. Properties, Container und Server-Setups gehören euch oder eurem Kunden. Gebaut wird darin, nicht daneben.',
 	],
 	[
 		'key' => 'kapazitaet',
 		'q'   => 'Wie schnell reagierst du — und was ist mit Kapazität?',
-		'a'   => 'Reaktionszeit unter 4 Stunden werktags, wöchentliches Delivery-Fenster, klare Abnahme. Ich nehme bewusst wenige Mandate parallel an, statt ein Junior-Team dazwischenzuschalten. Wenn die Kapazität nicht reicht, sage ich das im Fit-Gespräch — nicht drei Wochen nach Kickoff.',
+		'a'   => 'Reaktionszeit unter 4 Stunden werktags, wöchentliches Delivery-Fenster, klare Abnahme. Wenige Mandate parallel statt Junior-Team dazwischen — deshalb bleibt die Qualität konstant. Und wenn die Kapazität nicht reicht, hört ihr das im Fit-Gespräch, nicht drei Wochen nach Kickoff.',
 	],
 	[
 		'key' => 'ownership',
 		'q'   => 'Wem gehören Code, Setups und Daten?',
-		'a'   => 'Euch beziehungsweise eurem Kunden. Versionierter Code, dokumentierte Übergabe, Zugänge in euren Accounts. Es gibt keine Black Box, die euch an mich bindet — das ist Absicht.',
+		'a'   => 'Euch beziehungsweise eurem Kunden. Versionierter Code, dokumentierte Übergabe, Zugänge in euren Accounts. Es gibt keine Black Box und keinen Lock-in — das ist Absicht.',
 	],
 	[
 		'key' => 'exit',
@@ -304,11 +309,11 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 				<div class="wl-hero__copy">
 					<h1 class="wl-hero__title">
 						<span class="wl-hero__title-line">Ihr verkauft es.</span>
-						<span class="wl-hero__title-line">Ich baue es.</span>
+						<span class="wl-hero__title-line">Ihr liefert es.</span>
 						<span class="wl-hero__title-line wl-hero__title-line--em">Euer Name steht drauf.</span>
 					</h1>
 					<p class="wl-hero__lede">
-						Technical SEO, WordPress &amp; Core Web Vitals, GA4, Server-Side-Tracking, Landingpages, Automation — senior umgesetzt, unter eurem Branding. Standardmäßig unsichtbar im Hintergrund. Wenn ihr wollt, sitze ich als Teil eures Teams mit im Kunden-Call.
+						Technical SEO, Server-Side-Tracking, WordPress &amp; Core Web Vitals, Landingpages — senior umgesetzt, unter eurem Branding, zu eurer Marge. Unsichtbar im Hintergrund oder als euer Technik-Lead im Kunden-Call: Ihr entscheidet, pro Projekt.
 					</p>
 
 					<div class="wl-hero__actions">
@@ -386,8 +391,8 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 		<div class="nx-container">
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Problem</span>
-				<h2 class="nx-headline-section">Ihr verkauft SEO, Tracking oder Websites — und intern fehlt die Tiefe.</h2>
-				<p class="wl-section-lede">Drei Engpässe tauchen bei fast jeder Performance- und Webdesign-Agentur auf. Keiner davon ist eure Schuld — alle drei sind lösbar, ohne dass ihr eigenes Personal hochziehen müsst.</p>
+				<h2 class="nx-headline-section">Verkaufen könnt ihr. Liefern ist der Engpass.</h2>
+				<p class="wl-section-lede">Drei Engpässe, die jede Performance- und Webdesign-Agentur kennt. Alle drei lösbar — ohne eine einzige Neueinstellung.</p>
 			</div>
 
 			<div class="wl-problem__grid reveal-stagger">
@@ -409,8 +414,8 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 		<div class="nx-container">
 			<div class="wl-section-header wl-section-header--center nx-reveal">
 				<span class="wl-eyebrow">Lösung · Arbeitsmodus</span>
-				<h2 class="nx-headline-section">Ich docke an. Ihr liefert weiter unter eurem Namen.</h2>
-				<p class="wl-section-lede">Wie sichtbar ich für euren Kunden bin, entscheidet ihr — pro Projekt. Beides ist Whitelabel: euer Branding, eure Kundenbeziehung, euer Folgegeschäft.</p>
+				<h2 class="nx-headline-section">Andocken statt einstellen — geliefert wird unter eurem Namen.</h2>
+				<p class="wl-section-lede">Sichtbarkeit ist bei Whitelabel eine Einstellung, keine Grenze: Ihr entscheidet pro Projekt. Euer Branding, eure Kundenbeziehung, euer Folgegeschäft — in beiden Modi.</p>
 			</div>
 
 			<div class="wl-mode" id="wl-mode" data-wl-mode="hintergrund">
@@ -462,8 +467,8 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 		<div class="nx-container">
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Stack · Leistungen</span>
-				<h2 class="nx-headline-section">Was ich für euch im Hintergrund baue.</h2>
-				<p class="wl-section-lede">Sechs Bereiche, alle senior umgesetzt. Kombinierbar zum Retainer, einzeln als Projekt buchbar.</p>
+				<h2 class="nx-headline-section">Die Tiefe, die ihr ab sofort verkaufen könnt.</h2>
+				<p class="wl-section-lede">Sechs Bereiche, senior umgesetzt. Einzeln als Projekt, kombiniert als Retainer — immer unter eurem Namen.</p>
 			</div>
 
 			<div class="wl-stack__grid reveal-stagger">
@@ -493,7 +498,7 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Whitelabel-Kontrakt</span>
 				<h2 class="nx-headline-section">Diskret. Schnell. Planbar.</h2>
-				<p class="wl-section-lede">Drei Regeln, die ich von der ersten Minute an einhalte. Schriftlich, prüfbar, ohne Sternchen.</p>
+				<p class="wl-section-lede">Drei Regeln, schriftlich im Kontrakt — prüfbar ab der ersten Minute, ohne Sternchen.</p>
 			</div>
 
 			<div class="wl-contract__grid reveal-stagger">
@@ -563,7 +568,7 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Beleg · offengelegter Case</span>
 				<h2 class="nx-headline-section">Die meisten Mandate bleiben unter NDA. Eines ist offengelegt.</h2>
-				<p class="wl-section-lede">Genau dafür ist Whitelabel da. E3 New Energy ist der offengelegte Ausschnitt derselben Arbeitsweise: Nische erneuerbare Energien, Hebel Server-Side-Tracking, Consent Mode V2, CRM-Attribution.</p>
+				<p class="wl-section-lede">Genau dafür ist Whitelabel da. Der eine Case, der öffentlich sein darf: E3 New Energy, erneuerbare Energien — Server-Side-Tracking, Consent Mode V2, CRM-Attribution. Meine Arbeit, offengelegt bis in die Zahlen.</p>
 			</div>
 
 			<div class="wl-proof__grid reveal-stagger" role="list" aria-label="Proof-Kennzahlen">
@@ -617,9 +622,9 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 				</figure>
 				<div class="wl-founder__body">
 					<span class="wl-eyebrow">Wer liefert</span>
-					<h2 class="nx-headline-section">Ihr arbeitet direkt mit mir.</h2>
+					<h2 class="nx-headline-section">Eine Person. Kein Ticketsystem.</h2>
 					<p class="wl-founder__copy">
-						Kein anonymes Delivery-Team, keine Vermittlungsplattform. Ich bin Haşim Üner — Technical SEO, WordPress &amp; Core Web Vitals, GA4, Server-Side-Tracking, Landingpages, Automation. Der Case oben ist meine Arbeit: Architektur, Umsetzung und Messung aus einer Hand — im Call sitzt ihr mit der Person, die nachher euren Code schreibt.
+						Kein Delivery-Team, keine Vermittlungsplattform. Haşim Üner — Technical SEO, Server-Side-Tracking, WordPress &amp; Core Web Vitals, Landingpages, Automation. Der Case oben: von der Tracking-Architektur bis zur letzten Zeile Code aus einer Hand. Im Fit-Gespräch sitzt ihr mit genau der Person, die nachher euren Code schreibt.
 					</p>
 					<ul class="wl-founder__chips" aria-label="Rahmendaten">
 						<?php foreach ( $founder_chips as $chip ) : ?>
@@ -689,7 +694,7 @@ window.dataLayer.push({
 					<h3 class="wl-entry__title">Ein klar umrissenes Erstprojekt, bevor irgendwer „Retainer" sagt.</h3>
 				</header>
 				<p class="wl-entry__copy">
-					Wir starten mit einem fixen, abgegrenzten Scope — typischerweise ein Tracking-Audit, ein Server-Side-Setup oder eine Landingpage. 1–2&nbsp;Wochen Laufzeit, NDA, fixe Lieferung, Preis vorab vereinbart. Danach entscheidet ihr: Retainer, nächstes Projekt oder sauberer Abschluss.
+					Ein fixer, abgegrenzter Scope: Tracking-Audit, Server-Side-Setup oder eine Landingpage. 1–2&nbsp;Wochen Laufzeit, NDA, fixe Lieferung, Preis vorab vereinbart. Danach entscheidet ihr: Retainer, nächstes Projekt oder sauberer Abschluss.
 				</p>
 				<ul class="wl-entry__bullets" aria-label="Rahmen Erstprojekt">
 					<?php foreach ( $entry_bullets as $bullet ) : ?>
@@ -751,7 +756,7 @@ window.dataLayer.push({
 				<div class="wl-cta__copy">
 					<span class="wl-eyebrow">Nächster Schritt</span>
 					<h2 class="wl-cta__title">Passt das zu eurem Setup?</h2>
-					<p class="wl-cta__lede">30&nbsp;Min, kein Pitch-Deck, keine Verkaufsshow. Wir klären Stack, Kapazität und wie sichtbar ich für euren Kunden sein soll — danach wisst ihr, ob es passt.</p>
+					<p class="wl-cta__lede">30&nbsp;Min, kein Pitch-Deck, keine Verkaufsshow. Stack, Kapazität, Sichtbarkeits-Modus, Konditionen — danach wisst ihr, ob es passt. Und wenn nicht, wisst ihr das auch.</p>
 				</div>
 				<div class="wl-cta__actions">
 					<a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_whitelabel_footer_fit_call" data-track-category="lead_gen" data-track-section="cta">
