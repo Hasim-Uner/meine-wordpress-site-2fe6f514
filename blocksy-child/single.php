@@ -67,7 +67,11 @@ get_template_part( 'template-parts/blog-header' );
 			'secondary_url'   => $audit_url,
 		];
 
-		if ( in_array( 'solar-waermepumpen-anfrage-systeme', $post_cat_slugs, true ) ) {
+		// Portal-Einordnungs-Posts (checkfox u. a.) liegen in BEIDEN Kategorien
+		// (solar-waermepumpen-anfrage-systeme + markteinordnung). Für Vergleichsportal-
+		// Intent ("ist X seriös?") ist die Portal-vs-eigenes-System-Einordnung der
+		// treffendere nächste Schritt, daher hat markteinordnung/owned-leads Vorrang.
+		if ( in_array( 'solar-waermepumpen-anfrage-systeme', $post_cat_slugs, true ) && ! array_intersect( [ 'markteinordnung', 'owned-leads' ], $post_cat_slugs ) ) {
 			$article_context = [
 				'eyebrow'         => __( 'Solar-Fokus', 'blocksy-child' ),
 				'title'           => __( 'Teil des Anfrage-Systems für Solar & Wärmepumpe.', 'blocksy-child' ),
