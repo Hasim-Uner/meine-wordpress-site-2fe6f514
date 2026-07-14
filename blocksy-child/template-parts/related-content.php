@@ -97,9 +97,12 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 	];
 
 	$link_priority = [
-		'solar-waermepumpen-anfrage-systeme',
+		// Portal-Einordnungs-Posts liegen in solar-waermepumpen-anfrage-systeme UND
+		// markteinordnung; für Vergleichsportal-Intent hat die Portal-vs-eigenes-
+		// System-Einordnung Vorrang vor der generischen Pillar.
 		'markteinordnung',
 		'owned-leads',
+		'solar-waermepumpen-anfrage-systeme',
 		'sichtbarkeit-daten-conversion',
 		'tracking',
 		'seo',
