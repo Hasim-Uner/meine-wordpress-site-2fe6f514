@@ -57,43 +57,11 @@ $problem_cards = [
 $solution_modes = [
 	'hintergrund' => [
 		'label' => 'Im Hintergrund',
-		'steps' => [
-			[
-				'step'  => '01',
-				'title' => 'Ihr brieft',
-				'copy'  => 'Kurzes Setup mit eurem Projektlead. NDA standardmäßig. Scope, Zugänge, Deadlines — einmal sauber geklärt.',
-			],
-			[
-				'step'  => '02',
-				'title' => 'Delivery läuft',
-				'copy'  => 'Code, Tracking, Doku — sauber umgesetzt im Hintergrund. Kommunikation läuft über euch: euer Ton, euer Branding.',
-			],
-			[
-				'step'  => '03',
-				'title' => 'Ihr präsentiert',
-				'copy'  => 'Übergabe unter eurem Namen: Reports, Code-Doku und Files, fertig aufbereitet für euren Kunden.',
-			],
-		],
+		'copy'  => 'Komplett unsichtbar. Code, Tracking, Doku laufen über euch — euer Ton, euer Branding. Euer Kunde sieht nur das Ergebnis.',
 	],
 	'kundencall'  => [
 		'label' => 'Mit im Kunden-Call',
-		'steps' => [
-			[
-				'step'  => '01',
-				'title' => 'Ihr brieft',
-				'copy'  => 'Gleiches Setup, ein Unterschied: Ihr stellt euren neuen Technik-Lead vor — unter eurem Branding, auf Wunsch mit eurer Mail-Signatur.',
-			],
-			[
-				'step'  => '02',
-				'title' => 'Wir liefern',
-				'copy'  => 'Technikfragen? Direkt im Call beantwortet — ohne Übersetzungsschleife zwischen Kunde, PM und Umsetzung. Der Kunde hört Kompetenz, ihr erntet sie.',
-			],
-			[
-				'step'  => '03',
-				'title' => 'Ihr bleibt Owner',
-				'copy'  => 'Kundenbeziehung, Vertrag und Folgegeschäft bleiben bei euch. Der Technik-Lead gehört zu eurem Team — und wird nie zum neuen Ansprechpartner.',
-			],
-		],
+		'copy'  => 'Als euer Senior-Tech-Lead direkt im Call. Technikfragen sofort beantwortet, ohne Übersetzungsschleife — der Kunde hört Kompetenz, ihr erntet sie.',
 	],
 ];
 
@@ -309,7 +277,7 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 				<div class="wl-hero__copy">
 					<h1 class="wl-hero__title">
 						<span class="wl-hero__title-line">Ihr verkauft es.</span>
-						<span class="wl-hero__title-line">Ihr liefert es.</span>
+						<span class="wl-hero__title-line">Ich liefere es.</span>
 						<span class="wl-hero__title-line wl-hero__title-line--em">Euer Name steht drauf.</span>
 					</h1>
 					<p class="wl-hero__lede">
@@ -413,9 +381,9 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 	<section class="nx-section wl-solution" data-nx-theme="dark" id="loesung">
 		<div class="nx-container">
 			<div class="wl-section-header wl-section-header--center nx-reveal">
-				<span class="wl-eyebrow">Lösung · Arbeitsmodus</span>
-				<h2 class="nx-headline-section">Andocken statt einstellen — geliefert wird unter eurem Namen.</h2>
-				<p class="wl-section-lede">Sichtbarkeit ist bei Whitelabel eine Einstellung, keine Grenze: Ihr entscheidet pro Projekt. Euer Branding, eure Kundenbeziehung, euer Folgegeschäft — in beiden Modi.</p>
+				<span class="wl-eyebrow">Arbeitsmodus</span>
+				<h2 class="nx-headline-section">Zwei Modi. Volle Kontrolle.</h2>
+				<p class="wl-section-lede">Sichtbarkeit ist eine Einstellung, keine Grenze — ihr entscheidet pro Projekt.</p>
 			</div>
 
 			<div class="wl-mode" id="wl-mode" data-wl-mode="hintergrund">
@@ -445,17 +413,13 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 
 				<div class="wl-mode__panels">
 					<?php foreach ( $solution_modes as $mode_key => $mode ) : ?>
-						<ol class="wl-solution__flow wl-mode__panel" data-mode-panel="<?php echo esc_attr( $mode_key ); ?>" aria-label="<?php echo esc_attr( 'Drei-Schritt-Prozess: ' . $mode['label'] ); ?>">
-							<?php foreach ( $mode['steps'] as $step ) : ?>
-								<li class="wl-solution__step">
-									<span class="wl-solution__num"><?php echo esc_html( $step['step'] ); ?></span>
-									<h3 class="wl-solution__title"><?php echo esc_html( $step['title'] ); ?></h3>
-									<p class="wl-solution__copy"><?php echo esc_html( $step['copy'] ); ?></p>
-								</li>
-							<?php endforeach; ?>
-						</ol>
+						<div class="wl-mode__panel wl-mode__statement" data-mode-panel="<?php echo esc_attr( $mode_key ); ?>" aria-label="<?php echo esc_attr( 'Modus: ' . $mode['label'] ); ?>">
+							<p><?php echo esc_html( $mode['copy'] ); ?></p>
+						</div>
 					<?php endforeach; ?>
 				</div>
+
+				<p class="wl-mode__footer">Egal wie: euer Branding, eure Marge, eure Kundenbeziehung bleiben bei euch.</p>
 			</div>
 		</div>
 	</section>

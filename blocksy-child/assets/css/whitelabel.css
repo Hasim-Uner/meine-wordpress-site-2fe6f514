@@ -426,7 +426,7 @@
 }
 
 /* =====================================================================
-   3. SOLUTION (3-step flow)
+   3. SOLUTION (Arbeitsmodus — 2 Modi, je 1 Statement)
    ===================================================================== */
 
 .wl-solution {
@@ -443,69 +443,30 @@
 	pointer-events: none;
 }
 
-.wl-solution__flow {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: clamp(1rem, 2.5vw, 2rem);
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	counter-reset: wl-step;
-	position: relative;
-}
-
-@media (max-width: 860px) { .wl-solution__flow { grid-template-columns: 1fr; } }
-
-.wl-solution__step {
-	position: relative;
-	padding: clamp(1.5rem, 2.4vw, 1.85rem);
+/* Einzelnes Modus-Statement (ersetzt den früheren 3-Schritt-Flow). */
+.wl-mode__statement {
+	max-width: 52ch;
+	margin-inline: auto;
+	padding: clamp(1.5rem, 3vw, 2.25rem);
 	background: hsl(30 5% 9% / 0.6);
 	border: 1px solid hsl(30 10% 100% / 0.08);
 	border-radius: 14px;
+	text-align: center;
 }
 
-.wl-solution__step:not(:last-child)::after {
-	content: "→";
-	position: absolute;
-	right: -1.5rem;
-	top: 50%;
-	transform: translateY(-50%);
-	font-size: 1.5rem;
-	color: var(--accent);
-	font-weight: 300;
-	z-index: 2;
-}
-
-@media (max-width: 860px) {
-	.wl-solution__step:not(:last-child)::after {
-		right: 50%;
-		top: auto;
-		bottom: -1.5rem;
-		transform: translateX(50%) rotate(90deg);
-	}
-}
-
-.wl-solution__num {
-	font-family: var(--nx-font-mono);
-	font-size: 0.85rem;
-	color: var(--accent);
-	letter-spacing: 0.1em;
-}
-
-.wl-solution__title {
-	font-family: var(--nx-font-heading);
-	font-size: 1.25rem;
-	font-weight: 600;
-	color: var(--nx-text);
-	margin: 0.5rem 0 0.5rem;
-	letter-spacing: -0.01em;
-}
-
-.wl-solution__copy {
-	font-size: 0.95rem;
-	color: var(--nx-text-secondary);
-	line-height: 1.55;
+.wl-mode__statement p {
 	margin: 0;
+	font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+	line-height: 1.6;
+	color: var(--nx-text);
+}
+
+.wl-mode__footer {
+	margin: 1.25rem auto 0;
+	max-width: 52ch;
+	text-align: center;
+	font-size: 0.9rem;
+	color: hsl(30 6% 90% / 0.6);
 }
 
 /* =====================================================================
