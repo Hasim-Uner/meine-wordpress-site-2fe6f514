@@ -28,12 +28,10 @@ $cpl_reduction  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reducti
 $lead_count     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' )     : '1.750+';
 $sales_conv     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '12 %' ) : '12 %';
 $timeframe      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative', '6 Monaten' ) : '6 Monaten';
-$roas           = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'roas', 'display', '34×' )              : '34×';
 
 $cpl_after_int     = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'cpl_after',  'counter_target', 22 )  : 22;
 $cpl_reduction_int = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'cpl_reduction', 'counter_target', 85 ) : 85;
 $lead_count_int    = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'lead_count', 'counter_target', '1750' ) : 1750;
-$roas_int          = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'roas', 'counter_target', '34' )         : 34;
 $sales_conv_int    = function_exists( 'hu_e3_metric' ) ? (int) hu_e3_metric( 'sales_conversion', 'counter_target', '12' ) : 12;
 
 $problem_cards = [
@@ -305,7 +303,7 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 					<header class="wl-dash__head">
 						<span class="wl-dash__head-left">
 							<span class="wl-dash__dot" aria-hidden="true"></span>
-							Live · Whitelabel-Mandat
+							Referenzprojekt · offengelegt
 						</span>
 						<span class="wl-dash__head-right">CPL-Verlauf</span>
 					</header>
@@ -531,8 +529,8 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 		<div class="nx-container">
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Beleg · offengelegter Case</span>
-				<h2 class="nx-headline-section">Die meisten Mandate bleiben unter NDA. Eines ist offengelegt.</h2>
-				<p class="wl-section-lede">Genau dafür ist Whitelabel da. Der eine Case, der öffentlich sein darf: ein mittelständischer PV-Installationsbetrieb, erneuerbare Energien — Server-Side-Tracking, Consent Mode V2, CRM-Attribution. Meine Arbeit, offengelegt bis in die Zahlen.</p>
+				<h2 class="nx-headline-section">Ein Referenzprojekt, offengelegt bis in die Zahlen.</h2>
+				<p class="wl-section-lede">Der eine Case, der öffentlich sein darf: ein mittelständischer PV-Installationsbetrieb (erneuerbare Energien) — Server-Side-Tracking, Consent Mode V2, CRM-Attribution. Meine Arbeit, offengelegt bis in die Zahlen.</p>
 			</div>
 
 			<div class="wl-proof__grid reveal-stagger" role="list" aria-label="Proof-Kennzahlen">
@@ -543,10 +541,6 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 				<div class="wl-proof__item" role="listitem">
 					<div class="wl-proof__value"><span class="wl-counter wl-counter--proof-leads" data-counter-target="<?php echo esc_attr( (string) $lead_count_int ); ?>" data-counter-suffix="+"><?php echo esc_html( $lead_count ); ?></span></div>
 					<div class="wl-proof__label">Qualifizierte Anfragen</div>
-				</div>
-				<div class="wl-proof__item" role="listitem">
-					<div class="wl-proof__value"><span class="wl-counter wl-counter--proof-roas" data-counter-target="<?php echo esc_attr( (string) $roas_int ); ?>" data-counter-suffix="×"><?php echo esc_html( $roas ); ?></span></div>
-					<div class="wl-proof__label">Return on Ad Spend (ROAS)</div>
 				</div>
 				<div class="wl-proof__item" role="listitem">
 					<div class="wl-proof__value"><span class="wl-counter wl-counter--proof-conv" data-counter-target="<?php echo esc_attr( (string) $sales_conv_int ); ?>" data-counter-suffix="&nbsp;%"><?php echo esc_html( $sales_conv ); ?></span></div>
