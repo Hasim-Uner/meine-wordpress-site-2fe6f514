@@ -18,7 +18,6 @@ define( 'HU_E3_SALES_CONVERSION_PERCENT', 12 );
 define( 'HU_E3_SALES_CONVERSION_BEFORE_LOW', 1 );
 define( 'HU_E3_SALES_CONVERSION_BEFORE_HIGH', 2 );
 define( 'HU_E3_TIMEFRAME_MONTHS', 6 );
-define( 'HU_E3_ROAS', 34 );
 
 /**
  * Return the canonical E3 proof data.
@@ -75,12 +74,6 @@ function hu_e3_canon() {
 				'display' => '1 – 5 % → 12 %',
 				'short'   => '6× bis 12× höhere Abschlussquote',
 				'label'   => 'Anstieg der Abschlussquote durch eigenes System',
-			],
-			'roas'             => [
-				'value'          => HU_E3_ROAS,
-				'display'        => '34×',
-				'counter_target' => '34',
-				'label'          => 'Return on Ad Spend',
 			],
 			'timeframe'        => [
 				'value'          => HU_E3_TIMEFRAME_MONTHS,
