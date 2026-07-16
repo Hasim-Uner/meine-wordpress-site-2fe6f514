@@ -106,11 +106,6 @@ parameters:
 			path: blocksy-child/inc/seo-cockpit/seo-cockpit-ui.php
 
 		-
-			message: "#^Call to sprintf contains 0 placeholders, 1 value given\\.$#"
-			count: 1
-			path: blocksy-child/page-b2b-solar-leads.php
-
-		-
 			message: "#^Offset 'description' on array\\{label\\: 'Marktcheck', description\\: 'Klarheit vor…'\\}\\|array\\{label\\: 'Projektprüfung', description\\: 'B2B\\-Projekt sauber…'\\}\\|array\\{label\\: 'Umsetzung', description\\: 'Konkreter Bau oder…'\\}\\|array\\{label\\: 'Website\\-Analyse', description\\: 'Klarheit vor…'\\}\\|array\\{label\\: 'Weiterentwicklung', description\\: 'Planbare…'\\} in isset\\(\\) always exists and is not nullable\\.$#"
 			count: 1
 			path: blocksy-child/page-kontakt.php
