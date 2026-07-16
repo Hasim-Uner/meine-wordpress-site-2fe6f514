@@ -98,7 +98,7 @@ function hu_render_founding_cohort_block( $args = [] ) {
 			<div class="nx-container">
 				<div class="hu-founding__about-inner">
 					<span class="hu-founding__eyebrow"><?php echo esc_html( $label ); ?></span>
-					<h2 id="<?php echo esc_attr( $section_id . '-title' ); ?>">E3 New Energy war der erste Case, nicht die Grenze.</h2>
+					<h2 id="<?php echo esc_attr( $section_id . '-title' ); ?>">Der mittelständische PV-Installationsbetrieb war der erste Case, nicht die Grenze.</h2>
 					<p>Die Cohort erweitert diese Arbeitsweise auf maximal drei passende Solar- oder Wärmepumpen-Betriebe. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.</p>
 					<div class="hu-founding__about-footer">
 						<span><?php echo esc_html( $slot_line ); ?></span>

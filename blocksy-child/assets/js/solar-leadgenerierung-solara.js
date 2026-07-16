@@ -582,7 +582,7 @@
       var deadlineHuman = qualification.response_deadline_human || '';
       var proof = (!isNurture && qualification.proof && typeof qualification.proof === 'object') ? qualification.proof : null;
       var calcom = buildCalcomUrl(CFG.calcomUrl || 'https://cal.com/hasim-uener/30min', state.answers);
-      var caseUrl = CFG.caseUrl || '/e3-new-energy/';
+      var caseUrl = CFG.caseUrl || '/case-study-solar-leadgenerierung/';
 
       var ctaRow;
       if (isNurture) {
@@ -591,13 +591,13 @@
             href: caseUrl,
             className: 'is-primary',
             dataset: {
-              trackAction: 'cta_solar_success_to_e3_case',
+              trackAction: 'cta_solar_success_to_case_study',
               trackCategory: 'proof',
               trackSection: 'intake_success_nurture',
               trackFunnelStage: 'nurture_resource'
             }
           }, [
-            el('span', null, 'E3 New Energy Case lesen'),
+            el('span', null, 'Case Study lesen'),
             el('span', { 'aria-hidden': 'true', html: ARROW_SVG })
           ])
         ]);
@@ -622,12 +622,12 @@
             href: caseUrl,
             className: 'is-ghost',
             dataset: {
-              trackAction: 'cta_solar_success_to_e3_case',
+              trackAction: 'cta_solar_success_to_case_study',
               trackCategory: 'proof',
               trackSection: 'intake_success'
             }
           }, [
-            el('span', null, 'E3 Case lesen'),
+            el('span', null, 'Case Study lesen'),
             el('span', { 'aria-hidden': 'true', html: ARROW_SVG })
           ])
         ]);

@@ -5,7 +5,7 @@
  *              Outcome-Hero mit ruhigem Textlink (kein Button), Biografie als
  *              Kompetenz-Beleg, Manifest, Fit-Standards, interner Experten-Cluster
  *              (E-E-A-T). Proof/CTA-Last bewusst bei den Money-Pages, hier nur EIN
- *              primärer CTA am Seitenende. E3 erscheint einmal im Text + Link zum Case.
+ *              primärer CTA am Seitenende. Die Case Study erscheint einmal im Text + Link zum Case.
  *
  * Parallel zu template-about.php. Auswahl pro Page im WP-Admin.
  *
@@ -20,7 +20,7 @@ $request_url   = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_
 $request_cta   = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
 $portrait_url  = function_exists( 'hu_get_profile_image_url' ) ? hu_get_profile_image_url() : get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 $portrait_path = get_stylesheet_directory() . '/assets/img/hasim-portrait.png';
-$e3_case_url   = home_url( '/e3-new-energy/' );
+$e3_case_url   = home_url( '/case-study-solar-leadgenerierung/' );
 
 // ── E3-Canon: nur die eine, korrekte Erwähnung im Bio-Text (kein Zahlen-Band) ──
 $e3_canon     = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
@@ -42,7 +42,7 @@ $about_hero_path = [
 	],
 	[
 		't' => 'Der eigene Beweis',
-		's' => 'Eigenen Shop von Null aufgebaut und am eigenen Geld gespürt, was Plattform-Abhängigkeit kostet. Dieselbe Logik auf Energie skaliert – und bei E3 New Energy belegt.',
+		's' => 'Eigenen Shop von Null aufgebaut und am eigenen Geld gespürt, was Plattform-Abhängigkeit kostet. Dieselbe Logik auf Energie skaliert – und bei einem mittelständischen PV-Installationsbetrieb belegt.',
 	],
 ];
 
@@ -218,7 +218,7 @@ get_header();
 					<p>Vertrieb habe ich danach nicht in Seminaren gelernt, sondern in acht Jahren B2B-Beratung: Bedarf strukturiert aufnehmen, mit Entscheidern verbindlich kommunizieren, langfristige Beziehungen über zuverlässige Follow-ups halten.</p>
 					<p>Dann habe ich selbst gegründet — einen eigenen Online-Shop, von der ersten Zeile Code bis zur letzten Conversion. Dort habe ich am eigenen Geld erlebt, was es bedeutet, seine Nachfrage selbst zu erzeugen, statt sie von Plattformen zu mieten. Genau diese Erfahrung ist der Kern dessen, was ich heute baue.</p>
 					<p>Mein Studium der Medienwissenschaft an der Universität Paderborn war dabei der analytische Werkzeugkasten: Ich schaue nicht darauf, was auf einer Website schön aussieht, sondern wie Daten fließen, wo Aufmerksamkeit versickert und welche Signale zwischen Oberfläche und B2B-Entscheider übertragen werden müssen, damit Vertrauen entsteht.</p>
-					<p>Die meisten WordPress-Websites scheitern, weil sie von Designern gebaut wurden, die nie ein echtes Verkaufsgespräch geführt haben. Sie informieren den Nutzer zu Tode, statt Entscheidungen zu provozieren. Ich verbinde acht Jahre Vertriebs-Pragmatismus mit analytischer Präzision — und seit dem Case bei <a class="about-editorial__inline-link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="link_about_editorial_e3" data-track-category="navigation" data-track-section="about_editorial_bio">E3 New Energy</a> (<?php echo esc_html( $e3_bio_line ); ?>) wende ich diese Methode exklusiv auf den Solar- und Wärmepumpen-Mittelstand an.</p>
+					<p>Die meisten WordPress-Websites scheitern, weil sie von Designern gebaut wurden, die nie ein echtes Verkaufsgespräch geführt haben. Sie informieren den Nutzer zu Tode, statt Entscheidungen zu provozieren. Ich verbinde acht Jahre Vertriebs-Pragmatismus mit analytischer Präzision — und seit dem Case bei einem <a class="about-editorial__inline-link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="link_about_editorial_case_study" data-track-category="navigation" data-track-section="about_editorial_bio">mittelständischen PV-Installationsbetrieb</a> (<?php echo esc_html( $e3_bio_line ); ?>) wende ich diese Methode exklusiv auf den Solar- und Wärmepumpen-Mittelstand an.</p>
 				</div>
 			</section>
 
@@ -247,7 +247,7 @@ get_header();
 			<section class="about-editorial__expertise" aria-labelledby="about-editorial-expertise-title">
 				<div class="about-editorial__expertise-head">
 					<h2 id="about-editorial-expertise-title" class="about-editorial__section-kicker">Fachliche Schwerpunkte</h2>
-					<p class="about-editorial__fit-intro">Sechs Felder entlang der drei System-Ebenen — jedes als eigene Seite mit Methode, Beispielen und Bezug zum E3-Case.</p>
+					<p class="about-editorial__fit-intro">Sechs Felder entlang der drei System-Ebenen — jedes als eigene Seite mit Methode, Beispielen und Bezug zur Case Study.</p>
 				</div>
 				<div class="about-editorial__expertise-cluster">
 					<?php foreach ( $about_expertise_structured as $expertise_category => $expertise_items ) : ?>

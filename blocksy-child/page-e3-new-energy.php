@@ -1,7 +1,7 @@
 <?php
 /**
- * Template Name: E3 New Energy Methodik-Case
- * Description: Methodik-Case fuer /e3-new-energy/.
+ * Template Name: Solar Case Study Methodik-Case
+ * Description: Methodik-Case fuer /case-study-solar-leadgenerierung/.
  *
  * @package Blocksy_Child
  */
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $diagnostic_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $agentur_url    = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ) : home_url( '/wordpress-agentur-hannover/' );
 
-$tracking_attrs = 'data-track-section="case_e3_methodology" data-track-funnel-stage="proof"';
+$tracking_attrs = 'data-track-section="case_solar_methodology" data-track-funnel-stage="proof"';
 
 $e3_cpl_before  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
 $e3_cpl_after   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
@@ -60,7 +60,7 @@ $implementation_blocks = [
 	[
 		'label' => 'Block B',
 		'title' => 'Exklusivität nachbauen',
-		'body'  => 'Eigene Domain, eigenes Formular, eigene Datenbank. Jede Anfrage ging exklusiv an E3, nicht an drei andere Anbieter gleichzeitig. Zusätzlich: CRM-Webhook direkt aus dem Formular, damit der Erstkontakt in Minuten erfolgte, nicht in Stunden — der gleiche Speed-Vorteil, den Viessmann-Anfragen strukturell hatten.',
+		'body'  => 'Eigene Domain, eigenes Formular, eigene Datenbank. Jede Anfrage ging exklusiv an den Betrieb, nicht an drei andere Anbieter gleichzeitig. Zusätzlich: CRM-Webhook direkt aus dem Formular, damit der Erstkontakt in Minuten erfolgte, nicht in Stunden — der gleiche Speed-Vorteil, den Viessmann-Anfragen strukturell hatten.',
 	],
 	[
 		'label' => 'Block C',
@@ -93,7 +93,7 @@ $transferable = [
 	'Die Vier-Eigenschaften-Logik (Intent, Exklusivität, Vorqualifizierung, Echtzeit) gilt für jeden Solar- oder SHK-Betrieb mit eigenem Vertrieb.',
 	'Tracking-Fundament ist Voraussetzung, kein optionales Add-on. Ohne sauberes Attribution-Setup wird Optimierung zum Ratespiel.',
 	'Drei Monate Implementierung sind realistisch — wer "in zwei Wochen Leads" verspricht, übersieht entweder das Tracking-Fundament oder die CRM-Integration oder beides.',
-	'Vertriebs-Schulung wird oft als erste Maßnahme verkauft. Bei E3 war der Vertrieb nie das Problem. Das ist häufiger der Fall als die Branche zugibt.',
+	'Vertriebs-Schulung wird oft als erste Maßnahme verkauft. Bei diesem Betrieb war der Vertrieb nie das Problem. Das ist häufiger der Fall als die Branche zugibt.',
 ];
 
 $specific = [
@@ -147,7 +147,7 @@ $e3_deeper = [
 	],
 	[
 		't'   => 'Lead-Funnel Solar',
-		's'   => 'Die fünf Funnel-Stufen vom Suchbegriff bis zum Auftrag – die Architektur hinter dem E3-Setup.',
+		's'   => 'Die fünf Funnel-Stufen vom Suchbegriff bis zum Auftrag – die Architektur hinter diesem Setup.',
 		'url' => home_url( '/lead-funnel-solar/' ),
 	],
 	[
@@ -166,11 +166,11 @@ get_header();
 			<div class="e3-section__inner e3-hero__inner">
 				<div class="e3-hero__content" data-reveal>
 					<p class="e3-kicker">Methodik-Case · Solar &amp; Wärmepumpe</p>
-					<h1 class="e3-hero__headline" id="e3-hero-title">Warum gekaufte Leads bei E3 nicht funktionierten — und was wir stattdessen gebaut haben.</h1>
-					<p class="e3-hero__subline">E3 New Energy hatte zwei parallele Anfrage-Quellen: Portal-Leads für 150 € pro Stück und kostenlose Viessmann-Partner-Anfragen. Die kostenlosen konvertierten deutlich besser. Die Diagnose dieses Widerspruchs wurde zur Grundlage für ein eigenes Anfrage-System.</p>
+					<h1 class="e3-hero__headline" id="e3-hero-title">Warum gekaufte Leads bei einem mittelständischen PV-Installationsbetrieb nicht funktionierten — und was wir stattdessen gebaut haben.</h1>
+					<p class="e3-hero__subline">Ein mittelständischer PV-Installationsbetrieb hatte zwei parallele Anfrage-Quellen: Portal-Leads für 150 € pro Stück und kostenlose Viessmann-Partner-Anfragen. Die kostenlosen konvertierten deutlich besser. Die Diagnose dieses Widerspruchs wurde zur Grundlage für ein eigenes Anfrage-System.</p>
 				</div>
 
-				<div class="e3-metric-grid" role="list" aria-label="E3 New Energy Kennzahlen">
+				<div class="e3-metric-grid" role="list" aria-label="Kennzahlen des mittelständischen PV-Installationsbetriebs">
 					<?php foreach ( $metrics as $metric ) : ?>
 						<div class="e3-metric-card" role="listitem" data-reveal>
 							<strong><?php echo esc_html( $metric ); ?></strong>
@@ -178,7 +178,7 @@ get_header();
 					<?php endforeach; ?>
 				</div>
 
-				<p class="e3-hero__micro" data-reveal>Mandat E3 New Energy. Implementierungsphase 3 Monate, Optimierung 3 Monate.</p>
+				<p class="e3-hero__micro" data-reveal>Mandat mittelständischer PV-Installationsbetrieb. Implementierungsphase 3 Monate, Optimierung 3 Monate.</p>
 			</div>
 		</section>
 
@@ -190,8 +190,8 @@ get_header();
 				</div>
 
 				<div class="e3-prose e3-prose--wide" data-reveal>
-					<p>E3 New Energy kaufte 2024 Solar- und Wärmepumpen-Anfragen über Portale wie Aroundhome, Check24 und DAA — rund 150 € pro Lead. Die Conversion schwankte zwischen 1 % und 5 % je nach Monat. Bei 150 € Einkauf und 3 % Durchschnitt heißt das rechnerisch 5.000 € reine Lead-Kosten pro Abschluss, bevor irgendein Cent Marge entsteht.</p>
-					<p>Parallel dazu erhielt E3 als Premium-Partner von Viessmann Anfragen — kostenlos, direkt vom Interessenten ausgelöst, der aktiv nach einem Viessmann-Fachbetrieb in seiner Region gesucht hatte. Dieselbe Vertriebsmannschaft. Derselbe Außendienst. Dieselben Produkte. Diese Anfragen konvertierten deutlich besser.</p>
+					<p>Der mittelständische PV-Installationsbetrieb kaufte 2024 Solar- und Wärmepumpen-Anfragen über Portale wie Aroundhome, Check24 und DAA — rund 150 € pro Lead. Die Conversion schwankte zwischen 1 % und 5 % je nach Monat. Bei 150 € Einkauf und 3 % Durchschnitt heißt das rechnerisch 5.000 € reine Lead-Kosten pro Abschluss, bevor irgendein Cent Marge entsteht.</p>
+					<p>Parallel dazu erhielt der Betrieb als Premium-Partner von Viessmann Anfragen — kostenlos, direkt vom Interessenten ausgelöst, der aktiv nach einem Viessmann-Fachbetrieb in seiner Region gesucht hatte. Dieselbe Vertriebsmannschaft. Derselbe Außendienst. Dieselben Produkte. Diese Anfragen konvertierten deutlich besser.</p>
 					<p>Damit war die übliche Erklärung — "der Vertrieb müsste schneller anrufen", "die Margen müssten höher sein", "das Telefonscript müsste besser werden" — sofort entkräftet. Gleicher Vertrieb, anderes Resultat. Der Unterschied lag nicht im Haus. Er lag in der Anfrage.</p>
 				</div>
 
@@ -320,7 +320,7 @@ get_header();
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
 					<p class="e3-kicker">Kernerkenntnis</p>
-					<h2 class="e3-section__title" id="insight-title">Die fundamentale Erkenntnis aus <?php echo esc_html( function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative' ) : '6 Monaten' ); ?> E3.</h2>
+					<h2 class="e3-section__title" id="insight-title">Die fundamentale Erkenntnis aus <?php echo esc_html( function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative' ) : '6 Monaten' ); ?> Praxis.</h2>
 				</div>
 
 				<aside class="e3-pullquote" data-reveal>
@@ -333,7 +333,7 @@ get_header();
 			<div class="e3-section__inner">
 				<div class="e3-section__head" data-reveal>
 					<p class="e3-kicker">Methodik im Detail</p>
-					<h2 class="e3-section__title" id="vertiefung-title">Vier Bausteine, die das E3-Ergebnis möglich gemacht haben.</h2>
+					<h2 class="e3-section__title" id="vertiefung-title">Vier Bausteine, die dieses Ergebnis möglich gemacht haben.</h2>
 					<p class="e3-section__lead">
 						Wer den Case fachlich vertiefen will: hier die thematischen Seiten zu CPL-Rechnung, Tracking-Architektur, Funnel-Stufen und der TCO-Logik gegenüber Lead-Portalen.
 					</p>
@@ -344,7 +344,7 @@ get_header();
 						<li class="e3-deeper-item" data-reveal>
 							<a class="e3-deeper-link"
 							   href="<?php echo esc_url( $deeper_item['url'] ); ?>"
-							   data-track-action="cta_e3_deeper_link"
+							   data-track-action="cta_case_study_deeper_link"
 							   data-track-category="navigation"
 							   data-track-section="vertiefung">
 								<span class="e3-deeper-link__t"><?php echo esc_html( $deeper_item['t'] ); ?></span>
@@ -356,7 +356,7 @@ get_header();
 
 				<p class="e3-coda e3-coda--agentur" data-reveal>
 					Wenn es nicht um Solar oder Wärmepumpe geht, sondern um ein erklärungsbedürftiges B2B-Angebot auf WordPress, ist der passendere Einstieg die
-					<a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_e3_to_agentur" data-track-category="navigation" data-track-section="vertiefung">WordPress Agentur Hannover</a>.
+					<a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_case_study_to_agentur" data-track-category="navigation" data-track-section="vertiefung">WordPress Agentur Hannover</a>.
 				</p>
 			</div>
 		</section>
@@ -374,7 +374,7 @@ get_header();
 				</ul>
 
 				<div class="e3-cta__actions">
-					<a class="e3-btn" href="<?php echo esc_url( $diagnostic_url ); ?>" data-track-action="cta_e3_to_diagnostic_request" data-track-category="lead_gen" data-track-section="case_e3_methodology">
+					<a class="e3-btn" href="<?php echo esc_url( $diagnostic_url ); ?>" data-track-action="cta_case_study_to_diagnostic_request" data-track-category="lead_gen" data-track-section="case_solar_methodology">
 						<span>Marktcheck mit Fit-Entscheid starten</span>
 						<span class="e3-btn__arrow" aria-hidden="true">→</span>
 					</a>

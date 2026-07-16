@@ -1040,7 +1040,7 @@ function nexus_build_qualification_screen( $qualification, $validated, $post_id 
 			'response_deadline_human' => $deadline['human'],
 			'proof'                   => [
 				'label' => 'Echte Zahlen aus einem laufenden Setup',
-				'body'  => 'E3 New Energy — CPL von 150 € auf 22 € in 6 Monaten, +12 % Abschlussquote. Gleiche Methode, die für Ihren Betrieb geprüft wird.',
+				'body'  => 'Mittelständischer PV-Installationsbetrieb — CPL von 150 € auf 22 € in 6 Monaten, +12 % Abschlussquote. Gleiche Methode, die für Ihren Betrieb geprüft wird.',
 			],
 		];
 	}

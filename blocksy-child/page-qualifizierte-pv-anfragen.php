@@ -17,14 +17,14 @@ $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 	? nexus_get_energy_systems_url()
 	: home_url( '/solar-waermepumpen-leadgenerierung/' );
 $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
-$e3_url          = home_url( '/e3-new-energy/' );
+$e3_url          = home_url( '/case-study-solar-leadgenerierung/' );
 $cpl_url         = home_url( '/cost-per-lead-photovoltaik/' );
 $sst_url         = home_url( '/server-side-tracking-b2b/' );
 $intercept_url   = home_url( '/solar-leads-kaufen-alternative/' );
 
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
+$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
@@ -91,7 +91,7 @@ $linked_assets = [
 	[ 't' => 'Cost per Lead Photovoltaik', 's' => 'Drei Szenarien im CPL-Vergleich und versteckte Kostentreiber.', 'url' => $cpl_url ],
 	[ 't' => 'Server-Side Tracking für B2B', 's' => 'Wie man Quelle-zu-Auftrag-Attribution sauber misst.', 'url' => $sst_url ],
 	[ 't' => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage', 's' => 'Markteinordnung der Lead-Anbieter und konkrete Kosten pro Anfrage.', 'url' => $intercept_url ],
-	[ 't' => 'E3 New Energy – Methodik-Case', 's' => sprintf( '%1$s, %2$s Abschlussquote in %3$s.', $e3_lead_count, $e3_sales_conversion, $e3_timeframe ), 'url' => $e3_url ],
+	[ 't' => 'Solar Case Study – Methodik-Case', 's' => sprintf( '%1$s, %2$s Abschlussquote in %3$s.', $e3_lead_count, $e3_sales_conversion, $e3_timeframe ), 'url' => $e3_url ],
 ];
 
 $faq = [
@@ -113,7 +113,7 @@ $faq = [
 	],
 	[
 		'question' => sprintf( 'Welche Abschlussquote ist im Solar-Bereich realistisch?', $e3_case_label ),
-		'answer'   => sprintf( 'Im B2C-PV-Markt liegen Abschlussquoten bei Portal-Leads typischerweise zwischen 2 %% und 5 %%. Bei eigenen, qualifizierten Anfragen sind 8 %% bis 15 %% realistisch – die E3-Referenz liegt bei %s über alle Anfragen hinweg.', $e3_sales_conversion ),
+		'answer'   => sprintf( 'Im B2C-PV-Markt liegen Abschlussquoten bei Portal-Leads typischerweise zwischen 2 %% und 5 %%. Bei eigenen, qualifizierten Anfragen sind 8 %% bis 15 %% realistisch – die Case-Study-Referenz liegt bei %s über alle Anfragen hinweg.', $e3_sales_conversion ),
 	],
 ];
 
@@ -175,10 +175,10 @@ get_header();
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
-				   data-track-action="cta_e3_case"
+				   data-track-action="cta_case_study"
 				   data-track-category="qualifizierte_pv_anfragen"
 				   data-track-section="hero">
-					E3-Case ansehen
+					Case Study ansehen
 				</a>
 			</div>
 		</div>

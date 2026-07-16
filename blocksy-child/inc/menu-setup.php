@@ -72,6 +72,7 @@ function nexus_is_results_menu_item( $item ) {
 		'/case-studies/',
 		'/case-studies-e-commerce/',
 		'/ergebnisse/',
+		'/case-study-solar-leadgenerierung/',
 		'/e3-new-energy/',
 	];
 
@@ -336,8 +337,9 @@ add_filter( 'nav_menu_link_attributes', function ( $atts, $item ) {
 		'solar & wärmepumpen' => 'solar',
 		'wordpress agentur'   => 'agentur',
 		'ergebnisse'          => 'results',
-		'e3 proof'            => 'e3_proof',
-		'e3 new energy'       => 'e3_proof',
+		'e3 proof'            => 'case_study_proof',
+		'e3 new energy'       => 'case_study_proof',
+		'case study'          => 'case_study_proof',
 		'über mich'           => 'about',
 		'über haşim'          => 'about',
 	];

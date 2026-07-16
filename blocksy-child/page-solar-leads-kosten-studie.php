@@ -4,7 +4,7 @@
  * Description: Zitierfähige Marktstudie zu den tatsächlichen Kosten von Solar-,
  *              Wärmepumpen- und Speicher-Leads im DACH-Raum. Kernthese:
  *              Cost-per-Order statt Cost-per-Lead. Methodik transparent,
- *              eigene Fallzahl (E3) als Referenz-Benchmark.
+ *              eigene Fallzahl (Case Study) als Referenz-Benchmark.
  *              Primärer Pfad: Marktcheck auf /solar-waermepumpen-leadgenerierung/#marktcheck.
  *
  * @package Blocksy_Child
@@ -20,12 +20,12 @@ $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 	? nexus_get_energy_systems_url()
 	: home_url( '/solar-waermepumpen-leadgenerierung/' );
 $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
-$e3_url          = home_url( '/e3-new-energy/' );
+$e3_url          = home_url( '/case-study-solar-leadgenerierung/' );
 
 // ── E3-Proof-Canon (Referenz-Benchmark) ───────────────────────
 $e3_canon         = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics       = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_case_label    = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
+$e3_case_label    = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_cpl_after     = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_conv_after    = $e3_metrics['sales_conversion']['display'] ?? '12 %';
 $e3_timeframe     = $e3_metrics['timeframe']['display'] ?? '6 Monate';
@@ -97,7 +97,7 @@ $cpo_rows = [
 		'cpo'    => '3.000 €',
 	],
 	[
-		'modell' => 'Eigenes Anfrage-System (E3-Referenz)',
+		'modell' => 'Eigenes Anfrage-System (Case-Study-Referenz)',
 		'cpl'    => $e3_cpl_after,
 		'conv'   => $e3_conv_after,
 		'cpo'    => '≈ 183 €',
@@ -136,11 +136,11 @@ $faqs = [
 	],
 	[
 		'question' => 'Wie wird der Cost-per-Order berechnet?',
-		'answer'   => 'CPO = Cost-per-Lead geteilt durch die Abschlussquote. Beispiel: 70 € Lead-Preis bei 2 % Abschlussquote ergibt 3.500 € pro Abschluss. Ein eigenes System mit 22 € pro Anfrage und 12 % Abschlussquote ergibt rund 183 € pro Abschluss (Referenzwerte E3 New Energy).',
+		'answer'   => 'CPO = Cost-per-Lead geteilt durch die Abschlussquote. Beispiel: 70 € Lead-Preis bei 2 % Abschlussquote ergibt 3.500 € pro Abschluss. Ein eigenes System mit 22 € pro Anfrage und 12 % Abschlussquote ergibt rund 183 € pro Abschluss (Referenzwerte Case Study).',
 	],
 	[
 		'question' => 'Sind die Zahlen dieser Studie repräsentativ?',
-		'answer'   => 'Die Preisspannen basieren auf öffentlich beobachtbaren Marktpreispunkten und Brancheneinordnung. Die Abschluss- und CPO-Werte des eigenen Systems sind ein dokumentierter Einzelfall (E3 New Energy) und ausdrücklich als Referenz, nicht als Garantie zu lesen. Die CPO-Tabelle ist eine transparente Modellrechnung, keine Erhebung.',
+		'answer'   => 'Die Preisspannen basieren auf öffentlich beobachtbaren Marktpreispunkten und Brancheneinordnung. Die Abschluss- und CPO-Werte des eigenen Systems sind ein dokumentierter Einzelfall (mittelständischer PV-Installationsbetrieb) und ausdrücklich als Referenz, nicht als Garantie zu lesen. Die CPO-Tabelle ist eine transparente Modellrechnung, keine Erhebung.',
 	],
 	[
 		'question' => 'Lohnt sich ein eigenes Anfrage-System gegenüber Lead-Kauf?',

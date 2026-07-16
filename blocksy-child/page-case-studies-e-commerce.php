@@ -14,7 +14,7 @@ get_header();
 
 $request_url    = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $request_cta    = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Anfrage stellen';
-$e3_url         = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'e3', home_url( '/e3-new-energy/' ) ) : home_url( '/e3-new-energy/' );
+$e3_url         = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'e3', home_url( '/case-study-solar-leadgenerierung/' ) ) : home_url( '/case-study-solar-leadgenerierung/' );
 $agentur_url    = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ) : home_url( '/wordpress-agentur-hannover/' );
 $e3_cpl_before  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
 $e3_cpl_after   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
@@ -59,13 +59,13 @@ $e3_sales_rate  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conve
 		</div>
 	</section>
 
-	<!-- 2. E3 New Energy -->
+	<!-- 2. Solar Case Study -->
 	<section class="nx-section results-case">
 		<div class="nx-container">
 			<article class="results-case-card results-case-card--success">
 				<div class="results-case-card__content">
 					<span class="results-case-card__kicker">Öffentlicher Methodik-Case · Solar &amp; Wärmepumpe</span>
-					<h2 class="results-case-card__title">E3 New Energy</h2>
+					<h2 class="results-case-card__title">Solar Case Study</h2>
 					<p class="results-case-card__context">
 						Zwei parallele Anfrage-Quellen: Portal-Leads und Viessmann-Partner-Anfragen. Die Methodik im Detail.
 					</p>
@@ -83,7 +83,7 @@ $e3_sales_rate  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conve
 						<li>Drei Monate Implementierung, drei Monate Optimierung</li>
 					</ul>
 
-					<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_results_e3_methodology" data-track-category="trust">
+					<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_results_case_study_methodology" data-track-category="trust">
 						Methodik-Case lesen
 					</a>
 				</div>
@@ -126,7 +126,7 @@ $e3_sales_rate  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conve
 					<span class="results-case-card__kicker">Sekundärer Einstieg · WordPress Agentur Hannover</span>
 					<h2 class="results-case-card__title">Wenn es nicht um Solar geht, aber um ein erklärungsbedürftiges B2B-Angebot.</h2>
 					<p class="results-case-card__context">
-						Die Methodik hinter E3 ist nicht „mehr Leads kaufen", sondern WordPress, Tracking, SEO und Conversion als Anfrage-System zu ordnen. Für B2B-Websites außerhalb des Solar-Fokus ist die Agentur-Seite der passendere Einstieg.
+						Die Methodik hinter dieser Case Study ist nicht „mehr Leads kaufen", sondern WordPress, Tracking, SEO und Conversion als Anfrage-System zu ordnen. Für B2B-Websites außerhalb des Solar-Fokus ist die Agentur-Seite der passendere Einstieg.
 					</p>
 					<div class="results-case-card__actions">
 						<a href="<?php echo esc_url( $agentur_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_results_to_agentur" data-track-category="navigation" data-track-section="results_b2b_bridge">

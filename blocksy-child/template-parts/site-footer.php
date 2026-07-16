@@ -17,7 +17,7 @@ $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_ge
 $home_url     = $primary_urls['home'] ?? home_url( '/' );
 $analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $request_url  = $analysis_url;
-$e3_url       = $primary_urls['e3'] ?? home_url( '/e3-new-energy/' );
+$e3_url       = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
 $results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
 $agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
@@ -115,7 +115,7 @@ if ( $is_whitelabel_context ) {
 				<h3 id="ft-ergebnisse">Ergebnisse</h3>
 				<ul class="ft__list">
 					<li><a class="ft__link-strong" href="<?php echo esc_url( $results_url ); ?>" data-track-action="cta_footer_nav_results" data-track-category="trust" data-track-section="footer">Referenzen ansehen</a></li>
-					<li><a href="<?php echo esc_url( $e3_url ); ?>" data-track-action="cta_footer_nav_e3_proof" data-track-category="trust" data-track-section="footer">Fallstudie: E3 New Energy</a></li>
+					<li><a href="<?php echo esc_url( $e3_url ); ?>" data-track-action="cta_footer_nav_case_study_proof" data-track-category="trust" data-track-section="footer">Fallstudie: Solar Leadgenerierung</a></li>
 				</ul>
 			</section>
 

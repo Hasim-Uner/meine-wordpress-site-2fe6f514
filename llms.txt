@@ -9,8 +9,8 @@
 - [Kontakt](/kontakt/) - Anfragepfad für Analyse, Umsetzung und Weiterentwicklung nach Marktcheck-Fit.
 
 ## Proof und zitierfähige Quellen
-- [E3 New Energy](/e3-new-energy/) - kaufnaher Proof-Case für Nachfrageaufbau, Vorqualifizierung, Tracking und Conversion.
-- [Was kosten Solar-Leads? Marktstudie](/solar-leads-kosten-studie/) - zitierfähige Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen, Cost-per-Order, Methodik und E3-Benchmark.
+- [Solar Case Study](/case-study-solar-leadgenerierung/) - kaufnaher Proof-Case für Nachfrageaufbau, Vorqualifizierung, Tracking und Conversion.
+- [Was kosten Solar-Leads? Marktstudie](/solar-leads-kosten-studie/) - zitierfähige Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen, Cost-per-Order, Methodik und Case-Study-Benchmark.
 - [Ergebnisse](/ergebnisse/) - kuratierter Proof-Hub mit Cases, Kennzahlen und Kontext.
 - [Über Haşim Üner](/uber-mich/) - Personenprofil des Autors und Betreibers.
 

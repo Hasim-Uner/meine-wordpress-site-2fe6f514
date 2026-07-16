@@ -19,12 +19,12 @@ $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 	? nexus_get_energy_systems_url()
 	: home_url( '/solar-waermepumpen-leadgenerierung/' );
 $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
-$e3_url          = home_url( '/e3-new-energy/' );
+$e3_url          = home_url( '/case-study-solar-leadgenerierung/' );
 
 // ── E3-Canon ──────────────────────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
+$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
@@ -107,8 +107,8 @@ $faq = [
 		'answer'   => 'Typischerweise drei bis sechs: Energie-Manager (technische Erstprüfung), Geschäftsführung (strategische Freigabe), CFO (Finanzierung), Einkauf (Vertragsbedingungen), ggf. Facility Management und Nachhaltigkeitsbeauftragte. Jeder Stakeholder bekommt seinen eigenen Funnel-Schritt – nicht alles wird auf eine Person abgewälzt.',
 	],
 	[
-		'question' => sprintf( 'Funktioniert die E3-Referenz auch im B2B-Gewerbe?', $e3_case_label ),
-		'answer'   => sprintf( 'Die E3-Referenz (%1$s qualifizierte Anfragen, %2$s Abschlussquote, %3$s niedrigere Cost per Lead in %4$s) deckt B2C-Wärmepumpen und B2C/B2B-Photovoltaik ab. Im reinen Gewerbe-PV sind die Ticketgrößen größer, die Abschlussquoten ähnlich, die Sales-Zyklen länger – die System-Logik bleibt identisch.', $e3_lead_count, $e3_sales_conversion, $e3_cpl_reduction, $e3_timeframe ),
+		'question' => 'Funktioniert die Case-Study-Referenz auch im B2B-Gewerbe?',
+		'answer'   => sprintf( 'Die Case-Study-Referenz (%1$s qualifizierte Anfragen, %2$s Abschlussquote, %3$s niedrigere Cost per Lead in %4$s) deckt B2C-Wärmepumpen und B2C/B2B-Photovoltaik ab. Im reinen Gewerbe-PV sind die Ticketgrößen größer, die Abschlussquoten ähnlich, die Sales-Zyklen länger – die System-Logik bleibt identisch.', $e3_lead_count, $e3_sales_conversion, $e3_cpl_reduction, $e3_timeframe ),
 	],
 	[
 		'question' => 'Wie passt das mit DAA, Aroundhome oder Check24 zusammen?',
@@ -194,7 +194,7 @@ get_header();
 				   data-track-action="cta_e3_case"
 				   data-track-category="b2b_solar_leads"
 				   data-track-section="hero">
-					E3-Case lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
+					Case Study lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
 				</a>
 			</div>
 		</div>

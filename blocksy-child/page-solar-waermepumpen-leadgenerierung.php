@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // ── URLs ───────────────────────────────────────────────────────
 $page_url     = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
-$e3_url       = home_url( '/e3-new-energy/' );
+$e3_url       = home_url( '/case-study-solar-leadgenerierung/' );
 $privacy_url  = home_url( '/datenschutz/' );
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $tracking_url = $primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' );
@@ -33,7 +33,7 @@ $cal_url      = function_exists( 'hu_get_analysis_calcom_base_url' )
 // ── E3-Proof-Metriken (Canon) ──────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
+$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
 $e3_conv_before      = $e3_metrics['sales_conversion_before']['display'] ?? '1 – 5 %';
@@ -604,7 +604,7 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     PROOF-BAR — E3-Kennzahlen früh sichtbar (Teaser → #ergebnisse)
+		     PROOF-BAR — Case-Study-Kennzahlen früh sichtbar (Teaser → #ergebnisse)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="sol-proofbar" aria-label="Belegte Ergebnisse aus dem <?php echo esc_attr( $e3_case_label ); ?>-Case" data-track-section="proof_bar">
 			<div class="hu-container">
@@ -872,7 +872,7 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     05 / E3 NEW ENERGY — Vorher/Nachher + Stats (Ink)
+		     05 / SOLAR CASE STUDY — Vorher/Nachher + Stats (Ink)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="ergebnisse" data-track-section="results">
 			<div class="hu-container">

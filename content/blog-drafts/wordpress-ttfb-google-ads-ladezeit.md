@@ -100,7 +100,7 @@ Der Aufwand: höher. Die Skalierbarkeit: deutlich besser. Die TTFB-Werte: identi
 
 ## 5. Was TTFB im CPL und CPO konkret bewegt
 
-Im [E3-Case](/e3-new-energy/) hat eine vollständige Anfrage-System-Migration den Cost per Lead von 150 Euro auf 22 Euro gesenkt. Page Speed war einer von mehreren Faktoren — neben Vorqualifizierung, Server-Side Tracking und CRM-Übergabe.
+In der [Solar Case Study](/case-study-solar-leadgenerierung/) hat eine vollständige Anfrage-System-Migration den Cost per Lead von 150 Euro auf 22 Euro gesenkt. Page Speed war einer von mehreren Faktoren — neben Vorqualifizierung, Server-Side Tracking und CRM-Übergabe.
 
 Aber Page Speed wirkt an drei Stellen gleichzeitig:
 

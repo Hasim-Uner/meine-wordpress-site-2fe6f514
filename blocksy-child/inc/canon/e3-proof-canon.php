@@ -1,6 +1,6 @@
 <?php
 /**
- * Canonical E3 New Energy proof metrics.
+ * Canonical anonymized case-study proof metrics.
  *
  * @package Blocksy_Child
  */
@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HU_E3_CASE_LABEL', 'E3 New Energy' );
+define( 'HU_E3_CASE_LABEL', 'mittelständischer PV-Installationsbetrieb' );
 define( 'HU_E3_CPL_BEFORE', 150 );
 define( 'HU_E3_CPL_AFTER', 22 );
 define( 'HU_E3_CPL_REDUCTION_PERCENT', 85 );
@@ -28,7 +28,7 @@ define( 'HU_E3_ROAS', 34 );
 function hu_e3_canon() {
 	return [
 		'case_label' => HU_E3_CASE_LABEL,
-		'url'        => home_url( '/e3-new-energy/' ),
+		'url'        => home_url( '/case-study-solar-leadgenerierung/' ),
 		'metrics'    => [
 			'cpl_before'       => [
 				'value'   => HU_E3_CPL_BEFORE,
@@ -92,7 +92,7 @@ function hu_e3_canon() {
 		],
 		'summary'    => [
 			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 5 % auf 12 %, 6 Monate.',
-			'proof'      => 'Referenz E3 New Energy: 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 5 % auf 12 % und über 85 % weniger Kosten pro Anfrage.',
+			'proof'      => 'Referenz mittelständischer PV-Installationsbetrieb: 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 5 % auf 12 % und über 85 % weniger Kosten pro Anfrage.',
 			'conversion' => 'Die Abschlussquote stieg im selben Zeitraum von 1 – 5 % (gekaufte Portal-Leads) auf 12 % (eigenes Anfrage-System).',
 		],
 	];

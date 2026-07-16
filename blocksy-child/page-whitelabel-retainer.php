@@ -17,7 +17,7 @@ $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 	: 'https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true';
 $mailto_url = 'mailto:hallo@hasimuener.de';
 
-$e3_case_url  = function_exists( 'hu_e3_canon' ) ? (string) ( hu_e3_canon()['url'] ?? home_url( '/e3-new-energy/' ) ) : home_url( '/e3-new-energy/' );
+$e3_case_url  = function_exists( 'hu_e3_canon' ) ? (string) ( hu_e3_canon()['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) ) : home_url( '/case-study-solar-leadgenerierung/' );
 $portrait_url = function_exists( 'hu_get_portrait_image_url' )
 	? hu_get_portrait_image_url()
 	: home_url( '/wp-content/uploads/2026/01/Hasim-Uener-Prtraeit_Startseite.webp' );
@@ -532,7 +532,7 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Beleg · offengelegter Case</span>
 				<h2 class="nx-headline-section">Die meisten Mandate bleiben unter NDA. Eines ist offengelegt.</h2>
-				<p class="wl-section-lede">Genau dafür ist Whitelabel da. Der eine Case, der öffentlich sein darf: E3 New Energy, erneuerbare Energien — Server-Side-Tracking, Consent Mode V2, CRM-Attribution. Meine Arbeit, offengelegt bis in die Zahlen.</p>
+				<p class="wl-section-lede">Genau dafür ist Whitelabel da. Der eine Case, der öffentlich sein darf: ein mittelständischer PV-Installationsbetrieb, erneuerbare Energien — Server-Side-Tracking, Consent Mode V2, CRM-Attribution. Meine Arbeit, offengelegt bis in die Zahlen.</p>
 			</div>
 
 			<div class="wl-proof__grid reveal-stagger" role="list" aria-label="Proof-Kennzahlen">

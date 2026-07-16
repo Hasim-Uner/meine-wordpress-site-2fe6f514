@@ -211,7 +211,7 @@ Das Ergebnis wird nicht schöngerechnet. Wenn der eigene Weg bei Ihnen nicht tr�
 
 ## 9. Aus der Praxis: aus 150 € pro Anfrage wurden 22 €
 
-Der Fall E3 New Energy wird oft zu groß erzählt. Das ist gar nicht nötig. Die nackten Zahlen reichen:
+Der Fall eines mittelständischen PV-Installationsbetriebs wird oft zu groß erzählt. Das ist gar nicht nötig. Die nackten Zahlen reichen:
 
 - **Vorher:** 150 € pro gekaufter Anfrage
 - **Nachher:** 22 € pro eigener Anfrage
@@ -225,7 +225,7 @@ Die eigentliche Lehre ist nicht die Prozentzahl. Sie lautet: Der Vertrieb war ni
 
 Viele Betriebe reagieren auf schwache Portal-Leads mit Vertriebstraining. Das kann helfen, löst aber nicht den Kern. Wenn der Kunde schon mit mehreren spricht und auf Preis gepolt ist, arbeitet Ihr Vertrieb gegen die Struktur des Kanals.
 
-Der [E3-Fall](/e3-new-energy/) ist deshalb kein Ergebnisversprechen, sondern ein Beleg für die Mechanik: Wenn Anfragequelle, Nachverfolgen, Vorprüfung und Vertrieb zusammenspielen, ändert sich die Wirtschaftlichkeit.
+Der [Fall dieser Case Study](/case-study-solar-leadgenerierung/) ist deshalb kein Ergebnisversprechen, sondern ein Beleg für die Mechanik: Wenn Anfragequelle, Nachverfolgen, Vorprüfung und Vertrieb zusammenspielen, ändert sich die Wirtschaftlichkeit.
 
 ## 10. Sie müssen das Rad nicht neu erfinden
 

@@ -279,7 +279,7 @@ function nexus_get_wgos_cluster_page_proof_metrics() {
 		],
 		[
 			'value' => '3 Proof-Routen',
-			'label' => 'E3, DOMDAR und Ergebnisse sind oeffentlich einsehbar',
+			'label' => 'Case Study, DOMDAR und Ergebnisse sind oeffentlich einsehbar',
 		],
 	];
 }

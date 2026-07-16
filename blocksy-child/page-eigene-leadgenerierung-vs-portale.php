@@ -20,12 +20,12 @@ $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 	? nexus_get_energy_systems_url()
 	: home_url( '/solar-waermepumpen-leadgenerierung/' );
 $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
-$e3_url          = home_url( '/e3-new-energy/' );
+$e3_url          = home_url( '/case-study-solar-leadgenerierung/' );
 
 $linked_assets = [
 	[
 		't'   => 'CPL pro Anfrage: Solar Leads kaufen oder eigenes System?',
-		's'   => 'Die konkrete Kosten-pro-Anfrage-Rechnung mit E3-Benchmark und Portal-Preisspannen.',
+		's'   => 'Die konkrete Kosten-pro-Anfrage-Rechnung mit Case-Study-Benchmark und Portal-Preisspannen.',
 		'url' => home_url( '/solar-leads-kaufen-alternative/' ),
 	],
 	[
@@ -48,7 +48,7 @@ $linked_assets = [
 // ── E3-Canon ──────────────────────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
+$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
@@ -67,9 +67,9 @@ $rent_facts = [
 ];
 
 $own_facts = [
-	[ 'k' => $e3_cpl_after, 'l' => 'Cost per Lead im eigenen System (E3-Referenz)' ],
+	[ 'k' => $e3_cpl_after, 'l' => 'Cost per Lead im eigenen System (Case-Study-Referenz)' ],
 	[ 'k' => '1× exklusiv', 'l' => 'jede Anfrage gehört nur Ihrem Betrieb' ],
-	[ 'k' => $e3_sales_conversion, 'l' => 'Abschlussquote bei eigenen Anfragen (E3)' ],
+	[ 'k' => $e3_sales_conversion, 'l' => 'Abschlussquote bei eigenen Anfragen (Case Study)' ],
 	[ 'k' => 'CAPEX', 'l' => 'investiv in Eigentum, bilanzierbar und planbar' ],
 ];
 
@@ -102,7 +102,7 @@ $comparison_rows = [
 	[
 		'criterion' => 'Abschlussquote',
 		'rent'      => sprintf( 'typisch %s — Endkunde wurde parallel an Wettbewerber verkauft', $e3_conv_before ),
-		'own'       => sprintf( '%s bei E3 — Faktor 6× bis 12× durch Exklusivität und Vorqualifizierung', $e3_sales_conversion ),
+		'own'       => sprintf( '%s bei diesem Betrieb — Faktor 6× bis 12× durch Exklusivität und Vorqualifizierung', $e3_sales_conversion ),
 	],
 	[
 		'criterion' => 'Attribution',
@@ -154,7 +154,7 @@ $when_rent_makes_sense = [
 $faq = [
 	[
 		'question' => 'Wann lohnt sich der Umstieg vom Portal auf das eigene System?',
-		'answer'   => sprintf( 'Faustregel: ab einem monatlichen Portal-Budget von 800 – 1.000 € amortisiert sich der Aufbau eines eigenen Anfrage-Systems im B2B-Mittelstand binnen 12 – 24 Monaten. Bei E3 New Energy lag die Amortisation in %1$s; gleichzeitig sank der CPL %2$s.', $e3_timeframe, $e3_cpl_reduction ),
+		'answer'   => sprintf( 'Faustregel: ab einem monatlichen Portal-Budget von 800 – 1.000 € amortisiert sich der Aufbau eines eigenen Anfrage-Systems im B2B-Mittelstand binnen 12 – 24 Monaten. Bei einem mittelständischen PV-Installationsbetrieb lag die Amortisation in %1$s; gleichzeitig sank der CPL %2$s.', $e3_timeframe, $e3_cpl_reduction ),
 	],
 	[
 		'question' => 'Kann ich beide Wege parallel fahren?',
@@ -241,10 +241,10 @@ get_header();
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
-				   data-track-action="cta_e3_case"
+				   data-track-action="cta_case_study"
 				   data-track-category="vergleich_portale"
 				   data-track-section="hero">
-					E3-Case lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
+					Case Study lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
 				</a>
 			</div>
 			<p class="hu-intercept__hero-related" style="margin-top:18px;font-size:13.5px;opacity:.75;">
@@ -311,7 +311,7 @@ get_header();
 		<div class="hu-intercept__container">
 			<h2 class="hu-intercept__h2" id="hu-vs-tco-title">TCO-Überschlag: 24 und 36 Monate</h2>
 			<p class="hu-intercept__section-lead">
-				Beispielrechnung für einen mittelständischen Solar-/Wärmepumpen-Betrieb mit etwa ~ 20 zusätzlichen Anfragen pro Monat. Werte beruhen auf typischen Marktdaten und der E3-Referenz.
+				Beispielrechnung für einen mittelständischen Solar-/Wärmepumpen-Betrieb mit etwa ~ 20 zusätzlichen Anfragen pro Monat. Werte beruhen auf typischen Marktdaten und der Case-Study-Referenz.
 			</p>
 			<div class="hu-intercept__grid hu-intercept__grid--two">
 				<?php foreach ( $tco_scenarios as $scenario ) : ?>

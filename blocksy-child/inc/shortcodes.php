@@ -144,7 +144,7 @@ function hu_home_urls() {
 		'cro'         => nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) ),
 		'about'       => nexus_get_primary_public_url( 'about', home_url( '/uber-mich/' ) ),
 		'blog'        => nexus_get_primary_public_url( 'blog', home_url( '/blog/' ) ),
-		'e3'          => nexus_get_primary_public_url( 'e3', home_url( '/e3-new-energy/' ) ),
+		'e3'          => nexus_get_primary_public_url( 'e3', home_url( '/case-study-solar-leadgenerierung/' ) ),
 		'contact'     => nexus_get_primary_public_url( 'contact', home_url( '/kontakt/' ) ),
 		'github_repo' => 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514',
 		'linkedin'    => 'https://www.linkedin.com/in/hasim-%C3%BCner/',
@@ -670,13 +670,13 @@ function hu_erfolge_section_shortcode() {
 			<div class="nx-reveal" style="text-align:center; margin-bottom:3rem;">
 				<span class="nx-badge nx-badge--gold">Proof</span>
 				<h2 id="cases-heading" style="font-size:clamp(1.8rem,3vw,2.4rem); margin:1rem 0 0.5rem; color:#fff;">Beispielhafte Wirkung des Systems.</h2>
-				<p style="color:var(--nx-text-muted);">E3 New Energy zeigt die Logik im sichtbaren Ausschnitt. Der Hebel liegt selten in einer einzelnen Maßnahme, sondern fast immer in besserer Reihenfolge.</p>
+				<p style="color:var(--nx-text-muted);">Ein mittelständischer PV-Installationsbetrieb zeigt die Logik im sichtbaren Ausschnitt. Der Hebel liegt selten in einer einzelnen Maßnahme, sondern fast immer in besserer Reihenfolge.</p>
 			</div>
 
 			<div class="homepage-proof-grid">
 				<article class="nx-card nx-reveal homepage-proof-card" style="border-top:3px solid var(--nx-success);">
 					<p class="nx-card__subtitle"><?php echo esc_html( sprintf( 'Beispielhafte Wirkung des Systems · B2B Leadgen · WordPress System · %s', $e3_timeframe ) ); ?></p>
-					<h3 class="nx-card__title">E3 New Energy</h3>
+					<h3 class="nx-card__title">Solar Case Study</h3>
 					<p style="color:var(--nx-text-muted); margin:0.8rem 0 0;">Eingekaufte Leads, keine saubere Datenlage, hohe Reibung nach dem Klick. Nach systematischer Neuordnung von Positionierung, Tracking und Conversion-Pfad:</p>
 					<div class="nx-metrics" style="margin-top:1.5rem; display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
 						<?php foreach ( $canonical_metrics as $metric ) : ?>

@@ -19,13 +19,13 @@ $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 	? nexus_get_energy_systems_url()
 	: home_url( '/solar-waermepumpen-leadgenerierung/' );
 $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
-$e3_url          = home_url( '/e3-new-energy/' );
+$e3_url          = home_url( '/case-study-solar-leadgenerierung/' );
 $intercept_url   = home_url( '/solar-leads-kaufen-alternative/' );
 $vs_url          = home_url( '/eigene-leadgenerierung-vs-portale/' );
 
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
+$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
@@ -90,7 +90,7 @@ $linked_assets = [
 	[ 't' => 'Lead-Funnel Solar (Pillar)', 's' => 'Die 5 Funnel-Stufen und die häufigsten Fehler.', 'url' => home_url( '/lead-funnel-solar/' ) ],
 	[ 't' => 'TCO über 24 Monate: Portal-Leads vs. eigenes System', 's' => 'Strategische Vergleichsmatrix mit Asset-Eigentum-Logik.', 'url' => $vs_url ],
 	[ 't' => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage', 's' => 'Warum Portal-Leads das Wachstum bremsen — Kosten pro Anfrage im Detail.', 'url' => $intercept_url ],
-	[ 't' => 'E3-Methodik-Case', 's' => sprintf( '%1$s Anfragen, %2$s Abschlussquote.', $e3_lead_count, $e3_sales_conversion ), 'url' => $e3_url ],
+	[ 't' => 'Solar-Methodik-Case', 's' => sprintf( '%1$s Anfragen, %2$s Abschlussquote.', $e3_lead_count, $e3_sales_conversion ), 'url' => $e3_url ],
 ];
 
 $faq = [
@@ -104,7 +104,7 @@ $faq = [
 	],
 	[
 		'question' => 'Wie viele neue Kunden sind realistisch pro Monat?',
-		'answer'   => 'Das hängt von Region, Projektwert und Ad-Budget ab. Im DACH-Mittelstand sind 8–25 zusätzliche qualifizierte Anfragen pro Monat realistisch, bei Abschlussquoten von 8–15 % – siehe E3-Referenz mit 12 % Abschlussquote.',
+		'answer'   => 'Das hängt von Region, Projektwert und Ad-Budget ab. Im DACH-Mittelstand sind 8–25 zusätzliche qualifizierte Anfragen pro Monat realistisch, bei Abschlussquoten von 8–15 % – siehe Case-Study-Referenz mit 12 % Abschlussquote.',
 	],
 	[
 		'question' => 'Brauche ich dafür eine neue Website?',
@@ -174,10 +174,10 @@ get_header();
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
-				   data-track-action="cta_e3_case"
+				   data-track-action="cta_case_study"
 				   data-track-category="kunden_gewinnen_solarteure"
 				   data-track-section="hero">
-					E3-Case lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
+					Case Study lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
 				</a>
 			</div>
 		</div>
