@@ -462,7 +462,7 @@
 	outline-offset: 3px;
 }
 
-/* Inline-Link im Bio-Fließtext (E3-Case) */
+/* Inline-Link im Bio-Fließtext (Case Study) */
 .about-editorial__inline-link {
 	color: var(--ae-accent-2);
 	text-decoration: underline;

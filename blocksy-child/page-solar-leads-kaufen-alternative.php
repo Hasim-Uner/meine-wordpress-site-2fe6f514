@@ -19,7 +19,7 @@ $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 	? nexus_get_energy_systems_url()
 	: home_url( '/solar-waermepumpen-leadgenerierung/' );
 $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
-$e3_url          = home_url( '/e3-new-energy/' );
+$e3_url          = home_url( '/case-study-solar-leadgenerierung/' );
 $contact_url     = home_url( '/kontakt/' );
 
 $linked_assets = [
@@ -48,7 +48,7 @@ $linked_assets = [
 // ── E3-Proof-Canon ─────────────────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'E3 New Energy';
+$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
 $e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 5 % → 12 %';
@@ -81,7 +81,7 @@ $portal_facts = [
 $own_facts = [
 	[
 		'k' => $e3_cpl_after,
-		'l' => 'Cost per Lead im eigenen Anfrage-System (E3-Referenz)',
+		'l' => 'Cost per Lead im eigenen Anfrage-System (Case-Study-Referenz)',
 	],
 	[
 		'k' => '100 %',
@@ -89,7 +89,7 @@ $own_facts = [
 	],
 	[
 		'k' => $e3_conv_uplift,
-		'l' => 'Sprung der Abschlussquote — von Portal-Leads zu eigenem System (E3)',
+		'l' => 'Sprung der Abschlussquote — von Portal-Leads zu eigenem System (Case Study)',
 	],
 	[
 		'k' => '100 % Asset',
@@ -131,7 +131,7 @@ $market_models = [
 	],
 	[
 		't' => 'Eigene Anfrage-Infrastruktur',
-		's' => 'Money Page, Server-Side-Tracking und Vorqualifizierung im eigenen Eigentum. Anfragen sind per Definition exklusiv. Setup einmalig, Asset im Betrieb. Vergleich: siehe E3-Referenz.',
+		's' => 'Money Page, Server-Side-Tracking und Vorqualifizierung im eigenen Eigentum. Anfragen sind per Definition exklusiv. Setup einmalig, Asset im Betrieb. Vergleich: siehe Case-Study-Referenz.',
 	],
 ];
 
@@ -192,7 +192,7 @@ $objections = [
 	],
 	[
 		'question' => 'Wie lange dauert es, bis sich das rechnet?',
-		'answer'   => sprintf( 'Bei E3 New Energy hat sich das System nach %1$s amortisiert: %2$s qualifizierte Anfragen, %3$s Abschlussquote und der CPL fiel von %4$s auf %5$s.', $e3_timeframe, $e3_lead_count, $e3_sales_conversion, $e3_cpl_before, $e3_cpl_after ),
+		'answer'   => sprintf( 'Bei einem mittelständischen PV-Installationsbetrieb hat sich das System nach %1$s amortisiert: %2$s qualifizierte Anfragen, %3$s Abschlussquote und der CPL fiel von %4$s auf %5$s.', $e3_timeframe, $e3_lead_count, $e3_sales_conversion, $e3_cpl_before, $e3_cpl_after ),
 	],
 	[
 		'question' => 'Verkaufen Sie selbst Leads?',
@@ -275,10 +275,10 @@ get_header();
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
-				   data-track-action="cta_e3_case"
+				   data-track-action="cta_case_study"
 				   data-track-category="intercept_solar_leads"
 				   data-track-section="hero">
-					E3-Case lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
+					Case Study lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
 				</a>
 			</div>
 			<p class="hu-intercept__hero-related" style="margin-top:18px;font-size:13.5px;opacity:.75;">

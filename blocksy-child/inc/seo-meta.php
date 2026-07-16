@@ -45,7 +45,7 @@ function hu_get_homepage_description() {
 
 	return (string) apply_filters(
 		'hu_homepage_seo_description',
-		sprintf( 'Eigene Anfragen statt Portal-Leads: Marktcheck, Vorqualifizierung und Tracking für Solar- und Wärmepumpen-Anbieter. E3-Case: CPL von %s auf %s.', $cpl_before, $cpl_after )
+		sprintf( 'Eigene Anfragen statt Portal-Leads: Marktcheck, Vorqualifizierung und Tracking für Solar- und Wärmepumpen-Anbieter. Case Study: CPL von %s auf %s.', $cpl_before, $cpl_after )
 	);
 }
 
@@ -206,23 +206,27 @@ function hu_get_forced_singular_seo_map() {
 			// daher keine oeffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
 				'title'       => 'WordPress Agentur Hannover: SEO, Tracking & CRO',
-				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking und CRO. Erst Projektprüfung, dann Umsetzung — E3: CPL %s → %s.', $e3_cpl_before, $e3_cpl_after ),
+				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking und CRO. Erst Projektprüfung, dann Umsetzung — Case Study: CPL %s → %s.', $e3_cpl_before, $e3_cpl_after ),
 			],
 			'wordpress-agentur' => [
 				'title'       => 'WordPress Agentur Hannover: SEO, Tracking & CRO',
-				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking und CRO. Erst Projektprüfung, dann Umsetzung — E3: CPL %s → %s.', $e3_cpl_before, $e3_cpl_after ),
+				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking und CRO. Erst Projektprüfung, dann Umsetzung — Case Study: CPL %s → %s.', $e3_cpl_before, $e3_cpl_after ),
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: E3 New Energy, Systemlogik und konkrete nächste Schritte.',
+				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study mittelständischer PV-Installationsbetrieb, Systemlogik und konkrete nächste Schritte.',
 			],
 			'case-studies-e-commerce' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: E3 New Energy, Systemlogik und konkrete nächste Schritte.',
+				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study mittelständischer PV-Installationsbetrieb, Systemlogik und konkrete nächste Schritte.',
 			],
 			'case-studies' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: E3 New Energy, Systemlogik und konkrete nächste Schritte.',
+				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study mittelständischer PV-Installationsbetrieb, Systemlogik und konkrete nächste Schritte.',
+			],
+			'case-study-solar-leadgenerierung' => [
+				'title'       => hu_get_e3_methodology_case_title(),
+				'description' => hu_get_e3_methodology_case_description(),
 			],
 			'e3-new-energy' => [
 				'title'       => hu_get_e3_methodology_case_title(),
@@ -237,19 +241,19 @@ function hu_get_forced_singular_seo_map() {
 			// /ki-integration-wordpress/ ist noindex. Keine eigenstaendigen SEO-Signale mehr noetig.
 			'solar-waermepumpen-leadgenerierung' => [
 				'title'       => 'Leadgenerierung Photovoltaik & Wärmepumpe ohne Portale',
-				'description' => sprintf( 'Leadgenerierung für Photovoltaik, Solar und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus E3-Beleg: %s niedrigerer CPL.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Leadgenerierung für Photovoltaik, Solar und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus Case-Study-Beleg: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
 				'title'       => 'Leadgenerierung Photovoltaik & Wärmepumpe ohne Portale',
-				'description' => sprintf( 'Leadgenerierung für Photovoltaik, Solar und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus E3-Beleg: %s niedrigerer CPL.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Leadgenerierung für Photovoltaik, Solar und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus Case-Study-Beleg: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'solar-leads-kaufen-alternative' => [
 				'title'       => 'Photovoltaik & Solar Leads kaufen? Alternative ohne Portale',
-				'description' => sprintf( 'Photovoltaik-, PV- oder Solar-Leads kaufen — oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft. Der Vergleich pro Anfrage — E3-Case: %s niedrigerer CPL.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Photovoltaik-, PV- oder Solar-Leads kaufen — oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft. Der Vergleich pro Anfrage — Case Study: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'waermepumpen-leads' => [
 				'title'       => 'Wärmepumpen Leads kaufen? Alternative ohne Portale',
-				'description' => sprintf( 'Wärmepumpen-Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft und schließen selten ab. Der Vergleich pro Anfrage — E3-Case: %s niedrigerer CPL.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Wärmepumpen-Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft und schließen selten ab. Der Vergleich pro Anfrage — Case Study: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'server-side-tracking-b2b' => [
 				'title'       => 'Server-Side Tracking Agentur: DSGVO, GA4 & CAPI',
@@ -261,7 +265,7 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'eigene-leadgenerierung-vs-portale' => [
 				'title'       => 'Portal-Leads vs. eigenes System: TCO-Vergleich Solar/SHK',
-				'description' => sprintf( '24-Monats-TCO: Portal-Leads (DAA, Aroundhome, Check24) vs. eigenes Anfrage-System. E3: %s niedrigerer CPL in 6 Monaten.', $e3_cpl_reduction ),
+				'description' => sprintf( '24-Monats-TCO: Portal-Leads (DAA, Aroundhome, Check24) vs. eigenes Anfrage-System. Case Study: %s niedrigerer CPL in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'lead-funnel-solar' => [
 				'title'       => 'Lead-Funnel Solar & Wärmepumpe – Aufbau für B2B-Marketing',
@@ -269,19 +273,19 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'kunden-gewinnen-solarteure' => [
 				'title'       => 'Kunden gewinnen für Solarteure – ohne Portal-Leads',
-				'description' => sprintf( 'Wie Solarteure & Wärmepumpen-Anbieter systematisch Kunden gewinnen – ohne DAA, Aroundhome oder Check24. E3: %s niedrigerer CPL.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Wie Solarteure & Wärmepumpen-Anbieter systematisch Kunden gewinnen – ohne DAA, Aroundhome oder Check24. Case Study: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'cost-per-lead-photovoltaik' => [
 				'title'       => 'Cost per Lead Photovoltaik: Was Solar-Anfragen wirklich kosten',
-				'description' => sprintf( 'CPL-Rechnung für Photovoltaik- und Wärmepumpen-Anbieter: Portal-Leads vs. eigenes System. E3-Referenz: %s niedrigere Kosten pro Anfrage in 6 Monaten.', $e3_cpl_reduction ),
+				'description' => sprintf( 'CPL-Rechnung für Photovoltaik- und Wärmepumpen-Anbieter: Portal-Leads vs. eigenes System. Case-Study-Referenz: %s niedrigere Kosten pro Anfrage in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'qualifizierte-pv-anfragen' => [
 				'title'       => 'Qualifizierte PV-Anfragen: 4 Merkmale guter Solar-Leads',
-				'description' => 'Vier Merkmale einer qualifizierten Photovoltaik-Anfrage: Intent, Exklusivität, Vorqualifizierung, Echtzeit. Mit Praxisbezug E3 New Energy.',
+				'description' => 'Vier Merkmale einer qualifizierten Photovoltaik-Anfrage: Intent, Exklusivität, Vorqualifizierung, Echtzeit. Mit Praxisbezug zur Case Study eines mittelständischen PV-Installationsbetriebs.',
 			],
 			'solar-leads-kosten-studie' => [
 				'title'       => 'Solar-Leads Kosten 2026: CPL, CPO & Portal-Vergleich',
-				'description' => 'Was kosten Solar-Leads wirklich? Marktstudie mit Photovoltaik- und Wärmepumpen-CPL, Cost-per-Order, Portal-Modellen, Methodik und E3-Benchmark.',
+				'description' => 'Was kosten Solar-Leads wirklich? Marktstudie mit Photovoltaik- und Wärmepumpen-CPL, Cost-per-Order, Portal-Modellen, Methodik und Case-Study-Benchmark.',
 			],
 		]
 	);
@@ -594,7 +598,7 @@ function hu_is_e3_methodology_case_post( $post_id = 0 ) {
 	$slug     = (string) get_post_field( 'post_name', $post_id );
 	$template = (string) get_page_template_slug( $post_id );
 
-	return in_array( $slug, [ 'e3-new-energy', 'case-e3' ], true )
+	return in_array( $slug, [ 'case-study-solar-leadgenerierung', 'e3-new-energy', 'case-e3' ], true )
 		|| in_array( $template, [ 'page-e3-new-energy.php', 'page-case-e3.php' ], true );
 }
 
@@ -736,6 +740,11 @@ function hu_get_noindex_follow_slugs() {
 		'audit-linkedin',
 		'case-studies',
 		'case-studies-e-commerce',
+		// Anonymization hold: noindex pending settlement resolution.
+		// Remove once the anonymized case study is cleared for public reindexing.
+		'e3-new-energy',
+		'case-e3',
+		'case-study-solar-leadgenerierung',
 		'conversion-rate-optimization',
 		'core-web-vitals',
 		'danke',
@@ -864,21 +873,21 @@ function hu_get_subpage_last_updated_label( $template_path ) {
 }
 
 /**
- * Get the SEO title for the E3 methodology case.
+ * Get the SEO title for the anonymized solar methodology case.
  *
  * @return string
  */
 function hu_get_e3_methodology_case_title() {
-	return 'E3 New Energy: Cost per Lead von 150 € auf 22 € – Solar-Case';
+	return 'Solar Case Study: Cost per Lead von 150 € auf 22 € gesenkt';
 }
 
 /**
- * Get the SEO description for the E3 methodology case.
+ * Get the SEO description for the anonymized solar methodology case.
  *
  * @return string
  */
 function hu_get_e3_methodology_case_description() {
-	return 'E3 New Energy senkte den CPL mit eigenem Anfrage-System statt Portal-Leads um über 85 %: 1.750+ qualifizierte PV- & Wärmepumpen-Anfragen, 12 % Abschluss.';
+	return 'Ein mittelständischer PV-Installationsbetrieb senkte den CPL mit eigenem Anfrage-System statt Portal-Leads um über 85 %: 1.750+ qualifizierte PV- & Wärmepumpen-Anfragen, 12 % Abschluss.';
 }
 
 /**
@@ -1078,7 +1087,7 @@ function hu_get_singular_post_seo_context( $post_id ) {
 	}
 
 	$robots_context       = hu_get_singular_robots_context( $post_id );
-	$canonical            = hu_is_e3_methodology_case_post( $post_id ) ? home_url( '/e3-new-energy/' ) : (string) get_permalink( $post_id );
+	$canonical            = hu_is_e3_methodology_case_post( $post_id ) ? home_url( '/case-study-solar-leadgenerierung/' ) : (string) get_permalink( $post_id );
 
 	return [
 		'title'              => trim( wp_strip_all_tags( (string) $title ) ),
@@ -1340,7 +1349,7 @@ function hu_get_seo_meta() {
 		if ( hu_is_e3_methodology_case_post( $post_id ) ) {
 			$meta['og_title']    = hu_get_e3_methodology_case_title();
 			$meta['description'] = hu_get_e3_methodology_case_description();
-			$meta['canonical']   = home_url( '/e3-new-energy/' );
+			$meta['canonical']   = home_url( '/case-study-solar-leadgenerierung/' );
 			$meta['og_type']     = 'article';
 		}
 

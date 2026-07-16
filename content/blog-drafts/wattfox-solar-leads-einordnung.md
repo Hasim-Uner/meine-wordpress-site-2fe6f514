@@ -65,7 +65,7 @@ Wenn Reichweite, Formular, Datenbasis und Optimierung beim Anbieter liegen, blei
 
 ## Alternative: Eigene Anfrage-Infrastruktur
 
-Eigene Anfrage-Systeme führen per Definition zu exklusiven Anfragen, weil die Strecke dem Betrieb gehört: Money Page, Server-Side-Tracking, Vorqualifizierung, CRM-Übergabe und Datenbasis. Der [Methodik-Case E3 New Energy](https://hasimuener.de/e3-new-energy/) zeigt, dass die Cost per Lead durch ein eigenes System von 150 € auf 22 € gesenkt werden können – bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
+Eigene Anfrage-Systeme führen per Definition zu exklusiven Anfragen, weil die Strecke dem Betrieb gehört: Money Page, Server-Side-Tracking, Vorqualifizierung, CRM-Übergabe und Datenbasis. Der [Solar Case Study](https://hasimuener.de/case-study-solar-leadgenerierung/) zeigt, dass die Cost per Lead durch ein eigenes System von 150 € auf 22 € gesenkt werden können – bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
 
 Das ist kein allgemeines Versprechen. Es zeigt aber den Unterschied zwischen Lead-Miete und Ownership: Bei einer eigenen Infrastruktur verbessert jeder Lernzyklus das eigene Betriebs-Asset.
 

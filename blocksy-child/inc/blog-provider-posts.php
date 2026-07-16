@@ -136,7 +136,7 @@ Die Alternative zu gemieteten Portal-Leads ist kein weiteres Tool, sondern eine 
 
 So entsteht ein Betriebs-Asset. Die Anfrage kommt nicht aus einem fremden Portal, sondern aus einer Plattform, die dem Betrieb gehört.
 
-Der [Methodik-Case E3 New Energy](/e3-new-energy/) zeigt diesen Hebel konkret: Der Cost per Lead sank von 150 € auf 22 € bei über 1.750 qualifizierten Anfragen, 12 % Abschlussquote und 6 Monaten Projektlaufzeit. Das ist kein allgemeines Versprechen, aber ein belastbarer Beleg dafür, was möglich wird, wenn Website, Tracking, Vorqualifizierung und Vertrieb zusammengebaut werden.
+Der [Solar Case Study](/case-study-solar-leadgenerierung/) zeigt diesen Hebel konkret: Der Cost per Lead sank von 150 € auf 22 € bei über 1.750 qualifizierten Anfragen, 12 % Abschlussquote und 6 Monaten Projektlaufzeit. Das ist kein allgemeines Versprechen, aber ein belastbarer Beleg dafür, was möglich wird, wenn Website, Tracking, Vorqualifizierung und Vertrieb zusammengebaut werden.
 
 ## Wann das Vergleichsportal-Modell trotzdem Sinn ergibt
 
@@ -229,7 +229,7 @@ Wenn Reichweite, Formular, Datenbasis und Optimierung beim Anbieter liegen, blei
 
 ## Alternative: Eigene Anfrage-Infrastruktur
 
-Eigene Anfrage-Systeme führen per Definition zu exklusiven Anfragen, weil die Strecke dem Betrieb gehört: Money Page, Server-Side-Tracking, Vorqualifizierung, CRM-Übergabe und Datenbasis. Der [Methodik-Case E3 New Energy](/e3-new-energy/) zeigt, dass die Cost per Lead durch ein eigenes System von 150 € auf 22 € gesenkt werden können – bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
+Eigene Anfrage-Systeme führen per Definition zu exklusiven Anfragen, weil die Strecke dem Betrieb gehört: Money Page, Server-Side-Tracking, Vorqualifizierung, CRM-Übergabe und Datenbasis. Der [Solar Case Study](/case-study-solar-leadgenerierung/) zeigt, dass die Cost per Lead durch ein eigenes System von 150 € auf 22 € gesenkt werden können – bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
 
 Das ist kein allgemeines Versprechen. Es zeigt aber den Unterschied zwischen Lead-Miete und Ownership: Bei einer eigenen Infrastruktur verbessert jeder Lernzyklus das eigene Betriebs-Asset.
 
@@ -320,7 +320,7 @@ Ein spezialisierter Anbieter kann ein guter Kanal sein. Strategisch bleibt aber 
 
 ## Die strategische Alternative: Ownership statt Lead-Miete
 
-Ein eigenes Anfrage-System mit Money Page, Server-Side-Tracking, Vorqualifizierung und CRM-Übergabe erzeugt Anfragen, die per Definition **exklusiv** sind. Der [Methodik-Case E3 New Energy](/e3-new-energy/) zeigt eine CPL-Senkung von 150 € auf 22 € bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
+Ein eigenes Anfrage-System mit Money Page, Server-Side-Tracking, Vorqualifizierung und CRM-Übergabe erzeugt Anfragen, die per Definition **exklusiv** sind. Der [Solar Case Study](/case-study-solar-leadgenerierung/) zeigt eine CPL-Senkung von 150 € auf 22 € bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
 
 Das ist kein allgemeines Versprechen, sondern ein Beleg für den Unterschied zwischen gemieteter Nachfrage und eigener Anfrage-Infrastruktur: Die Marke, die Daten und die Optimierung bleiben beim Betrieb.
 
@@ -397,7 +397,7 @@ Wie diese Rechnung für Wärmepumpen-Anfragen im Detail aussieht, zeigt die Seit
 
 ## Die strategische Alternative: Eigene Anfrage-Infrastruktur
 
-Ein eigenes Anfrage-System – Money Page, Vorqualifizierung, Server-Side-Tracking, CRM-Übergabe – erzeugt per Definition exklusive Anfragen, weil die Strecke dem Betrieb gehört. Der [Methodik-Case E3 New Energy](/e3-new-energy/) zeigt eine CPL-Senkung von 150 € auf 22 € bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
+Ein eigenes Anfrage-System – Money Page, Vorqualifizierung, Server-Side-Tracking, CRM-Übergabe – erzeugt per Definition exklusive Anfragen, weil die Strecke dem Betrieb gehört. Der [Solar Case Study](/case-study-solar-leadgenerierung/) zeigt eine CPL-Senkung von 150 € auf 22 € bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
 
 Die vollständige System-Gegenüberstellung über 24 Monate finden Sie im [TCO-Vergleich Portal-Leads vs. eigenes Anfrage-System](/eigene-leadgenerierung-vs-portale/).
 
@@ -481,7 +481,7 @@ Regionale Videokampagnen sind im Volumen durch Region, Angebot und Zielgruppe be
 
 Der nächstgrößere Schritt vom regionalen Videomarketing-Modell ist der Aufbau eines vollständig eigenen Anfrage-Systems: eigene Money Page, eigener Werbe-Account, eigene Tracking-Strecke, eigenes CRM und eigene Vorqualifizierung. Vorteil: Code, Daten und Strecke bleiben dauerhaft im Betrieb.
 
-Der [Methodik-Case E3 New Energy](/e3-new-energy/) demonstriert das mit einer CPL-Senkung von 150 € auf 22 €, über 1.750 qualifizierten Anfragen, 12 % Abschlussquote und 6 Monaten Projektlaufzeit. Das ist kein pauschales Ergebnisversprechen, aber ein belastbarer Beleg für den Wert eigener Anfrage-Infrastruktur.
+Der [Solar Case Study](/case-study-solar-leadgenerierung/) demonstriert das mit einer CPL-Senkung von 150 € auf 22 €, über 1.750 qualifizierten Anfragen, 12 % Abschlussquote und 6 Monaten Projektlaufzeit. Das ist kein pauschales Ergebnisversprechen, aber ein belastbarer Beleg für den Wert eigener Anfrage-Infrastruktur.
 
 ## Wann das Videomarketing-Modell trotzdem Sinn ergibt
 

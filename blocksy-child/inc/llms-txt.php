@@ -86,14 +86,14 @@ function nexus_get_llms_txt_sections() {
 			'heading' => 'Proof und zitierfähige Quellen',
 			'links'   => [
 				[
-					'label'       => 'E3 New Energy',
-					'url'         => $urls['e3'] ?? home_url( '/e3-new-energy/' ),
+					'label'       => 'Solar Case Study',
+					'url'         => $urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
 					'description' => 'Kaufnaher Proof-Case: eigenes Anfrage-System, Vorqualifizierung, Tracking und Conversion statt Portal-Lead-Abhängigkeit.',
 				],
 				[
 					'label'       => 'Was kosten Solar-Leads? (Marktstudie)',
 					'url'         => $urls['solar_leads_cost_study'] ?? home_url( '/solar-leads-kosten-studie/' ),
-					'description' => 'Zitierfähige Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen je Modell, Cost-per-Order, Methodik und E3-Benchmark.',
+					'description' => 'Zitierfähige Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen je Modell, Cost-per-Order, Methodik und Case-Study-Benchmark.',
 				],
 				[
 					'label'       => 'Ergebnisse',

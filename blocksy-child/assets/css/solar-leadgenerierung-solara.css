@@ -622,7 +622,7 @@
   flex-shrink: 0;
 }
 
-/* ─── 5b) Proof-Bar (E3-Kennzahlen früh, Teaser → #ergebnisse) ─ */
+/* ─── 5b) Proof-Bar (Case-Study-Kennzahlen früh, Teaser → #ergebnisse) ─ */
 .solara-landing .sol-proofbar {
   border-bottom: 1px solid var(--line);
   padding: 22px 0;
@@ -829,7 +829,7 @@
   color: var(--fg-3);
 }
 
-/* Proof-Sektion: Abbinder (Tiefendiagnose + E3-Case-Link) */
+/* Proof-Sektion: Abbinder (Tiefendiagnose + Case-Study-Link) */
 .solara-landing .sol-proof-foot {
   display: flex;
   flex-wrap: wrap;

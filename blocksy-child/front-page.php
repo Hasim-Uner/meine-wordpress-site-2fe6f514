@@ -6,7 +6,7 @@
  *   - Hero: Leitmotiv links + animierte SVG-Pipeline (Blueprint) rechts.
  *   - Gateway-Band (3 Weichen) direkt unter dem Hero.
  *   - Sektionen 02–10: Verlust-Raster, Prozess-Kaskade, System-Phasen,
- *     E3-Proof, Portal-Chaos vs. Daten-Integrität, About, FAQ,
+ *     Case-Study-Proof, Portal-Chaos vs. Daten-Integrität, About, FAQ,
  *     Vertiefung, Final Routing.
  *
  * Schema/SEO: Title + Description kommen aus inc/seo-meta.php
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /* ── Datenbindungen ────────────────────────────────────── */
 $analysis_url      = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $e3_canon          = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
-$e3_case_url       = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : home_url( '/e3-new-energy/' );
+$e3_case_url       = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : home_url( '/case-study-solar-leadgenerierung/' );
 $e3_metrics        = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_lead_count     = $e3_metrics['lead_count']['display']        ?? '1.750+';
 $e3_sales_conv     = $e3_metrics['sales_conversion']['display']  ?? '12 %';
@@ -62,16 +62,16 @@ $home_routing_gateways = [
 	'proof' => [
 		'badge'   => 'G3',
 		'kicker'  => 'Zahlen-Validierung',
-		'title'   => 'Die E3-New-Energy-Methodik',
+		'title'   => 'Die Solar-Case-Study-Methodik',
 		'desc'    => sprintf(
 			'Wie ein autarker Nachfrage-Funnel die Cost-per-Lead von %s auf %s gesenkt hat — dokumentiert mit echten Vertriebs-Zahlen.',
 			$e3_cpl_before,
 			$e3_cpl_after
 		),
 		'url'     => $e3_case_url,
-		'label'   => 'E3-Case mit allen Zahlen lesen',
+		'label'   => 'Case Study mit allen Zahlen lesen',
 		'persona' => 'Für skeptische Zahlen-Prüfer',
-		'action'  => 'gateway_e3',
+		'action'  => 'gateway_case_study',
 	],
 ];
 
@@ -150,7 +150,7 @@ get_header();
 					</a>
 					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-link"
 					   data-track-action="cta_home_hero_proof" data-track-category="proof" data-track-section="01">
-						E3-Case ansehen
+						Case Study ansehen
 					</a>
 				</div>
 				<p class="hu-hero__cta-note hu-hero__cta-note--trust">Der Marktcheck kostet Sie 60 Sekunden — keine Zahlungsdaten, kein Newsletter, kein Pitch-Deck. Die Rückmeldung kommt persönlich geprüft innerhalb von 48 Stunden.</p>
@@ -159,17 +159,17 @@ get_header();
 				<div class="hu-hero__stats">
 					<div>
 						<div class="hu-stat-num"><?php echo esc_html( $e3_lead_count ); ?></div>
-						<div class="hu-stat-label">Anfragen · E3</div>
+						<div class="hu-stat-label">Anfragen · Case Study</div>
 					</div>
 					<div class="hu-stat-divider"></div>
 					<div>
 						<div class="hu-stat-num"><?php echo esc_html( $e3_sales_conv ); ?></div>
-						<div class="hu-stat-label">Abschlussquote · E3</div>
+						<div class="hu-stat-label">Abschlussquote · Case Study</div>
 					</div>
 					<div class="hu-stat-divider"></div>
 					<div>
 						<div class="hu-stat-num" style="color:var(--accent)"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
-						<div class="hu-stat-label">geringere Kosten/Anfrage · E3</div>
+						<div class="hu-stat-label">geringere Kosten/Anfrage · Case Study</div>
 					</div>
 				</div>
 
@@ -440,13 +440,13 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     05 / E3 PROOF — Validierungsschicht
+	     05 / CASE STUDY PROOF — Validierungsschicht
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section" id="proof" data-track-section="05">
 		<div class="hu-container">
 			<div class="hu-proof-headline hu-reveal">
 				<span class="hu-eyebrow">05 / Validierung</span>
-				<h2>E3 New Energy: von eingekauften Leads zu eigenen qualifizierten Anfragen.</h2>
+				<h2>Ein mittelständischer PV-Installationsbetrieb: von eingekauften Leads zu eigenen qualifizierten Anfragen.</h2>
 				<p>In <?php echo esc_html( $e3_timeframe_dat ); ?> sanken die Kosten pro Anfrage von <?php echo esc_html( $e3_cpl_before ); ?> auf <?php echo esc_html( $e3_cpl_after ); ?> — durch eigene Website-Strecke, Vorqualifizierung und belastbares Tracking.</p>
 			</div>
 
@@ -472,7 +472,7 @@ get_header();
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
 				<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-primary"
 				   data-track-action="cta_home_proof_case_study" data-track-category="lead_gen" data-track-section="05">
-					Vollständigen E3-Case analysieren
+					Vollständige Case Study analysieren
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 				</a>
 			</div>
@@ -569,7 +569,7 @@ get_header();
 			<div class="hu-sf-footer hu-reveal">
 				<div class="hu-sf-footer-l">
 					<div class="hu-eyebrow">ZEITRAUM</div>
-					<div class="hu-sf-footer-t"><?php echo esc_html( $e3_timeframe ); ?> · E3 New Energy</div>
+					<div class="hu-sf-footer-t"><?php echo esc_html( $e3_timeframe ); ?> · Case Study</div>
 				</div>
 				<div class="hu-sf-footer-r">
 					<div class="hu-eyebrow">SETUP</div>
@@ -622,12 +622,12 @@ get_header();
 					</p>
 					<p style="color:var(--ink-2);margin-top:16px">
 						Mein Zugang ist Medienwissenschaft, nicht Webdesign. Ich denke zuerst über Sprache,
-						Entscheidung und Signal — und erst danach über Code. Seit E3 New Energy als erstem
-						Solar-Case ist dokumentiert, wo diese Architektur am stärksten greift.
+						Entscheidung und Signal — und erst danach über Code. Seit dem ersten dokumentierten
+						Solar-Case ist belegt, wo diese Architektur am stärksten greift.
 					</p>
 					<ul class="hu-about-bullets">
 						<li><span class="hu-about-bullet-dot"></span>Medienwissenschaftliche Architektur — Sprache, Signal, System vor Code</li>
-						<li><span class="hu-about-bullet-dot"></span>Fokus Solar &amp; Wärmepumpen — verifizierte Daten-Integrität seit dem E3-Case</li>
+						<li><span class="hu-about-bullet-dot"></span>Fokus Solar &amp; Wärmepumpen — verifizierte Daten-Integrität seit der Case Study</li>
 						<li><span class="hu-about-bullet-dot"></span>Asset-Ownership statt Drittanbieter-Lock-in</li>
 						<li><span class="hu-about-bullet-dot"></span>Gegründet 2026 · Hannover, vor Ort und remote</li>
 						<li><span class="hu-about-bullet-dot"></span>Maximal 3 Founding-Partner pro Jahr</li>
@@ -691,7 +691,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Bei E3 New Energy: erste qualifizierte Anfragen nach 4–6 Wochen, voller Effekt nach 6 Monaten. Schnellere Versprechen sind unseriös — Abschlussquoten verlangen einen sauberen Trichter, nicht nur ein Logo-Update.</div>
+						<div class="hu-faq-item__a-inner">Bei einem mittelständischen PV-Installationsbetrieb: erste qualifizierte Anfragen nach 4–6 Wochen, voller Effekt nach 6 Monaten. Schnellere Versprechen sind unseriös — Abschlussquoten verlangen einen sauberen Trichter, nicht nur ein Logo-Update.</div>
 					</div>
 				</div>
 
@@ -765,7 +765,7 @@ get_header();
 				<div class="hu-final-routing__head">
 					<span class="hu-eyebrow" style="color:var(--accent)">10 / Nächster Schritt</span>
 					<h2 class="hu-display">Finden Sie heraus, wo Ihr Anfrage-System zuerst Geld verliert.</h2>
-					<p>Starten Sie mit dem Marktcheck, prüfen Sie den E3-Case oder gehen Sie direkt in die technische Umsetzung — je nachdem, wo Sie gerade stehen.</p>
+					<p>Starten Sie mit dem Marktcheck, prüfen Sie die Case Study oder gehen Sie direkt in die technische Umsetzung — je nachdem, wo Sie gerade stehen.</p>
 				</div>
 
 				<div class="hu-gateways hu-gateways--final" data-track-section="10">

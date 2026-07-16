@@ -77,7 +77,7 @@ $about_evidence = [
 	],
 	[
 		'k' => $e3_cpl_reduction,
-		'l' => sprintf( 'CPL-Senkung in %s bei E3 New Energy.', $e3_timeframe ),
+		'l' => sprintf( 'CPL-Senkung in %s bei einem mittelständischen PV-Installationsbetrieb.', $e3_timeframe ),
 	],
 	[
 		'k' => '100 %',
@@ -299,9 +299,9 @@ get_header();
 					<div class="about-evidence-band__intro">
 						<p class="about-evidence-band__eyebrow">Beleg, nicht Aufhänger</p>
 						<h3 class="about-evidence-band__title">Die Zahlen kommen nach der Diagnose.</h3>
-						<p>Beim E3-Case sieht man, warum diese Reihenfolge wichtig ist. Die Kennzahlen sind kein Versprechen für jeden Betrieb, sondern ein Beleg dafür, was möglich wird, wenn Nachfrage, Qualifizierung und Vertriebsanschluss zusammenpassen.</p>
+						<p>Bei dieser Case Study sieht man, warum diese Reihenfolge wichtig ist. Die Kennzahlen sind kein Versprechen für jeden Betrieb, sondern ein Beleg dafür, was möglich wird, wenn Nachfrage, Qualifizierung und Vertriebsanschluss zusammenpassen.</p>
 					</div>
-					<ul class="about-evidence-band__list" role="list" aria-label="Ausgewählte E3-Belege">
+					<ul class="about-evidence-band__list" role="list" aria-label="Ausgewählte Case-Study-Belege">
 						<?php foreach ( $about_evidence as $proof_item ) : ?>
 							<li class="about-evidence-band__item">
 								<span class="about-evidence-band__k"><?php echo esc_html( $proof_item['k'] ); ?></span>
@@ -440,13 +440,13 @@ get_header();
 
 				<div class="about-cohort-card" data-reveal>
 					<p class="about-cohort-card__eyebrow">FOUNDING COHORT 2026</p>
-					<h3 class="about-cohort-card__title">E3 New Energy war der erste Case, nicht die Grenze.</h3>
+					<h3 class="about-cohort-card__title">Der mittelständische PV-Installationsbetrieb war der erste Case, nicht die Grenze.</h3>
 					<p class="about-cohort-card__status">
 						<span class="about-cohort-card__dot" aria-hidden="true"></span>
 						3 von 3 Plätzen offen
 					</p>
 					<p class="about-cohort-card__text">
-						Ein einzelner dokumentierter Case ist eine bewusste Entscheidung gegen die anonyme Logo-Wand — dafür liegt dieser eine vollständig offen, von der Lead-Quelle bis zur Abschlussquote. Was bei E3 funktioniert hat, war Methode, kein Zufall: dieselbe Vier-Eigenschaften-Logik lässt sich auf jeden Solar- oder Wärmepumpen-Betrieb mit eigenem Vertrieb übertragen. Genau diese Arbeitsweise öffnet die Cohort für maximal drei passende Betriebe. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.
+						Ein einzelner dokumentierter Case ist eine bewusste Entscheidung gegen die anonyme Logo-Wand — dafür liegt dieser eine vollständig offen, von der Lead-Quelle bis zur Abschlussquote. Was bei diesem Betrieb funktioniert hat, war Methode, kein Zufall: dieselbe Vier-Eigenschaften-Logik lässt sich auf jeden Solar- oder Wärmepumpen-Betrieb mit eigenem Vertrieb übertragen. Genau diese Arbeitsweise öffnet die Cohort für maximal drei passende Betriebe. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.
 					</p>
 					<a href="<?php echo esc_url( $request_url ); ?>"
 					   class="about-cta-primary"
@@ -471,7 +471,7 @@ get_header();
 					<p class="about-section__number">05 / Fachliche Schwerpunkte</p>
 					<div class="about-section__head-body">
 						<h2 class="about-h2" id="about-expertise-title">Sechs Felder. Drei System-Ebenen.</h2>
-						<p class="about-section__lead">Jedes Feld ist als eigene Seite mit Methode, Beispielen und Bezug zum E3-Case aufgeschrieben — gruppiert entlang der Architektur, in der sie wirken.</p>
+						<p class="about-section__lead">Jedes Feld ist als eigene Seite mit Methode, Beispielen und Bezug zur Case Study aufgeschrieben — gruppiert entlang der Architektur, in der sie wirken.</p>
 					</div>
 				</header>
 

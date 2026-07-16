@@ -1312,10 +1312,10 @@ function hu_output_schema()
             $e3_article = [
                 '@context'         => 'https://schema.org',
                 '@type'            => 'Article',
-                '@id'              => home_url('/e3-new-energy/#article'),
-                'url'              => home_url('/e3-new-energy/'),
-                'mainEntityOfPage' => home_url('/e3-new-energy/'),
-                'headline'         => function_exists( 'hu_get_e3_methodology_case_title' ) ? hu_get_e3_methodology_case_title() : 'Methodik-Case E3 New Energy',
+                '@id'              => home_url('/case-study-solar-leadgenerierung/#article'),
+                'url'              => home_url('/case-study-solar-leadgenerierung/'),
+                'mainEntityOfPage' => home_url('/case-study-solar-leadgenerierung/'),
+                'headline'         => function_exists( 'hu_get_e3_methodology_case_title' ) ? hu_get_e3_methodology_case_title() : 'Solar Case Study: Cost per Lead von 150 € auf 22 € gesenkt',
                 'description'      => function_exists( 'hu_get_e3_methodology_case_description' ) ? hu_get_e3_methodology_case_description() : '',
                 'inLanguage'       => 'de',
                 'author'           => hu_person_schema_ref( true ),
@@ -1324,10 +1324,6 @@ function hu_output_schema()
                     [
                         '@type' => 'Thing',
                         'name'  => 'Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter',
-                    ],
-                    [
-                        '@type' => 'Organization',
-                        'name'  => 'E3 New Energy',
                     ],
                 ],
             ];
@@ -1362,8 +1358,8 @@ function hu_output_schema()
                 'hasPart' => [
                     [
                         '@type' => 'Article',
-                        'name'  => 'E3 New Energy',
-                        'url'   => home_url('/e3-new-energy/')
+                        'name'  => 'Solar Case Study',
+                        'url'   => home_url('/case-study-solar-leadgenerierung/')
                     ],
                 ],
             ];

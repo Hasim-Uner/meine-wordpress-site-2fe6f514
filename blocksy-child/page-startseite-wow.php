@@ -13,7 +13,7 @@ $analysis_url     = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_re
 $contact_url      = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
 $energy_url       = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
 $e3_canon         = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
-$e3_case_url      = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : home_url( '/e3-new-energy/' );
+$e3_case_url      = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : home_url( '/case-study-solar-leadgenerierung/' );
 $e3_metrics       = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_lead_count    = $e3_metrics['lead_count']['display']       ?? '1.750+';
 $e3_sales_conv    = $e3_metrics['sales_conversion']['display'] ?? '12 %';
@@ -57,7 +57,7 @@ $loss_markers = [
 ];
 
 $proof_metrics = [
-	[ 'value' => $e3_lead_count, 'label' => 'qualifizierte Anfragen', 'detail' => 'E3-System' ],
+	[ 'value' => $e3_lead_count, 'label' => 'qualifizierte Anfragen', 'detail' => 'eigenes System' ],
 	[ 'value' => $e3_sales_conv, 'label' => 'Abschlussquote', 'detail' => 'vom Lead zum Auftrag' ],
 	[ 'value' => $e3_cpl_before . ' auf ' . $e3_cpl_after, 'label' => 'Kosten pro Anfrage', 'detail' => 'vorher/nachher' ],
 	[ 'value' => $e3_timeframe, 'label' => 'Validierungszeitraum', 'detail' => 'Implementierung und Optimierung' ],
@@ -108,15 +108,15 @@ get_header();
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
 					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-ghost"
-						data-track-action="cta_wow_hero_e3" data-track-category="proof" data-track-section="wow_hero">
-						E3-Case prüfen
+						data-track-action="cta_wow_hero_case_study" data-track-category="proof" data-track-section="wow_hero">
+						Case Study prüfen
 					</a>
 				</div>
 
 				<p class="hu-wow-hero__note">Erst Diagnose, dann Entscheidung. Kein Relaunch auf Verdacht.</p>
 			</div>
 
-			<div class="hu-wow-kpi-strip" aria-label="E3 Proof Kennzahlen" data-wow-reveal>
+			<div class="hu-wow-kpi-strip" aria-label="Case Study Proof Kennzahlen" data-wow-reveal>
 				<?php foreach ( $proof_metrics as $metric ) : ?>
 					<div class="hu-wow-kpi">
 						<strong><?php echo esc_html( $metric['value'] ); ?></strong>
@@ -192,14 +192,14 @@ get_header();
 			<div class="hu-wow-proof">
 				<div class="hu-wow-proof__copy" data-wow-reveal>
 					<span class="hu-eyebrow">03 / Beweis-Schicht</span>
-					<h2>E3 zeigt den Mechanismus: eigene Strecke statt Lead-Einkauf.</h2>
+					<h2>Diese Case Study zeigt den Mechanismus: eigene Strecke statt Lead-Einkauf.</h2>
 					<p>
 						Der Case ist kein Versprechen für jeden Markt. Er zeigt, welche Mechanik funktioniert,
 						wenn Projektwert, Vertrieb und Region zur eigenen Nachfrage-Infrastruktur passen.
 					</p>
 					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-link"
-						data-track-action="cta_wow_proof_e3" data-track-category="proof" data-track-section="wow_proof">
-						E3-Methodik mit Zahlen lesen
+						data-track-action="cta_wow_proof_case_study" data-track-category="proof" data-track-section="wow_proof">
+						Methodik mit Zahlen lesen
 					</a>
 				</div>
 
@@ -219,7 +219,7 @@ get_header();
 					<div class="hu-wow-proof__result">
 						<span class="hu-mono">VALIDIERUNG</span>
 						<strong><?php echo esc_html( $e3_lead_count ); ?> Anfragen · <?php echo esc_html( $e3_sales_conv ); ?> Abschluss</strong>
-						<small><?php echo esc_html( $e3_timeframe ); ?> E3 New Energy</small>
+						<small><?php echo esc_html( $e3_timeframe ); ?> Case Study</small>
 					</div>
 				</div>
 			</div>

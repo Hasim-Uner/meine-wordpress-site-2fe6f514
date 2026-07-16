@@ -276,7 +276,7 @@ function hu_enqueue_assets() {
 			'diagnoseUrl'  => function_exists( 'hu_get_request_analysis_url' )
 				? hu_get_request_analysis_url()
 				: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
-			'caseUrl'      => home_url( '/e3-new-energy/' ),
+			'caseUrl'      => home_url( '/case-study-solar-leadgenerierung/' ),
 			'privacyUrl'   => home_url( '/datenschutz/' ),
 			'pageUrl'      => function_exists( 'nexus_get_energy_systems_url' )
 				? nexus_get_energy_systems_url()
@@ -321,8 +321,8 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-affiliate-notice-css', 'affiliate-notice.css', [ 'nexus-intercept-solar-leads-css' ] );
 	}
 
-	// ── F1b) Schwester-Templates (E3-Case, Service-Landing) ────────
-	if ( is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page( 'e3-new-energy' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) || is_page_template( 'page-e3-new-energy.php' ) || is_page_template( 'page-case-e3.php' ) ) {
+	// ── F1b) Schwester-Templates (Solar Case Study, Service-Landing) ────────
+	if ( is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page( 'case-study-solar-leadgenerierung' ) || is_page( 'e3-new-energy' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) || is_page_template( 'page-e3-new-energy.php' ) || is_page_template( 'page-case-e3.php' ) ) {
 		hu_enqueue_css( 'nexus-review-funnel-css', 'review-funnel.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-energy-systems-css', 'energy-systems.css', [ 'nexus-review-funnel-css' ] );
 		hu_enqueue_js( 'nexus-solar-hero-js', 'solar-hero.js', [ 'nexus-core-js' ] );
@@ -539,6 +539,7 @@ function hu_disable_core_block_styles_on_custom_templates() {
 		'cost-per-lead-photovoltaik',
 		'qualifizierte-pv-anfragen',
 		'solar-leads-kosten-studie',
+		'case-study-solar-leadgenerierung',
 		'e3-new-energy',
 		'case-e3',
 		'wordpress-agentur',

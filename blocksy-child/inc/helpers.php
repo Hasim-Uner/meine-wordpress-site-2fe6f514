@@ -566,8 +566,8 @@ function nexus_get_primary_public_url_map() {
 			home_url( '/datenschutz/' )
 		),
 		'e3'                   => nexus_get_page_url(
-			[ 'e3-new-energy', 'case-studies/e3-new-energy', 'case-e3' ],
-			home_url( '/e3-new-energy/' )
+			[ 'case-study-solar-leadgenerierung', 'e3-new-energy', 'case-studies/e3-new-energy', 'case-e3' ],
+			home_url( '/case-study-solar-leadgenerierung/' )
 		),
 		'energy'               => function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' ),
 		'solar_leads_alternative' => nexus_get_page_url(
@@ -863,6 +863,7 @@ function nexus_is_results_context() {
 	return is_page( 'case-studies-e-commerce' )
 		|| is_page( 'case-studies' )
 		|| is_page( 'ergebnisse' )
+		|| is_page( 'case-study-solar-leadgenerierung' )
 		|| is_page( 'e3-new-energy' )
 		|| is_page( 'case-study-domdar' )
 		|| is_page( 'domdar' )
@@ -1311,6 +1312,7 @@ function nexus_get_legacy_offer_redirect_map() {
 	$request_url = nexus_get_primary_request_url();
 	$energy_url  = nexus_get_energy_systems_url();
 	$portal_url  = home_url( '/eigene-leadgenerierung-vs-portale/' );
+	$case_study_url = nexus_get_primary_public_url( 'e3', home_url( '/case-study-solar-leadgenerierung/' ) );
 
 	return [
 		// High-probability external entry paths. Internal/historical tool,
@@ -1322,6 +1324,9 @@ function nexus_get_legacy_offer_redirect_map() {
 		'/wordpress-tech-audit/'     => $request_url,
 		'/wordpress-agentur/'        => $agentur_url,
 		'/alle-loesungen-im-detail/' => nexus_get_page_url( [ 'alle-loesungen' ], home_url( '/alle-loesungen/' ) ),
+		// Anonymized case study: old company-named slugs redirect to the anonymized slug.
+		'/e3-new-energy/'            => $case_study_url,
+		'/case-e3/'                  => $case_study_url,
 		// Retired (Entwurf) Blog-Slug: 301 auf die Solar-Money-Page, damit
 		// nachlaufende Impressionen/Backlinks das Hub-Signal stützen statt zu
 		// kannibalisieren oder ins Leere (404) zu laufen.
@@ -1574,6 +1579,7 @@ function nexus_should_hide_footer_primary_cta() {
 			'case-studies-e-commerce',
 			'case-studies',
 			'ergebnisse',
+			'case-study-solar-leadgenerierung',
 			'e3-new-energy',
 			'case-study-domdar',
 			'domdar',

@@ -380,9 +380,9 @@ Das Ergebnis darf nicht weichgespült werden. Wenn die eigene Strecke bei einem 
 
 Ein Anfrage-System ist keine Glaubensfrage. Es ist eine Rechenfrage.
 
-## 9. Case Study E3: 71 Prozent CPO-Reduktion, konservativ gerechnet
+## 9. Case Study: 71 Prozent CPO-Reduktion, konservativ gerechnet
 
-Der E3-Case wird oft zu aggressiv erzählt. Das ist unnötig.
+Dieser Case wird oft zu aggressiv erzählt. Das ist unnötig.
 
 Die kanonischen Fakten reichen:
 
@@ -419,7 +419,7 @@ Das ist die Zahl, die in den Artikel gehört: 71 Prozent CPO-Reduktion.
 
 Nicht, weil die schön klingt. Sondern weil sie belastbarer ist als die maximale Werberechnung aus CPL-Senkung und Abschlussquotensprung. Wer hohe Ticketpreise verkauft, braucht keine überzogene Proof-Zahl. Er braucht eine Zahl, die ein Geschäftsführer im Kopf nicht sofort zerlegt.
 
-Die eigentliche E3-Lektion ist ohnehin nicht die Prozentzahl.
+Die eigentliche Lektion aus dieser Case Study ist ohnehin nicht die Prozentzahl.
 
 Die Lektion ist: Der Vertrieb war nicht das Hauptproblem. Die Anfragequelle war das Problem. Dieselben Verkäufer konnten bessere Ergebnisse erzielen, sobald Anfragekontext, Exklusivität, Geschwindigkeit, Tracking und Vorqualifizierung sauberer wurden.
 
@@ -437,7 +437,7 @@ Beim eigenen Anfrage-System verschiebt sich diese Ausgangslage:
 
 Das ist kein einzelner Trick. Es ist Systemarbeit.
 
-Der [E3 New Energy Methodik-Case](/e3-new-energy/) ist deshalb nicht als Ergebnisversprechen zu lesen. Er ist ein Beleg für die Mechanik: Wenn Anfragequelle, Tracking, Vorqualifizierung und Vertrieb zusammenarbeiten, verändert sich die Wirtschaftlichkeit.
+Der [Solar Case Study Methodik-Case](/case-study-solar-leadgenerierung/) ist deshalb nicht als Ergebnisversprechen zu lesen. Er ist ein Beleg für die Mechanik: Wenn Anfragequelle, Tracking, Vorqualifizierung und Vertrieb zusammenarbeiten, verändert sich die Wirtschaftlichkeit.
 
 ## 10. Replikation heißt nicht Kopieren. Es heißt: keine Lernkurve zweimal bezahlen.
 

@@ -21,7 +21,7 @@ $contact_url    = add_query_arg(
 	],
 	home_url( '/kontakt/' )
 );
-$e3_url         = home_url( '/e3-new-energy/' );
+$e3_url         = home_url( '/case-study-solar-leadgenerierung/' );
 $marktcheck_url = home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 
 // ═══ Vertiefungs-Links für Fokusmarkt-Solar-Brücke ═══
@@ -203,8 +203,8 @@ get_header();
 								<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 							</svg>
 						</a>
-						<a href="#proof" class="ag-btn ag-btn--ghost" data-track-action="cta_hero_e3_case" data-track-category="navigation" data-track-section="hero">
-							E3-Case ansehen
+						<a href="#proof" class="ag-btn ag-btn--ghost" data-track-action="cta_hero_case_study" data-track-category="navigation" data-track-section="hero">
+							Case Study ansehen
 						</a>
 					</div>
 
@@ -213,11 +213,11 @@ get_header();
 					</p>
 				</div>
 
-				<aside class="ag-hero-viz" aria-label="Referenzfall E3 New Energy – Kosten pro qualifizierter Anfrage">
+				<aside class="ag-hero-viz" aria-label="Referenzfall mittelständischer PV-Installationsbetrieb – Kosten pro qualifizierter Anfrage">
 					<header class="ag-hero-viz__head">
 						<span class="ag-hero-viz__live">
 							<span class="ag-hero-viz__live-dot" aria-hidden="true"></span>
-							Verifizierter Referenzfall · E3 New Energy
+							Verifizierter Referenzfall · Solar Case Study
 						</span>
 						<h2 class="ag-hero-viz__title">CPL-Senkung in <?php echo esc_html( $e3_timeframe_dat ); ?></h2>
 						<p class="ag-hero-viz__sub">Kosten pro qualifizierter B2B-Anfrage — vor und nach dem eigenen Anfrage-System.</p>
@@ -247,7 +247,7 @@ get_header();
 						</div>
 					</div>
 
-					<dl class="ag-hero-viz__foot" aria-label="Kennzahlen aus dem E3-Case">
+					<dl class="ag-hero-viz__foot" aria-label="Kennzahlen aus der Case Study">
 						<div>
 							<dt><span class="ag-counter" data-counter-target="<?php echo esc_attr( $e3_lead_counter ); ?>" data-counter-suffix="+">0</span></dt>
 							<dd>Qualifizierte Anfragen</dd>
@@ -273,9 +273,9 @@ get_header();
 <section class="nx-section wp-agentur-proof" data-nx-theme="light" id="zahlen">
 	<div class="nx-container">
 		<div class="wp-agentur-proof-header">
-			<p class="wp-agentur-eyebrow">Proof · E3 New Energy</p>
+			<p class="wp-agentur-eyebrow">Proof · Solar Case Study</p>
 			<h2 class="nx-headline-section">Keine leeren Versprechen.</h2>
-			<p>Der E3-Case ist Referenz, keine pauschale Übertragbarkeitsgarantie. Er zeigt, warum Reihenfolge, Datenqualität und eigene Anfragepfade wichtiger sind als ein weiterer Relaunch.</p>
+			<p>Diese Case Study ist Referenz, keine pauschale Übertragbarkeitsgarantie. Sie zeigt, warum Reihenfolge, Datenqualität und eigene Anfragepfade wichtiger sind als ein weiterer Relaunch.</p>
 		</div>
 
 		<div class="wp-agentur-proof-grid">
@@ -299,8 +299,8 @@ get_header();
 
 		<div class="wp-agentur-proof-cta">
 			<p><?php echo esc_html( sprintf( '%s, %s qualifizierte Anfragen, %s niedrigere Kosten pro Anfrage.', $e3_timeframe, $e3_lead_count, $e3_cpl_reduction ) ); ?></p>
-			<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_proof_strip_e3" data-track-category="navigation" data-track-section="proof_strip">
-				E3-Case im Detail ansehen
+			<a href="<?php echo esc_url( $e3_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_proof_strip_case_study" data-track-category="navigation" data-track-section="proof_strip">
+				Case Study im Detail ansehen
 			</a>
 		</div>
 	</div>
@@ -332,7 +332,7 @@ get_header();
 			</div>
 			<div class="wp-agentur-segment-card">
 				<span class="wp-agentur-segment-card__tag">Womit</span>
-				<h3>Mit einer Anfrage-System-Methode, validiert am E3-Case</h3>
+				<h3>Mit einer Anfrage-System-Methode, validiert an der Case Study</h3>
 				<p><?php echo esc_html( sprintf( 'CPL von %s auf %s gesenkt, %s qualifizierte Anfragen in %s und %s Abschlussquote.', $e3_cpl_before, $e3_cpl_after, $e3_lead_count, $e3_timeframe_dat, $e3_sales_conv ) ); ?></p>
 			</div>
 		</div>
@@ -657,19 +657,19 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 08 — PROOF E3 DEEP DIVE
+     SECTION 08 — PROOF CASE STUDY DEEP DIVE
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="proof">
 	<div class="nx-container">
 		<div class="nx-section-header">
-			<p class="wp-agentur-eyebrow">Proof · E3 New Energy</p>
+			<p class="wp-agentur-eyebrow">Proof · Solar Case Study</p>
 			<h2 class="nx-headline-section">Was passiert, wenn WordPress, Tracking und Anfrageführung zusammenarbeiten.</h2>
 		</div>
 
 		<div class="wp-agentur-case-grid">
 			<div class="wp-agentur-case-card">
 				<span class="wp-agentur-case-card__eyebrow">Referenz</span>
-				<h3>E3 New Energy</h3>
+				<h3>Mittelständischer PV-Installationsbetrieb</h3>
 				<p>Ein Energie-Anbieter, der von eingekauften Portal-Leads auf ein eigenes Anfrage-System umgestellt hat — WordPress, Server-Side Tracking und Vorqualifizierung als ein zusammenhängendes System statt als Einzelmaßnahmen.</p>
 			</div>
 			<div class="wp-agentur-case-card wp-agentur-case-card--result">
@@ -886,8 +886,8 @@ get_header();
 						<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
 				</a>
-				<a href="<?php echo esc_url( $e3_url ); ?>" class="ag-close__textlink" data-track-action="cta_final_e3_case" data-track-category="navigation" data-track-section="cta">
-					E3-Case im Detail ansehen →
+				<a href="<?php echo esc_url( $e3_url ); ?>" class="ag-close__textlink" data-track-action="cta_final_case_study" data-track-category="navigation" data-track-section="cta">
+					Case Study im Detail ansehen →
 				</a>
 			</div>
 

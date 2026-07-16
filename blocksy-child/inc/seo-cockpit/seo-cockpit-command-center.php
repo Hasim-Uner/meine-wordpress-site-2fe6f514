@@ -184,7 +184,7 @@ function nexus_get_revenue_command_center_funnel_role( $page_role ) {
 function nexus_revenue_command_center_is_e3_adjacent_url( $url ) {
 	$path = (string) wp_parse_url( (string) $url, PHP_URL_PATH );
 
-	return false !== strpos( $path, 'e3' ) || false !== strpos( $path, 'ergebnisse' ) || false !== strpos( $path, 'case' );
+	return false !== strpos( $path, 'case-study-solar-leadgenerierung' ) || false !== strpos( $path, 'e3' ) || false !== strpos( $path, 'ergebnisse' ) || false !== strpos( $path, 'case' );
 }
 
 /**

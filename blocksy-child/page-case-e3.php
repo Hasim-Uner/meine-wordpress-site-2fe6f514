@@ -1,7 +1,7 @@
 <?php
 /**
- * Template Name: Case Study – E3 New Energy
- * Description: Legacy template alias for the E3 New Energy methodology case.
+ * Template Name: Case Study – Solar Leadgenerierung
+ * Description: Legacy template alias for the anonymized solar methodology case.
  *
  * @package Blocksy_Child
  */
