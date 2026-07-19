@@ -67,7 +67,7 @@ header "Hub Page Inbound Links"
 
 hubs=(
   "/solar-waermepumpen-leadgenerierung/"
-  "/e3-new-energy/"
+  "/case-study-solar-leadgenerierung/"
   "/ergebnisse/"
   "/blog/"
   "/wordpress-agentur-hannover/"

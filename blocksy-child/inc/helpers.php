@@ -943,6 +943,59 @@ function nexus_maybe_ensure_energy_systems_page() {
 add_action( 'init', 'nexus_maybe_ensure_energy_systems_page', 27 );
 
 /**
+ * Ensure the anonymized methodology case lives on the anonymized slug.
+ *
+ * Redirect map, canonicals and internal links already target
+ * /case-study-solar-leadgenerierung/, but the editor-owned page keeps its
+ * stored post_name until it is migrated here. Without the rename the URL
+ * resolver falls back to /e3-new-energy/ and the legacy 301 stays a
+ * self-referencing no-op. Rename only, never insert: an intentionally
+ * unpublished case must not resurface through provisioning.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_case_study_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	if ( nexus_get_page_id( [ 'case-study-solar-leadgenerierung' ] ) ) {
+		return;
+	}
+
+	$legacy_page = null;
+
+	foreach ( [ 'e3-new-energy', 'case-e3' ] as $legacy_slug ) {
+		$legacy_page = get_page_by_path( $legacy_slug );
+
+		if ( $legacy_page instanceof WP_Post ) {
+			break;
+		}
+	}
+
+	if ( ! ( $legacy_page instanceof WP_Post ) ) {
+		return;
+	}
+
+	$page_id = wp_update_post(
+		wp_slash(
+			[
+				'ID'        => (int) $legacy_page->ID,
+				'post_name' => 'case-study-solar-leadgenerierung',
+			]
+		),
+		true
+	);
+
+	if ( is_wp_error( $page_id ) ) {
+		return;
+	}
+
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-e3-new-energy.php' );
+}
+add_action( 'init', 'nexus_maybe_ensure_case_study_page', 27 );
+
+/**
  * Ensure the intercept landing page exists on /solar-leads-kaufen-alternative/.
  *
  * @return void

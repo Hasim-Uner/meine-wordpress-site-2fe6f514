@@ -8,7 +8,7 @@ print_reindex() {
   cat <<'EOF'
 [REINDEX]
 - /solar-waermepumpen-leadgenerierung/
-- /e3-new-energy/
+- /case-study-solar-leadgenerierung/
 - /wordpress-agentur-hannover/
 - /ergebnisse/
 - /ga4-tracking-setup/
@@ -31,6 +31,8 @@ print_redirects() {
 - /core-web-vitals/ -> /wgos-assets/cwv-optimierung/ or /wordpress-agentur-hannover/#methode
 - /case-studies/ -> /ergebnisse/
 - /case-studies-e-commerce/ -> /ergebnisse/
+- /e3-new-energy/ -> /case-study-solar-leadgenerierung/
+- /case-e3/ -> /case-study-solar-leadgenerierung/
 - /meta-ads/ -> canonical target
 - /wordpress-agentur/ -> canonical target
 - /roi-rechner/ -> canonical target
@@ -42,7 +44,7 @@ print_mapping() {
   cat <<'EOF'
 [PRIMARY URL MAP]
 - cold Solar/SHK demand -> /solar-waermepumpen-leadgenerierung/#marktcheck
-- proof -> /e3-new-energy/
+- proof -> /case-study-solar-leadgenerierung/
 - wordpress agentur hannover -> /wordpress-agentur-hannover/
 - wordpress seo hannover -> /wordpress-agentur-hannover/#technisches-seo
 - wordpress wartung hannover -> /wordpress-agentur-hannover/#wordpress-wartung

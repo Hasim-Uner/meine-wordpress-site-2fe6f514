@@ -28,7 +28,7 @@ The script scans all PHP templates for internal links and prints a link matrix.
 | Tier | Pages | Min inbound links |
 |------|-------|--------------------|
 | 1 | /solar-waermepumpen-leadgenerierung/ | 8+ |
-| 2 | /e3-new-energy/, /ergebnisse/, /blog/, /wordpress-agentur-hannover/ | 5+ |
+| 2 | /case-study-solar-leadgenerierung/, /ergebnisse/, /blog/, /wordpress-agentur-hannover/ | 5+ |
 | 3 | Service pages, cornerstone content | 3+ |
 | 4 | Glossary terms, blog posts | 1+ |
 
