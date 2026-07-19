@@ -806,6 +806,90 @@
     } catch (e) { /* Stats bleiben statisch — kein Schaden. */ }
   }
 
+  /* Scroll-Reveal + Anfrage-Ketten-Choreografie.
+     Gate: html.sol-anim kommt erst nach Reduced-Motion- und
+     IntersectionObserver-Check — ohne JS (oder bei Reduced Motion)
+     bleibt jeder Ausgangszustand sichtbar, es gibt keine
+     opacity:0-Zustände ohne Fallback. Bereits sichtbare oder
+     überscrollte Elemente werden vor dem Gate als .is-in markiert,
+     damit ein Reload mitten auf der Seite nicht blinkt. */
+  function setupMotion() {
+    var reduced = false;
+    try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    if (reduced || !('IntersectionObserver' in window)) return;
+    var root = document.querySelector(ROOT_SELECTOR);
+    if (!root) return;
+
+    var reveals = [].slice.call(root.querySelectorAll('[data-sol-reveal]'));
+    var chain = root.querySelector('.sol-chain');
+    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    var pending = [];
+
+    reveals.forEach(function (el) {
+      if (el.getBoundingClientRect().top < vh * 0.88) el.classList.add('is-in');
+      else pending.push(el);
+    });
+
+    var chainPending = false;
+    if (chain) {
+      if (chain.getBoundingClientRect().top < vh * 0.88) startChain(chain, false);
+      else chainPending = true;
+    }
+
+    document.documentElement.classList.add('sol-anim');
+    if (!pending.length && !chainPending) return;
+
+    try {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          io.unobserve(entry.target);
+          if (entry.target === chain) startChain(chain, true);
+          else entry.target.classList.add('is-in');
+        });
+      }, { rootMargin: '0px 0px -12% 0px' });
+      pending.forEach(function (el) { io.observe(el); });
+      if (chainPending) io.observe(chain);
+    } catch (e) {
+      document.documentElement.classList.remove('sol-anim');
+    }
+  }
+
+  /* Startet den Ketten-Aufbau (CSS übernimmt die Stagger-Delays) und
+     zählt den CPL-Wert am CRM-Ende von Canon-vorher auf Canon-nachher
+     herunter. SSR-Text ist der Endzustand und wird am Schluss exakt
+     wiederhergestellt. */
+  function startChain(chain, viaScroll) {
+    chain.classList.add('is-live');
+    var from = parseInt(chain.getAttribute('data-count-from'), 10);
+    var to = parseInt(chain.getAttribute('data-count-to'), 10);
+    var nodes = chain.querySelectorAll('.sol-chain-count');
+    if (!nodes.length || !isFinite(from) || !isFinite(to) || from <= to) return;
+    if (typeof window.requestAnimationFrame !== 'function') return;
+
+    var originals = [];
+    var i;
+    for (i = 0; i < nodes.length; i++) originals.push(nodes[i].textContent);
+    for (i = 0; i < nodes.length; i++) nodes[i].textContent = from + ' €';
+
+    var duration = 1200;
+    var t0 = null;
+    function tick(now) {
+      if (t0 === null) t0 = now;
+      var p = Math.min(1, (now - t0) / duration);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var j;
+      if (p < 1) {
+        var val = Math.round(from + (to - from) * eased);
+        for (j = 0; j < nodes.length; j++) nodes[j].textContent = val + ' €';
+        window.requestAnimationFrame(tick);
+      } else {
+        for (j = 0; j < nodes.length; j++) nodes[j].textContent = originals[j];
+      }
+    }
+    window.setTimeout(function () { window.requestAnimationFrame(tick); }, viaScroll ? 1500 : 300);
+  }
+
   function setupFaq() {
     var items = document.querySelectorAll(ROOT_SELECTOR + ' .sol-faq-item');
     if (!items.length) return;
@@ -1005,6 +1089,7 @@
   }
 
   ready(function () {
+    setupMotion();
     setupCountUp();
     setupFaq();
     setupStickyCta();
