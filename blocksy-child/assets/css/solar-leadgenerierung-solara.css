@@ -1033,7 +1033,130 @@
   .solara-landing .sol-sticky-cta { display: none; }
 }
 
-/* ─── 12) Reduced Motion ────────────────────────────────────── */
+/* ─── 11b) Anfrage-Ketten-SVG (direkt unter dem Hero) ───────────
+   Vier Stufen Anzeige → Landingpage → Qualifizierung → CRM als
+   Inline-SVG in zwei Layout-Varianten (horizontal/vertikal), per
+   Breakpoint umgeschaltet. Feste aspect-ratio je Variante → kein CLS.
+   Farben laufen über die Kit-Tokens (Ink + Kupfer). */
+.solara-landing .sol-chain { padding: 6px 0 clamp(30px, 5vw, 54px); }
+.solara-landing .sol-chain-fig { margin: 14px 0 0; }
+.solara-landing .sol-chain-svg { display: block; width: 100%; height: auto; }
+.solara-landing .sol-chain-svg--d { aspect-ratio: 760 / 248; }
+.solara-landing .sol-chain-svg--m {
+  display: none;
+  aspect-ratio: 340 / 644;
+  max-width: 400px;
+  margin: 0 auto;
+}
+@media (max-width: 819px) {
+  .solara-landing .sol-chain-svg--d { display: none; }
+  .solara-landing .sol-chain-svg--m { display: block; }
+}
+
+.solara-landing .sol-chain-rect {
+  fill: rgba(242, 235, 221, .03);
+  stroke: rgba(242, 235, 221, .16);
+  stroke-width: 1;
+}
+.solara-landing .sol-chain-node--final .sol-chain-rect {
+  fill: rgba(224, 138, 60, .07);
+  stroke: rgba(224, 138, 60, .55);
+}
+.solara-landing .sol-chain-k {
+  fill: var(--accent);
+  font: 600 9.5px 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  letter-spacing: 2px;
+}
+.solara-landing .sol-chain-t {
+  fill: var(--fg);
+  font: 700 15.5px 'Satoshi', 'Figtree', sans-serif;
+}
+.solara-landing .sol-chain-s {
+  fill: #8A8478;
+  font: 500 10.5px 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+.solara-landing .sol-chain-line {
+  stroke: rgba(224, 138, 60, .6);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.solara-landing .sol-chain-count {
+  fill: var(--accent);
+  font: 800 30px 'Satoshi', 'Figtree', sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.solara-landing .sol-chain-count-lbl {
+  fill: #8A8478;
+  font: 500 9.5px 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  letter-spacing: 1px;
+}
+
+/* Zähler-Ziffern laufen ohne Breitensprünge (Guardrail: kein Shift
+   beim Hochzählen — bei SVG-Text ohnehin layoutfrei, bei den
+   HTML-Stats sichert tabular-nums gegen Jitter). */
+.solara-landing .hu-stat-num,
+.solara-landing .hu-proof-stat__num,
+.solara-landing .sol-proofbar-num { font-variant-numeric: tabular-nums; }
+
+.solara-landing .sol-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── 12) Motion Layer ──────────────────────────────────────────
+   Drei Bausteine, ausschließlich transform/opacity (kein Layout):
+   a) Hero-Entry-Stagger: reines CSS (backwards-Fill wie sol-bar),
+      läuft auch ohne JS durch. H1 bleibt komplett unanimiert und
+      die Subline (mobiles LCP-Element) bekommt NUR transform —
+      kein Element des LCP-Pfads startet mit opacity:0.
+   b) Anfrage-Ketten-SVG: Linien zeichnen per stroke-dashoffset,
+      Stufen faden gestaffelt (--sol-d aus dem Template).
+   c) Scroll-Reveal [data-sol-reveal]: 16px/.5s ease-out, einmalig.
+   Versteckte Ausgangszustände (b, c) gelten NUR unter html.sol-anim —
+   die Klasse setzt das deferred JS erst nach Reduced-Motion- und
+   IntersectionObserver-Check. Ohne JS ist alles sofort sichtbar. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes sol-rise-fade { from { opacity: 0; transform: translateY(12px); } }
+  @keyframes sol-rise { from { transform: translateY(12px); } }
+  .solara-landing .sol-hero .hu-tag { animation: sol-rise-fade .5s ease-out backwards; }
+  .solara-landing .sol-hero .hu-hero__sub { animation: sol-rise .55s ease-out .1s backwards; }
+  .solara-landing .sol-cta-card { animation: sol-rise-fade .5s ease-out .15s backwards; }
+  .solara-landing .sol-hero .hu-hero__stats { animation: sol-rise-fade .5s ease-out .22s backwards; }
+  .solara-landing .sol-hero .hu-hero__bullets { animation: sol-rise-fade .5s ease-out .3s backwards; }
+  .solara-landing .sol-hero-callink { animation: sol-rise-fade .5s ease-out .38s backwards; }
+}
+
+html.sol-anim .solara-landing [data-sol-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .5s ease-out, transform .5s ease-out;
+}
+html.sol-anim .solara-landing [data-sol-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+html.sol-anim .solara-landing .sol-chain-node {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .5s ease-out var(--sol-d, 0s), transform .5s ease-out var(--sol-d, 0s);
+}
+html.sol-anim .solara-landing .sol-chain-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset .45s ease-out var(--sol-d, 0s);
+}
+html.sol-anim .solara-landing .sol-chain.is-live .sol-chain-node { opacity: 1; transform: none; }
+html.sol-anim .solara-landing .sol-chain.is-live .sol-chain-line { stroke-dashoffset: 0; }
+
+/* ─── 13) Reduced Motion ────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .solara-landing .sol-sun-rays,
   .solara-landing .sol-bar,
@@ -1041,4 +1164,19 @@
   .solara-landing .sol-quiz-opt,
   .solara-landing .sol-quiz-progress-shimmer { animation: none; }
   .solara-landing .sol-quiz-progress-fill { transition: none; }
+
+  /* Motion-Layer hart aus: alles sofort sichtbar, Linien gezeichnet.
+     (Greift auch, wenn der Nutzer Reduced Motion nach dem Laden
+     aktiviert und html.sol-anim bereits gesetzt ist.) */
+  html.sol-anim .solara-landing [data-sol-reveal],
+  html.sol-anim .solara-landing .sol-chain-node {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html.sol-anim .solara-landing .sol-chain-line {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    transition: none;
+  }
 }

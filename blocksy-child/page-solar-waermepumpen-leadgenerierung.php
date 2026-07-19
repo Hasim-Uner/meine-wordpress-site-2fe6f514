@@ -588,6 +588,83 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
+		     ANFRAGE-SYSTEM-KETTE — Anzeige → Landingpage → Qualifizierung → CRM
+		     Inline-SVG in zwei Layout-Varianten (CSS-Breakpoint 820px),
+		     baut sich beim Scroll-Eintritt stufenweise auf; Zähler am
+		     CRM-Ende läuft von CPL-vorher auf CPL-nachher (E3-Canon).
+		     SSR zeigt den Endzustand — ohne JS/bei Reduced Motion statisch.
+		     ════════════════════════════════════════════════════════════ -->
+		<?php
+		$chain_stages = [
+			[ 'k' => '01', 't' => 'Anzeige',        's' => 'Klick mit Kaufabsicht' ],
+			[ 'k' => '02', 't' => 'Landingpage',    's' => 'Eigener Kanal, eigene Daten' ],
+			[ 'k' => '03', 't' => 'Qualifizierung', 's' => 'Region · Dach · Projektwert' ],
+			[ 'k' => '04', 't' => 'CRM',            's' => 'Exklusiv für Ihren Vertrieb' ],
+		];
+		$chain_cx = [ 95, 285, 475, 665 ];
+		$chain_my = [ 24, 166, 308, 450 ];
+		?>
+		<section
+			class="sol-chain"
+			id="anfrage-system"
+			aria-label="Das Anfrage-System im Überblick"
+			data-track-section="request_chain"
+			data-count-from="<?php echo (int) $e3_cpl_before_val; ?>"
+			data-count-to="<?php echo (int) $e3_cpl_after_val; ?>"
+		>
+			<div class="hu-container">
+				<span class="hu-eyebrow">Das Anfrage-System · von der Anzeige bis ins CRM</span>
+				<figure class="sol-chain-fig">
+					<svg class="sol-chain-svg sol-chain-svg--d" viewBox="0 0 760 248" aria-hidden="true" focusable="false">
+						<?php foreach ( $chain_stages as $ci => $stage ) : $cx = $chain_cx[ $ci ]; ?>
+							<g class="sol-chain-node<?php echo 3 === $ci ? ' sol-chain-node--final' : ''; ?>" style="--sol-d:<?php echo esc_attr( (string) ( $ci * 0.35 ) ); ?>s">
+								<rect class="sol-chain-rect" x="<?php echo (int) ( $cx - 75 ); ?>" y="30" width="150" height="78" rx="13" />
+								<text class="sol-chain-k" x="<?php echo (int) $cx; ?>" y="57" text-anchor="middle"><?php echo esc_html( $stage['k'] ); ?></text>
+								<text class="sol-chain-t" x="<?php echo (int) $cx; ?>" y="80" text-anchor="middle"><?php echo esc_html( $stage['t'] ); ?></text>
+								<text class="sol-chain-s" x="<?php echo (int) $cx; ?>" y="130" text-anchor="middle"><?php echo esc_html( $stage['s'] ); ?></text>
+							</g>
+							<?php if ( $ci < 3 ) : ?>
+								<line class="sol-chain-line" pathLength="1" style="--sol-d:<?php echo esc_attr( (string) ( 0.18 + $ci * 0.35 ) ); ?>s"
+									x1="<?php echo (int) ( $cx + 81 ); ?>" y1="69" x2="<?php echo (int) ( $chain_cx[ $ci + 1 ] - 81 ); ?>" y2="69" />
+							<?php endif; ?>
+						<?php endforeach; ?>
+						<line class="sol-chain-line" pathLength="1" style="--sol-d:1.13s" x1="665" y1="140" x2="665" y2="176" />
+						<g class="sol-chain-node" style="--sol-d:1.3s">
+							<text class="sol-chain-count" x="665" y="206" text-anchor="middle"><?php echo esc_html( $e3_cpl_after ); ?></text>
+							<text class="sol-chain-count-lbl" x="665" y="226" text-anchor="middle">pro qualifizierter Anfrage</text>
+							<text class="sol-chain-count-lbl" x="665" y="242" text-anchor="middle">vorher <?php echo esc_html( $e3_cpl_before ); ?></text>
+						</g>
+					</svg>
+					<svg class="sol-chain-svg sol-chain-svg--m" viewBox="0 0 340 644" aria-hidden="true" focusable="false">
+						<?php foreach ( $chain_stages as $ci => $stage ) : $my = $chain_my[ $ci ]; ?>
+							<g class="sol-chain-node<?php echo 3 === $ci ? ' sol-chain-node--final' : ''; ?>" style="--sol-d:<?php echo esc_attr( (string) ( $ci * 0.35 ) ); ?>s">
+								<rect class="sol-chain-rect" x="45" y="<?php echo (int) $my; ?>" width="250" height="84" rx="13" />
+								<text class="sol-chain-k" x="170" y="<?php echo (int) ( $my + 26 ); ?>" text-anchor="middle"><?php echo esc_html( $stage['k'] ); ?></text>
+								<text class="sol-chain-t" x="170" y="<?php echo (int) ( $my + 50 ); ?>" text-anchor="middle"><?php echo esc_html( $stage['t'] ); ?></text>
+								<text class="sol-chain-s" x="170" y="<?php echo (int) ( $my + 70 ); ?>" text-anchor="middle"><?php echo esc_html( $stage['s'] ); ?></text>
+							</g>
+							<?php if ( $ci < 3 ) : ?>
+								<line class="sol-chain-line" pathLength="1" style="--sol-d:<?php echo esc_attr( (string) ( 0.18 + $ci * 0.35 ) ); ?>s"
+									x1="170" y1="<?php echo (int) ( $my + 92 ); ?>" x2="170" y2="<?php echo (int) ( $chain_my[ $ci + 1 ] - 8 ); ?>" />
+							<?php endif; ?>
+						<?php endforeach; ?>
+						<line class="sol-chain-line" pathLength="1" style="--sol-d:1.13s" x1="170" y1="542" x2="170" y2="562" />
+						<g class="sol-chain-node" style="--sol-d:1.3s">
+							<text class="sol-chain-count" x="170" y="596" text-anchor="middle"><?php echo esc_html( $e3_cpl_after ); ?></text>
+							<text class="sol-chain-count-lbl" x="170" y="614" text-anchor="middle">pro qualifizierter Anfrage</text>
+							<text class="sol-chain-count-lbl" x="170" y="630" text-anchor="middle">vorher <?php echo esc_html( $e3_cpl_before ); ?></text>
+						</g>
+					</svg>
+					<figcaption class="sol-sr">
+						Das Anfrage-System in vier Stufen: Anzeige, Landingpage, Qualifizierung, CRM.
+						Kosten pro qualifizierter Anfrage im <?php echo esc_html( $e3_case_label ); ?>-Case:
+						von <?php echo esc_html( $e3_cpl_before ); ?> auf <?php echo esc_html( $e3_cpl_after ); ?> in <?php echo esc_html( $e3_timeframe_dative ); ?>.
+					</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
 		     TRUST STRIP
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="sol-trust" aria-label="Vertrauenssignale" data-track-section="trust_strip">
@@ -607,7 +684,7 @@ get_header();
 		     PROOF-BAR — Case-Study-Kennzahlen früh sichtbar (Teaser → #ergebnisse)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="sol-proofbar" aria-label="Belegte Ergebnisse aus dem <?php echo esc_attr( $e3_case_label ); ?>-Case" data-track-section="proof_bar">
-			<div class="hu-container">
+			<div class="hu-container" data-sol-reveal>
 				<div class="sol-proofbar-inner">
 					<span class="sol-proofbar-eyebrow sol-mono">Belegt · <?php echo esc_html( $e3_case_label ); ?></span>
 					<ul class="sol-proofbar-stats">
@@ -669,7 +746,7 @@ get_header();
 		     01 / STATUS QUO (Creme)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section hu-section--cream" id="problem" data-track-section="problem">
-			<div class="hu-container">
+			<div class="hu-container" data-sol-reveal>
 				<div class="hu-section-head">
 					<span class="hu-eyebrow">01 / Status quo</span>
 					<div>
@@ -693,7 +770,7 @@ get_header();
 		     02 / MARKT VS. EIGENER WEG (Ink)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="vergleich" data-track-section="compare">
-			<div class="hu-container">
+			<div class="hu-container" data-sol-reveal>
 				<div class="hu-section-head">
 					<span class="hu-eyebrow">02 / Markt vs. eigener Weg</span>
 					<div>
@@ -737,7 +814,7 @@ get_header();
 		     03 / DAS SYSTEM — Asset-Panel + drei Schritte (Creme)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section hu-section--cream" id="system" data-track-section="method">
-			<div class="hu-container">
+			<div class="hu-container" data-sol-reveal>
 				<div class="hu-section-head">
 					<span class="hu-eyebrow">03 / Das System</span>
 					<div>
@@ -792,7 +869,7 @@ get_header();
 		     Interaktiver Zeitraum-Picker (12 · 24 · 36 Monate).
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="capex" data-track-section="capex_opex">
-			<div class="hu-container">
+			<div class="hu-container" data-sol-reveal>
 				<div class="hu-section-head">
 					<span class="hu-eyebrow">04 / Die Rechnung</span>
 					<div>
@@ -875,7 +952,7 @@ get_header();
 		     05 / SOLAR CASE STUDY — Vorher/Nachher + Stats (Ink)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="ergebnisse" data-track-section="results">
-			<div class="hu-container">
+			<div class="hu-container" data-sol-reveal>
 				<div class="hu-proof-headline">
 					<span class="hu-eyebrow">05 / <?php echo esc_html( $e3_case_label ); ?></span>
 					<h2>Vorher. Nachher. Beziffert.</h2>
@@ -904,7 +981,7 @@ get_header();
 				</div>
 				<div class="hu-proof-stats">
 					<div class="hu-proof-stat">
-						<div class="hu-proof-stat__num"><?php echo esc_html( $e3_lead_count ); ?></div>
+						<div class="hu-proof-stat__num" data-sol-countup><?php echo esc_html( $e3_lead_count ); ?></div>
 						<div class="hu-proof-stat__lbl">Qualifizierte Anfragen</div>
 					</div>
 					<div class="hu-proof-stat">
@@ -912,7 +989,7 @@ get_header();
 						<div class="hu-proof-stat__lbl">Abschlussquote · vorher → nachher</div>
 					</div>
 					<div class="hu-proof-stat">
-						<div class="hu-proof-stat__num" style="color:var(--accent);"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
+						<div class="hu-proof-stat__num" style="color:var(--accent);" data-sol-countup><?php echo esc_html( $e3_cpl_reduction ); ?></div>
 						<div class="hu-proof-stat__lbl">Weniger Kosten pro Anfrage</div>
 					</div>
 					<div class="hu-proof-stat">
@@ -944,7 +1021,7 @@ get_header();
 		     06 / WANN ES PASST — ehrliche Vorauswahl (Creme)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section hu-section--cream" id="fit" data-track-section="fit_check">
-			<div class="hu-container">
+			<div class="hu-container" data-sol-reveal>
 				<div class="hu-section-head">
 					<span class="hu-eyebrow">06 / Wann es passt</span>
 					<div>
@@ -1011,7 +1088,7 @@ get_header();
 		     07 / RISIKO-UMKEHR (Ink)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="garantie" data-track-section="guarantee">
-			<div class="hu-container">
+			<div class="hu-container" data-sol-reveal>
 				<div class="hu-section-head">
 					<span class="hu-eyebrow">07 / Risiko-Umkehr</span>
 					<div>
@@ -1035,7 +1112,7 @@ get_header();
 		     08 / VERTIEFUNG — Themen-Hub für SEO-Sub-Pages (Ink)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="deeper" data-track-section="deeper">
-			<div class="hu-container">
+			<div class="hu-container" data-sol-reveal>
 				<div class="hu-section-head">
 					<span class="hu-eyebrow">08 / Vertiefung</span>
 					<div>
@@ -1071,7 +1148,7 @@ get_header();
 		     09 / FAQ (Ink)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="faq" data-track-section="faq">
-			<div class="hu-container sol-faq-inner">
+			<div class="hu-container sol-faq-inner" data-sol-reveal>
 				<div class="sol-faq-left">
 					<span class="hu-eyebrow">09 / FAQ</span>
 					<h2 class="sol-faq-h">Bevor Sie fragen.</h2>
@@ -1107,7 +1184,7 @@ get_header();
 		     FOUNDING COHORT 2026 + FINAL CTA — zurück zum Marktcheck
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="founding" data-track-section="founding_cohort">
-			<div class="hu-container">
+			<div class="hu-container" data-sol-reveal>
 				<div class="hu-final-cta">
 					<span class="hu-tag">
 						<span class="hu-dot hu-dot--live" aria-hidden="true"></span>
