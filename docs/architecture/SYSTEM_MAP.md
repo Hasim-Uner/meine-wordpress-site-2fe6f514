@@ -172,7 +172,7 @@ Die CTA-Hierarchie ist klar und sollte nicht verwischt werden.
 
 - Primärer CTA für kalten Solar-/SHK-Traffic: `Marktcheck`
 - Retired Warm-intent Intake: `/anfrage/` leitet auf `/solar-waermepumpen-leadgenerierung/#marktcheck`
-- Proof-Pfade: `/e3-new-energy/`, `/ergebnisse/`
+- Proof-Pfade: `/case-study-solar-leadgenerierung/`, `/ergebnisse/`
 - Kein separater öffentlicher Tiefendiagnose-Schritt im Hauptfunnel
 - Umsetzungsnahe Kontaktwege: `Umsetzung / Optimierung`, `Laufende Weiterentwicklung`
 - Partner-/Agentur-Einstieg auf der Whitelabel-Seite: `Whitelabel-Fit-Gespraech`

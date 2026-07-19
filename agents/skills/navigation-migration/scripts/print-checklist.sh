@@ -5,7 +5,7 @@ set -euo pipefail
 cat <<'EOF'
 Main menu target:
 - /solar-waermepumpen-leadgenerierung/#marktcheck [class=nav-cta-button]
-- /e3-new-energy/
+- /case-study-solar-leadgenerierung/
 - /wordpress-agentur-hannover/
 - /ergebnisse/
 - /blog/

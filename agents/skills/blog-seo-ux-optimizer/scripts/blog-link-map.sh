@@ -14,4 +14,4 @@ rg -n "\\]\\(/|href=[\"']/" "$ROOT/blocksy-child/assets/content/blog" "$ROOT/con
   -g '!node_modules' -g '!.build' || true
 
 printf '\n%s\n' '== Canonical route index excerpts =='
-rg -n "/blog/|/wordpress-agentur-hannover/|/solar-waermepumpen-leadgenerierung/|/e3-new-energy/|/stack-|/server-side-tracking-b2b/" "$ROOT/llms.txt" || true
+rg -n "/blog/|/wordpress-agentur-hannover/|/solar-waermepumpen-leadgenerierung/|/case-study-solar-leadgenerierung/|/stack-|/server-side-tracking-b2b/" "$ROOT/llms.txt" || true
