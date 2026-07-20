@@ -64,6 +64,26 @@ kein Mitgründer, kein Anteilseigner, keine gesellschaftsrechtliche Partnerschaf
 - Gleichgewichtiger Leistungskatalog statt Diagnose-first-Funnel
 - Copy, die Taktik vor Diagnose verkauft
 
+## Nebenpfad: White-Label für Agenturen
+
+`/whitelabel-retainer/` ist ein bewusster, diskreter Nebenpfad außerhalb der
+Kern-Positionierung (noindex, Footer-only, nicht in `llms.txt`). Für diese
+eine Route gelten kontrollierte Ausnahmen:
+
+- Zielgruppe: Agenturen (Performance, Webdesign, Full-Service) — Anrede „ihr/euch“
+- Rolle dort: White-Label-Partner / „die System-Ebene hinter euren Kundenprojekten“
+- WordPress, SEO, Tracking, CRO dürfen als Lieferfelder benannt werden,
+  WordPress bleibt Technologie-Nennung, nie Rollen-Claim
+- Kein gleichgewichtiger Leistungskatalog: Einstieg immer über Erstprojekt
+  mit fixem Scope und Preis vorab, danach Retainer; Fit-Check vor Call
+- Proof: ausschließlich anonymisierte Arbeitsprobe (E3-Canon) mit dem
+  expliziten Hinweis, dass es kein White-Label-Mandat war; keine erfundenen
+  Agentur-Referenzen, keine Akquise im Kundenstamm der Partner
+- Schreibweise sichtbar immer „White-Label“ (Slug/interne Keys bleiben)
+
+Diese Ausnahmen gelten nur auf Whitelabel-Routen und rechtfertigen keine
+Aufweichung der Solar-/SHK-Kernpositionierung an anderer Stelle.
+
 ## Brand Colors (Project Override)
 
 - Primary brand accent: `#b46a3c` (copper)
