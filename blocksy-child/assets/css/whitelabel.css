@@ -1853,6 +1853,46 @@ thead .wl-compare__col--hl {
 }
 
 /* =====================================================================
+   19. MOTION LAYER (Minimal-Version, analog Solar-Muster)
+   Reines CSS mit backwards-Fill: läuft ohne JS durch, Endzustand ist
+   immer der sichtbare Normalzustand — kein opacity:0 ohne Fallback.
+   Ausschließlich transform/opacity (kein Layout, kein CLS).
+   H1 bleibt komplett unanimiert; die Lede ist das gemessene
+   LCP-Element und bekommt NUR transform, nie opacity.
+   Alles komplett im no-preference-Gate → Reduced Motion = statisch.
+   ===================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+	@keyframes wl-rise { from { transform: translateY(12px); } }
+	@keyframes wl-rise-fade { from { opacity: 0; transform: translateY(12px); } }
+	@keyframes wl-step-in { from { opacity: 0; transform: translateY(10px); } }
+	@keyframes wl-line-draw { from { transform: scaleY(0); } }
+
+	/* Hero-Entry: Lede (transform-only) → CTAs */
+	.wl-page .wl-hero__lede { animation: wl-rise 0.55s ease-out 0.1s backwards; }
+	.wl-page .wl-hero__actions { animation: wl-rise-fade 0.5s ease-out 0.2s backwards; }
+
+	/* Ablauf-Kette: Karte → Stationen nacheinander, Linien ziehen nach */
+	.wl-page .wl-flow { animation: wl-rise-fade 0.5s ease-out 0.15s backwards; }
+
+	.wl-page .wl-flow__step { animation: wl-step-in 0.45s ease-out backwards; }
+	.wl-page .wl-flow__step:nth-child(1) { animation-delay: 0.35s; }
+	.wl-page .wl-flow__step:nth-child(2) { animation-delay: 0.7s; }
+	.wl-page .wl-flow__step:nth-child(3) { animation-delay: 1.05s; }
+	.wl-page .wl-flow__step:nth-child(4) { animation-delay: 1.4s; }
+
+	.wl-page .wl-flow__step::before {
+		transform-origin: top;
+		animation: wl-line-draw 0.4s ease-out backwards;
+	}
+	.wl-page .wl-flow__step:nth-child(1)::before { animation-delay: 0.55s; }
+	.wl-page .wl-flow__step:nth-child(2)::before { animation-delay: 0.9s; }
+	.wl-page .wl-flow__step:nth-child(3)::before { animation-delay: 1.25s; }
+
+	.wl-page .wl-flow__chips { animation: wl-rise-fade 0.45s ease-out 1.6s backwards; }
+}
+
+/* =====================================================================
    Reduced Motion
    ===================================================================== */
 
