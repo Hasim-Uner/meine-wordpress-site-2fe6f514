@@ -328,7 +328,7 @@
 .solara-landing .sol-quiz-opt-idx {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 10px;
-  color: var(--fg-4);
+  color: var(--fg-3);  /* AA-fest auf Karten-Bg (war --fg-4 #5C5A52, 2.48:1) */
   flex-shrink: 0;
 }
 .solara-landing .sol-quiz-opt-arrow {

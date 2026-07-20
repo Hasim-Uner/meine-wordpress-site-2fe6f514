@@ -510,7 +510,7 @@ get_header();
 							</div>
 						</div>
 					</button>
-					<div class="acc-body" id="body-<?php echo esc_attr( $area_slug ); ?>" role="region">
+					<div class="acc-body" id="body-<?php echo esc_attr( $area_slug ); ?>">
 						<div class="acc-body-inner">
 							<div class="assets-grid">
 								<?php foreach ( $assets as $asset ) :

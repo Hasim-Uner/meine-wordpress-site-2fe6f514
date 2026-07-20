@@ -698,7 +698,8 @@
       var current = QUIZ_STEPS[state.step];
       var body = el('div', { className: 'sol-quiz-body' }, [
         el('div', { className: 'sol-quiz-label' }, current.label),
-        el('h3', { className: 'sol-quiz-title' }, current.title),
+        // h2: schließt direkt an die Hero-h1 an (h3 erzeugte einen Level-Sprung)
+        el('h2', { className: 'sol-quiz-title' }, current.title),
         el('p', { className: 'sol-quiz-hint' }, current.hint)
       ]);
 
