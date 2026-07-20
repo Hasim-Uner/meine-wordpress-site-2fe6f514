@@ -1,6 +1,6 @@
 /**
  * White-Label Retainer — page-whitelabel-retainer.php
- * Sticky-CTA, Arbeitsmodus-Toggle und Kennzahlen-Counter.
+ * Sticky-CTA, Arbeitsmodus-Toggle und Fit-Check (3 Klickfragen → Termin).
  * Wird nur auf Whitelabel-Routen geladen (inc/enqueue.php, Block P2).
  */
 (function () {
@@ -9,7 +9,7 @@
 	// ─── Sticky Mobile CTA visibility ───
 	var sticky = document.getElementById('wl-sticky-cta');
 	var hero   = document.getElementById('hero');
-	var cta    = document.getElementById('cta');
+	var cta    = document.getElementById('fit-check');
 
 	if (sticky && hero) {
 		var updateSticky = function () {
@@ -39,60 +39,85 @@
 		});
 	}
 
-	// ─── Animated Counters ───
-	// Eigene Implementierung statt NexusCore.initCounters: braucht deutsche
-	// Tausenderpunkte (1.750) und die data-counter-*-API mit HTML-Suffixen.
-	var counters = document.querySelectorAll('.wl-counter');
-	if (!counters.length) {
-		return;
-	}
-	var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	// ─── Fit-Check: 3 Klickfragen → Termin ───
+	// Rein clientseitig, keine Speicherung: Antworten sind Enum-Werte und
+	// fließen nur in die bestehende data-track-Delegation plus als Vorlage
+	// in den mailto-Link. SSR zeigt die Ergebnis-CTAs (No-JS-Pfad); JS
+	// invertiert beim Enhancen auf Quiz-first.
+	var fitcheck = document.querySelector('[data-fitcheck]');
+	if (fitcheck) {
+		var quiz   = fitcheck.querySelector('[data-fitcheck-quiz]');
+		var result = fitcheck.querySelector('[data-fitcheck-result]');
+		var note   = fitcheck.querySelector('[data-fitcheck-note]');
+		var skip   = fitcheck.querySelector('[data-fitcheck-skip]');
+		var mail   = fitcheck.querySelector('[data-fitcheck-mail]');
+		var steps  = quiz ? Array.prototype.slice.call(quiz.querySelectorAll('[data-fitcheck-step]')) : [];
 
-	function format(n, target) {
-		var s = String(Math.round(n));
-		if (target >= 1000) {
-			s = s.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-		}
-		return s;
-	}
+		if (quiz && result && steps.length) {
+			quiz.hidden   = false;
+			result.hidden = true;
+			if (skip) {
+				skip.hidden = false;
+			}
 
-	function run(el) {
-		var target = parseInt(el.getAttribute('data-counter-target') || '0', 10);
-		var suffix = el.getAttribute('data-counter-suffix') || '';
-		var prefix = el.getAttribute('data-counter-prefix') || '';
-		if (reduceMotion || !('requestAnimationFrame' in window)) {
-			el.innerHTML = prefix + format(target, target) + suffix;
-			return;
-		}
-		var duration = 1400;
-		var start = null;
-		function tick(t) {
-			if (start === null) {
-				start = t;
-			}
-			var p = Math.min(1, (t - start) / duration);
-			var eased = 1 - Math.pow(1 - p, 3);
-			el.innerHTML = prefix + format(target * eased, target) + suffix;
-			if (p < 1) {
-				requestAnimationFrame(tick);
-			} else {
-				el.innerHTML = prefix + format(target, target) + suffix;
-			}
-		}
-		requestAnimationFrame(tick);
-	}
+			var finishFitcheck = function () {
+				if (mail) {
+					var lines = [];
+					steps.forEach(function (stepEl) {
+						var chosen = stepEl.querySelector('.wl-fitcheck__opt.is-selected');
+						if (chosen) {
+							lines.push(chosen.getAttribute('data-fitcheck-key') + ': ' + chosen.getAttribute('data-fitcheck-label'));
+						}
+					});
+					var base = (mail.getAttribute('href') || '').split('?')[0];
+					if (base) {
+						mail.setAttribute(
+							'href',
+							base
+								+ '?subject=' + encodeURIComponent('White-Label Fit-Check')
+								+ '&body=' + encodeURIComponent('Kurz zu uns:\n' + lines.join('\n') + '\n\n')
+						);
+					}
+				}
+				quiz.hidden   = true;
+				result.hidden = false;
+				if (note) {
+					note.hidden = false;
+				}
+				if (skip) {
+					skip.hidden = true;
+				}
+				try { result.focus({ preventScroll: true }); } catch (e) { /* Fokus optional */ }
+			};
 
-	if (!('IntersectionObserver' in window)) {
-		counters.forEach(run);
-		return;
+			quiz.addEventListener('click', function (e) {
+				var opt = e.target.closest ? e.target.closest('.wl-fitcheck__opt') : null;
+				if (!opt) {
+					return;
+				}
+				var stepEl = opt.closest('[data-fitcheck-step]');
+				if (!stepEl) {
+					return;
+				}
+
+				stepEl.querySelectorAll('.wl-fitcheck__opt').forEach(function (btn) {
+					btn.classList.remove('is-selected');
+				});
+				opt.classList.add('is-selected');
+
+				var next = steps[steps.indexOf(stepEl) + 1];
+				if (!next) {
+					finishFitcheck();
+					return;
+				}
+				stepEl.hidden = true;
+				next.hidden   = false;
+				var question = next.querySelector('.wl-fitcheck__q');
+				if (question) {
+					question.setAttribute('tabindex', '-1');
+					try { question.focus({ preventScroll: true }); } catch (e) { /* Fokus optional */ }
+				}
+			});
+		}
 	}
-	var io = new IntersectionObserver(function (entries) {
-		entries.forEach(function (entry) {
-			if (entry.isIntersecting) {
-				run(entry.target);
-				io.unobserve(entry.target);
-			}
-		});
-	}, { threshold: 0.2 });
-	counters.forEach(function (el) { io.observe(el); });
 })();
