@@ -13,6 +13,9 @@
   --ag-primary:        #D97757;
   --ag-primary-dark:   #C05D3F;
   --ag-primary-light:  #F4D4C8;
+  /* Kontrastsicherer Akzent für Text/Chips/Buttons auf hellem Grund (WCAG AA).
+     --ag-primary (#D97757) bleibt für dunkle Sektionen (Hero, Final-CTA). */
+  --ag-accent-ink:     #A24C2A;
   --ag-secondary:      #29261B;
   --ag-secondary-light:#3D3A2E;
 
@@ -26,15 +29,15 @@
   /* Text */
   --ag-text:      #29261B;
   --ag-text-2:    #5A5748;
-  --ag-text-3:    #8B8775;
+  --ag-text-3:    #6E695B;  /* abgedunkelt für WCAG AA bei kleinem Muted-Text */
 
   /* Category accents (synchron mit PHP-Registry) */
-  --ag-strategie:        #D97757;
-  --ag-fundament:        #1F8A5B;
+  --ag-strategie:        #A24C2A;  /* AA-fest: Step-Num-Bg (weiß) + Step-h3 auf Weiß */
+  --ag-fundament:        #1A7A50;  /* AA-fest (war #1F8A5B, 4.33:1) */
   --ag-messbarkeit:      #2A6FDB;
-  --ag-sichtbarkeit:     #C05D3F;
+  --ag-sichtbarkeit:     #A2432A;  /* AA-fest (war #C05D3F, 4.30:1) */
   --ag-conversion:       #8B4789;
-  --ag-weiterentwicklung:#1F8A5B;
+  --ag-weiterentwicklung:#1A7A50;  /* AA-fest (war #1F8A5B, 4.33:1) */
 
   /* Typo — Brand-Stack uebernehmen (Satoshi Display, Figtree Body) */
   --ag-font-display: var(--font-display, "Satoshi", "Figtree", sans-serif);
@@ -80,6 +83,15 @@
 
 .wp-agentur-page-wrapper a {
   color: var(--ag-primary);
+}
+
+/* Titel dunkler Sektionen: höhere Spezifität als die globale
+   Heading-Regel (…-wrapper h1/h2/h3 { color: var(--ag-text) }),
+   damit die beabsichtigte helle Farbe nicht auf Dunkel verschluckt wird. */
+.wp-agentur-page-wrapper .ag-hero__title,
+.wp-agentur-page-wrapper .ag-hero-viz__title,
+.wp-agentur-page-wrapper .ag-close__title {
+  color: #FFFFFF;
 }
 
 .wp-agentur-page-wrapper section[id] {
@@ -132,7 +144,7 @@
 .wp-agentur-eyebrow {
   display: inline-block;
   margin: 0 0 var(--ag-space-sm);
-  color: var(--ag-primary);
+  color: var(--ag-accent-ink);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -173,14 +185,14 @@
 }
 
 .wp-agentur-page-wrapper .nx-btn--primary {
-  background: var(--ag-primary);
+  background: var(--ag-accent-ink);
   color: #FFFFFF;
   box-shadow: 0 4px 14px rgba(217, 119, 87, 0.28);
 }
 
 .wp-agentur-page-wrapper .nx-btn--primary:hover,
 .wp-agentur-page-wrapper .nx-btn--primary:focus-visible {
-  background: var(--ag-primary-dark);
+  background: #8F4126;
   transform: translateY(-2px);
   box-shadow: 0 10px 26px rgba(217, 119, 87, 0.38);
   color: #FFFFFF;
@@ -425,7 +437,7 @@
 .wp-agentur-proof-value {
   font-family: var(--ag-font-display);
   font-size: clamp(2rem, 4.5vw, 3rem);
-  color: var(--ag-primary);
+  color: var(--ag-accent-ink);
   font-weight: 600;
   line-height: 1;
   margin: 0 0 0.55rem;
@@ -493,7 +505,7 @@
   margin-bottom: var(--ag-space-md);
   padding: 0.3rem 0.65rem;
   background: rgba(217, 119, 87, 0.10);
-  color: var(--ag-primary);
+  color: var(--ag-accent-ink);
   border-radius: 0.4rem;
   font-size: 0.74rem;
   font-weight: 700;
@@ -502,7 +514,7 @@
 }
 
 .wp-agentur-segment-card--focus .wp-agentur-segment-card__tag {
-  background: var(--ag-primary);
+  background: var(--ag-accent-ink);
   color: #FFFFFF;
 }
 
@@ -579,7 +591,7 @@
 }
 
 .wp-agentur-intent-card__kicker {
-  color: var(--ag-primary);
+  color: var(--ag-accent-ink);
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0;
@@ -704,7 +716,7 @@
 }
 
 .wp-agentur-process-link a {
-  color: var(--ag-primary);
+  color: var(--ag-accent-ink);
   font-weight: 600;
   text-decoration: none;
   border-bottom: 1px solid rgba(217, 119, 87, 0.32);
@@ -1140,7 +1152,7 @@
   align-items: center;
   padding: 0.3rem 0.65rem;
   background: rgba(217, 119, 87, 0.12);
-  color: var(--ag-primary);
+  color: var(--ag-accent-ink);
   border-radius: 0.4rem;
   font-size: 0.72rem;
   font-weight: 700;
@@ -1589,11 +1601,17 @@
   border-top: 1px solid rgba(244, 212, 200, 0.18);
   box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.18);
   transform: translateY(100%);
-  transition: transform var(--ag-dur-smooth) var(--ag-ease);
+  /* im versteckten Zustand aus der Fokus-Reihenfolge nehmen, damit der
+     enthaltene Link nicht fokussierbar ist, solange aria-hidden="true" gilt */
+  visibility: hidden;
+  transition: transform var(--ag-dur-smooth) var(--ag-ease),
+              visibility 0s linear var(--ag-dur-smooth);
 }
 
 .wp-agentur-sticky-cta.is-visible {
   transform: translateY(0);
+  visibility: visible;
+  transition: transform var(--ag-dur-smooth) var(--ag-ease);
 }
 
 .wp-agentur-sticky-cta__inner {
@@ -3235,9 +3253,10 @@
   margin-top: var(--ag-space-md);
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--ag-primary);
+  color: var(--ag-accent-ink);
   letter-spacing: 0.01em;
-  opacity: 0.85;
+  /* volle Deckkraft: 0.85 hellte den Ink unter AA (4.29:1); Hover ergänzt nur die Verschiebung */
+  opacity: 1;
   transition: opacity var(--ag-dur-base) var(--ag-ease),
               transform var(--ag-dur-base) var(--ag-ease);
 }
@@ -3271,7 +3290,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ag-primary);
+  color: var(--ag-accent-ink);
 }
 
 .wp-agentur-quali__q {
