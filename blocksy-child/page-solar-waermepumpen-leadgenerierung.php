@@ -431,7 +431,7 @@ get_header();
 						<span class="hu-mono">Für Solar- &amp; Wärmepumpen-Betriebe · Eigener Vertrieb · DACH</span>
 					</span>
 					<h1 class="hu-display hu-hero__title sol-hero-h1">
-						Hören Sie auf,<br />Anfragen<br />zu&nbsp;<span class="hu-hero__title-2">mieten.</span>
+						Hören Sie auf,<br />Anfragen zu&nbsp;<span class="hu-hero__title-2">mieten.</span>
 					</h1>
 					<p class="hu-hero__sub">
 						Aroundhome, DAA und Wattfox verkaufen jede Anfrage an drei Wettbewerber — Sie bezahlen den Preiskampf.

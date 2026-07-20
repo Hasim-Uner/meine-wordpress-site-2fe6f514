@@ -38,9 +38,16 @@
   z-index: 1;
 }
 .solara-landing .sol-hero-left { position: relative; }
-.solara-landing .sol-hero-h1 { margin: 18px 0 0; }
-.solara-landing .sol-hero .hu-hero__sub { margin: 18px 0 4px; }
-.solara-landing .sol-hero .hu-hero__stats { margin-top: 24px; }
+.hu-hp.solara-landing .sol-hero-h1 {
+  margin: 14px 0 0;
+  font-size: clamp(34px, 4.2vw, 58px);
+  line-height: 1.05;
+}
+/* Akzentwort inline halten (Basis-Theme setzt display:block → sonst
+   rutscht „mieten." auf eine eigene Zeile und „zu" bleibt als Waise). */
+.hu-hp.solara-landing .sol-hero-h1 .hu-hero__title-2 { display: inline; }
+.solara-landing .sol-hero .hu-hero__sub { margin: 16px 0 4px; }
+.solara-landing .sol-hero .hu-hero__stats { margin-top: 18px; }
 .solara-landing .sol-hero .hu-hero__bullets { margin-top: 16px; }
 
 .solara-landing .sol-hero-callink {
@@ -75,10 +82,10 @@
 /* CPL-Telemetrie-Panel (Balken-Chart im hu-diagram-Rahmen) */
 .solara-landing .sol-cpl {
   min-height: 0;
-  margin: 26px 0 0;
-  padding: 24px 26px 20px;
+  margin: 18px 0 0;
+  padding: 20px 26px 18px;
 }
-.solara-landing .sol-cpl svg { width: 100%; height: auto; margin-top: 16px; }
+.solara-landing .sol-cpl svg { width: 100%; height: auto; margin-top: 12px; }
 .solara-landing .sol-bar {
   transform-box: fill-box;
   transform-origin: bottom;
