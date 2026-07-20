@@ -346,7 +346,10 @@
         var dot = el('button', {
           type: 'button',
           className: cls,
-          tabindex: i < state.step ? '0' : '-1',
+          // nicht fokussierbar: der Dots-Track ist aria-hidden (dekorativer
+          // Fortschritt); Tastatur-Rücknavigation läuft über „← Zurück".
+          // Verhindert aria-hidden-focus, sobald erledigte Schritte erscheinen.
+          tabindex: '-1',
           'aria-label': 'Zu Schritt ' + (i + 1),
           onClick: (function (idx) {
             return function () {
