@@ -2662,6 +2662,23 @@
   animation: agLineIn 0.7s var(--ag-ease) 0.74s forwards;
 }
 
+/* Inline-Link in der Fineprint: nicht nur per Farbe erkennbar (WCAG 1.4.1 /
+   Lighthouse link-in-text-block). Unterstrich + heller Ton = klar vom
+   gedämpften Umgebungstext unterscheidbar und kontraststark auf Dunkel. */
+.ag-hero__fineprint a {
+  color: var(--ag-primary-light);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
+}
+
+.ag-hero__fineprint a:hover,
+.ag-hero__fineprint a:focus-visible {
+  color: #FFFFFF;
+  text-decoration-thickness: 2px;
+}
+
 /* ---------------------------------------------------------------------------
    E2. CASE-BRIEF — editorial Daten-Karte rechts
    --------------------------------------------------------------------------- */
