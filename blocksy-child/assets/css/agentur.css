@@ -322,6 +322,8 @@
   animation: agFadeUp 0.6s var(--ag-ease) 0.05s forwards;
 }
 
+/* LCP-Schutz: Headline-Selektoren starten nie mit opacity:0 und werden
+   nicht animiert — der Titel steht ab dem ersten Paint. */
 .wp-agentur-hero__title,
 .wp-agentur-hero .nx-hero__title {
   font-family: var(--ag-font-display);
@@ -332,8 +334,6 @@
   color: #FFFFFF;
   margin: 0 0 var(--ag-space-lg);
   max-width: 22ch;
-  opacity: 0;
-  animation: agFadeUp 0.6s var(--ag-ease) 0.15s forwards;
 }
 
 .wp-agentur-hero__subtitle,
@@ -973,14 +973,21 @@
   transform: rotate(180deg);
 }
 
-.acc-body {
+/* Ohne JS sind alle Bausteine sichtbar: Der kollabierte Zustand existiert
+   nur unter html.ag-js. Öffnen/Schließen schaltet instant (keine
+   Höhen-Animation); die wahrgenommene Bewegung liefern die Karten
+   per gestaffeltem transform/opacity-Einblenden (siehe Motion-Layer). */
+html.ag-js .acc-body {
   max-height: 0;
   overflow: hidden;
-  transition: max-height var(--ag-dur-smooth) var(--ag-ease);
 }
 
-.acc-item.is-open .acc-body {
-  max-height: 3500px;
+html.ag-js .acc-item.is-open .acc-body {
+  max-height: none;
+}
+
+.acc-item[hidden] {
+  display: none;
 }
 
 .acc-body-inner {
@@ -1510,14 +1517,16 @@
   color: #FFFFFF;
 }
 
-.faq-body {
+/* Ohne JS sind alle Antworten sichtbar; kollabiert wird nur unter
+   html.ag-js. Statt Höhen-Animation blendet die Antwort per
+   transform/opacity ein (siehe Motion-Layer). */
+html.ag-js .faq-body {
   max-height: 0;
   overflow: hidden;
-  transition: max-height var(--ag-dur-smooth) var(--ag-ease);
 }
 
-.faq-item.is-open .faq-body {
-  max-height: 800px;
+html.ag-js .faq-item.is-open .faq-body {
+  max-height: none;
 }
 
 .faq-body-inner {
@@ -1709,30 +1718,17 @@
 }
 
 /* ---------------------------------------------------------------------------
-   17. INTERSECTION-OBSERVER REVEAL UTILITY
+   17. REDUCED-MOTION KILL-SWITCH
+   (Der frühere .wp-agentur-reveal-Ansatz ist durch das gate-basierte
+   [data-ag-reveal]-System im Motion-Layer ersetzt: Ausgangszustände
+   existieren nur unter html.ag-anim — ohne JS ist alles sichtbar.)
    --------------------------------------------------------------------------- */
-.wp-agentur-reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s var(--ag-ease), transform 0.6s var(--ag-ease);
-}
-
-.wp-agentur-reveal.is-revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .wp-agentur-page-wrapper *,
   .wp-agentur-page-wrapper *::before,
   .wp-agentur-page-wrapper *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
-  }
-
-  .wp-agentur-reveal {
-    opacity: 1;
-    transform: none;
   }
 }
 
@@ -2050,13 +2046,15 @@
   justify-content: center;
 }
 
+/* Endhöhe steht statisch im CSS (ohne JS voll sichtbar, null CLS);
+   animiert wird ausschließlich transform: scaleY im Motion-Layer. */
 .ag-bar__fill {
   display: block;
   width: 68%;
-  height: 0;
+  height: var(--ag-bar-height, 100%);
   border-radius: 0.7rem 0.7rem 0 0;
   transform-origin: bottom;
-  transition: height 1.4s cubic-bezier(0.16, 0.84, 0.44, 1);
+  transition: transform 1.4s cubic-bezier(0.16, 0.84, 0.44, 1);
 }
 
 .ag-bar--before .ag-bar__fill {
@@ -2069,8 +2067,10 @@
   box-shadow: 0 8px 24px rgba(217, 119, 87, 0.42);
 }
 
-.ag-hero-viz.is-played .ag-bar__fill {
-  height: var(--ag-bar-height);
+@media (prefers-reduced-motion: no-preference) {
+  html.ag-anim .ag-hero-viz:not(.is-played) .ag-bar__fill {
+    transform: scaleY(0);
+  }
 }
 
 .ag-bar__label {
@@ -2103,18 +2103,18 @@
   box-shadow: 0 8px 18px rgba(217, 119, 87, 0.32);
 }
 
-.ag-bar__arrow-path,
-.ag-bar__arrow-head {
-  transition: stroke-dashoffset 1.2s ease-out 0.4s, opacity 0.4s ease 0.4s;
+/* Pfeil ist statisch voll gezeichnet (ohne JS sichtbar); der Auftritt
+   läuft über opacity + transform im Motion-Layer. */
+.ag-bar__arrow svg {
+  transition: opacity 0.5s ease 0.55s, transform 0.5s ease 0.55s;
 }
 
-.ag-bar__arrow-head {
-  stroke-dasharray: 30;
-  stroke-dashoffset: 30;
+@media (prefers-reduced-motion: no-preference) {
+  html.ag-anim .ag-hero-viz:not(.is-played) .ag-bar__arrow svg {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 }
-
-.ag-hero-viz.is-played .ag-bar__arrow-path { stroke-dashoffset: 0; }
-.ag-hero-viz.is-played .ag-bar__arrow-head { stroke-dashoffset: 0; }
 
 .ag-hero-viz__foot {
   display: grid;
@@ -2611,16 +2611,11 @@
   .ag-hero__title { font-size: 6.4rem; }
 }
 
+/* LCP-Schutz: Die H1-Zeilen werden bewusst NICHT animiert und starten
+   nie mit opacity:0 — die Headline steht ab dem ersten Paint. */
 .ag-hero__title-line {
   display: block;
-  opacity: 0;
-  transform: translateY(14px);
-  animation: agLineIn 0.7s var(--ag-ease) forwards;
 }
-
-.ag-hero__title-line:nth-child(1) { animation-delay: 0.10s; }
-.ag-hero__title-line:nth-child(2) { animation-delay: 0.20s; }
-.ag-hero__title-line:nth-child(3) { animation-delay: 0.32s; }
 
 .ag-hero__title-line--em {
   font-style: italic;
@@ -3027,9 +3022,11 @@
 @media (prefers-reduced-motion: reduce) {
   .ag-hero__title-line,
   .ag-hero__lede,
+  .ag-hero__proofline,
   .ag-hero__actions,
   .ag-hero__fineprint,
-  .ag-brief {
+  .ag-brief,
+  .ag-hero-viz {
     opacity: 1;
     transform: none;
     animation: none;
@@ -3387,5 +3384,594 @@
   .wp-agentur-quali__opt:hover,
   .wp-agentur-quali__opt:focus-visible {
     transform: none;
+  }
+}
+
+/* ===========================================================================
+   DYNAMISIERUNG 2026-07 — Lebender Beweis, Kauf-Signal-Strecke,
+   Vorher/Nachher-Bühne, Bibliotheks-Filter, Count-up-Basis.
+
+   Architektur:
+   - html.ag-js   = JS vorhanden (funktionale Zustände wie Kollabieren/Filter).
+   - html.ag-anim = Bewegung erlaubt (kein Reduced Motion + IntersectionObserver).
+   - Jeder versteckte Ausgangszustand lebt NUR unter html.ag-anim und
+     innerhalb von @media (prefers-reduced-motion: no-preference):
+     ohne JS oder mit Reduced Motion steht sofort der Endzustand.
+   - Animiert werden ausschließlich transform und opacity.
+   =========================================================================== */
+
+/* ── D0. Count-up-Basis: Endwerte stehen im Markup, Ziffern laufen ruhig ── */
+.ag-counter {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── D1. Hero-Proofline (unter der neuen Subline) ───────────────────────── */
+.ag-hero__proofline {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
+  color: rgba(246, 244, 239, 0.72);
+  opacity: 0;
+  animation: agLineIn 0.7s var(--ag-ease) 0.56s forwards;
+}
+
+.ag-hero__proofline::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ag-primary);
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+/* ── D2. Vorqualifizierung ist ein reines JS-Widget: ohne JS ausblenden,
+        der klassische Formular-Link direkt darunter bleibt der Pfad. ────── */
+html:not(.ag-js) .wp-agentur-quali {
+  display: none;
+}
+
+/* ── D3. LEBENDER BEWEIS — Messwert-Kacheln der eigenen Seite ───────────── */
+.ag-liveproof__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--ag-space-md);
+  max-width: var(--ag-max);
+  margin: 0 auto;
+}
+
+.ag-liveproof__tile {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  text-align: center;
+  gap: 0.4rem;
+  padding: var(--ag-space-xl) var(--ag-space-lg);
+  background: var(--ag-surface);
+  border: 1px solid var(--ag-border);
+  border-radius: 1rem;
+}
+
+.ag-liveproof__gauge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 0.5rem;
+  color: var(--ag-primary);
+}
+
+.ag-liveproof__gauge svg {
+  display: block;
+}
+
+.ag-liveproof__gauge--live {
+  position: relative;
+  color: var(--ag-fundament);
+}
+
+.ag-liveproof__ping-core {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ag-fundament);
+}
+
+.ag-liveproof__ping {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ag-fundament);
+  opacity: 0.35;
+  transform: translate(-50%, -50%);
+}
+
+.ag-liveproof__value {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.15rem;
+  font-family: var(--ag-font-display);
+  font-size: clamp(2rem, 3.4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ag-text);
+}
+
+.ag-liveproof__max {
+  font-size: 0.55em;
+  font-weight: 600;
+  color: var(--ag-text-3);
+}
+
+.ag-liveproof__label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ag-text);
+  line-height: 1.35;
+}
+
+.ag-liveproof__note {
+  font-size: 0.8rem;
+  color: var(--ag-text-3);
+  line-height: 1.4;
+}
+
+.ag-liveproof__cta {
+  display: grid;
+  justify-items: center;
+  gap: var(--ag-space-md);
+  margin-top: var(--ag-space-2xl);
+  text-align: center;
+}
+
+.ag-liveproof__cta .nx-btn svg {
+  flex-shrink: 0;
+}
+
+.ag-liveproof__closing {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--ag-text-2);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ── D4. KAUF-SIGNAL-STRECKE — Inline-SVG, Endzustand ist der Default ───── */
+.ag-signal {
+  max-width: 1080px;
+  margin: 0 auto var(--ag-space-2xl);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  background: var(--ag-surface);
+  border: 1px solid var(--ag-border);
+  border-radius: 1.25rem;
+}
+
+.ag-signal__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ag-signal__svg--wide {
+  aspect-ratio: 1000 / 230;
+}
+
+.ag-signal__svg--stack {
+  display: none;
+  aspect-ratio: 380 / 640;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 719px) {
+  .ag-signal__svg--wide { display: none; }
+  .ag-signal__svg--stack { display: block; }
+}
+
+.ag-signal__svg text {
+  font-family: var(--ag-font-body);
+  fill: var(--ag-text);
+}
+
+.agsg-node__ring {
+  fill: var(--ag-surface);
+  stroke: var(--ag-secondary);
+  stroke-width: 2;
+}
+
+.agsg-node__num {
+  font-family: var(--ag-font-display);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.agsg-node__label {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.ag-signal__svg--stack .agsg-node__label {
+  font-size: 19px;
+}
+
+.agsg-seg {
+  fill: var(--ag-secondary);
+  opacity: 0.26;
+}
+
+.agsg-head {
+  fill: none;
+  stroke: var(--ag-secondary);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.45;
+}
+
+.agsg-tick__bg {
+  fill: var(--ag-accent-ink);
+}
+
+.agsg-tick__check {
+  fill: none;
+  stroke: #FFFFFF;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.agsg-chip rect {
+  fill: var(--ag-accent-ink);
+}
+
+.agsg-chip text {
+  fill: #FFFFFF;
+  font-size: 15.5px;
+  font-weight: 600;
+}
+
+.ag-signal__svg--stack .agsg-chip text {
+  font-size: 17px;
+}
+
+/* Der Laufpunkt existiert nur während der Choreografie. */
+.agsg-dot {
+  fill: var(--ag-primary);
+  opacity: 0;
+}
+
+/* ── D5. DER UNTERSCHIED — Segmented-Toggle + Bühne ─────────────────────── */
+.wp-agentur-vs__toggle {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 var(--ag-space-xl);
+}
+
+.wp-agentur-vs.is-enhanced .wp-agentur-vs__head {
+  margin-bottom: var(--ag-space-lg);
+}
+
+.wp-agentur-vs__seg {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  background: var(--ag-bg);
+  border: 1px solid var(--ag-border-strong);
+  border-radius: 999px;
+}
+
+.wp-agentur-vs__thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 999px;
+  background: var(--ag-secondary);
+  transition: transform var(--ag-dur-base) var(--ag-ease);
+}
+
+.wp-agentur-vs.is-after .wp-agentur-vs__thumb {
+  transform: translateX(100%);
+}
+
+.wp-agentur-vs__tab {
+  position: relative;
+  z-index: 1;
+  border: none;
+  background: transparent;
+  padding: 0.6rem 1.7rem;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ag-text-2);
+  cursor: pointer;
+  transition: color var(--ag-dur-base) var(--ag-ease);
+}
+
+.wp-agentur-vs__tab.is-active {
+  color: #FFFFFF;
+}
+
+.wp-agentur-vs__tab:focus-visible {
+  outline: 2px solid var(--ag-primary);
+  outline-offset: 2px;
+}
+
+/* Bühne: beide Panels teilen sich eine Grid-Zelle — Höhe bleibt stabil,
+   gewechselt wird nur über opacity/transform. */
+.wp-agentur-vs.is-enhanced .wp-agentur-vs__cols {
+  grid-template-columns: 1fr;
+}
+
+.wp-agentur-vs.is-enhanced .wp-agentur-vs__col {
+  grid-area: 1 / 1;
+  transition: opacity 0.35s var(--ag-ease), transform 0.35s var(--ag-ease);
+}
+
+.wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active {
+  position: relative;
+  z-index: 1;
+}
+
+.wp-agentur-vs.is-enhanced .wp-agentur-vs__col[aria-hidden="true"] {
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wp-agentur-vs.is-enhanced .wp-agentur-vs__col--before[aria-hidden="true"] {
+  transform: translateX(-24px);
+}
+
+.wp-agentur-vs.is-enhanced .wp-agentur-vs__col--after[aria-hidden="true"] {
+  transform: translateX(24px);
+}
+
+/* ── D6. METHODENBIBLIOTHEK — Filterleiste ──────────────────────────────── */
+.ag-lib-filter {
+  display: grid;
+  gap: var(--ag-space-sm);
+  max-width: var(--ag-max);
+  margin: 0 auto var(--ag-space-lg);
+}
+
+.ag-lib-filter__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ag-lib-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--ag-border-strong);
+  background: var(--ag-surface);
+  color: var(--ag-text);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color var(--ag-dur-fast) var(--ag-ease),
+              border-color var(--ag-dur-fast) var(--ag-ease),
+              background var(--ag-dur-fast) var(--ag-ease);
+}
+
+.ag-lib-chip:hover {
+  border-color: var(--ag-primary);
+  color: var(--ag-accent-ink);
+}
+
+.ag-lib-chip:focus-visible {
+  outline: 2px solid var(--ag-primary);
+  outline-offset: 2px;
+}
+
+.ag-lib-chip.is-active {
+  background: var(--ag-secondary);
+  border-color: var(--ag-secondary);
+  color: #FFFFFF;
+}
+
+.ag-lib-chip__n {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(41, 38, 27, 0.08);
+  color: var(--ag-text-2);
+}
+
+.ag-lib-chip.is-active .ag-lib-chip__n {
+  background: rgba(255, 255, 255, 0.16);
+  color: #FFFFFF;
+}
+
+.ag-lib-filter__status {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ag-text-3);
+}
+
+/* ═══ D7. MOTION-LAYER ═══════════════════════════════════════════════════
+   Sämtliche versteckten Ausgangszustände und Choreografien. Nur transform
+   und opacity; nur unter html.ag-anim; nur ohne Reduced Motion. */
+@media (prefers-reduced-motion: no-preference) {
+
+  /* Scroll-Reveal für markierte Elemente (Kacheln, CTA-Zeile) */
+  html.ag-anim [data-ag-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.55s ease-out var(--agr-d, 0s),
+                transform 0.55s ease-out var(--agr-d, 0s);
+  }
+
+  html.ag-anim [data-ag-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Score-Ringe drehen sich beim Auftritt ein */
+  html.ag-anim .ag-liveproof__gauge svg {
+    transition: transform 0.9s var(--ag-ease) calc(var(--agr-d, 0s) + 200ms);
+  }
+
+  html.ag-anim [data-ag-reveal]:not(.is-in) .ag-liveproof__gauge svg {
+    transform: rotate(-80deg);
+  }
+
+  /* Live-Ping des Tracking-Status (nur scale/opacity) */
+  html.ag-anim .ag-liveproof__ping {
+    animation: agLivePing 2.4s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+  }
+
+  /* ── Kauf-Signal-Strecke: Aufbau in Leserichtung ── */
+  html.ag-anim [data-ag-signal] .agsg-node,
+  html.ag-anim [data-ag-signal] .agsg-tick__in,
+  html.ag-anim [data-ag-signal] .agsg-chip,
+  html.ag-anim [data-ag-signal] .agsg-seg {
+    transform-box: fill-box;
+  }
+
+  html.ag-anim [data-ag-signal] .agsg-node {
+    transform-origin: center;
+    transition: opacity 0.45s var(--ag-ease), transform 0.45s var(--ag-ease);
+  }
+
+  html.ag-anim [data-ag-signal]:not(.is-live) .agsg-node {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  html.ag-anim [data-ag-signal] .agsg-seg {
+    transition: transform 0.35s var(--ag-ease);
+  }
+
+  html.ag-anim [data-ag-signal] .agsg-seg--x { transform-origin: left center; }
+  html.ag-anim [data-ag-signal] .agsg-seg--y { transform-origin: center top; }
+
+  html.ag-anim [data-ag-signal]:not(.is-live) .agsg-seg--x { transform: scaleX(0); }
+  html.ag-anim [data-ag-signal]:not(.is-live) .agsg-seg--y { transform: scaleY(0); }
+
+  html.ag-anim [data-ag-signal] .agsg-tick__in {
+    transform-origin: center;
+    transition: opacity 0.3s var(--ag-ease), transform 0.3s var(--ag-ease);
+  }
+
+  html.ag-anim [data-ag-signal]:not(.is-live) .agsg-tick__in {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  html.ag-anim [data-ag-signal] .agsg-chip {
+    transition: opacity 0.5s var(--ag-ease), transform 0.5s var(--ag-ease);
+  }
+
+  html.ag-anim [data-ag-signal]:not(.is-live) .agsg-chip {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  html.ag-anim [data-ag-signal] .agsg-head {
+    transition: opacity 0.35s var(--ag-ease);
+  }
+
+  html.ag-anim [data-ag-signal]:not(.is-live) .agsg-head {
+    opacity: 0;
+  }
+
+  /* Stagger beim Aufbau (Node → Häkchen → Strecke → nächstes Signal) */
+  html.ag-anim [data-ag-signal].is-live .agsg-node--1 { transition-delay: 0.10s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-tick--1 .agsg-tick__in { transition-delay: 0.32s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-seg--1 { transition-delay: 0.30s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-node--2 { transition-delay: 0.50s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-tick--2 .agsg-tick__in { transition-delay: 0.72s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-seg--2 { transition-delay: 0.70s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-node--3 { transition-delay: 0.90s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-tick--3 .agsg-tick__in { transition-delay: 1.12s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-seg--3 { transition-delay: 1.10s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-node--4 { transition-delay: 1.30s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-tick--4 .agsg-tick__in { transition-delay: 1.52s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-seg--4 { transition-delay: 1.50s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-head { transition-delay: 1.58s; }
+  html.ag-anim [data-ag-signal].is-live .agsg-chip { transition-delay: 1.66s; }
+
+  /* Ein Signal-Puls läuft nach dem Aufbau einmal über die Strecke */
+  html.ag-anim [data-ag-signal].is-live .agsg-dot--x {
+    animation: agSigDotX 1.5s cubic-bezier(0.45, 0, 0.25, 1) 2.1s forwards;
+  }
+
+  html.ag-anim [data-ag-signal].is-live .agsg-dot--y {
+    animation: agSigDotY 1.5s cubic-bezier(0.45, 0, 0.25, 1) 2.1s forwards;
+  }
+
+  /* ── Vorher/Nachher: Listenzeilen kaskadieren beim Umschalten ── */
+  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__list li {
+    transition: opacity 0.4s var(--ag-ease), transform 0.4s var(--ag-ease);
+  }
+
+  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col[aria-hidden="true"] .wp-agentur-vs__list li {
+    opacity: 0;
+    transform: translateY(8px);
+    transition-delay: 0s;
+  }
+
+  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active .wp-agentur-vs__list li:nth-child(1) { transition-delay: 0.05s; }
+  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active .wp-agentur-vs__list li:nth-child(2) { transition-delay: 0.11s; }
+  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active .wp-agentur-vs__list li:nth-child(3) { transition-delay: 0.17s; }
+  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active .wp-agentur-vs__list li:nth-child(4) { transition-delay: 0.23s; }
+  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active .wp-agentur-vs__list li:nth-child(5) { transition-delay: 0.29s; }
+
+  /* ── Methodenbibliothek: Karten kaskadieren beim Öffnen/Filtern ── */
+  html.ag-anim .acc-item .asset-card {
+    transition: opacity 0.4s var(--ag-ease) calc(var(--agc-i, 0) * 40ms),
+                transform 0.4s var(--ag-ease) calc(var(--agc-i, 0) * 40ms);
+  }
+
+  html.ag-anim .acc-item:not(.is-open) .asset-card {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  /* ── FAQ: Antwort blendet weich ein (statt Höhen-Animation) ── */
+  html.ag-anim .faq-item .faq-body-inner {
+    transition: opacity 0.3s var(--ag-ease), transform 0.3s var(--ag-ease);
+  }
+
+  html.ag-anim .faq-item:not(.is-open) .faq-body-inner {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  @keyframes agLivePing {
+    0%       { transform: translate(-50%, -50%) scale(0.9);  opacity: 0.5; }
+    70%, 100% { transform: translate(-50%, -50%) scale(2.7); opacity: 0; }
+  }
+
+  @keyframes agSigDotX {
+    0%   { transform: translateX(0);     opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateX(664px); opacity: 0; }
+  }
+
+  @keyframes agSigDotY {
+    0%   { transform: translateY(0);     opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateY(430px); opacity: 0; }
   }
 }

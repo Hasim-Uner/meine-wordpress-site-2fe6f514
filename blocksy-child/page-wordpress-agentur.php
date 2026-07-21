@@ -23,6 +23,7 @@ $contact_url    = add_query_arg(
 );
 $e3_url         = home_url( '/case-study-solar-leadgenerierung/' );
 $marktcheck_url = home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+$psi_url        = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-agentur-hannover/' ) );
 
 // ═══ Vertiefungs-Links für Fokusmarkt-Solar-Brücke ═══
 $agentur_solar_deeper = [
@@ -163,6 +164,21 @@ get_header();
 
 <div class="wp-agentur-page-wrapper">
 
+<script>
+/* Motion-Gates vor dem ersten Paint der Sektionen:
+   .ag-js  = JS vorhanden (Accordion/Quali/Filter dürfen kollabieren),
+   .ag-anim = Bewegung erlaubt (kein Reduced Motion, IntersectionObserver da).
+   Ohne diese Klassen bleibt jeder Inhalt im sichtbaren Endzustand. */
+(function (root) {
+	root.classList.add('ag-js');
+	try {
+		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+			root.classList.add('ag-anim');
+		}
+	} catch (e) {}
+})(document.documentElement);
+</script>
+
 <!-- ═══════════════════════════════════════════════
      SECTION 01 — HERO (Editorial, ruhig, Case-Brief rechts)
      ═══════════════════════════════════════════════ -->
@@ -193,7 +209,11 @@ get_header();
 						<span class="ag-hero__title-line ag-hero__title-line--em">für messbare B2B-Anfragen.</span>
 					</h1>
 					<p class="ag-hero__lede">
-						Keine klassische Webdesign-Agentur und kein Relaunch auf Verdacht. Ich prüfe zuerst, ob Suchintention, Angebotsseite, Tracking und Anfragepfad belastbar genug sind — dann wird WordPress als technische Basis für qualifizierte Anfragen geordnet.
+						Ich prüfe zuerst vier Kauf-Signale — Angebot, Nachfrage, Datenlage, Anfragepfad. Erst dann wird gebaut.
+					</p>
+
+					<p class="ag-hero__proofline">
+						Diese Seite: PageSpeed 95+ mobil, 100/100 Barrierefreiheit — gebaut mit derselben Methode.
 					</p>
 
 					<div class="ag-hero__actions">
@@ -234,7 +254,7 @@ get_header();
 						<div class="ag-bar__arrow" aria-hidden="true">
 							<span class="ag-bar__delta">−<?php echo esc_html( $e3_cpl_red_count ); ?> %</span>
 							<svg width="36" height="72" viewBox="0 0 36 72" fill="none">
-								<path class="ag-bar__arrow-path" d="M6 6 C 22 22, 6 40, 30 64" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="120" stroke-dashoffset="120" fill="none"/>
+								<path class="ag-bar__arrow-path" d="M6 6 C 22 22, 6 40, 30 64" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
 								<path class="ag-bar__arrow-head" d="M22 58 L30 64 L24 70" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
 							</svg>
 						</div>
@@ -249,20 +269,93 @@ get_header();
 
 					<dl class="ag-hero-viz__foot" aria-label="Kennzahlen aus der Case Study">
 						<div>
-							<dt><span class="ag-counter" data-counter-target="<?php echo esc_attr( $e3_lead_counter ); ?>" data-counter-suffix="+">0</span></dt>
+							<dt><span class="ag-counter"><?php echo esc_html( $e3_lead_count ); ?></span></dt>
 							<dd>Qualifizierte Anfragen</dd>
 						</div>
 						<div>
-							<dt><span class="ag-counter" data-counter-target="<?php echo esc_attr( $e3_conv_counter ); ?>" data-counter-suffix=" %">0</span></dt>
+							<dt><span class="ag-counter"><?php echo esc_html( $e3_sales_conv ); ?></span></dt>
 							<dd>Abschlussquote</dd>
 						</div>
 						<div>
-							<dt><span class="ag-counter" data-counter-target="<?php echo esc_attr( $e3_time_counter ); ?>" data-counter-suffix=" Mon.">0</span></dt>
+							<dt><span class="ag-counter"><?php echo esc_html( $e3_time_counter ); ?>&nbsp;Mon.</span></dt>
 							<dd>Zeitraum</dd>
 						</div>
 					</dl>
 				</aside>
 			</div>
+		</div>
+	</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 01B — LEBENDER BEWEIS (Selbst-Proof, live nachmessbar)
+     ═══════════════════════════════════════════════ -->
+<section class="nx-section ag-liveproof" data-nx-theme="light" id="lebender-beweis">
+	<div class="nx-container">
+		<div class="nx-section-header">
+			<p class="wp-agentur-eyebrow">Lebender Beweis</p>
+			<h2 class="nx-headline-section">Diese Seite praktiziert, was sie verspricht.</h2>
+			<p class="nx-subheadline wp-agentur-section-intro">
+				Keine gekauften Siegel, keine geliehenen Logos. Stattdessen: diese Seite selbst — jederzeit von Ihnen nachmessbar.
+			</p>
+		</div>
+
+		<div class="ag-liveproof__grid">
+			<div class="ag-liveproof__tile" data-ag-reveal style="--agr-d: 0ms;">
+				<span class="ag-liveproof__gauge" aria-hidden="true">
+					<svg viewBox="0 0 36 36" width="44" height="44" fill="none">
+						<circle cx="18" cy="18" r="15.9" stroke="currentColor" stroke-opacity="0.16" stroke-width="3"/>
+						<circle class="ag-liveproof__gauge-arc" cx="18" cy="18" r="15.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="100 100" transform="rotate(-90 18 18)"/>
+					</svg>
+				</span>
+				<span class="ag-liveproof__value"><span class="ag-counter">100</span><span class="ag-liveproof__max">/100</span></span>
+				<span class="ag-liveproof__label">Barrierefreiheit</span>
+			</div>
+
+			<div class="ag-liveproof__tile" data-ag-reveal style="--agr-d: 70ms;">
+				<span class="ag-liveproof__gauge" aria-hidden="true">
+					<svg viewBox="0 0 36 36" width="44" height="44" fill="none">
+						<circle cx="18" cy="18" r="15.9" stroke="currentColor" stroke-opacity="0.16" stroke-width="3"/>
+						<circle class="ag-liveproof__gauge-arc" cx="18" cy="18" r="15.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="100 100" transform="rotate(-90 18 18)"/>
+					</svg>
+				</span>
+				<span class="ag-liveproof__value"><span class="ag-counter">100</span><span class="ag-liveproof__max">/100</span></span>
+				<span class="ag-liveproof__label">SEO &amp; Best Practices</span>
+			</div>
+
+			<div class="ag-liveproof__tile" data-ag-reveal style="--agr-d: 140ms;">
+				<span class="ag-liveproof__gauge" aria-hidden="true">
+					<svg viewBox="0 0 36 36" width="44" height="44" fill="none">
+						<circle cx="18" cy="18" r="15.9" stroke="currentColor" stroke-opacity="0.16" stroke-width="3"/>
+						<circle class="ag-liveproof__gauge-arc" cx="18" cy="18" r="15.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="95 100" transform="rotate(-90 18 18)"/>
+					</svg>
+				</span>
+				<span class="ag-liveproof__value"><span class="ag-counter">95</span><span class="ag-liveproof__max">+</span></span>
+				<span class="ag-liveproof__label">PageSpeed mobil, konstant</span>
+				<span class="ag-liveproof__note">(zuletzt 96/100, Juli 2026)</span>
+			</div>
+
+			<div class="ag-liveproof__tile" data-ag-reveal style="--agr-d: 210ms;">
+				<span class="ag-liveproof__gauge ag-liveproof__gauge--live" aria-hidden="true">
+					<span class="ag-liveproof__ping"></span>
+					<span class="ag-liveproof__ping-core"></span>
+				</span>
+				<span class="ag-liveproof__value">Aktiv</span>
+				<span class="ag-liveproof__label">Server-Side Tracking</span>
+				<span class="ag-liveproof__note">(GA4 + sGTM, eigener Server)</span>
+			</div>
+		</div>
+
+		<div class="ag-liveproof__cta" data-ag-reveal style="--agr-d: 280ms;">
+			<a href="<?php echo esc_url( $psi_url ); ?>" class="nx-btn nx-btn--ghost" target="_blank" rel="noopener">
+				Diese Seite bei PageSpeed Insights testen
+				<svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+					<path d="M8 4H4.5A1.5 1.5 0 0 0 3 5.5v10A1.5 1.5 0 0 0 4.5 17h10a1.5 1.5 0 0 0 1.5-1.5V12M12 3h5m0 0v5m0-5-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+			</a>
+			<p class="ag-liveproof__closing">
+				Wer Ihnen Ladezeit, Tracking und SEO verkauft, sollte es auf der eigenen Seite beweisen können. Prüfen Sie meine — und danach die Ihrer aktuellen Agentur.
+			</p>
 		</div>
 	</div>
 </section>
@@ -425,14 +518,23 @@ get_header();
 			<?php endforeach; ?>
 		</ol>
 
-		<!-- Vorher / Nachher Vergleich -->
-		<div class="wp-agentur-vs" aria-label="Vorher Nachher Vergleich">
+		<!-- Vorher / Nachher Vergleich (mit JS: umschaltbare Bühne, ohne JS: beide Spalten) -->
+		<div class="wp-agentur-vs" aria-label="Vorher Nachher Vergleich" data-vs>
 			<div class="wp-agentur-vs__head">
 				<h3>Der Unterschied</h3>
 				<p>Was sich ändert, wenn WordPress als System funktioniert.</p>
 			</div>
+
+			<div class="wp-agentur-vs__toggle" data-vs-toggle hidden>
+				<div class="wp-agentur-vs__seg" role="group" aria-label="Vergleich umschalten: Vorher oder Nachher">
+					<span class="wp-agentur-vs__thumb" aria-hidden="true"></span>
+					<button type="button" class="wp-agentur-vs__tab is-active" data-vs-view="before" aria-pressed="true" aria-controls="vs-panel-before">Vorher</button>
+					<button type="button" class="wp-agentur-vs__tab" data-vs-view="after" aria-pressed="false" aria-controls="vs-panel-after">Nachher</button>
+				</div>
+			</div>
+
 			<div class="wp-agentur-vs__cols">
-				<div class="wp-agentur-vs__col wp-agentur-vs__col--before">
+				<div class="wp-agentur-vs__col wp-agentur-vs__col--before" id="vs-panel-before">
 					<div class="wp-agentur-vs__col-head">
 						<span class="wp-agentur-vs__badge" aria-hidden="true">×</span>
 						<h4>Vorher</h4>
@@ -445,7 +547,7 @@ get_header();
 						<li>Jede Änderung ist Bauchgefühl.</li>
 					</ul>
 				</div>
-				<div class="wp-agentur-vs__col wp-agentur-vs__col--after">
+				<div class="wp-agentur-vs__col wp-agentur-vs__col--after" id="vs-panel-after">
 					<div class="wp-agentur-vs__col-head">
 						<span class="wp-agentur-vs__badge" aria-hidden="true">✓</span>
 						<h4>Nachher</h4>
@@ -462,7 +564,7 @@ get_header();
 		</div>
 
 		<p class="wp-agentur-process-link">
-			<a href="#asset-uebersicht" data-track-action="cta_method_to_library" data-track-category="navigation" data-track-section="methode">Alle <?php echo (int) $total_assets; ?> Bausteine in der Methodenbibliothek ansehen ↓</a>
+			<a href="#asset-uebersicht" data-track-action="cta_method_to_library" data-track-category="navigation" data-track-section="methode">Alle <span class="ag-counter"><?php echo (int) $total_assets; ?></span> Bausteine in der Methodenbibliothek ansehen ↓</a>
 		</p>
 	</div>
 </section>
@@ -478,6 +580,30 @@ get_header();
 			<p class="nx-subheadline wp-agentur-section-intro">
 				Diese Bausteine bilden die Anfrage-System-Methode. Welche zuerst gebaut werden, entscheidet die Analyse — nicht der Katalog.
 			</p>
+		</div>
+
+		<div class="ag-lib-filter" data-lib-filter hidden>
+			<div class="ag-lib-filter__chips" role="group" aria-label="Methodenbibliothek nach Kernbereich filtern">
+				<button type="button" class="ag-lib-chip is-active" data-lib-cat="all" aria-pressed="true">
+					Alle
+					<span class="ag-lib-chip__n"><?php echo (int) $total_assets; ?></span>
+				</button>
+				<?php foreach ( $asset_groups as $area => $assets ) :
+					if ( empty( $assets ) ) {
+						continue;
+					}
+					$chip_slug  = sanitize_title( $area );
+					$chip_label = function_exists( 'hue_kernbereich_label' )
+						? hue_kernbereich_label( hue_get_wgos_kernbereich_key( $area ) )
+						: $area;
+				?>
+					<button type="button" class="ag-lib-chip" data-lib-cat="<?php echo esc_attr( $chip_slug ); ?>" aria-pressed="false">
+						<?php echo esc_html( $chip_label ); ?>
+						<span class="ag-lib-chip__n"><?php echo (int) count( $assets ); ?></span>
+					</button>
+				<?php endforeach; ?>
+			</div>
+			<p class="ag-lib-filter__status" role="status" data-lib-status><?php echo (int) $total_assets; ?> von <?php echo (int) $total_assets; ?> Bausteinen sichtbar</p>
 		</div>
 
 		<div class="accordion" id="asset-accordion">
@@ -513,7 +639,7 @@ get_header();
 					<div class="acc-body" id="body-<?php echo esc_attr( $area_slug ); ?>">
 						<div class="acc-body-inner">
 							<div class="assets-grid">
-								<?php foreach ( $assets as $asset ) :
+								<?php foreach ( $assets as $asset_i => $asset ) :
 									$asset_title = esc_html( $asset['title'] ?? '' );
 									$asset_desc  = esc_html( $asset['excerpt'] ?? '' );
 									$asset_url   = esc_url( function_exists( 'nexus_get_wgos_asset_detail_url' )
@@ -521,7 +647,7 @@ get_header();
 										: '#asset-uebersicht'
 									);
 								?>
-									<a href="<?php echo $asset_url; // raw-ok pre-escaped via esc_url at assignment ?>" class="asset-card" data-track-action="cta_asset_card" data-track-category="navigation" data-track-section="methodenbibliothek">
+									<a href="<?php echo $asset_url; // raw-ok pre-escaped via esc_url at assignment ?>" class="asset-card" style="--agc-i: <?php echo (int) min( (int) $asset_i, 9 ); ?>;" data-track-action="cta_asset_card" data-track-category="navigation" data-track-section="methodenbibliothek">
 										<div class="asset-header">
 											<div class="asset-icon" style="color: <?php echo esc_attr( $meta['color'] ); ?>;"><?php echo hu_agentur_icon_svg( '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h5M9.5 15.5h5"/>', 20 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 											<div class="asset-title"><?php echo $asset_title; // raw-ok pre-escaped via esc_html at assignment ?></div>
@@ -549,6 +675,73 @@ get_header();
 			<p class="nx-subheadline wp-agentur-section-intro">
 				Ich prüfe nicht, ob eine neue Website schöner wäre. Ich prüfe, ob Angebot, Nachfrage, Daten und Anfragepfad als System zusammenpassen.
 			</p>
+		</div>
+
+		<?php
+		// Kauf-Signal-Strecke als Inline-SVG (Desktop horizontal, Mobil vertikal).
+		// Endzustand steht vollständig im Markup; .is-live startet nur die Choreografie.
+		$agsg_signals = [
+			[ 'num' => '01', 'label' => 'Angebot' ],
+			[ 'num' => '02', 'label' => 'Nachfrage' ],
+			[ 'num' => '03', 'label' => 'Datenlage' ],
+			[ 'num' => '04', 'label' => 'Anfragepfad' ],
+		];
+		$agsg_aria = 'Vier Kauf-Signale als zusammenhängendes System: 01 Angebot, 02 Nachfrage, 03 Datenlage, 04 Anfragepfad — erst wenn alle vier tragen, wird gebaut.';
+		?>
+		<div class="ag-signal" data-ag-signal>
+			<svg class="ag-signal__svg ag-signal__svg--wide" viewBox="0 0 1000 230" role="img" aria-label="<?php echo esc_attr( $agsg_aria ); ?>" focusable="false">
+				<?php foreach ( [ [ 154, 122 ], [ 364, 122 ], [ 574, 122 ], [ 784, 24 ] ] as $i => $seg ) : ?>
+					<rect class="agsg-seg agsg-seg--x agsg-seg--<?php echo (int) ( $i + 1 ); ?>" x="<?php echo (int) $seg[0]; ?>" y="116.75" width="<?php echo (int) $seg[1]; ?>" height="2.5" rx="1.25"/>
+				<?php endforeach; ?>
+				<path class="agsg-head" d="M804 110 L812 118 L804 126"/>
+				<?php foreach ( $agsg_signals as $i => $sig ) :
+					$cx = 110 + ( $i * 210 );
+				?>
+					<g class="agsg-node agsg-node--<?php echo (int) ( $i + 1 ); ?>">
+						<circle class="agsg-node__ring" cx="<?php echo (int) $cx; ?>" cy="118" r="36"/>
+						<text class="agsg-node__num" x="<?php echo (int) $cx; ?>" y="125" text-anchor="middle"><?php echo esc_html( $sig['num'] ); ?></text>
+						<text class="agsg-node__label" x="<?php echo (int) $cx; ?>" y="192" text-anchor="middle"><?php echo esc_html( $sig['label'] ); ?></text>
+					</g>
+					<g class="agsg-tick agsg-tick--<?php echo (int) ( $i + 1 ); ?>" transform="translate(<?php echo (int) ( $cx + 27 ); ?> 91)">
+						<g class="agsg-tick__in">
+							<circle class="agsg-tick__bg" cx="0" cy="0" r="12"/>
+							<path class="agsg-tick__check" d="M-4.6 0.2 L-1.4 3.4 L4.8 -3.2"/>
+						</g>
+					</g>
+				<?php endforeach; ?>
+				<g class="agsg-chip">
+					<rect x="818" y="90" width="168" height="56" rx="28"/>
+					<text x="902" y="123.5" text-anchor="middle">Erst dann wird gebaut.</text>
+				</g>
+				<circle class="agsg-dot agsg-dot--x" cx="154" cy="118" r="5"/>
+			</svg>
+
+			<svg class="ag-signal__svg ag-signal__svg--stack" viewBox="0 0 380 640" role="img" aria-label="<?php echo esc_attr( $agsg_aria ); ?>" focusable="false">
+				<?php foreach ( [ [ 126, 48 ], [ 258, 48 ], [ 390, 48 ], [ 522, 28 ] ] as $i => $seg ) : ?>
+					<rect class="agsg-seg agsg-seg--y agsg-seg--<?php echo (int) ( $i + 1 ); ?>" x="62.75" y="<?php echo (int) $seg[0]; ?>" width="2.5" height="<?php echo (int) $seg[1]; ?>" rx="1.25"/>
+				<?php endforeach; ?>
+				<path class="agsg-head" d="M56 546 L64 554 L72 546"/>
+				<?php foreach ( $agsg_signals as $i => $sig ) :
+					$cy = 84 + ( $i * 132 );
+				?>
+					<g class="agsg-node agsg-node--<?php echo (int) ( $i + 1 ); ?>">
+						<circle class="agsg-node__ring" cx="64" cy="<?php echo (int) $cy; ?>" r="34"/>
+						<text class="agsg-node__num" x="64" y="<?php echo (int) ( $cy + 7 ); ?>" text-anchor="middle"><?php echo esc_html( $sig['num'] ); ?></text>
+						<text class="agsg-node__label" x="124" y="<?php echo (int) ( $cy + 7 ); ?>" text-anchor="start"><?php echo esc_html( $sig['label'] ); ?></text>
+					</g>
+					<g class="agsg-tick agsg-tick--<?php echo (int) ( $i + 1 ); ?>" transform="translate(88 <?php echo (int) ( $cy - 24 ); ?>)">
+						<g class="agsg-tick__in">
+							<circle class="agsg-tick__bg" cx="0" cy="0" r="11"/>
+							<path class="agsg-tick__check" d="M-4.2 0.2 L-1.3 3 L4.4 -2.9"/>
+						</g>
+					</g>
+				<?php endforeach; ?>
+				<g class="agsg-chip">
+					<rect x="40" y="560" width="300" height="54" rx="27"/>
+					<text x="190" y="592" text-anchor="middle">Erst dann wird gebaut.</text>
+				</g>
+				<circle class="agsg-dot agsg-dot--y" cx="64" cy="126" r="5"/>
+			</svg>
 		</div>
 
 		<div class="wp-agentur-decision-grid">
@@ -924,6 +1117,9 @@ get_header();
 <?php /* FAQPage JSON-LD wird zentral in inc/org-schema.php aus nexus_get_agentur_faq_items() emittiert. */ ?>
 
 <script>
+	// Motion-Gate: gesetzt im Kopf des Wrappers, nur ohne Reduced Motion + mit IO.
+	var AG_MOTION = document.documentElement.classList.contains('ag-anim');
+
 	// ─── Generic accordion factory ───
 	function initAccordion(containerSelector, itemSelector, triggerSelector, bodySelector) {
 		var container = document.querySelector(containerSelector);
@@ -1053,71 +1249,183 @@ get_header();
 		update();
 	})();
 
-	// ─── Reveal-on-scroll for marked elements ───
-	(function () {
-		if (!('IntersectionObserver' in window)) return;
-		var els = document.querySelectorAll('.wp-agentur-reveal');
-		if (!els.length) return;
-		var io = new IntersectionObserver(function (entries) {
-			entries.forEach(function (entry) {
-				if (entry.isIntersecting) {
-					entry.target.classList.add('is-revealed');
-					io.unobserve(entry.target);
-				}
-			});
-		}, { rootMargin: '0px 0px -80px 0px', threshold: 0.05 });
-		els.forEach(function (el) { io.observe(el); });
-	})();
-
-	// ─── Animated Counter (Hero-Datenkarte) ───
+	// ─── Count-up: Endwert steht serverseitig im Markup ("1.750+", "12 %", "39"),
+	//     JS liest ihn, zählt hoch und stellt den Originaltext exakt wieder her. ───
 	(function () {
 		var counters = document.querySelectorAll('.ag-counter');
-		if (!counters.length) return;
+		if (!counters.length || !AG_MOTION || typeof window.requestAnimationFrame !== 'function') return;
 
-		var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-		function format(n, target) {
-			// thousands grouping (de-DE: 1.750)
-			var s = String(Math.round(n));
-			if (target >= 1000) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-			return s;
-		}
-
-		function run(el) {
-			var target = parseInt(el.getAttribute('data-counter-target') || '0', 10);
-			var suffix = el.getAttribute('data-counter-suffix') || '';
-			if (reduceMotion || !('requestAnimationFrame' in window)) {
-				el.textContent = format(target, target) + suffix;
-				return;
-			}
-			var duration = 1400;
-			var start = null;
-			function tick(t) {
-				if (start === null) start = t;
-				var p = Math.min(1, (t - start) / duration);
-				// easeOutCubic
+		function animate(el) {
+			var original = el.textContent;
+			var match = /^([^0-9]*)([0-9][0-9.,]*)(.*)$/.exec(original.trim());
+			if (!match) return;
+			var target = parseInt(match[2].replace(/[.,]/g, ''), 10);
+			if (!isFinite(target) || target <= 0) return;
+			var prefix = match[1];
+			var suffix = match[3];
+			var t0 = null;
+			var duration = 1200;
+			function tick(now) {
+				if (t0 === null) t0 = now;
+				var p = Math.min(1, (now - t0) / duration);
 				var eased = 1 - Math.pow(1 - p, 3);
-				el.textContent = format(target * eased, target) + suffix;
-				if (p < 1) requestAnimationFrame(tick);
-				else el.textContent = format(target, target) + suffix;
+				if (p < 1) {
+					el.textContent = prefix + Math.round(target * eased).toLocaleString('de-DE') + suffix;
+					window.requestAnimationFrame(tick);
+				} else {
+					el.textContent = original;
+				}
 			}
-			requestAnimationFrame(tick);
-		}
-
-		if (!('IntersectionObserver' in window)) {
-			counters.forEach(run);
-			return;
+			window.requestAnimationFrame(tick);
 		}
 
 		var io = new IntersectionObserver(function (entries) {
 			entries.forEach(function (entry) {
-				if (entry.isIntersecting) {
-					run(entry.target);
-					io.unobserve(entry.target);
-				}
+				if (!entry.isIntersecting) return;
+				io.unobserve(entry.target);
+				animate(entry.target);
 			});
 		}, { threshold: 0.4 });
 		counters.forEach(function (el) { io.observe(el); });
+	})();
+
+	// ─── Scroll-Reveal [data-ag-reveal] + Kauf-Signal-Choreografie ───
+	//     Versteckte Ausgangszustände existieren nur unter html.ag-anim;
+	//     bereits sichtbare Elemente werden vor dem Beobachten markiert,
+	//     damit ein Reload mitten auf der Seite nicht blinkt.
+	(function () {
+		if (!AG_MOTION) return;
+		var els = [].slice.call(document.querySelectorAll('[data-ag-reveal]'));
+		var signal = document.querySelector('[data-ag-signal]');
+		var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+		var pending = [];
+
+		els.forEach(function (el) {
+			if (el.getBoundingClientRect().top < vh * 0.88) el.classList.add('is-in');
+			else pending.push(el);
+		});
+
+		var signalPending = false;
+		if (signal) {
+			if (signal.getBoundingClientRect().top < vh * 0.85) signal.classList.add('is-live');
+			else signalPending = true;
+		}
+
+		if (!pending.length && !signalPending) return;
+		var io = new IntersectionObserver(function (entries) {
+			entries.forEach(function (entry) {
+				if (!entry.isIntersecting) return;
+				io.unobserve(entry.target);
+				entry.target.classList.add(entry.target === signal ? 'is-live' : 'is-in');
+			});
+		}, { rootMargin: '0px 0px -10% 0px' });
+		pending.forEach(function (el) { io.observe(el); });
+		if (signalPending) io.observe(signal);
+	})();
+
+	// ─── „Der Unterschied": Vorher/Nachher-Bühne (Progressive Enhancement) ───
+	(function () {
+		var root = document.querySelector('[data-vs]');
+		if (!root) return;
+		var toggle = root.querySelector('[data-vs-toggle]');
+		var tabs = [].slice.call(root.querySelectorAll('[data-vs-view]'));
+		var panels = {
+			before: root.querySelector('#vs-panel-before'),
+			after: root.querySelector('#vs-panel-after')
+		};
+		if (!toggle || tabs.length !== 2 || !panels.before || !panels.after) return;
+
+		function setView(view) {
+			tabs.forEach(function (tab) {
+				var active = tab.getAttribute('data-vs-view') === view;
+				tab.classList.toggle('is-active', active);
+				tab.setAttribute('aria-pressed', active ? 'true' : 'false');
+			});
+			Object.keys(panels).forEach(function (key) {
+				var active = key === view;
+				panels[key].classList.toggle('is-active', active);
+				panels[key].setAttribute('aria-hidden', active ? 'false' : 'true');
+			});
+			root.classList.toggle('is-after', view === 'after');
+		}
+
+		toggle.hidden = false;
+		root.classList.add('is-enhanced');
+		setView('before');
+
+		tabs.forEach(function (tab) {
+			tab.addEventListener('click', function () {
+				setView(tab.getAttribute('data-vs-view'));
+			});
+			tab.addEventListener('keydown', function (ev) {
+				if (ev.key !== 'ArrowLeft' && ev.key !== 'ArrowRight') return;
+				ev.preventDefault();
+				var next = ev.key === 'ArrowRight' ? 'after' : 'before';
+				setView(next);
+				(next === 'after' ? tabs[1] : tabs[0]).focus();
+			});
+		});
+	})();
+
+	// ─── Methodenbibliothek: Kategorie-Filter + Status (aria-live) ───
+	(function () {
+		var filter = document.querySelector('[data-lib-filter]');
+		var acc = document.getElementById('asset-accordion');
+		if (!filter || !acc) return;
+		var chips = [].slice.call(filter.querySelectorAll('[data-lib-cat]'));
+		var items = [].slice.call(acc.querySelectorAll('.acc-item'));
+		var status = filter.querySelector('[data-lib-status]');
+		if (!chips.length || !items.length) return;
+
+		var total = 0;
+		var counts = {};
+		items.forEach(function (item) {
+			var n = item.querySelectorAll('.asset-card').length;
+			counts[item.getAttribute('data-acc')] = n;
+			total += n;
+		});
+
+		function openItem(item) {
+			if (item.classList.contains('is-open')) return;
+			item.classList.add('is-open');
+			var trigger = item.querySelector('.acc-trigger');
+			if (trigger) trigger.setAttribute('aria-expanded', 'true');
+		}
+
+		function apply(cat) {
+			var visible = 0;
+			chips.forEach(function (chip) {
+				var active = chip.getAttribute('data-lib-cat') === cat;
+				chip.classList.toggle('is-active', active);
+				chip.setAttribute('aria-pressed', active ? 'true' : 'false');
+			});
+			items.forEach(function (item) {
+				var slug = item.getAttribute('data-acc');
+				var show = cat === 'all' || slug === cat;
+				item.hidden = !show;
+				if (show) visible += counts[slug] || 0;
+				if (show && cat !== 'all') openItem(item);
+			});
+			if (status) status.textContent = visible + ' von ' + total + ' Bausteinen sichtbar';
+		}
+
+		// Deeplinks (#acc-…) dürfen nie in einen weggefilterten Bereich laufen.
+		function ensureHashVisible() {
+			var hash = window.location.hash;
+			if (!hash || hash.indexOf('#acc-') !== 0) return;
+			var target;
+			try { target = document.querySelector(hash); } catch (e) { return; }
+			if (target && target.hidden) apply('all');
+		}
+
+		filter.hidden = false;
+		chips.forEach(function (chip) {
+			chip.addEventListener('click', function () {
+				apply(chip.getAttribute('data-lib-cat'));
+			});
+		});
+		window.addEventListener('hashchange', ensureHashVisible);
+		ensureHashVisible();
 	})();
 
 	// ─── Hero-Viz Animationstrigger (Balken & Pfeil) ───
