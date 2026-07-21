@@ -3729,34 +3729,37 @@
   outline-offset: 2px;
 }
 
-/* Bühne: beide Panels teilen sich eine Grid-Zelle — Höhe bleibt stabil,
-   gewechselt wird nur über opacity/transform. */
-.wp-agentur-vs.is-enhanced .wp-agentur-vs__cols {
-  grid-template-columns: 1fr;
-}
-
+/* Spotlight-Bühne: beide Spalten bleiben IMMER nebeneinander (voller
+   Vergleich, nutzt die ganze Breite). Der Toggle setzt nur einen Spotlight —
+   die aktive Seite wird zur Karte mit Akzentrahmen und hebt sich leicht, die
+   andere tritt gedämpft zurück, bleibt aber voll lesbar. Ohne JS (ohne
+   .is-enhanced): beide Spalten schlicht und gleichwertig. */
 .wp-agentur-vs.is-enhanced .wp-agentur-vs__col {
-  grid-area: 1 / 1;
-  transition: opacity 0.35s var(--ag-ease), transform 0.35s var(--ag-ease);
+  padding: clamp(1.35rem, 3vw, 1.9rem);
+  background: var(--ag-surface);
+  border: 1.5px solid var(--ag-border);
+  border-radius: 1.1rem;
+  box-shadow: 0 6px 20px rgba(41, 38, 27, 0.04);
+  opacity: 0.82;
+  transition: transform 0.4s var(--ag-ease), opacity 0.4s var(--ag-ease);
 }
 
 .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active {
-  position: relative;
-  z-index: 1;
+  opacity: 1;
 }
 
-.wp-agentur-vs.is-enhanced .wp-agentur-vs__col[aria-hidden="true"] {
-  opacity: 0;
-  pointer-events: none;
-  z-index: 0;
+.wp-agentur-vs.is-enhanced .wp-agentur-vs__col--before.is-active {
+  border-color: var(--ag-border-strong);
 }
 
-.wp-agentur-vs.is-enhanced .wp-agentur-vs__col--before[aria-hidden="true"] {
-  transform: translateX(-24px);
+.wp-agentur-vs.is-enhanced .wp-agentur-vs__col--after.is-active {
+  border-color: var(--ag-fundament);
 }
 
-.wp-agentur-vs.is-enhanced .wp-agentur-vs__col--after[aria-hidden="true"] {
-  transform: translateX(24px);
+@media (prefers-reduced-motion: no-preference) {
+  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active {
+    transform: translateY(-6px);
+  }
 }
 
 /* ── D6. METHODENBIBLIOTHEK — Filterleiste ──────────────────────────────── */
@@ -3941,22 +3944,9 @@
     animation: agSigDotY 1.5s cubic-bezier(0.45, 0, 0.25, 1) 2.1s forwards;
   }
 
-  /* ── Vorher/Nachher: Listenzeilen kaskadieren beim Umschalten ── */
-  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__list li {
-    transition: opacity 0.4s var(--ag-ease), transform 0.4s var(--ag-ease);
-  }
-
-  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col[aria-hidden="true"] .wp-agentur-vs__list li {
-    opacity: 0;
-    transform: translateY(8px);
-    transition-delay: 0s;
-  }
-
-  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active .wp-agentur-vs__list li:nth-child(1) { transition-delay: 0.05s; }
-  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active .wp-agentur-vs__list li:nth-child(2) { transition-delay: 0.11s; }
-  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active .wp-agentur-vs__list li:nth-child(3) { transition-delay: 0.17s; }
-  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active .wp-agentur-vs__list li:nth-child(4) { transition-delay: 0.23s; }
-  html.ag-anim .wp-agentur-vs.is-enhanced .wp-agentur-vs__col.is-active .wp-agentur-vs__list li:nth-child(5) { transition-delay: 0.29s; }
+  /* Vorher/Nachher: Der Spotlight-Wechsel selbst ist die Bewegung
+     (Karten-Lift via transform oben). Beide Spalten bleiben sichtbar —
+     keine Zeilen-Kaskade mehr nötig. */
 
   /* ── Methodenbibliothek: Karten kaskadieren beim Öffnen/Filtern ── */
   html.ag-anim .acc-item .asset-card {

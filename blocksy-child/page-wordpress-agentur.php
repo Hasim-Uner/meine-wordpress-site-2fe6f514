@@ -537,8 +537,8 @@ get_header();
 			<div class="wp-agentur-vs__toggle" data-vs-toggle hidden>
 				<div class="wp-agentur-vs__seg" role="group" aria-label="Vergleich umschalten: Vorher oder Nachher">
 					<span class="wp-agentur-vs__thumb" aria-hidden="true"></span>
-					<button type="button" class="wp-agentur-vs__tab is-active" data-vs-view="before" aria-pressed="true" aria-controls="vs-panel-before">Vorher</button>
-					<button type="button" class="wp-agentur-vs__tab" data-vs-view="after" aria-pressed="false" aria-controls="vs-panel-after">Nachher</button>
+					<button type="button" class="wp-agentur-vs__tab" data-vs-view="before" aria-pressed="false" aria-controls="vs-panel-before">Vorher</button>
+					<button type="button" class="wp-agentur-vs__tab is-active" data-vs-view="after" aria-pressed="true" aria-controls="vs-panel-after">Nachher</button>
 				</div>
 			</div>
 
@@ -556,7 +556,7 @@ get_header();
 						<li>Jede Änderung ist Bauchgefühl.</li>
 					</ul>
 				</div>
-				<div class="wp-agentur-vs__col wp-agentur-vs__col--after" id="vs-panel-after">
+				<div class="wp-agentur-vs__col wp-agentur-vs__col--after is-active" id="vs-panel-after">
 					<div class="wp-agentur-vs__col-head">
 						<span class="wp-agentur-vs__badge" aria-hidden="true">✓</span>
 						<h4>Nachher</h4>
@@ -1350,17 +1350,17 @@ get_header();
 				tab.classList.toggle('is-active', active);
 				tab.setAttribute('aria-pressed', active ? 'true' : 'false');
 			});
+			// Beide Spalten bleiben sichtbar & lesbar — der Toggle setzt nur den
+			// Spotlight (is-active), kein aria-hidden.
 			Object.keys(panels).forEach(function (key) {
-				var active = key === view;
-				panels[key].classList.toggle('is-active', active);
-				panels[key].setAttribute('aria-hidden', active ? 'false' : 'true');
+				panels[key].classList.toggle('is-active', key === view);
 			});
 			root.classList.toggle('is-after', view === 'after');
 		}
 
 		toggle.hidden = false;
 		root.classList.add('is-enhanced');
-		setView('before');
+		setView('after');
 
 		tabs.forEach(function (tab) {
 			tab.addEventListener('click', function () {
