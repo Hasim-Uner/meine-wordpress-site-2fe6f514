@@ -165,12 +165,12 @@ get_header();
 <div class="wp-agentur-page-wrapper">
 
 <script>
-/* Motion-Gates vor dem ersten Paint der Sektionen:
-   .ag-js  = JS vorhanden (Accordion/Quali/Filter dürfen kollabieren),
-   .ag-anim = Bewegung erlaubt (kein Reduced Motion, IntersectionObserver da).
-   Ohne diese Klassen bleibt jeder Inhalt im sichtbaren Endzustand. */
+/* Motion-Gate vor dem ersten Paint: .ag-anim = Bewegung erlaubt
+   (kein Reduced Motion und IntersectionObserver vorhanden). Nur MOTION
+   hängt an dieser Klasse; das Kollabieren von Accordion/FAQ ist reines
+   CSS und damit cache-robust — ein Page-Cache, der altes HTML ohne diese
+   Klasse ausliefert, zeigt trotzdem sauber zugeklappte Bausteine. */
 (function (root) {
-	root.classList.add('ag-js');
 	try {
 		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
 			root.classList.add('ag-anim');
@@ -178,6 +178,15 @@ get_header();
 	} catch (e) {}
 })(document.documentElement);
 </script>
+<noscript>
+	<style>
+		/* Ohne JS: Bausteine und FAQ vollständig offen, das JS-only
+		   Vorqualifizierungs-Widget aus dem Weg (klassischer Formular-Link
+		   bleibt darunter erreichbar). */
+		.acc-body, .faq-body { max-height: none !important; }
+		.wp-agentur-quali { display: none !important; }
+	</style>
+</noscript>
 
 <!-- ═══════════════════════════════════════════════
      SECTION 01 — HERO (Editorial, ruhig, Case-Brief rechts)

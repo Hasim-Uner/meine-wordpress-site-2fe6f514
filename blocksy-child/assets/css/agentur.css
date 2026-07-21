@@ -973,16 +973,18 @@
   transform: rotate(180deg);
 }
 
-/* Ohne JS sind alle Bausteine sichtbar: Der kollabierte Zustand existiert
-   nur unter html.ag-js. Öffnen/Schließen schaltet instant (keine
-   Höhen-Animation); die wahrgenommene Bewegung liefern die Karten
-   per gestaffeltem transform/opacity-Einblenden (siehe Motion-Layer). */
-html.ag-js .acc-body {
+/* Kollabiert per reinem CSS (kein JS-Klassen-Gate) — damit ein Page-Cache,
+   der altes HTML ohne die Motion-Klassen ausliefert, das Accordion nie
+   aufgeklappt zeigt. Öffnen/Schließen schaltet instant (keine
+   Höhen-Animation, harte Regel); die wahrgenommene Bewegung liefern die
+   Karten per gestaffeltem transform/opacity-Einblenden (siehe Motion-Layer).
+   Ohne JS öffnet der <noscript>-Block im Template alle Bausteine. */
+.acc-body {
   max-height: 0;
   overflow: hidden;
 }
 
-html.ag-js .acc-item.is-open .acc-body {
+.acc-item.is-open .acc-body {
   max-height: none;
 }
 
@@ -1517,15 +1519,15 @@ html.ag-js .acc-item.is-open .acc-body {
   color: #FFFFFF;
 }
 
-/* Ohne JS sind alle Antworten sichtbar; kollabiert wird nur unter
-   html.ag-js. Statt Höhen-Animation blendet die Antwort per
-   transform/opacity ein (siehe Motion-Layer). */
-html.ag-js .faq-body {
+/* Kollabiert per reinem CSS (kein JS-Klassen-Gate, cache-robust). Ohne JS
+   öffnet der <noscript>-Block im Template alle Antworten. Statt
+   Höhen-Animation blendet die Antwort per transform/opacity ein. */
+.faq-body {
   max-height: 0;
   overflow: hidden;
 }
 
-html.ag-js .faq-item.is-open .faq-body {
+.faq-item.is-open .faq-body {
   max-height: none;
 }
 
@@ -3392,9 +3394,11 @@ html.ag-js .faq-item.is-open .faq-body {
    Vorher/Nachher-Bühne, Bibliotheks-Filter, Count-up-Basis.
 
    Architektur:
-   - html.ag-js   = JS vorhanden (funktionale Zustände wie Kollabieren/Filter).
+   - Kollabieren von Accordion/FAQ = reines CSS (kein JS-Klassen-Gate),
+     damit ein Page-Cache mit altem HTML nie einen kaputten Zustand zeigt.
+     Ohne JS öffnet der <noscript>-Block im Template alle Einträge.
    - html.ag-anim = Bewegung erlaubt (kein Reduced Motion + IntersectionObserver).
-   - Jeder versteckte Ausgangszustand lebt NUR unter html.ag-anim und
+   - Jeder versteckte MOTION-Ausgangszustand lebt NUR unter html.ag-anim und
      innerhalb von @media (prefers-reduced-motion: no-preference):
      ohne JS oder mit Reduced Motion steht sofort der Endzustand.
    - Animiert werden ausschließlich transform und opacity.
@@ -3426,11 +3430,9 @@ html.ag-js .faq-item.is-open .faq-body {
   vertical-align: middle;
 }
 
-/* ── D2. Vorqualifizierung ist ein reines JS-Widget: ohne JS ausblenden,
+/* ── D2. Vorqualifizierung ist ein reines JS-Widget. Ohne JS blendet der
+        <noscript>-Block im Template es aus (cache-robust, kein Klassen-Gate);
         der klassische Formular-Link direkt darunter bleibt der Pfad. ────── */
-html:not(.ag-js) .wp-agentur-quali {
-  display: none;
-}
 
 /* ── D3. LEBENDER BEWEIS — Messwert-Kacheln der eigenen Seite ───────────── */
 .ag-liveproof__grid {
@@ -3649,7 +3651,9 @@ html:not(.ag-js) .wp-agentur-quali {
 }
 
 /* ── D5. DER UNTERSCHIED — Segmented-Toggle + Bühne ─────────────────────── */
-.wp-agentur-vs__toggle {
+/* :not([hidden]) — respektiert das hidden-Attribut, damit ohne JS kein
+   totes Toggle erscheint (beide Spalten stehen dann nebeneinander). */
+.wp-agentur-vs__toggle:not([hidden]) {
   display: flex;
   justify-content: center;
   margin: 0 0 var(--ag-space-xl);
@@ -3739,7 +3743,9 @@ html:not(.ag-js) .wp-agentur-quali {
 }
 
 /* ── D6. METHODENBIBLIOTHEK — Filterleiste ──────────────────────────────── */
-.ag-lib-filter {
+/* :not([hidden]) — ohne JS bleibt die Filterleiste aus (keine toten
+   Buttons); die Bausteine sind dann via <noscript> ohnehin alle offen. */
+.ag-lib-filter:not([hidden]) {
   display: grid;
   gap: var(--ag-space-sm);
   max-width: var(--ag-max);
