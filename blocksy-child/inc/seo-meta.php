@@ -260,8 +260,8 @@ function hu_get_forced_singular_seo_map() {
 				'description' => 'Server-Side Tracking für B2B-Anfrage-Systeme: GA4, Meta CAPI und Consent Mode v2 auf eigenem Server. Attribution für qualifizierte Anfragen statt Klickberichte.',
 			],
 			'b2b-solar-leads' => [
-				'title'       => 'Photovoltaik B2B Leads: Gewerbe-PV statt Masse',
-				'description' => 'B2B-Leadgenerierung für gewerbliche Photovoltaik: Hallendächer, Quartierskonzepte und PPA. Eigenes Anfrage-System für Buying-Center statt Mengen-Leads.',
+				'title'       => 'Photovoltaik B2B Leads & PV-Termine: Gewerbe statt Masse',
+				'description' => 'Gewerbliche PV-Anfragen & B2B-Termine für Hallendächer, Quartiere & PPA — exklusiv statt mehrfach verkauft. Eigenes Anfrage-System statt Portal-Leads.',
 			],
 			'eigene-leadgenerierung-vs-portale' => [
 				'title'       => 'Portal-Leads vs. eigenes System: TCO-Vergleich Solar/SHK',

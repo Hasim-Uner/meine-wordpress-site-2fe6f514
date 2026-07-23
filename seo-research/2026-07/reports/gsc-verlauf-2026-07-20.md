@@ -5,12 +5,13 @@ Baseline für den Verlauf: `gsc-abgleich.md` (Stand 2026-07-03). Dieser Report i
 **Verlaufskontrolle** — er misst, welche Vorhersagen des 07-03-Sprints eingetroffen sind, nicht nur
 eine Momentaufnahme.
 
-> **Methodik-Hinweis:** Die CSV-Spalten `seo_title`/`seo_description` spiegeln das in der DB gespeicherte
-> ACF-Feld, **nicht immer das live gerenderte `<title>`**. Homepage/Blog-Index/Cornerstone/Marktcheck/
-> Kontakt/WGOS-Titel werden im Code erzwungen (`inc/seo-meta.php:936-1005`). Für page-Typ-Money-Pages
-> zieht `seo-meta.php` zuerst das ACF-Feld → Title/Meta-Edits dort sind **WP-Admin-Aufgaben**, nicht Repo.
-> Blog-Post-Titel/-Metas liegen in den Seed-Registries (`inc/blog-pillar-posts.php`,
-> `inc/blog-provider-posts.php`) → **Repo-Aufgaben**.
+> **Methodik-Hinweis (korrigiert 2026-07-23):** Die SCF-/SEO-Editorfelder werden **nicht** genutzt (leer) —
+> die Money-Page-Title/Descriptions kommen aus einer **Code-Map**: `hu_get_forced_singular_seo_map()`
+> (`inc/seo-meta.php:172-292`). Diese greift VOR dem SCF-Feld und ist die Quelle der GSC-Export-Titel.
+> **→ Money-Page-Title/Meta = Repo-Edit in dieser Map, KEINE WP-Admin-Aufgabe.** Homepage/Blog-Index/
+> Cornerstone/Marktcheck/Kontakt/WGOS-Titel werden ebenfalls im Code erzwungen. Blog-Post-Titel/-Metas
+> liegen in den Seed-Registries (`inc/blog-pillar-posts.php`, `inc/blog-provider-posts.php`) → Repo, gehen
+> aber erst nach Seeder-Lauf/Neuspeichern live.
 
 ## Gesamtbild
 
@@ -94,36 +95,31 @@ kein Blind-Delete). Optional `noindex` für echte Altlasten mit ~0 Signal (`/ga4
 
 ---
 
-## Repo-Aufgaben (in Phase 1 umgesetzt)
+## Repo-Aufgaben (umgesetzt)
 
 - **Checkfox-Snippet** (`inc/blog-provider-posts.php`): Title in Frage-Format, Description auf ≤160 Z. gekürzt.
 - **„PV-Termine im B2B"-Abschnitt** (`page-b2b-solar-leads.php`): neuer Compare-Abschnitt „gekauft vs. selbst erzeugt".
 - **Anchor-Disziplin** (`page-solar-leads-kaufen-alternative.php`): kontextueller interner Link
   „exklusive Wärmepumpen-Leads" → `/waermepumpen-leads/`.
+- **b2b-solar-leads Title/Meta** (`inc/seo-meta.php`, Forced-Map): Title/Description auf „pv termine b2b"
+  geschärft — `Photovoltaik B2B Leads & PV-Termine: Gewerbe statt Masse`. **Repo-Edit statt WP-Admin.**
 
-## Manuelle WordPress-Aufgaben (getrennt, kein Repo)
+## Manuelle WordPress-Aufgaben (nur diese — Rest ist Repo)
 
-> Die folgenden Title/Meta gehören in das ACF-Feld „SEO Meta (Growth Architect)" der jeweiligen **Seite**
-> (page-Typ). Title ≤65 Z., Description ≤160 Z.
+- **Checkfox live schalten:** Der neue Snippet liegt in der Seed-Registry → Beitrag im WP-Admin einmal
+  neu speichern (oder Seeder laufen lassen), sonst bleibt die alte Version live.
+- **Homepage-Daten-Hygiene:** View-Source auf hasimuener.de prüfen (Titel wird per Code erzwungen, sollte
+  bereits „Anfrage-Systeme für Solar & Wärmepumpe…" sein). SCF-Feld leer lassen ist korrekt.
+- **Server-Side-Konsolidierung:** Entscheidung Abgrenzung vs. 301 für `/server-side-tracking-gtm/`
+  (WP-DB-Post, nicht Repo); USP-Inhalte in `/server-side-tracking-b2b/` übernehmen.
+- **Nach Deploy:** GSC-Recrawl der geänderten URLs (Checkfox, b2b-solar-leads) anfordern.
 
-**`/b2b-solar-leads/`** — verstärkt „pv termine b2b" (Pos. 9,7) im Snippet:
-- Title: `Photovoltaik B2B Leads & PV-Termine: Gewerbe statt Masse`
-- Description: `Gewerbliche PV-Anfragen & B2B-Termine für Hallendächer, Quartiere & PPA — exklusiv statt mehrfach verkauft. Eigenes Anfrage-System statt Portal-Leads.`
+## Repo-Follow-ups (kein Admin nötig, optional als nächster Schritt)
 
-**`/waermepumpen-leads/`** — Snippet ist ok; Priorität ist **Ownership** (interne Anker aus Repo-Task).
-Keine Snippet-Änderung nötig.
-
-**`/wordpress-agentur-hannover/`** — **Positions-Problem, nicht Snippet.** Erst auf Seite 1 bringen
-(Content-Tiefe zu „wordpress agentur/hannover"-Cluster, interne Links von thematisch nahen Seiten).
-Optionaler Titel-Feinschliff, sobald auf Seite 1: `WordPress Agentur Hannover: B2B-Systeme, SEO & Tracking`.
-
-**Homepage-Daten-Hygiene:** View-Source auf hasimuener.de prüfen (Titel sollte bereits neu sein) →
-veraltetes ACF-`seo_title`/`seo_description`-Feld der Startseite leeren.
-
-**Server-Side-Konsolidierung:** Entscheidung Abgrenzung vs. 301 für `/server-side-tracking-gtm/`;
-USPs in `/server-side-tracking-b2b/` übernehmen (GTM-Post ist WP-DB, nicht Repo).
-
-**Nach Deploy:** GSC-Recrawl der geänderten URLs (Checkfox, b2b-solar-leads) anfordern.
+- **`/wordpress-agentur-hannover/` (Rückschritt):** Positions-Problem, kein Snippet — Hebel sind interne Links.
+  Title steht bereits code-seitig in der Forced-Map (`seo-meta.php:207-209`). Nächster Repo-Schritt bei Bedarf:
+  kontextuelle interne Links von thematisch nahen Seiten auf den Hannover-Hub (CWV-neutral).
+- **`/waermepumpen-leads/`:** Snippet ok; Ownership kommt aus der Anker-Disziplin (bereits gesetzt).
 
 ## Wirkungsmessung
 
