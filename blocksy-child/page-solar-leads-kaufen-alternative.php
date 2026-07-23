@@ -381,7 +381,7 @@ get_header();
 		<div class="hu-intercept__container">
 			<h2 class="hu-intercept__h2" id="hu-intercept-system-title">So sieht ein eigenes Anfrage-System für Solar und Wärmepumpe aus</h2>
 			<p class="hu-intercept__section-lead">
-				Vier Bausteine – jeder einzeln messbar, gemeinsam ergeben sie eine Strecke, die <strong>qualifizierte Photovoltaik-Anfragen</strong> und <strong>exklusive Wärmepumpen-Leads</strong> produziert, statt sie zu mieten.
+				Vier Bausteine – jeder einzeln messbar, gemeinsam ergeben sie eine Strecke, die <strong>qualifizierte Photovoltaik-Anfragen</strong> und <a href="<?php echo esc_url( home_url( '/waermepumpen-leads/' ) ); ?>" data-track-action="related_waermepumpen_leads" data-track-category="internal_link_hierarchy" data-track-section="system">exklusive Wärmepumpen-Leads</a> produziert, statt sie zu mieten.
 			</p>
 			<ol class="hu-intercept__layers">
 				<?php foreach ( $own_system_layers as $i => $layer ) : ?>

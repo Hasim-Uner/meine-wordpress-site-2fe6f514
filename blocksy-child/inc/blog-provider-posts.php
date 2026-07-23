@@ -342,8 +342,8 @@ MD,
 		[
 			'title'            => 'Checkfox für Solar- und Wärmepumpen-Betriebe: Seriosität, Mechanik und Markteinordnung',
 			'slug'             => 'checkfox-solar-waermepumpe-einordnung',
-			'seo_title'        => 'Checkfox Erfahrungen & Seriosität: Einordnung für Betriebe',
-			'seo_description'  => 'Ist Checkfox seriös? Einordnung des breiten Vergleichsportal-Modells für Solar- und Wärmepumpen-Anfragen: Mechanik, Kosten-Logik und die Alternative eigener Anfrage-Systeme.',
+			'seo_title'        => 'Checkfox Erfahrungen: Ist das Portal seriös für Betriebe?',
+			'seo_description'  => 'Ist Checkfox seriös? Unabhängige Einordnung für Solar- & Wärmepumpen-Betriebe: Portal-Mechanik, Kosten-Logik und die Alternative zu gekauften Leads.',
 			'excerpt'          => 'Checkfox aus Sicht von Solar- und Wärmepumpen-Betrieben eingeordnet: Seriositäts-Frage, Portal-Mechanik über viele Produktkategorien, Kosten-Logik und Ownership.',
 			'tags'             => [ 'Checkfox', 'Solar Leads', 'Wärmepumpe', 'Vergleichsportal', 'Markteinordnung' ],
 			'markdown_content' => <<<'MD'
