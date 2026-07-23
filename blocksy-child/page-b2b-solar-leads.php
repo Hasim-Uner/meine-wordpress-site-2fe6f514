@@ -80,6 +80,18 @@ $gewerbe_layers = [
 	],
 ];
 
+$pv_termine_bought = [
+	[ 't' => 'Termin ≠ Projekt', 's' => 'Gekaufte PV-Termine sind gelegte Kalendereinträge. Ob Anschlussleistung, Investitionsbudget und Entscheiderrolle stimmen, zeigt sich erst im Gespräch – die Qualifizierung passiert zu spät.' ],
+	[ 't' => 'Provision pro Termin', 's' => 'Bezahlt wird der Termin, nicht der Abschluss. No-Shows und unpassende Gewerbe-Projekte gehen zu Ihren Lasten.' ],
+	[ 't' => 'Fremde Vorqualifizierung', 's' => 'Ein Callcenter entscheidet, was ein „guter" B2B-Termin ist – nach eigenen Kriterien, nicht nach Ihrer Buying-Center-Logik.' ],
+];
+
+$pv_termine_own = [
+	[ 't' => 'Termin = qualifizierte Anfrage', 's' => 'Vorqualifizierung nach Dachfläche, Anschlussleistung und Buying-Center läuft vor dem Termin – nicht danach.' ],
+	[ 't' => 'Kosten pro Auftrag', 's' => 'Gemessen wird der Projektwert je Anfrage (> 50.000 €), nicht der Preis pro Kalendereintrag.' ],
+	[ 't' => 'Eigene Terminlogik', 's' => 'Ihr CRM und Ihre Kriterien bestimmen, welcher Gewerbe-Termin überhaupt in den Vertrieb geht.' ],
+];
+
 $fit_yes = [
 	[ 't' => 'Gewerbliche PV-Anbieter', 's' => 'Mit Fokus auf Hallendächer, Quartiere, Industrieanlagen oder PPA-Modelle.' ],
 	[ 't' => 'Speicher-Lösungsanbieter', 's' => 'Großspeicher für Gewerbe, Eigenverbrauchsoptimierung, Spitzenlastmanagement.' ],
@@ -224,6 +236,39 @@ get_header();
 						<p class="hu-intercept__card-text"><?php echo esc_html( $item['s'] ); ?></p>
 					</article>
 				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+
+	<section class="hu-intercept__compare" id="pv-termine" aria-labelledby="hu-b2b-termine-title">
+		<div class="hu-intercept__container">
+			<h2 class="hu-intercept__h2" id="hu-b2b-termine-title">PV-Termine im B2B: gekauft oder selbst erzeugt?</h2>
+			<p class="hu-intercept__section-lead">
+				„PV-Termine B2B" klingt nach Abkürzung zum Abschluss. Im Gewerbe mit Buying-Center und langen Sales-Zyklen entscheidet aber nicht der Termin, sondern die Qualifizierung dahinter – sonst sitzen teure Vertriebstermine ohne Projektsubstanz im Kalender.
+			</p>
+			<div class="hu-intercept__grid hu-intercept__grid--two">
+				<div class="hu-intercept__panel hu-intercept__panel--negative">
+					<h3 class="hu-intercept__panel-title">Gekaufte PV-Termine</h3>
+					<ul class="hu-intercept__facts">
+						<?php foreach ( $pv_termine_bought as $item ) : ?>
+							<li>
+								<span class="hu-intercept__fact-key"><?php echo esc_html( $item['t'] ); ?></span>
+								<span class="hu-intercept__fact-label"><?php echo esc_html( $item['s'] ); ?></span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+				<div class="hu-intercept__panel hu-intercept__panel--positive">
+					<h3 class="hu-intercept__panel-title">Eigene B2B-PV-Termine</h3>
+					<ul class="hu-intercept__facts">
+						<?php foreach ( $pv_termine_own as $item ) : ?>
+							<li>
+								<span class="hu-intercept__fact-key"><?php echo esc_html( $item['t'] ); ?></span>
+								<span class="hu-intercept__fact-label"><?php echo esc_html( $item['s'] ); ?></span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</section>
