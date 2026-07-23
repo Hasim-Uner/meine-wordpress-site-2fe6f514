@@ -219,7 +219,7 @@
    HERO
    ============================================================= */
 .hu-hp .hu-hero {
-  padding: clamp(56px,6vw,72px) 0 clamp(28px,3.5vw,44px);
+  padding: clamp(40px,4.5vw,56px) 0 clamp(28px,3.5vw,44px);
   position: relative;
   overflow: hidden;
 }
@@ -235,13 +235,13 @@
   display: grid;
   grid-template-columns: 1.05fr 1fr;
   gap: 64px;
-  align-items: center;
+  align-items: start;
   position: relative;
 }
 @media (max-width: 1080px) {
   .hu-hp .hu-hero__container { grid-template-columns: 1fr; gap: 48px; }
 }
-.hu-hp .hu-hero__eyebrow { margin-bottom: 16px; }
+.hu-hp .hu-hero__eyebrow { margin-bottom: 14px; }
 .hu-hp .hu-hero__title {
   font-size: clamp(36px,4.6vw,62px);
   font-weight: 700;
@@ -265,7 +265,7 @@
   color: var(--fg-2);
   font-size: clamp(16px,1.3vw,19px);
   max-width: 54ch;
-  margin: 16px 0 20px;
+  margin: 14px 0 18px;
 }
 .hu-hp .hu-hero__sub strong { color: var(--fg); font-weight: 600; }
 .hu-hp .hu-hero__ctas {
@@ -278,7 +278,7 @@
 .hu-hp .hu-hero__cta-note {
   color: var(--fg-2);
   font-size: 13px;
-  margin: 0 0 24px;
+  margin: 0 0 16px;
   opacity: 0.85;
 }
 .hu-hp .hu-hero__cta-note--trust {
@@ -290,12 +290,12 @@
 .hu-hp .hu-hero__bullets {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 6px 0 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 18px;
   color: var(--fg-2);
-  font-size: 14px;
+  font-size: 13px;
 }
 .hu-hp .hu-hero__bullets li { display: flex; align-items: center; gap: 10px; }
 .hu-hp .hu-bullet-dot {
@@ -314,7 +314,7 @@
   padding: 16px 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .hu-hp .hu-hero__stats > div:not(.hu-stat-divider) { flex: 1; }
 .hu-hp .hu-stat-divider {

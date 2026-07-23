@@ -138,8 +138,7 @@ get_header();
 				</h1>
 
 				<p class="hu-hero__sub">
-					Für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum, die weniger abhängig von Lead-Portalen werden wollen.
-					Ich prüfe, wo Website, Vorqualifizierung, Tracking und Werbekanäle aktuell Anfragen verlieren — und welche Hebel zuerst greifen.
+					Für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum: Ich prüfe, wo Website, Vorqualifizierung, Tracking und Werbekanäle heute Anfragen verlieren — und welche Hebel zuerst greifen.
 				</p>
 
 				<div class="hu-hero__ctas">
@@ -153,8 +152,8 @@ get_header();
 						Case Study ansehen
 					</a>
 				</div>
-				<p class="hu-hero__cta-note hu-hero__cta-note--trust">Der Marktcheck kostet Sie 60 Sekunden — keine Zahlungsdaten, kein Newsletter, kein Pitch-Deck. Die Rückmeldung kommt persönlich geprüft innerhalb von 48 Stunden.</p>
-				<p class="hu-hero__cta-note">Keine neue Website auf Verdacht. Erst Diagnose, dann Entscheidung.</p>
+				<p class="hu-hero__cta-note hu-hero__cta-note--trust">60 Sekunden · keine Zahlungsdaten · kein Newsletter · kein Pitch-Deck — persönlich geprüfte Rückmeldung in 48 Stunden.</p>
+				<p class="hu-hero__cta-note">Keine neue Website auf Verdacht — erst Diagnose, dann Entscheidung.</p>
 
 				<div class="hu-hero__stats">
 					<div>
