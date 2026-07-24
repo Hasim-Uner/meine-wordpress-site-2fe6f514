@@ -24,6 +24,7 @@ $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_ge
 $tracking_url = $primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' );
 $cwv_url      = $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' );
 $cro_url      = $primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#methode' );
+$about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
 $seo_url      = $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' );
 $paid_url     = $primary_urls['performance_marketing'] ?? home_url( '/performance-marketing/' );
 $cal_url      = function_exists( 'hu_get_analysis_calcom_base_url' )
@@ -62,12 +63,12 @@ $founding_end_de  = $founding_end_ts ? wp_date( 'd.m.Y', $founding_end_ts ) : '3
 
 // ── Inhaltsmodelle ─────────────────────────────────────────────
 $trust_items = [
-	'B2B · DACH · eigener Vertrieb',
+	'Solar · Wärmepumpe · Speicher · DACH',
 	'Server in Frankfurt · DSGVO',
 	'Server-Side · CAPI im Stack',
 	'Hardcoded WordPress · kein Page-Builder',
 	'1:1 Senior · keine Junior-Kette',
-	'Marktcheck mit Fit-Entscheid',
+	'Marktcheck · Fit-Befund in 48 h',
 	sprintf( '%s · %d/%d Plätze', $founding_label, $founding_open, $founding_seats ),
 ];
 
@@ -80,8 +81,8 @@ $cost_cards = [
 	],
 	[
 		'big'  => 'Blindflug',
-		'sub'  => 'Klicks ≠ Anfragen ≠ Termine',
-		'body' => 'Google Ads, Portale, Empfehlungen — niemand kann sauber sagen, woher die guten Abschlüsse kommen. Ohne diese Klarheit investieren Sie blind. Und skalieren falsch.',
+		'sub'  => 'Sie wissen nicht, welcher Euro verkauft',
+		'body' => 'Google Ads, Portale und Empfehlungen laufen parallel. Kommt ein Auftrag über 40.000 € herein, kann niemand sagen, welcher Kanal ihn gebracht hat. Also wird nach Bauchgefühl verteilt — und der schwächste Kanal bekommt oft am meisten.',
 	],
 	[
 		'big'  => 'Seit 2024',
@@ -120,7 +121,7 @@ $method_cards = [
 	[
 		'n'   => '02',
 		't'   => 'Eigenes Anfrage-System',
-		's'   => 'Money-Page, Proof- und Angebotsseiten. <a href="' . esc_url( $tracking_url ) . '">Server-Side-Tracking</a> auf eigenem Server — belastbare Zahlen trotz Ad-Blockern. <a href="' . esc_url( $cro_url ) . '">Vorqualifizierung</a> vor dem Formular statt 5-Felder-Hürdenlauf.',
+		's'   => 'Die Seite, auf der Ihre Anfragen entstehen, plus Beleg- und Angebotsseiten. <a href="' . esc_url( $tracking_url ) . '">Server-Side-Tracking</a> auf eigenem Server — belastbare Zahlen trotz Ad-Blockern. <a href="' . esc_url( $cro_url ) . '">Vorqualifizierung</a> vor dem Formular statt 5-Felder-Hürdenlauf.',
 		'out' => 'Output / System · Frankfurt · CAPI · Lead-Scoring',
 	],
 	[
@@ -193,7 +194,7 @@ $guarantee_points = [
 	[
 		'e' => 'Verrechnung',
 		't' => 'Diagnose wird 1:1 angerechnet',
-		's' => 'Bei Umsetzung zahlen Sie die Diagnose nicht doppelt. Keine Mindestlaufzeit, volle Asset-Übergabe.',
+		's' => 'Bei Umsetzung zahlen Sie die Diagnose nicht doppelt. Die Größenordnung kennen Sie vorher: 12.000–18.000 € einmalig für den Aufbau, danach rund 50 € Hosting im Monat. Keine Mindestlaufzeit, volle Asset-Übergabe.',
 	],
 ];
 
@@ -431,13 +432,18 @@ get_header();
 						<span class="hu-mono">Für Solar- &amp; Wärmepumpen-Betriebe · Eigener Vertrieb · DACH</span>
 					</span>
 					<h1 class="hu-display hu-hero__title sol-hero-h1">
-						Hören Sie auf,<br />Anfragen zu&nbsp;<span class="hu-hero__title-2">mieten.</span>
+						<?php
+					// Kein hartes <br />: .hu-display setzt `text-wrap: balance`,
+					// das bricht ueber alle Breiten sauberer als ein fixer Umbruch
+					// mitten im Kompositum. &nbsp; haelt nur „zu mieten." zusammen.
+					?>
+					Hören Sie auf, Photovoltaik-Anfragen zu&nbsp;<span class="hu-hero__title-2">mieten.</span>
 					</h1>
 					<p class="hu-hero__sub">
-						Aroundhome, DAA und Wattfox verkaufen jede Anfrage an drei Wettbewerber — Sie bezahlen den Preiskampf.
-						Ein eigenes Anfrage-System für Solar, Wärmepumpe und Speicher macht <strong>Region, Projektwert und Fit</strong>
-						sichtbar, bevor Ihr Vertrieb Zeit in falsche Gespräche steckt. Sie besitzen den Kanal,
-						den Datensatz und jede Anfrage.
+						Aroundhome, DAA und Wattfox verkaufen dieselbe Anfrage an drei Betriebe — Sie bieten gegen den Preis.
+						Ein eigenes Anfrage-System für Photovoltaik, Wärmepumpe und Speicher zeigt
+						<strong>Region, Dach und Projektwert</strong> vor dem ersten Anruf.
+						Der Kanal gehört Ihnen, nicht dem Portal.
 					</p>
 
 					<?php
@@ -582,6 +588,20 @@ get_header();
 							</ul>
 							<p class="sol-cta-fineprint">Wird geladen …</p>
 						</div>
+
+						<?php
+						// Person-Signal: bleibt bewusst AUSSERHALB des Quiz-Mounts,
+						// damit es beim JS-Mount nicht mit dem SSR-Fallback wegfällt.
+						?>
+						<p class="sol-cta-person">
+							<span class="sol-cta-person-dot" aria-hidden="true"></span>
+							Ihre Antworten liest und beantwortet
+							<a href="<?php echo esc_url( $about_url ); ?>"
+								data-track-action="cta_solar_intake_to_about"
+								data-track-category="trust"
+								data-track-section="hero_intake">Haşim Üner</a>
+							persönlich — kein Tool, kein automatisches PDF.
+						</p>
 					</div>
 				</aside>
 			</div>
@@ -657,7 +677,7 @@ get_header();
 					</svg>
 					<figcaption class="sol-sr">
 						Das Anfrage-System in vier Stufen: Anzeige, Landingpage, Qualifizierung, CRM.
-						Kosten pro qualifizierter Anfrage im <?php echo esc_html( $e3_case_label ); ?>-Case:
+						Kosten pro qualifizierter Anfrage in der dokumentierten Fallstudie:
 						von <?php echo esc_html( $e3_cpl_before ); ?> auf <?php echo esc_html( $e3_cpl_after ); ?> in <?php echo esc_html( $e3_timeframe_dative ); ?>.
 					</figcaption>
 				</figure>
@@ -1010,7 +1030,7 @@ get_header();
 						data-track-category="proof"
 						data-track-section="results"
 					>
-						Vollständige Methodik im <?php echo esc_html( $e3_case_label ); ?>-Case
+						Vollständige Methodik in der Fallstudie
 						<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</a>
 				</div>
@@ -1075,7 +1095,7 @@ get_header();
 							data-track-category="proof"
 							data-track-section="fit_check"
 						>
-							Erst den <?php echo esc_html( $e3_case_label ); ?>-Case ansehen
+							Erst die Fallstudie ansehen
 							<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</a>
 					</div>

@@ -176,6 +176,36 @@
   color: var(--fg-3);
 }
 
+/* Person-Signal unter dem Quiz-Mount: liegt bewusst ausserhalb des
+   JS-Mountpoints und bleibt deshalb ueber alle Quiz-Schritte sichtbar. */
+.solara-landing .sol-cta-person {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--fg-3);
+}
+.solara-landing .sol-cta-person-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--good);
+  flex-shrink: 0;
+  transform: translateY(-2px);
+}
+.solara-landing .sol-cta-person a {
+  color: var(--fg-2);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.solara-landing .sol-cta-person a:hover,
+.solara-landing .sol-cta-person a:focus-visible { color: var(--accent); }
+
 /* Noscript-/SSR-Fallback-Button */
 .solara-landing .sol-cta-submit {
   display: inline-flex;
