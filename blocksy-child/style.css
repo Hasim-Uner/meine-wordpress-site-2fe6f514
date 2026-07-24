@@ -776,8 +776,13 @@ p.hero-stack,
     margin: 0;
     max-width: 44ch;
 }
+/* .ft__cta setzt global `align-self: flex-start` (Brand-Spalte im Standard-
+   Footer) und unter 900px `align-self: stretch`. Beides schlug im zentrierten
+   Energy-Shell das `align-items: center` des Elternteils — der Button klebte
+   links. Die hoehere Spezifitaet hier gewinnt in beiden Breiten. */
 .ft--energy-minimal .ft__cta {
     min-width: 240px;
+    align-self: center;
 }
 .ft__energy-legal {
     display: inline-flex;

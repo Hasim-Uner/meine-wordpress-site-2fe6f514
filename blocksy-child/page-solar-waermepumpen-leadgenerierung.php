@@ -24,6 +24,7 @@ $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_ge
 $tracking_url = $primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' );
 $cwv_url      = $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' );
 $cro_url      = $primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#methode' );
+$about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
 $seo_url      = $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' );
 $paid_url     = $primary_urls['performance_marketing'] ?? home_url( '/performance-marketing/' );
 $cal_url      = function_exists( 'hu_get_analysis_calcom_base_url' )
@@ -62,12 +63,12 @@ $founding_end_de  = $founding_end_ts ? wp_date( 'd.m.Y', $founding_end_ts ) : '3
 
 // ── Inhaltsmodelle ─────────────────────────────────────────────
 $trust_items = [
-	'B2B · DACH · eigener Vertrieb',
+	'Solar · Wärmepumpe · Speicher · DACH',
 	'Server in Frankfurt · DSGVO',
 	'Server-Side · CAPI im Stack',
 	'Hardcoded WordPress · kein Page-Builder',
 	'1:1 Senior · keine Junior-Kette',
-	'Marktcheck mit Fit-Entscheid',
+	'Marktcheck · Fit-Befund in 48 h',
 	sprintf( '%s · %d/%d Plätze', $founding_label, $founding_open, $founding_seats ),
 ];
 
@@ -80,8 +81,8 @@ $cost_cards = [
 	],
 	[
 		'big'  => 'Blindflug',
-		'sub'  => 'Klicks ≠ Anfragen ≠ Termine',
-		'body' => 'Google Ads, Portale, Empfehlungen — niemand kann sauber sagen, woher die guten Abschlüsse kommen. Ohne diese Klarheit investieren Sie blind. Und skalieren falsch.',
+		'sub'  => 'Sie wissen nicht, welcher Euro verkauft',
+		'body' => 'Google Ads, Portale und Empfehlungen laufen parallel. Kommt ein Auftrag über 40.000 € herein, kann niemand sagen, welcher Kanal ihn gebracht hat. Also wird nach Bauchgefühl verteilt — und der schwächste Kanal bekommt oft am meisten.',
 	],
 	[
 		'big'  => 'Seit 2024',
@@ -120,7 +121,7 @@ $method_cards = [
 	[
 		'n'   => '02',
 		't'   => 'Eigenes Anfrage-System',
-		's'   => 'Money-Page, Proof- und Angebotsseiten. <a href="' . esc_url( $tracking_url ) . '">Server-Side-Tracking</a> auf eigenem Server — belastbare Zahlen trotz Ad-Blockern. <a href="' . esc_url( $cro_url ) . '">Vorqualifizierung</a> vor dem Formular statt 5-Felder-Hürdenlauf.',
+		's'   => 'Die Seite, auf der Ihre Anfragen entstehen, plus Beleg- und Angebotsseiten. <a href="' . esc_url( $tracking_url ) . '">Server-Side-Tracking</a> auf eigenem Server — belastbare Zahlen trotz Ad-Blockern. <a href="' . esc_url( $cro_url ) . '">Vorqualifizierung</a> vor dem Formular statt 5-Felder-Hürdenlauf.',
 		'out' => 'Output / System · Frankfurt · CAPI · Lead-Scoring',
 	],
 	[
@@ -161,6 +162,28 @@ $capex_timeframes = [
 $capex_default = 24;
 $capex_now     = $capex_timeframes[ $capex_default ];
 
+// 04b / Portal-Kosten-Rechner ─────────────────────────────────
+// Eingabewerte des Nutzers × Canon-Zahlen. Bewusst KEINE Prognose:
+// die Ausgabe ist eine Gegenüberstellung, kein Ersparnis-Versprechen.
+// Setup-Spanne und Hosting stammen aus derselben Quelle wie die
+// Modellkarten oben ($capex_timeframes) — Zahlen bleiben konsistent.
+$calc_setup_low  = 12000;
+$calc_setup_high = 18000;
+$calc_hosting    = 50;
+$calc_leads      = 14;
+$calc_price      = 80;
+
+$calc_portal_total = $calc_leads * $calc_price * $capex_default;
+$calc_own_low      = $calc_setup_low + $calc_hosting * $capex_default;
+$calc_own_high     = $calc_setup_high + $calc_hosting * $capex_default;
+$calc_diff_low     = $calc_portal_total - $calc_own_high;
+$calc_diff_high    = $calc_portal_total - $calc_own_low;
+
+// Deutsche Tausenderpunkte, Währungs-Doktrin EUR (siehe Dateikopf).
+$calc_eur = static function ( $value ) {
+	return number_format( (float) $value, 0, ',', '.' ) . ' €';
+};
+
 // 06 / Fit-Check (passt / passt nicht) ─────────────────────────
 $fit_yes = [
 	[ 't' => 'Solar, Wärmepumpe oder Speicher',     's' => 'Projektwert, Marge und Vertriebsfähigkeit stimmen.' ],
@@ -193,7 +216,7 @@ $guarantee_points = [
 	[
 		'e' => 'Verrechnung',
 		't' => 'Diagnose wird 1:1 angerechnet',
-		's' => 'Bei Umsetzung zahlen Sie die Diagnose nicht doppelt. Keine Mindestlaufzeit, volle Asset-Übergabe.',
+		's' => 'Bei Umsetzung zahlen Sie die Diagnose nicht doppelt. Die Größenordnung kennen Sie vorher: 12.000–18.000 € einmalig für den Aufbau, danach rund 50 € Hosting im Monat. Keine Mindestlaufzeit, volle Asset-Übergabe.',
 	],
 ];
 
@@ -431,13 +454,18 @@ get_header();
 						<span class="hu-mono">Für Solar- &amp; Wärmepumpen-Betriebe · Eigener Vertrieb · DACH</span>
 					</span>
 					<h1 class="hu-display hu-hero__title sol-hero-h1">
-						Hören Sie auf,<br />Anfragen zu&nbsp;<span class="hu-hero__title-2">mieten.</span>
+						<?php
+					// Kein hartes <br />: .hu-display setzt `text-wrap: balance`,
+					// das bricht ueber alle Breiten sauberer als ein fixer Umbruch
+					// mitten im Kompositum. &nbsp; haelt nur „zu mieten." zusammen.
+					?>
+					Hören Sie auf, Photovoltaik-Anfragen zu&nbsp;<span class="hu-hero__title-2">mieten.</span>
 					</h1>
 					<p class="hu-hero__sub">
-						Aroundhome, DAA und Wattfox verkaufen jede Anfrage an drei Wettbewerber — Sie bezahlen den Preiskampf.
-						Ein eigenes Anfrage-System für Solar, Wärmepumpe und Speicher macht <strong>Region, Projektwert und Fit</strong>
-						sichtbar, bevor Ihr Vertrieb Zeit in falsche Gespräche steckt. Sie besitzen den Kanal,
-						den Datensatz und jede Anfrage.
+						Aroundhome, DAA und Wattfox verkaufen dieselbe Anfrage an drei Betriebe — Sie bieten gegen den Preis.
+						Ein eigenes Anfrage-System für Photovoltaik, Wärmepumpe und Speicher zeigt
+						<strong>Region, Dach und Projektwert</strong> vor dem ersten Anruf.
+						Der Kanal gehört Ihnen, nicht dem Portal.
 					</p>
 
 					<?php
@@ -464,12 +492,10 @@ get_header();
 							foreach ( [ 0, 40, 80, 120, 160 ] as $grid_v ) :
 								$grid_y = $cpl_pad_t + ( 1 - $grid_v / $cpl_max ) * $cpl_inner;
 								?>
-								<line x1="<?php echo (int) ( $cpl_pad_l + 16 ); ?>" x2="<?php echo (int) $cpl_w; ?>"
-									y1="<?php echo esc_attr( (string) round( $grid_y, 1 ) ); ?>" y2="<?php echo esc_attr( (string) round( $grid_y, 1 ) ); ?>"
-									stroke="rgba(255,255,255,0.07)" stroke-width="1" />
-								<text x="<?php echo (int) ( $cpl_pad_l + 10 ); ?>" y="<?php echo esc_attr( (string) round( $grid_y + 3, 1 ) ); ?>"
-									text-anchor="end" font-size="9" fill="#5C5A52"
-									font-family="'JetBrains Mono', monospace"><?php echo (int) $grid_v; ?></text>
+								<line class="sol-cpl-grid" x1="<?php echo (int) ( $cpl_pad_l + 16 ); ?>" x2="<?php echo (int) $cpl_w; ?>"
+									y1="<?php echo esc_attr( (string) round( $grid_y, 1 ) ); ?>" y2="<?php echo esc_attr( (string) round( $grid_y, 1 ) ); ?>" />
+								<text class="sol-cpl-tick" x="<?php echo (int) ( $cpl_pad_l + 10 ); ?>" y="<?php echo esc_attr( (string) round( $grid_y + 3, 1 ) ); ?>"
+									text-anchor="end"><?php echo (int) $grid_v; ?></text>
 							<?php endforeach; ?>
 							<?php
 							foreach ( $cpl_bars as $bar_i => $bar_v ) :
@@ -478,18 +504,15 @@ get_header();
 								$bar_y    = $cpl_h - $cpl_pad_b - $bar_h;
 								$bar_last = count( $cpl_bars ) - 1 === $bar_i;
 								?>
-								<rect class="sol-bar" style="animation-delay:<?php echo (int) ( 250 + $bar_i * 110 ); ?>ms"
+								<rect class="sol-bar<?php echo esc_attr( $bar_last ? ' is-final' : '' ); ?>" style="animation-delay:<?php echo (int) ( 250 + $bar_i * 110 ); ?>ms"
 									x="<?php echo esc_attr( (string) round( $bar_x, 1 ) ); ?>" y="<?php echo esc_attr( (string) round( $bar_y, 1 ) ); ?>"
 									width="<?php echo esc_attr( (string) round( $cpl_bw * 0.5, 1 ) ); ?>" height="<?php echo esc_attr( (string) round( $bar_h, 1 ) ); ?>"
-									rx="2" fill="<?php echo esc_attr( $bar_last ? '#E08A3C' : 'rgba(242,235,221,0.13)' ); ?>" />
-								<text class="sol-bar-label" style="animation-delay:<?php echo (int) ( 520 + $bar_i * 110 ); ?>ms"
+									rx="2" />
+								<text class="sol-bar-label<?php echo esc_attr( $bar_last ? ' is-final' : '' ); ?>" style="animation-delay:<?php echo (int) ( 520 + $bar_i * 110 ); ?>ms"
 									x="<?php echo esc_attr( (string) round( $bar_x + $cpl_bw * 0.25, 1 ) ); ?>" y="<?php echo esc_attr( (string) round( $bar_y - 7, 1 ) ); ?>"
-									text-anchor="middle" font-size="11.5" font-weight="800"
-									font-family="'Satoshi','Figtree',sans-serif"
-									fill="<?php echo esc_attr( $bar_last ? '#E08A3C' : '#8A8478' ); ?>"><?php echo (int) $bar_v; ?> €</text>
-								<text x="<?php echo esc_attr( (string) round( $bar_x + $cpl_bw * 0.25, 1 ) ); ?>" y="<?php echo (int) ( $cpl_h - $cpl_pad_b + 17 ); ?>"
-									text-anchor="middle" font-size="9" letter-spacing="1.5"
-									font-family="'JetBrains Mono', monospace" fill="#5C5A52">M<?php echo (int) ( $bar_i + 1 ); ?></text>
+									text-anchor="middle"><?php echo (int) $bar_v; ?> €</text>
+								<text class="sol-cpl-tick" x="<?php echo esc_attr( (string) round( $bar_x + $cpl_bw * 0.25, 1 ) ); ?>" y="<?php echo (int) ( $cpl_h - $cpl_pad_b + 17 ); ?>"
+									text-anchor="middle">M<?php echo (int) ( $bar_i + 1 ); ?></text>
 							<?php endforeach; ?>
 						</svg>
 						<figcaption class="hu-lead-sketch__footer">
@@ -500,7 +523,8 @@ get_header();
 
 					<div class="hu-hero__stats">
 						<div>
-							<div class="hu-stat-num" style="color:var(--accent);" data-sol-countup><?php echo esc_html( $e3_cpl_after ); ?></div>
+							<?php // --accent-ink statt --accent: im hellen Hero muss auch die grosse Zahl AA halten. ?>
+							<div class="hu-stat-num" style="color:var(--accent-ink);" data-sol-countup><?php echo esc_html( $e3_cpl_after ); ?></div>
 							<div class="hu-stat-label">CPL nach <?php echo esc_html( $e3_timeframe_dative ); ?> · <?php echo esc_html( $e3_case_label ); ?></div>
 						</div>
 						<div class="hu-stat-divider"></div>
@@ -582,6 +606,20 @@ get_header();
 							</ul>
 							<p class="sol-cta-fineprint">Wird geladen …</p>
 						</div>
+
+						<?php
+						// Person-Signal: bleibt bewusst AUSSERHALB des Quiz-Mounts,
+						// damit es beim JS-Mount nicht mit dem SSR-Fallback wegfällt.
+						?>
+						<p class="sol-cta-person">
+							<span class="sol-cta-person-dot" aria-hidden="true"></span>
+							Ihre Antworten liest und beantwortet
+							<a href="<?php echo esc_url( $about_url ); ?>"
+								data-track-action="cta_solar_intake_to_about"
+								data-track-category="trust"
+								data-track-section="hero_intake">Haşim Üner</a>
+							persönlich — kein Tool, kein automatisches PDF.
+						</p>
 					</div>
 				</aside>
 			</div>
@@ -657,7 +695,7 @@ get_header();
 					</svg>
 					<figcaption class="sol-sr">
 						Das Anfrage-System in vier Stufen: Anzeige, Landingpage, Qualifizierung, CRM.
-						Kosten pro qualifizierter Anfrage im <?php echo esc_html( $e3_case_label ); ?>-Case:
+						Kosten pro qualifizierter Anfrage in der dokumentierten Fallstudie:
 						von <?php echo esc_html( $e3_cpl_before ); ?> auf <?php echo esc_html( $e3_cpl_after ); ?> in <?php echo esc_html( $e3_timeframe_dative ); ?>.
 					</figcaption>
 				</figure>
@@ -922,6 +960,87 @@ get_header();
 					</article>
 				</div>
 
+				<?php
+				// ── Portal-Kosten-Rechner ──────────────────────────────
+				// Zwei Slider, Ausgabe an den bestehenden Zeitraum-Picker
+				// gekoppelt (kein zweiter Zeitraum-Zustand). SSR rendert
+				// die Startwerte fertig aus — ohne JS steht hier eine
+				// korrekte, statische Beispielrechnung.
+				?>
+				<div class="sol-calc" data-sol-calc
+					data-setup-low="<?php echo (int) $calc_setup_low; ?>"
+					data-setup-high="<?php echo (int) $calc_setup_high; ?>"
+					data-hosting="<?php echo (int) $calc_hosting; ?>">
+					<div class="sol-calc-head">
+						<span class="hu-eyebrow">Mit Ihren Zahlen</span>
+						<h3 class="sol-calc-h">Was kostet Sie der Portal-Weg?</h3>
+						<p class="sol-calc-sub">
+							Die Modelle oben rechnen mit Marktdurchschnitt. Tragen Sie Ihre eigenen
+							Werte ein — die Gegenüberstellung rechnet sofort mit dem Zeitraum, den
+							Sie oben gewählt haben.
+						</p>
+					</div>
+
+					<div class="sol-calc-controls">
+						<div class="sol-calc-field">
+							<div class="sol-calc-lbl sol-mono">
+								<label for="sol-calc-leads">Gekaufte Anfragen pro Monat</label>
+								<output class="sol-calc-val" for="sol-calc-leads" data-sol-calc-out="leads"><?php echo (int) $calc_leads; ?></output>
+							</div>
+							<input class="sol-calc-range" type="range" id="sol-calc-leads"
+								name="sol-calc-leads" min="2" max="60" step="1"
+								value="<?php echo (int) $calc_leads; ?>"
+								data-sol-calc-input="leads"
+								aria-describedby="sol-calc-result"
+								data-track-action="capex_calc_leads"
+								data-track-category="engagement"
+								data-track-section="capex_opex" />
+						</div>
+						<div class="sol-calc-field">
+							<div class="sol-calc-lbl sol-mono">
+								<label for="sol-calc-price">Preis pro Portal-Anfrage</label>
+								<output class="sol-calc-val" for="sol-calc-price" data-sol-calc-out="price"><?php echo (int) $calc_price; ?> €</output>
+							</div>
+							<input class="sol-calc-range" type="range" id="sol-calc-price"
+								name="sol-calc-price" min="40" max="200" step="5"
+								value="<?php echo (int) $calc_price; ?>"
+								data-sol-calc-input="price"
+								aria-describedby="sol-calc-result"
+								data-track-action="capex_calc_price"
+								data-track-category="engagement"
+								data-track-section="capex_opex" />
+						</div>
+					</div>
+
+					<div class="sol-calc-result" id="sol-calc-result" aria-live="polite">
+						<div class="sol-calc-row">
+							<span class="sol-calc-row-lbl">Portal-Anfragen über <span data-sol-capex-out="tf5"><?php echo (int) $capex_default; ?></span> Monate</span>
+							<span class="sol-calc-row-num" data-sol-calc-out="portal"><?php echo esc_html( $calc_eur( $calc_portal_total ) ); ?></span>
+						</div>
+						<div class="sol-calc-row">
+							<span class="sol-calc-row-lbl">Eigenes System im selben Zeitraum</span>
+							<span class="sol-calc-row-num" data-sol-calc-out="own"><?php echo esc_html( $calc_eur( $calc_own_low ) . ' – ' . $calc_eur( $calc_own_high ) ); ?></span>
+						</div>
+						<p class="sol-calc-verdict" data-sol-calc-out="verdict">
+							<?php
+							echo esc_html(
+								sprintf(
+									'Differenz: %s bis %s — und am Ende gehört Ihnen das System.',
+									$calc_eur( $calc_diff_low ),
+									$calc_eur( $calc_diff_high )
+								)
+							);
+							?>
+						</p>
+					</div>
+
+					<p class="sol-calc-fineprint sol-mono">
+						Rechenbeispiel mit Ihren Eingaben — keine Prognose und keine zugesagte
+						Ersparnis. Eigenes System: <?php echo esc_html( $calc_eur( $calc_setup_low ) . ' – ' . $calc_eur( $calc_setup_high ) ); ?>
+						einmalig plus <?php echo esc_html( $calc_eur( $calc_hosting ) ); ?> Hosting im Monat.
+					</p>
+				</div>
+
 				<aside class="sol-capex-summary">
 					<h3 class="sol-capex-summary-h">Bilanziell: CAPEX statt OPEX</h3>
 					<p>
@@ -1010,7 +1129,7 @@ get_header();
 						data-track-category="proof"
 						data-track-section="results"
 					>
-						Vollständige Methodik im <?php echo esc_html( $e3_case_label ); ?>-Case
+						Vollständige Methodik in der Fallstudie
 						<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</a>
 				</div>
@@ -1075,7 +1194,7 @@ get_header();
 							data-track-category="proof"
 							data-track-section="fit_check"
 						>
-							Erst den <?php echo esc_html( $e3_case_label ); ?>-Case ansehen
+							Erst die Fallstudie ansehen
 							<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</a>
 					</div>

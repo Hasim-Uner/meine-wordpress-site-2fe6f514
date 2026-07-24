@@ -1034,15 +1034,99 @@
     own_monthly:    ' / Monat'
   };
 
+  /* Portal-Kosten-Rechner (Sektion 04).
+     Zwei Slider × Canon-Zahlen aus den data-Attributen des Mounts.
+     Bewusst ohne eigenen Zeitraum-Zustand: der Zeitraum kommt vom
+     bestehenden Picker, damit Modellkarten, Fazit und Rechner nie
+     auseinanderlaufen können. Ohne JS bleibt der SSR-Stand stehen. */
+  var EUR = (function () {
+    try {
+      var nf = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 });
+      return function (v) { return nf.format(Math.round(v)) + ' €'; };
+    } catch (e) {
+      return function (v) { return String(Math.round(v)) + ' €'; };
+    }
+  }());
+
+  function PortalCalc() {
+    var mount = document.querySelector(ROOT_SELECTOR + ' [data-sol-calc]');
+    if (!mount) return null;
+
+    var setupLow  = parseInt(mount.getAttribute('data-setup-low'), 10)  || 12000;
+    var setupHigh = parseInt(mount.getAttribute('data-setup-high'), 10) || 18000;
+    var hosting   = parseInt(mount.getAttribute('data-hosting'), 10)    || 50;
+
+    var leadsInput = mount.querySelector('[data-sol-calc-input="leads"]');
+    var priceInput = mount.querySelector('[data-sol-calc-input="price"]');
+    if (!leadsInput || !priceInput) return null;
+
+    function out(key) { return mount.querySelector('[data-sol-calc-out="' + key + '"]'); }
+
+    function render(tf) {
+      var months = parseInt(tf, 10) || 24;
+      var leads  = parseInt(leadsInput.value, 10) || 0;
+      var price  = parseInt(priceInput.value, 10) || 0;
+
+      var portal   = leads * price * months;
+      var ownLow   = setupLow + hosting * months;
+      var ownHigh  = setupHigh + hosting * months;
+      var diffLow  = portal - ownHigh;
+      var diffHigh = portal - ownLow;
+
+      var leadsOut = out('leads');
+      var priceOut = out('price');
+      var portalOut = out('portal');
+      var ownOut = out('own');
+      var verdictOut = out('verdict');
+
+      if (leadsOut)  leadsOut.textContent  = String(leads);
+      if (priceOut)  priceOut.textContent  = String(price) + ' €';
+      if (portalOut) portalOut.textContent = EUR(portal);
+      if (ownOut)    ownOut.textContent    = EUR(ownLow) + ' – ' + EUR(ownHigh);
+      if (!verdictOut) return;
+
+      // Drei ehrliche Fälle. Der dritte ist kein Bug, sondern die
+      // Aussage, die zur Positionierung gehört: bei kleinem Volumen
+      // trägt der Aufbau in diesem Zeitraum noch nicht.
+      if (diffLow > 0) {
+        verdictOut.textContent =
+          'Differenz: ' + EUR(diffLow) + ' bis ' + EUR(diffHigh) +
+          ' — und am Ende gehört Ihnen das System.';
+        mount.setAttribute('data-verdict', 'clear');
+      } else if (diffHigh > 0) {
+        verdictOut.textContent =
+          'Differenz: ' + EUR(Math.abs(diffLow)) + ' Mehrkosten bis ' + EUR(diffHigh) +
+          ' Ersparnis — je nach Aufbauumfang ein Nullsummenspiel. Das Asset bleibt trotzdem bei Ihnen.';
+        mount.setAttribute('data-verdict', 'even');
+      } else {
+        verdictOut.textContent =
+          'Bei diesem Volumen trägt sich der Aufbau über ' + months +
+          ' Monate rechnerisch noch nicht. Dann ist der Marktcheck ehrlicher als ein Angebot.';
+        mount.setAttribute('data-verdict', 'against');
+      }
+    }
+
+    return { mount: mount, render: render, leadsInput: leadsInput, priceInput: priceInput };
+  }
+
   function setupCapexPicker() {
     var section = document.querySelector(ROOT_SELECTOR + ' [data-sol-capex-buttons]');
     if (!section) return;
     var btns = section.querySelectorAll('[data-sol-capex-tf]');
     if (!btns.length) return;
 
+    var calc = PortalCalc();
+    var activeTf = 24;
+    btns.forEach(function (b) {
+      if (b.classList.contains('is-active')) {
+        activeTf = parseInt(b.getAttribute('data-sol-capex-tf'), 10) || activeTf;
+      }
+    });
+
     function apply(tf) {
       var data = CAPEX_DATA[tf];
       if (!data) return;
+      activeTf = parseInt(tf, 10) || activeTf;
       btns.forEach(function (b) {
         var on = String(b.getAttribute('data-sol-capex-tf')) === String(tf);
         b.classList.toggle('is-active', on);
@@ -1051,7 +1135,7 @@
       var outs = document.querySelectorAll(ROOT_SELECTOR + ' [data-sol-capex-out]');
       outs.forEach(function (el) {
         var key = el.getAttribute('data-sol-capex-out');
-        if (key === 'tf' || key === 'tf2' || key === 'tf3' || key === 'tf4') {
+        if (key.indexOf('tf') === 0) {
           el.textContent = String(tf);
           return;
         }
@@ -1059,6 +1143,7 @@
           el.textContent = data[key] + (CAPEX_SUFFIX[key] || '');
         }
       });
+      if (calc) calc.render(activeTf);
     }
 
     btns.forEach(function (b) {
@@ -1068,6 +1153,19 @@
         try { track('capex_timeframe_change', { tf: tf }); } catch (e) {}
       });
     });
+
+    if (calc) {
+      var trackOnce = false;
+      [calc.leadsInput, calc.priceInput].forEach(function (input) {
+        input.addEventListener('input', function () { calc.render(activeTf); });
+        input.addEventListener('change', function () {
+          if (trackOnce) return;
+          trackOnce = true;
+          try { track('capex_calc_used', { tf: activeTf }); } catch (e) {}
+        });
+      });
+      calc.render(activeTf);
+    }
   }
 
   /* Setzt --sol-nav-top auf die Höhe eines sticky Blocksy-Headers,
