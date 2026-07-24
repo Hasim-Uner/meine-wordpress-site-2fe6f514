@@ -42,11 +42,45 @@ Marktcheck -> Anfrage-System-Analyse -> Umsetzung / Retainer
 `Kosten pro Anfrage`, `qualifizierte Anfragen`, `Abschlussquote`,
 `Vorqualifizierung`, `Tracking`, `Nachfrage-Infrastruktur`,
 `System-Diagnose`, `Potenzial-Check`, `priorisierte Hebel`,
-`Solar`, `Wärmepumpe`, `Speicher`, `Energie-Anbieter`, `Handwerk`
+`Solar`, `Photovoltaik`, `PV`, `Wärmepumpe`, `Speicher`, `Energie-Anbieter`, `Handwerk`
 
 `Founding-Partner` darf im 2026-Angebotsframe verwendet werden, muss auf der
 ersten sichtbaren Nutzung aber als früher Umsetzungspartner erklärt werden:
 kein Mitgründer, kein Anteilseigner, keine gesellschaftsrechtliche Partnerschaft.
+
+## Solar / Photovoltaik / PV
+
+Die drei Begriffe sind keine Synonyme und haben feste Rollen. Sie stehen
+absichtlich nebeneinander — wer sie gegeneinander austauscht, verliert
+entweder den Suchbegriff oder die Präzision.
+
+| Begriff | Rolle | Wo |
+| --- | --- | --- |
+| `Solar` | Zielgruppen- und Marken-Rahmen: **wen** wir ansprechen | Slug, Header-Nav, Footer, Positionierung, Site-Title |
+| `Photovoltaik` | Produkt- und Suchbegriff: **worum** es geht | H1, Fließtext, Meta-Titles, Anchor-Texte |
+| `PV` | Branchenkürzel der Betriebe, Insider-Ton | Nur in Komposita: `PV-Anfragen`, `PV-Projekte`, `PV-Termine`, `Gewerbe-PV` |
+
+Regeln:
+
+- **Nicht `Solar` schreiben, wenn konkret die PV-Anlage gemeint ist.** `Solar`
+  ist der Oberbegriff und führt Solarthermie mit — ein anderes Gewerk, das nicht
+  Zielgruppe ist. (`Solarthermie` kommt im Theme bewusst 0× vor.)
+- `Wärmepumpe` bleibt **gleichrangig** neben `Photovoltaik`, nicht nachgeordnet.
+  `/waermepumpen-leads/` besitzt die Query `wärmepumpen leads` und wird nicht
+  durch PV-lastige Copy auf anderen Seiten verwässert.
+- Zielgruppen-Rahmen über Produktaussage ist die gewollte Schichtung, z. B. auf
+  der Money Page: Tag „Für Solar- & Wärmepumpen-Betriebe" über der H1
+  „… Photovoltaik-Anfragen …".
+
+Belege (nicht raten, nachschlagen):
+
+- `seo-research/2026-07/reports/gsc-verlauf-2026-07-20.md`,
+  Kannibalisierungs-Karte: „**Money-Page besitzt die Query**
+  `leadgenerierung photovoltaik`" → deshalb trägt die Money-Page-H1
+  `Photovoltaik` und nicht nur `Solar`.
+- `seo-research/2026-07/data/keywords-master.csv`, Cluster `a-money`:
+  Photovoltaik-Terme tragen das größte Volumen, `PV` folgt, `Solar` liegt
+  darunter. Zahlen dort nachsehen statt hier duplizieren.
 
 ## Anti-Patterns (Hard Bans)
 
