@@ -2,6 +2,19 @@
 
 ## 2026-07
 
+### Solar-Money-Page: Copy geschärft, heller Einstieg, Portal-Kosten-Rechner
+
+- **H1 trug kein Money-Keyword.** `docs/seo/money-keyword-implementation.md` (Phase 1) verlangt H1, Hero und die ersten 150 Wörter auf genau einen Cluster; der SEO-Title (`inc/seo-meta.php`) führte bereits „Leadgenerierung Photovoltaik & Wärmepumpe ohne Portale", die H1 („Hören Sie auf, Anfragen zu mieten.") zog nicht mit. Jetzt „Hören Sie auf, Photovoltaik-Anfragen zu mieten." — Hook bleibt, Cluster sitzt drin. Der harte `<br />` ist raus, `.hu-display` bricht per `text-wrap: balance` über alle Breiten sauberer.
+- **Brand-Verstoß:** Trust-Item „B2B · DACH · eigener Vertrieb" — `docs/standards/BRAND_AND_COPY.md` listet `B2B` als Positionierung unter den Hard Bans. Ersetzt durch „Solar · Wärmepumpe · Speicher · DACH". „Fit-Entscheid" (erfundenes Kompositum) → „Fit-Befund in 48 h".
+- **Gebrochene Deklination an drei Stellen:** `HU_E3_CASE_LABEL` („mittelständischer PV-Installationsbetrieb") wurde als Kompositum verwendet („im …-Case", „den …-Case"). Aufgelöst zu „die Fallstudie" — grammatisch korrekt, weiterhin anonym; der Canon-Wert selbst bleibt unangetastet.
+- **Person-Signal ergänzt:** Die Seite verkauft ein 12.000–18.000-€-Vorhaben, nannte aber nirgends einen Menschen. Eine ruhige Zeile in der Marktcheck-Karte, bewusst **außerhalb** des Quiz-Mountpoints, damit sie über alle drei Schritte stehen bleibt.
+- **Heller Einstieg (Hero, Anfrage-Kette, Trust-Strip)** statt durchgehend Ink: Zielgruppe sind Solar-/SHK-Entscheider, die weiße Fachbetriebs-Websites gewohnt sind. Umgesetzt als reiner Token-Swap in `assets/css/solar-leadgenerierung-solara.css` (Abschnitt 14) — das Stylesheet ist fast vollständig `var()`-getrieben, die Komponenten bleiben unverändert. Palette identisch zur hellen Variante auf `/waermepumpen-leads/`. Die Proof-Bar darunter bleibt dunkel und wirkt als Kontrast-Anker vor der Sticky-Nav.
+- **Kupfer in zwei Rollen getrennt:** `--accent` (Fläche) und neu `--accent-ink` (Text). `#E08A3C` als Text auf Papier erreicht nur 2,42:1 und wäre durch WCAG AA gefallen; `--accent-ink` (`#8f4f24`) liegt bei 5,74:1. Alle Text-Rollen im hellen Bereich sind explizit umgestellt, alle Paare rechnerisch ≥ 4,9:1 geprüft.
+- **CPL-Chart:** Farben lagen als SVG-Präsentationsattribute im Template (`fill="#5C5A52"` etc.) und hätten im hellen Hero nicht mitgezogen. Ersetzt durch Klassen (`.sol-cpl-grid`, `.sol-cpl-tick`, `.sol-bar`, `.sol-bar-label`), eingefärbt aus Tokens.
+- **Neu: Portal-Kosten-Rechner** in Sektion 04 (`.sol-calc`). Zwei Slider (Anfragen/Monat, Preis pro Portal-Anfrage) gegen Setup-Spanne und Hosting aus derselben Quelle wie die Modellkarten. Bewusst **kein** eigener Zeitraum-Zustand — der Zeitraum kommt vom bestehenden 12/24/36-Picker, damit Karten, Fazit und Rechner nie auseinanderlaufen. SSR rendert die Startwerte fertig aus, ohne JS steht eine korrekte statische Rechnung. Bei kleinem Volumen sagt der Rechner ausdrücklich, dass sich der Aufbau im gewählten Zeitraum **nicht** trägt — Abrat statt Ersparnis-Versprechen.
+- **Footer-CTA saß linksbündig statt zentriert** (`ft--energy-minimal`): `.ft__cta` setzt global `align-self: flex-start` (unter 900px `stretch`) und schlug damit das `align-items: center` von `.ft__energy-shell`. Fix per höherer Spezifität in `style.css`.
+- Canon-Werte, REST-Contract, Tracking-Attribute und SEO-Meta unverändert.
+
 ### Semrush Site-Audit: Meta-Descriptions & interne Link-Hygiene
 
 - **Fehlende/doppelte Meta-Descriptions behoben** (`inc/seo-meta.php`, Forced-SEO-Map): `/stack-solar/` hatte keine Meta-Description; `/owned-leads-statt-ad-miete/` und `/meta-ads-fuer-b2b/` teilten sich eine identische. Jeder Slug bekommt jetzt eine eigene, eindeutige Description (nur `description` gesetzt, Titel bleiben unberührt).

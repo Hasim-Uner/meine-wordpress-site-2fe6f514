@@ -11,6 +11,15 @@
 
 /* ─── 1) Wrapper & Theme-Bleed-Schutz ───────────────────────── */
 .solara-landing {
+  /* Rollen-Tokens. --accent bleibt die Flaechenfarbe (Buttons, Balken),
+     --accent-ink die Textrolle. Im Ink-Theme sind beide identisch; im hellen
+     Oberteil wird --accent-ink dunkler, weil Kupfer auf Weiss als Text
+     nur ~2,4:1 erreicht und damit durch WCAG AA fiele. */
+  --accent-ink:  var(--accent);
+  --bar-idle:    rgba(242, 235, 221, .13);
+  --surface:     var(--bg-2);
+  --card-shadow: 0 30px 90px -60px rgba(0, 0, 0, .85);
+
   background: var(--bg);
   overflow-x: clip;
 }
@@ -86,13 +95,32 @@
   padding: 20px 26px 18px;
 }
 .solara-landing .sol-cpl svg { width: 100%; height: auto; margin-top: 12px; }
+
+/* Chart-Farben liegen bewusst in CSS statt als SVG-Praesentationsattribute:
+   so folgen Ink- und Light-Variante derselben Token-Quelle. */
+.solara-landing .sol-cpl-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.solara-landing .sol-cpl-tick {
+  fill: var(--fg-4);
+  font: 400 9px 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  letter-spacing: 1.5px;
+}
 .solara-landing .sol-bar {
+  fill: var(--bar-idle);
   transform-box: fill-box;
   transform-origin: bottom;
   animation: sol-bar-grow .7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
+.solara-landing .sol-bar.is-final { fill: var(--accent); }
 @keyframes sol-bar-grow { from { transform: scaleY(0); } }
-.solara-landing .sol-bar-label { animation: sol-fade .45s ease backwards; }
+.solara-landing .sol-bar-label {
+  fill: var(--fg-3);
+  font: 800 11.5px 'Satoshi', 'Figtree', sans-serif;
+  animation: sol-fade .45s ease backwards;
+}
+.solara-landing .sol-bar-label.is-final { fill: var(--accent-ink); }
 @keyframes sol-fade { from { opacity: 0; } }
 
 /* ─── 3) Marktcheck-Card (Hero rechts) ──────────────────────── */
@@ -825,6 +853,159 @@
   border-color: var(--accent);
   color: #1A0F05;
 }
+/* ─── 8b) Portal-Kosten-Rechner ─────────────────────────────
+   Liegt in der Ink-Sektion 04, laeuft daher auf den Dark-Tokens.
+   Der Zeitraum kommt vom Picker darueber (data-sol-capex-out),
+   die Slider steuern nur Menge und Preis. */
+.solara-landing .sol-calc {
+  margin-top: 26px;
+  padding: 26px 28px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(224, 138, 60, .06), transparent 68%),
+    var(--bg-2);
+}
+@media (max-width: 640px) { .solara-landing .sol-calc { padding: 22px 18px; } }
+
+.solara-landing .sol-calc-h {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin: 8px 0 6px;
+}
+.solara-landing .sol-calc-sub {
+  margin: 0 0 22px;
+  max-width: 62ch;
+  color: var(--fg-2);
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+.solara-landing .sol-calc-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 32px;
+}
+@media (max-width: 640px) {
+  .solara-landing .sol-calc-controls { grid-template-columns: 1fr; }
+}
+.solara-landing .sol-calc-field { display: flex; flex-direction: column; gap: 10px; }
+.solara-landing .sol-calc-lbl {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.solara-landing .sol-calc-val {
+  font-family: 'Satoshi', 'Figtree', sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  text-transform: none;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Slider: eigener Track/Thumb, damit er nicht als Fremdkoerper im
+   Kupfer/Ink-System sitzt. Fokusring bleibt sichtbar. */
+.solara-landing .sol-calc-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+.solara-landing .sol-calc-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line-2);
+}
+.solara-landing .sol-calc-range::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line-2);
+}
+.solara-landing .sol-calc-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, .6);
+}
+.solara-landing .sol-calc-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, .6);
+}
+.solara-landing .sol-calc-range:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.solara-landing .sol-calc-result {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.solara-landing .sol-calc-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 7px 0;
+  font-size: 14.5px;
+}
+.solara-landing .sol-calc-row-lbl { color: var(--fg-2); }
+.solara-landing .sol-calc-row-num {
+  font-family: 'Satoshi', 'Figtree', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -.02em;
+  color: var(--fg);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.solara-landing .sol-calc-verdict {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border-left: 2px solid var(--accent);
+  background: rgba(224, 138, 60, .07);
+  color: var(--fg);
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+/* Ehrlicher Abrat-Fall bekommt eine neutrale, keine Kupfer-Optik. */
+.solara-landing .sol-calc[data-verdict="against"] .sol-calc-verdict {
+  border-left-color: var(--fg-3);
+  background: rgba(255, 255, 255, .03);
+  color: var(--fg-2);
+}
+.solara-landing .sol-calc-fineprint {
+  margin: 14px 0 0;
+  font-size: 10.5px;
+  letter-spacing: .04em;
+  line-height: 1.6;
+  color: var(--fg-3);
+}
+@media (prefers-reduced-motion: reduce) {
+  .solara-landing .sol-calc-range { transition: none; }
+}
+
 .solara-landing .sol-capex-summary {
   margin-top: 26px;
   padding: 24px 28px;
@@ -1091,8 +1272,8 @@
 }
 
 .solara-landing .sol-chain-rect {
-  fill: rgba(242, 235, 221, .03);
-  stroke: rgba(242, 235, 221, .16);
+  fill: var(--chain-rect-fill, rgba(242, 235, 221, .03));
+  stroke: var(--chain-rect-stroke, rgba(242, 235, 221, .16));
   stroke-width: 1;
 }
 .solara-landing .sol-chain-node--final .sol-chain-rect {
@@ -1109,7 +1290,7 @@
   font: 700 15.5px 'Satoshi', 'Figtree', sans-serif;
 }
 .solara-landing .sol-chain-s {
-  fill: #8A8478;
+  fill: var(--fg-3);
   font: 500 10.5px 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 }
 .solara-landing .sol-chain-line {
@@ -1123,7 +1304,7 @@
   font-variant-numeric: tabular-nums;
 }
 .solara-landing .sol-chain-count-lbl {
-  fill: #8A8478;
+  fill: var(--fg-3);
   font: 500 9.5px 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
   letter-spacing: 1px;
 }
@@ -1216,4 +1397,142 @@ html.sol-anim .solara-landing .sol-chain.is-live .sol-chain-line { stroke-dashof
     stroke-dashoffset: 0;
     transition: none;
   }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   14) LIGHT-TOP — heller Einstieg fuer Solar-/SHK-Entscheider
+   --------------------------------------------------------------
+   Zielgruppe ist an weisse Handwerks-/Fachbetriebs-Websites
+   gewoehnt; der durchgehend dunkle Einstieg war die groesste
+   Reibung. Hero, Anfrage-Kette und Trust-Strip laufen deshalb auf
+   warmem Papier, die Proof-Bar darunter bleibt dunkel und wirkt
+   als Kontrast-Anker vor der Sticky-Nav.
+
+   Umgesetzt als reiner Token-Swap: das Stylesheet ist fast
+   vollstaendig var()-getrieben, die Komponenten bleiben deshalb
+   unveraendert. Nur hartkodierte Dark-Werte (weisse Overlays,
+   SVG-Attribute) brauchen eine explizite Regel — siehe unten.
+
+   Palette bewusst identisch zur hellen Variante auf
+   /waermepumpen-leads/ (assets/css/waermepumpen-leads.css), damit
+   die hellen Flaechen der Site eine Handschrift behalten.
+   ══════════════════════════════════════════════════════════════ */
+.solara-landing .sol-hero,
+.solara-landing .sol-chain,
+.solara-landing .sol-trust {
+  --bg:      hsl(37 33% 95%);
+  --bg-2:    hsl(42 45% 99%);
+  --bg-3:    hsl(37 30% 97%);
+  --line:    hsl(33 24% 86%);
+  --line-2:  hsl(33 22% 78%);
+  --fg:      hsl(28 16% 15%);
+  --fg-2:    hsl(28 10% 32%);
+  --fg-3:    hsl(28  9% 36%);
+  --fg-4:    hsl(28  9% 41%);
+
+  /* Kupfer in zwei Rollen: Flaeche dunkler als im Ink-Theme
+     (#E08A3C waere auf Papier zu grell), Text noch dunkler,
+     damit auch Fliesstext AA haelt. */
+  --accent:      #b46a3c;
+  --accent-ink:  #8f4f24;
+  --accent-soft: rgba(180, 106, 60, .10);
+
+  --bar-idle:          hsl(33 20% 84%);
+  --chain-rect-fill:   hsl(42 45% 99%);
+  --chain-rect-stroke: hsl(33 24% 84%);
+  --surface:           hsl(42 45% 99%);
+  --card-shadow:
+    0 1px 2px hsl(28 20% 40% / .06),
+    0 10px 26px -14px hsl(28 30% 28% / .14);
+
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* Ueberschriften: das Basis-Kit faerbt h1–h4 ueber .hu-hp.solara-landing
+   (0,2,x) — hier muss die hellere Zone mit einer Klasse mehr nachziehen. */
+.hu-hp.solara-landing :is(.sol-hero, .sol-chain, .sol-trust) :is(h1, h2, h3, h4) {
+  color: var(--fg);
+}
+
+/* ─── Kupfer als Textrolle (AA) ──────────────────────────────
+   Ueberall dort, wo --accent als color/fill statt als Flaeche
+   dient. Ohne diese Liste faellt Kupfer-auf-Papier auf ~3,7:1. */
+.solara-landing :is(.sol-hero, .sol-chain, .sol-trust) :is(
+  .hu-hero__title-2,
+  .sol-hero-callink a,
+  .sol-cta-bullets-tick,
+  .sol-quiz-label,
+  .sol-quiz-next,
+  .sol-quiz-rationale-h,
+  .sol-quiz-field-lbl-req,
+  .sol-quiz-consent a,
+  .sol-quiz-error,
+  .sol-quiz-success-h,
+  .sol-quiz-success-proof-label,
+  .sol-quiz-opt.is-sel .sol-quiz-opt-t
+) {
+  color: var(--accent-ink);
+}
+/* Hover: nur eine Stufe heller, nicht bis --accent — #b46a3c faellt auf
+   Papier auf 3,75:1. #a05a2a haelt 4,77:1 und bleibt sichtbar anders. */
+.solara-landing .sol-hero :is(
+  .sol-hero-callink a:hover,
+  .sol-hero-callink a:focus-visible,
+  .sol-quiz-next:hover,
+  .sol-cta-person a:hover,
+  .sol-cta-person a:focus-visible
+) {
+  color: #a05a2a;
+}
+
+/* ─── Hartkodierte Dark-Werte ────────────────────────────────
+   Die folgenden Regeln existieren nur, weil die Basis an diesen
+   Stellen mit festen weissen/hellen Werten arbeitet statt mit
+   Tokens. Sie sind die vollstaendige Ausnahmeliste. */
+
+/* Punktraster im Hero: helle Punkte -> dunkle Punkte */
+.solara-landing .sol-hero .hu-hero__grid-bg {
+  background-image: radial-gradient(circle at 1px 1px, hsl(28 16% 15% / .07) 1px, transparent 0);
+}
+
+/* Tag-Pille: weisses 1%-Overlay traegt auf Papier nicht */
+.solara-landing .sol-hero .hu-tag {
+  background: var(--surface);
+  color: var(--fg-2);
+}
+
+/* CPL-Panel: weisser Schleier + weisser Rahmen raus, Karte
+   braucht auf Papier eine echte Kante plus weichen Schatten. */
+.solara-landing .sol-hero .hu-diagram {
+  background:
+    radial-gradient(ellipse 72% 54% at 52% 42%, var(--accent-soft), transparent 74%),
+    var(--surface);
+  border-color: var(--line);
+  box-shadow: var(--card-shadow);
+}
+
+/* Marktcheck-Karte: auf Weiss traegt der Kontrast allein nicht
+   mehr — sichtbare Kante + Hebung statt Leuchten gegen Dunkel. */
+.solara-landing .sol-hero .sol-cta-card {
+  border-color: hsl(28 55% 78%);
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, var(--accent-soft), transparent 65%),
+    var(--surface);
+  box-shadow: var(--card-shadow);
+}
+
+/* Kupfer-Sonne: bei voller Deckkraft auf Papier zu laut. */
+.solara-landing .sol-hero .sol-sun { opacity: .62; }
+.solara-landing .sol-hero .sol-sun line,
+.solara-landing .sol-hero .sol-sun circle { stroke: var(--accent); }
+.solara-landing .sol-hero .sol-sun stop { stop-color: var(--accent); }
+
+/* ─── Uebergang hell -> dunkel ───────────────────────────────
+   Trust-Strip endet, Proof-Bar beginnt. Bewusste Kante mit
+   weichem Inset, analog zu /waermepumpen-leads/. */
+.solara-landing .sol-trust { border-bottom: 0; }
+.solara-landing .sol-proofbar {
+  border-top: 1px solid var(--line);
+  box-shadow: inset 0 18px 32px -24px hsl(28 30% 6% / .55);
 }

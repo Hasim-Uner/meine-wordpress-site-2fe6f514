@@ -162,6 +162,28 @@ $capex_timeframes = [
 $capex_default = 24;
 $capex_now     = $capex_timeframes[ $capex_default ];
 
+// 04b / Portal-Kosten-Rechner ─────────────────────────────────
+// Eingabewerte des Nutzers × Canon-Zahlen. Bewusst KEINE Prognose:
+// die Ausgabe ist eine Gegenüberstellung, kein Ersparnis-Versprechen.
+// Setup-Spanne und Hosting stammen aus derselben Quelle wie die
+// Modellkarten oben ($capex_timeframes) — Zahlen bleiben konsistent.
+$calc_setup_low  = 12000;
+$calc_setup_high = 18000;
+$calc_hosting    = 50;
+$calc_leads      = 14;
+$calc_price      = 80;
+
+$calc_portal_total = $calc_leads * $calc_price * $capex_default;
+$calc_own_low      = $calc_setup_low + $calc_hosting * $capex_default;
+$calc_own_high     = $calc_setup_high + $calc_hosting * $capex_default;
+$calc_diff_low     = $calc_portal_total - $calc_own_high;
+$calc_diff_high    = $calc_portal_total - $calc_own_low;
+
+// Deutsche Tausenderpunkte, Währungs-Doktrin EUR (siehe Dateikopf).
+$calc_eur = static function ( $value ) {
+	return number_format( (float) $value, 0, ',', '.' ) . ' €';
+};
+
 // 06 / Fit-Check (passt / passt nicht) ─────────────────────────
 $fit_yes = [
 	[ 't' => 'Solar, Wärmepumpe oder Speicher',     's' => 'Projektwert, Marge und Vertriebsfähigkeit stimmen.' ],
@@ -470,12 +492,10 @@ get_header();
 							foreach ( [ 0, 40, 80, 120, 160 ] as $grid_v ) :
 								$grid_y = $cpl_pad_t + ( 1 - $grid_v / $cpl_max ) * $cpl_inner;
 								?>
-								<line x1="<?php echo (int) ( $cpl_pad_l + 16 ); ?>" x2="<?php echo (int) $cpl_w; ?>"
-									y1="<?php echo esc_attr( (string) round( $grid_y, 1 ) ); ?>" y2="<?php echo esc_attr( (string) round( $grid_y, 1 ) ); ?>"
-									stroke="rgba(255,255,255,0.07)" stroke-width="1" />
-								<text x="<?php echo (int) ( $cpl_pad_l + 10 ); ?>" y="<?php echo esc_attr( (string) round( $grid_y + 3, 1 ) ); ?>"
-									text-anchor="end" font-size="9" fill="#5C5A52"
-									font-family="'JetBrains Mono', monospace"><?php echo (int) $grid_v; ?></text>
+								<line class="sol-cpl-grid" x1="<?php echo (int) ( $cpl_pad_l + 16 ); ?>" x2="<?php echo (int) $cpl_w; ?>"
+									y1="<?php echo esc_attr( (string) round( $grid_y, 1 ) ); ?>" y2="<?php echo esc_attr( (string) round( $grid_y, 1 ) ); ?>" />
+								<text class="sol-cpl-tick" x="<?php echo (int) ( $cpl_pad_l + 10 ); ?>" y="<?php echo esc_attr( (string) round( $grid_y + 3, 1 ) ); ?>"
+									text-anchor="end"><?php echo (int) $grid_v; ?></text>
 							<?php endforeach; ?>
 							<?php
 							foreach ( $cpl_bars as $bar_i => $bar_v ) :
@@ -484,18 +504,15 @@ get_header();
 								$bar_y    = $cpl_h - $cpl_pad_b - $bar_h;
 								$bar_last = count( $cpl_bars ) - 1 === $bar_i;
 								?>
-								<rect class="sol-bar" style="animation-delay:<?php echo (int) ( 250 + $bar_i * 110 ); ?>ms"
+								<rect class="sol-bar<?php echo esc_attr( $bar_last ? ' is-final' : '' ); ?>" style="animation-delay:<?php echo (int) ( 250 + $bar_i * 110 ); ?>ms"
 									x="<?php echo esc_attr( (string) round( $bar_x, 1 ) ); ?>" y="<?php echo esc_attr( (string) round( $bar_y, 1 ) ); ?>"
 									width="<?php echo esc_attr( (string) round( $cpl_bw * 0.5, 1 ) ); ?>" height="<?php echo esc_attr( (string) round( $bar_h, 1 ) ); ?>"
-									rx="2" fill="<?php echo esc_attr( $bar_last ? '#E08A3C' : 'rgba(242,235,221,0.13)' ); ?>" />
-								<text class="sol-bar-label" style="animation-delay:<?php echo (int) ( 520 + $bar_i * 110 ); ?>ms"
+									rx="2" />
+								<text class="sol-bar-label<?php echo esc_attr( $bar_last ? ' is-final' : '' ); ?>" style="animation-delay:<?php echo (int) ( 520 + $bar_i * 110 ); ?>ms"
 									x="<?php echo esc_attr( (string) round( $bar_x + $cpl_bw * 0.25, 1 ) ); ?>" y="<?php echo esc_attr( (string) round( $bar_y - 7, 1 ) ); ?>"
-									text-anchor="middle" font-size="11.5" font-weight="800"
-									font-family="'Satoshi','Figtree',sans-serif"
-									fill="<?php echo esc_attr( $bar_last ? '#E08A3C' : '#8A8478' ); ?>"><?php echo (int) $bar_v; ?> €</text>
-								<text x="<?php echo esc_attr( (string) round( $bar_x + $cpl_bw * 0.25, 1 ) ); ?>" y="<?php echo (int) ( $cpl_h - $cpl_pad_b + 17 ); ?>"
-									text-anchor="middle" font-size="9" letter-spacing="1.5"
-									font-family="'JetBrains Mono', monospace" fill="#5C5A52">M<?php echo (int) ( $bar_i + 1 ); ?></text>
+									text-anchor="middle"><?php echo (int) $bar_v; ?> €</text>
+								<text class="sol-cpl-tick" x="<?php echo esc_attr( (string) round( $bar_x + $cpl_bw * 0.25, 1 ) ); ?>" y="<?php echo (int) ( $cpl_h - $cpl_pad_b + 17 ); ?>"
+									text-anchor="middle">M<?php echo (int) ( $bar_i + 1 ); ?></text>
 							<?php endforeach; ?>
 						</svg>
 						<figcaption class="hu-lead-sketch__footer">
@@ -506,7 +523,8 @@ get_header();
 
 					<div class="hu-hero__stats">
 						<div>
-							<div class="hu-stat-num" style="color:var(--accent);" data-sol-countup><?php echo esc_html( $e3_cpl_after ); ?></div>
+							<?php // --accent-ink statt --accent: im hellen Hero muss auch die grosse Zahl AA halten. ?>
+							<div class="hu-stat-num" style="color:var(--accent-ink);" data-sol-countup><?php echo esc_html( $e3_cpl_after ); ?></div>
 							<div class="hu-stat-label">CPL nach <?php echo esc_html( $e3_timeframe_dative ); ?> · <?php echo esc_html( $e3_case_label ); ?></div>
 						</div>
 						<div class="hu-stat-divider"></div>
@@ -940,6 +958,87 @@ get_header();
 						<div class="hu-model__foot">Gesamt über <span data-sol-capex-out="tf2"><?php echo esc_html( (string) $capex_default ); ?></span> Monate: <span data-sol-capex-out="own_total"><?php echo esc_html( $capex_now['own_total'] ); ?></span></div>
 						<span class="hu-model__pill">Aktiviertes Asset — bleibt, auch ohne laufende Kosten</span>
 					</article>
+				</div>
+
+				<?php
+				// ── Portal-Kosten-Rechner ──────────────────────────────
+				// Zwei Slider, Ausgabe an den bestehenden Zeitraum-Picker
+				// gekoppelt (kein zweiter Zeitraum-Zustand). SSR rendert
+				// die Startwerte fertig aus — ohne JS steht hier eine
+				// korrekte, statische Beispielrechnung.
+				?>
+				<div class="sol-calc" data-sol-calc
+					data-setup-low="<?php echo (int) $calc_setup_low; ?>"
+					data-setup-high="<?php echo (int) $calc_setup_high; ?>"
+					data-hosting="<?php echo (int) $calc_hosting; ?>">
+					<div class="sol-calc-head">
+						<span class="hu-eyebrow">Mit Ihren Zahlen</span>
+						<h3 class="sol-calc-h">Was kostet Sie der Portal-Weg?</h3>
+						<p class="sol-calc-sub">
+							Die Modelle oben rechnen mit Marktdurchschnitt. Tragen Sie Ihre eigenen
+							Werte ein — die Gegenüberstellung rechnet sofort mit dem Zeitraum, den
+							Sie oben gewählt haben.
+						</p>
+					</div>
+
+					<div class="sol-calc-controls">
+						<div class="sol-calc-field">
+							<div class="sol-calc-lbl sol-mono">
+								<label for="sol-calc-leads">Gekaufte Anfragen pro Monat</label>
+								<output class="sol-calc-val" for="sol-calc-leads" data-sol-calc-out="leads"><?php echo (int) $calc_leads; ?></output>
+							</div>
+							<input class="sol-calc-range" type="range" id="sol-calc-leads"
+								name="sol-calc-leads" min="2" max="60" step="1"
+								value="<?php echo (int) $calc_leads; ?>"
+								data-sol-calc-input="leads"
+								aria-describedby="sol-calc-result"
+								data-track-action="capex_calc_leads"
+								data-track-category="engagement"
+								data-track-section="capex_opex" />
+						</div>
+						<div class="sol-calc-field">
+							<div class="sol-calc-lbl sol-mono">
+								<label for="sol-calc-price">Preis pro Portal-Anfrage</label>
+								<output class="sol-calc-val" for="sol-calc-price" data-sol-calc-out="price"><?php echo (int) $calc_price; ?> €</output>
+							</div>
+							<input class="sol-calc-range" type="range" id="sol-calc-price"
+								name="sol-calc-price" min="40" max="200" step="5"
+								value="<?php echo (int) $calc_price; ?>"
+								data-sol-calc-input="price"
+								aria-describedby="sol-calc-result"
+								data-track-action="capex_calc_price"
+								data-track-category="engagement"
+								data-track-section="capex_opex" />
+						</div>
+					</div>
+
+					<div class="sol-calc-result" id="sol-calc-result" aria-live="polite">
+						<div class="sol-calc-row">
+							<span class="sol-calc-row-lbl">Portal-Anfragen über <span data-sol-capex-out="tf5"><?php echo (int) $capex_default; ?></span> Monate</span>
+							<span class="sol-calc-row-num" data-sol-calc-out="portal"><?php echo esc_html( $calc_eur( $calc_portal_total ) ); ?></span>
+						</div>
+						<div class="sol-calc-row">
+							<span class="sol-calc-row-lbl">Eigenes System im selben Zeitraum</span>
+							<span class="sol-calc-row-num" data-sol-calc-out="own"><?php echo esc_html( $calc_eur( $calc_own_low ) . ' – ' . $calc_eur( $calc_own_high ) ); ?></span>
+						</div>
+						<p class="sol-calc-verdict" data-sol-calc-out="verdict">
+							<?php
+							echo esc_html(
+								sprintf(
+									'Differenz: %s bis %s — und am Ende gehört Ihnen das System.',
+									$calc_eur( $calc_diff_low ),
+									$calc_eur( $calc_diff_high )
+								)
+							);
+							?>
+						</p>
+					</div>
+
+					<p class="sol-calc-fineprint sol-mono">
+						Rechenbeispiel mit Ihren Eingaben — keine Prognose und keine zugesagte
+						Ersparnis. Eigenes System: <?php echo esc_html( $calc_eur( $calc_setup_low ) . ' – ' . $calc_eur( $calc_setup_high ) ); ?>
+						einmalig plus <?php echo esc_html( $calc_eur( $calc_hosting ) ); ?> Hosting im Monat.
+					</p>
 				</div>
 
 				<aside class="sol-capex-summary">
