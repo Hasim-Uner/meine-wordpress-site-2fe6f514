@@ -33,6 +33,9 @@ $cluster_url  = static function ( $slug, $fallback ) use ( $cluster_map ) {
 $qualified_url = $cluster_url( 'qualifizierte-pv-anfragen', '/qualifizierte-pv-anfragen/' );
 $cpl_url       = $cluster_url( 'cost-per-lead-photovoltaik', '/cost-per-lead-photovoltaik/' );
 $tracking_url  = $cluster_url( 'server-side-tracking-b2b', '/server-side-tracking-b2b/' );
+// Intent-Trennung: wer den Portal-Vergleich sucht, gehoert auf die
+// Kauf-Alternative — nicht auf diese Gewerbe-/Termin-Seite.
+$portal_alternative_url = $cluster_url( 'solar-leads-kaufen-alternative', '/solar-leads-kaufen-alternative/' );
 
 // ── E3-Canon ──────────────────────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
@@ -54,25 +57,29 @@ $b2b_facts = [
 	[ 'k' => 'ab 50.000 €', 'l' => 'Projektwert, ab dem sich ein eigenes Anfrage-System gegenüber Lead-Einkauf rechnet' ],
 	[ 'k' => '3 – 6 Monate', 'l' => 'typische Dauer von der Erstanfrage bis zur Freigabe, wenn ein Buying-Center entscheidet' ],
 	[ 'k' => '3 – 6', 'l' => 'Entscheider und Einflussnehmer, die in der Regel an einer gewerblichen Anfrage beteiligt sind' ],
-	[ 'k' => '0 Felder', 'l' => 'fragen B2C-Portalformulare zu Anschlussleistung, Dachstatik oder EEG-Status ab — genau den Angaben, an denen ein Gewerbeprojekt hängt' ],
+	[ 'k' => 'Pro Termin', 'l' => 'rechnen Terminierungs-Dienstleister ab — unabhängig davon, ob Anschlussleistung, Budget und Entscheider am Tisch überhaupt passen' ],
 ];
 
+// Feindbild ist bewusst der Terminierungs-Dienstleister, nicht das
+// B2C-Lead-Portal: Ein Betrieb mit Hallendach-Projekten kauft bei Aroundhome
+// oder DAA ohnehin nicht ein. Was im Gewerbe wirklich eingekauft wird, sind
+// gelegte Vertriebstermine — dagegen argumentiert diese Seite.
 $why_b2c_funnel_fails = [
 	[
-		't' => 'Falsche Sprache',
-		's' => 'B2C-Portale werben mit „Solaranlage Kosten" – ein gewerblicher Einkäufer sucht nach „PPA", „Eigenverbrauchsoptimierung" oder „Hallendach Photovoltaik". Die Anfrage ist da, das Funnel-Vokabular fehlt.',
+		't' => 'Qualifizierung kommt zu spät',
+		's' => 'Ein gekaufter Termin ist ein Kalendereintrag. Ob Anschlussleistung, Dachstatik und Investitionsabsicht zusammenpassen, klärt sich erst, wenn Ihr Vertrieb schon angereist ist – und die Stunde ist bezahlt, egal wie sie ausgeht.',
 	],
 	[
 		't' => 'Buying-Center wird ignoriert',
-		's' => 'Im Gewerbe entscheiden Geschäftsführung, CFO, Energie-Manager und Technik gemeinsam. Ein 5-Felder-Formular passt nicht zu einem Beschaffungsprozess mit drei Freigaben.',
+		's' => 'Im Gewerbe entscheiden Geschäftsführung, CFO, Energie-Manager und Technik gemeinsam. Ein Termin mit genau einer Person führt zu einer zweiten Runde, die niemand eingeplant hat.',
 	],
 	[
 		't' => 'Förder- und Finanzierungslogik fehlt',
-		's' => 'KfW-Programme, IAB, Sonderabschreibung, PPA-Modelle, Investitions-Contracting – das gehört in die Anfragestrecke, nicht in ein FAQ am Seitenende.',
+		's' => 'KfW-Programme, IAB, Sonderabschreibung, PPA-Modelle, Investitions-Contracting – das gehört in die Vorqualifizierung, nicht in ein Gespräch, in dem beide Seiten bei null anfangen.',
 	],
 	[
-		't' => 'Geteilte Datensätze',
-		's' => 'Ein Gewerbe-Lead, der bei drei Wettbewerbern liegt, wird nicht angenommen. Einkäufer wollen mit einem Anbieter sprechen, der ihre Sprache spricht – nicht im Bieterkrieg landen.',
+		't' => 'Fremde Kriterien',
+		's' => 'Ein Callcenter entscheidet, was ein „guter" Gewerbe-Termin ist – nach eigener Erfolgsquote, nicht nach Ihrer Projektschwelle. Was durchfällt und was durchgeht, bestimmen Sie nicht.',
 	],
 ];
 
@@ -144,6 +151,18 @@ $faq = [
 		'answer'   => 'Termin-Anbieter verkaufen fertig gelegte Vertriebstermine statt Datensätze – klingt bequem, verlagert aber die Qualifizierung nach hinten: Ob Anschlussleistung, Entscheiderrolle und Investitionsabsicht stimmen, zeigt sich erst im Gespräch. Für Gewerbe-PV mit Buying-Center-Logik gilt dieselbe Rechnung wie beim Lead-Kauf: Kosten pro Auftrag zählen, nicht Kosten pro Termin. Ein eigenes System qualifiziert vor dem Termin – nicht danach.',
 	],
 	[
+		'question' => 'Woran erkenne ich einen wertlosen Gewerbe-PV-Termin?',
+		'answer'   => 'An vier Dingen, die vorher hätten geklärt sein müssen: Am Tisch sitzt niemand mit Freigabekompetenz. Die Anschlussleistung passt nicht zur eigenen Projektgröße. Es gibt kein Investitionsbudget, sondern eine Interessensbekundung. Und das Dach ist statisch oder rechtlich gar nicht bespielbar. Jeder dieser Punkte lässt sich vor dem Termin abfragen — wenn die Anfragestrecke danach fragt.',
+	],
+	[
+		'question' => 'Was macht einen PV-Termin im Gewerbe überhaupt qualifiziert?',
+		'answer'   => 'Dass die Entscheidung im Termin auch fallen könnte. Konkret heißt das: Projektwert oberhalb Ihrer Schwelle, Dachfläche und Anschlussleistung bekannt, EEG- und Netzanschluss-Status geklärt, Investitionsabsicht mit Zeithorizont, und mindestens ein Teilnehmer mit Budgetverantwortung. Ein Termin, der nur eines dieser Kriterien offen lässt, ist ein Informationsgespräch — das kann sinnvoll sein, sollte aber nicht als Vertriebstermin bezahlt werden.',
+	],
+	[
+		'question' => 'Terminierung einkaufen oder selbst aufbauen — wann lohnt sich was?',
+		'answer'   => 'Einkaufen lohnt sich, wenn Sie kurzfristig Vertriebskapazität auslasten wollen und die Streuverluste einkalkuliert sind. Selbst aufbauen lohnt sich, wenn Ihre Projekte groß genug sind, dass ein einzelner Fehltermin teurer ist als die Vorqualifizierung — und wenn Sie über zwölf Monate hinaus planen. Der Unterschied ist nicht Qualität gegen Menge, sondern wer die Kriterien setzt. Was in Ihrem Fall trägt, klärt der Marktcheck.',
+	],
+	[
 		'question' => 'Warum reicht eine B2C-Solar-Seite nicht für Gewerbe-PV?',
 		'answer'   => 'B2C- und B2B-PV haben unterschiedliche Sprache, unterschiedliche Entscheider und unterschiedliche Vertragsstrukturen. Ein gewerblicher Einkäufer mit 800 kWp Anschlussleistung und PPA-Bedarf erkennt sich in einer Hausbesitzer-Seite mit „CO₂-Fußabdruck" nicht wieder. Die Anfragequalität fällt drastisch.',
 	],
@@ -157,7 +176,7 @@ $faq = [
 	],
 	[
 		'question' => 'Wie passt das mit DAA, Aroundhome oder Check24 zusammen?',
-		'answer'   => 'Gar nicht. Diese Portale liefern überwiegend B2C-Anfragen, oft mehrfach verkauft, oft ohne Projektsubstanz. Für gewerbliche PV-Anbieter sind sie weder qualitativ noch wirtschaftlich tragfähig. Das B2B-Solar-System ist explizit als Alternative gebaut.',
+		'answer'   => sprintf( 'Gar nicht — und das ist hier der Punkt. Diese Portale sind auf Privathaushalte gebaut. Ein Betrieb mit Hallendach- oder Quartiersprojekten kauft dort ohnehin nicht ein, deshalb argumentiert diese Seite auch nicht gegen Portale, sondern gegen eingekaufte Vertriebstermine. Wenn Sie den Portal-Vergleich für das Privatkundengeschäft suchen, steht er unter %s.', '<a href="' . esc_url( $portal_alternative_url ) . '">Photovoltaik- und Solar-Leads kaufen: die Alternative</a>' ),
 	],
 	[
 		'question' => 'Wie lange dauert der Aufbau eines B2B-Solar-Systems?',
@@ -175,10 +194,11 @@ $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
 	'@id'         => trailingslashit( $page_url ) . '#service',
-	'name'        => 'B2B-Leadgenerierung für gewerbliche Photovoltaik',
-	'serviceType' => 'Anfrage-System für gewerbliche PV-, Speicher- und PPA-Anbieter',
+	'name'        => 'PV-Termine und Anfrage-Systeme für gewerbliche Photovoltaik',
+	'alternateName' => [ 'PV-Termine B2B', 'B2B Solar Leads', 'Gewerbe-PV-Anfragen' ],
+	'serviceType' => 'Vorqualifizierung und Terminlogik für gewerbliche PV-, Speicher- und PPA-Anbieter',
 	'url'         => $page_url,
-	'description' => sprintf( 'Buying-Center-taugliche Anfrage-Architektur für gewerbliche Photovoltaik-Projekte. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
+	'description' => sprintf( 'Buying-Center-taugliche Anfrage- und Terminarchitektur für gewerbliche Photovoltaik-Projekte: Qualifizierung vor dem Termin statt Provision pro Kalendereintrag. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
 	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 	'audience'    => [
@@ -206,7 +226,9 @@ foreach ( $faq as $faq_item ) {
 		'name'           => $faq_item['question'],
 		'acceptedAnswer' => [
 			'@type' => 'Answer',
-			'text'  => $faq_item['answer'],
+			// Sichtbare Antwort kann Markup tragen; das Schema bekommt Klartext,
+			// damit JSON-LD und sichtbarer Text dieselbe Aussage transportieren.
+			'text'  => wp_strip_all_tags( $faq_item['answer'] ),
 		],
 	];
 }
@@ -218,17 +240,22 @@ get_header();
 
 	<section class="hu-intercept__hero" id="hero" aria-labelledby="hu-b2b-hero-title">
 		<div class="hu-intercept__container">
-			<p class="hu-intercept__eyebrow">Gewerbliche Photovoltaik · Speicher · PPA</p>
+			<?php
+			// Scope-Abgrenzung im Eyebrow: die Seite zieht laut GSC auch
+			// Grosshandels-Queries ("b2b-handel pv", "b2b solar panels").
+			// Der Zusatz sortiert diesen Intent sichtbar aus.
+			?>
+			<p class="hu-intercept__eyebrow">Gewerbliche Photovoltaik · Speicher · PPA — kein Modul-Großhandel</p>
 			<?php
 			// H1 nimmt den Meta-Title auf ("Photovoltaik B2B Leads & PV-Termine"),
 			// damit der Einstieg das SERP-Versprechen einlöst. "B2B Solar Leads"
 			// bleibt vorn — das ist das rankende Asset.
 			?>
 			<h1 class="hu-intercept__title" id="hu-b2b-hero-title">
-				B2B Solar Leads &amp; PV-Termine für gewerbliche Projekte ab 50.000 €
+				PV-Termine im B2B: eigene Photovoltaik-Anfragen statt eingekaufter Termine
 			</h1>
 			<p class="hu-intercept__lead">
-				Gewerbliche Photovoltaik braucht keine B2C-Leadportale und keine eingekauften Termine. Sie braucht eine Anfrage-Architektur, die <strong>Buying-Center</strong>, <strong>lange Sales-Zyklen</strong> und <strong>komplexe Förderlogik</strong> abbildet – und die qualifiziert, <em>bevor</em> ein Termin im Kalender steht.
+				Gekaufte Gewerbe-Termine verlagern die Qualifizierung dorthin, wo sie am teuersten ist: in den Termin selbst. Gewerbliche Photovoltaik braucht eine Anfrage-Architektur, die <strong>Buying-Center</strong>, <strong>lange Sales-Zyklen</strong> und <strong>komplexe Förderlogik</strong> abbildet – und die qualifiziert, <em>bevor</em> Ihr Vertrieb anreist. Gebaut für Projekte <strong>ab 50.000 €</strong>.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">
@@ -272,7 +299,7 @@ get_header();
 				</div>
 			</dl>
 			<p class="hu-b2b-proof__note">
-				Ein realer Fall über <?php echo esc_html( $e3_timeframe ); ?>, eigener Anfrageweg statt Portal-Leads — dokumentiert,
+				Ein realer Fall über <?php echo esc_html( $e3_timeframe ); ?>, eigener Anfrageweg statt eingekaufter Nachfrage — dokumentiert,
 				keine pauschale Übertragbarkeitsgarantie.
 			</p>
 		</div>
@@ -326,9 +353,10 @@ get_header();
 		</div>
 	</section>
 
-	<section class="hu-intercept__why" id="warum-b2c-funnel" aria-labelledby="hu-b2b-why-title">
+	<?php // Anker umbenannt (vorher #warum-b2c-funnel): keine interne oder externe Referenz darauf, geprueft. ?>
+	<section class="hu-intercept__why" id="warum-gekaufte-termine" aria-labelledby="hu-b2b-why-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-b2b-why-title">Warum klassische B2C-Funnel im Gewerbe scheitern</h2>
+			<h2 class="hu-intercept__h2" id="hu-b2b-why-title">Warum eingekaufte Gewerbe-Termine scheitern</h2>
 			<div class="hu-intercept__grid hu-intercept__grid--four">
 				<?php foreach ( $why_b2c_funnel_fails as $item ) : ?>
 					<article class="hu-intercept__card">
@@ -397,7 +425,8 @@ get_header();
 				<?php foreach ( $faq as $item ) : ?>
 					<details class="hu-intercept__faq-item">
 						<summary class="hu-intercept__faq-q"><?php echo esc_html( $item['question'] ); ?></summary>
-						<p class="hu-intercept__faq-a"><?php echo esc_html( $item['answer'] ); ?></p>
+						<?php // wp_kses_post: eine Antwort traegt einen kontextuellen Link (Intent-Trennung). ?>
+						<p class="hu-intercept__faq-a"><?php echo wp_kses_post( $item['answer'] ); ?></p>
 					</details>
 				<?php endforeach; ?>
 			</div>

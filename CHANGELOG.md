@@ -2,6 +2,17 @@
 
 ## 2026-07
 
+### `/b2b-solar-leads/`: Feindbild korrigiert — gekaufte PV-Termine statt Lead-Portale
+
+- **Datenbefund** (`seo-research/2026-07/data/gsc/gsc-export-28d-2026-07-03.csv`, 28 Tage): Die Seite sammelt **207 Impressionen über 20 Queries, 0 Klicks**. `pv termine b2b` trägt davon **86 Impressionen (42 %) auf Position 9,65** — die einzige Seite-1-Position der gesamten Site. Zum Vergleich: Money Page 11 Impressionen, `/solar-leads-kaufen-alternative/` 34.
+- **Die geplante Suchintention existiert nicht.** `b2b leads photovoltaik` hat in `keywords-master.csv` Volumen 0 und ist der einzige Gewerbe-Term im Money-Cluster; „Termin" kommt im gesamten Research-Set kein einziges Mal vor. Semrush sieht den Longtail nicht, Google schon.
+- **Das Portal-Feindbild trug nicht.** Unter allen 20 Queries kommt Aroundhome, DAA, Check24, Wattfox oder „leads kaufen" **kein einziges Mal** vor — der Kauf-Intent sitzt auf `/solar-leads-kaufen-alternative/`. Die Seite argumentierte seitenlang gegen einen Wettbewerber, den ihre Zielgruppe nicht hat; die eigene FAQ gab das bereits zu („Wie passt das mit DAA, Aroundhome oder Check24 zusammen? — Gar nicht."). Der reale Wettbewerber im Gewerbe sind **Terminierungs-Dienstleister und Callcenter**.
+- **Umgebaut:** H1, Lead, Title und die Sektion „Warum …" argumentieren jetzt gegen eingekaufte Gewerbe-Termine. Fakten-Karte 4 stellt auf das Abrechnungsmodell der Terminierung um (Aussage über das Preismodell, keine erfundene Statistik — gleiche Vorsicht wie in #150). Sektions-Anker `#warum-b2c-funnel` → `#warum-gekaufte-termine` (keine interne oder externe Referenz darauf, geprüft).
+- **Title auf die tragende Query gezogen** (`inc/seo-meta.php`, Forced-Map): „PV-Termine B2B & Photovoltaik Leads: Gewerbe statt Masse". H1 synchron gehalten — sonst laufen Snippet und Einstieg wieder auseinander, genau der Fehler aus #150. Die H1 behält „Photovoltaik", weil `leadgenerierung photovoltaik` und `photovoltaik leads gewerbe` ebenfalls auf die Seite zeigen.
+- **Drei FAQ-Einträge zur Termin-Frage ergänzt** (wertloser vs. qualifizierter Termin, einkaufen vs. selbst aufbauen) — beantwortbar aus eigenen Kriterien, ohne erfundene Quoten oder Preise. `$faq` speist sichtbaren Text und `FAQPage`-Schema; das Schema bekommt via `wp_strip_all_tags()` Klartext, weil eine Antwort jetzt einen Link trägt.
+- **Intent-Trennung in zwei Richtungen:** Die Portal-FAQ bleibt und verlinkt Portal-Suchende auf `/solar-leads-kaufen-alternative/` (Ziel über `hu_get_solar_cluster_link_map()`). Der Eyebrow grenzt sichtbar gegen Modul-Großhandel ab — `b2b-handel pv`, `b2b solar panels` u. a. brachten 12 Impressionen ohne jede Chance.
+- `Service`-Schema nachgezogen (`name`, `alternateName`, `serviceType`, `description`). Slug, Canon-Werte, Matrix und Proof-Band aus #150 unverändert, kein CSS.
+
 ### `/b2b-solar-leads/`: Einstieg auf „pv termine b2b" ausgerichtet, unbelegte Zahlen entschärft
 
 - **Ausgangslage:** Die Seite rankt laut `seo-research/2026-07/reports/gsc-verlauf-2026-07-20.md` für `pv termine b2b` auf Position 9,7 — 45 Impressionen, **0 Klicks**, im Report als „dichtester Klick-Kandidat" markiert. Ursache im Repo auffindbar: Der Title verspricht seit #147 „PV-Termine", aber H1 und Lead erwähnten sie nicht, und der Abschnitt „PV-Termine im B2B" stand an dritter Stelle hinter zwei Kartenrastern.
