@@ -259,9 +259,13 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Server-Side Tracking Agentur: DSGVO, GA4 & CAPI',
 				'description' => 'Server-Side Tracking für B2B-Anfrage-Systeme: GA4, Meta CAPI und Consent Mode v2 auf eigenem Server. Attribution für qualifizierte Anfragen statt Klickberichte.',
 			],
+			// "pv termine b2b" traegt 42 % der Impressionen dieser Seite und ist
+			// die einzige Seite-1-Position der Site (Pos. 9,65) — deshalb steht
+			// die Termin-Aussage vorn. "B2B Leads" bleibt als zweiter Teil, die
+			// H1 im Template ist synchron gehalten.
 			'b2b-solar-leads' => [
-				'title'       => 'Photovoltaik B2B Leads & PV-Termine: Gewerbe statt Masse',
-				'description' => 'Gewerbliche PV-Anfragen & B2B-Termine für Hallendächer, Quartiere & PPA — exklusiv statt mehrfach verkauft. Eigenes Anfrage-System statt Portal-Leads.',
+				'title'       => 'PV-Termine B2B & Photovoltaik Leads: Gewerbe statt Masse',
+				'description' => 'Gewerbliche PV-Termine und Anfragen für Hallendächer, Quartiere & PPA: vorqualifiziert statt eingekauft. Eigenes Anfrage-System statt Termin-Provision.',
 			],
 			'eigene-leadgenerierung-vs-portale' => [
 				'title'       => 'Portal-Leads vs. eigenes System: TCO-Vergleich Solar/SHK',
