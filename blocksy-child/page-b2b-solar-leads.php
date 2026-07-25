@@ -21,6 +21,19 @@ $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
 $e3_url          = home_url( '/case-study-solar-leadgenerierung/' );
 
+// Kontextuelle Cluster-Links: Ziele kommen aus der Registry in
+// inc/seo-subpage-cluster-links.php, damit Pfade nicht doppelt gepflegt
+// werden und mit den automatischen Footer-Links konsistent bleiben.
+$cluster_map  = function_exists( 'hu_get_solar_cluster_link_map' ) ? hu_get_solar_cluster_link_map() : [];
+$cluster_url  = static function ( $slug, $fallback ) use ( $cluster_map ) {
+	return isset( $cluster_map[ $slug ]['path'] )
+		? home_url( (string) $cluster_map[ $slug ]['path'] )
+		: home_url( $fallback );
+};
+$qualified_url = $cluster_url( 'qualifizierte-pv-anfragen', '/qualifizierte-pv-anfragen/' );
+$cpl_url       = $cluster_url( 'cost-per-lead-photovoltaik', '/cost-per-lead-photovoltaik/' );
+$tracking_url  = $cluster_url( 'server-side-tracking-b2b', '/server-side-tracking-b2b/' );
+
 // ── E3-Canon ──────────────────────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
@@ -31,11 +44,17 @@ $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 
 // ── Inhalte ───────────────────────────────────────────────────
+// Bewusst als Orientierungsgrößen ausgewiesen, nicht als Marktstudie:
+// die 50.000 € sind das eigene Fit-Kriterium (identisch zur Money-Page,
+// "B2B ab ca. 50 k € pro Projekt"), Zyklus und Entscheiderzahl beschreiben
+// den Beschaffungsprozess des Lesers. Die vierte Karte argumentiert über die
+// nachprüfbare Bauweise der Portal-Formulare statt über eine Prozentzahl,
+// die sich nicht belegen lässt.
 $b2b_facts = [
-	[ 'k' => '50.000 €+', 'l' => 'durchschnittlicher Auftragswert pro gewerblichem PV-Projekt' ],
-	[ 'k' => '100 – 180 Tage', 'l' => 'typische Sales-Zyklen mit Buying-Center und CFO-Freigabe' ],
-	[ 'k' => '3 – 6', 'l' => 'Entscheider und Influencer pro gewerblicher Anfrage' ],
-	[ 'k' => '< 5 %', 'l' => 'Anteil qualifizierter Gewerbe-Anfragen in B2C-Lead-Portalen' ],
+	[ 'k' => 'ab 50.000 €', 'l' => 'Projektwert, ab dem sich ein eigenes Anfrage-System gegenüber Lead-Einkauf rechnet' ],
+	[ 'k' => '3 – 6 Monate', 'l' => 'typische Dauer von der Erstanfrage bis zur Freigabe, wenn ein Buying-Center entscheidet' ],
+	[ 'k' => '3 – 6', 'l' => 'Entscheider und Einflussnehmer, die in der Regel an einer gewerblichen Anfrage beteiligt sind' ],
+	[ 'k' => '0 Felder', 'l' => 'fragen B2C-Portalformulare zu Anschlussleistung, Dachstatik oder EEG-Status ab — genau den Angaben, an denen ein Gewerbeprojekt hängt' ],
 ];
 
 $why_b2c_funnel_fails = [
@@ -68,7 +87,7 @@ $gewerbe_layers = [
 	],
 	[
 		't' => 'Anfrage-Qualifizierung nach Projektwert',
-		's' => 'Dachfläche, Anschlussleistung, geplanter Eigenverbrauch, vorhandene Trafostation, EEG-Status – Anfragen werden grün/gelb/rot sortiert, bevor der Vertrieb anruft.',
+		's' => 'Dachfläche, Anschlussleistung, geplanter Eigenverbrauch, vorhandene Trafostation, EEG-Status – Anfragen werden grün/gelb/rot sortiert, bevor der Vertrieb anruft. Welche Merkmale dabei zählen, steht im Detail unter <a href="' . esc_url( $qualified_url ) . '">qualifizierte PV-Anfragen</a>.',
 	],
 	[
 		't' => 'CRM-Anschluss mit Stakeholder-Mapping',
@@ -76,20 +95,34 @@ $gewerbe_layers = [
 	],
 	[
 		't' => 'Tracking auf Auftragswert, nicht auf Klick',
-		's' => 'Server-Side Tracking misst, welcher Kanal Anfragen mit Projektwert > 50.000 € produziert – nicht nur, welcher Kanal billige Klicks liefert.',
+		's' => '<a href="' . esc_url( $tracking_url ) . '">Server-Side Tracking</a> misst, welcher Kanal Anfragen ab 50.000 € Projektwert produziert – nicht nur, welcher Kanal billige Klicks liefert.',
 	],
 ];
 
-$pv_termine_bought = [
-	[ 't' => 'Termin ≠ Projekt', 's' => 'Gekaufte PV-Termine sind gelegte Kalendereinträge. Ob Anschlussleistung, Investitionsbudget und Entscheiderrolle stimmen, zeigt sich erst im Gespräch – die Qualifizierung passiert zu spät.' ],
-	[ 't' => 'Provision pro Termin', 's' => 'Bezahlt wird der Termin, nicht der Abschluss. No-Shows und unpassende Gewerbe-Projekte gehen zu Ihren Lasten.' ],
-	[ 't' => 'Fremde Vorqualifizierung', 's' => 'Ein Callcenter entscheidet, was ein „guter" B2B-Termin ist – nach eigenen Kriterien, nicht nach Ihrer Buying-Center-Logik.' ],
-];
-
-$pv_termine_own = [
-	[ 't' => 'Termin = qualifizierte Anfrage', 's' => 'Vorqualifizierung nach Dachfläche, Anschlussleistung und Buying-Center läuft vor dem Termin – nicht danach.' ],
-	[ 't' => 'Kosten pro Auftrag', 's' => 'Gemessen wird der Projektwert je Anfrage (> 50.000 €), nicht der Preis pro Kalendereintrag.' ],
-	[ 't' => 'Eigene Terminlogik', 's' => 'Ihr CRM und Ihre Kriterien bestimmen, welcher Gewerbe-Termin überhaupt in den Vertrieb geht.' ],
+// Zeilenmodell für die Vergleichsmatrix (.hu-intercept__matrix): je Kriterium
+// eine Zeile, damit gekaufter und eigener Termin direkt nebeneinander stehen
+// statt in zwei gestapelten Panels.
+$pv_termine_rows = [
+	[
+		'criterion' => 'Qualifizierung',
+		'bought'    => 'Erst im Termin. Ob Anschlussleistung, Budget und Entscheiderrolle stimmen, zeigt sich, wenn Ihr Vertrieb schon im Raum sitzt.',
+		'own'       => 'Vor dem Termin. Dachfläche, Anschlussleistung und Buying-Center laufen durch die Anfragestrecke, bevor jemand einen Kalender öffnet.',
+	],
+	[
+		'criterion' => 'Bezahlt wird',
+		'bought'    => 'Der Kalendereintrag. No-Shows und unpassende Gewerbe-Projekte gehen zu Ihren Lasten.',
+		'own'       => 'Die qualifizierte Anfrage — einmalig aufgebaut, danach ohne Stückpreis je Termin.',
+	],
+	[
+		'criterion' => 'Kriterien setzt',
+		'bought'    => 'Ein fremdes Callcenter, nach eigenen Vorgaben statt nach Ihrer Buying-Center-Logik.',
+		'own'       => 'Ihr CRM und Ihre Schwellen bestimmen, welcher Gewerbe-Termin überhaupt in den Vertrieb geht.',
+	],
+	[
+		'criterion' => 'Gemessen wird',
+		'bought'    => 'Preis pro Termin. Über den Projektwert dahinter sagt die Zahl nichts.',
+		'own'       => 'Projektwert je Anfrage — die Größe, an der Ihr Vertrieb ohnehin gemessen wird.',
+	],
 ];
 
 $fit_yes = [
@@ -100,7 +133,7 @@ $fit_yes = [
 ];
 
 $fit_no = [
-	[ 't' => 'Reine B2C-Solarteure', 's' => 'Wer Privathäuser bestückt, braucht andere Funnel-Logik – siehe Branchen-Money-Page.' ],
+	[ 't' => 'Reine B2C-Solarteure', 's' => 'Wer Privathäuser bestückt, braucht eine andere Funnel-Logik – die steht unter <a href="' . esc_url( $solar_money_url ) . '">Leadgenerierung für Photovoltaik und Wärmepumpe</a>.' ],
 	[ 't' => 'Eintägige Mengen-Verkäufer', 's' => '„100 Anfragen morgen" ist im Gewerbe weder realistisch noch profitabel.' ],
 	[ 't' => 'Reine Vermittler', 's' => 'Wer Anfragen nur weiterverkauft, braucht kein eigenes B2B-System.' ],
 ];
@@ -186,11 +219,16 @@ get_header();
 	<section class="hu-intercept__hero" id="hero" aria-labelledby="hu-b2b-hero-title">
 		<div class="hu-intercept__container">
 			<p class="hu-intercept__eyebrow">Gewerbliche Photovoltaik · Speicher · PPA</p>
+			<?php
+			// H1 nimmt den Meta-Title auf ("Photovoltaik B2B Leads & PV-Termine"),
+			// damit der Einstieg das SERP-Versprechen einlöst. "B2B Solar Leads"
+			// bleibt vorn — das ist das rankende Asset.
+			?>
 			<h1 class="hu-intercept__title" id="hu-b2b-hero-title">
-				B2B Solar Leads: Anfrage-Systeme für gewerbliche PV-Projekte ab 50.000 €
+				B2B Solar Leads &amp; PV-Termine für gewerbliche Projekte ab 50.000 €
 			</h1>
 			<p class="hu-intercept__lead">
-				Gewerbliche Photovoltaik braucht keine B2C-Leadportale. Sie braucht eine Anfrage-Architektur, die <strong>Buying-Center</strong>, <strong>lange Sales-Zyklen</strong> und <strong>komplexe Förderlogik</strong> abbildet – und Anfragen liefert, die wirtschaftlich bleiben.
+				Gewerbliche Photovoltaik braucht keine B2C-Leadportale und keine eingekauften Termine. Sie braucht eine Anfrage-Architektur, die <strong>Buying-Center</strong>, <strong>lange Sales-Zyklen</strong> und <strong>komplexe Förderlogik</strong> abbildet – und die qualifiziert, <em>bevor</em> ein Termin im Kalender steht.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">
@@ -209,18 +247,80 @@ get_header();
 					Case Study lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
 				</a>
 			</div>
+
+			<?php
+			// Proof früh sichtbar: Zahlen lagen bisher nur in einer
+			// Button-Beschriftung und einer FAQ-Antwort. Quelle ist der
+			// anonymisierte Canon (hu_e3_canon) — kein Kundenname.
+			?>
+			<dl class="hu-b2b-proof" aria-label="Belegte Ergebnisse aus der dokumentierten Fallstudie">
+				<div class="hu-b2b-proof__item">
+					<dt class="hu-b2b-proof__num"><?php echo esc_html( $e3_cpl_reduction ); ?></dt>
+					<dd class="hu-b2b-proof__lbl">weniger Kosten pro Anfrage</dd>
+				</div>
+				<div class="hu-b2b-proof__item">
+					<dt class="hu-b2b-proof__num"><?php echo esc_html( $e3_lead_count ); ?></dt>
+					<dd class="hu-b2b-proof__lbl">qualifizierte Anfragen</dd>
+				</div>
+				<div class="hu-b2b-proof__item">
+					<dt class="hu-b2b-proof__num"><?php echo esc_html( $e3_sales_conversion ); ?></dt>
+					<dd class="hu-b2b-proof__lbl">Abschluss · Anfrage → Vertrag</dd>
+				</div>
+				<div class="hu-b2b-proof__item">
+					<dt class="hu-b2b-proof__num"><?php echo esc_html( $e3_timeframe ); ?></dt>
+					<dd class="hu-b2b-proof__lbl">dokumentierter Zeitraum</dd>
+				</div>
+			</dl>
+			<p class="hu-b2b-proof__note">
+				Ein realer Fall über <?php echo esc_html( $e3_timeframe ); ?>, eigener Anfrageweg statt Portal-Leads — dokumentiert,
+				keine pauschale Übertragbarkeitsgarantie.
+			</p>
 		</div>
 	</section>
 
 	<section class="hu-intercept__compare" id="fakten" aria-labelledby="hu-b2b-facts-title">
 		<div class="hu-intercept__container">
 			<h2 class="hu-intercept__h2" id="hu-b2b-facts-title">Warum gewerbliches PV-Lead-Geschäft anders funktioniert</h2>
+			<p class="hu-intercept__section-lead">
+				Vier Größenordnungen, an denen diese Architektur ausgerichtet ist — Erfahrungswerte
+				aus Gewerbeprojekten und die eigene Fit-Schwelle, keine Marktstudie.
+			</p>
 			<div class="hu-intercept__grid hu-intercept__grid--four">
 				<?php foreach ( $b2b_facts as $fact ) : ?>
 					<article class="hu-intercept__card">
 						<h3 class="hu-intercept__card-title"><?php echo esc_html( $fact['k'] ); ?></h3>
 						<p class="hu-intercept__card-text"><?php echo esc_html( $fact['l'] ); ?></p>
 					</article>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+
+	<?php
+	// PV-Termine steht bewusst direkt hinter dem Einstieg: der Meta-Title
+	// verspricht "PV-Termine", die Seite muss das oben einlösen und nicht
+	// erst nach zwei Kartenrastern. Anker #pv-termine bleibt erhalten.
+	// Darstellung als Vergleichsmatrix (.hu-intercept__matrix) — bereits im
+	// gemeinsamen Stylesheet vorhanden, bisher nur auf der TCO-Seite genutzt.
+	?>
+	<section class="hu-intercept__compare" id="pv-termine" aria-labelledby="hu-b2b-termine-title">
+		<div class="hu-intercept__container">
+			<h2 class="hu-intercept__h2" id="hu-b2b-termine-title">PV-Termine im B2B: gekauft oder selbst erzeugt?</h2>
+			<p class="hu-intercept__section-lead">
+				„PV-Termine B2B" klingt nach Abkürzung zum Abschluss. Im Gewerbe mit Buying-Center und langen Sales-Zyklen entscheidet aber nicht der Termin, sondern die Qualifizierung dahinter – sonst sitzen teure Vertriebstermine ohne Projektsubstanz im Kalender. Wie sich das auf die <a href="<?php echo esc_url( $cpl_url ); ?>">Kosten pro Anfrage</a> auswirkt, lässt sich durchrechnen.
+			</p>
+			<div class="hu-intercept__matrix" role="table" aria-label="Vergleich gekaufte und eigene PV-Termine im B2B">
+				<div class="hu-intercept__matrix-head" role="row">
+					<span role="columnheader">Kriterium</span>
+					<span role="columnheader">Gekaufter PV-Termin</span>
+					<span role="columnheader">Eigener PV-Termin</span>
+				</div>
+				<?php foreach ( $pv_termine_rows as $row ) : ?>
+					<div class="hu-intercept__matrix-row" role="row">
+						<span class="hu-intercept__matrix-criterion" role="cell"><?php echo esc_html( $row['criterion'] ); ?></span>
+						<span class="hu-intercept__matrix-rent" role="cell"><?php echo esc_html( $row['bought'] ); ?></span>
+						<span class="hu-intercept__matrix-own" role="cell"><?php echo esc_html( $row['own'] ); ?></span>
+					</div>
 				<?php endforeach; ?>
 			</div>
 		</div>
@@ -240,44 +340,11 @@ get_header();
 		</div>
 	</section>
 
-	<section class="hu-intercept__compare" id="pv-termine" aria-labelledby="hu-b2b-termine-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-b2b-termine-title">PV-Termine im B2B: gekauft oder selbst erzeugt?</h2>
-			<p class="hu-intercept__section-lead">
-				„PV-Termine B2B" klingt nach Abkürzung zum Abschluss. Im Gewerbe mit Buying-Center und langen Sales-Zyklen entscheidet aber nicht der Termin, sondern die Qualifizierung dahinter – sonst sitzen teure Vertriebstermine ohne Projektsubstanz im Kalender.
-			</p>
-			<div class="hu-intercept__grid hu-intercept__grid--two">
-				<div class="hu-intercept__panel hu-intercept__panel--negative">
-					<h3 class="hu-intercept__panel-title">Gekaufte PV-Termine</h3>
-					<ul class="hu-intercept__facts">
-						<?php foreach ( $pv_termine_bought as $item ) : ?>
-							<li>
-								<span class="hu-intercept__fact-key"><?php echo esc_html( $item['t'] ); ?></span>
-								<span class="hu-intercept__fact-label"><?php echo esc_html( $item['s'] ); ?></span>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-				<div class="hu-intercept__panel hu-intercept__panel--positive">
-					<h3 class="hu-intercept__panel-title">Eigene B2B-PV-Termine</h3>
-					<ul class="hu-intercept__facts">
-						<?php foreach ( $pv_termine_own as $item ) : ?>
-							<li>
-								<span class="hu-intercept__fact-key"><?php echo esc_html( $item['t'] ); ?></span>
-								<span class="hu-intercept__fact-label"><?php echo esc_html( $item['s'] ); ?></span>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</section>
-
 	<section class="hu-intercept__system" id="architektur" aria-labelledby="hu-b2b-arch-title">
 		<div class="hu-intercept__container">
 			<h2 class="hu-intercept__h2" id="hu-b2b-arch-title">Die Architektur für gewerbliche PV-Anfragen</h2>
 			<p class="hu-intercept__section-lead">
-				Fünf Schichten, die das B2B-Gewerbe-Geschäft tragen – von der Sprache der Money-Page bis zur Stakeholder-Mapping im CRM.
+				Fünf Schichten, die das B2B-Gewerbe-Geschäft tragen – von der Sprache der Money Page bis zum Stakeholder-Mapping im CRM.
 			</p>
 			<ol class="hu-intercept__layers">
 				<?php foreach ( $gewerbe_layers as $i => $layer ) : ?>
@@ -285,7 +352,7 @@ get_header();
 						<span class="hu-intercept__layer-index"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 						<div class="hu-intercept__layer-body">
 							<h3 class="hu-intercept__layer-title"><?php echo esc_html( $layer['t'] ); ?></h3>
-							<p class="hu-intercept__layer-text"><?php echo esc_html( $layer['s'] ); ?></p>
+							<p class="hu-intercept__layer-text"><?php echo wp_kses_post( $layer['s'] ); ?></p>
 						</div>
 					</li>
 				<?php endforeach; ?>
@@ -314,7 +381,7 @@ get_header();
 						<?php foreach ( $fit_no as $f ) : ?>
 							<li>
 								<span class="hu-intercept__fact-key"><?php echo esc_html( $f['t'] ); ?></span>
-								<span class="hu-intercept__fact-label"><?php echo esc_html( $f['s'] ); ?></span>
+								<span class="hu-intercept__fact-label"><?php echo wp_kses_post( $f['s'] ); ?></span>
 							</li>
 						<?php endforeach; ?>
 					</ul>
