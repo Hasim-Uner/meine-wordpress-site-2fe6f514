@@ -566,14 +566,18 @@
 		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 	}
 
+	/* Auf Mobil entfaellt die Kopfzeile, die Spaltenbedeutung muss deshalb an
+	   der Zelle stehen. Die Labels kommen aus Custom Properties, damit eine
+	   Matrix mit anderen Spalten nicht stillschweigend die falsche
+	   Beschriftung erbt. Defaults = bisherige Werte, TCO-Seite unveraendert. */
 	.hu-intercept__matrix-rent::before {
-		content: "Portal mieten: ";
+		content: var(--matrix-rent-label, "Portal mieten: ");
 		color: rgba(245, 241, 234, 0.55);
 		font-weight: 600;
 	}
 
 	.hu-intercept__matrix-own::before {
-		content: "Eigenes System: ";
+		content: var(--matrix-own-label, "Eigenes System: ");
 		color: rgba(245, 241, 234, 0.55);
 		font-weight: 600;
 	}
@@ -792,4 +796,69 @@ body {
 .seo-cluster-links__link:focus-visible {
 	color: var(--nx-accent, #c9974a);
 	border-color: var(--nx-accent, #c9974a);
+}
+
+/* ==========================================================================
+   Proof-Zeile im Hero — NUR /b2b-solar-leads/
+   --------------------------------------------------------------------------
+   Die Case-Study-Zahlen standen bisher nur in einer Button-Beschriftung und
+   einer FAQ-Antwort, also unterhalb der Entscheidungszone. Hier als ruhiges
+   Kennzahlen-Band direkt unter den CTAs.
+
+   Scoped auf [data-track-page="b2b-solar-leads"], weil diese Datei von allen
+   Intercept-Seiten geteilt wird — ohne Scoping wuerde die Regel auf sechs
+   Seiten greifen. Gleiches Isolationsmuster wie waermepumpen-leads.css.
+   ========================================================================== */
+/* Die Termin-Matrix vergleicht nicht Portal vs. System, sondern gekaufte vs.
+   eigene Termine — die Mobil-Labels muessen entsprechend anders lauten. */
+.hu-intercept[data-track-page="b2b-solar-leads"] .hu-intercept__matrix {
+	--matrix-rent-label: "Gekaufter PV-Termin: ";
+	--matrix-own-label: "Eigener PV-Termin: ";
+}
+
+.hu-intercept[data-track-page="b2b-solar-leads"] .hu-b2b-proof {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 20px 28px;
+	margin: 40px 0 0;
+	padding: 24px 0 0;
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hu-intercept[data-track-page="b2b-solar-leads"] .hu-b2b-proof__item {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+.hu-intercept[data-track-page="b2b-solar-leads"] .hu-b2b-proof__num {
+	font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+	font-weight: 800;
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+	color: var(--nx-accent, #c9974a);
+	font-variant-numeric: tabular-nums;
+}
+
+.hu-intercept[data-track-page="b2b-solar-leads"] .hu-b2b-proof__lbl {
+	margin: 0;
+	font-size: 0.78rem;
+	line-height: 1.45;
+	letter-spacing: 0.02em;
+	color: rgba(245, 241, 234, 0.62);
+}
+
+.hu-intercept[data-track-page="b2b-solar-leads"] .hu-b2b-proof__note {
+	margin: 16px 0 0;
+	font-size: 0.76rem;
+	line-height: 1.5;
+	color: rgba(245, 241, 234, 0.45);
+	max-width: 68ch;
+}
+
+@media (max-width: 720px) {
+	.hu-intercept[data-track-page="b2b-solar-leads"] .hu-b2b-proof {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 }
