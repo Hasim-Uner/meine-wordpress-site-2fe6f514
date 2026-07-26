@@ -2,6 +2,11 @@ name: German Copy Guard
 
 on:
   pull_request:
+  # Auch bei Direkt-Pushes auf main. Ohne diesen Trigger laeuft der Check nur bei
+  # Pull Requests — wer direkt auf main pusht, deployt ungeprueft.
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:

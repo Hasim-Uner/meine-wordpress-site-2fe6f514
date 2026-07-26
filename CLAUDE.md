@@ -70,5 +70,16 @@ Always separate repo fixes from editor work, SEO Cockpit work, WordPress admin w
 - Never invent keyword volumes, Search Console data, or analytics numbers.
 - Mark assumptions clearly.
 - If data is missing, create a clean placeholder or task instead of pretending it exists.
-- Prefer PRs over direct commits to `main`.
+- Direkt auf `main` committen ist der Normalfall (Ein-Personen-Repo). Alle vier
+  Checks laufen seit 2026-07-26 auch bei Push auf `main`, nicht nur bei Pull
+  Requests: CI, German Copy Guard und Link-Check. `deploy.yml` startet erst nach
+  erfolgreichem CI und nur von `main`.
+- **Push auf `main` heisst deployen.** `deploy.yml` schiebt `blocksy-child/` auf
+  den Server. Aenderungen ausserhalb dieses Ordners (`agents/`, `docs/`,
+  `seo-research/`) veraendern die Live-Site nicht.
+- Trotzdem einen PR nehmen, wenn eine Aenderung an `blocksy-child/` gross oder
+  schwer umkehrbar ist oder Live-Inhalte ueberschreibt (z. B. eine erhoehte
+  Seeder-Version) — dann ist ein Review-Schritt die guenstigere Versicherung.
+- Nach einem gemergten PR den Arbeitsbranch von `main` neu starten, nicht
+  weiterverwenden. Squash-Merges erzeugen sonst Konflikte mit identischem Inhalt.
 - Keep comments and docs concise.

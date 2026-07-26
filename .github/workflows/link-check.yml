@@ -3,6 +3,9 @@ name: Links prüfen
 # Wann soll der Check laufen?
 on:
   pull_request: # Bei jedem Pull Request
+  push: # Auch bei Direkt-Pushes auf main, sonst deployt man ungeprueft
+    branches:
+      - main
   workflow_dispatch: # Erlaubt manuelles Starten per Klick
   schedule:
     - cron: "0 0 * * 1" # Optional: Jeden Montag um Mitternacht
