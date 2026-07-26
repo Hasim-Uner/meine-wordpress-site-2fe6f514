@@ -425,7 +425,9 @@ function hu_enqueue_assets() {
 	}
 
 	// ── I) Template: SEO Landing (Hannover) ───────────────────────
-	if ( ! $is_cluster_page && ( is_page_template( 'page-seo.php' ) || is_page( 'seo' ) || is_page( 'wordpress-seo-hannover' ) ) ) {
+	// page-seo.php entfernt (Cluster-Daten weg, /seo/ liefert 410). Slug-Bedingungen
+	// bleiben als Absicherung, falls im Admin noch eine Seite dieser Namen existiert.
+	if ( ! $is_cluster_page && ( is_page( 'seo' ) || is_page( 'wordpress-seo-hannover' ) ) ) {
 		hu_enqueue_css( 'nexus-seo-css', 'seo.css', [ 'nexus-design-system' ] );
 		hu_enqueue_js( 'nexus-seo-js', 'seo.js', [ 'nexus-core-js' ] );
 	}
@@ -440,7 +442,9 @@ function hu_enqueue_assets() {
 	}
 
 	// ── J) Template: Core Web Vitals ──────────────────────────────
-	if ( ! $is_cluster_page && ( is_page_template( 'page-cwv.php' ) || is_page( 'core-web-vitals' ) || is_page( 'core-web-vitals-optimierung' ) ) ) {
+	// page-cwv.php entfernt. /core-web-vitals/ liefert 410, aber
+	// /core-web-vitals-optimierung/ steht nicht in der 410-Liste — Bedingung bleibt.
+	if ( ! $is_cluster_page && ( is_page( 'core-web-vitals' ) || is_page( 'core-web-vitals-optimierung' ) ) ) {
 		hu_enqueue_css( 'nexus-cwv-css', 'cwv.css', [ 'nexus-design-system' ] );
 	}
 
@@ -450,7 +454,8 @@ function hu_enqueue_assets() {
 	}
 
 	// ── L) Template: Conversion Rate Optimization (CRO) ──────────
-	if ( ! $is_cluster_page && ( is_page_template( 'page-cro.php' ) || is_page( 'conversion-rate-optimization' ) ) ) {
+	// page-cro.php entfernt (Cluster-Daten weg, /conversion-rate-optimization/ liefert 410).
+	if ( ! $is_cluster_page && is_page( 'conversion-rate-optimization' ) ) {
 		hu_enqueue_css( 'nexus-cro-css', 'cro.css', [ 'nexus-design-system' ] );
 	}
 

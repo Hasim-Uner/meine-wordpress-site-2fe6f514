@@ -53,10 +53,12 @@ Brand + Hauptkeyword Cluster
 ## 3. SERVICE LANDING PAGES
 
 Beispiele:
-- page-seo.php
-- page-cro.php
 - page-meta-ads.php
 - page-performance.php
+
+Entfernt am 2026-07-26: `page-seo.php`, `page-cro.php`, `page-cwv.php`. Ihre
+Cluster-Daten waren bereits geloescht, die Ziel-URLs liefern 410
+(`nexus_get_retired_gone_paths`).
 
 Ziel:
 - Suchintention bedienen
