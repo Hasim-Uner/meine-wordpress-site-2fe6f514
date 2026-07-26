@@ -206,23 +206,23 @@ function hu_get_forced_singular_seo_map() {
 			// daher keine oeffentlichen Meta-Signale mehr.
 			'wordpress-agentur-hannover' => [
 				'title'       => 'WordPress Agentur Hannover: SEO, Tracking & CRO',
-				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking und CRO. Erst Projektprüfung, dann Umsetzung — Case Study: CPL %s → %s.', $e3_cpl_before, $e3_cpl_after ),
+				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking, CRO. Erst Projektprüfung, dann Umsetzung. CPL-Case: %s → %s.', $e3_cpl_before, $e3_cpl_after ),
 			],
 			'wordpress-agentur' => [
 				'title'       => 'WordPress Agentur Hannover: SEO, Tracking & CRO',
-				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking und CRO. Erst Projektprüfung, dann Umsetzung — Case Study: CPL %s → %s.', $e3_cpl_before, $e3_cpl_after ),
+				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking, CRO. Erst Projektprüfung, dann Umsetzung. CPL-Case: %s → %s.', $e3_cpl_before, $e3_cpl_after ),
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study mittelständischer PV-Installationsbetrieb, Systemlogik und konkrete nächste Schritte.',
+				'description' => 'Ergebnisse aus WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study eines PV-Installationsbetriebs, Systemlogik und konkrete nächste Schritte.',
 			],
 			'case-studies-e-commerce' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study mittelständischer PV-Installationsbetrieb, Systemlogik und konkrete nächste Schritte.',
+				'description' => 'Ergebnisse aus WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study eines PV-Installationsbetriebs, Systemlogik und konkrete nächste Schritte.',
 			],
 			'case-studies' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus öffentlich sichtbaren WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study mittelständischer PV-Installationsbetrieb, Systemlogik und konkrete nächste Schritte.',
+				'description' => 'Ergebnisse aus WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study eines PV-Installationsbetriebs, Systemlogik und konkrete nächste Schritte.',
 			],
 			'case-study-solar-leadgenerierung' => [
 				'title'       => hu_get_e3_methodology_case_title(),
@@ -241,19 +241,19 @@ function hu_get_forced_singular_seo_map() {
 			// /ki-integration-wordpress/ ist noindex. Keine eigenstaendigen SEO-Signale mehr noetig.
 			'solar-waermepumpen-leadgenerierung' => [
 				'title'       => 'Leadgenerierung Photovoltaik & Wärmepumpe ohne Portale',
-				'description' => sprintf( 'Leadgenerierung für Photovoltaik, Solar und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus Case-Study-Beleg: %s niedrigerer CPL.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Leadgenerierung für Photovoltaik und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus Case Study: %s weniger CPL.', $e3_cpl_reduction ),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
 				'title'       => 'Leadgenerierung Photovoltaik & Wärmepumpe ohne Portale',
-				'description' => sprintf( 'Leadgenerierung für Photovoltaik, Solar und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus Case-Study-Beleg: %s niedrigerer CPL.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Leadgenerierung für Photovoltaik und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus Case Study: %s weniger CPL.', $e3_cpl_reduction ),
 			],
 			'solar-leads-kaufen-alternative' => [
 				'title'       => 'Photovoltaik & Solar Leads kaufen? Alternative ohne Portale',
-				'description' => sprintf( 'Photovoltaik-, PV- oder Solar-Leads kaufen — oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft. Der Vergleich pro Anfrage — Case Study: %s niedrigerer CPL.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Photovoltaik-, PV- oder Solar-Leads kaufen — oder eigene Anfragen aufbauen? Portal-Leads gehen an mehrere Betriebe. Case Study: %s niedrigerer CPL.', $e3_cpl_reduction ),
 			],
 			'waermepumpen-leads' => [
 				'title'       => 'Wärmepumpen Leads kaufen? Alternative ohne Portale',
-				'description' => sprintf( 'Wärmepumpen-Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads werden mehrfach verkauft und schließen selten ab. Der Vergleich pro Anfrage — Case Study: %s niedrigerer CPL.', $e3_cpl_reduction ),
+				'description' => sprintf( 'Wärmepumpen-Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads gehen an mehrere Betriebe und schließen selten ab. Case Study: %s weniger CPL.', $e3_cpl_reduction ),
 			],
 			'server-side-tracking-b2b' => [
 				'title'       => 'Server-Side Tracking Agentur: DSGVO, GA4 & CAPI',
@@ -281,11 +281,11 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'cost-per-lead-photovoltaik' => [
 				'title'       => 'Cost per Lead Photovoltaik: Was Solar-Anfragen wirklich kosten',
-				'description' => sprintf( 'CPL-Rechnung für Photovoltaik- und Wärmepumpen-Anbieter: Portal-Leads vs. eigenes System. Case-Study-Referenz: %s niedrigere Kosten pro Anfrage in 6 Monaten.', $e3_cpl_reduction ),
+				'description' => sprintf( 'CPL-Rechnung für Photovoltaik- und Wärmepumpen-Anbieter: Portal-Leads vs. eigenes System. Case Study: %s weniger Kosten pro Anfrage in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'qualifizierte-pv-anfragen' => [
 				'title'       => 'Qualifizierte PV-Anfragen: 4 Merkmale guter Solar-Leads',
-				'description' => 'Vier Merkmale einer qualifizierten Photovoltaik-Anfrage: Intent, Exklusivität, Vorqualifizierung, Echtzeit. Mit Praxisbezug zur Case Study eines mittelständischen PV-Installationsbetriebs.',
+				'description' => 'Vier Merkmale einer qualifizierten Photovoltaik-Anfrage: Intent, Exklusivität, Vorqualifizierung, Echtzeit — mit Praxisbezug aus einer Case Study.',
 			],
 			'solar-leads-kosten-studie' => [
 				'title'       => 'Solar-Leads Kosten 2026: CPL, CPO & Portal-Vergleich',

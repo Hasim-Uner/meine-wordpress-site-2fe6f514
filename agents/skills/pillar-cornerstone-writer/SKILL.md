@@ -33,6 +33,27 @@ The script prints the required package skeleton with a normalized slug.
 - End with a soft strategic CTA, not a hard sell.
 - Suggest internal links to one service page and supporting cluster articles.
 
+## AEO — Antwortbare Abschnitte
+
+Das Theme erzeugt FAQPage-Schema aus Überschriften, die auf `?` enden
+(`inc/org-schema.php:369-380`, Opt-in per ACF-Feld `enable_faq_schema`). Wer dafür
+schreibt, muss wissen, wie der Parser arbeitet — sonst entsteht leeres oder
+aufgeblähtes Schema.
+
+Vor dem Schreiben lesen: `references/aeo-answer-patterns.md`. Die vier Regeln, die
+am häufigsten verletzt werden:
+
+- **Fragezeichen ist das letzte Zeichen der Überschrift.** „… Lead? Ein Überblick"
+  wird nicht erkannt.
+- **Erster Satz beantwortet die Frage vollständig.** Kein „das kommt darauf an".
+- **Frage-Block 40–120 Wörter.** Die Antwort reicht bis zur nächsten Überschrift —
+  ein langer Block landet komplett im Schema.
+- **Keine Tabellen im Frage-Block.** Markup wird entfernt, die Tabelle wird zu
+  unlesbarem Fließtext.
+
+Mindestens zwei bis vier Frage-Überschriften pro Cornerstone, abgeleitet aus echten
+Suchanfragen — nicht erfunden.
+
 ## Deliver
 
 1. SEO title
@@ -41,3 +62,6 @@ The script prints the required package skeleton with a normalized slug.
 4. Full article in Markdown
 5. Suggested internal links
 6. Optional image brief
+7. Zeile für `docs/seo/query-ownership.csv` (Query, Owner-URL, Intent, Beleg)
+8. WP-Admin-Schritte: ACF-Feld `FAQ-Schema erzwingen` aktivieren, Beitrag einmal
+   speichern, `acceptedAnswer.text` auf Lesbarkeit prüfen

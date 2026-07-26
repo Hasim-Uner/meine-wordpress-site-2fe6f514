@@ -29,10 +29,37 @@ bash agents/skills/seo-agent/scripts/intent-gate.sh check "<ziel-query>" "<gepla
 bash agents/skills/seo-agent/scripts/intent-gate.sh audit   # Registry-Konsistenz
 ```
 
+Fuer die Frage „woran arbeiten wir als naechstes?" der Gap-Report:
+
+```bash
+bash agents/skills/seo-agent/scripts/gap-report.sh          # neueste Periode
+bash agents/skills/seo-agent/scripts/gap-report.sh 2026-07 --md > /tmp/gap.md
+```
+
+Er rechnet nur mit vorhandenen Exporten unter `seo-research/<periode>/data/` —
+keine API, keine geschaetzten Werte. Status je Keyword: `LUECKE`, `TEIL-LUECKE`
+(nahe an bestehendem Owner → dort einarbeiten), `REGISTRY-LUECKE` (rankt schon,
+fehlt aber in der Registry), `OWNER-KONFLIKT` (Registry und Realitaet
+widersprechen sich), `BESTEHT`, `AUSGESCHLOSSEN`.
+
+### Daten fuer eine neue Periode
+
+Ohne API ist das Sammeln Handarbeit, die Auswertung nicht. Neuen Ordner
+`seo-research/<JJJJ-MM>/data/` anlegen und ablegen:
+
+| Datei | Quelle |
+|---|---|
+| `keywords-master.csv` | Keyword-Recherche, Spalten `keyword,volume,kd,cpc,intent,cluster,quelle` |
+| `gsc/<export>.csv` | SEO-Cockpit-Export (Semikolon-getrennt) |
+| `comp-<domain>.json` | optional, Wettbewerber-Rankings mit `domain` + `keywords[]` |
+
+Fehlt eine Datei, meldet das Skript das — es rechnet nicht mit Platzhaltern.
+
 ## Routing Table
 
 | Signal in Task | Route to Skill | Context to Load |
 |---|---|---|
+| Was fehlt uns? Themenauswahl, Keyword-Luecken, Wettbewerbsvergleich | hier bleiben | `gap-report.sh` + `docs/seo/keyword-exclusions.csv` |
 | Live SEO check, reindex, redirects, canonicals, Search Console | `seo-live-qa` | `seo-live-qa/SKILL.md` |
 | SEO Cockpit, render helpers, Koko, internal link graph module | `seo-cockpit-hardening` | `seo-cockpit-hardening/SKILL.md` + `docs/systems/seo-cockpit.md` |
 | Orphan pages, link equity, cross-links, anchor text | `internal-linking-audit` | `internal-linking-audit/SKILL.md` |

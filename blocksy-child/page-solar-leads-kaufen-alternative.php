@@ -326,7 +326,10 @@ get_header();
 
 	<section class="hu-intercept__why" id="warum-portale" aria-labelledby="hu-intercept-why-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-why-title">Warum der Zukauf von Photovoltaik- und Wärmepumpen-Leads das Wachstum bremst</h2>
+			<?php /* Kein Exact-Match "Wärmepumpen-Leads" in dieser H2: die Query gehoert
+			         /waermepumpen-leads/ (docs/seo/query-ownership.csv). Sekundaerseiten
+			         bauen die Waermepumpen-Entitaet nicht weiter aus. */ ?>
+			<h2 class="hu-intercept__h2" id="hu-intercept-why-title">Warum der Zukauf von Photovoltaik- und Wärmepumpen-Anfragen das Wachstum bremst</h2>
 			<div class="hu-intercept__grid hu-intercept__grid--four">
 				<?php foreach ( $why_portals_fail as $item ) : ?>
 					<article class="hu-intercept__card">
