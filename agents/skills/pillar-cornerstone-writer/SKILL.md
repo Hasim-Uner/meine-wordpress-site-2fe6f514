@@ -36,7 +36,7 @@ The script prints the required package skeleton with a normalized slug.
 ## AEO — Antwortbare Abschnitte
 
 Das Theme erzeugt FAQPage-Schema aus Überschriften, die auf `?` enden
-(`inc/org-schema.php:369-380`, Opt-in per ACF-Feld `enable_faq_schema`). Wer dafür
+(`inc/org-schema.php:369-380`, Opt-in per SCF-Feld `enable_faq_schema`). Wer dafür
 schreibt, muss wissen, wie der Parser arbeitet — sonst entsteht leeres oder
 aufgeblähtes Schema.
 
@@ -63,5 +63,5 @@ Suchanfragen — nicht erfunden.
 5. Suggested internal links
 6. Optional image brief
 7. Zeile für `docs/seo/query-ownership.csv` (Query, Owner-URL, Intent, Beleg)
-8. WP-Admin-Schritte: ACF-Feld `FAQ-Schema erzwingen` aktivieren, Beitrag einmal
+8. WP-Admin-Schritte: SCF-Feld `FAQ-Schema erzwingen` aktivieren, Beitrag einmal
    speichern, `acceptedAnswer.text` auf Lesbarkeit prüfen

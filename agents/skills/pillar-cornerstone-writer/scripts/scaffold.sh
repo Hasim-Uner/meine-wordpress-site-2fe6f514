@@ -75,7 +75,7 @@ Ziel-Query (Owner laut query-ownership.csv):
 - Caption:
 
 # --- Nach dem Veroeffentlichen ----------------------------------------------
-# 1. ACF-Feld "FAQ-Schema erzwingen" aktivieren
+# 1. SCF-Feld "FAQ-Schema erzwingen" aktivieren
 # 2. Beitrag einmal speichern (sonst bleibt der Schema-Cache leer)
 # 3. acceptedAnswer.text pruefen: lesbarer Text oder Tabellen-Klumpen?
 # 4. Ziel-Query in docs/seo/query-ownership.csv eintragen

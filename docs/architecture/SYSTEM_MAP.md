@@ -6,7 +6,7 @@ Stand: 2026-05-25. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live
 
 | System | Zweck | Repo-Orte | Externe Abhaengigkeiten | Status |
 | --- | --- | --- | --- | --- |
-| Website | deploybarer WordPress-Theme-Code | `blocksy-child/`, `.github/workflows/ci.yml`, `.github/workflows/deploy.yml`, `docs/architecture/DEPLOYMENT.md` | WordPress, Blocksy Parent Theme, ACF | live |
+| Website | deploybarer WordPress-Theme-Code | `blocksy-child/`, `.github/workflows/ci.yml`, `.github/workflows/deploy.yml`, `docs/architecture/DEPLOYMENT.md` | WordPress, Blocksy Parent Theme, SCF | live |
 | Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler; `llms.txt` ist der kompakte Routen- und Positionierungsindex fuer Agenten | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
 | Growth-Audit-Legacypfad | deaktivierter Instant-Diagnose-Legacycode; geschützte Audit-Einstiege führen zum Marktcheck, alte Tools liefern 410 | `blocksy-child/page-audit.php`, `blocksy-child/inc/audit-page.php`, `blocksy-child/inc/tools-page.php`, `blocksy-child/inc/cja-shortcode.php`, `blocksy-child/assets/css/cja-audit.css`, `blocksy-child/assets/js/cja-audit.js`, `docs/systems/audit-funnel.md` | n8n Webhook nur für Legacy-Code, WordPress | öffentlich retired; selektive 301 auf `/solar-waermepumpen-leadgenerierung/#marktcheck`, interne Tool-Altlasten 410 |
 | Nexus CRM & Blog Notify | gemeinsames CRM für Analyse-Leads, Audit-, Folgeanalyse-, Umsetzungs- und Bestandskunden-Anfragen plus DOI- und Artikel-Mail-Logik | `blocksy-child/inc/crm.php`, `blocksy-child/inc/analysis-intake.php`, `blocksy-child/inc/blog-notify.php`, `blocksy-child/template-parts/blog-notify.php`, `blocksy-child/page-blog-notify.php`, `docs/systems/blog-notify.md` | WordPress CPT/Meta, WordPress REST, wp_mail, Brevo | repo-seitig live; Analyse-REST und Brevo-Konfiguration am 2026-05-07 verifiziert |
@@ -222,7 +222,10 @@ Risiko:
 ## Kritische Abhaengigkeiten
 
 - WordPress Block-Editor fuer editorgetriebene Seiten ausserhalb des Audit-Shells
-- ACF fuer SEO- und Content-Fallbacks
+- SCF (Secure Custom Fields) fuer SEO- und Content-Fallbacks. ACF ist
+  deinstalliert; SCF ist dessen WordPress.org-Fork, daher bleiben die `acf_*`-API
+  (`acf/init`, `acf_add_local_field_group()`) und der Dateiname `inc/acf.php`
+  unveraendert gueltig.
 - Theme-eigener SEO-Layer (seo-meta.php) für Title, Description, OG, Canonical und Robots
 - Native WordPress-Sitemap (/wp-sitemap.xml)
 - Theme-eigene Crawl-Signale für `/robots.txt` und `/llms.txt`
@@ -233,7 +236,7 @@ Risiko:
 
 ## Groesste Risiken
 
-- `page-wgos.php` ist fachlich wichtig und inzwischen deutlich verschlankt, bleibt aber technisch template-driven statt editor- oder ACF-getrieben.
+- `page-wgos.php` ist fachlich wichtig und inzwischen deutlich verschlankt, bleibt aber technisch template-driven statt editor- oder SCF-getrieben.
 - Kaufnahe Inhalte liegen weiter teils im Repo und teils im WordPress-Editor; Titel, Excerpts, Karten und manuell kuratierte Related-Module koennen die neue Proof- und Tonalitaetslogik unterlaufen, wenn sie nicht separat gepflegt werden.
 - Der aktive CJA-Flow haengt an einem impliziten n8n-Payload-Contract; ohne versionierten Workflow-Export und Response-Schema bleibt die Schnittstelle dokumentatorisch fragil.
 - Tracking-, Consent- und CRM-Logik sind operativ relevant, aber noch nicht als Repo-System dokumentiert.

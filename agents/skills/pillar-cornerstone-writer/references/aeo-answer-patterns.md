@@ -7,8 +7,16 @@ unbrauchbares.
 
 ## Wie der Mechanismus tatsächlich arbeitet
 
-1. **Opt-in.** Nur wenn das ACF-Feld `enable_faq_schema` gesetzt ist, werden
-   Überschriften ausgewertet (`acf.php:77`). Ohne Flag passiert nichts.
+1. **Opt-in.** Nur wenn das Feld `enable_faq_schema` gesetzt ist, werden
+   Überschriften ausgewertet (`inc/acf.php:77`). Ohne Flag passiert nichts.
+
+   > Im Admin heisst das Plugin **SCF (Secure Custom Fields)** — ACF ist
+   > deinstalliert. Die API bleibt `acf_*` (`acf/init`,
+   > `acf_add_local_field_group()`), weil SCF der WordPress.org-Fork von ACF ist;
+   > deshalb heisst die Datei weiterhin `acf.php`. Der Schalter selbst haengt
+   > ohnehin nicht am Plugin: `org-schema.php:401` liest ihn per
+   > `get_post_meta( $post_id, 'enable_faq_schema', true )` direkt aus den
+   > Post-Meta.
 2. **Frage = Überschrift H2–H4, deren Text auf `?` endet.** Die Prüfung ist
    `preg_match( '/\?\s*$/u', $question )` — das Fragezeichen muss das **letzte
    Zeichen** sein.
@@ -105,7 +113,7 @@ zitiert wird.
 
 ## Nach dem Veröffentlichen
 
-1. ACF-Feld **FAQ-Schema erzwingen** aktivieren.
+1. SCF-Feld **FAQ-Schema erzwingen** aktivieren.
 2. Beitrag einmal speichern — sonst bleibt der Schema-Cache leer.
 3. Schema mit dem Rich-Results-Test oder View-Source prüfen: Enthält
    `acceptedAnswer.text` den erwarteten, lesbaren Text — oder einen

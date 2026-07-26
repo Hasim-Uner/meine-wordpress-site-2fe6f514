@@ -37,7 +37,7 @@ Supported modes: `full`, `seo`, `cro`, `content`, `tracking`, `offers`. The scri
 
 - For positioning, tone, and copy direction, reference `docs/standards/BRAND_AND_COPY.md` — do not inline brand/copy rules here.
 - Treat the repo as the source for theme logic, templates, service pages, funnels, schema helpers, seeded content, and internal-link architecture.
-- Do not treat RankMath as active. It survives only as legacy `rank_math_*` post-meta fallback in `blocksy-child/inc/seo-meta.php`; new content uses ACF plus the custom WordPress SEO Cockpit.
+- Do not treat RankMath as active. It survives only as legacy `rank_math_*` post-meta fallback in `blocksy-child/inc/seo-meta.php`; new content uses SCF (Secure Custom Fields) plus the custom WordPress SEO Cockpit. ACF is uninstalled — SCF is its WordPress.org fork, so the `acf_*` API and `inc/acf.php` keep their names.
 - Do not assume cookie-based tracking as default. The current direction is privacy-first and may start without advertising or heavy tracking.
 - Do not add consent banners, ad pixels, or GA4/GTM runtime changes unless the task explicitly asks for them.
 - Google Analytics for WordPress may exist, but measurement notes must stay separate from code changes unless instructed otherwise.
