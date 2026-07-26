@@ -1,0 +1,20 @@
+﻿# Bewusst nicht bespielte Keywords.
+#
+# Zweck: Eine Gap-Analyse, die jedes Quartal dieselben verworfenen Keywords erneut
+# vorschlaegt, ist keine Analyse — sie ist eine Endlosschleife. Wer hier eintraegt,
+# trifft eine Entscheidung und begruendet sie. gap-report.sh listet diese Keywords
+# separat auf, statt sie als Luecke zu melden.
+#
+# Spalten:
+#   keyword   Kleinschreibung, Umlaute ausgeschrieben
+#   grund     Warum nicht. Ein Satz, nachvollziehbar.
+#   status    never = grundsaetzlich nicht | later = spaeter moeglich (P3)
+#   source    Belegstelle der Entscheidung
+keyword;grund;status;source
+photovoltaik angebotsvergleich;Verbraucher-Intent — Hausbesitzer suchen Angebote, nicht Zielgruppe A oder B;never;gap-analyse.md#b-portal-alternativen
+woocommerce agentur hannover;E-Commerce-Intent aus der Shopify-Aera, passt nicht zur Solar-/SHK-Positionierung;never;gsc-verlauf-2026-07-20.md#polish-7
+leads kaufen;Generischer Term, intent-gemischt (Immobilien/Versicherung dominieren) — kein eigenes Ziel, Blog-Pillar bedient den Ratgeber-Intent;never;gap-analyse.md#a-money
+hochpreis leadquelle;Vertriebler-/Coaching-Szene-Begriff, passt nur bedingt zur serioesen Positionierung;later;gap-analyse.md#a-money
+selfmade energy erfahrungen;B2B-Winkel mit minimalem Volumen — Abschnitt im Vergleichs-Hub reicht statt eigener Seite;later;gap-analyse.md#b-portal-alternativen
+elevar server side tracking;Fremdprodukt-Query ohne Bezug zum eigenen Angebot;never;gsc-verlauf-2026-07-20.md#polish-7
+server side tracking regensburg;Falscher Standort — lokale Signale zielen auf Hannover;never;gsc-verlauf-2026-07-20.md#polish-7
