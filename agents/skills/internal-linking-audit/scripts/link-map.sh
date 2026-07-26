@@ -11,18 +11,54 @@ count_lines() {
 }
 
 # --- 1. Collect all page templates ---
+#
+# Wichtig: Nur `page-<slug>.php` OHNE `Template Name:`-Header ist per
+# WordPress-Konvention an eine URL gebunden. Dateien mit `Template Name:` sind
+# im Editor zuweisbar — ihr Dateiname sagt nichts ueber die URL aus. Wer das
+# vermischt, erzeugt frei erfundene Pfade und damit falsche Orphan-Meldungen.
 header "Page Templates"
 
-templates="$(
+all_templates="$(
   rg --files "$THEME" \
     | awk -F/ 'NF == 2 && ($2 == "front-page.php" || $2 == "home.php" || $2 ~ /^page-.*\.php$/ || $2 ~ /^template-.*\.php$/) { print }' \
     | sort
 )"
 
+is_assignable_template() {
+  rg -q '^\s*\*\s*Template Name:' "$1" 2>/dev/null
+}
+
+# URL-gebundene Seiten (Orphan-Pruefung ist hier aussagekraeftig)
+templates=""
+# Im Editor zuweisbare Templates (URL nicht aus dem Repo ableitbar)
+assignable=""
+
+while IFS= read -r t; do
+  [[ -n "$t" ]] || continue
+  base="$(basename "$t")"
+  if [[ "$base" == "front-page.php" || "$base" == "home.php" ]] || is_assignable_template "$t"; then
+    assignable+="$t"$'\n'
+  else
+    templates+="$t"$'\n'
+  fi
+done <<< "$all_templates"
+
+templates="$(printf '%s' "$templates" | sed '/^[[:space:]]*$/d')"
+assignable="$(printf '%s' "$assignable" | sed '/^[[:space:]]*$/d')"
+
+echo "  -- URL-gebunden (page-<slug>.php ohne Template Name) --"
 printf '%s\n' "$templates" | while IFS= read -r t; do
   [[ -n "$t" ]] || continue
-  slug="$(basename "$t" .php | sed 's/^page-/\//' | sed 's/^front-page/\//' | sed 's/^template-/\//' | sed 's/$/\//')"
+  slug="/$(basename "$t" .php | sed 's/^page-//')/"
   printf '  %s -> %s\n' "$t" "$slug"
+done
+
+echo
+echo "  -- Im Editor zuweisbar (URL nicht aus Dateiname ableitbar) --"
+printf '%s\n' "$assignable" | while IFS= read -r t; do
+  [[ -n "$t" ]] || continue
+  name="$(rg -o -r '$1' '^\s*\*\s*Template Name:\s*(.+)$' "$t" 2>/dev/null | head -1 || true)"
+  printf '  %s -> %s\n' "$t" "${name:-Kern-Template (front-page/home)}"
 done
 
 # --- 2. Extract internal links from templates ---
@@ -33,7 +69,9 @@ if [[ -d "$THEME/template-parts" ]]; then
   template_parts="$(rg --files "$THEME/template-parts" -g '*.php' | sort || true)"
 fi
 
-scan_files="$(printf '%s\n%s\n' "$templates" "$template_parts" | sed '/^[[:space:]]*$/d')"
+# Die Link-Matrix scannt ALLE Templates — auch die zuweisbaren, denn ihre
+# ausgehenden Links zaehlen fuer die interne Verlinkung unabhaengig von der URL.
+scan_files="$(printf '%s\n%s\n' "$all_templates" "$template_parts" | sed '/^[[:space:]]*$/d')"
 
 printf '%s\n' "$scan_files" | while IFS= read -r tpl; do
   [[ -f "$tpl" ]] || continue
@@ -88,7 +126,10 @@ for hub in "${hubs[@]}"; do
 done
 
 # --- 4. Find orphan templates ---
-header "Potential Orphan Pages"
+#
+# Nur URL-gebundene Seiten. Zuweisbare Templates hier zu pruefen wuerde
+# Orphans fuer Pfade melden, die es gar nicht gibt.
+header "Potential Orphan Pages (nur URL-gebundene Seiten)"
 
 printf '%s\n' "$templates" | while IFS= read -r tpl; do
   [[ -n "$tpl" ]] || continue

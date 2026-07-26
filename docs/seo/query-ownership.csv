@@ -1,0 +1,43 @@
+﻿# Query-Ownership-Registry — maschinenlesbare Fassung der Regel
+# "Money-Page besitzt die Query" (docs/standards/BRAND_AND_COPY.md)
+# und "keine zwei Seiten mit gleichem Keyword-Ziel" (docs/seo/seo-content-system.md §8).
+#
+# Zweck: Vor dem Anlegen einer neuen Seite/eines neuen Beitrags pruefen, ob die
+# Ziel-Intention bereits eine besitzende URL hat:
+#   bash agents/skills/seo-agent/scripts/intent-gate.sh check "<query>" [<ziel-slug>]
+#   bash agents/skills/seo-agent/scripts/intent-gate.sh audit
+#
+# Spalten:
+#   query          Head-Term/Intention in Kleinschreibung, Umlaute ausgeschrieben
+#   owner_path     Die EINE URL, die diese Query besitzen soll
+#   intent         transactional | commercial | informational | navigational | local
+#   status         owned = besitzt die Query | support = darf unterstuetzen, nicht ranken
+#   source         Belegstelle im Repo (kein geratener Wert)
+#   distinct_from  Mit "|" getrennte Queries, deren Naehe bewusst akzeptiert ist.
+#                  Nur befuellen, wenn die Intent-Trennung irgendwo belegt ist —
+#                  diese Spalte schaltet eine Warnung ab, also ist sie eine Entscheidung.
+#
+# Belege stammen aus seo-research/2026-07/reports/ (GSC-Exporte). Keine erfundenen
+# Volumina. Neue Zeilen nur mit Quellenangabe eintragen.
+query;owner_path;intent;status;source;distinct_from
+leadgenerierung photovoltaik;/solar-waermepumpen-leadgenerierung/;transactional;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
+leadgenerierung waermepumpe;/solar-waermepumpen-leadgenerierung/;transactional;owned;seo-meta.php forced-map;
+photovoltaik leads;/solar-waermepumpen-leadgenerierung/;transactional;owned;keyword-map.md#a-money;photovoltaik leads kaufen
+waermepumpen leads;/waermepumpen-leads/;commercial;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
+waermepumpen leads kaufen;/waermepumpen-leads/;transactional;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
+pv termine b2b;/b2b-solar-leads/;commercial;owned;gsc-verlauf-2026-07-20.md#high-leverage-4;
+b2b photovoltaik;/b2b-solar-leads/;commercial;owned;gsc-verlauf-2026-07-20.md#gesamtbild;
+solar leads kaufen;/solar-leads-kaufen-alternative/;commercial;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;solar leads kosten
+photovoltaik leads kaufen;/solar-leads-kaufen-alternative/;commercial;owned;seo-meta.php forced-map;
+pv leads kaufen;/solar-leads-kaufen-alternative/;commercial;owned;seo-meta.php forced-map;
+solar leads kosten;/solar-leads-kosten-studie/;informational;owned;seo-meta.php forced-map;
+cost per lead photovoltaik;/cost-per-lead-photovoltaik/;informational;owned;seo-meta.php forced-map;
+portal leads vergleich;/eigene-leadgenerierung-vs-portale/;informational;owned;seo-meta.php forced-map;
+kunden gewinnen solarteure;/kunden-gewinnen-solarteure/;commercial;owned;seo-meta.php forced-map;
+qualifizierte pv anfragen;/qualifizierte-pv-anfragen/;informational;owned;seo-meta.php forced-map;
+lead funnel solar;/lead-funnel-solar/;informational;owned;seo-meta.php forced-map;
+server side tracking;/server-side-tracking-b2b/;commercial;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
+server side tracking agentur;/server-side-tracking-b2b/;commercial;owned;gsc-verlauf-2026-07-20.md#verlauf;
+wordpress agentur hannover;/wordpress-agentur-hannover/;local;owned;gsc-verlauf-2026-07-20.md#critical-1;
+checkfox erfahrungen;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-verlauf-2026-07-20.md#high-leverage-3;
+checkfox serioes;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-verlauf-2026-07-20.md#high-leverage-3;
