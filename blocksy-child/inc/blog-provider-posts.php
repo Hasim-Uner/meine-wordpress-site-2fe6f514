@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function hu_get_lead_provider_posts_seed_version() {
-	return '2026-07-03-1';
+	return '2026-07-26-1';
 }
 
 /**
@@ -160,7 +160,7 @@ MD,
 			'title'            => 'Wattfox Erfahrungen für Solarteure: Leads, Kosten und Markteinordnung',
 			'slug'             => 'wattfox-solar-leads-einordnung',
 			'seo_title'        => 'Wattfox Erfahrungen & Kosten: Einordnung für Solarteure',
-			'seo_description'  => 'Wattfox aus Anbietersicht: was Erfahrungs-Suchen wirklich beantworten müssen, wie die Lead-Kosten-Logik funktioniert und wann eigene Anfrage-Systeme stärker sind.',
+			'seo_description'  => 'Wattfox aus Anbietersicht: was Erfahrungs-Suchen beantworten müssen, wie die Lead-Kosten-Logik funktioniert und wann eigene Anfrage-Systeme stärker sind.',
 			'excerpt'          => 'Wattfox aus Solarteur-Sicht eingeordnet: Erfahrungs-Recherche, Verteilungslogik, Kosten pro Auftrag, Reaktionszeit und die Ownership-Frage.',
 			'tags'             => [ 'Solar Leads', 'Wattfox', 'Photovoltaik', 'Lead-Anbieter', 'Markteinordnung' ],
 			'markdown_content' => <<<'MD'
