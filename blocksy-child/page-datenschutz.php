@@ -331,7 +331,7 @@ while ( have_posts() ) :
 							<span class="privacy-meta__label">Kontakt</span>
 							<span class="privacy-meta__value">
 								E-Mail: <a href="mailto:kontakt@hasimuener.de">kontakt@hasimuener.de</a><br>
-								Telefon: <a href="tel:+4917681407134">0176 81407134</a>
+								Telefon: <a href="tel:+4917676596580">0176 76596580</a>
 							</span>
 						</div>
 						<div class="privacy-meta__item">

@@ -21,7 +21,7 @@ while ( have_posts() ) :
 		? nexus_get_contact_url()
 		: home_url( '/kontakt/' );
 	$mail_link   = 'mailto:kontakt@hasimuener.de';
-	$phone_link  = 'tel:+4917681407134';
+	$phone_link  = 'tel:+4917676596580';
 	?>
 	<main id="main" class="site-main imprint-page" data-track-section="imprint_page">
 		<style>
@@ -406,7 +406,7 @@ while ( have_posts() ) :
 							<span class="imprint-quickfact__label">Kontakt</span>
 							<span class="imprint-quickfact__value">
 								E-Mail: <a href="<?php echo esc_url( $mail_link ); ?>">kontakt@hasimuener.de</a><br>
-								Telefon: <a href="<?php echo esc_url( $phone_link ); ?>">0176 81407134</a>
+								Telefon: <a href="<?php echo esc_url( $phone_link ); ?>">0176 76596580</a>
 							</span>
 						</div>
 					</div>
@@ -438,7 +438,7 @@ while ( have_posts() ) :
 						<h2 id="imprint-contact">2. Kontakt</h2>
 						<p>
 							E-Mail: <a href="<?php echo esc_url( $mail_link ); ?>">kontakt@hasimuener.de</a><br>
-							Telefon: <a href="<?php echo esc_url( $phone_link ); ?>">0176 81407134</a>
+							Telefon: <a href="<?php echo esc_url( $phone_link ); ?>">0176 76596580</a>
 						</p>
 						<p>
 							Für allgemeine Anfragen, Projektanfragen und Rückfragen zu Inhalten dieser
