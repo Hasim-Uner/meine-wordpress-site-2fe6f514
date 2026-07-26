@@ -238,7 +238,7 @@ get_header();
 					</div>
 
 					<p class="ag-hero__fineprint">
-						30&nbsp;Min · kein Standard-Pitch · klare Priorität vor Relaunch, SEO oder Umsetzung. Solar, Wärmepumpe oder Speicher? <a href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_hero_to_energy_marktcheck" data-track-category="lead_gen" data-track-section="hero">Direkt zum Marktcheck</a>.
+						30&nbsp;Min · kein Standard-Pitch · klare Priorität vor Relaunch, SEO oder Umsetzung. Für erklärungsbedürftige B2B-Angebote in Hannover und im DACH-Raum. <a href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_hero_to_energy_marktcheck" data-track-category="lead_gen" data-track-section="hero">Angebot aus dem Energiebereich?</a>
 					</p>
 				</div>
 
@@ -246,7 +246,7 @@ get_header();
 					<header class="ag-hero-viz__head">
 						<span class="ag-hero-viz__live">
 							<span class="ag-hero-viz__live-dot" aria-hidden="true"></span>
-							Verifizierter Referenzfall · Solar Case Study
+							Verifizierter Referenzfall · Anfrage-System
 						</span>
 						<h2 class="ag-hero-viz__title">CPL-Senkung in <?php echo esc_html( $e3_timeframe_dat ); ?></h2>
 						<p class="ag-hero-viz__sub">Kosten pro qualifizierter B2B-Anfrage — vor und nach dem eigenen Anfrage-System.</p>
@@ -430,7 +430,7 @@ get_header();
 			<div class="wp-agentur-segment-card">
 				<span class="wp-agentur-segment-card__tag">Für wen</span>
 				<h3>Anspruchsvolle B2B-Unternehmen mit erklärungsbedürftigem Angebot</h3>
-				<p>Der Fokusmarkt ist Solar, Wärmepumpe und Speicher; die Arbeitsweise ist nicht auf Hannover begrenzt.</p>
+				<p>Dienstleister, Hersteller und Fachbetriebe, bei denen ein Auftrag mit einem Gespräch beginnt — nicht mit einem Warenkorb. Belegt ist die Methode bislang im Energiebereich; die Arbeitsweise ist weder darauf noch auf Hannover begrenzt.</p>
 			</div>
 			<div class="wp-agentur-segment-card">
 				<span class="wp-agentur-segment-card__tag">Womit</span>
@@ -941,7 +941,7 @@ get_header();
 <section class="nx-section" data-nx-theme="light" id="fokusmarkt">
 	<div class="nx-container">
 		<div class="nx-section-header">
-			<p class="wp-agentur-eyebrow">Fokusmarkt Energie</p>
+			<p class="wp-agentur-eyebrow">Zusätzlicher Einstieg</p>
 			<h2 class="nx-headline-section">Solar, Wärmepumpe oder Speicher?</h2>
 			<p class="nx-subheadline wp-agentur-section-intro">
 				Wenn Ihr Angebot Solar, Wärmepumpe oder Speicher ist, gibt es einen präziseren Einstieg: den Marktcheck, der gezielt auf Lead-Generierung in dieser Branche zugeschnitten ist.
@@ -984,7 +984,7 @@ get_header();
 			<p class="wp-agentur-eyebrow">Standort</p>
 			<h2 class="nx-headline-section">Aus Hannover für den DACH-Raum.</h2>
 			<p class="nx-subheadline wp-agentur-section-intro">
-				Persönliche Termine, Workshops und Reviews sind in Hannover, Pattensen und der Region Hannover möglich. Die Umsetzung funktioniert genauso sauber remote.
+				Der Sitz ist Pattensen bei Hannover. Persönliche Termine, Workshops und Reviews sind in Hannover und im weiteren Niedersachsen möglich — Hildesheim, Braunschweig und Celle sind an einem Tag machbar. Die Umsetzung funktioniert genauso sauber remote.
 			</p>
 		</div>
 
@@ -995,7 +995,7 @@ get_header();
 			</div>
 			<div class="wp-agentur-local-card" id="wordpress-wartung">
 				<h3>WordPress-Wartung in Hannover</h3>
-				<p>Für Bestandskunden mit etabliertem WordPress-System: Wartungsvertrag mit Updates, Monitoring und Weiterentwicklung im Rahmen laufender Mandate.</p>
+				<p>Wartungsvertrag mit Updates, Monitoring, Backups und Weiterentwicklung — bewusst nur im Rahmen laufender Mandate. Wartung an einem System, das ich nicht gebaut oder geprüft habe, ist Symptompflege: Sie hält die Seite am Leben, ohne dass jemand für Ladezeit, Tracking oder Anfragepfad geradesteht. Wenn Sie eine bestehende WordPress-Seite übergeben wollen, ist die Projektprüfung der richtige Einstieg — danach lässt sich über laufende Betreuung sprechen.</p>
 			</div>
 		</div>
 
