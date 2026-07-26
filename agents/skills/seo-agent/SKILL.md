@@ -18,7 +18,15 @@ Any time the task involves SEO: technical audits, internal linking, meta/schema,
 ## Run First
 
 ```bash
-sh agents/skills/seo-agent/scripts/route.sh
+bash agents/skills/seo-agent/scripts/route.sh
+```
+
+Sobald die Aufgabe eine **neue Seite, einen neuen Beitrag oder ein neues Cluster**
+erzeugen wuerde, zuerst das Ownership-Gate:
+
+```bash
+bash agents/skills/seo-agent/scripts/intent-gate.sh check "<ziel-query>" "<geplanter-slug>"
+bash agents/skills/seo-agent/scripts/intent-gate.sh audit   # Registry-Konsistenz
 ```
 
 ## Routing Table
@@ -34,6 +42,11 @@ sh agents/skills/seo-agent/scripts/route.sh
 
 ## Decision Rules
 
+0. **Ownership vor Produktion.** Keine neue Seite/kein neuer Beitrag ohne freie
+   Ziel-Query. Exit 1 aus `intent-gate.sh check` ist ein Stopp, kein Hinweis:
+   bestehenden Owner ausbauen, Intent belegbar abgrenzen, oder als Support-Seite
+   ohne Ranking-Ziel bauen. Neue Owner danach in `docs/seo/query-ownership.csv`
+   eintragen — mit Belegstelle, nie mit geschaetzten Volumina.
 1. Match the task against the **Signal** column above.
 2. If multiple signals match, prefer the more specific skill over the broader one.
 3. Load only the routed skill's `SKILL.md` — do not preload all SEO skills.

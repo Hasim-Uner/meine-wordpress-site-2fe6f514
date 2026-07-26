@@ -9,11 +9,21 @@ Use this skill when the output is a durable pillar article, not a short blog pos
 
 ## Run First
 
+Erst das Ownership-Gate, dann das Scaffold. Ohne freie Ziel-Query entsteht keine Seite:
+
 ```bash
+bash agents/skills/seo-agent/scripts/intent-gate.sh check "<ziel-query>" "<geplanter-slug>"
 agents/skills/pillar-cornerstone-writer/scripts/scaffold.sh "Topic" "optional-slug"
 ```
 
 The script prints the required package skeleton with a normalized slug.
+
+## Hard Rule — Ownership vor Produktion
+
+- Exit 1 aus dem Gate heisst: **keine neue Seite.** Stattdessen den Owner ausbauen
+  oder den Intent belegbar abgrenzen und die Registry-Zeile ergaenzen.
+- Nach dem Anlegen die Query in `docs/seo/query-ownership.csv` eintragen — sonst
+  faellt die naechste Seite in dieselbe Luecke.
 
 ## Writing Rules
 

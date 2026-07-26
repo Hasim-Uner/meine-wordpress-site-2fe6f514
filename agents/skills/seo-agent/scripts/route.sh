@@ -13,7 +13,8 @@ for skill in seo-live-qa seo-cockpit-hardening internal-linking-audit wordpress-
     script=$(find "$dir/scripts" -name '*.sh' 2>/dev/null | head -1 || echo "none")
     printf "  %-35s %s\n" "$skill" "$desc"
     if [ "$script" != "none" ]; then
-      printf "    -> run: sh %s\n" "$script"
+      # bash, nicht sh: die Skripte nutzen `set -o pipefail`, das unter dash fehlschlaegt.
+      printf "    -> run: bash %s\n" "$script"
     fi
     echo ""
   fi
