@@ -7,6 +7,10 @@ on:
       - '.claudeignore'
       - 'agents/skills/**'
       - 'blocksy-child/**'
+      # Der German Copy Guard prueft docs/ und content/. Ohne diese Pfade
+      # loest ein reiner Docs-Commit auf einem Branch gar keinen Check aus.
+      - 'docs/**'
+      - 'content/**'
       - '.github/workflows/**'
       - 'scripts/**'
       - 'package.json'
@@ -22,6 +26,10 @@ on:
       - '.claudeignore'
       - 'agents/skills/**'
       - 'blocksy-child/**'
+      # Der German Copy Guard prueft docs/ und content/. Ohne diese Pfade
+      # loest ein reiner Docs-Commit auf einem Branch gar keinen Check aus.
+      - 'docs/**'
+      - 'content/**'
       - '.github/workflows/**'
       - 'scripts/**'
       - 'package.json'
