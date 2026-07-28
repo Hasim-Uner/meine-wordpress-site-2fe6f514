@@ -79,27 +79,6 @@ function hu_price_shortcode( $atts ) {
 add_shortcode( 'hu_price', 'hu_price_shortcode' );
 
 /**
- * Render canonical Founding Cohort values.
- *
- * @param array<string, mixed> $atts Shortcode attributes.
- * @return string
- */
-function hu_founding_shortcode( $atts ) {
-	$atts = shortcode_atts(
-		[
-			'key' => '',
-		],
-		$atts,
-		'hu_founding'
-	);
-
-	$canon = function_exists( 'hu_founding_canon' ) ? hu_founding_canon() : [];
-
-	return hu_render_canon_shortcode_value( $canon, $atts['key'] );
-}
-add_shortcode( 'hu_founding', 'hu_founding_shortcode' );
-
-/**
  * Render canonical messaging values.
  *
  * @param array<string, mixed> $atts Shortcode attributes.

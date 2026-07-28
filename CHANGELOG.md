@@ -2,6 +2,16 @@
 
 ## 2026-07
 
+### `Founding Cohort 2026` vollständig zurückgezogen
+
+- **Auslöser:** Auf der Solar-Money-Page stand der Trust-Chip „Founding Cohort 2026 · 3/3 Plätze". Ein Platzzähler, der dauerhaft auf 3/3 steht, belegt keine Knappheit — er entwertet sie. Statt den Chip einzeln zu entfernen, ist der ganze Angebotsrahmen raus (ADR `docs/decisions/0011-founding-cohort-2026-entfernt.md`, löst `0007` ab).
+- **Gelöscht:** `inc/canon/founding-canon.php`, `inc/components/founding-cohort-block.php`, `assets/css/founding-cohort.css` (nur `.hu-founding*`-Regeln, keine Fremdnutzung), der Shortcode `[hu_founding]` und der bedingte CSS-Enqueue für Startseite/About.
+- **Solar-LP:** Trust-Chip weg; die Abschluss-Sektion ist jetzt reine Final-CTA — `#founding` → `#final-cta`, `data-track-section="founding_cohort"` → `final_cta` (der CTA-Link darin meldete schon immer `final_cta`). Platzzähler und Bewerbungsfrist ersatzlos gestrichen, die drei Fit-Bedingungen bleiben. CSS-Klasse `.sol-founding-facts` → `.sol-cta-facts`.
+- **About:** Kohorten-Card behält Titel, Text und CTA — Eyebrow „FOUNDING COHORT 2026" → „ARBEITSWEISE", Status-Zeile „3 von 3 Plätzen offen" samt zugehöriger CSS-Regeln raus, der Satz über die Kohorten-Öffnung gestrichen. Der zusätzlich gerenderte `about`-Block darunter entfällt komplett.
+- **Startseite:** Bullet „Maximal 3 Founding-Partner pro Jahr" → „Bewusst wenige Projekte parallel · 1:1 mit dem Betrieb"; FAQ „Bin ich gebunden?" schließt jetzt mit begrenzter Kapazität statt mit Kohorten-Plätzen. **Agentur-Seite:** Hero-Chip → „Solar · Wärmepumpe · SHK". **Quiz-JS:** grünes Signal spricht vom Umsetzungsfall.
+- **Sprachregelung:** `Founding-Partner` → `Umsetzungspartner`, gepflegt in `messaging-canon.php` (`preferred_terms`, `term_definitions`) und als Verbot in `AGENTS.md` + `docs/standards/BRAND_AND_COPY.md` verankert. Specs, Privacy-Doc, Audit-Funnel-Doc, Blog-Entwurf und zwei Skills nachgezogen.
+- **Bewusst unverändert:** die Preis-Konstanten in `pricing-canon.php`. Sie tragen die Namen `*_FOUNDING`, sind aber reine Preisdaten und können über `[hu_price]` in WordPress-Inhalten referenziert sein, die das Repo nicht sieht. Welcher Preis ohne Kohorte gilt, ist eine offene Angebotsentscheidung — kein Rename ohne sie.
+
 ### `/b2b-solar-leads/`: Feindbild korrigiert — gekaufte PV-Termine statt Lead-Portale
 
 - **Datenbefund** (`seo-research/2026-07/data/gsc/gsc-export-28d-2026-07-03.csv`, 28 Tage): Die Seite sammelt **207 Impressionen über 20 Queries, 0 Klicks**. `pv termine b2b` trägt davon **86 Impressionen (42 %) auf Position 9,65** — die einzige Seite-1-Position der gesamten Site. Zum Vergleich: Money Page 11 Impressionen, `/solar-leads-kaufen-alternative/` 34.

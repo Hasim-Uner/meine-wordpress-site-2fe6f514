@@ -93,7 +93,7 @@ Preserve the diagnosis-first funnel:
 - Retired growth-audit or generic agency paths must not become primary CTAs again.
 - Use `blocksy-child/inc/canon/diagnose-canon.php` as the source for current analysis labels, route, scope, and offer frame.
 
-Do not route analysis or demo interactions directly into a generic sales pitch. The flow must qualify or disqualify Founding-Partner fit before implementation is sold.
+Do not route analysis or demo interactions directly into a generic sales pitch. The flow must qualify or disqualify implementation fit before implementation is sold.
 
 ### 6. No Silent n8n Coupling
 

@@ -207,7 +207,7 @@ get_header();
 				</span>
 				<span class="ag-hero__meta-top">
 					<span class="ag-status-dot" aria-hidden="true"></span>
-					Founding&nbsp;Cohort&nbsp;2026
+					Solar&nbsp;·&nbsp;Wärmepumpe&nbsp;·&nbsp;SHK
 				</span>
 			</header>
 

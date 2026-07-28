@@ -19,7 +19,7 @@ define( 'HU_REQUEST_ANALYSIS_LABEL', 'Marktcheck' );
 define( 'HU_REQUEST_ANALYSIS_ROUTE', '/system-diagnose/' );
 define( 'HU_REQUEST_ANALYSIS_DAYS', 7 );
 define( 'HU_REQUEST_ANALYSIS_OUTPUT_LABEL', 'schriftlicher Befund zu Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss' );
-define( 'HU_REQUEST_ANALYSIS_PRICE_LABEL', 'nur für passende Founding-Partner nach Potenzialcheck' );
+define( 'HU_REQUEST_ANALYSIS_PRICE_LABEL', 'nur für passende Betriebe nach Potenzialcheck' );
 
 define( 'HU_DEEP_DIAGNOSIS_PRICE', 1500 );
 define( 'HU_DEEP_DIAGNOSIS_DAYS', 30 );
@@ -53,7 +53,7 @@ function hu_diagnose_canon() {
 		'deep_days'                  => HU_DEEP_DIAGNOSIS_DAYS,
 		'deep_screenshare_minutes'   => HU_DEEP_DIAGNOSIS_SCREENSHARE_MINUTES,
 		'access_policy'              => 'Kein Admin-Zugang in der Diagnose.',
-		'credit_policy'              => 'Anrechenbar auf die Umsetzung, wenn aus der Diagnose ein passender Founding-Partner-Fall wird.',
+		'credit_policy'              => 'Anrechenbar auf die Umsetzung, wenn aus der Diagnose ein passender Umsetzungsfall wird.',
 	];
 }
 

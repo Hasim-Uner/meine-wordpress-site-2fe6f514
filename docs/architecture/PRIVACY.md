@@ -4,7 +4,7 @@ Stand: 2026-05-07
 
 ## Anfrage-System-Analyse
 
-Die Anfrage-System-Analyse ist ein eigener Verarbeitungsvorgang. Sie dient der evidenzbasierten Prüfung, ob ein Solar-, Wärmepumpen- oder SHK-Betrieb als Founding-Partner für ein eigenes Anfrage-System geeignet ist.
+Die Anfrage-System-Analyse ist ein eigener Verarbeitungsvorgang. Sie dient der evidenzbasierten Prüfung, ob ein Solar-, Wärmepumpen- oder SHK-Betrieb für ein eigenes Anfrage-System geeignet ist.
 
 ## Verarbeitete Daten
 

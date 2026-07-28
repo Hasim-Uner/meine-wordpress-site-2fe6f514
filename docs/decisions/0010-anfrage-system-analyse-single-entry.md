@@ -13,12 +13,12 @@ Die bisher geplante öffentliche Zweistufigkeit aus `Readiness-Diagnose` und `Ti
 
 ## Begründung
 
-Der erste gute Kunde soll nicht über eine generische kostenlose Analyse gewonnen werden, sondern über einen selektiven Founding-Partner-Prozess. Die Analyse muss Entscheidungssicherheit liefern: Marktbild, Anfragepfad, Leadkosten-Korridor, Tracking-/CRM-Realität und klare Empfehlung für oder gegen eine Umsetzung. Eine zusätzliche öffentliche Tiefendiagnose erhöht die Komplexität, bevor Angebot und erster Case belastbar sind.
+Der erste gute Kunde soll nicht über eine generische kostenlose Analyse gewonnen werden, sondern über einen selektiven Auswahlprozess. Die Analyse muss Entscheidungssicherheit liefern: Marktbild, Anfragepfad, Leadkosten-Korridor, Tracking-/CRM-Realität und klare Empfehlung für oder gegen eine Umsetzung. Eine zusätzliche öffentliche Tiefendiagnose erhöht die Komplexität, bevor Angebot und erster Case belastbar sind.
 
 ## Konsequenzen
 
 - Primärer CTA für kalten Solar-/SHK-Traffic ist inzwischen `/solar-waermepumpen-leadgenerierung/#marktcheck`.
 - Die Analyse wird nicht als kostenloser Massen-Leadmagnet positioniert.
 - Der bestehende `readiness-diagnosis-payload.v1` bleibt bis zur nächsten Contract-Version intern stabil.
-- Texte, Demo-CTA und Founding-Cohort-Block sprechen öffentlich von `Anfrage-System-Analyse`.
+- Texte und Demo-CTA sprechen öffentlich von `Anfrage-System-Analyse`.
 - Die Tiefendiagnose bleibt intern als Option möglich, aber nicht als öffentlicher Funnel-Schritt.

@@ -1194,9 +1194,9 @@
 }
 .solara-landing .sol-faq-item.is-open .sol-faq-a { padding-bottom: 22px; }
 
-/* ─── 10) Founding / Final-CTA ──────────────────────────────── */
+/* ─── 10) Final-CTA ─────────────────────────────────────────── */
 .solara-landing .hu-final-cta { max-width: 880px; margin: 0 auto; }
-.solara-landing .sol-founding-facts {
+.solara-landing .sol-cta-facts {
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -1210,7 +1210,7 @@
   letter-spacing: .05em;
   color: var(--fg-2);
 }
-.solara-landing .sol-founding-facts li::before {
+.solara-landing .sol-cta-facts li::before {
   content: "·";
   color: var(--accent);
   margin-right: 10px;

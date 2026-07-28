@@ -18,7 +18,7 @@ Report-Spec: `docs/specs/anfrage-system-analyse-report-v1.md`
 
 ## Ziel
 
-Die Anfrage-System-Analyse ist der 14-Tage-Fitcheck für passende Founding-Partner. Sie soll nicht als kostenloser Massen-Leadmagnet wirken, sondern als qualifizierender Einstieg mit Marktbild, Anfragepfad-Prüfung, Leadkosten-Korridor und klarer Empfehlung für oder gegen eine Umsetzung.
+Die Anfrage-System-Analyse ist der 14-Tage-Fitcheck für passende Betriebe. Sie soll nicht als kostenloser Massen-Leadmagnet wirken, sondern als qualifizierender Einstieg mit Marktbild, Anfragepfad-Prüfung, Leadkosten-Korridor und klarer Empfehlung für oder gegen eine Umsetzung.
 
 ## Nicht-Ziele
 
@@ -40,7 +40,7 @@ Die Anfrage-System-Analyse ist der 14-Tage-Fitcheck für passende Founding-Partn
 | 1 Betrieb | ICP-Fit prüfen | Branche, Angebotsart | Nicht Solar, SHK oder Wärmepumpe → gelbes oder rotes Fit-Signal |
 | 2 Region | Marktreichweite einschätzen | PLZ-Region, DACH-Land | Außerhalb DACH → Nicht-Empfehlung möglich |
 | 3 Angebot | wirtschaftliche Relevanz prüfen | Hauptleistung, durchschnittlicher Auftragswert | niedriger Auftragswert → rotes Wirtschaftlichkeitssignal |
-| 4 Werbebudget | Skalierungsfähigkeit prüfen | Budget-Range | Unter 5.000 EUR/Monat → rotes Signal für Founding Cohort |
+| 4 Werbebudget | Skalierungsfähigkeit prüfen | Budget-Range | Unter 5.000 EUR/Monat → rotes Signal für die Umsetzung |
 | 5 Website | Anfragepfad einschätzen | URL, CMS-Selbstauskunft | Keine URL → Befund nur eingeschränkt |
 | 6 Tracking | Messlage prüfen | Pixel, GTM, Consent, CAPI als Ja/Nein/Weiß ich nicht | Weiß ich nicht → rot |
 | 7 Anfrageprozess | Vertriebsfähigkeit prüfen | Reaktionszeit, Verantwortlicher, CRM-Selbstauskunft | kein Prozess → rotes Prozesssignal |
@@ -88,7 +88,7 @@ Aktiver WordPress-Submit nach Einwilligung:
 
 - `Weiß ich nicht` ist gültig und wird nicht blockiert.
 - `Weiß ich nicht` in Tracking- oder CRM-Fragen wird im Befund rot bewertet.
-- Budget unter 5.000 EUR/Monat blockiert die Founding-Cohort-Empfehlung, aber nicht zwingend die Analyse.
+- Budget unter 5.000 EUR/Monat blockiert die Umsetzungsempfehlung, aber nicht zwingend die Analyse.
 - Leadkosten werden als marktbasierter Zielkorridor formuliert, nicht als Garantie.
 - Fehlende Website-URL erzeugt eine eingeschränkte Befundtiefe.
 

@@ -439,14 +439,10 @@ get_header();
 				</div>
 
 				<div class="about-cohort-card" data-reveal>
-					<p class="about-cohort-card__eyebrow">FOUNDING COHORT 2026</p>
+					<p class="about-cohort-card__eyebrow">ARBEITSWEISE</p>
 					<h3 class="about-cohort-card__title">Der mittelständische PV-Installationsbetrieb war der erste Case, nicht die Grenze.</h3>
-					<p class="about-cohort-card__status">
-						<span class="about-cohort-card__dot" aria-hidden="true"></span>
-						3 von 3 Plätzen offen
-					</p>
 					<p class="about-cohort-card__text">
-						Ein einzelner dokumentierter Case ist eine bewusste Entscheidung gegen die anonyme Logo-Wand — dafür liegt dieser eine vollständig offen, von der Lead-Quelle bis zur Abschlussquote. Was bei diesem Betrieb funktioniert hat, war Methode, kein Zufall: dieselbe Vier-Eigenschaften-Logik lässt sich auf jeden Solar- oder Wärmepumpen-Betrieb mit eigenem Vertrieb übertragen. Genau diese Arbeitsweise öffnet die Cohort für maximal drei passende Betriebe. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.
+						Ein einzelner dokumentierter Case ist eine bewusste Entscheidung gegen die anonyme Logo-Wand — dafür liegt dieser eine vollständig offen, von der Lead-Quelle bis zur Abschlussquote. Was bei diesem Betrieb funktioniert hat, war Methode, kein Zufall: dieselbe Vier-Eigenschaften-Logik lässt sich auf jeden Solar- oder Wärmepumpen-Betrieb mit eigenem Vertrieb übertragen. Der Einstieg bleibt der Marktcheck, damit vor einer Umsetzung klar ist, ob Markt, Budget und Tracking-Realität zusammenpassen.
 					</p>
 					<a href="<?php echo esc_url( $request_url ); ?>"
 					   class="about-cta-primary"
@@ -498,17 +494,6 @@ get_header();
 				</div>
 			</div>
 		</section>
-
-		<?php
-		if ( function_exists( 'hu_render_founding_cohort_block' ) ) {
-			echo hu_render_founding_cohort_block(
-				[
-					'variant' => 'about',
-					'id'      => 'founding-cohort-about',
-				]
-			); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		}
-		?>
 
 		<!-- ════════════════════════════════════════════════════════
 		     FINAL CTA

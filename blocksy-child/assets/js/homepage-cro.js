@@ -134,7 +134,7 @@
 
             if (bad === 0) {
                 resultTitle.textContent = 'Grünes Signal für die Analyse.';
-                resultText.textContent = 'Zielgebiet, Projektwert und Entscheidungsweg sind klar genug. Der Marktcheck kann prüfen, ob daraus ein Founding-Partner-Fall wird.';
+                resultText.textContent = 'Zielgebiet, Projektwert und Entscheidungsweg sind klar genug. Der Marktcheck kann prüfen, ob daraus ein Umsetzungsfall wird.';
             } else if (bad === 1) {
                 resultTitle.textContent = 'Gelbes Signal: erst sauber einordnen.';
                 resultText.textContent = 'Ein wichtiger Punkt ist noch unscharf. Genau dafür ist die Analyse gedacht: Fit, Marktbild und nächsten Schritt belastbar klären.';

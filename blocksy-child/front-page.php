@@ -629,7 +629,7 @@ get_header();
 						<li><span class="hu-about-bullet-dot"></span>Fokus Solar &amp; Wärmepumpen — verifizierte Daten-Integrität seit der Case Study</li>
 						<li><span class="hu-about-bullet-dot"></span>Asset-Ownership statt Drittanbieter-Lock-in</li>
 						<li><span class="hu-about-bullet-dot"></span>Gegründet 2026 · Hannover, vor Ort und remote</li>
-						<li><span class="hu-about-bullet-dot"></span>Maximal 3 Founding-Partner pro Jahr</li>
+						<li><span class="hu-about-bullet-dot"></span>Bewusst wenige Projekte parallel · 1:1 mit dem Betrieb</li>
 					</ul>
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 					   style="margin-top:8px"
@@ -700,7 +700,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Nein. Kein Knebelvertrag. Wir starten mit einer Analyse, dann entscheiden beide — Sie, ob es sich lohnt; ich, ob die Architektur passt. Founding-Cohort-Plätze sind auf drei pro Jahr begrenzt.</div>
+						<div class="hu-faq-item__a-inner">Nein. Kein Knebelvertrag. Wir starten mit einer Analyse, dann entscheiden beide — Sie, ob es sich lohnt; ich, ob die Architektur passt. Die Kapazität ist bewusst begrenzt, damit jedes Projekt 1:1 begleitet wird.</div>
 					</div>
 				</div>
 

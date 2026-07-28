@@ -24,7 +24,7 @@ Der Report entscheidet nicht über einen Verkauf. Er ordnet ein, ob ein eigener 
 
 | Status | Technischer Wert | Bedeutung | Nächster Schritt |
 |---|---|---|---|
-| Grün | `fit_green` | Umsetzung kann fachlich geprüft werden. | Founding-Partner-Fit einordnen; erst danach über Umsetzung sprechen. |
+| Grün | `fit_green` | Umsetzung kann fachlich geprüft werden. | Umsetzungs-Fit einordnen; erst danach über Umsetzung sprechen. |
 | Gelb | `fit_yellow` | Fit ist möglich, aber ein oder mehrere Risiken müssen vorher geklärt werden. | Gelbe und rote Signale bearbeiten, bevor Budget oder Technik gebaut wird. |
 | Rot | `fit_red` | Keine Umsetzungsempfehlung im aktuellen Zustand. | Kein Umsetzungs-Pitch; zuerst Branche, Budget, Prozess oder Messbarkeit korrigieren. |
 
@@ -58,7 +58,7 @@ Ein einzelner Hard Stop führt mindestens zu Gelb. Zwei oder mehr Hard Stops fü
 
 ### ICP-Fit
 
-Grün, wenn Branche und Betriebsgröße zum Founding-Partner-Rahmen passen.
+Grün, wenn Branche und Betriebsgröße zum Umsetzungsrahmen passen.
 
 Gelb, wenn der Betrieb energie-nah ist, aber Angebot oder Betriebsgröße noch eingeordnet werden müssen.
 
@@ -129,13 +129,13 @@ Diese Struktur ist die Zielstruktur für eine spätere REST- und n8n-Anbindung. 
     "fit_signal": "fit_green",
     "score": 82,
     "label": "Grüner Fit: Umsetzung prüfen",
-    "recommendation": "Founding-Partner-Fit einordnen; erst danach über Umsetzung sprechen."
+    "recommendation": "Umsetzungs-Fit einordnen; erst danach über Umsetzung sprechen."
   },
   "modules": [
     {
       "key": "icp_fit",
       "signal": "green",
-      "summary": "Branche und Betriebsgröße passen zum Founding-Partner-Rahmen."
+      "summary": "Branche und Betriebsgröße passen zum Umsetzungsrahmen."
     }
   ],
   "reasons": [

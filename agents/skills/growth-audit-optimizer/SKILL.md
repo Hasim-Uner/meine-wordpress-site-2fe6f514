@@ -17,7 +17,7 @@ sh agents/skills/growth-audit-optimizer/scripts/print-scope.sh
 
 - Treat `/growth-audit/` as a legacy route that redirects to the marketcheck.
 - Use `60 Sekunden` as the timing baseline.
-- Keep public positioning centered on `Solar`, `Wärmepumpe`, `Speicher`, `Founding-Partner`, `Marktcheck`, and `Anfrage-Systeme`.
+- Keep public positioning centered on `Solar`, `Wärmepumpe`, `Speicher`, `Marktcheck`, and `Anfrage-Systeme`.
 - Remove stale Shopify references if they still appear in the audit context.
 - Frame the page as a strategic diagnosis entry point, not as a gimmicky free tool.
 

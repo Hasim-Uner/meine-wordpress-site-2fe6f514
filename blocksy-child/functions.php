@@ -22,9 +22,7 @@ $modules = [
 	'canon/e3-proof-canon.php', // Kanonische E3-Proof-Zahlen und Displaywerte
 	'canon/diagnose-canon.php', // Kanonische Diagnose-Stufen, Preise und Scope-Grenzen
 	'canon/pricing-canon.php', // Kanonische Foundation-, Performance- und Premium-Preise
-	'canon/founding-canon.php', // Founding Cohort 2026: Plätze, Frist und Labels
 	'canon/messaging-canon.php', // Zentrale Wertanker, Abgrenzungen und Begriffsschutz
-	'components/founding-cohort-block.php', // Wiederverwendbarer Founding-Cohort-Block
 	'mail.php',           // Zentraler Brevo-Mail-Router für Transaktionsmails
 	'crm.php',            // Gemeinsame CRM-Grundlage für Kontakte, Blog-Abos und Projektanfragen
 	'wgos/wgos-access.php',    // Interne WGOS-Clientrolle, Dashboard-Capability und Backend-Sperre

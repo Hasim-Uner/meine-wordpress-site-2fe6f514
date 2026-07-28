@@ -44,10 +44,6 @@ function hu_enqueue_assets() {
 	// ── GLOBAL: Custom Header ──────────────────────────────────────
 	hu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-design-system' ] );
 
-	if ( is_front_page() || is_page_template( 'template-about.php' ) ) {
-		hu_enqueue_css( 'nexus-founding-cohort-css', 'founding-cohort.css', [ 'nexus-design-system' ] );
-	}
-
 	// ── GLOBAL: Core JS (Scroll-Spy, FAQ, Counter, Progress Bar) ──
 	hu_enqueue_js( 'nexus-core-js', 'nexus-core.js' );
 	hu_enqueue_js( 'nexus-site-header-js', 'site-header.js', [ 'nexus-core-js' ] );

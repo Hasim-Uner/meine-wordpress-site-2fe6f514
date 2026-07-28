@@ -39,7 +39,7 @@ MATCHES="$(
 
 if [[ -n "${MATCHES}" ]]; then
   echo "Canon drift guard failed."
-  echo "Move pricing, diagnosis, Founding Cohort, and forbidden customer-facing wording to blocksy-child/inc/canon/."
+  echo "Move pricing, diagnosis, and forbidden customer-facing wording to blocksy-child/inc/canon/."
   echo
   echo "${MATCHES}"
   exit 1

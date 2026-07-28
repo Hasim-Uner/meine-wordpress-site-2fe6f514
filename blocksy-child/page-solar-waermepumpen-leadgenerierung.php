@@ -47,20 +47,6 @@ $e3_cpl_after_val    = (int) ( $e3_metrics['cpl_after']['value'] ?? 22 );
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '6 Monaten';
 
-// ── Founding-Canon ─────────────────────────────────────────────
-$founding = function_exists( 'hu_founding_canon' ) ? hu_founding_canon() : [
-	'label'           => 'Founding Cohort 2026',
-	'slots_total'     => 3,
-	'slots_remaining' => 3,
-	'end_date'        => '2026-09-30',
-];
-$founding_label   = isset( $founding['label'] ) ? (string) $founding['label'] : 'Founding Cohort 2026';
-$founding_open    = isset( $founding['slots_remaining'] ) ? (int) $founding['slots_remaining'] : 3;
-$founding_seats   = isset( $founding['slots_total'] ) ? (int) $founding['slots_total'] : 3;
-$founding_end_iso = isset( $founding['end_date'] ) ? (string) $founding['end_date'] : '2026-09-30';
-$founding_end_ts  = strtotime( $founding_end_iso );
-$founding_end_de  = $founding_end_ts ? wp_date( 'd.m.Y', $founding_end_ts ) : '30.09.2026';
-
 // ── Inhaltsmodelle ─────────────────────────────────────────────
 $trust_items = [
 	'Solar · Wärmepumpe · Speicher · DACH',
@@ -1299,25 +1285,23 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     FOUNDING COHORT 2026 + FINAL CTA — zurück zum Marktcheck
+		     FINAL CTA — zurück zum Marktcheck
 		     ════════════════════════════════════════════════════════════ -->
-		<section class="hu-section" id="founding" data-track-section="founding_cohort">
+		<section class="hu-section" id="final-cta" data-track-section="final_cta">
 			<div class="hu-container" data-sol-reveal>
 				<div class="hu-final-cta">
 					<span class="hu-tag">
 						<span class="hu-dot hu-dot--live" aria-hidden="true"></span>
-						<span class="hu-mono"><?php echo esc_html( $founding_label ); ?> · <?php echo (int) $founding_open; ?> von <?php echo (int) $founding_seats; ?> Plätzen offen</span>
+						<span class="hu-mono">Marktcheck · Fit-Befund in 48 h</span>
 					</span>
 					<h2>Anfragen besitzen,<br />nicht mieten.</h2>
 					<p>
-						2026 nehme ich maximal <?php echo (int) $founding_seats; ?> Solar- oder SHK-Betriebe als Founding-Partner auf —
-						damit jede Region in Diagnose, Daten-Pipeline und Vertriebsanschluss persönlich abgebildet werden kann.
-						Founding-Partner heißt: früher Umsetzungspartner, kein Mitgründer, kein Anteilseigner und keine
-						gesellschaftsrechtliche Partnerschaft. Der Marktcheck entscheidet, ob die Architektur zu Ihrer Region passt.
+						Ich arbeite 1:1 mit Solar- und SHK-Betrieben, damit jede Region in Diagnose, Daten-Pipeline und
+						Vertriebsanschluss persönlich abgebildet werden kann. Der Marktcheck entscheidet, ob die Architektur
+						zu Ihrer Region passt — und sagt auch ab, wenn sie es nicht tut.
 					</p>
-					<ul class="sol-founding-facts">
-						<li>Plätze 2026: <?php echo (int) $founding_open; ?> von <?php echo (int) $founding_seats; ?> noch offen</li>
-						<li>Bewerbungsfrist: <?php echo esc_html( $founding_end_de ); ?></li>
+					<ul class="sol-cta-facts">
+						<li>Einstieg: Marktcheck · Fit-Befund statt Verkaufsgespräch</li>
 						<li>Entscheidung: nach Marktcheck · händisch · innerhalb von 48 Stunden</li>
 						<li>Bedingung: eigener Vertrieb · klares Zielgebiet · 12–24-Monate-Horizont</li>
 					</ul>

@@ -37,7 +37,7 @@ Die eigentliche Frage lautet:
 Wie bauen wir eine eigene Anfrage-Infrastruktur, die dauerhaft Aufträge erzeugt, Daten besitzt und den Vertrieb nicht in Preisvergleiche zwingt?
 ```
 
-Dieser Artikel rechnet genau das durch: Portal-Leads, gemietete GoHighLevel-Funnels, eigene WordPress-Money-Pages, Server-Side Tracking, CRM-Rücksignale, Page Speed, CPO und Founding-Partner-Fit. Founding-Partner meint hier einen frühen Umsetzungspartner der Founding Cohort 2026, keinen Mitgründer, Anteilseigner oder gesellschaftsrechtlichen Partner.
+Dieser Artikel rechnet genau das durch: Portal-Leads, gemietete GoHighLevel-Funnels, eigene WordPress-Money-Pages, Server-Side Tracking, CRM-Rücksignale, Page Speed, CPO und Umsetzungs-Fit.
 
 Die kompakte Einordnung für den Kauf-Suchintent liegt auf der Seite [Solar Leads kaufen Alternative](/solar-leads-kaufen-alternative/). Dieser Beitrag geht tiefer in TCO, CPO, Vertriebszeit und Datenbesitz.
 
@@ -566,7 +566,7 @@ Weil nicht jeder Betrieb passt. Erst müssen Projektwert, Zielgebiet, Vertriebsr
 
 Wenn Sie nur "mehr Leads" wollen, ist das hier der falsche Einstieg.
 
-Der regionale Marktcheck prüft nicht, ob man Ihnen irgendeinen Funnel verkaufen kann. Er prüft, ob Ihr Photovoltaik-Betrieb aktuell als Founding-Partner, also als früher Umsetzungspartner der Founding Cohort 2026, in die Kohorte passt.
+Der regionale Marktcheck prüft nicht, ob man Ihnen irgendeinen Funnel verkaufen kann. Er prüft, ob Ihr Photovoltaik-Betrieb aktuell zu einer Umsetzung passt.
 
 Geprüft werden drei Dinge:
 
@@ -591,7 +591,7 @@ Das ist Absicht.
 
 Der Marktcheck ist kein Massen-Leadmagnet. Er ist ein selektiver Einstieg für Solar- und Wärmepumpen-Anbieter, bei denen Projektwert, Vertriebsprozess und Zielgebiet zusammenpassen.
 
-Für die aktuelle Kohorte gelten Founding-Partner-Kriterien. Wer passt, bekommt Founding-Konditionen. Wer nicht passt, bekommt eine ehrliche Absage statt eines schön formulierten Pitches.
+Wer passt, bekommt ein Umsetzungsangebot. Wer nicht passt, bekommt eine ehrliche Absage statt eines schön formulierten Pitches.
 
 **Regionalen Marktcheck starten:**  
 [/solar-waermepumpen-leadgenerierung/#marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck)

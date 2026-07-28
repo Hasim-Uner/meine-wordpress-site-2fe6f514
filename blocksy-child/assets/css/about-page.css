@@ -891,28 +891,6 @@
 	text-wrap: balance;
 }
 
-.nexus-about .about-cohort-card__status {
-	display: inline-flex;
-	align-items: center;
-	gap: 10px;
-	background: var(--about-bg-2);
-	border: 1px solid var(--about-line);
-	padding: 10px 20px;
-	border-radius: var(--about-radius-pill);
-	font-size: 14px;
-	font-weight: 600;
-	color: var(--about-ink-2);
-	margin: 0 0 22px;
-}
-
-.nexus-about .about-cohort-card__dot {
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-	background: var(--about-good);
-	box-shadow: 0 0 8px rgba(107, 161, 122, 0.55);
-}
-
 .nexus-about .about-cohort-card__text {
 	font-size: 15.5px;
 	line-height: 1.6;

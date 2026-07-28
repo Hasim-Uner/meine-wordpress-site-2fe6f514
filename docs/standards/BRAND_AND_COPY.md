@@ -44,9 +44,12 @@ Marktcheck -> Anfrage-System-Analyse -> Umsetzung / Retainer
 `System-Diagnose`, `Potenzial-Check`, `priorisierte Hebel`,
 `Solar`, `Photovoltaik`, `PV`, `Wärmepumpe`, `Speicher`, `Energie-Anbieter`, `Handwerk`
 
-`Founding-Partner` darf im 2026-Angebotsframe verwendet werden, muss auf der
-ersten sichtbaren Nutzung aber als früher Umsetzungspartner erklärt werden:
-kein Mitgründer, kein Anteilseigner, keine gesellschaftsrechtliche Partnerschaft.
+`Founding Cohort 2026`, `Founding-Partner` und `Founding-Konditionen` sind
+zurückgezogen und dürfen nicht mehr in Kundencopy auftauchen — ebenso wenig
+Platzzähler oder Bewerbungsfristen. Wer den Betrieb hinter einer Umsetzung
+benennen muss, schreibt `Umsetzungspartner` und erklärt ihn bei der ersten
+sichtbaren Nutzung: kein Mitgründer, kein Anteilseigner, keine
+gesellschaftsrechtliche Partnerschaft.
 
 ## Solar / Photovoltaik / PV
 
