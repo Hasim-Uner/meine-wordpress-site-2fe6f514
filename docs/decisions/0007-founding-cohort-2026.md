@@ -1,10 +1,10 @@
 # 0007 Founding Cohort 2026
 
 - Datum: 2026-05-02
-- Status: abgeloest durch [0011](0011-founding-cohort-2026-entfernt.md) (2026-07-28)
+- Status: abgelöst durch [0011](0011-founding-cohort-2026-entfernt.md) (2026-07-28)
 
-> Historischer Datensatz. Der hier beschriebene Angebotsrahmen ist zurueckgezogen
-> und darf nicht mehr als Vorlage fuer Kundencopy dienen.
+> Historischer Datensatz. Der hier beschriebene Angebotsrahmen ist zurückgezogen
+> und darf nicht mehr als Vorlage für Kundencopy dienen.
 
 ## Entscheidung
 
