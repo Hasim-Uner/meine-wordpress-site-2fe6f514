@@ -70,10 +70,22 @@ Always separate repo fixes from editor work, SEO Cockpit work, WordPress admin w
 - Never invent keyword volumes, Search Console data, or analytics numbers.
 - Mark assumptions clearly.
 - If data is missing, create a clean placeholder or task instead of pretending it exists.
-- Direkt auf `main` committen ist der Normalfall (Ein-Personen-Repo). Alle vier
-  Checks laufen seit 2026-07-26 auch bei Push auf `main`, nicht nur bei Pull
-  Requests: CI, German Copy Guard und Link-Check. `deploy.yml` startet erst nach
-  erfolgreichem CI und nur von `main`.
+- **Direkt auf `main` ist der Standardweg, nicht die Ausnahme** (Ein-Personen-Repo).
+  Arbeit ohne ausdruecklichen Gegenauftrag dort committen und pushen. Ein
+  Feature-Branch ist nur richtig, wenn die Aufgabe ihn ausdruecklich vorgibt.
+  Liegen Commits auf einem Branch, ist das kein Endzustand: entweder auf `main`
+  bringen oder benennen, warum nicht. Der Stop-Hook
+  `scripts/claude-main-branch-reminder.sh` meldet genau das.
+- Entscheidungsregel PR ja/nein: **Kann man das Ergebnis auf der Live-Seite
+  sehen?** Ja (CSS, Copy, Layout) → direkt auf `main`, die Seite ist das Review.
+  Nein (Tracking- und GA4-Event-Namen, REST-Kontrakte, Schema, Registry- oder
+  Seeder-Versionen, alles was Daten schreibt statt Code) → PR, weil der Diff
+  dort das einzige Review ist und ein Code-Revert geschriebene Daten nicht
+  zurueckholt.
+- Ein PR bringt technisch keine zusaetzliche Absicherung: Bei Push auf `main`
+  laufen CI, German Copy Guard und Link-Check ohnehin, und `deploy.yml` startet
+  erst nach erfolgreichem CI und nur von `main`. Ein rotes CI heisst kein
+  Deploy — die Live-Seite bleibt unangetastet.
 - **Push auf `main` heisst deployen.** `deploy.yml` schiebt `blocksy-child/` auf
   den Server. Aenderungen ausserhalb dieses Ordners (`agents/`, `docs/`,
   `seo-research/`) veraendern die Live-Site nicht.

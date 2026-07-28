@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/claude-main-branch-reminder.sh\"",
+            "timeout": 15,
+            "statusMessage": "Branch-Status prüfen"
+          }
+        ]
+      }
+    ]
+  }
+}
