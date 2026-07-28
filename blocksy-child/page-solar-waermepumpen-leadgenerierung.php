@@ -69,7 +69,6 @@ $trust_items = [
 	'Hardcoded WordPress · kein Page-Builder',
 	'1:1 Senior · keine Junior-Kette',
 	'Marktcheck · Fit-Befund in 48 h',
-	sprintf( '%s · %d/%d Plätze', $founding_label, $founding_open, $founding_seats ),
 ];
 
 // 01 / Status quo — drei Kostenkarten (Creme)
