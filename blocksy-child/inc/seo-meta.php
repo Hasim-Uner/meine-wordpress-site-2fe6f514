@@ -786,6 +786,26 @@ function hu_get_noindex_follow_slugs() {
 }
 
 /**
+ * Return post types that should stay noindex but keep passing link equity.
+ *
+ * `wgos_asset`: WGOS ist als Angebot eingestellt (Hard Ban in
+ * docs/standards/BRAND_AND_COPY.md), /wgos/ ist noindex. Die 32 Baustein-
+ * Unterseiten waren es nicht — der CPT ist `public` mit
+ * `exclude_from_search => false` registriert und hatte keine Robots-Regel.
+ * Ergebnis laut GSC-Coverage-Export vom 2026-07-28: 32 der 72 indexierten URLs
+ * gehoerten diesem Framework, ohne eine einzige Impression, teils auf denselben
+ * Themen wie die Money-Pages (server-side-tracking, local-seo, cwv-optimierung).
+ * `follow` bleibt, weil Glossar- und Cluster-Seiten dorthin verlinken.
+ *
+ * @return array<int, string>
+ */
+function hu_get_noindex_follow_post_types() {
+	return [
+		'wgos_asset',
+	];
+}
+
+/**
  * Resolve the effective robots directive for a singular post/page.
  *
  * @param int $post_id Post ID.
@@ -808,6 +828,7 @@ function hu_get_singular_robots_context( $post_id ) {
 	$is_noindex_nofollow = in_array( $template, hu_get_noindex_nofollow_templates(), true )
 		|| in_array( $slug, hu_get_noindex_nofollow_slugs(), true );
 	$is_noindex_follow   = in_array( $slug, hu_get_noindex_follow_slugs(), true )
+		|| in_array( (string) get_post_type( $post_id ), hu_get_noindex_follow_post_types(), true )
 		|| $acf_noindex
 		|| $legacy_noindex;
 
@@ -1490,6 +1511,23 @@ add_filter( 'wp_sitemaps_posts_query_args', function ( $args, $post_type ) {
 
 	return $args;
 }, 10, 2 );
+
+/**
+ * Drop noindex post types from the core sitemap entirely.
+ *
+ * Ein Sitemap-Eintrag sagt "crawl mich", der noindex-Header sagt das Gegenteil.
+ * Fuer `wgos_asset` faellt damit ein ganzer Post-Type raus statt einzelner IDs.
+ *
+ * @param array<string, WP_Post_Type> $post_types Public post type objects.
+ * @return array<string, WP_Post_Type>
+ */
+add_filter( 'wp_sitemaps_post_types', function ( $post_types ) {
+	foreach ( hu_get_noindex_follow_post_types() as $type ) {
+		unset( $post_types[ $type ] );
+	}
+
+	return $post_types;
+} );
 
 /**
  * Keep native taxonomy sitemaps focused on curated category archives.
