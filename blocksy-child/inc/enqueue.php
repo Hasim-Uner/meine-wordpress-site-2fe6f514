@@ -584,8 +584,9 @@ function hu_should_use_dynamic_asset_versions() {
 /**
  * Return the static asset version used on live-like environments.
  *
- * `HU_THEME_VERSION` may be injected from `wp-config.php` or deployment
- * tooling. If it is absent, fall back to the child theme stylesheet version.
+ * The deployed child theme stylesheet is the primary source of truth.
+ * `HU_THEME_VERSION` remains a defensive fallback only when the stylesheet
+ * does not expose a version, so a stale server constant cannot pin old assets.
  *
  * @return string
  */
@@ -593,6 +594,15 @@ function hu_get_static_asset_version() {
 	static $version = null;
 
 	if ( null !== $version ) {
+		return $version;
+	}
+
+	$theme         = wp_get_theme( get_stylesheet() );
+	$theme_version = $theme instanceof WP_Theme ? trim( (string) $theme->get( 'Version' ) ) : '';
+
+	if ( '' !== $theme_version ) {
+		$version = $theme_version;
+
 		return $version;
 	}
 
@@ -606,9 +616,7 @@ function hu_get_static_asset_version() {
 		}
 	}
 
-	$theme          = wp_get_theme( get_stylesheet() );
-	$theme_version  = $theme instanceof WP_Theme ? trim( (string) $theme->get( 'Version' ) ) : '';
-	$version        = '' !== $theme_version ? $theme_version : '1.0.0';
+	$version = '1.0.0';
 
 	return $version;
 }
