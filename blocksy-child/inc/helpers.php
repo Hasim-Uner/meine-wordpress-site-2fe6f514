@@ -1386,8 +1386,9 @@ function nexus_get_legacy_offer_redirect_map() {
 		'/wordpress-agentur/'        => $agentur_url,
 		'/alle-loesungen-im-detail/' => nexus_get_page_url( [ 'alle-loesungen' ], home_url( '/alle-loesungen/' ) ),
 		// Anonymized case study: old company-named slugs redirect to the anonymized slug.
-		'/e3-new-energy/'            => $case_study_url,
-		'/case-e3/'                  => $case_study_url,
+		'/e3-new-energy/'              => $case_study_url,
+		'/case-e3/'                    => $case_study_url,
+		'/case-studies/e3-new-energy/' => $case_study_url,
 		// Retired (Entwurf) Blog-Slug: 301 auf die Solar-Money-Page, damit
 		// nachlaufende Impressionen/Backlinks das Hub-Signal stützen statt zu
 		// kannibalisieren oder ins Leere (404) zu laufen.
