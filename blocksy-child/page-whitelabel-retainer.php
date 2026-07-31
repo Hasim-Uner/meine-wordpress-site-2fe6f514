@@ -55,45 +55,50 @@ $flow_steps = [
 	[ 'num' => '04', 'title' => 'Ergebnis unter eurem Namen', 'desc' => 'Euer Branding, eure Marge' ],
 ];
 
-// ── Erstprojekte: fixer Scope, Preis vorab (Einstieg vor Retainer) ──
+// ── Test-Sprint: Detail-Scope unterhalb der kompakten Angebotskarten ──
+$test_sprint_scope = [
+	'duration'         => 'max. ein Arbeitstag',
+	'deliver'          => 'Umsetzung, Funktionstest, kurze technische Dokumentation und eine Korrekturrunde',
+	'suitable'         => [
+		'Template- oder Komponentenanpassung',
+		'kleiner PHP-/JS-/CSS-Fix',
+		'Performanceproblem',
+		'technischer SEO-Fix',
+		'fehlerhafte WordPress-Funktion',
+		'Umsetzung eines vorhandenen Layouts',
+	],
+	'excluded'         => [
+		'Relaunch',
+		'vollständige Landingpage',
+		'vollständiges Tracking-Setup',
+		'unbegrenzte Korrekturen',
+		'Lizenz- oder Drittanbieterkosten',
+	],
+	'scope_note'       => 'Der Aufgabenumfang wird vor Beginn schriftlich festgelegt. Erweiterungen sind ein eigenes Angebot.',
+	'intro_price_note' => 'Einmaliger Einstiegspreis für die erste Zusammenarbeit.',
+];
+
+// ── Erstprojekte: fixer Scope, Festpreis vorab (Einstieg vor Retainer) ──
 $entry_projects = [
 	[
-		'tag'             => 'WordPress',
-		'title'           => 'WordPress-Test-Sprint',
-		'price'           => '590 € netto',
-		'duration'        => 'max. ein Arbeitstag',
-		'deliver'         => 'Umsetzung, Funktionstest, kurze technische Dokumentation und eine Korrekturrunde',
-		'copy'            => 'Eine vorab schriftlich abgegrenzte technische Aufgabe als kleinster Einstieg in die erste Zusammenarbeit.',
-		'suitable'        => [
-			'Template- oder Komponentenanpassung',
-			'kleiner PHP-/JS-/CSS-Fix',
-			'Performanceproblem',
-			'technischer SEO-Fix',
-			'fehlerhafte WordPress-Funktion',
-			'Umsetzung eines vorhandenen Layouts',
-		],
-		'excluded'        => [
-			'Relaunch',
-			'vollständige Landingpage',
-			'vollständiges Tracking-Setup',
-			'unbegrenzte Korrekturen',
-			'Lizenz- oder Drittanbieterkosten',
-		],
-		'scope_note'      => 'Der Aufgabenumfang wird vor Beginn schriftlich festgelegt. Erweiterungen sind ein eigenes Angebot.',
-		'intro_price_note' => 'Einmaliger Einstiegspreis für die erste Zusammenarbeit.',
+		'tag'       => 'WordPress',
+		'title'     => 'WordPress-Test-Sprint',
+		'price'     => '590 € netto',
+		'copy'      => 'Eine vorab schriftlich abgegrenzte technische Aufgabe als kleinster Einstieg in die erste Zusammenarbeit.',
+		'card_line' => 'Eine abgegrenzte Aufgabe zum Festpreis — inklusive Umsetzung, Funktionstest, technischer Dokumentation und einer Korrekturrunde.',
 	],
 	[
 		'tag'      => 'Tracking',
 		'title'    => 'Tracking-Audit',
-		'price'    => 'ab 1.900 € netto',
+		'price'    => 'Festpreis nach Umfangsklärung',
 		'duration' => '1 Woche',
 		'deliver'  => 'Schriftlicher Befund + priorisierte Fixliste',
 		'copy'     => 'GA4, GTM und Consent-Bestand eures Kunden geprüft: Was misst, was fehlt, was verfälscht. Danach wisst ihr, worauf jede weitere Maßnahme aufsetzt.',
 	],
 	[
-		'tag'      => 'Server-Side',
+		'tag'      => 'Server',
 		'title'    => 'Server-Side-Setup',
-		'price'    => 'ab 2.900 € netto',
+		'price'    => 'Festpreis nach Umfangsklärung',
 		'duration' => '1–2 Wochen',
 		'deliver'  => 'Produktives Setup + Doku + Übergabe',
 		'copy'     => 'Eigener Server-Side-Container, Enhanced Conversions, Meta CAPI, Consent Mode V2 — produktiv geschaltet und dokumentiert, nicht nur konfiguriert.',
@@ -101,14 +106,14 @@ $entry_projects = [
 	[
 		'tag'      => 'Landingpage',
 		'title'    => 'Landingpage',
-		'price'    => 'ab 3.900 € netto',
+		'price'    => 'Festpreis nach Umfangsklärung',
 		'duration' => '2 Wochen',
 		'deliver'  => 'Live-Page + Doku, bereit für Traffic',
 		'copy'     => 'Individuelles Template mit klarer Funnel-Logik, sauberen Core Web Vitals und belastbarer Messbarkeit ab dem ersten Klick.',
 	],
 ];
 
-$entry_bullets = [ 'NDA', 'Fixer Scope', 'Preis vorab fix', 'Keine Verlängerungsfalle' ];
+$entry_bullets = [ 'NDA', 'Fixer Scope', 'Festpreis nach Umfangsklärung', 'Keine Verlängerungsfalle' ];
 
 $solution_modes = [
 	'hintergrund' => [
@@ -250,7 +255,7 @@ $faq_items = [
 	[
 		'key' => 'abrechnung',
 		'q'   => 'Wie rechnest du ab — Retainer oder Projekt?',
-		'a'   => 'Der WordPress-Test-Sprint ist mit 590 € netto der kleinste Einstieg. Größere Erstprojekte beginnen mit dem Tracking-Audit ab 1.900 € netto; Server-Side-Setup und Landingpage starten bei den auf dieser Seite genannten Preisen. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt und erhält einen vorab vereinbarten Leistungsrahmen.',
+		'a'   => 'Der WordPress-Test-Sprint ist mit 590 € netto der kleinste Einstieg und hat einen vorab schriftlich abgegrenzten Umfang. Tracking-Audit, Server-Side-Setup, Landingpage und weitere größere Erstprojekte werden nach der Umfangsklärung als Festpreis angeboten. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt und erhält einen vorab vereinbarten Leistungsrahmen.',
 	],
 	[
 		'key' => 'sichtbarkeit',
@@ -453,7 +458,7 @@ $fitcheck_steps = [
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Einstieg</span>
 				<h2 class="nx-headline-section">Kein Blind-Retainer. Erst ein Erstprojekt mit fixem Scope.</h2>
-				<p class="wl-section-lede">Der WordPress-Test-Sprint ist der kleinste Einstieg. Größere Erstprojekte folgen mit fester Lieferung und Preis vorab. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt.</p>
+				<p class="wl-section-lede">Der WordPress-Test-Sprint ist der kleinste Einstieg zum festen Preis. Größere Erstprojekte folgen mit fester Lieferung und einem Festpreis nach Umfangsklärung. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt.</p>
 			</div>
 
 			<div class="wl-entry__grid reveal-stagger">
@@ -465,45 +470,65 @@ $fitcheck_steps = [
 						</header>
 						<h3 class="wl-entry-card__title"><?php echo esc_html( $project['title'] ); ?></h3>
 						<p class="wl-entry-card__copy"><?php echo esc_html( $project['copy'] ); ?></p>
-						<?php if ( ! empty( $project['suitable'] ) ) : ?>
-							<div class="wl-entry-card__scope">
-								<h4>Geeignet für</h4>
-								<ul>
-									<?php foreach ( $project['suitable'] as $item ) : ?>
-										<li><?php echo esc_html( $item ); ?></li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-						<?php endif; ?>
-						<?php if ( ! empty( $project['excluded'] ) ) : ?>
-							<div class="wl-entry-card__scope wl-entry-card__scope--excluded">
-								<h4>Nicht enthalten</h4>
-								<ul>
-									<?php foreach ( $project['excluded'] as $item ) : ?>
-										<li><?php echo esc_html( $item ); ?></li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-						<?php endif; ?>
-						<dl class="wl-entry-card__meta">
-							<div>
-								<dt>Laufzeit</dt>
-								<dd><?php echo esc_html( $project['duration'] ); ?></dd>
-							</div>
-							<div>
-								<dt>Lieferung</dt>
-								<dd><?php echo esc_html( $project['deliver'] ); ?></dd>
-							</div>
-						</dl>
-						<?php if ( ! empty( $project['scope_note'] ) ) : ?>
-							<p class="wl-entry-card__note"><?php echo esc_html( $project['scope_note'] ); ?></p>
-						<?php endif; ?>
-						<?php if ( ! empty( $project['intro_price_note'] ) ) : ?>
-							<p class="wl-entry-card__note wl-entry-card__note--price"><?php echo esc_html( $project['intro_price_note'] ); ?></p>
+						<?php if ( ! empty( $project['card_line'] ) ) : ?>
+							<p class="wl-entry-card__summary"><?php echo esc_html( $project['card_line'] ); ?></p>
+						<?php else : ?>
+							<dl class="wl-entry-card__meta">
+								<div>
+									<dt>Laufzeit</dt>
+									<dd><?php echo esc_html( $project['duration'] ); ?></dd>
+								</div>
+								<div>
+									<dt>Lieferung</dt>
+									<dd><?php echo esc_html( $project['deliver'] ); ?></dd>
+								</div>
+							</dl>
 						<?php endif; ?>
 					</article>
 				<?php endforeach; ?>
 			</div>
+
+			<section class="wl-test-sprint-details nx-reveal" aria-labelledby="test-sprint-details-title">
+				<div class="wl-test-sprint-details__header">
+					<span class="wl-eyebrow">WordPress-Test-Sprint</span>
+					<h3 id="test-sprint-details-title">Was der Test-Sprint umfasst</h3>
+				</div>
+				<div class="wl-test-sprint-details__grid">
+					<div class="wl-test-sprint-details__item">
+						<h4>Rahmen</h4>
+						<dl>
+							<div>
+								<dt>Laufzeit</dt>
+								<dd><?php echo esc_html( $test_sprint_scope['duration'] ); ?></dd>
+							</div>
+							<div>
+								<dt>Lieferung</dt>
+								<dd><?php echo esc_html( $test_sprint_scope['deliver'] ); ?></dd>
+							</div>
+						</dl>
+					</div>
+					<div class="wl-test-sprint-details__item">
+						<h4>Geeignet für</h4>
+						<ul>
+							<?php foreach ( $test_sprint_scope['suitable'] as $item ) : ?>
+								<li><?php echo esc_html( $item ); ?></li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+					<div class="wl-test-sprint-details__item wl-test-sprint-details__item--excluded">
+						<h4>Nicht enthalten</h4>
+						<ul>
+							<?php foreach ( $test_sprint_scope['excluded'] as $item ) : ?>
+								<li><?php echo esc_html( $item ); ?></li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				</div>
+				<div class="wl-test-sprint-details__notes">
+					<p><?php echo esc_html( $test_sprint_scope['scope_note'] ); ?></p>
+					<p><?php echo esc_html( $test_sprint_scope['intro_price_note'] ); ?></p>
+				</div>
+			</section>
 
 			<ul class="wl-entry__bullets nx-reveal" aria-label="Rahmen Erstprojekt">
 				<?php foreach ( $entry_bullets as $bullet ) : ?>
