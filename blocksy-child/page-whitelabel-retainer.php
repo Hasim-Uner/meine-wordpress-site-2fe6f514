@@ -18,6 +18,7 @@ $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 $mailto_url          = 'mailto:hallo@hasimuener.de';
 $imprint_url         = home_url( '/impressum/' );
 $privacy_url         = home_url( '/datenschutz/' );
+$github_url          = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
 $current_year        = wp_date( 'Y' );
 
 // Diese Route hat eine eigene, geschlossene Seitennavigation. Der globale
@@ -127,7 +128,7 @@ $entry_projects = [
 		'tag'      => 'Tracking',
 		'title'    => 'Tracking-Audit',
 		'price'    => 'Festpreis nach Umfangsklärung',
-		'duration' => '1 Woche',
+		'duration' => 'Vor Projektstart verbindlich vereinbart',
 		'deliver'  => 'Schriftlicher Befund + priorisierte Fixliste',
 		'copy'     => 'GA4, GTM und Consent-Bestand eures Kunden geprüft: Was misst, was fehlt, was verfälscht. Danach wisst ihr, worauf jede weitere Maßnahme aufsetzt.',
 	],
@@ -135,7 +136,7 @@ $entry_projects = [
 		'tag'      => 'Server',
 		'title'    => 'Server-Side-Setup',
 		'price'    => 'Festpreis nach Umfangsklärung',
-		'duration' => '1–2 Wochen',
+		'duration' => 'Vor Projektstart verbindlich vereinbart',
 		'deliver'  => 'Produktives Setup + Doku + Übergabe',
 		'copy'     => 'Eigener Server-Side-Container, Enhanced Conversions, Meta CAPI, Consent Mode V2 — produktiv geschaltet und dokumentiert, nicht nur konfiguriert.',
 	],
@@ -143,7 +144,7 @@ $entry_projects = [
 		'tag'      => 'Landingpage',
 		'title'    => 'Landingpage',
 		'price'    => 'Festpreis nach Umfangsklärung',
-		'duration' => '2 Wochen',
+		'duration' => 'Vor Projektstart verbindlich vereinbart',
 		'deliver'  => 'Live-Page + Doku, bereit für Traffic',
 		'copy'     => 'Individuelles Template mit klarer Funnel-Logik, sauberen Core Web Vitals und belastbarer Messbarkeit ab dem ersten Klick.',
 	],
@@ -158,7 +159,7 @@ $solution_modes = [
 	],
 	'kundencall'  => [
 		'label' => 'Mit im Kunden-Call',
-		'copy'  => 'Als euer Senior-Tech-Lead direkt im Call. Technikfragen sofort beantwortet, ohne Übersetzungsschleife — der Kunde hört Kompetenz, ihr erntet sie.',
+		'copy'  => 'Als euer Senior-Tech-Lead beantworte ich technische Fragen direkt im Call. Rolle, Kommunikation und Freigaben klären wir vorab.',
 	],
 ];
 
@@ -346,33 +347,34 @@ $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 // ── Fit-Check: 3 Klickfragen vor der Terminbuchung ──────────────
 // Rein clientseitig (kein REST, keine Speicherung) — Antworten sind
 // Enum-Werte und fließen nur in data-track-Events + mailto-Vorlage.
-// Frage 2 spiegelt bewusst die drei Problem-Karten.
+// Die Antworten ordnen Vorhaben, Scope-Reife und zeitlichen Anlass ein.
 $fitcheck_steps = [
 	[
-		'key'      => 'agenturtyp',
-		'question' => 'Was für eine Agentur seid ihr?',
+		'key'      => 'vorhaben',
+		'question' => 'Was soll konkret geliefert werden?',
 		'options'  => [
-			'performance' => 'Performance / Paid',
-			'webdesign'   => 'Webdesign / WordPress',
-			'fullservice' => 'Full-Service / Brand',
-			'solo'        => 'Solo mit Freelancer-Netzwerk',
+			'testsprint'  => 'Eine klar abgegrenzte WordPress-Aufgabe',
+			'tracking'    => 'Tracking oder Server-Side-Setup',
+			'landingpage' => 'Eine Landingpage',
+			'retainer'    => 'Laufende technische Kapazität',
 		],
 	],
 	[
-		'key'      => 'engpass',
-		'question' => 'Wo drückt es gerade am meisten?',
+		'key'      => 'klarheit',
+		'question' => 'Wie klar ist der Scope bereits?',
 		'options'  => [
-			'kapazitaet' => 'Kapazität — Kalender dicht, Deadline steht',
-			'tiefe'      => 'Tiefe — Tracking/SEO/CWV über unserem Level',
-			'marge'      => 'Marge — ein Senior-Hire rechnet sich nicht',
+			'vorhanden' => 'Briefing oder Layout ist vorhanden',
+			'offen'     => 'Ziel ist klar, technischer Scope noch offen',
+			'einordnen' => 'Erst technische Einordnung nötig',
 		],
 	],
 	[
 		'key'      => 'anlass',
-		'question' => 'Was ist der Anlass?',
+		'question' => 'Wie konkret ist der Anlass?',
 		'options'  => [
-			'projekt'     => 'Ein konkretes Kundenprojekt steht an',
-			'vorsorglich' => 'Vorsorglich Kapazität sichern',
+			'konkret' => 'Ein konkretes Kundenprojekt steht an',
+			'planung' => 'Ein Projekt ist in Vorbereitung',
+			'spaeter' => 'Kapazität für später klären',
 		],
 	],
 ];
@@ -405,7 +407,7 @@ $fitcheck_steps = [
 				</span>
 				<span class="wl-hero__status">
 					<span class="wl-status-dot" aria-hidden="true"></span>
-					Aktive White-Label-Mandate
+					White-Label · NDA standardmäßig
 				</span>
 			</header>
 
@@ -511,7 +513,7 @@ $fitcheck_steps = [
 						<?php else : ?>
 							<dl class="wl-entry-card__meta">
 								<div>
-									<dt>Laufzeit</dt>
+									<dt>Delivery-Fenster</dt>
 									<dd><?php echo esc_html( $project['duration'] ); ?></dd>
 								</div>
 								<div>
@@ -614,7 +616,7 @@ $fitcheck_steps = [
 							><?php echo esc_html( $mode['label'] ); ?></label>
 						<?php endforeach; ?>
 					</fieldset>
-					<p class="wl-mode__hint">Pro Projekt wählbar, jederzeit umstellbar.</p>
+					<p class="wl-mode__hint">Pro Projekt vereinbart und bei Bedarf gemeinsam angepasst.</p>
 				</div>
 
 				<div class="wl-mode__panels">
@@ -910,7 +912,7 @@ window.dataLayer.push({
 					</div>
 
 					<div class="wl-fitcheck__result" data-fitcheck-result tabindex="-1">
-						<p class="wl-fitcheck__result-note" data-fitcheck-note hidden>Passt auf den ersten Blick. Nächster Schritt: 30 Minuten, direkt mit mir.</p>
+						<p class="wl-fitcheck__result-note" data-fitcheck-note aria-live="polite" hidden>Aus euren Antworten ergibt sich eine passende nächste Option.</p>
 						<div class="wl-cta__actions">
 							<a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" class="nx-btn nx-btn--primary" data-fitcheck-book data-track-action="cta_whitelabel_fitcheck_book" data-track-category="lead_gen" data-track-section="fitcheck_result">
 								Termin wählen (30 Min, direkt mit mir)
@@ -923,7 +925,7 @@ window.dataLayer.push({
 
 					<p class="wl-fitcheck__skip">
 						<a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" data-fitcheck-skip hidden data-track-action="cta_whitelabel_fitcheck_skip" data-track-category="lead_gen" data-track-section="fitcheck">
-							Direkt buchen — ohne Fit-Check
+							Scope schon klar? Direkt 30-Minuten-Termin wählen
 						</a>
 					</p>
 				</div>
@@ -959,8 +961,15 @@ do_action( 'blocksy:content:after' );
 do_action( 'blocksy:footer:before' );
 ?>
 	<footer id="footer" class="wl-page-footer" aria-labelledby="wl-page-footer-heading" role="contentinfo">
-		<h2 id="wl-page-footer-heading" class="wl-visually-hidden">Rechtliches</h2>
+		<h2 id="wl-page-footer-heading" class="wl-visually-hidden">Seitenabschluss</h2>
 		<div class="nx-container wl-page-footer__inner">
+			<a class="wl-page-footer__github" href="<?php echo esc_url( $github_url ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="nav_whitelabel_footer_github" data-track-category="navigation" data-track-section="whitelabel_footer">
+				<svg class="wl-page-footer__github-icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+					<path fill="currentColor" d="M12 .297a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .297Z"/>
+				</svg>
+				<span>Projekt auf GitHub</span>
+				<span class="wl-visually-hidden"> (öffnet in neuem Tab)</span>
+			</a>
 			<p>&copy; <time datetime="<?php echo esc_attr( $current_year ); ?>"><?php echo esc_html( $current_year ); ?></time> Haşim Üner · White-Label-Partner für Agenturen</p>
 			<nav class="wl-page-footer__legal" aria-label="Rechtliches">
 				<a href="<?php echo esc_url( $imprint_url ); ?>" data-track-action="nav_whitelabel_footer_imprint" data-track-category="navigation" data-track-section="whitelabel_footer">Impressum</a>

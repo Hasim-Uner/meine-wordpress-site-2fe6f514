@@ -51,7 +51,9 @@
 		var note   = fitcheck.querySelector('[data-fitcheck-note]');
 		var skip   = fitcheck.querySelector('[data-fitcheck-skip]');
 		var mail   = fitcheck.querySelector('[data-fitcheck-mail]');
+		var book   = fitcheck.querySelector('[data-fitcheck-book]');
 		var steps  = quiz ? Array.prototype.slice.call(quiz.querySelectorAll('[data-fitcheck-step]')) : [];
+		var answers = {};
 
 		if (quiz && result && steps.length) {
 			quiz.hidden   = false;
@@ -60,13 +62,74 @@
 				skip.hidden = false;
 			}
 
+			var setPrimaryAction = function (primary) {
+				if (!book || !mail) {
+					return;
+				}
+				book.classList.toggle('nx-btn--primary', primary === 'book');
+				book.classList.toggle('nx-btn--ghost', primary !== 'book');
+				mail.classList.toggle('nx-btn--primary', primary === 'mail');
+				mail.classList.toggle('nx-btn--ghost', primary !== 'mail');
+			};
+
+			var getRecommendation = function () {
+				if (answers.anlass === 'spaeter') {
+					return {
+						outcome: 'later',
+						note: 'Noch kein konkretes Projekt? Dann ist ein Termin meist zu früh. Schildert mir Anlass und gewünschten Zeitraum kurz per E-Mail; ich sage ehrlich, ob eine Abstimmung jetzt sinnvoll ist.',
+						primary: 'mail',
+						bookLabel: 'Trotzdem Termin wählen',
+						mailLabel: 'Bedarf kurz schriftlich schildern'
+					};
+				}
+
+				if (answers.vorhaben === 'retainer') {
+					return {
+						outcome: 'retainer_after_project',
+						note: 'Laufende Kapazität startet nicht direkt als Retainer. Wir wählen zuerst ein klar abgegrenztes Erstprojekt, an dem beide Seiten die Zusammenarbeit prüfen.',
+						primary: 'book',
+						bookLabel: 'Passendes Erstprojekt besprechen',
+						mailLabel: 'Vorhaben schriftlich schildern'
+					};
+				}
+
+				if (answers.klarheit === 'einordnen') {
+					return {
+						outcome: 'scope_first',
+						note: 'Der Scope ist noch nicht klar genug für ein Festpreisangebot. Im Fit-Gespräch klären wir Ziel, vorhandene Grundlagen und den nächsten sinnvollen Schritt; erst danach wird ein Projekt angeboten.',
+						primary: 'book',
+						bookLabel: 'Scope im Fit-Gespräch klären',
+						mailLabel: 'Vorhaben schriftlich schildern'
+					};
+				}
+
+				if (answers.vorhaben === 'testsprint') {
+					return {
+						outcome: 'test_sprint',
+						note: 'Das passt grundsätzlich zum WordPress-Test-Sprint: eine klar abgegrenzte Aufgabe für 590 € netto. Vor Start bestätige ich schriftlich, ob Aufgabe und Umfang in den Sprint passen.',
+						primary: 'mail',
+						bookLabel: 'Test-Sprint kurz besprechen',
+						mailLabel: 'Aufgabe schriftlich senden'
+					};
+				}
+
+				return {
+					outcome: 'larger_project',
+					note: 'Das klingt nach einem größeren Erstprojekt. Im Gespräch klären wir Ziel, Scope, Zugänge und Delivery-Fenster; danach folgt ein Festpreisangebot.',
+					primary: 'book',
+					bookLabel: 'Erstprojekt im Fit-Gespräch klären',
+					mailLabel: 'Vorhaben schriftlich schildern'
+				};
+			};
+
 			var finishFitcheck = function () {
 				if (mail) {
 					var lines = [];
 					steps.forEach(function (stepEl) {
 						var chosen = stepEl.querySelector('.wl-fitcheck__opt.is-selected');
 						if (chosen) {
-							lines.push(chosen.getAttribute('data-fitcheck-key') + ': ' + chosen.getAttribute('data-fitcheck-label'));
+							var question = stepEl.querySelector('.wl-fitcheck__q');
+							lines.push((question ? question.textContent.trim() : chosen.getAttribute('data-fitcheck-key')) + '\n' + chosen.getAttribute('data-fitcheck-label'));
 						}
 					});
 					var base = (mail.getAttribute('href') || '').split('?')[0];
@@ -74,11 +137,25 @@
 						mail.setAttribute(
 							'href',
 							base
-								+ '?subject=' + encodeURIComponent('White-Label Fit-Check')
+								+ '?subject=' + encodeURIComponent('White-Label Projekt-Fit')
 								+ '&body=' + encodeURIComponent('Kurz zu uns:\n' + lines.join('\n') + '\n\n')
 						);
 					}
 				}
+
+				var recommendation = getRecommendation();
+				fitcheck.setAttribute('data-fitcheck-outcome', recommendation.outcome);
+				if (note) {
+					note.textContent = recommendation.note;
+				}
+				if (book) {
+					book.textContent = recommendation.bookLabel;
+				}
+				if (mail) {
+					mail.textContent = recommendation.mailLabel;
+				}
+				setPrimaryAction(recommendation.primary);
+
 				quiz.hidden   = true;
 				result.hidden = false;
 				if (note) {
@@ -104,6 +181,7 @@
 					btn.classList.remove('is-selected');
 				});
 				opt.classList.add('is-selected');
+				answers[opt.getAttribute('data-fitcheck-key')] = opt.getAttribute('data-fitcheck-value');
 
 				var next = steps[steps.indexOf(stepEl) + 1];
 				if (!next) {
