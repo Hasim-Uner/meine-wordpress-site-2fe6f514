@@ -9,6 +9,13 @@
 	background: var(--nx-bg-deep);
 }
 
+/* Das Parent-Theme liefert zwei eigene Skip-Links. Auf dieser Route bleibt
+   nur der Link der geschlossenen Seitennavigation in der Tab-Reihenfolge. */
+body.page-template-page-whitelabel-retainer > .skip-to-content,
+body.page-template-page-whitelabel-retainer > .skip-link {
+	display: none !important;
+}
+
 html {
 	scroll-padding-top: 6rem;
 }
@@ -115,7 +122,7 @@ html {
 .wl-site-header__nav a {
 	padding-inline: clamp(0.7rem, 1.2vw, 1rem);
 	border: 1px solid transparent;
-	color: var(--nx-text-dim);
+	color: var(--nx-text-secondary);
 }
 
 .wl-site-header__nav a:hover {
@@ -150,11 +157,19 @@ html {
 	outline-offset: 3px;
 }
 
+.wl-page .nx-btn--ghost {
+	border-color: hsl(30 6% 90% / 0.42) !important;
+}
+
+.wl-page .nx-btn--ghost:hover {
+	border-color: hsl(23 60% 60%) !important;
+}
+
 .wl-page-footer {
 	padding: 1.5rem 1.25rem;
 	border-top: 1px solid var(--nx-border);
 	background: var(--nx-bg-deep);
-	color: var(--nx-text-dim);
+	color: var(--nx-text-secondary);
 }
 
 .wl-page-footer__inner {
@@ -180,7 +195,7 @@ html {
 	gap: 0.6rem;
 	min-height: 44px;
 	padding: 0.65rem 1rem;
-	border: 1px solid hsl(23 50% 47% / 0.4);
+	border: 1px solid hsl(23 60% 62% / 0.85);
 	border-radius: 999px;
 	background: linear-gradient(180deg, hsl(30 8% 13% / 0.94), hsl(28 8% 8% / 0.94));
 	box-shadow:
@@ -336,7 +351,7 @@ html {
 	font-weight: 600;
 	letter-spacing: 0.22em;
 	text-transform: uppercase;
-	color: var(--accent);
+	color: hsl(23 50% 70%);
 }
 
 .wl-eyebrow::before {
@@ -558,7 +573,7 @@ html {
 	border-bottom: 1px solid hsl(30 10% 100% / 0.06);
 }
 
-.wl-flow__kicker { color: var(--accent); font-family: var(--nx-font-mono); }
+.wl-flow__kicker { color: hsl(23 50% 70%); font-family: var(--nx-font-mono); }
 
 .wl-flow__list {
 	list-style: none;
@@ -832,7 +847,7 @@ html {
 	font-family: var(--nx-font-mono);
 	font-size: 0.7rem;
 	letter-spacing: 0.04em;
-	color: var(--accent);
+	color: hsl(23 50% 70%);
 	background: hsl(23 50% 47% / 0.08);
 	border: 1px solid hsl(23 50% 47% / 0.25);
 	border-radius: 6px;
@@ -902,7 +917,7 @@ html {
 .wl-contract-card__num {
 	font-family: var(--nx-font-mono);
 	font-size: 0.78rem;
-	color: var(--accent);
+	color: hsl(23 50% 70%);
 	letter-spacing: 0.1em;
 }
 
@@ -1006,7 +1021,7 @@ html {
 .wl-proof__disclaimer {
 	margin: 1.5rem 0 0;
 	font-size: 0.83rem;
-	color: hsl(30 6% 90% / 0.5);
+	color: hsl(30 6% 90% / 0.62);
 	text-align: center;
 }
 
@@ -1157,7 +1172,7 @@ html {
 .wl-entry-card__tag {
 	font-family: var(--nx-font-mono);
 	font-size: 0.72rem;
-	color: var(--accent);
+	color: hsl(23 50% 70%);
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
 }
@@ -1215,7 +1230,7 @@ html {
 	font-size: 0.66rem;
 	text-transform: uppercase;
 	letter-spacing: 0.14em;
-	color: hsl(30 6% 90% / 0.5);
+	color: hsl(30 6% 90% / 0.62);
 	margin: 0 0 0.2rem;
 }
 
@@ -1290,7 +1305,7 @@ html {
 	font-size: 0.66rem;
 	letter-spacing: 0.12em;
 	text-transform: uppercase;
-	color: hsl(30 6% 90% / 0.5);
+	color: hsl(30 6% 90% / 0.62);
 }
 
 .wl-test-sprint-details__item dd {
@@ -1514,6 +1529,31 @@ html {
 		text-align: center;
 	}
 
+	.wl-founder__grid,
+	.wl-founder__body,
+	.wl-founder__chips,
+	.wl-founder__chips li {
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.wl-founder__media {
+		width: min(300px, 100%);
+		max-width: 100%;
+	}
+
+	.wl-founder__chips .wl-chip {
+		max-width: 100%;
+		white-space: normal;
+		overflow-wrap: anywhere;
+	}
+
+	.wl-tech__code-body {
+		overflow-x: hidden;
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+	}
+
 	.wl-sticky-cta {
 		padding-inline: 0.75rem;
 	}
@@ -1584,7 +1624,7 @@ html {
 	gap: 0.25rem;
 	margin: 0;
 	padding: 0.3rem;
-	border: 1px solid hsl(30 10% 100% / 0.12);
+	border: 1px solid hsl(30 6% 90% / 0.42);
 	border-radius: 999px;
 	background: hsl(30 5% 9% / 0.85);
 	box-shadow:
@@ -1623,7 +1663,7 @@ html {
 	color: var(--nx-text);
 	background: linear-gradient(180deg, hsl(23 50% 47% / 0.32), hsl(23 50% 40% / 0.22));
 	box-shadow:
-		0 0 0 1px hsl(23 50% 47% / 0.55) inset,
+		0 0 0 2px hsl(23 60% 60%) inset,
 		0 6px 18px -8px hsl(23 50% 40% / 0.55);
 }
 
@@ -1635,7 +1675,7 @@ html {
 .wl-mode__hint {
 	margin: 0;
 	font-size: 0.8rem;
-	color: hsl(30 6% 90% / 0.5);
+	color: hsl(30 6% 90% / 0.62);
 }
 
 /* Panels als Grid-Stack: beide teilen dieselbe Zelle, der Wrapper reserviert
@@ -1843,7 +1883,7 @@ thead .wl-compare__col--hl {
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.12em;
-		color: hsl(30 6% 90% / 0.48);
+		color: hsl(30 6% 90% / 0.62);
 	}
 
 	.wl-compare__cell--hl {
@@ -2009,7 +2049,7 @@ thead .wl-compare__col--hl {
 	flex-shrink: 0;
 	width: 22px;
 	height: 22px;
-	border: 1px solid hsl(23 50% 47% / 0.4);
+	border: 1px solid hsl(23 60% 60%);
 	border-radius: 50%;
 	transition: transform 0.2s ease, background-color 0.2s ease;
 }
@@ -2179,13 +2219,13 @@ thead .wl-compare__col--hl {
 	line-height: 1.4;
 	color: hsl(30 6% 90% / 0.88);
 	background: hsl(30 10% 100% / 0.04);
-	border: 1px solid hsl(30 10% 100% / 0.1);
+	border: 1px solid hsl(30 6% 90% / 0.42);
 	border-radius: 12px;
 	transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .wl-fitcheck__opt:hover {
-	border-color: hsl(23 50% 47% / 0.45);
+	border-color: hsl(23 60% 60%);
 	background: hsl(23 50% 47% / 0.06);
 }
 
@@ -2200,7 +2240,11 @@ thead .wl-compare__col--hl {
 	color: hsl(23 60% 78%);
 }
 
-.wl-fitcheck__result:focus { outline: none; }
+.wl-fitcheck__result:focus {
+	border-radius: 12px;
+	outline: 3px solid hsl(23 60% 60%);
+	outline-offset: 6px;
+}
 
 .wl-fitcheck__result-note {
 	font-size: 0.9rem;
