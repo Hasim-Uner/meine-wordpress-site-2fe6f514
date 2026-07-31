@@ -339,6 +339,7 @@ $faq_items = [
 $tech_bullets = [
 	'Individuelle WordPress-Templates für vorhandene Layouts',
 	'Performance-Optimierung: Core Web Vitals, kritischer Renderpfad',
+	'Barrierefreiheit: semantisches HTML, Fokusreihenfolge, Kontraste nach WCAG 2.2 AA und vollständige Tastaturbedienung — die technischen Voraussetzungen, an denen Standard-Themes regelmäßig scheitern.',
 	'Versionierter Code, dokumentierte Übergabe',
 ];
 
@@ -380,7 +381,7 @@ $fitcheck_steps = [
 ];
 ?>
 
-<main id="main" class="site-main wl-page" data-track-section="whitelabel_proof" tabindex="-1">
+<div class="wl-page" data-track-section="whitelabel_proof">
 
 	<noscript>
 		<style>
@@ -818,7 +819,7 @@ $fitcheck_steps = [
 						<span class="wl-tech__code-dot wl-tech__code-dot--g"></span>
 						<span class="wl-tech__code-file">inc/enqueue.php</span>
 					</figcaption>
-<pre class="wl-tech__code-body"><span class="wl-tech__c">// Bedarfsgesteuertes Asset-Loading pro Template</span>
+<pre class="wl-tech__code-body" tabindex="-1"><span class="wl-tech__c">// Bedarfsgesteuertes Asset-Loading pro Template</span>
 <span class="wl-tech__k">if</span> ( is_page_template( <span class="wl-tech__s">'page-whitelabel.php'</span> ) ) {
     hu_enqueue_css( <span class="wl-tech__s">'whitelabel'</span>, <span class="wl-tech__s">'whitelabel.css'</span>, [ <span class="wl-tech__s">'design-system'</span> ] );
     hu_enqueue_js(  <span class="wl-tech__s">'whitelabel'</span>,  <span class="wl-tech__s">'whitelabel.js'</span> );
@@ -850,11 +851,24 @@ window.dataLayer.push({
 			<div class="wl-faq reveal-stagger">
 				<?php foreach ( $faq_items as $item ) : ?>
 					<details class="wl-faq__item">
-						<summary class="wl-faq__summary" data-track-action="faq_whitelabel_open" data-track-label="<?php echo esc_attr( $item['key'] ); ?>" data-track-category="engagement" data-track-section="faq">
+						<summary
+							id="wl-faq-summary-<?php echo esc_attr( $item['key'] ); ?>"
+							class="wl-faq__summary"
+							aria-expanded="false"
+							aria-controls="wl-faq-answer-<?php echo esc_attr( $item['key'] ); ?>"
+							data-track-action="faq_whitelabel_open"
+							data-track-label="<?php echo esc_attr( $item['key'] ); ?>"
+							data-track-category="engagement"
+							data-track-section="faq"
+						>
 							<span class="wl-faq__q"><?php echo esc_html( $item['q'] ); ?></span>
 							<span class="wl-faq__icon" aria-hidden="true"></span>
 						</summary>
-						<div class="wl-faq__answer">
+						<div
+							id="wl-faq-answer-<?php echo esc_attr( $item['key'] ); ?>"
+							class="wl-faq__answer"
+							aria-labelledby="wl-faq-summary-<?php echo esc_attr( $item['key'] ); ?>"
+						>
 							<p><?php echo esc_html( $item['a'] ); ?></p>
 						</div>
 					</details>
@@ -911,8 +925,9 @@ window.dataLayer.push({
 						<?php endforeach; ?>
 					</div>
 
-					<div class="wl-fitcheck__result" data-fitcheck-result tabindex="-1">
-						<p class="wl-fitcheck__result-note" data-fitcheck-note aria-live="polite" hidden>Aus euren Antworten ergibt sich eine passende nächste Option.</p>
+					<div class="wl-fitcheck__result" data-fitcheck-result role="group" aria-labelledby="wl-fitcheck-result-title" tabindex="-1">
+						<h3 id="wl-fitcheck-result-title" class="wl-visually-hidden">Ergebnis des Fit-Checks</h3>
+						<p class="wl-fitcheck__result-note" data-fitcheck-note role="status" aria-live="polite" aria-atomic="true" hidden>Aus euren Antworten ergibt sich eine passende nächste Option.</p>
 						<div class="wl-cta__actions">
 							<a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" class="nx-btn nx-btn--primary" data-fitcheck-book data-track-action="cta_whitelabel_fitcheck_book" data-track-category="lead_gen" data-track-section="fitcheck_result">
 								Termin wählen (30 Min, direkt mit mir)
@@ -946,7 +961,7 @@ window.dataLayer.push({
 		</div>
 	</div>
 
-</main>
+	</div>
 
 <?php
 if ( function_exists( 'blocksy_after_current_template' ) ) {

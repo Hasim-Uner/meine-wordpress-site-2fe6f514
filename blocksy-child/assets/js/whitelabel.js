@@ -39,6 +39,21 @@
 		});
 	}
 
+	// ─── FAQ: nativen <details>-Zustand mit explizitem ARIA spiegeln ───
+	// <summary> bleibt das native Tastaturziel (Enter/Leertaste); die Attribute
+	// machen Zustand und kontrollierte Antwort zusätzlich im DOM nachvollziehbar.
+	document.querySelectorAll('.wl-faq__item').forEach(function (item) {
+		var summary = item.querySelector('.wl-faq__summary');
+		if (!summary) {
+			return;
+		}
+		var syncExpanded = function () {
+			summary.setAttribute('aria-expanded', item.open ? 'true' : 'false');
+		};
+		item.addEventListener('toggle', syncExpanded);
+		syncExpanded();
+	});
+
 	// ─── Fit-Check: 3 Klickfragen → Termin ───
 	// Rein clientseitig, keine Speicherung: Antworten sind Enum-Werte und
 	// fließen nur in die bestehende data-track-Delegation plus als Vorlage
