@@ -36,13 +36,13 @@ $problem_cards = [
 	],
 	[
 		'eyebrow' => 'Tiefe',
-		'title'   => 'Der Kunde zahlt Senior. Intern liefert der Junior.',
-		'copy'    => 'Server-Side, Consent Mode V2, Core Web Vitals: verkauft als Expertise, gebaut auf Anschlag. Halbgare Setups kommen als Reklamation zurück — nicht als Referenz.',
+		'title'   => 'Technische Spezialfälle blockieren die Delivery.',
+		'copy'    => 'Server-Side, Consent Mode V2 oder Core Web Vitals brauchen Spezialwissen und klare Verantwortung. Fehlt intern die Kapazität, geraten Qualität, Dokumentation und Abnahme unter Zeitdruck.',
 	],
 	[
 		'eyebrow' => 'Marge',
-		'title'   => 'Senior einstellen frisst die Marge.',
-		'copy'    => 'Ein Senior kostet Gehalt, Suche und Auslastungsrisiko. Freelancer kosten Briefing und Nerven. White-Label dreht die Rechnung: Ihr verkauft zu eurem Satz, die Umsetzung bleibt darunter.',
+		'title'   => 'Zusätzliche Senior-Kapazität muss planbar bleiben.',
+		'copy'    => 'Eine Festanstellung bringt Such- und Auslastungsrisiko mit. Projektweise Unterstützung braucht klare Briefings, einheitliche Qualitätsstandards und eine eindeutig geregelte Verantwortung.',
 	],
 ];
 
@@ -58,9 +58,34 @@ $flow_steps = [
 // ── Erstprojekte: fixer Scope, Preis vorab (Einstieg vor Retainer) ──
 $entry_projects = [
 	[
+		'tag'             => 'WordPress',
+		'title'           => 'WordPress-Test-Sprint',
+		'price'           => '590 € netto',
+		'duration'        => 'max. ein Arbeitstag',
+		'deliver'         => 'Umsetzung, Funktionstest, kurze technische Dokumentation und eine Korrekturrunde',
+		'copy'            => 'Eine vorab schriftlich abgegrenzte technische Aufgabe als kleinster Einstieg in die erste Zusammenarbeit.',
+		'suitable'        => [
+			'Template- oder Komponentenanpassung',
+			'kleiner PHP-/JS-/CSS-Fix',
+			'Performanceproblem',
+			'technischer SEO-Fix',
+			'fehlerhafte WordPress-Funktion',
+			'Umsetzung eines vorhandenen Layouts',
+		],
+		'excluded'        => [
+			'Relaunch',
+			'vollständige Landingpage',
+			'vollständiges Tracking-Setup',
+			'unbegrenzte Korrekturen',
+			'Lizenz- oder Drittanbieterkosten',
+		],
+		'scope_note'      => 'Der Aufgabenumfang wird vor Beginn schriftlich festgelegt. Erweiterungen sind ein eigenes Angebot.',
+		'intro_price_note' => 'Einmaliger Einstiegspreis für die erste Zusammenarbeit.',
+	],
+	[
 		'tag'      => 'Tracking',
 		'title'    => 'Tracking-Audit',
-		'price'    => 'ab 1.900 €',
+		'price'    => 'ab 1.900 € netto',
 		'duration' => '1 Woche',
 		'deliver'  => 'Schriftlicher Befund + priorisierte Fixliste',
 		'copy'     => 'GA4, GTM und Consent-Bestand eures Kunden geprüft: Was misst, was fehlt, was verfälscht. Danach wisst ihr, worauf jede weitere Maßnahme aufsetzt.',
@@ -68,7 +93,7 @@ $entry_projects = [
 	[
 		'tag'      => 'Server-Side',
 		'title'    => 'Server-Side-Setup',
-		'price'    => 'ab 2.900 €',
+		'price'    => 'ab 2.900 € netto',
 		'duration' => '1–2 Wochen',
 		'deliver'  => 'Produktives Setup + Doku + Übergabe',
 		'copy'     => 'Eigener Server-Side-Container, Enhanced Conversions, Meta CAPI, Consent Mode V2 — produktiv geschaltet und dokumentiert, nicht nur konfiguriert.',
@@ -76,10 +101,10 @@ $entry_projects = [
 	[
 		'tag'      => 'Landingpage',
 		'title'    => 'Landingpage',
-		'price'    => 'ab 3.900 €',
+		'price'    => 'ab 3.900 € netto',
 		'duration' => '2 Wochen',
 		'deliver'  => 'Live-Page + Doku, bereit für Traffic',
-		'copy'     => 'Eigenes Template statt Page-Builder-Brei: klare Funnel-Logik, saubere Core Web Vitals, messbar ab dem ersten Klick.',
+		'copy'     => 'Individuelles Template mit klarer Funnel-Logik, sauberen Core Web Vitals und belastbarer Messbarkeit ab dem ersten Klick.',
 	],
 ];
 
@@ -111,7 +136,7 @@ $stack_groups = [
 			[
 				'tag'   => 'CRO',
 				'title' => 'Landingpages & CRO',
-				'copy'  => 'Konvertierende Templates statt Page-Builder-Brei: klare Funnel-Logik, A/B-Hypothesen, schnelle Ladezeit.',
+				'copy'  => 'Individuelle Templates mit klarer Funnel-Logik, belastbaren A/B-Hypothesen und schneller Ladezeit.',
 				'chips' => [ 'LP', 'A/B', 'Funnel', 'Speed' ],
 				'entry' => 'Typisches Erstprojekt: eine Landingpage, bereit für Traffic.',
 			],
@@ -137,7 +162,7 @@ $stack_groups = [
 			[
 				'tag'   => 'CWV',
 				'title' => 'Performance & Core Web Vitals',
-				'copy'  => 'Hardening, bedarfsgesteuertes Asset-Loading, kritischer Renderpfad — auf WordPress zuhause, per Template statt Plugin-Stack.',
+				'copy'  => 'Hardening, bedarfsgesteuertes Asset-Loading und ein optimierter kritischer Renderpfad — WordPress-spezifisch umgesetzt und dokumentiert.',
 				'chips' => [ 'CWV', 'Caching', 'Hardening', 'Templates' ],
 				'entry' => 'Typisch im Retainer: CWV-Budget halten, Release für Release.',
 			],
@@ -154,26 +179,26 @@ $contract_cards = [
 	],
 	[
 		'eyebrow' => '02',
-		'title'   => 'Schnell',
-		'copy'    => 'Onboarding in unter 14 Tagen, Reaktion in unter 4 Stunden (werktags). Und wenn ein Projekt brennt: Eskalation ist eingepreist, kein Sonderfall.',
-		'bullets' => [ '< 14 Tage Onboarding', '< 4 h Reaktion', 'Eskalation eingepreist' ],
+		'title'   => 'Verbindlich',
+		'copy'    => 'Rückmeldung in der Regel innerhalb eines Werktags. Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
+		'bullets' => [ 'Starttermin vereinbart', 'Delivery-Fenster verbindlich', 'Dringendes separat bestätigt' ],
 	],
 	[
 		'eyebrow' => '03',
 		'title'   => 'Planbar',
-		'copy'    => 'Monats-Retainer mit festem Stundenkontingent oder feste Tagessätze für Projektarbeit. Saubere Doku statt Black Box.',
-		'bullets' => [ 'Feste Tagessätze', 'Klare Doku', 'Keine Surprise-Rechnung' ],
+		'copy'    => 'Monats-Retainer mit vereinbartem Leistungsrahmen oder feste Projektpreise für abgegrenzte Aufgaben. Saubere Dokumentation schafft klare Übergaben.',
+		'bullets' => [ 'Projektpreis vorab', 'Klare Doku', 'Nachvollziehbare Abrechnung' ],
 	],
 ];
 
-$comparison_columns = [ 'Senior einstellen', 'Freelancer-Pool', 'White-Label-Partner' ];
+$comparison_columns = [ 'Senior einstellen', 'Projektweise extern', 'White-Label-Partner' ];
 
 $comparison_rows = [
 	[
 		'label' => 'Verfügbar ab',
 		'cells' => [
 			'Monate: Suche, Kündigungsfrist, Einarbeitung',
-			'Tage bis Wochen — wenn gerade jemand frei ist',
+			'Abhängig von der vereinbarten externen Kapazität',
 			'Nach einem Fit-Gespräch und NDA',
 		],
 	],
@@ -181,15 +206,15 @@ $comparison_rows = [
 		'label' => 'Fixkostenrisiko',
 		'cells' => [
 			'Volles Gehalt, auch in schwachen Monaten',
-			'Keins — aber auch keine Verbindlichkeit',
-			'Retainer oder Tagessatz — skaliert mit eurer Auslastung',
+			'Projektbezogene Kosten ohne laufende Personalbindung',
+			'Retainer oder Projektpreis — passend zum vereinbarten Bedarf',
 		],
 	],
 	[
 		'label' => 'Skill-Breite',
 		'cells' => [
 			'Eine Person, ein Schwerpunkt',
-			'Pro Skill ein neues Briefing',
+			'Je nach beauftragtem Profil und Projektscope',
 			'SEO, WordPress, Tracking, CRO, Automation aus einer Hand',
 		],
 	],
@@ -197,7 +222,7 @@ $comparison_rows = [
 		'label' => 'Qualität',
 		'cells' => [
 			'Zeigt sich nach der Probezeit',
-			'Wechselnde Standards, wechselnde Doku',
+			'Standards und Dokumentation werden pro Auftrag vereinbart',
 			'Ein Standard — prüfbar am Erstprojekt',
 		],
 	],
@@ -205,7 +230,7 @@ $comparison_rows = [
 		'label' => 'Diskretion',
 		'cells' => [
 			'Intern — Know-how geht mit der Person',
-			'Oft ungeklärt, selten mit NDA',
+			'NDA und Sichtbarkeit werden pro Auftrag geregelt',
 			'NDA standardmäßig, Sichtbarkeit wählbar',
 		],
 	],
@@ -213,19 +238,19 @@ $comparison_rows = [
 		'label' => 'Verantwortung',
 		'cells' => [
 			'Führung und QA liegen bei euch',
-			'Koordination liegt bei euch',
+			'Koordination und Abnahme werden pro Auftrag festgelegt',
 			'Lieferung inklusive Doku und Abnahme',
 		],
 	],
 ];
 
-$founder_chips = [ 'Hannover', 'NDA standardmäßig', 'Antwort < 4 h werktags' ];
+$founder_chips = [ 'Hannover', 'NDA standardmäßig', 'Rückmeldung in der Regel innerhalb eines Werktags' ];
 
 $faq_items = [
 	[
 		'key' => 'abrechnung',
 		'q'   => 'Wie rechnest du ab — Retainer oder Projekt?',
-		'a'   => 'Beides: Monats-Retainer mit festem Stundenkontingent für laufende Arbeit oder feste Tagessätze für abgegrenzte Projekte. Erstprojekte starten ab 1.900 € — der Preis steht vorab fest. Die Feinheiten klären wir im Fit-Gespräch — abhängig von Volumen und Reaktionszeit. Jede Position ist dokumentiert, keine Surprise-Rechnung.',
+		'a'   => 'Der WordPress-Test-Sprint ist mit 590 € netto der kleinste Einstieg. Größere Erstprojekte beginnen mit dem Tracking-Audit ab 1.900 € netto; Server-Side-Setup und Landingpage starten bei den auf dieser Seite genannten Preisen. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt und erhält einen vorab vereinbarten Leistungsrahmen.',
 	],
 	[
 		'key' => 'sichtbarkeit',
@@ -245,7 +270,7 @@ $faq_items = [
 	[
 		'key' => 'kapazitaet',
 		'q'   => 'Wie schnell reagierst du — und was ist mit Kapazität?',
-		'a'   => 'Reaktionszeit unter 4 Stunden werktags, wöchentliches Delivery-Fenster, klare Abnahme. Wenige Mandate parallel statt Junior-Team dazwischen — deshalb bleibt die Qualität konstant. Und wenn die Kapazität nicht reicht, hört ihr das im Fit-Gespräch, nicht drei Wochen nach Kickoff.',
+		'a'   => 'Rückmeldung in der Regel innerhalb eines Werktags. Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
 	],
 	[
 		'key' => 'ownership',
@@ -260,7 +285,7 @@ $faq_items = [
 	[
 		'key' => 'start',
 		'q'   => 'Wie schnell können wir starten?',
-		'a'   => 'Onboarding in unter 14 Tagen — so steht es im Kontrakt. Nach dem Fit-Gespräch: NDA, Zugänge, Erstprojekt mit fixem Scope. Typisch 1–2 Wochen Laufzeit, danach entscheidet ihr über mehr.',
+		'a'   => 'Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Nach dem Fit-Gespräch folgen NDA, Zugänge und ein Erstprojekt mit fixem Scope. Erst nach dessen erfolgreichem Abschluss entscheidet ihr über ein weiteres Projekt oder einen Retainer.',
 	],
 	[
 		'key' => 'recht',
@@ -270,7 +295,7 @@ $faq_items = [
 ];
 
 $tech_bullets = [
-	'Eigene WordPress-Templates statt generischer Page-Builder',
+	'Individuelle WordPress-Templates für vorhandene Layouts',
 	'Performance-Optimierung: Core Web Vitals, kritischer Renderpfad',
 	'Versionierter Code, dokumentierte Übergabe',
 ];
@@ -351,7 +376,7 @@ $fitcheck_steps = [
 						<span class="wl-hero__title-line wl-hero__title-line--em">Euer Name steht drauf.</span>
 					</h1>
 					<p class="wl-hero__lede">
-						Verkauft Senior-Tiefe, ohne einen Senior einzustellen: Ich baue die Technik-Ebene eurer Kundenprojekte — vom Tracking-Fundament bis zur Landingpage, die Anfragen bringt. Unter eurem Branding, zu eurer Marge. Unsichtbar im Hintergrund oder als euer Technik-Lead im Call: ihr entscheidet, pro Projekt.
+						Individuelle WordPress-Umsetzung, Performance, technisches SEO und Tracking — diskret unter eurem Namen. Unsichtbar im Hintergrund oder als euer Technik-Lead im Call: ihr entscheidet pro Projekt.
 					</p>
 
 					<div class="wl-hero__actions">
@@ -428,7 +453,7 @@ $fitcheck_steps = [
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Einstieg</span>
 				<h2 class="nx-headline-section">Kein Blind-Retainer. Erst ein Erstprojekt mit fixem Scope.</h2>
-				<p class="wl-section-lede">Drei Einstiege, jeder mit fester Lieferung und Preis vorab. Danach entscheidet ihr: Retainer, nächstes Projekt oder sauberer Abschluss.</p>
+				<p class="wl-section-lede">Der WordPress-Test-Sprint ist der kleinste Einstieg. Größere Erstprojekte folgen mit fester Lieferung und Preis vorab. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt.</p>
 			</div>
 
 			<div class="wl-entry__grid reveal-stagger">
@@ -440,6 +465,26 @@ $fitcheck_steps = [
 						</header>
 						<h3 class="wl-entry-card__title"><?php echo esc_html( $project['title'] ); ?></h3>
 						<p class="wl-entry-card__copy"><?php echo esc_html( $project['copy'] ); ?></p>
+						<?php if ( ! empty( $project['suitable'] ) ) : ?>
+							<div class="wl-entry-card__scope">
+								<h4>Geeignet für</h4>
+								<ul>
+									<?php foreach ( $project['suitable'] as $item ) : ?>
+										<li><?php echo esc_html( $item ); ?></li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						<?php endif; ?>
+						<?php if ( ! empty( $project['excluded'] ) ) : ?>
+							<div class="wl-entry-card__scope wl-entry-card__scope--excluded">
+								<h4>Nicht enthalten</h4>
+								<ul>
+									<?php foreach ( $project['excluded'] as $item ) : ?>
+										<li><?php echo esc_html( $item ); ?></li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						<?php endif; ?>
 						<dl class="wl-entry-card__meta">
 							<div>
 								<dt>Laufzeit</dt>
@@ -450,6 +495,12 @@ $fitcheck_steps = [
 								<dd><?php echo esc_html( $project['deliver'] ); ?></dd>
 							</div>
 						</dl>
+						<?php if ( ! empty( $project['scope_note'] ) ) : ?>
+							<p class="wl-entry-card__note"><?php echo esc_html( $project['scope_note'] ); ?></p>
+						<?php endif; ?>
+						<?php if ( ! empty( $project['intro_price_note'] ) ) : ?>
+							<p class="wl-entry-card__note wl-entry-card__note--price"><?php echo esc_html( $project['intro_price_note'] ); ?></p>
+						<?php endif; ?>
 					</article>
 				<?php endforeach; ?>
 			</div>
@@ -464,7 +515,7 @@ $fitcheck_steps = [
 				<a href="#fit-check" class="nx-btn nx-btn--primary" data-track-action="cta_whitelabel_entry_to_fitcheck" data-track-category="navigation" data-track-section="entry">
 					Fit-Check starten — 3 Fragen, 60 Sekunden
 				</a>
-				<p class="wl-entry__retainer-note">Wenn es passt: danach Monats-Retainer mit festem Stundenkontingent — Konditionen aus dem Fit-Gespräch.</p>
+				<p class="wl-entry__retainer-note">Wenn das Erstprojekt erfolgreich abgeschlossen ist, kann daraus ein Monats-Retainer mit vorab vereinbartem Leistungsrahmen entstehen.</p>
 			</div>
 		</div>
 	</section>
@@ -561,7 +612,7 @@ $fitcheck_steps = [
 		<div class="nx-container">
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">White-Label-Kontrakt</span>
-				<h2 class="nx-headline-section">Diskret. Schnell. Planbar.</h2>
+				<h2 class="nx-headline-section">Diskret. Verbindlich. Planbar.</h2>
 				<p class="wl-section-lede">Drei Regeln, schriftlich im Kontrakt — prüfbar ab der ersten Minute, ohne Sternchen.</p>
 			</div>
 
@@ -589,13 +640,13 @@ $fitcheck_steps = [
 		<div class="nx-container">
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Einordnung</span>
-				<h2 class="nx-headline-section">Senior einstellen, Freelancer suchen — oder andocken?</h2>
+				<h2 class="nx-headline-section">Senior einstellen, projektweise extern vergeben — oder andocken?</h2>
 				<p class="wl-section-lede">Drei Wege zu Senior-Kapazität. Ohne Fantasiezahlen — die Unterschiede liegen in Anlaufzeit, Risiko und Tiefe.</p>
 			</div>
 
 			<div class="wl-compare-wrap nx-reveal">
 				<table class="wl-compare">
-					<caption class="wl-visually-hidden">Vergleich der drei Wege zu Senior-Kapazität: Senior einstellen, Freelancer-Pool, White-Label-Partner</caption>
+					<caption class="wl-visually-hidden">Vergleich der drei Wege zu Senior-Kapazität: Senior einstellen, projektweise extern vergeben, White-Label-Partner</caption>
 					<thead>
 						<tr>
 							<th scope="col" class="wl-compare__crit"><span class="wl-visually-hidden">Kriterium</span></th>
@@ -695,8 +746,8 @@ $fitcheck_steps = [
 		<div class="nx-container">
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Technischer Beleg</span>
-				<h2 class="nx-headline-section">Sauberer Code statt Plugin-Stack.</h2>
-				<p class="wl-section-lede">Eigene Templates, bedarfsgesteuertes Asset-Loading, dokumentierte Übergabe. Keine Page-Builder-Wand, kein generisches Theme-Bloat.</p>
+				<h2 class="nx-headline-section">Nachvollziehbarer Code, gezielte Abhängigkeiten.</h2>
+				<p class="wl-section-lede">Individuelle Templates, bedarfsgesteuertes Asset-Loading und dokumentierte Übergabe — passend zum vorhandenen WordPress-Setup.</p>
 			</div>
 
 			<div class="wl-tech__split nx-reveal">
