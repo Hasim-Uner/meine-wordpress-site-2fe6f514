@@ -9,11 +9,240 @@
 	background: var(--nx-bg-deep);
 }
 
+html {
+	scroll-padding-top: 6rem;
+}
+
+/* =====================================================================
+   Page-local Header und Footer
+   ===================================================================== */
+
+.wl-skip-link {
+	position: fixed;
+	inset-block-start: 0.75rem;
+	inset-inline-start: 0.75rem;
+	z-index: 1100;
+	padding: 0.7rem 1rem;
+	border: 2px solid var(--accent);
+	border-radius: 999px;
+	background: var(--nx-bg-elevated);
+	color: var(--nx-text);
+	font-size: 0.88rem;
+	font-weight: 700;
+	text-decoration: none;
+	transform: translateY(calc(-100% - 1.5rem));
+	transition: transform var(--nx-duration-fast) var(--nx-ease);
+}
+
+.wl-skip-link:focus-visible {
+	outline: 3px solid hsl(23 60% 78%);
+	outline-offset: 3px;
+	transform: translateY(0);
+}
+
+.wl-site-header {
+	position: sticky;
+	inset-block-start: 0;
+	z-index: 1004;
+	padding: 0.75rem 1.25rem;
+	border-bottom: 1px solid var(--nx-border);
+	background: color-mix(in srgb, var(--nx-bg-deep) 88%, transparent);
+	backdrop-filter: blur(18px) saturate(145%);
+	-webkit-backdrop-filter: blur(18px) saturate(145%);
+}
+
+.admin-bar .wl-site-header {
+	inset-block-start: 32px;
+}
+
+.wl-site-header .nx-container,
+.wl-page-footer .nx-container {
+	width: min(100%, 1200px);
+	margin-inline: auto;
+}
+
+.wl-site-header__shell {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: center;
+	gap: clamp(0.75rem, 2vw, 2rem);
+	min-height: 64px;
+}
+
+.wl-site-header__brand {
+	color: var(--nx-text);
+	font-family: var(--nx-font-heading);
+	font-size: 0.96rem;
+	font-weight: 700;
+	letter-spacing: 0.2em;
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.wl-site-header__nav {
+	min-width: 0;
+}
+
+.wl-site-header__nav ul {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.wl-site-header__nav a,
+.wl-site-header__cta {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
+	border-radius: 999px;
+	font-size: 0.9rem;
+	font-weight: 650;
+	line-height: 1.2;
+	text-decoration: none;
+	white-space: nowrap;
+	transition:
+		transform var(--nx-duration-fast) var(--nx-ease),
+		border-color var(--nx-duration-fast) var(--nx-ease),
+		background var(--nx-duration-fast) var(--nx-ease),
+		color var(--nx-duration-fast) var(--nx-ease);
+}
+
+.wl-site-header__nav a {
+	padding-inline: clamp(0.7rem, 1.2vw, 1rem);
+	border: 1px solid transparent;
+	color: var(--nx-text-dim);
+}
+
+.wl-site-header__nav a:hover {
+	border-color: var(--nx-border);
+	background: var(--nx-bg-glass-light);
+	color: var(--nx-text);
+	transform: translateY(-1px);
+}
+
+.wl-site-header__cta {
+	padding-inline: clamp(0.9rem, 1.8vw, 1.25rem);
+	border: 1px solid transparent;
+	background: linear-gradient(180deg, var(--accent-hover) 0%, var(--accent) 100%);
+	box-shadow: 0 16px 34px hsl(var(--accent-hsl) / 0.2);
+	color: var(--text-inverse);
+}
+
+.wl-site-header__cta:hover {
+	background: linear-gradient(180deg, color-mix(in srgb, var(--accent-hover) 82%, white) 0%, var(--accent-hover) 100%);
+	color: var(--text-inverse);
+	transform: translateY(-1px);
+}
+
+.wl-site-header__cta-short {
+	display: none;
+}
+
+.wl-site-header__nav a:focus-visible,
+.wl-site-header__cta:focus-visible,
+.wl-page-footer a:focus-visible {
+	outline: 3px solid hsl(23 60% 78%);
+	outline-offset: 3px;
+}
+
+.wl-page-footer {
+	padding: 1.5rem 1.25rem;
+	border-top: 1px solid var(--nx-border);
+	background: var(--nx-bg-deep);
+	color: var(--nx-text-dim);
+}
+
+.wl-page-footer__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem 2rem;
+}
+
+.wl-page-footer p {
+	margin: 0;
+	font-size: 0.82rem;
+	line-height: 1.5;
+}
+
+.wl-page-footer__legal {
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+	white-space: nowrap;
+}
+
+.wl-page-footer__legal a {
+	color: var(--nx-text-secondary);
+	font-size: 0.82rem;
+	text-underline-offset: 0.2em;
+}
+
+.wl-page-footer__legal a:hover {
+	color: var(--nx-text);
+}
+
+@media (max-width: 760px) {
+	.wl-site-header__shell {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+
+	.wl-site-header__nav {
+		display: none;
+	}
+
+	.wl-page-footer__inner {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}
+
+@media (max-width: 380px) {
+	.wl-site-header {
+		padding-inline: 0.75rem;
+	}
+
+	.wl-site-header__shell {
+		gap: 0.65rem;
+		min-height: 58px;
+	}
+
+	.wl-site-header__brand {
+		font-size: 0.78rem;
+		letter-spacing: 0.14em;
+	}
+
+	.wl-site-header__cta {
+		padding-inline: 0.8rem;
+		font-size: 0.8rem;
+	}
+
+	.wl-site-header__cta-full {
+		display: none;
+	}
+
+	.wl-site-header__cta-short {
+		display: inline;
+	}
+}
+
+@media (max-width: 782px) {
+	.admin-bar .wl-site-header {
+		inset-block-start: 46px;
+	}
+}
+
 /* ─── Shared section primitives ─────────────────────────────────────── */
 
 .wl-page .nx-section {
 	position: relative;
 	padding: clamp(4rem, 8vw, 7rem) 1.25rem;
+	scroll-margin-top: 6rem;
 }
 
 .wl-page .nx-container {
@@ -1840,39 +2069,6 @@ thead .wl-compare__col--hl {
 }
 
 /* =====================================================================
-   16. PROOF-ERGÄNZUNGEN (Case-Link)
-   ===================================================================== */
-
-.wl-proof__case-link {
-	margin: 1.5rem 0 0;
-	text-align: center;
-}
-
-.wl-proof__case-link a {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.45rem;
-	padding-bottom: 2px;
-	font-size: 0.95rem;
-	font-weight: 600;
-	color: hsl(23 50% 70%);
-	text-decoration: none;
-	border-bottom: 1px solid hsl(23 50% 47% / 0.4);
-	transition: color 0.2s ease, border-color 0.2s ease, gap 0.2s ease;
-}
-
-.wl-proof__case-link a:hover {
-	color: hsl(23 60% 78%);
-	border-color: hsl(23 50% 60% / 0.7);
-	gap: 0.6rem;
-}
-
-.wl-proof__case-link a:focus-visible {
-	outline: 2px solid hsl(23 60% 60%);
-	outline-offset: 3px;
-}
-
-/* =====================================================================
    17. POLISH — Kontrakt-Hover
    ===================================================================== */
 
@@ -2024,6 +2220,12 @@ thead .wl-compare__col--hl {
    ===================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
+	html { scroll-behavior: auto !important; }
+
+	.wl-skip-link,
+	.wl-site-header__nav a,
+	.wl-site-header__cta { transition: none; }
+
 	.wl-status-dot { animation: none; }
 	.wl-sticky-cta { transition: none; }
 	.wl-problem-card,

@@ -12,14 +12,50 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-get_header();
-
 $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 	? nexus_get_whitelabel_calendar_url()
 	: 'https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true';
-$mailto_url = 'mailto:hallo@hasimuener.de';
+$mailto_url          = 'mailto:hallo@hasimuener.de';
+$imprint_url         = home_url( '/impressum/' );
+$privacy_url         = home_url( '/datenschutz/' );
+$current_year        = wp_date( 'Y' );
 
-$e3_case_url  = function_exists( 'hu_e3_canon' ) ? (string) ( hu_e3_canon()['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) ) : home_url( '/case-study-solar-leadgenerierung/' );
+// Diese Route hat eine eigene, geschlossene Seitennavigation. Der globale
+// Header bleibt für alle anderen Requests unverändert registriert.
+remove_action( 'wp_body_open', 'nexus_render_site_header', 20 );
+add_action(
+	'wp_body_open',
+	static function () {
+		?>
+		<a class="wl-skip-link" href="#main">Direkt zum Inhalt</a>
+		<header class="wl-site-header" role="banner" data-track-section="whitelabel_header">
+			<div class="nx-container">
+				<div class="wl-site-header__shell">
+					<span class="wl-site-header__brand">HAŞIM ÜNER</span>
+
+					<nav class="wl-site-header__nav" aria-label="Navigation auf dieser Seite">
+						<ul role="list">
+							<li><a href="#lieferfelder" data-track-action="nav_whitelabel_services" data-track-category="navigation" data-track-section="whitelabel_header">Leistungen</a></li>
+							<li><a href="#hero" data-track-action="nav_whitelabel_process" data-track-category="navigation" data-track-section="whitelabel_header">Ablauf</a></li>
+							<li><a href="#proof" data-track-action="nav_whitelabel_proof" data-track-category="navigation" data-track-section="whitelabel_header">Fallstudie</a></li>
+							<li><a href="#faq" data-track-action="nav_whitelabel_faq" data-track-category="navigation" data-track-section="whitelabel_header">FAQ</a></li>
+						</ul>
+					</nav>
+
+					<a class="wl-site-header__cta" href="#fit-check" aria-label="Fit-Check starten" data-track-action="cta_whitelabel_header_to_fitcheck" data-track-category="lead_gen" data-track-section="whitelabel_header">
+						<span class="wl-site-header__cta-full">Fit-Check starten</span>
+						<span class="wl-site-header__cta-short" aria-hidden="true">Fit-Check</span>
+					</a>
+				</div>
+			</div>
+		</header>
+		<?php
+	},
+	20
+);
+
+get_header();
+
 $portrait_url = function_exists( 'hu_get_portrait_image_url' )
 	? hu_get_portrait_image_url()
 	: home_url( '/wp-content/uploads/2026/01/Hasim-Uener-Prtraeit_Startseite.webp' );
@@ -342,7 +378,7 @@ $fitcheck_steps = [
 ];
 ?>
 
-<main id="main" class="site-main wl-page" data-track-section="whitelabel_proof">
+<main id="main" class="site-main wl-page" data-track-section="whitelabel_proof" tabindex="-1">
 
 	<noscript>
 		<style>
@@ -718,15 +754,6 @@ $fitcheck_steps = [
 				</div>
 			</div>
 
-			<p class="wl-proof__case-link nx-reveal">
-				<a href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="link_whitelabel_case_e3" data-track-category="navigation" data-track-section="proof">
-					Case im Detail ansehen
-					<svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-						<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					</svg>
-				</a>
-			</p>
-
 			<p class="wl-proof__disclaimer">Stand 2024–2025 · kein White-Label-Mandat, sondern eigenes Projekt · keine pauschale Übertragbarkeitsgarantie.</p>
 		</div>
 	</section>
@@ -919,4 +946,34 @@ window.dataLayer.push({
 
 </main>
 
-<?php get_footer(); ?>
+<?php
+if ( function_exists( 'blocksy_after_current_template' ) ) {
+	blocksy_after_current_template();
+}
+
+do_action( 'blocksy:content:bottom' );
+?>
+	</main>
+<?php
+do_action( 'blocksy:content:after' );
+do_action( 'blocksy:footer:before' );
+?>
+	<footer id="footer" class="wl-page-footer" aria-labelledby="wl-page-footer-heading" role="contentinfo">
+		<h2 id="wl-page-footer-heading" class="wl-visually-hidden">Rechtliches</h2>
+		<div class="nx-container wl-page-footer__inner">
+			<p>&copy; <time datetime="<?php echo esc_attr( $current_year ); ?>"><?php echo esc_html( $current_year ); ?></time> Haşim Üner · White-Label-Partner für Agenturen</p>
+			<nav class="wl-page-footer__legal" aria-label="Rechtliches">
+				<a href="<?php echo esc_url( $imprint_url ); ?>" data-track-action="nav_whitelabel_footer_imprint" data-track-category="navigation" data-track-section="whitelabel_footer">Impressum</a>
+				<span aria-hidden="true">·</span>
+				<a href="<?php echo esc_url( $privacy_url ); ?>" data-track-action="nav_whitelabel_footer_privacy" data-track-category="navigation" data-track-section="whitelabel_footer">Datenschutz</a>
+			</nav>
+		</div>
+	</footer>
+<?php
+do_action( 'blocksy:footer:after' );
+?>
+</div>
+
+<?php wp_footer(); ?>
+</body>
+</html>
