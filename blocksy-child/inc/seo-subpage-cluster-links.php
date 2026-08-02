@@ -27,7 +27,7 @@ function hu_get_solar_cluster_link_map() {
 		'solar-leads-kaufen-alternative'    => [ 'label' => 'Photovoltaik & Solar Leads kaufen – die Alternative', 'path' => '/solar-leads-kaufen-alternative/' ],
 		'waermepumpen-leads'                => [ 'label' => 'Wärmepumpen Leads kaufen – die Alternative', 'path' => '/waermepumpen-leads/' ],
 		'server-side-tracking-b2b'          => [ 'label' => 'Server-Side Tracking für B2B', 'path' => '/server-side-tracking-b2b/' ],
-		'b2b-solar-leads'                   => [ 'label' => 'B2B Solar Leads für PV-Projekte', 'path' => '/b2b-solar-leads/' ],
+		'b2b-solar-leads'                   => [ 'label' => 'PV-Termine B2B für Gewerbe-PV', 'path' => '/b2b-solar-leads/' ],
 		'eigene-leadgenerierung-vs-portale' => [ 'label' => 'Portal-Leads vs. eigenes System (TCO)', 'path' => '/eigene-leadgenerierung-vs-portale/' ],
 		'lead-funnel-solar'                 => [ 'label' => 'Lead-Funnel für Solar & Wärmepumpe', 'path' => '/lead-funnel-solar/' ],
 		'kunden-gewinnen-solarteure'        => [ 'label' => 'Kunden gewinnen für Solarteure', 'path' => '/kunden-gewinnen-solarteure/' ],

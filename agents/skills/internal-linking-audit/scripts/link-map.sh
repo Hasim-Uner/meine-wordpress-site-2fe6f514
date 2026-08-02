@@ -71,6 +71,19 @@ fi
 
 # Die Link-Matrix scannt ALLE Templates — auch die zuweisbaren, denn ihre
 # ausgehenden Links zaehlen fuer die interne Verlinkung unabhaengig von der URL.
+#
+# GRENZE DIESES SCANS: erfasst werden Link-ZIELE, keine Ankertexte. Beides sauber
+# zu paaren hiesse, PHP-durchsetztes HTML mit einer Regex zu parsen — der Anker
+# steht regelmaessig in einer anderen Zeile als das href, kommt aus einer
+# Variablen oder aus einem esc_html__()-Aufruf. Ein Teil-Regex wuerde still
+# falsche Paare melden, und das ist schaedlicher als eine ehrliche Luecke.
+#
+# Ankertexte deshalb dort pruefen, wo sie als Daten stehen und belegbar sind:
+#   inc/seo-subpage-cluster-links.php   Cluster-Labels je Money-Page
+#   inc/wgos/home-deeper-clusters.php   Karten-Titel auf der Startseite
+#   template-parts/related-content.php  Related-Labels
+#   inc/llms-txt.php                    Routen-Labels fuer LLM-Clients
+# Der Abgleich gegen die besitzende Query laeuft ueber docs/seo/query-ownership.csv.
 scan_files="$(printf '%s\n%s\n' "$all_templates" "$template_parts" | sed '/^[[:space:]]*$/d')"
 
 printf '%s\n' "$scan_files" | while IFS= read -r tpl; do

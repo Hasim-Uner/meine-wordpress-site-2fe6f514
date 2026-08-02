@@ -19,17 +19,22 @@
 #
 # Belege stammen aus seo-research/2026-07/reports/ (GSC-Exporte). Keine erfundenen
 # Volumina. Neue Zeilen nur mit Quellenangabe eintragen.
+#
+# Bewusst OHNE Owner (2026-08-02): "solar leads", "pv leads", "leads solar" und
+# "solar lead generation". Sie standen auf /b2b-solar-leads/, obwohl diese URL nur
+# Gewerbe-PV- und PV-Termine-B2B-Intent besitzt. Die Queries sind zu breit, um sie
+# ohne Beleg einer anderen Money-Page zuzuweisen — sie bleiben offen, bis der
+# Suchintent belegt getrennt ist. gap-report.sh meldet sie so lange als
+# REGISTRY-LUECKE. Das ist der gewollte Zustand, kein Versehen.
 query;owner_path;intent;status;source;distinct_from
 leadgenerierung photovoltaik;/solar-waermepumpen-leadgenerierung/;transactional;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte — GSC 28d 2026-07-30: /b2b-solar-leads/ rankt Pos. 46,2 (Owner-Entscheidung offen);
 leadgenerierung waermepumpe;/solar-waermepumpen-leadgenerierung/;transactional;owned;seo-meta.php forced-map;
-photovoltaik leads;/solar-waermepumpen-leadgenerierung/;transactional;owned;keyword-map.md#a-money — GSC 28d 2026-07-30: /b2b-solar-leads/ rankt Pos. 50,0 (Owner-Entscheidung offen);photovoltaik leads kaufen
+photovoltaik leads;/solar-waermepumpen-leadgenerierung/;transactional;owned;keyword-map.md#a-money — GSC 28d 2026-07-30: /b2b-solar-leads/ rankt Pos. 50,0, Titel/H1 dort bereinigt;photovoltaik leads kaufen
+leads photovoltaik;/solar-waermepumpen-leadgenerierung/;transactional;owned;gsc-export-28d-2026-07-30.csv (Pos. 48,0, 2 Impr. auf /b2b-solar-leads/) — belegte nahe Variante von "photovoltaik leads";photovoltaik leads|photovoltaik leads kaufen|leads kaufen photovoltaik
 waermepumpen leads;/waermepumpen-leads/;commercial;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
 waermepumpen leads kaufen;/waermepumpen-leads/;transactional;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
 pv termine b2b;/b2b-solar-leads/;commercial;owned;gsc-verlauf-2026-07-20.md#high-leverage-4;
 b2b photovoltaik;/b2b-solar-leads/;commercial;owned;gsc-verlauf-2026-07-20.md#gesamtbild;
-solar leads;/b2b-solar-leads/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 42,9);solar leads kaufen|solar leads kosten
-pv leads;/b2b-solar-leads/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 47,5);pv leads kaufen
-leads solar;/b2b-solar-leads/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 51,5);solar leads kaufen|solar leads kosten
 solar leads kaufen;/solar-leads-kaufen-alternative/;commercial;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;solar leads kosten
 photovoltaik leads kaufen;/solar-leads-kaufen-alternative/;commercial;owned;seo-meta.php forced-map;
 pv leads kaufen;/solar-leads-kaufen-alternative/;commercial;owned;seo-meta.php forced-map;
@@ -55,4 +60,14 @@ aroundhome;/aroundhome-solar-einordnung/;navigational;owned;seo-cockpit 28d 2026
 daa leads;/daa-photovoltaik-leads-einordnung/;commercial;owned;blog-provider-posts.php Publish-Seed;
 wordpress hannover;/wordpress-agentur-hannover/;local;owned;seo-cockpit 28d 2026-07-26 (Pos. 26,8);wordpress agentur hannover
 pv leads gewerbe;/b2b-solar-leads/;commercial;owned;seo-cockpit 28d 2026-07-26 (23 Impr., Pos. 14,7);
-solar lead generation;/b2b-solar-leads/;commercial;owned;gap-report 2026-07-26 (Pos. 58);
+checkfox solar;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 9,0);checkfox
+checkfox erfahrung;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 9,0);checkfox erfahrungen
+checkfox photovoltaik;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 14,0);checkfox
+checkfox photovoltaik serioes;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 6,3);checkfox serioes
+checkfox waermepumpe;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 11,7);checkfox
+checkfox bewertung;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 10,4, 29 Impr.);checkfox erfahrungen
+ist checkfox serioes;/checkfox-solar-waermepumpe-einordnung/;informational;owned;gsc-export-28d-2026-07-30.csv (Pos. 7,4, 16 Impr.);checkfox serioes
+was ist checkfox;/checkfox-solar-waermepumpe-einordnung/;informational;owned;gsc-export-28d-2026-07-30.csv (Pos. 10,3);checkfox
+aroundhome kosten fuer handwerker;/aroundhome-solar-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 4,5, 8 Impr.);aroundhome kosten
+aroundhome solaranlage;/aroundhome-solar-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 13,4, 8 Impr.);aroundhome
+wattfox leads kaufen;/wattfox-solar-leads-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 18,0, 2 Impr. auf /solar-leads-kaufen-alternative/) — Anbieter-Query bleibt beim Anbieterartikel;wattfox|solar leads kaufen

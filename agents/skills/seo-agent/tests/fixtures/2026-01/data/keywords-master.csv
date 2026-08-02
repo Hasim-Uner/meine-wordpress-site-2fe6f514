@@ -1,0 +1,6 @@
+keyword,volume,kd,cpc,intent,cluster,quelle
+testfrage alpha,480,10,3.20,local,fixture,fixture
+testfrage beta,210,9,2.10,commercial,fixture,fixture
+testfrage gamma,90,4,1.40,commercial,fixture,fixture
+testfrage delta,40,2,0.90,informational,fixture,fixture
+testfrage epsilon,30,1,0.50,informational,fixture,fixture

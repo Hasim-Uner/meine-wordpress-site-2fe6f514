@@ -67,11 +67,73 @@ get_template_part( 'template-parts/blog-header' );
 			'secondary_url'   => $audit_url,
 		];
 
-		// Portal-Einordnungs-Posts (checkfox u. a.) liegen in BEIDEN Kategorien
+		// Anbieter-Einordnungen (Checkfox, Aroundhome, Wattfox, DAA, Leadfluss)
+		// beantworten eine Ja/Nein-Frage aus der Suche. Die Beitragstexte sind
+		// editor-owned; repo-seitig steuerbar ist die Kontext-Box darueber.
+		$provider_post_slugs = [
+			'aroundhome-solar-einordnung',
+			'checkfox-solar-waermepumpe-einordnung',
+			'wattfox-solar-leads-einordnung',
+			'daa-photovoltaik-leads-einordnung',
+			'leadfluss-pv-leads-einordnung',
+		];
+		$is_provider_post = in_array( (string) get_post_field( 'post_name', get_the_ID() ), $provider_post_slugs, true );
+
+		// Prüfraster als Fragen an den Anbieter, nicht als Aussagen über ihn.
+		// Konditionen sind vertragsabhängig; jede Behauptung hier wäre unbelegt.
+		$provider_checks = [
+			[
+				'term' => __( 'Exklusivität', 'blocksy-child' ),
+				'desc' => __( 'Exklusiv oder an wie viele Betriebe parallel?', 'blocksy-child' ),
+			],
+			[
+				'term' => __( 'Mindestabnahme', 'blocksy-child' ),
+				'desc' => __( 'Feste Menge pro Monat — und was gilt bei zu wenig passenden Anfragen?', 'blocksy-child' ),
+			],
+			[
+				'term' => __( 'Storno', 'blocksy-child' ),
+				'desc' => __( 'Welche Reklamationsgründe zählen, in welcher Frist, mit welcher Quote?', 'blocksy-child' ),
+			],
+			[
+				'term' => __( 'Übergabezeit', 'blocksy-child' ),
+				'desc' => __( 'Wie viele Minuten zwischen Endkunden-Anfrage und Ihrem Kontakt?', 'blocksy-child' ),
+			],
+			[
+				'term' => __( 'Kosten pro Auftrag', 'blocksy-child' ),
+				'desc' => __( 'Stückpreis geteilt durch Ihre echte Abschlussquote — nicht der Stückpreis allein.', 'blocksy-child' ),
+			],
+		];
+
+		// Reihenfolge ist Absicht: Anbieter-Beiträge zuerst, sie ERSETZEN die
+		// Markteinordnungs-Variante an derselben Stelle statt eine zweite Box zu
+		// erzeugen. Portal-Einordnungs-Posts liegen in BEIDEN Kategorien
 		// (solar-waermepumpen-anfrage-systeme + markteinordnung). Für Vergleichsportal-
 		// Intent ("ist X seriös?") ist die Portal-vs-eigenes-System-Einordnung der
-		// treffendere nächste Schritt, daher hat markteinordnung/owned-leads Vorrang.
-		if ( in_array( 'solar-waermepumpen-anfrage-systeme', $post_cat_slugs, true ) && ! array_intersect( [ 'markteinordnung', 'owned-leads' ], $post_cat_slugs ) ) {
+		// treffendere nächste Schritt, daher hat markteinordnung/owned-leads Vorrang
+		// vor dem allgemeinen Solar-Zweig.
+		if ( $is_provider_post ) {
+			$article_context = [
+				'eyebrow'         => __( 'Kurz beantwortet', 'blocksy-child' ),
+				'title'           => __( 'Seriosität und wirtschaftliche Eignung sind zwei verschiedene Fragen.', 'blocksy-child' ),
+				'text'            => __( 'Der Beitrag darunter ordnet beides getrennt ein — für Ihren Betrieb zählt am Ende die zweite Frage.', 'blocksy-child' ),
+				'answers'         => [
+					[
+						'term' => __( 'Das Unternehmen', 'blocksy-child' ),
+						'desc' => __( 'Seriosität ist nachprüfbar: Impressum, Vertragswerk, benannte Konditionen und die Frage, wie transparent Reklamationen geregelt sind.', 'blocksy-child' ),
+					],
+					[
+						'term' => __( 'Ihr Betrieb', 'blocksy-child' ),
+						'desc' => __( 'Wirtschaftlich wird ein Portal erst, wenn die Kosten pro gewonnenem Auftrag zu Ihrer Marge passen. Ein seriöser Anbieter kann sich für Ihren Betrieb trotzdem nicht rechnen.', 'blocksy-child' ),
+					],
+				],
+				'checks'          => $provider_checks,
+				'checks_title'    => __( 'Vor der Registrierung schriftlich klären', 'blocksy-child' ),
+				'primary_label'   => __( 'TCO-Vergleich Portal vs. eigenes System', 'blocksy-child' ),
+				'primary_url'     => $portal_url,
+				'secondary_label' => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
+				'secondary_url'   => $audit_url,
+			];
+		} elseif ( in_array( 'solar-waermepumpen-anfrage-systeme', $post_cat_slugs, true ) && ! array_intersect( [ 'markteinordnung', 'owned-leads' ], $post_cat_slugs ) ) {
 			$article_context = [
 				'eyebrow'         => __( 'Solar-Fokus', 'blocksy-child' ),
 				'title'           => __( 'Teil des Anfrage-Systems für Solar & Wärmepumpe.', 'blocksy-child' ),
@@ -133,16 +195,21 @@ get_template_part( 'template-parts/blog-header' );
 			];
 		}
 
+		// Tracking-Kategorie folgt dem Ziel, nicht der Position: nur der Marktcheck
+		// ist lead_gen, redaktionelle Anschlussseiten sind internal_link.
+		$context_primary_category   = $audit_url === $article_context['primary_url'] ? 'lead_gen' : 'internal_link';
+		$context_secondary_category = $audit_url === $article_context['secondary_url'] ? 'lead_gen' : 'internal_link';
+
 		$article_next_links = [
 			[
 				'label'    => $article_context['primary_label'],
 				'url'      => $article_context['primary_url'],
-				'category' => 'internal_link',
+				'category' => $context_primary_category,
 			],
 			[
 				'label'    => $article_context['secondary_label'],
 				'url'      => $article_context['secondary_url'],
-				'category' => $audit_url === $article_context['secondary_url'] ? 'lead_gen' : 'internal_link',
+				'category' => $context_secondary_category,
 			],
 			[
 				'label'    => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
@@ -253,18 +320,43 @@ get_template_part( 'template-parts/blog-header' );
 			</div>
 		</figure>
 
-		<section class="nexus-article-context nexus-reveal" data-track-section="article_context_bridge" aria-label="<?php echo esc_attr( $article_context['eyebrow'] ); ?>">
+		<section class="nexus-article-context nexus-reveal<?php echo esc_attr( $is_provider_post ? ' nexus-article-context--provider' : '' ); ?>" data-track-section="article_context_bridge" aria-labelledby="nexus-article-context-title">
 			<div class="nexus-article-context__copy">
 				<span class="nexus-article-context__eyebrow"><?php echo esc_html( $article_context['eyebrow'] ); ?></span>
-				<h2 class="nexus-article-context__title"><?php echo esc_html( $article_context['title'] ); ?></h2>
+				<h2 id="nexus-article-context-title" class="nexus-article-context__title"><?php echo esc_html( $article_context['title'] ); ?></h2>
 				<p class="nexus-article-context__text"><?php echo esc_html( $article_context['text'] ); ?></p>
+
+				<?php if ( ! empty( $article_context['answers'] ) ) : ?>
+					<dl class="nexus-article-context__answers">
+						<?php foreach ( $article_context['answers'] as $answer ) : ?>
+							<div class="nexus-article-context__answer">
+								<dt><?php echo esc_html( $answer['term'] ); ?></dt>
+								<dd><?php echo esc_html( $answer['desc'] ); ?></dd>
+							</div>
+						<?php endforeach; ?>
+					</dl>
+				<?php endif; ?>
+
+				<?php if ( ! empty( $article_context['checks'] ) ) : ?>
+					<div class="nexus-article-context__checks">
+						<p class="nexus-article-context__checks-title"><?php echo esc_html( $article_context['checks_title'] ); ?></p>
+						<dl class="nexus-article-context__checklist">
+							<?php foreach ( $article_context['checks'] as $check ) : ?>
+								<div class="nexus-article-context__check">
+									<dt><?php echo esc_html( $check['term'] ); ?></dt>
+									<dd><?php echo esc_html( $check['desc'] ); ?></dd>
+								</div>
+							<?php endforeach; ?>
+						</dl>
+					</div>
+				<?php endif; ?>
 			</div>
 			<div class="nexus-article-context__actions">
 				<a
 					href="<?php echo esc_url( $article_context['primary_url'] ); ?>"
 					class="nexus-article-context__link nexus-article-context__link--primary"
 					data-track-action="cta_article_context_primary"
-					data-track-category="internal_link"
+					data-track-category="<?php echo esc_attr( $context_primary_category ); ?>"
 				>
 					<?php echo esc_html( $article_context['primary_label'] ); ?>
 				</a>
@@ -272,7 +364,7 @@ get_template_part( 'template-parts/blog-header' );
 					href="<?php echo esc_url( $article_context['secondary_url'] ); ?>"
 					class="nexus-article-context__link"
 					data-track-action="cta_article_context_secondary"
-					data-track-category="lead_gen"
+					data-track-category="<?php echo esc_attr( $context_secondary_category ); ?>"
 				>
 					<?php echo esc_html( $article_context['secondary_label'] ); ?>
 				</a>

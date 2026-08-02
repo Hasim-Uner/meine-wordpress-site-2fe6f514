@@ -1,0 +1,3 @@
+# Fixture-Ausschlussliste fuer run-gap-report-tests.sh. Bewusst leer:
+# die Tests pruefen Snapshot-Auswahl und Owner-Konflikte, nicht Ausschluesse.
+keyword;grund;status;source

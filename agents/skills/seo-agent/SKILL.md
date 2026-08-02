@@ -32,8 +32,26 @@ bash agents/skills/seo-agent/scripts/intent-gate.sh audit   # Registry-Konsisten
 Fuer die Frage „woran arbeiten wir als naechstes?" der Gap-Report:
 
 ```bash
-bash agents/skills/seo-agent/scripts/gap-report.sh          # neueste Periode
+bash agents/skills/seo-agent/scripts/gap-report.sh          # neueste Periode, 28d
+bash agents/skills/seo-agent/scripts/gap-report.sh --7d      # 7-Tage-Snapshot
 bash agents/skills/seo-agent/scripts/gap-report.sh 2026-07 --md > /tmp/gap.md
+```
+
+Der Rang-Status kommt immer aus **einem** Snapshot: dem neuesten Export des
+gewaehlten Zeitraums, bestimmt ueber `range_days` + `current_end`, nicht ueber
+den Dateinamen. Default sind 28 Tage; `--7d` / `--28d` / `--range=N` waehlen
+explizit. Fehlt der Zeitraum, bricht das Skript ab, statt still auf einen
+anderen auszuweichen. Der Report weist Zeitraum **und** Quelldatei aus.
+
+Der Abschnitt `MEHRFACH-URLS` listet vollstaendig jede Query, fuer die im
+Snapshot mehr als eine eigene URL rankt (`=` Registry-Owner, `+` nicht
+registriert). Bewusst ohne Schwellenwert: sobald eine Nicht-Owner-URL fuer eine
+Owner-Query Impressionen bekommt, ist das ein `OWNER-KONFLIKT`.
+
+Regressionstest nach jeder Aenderung am Report:
+
+```bash
+bash agents/skills/seo-agent/tests/run-gap-report-tests.sh
 ```
 
 Er rechnet nur mit vorhandenen Exporten unter `seo-research/<periode>/data/` —

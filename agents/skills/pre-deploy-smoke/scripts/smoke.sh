@@ -55,11 +55,20 @@ fi
 # --- 3. Raw echo check ---
 header "Escaping Hygiene"
 
+# Ausgenommen sind Zeilen mit "// raw-ok" und Zeilen mit einer begruendeten
+# phpcs:ignore-Annotation fuer EscapeOutput. Letztere ist die im Repo bereits
+# verwendete Markierung fuer geprueften Roh-Output (z. B. get_avatar(), das
+# fertiges Core-HTML zurueckgibt). Der Check prueft geaenderte Dateien, deshalb
+# tauchen solche Altzeilen sonst erst auf, wenn die Datei aus einem anderen
+# Grund angefasst wird.
 raw_echo=""
 if [[ -n "$theme_php" ]]; then
   while IFS= read -r f; do
     [[ -f "$f" ]] || continue
-    found="$(grep -n 'echo \$' "$f" 2>/dev/null | grep -v 'esc_' | grep -v '// raw-ok' || true)"
+    found="$(grep -n 'echo \$' "$f" 2>/dev/null \
+      | grep -v 'esc_' \
+      | grep -v '// raw-ok' \
+      | grep -v 'phpcs:ignore[[:space:]].*EscapeOutput' || true)"
     [[ -n "$found" ]] && raw_echo+="${found/#/$f:}"$'\n'
   done <<< "$theme_php"
 fi

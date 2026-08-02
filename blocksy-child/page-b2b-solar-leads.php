@@ -247,12 +247,13 @@ get_header();
 			?>
 			<p class="hu-intercept__eyebrow">Gewerbliche Photovoltaik · Speicher · PPA — kein Modul-Großhandel</p>
 			<?php
-			// H1 nimmt den Meta-Title auf ("Photovoltaik B2B Leads & PV-Termine"),
-			// damit der Einstieg das SERP-Versprechen einlöst. "B2B Solar Leads"
-			// bleibt vorn — das ist das rankende Asset.
+			// H1 nimmt den Meta-Title auf ("PV-Termine B2B für Gewerbe-PV"), damit
+			// der Einstieg das SERP-Versprechen einlöst. Bewusst ohne das generische
+			// "Photovoltaik Leads": diese Query gehört der Solar-Money-Page, und der
+			// Begriff im Hero hat sie hierher gezogen (GSC 28d 2026-07-30, Pos. 50,0).
 			?>
 			<h1 class="hu-intercept__title" id="hu-b2b-hero-title">
-				PV-Termine im B2B: eigene Photovoltaik-Anfragen statt eingekaufter Termine
+				PV-Termine B2B für Gewerbe-PV: eigene Anfragen statt eingekaufter Termine
 			</h1>
 			<p class="hu-intercept__lead">
 				Gekaufte Gewerbe-Termine verlagern die Qualifizierung dorthin, wo sie am teuersten ist: in den Termin selbst. Gewerbliche Photovoltaik braucht eine Anfrage-Architektur, die <strong>Buying-Center</strong>, <strong>lange Sales-Zyklen</strong> und <strong>komplexe Förderlogik</strong> abbildet – und die qualifiziert, <em>bevor</em> Ihr Vertrieb anreist. Gebaut für Projekte <strong>ab 50.000 €</strong>.

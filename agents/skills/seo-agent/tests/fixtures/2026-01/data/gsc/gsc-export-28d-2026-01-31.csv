@@ -1,0 +1,9 @@
+range_days;current_start;current_end;page;query;clicks;impressions;ctr;position;previous_clicks;previous_impressions;previous_ctr;previous_position;delta_clicks;delta_impressions;delta_position
+28;2026-01-04;2026-01-31;https://hasimuener.de/alpha/;"testfrage alpha";1;190;0,0053;26,64;4;300;0,0133;11,00;-3;-110;15,64
+28;2026-01-04;2026-01-31;https://hasimuener.de/beta/;"testfrage beta";0;43;0,0000;29,60;1;60;0,0167;9,50;-1;-17;20,10
+28;2026-01-04;2026-01-31;https://hasimuener.de/gamma-seite/;"testfrage beta";0;28;0,0000;57,61;0;0;0,0000;0,00;0;28;
+28;2026-01-04;2026-01-31;https://hasimuener.de/gamma-seite/;"testfrage gamma";0;20;0,0000;40,00;0;18;0,0000;44,00;0;2;-4,00
+28;2026-01-04;2026-01-31;https://hasimuener.de/beta/;"testfrage gamma";0;1;0,0000;62,00;0;0;0,0000;0,00;0;1;
+28;2026-01-04;2026-01-31;https://hasimuener.de/delta/;"testfrage delta";0;10;0,0000;12,00;0;8;0,0000;14,00;0;2;-2,00
+28;2026-01-04;2026-01-31;https://hasimuener.de/delta/;"testfrage-delta";0;2;0,0000;15,00;0;0;0,0000;0,00;0;2;
+28;2026-01-04;2026-01-31;https://hasimuener.de/epsilon/;"testfrage epsilon";0;9;0,0000;8,00;0;5;0,0000;10,00;0;4;-2,00

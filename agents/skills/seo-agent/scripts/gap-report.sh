@@ -8,29 +8,49 @@
 # Fehlende Daten werden als fehlend ausgewiesen, nicht geschaetzt.
 #
 # Nutzung:
-#   gap-report.sh                      neueste Periode unter seo-research/
+#   gap-report.sh                      neueste Periode, 28-Tage-Snapshot (Default)
 #   gap-report.sh 2026-07              bestimmte Periode
+#   gap-report.sh --7d                 7-Tage-Snapshot statt 28 Tage
+#   gap-report.sh --28d                28-Tage-Snapshot (explizit)
+#   gap-report.sh --range=28           gleichwertig zu --28d
 #   gap-report.sh 2026-07 --md         Markdown statt Konsolenausgabe
+#
+# Der Rang-Status kommt immer aus genau EINEM Snapshot: dem neuesten Export des
+# gewaehlten Zeitraums, bestimmt ueber range_days + current_end (nicht ueber den
+# Dateinamen). Historische Exporte werden nie mit dem aktuellen Stand vermischt,
+# und eine alte Bestposition gewinnt nie gegen den Ist-Wert.
 #
 # Erwartete Dateien in seo-research/<periode>/data/:
 #   keywords-master.csv                keyword,volume,kd,cpc,intent,cluster,quelle
 #   gsc/*.csv                          SEO-Cockpit-Export (Semikolon)
 #   comp-<domain>.json                 optional, Wettbewerber-Rankings
+#
+# Fuer Tests ueberschreibbar: RESEARCH_DIR, OWNERSHIP, EXCLUSIONS.
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
-RESEARCH_DIR="$REPO_ROOT/seo-research"
+RESEARCH_DIR="${RESEARCH_DIR:-$REPO_ROOT/seo-research}"
 
 PERIOD=""
 FORMAT="text"
+RANGE=""
 for arg in "$@"; do
   case "$arg" in
     --md|--markdown) FORMAT="md" ;;
-    --help|-h) sed -n '2,20p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --7d|--7) RANGE="7" ;;
+    --28d|--28) RANGE="28" ;;
+    --range=*) RANGE="${arg#--range=}" ;;
+    --help|-h) sed -n '2,30p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -*) echo "FEHLER: Unbekannte Option '$arg'. --help zeigt die Nutzung." >&2; exit 2 ;;
     *) PERIOD="$arg" ;;
   esac
 done
+
+if [[ -n "$RANGE" && ! "$RANGE" =~ ^[0-9]+$ ]]; then
+  echo "FEHLER: --range erwartet eine Zahl (z. B. --range=28)." >&2
+  exit 2
+fi
 
 if [[ -z "$PERIOD" ]]; then
   PERIOD="$(ls -1 "$RESEARCH_DIR" 2>/dev/null | grep -E '^[0-9]{4}-[0-9]{2}$' | sort | tail -1 || true)"
@@ -38,13 +58,13 @@ fi
 
 DATA_DIR="$RESEARCH_DIR/$PERIOD/data"
 if [[ -z "$PERIOD" || ! -d "$DATA_DIR" ]]; then
-  echo "FEHLER: Keine Datenperiode gefunden. Erwartet: seo-research/<JJJJ-MM>/data/" >&2
+  echo "FEHLER: Keine Datenperiode gefunden. Erwartet: $RESEARCH_DIR/<JJJJ-MM>/data/" >&2
   exit 2
 fi
 
-DATA_DIR="$DATA_DIR" PERIOD="$PERIOD" FORMAT="$FORMAT" \
-OWNERSHIP="$REPO_ROOT/docs/seo/query-ownership.csv" \
-EXCLUSIONS="$REPO_ROOT/docs/seo/keyword-exclusions.csv" \
+DATA_DIR="$DATA_DIR" PERIOD="$PERIOD" FORMAT="$FORMAT" RANGE="$RANGE" \
+OWNERSHIP="${OWNERSHIP:-$REPO_ROOT/docs/seo/query-ownership.csv}" \
+EXCLUSIONS="${EXCLUSIONS:-$REPO_ROOT/docs/seo/keyword-exclusions.csv}" \
 python3 <<'PY'
 import csv, glob, json, os, re, sys
 from collections import defaultdict
@@ -52,6 +72,12 @@ from collections import defaultdict
 data_dir = os.environ["DATA_DIR"]
 period = os.environ["PERIOD"]
 fmt = os.environ["FORMAT"]
+requested_range = (os.environ.get("RANGE") or "").strip()
+
+# Bewusst ohne Schwellenwert: sobald eine Nicht-Owner-URL fuer eine Owner-Query
+# ueberhaupt Impressionen bekommt, ist das ein Owner-Konflikt. Jede Grenze waere
+# geraten und wuerde genau die Faelle verstecken, wegen derer dieser Report
+# existiert.
 
 FOLD = {"ä": "ae", "ö": "oe", "ü": "ue", "ß": "ss"}
 STOP = {"und", "oder", "fuer", "der", "die", "das", "im", "in", "mit", "ohne", "vs", "von", "zu"}
@@ -99,7 +125,9 @@ for r in read_semicolon_csv(os.environ["EXCLUSIONS"]):
 # und 28d sowie historische Exporte, und eine alte Bestposition gewinnt gegen
 # den aktuellen Stand.
 latest_gsc_end = {}
+latest_gsc_start = {}
 latest_gsc_rows = defaultdict(list)
+latest_gsc_files = defaultdict(list)
 for path in sorted(glob.glob(os.path.join(data_dir, "gsc", "*.csv"))):
     for r in read_semicolon_csv(path):
         range_days = (r.get("range_days") or "").strip()
@@ -109,15 +137,36 @@ for path in sorted(glob.glob(os.path.join(data_dir, "gsc", "*.csv"))):
         latest_end = latest_gsc_end.get(range_days, "")
         if current_end > latest_end:
             latest_gsc_end[range_days] = current_end
+            latest_gsc_start[range_days] = (r.get("current_start") or "").strip()
             latest_gsc_rows[range_days] = [r]
+            latest_gsc_files[range_days] = [path]
         elif current_end == latest_end:
             latest_gsc_rows[range_days].append(r)
+            if path not in latest_gsc_files[range_days]:
+                latest_gsc_files[range_days].append(path)
 
-status_range_days = "28" if "28" in latest_gsc_rows else ""
-if not status_range_days and latest_gsc_rows:
-    status_range_days = max(latest_gsc_rows, key=lambda value: int(value) if value.isdigit() else 0)
+if requested_range:
+    if requested_range not in latest_gsc_rows:
+        available = ", ".join(sorted(latest_gsc_rows, key=lambda v: int(v) if v.isdigit() else 0)) or "keine"
+        print(
+            "FEHLER: Kein %s-Tage-Snapshot in %s. Vorhanden: %s."
+            % (requested_range, os.path.relpath(os.path.join(data_dir, "gsc")), available),
+            file=sys.stderr,
+        )
+        sys.exit(2)
+    status_range_days = requested_range
+else:
+    # Default ist bewusst 28 Tage: der 7-Tage-Snapshot schwankt zu stark, um
+    # daraus Eigentums- oder Prioritaetsentscheidungen abzuleiten.
+    status_range_days = "28" if "28" in latest_gsc_rows else ""
+    if not status_range_days and latest_gsc_rows:
+        status_range_days = max(latest_gsc_rows, key=lambda value: int(value) if value.isdigit() else 0)
 
-gsc_best = {}
+status_sources = [os.path.relpath(p) for p in latest_gsc_files.get(status_range_days, [])]
+
+# Alle rankenden URLs je Query behalten. Blind auf die beste Position zu
+# aggregieren wuerde Kannibalisierung im selben Snapshot unsichtbar machen.
+gsc_pages = defaultdict(list)
 for r in latest_gsc_rows.get(status_range_days, []):
     q = fold(r.get("query", ""))
     if not q:
@@ -134,9 +183,32 @@ for r in latest_gsc_rows.get(status_range_days, []):
     except ValueError:
         previous_pos = 0
     url = (r.get("page") or "").replace("https://hasimuener.de", "") or "/"
-    prev = gsc_best.get(q)
-    if prev is None or pos < prev[1] or (pos == prev[1] and impr > prev[2]):
-        gsc_best[q] = (url, pos, impr, previous_pos if previous_pos > 0 else None)
+    gsc_pages[q].append({
+        "url": url,
+        "pos": pos,
+        "impr": impr,
+        "previous_pos": previous_pos if previous_pos > 0 else None,
+    })
+
+# Schreibvarianten derselben Query ("pv leads" / "pv-leads") falten auf denselben
+# Schluessel. Steht dahinter dieselbe URL, ist das keine Kannibalisierung, sondern
+# eine Variante: Impressionen addieren, Position aus der staerksten Variante
+# uebernehmen. Nichts wird gemittelt oder geschaetzt.
+for q, entries in gsc_pages.items():
+    merged = {}
+    for e in entries:
+        key = e["url"].rstrip("/")
+        seen = merged.get(key)
+        if seen is None:
+            merged[key] = dict(e)
+            continue
+        if e["impr"] > seen["impr"]:
+            seen["pos"] = e["pos"]
+            seen["previous_pos"] = e["previous_pos"]
+        seen["impr"] += e["impr"]
+    gsc_pages[q] = sorted(merged.values(), key=lambda e: (e["pos"], -e["impr"]))
+
+gsc_best = {q: entries[0] for q, entries in gsc_pages.items()}
 
 # --- 4. Wettbewerber ------------------------------------------------------
 comp_best = defaultdict(list)
@@ -168,24 +240,48 @@ def fmt_ranking(pos, previous_pos):
     return "%s; vorher Pos. %s" % (current, fmt_position(previous_pos))
 
 
+def fmt_entry(entry, with_url=True):
+    ranking = "%s, %d Impr." % (fmt_ranking(entry["pos"], entry["previous_pos"]), entry["impr"])
+    return "%s (%s)" % (entry["url"], ranking) if with_url else ranking
+
+
+def fmt_rivals(entries):
+    return ", ".join(fmt_entry(e) for e in entries)
+
+
+# Jede Query mit mehr als einer rankenden URL im gewaehlten Snapshot, unabhaengig
+# davon ob sie im Keyword-Universum steht. Vollstaendig, ohne Schwelle: der
+# Abschnitt ist die Kannibalisierungs-Karte des Snapshots.
+multi_url_queries = sorted(
+    ((q, entries) for q, entries in gsc_pages.items() if len(entries) > 1),
+    key=lambda item: -sum(e["impr"] for e in item[1]),
+)
+
 for kw in keywords:
     q = fold(kw["keyword"])
     if q in excluded:
         status, detail = "AUSGESCHLOSSEN", excluded[q]["grund"]
     elif q in owned:
         status, detail = "BESTEHT", owned[q]
-        if q in gsc_best:
-            u, pos, impr, previous_pos = gsc_best[q]
-            ranking = fmt_ranking(pos, previous_pos)
-            detail = "%s (rankt %s, %d Impr.)" % (owned[q], ranking, impr)
-            if u.rstrip("/") != owned[q].rstrip("/"):
+        if q in gsc_pages:
+            owner_path = owned[q]
+            entries = gsc_pages[q]
+            owner_entry = next(
+                (e for e in entries if e["url"].rstrip("/") == owner_path.rstrip("/")), None)
+            rivals = [e for e in entries if e is not owner_entry]
+
+            if owner_entry is None:
                 status = "OWNER-KONFLIKT"
-                detail = "Registry: %s — rankt aber %s (%s)" % (owned[q], u, ranking)
-    elif q in gsc_best:
-        u, pos, impr, previous_pos = gsc_best[q]
+                detail = "Registry: %s — rankt aber %s" % (owner_path, fmt_rivals(entries))
+            else:
+                detail = "%s (rankt %s)" % (owner_path, fmt_entry(owner_entry, with_url=False))
+                if rivals:
+                    status = "OWNER-KONFLIKT"
+                    detail += " — dieselbe Query rankt zusaetzlich mit %s" % fmt_rivals(rivals)
+    elif q in gsc_pages:
+        entries = gsc_pages[q]
         status = "REGISTRY-LUECKE"
-        detail = "rankt bereits %s (%s, %d Impr.), fehlt in query-ownership.csv" % (
-            u, fmt_ranking(pos, previous_pos), impr)
+        detail = "rankt bereits %s, fehlt in query-ownership.csv" % fmt_rivals(entries)
     else:
         near = [(len(toks(kw["keyword"]) & t) / len(toks(kw["keyword"]) | t), p)
                 for t, p in owned_tok if t and toks(kw["keyword"])]
@@ -222,8 +318,10 @@ if fmt == "md":
     out.append("# Gap-Report %s\n" % period)
     out.append("Erzeugt aus `%s`. Keine API-Aufrufe, keine geschaetzten Werte.\n" % os.path.relpath(data_dir))
     if status_range_days:
-        out.append("GSC-Status: %s Tage, neuester Snapshot bis `%s`.\n" % (
-            status_range_days, latest_gsc_end[status_range_days]))
+        out.append("GSC-Status: %s Tage, Snapshot %s bis `%s`.\n" % (
+            status_range_days, latest_gsc_start.get(status_range_days, "?"),
+            latest_gsc_end[status_range_days]))
+        out.append("Quelle: %s\n" % ", ".join("`%s`" % s for s in status_sources))
     out.append("| Status | Anzahl |\n| --- | ---: |")
     for s in ORDER:
         if counts[s]:
@@ -233,8 +331,10 @@ else:
     out.append("=== Gap-Report %s ===\n" % period)
     out.append("Datenbasis: %s" % os.path.relpath(data_dir))
     if status_range_days:
-        out.append("GSC-Status: %s Tage, neuester Snapshot bis %s" % (
-            status_range_days, latest_gsc_end[status_range_days]))
+        out.append("GSC-Status: %s Tage, Snapshot %s bis %s" % (
+            status_range_days, latest_gsc_start.get(status_range_days, "?"),
+            latest_gsc_end[status_range_days]))
+        out.append("Quelle: %s" % ", ".join(status_sources))
     out.append("Keywords: %d | " % len(rows) + " | ".join("%s %d" % (s, counts[s]) for s in ORDER if counts[s]))
     out.append("")
 
@@ -259,6 +359,36 @@ for status in ORDER:
                 kw["keyword"][:42], kw.get("volume") or "–", kw.get("kd") or "–", detail))
         if len(group) > 25:
             out.append("  … %d weitere (--md fuer die vollstaendige Liste)" % (len(group) - 25))
+        out.append("")
+
+if multi_url_queries:
+    if fmt == "md":
+        out.append("## MEHRFACH-URLS (%d)\n" % len(multi_url_queries))
+        out.append("Queries, fuer die im gewaehlten Snapshot mehr als eine eigene URL rankt.")
+        out.append("Vollstaendig und ohne Schwelle. Registry-Owner ist mit `=` markiert,")
+        out.append("nicht registrierte URLs mit `+`.\n")
+        out.append("| Query | Impr. gesamt | Rankende URLs |")
+        out.append("| --- | ---: | --- |")
+        for q, entries in multi_url_queries:
+            owner_path = owned.get(q)
+            urls = " · ".join(
+                "%s%s" % (
+                    "=" if owner_path and e["url"].rstrip("/") == owner_path.rstrip("/") else "+",
+                    fmt_entry(e),
+                )
+                for e in entries
+            )
+            out.append("| %s | %d | %s |" % (q, sum(e["impr"] for e in entries), urls))
+        out.append("")
+    else:
+        out.append("--- MEHRFACH-URLS (%d) ---" % len(multi_url_queries))
+        out.append("  Mehr als eine eigene URL im Snapshot. '=' Registry-Owner, '+' nicht registriert.")
+        for q, entries in multi_url_queries:
+            owner_path = owned.get(q)
+            out.append("  %-42s %d Impr. gesamt" % (q[:42], sum(e["impr"] for e in entries)))
+            for e in entries:
+                marker = "=" if owner_path and e["url"].rstrip("/") == owner_path.rstrip("/") else "+"
+                out.append("    %s %s" % (marker, fmt_entry(e)))
         out.append("")
 
 if fmt != "md":

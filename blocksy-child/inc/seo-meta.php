@@ -259,13 +259,16 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Server-Side Tracking Agentur: DSGVO, GA4 & CAPI',
 				'description' => 'Server-Side Tracking für B2B-Anfrage-Systeme: GA4, Meta CAPI und Consent Mode v2 auf eigenem Server. Attribution für qualifizierte Anfragen statt Klickberichte.',
 			],
-			// "pv termine b2b" traegt 42 % der Impressionen dieser Seite und ist
-			// die einzige Seite-1-Position der Site (Pos. 9,65) — deshalb steht
-			// die Termin-Aussage vorn. "B2B Leads" bleibt als zweiter Teil, die
-			// H1 im Template ist synchron gehalten.
+			// Diese Seite besitzt laut docs/seo/query-ownership.csv ausschliesslich
+			// Gewerbe-PV-Intent: "pv termine b2b", "pv leads gewerbe", "b2b
+			// photovoltaik". Das generische "Photovoltaik Leads" stand frueher im
+			// Titel und hat der Seite genau die Query zugespielt, die der
+			// Solar-Money-Page gehoert — GSC 28d 2026-07-30 zeigt sie dafuer auf
+			// Pos. 50,0 mit 47 Impressionen. Titel und H1 tragen deshalb nur noch
+			// Gewerbe-PV und PV-Termine; die H1 im Template ist synchron gehalten.
 			'b2b-solar-leads' => [
-				'title'       => 'PV-Termine B2B & Photovoltaik Leads: Gewerbe statt Masse',
-				'description' => 'Gewerbliche PV-Termine und Anfragen für Hallendächer, Quartiere & PPA: vorqualifiziert statt eingekauft. Eigenes Anfrage-System statt Termin-Provision.',
+				'title'       => 'PV-Termine B2B für Gewerbe-PV | Haşim Üner',
+				'description' => 'Gewerbliche PV-Termine und Anfragen für Hallendächer, Quartiere & PPA: Buying-Center-Funnel mit eigener Vorqualifizierung statt eingekaufter Termine.',
 			],
 			'eigene-leadgenerierung-vs-portale' => [
 				'title'       => 'Portal-Leads vs. eigenes System: TCO-Vergleich Solar/SHK',
@@ -303,6 +306,17 @@ function hu_get_forced_singular_seo_map() {
 			'checkfox-solar-waermepumpe-einordnung' => [
 				'title'       => 'Checkfox seriös? Erfahrungen & Kosten für Solar-Betriebe',
 				'description' => 'Ist Checkfox seriös? Unabhängige Einordnung für Solar- & Wärmepumpen-Betriebe: Portal-Mechanik, Kosten-Logik und die Alternative zu gekauften Leads.',
+			],
+			// Zweite Seite-1-URL ohne Klicks: 45 Impressionen auf Pos. 4,5–13,4
+			// (GSC 28d 2026-07-30), 0 Klicks. Der Seeder-Titel setzte "für
+			// Handwerker" vor den Klickgrund. Jetzt steht die staerkste Query
+			// vorn ("aroundhome kosten für handwerker", Pos. 4,5), dann
+			// Erfahrungen als zweiter Suchgrund. Ueberschreibt den Seeder-Wert
+			// aus blog-provider-posts.php, ohne die Seed-Version zu heben — ein
+			// Bump wuerde veroeffentlichte Editor-Copy ueberschreiben.
+			'aroundhome-solar-einordnung' => [
+				'title'       => 'Aroundhome Kosten für Handwerker: Erfahrungen & Einordnung',
+				'description' => 'Was kostet Aroundhome für Handwerker? Einordnung öffentlicher Erfahrungen, Vertragsfragen und Kosten pro Auftrag für Solar- und SHK-Betriebe.',
 			],
 		]
 	);

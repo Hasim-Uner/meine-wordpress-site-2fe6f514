@@ -1541,6 +1541,34 @@
     box-shadow: 0 10px 26px hsl(28 72% 56% / 0.28);
 }
 
+/* Anbieter-Variante: der Titel ist ein Satz, keine Schlagzeile — die
+   18ch-Begrenzung der Standardbox wuerde ihn in eine Spalte quetschen.
+   Farben auf die Editorial-Tokens ziehen, damit Antwortpaar und Pruefraster
+   nicht aus dem Kontrastsystem der Seite fallen. */
+.nexus-article-context--provider .nexus-article-context__title {
+    max-width: 32ch;
+    font-size: 1.55rem;
+}
+
+.nexus-article-context--provider .nexus-article-context__answer {
+    border-left-color: hsl(28 72% 56% / 0.45);
+}
+
+.nexus-article-context--provider .nexus-article-context__answer dt,
+.nexus-article-context--provider .nexus-article-context__checks-title,
+.nexus-article-context--provider .nexus-article-context__check dt {
+    color: var(--hu-fg);
+}
+
+.nexus-article-context--provider .nexus-article-context__answer dd,
+.nexus-article-context--provider .nexus-article-context__check dd {
+    color: var(--hu-fg-2);
+}
+
+.nexus-article-context--provider .nexus-article-context__checks {
+    border-top-color: var(--hu-line);
+}
+
 .nexus-post-layout {
     grid-template-columns: minmax(230px, 280px) minmax(0, 860px);
     gap: 56px;

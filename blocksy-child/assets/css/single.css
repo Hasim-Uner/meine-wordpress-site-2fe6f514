@@ -237,6 +237,94 @@
     color: var(--text-inverse);
 }
 
+/* Anbieter-Einordnungen: die Box beantwortet die Suchfrage oberhalb des langen
+   Beitrags. Dafuer bricht sie aus dem zweispaltigen Zeilen-Layout aus und
+   stapelt Copy, Antwortpaar, Pruefraster und Aktionen untereinander. */
+.nexus-article-context--provider {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    padding: clamp(1.1rem, 2.6vw, 1.6rem) 0;
+}
+
+.nexus-article-context__answers,
+.nexus-article-context__checklist {
+    margin: 0;
+}
+
+.nexus-article-context__answers {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 0.9rem;
+}
+
+.nexus-article-context__answer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+    padding-left: 0.85rem;
+    border-left: 2px solid hsl(var(--accent-hsl) / 0.38);
+}
+
+.nexus-article-context__answer dt {
+    color: var(--nx-text);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.nexus-article-context__answer dd {
+    margin: 0;
+    max-width: 68ch;
+    color: var(--nx-text-secondary);
+    font-size: 0.94rem;
+    line-height: 1.6;
+}
+
+.nexus-article-context__checks {
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--nx-border);
+}
+
+.nexus-article-context__checks-title {
+    margin: 0 0 0.6rem;
+    color: var(--nx-text);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.nexus-article-context__checklist {
+    display: grid;
+    gap: 0.55rem 1.4rem;
+}
+
+.nexus-article-context__check dt {
+    color: var(--nx-text);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.nexus-article-context__check dd {
+    margin: 0.1rem 0 0;
+    color: var(--nx-text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.nexus-article-context--provider .nexus-article-context__actions {
+    justify-content: flex-start;
+    margin-top: 1.1rem;
+}
+
+@media (min-width: 700px) {
+    .nexus-article-context__checklist {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 .nexus-hero-footer {
     display: flex;
     align-items: center;

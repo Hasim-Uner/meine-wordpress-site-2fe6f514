@@ -1,0 +1,7 @@
+# Fixture-Registry fuer run-gap-report-tests.sh. Kein Produktivdatensatz.
+# Bewusst ohne "testfrage epsilon", damit der REGISTRY-LUECKE-Fall greift.
+query;owner_path;intent;status;source;distinct_from
+testfrage alpha;/alpha/;local;owned;fixture;
+testfrage beta;/beta/;commercial;owned;fixture;
+testfrage gamma;/gamma-seite/;commercial;owned;fixture;
+testfrage delta;/delta/;informational;owned;fixture;
