@@ -291,6 +291,19 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Solar-Leads Kosten 2026: CPL, CPO & Portal-Vergleich',
 				'description' => 'Was kosten Solar-Leads wirklich? Marktstudie mit Photovoltaik- und Wärmepumpen-CPL, Cost-per-Order, Portal-Modellen, Methodik und Case-Study-Benchmark.',
 			],
+			// Groesste ungenutzte Chance der Domain: 315 Impressionen auf Pos. 8,4
+			// (GSC 28d 2026-07-30) bei 1 Klick. Der alte Titel stellte die Query nur
+			// als Frage zurueck und setzte "fuer Betriebe" als Filter davor — beides
+			// ohne Klickgrund. Jetzt vorn die Query, dann das Versprechen (Erfahrungen,
+			// Kosten), die Zielgruppe am Ende. Dass die Zielgruppe bleibt, ist Absicht:
+			// CPC 3,24–6,63 € im Checkfox-Cluster gegen 0,51 € bei Aroundhome zeigt,
+			// dass hier das kommerzielle Publikum sucht, nicht das Verbraucher-Volumen.
+			// Ueberschreibt den Seeder-Wert aus blog-provider-posts.php, ohne die
+			// Seed-Version zu heben — ein Bump wuerde Live-Inhalte ueberschreiben.
+			'checkfox-solar-waermepumpe-einordnung' => [
+				'title'       => 'Checkfox seriös? Erfahrungen & Kosten für Solar-Betriebe',
+				'description' => 'Ist Checkfox seriös? Unabhängige Einordnung für Solar- & Wärmepumpen-Betriebe: Portal-Mechanik, Kosten-Logik und die Alternative zu gekauften Leads.',
+			],
 		]
 	);
 }
