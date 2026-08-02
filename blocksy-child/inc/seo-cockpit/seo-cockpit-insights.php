@@ -420,6 +420,42 @@ function nexus_get_seo_cockpit_page_context_map( $rows ) {
  */
 function nexus_get_seo_cockpit_post_seo_context( $post_id ) {
 	$post_id = absint( $post_id );
+	$is_front_page = $post_id > 0 && $post_id === absint( get_option( 'page_on_front' ) );
+	$is_posts_page = $post_id > 0 && $post_id === absint( get_option( 'page_for_posts' ) );
+	$is_forced_archive = false;
+	$archive_title     = '';
+	$archive_desc      = '';
+
+	if ( $is_front_page && function_exists( 'hu_get_homepage_title' ) && function_exists( 'hu_get_homepage_description' ) ) {
+		$is_forced_archive = true;
+		$archive_title     = hu_get_homepage_title();
+		$archive_desc      = hu_get_homepage_description();
+	} elseif ( $is_posts_page && function_exists( 'hu_get_blog_archive_title' ) && function_exists( 'hu_get_blog_archive_description' ) ) {
+		$is_forced_archive = true;
+		$archive_title     = hu_get_blog_archive_title();
+		$archive_desc      = hu_get_blog_archive_description();
+	}
+
+	if ( $is_forced_archive ) {
+		$post = get_post( $post_id );
+		if ( ! ( $post instanceof WP_Post ) ) {
+			return [];
+		}
+
+		$robots_context = function_exists( 'hu_get_singular_robots_context' )
+			? hu_get_singular_robots_context( $post_id )
+			: [ 'robots' => 'index, follow', 'noindex' => false ];
+
+		return [
+			'title'              => trim( wp_strip_all_tags( (string) $archive_title ) ),
+			'description'        => trim( wp_strip_all_tags( (string) $archive_desc ) ),
+			'canonical'          => (string) get_permalink( $post_id ),
+			'robots'             => isset( $robots_context['robots'] ) ? (string) $robots_context['robots'] : 'index, follow',
+			'noindex'            => ! empty( $robots_context['noindex'] ),
+			'title_source'       => 'forced',
+			'description_source' => 'forced',
+		];
+	}
 
 	if ( function_exists( 'hu_get_singular_post_seo_context' ) ) {
 		$context = hu_get_singular_post_seo_context( $post_id );

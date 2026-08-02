@@ -20,16 +20,21 @@
 # Belege stammen aus seo-research/2026-07/reports/ (GSC-Exporte). Keine erfundenen
 # Volumina. Neue Zeilen nur mit Quellenangabe eintragen.
 query;owner_path;intent;status;source;distinct_from
-leadgenerierung photovoltaik;/solar-waermepumpen-leadgenerierung/;transactional;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
+leadgenerierung photovoltaik;/solar-waermepumpen-leadgenerierung/;transactional;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte — GSC 28d 2026-07-30: /b2b-solar-leads/ rankt Pos. 46,2 (Owner-Entscheidung offen);
 leadgenerierung waermepumpe;/solar-waermepumpen-leadgenerierung/;transactional;owned;seo-meta.php forced-map;
-photovoltaik leads;/solar-waermepumpen-leadgenerierung/;transactional;owned;keyword-map.md#a-money;photovoltaik leads kaufen
+photovoltaik leads;/solar-waermepumpen-leadgenerierung/;transactional;owned;keyword-map.md#a-money — GSC 28d 2026-07-30: /b2b-solar-leads/ rankt Pos. 50,0 (Owner-Entscheidung offen);photovoltaik leads kaufen
 waermepumpen leads;/waermepumpen-leads/;commercial;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
 waermepumpen leads kaufen;/waermepumpen-leads/;transactional;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
 pv termine b2b;/b2b-solar-leads/;commercial;owned;gsc-verlauf-2026-07-20.md#high-leverage-4;
 b2b photovoltaik;/b2b-solar-leads/;commercial;owned;gsc-verlauf-2026-07-20.md#gesamtbild;
+solar leads;/b2b-solar-leads/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 42,9);solar leads kaufen|solar leads kosten
+pv leads;/b2b-solar-leads/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 47,5);pv leads kaufen
+leads solar;/b2b-solar-leads/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 51,5);solar leads kaufen|solar leads kosten
 solar leads kaufen;/solar-leads-kaufen-alternative/;commercial;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;solar leads kosten
 photovoltaik leads kaufen;/solar-leads-kaufen-alternative/;commercial;owned;seo-meta.php forced-map;
 pv leads kaufen;/solar-leads-kaufen-alternative/;commercial;owned;seo-meta.php forced-map;
+leads kaufen photovoltaik;/solar-leads-kaufen-alternative/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 40,5);photovoltaik leads
+leadgenerator solar;/solar-leads-kaufen-alternative/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 59,0);
 solar leads kosten;/solar-leads-kosten-studie/;informational;owned;seo-meta.php forced-map;
 cost per lead photovoltaik;/cost-per-lead-photovoltaik/;informational;owned;seo-meta.php forced-map;
 portal leads vergleich;/eigene-leadgenerierung-vs-portale/;informational;owned;seo-meta.php forced-map;
@@ -38,12 +43,13 @@ qualifizierte pv anfragen;/qualifizierte-pv-anfragen/;informational;owned;seo-me
 lead funnel solar;/lead-funnel-solar/;informational;owned;seo-meta.php forced-map;
 server side tracking;/server-side-tracking-b2b/;commercial;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
 server side tracking agentur;/server-side-tracking-b2b/;commercial;owned;gsc-verlauf-2026-07-20.md#verlauf;
+server side tracking dsgvo;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 65,2);
 wordpress agentur hannover;/wordpress-agentur-hannover/;local;owned;gsc-verlauf-2026-07-20.md#critical-1;
 checkfox erfahrungen;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-verlauf-2026-07-20.md#high-leverage-3;
 checkfox serioes;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-verlauf-2026-07-20.md#high-leverage-3;
-wattfox;/wattfox-solar-leads-einordnung/;navigational;owned;seo-cockpit 28d 2026-07-26 (Pos. 30,7 — von Pos. 9 abgerutscht);
+wattfox;/wattfox-solar-leads-einordnung/;navigational;owned;blog-provider-posts.php Publish-Seed — GSC 28d 2026-07-30: /solar-leads-kaufen-alternative/ rankt Pos. 30,7 (Owner-Konflikt offen);
 aroundhome;/aroundhome-solar-einordnung/;navigational;owned;seo-cockpit 28d 2026-07-26 + gap-report;
-daa leads;/daa-photovoltaik-leads-einordnung/;commercial;owned;keyword-map.md#b-portal-alternativen;
+daa leads;/daa-photovoltaik-leads-einordnung/;commercial;owned;blog-provider-posts.php Publish-Seed;
 wordpress hannover;/wordpress-agentur-hannover/;local;owned;seo-cockpit 28d 2026-07-26 (Pos. 26,8);wordpress agentur hannover
 pv leads gewerbe;/b2b-solar-leads/;commercial;owned;seo-cockpit 28d 2026-07-26 (23 Impr., Pos. 14,7);
 solar lead generation;/b2b-solar-leads/;commercial;owned;gap-report 2026-07-26 (Pos. 58);

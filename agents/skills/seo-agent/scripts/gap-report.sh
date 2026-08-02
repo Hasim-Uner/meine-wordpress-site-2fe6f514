@@ -95,23 +95,48 @@ for r in read_semicolon_csv(os.environ["EXCLUSIONS"]):
         excluded[fold(r["keyword"])] = r
 
 # --- 3. GSC: was rankt tatsaechlich? -------------------------------------
-gsc_best = {}
+# Pro Zeitraum nur den neuesten Snapshot auswerten. Sonst vermischen sich 7d
+# und 28d sowie historische Exporte, und eine alte Bestposition gewinnt gegen
+# den aktuellen Stand.
+latest_gsc_end = {}
+latest_gsc_rows = defaultdict(list)
 for path in sorted(glob.glob(os.path.join(data_dir, "gsc", "*.csv"))):
     for r in read_semicolon_csv(path):
-        q = fold(r.get("query", ""))
-        if not q:
+        range_days = (r.get("range_days") or "").strip()
+        current_end = (r.get("current_end") or "").strip()
+        if not range_days or not current_end:
             continue
-        try:
-            pos = float((r.get("position") or "0").replace(",", "."))
-            impr = int(r.get("impressions") or 0)
-        except ValueError:
-            continue
-        if pos <= 0:
-            continue
-        url = (r.get("page") or "").replace("https://hasimuener.de", "") or "/"
-        prev = gsc_best.get(q)
-        if prev is None or pos < prev[1]:
-            gsc_best[q] = (url, pos, impr)
+        latest_end = latest_gsc_end.get(range_days, "")
+        if current_end > latest_end:
+            latest_gsc_end[range_days] = current_end
+            latest_gsc_rows[range_days] = [r]
+        elif current_end == latest_end:
+            latest_gsc_rows[range_days].append(r)
+
+status_range_days = "28" if "28" in latest_gsc_rows else ""
+if not status_range_days and latest_gsc_rows:
+    status_range_days = max(latest_gsc_rows, key=lambda value: int(value) if value.isdigit() else 0)
+
+gsc_best = {}
+for r in latest_gsc_rows.get(status_range_days, []):
+    q = fold(r.get("query", ""))
+    if not q:
+        continue
+    try:
+        pos = float((r.get("position") or "0").replace(",", "."))
+        impr = int(r.get("impressions") or 0)
+    except ValueError:
+        continue
+    if pos <= 0:
+        continue
+    try:
+        previous_pos = float((r.get("previous_position") or "0").replace(",", "."))
+    except ValueError:
+        previous_pos = 0
+    url = (r.get("page") or "").replace("https://hasimuener.de", "") or "/"
+    prev = gsc_best.get(q)
+    if prev is None or pos < prev[1] or (pos == prev[1] and impr > prev[2]):
+        gsc_best[q] = (url, pos, impr, previous_pos if previous_pos > 0 else None)
 
 # --- 4. Wettbewerber ------------------------------------------------------
 comp_best = defaultdict(list)
@@ -130,6 +155,19 @@ for path in sorted(glob.glob(os.path.join(data_dir, "comp-*.json"))):
 # --- 5. Status je Keyword -------------------------------------------------
 owned_tok = [(toks(q), p) for q, p in owned.items()]
 rows = []
+
+
+def fmt_position(value):
+    return ("%.1f" % value).replace(".", ",")
+
+
+def fmt_ranking(pos, previous_pos):
+    current = "Pos. %s" % fmt_position(pos)
+    if previous_pos is None:
+        return current
+    return "%s; vorher Pos. %s" % (current, fmt_position(previous_pos))
+
+
 for kw in keywords:
     q = fold(kw["keyword"])
     if q in excluded:
@@ -137,15 +175,17 @@ for kw in keywords:
     elif q in owned:
         status, detail = "BESTEHT", owned[q]
         if q in gsc_best:
-            u, pos, impr = gsc_best[q]
-            detail = "%s (rankt Pos. %.0f, %d Impr.)" % (owned[q], pos, impr)
+            u, pos, impr, previous_pos = gsc_best[q]
+            ranking = fmt_ranking(pos, previous_pos)
+            detail = "%s (rankt %s, %d Impr.)" % (owned[q], ranking, impr)
             if u.rstrip("/") != owned[q].rstrip("/"):
                 status = "OWNER-KONFLIKT"
-                detail = "Registry: %s — rankt aber %s (Pos. %.0f)" % (owned[q], u, pos)
+                detail = "Registry: %s — rankt aber %s (%s)" % (owned[q], u, ranking)
     elif q in gsc_best:
-        u, pos, impr = gsc_best[q]
+        u, pos, impr, previous_pos = gsc_best[q]
         status = "REGISTRY-LUECKE"
-        detail = "rankt bereits %s (Pos. %.0f, %d Impr.), fehlt in query-ownership.csv" % (u, pos, impr)
+        detail = "rankt bereits %s (%s, %d Impr.), fehlt in query-ownership.csv" % (
+            u, fmt_ranking(pos, previous_pos), impr)
     else:
         near = [(len(toks(kw["keyword"]) & t) / len(toks(kw["keyword"]) | t), p)
                 for t, p in owned_tok if t and toks(kw["keyword"])]
@@ -181,6 +221,9 @@ out = []
 if fmt == "md":
     out.append("# Gap-Report %s\n" % period)
     out.append("Erzeugt aus `%s`. Keine API-Aufrufe, keine geschaetzten Werte.\n" % os.path.relpath(data_dir))
+    if status_range_days:
+        out.append("GSC-Status: %s Tage, neuester Snapshot bis `%s`.\n" % (
+            status_range_days, latest_gsc_end[status_range_days]))
     out.append("| Status | Anzahl |\n| --- | ---: |")
     for s in ORDER:
         if counts[s]:
@@ -189,6 +232,9 @@ if fmt == "md":
 else:
     out.append("=== Gap-Report %s ===\n" % period)
     out.append("Datenbasis: %s" % os.path.relpath(data_dir))
+    if status_range_days:
+        out.append("GSC-Status: %s Tage, neuester Snapshot bis %s" % (
+            status_range_days, latest_gsc_end[status_range_days]))
     out.append("Keywords: %d | " % len(rows) + " | ".join("%s %d" % (s, counts[s]) for s in ORDER if counts[s]))
     out.append("")
 
