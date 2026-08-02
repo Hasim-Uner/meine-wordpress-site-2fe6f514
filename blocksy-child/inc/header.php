@@ -267,6 +267,127 @@ function nexus_strip_side_funnel_nav_items( $items, $args ) {
 add_filter( 'wp_nav_menu_objects', 'nexus_strip_side_funnel_nav_items', 10, 2 );
 
 /**
+ * Repair legacy primary-menu placeholders and dirty editor URLs at render time.
+ *
+ * Group headings remain visible as non-interactive labels. Ambiguous leaf items
+ * without a reliable destination are removed, while known legacy page IDs are
+ * normalized to the canonical public route map.
+ *
+ * @param array           $items Sorted menu item objects.
+ * @param stdClass|string $args  Menu arguments.
+ * @return array
+ */
+function nexus_repair_primary_header_menu_items( $items, $args ) {
+	if ( is_admin() || ! nexus_is_primary_header_menu_args( $args ) ) {
+		return $items;
+	}
+
+	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+	$group_labels = [ 'Leistungen', 'Build & Care', 'Sichtbarkeit (SEO)', 'Ressourcen' ];
+	$remove_items = [ 'Performance', 'Tracking & CRO' ];
+	$clean_urls   = [
+		'13035' => $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' ),
+		'14283' => $primary_urls['results'] ?? home_url( '/ergebnisse/' ),
+	];
+	$filtered_items = [];
+
+	foreach ( $items as $item ) {
+		$title      = isset( $item->title ) ? trim( wp_strip_all_tags( (string) $item->title ) ) : '';
+		$item_url   = isset( $item->url ) ? trim( (string) $item->url ) : '';
+		$item_query = (string) wp_parse_url( $item_url, PHP_URL_QUERY );
+		$query_args = [];
+		wp_parse_str( $item_query, $query_args );
+		$legacy_id = isset( $query_args['page_id'] ) ? (string) absint( $query_args['page_id'] ) : '';
+
+		if ( in_array( $title, $remove_items, true ) ) {
+			continue;
+		}
+
+		if ( 'WordPress SEO' === $title || '13035' === $legacy_id ) {
+			$item->url = $clean_urls['13035'];
+		}
+
+		if ( 'E-Commerce Growth' === $title || '14283' === $legacy_id ) {
+			$item->url = $clean_urls['14283'];
+		}
+
+		if ( in_array( $title, $group_labels, true ) ) {
+			$item->url = '';
+			$item->classes = isset( $item->classes ) && is_array( $item->classes ) ? $item->classes : [];
+			$item->classes[] = 'nx-menu-label-item';
+		}
+
+		$filtered_items[] = $item;
+	}
+
+	return $filtered_items;
+}
+add_filter( 'wp_nav_menu_objects', 'nexus_repair_primary_header_menu_items', 15, 2 );
+
+/**
+ * Render primary-menu group headings without a fake link destination.
+ *
+ * @param string   $item_output Existing walker output.
+ * @param WP_Post  $menu_item   Menu item object.
+ * @param int      $depth       Menu depth.
+ * @param stdClass $args        Menu arguments.
+ * @return string
+ */
+function nexus_render_primary_header_menu_label( $item_output, $menu_item, $depth, $args ) {
+	if ( ! nexus_is_primary_header_menu_args( $args ) ) {
+		return $item_output;
+	}
+
+	$item_classes = isset( $menu_item->classes ) && is_array( $menu_item->classes ) ? $menu_item->classes : [];
+	if ( ! in_array( 'nx-menu-label-item', $item_classes, true ) ) {
+		return $item_output;
+	}
+
+	$before = isset( $args->before ) ? (string) $args->before : '';
+	$after  = isset( $args->after ) ? (string) $args->after : '';
+	$label  = isset( $menu_item->title ) ? wp_strip_all_tags( (string) $menu_item->title ) : '';
+
+	return $before . '<span class="nx-site-header__menu-label">' . esc_html( $label ) . '</span>' . $after;
+}
+add_filter( 'walker_nav_menu_start_el', 'nexus_render_primary_header_menu_label', 10, 4 );
+
+/**
+ * Redirect the two legacy menu page-ID URLs to their canonical public routes.
+ *
+ * @return void
+ */
+function nexus_redirect_legacy_menu_page_ids() {
+	if ( is_admin() || ! isset( $_GET['page_id'] ) ) {
+		return;
+	}
+	if ( ! is_scalar( $_GET['page_id'] ) ) {
+		return;
+	}
+
+	$page_id = absint( wp_unslash( $_GET['page_id'] ) );
+	if ( ! in_array( $page_id, [ 13035, 14283 ], true ) ) {
+		return;
+	}
+
+	$request_uri  = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+	$request_path = (string) wp_parse_url( $request_uri, PHP_URL_PATH );
+	$home_path    = (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH );
+	if ( untrailingslashit( $request_path ) !== untrailingslashit( $home_path ) ) {
+		return;
+	}
+
+	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+	$redirects    = [
+		13035 => $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' ),
+		14283 => $primary_urls['results'] ?? home_url( '/ergebnisse/' ),
+	];
+
+	wp_safe_redirect( $redirects[ $page_id ], 301, 'Nexus Legacy Menu Permalink' );
+	exit;
+}
+add_action( 'template_redirect', 'nexus_redirect_legacy_menu_page_ids', 1 );
+
+/**
  * Swap legacy nav CTAs to the current analysis entry when a WordPress menu is assigned.
  *
  * @param array           $items Sorted menu item objects.
