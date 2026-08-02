@@ -169,7 +169,7 @@ $calc_eur = static function ( $value ) {
 	return number_format( (float) $value, 0, ',', '.' ) . ' €';
 };
 
-// 06 / Fit-Check (passt / passt nicht) ─────────────────────────
+// 07 / Fit-Check (passt / passt nicht) ─────────────────────────
 $fit_yes = [
 	[ 't' => 'Solar, Wärmepumpe oder Speicher',     's' => 'Projektwert, Marge und Vertriebsfähigkeit stimmen.' ],
 	[ 't' => 'Eigener Vertrieb',                    's' => 'Ihr Team verkauft selbst — oder die Geschäftsführung übernimmt den Abschluss.' ],
@@ -186,7 +186,7 @@ $fit_no = [
 	[ 't' => 'Kein sauberer Daten- und Anfrageweg gewollt', 's' => 'Ohne Tracking, Vorqualifizierung und klare Zuständigkeit bleibt auch ein eigenes System blind.' ],
 ];
 
-// 07 / Risiko-Umkehr ───────────────────────────────────────────
+// 08 / Risiko-Umkehr ───────────────────────────────────────────
 $guarantee_points = [
 	[
 		'e' => 'Befund',
@@ -211,6 +211,7 @@ $section_nav = [
 	[ 'h' => '#vergleich',  'l' => 'Vergleich' ],
 	[ 'h' => '#system',     'l' => 'System' ],
 	[ 'h' => '#capex',      'l' => 'Rechnung' ],
+	[ 'h' => '#einstieg',   'l' => 'Einstieg' ],
 	[ 'h' => '#ergebnisse', 'l' => 'Referenz' ],
 	[ 'h' => '#fit',        'l' => 'Passt es?' ],
 	[ 'h' => '#deeper',     'l' => 'Vertiefung' ],
@@ -261,7 +262,11 @@ $faq_items = [
 	],
 	[
 		'question' => 'Was kostet das im Vergleich zur Performance-Agentur?',
-		'answer'   => 'Initiales Setup: 12.000–18.000 € einmalig. Laufend ca. 50 €/Monat für Hochleistungs-Hosting. TCO über 24 Monate: 13.200–19.200 € — und Sie besitzen Code, Tracking und Daten. Ein vergleichbares Agentur-Mietmodell kostet im gleichen Zeitraum rund 26.000 € — und Sie besitzen am Ende nichts. Bilanziell: CAPEX statt OPEX.',
+		'answer'   => 'Initiales Setup: 12.000–18.000 € einmalig. Laufend ca. 50 €/Monat für Hochleistungs-Hosting. TCO über 24 Monate: 13.200–19.200 € — und Sie besitzen Code, Tracking und Daten. Ein vergleichbares Agentur-Mietmodell kostet im gleichen Zeitraum rund 26.000 € — und Sie besitzen am Ende nichts. Bilanziell: CAPEX statt OPEX. Wenn das zu groß gedacht ist: Der Einstieg über das Sofortkontakt-Setup liegt bei 790 € netto und ist in fünf Werktagen eingerichtet.',
+	],
+	[
+		'question' => 'Gibt es einen kleineren Einstieg als das volle System?',
+		'answer'   => 'Ja. Das Sofortkontakt-Setup für 790 € netto richtet Sofort-Alarm, automatische Eingangsbestätigung und eine Anfragen-Übersicht nach Quelle ein — auch für Leads, die Sie bereits bei Portalen kaufen. In fünf Werktagen fertig, ohne zusätzliches Werbebudget. Danach haben Sie eigene Zahlen zur Hand und können in Ruhe entscheiden, ob ein eigenes System sich rechnet.',
 	],
 	[
 		'question' => 'Welche Daten brauchen Sie für die Diagnose?',
@@ -585,7 +590,7 @@ get_header();
 							</p>
 							<ul class="sol-cta-bullets sol-mono" aria-label="Was Sie nach dem Marktcheck erhalten">
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Keine Zahlungsdaten, kein Abo, keine Verpflichtung</li>
-								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Regions-Verfügbarkeitsprüfung über Ihre Firmen-PLZ</li>
+								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Einordnung Ihres Marktumfelds anhand der Firmen-PLZ</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Manuelle Erst-Analyse statt automatisierter Tool-Bericht</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Befund in 48 h per E-Mail · kein Pflicht-Call</li>
 							</ul>
@@ -613,8 +618,7 @@ get_header();
 		<!-- ════════════════════════════════════════════════════════════
 		     ANFRAGE-SYSTEM-KETTE — Anzeige → Landingpage → Qualifizierung → CRM
 		     Inline-SVG in zwei Layout-Varianten (CSS-Breakpoint 820px),
-		     baut sich beim Scroll-Eintritt stufenweise auf; Zähler am
-		     CRM-Ende läuft von CPL-vorher auf CPL-nachher (E3-Canon).
+		     baut sich beim Scroll-Eintritt stufenweise auf.
 		     SSR zeigt den Endzustand — ohne JS/bei Reduced Motion statisch.
 		     ════════════════════════════════════════════════════════════ -->
 		<?php
@@ -632,13 +636,11 @@ get_header();
 			id="anfrage-system"
 			aria-label="Das Anfrage-System im Überblick"
 			data-track-section="request_chain"
-			data-count-from="<?php echo (int) $e3_cpl_before_val; ?>"
-			data-count-to="<?php echo (int) $e3_cpl_after_val; ?>"
 		>
 			<div class="hu-container">
 				<span class="hu-eyebrow">Das Anfrage-System · von der Anzeige bis ins CRM</span>
 				<figure class="sol-chain-fig">
-					<svg class="sol-chain-svg sol-chain-svg--d" viewBox="0 0 760 248" aria-hidden="true" focusable="false">
+					<svg class="sol-chain-svg sol-chain-svg--d" viewBox="0 0 760 150" aria-hidden="true" focusable="false">
 						<?php foreach ( $chain_stages as $ci => $stage ) : $cx = $chain_cx[ $ci ]; ?>
 							<g class="sol-chain-node<?php echo 3 === $ci ? ' sol-chain-node--final' : ''; ?>" style="--sol-d:<?php echo esc_attr( (string) ( $ci * 0.35 ) ); ?>s">
 								<rect class="sol-chain-rect" x="<?php echo (int) ( $cx - 75 ); ?>" y="30" width="150" height="78" rx="13" />
@@ -651,14 +653,8 @@ get_header();
 									x1="<?php echo (int) ( $cx + 81 ); ?>" y1="69" x2="<?php echo (int) ( $chain_cx[ $ci + 1 ] - 81 ); ?>" y2="69" />
 							<?php endif; ?>
 						<?php endforeach; ?>
-						<line class="sol-chain-line" pathLength="1" style="--sol-d:1.13s" x1="665" y1="140" x2="665" y2="176" />
-						<g class="sol-chain-node" style="--sol-d:1.3s">
-							<text class="sol-chain-count" x="665" y="206" text-anchor="middle"><?php echo esc_html( $e3_cpl_after ); ?></text>
-							<text class="sol-chain-count-lbl" x="665" y="226" text-anchor="middle">pro qualifizierter Anfrage</text>
-							<text class="sol-chain-count-lbl" x="665" y="242" text-anchor="middle">vorher <?php echo esc_html( $e3_cpl_before ); ?></text>
-						</g>
 					</svg>
-					<svg class="sol-chain-svg sol-chain-svg--m" viewBox="0 0 340 644" aria-hidden="true" focusable="false">
+					<svg class="sol-chain-svg sol-chain-svg--m" viewBox="0 0 340 550" aria-hidden="true" focusable="false">
 						<?php foreach ( $chain_stages as $ci => $stage ) : $my = $chain_my[ $ci ]; ?>
 							<g class="sol-chain-node<?php echo 3 === $ci ? ' sol-chain-node--final' : ''; ?>" style="--sol-d:<?php echo esc_attr( (string) ( $ci * 0.35 ) ); ?>s">
 								<rect class="sol-chain-rect" x="45" y="<?php echo (int) $my; ?>" width="250" height="84" rx="13" />
@@ -671,17 +667,9 @@ get_header();
 									x1="170" y1="<?php echo (int) ( $my + 92 ); ?>" x2="170" y2="<?php echo (int) ( $chain_my[ $ci + 1 ] - 8 ); ?>" />
 							<?php endif; ?>
 						<?php endforeach; ?>
-						<line class="sol-chain-line" pathLength="1" style="--sol-d:1.13s" x1="170" y1="542" x2="170" y2="562" />
-						<g class="sol-chain-node" style="--sol-d:1.3s">
-							<text class="sol-chain-count" x="170" y="596" text-anchor="middle"><?php echo esc_html( $e3_cpl_after ); ?></text>
-							<text class="sol-chain-count-lbl" x="170" y="614" text-anchor="middle">pro qualifizierter Anfrage</text>
-							<text class="sol-chain-count-lbl" x="170" y="630" text-anchor="middle">vorher <?php echo esc_html( $e3_cpl_before ); ?></text>
-						</g>
 					</svg>
 					<figcaption class="sol-sr">
 						Das Anfrage-System in vier Stufen: Anzeige, Landingpage, Qualifizierung, CRM.
-						Kosten pro qualifizierter Anfrage in der dokumentierten Fallstudie:
-						von <?php echo esc_html( $e3_cpl_before ); ?> auf <?php echo esc_html( $e3_cpl_after ); ?> in <?php echo esc_html( $e3_timeframe_dative ); ?>.
 					</figcaption>
 				</figure>
 			</div>
@@ -709,25 +697,10 @@ get_header();
 		<section class="sol-proofbar" aria-label="Belegte Ergebnisse aus dem <?php echo esc_attr( $e3_case_label ); ?>-Case" data-track-section="proof_bar">
 			<div class="hu-container" data-sol-reveal>
 				<div class="sol-proofbar-inner">
-					<span class="sol-proofbar-eyebrow sol-mono">Belegt · <?php echo esc_html( $e3_case_label ); ?></span>
-					<ul class="sol-proofbar-stats">
-						<li>
-							<span class="sol-proofbar-num"><?php echo esc_html( $e3_cpl_before ); ?> → <span class="sol-proofbar-num-accent"><?php echo esc_html( $e3_cpl_after ); ?></span></span>
-							<span class="sol-proofbar-lbl">CPL pro Anfrage</span>
-						</li>
-						<li>
-							<span class="sol-proofbar-num"><?php echo esc_html( $e3_lead_count ); ?></span>
-							<span class="sol-proofbar-lbl">Qualifizierte Anfragen</span>
-						</li>
-						<li>
-							<span class="sol-proofbar-num"><?php echo esc_html( $e3_sales_conversion ); ?></span>
-							<span class="sol-proofbar-lbl">Abschluss · Anfrage → Vertrag</span>
-						</li>
-						<li>
-							<span class="sol-proofbar-num sol-proofbar-num-accent"><?php echo esc_html( $e3_cpl_reduction ); ?></span>
-							<span class="sol-proofbar-lbl">Weniger Kosten pro Anfrage</span>
-						</li>
-					</ul>
+					<p class="sol-proofbar-summary sol-mono">
+						<strong>Belegt · <?php echo esc_html( $e3_case_label ); ?></strong>
+						<span>Dokumentierter Vorher-/Nachher-Vergleich über <?php echo esc_html( $e3_timeframe ); ?></span>
+					</p>
 					<a class="sol-proofbar-link sol-mono" href="#ergebnisse"
 						data-track-action="cta_solar_proofbar_to_results"
 						data-track-category="proof"
@@ -1047,18 +1020,63 @@ get_header();
 						<span>Marktcheck starten</span>
 						<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</a>
-					<div class="sol-section-cta-micro sol-mono">Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln</div>
+					<div class="sol-section-cta-micro sol-mono">Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln · Befund in 48 h</div>
 				</div>
 			</div>
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     05 / SOLAR CASE STUDY — Vorher/Nachher + Stats (Ink)
+		     05 / KLEINER EINSTIEG — Sofortkontakt-Setup (Creme)
+		     ════════════════════════════════════════════════════════════ -->
+		<section class="hu-section hu-section--cream sol-entry" id="einstieg" aria-labelledby="sol-entry-title" data-track-section="entry_offer">
+			<div class="hu-container" data-sol-reveal>
+				<div class="hu-section-head sol-entry-head">
+					<span class="hu-eyebrow">05 / Kleiner Einstieg</span>
+					<div>
+						<h2 id="sol-entry-title">Wer zuerst zurückruft, bekommt den Termin.</h2>
+						<p class="hu-lead">Nicht jeder Betrieb braucht sofort ein ganzes System. Der schnellste Hebel liegt meistens vor der Anfrage-Menge: bei der Zeit zwischen Anfrage und erstem Kontakt. Eine Anfrage, die vier Stunden liegen bleibt, ist praktisch verloren — bei geteilten Portal-Leads sowieso, weil drei Betriebe dieselbe Anfrage haben.</p>
+					</div>
+				</div>
+
+				<div class="sol-entry-panel">
+					<p class="sol-entry-price">
+						<strong>Sofortkontakt-Setup — 790 € netto</strong>
+						<span>Fertig eingerichtet in fünf Werktagen. Kein Werbebudget nötig, keine Mindestlaufzeit, kein CRM-Wechsel.</span>
+					</p>
+
+					<h3>Was eingerichtet wird</h3>
+					<ul class="sol-entry-list">
+						<li><strong>Sofort-Alarm bei jeder neuen Anfrage.</strong> In unter 60 Sekunden per SMS oder WhatsApp an den zuständigen Vertriebler — mit Ort, Projektart und Uhrzeit direkt in der Nachricht. Nicht als Mail, die im Postfach untergeht.</li>
+						<li><strong>Automatische Eingangsbestätigung</strong> an den Interessenten, mit direktem Terminbuchungslink. Ihr Betrieb ist der Erste, der zurückmeldet — auch abends, auch am Wochenende.</li>
+						<li><strong>Alle Anfragen an einem Ort, nach Quelle getrennt.</strong> Portal, Website, Google, Empfehlung — in einer Übersicht, die Sie morgens aufmachen und sofort verstehen.</li>
+					</ul>
+
+					<p><strong>Auch Ihre gekauften Leads laufen mit durch.</strong> Aroundhome, DAA und Wattfox liefern per E-Mail — die werden mit ausgelesen und genauso schnell weitergereicht. Sie holen ab dem ersten Tag mehr aus dem Budget, das Sie ohnehin schon ausgeben.</p>
+					<p>Nach rund 60 Tagen wissen Sie mit Ihren eigenen Zahlen, was ein gekaufter Lead Sie pro gewonnenem Auftrag wirklich kostet. Ob danach ein eigenes System sinnvoll ist, entscheiden Sie auf dieser Grundlage — nicht auf meiner Behauptung.</p>
+					<p class="sol-entry-qualifier"><em>Nicht sinnvoll, wenn bei Ihnen aktuell kaum Anfragen eingehen. Dann gibt es nichts zu beschleunigen, und wir reden über die Quelle statt über die Reaktion.</em></p>
+
+					<div class="sol-section-cta">
+						<a class="hu-btn hu-btn-primary" href="#marktcheck"
+							data-track-action="cta_solar_entry_to_intake"
+							data-track-category="lead_gen"
+							data-track-section="entry_offer"
+							data-track-funnel-stage="intake_open"
+						>
+							<span>Sofortkontakt-Setup anfragen</span>
+							<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ════════════════════════════════════════════════════════════
+		     06 / SOLAR CASE STUDY — Vorher/Nachher + Stats (Ink)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="ergebnisse" data-track-section="results">
 			<div class="hu-container" data-sol-reveal>
 				<div class="hu-proof-headline">
-					<span class="hu-eyebrow">05 / <?php echo esc_html( $e3_case_label ); ?></span>
+					<span class="hu-eyebrow">06 / <?php echo esc_html( $e3_case_label ); ?></span>
 					<h2>Vorher. Nachher. Beziffert.</h2>
 					<p><?php echo esc_html( $e3_timeframe ); ?> eigener Anfrageweg — Methodik-Snapshot statt Referenz-Logo-Wand.</p>
 				</div>
@@ -1122,12 +1140,12 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     06 / WANN ES PASST — ehrliche Vorauswahl (Creme)
+		     07 / WANN ES PASST — ehrliche Vorauswahl (Creme)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section hu-section--cream" id="fit" data-track-section="fit_check">
 			<div class="hu-container" data-sol-reveal>
 				<div class="hu-section-head">
-					<span class="hu-eyebrow">06 / Wann es passt</span>
+					<span class="hu-eyebrow">07 / Wann es passt</span>
 					<div>
 						<h2>Lieber jetzt klären, ob es passt.</h2>
 						<p class="hu-lead">Als später ein Setup zu bauen, das ins Leere läuft. Ehrliche Vorauswahl, bevor wir reden.</p>
@@ -1183,18 +1201,18 @@ get_header();
 							<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</a>
 					</div>
-					<div class="sol-section-cta-micro sol-mono">Regions-Verfügbarkeitsprüfung · Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln</div>
+					<div class="sol-section-cta-micro sol-mono">Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln · Befund in 48 h</div>
 				</div>
 			</div>
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     07 / RISIKO-UMKEHR (Ink)
+		     08 / RISIKO-UMKEHR (Ink)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="garantie" data-track-section="guarantee">
 			<div class="hu-container" data-sol-reveal>
 				<div class="hu-section-head">
-					<span class="hu-eyebrow">07 / Risiko-Umkehr</span>
+					<span class="hu-eyebrow">08 / Risiko-Umkehr</span>
 					<div>
 						<h2>Diagnose vor Pitch.</h2>
 						<p class="hu-lead">Der Marktcheck ist kein Verkaufsritual — er ist eine ehrliche Ersteinschätzung. Auch dann, wenn sie heißt: nicht mit mir.</p>
@@ -1213,12 +1231,12 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     08 / VERTIEFUNG — Themen-Hub für SEO-Sub-Pages (Ink)
+		     09 / VERTIEFUNG — Themen-Hub für SEO-Sub-Pages (Ink)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="deeper" data-track-section="deeper">
 			<div class="hu-container" data-sol-reveal>
 				<div class="hu-section-head">
-					<span class="hu-eyebrow">08 / Vertiefung</span>
+					<span class="hu-eyebrow">09 / Vertiefung</span>
 					<div>
 						<h2>Wenn Sie tiefer einsteigen wollen.</h2>
 						<p class="hu-lead">Acht Vertiefungs-Seiten zu Strategie, Lead-Qualität, Funnel-Architektur und Markteinordnung — jede kann unabhängig gelesen werden, alle führen zurück zum Marktcheck.</p>
@@ -1249,12 +1267,12 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     09 / FAQ (Ink)
+		     10 / FAQ (Ink)
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="faq" data-track-section="faq">
 			<div class="hu-container sol-faq-inner" data-sol-reveal>
 				<div class="sol-faq-left">
-					<span class="hu-eyebrow">09 / FAQ</span>
+					<span class="hu-eyebrow">10 / FAQ</span>
 					<h2 class="sol-faq-h">Bevor Sie fragen.</h2>
 					<p class="sol-faq-sub">
 						Was hier nicht beantwortet wird, klären wir im Marktcheck — strukturiert, schriftlich, ohne Verkaufsgespräch.
@@ -1298,7 +1316,7 @@ get_header();
 					<p>
 						Ich arbeite 1:1 mit Solar- und SHK-Betrieben, damit jede Region in Diagnose, Daten-Pipeline und
 						Vertriebsanschluss persönlich abgebildet werden kann. Der Marktcheck entscheidet, ob die Architektur
-						zu Ihrer Region passt — und sagt auch ab, wenn sie es nicht tut.
+						zu Ihrem Betrieb passt — und sagt auch ab, wenn sie es nicht tut.
 					</p>
 					<ul class="sol-cta-facts">
 						<li>Einstieg: Marktcheck · Fit-Befund statt Verkaufsgespräch</li>
@@ -1317,7 +1335,7 @@ get_header();
 						<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</a>
 					<div class="hu-final-cta__signature">
-						Befund in 48 h · <strong>kein Pflicht-Call</strong> · keine Zahlungsdaten · Regions-Verfügbarkeitsprüfung inklusive
+						Befund in 48 h · <strong>kein Pflicht-Call</strong> · keine Zahlungsdaten · Einordnung des Marktumfelds anhand der Firmen-PLZ inklusive
 					</div>
 				</div>
 			</div>

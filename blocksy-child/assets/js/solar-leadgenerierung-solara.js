@@ -836,7 +836,7 @@
 
     var chainPending = false;
     if (chain) {
-      if (chain.getBoundingClientRect().top < vh * 0.88) startChain(chain, false);
+      if (chain.getBoundingClientRect().top < vh * 0.88) startChain(chain);
       else chainPending = true;
     }
 
@@ -848,7 +848,7 @@
         entries.forEach(function (entry) {
           if (!entry.isIntersecting) return;
           io.unobserve(entry.target);
-          if (entry.target === chain) startChain(chain, true);
+          if (entry.target === chain) startChain(chain);
           else entry.target.classList.add('is-in');
         });
       }, { rootMargin: '0px 0px -12% 0px' });
@@ -859,39 +859,9 @@
     }
   }
 
-  /* Startet den Ketten-Aufbau (CSS übernimmt die Stagger-Delays) und
-     zählt den CPL-Wert am CRM-Ende von Canon-vorher auf Canon-nachher
-     herunter. SSR-Text ist der Endzustand und wird am Schluss exakt
-     wiederhergestellt. */
-  function startChain(chain, viaScroll) {
+  /* Startet den Ketten-Aufbau; CSS übernimmt die Stagger-Delays. */
+  function startChain(chain) {
     chain.classList.add('is-live');
-    var from = parseInt(chain.getAttribute('data-count-from'), 10);
-    var to = parseInt(chain.getAttribute('data-count-to'), 10);
-    var nodes = chain.querySelectorAll('.sol-chain-count');
-    if (!nodes.length || !isFinite(from) || !isFinite(to) || from <= to) return;
-    if (typeof window.requestAnimationFrame !== 'function') return;
-
-    var originals = [];
-    var i;
-    for (i = 0; i < nodes.length; i++) originals.push(nodes[i].textContent);
-    for (i = 0; i < nodes.length; i++) nodes[i].textContent = from + ' €';
-
-    var duration = 1200;
-    var t0 = null;
-    function tick(now) {
-      if (t0 === null) t0 = now;
-      var p = Math.min(1, (now - t0) / duration);
-      var eased = 1 - Math.pow(1 - p, 3);
-      var j;
-      if (p < 1) {
-        var val = Math.round(from + (to - from) * eased);
-        for (j = 0; j < nodes.length; j++) nodes[j].textContent = val + ' €';
-        window.requestAnimationFrame(tick);
-      } else {
-        for (j = 0; j < nodes.length; j++) nodes[j].textContent = originals[j];
-      }
-    }
-    window.setTimeout(function () { window.requestAnimationFrame(tick); }, viaScroll ? 1500 : 300);
   }
 
   function setupFaq() {
