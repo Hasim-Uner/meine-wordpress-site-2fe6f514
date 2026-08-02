@@ -65,6 +65,11 @@ function nexus_render_site_header() {
 		return;
 	}
 
+	// Die Solar-Money-Page nutzt ihre eigene sticky Sprungnavigation.
+	if ( function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context() ) {
+		return;
+	}
+
 	if ( function_exists( 'hu_is_energy_demo_request_path' ) && hu_is_energy_demo_request_path() ) {
 		return;
 	}
