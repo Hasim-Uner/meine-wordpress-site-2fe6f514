@@ -670,6 +670,10 @@
 }
 
 .hu-checkfox__final {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(210px, 280px);
+	gap: clamp(30px, 5vw, 58px);
+	align-items: center;
 	margin-bottom: 60px;
 	padding-inline: clamp(22px, 5vw, 56px);
 	border: 1px solid rgba(221, 150, 104, 0.46);
@@ -679,7 +683,11 @@
 		var(--checkfox-surface);
 }
 
-.hu-checkfox__final > p:not(.hu-checkfox__eyebrow) {
+.hu-checkfox__final-copy {
+	min-width: 0;
+}
+
+.hu-checkfox__final-copy > p:not(.hu-checkfox__eyebrow) {
 	max-width: 68ch;
 	color: var(--checkfox-muted);
 }
@@ -705,6 +713,23 @@
 
 .hu-checkfox__deeper a:hover {
 	color: var(--checkfox-copper-light);
+}
+
+.hu-checkfox__final-portrait {
+	width: min(100%, 280px);
+	padding: 8px;
+	justify-self: end;
+	border: 1px solid rgba(221, 150, 104, 0.48);
+	border-radius: 50%;
+	background: rgba(8, 11, 13, 0.72);
+	box-shadow: 0 24px 54px rgba(0, 0, 0, 0.32);
+}
+
+.hu-checkfox__final-portrait img {
+	display: block;
+	width: 100%;
+	height: auto;
+	border-radius: 50%;
 }
 
 .hu-checkfox + .nexus-author-bio {
@@ -784,6 +809,15 @@
 
 	.hu-cpo-calculator__portal-results {
 		grid-template-columns: 1fr;
+	}
+
+	.hu-checkfox__final {
+		grid-template-columns: 1fr;
+	}
+
+	.hu-checkfox__final-portrait {
+		width: min(72vw, 240px);
+		justify-self: center;
 	}
 
 }
