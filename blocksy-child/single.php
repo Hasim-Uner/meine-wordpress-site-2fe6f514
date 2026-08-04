@@ -43,6 +43,7 @@ get_template_part( 'template-parts/blog-header' );
 			$article_summary = wp_trim_words( wp_strip_all_tags( get_the_content() ), 30, '...' );
 		}
 		$reading_time = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time() : 0;
+		$is_checkfox_decision = is_single( 'checkfox-solar-waermepumpe-einordnung' );
 		$primary_urls    = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 		$audit_url       = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 		$energy_url      = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
@@ -249,6 +250,10 @@ get_template_part( 'template-parts/blog-header' );
 
 		$article_next_links = $deduped_next_links;
 		?>
+
+		<?php if ( $is_checkfox_decision ) : ?>
+			<?php get_template_part( 'template-parts/checkfox-decision-cockpit' ); ?>
+		<?php else : ?>
 
 		<header class="nexus-article-hero nexus-article-hero--editorial" data-track-section="article_hero" aria-labelledby="nexus-article-title">
 			<div class="nexus-hero-content">
@@ -468,13 +473,16 @@ get_template_part( 'template-parts/blog-header' );
 		<?php endif; ?>
 
 		<?php get_template_part( 'template-parts/blog-notify', null, [ 'variant' => 'full' ] ); ?>
+		<?php endif; ?>
 
-		<?php if ( is_singular( 'post' ) ) : ?>
+		<?php if ( is_singular( 'post' ) && ! $is_checkfox_decision ) : ?>
 		<div class="nexus-bottom-share" data-track-section="article_share">
 			<h3><?php esc_html_e( 'Diesen Artikel teilen', 'blocksy-child' ); ?></h3>
 			<?php if ( function_exists( 'nexus_render_share_buttons' ) ) { nexus_render_share_buttons(); } ?>
 		</div>
+		<?php endif; ?>
 
+		<?php if ( is_singular( 'post' ) ) : ?>
 		<?php
 		$author_id          = get_the_author_meta( 'ID' );
 		$canonical_author   = function_exists( 'hu_get_canonical_author_person' ) ? hu_get_canonical_author_person() : [];
@@ -533,6 +541,7 @@ get_template_part( 'template-parts/blog-header' );
 				<p class="nexus-author-bio__role"><?php echo esc_html( $author_role ); ?></p>
 				<p class="nexus-author-bio__text"><?php echo esc_html( $author_description_text ); ?></p>
 				<div class="nexus-author-bio__links">
+					<?php if ( ! $is_checkfox_decision ) : ?>
 					<a
 						href="<?php echo esc_url( $audit_url ); ?>"
 						class="nexus-author-bio__link"
@@ -542,6 +551,7 @@ get_template_part( 'template-parts/blog-header' );
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 						<?php esc_html_e( 'Marktcheck starten', 'blocksy-child' ); ?>
 					</a>
+					<?php endif; ?>
 					<?php $about_url = function_exists( 'nexus_get_page_url' ) ? nexus_get_page_url( [ 'uber-mich', 'ueber-mich', 'ueber-hasim' ], home_url( '/uber-mich/' ) ) : home_url( '/uber-mich/' ); ?>
 					<a
 						href="<?php echo esc_url( $about_url ); ?>"
@@ -568,6 +578,7 @@ get_template_part( 'template-parts/blog-header' );
 		</section>
 		<?php endif; ?>
 
+		<?php if ( ! $is_checkfox_decision ) : ?>
 		<?php
 		// Related Content (gleiche Kategorie)
 		set_query_var( 'related_heading', __( 'Das könnte Sie auch interessieren', 'blocksy-child' ) );
@@ -577,6 +588,7 @@ get_template_part( 'template-parts/blog-header' );
 		?>
 
 		<?php get_template_part( 'template-parts/footer-cta' ); ?>
+		<?php endif; ?>
 
 	<?php endwhile; ?>
 
