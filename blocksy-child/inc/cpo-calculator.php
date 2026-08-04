@@ -40,7 +40,7 @@ function hu_render_portal_cpo_calculator() {
 	$orders          = $defaults['leads'] * ( $defaults['close_rate'] / 100 );
 	$sales_hours     = $defaults['leads'] * ( $defaults['sales_minutes'] / 60 );
 	$sales_costs     = $sales_hours * $defaults['hourly_rate'];
-	$full_cpo        = $orders > 0 ? ( $lead_spend + $sales_costs ) / $orders : 0;
+	$full_cpo        = ( $lead_spend + $sales_costs ) / $orders;
 
 	ob_start();
 	?>
