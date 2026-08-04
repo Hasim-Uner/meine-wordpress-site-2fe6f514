@@ -16,6 +16,9 @@ $analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_reques
 $tco_url      = home_url( '/eigene-leadgenerierung-vs-portale/' );
 $solar_url    = home_url( '/solar-leads-kaufen-alternative/' );
 $heatpump_url = home_url( '/waermepumpen-leads/' );
+$portrait_url = function_exists( 'nexus_asset_url' )
+	? nexus_asset_url( 'img/hasim-portrait.png' )
+	: get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 $reading_time = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time() : 0;
 
 $contract_items = [
@@ -281,14 +284,26 @@ $editorial_content = str_replace(
 	</section>
 
 	<section class="hu-checkfox__final" id="finaler-marktcheck" data-track-section="checkfox_final">
-		<p class="hu-checkfox__eyebrow">Nächster Schritt</p>
-		<h2>Mit Ihren Zahlen in den Marktcheck.</h2>
-		<p>Wenn Preis pro Anfrage, Abschlussquote und Vertriebsaufwand eingetragen sind, lässt sich der Kanal im nächsten Schritt mit Region, Projektwert und Portalabhängigkeit einordnen.</p>
-		<a class="hu-checkfox__button hu-checkfox__button--primary" href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_checkfox_final_marktcheck" data-track-category="lead_gen" data-track-section="checkfox_final">Marktcheck mit meinen Zahlen starten</a>
-		<nav class="hu-checkfox__deeper" aria-label="Sekundäre Vertiefung">
-			<a href="<?php echo esc_url( $tco_url ); ?>" data-track-action="checkfox_deeper_tco" data-track-category="internal_link" data-track-section="checkfox_final">TCO-Vergleich Portal vs. eigenes System</a>
-			<a href="<?php echo esc_url( $solar_url ); ?>" data-track-action="checkfox_deeper_solar" data-track-category="internal_link" data-track-section="checkfox_final">Photovoltaik-Anfragen vertiefen</a>
-			<a href="<?php echo esc_url( $heatpump_url ); ?>" data-track-action="checkfox_deeper_heatpump" data-track-category="internal_link" data-track-section="checkfox_final">Wärmepumpen-Anfragen vertiefen</a>
-		</nav>
+		<div class="hu-checkfox__final-copy">
+			<p class="hu-checkfox__eyebrow">Nächster Schritt</p>
+			<h2>Mit Ihren Zahlen in den Marktcheck.</h2>
+			<p>Wenn Preis pro Anfrage, Abschlussquote und Vertriebsaufwand eingetragen sind, lässt sich der Kanal im nächsten Schritt mit Region, Projektwert und Portalabhängigkeit einordnen.</p>
+			<a class="hu-checkfox__button hu-checkfox__button--primary" href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_checkfox_final_marktcheck" data-track-category="lead_gen" data-track-section="checkfox_final">Marktcheck mit meinen Zahlen starten</a>
+			<nav class="hu-checkfox__deeper" aria-label="Sekundäre Vertiefung">
+				<a href="<?php echo esc_url( $tco_url ); ?>" data-track-action="checkfox_deeper_tco" data-track-category="internal_link" data-track-section="checkfox_final">TCO-Vergleich Portal vs. eigenes System</a>
+				<a href="<?php echo esc_url( $solar_url ); ?>" data-track-action="checkfox_deeper_solar" data-track-category="internal_link" data-track-section="checkfox_final">Photovoltaik-Anfragen vertiefen</a>
+				<a href="<?php echo esc_url( $heatpump_url ); ?>" data-track-action="checkfox_deeper_heatpump" data-track-category="internal_link" data-track-section="checkfox_final">Wärmepumpen-Anfragen vertiefen</a>
+			</nav>
+		</div>
+		<div class="hu-checkfox__final-portrait">
+			<img
+				src="<?php echo esc_url( $portrait_url ); ?>"
+				alt="Haşim Üner"
+				width="1254"
+				height="1254"
+				loading="lazy"
+				decoding="async"
+			>
+		</div>
 	</section>
 </article>
