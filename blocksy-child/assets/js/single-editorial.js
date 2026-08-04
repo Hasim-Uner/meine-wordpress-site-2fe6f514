@@ -42,7 +42,8 @@
        ---------------------------------------------------------- */
     function initProgressBar() {
         var bar = document.querySelector('.nexus-reading-progress');
-        var article = document.querySelector('.nexus-article-content');
+        var article = document.querySelector('.nexus-article-content') ||
+                      document.querySelector('[data-checkfox-cockpit]');
         if (!bar || !article) return;
 
         var ticking = false;
@@ -73,7 +74,8 @@
         var rail = document.querySelector('.nexus-share-rail');
         if (!rail) return;
 
-        var hero = document.querySelector('.nexus-article-hero');
+        var hero = document.querySelector('.nexus-article-hero') ||
+                   document.querySelector('.hu-checkfox__hero');
         var endMarker = document.querySelector('.nexus-author-bio') ||
                         document.querySelector('.nexus-related-content') ||
                         document.querySelector('.nexus-rating');
@@ -111,7 +113,8 @@
         update();
 
         btn.addEventListener('click', function () {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
         });
     }
 

@@ -71,7 +71,30 @@
 		};
 	}
 
+	function updatePortalCalculator(calculator) {
+		var cpl = getInput(calculator, 'cpl');
+		var leads = getInput(calculator, 'leads');
+		var closeRate = getInput(calculator, 'close_rate') / 100;
+		var salesMinutes = getInput(calculator, 'sales_minutes');
+		var hourlyRate = getInput(calculator, 'hourly_rate');
+		var monthlyLeadCost = leads * cpl;
+		var orders = leads * closeRate;
+		var salesHours = leads * (salesMinutes / 60);
+		var salesCost = salesHours * hourlyRate;
+		var fullCpo = orders > 0 ? (monthlyLeadCost + salesCost) / orders : 0;
+
+		setText(calculator, 'output', 'monthly_lead_cost', currencyFormatter.format(monthlyLeadCost));
+		setText(calculator, 'output', 'orders', numberFormatter.format(orders));
+		setText(calculator, 'output', 'sales_hours', numberFormatter.format(salesHours) + ' Std.');
+		setText(calculator, 'output', 'full_cpo', orders > 0 ? currencyFormatter.format(fullCpo) : '–');
+	}
+
 	function updateCalculator(calculator) {
+		if (calculator.getAttribute('data-cpo-mode') === 'portal') {
+			updatePortalCalculator(calculator);
+			return;
+		}
+
 		var current = calculator.querySelector('[data-cpo-scenario="current"]');
 		var target = calculator.querySelector('[data-cpo-scenario="target"]');
 		var deltaOutput = calculator.querySelector('[data-cpo-summary="delta_cpo"]');
@@ -117,8 +140,18 @@
 	}
 
 	function initCalculator(calculator) {
+		var updateTimer = 0;
+
 		calculator.addEventListener('input', function () {
-			updateCalculator(calculator);
+			if (calculator.getAttribute('data-cpo-mode') !== 'portal') {
+				updateCalculator(calculator);
+				return;
+			}
+
+			window.clearTimeout(updateTimer);
+			updateTimer = window.setTimeout(function () {
+				updateCalculator(calculator);
+			}, 120);
 		});
 		updateCalculator(calculator);
 	}
