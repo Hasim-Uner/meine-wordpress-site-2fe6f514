@@ -621,9 +621,21 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__toc {
 }
 
 .hu-checkfox__byline {
-	margin: 18px 0 0;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 20px 0 0;
 	color: #918a7e;
 	font-size: 0.85rem !important;
+}
+
+.hu-checkfox__byline img {
+	width: 48px;
+	height: 48px;
+	flex: 0 0 auto;
+	border: 1px solid var(--checkfox-line);
+	border-radius: 50%;
+	object-fit: cover;
 }
 
 .hu-checkfox + .nexus-author-bio {
