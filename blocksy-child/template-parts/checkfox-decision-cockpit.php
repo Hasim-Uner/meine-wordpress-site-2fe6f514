@@ -169,11 +169,12 @@ $toc_items = [
 			<p>Wenn Anfragepreis, Abschlussquote und Vertriebsaufwand stehen, ordnen wir den Kanal mit Region, Projektwert und Portalabhängigkeit ein.</p>
 			<a class="hu-checkfox__button hu-checkfox__button--primary" href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_checkfox_final_marktcheck" data-track-category="lead_gen" data-track-section="checkfox_final">Marktcheck mit meinen Zahlen starten</a>
 			<p class="hu-checkfox__byline">
+<?php // Attribute tragen die Layoutgroesse, damit das Bild auch ohne (oder mit veralteter) CSS klein bleibt. ?>
 				<img
 					src="<?php echo esc_url( $portrait_url ); ?>"
 					alt="<?php echo esc_attr( get_the_author() ); ?>"
-					width="1254"
-					height="1254"
+					width="48"
+					height="48"
 					loading="lazy"
 					decoding="async"
 				>

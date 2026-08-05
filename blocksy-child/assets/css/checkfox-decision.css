@@ -629,9 +629,12 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__toc {
 	font-size: 0.85rem !important;
 }
 
-.hu-checkfox__byline img {
+/* Doppelte Klasse: schlaegt gleich-spezifische globale img-Regeln wie
+   `.hu-hp img`, egal in welcher Reihenfolge die Stylesheets laden. */
+.hu-checkfox .hu-checkfox__byline img {
 	width: 48px;
 	height: 48px;
+	max-width: 48px;
 	flex: 0 0 auto;
 	border: 1px solid var(--checkfox-line);
 	border-radius: 50%;
