@@ -18,12 +18,6 @@ $tco_url      = home_url( '/eigene-leadgenerierung-vs-portale/' );
 $solar_url    = home_url( '/solar-leads-kaufen-alternative/' );
 $heatpump_url = home_url( '/waermepumpen-leads/' );
 
-// Avatare sind in WordPress deaktiviert, die Autorenbox darunter zeigt nur die
-// Initialen. Das Portrait hier ist damit das einzige echte Foto der Seite.
-$portrait_url = function_exists( 'nexus_asset_url' )
-	? nexus_asset_url( 'img/hasim-portrait.png' )
-	: get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
-
 $contract_items = [
 	'exklusivitaet'    => 'Exklusivität schriftlich geregelt',
 	'empfaenger'       => 'Anzahl paralleler Empfänger bekannt',
@@ -168,18 +162,8 @@ $toc_items = [
 			<h2>Mit Ihren Zahlen in den Marktcheck.</h2>
 			<p>Wenn Anfragepreis, Abschlussquote und Vertriebsaufwand stehen, ordnen wir den Kanal mit Region, Projektwert und Portalabhängigkeit ein.</p>
 			<a class="hu-checkfox__button hu-checkfox__button--primary" href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_checkfox_final_marktcheck" data-track-category="lead_gen" data-track-section="checkfox_final">Marktcheck mit meinen Zahlen starten</a>
-			<p class="hu-checkfox__byline">
-<?php // Attribute tragen die Layoutgroesse, damit das Bild auch ohne (oder mit veralteter) CSS klein bleibt. ?>
-				<img
-					src="<?php echo esc_url( $portrait_url ); ?>"
-					alt="<?php echo esc_attr( get_the_author() ); ?>"
-					width="48"
-					height="48"
-					loading="lazy"
-					decoding="async"
-				>
-				<span>Einordnung von <?php echo esc_html( get_the_author() ); ?> · zuletzt aktualisiert am <?php echo esc_html( get_the_modified_date( 'd. F Y' ) ); ?></span>
-			</p>
+			<?php // Das Portrait sitzt in der Autorenbox direkt darunter, hier waere es doppelt. ?>
+			<p class="hu-checkfox__byline">Einordnung von <?php echo esc_html( get_the_author() ); ?> · zuletzt aktualisiert am <?php echo esc_html( get_the_modified_date( 'd. F Y' ) ); ?></p>
 		</div>
 	</section>
 </article>

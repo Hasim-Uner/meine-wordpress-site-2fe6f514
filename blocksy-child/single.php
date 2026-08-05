@@ -490,6 +490,12 @@ get_template_part( 'template-parts/blog-header' );
 		$author_name        = ! empty( $canonical_author['name'] ) ? (string) $canonical_author['name'] : get_the_author();
 		$author_description = get_the_author_meta( 'description' );
 		$author_avatar      = get_avatar( $author_id, 96, '', $author_name, [ 'class' => 'nexus-author-bio__avatar-img' ] );
+		// Avatare sind in WordPress deaktiviert, get_avatar() liefert nichts. Statt des
+		// Initialen-Kreises zeigt die Box das gepflegte Portrait aus dem Theme.
+		// Ein-Personen-Repo: alle Beitraege stammen vom selben Autor.
+		$author_portrait    = function_exists( 'nexus_asset_url' )
+			? nexus_asset_url( 'img/hasim-portrait.png' )
+			: get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 		$author_initials    = '';
 		if ( $author_name ) {
 			$parts = preg_split( '/\s+/', trim( wp_strip_all_tags( $author_name ) ) );
@@ -532,6 +538,16 @@ get_template_part( 'template-parts/blog-header' );
 			<div class="nexus-author-bio__avatar" aria-hidden="true">
 				<?php if ( $author_avatar ) : ?>
 					<?php echo $author_avatar; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — get_avatar() returns safe HTML. ?>
+				<?php elseif ( $author_portrait ) : ?>
+					<img
+						class="nexus-author-bio__avatar-img"
+						src="<?php echo esc_url( $author_portrait ); ?>"
+						alt=""
+						width="96"
+						height="96"
+						loading="lazy"
+						decoding="async"
+					>
 				<?php else : ?>
 					<?php echo esc_html( strtoupper( $author_initials ?: 'HÜ' ) ); ?>
 				<?php endif; ?>
