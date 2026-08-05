@@ -123,7 +123,18 @@ $primary_items = [
 ];
 ?>
 
-<header class="nexus-blog-header" data-site-header role="banner">
+<header
+	class="nexus-blog-header"
+	data-site-header
+	<?php
+	// Auf der Checkfox-Entscheidungsseite uebernimmt die seiteninterne Leiste die
+	// Orientierung. Der Header blendet sich dort nicht mehr beim Scrollen ein;
+	// Tastaturfokus und Zeiger an der Oberkante holen ihn weiterhin hervor, und
+	// am Seitenende pinnt ihn die Seite selbst wieder ein.
+	echo $suppress_context_links ? ' data-site-header-scroll-reveal="off"' : ''; // raw-ok -- static attribute
+	?>
+	role="banner"
+>
 	<div class="nx-container nexus-blog-header__frame">
 		<div class="nexus-blog-header__shell">
 			<div class="nexus-blog-header__brand-block">

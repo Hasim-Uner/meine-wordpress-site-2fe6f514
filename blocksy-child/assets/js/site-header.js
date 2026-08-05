@@ -64,9 +64,19 @@
             header.classList.toggle('is-visible', nextVisible);
         }
 
+        var scrollRevealEnabled = header.getAttribute('data-site-header-scroll-reveal') !== 'off';
+
         function shouldPinHeader() {
-            return isPointerInside || isFocusInside || isNearTopEdge || header.classList.contains('is-open');
+            return isPointerInside || isFocusInside || isNearTopEdge ||
+                header.classList.contains('is-open') ||
+                header.hasAttribute('data-site-header-pin');
         }
+
+        // Eine Seite kann den Header selbst einblenden — etwa am Seitenende, wenn
+        // ihre eigene Sprungnavigation die Orientierung wieder abgibt.
+        header.addEventListener('nexus:header-pin', function () {
+            updateVisibility(false);
+        });
 
         // Cache scrollY um Forced Reflow nach DOM-Writes zu vermeiden.
         var cachedScrollY = window.scrollY;
@@ -172,6 +182,13 @@
 
                 if (shouldPinHeader()) {
                     showHeader(false);
+                    return;
+                }
+
+                // Seiten mit eigener sticky Sprungnavigation schalten die
+                // Scroll-Einblendung ab, damit nicht zwei Leisten konkurrieren.
+                if (!scrollRevealEnabled) {
+                    hideHeader();
                     return;
                 }
 

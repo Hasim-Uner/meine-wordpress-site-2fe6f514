@@ -145,6 +145,48 @@
 		});
 	}
 
+	/**
+	 * Hand orientation back to the global header at the end of the page.
+	 *
+	 * Inside the article the sticky bar carries navigation and the Marktcheck
+	 * CTA, so the header stays out of the way. Once the closing CTA is in view
+	 * the bar steps aside and the site menu takes over for "where next".
+	 */
+	function initEndOfPageHandover(root) {
+		var bar = root.querySelector('[data-checkfox-bar]');
+		var closing = root.querySelector('.hu-checkfox__final');
+		var header = document.querySelector('[data-site-header]');
+
+		if (!bar || !closing || typeof window.IntersectionObserver !== 'function') {
+			return;
+		}
+
+		function setHandover(active) {
+			bar.classList.toggle('is-hidden', active);
+
+			if (!header) {
+				return;
+			}
+
+			if (active) {
+				header.setAttribute('data-site-header-pin', '');
+			} else {
+				header.removeAttribute('data-site-header-pin');
+			}
+
+			// site-header.js owns visibility; tell it the pin state changed.
+			header.dispatchEvent(new CustomEvent('nexus:header-pin'));
+		}
+
+		var observer = new window.IntersectionObserver(function (entries) {
+			entries.forEach(function (entry) {
+				setHandover(entry.isIntersecting);
+			});
+		}, { rootMargin: '0px 0px -35% 0px' });
+
+		observer.observe(closing);
+	}
+
 	function initCalculatorTracking(root) {
 		var calculator = root.querySelector('[data-hu-cpo-calculator][data-cpo-mode="portal"]');
 		var results = calculator && calculator.querySelector('[data-cpo-results]');
@@ -251,6 +293,7 @@
 	function initCockpit(root) {
 		initAnchorFocus(root);
 		initTableOfContents(root);
+		initEndOfPageHandover(root);
 		initCalculatorTracking(root);
 		initContract(root);
 	}

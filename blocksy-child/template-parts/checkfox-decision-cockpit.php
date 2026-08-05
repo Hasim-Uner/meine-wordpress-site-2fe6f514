@@ -66,13 +66,27 @@ $toc_items = [
 		</figure>
 	</header>
 
-	<nav class="hu-checkfox__toc" aria-label="Auf dieser Seite" data-checkfox-toc>
-		<ul>
-			<?php foreach ( $toc_items as $toc_target => $toc_label ) : ?>
-				<li><a href="#<?php echo esc_attr( $toc_target ); ?>"><?php echo esc_html( $toc_label ); ?></a></li>
-			<?php endforeach; ?>
-		</ul>
-	</nav>
+	<?php
+	// Die Leiste ersetzt im Artikel den globalen Header: Orientierung links,
+	// der Marktcheck-CTA rechts. Der CTA steht bewusst ausserhalb des <nav>,
+	// er ist kein Sprungziel auf dieser Seite.
+	?>
+	<div class="hu-checkfox__bar" data-checkfox-bar>
+		<nav class="hu-checkfox__toc" aria-label="Auf dieser Seite" data-checkfox-toc>
+			<ul>
+				<?php foreach ( $toc_items as $toc_target => $toc_label ) : ?>
+					<li><a href="#<?php echo esc_attr( $toc_target ); ?>"><?php echo esc_html( $toc_label ); ?></a></li>
+				<?php endforeach; ?>
+			</ul>
+		</nav>
+		<a
+			class="hu-checkfox__bar-cta"
+			href="<?php echo esc_url( $analysis_url ); ?>"
+			data-track-action="cta_checkfox_bar_marktcheck"
+			data-track-category="lead_gen"
+			data-track-section="checkfox_bar"
+		>Marktcheck</a>
+	</div>
 
 	<section class="hu-checkfox__section" id="portal-kostenrechner" tabindex="-1" data-track-section="checkfox_calculator">
 		<h2>Kosten pro Auftrag berechnen</h2>

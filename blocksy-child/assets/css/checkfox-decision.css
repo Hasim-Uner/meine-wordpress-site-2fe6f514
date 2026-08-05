@@ -200,22 +200,57 @@
 
 /* ── In-page navigation ─────────────────────────────────── */
 
-.hu-checkfox__toc {
+.hu-checkfox__bar {
 	position: sticky;
 	top: 0;
 	z-index: 30;
+	display: flex;
+	align-items: center;
+	gap: 12px;
 	margin-bottom: clamp(28px, 4vw, 44px);
 	border-block: 1px solid var(--checkfox-line);
-	background: rgba(11, 15, 18, 0.92);
-	backdrop-filter: blur(14px) saturate(140%);
-	-webkit-backdrop-filter: blur(14px) saturate(140%);
+	/* Deckend: der Artikeltext darf nicht durch die Leiste scheinen. */
+	background: var(--checkfox-bg);
 }
 
-/* The global blog header is summoned on demand and sits at z-index 1004.
-   Drop the jump nav below it while it is on screen instead of fighting it. */
-html:has(.nexus-blog-header.is-visible) .hu-checkfox__toc,
-html:has(.nexus-blog-header.is-open) .hu-checkfox__toc {
+/* Der globale Header wird am Seitenende wieder eingeblendet und liegt auf
+   z-index 1004. Solange er sichtbar ist, rutscht die Leiste darunter. */
+html:has(.nexus-blog-header.is-visible) .hu-checkfox__bar,
+html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 	top: var(--nx-header-height, 88px);
+}
+
+/* Am Seitenende uebernimmt der globale Header die Orientierung. */
+.hu-checkfox__bar.is-hidden {
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 180ms ease, visibility 0s linear 180ms;
+}
+
+.hu-checkfox__toc {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.hu-checkfox__bar-cta {
+	display: inline-flex;
+	align-items: center;
+	flex: 0 0 auto;
+	min-height: 44px;
+	margin-right: 2px;
+	padding: 0 18px;
+	border-radius: 999px;
+	background: var(--checkfox-copper);
+	color: #fffaf5;
+	font-size: 0.9rem;
+	font-weight: 760;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.hu-checkfox__bar-cta:hover {
+	background: #ca7b49;
+	color: #fff;
 }
 
 .hu-checkfox__toc ul {
