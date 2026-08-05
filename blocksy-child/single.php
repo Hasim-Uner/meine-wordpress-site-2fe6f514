@@ -32,7 +32,8 @@ get_template_part( 'template-parts/blog-header' );
 	</button>
 </aside>
 
-<main id="main" class="site-main nexus-single-container nexus-single-container--with-blog-header nexus-single-container--editorial hu-hp">
+<?php // tabindex="-1" macht den Skip-Link aus functions.php zum echten Fokusziel. ?>
+<main id="main" tabindex="-1" class="site-main nexus-single-container nexus-single-container--with-blog-header nexus-single-container--editorial hu-hp">
 
 	<?php while ( have_posts() ) : the_post(); ?>
 
