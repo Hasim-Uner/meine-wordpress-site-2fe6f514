@@ -33,6 +33,11 @@ $home_label         = sprintf(
 	$brand_text
 );
 
+// Die Checkfox-Entscheidungsseite ersetzt die Kontextzeile durch ihre eigene
+// sticky Sprungnavigation im Artikel. Zwei Orientierungsleisten uebereinander
+// waeren dort nur doppelte Hoehe ohne zusaetzliche Information.
+$suppress_context_links = is_single( 'checkfox-solar-waermepumpe-einordnung' );
+
 $context_title = __( 'Blog', 'blocksy-child' );
 $context_text  = __( 'Analysen zu Anfrage-Systemen, Portal-Kosten, Tracking und Conversion.', 'blocksy-child' );
 $context_links = [
@@ -217,7 +222,7 @@ $primary_items = [
 		</div>
 	</div>
 
-	<?php if ( count( $context_links ) > 1 ) : ?>
+	<?php if ( count( $context_links ) > 1 && ! $suppress_context_links ) : ?>
 		<nav class="nx-container nexus-blog-header__context-links" aria-label="<?php esc_attr_e( 'Blog-Kontext', 'blocksy-child' ); ?>">
 			<?php foreach ( $context_links as $link ) : ?>
 				<a

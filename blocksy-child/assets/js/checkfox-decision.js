@@ -20,46 +20,128 @@
 		}
 	}
 
-	function initIntent(root) {
-		var intent = root.querySelector('[data-checkfox-intent]');
+	/**
+	 * Resolve which element a fragment scrolls to and which one takes focus.
+	 *
+	 * A <details> target opens first and hands focus to its <summary>, the
+	 * natively focusable control. Scrolling stays on the fragment target itself
+	 * so its scroll-margin-top keeps it clear of the sticky navigation.
+	 */
+	function revealTarget(target) {
+		if (!target) {
+			return null;
+		}
 
-		if (!intent) {
+		var details = target.tagName === 'DETAILS' ? target : target.closest('details');
+
+		if (details) {
+			details.open = true;
+		}
+
+		if (target.tagName === 'DETAILS') {
+			return { scroll: target, focus: target.querySelector('summary') || target };
+		}
+
+		return { scroll: target, focus: target };
+	}
+
+	function focusFromHash(root, hash) {
+		if (!hash || hash.length < 2) {
 			return;
 		}
 
-		var controls = intent.querySelectorAll('input[type="radio"]');
-		var answers = intent.querySelectorAll('[data-checkfox-intent-answer]');
+		var target;
 
-		intent.addEventListener('change', function (event) {
-			var control = event.target;
+		try {
+			target = root.querySelector(hash);
+		} catch (error) {
+			return;
+		}
 
-			if (!control.matches('input[type="radio"]')) {
-				return;
-			}
+		var resolved = revealTarget(target);
 
-			answers.forEach(function (answer) {
-				answer.hidden = answer.getAttribute('data-checkfox-intent-answer') !== control.value;
-			});
-		});
+		if (!resolved) {
+			return;
+		}
 
-		controls.forEach(function (control) {
-			control.setAttribute('aria-controls', 'checkfox-intent-answer');
-		});
+		// Let the browser finish its own fragment scroll before taking over,
+		// otherwise the position jumps back to the pre-open layout.
+		window.setTimeout(function () {
+			resolved.focus.focus({ preventScroll: true });
+			resolved.scroll.scrollIntoView({ block: 'start' });
+		}, 0);
 	}
 
 	function initAnchorFocus(root) {
 		root.querySelectorAll('a[href^="#"]').forEach(function (link) {
 			link.addEventListener('click', function () {
-				var target = document.querySelector(link.getAttribute('href'));
+				focusFromHash(root, link.getAttribute('href'));
+			});
+		});
 
-				if (!target) {
+		window.addEventListener('hashchange', function () {
+			focusFromHash(root, window.location.hash);
+		});
+
+		if (window.location.hash) {
+			focusFromHash(root, window.location.hash);
+		}
+	}
+
+	function initTableOfContents(root) {
+		var toc = root.querySelector('[data-checkfox-toc]');
+
+		if (!toc || typeof window.IntersectionObserver !== 'function') {
+			return;
+		}
+
+		var links = Array.prototype.slice.call(toc.querySelectorAll('a[href^="#"]'));
+		var sections = [];
+
+		links.forEach(function (link) {
+			var section = root.querySelector(link.getAttribute('href'));
+
+			if (!section) {
+				return;
+			}
+
+			// A <details> anchor marks its surrounding section, not the disclosure.
+			sections.push({ link: link, node: section.closest('.hu-checkfox__section') || section });
+		});
+
+		if (!sections.length) {
+			return;
+		}
+
+		function setCurrent(entryNode) {
+			sections.forEach(function (item) {
+				if (item.node === entryNode) {
+					item.link.setAttribute('aria-current', 'true');
 					return;
 				}
 
-				window.setTimeout(function () {
-					target.focus({ preventScroll: true });
-				}, 0);
+				item.link.removeAttribute('aria-current');
 			});
+		}
+
+		var observer = new window.IntersectionObserver(function (entries) {
+			var visible = entries.filter(function (entry) {
+				return entry.isIntersecting;
+			});
+
+			if (!visible.length) {
+				return;
+			}
+
+			visible.sort(function (a, b) {
+				return a.boundingClientRect.top - b.boundingClientRect.top;
+			});
+
+			setCurrent(visible[0].target);
+		}, { rootMargin: '-20% 0px -70% 0px' });
+
+		sections.forEach(function (item) {
+			observer.observe(item.node);
 		});
 	}
 
@@ -119,71 +201,56 @@
 			return;
 		}
 
-		var rows = contract.querySelectorAll('[data-contract-row]');
+		var checks = contract.querySelectorAll('[data-contract-check]');
 		var result = contract.querySelector('[data-contract-result]');
 		var detail = contract.querySelector('[data-contract-detail]');
 		var resultBox = result && result.closest('.hu-checkfox__contract-result');
-		var touchedRows = new Set();
 		var completionTracked = false;
+
+		if (!checks.length || !result || !detail) {
+			return;
+		}
 
 		function updateResult() {
 			var clarified = 0;
-			var unclear = 0;
-			var notApplicable = 0;
 
-			rows.forEach(function (row) {
-				var selected = row.querySelector('input[type="radio"]:checked');
-
-				if (!selected) {
-					return;
-				}
-
-				if (selected.value === 'geklaert') {
+			checks.forEach(function (check) {
+				if (check.checked) {
 					clarified += 1;
-				} else if (selected.value === 'nicht-zutreffend') {
-					notApplicable += 1;
-				} else {
-					unclear += 1;
 				}
 			});
 
-			if (unclear === 0 && clarified >= 5) {
-				result.textContent = 'Weitgehend geklärt';
-				detail.textContent = 'Die wesentlichen Angaben sind dokumentiert. Prüfen Sie jetzt, ob die Kosten pro Auftrag zu Marge und Vertriebskapazität passen.';
-			} else if (unclear <= 3 && clarified + notApplicable >= 5) {
-				result.textContent = 'Vor Vertragsabschluss nachschärfen';
-				detail.textContent = unclear + ' Punkt' + (unclear === 1 ? ' ist' : 'e sind') + ' noch ungeklärt. Schließen Sie diese Lücken vor der wirtschaftlichen Entscheidung.';
+			result.textContent = clarified + ' von ' + checks.length + ' Punkten geklärt';
+
+			if (clarified === checks.length) {
+				detail.textContent = 'Die Grundlagen sind dokumentiert. Prüfen Sie jetzt, ob die Kosten pro Auftrag zu Marge und Vertriebskapazität passen.';
+			} else if (clarified >= 5) {
+				detail.textContent = 'Schließen Sie die offenen Punkte vor Vertragsabschluss, sonst rechnen Sie mit Annahmen.';
 			} else {
-				result.textContent = 'Wirtschaftliche Entscheidung noch nicht belastbar';
-				detail.textContent = unclear + ' Punkte sind noch ungeklärt. Klären Sie zuerst die Grundlagen und rechnen Sie danach mit belastbaren Werten.';
+				detail.textContent = 'Solange Grundlagen offen sind, rechnet der Kostenrechner mit Annahmen statt mit Ihren Werten.';
 			}
 
-			if (!completionTracked && touchedRows.size === rows.length) {
+			if (!completionTracked && clarified === checks.length) {
 				completionTracked = true;
 				pushTrack(resultBox);
 			}
 		}
 
 		contract.addEventListener('change', function (event) {
-			var control = event.target;
-
-			if (!control.matches('[data-contract-check]')) {
+			if (!event.target.matches('[data-contract-check]')) {
 				return;
-			}
-
-			var row = control.closest('[data-contract-row]');
-
-			if (row) {
-				touchedRows.add(row.getAttribute('data-contract-row'));
 			}
 
 			updateResult();
 		});
+
+		// Browsers restore checkbox state on back-navigation; keep the summary honest.
+		updateResult();
 	}
 
 	function initCockpit(root) {
-		initIntent(root);
 		initAnchorFocus(root);
+		initTableOfContents(root);
 		initCalculatorTracking(root);
 		initContract(root);
 	}
