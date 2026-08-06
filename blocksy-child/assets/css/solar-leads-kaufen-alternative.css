@@ -189,6 +189,26 @@
 	color: var(--nx-accent, #c9974a);
 }
 
+/* Branchen-Abzweig unter dem primaeren CTA: haelt den Solar-/SHK-Pfad
+   sichtbar, ohne ihn zum Standardweg der Seite zu machen. */
+.hu-intercept__cta-note {
+	margin: 18px 0 0;
+	font-size: 0.9375rem;
+	line-height: 1.6;
+	color: rgba(245, 241, 234, 0.66);
+}
+
+.hu-intercept__cta-note a {
+	color: var(--nx-accent, #c9974a);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.hu-intercept__cta-note a:hover,
+.hu-intercept__cta-note a:focus-visible {
+	color: #e0ad5e;
+}
+
 /* ── Compare-Grid ───────────────────────────────────────── */
 
 .hu-intercept__grid {

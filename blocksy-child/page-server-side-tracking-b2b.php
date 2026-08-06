@@ -3,7 +3,10 @@
  * Template Name: Server-Side Tracking für B2B-Leadgenerierung
  * Description: Tech-Feature-Page für GA4, Meta CAPI, Consent Mode v2 auf eigenem
  *              Server. Argumentation: Cookieless Future, ITP, Ad-Blocker.
- *              Primärer CTA: Marktcheck auf /solar-waermepumpen-leadgenerierung/#marktcheck.
+ *              Primärer CTA: Projektprüfung auf /kontakt/?type=project&focus=tracking.
+ *              Begründung: Die Seite erhält laut GSC-Export ausschließlich
+ *              generische Tracking-Agentur-Queries ohne Solar-Bezug. Der
+ *              Marktcheck bleibt als sekundärer Branchen-Einstieg erhalten.
  *
  * @package Blocksy_Child
  */
@@ -19,6 +22,13 @@ $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 	: home_url( '/solar-waermepumpen-leadgenerierung/' );
 $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
 $e3_url          = home_url( '/case-study-solar-leadgenerierung/' );
+$contact_url     = add_query_arg(
+	[
+		'type'  => 'project',
+		'focus' => 'tracking',
+	],
+	home_url( '/kontakt/' )
+);
 
 // ── E3-Canon ──────────────────────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
@@ -185,11 +195,11 @@ get_header();
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"
-				   href="<?php echo esc_url( $marktcheck_url ); ?>"
-				   data-track-action="cta_marktcheck"
+				   href="<?php echo esc_url( $contact_url ); ?>"
+				   data-track-action="cta_project_tracking"
 				   data-track-category="server_side_tracking_b2b"
 				   data-track-section="hero">
-					Marktcheck mit Fit-Entscheid starten
+					Tracking-Setup prüfen lassen
 				</a>
 				<a class="hu-intercept__cta-secondary"
 				   href="<?php echo esc_url( $e3_url ); ?>"
@@ -199,6 +209,13 @@ get_header();
 					Case Study ansehen (<?php echo esc_html( $e3_cpl_reduction ); ?> CPL-Senkung)
 				</a>
 			</div>
+			<p class="hu-intercept__cta-note">
+				Solar-, Wärmepumpen- oder SHK-Betrieb?
+				<a href="<?php echo esc_url( $marktcheck_url ); ?>"
+				   data-track-action="cta_marktcheck_branch"
+				   data-track-category="server_side_tracking_b2b"
+				   data-track-section="hero">Direkt zum Marktcheck mit Fit-Entscheid</a>
+			</p>
 		</div>
 	</section>
 
@@ -266,24 +283,24 @@ get_header();
 
 	<section class="hu-intercept__final" id="final-cta" aria-labelledby="hu-sst-final-title">
 		<div class="hu-intercept__container hu-intercept__container--centered">
-			<h2 class="hu-intercept__h2" id="hu-sst-final-title">Tracking-Lücken händisch einordnen — Befund innerhalb von 48 Stunden</h2>
+			<h2 class="hu-intercept__h2" id="hu-sst-final-title">Tracking-Setup prüfen lassen — erst Befund, dann Entscheidung</h2>
 			<p class="hu-intercept__final-text">
-				Im Marktcheck zeigt sich schnell, ob die heutige Attribution Ihrer Marketing-Kanäle belastbar ist – oder ob entscheidende Conversions im Standard-Setup verloren gehen.
+				Sie schildern Ihr aktuelles Setup: Kanäle, Consent-Lösung, CRM und die Stelle, an der die Zahlen heute nicht zusammenpassen. Daraus folgt eine saubere Entscheidung – Korrektur, Umsetzung, Weiterentwicklung oder bewusst kein gemeinsamer nächster Schritt.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"
-				   href="<?php echo esc_url( $marktcheck_url ); ?>"
-				   data-track-action="cta_marktcheck"
+				   href="<?php echo esc_url( $contact_url ); ?>"
+				   data-track-action="cta_project_tracking"
 				   data-track-category="server_side_tracking_b2b"
 				   data-track-section="final">
-					Marktcheck mit Fit-Entscheid starten
+					Tracking-Setup prüfen lassen
 				</a>
 				<a class="hu-intercept__cta-secondary"
-				   href="<?php echo esc_url( $solar_money_url ); ?>"
-				   data-track-action="cta_money_page"
+				   href="<?php echo esc_url( $marktcheck_url ); ?>"
+				   data-track-action="cta_marktcheck_branch"
 				   data-track-category="server_side_tracking_b2b"
 				   data-track-section="final">
-					System & Methode ansehen
+					Solar oder SHK? Zum Marktcheck
 				</a>
 			</div>
 		</div>
@@ -301,8 +318,13 @@ get_template_part(
 	'template-parts/seo-subpage-sticky-cta',
 	null,
 	[
-		'marktcheck_url' => $marktcheck_url,
+		'cta_url'        => $contact_url,
 		'track_category' => 'server_side_tracking_b2b',
+		'region_label'   => 'Schnellzugang zur Projektprüfung',
+		'lead'           => 'Tracking-Setup prüfen',
+		'sub'            => 'Befund vor Angebot',
+		'label'          => 'Setup schildern',
+		'track_action'   => 'cta_sticky_project_tracking',
 	]
 );
 
