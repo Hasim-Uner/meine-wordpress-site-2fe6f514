@@ -19,6 +19,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 add_action( 'wp_head', 'hu_seo_meta_tags', 1 );
 
+/**
+ * Silence the WordPress core robots tag.
+ *
+ * Ohne diesen Filter stehen zwei <meta name="robots"> im Head: einer vom Core
+ * (max-image-preview:large) und einer aus hu_seo_meta_tags(). Suchmaschinen
+ * fuehren beide zusammen, es ist also nicht schaedlich — aber es widerspricht
+ * der Zusage in docs/architecture/LIVE_STATUS.md, dass das Theme die zentrale
+ * Quelle fuer Robots ist, und macht die Diagnose im Quelltext unnoetig schwer.
+ *
+ * Bewusst diese Richtung: Der Theme-Tag bleibt die autoritative Ausgabe. Wuerde
+ * man stattdessen den Theme-Tag entfernen und die Direktiven ueber wp_robots
+ * ausspielen, haetten noindex-Routen keinen Schutz mehr, sobald der Filter
+ * einmal nicht greift. So faellt der Fehlerfall auf den heutigen Zustand
+ * zurueck (zwei Tags), nicht auf einen indexierbaren Dashboard-Pfad.
+ *
+ * Nebenwirkung: Direktiven, die Plugins ueber wp_robots ergaenzen wuerden,
+ * entfallen. Das Repo faehrt bewusst ohne SEO-Plugin.
+ *
+ * @return array<string, mixed>
+ */
+function hu_silence_core_robots_tag() {
+	return [];
+}
+add_filter( 'wp_robots', 'hu_silence_core_robots_tag', 99 );
+
 add_filter( 'pre_get_document_title', 'hu_pre_get_document_title_override' );
 add_filter( 'document_title_parts', 'hu_document_title_overrides' );
 
@@ -1195,9 +1220,17 @@ function hu_seo_meta_tags() {
 		printf( '<link rel="canonical" href="%s">' . "\n", esc_url( $meta['canonical'] ) );
 	}
 
-	// Robots
+	// Robots. Der Core-Tag ist per wp_robots abgeschaltet (siehe unten), damit
+	// nur ein <meta name="robots"> im Head steht. Deshalb muss die Direktive
+	// max-image-preview, die sonst der Core beisteuert, hier mitlaufen.
 	if ( ! empty( $meta['robots'] ) ) {
-		printf( '<meta name="robots" content="%s">' . "\n", esc_attr( $meta['robots'] ) );
+		$robots_value = (string) $meta['robots'];
+
+		if ( false === stripos( $robots_value, 'noindex' ) && false === stripos( $robots_value, 'max-image-preview' ) ) {
+			$robots_value .= ', max-image-preview:large';
+		}
+
+		printf( '<meta name="robots" content="%s">' . "\n", esc_attr( $robots_value ) );
 	}
 
 	// Open Graph
