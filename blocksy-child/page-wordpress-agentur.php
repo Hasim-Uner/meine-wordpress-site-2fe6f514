@@ -480,12 +480,52 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
+     SECTION 04b — TECHNISCHES WORDPRESS-SEO
+     Traegt den Anker #technisches-seo, auf den die Intent-Card in Section 04
+     verweist. Vorher zeigte der Anker auf die generische Methode-Sektion —
+     die Karte versprach Substanz, die dort nicht stand.
+     ═══════════════════════════════════════════════ -->
+<section class="nx-section" data-nx-theme="light" id="technisches-seo">
+	<div class="nx-container">
+		<div class="nx-section-header">
+			<p class="wp-agentur-eyebrow">Technisches SEO</p>
+			<h2 class="nx-headline-section">Warum eine WordPress-Seite rankt und trotzdem keine Anfragen bringt.</h2>
+			<p class="nx-subheadline wp-agentur-section-intro">
+				Die meisten B2B-Seiten haben kein Mengenproblem bei Inhalten, sondern ein Zuordnungsproblem: Mehrere Seiten zielen auf dieselbe Suchanfrage, die kaufnahe Seite ist die schwächste, und Google zeigt die falsche. Technisches SEO heißt hier zuerst aufräumen, nicht nachlegen.
+			</p>
+		</div>
+
+		<div class="wp-agentur-local-grid">
+			<div class="wp-agentur-local-card">
+				<h3>„Wir ranken für unseren Namen, sonst nichts."</h3>
+				<p>Dann besitzt keine Seite eine kaufnahe Suchanfrage. Der erste Schritt ist die Zuordnung: Welche URL soll welche Anfrage tragen — eine Suchanfrage, eine Seite. Solange das offen ist, verteilt jeder neue Text die Signale weiter, statt sie zu bündeln.</p>
+			</div>
+			<div class="wp-agentur-local-card">
+				<h3>„Die Seite war schon mal weiter oben."</h3>
+				<p>Ein gleichmäßiger Positionsverlust über alle Suchanfragen einer URL ist selten ein Textproblem. Häufiger hat die Domain thematisch die Richtung gewechselt, oder eine zweite eigene Seite hat dieselbe Anfrage übernommen. Beides sieht in der Search Console gleich aus und braucht unterschiedliche Antworten.</p>
+			</div>
+			<div class="wp-agentur-local-card">
+				<h3>„Der Pagespeed-Test ist rot."</h3>
+				<p>Core Web Vitals sind ein Fundament, kein Hebel. Sie entscheiden, ob eine Seite ihre Chance behält — Nachfrage erzeugen sie nicht. Deshalb stehen sie in der Reihenfolge hinter der Frage, welche Seite überhaupt ranken soll.</p>
+			</div>
+			<div class="wp-agentur-local-card">
+				<h3>„Wir haben doch ein SEO-Plugin."</h3>
+				<p>Ein Plugin stellt Felder bereit, es trifft keine Entscheidungen. Titel, Canonical, Robots und strukturierte Daten gehören in eine nachvollziehbare Logik, damit später erklärbar bleibt, warum eine Seite so ausgezeichnet ist — und damit eine Änderung prüfbar wird, statt im Backend zu verschwinden.</p>
+			</div>
+		</div>
+
+		<p class="wp-agentur-section-intro">
+			Was davon bei Ihnen zutrifft, zeigt die Projektprüfung — bevor über Umfang oder Umsetzung gesprochen wird.
+		</p>
+	</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
      SECTION 05 — ANFRAGE-SYSTEM-METHODE (6 Phasen + Vorher/Nachher)
      ═══════════════════════════════════════════════ -->
 <span class="wp-agentur-anchor" id="wgos" aria-hidden="true"></span>
 <section class="nx-section" data-nx-theme="light" id="methode">
 	<div class="nx-container">
-		<span class="wp-agentur-anchor" id="technisches-seo" aria-hidden="true"></span>
 		<div class="nx-section-header">
 			<p class="wp-agentur-eyebrow">Methode</p>
 			<h2 class="nx-headline-section">WordPress, SEO, Tracking und CRO in der richtigen Reihenfolge.</h2>
@@ -995,7 +1035,9 @@ get_header();
 			</div>
 			<div class="wp-agentur-local-card" id="wordpress-wartung">
 				<h3>WordPress-Wartung in Hannover</h3>
-				<p>Wartungsvertrag mit Updates, Monitoring, Backups und Weiterentwicklung — bewusst nur im Rahmen laufender Mandate. Wartung an einem System, das ich nicht gebaut oder geprüft habe, ist Symptompflege: Sie hält die Seite am Leben, ohne dass jemand für Ladezeit, Tracking oder Anfragepfad geradesteht. Wenn Sie eine bestehende WordPress-Seite übergeben wollen, ist die Projektprüfung der richtige Einstieg — danach lässt sich über laufende Betreuung sprechen.</p>
+				<p>Ein Wartungsvertrag umfasst Updates, Monitoring, Backups und Weiterentwicklung — bewusst nur im Rahmen laufender Mandate. Wartung an einem System, das ich nicht gebaut oder geprüft habe, ist Symptompflege: Sie hält die Seite am Leben, ohne dass jemand für Ladezeit, Tracking oder Anfragepfad geradesteht.</p>
+				<p>Der Unterschied zeigt sich beim Plugin-Update. Reine Wartung stellt fest, dass es eingespielt wurde. Wartung an einem bekannten System stellt fest, ob danach noch dieselbe Anzahl Anfragen ankommt — weil klar ist, welche Seite welchen Anfragepfad trägt und wo gemessen wird. Deshalb steht am Anfang die Projektprüfung und nicht der Vertrag.</p>
+				<p>Wenn Sie eine bestehende WordPress-Seite übergeben wollen, ist die Projektprüfung der richtige Einstieg — danach lässt sich über laufende Betreuung sprechen.</p>
 			</div>
 		</div>
 
