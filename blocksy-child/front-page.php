@@ -35,6 +35,7 @@ $e3_cpl_before     = $e3_metrics['cpl_before']['display']        ?? '150 €';
 $e3_cpl_after      = $e3_metrics['cpl_after']['display']         ?? '22 €';
 $contact_url       = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
 $agentur_hub_url   = home_url( '/wordpress-agentur-hannover/' );
+$whitelabel_url    = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 $portrait_url      = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
 
 /* ── Routing-Tabelle: 3 Gateways ───────────────────────── */
@@ -51,7 +52,7 @@ $home_routing_gateways = [
 	],
 	'agentur' => [
 		'badge'   => 'G2',
-		'kicker'  => 'Sekundärer Technik-Einstieg',
+		'kicker'  => 'Technischer Direkteinstieg',
 		'title'   => 'WordPress Agentur Hannover für B2B-Anfragen',
 		'desc'    => 'Für bestehende WordPress-Seiten, bei denen technisches SEO, Tracking und Conversion-Pfad kaufnahe Anfragen nicht sauber tragen.',
 		'url'     => $agentur_hub_url,
@@ -72,6 +73,16 @@ $home_routing_gateways = [
 		'label'   => 'Case Study mit allen Zahlen lesen',
 		'persona' => 'Für skeptische Zahlen-Prüfer',
 		'action'  => 'gateway_case_study',
+	],
+	'whitelabel' => [
+		'badge'   => 'G4',
+		'kicker'  => 'Umsetzung im Hintergrund',
+		'title'   => 'White-Label für Agenturen',
+		'desc'    => 'Diskrete Umsetzung technischer Kundenprojekte unter dem Namen der Agentur — mit fixem Scope und Preis vor dem Start.',
+		'url'     => $whitelabel_url,
+		'label'   => 'White-Label-Fit prüfen',
+		'persona' => 'Für Agenturen ohne eigene Umsetzungskapazität',
+		'action'  => 'gateway_whitelabel',
 	],
 ];
 
@@ -764,7 +775,7 @@ get_header();
 				<div class="hu-final-routing__head">
 					<span class="hu-eyebrow" style="color:var(--accent)">10 / Nächster Schritt</span>
 					<h2 class="hu-display">Finden Sie heraus, wo Ihr Anfrage-System zuerst Geld verliert.</h2>
-					<p>Starten Sie mit dem Marktcheck, prüfen Sie die Case Study oder gehen Sie direkt in die technische Umsetzung — je nachdem, wo Sie gerade stehen.</p>
+					<p>Starten Sie mit dem Marktcheck, prüfen Sie die Case Study oder gehen Sie direkt in die technische Umsetzung — je nachdem, wo Sie gerade stehen. Agenturen finden ihren eigenen Einstieg in der letzten Karte.</p>
 				</div>
 
 				<div class="hu-gateways hu-gateways--final" data-track-section="10">

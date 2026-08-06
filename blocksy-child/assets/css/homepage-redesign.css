@@ -1641,9 +1641,10 @@
 
 .hu-hp .hu-gateways--final {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
+@media (max-width: 1139px) { .hu-hp .hu-gateways--final { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 980px) { .hu-hp .hu-gateways--final { grid-template-columns: 1fr; } }
 
 .hu-hp .hu-final-routing__alt {
@@ -1709,11 +1710,14 @@
   padding: clamp(36px,5vw,64px) 0 clamp(24px,3vw,36px);
   border-top: 0;
 }
+/* 4 Routen-Karten. Vier nebeneinander erst ab 1140px — darunter 2x2, damit
+   keine 3+1-Waisenreihe entsteht. Unter 980px bleibt es einspaltig. */
 .hu-hp .hu-gateways--band {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
+@media (max-width: 1139px) { .hu-hp .hu-gateways--band { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 980px) { .hu-hp .hu-gateways--band { grid-template-columns: 1fr; } }
 
 /* Gateway-Band-Karten brauchen etwas mehr Luft als die Hero-Stack-Variante */
