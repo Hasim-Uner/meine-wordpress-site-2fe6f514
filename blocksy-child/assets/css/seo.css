@@ -11,7 +11,13 @@
   --glass-bg: rgba(255, 255, 255, 0.03);
   --glass-border: rgba(255, 255, 255, 0.1);
   --radius-lg: 16px;
-  --transition: all 0.3s ease;
+  /* Covers every property the six call sites actually change. */
+  --transition: opacity var(--duration-slow) var(--ease-default),
+                color var(--duration-slow) var(--ease-default),
+                background var(--duration-slow) var(--ease-default),
+                border-color var(--duration-slow) var(--ease-default),
+                box-shadow var(--duration-slow) var(--ease-default),
+                transform var(--duration-slow) var(--ease-default);
   --success: #10b981;
   color: #fff;
   font-family: var(--nx-font, 'Figtree', sans-serif);

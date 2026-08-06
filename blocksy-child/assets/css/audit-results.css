@@ -894,7 +894,8 @@
   background: rgba(255, 255, 255, 0.03) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-radius: 10px !important;
-  transition: all 0.2s ease !important;
+  transition: background var(--duration-normal) var(--ease-default),
+              border-color var(--duration-normal) var(--ease-default) !important;
   cursor: pointer;
 }
 
@@ -912,7 +913,8 @@
   border: 2px solid rgba(255, 255, 255, 0.2) !important;
   background: rgba(255, 255, 255, 0.04) !important;
   cursor: pointer;
-  transition: all 0.2s ease !important;
+  transition: background var(--duration-normal) var(--ease-default),
+              border-color var(--duration-normal) var(--ease-default) !important;
   flex-shrink: 0;
   position: relative;
   vertical-align: middle;
@@ -1014,7 +1016,8 @@
 .deepdive-form-wrap .ff-btn-prev {
   padding: 0.85rem 1.5rem !important;
   font-size: 0.88rem !important;
-  transition: all 0.2s ease !important;
+  transition: background var(--duration-normal) var(--ease-default),
+              color var(--duration-normal) var(--ease-default) !important;
   cursor: pointer;
 }
 

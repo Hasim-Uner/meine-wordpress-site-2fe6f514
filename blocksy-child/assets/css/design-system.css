@@ -147,7 +147,6 @@
         border-color var(--duration-fast) var(--ease-default);
     --transition-transform: transform var(--duration-normal) var(--ease-default);
     --transition-shadow: box-shadow var(--duration-normal) var(--ease-default);
-    --transition-all: all var(--duration-normal) var(--ease-default);
 
     /* --- Repo compatibility aliases --- */
     --nx-gold: var(--accent);
@@ -862,7 +861,11 @@ h1, h2, h3, h4, h5, h6 {
     background: var(--nx-bg-glass-light);
     border: 1px solid var(--nx-border);
     color: var(--nx-text);
-    transition: all var(--nx-duration) var(--nx-ease);
+    transition: transform var(--nx-duration) var(--nx-ease),
+                background var(--nx-duration) var(--nx-ease),
+                color var(--nx-duration) var(--nx-ease),
+                border-color var(--nx-duration) var(--nx-ease),
+                box-shadow var(--nx-duration) var(--nx-ease);
     cursor: pointer;
     padding: 0;
     line-height: 0;
@@ -919,7 +922,11 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 50px;
     border: 1px solid var(--nx-border);
     box-shadow: var(--nx-shadow);
-    transition: all 0.4s var(--nx-ease-spring);
+    transition: width var(--duration-slow) var(--nx-ease-spring),
+                padding-left var(--duration-slow) var(--nx-ease-spring),
+                border-radius var(--duration-slow) var(--nx-ease-spring),
+                border-color var(--duration-slow) var(--nx-ease-spring),
+                background var(--duration-slow) var(--nx-ease-spring);
     width: 60px;
     overflow: hidden;
     white-space: nowrap;
@@ -963,7 +970,9 @@ h1, h2, h3, h4, h5, h6 {
     background: var(--nx-dot-base);
     border-radius: 50%;
     flex-shrink: 0;
-    transition: all var(--nx-duration) var(--nx-ease);
+    transition: background var(--nx-duration) var(--nx-ease),
+                box-shadow var(--nx-duration) var(--nx-ease),
+                transform var(--nx-duration) var(--nx-ease);
     box-shadow: 0 0 0 2px transparent;
 }
 
@@ -982,7 +991,8 @@ h1, h2, h3, h4, h5, h6 {
 .nx-sidenav__text {
     opacity: 0;
     transform: translateX(10px);
-    transition: all var(--nx-duration) var(--nx-ease);
+    transition: opacity var(--nx-duration) var(--nx-ease),
+                transform var(--nx-duration) var(--nx-ease);
 }
 
 .nx-sidenav:hover .nx-sidenav__text {

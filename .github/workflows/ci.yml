@@ -96,6 +96,9 @@ jobs:
       - name: Check E3 canon
         run: bash scripts/lint-e3-canon.sh
 
+      - name: Check CSS motion rules
+        run: bash scripts/lint-css-motion.sh
+
       - name: Check visible German copy
         run: bash scripts/check-german-copy.sh "${{ steps.refs.outputs.base }}" "${{ steps.refs.outputs.head }}"
 

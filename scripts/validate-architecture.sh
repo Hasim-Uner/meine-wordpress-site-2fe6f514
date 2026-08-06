@@ -108,6 +108,7 @@ require_text ".github/workflows/ci.yml" 'id:[[:space:]]*refs' "CI computes diff 
 require_text ".github/workflows/ci.yml" 'bash scripts/validate-architecture\.sh' "CI runs architecture validation"
 require_text ".github/workflows/ci.yml" 'bash scripts/lint-canon-drift\.sh.*steps\.refs\.outputs\.base.*steps\.refs\.outputs\.head' "CI runs canon drift guard with diff refs"
 require_text ".github/workflows/ci.yml" 'bash scripts/lint-e3-canon\.sh' "CI runs E3 canon guard"
+require_text ".github/workflows/ci.yml" 'bash scripts/lint-css-motion\.sh' "CI runs CSS motion guard"
 require_text ".github/workflows/ci.yml" 'bash scripts/check-german-copy\.sh.*steps\.refs\.outputs\.base.*steps\.refs\.outputs\.head' "CI runs German copy guard with diff refs"
 
 echo
