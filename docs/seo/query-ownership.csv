@@ -26,6 +26,21 @@
 # ohne Beleg einer anderen Money-Page zuzuweisen — sie bleiben offen, bis der
 # Suchintent belegt getrennt ist. gap-report.sh meldet sie so lange als
 # REGISTRY-LUECKE. Das ist der gewollte Zustand, kein Versehen.
+#
+# Ownership-Linie WordPress/Tracking (2026-08-06): Beide Seiten bekommen im
+# 28d-Export Signal aus Queries ohne Solar-Bezug — zusammen 541 der 1.420
+# Domain-Impressionen. Damit die Vertiefung der Hannover-Seite nicht in die
+# Tracking-Seite laeuft, gilt eine Orts- und keine Themenregel:
+#
+#   ortsqualifiziert (hannover / niedersachsen)  -> /wordpress-agentur-hannover/
+#   nicht ortsqualifiziert (tracking-Terme)      -> /server-side-tracking-b2b/
+#
+# Konkret: "wordpress seo hannover" und "wordpress wartung hannover" bleiben auf
+# der lokalen Money-Page. Die zugehoerigen Slugs /wordpress-seo-hannover/ und
+# /wordpress-wartung-hannover/ liefern 410 Gone (LIVE_STATUS.md) — die Eintraege
+# hier verhindern, dass sie als neue Seiten wiederauferstehen. Umgekehrt gehoeren
+# "agentur"-Tracking-Queries nicht auf die Hannover-Seite, auch wenn Tracking dort
+# fachlich vorkommt.
 query;owner_path;intent;status;source;distinct_from
 leadgenerierung photovoltaik;/solar-waermepumpen-leadgenerierung/;transactional;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte — GSC 28d 2026-07-30: /b2b-solar-leads/ rankt Pos. 46,2 (Owner-Entscheidung offen);
 leadgenerierung waermepumpe;/solar-waermepumpen-leadgenerierung/;transactional;owned;seo-meta.php forced-map;
@@ -71,3 +86,25 @@ was ist checkfox;/checkfox-solar-waermepumpe-einordnung/;informational;owned;gsc
 aroundhome kosten fuer handwerker;/aroundhome-solar-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 4,5, 8 Impr.);aroundhome kosten
 aroundhome solaranlage;/aroundhome-solar-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 13,4, 8 Impr.);aroundhome
 wattfox leads kaufen;/wattfox-solar-leads-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 18,0, 2 Impr. auf /solar-leads-kaufen-alternative/) — Anbieter-Query bleibt beim Anbieterartikel;wattfox|solar leads kaufen
+# Ortsqualifizierte WordPress-Queries (2026-08-06). Alle ranken im 28d-Export
+# 2026-07-30 auf genau einer URL, es besteht kein Mehrfach-URL-Konflikt.
+# "woocommerce agentur hannover" steht bewusst in keyword-exclusions.csv.
+wordpress agenturen hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 28,8, 4 Impr.) — Plural-Variante;wordpress agentur hannover
+agentur wordpress hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 31,5, 6 Impr.) — Wortstellungs-Variante;wordpress agentur hannover
+wordpress agentur niedersachsen;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 61,9, 17 Impr.) — Bundesland-Variante des lokalen Ankers;wordpress agentur hannover
+wordpress website hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 42,6, 8 Impr.);wordpress agentur hannover
+wordpress experte hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 43,0, 1 Impr.);wordpress agentur hannover
+wordpress entwicklung hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 54,0, 1 Impr.);wordpress agentur hannover
+wordpress seo hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 25,7, 9 Impr.) — /wordpress-seo-hannover/ ist 410 Gone, Signal bleibt auf der lokalen Money-Page;wordpress agentur hannover
+wordpress suchmaschinenoptimierung hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 26,4, 5 Impr.) — deutsche Variante von "wordpress seo hannover";wordpress seo hannover|wordpress agentur hannover
+wordpress wartung hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 13,0, 1 Impr. — beste Position der URL). /wordpress-wartung-hannover/ ist 410 Gone;wordpress agentur hannover
+wordpress wartungsvertrag hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 48,5, 4 Impr.);wordpress wartung hannover|wordpress agentur hannover
+# Nicht ortsqualifizierte Tracking-Queries (2026-08-06). Ebenfalls je genau eine
+# rankende URL. "elevar server side tracking" und "server side tracking regensburg"
+# stehen bewusst in keyword-exclusions.csv.
+serverside tracking agentur;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 58,3, 19 Impr.) — Schreibvariante;server side tracking agentur
+agentur server side tracking;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 37,6, 5 Impr.) — Wortstellungs-Variante;server side tracking agentur
+server-side tracking dsgvo;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 66,1, 14 Impr.) — Bindestrich-Variante, im Cockpit als eigene Query gezaehlt;server side tracking dsgvo
+serverseitiges tracking dsgvo;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 85,7, 3 Impr.) — deutsche Variante;server side tracking dsgvo
+server side tracking anbieter;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 71,2, 6 Impr.);server side tracking agentur
+tracking loesungen b2b;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 37,0, 2 Impr.);server side tracking
