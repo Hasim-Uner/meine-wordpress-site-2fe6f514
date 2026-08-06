@@ -594,3 +594,28 @@ function toggleTheme() {
 6. **Intersection Observer > scroll listeners**: Never use `scroll` event for reveal animations.
 7. **`prefers-reduced-motion`**: Always respected. No exceptions.
 8. **No animation on mobile that isn't on desktop**: Consistency across devices.
+9. **Never `transition: all`**: It animates every property that ever changes,
+   including layout and paint work nobody asked for. Name the properties.
+10. **Never bare `ease-in`**: It accelerates from a standstill, so entering
+    elements look sluggish. Use `var(--ease-default)`; `ease-out` for exits.
+
+---
+
+## Enforcement
+
+Rules 4, 7, 9, and 10 are checked by `scripts/lint-css-motion.sh`, which runs in
+CI and can be run by hand:
+
+```bash
+bash scripts/lint-css-motion.sh
+```
+
+It fails the build on `transition: all`, on bare `ease-in`, and on a stylesheet
+that animates without a `prefers-reduced-motion` block. Files that predate the
+guard sit in `BASELINE_REDUCED_MOTION` inside the script — that list may shrink,
+never grow.
+
+Slow transitions, hardcoded timings, and layout-property transitions are
+reported without failing, because a 900ms scroll reveal is a choice and a 200ms
+hover is not. Mark a deliberate exception with `lint-css-motion: allow` on the
+line or the line above it.

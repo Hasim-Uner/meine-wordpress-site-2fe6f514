@@ -90,6 +90,14 @@ Full specs in `references/motion.md`. Core rules:
 - Total animation budget per page load: < 2 seconds cumulative.
 - Respect `prefers-reduced-motion`.
 - CSS + Intersection Observer only. No React/GSAP. <50KB JS for animations.
+- Never `transition: all` — name the properties that actually change.
+- Never bare `ease-in` — entrances use `var(--ease-default)`, exits `ease-out`.
+
+Run the guard before pushing CSS; CI runs it too:
+
+```bash
+bash scripts/lint-css-motion.sh
+```
 
 ## WordPress / Blocksy Notes
 
@@ -118,5 +126,6 @@ Full specs in `references/motion.md`. Core rules:
 - [ ] Mobile: Responsive, CTA accessible without scrolling
 - [ ] Performance: CSS-first animations, web fonts <= 2 weights
 - [ ] Motion: prefers-reduced-motion respected, total < 2s
+- [ ] Motion guard green: `bash scripts/lint-css-motion.sh`
 - [ ] No anti-patterns from Hard Bans list
 - [ ] Dark/Light: Both modes tested

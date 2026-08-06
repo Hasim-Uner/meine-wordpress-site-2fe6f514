@@ -1326,7 +1326,9 @@
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: border-color var(--duration-normal) var(--ease-default),
+                background var(--duration-normal) var(--ease-default),
+                color var(--duration-normal) var(--ease-default);
     text-align: center;
     min-height: 44px;
 }
@@ -1355,7 +1357,9 @@
     color: var(--nx-text-secondary);
     font-size: 0.95rem;
     line-height: 1.6;
-    transition: all 0.3s ease;
+    transition: border-color var(--duration-slow) var(--ease-default),
+                background var(--duration-slow) var(--ease-default),
+                color var(--duration-slow) var(--ease-default);
 }
 .cro-diagnose__result.is-active {
     border-style: solid;
