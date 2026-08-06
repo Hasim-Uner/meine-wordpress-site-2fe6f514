@@ -20,6 +20,8 @@ Use `offer-funnel-intelligence` first when the task asks whether the website or 
 
 Use `wordpress-cro-content-design-audit` when the task is narrower: improve one page, hero, CTA, proof block, FAQ, form flow, or section order.
 
+Use `seo-conversion-copywriting` when der Text selbst entsteht — Money-Page, Landingpage, Leistungsseite, Hero, CTA, FAQ. Die Kritik an einer bestehenden Seite bleibt bei `wordpress-cro-content-design-audit`.
+
 Use `modern-web-guidance` before implementation when frontend templates, CSS, JS, forms, accessibility, or Core Web Vitals are touched.
 
 ## Canonical skill table

@@ -23,6 +23,7 @@ Scope: `agents/skills/`.
 | `pillar-cornerstone-writer` | Cornerstone-/Pillar-Artikelpakete | cornerstone, pillar, article package, publish pack |
 | `offer-funnel-intelligence` | Angebotslogik, Funnel, Marktcheck, Proof, Qualifizierung, WGOS-Grenze | offer, funnel, angebot, marktcheck, proof, qualifizierung, sales, wgos |
 | `wordpress-cro-content-design-audit` | B2B-CRO, Page-Kritik, CTA-/Proof-Hierarchie | cro, cta, proof, page critique, conversion |
+| `seo-conversion-copywriting` | Verkaufsorientierte deutsche Copy schreiben: Money-Pages, Landingpages, Leistungsseiten | copywriting, copy, text, hero, headline, cta-label, meta description |
 | `b2b-design-system` | Visual System, UI-Komponenten, Premium-Polish | design, ui, component, polish, visual |
 | `modern-web-guidance` | Moderne Web-Standards fuer WordPress-Frontend, CSS, Vanilla JS, Forms, A11y, CWV | frontend, html, css, javascript, vanilla js, forms, a11y, cwv, browser api |
 | `growth-audit-optimizer` | Legacy-Optimierung fuer `/growth-audit/` | growth audit, legacy audit, instant results |
