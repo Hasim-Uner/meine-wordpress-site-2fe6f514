@@ -122,6 +122,7 @@ function nexus_get_site_header_fallback_items() {
 	$solar_url    = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 	$agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 	$results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
+	$agency_url   = $primary_urls['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
 	$request_cta  = 'Marktcheck · 48 h';
 
 	return [
@@ -154,6 +155,13 @@ function nexus_get_site_header_fallback_items() {
 			'track'  => 'about',
 		],
 		[
+			'label'  => __( 'Für Agenturen', 'blocksy-child' ),
+			'url'    => $agency_url,
+			'active' => nexus_is_agency_nav_context(),
+			'class'  => '',
+			'track'  => 'whitelabel',
+		],
+		[
 			'label'  => $request_cta,
 			'url'    => $analysis_url,
 			'active' => false,
@@ -172,6 +180,18 @@ function nexus_is_energy_systems_context() {
 	return is_page( 'solar-waermepumpen-leadgenerierung' )
 		|| is_page( 'website-fuer-solar-und-waermepumpen-anbieter' )
 		|| is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' );
+}
+
+/**
+ * Check whether the current request is the agency (white-label) route.
+ *
+ * @return bool
+ */
+function nexus_is_agency_nav_context() {
+	return is_page( 'whitelabel-retainer' )
+		|| is_page( 'whitelabel-retainer-proof' )
+		|| is_page( 'whitelabel' )
+		|| is_page_template( 'page-whitelabel-retainer.php' );
 }
 
 /**
@@ -237,8 +257,9 @@ function nexus_strip_side_funnel_nav_items( $items, $args ) {
 		return $items;
 	}
 
+	// '/whitelabel-retainer/' steht bewusst nicht mehr hier: die Agenturseite
+	// ist jetzt ein regulärer Navigationspunkt, kein Footer-only-Nebenpfad.
 	$blocked_paths = [
-		'/whitelabel-retainer/',
 		'/core-web-vitals/',
 		'/conversion-rate-optimization/',
 		'/wordpress-seo-hannover/',
@@ -270,6 +291,86 @@ function nexus_strip_side_funnel_nav_items( $items, $args ) {
 	return $filtered_items;
 }
 add_filter( 'wp_nav_menu_objects', 'nexus_strip_side_funnel_nav_items', 10, 2 );
+
+/**
+ * Keep the agency entry point in the primary header navigation.
+ *
+ * Das gespeicherte WordPress-Menü wird nur beim Theme-Wechsel oder über
+ * `?nexus_rebuild_menu=1` neu aufgebaut. Damit "Für Agenturen" nicht von einem
+ * Admin-Schritt abhängt, wird der Punkt hier ergänzt, falls kein Menüeintrag
+ * bereits auf die Route zeigt. Er steht vor dem CTA-Button, damit der Marktcheck
+ * der letzte Punkt der Leiste bleibt.
+ *
+ * @param array           $items Sorted menu item objects.
+ * @param stdClass|string $args  Menu arguments.
+ * @return array
+ */
+function nexus_ensure_agency_nav_item( $items, $args ) {
+	if ( is_admin() || ! nexus_is_primary_header_menu_args( $args ) || ! is_array( $items ) ) {
+		return $items;
+	}
+
+	$agency_url  = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
+	$agency_path = (string) wp_parse_url( $agency_url, PHP_URL_PATH );
+	$agency_path = '' !== $agency_path ? trailingslashit( untrailingslashit( $agency_path ) ) : '/whitelabel-retainer/';
+	$cta_index   = null;
+
+	// WordPress schlüsselt die Menüpunkte nach `menu_order`, nicht nach
+	// Position. Erst neu indizieren, damit der gefundene Index auch der
+	// Offset für array_splice() ist.
+	$items = array_values( $items );
+
+	foreach ( $items as $index => $item ) {
+		$item_url  = isset( $item->url ) ? (string) $item->url : '';
+		$item_path = (string) wp_parse_url( $item_url, PHP_URL_PATH );
+
+		if ( '' !== $item_path && trailingslashit( untrailingslashit( $item_path ) ) === $agency_path ) {
+			return $items;
+		}
+
+		$item_classes = isset( $item->classes ) && is_array( $item->classes ) ? $item->classes : [];
+		if ( null === $cta_index && in_array( 'nav-cta-button', $item_classes, true ) ) {
+			$cta_index = (int) $index;
+		}
+	}
+
+	$is_current  = nexus_is_agency_nav_context();
+	$agency_item = (object) [
+		'ID'                    => 0,
+		'db_id'                 => 0,
+		'menu_item_parent'      => 0,
+		'object_id'             => 0,
+		'object'                => 'custom',
+		'type'                  => 'custom',
+		'type_label'            => 'Custom Link',
+		'title'                 => __( 'Für Agenturen', 'blocksy-child' ),
+		'url'                   => $agency_url,
+		'target'                => '',
+		'attr_title'            => '',
+		'description'           => '',
+		'xfn'                   => '',
+		'classes'               => $is_current
+			? [ 'menu-item', 'nav-agency-link', 'current-menu-item', 'current_page_item' ]
+			: [ 'menu-item', 'nav-agency-link' ],
+		'current'               => $is_current,
+		'current_item_ancestor' => false,
+		'current_item_parent'   => false,
+		'menu_order'            => 0,
+		'post_type'             => 'nav_menu_item',
+		'post_status'           => 'publish',
+	];
+
+	if ( null === $cta_index ) {
+		$items[] = $agency_item;
+
+		return $items;
+	}
+
+	array_splice( $items, $cta_index, 0, [ $agency_item ] );
+
+	return $items;
+}
+add_filter( 'wp_nav_menu_objects', 'nexus_ensure_agency_nav_item', 25, 2 );
 
 /**
  * Repair legacy primary-menu placeholders and dirty editor URLs at render time.
