@@ -152,7 +152,20 @@ function nexus_setup_main_menu() {
 		'menu-item-status'    => 'publish',
 	] );
 
-	// ── 5. Marktcheck CTA (Top-Level) ──────────────────────────────
+	// ── 5. Für Agenturen (Top-Level) ───────────────────────────────
+	$agency_id  = nexus_get_page_id( [ 'whitelabel-retainer' ] );
+	$agency_url = $primary_urls['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
+	wp_update_nav_menu_item( $menu_id, 0, [
+		'menu-item-title'     => 'Für Agenturen',
+		'menu-item-object'    => 'page',
+		'menu-item-object-id' => $agency_id,
+		'menu-item-type'      => $agency_id ? 'post_type' : 'custom',
+		'menu-item-url'       => $agency_id ? '' : $agency_url,
+		'menu-item-status'    => 'publish',
+		'menu-item-classes'   => 'nav-agency-link',
+	] );
+
+	// ── 6. Marktcheck CTA (Top-Level) ──────────────────────────────
 	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	wp_update_nav_menu_item( $menu_id, 0, [
 		'menu-item-title'     => 'Marktcheck · 48 h',
@@ -342,6 +355,7 @@ add_filter( 'nav_menu_link_attributes', function ( $atts, $item ) {
 		'case study'          => 'case_study_proof',
 		'über mich'           => 'about',
 		'über haşim'          => 'about',
+		'für agenturen'       => 'whitelabel',
 	];
 
 	foreach ( $track_map as $label => $track_key ) {

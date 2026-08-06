@@ -103,8 +103,9 @@ Belege (nicht raten, nachschlagen):
 
 ## Nebenpfad: White-Label für Agenturen
 
-`/whitelabel-retainer/` ist ein bewusster, diskreter Nebenpfad außerhalb der
-Kern-Positionierung (noindex, Footer-only, nicht in `llms.txt`). Für diese
+`/whitelabel-retainer/` ist ein eigener Agentur-Einstieg außerhalb der
+Kern-Positionierung: indexierbar, in der Sitemap und über den Navigationspunkt
+„Für Agenturen“ erreichbar, aber weiterhin nicht in `llms.txt`. Für diese
 eine Route gelten kontrollierte Ausnahmen:
 
 - Zielgruppe: Agenturen (Performance, Webdesign, Full-Service) — Anrede „ihr/euch“

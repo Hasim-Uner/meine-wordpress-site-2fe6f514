@@ -318,6 +318,16 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Aroundhome Kosten für Handwerker: Erfahrungen & Einordnung',
 				'description' => 'Was kostet Aroundhome für Handwerker? Einordnung öffentlicher Erfahrungen, Vertragsfragen und Kosten pro Auftrag für Solar- und SHK-Betriebe.',
 			],
+			// Die Agenturseite hat keine Editor-Copy (Template-Route mit leerem
+			// post_content), lieferte also bis hierher weder Title noch
+			// Description. Beide stehen jetzt hier, weil die Route indexierbar
+			// ist. Zielgruppe und Ansprache folgen der Whitelabel-Ausnahme in
+			// docs/standards/BRAND_AND_COPY.md: Agenturen, „ihr/euch“,
+			// sichtbar immer „White-Label“, Einstieg über das Erstprojekt.
+			'whitelabel-retainer' => [
+				'title'       => 'White-Label-Partner für Agenturen: WordPress, SEO, Tracking',
+				'description' => 'White-Label-Partner für Agenturen: WordPress, technisches SEO, Tracking und CRO unter eurem Namen. Einstieg über ein Erstprojekt mit fixem Scope und Festpreis.',
+			],
 		]
 	);
 }
@@ -806,8 +816,11 @@ function hu_get_noindex_follow_slugs() {
 		'wordpress-wartung-hannover',
 		'roi-rechner',
 		'seo',
+		// '/whitelabel-retainer/' ist bewusst nicht mehr hier gelistet: die
+		// Agenturseite ist ab sofort ein indexierbarer Einstieg mit eigenem
+		// Navigationspunkt "Für Agenturen". Die beiden Alias-Slugs bleiben
+		// noindex, damit dieselbe Seite nicht mehrfach in den Index kommt.
 		'whitelabel',
-		'whitelabel-retainer',
 		'whitelabel-retainer-proof',
 	];
 }
@@ -1478,7 +1491,9 @@ add_action( 'template_redirect', function () {
  * - alte Service-, Tool- und ROI-Slugs: 410 Gone und aus Sitemap entfernen
  * - alte WGOS-Slugs: noindex/access-protected und aus Sitemap entfernen
  * - growth-audit und generische Audit-Aliasse: 301 auf Marktcheck
- * - whitelabel*: diskreter Akquisepfad, aber kein aktives SEO-Ziel
+ * - whitelabel / whitelabel-retainer-proof: Alias-Slugs derselben Agenturseite,
+ *   noindex gegen Duplikate. `/whitelabel-retainer/` selbst ist indexierbar und
+ *   steht damit auch in der Sitemap.
  *
  * @return array<int, string>
  */
