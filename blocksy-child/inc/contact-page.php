@@ -381,6 +381,44 @@ function nexus_get_contact_budget_options() {
 }
 
 /**
+ * Return the selectable advertising platforms for tracking intake forms.
+ *
+ * Rendered as single checkboxes named `ad_platform_<key>`, not as a group.
+ * The shared form JS flattens FormData into a JSON object, so repeated field
+ * names would overwrite each other — distinct names keep every selection.
+ *
+ * @return array<string, string>
+ */
+function nexus_get_contact_ad_platform_options() {
+	return [
+		'google_ads' => 'Google Ads',
+		'meta'       => 'Meta (Facebook/Instagram)',
+		'microsoft'  => 'Microsoft Ads',
+		'linkedin'   => 'LinkedIn Ads',
+		'tiktok'     => 'TikTok Ads',
+		'other'      => 'Andere',
+	];
+}
+
+/**
+ * Return the available monthly advertising budget ranges for tracking intakes.
+ *
+ * Separate from nexus_get_contact_budget_options(): that one asks for the
+ * project budget, this one for recurring media spend.
+ *
+ * @return array<string, string>
+ */
+function nexus_get_contact_ad_budget_options() {
+	return [
+		'under_1000' => 'unter 1.000 € pro Monat',
+		'1000_5000'  => '1.000 – 5.000 € pro Monat',
+		'5000_15000' => '5.000 – 15.000 € pro Monat',
+		'15000_plus' => 'über 15.000 € pro Monat',
+		'unsure'     => 'Noch offen',
+	];
+}
+
+/**
  * Return the available timing options for follow-up, implementation and client requests.
  *
  * @return array<string, string>
@@ -616,6 +654,8 @@ function nexus_validate_contact_request_payload( $payload ) {
 	$focus_labels         = nexus_get_contact_focus_labels();
 	$budget_options       = nexus_get_contact_budget_options();
 	$timeline_options     = nexus_get_contact_timeline_options();
+	$ad_budget_options    = nexus_get_contact_ad_budget_options();
+	$ad_platform_options  = nexus_get_contact_ad_platform_options();
 	$name                 = isset( $payload['name'] ) ? sanitize_text_field( (string) $payload['name'] ) : '';
 	$email                = isset( $payload['email'] ) ? sanitize_email( (string) $payload['email'] ) : '';
 	$request_type         = isset( $payload['request_type'] ) ? sanitize_key( (string) $payload['request_type'] ) : '';
@@ -627,6 +667,12 @@ function nexus_validate_contact_request_payload( $payload ) {
 	$budget               = isset( $payload['budget'] ) ? sanitize_key( (string) $payload['budget'] ) : '';
 	$consent              = ! empty( $payload['consent'] );
 	$minimum_message_len  = 'general' === $request_type ? 18 : 24;
+
+	// Optionale Zusatzangaben. Formulare, die sie nicht senden, bleiben unveraendert gueltig.
+	$company        = isset( $payload['company'] ) ? mb_substr( sanitize_text_field( (string) $payload['company'] ), 0, 120 ) : '';
+	$consent_tool   = isset( $payload['consent_tool'] ) ? mb_substr( sanitize_text_field( (string) $payload['consent_tool'] ), 0, 120 ) : '';
+	$tracking_setup = isset( $payload['tracking_setup'] ) ? mb_substr( sanitize_textarea_field( (string) $payload['tracking_setup'] ), 0, 2000 ) : '';
+	$ad_budget      = isset( $payload['ad_budget'] ) ? sanitize_key( (string) $payload['ad_budget'] ) : '';
 
 	if ( '' === $name ) {
 		return new WP_Error( 'missing_name', 'Bitte Ihren Namen angeben.' );
@@ -683,6 +729,17 @@ function nexus_validate_contact_request_payload( $payload ) {
 		$budget = '';
 	}
 
+	if ( '' !== $ad_budget && ! isset( $ad_budget_options[ $ad_budget ] ) ) {
+		return new WP_Error( 'invalid_ad_budget', 'Bitte ein gültiges Werbebudget auswählen.' );
+	}
+
+	$ad_platform_labels = [];
+	foreach ( $ad_platform_options as $ad_platform_key => $ad_platform_label ) {
+		if ( ! empty( $payload[ 'ad_platform_' . $ad_platform_key ] ) ) {
+			$ad_platform_labels[] = $ad_platform_label;
+		}
+	}
+
 	if ( '' === trim( $message ) || mb_strlen( trim( $message ) ) < $minimum_message_len ) {
 		return new WP_Error( 'message_too_short', 'Bitte Ihr Anliegen kurz und konkret beschreiben.' );
 	}
@@ -712,6 +769,12 @@ function nexus_validate_contact_request_payload( $payload ) {
 		'message'            => $message,
 		'budget'             => $budget,
 		'budget_label'       => '' !== $budget ? $budget_options[ $budget ] : '',
+		'company'            => $company,
+		'ad_platforms'       => implode( ', ', $ad_platform_labels ),
+		'ad_budget'          => $ad_budget,
+		'ad_budget_label'    => '' !== $ad_budget ? $ad_budget_options[ $ad_budget ] : '',
+		'tracking_setup'     => $tracking_setup,
+		'consent_tool'       => $consent_tool,
 		'ads_source'         => $ads_source,
 		'ads_keyword'        => $ads_keyword,
 		'utm_medium'         => $utm_medium,
@@ -827,6 +890,13 @@ function nexus_send_contact_request_admin_notification( $payload ) {
 		esc_html( $payload['focus_label'] )
 	);
 
+	if ( ! empty( $payload['company'] ) ) {
+		$meta_rows .= sprintf(
+			'<br><strong style="color:#f7f3ee;">Unternehmen:</strong> %s',
+			esc_html( (string) $payload['company'] )
+		);
+	}
+
 	if ( '' !== $payload['timeline_label'] ) {
 		$meta_rows .= sprintf(
 			'<br><strong style="color:#f7f3ee;">Zeitfenster:</strong> %s',
@@ -854,6 +924,34 @@ function nexus_send_contact_request_admin_notification( $payload ) {
 			'<br><strong style="color:#f7f3ee;">LinkedIn:</strong> <a href="%1$s" style="color:#f7f3ee;">%2$s</a>',
 			esc_url( $payload['linkedin_url'] ),
 			esc_html( $payload['linkedin_url'] )
+		);
+	}
+
+	if ( ! empty( $payload['ad_platforms'] ) ) {
+		$meta_rows .= sprintf(
+			'<br><strong style="color:#f7f3ee;">Werbeplattformen:</strong> %s',
+			esc_html( (string) $payload['ad_platforms'] )
+		);
+	}
+
+	if ( ! empty( $payload['ad_budget_label'] ) ) {
+		$meta_rows .= sprintf(
+			'<br><strong style="color:#f7f3ee;">Werbebudget:</strong> %s',
+			esc_html( (string) $payload['ad_budget_label'] )
+		);
+	}
+
+	if ( ! empty( $payload['consent_tool'] ) ) {
+		$meta_rows .= sprintf(
+			'<br><strong style="color:#f7f3ee;">Consent-Tool:</strong> %s',
+			esc_html( (string) $payload['consent_tool'] )
+		);
+	}
+
+	if ( ! empty( $payload['tracking_setup'] ) ) {
+		$meta_rows .= sprintf(
+			'<br><strong style="color:#f7f3ee;">Aktuelles Tracking-Setup:</strong><br>%s',
+			nl2br( esc_html( (string) $payload['tracking_setup'] ) )
 		);
 	}
 
