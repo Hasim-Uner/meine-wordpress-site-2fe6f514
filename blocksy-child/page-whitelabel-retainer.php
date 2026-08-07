@@ -37,7 +37,7 @@ add_action(
 					<nav class="wl-site-header__nav" aria-label="Navigation auf dieser Seite">
 						<ul role="list">
 							<li><a href="#lieferfelder" data-track-action="nav_whitelabel_services" data-track-category="navigation" data-track-section="whitelabel_header">Leistungen</a></li>
-							<li><a href="#hero" data-track-action="nav_whitelabel_process" data-track-category="navigation" data-track-section="whitelabel_header">Ablauf</a></li>
+							<li><a href="#ablauf" data-track-action="nav_whitelabel_process" data-track-category="navigation" data-track-section="whitelabel_header">Ablauf</a></li>
 							<li><a href="#proof" data-track-action="nav_whitelabel_proof" data-track-category="navigation" data-track-section="whitelabel_header">Fallstudie</a></li>
 							<li><a href="#faq" data-track-action="nav_whitelabel_faq" data-track-category="navigation" data-track-section="whitelabel_header">FAQ</a></li>
 						</ul>
@@ -104,13 +104,6 @@ $test_sprint_scope = [
 		'fehlerhafte WordPress-Funktion',
 		'Umsetzung eines vorhandenen Layouts',
 	],
-	'excluded'         => [
-		'Relaunch',
-		'vollständige Landingpage',
-		'vollständiges Tracking-Setup',
-		'unbegrenzte Korrekturen',
-		'Lizenz- oder Drittanbieterkosten',
-	],
 	'scope_note'       => 'Der Aufgabenumfang wird vor Beginn schriftlich festgelegt. Erweiterungen sind ein eigenes Angebot.',
 	'intro_price_note' => 'Einmaliger Einstiegspreis für die erste Zusammenarbeit.',
 ];
@@ -125,29 +118,32 @@ $entry_projects = [
 		'card_line' => 'Eine abgegrenzte Aufgabe zum Festpreis — inklusive Umsetzung, Funktionstest, technischer Dokumentation und einer Korrekturrunde.',
 	],
 	[
-		'tag'      => 'Tracking',
-		'title'    => 'Tracking-Audit',
-		'price'    => 'Festpreis nach Umfangsklärung',
-		'duration' => 'Vor Projektstart verbindlich vereinbart',
-		'deliver'  => 'Schriftlicher Befund + priorisierte Fixliste',
-		'copy'     => 'GA4, GTM und Consent-Bestand eures Kunden geprüft: Was misst, was fehlt, was verfälscht. Danach wisst ihr, worauf jede weitere Maßnahme aufsetzt.',
+		'tag'     => 'Tracking',
+		'title'   => 'Tracking-Audit',
+		'price'   => 'Festpreis nach Umfangsklärung',
+		'deliver' => 'Schriftlicher Befund + priorisierte Fixliste',
+		'copy'    => 'GA4, GTM und Consent-Bestand eures Kunden geprüft: Was misst, was fehlt, was verfälscht. Danach wisst ihr, worauf jede weitere Maßnahme aufsetzt.',
 	],
 	[
-		'tag'      => 'Server',
-		'title'    => 'Server-Side-Setup',
-		'price'    => 'Festpreis nach Umfangsklärung',
-		'duration' => 'Vor Projektstart verbindlich vereinbart',
-		'deliver'  => 'Produktives Setup + Doku + Übergabe',
-		'copy'     => 'Eigener Server-Side-Container, Enhanced Conversions, Meta CAPI, Consent Mode V2 — produktiv geschaltet und dokumentiert, nicht nur konfiguriert.',
+		'tag'     => 'Server',
+		'title'   => 'Server-Side-Setup',
+		'price'   => 'Festpreis nach Umfangsklärung',
+		'deliver' => 'Produktives Setup + Doku + Übergabe',
+		'copy'    => 'Eigener Server-Side-Container, Enhanced Conversions, Meta CAPI, Consent Mode V2 — produktiv geschaltet und dokumentiert, nicht nur konfiguriert.',
 	],
 	[
-		'tag'      => 'Landingpage',
-		'title'    => 'Landingpage',
-		'price'    => 'Festpreis nach Umfangsklärung',
-		'duration' => 'Vor Projektstart verbindlich vereinbart',
-		'deliver'  => 'Live-Page + Doku, bereit für Traffic',
-		'copy'     => 'Individuelles Template mit klarer Funnel-Logik, sauberen Core Web Vitals und belastbarer Messbarkeit ab dem ersten Klick.',
+		'tag'     => 'Landingpage',
+		'title'   => 'Landingpage',
+		'price'   => 'Festpreis nach Umfangsklärung',
+		'deliver' => 'Live-Page + Doku, bereit für Traffic',
+		'copy'    => 'Individuelles Template mit klarer Funnel-Logik, sauberen Core Web Vitals und belastbarer Messbarkeit ab dem ersten Klick.',
 	],
+];
+
+// ── Pre-Sales-Scoping: greift vor dem Erstprojekt, noch in der Angebotsphase ──
+$presales_scoping = [
+	'question' => 'Ihr seid noch in der Angebotsphase?',
+	'copy'     => 'Ich schätze technische Anforderungen, Aufwand und Machbarkeit vorab mit euch ein, bevor ihr dem Kunden etwas zusagt.',
 ];
 
 $entry_bullets = [ 'NDA', 'Fixer Scope', 'Festpreis nach Umfangsklärung', 'Keine Verlängerungsfalle' ];
@@ -163,54 +159,34 @@ $solution_modes = [
 	],
 ];
 
-// ── Lieferfelder: zwei Gruppen statt Leistungskatalog ───────────
-$stack_groups = [
+// ── Lieferfelder: drei Bereiche statt Leistungskatalog ──────────
+// Landingpages sind bewusst kein vierter Bereich, sondern der Querschnitt
+// aus allen dreien (siehe $stack_crosscut).
+$stack_fields = [
 	[
-		'title' => 'Anfrage-System-Handwerk',
-		'cards' => [
-			[
-				'tag'   => 'Tracking',
-				'title' => 'Tracking-Fundament',
-				'copy'  => 'GA4 + GTM, eigener Server-Side-Container (Stape/GCP), Enhanced Conversions, Meta CAPI, Consent Mode V2 — eine Datenstrecke vom Klick bis zum Abschluss.',
-				'chips' => [ 'GA4', 'GTM-SS', 'CAPI', 'Consent V2' ],
-				'entry' => 'Typisches Erstprojekt: Tracking-Audit oder Server-Side-Setup.',
-			],
-			[
-				'tag'   => 'CRO',
-				'title' => 'Landingpages & CRO',
-				'copy'  => 'Individuelle Templates mit klarer Funnel-Logik, belastbaren A/B-Hypothesen und schneller Ladezeit.',
-				'chips' => [ 'LP', 'A/B', 'Funnel', 'Speed' ],
-				'entry' => 'Typisches Erstprojekt: eine Landingpage, bereit für Traffic.',
-			],
-			[
-				'tag'   => 'Ops',
-				'title' => 'Automation & CRM',
-				'copy'  => 'n8n, Make, Zapier; CRM-Attribution in Bitrix24, HubSpot, Pipedrive. Die Lead-Strecke endet im Abschluss, nicht im Postfach.',
-				'chips' => [ 'n8n', 'Make', 'CRM', 'Attribution' ],
-				'entry' => 'Typisches Erstprojekt: Lead-Routing bis ins CRM.',
-			],
-		],
+		'tag'   => 'WordPress',
+		'title' => 'WordPress & Technical Delivery',
+		'copy'  => 'Individuelle Templates für vorhandene Layouts, Core Web Vitals und technisches SEO — umgesetzt, geprüft und dokumentiert im bestehenden WordPress-Setup.',
+		'chips' => [ 'Templates', 'CWV', 'Technical SEO', 'Hardening' ],
+		'entry' => 'Typisches Erstprojekt: eine abgegrenzte WordPress-Aufgabe oder ein technischer SEO-Fix.',
 	],
 	[
-		'title' => 'Technisches Fundament',
-		'cards' => [
-			[
-				'tag'   => 'SEO',
-				'title' => 'Technical SEO',
-				'copy'  => 'Audits, Indexierung, Logfile-Analysen, Schema, hreflang — Architektur, die trägt, statt Checklisten-Kosmetik.',
-				'chips' => [ 'Audit', 'Schema', 'hreflang', 'Logfiles' ],
-				'entry' => 'Typisch im Retainer: fortlaufende technische Betreuung.',
-			],
-			[
-				'tag'   => 'CWV',
-				'title' => 'Performance & Core Web Vitals',
-				'copy'  => 'Hardening, bedarfsgesteuertes Asset-Loading und ein optimierter kritischer Renderpfad — WordPress-spezifisch umgesetzt und dokumentiert.',
-				'chips' => [ 'CWV', 'Caching', 'Hardening', 'Templates' ],
-				'entry' => 'Typisch im Retainer: CWV-Budget halten, Release für Release.',
-			],
-		],
+		'tag'   => 'Tracking',
+		'title' => 'Tracking & Attribution',
+		'copy'  => 'GA4 und GTM, eigener Server-Side-Container (Stape/GCP), Enhanced Conversions, Meta CAPI, Consent Mode V2 — die Messkette vom Klick bis zum Abschluss, dokumentiert und nachvollziehbar.',
+		'chips' => [ 'GA4', 'GTM-SS', 'CAPI', 'Consent V2' ],
+		'entry' => 'Typisches Erstprojekt: Tracking-Audit oder Server-Side-Setup.',
+	],
+	[
+		'tag'   => 'Ops',
+		'title' => 'CRM & Automation',
+		'copy'  => 'n8n, Make und Zapier, CRM-Integrationen in Bitrix24, HubSpot und Pipedrive, Leadflows und API-Anbindungen — mit Fehlerbehandlung, Doku und Übergabe statt Workflow-Screenshot.',
+		'chips' => [ 'n8n', 'CRM', 'Leadflow', 'APIs' ],
+		'entry' => 'Typisches Erstprojekt: Lead-Routing bis ins CRM.',
 	],
 ];
+
+$stack_crosscut = 'Landingpages sind kein eigener Bereich. Sie sind der Querschnitt: WordPress-Umsetzung, Messbarkeit und Lead-Routing aus allen drei Feldern in einer Seite.';
 
 $contract_cards = [
 	[
@@ -222,8 +198,8 @@ $contract_cards = [
 	[
 		'eyebrow' => '02',
 		'title'   => 'Verbindlich',
-		'copy'    => 'Rückmeldung in der Regel innerhalb eines Werktags. Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
-		'bullets' => [ 'Starttermin vereinbart', 'Delivery-Fenster verbindlich', 'Dringendes separat bestätigt' ],
+		'copy'    => 'Antwort innerhalb von 4 Stunden werktags. Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
+		'bullets' => [ 'Antwort in 4 Stunden werktags', 'Starttermin vorab bestätigt', 'Dringendes separat priorisiert' ],
 	],
 	[
 		'eyebrow' => '03',
@@ -286,7 +262,13 @@ $comparison_rows = [
 	],
 ];
 
-$founder_chips = [ 'Hannover', 'NDA standardmäßig', 'Rückmeldung in der Regel innerhalb eines Werktags' ];
+$founder_credentials = '8+ Jahre WordPress-Entwicklung · B.A. Medienwissenschaften · Performance-Marketing und Leadgenerierung für D2C und B2B · Hannover';
+
+// Ein-Personen-Modell: Kapazität und Abwesenheiten werden benannt, nicht
+// durch eine erfundene Vertretung überdeckt.
+$founder_availability = 'Verfügbarkeiten und Abwesenheiten werden vor Projektstart transparent eingeplant. Kritische Deadlines werden nur zugesagt, wenn die Umsetzung im vereinbarten Zeitraum abgesichert ist.';
+
+$founder_chips = [ 'NDA standardmäßig', 'Antwort innerhalb von 4 Stunden werktags' ];
 
 $faq_items = [
 	[
@@ -295,14 +277,14 @@ $faq_items = [
 		'a'   => 'Der WordPress-Test-Sprint ist mit 590 € netto der kleinste Einstieg und hat einen vorab schriftlich abgegrenzten Umfang. Tracking-Audit, Server-Side-Setup, Landingpage und weitere größere Erstprojekte werden nach der Umfangsklärung als Festpreis angeboten. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt und erhält einen vorab vereinbarten Leistungsrahmen.',
 	],
 	[
+		'key' => 'sprint-scope',
+		'q'   => 'Was ist im WordPress-Test-Sprint nicht enthalten?',
+		'a'   => 'Nicht enthalten sind Relaunch, vollständige Landingpage, vollständiges Tracking-Setup, unbegrenzte Korrekturen sowie Lizenz- oder Drittanbieterkosten. Größere Vorhaben laufen als eigenes Erstprojekt mit Festpreis nach Umfangsklärung.',
+	],
+	[
 		'key' => 'sichtbarkeit',
 		'q'   => 'Was passiert, wenn unser Kunde fragt, wer die Technik macht?',
 		'a'   => 'Das legt ihr vorab fest. Standard: Backoffice — ihr antwortet als Team. Auf Wunsch stellt ihr euren Technik-Lead vor, und die Fragen werden direkt im Call beantwortet, unter eurem Branding. Was nie passiert: Akquise in eurem Kundenstamm. Das steht im Kontrakt.',
-	],
-	[
-		'key' => 'pitch',
-		'q'   => 'Gibt es Support schon im Pitch — bevor der Kunde unterschrieben hat?',
-		'a'   => 'Ja. Scope, Aufwandsschätzung, technische Machbarkeit — ihr bekommt belastbare Zahlen für euer Angebot, bevor ihr etwas verkauft, das nachher niemand bauen kann. Den Rahmen dafür klären wir im Fit-Gespräch.',
 	],
 	[
 		'key' => 'zugaenge',
@@ -312,7 +294,7 @@ $faq_items = [
 	[
 		'key' => 'kapazitaet',
 		'q'   => 'Wie schnell reagierst du — und was ist mit Kapazität?',
-		'a'   => 'Rückmeldung in der Regel innerhalb eines Werktags. Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
+		'a'   => 'Antwort innerhalb von 4 Stunden werktags. Wie viel Kapazität in welchem Zeitraum zur Verfügung steht, klären wir vor dem Angebot; Abwesenheiten werden dabei offen eingeplant. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
 	],
 	[
 		'key' => 'ownership',
@@ -327,7 +309,7 @@ $faq_items = [
 	[
 		'key' => 'start',
 		'q'   => 'Wie schnell können wir starten?',
-		'a'   => 'Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Nach dem Fit-Gespräch folgen NDA, Zugänge und ein Erstprojekt mit fixem Scope. Erst nach dessen erfolgreichem Abschluss entscheidet ihr über ein weiteres Projekt oder einen Retainer.',
+		'a'   => 'Nach dem Fit-Gespräch folgen NDA, Zugänge und ein Erstprojekt mit fixem Scope; den Starttermin legen wir dabei gemeinsam fest. Erst nach dessen erfolgreichem Abschluss entscheidet ihr über ein weiteres Projekt oder einen Retainer.',
 	],
 	[
 		'key' => 'recht',
@@ -420,7 +402,7 @@ $fitcheck_steps = [
 						<span class="wl-hero__title-line wl-hero__title-line--em">Euer Name steht drauf.</span>
 					</h1>
 					<p class="wl-hero__lede">
-						Individuelle WordPress-Umsetzung, Performance, technisches SEO und Tracking — diskret unter eurem Namen. Unsichtbar im Hintergrund oder als euer Technik-Lead im Call: ihr entscheidet pro Projekt.
+						Senior-Unterstützung für WordPress, Tracking und Automation — wenn intern technische Tiefe oder Kapazität fehlt. Ohne zusätzliche Festanstellung und unter eurem Namen.
 					</p>
 
 					<div class="wl-hero__actions">
@@ -440,7 +422,7 @@ $fitcheck_steps = [
 					</p>
 				</div>
 
-				<aside class="wl-flow" aria-label="Ablauf eines White-Label-Mandats">
+				<aside class="wl-flow" id="ablauf" aria-label="Ablauf eines White-Label-Mandats">
 					<header class="wl-flow__head">
 						<span class="wl-flow__kicker">Der Ablauf</span>
 						<span class="wl-flow__sub">Ein Mandat, vier Stationen</span>
@@ -500,6 +482,10 @@ $fitcheck_steps = [
 				<p class="wl-section-lede">Der WordPress-Test-Sprint ist der kleinste Einstieg zum festen Preis. Größere Erstprojekte folgen mit fester Lieferung und einem Festpreis nach Umfangsklärung. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt.</p>
 			</div>
 
+			<div class="wl-entry__presales nx-reveal">
+				<p><strong><?php echo esc_html( $presales_scoping['question'] ); ?></strong> <?php echo esc_html( $presales_scoping['copy'] ); ?></p>
+			</div>
+
 			<div class="wl-entry__grid reveal-stagger">
 				<?php foreach ( $entry_projects as $project ) : ?>
 					<article class="wl-entry-card">
@@ -513,10 +499,6 @@ $fitcheck_steps = [
 							<p class="wl-entry-card__summary"><?php echo esc_html( $project['card_line'] ); ?></p>
 						<?php else : ?>
 							<dl class="wl-entry-card__meta">
-								<div>
-									<dt>Delivery-Fenster</dt>
-									<dd><?php echo esc_html( $project['duration'] ); ?></dd>
-								</div>
 								<div>
 									<dt>Lieferung</dt>
 									<dd><?php echo esc_html( $project['deliver'] ); ?></dd>
@@ -550,14 +532,6 @@ $fitcheck_steps = [
 						<h4>Geeignet für</h4>
 						<ul>
 							<?php foreach ( $test_sprint_scope['suitable'] as $item ) : ?>
-								<li><?php echo esc_html( $item ); ?></li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-					<div class="wl-test-sprint-details__item wl-test-sprint-details__item--excluded">
-						<h4>Nicht enthalten</h4>
-						<ul>
-							<?php foreach ( $test_sprint_scope['excluded'] as $item ) : ?>
 								<li><?php echo esc_html( $item ); ?></li>
 							<?php endforeach; ?>
 						</ul>
@@ -644,28 +618,25 @@ $fitcheck_steps = [
 				<p class="wl-section-lede">Alles zahlt auf denselben Zweck ein: Kundenprojekte, die messbar Anfragen bringen. Einzeln als Erstprojekt, kombiniert im Retainer — immer unter eurem Namen.</p>
 			</div>
 
-			<?php foreach ( $stack_groups as $group ) : ?>
-				<div class="wl-stack__group">
-					<h3 class="wl-stack__group-title nx-reveal"><?php echo esc_html( $group['title'] ); ?></h3>
-					<div class="wl-stack__grid reveal-stagger">
-						<?php foreach ( $group['cards'] as $card ) : ?>
-							<article class="wl-stack-card">
-								<header class="wl-stack-card__head">
-									<span class="wl-stack-card__tag"><?php echo esc_html( $card['tag'] ); ?></span>
-								</header>
-								<h4 class="wl-stack-card__title"><?php echo esc_html( $card['title'] ); ?></h4>
-								<p class="wl-stack-card__copy"><?php echo esc_html( $card['copy'] ); ?></p>
-								<ul class="wl-stack-card__chips" aria-label="Komponenten">
-									<?php foreach ( $card['chips'] as $chip ) : ?>
-										<li><span class="wl-chip wl-chip--mono"><?php echo esc_html( $chip ); ?></span></li>
-									<?php endforeach; ?>
-								</ul>
-								<p class="wl-stack-card__entry"><?php echo esc_html( $card['entry'] ); ?></p>
-							</article>
-						<?php endforeach; ?>
-					</div>
-				</div>
-			<?php endforeach; ?>
+			<div class="wl-stack__grid reveal-stagger">
+				<?php foreach ( $stack_fields as $card ) : ?>
+					<article class="wl-stack-card">
+						<header class="wl-stack-card__head">
+							<span class="wl-stack-card__tag"><?php echo esc_html( $card['tag'] ); ?></span>
+						</header>
+						<h3 class="wl-stack-card__title"><?php echo esc_html( $card['title'] ); ?></h3>
+						<p class="wl-stack-card__copy"><?php echo esc_html( $card['copy'] ); ?></p>
+						<ul class="wl-stack-card__chips" aria-label="Komponenten">
+							<?php foreach ( $card['chips'] as $chip ) : ?>
+								<li><span class="wl-chip wl-chip--mono"><?php echo esc_html( $chip ); ?></span></li>
+							<?php endforeach; ?>
+						</ul>
+						<p class="wl-stack-card__entry"><?php echo esc_html( $card['entry'] ); ?></p>
+					</article>
+				<?php endforeach; ?>
+			</div>
+
+			<p class="wl-stack__crosscut nx-reveal"><?php echo esc_html( $stack_crosscut ); ?></p>
 		</div>
 	</section>
 
@@ -757,7 +728,9 @@ $fitcheck_steps = [
 				</div>
 			</div>
 
-			<p class="wl-proof__disclaimer">Stand 2024–2025 · kein White-Label-Mandat, sondern eigenes Projekt · keine pauschale Übertragbarkeitsgarantie.</p>
+			<p class="wl-proof__scope">Mein Verantwortungsbereich: Landingpage, Tracking-Architektur, Consent Mode V2, CRM-Attribution</p>
+
+			<p class="wl-proof__disclaimer">Historisches Fallbeispiel aus dem Zeitraum 2024–2025 · kein White-Label-Mandat, sondern eigenes Projekt · keine pauschale Übertragbarkeitsgarantie.</p>
 		</div>
 	</section>
 
@@ -784,6 +757,8 @@ $fitcheck_steps = [
 					<p class="wl-founder__copy">
 						Kein Delivery-Team, keine Vermittlungsplattform. Haşim Üner — Technical SEO, Server-Side-Tracking, WordPress &amp; Core Web Vitals, Landingpages, Automation. Die Arbeitsprobe oben: von der Tracking-Architektur bis zur letzten Zeile Code aus einer Hand. Im Fit-Gespräch sitzt ihr mit genau der Person, die nachher euren Code schreibt.
 					</p>
+					<p class="wl-founder__availability"><?php echo esc_html( $founder_availability ); ?></p>
+					<p class="wl-founder__credentials"><?php echo esc_html( $founder_credentials ); ?></p>
 					<ul class="wl-founder__chips" aria-label="Rahmendaten">
 						<?php foreach ( $founder_chips as $chip ) : ?>
 							<li><span class="wl-chip"><?php echo esc_html( $chip ); ?></span></li>
