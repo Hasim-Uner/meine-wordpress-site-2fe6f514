@@ -80,7 +80,7 @@ report "Floskeln" \
 
 report "Offene Marker" \
   "Vor dem Livegang aufloesen: Beleg liefern oder Aussage streichen." \
-  '\[BELEG FEHLT|BELEGDATEI EINTRAGEN|TODO|TBD'
+  '\[BELEG FEHLT|\[KUNDENSPRACHE FEHLT|BELEGDATEI EINTRAGEN|TODO|TBD'
 
 if [[ "${FOUND}" -eq 0 ]]; then
   echo "Keine Treffer."

@@ -94,8 +94,11 @@ Belege (nicht raten, nachschlagen):
 - `B2B` als Positionierung (zu generisch — wir sprechen Solar/Wärmepumpe)
 - `WordPress Specialist`, `WordPress-Agentur`, `Webdesign`, `Leistungen`
 - `Growth Architect`, generische Growth-/Marketing-Blasen-Begriffe
-- Shopify als Live-Positionierung
+- `Shopify` als Live-Positionierung
 - `kostenlos` als alleiniges Wertversprechen
+- `Founding Cohort 2026`, `Founding-Partner`, `Founding-Konditionen` — Detail
+  oben unter Preferred Terms
+- `Solarthermie` — anderes Gewerk, nicht Zielgruppe; Detail unten unter Solar / Photovoltaik / PV
 - Tool-artige Rahmung der Diagnose
 - Überhöhte Umsatzversprechen
 - Gleichgewichtiger Leistungskatalog statt Diagnose-first-Funnel

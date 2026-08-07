@@ -12,8 +12,11 @@ Diese Skill schreibt den Text. Die Seitenkritik mit Priorisierung macht
 
 1. `docs/standards/BRAND_AND_COPY.md` — Positionierung, Ton, Hard Bans
 2. `blocksy-child/inc/canon/messaging-canon.php` — kundenseitig gesperrte Begriffe
-3. `[BELEGDATEI EINTRAGEN]` — die einzige Quelle für Zahlen
-4. Die Zielseite selbst, dazu `llms.txt` für Route und CTA-Ziel
+3. `blocksy-child/inc/canon/e3-proof-canon.php` — die einzige Quelle für
+   Ergebniszahlen. Preise stehen in `pricing-canon.php` daneben, Such- und
+   GSC-Zahlen in `seo-research/<periode>/reports/`.
+4. `docs/standards/VOICE_OF_CUSTOMER.md` — Kundensprache, sofern gefüllt
+5. Die Zielseite selbst, dazu `llms.txt` für Route und CTA-Ziel
 
 ## A — Harte Regeln
 
@@ -24,9 +27,13 @@ und bei Rechts- oder Ergebnisaussagen kostet er mehr als eine Conversion.
 - Keine Garantien, keine Aussagen zu Rechtskonformität, keine absoluten
   Versprechen. Technische Tatsache statt Rechtsurteil: „läuft ohne Cookies" ja,
   „DSGVO-konform" nein.
-- Belegbare Zahlen stehen ausschließlich in `[BELEGDATEI EINTRAGEN]`. Was dort
+- Belegbare Zahlen stehen ausschließlich in den Canon-Dateien oben. Was dort
   nicht steht, wird nicht geschrieben, sondern als `[BELEG FEHLT: Aussage]`
   markiert und offen zurückgemeldet.
+- Für Kundensprache gilt dasselbe: Ist `VOICE_OF_CUSTOMER.md` leer oder deckt
+  die Aussage nicht ab, wird die Formulierung nicht erfunden, sondern als
+  `[KUNDENSPRACHE FEHLT: Aussage]` markiert. Eine geratene Kundenstimme ist
+  genauso wertlos wie eine geratene Zahl.
 - Keine Kundennamen. Neu geschriebene Copy beschreibt anonymisiert: Gewerk,
   Größenordnung, Ausgangslage. (Bestehende freigegebene Cases zu entfernen ist
   eine eigene Entscheidung, keine Nebenwirkung dieser Regel.)
@@ -75,7 +82,7 @@ ASCII-Umlaute und Canon-Drift prüft die CI bereits
 ## Deliver
 
 - Fertige Copy je Abschnitt, in der Reihenfolge der Seite
-- Liste der offenen `[BELEG FEHLT: …]`-Marker: was geliefert werden muss, damit
-  die Aussage stehen bleiben darf
+- Liste der offenen `[BELEG FEHLT: …]`- und `[KUNDENSPRACHE FEHLT: …]`-Marker:
+  was geliefert werden muss, damit die Aussage stehen bleiben darf
 - Trennung `Repo` (Template/Partial) und `Manual WP` (Editor-Copy)
 - Meta-Title und -Description, wenn die Seite eine eigene Route hat
