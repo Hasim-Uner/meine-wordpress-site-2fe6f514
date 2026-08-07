@@ -11,6 +11,10 @@ PATHS=(
   ":(exclude)blocksy-child/energie-fahrplan/dist/**"
   ":(exclude)blocksy-child/energie-fahrplan/package-lock.json"
   ":(exclude)scripts/lint-canon-drift.sh"
+  # Liest die Begriffe zur Laufzeit aus dem Canon und muss die mehrdeutigen
+  # davon benennen duerfen, um sie von echten Verstoessen zu trennen —
+  # gleiche Begruendung wie beim Selbstausschluss dieses Guards.
+  ":(exclude)agents/skills/route-conversion-review/scripts/review-route.sh"
   ":(exclude)docs/audits/**"
   ":(exclude)docs/decisions/**"
   ":(exclude)docs/references/**"
