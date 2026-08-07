@@ -325,6 +325,34 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-affiliate-notice-css', 'affiliate-notice.css', [ 'nexus-intercept-solar-leads-css' ] );
 	}
 
+	// ── F1a-int-sst) Money-Page-Layout NUR auf /server-side-tracking-b2b/ ──
+	// Die Seite rendert ein eigenes Formular auf den bestehenden Kontakt-Intake
+	// (nexus/v1/contact-request, type=project, focus=tracking) und braucht dafür
+	// contact.css/contact.js wie die Agentur-Seite. Das Page-Delta-Stylesheet
+	// lädt zuletzt und ist über .hu-sst gescopet – keine andere Intercept-Seite
+	// wird berührt.
+	if ( is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' ) ) {
+		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-design-system' ] );
+		hu_enqueue_css( 'nexus-sst-css', 'server-side-tracking.css', [ 'nexus-intercept-solar-leads-css', 'nexus-contact-css' ] );
+		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js' ] );
+
+		wp_localize_script(
+			'nexus-contact-js',
+			'NexusContactConfig',
+			[
+				'restEndpoint'    => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
+				'successMessage'  => 'Danke. Ihre Anfrage ist eingegangen. Sie erhalten eine Einschätzung zu Ihrem Tracking-Setup innerhalb von zwei Werktagen.',
+				'errorMessage'    => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
+				'callUrl'         => esc_url_raw(
+					function_exists( 'nexus_get_audit_calendar_url' )
+						? nexus_get_audit_calendar_url()
+						: home_url( '/kontakt/' )
+				),
+				'isScopedLanding' => true,
+			]
+		);
+	}
+
 	// ── F1b) Schwester-Templates (Solar Case Study, Service-Landing) ────────
 	if ( is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page( 'case-study-solar-leadgenerierung' ) || is_page( 'e3-new-energy' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) || is_page_template( 'page-e3-new-energy.php' ) || is_page_template( 'page-case-e3.php' ) ) {
 		hu_enqueue_css( 'nexus-review-funnel-css', 'review-funnel.css', [ 'nexus-design-system' ] );

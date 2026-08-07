@@ -851,6 +851,7 @@
                                 'invalid_focus_type': 'focus',
                                 'missing_timeline': 'timeline',
                                 'invalid_budget': 'budget',
+                                'invalid_ad_budget': 'ad_budget',
                                 'message_too_short': 'message',
                                 'missing_consent': 'consent'
                             };
