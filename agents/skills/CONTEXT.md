@@ -36,12 +36,16 @@ Scope: `agents/skills/`.
 | `homepage-proof-monitoring` | Homepage-Proof-Monitoring | homepage proof, proof metrics, monitoring |
 | `wordpress-performance-marketing` | Repo-weiter Sweep aus SEO, CRO und Tracking | full audit, performance marketing, tracking |
 | `route-conversion-review` | Eine einzelne Route komplett, in fester Linsen-Reihenfolge | route prüfen, seite komplett, vollcheck, durchleuchten |
+| `conversion-copy-loop` | Copy einer Route in Runden verbessern, bis die Gates grün sind | loop, iterieren, überarbeiten bis, verbessern bis |
 | `copy-anatomy` | Fremde Copy in Struktur zerlegen, Muster extrahieren | teardown, copy analyse, wettbewerberseite, vorbild |
 | `blog-seo-ux-optimizer` | Blog-Index, Kategorien, Single-Posts, interne Links, alte Positionierung | blog, category, article, author bio, related content, stale copy |
 
-Horizontal vs. vertikal: `wordpress-performance-marketing` prüft viele Seiten
-auf eine Domäne, `route-conversion-review` eine Seite auf alle Domänen. Wer
-beide Beschreibungen aufweicht, macht die Auswahl zum Ratespiel.
+Drei Achsen, drei Skills. `wordpress-performance-marketing` prüft **horizontal**:
+viele Seiten auf eine Domäne. `route-conversion-review` prüft **vertikal**: eine
+Seite auf alle Domänen, einmal. `conversion-copy-loop` arbeitet **iterativ**:
+dieselbe Seite in Runden, bis messbare Gates grün sind — er benutzt den
+vertikalen Check als Instrument und ersetzt ihn nicht. Wer diese drei
+Beschreibungen aufweicht, macht die Auswahl zum Ratespiel.
 
 Core rule: When a task touches `blocksy-child/assets/css/`, `blocksy-child/assets/js/`, or PHP templates that emit frontend HTML, load `modern-web-guidance` before implementation and retrieve only task-matching guides.
 
