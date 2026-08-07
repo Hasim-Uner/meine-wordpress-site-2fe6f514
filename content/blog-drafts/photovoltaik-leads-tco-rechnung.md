@@ -7,7 +7,7 @@
 - SEO-Titel (max. 60): Photovoltaik-Leads: TCO- und CPO-Rechnung
 - Meta-Description (max. 155): PV-Leads kaufen wirkt billig. Entscheidend ist CPO: Abschlussquote, Tracking, Page Speed, Datenbesitz und eigene Anfrage-Infrastruktur.
 - Excerpt: Warum Photovoltaik-Betriebe nicht CPL, sondern Cost per Order rechnen müssen. Eine harte Einordnung zu Portal-Leads, gemieteten Agentur-Funnels, Tracking, Page Speed und eigener Nachfrage-Infrastruktur.
-- Hero-Bild: `content/blog-drafts/assets/photovoltaik-leads-kaufen-alternative-hero.png`
+- Hero-Bild: `blocksy-child/assets/img/blog/photovoltaik-leads-kaufen-alternative-hero.png`
 - Hero-Bild Alt-Text: Vergleich von gemieteten Photovoltaik-Leads und eigener Anfrage-Infrastruktur mit CPO-Rechnung.
 - Primärer CTA: `Regionalen Marktcheck starten`
 - Primäre CTA-URL: `/solar-waermepumpen-leadgenerierung/#marktcheck`
