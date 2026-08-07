@@ -789,28 +789,13 @@ html {
 @media (max-width: 1000px) { .wl-stack__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 680px)  { .wl-stack__grid { grid-template-columns: 1fr; } }
 
-/* Zwei Liefer-Gruppen statt flachem Katalog-Grid. */
-.wl-stack__group { margin-bottom: clamp(1.75rem, 3vw, 2.5rem); }
-.wl-stack__group:last-child { margin-bottom: 0; }
-
-.wl-stack__group-title {
-	font-family: var(--nx-font-mono);
-	font-size: 0.78rem;
-	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.18em;
-	color: hsl(23 50% 70%);
-	margin: 0 0 1rem;
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-}
-
-.wl-stack__group-title::after {
-	content: "";
-	flex: 1;
-	height: 1px;
-	background: linear-gradient(90deg, hsl(23 50% 47% / 0.3), transparent);
+/* Landingpages als Querschnitt der drei Felder, nicht als viertes Feld. */
+.wl-stack__crosscut {
+	margin: clamp(1.25rem, 2.5vw, 1.75rem) 0 0;
+	max-width: 68ch;
+	font-size: 0.92rem;
+	line-height: 1.6;
+	color: hsl(30 6% 90% / 0.72);
 }
 
 .wl-stack-card__entry {
@@ -1018,8 +1003,17 @@ html {
 	margin-top: 0.5rem;
 }
 
+.wl-proof__scope {
+	margin: 1.5rem auto 0;
+	max-width: 62ch;
+	font-size: 0.92rem;
+	line-height: 1.6;
+	color: hsl(30 6% 90% / 0.78);
+	text-align: center;
+}
+
 .wl-proof__disclaimer {
-	margin: 1.5rem 0 0;
+	margin: 0.75rem 0 0;
 	font-size: 0.83rem;
 	color: hsl(30 6% 90% / 0.62);
 	text-align: center;
@@ -1241,6 +1235,28 @@ html {
 	line-height: 1.45;
 }
 
+/* Pre-Sales-Scoping: greift vor dem Erstprojekt, deshalb vor den Karten. */
+.wl-entry__presales {
+	margin: 0 0 clamp(1.5rem, 3vw, 2rem);
+	padding: 0.9rem 1.15rem;
+	background: hsl(28 8% 8% / 0.7);
+	border-left: 2px solid hsl(23 50% 47% / 0.55);
+	border-radius: 0 12px 12px 0;
+}
+
+.wl-entry__presales p {
+	margin: 0;
+	max-width: 68ch;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: hsl(30 6% 90% / 0.8);
+}
+
+.wl-entry__presales strong {
+	color: var(--nx-text);
+	font-weight: 600;
+}
+
 .wl-test-sprint-details {
 	margin: 0 0 1.75rem;
 	padding: clamp(1.5rem, 3vw, 2.25rem);
@@ -1264,7 +1280,7 @@ html {
 
 .wl-test-sprint-details__grid {
 	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: clamp(1.25rem, 2.5vw, 2rem);
 }
 
@@ -1276,10 +1292,6 @@ html {
 	letter-spacing: 0.12em;
 	text-transform: uppercase;
 	color: hsl(23 50% 70%);
-}
-
-.wl-test-sprint-details__item--excluded h4 {
-	color: hsl(30 6% 90% / 0.58);
 }
 
 .wl-test-sprint-details__item ul,
@@ -1451,11 +1463,22 @@ html {
 	-webkit-backdrop-filter: blur(10px);
 	border-top: 1px solid hsl(23 50% 47% / 0.25);
 	box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.4);
+	/* visibility statt nur transform: sonst bleibt der ausgefahrene CTA
+	   fokussierbar, obwohl er aria-hidden ist (und ohne JS dauerhaft). */
+	visibility: hidden;
 	transform: translateY(100%);
-	transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+	transition:
+		transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+		visibility 0s linear 0.35s;
 }
 
-.wl-sticky-cta.is-visible { transform: translateY(0); }
+.wl-sticky-cta.is-visible {
+	visibility: visible;
+	transform: translateY(0);
+	transition:
+		transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+		visibility 0s;
+}
 
 .wl-sticky-cta__inner {
 	display: flex;
@@ -1972,6 +1995,22 @@ thead .wl-compare__col--hl {
 	line-height: 1.65;
 	color: hsl(30 6% 90% / 0.85);
 	max-width: 62ch;
+}
+
+.wl-founder__availability {
+	margin: 0 0 1rem;
+	max-width: 62ch;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: hsl(30 6% 90% / 0.75);
+}
+
+.wl-founder__credentials {
+	margin: 0 0 1.1rem;
+	max-width: 62ch;
+	font-size: 0.88rem;
+	line-height: 1.55;
+	color: hsl(30 6% 90% / 0.72);
 }
 
 .wl-founder__chips {
