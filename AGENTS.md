@@ -22,6 +22,20 @@ Global contract for agents in this repo. Keep context small: read this file, the
 - For pure layout/template work, keep searches scoped to templates/assets and avoid heavy backend modules such as `blocksy-child/inc/seo-cockpit/`, `blocksy-child/inc/wgos/`, and `blocksy-child/inc/glossary/` unless they are in scope.
 - Do not create root plans, fix logs, or temporary markdown. Use `.ai/memory/` for ephemeral notes.
 
+### Never read whole
+
+These files cost more context than a whole task should. Locate the relevant lines with
+`rg -n`, then read only that range with an offset. This applies even when the file is in scope.
+
+| Datei | ~Tokens |
+|---|---|
+| `blocksy-child/inc/wgos/wgos-asset-registry-data.php` | 34k — reine Datenliste, keine Logik |
+| `blocksy-child/inc/review-crm.php` | 34k |
+| `blocksy-child/assets/css/agentur.css` | 25k |
+| `blocksy-child/inc/seo-cockpit/seo-cockpit-ui.php` | 23k |
+| `blocksy-child/page-solar-waermepumpen-leadgenerierung.php` | 19k |
+| `blocksy-child/page-wordpress-agentur.php` | 19k |
+
 ## Stack
 
 - Deployable WordPress child theme: `blocksy-child/`
