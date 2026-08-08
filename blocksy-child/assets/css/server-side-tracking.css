@@ -976,21 +976,24 @@
 	color: var(--sst-on-dark-2);
 }
 
-/* ── Nachweis-Platzhalter ────────────────────────────────────────────── */
+/* ── Fliesstext-Block (Erfahrungswerte) ──────────────────────────────── */
 
-.hu-sst .hu-sst__placeholder {
-	padding: clamp(2rem, 5vw, 3.5rem);
-	border-radius: var(--sst-radius-lg);
-	border: 1px dashed var(--sst-dark-line-strong);
-	background: var(--sst-dark-surface);
-	text-align: center;
+.hu-sst .hu-sst__prose {
+	display: grid;
+	gap: 1.1rem;
+	max-width: 68ch;
 }
 
-.hu-sst .hu-sst__placeholder-hint {
+.hu-sst .hu-sst__prose p {
 	margin: 0;
-	font-size: 0.9rem;
-	letter-spacing: 0.06em;
-	color: var(--sst-on-dark-3);
+	font-size: clamp(1rem, 1.6vw, 1.08rem);
+	line-height: 1.72;
+	color: var(--sst-on-dark-2);
+}
+
+.hu-sst .hu-sst__prose strong {
+	color: var(--sst-on-dark);
+	font-weight: 700;
 }
 
 /* ── FAQ ─────────────────────────────────────────────────────────────── */
