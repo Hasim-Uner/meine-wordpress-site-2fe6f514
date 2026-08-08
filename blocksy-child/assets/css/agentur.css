@@ -1601,9 +1601,13 @@
   font-family: inherit;
 }
 
+/* Negativer Offset, weil .faq-item overflow:hidden setzt: mit +2px werden
+   linke und rechte Ringkante weggeschnitten und nur die Unterkante bleibt als
+   Strich quer durch die Karte stehen. Innen gezeichnet bleibt der Ring ein
+   Ring. */
 .faq-trigger:focus-visible {
   outline: 2px solid var(--ag-primary);
-  outline-offset: 2px;
+  outline-offset: -2px;
 }
 
 .faq-question {
@@ -1648,8 +1652,10 @@
   max-height: none;
 }
 
+/* Oben nicht 0: sonst startet die Antwort buendig an der Unterkante des
+   Trigger-Focus-Rings, gemessen sogar 3,5px darueber. */
 .faq-body-inner {
-  padding: 0 var(--ag-space-lg) var(--ag-space-lg);
+  padding: var(--ag-space-md) var(--ag-space-lg) var(--ag-space-lg);
 }
 
 .faq-answer {
