@@ -24,6 +24,7 @@ $contact_url    = add_query_arg(
 $e3_url         = home_url( '/case-study-solar-leadgenerierung/' );
 $marktcheck_url = home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $psi_url        = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-agentur-hannover/' ) );
+$hero_asset_url = get_stylesheet_directory_uri() . '/assets/img/landing/wordpress-agentur-system-hero';
 
 // ═══ Vertiefungs-Links für Fokusmarkt-Solar-Brücke ═══
 $agentur_solar_deeper = [
@@ -198,6 +199,14 @@ get_header();
      ═══════════════════════════════════════════════ -->
 <section class="nx-section wp-agentur-hero wp-agentur-hero--editorial" data-nx-theme="dark" id="hero">
 	<div class="ag-hero-bg" aria-hidden="true">
+		<picture class="ag-hero-bg__scene">
+			<source media="(max-width: 1024px)" srcset="<?php echo esc_url( $hero_asset_url . '-mobile.avif' ); ?>" type="image/avif">
+			<source media="(max-width: 1024px)" srcset="<?php echo esc_url( $hero_asset_url . '-mobile.webp' ); ?>" type="image/webp">
+			<source media="(max-width: 1024px)" srcset="<?php echo esc_url( $hero_asset_url . '-mobile.jpg' ); ?>" type="image/jpeg">
+			<source srcset="<?php echo esc_url( $hero_asset_url . '.avif' ); ?>" type="image/avif">
+			<source srcset="<?php echo esc_url( $hero_asset_url . '.webp' ); ?>" type="image/webp">
+			<img src="<?php echo esc_url( $hero_asset_url . '.jpg' ); ?>" alt="" width="1672" height="941" loading="eager" decoding="async" fetchpriority="high">
+		</picture>
 		<div class="ag-hero-bg__warmth"></div>
 		<div class="ag-hero-bg__vignette"></div>
 		<div class="ag-hero-bg__grain"></div>
@@ -1221,6 +1230,18 @@ get_header();
 <script>
 	// Motion-Gate: gesetzt im Kopf des Wrappers, nur ohne Reduced Motion + mit IO.
 	var AG_MOTION = document.documentElement.classList.contains('ag-anim');
+
+	// Die Hero-Szene bewegt sich nur, solange sie auf grossen Viewports sichtbar ist.
+	(function () {
+		var hero = document.querySelector('.wp-agentur-hero--editorial');
+		if (!hero || !AG_MOTION || !window.matchMedia('(min-width: 1025px)').matches) return;
+		var io = new IntersectionObserver(function (entries) {
+			entries.forEach(function (entry) {
+				hero.classList.toggle('is-scene-active', entry.isIntersecting);
+			});
+		}, { rootMargin: '8% 0px' });
+		io.observe(hero);
+	})();
 
 	// ─── Generic accordion factory ───
 	function initAccordion(containerSelector, itemSelector, triggerSelector, bodySelector) {
