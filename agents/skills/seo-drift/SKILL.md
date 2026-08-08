@@ -25,16 +25,18 @@ bash agents/skills/seo-drift/scripts/drift-report.sh
 Nutzt den neuesten 28-Tage-Snapshot. `--7d` für das kurze Fenster, `--md` für
 Markdown, `--all` auch für unbelegte Positionsverluste, `--help` für den Rest.
 
-**Exit 1, sobald ein `ABSTURZ` gefunden wird.** Damit ist der Report als Gate
-nach einem Deploy nutzbar. `POSITION` allein färbt nichts rot.
+**Exit 1, sobald ein `VERSCHWUNDEN` oder `ABSTURZ` gefunden wird.** Damit ist
+der Report als Gate nach einem Deploy nutzbar. `POSITION` allein färbt nichts
+rot.
 
-## Die drei Befundarten
+## Die vier Befundarten
 
 Der Unterschied ist der eigentliche Wert des Reports — die Rohdaten geben ihn
 nicht her.
 
 | Art | Bedeutung | Reaktion |
 | --- | --- | --- |
+| `VERSCHWUNDEN` | Query×URL existierte vorher, aktuell aber nicht mehr | Zuerst prüfen. Das ist ein vollständiger Sichtbarkeitsverlust. |
 | `ABSTURZ` | Position **und** Impressionen fallen | Zuerst ansehen. Beide Signale zeigen in dieselbe Richtung. |
 | `SICHTBARKEIT` | Impressionen brechen ein, Position bleibt | Kein Ranking-Verlust. Eher SERP-Feature, Query-Mix oder Saison. |
 | `POSITION` | Position fällt, Impressionen nicht | Unbelegt. Prüfen, nicht handeln — eine GSC-Position ist ein Periodendurchschnitt. |
@@ -43,8 +45,8 @@ nicht her.
 
 - **Seiten-Cluster vor Einzel-Query.** Eine gefallene Query ist Rauschen.
   Mehrere Queries derselben URL, die gemeinsam fallen, sind ein Seiten-Ereignis.
-  Cluster entstehen nur aus `ABSTURZ` und `SICHTBARKEIT` — wo die Impressionen
-  nicht mitgehen, ist der Verlust nicht belegt.
+  Cluster entstehen nur aus `VERSCHWUNDEN`, `ABSTURZ` und `SICHTBARKEIT` — wo
+  die Impressionen nicht mitgehen, ist der Verlust nicht belegt.
 - **Zeitliche Nähe ist keine Ursache.** Der Report stellt fest, wann das
   Template zuletzt geändert wurde, und ordnet die Änderung dem Messfenster zu:
   davor, darin, oder danach. Eine Änderung **nach** dem Fenster ist als Ursache
@@ -67,7 +69,9 @@ nicht her.
 
 Der Report braucht nichts, was `gap-report.sh` nicht auch braucht: einen
 SEO-Cockpit-Export unter `seo-research/<JJJJ-MM>/data/gsc/`. Die Spalten
-`previous_*` und `delta_*` bringt der Export bereits mit.
+`previous_*`, `delta_*`, `row_scope` und `period_presence` bringt der Export
+bereits mit. Alte Exporte bleiben lesbar, können vollständig verschwundene
+Query×URL-Paare aber noch nicht enthalten.
 
 ## Deliver
 

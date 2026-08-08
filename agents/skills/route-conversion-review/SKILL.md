@@ -31,6 +31,15 @@ bash agents/skills/route-conversion-review/scripts/review-route.sh /whitelabel-r
 
 Das Skript löst die Route auf, listet Überschriften, CTAs, Proof-Referenzen,
 harte Zahlen und eingehende Links und schließt mit einer Ampel.
+Explizite Alias-/Wrapper-Routen werden dabei auf ihren effektiven
+Template-Träger aufgelöst; ein PHP-Wrapper ohne eigene Ausgabe darf die Ampel
+nicht fälschlich rot färben.
+
+Nach Änderungen an der Alias-Auflösung ausführen:
+
+```bash
+bash agents/skills/route-conversion-review/tests/run-review-route-tests.sh
+```
 
 Zur Ampel: `ROT` ist ein P0-Kandidat, kein Urteil. Zwei Fälle entwerten sie,
 beide vor dem Report prüfen — Copy kann im WordPress-Editor liegen statt im

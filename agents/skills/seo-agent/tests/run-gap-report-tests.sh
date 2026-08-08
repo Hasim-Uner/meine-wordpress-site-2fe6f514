@@ -92,6 +92,7 @@ check "Zweitseite meldet Owner-Konflikt"         "$OUT" "dieselbe Query rankt zu
 check "Zweitseite mit Position und Impressionen" "$OUT" "/gamma-seite/ (Pos. 57,6, 28 Impr.)"
 check "auch eine Impression zaehlt als Konflikt" "$OUT" "dieselbe Query rankt zusaetzlich mit /beta/ (Pos. 62,0, 1 Impr.)"
 check "Registry-Luecke wird gemeldet"            "$OUT" "/epsilon/ (Pos. 8,0; vorher Pos. 10,0, 9 Impr.), fehlt in query-ownership.csv"
+check_absent "previous-only URL ist kein aktueller Owner" "$OUT" "/old-beta/"
 echo
 
 echo "[4b] Mehrfach-URL-Abschnitt zeigt alle URLs vollstaendig"

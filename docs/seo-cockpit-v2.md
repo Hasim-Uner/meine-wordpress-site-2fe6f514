@@ -197,6 +197,12 @@ Search Console arbeitet jetzt mit gekapselten Bucket-Limits statt mit verstreute
 Fuer groessere Buckets nutzt das Cockpit jetzt `startRow` plus begrenztes Paging.
 Dadurch bleibt das System fuer groessere Sites robuster, ohne die API unkontrolliert mit Requests zu fluten.
 
+Der CSV-Export führt aktuelle und vorherige `query_page_rows` als Union
+zusammen und ergänzt `current_page_rows`/`previous_page_rows` als
+`page_total`. `row_scope` und `period_presence` sind Teil des stabilen
+Exportvertrags; Downstream-Auswertungen dürfen Page-Totals und nur vorherige
+Zeilen nicht als aktuelle Rankings behandeln.
+
 ## Runtime-Diagnostik
 
 Das Cockpit fuehrt jetzt kompakte Laufzeitchecks fuer:

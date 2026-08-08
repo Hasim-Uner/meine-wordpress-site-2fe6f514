@@ -165,6 +165,7 @@ Systemische Rolle:
 - Koko liefert optional die lokale Seiten- und Traffic-Sicht
 - das Audit-CRM liefert zusaetzlich Lead-Signale und neue interne Attributionsdaten
 - WordPress bleibt der Ort, an dem diese Perspektiven in einem operativen Cockpit zusammenlaufen
+- Der CSV-Vertrag exportiert Query×URL- und Page-Total-Zeilen getrennt, vereinigt aktuelle und vorherige Perioden und kennzeichnet vollständig verschwundene Rankings explizit für Gap-/Drift-Auswertungen
 
 ## CTA- und Leadflow
 

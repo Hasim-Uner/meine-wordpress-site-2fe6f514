@@ -113,6 +113,24 @@ Wichtige technische Entscheidungen:
 - Audit-CRM als dritter Datenlayer fuer Lead-Kontext und Priorisierung
 - Revenue Command Center als vierter operativer Layer für Today Queue, Lead-Follow-up, Page Queue, Conversion Leaks und Manual Checks
 
+## CSV-Exportvertrag
+
+Der Admin-Export enthält zwei explizit getrennte Zeilentypen:
+
+- `query_page`: Query×URL-Metriken für Ownership, Gap- und Drift-Auswertungen
+- `page_total`: vollständige URL-Summen, auch wenn Search Console einzelne Queries anonymisiert
+
+`period_presence` unterscheidet `both`, `current_only` und `previous_only`.
+Der Export bildet dafür die Union beider Perioden. Vollständig verschwundene
+Query×URL-Paare bleiben dadurch als `previous_only` mit leeren aktuellen
+Positions-/CTR-Feldern sichtbar; fehlende Positionen werden nie als `0`
+ausgegeben. `previous_start` und `previous_end` machen das Vergleichsfenster im
+CSV selbst nachvollziehbar.
+
+Konsumenten müssen `page_total` aus Query-Ownership-Auswertungen ausschließen.
+Der Gap-Report ignoriert außerdem `previous_only`, während der Drift-Report
+diese Zeilen als `VERSCHWUNDEN` priorisiert.
+
 ## Naechster Ausbau
 
 - CTA-Klickpfade jenseits des Audit-Intakes serverseitig oder ueber einen belastbaren Event-Layer versionieren

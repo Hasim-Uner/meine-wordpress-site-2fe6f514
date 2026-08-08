@@ -1,0 +1,3 @@
+range_days;current_start;current_end;row_scope;period_presence;page;query;clicks;impressions;ctr;position;previous_clicks;previous_impressions;previous_ctr;previous_position;delta_clicks;delta_impressions;delta_position
+28;2026-01-04;2026-01-31;query_page;previous_only;https://hasimuener.de/testseite-verschwunden/;"testfrage verschwunden";0;0;;;2;40;0,0500;9,00;-2;-40;
+28;2026-01-04;2026-01-31;page_total;both;https://hasimuener.de/testseite-eins/;"page total sentinel";1;30;0,0333;20,00;2;35;0,0571;18,00;-1;-5;2,00

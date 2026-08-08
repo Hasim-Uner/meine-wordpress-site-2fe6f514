@@ -26,6 +26,14 @@ Then read only the docs you need:
 - Use defensive defaults, `WP_Error`, `is_array()`, and `isset()` checks.
 - Reuse existing SEO Cockpit layers before adding new modules.
 
+## Regression Test
+
+After changing the CSV export contract, run:
+
+```bash
+bash agents/skills/seo-cockpit-hardening/tests/run-export-tests.sh
+```
+
 ## Focus Order
 
 1. Render helpers and readability

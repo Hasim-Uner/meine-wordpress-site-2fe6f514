@@ -145,6 +145,7 @@ window_end = latest_end[range_days]
 # filtern wird nach Beweislage getrennt und nach verlorenen Impressionen
 # sortiert — das ist die wirtschaftliche Groesse, keine gewichtete Kennzahl.
 #
+# VERSCHWUNDEN  Query×URL existierte vorher, in der aktuellen Periode nicht.
 # ABSTURZ       Position schlechter UND Impressionen gefallen. Beide Signale
 #               zeigen in dieselbe Richtung.
 # POSITION      Position schlechter, Impressionen aber nicht gefallen. Kann ein
@@ -155,6 +156,11 @@ window_end = latest_end[range_days]
 losses = []
 gains = 0
 for r in rows:
+    row_scope = (r.get("row_scope") or "query_page").strip()
+    period_presence = (r.get("period_presence") or "").strip()
+    if row_scope != "query_page":
+        continue
+
     dpos = fnum(r.get("delta_position"))
     dimpr = fnum(r.get("delta_impressions"))
     pos, prev_pos = fnum(r.get("position")), fnum(r.get("previous_position"))
@@ -162,6 +168,18 @@ for r in rows:
     query = (r.get("query") or "").strip()
     url = (r.get("page") or "").replace("https://hasimuener.de", "") or "/"
     if not query:
+        continue
+
+    if period_presence == "previous_only" and prev_impr > 0:
+        kind = "VERSCHWUNDEN"
+        losses.append({
+            "kind": kind, "query": query, "url": url,
+            "pos": None, "prev_pos": prev_pos, "dpos": 0.0,
+            "impr": 0, "prev_impr": prev_impr,
+            "lost_impr": prev_impr,
+            "page_type": (r.get("page_type") or "").strip(),
+            "word_count": (r.get("word_count") or "").strip(),
+        })
         continue
 
     # delta_position: positiv = weiter hinten = schlechter.
@@ -207,7 +225,7 @@ losses.sort(key=lambda l: (-l["lost_impr"], l["dpos"] and -l["dpos"] or 0))
 # mitgehen, ist der Verlust nicht belegt.
 by_page = defaultdict(list)
 for l in losses:
-    if l["kind"] in ("ABSTURZ", "SICHTBARKEIT"):
+    if l["kind"] in ("VERSCHWUNDEN", "ABSTURZ", "SICHTBARKEIT"):
         by_page[l["url"]].append(l)
 clusters = sorted(
     ((u, ls) for u, ls in by_page.items() if len(ls) > 1),
@@ -294,7 +312,7 @@ else:
     out.append("Fenster: %s Tage, %s bis %s" % (range_days, window_start or "?", window_end))
     out.append("Quelle: %s" % ", ".join(sources))
 
-summary = " | ".join("%s %d" % (k, counts[k]) for k in ("ABSTURZ", "POSITION", "SICHTBARKEIT") if counts[k])
+summary = " | ".join("%s %d" % (k, counts[k]) for k in ("VERSCHWUNDEN", "ABSTURZ", "POSITION", "SICHTBARKEIT") if counts[k])
 out.append("Verluste: %s%s | Verbesserungen: %d" % (
     summary or "keine", "", gains))
 out.append("")
@@ -388,15 +406,15 @@ tail = [
     "Google-Update oder an der Saison liegen — das Skript kann das nicht trennen.",
     "Es zeigt, wo sich gleichzeitig etwas im Repo bewegt hat.",
     "",
-    "Naechster Schritt: ABSTURZ-Zeilen zuerst. Bei einem Seiten-Cluster die Route",
+    "Naechster Schritt: VERSCHWUNDEN- und ABSTURZ-Zeilen zuerst. Bei einem Seiten-Cluster die Route",
     "mit route-conversion-review pruefen, bevor einzelne Queries bewertet werden.",
 ]
 out.append(("\n".join("> " + t if t else ">" for t in tail)) if md else "\n".join(tail))
 
 print("\n".join(out))
 
-# Exit 1 nur bei ABSTURZ: dort zeigen Position und Impressionen gemeinsam nach
-# unten. POSITION allein reicht nicht — ein veraenderter Query-Mix ist kein
-# Grund, einen Deploy rot zu faerben.
-sys.exit(1 if counts["ABSTURZ"] else 0)
+# Exit 1 bei vollstaendig verschwundenen Queries oder ABSTURZ. POSITION allein
+# reicht nicht — ein veraenderter Query-Mix ist kein Grund, einen Deploy rot zu
+# faerben.
+sys.exit(1 if counts["VERSCHWUNDEN"] or counts["ABSTURZ"] else 0)
 PY
