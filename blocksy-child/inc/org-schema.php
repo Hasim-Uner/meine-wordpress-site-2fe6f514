@@ -1144,7 +1144,12 @@ function hu_output_schema()
 
                 $schemas[] = $professional_service;
 
-                $schemas[] = [
+                // Kommerzielle Leistungsseite, kein redaktioneller Beitrag: die
+                // Seitenentitaet bleibt WebPage, Hauptentitaet ist der Service.
+                // Ein zusaetzlicher Article-Node waere hier weder Rich-Result-
+                // berechtigt noch inhaltlich zutreffend und setzte nur eine
+                // zweite Inhaltsentitaet auf dieselbe URL.
+                $agentur_webpage = [
                     '@context'    => 'https://schema.org',
                     '@type'       => 'WebPage',
                     '@id'         => home_url('/wordpress-agentur-hannover/#webpage'),
@@ -1162,41 +1167,31 @@ function hu_output_schema()
                     'reviewedBy'  => hu_person_schema_ref(),
                 ];
 
-                $agentur_article = [
-                    '@context'         => 'https://schema.org',
-                    '@type'            => 'Article',
-                    '@id'              => home_url('/wordpress-agentur-hannover/#article'),
-                    'url'              => home_url('/wordpress-agentur-hannover/'),
-                    'mainEntityOfPage' => ['@id' => home_url('/wordpress-agentur-hannover/#webpage')],
-                    'headline'         => 'WordPress Agentur Hannover für B2B-Websites und Anfrage-Systeme',
-                    'description'      => $def['description'],
-                    'inLanguage'       => 'de',
-                    'articleSection'   => 'WordPress, technisches SEO und B2B-Anfrage-Systeme',
-                    'author'           => hu_person_schema_ref( true ),
-                    'publisher'        => ['@id' => home_url('/#organization')],
-                    'about'            => [
-                        ['@id' => home_url('/wordpress-agentur-hannover/#service')],
-                        ['@id' => home_url('/#organization')],
-                    ],
-                ];
-
+                // Aktualitaets- und Bildsignale bleiben erhalten, haengen aber am
+                // korrekten Typ statt am entfernten Article-Node.
                 $agentur_published_date = get_post_time( DATE_W3C, true, $post_id );
                 $agentur_modified_date  = get_post_modified_time( DATE_W3C, true, $post_id );
 
                 if ( $agentur_published_date ) {
-                    $agentur_article['datePublished'] = $agentur_published_date;
+                    $agentur_webpage['datePublished'] = $agentur_published_date;
                 }
 
                 if ( $agentur_modified_date ) {
-                    $agentur_article['dateModified'] = $agentur_modified_date;
+                    $agentur_webpage['dateModified'] = $agentur_modified_date;
                 }
 
-                $agentur_article_image = hu_get_post_schema_image_object( $post_id );
-                if ( is_array( $agentur_article_image ) ) {
-                    $agentur_article['image'] = $agentur_article_image;
+                $agentur_page_image = hu_get_post_schema_image_object( $post_id );
+                if ( is_array( $agentur_page_image ) ) {
+                    $agentur_webpage['primaryImageOfPage'] = $agentur_page_image;
                 }
 
-                $schemas[] = $agentur_article;
+                if ( hu_should_output_global_breadcrumb_schema() ) {
+                    $agentur_webpage['breadcrumb'] = [
+                        '@id' => home_url('/wordpress-agentur-hannover/#breadcrumb'),
+                    ];
+                }
+
+                $schemas[] = $agentur_webpage;
             }
         }
 
