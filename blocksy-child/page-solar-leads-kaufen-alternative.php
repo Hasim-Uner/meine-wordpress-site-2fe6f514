@@ -262,7 +262,11 @@ get_header();
 			<div class="hu-buy__hero-grid">
 				<div class="hu-buy__hero-copy">
 					<p class="hu-buy__eyebrow">Für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Markt</p>
-					<h1 class="hu-buy__h1" id="hu-buy-hero-title">Solar Leads kaufen — oder den Anfragekanal selbst besitzen?</h1>
+					<h1 class="hu-buy__h1" id="hu-buy-hero-title">
+						<span class="hu-buy__h1-line">Solar Leads kaufen —</span>
+						<span class="hu-buy__h1-line">oder eigene Anfragen</span>
+						<span class="hu-buy__h1-line">gewinnen?</span>
+					</h1>
 					<p class="hu-buy__lead">
 						Der Zukauf kann kurzfristig die Pipeline füllen. Er löst aber nicht automatisch Exklusivität, Vorqualifizierung, Messbarkeit oder Datenbesitz. Diese Seite zeigt, welche Modelle Sie vergleichen sollten — und wann ein eigener Anfrageweg wirtschaftlich sinnvoller sein kann.
 					</p>
