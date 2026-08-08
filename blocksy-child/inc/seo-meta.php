@@ -280,9 +280,12 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Wärmepumpen Leads kaufen? Alternative ohne Portale',
 				'description' => sprintf( 'Wärmepumpen-Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads gehen an mehrere Betriebe und schließen selten ab. Case Study: %s weniger CPL.', $e3_cpl_reduction ),
 			],
+			// "Consent" statt "CAPI" im Title haelt das Signal fuer die vier
+			// DSGVO-Queries, die diese Seite laut docs/seo/query-ownership.csv
+			// besitzt. CAPI steht dafuer in der Description.
 			'server-side-tracking-b2b' => [
-				'title'       => 'Server-Side Tracking Agentur: DSGVO, GA4 & CAPI',
-				'description' => 'Server-Side Tracking für B2B-Anfrage-Systeme: GA4, Meta CAPI und Consent Mode v2 auf eigenem Server. Attribution für qualifizierte Anfragen statt Klickberichte.',
+				'title'       => 'Server-Side Tracking einrichten lassen | GA4, Ads & Consent',
+				'description' => 'Server-Side Tracking für WordPress, GA4, Google Ads und Meta CAPI – eingerichtet, getestet, dokumentiert. Consent-Signale berücksichtigt. Setup ab 890 € netto.',
 			],
 			// Diese Seite besitzt laut docs/seo/query-ownership.csv ausschliesslich
 			// Gewerbe-PV-Intent: "pv termine b2b", "pv leads gewerbe", "b2b
