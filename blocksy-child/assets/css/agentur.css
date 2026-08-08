@@ -1017,8 +1017,10 @@
   display: none;
 }
 
+/* Oben nicht 0, gleiche Begruendung wie bei .faq-body-inner: sonst startet der
+   Inhalt buendig an der Unterkante des Triggers. */
 .acc-body-inner {
-  padding: 0 clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2rem);
+  padding: clamp(1rem, 2vw, 1.5rem) clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2rem);
 }
 
 .assets-grid {
@@ -1195,8 +1197,12 @@
   width: fit-content;
 }
 
+/* Bei vier Spalten steht die Textbox auf 170px. "Installationsbetrieb" war mit
+   1.3rem 180px breit und brach mitten im Wort — ein einzelnes "b" blieb in der
+   letzten Zeile. 1.15rem laesst 11px Luft. Die Spaltenzahl bleibt, damit die
+   vier Karten eine Reihe bilden statt 3+1. */
 .wp-agentur-case-card h3 {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: 600;
   margin: 0;
   color: var(--ag-text);
