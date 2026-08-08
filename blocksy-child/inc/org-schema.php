@@ -1049,100 +1049,15 @@ function hu_output_schema()
             $schemas[] = $service;
 
             if ('wordpress-agentur-hannover' === $slug) {
-                // Dedicated ProfessionalService (LocalBusiness subtype) for the
-                // Hannover money page: explicit geo, address and an extended
-                // areaServed array boost local-pack relevance.
-                $hannover_area_served = [
-                    [
-                        '@type'  => 'City',
-                        'name'   => 'Hannover',
-                        'sameAs' => 'https://de.wikipedia.org/wiki/Hannover',
-                    ],
-                    [
-                        '@type'  => 'City',
-                        'name'   => 'Pattensen',
-                        'sameAs' => 'https://de.wikipedia.org/wiki/Pattensen',
-                    ],
-                    [
-                        '@type'  => 'City',
-                        'name'   => 'Braunschweig',
-                        'sameAs' => 'https://de.wikipedia.org/wiki/Braunschweig',
-                    ],
-                    [
-                        '@type'  => 'City',
-                        'name'   => 'Wolfsburg',
-                        'sameAs' => 'https://de.wikipedia.org/wiki/Wolfsburg',
-                    ],
-                    [
-                        '@type'  => 'City',
-                        'name'   => 'Hildesheim',
-                        'sameAs' => 'https://de.wikipedia.org/wiki/Hildesheim',
-                    ],
-                    [
-                        '@type'  => 'AdministrativeArea',
-                        'name'   => 'Region Hannover',
-                        'sameAs' => 'https://de.wikipedia.org/wiki/Region_Hannover',
-                    ],
-                    [
-                        '@type'  => 'AdministrativeArea',
-                        'name'   => 'Niedersachsen',
-                        'sameAs' => 'https://de.wikipedia.org/wiki/Niedersachsen',
-                    ],
-                ];
-
-                $professional_service = [
-                    '@context'           => 'https://schema.org',
-                    '@type'              => 'ProfessionalService',
-                    '@id'                => home_url('/wordpress-agentur-hannover/#localbusiness'),
-                    'name'               => 'Haşim Üner – WordPress Agentur Hannover',
-                    'alternateName'      => 'WordPress Agentur Hannover',
-                    'description'        => $def['description'],
-                    'url'                => home_url('/wordpress-agentur-hannover/'),
-                    'image'              => hu_get_profile_image_url(),
-                    'logo'               => function_exists( 'hu_get_brand_logo_url' ) ? hu_get_brand_logo_url() : content_url( '/uploads/2025/08/cropped-Logo-hasim-uener-1.webp' ),
-                    'telephone'          => '+49 176 76596580',
-                    'email'              => 'info@hasimuener.de',
-                    'priceRange'         => '€€',
-                    'currenciesAccepted' => 'EUR',
-                    'paymentAccepted'    => 'Überweisung',
-                    'parentOrganization' => ['@id' => home_url('/#organization')],
-                    'address'            => [
-                        '@type'           => 'PostalAddress',
-                        'streetAddress'   => 'Warschauer Str. 5',
-                        'addressLocality' => 'Pattensen',
-                        'addressRegion'   => 'Niedersachsen',
-                        'postalCode'      => '30982',
-                        'addressCountry'  => 'DE',
-                    ],
-                    'geo' => [
-                        '@type'     => 'GeoCoordinates',
-                        'latitude'  => '52.2736456',
-                        'longitude' => '9.7559953',
-                    ],
-                    'hasMap'        => $google_maps_url,
-                    'areaServed'    => $hannover_area_served,
-                    'knowsAbout'    => [
-                        'WordPress',
-                        'Technisches SEO',
-                        'Core Web Vitals',
-                        'Conversion Rate Optimization',
-                        'GA4 Tracking',
-                        'Server-Side Tagging',
-                        'B2B Lead Generation',
-                    ],
-                    'knowsLanguage' => ['de', 'en', 'tr'],
-                    'sameAs'        => hu_business_same_as_urls(),
-                    'openingHoursSpecification' => [
-                        [
-                            '@type'     => 'OpeningHoursSpecification',
-                            'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
-                            'opens'     => '08:30',
-                            'closes'    => '16:00',
-                        ],
-                    ],
-                ];
-
-                $schemas[] = $professional_service;
+                // Kein eigener LocalBusiness-Node fuer diese Seite. Der
+                // sitewide #organization-Node ist bereits
+                // [Organization, LocalBusiness] und traegt dieselbe Adresse,
+                // Geo, Telefon, E-Mail, Oeffnungszeiten, hasMap und sameAs —
+                // sein areaServed ist sogar eine Obermenge. Ein zweiter Node
+                // beschriebe denselben physischen Betrieb unter einer zweiten
+                // @id und zwaenge Google zu einer Entitaetsentscheidung, die
+                // es nicht treffen muesste. Der lokale Bezug der Seite haengt
+                // an Service, Copy und WebPage, nicht an einer Dublette.
 
                 // Kommerzielle Leistungsseite, kein redaktioneller Beitrag: die
                 // Seitenentitaet bleibt WebPage, Hauptentitaet ist der Service.
@@ -1158,10 +1073,7 @@ function hu_output_schema()
                     'description' => $def['description'],
                     'inLanguage'  => 'de',
                     'isPartOf'    => ['@id' => home_url('/#website')],
-                    'about'       => [
-                        ['@id' => home_url('/#organization')],
-                        ['@id' => home_url('/wordpress-agentur-hannover/#localbusiness')],
-                    ],
+                    'about'       => ['@id' => home_url('/#organization')],
                     'mainEntity'  => ['@id' => home_url('/wordpress-agentur-hannover/#service')],
                     'author'      => hu_person_schema_ref(),
                     'reviewedBy'  => hu_person_schema_ref(),
