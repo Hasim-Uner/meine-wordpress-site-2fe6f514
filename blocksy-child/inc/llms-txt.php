@@ -141,9 +141,9 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Funnel-Architektur von Erstkontakt bis Sales-Anschluss für Photovoltaik- und Wärmepumpen-Anbieter.',
 				],
 				[
-					'label'       => 'Server-Side Tracking für B2B',
+					'label'       => 'Server-Side Tracking einrichten lassen',
 					'url'         => $urls['solar_tracking'] ?? home_url( '/server-side-tracking-b2b/' ),
-					'description' => 'GA4, Meta CAPI und Consent Mode v2 auf eigenem Server als Messfundament für Anfrage-Systeme.',
+					'description' => 'Server-GTM, GA4, Google Ads und Meta CAPI über eine eigene Tracking-Subdomain: Einrichtung, Testbetrieb und laufende Kontrolle mit Preisen ab 890 € netto.',
 				],
 				[
 					'label'       => 'B2B Solar Leads für Gewerbe',

@@ -20,7 +20,7 @@
 - [Cost per Lead Photovoltaik](/cost-per-lead-photovoltaik/) - CPL-Analyse mit Szenarienvergleich und versteckten Kostentreibern.
 - [Qualifizierte PV-Anfragen](/qualifizierte-pv-anfragen/) - Merkmale hochwertiger Solar-Anfragen und Warnsignale.
 - [Lead-Funnel Solar](/lead-funnel-solar/) - Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter.
-- [Server-Side Tracking B2B](/server-side-tracking-b2b/) - GA4, Meta CAPI, Consent Mode v2 und Tracking-Fundament.
+- [Server-Side Tracking einrichten lassen](/server-side-tracking-b2b/) - Server-GTM, GA4, Google Ads und Meta CAPI über eine eigene Tracking-Subdomain, mit Paketpreisen.
 - [B2B Solar Leads](/b2b-solar-leads/) - gewerbliche PV-Anfragen und Buying-Center-Logik.
 - [Kunden gewinnen für Solarteure](/kunden-gewinnen-solarteure/) - systematische Nachfragegewinnung für Solarteure.
 

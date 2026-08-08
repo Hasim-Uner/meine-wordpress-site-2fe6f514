@@ -1394,7 +1394,7 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'wordpress-agentur-hannover', 'wgos', 'wordpress-growth-operating-system' ], true )
+                in_array( $slug, [ 'wordpress-agentur-hannover', 'server-side-tracking-b2b', 'wgos', 'wordpress-growth-operating-system' ], true )
                 || ( function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page( $slug ) )
                 || ( function_exists( 'hu_is_seo_cornerstone_article' ) && hu_is_seo_cornerstone_article() )
             );
