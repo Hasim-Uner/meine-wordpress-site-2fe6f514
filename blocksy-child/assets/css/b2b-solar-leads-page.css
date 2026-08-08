@@ -542,12 +542,19 @@
 	color: var(--b2b-accent);
 }
 
+/* Cap und Steigung sind gemessen: bei 4 Spalten deckelt das Grid auf 1200px,
+   die Textbox steht dann bei 232,8px. Mit dem alten Cap 1.8rem war
+   "entscheidungsfaehig" ab 1376px Viewport 243px breit, und Blocksy setzt im
+   Parent `body { overflow-wrap: break-word }` — daher der Waisen-Buchstabe.
+   Jetzt bleiben ueberall >=13px Luft. hyphens ist nur das Netz fuer reinen
+   Textzoom, wo das Wort nicht mehr passen kann. */
 .hu-b2b .hu-b2b__signal-value {
 	display: block;
 	margin-bottom: 0.55rem;
-	font-size: clamp(1.35rem, 2vw, 1.8rem);
+	font-size: clamp(1.275rem, 0.22rem + 1.55vw, 1.6rem);
 	line-height: 1.12;
 	letter-spacing: -0.035em;
+	hyphens: auto;
 	color: var(--b2b-ink);
 }
 
