@@ -444,6 +444,31 @@
   letter-spacing: -0.01em;
 }
 
+/* Zahl und Einheit sind eine Einheit. Ohne das bricht "22 €" in schmalen
+   Spalten um und das Waehrungszeichen steht allein in der naechsten Zeile. */
+.wp-agentur-proof-num {
+  white-space: nowrap;
+}
+
+/* Der Vorher/Nachher-Wert ist die einzige Kachel mit zwei Zahlen. Als Flexbox
+   ist der Pfeil die einzige Umbruchstelle — und die ist die inhaltlich richtige. */
+/* Diese Kachel traegt zwei Zahlen und einen Pfeil, also rund die dreifache
+   Zeichenzahl der uebrigen. In der Display-Groesse der anderen bricht sie
+   zweizeilig um und faellt aus der Reihe — daher eine Stufe kleiner. */
+.wp-agentur-proof-value--delta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.15em 0.3em;
+  font-size: clamp(1.5rem, 3.1vw, 2.15rem);
+}
+
+.wp-agentur-proof-arrow {
+  color: var(--ag-primary);
+  font-weight: 400;
+}
+
 .wp-agentur-proof-label {
   font-size: 0.85rem;
   color: var(--ag-text-2);
@@ -1381,11 +1406,94 @@
   margin: 0 auto;
 }
 
+/* Vier Karten fielen mit auto-fit in ein 3+1-Raster — die vierte stand allein
+   neben zwei Luecken. 2x2 traegt vier Einwaende als Paare. */
+@media (min-width: 900px) {
+  .wp-agentur-local-grid--quad {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Zwei Karten mit stark ungleichem Text: die kuerzere nicht auf die Hoehe der
+   laengeren strecken. Gestreckt entsteht eine grosse leere Flaeche, die wie ein
+   Fehler aussieht — nebeneinander stehend sieht man zwei unterschiedlich
+   ausfuehrliche Antworten, und das ist die Wahrheit. */
+.wp-agentur-local-grid--duo {
+  align-items: start;
+}
+
 .wp-agentur-local-card {
+  position: relative;
+  overflow: hidden;
   padding: var(--ag-space-xl);
   background: var(--ag-surface);
   border: 1px solid var(--ag-border);
   border-radius: 1rem;
+  transition: transform var(--ag-dur-base) var(--ag-ease),
+              border-color var(--ag-dur-base) var(--ag-ease),
+              box-shadow var(--ag-dur-base) var(--ag-ease);
+}
+
+/* Akzentkante waechst aus der linken Ecke. scaleX statt width: nur transform,
+   also kein Layout- und kein Paint-Reflow beim Hover. */
+.wp-agentur-local-card::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--ag-primary), var(--ag-accent-ink));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--ag-dur-base) var(--ag-ease);
+}
+
+.wp-agentur-local-card:hover,
+.wp-agentur-local-card:focus-within {
+  transform: translateY(-3px);
+  border-color: var(--ag-border-strong);
+  box-shadow: 0 12px 28px -18px rgba(41, 38, 27, 0.45);
+}
+
+.wp-agentur-local-card:hover::after,
+.wp-agentur-local-card:focus-within::after {
+  transform: scaleX(1);
+}
+
+/* Die Einwand-Karten sind woertliche Zitate. Das Anfuehrungszeichen benennt
+   das, statt Dekoration zu sein — Alt-Text leer, damit Screenreader es nicht
+   zusaetzlich vorlesen. */
+.wp-agentur-local-card--quote::before {
+  content: "„" / "";
+  position: absolute;
+  /* U+201E sitzt auf der Grundlinie, nicht auf Versalhoehe. Ohne den negativen
+     Versatz haengt das Zeichen in der Kartenmitte und laeuft in den Fliesstext. */
+  top: -0.46em;
+  right: 0.22em;
+  font-family: var(--ag-font-display);
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--ag-primary);
+  opacity: 0.16;
+  pointer-events: none;
+  user-select: none;
+}
+
+.wp-agentur-local-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: var(--ag-space-md);
+  border-radius: 0.75rem;
+  background: var(--ag-surface-2);
+  border: 1px solid var(--ag-border);
+  color: var(--ag-accent-ink);
+}
+
+.wp-agentur-local-icon svg {
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
 .wp-agentur-local-card h3 {
@@ -1395,10 +1503,19 @@
   color: var(--ag-text);
 }
 
+/* Zitat-Karten: Ueberschrift nicht unter das Anfuehrungszeichen laufen lassen. */
+.wp-agentur-local-card--quote h3 {
+  padding-right: 2.5rem;
+}
+
 .wp-agentur-local-card p {
   color: var(--ag-text-2);
   margin: 0;
   line-height: 1.6;
+}
+
+.wp-agentur-local-card p + p {
+  margin-top: var(--ag-space-sm);
 }
 
 .wp-agentur-location-facts {
