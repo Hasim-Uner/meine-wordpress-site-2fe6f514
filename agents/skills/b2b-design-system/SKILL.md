@@ -116,6 +116,34 @@ bash scripts/lint-css-motion.sh
 | JS Bundle | < 100KB | < 200KB |
 | Web Fonts | 2 weights | 3 weights |
 
+## Messen statt beurteilen
+
+Dieser Skill definiert das **Soll**. Ob eine gerenderte Seite es einhält, ist
+eine Messung, kein Urteil — „sieht gut aus" hat heute schon einen 1px-Versatz
+und einen Umbruch im Währungszeichen durchgelassen.
+
+```bash
+PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i --no-save playwright   # einmalig
+
+node agents/skills/b2b-design-system/scripts/layout-audit.mjs <url> \
+  --expect=.wp-agentur-page-wrapper --expect-token=--ag-bg \
+  --shot=/tmp/audit.png
+```
+
+Misst horizontalen Überlauf, abgeschnittenen Inhalt, Tap-Targets unter 44×44,
+Fast-Ausrichtungen (1–7 px neben einer Flucht) und Abstände neben dem 4px-Raster.
+Zeichnet die Fundstellen in den Screenshot. Ohne Baseline: jede Prüfung ist eine
+absolute Zusicherung, es gibt nichts zu pflegen und nichts abzunicken.
+
+**`--expect` und `--expect-token` sind nicht optional gemeint.** Die Tokens
+dieser Seiten hängen an einem Wrapper (`.wp-agentur-page-wrapper`), nicht an
+`:root`. Wer eine Testseite ohne ihn rendert, misst ein Layout ohne Abstände und
+bekommt Befunde, die es nicht gibt. Das Audit bricht in dem Fall ab, statt zu
+messen — Zahlen aus einer falsch aufgebauten Seite sind schlechter als gar keine.
+
+Läuft bewusst nicht in der CI: `ci.yml` und `deploy.yml` rufen beide `npm ci`,
+und playwright zöge dort jedes Mal einen Browser nach.
+
 ## Quality Checklist
 
 - [ ] Typography: Max 2 fonts, modular ratio, line-height 1.4-1.6
