@@ -382,7 +382,14 @@
             var total = activeSteps.length;
             var percentage = Math.round(((currentFlowIndex + 1) / total) * 100);
             var isLast = currentFlowIndex >= total - 1;
-            var needsManualNext = currentKey === 'message';
+            // Die Schritte "type" und "focus" schalten normalerweise selbst weiter,
+            // ausgeloest vom change-Event. Kommt der Wert aber aus der URL
+            // (/kontakt/?type=project&focus=followup_scope), feuert nie ein change:
+            // Der Besucher sah ein ausgefuelltes Feld und keinen Weg vorwaerts und
+            // musste die Auswahl erst aendern, um weiterzukommen. Liegt schon ein
+            // Wert vor, gibt es deshalb den Weiter-Button — sichtbar, korrigierbar,
+            // ein Klick.
+            var needsManualNext = currentKey === 'message' || contactFlowStepHasValue(currentStep);
 
             if (flowStepLabel) {
                 flowStepLabel.textContent = 'Schritt ' + (currentFlowIndex + 1) + ' von ' + total + (currentLabel ? ' - ' + currentLabel : '');
@@ -420,6 +427,32 @@
             cancelContactAutoAdvance();
             currentFlowIndex = index;
             updateContactFlowUi(options);
+        }
+
+        // Hat der Schritt bereits einen Wert? Bewusst getrennt von
+        // validateContactFlowStep: die raeumt Fehlermeldungen ab und setzt neue,
+        // taugt also nur fuer den Klick auf Weiter, nicht fuer die Frage, wie die
+        // Oberflaeche gerade aussehen soll.
+        function contactFlowStepHasValue(step) {
+            if (!step) {
+                return false;
+            }
+
+            var stepKey = step.getAttribute('data-contact-step') || '';
+
+            if (stepKey === 'type') {
+                var picked = false;
+                Array.prototype.forEach.call(typeInputs, function (input) {
+                    if (input.checked) picked = true;
+                });
+                return picked;
+            }
+
+            if (stepKey === 'focus') {
+                return !!(focusSelect && focusSelect.value);
+            }
+
+            return false;
         }
 
         function validateContactFlowStep(step) {
