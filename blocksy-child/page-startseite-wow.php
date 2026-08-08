@@ -21,7 +21,8 @@ $e3_cpl_reduction = $e3_metrics['cpl_reduction']['display']    ?? 'über 85 %';
 $e3_timeframe     = $e3_metrics['timeframe']['display']        ?? '6 Monate';
 $e3_cpl_before    = $e3_metrics['cpl_before']['display']       ?? '150 €';
 $e3_cpl_after     = $e3_metrics['cpl_after']['display']        ?? '22 €';
-$portrait_url     = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
+// Portrait als WebP in Darstellungsgroesse (380px @2x) statt des 625-KB-Palette-PNG.
+$portrait_url     = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait-760.webp';
 
 $system_nodes = [
 	[

@@ -493,9 +493,10 @@ get_template_part( 'template-parts/blog-header' );
 		// Avatare sind in WordPress deaktiviert, get_avatar() liefert nichts. Statt des
 		// Initialen-Kreises zeigt die Box das gepflegte Portrait aus dem Theme.
 		// Ein-Personen-Repo: alle Beitraege stammen vom selben Autor.
+		// 192px-WebP: die Box zeigt 96px (72px mobil), das Vollformat waere 625 KB fuer einen Daumennagel.
 		$author_portrait    = function_exists( 'nexus_asset_url' )
-			? nexus_asset_url( 'img/hasim-portrait.png' )
-			: get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
+			? nexus_asset_url( 'img/hasim-portrait-192.webp' )
+			: get_stylesheet_directory_uri() . '/assets/img/hasim-portrait-192.webp';
 		$author_initials    = '';
 		if ( $author_name ) {
 			$parts = preg_split( '/\s+/', trim( wp_strip_all_tags( $author_name ) ) );

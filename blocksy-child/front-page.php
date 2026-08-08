@@ -36,7 +36,8 @@ $e3_cpl_after      = $e3_metrics['cpl_after']['display']         ?? '22 €';
 $contact_url       = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
 $agentur_hub_url   = home_url( '/wordpress-agentur-hannover/' );
 $whitelabel_url    = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
-$portrait_url      = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait.png';
+// Portrait als WebP in Darstellungsgroesse (380px @2x) statt des 625-KB-Palette-PNG.
+$portrait_url      = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait-760.webp';
 
 /* ── Routing-Tabelle: 3 Gateways ───────────────────────── */
 $home_routing_gateways = [
