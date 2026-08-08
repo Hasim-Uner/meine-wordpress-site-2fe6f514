@@ -18,6 +18,7 @@ Scope: `agents/skills/`.
 | --- | --- | --- |
 | `seo-agent` | SEO-Triage und gemischte SEO-Arbeiten | seo, meta, schema, sitemap, robots, llms |
 | `seo-live-qa` | Live-SEO, Canonicals, Redirects, Reindex | canonical, redirect, noindex, indexierung, search console |
+| `seo-drift` | SEO-Regressionen im Periodenvergleich, Korrelation mit Repo-Änderungen | drift, regression, verloren, schlechter geworden, sichtbarkeit gefallen |
 | `seo-cockpit-hardening` | SEO-Cockpit-Module und Diagnostik | cockpit, insights, queue, gsc, koko |
 | `internal-linking-audit` | Interne Links, Orphans, Ankerlogik | internal links, orphan, anchors, linkgraph |
 | `pillar-cornerstone-writer` | Cornerstone-/Pillar-Artikelpakete | cornerstone, pillar, article package, publish pack |

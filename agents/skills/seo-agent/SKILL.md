@@ -43,6 +43,10 @@ den Dateinamen. Default sind 28 Tage; `--7d` / `--28d` / `--range=N` waehlen
 explizit. Fehlt der Zeitraum, bricht das Skript ab, statt still auf einen
 anderen auszuweichen. Der Report weist Zeitraum **und** Quelldatei aus.
 
+Die Spalten `previous_*` und `delta_*` bleiben hier bewusst liegen: der
+Gap-Report soll den Ist-Stand zeigen, nicht die Bewegung. Den Periodenvergleich
+macht `seo-drift` — dort gehoert er hin, nicht in eine zweite Auswertung hier.
+
 Der Abschnitt `MEHRFACH-URLS` listet vollstaendig jede Query, fuer die im
 Snapshot mehr als eine eigene URL rankt (`=` Registry-Owner, `+` nicht
 registriert). Bewusst ohne Schwellenwert: sobald eine Nicht-Owner-URL fuer eine
@@ -78,6 +82,7 @@ Fehlt eine Datei, meldet das Skript das — es rechnet nicht mit Platzhaltern.
 | Signal in Task | Route to Skill | Context to Load |
 |---|---|---|
 | Was fehlt uns? Themenauswahl, Keyword-Luecken, Wettbewerbsvergleich | hier bleiben | `gap-report.sh` + `docs/seo/keyword-exclusions.csv` |
+| Was ist schlechter geworden? Verluste, Regression nach Deploy | `seo-drift` | `seo-drift/SKILL.md` |
 | Live SEO check, reindex, redirects, canonicals, Search Console | `seo-live-qa` | `seo-live-qa/SKILL.md` |
 | SEO Cockpit, render helpers, Koko, internal link graph module | `seo-cockpit-hardening` | `seo-cockpit-hardening/SKILL.md` + `docs/systems/seo-cockpit.md` |
 | Orphan pages, link equity, cross-links, anchor text | `internal-linking-audit` | `internal-linking-audit/SKILL.md` |
