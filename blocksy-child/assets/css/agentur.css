@@ -3659,8 +3659,13 @@
   line-height: 1.4;
 }
 
+/* minmax(0, 1fr) statt der impliziten auto-Spalte: Grid-Items bekommen sonst
+   ihre Inhaltsbreite und ragen aus dem Container. Auf 390px lief der Fliesstext
+   dadurch ueber den Rand und wurde vom overflow-x:clip des Seiten-Wrappers
+   abgeschnitten — sichtbar mitten im Wort, ohne dass die Seite scrollte. */
 .ag-liveproof__cta {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   gap: var(--ag-space-md);
   margin-top: var(--ag-space-2xl);
@@ -3671,8 +3676,22 @@
   flex-shrink: 0;
 }
 
+/* Das Label "Diese Seite bei PageSpeed Insights testen" ist mit dem globalen
+   nowrap und 30px Innenabstand 391px breit — auf 390px-Displays lief es aus
+   dem Container und wurde abgeschnitten. .nx-btn gilt seitenweit, deshalb wird
+   die Regel hier nur fuer diesen Button und nur auf schmalen Schirmen gelockert. */
+@media (max-width: 480px) {
+  .ag-liveproof__cta .nx-btn {
+    white-space: normal;
+    padding-inline: var(--ag-space-md);
+    max-width: 100%;
+  }
+}
+
 .ag-liveproof__closing {
-  max-width: 62ch;
+  /* 62ch sind auf einem 390px-Display breiter als der Platz. min() haelt das
+     Lesemass auf grossen Schirmen und laesst es auf kleinen schrumpfen. */
+  max-width: min(62ch, 100%);
   margin: 0;
   color: var(--ag-text-2);
   font-size: 0.95rem;

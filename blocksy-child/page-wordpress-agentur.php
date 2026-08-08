@@ -351,12 +351,16 @@ get_header();
 				<span class="ag-liveproof__gauge" aria-hidden="true">
 					<svg viewBox="0 0 36 36" width="44" height="44" fill="none">
 						<circle cx="18" cy="18" r="15.9" stroke="currentColor" stroke-opacity="0.16" stroke-width="3"/>
-						<circle class="ag-liveproof__gauge-arc" cx="18" cy="18" r="15.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="95 100" transform="rotate(-90 18 18)"/>
+						<circle class="ag-liveproof__gauge-arc" cx="18" cy="18" r="15.9" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="94 100" transform="rotate(-90 18 18)"/>
 					</svg>
 				</span>
-				<span class="ag-liveproof__value"><span class="ag-counter">95</span><span class="ag-liveproof__max">+</span></span>
-				<span class="ag-liveproof__label">PageSpeed mobil, konstant</span>
-				<span class="ag-liveproof__note">(zuletzt 96/100, Juli 2026)</span>
+				<?php // Stand vorher "95+ konstant (zuletzt 96/100)". Der Hero nennt seit
+					// heute 94 — damit widersprach sich die Seite an zwei Stellen selbst,
+					// ausgerechnet in dem Abschnitt, der zum Nachmessen auffordert.
+					// "konstant" und der Julistand waren zusaetzlich nicht belegbar. ?>
+				<span class="ag-liveproof__value"><span class="ag-counter">94</span></span>
+				<span class="ag-liveproof__label">PageSpeed mobil</span>
+				<span class="ag-liveproof__note">(Desktop 100 — nicht aufgerundet)</span>
 			</div>
 
 			<div class="ag-liveproof__tile" data-ag-reveal style="--agr-d: 210ms;">
