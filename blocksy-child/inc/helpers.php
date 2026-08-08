@@ -669,20 +669,12 @@ function nexus_get_agentur_faq_items() {
 			'answer'   => 'Ranking und Anfragequalität sind zwei verschiedene Probleme. Oft rankt eine Seite für Informationssuchen, während Proof, CTA-Führung und kaufnahe Argumentation fehlen. Genau dort verbindet diese Arbeit SEO, Struktur, Tracking und Conversion.',
 		],
 		[
-			'question' => 'Seid ihr eine Webdesign-Agentur oder Internetagentur in Hannover?',
-			'answer'   => 'Technisch überschneidet sich die Arbeit mit dem, was eine Webdesign-Agentur oder Internetagentur in Hannover leistet: WordPress-Umsetzung, Design und Seitenstruktur. Der Unterschied liegt im Ziel — nicht die schönste Website, sondern eine, die kaufnahe Besucher messbar in qualifizierte Anfragen führt. Design ist hier Mittel zum Zweck, nicht das Ergebnis.',
-		],
-		[
 			'question' => 'Bieten Sie WordPress-Wartung in Hannover an?',
 			'answer'   => 'Ja, aber bewusst nur im Rahmen laufender Mandate: Updates, Monitoring, Backups und Weiterentwicklung für Systeme, die ich gebaut oder geprüft habe. Ein reiner Wartungsvertrag für eine fremde Installation ist Symptompflege — die Seite bleibt am Leben, aber niemand steht für Ladezeit, Tracking und Anfragepfad gerade. Wer eine bestehende WordPress-Seite übergeben möchte, startet mit der Projektprüfung; laufende Betreuung schließt sich daran an.',
 		],
 		[
 			'question' => 'Arbeiten Sie auch außerhalb von Hannover in Niedersachsen?',
 			'answer'   => 'Ja. Der Sitz ist Pattensen bei Hannover, persönliche Termine sind im weiteren Niedersachsen gut machbar — Hildesheim, Braunschweig und Celle liegen im Tagesradius. Für Unternehmen außerhalb der Region ändert sich am Ablauf nichts: Projektprüfung, Umsetzung und Reviews funktionieren remote genauso strukturiert.',
-		],
-		[
-			'question' => 'Was unterscheidet Sie von einer klassischen Webagentur in Hannover?',
-			'answer'   => 'Eine klassische Webagentur in Hannover liefert meist eine Website und übergibt sie. Hier ist die Website Teil eines Anfrage-Systems: technisches SEO, Server-Side Tracking und Conversion-Führung gehören zusammen, damit am Ende nicht nur Besucher, sondern nachvollziehbar qualifizierte Anfragen entstehen. Reine Webentwicklung ohne diese Lead-Logik ist bewusst nicht der Fokus.',
 		],
 	];
 }

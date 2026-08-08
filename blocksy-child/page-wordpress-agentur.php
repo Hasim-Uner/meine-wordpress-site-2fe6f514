@@ -34,7 +34,7 @@ $agentur_solar_deeper = [
 	],
 	[
 		't'   => 'Server-Side Tracking für B2B',
-		's'   => 'GA4, Meta CAPI und Consent Mode v2 — DSGVO-konform auf eigenem Server, Grundlage sauberer Attribution.',
+		's'   => 'GA4, Meta CAPI und Consent Mode v2 — Daten laufen über den eigenen Server, Grundlage sauberer Attribution.',
 		'url' => home_url( '/server-side-tracking-b2b/' ),
 	],
 	[
@@ -55,19 +55,23 @@ $agentur_solar_deeper = [
 ];
 
 // ═══ E3 Proof Canon ═══
-$e3                = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
-$e3_metrics        = $e3['metrics'] ?? [];
-$e3_cpl_before     = $e3_metrics['cpl_before']['display'] ?? '150 €';
-$e3_cpl_after      = $e3_metrics['cpl_after']['display'] ?? '22 €';
-$e3_cpl_reduction  = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
-$e3_cpl_red_count  = $e3_metrics['cpl_reduction']['counter_target'] ?? '85';
-$e3_lead_count     = $e3_metrics['lead_count']['display'] ?? '1.750+';
-$e3_lead_counter   = $e3_metrics['lead_count']['counter_target'] ?? '1750';
-$e3_sales_conv     = $e3_metrics['sales_conversion']['display'] ?? '12 %';
-$e3_conv_counter   = $e3_metrics['sales_conversion']['counter_target'] ?? '12';
-$e3_timeframe      = $e3_metrics['timeframe']['display'] ?? '6 Monate';
-$e3_timeframe_dat  = $e3_metrics['timeframe']['display_dative'] ?? '6 Monaten';
-$e3_time_counter   = $e3_metrics['timeframe']['counter_target'] ?? '6';
+// Zugriff ueber hu_e3_metric() wie in den uebrigen Templates. Vorher standen
+// hier acht hartcodierte Fallbacks — stille Kopien der Canon-Werte, die bei
+// einer Canon-Aenderung unbemerkt den alten Stand angezeigt haetten.
+$e3_metric         = static function ( $metric, $field = 'display' ) {
+	return function_exists( 'hu_e3_metric' ) ? hu_e3_metric( $metric, $field ) : '';
+};
+$e3_cpl_before     = $e3_metric( 'cpl_before' );
+$e3_cpl_after      = $e3_metric( 'cpl_after' );
+$e3_cpl_reduction  = $e3_metric( 'cpl_reduction' );
+$e3_cpl_red_count  = $e3_metric( 'cpl_reduction', 'counter_target' );
+$e3_lead_count     = $e3_metric( 'lead_count' );
+$e3_lead_counter   = $e3_metric( 'lead_count', 'counter_target' );
+$e3_sales_conv     = $e3_metric( 'sales_conversion' );
+$e3_conv_counter   = $e3_metric( 'sales_conversion', 'counter_target' );
+$e3_timeframe      = $e3_metric( 'timeframe' );
+$e3_timeframe_dat  = $e3_metric( 'timeframe', 'display_dative' );
+$e3_time_counter   = $e3_metric( 'timeframe', 'counter_target' );
 
 // ═══ Methodenbausteine aus der Asset Registry ═══
 $wgos_assets = function_exists( 'nexus_get_wgos_asset_registry' ) ? nexus_get_wgos_asset_registry() : [];
@@ -252,7 +256,13 @@ get_header();
 						<p class="ag-hero-viz__sub">Kosten pro qualifizierter B2B-Anfrage — vor und nach dem eigenen Anfrage-System.</p>
 					</header>
 
-					<div class="ag-hero-viz__chart" role="img" aria-label="Balkenchart: Kosten pro qualifizierter Anfrage fielen von 150 Euro auf 22 Euro, ein Rückgang um 85 Prozent.">
+					<div class="ag-hero-viz__chart" role="img" aria-label="<?php echo esc_attr( sprintf(
+						/* translators: 1: CPL vorher, 2: CPL nachher, 3: Rueckgang in Prozent. */
+						'Balkenchart: Kosten pro qualifizierter Anfrage fielen von %1$s auf %2$s, ein Rückgang um %3$s.',
+						$e3_cpl_before,
+						$e3_cpl_after,
+						$e3_cpl_reduction
+					) ); ?>">
 						<div class="ag-bar ag-bar--before">
 							<span class="ag-bar__num"><?php echo esc_html( $e3_cpl_before ); ?></span>
 							<span class="ag-bar__track">
