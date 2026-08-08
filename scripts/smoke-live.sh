@@ -60,21 +60,33 @@ for route in "${ROUTE_LIST[@]}"; do
   fi
 
   if [[ $rc -eq 0 && "$status" == "200" ]]; then
-    title="$(printf '%s' "$html" | tr '\n' ' ' | grep -oiE '<title[^>]*>[^<]*</title>' | head -1 \
+    # Auch hier Herestring statt Pipe: "head -1" wuerde die Pipe frueh schliessen
+    # und unter pipefail dasselbe Problem ausloesen.
+    title="$(grep -oiE '<title[^>]*>[^<]*</title>' <<< "${html//$'\n'/ }" | head -1 \
              | sed -E 's/<[^>]*>//g' | sed 's/^ *//;s/ *$//')"
     [[ -n "$title" ]] || problems+=("kein oder leerer <title>")
 
-    h1_count="$(printf '%s' "$html" | grep -oiE '<h1[ >]' | wc -l | tr -d ' ')"
+    # wc liest bis zum Ende, hier gibt es kein frueh geschlossenes Rohr.
+    h1_count="$(grep -oiE '<h1[ >]' <<< "$html" | wc -l | tr -d ' ')"
     [[ "$h1_count" == "1" ]] || problems+=("$h1_count H1-Elemente statt genau einer")
+
+    # Achtung, hier lag ein Fehler: "printf | grep -q" bricht bei grosser Seite
+    # weg. grep -q endet beim ersten Treffer, printf bekommt SIGPIPE und damit
+    # Status 141, und unter pipefail gilt die Pipeline als fehlgeschlagen —
+    # obwohl der Treffer da war. Kleine Seiten sind rechtzeitig durchgeschrieben,
+    # grosse nicht, also war das Ergebnis von der Seitengroesse abhaengig.
+    # Beim noindex war es die gefaehrlichere Richtung: ein echtes noindex auf
+    # einer grossen Seite waere durchgerutscht. Herestring statt Pipe.
 
     # Der teuerste Einzelfehler: ein verirrtes noindex nimmt die Seite aus dem
     # Index, und zurueck dauert Wochen.
-    if printf '%s' "$html" | tr '\n' ' ' | grep -qiE '<meta[^>]+name=["'"'"']robots["'"'"'][^>]*content=["'"'"'][^"'"'"']*noindex'; then
+    if grep -qiE '<meta[^>]+name=["'"'"']robots["'"'"'][^>]*content=["'"'"'][^"'"'"']*noindex' <<< "${html//$'\n'/ }"; then
       problems+=("NOINDEX gesetzt")
     fi
 
-    printf '%s' "$html" | grep -qiE '<link[^>]+rel=["'"'"']canonical["'"'"'][^>]*href=["'"'"']https?://' \
-      || problems+=("kein absolutes canonical")
+    if ! grep -qiE '<link[^>]+rel=["'"'"']canonical["'"'"'][^>]*href=["'"'"']https?://' <<< "$html"; then
+      problems+=("kein absolutes canonical")
+    fi
   fi
 
   CHECKED=$((CHECKED + 1))
