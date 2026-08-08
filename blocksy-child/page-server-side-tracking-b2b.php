@@ -344,6 +344,15 @@ $security_items = [
 	'GTM-Versionen werden dokumentiert, damit Änderungen nachvollziehbar bleiben.',
 ];
 
+// ── 11) Erfahrungswert ────────────────────────────────────────
+// ACHTUNG, kein belegter Kanon: Diese Spanne ist die Eigenaussage des
+// Betreibers aus bisherigen Umstellungen, nicht aus einer Belegdatei und
+// nicht aus inc/canon/. Sie gilt nur auf dieser Seite und darf nicht auf
+// andere Seiten uebernommen oder als Referenzwert zitiert werden. Bewusst
+// "gemessene Conversions", nicht "Conversion Rate": serverseitiges Tracking
+// erhoeht die Erfassung, nicht die Kaufbereitschaft.
+$measured_uplift = '20 bis 40 Prozent';
+
 // ── 12) FAQ ───────────────────────────────────────────────────
 $faq = [
 	[
@@ -365,6 +374,10 @@ $faq = [
 	[
 		'question' => 'Welche Plattformen können angebunden werden?',
 		'answer'   => 'Standardmäßig GA4 und Google Ads, im Pro-Setup zusätzlich Meta Pixel und Meta Conversion API mit Deduplizierung. Darüber hinaus sind Microsoft Ads, LinkedIn Ads, TikTok sowie CRM-Systeme mit REST-API oder Webhook möglich — das läuft über das individuelle Setup.',
+	],
+	[
+		'question' => 'Wie viele Conversions kommen zusätzlich an?',
+		'answer'   => sprintf( 'In den Setups, die ich bisher umgestellt habe, kamen anschließend rund %s mehr Conversions in den Werbekonten an als vorher. Das ist ein Erfahrungswert, keine Zusage: Wie viel es im Einzelfall wird, hängt vom Anteil an Safari- und iOS-Traffic ab, vom Anteil der Werbeblocker, von der Consent-Rate und davon, wie sauber vorher gemessen wurde. Wichtig zur Einordnung: Es kaufen dadurch nicht mehr Menschen — es werden mehr der ohnehin stattfindenden Abschlüsse erfasst und richtig zugeordnet. Im Testbetrieb läuft die neue Messung neben der alten, damit Sie die Differenz an Ihren eigenen Zahlen sehen.', $measured_uplift ),
 	],
 	[
 		'question' => 'Was kostet Server-Side Tracking?',
@@ -837,18 +850,26 @@ get_header();
 		</div>
 	</section>
 
-	<?php // ── 11 Nachweis (Platzhalter) ── dunkel ──────────── ?>
+	<?php // ── 11 Erfahrungswerte ── dunkel ─────────────────── ?>
 	<section class="hu-sst__band hu-sst__band--dark hu-sst__band--deep" id="nachweis" data-nx-theme="dark" aria-labelledby="hu-sst-nachweis-title">
-		<div class="hu-sst__container">
+		<div class="hu-sst__container hu-sst__container--narrow">
 			<div class="hu-sst__section-head">
-				<p class="hu-sst__eyebrow">Erfahrung und Nachweis</p>
-				<h2 class="hu-sst__h2" id="hu-sst-nachweis-title">Erfahrung und Nachweis</h2>
+				<p class="hu-sst__eyebrow">Einordnung</p>
+				<h2 class="hu-sst__h2" id="hu-sst-nachweis-title">Erfahrungswerte statt Logos</h2>
 			</div>
 
-			<div class="hu-sst__placeholder">
-				<!-- Inhalt wird manuell eingesetzt -->
-				<p class="hu-sst__placeholder-hint">
-					Platzhalter — Inhalt wird manuell eingesetzt.
+			<div class="hu-sst__prose">
+				<p>
+					Ein großer Teil meiner Tracking-Arbeit läuft unter fremdem Namen, als technische Ebene hinter Agenturprojekten. Deshalb stehen hier keine Logos.
+				</p>
+				<p>
+					Aus den Setups, die ich bisher umgestellt habe: In den Werbekonten kommen anschließend rund <strong><?php echo esc_html( $measured_uplift ); ?> mehr Conversions</strong> an als vorher, und die Zuordnung zu Kampagne und Anzeigengruppe wird stabiler.
+				</p>
+				<p>
+					Das ist meine Erfahrung, keine Zusage. Wie viel es bei Ihnen wird, hängt an Ihrem Traffic: Anteil Safari und iOS, Werbeblocker, Consent-Rate und Zustand des bisherigen Setups. War vorher sauber gemessen, bleibt weniger übrig. War es kaputt, mehr.
+				</p>
+				<p>
+					Nachprüfbar ist es trotzdem. Im Testbetrieb läuft die neue Messung neben der alten — die Differenz sehen Sie in Ihren eigenen Konten, nicht in meiner Präsentation. Container, Hosting und Zugänge laufen auf Ihren Namen, jede Änderung liegt als benannte GTM-Version vor.
 				</p>
 			</div>
 		</div>
