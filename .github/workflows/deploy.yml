@@ -132,3 +132,20 @@ jobs:
             -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o BatchMode=yes -o StrictHostKeyChecking=yes" \
             "$BUILD_OUTPUT_DIR/" \
             "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH_NORMALIZED"
+
+      # Bis hierher endete der Deploy. Ob die Seite danach noch antwortet, hat
+      # niemand geprueft — und bei kleinen Besucherzahlen sieht ein toter Monat
+      # aus wie ein ruhiger. Der Smoke prueft nur Vitalzeichen (200, Title,
+      # eine H1, kein noindex, Canonical), kein Aussehen und kein Formular.
+      #
+      # Rot heisst: nachsehen. Zurueckgerollt wird von Hand — die Dateien
+      # liegen zu diesem Zeitpunkt bereits auf dem Server.
+      - name: Live smoke test
+        if: ${{ github.event_name != 'workflow_dispatch' || !inputs.dry_run }}
+        run: |
+          # Kurz warten: Seiten-Cache und OPcache brauchen einen Moment, bis
+          # sie das neue Theme ausliefern.
+          sleep 20
+          bash scripts/smoke-live.sh "${SMOKE_BASE_URL:-https://hasimuener.de}"
+        env:
+          SMOKE_BASE_URL: ${{ vars.SMOKE_BASE_URL }}
