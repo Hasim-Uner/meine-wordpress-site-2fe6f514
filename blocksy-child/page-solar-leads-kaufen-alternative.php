@@ -20,28 +20,30 @@ $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 	: home_url( '/solar-waermepumpen-leadgenerierung/' );
 $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
 $e3_url          = home_url( '/case-study-solar-leadgenerierung/' );
-$contact_url     = home_url( '/kontakt/' );
+$cost_study_url  = home_url( '/solar-leads-kosten-studie/' );
+$tco_url         = home_url( '/eigene-leadgenerierung-vs-portale/' );
+$waermepumpen_url = home_url( '/waermepumpen-leads/' );
 
 $linked_assets = [
 	[
-		't'   => 'Strategischer TCO-Vergleich über 24 Monate',
-		's'   => 'Portal-Leads gegen eigenes Anfrage-System mit CAPEX-vs-OPEX-Logik und Asset-Eigentum.',
-		'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ),
+		't'   => 'Was Solar-Leads wirklich kosten',
+		's'   => 'Marktstudie zu Preismodellen, Cost per Order, Methodik und belastbaren Vergleichsgrößen.',
+		'url' => $cost_study_url,
 	],
 	[
-		't'   => 'Lead-Funnel Solar (Pillar)',
-		's'   => 'Die 5 Funnel-Stufen vom Erstkontakt zur qualifizierten Anfrage — und die häufigsten Fehler.',
-		'url' => home_url( '/lead-funnel-solar/' ),
+		't'   => 'Portal-Zukauf oder eigenes Asset?',
+		's'   => 'Strategischer TCO-Vergleich über 24 Monate mit Eigentums- und Abhängigkeitslogik.',
+		'url' => $tco_url,
 	],
 	[
 		't'   => 'Cost per Lead Photovoltaik',
-		's'   => 'Drei CPL-Szenarien im Vergleich und welche versteckten Kostentreiber den CPL hochtreiben.',
+		's'   => 'Drei CPL-Szenarien und die Kosten, die im reinen Leadpreis nicht sichtbar werden.',
 		'url' => home_url( '/cost-per-lead-photovoltaik/' ),
 	],
 	[
-		't'   => 'Kunden gewinnen für Solarteure',
-		's'   => 'Wie Solar- und Wärmepumpen-Anbieter im DACH-Mittelstand ohne DAA, Aroundhome und Check24 wachsen.',
-		'url' => home_url( '/kunden-gewinnen-solarteure/' ),
+		't'   => 'Lead-Funnel für Solar-Betriebe',
+		's'   => 'Die fünf Stufen vom ersten Suchsignal bis zur qualifizierten Anfrage im Vertrieb.',
+		'url' => home_url( '/lead-funnel-solar/' ),
 	],
 ];
 
@@ -61,20 +63,20 @@ $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 // ── Inhalt: Portal vs. eigenes System (Problem → Lösung) ──────
 $portal_facts = [
 	[
-		'k' => '60 – 120 €',
-		'l' => 'CPL für „exklusive" PV-/WP-Leads im Portal-Markt',
+		'k' => 'Einkauf',
+		'l' => 'Jeder zusätzliche Kontakt erzeugt erneut variable Kosten.',
 	],
 	[
-		'k' => 'bis zu 5×',
-		'l' => 'Mehrfachverkauf desselben Datensatzes an Wettbewerber',
+		'k' => 'Kontaktlage',
+		'l' => 'Exklusivität, Alter und Herkunft müssen vor dem Kauf geklärt sein.',
 	],
 	[
-		'k' => $e3_conv_before,
-		'l' => 'typische Abschlussquote auf gekaufte Portal-Leads',
+		'k' => 'Vertrieb',
+		'l' => 'Nachqualifizierung und schnelle Reaktion bleiben beim Betrieb.',
 	],
 	[
-		'k' => '0 % Asset',
-		'l' => 'kein Code, kein Tracking, keine Daten verbleiben im Betrieb',
+		'k' => 'Kein Asset',
+		'l' => 'Mit dem Ende des Einkaufs endet auch der Anfragezufluss.',
 	],
 ];
 
@@ -84,115 +86,115 @@ $own_facts = [
 		'l' => 'Cost per Lead im eigenen Anfrage-System (Case-Study-Referenz)',
 	],
 	[
-		'k' => '100 %',
-		'l' => 'exklusive Anfragen – kein Parallelversand an Wettbewerber',
+		'k' => 'Eigener Kontakt',
+		'l' => 'Die Anfrage läuft direkt und ohne Portal-Parallelversand in den Vertrieb.',
 	],
 	[
 		'k' => $e3_conv_uplift,
-		'l' => 'Sprung der Abschlussquote — von Portal-Leads zu eigenem System (Case Study)',
+		'l' => 'Abschlussquote im dokumentierten Fall — kein allgemeines Versprechen.',
 	],
 	[
-		'k' => '100 % Asset',
-		'l' => 'Code, Tracking und Daten bleiben im Betrieb',
+		'k' => 'Eigenes Asset',
+		'l' => 'Seite, Tracking, Prozess und Datenbasis bleiben beim Betrieb.',
 	],
 ];
 
 $why_portals_fail = [
 	[
-		't' => 'Mehrfachverkauf zerstört Margen',
-		's' => 'Drei bis fünf Anbieter bieten gegen denselben Datensatz. Die Conversion sinkt, der Preisdruck steigt, der Vertrieb verbrennt Zeit.',
+		't' => 'Der Leadpreis ist nicht der Auftragspreis',
+		's' => 'Entscheidend ist, wie viele Kontakte, Rückrufversuche und Angebotsstunden bis zu einem gewonnenen Auftrag nötig sind.',
 	],
 	[
-		't' => 'Keine Vorqualifizierung',
-		's' => 'Portale verkaufen Klick-Interesse, kein Projektinteresse. Region, Dach, Heizart und Budget bleiben offen – Sie qualifizieren am Telefon nach.',
+		't' => 'Exklusivität verändert die Vertriebslage',
+		's' => 'Erhält mehr als ein Betrieb denselben Kontakt, wird Reaktionsgeschwindigkeit zum Wettbewerbsfaktor — noch vor der Beratung.',
 	],
 	[
-		't' => 'Daten gehören dem Portal',
-		's' => 'Sie bezahlen pro Datensatz, ohne das System zu besitzen, das ihn erzeugt. Kündigung = Anfrage-Stopp.',
+		't' => 'Ungeklärte Daten kosten Vertriebszeit',
+		's' => 'Fehlen Region, Vorhaben, Gebäudesituation oder Investitionsnähe, übernimmt der Vertrieb die Qualifizierung nach dem Einkauf.',
 	],
 	[
-		't' => 'CPL steigt mit dem Markt',
-		's' => 'Je mehr Anbieter sich um dieselbe Anzahl an Endkunden drängen, desto teurer der Datensatz – ohne Qualitätsgewinn.',
+		't' => 'Zukauf baut keinen eigenen Kanal auf',
+		's' => 'Auch ein guter Lieferant bleibt ein externer Zugang zur Nachfrage. Der Betrieb sammelt dabei kaum eigene Lern- und Steuerungsdaten.',
 	],
 ];
 
 $market_models = [
 	[
 		't' => 'Geteilte Datensätze',
-		's' => 'Eine Endkundenanfrage wird parallel an drei Solarteure verkauft. Marktbreit etablierte Mengenmodelle (z. B. Aroundhome, DAA, Wattfox in Teilen). Preis pro Datensatz niedriger, Wettbewerb höher.',
+		's' => 'Ein Kontakt kann mehreren Betrieben angeboten werden. Der Einstiegspreis ist nur zusammen mit Empfängerzahl, Alter und Rückerstattungsregeln aussagekräftig.',
 	],
 	[
 		't' => 'Exklusive Datensätze',
-		's' => 'Anfrage wird nur an einen Anbieter weitergegeben. Selteneres Modell, höherer Preis pro Datensatz (oft 80 – 150 €). Faktor Geschwindigkeit weniger entscheidend, Abschlussquote tendenziell höher.',
+		's' => 'Der Kontakt wird einem Betrieb zugesagt. Entscheidend bleibt, wie Exklusivität definiert, geprüft und bei Fehlkontakten behandelt wird.',
 	],
 	[
 		't' => 'Regional erzeugte Leads',
-		's' => 'Anfragen werden über lokale Kampagnen oder Videowerbung im Namen des Fachbetriebs eingesammelt (z. B. Leadfluss-Modell). Markenwirkung bleibt beim Fachbetrieb, Volumen abhängig von der lokalen Kampagne.',
+		's' => 'Kampagnen werden für ein Zielgebiet ausgespielt. Vor dem Auftrag sollte klar sein, wem Werbekonto, Landingpage und Rohdaten gehören.',
 	],
 	[
 		't' => 'Eigene Anfrage-Infrastruktur',
-		's' => 'Money Page, Server-Side-Tracking und Vorqualifizierung im eigenen Eigentum. Anfragen sind per Definition exklusiv. Setup einmalig, Asset im Betrieb. Vergleich: siehe Case-Study-Referenz.',
+		's' => 'Suchseite, Vorqualifizierung, Messung und Übergabe laufen unter eigener Kontrolle. Der Aufbau dauert länger, schafft dafür ein übergebbares Asset.',
 	],
 ];
 
 $buyer_check_criteria = [
 	[
 		'k' => 'Intent-Stärke',
-		'l' => 'Was hat der Endkunde geklickt – ein Angebotsvergleich, eine Förder-Frage, eine konkrete Investitionsentscheidung? Je näher am Kauf, desto wertvoller die Anfrage.',
+		'l' => 'Löst die Anfrage nur Informationsbedarf aus — oder ist bereits ein konkretes Projekt erkennbar?',
 	],
 	[
 		'k' => 'Exklusivität',
-		'l' => 'Wie viele Wettbewerber bekommen denselben Datensatz? Bei drei oder mehr ist die Anfrage faktisch ein Bieter-Wettlauf, kein Verkaufsgespräch.',
+		'l' => 'Wie viele Betriebe erhalten denselben Kontakt und wie wird diese Zusage kontrolliert?',
 	],
 	[
 		'k' => 'Vorqualifizierung',
-		'l' => 'Sind Region, Dachfläche, Heizart und Projektwert vor dem Anruf bekannt? Ohne diese Daten qualifizieren Sie selbst nach – und verlieren Zeit an Nicht-Passende.',
+		'l' => 'Sind Region, Vorhaben, Gebäudesituation und zeitlicher Horizont vor dem Rückruf bekannt?',
 	],
 	[
-		'k' => 'Echtzeit-Übermittlung',
-		'l' => 'Kommt die Anfrage innerhalb von Minuten nach Endkundenklick? Leads, die Stunden oder Tage alt sind, sind faktisch tot – der Endkunde hat längst andere Angebote.',
+		'k' => 'Übergabe & Daten',
+		'l' => 'Wann kommt der Kontakt an, welche Einwilligung liegt vor und kann der Vertriebsstatus zurückgespielt werden?',
 	],
 ];
 
 $own_system_layers = [
 	[
-		't' => 'Money Page mit Vorqualifizierung',
-		's' => 'Solar/Wärmepumpen-spezifisch, mit händischer Region-Analyse. Region, Heizart, Projektwert – vor dem Anruf.',
+		't' => 'Kaufnahe Seite mit Vorqualifizierung',
+		's' => 'Suchintention, Zielgebiet und Projektmerkmale werden vor dem ersten Vertriebskontakt zusammengeführt.',
 	],
 	[
-		't' => 'Server-Side-Tracking (CAPI)',
-		's' => 'Eigener Container in Frankfurt, DSGVO-konform. Ad-Blocker, ITP und Cookieless brechen die Attribution nicht mehr.',
+		't' => 'Messbare Anfrage-Strecke',
+		's' => 'Formular, Consent-Signale und Kampagnenquellen werden technisch nachvollziehbar verbunden.',
 	],
 	[
-		't' => 'CRM-Anschluss & Lead-Scoring',
-		's' => 'Anfragen laufen sortiert in den Vertrieb – grün, gelb, rot. Sie rufen die kaufbereiten zuerst zurück.',
+		't' => 'Vertriebsübergabe und Priorisierung',
+		's' => 'Anfragen kommen mit den entscheidenden Kontextdaten an und können nach Fit und Dringlichkeit bearbeitet werden.',
 	],
 	[
-		't' => 'Skalierung über eigene Kanäle',
-		's' => 'Google Ads, Meta Ads und SEO laufen erst dann profitabel, wenn die Strecke darunter sauber misst und konvertiert.',
+		't' => 'Lernen auf eigener Datenbasis',
+		's' => 'SEO und bezahlte Kanäle werden anhand der Anfragequalität gesteuert — nicht nur anhand eines Formularabschlusses.',
 	],
 ];
 
 $objections = [
 	[
 		'question' => 'Was kosten Photovoltaik-Leads im Einkauf?',
-		'answer'   => 'Geteilte Datensätze liegen im Markt typischerweise bei 60 – 120 € pro Anfrage, exklusive bei 80 – 150 €. Entscheidend ist aber der Preis pro Abschluss: Bei 1 – 5 % Abschlussquote kostet ein gewonnener Auftrag schnell das Zwanzigfache des Lead-Preises. Die vollständige Rechnung steht in der Solar-Leads-Kosten-Studie und der Cost-per-Lead-Analyse weiter unten.',
+		'answer'   => 'Der Preis hängt unter anderem von Exklusivität, Region, Produkt, Vorqualifizierung und Rückerstattungsregeln ab. Ein einzelner CPL ist deshalb keine belastbare Einkaufsentscheidung. Die verlinkte Solar-Leads-Kosten-Studie trennt Marktpreise, Cost per Order und eigene Case-Werte methodisch voneinander.',
 	],
 	[
 		'question' => 'Wo kann man PV-Leads kaufen – und worauf ist zu achten?',
-		'answer'   => 'Der Markt unterteilt sich in geteilte Datensätze, exklusive Datensätze, regional erzeugte Kampagnen-Leads und eigene Anfrage-Infrastruktur. Unabhängig vom Anbieter entscheiden vier Kriterien über die Wirtschaftlichkeit: Intent-Stärke, Exklusivität, Vorqualifizierung und Echtzeit-Übermittlung. Wer länger als eine Saison plant, rechnet den Zukauf gegen ein eigenes System – die Markteinordnung weiter oben zeigt beide Wege ohne Wertung.',
+		'answer'   => 'Der Markt lässt sich in geteilte Datensätze, exklusive Datensätze, regional erzeugte Kampagnen-Leads und eigene Anfrage-Infrastruktur einordnen. Unabhängig vom Anbieter entscheiden Intent-Stärke, Exklusivität, Vorqualifizierung sowie Übergabe- und Datenregeln über die Wirtschaftlichkeit.',
 	],
 	[
 		'question' => 'Aber Portal-Leads liefern doch sofort Anfragen.',
-		'answer'   => 'Sofort ja, aber teuer und mehrfach verkauft. Ein eigenes System braucht 6–12 Wochen Aufbau, liefert dann jedoch exklusive Anfragen zu deutlich niedrigeren Stückkosten. Wer dauerhaft skalieren will, kommt am eigenen System nicht vorbei.',
+		'answer'   => 'Zukauf kann eine kurzfristige Kapazitätslücke überbrücken. Ein eigener Anfragekanal hat einen anderen Zweck: Er soll Nachfrage, Qualifizierung und Lerndaten schrittweise in das Eigentum des Betriebs holen. Welcher Weg gerade sinnvoll ist, hängt von Zielgebiet, Vertrieb und Zeithorizont ab.',
 	],
 	[
 		'question' => 'Was kostet der Aufbau eines eigenen Anfrage-Systems?',
-		'answer'   => 'Initiales Setup im B2B-Mittelstand: rund 12.000 – 18.000 € einmalig, laufend ca. 50 €/Monat Hochleistungs-Hosting. Über 24 Monate liegt die Gesamtkostenrechnung unter dem, was viele Anbieter heute für Portal-Leads ausgeben – nur dass am Ende ein Asset im Eigentum steht.',
+		'answer'   => 'Der Umfang hängt von bestehender Website, Messbarkeit, Vorqualifizierung, CRM-Anschluss und Zielgebiet ab. Deshalb steht vor einem Angebot der Marktcheck und bei passendem Fit eine vertiefte Analyse. Verglichen wird nicht nur Setup gegen Leadpreis, sondern die Gesamtkosten über den geplanten Zeitraum und der Wert des verbleibenden Assets.',
 	],
 	[
 		'question' => 'Wie lange dauert es, bis sich das rechnet?',
-		'answer'   => sprintf( 'Bei einem mittelständischen PV-Installationsbetrieb hat sich das System nach %1$s amortisiert: %2$s qualifizierte Anfragen, %3$s Abschlussquote und der CPL fiel von %4$s auf %5$s.', $e3_timeframe, $e3_lead_count, $e3_sales_conversion, $e3_cpl_before, $e3_cpl_after ),
+		'answer'   => sprintf( 'Eine allgemeine Amortisationsdauer wäre unseriös. Im dokumentierten Fall wurden über %1$s mehr als %2$s qualifizierte Anfragen erfasst; die Abschlussquote lag bei %3$s und die Kosten pro Anfrage gingen von %4$s auf %5$s zurück. Ob diese Mechanik übertragbar ist, prüft der Marktcheck anhand Ihrer Ausgangslage.', $e3_timeframe, $e3_lead_count, $e3_sales_conversion, $e3_cpl_before, $e3_cpl_after ),
 	],
 	[
 		'question' => 'Verkaufen Sie selbst Leads?',
@@ -200,11 +202,11 @@ $objections = [
 	],
 	[
 		'question' => 'Funktioniert das auch für Wärmepumpen und Speicher?',
-		'answer'   => 'Ja. Die gleiche Architektur trägt Photovoltaik, Wärmepumpe und Speicher. Die Vorqualifizierung wird pro Produkt anders gewichtet (Heizart, Dachfläche, Bestandsanlage), die System-Logik bleibt identisch.',
+		'answer'   => 'Die Grundarchitektur kann für Photovoltaik, Wärmepumpe und Speicher eingesetzt werden. Suchintention, Fragen und Fit-Kriterien müssen jedoch pro Produkt angepasst werden. Für den generischen Wärmepumpen-Lead-Intent gibt es deshalb eine eigene Seite.',
 	],
 	[
 		'question' => 'Wir nutzen schon DAA/Aroundhome/Check24. Was ist anders?',
-		'answer'   => 'Sie mieten dort Nachfrage. Hier bauen Sie eigene Nachfrage. Drei Prüffragen: Wem gehört die Landingpage, das Tracking, das CRM? Wenn dreimal „dem Portal" steht – mieten Sie ein System, das morgen abgeschaltet werden kann.',
+		'answer'   => 'Der Unterschied liegt nicht im Namen des Anbieters, sondern im Eigentum am Anfrageweg. Prüfen Sie, wem Landingpage, Tracking, Kampagnendaten und Vertriebsfeedback gehören. Ein eigenes System soll diese Ebenen unter Ihrer Kontrolle verbinden; bestehender Zukauf kann während des Übergangs weiterlaufen.',
 	],
 ];
 
@@ -219,7 +221,7 @@ $service_schema = [
 	'@type'       => 'Service',
 	'@id'         => trailingslashit( $page_url ) . '#service',
 	'name'        => 'Eigenes Anfrage-System statt Portal-Leads für Solar, Wärmepumpe und Speicher',
-	'serviceType' => 'Alternative zu Lead-Portalen: Aufbau eigener B2B-Anfrage-Infrastruktur',
+	'serviceType' => 'Alternative zu Lead-Portalen: Aufbau eigener Anfrage-Infrastruktur',
 	'url'         => $page_url,
 	'description' => sprintf( 'Aufbau eines eigenen Anfrage-Systems für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
 	'provider'    => [ '@id' => home_url( '/#organization' ) ],
@@ -253,203 +255,279 @@ foreach ( $objections as $faq_item ) {
 get_header();
 ?>
 
-<main id="primary" class="hu-intercept" role="main" data-track-page="solar-leads-kaufen-alternative">
+<main id="primary" class="hu-intercept hu-buy" role="main" data-track-page="solar-leads-kaufen-alternative">
 
-	<section class="hu-intercept__hero" id="hero" aria-labelledby="hu-intercept-hero-title">
-		<div class="hu-intercept__container">
-			<p class="hu-intercept__eyebrow">Für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Mittelstand</p>
-			<h1 class="hu-intercept__title" id="hu-intercept-hero-title">
-				Sie wollen Photovoltaik- oder Solar-Leads kaufen? Eigene Anfragen senken den CPL um <?php echo esc_html( $e3_cpl_reduction ); ?>.
-			</h1>
-			<p class="hu-intercept__lead">
-				Gekaufte Photovoltaik- und Wärmepumpen-Leads kosten <strong>60 – 120 €</strong>, werden parallel an drei Wettbewerber verkauft und schließen typischerweise nur bei <strong><?php echo esc_html( $e3_conv_before ); ?></strong>. Bei <?php echo esc_html( $e3_case_label ); ?> stieg die Abschlussquote im eigenen System auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> — der Cost per Lead fiel parallel von <strong><?php echo esc_html( $e3_cpl_before ); ?></strong> auf <strong><?php echo esc_html( $e3_cpl_after ); ?></strong> in <strong><?php echo esc_html( $e3_timeframe ); ?></strong>.
-			</p>
-			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
-			<div class="hu-intercept__cta">
-				<a class="hu-intercept__cta-primary"
-				   href="<?php echo esc_url( $marktcheck_url ); ?>"
-				   data-track-action="cta_marktcheck"
-				   data-track-category="intercept_solar_leads"
-				   data-track-section="hero">
-					Marktcheck mit Fit-Entscheid starten
-				</a>
-				<a class="hu-intercept__cta-secondary"
-				   href="<?php echo esc_url( $e3_url ); ?>"
-				   data-track-action="cta_case_study"
-				   data-track-category="intercept_solar_leads"
-				   data-track-section="hero">
-					Case Study lesen (<?php echo esc_html( $e3_lead_count ); ?> Anfragen, <?php echo esc_html( $e3_sales_conversion ); ?> Abschlussquote)
-				</a>
-			</div>
-			<p class="hu-intercept__hero-related" style="margin-top:18px;font-size:13.5px;opacity:.75;">
-				Strategische Tiefe: <a
-					href="<?php echo esc_url( home_url( '/eigene-leadgenerierung-vs-portale/' ) ); ?>"
-					data-track-action="related_to_tco_strategy"
-					data-track-category="internal_link_hierarchy"
-					data-track-section="hero">Portal-Leads vs. eigenes Anfrage-System — TCO-Vergleich über 24 Monate</a>
-			</p>
-		</div>
-	</section>
-
-	<section class="hu-intercept__compare" id="vergleich" aria-labelledby="hu-intercept-compare-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-compare-title">Photovoltaik-Leads kaufen vs. eigenes Anfrage-System</h2>
-			<div class="hu-intercept__grid hu-intercept__grid--two">
-				<div class="hu-intercept__panel hu-intercept__panel--negative">
-					<h3 class="hu-intercept__panel-title">Portal-Leads kaufen</h3>
-					<ul class="hu-intercept__facts">
-						<?php foreach ( $portal_facts as $fact ) : ?>
-							<li>
-								<span class="hu-intercept__fact-key"><?php echo esc_html( $fact['k'] ); ?></span>
-								<span class="hu-intercept__fact-label"><?php echo esc_html( $fact['l'] ); ?></span>
-							</li>
-						<?php endforeach; ?>
-					</ul>
+	<section class="hu-buy__band hu-buy__band--dark hu-buy__band--hero" id="hero" data-nx-theme="dark" data-track-section="hero" aria-labelledby="hu-buy-hero-title">
+		<div class="hu-buy__container">
+			<div class="hu-buy__hero-grid">
+				<div class="hu-buy__hero-copy">
+					<p class="hu-buy__eyebrow">Für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Markt</p>
+					<h1 class="hu-buy__h1" id="hu-buy-hero-title">Solar Leads kaufen — oder den Anfragekanal selbst besitzen?</h1>
+					<p class="hu-buy__lead">
+						Der Zukauf kann kurzfristig die Pipeline füllen. Er löst aber nicht automatisch Exklusivität, Vorqualifizierung, Messbarkeit oder Datenbesitz. Diese Seite zeigt, welche Modelle Sie vergleichen sollten — und wann ein eigener Anfrageweg wirtschaftlich sinnvoller sein kann.
+					</p>
+					<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
+					<div class="hu-buy__actions">
+						<a class="hu-buy__button hu-buy__button--primary"
+						   href="<?php echo esc_url( $marktcheck_url ); ?>"
+						   data-track-action="cta_marktcheck"
+						   data-track-category="intercept_solar_leads"
+						   data-track-section="hero">
+							Marktcheck mit Fit-Entscheid starten
+							<span aria-hidden="true">→</span>
+						</a>
+						<a class="hu-buy__button hu-buy__button--secondary"
+						   href="<?php echo esc_url( $cost_study_url ); ?>"
+						   data-track-action="cta_cost_study"
+						   data-track-category="internal_link_hierarchy"
+						   data-track-section="hero">
+							Kostenstudie öffnen
+						</a>
+					</div>
+					<p class="hu-buy__microcopy">Keine Zahlungsdaten · kein Pflicht-Call · händische Fit-Einordnung statt Tool-Ergebnis</p>
 				</div>
-				<div class="hu-intercept__panel hu-intercept__panel--positive">
-					<h3 class="hu-intercept__panel-title">Eigenes Anfrage-System</h3>
-					<ul class="hu-intercept__facts">
-						<?php foreach ( $own_facts as $fact ) : ?>
-							<li>
-								<span class="hu-intercept__fact-key"><?php echo esc_html( $fact['k'] ); ?></span>
-								<span class="hu-intercept__fact-label"><?php echo esc_html( $fact['l'] ); ?></span>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-			</div>
-			<p class="hu-intercept__compare-note">
-				Quelle der eigenen Zahlen: Methodik-Case <a href="<?php echo esc_url( $e3_url ); ?>"><?php echo esc_html( $e3_case_label ); ?></a> – Photovoltaik- und Wärmepumpen-Anbieter im DACH-Mittelstand.
-			</p>
-		</div>
-	</section>
 
-	<section class="hu-intercept__why" id="warum-portale" aria-labelledby="hu-intercept-why-title">
-		<div class="hu-intercept__container">
-			<?php /* Kein Exact-Match "Wärmepumpen-Leads" in dieser H2: die Query gehoert
-			         /waermepumpen-leads/ (docs/seo/query-ownership.csv). Sekundaerseiten
-			         bauen die Waermepumpen-Entitaet nicht weiter aus. */ ?>
-			<h2 class="hu-intercept__h2" id="hu-intercept-why-title">Warum der Zukauf von Photovoltaik- und Wärmepumpen-Anfragen das Wachstum bremst</h2>
-			<div class="hu-intercept__grid hu-intercept__grid--four">
-				<?php foreach ( $why_portals_fail as $item ) : ?>
-					<article class="hu-intercept__card">
-						<h3 class="hu-intercept__card-title"><?php echo esc_html( $item['t'] ); ?></h3>
-						<p class="hu-intercept__card-text"><?php echo esc_html( $item['s'] ); ?></p>
-					</article>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</section>
-
-	<section class="hu-intercept__why" id="markt-modelle" aria-labelledby="hu-intercept-markt-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-markt-title">Photovoltaik-Leads-Anbieter im Vergleich: sachliche Markteinordnung</h2>
-			<p class="hu-intercept__section-lead">
-				Der deutsche Markt für Photovoltaik- und Wärmepumpen-Anfragen unterteilt sich in vier strukturell unterschiedliche Modelle. Eigene Markteinordnung – keine Empfehlung, keine Wertung.
-			</p>
-			<div class="hu-intercept__grid hu-intercept__grid--four">
-				<?php foreach ( $market_models as $model ) : ?>
-					<article class="hu-intercept__card">
-						<h3 class="hu-intercept__card-title"><?php echo esc_html( $model['t'] ); ?></h3>
-						<p class="hu-intercept__card-text"><?php echo esc_html( $model['s'] ); ?></p>
-					</article>
-				<?php endforeach; ?>
-			</div>
-			<p class="hu-intercept__section-lead" style="margin-top:24px;">
-				Einzelne Anbieter im Detail: <a href="<?php echo esc_url( home_url( '/aroundhome-solar-einordnung/' ) ); ?>" data-track-action="provider_aroundhome" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Aroundhome-Erfahrungen für Handwerker</a> · <a href="<?php echo esc_url( home_url( '/wattfox-solar-leads-einordnung/' ) ); ?>" data-track-action="provider_wattfox" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Wattfox-Erfahrungen &amp; Kosten</a> · <a href="<?php echo esc_url( home_url( '/daa-photovoltaik-leads-einordnung/' ) ); ?>" data-track-action="provider_daa" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">DAA Leads</a> · <a href="<?php echo esc_url( home_url( '/checkfox-solar-waermepumpe-einordnung/' ) ); ?>" data-track-action="provider_checkfox" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Checkfox: seriös?</a> · <a href="<?php echo esc_url( home_url( '/leadfluss-pv-leads-einordnung/' ) ); ?>" data-track-action="provider_leadfluss" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Leadfluss</a>
-			</p>
-		</div>
-	</section>
-
-	<section class="hu-intercept__compare" id="qualitaet" aria-labelledby="hu-intercept-quality-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-quality-title">Vier Kriterien, an denen sich ein hochwertiger Lead erkennen lässt</h2>
-			<p class="hu-intercept__section-lead">
-				Unabhängig vom gewählten Modell – ob Portal, eigene Strecke oder regionale Kampagne – entscheiden vier Merkmale, ob eine Anfrage wirtschaftlich ist.
-			</p>
-			<div class="hu-intercept__panel hu-intercept__panel--positive">
-				<ul class="hu-intercept__facts">
-					<?php foreach ( $buyer_check_criteria as $crit ) : ?>
-						<li>
-							<span class="hu-intercept__fact-key"><?php echo esc_html( $crit['k'] ); ?></span>
-							<span class="hu-intercept__fact-label"><?php echo esc_html( $crit['l'] ); ?></span>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
-		</div>
-	</section>
-
-	<section class="hu-intercept__system" id="system" aria-labelledby="hu-intercept-system-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-system-title">So sieht ein eigenes Anfrage-System für Solar und Wärmepumpe aus</h2>
-			<p class="hu-intercept__section-lead">
-				Vier Bausteine – jeder einzeln messbar, gemeinsam ergeben sie eine Strecke, die <strong>qualifizierte Photovoltaik-Anfragen</strong> und <a href="<?php echo esc_url( home_url( '/waermepumpen-leads/' ) ); ?>" data-track-action="related_waermepumpen_leads" data-track-category="internal_link_hierarchy" data-track-section="system">exklusive Wärmepumpen-Leads</a> produziert, statt sie zu mieten.
-			</p>
-			<ol class="hu-intercept__layers">
-				<?php foreach ( $own_system_layers as $i => $layer ) : ?>
-					<li class="hu-intercept__layer">
-						<span class="hu-intercept__layer-index"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-						<div class="hu-intercept__layer-body">
-							<h3 class="hu-intercept__layer-title"><?php echo esc_html( $layer['t'] ); ?></h3>
-							<p class="hu-intercept__layer-text"><?php echo esc_html( $layer['s'] ); ?></p>
+				<aside class="hu-buy__proof" aria-labelledby="hu-buy-proof-title">
+					<p class="hu-buy__proof-kicker">Dokumentierter Wechsel</p>
+					<h2 class="hu-buy__proof-title" id="hu-buy-proof-title">Von gekauften Kontakten zu einem eigenen Anfrageweg</h2>
+					<dl class="hu-buy__proof-grid">
+						<div>
+							<dt>Kosten pro Anfrage</dt>
+							<dd><?php echo esc_html( $e3_cpl_before ); ?> <span>→</span> <?php echo esc_html( $e3_cpl_after ); ?></dd>
 						</div>
+						<div>
+							<dt>Abschlussquote</dt>
+							<dd><?php echo esc_html( $e3_conv_uplift ); ?></dd>
+						</div>
+						<div>
+							<dt>Qualifizierte Anfragen</dt>
+							<dd><?php echo esc_html( $e3_lead_count ); ?></dd>
+						</div>
+						<div>
+							<dt>Beobachteter Zeitraum</dt>
+							<dd><?php echo esc_html( $e3_timeframe ); ?></dd>
+						</div>
+					</dl>
+					<p class="hu-buy__proof-note">Ein anonymisierter <?php echo esc_html( $e3_case_label ); ?>. Mechanismus-Beleg, keine Übertragbarkeitsgarantie.</p>
+					<a class="hu-buy__text-link"
+					   href="<?php echo esc_url( $e3_url ); ?>"
+					   data-track-action="cta_case_study"
+					   data-track-category="proof"
+					   data-track-section="hero">Methodik und Grenzen des Falls ansehen <span aria-hidden="true">↗</span></a>
+				</aside>
+			</div>
+
+			<nav class="hu-buy__jump" aria-label="Entscheidungspfade auf dieser Seite">
+				<a href="#markt-modelle"><span>01</span> Beschaffungsmodelle</a>
+				<a href="#qualitaet"><span>02</span> Leadqualität prüfen</a>
+				<a href="#system"><span>03</span> Eigenen Kanal verstehen</a>
+			</nav>
+		</div>
+	</section>
+
+	<section class="hu-buy__band hu-buy__band--light hu-buy__band--cream" id="vergleich" data-nx-theme="light" data-track-section="vergleich" aria-labelledby="hu-buy-compare-title">
+		<div class="hu-buy__container">
+			<header class="hu-buy__section-head">
+				<p class="hu-buy__eyebrow">Die erste Entscheidung</p>
+				<h2 class="hu-buy__h2" id="hu-buy-compare-title">Nicht der Leadpreis entscheidet. Sondern was nach dem Kauf übrig bleibt.</h2>
+				<p class="hu-buy__section-lead">Ein günstiger Kontakt kann teuer werden, wenn der Vertrieb erst Eignung, Region und Ernsthaftigkeit klären muss. Ein eigener Kanal kostet Aufbau — schafft dafür Daten, Lernkurve und ein übergebbares Asset.</p>
+			</header>
+			<div class="hu-buy__compare-grid">
+				<article class="hu-buy__compare-card hu-buy__compare-card--rent">
+					<p class="hu-buy__compare-label">Variable Beschaffung</p>
+					<h3>Portal-Leads kaufen</h3>
+					<ul class="hu-buy__fact-list" role="list">
+						<?php foreach ( $portal_facts as $fact ) : ?>
+							<li><strong><?php echo esc_html( $fact['k'] ); ?></strong><span><?php echo esc_html( $fact['l'] ); ?></span></li>
+						<?php endforeach; ?>
+					</ul>
+				</article>
+				<article class="hu-buy__compare-card hu-buy__compare-card--own">
+					<p class="hu-buy__compare-label">Eigene Infrastruktur</p>
+					<h3>Eigenes Anfrage-System</h3>
+					<ul class="hu-buy__fact-list" role="list">
+						<?php foreach ( $own_facts as $fact ) : ?>
+							<li><strong><?php echo esc_html( $fact['k'] ); ?></strong><span><?php echo esc_html( $fact['l'] ); ?></span></li>
+						<?php endforeach; ?>
+					</ul>
+				</article>
+			</div>
+			<div class="hu-buy__source-bar">
+				<span>Sauber getrennte Quellen:</span>
+				<a href="<?php echo esc_url( $cost_study_url ); ?>" data-track-action="source_cost_study" data-track-category="proof" data-track-section="vergleich">Marktpreise und Methodik</a>
+				<a href="<?php echo esc_url( $e3_url ); ?>" data-track-action="source_case_study" data-track-category="proof" data-track-section="vergleich">eigene Case-Zahlen</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="hu-buy__band hu-buy__band--dark hu-buy__band--deep" id="kostenlogik" data-nx-theme="dark" data-track-section="kostenlogik" aria-labelledby="hu-buy-economics-title">
+		<div class="hu-buy__container">
+			<header class="hu-buy__section-head hu-buy__section-head--split">
+				<div>
+					<p class="hu-buy__eyebrow">Vom CPL zum Auftrag</p>
+					<h2 class="hu-buy__h2" id="hu-buy-economics-title">Der wirtschaftliche Engpass beginnt oft erst nach dem Leadkauf.</h2>
+				</div>
+				<p class="hu-buy__section-lead">Die Einkaufsrechnung endet beim Datensatz. Die Vertriebsrechnung beginnt dort: Rückruf, Nachqualifizierung, Termin, Angebot und Abschluss.</p>
+			</header>
+			<div class="hu-buy__reason-grid">
+				<?php foreach ( $why_portals_fail as $i => $item ) : ?>
+					<article class="hu-buy__reason-card">
+						<span class="hu-buy__index"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+						<h3><?php echo esc_html( $item['t'] ); ?></h3>
+						<p><?php echo esc_html( $item['s'] ); ?></p>
+					</article>
+				<?php endforeach; ?>
+			</div>
+			<aside class="hu-buy__equation" aria-label="Entscheidungslogik für die Kosten pro gewonnenem Auftrag">
+				<span>Leadpreis</span><b aria-hidden="true">+</b><span>Vertriebseinsatz</span><b aria-hidden="true">+</b><span>Streuverlust</span><b aria-hidden="true">=</b><strong>Kosten bis zum Auftrag</strong>
+			</aside>
+			<a class="hu-buy__text-link" href="<?php echo esc_url( $cost_study_url ); ?>" data-track-action="cta_cost_study_economics" data-track-category="internal_link_hierarchy" data-track-section="kostenlogik">Die vollständige Kostenmethodik lesen <span aria-hidden="true">→</span></a>
+		</div>
+	</section>
+
+	<section class="hu-buy__band hu-buy__band--light hu-buy__band--white" id="markt-modelle" data-nx-theme="light" data-track-section="markt-modelle" aria-labelledby="hu-buy-market-title">
+		<div class="hu-buy__container">
+			<header class="hu-buy__section-head">
+				<p class="hu-buy__eyebrow">Vier Beschaffungsmodelle</p>
+				<h2 class="hu-buy__h2" id="hu-buy-market-title">Photovoltaik-Leads-Anbieter lassen sich nicht über einen Preis vergleichen.</h2>
+				<p class="hu-buy__section-lead">Vergleichbar werden Angebote erst, wenn Modell, Eigentum, Exklusivität, Datenlage und Übergabe gemeinsam betrachtet werden. Diese Einordnung ist bewusst neutral.</p>
+			</header>
+			<div class="hu-buy__model-grid">
+				<?php foreach ( $market_models as $i => $model ) : ?>
+					<article class="hu-buy__model-card">
+						<span class="hu-buy__model-number"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+						<h3><?php echo esc_html( $model['t'] ); ?></h3>
+						<p><?php echo esc_html( $model['s'] ); ?></p>
+					</article>
+				<?php endforeach; ?>
+			</div>
+			<nav class="hu-buy__provider-nav" aria-label="Einordnungen einzelner Lead-Anbieter">
+				<p>Anbieter einzeln einordnen:</p>
+				<ul role="list">
+					<li><a href="<?php echo esc_url( home_url( '/aroundhome-solar-einordnung/' ) ); ?>" data-track-action="provider_aroundhome" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Aroundhome</a></li>
+					<li><a href="<?php echo esc_url( home_url( '/wattfox-solar-leads-einordnung/' ) ); ?>" data-track-action="provider_wattfox" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Wattfox</a></li>
+					<li><a href="<?php echo esc_url( home_url( '/daa-photovoltaik-leads-einordnung/' ) ); ?>" data-track-action="provider_daa" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">DAA</a></li>
+					<li><a href="<?php echo esc_url( home_url( '/checkfox-solar-waermepumpe-einordnung/' ) ); ?>" data-track-action="provider_checkfox" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Checkfox</a></li>
+					<li><a href="<?php echo esc_url( home_url( '/leadfluss-pv-leads-einordnung/' ) ); ?>" data-track-action="provider_leadfluss" data-track-category="internal_link_hierarchy" data-track-section="markt-modelle">Leadfluss</a></li>
+				</ul>
+			</nav>
+		</div>
+	</section>
+
+	<section class="hu-buy__band hu-buy__band--dark hu-buy__band--warm" id="qualitaet" data-nx-theme="dark" data-track-section="qualitaet" aria-labelledby="hu-buy-quality-title">
+		<div class="hu-buy__container">
+			<header class="hu-buy__section-head hu-buy__section-head--split">
+				<div>
+					<p class="hu-buy__eyebrow">Vor jedem Einkauf prüfen</p>
+					<h2 class="hu-buy__h2" id="hu-buy-quality-title">Vier Merkmale entscheiden, ob aus einem Lead ein gutes Verkaufsgespräch werden kann.</h2>
+				</div>
+				<p class="hu-buy__section-lead">Die Kriterien gelten für Portal-Zukauf, regionale Kampagnen und eigene Strecken. Ein Modell ist nur so gut wie die Informationen, die der Vertrieb vor dem Rückruf erhält.</p>
+			</header>
+			<ol class="hu-buy__quality-grid">
+				<?php foreach ( $buyer_check_criteria as $i => $crit ) : ?>
+					<li>
+						<span class="hu-buy__quality-number"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+						<div><h3><?php echo esc_html( $crit['k'] ); ?></h3><p><?php echo esc_html( $crit['l'] ); ?></p></div>
 					</li>
 				<?php endforeach; ?>
 			</ol>
 		</div>
 	</section>
 
-	<section class="hu-intercept__why" id="vertiefung" aria-labelledby="hu-intercept-linked-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-linked-title">Vertiefende Bausteine im Anfrage-System</h2>
-			<div class="hu-intercept__grid hu-intercept__grid--four">
-				<?php foreach ( $linked_assets as $item ) : ?>
-					<article class="hu-intercept__card">
-						<h3 class="hu-intercept__card-title"><a href="<?php echo esc_url( $item['url'] ); ?>"><?php echo esc_html( $item['t'] ); ?></a></h3>
-						<p class="hu-intercept__card-text"><?php echo esc_html( $item['s'] ); ?></p>
+	<section class="hu-buy__band hu-buy__band--light hu-buy__band--cream" id="system" data-nx-theme="light" data-track-section="system" aria-labelledby="hu-buy-system-title">
+		<div class="hu-buy__container">
+			<header class="hu-buy__section-head">
+				<p class="hu-buy__eyebrow">Die Alternative zum dauerhaften Zukauf</p>
+				<h2 class="hu-buy__h2" id="hu-buy-system-title">Ein eigener Anfragekanal verbindet Nachfrage, Qualifizierung und Vertrieb.</h2>
+				<p class="hu-buy__section-lead">Nicht jede Firma braucht sofort den vollständigen Aufbau. Der Marktcheck klärt zuerst, welcher Engpass tatsächlich vorliegt. Wenn ein eigener Kanal sinnvoll ist, greifen diese vier Ebenen ineinander.</p>
+			</header>
+			<ol class="hu-buy__layers">
+				<?php foreach ( $own_system_layers as $i => $layer ) : ?>
+					<li>
+						<span class="hu-buy__layer-index"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+						<div class="hu-buy__layer-body">
+							<h3><?php echo esc_html( $layer['t'] ); ?></h3>
+							<p><?php echo esc_html( $layer['s'] ); ?></p>
+						</div>
+					</li>
+				<?php endforeach; ?>
+			</ol>
+			<div class="hu-buy__inline-action">
+				<p>Für den generischen Suchintent rund um Wärmepumpen-Anfragen bleibt die eigene <a href="<?php echo esc_url( $waermepumpen_url ); ?>" data-track-action="related_waermepumpen_leads" data-track-category="internal_link_hierarchy" data-track-section="system">Wärmepumpen-Leads-Seite</a> der thematische Owner.</p>
+				<a class="hu-buy__button hu-buy__button--primary" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck" data-track-category="intercept_solar_leads" data-track-section="system">Eigenen Anfrageweg prüfen lassen <span aria-hidden="true">→</span></a>
+			</div>
+		</div>
+	</section>
+
+	<section class="hu-buy__band hu-buy__band--dark hu-buy__band--deep" id="nachweis" data-nx-theme="dark" data-track-section="nachweis" aria-labelledby="hu-buy-case-title">
+		<div class="hu-buy__container">
+			<div class="hu-buy__case-grid">
+				<div>
+					<p class="hu-buy__eyebrow">Beleg mit klarer Grenze</p>
+					<h2 class="hu-buy__h2" id="hu-buy-case-title">Was sich im dokumentierten Fall verändert hat.</h2>
+					<p class="hu-buy__section-lead">Der Fall beweist kein allgemeines Ergebnis. Er zeigt, was möglich wurde, als Anfrageweg, Vorqualifizierung und Messung nicht mehr voneinander getrennt liefen.</p>
+					<ul class="hu-buy__case-mechanism" role="list">
+						<li>Eigene Seitenstrecke statt ausschließlichem Datensatzbezug</li>
+						<li>Projektkontext vor der Übergabe an den Vertrieb</li>
+						<li>Rückführung von Anfragequalität und Abschlussstatus</li>
+					</ul>
+					<a class="hu-buy__button hu-buy__button--secondary" href="<?php echo esc_url( $e3_url ); ?>" data-track-action="cta_case_study" data-track-category="proof" data-track-section="nachweis">Vollständige Methodik lesen</a>
+				</div>
+				<dl class="hu-buy__case-stats">
+					<div><dt>Vorher</dt><dd><?php echo esc_html( $e3_cpl_before ); ?> CPL</dd><span>gekaufte Portal-Anfragen</span></div>
+					<div><dt>Nachher</dt><dd><?php echo esc_html( $e3_cpl_after ); ?> CPL</dd><span>eigener Anfrageweg</span></div>
+					<div><dt>Vertrieb</dt><dd><?php echo esc_html( $e3_sales_conversion ); ?></dd><span>Abschlussquote im Fall</span></div>
+					<div><dt>Zeitraum</dt><dd><?php echo esc_html( $e3_timeframe ); ?></dd><span><?php echo esc_html( $e3_lead_count ); ?> qualifizierte Anfragen</span></div>
+				</dl>
+			</div>
+		</div>
+	</section>
+
+	<section class="hu-buy__band hu-buy__band--light hu-buy__band--white" id="vertiefung" data-nx-theme="light" data-track-section="vertiefung" aria-labelledby="hu-buy-linked-title">
+		<div class="hu-buy__container">
+			<header class="hu-buy__section-head">
+				<p class="hu-buy__eyebrow">Für die eigene Prüfung</p>
+				<h2 class="hu-buy__h2" id="hu-buy-linked-title">Kosten, Eigentum und Funnel getrennt vertiefen.</h2>
+				<p class="hu-buy__section-lead">Jede Vertiefung beantwortet eine andere Entscheidung. So bleibt diese Seite beim Kauf-Intent, ohne benachbarte Queries zu übernehmen.</p>
+			</header>
+			<div class="hu-buy__resource-grid">
+				<?php foreach ( $linked_assets as $i => $item ) : ?>
+					<article class="hu-buy__resource-card">
+						<span><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+						<h3><a href="<?php echo esc_url( $item['url'] ); ?>" data-track-action="related_content" data-track-category="internal_link_hierarchy" data-track-section="vertiefung"><?php echo esc_html( $item['t'] ); ?></a></h3>
+						<p><?php echo esc_html( $item['s'] ); ?></p>
 					</article>
 				<?php endforeach; ?>
 			</div>
 		</div>
 	</section>
 
-	<section class="hu-intercept__faq" id="faq" aria-labelledby="hu-intercept-faq-title">
-		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-faq-title">Häufige Fragen zu Photovoltaik- und Solar-Leads</h2>
-			<div class="hu-intercept__faq-list">
+	<section class="hu-buy__band hu-buy__band--dark hu-buy__band--warm" id="faq" data-nx-theme="dark" data-track-section="faq" aria-labelledby="hu-buy-faq-title">
+		<div class="hu-buy__container hu-buy__container--narrow">
+			<header class="hu-buy__section-head">
+				<p class="hu-buy__eyebrow">Vor der Entscheidung</p>
+				<h2 class="hu-buy__h2" id="hu-buy-faq-title">Häufige Fragen zum Kauf von Photovoltaik- und Solar-Leads.</h2>
+			</header>
+			<div class="hu-buy__faq-list">
 				<?php foreach ( $objections as $item ) : ?>
-					<details class="hu-intercept__faq-item">
-						<summary class="hu-intercept__faq-q"><?php echo esc_html( $item['question'] ); ?></summary>
-						<p class="hu-intercept__faq-a"><?php echo esc_html( $item['answer'] ); ?></p>
+					<details class="hu-buy__faq-item">
+						<summary><?php echo esc_html( $item['question'] ); ?></summary>
+						<p><?php echo esc_html( $item['answer'] ); ?></p>
 					</details>
 				<?php endforeach; ?>
 			</div>
 		</div>
 	</section>
 
-	<section class="hu-intercept__final" id="final-cta" aria-labelledby="hu-intercept-final-title">
-		<div class="hu-intercept__container hu-intercept__container--centered">
-			<h2 class="hu-intercept__h2" id="hu-intercept-final-title">Statt Leads zu kaufen: Marktcheck mit Fit-Entscheid starten</h2>
-			<p class="hu-intercept__final-text">
-				Manueller Marktcheck statt Software-Einheitsbrei. Sie erhalten eine händische Einordnung Ihrer Region, Lead-Quellen und Anfragequalität — mit klarer Aussage, ob ein eigenes Anfrage-System für Ihren Betrieb wirtschaftlicher ist als der Weiterkauf von Portal-Leads. Ohne Pflicht-Call, ohne Newsletter.
-			</p>
-			<div class="hu-intercept__cta">
-				<a class="hu-intercept__cta-primary"
-				   href="<?php echo esc_url( $marktcheck_url ); ?>"
-				   data-track-action="cta_marktcheck"
-				   data-track-category="intercept_solar_leads"
-				   data-track-section="final">
-					Marktcheck mit Fit-Entscheid starten
-				</a>
-				<a class="hu-intercept__cta-secondary"
-				   href="<?php echo esc_url( $solar_money_url ); ?>"
-				   data-track-action="cta_money_page"
-				   data-track-category="intercept_solar_leads"
-				   data-track-section="final">
-					Methode und System ansehen
-				</a>
+	<section class="hu-buy__band hu-buy__band--light hu-buy__band--final" id="final-cta" data-nx-theme="light" data-track-section="final" aria-labelledby="hu-buy-final-title">
+		<div class="hu-buy__container hu-buy__container--narrow hu-buy__final-inner">
+			<p class="hu-buy__eyebrow">Nächster sinnvoller Schritt</p>
+			<h2 class="hu-buy__h2" id="hu-buy-final-title">Klären Sie zuerst, welches Beschaffungsmodell zu Ihrem Betrieb passt.</h2>
+			<p class="hu-buy__final-text">Der Marktcheck ordnet Zielgebiet, Vertrieb, aktuelle Leadquellen und Anfragequalität ein. Das Ergebnis ist eine klare Empfehlung für Zukauf, Übergang oder eigenen Anfragekanal — auch dann, wenn eine Umsetzung aktuell nicht sinnvoll ist.</p>
+			<div class="hu-buy__actions hu-buy__actions--centered">
+				<a class="hu-buy__button hu-buy__button--primary" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck" data-track-category="intercept_solar_leads" data-track-section="final">Marktcheck mit Fit-Entscheid starten <span aria-hidden="true">→</span></a>
 			</div>
+			<p class="hu-buy__final-note">Erst die Gesamtmethode verstehen? <a href="<?php echo esc_url( $solar_money_url ); ?>" data-track-action="cta_money_page" data-track-category="internal_link_hierarchy" data-track-section="final">Das eigene Anfrage-System ansehen</a>.</p>
 		</div>
 	</section>
 
