@@ -289,14 +289,13 @@ function hu_get_forced_singular_seo_map() {
 			],
 			// Diese Seite besitzt laut docs/seo/query-ownership.csv ausschliesslich
 			// Gewerbe-PV-Intent: "pv termine b2b", "pv leads gewerbe", "b2b
-			// photovoltaik". Das generische "Photovoltaik Leads" stand frueher im
-			// Titel und hat der Seite genau die Query zugespielt, die der
-			// Solar-Money-Page gehoert — GSC 28d 2026-07-30 zeigt sie dafuer auf
-			// Pos. 50,0 mit 47 Impressionen. Titel und H1 tragen deshalb nur noch
-			// Gewerbe-PV und PV-Termine; die H1 im Template ist synchron gehalten.
+			// photovoltaik". Das generische "Photovoltaik Leads" bleibt draussen,
+			// weil es der Solar-Money-Page gehoert. GSC 90d bis 2026-08-05 zeigt
+			// fuer "pv termine b2b" 148 Impressionen bei Ø-Position 7,95, aber
+			// keinen Klick; deshalb schaerfen Title und H1 Nutzen und Qualifizierung.
 			'b2b-solar-leads' => [
-				'title'       => 'PV-Termine B2B für Gewerbe-PV | Haşim Üner',
-				'description' => 'Gewerbliche PV-Termine und Anfragen für Hallendächer, Quartiere & PPA: Buying-Center-Funnel mit eigener Vorqualifizierung statt eingekaufter Termine.',
+				'title'       => 'PV-Termine B2B: qualifizierte Gewerbe-PV-Anfragen',
+				'description' => 'PV-Termine B2B für Gewerbe-PV: Projektwert, Technik und Buying-Center vorqualifizieren. Eigener Anfrageweg statt Termine ohne Projektsubstanz.',
 			],
 			'eigene-leadgenerierung-vs-portale' => [
 				'title'       => 'Portal-Leads vs. eigenes System: TCO-Vergleich Solar/SHK',

@@ -320,6 +320,13 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-solar-leads-buy-css', 'solar-leads-kaufen-alternative-page.css', [ 'nexus-intercept-solar-leads-css' ] );
 	}
 
+	// ── F1a-int-b2b) Gewerbe-PV Qualification-Gate NUR auf /b2b-solar-leads/ ──
+	// Das Premium-Layout bleibt als Page-Delta isoliert. Andere Intercept-Routen
+	// laden weder die alternierenden Hell-/Dunkel-Sektionen noch die B2B-Komponenten.
+	if ( is_page( 'b2b-solar-leads' ) || is_page_template( 'page-b2b-solar-leads.php' ) ) {
+		hu_enqueue_css( 'nexus-b2b-solar-leads-css', 'b2b-solar-leads-page.css', [ 'nexus-intercept-solar-leads-css' ] );
+	}
+
 	// ── F1a-int-pilot) Light-Body-Design-Pilot NUR auf /waermepumpen-leads/ ──
 	// Lädt nach dem gemeinsamen Intercept-CSS und überschreibt scoped
 	// (data-track-page). Isoliert – berührt keine andere Intercept-Seite.
