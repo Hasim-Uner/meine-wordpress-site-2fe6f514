@@ -124,13 +124,21 @@
 }
 
 .hu-buy .hu-buy__h1 {
-	max-width: 16ch;
+	max-width: 19ch;
 	margin: 0 0 1.4rem;
-	font-size: clamp(2.55rem, 6vw, 5.2rem);
+	font-size: clamp(2.55rem, 4.75vw, 4.25rem);
 	font-weight: 720;
-	line-height: 0.99;
+	line-height: 1.01;
 	letter-spacing: -0.045em;
 	color: var(--buy-on-dark);
+}
+
+.hu-buy .hu-buy__h1-line {
+	display: block;
+}
+
+.hu-buy .hu-buy__h1-line + .hu-buy__h1-line {
+	margin-top: 0.04em;
 }
 
 .hu-buy .hu-buy__h2 {
@@ -202,6 +210,7 @@
 /* ── Hero ─────────────────────────────────────────────────────────── */
 
 .hu-buy .hu-buy__band--hero {
+	--buy-max: 82rem;
 	padding-top: clamp(3.5rem, 8vw, 6.75rem);
 	background:
 		linear-gradient(rgba(255, 255, 255, 0.027) 1px, transparent 1px),
@@ -227,8 +236,8 @@
 
 .hu-buy .hu-buy__hero-grid {
 	display: grid;
-	grid-template-columns: minmax(0, 1.16fr) minmax(19rem, 0.84fr);
-	gap: clamp(3rem, 7vw, 7rem);
+	grid-template-columns: minmax(0, 1.3fr) minmax(27rem, 0.72fr);
+	gap: clamp(3rem, 5vw, 5rem);
 	align-items: center;
 }
 
@@ -1033,7 +1042,7 @@
 	}
 
 	.hu-buy .hu-buy__h1 {
-		max-width: 18ch;
+		max-width: 19ch;
 	}
 
 	.hu-buy .hu-buy__proof {
@@ -1085,7 +1094,7 @@
 
 @media (max-width: 36rem) {
 	.hu-buy .hu-buy__h1 {
-		font-size: clamp(2.35rem, 12vw, 3.3rem);
+		font-size: clamp(2.3rem, 10.8vw, 2.95rem);
 	}
 
 	.hu-buy .hu-buy__actions,
