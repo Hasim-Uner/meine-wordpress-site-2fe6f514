@@ -222,11 +222,14 @@ get_header();
 						<span class="ag-hero__title-line ag-hero__title-line--em">für messbare B2B-Anfragen.</span>
 					</h1>
 					<p class="ag-hero__lede">
-						Ich prüfe zuerst vier Kauf-Signale — Angebot, Nachfrage, Datenlage, Anfragepfad. Erst dann wird gebaut.
+						Jeder neue Text verteilt Ihr Budget weiter, solange keine Seite die kaufnahe Suchanfrage besitzt. Deshalb zuerst vier Kauf-Signale — Angebot, Nachfrage, Datenlage, Anfragepfad. Erst dann wird gebaut.
 					</p>
 
+					<?php // Bewusst ohne Punktzahl: Lighthouse-Werte schwanken je Lauf, und ein
+						// verfehlter Schwellwert entwertet ausgerechnet die Seite, deren ganze
+						// Beweisfuehrung auf Nachpruefbarkeit beruht. ?>
 					<p class="ag-hero__proofline">
-						Diese Seite: PageSpeed 95+ mobil, 100/100 Barrierefreiheit — gebaut mit derselben Methode.
+						Diese Seite ist mit derselben Methode gebaut — Ladezeit, Tracking und Struktur jederzeit nachmessbar.
 					</p>
 
 					<div class="ag-hero__actions">
@@ -618,12 +621,15 @@ get_header();
 						<span class="wp-agentur-vs__badge" aria-hidden="true">✓</span>
 						<h4>Nachher</h4>
 					</div>
+					<?php // Jede Zeile beschreibt einen Zustand, den der Leser im eigenen Betrieb
+						// nachpruefen kann — keine Ergebnisbehauptung. "Messbar gestiegen" war
+						// unwiderlegbar und damit wertlos: es gilt fuer jede Agenturseite. ?>
 					<ul class="wp-agentur-vs__list">
-						<li>Qualifizierte Anfragen messbar gestiegen.</li>
-						<li>Saubere Datenbasis für Entscheidungen.</li>
-						<li>Klare Zuordnung: Kanal → Anfrage → Projekt.</li>
-						<li>Änderungen basieren auf Daten.</li>
-						<li>Kontinuierliche Optimierung statt Neubau.</li>
+						<li>Sie sehen, welche Seite welche Anfrage trägt.</li>
+						<li>Tracking, dem Sie eine Budgetentscheidung zutrauen.</li>
+						<li>Kanal, Anfrage und Projekt hängen an einer Kette.</li>
+						<li>Jede Änderung hat ein Vorher und ein Nachher.</li>
+						<li>Der nächste Hebel steht fest, bevor er gebaut wird.</li>
 					</ul>
 				</div>
 			</div>
