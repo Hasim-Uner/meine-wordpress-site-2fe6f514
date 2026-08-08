@@ -313,6 +313,13 @@ function hu_enqueue_assets() {
 		}
 	}
 
+	// ── F1a-int-buy) Kauf-Intent-Redesign NUR auf /solar-leads-kaufen-alternative/ ──
+	// Das alternierende Editorial-Layout bleibt als Page-Delta isoliert, damit
+	// die übrigen Intercept-Routen das umfangreiche Design-CSS nicht laden.
+	if ( is_page( 'solar-leads-kaufen-alternative' ) || is_page_template( 'page-solar-leads-kaufen-alternative.php' ) ) {
+		hu_enqueue_css( 'nexus-solar-leads-buy-css', 'solar-leads-kaufen-alternative-page.css', [ 'nexus-intercept-solar-leads-css' ] );
+	}
+
 	// ── F1a-int-pilot) Light-Body-Design-Pilot NUR auf /waermepumpen-leads/ ──
 	// Lädt nach dem gemeinsamen Intercept-CSS und überschreibt scoped
 	// (data-track-page). Isoliert – berührt keine andere Intercept-Seite.
