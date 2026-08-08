@@ -9,13 +9,16 @@
         var toggle = header.querySelector('[data-site-header-toggle]');
         var panel = header.querySelector('[data-site-header-panel]');
         var desktopMedia = window.matchMedia('(min-width: 1101px)');
+        // Ein echter Zeiger, der die obere Kante ansteuern kann. Ein Handy hat
+        // den nicht -- dort braucht es einen anderen Weg zur Navigation.
+        var hoverMedia = window.matchMedia('(hover: hover) and (pointer: fine)');
         var isCondensed = null;
         var isVisible = null;
         var isPointerInside = false;
         var isFocusInside = false;
         var isNearTopEdge = false;
+        var isAtPageEnd = false;
         var hideTimer = 0;
-        var initialHideDelay = 1700;
         var idleHideDelay = 1700;
         var scrollRevealDelta = 5;
         var scrollHideDelta = 8;
@@ -67,7 +70,7 @@
         var scrollRevealEnabled = header.getAttribute('data-site-header-scroll-reveal') !== 'off';
 
         function shouldPinHeader() {
-            return isPointerInside || isFocusInside || isNearTopEdge ||
+            return isPointerInside || isFocusInside || isNearTopEdge || isAtPageEnd ||
                 header.classList.contains('is-open') ||
                 header.hasAttribute('data-site-header-pin');
         }
@@ -188,6 +191,15 @@
                 // Seiten mit eigener sticky Sprungnavigation schalten die
                 // Scroll-Einblendung ab, damit nicht zwei Leisten konkurrieren.
                 if (!scrollRevealEnabled) {
+                    hideHeader();
+                    return;
+                }
+
+                // Am Zeigergeraet blendet nur die obere Bildschirmkante ein.
+                // Auf Touch gibt es die nicht, und der Menue-Knopf steckt im
+                // versteckten Header -- ohne diese Einblendung waere die
+                // Navigation dort nur am Seitenende erreichbar.
+                if (hoverMedia.matches) {
                     hideHeader();
                     return;
                 }
@@ -329,10 +341,32 @@
             updateVisibility(false);
         });
 
+        // Der Footer ist der zweite Weg zur Navigation: wer unten ankommt, hat
+        // zu Ende gelesen und will weiter. Das ist zugleich der einzige Reveal,
+        // der auf Touch und am Zeigergeraet gleich funktioniert -- und der
+        // einzige, ueber den ein Erstbesucher ueberhaupt erfaehrt, dass es ein
+        // Menue gibt, wenn er nie an die obere Kante faehrt.
+        var pageEnd = document.getElementById('footer');
+
+        if (pageEnd && typeof window.IntersectionObserver === 'function') {
+            new window.IntersectionObserver(function (entries) {
+                var nextAtPageEnd = entries[0].isIntersecting;
+
+                if (isAtPageEnd === nextAtPageEnd) {
+                    return;
+                }
+
+                isAtPageEnd = nextAtPageEnd;
+                updateVisibility(false);
+            }, { rootMargin: '0px 0px -25% 0px' }).observe(pageEnd);
+        }
+
         readScrollY();
         lastScrollY = cachedScrollY;
         updateFlightMode();
-        showHeader(true, initialHideDelay);
+        // Bewusst kein Einblenden beim Laden: das Aufblitzen ueber dem
+        // Hero-Bereich war der Grund fuer diese Aenderung.
+        setHeaderVisibility(false);
         syncHeaderHeight();
 
         window.addEventListener('scroll', queueScrollUpdate, { passive: true });
