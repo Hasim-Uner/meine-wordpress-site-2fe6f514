@@ -99,6 +99,9 @@ jobs:
       - name: Check CSS motion rules
         run: bash scripts/lint-css-motion.sh
 
+      - name: Check CSS spacing rules
+        run: bash scripts/lint-css-spacing.sh
+
       - name: Check visible German copy
         run: bash scripts/check-german-copy.sh "${{ steps.refs.outputs.base }}" "${{ steps.refs.outputs.head }}"
 
