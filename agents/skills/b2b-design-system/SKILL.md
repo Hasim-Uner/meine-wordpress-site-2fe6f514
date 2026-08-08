@@ -56,10 +56,52 @@ Benchmarks: Linear (clean density), Vercel (typographic confidence), Stripe (lay
 Full specs in `references/design-tokens.md`. Key rules:
 
 - **Typography**: Modular scale (ratio 1.25). Max 2 font families. Never use Inter/Roboto/Open Sans/Poppins.
-- **Spacing**: 8px base grid. Section padding: 80-128px vertical. More space = more premium.
+- **Spacing**: 4px base grid, 8px the preferred step. Section padding: 80-128px vertical. More space = more premium.
 - **Color**: Monochrom-warm + one chromatic accent. Three neutral axes (black, silver, brown) + accent.
 - **Border-radius**: One personality per project (sharp/soft/round). No mixing.
 - **Shadows**: Dark mode uses border+bg elevation. Light mode uses warm-tinted layered shadows.
+
+## Spacing-Kontrakt
+
+Das Raster ist **4px**, bevorzugter Schritt **8px**. Die `--space-*`-Skala in
+`blocksy-child/assets/css/design-system.css` ist 4px-basiert, `layout-audit.mjs`
+prüft gegen denselben Wert.
+
+**Token-Hierarchie — von oben nach unten benutzen:**
+
+1. `--nx-space-*` — die semantischen Namen. Diese gehören in Seiten-CSS.
+2. `--space-*` — die rohe Skala. Nur in `design-system.css` selbst.
+3. Seitenlokale Namen — **nur als Alias** auf die obigen, nie mit neuen Zahlen.
+
+Das ist heute die größte Lücke im System: 45 von 51 Stylesheets benutzen keinen
+einzigen gemeinsamen Spacing-Token. Genau deshalb laufen die Abstände von Seite
+zu Seite auseinander. Neue lokale Skalen lässt der Guard nicht mehr durch.
+
+**Innenabstände sind symmetrisch**, außer mit begründeter Ausnahme. `padding: 0 2rem 2rem`
+an einem Textkasten heißt: die erste Zeile startet bündig an der Oberkante. Wenn
+darüber ein Rahmen, ein Focus-Ring oder ein Hintergrundwechsel liegt, klebt der
+Text daran. Achtung bei `width: 100%`-Buttons in `overflow: hidden`-Containern:
+ein positiver `outline-offset` wird seitlich weggeschnitten und die Unterkante
+des Rings bleibt als Strich quer durch die Karte stehen.
+
+**Lange deutsche Komposita brauchen eine Breitenprüfung.** Steht ein Wert oder
+eine Überschrift in einer festen Rasterzelle, muss die Zelle das **längste Wort
+bei maximaler Schriftgröße** tragen. Das ist keine Theorie — genau daran sind
+„entscheidungsfähig" und „PV-Installationsbetrieb" zerbrochen. Rechnen statt
+schätzen: Zellbreite minus Innenabstand ergibt die Textbox, dagegen die
+gerenderte Wortbreite messen. Reicht es nicht, sinkt der `font-size`-Cap oder
+die Zelle wird breiter — die Copy bleibt.
+
+Blocksy setzt im Parent `body { overflow-wrap: break-word }`. Ein zu langes Wort
+läuft deshalb nicht sichtbar über, sondern bricht am letzten passenden Zeichen.
+Der Fehler sieht dann aus wie ein Umbruchproblem, ist aber ein Breitenproblem.
+`hyphens: auto` ist das Netz für Textzoom, kein Ersatz für die Rechnung.
+
+Guard vor dem Push, CI führt ihn auch aus:
+
+```bash
+bash scripts/lint-css-spacing.sh
+```
 
 ## CRO Architecture
 
@@ -127,13 +169,24 @@ PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i --no-save playwright   # einmalig
 
 node agents/skills/b2b-design-system/scripts/layout-audit.mjs <url> \
   --expect=.wp-agentur-page-wrapper --expect-token=--ag-bg \
-  --shot=/tmp/audit.png
+  --expand --shot=/tmp/audit.png
 ```
 
 Misst horizontalen Überlauf, abgeschnittenen Inhalt, Tap-Targets unter 44×44,
-Fast-Ausrichtungen (1–7 px neben einer Flucht) und Abstände neben dem 4px-Raster.
-Zeichnet die Fundstellen in den Screenshot. Ohne Baseline: jede Prüfung ist eine
-absolute Zusicherung, es gibt nichts zu pflegen und nichts abzunicken.
+typografische Waisen, am Rand klebenden Text, Fast-Ausrichtungen (1–7 px neben
+einer Flucht) und Abstände neben dem 4px-Raster. Zeichnet die Fundstellen in den
+Screenshot. Ohne Baseline: jede Prüfung ist eine absolute Zusicherung, es gibt
+nichts zu pflegen und nichts abzunicken.
+
+Überlauf, abgeschnittener Inhalt, Waisen und klebender Text sind **Befunde**.
+Fast-Ausrichtung und Rhythmus sind Hinweise — ein bewusst gesetzter Versatz ist
+erlaubt.
+
+**`--expand` mitgeben, sonst misst das Audit nur den Startzustand.** Eingeklappte
+FAQ-Antworten sind `opacity: 0` und damit für die Messung unsichtbar. Der
+gemeldete Abstandsfehler auf der Agentur-Seite lag genau dort und blieb deshalb
+liegen. Die Option öffnet vorher jedes `<details>` und alles mit
+`aria-expanded="false"`.
 
 **`--expect` und `--expect-token` sind nicht optional gemeint.** Die Tokens
 dieser Seiten hängen an einem Wrapper (`.wp-agentur-page-wrapper`), nicht an
@@ -148,12 +201,17 @@ und playwright zöge dort jedes Mal einen Browser nach.
 
 - [ ] Typography: Max 2 fonts, modular ratio, line-height 1.4-1.6
 - [ ] Color: One accent, consistent HSL, WCAG AA contrast
-- [ ] Spacing: 8px grid, generous section padding (min 80px)
+- [ ] Spacing: 4px grid (8px preferred), generous section padding (min 80px)
+- [ ] Spacing: `var(--nx-space-*)` consumed, no new local scale
+- [ ] Spacing: symmetric padding on text boxes, no collapsed top edge
+- [ ] Longest German compound fits its grid cell at max font size
 - [ ] Border-radius: Consistent, one personality
 - [ ] CTA: Highest contrast, 48px+ padding, visible above fold
 - [ ] Mobile: Responsive, CTA accessible without scrolling
 - [ ] Performance: CSS-first animations, web fonts <= 2 weights
 - [ ] Motion: prefers-reduced-motion respected, total < 2s
 - [ ] Motion guard green: `bash scripts/lint-css-motion.sh`
+- [ ] Spacing guard green: `bash scripts/lint-css-spacing.sh`
+- [ ] Layout audit green on hard findings, run with `--expand`
 - [ ] No anti-patterns from Hard Bans list
 - [ ] Dark/Light: Both modes tested

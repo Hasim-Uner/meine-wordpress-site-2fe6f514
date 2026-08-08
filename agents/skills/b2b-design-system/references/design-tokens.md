@@ -286,31 +286,33 @@ h3, .h3 {
   --cta-isolation:    var(--space-12);  /* Min space around primary CTA */
 }
 
-/* ─── Container Utility ─── */
-.container {
-  width: 100%;
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: var(--container-x);
+/* ─── Layout-Primitive, wie sie im Theme wirklich heissen ─── */
+/* design-system.css, Abschnitt "LAYOUT PRIMITIVES".            */
+.nx-container {
+  max-width: var(--nx-max-width);
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.container--narrow {
-  max-width: var(--container-narrow);
+.nx-section {
+  padding: var(--nx-space-section) 0;
 }
 
-/* ─── Section Utility ─── */
-.section {
-  padding-block: var(--section-y);
-}
-
-.section--compact {
-  padding-block: var(--section-y-sm);
-}
-
-.section--hero {
-  padding-block: var(--section-y-lg);
+.nx-section-header {
+  text-align: center;
+  margin-bottom: var(--nx-space-2xl);
 }
 ```
+
+**Vorsicht bei den Namen.** Es gibt kein `.section`, `.section--compact`,
+`.section--hero` oder `.container` im Theme — wer danach greift, schreibt eine
+Klasse ohne Wirkung. Die Primitive heissen `.nx-*`.
+
+Dasselbe bei den Tokens: `--section-y*` ist definiert und loest auf, hat aber
+**null Verwender**. Der Abschnittsrhythmus laeuft ueber `--nx-space-section`.
+Fuer neues CSS gilt die Hierarchie aus dem Spacing-Kontrakt in `SKILL.md`:
+`--nx-space-*` benutzen, `--space-*` nur in `design-system.css` selbst, lokale
+Namen nur als Alias.
 
 ---
 
