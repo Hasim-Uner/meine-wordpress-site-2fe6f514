@@ -124,11 +124,11 @@
 }
 
 .hu-buy .hu-buy__h1 {
-	max-width: 19ch;
-	margin: 0 0 1.4rem;
-	font-size: clamp(2.55rem, 4.75vw, 4.25rem);
+	max-width: 20ch;
+	margin: 0 0 1.05rem;
+	font-size: clamp(2.35rem, 3.8vw, 3.4rem);
 	font-weight: 720;
-	line-height: 1.01;
+	line-height: 1.02;
 	letter-spacing: -0.045em;
 	color: var(--buy-on-dark);
 }
@@ -211,7 +211,8 @@
 
 .hu-buy .hu-buy__band--hero {
 	--buy-max: 82rem;
-	padding-top: clamp(3.5rem, 8vw, 6.75rem);
+	padding-top: clamp(2.5rem, 5vw, 4.5rem);
+	padding-bottom: clamp(3.25rem, 6vw, 5rem);
 	background:
 		linear-gradient(rgba(255, 255, 255, 0.027) 1px, transparent 1px),
 		linear-gradient(90deg, rgba(255, 255, 255, 0.027) 1px, transparent 1px),
@@ -245,8 +246,15 @@
 	min-width: 0;
 }
 
+.hu-buy .hu-buy__band--hero .hu-buy__lead {
+	max-width: 60ch;
+	margin-bottom: 1.2rem;
+	font-size: clamp(1rem, 1.2vw, 1.1rem);
+	line-height: 1.55;
+}
+
 .hu-buy .hu-intercept__byline {
-	margin: 0 0 1.8rem;
+	margin: 0 0 1.15rem;
 	color: var(--buy-on-dark-muted);
 	background: rgba(247, 243, 236, 0.04);
 	border-color: var(--buy-dark-line);
@@ -323,7 +331,7 @@
 
 .hu-buy .hu-buy__proof {
 	position: relative;
-	padding: clamp(1.5rem, 3.5vw, 2.4rem);
+	padding: clamp(1.3rem, 2.4vw, 1.8rem);
 	border: 1px solid rgba(215, 122, 85, 0.38);
 	border-radius: var(--buy-radius-lg);
 	background: rgba(9, 11, 10, 0.72);
@@ -353,8 +361,8 @@
 
 .hu-buy .hu-buy__proof-title {
 	max-width: 20ch;
-	margin: 0 0 1.8rem;
-	font-size: clamp(1.4rem, 2.4vw, 2rem);
+	margin: 0 0 1.25rem;
+	font-size: clamp(1.35rem, 1.8vw, 1.7rem);
 	line-height: 1.14;
 	letter-spacing: -0.025em;
 	color: var(--buy-on-dark);
@@ -371,9 +379,9 @@
 .hu-buy .hu-buy__proof-grid > div {
 	display: flex;
 	min-width: 0;
-	min-height: 7.2rem;
+	min-height: 5.75rem;
 	flex-direction: column;
-	padding: 1rem;
+	padding: 0.85rem;
 	border-right: 1px solid var(--buy-dark-line);
 	border-bottom: 1px solid var(--buy-dark-line);
 }
@@ -389,7 +397,7 @@
 .hu-buy .hu-buy__proof-grid dd {
 	order: 1;
 	margin: auto 0 0;
-	font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+	font-size: clamp(1.2rem, 1.7vw, 1.55rem);
 	font-weight: 780;
 	line-height: 1.08;
 	letter-spacing: -0.035em;
@@ -402,9 +410,9 @@
 }
 
 .hu-buy .hu-buy__proof-note {
-	margin: 1rem 0 0.75rem;
+	margin: 0.75rem 0 0.55rem;
 	font-size: 0.78rem;
-	line-height: 1.55;
+	line-height: 1.45;
 	color: var(--buy-on-dark-faint);
 }
 
@@ -421,7 +429,7 @@
 .hu-buy .hu-buy__jump {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	margin-top: clamp(3rem, 7vw, 5rem);
+	margin-top: clamp(2rem, 4vw, 3rem);
 	border-top: 1px solid var(--buy-dark-line);
 	border-bottom: 1px solid var(--buy-dark-line);
 }
@@ -1094,7 +1102,7 @@
 
 @media (max-width: 36rem) {
 	.hu-buy .hu-buy__h1 {
-		font-size: clamp(2.3rem, 10.8vw, 2.95rem);
+		font-size: clamp(2.15rem, 9.8vw, 2.7rem);
 	}
 
 	.hu-buy .hu-buy__actions,
