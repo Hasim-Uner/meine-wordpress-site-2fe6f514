@@ -405,7 +405,7 @@ function nexus_render_seo_cockpit_notice() {
 		'refresh_failed'        => [ 'error', 'Die Synchronisierung ist fehlgeschlagen. Bitte Verbindung und Property prüfen.' ],
 		'refresh_locked'        => [ 'warning', 'Es läuft bereits eine Synchronisierung. Bitte gleich erneut versuchen.' ],
 		'export_failed'         => [ 'error', 'Der CSV-Export konnte nicht erstellt werden. Bitte zuerst synchronisieren.' ],
-		'export_empty'          => [ 'warning', 'Für den gewählten Zeitraum liegen keine Query-Page-Daten zum Export vor.' ],
+	'export_empty'          => [ 'warning', 'Für den gewählten Zeitraum liegen keine SEO-Daten zum Export vor.' ],
 		'inspection_success'    => [ 'success', 'Die URL-Inspektion wurde aktualisiert.' ],
 		'inspection_failed'     => [ 'error', 'Die URL-Inspektion konnte nicht geladen werden.' ],
 		'revenue_status_saved'  => [ 'success', 'Der Revenue-Status wurde gespeichert.' ],

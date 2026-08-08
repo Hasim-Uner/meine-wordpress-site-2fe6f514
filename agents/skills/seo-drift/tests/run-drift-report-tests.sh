@@ -79,10 +79,13 @@ check_absent "7d mischt den 28d-Snapshot nicht ein" "$OUT7" "testfrage gamma"
 echo
 echo "[2] Klassifikation nach Beweislage"
 check        "Position und Impressionen fallen -> ABSTURZ"      "$OUT" "ABSTURZ 2"
+check        "vollstaendig fehlende Query -> VERSCHWUNDEN"       "$OUT" "VERSCHWUNDEN 1"
 check        "Position faellt, Impressionen nicht -> POSITION"  "$OUT" "POSITION 2"
 check        "Impressionen brechen ein, Position flach -> SICHTBARKEIT" "$OUT" "SICHTBARKEIT 1"
 check        "Verbesserung wird nicht als Verlust gezaehlt"     "$OUT" "Verbesserungen: 1"
 check_absent "verbesserte Query steht in keiner Verlustliste"   "$OUT" "testfrage epsilon"
+check        "verschwundene Query wird benannt"                  "$OUT" "testfrage verschwunden"
+check_absent "Page-Total wird nicht als Query ausgewertet"       "$OUT" "page total sentinel"
 
 echo
 echo "[3] Cluster nur aus belegten Verlusten"

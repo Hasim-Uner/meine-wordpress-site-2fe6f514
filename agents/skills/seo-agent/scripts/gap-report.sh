@@ -168,6 +168,14 @@ status_sources = [os.path.relpath(p) for p in latest_gsc_files.get(status_range_
 # aggregieren wuerde Kannibalisierung im selben Snapshot unsichtbar machen.
 gsc_pages = defaultdict(list)
 for r in latest_gsc_rows.get(status_range_days, []):
+    # Neue Cockpit-Exporte enthalten neben Query×Page-Zeilen auch Page-Totals
+    # und vollstaendig aus der aktuellen Periode verschwundene Queries. Beides
+    # ist fuer den Ist-Stand kein aktuelles Ranking. Alte Exporte ohne diese
+    # Spalten bleiben als query_page/current kompatibel.
+    row_scope = (r.get("row_scope") or "query_page").strip()
+    period_presence = (r.get("period_presence") or "").strip()
+    if row_scope != "query_page" or period_presence == "previous_only":
+        continue
     q = fold(r.get("query", ""))
     if not q:
         continue

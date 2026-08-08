@@ -47,8 +47,8 @@ case "${SLUG}" in
     CARRIER_SLUG="wordpress-agentur"
     ;;
   case-study-solar-leadgenerierung)
-    CARRIER_NOTE="Dateiname weicht vom Slug ab (Template Name: 'Case Study – Solar Leadgenerierung')."
-    CARRIER_SLUG="case-e3"
+    CARRIER_NOTE="Alias-Wrapper page-case-e3.php bindet page-e3-new-energy.php ein. Geprueft wird der effektive Template-Traeger."
+    CARRIER_SLUG="e3-new-energy"
     ;;
   ergebnisse)
     CARRIER_NOTE="Legacy-Dateiname aus der E-Commerce-Zeit, traegt heute den Ergebnisse-Hub."
