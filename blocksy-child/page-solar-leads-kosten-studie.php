@@ -354,7 +354,7 @@ get_header();
 			<h2 class="hu-intercept__h2" id="hu-study-faq-title">Häufige Fragen zu Solar-Lead-Kosten</h2>
 			<div class="hu-intercept__faq-list">
 				<?php foreach ( $faqs as $item ) : ?>
-					<details class="hu-intercept__faq-item">
+					<details class="hu-intercept__faq-item" name="hu-faq-kosten-studie">
 						<summary class="hu-intercept__faq-q"><?php echo esc_html( $item['question'] ); ?></summary>
 						<p class="hu-intercept__faq-a"><?php echo esc_html( $item['answer'] ); ?></p>
 					</details>

@@ -25,12 +25,17 @@
       document.querySelectorAll('.hu-hp .hu-faq-item.is-open').forEach(function (el) {
         el.classList.remove('is-open');
         el.querySelector('.hu-faq-item__icon').textContent = '+';
+        /* aria-expanded lief hier bisher nicht mit: Screenreader meldeten
+           jeden Eintrag dauerhaft als aufgeklappt. */
+        var q = el.querySelector('.hu-faq-item__q');
+        if (q) q.setAttribute('aria-expanded', 'false');
       });
       /* open clicked if it was closed */
       if (!isOpen) {
         item.classList.add('is-open');
         item.querySelector('.hu-faq-item__icon').textContent = '−';
       }
+      btn.setAttribute('aria-expanded', String(!isOpen));
     });
   });
 

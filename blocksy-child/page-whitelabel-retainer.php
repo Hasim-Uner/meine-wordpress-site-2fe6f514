@@ -825,7 +825,7 @@ window.dataLayer.push({
 
 			<div class="wl-faq reveal-stagger">
 				<?php foreach ( $faq_items as $item ) : ?>
-					<details class="wl-faq__item">
+					<details class="wl-faq__item" name="hu-faq-whitelabel">
 						<summary
 							id="wl-faq-summary-<?php echo esc_attr( $item['key'] ); ?>"
 							class="wl-faq__summary"

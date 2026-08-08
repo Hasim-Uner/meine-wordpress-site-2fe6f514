@@ -885,7 +885,7 @@ get_header();
 
 			<div class="hu-sst__faq-list">
 				<?php foreach ( $faq as $item ) : ?>
-					<details class="hu-sst__faq-item">
+					<details class="hu-sst__faq-item" name="hu-faq-server-side">
 						<summary class="hu-sst__faq-q"><?php echo esc_html( $item['question'] ); ?></summary>
 						<div class="hu-sst__faq-a">
 							<p><?php echo esc_html( $item['answer'] ); ?></p>

@@ -511,7 +511,7 @@ function nexus_render_wgos_cluster_page( $page ) {
 
 					<div class="nx-faq">
 						<?php foreach ( $faq_items as $index => $item ) : ?>
-							<details class="nx-faq__item"<?php echo 0 === $index ? ' open' : ''; ?>>
+							<details class="nx-faq__item" name="hu-faq-wgos-cluster"<?php echo 0 === $index ? ' open' : ''; ?>>
 								<summary><?php echo esc_html( (string) ( $item['question'] ?? '' ) ); ?></summary>
 								<div class="nx-faq__content"><?php echo esc_html( (string) ( $item['answer'] ?? '' ) ); ?></div>
 							</details>

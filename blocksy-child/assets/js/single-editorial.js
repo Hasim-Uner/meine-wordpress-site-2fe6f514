@@ -128,8 +128,22 @@
             var item = question.closest('.faq-item');
             if (!item) return;
             event.preventDefault();
-            var isOpen = item.classList.toggle('is-open');
-            question.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+            // Exklusiv: ein zweiter Eintrag schliesst den ersten. Vorher blieb
+            // im Blog jede geoeffnete Antwort stehen, waehrend dieselbe Geste
+            // auf den <details>-Seiten schloss -- dasselbe Element, zwei
+            // Verhalten.
+            var open = item.classList.contains('is-open');
+            var scope = item.closest('.nexus-article-content') || document;
+            scope.querySelectorAll('.faq-item.is-open').forEach(function (other) {
+                if (other === item) return;
+                other.classList.remove('is-open');
+                var q = other.querySelector('.faq-question');
+                if (q) q.setAttribute('aria-expanded', 'false');
+            });
+
+            item.classList.toggle('is-open', !open);
+            question.setAttribute('aria-expanded', open ? 'false' : 'true');
         });
 
         // Initialise ARIA + IDs so screen readers can use the accordion.

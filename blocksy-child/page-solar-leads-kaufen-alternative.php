@@ -514,7 +514,7 @@ get_header();
 			</header>
 			<div class="hu-buy__faq-list">
 				<?php foreach ( $objections as $item ) : ?>
-					<details class="hu-buy__faq-item">
+					<details class="hu-buy__faq-item" name="hu-faq-buy-alternative">
 						<summary><?php echo esc_html( $item['question'] ); ?></summary>
 						<p><?php echo esc_html( $item['answer'] ); ?></p>
 					</details>

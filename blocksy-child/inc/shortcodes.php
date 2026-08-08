@@ -782,19 +782,19 @@ function hu_faq_section_shortcode() {
 				<p style="color:var(--nx-text-muted);">Klarheit vor dem nächsten Schritt.</p>
 			</div>
 			<div class="nx-faq">
-				<details class="nx-faq__item nx-reveal">
+				<details class="nx-faq__item nx-reveal" name="hu-faq-shortcode">
 					<summary>Was unterscheidet Sie von einer klassischen WordPress-Agentur?</summary>
 					<div class="nx-faq__content">Ich verkaufe nicht zuerst Seiten oder Leistungslisten. Ich baue WordPress als steuerbare Business-Plattform für Sichtbarkeit, Anfrageführung, Messbarkeit und kontrollierte Weiterentwicklung.</div>
 				</details>
-				<details class="nx-faq__item nx-reveal">
+				<details class="nx-faq__item nx-reveal" name="hu-faq-shortcode">
 					<summary>Ist das eher SEO, Tracking oder CRO?</summary>
 					<div class="nx-faq__content">Genau diese Trennung ist meist das Problem. In der Praxis greifen technische SEO, privacy-first Measurement und Conversion-Logik ineinander. Ich arbeite an der Schnittstelle.</div>
 				</details>
-				<details class="nx-faq__item nx-reveal">
+				<details class="nx-faq__item nx-reveal" name="hu-faq-shortcode">
 					<summary>Brauchen wir danach noch Ads?</summary>
 					<div class="nx-faq__content">Möglicherweise. Aber erst dann, wenn die Seite Nachfrage halten und sauber messen kann. Ads sind bei mir ein Verstärker, nicht das Betriebssystem.</div>
 				</details>
-				<details class="nx-faq__item nx-reveal">
+				<details class="nx-faq__item nx-reveal" name="hu-faq-shortcode">
 					<summary>Wie startet die Zusammenarbeit?</summary>
 					<div class="nx-faq__content">Mit dem Marktcheck. Danach gibt es eine klare Priorität und den nächsten sinnvollen Schritt. Größere Folgeprojekte ergeben sich erst nach der Rückmeldung und persönlichem Kontakt.</div>
 				</details>

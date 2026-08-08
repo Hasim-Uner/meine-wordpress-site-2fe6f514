@@ -519,7 +519,7 @@ get_header();
 
 		<div class="nx-faq" style="margin-top:2rem;">
 			<?php foreach ( $faq_items as $index => $faq_item ) : ?>
-				<details class="nx-faq__item"<?php echo 0 === $index ? ' open' : ''; ?>>
+				<details class="nx-faq__item" name="hu-faq-case-domdar"<?php echo 0 === $index ? ' open' : ''; ?>>
 					<summary><?php echo esc_html( $faq_item['question'] ); ?></summary>
 					<div class="nx-faq__content">
 						<?php echo esc_html( $faq_item['answer'] ); ?>

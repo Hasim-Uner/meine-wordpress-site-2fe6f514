@@ -382,31 +382,31 @@ get_header();
 				</div>
 
 				<h2>FAQ</h2>
-				<details class="nx-faq__item">
+				<details class="nx-faq__item" name="hu-faq-cornerstone">
 					<summary>Was kostet technisches SEO für den Mittelstand?</summary>
 					<div class="nx-faq__content">Die Kosten hängen von Ausgangslage, Seitengröße und Umsetzungsgrad ab. In der Praxis ist entscheidend, welche Maßnahmen direkt auf CPL, Conversion Rate und Vertriebsaufwand wirken. Ein gutes Setup priorisiert nicht nach Checkliste, sondern nach Umsatzhebel und Umsetzungsreife.</div>
 				</details>
-				<details class="nx-faq__item">
+				<details class="nx-faq__item" name="hu-faq-cornerstone">
 					<summary>Wie hängen Quality Score und Ladezeit zusammen?</summary>
 					<div class="nx-faq__content">Die Landingpage-Erfahrung ist ein zentraler Bestandteil der Anzeigenqualität. Langsame oder instabile Seiten verschlechtern Nutzersignale, was den Quality Score belastet und CPC-Druck erhöht. Bessere Ladezeiten und klare Seitenstruktur verbessern Relevanz und Wirtschaftlichkeit gleichzeitig.</div>
 				</details>
-				<details class="nx-faq__item">
+				<details class="nx-faq__item" name="hu-faq-cornerstone">
 					<summary>Was bringt technisches SEO konkret für Google Ads?</summary>
 					<div class="nx-faq__content">Technisches SEO verbessert die Grundlage, auf der Ads konvertieren: schnellere Zielseiten, stabilere mobile Erfahrung, sauberes Tracking und klarere Informationsarchitektur. Das führt typischerweise zu besserer Seitenerfahrung, geringerer Reibung im Funnel und dadurch zu besserem Cost per Lead.</div>
 				</details>
-				<details class="nx-faq__item">
+				<details class="nx-faq__item" name="hu-faq-cornerstone">
 					<summary>Wie schnell sind erste Effekte sichtbar?</summary>
 					<div class="nx-faq__content">Technik- und Tracking-Effekte sind häufig in wenigen Wochen messbar. Organische Sichtbarkeit und belastbare Inbound-Effekte bauen sich über Monate auf. Entscheidend ist, früh die richtigen KPI-Signale zu definieren und die Umsetzung in kurzen Iterationen zu steuern.</div>
 				</details>
-				<details class="nx-faq__item">
+				<details class="nx-faq__item" name="hu-faq-cornerstone">
 					<summary>Ist das nur für große Konzerne relevant?</summary>
 					<div class="nx-faq__content">Nein. Gerade Unternehmen im Mittelstand profitieren stark, weil Budgeteffizienz und Vertriebszeit besonders eng getaktet sind. Je kleiner die Fehlertoleranz, desto wichtiger ist ein sauberes technisches Fundament vor jeder aggressiven Kampagnenskalierung.</div>
 				</details>
-				<details class="nx-faq__item">
+				<details class="nx-faq__item" name="hu-faq-cornerstone">
 					<summary>Welche Rolle spielt CRO im SEO-und-SEA-System?</summary>
 					<div class="nx-faq__content">CRO sorgt dafür, dass vorhandener Traffic besser in qualifizierte Anfragen übersetzt wird. Ohne CRO bleibt Reichweite teuer. Mit CRO sinkt Reibung im Formularprozess, Lead-Qualität steigt und die Wirkung von SEO wie SEA wird deutlich besser messbar.</div>
 				</details>
-				<details class="nx-faq__item">
+				<details class="nx-faq__item" name="hu-faq-cornerstone">
 					<summary>Welche internen Teams sollten eingebunden werden?</summary>
 					<div class="nx-faq__content">Marketing, Vertrieb und Technik sollten gemeinsam priorisieren. Marketing steuert Nachfrage, Vertrieb bewertet Qualität, Technik sichert Umsetzbarkeit und Datensauberkeit. Erst diese Verbindung macht aus Einzelmaßnahmen ein skalierbares Wachstumssystem mit klarer Verantwortung.</div>
 				</details>

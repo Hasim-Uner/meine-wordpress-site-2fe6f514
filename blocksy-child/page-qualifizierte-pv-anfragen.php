@@ -251,7 +251,7 @@ get_header();
 			<h2 class="hu-intercept__h2" id="hu-quality-faq-title">Häufige Fragen zur Lead-Qualität</h2>
 			<div class="hu-intercept__faq-list">
 				<?php foreach ( $faq as $item ) : ?>
-					<details class="hu-intercept__faq-item">
+					<details class="hu-intercept__faq-item" name="hu-faq-qualifizierte-pv">
 						<summary class="hu-intercept__faq-q"><?php echo esc_html( $item['question'] ); ?></summary>
 						<p class="hu-intercept__faq-a"><?php echo esc_html( $item['answer'] ); ?></p>
 					</details>

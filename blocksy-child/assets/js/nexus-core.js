@@ -218,22 +218,88 @@
 
 
         /**
+         * FAQ-Container. Neue Seiten setzen data-faq-group, die Bestandsklassen
+         * stehen hier, damit dieser Umbau ohne Template-Aenderung auskommt.
+         *
+         * Bewusst NICHT enthalten: .hu-faq (Startseite), .sol-faq-list
+         * (Solar-Money-Page) und .nexus-article-content (Blog). Die ersten
+         * beiden oeffnen bereits exklusiv ueber eigene Handler, die zusaetzlich
+         * ein +/- Icon umschalten; der Blog nutzt einen delegierten Handler auf
+         * editor-getippten Elementen. Zwei Handler auf denselben Knoten wuerden
+         * sich gegenseitig ueberholen.
+         */
+        FAQ_GROUPS: [
+            '[data-faq-group]',
+            '.hu-intercept__faq-list',
+            '.hu-buy__faq-list',
+            '.hu-sst__faq-list',
+            '.nx-faq',
+            '.wl-faq',
+            '#faq-accordion'
+        ].join(', '),
+
+        /**
          * 2. FAQ ACCORDION
-         * Schließt andere <details> wenn eins geöffnet wird.
-         * Scope optional (z.B. '.my-faq' um nur dort zu wirken).
+         * Oeffnet exklusiv: ein zweiter Eintrag schliesst den ersten.
+         *
+         * Frueher lief das ungescopt ueber document und griff damit auf JEDES
+         * <details> der Seite zu -- auch auf die optionalen Formularfelder im
+         * Kontaktformular, den CPO-Rechner und den Vertragscheck. Ein FAQ-Klick
+         * konnte dort ein ausgeklapptes Feld zuklappen. Jetzt nur noch
+         * innerhalb echter FAQ-Container.
+         *
+         * Bedient beide Markup-Formen: natives <details> und Button + .is-open.
+         * data-faq-multi haelt eine Gruppe bewusst mehrfach offen.
          */
         initFaqAccordion: function (scope) {
-            var container = scope ? document.querySelector(scope) : document;
-            if (!container) return;
+            var self = this;
+            var roots = document.querySelectorAll(scope || this.FAQ_GROUPS);
 
-            var items = container.querySelectorAll('details');
+            roots.forEach(function (root) {
+                if (root.hasAttribute('data-faq-multi')) return;
+                self.bindFaqDetails(root);
+                self.bindFaqButtons(root);
+            });
+        },
+
+        /** Natives <details>. name= macht das schon ohne JS -- das hier ist der
+         *  Rueckfall fuer Browser ohne Unterstuetzung fuer exklusive Gruppen. */
+        bindFaqDetails: function (root) {
+            var items = root.querySelectorAll('details');
             if (!items.length) return;
 
             items.forEach(function (item) {
-                item.addEventListener('click', function () {
+                item.addEventListener('toggle', function () {
+                    if (!item.open) return;
                     items.forEach(function (other) {
                         if (other !== item) other.removeAttribute('open');
                     });
+                });
+            });
+        },
+
+        /** Button + .is-open. Der Eintrag ist das Elternelement des Buttons --
+         *  das trifft auf alle Varianten im Theme zu. */
+        bindFaqButtons: function (root) {
+            var triggers = root.querySelectorAll('button[aria-expanded], [role="button"][aria-expanded]');
+            if (!triggers.length) return;
+
+            triggers.forEach(function (trigger) {
+                var item = trigger.parentElement;
+                if (!item) return;
+
+                trigger.addEventListener('click', function () {
+                    var willOpen = !item.classList.contains('is-open');
+
+                    triggers.forEach(function (other) {
+                        var otherItem = other.parentElement;
+                        if (!otherItem || otherItem === item) return;
+                        otherItem.classList.remove('is-open');
+                        other.setAttribute('aria-expanded', 'false');
+                    });
+
+                    item.classList.toggle('is-open', willOpen);
+                    trigger.setAttribute('aria-expanded', String(willOpen));
                 });
             });
         },

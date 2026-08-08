@@ -1240,8 +1240,10 @@ get_header();
 		});
 	}
 
+	// Nur die Methodenbibliothek: die darf bewusst mehrfach offen bleiben.
+	// Das FAQ laeuft ueber NexusCore.initFaqAccordion und oeffnet dort
+	// exklusiv -- diese Fabrik schloss keine Geschwister.
 	initAccordion('#asset-accordion', '.acc-item',  '.acc-trigger',  '.acc-body');
-	initAccordion('#faq-accordion',   '.faq-item',  '.faq-trigger',  '.faq-body');
 
 	// ─── Auto-open accordion target via hash (#acc-<slug>) ───
 	(function () {
