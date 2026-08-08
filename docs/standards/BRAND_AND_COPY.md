@@ -125,6 +125,32 @@ eine Route gelten kontrollierte Ausnahmen:
 Diese Ausnahmen gelten nur auf Whitelabel-Routen und rechtfertigen keine
 Aufweichung der Solar-/SHK-Kernpositionierung an anderer Stelle.
 
+## Nebenpfad: Lokale WordPress-Route Hannover
+
+`/wordpress-agentur-hannover/` trägt die H1 „WordPress Agentur Hannover" und
+steht damit sichtbar gegen die Identity-Zeile „Not: WordPress-Agentur". Das ist
+eine bewusste Ausnahme, keine Drift:
+
+- Die Route existiert für eine lokale Suchanfrage, die genau diesen Begriff
+  benutzt. Ohne ihn rankt sie nicht, und sie ist die einzige Seite mit
+  lokalem Einstieg.
+- Der Begriff wird immer qualifiziert („für messbare B2B-Anfragen"), nie allein
+  als Rollen-Claim gesetzt. Im Fließtext bleibt die Rolle `Spezialist für
+  WordPress als Anfrage-System`, ausdrücklich abgegrenzt gegen die lokale
+  Allround-Agentur.
+- **Benachbarte Kategoriebegriffe bleiben draußen.** Am 2026-07-09 wurden
+  `Webdesign-Agentur`, `Internetagentur` und `Webagentur` über zwei FAQ-Items
+  ergänzt, um lokale Zweitbegriffe mitzunehmen. Ergebnis: die Money-Query fiel
+  von Position 11 auf 35, die Zielbegriffe bekamen keine einzige Impression.
+  Zurückgenommen am 2026-08-08.
+- Die Lehre daraus gilt über diese Route hinaus: Der Hard-Ban-Check lässt
+  gesperrte Begriffe in der Abgrenzung durch, weil „Architektur statt
+  Webdesign" positionierungsseitig ein Gegen-Claim ist. Eine Suchmaschine liest
+  denselben Satz ohne Verneinung. Grün im Guard heißt hier nicht unschädlich.
+
+Regressionen auf dieser Route findet
+`agents/skills/seo-drift/scripts/drift-report.sh`.
+
 ## Brand Colors (Project Override)
 
 - Primary brand accent: `#b46a3c` (copper)

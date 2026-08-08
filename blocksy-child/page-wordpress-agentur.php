@@ -68,6 +68,7 @@ $e3_cpl_red_count  = $e3_metric( 'cpl_reduction', 'counter_target' );
 $e3_lead_count     = $e3_metric( 'lead_count' );
 $e3_lead_counter   = $e3_metric( 'lead_count', 'counter_target' );
 $e3_sales_conv     = $e3_metric( 'sales_conversion' );
+$e3_sales_conv_bef = $e3_metric( 'sales_conversion_before' );
 $e3_conv_counter   = $e3_metric( 'sales_conversion', 'counter_target' );
 $e3_timeframe      = $e3_metric( 'timeframe' );
 $e3_timeframe_dat  = $e3_metric( 'timeframe', 'display_dative' );
@@ -225,11 +226,12 @@ get_header();
 						Jeder neue Text verteilt Ihr Budget weiter, solange keine Seite die kaufnahe Suchanfrage besitzt. Deshalb zuerst vier Kauf-Signale — Angebot, Nachfrage, Datenlage, Anfragepfad. Erst dann wird gebaut.
 					</p>
 
-					<?php // Bewusst ohne Punktzahl: Lighthouse-Werte schwanken je Lauf, und ein
-						// verfehlter Schwellwert entwertet ausgerechnet die Seite, deren ganze
-						// Beweisfuehrung auf Nachpruefbarkeit beruht. ?>
+					<?php // Der schwaechere Wert steht bewusst daneben: "95+ mobil" war bei
+						// tatsaechlich 94 nicht gedeckt, und eine aufgerundete Zahl entwertet
+						// ausgerechnet die Seite, die zum Nachmessen auffordert. Den
+						// unbequemen Wert offen zu nennen macht die 100er erst glaubhaft. ?>
 					<p class="ag-hero__proofline">
-						Diese Seite ist mit derselben Methode gebaut — Ladezeit, Tracking und Struktur jederzeit nachmessbar.
+						Diese Seite: Desktop 100 in allen vier Lighthouse-Kategorien, mobil 94 bei Performance. Nicht aufgerundet — messen Sie nach.
 					</p>
 
 					<div class="ag-hero__actions">
@@ -409,13 +411,23 @@ get_header();
 				<div class="wp-agentur-proof-value"><span class="wp-agentur-proof-num"><?php echo esc_html( $e3_lead_count ); ?></span></div>
 				<div class="wp-agentur-proof-label">Qualifizierte Anfragen</div>
 			</div>
+			<?php // Eine nackte Abschlussquote ist ohne Ausgangswert nicht lesbar: 12 %
+				// koennen gut oder schlecht sein. Der Canon fuehrt den Vorher-Wert bereits. ?>
 			<div class="wp-agentur-proof-item" data-ag-reveal style="--agr-d:140ms">
-				<div class="wp-agentur-proof-value"><span class="wp-agentur-proof-num"><?php echo esc_html( $e3_sales_conv ); ?></span></div>
+				<div class="wp-agentur-proof-value wp-agentur-proof-value--delta">
+					<span class="wp-agentur-proof-num"><?php echo esc_html( $e3_sales_conv_bef ); ?></span>
+					<span class="wp-agentur-proof-arrow">→</span>
+					<span class="wp-agentur-proof-num"><?php echo esc_html( $e3_sales_conv ); ?></span>
+				</div>
 				<div class="wp-agentur-proof-label">Abschlussquote</div>
 			</div>
+			<?php // Vorher stand hier die CPL-Senkung — dieselbe Aussage wie Kachel 1
+				// (150 € auf 22 € IST die Senkung um ueber 85 %). Eine von vier Kacheln
+				// trug damit keine neue Information. Der Zeitraum beantwortet stattdessen
+				// die Frage, die jeder Entscheider als naechstes stellt. ?>
 			<div class="wp-agentur-proof-item" data-ag-reveal style="--agr-d:210ms">
-				<div class="wp-agentur-proof-value"><span class="wp-agentur-proof-num"><?php echo esc_html( $e3_cpl_reduction ); ?></span></div>
-				<div class="wp-agentur-proof-label">Niedrigere Kosten pro Anfrage</div>
+				<div class="wp-agentur-proof-value"><span class="wp-agentur-proof-num"><?php echo esc_html( $e3_timeframe ); ?></span></div>
+				<div class="wp-agentur-proof-label">Zeitraum im Referenzfall</div>
 			</div>
 		</div>
 
