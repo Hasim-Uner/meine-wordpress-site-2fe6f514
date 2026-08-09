@@ -184,17 +184,17 @@ $timeline_phases = [
  */
 $cpl_chart = [
 	[
-		'value'   => $e3_cpl_before,
+		'x'       => 150,
 		'caption' => 'Vorher',
 		'sub'     => 'Portal-Einkauf',
 	],
 	[
-		'value'   => $e3_cpl_ramp,
+		'x'       => 380,
 		'caption' => 'Monate 1–2',
 		'sub'     => 'Aufbauphase',
 	],
 	[
-		'value'   => $e3_cpl_after,
+		'x'       => 610,
 		'caption' => 'Ab Monat 4',
 		'sub'     => 'stabilisiert',
 	],
@@ -471,13 +471,9 @@ get_header();
 						<text class="e3-chart__value" x="380" y="98" text-anchor="middle"><?php echo esc_html( $e3_cpl_ramp ); ?></text>
 						<text class="e3-chart__value" x="610" y="207" text-anchor="middle"><?php echo esc_html( $e3_cpl_after ); ?></text>
 
-						<?php
-						$chart_x = [ 150, 380, 610 ];
-						foreach ( $cpl_chart as $chart_index => $chart_point ) :
-							$chart_cx = isset( $chart_x[ $chart_index ] ) ? $chart_x[ $chart_index ] : 0;
-							?>
-							<text class="e3-chart__caption" x="<?php echo esc_attr( (string) $chart_cx ); ?>" y="274" text-anchor="middle"><?php echo esc_html( $chart_point['caption'] ); ?></text>
-							<text class="e3-chart__sub" x="<?php echo esc_attr( (string) $chart_cx ); ?>" y="294" text-anchor="middle"><?php echo esc_html( $chart_point['sub'] ); ?></text>
+						<?php foreach ( $cpl_chart as $chart_point ) : ?>
+							<text class="e3-chart__caption" x="<?php echo esc_attr( (string) $chart_point['x'] ); ?>" y="274" text-anchor="middle"><?php echo esc_html( $chart_point['caption'] ); ?></text>
+							<text class="e3-chart__sub" x="<?php echo esc_attr( (string) $chart_point['x'] ); ?>" y="294" text-anchor="middle"><?php echo esc_html( $chart_point['sub'] ); ?></text>
 						<?php endforeach; ?>
 					</svg>
 					<figcaption>Kosten pro Anfrage. Die gestrichelte Linie markiert das Ausgangsniveau des Portal-Einkaufs.</figcaption>
