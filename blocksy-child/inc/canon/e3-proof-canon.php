@@ -16,8 +16,17 @@ define( 'HU_E3_CPL_REDUCTION_PERCENT', 85 );
 define( 'HU_E3_LEAD_COUNT', 1750 );
 define( 'HU_E3_SALES_CONVERSION_PERCENT', 12 );
 define( 'HU_E3_SALES_CONVERSION_BEFORE_LOW', 1 );
-define( 'HU_E3_SALES_CONVERSION_BEFORE_HIGH', 2 );
+define( 'HU_E3_SALES_CONVERSION_BEFORE_HIGH', 5 );
 define( 'HU_E3_TIMEFRAME_MONTHS', 6 );
+
+// Zwischenwerte der Strecke. Standen bis 2026-08 als Literale in
+// page-e3-new-energy.php und waren damit weder prüfbar noch mitpflegbar.
+define( 'HU_E3_CPL_RAMP_LOW', 70 );
+define( 'HU_E3_CPL_RAMP_HIGH', 100 );
+define( 'HU_E3_PORTAL_CONVERSION_AVG', 3 );
+define( 'HU_E3_PORTAL_COST_PER_DEAL', 5000 );
+define( 'HU_E3_BUILD_MONTHS', 3 );
+define( 'HU_E3_TUNING_MONTHS', 3 );
 
 /**
  * Return the canonical E3 proof data.
@@ -81,6 +90,32 @@ function hu_e3_canon() {
 				'display_dative' => '6 Monaten',
 				'counter_target' => '6',
 				'label'          => 'Zeitraum',
+			],
+			'cpl_ramp'         => [
+				'value'      => HU_E3_CPL_RAMP_LOW,
+				'value_high' => HU_E3_CPL_RAMP_HIGH,
+				'display'    => '70 – 100 €',
+				'label'      => 'Kosten pro Anfrage in der Aufbauphase',
+			],
+			'portal_conversion_avg' => [
+				'value'   => HU_E3_PORTAL_CONVERSION_AVG,
+				'display' => '3 %',
+				'label'   => 'durchschnittliche Abschlussquote auf Portal-Leads',
+			],
+			'portal_cost_per_deal'  => [
+				'value'   => HU_E3_PORTAL_COST_PER_DEAL,
+				'display' => '5.000 €',
+				'label'   => 'reine Anfrage-Kosten pro Abschluss vorher',
+			],
+			'build_months'     => [
+				'value'   => HU_E3_BUILD_MONTHS,
+				'display' => '3 Monate',
+				'label'   => 'Implementierung',
+			],
+			'tuning_months'    => [
+				'value'   => HU_E3_TUNING_MONTHS,
+				'display' => '3 Monate',
+				'label'   => 'Optimierung',
 			],
 		],
 		'summary'    => [

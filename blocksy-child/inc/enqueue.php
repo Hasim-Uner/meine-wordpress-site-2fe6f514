@@ -308,6 +308,7 @@ function hu_enqueue_assets() {
 	foreach ( $intercept_routes as $slug => $template ) {
 		if ( is_page( $slug ) || is_page_template( $template ) ) {
 			hu_enqueue_css( 'nexus-intercept-solar-leads-css', 'solar-leads-kaufen-alternative.css', [ 'nexus-design-system' ] );
+			hu_enqueue_css( 'nexus-sticky-cta-css', 'sticky-cta.css', [ 'nexus-design-system' ] );
 			hu_enqueue_js( 'nexus-seo-subpage-sticky-cta-js', 'seo-subpage-sticky-cta.js', [] );
 			break;
 		}
@@ -369,19 +370,18 @@ function hu_enqueue_assets() {
 
 	// ── F1b) Schwester-Templates (Solar Case Study, Service-Landing) ────────
 	if ( is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page( 'case-study-solar-leadgenerierung' ) || is_page( 'e3-new-energy' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) || is_page_template( 'page-e3-new-energy.php' ) || is_page_template( 'page-case-e3.php' ) ) {
-		hu_enqueue_css( 'nexus-review-funnel-css', 'review-funnel.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-energy-systems-css', 'energy-systems.css', [ 'nexus-review-funnel-css' ] );
+		// review-funnel.css/.js sind hier bewusst NICHT geladen: das JS bindet an
+		// #review-request-form, das kein Template im Theme rendert, und keines
+		// der beiden Templates benutzt eine .review-*-Klasse. Das waren 45 KB
+		// render-blockierendes CSS plus 24 KB JS ohne Gegenwert. Der Marktcheck
+		// laeuft auf der Money Page ueber solar-leadgenerierung-solara.js.
+		hu_enqueue_css( 'nexus-energy-systems-css', 'energy-systems.css', [ 'nexus-design-system' ] );
 		hu_enqueue_js( 'nexus-solar-hero-js', 'solar-hero.js', [ 'nexus-core-js' ] );
-		hu_enqueue_js( 'nexus-review-funnel-js', 'review-funnel.js', [ 'nexus-core-js' ] );
-		wp_localize_script(
-			'nexus-review-funnel-js',
-			'NexusReviewConfig',
-			[
-				'auditLabel'   => 'Marktcheck',
-				'submitLabel'  => 'Marktcheck mit Fit-Entscheid starten',
-				'restEndpoint' => esc_url_raw( rest_url( 'nexus/v1/audit-request' ) ),
-			]
-		);
+
+		// Sticky-CTA-Bar: die Case Study hatte bis 2026-08 keinen einzigen CTA
+		// oberhalb des Seitenendes. Gleiche Komponente wie auf den Intercept-Routen.
+		hu_enqueue_css( 'nexus-sticky-cta-css', 'sticky-cta.css', [ 'nexus-design-system' ] );
+		hu_enqueue_js( 'nexus-seo-subpage-sticky-cta-js', 'seo-subpage-sticky-cta.js', [] );
 	}
 
 	// ── G) Template: WGOS Client Dashboard ─────────────────────────
