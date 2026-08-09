@@ -173,7 +173,9 @@ Remove the "who is this person?" doubt. Social proof within first scroll.
 - Number: `--text-2xl` or `--text-3xl`, `--weight-bold`, `--text-primary`.
 - Label: `--text-sm`, `--text-secondary`.
 - Container: Subtle border or bg differentiation. Not heavy cards.
-- 3–4 stats max. Animate on scroll (count up).
+- 3–4 stats max. Render the truthful final value server-side. Count up only
+  when the Motion Brief justifies it; reduced-motion and no-support paths keep
+  the final value static.
 
 ---
 
@@ -370,7 +372,9 @@ Handle objections. Answer the questions that block the conversion decision.
 - Answer: `--text-base`, `--text-secondary`, `max-width: var(--measure-base)`.
 - Divider: `1px solid var(--border-subtle)` between items.
 - Toggle icon: Minimal `+`/`−` or chevron. `--text-tertiary`. Rotates on open.
-- Animation: `max-height` transition, 300ms, `--ease-default`.
+- Animation: Prefer native `<details>` plus an icon rotation. If answer motion
+  materially improves continuity, follow the disclosure contract in
+  `motion.md` and keep the unenhanced answer accessible.
 - Open state: Question color → `--text-primary` or `--accent`.
 
 **CRO Rules**:
@@ -445,11 +449,15 @@ Capture the lead with minimum friction. Every field is a friction point.
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: var(--card-padding);
-  transition: var(--transition-all);
+  transition:
+    background-color var(--duration-fast) var(--ease-default),
+    border-color var(--duration-fast) var(--ease-default),
+    box-shadow var(--duration-normal) var(--ease-default),
+    transform var(--duration-normal) var(--ease-default);
 }
 
-/* Dark mode: elevation via border lightness */
-.card:hover {
+/* Only interactive cards promise a hover/focus response. */
+.card--interactive:focus-within {
   border-color: var(--border-default);
   background: var(--bg-elevated);
 }
@@ -459,9 +467,16 @@ Capture the lead with minimum friction. Every field is a friction point.
   border-color: transparent;
   box-shadow: var(--shadow-sm);
 }
-[data-theme="light"] .card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .card--interactive:hover {
+    border-color: var(--border-default);
+    background: var(--bg-elevated);
+  }
+
+  [data-theme="light"] .card--interactive:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
 }
 ```
 
@@ -491,9 +506,11 @@ Capture the lead with minimum friction. Every field is a friction point.
   white-space: nowrap;
 }
 
-.btn-primary:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+  }
 }
 
 .btn-primary:active {
@@ -525,10 +542,12 @@ Capture the lead with minimum friction. Every field is a friction point.
   transition: var(--transition-colors);
 }
 
-.btn-ghost:hover {
-  color: var(--text-primary);
-  border-color: var(--border-emphasis);
-  background: var(--hover-overlay);
+@media (hover: hover) and (pointer: fine) {
+  .btn-ghost:hover {
+    color: var(--text-primary);
+    border-color: var(--border-emphasis);
+    background: var(--hover-overlay);
+  }
 }
 ```
 
@@ -548,16 +567,18 @@ Capture the lead with minimum friction. Every field is a friction point.
   transition: var(--transition-colors);
 }
 
-.btn-link:hover {
-  color: var(--accent-hover);
-}
-
-/* Arrow animation */
 .btn-link .arrow {
   transition: transform var(--duration-fast) var(--ease-default);
 }
-.btn-link:hover .arrow {
-  transform: translateX(4px);
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-link:hover {
+    color: var(--accent-hover);
+  }
+
+  .btn-link:hover .arrow {
+    transform: translateX(4px);
+  }
 }
 ```
 

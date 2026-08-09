@@ -1,621 +1,337 @@
-# Motion & Interaction Design Reference
+# Motion Direction & Interaction Standard
 
-Animation and micro-interaction patterns for B2B WordPress sites.
-All patterns are CSS-first, WordPress-compatible, and performance-budgeted.
+Use this reference when a page should feel more dynamic, when adding or
+reviewing animation, or when changing an interactive component. Motion must
+improve orientation, feedback, hierarchy, or authored character without making
+the visitor wait for the interface.
 
----
+## Contents
 
-## Motion Budget
+1. [Ownership](#ownership)
+2. [Motion Direction Pass](#motion-direction-pass)
+3. [Decision gate and intensity](#decision-gate-and-intensity)
+4. [Choreography and timing](#choreography-and-timing)
+5. [Canonical runtime patterns](#canonical-runtime-patterns)
+6. [Interaction state contract](#interaction-state-contract)
+7. [Progressive enhancement and accessibility](#progressive-enhancement-and-accessibility)
+8. [Performance rules](#performance-rules)
+9. [Pattern decisions](#pattern-decisions)
+10. [Verification](#verification)
 
-**Total page load animation time: < 2 seconds.**
+## Ownership
 
-| Animation Type        | Duration    | When                    | Priority |
-|-----------------------|-------------|-------------------------|----------|
-| Hero entrance         | 600–800ms   | Page load               | Critical |
-| Scroll reveals        | 400–600ms   | On scroll into view     | High     |
-| Number counters       | 1200–1800ms | On scroll into view     | Medium   |
-| Hover states          | 120–200ms   | On hover                | High     |
-| Focus states          | 120ms       | On focus                | Critical |
-| Accordion open/close  | 300ms       | On click                | Medium   |
-| Page transitions      | 200–350ms   | On navigation           | Low      |
-| CTA attention pulse   | 2000ms      | After 5s idle, once     | Low      |
+- CRO decides **whether** motion helps the visitor understand or act.
+- This skill defines **what moves**, the hierarchy, and the intended feel.
+- `modern-web-guidance` chooses the browser API, feature detection, and fallback.
+- `page-speed-audit` verifies rendered CWV and transfer/execution cost.
+- `landing-page-builder` applies the brief to a campaign route.
 
----
+Do not let a route-local effect become a second global design system. Do not let
+a generic design trend override the route's conversion job.
 
-## 1. Page Load: Hero Entrance
+## Motion Direction Pass
 
-The hero entrance is the first impression. It must feel intentional and confident.
+Write this brief before choosing CSS properties or JavaScript APIs:
 
-### Staggered Reveal Pattern
+```text
+Route / surface:
+Visitor decision and primary CTA:
+Motion intensity (0–3):
+Motion thesis (one sentence):
+Focal moment (one or none):
+Continuity to explain:
+Feedback states to acknowledge:
+Explicitly static areas:
+Maximum simultaneous moving groups:
+Runtime and payload delta:
+CWV baseline and post-change evidence:
+Mobile / coarse-pointer variant:
+Reduced-motion final state:
+No-JS / unsupported-API final state:
+Acceptance checks:
+```
+
+The motion thesis must be specific to the page. “Fade sections in on scroll” is
+an implementation habit, not a thesis. A useful thesis names the relationship
+or feeling, for example: “The diagnostic path resolves from uncertainty into a
+single next step; supporting sections remain quiet.”
+
+If no meaningful focal moment exists, record `none`. Motion intensity is not a
+quality score; level 1 can be the premium choice.
+
+## Decision gate and intensity
+
+For every proposed animation, answer:
+
+1. What becomes clearer: action feedback, state, spatial relationship,
+   hierarchy, or one brand-defining moment?
+2. How often will the visitor encounter it?
+3. What is lost if the animation is removed?
+4. What do touch, keyboard, reduced-motion, no-JS, and unsupported browsers see?
+5. Can an existing shared pattern express it?
+
+If nothing meaningful is lost when it is removed, keep the surface static.
+Frequent actions must be faster and quieter than rare, authored moments. Never
+delay keyboard-initiated work for choreography.
+
+| Level | Use | Default behavior |
+| --- | --- | --- |
+| `0` Static | Dense reading, utility, or constrained performance | No decorative movement; state changes remain immediate and legible |
+| `1` Responsive | Default B2B UI | Hover/press/focus, disclosure, loading, success, and error feedback |
+| `2` Guided | Marketing route with a clear visual thesis | Level 1 plus one focal sequence and a few hierarchy reveals |
+| `3` Narrative | Rare hero story or scrollytelling with explicit approval | Purpose-built sequence, measured on target devices, complete static fallback |
+
+Do not use level 3 merely because the user asks for “more Dynamik.” Translate
+that request into a clearer focal moment, stronger state feedback, or better
+continuity first.
+
+## Choreography and timing
+
+Use a three-tier hierarchy, but do not force all tiers onto every page:
+
+1. **Focal:** at most one authored sequence per route.
+2. **Supporting:** feedback and continuity that make the interface legible.
+3. **Ambient:** optional, quiet, and only when it expresses the brand; never a
+   permanent competitor to the CTA or reading flow.
+
+Prefer one rehearsed focal sequence over repeated section reveals. Do not run
+multiple large moving groups in the same viewport. Keep above-fold copy and the
+primary CTA available without waiting for a stagger to complete.
+
+Use the existing tokens from `design-system.css`:
+
+| Token | Typical job |
+| --- | --- |
+| `--duration-fast` (`120ms`) | press, focus, immediate acknowledgement |
+| `--duration-normal` (`200ms`) | hover and routine state changes |
+| `--duration-slow` (`350ms`) | disclosure, layout continuity, overlays |
+| `--duration-reveal` (`600ms`) | one deliberate focal entrance |
+| `--ease-default` | confident entrance and responsive state movement |
+| `--ease-linear` | progress tied directly to elapsed time or scroll position |
+
+Exit faster than entrance. Cap a sibling stagger as one bounded group; after
+roughly five items, reveal the remainder together. Never turn every section into
+a staggered list. Use bounce or spring-like easing only when the established
+visual personality earns it, not as a default “premium” effect.
+
+## Canonical runtime patterns
+
+The shared authorities are:
+
+- CSS and tokens: `blocksy-child/assets/css/design-system.css`
+- JavaScript utilities: `blocksy-child/assets/js/nexus-core.js`
+
+For new general-purpose reveal and counter work, use:
+
+| Job | Canonical contract |
+| --- | --- |
+| One-time reveal | `.nx-reveal` → `.nx-visible` |
+| Numeric proof | `.nx-counter` plus its final value in the markup/data contract |
+| Shared timing | `--duration-*`, `--ease-*`, or their `--nx-*` aliases |
+
+`.reveal`, `.reveal-stagger`, `.is-visible`, `.is-revealed`, and `.in` exist in
+legacy route systems. Do not create another dialect. When editing one route,
+migrate only that route where safe; do not bulk-rewrite unrelated behavior.
+Compatibility aliases may remain until their consumers are migrated.
+
+The current shared reveal/counter implementation predates the pending-state
+contract. Do not copy its default-hidden legacy CSS into new work. When a route
+touches that behavior, harden the shared utility or the scoped consumer so a
+missing Intersection Observer, reduced motion, or an exception leaves the final
+server-rendered state visible.
+
+Before adding route JavaScript:
+
+1. Search `NexusCore` for the behavior.
+2. Extend the shared utility if the behavior is reusable and its contract stays
+   small.
+3. Keep code route-local only for a genuinely unique story or data model.
+4. Do not create a second generic reveal observer.
+
+Do not hide meaningful content in the default CSS state. After capability and
+reduced-motion checks pass, JavaScript may add an element-local
+`.is-motion-pending` state to an eligible, initially offscreen target. Settling
+adds `.nx-visible` and removes the pending state. Missing APIs, exceptions, and
+reduced motion skip pending and keep the server-rendered final state visible.
+A failed script must leave readable content.
+
+## Interaction state contract
+
+Specify every applicable state before styling the transition. Motion may
+reinforce a state, but color, copy, iconography, and ARIA must carry the meaning.
+
+| State | Required behavior |
+| --- | --- |
+| Rest | Stable hierarchy and sufficient contrast |
+| Hover | Optional pointer affordance; never the only discoverability cue |
+| Focus-visible | Immediate visible ring; never delayed or removed for aesthetics |
+| Pressed / active | Fast acknowledgement without moving the target away |
+| Selected | Persistent non-motion cue and correct semantic state |
+| Expanded / collapsed | Correct `aria-expanded` or native `<details>` state |
+| Loading | Preserve label/context, prevent duplicate action, announce when needed |
+| Success | Confirm the completed action and next step |
+| Error | Identify the problem near its source; no aggressive shake by default |
+| Disabled | Visibly unavailable and semantically disabled; no hover promise |
+
+Gate hover transforms:
 
 ```css
-/* Hero container */
-.hero {
-  overflow: hidden; /* Prevent layout shift during animation */
-}
-
-/* Each element fades in + slides up with increasing delay */
-.hero__overline {
-  opacity: 0;
-  transform: translateY(16px);
-  animation: heroReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-}
-
-.hero__title {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: heroReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
-}
-
-.hero__subtitle {
-  opacity: 0;
-  transform: translateY(16px);
-  animation: heroReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
-}
-
-.hero__cta-group {
-  opacity: 0;
-  transform: translateY(16px);
-  animation: heroReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
-}
-
-.hero__proof {
-  opacity: 0;
-  transform: translateY(12px);
-  animation: heroReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
-}
-
-@keyframes heroReveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+@media (hover: hover) and (pointer: fine) {
+  .component:hover {
+    transform: translateY(-2px);
   }
 }
-
-/* Reduced motion: instant display */
-@media (prefers-reduced-motion: reduce) {
-  .hero__overline,
-  .hero__title,
-  .hero__subtitle,
-  .hero__cta-group,
-  .hero__proof {
-    opacity: 1;
-    transform: none;
-    animation: none;
-  }
-}
 ```
 
-### Hero Background Glow
+Touch must not need hover to expose content or controls. Keyboard and pointer
+activation must reach the same end state, even if their motion differs.
 
-A subtle radial gradient that adds depth without distraction.
+## Progressive enhancement and accessibility
 
-```css
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 800px;
-  height: 600px;
-  background: radial-gradient(
-    ellipse,
-    hsla(var(--accent-hsl) / 0.08) 0%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-```
+`prefers-reduced-motion` is an alternate design, not a blanket `animation: none`
+afterthought:
 
----
+- Show final values and content immediately.
+- Replace smooth scrolling with instant/automatic scrolling.
+- Remove parallax, large spatial movement, counters, and nonessential loops.
+- Keep essential state feedback, but make it brief and non-spatial.
+- For long-lived components, listen for preference changes rather than reading
+  the media query only once.
 
-## 2. Scroll Reveal System
-
-### Base CSS Classes
-
-```css
-/* ─── Fade Up (Default) ─── */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ─── Fade In (No movement) ─── */
-.reveal--fade {
-  opacity: 0;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: none;
-}
-
-.reveal--fade.is-visible {
-  opacity: 1;
-}
-
-/* ─── Scale Up ─── */
-.reveal--scale {
-  opacity: 0;
-  transform: scale(0.95);
-  transition:
-    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal--scale.is-visible {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* ─── Stagger Children ─── */
-.reveal-stagger > * {
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 80ms; opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 160ms; opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 240ms; opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 320ms; opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 400ms; opacity: 1; transform: translateY(0); }
-
-/* ─── Reduced Motion ─── */
-@media (prefers-reduced-motion: reduce) {
-  .reveal,
-  .reveal--fade,
-  .reveal--scale,
-  .reveal-stagger > * {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-```
-
-### JavaScript (Intersection Observer)
+Resolve scroll behavior before calling the API; never hard-code literal smooth
+behavior:
 
 ```js
-/**
- * Scroll Reveal Observer
- * Lightweight (~500 bytes), no dependencies.
- * Add class="reveal" to any element to animate on scroll.
- */
-(function() {
-  'use strict';
-
-  // Bail if reduced motion preferred
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll('.reveal, .reveal-stagger').forEach(function(el) {
-      el.classList.add('is-visible');
-    });
-    return;
-  }
-
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.12,
-    rootMargin: '0px 0px -60px 0px'
-  });
-
-  // Observe all reveal elements
-  document.querySelectorAll('.reveal, .reveal-stagger').forEach(function(el) {
-    observer.observe(el);
-  });
-})();
+var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
 ```
 
-**WordPress Integration**: Enqueue this as a deferred script in your child theme's `functions.php`:
-
-```php
-function theme_enqueue_reveal_script() {
-    wp_enqueue_script(
-        'scroll-reveal',
-        get_stylesheet_directory_uri() . '/js/scroll-reveal.js',
-        array(),
-        '1.0',
-        array('strategy' => 'defer', 'in_footer' => true)
-    );
-}
-add_action('wp_enqueue_scripts', 'theme_enqueue_reveal_script');
-```
-
----
-
-## 3. Number Counter Animation
-
-For stat bars and proof sections. Numbers count up from 0.
-
-```js
-/**
- * Counter Animation
- * Triggers on scroll into view. Supports integers, decimals, and prefixes/suffixes.
- * Usage: <span class="counter" data-target="83" data-prefix="-" data-suffix="%">0</span>
- */
-(function() {
-  'use strict';
-
-  function animateCounter(el) {
-    var target = parseFloat(el.dataset.target);
-    var prefix = el.dataset.prefix || '';
-    var suffix = el.dataset.suffix || '';
-    var decimals = (el.dataset.target.includes('.')) ? el.dataset.target.split('.')[1].length : 0;
-    var duration = 1500; // ms
-    var startTime = null;
-
-    function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
-
-    function step(timestamp) {
-      if (!startTime) startTime = timestamp;
-      var progress = Math.min((timestamp - startTime) / duration, 1);
-      var current = target * easeOutQuart(progress);
-      el.textContent = prefix + current.toFixed(decimals) + suffix;
-
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        el.textContent = prefix + target.toFixed(decimals) + suffix;
-      }
-    }
-
-    requestAnimationFrame(step);
-  }
-
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        animateCounter(entry.target);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.5 });
-
-  document.querySelectorAll('.counter').forEach(function(el) {
-    observer.observe(el);
-  });
-})();
-```
-
----
-
-## 4. Hover & Interactive States
-
-### Card Hover
-
-```css
-/* Dark mode: border brightens + background shifts */
-.card {
-  transition:
-    border-color var(--duration-fast) var(--ease-default),
-    background-color var(--duration-fast) var(--ease-default),
-    transform var(--duration-normal) var(--ease-default),
-    box-shadow var(--duration-normal) var(--ease-default);
-}
-
-.card:hover {
-  border-color: var(--border-default);
-  background: var(--bg-elevated);
-}
-
-/* Light mode: shadow elevation + subtle lift */
-[data-theme="light"] .card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-```
-
-### Button Hover
-
-```css
-.btn-primary {
-  transition:
-    background-color var(--duration-fast) var(--ease-default),
-    transform var(--duration-fast) var(--ease-default),
-    box-shadow var(--duration-fast) var(--ease-default);
-}
-
-.btn-primary:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px hsla(var(--accent-hsl) / 0.25);
-}
-
-.btn-primary:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-```
-
-### Link Hover (Underline Animation)
-
-```css
-.link {
-  position: relative;
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.link::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: currentColor;
-  transition: width var(--duration-normal) var(--ease-default);
-}
-
-.link:hover::after {
-  width: 100%;
-}
-```
-
-### Navigation Link Active Indicator
-
-```css
-.nav-link {
-  position: relative;
-  color: var(--text-secondary);
-  transition: color var(--duration-fast) var(--ease-default);
-}
-
-.nav-link:hover,
-.nav-link.is-active {
-  color: var(--text-primary);
-}
-
-.nav-link.is-active::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 16px;
-  height: 2px;
-  background: var(--accent);
-  border-radius: var(--radius-full);
-}
-```
-
----
-
-## 5. Focus States (Accessibility)
-
-```css
-/* Visible focus ring for keyboard navigation */
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* Remove outline for mouse clicks */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
-/* Custom focus ring for inputs */
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px hsla(var(--accent-hsl) / 0.2);
-  outline: none;
-}
-```
-
----
-
-## 6. Accordion / FAQ Animation
-
-```css
-.faq-item {
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.faq-question {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: var(--space-5) 0;
-  font-size: var(--text-base);
-  font-weight: var(--weight-medium);
-  color: var(--text-primary);
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  transition: color var(--duration-fast) var(--ease-default);
-}
-
-.faq-question:hover {
-  color: var(--accent);
-}
-
-.faq-icon {
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  color: var(--text-tertiary);
-  transition: transform var(--duration-normal) var(--ease-default);
-}
-
-.faq-item.is-open .faq-icon {
-  transform: rotate(45deg);
-}
-
-.faq-answer {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--duration-normal) var(--ease-default);
-}
-
-.faq-item.is-open .faq-answer {
-  grid-template-rows: 1fr;
-}
-
-.faq-answer__inner {
-  overflow: hidden;
-}
-
-.faq-answer__content {
-  padding-bottom: var(--space-6);
-  color: var(--text-secondary);
-  font-size: var(--text-base);
-  line-height: var(--leading-normal);
-  max-width: var(--measure-base);
-}
-```
-
-```js
-/* FAQ Accordion — lightweight, accessible */
-document.querySelectorAll('.faq-question').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    var item = this.closest('.faq-item');
-    var isOpen = item.classList.contains('is-open');
-
-    // Close all others (single-open mode)
-    document.querySelectorAll('.faq-item.is-open').forEach(function(openItem) {
-      openItem.classList.remove('is-open');
-      openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
-    });
-
-    // Toggle current
-    if (!isOpen) {
-      item.classList.add('is-open');
-      this.setAttribute('aria-expanded', 'true');
-    }
-  });
-});
-```
-
----
-
-## 7. CTA Attention Pulse
-
-A subtle one-time pulse to draw attention to the primary CTA after the user has been idle.
-
-```css
-@keyframes ctaPulse {
-  0%, 100% { box-shadow: 0 0 0 0 hsla(var(--accent-hsl) / 0.4); }
-  50%      { box-shadow: 0 0 0 8px hsla(var(--accent-hsl) / 0); }
-}
-
-.btn-primary--pulse {
-  animation: ctaPulse 2s ease-in-out 1;
-}
-```
-
-```js
-/* Trigger pulse once after 5s of no scroll/click */
-var pulseTimer;
-function resetPulseTimer() {
-  clearTimeout(pulseTimer);
-  pulseTimer = setTimeout(function() {
-    var cta = document.querySelector('.hero .btn-primary');
-    if (cta && !cta.classList.contains('btn-primary--pulse')) {
-      cta.classList.add('btn-primary--pulse');
-    }
-  }, 5000);
-}
-
-['scroll', 'click', 'mousemove'].forEach(function(event) {
-  document.addEventListener(event, resetPulseTimer, { passive: true });
-});
-resetPulseTimer();
-```
-
----
-
-## 8. Dark/Light Mode Transition
-
-Smooth color transition when toggling themes.
-
-```css
-/* Apply to root for smooth theme switching */
-html.theme-transitioning,
-html.theme-transitioning *,
-html.theme-transitioning *::before,
-html.theme-transitioning *::after {
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease !important;
-}
-```
-
-```js
-function toggleTheme() {
-  var html = document.documentElement;
-  html.classList.add('theme-transitioning');
-
-  var current = html.getAttribute('data-theme');
-  var next = current === 'dark' ? 'light' : 'dark';
-
-  html.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
-
-  // Remove transition class after animation completes
-  setTimeout(function() {
-    html.classList.remove('theme-transitioning');
-  }, 350);
-}
-```
-
----
-
-## Performance Rules
-
-1. **No animation libraries** (GSAP, Anime.js, Framer Motion). Pure CSS + vanilla JS only.
-2. **Total JS for all animations: < 3KB** (minified, gzipped).
-3. **Use `transform` and `opacity` only** for animations — they don't trigger layout/paint.
-4. **Never animate**: `width`, `height`, `top`, `left`, `margin`, `padding`, `font-size`.
-5. **`will-change`**: Only add to elements that are actively animating. Remove after.
-6. **Intersection Observer > scroll listeners**: Never use `scroll` event for reveal animations.
-7. **`prefers-reduced-motion`**: Always respected. No exceptions.
-8. **No animation on mobile that isn't on desktop**: Consistency across devices.
-9. **Never `transition: all`**: It animates every property that ever changes,
-   including layout and paint work nobody asked for. Name the properties.
-10. **Never bare `ease-in`**: It accelerates from a standstill, so entering
-    elements look sluggish. Use `var(--ease-default)`; `ease-out` for exits.
-
----
-
-## Enforcement
-
-Rules 4, 7, 9, and 10 are checked by `scripts/lint-css-motion.sh`, which runs in
-CI and can be run by hand:
+Autoplaying or persistent motion must:
+
+- pause when offscreen or when `document.hidden` is true;
+- expose a pause control when it carries information or persists;
+- never start in the reduced-motion variant;
+- preserve the same content and decision path when stopped.
+
+Use modern APIs only as progressive enhancement:
+
+- `@starting-style` for an entrance whose steady state already works.
+- View Transitions for continuity when normal navigation remains complete.
+- Scroll/View Timelines inside full `@supports` blocks with a static fallback.
+- Intersection Observer with an immediate-visible fallback.
+
+Do not add a polyfill for a decorative effect. Do not add GSAP, React motion, or
+another runtime unless a level-3 brief demonstrates that CSS, WAAPI, and the
+current utilities cannot express the approved sequence.
+
+## Performance rules
+
+- Prefer transform and opacity, but choose a property by meaning rather than by
+  slogan. Measure bounded clip-path, filter, shadow, and layout transitions on
+  target devices when they are justified.
+- Avoid animating `width`, `height`, inset, margin, padding, and font size. Use
+  FLIP, transforms, or grid disclosure where practical. A justified exception
+  requires measurement and a lint reason.
+- Add `will-change` only immediately before known motion and remove it when the
+  motion finishes.
+- Use passive scroll listeners and batch visual writes through
+  `requestAnimationFrame`. Prefer Intersection Observer when the question is
+  simply whether an element entered the viewport.
+- Make programmatic animation interruptible. Cancel obsolete animation and
+  timer work during rapid state changes.
+- Bound blur, shadow, canvas, masks, and shader-like work to an isolated region.
+- Do not assume a transform is cheap; verify frame stability on representative
+  mobile and desktop viewports.
+- Keep the default dependency delta at zero. Record any route-specific CSS/JS
+  byte increase and its execution cost in the Motion Brief.
+- Do not trade motion for Core Web Vitals. Recheck the route against the skill's
+  LCP, INP, and CLS targets after implementation; remove or simplify the effect
+  when it pushes a metric across its budget.
+
+There is no “cumulative page animation time” budget. A reveal triggered minutes
+later cannot be added meaningfully to the hero duration. Budget by interaction:
+duration, delay before usefulness, simultaneous moving groups, frequency, main
+thread cost, and the time until the CTA/content is usable.
+
+## Pattern decisions
+
+### Hero
+
+- Level 1: static composition plus immediate control feedback.
+- Level 2: one page-specific sequence; keep headline and CTA readable throughout.
+- Do not copy the same overline/title/subtitle/CTA fade stagger to every route.
+- Background glow is a visual layer, not motion by itself.
+
+### Scroll reveal
+
+- Reveal only when it clarifies hierarchy or sequence.
+- Do not hide above-fold decision content while waiting for observation.
+- Run once by default. Replaying on every scroll direction usually adds noise.
+- Unsupported API and reduced-motion paths mark every target final immediately.
+
+### Counters
+
+- Put the truthful final value in the markup or data contract.
+- Reduced-motion and no-support paths display the final value without counting.
+- Do not animate weak or synthetic proof to make it appear stronger.
+
+### Disclosure / FAQ
+
+- Prefer native `<details>` when its behavior fits.
+- Keep the icon and `aria-expanded`/`open` state synchronized.
+- Use a grid-row disclosure only when continuity materially improves; content
+  must remain reachable without animation.
+
+### CTA attention
+
+- Do not add an automatic pulse by default. Contrast, placement, and copy own
+  CTA prominence.
+- A one-time attention cue requires a concrete behavioral reason and must stop
+  after interaction, offscreen, hidden, and reduced-motion conditions.
+
+### Loading, success, and error
+
+- Feedback motion confirms cause and result; it must not postpone the result.
+- Prefer progress or a state morph over indefinite decorative spinners.
+- Never use shake as the default error treatment; identify the field and error.
+
+## Verification
+
+Run the repository guard:
 
 ```bash
 bash scripts/lint-css-motion.sh
 ```
 
-It fails the build on `transition: all`, on bare `ease-in`, and on a stylesheet
-that animates without a `prefers-reduced-motion` block. Files that predate the
-guard sit in `BASELINE_REDUCED_MOTION` inside the script — that list may shrink,
-never grow.
+After changing the guard, scanner, or baseline, run its synthetic regression
+suite:
 
-Slow transitions, hardcoded timings, and layout-property transitions are
-reported without failing, because a 900ms scroll reveal is a choice and a 200ms
-hover is not. Mark a deliberate exception with `lint-css-motion: allow` on the
-line or the line above it.
+```bash
+bash agents/skills/b2b-design-system/tests/run-motion-guard-tests.sh
+```
+
+For a rendered route, also run the layout audit and then verify the motion states
+in a real browser:
+
+```bash
+node agents/skills/b2b-design-system/scripts/layout-audit.mjs <url> \
+  --expect=<page-wrapper> --expand --shot=/tmp/layout-audit.png
+```
+
+Acceptance requires:
+
+- normal motion at desktop and mobile widths;
+- reduced motion with final content visible and no smooth-scroll surprise;
+- keyboard activation and focus-visible states;
+- touch/coarse-pointer behavior without hover dependency;
+- unsupported Intersection Observer / enhanced API fallback;
+- page-hidden/offscreen behavior for persistent motion;
+- final state after interruption or rapid repeated input;
+- no layout shift, horizontal overflow, or blocked CTA/content;
+- no regression against the route's recorded LCP, INP, CLS, and payload budget;
+- no unexplained new route-local reveal dialect.
+
+The guard fails objective new violations and reports legacy drift separately.
+Use `lint-css-motion: allow -- <reason>` or `lint-js-motion: allow -- <reason>`
+on the offending line or the line above only for a measured, deliberate
+exception. Baselines may shrink, never grow.

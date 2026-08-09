@@ -1,0 +1,2 @@
+# rule_id	relative_path	normalized_source_line	expected_count
+literal-smooth-scroll	input.js	target.scrollIntoView({ behavior: 'smooth', block: 'start' });	1

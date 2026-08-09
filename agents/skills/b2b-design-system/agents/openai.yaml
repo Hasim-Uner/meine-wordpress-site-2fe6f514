@@ -1,4 +1,4 @@
 interface:
   display_name: "B2B Design System"
-  short_description: "Premium B2B UX/UI and CRO system"
-  default_prompt: "Use $b2b-design-system to design or refine a B2B WordPress page, hero, section, or component for stronger conversion."
+  short_description: "Premium B2B design and motion direction"
+  default_prompt: "Use $b2b-design-system to refine a B2B WordPress surface, including a Motion Direction Pass when interaction or motion is in scope."

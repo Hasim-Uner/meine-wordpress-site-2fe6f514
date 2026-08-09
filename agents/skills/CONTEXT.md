@@ -26,7 +26,7 @@ Scope: `agents/skills/`.
 | `offer-funnel-intelligence` | Angebotslogik, Funnel, Marktcheck, Proof, Qualifizierung, WGOS-Grenze | offer, funnel, angebot, marktcheck, proof, qualifizierung, sales, wgos |
 | `wordpress-cro-content-design-audit` | B2B-CRO, Page-Kritik, CTA-/Proof-Hierarchie | cro, cta, proof, page critique, conversion |
 | `seo-conversion-copywriting` | Verkaufsorientierte deutsche Copy schreiben: Money-Pages, Landingpages, Leistungsseiten | copywriting, copy, text, hero, headline, cta-label, meta description |
-| `b2b-design-system` | Visual System, UI-Komponenten, Premium-Polish | design, ui, component, polish, visual |
+| `b2b-design-system` | Visual System, Motion Direction, UI-Komponenten, Premium-Polish | design, ui, component, polish, visual, dynamik, motion, animation, microinteraction, scroll effect, hover, entrance |
 | `modern-web-guidance` | Moderne Web-Standards fuer WordPress-Frontend, CSS, Vanilla JS, Forms, A11y, CWV | frontend, html, css, javascript, vanilla js, forms, a11y, cwv, browser api |
 | `growth-audit-optimizer` | Legacy-Optimierung fuer `/growth-audit/` | growth audit, legacy audit, instant results |
 | `landing-page-builder` | Neue Paid-/Kampagnen-Landingpages | landing page, paid, campaign, ads |

@@ -354,6 +354,5 @@ Namen nur als Alias.
                         border-color var(--duration-fast) var(--ease-default);
   --transition-transform: transform var(--duration-normal) var(--ease-default);
   --transition-shadow:    box-shadow var(--duration-normal) var(--ease-default);
-  --transition-all:       all var(--duration-normal) var(--ease-default);
 }
 ```

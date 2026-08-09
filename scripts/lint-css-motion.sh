@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
 
-# Motion guard for the child theme stylesheets.
+# Motion guard for child-theme CSS and JavaScript.
 #
 # Hard rules cover what is unambiguously wrong and fail the build. Judgement
 # calls — a 900ms scroll reveal is a choice, not a bug — land in the drift
 # report, which stays visible without blocking a release.
 #
-# Suppress a deliberate exception with "lint-css-motion: allow" on the
-# offending line or the line above it.
+# Suppress a deliberate CSS exception with "lint-css-motion: allow -- <reason>"
+# and a JavaScript exception with "lint-js-motion: allow -- <reason>" on the
+# offending line or the line above it. Existing debt belongs in the baselines.
 
 set -euo pipefail
 
 CSS_DIR="${1:-blocksy-child/assets/css}"
+JS_DIR="${2:-blocksy-child/assets/js}"
+JS_MOTION_BASELINE="${MOTION_JS_BASELINE:-scripts/baselines/js-motion.tsv}"
+JS_MOTION_SCANNER="agents/skills/b2b-design-system/scripts/scan-js-motion.py"
 
 # A transition above this reads as lag on a discrete state change. Reveal
 # choreography legitimately runs longer, so this only reports.
@@ -20,6 +24,42 @@ SLOW_TRANSITION_MS=600
 if [[ ! -d "${CSS_DIR}" ]]; then
   echo "Motion guard failed: no CSS directory at ${CSS_DIR}" >&2
   exit 1
+fi
+
+if [[ ! -d "${JS_DIR}" ]]; then
+  echo "Motion guard failed: no JavaScript directory at ${JS_DIR}" >&2
+  exit 1
+fi
+
+if [[ ! -f "${JS_MOTION_BASELINE}" ]]; then
+  echo "Motion guard failed: no JavaScript baseline at ${JS_MOTION_BASELINE}" >&2
+  exit 1
+fi
+
+if [[ ! -f "${JS_MOTION_SCANNER}" ]]; then
+  echo "Motion guard failed: no JavaScript scanner at ${JS_MOTION_SCANNER}" >&2
+  exit 1
+fi
+
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "Motion guard failed: python3 is required for the JavaScript scan" >&2
+  exit 1
+fi
+
+shopt -s nullglob
+JS_FILES=("${JS_DIR}"/*.js "${JS_DIR}"/*.jsx)
+shopt -u nullglob
+
+if [[ "${#JS_FILES[@]}" -eq 0 ]]; then
+  echo "Motion guard failed: no .js or .jsx files at ${JS_DIR}" >&2
+  exit 1
+fi
+
+css_dir_resolved="$(cd "${CSS_DIR}" && pwd -P)"
+project_css_dir_resolved="$(cd blocksy-child/assets/css && pwd -P)"
+use_css_baseline=0
+if [[ "${css_dir_resolved}" == "${project_css_dir_resolved}" ]]; then
+  use_css_baseline=1
 fi
 
 # Files that animate without a prefers-reduced-motion block. New files must not
@@ -147,12 +187,14 @@ for file in "${CSS_DIR}"/*.css; do
   fi
 
   baselined=0
-  for known in "${BASELINE_REDUCED_MOTION[@]}"; do
-    if [[ "${name}" == "${known}" ]]; then
-      baselined=1
-      break
-    fi
-  done
+  if [[ "${use_css_baseline}" -eq 1 ]]; then
+    for known in "${BASELINE_REDUCED_MOTION[@]}"; do
+      if [[ "${name}" == "${known}" ]]; then
+        baselined=1
+        break
+      fi
+    done
+  fi
 
   if [[ "${baselined}" -eq 0 ]]; then
     missing_reduced_motion+="${file}"$'\n'
@@ -167,20 +209,48 @@ report_rule \
 # A baselined file that grew a reduced-motion block should leave the list, so
 # the baseline can only shrink.
 stale_baseline=""
-for known in "${BASELINE_REDUCED_MOTION[@]}"; do
-  path="${CSS_DIR}/${known}"
+if [[ "${use_css_baseline}" -eq 1 ]]; then
+  for known in "${BASELINE_REDUCED_MOTION[@]}"; do
+    path="${CSS_DIR}/${known}"
 
-  if [[ ! -f "${path}" ]]; then
-    stale_baseline+="${known} (file is gone)"$'\n'
-  elif grep -q "prefers-reduced-motion" "${path}"; then
-    stale_baseline+="${known} (now compliant)"$'\n'
-  fi
-done
+    if [[ ! -f "${path}" ]]; then
+      stale_baseline+="${known} (file is gone)"$'\n'
+    elif grep -q "prefers-reduced-motion" "${path}"; then
+      stale_baseline+="${known} (now compliant)"$'\n'
+    fi
+  done
+fi
 
 report_rule \
   "Reduced-motion baseline is current" \
   "Drop these entries from BASELINE_REDUCED_MOTION in this script." \
   "${stale_baseline%$'\n'}"
+
+if ! js_findings="$(python3 -B "${JS_MOTION_SCANNER}" "${JS_DIR}")"; then
+  echo "Motion guard failed: JavaScript scanner could not complete" >&2
+  exit 1
+fi
+
+baseline_findings="$(awk -F '\t' 'NF && $1 !~ /^#/ { print }' "${JS_MOTION_BASELINE}" | LC_ALL=C sort)"
+sorted_js_findings="$(printf '%s\n' "${js_findings}" | sed '/^$/d' | LC_ALL=C sort)"
+
+new_js_findings="$(comm -23 \
+  <(printf '%s\n' "${sorted_js_findings}") \
+  <(printf '%s\n' "${baseline_findings}"))"
+
+stale_js_baseline="$(comm -13 \
+  <(printf '%s\n' "${sorted_js_findings}") \
+  <(printf '%s\n' "${baseline_findings}"))"
+
+report_rule \
+  "JavaScript motion avoids unreviewed hard rules" \
+  "Resolve literal smooth scrolling through reduced-motion state; do not author transition: all or bare ease-in in JavaScript." \
+  "${new_js_findings}"
+
+report_rule \
+  "JavaScript motion baseline is current" \
+  "Remove or update only the exact stale fingerprint in ${JS_MOTION_BASELINE}; never broaden the baseline." \
+  "${stale_js_baseline}"
 
 echo
 echo "=== Motion guard: drift report (never fails) ==="
@@ -190,6 +260,10 @@ slow_count="$(printf '%s' "${slow}" | grep -c . || true)"
 
 hardcoded_count="$(scan "transition:[^;]*[0-9](\\.[0-9]+)?(m?s)" | grep -v "var(--" | grep -c . || true)"
 layout_count="$(scan "transition:[^;]*(width|height|top|left|right|bottom|margin|padding)[^;]*[0-9]" | grep -c . || true)"
+will_change_count="$(scan "will-change[[:space:]]*:" | grep -c . || true)"
+literal_smooth_count="$(printf '%s\n' "${sorted_js_findings}" | awk -F '\t' '$1 == "literal-smooth-scroll" { count += $4 } END { print count + 0 }')"
+waapi_count="$(awk '{ count += gsub(/\.animate[[:space:]]*\(/, "&") } END { print count + 0 }' "${JS_FILES[@]}")"
+cssom_motion_count="$(awk '{ count += gsub(/\.style\.(transition|animation)[A-Za-z]*/, "&") } END { print count + 0 }' "${JS_FILES[@]}")"
 
 echo "Transitions over ${SLOW_TRANSITION_MS}ms:                    ${slow_count}"
 if [[ -n "${slow}" ]]; then
@@ -197,8 +271,12 @@ if [[ -n "${slow}" ]]; then
 fi
 echo "Transitions with hardcoded timing, no token:  ${hardcoded_count}"
 echo "Transitions on layout properties:             ${layout_count}"
+echo "CSS will-change declarations:                 ${will_change_count}"
+echo "Literal smooth-scroll calls (baselined):      ${literal_smooth_count}"
+echo "Web Animations API calls:                     ${waapi_count}"
+echo "JavaScript CSSOM motion declarations:         ${cssom_motion_count}"
 echo
-echo "These shrink by editing CSS, not by editing this script."
+echo "These shrink by editing source files, not by weakening this script."
 echo
 
 if [[ "${failures}" -gt 0 ]]; then

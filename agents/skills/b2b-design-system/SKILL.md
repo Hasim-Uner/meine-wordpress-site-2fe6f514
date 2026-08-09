@@ -1,15 +1,14 @@
 ---
 name: b2b-design-system
 description: >
-  Premium UX/UI design system and CRO framework for B2B WordPress websites.
-  Use for any page, component, section, hero, layout, or UI element in a B2B context.
-  Trigger on: "design system", "UI components", "CRO", "hero section", "modern design",
-  "premium look", "make this look better", or any visual quality request.
-context: heavy
-preload: docs/standards/BRAND_AND_COPY.md
+  Premium UX/UI and motion-direction system for B2B WordPress websites. Use for
+  pages, heroes, sections, components, design critique, visual hierarchy,
+  interaction states, premium polish, or requests for more Dynamik, motion,
+  animation, microinteractions, scroll effects, hover behavior, entrance
+  choreography, bolder art direction, or a less static interface.
 ---
 
-# B2B Premium Design System & CRO Framework
+# B2B Premium Design & Motion Direction System
 
 Every design decision serves two masters: aesthetic excellence and measurable conversion.
 
@@ -25,9 +24,12 @@ Project brand accent override: `#b46a3c` (copper, HSL `23 50% 47%`).
 2. Read the relevant reference file:
    - Components → `references/components.md`
    - Layout, spacing, color, typography → `references/design-tokens.md`
-   - Animations, interactions → `references/motion.md`
-3. Identify the conversion goal of the page/section.
-4. Check the mode — Dark Mode is default.
+   - Motion, Dynamik, animation, interaction states → `references/motion.md`
+3. Identify the visitor decision, interaction goal, and primary content hierarchy.
+   Load `wordpress-cro-content-design-audit` when motion may affect conversion.
+   Load `offer-funnel-intelligence` before inventing CTA-attention mechanics.
+4. For motion work, write the route's Motion Brief before choosing effects.
+5. Check the mode — Dark Mode is default.
 
 ## Design Philosophy: "Engineered Elegance"
 
@@ -128,23 +130,42 @@ Conversion hierarchy for every B2B page:
 
 Full specs in `references/motion.md`. Core rules:
 
-- Every animation needs a functional purpose. No decoration.
-- Total animation budget per page load: < 2 seconds cumulative.
-- Respect `prefers-reduced-motion`.
-- CSS + Intersection Observer only. No React/GSAP. <50KB JS for animations.
+- Decide the route's motion intensity (`0`–`3`) and one motion thesis before code.
+- Use motion for feedback, continuity, hierarchy, or one earned focal moment.
+  Generic fade-and-rise on every section is not a direction.
+- Prefer the shared `NexusCore` and canonical `.nx-*` states. Add a route-local
+  system only when the route has a genuinely unique narrative interaction.
+- Keep content visible by default. Add an element-local pending state only after
+  capability and preference checks; no-JS and unsupported APIs stay visible.
+- Respect `prefers-reduced-motion`, including smooth scrolling, counters, loops,
+  and long-lived interactions. Reduced motion must show the final state.
+- Require progressive enhancement and no new dependency when the current stack
+  can express the effect. Let `modern-web-guidance` select the exact browser API
+  and fallback.
+- Gate hover-only movement with `(hover: hover) and (pointer: fine)` and specify
+  keyboard, touch, loading, success, error, expanded, and disabled states.
 - Never `transition: all` — name the properties that actually change.
-- Never bare `ease-in` — entrances use `var(--ease-default)`, exits `ease-out`.
+- Never bare `ease-in` — entrances use `var(--nx-ease)`, exits are faster.
 
-Run the guard before pushing CSS; CI runs it too:
+**Role boundary:** `wordpress-cro-content-design-audit` decides whether motion
+helps the decision; `offer-funnel-intelligence` owns CTA economics. This skill
+defines what should move and how it should feel. `modern-web-guidance` selects
+the browser API and fallback. `page-speed-audit` verifies the rendered CWV and
+payload result. `landing-page-builder` applies the decision to a campaign route.
+
+Run the guard before pushing frontend motion; CI runs it too. After changing the
+guard or its scanner, run the regression suite as well:
 
 ```bash
 bash scripts/lint-css-motion.sh
+bash agents/skills/b2b-design-system/tests/run-motion-guard-tests.sh
 ```
 
 ## WordPress / Blocksy Notes
 
 - Base theme: Blocksy. Custom CSS via Customizer or child theme.
-- Custom JS: `wp_enqueue_script` with `defer`. Never inline.
+- Follow the repository enqueue contract. Prefer deferred route scripts; do not
+  add route-local inline behavior or a second generic motion runtime.
 - No Elementor/Divi. Gutenberg blocks + custom CSS.
 
 ### Performance Budgets
@@ -208,8 +229,10 @@ und playwright zöge dort jedes Mal einen Browser nach.
 - [ ] Border-radius: Consistent, one personality
 - [ ] CTA: Highest contrast, 48px+ padding, visible above fold
 - [ ] Mobile: Responsive, CTA accessible without scrolling
-- [ ] Performance: CSS-first animations, web fonts <= 2 weights
-- [ ] Motion: prefers-reduced-motion respected, total < 2s
+- [ ] Performance: CSS-first motion, no unapproved runtime dependency, web fonts <= 2 weights
+- [ ] Motion Brief records purpose, intensity, focal moment, variants, and acceptance criteria
+- [ ] Motion: reduced-motion, keyboard, touch, mobile, and no-JS final states verified
+- [ ] Motion: shared `.nx-*` pattern reused or route-local exception justified
 - [ ] Motion guard green: `bash scripts/lint-css-motion.sh`
 - [ ] Spacing guard green: `bash scripts/lint-css-spacing.sh`
 - [ ] Layout audit green on hard findings, run with `--expand`

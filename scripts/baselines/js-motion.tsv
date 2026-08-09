@@ -1,0 +1,12 @@
+# rule_id	relative_path	normalized_source_line	expected_count
+literal-smooth-scroll	audit-live.js	results.scrollIntoView({ behavior: 'smooth', block: 'start' });	1
+literal-smooth-scroll	contact.js	errorSummary.scrollIntoView({ behavior: 'smooth', block: 'center' });	1
+literal-smooth-scroll	contact.js	formPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });	1
+literal-smooth-scroll	contact.js	scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });	1
+literal-smooth-scroll	contact.js	target.scrollIntoView({ behavior: 'smooth', block: 'center' });	1
+literal-smooth-scroll	homepage-redesign.js	target.scrollIntoView({ behavior: 'smooth', block: 'start' });	1
+literal-smooth-scroll	nexus-core.js	window.scrollTo({ top: top, behavior: 'smooth' });	1
+literal-smooth-scroll	solar-leadgenerierung-solara.js	window.scrollTo({ top: top, behavior: 'smooth' });	1
+literal-smooth-scroll	solar-leadgenerierung-solara.js	wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });	1
+literal-smooth-scroll	wgos-asset-explorer.js	panel.scrollIntoView({ behavior: 'smooth', block: 'start' });	1
+literal-smooth-scroll	wgos-asset-explorer.jsx	panel.scrollIntoView({ behavior: 'smooth', block: 'start' });	1
