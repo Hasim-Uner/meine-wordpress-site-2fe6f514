@@ -1,0 +1,4 @@
+interface:
+  display_name: "Buyer Research"
+  short_description: "Echte Käuferstimmen und Proxy-Evidenz trennen"
+  default_prompt: "Nutze $buyer-research, um echte Käuferstimmen und Proxy-Evidenz sauber getrennt auszuwerten."

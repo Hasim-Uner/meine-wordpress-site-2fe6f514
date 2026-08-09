@@ -15,7 +15,9 @@ Diese Skill schreibt den Text. Die Seitenkritik mit Priorisierung macht
 3. `blocksy-child/inc/canon/e3-proof-canon.php` — die einzige Quelle für
    Ergebniszahlen. Preise stehen in `pricing-canon.php` daneben, Such- und
    GSC-Zahlen in `seo-research/<periode>/reports/`.
-4. `docs/standards/VOICE_OF_CUSTOMER.md` — Kundensprache, sofern gefüllt
+4. `docs/standards/VOICE_OF_CUSTOMER.md` — Kundensprache, sofern gefüllt. Fehlt
+   sie für die Aussage, zuerst `buyer-research` nutzen; Proxy-Evidenz ersetzt
+   keine direkte Kundenstimme und hebt keinen Belegmarker auf.
 5. Die Zielseite selbst, dazu `llms.txt` für Route und CTA-Ziel
 
 ## A — Harte Regeln

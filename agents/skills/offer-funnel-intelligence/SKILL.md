@@ -14,9 +14,11 @@ This is not a generic CRO checklist. It is the strategic revenue layer above cop
 1. `AGENTS.md`
 2. `agents/skills/CONTEXT.md`
 3. `docs/standards/BRAND_AND_COPY.md`
-4. `llms.txt`
-5. Relevant route/template/helper files only
-6. If touching frontend HTML/CSS/JS, also load `modern-web-guidance`
+4. `docs/standards/VOICE_OF_CUSTOMER.md`; if direct buyer evidence is thin,
+   use `buyer-research` before asserting buyer psychology or language
+5. `llms.txt`
+6. Relevant route/template/helper files only
+7. If touching frontend HTML/CSS/JS, also load `modern-web-guidance`
 
 ## First Command
 
@@ -74,6 +76,8 @@ Score the funnel as a business system, not as a page:
 
 - Do not optimize for clicks if lead quality drops.
 - Do not add clever terminology when buyer language is clearer.
+- Do not present proxy research, competitor language, or inference as proven
+  buyer language.
 - Do not make WordPress the core offer on Solar/SHK acquisition routes.
 - Do not delete WGOS blindly. Reclassify it: public acquisition vs delivery architecture.
 - Do not treat E3 as a universal guarantee. Use it as mechanism proof with constraints.
