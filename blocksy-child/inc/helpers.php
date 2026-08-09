@@ -680,6 +680,54 @@ function nexus_get_agentur_faq_items() {
 }
 
 /**
+ * Return the objection set for the anonymized solar methodology case.
+ *
+ * Shared between the page template and centralized JSON-LD output, so the
+ * visible answers and the FAQPage node can never drift apart.
+ *
+ * Prices stay out of these answers on purpose: scope is what the Marktcheck
+ * establishes, and every figure that belongs to a customer promise lives in
+ * blocksy-child/inc/canon/ instead of in page copy.
+ *
+ * @return array<int, array{question: string, answer: string}>
+ */
+function nexus_get_e3_case_faq_items() {
+	$cpl_after = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after' ) : '22 €';
+	$build     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'build_months' ) : '3 Monate';
+
+	return [
+		[
+			'question' => sprintf( 'Sind %s pro Anfrage auf meinen Betrieb übertragbar?', $cpl_after ),
+			'answer'   => sprintf( 'Nicht als Zusage. %s war der Endpunkt einer Strecke, kein Startwert und kein Tarif. Was die Kosten pro Anfrage in Ihrem Fall bestimmt, sind Region, Produktmix und der Werbedruck Ihrer Mitbewerber. Übertragbar ist die Mechanik: Kaufabsicht, Exklusivität, Vorqualifizierung und Reaktionszeit lassen sich in jedem Betrieb mit eigenem Vertrieb nachbauen. Die Zahl, die dabei herauskommt, ist von Fall zu Fall verschieden.', $cpl_after ),
+		],
+		[
+			'question' => 'Wie lange dauert es, bis eigene Anfragen ankommen?',
+			'answer'   => sprintf( 'Erste Anfragen entstehen früh, aber der belastbare Zustand braucht Zeit. In diesem Mandat lief das System nach %s produktiv, die Kosten pro Anfrage stabilisierten sich in den drei Monaten danach. Wer eine Strecke in zwei Wochen verspricht, überspringt entweder das Tracking-Fundament oder die CRM-Anbindung — meistens beides.', $build ),
+		],
+		[
+			'question' => 'Was kostet der Aufbau eines eigenen Anfrage-Systems?',
+			'answer'   => 'Das hängt davon ab, was bereits steht. Ein Betrieb mit sauberem CRM und funktionierender Website braucht etwas anderes als einer, der bei Tracking und Anfragestrecke bei null anfängt. Genau diese Einordnung ist der Zweck des Marktchecks: erst der Befund, dann der Umfang, dann ein Preis. Eine Zahl vor der Diagnose wäre geraten.',
+		],
+		[
+			'question' => 'Was muss der Betrieb selbst leisten?',
+			'answer'   => 'Drei Dinge. Erstens einen Vertrieb, der neue Anfragen zügig anruft — die Reaktionszeit ist ein Teil des Systems, kein Randthema. Zweitens einen Ansprechpartner mit Entscheidungsbefugnis für Rückfragen zu Angebot und Zielgebiet. Drittens Zugriff auf Werbekonten, Website und CRM. Der Aufbau selbst liegt nicht beim Betrieb.',
+		],
+		[
+			'question' => 'Funktioniert das auch ohne eigenen Außendienst?',
+			'answer'   => 'Nein. Ein Anfrage-System erzeugt Gespräche, keine Aufträge. Die Abschlussquote in diesem Mandat entstand, weil hinter den Anfragen eine Vertriebsmannschaft stand, die Termine wahrnehmen und Angebote schreiben konnte. Ohne diesen Anschluss verlagert ein besseres System das Problem nur nach hinten.',
+		],
+		[
+			'question' => 'Ersetzt das den Portal-Einkauf sofort?',
+			'answer'   => 'Nein, und das sollte es auch nicht. In diesem Mandat lief der Portal-Einkauf weiter, bis die eigene Strecke messbar lieferte, und wurde erst danach heruntergefahren. Ein harter Schnitt vor dem ersten belastbaren Monat setzt den Vertrieb ohne Not auf Diät.',
+		],
+		[
+			'question' => 'Wem gehören die Anfragen und die Daten?',
+			'answer'   => 'Dem Betrieb. Eigene Domain, eigenes Formular, eigene Datenbank, eigene Werbekonten. Das ist kein Nebeneffekt, sondern der Kern des Unterschieds zum Portal-Einkauf: Eine gekaufte Anfrage ist ein Vorgang, eine eigene Anfrage ist ein Bestand, der auch nächstes Jahr noch zählt.',
+		],
+	];
+}
+
+/**
  * Resolve the primary audit page ID while supporting legacy slugs.
  *
  * @return int

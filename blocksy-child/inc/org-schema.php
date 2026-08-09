@@ -1107,6 +1107,40 @@ function hu_output_schema()
             }
         }
 
+        // Einwand-Sektion der Solar Case Study. Gleiche Quelle wie die
+        // sichtbaren Antworten im Template, damit beide nicht auseinanderlaufen.
+        if (
+            function_exists('hu_is_e3_methodology_case_post')
+            && hu_is_e3_methodology_case_post($post_id)
+            && function_exists('nexus_get_e3_case_faq_items')
+        ) {
+            $e3_faq_entities = array_map(
+                static function ($item) {
+                    return [
+                        '@type'          => 'Question',
+                        'name'           => (string) $item['question'],
+                        'acceptedAnswer' => [
+                            '@type' => 'Answer',
+                            'text'  => (string) $item['answer'],
+                        ],
+                    ];
+                },
+                nexus_get_e3_case_faq_items()
+            );
+
+            if (!empty($e3_faq_entities)) {
+                $schemas[] = [
+                    '@context'   => 'https://schema.org',
+                    '@type'      => 'FAQPage',
+                    '@id'        => home_url('/case-study-solar-leadgenerierung/#faq'),
+                    'url'        => home_url('/case-study-solar-leadgenerierung/'),
+                    'inLanguage' => 'de',
+                    'publisher'  => ['@id' => home_url('/#organization')],
+                    'mainEntity' => $e3_faq_entities,
+                ];
+            }
+        }
+
         if ('wordpress-agentur-hannover' === $slug && function_exists('nexus_get_agentur_faq_items')) {
             // Alle sichtbaren FAQ-Items ins Schema spiegeln (Seite rendert den
             // vollen Satz aus nexus_get_agentur_faq_items()); Schema == sichtbarer
@@ -1304,6 +1338,8 @@ function hu_output_schema()
                 in_array( $slug, [ 'wordpress-agentur-hannover', 'server-side-tracking-b2b', 'wgos', 'wordpress-growth-operating-system' ], true )
                 || ( function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page( $slug ) )
                 || ( function_exists( 'hu_is_seo_cornerstone_article' ) && hu_is_seo_cornerstone_article() )
+                // Die Solar Case Study emittiert ihren FAQPage-Knoten oben selbst.
+                || ( function_exists( 'hu_is_e3_methodology_case_post' ) && hu_is_e3_methodology_case_post( $post_id ) )
             );
 
             if ( ! $template_owns_faq_schema ) {
