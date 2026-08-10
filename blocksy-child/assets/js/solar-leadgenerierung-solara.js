@@ -169,7 +169,9 @@
       if (a.email && /^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(a.email)) {
         errs.email = 'Bitte nutzen Sie Ihre geschäftliche E-Mail-Adresse (Firmen-Domain) — so kann ich Betrieb und Region eindeutig zuordnen. Keine eigene Domain? Schreiben Sie direkt an hasim@hasimuener.de.';
       }
-      if (!a.postal_code || !/^[0-9]{5}$/.test(String(a.postal_code).trim())) errs.postal_code = 'Bitte eine fünfstellige Firmen-PLZ angeben.';
+      // 4-5 Stellen: DE hat fünfstellige PLZ, AT und CH vierstellige. Die Seite
+      // verspricht DACH — eine reine DE-Regel sperrt AT/CH komplett aus.
+      if (!a.postal_code || !/^[0-9]{4,5}$/.test(String(a.postal_code).trim())) errs.postal_code = 'Bitte die Firmen-PLZ angeben — vierstellig (AT, CH) oder fünfstellig (DE).';
       if (!a.consent_privacy) errs.consent_privacy = 'Bitte den Datenschutzhinweis bestätigen.';
       return errs;
     }
@@ -507,7 +509,7 @@
       form.appendChild(renderField({ k: 'postal_code', t: 'Firmen-PLZ', type: 'text', ph: '30159', req: true, ac: 'postal-code', im: 'numeric',
         maxlength: '5',
         validator: function (v) {
-          return /^[0-9]{5}$/.test(String(v || '').trim()) ? null : 'Bitte eine fünfstellige PLZ angeben — sie steuert die Regions-Verfügbarkeitsprüfung.';
+          return /^[0-9]{4,5}$/.test(String(v || '').trim()) ? null : 'Bitte die Firmen-PLZ angeben — vierstellig (AT, CH) oder fünfstellig (DE). Sie steuert die Regions-Verfügbarkeitsprüfung.';
         }
       }));
 
