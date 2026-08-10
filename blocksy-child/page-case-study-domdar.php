@@ -470,7 +470,7 @@ get_header();
 				</div>
 				<div class="cs-domdar-portrait-meta">
 					<span class="cs-domdar-portrait-label">Haşim Üner</span>
-					<span class="cs-domdar-portrait-text">Architekt für eigene Anfrage-Systeme: Solar, Wärmepumpe und systemische Nachfrage-Logik</span>
+					<span class="cs-domdar-portrait-text">Architekt für eigene Anfragesysteme: Solar, Wärmepumpe und systemische Nachfrage-Logik</span>
 				</div>
 			</div>
 
@@ -498,7 +498,7 @@ get_header();
 						<?php echo esc_html( $audit_cta_label ); ?>
 					</a>
 					<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost">
-						Anfrage-System ansehen
+						Anfragesystem ansehen
 					</a>
 				</div>
 			</div>
@@ -558,7 +558,7 @@ get_header();
 
 			<div class="cs-internal-links">
 				<a href="<?php echo esc_url( $cases_url ); ?>" class="cs-internal-link">Weitere Ergebnisse</a>
-				<a href="<?php echo esc_url( $wgos_url ); ?>" class="cs-internal-link">Anfrage-System dahinter</a>
+				<a href="<?php echo esc_url( $wgos_url ); ?>" class="cs-internal-link">Anfragesystem dahinter</a>
 				<a href="<?php echo esc_url( $local_wp_url ); ?>" class="cs-internal-link">WordPress Agentur Hannover</a>
 			</div>
 		</div>

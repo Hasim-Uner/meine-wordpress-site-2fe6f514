@@ -94,7 +94,7 @@ function nexus_get_seo_cockpit_effective_insight_url( $url ) {
  * Decide whether a query belongs outside the current acquisition strategy.
  *
  * These queries may still be interesting in Search Console, but they should not
- * compete with Solar/SHK, B2B Anfrage-System and Hannover WordPress priorities.
+ * compete with Solar/SHK, B2B Anfragesystem and Hannover WordPress priorities.
  *
  * @param string $query Search query.
  * @return bool

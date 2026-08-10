@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Interne Baustein-Übersicht
- * Description: Klickbare interne Baustein-Übersicht für dokumentierte Anfrage-Systeme
+ * Description: Klickbare interne Baustein-Übersicht für dokumentierte Anfragesysteme
  *
  * @package Blocksy_Child
  */

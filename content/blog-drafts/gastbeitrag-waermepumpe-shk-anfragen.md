@@ -77,7 +77,7 @@ eigenen Auftragsliste: Was kostet ein gewonnener Auftrag — und wem gehört der
 
 **Autoren-Byline (für die Redaktion):**
 
-*Haşim Üner entwickelt eigene Anfrage-Systeme für Solar-, Wärmepumpen- und Speicher-Anbieter —
+*Haşim Üner entwickelt eigene Anfragesysteme für Solar-, Wärmepumpen- und Speicher-Anbieter —
 von der schnellen Website über die Vorprüfung bis zum Nachverfolgen jeder Anfrage bis zum
 Auftrag. Eine ausführliche Analyse zur Wirtschaftlichkeit gekaufter Leads hat er unter
 https://hasimuener.de/solar-leads-kaufen-lohnt-sich/ veröffentlicht.*

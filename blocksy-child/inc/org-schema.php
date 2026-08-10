@@ -54,7 +54,7 @@ function hu_person_same_as_urls() {
  * @return string
  */
 function hu_brand_map_url() {
-    return 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfrage-Systeme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
+    return 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfragesysteme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
 }
 
 /**
@@ -101,12 +101,12 @@ function hu_get_person_node() {
         '@id'         => hu_person_schema_id(),
         'name'        => 'Haşim Üner',
         'alternateName' => hu_brand_alternate_names(),
-        'jobTitle'    => 'Architekt für eigene Anfrage-Systeme',
+        'jobTitle'    => 'Architekt für eigene Anfragesysteme',
         'url'         => hu_person_profile_url(),
         'image'       => hu_get_profile_image_url(),
         'worksFor'    => [ '@id' => home_url( '/#organization' ) ],
         'sameAs'      => hu_person_same_as_urls(),
-        'description' => 'Architekt für eigene Anfrage-Systeme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum. Haşim Üner verbindet Bauunternehmer-DNA, Vertriebspraxis und Medienwissenschaft mit WordPress, Tracking, Vorqualifizierung und Werbekanal-Steuerung.',
+        'description' => 'Architekt für eigene Anfragesysteme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum. Haşim Üner verbindet Bauunternehmer-DNA, Vertriebspraxis und Medienwissenschaft mit WordPress, Tracking, Vorqualifizierung und Werbekanal-Steuerung.',
         'alumniOf'    => [
             '@type'  => 'CollegeOrUniversity',
             'name'   => 'Universität Paderborn',
@@ -234,7 +234,7 @@ function hu_get_blog_archive_collection_schema() {
         $collection['about']  = [
             [
                 '@type' => 'Thing',
-                'name'  => 'Portal-Leads und eigene Anfrage-Systeme',
+                'name'  => 'Portal-Leads und eigene Anfragesysteme',
             ],
             [
                 '@type' => 'Thing',
@@ -599,10 +599,10 @@ function hu_output_schema()
         '@context' => 'https://schema.org',
         '@type'    => ['Organization', 'LocalBusiness'],
         '@id'      => home_url('/#organization'),
-        'name'     => 'Haşim Üner | Architekt für eigene Anfrage-Systeme',
+        'name'     => 'Haşim Üner | Architekt für eigene Anfragesysteme',
         'alternateName' => array_merge( [ 'Haşim Üner' ], hu_brand_alternate_names() ),
         'url'      => home_url(),
-        'description' => 'Architekt für eigene Anfrage-Systeme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',
+        'description' => 'Architekt für eigene Anfragesysteme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',
         'telephone'   => '+49 176 76596580',
         'email'       => 'info@hasimuener.de',
         'logo'        => function_exists( 'hu_get_brand_logo_url' ) ? hu_get_brand_logo_url() : content_url( '/uploads/2025/08/cropped-Logo-hasim-uener-1.webp' ),
@@ -687,7 +687,7 @@ function hu_output_schema()
         ],
         'hasOfferCatalog' => [
             '@type'           => 'OfferCatalog',
-            'name'            => 'Anfrage-Systeme für Solar-, Wärmepumpen- und Speicher-Anbieter',
+            'name'            => 'Anfragesysteme für Solar-, Wärmepumpen- und Speicher-Anbieter',
             'itemListElement' => [
                 [
                     '@type'       => 'Offer',
@@ -697,20 +697,20 @@ function hu_output_schema()
                 ],
                 [
                     '@type'       => 'Offer',
-                    'name'        => 'Eigenes Anfrage-System für Solar- und Wärmepumpen-Anbieter',
-                    'description' => 'Aufbau eigener Anfrage-Systeme zur Ablösung von Portal-Leads: Website, Tracking, Vorqualifizierung und Kanal-Steuerung als verbundenes System.',
+                    'name'        => 'Eigenes Anfragesystem für Solar- und Wärmepumpen-Anbieter',
+                    'description' => 'Aufbau eigener Anfragesysteme zur Ablösung von Portal-Leads: Website, Tracking, Vorqualifizierung und Kanal-Steuerung als verbundenes System.',
                     'url'         => home_url('/solar-waermepumpen-leadgenerierung/'),
                 ],
                 [
                     '@type'       => 'Offer',
                     'name'        => 'WordPress Agentur Hannover',
-                    'description' => 'Sekundäre lokale B2B-Seite in Hannover: WordPress-System, technisches SEO, Tracking und Conversion als verbundenes Anfrage-System.',
+                    'description' => 'Sekundäre lokale B2B-Seite in Hannover: WordPress-System, technisches SEO, Tracking und Conversion als verbundenes Anfragesystem.',
                     'url'         => home_url('/wordpress-agentur-hannover/'),
                 ],
                 [
                     '@type'       => 'Offer',
                     'name'        => 'Speed & Core Web Vitals',
-                    'description' => 'Performance-Arbeit mit Fokus auf LCP, INP, CLS, Server-Antwortzeiten und tragfähige Anfrage-System-Basis.',
+                    'description' => 'Performance-Arbeit mit Fokus auf LCP, INP, CLS, Server-Antwortzeiten und tragfähige Anfragesystem-Basis.',
                     'url'         => home_url('/wgos-assets/cwv-optimierung/'),
                 ],
                 [
@@ -732,9 +732,9 @@ function hu_output_schema()
         '@type'       => 'WebSite',
         '@id'         => home_url('/#website'),
         'url'         => home_url('/'),
-        'name'        => 'Haşim Üner | Architekt für eigene Anfrage-Systeme',
+        'name'        => 'Haşim Üner | Architekt für eigene Anfragesysteme',
         'alternateName' => array_merge( [ 'Haşim Üner' ], hu_brand_alternate_names() ),
-        'description' => 'Architekt für eigene Anfrage-Systeme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',
+        'description' => 'Architekt für eigene Anfragesysteme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',
         'inLanguage'  => 'de',
         'publisher'   => ['@id' => home_url('/#organization')],
         'potentialAction' => [
@@ -770,12 +770,12 @@ function hu_output_schema()
                     [
                         '@type'       => 'Offer',
                         'name'        => 'Technisches SEO und Tracking',
-                        'description' => 'WordPress, technisches SEO, Tracking und Conversion in der richtigen Reihenfolge als verbundenes Anfrage-System.',
+                        'description' => 'WordPress, technisches SEO, Tracking und Conversion in der richtigen Reihenfolge als verbundenes Anfragesystem.',
                         'url'         => home_url('/wordpress-agentur-hannover/#technisches-seo'),
                     ],
                     [
                         '@type'       => 'Offer',
-                        'name'        => 'Anfrage-System-Methode',
+                        'name'        => 'Anfragesystem-Methode',
                         'description' => 'Strategie, technisches Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängende Methode.',
                         'url'         => home_url('/wordpress-agentur-hannover/#methode'),
                     ],
@@ -1264,7 +1264,7 @@ function hu_output_schema()
                 'about'            => [
                     [
                         '@type' => 'Thing',
-                        'name'  => 'Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter',
+                        'name'  => 'Anfragesysteme für Solar- und Wärmepumpen-Anbieter',
                     ],
                 ],
             ];

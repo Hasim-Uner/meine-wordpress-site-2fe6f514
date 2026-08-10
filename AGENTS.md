@@ -61,8 +61,8 @@ These files cost more context than a whole task should. Locate the relevant line
 ## Funnel Ladder
 
 1. Marktcheck: qualifier for fit, not a generic sale.
-2. Anfrage-System-Analyse: evidence-based fit and market check for suitable businesses.
-3. Anfrage-System-Umsetzung: build only after green/yellow fit.
+2. Anfragesystem-Analyse: evidence-based fit and market check for suitable businesses.
+3. Anfragesystem-Umsetzung: build only after green/yellow fit.
 4. Optional performance and premium layers.
 
 Use `Umsetzungspartner` for a business that reaches the build stage. Do not reintroduce the retired `Founding Cohort 2026` frame, seat counters, or application deadlines — see `docs/decisions/0011-founding-cohort-2026-entfernt.md`. Customer-facing forbidden terms live in `blocksy-child/inc/canon/messaging-canon.php`.

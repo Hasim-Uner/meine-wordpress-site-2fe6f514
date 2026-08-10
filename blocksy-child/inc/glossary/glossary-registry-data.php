@@ -22,7 +22,7 @@ return [
 			'Tracking-, Consent- oder Theme-Skripte blockieren den Main Thread genau in kaufnahen Momenten.',
 		],
 		'wgos_context'       => [
-			'Im Anfrage-System-Kontext ist INP kein Technik-Selbstzweck. Die Metrik entscheidet mit darüber, ob Nutzer überhaupt den nächsten sinnvollen Schritt gehen.',
+			'Im Anfragesystem-Kontext ist INP kein Technik-Selbstzweck. Die Metrik entscheidet mit darüber, ob Nutzer überhaupt den nächsten sinnvollen Schritt gehen.',
 			'Deshalb stützt ein sauberer INP sowohl die Core-Web-Vitals-Cluster-Seite als auch die Performance-Analyse als Lead-Magnet.',
 		],
 		'primary_url_key'    => 'cwv',
@@ -200,7 +200,7 @@ return [
 			'Mehrere Seiten zielen auf dieselbe Suchintention, während Canonicals nur kosmetisch statt strukturell eingesetzt werden.',
 		],
 		'wgos_context'     => [
-			'Im Anfrage-System ist Canonical-Steuerung Teil der Primary-URL-Disziplin. Die eigentliche Arbeit besteht darin, Intent sauber auf die richtige Seite zu legen und Drift zu verhindern.',
+			'Im Anfragesystem ist Canonical-Steuerung Teil der Primary-URL-Disziplin. Die eigentliche Arbeit besteht darin, Intent sauber auf die richtige Seite zu legen und Drift zu verhindern.',
 			'Darum ist Canonical URL ein idealer Glossar-Sub-Term für technisches SEO, aber kein Ersatz für die Cluster- oder Angebotsseite selbst.',
 		],
 		'primary_url_key'  => 'seo',
@@ -214,7 +214,7 @@ return [
 			],
 			[
 				'key'    => 'wgos',
-				'label'  => 'Anfrage-System',
+				'label'  => 'Anfragesystem',
 				'reason' => 'Zeigt, wie Canonical-Disziplin in die gesamte Seiten- und Intent-Architektur passt.',
 			],
 		],
@@ -242,7 +242,7 @@ return [
 			'Landing Pages sind kampagnenfähig, aber die Datenbasis bleibt unscharf, weil Parameter und Events nicht zusammen gedacht werden.',
 		],
 		'wgos_context'     => [
-			'UTM-Parameter gehören im Anfrage-System nicht in eine isolierte Tracking-Ecke. Sie sind Teil einer Messbarkeitsschicht, die später Kampagnen, Dashboards und Conversion-Entscheidungen tragfähig macht.',
+			'UTM-Parameter gehören im Anfragesystem nicht in eine isolierte Tracking-Ecke. Sie sind Teil einer Messbarkeitsschicht, die später Kampagnen, Dashboards und Conversion-Entscheidungen tragfähig macht.',
 			'Die Glossar-Seite erklärt den Begriff. Das eigentliche Setup, die Datenlogik und die Governance bleiben auf der Tracking-Primary-URL.',
 		],
 		'primary_url_key'  => 'tracking',
@@ -284,7 +284,7 @@ return [
 		],
 		'wgos_context'     => [
 			'Message Match ist ein typischer Glossar-Sub-Term für CRO: hochrelevant, aber zu kleinteilig für die Head-Term-Seite selbst.',
-			'Im Anfrage-System verbindet der Begriff Positionierung, Landing-Page-Struktur und Kampagnenfähigkeit zu einem gemeinsamen Conversion-Thema.',
+			'Im Anfragesystem verbindet der Begriff Positionierung, Landing-Page-Struktur und Kampagnenfähigkeit zu einem gemeinsamen Conversion-Thema.',
 		],
 		'keywords_match'   => [ 'Message Match', 'Anzeigen-Anschluss', 'Erwartungskonformität' ],
 		'primary_url_key'  => 'cro',
@@ -326,17 +326,17 @@ return [
 			'Owned Leads werden als Branding-Idee verstanden, nicht als messbare Architekturfrage aus Seiten, Tracking und Conversion.',
 		],
 		'wgos_context'     => [
-			'Owned Leads ist bewusst ein Haşim-Lexikon-Begriff. Genau solche Begriffe differenzieren das Glossar von generischen SEO-Wörterbüchern und stärken gleichzeitig die Anfrage-System-Seite.',
-			'Der Glossar-Eintrag erklärt die Logik. Die eigentliche Angebots- und Systemargumentation bleibt auf der Anfrage-System-Primary-URL.',
+			'Owned Leads ist bewusst ein Haşim-Lexikon-Begriff. Genau solche Begriffe differenzieren das Glossar von generischen SEO-Wörterbüchern und stärken gleichzeitig die Anfragesystem-Seite.',
+			'Der Glossar-Eintrag erklärt die Logik. Die eigentliche Angebots- und Systemargumentation bleibt auf der Anfragesystem-Primary-URL.',
 		],
 		'keywords_match'   => [ 'Owned Leads', 'eigene Leads', 'kontrollierte Nachfrage', 'Portal-Unabhängigkeit' ],
 		'primary_url_key'  => 'wgos',
-		'primary_url_label'=> 'Anfrage-System-Methode',
-		'primary_url_reason' => 'Der strategische Head Term bleibt auf der Anfrage-System-Seite, während das Glossar die interne Sprache schärft.',
+		'primary_url_label'=> 'Anfragesystem-Methode',
+		'primary_url_reason' => 'Der strategische Head Term bleibt auf der Anfragesystem-Seite, während das Glossar die interne Sprache schärft.',
 		'related_primary_urls' => [
 			[
 				'key'    => 'wgos',
-				'label'  => 'Anfrage-System',
+				'label'  => 'Anfragesystem',
 				'reason' => 'Führt vom Begriff direkt in die Systemlogik aus Fundament, Messbarkeit, Sichtbarkeit und Conversion.',
 			],
 			[
@@ -362,7 +362,7 @@ return [
 		'excerpt'            => 'Solar Leadgenerierung bündelt die Nachfragepfade für eigene PV-, Speicher- und Wärmepumpen-Anfragen.',
 		'short_definition'   => 'Begriff für die Branchen-Landingpage zur eigenen Leadgenerierung für Solar-, Speicher- und Wärmepumpen-Anbieter.',
 		'why_it_matters'     => 'Der kaufnahe Branchen-Intent soll auf die zentrale Branchen-Landingpage führen, damit Einordnung, Proof und Marktcheck nicht auf mehrere Zielseiten verteilt werden.',
-		'keywords_match'     => [ 'B2B-Leadgenerierung für Solar', 'Leadgenerierung für Photovoltaik', 'Leadgenerierung für Solar', 'Leadgenerierung für Solarteure', 'Photovoltaik Leadgenerierung', 'Photovoltaik-Leadgenerierung', 'Solar Leadgenerierung', 'Solar-Leadgenerierung', 'PV Leadgenerierung', 'PV-Leadgenerierung', 'Photovoltaik Leads', 'Photovoltaik-Leads', 'Solar Leads', 'Solar-Leads', 'PV Leads', 'PV-Leads', 'Wärmepumpen Leads', 'Wärmepumpen-Leads', 'qualifizierte PV-Anfragen', 'qualifizierte Solar-Anfragen', 'eigene Solar-Anfragen', 'Anfrage-System für Solar', 'Anfrage-Systeme für Solar', 'Anfrage-System Solar', 'Solar-Kundengewinnung', 'Kundengewinnung für Solarteure' ],
+		'keywords_match'     => [ 'B2B-Leadgenerierung für Solar', 'Leadgenerierung für Photovoltaik', 'Leadgenerierung für Solar', 'Leadgenerierung für Solarteure', 'Photovoltaik Leadgenerierung', 'Photovoltaik-Leadgenerierung', 'Solar Leadgenerierung', 'Solar-Leadgenerierung', 'PV Leadgenerierung', 'PV-Leadgenerierung', 'Photovoltaik Leads', 'Photovoltaik-Leads', 'Solar Leads', 'Solar-Leads', 'PV Leads', 'PV-Leads', 'Wärmepumpen Leads', 'Wärmepumpen-Leads', 'qualifizierte PV-Anfragen', 'qualifizierte Solar-Anfragen', 'eigene Solar-Anfragen', 'Anfragesystem für Solar', 'Anfragesysteme für Solar', 'Anfragesystem Solar', 'Solar-Kundengewinnung', 'Kundengewinnung für Solarteure' ],
 		'primary_url_key'    => 'energy',
 		'primary_url_label'  => 'Solar- und Wärmepumpen-Leadgenerierung',
 		'primary_url_reason' => 'Kaufnahe Solar-/SHK-Begriffe führen auf die Branchen-Landingpage statt auf eine zweite Glossar-URL.',
@@ -380,7 +380,7 @@ return [
 		],
 		'related_terms'      => [ 'owned-leads', 'lead-portale', 'message-match' ],
 		'seo_title'          => 'Solar Leadgenerierung | Haşim Üner',
-		'seo_description'    => 'Alias-Eintrag für Solar Leadgenerierung. Der Begriff verweist bewusst auf die Branchen-Landingpage für eigene Anfrage-Systeme.',
+		'seo_description'    => 'Alias-Eintrag für Solar Leadgenerierung. Der Begriff verweist bewusst auf die Branchen-Landingpage für eigene Anfragesysteme.',
 	],
 	'lead-portale' => [
 		'title'              => 'Lead-Portale',
@@ -390,11 +390,11 @@ return [
 		'index_policy'       => 'alias',
 		'excerpt'            => 'Lead-Portale verkaufen vorqualifizierte Anfragen an mehrere Fachbetriebe gleichzeitig.',
 		'short_definition'   => 'Plattformen wie Aroundhome, DAA oder Wattfox, die Anfragen generieren und als gemietete Leads an Solar- und SHK-Betriebe weiterverkaufen.',
-		'why_it_matters'     => 'Das Mieten von Leads erzeugt Margendruck und Abhängigkeit. Eigene Anfrage-Systeme lösen diesen Zustand ab, weil Strecke, Daten und Nachqualifizierung beim Betrieb liegen.',
+		'why_it_matters'     => 'Das Mieten von Leads erzeugt Margendruck und Abhängigkeit. Eigene Anfragesysteme lösen diesen Zustand ab, weil Strecke, Daten und Nachqualifizierung beim Betrieb liegen.',
 		'keywords_match'     => [ 'Lead-Portale', 'Leadportale', 'Portal-Leads', 'Leads kaufen', 'Photovoltaik Leads kaufen', 'Solarleads', 'Lead-Anbieter', 'Vergleichsportal', 'Vergleichsportale', 'Portal-Abhängigkeit', 'Wattfox', 'Aroundhome', 'DAA' ],
 		'primary_url_key'    => 'solar_leads_alternative',
 		'primary_url_label'  => 'Solar Leads kaufen Alternative',
-		'primary_url_reason' => 'Führt von Portal-Kritik zur aktiven Vergleichs- und Alternative-Seite für eigene Anfrage-Systeme.',
+		'primary_url_reason' => 'Führt von Portal-Kritik zur aktiven Vergleichs- und Alternative-Seite für eigene Anfragesysteme.',
 		'related_primary_urls' => [
 			[
 				'key'    => 'energy',
@@ -433,11 +433,11 @@ return [
 			[
 				'key'    => 'tracking',
 				'label'  => 'GA4 Tracking Setup',
-				'reason' => 'B2B-Anfrage-Systeme brauchen saubere Messbarkeit.',
+				'reason' => 'B2B-Anfragesysteme brauchen saubere Messbarkeit.',
 			],
 		],
 		'related_terms'      => [ 'canonical-url', 'message-match', 'utm-parameter' ],
-		'seo_title'          => 'WordPress Agentur Hannover: B2B Anfrage-Systeme | Haşim Üner',
+		'seo_title'          => 'WordPress Agentur Hannover: B2B Anfragesysteme | Haşim Üner',
 		'seo_description'    => 'Architektur und Digitalstrategie für WordPress im DACH-Raum mit lokalem Fokus auf Hannover und Umgebung.',
 	],
 	'core-web-vitals' => [

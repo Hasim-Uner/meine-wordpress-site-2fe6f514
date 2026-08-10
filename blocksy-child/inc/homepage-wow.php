@@ -166,7 +166,7 @@ add_action( 'wp', 'hu_setup_homepage_wow_meta', 1 );
  */
 function hu_output_homepage_wow_meta() {
 	$title       = 'Startseiten-Variante | Haşim Üner';
-	$description = 'Noindex-Testseite fuer eine visuell staerkere Homepage-Variante des Anfrage-Systems fuer Solar- und Waermepumpen-Anbieter.';
+	$description = 'Noindex-Testseite fuer eine visuell staerkere Homepage-Variante des Anfragesystems fuer Solar- und Waermepumpen-Anbieter.';
 	$canonical   = home_url( '/startseite-wow/' );
 
 	printf( '<meta name="description" content="%s">' . "\n", esc_attr( $description ) );

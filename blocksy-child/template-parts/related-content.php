@@ -90,7 +90,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 			'text'  => __( 'Für den allgemeinen WordPress-Kontext:', 'blocksy-child' ),
 		],
 		'strategie' => [
-			'label' => __( 'Anfrage-System-Methode', 'blocksy-child' ),
+			'label' => __( 'Anfragesystem-Methode', 'blocksy-child' ),
 			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#methode' ) ) : home_url( '/wordpress-agentur-hannover/#methode' ),
 			'text'  => __( 'Wenn das Thema in ein größeres System eingeordnet werden soll:', 'blocksy-child' ),
 		],

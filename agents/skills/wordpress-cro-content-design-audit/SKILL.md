@@ -18,7 +18,7 @@ Use this skill when the task is not only visual polish. The job is to decide whe
 ## First Command
 
 ```bash
-rg -n "WordPress Agentur|Anfrage-System|Marktcheck|Projekt prüfen|Auswertung anfordern|E3|CPL|qualifiziert|Portal|Tracking|Conversion|Kontakt" \
+rg -n "WordPress Agentur|Anfragesystem|Marktcheck|Projekt prüfen|Auswertung anfordern|E3|CPL|qualifiziert|Portal|Tracking|Conversion|Kontakt" \
   blocksy-child/front-page.php \
   blocksy-child/page-*.php \
   blocksy-child/template-parts/ \
@@ -63,7 +63,7 @@ Review in this order. Do not skip to design polish before the copy diagnosis is 
    - Prefer Geschäftsführer-/Vertriebsleiter language over marketing-department language.
    - Translate abstractions into loss, risk, control, time, cost, lead quality, and sales capacity.
 3. `Offer architecture`
-   - Reinforce `Marktcheck -> Anfrage-System-Analyse -> Umsetzung / Retainer`.
+   - Reinforce `Marktcheck -> Anfragesystem-Analyse -> Umsetzung / Retainer`.
    - Do not fragment the page into equal service tiles, feature catalogs, or generic agency positioning.
 4. `CTA hierarchy`
    - One primary action per decision zone.

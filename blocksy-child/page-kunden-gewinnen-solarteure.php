@@ -46,7 +46,7 @@ $myths = [
 	],
 	[
 		't' => 'Mythos: „Eine moderne Website reicht"',
-		's' => 'Eine Website ohne Vorqualifizierung, ohne Tracking und ohne CRM-Anbindung ist eine digitale Visitenkarte – kein Anfrage-System.',
+		's' => 'Eine Website ohne Vorqualifizierung, ohne Tracking und ohne CRM-Anbindung ist eine digitale Visitenkarte – kein Anfragesystem.',
 	],
 ];
 
@@ -96,7 +96,7 @@ $linked_assets = [
 $faq = [
 	[
 		'question' => 'Funktioniert das auch für kleinere Solar-Betriebe?',
-		'answer'   => 'Der Aufbau eines eigenen Anfrage-Systems lohnt sich erfahrungsgemäß ab einem monatlichen Marketing-Budget von rund 1.500 € und einem Mindest-Projektwert von 15.000 €. Für reine Einzelbetriebe ohne Vertriebskapazität ist der Hebel zu klein.',
+		'answer'   => 'Der Aufbau eines eigenen Anfragesystems lohnt sich erfahrungsgemäß ab einem monatlichen Marketing-Budget von rund 1.500 € und einem Mindest-Projektwert von 15.000 €. Für reine Einzelbetriebe ohne Vertriebskapazität ist der Hebel zu klein.',
 	],
 	[
 		'question' => 'Wie unterscheidet sich das von Social Media Marketing?',
@@ -128,7 +128,7 @@ $service_schema = [
 	'name'        => 'Kunden gewinnen für Solarteure ohne Portal-Leads',
 	'serviceType' => 'Systematische Kundenakquise für Photovoltaik-, Wärmepumpen- und Speicher-Anbieter',
 	'url'         => $page_url,
-	'description' => sprintf( 'Anfrage-System für Solarteure im DACH-Mittelstand. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
+	'description' => sprintf( 'Anfragesystem für Solarteure im DACH-Mittelstand. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
 	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 ];
@@ -161,7 +161,7 @@ get_header();
 				Kunden gewinnen für Solarteure – ohne DAA, Aroundhome oder Check24
 			</h1>
 			<p class="hu-intercept__lead">
-				Der Photovoltaik-Markt normalisiert sich. Wer 2026 systematisch wachsen will, braucht keine teureren Portal-Leads – sondern ein eigenes Anfrage-System, das qualifizierte Anfragen produziert und im Betrieb bleibt.
+				Der Photovoltaik-Markt normalisiert sich. Wer 2026 systematisch wachsen will, braucht keine teureren Portal-Leads – sondern ein eigenes Anfragesystem, das qualifizierte Anfragen produziert und im Betrieb bleibt.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">

@@ -1,6 +1,6 @@
 ---
 name: wordpress-growth-architecture
-description: Enforce the technical WordPress growth-system architecture for hasimuener.de. Use when work touches lead routing, conversion forms, WordPress REST endpoints, CRM payloads, Anfrage-System-Analyse/System-Diagnose, attribution payloads, caching resilience, route contracts, n8n handoff boundaries, or repo-vs-editor ownership in the Blocksy child theme. Do not use for visual polish, color systems, card styling, typography, or premium-design direction; route those tasks to b2b-design-system.
+description: Enforce the technical WordPress growth-system architecture for hasimuener.de. Use when work touches lead routing, conversion forms, WordPress REST endpoints, CRM payloads, Anfragesystem-Analyse/System-Diagnose, attribution payloads, caching resilience, route contracts, n8n handoff boundaries, or repo-vs-editor ownership in the Blocksy child theme. Do not use for visual polish, color systems, card styling, typography, or premium-design direction; route those tasks to b2b-design-system.
 ---
 
 # WordPress Growth Architecture

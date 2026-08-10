@@ -83,7 +83,7 @@ Inline color helpers inside: `.accent` (copper), `.good`, `.bad`, `.warn`, `.com
 ```html
 <div class="callout">
   <div class="callout-label">Stopp · Bevor Sie weiterlesen</div>
-  <div class="callout-title">Prüfen Sie, ob Ihr Zielgebiet ein eigenes Anfrage-System trägt.</div>
+  <div class="callout-title">Prüfen Sie, ob Ihr Zielgebiet ein eigenes Anfragesystem trägt.</div>
   <p class="callout-text">Der Marktcheck prüft Region, Projektvolumen und Vertriebsreife innerhalb von 48 Stunden.</p>
   <a href="/marktcheck/" class="callout-cta">Marktcheck starten →</a>
 </div>

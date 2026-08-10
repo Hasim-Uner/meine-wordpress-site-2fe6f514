@@ -209,7 +209,7 @@ $transferable = [
 
 $specific = [
 	sprintf( 'Konkrete Kosten pro Anfrage hängen von Region, Produktmix und Werbedruck der Mitbewerber ab. %s ist kein Versprechen, sondern der Endpunkt einer Strecke aus %s Implementierung und %s Optimierung.', $e3_cpl_after, $e3_build, $e3_tuning ),
-	sprintf( '%s Abschlussquote auf Auftrag setzt einen funktionierenden Außendienst voraus. Ohne den nutzt das beste Anfrage-System nichts.', $e3_conv_after ),
+	sprintf( '%s Abschlussquote auf Auftrag setzt einen funktionierenden Außendienst voraus. Ohne den nutzt das beste Anfragesystem nichts.', $e3_conv_after ),
 	'Hersteller-Partner-Programme wie das von Viessmann sind eine wertvolle Zusatzquelle, ersetzen aber kein eigenes System — Partner-Kontingente sind begrenzt und nicht steuerbar.',
 ];
 
@@ -293,7 +293,7 @@ get_header();
 				<div class="e3-hero__content" data-reveal>
 					<p class="e3-kicker">Methodik-Case · Photovoltaik &amp; Wärmepumpe</p>
 					<h1 class="e3-hero__headline" id="e3-hero-title">Die kostenlosen Anfragen schlossen besser ab als die für <?php echo esc_html( $e3_cpl_before ); ?> gekauften. Was wir daraufhin für einen Photovoltaik-Betrieb gebaut haben.</h1>
-					<p class="e3-hero__subline">Ein <?php echo esc_html( $e3_case_label ); ?> hatte zwei parallele Anfrage-Quellen: zugekaufte Portal-Leads und kostenlose Anfragen aus einem Hersteller-Partnerprogramm. Gleicher Vertrieb, gleiche Produkte, deutlich verschiedene Abschlussquote. Die Erklärung dieses Widerspruchs wurde zur Bauanleitung für ein eigenes Anfrage-System.</p>
+					<p class="e3-hero__subline">Ein <?php echo esc_html( $e3_case_label ); ?> hatte zwei parallele Anfrage-Quellen: zugekaufte Portal-Leads und kostenlose Anfragen aus einem Hersteller-Partnerprogramm. Gleicher Vertrieb, gleiche Produkte, deutlich verschiedene Abschlussquote. Die Erklärung dieses Widerspruchs wurde zur Bauanleitung für ein eigenes Anfragesystem.</p>
 				</div>
 
 				<div class="e3-metric-grid" role="list" aria-label="Kennzahlen des Mandats">
@@ -393,7 +393,7 @@ get_header();
 					</table>
 				</div>
 
-				<p class="e3-coda" data-reveal>Die Hypothese war einfach: Wenn ein eigenes Anfrage-System diese vier Eigenschaften strukturell nachbaut, sollte die Abschlussquote sich der von Hersteller-Anfragen annähern. Das war das Ziel der nächsten <?php echo esc_html( $e3_timeframe ); ?>.</p>
+				<p class="e3-coda" data-reveal>Die Hypothese war einfach: Wenn ein eigenes Anfragesystem diese vier Eigenschaften strukturell nachbaut, sollte die Abschlussquote sich der von Hersteller-Anfragen annähern. Das war das Ziel der nächsten <?php echo esc_html( $e3_timeframe ); ?>.</p>
 			</div>
 		</section>
 

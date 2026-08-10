@@ -3,8 +3,8 @@
 - Titel: Solar-Leads kaufen: Warum die billigen Anfragen am Ende die teuersten sind
 - Slug: `solar-leads-kaufen-lohnt-sich`
 - Alt-Slug (301): `photovoltaik-leads-tco-rechnung`
-- Kategorie: Leadgenerierung; Solar-/Wärmepumpen Anfrage-Systeme
-- Tags: Solar Leads kaufen, Photovoltaik Leads, Lead-Portale, Anfragen kaufen, eigene Leadgenerierung, Anfrage-System
+- Kategorie: Leadgenerierung; Solar-/Wärmepumpen Anfragesysteme
+- Tags: Solar Leads kaufen, Photovoltaik Leads, Lead-Portale, Anfragen kaufen, eigene Leadgenerierung, Anfragesystem
 - SEO-Titel (max. 60): Solar-Leads kaufen: Lohnt sich das für Ihren Betrieb?
 - Meta-Description (max. 155): Gekaufte Solar-Leads wirken günstig. Warum die billigen Anfragen am Ende die teuersten sind – und wie Solar- und Heizungsbetriebe an bessere Anfragen kommen.
 - Excerpt: Gekaufte Portal-Anfragen wirken günstig, bringen aber selten Aufträge. Warum nicht der Preis pro Anfrage zählt, sondern was ein fertiger Auftrag kostet – und wie Sie eigene Anfragen gewinnen.
@@ -191,7 +191,7 @@ Wer diese Kette nicht besitzt, wirbt blind. Wer sie besitzt, baut mit jedem Mona
 
 Ein Portalvertrag ist laufende Ausgabe. Eine Funnel-Monatsmiete ist laufende Ausgabe. Ein Agentur-Zugang mit Kündigungsrisiko ist laufende Ausgabe.
 
-Ein eigenes Anfrage-System hat dagegen eher Investitionscharakter: Ihre Seite, Ihr Nachverfolgen, Ihre Kundenanbindung, Ihre Inhalte, Ihre regionalen Suchbegriffe.
+Ein eigenes Anfragesystem hat dagegen eher Investitionscharakter: Ihre Seite, Ihr Nachverfolgen, Ihre Kundenanbindung, Ihre Inhalte, Ihre regionalen Suchbegriffe.
 
 Wichtig, und das ist keine Steuerberatung: Ob und wie sich solche Kosten steuerlich behandeln lassen, entscheidet Ihr Steuerberater – nicht ein Text im Internet. Die Details zum Aktivierungswahlrecht regelt [§ 248 HGB](https://www.gesetze-im-internet.de/hgb/__248.html).
 
@@ -312,7 +312,7 @@ Der regionale Marktcheck ist dafür der einfachste Einstieg. Er prüft nicht, ob
 - **Vertriebsreife:** Können Sie Anfragen schnell und sauber nachfassen?
 - **Zielgebiet:** Gibt es in Ihrer Region genug Nachfrage und sinnvollen Wettbewerb?
 
-Ist die Ampel grün, wird die Anfrage-System-Analyse vorbereitet. Ist sie gelb, benennen wir die Risiken. Ist sie rot, gibt es keine Umsetzungsempfehlung. Das ist Absicht – eine ehrliche Absage statt eines schön formulierten Pitches.
+Ist die Ampel grün, wird die Anfragesystem-Analyse vorbereitet. Ist sie gelb, benennen wir die Risiken. Ist sie rot, gibt es keine Umsetzungsempfehlung. Das ist Absicht – eine ehrliche Absage statt eines schön formulierten Pitches.
 
 **Regionalen Marktcheck starten:**  
 [/solar-waermepumpen-leadgenerierung/#marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck)

@@ -635,7 +635,7 @@ function nexus_get_glossary_term_content_html( $term ) {
 	<section class="wgos-section wgos-section--gray">
 		<div class="wgos-container">
 			<div class="wgos-section-head">
-				<span class="wgos-principle-kicker">Im Anfrage-System-Kontext</span>
+				<span class="wgos-principle-kicker">Im Anfragesystem-Kontext</span>
 				<h2 class="wgos-h2">Der Begriff ist nur dann sinnvoll, wenn er auf die richtige Primary URL zurückführt.</h2>
 			</div>
 

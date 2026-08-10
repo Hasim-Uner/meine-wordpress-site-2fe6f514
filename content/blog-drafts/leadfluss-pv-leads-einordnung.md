@@ -11,7 +11,7 @@
 - Primärer CTA: `Solar-Marktcheck starten`
 - Status: Ready to Publish
 
-> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfrage-Systeme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
+> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfragesysteme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
 
 # Leadfluss für Solarteure: Markteinordnung des regionalen Videomarketing-Modells
 
@@ -66,7 +66,7 @@ Regionale Videokampagnen sind im Volumen durch Region, Angebot und Zielgruppe be
 
 ## Alternative: Eigene Anfrage-Infrastruktur in vollständigem Eigentum
 
-Der nächstgrößere Schritt vom regionalen Videomarketing-Modell ist der Aufbau eines vollständig eigenen Anfrage-Systems: eigene Money Page, eigener Werbe-Account, eigene Tracking-Strecke, eigenes CRM und eigene Vorqualifizierung. Vorteil: Code, Daten und Strecke bleiben dauerhaft im Betrieb.
+Der nächstgrößere Schritt vom regionalen Videomarketing-Modell ist der Aufbau eines vollständig eigenen Anfragesystems: eigene Money Page, eigener Werbe-Account, eigene Tracking-Strecke, eigenes CRM und eigene Vorqualifizierung. Vorteil: Code, Daten und Strecke bleiben dauerhaft im Betrieb.
 
 Der [Solar Case Study](https://hasimuener.de/case-study-solar-leadgenerierung/) demonstriert das mit einer CPL-Senkung von 150 € auf 22 €, über 1.750 qualifizierten Anfragen, 12 % Abschlussquote und 6 Monaten Projektlaufzeit. Das ist kein pauschales Ergebnisversprechen, aber ein belastbarer Beleg für den Wert eigener Anfrage-Infrastruktur.
 

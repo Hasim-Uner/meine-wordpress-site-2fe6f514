@@ -37,7 +37,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Der Marktcheck steht ganz am Anfang der Anfrage-System-Reihenfolge. Er schafft die gemeinsame Diagnose, auf der Positionierungs-Check, CWV Speed Audit oder Tracking Audit sinnvoll priorisiert werden können.',
+			'Der Marktcheck steht ganz am Anfang der Anfragesystem-Reihenfolge. Er schafft die gemeinsame Diagnose, auf der Positionierungs-Check, CWV Speed Audit oder Tracking Audit sinnvoll priorisiert werden können.',
 			'Ohne diese Vorarbeit werden Maßnahmen schnell politisch statt systemisch entschieden. Mit dem Marktcheck wird aus einer losen Aufgabenliste eine belastbare Reihenfolge.',
 		],
 		'priority'        => [
@@ -190,7 +190,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Die Wettbewerbs-Analyse kommt im Anfrage-System früh nach Positionierung und Discovery, weil sie externe Muster gegen den eigenen Anspruch spiegelt. So werden Differenzierung und Priorisierung marktnah statt intern diskutiert.',
+			'Die Wettbewerbs-Analyse kommt im Anfragesystem früh nach Positionierung und Discovery, weil sie externe Muster gegen den eigenen Anspruch spiegelt. So werden Differenzierung und Priorisierung marktnah statt intern diskutiert.',
 			'Sie schafft anschließend bessere Grundlagen für Keyword-Strategie, Landing Page Neu und Social Proof. Erst mit diesem Spiegel wird klar, wo Sie bewusst anders sein sollten und wo Basiserwartungen fehlen.',
 		],
 		'priority'        => [
@@ -217,7 +217,7 @@ return [
 		'result'          => 'Sie erhalten eine abgestimmte Umsetzungsroadmap statt einer losen Wunschliste.',
 		'prerequisite'    => 'Marktcheck oder klare Discovery sollte abgeschlossen sein',
 		'seo_title'       => 'Roadmap Priorisierung - Systembaustein | Haşim Üner',
-		'seo_description' => 'Roadmap & Priorisierung für Anfrage-System: Maßnahmen nach Impact, Abhängigkeiten und Teamkapazität sauber staffeln.',
+		'seo_description' => 'Roadmap & Priorisierung für Anfragesystem: Maßnahmen nach Impact, Abhängigkeiten und Teamkapazität sauber staffeln.',
 		'problem'         => [
 			'Viele Website-Projekte scheitern nicht an Ideen, sondern an falscher Reihenfolge. Dann werden Sichtbarkeit, Tracking und Conversion gleichzeitig angefasst, obwohl das Fundament noch fehlt.',
 			'Roadmap & Priorisierung sorgt dafür, dass Entscheidungen systemisch getroffen werden. So wird Fortschritt planbar statt hektisch.',
@@ -241,7 +241,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Roadmap & Priorisierung steht im Anfrage-System zwischen Diagnose und Umsetzung. Sie setzt meist auf Marktcheck, Positionierungs-Check oder Discovery-Ergebnissen auf und übersetzt diese in einen belastbaren Arbeitsplan.',
+			'Roadmap & Priorisierung steht im Anfragesystem zwischen Diagnose und Umsetzung. Sie setzt meist auf Marktcheck, Positionierungs-Check oder Discovery-Ergebnissen auf und übersetzt diese in einen belastbaren Arbeitsplan.',
 			'Danach können einzelne Assets wie CWV Speed Audit, Tracking Audit oder Landing Page Neu ohne Richtungsverlust umgesetzt werden. Die Roadmap ist damit das Bindeglied zwischen Einsicht und Ausführung.',
 		],
 		'priority'        => [
@@ -599,7 +599,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Der Tracking Audit steht im Anfrage-System früh in der Messbarkeit, oft noch vor großer SEO- oder CRO-Arbeit. Ohne brauchbare Daten lassen sich spätere Maßnahmen nur schwer bewerten.',
+			'Der Tracking Audit steht im Anfragesystem früh in der Messbarkeit, oft noch vor großer SEO- oder CRO-Arbeit. Ohne brauchbare Daten lassen sich spätere Maßnahmen nur schwer bewerten.',
 			'Er bereitet GA4 Event Blueprint, Consent Mode v2 und Server-Side Tracking vor. Erst wenn die Diagnose steht, werden Messkonzepte und technische Setups wirklich tragfähig.',
 		],
 		'priority'        => [
@@ -753,7 +753,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Server-Side Tracking kommt im Anfrage-System nach Tracking Audit, Event-Modell und Consent-Einordnung. Erst wenn klar ist, was gemessen werden soll und wie Datenschutz greift, lohnt sich die technische Vertiefung.',
+			'Server-Side Tracking kommt im Anfragesystem nach Tracking Audit, Event-Modell und Consent-Einordnung. Erst wenn klar ist, was gemessen werden soll und wie Datenschutz greift, lohnt sich die technische Vertiefung.',
 			'Danach profitieren KPI-Dashboard Setup, Reporting Dashboard und Kampagnensteuerung. Ein serverseitiger Layer ist kein Ersatz für Strategie, sondern ein robusterer Transport für eine saubere Messlogik.',
 		],
 		'priority'        => [
@@ -906,7 +906,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Der Technical SEO Audit steht im Anfrage-System im Bereich Sichtbarkeit, setzt aber oft voraus, dass Performance-Basisthemen wie CWV Speed Audit bereits geordnet wurden. Sonst überlagern sich technische Baustellen und SEO-Symptome.',
+			'Der Technical SEO Audit steht im Anfragesystem im Bereich Sichtbarkeit, setzt aber oft voraus, dass Performance-Basisthemen wie CWV Speed Audit bereits geordnet wurden. Sonst überlagern sich technische Baustellen und SEO-Symptome.',
 			'Er schafft die Grundlage für On-Page SEO, Schema Markup und interne Verlinkung. Erst wenn Crawling und Indexierung sauber laufen, lohnen sich tiefergehende Content- und Strukturinvestitionen voll.',
 		],
 		'priority'        => [
@@ -1110,7 +1110,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'On-Page SEO folgt im Anfrage-System meist auf Keyword-Strategie, Technical SEO Audit oder eine bestehende Pillar-/Hub-Logik. Erst wenn Thema und technische Basis klar sind, lohnt sich die inhaltliche Feinarbeit wirklich.',
+			'On-Page SEO folgt im Anfragesystem meist auf Keyword-Strategie, Technical SEO Audit oder eine bestehende Pillar-/Hub-Logik. Erst wenn Thema und technische Basis klar sind, lohnt sich die inhaltliche Feinarbeit wirklich.',
 			'Das Asset ergänzt Pillar Page, interne Verlinkung und Schema Markup. Gemeinsam sorgen diese Ebenen dafür, dass gute Inhalte auch technisch und semantisch sauber verstärkt werden.',
 		],
 		'priority'        => [
@@ -1663,7 +1663,7 @@ return [
 			],
 			[
 				'title'       => 'Neu Reihenfolge definieren',
-				'description' => 'Wir ordnen die nächsten Anfrage-System-Bausteine für das kommende Quartal neu. So bleiben Ressourcen auf die wirksamsten Themen fokussiert.',
+				'description' => 'Wir ordnen die nächsten Anfragesystem-Bausteine für das kommende Quartal neu. So bleiben Ressourcen auf die wirksamsten Themen fokussiert.',
 			],
 			[
 				'title'       => 'Kapazität und Entscheidungsfenster abstimmen',
@@ -1800,7 +1800,7 @@ return [
 		'result'          => 'Sie erhalten einen DSGVO-konformen KI-Assistenten, der aus Ihren Inhalten antwortet und Vertrieb wie Support bei Standardfragen entlastet.',
 		'prerequisite'    => 'Saubere Inhalte als Wissensbasis und eine klare Positionierung müssen stehen',
 		'seo_title'       => 'KI-Chatbot für WordPress – DSGVO-konform | Systembaustein',
-		'seo_description' => 'Ein KI-Assistent, der aus Ihren Inhalten antwortet – auf eigener Infrastruktur, ohne Datenabfluss. 30 Credits im Anfrage-System.',
+		'seo_description' => 'Ein KI-Assistent, der aus Ihren Inhalten antwortet – auf eigener Infrastruktur, ohne Datenabfluss. 30 Credits im Anfragesystem.',
 		'problem'         => [
 			'Besucher haben Fragen, finden aber die Antworten auf der Website nicht schnell genug. Support und Vertrieb beantworten dieselben Standardfragen immer wieder – das kostet Zeit und verzögert echte Qualifizierung.',
 			'Ein KI-Assistent löst dieses Problem, wenn er aus Ihren eigenen Inhalten antwortet statt aus dem offenen Internet. Entscheidend ist, dass keine Besucherdaten an US-Provider fließen und die Verarbeitung auf eigener Infrastruktur bleibt.',
@@ -1816,7 +1816,7 @@ return [
 			],
 			[
 				'title'       => 'WordPress-native Einbindung umsetzen',
-				'description' => 'Wir integrieren den Assistenten direkt in Ihre WordPress-Seite – consent-integriert, ohne externen Widget-Code, wartbar im Anfrage-System-Stack.',
+				'description' => 'Wir integrieren den Assistenten direkt in Ihre WordPress-Seite – consent-integriert, ohne externen Widget-Code, wartbar im Anfragesystem-Stack.',
 			],
 			[
 				'title'       => 'Qualifizierungslogik und Grenzen definieren',
@@ -1824,7 +1824,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Der KI-Assistent gehört im aktualisierten Anfrage-System in den Kernbereich Weiterentwicklung. Er baut auf Fundament, Messbarkeit und klaren Inhalten auf und erweitert ein bereits tragfähiges System um einen dialogbasierten KI-Baustein.',
+			'Der KI-Assistent gehört im aktualisierten Anfragesystem in den Kernbereich Weiterentwicklung. Er baut auf Fundament, Messbarkeit und klaren Inhalten auf und erweitert ein bereits tragfähiges System um einen dialogbasierten KI-Baustein.',
 			'In Kombination mit Lead-Qualifizierung, RAG-Wissenssuche und n8n-Workflows entsteht daraus eine kontrollierte KI- und Automatisierungsschicht. Der Assistent bleibt dabei ein versionierter Systembaustein und kein loses ChatGPT-Widget.',
 		],
 		'priority'        => [
@@ -1875,7 +1875,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'KI-gestützte Lead-Qualifizierung gehört im aktualisierten Anfrage-System in den Kernbereich Weiterentwicklung. Sie setzt eine funktionierende Conversion-Basis voraus und ergänzt diese um eine server-seitige Automatisierungslogik für Routing und Priorisierung.',
+			'KI-gestützte Lead-Qualifizierung gehört im aktualisierten Anfragesystem in den Kernbereich Weiterentwicklung. Sie setzt eine funktionierende Conversion-Basis voraus und ergänzt diese um eine server-seitige Automatisierungslogik für Routing und Priorisierung.',
 			'Zusammen mit KI-Assistent, RAG-Wissenssuche und n8n-Workflows bildet sie die operative KI-Schicht oberhalb der klassischen Kernbereiche. Die Datenverarbeitung bleibt dabei server-seitig auf eigenem Server und DSGVO-konform.',
 		],
 		'priority'        => [
@@ -1902,7 +1902,7 @@ return [
 		'result'          => 'Sie erhalten eine KI-gestützte Suche, die natürliche Fragen versteht und Antworten mit Quellenangabe aus Ihren Inhalten zurückgibt.',
 		'prerequisite'    => 'Umfangreicher Content-Pool (50+ Seiten) und saubere, aktuelle Inhalte als Quelldaten',
 		'seo_title'       => 'RAG-Wissenssuche für WordPress – DSGVO-konform | Systembaustein',
-		'seo_description' => 'Mitarbeiter und Kunden finden Antworten in Ihren Inhalten – KI-gestützt, ohne externe Datenflüsse. 25 Credits im Anfrage-System.',
+		'seo_description' => 'Mitarbeiter und Kunden finden Antworten in Ihren Inhalten – KI-gestützt, ohne externe Datenflüsse. 25 Credits im Anfragesystem.',
 		'problem'         => [
 			'Die eingebaute WordPress-Suche matcht Keywords, versteht aber keine Fragen. Besucher finden Ergebnisse, aber selten die Antwort, die sie tatsächlich suchen. Bei komplexen Angeboten oder umfangreichem Content wird das zum Conversion-Killer.',
 			'RAG-Wissenssuche durchsucht Ihre Inhalte semantisch: Besucher stellen eine Frage in natürlicher Sprache und bekommen eine Antwort mit Quellenangabe. Keine Halluzinationen, weil nur Ihr eigener Content als Basis dient.',
@@ -1926,7 +1926,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'Die RAG-Wissenssuche gehört im aktualisierten Anfrage-System in den Kernbereich Weiterentwicklung. Sie nutzt bestehende Inhalte und technische Stabilität als Grundlage und erweitert das System um eine semantische Wissensschicht.',
+			'Die RAG-Wissenssuche gehört im aktualisierten Anfragesystem in den Kernbereich Weiterentwicklung. Sie nutzt bestehende Inhalte und technische Stabilität als Grundlage und erweitert das System um eine semantische Wissensschicht.',
 			'Das Asset kann standalone laufen oder als Grundlage für den KI-Assistenten dienen, der dieselbe RAG-Architektur für dialogbasierte Interaktion nutzt. In beiden Fällen bleibt die Verarbeitung auf eigenem Server.',
 		],
 		'priority'        => [
@@ -1977,7 +1977,7 @@ return [
 			],
 		],
 		'system_context'  => [
-			'LLM-Workflow-Automatisierung gehört im Anfrage-System zur Weiterentwicklung und kommt erst, wenn Fundament und Messbarkeit stehen. Automatisierung braucht einen sauberen Prozess als Grundlage – ohne definierten Ablauf entsteht nur automatisiertes Chaos.',
+			'LLM-Workflow-Automatisierung gehört im Anfragesystem zur Weiterentwicklung und kommt erst, wenn Fundament und Messbarkeit stehen. Automatisierung braucht einen sauberen Prozess als Grundlage – ohne definierten Ablauf entsteht nur automatisiertes Chaos.',
 			'Das Asset ergänzt die Lead-Qualifizierung und andere Conversion-Bausteine um prozessübergreifende Automatisierung. n8n als Self-hosted-Plattform auf eigenem Hetzner-Server hält die Datenhoheit im Haus.',
 		],
 		'priority'        => [

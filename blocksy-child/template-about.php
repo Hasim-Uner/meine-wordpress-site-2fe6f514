@@ -52,18 +52,18 @@ $about_work_principles = [
 	[
 		'eyebrow' => 'Ebene 1 / Fundament-Check',
 		'title'   => 'Portal-Abhängigkeit beenden.',
-		'body'    => 'Wer dauerhaft Portal-Leads einkauft, mietet Nachfrage auf fremdem Grund und teilt Kaufinteressenten mit mehreren Wettbewerbern. Ich analysiere, wie viel Vertriebsbudget durch unqualifizierte Kontakte gebunden wird und wo ein eigenes Anfrage-System wirtschaftlich ansetzen muss.',
+		'body'    => 'Wer dauerhaft Portal-Leads einkauft, mietet Nachfrage auf fremdem Grund und teilt Kaufinteressenten mit mehreren Wettbewerbern. Ich analysiere, wie viel Vertriebsbudget durch unqualifizierte Kontakte gebunden wird und wo ein eigenes Anfragesystem wirtschaftlich ansetzen muss.',
 		'detail'  => 'Erst wenn das digitale Fundament belastbar ist, macht zusätzlicher Traffic Sinn.',
 	],
 	[
 		'eyebrow' => 'Ebene 2 / Daten-Integrität',
 		'title'   => 'Messbarkeit, die Verträge zeigt, nicht Klicks.',
-		'body'    => 'Standard-Tracking misst Bewegung. Ein echtes Anfrage-System unterscheidet zwischen Formular-Abbruch, qualifizierter Anfrage und unterschriebenem Werksvertrag. Serverseitiges GA4, Meta CAPI und Consent Mode v2 schaffen eine attributionsfähige Datenebene auf Ihrer eigenen Infrastruktur.',
+		'body'    => 'Standard-Tracking misst Bewegung. Ein echtes Anfragesystem unterscheidet zwischen Formular-Abbruch, qualifizierter Anfrage und unterschriebenem Werksvertrag. Serverseitiges GA4, Meta CAPI und Consent Mode v2 schaffen eine attributionsfähige Datenebene auf Ihrer eigenen Infrastruktur.',
 		'detail'  => 'Belastbare First-Party-Daten machen Marketingbudgets steuerbar.',
 	],
 	[
 		'eyebrow' => 'Ebene 3 / System-Architektur',
-		'title'   => 'Ein autarkes Anfrage-System.',
+		'title'   => 'Ein autarkes Anfragesystem.',
 		'body'    => 'Nach der Diagnose folgt die technische Umsetzung: ein geschlossenes WordPress-System, intelligente Vorqualifizierungs-Funnel und direkte CRM-Schnittstellen. Keine Standard-Templates, kein Plugin-Bloat. Code, Datenkontrolle und Eigentum liegen vollständig in Ihrer Hand.',
 		'detail'  => 'Ein digitaler Vermögenswert, der planbar exklusive Anfragen vorbereitet.',
 	],
@@ -97,7 +97,7 @@ $about_fit_points = [
 	],
 	[
 		't' => 'Verständnis für Infrastruktur statt Landingpage.',
-		's' => 'Ein eigenes Anfrage-System ist ein digitaler Vermögenswert. Wer eine günstige Landingpage sucht, ist hier falsch.',
+		's' => 'Ein eigenes Anfragesystem ist ein digitaler Vermögenswert. Wer eine günstige Landingpage sucht, ist hier falsch.',
 	],
 ];
 
@@ -119,12 +119,12 @@ $about_background_points = [
 	],
 ];
 
-// Blueprint-Labels: 4 Stationen vom Mietsignal zum eigenen Anfrage-System.
+// Blueprint-Labels: 4 Stationen vom Mietsignal zum eigenen Anfragesystem.
 $about_well_labels = [
 	[ 'depth' => 20, 'label' => 'Miet-Leads (Verlustzone)', 'highlight' => false ],
 	[ 'depth' => 40, 'label' => 'First-Party-Datenebene',   'highlight' => false ],
 	[ 'depth' => 60, 'label' => 'Vorqualifizierungs-Funnel', 'highlight' => false ],
-	[ 'depth' => 80, 'label' => 'Autarkes Anfrage-System',   'highlight' => true  ],
+	[ 'depth' => 80, 'label' => 'Autarkes Anfragesystem',   'highlight' => true  ],
 ];
 
 // Fachliche Schwerpunkte: System-Architektur in 3 Cluster für besseres Scanning + E-E-A-T-Signal.
@@ -184,7 +184,7 @@ get_header();
 							<span class="about-live-dot" aria-hidden="true"></span>
 							ÜBER MICH
 						</p>
-						<h1 class="about-h1">Ich baue Anfrage-Systeme, die Ihrem Betrieb gehören.</h1>
+						<h1 class="about-h1">Ich baue Anfragesysteme, die Ihrem Betrieb gehören.</h1>
 						<p class="about-hero__lead">
 							Für Solar- und Wärmepumpen-Betriebe, die Portal-Abhängigkeit durch eigene Daten, bessere Vorqualifizierung und sauberen CRM-Anschluss ersetzen.
 						</p>
@@ -279,7 +279,7 @@ get_header();
 				<header class="about-section__head" data-reveal>
 					<p class="about-section__number">Wie ich arbeite</p>
 					<div class="about-section__head-body">
-						<h2 class="about-h2">Drei Ebenen. Ein eigenes Anfrage-System.</h2>
+						<h2 class="about-h2">Drei Ebenen. Ein eigenes Anfragesystem.</h2>
 						<p class="about-section__lead">Meine Arbeit ist keine neue Oberfläche über einer alten Vertriebslogik. Sie folgt dem Aufbau einer kontrollierbaren Infrastruktur: von Portal-Abhängigkeit über Daten-Integrität bis zum eigenen Vertriebsanschluss.</p>
 					</div>
 				</header>
@@ -365,7 +365,7 @@ get_header();
 					<p class="about-section__number">03 / Voraussetzungen</p>
 					<div class="about-section__head-body">
 						<h2 class="about-h2">Drei Dinge müssen stimmen.</h2>
-						<p class="about-section__lead">Nicht jeder Betrieb braucht sofort ein eigenes Anfrage-System. Manchmal ist die ehrliche Antwort: noch nicht.</p>
+						<p class="about-section__lead">Nicht jeder Betrieb braucht sofort ein eigenes Anfragesystem. Manchmal ist die ehrliche Antwort: noch nicht.</p>
 					</div>
 				</header>
 
@@ -502,7 +502,7 @@ get_header();
 			<div class="about-container about-container--centered">
 				<h2 class="about-h2">Der nächste Schritt.</h2>
 				<p class="about-final__lead">
-					Wenn Sie Portal-Abhängigkeit durch ein eigenes Anfrage-System ersetzen wollen, gehen Sie direkt ins qualifizierte Formular. Manueller, tiefer Marktcheck, händische Prüfung der Regions-Verfügbarkeit, Befund innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.
+					Wenn Sie Portal-Abhängigkeit durch ein eigenes Anfragesystem ersetzen wollen, gehen Sie direkt ins qualifizierte Formular. Manueller, tiefer Marktcheck, händische Prüfung der Regions-Verfügbarkeit, Befund innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.
 				</p>
 				<div class="about-cta-wrap about-cta-wrap--centered">
 					<a href="<?php echo esc_url( $request_url ); ?>"

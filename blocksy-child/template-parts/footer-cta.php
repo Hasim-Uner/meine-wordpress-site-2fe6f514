@@ -6,7 +6,7 @@
  * Tracking-ready mit data-track-* Attributen.
  *
  * Usage:
- *   set_query_var( 'cta_heading', 'Passt Ihr Betrieb für ein eigenes Anfrage-System?' );
+ *   set_query_var( 'cta_heading', 'Passt Ihr Betrieb für ein eigenes Anfragesystem?' );
  *   set_query_var( 'cta_text', 'Die Analyse prüft Fit, Marktbild und nächsten Schritt.' );
  *   set_query_var( 'cta_url', '/solar-waermepumpen-leadgenerierung/#marktcheck' );
  *   set_query_var( 'cta_button_text', 'Marktcheck mit Fit-Entscheid starten' );
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$heading     = get_query_var( 'cta_heading', __( 'Passt Ihr Betrieb für ein eigenes Anfrage-System?', 'blocksy-child' ) );
+$heading     = get_query_var( 'cta_heading', __( 'Passt Ihr Betrieb für ein eigenes Anfragesystem?', 'blocksy-child' ) );
 $text        = get_query_var( 'cta_text', __( 'Die Analyse prüft Fit, Marktbild und den nächsten sinnvollen Schritt.', 'blocksy-child' ) );
 $url         = get_query_var( 'cta_url', function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
 $button_text = get_query_var( 'cta_button_text', __( 'Marktcheck mit Fit-Entscheid starten', 'blocksy-child' ) );

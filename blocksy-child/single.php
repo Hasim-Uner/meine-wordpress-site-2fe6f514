@@ -63,7 +63,7 @@ get_template_part( 'template-parts/blog-header' );
 			'eyebrow'         => __( 'Einordnung', 'blocksy-child' ),
 			'title'           => __( 'Dieser Artikel gehört in den größeren Anfrage-Kontext.', 'blocksy-child' ),
 			'text'            => __( 'Lesen Sie den Beitrag als Baustein im Zusammenspiel aus Angebot, Sichtbarkeit, Daten und Conversion.', 'blocksy-child' ),
-			'primary_label'   => __( 'Anfrage-System ansehen', 'blocksy-child' ),
+			'primary_label'   => __( 'Anfragesystem ansehen', 'blocksy-child' ),
 			'primary_url'     => $energy_url,
 			'secondary_label' => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
 			'secondary_url'   => $audit_url,
@@ -138,9 +138,9 @@ get_template_part( 'template-parts/blog-header' );
 		} elseif ( in_array( 'solar-waermepumpen-anfrage-systeme', $post_cat_slugs, true ) && ! array_intersect( [ 'markteinordnung', 'owned-leads' ], $post_cat_slugs ) ) {
 			$article_context = [
 				'eyebrow'         => __( 'Solar-Fokus', 'blocksy-child' ),
-				'title'           => __( 'Teil des Anfrage-Systems für Solar & Wärmepumpe.', 'blocksy-child' ),
+				'title'           => __( 'Teil des Anfragesystems für Solar & Wärmepumpe.', 'blocksy-child' ),
 				'text'            => __( 'Dieser Artikel ordnet einen Baustein ein: weniger Portal-Abhängigkeit, klarere Angebotsseiten, bessere Daten und ein Anfragepfad im eigenen Besitz.', 'blocksy-child' ),
-				'primary_label'   => __( 'Anfrage-System ansehen', 'blocksy-child' ),
+				'primary_label'   => __( 'Anfragesystem ansehen', 'blocksy-child' ),
 				'primary_url'     => $energy_url,
 				'secondary_label' => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
 				'secondary_url'   => $audit_url,
@@ -512,7 +512,7 @@ get_template_part( 'template-parts/blog-header' );
 		}
 		$author_role = trim( (string) get_the_author_meta( 'hu_author_role' ) );
 		if ( '' === $author_role ) {
-			$author_role = ! empty( $canonical_author['jobTitle'] ) ? (string) $canonical_author['jobTitle'] . ' · Hannover' : __( 'Architekt für eigene Anfrage-Systeme · Hannover', 'blocksy-child' );
+			$author_role = ! empty( $canonical_author['jobTitle'] ) ? (string) $canonical_author['jobTitle'] . ' · Hannover' : __( 'Architekt für eigene Anfragesysteme · Hannover', 'blocksy-child' );
 		}
 		$author_description_text = trim( wp_strip_all_tags( (string) $author_description ) );
 		$stale_author_patterns   = [
@@ -532,7 +532,7 @@ get_template_part( 'template-parts/blog-header' );
 		if ( '' === $author_description_text ) {
 			$author_description_text = ! empty( $canonical_author['description'] )
 				? (string) $canonical_author['description']
-				: __( 'Ich baue Solar- und Wärmepumpen-Anbietern im DACH-Raum eigene Anfrage-Systeme, die Portal-Abhängigkeit ablösen und Leadkosten messbar senken. Diagnose vor Pitch. Klarheit vor Feature-Count.', 'blocksy-child' );
+				: __( 'Ich baue Solar- und Wärmepumpen-Anbietern im DACH-Raum eigene Anfragesysteme, die Portal-Abhängigkeit ablösen und Leadkosten messbar senken. Diagnose vor Pitch. Klarheit vor Feature-Count.', 'blocksy-child' );
 		}
 		?>
 		<section class="nexus-author-bio nexus-reveal" data-track-section="article_author_bio" aria-labelledby="nexus-author-bio-name">

@@ -1,4 +1,4 @@
-# Anfrage-System-Analyse Form v1
+# Anfragesystem-Analyse Form v1
 
 Status: superseded-by-marketcheck
 Owner: Repo / Funnel
@@ -10,7 +10,7 @@ Report-Spec: `docs/specs/anfrage-system-analyse-report-v1.md`
 
 - WordPress bleibt das Hauptsystem für Seiten, SEO, Canon-Dateien, Routing und Consent-Grenzen.
 - Die frühere Analyse läuft nicht mehr als öffentliche React-Funnel-Mikro-App. Customer-facing ist der Marktcheck auf der Solar-/Wärmepumpen-Seite.
-- Der frühere EnergieFahrplan-Showroom ist retired; der Hauptpfad läuft direkt über Landingpage, Branchen-Seite und Anfrage-System-Analyse.
+- Der frühere EnergieFahrplan-Showroom ist retired; der Hauptpfad läuft direkt über Landingpage, Branchen-Seite und Anfragesystem-Analyse.
 - `/solar-waermepumpen-leadgenerierung/#marktcheck` ist der primäre Einstieg für kalten Solar-/SHK-Traffic. `/growth-audit/` und `/anfrage-system-analyse/` dürfen nicht als Hauptfunnel zurückkehren.
 - n8n bleibt bis zu einem versionierten Contract und einer expliziten Workflow-Freigabe abgekoppelt.
 - Der Default-Pfad verarbeitet keine personenbezogenen Daten; Ergebnis und Kontaktdaten werden erst im separaten Kontakt-Schritt nach Einwilligung an WordPress REST übergeben.
@@ -18,7 +18,7 @@ Report-Spec: `docs/specs/anfrage-system-analyse-report-v1.md`
 
 ## Ziel
 
-Die Anfrage-System-Analyse ist der 14-Tage-Fitcheck für passende Betriebe. Sie soll nicht als kostenloser Massen-Leadmagnet wirken, sondern als qualifizierender Einstieg mit Marktbild, Anfragepfad-Prüfung, Leadkosten-Korridor und klarer Empfehlung für oder gegen eine Umsetzung.
+Die Anfragesystem-Analyse ist der 14-Tage-Fitcheck für passende Betriebe. Sie soll nicht als kostenloser Massen-Leadmagnet wirken, sondern als qualifizierender Einstieg mit Marktbild, Anfragepfad-Prüfung, Leadkosten-Korridor und klarer Empfehlung für oder gegen eine Umsetzung.
 
 ## Nicht-Ziele
 

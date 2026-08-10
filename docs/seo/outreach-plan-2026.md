@@ -30,7 +30,7 @@ Aufbauend auf `docs/seo/offpage-authority-playbook.md` (Phase 2: themenrelevante
    anbieten; kurze Zitate + Link auf die Analyse.
 5. **LinkedIn (eigene Distribution)** — Pillar-Kernthese als eigenständiger Post mit Link;
    wiederholbar pro neuem Beitrag (Brand-/Referral-Signal laut Playbook Phase 3).
-6. **Regionale Wirtschafts-/Gründermedien Hannover** — Winkel „B2B-Website als Anfrage-System
+6. **Regionale Wirtschafts-/Gründermedien Hannover** — Winkel „B2B-Website als Anfragesystem
    statt Schaufenster" (zahlt auf den lokalen Track im Playbook ein).
 
 ## Pitch-Vorlage A — Fachredaktion (Gastbeitrag)

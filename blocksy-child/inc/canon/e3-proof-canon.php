@@ -77,7 +77,7 @@ function hu_e3_canon() {
 				'value'          => HU_E3_SALES_CONVERSION_PERCENT,
 				'display'        => '12 %',
 				'counter_target' => '12',
-				'label'          => 'Abschlussquote nachher (eigenes Anfrage-System)',
+				'label'          => 'Abschlussquote nachher (eigenes Anfragesystem)',
 			],
 			'sales_conversion_uplift' => [
 				'display' => '1 – 5 % → 12 %',
@@ -121,7 +121,7 @@ function hu_e3_canon() {
 		'summary'    => [
 			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 5 % auf 12 %, 6 Monate.',
 			'proof'      => 'Referenz mittelständischer PV-Installationsbetrieb: 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 5 % auf 12 % und über 85 % weniger Kosten pro Anfrage.',
-			'conversion' => 'Die Abschlussquote stieg im selben Zeitraum von 1 – 5 % (gekaufte Portal-Leads) auf 12 % (eigenes Anfrage-System).',
+			'conversion' => 'Die Abschlussquote stieg im selben Zeitraum von 1 – 5 % (gekaufte Portal-Leads) auf 12 % (eigenes Anfragesystem).',
 		],
 	];
 }

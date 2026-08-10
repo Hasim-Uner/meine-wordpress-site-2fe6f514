@@ -37,7 +37,7 @@ Stand: 2026-07-01 (Rewrite auf Handwerker-Klartext, neue Überschrift, Slug-Wech
 | Inline-CTA-Asides rendern (Konverter erkennt „**Stopp." / „**Marktcheck-Filter:") | ✓ | `blog-pillar-posts.php` (Z. 108) |
 
 **Repo-Fixes in diesem Durchgang** (Publish-Pack-Header an den real laufenden Seed angeglichen):
-- Kategorie: jetzt beide Kategorien (Leadgenerierung + Solar-/Wärmepumpen Anfrage-Systeme).
+- Kategorie: jetzt beide Kategorien (Leadgenerierung + Solar-/Wärmepumpen Anfragesysteme).
 - Hero-Bild-Pfad: korrigiert auf `assets/img/blog/...` (Seed-Wahrheit) statt Draft-Pfad.
 - Status: „Entwurf" → „Freigegeben zur Veröffentlichung" mit Verweis auf dieses Dokument.
 

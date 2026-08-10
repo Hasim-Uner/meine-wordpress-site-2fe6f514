@@ -5,9 +5,9 @@
 
 ## Entscheidung
 
-Die Anfrage-System-Analyse verlangt keinen Admin-Zugang zu GA4, GTM, Ads, CRM, Pixeln oder Kundensystemen.
+Die Anfragesystem-Analyse verlangt keinen Admin-Zugang zu GA4, GTM, Ads, CRM, Pixeln oder Kundensystemen.
 
-Die Anfrage-System-Analyse arbeitet mit Formular-Selbstauskunft und öffentlichen Prüfsignalen wie Pixel-/Tag-Sichtbarkeit, PageSpeed, SERP-Stichprobe, Schema, Wettbewerbsbild und marktbasierter Leadkosten-Einordnung.
+Die Anfragesystem-Analyse arbeitet mit Formular-Selbstauskunft und öffentlichen Prüfsignalen wie Pixel-/Tag-Sichtbarkeit, PageSpeed, SERP-Stichprobe, Schema, Wettbewerbsbild und marktbasierter Leadkosten-Einordnung.
 
 ## Begründung
 

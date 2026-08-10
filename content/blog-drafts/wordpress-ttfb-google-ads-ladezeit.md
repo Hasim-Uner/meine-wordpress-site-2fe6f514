@@ -13,7 +13,7 @@
 - Primäre CTA-URL: `/solar-waermepumpen-leadgenerierung/#marktcheck`
 - Status: Entwurf
 
-> Hinweis: Dieser Beitrag ist eine technische und ökonomische Einordnung für Geschäftsführer, Vertriebsleiter und technische Entscheider in Solar-, Wärmepumpen- und SHK-Betrieben. Die genannten Hosting- und Software-Empfehlungen basieren auf eigenem Einsatz im Anfrage-System-Setup. Werbekennzeichnung für Partnerlinks ist im Text gesondert ausgewiesen.
+> Hinweis: Dieser Beitrag ist eine technische und ökonomische Einordnung für Geschäftsführer, Vertriebsleiter und technische Entscheider in Solar-, Wärmepumpen- und SHK-Betrieben. Die genannten Hosting- und Software-Empfehlungen basieren auf eigenem Einsatz im Anfragesystem-Setup. Werbekennzeichnung für Partnerlinks ist im Text gesondert ausgewiesen.
 
 # WordPress TTFB unter 200 ms: Wie Server-Antwortzeit den Google-Ads-Qualitätsfaktor entscheidet
 
@@ -100,7 +100,7 @@ Der Aufwand: höher. Die Skalierbarkeit: deutlich besser. Die TTFB-Werte: identi
 
 ## 5. Was TTFB im CPL und CPO konkret bewegt
 
-In der [Solar Case Study](/case-study-solar-leadgenerierung/) hat eine vollständige Anfrage-System-Migration den Cost per Lead von 150 Euro auf 22 Euro gesenkt. Page Speed war einer von mehreren Faktoren — neben Vorqualifizierung, Server-Side Tracking und CRM-Übergabe.
+In der [Solar Case Study](/case-study-solar-leadgenerierung/) hat eine vollständige Anfragesystem-Migration den Cost per Lead von 150 Euro auf 22 Euro gesenkt. Page Speed war einer von mehreren Faktoren — neben Vorqualifizierung, Server-Side Tracking und CRM-Übergabe.
 
 Aber Page Speed wirkt an drei Stellen gleichzeitig:
 
@@ -134,7 +134,7 @@ Drei Schritte, in dieser Reihenfolge:
 2. **Hosting-Standort prüfen.** Wenn der Server nicht in Deutschland steht, kostet jeder Klick aus dem DACH-Raum Latenz, die kein Cache zurückholt.
 3. **Cache-Hit-Rate prüfen.** Server-level Page Cache aktiv? Redis als Object Cache eingerichtet? Wenn nein, sind das die nächsten zwei Hebel.
 
-Wenn Sie diese drei Punkte beantwortet haben und unsicher sind, ob ein eigenes Anfrage-System die nächste sinnvolle Stufe ist, ist der [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) der direkteste Weg zur Einordnung. Händische Analyse, Befund per E-Mail in 48 Stunden, kein automatisches Software-Score.
+Wenn Sie diese drei Punkte beantwortet haben und unsicher sind, ob ein eigenes Anfragesystem die nächste sinnvolle Stufe ist, ist der [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) der direkteste Weg zur Einordnung. Händische Analyse, Befund per E-Mail in 48 Stunden, kein automatisches Software-Score.
 
 ---
 

@@ -3,7 +3,7 @@
 - Titel: Photovoltaik-Leads: Die TCO- und CPO-Rechnung für Fachbetriebe
 - Slug: `photovoltaik-leads-tco-rechnung`
 - Kategorie: Leadgenerierung
-- Tags: Photovoltaik Leads, Solar Leads, Lead-Portale, Cost per Order, Server-Side Tracking, Anfrage-System
+- Tags: Photovoltaik Leads, Solar Leads, Lead-Portale, Cost per Order, Server-Side Tracking, Anfragesystem
 - SEO-Titel (max. 60): Photovoltaik-Leads: TCO- und CPO-Rechnung
 - Meta-Description (max. 155): PV-Leads kaufen wirkt billig. Entscheidend ist CPO: Abschlussquote, Tracking, Page Speed, Datenbesitz und eigene Anfrage-Infrastruktur.
 - Excerpt: Warum Photovoltaik-Betriebe nicht CPL, sondern Cost per Order rechnen müssen. Eine harte Einordnung zu Portal-Leads, gemieteten Agentur-Funnels, Tracking, Page Speed und eigener Nachfrage-Infrastruktur.
@@ -75,7 +75,7 @@ Der Solarteur muss Vertrauen nachträglich einkaufen: durch Geschwindigkeit, Ber
 
 Das erklärt, warum geteilte oder portalnahe Leads in der Praxis häufig schwächere Abschlussquoten erzeugen. Nicht weil jeder Lead schlecht ist. Sondern weil die Ausgangslage schlechter ist. Der Kunde wurde auf Vergleich konditioniert. Der Betrieb ist einer von mehreren. Das Gespräch startet nicht mit Autorität, sondern mit Austauschbarkeit.
 
-Ein eigenes Anfrage-System dreht diese Reihenfolge.
+Ein eigenes Anfragesystem dreht diese Reihenfolge.
 
 Der Interessent landet auf einer Money Page des Betriebs. Die Argumentation ist regional, technisch und wirtschaftlich zugeschnitten. Die Vorqualifizierung fragt nicht nur "Interesse an PV?", sondern prüft Projektwert, Immobilieneignung, Investitionsabsicht, Zielgebiet und nächsten sinnvollen Schritt. Das Tracking läuft im First-Party-Context. Die Daten gehen ins eigene CRM. Die Rückmeldungen aus echten Abschlüssen verbessern die Kampagnensteuerung.
 
@@ -143,7 +143,7 @@ Alle drei Fälle sind teuer.
 
 > **Stopp. Bevor Sie weiterlesen:**
 >
-> Der regionale Marktcheck prüft exklusiv, ob Zielgebiet, Projektvolumen und Vertriebsreife die Amortisation eines eigenen Anfrage-Systems in unter 90 Tagen plausibel machen.
+> Der regionale Marktcheck prüft exklusiv, ob Zielgebiet, Projektvolumen und Vertriebsreife die Amortisation eines eigenen Anfragesystems in unter 90 Tagen plausibel machen.
 >
 > Keine Verkaufspräsentation. Keine Leadmagnet-Show. Daten-Validierung: TCO, CPO, Abschlussquote und Kanalabhängigkeit.
 >
@@ -163,7 +163,7 @@ Bei jeder Kampagne lernt das Portal mehr über Suchverhalten, Regionen, Abschlus
 
 Aber die Lernkurve bleibt draußen.
 
-Ein eigenes Anfrage-System verlagert diese Lernkurve in den Betrieb. Die Money Page, die Kampagnendaten, die Tracking-Historie, die CRM-Rückmeldung, die regionalen Keyword-Sets und die Conversion-Mechanik gehören nicht dem Vermittler. Sie gehören dem Unternehmen, das die Aufträge ausführt.
+Ein eigenes Anfragesystem verlagert diese Lernkurve in den Betrieb. Die Money Page, die Kampagnendaten, die Tracking-Historie, die CRM-Rückmeldung, die regionalen Keyword-Sets und die Conversion-Mechanik gehören nicht dem Vermittler. Sie gehören dem Unternehmen, das die Aufträge ausführt.
 
 Das ist der Unterschied zwischen Vertriebskosten und Vermögensaufbau.
 
@@ -183,7 +183,7 @@ Ihre Historie bleibt fragmentiert. Ein Teil liegt beim Portal. Ein Teil liegt in
 
 Das ist die harte strategische Differenz.
 
-Leadkauf kann Liquidität in Auftragseingang verwandeln. Ein eigenes Anfrage-System kann zusätzlich Firmenwert im Nachfrageprozess aufbauen.
+Leadkauf kann Liquidität in Auftragseingang verwandeln. Ein eigenes Anfragesystem kann zusätzlich Firmenwert im Nachfrageprozess aufbauen.
 
 ## 4. Die GoHighLevel-White-Label-Falle
 
@@ -270,7 +270,7 @@ Langsame Seiten beschädigen also nicht nur Conversion. Sie beschädigen die Ler
 >
 > Wenn Ihre aktuelle Strecke aus Plattformmiete, Page-Speed-Verlusten und fremder Datenbasis besteht, ist der Monatsbeitrag nicht die Wahrheit.
 >
-> Der Marktcheck prüft, ob Ihr Zielgebiet ein eigenes Anfrage-System trägt oder ob Portal-Zukauf als Übergang rationaler ist.
+> Der Marktcheck prüft, ob Ihr Zielgebiet ein eigenes Anfragesystem trägt oder ob Portal-Zukauf als Übergang rationaler ist.
 >
 > [TCO und Zielgebiet prüfen](/solar-waermepumpen-leadgenerierung/#marktcheck)
 
@@ -284,7 +284,7 @@ Das Problem: Der Werbealgorithmus lernt dann nicht, wer kauft. Er lernt, wer For
 
 Das ist ein massiver Unterschied.
 
-Ein sauber gebautes Anfrage-System misst nicht nur den ersten Kontakt. Es verbindet den gesamten Weg: Klick, Landingpage, Formular, Qualifizierung, CRM-Status, Vertriebsergebnis und Auftrag. Erst dadurch entsteht eine Datenbasis, mit der Werbebudget präziser arbeiten kann.
+Ein sauber gebautes Anfragesystem misst nicht nur den ersten Kontakt. Es verbindet den gesamten Weg: Klick, Landingpage, Formular, Qualifizierung, CRM-Status, Vertriebsergebnis und Auftrag. Erst dadurch entsteht eine Datenbasis, mit der Werbebudget präziser arbeiten kann.
 
 Der technische Kern ist [Server-Side Tracking im First-Party-Context](/server-side-tracking-b2b/).
 
@@ -324,7 +324,7 @@ Damit verschiebt sich die Kampagnenlogik. Der Werbekanal sucht nicht mehr nach m
 
 Genau hier scheitern viele gemietete Funnel-Setups. Sie erzeugen Frontend-Conversions, aber keine belastbare Rückkopplung aus dem Vertrieb. Das Dashboard sieht aktiv aus. Der Kalender füllt sich. Der Vertrieb arbeitet. Aber das System lernt nicht aus Abschlüssen.
 
-Ein eigenes Anfrage-System muss deshalb immer drei Ebenen verbinden:
+Ein eigenes Anfragesystem muss deshalb immer drei Ebenen verbinden:
 
 ```text
 1. First-Party Tracking auf eigener Infrastruktur
@@ -340,7 +340,7 @@ Wer diese Kette nicht besitzt, optimiert blind. Wer sie besitzt, baut mit jedem 
 
 Ein Portalvertrag ist OPEX. Eine Funnel-Monatsmiete ist OPEX. Ein GoHighLevel-Sub-Account unter Agenturkontrolle ist OPEX mit Kündigungsrisiko.
 
-Ein eigenes Anfrage-System kann dagegen teilweise Investitionscharakter haben: Money Page, Tracking-Container, CRM-Anbindung, Datenmodell, Conversion-Logik, regionale Keyword-Sets, dokumentierte Kampagnenstruktur.
+Ein eigenes Anfragesystem kann dagegen teilweise Investitionscharakter haben: Money Page, Tracking-Container, CRM-Anbindung, Datenmodell, Conversion-Logik, regionale Keyword-Sets, dokumentierte Kampagnenstruktur.
 
 Wichtig: Das ist keine Steuerberatung.
 
@@ -378,7 +378,7 @@ Der Rechner trennt Leadkosten, Vertriebszeit und Plattformkosten. Genau dadurch 
 
 Das Ergebnis darf nicht weichgespült werden. Wenn die eigene Strecke bei einem Betrieb nicht trägt, muss die Rechnung das zeigen. Wenn Portal-Zukauf als Übergang wirtschaftlich sinnvoll ist, muss auch das sichtbar werden.
 
-Ein Anfrage-System ist keine Glaubensfrage. Es ist eine Rechenfrage.
+Ein Anfragesystem ist keine Glaubensfrage. Es ist eine Rechenfrage.
 
 ## 9. Case Study: 71 Prozent CPO-Reduktion, konservativ gerechnet
 
@@ -427,7 +427,7 @@ Das ist entscheidend.
 
 Viele PV-Betriebe reagieren auf schwache Portal-Leads mit Vertriebstraining. Das kann helfen, löst aber nicht den Kern. Wenn der Kunde bereits mit mehreren Anbietern spricht, wenig Kontext hat und auf Preisvergleich eingestellt ist, muss der Vertrieb gegen die Architektur des Kanals arbeiten.
 
-Beim eigenen Anfrage-System verschiebt sich diese Ausgangslage:
+Beim eigenen Anfragesystem verschiebt sich diese Ausgangslage:
 
 - Der Interessent kommt über die eigene Strecke.
 - Die Marke ist vor dem Erstkontakt sichtbar.
@@ -441,7 +441,7 @@ Der [Solar Case Study Methodik-Case](/case-study-solar-leadgenerierung/) ist des
 
 ## 10. Replikation heißt nicht Kopieren. Es heißt: keine Lernkurve zweimal bezahlen.
 
-Viele Betriebe überschätzen die Dauer eines Anfrage-System-Aufbaus, weil sie an einen Kaltstart denken.
+Viele Betriebe überschätzen die Dauer eines Anfragesystem-Aufbaus, weil sie an einen Kaltstart denken.
 
 Strategie-Workshop. Zielgruppenfindung. Keyword-Recherche. Wireframes. Tracking-Konzept. Formularlogik. CRM-Struktur. Kampagnenaufbau. Testing. Optimierung. Wochen werden zu Monaten, bevor überhaupt eine belastbare Anfrage kommt.
 
@@ -490,9 +490,9 @@ Die regionale Kalibrierung entscheidet über die Details:
 
 Deshalb dauert der Aufbau nicht Monate, weil ein System erfunden werden muss. Er dauert so lange, wie die saubere Kalibrierung dauert.
 
-## 11. Für wen sich ein eigenes PV-Anfrage-System lohnt
+## 11. Für wen sich ein eigenes PV-Anfragesystem lohnt
 
-Nicht jeder Photovoltaik-Betrieb sollte ein eigenes Anfrage-System bauen.
+Nicht jeder Photovoltaik-Betrieb sollte ein eigenes Anfragesystem bauen.
 
 Wer keine klare Region hat, keine schnelle Reaktion sicherstellt, keine Angebotsdisziplin besitzt oder jeden Lead unabhängig vom Projektwert annimmt, sollte zuerst den Vertrieb ordnen. Sonst wird nur ein besseres System an einen schwachen Prozess angeschlossen.
 
@@ -521,7 +521,7 @@ jeder Kontakt soll irgendwie verkauft werden
 
 Das ist keine moralische Bewertung. Das ist Fit.
 
-Ein eigenes Anfrage-System verstärkt einen guten wirtschaftlichen Kern. Es repariert keinen Betrieb, der noch nicht weiß, welche Projekte er überhaupt gewinnen will.
+Ein eigenes Anfragesystem verstärkt einen guten wirtschaftlichen Kern. Es repariert keinen Betrieb, der noch nicht weiß, welche Projekte er überhaupt gewinnen will.
 
 Die Qualifizierung sollte deshalb nicht über plumpe Mitarbeiterzahlen laufen. Mitarbeiterzahl ist ein grober Indikator, aber kein Fit-Kriterium.
 
@@ -554,7 +554,7 @@ Weil sie exklusiv entstehen, unter der eigenen Marke laufen, sauber vorqualifizi
 
 Viele Agenturen verkaufen keine eigene Infrastruktur, sondern gemietete Sub-Accounts. Bei Kündigung können Pages, Historie, Automationen, Tracking und Datenzugriff verloren gehen. Dazu kommen häufig Page-Speed-Probleme durch Plattform- und Builder-Ballast.
 
-### Für wen lohnt sich ein eigenes Anfrage-System?
+### Für wen lohnt sich ein eigenes Anfragesystem?
 
 Für PV-Betriebe mit hohen Projektwerten, klarem Zielgebiet, eigenem Vertrieb oder geschäftsführergeführtem Abschlussprozess und Bereitschaft zur sauberen CRM- und Tracking-Disziplin.
 
@@ -581,7 +581,7 @@ Zielgebiet:
 Gibt es in Ihrer Region genug Nachfrage und einen wirtschaftlich sinnvollen Wettbewerbsraum?
 ```
 
-Wenn der Fit grün ist, wird die Anfrage-System-Analyse vorbereitet.
+Wenn der Fit grün ist, wird die Anfragesystem-Analyse vorbereitet.
 
 Wenn der Fit gelb ist, werden die Risiken benannt.
 

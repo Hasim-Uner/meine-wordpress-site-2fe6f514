@@ -30,7 +30,7 @@ function nexus_get_wgos_cluster_page_data() {
 	// kein verwaister Konfigurations-Ballast in jedem Request initialisiert wird.
 	$pages = [
 		'ga4-tracking-setup' => [
-			'eyebrow'          => 'GA4 Tracking Setup · Messbarkeit im Anfrage-System',
+			'eyebrow'          => 'GA4 Tracking Setup · Messbarkeit im Anfragesystem',
 			'title'            => 'GA4 Tracking Setup für B2B-WordPress-Websites',
 			'lead'             => 'GA4 Tracking Setup heißt hier: Event-Logik, Consent, GTM und serverseitige Signale so bauen, dass Sie Anfragen, Einstiegsseiten und Leadqualität belastbar sehen.',
 			'intro'            => [
@@ -98,7 +98,7 @@ function nexus_get_wgos_cluster_page_data() {
 			'schema_description' => 'GA4 Tracking Setup: Event-Logik, GTM, Consent Mode und Server Side Tracking für B2B-WordPress-Websites.',
 		],
 		'performance-marketing' => [
-			'eyebrow'          => 'Paid-Kontext im Anfrage-System',
+			'eyebrow'          => 'Paid-Kontext im Anfragesystem',
 			'title'            => 'Performance Marketing',
 			'lead'             => 'Paid darf Nachfrage verstärken, aber keine strukturellen Fehler verdecken. Ohne Fundament wird Budget nur schneller verbrannt.',
 			'intro'            => [
@@ -346,7 +346,7 @@ function nexus_render_wgos_cluster_page( $page ) {
 
 					<aside class="nx-card nx-card--flat nx-cluster-hero__card">
 						<span class="nx-cluster-hero__card-kicker">So ist die Seite gebaut</span>
-						<p>Diese Seite ist keine isolierte Service-Landingpage mehr. Sie ordnet das Thema in die Anfrage-System-Logik ein und zeigt die passenden Bausteine für den nächsten sinnvollen Schritt.</p>
+						<p>Diese Seite ist keine isolierte Service-Landingpage mehr. Sie ordnet das Thema in die Anfragesystem-Logik ein und zeigt die passenden Bausteine für den nächsten sinnvollen Schritt.</p>
 						<p class="nx-cluster-hero__card-link"><a href="<?php echo esc_url( $results_url ); ?>">Ergebnisse ansehen</a></p>
 					</aside>
 				</div>
@@ -372,7 +372,7 @@ function nexus_render_wgos_cluster_page( $page ) {
 			<div class="nx-container nx-cluster-stack">
 				<div class="nx-section-header">
 					<span class="nx-badge nx-badge--gold">Systemlogik</span>
-					<h2 class="nx-headline-section">Wie das im Anfrage-System gelöst wird</h2>
+					<h2 class="nx-headline-section">Wie das im Anfragesystem gelöst wird</h2>
 				</div>
 
 				<div class="nx-prose nx-cluster-prose">
@@ -817,7 +817,7 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 			'supporting_link' => [
 				'label' => 'Solar- & Wärmepumpen-Leadgenerierung',
 				'url'   => $solar_pillar_url,
-				'text'  => 'Wenn der Kontext konkret Solar oder Wärmepumpen ist und aus Portal-Mietern Eigentümer der Nachfrage werden sollen, ist die Pillar-Seite der direkte Einstieg in das eigene Anfrage-System.',
+				'text'  => 'Wenn der Kontext konkret Solar oder Wärmepumpen ist und aus Portal-Mietern Eigentümer der Nachfrage werden sollen, ist die Pillar-Seite der direkte Einstieg in das eigene Anfragesystem.',
 			],
 		],
 		'b2b-landingpage-optimieren' => [

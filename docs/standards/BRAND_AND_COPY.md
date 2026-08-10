@@ -5,13 +5,13 @@ Skills reference this file instead of duplicating brand rules.
 
 ## Identity
 
-- Role: **Architekt für eigene Anfrage-Systeme**
+- Role: **Architekt für eigene Anfragesysteme**
 - Entity: Haşim Üner, hasimuener.de
 - Not: WordPress-Agentur, B2B-Generalist, Performance-Marketing-Agentur, Webdesign-Dienstleister
 
 ## Positioning
 
-**Ich baue Solar- und Wärmepumpen-Anbietern im DACH-Raum eigene Anfrage-Systeme, die Portal-Abhängigkeit ablösen und Leadkosten messbar senken.**
+**Ich baue Solar- und Wärmepumpen-Anbietern im DACH-Raum eigene Anfragesysteme, die Portal-Abhängigkeit ablösen und Leadkosten messbar senken.**
 
 - Zielgruppe: Solar-, Wärmepumpen-, Speicher- und Energie-Anbieter mit eigenem Vertrieb, hohen Projektwerten und klarem Zielgebiet
 - Wettbewerb: Lead-Portale (Aroundhome, Check24, DAA) — nicht Webdesign-Agenturen
@@ -23,7 +23,7 @@ Skills reference this file instead of duplicating brand rules.
 ## Offer Ladder
 
 ```
-Marktcheck -> Anfrage-System-Analyse -> Umsetzung / Retainer
+Marktcheck -> Anfragesystem-Analyse -> Umsetzung / Retainer
 ```
 
 - Primary CTA: Marktcheck (`/solar-waermepumpen-leadgenerierung/#marktcheck`)
@@ -38,7 +38,7 @@ Marktcheck -> Anfrage-System-Analyse -> Umsetzung / Retainer
 
 ## Preferred Terms
 
-`Anfrage-System`, `eigene Anfragen`, `Portal-Abhängigkeit`, `Leadkosten`,
+`Anfragesystem`, `eigene Anfragen`, `Portal-Abhängigkeit`, `Leadkosten`,
 `Kosten pro Anfrage`, `qualifizierte Anfragen`, `Abschlussquote`,
 `Vorqualifizierung`, `Tracking`, `Nachfrage-Infrastruktur`,
 `System-Diagnose`, `Potenzial-Check`, `priorisierte Hebel`,
@@ -136,7 +136,7 @@ eine bewusste Ausnahme, keine Drift:
   lokalem Einstieg.
 - Der Begriff wird immer qualifiziert („für messbare B2B-Anfragen"), nie allein
   als Rollen-Claim gesetzt. Im Fließtext bleibt die Rolle `Spezialist für
-  WordPress als Anfrage-System`, ausdrücklich abgegrenzt gegen die lokale
+  WordPress als Anfragesystem`, ausdrücklich abgegrenzt gegen die lokale
   Allround-Agentur.
 - **Benachbarte Kategoriebegriffe bleiben draußen.** Am 2026-07-09 wurden
   `Webdesign-Agentur`, `Internetagentur` und `Webagentur` über zwei FAQ-Items

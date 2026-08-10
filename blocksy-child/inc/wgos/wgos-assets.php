@@ -152,7 +152,7 @@ function nexus_render_wgos_asset_label( $label ) {
 	if ( '' === $hint ) {
 		$hint = $asset instanceof WP_Post
 			? __( 'Öffnet die passende Baustein-Seite mit Nutzen, Kontext und nächstem sinnvollen Schritt.', 'blocksy-child' )
-			: __( 'Dieses Asset wird im Anfrage-System priorisiert und in der Methode sauber eingeordnet.', 'blocksy-child' );
+			: __( 'Dieses Asset wird im Anfragesystem priorisiert und in der Methode sauber eingeordnet.', 'blocksy-child' );
 	}
 
 	return sprintf(

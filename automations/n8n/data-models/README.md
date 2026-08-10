@@ -6,7 +6,7 @@ Aktuell wichtig:
 
 - Frontend-Payload fuer den Customer Journey Audit
 - V3-Contract fuer den Instant-Results-Refactor
-- Anfrage-System-Analyse Submit-Payload v1 für den neuen Analyse-Einstieg. Der bestehende Contract-Dateiname `readiness-diagnosis-payload.v1.contract.json` bleibt bis zur nächsten Contract-Version intern stabil.
+- Anfragesystem-Analyse Submit-Payload v1 für den neuen Analyse-Einstieg. Der bestehende Contract-Dateiname `readiness-diagnosis-payload.v1.contract.json` bleibt bis zur nächsten Contract-Version intern stabil.
 
 Ziel:
 

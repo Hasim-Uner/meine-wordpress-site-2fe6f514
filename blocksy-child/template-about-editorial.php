@@ -51,7 +51,7 @@ $about_work_principles = [
 	[
 		'eyebrow' => 'Überzeugung I',
 		'title'   => 'Code muss verkaufen, nicht informieren.',
-		'body'    => 'Die meisten Websites sind digitale Hochglanz-Prospekte. Wer selbst aus dem Vertrieb kommt, weiß: Eine B2B-Website hat eine Aufgabe — Abschlüsse vorzubereiten. Ein eigenes Anfrage-System ist kein Informationsfriedhof, sondern ein scharf kalkulierter Filter, der unqualifizierte Anfragen abweist und kaufbereite Entscheider isoliert.',
+		'body'    => 'Die meisten Websites sind digitale Hochglanz-Prospekte. Wer selbst aus dem Vertrieb kommt, weiß: Eine B2B-Website hat eine Aufgabe — Abschlüsse vorzubereiten. Ein eigenes Anfragesystem ist kein Informationsfriedhof, sondern ein scharf kalkulierter Filter, der unqualifizierte Anfragen abweist und kaufbereite Entscheider isoliert.',
 		'detail'  => 'Wer acht Jahre im B2B-Vertrieb stand, weiß: Wenn die technische Struktur die Sprache des Vertriebs nicht spricht, ist sie wertlos.',
 	],
 	[
@@ -80,7 +80,7 @@ $about_fit_points = [
 	],
 	[
 		't' => 'Verständnis für Infrastruktur statt Landingpage.',
-		's' => 'Ein eigenes Anfrage-System ist ein digitaler Vermögenswert. Wer eine günstige Landingpage sucht, ist hier falsch.',
+		's' => 'Ein eigenes Anfragesystem ist ein digitaler Vermögenswert. Wer eine günstige Landingpage sucht, ist hier falsch.',
 	],
 ];
 
@@ -133,8 +133,8 @@ get_header();
 
 			<!-- HERO — Outcome + ein ruhiger Textlink (kein Button) -->
 			<header class="about-editorial__hero">
-				<span class="about-editorial__kicker">Architekt für eigene Anfrage-Systeme</span>
-				<h1 class="about-editorial__h1">Ich beende Portal-Abhängigkeit — mit Anfrage-Systemen, die Ihrem Betrieb gehören.</h1>
+				<span class="about-editorial__kicker">Architekt für eigene Anfragesysteme</span>
+				<h1 class="about-editorial__h1">Ich beende Portal-Abhängigkeit — mit Anfragesystemen, die Ihrem Betrieb gehören.</h1>
 				<p class="about-editorial__lead">
 					Für inhabergeführte Solar- und Wärmepumpen-Betriebe, die geteilte Portal-Leads durch eigene Daten, saubere Vorqualifizierung und direkten CRM-Anschluss ersetzen wollen.
 				</p>
@@ -151,7 +151,7 @@ get_header();
 			<!-- BIOGRAFISCHER PFAD + PORTRAIT-CARD -->
 			<section class="about-editorial__split">
 				<div class="about-editorial__path-col">
-					<h2 class="about-editorial__section-kicker">Warum ich Anfrage-Systeme baue</h2>
+					<h2 class="about-editorial__section-kicker">Warum ich Anfragesysteme baue</h2>
 					<ol class="about-editorial__path" role="list">
 						<?php foreach ( $about_hero_path as $index => $step ) : ?>
 							<li class="about-editorial__path-item">
@@ -187,7 +187,7 @@ get_header();
 						</div>
 						<div class="about-editorial__meta-row">
 							<dt>Methode</dt>
-							<dd>Eigenes Anfrage-System</dd>
+							<dd>Eigenes Anfragesystem</dd>
 						</div>
 					</dl>
 				</aside>
@@ -226,7 +226,7 @@ get_header();
 			<section class="about-editorial__fit" aria-labelledby="about-editorial-fit-title">
 				<div class="about-editorial__fit-head">
 					<h2 id="about-editorial-fit-title" class="about-editorial__section-kicker">Mit wem ich arbeite</h2>
-					<p class="about-editorial__fit-intro">Nicht jeder Betrieb braucht ein eigenes Anfrage-System. Drei Dinge müssen stimmen — sonst ist die ehrliche Antwort: noch nicht.</p>
+					<p class="about-editorial__fit-intro">Nicht jeder Betrieb braucht ein eigenes Anfragesystem. Drei Dinge müssen stimmen — sonst ist die ehrliche Antwort: noch nicht.</p>
 				</div>
 				<ul class="about-editorial__fit-list" role="list">
 					<?php foreach ( $about_fit_points as $fit_item ) : ?>
@@ -277,9 +277,9 @@ get_header();
 			<!-- FINAL CTA — der einzige primäre Button der Seite -->
 			<footer class="about-editorial__cta-card">
 				<span class="about-editorial__cta-eyebrow">Exklusiver Marktcheck</span>
-				<h2 class="about-editorial__cta-title">Bereit für ein eigenes Anfrage-System?</h2>
+				<h2 class="about-editorial__cta-title">Bereit für ein eigenes Anfragesystem?</h2>
 				<p class="about-editorial__cta-text">
-					Wir analysieren, wie viel Werbebudget aktuell in Portal-Lücken versickert und wie ein eigenes Anfrage-System für Ihren Betrieb aussehen muss. Manueller, tiefer Marktcheck, händische Prüfung der Regions-Verfügbarkeit, Befund innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.
+					Wir analysieren, wie viel Werbebudget aktuell in Portal-Lücken versickert und wie ein eigenes Anfragesystem für Ihren Betrieb aussehen muss. Manueller, tiefer Marktcheck, händische Prüfung der Regions-Verfügbarkeit, Befund innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.
 				</p>
 				<a
 					href="<?php echo esc_url( $request_url ); ?>"

@@ -1,5 +1,5 @@
 /*
- * Homepage Anfrage-System Teaser (runtime, no build step required)
+ * Homepage Anfragesystem Teaser (runtime, no build step required)
  * Mounts into #homepage-mindmap-teaser-root on the front page.
  */
 (function () {
@@ -117,9 +117,9 @@
 		'<section class="hmt-root" aria-labelledby="hmt-title">' +
 		'<div class="hmt-shell">' +
 		'<p class="hmt-kicker">System-Vorschau</p>' +
-		'<h3 id="hmt-title">Anfrage-System in 3 Phasen</h3>' +
+		'<h3 id="hmt-title">Anfragesystem in 3 Phasen</h3>' +
 		'<p class="hmt-subtitle">Fundament aufbauen, Wachstum stabilisieren, Skalierung kontrolliert hochfahren.</p>' +
-		'<div class="hmt-map" aria-label="Anfrage-System Teaser">' +
+		'<div class="hmt-map" aria-label="Anfragesystem Teaser">' +
 		phases.map(renderNode).join("") +
 		"</div>" +
 		'<a class="hmt-cta" href="' + systemUrl + '">Marktcheck mit Fit-Entscheid starten →</a>' +

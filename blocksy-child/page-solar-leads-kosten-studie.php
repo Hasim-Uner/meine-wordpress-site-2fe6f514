@@ -74,7 +74,7 @@ $cost_models = [
 		's'    => 'Durch Förderdynamik und höhere Projektwerte oft teurer als reine PV-Leads. Qualität schwankt stark mit der Vorqualifizierung.',
 	],
 	[
-		't'    => 'Eigenes Anfrage-System',
+		't'    => 'Eigenes Anfragesystem',
 		'cpl'  => $e3_cpl_after . ' *',
 		'excl' => '100 % exklusiv',
 		's'    => 'Money Page + Vorqualifizierung + Tracking im eigenen Eigentum. * Referenzwert ' . $e3_case_label . ' nach Einschwingen, nicht garantiert reproduzierbar.',
@@ -97,7 +97,7 @@ $cpo_rows = [
 		'cpo'    => '3.000 €',
 	],
 	[
-		'modell' => 'Eigenes Anfrage-System (Case-Study-Referenz)',
+		'modell' => 'Eigenes Anfragesystem (Case-Study-Referenz)',
 		'cpl'    => $e3_cpl_after,
 		'conv'   => $e3_conv_after,
 		'cpo'    => '≈ 183 €',
@@ -143,7 +143,7 @@ $faqs = [
 		'answer'   => 'Die Preisspannen basieren auf öffentlich beobachtbaren Marktpreispunkten und Brancheneinordnung. Die Abschluss- und CPO-Werte des eigenen Systems sind ein dokumentierter Einzelfall (mittelständischer PV-Installationsbetrieb) und ausdrücklich als Referenz, nicht als Garantie zu lesen. Die CPO-Tabelle ist eine transparente Modellrechnung, keine Erhebung.',
 	],
 	[
-		'question' => 'Lohnt sich ein eigenes Anfrage-System gegenüber Lead-Kauf?',
+		'question' => 'Lohnt sich ein eigenes Anfragesystem gegenüber Lead-Kauf?',
 		'answer'   => 'Das hängt von Marktregion, Projektwert und Vertriebskapazität ab. Faustregel: Wer dauerhaft skaliert und exklusive, vorqualifizierte Anfragen braucht, fährt mit einem eigenen System pro Abschluss meist deutlich günstiger — bei gleichzeitigem Asset-Aufbau. Der Marktcheck mit Fit-Entscheid prüft das für Ihre Region.',
 	],
 ];
@@ -166,7 +166,7 @@ $article_schema = [
 	'author'           => $author_person,
 	'publisher'        => [ '@id' => home_url( '/#organization' ) ],
 	'about'            => [ 'Lead-Kosten', 'Cost per Lead', 'Cost per Order', 'Photovoltaik', 'Wärmepumpe' ],
-	'description'      => 'Marktstudie zu den tatsächlichen Kosten von Solar-, Wärmepumpen- und Speicher-Leads im DACH-Raum: Preisspannen je Modell, Cost-per-Order statt Cost-per-Lead, versteckte Kosten und Benchmark eines eigenen Anfrage-Systems.',
+	'description'      => 'Marktstudie zu den tatsächlichen Kosten von Solar-, Wärmepumpen- und Speicher-Leads im DACH-Raum: Preisspannen je Modell, Cost-per-Order statt Cost-per-Lead, versteckte Kosten und Benchmark eines eigenen Anfragesystems.',
 ];
 
 if ( function_exists( 'hu_get_post_schema_image_object' ) ) {
@@ -367,7 +367,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-study-final-title">Was kostet ein Abschluss in Ihrer Region?</h2>
 			<p class="hu-intercept__final-text">
-				Manueller, tiefer Marktcheck statt Software-Einheitsbrei: händische Analyse Ihrer Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, ob ein eigenes Anfrage-System pro Abschluss wirtschaftlicher ist als der Weiterkauf von Portal-Leads. Ohne Pflicht-Call, ohne Newsletter.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei: händische Analyse Ihrer Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, ob ein eigenes Anfragesystem pro Abschluss wirtschaftlicher ist als der Weiterkauf von Portal-Leads. Ohne Pflicht-Call, ohne Newsletter.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"

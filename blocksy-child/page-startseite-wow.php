@@ -35,7 +35,7 @@ $system_nodes = [
 		'num'    => '02',
 		'kicker' => 'Eigene Strecke',
 		'title'  => 'Money Page, Beweis und Marktcheck greifen zusammen.',
-		'desc'   => 'Die Seite beantwortet zuerst die wirtschaftliche Frage: Lohnt sich ein eigenes Anfrage-System in dieser Region und mit diesem Vertrieb?',
+		'desc'   => 'Die Seite beantwortet zuerst die wirtschaftliche Frage: Lohnt sich ein eigenes Anfragesystem in dieser Region und mit diesem Vertrieb?',
 	],
 	[
 		'num'    => '03',
@@ -91,11 +91,11 @@ get_header();
 				<div class="hu-hero__eyebrow">
 					<span class="hu-tag">
 						<span class="hu-dot hu-dot--live"></span>
-						<span class="hu-mono">ANFRAGE-SYSTEM · SOLAR · SHK · DACH</span>
+						<span class="hu-mono">ANFRAGESYSTEM · SOLAR · SHK · DACH</span>
 					</span>
 				</div>
 
-				<h1 class="hu-display hu-wow-hero__title">Das eigene Anfrage-System als sichtbare Maschine.</h1>
+				<h1 class="hu-display hu-wow-hero__title">Das eigene Anfragesystem als sichtbare Maschine.</h1>
 				<p class="hu-wow-hero__lead">
 					Für Solar-, Wärmepumpen- und Speicher-Anbieter, die nicht mehr raten wollen,
 					wo Anfragen verloren gehen. Nachfrage, Vorqualifizierung, Tracking und Vertrieb
@@ -133,11 +133,11 @@ get_header();
 		<div class="hu-container">
 			<div class="hu-wow-section-head" data-wow-reveal>
 				<span class="hu-eyebrow">01 / System-Cockpit</span>
-				<h2>So sieht das Anfrage-System aus, wenn es nicht als Website, sondern als Infrastruktur gedacht wird.</h2>
+				<h2>So sieht das Anfragesystem aus, wenn es nicht als Website, sondern als Infrastruktur gedacht wird.</h2>
 				<p>Die Oberfläche bleibt einfach. Darunter laufen vier Ebenen zusammen: Nachfrage, eigener Filter, Daten-Integrität und Vertrieb.</p>
 			</div>
 
-			<div class="hu-wow-engine" aria-label="Vier Ebenen des Anfrage-Systems">
+			<div class="hu-wow-engine" aria-label="Vier Ebenen des Anfragesystems">
 				<div class="hu-wow-engine__visual" aria-hidden="true" data-wow-reveal>
 					<div class="hu-wow-engine__lane hu-wow-engine__lane--one"></div>
 					<div class="hu-wow-engine__lane hu-wow-engine__lane--two"></div>
@@ -243,7 +243,7 @@ get_header();
 					<div class="hu-wow-route__actions">
 						<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 							data-track-action="cta_wow_final_marktcheck" data-track-category="lead_gen" data-track-section="wow_route">
-							Region und Anfrage-System prüfen
+							Region und Anfragesystem prüfen
 							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 						</a>
 						<a href="<?php echo esc_url( $energy_url ); ?>" class="hu-btn hu-btn-ghost"

@@ -55,7 +55,7 @@ $category_deep_link_map = [
 	],
 	'owned-leads' => [
 		[ 'label' => 'Asset-Eigentum Vergleichsmatrix', 'url' => $portal_url ],
-		[ 'label' => 'Anfrage-Systeme', 'url' => $energy_url ],
+		[ 'label' => 'Anfragesysteme', 'url' => $energy_url ],
 		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
 	],
 	'sichtbarkeit-daten-conversion' => [
@@ -89,7 +89,7 @@ $category_deep_link_map = [
 		[ 'label' => 'WordPress Agentur Hannover', 'url' => $agentur_url ],
 	],
 	'strategie' => [
-		[ 'label' => 'Anfrage-Systeme', 'url' => $energy_url ],
+		[ 'label' => 'Anfragesysteme', 'url' => $energy_url ],
 		[ 'label' => 'Strategischer Portal-Vergleich', 'url' => $portal_url ],
 		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
 	],
@@ -249,7 +249,7 @@ $category_deep_links = $category_deep_link_map[ $current_term_slug ] ?? [
 					<?php esc_html_e( 'Lesen ersetzt keine Systemdiagnose.', 'blocksy-child' ); ?>
 				</h2>
 				<p class="blog-bell__bottom-cta-text">
-					<?php esc_html_e( 'Der regionale Marktcheck prüft, ob Projektwerte, Zielgebiet, Vertrieb und Website-Fundament für ein eigenes Anfrage-System tragfähig sind.', 'blocksy-child' ); ?>
+					<?php esc_html_e( 'Der regionale Marktcheck prüft, ob Projektwerte, Zielgebiet, Vertrieb und Website-Fundament für ein eigenes Anfragesystem tragfähig sind.', 'blocksy-child' ); ?>
 				</p>
 				<a
 					class="blog-bell__bottom-cta-link"

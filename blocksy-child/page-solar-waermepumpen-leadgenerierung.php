@@ -110,7 +110,7 @@ $method_cards = [
 	],
 	[
 		'n'   => '02',
-		't'   => 'Eigenes Anfrage-System',
+		't'   => 'Eigenes Anfragesystem',
 		's'   => 'Die Seite, auf der Ihre Anfragen entstehen, plus Beleg- und Angebotsseiten. <a href="' . esc_url( $tracking_url ) . '">Server-Side-Tracking</a> auf eigenem Server — belastbare Zahlen trotz Ad-Blockern. <a href="' . esc_url( $cro_url ) . '">Vorqualifizierung</a> vor dem Formular statt 5-Felder-Hürdenlauf.',
 		'out' => 'Output / System · Frankfurt · CAPI · Lead-Scoring',
 	],
@@ -313,7 +313,7 @@ $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
 	'@id'         => trailingslashit( $page_url ) . '#service',
-	'name'        => 'B2B Solar Leadgenerierung — Aufbau eigener Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter',
+	'name'        => 'B2B Solar Leadgenerierung — Aufbau eigener Anfragesysteme für Solar- und Wärmepumpen-Anbieter',
 	'alternateName' => [ 'Photovoltaik Leadgenerierung', 'Eigene Solar Leads gewinnen', 'B2B Solar Leads' ],
 	'serviceType' => 'Eigene Anfrage-Infrastruktur für Solar- und Wärmepumpen-Anbieter: WordPress hardcoded, Server-Side-Tracking, Lead-Scoring und CRM-Übergabe',
 	'category'    => 'B2B Lead Generation Infrastructure',
@@ -323,7 +323,7 @@ $service_schema = [
 	'provider'    => [
 		'@type'       => 'Organization',
 		'@id'         => $organization_id,
-		'name'        => 'Haşim Üner — Anfrage-Systeme für Solar & Wärmepumpe',
+		'name'        => 'Haşim Üner — Anfragesysteme für Solar & Wärmepumpe',
 		'url'         => home_url( '/' ),
 		'founder'     => [
 			'@id' => function_exists( 'hu_person_schema_id' ) ? hu_person_schema_id() : home_url( '/uber-mich/#person' ),
@@ -458,7 +458,7 @@ get_header();
 					</h1>
 					<p class="hu-hero__sub">
 						Aroundhome, DAA und Wattfox verkaufen dieselbe Anfrage an drei Betriebe — Sie bieten gegen den Preis.
-						Ein eigenes Anfrage-System für Photovoltaik, Wärmepumpe und Speicher zeigt
+						Ein eigenes Anfragesystem für Photovoltaik, Wärmepumpe und Speicher zeigt
 						<strong>Region, Dach und Projektwert</strong> vor dem ersten Anruf.
 						Der Kanal gehört Ihnen, nicht dem Portal.
 					</p>
@@ -621,7 +621,7 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     ANFRAGE-SYSTEM-KETTE — Anzeige → Landingpage → Qualifizierung → CRM
+		     ANFRAGESYSTEM-KETTE — Anzeige → Landingpage → Qualifizierung → CRM
 		     Inline-SVG in zwei Layout-Varianten (CSS-Breakpoint 820px),
 		     baut sich beim Scroll-Eintritt stufenweise auf.
 		     SSR zeigt den Endzustand — ohne JS/bei Reduced Motion statisch.
@@ -639,11 +639,11 @@ get_header();
 		<section
 			class="sol-chain"
 			id="anfrage-system"
-			aria-label="Das Anfrage-System im Überblick"
+			aria-label="Das Anfragesystem im Überblick"
 			data-track-section="request_chain"
 		>
 			<div class="hu-container">
-				<span class="hu-eyebrow">Das Anfrage-System · von der Anzeige bis ins CRM</span>
+				<span class="hu-eyebrow">Das Anfragesystem · von der Anzeige bis ins CRM</span>
 				<figure class="sol-chain-fig">
 					<svg class="sol-chain-svg sol-chain-svg--d" viewBox="0 0 760 150" aria-hidden="true" focusable="false">
 						<?php foreach ( $chain_stages as $ci => $stage ) : $cx = $chain_cx[ $ci ]; ?>
@@ -674,7 +674,7 @@ get_header();
 						<?php endforeach; ?>
 					</svg>
 					<figcaption class="sol-sr">
-						Das Anfrage-System in vier Stufen: Anzeige, Landingpage, Qualifizierung, CRM.
+						Das Anfragesystem in vier Stufen: Anzeige, Landingpage, Qualifizierung, CRM.
 					</figcaption>
 				</figure>
 			</div>
@@ -1007,7 +1007,7 @@ get_header();
 				<aside class="sol-capex-summary">
 					<h3 class="sol-capex-summary-h">Bilanziell: CAPEX statt OPEX</h3>
 					<p>
-						Ein eigenes Anfrage-System ist eine <strong>aktivierbare Investition</strong> (CAPEX), kein wiederkehrender Kostenfaktor (OPEX). Portal-Leads sind Betriebsausgaben ohne Restwert.
+						Ein eigenes Anfragesystem ist eine <strong>aktivierbare Investition</strong> (CAPEX), kein wiederkehrender Kostenfaktor (OPEX). Portal-Leads sind Betriebsausgaben ohne Restwert.
 						Nach <span data-sol-capex-out="tf3"><?php echo esc_html( (string) $capex_default ); ?></span> Monaten haben Sie entweder
 						<strong><span data-sol-capex-out="portal_total2"><?php echo esc_html( $capex_now['portal_total'] ); ?></span> ausgegeben und besitzen nichts</strong> —
 						oder Sie haben <strong><span data-sol-capex-out="own_total2"><?php echo esc_html( $capex_now['own_total'] ); ?></span> investiert und ein skalierbares Asset</strong>

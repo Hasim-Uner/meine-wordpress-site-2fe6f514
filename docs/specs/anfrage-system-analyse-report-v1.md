@@ -1,4 +1,4 @@
-# Anfrage-System-Analyse Report v1
+# Anfragesystem-Analyse Report v1
 
 Status: defined-local-result-with-contact-submit
 Owner: Repo / Funnel
@@ -7,9 +7,9 @@ Runtime: `blocksy-child/readiness/src/App.tsx`
 
 ## Zweck
 
-Dieser Report definiert die fachliche Bedeutung des lokalen Ergebnisses am Ende der Anfrage-System-Analyse. Er ist die Brücke zwischen dem aktuellen Browser-Ergebnis und einer späteren serverseitigen Befundlogik.
+Dieser Report definiert die fachliche Bedeutung des lokalen Ergebnisses am Ende der Anfragesystem-Analyse. Er ist die Brücke zwischen dem aktuellen Browser-Ergebnis und einer späteren serverseitigen Befundlogik.
 
-Der Report entscheidet nicht über einen Verkauf. Er ordnet ein, ob ein eigener Anfrage-System-Aufbau für den Betrieb aktuell sinnvoll, bedingt sinnvoll oder nicht empfehlenswert ist.
+Der Report entscheidet nicht über einen Verkauf. Er ordnet ein, ob ein eigener Anfragesystem-Aufbau für den Betrieb aktuell sinnvoll, bedingt sinnvoll oder nicht empfehlenswert ist.
 
 ## Architektur-Grenzen
 
@@ -62,7 +62,7 @@ Grün, wenn Branche und Betriebsgröße zum Umsetzungsrahmen passen.
 
 Gelb, wenn der Betrieb energie-nah ist, aber Angebot oder Betriebsgröße noch eingeordnet werden müssen.
 
-Rot, wenn die Branche außerhalb des aktuellen Fokus liegt oder der Betrieb sehr wahrscheinlich zu früh für ein eigenes Anfrage-System ist.
+Rot, wenn die Branche außerhalb des aktuellen Fokus liegt oder der Betrieb sehr wahrscheinlich zu früh für ein eigenes Anfragesystem ist.
 
 ### Wirtschaftlichkeit
 
@@ -139,7 +139,7 @@ Diese Struktur ist die Zielstruktur für eine spätere REST- und n8n-Anbindung. 
     }
   ],
   "reasons": [
-    "Branche passt zum Anfrage-System-Fokus."
+    "Branche passt zum Anfragesystem-Fokus."
   ],
   "constraints": [
     "Leadkosten bleiben ein Korridor, keine Garantie."

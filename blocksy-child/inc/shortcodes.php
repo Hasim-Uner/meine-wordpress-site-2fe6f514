@@ -351,7 +351,7 @@ function hu_hero_section_shortcode() {
 			<div class="wp-container">
 				<div class="wp-hero-grid">
 					<div class="wp-hero-copy">
-						<span class="wp-badge nx-reveal">Architekt für eigene Anfrage-Systeme</span>
+						<span class="wp-badge nx-reveal">Architekt für eigene Anfragesysteme</span>
 						<h1 class="wp-hero-title nx-reveal">
 							Ich mache aus Ihrer<br><span>WordPress-Website ein planbares Nachfrage-System.</span>
 						</h1>
@@ -618,7 +618,7 @@ function hu_wgos_block_shortcode() {
 				</div>
 			</div>
 
-			<div id="homepage-mindmap-teaser-root" class="homepage-mindmap-section" aria-label="Anfrage-System Teaser"></div>
+			<div id="homepage-mindmap-teaser-root" class="homepage-mindmap-section" aria-label="Anfragesystem Teaser"></div>
 
 			<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:2.5rem;">
 				<a href="<?php echo esc_url( $urls['audit'] ); ?>" class="wp-btn wp-btn-primary" data-track-action="cta_wgos_marketcheck" data-track-category="lead_gen">Marktcheck mit Fit-Entscheid starten</a>

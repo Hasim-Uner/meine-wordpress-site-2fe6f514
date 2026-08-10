@@ -126,7 +126,7 @@ $e3_sales_rate  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conve
 					<span class="results-case-card__kicker">Sekundärer Einstieg · WordPress Agentur Hannover</span>
 					<h2 class="results-case-card__title">Wenn es nicht um Solar geht, aber um ein erklärungsbedürftiges B2B-Angebot.</h2>
 					<p class="results-case-card__context">
-						Die Methodik hinter dieser Case Study ist nicht „mehr Leads kaufen", sondern WordPress, Tracking, SEO und Conversion als Anfrage-System zu ordnen. Für B2B-Websites außerhalb des Solar-Fokus ist die Agentur-Seite der passendere Einstieg.
+						Die Methodik hinter dieser Case Study ist nicht „mehr Leads kaufen", sondern WordPress, Tracking, SEO und Conversion als Anfragesystem zu ordnen. Für B2B-Websites außerhalb des Solar-Fokus ist die Agentur-Seite der passendere Einstieg.
 					</p>
 					<div class="results-case-card__actions">
 						<a href="<?php echo esc_url( $agentur_url ); ?>" class="nx-btn nx-btn--ghost" data-track-action="cta_results_to_agentur" data-track-category="navigation" data-track-section="results_b2b_bridge">

@@ -2,9 +2,9 @@
 
 Stand: 2026-05-07
 
-## Anfrage-System-Analyse
+## Anfragesystem-Analyse
 
-Die Anfrage-System-Analyse ist ein eigener Verarbeitungsvorgang. Sie dient der evidenzbasierten Prüfung, ob ein Solar-, Wärmepumpen- oder SHK-Betrieb für ein eigenes Anfrage-System geeignet ist.
+Die Anfragesystem-Analyse ist ein eigener Verarbeitungsvorgang. Sie dient der evidenzbasierten Prüfung, ob ein Solar-, Wärmepumpen- oder SHK-Betrieb für ein eigenes Anfragesystem geeignet ist.
 
 ## Verarbeitete Daten
 
@@ -56,10 +56,10 @@ Telefonnummern bleiben ausgeschlossen. Klarnamen sind nur im Kontakt-Schritt nac
 
 ## n8n-Retention
 
-n8n ist für die Anfrage-System-Analyse aktuell nicht angebunden. Falls später ein n8n-Branch aktiviert wird, dürfen Analyse-Intakes dort maximal 30 Tage gespeichert werden. Danach werden sie gelöscht oder so anonymisiert, dass kein Rückschluss auf den konkreten Betrieb möglich ist.
+n8n ist für die Anfragesystem-Analyse aktuell nicht angebunden. Falls später ein n8n-Branch aktiviert wird, dürfen Analyse-Intakes dort maximal 30 Tage gespeichert werden. Danach werden sie gelöscht oder so anonymisiert, dass kein Rückschluss auf den konkreten Betrieb möglich ist.
 
 ## Auftragsverarbeitung
 
 WordPress ist für diesen Prozess Website, REST-Empfänger und CRM-Speicher (`nexus_contact`). Brevo ist für Transaktionsmails angebunden. n8n ist kein aktiver Empfänger dieses Payloads.
 
-Kein neuer Drittland-Default wird durch die Anfrage-System-Analyse eingeführt.
+Kein neuer Drittland-Default wird durch die Anfragesystem-Analyse eingeführt.

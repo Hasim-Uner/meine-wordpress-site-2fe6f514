@@ -57,7 +57,7 @@ $duration_max  = isset( $pricing_canon['foundation_duration_weeks_max'] ) ? (int
 // Die 50.000 € sind die eigene Fit-Schwelle, keine Marktstudie. Alle übrigen
 // Punkte sind Prüfkriterien statt ungesicherter Branchen-Durchschnittswerte.
 $b2b_facts = [
-	[ 'n' => '01', 'k' => 'ab 50.000 €', 't' => 'Projektwert', 'l' => 'Eigene Fit-Schwelle: Unterhalb davon ist ein vollständiges Gewerbe-Anfrage-System meist nicht der erste wirtschaftliche Hebel.' ],
+	[ 'n' => '01', 'k' => 'ab 50.000 €', 't' => 'Projektwert', 'l' => 'Eigene Fit-Schwelle: Unterhalb davon ist ein vollständiges Gewerbe-Anfragesystem meist nicht der erste wirtschaftliche Hebel.' ],
 	[ 'n' => '02', 'k' => 'prüfbar', 't' => 'Technische Substanz', 'l' => 'Dachfläche, Anschlussleistung, Trafostation und Nutzungsprofil müssen vor dem Vertriebsgespräch belastbar einzuordnen sein.' ],
 	[ 'n' => '03', 'k' => 'entscheidungsfähig', 't' => 'Buying-Center', 'l' => 'Die Anfrage muss zeigen, wer fachlich prüft, wer Budget freigibt und wer den Vertrag verantwortet.' ],
 	[ 'n' => '04', 'k' => 'terminierbar', 't' => 'Investitionspfad', 'l' => 'Budgetrahmen, Zeithorizont und nächster interner Beschluss gehören in die Vorqualifizierung — nicht in ein spätes Nachfassgespräch.' ],
@@ -157,7 +157,7 @@ $offer_steps = [
 	],
 	[
 		'n' => '02',
-		't' => 'Anfrage-System-Analyse',
+		't' => 'Anfragesystem-Analyse',
 		's' => 'Nur bei grünem oder gelbem Fit werden Suchintention, Buying-Center, Vorqualifizierung, Tracking und CRM-Übergabe als priorisierter Bauplan konkretisiert.',
 	],
 	[
@@ -177,12 +177,12 @@ $faq = [
 		'answer'   => 'Mindestens Projektart, Standort, Dachfläche, Anschlussleistung, Investitionsrahmen und Zeithorizont müssen einzuordnen sein. Dazu kommt die Rolle der Kontaktperson im Buying-Center. Fehlen diese Angaben, ist ein Gespräch nicht automatisch wertlos — es sollte nur nicht als qualifizierter Vertriebstermin behandelt werden.',
 	],
 	[
-		'question' => 'Für welche Gewerbe-PV-Anbieter ist das Anfrage-System gedacht?',
+		'question' => 'Für welche Gewerbe-PV-Anbieter ist das Anfragesystem gedacht?',
 		'answer'   => 'Für Anbieter mit eigenem Vertrieb, klarem Zielgebiet und Projekten ab der Fit-Schwelle von 50.000 €. Dazu können gewerbliche Photovoltaik, Speicher, EPC-Modelle oder Contracting gehören. Für reines Privatkundengeschäft oder reine Lead-Vermittlung ist diese Strecke nicht gedacht.',
 	],
 	[
 		'question' => 'Was passiert nach dem Marktcheck?',
-		'answer'   => 'Sie erhalten zuerst eine Fit-Entscheidung zu Region, Projektwert, Vertriebskapazität und Anfragequalität. Nur wenn ein eigener Anfrageweg wirtschaftlich und operativ trägt, folgt die vertiefte Anfrage-System-Analyse. Erst danach wird ein Umsetzungsumfang festgelegt.',
+		'answer'   => 'Sie erhalten zuerst eine Fit-Entscheidung zu Region, Projektwert, Vertriebskapazität und Anfragequalität. Nur wenn ein eigener Anfrageweg wirtschaftlich und operativ trägt, folgt die vertiefte Anfragesystem-Analyse. Erst danach wird ein Umsetzungsumfang festgelegt.',
 	],
 	[
 		'question' => 'Wie lange dauert die Umsetzung nach einer positiven Fit-Entscheidung?',
@@ -212,7 +212,7 @@ $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
 	'@id'         => trailingslashit( $page_url ) . '#service',
-	'name'        => 'PV-Termine und Anfrage-Systeme für gewerbliche Photovoltaik',
+	'name'        => 'PV-Termine und Anfragesysteme für gewerbliche Photovoltaik',
 	'alternateName' => [ 'PV-Termine B2B', 'B2B Solar Leads', 'Gewerbe-PV-Anfragen' ],
 	'serviceType' => 'Vorqualifizierung und Terminlogik für gewerbliche PV-, Speicher- und PPA-Anbieter',
 	'url'         => $page_url,
@@ -267,7 +267,7 @@ get_header();
 						<span>Ihr Vertrieb anreist.</span>
 					</h1>
 					<p class="hu-intercept__lead">
-						Ein Kalendereintrag ist noch keine Verkaufschance. Ein eigenes Anfrage-System prüft Projektwert, technische Substanz und Buying-Center, <strong>bevor Ihr Vertrieb Zeit blockiert</strong> — für Gewerbe-PV-Projekte ab <strong>50.000 €</strong>.
+						Ein Kalendereintrag ist noch keine Verkaufschance. Ein eigenes Anfragesystem prüft Projektwert, technische Substanz und Buying-Center, <strong>bevor Ihr Vertrieb Zeit blockiert</strong> — für Gewerbe-PV-Projekte ab <strong>50.000 €</strong>.
 					</p>
 					<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 					<div class="hu-intercept__cta hu-b2b__actions">

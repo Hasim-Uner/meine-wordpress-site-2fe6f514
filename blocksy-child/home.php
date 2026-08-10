@@ -50,7 +50,7 @@ get_header();
 				Blog
 			</span>
 			<h1 id="blog-archive-heading" class="blog-bell__title">
-				Analysen für eigene Anfrage-Systeme.
+				Analysen für eigene Anfragesysteme.
 			</h1>
 			<p class="blog-bell__lead">
 				Portal-Abhängigkeit, Leadkosten, Tracking und Vorqualifizierung — für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum, die eigene Nachfrage-Infrastruktur aufbauen wollen.

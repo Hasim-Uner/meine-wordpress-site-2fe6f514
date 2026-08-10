@@ -100,9 +100,9 @@ function nexus_get_public_proof_data() {
 			],
 		],
 		'ownership_sentence'  => 'Code, Inhalte, Zugänge und Setups bleiben bei Ihnen. Laufende Zusammenarbeit bedeutet Weiterentwicklung, nicht Abhängigkeit.',
-		'primary_term'        => 'Eigenes Anfrage-System für Solar- und Wärmepumpen-Anbieter',
-		'framework_label'     => 'Anfrage-System-Methode',
-		'framework_long'      => 'Methode für eigene Anfrage-Systeme',
+		'primary_term'        => 'Eigenes Anfragesystem für Solar- und Wärmepumpen-Anbieter',
+		'framework_label'     => 'Anfragesystem-Methode',
+		'framework_long'      => 'Methode für eigene Anfragesysteme',
 		'allowed_subterms'    => [
 			'Marktcheck',
 			'priorisierte Folgeanalyse',
@@ -638,7 +638,7 @@ function nexus_get_agentur_faq_items() {
 	return [
 		[
 			'question' => 'Welche WordPress Agentur in Hannover passt für anspruchsvolle B2B-Angebote?',
-			'answer'   => 'Eine, die WordPress-Entwicklung, technisches SEO, Tracking und Conversion-Führung als ein System behandelt — nicht als getrennte Einzelleistungen. Genau darauf ist diese Seite ausgerichtet: WordPress als Anfrage-System, geprüft an vier Kauf-Signalen, bevor ein Relaunch überhaupt zur Debatte steht.',
+			'answer'   => 'Eine, die WordPress-Entwicklung, technisches SEO, Tracking und Conversion-Führung als ein System behandelt — nicht als getrennte Einzelleistungen. Genau darauf ist diese Seite ausgerichtet: WordPress als Anfragesystem, geprüft an vier Kauf-Signalen, bevor ein Relaunch überhaupt zur Debatte steht.',
 		],
 		[
 			'question' => 'Arbeiten Sie nur mit Unternehmen aus Hannover?',
@@ -705,7 +705,7 @@ function nexus_get_e3_case_faq_items() {
 			'answer'   => sprintf( 'Erste Anfragen entstehen früh, aber der belastbare Zustand braucht Zeit. In diesem Mandat lief das System nach %s produktiv, die Kosten pro Anfrage stabilisierten sich in den drei Monaten danach. Wer eine Strecke in zwei Wochen verspricht, überspringt entweder das Tracking-Fundament oder die CRM-Anbindung — meistens beides.', $build ),
 		],
 		[
-			'question' => 'Was kostet der Aufbau eines eigenen Anfrage-Systems?',
+			'question' => 'Was kostet der Aufbau eines eigenen Anfragesystems?',
 			'answer'   => 'Das hängt davon ab, was bereits steht. Ein Betrieb mit sauberem CRM und funktionierender Website braucht etwas anderes als einer, der bei Tracking und Anfragestrecke bei null anfängt. Genau diese Einordnung ist der Zweck des Marktchecks: erst der Befund, dann der Umfang, dann ein Preis. Eine Zahl vor der Diagnose wäre geraten.',
 		],
 		[
@@ -714,7 +714,7 @@ function nexus_get_e3_case_faq_items() {
 		],
 		[
 			'question' => 'Funktioniert das auch ohne eigenen Außendienst?',
-			'answer'   => 'Nein. Ein Anfrage-System erzeugt Gespräche, keine Aufträge. Die Abschlussquote in diesem Mandat entstand, weil hinter den Anfragen eine Vertriebsmannschaft stand, die Termine wahrnehmen und Angebote schreiben konnte. Ohne diesen Anschluss verlagert ein besseres System das Problem nur nach hinten.',
+			'answer'   => 'Nein. Ein Anfragesystem erzeugt Gespräche, keine Aufträge. Die Abschlussquote in diesem Mandat entstand, weil hinter den Anfragen eine Vertriebsmannschaft stand, die Termine wahrnehmen und Angebote schreiben konnte. Ohne diesen Anschluss verlagert ein besseres System das Problem nur nach hinten.',
 		],
 		[
 			'question' => 'Ersetzt das den Portal-Einkauf sofort?',
@@ -1123,10 +1123,10 @@ function nexus_maybe_ensure_intercept_solar_leads_page() {
 				[
 					'post_type'    => 'page',
 					'post_status'  => 'publish',
-					'post_title'   => 'Solar Leads kaufen – Alternative: eigenes Anfrage-System',
+					'post_title'   => 'Solar Leads kaufen – Alternative: eigenes Anfragesystem',
 					'post_name'    => 'solar-leads-kaufen-alternative',
 					'post_content' => '',
-					'post_excerpt' => 'Intercept-Landingpage für Suchintent „Solar Leads kaufen": Argumentation für eigene Anfrage-Systeme statt Portal-Leads.',
+					'post_excerpt' => 'Intercept-Landingpage für Suchintent „Solar Leads kaufen": Argumentation für eigene Anfragesysteme statt Portal-Leads.',
 				]
 			),
 			true
@@ -1159,10 +1159,10 @@ function nexus_maybe_ensure_intercept_waermepumpen_leads_page() {
 				[
 					'post_type'    => 'page',
 					'post_status'  => 'publish',
-					'post_title'   => 'Wärmepumpen Leads – Alternative: eigenes Anfrage-System',
+					'post_title'   => 'Wärmepumpen Leads – Alternative: eigenes Anfragesystem',
 					'post_name'    => 'waermepumpen-leads',
 					'post_content' => '',
-					'post_excerpt' => 'Intercept-Landingpage für Suchintent „Wärmepumpen Leads kaufen": Argumentation für eigene Anfrage-Systeme statt Portal-Leads.',
+					'post_excerpt' => 'Intercept-Landingpage für Suchintent „Wärmepumpen Leads kaufen": Argumentation für eigene Anfragesysteme statt Portal-Leads.',
 				]
 			),
 			true
@@ -1234,7 +1234,7 @@ function nexus_maybe_ensure_server_side_tracking_page() {
 					'post_title'   => 'Server-Side Tracking für B2B-Leadgenerierung',
 					'post_name'    => 'server-side-tracking-b2b',
 					'post_content' => '',
-					'post_excerpt' => 'Server-Side Tracking auf eigenem Server: GA4, Meta CAPI, Consent Mode v2 für B2B-Anfrage-Systeme.',
+					'post_excerpt' => 'Server-Side Tracking auf eigenem Server: GA4, Meta CAPI, Consent Mode v2 für B2B-Anfragesysteme.',
 				]
 			),
 			true
@@ -1267,10 +1267,10 @@ function nexus_maybe_ensure_b2b_solar_leads_page() {
 				[
 					'post_type'    => 'page',
 					'post_status'  => 'publish',
-					'post_title'   => 'B2B Solar Leads – gewerbliche Photovoltaik-Anfrage-Systeme',
+					'post_title'   => 'B2B Solar Leads – gewerbliche Photovoltaik-Anfragesysteme',
 					'post_name'    => 'b2b-solar-leads',
 					'post_content' => '',
-					'post_excerpt' => 'Anfrage-Systeme für gewerbliche Photovoltaik, Speicher und PPA. Buying-Center-tauglicher Funnel statt B2C-Mengen-Leads.',
+					'post_excerpt' => 'Anfragesysteme für gewerbliche Photovoltaik, Speicher und PPA. Buying-Center-tauglicher Funnel statt B2C-Mengen-Leads.',
 				]
 			),
 			true

@@ -33,11 +33,11 @@ function hu_get_lead_provider_posts_seed_data() {
 			'title'            => 'Aroundhome Erfahrungen für Handwerker: Kosten und Einordnung des Vergleichsportal-Modells',
 			'slug'             => 'aroundhome-solar-einordnung',
 			'seo_title'        => 'Aroundhome Erfahrungen für Handwerker: Kosten & Einordnung',
-			'seo_description'  => 'Aroundhome aus Handwerker-Sicht: was öffentliche Erfahrungen zeigen, wie die Kosten-Logik funktioniert und wann eigene Anfrage-Systeme wirtschaftlicher sind.',
-			'excerpt'          => 'Aroundhome aus Handwerker-Sicht eingeordnet: Erfahrungs-Recherche, Kosten-Logik, Verteilungsmechanik, Markenwirkung und die Alternative durch eigene Anfrage-Systeme.',
+			'seo_description'  => 'Aroundhome aus Handwerker-Sicht: was öffentliche Erfahrungen zeigen, wie die Kosten-Logik funktioniert und wann eigene Anfragesysteme wirtschaftlicher sind.',
+			'excerpt'          => 'Aroundhome aus Handwerker-Sicht eingeordnet: Erfahrungs-Recherche, Kosten-Logik, Verteilungsmechanik, Markenwirkung und die Alternative durch eigene Anfragesysteme.',
 			'tags'             => [ 'Solar Leads', 'Aroundhome', 'Photovoltaik', 'Vergleichsportal', 'Markteinordnung' ],
 			'markdown_content' => <<<'MD'
-> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfrage-Systeme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
+> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfragesysteme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
 
 # Aroundhome Erfahrungen für Handwerker: Kosten und Einordnung des Vergleichsportal-Modells
 
@@ -47,7 +47,7 @@ Aroundhome ist eines der bekanntesten **Vergleichsportale** im deutschen Endkund
 
 Für Solarteure ist deshalb nicht die Frage, ob das Portal grundsätzlich Nachfrage erzeugen kann. Die wichtigere Frage lautet: **Bleibt daraus eine eigene Kundenbeziehung oder entsteht eine gemietete Lead-Abhängigkeit?**
 
-Vergleichsportale können kurzfristig Volumen liefern. Ein eigenes Anfrage-System baut dagegen ein Betriebs-Asset auf: eigene Sichtbarkeit, eigene Daten, eigene Vorqualifizierung und exklusive Anfragen auf der eigenen Plattform.
+Vergleichsportale können kurzfristig Volumen liefern. Ein eigenes Anfragesystem baut dagegen ein Betriebs-Asset auf: eigene Sichtbarkeit, eigene Daten, eigene Vorqualifizierung und exklusive Anfragen auf der eigenen Plattform.
 
 ## Wer sucht das?
 
@@ -113,7 +113,7 @@ Dann kann ein bezahlter Lead schnell zum Margenproblem werden.
 
 Der Endkunde startet seine Reise beim Portal, nicht beim Fachbetrieb. Dadurch entsteht Vertrauen zunächst zur Vermittlungsplattform. Der Solarteur muss dieses Vertrauen im Erstkontakt nachträglich aufbauen.
 
-Das ist der zentrale Unterschied zu einem eigenen Anfrage-System: Bei eigener Sichtbarkeit entsteht die Kundenbeziehung direkt auf der eigenen Website. Die Marke, die Daten, die Anfragehistorie und die Optimierung bleiben beim Betrieb. Genau hier liegt der Unterschied zwischen **Lead-Miete** und **Ownership**.
+Das ist der zentrale Unterschied zu einem eigenen Anfragesystem: Bei eigener Sichtbarkeit entsteht die Kundenbeziehung direkt auf der eigenen Website. Die Marke, die Daten, die Anfragehistorie und die Optimierung bleiben beim Betrieb. Genau hier liegt der Unterschied zwischen **Lead-Miete** und **Ownership**.
 
 ## Warnsignale, auf die Solarteure achten sollten
 
@@ -145,13 +145,13 @@ Der [Solar Case Study](/case-study-solar-leadgenerierung/) zeigt diesen Hebel ko
 - **Validierung** einer neuen Zielgruppe vor dem Aufbau eigener Funnels
 - kurzfristige Auslastung, wenn der Vertrieb sehr schnell reagieren kann
 
-Als alleinige Lead-Quelle ist das Modell im 2026er Markt für PV/Wärmepumpe jedoch riskant. Es macht Betriebe abhängig von externer Reichweite, fremder Datenbasis und schwankender Lead-Qualität. Eine ausführlichere System-Gegenüberstellung finden Sie im [TCO-Vergleich Portal-Leads vs. eigenes Anfrage-System über 24 Monate](/eigene-leadgenerierung-vs-portale/).
+Als alleinige Lead-Quelle ist das Modell im 2026er Markt für PV/Wärmepumpe jedoch riskant. Es macht Betriebe abhängig von externer Reichweite, fremder Datenbasis und schwankender Lead-Qualität. Eine ausführlichere System-Gegenüberstellung finden Sie im [TCO-Vergleich Portal-Leads vs. eigenes Anfragesystem über 24 Monate](/eigene-leadgenerierung-vs-portale/).
 
 Für Betriebe mit eigener Vertriebsverantwortung, hohen Projektwerten und klarem Zielgebiet ist der strategisch stärkere Weg meist: Portal-Leads nicht blind abschalten, sondern parallel eine eigene Anfrage-Infrastruktur aufbauen. So wird aus kurzfristigem Volumen schrittweise ein eigenes Akquise-Asset.
 
 ## Nächster Schritt: Solar-Marktcheck
 
-Wenn Sie prüfen möchten, ob sich ein eigenes Anfrage-System für Ihren Solar-, Wärmepumpen- oder Speicherbetrieb wirtschaftlich lohnt, starten Sie den Marktcheck mit Fit-Entscheid. Dabei werden Projektwert, Region, Vertriebsprozess, aktuelle Lead-Kosten und Abhängigkeit von Portalen eingeordnet.
+Wenn Sie prüfen möchten, ob sich ein eigenes Anfragesystem für Ihren Solar-, Wärmepumpen- oder Speicherbetrieb wirtschaftlich lohnt, starten Sie den Marktcheck mit Fit-Entscheid. Dabei werden Projektwert, Region, Vertriebsprozess, aktuelle Lead-Kosten und Abhängigkeit von Portalen eingeordnet.
 
 → [Solar-Marktcheck starten](/solar-waermepumpen-leadgenerierung/#marktcheck)
 MD,
@@ -160,11 +160,11 @@ MD,
 			'title'            => 'Wattfox Erfahrungen für Solarteure: Leads, Kosten und Markteinordnung',
 			'slug'             => 'wattfox-solar-leads-einordnung',
 			'seo_title'        => 'Wattfox Erfahrungen & Kosten: Einordnung für Solarteure',
-			'seo_description'  => 'Wattfox aus Anbietersicht: was Erfahrungs-Suchen beantworten müssen, wie die Lead-Kosten-Logik funktioniert und wann eigene Anfrage-Systeme stärker sind.',
+			'seo_description'  => 'Wattfox aus Anbietersicht: was Erfahrungs-Suchen beantworten müssen, wie die Lead-Kosten-Logik funktioniert und wann eigene Anfragesysteme stärker sind.',
 			'excerpt'          => 'Wattfox aus Solarteur-Sicht eingeordnet: Erfahrungs-Recherche, Verteilungslogik, Kosten pro Auftrag, Reaktionszeit und die Ownership-Frage.',
 			'tags'             => [ 'Solar Leads', 'Wattfox', 'Photovoltaik', 'Lead-Anbieter', 'Markteinordnung' ],
 			'markdown_content' => <<<'MD'
-> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfrage-Systeme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
+> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfragesysteme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
 
 # Wattfox Erfahrungen für Solarteure: Leads, Kosten und Markteinordnung
 
@@ -179,7 +179,7 @@ Die eigentliche strategische Frage lautet nicht nur: “Wie teuer ist ein Datens
 - Solarteure, die vor einem Vertragsabschluss **Wattfox-Erfahrungen, Lead-Kosten und Seriosität** recherchieren
 - Geschäftsführer von Solarteur-Betrieben, die akut Anfrage-Volumen suchen
 - Vertriebsleiter, die ihre aktuellen Lead-Quellen evaluieren
-- Marketing-Verantwortliche im SHK-/PV-Mittelstand, die Portal-Leads mit eigenen Anfrage-Systemen vergleichen
+- Marketing-Verantwortliche im SHK-/PV-Mittelstand, die Portal-Leads mit eigenen Anfragesystemen vergleichen
 - Inhaber, die Lead-Miete gegen eigene Anfrage-Infrastruktur abwägen
 
 ## Wattfox-Erfahrungen: die richtige Frage aus Anbietersicht
@@ -229,7 +229,7 @@ Wenn Reichweite, Formular, Datenbasis und Optimierung beim Anbieter liegen, blei
 
 ## Alternative: Eigene Anfrage-Infrastruktur
 
-Eigene Anfrage-Systeme führen per Definition zu exklusiven Anfragen, weil die Strecke dem Betrieb gehört: Money Page, Server-Side-Tracking, Vorqualifizierung, CRM-Übergabe und Datenbasis. Der [Solar Case Study](/case-study-solar-leadgenerierung/) zeigt, dass die Cost per Lead durch ein eigenes System von 150 € auf 22 € gesenkt werden können – bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
+Eigene Anfragesysteme führen per Definition zu exklusiven Anfragen, weil die Strecke dem Betrieb gehört: Money Page, Server-Side-Tracking, Vorqualifizierung, CRM-Übergabe und Datenbasis. Der [Solar Case Study](/case-study-solar-leadgenerierung/) zeigt, dass die Cost per Lead durch ein eigenes System von 150 € auf 22 € gesenkt werden können – bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
 
 Das ist kein allgemeines Versprechen. Es zeigt aber den Unterschied zwischen Lead-Miete und Ownership: Bei einer eigenen Infrastruktur verbessert jeder Lernzyklus das eigene Betriebs-Asset.
 
@@ -241,11 +241,11 @@ In drei Situationen können Portal-Leads übergangsweise sinnvoll sein:
 2. **Markteintritt ohne Marke**: neue Region, in der noch keine eigene Sichtbarkeit aufgebaut ist
 3. **Validierung**: Erprobung einer neuen Zielgruppe oder eines neuen Produkts vor dem Aufbau eigener Strecken
 
-Als alleinige Dauerstrategie ist Portal-Lead-Einkauf im 2026er Markt für PV/Wärmepumpe riskant. Eine ausführliche Gegenüberstellung finden Sie im [CAPEX-vs-OPEX-Vergleich: Portal-Leads gegen eigenes Anfrage-System](/eigene-leadgenerierung-vs-portale/).
+Als alleinige Dauerstrategie ist Portal-Lead-Einkauf im 2026er Markt für PV/Wärmepumpe riskant. Eine ausführliche Gegenüberstellung finden Sie im [CAPEX-vs-OPEX-Vergleich: Portal-Leads gegen eigenes Anfragesystem](/eigene-leadgenerierung-vs-portale/).
 
 ## Nächster Schritt: Solar-Marktcheck
 
-Wenn Sie prüfen möchten, ob Ihr Betrieb wirtschaftlich besser mit Portal-Leads, einer Mischstrategie oder einem eigenen Anfrage-System fährt, starten Sie den Marktcheck mit Fit-Entscheid.
+Wenn Sie prüfen möchten, ob Ihr Betrieb wirtschaftlich besser mit Portal-Leads, einer Mischstrategie oder einem eigenen Anfragesystem fährt, starten Sie den Marktcheck mit Fit-Entscheid.
 
 → [Solar-Marktcheck starten](/solar-waermepumpen-leadgenerierung/#marktcheck)
 MD,
@@ -254,11 +254,11 @@ MD,
 			'title'            => 'DAA Photovoltaik Leads: Markteinordnung des Branchen-Portal-Modells',
 			'slug'             => 'daa-photovoltaik-leads-einordnung',
 			'seo_title'        => 'DAA Leads: Erfahrungen, Kosten & Einordnung für Solarteure',
-			'seo_description'  => 'DAA Leads aus Solarteur-Sicht: Spezialisierung, Verteilungslogik, Kosten pro Auftrag und die Alternative durch eigene Anfrage-Systeme.',
+			'seo_description'  => 'DAA Leads aus Solarteur-Sicht: Spezialisierung, Verteilungslogik, Kosten pro Auftrag und die Alternative durch eigene Anfragesysteme.',
 			'excerpt'          => 'Sachliche Markteinordnung zu DAA im PV-Segment: Spezialisierung, Vorqualifizierung, Verteilungsmodell und Ownership-Frage.',
 			'tags'             => [ 'Solar Leads', 'DAA', 'Photovoltaik', 'Lead-Anbieter', 'Erneuerbare Energien' ],
 			'markdown_content' => <<<'MD'
-> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfrage-Systeme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
+> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfragesysteme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
 
 # DAA Photovoltaik Leads: Markteinordnung des Branchen-Portal-Modells
 
@@ -320,7 +320,7 @@ Ein spezialisierter Anbieter kann ein guter Kanal sein. Strategisch bleibt aber 
 
 ## Die strategische Alternative: Ownership statt Lead-Miete
 
-Ein eigenes Anfrage-System mit Money Page, Server-Side-Tracking, Vorqualifizierung und CRM-Übergabe erzeugt Anfragen, die per Definition **exklusiv** sind. Der [Solar Case Study](/case-study-solar-leadgenerierung/) zeigt eine CPL-Senkung von 150 € auf 22 € bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
+Ein eigenes Anfragesystem mit Money Page, Server-Side-Tracking, Vorqualifizierung und CRM-Übergabe erzeugt Anfragen, die per Definition **exklusiv** sind. Der [Solar Case Study](/case-study-solar-leadgenerierung/) zeigt eine CPL-Senkung von 150 € auf 22 € bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
 
 Das ist kein allgemeines Versprechen, sondern ein Beleg für den Unterschied zwischen gemieteter Nachfrage und eigener Anfrage-Infrastruktur: Die Marke, die Daten und die Optimierung bleiben beim Betrieb.
 
@@ -330,11 +330,11 @@ Das ist kein allgemeines Versprechen, sondern ein Beleg für den Unterschied zwi
 - **Kurzfristige Auslastungslücke** beim Vertrieb
 - **Validierung** einer neuen Region oder eines neuen Produkts
 
-Als alleinige Lead-Quelle ist auch das Branchen-Portal-Modell riskant, wenn keine eigene Strecke parallel aufgebaut wird. Die ausführliche System-Gegenüberstellung finden Sie in der [Vergleichsmatrix Portal-Leads vs. eigenes Anfrage-System mit 8-Kriterien-Bewertung](/eigene-leadgenerierung-vs-portale/).
+Als alleinige Lead-Quelle ist auch das Branchen-Portal-Modell riskant, wenn keine eigene Strecke parallel aufgebaut wird. Die ausführliche System-Gegenüberstellung finden Sie in der [Vergleichsmatrix Portal-Leads vs. eigenes Anfragesystem mit 8-Kriterien-Bewertung](/eigene-leadgenerierung-vs-portale/).
 
 ## Nächster Schritt: Solar-Marktcheck
 
-Wenn Sie prüfen möchten, ob branchenspezialisierte Portale, eine Mischstrategie oder ein eigenes Anfrage-System für Ihren Betrieb wirtschaftlich sinnvoller sind, starten Sie den Marktcheck mit Fit-Entscheid.
+Wenn Sie prüfen möchten, ob branchenspezialisierte Portale, eine Mischstrategie oder ein eigenes Anfragesystem für Ihren Betrieb wirtschaftlich sinnvoller sind, starten Sie den Marktcheck mit Fit-Entscheid.
 
 → [Solar-Marktcheck starten](/solar-waermepumpen-leadgenerierung/#marktcheck)
 MD,
@@ -347,7 +347,7 @@ MD,
 			'excerpt'          => 'Checkfox aus Sicht von Solar- und Wärmepumpen-Betrieben eingeordnet: Seriositäts-Frage, Portal-Mechanik über viele Produktkategorien, Kosten-Logik und Ownership.',
 			'tags'             => [ 'Checkfox', 'Solar Leads', 'Wärmepumpe', 'Vergleichsportal', 'Markteinordnung' ],
 			'markdown_content' => <<<'MD'
-> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfrage-Systeme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
+> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfragesysteme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
 
 # Checkfox für Solar- und Wärmepumpen-Betriebe: Seriosität, Mechanik und Markteinordnung
 
@@ -397,9 +397,9 @@ Wie diese Rechnung für Wärmepumpen-Anfragen im Detail aussieht, zeigt die Seit
 
 ## Die strategische Alternative: Eigene Anfrage-Infrastruktur
 
-Ein eigenes Anfrage-System – Money Page, Vorqualifizierung, Server-Side-Tracking, CRM-Übergabe – erzeugt per Definition exklusive Anfragen, weil die Strecke dem Betrieb gehört. Der [Solar Case Study](/case-study-solar-leadgenerierung/) zeigt eine CPL-Senkung von 150 € auf 22 € bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
+Ein eigenes Anfragesystem – Money Page, Vorqualifizierung, Server-Side-Tracking, CRM-Übergabe – erzeugt per Definition exklusive Anfragen, weil die Strecke dem Betrieb gehört. Der [Solar Case Study](/case-study-solar-leadgenerierung/) zeigt eine CPL-Senkung von 150 € auf 22 € bei 12 % Abschlussquote, über 1.750 qualifizierten Anfragen und 6 Monaten Projektlaufzeit.
 
-Die vollständige System-Gegenüberstellung über 24 Monate finden Sie im [TCO-Vergleich Portal-Leads vs. eigenes Anfrage-System](/eigene-leadgenerierung-vs-portale/).
+Die vollständige System-Gegenüberstellung über 24 Monate finden Sie im [TCO-Vergleich Portal-Leads vs. eigenes Anfragesystem](/eigene-leadgenerierung-vs-portale/).
 
 ## Wann das breite Portal-Modell trotzdem Sinn ergibt
 
@@ -411,7 +411,7 @@ Als alleinige Dauerstrategie bleibt das Modell riskant: fremde Reichweite, fremd
 
 ## Nächster Schritt: Solar-Marktcheck
 
-Wenn Sie prüfen möchten, ob Portal-Leads, eine Mischstrategie oder ein eigenes Anfrage-System für Ihren Solar-, Wärmepumpen- oder Speicherbetrieb wirtschaftlicher ist, starten Sie den Marktcheck mit Fit-Entscheid.
+Wenn Sie prüfen möchten, ob Portal-Leads, eine Mischstrategie oder ein eigenes Anfragesystem für Ihren Solar-, Wärmepumpen- oder Speicherbetrieb wirtschaftlicher ist, starten Sie den Marktcheck mit Fit-Entscheid.
 
 → [Solar-Marktcheck starten](/solar-waermepumpen-leadgenerierung/#marktcheck)
 MD,
@@ -424,7 +424,7 @@ MD,
 			'excerpt'          => 'Sachliche Einordnung des regionalen Videomarketing-Modells am Beispiel Leadfluss: Markenwirkung, Exklusivität, Datenbesitz und eigene Infrastruktur.',
 			'tags'             => [ 'Solar Leads', 'Leadfluss', 'Photovoltaik', 'Regionalmarketing', 'Videomarketing' ],
 			'markdown_content' => <<<'MD'
-> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfrage-Systeme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
+> Hinweis: Dieser Beitrag ist eine eigene Markteinordnung aus Sicht eines Systemarchitekten für Anfragesysteme im Solar-/SHK-Markt. Er ist kein Erfahrungsbericht, keine Rechtsberatung und keine abschließende Bewertung einzelner Vertragsbedingungen. Alle Angaben beruhen auf öffentlich zugänglichen Informationen, marktüblichen Mechaniken und wirtschaftlicher Systemanalyse. Markenrechte verbleiben bei den jeweiligen Inhabern.
 
 # Leadfluss für Solarteure: Markteinordnung des regionalen Videomarketing-Modells
 
@@ -479,7 +479,7 @@ Regionale Videokampagnen sind im Volumen durch Region, Angebot und Zielgruppe be
 
 ## Alternative: Eigene Anfrage-Infrastruktur in vollständigem Eigentum
 
-Der nächstgrößere Schritt vom regionalen Videomarketing-Modell ist der Aufbau eines vollständig eigenen Anfrage-Systems: eigene Money Page, eigener Werbe-Account, eigene Tracking-Strecke, eigenes CRM und eigene Vorqualifizierung. Vorteil: Code, Daten und Strecke bleiben dauerhaft im Betrieb.
+Der nächstgrößere Schritt vom regionalen Videomarketing-Modell ist der Aufbau eines vollständig eigenen Anfragesystems: eigene Money Page, eigener Werbe-Account, eigene Tracking-Strecke, eigenes CRM und eigene Vorqualifizierung. Vorteil: Code, Daten und Strecke bleiben dauerhaft im Betrieb.
 
 Der [Solar Case Study](/case-study-solar-leadgenerierung/) demonstriert das mit einer CPL-Senkung von 150 € auf 22 €, über 1.750 qualifizierten Anfragen, 12 % Abschlussquote und 6 Monaten Projektlaufzeit. Das ist kein pauschales Ergebnisversprechen, aber ein belastbarer Beleg für den Wert eigener Anfrage-Infrastruktur.
 
@@ -742,7 +742,7 @@ function hu_maybe_seed_lead_provider_markteinordnung_posts() {
 	$category_ids = array_filter(
 		[
 			hu_lead_provider_ensure_term_id( 'Markteinordnung', 'markteinordnung', 'category' ),
-			hu_lead_provider_ensure_term_id( 'Solar-/Wärmepumpen Anfrage-Systeme', 'solar-waermepumpen-anfrage-systeme', 'category' ),
+			hu_lead_provider_ensure_term_id( 'Solar-/Wärmepumpen Anfragesysteme', 'solar-waermepumpen-anfrage-systeme', 'category' ),
 		]
 	);
 

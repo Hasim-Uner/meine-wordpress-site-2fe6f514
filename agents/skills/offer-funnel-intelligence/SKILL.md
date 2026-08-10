@@ -41,7 +41,7 @@ Score the funnel as a business system, not as a page:
    - Can the buyer feel the cost of doing nothing?
    - Are numbers used responsibly and tied to proof?
 3. `Offer ladder`
-   - Is the path clear: Marktcheck -> Anfrage-System-Analyse -> Umsetzung/WGOS-Module -> Retainer/Weiterentwicklung?
+   - Is the path clear: Marktcheck -> Anfragesystem-Analyse -> Umsetzung/WGOS-Module -> Retainer/Weiterentwicklung?
    - Does each step have a job, decision criterion, and next action?
    - Is the Marktcheck framed as diagnosis, not as a gimmicky free tool?
 4. `Marketcheck desire`

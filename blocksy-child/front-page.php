@@ -47,7 +47,7 @@ $home_routing_gateways = [
 		'title'   => 'Der 60-Sekunden-Marktcheck',
 		'desc'    => 'Prüft, wo Portal-Abhängigkeit, Website, Tracking oder Vorqualifizierung aktuell qualifizierte Anfragen kosten.',
 		'url'     => $analysis_url,
-		'label'   => 'Leadkosten & Anfrage-System prüfen',
+		'label'   => 'Leadkosten & Anfragesystem prüfen',
 		'persona' => 'Für portalmüde Solar-/SHK-Anbieter',
 		'action'  => 'gateway_marktcheck',
 	],
@@ -57,7 +57,7 @@ $home_routing_gateways = [
 		'title'   => 'WordPress Agentur Hannover für B2B-Anfragen',
 		'desc'    => 'Für bestehende WordPress-Seiten, bei denen technisches SEO, Tracking und Conversion-Pfad kaufnahe Anfragen nicht sauber tragen.',
 		'url'     => $agentur_hub_url,
-		'label'   => 'WordPress-Anfrage-System prüfen',
+		'label'   => 'WordPress-Anfragesystem prüfen',
 		'persona' => 'Für B2B-Unternehmen mit bestehender WordPress-Basis',
 		'action'  => 'gateway_agentur',
 	],
@@ -139,7 +139,7 @@ get_header();
 				<div class="hu-hero__eyebrow">
 					<span class="hu-tag">
 						<span class="hu-dot hu-dot--live"></span>
-						<span class="hu-mono">ANFRAGE-SYSTEM · SOLAR · SHK · DACH</span>
+						<span class="hu-mono">ANFRAGESYSTEM · SOLAR · SHK · DACH</span>
 					</span>
 				</div>
 
@@ -403,7 +403,7 @@ get_header();
 			<div class="hu-section-head hu-reveal">
 				<span class="hu-eyebrow">03 / Prozess-Kaskade</span>
 				<div>
-					<h2>Drei Schritte, die das Anfrage-System tragen.</h2>
+					<h2>Drei Schritte, die das Anfragesystem tragen.</h2>
 					<p class="hu-lead">Keine austauschbare Leistungsliste — die Reihenfolge entscheidet, ob aus Reichweite ein Asset wird.</p>
 				</div>
 			</div>
@@ -637,7 +637,7 @@ get_header();
 				</div>
 				<div class="hu-about-text hu-reveal">
 					<span class="hu-eyebrow">07 / Wer steht dahinter</span>
-					<h2>Ich baue Anfrage-Systeme,<br>die Vertrieb und Daten verbinden.</h2>
+					<h2>Ich baue Anfragesysteme,<br>die Vertrieb und Daten verbinden.</h2>
 					<p class="hu-lead" style="color:var(--ink-2)">
 						Für Betriebe, die nicht dauerhaft Leads mieten wollen, sondern wissen müssen,
 						welcher Kanal echte Projekte bringt — und wem die Anfrage am Ende gehört.
@@ -703,7 +703,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Der Marktcheck ist vorgeschaltet und prüft zuerst, ob Region, Projektwert und Vertriebskapazität zum Anfrage-System passen. Der Aufbau danach liegt — abhängig vom Setup — bei 12.000 – 18.000 € einmalig, dazu rund 50 € im Monat für Hosting und Wartung. Über 24 Monate sind das 13.200 – 19.200 €. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten im selben Zeitraum ca. 26.000 €. Weniger Kosten, dafür ein Asset, das bleibt.</div>
+						<div class="hu-faq-item__a-inner">Der Marktcheck ist vorgeschaltet und prüft zuerst, ob Region, Projektwert und Vertriebskapazität zum Anfragesystem passen. Der Aufbau danach liegt — abhängig vom Setup — bei 12.000 – 18.000 € einmalig, dazu rund 50 € im Monat für Hosting und Wartung. Über 24 Monate sind das 13.200 – 19.200 €. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten im selben Zeitraum ca. 26.000 €. Weniger Kosten, dafür ein Asset, das bleibt.</div>
 					</div>
 				</div>
 
@@ -804,7 +804,7 @@ get_header();
 			<div class="hu-final-routing hu-reveal">
 				<div class="hu-final-routing__head">
 					<span class="hu-eyebrow" style="color:var(--accent)">10 / Nächster Schritt</span>
-					<h2 class="hu-display">Finden Sie heraus, wo Ihr Anfrage-System zuerst Geld verliert.</h2>
+					<h2 class="hu-display">Finden Sie heraus, wo Ihr Anfragesystem zuerst Geld verliert.</h2>
 					<p>Starten Sie mit dem Marktcheck, prüfen Sie die Case Study oder gehen Sie direkt in die technische Umsetzung — je nachdem, wo Sie gerade stehen. Agenturen finden ihren eigenen Einstieg in der letzten Karte.</p>
 				</div>
 

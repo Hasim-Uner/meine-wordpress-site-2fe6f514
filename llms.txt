@@ -1,10 +1,10 @@
 # Haşim Üner
 
-> Architekt für eigene Anfrage-Systeme für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum. Fokus: Portal-Abhängigkeit durch eigene Website, Vorqualifizierung, Tracking und steuerbare Werbekanäle ersetzen. Primärer Einstieg ist der Marktcheck.
+> Architekt für eigene Anfragesysteme für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum. Fokus: Portal-Abhängigkeit durch eigene Website, Vorqualifizierung, Tracking und steuerbare Werbekanäle ersetzen. Primärer Einstieg ist der Marktcheck.
 
 ## Primäre Einstiege
 - [Startseite](/) - Überblick über Positionierung, Proof und aktuelle Einstiege.
-- [Solar- und Wärmepumpen-Leadgenerierung](/solar-waermepumpen-leadgenerierung/) - Branchen-Landingpage für eigene Anfrage-Systeme gegen Portal-Abhängigkeit.
+- [Solar- und Wärmepumpen-Leadgenerierung](/solar-waermepumpen-leadgenerierung/) - Branchen-Landingpage für eigene Anfragesysteme gegen Portal-Abhängigkeit.
 - [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) - primärer Einstieg für kalten Solar-/SHK-Traffic.
 - [Kontakt](/kontakt/) - Anfragepfad für Analyse, Umsetzung und Weiterentwicklung nach Marktcheck-Fit.
 
@@ -16,7 +16,7 @@
 
 ## Solar- und Wärmepumpen-Leadgenerierung: Themen-Cluster
 - [Solar Leads kaufen Alternative](/solar-leads-kaufen-alternative/) - Intercept-Page für Kauf-Suchintent und Alternative zu Lead-Anbietern.
-- [Eigene Leadgenerierung vs. Portale](/eigene-leadgenerierung-vs-portale/) - Vergleich von Portal-Leads und eigenem Anfrage-System.
+- [Eigene Leadgenerierung vs. Portale](/eigene-leadgenerierung-vs-portale/) - Vergleich von Portal-Leads und eigenem Anfragesystem.
 - [Cost per Lead Photovoltaik](/cost-per-lead-photovoltaik/) - CPL-Analyse mit Szenarienvergleich und versteckten Kostentreibern.
 - [Qualifizierte PV-Anfragen](/qualifizierte-pv-anfragen/) - Merkmale hochwertiger Solar-Anfragen und Warnsignale.
 - [Lead-Funnel Solar](/lead-funnel-solar/) - Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter.
@@ -25,7 +25,7 @@
 - [Kunden gewinnen für Solarteure](/kunden-gewinnen-solarteure/) - systematische Nachfragegewinnung für Solarteure.
 
 ## Sekundäre Einstiege und Wissen
-- [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und Anfrage-Systemen.
+- [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und Anfragesystemen.
 - [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
 - [Stack Solar](/stack-solar/) - Performance-Stack für Solar-/SHK-Anbieter: Frontend, Managed Hosting, Server-Side Tracking, CRM-Anbindung und Marktcheck-Vorqualifizierung.
 - [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - sekundäre lokale B2B-Service-Seite.

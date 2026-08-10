@@ -43,9 +43,9 @@ function hu_get_blog_pillar_posts_seed_data() {
 			'excerpt'           => 'Gekaufte Portal-Anfragen wirken günstig, bringen aber selten Aufträge. Warum nicht der Preis pro Anfrage zählt, sondern was ein fertiger Auftrag kostet – und wie Sie eigene Anfragen gewinnen.',
 			'categories'        => [
 				[ 'name' => 'Leadgenerierung', 'slug' => 'leadgenerierung' ],
-				[ 'name' => 'Solar-/Wärmepumpen Anfrage-Systeme', 'slug' => 'solar-waermepumpen-anfrage-systeme' ],
+				[ 'name' => 'Solar-/Wärmepumpen Anfragesysteme', 'slug' => 'solar-waermepumpen-anfrage-systeme' ],
 			],
-			'tags'              => [ 'Solar Leads kaufen', 'Photovoltaik Leads', 'Lead-Portale', 'Anfragen kaufen', 'eigene Leadgenerierung', 'Anfrage-System' ],
+			'tags'              => [ 'Solar Leads kaufen', 'Photovoltaik Leads', 'Lead-Portale', 'Anfragen kaufen', 'eigene Leadgenerierung', 'Anfragesystem' ],
 			'markdown_file'     => 'assets/content/blog/photovoltaik-leads-tco-rechnung.md',
 			'featured_image'    => 'assets/img/blog/photovoltaik-leads-kaufen-alternative-hero.png',
 			'featured_alt_text' => 'Vergleich von gekauften Solar-Leads und eigenen Anfragen mit ehrlicher Kosten-pro-Auftrag-Rechnung.',

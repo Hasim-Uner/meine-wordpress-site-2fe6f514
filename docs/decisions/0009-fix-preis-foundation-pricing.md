@@ -17,7 +17,7 @@ Setup-plus-Retainer-Bundles vermischen Implementierung, Betrieb und Wachstum. Ei
 
 ## Konsequenzen
 
-- Foundation garantiert ein funktionsfähiges Anfrage-System, kein Anfrage-Volumen.
+- Foundation garantiert ein funktionsfähiges Anfragesystem, kein Anfrage-Volumen.
 - Volumenzusagen dürfen nicht als Landingpage-Headline genutzt werden.
 - Performance ist optional ab Monat 3.
 - Premium-Layer ist nur zusätzlich zu Performance möglich.

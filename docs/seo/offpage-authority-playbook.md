@@ -46,7 +46,7 @@ Identische Firmierung + Adresse + URL in:
 
 - Wer liefert was (`wlw.de`) — B2B-Standard im DACH-Raum
 - Gelbe Seiten / 11880 / Das Örtliche
-- LinkedIn-Unternehmensseite (+ persönliches Profil mit „Solar-Anfrage-Systeme" in der Headline)
+- LinkedIn-Unternehmensseite (+ persönliches Profil mit „Solar-Anfragesysteme" in der Headline)
 - Xing (im DACH-B2B noch relevant)
 - North Data / Companyhouse (Entitäts-Bestätigung über Handelsregister-Daten)
 
@@ -110,7 +110,7 @@ Für das lokale Commercial-Keyword **„wordpress agentur hannover"** (aktuell P
 
 - Dasselbe GBP wie in Phase 1.1, aber **lokal optimiert**: Primärkategorie „Webdesigner" bzw. „Internetmarketing-Dienst", Sekundär „Werbeagentur".
 - Als Service-Area-Business: **Hannover + Region Hannover** explizit als Einzugsgebiet hinterlegen (deckt sich mit `areaServed` im Schema).
-- Beschreibung mit „WordPress-Agentur in Hannover für B2B-Anfrage-Systeme", Link auf `/wordpress-agentur-hannover/` (nicht nur die Solar-Page).
+- Beschreibung mit „WordPress-Agentur in Hannover für B2B-Anfragesysteme", Link auf `/wordpress-agentur-hannover/` (nicht nur die Solar-Page).
 - Erste 3–5 echte Kunden-/Partner-Bewertungen — lokaler Trust-Faktor Nr. 1.
 
 ### L2 — Lokale & Branchen-Citations (NAP zeichengenau aus `/impressum/`)
@@ -126,7 +126,7 @@ Dieselbe kanonische NAP-Schreibweise (Firmierung · Pattensen/Region Hannover ·
 
 - Hannover-/Niedersachsen-Unternehmensnetzwerke, lokale Gründer-/Mittelstands-Initiativen, Co-Working-/Startup-Verzeichnisse der Region.
 - Lokale Kunden/Partner um eine Referenz-Erwähnung mit Link auf `/wordpress-agentur-hannover/` bitten (ein einziger themen- **und** ortsrelevanter Link wiegt schwer).
-- Gastbeitrag/Interview in einem regionalen Wirtschafts-/Gründer-Medium (Angle: „B2B-Website als Anfrage-System statt Schaufenster" — die E3-Datenstory trägt auch lokal).
+- Gastbeitrag/Interview in einem regionalen Wirtschafts-/Gründer-Medium (Angle: „B2B-Website als Anfragesystem statt Schaufenster" — die E3-Datenstory trägt auch lokal).
 
 ### Erwartung & Messung (lokal)
 

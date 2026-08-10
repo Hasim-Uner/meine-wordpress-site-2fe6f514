@@ -55,7 +55,7 @@ add_filter( 'document_title_parts', 'hu_document_title_overrides' );
 function hu_get_homepage_title() {
 	return (string) apply_filters(
 		'hu_homepage_seo_title',
-		'Anfrage-Systeme für Solar & Wärmepumpe | Haşim Üner'
+		'Anfragesysteme für Solar & Wärmepumpe | Haşim Üner'
 	);
 }
 
@@ -94,7 +94,7 @@ function hu_get_blog_archive_title() {
 function hu_get_blog_archive_description() {
 	return (string) apply_filters(
 		'hu_blog_archive_seo_description',
-		'Analysen zu eigenen Anfrage-Systemen für Solar-/Wärmepumpen-Betriebe: Portal-Leads, SEO, Tracking, CRO und WordPress-Performance.'
+		'Analysen zu eigenen Anfragesystemen für Solar-/Wärmepumpen-Betriebe: Portal-Leads, SEO, Tracking, CRO und WordPress-Performance.'
 	);
 }
 
@@ -108,16 +108,16 @@ function hu_get_category_archive_seo_map() {
 		'hu_category_archive_seo_map',
 		[
 			'solar-waermepumpen-anfrage-systeme' => [
-				'title'       => 'Solar & SHK Anfrage-Systeme | Haşim Üner',
-				'description' => 'Analysen zu eigenen Anfrage-Systemen für Solar-/SHK-Betriebe: Portal-Leads, Marktcheck, Lead-Qualität, Tracking und Conversion statt gemieteter Nachfrage.',
+				'title'       => 'Solar & SHK Anfragesysteme | Haşim Üner',
+				'description' => 'Analysen zu eigenen Anfragesystemen für Solar-/SHK-Betriebe: Portal-Leads, Marktcheck, Lead-Qualität, Tracking und Conversion statt gemieteter Nachfrage.',
 			],
 			'sichtbarkeit-daten-conversion' => [
 				'title'       => 'Sichtbarkeit, Daten & Conversion | Haşim Üner',
-				'description' => 'SEO, Tracking, Core Web Vitals und CRO für Anfrage-Systeme: wie Sichtbarkeit belastbare Daten liefert und aus Traffic qualifizierte Anfragen entstehen.',
+				'description' => 'SEO, Tracking, Core Web Vitals und CRO für Anfragesysteme: wie Sichtbarkeit belastbare Daten liefert und aus Traffic qualifizierte Anfragen entstehen.',
 			],
 			'wordpress-growth-agentur' => [
 				'title'       => 'WordPress-Systeme & Anfrage-Architektur | Haşim Üner',
-				'description' => 'WordPress als technische Basis für Anfrage-Systeme: Struktur, SEO, Performance, Tracking und CRO in der richtigen Reihenfolge.',
+				'description' => 'WordPress als technische Basis für Anfragesysteme: Struktur, SEO, Performance, Tracking und CRO in der richtigen Reihenfolge.',
 			],
 			'markteinordnung' => [
 				'title'       => 'Lead-Portal Markteinordnung | Haşim Üner',
@@ -128,24 +128,24 @@ function hu_get_category_archive_seo_map() {
 				'description' => 'Beiträge zu eigener Leadgenerierung, First-Party-Daten und Nachfrage-Infrastruktur: weniger Portal-Abhängigkeit, mehr Kontrolle über Anfragequalität.',
 			],
 			'seo' => [
-				'title'       => 'Technisches SEO für Anfrage-Systeme | Haşim Üner',
-				'description' => 'Technisches SEO für Anfrage-Systeme: Struktur, Indexierung, Content-Architektur und interne Links als Fundament für qualifizierte Anfragen.',
+				'title'       => 'Technisches SEO für Anfragesysteme | Haşim Üner',
+				'description' => 'Technisches SEO für Anfragesysteme: Struktur, Indexierung, Content-Architektur und interne Links als Fundament für qualifizierte Anfragen.',
 			],
 			'tracking' => [
-				'title'       => 'Tracking & Analytics für Anfrage-Systeme | Haşim Üner',
-				'description' => 'GA4, Server-Side Tracking, Consent und CRM-Rückführung für Anfrage-Systeme: Daten, die Budgetsteuerung und Conversion-Lernen ermöglichen.',
+				'title'       => 'Tracking & Analytics für Anfragesysteme | Haşim Üner',
+				'description' => 'GA4, Server-Side Tracking, Consent und CRM-Rückführung für Anfragesysteme: Daten, die Budgetsteuerung und Conversion-Lernen ermöglichen.',
 			],
 			'cro' => [
 				'title'       => 'CRO & UX für qualifizierte Anfragen | Haşim Üner',
-				'description' => 'Conversion-Optimierung für Anfrage-Systeme: Angebotslogik, Reibungsverluste, Proof, Formulare und klare nächste Schritte für qualifizierte Anfragen.',
+				'description' => 'Conversion-Optimierung für Anfragesysteme: Angebotslogik, Reibungsverluste, Proof, Formulare und klare nächste Schritte für qualifizierte Anfragen.',
 			],
 			'wordpress-performance' => [
 				'title'       => 'WordPress Performance & CWV | Haşim Üner',
-				'description' => 'WordPress Performance, Core Web Vitals, Hosting und Frontend-Bloat: Ladezeit als SEO-, Ads- und Conversion-Hebel für Anfrage-Systeme.',
+				'description' => 'WordPress Performance, Core Web Vitals, Hosting und Frontend-Bloat: Ladezeit als SEO-, Ads- und Conversion-Hebel für Anfragesysteme.',
 			],
 			'strategie' => [
-				'title'       => 'Strategie für eigene Anfrage-Systeme | Haşim Üner',
-				'description' => 'Strategische Beiträge zu eigenen Anfrage-Systemen: Zielmarkt, Angebot, Funnel-Logik, Budgetsteuerung und Priorisierung vor der Umsetzung.',
+				'title'       => 'Strategie für eigene Anfragesysteme | Haşim Üner',
+				'description' => 'Strategische Beiträge zu eigenen Anfragesystemen: Zielmarkt, Angebot, Funnel-Logik, Budgetsteuerung und Priorisierung vor der Umsetzung.',
 			],
 		]
 	);
@@ -185,7 +185,7 @@ function hu_get_category_archive_seo( $term = null ) {
 		'title'       => hu_build_compact_branded_title( $term_name . ' Blog' ),
 		'description' => '' !== $term_description
 			? wp_trim_words( $term_description, 24, '…' )
-			: sprintf( 'Analysen und Einordnungen zu %s: Sichtbarkeit, Daten, Conversion und eigene Anfrage-Systeme.', $term_name ),
+			: sprintf( 'Analysen und Einordnungen zu %s: Sichtbarkeit, Daten, Conversion und eigene Anfragesysteme.', $term_name ),
 	];
 }
 
@@ -223,8 +223,8 @@ function hu_get_forced_singular_seo_map() {
 				'description' => 'Projekt oder Frage kurz einordnen: ein Formular, händisch geprüfte Rückmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Vertriebsteam.',
 			],
 			'uber-mich' => [
-				'title'       => 'Über Haşim Üner | Solar-Anfrage-Systeme',
-				'description' => 'Haşim Üner baut eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter: weg von gemieteten Portal-Leads, hin zu eigener Infrastruktur.',
+				'title'       => 'Über Haşim Üner | Solar-Anfragesysteme',
+				'description' => 'Haşim Üner baut eigene Anfragesysteme für Solar- und Wärmepumpen-Anbieter: weg von gemieteten Portal-Leads, hin zu eigener Infrastruktur.',
 			],
 			// 'wgos' / 'wordpress-growth-operating-system' sowie Tool-/Audit-Legacy-Routen:
 			// Seiten sind noindex, sitemap-excluded oder geschuetzte 301-Einstiege,
@@ -299,7 +299,7 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'eigene-leadgenerierung-vs-portale' => [
 				'title'       => 'Portal-Leads vs. eigenes System: TCO-Vergleich Solar/SHK',
-				'description' => sprintf( '24-Monats-TCO: Portal-Leads (DAA, Aroundhome, Check24) vs. eigenes Anfrage-System. Case Study: %s niedrigerer CPL in 6 Monaten.', $e3_cpl_reduction ),
+				'description' => sprintf( '24-Monats-TCO: Portal-Leads (DAA, Aroundhome, Check24) vs. eigenes Anfragesystem. Case Study: %s niedrigerer CPL in 6 Monaten.', $e3_cpl_reduction ),
 			],
 			'lead-funnel-solar' => [
 				'title'       => 'Lead-Funnel Solar & Wärmepumpe – Aufbau für B2B-Marketing',
@@ -979,7 +979,7 @@ function hu_get_e3_methodology_case_title() {
  * @return string
  */
 function hu_get_e3_methodology_case_description() {
-	return 'Ein mittelständischer PV-Installationsbetrieb senkte den CPL mit eigenem Anfrage-System statt Portal-Leads um über 85 %: 1.750+ qualifizierte PV- & Wärmepumpen-Anfragen, 12 % Abschluss.';
+	return 'Ein mittelständischer PV-Installationsbetrieb senkte den CPL mit eigenem Anfragesystem statt Portal-Leads um über 85 %: 1.750+ qualifizierte PV- & Wärmepumpen-Anfragen, 12 % Abschluss.';
 }
 
 /**

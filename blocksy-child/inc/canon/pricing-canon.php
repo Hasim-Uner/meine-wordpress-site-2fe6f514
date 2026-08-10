@@ -43,7 +43,7 @@ function hu_pricing_canon() {
 		'founding_discount_percent'       => HU_FOUNDING_DISCOUNT_PERCENT,
 		'value_anchor_market_min'         => HU_VALUE_ANCHOR_MARKET_MIN,
 		'value_anchor_market_max'         => HU_VALUE_ANCHOR_MARKET_MAX,
-		'guarantee_scope'                 => 'Funktionsfähiges Anfrage-System, kein Anfrage-Volumen.',
+		'guarantee_scope'                 => 'Funktionsfähiges Anfragesystem, kein Anfrage-Volumen.',
 	];
 }
 

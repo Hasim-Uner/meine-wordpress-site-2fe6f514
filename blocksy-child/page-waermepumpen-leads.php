@@ -3,7 +3,7 @@
  * Template Name: Wärmepumpen Leads – Alternative (Intercept)
  * Description: Intercept-Landingpage für Suchintent "Wärmepumpen Leads",
  *              "Wärmepumpen Leads kaufen", "Leadgenerierung Wärmepumpe".
- *              Argumentation: Portal-Leads vs. eigenes Anfrage-System (CPL-Senkung),
+ *              Argumentation: Portal-Leads vs. eigenes Anfragesystem (CPL-Senkung),
  *              mit wärmepumpen-spezifischer Vorqualifizierung (Bestandsheizung,
  *              Gebäude, Förderung, Zeithorizont).
  *              Primärer Pfad: Marktcheck auf /solar-waermepumpen-leadgenerierung/#marktcheck.
@@ -31,7 +31,7 @@ $linked_assets = [
 	],
 	[
 		't'   => 'Strategischer TCO-Vergleich über 24 Monate',
-		's'   => 'Portal-Leads gegen eigenes Anfrage-System mit CAPEX-vs-OPEX-Logik und Asset-Eigentum.',
+		's'   => 'Portal-Leads gegen eigenes Anfragesystem mit CAPEX-vs-OPEX-Logik und Asset-Eigentum.',
 		'url' => home_url( '/eigene-leadgenerierung-vs-portale/' ),
 	],
 	[
@@ -82,7 +82,7 @@ $portal_facts = [
 $own_facts = [
 	[
 		'k' => $e3_cpl_after,
-		'l' => 'Cost per Lead im eigenen Anfrage-System (Case-Study-Referenz)',
+		'l' => 'Cost per Lead im eigenen Anfragesystem (Case-Study-Referenz)',
 	],
 	[
 		'k' => '100 %',
@@ -188,7 +188,7 @@ $objections = [
 		'answer'   => 'Weil der Heizungstausch beratungsintensiv ist und der Datensatz mehrfach verkauft wird: Der Endkunde spricht parallel mit drei Betrieben, während Bestandsheizung, Sanierungsstand und Fördersituation ungeklärt sind. Typische Abschlussquoten liegen bei 1 – 5 %. Im eigenen System stieg die Quote bei einem mittelständischen PV-Installationsbetrieb auf 12 %, weil die Vorqualifizierung vor dem ersten Anruf passiert.',
 	],
 	[
-		'question' => 'Funktioniert ein eigenes Anfrage-System für Wärmepumpe und Photovoltaik zusammen?',
+		'question' => 'Funktioniert ein eigenes Anfragesystem für Wärmepumpe und Photovoltaik zusammen?',
 		'answer'   => sprintf( 'Ja – das ist der Regelfall. Die gleiche Architektur trägt Wärmepumpe, Photovoltaik und Speicher; nur die Vorqualifizierung wird pro Produkt anders gewichtet. Referenz %1$s: %2$s qualifizierte Anfragen in %3$s, CPL von %4$s auf %5$s gesenkt.', $e3_case_label, $e3_lead_count, $e3_timeframe, $e3_cpl_before, $e3_cpl_after ),
 	],
 	[
@@ -211,10 +211,10 @@ $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
 	'@id'         => trailingslashit( $page_url ) . '#service',
-	'name'        => 'Eigenes Anfrage-System statt Wärmepumpen-Leads kaufen',
+	'name'        => 'Eigenes Anfragesystem statt Wärmepumpen-Leads kaufen',
 	'serviceType' => 'Alternative zu Lead-Portalen: Aufbau eigener Wärmepumpen-Anfrage-Infrastruktur',
 	'url'         => $page_url,
-	'description' => sprintf( 'Aufbau eines eigenen Anfrage-Systems für Wärmepumpen- und SHK-Betriebe im DACH-Raum. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
+	'description' => sprintf( 'Aufbau eines eigenen Anfragesystems für Wärmepumpen- und SHK-Betriebe im DACH-Raum. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
 	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 	'areaServed'  => [
@@ -286,7 +286,7 @@ get_header();
 
 	<section class="hu-intercept__compare" id="vergleich" aria-labelledby="hu-intercept-compare-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-compare-title">Wärmepumpen-Leads kaufen vs. eigenes Anfrage-System</h2>
+			<h2 class="hu-intercept__h2" id="hu-intercept-compare-title">Wärmepumpen-Leads kaufen vs. eigenes Anfragesystem</h2>
 			<div class="hu-intercept__grid hu-intercept__grid--two">
 				<div class="hu-intercept__panel hu-intercept__panel--negative">
 					<h3 class="hu-intercept__panel-title">Portal-Leads kaufen</h3>
@@ -300,7 +300,7 @@ get_header();
 					</ul>
 				</div>
 				<div class="hu-intercept__panel hu-intercept__panel--positive">
-					<h3 class="hu-intercept__panel-title">Eigenes Anfrage-System</h3>
+					<h3 class="hu-intercept__panel-title">Eigenes Anfragesystem</h3>
 					<ul class="hu-intercept__facts">
 						<?php foreach ( $own_facts as $fact ) : ?>
 							<li>
@@ -392,7 +392,7 @@ get_header();
 
 	<section class="hu-intercept__why" id="vertiefung" aria-labelledby="hu-intercept-linked-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-intercept-linked-title">Vertiefende Bausteine im Anfrage-System</h2>
+			<h2 class="hu-intercept__h2" id="hu-intercept-linked-title">Vertiefende Bausteine im Anfragesystem</h2>
 			<div class="hu-intercept__grid hu-intercept__grid--four">
 				<?php foreach ( $linked_assets as $item ) : ?>
 					<article class="hu-intercept__card">
@@ -422,7 +422,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-intercept-final-title">Statt Leads zu kaufen: Marktcheck mit Fit-Entscheid starten</h2>
 			<p class="hu-intercept__final-text">
-				Manueller Marktcheck statt Software-Einheitsbrei. Sie erhalten eine händische Einordnung Ihrer Region, Lead-Quellen und Anfragequalität — mit klarer Aussage, ob ein eigenes Anfrage-System für Ihren Betrieb wirtschaftlicher ist als der Zukauf von Wärmepumpen-Leads. Ohne Pflicht-Call, ohne Newsletter.
+				Manueller Marktcheck statt Software-Einheitsbrei. Sie erhalten eine händische Einordnung Ihrer Region, Lead-Quellen und Anfragequalität — mit klarer Aussage, ob ein eigenes Anfragesystem für Ihren Betrieb wirtschaftlicher ist als der Zukauf von Wärmepumpen-Leads. Ohne Pflicht-Call, ohne Newsletter.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"

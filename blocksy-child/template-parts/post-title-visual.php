@@ -72,7 +72,7 @@ $visuals = [
 	],
 	'wordpress'  => [
 		'eyebrow' => 'WordPress',
-		'title'   => 'Website als Anfrage-System',
+		'title'   => 'Website als Anfragesystem',
 		'meta'    => 'Architektur + Betrieb',
 		'nodes'   => [ 'Speed', 'SEO', 'Wartung' ],
 	],

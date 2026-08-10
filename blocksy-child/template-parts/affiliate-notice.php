@@ -23,7 +23,7 @@ $context        = get_query_var( 'affiliate_notice_context', 'stack' );
 $context_text = ( 'inline' === $context )
 	? sprintf(
 		/* translators: %s: provider name */
-		__( 'Werbung · Partnerlink. Die Empfehlung für %s basiert auf eigenem Einsatz im Anfrage-System-Setup. Bei einem Abschluss über diesen Link entsteht eine Vergütung — ohne Mehrkosten.', 'blocksy-child' ),
+		__( 'Werbung · Partnerlink. Die Empfehlung für %s basiert auf eigenem Einsatz im Anfragesystem-Setup. Bei einem Abschluss über diesen Link entsteht eine Vergütung — ohne Mehrkosten.', 'blocksy-child' ),
 		$provider_label
 	)
 	: sprintf(

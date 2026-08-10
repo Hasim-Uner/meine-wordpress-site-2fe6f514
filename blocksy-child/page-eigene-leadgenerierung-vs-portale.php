@@ -30,7 +30,7 @@ $linked_assets = [
 	],
 	[
 		't'   => 'Lead-Funnel Solar (Pillar)',
-		's'   => 'Funnel-Architektur fürs eigene Anfrage-System — was nach der Entscheidung gegen Portale folgt.',
+		's'   => 'Funnel-Architektur fürs eigene Anfragesystem — was nach der Entscheidung gegen Portale folgt.',
 		'url' => home_url( '/lead-funnel-solar/' ),
 	],
 	[
@@ -132,7 +132,7 @@ $tco_scenarios = [
 		'scope'    => '36 Monate (mit Skalierung)',
 		'rent'     => '~ 1.080 € / Monat × 36 Mon. ≈ 39.000 € Lead-Einkauf bei sinkender Qualität',
 		'own'      => '12.000 – 18.000 € Setup + ~ 50 € / Monat Hosting ≈ 14.160 – 20.160 €',
-		'delta'    => 'Über 36 Monate beträgt die TCO-Differenz häufig den fünffachen Setup-Wert – plus dauerhaftes Eigentum am Anfrage-System.',
+		'delta'    => 'Über 36 Monate beträgt die TCO-Differenz häufig den fünffachen Setup-Wert – plus dauerhaftes Eigentum am Anfragesystem.',
 	],
 ];
 
@@ -154,7 +154,7 @@ $when_rent_makes_sense = [
 $faq = [
 	[
 		'question' => 'Wann lohnt sich der Umstieg vom Portal auf das eigene System?',
-		'answer'   => sprintf( 'Faustregel: ab einem monatlichen Portal-Budget von 800 – 1.000 € amortisiert sich der Aufbau eines eigenen Anfrage-Systems im B2B-Mittelstand binnen 12 – 24 Monaten. Bei einem mittelständischen PV-Installationsbetrieb lag die Amortisation in %1$s; gleichzeitig sank der CPL %2$s.', $e3_timeframe, $e3_cpl_reduction ),
+		'answer'   => sprintf( 'Faustregel: ab einem monatlichen Portal-Budget von 800 – 1.000 € amortisiert sich der Aufbau eines eigenen Anfragesystems im B2B-Mittelstand binnen 12 – 24 Monaten. Bei einem mittelständischen PV-Installationsbetrieb lag die Amortisation in %1$s; gleichzeitig sank der CPL %2$s.', $e3_timeframe, $e3_cpl_reduction ),
 	],
 	[
 		'question' => 'Kann ich beide Wege parallel fahren?',
@@ -166,7 +166,7 @@ $faq = [
 	],
 	[
 		'question' => 'Wie unterscheidet sich das von einer klassischen Performance-Agentur?',
-		'answer'   => 'Klassische Performance-Agenturen bauen meist auf eigenen Konten und eigenen Tracking-Setups – das CRM, der Code und das Tracking gehören ihnen, nicht Ihnen. Bei Vertragsende verlieren Sie wieder die Datenebene. Das eigene Anfrage-System gehört vollständig dem Betrieb, inklusive Code, CRM-Anbindung und Server.',
+		'answer'   => 'Klassische Performance-Agenturen bauen meist auf eigenen Konten und eigenen Tracking-Setups – das CRM, der Code und das Tracking gehören ihnen, nicht Ihnen. Bei Vertragsende verlieren Sie wieder die Datenebene. Das eigene Anfragesystem gehört vollständig dem Betrieb, inklusive Code, CRM-Anbindung und Server.',
 	],
 	[
 		'question' => 'Gibt es einen konkreten Vergleichs-ROI auf Basis der eigenen Daten?',
@@ -185,9 +185,9 @@ $service_schema = [
 	'@type'       => 'Service',
 	'@id'         => trailingslashit( $page_url ) . '#service',
 	'name'        => 'Eigene Leadgenerierung als Alternative zu Lead-Portalen',
-	'serviceType' => 'Anfrage-System für Solar, Wärmepumpe und Speicher – Alternative zu DAA, Aroundhome, Check24',
+	'serviceType' => 'Anfragesystem für Solar, Wärmepumpe und Speicher – Alternative zu DAA, Aroundhome, Check24',
 	'url'         => $page_url,
-	'description' => sprintf( 'Vergleich Portal-Leads vs. eigenes Anfrage-System für Solar- und Wärmepumpen-Anbieter. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
+	'description' => sprintf( 'Vergleich Portal-Leads vs. eigenes Anfragesystem für Solar- und Wärmepumpen-Anbieter. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
 	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 	'areaServed'  => [
@@ -225,10 +225,10 @@ get_header();
 		<div class="hu-intercept__container">
 			<p class="hu-intercept__eyebrow">Strategischer Vergleich · CAPEX vs. OPEX · 24-Monats-Horizont</p>
 			<h1 class="hu-intercept__title" id="hu-vs-hero-title">
-				Portal-Leads vs. eigenes Anfrage-System — TCO-Vergleich über 24 Monate
+				Portal-Leads vs. eigenes Anfragesystem — TCO-Vergleich über 24 Monate
 			</h1>
 			<p class="hu-intercept__lead">
-				Portal-Leads sind <strong>OPEX</strong> – laufende Miete für mehrfach verkaufte Datensätze mit typisch <strong><?php echo esc_html( $e3_conv_before ); ?></strong> Abschlussquote. Eigene Anfrage-Systeme sind <strong>CAPEX</strong> – investiv aufgebaute Infrastruktur, die im Betrieb bleibt. Bei <?php echo esc_html( $e3_case_label ); ?>: <strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong> niedrigerer CPL und Abschlussquote auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> in <strong><?php echo esc_html( $e3_timeframe ); ?></strong>.
+				Portal-Leads sind <strong>OPEX</strong> – laufende Miete für mehrfach verkaufte Datensätze mit typisch <strong><?php echo esc_html( $e3_conv_before ); ?></strong> Abschlussquote. Eigene Anfragesysteme sind <strong>CAPEX</strong> – investiv aufgebaute Infrastruktur, die im Betrieb bleibt. Bei <?php echo esc_html( $e3_case_label ); ?>: <strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong> niedrigerer CPL und Abschlussquote auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> in <strong><?php echo esc_html( $e3_timeframe ); ?></strong>.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">
@@ -375,7 +375,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-vs-final-title">TCO im Marktcheck einordnen</h2>
 			<p class="hu-intercept__final-text">
-				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse Ihrer Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, ab welchem monatlichen Lead-Budget sich der Umstieg vom Portal-Modell auf ein eigenes Anfrage-System wirtschaftlich rechnet.
+				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse Ihrer Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, ab welchem monatlichen Lead-Budget sich der Umstieg vom Portal-Modell auf ein eigenes Anfragesystem wirtschaftlich rechnet.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"

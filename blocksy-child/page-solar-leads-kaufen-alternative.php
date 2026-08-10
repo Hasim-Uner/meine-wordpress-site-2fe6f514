@@ -3,7 +3,7 @@
  * Template Name: Solar Leads kaufen – Alternative (Intercept)
  * Description: Intercept-Landingpage für Suchintent "Solar Leads kaufen",
  *              "Photovoltaik Leads kaufen", "Wärmepumpen Leads kaufen".
- *              Argumentation: Portal-Leads vs. eigenes Anfrage-System (CPL-Senkung).
+ *              Argumentation: Portal-Leads vs. eigenes Anfragesystem (CPL-Senkung).
  *              Primärer Pfad: Marktcheck auf /solar-waermepumpen-leadgenerierung/#marktcheck.
  *
  * @package Blocksy_Child
@@ -83,7 +83,7 @@ $portal_facts = [
 $own_facts = [
 	[
 		'k' => $e3_cpl_after,
-		'l' => 'Cost per Lead im eigenen Anfrage-System (Case-Study-Referenz)',
+		'l' => 'Cost per Lead im eigenen Anfragesystem (Case-Study-Referenz)',
 	],
 	[
 		'k' => 'Eigener Kontakt',
@@ -189,7 +189,7 @@ $objections = [
 		'answer'   => 'Zukauf kann eine kurzfristige Kapazitätslücke überbrücken. Ein eigener Anfragekanal hat einen anderen Zweck: Er soll Nachfrage, Qualifizierung und Lerndaten schrittweise in das Eigentum des Betriebs holen. Welcher Weg gerade sinnvoll ist, hängt von Zielgebiet, Vertrieb und Zeithorizont ab.',
 	],
 	[
-		'question' => 'Was kostet der Aufbau eines eigenen Anfrage-Systems?',
+		'question' => 'Was kostet der Aufbau eines eigenen Anfragesystems?',
 		'answer'   => 'Der Umfang hängt von bestehender Website, Messbarkeit, Vorqualifizierung, CRM-Anschluss und Zielgebiet ab. Deshalb steht vor einem Angebot der Marktcheck und bei passendem Fit eine vertiefte Analyse. Verglichen wird nicht nur Setup gegen Leadpreis, sondern die Gesamtkosten über den geplanten Zeitraum und der Wert des verbleibenden Assets.',
 	],
 	[
@@ -220,10 +220,10 @@ $service_schema = [
 	'@context'    => 'https://schema.org',
 	'@type'       => 'Service',
 	'@id'         => trailingslashit( $page_url ) . '#service',
-	'name'        => 'Eigenes Anfrage-System statt Portal-Leads für Solar, Wärmepumpe und Speicher',
+	'name'        => 'Eigenes Anfragesystem statt Portal-Leads für Solar, Wärmepumpe und Speicher',
 	'serviceType' => 'Alternative zu Lead-Portalen: Aufbau eigener Anfrage-Infrastruktur',
 	'url'         => $page_url,
-	'description' => sprintf( 'Aufbau eines eigenen Anfrage-Systems für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
+	'description' => sprintf( 'Aufbau eines eigenen Anfragesystems für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
 	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 	'areaServed'  => [
@@ -348,7 +348,7 @@ get_header();
 				</article>
 				<article class="hu-buy__compare-card hu-buy__compare-card--own">
 					<p class="hu-buy__compare-label">Eigene Infrastruktur</p>
-					<h3>Eigenes Anfrage-System</h3>
+					<h3>Eigenes Anfragesystem</h3>
 					<ul class="hu-buy__fact-list" role="list">
 						<?php foreach ( $own_facts as $fact ) : ?>
 							<li><strong><?php echo esc_html( $fact['k'] ); ?></strong><span><?php echo esc_html( $fact['l'] ); ?></span></li>
@@ -531,7 +531,7 @@ get_header();
 			<div class="hu-buy__actions hu-buy__actions--centered">
 				<a class="hu-buy__button hu-buy__button--primary" href="<?php echo esc_url( $marktcheck_url ); ?>" data-track-action="cta_marktcheck" data-track-category="intercept_solar_leads" data-track-section="final">Marktcheck mit Fit-Entscheid starten <span aria-hidden="true">→</span></a>
 			</div>
-			<p class="hu-buy__final-note">Erst die Gesamtmethode verstehen? <a href="<?php echo esc_url( $solar_money_url ); ?>" data-track-action="cta_money_page" data-track-category="internal_link_hierarchy" data-track-section="final">Das eigene Anfrage-System ansehen</a>.</p>
+			<p class="hu-buy__final-note">Erst die Gesamtmethode verstehen? <a href="<?php echo esc_url( $solar_money_url ); ?>" data-track-action="cta_money_page" data-track-category="internal_link_hierarchy" data-track-section="final">Das eigene Anfragesystem ansehen</a>.</p>
 		</div>
 	</section>
 

@@ -495,7 +495,7 @@ function nexus_get_wgos_asset_content_html( $asset ) {
 					<h3>Dieses Asset ist Teil eines dokumentierten Systems.</h3>
 					<p>Wir priorisieren nicht isoliert, sondern gegen Strategie, Fundament, Messbarkeit und Conversion. Die Systemlogik ist im Theme versioniert und fachlich nachvollziehbar.</p>
 					<p class="wgos-inline-cta">
-						<a href="<?php echo esc_url( $wgos_url ); ?>">Anfrage-System ansehen</a>
+						<a href="<?php echo esc_url( $wgos_url ); ?>">Anfragesystem ansehen</a>
 						<span aria-hidden="true"> / </span>
 						<a href="<?php echo esc_url( $hub_url ); ?>">Bausteine einordnen</a>
 					</p>
@@ -542,7 +542,7 @@ function nexus_get_wgos_asset_content_html( $asset ) {
 		<div class="wgos-container">
 			<div class="wgos-section-head">
 				<span class="wgos-principle-kicker">Systemlogik</span>
-				<h2 class="wgos-h2">Dieses Asset im Anfrage-System</h2>
+				<h2 class="wgos-h2">Dieses Asset im Anfragesystem</h2>
 			</div>
 			<div class="wgos-principle-shell">
 				<div class="wgos-prose">

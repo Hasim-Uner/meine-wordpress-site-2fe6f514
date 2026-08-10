@@ -16,7 +16,7 @@ define(
 
 define(
 	'HU_MESSAGE_VALUE_ANCHOR_PRICE',
-	'Sie würden bei einer WordPress-Agentur 15.000 € für Design ausgeben. Hier bekommen Sie für 9.900 € ein funktionierendes Anfrage-System. Das Design ist dabei.'
+	'Sie würden bei einer WordPress-Agentur 15.000 € für Design ausgeben. Hier bekommen Sie für 9.900 € ein funktionierendes Anfragesystem. Das Design ist dabei.'
 );
 
 /**
@@ -29,7 +29,7 @@ function hu_messaging_canon() {
 		'value_anchor_architecture' => HU_MESSAGE_VALUE_ANCHOR_ARCHITECTURE,
 		'value_anchor_price'        => HU_MESSAGE_VALUE_ANCHOR_PRICE,
 		'what_we_dont_sell'         => [
-			'Keine reine Design-Retusche ohne Anfrage-System.',
+			'Keine reine Design-Retusche ohne Anfragesystem.',
 			'Keine Reporting-Fassade ohne belastbare Datengrundlage.',
 			'Keine Anfrage-Volumengarantie ohne passendes Werbebudget und schriftliche Grundlage.',
 			'Keine Kundendaten-Blackbox, bei der Ownership unklar bleibt.',
@@ -50,7 +50,7 @@ function hu_messaging_canon() {
 			'Baustein',
 		],
 		'term_definitions'          => [
-			'Umsetzungspartner' => 'Betrieb, für den nach dem Marktcheck ein eigenes Anfrage-System gebaut wird; kein Mitgründer, kein Anteilseigner und keine gesellschaftsrechtliche Partnerschaft.',
+			'Umsetzungspartner' => 'Betrieb, für den nach dem Marktcheck ein eigenes Anfragesystem gebaut wird; kein Mitgründer, kein Anteilseigner und keine gesellschaftsrechtliche Partnerschaft.',
 		],
 	];
 }

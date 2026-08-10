@@ -33,7 +33,7 @@ Wichtige Merkmale:
 - Ein Teil der Seiten ist editor-getrieben und nutzt `the_content()`.
 - Ein anderer Teil ist hart codiert und traegt Business-Logik direkt im Template.
 - Die kanonische Kontaktseite `/kontakt/` rendert im Frontend jetzt immer das versionierte Theme-Template statt editorgetriebener Altinhalte.
-- Die frühere WGOS-Erklärung ist öffentlich in Ergebnis-/Anfrage-System-Sprache auf der lokalen Money Page `/wordpress-agentur-hannover/#methode` konsolidiert. `page-wgos.php` ist kein Sales-Template mehr, sondern internes Client-Dashboard mit Login- und Capability-Schutz; alte WGOS-Erklärpfade sind keine erzwungenen 301-Ziele mehr und bleiben bei vorhandenen DB-Seiten noindex sowie sitemap-excluded.
+- Die frühere WGOS-Erklärung ist öffentlich in Ergebnis-/Anfragesystem-Sprache auf der lokalen Money Page `/wordpress-agentur-hannover/#methode` konsolidiert. `page-wgos.php` ist kein Sales-Template mehr, sondern internes Client-Dashboard mit Login- und Capability-Schutz; alte WGOS-Erklärpfade sind keine erzwungenen 301-Ziele mehr und bleiben bei vorhandenen DB-Seiten noindex sowie sitemap-excluded.
 - Die Homepage-Shortcodes liefern jetzt einen versionierten Public-Proof-Layer aus konservativen Leistungsmetriken, GitHub-Transparenz und audit-first Folgelogik statt Pilotangebot.
 
 Kritische Dateien:

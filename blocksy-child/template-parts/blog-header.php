@@ -39,7 +39,7 @@ $home_label         = sprintf(
 $suppress_context_links = is_single( 'checkfox-solar-waermepumpe-einordnung' );
 
 $context_title = __( 'Blog', 'blocksy-child' );
-$context_text  = __( 'Analysen zu Anfrage-Systemen, Portal-Kosten, Tracking und Conversion.', 'blocksy-child' );
+$context_text  = __( 'Analysen zu Anfragesystemen, Portal-Kosten, Tracking und Conversion.', 'blocksy-child' );
 $context_links = [
 	[
 		'label'  => __( 'Alle Analysen', 'blocksy-child' ),

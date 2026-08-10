@@ -58,7 +58,7 @@ Copy-Rewrite der Solar-/Wärmepumpen-Landingpage von Berater-Sprache auf Handwer
 
 ### SEO
 - **Meta Title:** "Leadgenerierung für Solar & Wärmepumpen | Weniger Kosten, bessere Anfragen"
-- **Meta Description:** "Schluss mit teuren Portal-Leads. Eigenes Anfrage-System für Solarteure und Wärmepumpen-Installateure. Referenz: –83 % Kosten pro Anfrage. Kostenloses Erstgespräch."
+- **Meta Description:** "Schluss mit teuren Portal-Leads. Eigenes Anfragesystem für Solarteure und Wärmepumpen-Installateure. Referenz: –83 % Kosten pro Anfrage. Kostenloses Erstgespräch."
 
 ## Copy-Regeln angewendet
 

@@ -101,7 +101,7 @@ $faq = [
 	],
 	[
 		'question' => sprintf( 'Wie hat %s den CPL gesenkt?', $e3_case_label ),
-		'answer'   => sprintf( 'Durch Aufbau eines eigenen Anfrage-Systems mit Money Page, Server-Side-Tracking, Vorqualifizierung und CRM-Anbindung. Ergebnis: CPL %1$s → %2$s (%3$s), %4$s qualifizierte Anfragen in %5$s, %6$s Abschlussquote.', $e3_cpl_before, $e3_cpl_after, $e3_cpl_reduction, $e3_lead_count, $e3_timeframe, $e3_sales_conversion ),
+		'answer'   => sprintf( 'Durch Aufbau eines eigenen Anfragesystems mit Money Page, Server-Side-Tracking, Vorqualifizierung und CRM-Anbindung. Ergebnis: CPL %1$s → %2$s (%3$s), %4$s qualifizierte Anfragen in %5$s, %6$s Abschlussquote.', $e3_cpl_before, $e3_cpl_after, $e3_cpl_reduction, $e3_lead_count, $e3_timeframe, $e3_sales_conversion ),
 	],
 	[
 		'question' => 'Ab welchem Lead-Budget lohnt sich der Aufbau eines eigenen Systems?',
@@ -123,7 +123,7 @@ $service_schema = [
 	'@type'       => 'Service',
 	'@id'         => trailingslashit( $page_url ) . '#service',
 	'name'        => 'CPL-Optimierung für Photovoltaik- und Wärmepumpen-Anbieter',
-	'serviceType' => 'Cost per Lead Senkung durch eigene Anfrage-Systeme',
+	'serviceType' => 'Cost per Lead Senkung durch eigene Anfragesysteme',
 	'url'         => $page_url,
 	'description' => sprintf( 'Cost per Lead Analyse und Senkung für Solar-, Wärmepumpen- und Speicher-Anbieter. Referenz %1$s: %2$s niedrigere Kosten pro Anfrage in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
 	'provider'    => [ '@id' => home_url( '/#organization' ) ],

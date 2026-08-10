@@ -47,8 +47,8 @@ if ( $is_whitelabel_context ) {
 	$brand_tagline   = 'White-Label-Partner für Agenturen — SEO, WordPress, Tracking und Conversion. Unsichtbar im Hintergrund.';
 	$copyright_line  = 'Haşim Üner - White-Label-Partner für Agenturen';
 } else {
-	$brand_tagline   = 'Eigene Anfrage-Systeme für Solar-, Wärmepumpen- und Speicher-Anbieter, die Portal-Abhängigkeit messbar senken wollen.';
-	$copyright_line  = 'Haşim Üner - Anfrage-Systeme für Solar & Wärmepumpe';
+	$brand_tagline   = 'Eigene Anfragesysteme für Solar-, Wärmepumpen- und Speicher-Anbieter, die Portal-Abhängigkeit messbar senken wollen.';
+	$copyright_line  = 'Haşim Üner - Anfragesysteme für Solar & Wärmepumpe';
 }
 ?>
 

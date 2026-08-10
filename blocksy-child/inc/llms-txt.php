@@ -68,7 +68,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Solar- und Wärmepumpen-Leadgenerierung',
 					'url'         => $urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ),
-					'description' => 'Branchen-Landingpage für eigene Anfrage-Systeme gegen Portal-Abhängigkeit: Website, Vorqualifizierung, Tracking und steuerbare Werbekanäle.',
+					'description' => 'Branchen-Landingpage für eigene Anfragesysteme gegen Portal-Abhängigkeit: Website, Vorqualifizierung, Tracking und steuerbare Werbekanäle.',
 				],
 				[
 					'label'       => 'Marktcheck',
@@ -88,7 +88,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Solar Case Study',
 					'url'         => $urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
-					'description' => 'Kaufnaher Proof-Case: eigenes Anfrage-System, Vorqualifizierung, Tracking und Conversion statt Portal-Lead-Abhängigkeit.',
+					'description' => 'Kaufnaher Proof-Case: eigenes Anfragesystem, Vorqualifizierung, Tracking und Conversion statt Portal-Lead-Abhängigkeit.',
 				],
 				[
 					'label'       => 'Was kosten Solar-Leads? (Marktstudie)',
@@ -103,7 +103,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Über Haşim Üner',
 					'url'         => $urls['about'] ?? home_url( '/uber-mich/' ),
-					'description' => 'Personenprofil des Autors und Betreibers: Architekt für eigene Anfrage-Systeme.',
+					'description' => 'Personenprofil des Autors und Betreibers: Architekt für eigene Anfragesysteme.',
 				],
 			],
 		],
@@ -113,17 +113,17 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Photovoltaik & Solar Leads kaufen – Alternative',
 					'url'         => $urls['solar_leads_alternative'] ?? home_url( '/solar-leads-kaufen-alternative/' ),
-					'description' => 'Intercept-Page für Kauf-Suchintent: Lead-Anbieter einordnen und eigene Anfrage-Systeme als Alternative bewerten.',
+					'description' => 'Intercept-Page für Kauf-Suchintent: Lead-Anbieter einordnen und eigene Anfragesysteme als Alternative bewerten.',
 				],
 				[
 					'label'       => 'Wärmepumpen Leads kaufen – Alternative',
 					'url'         => home_url( '/waermepumpen-leads/' ),
-					'description' => 'Intercept-Page für Wärmepumpen-Lead-Kauf: Marktmodelle, wärmepumpen-spezifische Vorqualifizierung und eigenes Anfrage-System als Alternative.',
+					'description' => 'Intercept-Page für Wärmepumpen-Lead-Kauf: Marktmodelle, wärmepumpen-spezifische Vorqualifizierung und eigenes Anfragesystem als Alternative.',
 				],
 				[
 					'label'       => 'Eigene Leadgenerierung vs. Portale',
 					'url'         => $urls['solar_leads_tco'] ?? home_url( '/eigene-leadgenerierung-vs-portale/' ),
-					'description' => 'Vergleich von Portal-Leads und eigenem Anfrage-System: Mieten vs. Besitzen, TCO und Datenbesitz.',
+					'description' => 'Vergleich von Portal-Leads und eigenem Anfragesystem: Mieten vs. Besitzen, TCO und Datenbesitz.',
 				],
 				[
 					'label'       => 'Cost per Lead Photovoltaik',
@@ -148,7 +148,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'B2B Solar Leads für Gewerbe',
 					'url'         => home_url( '/b2b-solar-leads/' ),
-					'description' => 'Anfrage-Systeme für gewerbliche Photovoltaik-Projekte mit Buying-Center-Funnel und langen Sales-Zyklen.',
+					'description' => 'Anfragesysteme für gewerbliche Photovoltaik-Projekte mit Buying-Center-Funnel und langen Sales-Zyklen.',
 				],
 				[
 					'label'       => 'Kunden gewinnen für Solarteure',
@@ -163,7 +163,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Blog',
 					'url'         => $urls['blog'] ?? home_url( '/blog/' ),
-					'description' => 'Artikel zu SEO, Tracking, WordPress-Performance und Anfrage-Systemen.',
+					'description' => 'Artikel zu SEO, Tracking, WordPress-Performance und Anfragesystemen.',
 				],
 				[
 					'label'       => 'Glossar',
@@ -194,7 +194,7 @@ function nexus_get_llms_txt_content() {
 	$lines = [
 		'# Haşim Üner',
 		'',
-		'> Architekt für eigene Anfrage-Systeme für Solar- und Wärmepumpen-Anbieter im DACH-Raum. Ablösung von Portal-Abhängigkeit durch Website, Tracking, Vorqualifizierung und Werbekanal-Steuerung als ein verbundenes System. Primärer Einstieg ist der Marktcheck auf der Solar- und Wärmepumpen-Seite.',
+		'> Architekt für eigene Anfragesysteme für Solar- und Wärmepumpen-Anbieter im DACH-Raum. Ablösung von Portal-Abhängigkeit durch Website, Tracking, Vorqualifizierung und Werbekanal-Steuerung als ein verbundenes System. Primärer Einstieg ist der Marktcheck auf der Solar- und Wärmepumpen-Seite.',
 	];
 
 	foreach ( nexus_get_llms_txt_sections() as $section ) {

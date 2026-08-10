@@ -115,7 +115,7 @@ $tech_article_schema = [
 	'@context'         => 'https://schema.org',
 	'@type'            => 'TechArticle',
 	'@id'              => trailingslashit( $page_url ) . '#article',
-	'headline'         => 'Stack für Solar-/SHK-Anfrage-Systeme: Performance, Tracking und Vorqualifizierung',
+	'headline'         => 'Stack für Solar-/SHK-Anfragesysteme: Performance, Tracking und Vorqualifizierung',
 	'description'      => 'Performance-Stack für Solar-/SHK-Anbieter und Performance-Marketer. Frontend, Managed Hosting (DE), Server-Side Tracking, CRM-Anbindung und Marktcheck-Vorqualifizierung in fünf Schichten. Mit Closed-Loop-Effekt aus SST + Marktcheck: bis zu ×4–×5 Effizienz pro qualifiziertem Lead.',
 	'url'              => $page_url,
 	'mainEntityOfPage' => $page_url,
@@ -150,7 +150,7 @@ get_header();
 
 	<section class="hu-intercept__hero" id="hero" aria-labelledby="hu-stack-solar-hero-title">
 		<div class="hu-intercept__container">
-			<p class="hu-intercept__eyebrow">Stack für Solar-/SHK-Anfrage-Systeme</p>
+			<p class="hu-intercept__eyebrow">Stack für Solar-/SHK-Anfragesysteme</p>
 			<h1 class="hu-intercept__title" id="hu-stack-solar-hero-title">
 				Der Stack, der CPL halbiert und 80 % der Schrott-Anfragen filtert
 			</h1>
@@ -243,7 +243,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="stack_solar"
 				   data-track-section="zahlen">
-					Marktcheck starten — sieh, wo dein Anfrage-System Geld liegen lässt
+					Marktcheck starten — sieh, wo dein Anfragesystem Geld liegen lässt
 				</a>
 			</div>
 		</div>

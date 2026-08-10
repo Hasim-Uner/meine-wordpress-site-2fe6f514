@@ -7,7 +7,7 @@
 
 WordPress bleibt das Hauptsystem. Funnel-Erlebnisse werden als React-Mikro-Apps im Theme eingebettet. Es wird kein vollständig Headless-Stack und kein SaaS-Produkt eingeführt.
 
-Die Anfrage-System-Analyse bleibt der aktive React-Funnel-Layer im Theme. Der frühere Showroom-Pfad ist nicht mehr Teil der Funnel-Architektur.
+Die Anfragesystem-Analyse bleibt der aktive React-Funnel-Layer im Theme. Der frühere Showroom-Pfad ist nicht mehr Teil der Funnel-Architektur.
 
 ## Begründung
 
@@ -18,7 +18,7 @@ Der Solo-Betrieb braucht eine Architektur, die schnell auslieferbar, versionierb
 - Marketing-Pages, Money-Pages und Blog bleiben im WordPress-Editor.
 - Funnel-Erlebnisse bauen nach `/wp-content/themes/<theme>/<funnel-name>/dist/`.
 - Submit-, Tracking-, n8n- und CRM-Schichten kommen erst nach versioniertem Contract, explizitem Consent und Feature-Flag.
-- Der Default-Pfad der Anfrage-System-Analyse verarbeitet keine personenbezogenen Daten und erzeugt keinen CRM-Datensatz.
+- Der Default-Pfad der Anfragesystem-Analyse verarbeitet keine personenbezogenen Daten und erzeugt keinen CRM-Datensatz.
 - Der retired EnergieFahrplan-Showroom bleibt kein SaaS und kein Lead-Pflichtpfad.
 - Der Growth Audit bleibt Legacy-/Sekundärpfad und darf nicht als Hauptfunnel zurückkehren.
 - `scripts/build-theme-dist.sh` wird multi-funnel-fähig.
@@ -26,8 +26,8 @@ Der Solo-Betrieb braucht eine Architektur, die schnell auslieferbar, versionierb
 
 ## Nachtrag 2026-05-07
 
-Der Default-Fragepfad der Anfrage-System-Analyse bleibt lokal und ohne personenbezogene Daten. Der separate Kontakt-Schritt ist inzwischen hinter sichtbarer Einwilligung aktiv: WordPress REST speichert Analyse-Leads in `nexus_contact`, Brevo versendet Transaktionsmails. n8n bleibt für diese Route nicht angebunden.
+Der Default-Fragepfad der Anfragesystem-Analyse bleibt lokal und ohne personenbezogene Daten. Der separate Kontakt-Schritt ist inzwischen hinter sichtbarer Einwilligung aktiv: WordPress REST speichert Analyse-Leads in `nexus_contact`, Brevo versendet Transaktionsmails. n8n bleibt für diese Route nicht angebunden.
 
 ## Nachtrag 2026-05-13
 
-Der EnergieFahrplan-Showroom wurde aus dem Repo-Funnel entfernt. Die Beweisführung läuft über E3, Methodik und die direkte Anfrage-System-Analyse.
+Der EnergieFahrplan-Showroom wurde aus dem Repo-Funnel entfernt. Die Beweisführung läuft über E3, Methodik und die direkte Anfragesystem-Analyse.

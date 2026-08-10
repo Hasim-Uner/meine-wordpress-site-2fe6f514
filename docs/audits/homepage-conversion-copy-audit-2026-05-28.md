@@ -106,7 +106,7 @@ Recommended:
 ```php
 'title' => 'Der 60-Sekunden-Marktcheck',
 'desc'  => 'Prüft, wo Portal-Abhängigkeit, Website, Tracking oder Vorqualifizierung aktuell qualifizierte Anfragen kosten.',
-'label' => 'Leadkosten & Anfrage-System prüfen',
+'label' => 'Leadkosten & Anfragesystem prüfen',
 ```
 
 Priority: P0
@@ -205,7 +205,7 @@ Ich entwickle autarke Nachfrage-Kraftwerke. Digital.
 Recommended:
 
 ```html
-Ich baue Anfrage-Systeme, die Vertrieb und Daten zusammenbringen.
+Ich baue Anfragesysteme, die Vertrieb und Daten zusammenbringen.
 ```
 
 Recommended lead:
@@ -253,7 +253,7 @@ Kein Pitch. Drei klare Einstiege — jede führt zu einem konkreten, prüfbaren 
 Recommended:
 
 ```html
-Finden Sie heraus, wo Ihr Anfrage-System zuerst Geld verliert.
+Finden Sie heraus, wo Ihr Anfragesystem zuerst Geld verliert.
 Starten Sie mit dem Marktcheck, prüfen Sie den E3-Case oder gehen Sie direkt in die technische Umsetzung — je nachdem, wo Sie gerade stehen.
 ```
 

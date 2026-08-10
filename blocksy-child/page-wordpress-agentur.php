@@ -30,7 +30,7 @@ $hero_asset_url = get_stylesheet_directory_uri() . '/assets/img/landing/wordpres
 $agentur_solar_deeper = [
 	[
 		't'   => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage',
-		's'   => 'Markteinordnung der Lead-Anbieter und warum eigene Anfrage-Systeme den CPL senken.',
+		's'   => 'Markteinordnung der Lead-Anbieter und warum eigene Anfragesysteme den CPL senken.',
 		'url' => home_url( '/solar-leads-kaufen-alternative/' ),
 	],
 	[
@@ -245,7 +245,7 @@ get_header();
 
 					<div class="ag-hero__actions">
 						<a href="<?php echo esc_url( $contact_url ); ?>" class="ag-btn ag-btn--primary" data-track-action="cta_hero_projekt_pruefen" data-track-category="lead_gen" data-track-section="hero">
-							<span>Anfrage-System prüfen</span>
+							<span>Anfragesystem prüfen</span>
 							<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
 								<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 							</svg>
@@ -264,10 +264,10 @@ get_header();
 					<header class="ag-hero-viz__head">
 						<span class="ag-hero-viz__live">
 							<span class="ag-hero-viz__live-dot" aria-hidden="true"></span>
-							Verifizierter Referenzfall · Anfrage-System
+							Verifizierter Referenzfall · Anfragesystem
 						</span>
 						<h2 class="ag-hero-viz__title">CPL-Senkung in <?php echo esc_html( $e3_timeframe_dat ); ?></h2>
-						<p class="ag-hero-viz__sub">Kosten pro qualifizierter B2B-Anfrage — vor und nach dem eigenen Anfrage-System.</p>
+						<p class="ag-hero-viz__sub">Kosten pro qualifizierter B2B-Anfrage — vor und nach dem eigenen Anfragesystem.</p>
 					</header>
 
 					<div class="ag-hero-viz__chart" role="img" aria-label="<?php echo esc_attr( sprintf(
@@ -460,7 +460,7 @@ get_header();
 	<div class="nx-container">
 		<div class="nx-section-header">
 			<p class="wp-agentur-eyebrow">Spezialisierung</p>
-			<h2 class="nx-headline-section">Keine lokale Allround-Agentur. Ein Spezialist für WordPress als Anfrage-System.</h2>
+			<h2 class="nx-headline-section">Keine lokale Allround-Agentur. Ein Spezialist für WordPress als Anfragesystem.</h2>
 			<p class="nx-subheadline wp-agentur-section-intro">
 				Für Unternehmen in Hannover und im DACH-Raum, deren WordPress-Website nicht nur gut aussehen, sondern kaufnahe Besucher in messbare Anfragen führen soll.
 			</p>
@@ -479,7 +479,7 @@ get_header();
 			</div>
 			<div class="wp-agentur-segment-card">
 				<span class="wp-agentur-segment-card__tag">Womit</span>
-				<h3>Mit einer Anfrage-System-Methode, validiert an der Case Study</h3>
+				<h3>Mit einer Anfragesystem-Methode, validiert an der Case Study</h3>
 				<p><?php echo esc_html( sprintf( 'CPL von %s auf %s gesenkt, %s qualifizierte Anfragen in %s und %s Abschlussquote.', $e3_cpl_before, $e3_cpl_after, $e3_lead_count, $e3_timeframe_dat, $e3_sales_conv ) ); ?></p>
 			</div>
 		</div>
@@ -566,7 +566,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 05 — ANFRAGE-SYSTEM-METHODE (6 Phasen + Vorher/Nachher)
+     SECTION 05 — ANFRAGESYSTEM-METHODE (6 Phasen + Vorher/Nachher)
      ═══════════════════════════════════════════════ -->
 <span class="wp-agentur-anchor" id="wgos" aria-hidden="true"></span>
 <section class="nx-section" data-nx-theme="light" id="methode">
@@ -575,7 +575,7 @@ get_header();
 			<p class="wp-agentur-eyebrow">Methode</p>
 			<h2 class="nx-headline-section">WordPress, SEO, Tracking und CRO in der richtigen Reihenfolge.</h2>
 			<p class="nx-subheadline wp-agentur-section-intro">
-				Die Methode hinter dem eigenen Anfrage-System ordnet WordPress, SEO, Tracking und CRO nach Wirkung. Nicht die Baustein-Liste entscheidet, sondern die Frage, welcher Eingriff zuerst mehr kaufnahe Klarheit erzeugt.
+				Die Methode hinter dem eigenen Anfragesystem ordnet WordPress, SEO, Tracking und CRO nach Wirkung. Nicht die Baustein-Liste entscheidet, sondern die Frage, welcher Eingriff zuerst mehr kaufnahe Klarheit erzeugt.
 			</p>
 		</div>
 
@@ -673,9 +673,9 @@ get_header();
 	<div class="nx-container">
 		<div class="nx-section-header">
 			<p class="wp-agentur-eyebrow">Methodenbibliothek</p>
-			<h2 class="nx-headline-section">Die Bausteine hinter der Anfrage-System-Methode.</h2>
+			<h2 class="nx-headline-section">Die Bausteine hinter der Anfragesystem-Methode.</h2>
 			<p class="nx-subheadline wp-agentur-section-intro">
-				Diese Bausteine bilden die Anfrage-System-Methode. Welche zuerst gebaut werden, entscheidet die Analyse — nicht der Katalog.
+				Diese Bausteine bilden die Anfragesystem-Methode. Welche zuerst gebaut werden, entscheidet die Analyse — nicht der Katalog.
 			</p>
 		</div>
 
@@ -960,7 +960,7 @@ get_header();
 			<div class="wp-agentur-case-card">
 				<span class="wp-agentur-case-card__eyebrow">Referenz</span>
 				<h3>Mittelständischer PV-Installationsbetrieb</h3>
-				<p>Ein Energie-Anbieter, der von eingekauften Portal-Leads auf ein eigenes Anfrage-System umgestellt hat — WordPress, Server-Side Tracking und Vorqualifizierung als ein zusammenhängendes System statt als Einzelmaßnahmen.</p>
+				<p>Ein Energie-Anbieter, der von eingekauften Portal-Leads auf ein eigenes Anfragesystem umgestellt hat — WordPress, Server-Side Tracking und Vorqualifizierung als ein zusammenhängendes System statt als Einzelmaßnahmen.</p>
 			</div>
 			<div class="wp-agentur-case-card wp-agentur-case-card--result">
 				<span class="wp-agentur-case-card__eyebrow">Ergebnis</span>
@@ -973,7 +973,7 @@ get_header();
 			<div class="wp-agentur-case-card">
 				<span class="wp-agentur-case-card__eyebrow">Zeitraum</span>
 				<h3><?php echo esc_html( $e3_timeframe ); ?></h3>
-				<p>In <?php echo esc_html( $e3_timeframe_dat ); ?> von portalabhängiger Leadbeschaffung zu einem eigenen, messbaren Anfrage-System.</p>
+				<p>In <?php echo esc_html( $e3_timeframe_dat ); ?> von portalabhängiger Leadbeschaffung zu einem eigenen, messbaren Anfragesystem.</p>
 			</div>
 			<div class="wp-agentur-case-card wp-agentur-case-card--cta">
 				<span class="wp-agentur-case-card__eyebrow">Nächster Schritt</span>
@@ -1214,7 +1214,7 @@ get_header();
 <div class="wp-agentur-sticky-cta" id="wp-agentur-sticky-cta" aria-hidden="true">
 	<div class="wp-agentur-sticky-cta__inner">
 		<div class="wp-agentur-sticky-cta__label">
-			<strong>WordPress als Anfrage-System</strong>
+			<strong>WordPress als Anfragesystem</strong>
 			<span>Projektprüfung in 30 Min · kein Standard-Pitch</span>
 		</div>
 		<a href="<?php echo esc_url( $contact_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_sticky_projekt_pruefen" data-track-category="lead_gen" data-track-section="sticky_mobile">

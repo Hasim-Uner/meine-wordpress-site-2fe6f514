@@ -422,7 +422,7 @@ function nexus_get_energy_intake_flow_definition() {
 			'name'          => 'business_fit',
 			'kind'          => 'single_choice',
 			'title_short'   => 'Fit',
-			'question'      => 'Passt das wirtschaftlich zu einem eigenen Anfrage-System?',
+			'question'      => 'Passt das wirtschaftlich zu einem eigenen Anfragesystem?',
 			'description'   => 'Keine Mitarbeitergrenze: Projektwert, Zielgebiet und Vertriebsfähigkeit entscheiden.',
 			'summary_label' => 'Wirtschaftlicher Fit',
 			'auto_advance'  => true,

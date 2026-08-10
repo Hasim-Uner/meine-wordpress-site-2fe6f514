@@ -25,7 +25,7 @@ Ownership sortieren") ist richtig. Das ist eine gute Analyse.
 | 7d: 462 Impr., 0 Klicks | ✅ exakt | Vorperiode 215 Impr. |
 | `gap-report.sh` nimmt beste historische Position | ✅ **echter Bug** | `gap-report.sh:99–114`: `glob("gsc/*.csv")` + `if pos < prev[1]` — ohne Filter auf `range_days`/`current_end` |
 | Hannover meldet ~Pos. 11 statt 26,6 | ✅ exakt | Repo-Exporte: 7d-Datei Pos. 11,46 / 28d-Datei 14,03 → `min` = 11,46. Aktuell real: 26,64 |
-| Cockpit exportiert Frontpage-Alttitel | ✅ **echter Bug** | `hu_get_homepage_title()` = „Anfrage-Systeme für Solar & Wärmepumpe" (`seo-meta.php:30`), Export zeigt „WordPress Growth Architect \| Hasim Üner Hannover" |
+| Cockpit exportiert Frontpage-Alttitel | ✅ **echter Bug** | `hu_get_homepage_title()` = „Anfragesysteme für Solar & Wärmepumpe" (`seo-meta.php:30`), Export zeigt „WordPress Growth Architect \| Hasim Üner Hannover" |
 | „wärmepumpen leads" auf 4 URLs | ✅ | 79 Impr. / 4 URLs, Gewinner `/waermepumpen-leads/` Pos. 29,6 |
 | `/b2b-solar-leads/` rankt für „leadgenerierung photovoltaik" | ✅ | Pos. 46,2 / 34 Impr., Registry-Owner wäre `/solar-waermepumpen-leadgenerierung/` |
 
@@ -156,7 +156,7 @@ Folgeentscheidung auf Sand gebaut. Das kommt zuerst.
    dann `hu_get_homepage_title()` / `hu_get_homepage_description()` bzw.
    `hu_get_blog_archive_title()` zurückgeben, mit `title_source = 'forced'`.
    Kein Duplizieren der Strings — die Helper aufrufen.
-   *Akzeptanz:* Cockpit-Export zeigt für `/` „Anfrage-Systeme für Solar &
+   *Akzeptanz:* Cockpit-Export zeigt für `/` „Anfragesysteme für Solar &
    Wärmepumpe | Haşim Üner"; Frontend-Ausgabe bleibt unverändert.
 
 ### P1 — Registry entrümpeln (Codex)
@@ -249,7 +249,7 @@ Soll: vor dem stored-Pfad pruefen, ob $post_id === (int) get_option('page_on_fro
      bzw. === (int) get_option('page_for_posts') -> hu_get_blog_archive_title().
      title_source/description_source auf 'forced' setzen.
      Die Helper aufrufen, die Strings NICHT duplizieren.
-Test: Cockpit-Export zeigt fuer / den Titel "Anfrage-Systeme für Solar &
+Test: Cockpit-Export zeigt fuer / den Titel "Anfragesysteme für Solar &
      Wärmepumpe | Haşim Üner". Die Frontend-Ausgabe darf sich nicht aendern.
 
 AUFGABE 4 — docs/seo/query-ownership.csv bereinigen
