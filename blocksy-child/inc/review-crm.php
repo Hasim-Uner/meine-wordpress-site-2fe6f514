@@ -1637,6 +1637,10 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 			: ( 'medium' === $portal_margin_loss ? '151_bis_300' : '80_bis_150' );
 		$primary_bottleneck = 'low' === $portal_margin_loss ? 'tracking_klarheit' : 'lead_qualitaet';
 	} else {
+		// Nur der Standard-Audit fragt Lead-Volumen und CPL wirklich ab. Im
+		// Marktcheck oben werden beide aus Vertriebsgröße und Margendruck
+		// geschätzt — das muss im CRM erkennbar bleiben, sonst liest sich eine
+		// Ableitung später wie eine Angabe des Betriebs.
 		if ( '' === $postal_code || ! preg_match( '/^[0-9]{5}$/', $postal_code ) ) {
 			return new WP_Error( 'invalid_postal_code', 'Bitte eine gültige fünfstellige deutsche Postleitzahl angeben.' );
 		}
@@ -1736,9 +1740,23 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 	$entry_page_url        = nexus_sanitize_review_request_internal_url( $payload['entry_page_url'] ?? '' );
 	$previous_internal_url = nexus_sanitize_review_request_internal_url( $payload['previous_internal_url'] ?? '' );
 	$referrer_url          = nexus_sanitize_review_request_referrer_url( $payload['referrer_url'] ?? '' );
-	$resolved_domain = $page_url
-		? (string) wp_parse_url( $page_url, PHP_URL_HOST )
-		: nexus_get_review_request_domain_from_email( $email );
+	// Im Standard-Audit ist page_url ein Eingabefeld: die Seite des Interessenten.
+	// Der Hero-Marktcheck schickt dagegen immer die eigene Money-Page mit, sodass
+	// dort bislang in jedem Datensatz hasimuener.de als Firmendomain stand. Für
+	// diesen Pfad ist die geschäftliche E-Mail die einzige echte Domain-Quelle.
+	$derived_suffix = $is_b2b_system_intake ? ' (geschätzt)' : '';
+
+	$email_domain = nexus_get_review_request_domain_from_email( $email );
+
+	if ( $is_b2b_system_intake ) {
+		$resolved_domain = $email_domain
+			? $email_domain
+			: (string) wp_parse_url( $page_url, PHP_URL_HOST );
+	} else {
+		$resolved_domain = $page_url
+			? (string) wp_parse_url( $page_url, PHP_URL_HOST )
+			: $email_domain;
+	}
 
 	$lookup_label = static function( $group, $key ) use ( $field_options ) {
 		if ( '' === $key || ! isset( $field_options[ $group ][ $key ]['label'] ) ) {
@@ -1781,9 +1799,14 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 		'portal_margin_loss'          => $portal_margin_loss,
 		'portal_margin_loss_label'    => $portal_margin_loss_options[ $portal_margin_loss ] ?? '',
 		'lead_volume'                 => $lead_volume,
-		'lead_volume_label'           => $lookup_label( 'lead_volume', $lead_volume ),
+		'lead_volume_label'           => $derived_suffix
+			? $lookup_label( 'lead_volume', $lead_volume ) . $derived_suffix
+			: $lookup_label( 'lead_volume', $lead_volume ),
 		'cpl_range'                   => $cpl_range,
-		'cpl_range_label'             => $lookup_label( 'cpl_range', $cpl_range ),
+		'cpl_range_label'             => $derived_suffix
+			? $lookup_label( 'cpl_range', $cpl_range ) . $derived_suffix
+			: $lookup_label( 'cpl_range', $cpl_range ),
+		'estimates_are_derived'       => $is_b2b_system_intake,
 		'primary_bottleneck'          => $primary_bottleneck,
 		'primary_bottleneck_label'    => $lookup_label( 'primary_bottleneck', $primary_bottleneck ),
 		'solution_focus'              => $solution_focus,
@@ -2158,7 +2181,13 @@ function nexus_get_review_request_detail_rows( $payload ) {
 					'value' => (string) ( $payload['phone'] ?? '' ),
 				],
 				[
-					'label' => 'Website',
+					// page_url ist hier die eigene Money-Page, nicht der Betrieb.
+					// Die Domain kommt aus der geschäftlichen E-Mail.
+					'label' => 'Firmen-Domain',
+					'value' => (string) ( $payload['domain'] ?? '' ),
+				],
+				[
+					'label' => 'Eingang über',
 					'value' => (string) ( $payload['page_url'] ?? '' ),
 				],
 			];
