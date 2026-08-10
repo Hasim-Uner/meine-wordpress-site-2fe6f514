@@ -968,11 +968,10 @@ html {
 	pointer-events: none;
 }
 
-/* Eine Kennzahl statt Tile-Wand: der CPL-Kontrast trägt allein. */
 .wl-proof__grid {
 	display: grid;
-	grid-template-columns: 1fr;
-	max-width: 640px;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	max-width: none;
 	margin: 0 auto;
 	border: 1px solid hsl(30 10% 100% / 0.08);
 	border-radius: 14px;
@@ -981,8 +980,13 @@ html {
 }
 
 .wl-proof__item {
+	min-width: 0;
 	padding: clamp(1.75rem, 3vw, 2.5rem) clamp(1rem, 2vw, 1.5rem);
 	text-align: center;
+}
+
+.wl-proof__item + .wl-proof__item {
+	border-inline-start: 1px solid hsl(30 10% 100% / 0.08);
 }
 
 .wl-proof__value {
@@ -993,6 +997,13 @@ html {
 	letter-spacing: -0.02em;
 	line-height: 1.1;
 	font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 821px) {
+	.wl-proof__item:nth-child(3) .wl-proof__value {
+		font-size: clamp(1.65rem, 2.8vw, 2.5rem);
+		white-space: nowrap;
+	}
 }
 
 .wl-proof__label {
@@ -1017,6 +1028,80 @@ html {
 	font-size: 0.83rem;
 	color: hsl(30 6% 90% / 0.62);
 	text-align: center;
+}
+
+.wl-proof__cta {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: var(--nx-space-md);
+	max-width: 960px;
+	margin: var(--nx-space-lg) auto 0;
+}
+
+.wl-proof__cta-copy {
+	max-width: 62ch;
+	margin: 0;
+	color: hsl(30 6% 90% / 0.78);
+	line-height: 1.6;
+}
+
+.wl-proof__cta .nx-btn {
+	max-width: 100%;
+	white-space: normal;
+	overflow-wrap: anywhere;
+	line-height: 1.25;
+	text-align: center;
+}
+
+@media (max-width: 820px) {
+	.wl-proof__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.wl-proof__item:first-child {
+		grid-column: 1 / -1;
+	}
+
+	.wl-proof__item:nth-child(2),
+	.wl-proof__item:nth-child(3) {
+		border-top: 1px solid hsl(30 10% 100% / 0.08);
+	}
+
+	.wl-proof__item:nth-child(2) {
+		border-inline-start: 0;
+	}
+}
+
+@media (max-width: 760px) {
+	.wl-proof__grid,
+	.wl-proof__cta {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.wl-proof__item:first-child {
+		grid-column: auto;
+	}
+
+	.wl-proof__item + .wl-proof__item {
+		border-inline-start: 0;
+		border-top: 1px solid hsl(30 10% 100% / 0.08);
+	}
+
+	.wl-proof__cta-copy {
+		text-align: center;
+	}
+
+	.wl-proof__cta .nx-btn {
+		width: 100%;
+	}
+}
+
+@media (max-width: 420px) {
+	.wl-proof__value,
+	.wl-proof__label {
+		overflow-wrap: anywhere;
+	}
 }
 
 /* =====================================================================
@@ -2365,6 +2450,9 @@ thead .wl-compare__col--hl {
 
 @media (prefers-reduced-motion: reduce) {
 	html { scroll-behavior: auto !important; }
+
+	.wl-page .nx-btn { transition: none; }
+	.wl-page .nx-btn:hover { transform: none; }
 
 	.wl-skip-link,
 	.wl-site-header__nav a,

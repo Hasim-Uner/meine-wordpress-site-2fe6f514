@@ -36,7 +36,7 @@ add_action(
 
 					<nav class="wl-site-header__nav" aria-label="Navigation auf dieser Seite">
 						<ul role="list">
-							<li><a href="#lieferfelder" data-track-action="nav_whitelabel_services" data-track-category="navigation" data-track-section="whitelabel_header">Leistungen</a></li>
+							<li><a href="#lieferfelder" data-track-action="nav_whitelabel_services" data-track-category="navigation" data-track-section="whitelabel_header">Lieferfelder</a></li>
 							<li><a href="#ablauf" data-track-action="nav_whitelabel_process" data-track-category="navigation" data-track-section="whitelabel_header">Ablauf</a></li>
 							<li><a href="#proof" data-track-action="nav_whitelabel_proof" data-track-category="navigation" data-track-section="whitelabel_header">Fallstudie</a></li>
 							<li><a href="#faq" data-track-action="nav_whitelabel_faq" data-track-category="navigation" data-track-section="whitelabel_header">FAQ</a></li>
@@ -61,9 +61,27 @@ $portrait_url = function_exists( 'hu_get_portrait_image_url' )
 	? hu_get_portrait_image_url()
 	: home_url( '/wp-content/uploads/2026/01/Hasim-Uener-Prtraeit_Startseite.webp' );
 
-$cpl_before = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
-$cpl_after  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
-$timeframe  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative', '6 Monaten' ) : '6 Monaten';
+$cpl_before             = hu_e3_metric( 'cpl_before' );
+$cpl_after              = hu_e3_metric( 'cpl_after' );
+$lead_count             = hu_e3_metric( 'lead_count' );
+$sales_conversion_lift = hu_e3_metric( 'sales_conversion_uplift' );
+$timeframe              = hu_e3_metric( 'timeframe', 'display_dative' );
+$test_sprint_price      = hu_whitelabel_price( 'test_sprint' );
+
+$proof_metrics = [
+	[
+		'value' => sprintf( '%1$s → %2$s', $cpl_before, $cpl_after ),
+		'label' => sprintf( 'Kosten pro qualifizierter Anfrage · in %s', $timeframe ),
+	],
+	[
+		'value' => $lead_count,
+		'label' => 'qualifizierte Anfragen im selben Zeitraum',
+	],
+	[
+		'value' => $sales_conversion_lift,
+		'label' => 'Abschlussquote · gekaufte Portal-Leads vorher → eigene Anfragen nachher',
+	],
+];
 
 $problem_cards = [
 	[
@@ -111,13 +129,15 @@ $test_sprint_scope = [
 // ── Erstprojekte: fixer Scope, Festpreis vorab (Einstieg vor Retainer) ──
 $entry_projects = [
 	[
+		'key'       => 'testsprint',
 		'tag'       => 'WordPress',
 		'title'     => 'WordPress-Test-Sprint',
-		'price'     => '590 € netto',
+		'price'     => $test_sprint_price,
 		'copy'      => 'Eine vorab schriftlich abgegrenzte technische Aufgabe als kleinster Einstieg in die erste Zusammenarbeit.',
 		'card_line' => 'Eine abgegrenzte Aufgabe zum Festpreis — inklusive Umsetzung, Funktionstest, technischer Dokumentation und einer Korrekturrunde.',
 	],
 	[
+		'key'     => 'tracking',
 		'tag'     => 'Tracking',
 		'title'   => 'Tracking-Audit',
 		'price'   => 'Festpreis nach Umfangsklärung',
@@ -125,6 +145,7 @@ $entry_projects = [
 		'copy'    => 'GA4, GTM und Consent-Bestand eures Kunden geprüft: Was misst, was fehlt, was verfälscht. Danach wisst ihr, worauf jede weitere Maßnahme aufsetzt.',
 	],
 	[
+		'key'     => 'tracking',
 		'tag'     => 'Server',
 		'title'   => 'Server-Side-Setup',
 		'price'   => 'Festpreis nach Umfangsklärung',
@@ -132,6 +153,7 @@ $entry_projects = [
 		'copy'    => 'Eigener Server-Side-Container, Enhanced Conversions, Meta CAPI, Consent Mode V2 — produktiv geschaltet und dokumentiert, nicht nur konfiguriert.',
 	],
 	[
+		'key'     => 'landingpage',
 		'tag'     => 'Landingpage',
 		'title'   => 'Landingpage',
 		'price'   => 'Festpreis nach Umfangsklärung',
@@ -270,53 +292,7 @@ $founder_availability = 'Verfügbarkeiten und Abwesenheiten werden vor Projektst
 
 $founder_chips = [ 'NDA standardmäßig', 'Antwort innerhalb von 4 Stunden werktags' ];
 
-$faq_items = [
-	[
-		'key' => 'abrechnung',
-		'q'   => 'Wie rechnest du ab — Retainer oder Projekt?',
-		'a'   => 'Der WordPress-Test-Sprint ist mit 590 € netto der kleinste Einstieg und hat einen vorab schriftlich abgegrenzten Umfang. Tracking-Audit, Server-Side-Setup, Landingpage und weitere größere Erstprojekte werden nach der Umfangsklärung als Festpreis angeboten. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt und erhält einen vorab vereinbarten Leistungsrahmen.',
-	],
-	[
-		'key' => 'sprint-scope',
-		'q'   => 'Was ist im WordPress-Test-Sprint nicht enthalten?',
-		'a'   => 'Nicht enthalten sind Relaunch, vollständige Landingpage, vollständiges Tracking-Setup, unbegrenzte Korrekturen sowie Lizenz- oder Drittanbieterkosten. Größere Vorhaben laufen als eigenes Erstprojekt mit Festpreis nach Umfangsklärung.',
-	],
-	[
-		'key' => 'sichtbarkeit',
-		'q'   => 'Was passiert, wenn unser Kunde fragt, wer die Technik macht?',
-		'a'   => 'Das legt ihr vorab fest. Standard: Backoffice — ihr antwortet als Team. Auf Wunsch stellt ihr euren Technik-Lead vor, und die Fragen werden direkt im Call beantwortet, unter eurem Branding. Was nie passiert: Akquise in eurem Kundenstamm. Das steht im Kontrakt.',
-	],
-	[
-		'key' => 'zugaenge',
-		'q'   => 'Wie laufen Zugänge zu GA4, GTM, Server & Co.?',
-		'a'   => 'Über eure Accounts — nie andersherum. Ihr vergebt den Zugang (eigene E-Mail, 2FA) und entzieht ihn, wann ihr wollt. Properties, Container und Server-Setups gehören euch oder eurem Kunden. Gebaut wird darin, nicht daneben.',
-	],
-	[
-		'key' => 'kapazitaet',
-		'q'   => 'Wie schnell reagierst du — und was ist mit Kapazität?',
-		'a'   => 'Antwort innerhalb von 4 Stunden werktags. Wie viel Kapazität in welchem Zeitraum zur Verfügung steht, klären wir vor dem Angebot; Abwesenheiten werden dabei offen eingeplant. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
-	],
-	[
-		'key' => 'ownership',
-		'q'   => 'Wem gehören Code, Setups und Daten?',
-		'a'   => 'Euch beziehungsweise eurem Kunden. Versionierter Code, dokumentierte Übergabe, Zugänge in euren Accounts. Es gibt keine Black Box und keinen Lock-in — das ist Absicht.',
-	],
-	[
-		'key' => 'exit',
-		'q'   => 'Wie kommen wir wieder raus?',
-		'a'   => 'Projekte enden mit der Abnahme, Retainer ohne Verlängerungsfalle. Durch Doku und Ownership in euren Accounts könnt ihr jederzeit intern übernehmen oder wechseln. Partner bleiben, weil die Lieferung stimmt — nicht, weil der Ausstieg wehtut.',
-	],
-	[
-		'key' => 'start',
-		'q'   => 'Wie schnell können wir starten?',
-		'a'   => 'Nach dem Fit-Gespräch folgen NDA, Zugänge und ein Erstprojekt mit fixem Scope; den Starttermin legen wir dabei gemeinsam fest. Erst nach dessen erfolgreichem Abschluss entscheidet ihr über ein weiteres Projekt oder einen Retainer.',
-	],
-	[
-		'key' => 'recht',
-		'q'   => 'Arbeitest du als Subunternehmer — und wie sauber ist das rechtlich?',
-		'a'   => 'Ja, klassisches Subunternehmer-Verhältnis: Vertrag mit eurer Agentur, nicht mit eurem Kunden. NDA gehört zum Standard, Auftragsverarbeitung nach DSGVO, wo personenbezogene Daten im Spiel sind. Rechnung an euch — eure Marge bleibt eure Sache.',
-	],
-];
+$faq_items = nexus_get_whitelabel_faq_items();
 
 $tech_bullets = [
 	'Individuelle WordPress-Templates für vorhandene Layouts',
@@ -363,7 +339,7 @@ $fitcheck_steps = [
 ];
 ?>
 
-<div class="wl-page" data-track-section="whitelabel_proof">
+<div class="wl-page" data-track-section="whitelabel_page">
 
 	<noscript>
 		<style>
@@ -488,7 +464,7 @@ $fitcheck_steps = [
 
 			<div class="wl-entry__grid reveal-stagger">
 				<?php foreach ( $entry_projects as $project ) : ?>
-					<article class="wl-entry-card">
+					<article class="wl-entry-card" data-entry-key="<?php echo esc_attr( $project['key'] ); ?>">
 						<header class="wl-entry-card__head">
 							<span class="wl-entry-card__tag"><?php echo esc_html( $project['tag'] ); ?></span>
 							<span class="wl-entry-card__price"><?php echo esc_html( $project['price'] ); ?></span>
@@ -721,16 +697,25 @@ $fitcheck_steps = [
 				<p class="wl-section-lede">Was ich unter eurem Namen liefere, bleibt unter eurem Namen — NDA. Deshalb zeige ich ein eigenes, offengelegtes Projekt bis in die Zahlen: ein mittelständischer PV-Installationsbetrieb — Server-Side-Tracking, Consent Mode V2, CRM-Attribution, Landingpage.</p>
 			</div>
 
-			<div class="wl-proof__grid nx-reveal" role="list" aria-label="Kennzahl der Arbeitsprobe">
-				<div class="wl-proof__item" role="listitem">
-					<div class="wl-proof__value"><?php echo esc_html( $cpl_before ); ?>&nbsp;→&nbsp;<?php echo esc_html( $cpl_after ); ?></div>
-					<div class="wl-proof__label">Kosten pro qualifizierter Anfrage · in <?php echo esc_html( $timeframe ); ?></div>
-				</div>
+			<div class="wl-proof__grid nx-reveal" role="list" aria-label="Kennzahlen der Arbeitsprobe">
+				<?php foreach ( $proof_metrics as $metric ) : ?>
+					<div class="wl-proof__item" role="listitem">
+						<div class="wl-proof__value"><?php echo esc_html( $metric['value'] ); ?></div>
+						<div class="wl-proof__label"><?php echo esc_html( $metric['label'] ); ?></div>
+					</div>
+				<?php endforeach; ?>
 			</div>
 
 			<p class="wl-proof__scope">Mein Verantwortungsbereich: Landingpage, Tracking-Architektur, Consent Mode V2, CRM-Attribution</p>
 
 			<p class="wl-proof__disclaimer">Historisches Fallbeispiel aus dem Zeitraum 2024–2025 · kein White-Label-Mandat, sondern eigenes Projekt · keine pauschale Übertragbarkeitsgarantie.</p>
+
+			<div class="wl-proof__cta nx-reveal">
+				<p class="wl-proof__cta-copy">Dieselbe Mechanik unter eurem Namen — die Frage ist nur, ob sie zu eurem nächsten Kundenprojekt passt.</p>
+				<a href="#fit-check" class="nx-btn nx-btn--ghost" data-track-action="cta_whitelabel_proof_to_fitcheck" data-track-category="navigation" data-track-section="proof">
+					Fit-Check starten — 3 Fragen, 60 Sekunden
+				</a>
+			</div>
 		</div>
 	</section>
 
@@ -836,7 +821,7 @@ window.dataLayer.push({
 							data-track-category="engagement"
 							data-track-section="faq"
 						>
-							<span class="wl-faq__q"><?php echo esc_html( $item['q'] ); ?></span>
+							<span class="wl-faq__q"><?php echo esc_html( $item['question'] ); ?></span>
 							<span class="wl-faq__icon" aria-hidden="true"></span>
 						</summary>
 						<div
@@ -844,7 +829,7 @@ window.dataLayer.push({
 							class="wl-faq__answer"
 							aria-labelledby="wl-faq-summary-<?php echo esc_attr( $item['key'] ); ?>"
 						>
-							<p><?php echo esc_html( $item['a'] ); ?></p>
+							<p><?php echo esc_html( $item['answer'] ); ?></p>
 						</div>
 					</details>
 				<?php endforeach; ?>
@@ -876,7 +861,7 @@ window.dataLayer.push({
 					<p class="wl-cta__lede">Kurz prüfen, dann reden: 30&nbsp;Min, kein Pitch-Deck, keine Verkaufsshow. Danach wisst ihr, ob es passt — und wenn nicht, wisst ihr das auch.</p>
 				</div>
 
-				<div class="wl-fitcheck__box" data-fitcheck>
+				<div class="wl-fitcheck__box" data-fitcheck data-test-sprint-price="<?php echo esc_attr( $test_sprint_price ); ?>">
 					<div class="wl-fitcheck__quiz" data-fitcheck-quiz hidden>
 						<?php foreach ( $fitcheck_steps as $step_i => $step ) : ?>
 							<div class="wl-fitcheck__step" data-fitcheck-step="<?php echo (int) ( $step_i + 1 ); ?>"<?php echo 0 !== $step_i ? ' hidden' : ''; ?>>
@@ -900,9 +885,9 @@ window.dataLayer.push({
 						<?php endforeach; ?>
 					</div>
 
-					<div class="wl-fitcheck__result" data-fitcheck-result role="group" aria-labelledby="wl-fitcheck-result-title" tabindex="-1">
+					<div class="wl-fitcheck__result" data-fitcheck-result role="group" aria-labelledby="wl-fitcheck-result-title" aria-describedby="wl-fitcheck-result-note" tabindex="-1">
 						<h3 id="wl-fitcheck-result-title" class="wl-visually-hidden">Ergebnis des Fit-Checks</h3>
-						<p class="wl-fitcheck__result-note" data-fitcheck-note role="status" aria-live="polite" aria-atomic="true" hidden>Aus euren Antworten ergibt sich eine passende nächste Option.</p>
+						<p id="wl-fitcheck-result-note" class="wl-fitcheck__result-note" data-fitcheck-note role="status" aria-live="polite" aria-atomic="true" hidden>Aus euren Antworten ergibt sich eine passende nächste Option.</p>
 						<div class="wl-cta__actions">
 							<a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" class="nx-btn nx-btn--primary" data-fitcheck-book data-track-action="cta_whitelabel_fitcheck_book" data-track-category="lead_gen" data-track-section="fitcheck_result">
 								Termin wählen (30 Min, direkt mit mir)

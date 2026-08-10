@@ -6,6 +6,73 @@
 (function () {
 	'use strict';
 
+	// ─── Seitenlokales Tracking: ein dataLayer-Push, sonst nichts ───
+	// Der Listener läuft in der Capture-Phase, damit beim letzten Quiz-Klick
+	// zuerst die Antwort und danach das abgeleitete Ergebnis erfasst werden.
+	var track = function (action, extra) {
+		if (!action) {
+			return;
+		}
+
+		try {
+			if (!window.dataLayer || typeof window.dataLayer.push !== 'function') {
+				return;
+			}
+
+			var payload = Object.assign({ event: action }, extra || {});
+			window.dataLayer.push(payload);
+		} catch (error) {
+			// Tracking darf Navigation und Fit-Check nie blockieren.
+		}
+	};
+
+	var handleTrackedClick = function (event) {
+		var target = event.target;
+
+		if (!target || typeof target.closest !== 'function') {
+			return;
+		}
+
+		var node = target.closest('[data-track-action]');
+
+		if (!node || !node.closest('.wl-page, .wl-site-header, .wl-page-footer')) {
+			return;
+		}
+
+		var action = node.getAttribute('data-track-action');
+
+		if (!action) {
+			return;
+		}
+
+		// Capture läuft vor dem nativen <details>-Toggle. Ein bereits offenes
+		// Element wird mit diesem Klick geschlossen und ist kein Open-Event.
+		if (action === 'faq_whitelabel_open') {
+			var details = node.closest('.wl-faq__item');
+
+			if (details && details.open) {
+				return;
+			}
+		}
+
+		var sectionOwner = node.closest('[data-track-section]');
+		var eventData = {
+			event_category: node.getAttribute('data-track-category') || 'engagement',
+			event_section: sectionOwner ? sectionOwner.getAttribute('data-track-section') : 'whitelabel'
+		};
+		var label = node.getAttribute('data-track-label');
+
+		if (label) {
+			eventData.event_label = label;
+		}
+
+		track(action, eventData);
+	};
+
+	if (document.querySelector('.wl-page')) {
+		document.addEventListener('click', handleTrackedClick, true);
+	}
+
 	// ─── Sticky Mobile CTA visibility ───
 	var sticky = document.getElementById('wl-sticky-cta');
 	var hero   = document.getElementById('hero');
@@ -56,9 +123,9 @@
 
 	// ─── Fit-Check: 3 Klickfragen → Termin ───
 	// Rein clientseitig, keine Speicherung: Antworten sind Enum-Werte und
-	// fließen nur in die bestehende data-track-Delegation plus als Vorlage
-	// in den mailto-Link. SSR zeigt die Ergebnis-CTAs (No-JS-Pfad); JS
-	// invertiert beim Enhancen auf Quiz-first.
+	// fließen nur in das seitenlokale Click-Tracking plus als Vorlage in den
+	// mailto-Link. SSR zeigt die Ergebnis-CTAs (No-JS-Pfad); JS invertiert
+	// beim Enhancen auf Quiz-first.
 	var fitcheck = document.querySelector('[data-fitcheck]');
 	if (fitcheck) {
 		var quiz   = fitcheck.querySelector('[data-fitcheck-quiz]');
@@ -69,6 +136,8 @@
 		var book   = fitcheck.querySelector('[data-fitcheck-book]');
 		var steps  = quiz ? Array.prototype.slice.call(quiz.querySelectorAll('[data-fitcheck-step]')) : [];
 		var answers = {};
+		var resultTracked = false;
+		var testSprintPrice = fitcheck.getAttribute('data-test-sprint-price') || '';
 
 		if (quiz && result && steps.length) {
 			quiz.hidden   = false;
@@ -88,6 +157,10 @@
 			};
 
 			var getRecommendation = function () {
+				var testSprintPricePhrase = testSprintPrice
+					? ' für ' + testSprintPrice
+					: ' zum vorab genannten Festpreis';
+
 				if (answers.anlass === 'spaeter') {
 					return {
 						outcome: 'later',
@@ -121,7 +194,7 @@
 				if (answers.vorhaben === 'testsprint') {
 					return {
 						outcome: 'test_sprint',
-						note: 'Das passt grundsätzlich zum WordPress-Test-Sprint: eine klar abgegrenzte Aufgabe für 590 € netto. Vor Start bestätige ich schriftlich, ob Aufgabe und Umfang in den Sprint passen.',
+						note: 'Das passt grundsätzlich zum WordPress-Test-Sprint: eine klar abgegrenzte Aufgabe' + testSprintPricePhrase + '. Vor Start bestätige ich schriftlich, ob Aufgabe und Umfang in den Sprint passen.',
 						primary: 'mail',
 						bookLabel: 'Test-Sprint kurz besprechen',
 						mailLabel: 'Aufgabe schriftlich senden'
@@ -180,6 +253,15 @@
 					skip.hidden = true;
 				}
 				try { result.focus({ preventScroll: true }); } catch (e) { /* Fokus optional */ }
+
+				if (!resultTracked) {
+					resultTracked = true;
+					track('fitcheck_result', {
+						event_category: 'lead_gen',
+						event_section: 'fitcheck_result',
+						fitcheck_outcome: recommendation.outcome
+					});
+				}
 			};
 
 			quiz.addEventListener('click', function (e) {

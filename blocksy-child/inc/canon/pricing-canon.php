@@ -46,3 +46,44 @@ function hu_pricing_canon() {
 		'guarantee_scope'                 => 'Funktionsfähiges Anfrage-System, kein Anfrage-Volumen.',
 	];
 }
+
+// ── White-Label-Nebenpfad ────────────────────────────────────────
+// Der Partner-Funnel hat eine eigene Einstiegsebene. Sie bleibt bewusst
+// getrennt vom WGOS-Foundation- und Add-on-Modell oben.
+define( 'HU_WHITELABEL_TEST_SPRINT_PRICE', 590 );
+
+/**
+ * Return the canonical White-Label pricing model.
+ *
+ * @return array<string, array<string, int|string>>
+ */
+function hu_whitelabel_pricing_canon() {
+	return [
+		'test_sprint' => [
+			'value'   => HU_WHITELABEL_TEST_SPRINT_PRICE,
+			'display' => sprintf( '%d € netto', HU_WHITELABEL_TEST_SPRINT_PRICE ),
+		],
+	];
+}
+
+/**
+ * Return one field from the canonical White-Label pricing model.
+ *
+ * @param string $key      Price key.
+ * @param string $field    Field key.
+ * @param string $fallback Fallback value.
+ * @return string
+ */
+function hu_whitelabel_price( $key, $field = 'display', $fallback = '' ) {
+	$prices = hu_whitelabel_pricing_canon();
+
+	if ( ! isset( $prices[ $key ] ) || ! is_array( $prices[ $key ] ) ) {
+		return $fallback;
+	}
+
+	if ( ! array_key_exists( $field, $prices[ $key ] ) ) {
+		return $fallback;
+	}
+
+	return (string) $prices[ $key ][ $field ];
+}

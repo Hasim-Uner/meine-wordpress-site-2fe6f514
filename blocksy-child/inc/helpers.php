@@ -897,6 +897,68 @@ function nexus_get_whitelabel_page_url() {
 }
 
 /**
+ * Return the FAQ set for the White-Label partner funnel.
+ *
+ * Shared between the page template and centralized JSON-LD output so the
+ * visible answers, tracking labels, and FAQPage node cannot drift apart.
+ *
+ * @return array<int, array{key: string, question: string, answer: string}>
+ */
+function nexus_get_whitelabel_faq_items() {
+	$test_sprint_price = function_exists( 'hu_whitelabel_price' )
+		? hu_whitelabel_price( 'test_sprint' )
+		: 'dem schriftlich bestätigten Festpreis';
+
+	return [
+		[
+			'key'      => 'abrechnung',
+			'question' => 'Wie rechnest du ab — Retainer oder Projekt?',
+			'answer'   => sprintf( 'Der WordPress-Test-Sprint ist mit %s der kleinste Einstieg und hat einen vorab schriftlich abgegrenzten Umfang. Tracking-Audit, Server-Side-Setup, Landingpage und weitere größere Erstprojekte werden nach der Umfangsklärung als Festpreis angeboten. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt und erhält einen vorab vereinbarten Leistungsrahmen.', $test_sprint_price ),
+		],
+		[
+			'key'      => 'sprint-scope',
+			'question' => 'Was ist im WordPress-Test-Sprint nicht enthalten?',
+			'answer'   => 'Nicht enthalten sind Relaunch, vollständige Landingpage, vollständiges Tracking-Setup, unbegrenzte Korrekturen sowie Lizenz- oder Drittanbieterkosten. Größere Vorhaben laufen als eigenes Erstprojekt mit Festpreis nach Umfangsklärung.',
+		],
+		[
+			'key'      => 'sichtbarkeit',
+			'question' => 'Was passiert, wenn unser Kunde fragt, wer die Technik macht?',
+			'answer'   => 'Das legt ihr vorab fest. Standard: Backoffice — ihr antwortet als Team. Auf Wunsch stellt ihr euren Technik-Lead vor, und die Fragen werden direkt im Call beantwortet, unter eurem Branding. Was nie passiert: Akquise in eurem Kundenstamm. Das steht im Kontrakt.',
+		],
+		[
+			'key'      => 'zugaenge',
+			'question' => 'Wie laufen Zugänge zu GA4, GTM, Server & Co.?',
+			'answer'   => 'Über eure Accounts — nie andersherum. Ihr vergebt den Zugang (eigene E-Mail, 2FA) und entzieht ihn, wann ihr wollt. Properties, Container und Server-Setups gehören euch oder eurem Kunden. Gebaut wird darin, nicht daneben.',
+		],
+		[
+			'key'      => 'kapazitaet',
+			'question' => 'Wie schnell reagierst du — und was ist mit Kapazität?',
+			'answer'   => 'Antwort innerhalb von 4 Stunden werktags. Wie viel Kapazität in welchem Zeitraum zur Verfügung steht, klären wir vor dem Angebot; Abwesenheiten werden dabei offen eingeplant. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
+		],
+		[
+			'key'      => 'ownership',
+			'question' => 'Wem gehören Code, Setups und Daten?',
+			'answer'   => 'Euch beziehungsweise eurem Kunden. Versionierter Code, dokumentierte Übergabe, Zugänge in euren Accounts. Es gibt keine Black Box und keinen Lock-in — das ist Absicht.',
+		],
+		[
+			'key'      => 'exit',
+			'question' => 'Wie kommen wir wieder raus?',
+			'answer'   => 'Projekte enden mit der Abnahme, Retainer ohne Verlängerungsfalle. Durch Doku und Ownership in euren Accounts könnt ihr jederzeit intern übernehmen oder wechseln. Partner bleiben, weil die Lieferung stimmt — nicht, weil der Ausstieg wehtut.',
+		],
+		[
+			'key'      => 'start',
+			'question' => 'Wie schnell können wir starten?',
+			'answer'   => 'Nach dem Fit-Gespräch folgen NDA, Zugänge und ein Erstprojekt mit fixem Scope; den Starttermin legen wir dabei gemeinsam fest. Erst nach dessen erfolgreichem Abschluss entscheidet ihr über ein weiteres Projekt oder einen Retainer.',
+		],
+		[
+			'key'      => 'recht',
+			'question' => 'Arbeitest du als Subunternehmer — und wie sauber ist das rechtlich?',
+			'answer'   => 'Ja, klassisches Subunternehmer-Verhältnis: Vertrag mit eurer Agentur, nicht mit eurem Kunden. NDA gehört zum Standard, Auftragsverarbeitung nach DSGVO, wo personenbezogene Daten im Spiel sind. Rechnung an euch — eure Marge bleibt eure Sache.',
+		],
+	];
+}
+
+/**
  * Determine whether the current request is inside the public results area.
  *
  * @return bool

@@ -1309,14 +1309,15 @@ function hu_output_schema()
         }
 
         if ($slug === 'whitelabel-retainer' || $slug === 'whitelabel-retainer-proof' || $slug === 'whitelabel') {
+            $whitelabel_url = home_url('/' . $slug . '/');
             $whitelabelPage = [
                 '@context' => 'https://schema.org',
                 '@type'    => 'AboutPage',
-                '@id'      => home_url('/' . $slug . '/#about'),
-                'url'      => home_url('/' . $slug . '/'),
-                'name'     => 'Whitelabel & Weiterentwicklung',
-                'headline' => 'Whitelabel-Arbeit und laufende Weiterentwicklung von Haşim Üner',
-                'description' => 'Anonymisierte Einblicke in Whitelabel-Projekte, laufende Weiterentwicklung und typische Eingriffstiefen für WordPress, SEO, Tracking und CRO.',
+                '@id'      => $whitelabel_url . '#about',
+                'url'      => $whitelabel_url,
+                'name'     => 'White-Label-Partner für Agenturen',
+                'headline' => 'Ihr verkauft es. Ich liefere es. Euer Name steht drauf.',
+                'description' => 'Senior-Unterstützung für WordPress, Tracking und Automation als White-Label-Partner für Agenturen: Einstieg über ein klar abgegrenztes Erstprojekt, Retainer erst nach erfolgreicher Zusammenarbeit.',
                 'inLanguage' => 'de',
                 'about'    => ['@id' => home_url('/#organization')],
                 'mainEntity' => hu_person_schema_ref(),
@@ -1324,6 +1325,34 @@ function hu_output_schema()
             ];
 
             $schemas[] = $whitelabelPage;
+
+            if ( function_exists( 'nexus_get_whitelabel_faq_items' ) ) {
+                $whitelabel_faq_entities = array_map(
+                    static function ( $item ) {
+                        return [
+                            '@type'          => 'Question',
+                            'name'           => (string) $item['question'],
+                            'acceptedAnswer' => [
+                                '@type' => 'Answer',
+                                'text'  => (string) $item['answer'],
+                            ],
+                        ];
+                    },
+                    nexus_get_whitelabel_faq_items()
+                );
+
+                if ( ! empty( $whitelabel_faq_entities ) ) {
+                    $schemas[] = [
+                        '@context'   => 'https://schema.org',
+                        '@type'      => 'FAQPage',
+                        '@id'        => $whitelabel_url . '#faq',
+                        'url'        => $whitelabel_url,
+                        'inLanguage' => 'de',
+                        'publisher'  => ['@id' => home_url('/#organization')],
+                        'mainEntity' => $whitelabel_faq_entities,
+                    ];
+                }
+            }
         }
 
         /**
@@ -1335,7 +1364,7 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'wordpress-agentur-hannover', 'server-side-tracking-b2b', 'wgos', 'wordpress-growth-operating-system' ], true )
+                in_array( $slug, [ 'wordpress-agentur-hannover', 'server-side-tracking-b2b', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'wgos', 'wordpress-growth-operating-system' ], true )
                 || ( function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page( $slug ) )
                 || ( function_exists( 'hu_is_seo_cornerstone_article' ) && hu_is_seo_cornerstone_article() )
                 // Die Solar Case Study emittiert ihren FAQPage-Knoten oben selbst.
