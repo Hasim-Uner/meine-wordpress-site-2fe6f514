@@ -247,12 +247,12 @@ $tracking_repair_steps = [
 	[
 		'label' => 'Wirkung',
 		'title' => 'Algorithmen sahen erstmals echte Käufer.',
-		'body'  => 'Erst mit dieser First-Party-Attribution bekamen Meta und Google die belastbaren Kauf-Signale, die ihre Optimierung braucht. Der Kostensturz war ab Monat 3 keine Marketing-Magie, sondern eine zwingende Folge: Wer den Algorithmen sagt, wer wirklich gekauft hat, bekommt mehr von genau diesen Leuten — und weniger Klick-Touristen.',
+		'body'  => 'Erst mit dieser First-Party-Attribution bekamen Meta und Google die belastbaren Kauf-Signale, die ihre Optimierung braucht. Ab Monat 3 konnten die Kampagnen erstmals auf echten Kaufsignalen lernen: mehr von den Mustern, die tatsächlich zu Abschlüssen führten, und weniger Klick-Touristen.',
 	],
 ];
 
 $insight_body = sprintf(
-	'Höheres Werbebudget skaliert bei taubem Tracking nur den Verlust. Erst als der Vertrieb (CRM) und der Werbe-Algorithmus über First-Party-Attribution dieselbe Sprache sprachen, konnte die Automatik der Werbekanäle kaufbereite Hausbesitzer von Klick-Touristen unterscheiden. Der Sturz von %s auf %s in %s war keine Optimierungsleistung — er war die mathematische Folge sauberer Daten.',
+	'Höheres Werbebudget skaliert bei taubem Tracking nur den Verlust. Erst als der Vertrieb (CRM) und die Werbe-Algorithmen über First-Party-Attribution dieselbe Sprache sprachen, konnten die Werbekanäle kaufbereite Hausbesitzer von Klick-Touristen unterscheiden. Der Sturz von %s auf %s in %s lässt sich deshalb nicht einer einzelnen Optimierung zuschreiben: Belastbare Kaufsignale, geschärfte Audiences, iterierte Creatives und die neue Anfrage-Strecke wirkten zusammen.',
 	$e3_cpl_before,
 	$e3_cpl_after,
 	$e3_timeframe_dt

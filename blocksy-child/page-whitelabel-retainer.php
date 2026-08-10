@@ -694,7 +694,7 @@ $fitcheck_steps = [
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Arbeitsprobe · offengelegt</span>
 				<h2 class="nx-headline-section">Keine Referenz-Logos. Eine offengelegte Arbeitsprobe.</h2>
-				<p class="wl-section-lede">Was ich unter eurem Namen liefere, bleibt unter eurem Namen — NDA. Deshalb zeige ich ein eigenes, offengelegtes Projekt bis in die Zahlen: ein mittelständischer PV-Installationsbetrieb — Server-Side-Tracking, Consent Mode V2, CRM-Attribution, Landingpage.</p>
+				<p class="wl-section-lede">Was ich unter eurem Namen liefere, bleibt unter eurem Namen — NDA. Deshalb zeige ich ein eigenes, offengelegtes Projekt bis in die Zahlen: ein mittelständischer PV-Installationsbetrieb — von Google- und Meta-Kampagnen über die Landingpage bis zu Server-Side-Tracking, Consent Mode V2 und CRM-Attribution.</p>
 			</div>
 
 			<div class="wl-proof__grid nx-reveal" role="list" aria-label="Kennzahlen der Arbeitsprobe">
@@ -706,7 +706,7 @@ $fitcheck_steps = [
 				<?php endforeach; ?>
 			</div>
 
-			<p class="wl-proof__scope">Mein Verantwortungsbereich: Landingpage, Tracking-Architektur, Consent Mode V2, CRM-Attribution</p>
+			<p class="wl-proof__scope">Mein Verantwortungsbereich in dieser Arbeitsprobe: Landingpage und Kampagnensteuerung in Google Ads und Meta Ads — verbunden durch Tracking-Architektur, Consent Mode V2 und CRM-Attribution.</p>
 
 			<p class="wl-proof__disclaimer">Historisches Fallbeispiel aus dem Zeitraum 2024–2025 · kein White-Label-Mandat, sondern eigenes Projekt · keine pauschale Übertragbarkeitsgarantie.</p>
 
