@@ -703,7 +703,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Der Marktcheck ist vorgeschaltet und prüft zuerst, ob Region, Projektwert und Vertriebskapazität zum Anfrage-System passen. Der Aufbau danach liegt — abhängig vom Setup — bei 13.200 – 19.200 € verteilt auf 24 Monate. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten ca. 26.000 €. Weniger Kosten, dafür ein Asset, das bleibt.</div>
+						<div class="hu-faq-item__a-inner">Der Marktcheck ist vorgeschaltet und prüft zuerst, ob Region, Projektwert und Vertriebskapazität zum Anfrage-System passen. Der Aufbau danach liegt — abhängig vom Setup — bei 12.000 – 18.000 € einmalig, dazu rund 50 € im Monat für Hosting und Wartung. Über 24 Monate sind das 13.200 – 19.200 €. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten im selben Zeitraum ca. 26.000 €. Weniger Kosten, dafür ein Asset, das bleibt.</div>
 					</div>
 				</div>
 

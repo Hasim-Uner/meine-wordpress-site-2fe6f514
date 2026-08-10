@@ -78,6 +78,20 @@ function blocksy_child_register_slim_nav_menu() {
 	);
 }
 
+// ── 1c. SCROLL-REVEAL: NUR VERSTECKEN, WENN JS WIRKLICH LAEUFT ───
+// Die Startseite blendet ihre Sektionen per .hu-reveal ein. Ohne dieses
+// Signal war der Ausgangszustand opacity:0 — faellt homepage-redesign.js
+// aus, bleibt die halbe Seite unsichtbar. Das Flag setzt die Klasse vor
+// dem ersten Paint, das CSS versteckt erst dann.
+add_action( 'wp_head', 'hu_mark_reveal_capable', 0 );
+function hu_mark_reveal_capable() {
+	if ( ! is_front_page() ) {
+		return;
+	}
+
+	echo "<script>document.documentElement.classList.add('hu-js')</script>\n";
+}
+
 // ── 2. TYPOGRAFIE & BRANDING: SELF-HOSTED FONTS ──────────────────
 add_action( 'wp_head', 'hu_preload_self_hosted_fonts', 1 );
 function hu_preload_self_hosted_fonts() {
