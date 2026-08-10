@@ -47,6 +47,26 @@ function hu_pricing_canon() {
 	];
 }
 
+// ── Sofortkontakt-Setup: Einstiegsangebot der Solar-Money-Page ───
+// Eigene Ebene unterhalb des Foundation-Modells: beschleunigt die Reaktion
+// auf vorhandene Anfragen, auch auf gekaufte Portal-Leads.
+define( 'HU_ENTRY_SETUP_PRICE', 790 );
+
+/**
+ * Display value of the Sofortkontakt-Setup entry price.
+ *
+ * Single source for the price, so nav label, section CTA and the offer
+ * panel cannot drift apart when the price changes.
+ *
+ * @param bool $with_net Append the "netto" qualifier.
+ * @return string
+ */
+function hu_entry_setup_price( $with_net = false ) {
+	$price = sprintf( '%d €', HU_ENTRY_SETUP_PRICE );
+
+	return $with_net ? $price . ' netto' : $price;
+}
+
 // ── White-Label-Nebenpfad ────────────────────────────────────────
 // Der Partner-Funnel hat eine eigene Einstiegsebene. Sie bleibt bewusst
 // getrennt vom WGOS-Foundation- und Add-on-Modell oben.

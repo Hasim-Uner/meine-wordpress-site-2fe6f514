@@ -47,13 +47,18 @@ $e3_cpl_after_val    = (int) ( $e3_metrics['cpl_after']['value'] ?? 22 );
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '6 Monaten';
 
+// Sofortkontakt-Setup: Preis aus dem pricing-canon, damit Nav-Label,
+// Rechner-CTA und Angebots-Panel nicht auseinanderlaufen.
+$entry_price     = function_exists( 'hu_entry_setup_price' ) ? hu_entry_setup_price() : '790 €';
+$entry_price_net = function_exists( 'hu_entry_setup_price' ) ? hu_entry_setup_price( true ) : '790 € netto';
+
 // ── Inhaltsmodelle ─────────────────────────────────────────────
 $trust_items = [
 	'Solar · Wärmepumpe · Speicher · DACH',
-	'Server in Frankfurt · DSGVO',
-	'Server-Side · CAPI im Stack',
-	'Hardcoded WordPress · kein Page-Builder',
-	'1:1 Senior · keine Junior-Kette',
+	'Server in Frankfurt · Daten in der EU',
+	'Tracking, das Ad-Blocker übersteht',
+	'Eigener Code statt Baukasten',
+	'Immer direkt mit mir',
 	'Marktcheck · Fit-Befund in 48 h',
 ];
 
@@ -92,9 +97,9 @@ $compare_good = [
 
 // 03 / Das System — Asset-Panel (links) + drei Schritte (rechts)
 $process_rows = [
-	[ 'e' => 'Fundament',        't' => 'WordPress hardcoded · Frankfurt-Server · DSGVO', 'url' => $cwv_url ],
-	[ 'e' => 'Daten & Tracking', 't' => 'Server-Side · GA4 · CAPI · saubere Attribution', 'url' => $tracking_url ],
-	[ 'e' => 'Conversion-Pfad',  't' => 'Vorqualifizierung · Lead-Scoring vor dem Anruf', 'url' => $cro_url ],
+	[ 'e' => 'Fundament',          't' => 'Eigener Code statt Baukasten · Server in Frankfurt', 'url' => $cwv_url ],
+	[ 'e' => 'Daten & Tracking',   't' => 'Jede Anfrage bis zur Anzeige zurückverfolgbar',      'url' => $tracking_url ],
+	[ 'e' => 'Weg zur Anfrage',    't' => 'Vorqualifizierung · Fit bekannt vor dem Anruf',      'url' => $cro_url ],
 ];
 $method_cards = [
 	[
@@ -211,7 +216,7 @@ $section_nav = [
 	[ 'h' => '#vergleich',  'l' => 'Vergleich' ],
 	[ 'h' => '#system',     'l' => 'System' ],
 	[ 'h' => '#capex',      'l' => 'Rechnung' ],
-	[ 'h' => '#einstieg',   'l' => 'Einstieg' ],
+	[ 'h' => '#einstieg',   'l' => 'Ab ' . $entry_price ],
 	[ 'h' => '#ergebnisse', 'l' => 'Referenz' ],
 	[ 'h' => '#fit',        'l' => 'Passt es?' ],
 	[ 'h' => '#deeper',     'l' => 'Vertiefung' ],
@@ -262,11 +267,11 @@ $faq_items = [
 	],
 	[
 		'question' => 'Was kostet das im Vergleich zur Performance-Agentur?',
-		'answer'   => 'Initiales Setup: 12.000–18.000 € einmalig. Laufend ca. 50 €/Monat für Hochleistungs-Hosting. TCO über 24 Monate: 13.200–19.200 € — und Sie besitzen Code, Tracking und Daten. Ein vergleichbares Agentur-Mietmodell kostet im gleichen Zeitraum rund 26.000 € — und Sie besitzen am Ende nichts. Bilanziell: CAPEX statt OPEX. Wenn das zu groß gedacht ist: Der Einstieg über das Sofortkontakt-Setup liegt bei 790 € netto und ist in fünf Werktagen eingerichtet.',
+		'answer'   => 'Initiales Setup: 12.000–18.000 € einmalig. Laufend ca. 50 €/Monat für Hochleistungs-Hosting. TCO über 24 Monate: 13.200–19.200 € — und Sie besitzen Code, Tracking und Daten. Ein vergleichbares Agentur-Mietmodell kostet im gleichen Zeitraum rund 26.000 € — und Sie besitzen am Ende nichts. Bilanziell: CAPEX statt OPEX. Wenn das zu groß gedacht ist: Der Einstieg über das Sofortkontakt-Setup liegt bei ' . $entry_price_net . ' und ist in fünf Werktagen eingerichtet.',
 	],
 	[
 		'question' => 'Gibt es einen kleineren Einstieg als das volle System?',
-		'answer'   => 'Ja. Das Sofortkontakt-Setup für 790 € netto richtet Sofort-Alarm, automatische Eingangsbestätigung und eine Anfragen-Übersicht nach Quelle ein — auch für Leads, die Sie bereits bei Portalen kaufen. In fünf Werktagen fertig, ohne zusätzliches Werbebudget. Danach haben Sie eigene Zahlen zur Hand und können in Ruhe entscheiden, ob ein eigenes System sich rechnet.',
+		'answer'   => 'Ja. Das Sofortkontakt-Setup für ' . $entry_price_net . ' richtet Sofort-Alarm, automatische Eingangsbestätigung und eine Anfragen-Übersicht nach Quelle ein — auch für Leads, die Sie bereits bei Portalen kaufen. In fünf Werktagen fertig, ohne zusätzliches Werbebudget. Danach haben Sie eigene Zahlen zur Hand und können in Ruhe entscheiden, ob ein eigenes System sich rechnet.',
 	],
 	[
 		'question' => 'Welche Daten brauchen Sie für die Diagnose?',
@@ -278,7 +283,7 @@ $faq_items = [
 	],
 	[
 		'question' => 'Brauchen wir eine neue Website?',
-		'answer'   => 'Meistens nicht im Komplettumfang. Was Sie brauchen: hardcoded WordPress (kein Page-Builder, kein Plugin-Stack), serverseitiges Tracking auf eigenem Server, Conversion-Pfad ohne Mietsysteme. Ob das ein Teil-Umbau oder ein sauberer Erstaufbau wird, zeigt sich im ersten Schritt.',
+		'answer'   => 'Meistens nicht im Komplettumfang. Was Sie brauchen: eigenen Code statt Baukasten, serverseitiges Tracking auf eigenem Server und einen Weg vom Klick bis zur Anfrage, der Ihnen gehört statt gemietet zu sein. Ob das ein Teil-Umbau oder ein sauberer Erstaufbau wird, zeigt sich im ersten Schritt.',
 	],
 	[
 		'question' => 'Wir nutzen schon eine Performance-Agentur — warum sollten wir wechseln?',
@@ -286,7 +291,7 @@ $faq_items = [
 	],
 	[
 		'question' => 'Wie schnell sieht man Ergebnisse?',
-		'answer'   => 'Erste Verbesserungen entstehen oft nach den ersten Optimierungen an Tracking, Formularen und Conversion-Pfaden. Belastbare Skalierung braucht in der Regel mehrere Wochen bis Monate — weil Daten, Tests und Kanäle zusammenspielen müssen.',
+		'answer'   => 'Erste Verbesserungen entstehen oft nach den ersten Optimierungen an Tracking, Formularen und dem Weg zur Anfrage. Belastbare Skalierung braucht in der Regel mehrere Wochen bis Monate — weil Daten, Tests und Kanäle zusammenspielen müssen.',
 	],
 	[
 		'question' => 'Was unterscheidet Sie von Lead-Portalen?',
@@ -838,7 +843,7 @@ get_header();
 						<div class="hu-process-asset__metrics">
 							<div class="hu-process-asset__metric">
 								<div class="hu-process-asset__metric-num">100 %</div>
-								<div class="hu-process-asset__metric-lbl">Asset-Eigentum</div>
+								<div class="hu-process-asset__metric-lbl">gehört Ihrem Betrieb</div>
 							</div>
 							<div class="hu-process-asset__metric">
 								<div class="hu-process-asset__metric-num">1:1</div>
@@ -1011,15 +1016,24 @@ get_header();
 				</aside>
 
 				<div class="sol-section-cta">
-					<a class="hu-btn hu-btn-primary" href="#marktcheck"
-						data-track-action="cta_solar_capex_to_intake"
-						data-track-category="lead_gen"
-						data-track-section="capex_opex"
-						data-track-funnel-stage="intake_open"
-					>
-						<span>Marktcheck starten</span>
-						<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					</a>
+					<div class="sol-section-cta-actions">
+						<a class="hu-btn hu-btn-primary" href="#marktcheck"
+							data-track-action="cta_solar_capex_to_intake"
+							data-track-category="lead_gen"
+							data-track-section="capex_opex"
+							data-track-funnel-stage="intake_open"
+						>
+							<span>Diese Rechnung für meinen Betrieb prüfen</span>
+							<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</a>
+						<a class="hu-btn hu-btn-ghost" href="#einstieg"
+							data-track-action="cta_solar_capex_to_entry"
+							data-track-category="lead_gen"
+							data-track-section="capex_opex"
+						>
+							<span>Noch zu groß? Einstieg ab <?php echo esc_html( $entry_price ); ?></span>
+						</a>
+					</div>
 					<div class="sol-section-cta-micro sol-mono">Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln · Befund in 48 h</div>
 				</div>
 			</div>
@@ -1040,7 +1054,7 @@ get_header();
 
 				<div class="sol-entry-panel">
 					<p class="sol-entry-price">
-						<strong>Sofortkontakt-Setup — 790 € netto</strong>
+						<strong>Sofortkontakt-Setup — <?php echo esc_html( $entry_price_net ); ?></strong>
 						<span>Fertig eingerichtet in fünf Werktagen. Kein Werbebudget nötig, keine Mindestlaufzeit, kein CRM-Wechsel.</span>
 					</p>
 
