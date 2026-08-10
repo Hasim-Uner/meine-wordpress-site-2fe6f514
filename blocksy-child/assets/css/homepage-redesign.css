@@ -1155,6 +1155,12 @@
   letter-spacing: -.02em;
 }
 .hu-hp .hu-sf-result-num--accent { color: var(--accent); }
+/* "22 € pro Anfrage statt 150 €" — der Vorher-Wert bleibt lesbar, tritt aber zurueck. */
+.hu-hp .hu-sf-result-delta {
+  color: var(--fg-3);
+  font-size: 13px;
+  white-space: nowrap;
+}
 
 .hu-hp .hu-sf-arrow {
   display: flex;
@@ -1550,6 +1556,12 @@
   font-size: 15px;
   line-height: 1.6;
   color: var(--ink-2);
+}
+/* Die wirtschaftliche Folge traegt die Karte beim Ueberfliegen. */
+.hu-hp .hu-loss-card__body strong,
+.hu-hp .hu-category-prose strong {
+  font-weight: 700;
+  color: var(--ink);
 }
 
 /* =============================================================
