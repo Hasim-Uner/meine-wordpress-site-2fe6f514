@@ -101,20 +101,20 @@ $home_process_cascade = [
 	[
 		'num'    => '01',
 		'kicker' => 'Untergrund lesen',
-		'title'  => 'System-Auditing',
-		'desc'   => 'Der bestehende Anfrage-Stack wird auf Daten-Integrität, Performance und Attribution geprüft. Befund statt Bauchgefühl, Belege statt Vermutungen.',
+		'title'  => 'System-Audit',
+		'desc'   => 'Website, Tracking und Anfragestrecke werden geprüft: Wo bricht der Weg zur Anfrage ab, und welche Zahl belegt das? Befund statt Bauchgefühl.',
 	],
 	[
 		'num'    => '02',
 		'kicker' => 'Filter setzen',
-		'title'  => 'Daten-Orchestrierung',
-		'desc'   => 'Server-Side Tracking, gezielte Vorqualifizierung (ohne Streuverlust) und kontrollierte Werbekanal-Steuerung greifen als ein System ineinander.',
+		'title'  => 'Messbare Kanäle',
+		'desc'   => 'Tracking, Vorqualifizierung und Werbekanäle greifen als ein System ineinander — damit jeder Kanal zurückmeldet, welche Anfragen er tatsächlich gebracht hat.',
 	],
 	[
 		'num'    => '03',
 		'kicker' => 'Eigene Quelle besitzen',
-		'title'  => 'Asset-Ownership',
-		'desc'   => 'Money Page, Funnel und Tracking-Stack bleiben Eigentum des Betriebs — kein gemieteter Boden, kein Drittanbieter-Lock-in.',
+		'title'  => 'Das System gehört Ihnen',
+		'desc'   => 'Money Page, Anfragestrecke und Tracking bleiben Eigentum des Betriebs — kein gemieteter Boden, keine Bindung an einen Drittanbieter.',
 	],
 ];
 
@@ -164,7 +164,7 @@ get_header();
 					</a>
 				</div>
 				<p class="hu-hero__cta-note hu-hero__cta-note--trust">60 Sekunden · keine Zahlungsdaten · kein Newsletter · kein Pitch-Deck — persönlich geprüfte Rückmeldung in 48 Stunden.</p>
-				<p class="hu-hero__cta-note">Keine neue Website auf Verdacht — erst Diagnose, dann Entscheidung.</p>
+				<p class="hu-hero__cta-note">Keine neue Website auf Verdacht: Sie bekommen eine Einordnung zu Region, Setup und Anfragequalität — mit klarer Empfehlung, ob sich der Aufbau lohnt oder noch nicht.</p>
 
 				<div class="hu-hero__stats">
 					<div>
@@ -344,7 +344,7 @@ get_header();
 	<section class="hu-section hu-section--cream" id="verlust" data-track-section="02">
 		<div class="hu-container">
 			<div class="hu-proof-headline hu-reveal">
-				<span class="hu-eyebrow">02 / System-Verlust-Raster</span>
+				<span class="hu-eyebrow">02 / Wo Anfragen verloren gehen</span>
 				<h2 style="color:var(--ink)">Drei Stellen, an denen Solar- und SHK-Betriebe qualifizierte Anfragen verlieren.</h2>
 				<p>Mehr Reichweite hilft wenig, wenn Tracking blind ist, Portal-Leads geteilt werden und kaufnahe Besucher keinen klaren nächsten Schritt finden.</p>
 			</div>
@@ -352,31 +352,34 @@ get_header();
 			<div class="hu-loss-grid">
 				<article class="hu-loss-card hu-reveal">
 					<div class="hu-loss-card__num hu-mono">VERLUSTPUNKT 01</div>
-					<div class="hu-loss-card__title">Taubes Tracking</div>
+					<div class="hu-loss-card__title">Sie wissen nicht, was verkauft</div>
 					<div class="hu-loss-card__bracket">Die Daten-Lücke</div>
 					<p class="hu-loss-card__body">
-						Standard-Analytics zählt Klicks — sagt aber nicht, welche Anfrage am Ende zum Auftrag wurde.
-						Ergebnis: Budget wird blind auf falsche Kanäle verteilt.
+						Google Analytics zählt Besucher und Klicks — aber nicht, welche Anzeige die Anfrage
+						gebracht hat, aus der am Ende ein unterschriebener Auftrag wurde.
+						<strong>Das Werbebudget wird verteilt, ohne zu wissen, welcher Kanal Projekte bringt.</strong>
 					</p>
 				</article>
 
 				<article class="hu-loss-card hu-reveal">
 					<div class="hu-loss-card__num hu-mono">VERLUSTPUNKT 02</div>
-					<div class="hu-loss-card__title">Gemieteter Grund</div>
+					<div class="hu-loss-card__title">Der Kunde gehört nicht Ihnen</div>
 					<div class="hu-loss-card__bracket">Das Portal-Dilemma</div>
 					<p class="hu-loss-card__body">
-						Wer Leads exklusiv bei Drittanbieter-Portalen kauft, teilt sich den Kontakt mit drei
-						Mitbewerbern, steht unter Margendruck und besitzt keinen eigenen digitalen Vermögenswert.
+						Wer Anfragen bei Portalen einkauft, teilt sich denselben Interessenten mit drei
+						Mitbewerbern und verhandelt über den Preis, bevor das Gespräch beginnt.
+						<strong>Bezahlt wird jeden Monat neu — aufgebaut hat der Betrieb dabei nichts Eigenes.</strong>
 					</p>
 				</article>
 
 				<article class="hu-loss-card hu-reveal">
 					<div class="hu-loss-card__num hu-mono">VERLUSTPUNKT 03</div>
-					<div class="hu-loss-card__title">Überladene Website</div>
+					<div class="hu-loss-card__title">Kaufbereite Besucher springen ab</div>
 					<div class="hu-loss-card__bracket">Die Conversion-Bremse</div>
 					<p class="hu-loss-card__body">
-						Komplexe Themes und unkoordinierte Plugins machen die Website langsam und träge —
-						und jagen kaufnahe Besucher in Sackgassen, statt Abschlüsse vorzubereiten.
+						Überladene Themes und unkoordinierte Plugins machen die Website langsam, und der
+						nächste Schritt ist nicht zu erkennen.
+						<strong>Wer bereit wäre anzufragen, findet den Weg zum Formular nicht.</strong>
 					</p>
 				</article>
 			</div>
@@ -561,8 +564,8 @@ get_header();
 					<div class="hu-sf-row">
 						<div class="hu-sf-row-icon hu-sf-row-icon--good">3</div>
 						<div class="hu-sf-row-content">
-							<div class="hu-sf-row-t">Attributionssicheres Tracking</div>
-							<div class="hu-sf-row-d">First-Party-Daten · Server-Side · Consent</div>
+							<div class="hu-sf-row-t">Tracking, das die Anfrage zuordnet</div>
+							<div class="hu-sf-row-d">Jede Anfrage bis zur Anzeige zurückverfolgbar · First-Party · Server-Side</div>
 						</div>
 					</div>
 					<div class="hu-sf-result">
@@ -570,7 +573,7 @@ get_header();
 						<div class="hu-sf-result-stats">
 							<div><span class="hu-sf-result-num"><?php echo esc_html( $e3_lead_count ); ?></span> Anfragen</div>
 							<div><span class="hu-sf-result-num"><?php echo esc_html( $e3_sales_conv ); ?></span> Abschluss</div>
-							<div><span class="hu-sf-result-num hu-sf-result-num--accent"><?php echo esc_html( $e3_cpl_reduction ); ?></span> Kosten</div>
+							<div><span class="hu-sf-result-num hu-sf-result-num--accent"><?php echo esc_html( $e3_cpl_after ); ?></span> pro Anfrage <span class="hu-sf-result-delta">statt <?php echo esc_html( $e3_cpl_before ); ?></span></div>
 						</div>
 					</div>
 				</div>
@@ -585,6 +588,14 @@ get_header();
 					<div class="hu-eyebrow">SETUP</div>
 					<div class="hu-sf-footer-t">First-Party · Server-Side Tracking · Consent Mode v2</div>
 				</div>
+			</div>
+
+			<div style="text-align:center;margin-top:48px" class="hu-reveal">
+				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
+				   data-track-action="cta_home_vergleich_marktcheck" data-track-category="lead_gen" data-track-section="06">
+					Prüfen, auf welcher Seite Ihr Betrieb gerade steht
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+				</a>
 			</div>
 		</div>
 	</section>
@@ -601,13 +612,13 @@ get_header();
 
 			<div class="hu-category-prose hu-reveal" style="max-width:680px;margin:32px auto 0;color:var(--ink-2);font-size:18px;line-height:1.62">
 				<p style="margin:0 0 18px">
-					Eine Standard-Agentur klickt Plugins und Page-Builder im WordPress-Backend zusammen. Bei jedem Theme- oder Plugin-Update zerschießt eine fremde Hand die LCP-Performance — und kein Mensch im Betrieb kann nachvollziehen, warum die Anfragen plötzlich einbrechen.
+					Eine Standard-Agentur klickt Plugins und Page-Builder im WordPress-Backend zusammen. Bei jedem Theme- oder Plugin-Update macht eine fremde Hand die Seite langsamer — und <strong>niemand im Betrieb kann nachvollziehen, warum die Anfragen plötzlich einbrechen.</strong>
 				</p>
 				<p style="margin:0 0 18px">
-					Hier wird anders gearbeitet: System-Logik und Daten-Pfade liegen versioniert im GitHub-Repository. WordPress dient nur als performantes Frontend — kein Page-Builder, kein Plugin-Stack als Software-Fassade. Jede Änderung ist nachvollziehbar, jedes Rollback in Minuten möglich.
+					Hier wird anders gearbeitet: <strong>Die gesamte Systemlogik liegt versioniert im Code-Repository</strong>, nicht in einem Backend, das jeder überschreiben kann. WordPress ist nur die Anzeigefläche. Jede Änderung ist nachvollziehbar, jeder Rückbau in Minuten möglich.
 				</p>
 				<p style="margin:0">
-					Das Resultat für den Betrieb: Sie mieten keine Agentur-Software, Sie besitzen den Code. Server-Side Tracking, CRM-Anbindung und Conversion-Pfad gehören Ihnen — übergebbar, prüfbar, unabhängig von mir.
+					Das Resultat für den Betrieb: <strong>Sie mieten keine Agentur-Software, Sie besitzen den Code.</strong> Tracking, CRM-Anbindung und Anfragestrecke gehören Ihnen — übergebbar, prüfbar, auch ohne mich weiterzuführen.
 				</p>
 			</div>
 		</div>
@@ -636,16 +647,16 @@ get_header();
 						Solar-Case ist belegt, wo diese Architektur am stärksten greift.
 					</p>
 					<ul class="hu-about-bullets">
-						<li><span class="hu-about-bullet-dot"></span>Medienwissenschaftliche Architektur — Sprache, Signal, System vor Code</li>
-						<li><span class="hu-about-bullet-dot"></span>Fokus Solar &amp; Wärmepumpen — verifizierte Daten-Integrität seit der Case Study</li>
-						<li><span class="hu-about-bullet-dot"></span>Asset-Ownership statt Drittanbieter-Lock-in</li>
+						<li><span class="hu-about-bullet-dot"></span>Erst die Entscheidung Ihres Kunden, dann der Code — nicht umgekehrt</li>
+						<li><span class="hu-about-bullet-dot"></span>Fokus Solar &amp; Wärmepumpen — mit einer Case Study, deren Zahlen offen liegen</li>
+						<li><span class="hu-about-bullet-dot"></span>Das System gehört Ihnen — keine Bindung an einen Drittanbieter</li>
 						<li><span class="hu-about-bullet-dot"></span>Gegründet 2026 · Hannover, vor Ort und remote</li>
 						<li><span class="hu-about-bullet-dot"></span>Bewusst wenige Projekte parallel · 1:1 mit dem Betrieb</li>
 					</ul>
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 					   style="margin-top:8px"
 					   data-track-action="cta_home_about_marktcheck" data-track-category="lead_gen" data-track-section="07">
-						Eigene Region jetzt prüfen
+						Prüfen, ob das zu Ihrem Betrieb passt
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
 				</div>
@@ -697,6 +708,16 @@ get_header();
 
 				<div class="hu-faq-item">
 					<button class="hu-faq-item__q" type="button" aria-expanded="false">
+						<span>Warum nicht einfach eine Marketing-Agentur beauftragen?</span>
+						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
+					</button>
+					<div class="hu-faq-item__a">
+						<div class="hu-faq-item__a-inner">Weil dabei meist zwei getrennte Dinge entstehen: eine Website und geschaltete Anzeigen. Was fehlt, ist die Verbindung dazwischen — die Zuordnung, welche Anzeige die Anfrage gebracht hat, aus der ein Auftrag wurde. Genau diese Verbindung ist hier die Leistung, nicht das Design. Dazu kommt: Die Systemlogik liegt versioniert in Ihrem Repository, der Zugang zu Tracking und Daten bleibt bei Ihnen. Wenn wir auseinandergehen, läuft das System weiter. Dafür bin ich der teurere Weg, wenn ein Betrieb nur eine hübschere Website braucht — dann ist eine Agentur die richtige Wahl.</div>
+					</div>
+				</div>
+
+				<div class="hu-faq-item">
+					<button class="hu-faq-item__q" type="button" aria-expanded="false">
 						<span>Wie lange dauert es bis zu den ersten Anfragen?</span>
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
@@ -725,6 +746,14 @@ get_header();
 					</div>
 				</div>
 
+			</div>
+
+			<div style="text-align:center;margin-top:48px" class="hu-reveal">
+				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
+				   data-track-action="cta_home_faq_marktcheck" data-track-category="lead_gen" data-track-section="08">
+					Erst der Befund, dann die Budgetfrage
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+				</a>
 			</div>
 		</div>
 	</section>
