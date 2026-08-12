@@ -342,8 +342,8 @@ function hu_get_forced_singular_seo_map() {
 			// aus blog-provider-posts.php, ohne die Seed-Version zu heben — ein
 			// Bump wuerde veroeffentlichte Editor-Copy ueberschreiben.
 			'aroundhome-solar-einordnung' => [
-				'title'       => 'Aroundhome Kosten für Handwerker: Erfahrungen & Einordnung',
-				'description' => 'Was kostet Aroundhome für Handwerker? Einordnung öffentlicher Erfahrungen, Vertragsfragen und Kosten pro Auftrag für Solar- und SHK-Betriebe.',
+				'title'       => 'Aroundhome Kosten für Handwerker: Lohnt sich das?',
+				'description' => 'Was kostet Aroundhome für Handwerker? Rechnen Sie Kosten pro Auftrag mit eigenen Zahlen und prüfen Sie Vertrag, Erfahrungen und Portal-Fit.',
 			],
 			// Die Agenturseite hat keine Editor-Copy (Template-Route mit leerem
 			// post_content), lieferte also bis hierher weder Title noch

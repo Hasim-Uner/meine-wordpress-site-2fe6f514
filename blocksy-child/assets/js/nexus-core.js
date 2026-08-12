@@ -448,6 +448,7 @@
             document.addEventListener('click', function (e) {
                 var link = e.target.closest('a[href^="#"]');
                 if (!link) return;
+                if (link.closest('[data-aroundhome-decision]')) return;
 
                 var targetId = link.getAttribute('href');
                 if (!targetId || targetId === '#') return;

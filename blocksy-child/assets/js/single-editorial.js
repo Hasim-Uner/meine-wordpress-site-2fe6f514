@@ -43,6 +43,7 @@
     function initProgressBar() {
         var bar = document.querySelector('.nexus-reading-progress');
         var article = document.querySelector('.nexus-article-content') ||
+                      document.querySelector('[data-provider-decision]') ||
                       document.querySelector('[data-checkfox-cockpit]');
         if (!bar || !article) return;
 
@@ -75,6 +76,7 @@
         if (!rail) return;
 
         var hero = document.querySelector('.nexus-article-hero') ||
+                   document.querySelector('[data-provider-decision-hero]') ||
                    document.querySelector('.hu-checkfox__hero');
         var endMarker = document.querySelector('.nexus-author-bio') ||
                         document.querySelector('.nexus-related-content') ||

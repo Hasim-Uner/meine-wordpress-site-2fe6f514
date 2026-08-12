@@ -10,12 +10,17 @@
  * @package Blocksy_Child
  */
 
+$is_aroundhome_decision_request = is_single( 'aroundhome-solar-einordnung' );
+$is_checkfox_decision_request   = is_single( 'checkfox-solar-waermepumpe-einordnung' );
+$is_provider_decision_request   = $is_aroundhome_decision_request || $is_checkfox_decision_request;
+
 get_header();
 get_template_part( 'template-parts/blog-header' );
 ?>
 
 <div class="nexus-reading-progress" aria-hidden="true"></div>
 
+<?php if ( ! $is_aroundhome_decision_request ) : ?>
 <aside class="nexus-share-rail" aria-label="<?php esc_attr_e( 'Artikel teilen', 'blocksy-child' ); ?>">
 	<span class="nexus-share-rail__label"><?php esc_html_e( 'Teilen', 'blocksy-child' ); ?></span>
 	<button class="nexus-share-rail__btn" type="button" data-nexus-share="linkedin" aria-label="LinkedIn">
@@ -31,9 +36,10 @@ get_template_part( 'template-parts/blog-header' );
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
 	</button>
 </aside>
+<?php endif; ?>
 
 <?php // tabindex="-1" macht den Skip-Link aus functions.php zum echten Fokusziel. ?>
-<main id="main" tabindex="-1" class="site-main nexus-single-container nexus-single-container--with-blog-header nexus-single-container--editorial hu-hp">
+<main id="main" tabindex="-1" class="site-main nexus-single-container nexus-single-container--with-blog-header nexus-single-container--editorial hu-hp<?php echo esc_attr( $is_aroundhome_decision_request ? ' nexus-single-container--aroundhome' : '' ); ?>">
 
 	<?php while ( have_posts() ) : the_post(); ?>
 
@@ -254,6 +260,8 @@ get_template_part( 'template-parts/blog-header' );
 
 		<?php if ( $is_checkfox_decision ) : ?>
 			<?php get_template_part( 'template-parts/checkfox-decision-cockpit' ); ?>
+		<?php elseif ( $is_aroundhome_decision_request ) : ?>
+			<?php get_template_part( 'template-parts/aroundhome-decision-cockpit' ); ?>
 		<?php else : ?>
 
 		<header class="nexus-article-hero nexus-article-hero--editorial" data-track-section="article_hero" aria-labelledby="nexus-article-title">
@@ -476,7 +484,7 @@ get_template_part( 'template-parts/blog-header' );
 		<?php get_template_part( 'template-parts/blog-notify', null, [ 'variant' => 'full' ] ); ?>
 		<?php endif; ?>
 
-		<?php if ( is_singular( 'post' ) && ! $is_checkfox_decision ) : ?>
+		<?php if ( is_singular( 'post' ) && ! $is_provider_decision_request ) : ?>
 		<div class="nexus-bottom-share" data-track-section="article_share">
 			<h3><?php esc_html_e( 'Diesen Artikel teilen', 'blocksy-child' ); ?></h3>
 			<?php if ( function_exists( 'nexus_render_share_buttons' ) ) { nexus_render_share_buttons(); } ?>
@@ -559,7 +567,7 @@ get_template_part( 'template-parts/blog-header' );
 				<p class="nexus-author-bio__role"><?php echo esc_html( $author_role ); ?></p>
 				<p class="nexus-author-bio__text"><?php echo esc_html( $author_description_text ); ?></p>
 				<div class="nexus-author-bio__links">
-					<?php if ( ! $is_checkfox_decision ) : ?>
+					<?php if ( ! $is_provider_decision_request ) : ?>
 					<a
 						href="<?php echo esc_url( $audit_url ); ?>"
 						class="nexus-author-bio__link"
@@ -596,7 +604,7 @@ get_template_part( 'template-parts/blog-header' );
 		</section>
 		<?php endif; ?>
 
-		<?php if ( ! $is_checkfox_decision ) : ?>
+		<?php if ( ! $is_provider_decision_request ) : ?>
 		<?php
 		// Related Content (gleiche Kategorie)
 		set_query_var( 'related_heading', __( 'Das könnte Sie auch interessieren', 'blocksy-child' ) );

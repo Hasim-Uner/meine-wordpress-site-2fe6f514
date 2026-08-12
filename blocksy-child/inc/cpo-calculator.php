@@ -18,29 +18,92 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * The values are examples only. Nothing is submitted or persisted.
  *
+ * @param array<string, mixed> $args Provider-specific copy, tracking and defaults.
  * @return string
  */
-function hu_render_portal_cpo_calculator() {
+function hu_render_portal_cpo_calculator( $args = [] ) {
 	static $instance = 0;
 
 	++$instance;
 
-	$calculator_id  = 'hu-cpo-portal-' . $instance;
-	$marktcheck_url = function_exists( 'hu_get_request_analysis_url' )
+	$calculator_id   = 'hu-cpo-portal-' . $instance;
+	$marktcheck_url  = function_exists( 'hu_get_request_analysis_url' )
 		? hu_get_request_analysis_url()
 		: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-	$defaults        = [
+	$default_values  = [
 		'cpl'           => 90,
 		'leads'         => 50,
 		'close_rate'    => 5,
 		'sales_minutes' => 35,
 		'hourly_rate'   => 60,
 	];
-	$lead_spend      = $defaults['cpl'] * $defaults['leads'];
-	$orders          = $defaults['leads'] * ( $defaults['close_rate'] / 100 );
-	$sales_hours     = $defaults['leads'] * ( $defaults['sales_minutes'] / 60 );
-	$sales_costs     = $sales_hours * $defaults['hourly_rate'];
-	$full_cpo        = ( $lead_spend + $sales_costs ) / $orders;
+	$args            = wp_parse_args(
+		(array) $args,
+		[
+			'provider_label'  => 'Checkfox',
+			'tracking_prefix' => 'checkfox',
+			'tracking_section' => 'checkfox_portal_calculator',
+			'defaults'        => $default_values,
+			'require_complete' => false,
+			'heading'         => 'Was kostet der Portal-Kanal pro gewonnenem Auftrag?',
+			'description'     => 'Tragen Sie Ihre echten Vertriebswerte ein. Der Rechner verbindet Anfragepreis, Abschlussquote und interne Vertriebszeit.',
+			'example_text'    => '',
+			'cta_label'       => 'Mit meinen Zahlen Marktcheck starten',
+			'cta_note'        => 'Im Marktcheck werden Region, Projektwert, Abschlussquote und Portalabhängigkeit händisch eingeordnet.',
+		]
+	);
+	$provider_label   = sanitize_text_field( (string) $args['provider_label'] );
+	$tracking_prefix  = sanitize_key( (string) $args['tracking_prefix'] );
+	$tracking_section = sanitize_key( (string) $args['tracking_section'] );
+	$defaults         = wp_parse_args( is_array( $args['defaults'] ) ? $args['defaults'] : [], $default_values );
+	$require_complete = (bool) $args['require_complete'];
+	$heading          = wp_strip_all_tags( (string) $args['heading'] );
+	$description      = wp_strip_all_tags( (string) $args['description'] );
+	$example_text     = trim( wp_strip_all_tags( (string) $args['example_text'] ) );
+	$cta_label        = wp_strip_all_tags( (string) $args['cta_label'] );
+	$cta_note         = wp_strip_all_tags( (string) $args['cta_note'] );
+	$describedby_ids  = $calculator_id . '-example';
+
+	if ( $require_complete ) {
+		$describedby_ids .= ' ' . $calculator_id . '-validation';
+	}
+
+	if ( '' === $tracking_prefix ) {
+		$tracking_prefix = 'portal';
+	}
+
+	if ( '' === $tracking_section ) {
+		$tracking_section = $tracking_prefix . '_portal_calculator';
+	}
+
+	if ( '' === $example_text ) {
+		$example_text = sprintf(
+			/* translators: %s: provider name */
+			'Beispielwerte – keine %s-Konditionen. Die voreingestellten Werte dienen nur als Rechenbeispiel.',
+			$provider_label
+		);
+	}
+
+	$required_keys = [ 'cpl', 'leads', 'close_rate', 'sales_minutes', 'hourly_rate' ];
+	$has_values    = true;
+	foreach ( $required_keys as $required_key ) {
+		if ( '' === trim( (string) $defaults[ $required_key ] ) ) {
+			$has_values = false;
+			break;
+		}
+	}
+
+	$cpl           = max( 0, (float) $defaults['cpl'] );
+	$leads         = max( 0, (float) $defaults['leads'] );
+	$close_rate    = min( 100, max( 0, (float) $defaults['close_rate'] ) );
+	$sales_minutes = max( 0, (float) $defaults['sales_minutes'] );
+	$hourly_rate   = max( 0, (float) $defaults['hourly_rate'] );
+	$lead_spend    = $cpl * $leads;
+	$orders        = $leads * ( $close_rate / 100 );
+	$sales_hours   = $leads * ( $sales_minutes / 60 );
+	$sales_costs   = $sales_hours * $hourly_rate;
+	$has_result    = ( ! $require_complete || $has_values ) && $orders > 0;
+	$full_cpo      = $has_result ? ( $lead_spend + $sales_costs ) / $orders : 0;
 
 	ob_start();
 	?>
@@ -48,65 +111,70 @@ function hu_render_portal_cpo_calculator() {
 		class="hu-cpo-calculator hu-cpo-calculator--portal"
 		data-hu-cpo-calculator
 		data-cpo-mode="portal"
-		data-track-action="interact_checkfox_calculator_first"
+		data-cpo-require-complete="<?php echo esc_attr( $require_complete ? 'true' : 'false' ); ?>"
+		data-track-action="<?php echo esc_attr( 'interact_' . $tracking_prefix . '_calculator_first' ); ?>"
 		data-track-category="engagement"
-		data-track-section="checkfox_portal_calculator"
+		data-track-section="<?php echo esc_attr( $tracking_section ); ?>"
 		aria-labelledby="<?php echo esc_attr( $calculator_id . '-title' ); ?>"
 	>
 		<div class="hu-cpo-calculator__intro">
 			<p class="hu-cpo-calculator__eyebrow">Live-Rechnung</p>
-			<h3 class="hu-cpo-calculator__title" id="<?php echo esc_attr( $calculator_id . '-title' ); ?>">Was kostet der Portal-Kanal pro gewonnenem Auftrag?</h3>
-			<p class="hu-cpo-calculator__text">Tragen Sie Ihre echten Vertriebswerte ein. Der Rechner verbindet Anfragepreis, Abschlussquote und interne Vertriebszeit.</p>
+			<h3 class="hu-cpo-calculator__title" id="<?php echo esc_attr( $calculator_id . '-title' ); ?>"><?php echo esc_html( $heading ); ?></h3>
+			<p class="hu-cpo-calculator__text"><?php echo esc_html( $description ); ?></p>
 			<p class="hu-cpo-calculator__example" id="<?php echo esc_attr( $calculator_id . '-example' ); ?>">
-				<strong>Beispielwerte – keine Checkfox-Konditionen.</strong> Die voreingestellten Werte dienen nur als Rechenbeispiel.
+				<?php echo esc_html( $example_text ); ?>
 			</p>
 		</div>
 
-		<div class="hu-cpo-calculator__portal-fields">
+		<fieldset class="hu-cpo-calculator__portal-fields">
+			<legend class="screen-reader-text">Eigene Werte für die Kosten-pro-Auftrag-Rechnung</legend>
 			<label class="hu-cpo-calculator__field" for="<?php echo esc_attr( $calculator_id . '-cpl' ); ?>">
-				<span class="hu-cpo-calculator__field-label">Preis pro Anfrage (€)</span>
-				<input id="<?php echo esc_attr( $calculator_id . '-cpl' ); ?>" type="number" min="0" step="5" inputmode="decimal" autocomplete="off" data-cpo-input="cpl" value="<?php echo esc_attr( (string) $defaults['cpl'] ); ?>" aria-describedby="<?php echo esc_attr( $calculator_id . '-example' ); ?>">
+				<span class="hu-cpo-calculator__field-label">Preis pro Anfrage (€)<?php echo esc_html( $require_complete ? ' *' : '' ); ?></span>
+				<input id="<?php echo esc_attr( $calculator_id . '-cpl' ); ?>" type="number" min="0" step="any" inputmode="decimal" autocomplete="off" data-cpo-input="cpl" value="<?php echo esc_attr( (string) $defaults['cpl'] ); ?>" aria-describedby="<?php echo esc_attr( $describedby_ids ); ?>"<?php echo esc_attr( $require_complete ? ' required' : '' ); ?>>
 			</label>
 			<label class="hu-cpo-calculator__field" for="<?php echo esc_attr( $calculator_id . '-leads' ); ?>">
-				<span class="hu-cpo-calculator__field-label">Anfragen pro Monat</span>
-				<input id="<?php echo esc_attr( $calculator_id . '-leads' ); ?>" type="number" min="0" step="1" inputmode="numeric" autocomplete="off" data-cpo-input="leads" value="<?php echo esc_attr( (string) $defaults['leads'] ); ?>" aria-describedby="<?php echo esc_attr( $calculator_id . '-example' ); ?>">
+				<span class="hu-cpo-calculator__field-label">Anfragen pro Monat<?php echo esc_html( $require_complete ? ' *' : '' ); ?></span>
+				<input id="<?php echo esc_attr( $calculator_id . '-leads' ); ?>" type="number" min="0" step="1" inputmode="numeric" autocomplete="off" data-cpo-input="leads" value="<?php echo esc_attr( (string) $defaults['leads'] ); ?>" aria-describedby="<?php echo esc_attr( $describedby_ids ); ?>"<?php echo esc_attr( $require_complete ? ' required' : '' ); ?>>
 			</label>
 			<label class="hu-cpo-calculator__field" for="<?php echo esc_attr( $calculator_id . '-close-rate' ); ?>">
-				<span class="hu-cpo-calculator__field-label">Abschlussquote (%)</span>
-				<input id="<?php echo esc_attr( $calculator_id . '-close-rate' ); ?>" type="number" min="0" max="100" step="0.5" inputmode="decimal" autocomplete="off" data-cpo-input="close_rate" value="<?php echo esc_attr( (string) $defaults['close_rate'] ); ?>" aria-describedby="<?php echo esc_attr( $calculator_id . '-example' ); ?>">
+				<span class="hu-cpo-calculator__field-label">Abschlussquote (%)<?php echo esc_html( $require_complete ? ' *' : '' ); ?></span>
+				<input id="<?php echo esc_attr( $calculator_id . '-close-rate' ); ?>" type="number" min="0" max="100" step="any" inputmode="decimal" autocomplete="off" data-cpo-input="close_rate" value="<?php echo esc_attr( (string) $defaults['close_rate'] ); ?>" aria-describedby="<?php echo esc_attr( $describedby_ids ); ?>"<?php echo esc_attr( $require_complete ? ' required' : '' ); ?>>
 			</label>
 			<label class="hu-cpo-calculator__field" for="<?php echo esc_attr( $calculator_id . '-sales-minutes' ); ?>">
-				<span class="hu-cpo-calculator__field-label">Vertriebszeit pro Anfrage (Min.)</span>
-				<input id="<?php echo esc_attr( $calculator_id . '-sales-minutes' ); ?>" type="number" min="0" step="5" inputmode="numeric" autocomplete="off" data-cpo-input="sales_minutes" value="<?php echo esc_attr( (string) $defaults['sales_minutes'] ); ?>" aria-describedby="<?php echo esc_attr( $calculator_id . '-example' ); ?>">
+				<span class="hu-cpo-calculator__field-label">Vertriebszeit pro Anfrage (Min.)<?php echo esc_html( $require_complete ? ' *' : '' ); ?></span>
+				<input id="<?php echo esc_attr( $calculator_id . '-sales-minutes' ); ?>" type="number" min="0" step="any" inputmode="decimal" autocomplete="off" data-cpo-input="sales_minutes" value="<?php echo esc_attr( (string) $defaults['sales_minutes'] ); ?>" aria-describedby="<?php echo esc_attr( $describedby_ids ); ?>"<?php echo esc_attr( $require_complete ? ' required' : '' ); ?>>
 			</label>
 			<label class="hu-cpo-calculator__field" for="<?php echo esc_attr( $calculator_id . '-hourly-rate' ); ?>">
-				<span class="hu-cpo-calculator__field-label">Interner Vertriebsstundensatz (€)</span>
-				<input id="<?php echo esc_attr( $calculator_id . '-hourly-rate' ); ?>" type="number" min="0" step="5" inputmode="decimal" autocomplete="off" data-cpo-input="hourly_rate" value="<?php echo esc_attr( (string) $defaults['hourly_rate'] ); ?>" aria-describedby="<?php echo esc_attr( $calculator_id . '-example' ); ?>">
+				<span class="hu-cpo-calculator__field-label">Interner Vertriebsstundensatz (€)<?php echo esc_html( $require_complete ? ' *' : '' ); ?></span>
+				<input id="<?php echo esc_attr( $calculator_id . '-hourly-rate' ); ?>" type="number" min="0" step="any" inputmode="decimal" autocomplete="off" data-cpo-input="hourly_rate" value="<?php echo esc_attr( (string) $defaults['hourly_rate'] ); ?>" aria-describedby="<?php echo esc_attr( $describedby_ids ); ?>"<?php echo esc_attr( $require_complete ? ' required' : '' ); ?>>
 			</label>
-		</div>
+		</fieldset>
+		<?php if ( $require_complete ) : ?>
+			<p class="hu-cpo-calculator__validation" id="<?php echo esc_attr( $calculator_id . '-validation' ); ?>" data-cpo-validation role="status" aria-live="polite" aria-atomic="true">* Pflichtfelder. Tragen Sie alle fünf Werte ein; Anfragen und Abschlussquote müssen größer als null sein.</p>
+		<?php endif; ?>
 
 		<div
 			class="hu-cpo-calculator__portal-results"
 			data-cpo-results
-			data-track-action="view_checkfox_calculator_result"
+			data-track-action="<?php echo esc_attr( 'view_' . $tracking_prefix . '_calculator_result' ); ?>"
 			data-track-category="engagement"
-			data-track-section="checkfox_portal_calculator"
+			data-track-section="<?php echo esc_attr( $tracking_section ); ?>"
 		>
 			<div>
 				<span>Monatliche Anfragekosten</span>
-				<strong data-cpo-output="monthly_lead_cost"><?php echo esc_html( number_format_i18n( $lead_spend, 0 ) . ' €' ); ?></strong>
+				<strong data-cpo-output="monthly_lead_cost"><?php echo esc_html( $has_result ? number_format_i18n( $lead_spend, 0 ) . ' €' : '–' ); ?></strong>
 			</div>
 			<div>
 				<span>Voraussichtliche Aufträge</span>
-				<strong data-cpo-output="orders"><?php echo esc_html( number_format_i18n( $orders, 1 ) ); ?></strong>
+				<strong data-cpo-output="orders"><?php echo esc_html( $has_result ? number_format_i18n( $orders, 1 ) : '–' ); ?></strong>
 			</div>
 			<div>
 				<span>Vertriebsstunden</span>
-				<strong data-cpo-output="sales_hours"><?php echo esc_html( number_format_i18n( $sales_hours, 1 ) . ' Std.' ); ?></strong>
+				<strong data-cpo-output="sales_hours"><?php echo esc_html( $has_result ? number_format_i18n( $sales_hours, 1 ) . ' Std.' : '–' ); ?></strong>
 			</div>
 			<div class="hu-cpo-calculator__portal-result-main">
-				<span>Vollständige Kosten pro Auftrag</span>
-				<strong data-cpo-output="full_cpo" aria-live="polite" aria-atomic="true"><?php echo esc_html( number_format_i18n( $full_cpo, 0 ) . ' €' ); ?></strong>
+				<span>Anfrage- und Vertriebskosten pro Auftrag</span>
+				<strong data-cpo-output="full_cpo" aria-live="polite" aria-atomic="true"><?php echo esc_html( $has_result ? number_format_i18n( $full_cpo, 0 ) . ' €' : '–' ); ?></strong>
 			</div>
 		</div>
 
@@ -114,13 +182,13 @@ function hu_render_portal_cpo_calculator() {
 			<a
 				class="hu-cpo-calculator__cta"
 				href="<?php echo esc_url( $marktcheck_url ); ?>"
-				data-track-action="cta_checkfox_calculator_marktcheck"
+				data-track-action="<?php echo esc_attr( 'cta_' . $tracking_prefix . '_calculator_marktcheck' ); ?>"
 				data-track-category="lead_gen"
-				data-track-section="checkfox_portal_calculator"
+				data-track-section="<?php echo esc_attr( $tracking_section ); ?>"
 			>
-				Mit meinen Zahlen Marktcheck starten
+				<?php echo esc_html( $cta_label ); ?>
 			</a>
-			<p>Im Marktcheck werden Region, Projektwert, Abschlussquote und Portalabhängigkeit händisch eingeordnet.</p>
+			<p><?php echo esc_html( $cta_note ); ?></p>
 		</div>
 	</section>
 	<?php

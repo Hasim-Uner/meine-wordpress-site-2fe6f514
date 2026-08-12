@@ -487,6 +487,36 @@ function hu_get_post_schema_image_object( $post_id ) {
 }
 
 /**
+ * Return schema copy and modification time for the repo-owned Aroundhome view.
+ *
+ * The WordPress post remains the route container, but its editor title, excerpt
+ * and modified date no longer describe the content rendered by single.php.
+ *
+ * @param int    $post_id              Queried post ID.
+ * @param string $fallback_description Existing schema description.
+ * @return array{headline: string, description: string, dateModified: string}
+ */
+function hu_get_aroundhome_decision_schema_data( $post_id, $fallback_description ) {
+    $forced_seo  = function_exists( 'hu_get_forced_singular_seo' ) ? hu_get_forced_singular_seo( $post_id ) : [];
+    $description = ! empty( $forced_seo['description'] ) ? (string) $forced_seo['description'] : $fallback_description;
+    $modified    = (string) get_post_modified_time( DATE_W3C, true, $post_id );
+    $template    = get_stylesheet_directory() . '/template-parts/aroundhome-decision-cockpit.php';
+
+    if ( is_file( $template ) ) {
+        $template_modified = filemtime( $template );
+        if ( false !== $template_modified ) {
+            $modified = gmdate( DATE_W3C, $template_modified );
+        }
+    }
+
+    return [
+        'headline'     => 'Aroundhome-Kosten für Handwerker: Rechnen Sie den Auftrag, nicht den Lead.',
+        'description'  => $description,
+        'dateModified' => $modified,
+    ];
+}
+
+/**
  * Build a generic WebPage node that anchors a singular view in the graph.
  *
  * Pages that already emit a dedicated WebPage subtype (ProfilePage, AboutPage,
@@ -528,6 +558,13 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
     $title       = get_the_title( $post_id );
     $excerpt     = get_the_excerpt( $post_id );
     $description = $excerpt ? wp_strip_all_tags( $excerpt ) : wp_strip_all_tags( $title );
+    $route_schema = [];
+
+    if ( 'aroundhome-solar-einordnung' === $slug ) {
+        $route_schema = hu_get_aroundhome_decision_schema_data( $post_id, $description );
+        $title        = $route_schema['headline'];
+        $description  = $route_schema['description'];
+    }
 
     $type = 'WebPage';
     if ( in_array( $slug, [ 'kontakt', 'anfrage' ], true ) ) {
@@ -551,6 +588,10 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
 
     $published = get_post_time( DATE_W3C, true, $post_id );
     $modified  = get_post_modified_time( DATE_W3C, true, $post_id );
+
+    if ( ! empty( $route_schema['dateModified'] ) ) {
+        $modified = $route_schema['dateModified'];
+    }
 
     if ( $published ) {
         $webpage['datePublished'] = $published;
@@ -1218,16 +1259,29 @@ function hu_output_schema()
             $post_permalink    = get_permalink( $post_id );
             $post_description  = get_the_excerpt( $post_id );
             $post_description  = $post_description ? wp_strip_all_tags( $post_description ) : wp_strip_all_tags( get_the_title( $post_id ) );
+            $post_headline     = get_the_title( $post_id );
+            $post_slug         = (string) get_post_field( 'post_name', $post_id );
+            $route_schema      = [];
+
+            if ( 'aroundhome-solar-einordnung' === $post_slug ) {
+                $route_schema      = hu_get_aroundhome_decision_schema_data( $post_id, $post_description );
+                $post_headline     = $route_schema['headline'];
+                $post_description  = $route_schema['description'];
+            }
             $post_image        = hu_get_post_schema_image_object( $post_id );
             $published_date    = get_post_time( DATE_W3C, true, $post_id );
             $modified_date     = get_post_modified_time( DATE_W3C, true, $post_id );
+
+            if ( ! empty( $route_schema['dateModified'] ) ) {
+                $modified_date = $route_schema['dateModified'];
+            }
 
             $blog_posting = [
                 '@context'         => 'https://schema.org',
                 '@type'            => 'BlogPosting',
                 '@id'              => trailingslashit( $post_permalink ) . '#blogposting',
                 'mainEntityOfPage' => [ '@id' => trailingslashit( $post_permalink ) . '#webpage' ],
-                'headline'         => get_the_title( $post_id ),
+                'headline'         => $post_headline,
                 'description'      => $post_description,
                 'datePublished'    => $published_date,
                 'dateModified'     => $modified_date,
@@ -1355,6 +1409,35 @@ function hu_output_schema()
             }
         }
 
+        if ( 'aroundhome-solar-einordnung' === $slug && function_exists( 'nexus_get_aroundhome_faq_items' ) ) {
+            $aroundhome_url          = home_url( '/aroundhome-solar-einordnung/' );
+            $aroundhome_faq_entities = array_map(
+                static function ( $item ) {
+                    return [
+                        '@type'          => 'Question',
+                        'name'           => (string) $item['question'],
+                        'acceptedAnswer' => [
+                            '@type' => 'Answer',
+                            'text'  => (string) $item['answer'],
+                        ],
+                    ];
+                },
+                nexus_get_aroundhome_faq_items()
+            );
+
+            if ( ! empty( $aroundhome_faq_entities ) ) {
+                $schemas[] = [
+                    '@context'   => 'https://schema.org',
+                    '@type'      => 'FAQPage',
+                    '@id'        => $aroundhome_url . '#faq',
+                    'url'        => $aroundhome_url,
+                    'inLanguage' => 'de',
+                    'publisher'  => [ '@id' => home_url( '/#organization' ) ],
+                    'mainEntity' => $aroundhome_faq_entities,
+                ];
+            }
+        }
+
         /**
          * FAQ schema from save-time cache.
          *
@@ -1364,7 +1447,7 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'wordpress-agentur-hannover', 'server-side-tracking-b2b', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'wgos', 'wordpress-growth-operating-system' ], true )
+                in_array( $slug, [ 'wordpress-agentur-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'wgos', 'wordpress-growth-operating-system' ], true )
                 || ( function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page( $slug ) )
                 || ( function_exists( 'hu_is_seo_cornerstone_article' ) && hu_is_seo_cornerstone_article() )
                 // Die Solar Case Study emittiert ihren FAQPage-Knoten oben selbst.

@@ -116,6 +116,11 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Intercept-Page für Kauf-Suchintent: Lead-Anbieter einordnen und eigene Anfragesysteme als Alternative bewerten.',
 				],
 				[
+					'label'       => 'Aroundhome Kosten für Handwerker',
+					'url'         => home_url( '/aroundhome-solar-einordnung/' ),
+					'description' => 'Anbieterunabhängiger Kosten-, Vertrags- und Portal-Fit-Entscheid mit CPO-Rechner auf Basis eigener Betriebswerte.',
+				],
+				[
 					'label'       => 'Wärmepumpen Leads kaufen – Alternative',
 					'url'         => home_url( '/waermepumpen-leads/' ),
 					'description' => 'Intercept-Page für Wärmepumpen-Lead-Kauf: Marktmodelle, wärmepumpen-spezifische Vorqualifizierung und eigenes Anfragesystem als Alternative.',

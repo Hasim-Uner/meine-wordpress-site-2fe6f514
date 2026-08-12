@@ -30,7 +30,7 @@ BASE="${BASE%/}"
 
 # Die Money-Pages und der Anfragepfad. Bewusst kurz: ein Smoke prueft die
 # Seiten, deren Ausfall wehtut, nicht den ganzen Bestand.
-DEFAULT_ROUTES="/ /solar-waermepumpen-leadgenerierung/ /b2b-solar-leads/ /wordpress-agentur-hannover/ /server-side-tracking-b2b/ /checkfox-solar-waermepumpe-einordnung/ /kontakt/"
+DEFAULT_ROUTES="/ /solar-waermepumpen-leadgenerierung/ /b2b-solar-leads/ /wordpress-agentur-hannover/ /server-side-tracking-b2b/ /checkfox-solar-waermepumpe-einordnung/ /aroundhome-solar-einordnung/ /kontakt/"
 read -r -a ROUTE_LIST <<< "${ROUTES:-$DEFAULT_ROUTES}"
 
 command -v curl >/dev/null 2>&1 || { echo "FEHLER: curl fehlt." >&2; exit 2; }

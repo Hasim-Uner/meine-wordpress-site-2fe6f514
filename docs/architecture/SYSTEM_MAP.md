@@ -201,7 +201,7 @@ Bausteine:
 
 - `home.php`: reduziertes Editorial-Blogarchiv mit echten Kategorie-Links, bildloser Artikelliste, CollectionPage-/ItemList-Schema und Marktcheck-Führung
 - `category.php`: bildloses Kategorie-Archiv mit dynamischer Kategorienavigation, zentralen SEO-Fallbacks, thematischen Vertiefungslinks, CollectionPage-/ItemList-Schema und Marktcheck-Führung
-- `single.php`: Artikel mit reduziertem Editorial-Hero, TOC, strukturierter Next-Step-Zone, thematischem Related Content und Footer-CTA
+- `single.php`: Artikel mit reduziertem Editorial-Hero, TOC, strukturierter Next-Step-Zone, thematischem Related Content und Footer-CTA; die Provider-Entscheide für Checkfox und Aroundhome ersetzen den Editor-Inhalt slug-spezifisch durch repo-eigene Templates und Assets
 - `template-parts/post-title-visual.php`: generierte Titelgrafik als Fallback für Beiträge ohne Featured Image
 - `page-seo-cornerstone.php`: Cornerstone-Template mit starkem Entscheider-Fokus
 - `inc/glossary/`: Registry, Alias-Logik und Blog-Autolinking für Fachbegriffe, 90-Tage-Fokus-Keywords und Money-Page-Brücken

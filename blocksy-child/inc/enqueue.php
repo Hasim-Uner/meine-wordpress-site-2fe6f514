@@ -31,6 +31,9 @@ function hu_enqueue_assets() {
 	$is_cluster_page = function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page();
 	$is_checkfox_decision = is_singular( 'post' ) && $queried_id && 'checkfox-solar-waermepumpe-einordnung' === get_post_field( 'post_name', $queried_id );
 
+	$is_aroundhome_decision = is_singular( 'post' ) && $queried_id && 'aroundhome-solar-einordnung' === get_post_field( 'post_name', $queried_id );
+	$is_provider_decision   = $is_checkfox_decision || $is_aroundhome_decision;
+
 	// ── Parent Theme ──────────────────────────────────────────────
 	wp_enqueue_style(
 		'blocksy-child-style',
@@ -106,7 +109,7 @@ function hu_enqueue_assets() {
 	}
 
 	// ── GLOBAL: Blog Notify ────────────────────────────────────────
-	if ( is_archive() || ( is_singular( 'post' ) && ! $is_checkfox_decision ) || ( function_exists( 'nexus_is_blog_notify_page' ) && nexus_is_blog_notify_page() ) ) {
+	if ( is_archive() || ( is_singular( 'post' ) && ! $is_provider_decision ) || ( function_exists( 'nexus_is_blog_notify_page' ) && nexus_is_blog_notify_page() ) ) {
 		hu_enqueue_css( 'nexus-blog-notify-css', 'blog-notify.css', [ 'nexus-design-system' ] );
 		hu_enqueue_js( 'nexus-blog-notify-js', 'blog-notify.js', [ 'nexus-core-js' ] );
 		wp_localize_script(
@@ -121,7 +124,7 @@ function hu_enqueue_assets() {
 		);
 	}
 
-	if ( is_category() || ( is_singular( 'post' ) && ! $is_checkfox_decision ) ) {
+	if ( is_category() || ( is_singular( 'post' ) && ! $is_provider_decision ) ) {
 		hu_enqueue_css( 'nexus-post-visual-css', 'post-visual.css', [ 'nexus-design-system' ] );
 	}
 
@@ -155,7 +158,7 @@ function hu_enqueue_assets() {
 	}
 
 	if ( is_singular( 'post' ) ) {
-		if ( ! $is_checkfox_decision ) {
+		if ( ! $is_provider_decision ) {
 			hu_enqueue_css( 'nexus-related-content-css', 'related-content.css', [ 'nexus-design-system' ] );
 			hu_enqueue_css( 'nexus-footer-cta-css', 'footer-cta.css', [ 'nexus-design-system' ] );
 			hu_enqueue_js( 'nexus-blog-inline-cta-js', 'blog-inline-cta.js', [ 'nexus-core-js' ] );
@@ -166,7 +169,7 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-single-editorial-js', 'single-editorial.js', [ 'nexus-core-js' ] );
 
 		$post_content = $queried_id ? (string) get_post_field( 'post_content', $queried_id ) : '';
-		if ( $is_checkfox_decision || has_shortcode( $post_content, 'hu_cpo_calculator' ) ) {
+		if ( $is_provider_decision || has_shortcode( $post_content, 'hu_cpo_calculator' ) ) {
 			hu_enqueue_css( 'nexus-cpo-calculator-css', 'cpo-calculator.css', [ 'nexus-single-editorial-css' ] );
 			hu_enqueue_js( 'nexus-cpo-calculator-js', 'cpo-calculator.js', [ 'nexus-core-js' ] );
 		}
@@ -174,6 +177,11 @@ function hu_enqueue_assets() {
 		if ( $is_checkfox_decision ) {
 			hu_enqueue_css( 'nexus-checkfox-decision-css', 'checkfox-decision.css', [ 'nexus-cpo-calculator-css' ] );
 			hu_enqueue_js( 'nexus-checkfox-decision-js', 'checkfox-decision.js', [ 'nexus-cpo-calculator-js' ] );
+		}
+
+		if ( $is_aroundhome_decision ) {
+			hu_enqueue_css( 'nexus-aroundhome-decision-css', 'aroundhome-decision.css', [ 'nexus-cpo-calculator-css' ] );
+			hu_enqueue_js( 'nexus-aroundhome-decision-js', 'aroundhome-decision.js', [ 'nexus-cpo-calculator-js' ] );
 		}
 
 		wp_localize_script(

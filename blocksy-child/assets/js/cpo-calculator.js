@@ -18,7 +18,16 @@
 
 	function getInput(scenario, key) {
 		var input = scenario.querySelector('[data-cpo-input="' + key + '"]');
-		return input ? toNumber(input.value) : 0;
+
+		if (!input) {
+			return 0;
+		}
+
+		var value = toNumber(input.value);
+		var min = input.hasAttribute('min') ? toNumber(input.getAttribute('min')) : Number.NEGATIVE_INFINITY;
+		var max = input.hasAttribute('max') ? toNumber(input.getAttribute('max')) : Number.POSITIVE_INFINITY;
+
+		return Math.min(max, Math.max(min, value));
 	}
 
 	function getShared(calculator, key, fallback) {
@@ -72,6 +81,54 @@
 	}
 
 	function updatePortalCalculator(calculator) {
+		var requireComplete = calculator.getAttribute('data-cpo-require-complete') === 'true';
+		var inputs = Array.prototype.slice.call(calculator.querySelectorAll('[data-cpo-input]'));
+		var validation = calculator.querySelector('[data-cpo-validation]');
+		var emptyInputs = inputs.filter(function (input) {
+			return String(input.value).trim() === '';
+		});
+		var invalidInputs = inputs.filter(function (input) {
+			return String(input.value).trim() !== '' && !input.checkValidity();
+		});
+		var complete = inputs.every(function (input) {
+			return String(input.value).trim() !== '' && input.checkValidity();
+		});
+		complete = complete && getInput(calculator, 'leads') > 0 && getInput(calculator, 'close_rate') > 0;
+
+		inputs.forEach(function (input) {
+			var isInvalid = input.hasAttribute('data-cpo-touched') && (
+				!input.checkValidity() ||
+				(input.getAttribute('data-cpo-input') === 'leads' && getInput(calculator, 'leads') <= 0) ||
+				(input.getAttribute('data-cpo-input') === 'close_rate' && getInput(calculator, 'close_rate') <= 0)
+			);
+			if (isInvalid) {
+				input.setAttribute('aria-invalid', 'true');
+			} else {
+				input.removeAttribute('aria-invalid');
+			}
+		});
+
+		if (requireComplete && !complete) {
+			if (validation) {
+				if (invalidInputs.length) {
+					validation.textContent = 'Mindestens ein Wert liegt außerhalb des erlaubten Bereichs. Prüfen Sie die markierten Felder.';
+				} else if (!emptyInputs.length) {
+					validation.textContent = 'Anfragen und Abschlussquote müssen größer als null sein.';
+				} else {
+					validation.textContent = '* Pflichtfelder. Tragen Sie alle fünf Werte ein; Anfragen und Abschlussquote müssen größer als null sein.';
+				}
+			}
+			setText(calculator, 'output', 'monthly_lead_cost', '–');
+			setText(calculator, 'output', 'orders', '–');
+			setText(calculator, 'output', 'sales_hours', '–');
+			setText(calculator, 'output', 'full_cpo', '–');
+			return;
+		}
+
+		if (validation) {
+			validation.textContent = 'Berechnung aktualisiert. Es werden keine Werte gespeichert oder übertragen.';
+		}
+
 		var cpl = getInput(calculator, 'cpl');
 		var leads = getInput(calculator, 'leads');
 		var closeRate = getInput(calculator, 'close_rate') / 100;
@@ -141,6 +198,15 @@
 
 	function initCalculator(calculator) {
 		var updateTimer = 0;
+
+		calculator.addEventListener('blur', function (event) {
+			if (!event.target.matches('[data-cpo-input]')) {
+				return;
+			}
+
+			event.target.setAttribute('data-cpo-touched', '');
+			updateCalculator(calculator);
+		}, true);
 
 		calculator.addEventListener('input', function () {
 			if (calculator.getAttribute('data-cpo-mode') !== 'portal') {
