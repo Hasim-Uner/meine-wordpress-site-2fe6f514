@@ -75,12 +75,12 @@ Marktcheck / System-Diagnose-Legacy:
 - Aktive Route: `/solar-waermepumpen-leadgenerierung/#marktcheck`
 - Legacy: `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` leiten per 301 weiter
 - Contract: aktiver REST-Contract `2026-05-26.audit-request.v1`; historischer n8n-Contract `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt nur für Legacy-Kontext intern stabil
-- Status: dreistufiger B2B-System-Intake im Hero der Solar-Landingpage; Qualifizierung läuft über `sales_team_size`, `portal_margin_loss` und geschäftliche Kontaktdaten, ohne PLZ-Pflicht im neuen Intake; fruehere 8-Schritt-React-App bleibt Legacy-Code
+- Status: fünfstufiger B2B-System-Intake im Hero der Solar-Landingpage; vier tatsächliche Fit-Signale (`solution_focus`, `business_fit`, `sales_team_size`, `project_timing`) führen zu den geschäftlichen Kontaktdaten. CPL, Anfragevolumen oder Engpass werden nicht aus anderen Antworten abgeleitet; die Firmen-PLZ bleibt Pflicht für die regionale Einordnung. Die fruehere 8-Schritt-React-App bleibt Legacy-Code
 - WordPress REST: `/wp-json/nexus/v1/audit-request`; Antworten tragen `contractVersion`, `traceId` sowie `X-Nexus-Contract-Version`/`X-Nexus-Trace-Id`
 - CRM: `nexus_review_request`, Audit-Typ `B2B-System-Intake`; Legacy-Energy-Intakes bleiben als `Marktcheck` rückwärtskompatibel
 - Mail: interne Admin-Benachrichtigung und Lead-Bestätigung über zentrale Brevo-/`wp_mail`-Schicht
 - n8n-Route: nicht angebunden; erst nach neuer Contract-/Consent-/Feature-Flag-Freigabe
-- Default-Fragepfad: Vertriebsteam-Größe, Portal-Margenverlust, Firma, Name, Position, geschäftliche E-Mail und Telefonnummer; keine personenbezogenen Endkundendaten
+- Default-Fragepfad: Leistungsfokus, wirtschaftlicher Projekt-Fit, Vertriebsverantwortung, Umsetzungshorizont, Firma, Name, Position, geschäftliche E-Mail und Firmen-PLZ; keine personenbezogenen Endkundendaten
 - Retention: für n8n nicht anwendbar, weil nichts an n8n gesendet wird
 
 Bekannte technische Touchpoints:
@@ -157,13 +157,13 @@ Neu im Repo:
 - gecachte Kernmetriken fuer Klicks, Impressionen, CTR, Position, Top Pages und Top Queries
 - automatischer Snapshot-Refresh per WP-Cron
 - optionale Koko-Erkennung als lokaler Traffic-Layer fuer spaetere Zusammenfuehrung
-- Audit-Lead-Layer aus `nexus_review_request` mit Status, Source-Mix und intern attribuierten Seiten fuer neue Leads
+- Audit-Lead-Layer aus `nexus_review_request` mit dem gemeinsamen Statusvertrag `qualified|nurture`, qualifizierter Anzahl, Source-Mix und intern attribuierten Seiten für neue Leads
 
 Systemische Rolle:
 
 - Search Console liefert die externe SEO-Sicht
 - Koko liefert optional die lokale Seiten- und Traffic-Sicht
-- das Audit-CRM liefert zusaetzlich Lead-Signale und neue interne Attributionsdaten
+- das Audit-CRM liefert zusaetzlich Lead-Signale, qualifizierte Anfragen und interne Attributionsdaten; der sessionbasierte Frontend-Helper uebernimmt `utm_source`/`utm_term` als Quelle bzw. Suchbegriff, erkennt Google-/Meta-Klickparameter nur als Quellensignal und speichert keine rohe Klick-ID
 - WordPress bleibt der Ort, an dem diese Perspektiven in einem operativen Cockpit zusammenlaufen
 - Der CSV-Vertrag exportiert Query×URL- und Page-Total-Zeilen getrennt, vereinigt aktuelle und vorherige Perioden und kennzeichnet vollständig verschwundene Rankings explizit für Gap-/Drift-Auswertungen
 

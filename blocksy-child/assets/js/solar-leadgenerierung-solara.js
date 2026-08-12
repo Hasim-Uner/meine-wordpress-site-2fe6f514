@@ -1,6 +1,6 @@
 /* solar-leadgenerierung-solara.js
    SOLARA Landing — B2B Marktcheck im Hero.
-   3-stufige Progressive-Disclosure-Sequenz (Vertrieb → Akquisekosten → Befund-Daten).
+   5-stufige Progressive-Disclosure-Sequenz (vier Fit-Fragen → Befund-Daten).
    Submit → /wp-json/nexus/v1/audit-request (intake_variant=energy_systems).
    Success-Screen mit Cal.com-Direktbuchung + händischer SLA-Antwort.
    Vanilla JS. Keine Dependencies. Touch- & Keyboard-accessible. */
@@ -11,41 +11,69 @@
   var CFG = (window.NexusMarktcheckConfig && typeof window.NexusMarktcheckConfig === 'object')
     ? window.NexusMarktcheckConfig : {};
 
-  // ── Progressive Disclosure: 3-stufige B2B-Sequenz ─────────────
-  // Step 1 — Klickbasierter Einstieg ohne Datenrisiko.
-  // Step 2 — Problemverankerung über Akquisekosten (Sunk-Cost-Trigger).
-  // Step 3 — Erst danach freigeschaltete Business-Datenfelder.
+  // ── Progressive Disclosure: vier Fit-Fragen + Kontakt ─────────
+  // Die Werte entsprechen exakt den serverseitigen Enums. Es werden keine
+  // CPL-, Leadvolumen- oder Engpasswerte aus anderen Antworten abgeleitet.
   var QUIZ_STEPS = [
     {
-      key: 'sales_team_size',
-      label: 'Vertrieb',
-      title: 'Wer verkauft bei Ihnen?',
-      hint: 'Das System richtet sich an Betriebe mit eigenem Vertrieb — die Antwort entscheidet über den Fit.',
+      key: 'solution_focus',
+      label: 'Angebot',
+      title: 'Welche Lösung verkaufen Sie?',
+      hint: 'Damit der Marktcheck Angebotslogik, Zielgebiet und typische Kaufentscheidung passend einordnet.',
       kind: 'pick',
       options: [
-        { v: 'none',           t: 'Die Geschäftsführung verkauft selbst', s: 'Noch kein eigenes Vertriebsteam — Abschluss ist Chefsache.' },
-        { v: 'one',            t: '1 Person im Vertrieb',                 s: 'Eine zentrale Anlaufstelle, klare Verantwortung.' },
-        { v: 'two_to_five',    t: '2–5 Personen im Vertrieb',             s: 'Vertriebsteam vorhanden, Pipeline-Routing geregelt.' },
-        { v: 'more_than_five', t: 'Mehr als 5 Personen im Vertrieb',      s: 'Strukturierter Vertrieb mit eigener Pipeline-Logik.' }
+        { v: 'photovoltaik',       t: 'Photovoltaik',      s: 'PV-Anlagen, Planung oder Vertrieb.' },
+        { v: 'waermepumpen',       t: 'Wärmepumpen',       s: 'Wärmepumpen-Angebote mit regionalem Beratungsbedarf.' },
+        { v: 'speicher',           t: 'Speicher',          s: 'Speicherlösungen mit erklärungsbedürftiger Kaufentscheidung.' },
+        { v: 'mehrere_loesungen',  t: 'Mehrere Lösungen',  s: 'PV, Wärmepumpe, Speicher oder ergänzende Leistungen.' },
+        { v: 'sonstiges',          t: 'Sonstiges',         s: 'Angrenzende Energielösungen oder ein hybrides Angebot.' }
       ]
     },
     {
-      key: 'portal_margin_loss',
-      label: 'Akquisekosten',
-      title: 'Was kostet Sie Akquise heute?',
-      hint: 'Portal-Leads, Google Ads, Agentur — alles zusammengenommen, grob geschätzt. Es geht um den Druck auf Ihre Marge.',
+      key: 'business_fit',
+      label: 'Projektgeschäft',
+      title: 'Welche Projekte bilden Ihr Kerngeschäft?',
+      hint: 'Projektwert und Verkaufsmodell entscheiden, ob ein eigenes Anfragesystem wirtschaftlich passt.',
       kind: 'pick',
       options: [
-        { v: 'low',    t: 'Gering',    s: 'Portal-Leads und Werbekosten sind wirtschaftlich noch vertretbar.' },
-        { v: 'medium', t: 'Deutlich',  s: 'CPL und Anfragequalität drücken die Marge in Grenzprojekten.' },
-        { v: 'high',   t: 'Erheblich', s: 'Budget und Vertriebszeit verbrennen in Anfragen, die nicht kaufen.' }
+        { v: 'b2c_high_value_own_sales', t: 'B2C ab ca. 15.000 € mit eigenem Vertrieb', s: 'Privatkundenprojekte mit eigenem Verkaufsprozess.' },
+        { v: 'b2b_high_value_own_sales', t: 'B2B ab ca. 50.000 € mit eigenem Vertrieb', s: 'Gewerbeprojekte mit höherem Beratungs- und Abschlusswert.' },
+        { v: 'founder_led_regional',     t: 'Klein, aber vertriebsstark',                s: 'Die Geschäftsführung verkauft selbst; Region und Marge stimmen.' },
+        { v: 'resale_or_short_term',     t: 'Vermittlung oder kurzfristiger Lead-Bedarf', s: 'Sie suchen eher kurzfristige Kontakte als ein eigenes Anfrage-Asset.' }
+      ]
+    },
+    {
+      key: 'sales_team_size',
+      label: 'Vertrieb',
+      title: 'Wer übernimmt den Verkauf?',
+      hint: 'Ein eigener Anfrageweg braucht eine klare Zuständigkeit für Qualifizierung, Rückruf und Abschluss.',
+      kind: 'pick',
+      options: [
+        { v: 'none',           t: 'Die Geschäftsführung verkauft selbst', s: 'Der Inhaber oder die Geschäftsführung übernimmt den Abschluss.' },
+        { v: 'one',            t: '1 Person im Vertrieb',                  s: 'Eine zentrale Anlaufstelle mit klarer Verantwortung.' },
+        { v: 'two_to_five',    t: '2–5 Personen im Vertrieb',              s: 'Ein Team mit geregelter Übergabe und Nachverfolgung.' },
+        { v: 'more_than_five', t: 'Mehr als 5 Personen im Vertrieb',       s: 'Ein strukturierter Vertrieb mit eigener Pipeline-Logik.' },
+        { v: 'no_owner',       t: 'Aktuell übernimmt das niemand verbindlich', s: 'Anfragen haben noch keine feste Vertriebsverantwortung.' }
+      ]
+    },
+    {
+      key: 'project_timing',
+      label: 'Zeitrahmen',
+      title: 'Wann soll sich etwas verändern?',
+      hint: 'Der Zeitrahmen hilft, zwischen akuter Priorität und erster Orientierung zu unterscheiden.',
+      kind: 'pick',
+      options: [
+        { v: 'sofort',                  t: 'Sofort',                    s: 'Es besteht akuter Handlungsdruck oder laufender Vertriebsbedarf.' },
+        { v: 'naechste_4_wochen',       t: 'In den nächsten 4 Wochen',  s: 'Das Thema ist konkret und soll jetzt sauber priorisiert werden.' },
+        { v: 'eins_bis_drei_monate',    t: 'In 1–3 Monaten',            s: 'Die Entscheidung steht bevor, braucht aber noch Vorbereitung.' },
+        { v: 'erstmal_orientierung',    t: 'Erstmal Orientierung',      s: 'Zuerst soll klar werden, wo heute Nachfrage verloren geht.' }
       ]
     },
     {
       key: 'contact',
       label: 'Marktcheck',
       title: 'Wohin darf der Befund?',
-      hint: 'Fünf Angaben — mehr braucht der Marktcheck nicht. Die Firmen-PLZ dient der Regions-Verfügbarkeitsprüfung.',
+      hint: 'Fünf geschäftliche Angaben — die Firmen-PLZ dient ausschließlich der Regions-Verfügbarkeitsprüfung.',
       kind: 'form'
     }
   ];
@@ -117,20 +145,47 @@
 
     var landingUrl = normalizeInternalAttributionUrl(window.location.href);
     var referrerUrl = '';
+    var adsSource = '';
+    var adsKeyword = '';
 
     if (document.referrer) {
       try {
-        referrerUrl = String(new URL(document.referrer, window.location.origin)).split('#')[0];
+        var referrer = new URL(document.referrer, window.location.origin);
+        referrerUrl = referrer.origin + (referrer.pathname || '/');
       } catch (error) {
         referrerUrl = '';
       }
+    }
+
+    try {
+      var searchParams = new URLSearchParams(window.location.search || '');
+      adsSource = (searchParams.get('utm_source') || '').trim().slice(0, 120);
+      adsKeyword = (searchParams.get('utm_term') || searchParams.get('keyword') || '').trim().slice(0, 180);
+
+      // Click IDs bleiben bewusst draußen. Sie liefern nur ein grobes
+      // Quellensignal, niemals die rohe personenbeziehbare Kennung.
+      if (!adsSource && searchParams.get('gclid')) adsSource = 'google-ads';
+      if (!adsSource && searchParams.get('fbclid')) adsSource = 'meta-ads';
+
+      if (typeof window.sessionStorage !== 'undefined') {
+        if (adsSource) window.sessionStorage.setItem('nexus_ads_source', adsSource);
+        else adsSource = (window.sessionStorage.getItem('nexus_ads_source') || '').slice(0, 120);
+
+        if (adsKeyword) window.sessionStorage.setItem('nexus_ads_keyword', adsKeyword);
+        else adsKeyword = (window.sessionStorage.getItem('nexus_ads_keyword') || '').slice(0, 180);
+      }
+    } catch (error) {
+      adsSource = '';
+      adsKeyword = '';
     }
 
     return {
       landing_page_url: landingUrl,
       entry_page_url: landingUrl,
       previous_internal_url: '',
-      referrer_url: referrerUrl
+      referrer_url: referrerUrl,
+      ads_source: adsSource,
+      ads_keyword: adsKeyword
     };
   }
 
@@ -139,6 +194,7 @@
     var state = {
       step: 0,
       answers: {},
+      touched: {},
       submitting: false,
       submitError: null,
       done: false,
@@ -146,16 +202,27 @@
     };
 
     var totalSteps = QUIZ_STEPS.length;
-
-    function setState(patch) {
-      Object.keys(patch).forEach(function (k) { state[k] = patch[k]; });
-      render();
-    }
+    var view;
+    var liveRegion;
 
     function setAnswer(k, v) {
-      var answers = Object.assign({}, state.answers);
-      answers[k] = v;
-      state.answers = answers;
+      state.answers[k] = v;
+    }
+
+    function announce(message) {
+      if (!liveRegion) return;
+      liveRegion.textContent = '';
+      window.requestAnimationFrame(function () {
+        liveRegion.textContent = message;
+      });
+    }
+
+    function focusCurrentHeading() {
+      window.setTimeout(function () {
+        var heading = mount.querySelector('#sol-quiz-title');
+        if (!heading) return;
+        try { heading.focus({ preventScroll: true }); } catch (e) { heading.focus(); }
+      }, 0);
     }
 
     function validateContact() {
@@ -169,34 +236,79 @@
       if (a.email && /^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(a.email)) {
         errs.email = 'Bitte nutzen Sie Ihre geschäftliche E-Mail-Adresse (Firmen-Domain) — so kann ich Betrieb und Region eindeutig zuordnen. Keine eigene Domain? Schreiben Sie direkt an hasim@hasimuener.de.';
       }
-      // 4-5 Stellen: DE hat fünfstellige PLZ, AT und CH vierstellige. Die Seite
-      // verspricht DACH — eine reine DE-Regel sperrt AT/CH komplett aus.
       if (!a.postal_code || !/^[0-9]{4,5}$/.test(String(a.postal_code).trim())) errs.postal_code = 'Bitte die Firmen-PLZ angeben — vierstellig (AT, CH) oder fünfstellig (DE).';
       if (!a.consent_privacy) errs.consent_privacy = 'Bitte den Datenschutzhinweis bestätigen.';
       return errs;
+    }
+
+    function setFieldError(name, message) {
+      var input = mount.querySelector('[name="' + name + '"]');
+      var error = mount.querySelector('#sol-quiz-' + name.replace(/_/g, '-') + '-error');
+      if (!input || !error) return;
+
+      var field = input.closest('.sol-quiz-field, .sol-quiz-consent-wrap');
+      var invalid = !!message;
+      input.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+      if (field) field.classList.toggle('is-err', invalid);
+      error.textContent = message || '';
+      error.hidden = !invalid;
+    }
+
+    function showContactErrors(errors) {
+      [ 'company', 'name', 'position', 'email', 'postal_code', 'consent_privacy' ].forEach(function (name) {
+        setFieldError(name, errors[name] || '');
+      });
+    }
+
+    function showSubmitError(message) {
+      var error = mount.querySelector('#sol-quiz-submit-error');
+      if (!error) return;
+      error.textContent = message || '';
+      error.hidden = !message;
+    }
+
+    function setSubmitting(submitting) {
+      state.submitting = submitting;
+      var button = mount.querySelector('.sol-quiz-submit');
+      if (!button) return;
+      button.disabled = submitting;
+      button.classList.toggle('is-loading', submitting);
+      button.setAttribute('aria-busy', submitting ? 'true' : 'false');
+      var label = button.querySelector('.sol-quiz-submit-label');
+      if (label) label.textContent = submitting ? 'Wird gesendet …' : 'Fit-Befund anfordern';
     }
 
     function submit() {
       if (state.submitting) return;
       var errs = validateContact();
       if (Object.keys(errs).length) {
-        state.touched = Object.assign({}, state.touched || {}, { name: true, company: true, position: true, email: true, postal_code: true, consent_privacy: true });
-        render();
-        // Focus and scroll to the first invalid field so the user knows what to fix.
+        state.touched = { name: true, company: true, position: true, email: true, postal_code: true, consent_privacy: true };
+        showContactErrors(errs);
+        showSubmitError('');
+        announce('Bitte prüfen Sie die markierten Pflichtfelder.');
         var firstKey = Object.keys(errs)[0];
         setTimeout(function () {
           var input = mount.querySelector('[name="' + firstKey + '"]');
           if (!input) return;
-          var wrap = input.closest('.sol-quiz-field, .sol-quiz-consent') || input;
+          var wrap = input.closest('.sol-quiz-field, .sol-quiz-consent-wrap') || input;
           if (typeof wrap.scrollIntoView === 'function') {
-            wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            var reduced = false;
+            try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+            if (reduced) {
+              wrap.scrollIntoView({ behavior: 'auto', block: 'center' });
+            } else {
+              wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
           }
           try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); }
         }, 0);
         return;
       }
 
-      setState({ submitting: true, submitError: null });
+      showContactErrors({});
+      showSubmitError('');
+      setSubmitting(true);
+      announce('Der Marktcheck wird gesendet.');
 
       var endpoint = CFG.restEndpoint || '/wp-json/nexus/v1/audit-request';
       var attribution = getLeadAttributionPayload();
@@ -204,12 +316,10 @@
         contract_version:   CFG.contractVersion || '',
         intake_variant:      'energy_systems',
         audit_type:          'b2b_system_intake',
+        solution_focus:      state.answers.solution_focus || '',
+        business_fit:        state.answers.business_fit || '',
         sales_team_size:     state.answers.sales_team_size || '',
-        portal_margin_loss:  state.answers.portal_margin_loss || '',
-        portal_streuverlust: state.answers.portal_margin_loss || '',
-        lead_volume:         mapSalesTeamToLeadVolume(state.answers.sales_team_size),
-        cpl_range:           mapMarginLossToCplRange(state.answers.portal_margin_loss),
-        primary_bottleneck:  mapMarginLossToBottleneck(state.answers.portal_margin_loss),
+        project_timing:      state.answers.project_timing || '',
         name:                state.answers.name || '',
         company:             state.answers.company || '',
         position:            state.answers.position || '',
@@ -234,40 +344,66 @@
       }).then(function (res) {
         return res.json().then(function (json) { return { ok: res.ok, json: json }; }).catch(function () { return { ok: res.ok, json: {} }; });
       }).then(function (r) {
+        if (r.ok && r.json && r.json.ok && r.json.status === 'ignored') {
+          setSubmitting(false);
+          showSubmitError('Die Anfrage konnte nicht verifiziert werden. Bitte laden Sie die Seite neu und versuchen Sie es erneut.');
+          announce('Die Anfrage konnte nicht verifiziert werden. Es wurde kein Marktcheck angelegt.');
+          track('system_intake_submit_ignored', { funnel_stage: 'submit_ignored' });
+          return;
+        }
+
         if (r.ok && r.json && r.json.ok) {
           var qualification = (r.json.qualification && typeof r.json.qualification === 'object') ? r.json.qualification : null;
           track('system_intake_submit_success', { funnel_stage: 'lead_captured' });
           if (qualification && qualification.status) {
             track('system_intake_qualification', {
-              funnel_stage: 'lead_qualified',
+              funnel_stage: qualification.status === 'qualified' ? 'lead_qualified' : 'lead_nurture',
               qualification_status: qualification.status,
               qualification_reason: qualification.reason || ''
             });
           }
-          setState({ submitting: false, done: true, submitError: null, qualification: qualification });
+          state.submitting = false;
+          state.done = true;
+          state.submitError = null;
+          state.qualification = qualification;
+          renderSuccessView();
         } else {
           var msg = (r.json && (r.json.message || r.json.error || r.json.code))
             ? (typeof r.json.message === 'string' ? r.json.message : 'Bitte Eingaben prüfen.')
             : 'Die Anfrage konnte gerade nicht gesendet werden. Bitte erneut versuchen.';
           track('system_intake_submit_error', { funnel_stage: 'submit_error' });
-          setState({ submitting: false, submitError: msg });
+          setSubmitting(false);
+          showSubmitError(msg);
+          announce(msg);
+
+          var field = r.json && r.json.error_details && r.json.error_details.field;
+          if (field && mount.querySelector('[name="' + field + '"]')) {
+            setFieldError(field, msg);
+            var invalidInput = mount.querySelector('[name="' + field + '"]');
+            try { invalidInput.focus({ preventScroll: true }); } catch (e) { invalidInput.focus(); }
+          }
         }
       }).catch(function () {
         track('system_intake_submit_error', { funnel_stage: 'submit_network' });
-        setState({ submitting: false, submitError: 'Netzwerkfehler. Bitte erneut versuchen.' });
+        setSubmitting(false);
+        showSubmitError('Netzwerkfehler. Bitte erneut versuchen.');
+        announce('Netzwerkfehler. Bitte versuchen Sie es erneut.');
       });
     }
 
     function goNext() {
-      if (state.step < totalSteps - 1) {
-        setState({ step: state.step + 1 });
-        track('system_intake_step_next', { step: state.step + 1 });
-      }
+      var current = QUIZ_STEPS[state.step];
+      if (!current || current.kind !== 'pick' || !state.answers[current.key]) return;
+      if (state.step >= totalSteps - 1) return;
+      state.step += 1;
+      renderStep(true);
+      track('system_intake_step_next', { step: state.step + 1 });
     }
 
     function goBack() {
       if (state.step > 0) {
-        setState({ step: Math.max(0, state.step - 1) });
+        state.step = Math.max(0, state.step - 1);
+        renderStep(true);
         track('system_intake_step_back', { step: state.step });
       }
     }
@@ -275,14 +411,18 @@
     function pick(key, value) {
       setAnswer(key, value);
       track('system_intake_pick', { step: state.step + 1, field: key, value: value });
-      // auto-advance — long enough for the user to register the chosen option
-      setTimeout(function () {
-        if (state.step < totalSteps - 1) {
-          setState({ step: state.step + 1 });
-        } else {
-          render();
-        }
-      }, 600);
+
+      mount.querySelectorAll('.sol-quiz-opt').forEach(function (option) {
+        var input = option.querySelector('input[type="radio"]');
+        option.classList.toggle('is-sel', !!input && input.checked);
+      });
+
+      var next = mount.querySelector('.sol-quiz-next');
+      if (next) {
+        next.disabled = false;
+        next.classList.remove('is-dis');
+        next.setAttribute('aria-disabled', 'false');
+      }
     }
 
     function reset() {
@@ -293,25 +433,8 @@
       state.done = false;
       state.qualification = null;
       state.touched = {};
-      render();
+      renderStep(true);
       track('system_intake_reset');
-    }
-
-    function mapSalesTeamToLeadVolume(value) {
-      if (value === 'more_than_five') return '51_bis_120';
-      if (value === 'two_to_five') return '20_bis_50';
-      return 'unter_20';
-    }
-
-    function mapMarginLossToCplRange(value) {
-      if (value === 'high') return 'ueber_300';
-      if (value === 'medium') return '151_bis_300';
-      return '80_bis_150';
-    }
-
-    function mapMarginLossToBottleneck(value) {
-      if (value === 'low') return 'tracking_klarheit';
-      return 'lead_qualitaet';
     }
 
     // Pre-fill the Cal.com booking URL with the data the buyer just typed
@@ -338,41 +461,28 @@
 
     // ── render helpers ────────────────────────────────────────
     function renderProgress() {
-      var pct = Math.round((state.step / (totalSteps - 1)) * 100);
+      var pct = Math.round(((state.step + 1) / totalSteps) * 100);
       var dotsTrack = el('div', { className: 'sol-quiz-dots', 'aria-hidden': 'true' });
       for (var i = 0; i < totalSteps; i++) {
         var cls = 'sol-quiz-dot';
         if (i === state.step) cls += ' is-active';
         else if (i < state.step) cls += ' is-done';
-        var dotIdx = i; // capture
-        var dot = el('button', {
-          type: 'button',
-          className: cls,
-          // nicht fokussierbar: der Dots-Track ist aria-hidden (dekorativer
-          // Fortschritt); Tastatur-Rücknavigation läuft über „← Zurück".
-          // Verhindert aria-hidden-focus, sobald erledigte Schritte erscheinen.
-          tabindex: '-1',
-          'aria-label': 'Zu Schritt ' + (i + 1),
-          onClick: (function (idx) {
-            return function () {
-              if (idx < state.step) {
-                state.step = idx;
-                render();
-                track('system_intake_dot_jump', { to_step: idx + 1 });
-              }
-            };
-          })(dotIdx)
-        }, [
-          i < state.step ? el('span', { className: 'sol-quiz-dot-check', html: '✓' }) : null
-        ]);
-        dotsTrack.appendChild(dot);
+        dotsTrack.appendChild(el('span', { className: cls }));
       }
       return el('div', { className: 'sol-quiz-progress' }, [
         el('div', { className: 'sol-quiz-progress-meta' }, [
           el('span', null, 'Schritt ' + String(state.step + 1).padStart(2, '0') + ' / ' + String(totalSteps).padStart(2, '0')),
           el('span', null, pct + ' %')
         ]),
-        el('div', { className: 'sol-quiz-progress-track' }, [
+        el('div', {
+          className: 'sol-quiz-progress-track',
+          role: 'progressbar',
+          'aria-label': 'Fortschritt im Marktcheck',
+          'aria-valuemin': '1',
+          'aria-valuemax': String(totalSteps),
+          'aria-valuenow': String(state.step + 1),
+          'aria-valuetext': 'Schritt ' + (state.step + 1) + ' von ' + totalSteps
+        }, [
           el('div', { className: 'sol-quiz-progress-fill', style: 'width:' + pct + '%' }, [
             el('span', { className: 'sol-quiz-progress-shimmer', 'aria-hidden': 'true' })
           ])
@@ -382,60 +492,74 @@
     }
 
     function renderPickStep(step) {
-      var picks = el('div', { className: 'sol-quiz-options', role: 'radiogroup', 'aria-label': step.title });
+      var picks = el('fieldset', {
+        className: 'sol-quiz-options',
+        'aria-describedby': 'sol-quiz-hint'
+      });
+      picks.appendChild(el('legend', { className: 'sol-sr' }, step.title));
+
       step.options.forEach(function (o, i) {
         var sel = state.answers[step.key] === o.v;
-        var children = [];
-        children.push(el('span', { className: 'sol-quiz-opt-bullet', 'aria-hidden': 'true' }, [
-          el('span', { className: 'sol-quiz-opt-bullet-dot' })
-        ]));
-        if (o.i) {
-          children.push(el('span', { className: 'sol-quiz-opt-icon', 'aria-hidden': 'true' }, o.i));
-        }
-        children.push(el('span', { className: 'sol-quiz-opt-body' }, [
+        var id = 'sol-quiz-' + step.key.replace(/_/g, '-') + '-' + i;
+        var input = el('input', {
+          id: id,
+          className: 'sol-quiz-opt-input',
+          type: 'radio',
+          name: step.key,
+          value: o.v,
+          required: true,
+          checked: sel ? true : null,
+          onChange: function (event) {
+            if (event.target.checked) pick(step.key, o.v);
+          }
+        });
+
+        var option = el('label', {
+          className: 'sol-quiz-opt' + (sel ? ' is-sel' : ''),
+          for: id,
+          style: '--sol-opt-delay:' + (i * 60) + 'ms',
+          dataset: { trackAction: 'marketcheck_answer_select', trackCategory: 'engagement', trackSection: 'hero_intake', trackIntent: 'intake_step_' + (state.step + 1) }
+        }, [
+          input,
+          el('span', { className: 'sol-quiz-opt-body' }, [
           el('span', { className: 'sol-quiz-opt-t' }, o.t),
           o.s ? el('span', { className: 'sol-quiz-opt-s' }, o.s) : null
-        ]));
-        children.push(el('span', { className: 'sol-quiz-opt-idx' }, '0' + (i + 1)));
-        children.push(el('span', { className: 'sol-quiz-opt-arrow', 'aria-hidden': 'true', html: ARROW_SVG }));
-        var btn = el('button', {
-          type: 'button',
-          className: 'sol-quiz-opt' + (sel ? ' is-sel' : ''),
-          role: 'radio',
-          'aria-checked': sel ? 'true' : 'false',
-          style: '--sol-opt-delay:' + (i * 60) + 'ms',
-          dataset: { trackAction: 'submit_solar_intake', trackCategory: 'lead_gen', trackSection: 'hero_intake', trackIntent: 'intake_step_' + (state.step + 1) },
-          onClick: function () { pick(step.key, o.v); }
-        }, children);
-        picks.appendChild(btn);
+          ]),
+          el('span', { className: 'sol-quiz-opt-idx', 'aria-hidden': 'true' }, String(i + 1).padStart(2, '0')),
+          el('span', { className: 'sol-quiz-opt-arrow', 'aria-hidden': 'true', html: ARROW_SVG })
+        ]);
+        picks.appendChild(option);
       });
       return picks;
     }
 
     function renderField(opts) {
       var a = state.answers;
-      var t = state.touched || {};
       var v = a[opts.k] || '';
-      var errMsg = (t[opts.k] && opts.validator) ? opts.validator(v) : null;
-      var wrap = el('label', { className: 'sol-quiz-field' + (opts.full ? ' sol-quiz-field--full' : '') + (errMsg ? ' is-err' : '') }, [
-        el('span', { className: 'sol-quiz-field-lbl' }, [
+      var id = 'sol-quiz-' + opts.k.replace(/_/g, '-');
+      var errorId = id + '-error';
+      var wrap = el('div', { className: 'sol-quiz-field' + (opts.full ? ' sol-quiz-field--full' : '') }, [
+        el('label', { className: 'sol-quiz-field-lbl', for: id }, [
           opts.t,
-          opts.req ? el('span', { className: 'sol-quiz-field-lbl-req' }, ' *') : null
+          opts.req ? el('span', { className: 'sol-quiz-field-lbl-req', 'aria-hidden': 'true' }, ' *') : null
         ])
       ]);
 
       var input;
       if (opts.kind === 'select') {
         input = el('select', {
+          id: id,
           name: opts.k,
           autocomplete: opts.ac || 'off',
-          'aria-invalid': errMsg ? 'true' : 'false',
+          required: opts.req ? true : null,
+          'aria-required': opts.req ? 'true' : null,
+          'aria-invalid': 'false',
+          'aria-describedby': errorId,
+          'aria-errormessage': errorId,
           onChange: function (e) {
             setAnswer(opts.k, e.target.value);
-            var touched = Object.assign({}, state.touched || {});
-            touched[opts.k] = true;
-            state.touched = touched;
-            render();
+            state.touched[opts.k] = true;
+            setFieldError(opts.k, opts.validator ? opts.validator(e.target.value) : '');
           }
         });
         (opts.options || []).forEach(function (o) {
@@ -446,6 +570,7 @@
         });
       } else {
         input = el('input', {
+          id: id,
           type: opts.type || 'text',
           value: v,
           placeholder: opts.ph || '',
@@ -453,18 +578,30 @@
           inputmode: opts.im || null,
           maxlength: opts.maxlength || null,
           name: opts.k,
-          onInput: function (e) { setAnswer(opts.k, e.target.value); },
-          onBlur: function () {
-            var touched = Object.assign({}, state.touched || {});
-            touched[opts.k] = true;
-            state.touched = touched;
-            render();
+          required: opts.req ? true : null,
+          'aria-required': opts.req ? 'true' : null,
+          'aria-invalid': 'false',
+          'aria-describedby': errorId,
+          'aria-errormessage': errorId,
+          onInput: function (e) {
+            setAnswer(opts.k, e.target.value);
+            if (state.touched[opts.k]) setFieldError(opts.k, opts.validator ? opts.validator(e.target.value) : '');
+          },
+          onBlur: function (e) {
+            state.touched[opts.k] = true;
+            setFieldError(opts.k, opts.validator ? opts.validator(e.target.value) : '');
           }
         });
       }
 
       wrap.appendChild(input);
-      if (errMsg) wrap.appendChild(el('span', { className: 'sol-quiz-field-err' }, errMsg));
+      wrap.appendChild(el('span', {
+        id: errorId,
+        className: 'sol-quiz-field-err',
+        role: 'status',
+        'aria-live': 'polite',
+        hidden: true
+      }));
       return wrap;
     }
 
@@ -472,14 +609,14 @@
       var form = el('form', {
         className: 'sol-quiz-form',
         novalidate: 'novalidate',
-        dataset: { trackAction: 'submit_solar_intake', trackCategory: 'lead_gen', trackSection: 'hero_intake' },
+        dataset: { trackAction: 'marketcheck_contact_form', trackCategory: 'engagement', trackSection: 'hero_intake' },
         onSubmit: function (e) { e.preventDefault(); submit(); }
       });
 
       var rationale = el('div', { className: 'sol-quiz-rationale', role: 'note' }, [
         el('p', { className: 'sol-quiz-rationale-h' }, 'Daten-Integrität · Letzter Schritt des Marktchecks'),
         el('p', { className: 'sol-quiz-rationale-b' },
-          'Sie haben Vertrieb und Akquisekosten skizziert — jetzt brauche ich die Firmen-Eckdaten, um Domain, Region und Fit persönlich-händisch zu prüfen und den Befund an den richtigen Entscheider zu senden.')
+          'Sie haben Angebot, Projektgeschäft, Vertrieb und Zeitrahmen eingeordnet. Jetzt brauche ich die Firmen-Eckdaten, um Region und Fit persönlich-händisch zu prüfen und den Befund an den richtigen Entscheider zu senden.')
       ]);
       form.appendChild(rationale);
 
@@ -523,42 +660,50 @@
       form.appendChild(hp);
 
       // Consent
-      var consentTouched = !!(state.touched || {}).consent_privacy;
-      var consentInvalid = consentTouched && !state.answers.consent_privacy;
-      var consentLbl = el('label', { className: 'sol-quiz-consent' + (consentInvalid ? ' is-err' : '') });
+      var consentErrorId = 'sol-quiz-consent-privacy-error';
+      var consentWrap = el('div', { className: 'sol-quiz-consent-wrap' });
+      var consentLbl = el('label', { className: 'sol-quiz-consent', for: 'sol-quiz-consent-privacy' });
       var consentInput = el('input', {
+        id: 'sol-quiz-consent-privacy',
         type: 'checkbox',
         name: 'consent_privacy',
+        required: true,
+        'aria-required': 'true',
         checked: state.answers.consent_privacy ? 'checked' : null,
-        'aria-invalid': consentInvalid ? 'true' : 'false',
+        'aria-invalid': 'false',
+        'aria-describedby': consentErrorId,
+        'aria-errormessage': consentErrorId,
         onChange: function (e) {
           setAnswer('consent_privacy', e.target.checked ? 'accepted' : '');
-          var touched = Object.assign({}, state.touched || {});
-          touched.consent_privacy = true;
-          state.touched = touched;
-          render();
+          state.touched.consent_privacy = true;
+          setFieldError('consent_privacy', e.target.checked ? '' : 'Bitte den Datenschutzhinweis bestätigen, um den Marktcheck zu starten.');
         }
       });
       consentLbl.appendChild(consentInput);
       var consentText = el('span', { html: 'Ich akzeptiere die <a href="' + (CFG.privacyUrl || '/datenschutz/') + '" target="_blank" rel="noopener">Datenschutzhinweise</a> und möchte zu meiner Anfrage kontaktiert werden.' });
       consentLbl.appendChild(consentText);
-      form.appendChild(consentLbl);
-      if (consentInvalid) {
-        form.appendChild(el('span', { className: 'sol-quiz-field-err', role: 'alert' }, 'Bitte den Datenschutzhinweis bestätigen, um den Marktcheck zu starten.'));
-      }
+      consentWrap.appendChild(consentLbl);
+      consentWrap.appendChild(el('span', {
+        id: consentErrorId,
+        className: 'sol-quiz-field-err',
+        role: 'status',
+        'aria-live': 'polite',
+        hidden: true
+      }));
+      form.appendChild(consentWrap);
 
       // Error banner
-      if (state.submitError) {
-        form.appendChild(el('div', { className: 'sol-quiz-error', role: 'alert' }, state.submitError));
-      }
-
-      var errs = validateContact();
-      var canSubmit = Object.keys(errs).length === 0 && !state.submitting;
+      form.appendChild(el('div', {
+        id: 'sol-quiz-submit-error',
+        className: 'sol-quiz-error',
+        role: 'alert',
+        hidden: true
+      }));
 
       var submitBtn = el('button', {
         type: 'submit',
-        className: 'sol-quiz-submit' + (canSubmit ? '' : ' is-dis') + (state.submitting ? ' is-loading' : ''),
-        'aria-disabled': canSubmit ? 'false' : 'true',
+        className: 'sol-quiz-submit',
+        'aria-busy': 'false',
         dataset: {
           trackAction: 'submit_solar_intake',
           trackCategory: 'lead_gen',
@@ -566,7 +711,7 @@
           trackFunnelStage: 'lead_capture_submit'
         }
       }, [
-        el('span', null, state.submitting ? 'Wird gesendet …' : 'Befund in 48 h anfordern'),
+        el('span', { className: 'sol-quiz-submit-label' }, 'Fit-Befund anfordern'),
         el('span', { className: 'sol-quiz-submit-arrow', 'aria-hidden': 'true', html: ARROW_SVG })
       ]);
       form.appendChild(submitBtn);
@@ -579,10 +724,10 @@
     function renderSuccess() {
       var first = (state.answers.name || '').trim().split(' ')[0];
       var fallbackHeadline = 'Danke' + (first ? ', ' + first : '') + '.';
-      var qualification = state.qualification || { status: 'qualified', reason: 'sweet_spot' };
+      var qualification = state.qualification || { status: 'nurture', reason: 'unverified' };
       var isNurture = qualification.status === 'nurture';
       var headline = qualification.headline || fallbackHeadline;
-      var message = qualification.message || 'Ihr Marktcheck ist eingegangen. Ich prüfe Domain, Region und Fit persönlich-händisch und sende den Befund in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, an Ihre geschäftliche E-Mail.';
+      var message = qualification.message || 'Ihr Marktcheck ist eingegangen. Ich prüfe Domain, Region und Fit persönlich-händisch und sende den Befund spätestens 2 Werktage nach Eingang an Ihre geschäftliche E-Mail.';
       var ticketId = qualification.ticket_id || '';
       var deadlineHuman = qualification.response_deadline_human || '';
       var proof = (!isNurture && qualification.proof && typeof qualification.proof === 'object') ? qualification.proof : null;
@@ -640,7 +785,7 @@
 
       var children = [
         el('div', { className: 'sol-quiz-success-icon', 'aria-hidden': 'true', html: CHECK_SVG }),
-        el('h3', { className: 'sol-quiz-success-h' }, headline)
+        el('h2', { id: 'sol-quiz-title', className: 'sol-quiz-success-h', tabindex: '-1' }, headline)
       ];
 
       if (ticketId) {
@@ -678,24 +823,28 @@
       return el('div', { className: 'sol-quiz-success' + (isNurture ? ' is-nurture' : '') }, children);
     }
 
-    function render() {
-      // clear
+    function renderShell() {
       while (mount.firstChild) mount.removeChild(mount.firstChild);
-
-      // header card
-      var head = el('div', { className: 'sol-cta-head' }, [
+      mount.appendChild(el('div', { className: 'sol-cta-head' }, [
         el('span', { className: 'sol-cta-tag sol-mono' }, [
           el('span', { className: 'sol-cta-tag-dot', 'aria-hidden': 'true' }),
-          'Marktcheck · Fit geprüft · 48-h-Befund'
+          'Marktcheck · Fit geprüft · spätestens 2 Werktage'
         ]),
         el('span', { className: 'sol-cta-head-right sol-mono' }, 'Fit-Check')
-      ]);
-      mount.appendChild(head);
+      ]));
+      liveRegion = el('div', {
+        className: 'sol-sr sol-quiz-live',
+        role: 'status',
+        'aria-live': 'polite',
+        'aria-atomic': 'true'
+      });
+      mount.appendChild(liveRegion);
+      view = el('div', { className: 'sol-quiz-view' });
+      mount.appendChild(view);
+    }
 
-      if (state.done) {
-        mount.appendChild(renderSuccess());
-        return;
-      }
+    function renderStep(shouldFocus) {
+      while (view.firstChild) view.removeChild(view.firstChild);
 
       var quiz = el('div', { className: 'sol-quiz' });
       quiz.appendChild(renderProgress());
@@ -703,9 +852,8 @@
       var current = QUIZ_STEPS[state.step];
       var body = el('div', { className: 'sol-quiz-body' }, [
         el('div', { className: 'sol-quiz-label' }, current.label),
-        // h2: schließt direkt an die Hero-h1 an (h3 erzeugte einen Level-Sprung)
-        el('h2', { className: 'sol-quiz-title' }, current.title),
-        el('p', { className: 'sol-quiz-hint' }, current.hint)
+        el('h2', { id: 'sol-quiz-title', className: 'sol-quiz-title', tabindex: '-1' }, current.title),
+        el('p', { id: 'sol-quiz-hint', className: 'sol-quiz-hint' }, current.hint)
       ]);
 
       if (current.kind === 'pick') {
@@ -722,40 +870,46 @@
       var backBtn = el('button', {
         type: 'button',
         className: 'sol-quiz-back' + (canBack ? '' : ' is-dis'),
+        disabled: canBack ? null : true,
         'aria-disabled': canBack ? 'false' : 'true',
-        dataset: { trackAction: 'submit_solar_intake', trackCategory: 'lead_gen', trackSection: 'hero_intake', trackIntent: 'intake_back' },
+        dataset: { trackAction: 'marketcheck_step_back', trackCategory: 'engagement', trackSection: 'hero_intake', trackIntent: 'intake_back' },
         onClick: goBack
       }, '← Zurück');
       nav.appendChild(backBtn);
-
-      var dots = el('div', { className: 'sol-quiz-dots', 'aria-hidden': 'true' });
-      QUIZ_STEPS.forEach(function (_, i) {
-        var cls = 'sol-quiz-dot';
-        if (i === state.step) cls += ' is-cur';
-        else if (i < state.step) cls += ' is-done';
-        dots.appendChild(el('span', { className: cls }));
-      });
-      nav.appendChild(dots);
 
       if (current.kind === 'pick') {
         var canNext = !!state.answers[current.key] && state.step < totalSteps - 1;
         var nextBtn = el('button', {
           type: 'button',
           className: 'sol-quiz-next' + (canNext ? '' : ' is-dis'),
+          disabled: canNext ? null : true,
           'aria-disabled': canNext ? 'false' : 'true',
-          dataset: { trackAction: 'submit_solar_intake', trackCategory: 'lead_gen', trackSection: 'hero_intake', trackIntent: 'intake_next' },
-          onClick: function () { if (canNext) goNext(); }
+          dataset: { trackAction: 'marketcheck_step_next', trackCategory: 'engagement', trackSection: 'hero_intake', trackIntent: 'intake_next' },
+          onClick: goNext
         }, 'Weiter →');
         nav.appendChild(nextBtn);
       } else {
-        nav.appendChild(el('span', { style: 'width:60px;' }));
+        nav.appendChild(el('span', { 'aria-hidden': 'true' }));
       }
 
       quiz.appendChild(nav);
-      mount.appendChild(quiz);
+      view.appendChild(quiz);
+
+      if (shouldFocus) {
+        announce('Schritt ' + (state.step + 1) + ' von ' + totalSteps + ': ' + current.title);
+        focusCurrentHeading();
+      }
     }
 
-    render();
+    function renderSuccessView() {
+      while (view.firstChild) view.removeChild(view.firstChild);
+      view.appendChild(renderSuccess());
+      announce('Ihr Marktcheck wurde übermittelt. ' + (state.qualification && state.qualification.headline ? state.qualification.headline : 'Vielen Dank.'));
+      focusCurrentHeading();
+    }
+
+    renderShell();
+    renderStep(false);
     return { reset: reset };
   }
 
@@ -902,6 +1056,13 @@
     var fired = false;
     var THRESHOLD = 0.20;
 
+    function setVisible(visible) {
+      sticky.classList.toggle('is-visible', visible);
+      sticky.setAttribute('aria-hidden', visible ? 'false' : 'true');
+      if (visible) sticky.removeAttribute('tabindex');
+      else sticky.setAttribute('tabindex', '-1');
+    }
+
     function update() {
       var docH = Math.max(
         document.body.scrollHeight,
@@ -919,25 +1080,57 @@
         intakeVisible = r.top < winH * 0.6 && r.bottom > winH * 0.4;
       }
 
-      if (depth >= THRESHOLD && !intakeVisible) {
+      var shouldShow = window.innerWidth <= 820 && depth >= THRESHOLD && !intakeVisible;
+      if (shouldShow) {
         if (!sticky.classList.contains('is-visible')) {
-          sticky.classList.add('is-visible');
+          setVisible(true);
           if (!fired) {
             fired = true;
             try { track('sticky_cta_visible', { depth: Math.round(depth * 100) }); } catch (e) {}
           }
         }
       } else {
-        sticky.classList.remove('is-visible');
+        setVisible(false);
       }
     }
 
+    setVisible(false);
     update();
     window.addEventListener('scroll',  update, { passive: true });
     window.addEventListener('resize',  update, { passive: true });
   }
 
   function setupScrollAnchor() {
+    var reduced = false;
+    try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+    function focusTarget(target) {
+      var focusNode = target.querySelector('#sol-quiz-title') || target;
+      if (!focusNode.hasAttribute('tabindex')) focusNode.setAttribute('tabindex', '-1');
+      try { focusNode.focus({ preventScroll: true }); } catch (e) { focusNode.focus(); }
+    }
+
+    function activate(hash, updateHistory) {
+      if (!hash || hash.length < 2) return;
+      var target = document.querySelector(hash);
+      if (!target) return;
+
+      if (updateHistory && window.history && typeof window.history.pushState === 'function') {
+        if (window.location.hash !== hash) {
+          window.history.pushState(null, '', window.location.pathname + window.location.search + hash);
+        }
+      }
+
+      var scrollMargin = parseFloat(window.getComputedStyle(target).scrollMarginTop || '0') || 0;
+      var top = target.getBoundingClientRect().top + window.scrollY - scrollMargin;
+      if (reduced) {
+        window.scrollTo({ top: top, behavior: 'auto' });
+      } else {
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
+      focusTarget(target);
+    }
+
     document.querySelectorAll(ROOT_SELECTOR + ' a[href^="#"]').forEach(function (a) {
       a.addEventListener('click', function (e) {
         var hash = a.getAttribute('href');
@@ -945,10 +1138,19 @@
         var target = document.querySelector(hash);
         if (!target) return;
         e.preventDefault();
-        var top = target.getBoundingClientRect().top + window.scrollY - 20;
-        window.scrollTo({ top: top, behavior: 'smooth' });
+        // Der globale Nexus-Ankerhandler darf denselben Klick nicht ein zweites
+        // Mal verarbeiten; dieser Handler pflegt zusätzlich Hash und Fokus.
+        e.stopPropagation();
+        activate(hash, true);
       });
     });
+
+    if (window.location.hash === '#marktcheck') {
+      window.requestAnimationFrame(function () {
+        var target = document.querySelector('#marktcheck');
+        if (target) focusTarget(target);
+      });
+    }
   }
 
   function setupQuiz() {
@@ -973,31 +1175,19 @@
       portal_monthly: '~ 1.080 €',
       portal_leads:   '~ 160',
       portal_total:   '13.000 €',
-      portal_total2:  '13.000 €',
-      own_setup:      '12.000 – 18.000 €',
-      own_monthly:    '~ 50 €',
-      own_total:      '12.600 – 18.600 €',
-      own_total2:     '12.600 – 18.600 €'
+      portal_total2:  '13.000 €'
     },
     24: {
       portal_monthly: '~ 1.080 €',
       portal_leads:   '~ 320',
       portal_total:   '26.000 €',
-      portal_total2:  '26.000 €',
-      own_setup:      '12.000 – 18.000 €',
-      own_monthly:    '~ 50 €',
-      own_total:      '13.200 – 19.200 €',
-      own_total2:     '13.200 – 19.200 €'
+      portal_total2:  '26.000 €'
     },
     36: {
       portal_monthly: '~ 1.080 €',
       portal_leads:   '~ 480',
       portal_total:   '39.000 €',
-      portal_total2:  '39.000 €',
-      own_setup:      '12.000 – 18.000 €',
-      own_monthly:    '~ 50 €',
-      own_total:      '14.160 – 20.160 €',
-      own_total2:     '14.160 – 20.160 €'
+      portal_total2:  '39.000 €'
     }
   };
   var CAPEX_SUFFIX = {
@@ -1024,8 +1214,8 @@
     var mount = document.querySelector(ROOT_SELECTOR + ' [data-sol-calc]');
     if (!mount) return null;
 
-    var setupLow  = parseInt(mount.getAttribute('data-setup-low'), 10)  || 12000;
-    var setupHigh = parseInt(mount.getAttribute('data-setup-high'), 10) || 18000;
+    var setupLow  = parseInt(mount.getAttribute('data-setup-low'), 10)  || 14900;
+    var setupHigh = parseInt(mount.getAttribute('data-setup-high'), 10) || setupLow;
     var hosting   = parseInt(mount.getAttribute('data-hosting'), 10)    || 50;
 
     var leadsInput = mount.querySelector('[data-sol-calc-input="leads"]');
@@ -1042,40 +1232,16 @@
       var portal   = leads * price * months;
       var ownLow   = setupLow + hosting * months;
       var ownHigh  = setupHigh + hosting * months;
-      var diffLow  = portal - ownHigh;
-      var diffHigh = portal - ownLow;
 
       var leadsOut = out('leads');
       var priceOut = out('price');
       var portalOut = out('portal');
       var ownOut = out('own');
-      var verdictOut = out('verdict');
 
       if (leadsOut)  leadsOut.textContent  = String(leads);
       if (priceOut)  priceOut.textContent  = String(price) + ' €';
       if (portalOut) portalOut.textContent = EUR(portal);
-      if (ownOut)    ownOut.textContent    = EUR(ownLow) + ' – ' + EUR(ownHigh);
-      if (!verdictOut) return;
-
-      // Drei ehrliche Fälle. Der dritte ist kein Bug, sondern die
-      // Aussage, die zur Positionierung gehört: bei kleinem Volumen
-      // trägt der Aufbau in diesem Zeitraum noch nicht.
-      if (diffLow > 0) {
-        verdictOut.textContent =
-          'Differenz: ' + EUR(diffLow) + ' bis ' + EUR(diffHigh) +
-          ' — und am Ende gehört Ihnen das System.';
-        mount.setAttribute('data-verdict', 'clear');
-      } else if (diffHigh > 0) {
-        verdictOut.textContent =
-          'Differenz: ' + EUR(Math.abs(diffLow)) + ' Mehrkosten bis ' + EUR(diffHigh) +
-          ' Ersparnis — je nach Aufbauumfang ein Nullsummenspiel. Das Asset bleibt trotzdem bei Ihnen.';
-        mount.setAttribute('data-verdict', 'even');
-      } else {
-        verdictOut.textContent =
-          'Bei diesem Volumen trägt sich der Aufbau über ' + months +
-          ' Monate rechnerisch noch nicht. Dann ist der Marktcheck ehrlicher als ein Angebot.';
-        mount.setAttribute('data-verdict', 'against');
-      }
+      if (ownOut)    ownOut.textContent    = ownLow === ownHigh ? EUR(ownLow) : EUR(ownLow) + ' – ' + EUR(ownHigh);
     }
 
     return { mount: mount, render: render, leadsInput: leadsInput, priceInput: priceInput };
@@ -1099,6 +1265,20 @@
       var data = CAPEX_DATA[tf];
       if (!data) return;
       activeTf = parseInt(tf, 10) || activeTf;
+
+      if (calc) {
+        var setupLow = parseInt(calc.mount.getAttribute('data-setup-low'), 10) || 14900;
+        var setupHigh = parseInt(calc.mount.getAttribute('data-setup-high'), 10) || setupLow;
+        var hosting = parseInt(calc.mount.getAttribute('data-hosting'), 10) || 50;
+        var ownLow = setupLow + hosting * activeTf;
+        var ownHigh = setupHigh + hosting * activeTf;
+        data = Object.assign({}, data, {
+          own_setup: setupLow === setupHigh ? EUR(setupLow) : EUR(setupLow) + ' – ' + EUR(setupHigh),
+          own_monthly: '~ ' + EUR(hosting),
+          own_total: ownLow === ownHigh ? EUR(ownLow) : EUR(ownLow) + ' – ' + EUR(ownHigh),
+          own_total2: ownLow === ownHigh ? EUR(ownLow) : EUR(ownLow) + ' – ' + EUR(ownHigh)
+        });
+      }
       btns.forEach(function (b) {
         var on = String(b.getAttribute('data-sol-capex-tf')) === String(tf);
         b.classList.toggle('is-active', on);
@@ -1167,8 +1347,8 @@
     setupCountUp();
     setupFaq();
     setupStickyCta();
-    setupScrollAnchor();
     setupQuiz();
+    setupScrollAnchor();
     setupCapexPicker();
     setupSectionNavOffset();
   });

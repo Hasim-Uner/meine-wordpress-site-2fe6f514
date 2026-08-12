@@ -953,10 +953,29 @@
             }
 
             try {
+                var searchParams = new URLSearchParams(window.location.search || '');
+                var campaignSource = (searchParams.get('utm_source') || '').trim();
+                var campaignKeyword = (searchParams.get('utm_term') || searchParams.get('keyword') || '').trim();
                 var currentUrl = this.normalizeAttributionUrl(window.location.href);
                 var firstUrl = window.sessionStorage.getItem('nexus_first_internal_url') || '';
                 var lastUrl = window.sessionStorage.getItem('nexus_last_internal_url') || '';
                 var referrerOrigin = '';
+
+                if (!campaignSource && searchParams.get('gclid')) {
+                    campaignSource = 'google-ads';
+                }
+
+                if (!campaignSource && searchParams.get('fbclid')) {
+                    campaignSource = 'meta-ads';
+                }
+
+                if (campaignSource) {
+                    window.sessionStorage.setItem('nexus_ads_source', campaignSource.slice(0, 120));
+                }
+
+                if (campaignKeyword) {
+                    window.sessionStorage.setItem('nexus_ads_keyword', campaignKeyword.slice(0, 180));
+                }
 
                 if (!currentUrl) {
                     return;
@@ -996,12 +1015,15 @@
                 landing_page_url: this.normalizeAttributionUrl(window.location.href),
                 entry_page_url: '',
                 previous_internal_url: '',
-                referrer_url: ''
+                referrer_url: '',
+                ads_source: '',
+                ads_keyword: ''
             };
 
             if (document.referrer) {
                 try {
-                    payload.referrer_url = String(new URL(document.referrer, window.location.origin)).split('#')[0];
+                    var referrer = new URL(document.referrer, window.location.origin);
+                    payload.referrer_url = referrer.origin + (referrer.pathname || '/');
                 } catch (error) {
                     payload.referrer_url = '';
                 }
@@ -1011,9 +1033,13 @@
                 try {
                     payload.entry_page_url = this.normalizeAttributionUrl(window.sessionStorage.getItem('nexus_first_internal_url') || '');
                     payload.previous_internal_url = this.normalizeAttributionUrl(window.sessionStorage.getItem('nexus_previous_internal_url') || '');
+                    payload.ads_source = (window.sessionStorage.getItem('nexus_ads_source') || '').slice(0, 120);
+                    payload.ads_keyword = (window.sessionStorage.getItem('nexus_ads_keyword') || '').slice(0, 180);
                 } catch (error) {
                     payload.entry_page_url = '';
                     payload.previous_internal_url = '';
+                    payload.ads_source = '';
+                    payload.ads_keyword = '';
                 }
             }
 

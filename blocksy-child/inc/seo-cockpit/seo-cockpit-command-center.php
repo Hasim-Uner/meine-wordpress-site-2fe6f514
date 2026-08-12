@@ -399,7 +399,7 @@ function nexus_get_revenue_command_center_lead_rows( $stored_statuses, $limit = 
 		]
 	);
 	$rows  = [];
-	$now   = current_time( 'timestamp' );
+	$now   = current_time( 'timestamp', true );
 
 	foreach ( $posts as $post ) {
 		if ( ! ( $post instanceof WP_Post ) ) {
@@ -437,7 +437,7 @@ function nexus_get_revenue_command_center_lead_rows( $stored_statuses, $limit = 
 			$score += 12;
 		}
 
-		if ( in_array( $qualification, [ 'green', 'yellow' ], true ) ) {
+		if ( in_array( $qualification, [ 'qualified' ], true ) ) {
 			$score += 8;
 		}
 

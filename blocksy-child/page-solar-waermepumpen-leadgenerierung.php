@@ -27,9 +27,6 @@ $cro_url      = $primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#
 $about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
 $seo_url      = $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' );
 $paid_url     = $primary_urls['performance_marketing'] ?? home_url( '/performance-marketing/' );
-$cal_url      = function_exists( 'hu_get_analysis_calcom_base_url' )
-	? hu_get_analysis_calcom_base_url()
-	: 'https://cal.com/hasim-uener/30min?overlayCalendar=true';
 
 // ── E3-Proof-Metriken (Canon) ──────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
@@ -44,13 +41,28 @@ $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_cpl_before_val   = (int) ( $e3_metrics['cpl_before']['value'] ?? 150 );
 $e3_cpl_after_val    = (int) ( $e3_metrics['cpl_after']['value'] ?? 22 );
+$e3_cpl_ramp         = $e3_metrics['cpl_ramp']['display'] ?? '70 – 100 €';
+$e3_cpl_ramp_low     = (int) ( $e3_metrics['cpl_ramp']['value'] ?? 70 );
+$e3_cpl_ramp_high    = (int) ( $e3_metrics['cpl_ramp']['value_high'] ?? 100 );
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '6 Monaten';
+
+// ── Anfragesystem-Analyse (Canon) ────────────────────────────
+$diagnose_canon = function_exists( 'hu_diagnose_canon' ) ? hu_diagnose_canon() : [];
+$analysis_days  = (int) ( $diagnose_canon['primary_days'] ?? 7 );
 
 // Sofortkontakt-Setup: Preis aus dem pricing-canon, damit Nav-Label,
 // Rechner-CTA und Angebots-Panel nicht auseinanderlaufen.
 $entry_price     = function_exists( 'hu_entry_setup_price' ) ? hu_entry_setup_price() : '790 €';
 $entry_price_net = function_exists( 'hu_entry_setup_price' ) ? hu_entry_setup_price( true ) : '790 € netto';
+$pricing_canon   = function_exists( 'hu_pricing_canon' ) ? hu_pricing_canon() : [];
+$foundation_price = (int) ( $pricing_canon['foundation_price_standard'] ?? 14900 );
+
+// Deutsche Tausenderpunkte, Währungs-Doktrin EUR (siehe Dateikopf).
+$calc_eur = static function ( $value ) {
+	return number_format( (float) $value, 0, ',', '.' ) . ' €';
+};
+$foundation_price_display = $calc_eur( $foundation_price );
 
 // ── Inhaltsmodelle ─────────────────────────────────────────────
 $trust_items = [
@@ -59,15 +71,15 @@ $trust_items = [
 	'Tracking, das Ad-Blocker übersteht',
 	'Eigener Code statt Baukasten',
 	'Immer direkt mit mir',
-	'Marktcheck · Fit-Befund in 48 h',
+	'Marktcheck · Fit-Befund · spätestens 2 Werktage',
 ];
 
 // 01 / Status quo — drei Kostenkarten (Creme)
 $cost_cards = [
 	[
-		'big'  => '80–150 €',
-		'sub'  => 'pro Portal-Lead — geteilt',
-		'body' => 'Aroundhome, DAA, Wattfox: Mieter ohne Dach, Preisvergleicher ohne Budget — Anfragen, die parallel bei drei Wettbewerbern landen. Die Hälfte geht nicht ans Telefon.',
+		'big'  => $e3_cpl_before,
+		'sub'  => 'CPL im dokumentierten Ausgangsfall',
+		'body' => 'Im E3-Referenzfall kostete eine gekaufte Anfrage vor dem Aufbau des eigenen Systems 150 €. Das ist ein belegter Einzelfall, kein Marktmittelwert. Ihre tatsächliche Portal-Ökonomie hängt von Vertrag, Qualität, Exklusivität und Abschlussquote ab.',
 	],
 	[
 		'big'  => 'Blindflug',
@@ -83,7 +95,7 @@ $cost_cards = [
 
 // 02 / Markt vs. eigener Weg (Compare)
 $compare_bad = [
-	[ 't' => 'Portal-Leads',      's' => 'Drei Wettbewerber bekommen dieselbe Anfrage. Sie bieten gegen den Preis.' ],
+	[ 't' => 'Portal-Leads',      's' => 'Preis, Exklusivität, Storno und Übergabezeit hängen vom jeweiligen Vertrag ab.' ],
 	[ 't' => 'Klickberichte',     's' => 'Reportings über Impressionen — nicht über Projektwert.' ],
 	[ 't' => '5-Felder-Formular', 's' => 'Verliert Interessenten, bevor sie qualifiziert sind.' ],
 	[ 't' => 'Black-Box-Agentur', 's' => 'Niemand weiß, woher die nächste Anfrage kommt — oder warum sie ausbleibt.' ],
@@ -104,9 +116,9 @@ $process_rows = [
 $method_cards = [
 	[
 		'n'   => '01',
-		't'   => 'Diagnose & Fundament',
-		's'   => 'Anfrage-Quellen, Tracking, Funnel, Vertriebsanschluss — vier Bausteine, ein schriftlicher Befund, drei priorisierte Hebel. Auf Umsetzung 1:1 verrechenbar.',
-		'out' => 'Output / Befund · keine Folien · verrechenbar',
+		't'   => 'Anfragesystem-Analyse',
+		's'   => sprintf( 'Nach passendem Marktcheck: Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss werden in %d Werktagen zu einem schriftlichen Befund mit drei priorisierten Hebeln. Bei anschließender Umsetzung wird die Analyse 1:1 angerechnet.', $analysis_days ),
+		'out' => sprintf( 'Output / Befund · %d Werktage · anrechenbar', $analysis_days ),
 	],
 	[
 		'n'   => '02',
@@ -116,37 +128,38 @@ $method_cards = [
 	],
 	[
 		'n'   => '03',
-		't'   => 'Skalieren & Übergeben',
+		't'   => 'Weiterentwickeln & Übergeben',
 		's'   => 'Auf sauberem <a href="' . esc_url( $cwv_url ) . '">technischen Fundament</a> rechnen sich <a href="' . esc_url( $paid_url ) . '">Google Ads und Meta Ads</a> endlich — plus <a href="' . esc_url( $seo_url ) . '">SEO-Anteil</a>. Wöchentliches Reporting. Bei Vertragsende: dokumentierte Übergabe.',
-		'out' => 'Output / Skalierung · monatlich kündbar · 100 % Übergabe',
+		'out' => 'Output / Weiterentwicklung · optional · 100 % Übergabe',
 	],
 ];
 
-// 04 / CAPEX vs OPEX · Zahlen aus dem messaging-canon ──────────
+// 04 / Portal-Einkauf vs. Aufbau + Hosting · Kostenbausteine
+$calc_hosting = 50;
 $capex_timeframes = [
 	12 => [
 		'portal_monthly' => '~ 1.080 €',
 		'portal_leads'   => '~ 160',
 		'portal_total'   => '13.000 €',
-		'own_setup'      => '12.000 – 18.000 €',
+		'own_setup'      => $foundation_price_display,
 		'own_monthly'    => '~ 50 €',
-		'own_total'      => '12.600 – 18.600 €',
+		'own_total'      => $calc_eur( $foundation_price + ( 12 * $calc_hosting ) ),
 	],
 	24 => [
 		'portal_monthly' => '~ 1.080 €',
 		'portal_leads'   => '~ 320',
 		'portal_total'   => '26.000 €',
-		'own_setup'      => '12.000 – 18.000 €',
+		'own_setup'      => $foundation_price_display,
 		'own_monthly'    => '~ 50 €',
-		'own_total'      => '13.200 – 19.200 €',
+		'own_total'      => $calc_eur( $foundation_price + ( 24 * $calc_hosting ) ),
 	],
 	36 => [
 		'portal_monthly' => '~ 1.080 €',
 		'portal_leads'   => '~ 480',
 		'portal_total'   => '39.000 €',
-		'own_setup'      => '12.000 – 18.000 €',
+		'own_setup'      => $foundation_price_display,
 		'own_monthly'    => '~ 50 €',
-		'own_total'      => '14.160 – 20.160 €',
+		'own_total'      => $calc_eur( $foundation_price + ( 36 * $calc_hosting ) ),
 	],
 ];
 $capex_default = 24;
@@ -155,24 +168,16 @@ $capex_now     = $capex_timeframes[ $capex_default ];
 // 04b / Portal-Kosten-Rechner ─────────────────────────────────
 // Eingabewerte des Nutzers × Canon-Zahlen. Bewusst KEINE Prognose:
 // die Ausgabe ist eine Gegenüberstellung, kein Ersparnis-Versprechen.
-// Setup-Spanne und Hosting stammen aus derselben Quelle wie die
-// Modellkarten oben ($capex_timeframes) — Zahlen bleiben konsistent.
-$calc_setup_low  = 12000;
-$calc_setup_high = 18000;
-$calc_hosting    = 50;
+// Foundation-Preis stammt aus dem Pricing-Canon; Hosting bleibt als separat
+// ausgewiesener Infrastruktur-Baustein der Modellkarten sichtbar.
+$calc_setup_low  = $foundation_price;
+$calc_setup_high = $foundation_price;
 $calc_leads      = 14;
 $calc_price      = 80;
 
 $calc_portal_total = $calc_leads * $calc_price * $capex_default;
 $calc_own_low      = $calc_setup_low + $calc_hosting * $capex_default;
 $calc_own_high     = $calc_setup_high + $calc_hosting * $capex_default;
-$calc_diff_low     = $calc_portal_total - $calc_own_high;
-$calc_diff_high    = $calc_portal_total - $calc_own_low;
-
-// Deutsche Tausenderpunkte, Währungs-Doktrin EUR (siehe Dateikopf).
-$calc_eur = static function ( $value ) {
-	return number_format( (float) $value, 0, ',', '.' ) . ' €';
-};
 
 // 07 / Fit-Check (passt / passt nicht) ─────────────────────────
 $fit_yes = [
@@ -196,17 +201,17 @@ $guarantee_points = [
 	[
 		'e' => 'Befund',
 		't' => 'Marktcheck schafft Entscheidungsgrundlage',
-		's' => 'Händisch geprüfter Befund Ihrer Domain und Region innerhalb von 48 Stunden per E-Mail — mit Fit-Einschätzung und klarer Empfehlung für oder gegen den nächsten Schritt.',
+		's' => 'Händisch geprüfter Befund zu Betrieb und Region per E-Mail — spätestens 2 Werktage nach Eingang, mit Fit-Einschätzung und klarer Empfehlung für oder gegen den nächsten Schritt.',
 	],
 	[
 		'e' => 'Abrat inklusive',
 		't' => 'Drei priorisierte Hebel — auch bei Nein',
-		's' => 'Kommt die Diagnose zum Ergebnis, dass Sie das volle System nicht brauchen, bekommen Sie trotzdem drei Hebel mit konkretem nächstem Schritt.',
+		's' => 'Kommt der Marktcheck zum Ergebnis, dass Sie das volle System nicht brauchen, bekommen Sie trotzdem drei Hebel mit konkretem nächstem Schritt.',
 	],
 	[
 		'e' => 'Verrechnung',
-		't' => 'Diagnose wird 1:1 angerechnet',
-		's' => 'Bei Umsetzung zahlen Sie die Diagnose nicht doppelt. Die Größenordnung kennen Sie vorher: 12.000–18.000 € einmalig für den Aufbau, danach rund 50 € Hosting im Monat. Keine Mindestlaufzeit, volle Asset-Übergabe.',
+		't' => 'Anfragesystem-Analyse wird 1:1 angerechnet',
+		's' => 'Bei Umsetzung zahlen Sie die Anfragesystem-Analyse nicht doppelt. Der Foundation-Aufbau kostet ' . $foundation_price_display . ' einmalig, danach rund 50 € Hosting im Monat. Media, laufende Optimierung und Vertriebsaufwand sind eigene Kostenbausteine.',
 	],
 ];
 
@@ -259,23 +264,23 @@ $deeper_clusters = [
 $faq_items = [
 	[
 		'question' => 'Wie läuft der Marktcheck konkret ab und wie lange dauert er?',
-		'answer'   => 'Drei strukturierte Schritte: Vertriebsteam-Größe, Portal-Margenverlust, geschäftliche Eckdaten. Den händisch geprüften Infrastruktur-Befund Ihrer Domain und Region erhalten Sie in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, per E-Mail. Keine automatisierten Standard-PDFs, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
+		'answer'   => 'Fünf kurze Schritte in etwa 2 Minuten: Leistungsfokus, wirtschaftlicher Projekt-Fit, Vertriebsverantwortung, Umsetzungshorizont und anschließend Ihre geschäftlichen Eckdaten. Den händisch geprüften Fit-Befund zu Betrieb und Region erhalten Sie per E-Mail — spätestens 2 Werktage nach Eingang. Kein automatisierter Standardbericht, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
 	],
 	[
 		'question' => 'Was passiert nach dem Marktcheck?',
-		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, per E-Mail. Wenn der Fit passt, schlage ich ein 30-minütiges Erstgespräch vor oder lade Sie in die verrechenbare Tiefendiagnose ein. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
+		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich per E-Mail — spätestens 2 Werktage nach Eingang. Bei passendem Fit folgt ein Vorschlag für die Anfragesystem-Analyse oder, wenn das ausreicht, für den kleineren Sofortkontakt-Einstieg. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
 	],
 	[
-		'question' => 'Was kostet das im Vergleich zur Performance-Agentur?',
-		'answer'   => 'Initiales Setup: 12.000–18.000 € einmalig. Laufend ca. 50 €/Monat für Hochleistungs-Hosting. TCO über 24 Monate: 13.200–19.200 € — und Sie besitzen Code, Tracking und Daten. Ein vergleichbares Agentur-Mietmodell kostet im gleichen Zeitraum rund 26.000 € — und Sie besitzen am Ende nichts. Bilanziell: CAPEX statt OPEX. Wenn das zu groß gedacht ist: Der Einstieg über das Sofortkontakt-Setup liegt bei ' . $entry_price_net . ' und ist in fünf Werktagen eingerichtet.',
+		'question' => 'Welche Kostenbausteine gehören zum eigenen Anfragesystem?',
+		'answer'   => 'Die Foundation liegt bei ' . $foundation_price_display . ' einmalig, das Hosting bei rund 50 € im Monat. Media-Budget, laufende Kampagnenoptimierung und interner Vertriebsaufwand sind davon getrennte Kostenbausteine und werden nicht als pauschale Ersparnis eingerechnet. Wenn das zu groß gedacht ist: Der Einstieg über das Sofortkontakt-Setup liegt bei ' . $entry_price_net . ' und ist in fünf Werktagen eingerichtet.',
 	],
 	[
 		'question' => 'Gibt es einen kleineren Einstieg als das volle System?',
 		'answer'   => 'Ja. Das Sofortkontakt-Setup für ' . $entry_price_net . ' richtet Sofort-Alarm, automatische Eingangsbestätigung und eine Anfragen-Übersicht nach Quelle ein — auch für Leads, die Sie bereits bei Portalen kaufen. In fünf Werktagen fertig, ohne zusätzliches Werbebudget. Danach haben Sie eigene Zahlen zur Hand und können in Ruhe entscheiden, ob ein eigenes System sich rechnet.',
 	],
 	[
-		'question' => 'Welche Daten brauchen Sie für die Diagnose?',
-		'answer'   => 'Für den Marktcheck reichen zwei Klick-Antworten plus geschäftliche Eckdaten (Firma, Ansprechpartner, Position, geschäftliche E-Mail, Firmen-PLZ). Für die Tiefendiagnose: Lesezugriff auf Google Analytics, Google Ads und Meta Ads Manager, Einblick in den CRM-Datenbestand der letzten 90 Tage und eine 15-Minuten-Bestandsaufnahme zu Vertriebsprozess und Lead-Quellen. Wenn Tracking-Daten fehlen, ist das oft schon das erste Diagnose-Ergebnis.',
+		'question' => 'Welche Daten brauchen Sie für Marktcheck und Anfragesystem-Analyse?',
+		'answer'   => 'Für den Marktcheck reichen vier Auswahlantworten zu Leistungsfokus, Projekt-Fit, Vertriebsverantwortung und Umsetzungshorizont plus geschäftliche Eckdaten (Firma, Ansprechpartner, Position, geschäftliche E-Mail, Firmen-PLZ). Für die anschließende Anfragesystem-Analyse werden nur nach passendem Fit die vorhandenen Datenquellen und der Vertriebsprozess konkret abgestimmt. Wenn Tracking-Daten fehlen, ist das oft schon ein wichtiges Diagnose-Ergebnis.',
 	],
 	[
 		'question' => 'Warum nicht einfach mehr Google Ads schalten?',
@@ -295,15 +300,15 @@ $faq_items = [
 	],
 	[
 		'question' => 'Was unterscheidet Sie von Lead-Portalen?',
-		'answer'   => 'Portale vermieten Nachfrage. Sie zahlen für jeden Kontakt, den auch drei Mitbewerber erhalten. Das System hier baut eigene Nachfrage-Infrastruktur auf, die Ihrem Betrieb gehört und langfristig für exklusive Anfragen sorgt.',
+		'answer'   => 'Bei Portalen zahlen Sie nach dem jeweiligen Vertrag für bereitgestellte Kontakte; Exklusivität, Storno und Übergabe unterscheiden sich je Anbieter und Tarif. Das System hier baut dagegen eine eigene Nachfrage-Infrastruktur auf Ihrer Domain auf. Formulare, Tracking und Daten bleiben bei Ihrem Betrieb.',
 	],
 	[
 		'question' => 'Was ist B2B Solar Leadgenerierung — und wie funktioniert sie ohne Portale wie Aroundhome, DAA oder Wattfox?',
-		'answer'   => 'B2B Solar Leadgenerierung ist der Aufbau einer eigenen Nachfrage-Infrastruktur für Solar-, Wärmepumpen- und Speicheranbieter. Anders als Portale (Aroundhome, DAA, Wattfox), die identische Anfragen parallel an drei Wettbewerber verkaufen, gehören die Anfragen hier exklusiv Ihrem Betrieb. Die Infrastruktur besteht aus drei Schichten: einer hardcoded WordPress-Money-Page, serverseitigem Tracking (GA4 + Meta CAPI auf eigenem Server) und einem mehrstufigen Lead-Scoring vor dem Erstkontakt.',
+		'answer'   => 'B2B Solar Leadgenerierung ist der Aufbau einer eigenen Nachfrage-Infrastruktur für Solar-, Wärmepumpen- und Speicheranbieter. Statt ausschließlich Kontakte bei Portalen einzukaufen, entstehen Anfragen über Ihre Domain und Ihre Vorqualifizierung. Die Infrastruktur verbindet eine eigene WordPress-Anfrageseite, belastbares Tracking und eine strukturierte Qualifizierung vor dem Erstkontakt.',
 	],
 	[
 		'question' => 'Wie unterscheidet sich „eigene Solar Leads gewinnen" von Photovoltaik-Leadkauf?',
-		'answer'   => 'Beim Leadkauf zahlen Sie 80–150 € pro Kontakt — geteilt mit drei Wettbewerbern, oft ohne Telefonnummer, häufig ohne Budget. Eigene Solar Leads werden über Ihre eigene Domain generiert, über Ihre Vorqualifizierung gefiltert und landen exklusiv in Ihrem CRM. Über 24 Monate liegen die Gesamtkosten dabei rund 50 % unter dem reinen Portal-Modell — und Sie besitzen am Ende ein aktivierbares Asset.',
+		'answer'   => 'Beim Leadkauf zahlen Sie laufend pro Kontakt und bleiben von Verfügbarkeit, Qualität und Vertragsmodell des Portals abhängig. Eigene Photovoltaik-Anfragen entstehen über Ihre Domain, werden nach Ihren Kriterien vorqualifiziert und landen exklusiv in Ihrem CRM. Ob dieser Weg wirtschaftlicher ist, hängt von Media-Budget, Anfragequalität, Abschlussquote und Vertriebsaufwand ab — genau diese Passung ordnet der Marktcheck ein.',
 	],
 ];
 
@@ -319,7 +324,7 @@ $service_schema = [
 	'category'    => 'B2B Lead Generation Infrastructure',
 	'url'         => $page_url,
 	'mainEntityOfPage' => $page_url,
-	'description' => sprintf( 'B2B-Leadgenerierung für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum. Souveräne Nachfrage-Infrastruktur statt geteilter Portal-Leads. Referenz %1$s: %2$s weniger Kosten pro Anfrage in %3$s (CPL von %4$s auf %5$s).', $e3_case_label, $e3_cpl_reduction, $e3_timeframe_dative, $e3_cpl_before, $e3_cpl_after ),
+	'description' => sprintf( 'B2B-Leadgenerierung für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum. Eigene Nachfrage-Infrastruktur statt reiner Portal-Abhängigkeit. Referenz %1$s: %2$s weniger Kosten pro Anfrage in %3$s (CPL von %4$s auf %5$s).', $e3_case_label, $e3_cpl_reduction, $e3_timeframe_dative, $e3_cpl_before, $e3_cpl_after ),
 	'provider'    => [
 		'@type'       => 'Organization',
 		'@id'         => $organization_id,
@@ -364,7 +369,7 @@ $service_schema = [
 		'@type'         => 'Offer',
 		'price'         => '0',
 		'priceCurrency' => 'EUR',
-		'description'   => 'Marktcheck mit händisch geprüftem Fit-Befund Ihrer Region innerhalb von 48 Stunden per E-Mail.',
+		'description'   => 'Marktcheck mit vier strukturierten Auswahlfragen und händisch geprüftem Fit-Befund Ihrer Region per E-Mail — spätestens 2 Werktage nach Eingang.',
 		'availability'  => 'https://schema.org/InStock',
 	],
 	'isRelatedTo' => [
@@ -457,32 +462,35 @@ get_header();
 					Hören Sie auf, Photovoltaik-Anfragen zu&nbsp;<span class="hu-hero__title-2">mieten.</span>
 					</h1>
 					<p class="hu-hero__sub">
-						Aroundhome, DAA und Wattfox verkaufen dieselbe Anfrage an drei Betriebe — Sie bieten gegen den Preis.
+						Bei Portalen bestimmen Vertrag und Tarif, ob Kontakte geteilt oder exklusiv sind. Ohne eigene Messung bleibt oft unklar, welcher Einkauf wirklich zu Aufträgen führt.
 						Ein eigenes Anfragesystem für Photovoltaik, Wärmepumpe und Speicher zeigt
 						<strong>Region, Dach und Projektwert</strong> vor dem ersten Anruf.
 						Der Kanal gehört Ihnen, nicht dem Portal.
 					</p>
 
 					<?php
-					// CPL-Telemetrie: 6 Kupfer-Balken, Endpunkte aus dem E3-Canon
-					// (150 € → 22 €), Zwischenwerte kosmetische Kaskade.
-					$cpl_bars  = [ $e3_cpl_before_val, 96, 61, 42, 30, $e3_cpl_after_val ];
-					$cpl_w     = 520;
-					$cpl_h     = 210;
-					$cpl_pad_l = 16;
-					$cpl_pad_t = 22;
-					$cpl_pad_b = 30;
-					$cpl_max   = 160;
-					$cpl_inner = $cpl_h - $cpl_pad_t - $cpl_pad_b;
-					$cpl_bw    = ( $cpl_w - $cpl_pad_l - 10 ) / count( $cpl_bars );
+					// Nur belegte Canon-Werte: Start, dokumentierter Korridor der
+					// Aufbauphase und Endwert in Monat 6. Keine interpolierte Monatskurve.
+					$cpl_w          = 520;
+					$cpl_h          = 210;
+					$cpl_pad_l      = 16;
+					$cpl_pad_t      = 22;
+					$cpl_pad_b      = 30;
+					$cpl_max        = 160;
+					$cpl_inner      = $cpl_h - $cpl_pad_t - $cpl_pad_b;
+					$cpl_baseline   = $cpl_h - $cpl_pad_b;
+					$cpl_start_y    = $cpl_pad_t + ( 1 - $e3_cpl_before_val / $cpl_max ) * $cpl_inner;
+					$cpl_ramp_top_y = $cpl_pad_t + ( 1 - $e3_cpl_ramp_high / $cpl_max ) * $cpl_inner;
+					$cpl_ramp_low_y = $cpl_pad_t + ( 1 - $e3_cpl_ramp_low / $cpl_max ) * $cpl_inner;
+					$cpl_end_y      = $cpl_pad_t + ( 1 - $e3_cpl_after_val / $cpl_max ) * $cpl_inner;
 					?>
 					<figure class="hu-diagram sol-cpl" aria-labelledby="sol-cpl-title" data-track-section="hero_dashboard">
 						<div class="hu-lead-sketch__head">
-							<span class="hu-eyebrow">CPL-Verlauf · <?php echo esc_html( $e3_case_label ); ?></span>
+							<span class="hu-eyebrow">CPL-Referenz · <?php echo esc_html( $e3_case_label ); ?></span>
 							<span class="hu-lead-sketch__status" id="sol-cpl-title">Kosten pro qualifizierter Anfrage · <?php echo esc_html( $e3_timeframe ); ?></span>
 						</div>
 						<svg viewBox="0 0 <?php echo (int) $cpl_w; ?> <?php echo (int) $cpl_h; ?>" role="img"
-							aria-label="Kosten pro Anfrage fallen von <?php echo esc_attr( (string) $e3_cpl_before_val ); ?> Euro auf <?php echo esc_attr( (string) $e3_cpl_after_val ); ?> Euro in sechs Monaten">
+							aria-label="Dokumentierte Kosten pro Anfrage: Start <?php echo esc_attr( (string) $e3_cpl_before_val ); ?> Euro, Aufbauphase <?php echo esc_attr( $e3_cpl_ramp ); ?>, Monat sechs <?php echo esc_attr( (string) $e3_cpl_after_val ); ?> Euro">
 							<?php
 							foreach ( [ 0, 40, 80, 120, 160 ] as $grid_v ) :
 								$grid_y = $cpl_pad_t + ( 1 - $grid_v / $cpl_max ) * $cpl_inner;
@@ -492,27 +500,27 @@ get_header();
 								<text class="sol-cpl-tick" x="<?php echo (int) ( $cpl_pad_l + 10 ); ?>" y="<?php echo esc_attr( (string) round( $grid_y + 3, 1 ) ); ?>"
 									text-anchor="end"><?php echo (int) $grid_v; ?></text>
 							<?php endforeach; ?>
-							<?php
-							foreach ( $cpl_bars as $bar_i => $bar_v ) :
-								$bar_x    = $cpl_pad_l + 24 + $bar_i * $cpl_bw;
-								$bar_h    = $bar_v / $cpl_max * $cpl_inner;
-								$bar_y    = $cpl_h - $cpl_pad_b - $bar_h;
-								$bar_last = count( $cpl_bars ) - 1 === $bar_i;
-								?>
-								<rect class="sol-bar<?php echo esc_attr( $bar_last ? ' is-final' : '' ); ?>" style="animation-delay:<?php echo (int) ( 250 + $bar_i * 110 ); ?>ms"
-									x="<?php echo esc_attr( (string) round( $bar_x, 1 ) ); ?>" y="<?php echo esc_attr( (string) round( $bar_y, 1 ) ); ?>"
-									width="<?php echo esc_attr( (string) round( $cpl_bw * 0.5, 1 ) ); ?>" height="<?php echo esc_attr( (string) round( $bar_h, 1 ) ); ?>"
-									rx="2" />
-								<text class="sol-bar-label<?php echo esc_attr( $bar_last ? ' is-final' : '' ); ?>" style="animation-delay:<?php echo (int) ( 520 + $bar_i * 110 ); ?>ms"
-									x="<?php echo esc_attr( (string) round( $bar_x + $cpl_bw * 0.25, 1 ) ); ?>" y="<?php echo esc_attr( (string) round( $bar_y - 7, 1 ) ); ?>"
-									text-anchor="middle"><?php echo (int) $bar_v; ?> €</text>
-								<text class="sol-cpl-tick" x="<?php echo esc_attr( (string) round( $bar_x + $cpl_bw * 0.25, 1 ) ); ?>" y="<?php echo (int) ( $cpl_h - $cpl_pad_b + 17 ); ?>"
-									text-anchor="middle">M<?php echo (int) ( $bar_i + 1 ); ?></text>
-							<?php endforeach; ?>
+							<rect class="sol-bar" style="animation-delay:250ms"
+								x="86" y="<?php echo esc_attr( (string) round( $cpl_start_y, 1 ) ); ?>"
+								width="54" height="<?php echo esc_attr( (string) round( $cpl_baseline - $cpl_start_y, 1 ) ); ?>" rx="2" />
+							<text class="sol-bar-label" style="animation-delay:520ms" x="113" y="<?php echo esc_attr( (string) round( $cpl_start_y - 7, 1 ) ); ?>" text-anchor="middle"><?php echo esc_html( $e3_cpl_before ); ?></text>
+							<text class="sol-cpl-tick" x="113" y="<?php echo (int) ( $cpl_baseline + 17 ); ?>" text-anchor="middle">Start</text>
+
+							<rect class="sol-bar" style="animation-delay:360ms" opacity="0.78"
+								x="233" y="<?php echo esc_attr( (string) round( $cpl_ramp_top_y, 1 ) ); ?>"
+								width="54" height="<?php echo esc_attr( (string) round( $cpl_ramp_low_y - $cpl_ramp_top_y, 1 ) ); ?>" rx="2" />
+							<text class="sol-bar-label" style="animation-delay:630ms" x="260" y="<?php echo esc_attr( (string) round( $cpl_ramp_top_y - 7, 1 ) ); ?>" text-anchor="middle"><?php echo esc_html( $e3_cpl_ramp ); ?></text>
+							<text class="sol-cpl-tick" x="260" y="<?php echo (int) ( $cpl_baseline + 17 ); ?>" text-anchor="middle">Aufbau</text>
+
+							<rect class="sol-bar is-final" style="animation-delay:470ms"
+								x="380" y="<?php echo esc_attr( (string) round( $cpl_end_y, 1 ) ); ?>"
+								width="54" height="<?php echo esc_attr( (string) round( $cpl_baseline - $cpl_end_y, 1 ) ); ?>" rx="2" />
+							<text class="sol-bar-label is-final" style="animation-delay:740ms" x="407" y="<?php echo esc_attr( (string) round( $cpl_end_y - 7, 1 ) ); ?>" text-anchor="middle"><?php echo esc_html( $e3_cpl_after ); ?></text>
+							<text class="sol-cpl-tick" x="407" y="<?php echo (int) ( $cpl_baseline + 17 ); ?>" text-anchor="middle">Monat 6</text>
 						</svg>
 						<figcaption class="hu-lead-sketch__footer">
-							<span>Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?></span>
-							<span>DSGVO · Server in Frankfurt</span>
+							<span>Dokumentierte Referenzwerte · Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?></span>
+							<span>Keine Prognose für Ihren Betrieb</span>
 						</figcaption>
 					</figure>
 
@@ -535,19 +543,20 @@ get_header();
 					</div>
 
 					<ul class="hu-hero__bullets">
-						<li><span class="hu-bullet-dot" aria-hidden="true"></span>Befund in 48 h · kein Pflicht-Call</li>
+						<li><span class="hu-bullet-dot" aria-hidden="true"></span>Befund per E-Mail · spätestens 2 Werktage nach Eingang</li>
 						<li><span class="hu-bullet-dot" aria-hidden="true"></span>Keine Zahlungsdaten, kein Abo</li>
 						<li><span class="hu-bullet-dot" aria-hidden="true"></span>Für Solar, Wärmepumpe und Speicher</li>
 					</ul>
 
 					<p class="sol-hero-callink hu-mono">
-						Bereits qualifizierter Fall?
+						Passt ein eigener Anfrageweg wirtschaftlich?
 						<a
-							href="<?php echo esc_url( $cal_url ); ?>"
-							data-track-action="cta_solar_to_calcom"
+							href="#marktcheck"
+							data-track-action="cta_solar_hero_to_intake"
 							data-track-category="lead_gen"
 							data-track-section="hero_secondary"
-						>Direkt 30-Min-Gespräch buchen →</a>
+							data-track-funnel-stage="intake_open"
+						>Mit dem Marktcheck einordnen →</a>
 					</p>
 				</div>
 
@@ -555,7 +564,8 @@ get_header();
 					<div class="sol-cta-card" id="marktcheck">
 						<!--
 						  Marktcheck Mount-Point. JS rendert hier die
-						  3-stufige Progressive-Disclosure-Sequenz.
+						  5-stufige Progressive-Disclosure-Sequenz:
+						  vier Auswahlfragen plus Kontaktschritt.
 						  Wenn JS fehlt, bleibt der SSR-Fallback aktiv.
 						-->
 						<div data-sol-quiz id="sol-quiz-mount">
@@ -581,7 +591,7 @@ get_header();
 							<div class="sol-cta-head">
 								<span class="sol-cta-tag sol-mono">
 									<span class="sol-cta-tag-dot" aria-hidden="true"></span>
-									Marktcheck · Fit geprüft · 48-h-Befund
+									Marktcheck · Fit geprüft · spätestens 2 Werktage
 								</span>
 								<span class="sol-cta-head-right sol-mono">Fit-Check</span>
 							</div>
@@ -589,15 +599,15 @@ get_header();
 								Marktcheck für Ihren Vertrieb starten.
 							</h2>
 							<p class="sol-cta-hint">
-								Drei Schritte, vier Angaben. Sie erhalten einen händisch geprüften Fit-Befund
-								für Ihre Region — mit drei priorisierten Hebeln und klarem nächsten Schritt.
+								Fünf kurze Schritte, etwa 2 Minuten: vier Auswahlfragen plus Kontaktdaten.
+								Sie erhalten einen händisch geprüften Fit-Befund für Ihre Region — mit drei priorisierten Hebeln und klarem nächsten Schritt.
 								Kein Newsletter, kein Pitch-Deck.
 							</p>
 							<ul class="sol-cta-bullets sol-mono" aria-label="Was Sie nach dem Marktcheck erhalten">
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Keine Zahlungsdaten, kein Abo, keine Verpflichtung</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Einordnung Ihres Marktumfelds anhand der Firmen-PLZ</li>
 								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Manuelle Erst-Analyse statt automatisierter Tool-Bericht</li>
-								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Befund in 48 h per E-Mail · kein Pflicht-Call</li>
+								<li><span class="sol-cta-bullets-tick" aria-hidden="true">✓</span>Befund per E-Mail · spätestens 2 Werktage nach Eingang</li>
 							</ul>
 							<p class="sol-cta-fineprint">Wird geladen …</p>
 						</div>
@@ -608,12 +618,12 @@ get_header();
 						?>
 						<p class="sol-cta-person">
 							<span class="sol-cta-person-dot" aria-hidden="true"></span>
-							Ihre Antworten liest und beantwortet
+							Ihre Angaben dienen dem Fit-Befund und der persönlichen Rückmeldung durch
 							<a href="<?php echo esc_url( $about_url ); ?>"
 								data-track-action="cta_solar_intake_to_about"
 								data-track-category="trust"
 								data-track-section="hero_intake">Haşim Üner</a>
-							persönlich — kein Tool, kein automatisches PDF.
+							— kein automatischer Standardbericht.
 						</p>
 					</div>
 				</aside>
@@ -819,8 +829,8 @@ get_header();
 				<div class="hu-section-head">
 					<span class="hu-eyebrow">03 / Das System</span>
 					<div>
-						<h2>Diagnose. Aufbau. Eigentum.</h2>
-						<p class="hu-lead">Drei Schritte, ein Ergebnis: exklusive Anfragen. Jede Komponente ist dokumentiert, gehört Ihnen und wird 1:1 übergeben — inklusive Zugang zu allen Accounts.</p>
+						<h2>Nach dem Marktcheck: Analyse. Aufbau. Weiterentwicklung.</h2>
+						<p class="hu-lead">Nur bei passendem Fit folgt die Anfragesystem-Analyse. Daraus entsteht der priorisierte Aufbau; laufende Weiterentwicklung bleibt optional. Jede umgesetzte Komponente ist dokumentiert und wird inklusive aller Accounts übergeben.</p>
 					</div>
 				</div>
 				<div class="hu-process-grid">
@@ -866,7 +876,7 @@ get_header();
 		</section>
 
 		<!-- ════════════════════════════════════════════════════════════
-		     04 / DIE RECHNUNG — CAPEX vs OPEX (Ink)
+		     04 / DIE RECHNUNG — getrennte Kostenbausteine (Ink)
 		     Interaktiver Zeitraum-Picker (12 · 24 · 36 Monate).
 		     ════════════════════════════════════════════════════════════ -->
 		<section class="hu-section" id="capex" data-track-section="capex_opex">
@@ -874,8 +884,8 @@ get_header();
 				<div class="hu-section-head">
 					<span class="hu-eyebrow">04 / Die Rechnung</span>
 					<div>
-						<h2>Eine Bilanz-Entscheidung.</h2>
-						<p class="hu-lead">Beide Wege kosten Geld. Nur einer hinterlässt ein Asset, das Ihnen gehört — CAPEX statt OPEX.</p>
+						<h2>Eigentum und laufende Kosten trennen.</h2>
+						<p class="hu-lead">Der Vergleich zeigt zwei klar abgegrenzte Kostenbausteine: den laufenden Portal-Einkauf sowie Aufbau und Hosting eines eigenen Systems. Media, Optimierung und interner Vertrieb werden separat betrachtet.</p>
 					</div>
 				</div>
 
@@ -898,28 +908,28 @@ get_header();
 
 				<div class="hu-models" data-sol-capex>
 					<article class="hu-model hu-model--a">
-						<div class="hu-model__label">Modell A · OPEX</div>
+						<div class="hu-model__label">Modell A · laufender Einkauf</div>
 						<div class="hu-model__title">Portal-Leads mieten</div>
 						<ul class="hu-model__list">
-							<li><span class="hu-model__bullet" aria-hidden="true">✕</span><span>Lead-Kosten Ø 80 €/Stück — <span data-sol-capex-out="portal_monthly"><?php echo esc_html( $capex_now['portal_monthly'] ); ?> / Monat</span></span></li>
-							<li><span class="hu-model__bullet" aria-hidden="true">✕</span><span><span data-sol-capex-out="portal_leads"><?php echo esc_html( $capex_now['portal_leads'] ); ?> Stück</span> erwartet — rund 50 % gehen nicht ans Telefon</span></li>
-							<li><span class="hu-model__bullet" aria-hidden="true">✕</span><span>Drei Wettbewerber parallel auf jeder Anfrage</span></li>
+							<li><span class="hu-model__bullet" aria-hidden="true">✕</span><span>Rechenbeispiel 80 €/Stück — <span data-sol-capex-out="portal_monthly"><?php echo esc_html( $capex_now['portal_monthly'] ); ?> / Monat</span></span></li>
+							<li><span class="hu-model__bullet" aria-hidden="true">✕</span><span><span data-sol-capex-out="portal_leads"><?php echo esc_html( $capex_now['portal_leads'] ); ?> Stück</span> im Rechenbeispiel — Qualität und Erreichbarkeit variieren je Anbieter</span></li>
+							<li><span class="hu-model__bullet" aria-hidden="true">✕</span><span>Exklusivität und Storno richten sich nach Anbieter und Vertrag</span></li>
 							<li><span class="hu-model__bullet" aria-hidden="true">✕</span><span>Portal behält die Daten · Preiserhöhung jederzeit</span></li>
 						</ul>
-						<div class="hu-model__foot">Gesamt über <span data-sol-capex-out="tf"><?php echo esc_html( (string) $capex_default ); ?></span> Monate: <span data-sol-capex-out="portal_total"><?php echo esc_html( $capex_now['portal_total'] ); ?></span></div>
-						<span class="hu-model__pill">0 € Asset am Ende — Budget aus, Anfragen aus</span>
+						<div class="hu-model__foot">Abgebildeter Lead-Einkauf über <span data-sol-capex-out="tf"><?php echo esc_html( (string) $capex_default ); ?></span> Monate: <span data-sol-capex-out="portal_total"><?php echo esc_html( $capex_now['portal_total'] ); ?></span></div>
+						<span class="hu-model__pill">Der betrachtete Kostenbaustein schafft kein eigenes Anfrage-Asset</span>
 					</article>
 					<article class="hu-model hu-model--b">
-						<div class="hu-model__label">Modell B · CAPEX</div>
+						<div class="hu-model__label">Modell B · eigener Aufbau</div>
 						<div class="hu-model__title">Eigenes System besitzen</div>
 						<ul class="hu-model__list">
 							<li><span class="hu-model__bullet" aria-hidden="true">✓</span><span>Setup einmalig <span data-sol-capex-out="own_setup"><?php echo esc_html( $capex_now['own_setup'] ); ?></span> · Hosting <span data-sol-capex-out="own_monthly"><?php echo esc_html( $capex_now['own_monthly'] ); ?> / Monat</span></span></li>
 							<li><span class="hu-model__bullet" aria-hidden="true">✓</span><span>Exklusive Anfragen — nur für Ihren Vertrieb</span></li>
 							<li><span class="hu-model__bullet" aria-hidden="true">✓</span><span>Vorqualifizierung: Region · Projektwert · Fit-Score</span></li>
-							<li><span class="hu-model__bullet" aria-hidden="true">✓</span><span>Datenhoheit 100 % bei Ihnen · skaliert ohne Kostenexplosion</span></li>
+							<li><span class="hu-model__bullet" aria-hidden="true">✓</span><span>Datenhoheit 100 % bei Ihnen · Media und laufende Optimierung separat</span></li>
 						</ul>
-						<div class="hu-model__foot">Gesamt über <span data-sol-capex-out="tf2"><?php echo esc_html( (string) $capex_default ); ?></span> Monate: <span data-sol-capex-out="own_total"><?php echo esc_html( $capex_now['own_total'] ); ?></span></div>
-						<span class="hu-model__pill">Aktiviertes Asset — bleibt, auch ohne laufende Kosten</span>
+						<div class="hu-model__foot">Abgebildeter Aufbau + Hosting über <span data-sol-capex-out="tf2"><?php echo esc_html( (string) $capex_default ); ?></span> Monate: <span data-sol-capex-out="own_total"><?php echo esc_html( $capex_now['own_total'] ); ?></span></div>
+						<span class="hu-model__pill">Eigentum am System — laufende Kanäle bleiben eigene Kostenbausteine</span>
 					</article>
 				</div>
 
@@ -938,9 +948,9 @@ get_header();
 						<span class="hu-eyebrow">Mit Ihren Zahlen</span>
 						<h3 class="sol-calc-h">Was kostet Sie der Portal-Weg?</h3>
 						<p class="sol-calc-sub">
-							Die Modelle oben rechnen mit Marktdurchschnitt. Tragen Sie Ihre eigenen
-							Werte ein — die Gegenüberstellung rechnet sofort mit dem Zeitraum, den
-							Sie oben gewählt haben.
+							Die Modelle oben rechnen mit einem Beispielwert. Tragen Sie Ihre eigenen
+							Portal-Werte ein. Das Ergebnis zeigt den Lead-Einkauf neben Aufbau und Hosting —
+							nicht die vollständigen Gesamtkosten beider Vertriebswege.
 						</p>
 					</div>
 
@@ -981,37 +991,26 @@ get_header();
 							<span class="sol-calc-row-num" data-sol-calc-out="portal"><?php echo esc_html( $calc_eur( $calc_portal_total ) ); ?></span>
 						</div>
 						<div class="sol-calc-row">
-							<span class="sol-calc-row-lbl">Eigenes System im selben Zeitraum</span>
-							<span class="sol-calc-row-num" data-sol-calc-out="own"><?php echo esc_html( $calc_eur( $calc_own_low ) . ' – ' . $calc_eur( $calc_own_high ) ); ?></span>
+							<span class="sol-calc-row-lbl">Aufbau + Hosting im selben Zeitraum</span>
+							<span class="sol-calc-row-num" data-sol-calc-out="own"><?php echo esc_html( $calc_eur( $calc_own_low ) ); ?></span>
 						</div>
-						<p class="sol-calc-verdict" data-sol-calc-out="verdict">
-							<?php
-							echo esc_html(
-								sprintf(
-									'Differenz: %s bis %s — und am Ende gehört Ihnen das System.',
-									$calc_eur( $calc_diff_low ),
-									$calc_eur( $calc_diff_high )
-								)
-							);
-							?>
-						</p>
+						<p class="sol-calc-verdict">Keine Schein-Differenz: Media-Budget, laufende Kampagnenoptimierung, interner Vertriebsaufwand und unterschiedliche Abschlussquoten sind hier bewusst nicht eingerechnet.</p>
 					</div>
 
 					<p class="sol-calc-fineprint sol-mono">
-						Rechenbeispiel mit Ihren Eingaben — keine Prognose und keine zugesagte
-						Ersparnis. Eigenes System: <?php echo esc_html( $calc_eur( $calc_setup_low ) . ' – ' . $calc_eur( $calc_setup_high ) ); ?>
-						einmalig plus <?php echo esc_html( $calc_eur( $calc_hosting ) ); ?> Hosting im Monat.
+						Kostenbaustein-Vergleich, keine Prognose und keine zugesagte Ersparnis.
+						Abgebildet sind <?php echo esc_html( $calc_eur( $calc_setup_low ) ); ?>
+						Aufbau plus <?php echo esc_html( $calc_eur( $calc_hosting ) ); ?> Hosting im Monat; Media, Optimierung und Vertrieb kommen je nach Modell hinzu.
 					</p>
 				</div>
 
 				<aside class="sol-capex-summary">
-					<h3 class="sol-capex-summary-h">Bilanziell: CAPEX statt OPEX</h3>
+					<h3 class="sol-capex-summary-h">Was dieser Vergleich belastbar zeigt</h3>
 					<p>
-						Ein eigenes Anfragesystem ist eine <strong>aktivierbare Investition</strong> (CAPEX), kein wiederkehrender Kostenfaktor (OPEX). Portal-Leads sind Betriebsausgaben ohne Restwert.
-						Nach <span data-sol-capex-out="tf3"><?php echo esc_html( (string) $capex_default ); ?></span> Monaten haben Sie entweder
-						<strong><span data-sol-capex-out="portal_total2"><?php echo esc_html( $capex_now['portal_total'] ); ?></span> ausgegeben und besitzen nichts</strong> —
-						oder Sie haben <strong><span data-sol-capex-out="own_total2"><?php echo esc_html( $capex_now['own_total'] ); ?></span> investiert und ein skalierbares Asset</strong>
-						(Setup einmalig + <span data-sol-capex-out="tf4"><?php echo esc_html( (string) $capex_default ); ?></span> × Hosting/Wartung).
+					Über <span data-sol-capex-out="tf3"><?php echo esc_html( (string) $capex_default ); ?></span> Monate stehen im Beispiel
+					<strong><span data-sol-capex-out="portal_total2"><?php echo esc_html( $capex_now['portal_total'] ); ?></span> für eingekaufte Kontakte</strong> und
+					<strong><span data-sol-capex-out="own_total2"><?php echo esc_html( $capex_now['own_total'] ); ?></span> für Aufbau und Hosting eines eigenen Systems</strong> gegenüber.
+					Ob daraus ein wirtschaftlicher Vorteil entsteht, entscheiden Media-Kosten, Anfragequalität, Abschlussquote und Vertriebsaufwand. Diese Variablen gehören in den Marktcheck, nicht in eine pauschale Ersparnisbehauptung.
 					</p>
 				</aside>
 
@@ -1023,7 +1022,7 @@ get_header();
 							data-track-section="capex_opex"
 							data-track-funnel-stage="intake_open"
 						>
-							<span>Diese Rechnung für meinen Betrieb prüfen</span>
+							<span>Diese Kostenbausteine im Marktcheck einordnen</span>
 							<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</a>
 						<a class="hu-btn hu-btn-ghost" href="#einstieg"
@@ -1034,7 +1033,7 @@ get_header();
 							<span>Noch zu groß? Einstieg ab <?php echo esc_html( $entry_price ); ?></span>
 						</a>
 					</div>
-					<div class="sol-section-cta-micro sol-mono">Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln · Befund in 48 h</div>
+					<div class="sol-section-cta-micro sol-mono">Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln · spätestens 2 Werktage</div>
 				</div>
 			</div>
 		</section>
@@ -1048,7 +1047,7 @@ get_header();
 					<span class="hu-eyebrow">05 / Kleiner Einstieg</span>
 					<div>
 						<h2 id="sol-entry-title">Wer zuerst zurückruft, bekommt den Termin.</h2>
-						<p class="hu-lead">Nicht jeder Betrieb braucht sofort ein ganzes System. Der schnellste Hebel liegt meistens vor der Anfrage-Menge: bei der Zeit zwischen Anfrage und erstem Kontakt. Eine Anfrage, die vier Stunden liegen bleibt, ist praktisch verloren — bei geteilten Portal-Leads sowieso, weil drei Betriebe dieselbe Anfrage haben.</p>
+						<p class="hu-lead">Nicht jeder Betrieb braucht sofort ein ganzes System. Der schnellste Hebel liegt oft vor der Anfrage-Menge: bei der Zeit zwischen Anfrage und erstem Kontakt. Je länger eine passende Anfrage unbearbeitet bleibt, desto wahrscheinlicher orientiert sich der Interessent weiter — besonders bei nicht exklusiven Kontakten.</p>
 					</div>
 				</div>
 
@@ -1076,7 +1075,7 @@ get_header();
 							data-track-section="entry_offer"
 							data-track-funnel-stage="intake_open"
 						>
-							<span>Sofortkontakt-Setup anfragen</span>
+							<span>Sofortkontakt-Fit im Marktcheck prüfen</span>
 							<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</a>
 					</div>
@@ -1135,8 +1134,8 @@ get_header();
 				</div>
 				<div class="sol-proof-foot">
 					<p>
-						Schritt 2 nach dem Marktcheck: die verrechenbare <strong>Tiefendiagnose</strong> —
-						vier Bausteine, schriftlicher Befund in 7 Werktagen, drei priorisierte Hebel,
+						Schritt 2 nach dem Marktcheck: die anrechenbare <strong>Anfragesystem-Analyse</strong> —
+						vier Bausteine, schriftlicher Befund in <?php echo esc_html( (string) $analysis_days ); ?> Werktagen, drei priorisierte Hebel,
 						eine Wirtschaftlichkeits-Einordnung. Klarheit, keine Folien.
 					</p>
 					<a
@@ -1203,7 +1202,7 @@ get_header();
 							data-track-section="fit_check"
 							data-track-funnel-stage="intake_open"
 						>
-							<span>Marktcheck beantragen</span>
+							<span>Fit-Befund mit drei Hebeln anfordern</span>
 							<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</a>
 						<a class="hu-btn hu-btn-ghost" href="#ergebnisse"
@@ -1215,7 +1214,7 @@ get_header();
 							<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</a>
 					</div>
-					<div class="sol-section-cta-micro sol-mono">Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln · Befund in 48 h</div>
+					<div class="sol-section-cta-micro sol-mono">Manuelle Erst-Analyse · Fit-Entscheid mit drei Hebeln · spätestens 2 Werktage</div>
 				</div>
 			</div>
 		</section>
@@ -1228,7 +1227,7 @@ get_header();
 				<div class="hu-section-head">
 					<span class="hu-eyebrow">08 / Risiko-Umkehr</span>
 					<div>
-						<h2>Diagnose vor Pitch.</h2>
+						<h2>Marktcheck vor Angebot.</h2>
 						<p class="hu-lead">Der Marktcheck ist kein Verkaufsritual — er ist eine ehrliche Ersteinschätzung. Auch dann, wenn sie heißt: nicht mit mir.</p>
 					</div>
 				</div>
@@ -1324,7 +1323,7 @@ get_header();
 				<div class="hu-final-cta">
 					<span class="hu-tag">
 						<span class="hu-dot hu-dot--live" aria-hidden="true"></span>
-						<span class="hu-mono">Marktcheck · Fit-Befund in 48 h</span>
+						<span class="hu-mono">Marktcheck · Fit-Befund · spätestens 2 Werktage</span>
 					</span>
 					<h2>Anfragen besitzen,<br />nicht mieten.</h2>
 					<p>
@@ -1334,7 +1333,7 @@ get_header();
 					</p>
 					<ul class="sol-cta-facts">
 						<li>Einstieg: Marktcheck · Fit-Befund statt Verkaufsgespräch</li>
-						<li>Entscheidung: nach Marktcheck · händisch · innerhalb von 48 Stunden</li>
+						<li>Entscheidung: händisch · spätestens 2 Werktage nach Eingang</li>
 						<li>Bedingung: eigener Vertrieb · klares Zielgebiet · 12–24-Monate-Horizont</li>
 					</ul>
 					<a
@@ -1345,11 +1344,11 @@ get_header();
 						data-track-section="final_cta"
 						data-track-funnel-stage="intake_open"
 					>
-						<span>Marktcheck starten</span>
+						<span>Fit-Befund mit drei Hebeln anfordern</span>
 						<?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</a>
 					<div class="hu-final-cta__signature">
-						Befund in 48 h · <strong>kein Pflicht-Call</strong> · keine Zahlungsdaten · Einordnung des Marktumfelds anhand der Firmen-PLZ inklusive
+						Spätestens 2 Werktage · <strong>kein Pflicht-Call</strong> · keine Zahlungsdaten · Einordnung des Marktumfelds anhand der Firmen-PLZ inklusive
 					</div>
 				</div>
 			</div>
@@ -1364,7 +1363,7 @@ get_header();
 			data-track-section="sticky_mobile"
 			data-track-funnel-stage="intake_open"
 		>
-			<span>Marktcheck starten</span>
+			<span>Fit-Befund anfordern</span>
 			<span class="sol-sticky-cta-arrow" aria-hidden="true"><?php echo $arrow_svg; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 		</a>
 

@@ -30,15 +30,17 @@ CORE_JS="$ROOT/assets/js/nexus-core.js"
 SOLAR_JS="$ROOT/assets/js/solar-leadgenerierung-solara.js"
 CRM_PHP="$ROOT/inc/review-crm.php"
 COCKPIT_LEADS="$ROOT/inc/seo-cockpit/seo-cockpit-leads.php"
+COCKPIT_COMMAND="$ROOT/inc/seo-cockpit/seo-cockpit-command-center.php"
 
 require_file "$CORE_JS"
 require_file "$SOLAR_JS"
 require_file "$CRM_PHP"
 require_file "$COCKPIT_LEADS"
+require_file "$COCKPIT_COMMAND"
 
 # Frontend attribution helper must still expose the fields consumed by the CRM.
 require_pattern "getLeadAttributionPayload" "$CORE_JS"
-for field in landing_page_url entry_page_url previous_internal_url referrer_url; do
+for field in landing_page_url entry_page_url previous_internal_url referrer_url ads_source ads_keyword; do
   require_pattern "$field" "$CORE_JS"
   require_pattern "$field" "$SOLAR_JS"
   require_pattern "$field" "$CRM_PHP"
@@ -49,6 +51,19 @@ require_pattern "/wp-json/nexus/v1/audit-request" "$SOLAR_JS"
 require_pattern "intake_variant:[[:space:]]*'energy_systems'" "$SOLAR_JS"
 require_pattern "audit_type:[[:space:]]*'b2b_system_intake'" "$SOLAR_JS"
 require_pattern "Object\\.keys\\(attribution\\)" "$SOLAR_JS"
+
+# The active intake must submit actual answers. Team size and portal pressure
+# used to fabricate lead volume, CPL and a bottleneck in the browser, which made
+# CRM qualification look more precise than the visitor's answers allowed.
+for field in solution_focus business_fit sales_team_size project_timing; do
+  require_pattern "$field" "$SOLAR_JS"
+  require_pattern "$field" "$CRM_PHP"
+done
+forbid_pattern "mapSalesTeamToLeadVolume" "$SOLAR_JS"
+forbid_pattern "mapMarginLossToCplRange" "$SOLAR_JS"
+forbid_pattern "mapMarginLossToBottleneck" "$SOLAR_JS"
+require_pattern "no_owner" "$SOLAR_JS"
+require_pattern "no_owner" "$CRM_PHP"
 
 # REST route, schema, sanitization and CRM meta persistence must remain wired.
 require_pattern "register_rest_route" "$CRM_PHP"
@@ -66,6 +81,14 @@ require_pattern "energy_systems_landing" "$CRM_PHP"
 require_pattern "nexus_get_seo_cockpit_review_request_attribution_target" "$COCKPIT_LEADS"
 require_pattern "'inferred'[[:space:]]*=>[[:space:]]*true" "$COCKPIT_LEADS"
 require_pattern "inferred_requests" "$COCKPIT_LEADS"
+
+# Repo-owned outcome reporting must use the same qualified|nurture contract as
+# the CRM. Otherwise a successful form redesign cannot be evaluated by lead
+# quality in the command center.
+require_pattern "['\"]qualified['\"][[:space:]]*=>[[:space:]]*0" "$COCKPIT_LEADS"
+require_pattern "\[['\"]qualified['\"]\][[:space:]]*(\+\+|\+=)" "$COCKPIT_LEADS"
+require_pattern "\[[[:space:]]*['\"]qualified['\"][[:space:]]*\]" "$COCKPIT_COMMAND"
+forbid_pattern "\[[[:space:]]*['\"]green['\"][[:space:]]*,[[:space:]]*['\"]yellow['\"][[:space:]]*\]" "$COCKPIT_COMMAND"
 
 # ---------------------------------------------------------------------------
 # Kontaktformular: Thema/Typ-Kombination

@@ -114,6 +114,7 @@ function nexus_get_seo_cockpit_empty_lead_metrics() {
 		'mapped_requests'  => 0,
 		'unmapped_requests' => 0,
 		'inferred_requests' => 0,
+		'qualified'        => 0,
 		'progressed'       => 0,
 		'won'              => 0,
 		'mapped_pages'     => 0,
@@ -239,6 +240,7 @@ function nexus_get_seo_cockpit_review_request_attribution_target( $entry_url, $p
 function nexus_get_seo_cockpit_empty_page_lead_metrics() {
 	return [
 		'requests'   => 0,
+		'qualified'  => 0,
 		'progressed' => 0,
 		'won'        => 0,
 		'inferred_requests' => 0,
@@ -391,6 +393,7 @@ function nexus_get_seo_cockpit_lead_snapshot_data( $ranges ) {
 		$timestamp          = nexus_get_seo_cockpit_review_request_timestamp( $post );
 		$bucket             = nexus_get_seo_cockpit_lead_bucket_for_timestamp( $timestamp, $ranges );
 		$status             = sanitize_key( (string) get_post_meta( $post->ID, '_nexus_review_status', true ) );
+		$qualification      = sanitize_key( (string) get_post_meta( $post->ID, '_nexus_review_qualification_status', true ) );
 		$source             = sanitize_key( (string) get_post_meta( $post->ID, '_nexus_review_source', true ) );
 		$landing_page_url   = (string) get_post_meta( $post->ID, '_nexus_review_landing_page_url', true );
 		$entry_page_url     = (string) get_post_meta( $post->ID, '_nexus_review_entry_page_url', true );
@@ -419,6 +422,10 @@ function nexus_get_seo_cockpit_lead_snapshot_data( $ranges ) {
 
 			if ( in_array( $status, $progressed, true ) ) {
 				$overview[ $window ]['progressed'] += 1;
+			}
+
+			if ( 'qualified' === $qualification ) {
+				$overview[ $window ]['qualified'] += 1;
 			}
 
 			if ( 'won' === $status ) {
@@ -451,6 +458,10 @@ function nexus_get_seo_cockpit_lead_snapshot_data( $ranges ) {
 
 			if ( in_array( $status, $progressed, true ) ) {
 				$page_map[ $attributed_url ][ $window ]['progressed'] += 1;
+			}
+
+			if ( 'qualified' === $qualification ) {
+				$page_map[ $attributed_url ][ $window ]['qualified'] += 1;
 			}
 
 			if ( 'won' === $status ) {

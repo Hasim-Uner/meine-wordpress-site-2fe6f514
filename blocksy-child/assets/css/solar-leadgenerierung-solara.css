@@ -260,8 +260,9 @@
 .solara-landing .sol-cta-submit-arrow svg,
 .solara-landing .sol-quiz-submit-arrow svg { width: 16px; height: 16px; }
 
-/* ─── 4) Quiz-Skin (3-Schritte-Marktcheck) ──────────────────── */
+/* ─── 4) Quiz-Skin (vier Fit-Fragen + Kontakt) ─────────────── */
 .solara-landing .sol-quiz { display: flex; flex-direction: column; gap: 16px; }
+.solara-landing .sol-quiz-view { min-width: 0; }
 
 .solara-landing .sol-quiz-progress { display: flex; flex-direction: column; gap: 8px; }
 .solara-landing .sol-quiz-progress-meta {
@@ -308,7 +309,7 @@
 }
 .solara-landing .sol-quiz-dot.is-active,
 .solara-landing .sol-quiz-dot.is-cur { background: var(--accent); }
-.solara-landing .sol-quiz-dot.is-done { background: var(--accent-2); cursor: pointer; }
+.solara-landing .sol-quiz-dot.is-done { background: var(--accent-2); }
 .solara-landing .sol-quiz-dot-check { display: none; }
 
 .solara-landing .sol-quiz-label {
@@ -327,6 +328,12 @@
   margin: 8px 0 6px;
   color: var(--fg);
 }
+.solara-landing .sol-quiz-title:focus-visible,
+.solara-landing .sol-quiz-success-h:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
 .solara-landing .sol-quiz-hint {
   margin: 0 0 16px;
   color: var(--fg-2);
@@ -334,15 +341,23 @@
   line-height: 1.55;
 }
 
-/* Antwort-Optionen */
-.solara-landing .sol-quiz-options { display: flex; flex-direction: column; gap: 10px; }
+/* Antwort-Optionen: echte Radios liefern Pfeiltasten- und Gruppensemantik. */
+.solara-landing .sol-quiz-options {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
 .solara-landing .sol-quiz-opt {
   display: flex;
   align-items: center;
   gap: 12px;
   width: 100%;
   padding: 13px 16px;
-  border: 1px solid var(--line-2);
+  border: 1px solid hsl(28 14% 45%);
   border-radius: 12px;
   background: var(--bg-3);
   text-align: left;
@@ -353,6 +368,17 @@
   transition: border-color .15s, background .15s, color .15s;
   animation: sol-fade .35s ease backwards;
   animation-delay: var(--sol-opt-delay, 0ms);
+}
+.solara-landing .sol-quiz-opt-input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--accent-ink);
+  flex: 0 0 auto;
+}
+.solara-landing .sol-quiz-opt-input:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
 }
 .solara-landing .sol-quiz-opt:hover,
 .solara-landing .sol-quiz-opt.is-sel {
@@ -410,7 +436,7 @@
   gap: 12px;
 }
 .solara-landing .sol-quiz-form > .sol-quiz-rationale,
-.solara-landing .sol-quiz-form > .sol-quiz-consent,
+.solara-landing .sol-quiz-form > .sol-quiz-consent-wrap,
 .solara-landing .sol-quiz-form > .sol-quiz-error,
 .solara-landing .sol-quiz-form > .sol-quiz-submit,
 .solara-landing .sol-quiz-form > .sol-quiz-fineprint,
@@ -455,7 +481,7 @@
   box-sizing: border-box;
   padding: 13px 16px;
   background: var(--bg-3);
-  border: 1px solid var(--line-2);
+  border: 1px solid hsl(28 14% 45%);
   border-radius: 12px;
   color: var(--fg);
   font: inherit;
@@ -464,19 +490,23 @@
 }
 .solara-landing .sol-quiz-field select { appearance: none; cursor: pointer; }
 .solara-landing .sol-quiz-field input::placeholder { color: var(--fg-4); }
-.solara-landing .sol-quiz-field input:focus,
-.solara-landing .sol-quiz-field select:focus {
-  outline: none;
+.solara-landing .sol-quiz-field input:focus-visible,
+.solara-landing .sol-quiz-field select:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(224, 138, 60, .18);
 }
 .solara-landing .sol-quiz-field.is-err input,
-.solara-landing .sol-quiz-field.is-err select { border-color: var(--bad); }
+.solara-landing .sol-quiz-field.is-err select { border-color: #8f3f2c; }
 .solara-landing .sol-quiz-field-err {
   font-size: 12px;
   line-height: 1.45;
-  color: #D88673;
+  color: #8f3f2c;
+  font-weight: 600;
 }
+.solara-landing .sol-quiz-field-err[hidden],
+.solara-landing .sol-quiz-error[hidden] { display: none; }
 .solara-landing .sol-quiz-hp {
   position: absolute !important;
   left: -9999px !important;
@@ -494,17 +524,28 @@
   color: var(--fg-2);
   cursor: pointer;
 }
+.solara-landing .sol-quiz-consent-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 .solara-landing .sol-quiz-consent input {
+  width: 18px;
+  height: 18px;
   margin-top: 2px;
-  accent-color: var(--accent);
+  accent-color: var(--accent-ink);
   flex-shrink: 0;
+}
+.solara-landing .sol-quiz-consent input:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
 }
 .solara-landing .sol-quiz-consent a {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.solara-landing .sol-quiz-consent.is-err { color: #D88673; }
+.solara-landing .sol-quiz-consent-wrap.is-err .sol-quiz-consent { color: #8f3f2c; }
 .solara-landing .sol-quiz-error {
   padding: 10px 14px;
   border-radius: 10px;
@@ -531,9 +572,9 @@
   transition: transform .15s, background .2s, opacity .2s;
 }
 .solara-landing .sol-quiz-submit:hover { background: #EA9A4F; transform: translateY(-1px); }
-.solara-landing .sol-quiz-submit.is-dis { opacity: .55; cursor: not-allowed; }
-.solara-landing .sol-quiz-submit.is-dis:hover { background: var(--accent); transform: none; }
+.solara-landing .sol-quiz-submit:disabled,
 .solara-landing .sol-quiz-submit.is-loading { opacity: .75; cursor: progress; }
+.solara-landing .sol-quiz-submit:disabled:hover { background: var(--accent); transform: none; }
 .solara-landing .sol-quiz-fineprint {
   margin: 0;
   font-size: 11.5px;
@@ -974,12 +1015,6 @@
   font-size: 14.5px;
   line-height: 1.55;
 }
-/* Ehrlicher Abrat-Fall bekommt eine neutrale, keine Kupfer-Optik. */
-.solara-landing .sol-calc[data-verdict="against"] .sol-calc-verdict {
-  border-left-color: var(--fg-3);
-  background: rgba(255, 255, 255, .03);
-  color: var(--fg-2);
-}
 .solara-landing .sol-calc-fineprint {
   margin: 14px 0 0;
   font-size: 10.5px;
@@ -1276,7 +1311,7 @@
 .solara-landing .sol-sticky-cta {
   position: fixed;
   left: 50%;
-  bottom: 18px;
+  bottom: max(18px, env(safe-area-inset-bottom));
   z-index: 60;
   display: inline-flex;
   align-items: center;
@@ -1289,14 +1324,17 @@
   font-size: 15px;
   box-shadow: 0 1px 0 rgba(255, 255, 255, .18) inset, 0 16px 40px -12px rgba(0, 0, 0, .65);
   opacity: 0;
+  visibility: hidden;
   transform: translate(-50%, 16px);
   pointer-events: none;
-  transition: opacity .25s, transform .25s;
+  transition: opacity .25s, transform .25s, visibility 0s linear .25s;
 }
 .solara-landing .sol-sticky-cta.is-visible {
   opacity: 1;
+  visibility: visible;
   transform: translate(-50%, 0);
   pointer-events: auto;
+  transition-delay: 0s;
 }
 .solara-landing .sol-sticky-cta-arrow { display: inline-flex; width: 16px; height: 16px; }
 .solara-landing .sol-sticky-cta-arrow svg { width: 16px; height: 16px; }
@@ -1420,7 +1458,8 @@ html.sol-anim .solara-landing .sol-chain.is-live .sol-chain-line { stroke-dashof
   .solara-landing .sol-bar-label,
   .solara-landing .sol-quiz-opt,
   .solara-landing .sol-quiz-progress-shimmer { animation: none; }
-  .solara-landing .sol-quiz-progress-fill { transition: none; }
+  .solara-landing .sol-quiz-progress-fill,
+  .solara-landing .sol-sticky-cta { transition: none; }
 
   /* Motion-Layer hart aus: alles sofort sichtbar, Linien gezeichnet.
      (Greift auch, wenn der Nutzer Reduced Motion nach dem Laden
