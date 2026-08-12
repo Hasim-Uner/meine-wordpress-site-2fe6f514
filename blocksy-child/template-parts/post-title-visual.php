@@ -84,7 +84,7 @@ $visuals = [
 	],
 ];
 
-$visual = $visuals[ $style ] ?? $visuals['growth'];
+$visual = $visuals[ $style ];
 ?>
 
 <div class="hu-post-visual hu-post-visual--<?php echo esc_attr( $style ); ?> hu-post-visual--<?php echo esc_attr( $variant ); ?>" aria-hidden="true">

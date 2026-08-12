@@ -124,7 +124,7 @@ $category_deep_links = $category_deep_link_map[ $current_term_slug ] ?? [
 				<nav class="category-bell__deep-links" aria-label="<?php esc_attr_e( 'Passende Vertiefungen', 'blocksy-child' ); ?>" data-track-section="category_archive_deep_links">
 					<span class="category-bell__deep-label"><?php esc_html_e( 'Vertiefen', 'blocksy-child' ); ?></span>
 					<?php foreach ( $category_deep_links as $index => $deep_link ) : ?>
-						<?php if ( empty( $deep_link['url'] ) || empty( $deep_link['label'] ) ) : ?>
+						<?php if ( empty( $deep_link['url'] ) ) : ?>
 							<?php continue; ?>
 						<?php endif; ?>
 						<a
@@ -163,9 +163,9 @@ $category_deep_links = $category_deep_link_map[ $current_term_slug ] ?? [
 					}
 					?>
 					<a
-						class="blog-bell__chip <?php echo $is_active ? 'is-active' : ''; ?>"
+						class="blog-bell__chip<?php echo esc_attr( $is_active ? ' is-active' : '' ); ?>"
 						href="<?php echo esc_url( $category_url ); ?>"
-						<?php echo $is_active ? 'aria-current="page"' : ''; ?>
+						<?php if ( $is_active ) : ?>aria-current="page"<?php endif; ?>
 						data-track-action="<?php echo esc_attr( 'blog_filter_' . $category->slug ); ?>"
 						data-track-category="navigation"
 					>

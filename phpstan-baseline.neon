@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Offset 'label' on array\\{label\\: 'Alle Analysen'\\|'Anfrage\\-Systeme'\\|'Asset\\-Eigentum…'\\|'Core Web Vitals'\\|'CPL/CPO\\-Rechnung'\\|'CRO\\-System'\\|'Portal vs\\. eigenes…'\\|'Regionaler…'\\|'Server\\-Side Tracking'\\|'Strategischer…'\\|'TCO\\-Vergleich 24…'\\|'Technisches SEO'\\|'WordPress Agentur…', url\\: mixed\\} in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: blocksy-child/category.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: blocksy-child/category.php
@@ -134,11 +129,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int\\<1, max\\> given\\.$#"
 			count: 1
 			path: blocksy-child/template-parts/breadcrumb.php
-
-		-
-			message: "#^Offset 'conversion'\\|'data'\\|'growth'\\|'solar'\\|'wordpress' on array\\{solar\\: array\\{eyebrow\\: 'Solar / SHK', title\\: 'Eigene Anfrage…', meta\\: 'Portal\\-Alternative', nodes\\: array\\{'SEO', 'Tracking', 'Vorqualifizierung'\\}\\}, data\\: array\\{eyebrow\\: 'SEO / Daten', title\\: 'Sichtbarkeit wird…', meta\\: 'Technik \\+…', nodes\\: array\\{'Crawl', 'Events', 'CRO'\\}\\}, conversion\\: array\\{eyebrow\\: 'CRO / UX', title\\: 'Aus Besuchern…', meta\\: 'Message Match', nodes\\: array\\{'Intent', 'Proof', 'CTA'\\}\\}, wordpress\\: array\\{eyebrow\\: 'WordPress', title\\: 'Website als Anfrage…', meta\\: 'Architektur \\+…', nodes\\: array\\{'Speed', 'SEO', 'Wartung'\\}\\}, growth\\: array\\{eyebrow\\: non\\-falsy\\-string, title\\: 'Strategischer…', meta\\: 'Einordnung', nodes\\: array\\{'Problem', 'Hebel', 'Priorität'\\}\\}\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: blocksy-child/template-parts/post-title-visual.php
 
 		-
 			message: "#^Offset 'cro'\\|'markteinordnung'\\|'owned\\-leads'\\|'seo'\\|'sichtbarkeit\\-daten…'\\|'solar\\-waermepumpen…'\\|'strategie'\\|'tracking'\\|'wordpress\\-growth…'\\|'wordpress…' on array\\{solar\\-waermepumpen\\-anfrage\\-systeme\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, markteinordnung\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, owned\\-leads\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, sichtbarkeit\\-daten\\-conversion\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, seo\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, tracking\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, cro\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, wordpress\\-performance\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, \\.\\.\\.\\} in empty\\(\\) always exists and is not falsy\\.$#"
