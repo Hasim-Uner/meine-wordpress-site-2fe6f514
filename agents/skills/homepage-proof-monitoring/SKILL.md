@@ -1,11 +1,12 @@
 ---
 name: homepage-proof-monitoring
-description: Monitor the homepage public-proof layer after releases. Use when homepage proof, pilot CTA routing, or related GTM/GA4 follow-up must be reviewed over time.
+description: Reconstruct or finish the fixed 2026-03-11 homepage public-proof monitoring cohort, including its historical proof hooks and pilot-intent review. Use only for that specific launch record; use revenue-learning-loop for current or route-independent post-release measurement.
 ---
 
 # Homepage Proof Monitoring
 
-Use this skill for post-release measurement of the homepage proof layer and pilot-intent path.
+This is a historical adapter for the fixed 2026-03-11 homepage proof release.
+For every current release, use `revenue-learning-loop` instead.
 
 ## Run First
 

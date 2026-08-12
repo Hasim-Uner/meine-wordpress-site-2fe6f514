@@ -1,0 +1,4 @@
+interface:
+  display_name: "Revenue Learning Loop"
+  short_description: "Releases anhand von Revenue-Signalen messen"
+  default_prompt: "Use $revenue-learning-loop to evaluate one funnel change against qualified, progressed, and won outcomes."
