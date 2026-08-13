@@ -273,7 +273,7 @@ get_header();
 					</div>
 					<div class="hu-stat-divider"></div>
 					<div>
-						<div class="hu-stat-num" style="color:var(--accent)"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
+						<div class="hu-stat-num hu-on-accent"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
 						<div class="hu-stat-label">geringere Kosten/Anfrage · Case Study</div>
 					</div>
 				</div>
@@ -440,7 +440,7 @@ get_header();
 		<div class="hu-container">
 			<div class="hu-proof-headline hu-reveal">
 				<span class="hu-eyebrow">02 / Wo Anfragen verloren gehen</span>
-				<h2 style="color:var(--ink)">Drei Stellen, an denen Solar- und SHK-Betriebe qualifizierte Anfragen verlieren.</h2>
+				<h2 class="hu-on-cream--strong">Drei Stellen, an denen Solar- und SHK-Betriebe qualifizierte Anfragen verlieren.</h2>
 				<p>Mehr Reichweite hilft wenig, wenn Tracking blind ist, Portal-Leads geteilt werden und kaufnahe Besucher keinen klaren nächsten Schritt finden.</p>
 			</div>
 
@@ -479,7 +479,7 @@ get_header();
 				</article>
 			</div>
 
-			<div style="text-align:center;margin-top:48px" class="hu-reveal">
+			<div class="hu-cta-row hu-reveal">
 				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 				   data-track-action="cta_home_loss_grid_marktcheck" data-track-category="lead_gen" data-track-section="02">
 					Diese Lecks am eigenen System prüfen
@@ -521,10 +521,10 @@ get_header();
 	<section class="hu-section hu-section--cream" id="phasen" data-track-section="04">
 		<div class="hu-container">
 			<div class="hu-section-head hu-reveal">
-				<span class="hu-eyebrow" style="color:var(--ink-2)">04 / System-Phasen</span>
+				<span class="hu-eyebrow hu-on-cream">04 / System-Phasen</span>
 				<div>
-					<h2 style="color:var(--ink)">WordPress, SEO, Tracking und CRO — in der richtigen Reihenfolge.</h2>
-					<p class="hu-lead" style="color:var(--ink-2)">Die drei Schritte oben sind das Prinzip — diese sechs Phasen das Handwerk dahinter. Welche zuerst greift, entscheidet der Marktcheck, nicht der Katalog.</p>
+					<h2 class="hu-on-cream--strong">WordPress, SEO, Tracking und CRO — in der richtigen Reihenfolge.</h2>
+					<p class="hu-lead hu-on-cream">Die drei Schritte oben sind das Prinzip — diese sechs Phasen das Handwerk dahinter. Welche zuerst greift, entscheidet der Marktcheck, nicht der Katalog.</p>
 				</div>
 			</div>
 
@@ -572,12 +572,12 @@ get_header();
 					<div class="hu-proof-stat__lbl">Abschluss</div>
 				</div>
 				<div class="hu-proof-stat">
-					<div class="hu-proof-stat__num" style="color:var(--accent)"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
+					<div class="hu-proof-stat__num hu-on-accent"><?php echo esc_html( $e3_cpl_reduction ); ?></div>
 					<div class="hu-proof-stat__lbl">Kosten / Anfrage</div>
 				</div>
 			</div>
 
-			<div style="text-align:center;margin-top:48px" class="hu-reveal">
+			<div class="hu-cta-row hu-reveal">
 				<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-primary"
 				   data-track-action="cta_home_proof_case_study" data-track-category="lead_gen" data-track-section="05">
 					Vollständige Case Study analysieren
@@ -592,10 +592,10 @@ get_header();
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-system-visual-section" id="vergleich" data-track-section="06">
 		<div class="hu-container">
-			<div class="hu-proof-headline hu-reveal" style="margin-bottom:64px">
+			<div class="hu-proof-headline hu-head--gap-lg hu-reveal">
 				<span class="hu-eyebrow">06 / Portal-Chaos vs. Daten-Integrität</span>
 				<h2>Zwei Systeme. Zwei Ergebnisse.</h2>
-				<p style="color:var(--fg-2);font-weight:400">Eine Strecke, an jedem Punkt belegbar — gegen ein Setup, das nur Klicks zählt.</p>
+				<p class="hu-section-sub--muted">Eine Strecke, an jedem Punkt belegbar — gegen ein Setup, das nur Klicks zählt.</p>
 			</div>
 
 			<div class="hu-system-flow hu-reveal">
@@ -685,7 +685,7 @@ get_header();
 				</div>
 			</div>
 
-			<div style="text-align:center;margin-top:48px" class="hu-reveal">
+			<div class="hu-cta-row hu-reveal">
 				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 				   data-track-action="cta_home_vergleich_marktcheck" data-track-category="lead_gen" data-track-section="06">
 					Prüfen, auf welcher Seite Ihr Betrieb gerade steht
@@ -699,20 +699,20 @@ get_header();
 	     06b / KATEGORIE-BRUCH — Architektur statt Webdesign
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--cream" id="kategorie" data-track-section="06b">
-		<div class="hu-container" style="max-width:880px">
+		<div class="hu-container hu-container--narrow">
 			<div class="hu-proof-headline hu-reveal">
-				<span class="hu-eyebrow" style="color:var(--ink-2)">06b / Kategorie</span>
-				<h2 style="color:var(--ink)">Warum dies kein Webdesign-Projekt ist.</h2>
+				<span class="hu-eyebrow hu-on-cream">06b / Kategorie</span>
+				<h2 class="hu-on-cream--strong">Warum dies kein Webdesign-Projekt ist.</h2>
 			</div>
 
-			<div class="hu-category-prose hu-reveal" style="max-width:680px;margin:32px auto 0;color:var(--ink-2);font-size:18px;line-height:1.62">
-				<p style="margin:0 0 18px">
+			<div class="hu-category-prose hu-reveal">
+				<p>
 					Eine Standard-Agentur klickt Plugins und Page-Builder im WordPress-Backend zusammen. Bei jedem Theme- oder Plugin-Update macht eine fremde Hand die Seite langsamer — und <strong>niemand im Betrieb kann nachvollziehen, warum die Anfragen plötzlich einbrechen.</strong>
 				</p>
-				<p style="margin:0 0 18px">
+				<p>
 					Hier wird anders gearbeitet: <strong>Die gesamte Systemlogik liegt versioniert im Code-Repository</strong>, nicht in einem Backend, das jeder überschreiben kann. WordPress ist nur die Anzeigefläche. Jede Änderung ist nachvollziehbar, jeder Rückbau in Minuten möglich.
 				</p>
-				<p style="margin:0">
+				<p>
 					Das Resultat für den Betrieb: <strong>Sie mieten keine Agentur-Software, Sie besitzen den Code.</strong> Tracking, CRM-Anbindung und Anfragestrecke gehören Ihnen — übergebbar, prüfbar, auch ohne mich weiterzuführen.
 				</p>
 			</div>
@@ -732,11 +732,11 @@ get_header();
 				<div class="hu-about-text hu-reveal">
 					<span class="hu-eyebrow">07 / Wer steht dahinter</span>
 					<h2>Ich baue Anfragesysteme,<br>die Vertrieb und Daten verbinden.</h2>
-					<p class="hu-lead" style="color:var(--ink-2)">
+					<p class="hu-lead hu-on-cream">
 						Für Betriebe, die nicht dauerhaft Leads mieten wollen, sondern wissen müssen,
 						welcher Kanal echte Projekte bringt — und wem die Anfrage am Ende gehört.
 					</p>
-					<p style="color:var(--ink-2);margin-top:16px">
+					<p class="hu-on-cream hu-about-text__note">
 						Mein Zugang ist Medienwissenschaft, nicht Webdesign. Ich denke zuerst über Sprache,
 						Entscheidung und Signal — und erst danach über Code. Seit dem ersten dokumentierten
 						Solar-Case ist belegt, wo diese Architektur am stärksten greift.
@@ -749,7 +749,6 @@ get_header();
 						<li><span class="hu-about-bullet-dot"></span>Bewusst wenige Projekte parallel · 1:1 mit dem Betrieb</li>
 					</ul>
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
-					   style="margin-top:8px"
 					   data-track-action="cta_home_about_marktcheck" data-track-category="lead_gen" data-track-section="07">
 						Prüfen, ob das zu Ihrem Betrieb passt
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -763,8 +762,8 @@ get_header();
 	     08 / FAQ
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section" id="faq" data-track-section="08">
-		<div class="hu-container" style="max-width:880px">
-			<div class="hu-proof-headline hu-reveal" style="margin-bottom:48px">
+		<div class="hu-container hu-container--narrow">
+			<div class="hu-proof-headline hu-head--gap hu-reveal">
 				<span class="hu-eyebrow">08 / FAQ</span>
 				<h2>Was Geschäftsführer wirklich fragen.</h2>
 			</div>
@@ -784,7 +783,7 @@ get_header();
 				<?php endforeach; ?>
 			</div>
 
-			<div style="text-align:center;margin-top:48px" class="hu-reveal">
+			<div class="hu-cta-row hu-reveal">
 				<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 				   data-track-action="cta_home_faq_marktcheck" data-track-category="lead_gen" data-track-section="08">
 					Erst der Befund, dann die Budgetfrage
@@ -799,10 +798,10 @@ get_header();
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--cream" id="deeper" data-track-section="09" aria-labelledby="hu-deeper-h">
 		<div class="hu-container">
-			<div class="hu-proof-headline hu-reveal" style="margin-bottom:48px;text-align:center">
+			<div class="hu-proof-headline hu-head--gap hu-head--centered hu-reveal">
 				<span class="hu-eyebrow">09 / Vertiefung</span>
 				<h2 id="hu-deeper-h">Themen-Hub für tiefere Recherche.</h2>
-				<p style="max-width:62ch;margin:16px auto 0;color:var(--ink-2)">
+				<p class="hu-deeper-intro">
 					<?php echo esc_html( sprintf( '%d thematische Seiten', $homepage_deeper_count ) ); ?> zu Strategie, Lead-Qualität, Funnel-Architektur und Markteinordnung. Jede Seite steht für sich, alle führen zurück zum Marktcheck.
 				</p>
 			</div>
@@ -838,7 +837,7 @@ get_header();
 		<div class="hu-container">
 			<div class="hu-final-routing hu-reveal">
 				<div class="hu-final-routing__head">
-					<span class="hu-eyebrow" style="color:var(--accent)">10 / Nächster Schritt</span>
+					<span class="hu-eyebrow hu-on-accent">10 / Nächster Schritt</span>
 					<h2 class="hu-display">Finden Sie heraus, wo Ihr Anfragesystem zuerst Geld verliert.</h2>
 					<p>Starten Sie mit dem Marktcheck, prüfen Sie die Case Study oder gehen Sie direkt in die technische Umsetzung — je nachdem, wo Sie gerade stehen. Agenturen finden ihren eigenen Einstieg in der letzten Karte.</p>
 				</div>

@@ -1867,3 +1867,54 @@
 .hu-hp .hu-phases--light .hu-phase__desc { color: var(--ink-2); }
 
 /* Footer-Styles entfernt — die Seite nutzt den globalen Blocksy-Footer. */
+
+/* =============================================================
+   TEMPLATE-UTILITIES — ersetzen die frueheren style="…"-Attribute
+   in front-page.php. Abstaende kommen aus der geteilten Skala in
+   design-system.css; diese Datei fuehrt bewusst keinen eigenen
+   Massstab (siehe scripts/lint-css-spacing.sh).
+   ============================================================= */
+
+/* 4x identisch im Template: zentrierter CTA unter einer Sektion. */
+.hu-hp .hu-cta-row {
+  text-align: center;
+  margin-top: var(--space-12);
+}
+
+/* Schmalere Spalte fuer Fliesstext-Sektionen (Kategorie, FAQ). */
+.hu-hp .hu-container--narrow { max-width: 880px; }
+
+/* Abstand zwischen Sektionskopf und Inhalt. */
+.hu-hp .hu-head--gap { margin-bottom: var(--space-12); }
+.hu-hp .hu-head--gap-lg { margin-bottom: var(--space-16); }
+.hu-hp .hu-head--centered { text-align: center; }
+
+/* Kategorie-Bruch: Fliesstextblock. */
+.hu-hp .hu-category-prose {
+  max-width: 680px;
+  margin: var(--space-8) auto 0;
+  color: var(--ink-2);
+  font-size: 18px;
+  line-height: 1.62;
+}
+.hu-hp .hu-category-prose p { margin: 0 0 var(--space-4); }
+.hu-hp .hu-category-prose p:last-child { margin-bottom: 0; }
+
+/* Themen-Hub: Intro unter der Ueberschrift. */
+.hu-hp .hu-deeper-intro {
+  max-width: 62ch;
+  margin: var(--space-4) auto 0;
+  color: var(--ink-2);
+}
+
+/* Farbrollen auf hellen Sektionen und Akzent-Eyebrows. Bewusst als
+   Klasse statt als Element-Selektor: ein pauschales `.hu-section--cream p`
+   ueberschriebe die eigenen Regeln von Loss-Cards, Phasen und Hub-Links. */
+.hu-hp .hu-on-cream { color: var(--ink-2); }
+.hu-hp .hu-on-cream--strong { color: var(--ink); }
+.hu-hp .hu-on-accent { color: var(--accent); }
+.hu-hp .hu-section-sub--muted { color: var(--fg-2); font-weight: 400; }
+
+/* About-CTA sitzt direkt unter der Bullet-Liste. */
+.hu-hp .hu-about-text .hu-btn-primary { margin-top: var(--space-2); }
+.hu-hp .hu-about-text__note { margin-top: var(--space-4); }
