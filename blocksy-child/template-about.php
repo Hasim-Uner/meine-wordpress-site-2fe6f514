@@ -212,7 +212,7 @@ get_header();
 							<p class="about-cta-meta">
 								<span>Exklusive Erst-Analyse</span>
 								<span>Prüfung auf Regions-Verfügbarkeit</span>
-								<span>Händischer Befund innerhalb von 48 Stunden</span>
+								<span>Händischer Befund in <?php echo esc_html( hu_marketcheck_reply_label( true ) ); ?></span>
 							</p>
 						</div>
 					</div>
@@ -502,7 +502,7 @@ get_header();
 			<div class="about-container about-container--centered">
 				<h2 class="about-h2">Der nächste Schritt.</h2>
 				<p class="about-final__lead">
-					Wenn Sie Portal-Abhängigkeit durch ein eigenes Anfragesystem ersetzen wollen, gehen Sie direkt ins qualifizierte Formular. Manueller, tiefer Marktcheck, händische Prüfung der Regions-Verfügbarkeit, Befund innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.
+					Wenn Sie Portal-Abhängigkeit durch ein eigenes Anfragesystem ersetzen wollen, gehen Sie direkt ins qualifizierte Formular. Manueller, tiefer Marktcheck, händische Prüfung der Regions-Verfügbarkeit, Befund per E-Mail <?php echo esc_html( hu_marketcheck_reply_label() ); ?>. Kein Verkaufsgespräch.
 				</p>
 				<div class="about-cta-wrap about-cta-wrap--centered">
 					<a href="<?php echo esc_url( $request_url ); ?>"
@@ -518,7 +518,7 @@ get_header();
 					<p class="about-cta-meta about-cta-meta--centered">
 						<span>Exklusive Erst-Analyse</span>
 						<span>Prüfung auf Regions-Verfügbarkeit</span>
-						<span>Händischer Befund innerhalb von 48 Stunden</span>
+						<span>Händischer Befund in <?php echo esc_html( hu_marketcheck_reply_label( true ) ); ?></span>
 					</p>
 				</div>
 			</div>

@@ -279,7 +279,7 @@ get_header();
 				<span class="about-editorial__cta-eyebrow">Exklusiver Marktcheck</span>
 				<h2 class="about-editorial__cta-title">Bereit für ein eigenes Anfragesystem?</h2>
 				<p class="about-editorial__cta-text">
-					Wir analysieren, wie viel Werbebudget aktuell in Portal-Lücken versickert und wie ein eigenes Anfragesystem für Ihren Betrieb aussehen muss. Manueller, tiefer Marktcheck, händische Prüfung der Regions-Verfügbarkeit, Befund innerhalb von 48 Stunden per E-Mail. Kein Verkaufsgespräch.
+					Wir analysieren, wie viel Werbebudget aktuell in Portal-Lücken versickert und wie ein eigenes Anfragesystem für Ihren Betrieb aussehen muss. Manueller, tiefer Marktcheck, händische Prüfung der Regions-Verfügbarkeit, Befund per E-Mail <?php echo esc_html( hu_marketcheck_reply_label() ); ?>. Kein Verkaufsgespräch.
 				</p>
 				<a
 					href="<?php echo esc_url( $request_url ); ?>"
@@ -293,7 +293,7 @@ get_header();
 				<p class="about-editorial__cta-meta">
 					<span>Exklusive Erst-Analyse</span>
 					<span>Prüfung auf Regions-Verfügbarkeit</span>
-					<span>Händischer Befund innerhalb von 48 Stunden</span>
+					<span>Händischer Befund in <?php echo esc_html( hu_marketcheck_reply_label( true ) ); ?></span>
 				</p>
 			</footer>
 

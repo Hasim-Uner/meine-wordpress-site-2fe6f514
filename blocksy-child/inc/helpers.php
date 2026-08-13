@@ -250,6 +250,28 @@ function nexus_get_audit_footer_note() {
 }
 
 /**
+ * Shared opening for the closing Marktcheck section on the intercept routes.
+ *
+ * Six Seiten öffneten ihren Final-CTA mit demselben Satz und hängten nur eine
+ * seitenspezifische Zusage an. Die geteilte Hälfte steht hier, damit die
+ * Antwortzeit nicht wieder auf sechs Seiten einzeln gepflegt wird.
+ *
+ * @return string
+ */
+function nexus_get_marketcheck_final_lead_in() {
+	$reply = function_exists( 'hu_marketcheck_reply_label' )
+		? hu_marketcheck_reply_label()
+		: 'in der Regel 48 Stunden, spätestens 2 Werktage';
+
+	// Kein Gedankenstrich am Ende: die aufrufenden Seiten haengen ihre eigene
+	// Zusage mit einem an. Zwei Striche in einem Satz lesen sich holprig.
+	return sprintf(
+		'Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse Ihrer Region per E-Mail, %s',
+		$reply
+	);
+}
+
+/**
  * Render a tracking-ready CTA button.
  *
  * Outputs an <a> element with proper data-track-* attributes

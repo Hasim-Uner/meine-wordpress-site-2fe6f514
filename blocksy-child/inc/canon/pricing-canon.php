@@ -94,6 +94,57 @@ function hu_foundation_total_display( $months ) {
 	return hu_format_eur( HU_FOUNDATION_PRICE_STANDARD + $months * HU_FOUNDATION_HOSTING_MONTHLY );
 }
 
+// ── Portal-Einkauf als Referenz-Rechenbeispiel ──────────────────
+// Ausdruecklich kein Marktmittelwert: rund 13,5 gekaufte Anfragen im Monat zu
+// rund 80 EUR. Drei Seiten zeigen dieselbe Gegenueberstellung — Money Page,
+// TCO-Vergleich und die Preis-FAQ der Startseite. Vorher stand sie als
+// Literal in allen dreien.
+define( 'HU_PORTAL_REFERENCE_MONTHLY', 1080 );
+define( 'HU_PORTAL_REFERENCE_LEAD_PRICE', 80 );
+
+/**
+ * Display value of the monthly portal spend in the reference example.
+ *
+ * @return string
+ */
+function hu_portal_reference_monthly_display() {
+	return '~ ' . hu_format_eur( HU_PORTAL_REFERENCE_MONTHLY );
+}
+
+/**
+ * Display value of the portal spend over a number of months.
+ *
+ * Auf volle Tausend gerundet. Die Zahl ist ein Rechenbeispiel, keine Rechnung;
+ * eine exakte Summe taeuschte eine Genauigkeit vor, die das Modell nicht hat.
+ *
+ * @param int $months Months of portal purchasing.
+ * @return string
+ */
+function hu_portal_reference_total_display( $months ) {
+	$months = max( 0, (int) $months );
+	$total  = HU_PORTAL_REFERENCE_MONTHLY * $months;
+
+	return hu_format_eur( (int) round( $total / 1000 ) * 1000 );
+}
+
+/**
+ * Approximate number of bought requests over a number of months.
+ *
+ * Auf volle Zehner abgerundet, aus derselben Monatsausgabe abgeleitet wie die
+ * Summe — sonst behaupten Stueckzahl und Betrag zwei verschiedene Modelle.
+ * Abgerundet, nicht kaufmaennisch: die Stueckzahl soll die Gegenueberstellung
+ * nicht besser aussehen lassen, als das Modell hergibt.
+ *
+ * @param int $months Months of portal purchasing.
+ * @return string
+ */
+function hu_portal_reference_leads_display( $months ) {
+	$months = max( 0, (int) $months );
+	$leads  = ( HU_PORTAL_REFERENCE_MONTHLY / HU_PORTAL_REFERENCE_LEAD_PRICE ) * $months;
+
+	return '~ ' . number_format( (int) floor( $leads / 10 ) * 10, 0, ',', '.' );
+}
+
 // ── Sofortkontakt-Setup: Einstiegsangebot der Solar-Money-Page ───
 // Eigene Ebene unterhalb des Foundation-Modells: beschleunigt die Reaktion
 // auf vorhandene Anfragen, auch auf gekaufte Portal-Leads.

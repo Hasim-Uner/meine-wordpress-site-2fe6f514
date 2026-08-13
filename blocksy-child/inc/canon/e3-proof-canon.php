@@ -116,6 +116,13 @@ function hu_e3_canon() {
 				'display' => '3 Monate',
 				'label'   => 'Implementierung',
 			],
+			// Anlaufzeit bis zur ersten qualifizierten Anfrage im dokumentierten
+			// Fall. Erfahrungswert aus diesem einen Projekt, kein Marktversprechen
+			// — die Copy muss den Fallbezug immer mitfuehren.
+			'first_requests_weeks' => [
+				'display' => '4–6 Wochen',
+				'label'   => 'bis zu den ersten qualifizierten Anfragen (dokumentierter Fall)',
+			],
 			'tuning_months'    => [
 				'value'   => HU_E3_TUNING_MONTHS,
 				'display' => '3 Monate',

@@ -124,13 +124,13 @@ $comparison_rows = [
 $tco_scenarios = [
 	[
 		'scope'    => '24 Monate (typisch B2B-Mittelstand)',
-		'rent'     => '~ 1.080 € / Monat × 24 Mon. ≈ 26.000 € Lead-Einkauf',
+		'rent'     => sprintf( '%s / Monat × 24 Mon. ≈ %s Lead-Einkauf', hu_portal_reference_monthly_display(), hu_portal_reference_total_display( 24 ) ),
 		'own'      => sprintf( '%s Setup + ~ %s / Monat Hosting ≈ %s', hu_foundation_price_display(), hu_foundation_hosting_display(), hu_foundation_total_display( 24 ) ),
 		'delta'    => 'Gegenübergestellt sind nur Lead-Einkauf und Aufbau plus Hosting. Media-Budget, laufende Optimierung und Vertriebsaufwand fehlen auf beiden Seiten – das Asset bleibt nach Monat 24 im Betrieb.',
 	],
 	[
 		'scope'    => '36 Monate (mit Skalierung)',
-		'rent'     => '~ 1.080 € / Monat × 36 Mon. ≈ 39.000 € Lead-Einkauf bei sinkender Qualität',
+		'rent'     => sprintf( '%s / Monat × 36 Mon. ≈ %s Lead-Einkauf bei sinkender Qualität', hu_portal_reference_monthly_display(), hu_portal_reference_total_display( 36 ) ),
 		'own'      => sprintf( '%s Setup + ~ %s / Monat Hosting ≈ %s', hu_foundation_price_display(), hu_foundation_hosting_display(), hu_foundation_total_display( 36 ) ),
 		'delta'    => 'Der Abstand wächst mit jedem Monat Lead-Einkauf, weil der Aufbau einmalig anfällt. Ob daraus ein wirtschaftlicher Vorteil wird, entscheiden Anfragequalität und Abschlussquote – nicht diese Gegenüberstellung.',
 	],
@@ -375,7 +375,7 @@ get_header();
 		<div class="hu-intercept__container hu-intercept__container--centered">
 			<h2 class="hu-intercept__h2" id="hu-vs-final-title">TCO im Marktcheck einordnen</h2>
 			<p class="hu-intercept__final-text">
-				Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse Ihrer Region innerhalb von 48 Stunden per E-Mail — mit klarer Aussage, ab welchem monatlichen Lead-Budget sich der Umstieg vom Portal-Modell auf ein eigenes Anfragesystem wirtschaftlich rechnet.
+				<?php echo esc_html( nexus_get_marketcheck_final_lead_in() ); ?> — mit klarer Aussage, ab welchem monatlichen Lead-Budget sich der Umstieg vom Portal-Modell auf ein eigenes Anfragesystem wirtschaftlich rechnet.
 			</p>
 			<div class="hu-intercept__cta">
 				<a class="hu-intercept__cta-primary"

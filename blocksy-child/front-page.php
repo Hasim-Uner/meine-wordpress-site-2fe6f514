@@ -41,6 +41,7 @@ $e3_cpl_reduction  = $e3_metrics['cpl_reduction']['display']     ?? 'über 85 %'
 $e3_timeframe      = $e3_metrics['timeframe']['display']         ?? '6 Monate';
 $e3_timeframe_dat  = $e3_metrics['timeframe']['display_dative']  ?? '6 Monaten';
 $e3_cpl_before     = $e3_metrics['cpl_before']['display']        ?? '150 €';
+$e3_first_requests = $e3_metrics['first_requests_weeks']['display'] ?? '4–6 Wochen';
 $e3_cpl_after      = $e3_metrics['cpl_after']['display']         ?? '22 €';
 $contact_url       = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
 $agentur_hub_url   = home_url( '/wordpress-agentur-hannover/' );
@@ -159,10 +160,11 @@ $home_faq_items = [
 	[
 		'question' => 'Was kostet das Ganze?',
 		'answer'   => sprintf(
-			'Der Marktcheck ist vorgeschaltet und prüft zuerst, ob Region, Projektwert und Vertriebskapazität zum Anfragesystem passen. Der Aufbau danach liegt bei %s einmalig, dazu rund %s im Monat für Hosting und Wartung. Über 24 Monate sind das %s. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten im selben Zeitraum ca. 26.000 €. Media-Budget, laufende Optimierung und interner Vertriebsaufwand sind eigene Kostenbausteine und in keiner der beiden Zahlen enthalten. Was günstiger ist, entscheidet der Marktcheck — das Eigentum am System bleibt in jedem Fall beim Betrieb.',
+			'Der Marktcheck ist vorgeschaltet und prüft zuerst, ob Region, Projektwert und Vertriebskapazität zum Anfragesystem passen. Der Aufbau danach liegt bei %s einmalig, dazu rund %s im Monat für Hosting und Wartung. Über 24 Monate sind das %s. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten im selben Zeitraum rund %s. Media-Budget, laufende Optimierung und interner Vertriebsaufwand sind eigene Kostenbausteine und in keiner der beiden Zahlen enthalten. Was günstiger ist, entscheidet der Marktcheck — das Eigentum am System bleibt in jedem Fall beim Betrieb.',
 			hu_foundation_price_display(),
 			hu_foundation_hosting_display(),
-			hu_foundation_total_display( 24 )
+			hu_foundation_total_display( 24 ),
+			hu_portal_reference_total_display( 24 )
 		),
 	],
 	[
@@ -171,7 +173,7 @@ $home_faq_items = [
 	],
 	[
 		'question' => 'Wie lange dauert es bis zu den ersten Anfragen?',
-		'answer'   => sprintf( 'Bei einem mittelständischen PV-Installationsbetrieb: erste qualifizierte Anfragen nach 4–6 Wochen, voller Effekt nach %s. Schnellere Versprechen sind unseriös — Abschlussquoten verlangen einen sauberen Trichter, nicht nur ein Logo-Update.', $e3_timeframe ),
+		'answer'   => sprintf( 'Bei einem mittelständischen PV-Installationsbetrieb: erste qualifizierte Anfragen nach %s, voller Effekt nach %s. Schnellere Versprechen sind unseriös — Abschlussquoten verlangen einen sauberen Trichter, nicht nur ein Logo-Update.', $e3_first_requests, $e3_timeframe ),
 	],
 	[
 		'question' => 'Bin ich gebunden?',

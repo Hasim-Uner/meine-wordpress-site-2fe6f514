@@ -228,7 +228,7 @@ $fit_no = [
 
 $cta_features = [
 	sprintf( 'Marktcheck in %d Schritten — %s Eingabe', (int) ( hu_diagnose_canon()['marketcheck_steps'] ?? 5 ), hu_marketcheck_duration_label() ),
-	'Händisch geprüfter Befund innerhalb von 48 Stunden per E-Mail',
+	sprintf( 'Händisch geprüfter Befund per E-Mail — %s', hu_marketcheck_reply_label() ),
 	'Einordnung von Anfrage-Quellen, Tracking und Vertriebsanschluss',
 	'Kein Pflicht-Termin, kein Pitch-Call',
 ];
@@ -310,7 +310,7 @@ get_header();
 						<span><?php echo esc_html( $cta_label ); ?></span>
 						<span class="e3-btn__arrow" aria-hidden="true">→</span>
 					</a>
-					<p class="e3-hero__micro">Sehen Sie dieselbe Asymmetrie zwischen Ihren Anfrage-Quellen? Der Marktcheck ordnet sie ein — händisch geprüft, Befund in 48 Stunden, ohne Pflicht-Termin.</p>
+					<p class="e3-hero__micro">Sehen Sie dieselbe Asymmetrie zwischen Ihren Anfrage-Quellen? Der Marktcheck ordnet sie ein — händisch geprüft, Befund in <?php echo esc_html( hu_marketcheck_reply_label( true ) ); ?>, ohne Pflicht-Termin.</p>
 				</div>
 			</div>
 		</section>

@@ -79,7 +79,7 @@ $cost_cards = [
 	[
 		'big'  => $e3_cpl_before,
 		'sub'  => 'CPL im dokumentierten Ausgangsfall',
-		'body' => 'Im E3-Referenzfall kostete eine gekaufte Anfrage vor dem Aufbau des eigenen Systems 150 €. Das ist ein belegter Einzelfall, kein Marktmittelwert. Ihre tatsächliche Portal-Ökonomie hängt von Vertrag, Qualität, Exklusivität und Abschlussquote ab.',
+		'body' => 'Im E3-Referenzfall kostete eine gekaufte Anfrage vor dem Aufbau des eigenen Systems ' . $e3_cpl_before . '. Das ist ein belegter Einzelfall, kein Marktmittelwert. Ihre tatsächliche Portal-Ökonomie hängt von Vertrag, Qualität, Exklusivität und Abschlussquote ab.',
 	],
 	[
 		'big'  => 'Blindflug',
@@ -138,27 +138,27 @@ $method_cards = [
 $calc_hosting = (int) ( $pricing_canon['foundation_hosting_monthly'] ?? 50 );
 $capex_timeframes = [
 	12 => [
-		'portal_monthly' => '~ 1.080 €',
-		'portal_leads'   => '~ 160',
-		'portal_total'   => '13.000 €',
+		'portal_monthly' => hu_portal_reference_monthly_display(),
+		'portal_leads'   => hu_portal_reference_leads_display( 12 ),
+		'portal_total'   => hu_portal_reference_total_display( 12 ),
 		'own_setup'      => $foundation_price_display,
-		'own_monthly'    => '~ 50 €',
+		'own_monthly'    => '~ ' . hu_foundation_hosting_display(),
 		'own_total'      => $calc_eur( $foundation_price + ( 12 * $calc_hosting ) ),
 	],
 	24 => [
-		'portal_monthly' => '~ 1.080 €',
-		'portal_leads'   => '~ 320',
-		'portal_total'   => '26.000 €',
+		'portal_monthly' => hu_portal_reference_monthly_display(),
+		'portal_leads'   => hu_portal_reference_leads_display( 24 ),
+		'portal_total'   => hu_portal_reference_total_display( 24 ),
 		'own_setup'      => $foundation_price_display,
-		'own_monthly'    => '~ 50 €',
+		'own_monthly'    => '~ ' . hu_foundation_hosting_display(),
 		'own_total'      => $calc_eur( $foundation_price + ( 24 * $calc_hosting ) ),
 	],
 	36 => [
-		'portal_monthly' => '~ 1.080 €',
-		'portal_leads'   => '~ 480',
-		'portal_total'   => '39.000 €',
+		'portal_monthly' => hu_portal_reference_monthly_display(),
+		'portal_leads'   => hu_portal_reference_leads_display( 36 ),
+		'portal_total'   => hu_portal_reference_total_display( 36 ),
 		'own_setup'      => $foundation_price_display,
-		'own_monthly'    => '~ 50 €',
+		'own_monthly'    => '~ ' . hu_foundation_hosting_display(),
 		'own_total'      => $calc_eur( $foundation_price + ( 36 * $calc_hosting ) ),
 	],
 ];
@@ -211,7 +211,7 @@ $guarantee_points = [
 	[
 		'e' => 'Verrechnung',
 		't' => 'Anfragesystem-Analyse wird 1:1 angerechnet',
-		's' => 'Bei Umsetzung zahlen Sie die Anfragesystem-Analyse nicht doppelt. Der Foundation-Aufbau kostet ' . $foundation_price_display . ' einmalig, danach rund 50 € Hosting im Monat. Media, laufende Optimierung und Vertriebsaufwand sind eigene Kostenbausteine.',
+		's' => 'Bei Umsetzung zahlen Sie die Anfragesystem-Analyse nicht doppelt. Der Foundation-Aufbau kostet ' . $foundation_price_display . ' einmalig, danach rund ' . hu_foundation_hosting_display() . ' Hosting im Monat. Media, laufende Optimierung und Vertriebsaufwand sind eigene Kostenbausteine.',
 	],
 ];
 
@@ -272,7 +272,7 @@ $faq_items = [
 	],
 	[
 		'question' => 'Welche Kostenbausteine gehören zum eigenen Anfragesystem?',
-		'answer'   => 'Die Foundation liegt bei ' . $foundation_price_display . ' einmalig, das Hosting bei rund 50 € im Monat. Media-Budget, laufende Kampagnenoptimierung und interner Vertriebsaufwand sind davon getrennte Kostenbausteine und werden nicht als pauschale Ersparnis eingerechnet. Wenn das zu groß gedacht ist: Der Einstieg über das Sofortkontakt-Setup liegt bei ' . $entry_price_net . ' und ist in fünf Werktagen eingerichtet.',
+		'answer'   => 'Die Foundation liegt bei ' . $foundation_price_display . ' einmalig, das Hosting bei rund ' . hu_foundation_hosting_display() . ' im Monat. Media-Budget, laufende Kampagnenoptimierung und interner Vertriebsaufwand sind davon getrennte Kostenbausteine und werden nicht als pauschale Ersparnis eingerechnet. Wenn das zu groß gedacht ist: Der Einstieg über das Sofortkontakt-Setup liegt bei ' . $entry_price_net . ' und ist in fünf Werktagen eingerichtet.',
 	],
 	[
 		'question' => 'Gibt es einen kleineren Einstieg als das volle System?',
