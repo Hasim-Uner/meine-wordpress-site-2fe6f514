@@ -1,22 +1,32 @@
 /* =============================================================
-   Personenseite /hasim-uener/ — fuenf Bloecke, keine Story-Strecke.
-   Scoped auf .hu-about.
+   Personenseite /hasim-uener/ — fuenf Bloecke, ein lautes Element.
 
-   Farbwelt und Typografie sind die der bisherigen Ueber-Seite
-   (helles Creme zwischen dunklem Header und Footer, Satoshi /
-   Figtree / JetBrains Mono). Abstaende kommen aus der geteilten
-   Skala in design-system.css, nicht aus eigenen Werten.
+   Farbwelt und Typografie sind die der Site: Creme-Grund wie bisher
+   auf der Ueber-Seite, Satoshi als Display-Schnitt, Figtree im Text.
+   Abstaende kommen aus der geteilten Skala in design-system.css.
+
+   Bewusst nicht vorhanden: Verlaeufe, Schatten, Glaseffekte,
+   Parallaxe. Das dunkle Stationen-Band ist der einzige Farbbruch.
    ============================================================= */
 
 .hu-about {
 	--hu-about-bg: #fbfaf8;
-	--hu-about-surface: #f7f5f0;
 	--hu-about-ink: #1a1a1a;
 	--hu-about-ink-soft: rgba(26, 26, 26, 0.72);
 	--hu-about-accent: #8c6239;
 	--hu-about-accent-strong: #734f2d;
 	--hu-about-line: rgba(140, 98, 57, 0.22);
+
+	/* Band: dunkles Braun aus dem Design-System (--brown-subtle), flach
+	   statt als Verlauf. Creme und Trennlinie sind gegen diesen Grund
+	   auf WCAG AA geprueft — siehe Kommentar am Band. */
+	--hu-about-band-bg: hsl(28 12% 12%);
+	--hu-about-band-ink: #fbfaf8;
+	--hu-about-band-ink-soft: hsl(30 8% 82%);
+	--hu-about-band-line: hsl(30 10% 100% / 0.36);
+
 	--hu-about-radius: 10px;
+	--hu-about-serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
 
 	position: relative;
 	isolation: isolate;
@@ -24,60 +34,69 @@
 	color: var(--hu-about-ink);
 	font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	line-height: var(--leading-normal, 1.55);
-
-	background-image:
-		linear-gradient(to right, rgba(140, 98, 57, 0.03) 1px, transparent 1px),
-		linear-gradient(to bottom, rgba(140, 98, 57, 0.03) 1px, transparent 1px);
-	background-size: 40px 40px;
 }
 
 .hu-about__inner {
 	max-width: 1000px;
 	margin: 0 auto;
-	padding: clamp(var(--space-12), 8vw, var(--space-24)) var(--space-6);
+	padding: clamp(var(--space-12), 8vw, var(--space-20)) var(--space-6) 0;
 	display: grid;
-	gap: clamp(var(--space-12), 7vw, var(--space-20));
+	gap: clamp(var(--space-16), 10vw, var(--space-32));
 }
 
 /* -----------------------------------------------------------
-   1 — Hero: Portrait links, Name und ein Satz rechts
+   1 — Hero: Name als typografisches Element ueber die volle
+   Spaltenbreite, Portrait oben und rechts angeschnitten.
+   Der Anschnitt entsteht durch overflow:hidden am Hero, nicht
+   durch einen Rahmen um das Bild.
 ----------------------------------------------------------- */
 .hu-about__hero {
-	display: grid;
-	grid-template-columns: minmax(0, 168px) minmax(0, 1fr);
-	align-items: center;
-	gap: clamp(var(--space-6), 4vw, var(--space-10));
+	position: relative;
+	overflow: hidden;
+	/* Oben kein eigener Abstand: die Hoehe des angeschnittenen Portraits
+	   steckt bereits im padding-top von __hero-inner. Beides zusammen
+	   riss ein leeres Feld zwischen Bildunterkante und Namen auf. */
+	padding-block: 0 clamp(var(--space-12), 8vw, var(--space-24));
 }
 
 .hu-about__portrait {
-	width: 100%;
+	position: absolute;
+	top: clamp(-72px, -5vw, -32px);
+	right: clamp(-40px, -2.5vw, -16px);
+	width: clamp(150px, 46vw, 340px);
 	height: auto;
-	aspect-ratio: 1;
-	border-radius: var(--hu-about-radius);
+	aspect-ratio: 3 / 4;
 	object-fit: cover;
-	border: 1px solid var(--hu-about-line);
+	object-position: 50% 22%;
 }
 
-.hu-about__hero-body {
-	display: grid;
-	gap: var(--space-4);
+.hu-about__hero-inner {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 0 var(--space-6);
+	/* Haelt den Namen frei vom angeschnittenen Portrait. */
+	padding-top: clamp(200px, 58vw, 320px);
 }
 
 .hu-about__h1 {
-	font-family: 'Satoshi', 'Figtree', -apple-system, sans-serif;
-	font-size: clamp(2.25rem, 6vw, 3.75rem);
-	font-weight: 800;
-	line-height: var(--leading-tight, 1.15);
-	letter-spacing: -0.01em;
 	margin: 0;
+	font-family: var(--font-display, 'Satoshi'), 'Figtree', -apple-system, sans-serif;
+	font-weight: 700;
+	/* Gesperrt und in Versalien wie das Footer-Logo (.site-logo). Satoshi
+	   Variable liegt bereits im Preload — kein zusaetzlicher Font. */
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	font-size: clamp(2.25rem, 10vw, 7rem);
+	line-height: 1.02;
 	color: var(--hu-about-ink);
-	text-wrap: balance;
+	/* Sperrung erzeugt rechts eine Leerstelle hinter dem letzten Zeichen. */
+	margin-right: -0.18em;
 }
 
 .hu-about__lead {
-	margin: 0;
+	margin: var(--space-6) 0 0;
 	font-size: clamp(1.0625rem, 2.2vw, 1.375rem);
-	font-weight: 300;
+	font-weight: 400;
 	line-height: var(--leading-normal, 1.55);
 	color: var(--hu-about-ink-soft);
 	max-width: var(--measure-base, 60ch);
@@ -85,56 +104,72 @@
 }
 
 /* -----------------------------------------------------------
-   2 — Vier Stationen: gleichwertig, kein Zeitstrahl
+   2 — Stationen: durchgehendes Band, einziger Farbbruch.
+   Karten ohne eigenen Hintergrund, nur senkrechte Trennlinien.
+
+   Kontrast gegen hsl(28 12% 12%) (#221E1B), gerechnet:
+     Creme  #fbfaf8        15,9:1  (AA/AAA Text)
+     Soft   hsl(30 8% 82%) 10,9:1  (AA/AAA Text)
+     Linie  36 % Weiss      3,3:1  (AA fuer grafische Objekte, 1.4.11)
+   32 % waeren 2,9:1 und damit knapp darunter — nicht senken.
 ----------------------------------------------------------- */
+.hu-about__band {
+	background-color: var(--hu-about-band-bg);
+	color: var(--hu-about-band-ink);
+	padding-block: clamp(var(--space-12), 8vw, var(--space-20));
+}
+
 .hu-about__station-grid {
 	list-style: none;
-	margin: 0;
-	padding: 0;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--space-6);
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: var(--space-5);
+	gap: var(--space-6);
 }
 
 .hu-about__station {
 	display: grid;
 	align-content: start;
 	gap: var(--space-2);
-	padding: var(--space-6);
-	background-color: var(--hu-about-surface);
-	border: 1px solid var(--hu-about-line);
-	border-radius: var(--hu-about-radius);
 }
 
-.hu-about__station-kicker {
-	font-family: 'JetBrains Mono', ui-monospace, monospace;
-	font-size: 0.75rem;
-	font-weight: 500;
-	letter-spacing: 0.16em;
-	text-transform: uppercase;
-	color: var(--hu-about-accent);
+.hu-about__station + .hu-about__station {
+	border-left: 1px solid var(--hu-about-band-line);
+	padding-left: var(--space-6);
+	margin-left: calc(var(--space-6) * -1 + var(--space-2));
+}
+
+.hu-about__station-figure {
+	margin: 0 0 var(--space-1);
+	font-family: var(--font-display, 'Satoshi'), 'Figtree', -apple-system, sans-serif;
+	font-size: clamp(2.75rem, 9vw, 3.5rem);
+	font-weight: 700;
+	line-height: 1.05;
+	letter-spacing: -0.02em;
+	color: var(--hu-about-band-ink);
 }
 
 .hu-about__station-title {
 	margin: 0;
-	font-family: 'Satoshi', 'Figtree', -apple-system, sans-serif;
-	font-size: 1.25rem;
-	font-weight: 700;
+	font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	font-size: 1rem;
+	font-weight: 600;
 	line-height: var(--leading-snug, 1.3);
-	letter-spacing: -0.01em;
-	color: var(--hu-about-ink);
+	color: var(--hu-about-band-ink);
 }
 
 .hu-about__station-text {
 	margin: 0;
-	font-size: 0.9375rem;
+	font-size: 0.875rem;
 	line-height: var(--leading-normal, 1.55);
-	color: var(--hu-about-ink-soft);
+	color: var(--hu-about-band-ink-soft);
 	text-wrap: pretty;
 }
 
 /* -----------------------------------------------------------
-   3 — Kompetenzraster: ein Wort je Kachel, Icon dekorativ
+   3 — Kompetenzraster: bleibt zurueckhaltend
 ----------------------------------------------------------- */
 .hu-about__skill-grid {
 	list-style: none;
@@ -169,33 +204,32 @@
 }
 
 /* -----------------------------------------------------------
-   4 — Haltung: abgesetzter Kasten, drei Saetze
+   4 — Haltung: Serif, groesser als Fliesstext, kein Kasten
 ----------------------------------------------------------- */
-.hu-about__stance {
-	padding: clamp(var(--space-6), 4vw, var(--space-10));
-	background-color: var(--hu-about-surface);
-	border: 1px solid var(--hu-about-line);
-	border-left: 3px solid var(--hu-about-accent);
-	border-radius: var(--hu-about-radius);
-}
-
 .hu-about__stance-text {
 	margin: 0;
-	font-size: clamp(1rem, 1.6vw, 1.1875rem);
-	line-height: var(--leading-relaxed, 1.7);
+	font-family: var(--hu-about-serif);
+	font-size: clamp(1.25rem, 2.4vw, 1.625rem);
+	line-height: 1.6;
 	color: var(--hu-about-ink);
-	max-width: var(--measure-wide, 75ch);
+	/* 48ch ergibt in Georgia gemessene ~60 Zeichen je Zeile. */
+	max-width: 48ch;
 	text-wrap: pretty;
 }
 
 /* -----------------------------------------------------------
-   5 — CTA: ein Button, zwei Textlinks
+   5 — CTA: zwei Ausgaenge, danach die leisen Kontaktwege
 ----------------------------------------------------------- */
 .hu-about__cta {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--space-4) var(--space-8);
+	display: grid;
+	justify-items: start;
+	gap: var(--space-3);
+}
+
+.hu-about__cta-note {
+	margin: 0;
+	font-size: 0.875rem;
+	color: var(--hu-about-ink-soft);
 }
 
 .hu-about__cta-btn {
@@ -210,29 +244,51 @@
 	font-size: 1rem;
 	font-weight: 600;
 	text-decoration: none;
-	transition:
-		background-color var(--duration-fast, 120ms) var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1)),
-		transform var(--duration-fast, 120ms) var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1));
+	transition: background-color var(--duration-fast, 120ms) var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .hu-about__cta-btn:hover {
 	background-color: var(--hu-about-accent-strong);
-	transform: translateY(-1px);
+}
+
+.hu-about__cta-secondary {
+	margin: var(--space-2) 0 0;
+	font-size: 1rem;
+}
+
+/* Bewusst im Textfluss statt als Flex-Zeile: als inline-flex riss der Link
+   auf Mobil in zwei Spalten auf, mit dem Pfeil allein am rechten Rand. */
+.hu-about__cta-secondary a {
+	color: var(--hu-about-accent-strong);
+	/* 600 statt 500: der 500er-Schnitt waere sonst die einzige Stelle, die
+	   ihn braucht — eine weitere Font-Datei auf dem kritischen Pfad. */
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 4px;
+}
+
+.hu-about__cta-secondary a:hover {
+	color: var(--hu-about-ink);
+}
+
+/* Pfeil und Ziel bleiben zusammen, egal wo die Zeile bricht. */
+.hu-about__cta-target {
+	white-space: nowrap;
 }
 
 .hu-about__cta-links {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--space-2) var(--space-6);
-	margin: 0;
-	font-size: 0.9375rem;
+	gap: 0 var(--space-6);
+	margin: var(--space-4) 0 0;
+	font-size: 0.875rem;
 }
 
 .hu-about__cta-links a {
 	display: inline-flex;
 	align-items: center;
 	min-height: 44px;
-	color: var(--hu-about-accent-strong);
+	color: var(--hu-about-ink-soft);
 	text-decoration: underline;
 	text-underline-offset: 3px;
 }
@@ -245,6 +301,10 @@
 	outline: 2px solid var(--hu-about-accent-strong);
 	outline-offset: 3px;
 	border-radius: var(--radius-sm, 4px);
+}
+
+.hu-about__band :is(a):focus-visible {
+	outline-color: var(--hu-about-band-ink);
 }
 
 /* -----------------------------------------------------------
@@ -271,34 +331,42 @@ html.hu-about-anim .hu-about [data-hu-reveal].is-in {
 /* -----------------------------------------------------------
    Breakpoints
 ----------------------------------------------------------- */
+@media (min-width: 901px) {
+	/* Vierspaltig muss "70 € → 26 €" einzeilig in die Spalte passen:
+	   gemessen 262 px bei 47,5 px Schriftgroesse, verfuegbar 246 px. */
+	.hu-about__station-figure {
+		font-size: clamp(2.25rem, 3vw, 2.75rem);
+	}
+
+	/* Der Name laeuft unter dem angeschnittenen Portrait ueber die volle
+	   Spaltenbreite — deshalb keine rechte Reserve, nur Hoehe. */
+	.hu-about__hero-inner {
+		padding-top: clamp(300px, 27vw, 420px);
+	}
+}
+
 @media (max-width: 900px) {
 	.hu-about__station-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--space-10);
+	}
+
+	.hu-about__station + .hu-about__station {
+		border-left: 0;
+		border-top: 1px solid var(--hu-about-band-line);
+		padding-left: 0;
+		padding-top: var(--space-10);
+		margin-left: 0;
 	}
 }
 
 @media (max-width: 620px) {
-	.hu-about__hero {
-		grid-template-columns: minmax(0, 120px) minmax(0, 1fr);
-		gap: var(--space-5);
-	}
-
-	.hu-about__station-grid {
-		grid-template-columns: minmax(0, 1fr);
-	}
-
-	/* Zwei Spalten, weil "Automatisierung" in einer Drittel-Spalte mitten im
-	   Wort bricht. Die fuenfte Kachel nimmt die letzte Zeile ganz. */
 	.hu-about__skill-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
 	.hu-about__skill:last-child {
 		grid-column: 1 / -1;
-	}
-
-	.hu-about__cta {
-		gap: var(--space-5);
 	}
 
 	.hu-about__cta-btn {
@@ -319,9 +387,5 @@ html.hu-about-anim .hu-about [data-hu-reveal].is-in {
 
 	.hu-about__cta-btn {
 		transition: none;
-	}
-
-	.hu-about__cta-btn:hover {
-		transform: none;
 	}
 }
