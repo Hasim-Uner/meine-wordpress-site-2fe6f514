@@ -1,0 +1,327 @@
+/* =============================================================
+   Personenseite /hasim-uener/ — fuenf Bloecke, keine Story-Strecke.
+   Scoped auf .hu-about.
+
+   Farbwelt und Typografie sind die der bisherigen Ueber-Seite
+   (helles Creme zwischen dunklem Header und Footer, Satoshi /
+   Figtree / JetBrains Mono). Abstaende kommen aus der geteilten
+   Skala in design-system.css, nicht aus eigenen Werten.
+   ============================================================= */
+
+.hu-about {
+	--hu-about-bg: #fbfaf8;
+	--hu-about-surface: #f7f5f0;
+	--hu-about-ink: #1a1a1a;
+	--hu-about-ink-soft: rgba(26, 26, 26, 0.72);
+	--hu-about-accent: #8c6239;
+	--hu-about-accent-strong: #734f2d;
+	--hu-about-line: rgba(140, 98, 57, 0.22);
+	--hu-about-radius: 10px;
+
+	position: relative;
+	isolation: isolate;
+	background-color: var(--hu-about-bg);
+	color: var(--hu-about-ink);
+	font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	line-height: var(--leading-normal, 1.55);
+
+	background-image:
+		linear-gradient(to right, rgba(140, 98, 57, 0.03) 1px, transparent 1px),
+		linear-gradient(to bottom, rgba(140, 98, 57, 0.03) 1px, transparent 1px);
+	background-size: 40px 40px;
+}
+
+.hu-about__inner {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: clamp(var(--space-12), 8vw, var(--space-24)) var(--space-6);
+	display: grid;
+	gap: clamp(var(--space-12), 7vw, var(--space-20));
+}
+
+/* -----------------------------------------------------------
+   1 — Hero: Portrait links, Name und ein Satz rechts
+----------------------------------------------------------- */
+.hu-about__hero {
+	display: grid;
+	grid-template-columns: minmax(0, 168px) minmax(0, 1fr);
+	align-items: center;
+	gap: clamp(var(--space-6), 4vw, var(--space-10));
+}
+
+.hu-about__portrait {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 1;
+	border-radius: var(--hu-about-radius);
+	object-fit: cover;
+	border: 1px solid var(--hu-about-line);
+}
+
+.hu-about__hero-body {
+	display: grid;
+	gap: var(--space-4);
+}
+
+.hu-about__h1 {
+	font-family: 'Satoshi', 'Figtree', -apple-system, sans-serif;
+	font-size: clamp(2.25rem, 6vw, 3.75rem);
+	font-weight: 800;
+	line-height: var(--leading-tight, 1.15);
+	letter-spacing: -0.01em;
+	margin: 0;
+	color: var(--hu-about-ink);
+	text-wrap: balance;
+}
+
+.hu-about__lead {
+	margin: 0;
+	font-size: clamp(1.0625rem, 2.2vw, 1.375rem);
+	font-weight: 300;
+	line-height: var(--leading-normal, 1.55);
+	color: var(--hu-about-ink-soft);
+	max-width: var(--measure-base, 60ch);
+	text-wrap: pretty;
+}
+
+/* -----------------------------------------------------------
+   2 — Vier Stationen: gleichwertig, kein Zeitstrahl
+----------------------------------------------------------- */
+.hu-about__station-grid {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--space-5);
+}
+
+.hu-about__station {
+	display: grid;
+	align-content: start;
+	gap: var(--space-2);
+	padding: var(--space-6);
+	background-color: var(--hu-about-surface);
+	border: 1px solid var(--hu-about-line);
+	border-radius: var(--hu-about-radius);
+}
+
+.hu-about__station-kicker {
+	font-family: 'JetBrains Mono', ui-monospace, monospace;
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--hu-about-accent);
+}
+
+.hu-about__station-title {
+	margin: 0;
+	font-family: 'Satoshi', 'Figtree', -apple-system, sans-serif;
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: var(--leading-snug, 1.3);
+	letter-spacing: -0.01em;
+	color: var(--hu-about-ink);
+}
+
+.hu-about__station-text {
+	margin: 0;
+	font-size: 0.9375rem;
+	line-height: var(--leading-normal, 1.55);
+	color: var(--hu-about-ink-soft);
+	text-wrap: pretty;
+}
+
+/* -----------------------------------------------------------
+   3 — Kompetenzraster: ein Wort je Kachel, Icon dekorativ
+----------------------------------------------------------- */
+.hu-about__skill-grid {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: var(--space-3);
+}
+
+.hu-about__skill {
+	display: grid;
+	justify-items: center;
+	align-content: center;
+	gap: var(--space-2);
+	padding: var(--space-5) var(--space-3);
+	border: 1px solid var(--hu-about-line);
+	border-radius: var(--hu-about-radius);
+	text-align: center;
+}
+
+.hu-about__skill-icon {
+	display: block;
+	color: var(--hu-about-accent);
+}
+
+.hu-about__skill-label {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	color: var(--hu-about-ink);
+}
+
+/* -----------------------------------------------------------
+   4 — Haltung: abgesetzter Kasten, drei Saetze
+----------------------------------------------------------- */
+.hu-about__stance {
+	padding: clamp(var(--space-6), 4vw, var(--space-10));
+	background-color: var(--hu-about-surface);
+	border: 1px solid var(--hu-about-line);
+	border-left: 3px solid var(--hu-about-accent);
+	border-radius: var(--hu-about-radius);
+}
+
+.hu-about__stance-text {
+	margin: 0;
+	font-size: clamp(1rem, 1.6vw, 1.1875rem);
+	line-height: var(--leading-relaxed, 1.7);
+	color: var(--hu-about-ink);
+	max-width: var(--measure-wide, 75ch);
+	text-wrap: pretty;
+}
+
+/* -----------------------------------------------------------
+   5 — CTA: ein Button, zwei Textlinks
+----------------------------------------------------------- */
+.hu-about__cta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-4) var(--space-8);
+}
+
+.hu-about__cta-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 48px;
+	padding: var(--space-3) var(--space-8);
+	border-radius: var(--radius-full, 9999px);
+	background-color: var(--hu-about-accent);
+	color: #fff;
+	font-size: 1rem;
+	font-weight: 600;
+	text-decoration: none;
+	transition:
+		background-color var(--duration-fast, 120ms) var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1)),
+		transform var(--duration-fast, 120ms) var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.hu-about__cta-btn:hover {
+	background-color: var(--hu-about-accent-strong);
+	transform: translateY(-1px);
+}
+
+.hu-about__cta-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2) var(--space-6);
+	margin: 0;
+	font-size: 0.9375rem;
+}
+
+.hu-about__cta-links a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	color: var(--hu-about-accent-strong);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.hu-about__cta-links a:hover {
+	color: var(--hu-about-ink);
+}
+
+.hu-about :is(a, .hu-about__cta-btn):focus-visible {
+	outline: 2px solid var(--hu-about-accent-strong);
+	outline-offset: 3px;
+	border-radius: var(--radius-sm, 4px);
+}
+
+/* -----------------------------------------------------------
+   Motion: nur die vier Stationen, nacheinander.
+   Gleiche Utility-Basis wie [data-sol-reveal] auf der
+   Solar-Lead-Seite: der versteckte Ausgangszustand haengt an der
+   Gate-Klasse html.hu-about-anim, die das Seiten-JS erst nach
+   Reduced-Motion- und IntersectionObserver-Pruefung setzt. Ohne
+   JS ist jede Karte sofort sichtbar.
+----------------------------------------------------------- */
+html.hu-about-anim .hu-about [data-hu-reveal] {
+	opacity: 0;
+	transform: translateY(16px);
+	transition:
+		opacity 0.5s ease-out var(--hu-about-delay, 0ms),
+		transform 0.5s ease-out var(--hu-about-delay, 0ms);
+}
+
+html.hu-about-anim .hu-about [data-hu-reveal].is-in {
+	opacity: 1;
+	transform: none;
+}
+
+/* -----------------------------------------------------------
+   Breakpoints
+----------------------------------------------------------- */
+@media (max-width: 900px) {
+	.hu-about__station-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 620px) {
+	.hu-about__hero {
+		grid-template-columns: minmax(0, 120px) minmax(0, 1fr);
+		gap: var(--space-5);
+	}
+
+	.hu-about__station-grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	/* Zwei Spalten, weil "Automatisierung" in einer Drittel-Spalte mitten im
+	   Wort bricht. Die fuenfte Kachel nimmt die letzte Zeile ganz. */
+	.hu-about__skill-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.hu-about__skill:last-child {
+		grid-column: 1 / -1;
+	}
+
+	.hu-about__cta {
+		gap: var(--space-5);
+	}
+
+	.hu-about__cta-btn {
+		width: 100%;
+	}
+}
+
+/* -----------------------------------------------------------
+   Reduced Motion: Ausgangszustaende hart aus, auch wenn die
+   Gate-Klasse bereits gesetzt ist.
+----------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+	html.hu-about-anim .hu-about [data-hu-reveal] {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.hu-about__cta-btn {
+		transition: none;
+	}
+
+	.hu-about__cta-btn:hover {
+		transform: none;
+	}
+}

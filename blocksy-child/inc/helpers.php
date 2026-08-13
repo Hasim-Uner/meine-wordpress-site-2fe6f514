@@ -575,8 +575,8 @@ function nexus_get_primary_public_url_map() {
 		'tools'                => $request_url,
 		'performance_analysis' => $request_url,
 		'about'                => nexus_get_page_url(
-			[ 'uber-mich' ],
-			home_url( '/uber-mich/' )
+			[ 'hasim-uener', 'uber-mich' ],
+			home_url( '/hasim-uener/' )
 		),
 		'contact'              => function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' ),
 		'impressum'            => nexus_get_page_url(
@@ -1183,6 +1183,67 @@ function nexus_maybe_ensure_case_study_page() {
 add_action( 'init', 'nexus_maybe_ensure_case_study_page', 27 );
 
 /**
+ * Ensure the person page lives on /hasim-uener/ with the current template.
+ *
+ * Der Slug wechselt von /uber-mich/ auf die ASCII-Form ohne Umlaut. Umbenennen
+ * statt neu anlegen: die Seite ist redaktionell gepflegt, ihre ID haengt an
+ * Menue-Eintraegen und internen Verweisen. Erst wenn gar keine Seite existiert,
+ * wird eine angelegt — sonst waere die Route nach einem Datenbank-Reset weg.
+ *
+ * Das Template wird hier gesetzt, weil die alte Auswahl (template-about.php
+ * bzw. template-about-editorial.php) als Post-Meta gespeichert war und sonst
+ * auf eine geloeschte Datei zeigen wuerde.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_about_page() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+
+	$page_id = nexus_get_page_id( [ 'hasim-uener' ] );
+
+	if ( ! $page_id ) {
+		$legacy_page = get_page_by_path( 'uber-mich' );
+
+		if ( $legacy_page instanceof WP_Post ) {
+			$page_id = wp_update_post(
+				wp_slash(
+					[
+						'ID'        => (int) $legacy_page->ID,
+						'post_name' => 'hasim-uener',
+					]
+				),
+				true
+			);
+		} else {
+			$page_id = wp_insert_post(
+				wp_slash(
+					[
+						'post_type'    => 'page',
+						'post_status'  => 'publish',
+						'post_title'   => 'Haşim Üner',
+						'post_name'    => 'hasim-uener',
+						'post_content' => '',
+						'post_excerpt' => 'Personenseite: Stationen, Kompetenzen und Arbeitsweise von Haşim Üner.',
+					]
+				),
+				true
+			);
+		}
+
+		if ( is_wp_error( $page_id ) || ! $page_id ) {
+			return;
+		}
+	}
+
+	if ( 'page-hasim-uener.php' !== (string) get_post_meta( (int) $page_id, '_wp_page_template', true ) ) {
+		update_post_meta( (int) $page_id, '_wp_page_template', 'page-hasim-uener.php' );
+	}
+}
+add_action( 'init', 'nexus_maybe_ensure_about_page', 27 );
+
+/**
  * Ensure the intercept landing page exists on /solar-leads-kaufen-alternative/.
  *
  * @return void
@@ -1553,6 +1614,11 @@ function nexus_get_legacy_offer_redirect_map() {
 	$energy_url  = nexus_get_energy_systems_url();
 	$portal_url  = home_url( '/eigene-leadgenerierung-vs-portale/' );
 	$case_study_url = nexus_get_primary_public_url( 'e3', home_url( '/case-study-solar-leadgenerierung/' ) );
+	// Aufgeloest statt hart verdrahtet: solange der Seeder die Seite noch nicht
+	// umbenannt hat, zeigt der Resolver auf /uber-mich/ — der Pfadvergleich in
+	// nexus_redirect_legacy_offer_paths() unterdrueckt die Weiterleitung dann,
+	// statt in eine Schleife oder auf eine 404 zu laufen.
+	$about_url   = nexus_get_primary_public_url( 'about', home_url( '/hasim-uener/' ) );
 
 	return [
 		// High-probability external entry paths. Internal/historical tool,
@@ -1564,6 +1630,8 @@ function nexus_get_legacy_offer_redirect_map() {
 		'/wordpress-tech-audit/'     => $request_url,
 		'/wordpress-agentur/'        => $agentur_url,
 		'/alle-loesungen-im-detail/' => nexus_get_page_url( [ 'alle-loesungen' ], home_url( '/alle-loesungen/' ) ),
+		// Personenseite: alter Slug mit Umlaut-Ersatz auf die ASCII-Route.
+		'/uber-mich/'                => $about_url,
 		// Anonymized case study: old company-named slugs redirect to the anonymized slug.
 		'/e3-new-energy/'              => $case_study_url,
 		'/case-e3/'                    => $case_study_url,
@@ -1784,8 +1852,7 @@ function nexus_should_hide_footer_primary_cta() {
 	}
 
 	$page_templates = [
-		'template-about.php',
-		'template-about-editorial.php',
+		'page-hasim-uener.php',
 		'page-wordpress-agentur.php',
 		'page-wordpress-agentur-hannover.php',
 		'page-case-studies-e-commerce.php',
@@ -1814,7 +1881,7 @@ function nexus_should_hide_footer_primary_cta() {
 
 	return is_page(
 		[
-			'uber-mich',
+			'hasim-uener',
 			'wordpress-agentur',
 			'wordpress-agentur-hannover',
 			'case-studies-e-commerce',

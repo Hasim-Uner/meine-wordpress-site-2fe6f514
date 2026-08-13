@@ -24,7 +24,7 @@ $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_ge
 $tracking_url = $primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' );
 $cwv_url      = $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' );
 $cro_url      = $primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#methode' );
-$about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
+$about_url    = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
 $seo_url      = $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' );
 $paid_url     = $primary_urls['performance_marketing'] ?? home_url( '/performance-marketing/' );
 
@@ -331,7 +331,7 @@ $service_schema = [
 		'name'        => 'Haşim Üner — Anfragesysteme für Solar & Wärmepumpe',
 		'url'         => home_url( '/' ),
 		'founder'     => [
-			'@id' => function_exists( 'hu_person_schema_id' ) ? hu_person_schema_id() : home_url( '/uber-mich/#person' ),
+			'@id' => function_exists( 'hu_person_schema_id' ) ? hu_person_schema_id() : home_url( '/hasim-uener/#person' ),
 		],
 	],
 	'audience'    => [

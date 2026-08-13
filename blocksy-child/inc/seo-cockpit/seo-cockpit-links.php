@@ -299,7 +299,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 				$primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
 				$primary_urls['results'] ?? home_url( '/ergebnisse/' ),
 				$primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#methode' ),
-				$primary_urls['about'] ?? home_url( '/uber-mich/' ),
+				$primary_urls['about'] ?? home_url( '/hasim-uener/' ),
 				$contact_url,
 				$primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
 				$primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' ),
@@ -357,7 +357,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 		);
 	}
 
-	if ( 'template-about.php' === $template || 'uber-mich' === $post_slug ) {
+	if ( 'page-hasim-uener.php' === $template || 'hasim-uener' === $post_slug ) {
 		$links = array_merge(
 			$links,
 			[
@@ -503,7 +503,7 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 	$cwv_url          = $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' );
 	$tracking_url     = $primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' );
 	$tools_url        = $primary_urls['tools'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-	$about_url        = $primary_urls['about'] ?? home_url( '/uber-mich/' );
+	$about_url        = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
 	$contact_url      = $primary_urls['contact'] ?? home_url( '/kontakt/' );
 	$implementation_url = add_query_arg(
 		[

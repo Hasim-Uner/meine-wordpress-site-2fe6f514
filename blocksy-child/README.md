@@ -35,7 +35,7 @@ blocksy-child/
 ├── category.php               ← Pillar Hub (Kategorie als Content-Cluster)
 ├── 404.php                    ← Fehlerseite mit Suche + Top-Links
 ├── page-*.php                 ← Service- und Proof-Landingpages (Audit, SEO, CWV, CRO, GA4, Case Studies, …)
-├── template-about.php         ← Über-Mich-Seite
+├── page-hasim-uener.php       ← Personenseite /hasim-uener/
 ├── template-portal.php        ← Client Portal (noindex)
 ├── assets/
 │   ├── css/                   ← Modulare Stylesheets pro Seitentyp

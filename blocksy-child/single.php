@@ -578,7 +578,7 @@ get_template_part( 'template-parts/blog-header' );
 						<?php esc_html_e( 'Marktcheck starten', 'blocksy-child' ); ?>
 					</a>
 					<?php endif; ?>
-					<?php $about_url = function_exists( 'nexus_get_page_url' ) ? nexus_get_page_url( [ 'uber-mich', 'ueber-mich', 'ueber-hasim' ], home_url( '/uber-mich/' ) ) : home_url( '/uber-mich/' ); ?>
+					<?php $about_url = function_exists( 'nexus_get_page_url' ) ? nexus_get_page_url( [ 'hasim-uener', 'uber-mich' ], home_url( '/hasim-uener/' ) ) : home_url( '/hasim-uener/' ); ?>
 					<a
 						href="<?php echo esc_url( $about_url ); ?>"
 						class="nexus-author-bio__link"

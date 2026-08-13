@@ -17,6 +17,37 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action( 'wp_enqueue_scripts', 'hu_enqueue_assets', 20 );
 
 /**
+ * Determine whether the current request renders the person page.
+ *
+ * @return bool
+ */
+function hu_is_person_page() {
+	return is_page_template( 'page-hasim-uener.php' ) || is_page( 'hasim-uener' );
+}
+
+/**
+ * Drop the core block stylesheet on the person page.
+ *
+ * Die Seite hat keinen Editor-Inhalt — das Markup kommt vollstaendig aus
+ * page-hasim-uener.php, Header und Footer sind eigene Template-Parts. Das
+ * Block-Stylesheet blockiert das Rendering trotzdem mit ~13 KB, von denen
+ * Lighthouse 99,8 % als ungenutzt misst. Bewusst nur diese eine Route und
+ * bewusst nur wp-block-library: die Inline-Variablen aus theme.json und
+ * die Blocksy-Styles bleiben unangetastet.
+ *
+ * @return void
+ */
+function hu_dequeue_block_library_on_person_page() {
+	if ( ! hu_is_person_page() ) {
+		return;
+	}
+
+	wp_dequeue_style( 'wp-block-library' );
+	wp_dequeue_style( 'wp-block-library-theme' );
+}
+add_action( 'wp_enqueue_scripts', 'hu_dequeue_block_library_on_person_page', 100 );
+
+/**
  * Enqueue all theme styles and scripts conditionally.
  *
  * @return void
@@ -214,15 +245,12 @@ function hu_enqueue_assets() {
 		' );
 	}
 
-	// ── E) Template: Über Mich ────────────────────────────────────
-	if ( is_page_template( 'template-about.php' ) ) {
-		hu_enqueue_css( 'nexus-about-css', 'about-page.css', [ 'nexus-design-system' ] );
-		hu_enqueue_js( 'nexus-about-js', 'about-page.js', [] );
-	}
-
-	// ── E1) Template: Über Mich (Editorial Variante) ──────────────
-	if ( is_page_template( 'template-about-editorial.php' ) ) {
-		hu_enqueue_css( 'nexus-about-editorial-css', 'about-editorial.css', [ 'nexus-design-system' ] );
+	// ── E) Personenseite /hasim-uener/ ────────────────────────────
+	// Slug-Route statt Template-Auswahl: die beiden alten Ueber-Mich-
+	// Templates sind entfallen, die Seite haengt jetzt am Dateinamen.
+	if ( hu_is_person_page() ) {
+		hu_enqueue_css( 'nexus-about-css', 'hasim-uener.css', [ 'nexus-design-system' ] );
+		hu_enqueue_js( 'nexus-about-js', 'hasim-uener.js', [] );
 	}
 
 	// ── E2) Kontakt ───────────────────────────────────────────────

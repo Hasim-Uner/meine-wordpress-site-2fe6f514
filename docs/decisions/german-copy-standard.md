@@ -23,7 +23,7 @@ ASCII-only forms are acceptable for:
 
 Examples:
 
-- `/uber-mich/`
+- `/hasim-uener/`
 - `page-datenschutz.php`
 - `nexus_get_page_url()`
 

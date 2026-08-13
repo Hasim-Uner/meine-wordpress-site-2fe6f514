@@ -222,9 +222,9 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Kontakt & Projektanfrage | Haşim Üner',
 				'description' => 'Projekt oder Frage kurz einordnen: ein Formular, händisch geprüfte Rückmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Vertriebsteam.',
 			],
-			'uber-mich' => [
-				'title'       => 'Über Haşim Üner | Solar-Anfragesysteme',
-				'description' => 'Haşim Üner baut eigene Anfragesysteme für Solar- und Wärmepumpen-Anbieter: weg von gemieteten Portal-Leads, hin zu eigener Infrastruktur.',
+			'hasim-uener' => [
+				'title'       => 'Haşim Üner | Websites, die Anfragen produzieren',
+				'description' => 'Haşim Üner aus Pattensen bei Hannover baut Websites, die Anfragen produzieren — und die Technik dahinter: WordPress, Tracking, Ads, CRO, Automatisierung.',
 			],
 			// 'wgos' / 'wordpress-growth-operating-system' sowie Tool-/Audit-Legacy-Routen:
 			// Seiten sind noindex, sitemap-excluded oder geschuetzte 301-Einstiege,
@@ -688,7 +688,11 @@ function hu_is_e3_methodology_case_page() {
  * @return array<string, string>
  */
 function hu_get_canonical_author_person() {
-	return [ '@id' => home_url( '/uber-mich/#person' ) ];
+	// Eine Quelle fuer die Person-@id: sonst zeigt die Autoren-Referenz nach
+	// einem Slug-Wechsel auf einen Knoten, den es im Graph nicht mehr gibt.
+	return function_exists( 'hu_person_schema_id' )
+		? [ '@id' => hu_person_schema_id() ]
+		: [ '@id' => home_url( '/hasim-uener/#person' ) ];
 }
 
 /**

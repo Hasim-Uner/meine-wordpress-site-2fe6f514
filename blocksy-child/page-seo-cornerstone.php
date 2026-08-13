@@ -437,7 +437,7 @@ get_header();
 			: [
 				'@type' => 'Person',
 				'name'  => $author_name,
-				'url'   => home_url( '/uber-mich/' ),
+				'url'   => home_url( '/hasim-uener/' ),
 			];
 
 		$article_schema = [

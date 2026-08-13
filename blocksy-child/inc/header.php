@@ -116,7 +116,7 @@ function nexus_is_primary_header_menu_args( $args ) {
  * @return array<int, array<string, mixed>>
  */
 function nexus_get_site_header_fallback_items() {
-	$about_page_id = nexus_get_page_id( [ 'uber-mich' ] );
+	$about_page_id = nexus_get_page_id( [ 'hasim-uener', 'uber-mich' ] );
 	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$solar_url    = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
@@ -149,7 +149,7 @@ function nexus_get_site_header_fallback_items() {
 		],
 		[
 			'label'  => __( 'Über Haşim', 'blocksy-child' ),
-			'url'    => $primary_urls['about'] ?? home_url( '/uber-mich/' ),
+			'url'    => $primary_urls['about'] ?? home_url( '/hasim-uener/' ),
 			'active' => $about_page_id ? is_page( $about_page_id ) : false,
 			'class'  => '',
 			'track'  => 'about',
