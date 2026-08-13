@@ -1,6 +1,6 @@
 ---
 name: modern-web-guidance
-description: Use GoogleChrome/modern-web-guidance before frontend work in this WordPress child theme: HTML templates, CSS, vanilla JavaScript, forms, accessibility, browser APIs, Core Web Vitals, and progressive enhancement.
+description: "Use GoogleChrome/modern-web-guidance before frontend work in this WordPress child theme: HTML templates, CSS, vanilla JavaScript, forms, accessibility, browser APIs, Core Web Vitals, and progressive enhancement."
 ---
 
 # Modern Web Guidance

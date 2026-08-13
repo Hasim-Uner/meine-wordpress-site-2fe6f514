@@ -3,8 +3,6 @@ name: seo-agent
 description: >
   SEO dispatcher that routes to the right sub-skill based on the task.
   Use this skill for any SEO-related work instead of picking a sub-skill manually.
-context: light
-preload: none
 ---
 
 # SEO Agent

@@ -2,10 +2,9 @@
 
 # Stop-Hook fuer Claude Code.
 #
-# Repo-Policy (CLAUDE.md): Aenderungen gehen direkt auf `main`, ein PR ist die
-# Ausnahme. Dieser Hook meldet am Ende einer Antwort, wenn Arbeit noch nicht
-# dort gelandet ist — als Hinweis, nicht als Blocker. Er schreibt nichts und
-# pusht nichts.
+# Die gemeinsame Git-/Deploy-Policy steht in AGENTS.md. Dieser Hook meldet am
+# Ende einer Antwort unveroeffentlichte oder noch nicht integrierte Arbeit — als
+# Hinweis, nicht als Freigabe oder Blocker. Er schreibt und pusht nichts.
 #
 # Ausgabe: JSON mit systemMessage (sichtbar fuer den Nutzer) und
 # additionalContext (geht zurueck ins Modell).
@@ -33,16 +32,17 @@ notes=()
 if [ "$branch" = "main" ]; then
   ahead="$(count_against_main)"
   if [ "${ahead:-0}" -gt 0 ] 2>/dev/null; then
-    notes+=("$ahead Commit(s) auf main sind noch nicht gepusht. Push auf main loest den Deploy aus.")
+    notes+=("$ahead Commit(s) auf main sind noch nicht gepusht. Ein Push auf main kann bei CI-erfassten Pfaden nach erfolgreichen Checks den Deploy ausloesen.")
   fi
 else
   unmerged="$(count_against_main)"
   if [ "${unmerged:-0}" -gt 0 ] 2>/dev/null; then
-    notes+=("Branch '$branch' traegt $unmerged Commit(s), die nicht auf main sind. Repo-Policy ist direkt auf main (CLAUDE.md); ein PR ist die Ausnahme fuer Aenderungen, deren Ergebnis man auf der Live-Seite nicht sehen kann.")
+    notes+=("Branch '$branch' traegt $unmerged Commit(s), die nicht auf main sind. Vor dem Veroeffentlichen gilt die gemeinsame Git-/PR-Policy aus AGENTS.md.")
   fi
 fi
 
-if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null; then
+status_porcelain="$(git status --porcelain --untracked-files=normal 2>/dev/null || true)"
+if [ -n "$status_porcelain" ]; then
   notes+=("Es liegen uncommittete Aenderungen im Arbeitsverzeichnis.")
 fi
 
@@ -51,7 +51,16 @@ fi
 msg="$(printf '%s ' "${notes[@]}")"
 msg="${msg% }"
 
-jq -n --arg m "$msg" '{
-  systemMessage: $m,
-  hookSpecificOutput: { hookEventName: "Stop", additionalContext: $m }
-}'
+json_escape() {
+  local value="$1"
+  value="${value//\\/\\\\}"
+  value="${value//\"/\\\"}"
+  value="${value//$'\n'/\\n}"
+  value="${value//$'\r'/\\r}"
+  value="${value//$'\t'/\\t}"
+  printf '%s' "$value"
+}
+
+escaped_msg="$(json_escape "$msg")"
+printf '{"systemMessage":"%s","hookSpecificOutput":{"hookEventName":"Stop","additionalContext":"%s"}}\n' \
+  "$escaped_msg" "$escaped_msg"

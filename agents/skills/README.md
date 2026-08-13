@@ -1,8 +1,12 @@
 # Agent Skills Index
 
-This directory contains the repo-specific agent skills. Use `agents/skills/CONTEXT.md` as the routing table before opening individual skills.
+This directory contains the repo-specific agent skills. For skill authoring or
+unclear routing, use `agents/skills/CONTEXT.md` as the one local context;
+otherwise follow `AGENTS.md` and load only the matching skill.
 
-All skills are also exposed to Claude Code via symlinks in `.claude/skills/`, so Claude Code auto-discovers them as invocable skills. `agents/skills/` stays the single source of truth; edit skills here, never in `.claude/skills/`.
+All skills are exposed through symlinks in `.agents/skills/` for Codex and
+`.claude/skills/` for Claude Code. `agents/skills/` stays the single source of
+truth; edit skills here, never through either discovery directory.
 
 ## High-priority routing
 

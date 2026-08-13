@@ -7,6 +7,10 @@ Scope: `agents/skills/`.
 - One skill per directory.
 - Required: `SKILL.md`.
 - Optional: `scripts/`, `references/`, `guides/`, `agents/`.
+- Keep `agents/skills/` as the single source of truth. Every skill directory must
+  have a same-named relative symlink in both `.agents/skills/` for Codex and
+  `.claude/skills/` for Claude Code.
+- Never edit skill content through either symlink directory.
 - Keep `SKILL.md` short: trigger, first command, hard rules, deliverable.
 - Move repeated checklists, scaffolds, and scans into scripts.
 - Keep large `guides/` trees out of default context; retrieve or open only task-matching guides.

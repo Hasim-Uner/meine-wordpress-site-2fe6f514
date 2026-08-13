@@ -14,6 +14,23 @@ Global contract for agents in this repo. Keep context small: read this file, the
    - Skill work: `agents/skills/CONTEXT.md`
 3. Only the files needed for the task.
 
+## Skill Routing
+
+- `agents/skills/` is the canonical skill source for every agent host.
+- Codex discovers the skills through `.agents/skills/`; Claude Code discovers
+  the same skills through `.claude/skills/`. Both directories contain symlinks
+  only; never edit a skill through an exposure path.
+- Select and load the matching `agents/skills/<skill>/SKILL.md` before
+  implementation. Use `agents/skills/CONTEXT.md` as the one local context when
+  the task is skill work or routing is unclear.
+- For broad website, SEO, offer, tracking, CRO, landing-page, lead-generation,
+  or content-automation work, start with
+  `agents/skills/wordpress-performance-marketing/scripts/render-checklist.sh full`.
+- For frontend HTML, CSS, JavaScript, forms, accessibility, or Core Web Vitals,
+  also load `modern-web-guidance` before implementation.
+- Keep changes small, reviewable, and limited to one coherent intent per commit
+  or PR.
+
 ## Token Rules
 
 - Start with `rg --files`; avoid broad `find .` unless excluding generated/ignored paths.
@@ -51,6 +68,52 @@ These files cost more context than a whole task should. Locate the relevant line
 - Diagnosis/analysis canon: `blocksy-child/inc/canon/diagnose-canon.php`
 - Analyse before implementation pitch. Clarity before feature count.
 - Do not reintroduce broad agency wording when it weakens the diagnosis-first funnel.
+- Do not assume RankMath; use the custom WordPress SEO Cockpit where relevant.
+- Do not reintroduce Shopify as a current service focus unless the task is
+  explicitly about legacy cleanup.
+
+## Evidence and Measurement Defaults
+
+- Prefer repo-verifiable findings over generic marketing advice.
+- Never invent keyword volumes, rankings, Search Console clicks, analytics
+  numbers, GA4 events, or conversion data.
+- Mark assumptions clearly. Report missing evidence; add a placeholder only
+  when it belongs to the requested deliverable.
+- Never commit secrets or API keys. Do not add analytics IDs, cookies, pixels,
+  consent code, or third-party scripts unless explicitly requested.
+- Tracking plans may use neutral event names and `data-track-*` attributes, but
+  runtime tracking changes must be explicit and kept separate from planning.
+
+## Workstream and Audit Protocol
+
+- Classify work as strategy, docs/agent instructions, theme/template, backend,
+  WordPress admin/editor, analytics, or external platform. Keep code changes and
+  manual tasks separate when a request crosses workstreams.
+- Do not touch live-critical theme, deployment, hosting, or generated assets
+  during planning-only work or without explicit scope.
+- Preserve the existing project language, positioning, and architecture.
+- For repo audits, report findings under `Critical`, `High leverage`, `Polish`,
+  `Manual WordPress tasks`, and `Agent tasks / repo tasks` as applicable.
+- In audits, distinguish repo fixes from editor, SEO Cockpit, WordPress admin,
+  analytics, and external-platform work.
+
+## Git, PR, and Deploy
+
+- Publishing requires explicit scope. When publishing is requested, `main` is
+  the default target for small, reversible changes unless the task requests a
+  branch or the risk rules below require a PR.
+- Prefer a PR for non-visual contracts or data-writing changes such as tracking
+  and GA4 event names, REST contracts, schema, registry or seeder versions, and
+  for large, hard-to-reverse `blocksy-child/` changes.
+- A `main` push that matches the CI path filters can start the production deploy
+  after successful checks; a failed CI run must not deploy the live site. The
+  deploy builds and rsyncs `blocksy-child/`.
+- Workflow files, build scripts, and package configuration outside
+  `blocksy-child/` can still affect deployment output. Instruction and research
+  paths such as `agents/`, `docs/`, and `seo-research/` are not copied into the
+  deployed child theme.
+- After a merged PR, start new work from updated `main`; do not keep using the
+  squash-merged branch.
 
 ## Sonderrouten & Schatten-Templates
 
@@ -108,3 +171,5 @@ data-track-section=""
 - Runtime behavior, route status, or deploy scope changes: update `docs/architecture/LIVE_STATUS.md`.
 - Cross-system contracts or dependencies change: update `docs/architecture/SYSTEM_MAP.md`.
 - New repetitive workflow: add/update `agents/skills/<skill>/SKILL.md` plus scripts.
+- Skill added or removed: keep matching symlinks in both `.agents/skills/` and
+  `.claude/skills/` synchronized with `agents/skills/`.
