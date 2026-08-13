@@ -11,6 +11,10 @@
  * nexus_maybe_ensure_about_page() in inc/helpers.php benennt die alte
  * Seite um und setzt dieses Template.
  *
+ * Bloecke 1, 2 und 4 haengen direkt an .hu-about statt am Inhalts-
+ * container: Hero und Stationen-Band brauchen die volle Breite fuer
+ * Anschnitt und Farbbruch.
+ *
  * @package Blocksy_Child
  */
 
@@ -18,17 +22,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$request_url  = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-// Dasselbe Portrait wie auf der Startseite, nur zusaetzlich in Darstellungs-
-// groesse: 384 px deckt beide Spaltenbreiten bis DPR 3 ab, die 760er Variante
-// bleibt fuer alles darueber. Ohne das laedt Mobil 52 KB fuer 120 CSS-Pixel.
-$portrait_url     = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait-384.webp';
-$portrait_srcset  = sprintf(
-	'%1$s/assets/img/hasim-portrait-384.webp 384w, %1$s/assets/img/hasim-portrait-760.webp 760w',
+$request_url    = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+$whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
+$linkedin_url   = 'https://www.linkedin.com/in/hasim-%C3%BCner/';
+$mail_address   = 'hasim@hasimuener.de';
+
+// Portrait im 3:4-Ausschnitt, weil der Hero es oben und rechts anschneidet.
+// Zwei Groessen: 400 deckt Mobil und 1x-Desktop, 800 die Retina-Faelle.
+$portrait_url    = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait-400x533.webp';
+$portrait_srcset = sprintf(
+	'%1$s/assets/img/hasim-portrait-400x533.webp 400w, %1$s/assets/img/hasim-portrait-800x1067.webp 800w',
 	get_stylesheet_directory_uri()
 );
-$linkedin_url = 'https://www.linkedin.com/in/hasim-%C3%BCner/';
-$mail_address = 'hasim@hasimuener.de';
 
 // Der Prozentwert kommt aus dem E3-Canon, damit eine Korrektur dort auch hier
 // ankommt. Bewusst ohne das "ueber" der Canon-Display-Form: auf dieser Seite
@@ -36,32 +41,29 @@ $mail_address = 'hasim@hasimuener.de';
 $e3_cpl_reduction_percent = defined( 'HU_E3_CPL_REDUCTION_PERCENT' ) ? (int) HU_E3_CPL_REDUCTION_PERCENT : 85;
 
 // Vier gleichwertige Stationen, kein Zeitstrahl. Reihenfolge ist die
-// Lesereihenfolge und zugleich die Reveal-Reihenfolge.
+// Lesereihenfolge und zugleich die Reveal-Reihenfolge. Die Kennzahl steht als
+// eigene Display-Zeile ueber Titel und Satz; geschuetzte Leerzeichen halten
+// Wert und Einheit zusammen, damit die Einheit nicht allein umbricht.
 $about_stations = [
 	[
-		'kicker' => '8 Jahre',
+		'figure' => '8 Jahre',
 		'title'  => 'B2B-Vertrieb',
 		'text'   => 'Ich weiß, wie eine Anfrage klingt, aus der ein Auftrag wird.',
 	],
 	[
-		'kicker' => 'Studium',
+		'figure' => 'Studium',
 		'title'  => 'Medienwissenschaft',
 		'text'   => 'Seitdem baue ich Websites. Schwerpunkt webbasierte Systeme.',
 	],
 	[
-		'kicker' => 'Eigener Onlineshop',
-		'title'  => 'D2C, eigenes Geld',
-		// Geschuetzte Leerzeichen: sonst rutscht das Euro-Zeichen allein in die
-		// naechste Zeile, sobald die Karte schmal wird.
-		'text'   => "Kosten pro Bestellung von 70\u{00A0}€ auf 26\u{00A0}€ gesenkt.",
+		'figure' => "70\u{00A0}€ → 26\u{00A0}€",
+		'title'  => 'Eigener Onlineshop',
+		'text'   => 'Kosten pro Bestellung. D2C, auf eigenes Geld.',
 	],
 	[
-		'kicker' => 'Heute',
-		'title'  => 'Anfrage-Systeme',
-		'text'   => sprintf(
-			"Kosten pro Anfrage um %d\u{00A0}%% gesenkt, bei einem mittelständischen PV-Installationsbetrieb.",
-			$e3_cpl_reduction_percent
-		),
+		'figure' => sprintf( "%d\u{00A0}%%", $e3_cpl_reduction_percent ),
+		'title'  => 'Anfrage-Systeme, heute',
+		'text'   => 'Weniger Kosten pro Anfrage, bei einem mittelständischen PV-Installationsbetrieb.',
 	],
 ];
 
@@ -95,43 +97,44 @@ get_header();
 
 <main id="main" class="site-main">
 	<div class="hu-about" data-track-section="about_page">
+
+		<!-- 1 — HERO -->
+		<header class="hu-about__hero">
+			<img
+				class="hu-about__portrait"
+				src="<?php echo esc_url( $portrait_url ); ?>"
+				srcset="<?php echo esc_attr( $portrait_srcset ); ?>"
+				sizes="(max-width: 900px) 46vw, 340px"
+				alt="Haşim Üner"
+				width="400"
+				height="533"
+				fetchpriority="high"
+				decoding="async"
+			>
+			<div class="hu-about__hero-inner">
+				<h1 class="hu-about__h1">Haşim Üner</h1>
+				<p class="hu-about__lead">Ich baue Websites, die Anfragen produzieren — und die Technik dahinter. Pattensen bei Hannover.</p>
+			</div>
+		</header>
+
+		<!-- 2 — VIER STATIONEN -->
+		<section class="hu-about__band" aria-label="Stationen">
+			<ul class="hu-about__station-grid" role="list">
+				<?php foreach ( $about_stations as $index => $station ) : ?>
+					<li
+						class="hu-about__station"
+						data-hu-reveal
+						style="--hu-about-delay: <?php echo (int) ( $index * 90 ); ?>ms"
+					>
+						<p class="hu-about__station-figure"><?php echo esc_html( $station['figure'] ); ?></p>
+						<h2 class="hu-about__station-title"><?php echo esc_html( $station['title'] ); ?></h2>
+						<p class="hu-about__station-text"><?php echo esc_html( $station['text'] ); ?></p>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</section>
+
 		<div class="hu-about__inner">
-
-			<!-- 1 — HERO -->
-			<header class="hu-about__hero">
-				<img
-					class="hu-about__portrait"
-					src="<?php echo esc_url( $portrait_url ); ?>"
-					srcset="<?php echo esc_attr( $portrait_srcset ); ?>"
-					sizes="(max-width: 620px) 120px, 168px"
-					alt="Haşim Üner"
-					width="384"
-					height="384"
-					fetchpriority="high"
-					decoding="async"
-				>
-				<div class="hu-about__hero-body">
-					<h1 class="hu-about__h1">Haşim Üner</h1>
-					<p class="hu-about__lead">Ich baue Websites, die Anfragen produzieren — und die Technik dahinter. Pattensen bei Hannover.</p>
-				</div>
-			</header>
-
-			<!-- 2 — VIER STATIONEN -->
-			<section class="hu-about__stations" aria-label="Stationen">
-				<ul class="hu-about__station-grid" role="list">
-					<?php foreach ( $about_stations as $index => $station ) : ?>
-						<li
-							class="hu-about__station"
-							data-hu-reveal
-							style="--hu-about-delay: <?php echo (int) ( $index * 90 ); ?>ms"
-						>
-							<span class="hu-about__station-kicker"><?php echo esc_html( $station['kicker'] ); ?></span>
-							<h2 class="hu-about__station-title"><?php echo esc_html( $station['title'] ); ?></h2>
-							<p class="hu-about__station-text"><?php echo esc_html( $station['text'] ); ?></p>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</section>
 
 			<!-- 3 — KOMPETENZRASTER -->
 			<section class="hu-about__skills" aria-label="Kompetenzen">
@@ -164,8 +167,9 @@ get_header();
 				</p>
 			</section>
 
-			<!-- 5 — CTA -->
+			<!-- 5 — CTA: zwei Ausgaenge, danach die leisen Kontaktwege -->
 			<section class="hu-about__cta">
+				<p class="hu-about__cta-note">Sie betreiben selbst einen Solar- oder Wärmepumpenbetrieb</p>
 				<a
 					class="hu-about__cta-btn"
 					href="<?php echo esc_url( $request_url ); ?>"
@@ -173,6 +177,14 @@ get_header();
 					data-track-category="lead_gen"
 					data-track-section="about_cta"
 				>Marktcheck anfragen</a>
+				<p class="hu-about__cta-secondary">
+					<a
+						href="<?php echo esc_url( $whitelabel_url ); ?>"
+						data-track-action="link_about_whitelabel"
+						data-track-category="lead_gen"
+						data-track-section="about_cta"
+					>Sie sind Agentur und suchen Umsetzung <span class="hu-about__cta-target"><span aria-hidden="true">→</span> White-Label</span></a>
+				</p>
 				<p class="hu-about__cta-links">
 					<a
 						href="<?php echo esc_url( $linkedin_url ); ?>"
