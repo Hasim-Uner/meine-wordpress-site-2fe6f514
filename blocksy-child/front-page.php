@@ -4,7 +4,8 @@
  *
  * Architektur:
  *   - Hero: Leitmotiv links + animierte SVG-Pipeline (Blueprint) rechts.
- *   - Gateway-Band (3 Weichen) direkt unter dem Hero.
+ *   - Gateway-Band direkt unter dem Hero: nur die beiden Einstiege der
+ *     Hero-Zielgruppe. Alle vier Wege stehen im Final-Routing (Sektion 10).
  *   - Sektionen 02–10: Verlust-Raster, Prozess-Kaskade, System-Phasen,
  *     Case-Study-Proof, Portal-Chaos vs. Daten-Integrität, About, FAQ,
  *     Vertiefung, Final Routing.
@@ -47,7 +48,7 @@ $whitelabel_url    = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_
 // Portrait als WebP in Darstellungsgroesse (380px @2x) statt des 625-KB-Palette-PNG.
 $portrait_url      = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait-760.webp';
 
-/* ── Routing-Tabelle: 3 Gateways ───────────────────────── */
+/* ── Routing-Tabelle: 4 Gateways, zwei Sichten ─────────── */
 $home_routing_gateways = [
 	'marktcheck' => [
 		'badge'   => 'G1',
@@ -95,6 +96,14 @@ $home_routing_gateways = [
 	],
 ];
 
+/* ── Zwei Sichten auf dieselben Karten ─────────────────── */
+// Direkt unter dem Hero stehen nur die beiden Einstiege, die zur H1 passen.
+// Agentur und White-Label adressieren andere Zielgruppen und warten bis zum
+// Final-Routing — sonst konkurrieren im ersten Bildschirmdrittel sechs Ziele
+// mit dem primaeren CTA. Die Karteninhalte bleiben eine einzige Quelle.
+$home_gateways_band  = [ 'marktcheck', 'proof' ];
+$home_gateways_final = array_keys( $home_routing_gateways );
+
 /* ── 6 System-Phasen (strukturgleich zu page-wordpress-agentur.php) ── */
 $home_system_phases = [
 	[ 'num' => '01', 'title' => 'Strategie',         'desc' => 'Welche Seite trägt welche Anfrage — und welche nicht.' ],
@@ -127,8 +136,83 @@ $home_process_cascade = [
 	],
 ];
 
+/* ── FAQ: eine Quelle für sichtbaren Text und FAQPage-Schema ── */
+// Vorher lagen die Fragen als Markup im Template. Der Schema-Pfad in
+// inc/org-schema.php liest aber aus Post-Meta, also aus Editor-Inhalt — die
+// sieben Fragen standen damit sichtbar auf der Seite und in keinem
+// strukturierten Datum. Muster übernommen von der Solar-Money-Page.
+$home_faq_items = [
+	[
+		'question' => 'Wie läuft der Marktcheck konkret ab und wie lange dauert er?',
+		'answer'   => sprintf(
+			'%d Schritte, %s: %d Auswahlfragen zu Leistungsfokus, Projekt-Fit, Vertriebsverantwortung und Umsetzungshorizont, danach Ihre geschäftlichen Eckdaten. Den händisch geprüften Befund zu Domain, Region, Vertrieb und Anfragequalität erhalten Sie per E-Mail — %s. Kein automatisches Standard-PDF, sondern eine Einordnung mit klarer Empfehlung für oder gegen den nächsten Schritt.',
+			$mc_steps,
+			$mc_duration,
+			$mc_fit_questions,
+			hu_marketcheck_reply_label()
+		),
+	],
+	[
+		'question' => 'Bauen Sie nur eine Website oder kümmern Sie sich auch um den Traffic?',
+		'answer'   => 'Beides — als ein System. Die Website ist nur die Mechanik. Tracking, gezielte Vorqualifizierung und Werbekanal-Steuerung gehören zur selben Architektur, sonst bleibt der Betrieb in Portal-Leads gefangen.',
+	],
+	[
+		'question' => 'Was kostet das Ganze?',
+		'answer'   => sprintf(
+			'Der Marktcheck ist vorgeschaltet und prüft zuerst, ob Region, Projektwert und Vertriebskapazität zum Anfragesystem passen. Der Aufbau danach liegt bei %s einmalig, dazu rund %s im Monat für Hosting und Wartung. Über 24 Monate sind das %s. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten im selben Zeitraum ca. 26.000 €. Media-Budget, laufende Optimierung und interner Vertriebsaufwand sind eigene Kostenbausteine und in keiner der beiden Zahlen enthalten. Was günstiger ist, entscheidet der Marktcheck — das Eigentum am System bleibt in jedem Fall beim Betrieb.',
+			hu_foundation_price_display(),
+			hu_foundation_hosting_display(),
+			hu_foundation_total_display( 24 )
+		),
+	],
+	[
+		'question' => 'Warum nicht einfach eine Marketing-Agentur beauftragen?',
+		'answer'   => 'Weil dabei meist zwei getrennte Dinge entstehen: eine Website und geschaltete Anzeigen. Was fehlt, ist die Verbindung dazwischen — die Zuordnung, welche Anzeige die Anfrage gebracht hat, aus der ein Auftrag wurde. Genau diese Verbindung ist hier die Leistung, nicht das Design. Dazu kommt: Die Systemlogik liegt versioniert in Ihrem Repository, der Zugang zu Tracking und Daten bleibt bei Ihnen. Wenn wir auseinandergehen, läuft das System weiter. Dafür bin ich der teurere Weg, wenn ein Betrieb nur eine hübschere Website braucht — dann ist eine Agentur die richtige Wahl.',
+	],
+	[
+		'question' => 'Wie lange dauert es bis zu den ersten Anfragen?',
+		'answer'   => sprintf( 'Bei einem mittelständischen PV-Installationsbetrieb: erste qualifizierte Anfragen nach 4–6 Wochen, voller Effekt nach %s. Schnellere Versprechen sind unseriös — Abschlussquoten verlangen einen sauberen Trichter, nicht nur ein Logo-Update.', $e3_timeframe ),
+	],
+	[
+		'question' => 'Bin ich gebunden?',
+		'answer'   => 'Nein. Kein Knebelvertrag. Wir starten mit einer Analyse, dann entscheiden beide — Sie, ob es sich lohnt; ich, ob die Architektur passt. Die Kapazität ist bewusst begrenzt, damit jedes Projekt 1:1 begleitet wird.',
+	],
+	[
+		'question' => 'Arbeiten Sie auch mit bestehenden Websites?',
+		'answer'   => 'Ja, wenn die Substanz reicht. Manchmal ist ein Money-Page-Slot auf einer bestehenden Domain der schnellere Hebel als ein kompletter Relaunch. Das klärt der Marktcheck.',
+	],
+];
+
+$home_faq_schema = [
+	'@context'   => 'https://schema.org',
+	'@type'      => 'FAQPage',
+	'@id'        => home_url( '/' ) . '#faq',
+	'url'        => home_url( '/' ) . '#faq',
+	'inLanguage' => 'de',
+	'mainEntity' => [],
+];
+
+foreach ( $home_faq_items as $home_faq_item ) {
+	$home_faq_schema['mainEntity'][] = [
+		'@type'          => 'Question',
+		'name'           => $home_faq_item['question'],
+		'acceptedAnswer' => [
+			'@type' => 'Answer',
+			'text'  => $home_faq_item['answer'],
+		],
+	];
+}
+
 /* ── Themen-Hub: ausgelagertes Array (Token-Optimierung) ── */
 $homepage_deeper_clusters = include get_stylesheet_directory() . '/inc/wgos/home-deeper-clusters.php';
+// Anzahl zaehlen statt schreiben: die Copy stand auf "acht", waehrend der Hub
+// laengst zehn Seiten fuehrte.
+$homepage_deeper_count = array_sum( array_map(
+	static function ( $cluster ) {
+		return isset( $cluster['items'] ) && is_array( $cluster['items'] ) ? count( $cluster['items'] ) : 0;
+	},
+	$homepage_deeper_clusters
+) );
 
 get_header();
 ?>
@@ -172,7 +256,7 @@ get_header();
 						Case Study ansehen
 					</a>
 				</div>
-				<p class="hu-hero__cta-note hu-hero__cta-note--trust"><?php echo esc_html( hu_marketcheck_length_label() ); ?> · keine Zahlungsdaten · kein Newsletter · kein Pitch-Deck — persönlich geprüfte Rückmeldung in 48 Stunden.</p>
+				<p class="hu-hero__cta-note hu-hero__cta-note--trust"><?php echo esc_html( hu_marketcheck_length_label() ); ?> · keine Zahlungsdaten · kein Newsletter · kein Pitch-Deck — persönlich geprüfte Rückmeldung in <?php echo esc_html( hu_marketcheck_reply_label( true ) ); ?>.</p>
 				<p class="hu-hero__cta-note">Keine neue Website auf Verdacht: Sie bekommen eine Einordnung zu Region, Setup und Anfragequalität — mit klarer Empfehlung, ob sich der Aufbau lohnt oder noch nicht.</p>
 
 				<div class="hu-hero__stats">
@@ -317,12 +401,12 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     01b / GATEWAY-BAND — Die 3 Routen
+	     01b / GATEWAY-BAND — die beiden Einstiege zur Hero-Zielgruppe
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--gateways" id="gateways" data-track-section="01">
 		<div class="hu-container">
 			<div class="hu-gateways hu-gateways--band hu-reveal" data-track-section="01">
-				<?php foreach ( $home_routing_gateways as $key => $gw ) : ?>
+				<?php foreach ( $home_gateways_band as $key ) : $gw = $home_routing_gateways[ $key ]; ?>
 					<a class="hu-gateway hu-gateway--<?php echo esc_attr( $key ); ?>"
 					   href="<?php echo esc_url( $gw['url'] ); ?>"
 					   data-track-action="<?php echo esc_attr( $gw['action'] ); ?>"
@@ -375,8 +459,8 @@ get_header();
 					<div class="hu-loss-card__title">Der Kunde gehört nicht Ihnen</div>
 					<div class="hu-loss-card__bracket">Das Portal-Dilemma</div>
 					<p class="hu-loss-card__body">
-						Wer Anfragen bei Portalen einkauft, teilt sich denselben Interessenten mit drei
-						Mitbewerbern und verhandelt über den Preis, bevor das Gespräch beginnt.
+						Wer Anfragen bei Portalen einkauft, entscheidet nicht selbst, wie oft derselbe
+						Interessent noch weitergegeben wird — das steht im Vertrag, nicht in Ihrer Hand.
 						<strong>Bezahlt wird jeden Monat neu — aufgebaut hat der Betrieb dabei nichts Eigenes.</strong>
 					</p>
 				</article>
@@ -522,14 +606,14 @@ get_header();
 						<div class="hu-sf-row-icon" aria-hidden="true">×</div>
 						<div class="hu-sf-row-content">
 							<div class="hu-sf-row-t">Portal-Lead</div>
-							<div class="hu-sf-row-d"><?php echo esc_html( $e3_cpl_before ); ?> · 3 Wettbewerber</div>
+							<div class="hu-sf-row-d"><?php echo esc_html( $e3_cpl_before ); ?> im dokumentierten Fall · Exklusivität laut Vertrag</div>
 						</div>
 					</div>
 					<div class="hu-sf-row">
 						<div class="hu-sf-row-icon" aria-hidden="true">×</div>
 						<div class="hu-sf-row-content">
 							<div class="hu-sf-row-t">Ads ohne Fit-Signal</div>
-							<div class="hu-sf-row-d">240 € CPA · Blindflug ohne Attribution</div>
+							<div class="hu-sf-row-d">Budget läuft · keine Zuordnung zum Auftrag</div>
 						</div>
 					</div>
 					<div class="hu-sf-row">
@@ -540,8 +624,8 @@ get_header();
 						</div>
 					</div>
 					<div class="hu-sf-cost">
-						<div class="hu-sf-cost-label">BEISPIELRECHNUNG / MONAT</div>
-						<div class="hu-sf-cost-num">~ 4.800 €</div>
+						<div class="hu-sf-cost-label">KOSTENLOGIK</div>
+						<div class="hu-sf-cost-num">Monatlich neu</div>
 					</div>
 				</div>
 
@@ -684,77 +768,18 @@ get_header();
 			</div>
 
 			<div class="hu-faq">
-
-				<div class="hu-faq-item is-open">
-					<button class="hu-faq-item__q" type="button" aria-expanded="true">
-						<span>Wie läuft der Marktcheck konkret ab und wie lange dauert er?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">−</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner"><?php echo esc_html( sprintf( '%d Schritte, %s: %d Auswahlfragen zu Leistungsfokus, Projekt-Fit, Vertriebsverantwortung und Umsetzungshorizont, danach Ihre geschäftlichen Eckdaten.', $mc_steps, $mc_duration, $mc_fit_questions ) ); ?> Den händisch geprüften Befund zu Domain, Region, Vertrieb und Anfragequalität erhalten Sie in der Regel innerhalb von 48 Stunden, spätestens 2 Werktagen, per E-Mail. Kein automatisches Standard-PDF, sondern eine Einordnung mit klarer Empfehlung für oder gegen den nächsten Schritt.</div>
+				<?php foreach ( $home_faq_items as $home_faq_index => $home_faq ) : ?>
+					<?php $home_faq_open = 0 === $home_faq_index; ?>
+					<div class="hu-faq-item<?php echo $home_faq_open ? ' is-open' : ''; ?>">
+						<button class="hu-faq-item__q" type="button" aria-expanded="<?php echo $home_faq_open ? 'true' : 'false'; ?>">
+							<span><?php echo esc_html( $home_faq['question'] ); ?></span>
+							<span class="hu-faq-item__icon" aria-hidden="true"><?php echo $home_faq_open ? "\u{2212}" : '+'; ?></span>
+						</button>
+						<div class="hu-faq-item__a">
+							<div class="hu-faq-item__a-inner"><?php echo esc_html( $home_faq['answer'] ); ?></div>
+						</div>
 					</div>
-				</div>
-
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button" aria-expanded="false">
-						<span>Bauen Sie nur eine Website oder kümmern Sie sich auch um den Traffic?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Beides — als ein System. Die Website ist nur die Mechanik. Tracking, gezielte Vorqualifizierung und Werbekanal-Steuerung gehören zur selben Architektur, sonst bleibt der Betrieb in Portal-Leads gefangen.</div>
-					</div>
-				</div>
-
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button" aria-expanded="false">
-						<span>Was kostet das Ganze?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner"><?php echo esc_html( sprintf( 'Der Marktcheck ist vorgeschaltet und prüft zuerst, ob Region, Projektwert und Vertriebskapazität zum Anfragesystem passen. Der Aufbau danach liegt bei %s einmalig, dazu rund %s im Monat für Hosting und Wartung. Über 24 Monate sind das %s. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten im selben Zeitraum ca. 26.000 €.', hu_foundation_price_display(), hu_foundation_hosting_display(), hu_foundation_total_display( 24 ) ) ); ?> Media-Budget, laufende Optimierung und interner Vertriebsaufwand sind eigene Kostenbausteine und in keiner der beiden Zahlen enthalten. Was günstiger ist, entscheidet der Marktcheck — das Eigentum am System bleibt in jedem Fall beim Betrieb.</div>
-					</div>
-				</div>
-
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button" aria-expanded="false">
-						<span>Warum nicht einfach eine Marketing-Agentur beauftragen?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Weil dabei meist zwei getrennte Dinge entstehen: eine Website und geschaltete Anzeigen. Was fehlt, ist die Verbindung dazwischen — die Zuordnung, welche Anzeige die Anfrage gebracht hat, aus der ein Auftrag wurde. Genau diese Verbindung ist hier die Leistung, nicht das Design. Dazu kommt: Die Systemlogik liegt versioniert in Ihrem Repository, der Zugang zu Tracking und Daten bleibt bei Ihnen. Wenn wir auseinandergehen, läuft das System weiter. Dafür bin ich der teurere Weg, wenn ein Betrieb nur eine hübschere Website braucht — dann ist eine Agentur die richtige Wahl.</div>
-					</div>
-				</div>
-
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button" aria-expanded="false">
-						<span>Wie lange dauert es bis zu den ersten Anfragen?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Bei einem mittelständischen PV-Installationsbetrieb: erste qualifizierte Anfragen nach 4–6 Wochen, voller Effekt nach 6 Monaten. Schnellere Versprechen sind unseriös — Abschlussquoten verlangen einen sauberen Trichter, nicht nur ein Logo-Update.</div>
-					</div>
-				</div>
-
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button" aria-expanded="false">
-						<span>Bin ich gebunden?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Nein. Kein Knebelvertrag. Wir starten mit einer Analyse, dann entscheiden beide — Sie, ob es sich lohnt; ich, ob die Architektur passt. Die Kapazität ist bewusst begrenzt, damit jedes Projekt 1:1 begleitet wird.</div>
-					</div>
-				</div>
-
-				<div class="hu-faq-item">
-					<button class="hu-faq-item__q" type="button" aria-expanded="false">
-						<span>Arbeiten Sie auch mit bestehenden Websites?</span>
-						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
-					</button>
-					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Ja, wenn die Substanz reicht. Manchmal ist ein Money-Page-Slot auf einer bestehenden Domain der schnellere Hebel als ein kompletter Relaunch. Das klärt der Marktcheck.</div>
-					</div>
-				</div>
-
+				<?php endforeach; ?>
 			</div>
 
 			<div style="text-align:center;margin-top:48px" class="hu-reveal">
@@ -776,7 +801,7 @@ get_header();
 				<span class="hu-eyebrow">09 / Vertiefung</span>
 				<h2 id="hu-deeper-h">Themen-Hub für tiefere Recherche.</h2>
 				<p style="max-width:62ch;margin:16px auto 0;color:var(--ink-2)">
-					Acht thematische Seiten zu Strategie, Lead-Qualität, Funnel-Architektur und Markteinordnung. Jede Seite steht für sich, alle führen zurück zum Marktcheck.
+					<?php echo esc_html( sprintf( '%d thematische Seiten', $homepage_deeper_count ) ); ?> zu Strategie, Lead-Qualität, Funnel-Architektur und Markteinordnung. Jede Seite steht für sich, alle führen zurück zum Marktcheck.
 				</p>
 			</div>
 
@@ -805,7 +830,7 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     10 / FINAL ROUTING — die 3 Gateways noch einmal.
+	     10 / FINAL ROUTING — hier alle vier Wege, auch die fremden Zielgruppen.
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section" id="cta" data-track-section="10">
 		<div class="hu-container">
@@ -817,7 +842,7 @@ get_header();
 				</div>
 
 				<div class="hu-gateways hu-gateways--final" data-track-section="10">
-					<?php foreach ( $home_routing_gateways as $key => $gw ) : ?>
+					<?php foreach ( $home_gateways_final as $key ) : $gw = $home_routing_gateways[ $key ]; ?>
 						<a class="hu-gateway hu-gateway--<?php echo esc_attr( $key ); ?>"
 						   href="<?php echo esc_url( $gw['url'] ); ?>"
 						   data-track-action="final_<?php echo esc_attr( $gw['action'] ); ?>"
@@ -853,5 +878,7 @@ get_header();
 	</section>
 
 </div><!-- .hu-hp -->
+
+<script type="application/ld+json"><?php echo wp_json_encode( $home_faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 
 <?php get_footer(); ?>

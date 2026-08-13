@@ -28,6 +28,12 @@ define( 'HU_MARKETCHECK_STEPS', 5 );
 define( 'HU_MARKETCHECK_FIT_QUESTIONS', 4 );
 define( 'HU_MARKETCHECK_MINUTES', 2 );
 
+// Antwortzeit auf den Marktcheck: Normalfall und Obergrenze gehoeren zusammen.
+// Getrennt gepflegt versprach die Startseite 48 Stunden und die Money Page nur
+// die 2 Werktage — dieselbe Zusage in zwei Staerken.
+define( 'HU_MARKETCHECK_REPLY_HOURS', 48 );
+define( 'HU_MARKETCHECK_REPLY_MAX_DAYS', 2 );
+
 define( 'HU_DEEP_DIAGNOSIS_PRICE', 1500 );
 define( 'HU_DEEP_DIAGNOSIS_DAYS', 30 );
 define( 'HU_DEEP_DIAGNOSIS_SCREENSHARE_MINUTES', 30 );
@@ -48,6 +54,8 @@ function hu_diagnose_canon() {
 		'marketcheck_steps'          => HU_MARKETCHECK_STEPS,
 		'marketcheck_fit_questions'  => HU_MARKETCHECK_FIT_QUESTIONS,
 		'marketcheck_minutes'        => HU_MARKETCHECK_MINUTES,
+		'marketcheck_reply_hours'    => HU_MARKETCHECK_REPLY_HOURS,
+		'marketcheck_reply_max_days' => HU_MARKETCHECK_REPLY_MAX_DAYS,
 		'primary_is_public_freebie'  => false,
 		'legacy_readiness_route'     => '/readiness-diagnose/',
 		'readiness_label'            => HU_REQUEST_ANALYSIS_LABEL,
@@ -88,6 +96,25 @@ function hu_marketcheck_duration_label() {
  */
 function hu_marketcheck_length_label() {
 	return sprintf( '%d Schritte · %s', HU_MARKETCHECK_STEPS, hu_marketcheck_duration_label() );
+}
+
+/**
+ * Display value for the marketcheck reply promise.
+ *
+ * Normal case and hard cap always travel together. Kept in one place because
+ * the promise appears on every route that sends traffic into the marketcheck,
+ * and the halves had already drifted apart across pages.
+ *
+ * @param bool $short Drop the leading "in der Regel" for tight lines.
+ * @return string
+ */
+function hu_marketcheck_reply_label( $short = false ) {
+	$normal = sprintf( '%d Stunden', HU_MARKETCHECK_REPLY_HOURS );
+	$cap    = sprintf( 'spätestens %d Werktage', HU_MARKETCHECK_REPLY_MAX_DAYS );
+
+	return $short
+		? sprintf( '%s, %s', $normal, $cap )
+		: sprintf( 'in der Regel %s, %s', $normal, $cap );
 }
 
 /**

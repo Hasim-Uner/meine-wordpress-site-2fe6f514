@@ -201,7 +201,7 @@ $guarantee_points = [
 	[
 		'e' => 'Befund',
 		't' => 'Marktcheck schafft Entscheidungsgrundlage',
-		's' => 'Händisch geprüfter Befund zu Betrieb und Region per E-Mail — spätestens 2 Werktage nach Eingang, mit Fit-Einschätzung und klarer Empfehlung für oder gegen den nächsten Schritt.',
+		's' => 'Händisch geprüfter Befund zu Betrieb und Region per E-Mail — ' . hu_marketcheck_reply_label() . ' nach Eingang, mit Fit-Einschätzung und klarer Empfehlung für oder gegen den nächsten Schritt.',
 	],
 	[
 		'e' => 'Abrat inklusive',
@@ -264,11 +264,11 @@ $deeper_clusters = [
 $faq_items = [
 	[
 		'question' => 'Wie läuft der Marktcheck konkret ab und wie lange dauert er?',
-		'answer'   => 'Fünf kurze Schritte in etwa 2 Minuten: Leistungsfokus, wirtschaftlicher Projekt-Fit, Vertriebsverantwortung, Umsetzungshorizont und anschließend Ihre geschäftlichen Eckdaten. Den händisch geprüften Fit-Befund zu Betrieb und Region erhalten Sie per E-Mail — spätestens 2 Werktage nach Eingang. Kein automatisierter Standardbericht, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
+		'answer'   => 'Fünf kurze Schritte in etwa 2 Minuten: Leistungsfokus, wirtschaftlicher Projekt-Fit, Vertriebsverantwortung, Umsetzungshorizont und anschließend Ihre geschäftlichen Eckdaten. Den händisch geprüften Fit-Befund zu Betrieb und Region erhalten Sie per E-Mail — ' . hu_marketcheck_reply_label() . ' nach Eingang. Kein automatisierter Standardbericht, sondern eine strategische Einordnung für Geschäftsführung und Vertriebsleitung.',
 	],
 	[
 		'question' => 'Was passiert nach dem Marktcheck?',
-		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich per E-Mail — spätestens 2 Werktage nach Eingang. Bei passendem Fit folgt ein Vorschlag für die Anfragesystem-Analyse oder, wenn das ausreicht, für den kleineren Sofortkontakt-Einstieg. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
+		'answer'   => 'Ich lese Ihre Antworten persönlich und melde mich per E-Mail — ' . hu_marketcheck_reply_label() . ' nach Eingang. Bei passendem Fit folgt ein Vorschlag für die Anfragesystem-Analyse oder, wenn das ausreicht, für den kleineren Sofortkontakt-Einstieg. Wenn der Fit nicht passt, sage ich das ehrlich und nenne Ihnen die realistischere Alternative.',
 	],
 	[
 		'question' => 'Welche Kostenbausteine gehören zum eigenen Anfragesystem?',
