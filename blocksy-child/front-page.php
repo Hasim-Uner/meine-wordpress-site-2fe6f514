@@ -23,6 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /* ── Datenbindungen ────────────────────────────────────── */
 $analysis_url      = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+
+// Länge und Preis des Marktchecks stehen im Canon, weil diese Seite sie
+// verspricht, bevor der Besucher das Formular auf der Money-Page sieht.
+$diagnose_canon    = function_exists( 'hu_diagnose_canon' ) ? hu_diagnose_canon() : [];
+$mc_minutes        = (int) ( $diagnose_canon['marketcheck_minutes'] ?? 2 );
+$mc_steps          = (int) ( $diagnose_canon['marketcheck_steps'] ?? 5 );
+$mc_fit_questions  = (int) ( $diagnose_canon['marketcheck_fit_questions'] ?? 4 );
+$mc_duration       = hu_marketcheck_duration_label();
 $e3_canon          = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_case_url       = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : home_url( '/case-study-solar-leadgenerierung/' );
 $e3_metrics        = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
@@ -44,7 +52,7 @@ $home_routing_gateways = [
 	'marktcheck' => [
 		'badge'   => 'G1',
 		'kicker'  => 'Sofort-Qualifizierung',
-		'title'   => 'Der 60-Sekunden-Marktcheck',
+		'title'   => sprintf( 'Der %d-Minuten-Marktcheck', $mc_minutes ),
 		'desc'    => 'Prüft, wo Portal-Abhängigkeit, Website, Tracking oder Vorqualifizierung aktuell qualifizierte Anfragen kosten.',
 		'url'     => $analysis_url,
 		'label'   => 'Leadkosten & Anfragesystem prüfen',
@@ -156,7 +164,7 @@ get_header();
 				<div class="hu-hero__ctas">
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 					   data-track-action="cta_home_hero_marktcheck" data-track-category="lead_gen" data-track-section="01">
-						Marktcheck starten — 60 Sekunden
+						Marktcheck starten — <?php echo esc_html( $mc_duration ); ?>
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
 					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-link"
@@ -164,7 +172,7 @@ get_header();
 						Case Study ansehen
 					</a>
 				</div>
-				<p class="hu-hero__cta-note hu-hero__cta-note--trust">60 Sekunden · keine Zahlungsdaten · kein Newsletter · kein Pitch-Deck — persönlich geprüfte Rückmeldung in 48 Stunden.</p>
+				<p class="hu-hero__cta-note hu-hero__cta-note--trust"><?php echo esc_html( hu_marketcheck_length_label() ); ?> · keine Zahlungsdaten · kein Newsletter · kein Pitch-Deck — persönlich geprüfte Rückmeldung in 48 Stunden.</p>
 				<p class="hu-hero__cta-note">Keine neue Website auf Verdacht: Sie bekommen eine Einordnung zu Region, Setup und Anfragequalität — mit klarer Empfehlung, ob sich der Aufbau lohnt oder noch nicht.</p>
 
 				<div class="hu-hero__stats">
@@ -683,7 +691,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">−</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Drei Klick-Schritte, rund 60 Sekunden Eingabe. Den händisch geprüften Befund zu Domain, Region, Vertrieb und Anfragequalität erhalten Sie in der Regel innerhalb von 48 Stunden, spätestens 2 Werktagen, per E-Mail. Kein automatisches Standard-PDF, sondern eine Einordnung mit klarer Empfehlung für oder gegen den nächsten Schritt.</div>
+						<div class="hu-faq-item__a-inner"><?php echo esc_html( sprintf( '%d Schritte, %s: %d Auswahlfragen zu Leistungsfokus, Projekt-Fit, Vertriebsverantwortung und Umsetzungshorizont, danach Ihre geschäftlichen Eckdaten.', $mc_steps, $mc_duration, $mc_fit_questions ) ); ?> Den händisch geprüften Befund zu Domain, Region, Vertrieb und Anfragequalität erhalten Sie in der Regel innerhalb von 48 Stunden, spätestens 2 Werktagen, per E-Mail. Kein automatisches Standard-PDF, sondern eine Einordnung mit klarer Empfehlung für oder gegen den nächsten Schritt.</div>
 					</div>
 				</div>
 
@@ -703,7 +711,7 @@ get_header();
 						<span class="hu-faq-item__icon" aria-hidden="true">+</span>
 					</button>
 					<div class="hu-faq-item__a">
-						<div class="hu-faq-item__a-inner">Der Marktcheck ist vorgeschaltet und prüft zuerst, ob Region, Projektwert und Vertriebskapazität zum Anfragesystem passen. Der Aufbau danach liegt — abhängig vom Setup — bei 12.000 – 18.000 € einmalig, dazu rund 50 € im Monat für Hosting und Wartung. Über 24 Monate sind das 13.200 – 19.200 €. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten im selben Zeitraum ca. 26.000 €. Weniger Kosten, dafür ein Asset, das bleibt.</div>
+						<div class="hu-faq-item__a-inner"><?php echo esc_html( sprintf( 'Der Marktcheck ist vorgeschaltet und prüft zuerst, ob Region, Projektwert und Vertriebskapazität zum Anfragesystem passen. Der Aufbau danach liegt bei %s einmalig, dazu rund %s im Monat für Hosting und Wartung. Über 24 Monate sind das %s. Zum Vergleich: Portal-Leads in derselben Größenordnung kosten im selben Zeitraum ca. 26.000 €.', hu_foundation_price_display(), hu_foundation_hosting_display(), hu_foundation_total_display( 24 ) ) ); ?> Media-Budget, laufende Optimierung und interner Vertriebsaufwand sind eigene Kostenbausteine und in keiner der beiden Zahlen enthalten. Was günstiger ist, entscheidet der Marktcheck — das Eigentum am System bleibt in jedem Fall beim Betrieb.</div>
 					</div>
 				</div>
 

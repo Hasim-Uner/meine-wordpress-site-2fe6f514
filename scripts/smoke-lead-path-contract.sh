@@ -31,12 +31,16 @@ SOLAR_JS="$ROOT/assets/js/solar-leadgenerierung-solara.js"
 CRM_PHP="$ROOT/inc/review-crm.php"
 COCKPIT_LEADS="$ROOT/inc/seo-cockpit/seo-cockpit-leads.php"
 COCKPIT_COMMAND="$ROOT/inc/seo-cockpit/seo-cockpit-command-center.php"
+DIAGNOSE_CANON="$ROOT/inc/canon/diagnose-canon.php"
+PRICING_CANON="$ROOT/inc/canon/pricing-canon.php"
 
 require_file "$CORE_JS"
 require_file "$SOLAR_JS"
 require_file "$CRM_PHP"
 require_file "$COCKPIT_LEADS"
 require_file "$COCKPIT_COMMAND"
+require_file "$DIAGNOSE_CANON"
+require_file "$PRICING_CANON"
 
 # Frontend attribution helper must still expose the fields consumed by the CRM.
 require_pattern "getLeadAttributionPayload" "$CORE_JS"
@@ -64,6 +68,22 @@ forbid_pattern "mapMarginLossToCplRange" "$SOLAR_JS"
 forbid_pattern "mapMarginLossToBottleneck" "$SOLAR_JS"
 require_pattern "no_owner" "$SOLAR_JS"
 require_pattern "no_owner" "$CRM_PHP"
+
+# Other routes promise the length of this intake before the visitor reaches it.
+# That promise reads from the diagnosis canon, so the canon has to keep matching
+# the form: the intake grew from three steps to five while the homepage, the
+# case study and the test route still advertised a sixty-second, three-step
+# marketcheck.
+js_steps="$(grep -cE "^[[:space:]]*key: '" "$SOLAR_JS")"
+canon_steps="$(grep -oE "define\( 'HU_MARKETCHECK_STEPS', [0-9]+" "$DIAGNOSE_CANON" | grep -oE '[0-9]+$')"
+[[ -n "$canon_steps" ]] || fail "missing HU_MARKETCHECK_STEPS in $DIAGNOSE_CANON"
+[[ "$js_steps" == "$canon_steps" ]] || fail "intake has $js_steps steps, HU_MARKETCHECK_STEPS says $canon_steps"
+
+# The build price may not live as literal copy in templates. It drifted once
+# already: the money page moved to the canon, three other routes kept quoting
+# the retired 12.000-18.000 range.
+require_pattern "HU_FOUNDATION_HOSTING_MONTHLY" "$PRICING_CANON"
+require_pattern "function hu_foundation_total_display" "$PRICING_CANON"
 
 # REST route, schema, sanitization and CRM meta persistence must remain wired.
 require_pattern "register_rest_route" "$CRM_PHP"

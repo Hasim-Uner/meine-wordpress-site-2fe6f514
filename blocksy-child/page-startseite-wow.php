@@ -105,7 +105,7 @@ get_header();
 				<div class="hu-wow-hero__actions">
 					<a href="<?php echo esc_url( $analysis_url ); ?>" class="hu-btn hu-btn-primary"
 						data-track-action="cta_wow_hero_marktcheck" data-track-category="lead_gen" data-track-section="wow_hero">
-						Marktcheck starten - 60 Sekunden
+						Marktcheck starten - <?php echo esc_html( hu_marketcheck_duration_label() ); ?>
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
 					<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-ghost"

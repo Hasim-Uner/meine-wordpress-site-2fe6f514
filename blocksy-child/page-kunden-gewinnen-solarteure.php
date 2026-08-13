@@ -112,7 +112,7 @@ $faq = [
 	],
 	[
 		'question' => 'Was kostet das System für einen mittelständischen Solar-Betrieb?',
-		'answer'   => 'Initiales Setup: 12.000 – 18.000 € einmalig. Laufend ca. 50 €/Monat Hochleistungs-Hosting. Über 24 Monate liegt die TCO meist unter dem, was viele Betriebe heute für Portal-Leads ausgeben – und das Asset bleibt im Eigentum.',
+		'answer'   => sprintf( 'Initiales Setup: %s einmalig. Laufend rund %s im Monat für Hochleistungs-Hosting, über 24 Monate also %s. Media-Budget, laufende Optimierung und Vertriebsaufwand sind eigene Kostenbausteine und darin nicht enthalten. Ob das günstiger ist als der laufende Portal-Einkauf, hängt von Anfragequalität und Abschlussquote ab – das Asset bleibt in jedem Fall im Eigentum.', hu_foundation_price_display(), hu_foundation_hosting_display(), hu_foundation_total_display( 24 ) ),
 	],
 ];
 

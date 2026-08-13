@@ -125,14 +125,14 @@ $tco_scenarios = [
 	[
 		'scope'    => '24 Monate (typisch B2B-Mittelstand)',
 		'rent'     => '~ 1.080 € / Monat × 24 Mon. ≈ 26.000 € Lead-Einkauf',
-		'own'      => '12.000 – 18.000 € Setup + ~ 50 € / Monat Hosting ≈ 13.200 – 19.200 €',
-		'delta'    => 'Eigenes System schont das Marketing-Budget – und das Asset bleibt nach Monat 24 vollständig im Betrieb.',
+		'own'      => sprintf( '%s Setup + ~ %s / Monat Hosting ≈ %s', hu_foundation_price_display(), hu_foundation_hosting_display(), hu_foundation_total_display( 24 ) ),
+		'delta'    => 'Gegenübergestellt sind nur Lead-Einkauf und Aufbau plus Hosting. Media-Budget, laufende Optimierung und Vertriebsaufwand fehlen auf beiden Seiten – das Asset bleibt nach Monat 24 im Betrieb.',
 	],
 	[
 		'scope'    => '36 Monate (mit Skalierung)',
 		'rent'     => '~ 1.080 € / Monat × 36 Mon. ≈ 39.000 € Lead-Einkauf bei sinkender Qualität',
-		'own'      => '12.000 – 18.000 € Setup + ~ 50 € / Monat Hosting ≈ 14.160 – 20.160 €',
-		'delta'    => 'Über 36 Monate beträgt die TCO-Differenz häufig den fünffachen Setup-Wert – plus dauerhaftes Eigentum am Anfragesystem.',
+		'own'      => sprintf( '%s Setup + ~ %s / Monat Hosting ≈ %s', hu_foundation_price_display(), hu_foundation_hosting_display(), hu_foundation_total_display( 36 ) ),
+		'delta'    => 'Der Abstand wächst mit jedem Monat Lead-Einkauf, weil der Aufbau einmalig anfällt. Ob daraus ein wirtschaftlicher Vorteil wird, entscheiden Anfragequalität und Abschlussquote – nicht diese Gegenüberstellung.',
 	],
 ];
 

@@ -227,7 +227,7 @@ $fit_no = [
 ];
 
 $cta_features = [
-	'Marktcheck in drei Schritten — rund 60 Sekunden Eingabe',
+	sprintf( 'Marktcheck in %d Schritten — %s Eingabe', (int) ( hu_diagnose_canon()['marketcheck_steps'] ?? 5 ), hu_marketcheck_duration_label() ),
 	'Händisch geprüfter Befund innerhalb von 48 Stunden per E-Mail',
 	'Einordnung von Anfrage-Quellen, Tracking und Vertriebsanschluss',
 	'Kein Pflicht-Termin, kein Pitch-Call',

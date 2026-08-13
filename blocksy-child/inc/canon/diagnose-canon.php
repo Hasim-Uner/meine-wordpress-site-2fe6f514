@@ -21,6 +21,13 @@ define( 'HU_REQUEST_ANALYSIS_DAYS', 7 );
 define( 'HU_REQUEST_ANALYSIS_OUTPUT_LABEL', 'schriftlicher Befund zu Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss' );
 define( 'HU_REQUEST_ANALYSIS_PRICE_LABEL', 'nur für passende Betriebe nach Potenzialcheck' );
 
+// Länge des Marktcheck-Intakes im Hero der Solar-Money-Page. Muss zu
+// QUIZ_STEPS in assets/js/solar-leadgenerierung-solara.js passen; der
+// Lead-Path-Smoke bricht ab, sobald Formular und Canon auseinanderlaufen.
+define( 'HU_MARKETCHECK_STEPS', 5 );
+define( 'HU_MARKETCHECK_FIT_QUESTIONS', 4 );
+define( 'HU_MARKETCHECK_MINUTES', 2 );
+
 define( 'HU_DEEP_DIAGNOSIS_PRICE', 1500 );
 define( 'HU_DEEP_DIAGNOSIS_DAYS', 30 );
 define( 'HU_DEEP_DIAGNOSIS_SCREENSHARE_MINUTES', 30 );
@@ -38,6 +45,9 @@ function hu_diagnose_canon() {
 		'primary_days'               => HU_REQUEST_ANALYSIS_DAYS,
 		'primary_output_label'       => HU_REQUEST_ANALYSIS_OUTPUT_LABEL,
 		'primary_price_label'        => HU_REQUEST_ANALYSIS_PRICE_LABEL,
+		'marketcheck_steps'          => HU_MARKETCHECK_STEPS,
+		'marketcheck_fit_questions'  => HU_MARKETCHECK_FIT_QUESTIONS,
+		'marketcheck_minutes'        => HU_MARKETCHECK_MINUTES,
 		'primary_is_public_freebie'  => false,
 		'legacy_readiness_route'     => '/readiness-diagnose/',
 		'readiness_label'            => HU_REQUEST_ANALYSIS_LABEL,
@@ -55,6 +65,29 @@ function hu_diagnose_canon() {
 		'access_policy'              => 'Kein Admin-Zugang in der Diagnose.',
 		'credit_policy'              => 'Anrechenbar auf die Umsetzung, wenn aus der Diagnose ein passender Umsetzungsfall wird.',
 	];
+}
+
+/**
+ * Display value for how long the marketcheck intake takes.
+ *
+ * @return string
+ */
+function hu_marketcheck_duration_label() {
+	return sprintf( 'etwa %d Minuten', HU_MARKETCHECK_MINUTES );
+}
+
+/**
+ * Display value for the length of the marketcheck intake.
+ *
+ * Entry points on other routes make this promise before the visitor ever
+ * sees the form, so both halves come from here. They used to be literal
+ * copy, and the intake grew to five steps while three routes still
+ * advertised a three-step, sixty-second marketcheck.
+ *
+ * @return string
+ */
+function hu_marketcheck_length_label() {
+	return sprintf( '%d Schritte · %s', HU_MARKETCHECK_STEPS, hu_marketcheck_duration_label() );
 }
 
 /**

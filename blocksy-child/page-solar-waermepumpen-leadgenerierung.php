@@ -135,7 +135,7 @@ $method_cards = [
 ];
 
 // 04 / Portal-Einkauf vs. Aufbau + Hosting · Kostenbausteine
-$calc_hosting = 50;
+$calc_hosting = (int) ( $pricing_canon['foundation_hosting_monthly'] ?? 50 );
 $capex_timeframes = [
 	12 => [
 		'portal_monthly' => '~ 1.080 €',

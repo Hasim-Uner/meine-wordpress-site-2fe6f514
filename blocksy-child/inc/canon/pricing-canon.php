@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'HU_FOUNDATION_PRICE_STANDARD', 14900 );
 define( 'HU_FOUNDATION_PRICE_FOUNDING', 9900 );
+define( 'HU_FOUNDATION_HOSTING_MONTHLY', 50 );
 define( 'HU_FOUNDATION_DURATION_WEEKS_MIN', 8 );
 define( 'HU_FOUNDATION_DURATION_WEEKS_MAX', 10 );
 define( 'HU_PERFORMANCE_RETAINER_PRICE', 1500 );
@@ -32,6 +33,7 @@ function hu_pricing_canon() {
 	return [
 		'foundation_price_standard'       => HU_FOUNDATION_PRICE_STANDARD,
 		'foundation_price_founding'       => HU_FOUNDATION_PRICE_FOUNDING,
+		'foundation_hosting_monthly'      => HU_FOUNDATION_HOSTING_MONTHLY,
 		'foundation_duration_weeks_min'   => HU_FOUNDATION_DURATION_WEEKS_MIN,
 		'foundation_duration_weeks_max'   => HU_FOUNDATION_DURATION_WEEKS_MAX,
 		'performance_retainer_price'      => HU_PERFORMANCE_RETAINER_PRICE,
@@ -45,6 +47,51 @@ function hu_pricing_canon() {
 		'value_anchor_market_max'         => HU_VALUE_ANCHOR_MARKET_MAX,
 		'guarantee_scope'                 => 'Funktionsfähiges Anfragesystem, kein Anfrage-Volumen.',
 	];
+}
+
+/**
+ * Format a EUR amount with German thousand separators.
+ *
+ * @param int|float $value Amount in EUR.
+ * @return string
+ */
+function hu_format_eur( $value ) {
+	return number_format( (float) $value, 0, ',', '.' ) . ' €';
+}
+
+/**
+ * Display value of the Foundation build price.
+ *
+ * @return string
+ */
+function hu_foundation_price_display() {
+	return hu_format_eur( HU_FOUNDATION_PRICE_STANDARD );
+}
+
+/**
+ * Display value of the hosting cost that runs after the build.
+ *
+ * @return string
+ */
+function hu_foundation_hosting_display() {
+	return hu_format_eur( HU_FOUNDATION_HOSTING_MONTHLY );
+}
+
+/**
+ * Display value of build plus hosting over a number of months.
+ *
+ * Every page that holds the own system against bought leads quotes this
+ * total. It is derived here because the price used to live as literal copy:
+ * the money page moved to the canon while three other routes kept quoting
+ * the retired range.
+ *
+ * @param int $months Months of hosting contained in the total.
+ * @return string
+ */
+function hu_foundation_total_display( $months ) {
+	$months = max( 0, (int) $months );
+
+	return hu_format_eur( HU_FOUNDATION_PRICE_STANDARD + $months * HU_FOUNDATION_HOSTING_MONTHLY );
 }
 
 // ── Sofortkontakt-Setup: Einstiegsangebot der Solar-Money-Page ───

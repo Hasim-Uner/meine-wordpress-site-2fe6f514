@@ -271,7 +271,8 @@ function hu_enqueue_assets() {
 	// Nutzt das geteilte .hu-hp-Brand-Kit (homepage-redesign.css) plus ein
 	// schlankes Page-Delta-Stylesheet; legacy energy-systems / review-funnel
 	// werden hier bewusst NICHT geladen — das Template rendert einen
-	// 3-Schritte-Marktcheck im Hero (REST → CRM).
+	// mehrstufigen Marktcheck im Hero (REST → CRM). Die Stufenzahl steht im
+	// diagnose-canon, nicht hier.
 	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) ) {
 		hu_enqueue_css( 'nexus-home-redesign-css', 'homepage-redesign.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-solar-leadgen-solara-css', 'solar-leadgenerierung-solara.css', [ 'nexus-home-redesign-css' ] );
