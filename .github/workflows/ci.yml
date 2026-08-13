@@ -5,6 +5,8 @@ on:
     paths:
       - 'AGENTS.md'
       - '.claudeignore'
+      - '.agents/skills/**'
+      - '.claude/skills/**'
       - 'agents/skills/**'
       - 'blocksy-child/**'
       # Der German Copy Guard prueft docs/ und content/. Ohne diese Pfade
@@ -24,6 +26,8 @@ on:
     paths:
       - 'AGENTS.md'
       - '.claudeignore'
+      - '.agents/skills/**'
+      - '.claude/skills/**'
       - 'agents/skills/**'
       - 'blocksy-child/**'
       # Der German Copy Guard prueft docs/ und content/. Ohne diese Pfade
