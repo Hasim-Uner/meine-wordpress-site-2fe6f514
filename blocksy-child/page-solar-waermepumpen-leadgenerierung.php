@@ -1120,7 +1120,7 @@ get_header();
 						<div class="hu-proof-stat__lbl">Qualifizierte Anfragen</div>
 					</div>
 					<div class="hu-proof-stat">
-						<div class="hu-proof-stat__num"><?php echo esc_html( $e3_conv_uplift ); ?></div>
+						<div class="hu-proof-stat__num hu-proof-stat__num--pair"><?php echo esc_html( $e3_conv_uplift ); ?></div>
 						<div class="hu-proof-stat__lbl">Abschlussquote · vorher → nachher</div>
 					</div>
 					<div class="hu-proof-stat">

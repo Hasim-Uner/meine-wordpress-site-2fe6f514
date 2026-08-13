@@ -80,7 +80,11 @@ function hu_e3_canon() {
 				'label'          => 'Abschlussquote nachher (eigenes Anfragesystem)',
 			],
 			'sales_conversion_uplift' => [
-				'display' => '1 – 5 % → 12 %',
+				// Geschuetzte Leerzeichen binden Spanne und Einheit zusammen. Der
+				// Wert ist der laengste im Proof-Band; mit normalen Leerzeichen
+				// rutschte in der grossen Stat-Darstellung das Prozentzeichen
+				// allein in die naechste Zeile. Umbrechen darf er nur am Pfeil.
+				'display' => "1\u{00A0}–\u{00A0}5\u{00A0}% → 12\u{00A0}%",
 				'short'   => '6× bis 12× höhere Abschlussquote',
 				'label'   => 'Anstieg der Abschlussquote durch eigenes System',
 			],

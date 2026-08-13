@@ -1280,7 +1280,11 @@
   line-height: 1.65;
   max-width: 72ch;
 }
-.solara-landing .sol-faq-item.is-open .sol-faq-a { padding-bottom: 22px; }
+/* Oben nicht 0: sonst beginnt die Antwort buendig an der Unterkante des
+   Trigger-Focus-Rings und klebt an der Frage. Gleiche Korrektur wie im
+   Agentur-FAQ. Nur im offenen Zustand, damit die 0fr-Kollapshoehe des
+   Grid-Wrappers unberuehrt bleibt. */
+.solara-landing .sol-faq-item.is-open .sol-faq-a { padding: 18px 0 26px; }
 
 /* ─── 10) Final-CTA ─────────────────────────────────────────── */
 .solara-landing .hu-final-cta { max-width: 880px; margin: 0 auto; }
@@ -1392,6 +1396,11 @@
 /* HTML-Stat-Ziffern bleiben ohne Breitensprünge. */
 .solara-landing .hu-stat-num,
 .solara-landing .hu-proof-stat__num { font-variant-numeric: tabular-nums; }
+/* Vorher/Nachher ist der laengste Wert im Band und braucht eine Stufe weniger,
+   um auf Desktop in eine Zeile zu passen. Kein nowrap: ab 880px steht das Band
+   zweispaltig, dort muss der Wert umbrechen duerfen — dank der geschuetzten
+   Leerzeichen im E3-Canon dann nur am Pfeil. */
+.solara-landing .hu-proof-stat__num--pair { font-size: clamp(24px, 2.05vw, 32px); }
 
 .solara-landing .sol-sr {
   position: absolute;
