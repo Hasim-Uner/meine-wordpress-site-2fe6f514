@@ -1,234 +1,482 @@
 /* =============================================================
-   Personenseite /hasim-uener/ — fuenf Bloecke, ein lautes Element.
+   Personenseite /hasim-uener/ — Editorial Operator.
 
-   Farbwelt und Typografie sind die der Site: Creme-Grund wie bisher
-   auf der Ueber-Seite, Satoshi als Display-Schnitt, Figtree im Text.
-   Abstaende kommen aus der geteilten Skala in design-system.css.
+   Der Name ist eine leise Identitaetszeile. Die bestehende Aussage und das
+   Portrait bilden gemeinsam den Hero; eine Kupferlinie fuehrt als einziges
+   Bewegungsmotiv in die vier Stationen weiter.
 
-   Bewusst nicht vorhanden: Verlaeufe, Schatten, Glaseffekte,
-   Parallaxe. Das dunkle Stationen-Band ist der einzige Farbbruch.
+   MOTION BRIEF
+   Route / surface: /hasim-uener/, Hero und Stationen-Band.
+   Visitor decision / CTA: Person und Arbeitsansatz einordnen; Marktcheck ist
+   der unveraenderte primaere Ausgang am Seitenende.
+   Intensity: 2 — guided.
+   Thesis: Portrait, Aussage und Stationen lesen sich als ein zusammenhaengendes
+   System; Bewegung markiert nur diese Verbindung.
+   Focal moment: einmaliger Portrait- und Linien-Einzug beim ersten Paint.
+   Continuity: die Linie setzt sich durch die vier biografischen Stationen fort.
+   Feedback states: Fokus, Hover und Active der bestehenden Links.
+   Explicitly static: Aussage, Zahlen, Kompetenzleiste, Haltung und CTA.
+   Max moving groups: eine (Portrait plus zusammengehoerige Systemlinie).
+   Runtime / payload: kein neues JS, keine Abhaengigkeit, bestehendes WebP bleibt.
+   CWV: keine belastbare Feld-Baseline im Repo; feste Bildmasse, srcset und
+   fetchpriority=high bleiben als LCP-Vertrag erhalten.
+   Mobile: kein Parallax oder Hover-Move; gestapelte, vollstaendige Komposition.
+   Reduced motion / no JS: sofortiger Endzustand, alle Inhalte bleiben sichtbar.
    ============================================================= */
 
 .hu-about {
-	--hu-about-bg: #fbfaf8;
-	--hu-about-ink: #1a1a1a;
-	--hu-about-ink-soft: rgba(26, 26, 26, 0.72);
-	--hu-about-accent: #8c6239;
-	--hu-about-accent-strong: #734f2d;
-	--hu-about-line: rgba(140, 98, 57, 0.22);
-
-	/* Band: dunkles Braun aus dem Design-System (--brown-subtle), flach
-	   statt als Verlauf. Creme und Trennlinie sind gegen diesen Grund
-	   auf WCAG AA geprueft — siehe Kommentar am Band. */
-	--hu-about-band-bg: hsl(28 12% 12%);
-	--hu-about-band-ink: #fbfaf8;
-	--hu-about-band-ink-soft: hsl(30 8% 82%);
-	--hu-about-band-line: hsl(30 10% 100% / 0.36);
-
-	--hu-about-radius: 10px;
-	--hu-about-serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+	--hu-about-bg: hsl(35 12% 96%);
+	--hu-about-surface: hsl(34 13% 92%);
+	--hu-about-ink: hsl(30 10% 12%);
+	--hu-about-ink-soft: hsl(30 6% 38%);
+	--hu-about-accent: #b46a3c;
+	--hu-about-accent-strong: #754027;
+	--hu-about-line: hsl(23 24% 68% / 0.5);
+	--hu-about-hero-bg: hsl(30 8% 7%);
+	--hu-about-hero-surface: hsl(28 10% 10%);
+	--hu-about-hero-ink: hsl(35 16% 94%);
+	--hu-about-hero-ink-soft: hsl(32 7% 71%);
+	--hu-about-band-bg: hsl(28 12% 10%);
+	--hu-about-band-line: hsl(30 10% 100% / 0.24);
+	--hu-about-radius: var(--radius-lg, 12px);
 
 	position: relative;
 	isolation: isolate;
 	background-color: var(--hu-about-bg);
 	color: var(--hu-about-ink);
-	font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	font-family: var(--font-body, 'Figtree'), sans-serif;
 	line-height: var(--leading-normal, 1.55);
 }
 
 .hu-about__inner {
-	max-width: 1000px;
-	margin: 0 auto;
-	padding: clamp(var(--space-12), 8vw, var(--space-20)) var(--space-6) 0;
 	display: grid;
-	gap: clamp(var(--space-16), 10vw, var(--space-32));
+	gap: clamp(var(--nx-space-3xl), 9vw, calc(var(--nx-space-section) + var(--nx-space-xl)));
+	max-width: 1000px;
+	margin-inline: auto;
+	padding: clamp(var(--nx-space-3xl), 8vw, var(--nx-space-section)) var(--nx-space-lg) 0;
 }
 
 /* -----------------------------------------------------------
-   1 — Hero: Name als typografisches Element ueber die volle
-   Spaltenbreite, Portrait oben und rechts angeschnitten.
-   Der Anschnitt entsteht durch overflow:hidden am Hero, nicht
-   durch einen Rahmen um das Bild.
+   1 — Hero: asymmetrische Editorial-Komposition. Der Name ist
+   Identitaet, nicht Billboard; die Aussage ist die Hauptstufe.
 ----------------------------------------------------------- */
 .hu-about__hero {
 	position: relative;
 	overflow: hidden;
-	/* Oben kein eigener Abstand: die Hoehe des angeschnittenen Portraits
-	   steckt bereits im padding-top von __hero-inner. Beides zusammen
-	   riss ein leeres Feld zwischen Bildunterkante und Namen auf. */
-	padding-block: 0 clamp(var(--space-12), 8vw, var(--space-24));
+	overflow: clip;
+	padding-block:
+		clamp(calc(var(--nx-space-section) + var(--nx-space-md)), 10vw, calc(var(--nx-space-section) + var(--nx-space-2xl)))
+		clamp(var(--nx-space-3xl), 7vw, var(--nx-space-section));
+	color: var(--hu-about-hero-ink);
+	background-color: var(--hu-about-hero-bg);
+	background-image:
+		radial-gradient(circle at 82% 38%, hsl(23 50% 47% / 0.12), transparent 34%),
+		linear-gradient(135deg, hsl(30 9% 8%), var(--hu-about-hero-bg) 58%);
 }
 
-.hu-about__portrait {
+.hu-about__hero::before {
 	position: absolute;
-	top: clamp(-72px, -5vw, -32px);
-	right: clamp(-40px, -2.5vw, -16px);
-	width: clamp(150px, 46vw, 340px);
-	height: auto;
-	aspect-ratio: 3 / 4;
-	object-fit: cover;
-	object-position: 50% 22%;
+	inset: 0;
+	background-image:
+		linear-gradient(90deg, transparent 0 49.9%, hsl(35 14% 90% / 0.035) 50%, transparent 50.1%),
+		linear-gradient(hsl(35 14% 90% / 0.025) 1px, transparent 1px);
+	background-size: 100% 100%, 100% var(--nx-space-section);
+	content: '';
+	pointer-events: none;
 }
 
 .hu-about__hero-inner {
-	max-width: 1000px;
-	margin: 0 auto;
-	padding: 0 var(--space-6);
-	/* Haelt den Namen frei vom angeschnittenen Portrait. */
-	padding-top: clamp(200px, 58vw, 320px);
+	position: relative;
+	z-index: 1;
+	display: grid;
+	grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+	grid-template-areas: 'copy visual';
+	align-items: center;
+	gap: clamp(var(--nx-space-2xl), 6vw, var(--nx-space-section));
+	max-width: 1200px;
+	margin-inline: auto;
+	padding-block: 0;
+	padding-inline: var(--nx-space-lg);
+}
+
+.hu-about__hero-copy {
+	grid-area: copy;
+	max-width: 44rem;
 }
 
 .hu-about__h1 {
-	margin: 0;
-	font-family: var(--font-display, 'Satoshi'), 'Figtree', -apple-system, sans-serif;
-	font-weight: 700;
-	/* Gesperrt und in Versalien wie das Footer-Logo (.site-logo). Satoshi
-	   Variable liegt bereits im Preload — kein zusaetzlicher Font. */
-	text-transform: uppercase;
-	letter-spacing: 0.18em;
-	font-size: clamp(2.25rem, 10vw, 7rem);
-	line-height: 1.02;
-	color: var(--hu-about-ink);
-	/* Sperrung erzeugt rechts eine Leerstelle hinter dem letzten Zeichen. */
-	margin-right: -0.18em;
+	display: flex;
+	align-items: center;
+	gap: var(--nx-space-md);
+	margin: 0 0 var(--nx-space-xl);
+	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
+	font-size: clamp(1.125rem, 1.5vw, 1.5rem);
+	font-weight: 600;
+	line-height: var(--leading-snug, 1.3);
+	letter-spacing: 0.08em;
+	text-transform: none;
+	color: var(--hu-about-hero-ink-soft);
+}
+
+.hu-about__h1::before {
+	flex: 0 0 var(--nx-space-2xl);
+	block-size: 1px;
+	background-color: var(--hu-about-accent);
+	content: '';
 }
 
 .hu-about__lead {
-	margin: var(--space-6) 0 0;
-	font-size: clamp(1.0625rem, 2.2vw, 1.375rem);
-	font-weight: 400;
+	margin: 0;
+}
+
+.hu-about__lead-main {
+	display: block;
+	max-width: 14.5ch;
+	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
+	font-size: clamp(2.625rem, 4.5vw, 4.75rem);
+	font-weight: 600;
+	line-height: 1.02;
+	letter-spacing: -0.035em;
+	color: var(--hu-about-hero-ink);
+	text-wrap: balance;
+}
+
+.hu-about__lead-place {
+	display: block;
+	margin-block-start: var(--nx-space-lg);
+	font-size: 1rem;
+	font-weight: 500;
 	line-height: var(--leading-normal, 1.55);
-	color: var(--hu-about-ink-soft);
-	max-width: var(--measure-base, 60ch);
-	text-wrap: pretty;
+	letter-spacing: 0.04em;
+	color: var(--hu-about-hero-ink-soft);
+}
+
+.hu-about__hero-visual {
+	position: relative;
+	grid-area: visual;
+	justify-self: end;
+	width: min(100%, 30rem);
+	aspect-ratio: 4 / 5;
+	overflow: hidden;
+	border: 1px solid hsl(23 34% 60% / 0.34);
+	border-radius: var(--hu-about-radius);
+	background-color: var(--hu-about-hero-surface);
+	box-shadow: 0 32px 80px hsl(30 30% 2% / 0.42);
+	isolation: isolate;
+	animation: hu-about-portrait-in var(--duration-reveal, 600ms) var(--nx-ease) both;
+}
+
+.hu-about__hero-visual::after {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	background-image:
+		linear-gradient(180deg, transparent 58%, hsl(28 20% 8% / 0.36)),
+		linear-gradient(135deg, hsl(23 50% 47% / 0.1), transparent 42%);
+	content: '';
+	pointer-events: none;
+}
+
+.hu-about__portrait {
+	position: static;
+	inset: auto;
+	display: block;
+	width: 100%;
+	max-width: none;
+	height: 100%;
+	aspect-ratio: auto;
+	object-fit: cover;
+	object-position: 50% 22%;
+	filter: saturate(0.58) sepia(0.12) contrast(1.04) brightness(0.9);
+	transform: scale(1.01);
+}
+
+.hu-about__portrait-axis {
+	position: absolute;
+	top: var(--nx-space-xl);
+	bottom: calc(var(--nx-space-2xl) * -1);
+	left: calc(var(--nx-space-lg) * -1);
+	z-index: 2;
+	width: 1px;
+	background-image: linear-gradient(var(--hu-about-accent), hsl(23 50% 47% / 0.16));
+	transform-origin: 50% 0;
+	animation: hu-about-axis-in var(--duration-reveal, 600ms) var(--nx-ease) 80ms both;
+}
+
+.hu-about__portrait-axis::after {
+	position: absolute;
+	right: -4px;
+	bottom: 0;
+	width: 9px;
+	aspect-ratio: 1;
+	border: 2px solid var(--hu-about-accent);
+	border-radius: 50%;
+	background-color: var(--hu-about-hero-bg);
+	content: '';
+}
+
+.hu-about__hero-signal {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: max(var(--nx-space-lg), calc((100vw - 1200px) / 2 + var(--nx-space-lg)));
+	height: 1px;
+	background-image: linear-gradient(90deg, var(--hu-about-accent), hsl(23 50% 47% / 0.12) 72%, transparent);
+	transform-origin: 0 50%;
+	animation: hu-about-signal-in var(--duration-reveal, 600ms) var(--nx-ease) 80ms both;
+}
+
+@keyframes hu-about-portrait-in {
+	from {
+		opacity: 0.55;
+		transform: translateY(12px) scale(0.985);
+	}
+}
+
+@keyframes hu-about-axis-in {
+	from {
+		transform: scaleY(0);
+	}
+}
+
+@keyframes hu-about-signal-in {
+	from {
+		transform: scaleX(0);
+	}
 }
 
 /* -----------------------------------------------------------
-   2 — Stationen: durchgehendes Band, einziger Farbbruch.
-   Karten ohne eigenen Hintergrund, nur senkrechte Trennlinien.
-
-   Kontrast gegen hsl(28 12% 12%) (#221E1B), gerechnet:
-     Creme  #fbfaf8        15,9:1  (AA/AAA Text)
-     Soft   hsl(30 8% 82%) 10,9:1  (AA/AAA Text)
-     Linie  36 % Weiss      3,3:1  (AA fuer grafische Objekte, 1.4.11)
-   32 % waeren 2,9:1 und damit knapp darunter — nicht senken.
+   2 — Stationen: eine biografische Systemlinie statt vier
+   gleichfoermiger Karten. Die Inhalte selbst bleiben immer sichtbar.
 ----------------------------------------------------------- */
 .hu-about__band {
+	border-top: 1px solid hsl(23 50% 47% / 0.18);
+	padding-block: var(--nx-space-3xl);
 	background-color: var(--hu-about-band-bg);
-	color: var(--hu-about-band-ink);
-	padding-block: clamp(var(--space-12), 8vw, var(--space-20));
+	color: var(--hu-about-hero-ink);
 }
 
 .hu-about__station-grid {
-	list-style: none;
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 0 var(--space-6);
+	position: relative;
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: var(--space-6);
+	gap: 0;
+	max-width: 1200px;
+	margin-inline: auto;
+	padding: 0 var(--nx-space-lg);
+	list-style: none;
+}
+
+.hu-about__station-grid::before {
+	position: absolute;
+	top: 6px;
+	right: calc(var(--nx-space-lg) + 6px);
+	left: calc(var(--nx-space-lg) + 6px);
+	height: 1px;
+	background-color: var(--hu-about-band-line);
+	content: '';
 }
 
 .hu-about__station {
+	--hu-about-delay: 0ms;
+
+	position: relative;
 	display: grid;
 	align-content: start;
-	gap: var(--space-2);
+	gap: var(--nx-space-sm);
+	min-width: 0;
+	padding: var(--nx-space-xl) var(--nx-space-xl) 0 0;
 }
 
-.hu-about__station + .hu-about__station {
-	border-left: 1px solid var(--hu-about-band-line);
-	padding-left: var(--space-6);
-	margin-left: calc(var(--space-6) * -1 + var(--space-2));
+.hu-about__station:nth-child(2) {
+	--hu-about-delay: 90ms;
+}
+
+.hu-about__station:nth-child(3) {
+	--hu-about-delay: 180ms;
+}
+
+.hu-about__station:nth-child(4) {
+	--hu-about-delay: 270ms;
+}
+
+.hu-about__station::before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	width: 12px;
+	aspect-ratio: 1;
+	border: 2px solid var(--hu-about-accent);
+	border-radius: 50%;
+	background-color: var(--hu-about-accent);
+	box-shadow: 0 0 0 6px hsl(23 50% 47% / 0.11);
+	content: '';
+	transition:
+		background-color var(--nx-duration) var(--nx-ease),
+		border-color var(--nx-duration) var(--nx-ease),
+		box-shadow var(--nx-duration) var(--nx-ease),
+		transform var(--nx-duration) var(--nx-ease);
+	transition-delay: var(--hu-about-delay);
+}
+
+.hu-about__station::after {
+	position: absolute;
+	top: 6px;
+	right: -6px;
+	left: 12px;
+	height: 1px;
+	background-color: var(--hu-about-accent);
+	content: '';
+	transform: scaleX(1);
+	transform-origin: 0 50%;
+	transition: transform var(--duration-reveal, 600ms) var(--nx-ease) var(--hu-about-delay);
+}
+
+.hu-about__station:last-child::after {
+	display: none;
+}
+
+html.hu-about-anim .hu-about__station:not(.is-in)::before {
+	background-color: var(--hu-about-band-bg);
+	box-shadow: none;
+	transform: scale(0.72);
+}
+
+html.hu-about-anim .hu-about__station:not(.is-in)::after {
+	transform: scaleX(0);
 }
 
 .hu-about__station-figure {
-	margin: 0 0 var(--space-1);
-	font-family: var(--font-display, 'Satoshi'), 'Figtree', -apple-system, sans-serif;
-	font-size: clamp(2.75rem, 9vw, 3.5rem);
-	font-weight: 700;
+	margin: 0 0 var(--nx-space-xs);
+	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
+	font-size: clamp(2rem, 3vw, 2.5rem);
+	font-weight: 650;
 	line-height: 1.05;
-	letter-spacing: -0.02em;
-	color: var(--hu-about-band-ink);
+	letter-spacing: -0.025em;
+	color: var(--hu-about-hero-ink);
+	white-space: nowrap;
 }
 
 .hu-about__station-title {
 	margin: 0;
-	font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	font-family: var(--font-body, 'Figtree'), sans-serif;
 	font-size: 1rem;
 	font-weight: 600;
 	line-height: var(--leading-snug, 1.3);
-	color: var(--hu-about-band-ink);
+	color: var(--hu-about-hero-ink);
 }
 
 .hu-about__station-text {
+	max-width: 29ch;
 	margin: 0;
 	font-size: 0.875rem;
 	line-height: var(--leading-normal, 1.55);
-	color: var(--hu-about-band-ink-soft);
+	color: var(--hu-about-hero-ink-soft);
 	text-wrap: pretty;
 }
 
 /* -----------------------------------------------------------
-   3 — Kompetenzraster: bleibt zurueckhaltend
+   3 — Kompetenzen: eine ruhige Werkzeugleiste ohne Card-Grid.
 ----------------------------------------------------------- */
 .hu-about__skill-grid {
-	list-style: none;
-	margin: 0;
-	padding: 0;
 	display: grid;
 	grid-template-columns: repeat(5, minmax(0, 1fr));
-	gap: var(--space-3);
+	margin: 0;
+	padding: 0;
+	border-block: 1px solid var(--hu-about-line);
+	list-style: none;
 }
 
 .hu-about__skill {
-	display: grid;
-	justify-items: center;
-	align-content: center;
-	gap: var(--space-2);
-	padding: var(--space-5) var(--space-3);
-	border: 1px solid var(--hu-about-line);
-	border-radius: var(--hu-about-radius);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--nx-space-md);
+	min-width: 0;
+	padding: var(--nx-space-lg) var(--nx-space-md);
+	border: 0;
+	border-radius: 0;
 	text-align: center;
 }
 
+.hu-about__skill + .hu-about__skill {
+	border-left: 1px solid var(--hu-about-line);
+}
+
 .hu-about__skill-icon {
-	display: block;
-	color: var(--hu-about-accent);
+	flex: 0 0 auto;
+	color: var(--hu-about-accent-strong);
 }
 
 .hu-about__skill-label {
+	min-width: 0;
 	font-size: 0.8125rem;
-	font-weight: 600;
+	font-weight: 650;
 	letter-spacing: 0.01em;
 	color: var(--hu-about-ink);
+	overflow-wrap: anywhere;
 }
 
 /* -----------------------------------------------------------
-   4 — Haltung: Serif, groesser als Fliesstext, kein Kasten
+   4 — Haltung: dieselbe Display-Stimme wie der Hero, mit einer
+   kupfernen Achse statt eines weiteren Kartenstils.
 ----------------------------------------------------------- */
+.hu-about__stance {
+	position: relative;
+	padding-inline-start: clamp(var(--nx-space-lg), 5vw, var(--nx-space-2xl));
+}
+
+.hu-about__stance::before {
+	position: absolute;
+	inset-block: 0;
+	left: 0;
+	width: 2px;
+	background-image: linear-gradient(var(--hu-about-accent), hsl(23 50% 47% / 0.12));
+	content: '';
+}
+
 .hu-about__stance-text {
-	margin: 0;
-	font-family: var(--hu-about-serif);
-	font-size: clamp(1.25rem, 2.4vw, 1.625rem);
-	line-height: 1.6;
-	color: var(--hu-about-ink);
-	/* 48ch ergibt in Georgia gemessene ~60 Zeichen je Zeile. */
 	max-width: 48ch;
+	margin: 0;
+	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
+	font-size: clamp(1.375rem, 2.5vw, 1.875rem);
+	font-weight: 500;
+	line-height: 1.52;
+	letter-spacing: -0.015em;
+	color: var(--hu-about-ink);
 	text-wrap: pretty;
 }
 
 /* -----------------------------------------------------------
-   5 — CTA: zwei Ausgaenge, danach die leisen Kontaktwege
+   5 — CTA: unveraenderte Ausgaenge, aber als klarer Schlussakkord.
 ----------------------------------------------------------- */
 .hu-about__cta {
+	position: relative;
 	display: grid;
 	justify-items: start;
-	gap: var(--space-3);
+	gap: var(--nx-space-md);
+	padding: clamp(var(--nx-space-xl), 6vw, var(--nx-space-2xl));
+	overflow: hidden;
+	border: 1px solid var(--hu-about-line);
+	border-radius: var(--hu-about-radius);
+	background-color: var(--hu-about-surface);
+}
+
+.hu-about__cta::before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: min(36%, 14rem);
+	height: 3px;
+	background-color: var(--hu-about-accent);
+	content: '';
 }
 
 .hu-about__cta-note {
 	margin: 0;
 	font-size: 0.875rem;
+	font-weight: 500;
 	color: var(--hu-about-ink-soft);
 }
 
@@ -236,42 +484,43 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	min-height: 48px;
-	padding: var(--space-3) var(--space-8);
-	border-radius: var(--radius-full, 9999px);
-	background-color: var(--hu-about-accent);
-	color: #fff;
+	min-block-size: 48px;
+	min-inline-size: 44px;
+	padding: var(--nx-space-md) var(--nx-space-xl);
+	border: 1px solid var(--hu-about-accent-strong);
+	border-radius: var(--hu-about-radius);
+	background-color: var(--hu-about-accent-strong);
+	color: var(--hu-about-hero-ink);
 	font-size: 1rem;
-	font-weight: 600;
+	font-weight: 650;
+	line-height: 1;
 	text-decoration: none;
-	transition: background-color var(--duration-fast, 120ms) var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1));
+	transition:
+		background-color var(--nx-duration-fast) var(--nx-ease),
+		border-color var(--nx-duration-fast) var(--nx-ease),
+		transform var(--nx-duration) var(--nx-ease);
 }
 
-.hu-about__cta-btn:hover {
-	background-color: var(--hu-about-accent-strong);
+.hu-about__cta-btn:active {
+	transform: translateY(0);
 }
 
 .hu-about__cta-secondary {
-	margin: var(--space-2) 0 0;
+	margin: var(--nx-space-sm) 0 0;
 	font-size: 1rem;
 }
 
-/* Bewusst im Textfluss statt als Flex-Zeile: als inline-flex riss der Link
-   auf Mobil in zwei Spalten auf, mit dem Pfeil allein am rechten Rand. */
 .hu-about__cta-secondary a {
+	display: inline-flex;
+	align-items: center;
+	min-block-size: 44px;
 	color: var(--hu-about-accent-strong);
-	/* 600 statt 500: der 500er-Schnitt waere sonst die einzige Stelle, die
-	   ihn braucht — eine weitere Font-Datei auf dem kritischen Pfad. */
-	font-weight: 600;
+	font-weight: 650;
 	text-decoration: underline;
+	text-decoration-thickness: 1px;
 	text-underline-offset: 4px;
 }
 
-.hu-about__cta-secondary a:hover {
-	color: var(--hu-about-ink);
-}
-
-/* Pfeil und Ziel bleiben zusammen, egal wo die Zeile bricht. */
 .hu-about__cta-target {
 	white-space: nowrap;
 }
@@ -279,84 +528,142 @@
 .hu-about__cta-links {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 0 var(--space-6);
-	margin: var(--space-4) 0 0;
+	gap: 0 var(--nx-space-lg);
+	margin: var(--nx-space-md) 0 0;
 	font-size: 0.875rem;
 }
 
 .hu-about__cta-links a {
 	display: inline-flex;
 	align-items: center;
-	min-height: 44px;
+	min-block-size: 44px;
+	min-inline-size: 44px;
 	color: var(--hu-about-ink-soft);
 	text-decoration: underline;
 	text-underline-offset: 3px;
 }
 
-.hu-about__cta-links a:hover {
-	color: var(--hu-about-ink);
-}
-
 .hu-about :is(a, .hu-about__cta-btn):focus-visible {
-	outline: 2px solid var(--hu-about-accent-strong);
+	outline: 3px solid var(--hu-about-accent);
 	outline-offset: 3px;
-	border-radius: var(--radius-sm, 4px);
 }
 
-.hu-about__band :is(a):focus-visible {
-	outline-color: var(--hu-about-band-ink);
-}
-
-/* -----------------------------------------------------------
-   Motion: nur die vier Stationen, nacheinander.
-   Gleiche Utility-Basis wie [data-sol-reveal] auf der
-   Solar-Lead-Seite: der versteckte Ausgangszustand haengt an der
-   Gate-Klasse html.hu-about-anim, die das Seiten-JS erst nach
-   Reduced-Motion- und IntersectionObserver-Pruefung setzt. Ohne
-   JS ist jede Karte sofort sichtbar.
------------------------------------------------------------ */
-html.hu-about-anim .hu-about [data-hu-reveal] {
-	opacity: 0;
-	transform: translateY(16px);
-	transition:
-		opacity 0.5s ease-out var(--hu-about-delay, 0ms),
-		transform 0.5s ease-out var(--hu-about-delay, 0ms);
-}
-
-html.hu-about-anim .hu-about [data-hu-reveal].is-in {
-	opacity: 1;
-	transform: none;
-}
-
-/* -----------------------------------------------------------
-   Breakpoints
------------------------------------------------------------ */
-@media (min-width: 901px) {
-	/* Vierspaltig muss "70 € → 26 €" einzeilig in die Spalte passen:
-	   gemessen 262 px bei 47,5 px Schriftgroesse, verfuegbar 246 px. */
-	.hu-about__station-figure {
-		font-size: clamp(2.25rem, 3vw, 2.75rem);
+@media (hover: hover) and (pointer: fine) {
+	.hu-about__cta-btn:hover {
+		border-color: var(--hu-about-accent);
+		background-color: #854a2c;
+		transform: translateY(-2px);
 	}
 
-	/* Der Name laeuft unter dem angeschnittenen Portrait ueber die volle
-	   Spaltenbreite — deshalb keine rechte Reserve, nur Hoehe. */
-	.hu-about__hero-inner {
-		padding-top: clamp(300px, 27vw, 420px);
+	.hu-about__cta-secondary a:hover,
+	.hu-about__cta-links a:hover {
+		color: var(--hu-about-ink);
 	}
 }
 
+/* -----------------------------------------------------------
+   Responsive composition
+----------------------------------------------------------- */
 @media (max-width: 900px) {
+	.hu-about__hero-inner {
+		grid-template-columns: minmax(0, 1.08fr) minmax(17rem, 0.92fr);
+		gap: var(--nx-space-2xl);
+	}
+
+	.hu-about__station-figure {
+		font-size: clamp(1.75rem, 3.7vw, 2.125rem);
+	}
+}
+
+@media (max-width: 760px) {
+	.hu-about__hero {
+		padding-block:
+		calc(var(--nx-space-section) + var(--nx-space-sm))
+		var(--nx-space-3xl);
+	}
+
+	.hu-about__hero-inner {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			'visual'
+			'copy';
+		gap: var(--nx-space-2xl);
+	}
+
+	.hu-about__hero-copy,
+	.hu-about__hero-visual {
+		justify-self: center;
+		width: min(100%, 34rem);
+	}
+
+	.hu-about__hero-visual {
+		aspect-ratio: 4 / 3;
+	}
+
+	.hu-about__portrait {
+		object-position: 50% 20%;
+	}
+
+	.hu-about__portrait-axis {
+		top: auto;
+		right: var(--nx-space-lg);
+		bottom: calc(var(--nx-space-2xl) * -1);
+		left: auto;
+		height: var(--nx-space-3xl);
+	}
+
+	.hu-about__h1 {
+		margin-block-end: var(--nx-space-lg);
+	}
+
+	.hu-about__lead-main {
+		max-width: 15ch;
+		font-size: clamp(2.25rem, 10vw, 3rem);
+		line-height: 1.04;
+	}
+
+	.hu-about__band {
+		padding-block: var(--nx-space-3xl);
+	}
+
 	.hu-about__station-grid {
 		grid-template-columns: minmax(0, 1fr);
-		gap: var(--space-10);
 	}
 
-	.hu-about__station + .hu-about__station {
-		border-left: 0;
-		border-top: 1px solid var(--hu-about-band-line);
-		padding-left: 0;
-		padding-top: var(--space-10);
-		margin-left: 0;
+	.hu-about__station-grid::before {
+		top: 6px;
+		right: auto;
+		bottom: calc(var(--nx-space-2xl) + 6px);
+		left: calc(var(--nx-space-lg) + 6px);
+		width: 1px;
+		height: auto;
+	}
+
+	.hu-about__station {
+		padding: 0 0 var(--nx-space-2xl) var(--nx-space-2xl);
+	}
+
+	.hu-about__station:last-child {
+		padding-block-end: 0;
+	}
+
+	.hu-about__station::after {
+		top: 12px;
+		right: auto;
+		bottom: 0;
+		left: 6px;
+		width: 1px;
+		height: auto;
+		transform: scaleY(1);
+		transform-origin: 50% 0;
+	}
+
+	html.hu-about-anim .hu-about__station:not(.is-in)::after {
+		transform: scaleY(0);
+	}
+
+	.hu-about__station-figure {
+		font-size: clamp(2rem, 8vw, 2.5rem);
 	}
 }
 
@@ -365,8 +672,21 @@ html.hu-about-anim .hu-about [data-hu-reveal].is-in {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
+	.hu-about__skill + .hu-about__skill {
+		border-left: 0;
+	}
+
+	.hu-about__skill:nth-child(even) {
+		border-left: 1px solid var(--hu-about-line);
+	}
+
+	.hu-about__skill:nth-child(n + 3) {
+		border-top: 1px solid var(--hu-about-line);
+	}
+
 	.hu-about__skill:last-child {
 		grid-column: 1 / -1;
+		border-left: 0;
 	}
 
 	.hu-about__cta-btn {
@@ -374,18 +694,82 @@ html.hu-about-anim .hu-about [data-hu-reveal].is-in {
 	}
 }
 
+@media (max-width: 420px) {
+	.hu-about__hero-inner,
+	.hu-about__station-grid,
+	.hu-about__inner {
+		padding-inline: var(--nx-space-md);
+	}
+
+	.hu-about__hero-signal {
+		left: var(--nx-space-md);
+	}
+
+	.hu-about__station-grid::before {
+		left: calc(var(--nx-space-md) + 6px);
+	}
+
+	.hu-about__h1::before {
+		flex-basis: var(--nx-space-xl);
+	}
+
+	.hu-about__cta {
+		padding: var(--nx-space-lg);
+	}
+}
+
 /* -----------------------------------------------------------
-   Reduced Motion: Ausgangszustaende hart aus, auch wenn die
-   Gate-Klasse bereits gesetzt ist.
+   Preference and platform fallbacks
 ----------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-	html.hu-about-anim .hu-about [data-hu-reveal] {
-		opacity: 1;
+	.hu-about__hero-visual,
+	.hu-about__portrait-axis,
+	.hu-about__hero-signal {
+		animation: none;
+	}
+
+	html.hu-about-anim .hu-about__station:not(.is-in)::before {
+		background-color: var(--hu-about-accent);
+		box-shadow: 0 0 0 6px hsl(23 50% 47% / 0.11);
 		transform: none;
+	}
+
+	html.hu-about-anim .hu-about__station:not(.is-in)::after {
+		transform: scaleX(1);
+	}
+
+	.hu-about__station::before,
+	.hu-about__station::after,
+	.hu-about__cta-btn {
 		transition: none;
 	}
 
+	.hu-about__cta-btn:hover {
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 760px) {
+	html.hu-about-anim .hu-about__station:not(.is-in)::after {
+		transform: scaleY(1);
+	}
+}
+
+@media (forced-colors: active) {
+	.hu-about__hero,
+	.hu-about__band {
+		border-color: CanvasText;
+		background: Canvas;
+		color: CanvasText;
+	}
+
+	.hu-about__portrait {
+		filter: none;
+	}
+
 	.hu-about__cta-btn {
-		transition: none;
+		border: 2px solid ButtonText;
+		background: ButtonFace;
+		color: ButtonText;
 	}
 }

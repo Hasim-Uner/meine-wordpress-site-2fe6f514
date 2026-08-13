@@ -1,19 +1,19 @@
 /* hasim-uener.js
-   Personenseite /hasim-uener/ — einzige Aufgabe: die vier Stationen
-   beim Scrollen nacheinander einblenden.
+   Personenseite /hasim-uener/ — einzige Aufgabe: die kupferne Systemlinie
+   durch die vier sichtbaren Stationen beim Scrollen fortschreiben.
 
    Gleiche Utility-Basis wie [data-sol-reveal] auf der Solar-Lead-Seite:
    die Gate-Klasse html.hu-about-anim kommt erst nach Reduced-Motion- und
-   IntersectionObserver-Pruefung. Ohne JS, ohne Observer oder bei Reduced
-   Motion existiert kein versteckter Ausgangszustand — die Karten stehen
-   sofort da. Bereits sichtbare Karten werden vor dem Gate als .is-in
-   markiert, damit ein Reload mitten auf der Seite nicht blinkt. */
+   IntersectionObserver-Pruefung. Die Texte werden nie versteckt; ohne JS,
+   ohne Observer oder bei Reduced Motion stehen Linie und Knoten direkt im
+   Endzustand. Bereits erreichte Stationen werden vor dem Gate als .is-in
+   markiert, damit ein Reload mitten auf der Seite nicht zurueckspringt. */
 (function () {
   'use strict';
 
   var ROOT_SELECTOR = '.hu-about';
 
-  function setupReveal() {
+  function setupStationPath() {
     var reduced = false;
     try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
     if (reduced || !('IntersectionObserver' in window)) return;
@@ -50,8 +50,8 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupReveal);
+    document.addEventListener('DOMContentLoaded', setupStationPath);
   } else {
-    setupReveal();
+    setupStationPath();
   }
 })();

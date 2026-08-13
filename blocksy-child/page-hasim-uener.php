@@ -27,7 +27,8 @@ $whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get
 $linkedin_url   = 'https://www.linkedin.com/in/hasim-%C3%BCner/';
 $mail_address   = 'hasim@hasimuener.de';
 
-// Portrait im 3:4-Ausschnitt, weil der Hero es oben und rechts anschneidet.
+// Portrait im 3:4-Ausschnitt. Der neue Hero setzt das Bild als eigene,
+// responsiv zugeschnittene Buehne ein statt es am Viewport anzuschneiden.
 // Zwei Groessen: 400 deckt Mobil und 1x-Desktop, 800 die Retina-Faelle.
 $portrait_url    = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait-400x533.webp';
 $portrait_srcset = sprintf(
@@ -100,31 +101,39 @@ get_header();
 
 		<!-- 1 — HERO -->
 		<header class="hu-about__hero">
-			<img
-				class="hu-about__portrait"
-				src="<?php echo esc_url( $portrait_url ); ?>"
-				srcset="<?php echo esc_attr( $portrait_srcset ); ?>"
-				sizes="(max-width: 900px) 46vw, 340px"
-				alt="Haşim Üner"
-				width="400"
-				height="533"
-				fetchpriority="high"
-				decoding="async"
-			>
 			<div class="hu-about__hero-inner">
-				<h1 class="hu-about__h1">Haşim Üner</h1>
-				<p class="hu-about__lead">Ich baue Websites, die Anfragen produzieren — und die Technik dahinter. Pattensen bei Hannover.</p>
+				<div class="hu-about__hero-copy">
+					<h1 class="hu-about__h1">Haşim Üner</h1>
+					<p class="hu-about__lead">
+						<span class="hu-about__lead-main">Ich baue Websites, die Anfragen produzieren — und die Technik dahinter.</span>
+						<span class="hu-about__lead-place">Pattensen bei Hannover.</span>
+					</p>
+				</div>
+				<div class="hu-about__hero-visual">
+					<img
+						class="hu-about__portrait"
+						src="<?php echo esc_url( $portrait_url ); ?>"
+						srcset="<?php echo esc_attr( $portrait_srcset ); ?>"
+						sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 42vw, 480px"
+						alt="Porträt von Haşim Üner"
+						width="400"
+						height="533"
+						fetchpriority="high"
+						decoding="async"
+					>
+					<span class="hu-about__portrait-axis" aria-hidden="true"></span>
+				</div>
 			</div>
+			<span class="hu-about__hero-signal" aria-hidden="true"></span>
 		</header>
 
 		<!-- 2 — VIER STATIONEN -->
 		<section class="hu-about__band" aria-label="Stationen">
 			<ul class="hu-about__station-grid" role="list">
-				<?php foreach ( $about_stations as $index => $station ) : ?>
+				<?php foreach ( $about_stations as $station ) : ?>
 					<li
 						class="hu-about__station"
 						data-hu-reveal
-						style="--hu-about-delay: <?php echo (int) ( $index * 90 ); ?>ms"
 					>
 						<p class="hu-about__station-figure"><?php echo esc_html( $station['figure'] ); ?></p>
 						<h2 class="hu-about__station-title"><?php echo esc_html( $station['title'] ); ?></h2>
