@@ -101,9 +101,9 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Kuratierter Proof-Hub mit Cases, Kennzahlen und Einordnung.',
 				],
 				[
-					'label'       => 'Über Haşim Üner',
-					'url'         => $urls['about'] ?? home_url( '/uber-mich/' ),
-					'description' => 'Personenprofil des Autors und Betreibers: Architekt für eigene Anfragesysteme.',
+					'label'       => 'Haşim Üner',
+					'url'         => $urls['about'] ?? home_url( '/hasim-uener/' ),
+					'description' => 'Personenprofil des Autors und Betreibers: Stationen, Kompetenzen und Arbeitsweise.',
 				],
 			],
 		],

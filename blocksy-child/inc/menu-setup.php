@@ -142,13 +142,13 @@ function nexus_setup_main_menu() {
 	] );
 
 	// ── 4. Über Haşim (Top-Level) ─────────────────────────────────
-	$about_id = nexus_get_page_id( [ 'uber-mich' ] );
+	$about_id = nexus_get_page_id( [ 'hasim-uener', 'uber-mich' ] );
 	wp_update_nav_menu_item( $menu_id, 0, [
 		'menu-item-title'     => 'Über Haşim',
 		'menu-item-object'    => 'page',
 		'menu-item-object-id' => $about_id,
 		'menu-item-type'      => $about_id ? 'post_type' : 'custom',
-		'menu-item-url'       => $about_id ? '' : ( $primary_urls['about'] ?? home_url( '/uber-mich/' ) ),
+		'menu-item-url'       => $about_id ? '' : ( $primary_urls['about'] ?? home_url( '/hasim-uener/' ) ),
 		'menu-item-status'    => 'publish',
 	] );
 

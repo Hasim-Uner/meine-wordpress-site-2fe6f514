@@ -8,11 +8,13 @@ if (!defined('ABSPATH')) {
  * This file centralizes all structured data logic. Include it once in your child theme.
  */
 function hu_person_schema_id() {
-    return home_url('/uber-mich/#person');
+    return hu_person_profile_url() . '#person';
 }
 
 function hu_person_profile_url() {
-    return home_url('/uber-mich/');
+    return function_exists('nexus_get_primary_public_url')
+        ? nexus_get_primary_public_url('about', home_url('/hasim-uener/'))
+        : home_url('/hasim-uener/');
 }
 
 /**
@@ -105,7 +107,16 @@ function hu_get_person_node() {
         'url'         => hu_person_profile_url(),
         'image'       => hu_get_profile_image_url(),
         'worksFor'    => [ '@id' => home_url( '/#organization' ) ],
-        'sameAs'      => hu_person_same_as_urls(),
+        // Ort ohne Strasse: die Personenseite nennt "Pattensen bei Hannover",
+        // die vollstaendige Anschrift bleibt beim Organization-Knoten.
+        'address'     => [
+            '@type'           => 'PostalAddress',
+            'addressLocality' => 'Pattensen',
+            'addressCountry'  => 'DE',
+        ],
+        // Die eigene Domain gehoert in die Person-sameAs, nicht in die der
+        // Geschaeftsknoten — dort ist sie bereits 'url'.
+        'sameAs'      => array_values( array_unique( array_merge( [ home_url( '/' ) ], hu_person_same_as_urls() ) ) ),
         'description' => 'Architekt für eigene Anfragesysteme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum. Haşim Üner verbindet Bauunternehmer-DNA, Vertriebspraxis und Medienwissenschaft mit WordPress, Tracking, Vorqualifizierung und Werbekanal-Steuerung.',
         'alumniOf'    => [
             '@type'  => 'CollegeOrUniversity',
@@ -534,7 +545,7 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
 
     // Slugs whose templates already emit a WebPage-subtype page node.
     $page_subtype_slugs = [
-        'uber-mich',                  // ProfilePage
+        'hasim-uener',                // ProfilePage
         'wordpress-agentur-hannover', // WebPage
         'case-studies',               // CollectionPage
         'case-studies-e-commerce',    // CollectionPage
@@ -1232,15 +1243,15 @@ function hu_output_schema()
             }
         }
 
-        // Über mich: ProfilePage referencing the canonical Person node, which
-        // is emitted site-wide — no second inline Person needed here.
-        if ($slug === 'uber-mich') {
+        // Personenseite: ProfilePage referencing the canonical Person node,
+        // which is emitted site-wide — no second inline Person needed here.
+        if ($slug === 'hasim-uener') {
             $profilePage = [
                 '@context' => 'https://schema.org',
                 '@type'    => 'ProfilePage',
-                '@id'      => home_url('/uber-mich/#profile'),
+                '@id'      => hu_person_profile_url() . '#profile',
                 'url'      => hu_person_profile_url(),
-                'name'     => 'Über mich – Haşim Üner',
+                'name'     => 'Haşim Üner',
                 'mainEntity' => ['@id' => hu_person_schema_id()],
                 'inLanguage' => 'de',
                 'about'    => ['@id' => hu_person_schema_id()]

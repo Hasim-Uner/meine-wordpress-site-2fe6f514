@@ -21,7 +21,7 @@ $e3_url       = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerier
 $results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
 $agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
-$about_url    = $primary_urls['about'] ?? home_url( '/uber-mich/' );
+$about_url    = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
 $contact_url  = $primary_urls['contact'] ?? nexus_get_contact_url();
 $project_request_url = add_query_arg(
 	[

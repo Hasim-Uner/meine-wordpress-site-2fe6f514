@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $hu_byline_args        = isset( $args ) && is_array( $args ) ? $args : [];
 $hu_byline_template    = isset( $hu_byline_args['template_path'] ) ? (string) $hu_byline_args['template_path'] : '';
-$hu_byline_profile_url = isset( $hu_byline_args['profile_url'] ) ? (string) $hu_byline_args['profile_url'] : home_url( '/uber-mich/' );
+$hu_byline_profile_url = isset( $hu_byline_args['profile_url'] ) ? (string) $hu_byline_args['profile_url'] : home_url( '/hasim-uener/' );
 
 $hu_byline_updated_iso   = function_exists( 'hu_get_subpage_last_updated_iso' ) ? hu_get_subpage_last_updated_iso( $hu_byline_template ) : '';
 $hu_byline_updated_label = function_exists( 'hu_get_subpage_last_updated_label' ) ? hu_get_subpage_last_updated_label( $hu_byline_template ) : '';

@@ -10,7 +10,7 @@ Code-Qualität ist nicht ein Versprechen, sondern überprüfbar.
 
 ➡️ **Für Agenturen:** [White-Label-Partner-Modell](https://hasimuener.de/whitelabel-retainer/)
 ➡️ **Live-Site:** [hasimuener.de](https://hasimuener.de)
-➡️ **Über mich:** [hasimuener.de/uber-mich/](https://hasimuener.de/uber-mich/)
+➡️ **Über mich:** [hasimuener.de/hasim-uener/](https://hasimuener.de/hasim-uener/)
 
 ---
 

@@ -121,7 +121,7 @@ function hu_home_urls() {
 		'tracking'    => nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) ),
 		'cwv'         => nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) ),
 		'cro'         => nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) ),
-		'about'       => nexus_get_primary_public_url( 'about', home_url( '/uber-mich/' ) ),
+		'about'       => nexus_get_primary_public_url( 'about', home_url( '/hasim-uener/' ) ),
 		'blog'        => nexus_get_primary_public_url( 'blog', home_url( '/blog/' ) ),
 		'e3'          => nexus_get_primary_public_url( 'e3', home_url( '/case-study-solar-leadgenerierung/' ) ),
 		'contact'     => nexus_get_primary_public_url( 'contact', home_url( '/kontakt/' ) ),
