@@ -174,8 +174,8 @@ html {
 
 .wl-page-footer__inner {
 	display: grid;
-	grid-template-areas: "copyright github legal";
-	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+	grid-template-areas: "copyright legal";
+	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: center;
 	gap: 1rem 2rem;
 }
@@ -185,44 +185,6 @@ html {
 	margin: 0;
 	font-size: 0.82rem;
 	line-height: 1.5;
-}
-
-.wl-page-footer__github {
-	grid-area: github;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 0.6rem;
-	min-height: 44px;
-	padding: 0.65rem 1rem;
-	border: 1px solid hsl(23 60% 62% / 0.85);
-	border-radius: 999px;
-	background: linear-gradient(180deg, hsl(30 8% 13% / 0.94), hsl(28 8% 8% / 0.94));
-	box-shadow:
-		inset 0 1px 0 hsl(30 10% 100% / 0.06),
-		0 10px 28px hsl(var(--accent-hsl) / 0.12);
-	color: var(--nx-text);
-	font-size: 0.86rem;
-	font-weight: 700;
-	line-height: 1.2;
-	text-decoration: none;
-	white-space: nowrap;
-	transition:
-		transform var(--nx-duration-fast) var(--nx-ease),
-		border-color var(--nx-duration-fast) var(--nx-ease),
-		background var(--nx-duration-fast) var(--nx-ease);
-}
-
-.wl-page-footer__github-icon {
-	flex: 0 0 auto;
-	color: hsl(23 60% 72%);
-}
-
-.wl-page-footer__github:hover {
-	border-color: hsl(23 60% 62% / 0.72);
-	background: linear-gradient(180deg, hsl(28 10% 16% / 0.98), hsl(28 9% 10% / 0.98));
-	color: var(--nx-text);
-	transform: translateY(-1px);
 }
 
 .wl-page-footer__legal {
@@ -255,7 +217,6 @@ html {
 
 	.wl-page-footer__inner {
 		grid-template-areas:
-			"github"
 			"copyright"
 			"legal";
 		grid-template-columns: minmax(0, 1fr);
@@ -2456,8 +2417,7 @@ thead .wl-compare__col--hl {
 
 	.wl-skip-link,
 	.wl-site-header__nav a,
-	.wl-site-header__cta,
-	.wl-page-footer__github { transition: none; }
+	.wl-site-header__cta { transition: none; }
 
 	.wl-status-dot { animation: none; }
 	.wl-sticky-cta { transition: none; }

@@ -18,7 +18,6 @@ $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 $mailto_url          = 'mailto:hallo@hasimuener.de';
 $imprint_url         = home_url( '/impressum/' );
 $privacy_url         = home_url( '/datenschutz/' );
-$github_url          = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
 $current_year        = wp_date( 'Y' );
 
 // Diese Route hat eine eigene, geschlossene Seitennavigation. Der globale
@@ -938,13 +937,6 @@ do_action( 'blocksy:footer:before' );
 	<footer id="footer" class="wl-page-footer" aria-labelledby="wl-page-footer-heading" role="contentinfo">
 		<h2 id="wl-page-footer-heading" class="wl-visually-hidden">Seitenabschluss</h2>
 		<div class="nx-container wl-page-footer__inner">
-			<a class="wl-page-footer__github" href="<?php echo esc_url( $github_url ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="nav_whitelabel_footer_github" data-track-category="navigation" data-track-section="whitelabel_footer">
-				<svg class="wl-page-footer__github-icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-					<path fill="currentColor" d="M12 .297a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .297Z"/>
-				</svg>
-				<span>Projekt auf GitHub</span>
-				<span class="wl-visually-hidden"> (öffnet in neuem Tab)</span>
-			</a>
 			<p>&copy; <time datetime="<?php echo esc_attr( $current_year ); ?>"><?php echo esc_html( $current_year ); ?></time> Haşim Üner · White-Label-Partner für Agenturen</p>
 			<nav class="wl-page-footer__legal" aria-label="Rechtliches">
 				<a href="<?php echo esc_url( $imprint_url ); ?>" data-track-action="nav_whitelabel_footer_imprint" data-track-category="navigation" data-track-section="whitelabel_footer">Impressum</a>
