@@ -48,6 +48,12 @@ $e3_cpl_reduction_percent = defined( 'HU_E3_CPL_REDUCTION_PERCENT' ) ? (int) HU_
 // Lesereihenfolge und zugleich die Reveal-Reihenfolge. Die Kennzahl steht als
 // eigene Display-Zeile ueber Titel und Satz; geschuetzte Leerzeichen halten
 // Wert und Einheit zusammen, damit die Einheit nicht allein umbricht.
+//
+// Nicht jede Station traegt eine Zahl: Station 3 belegt unternehmerisches
+// Risiko, keine zweite Kostensenkung. Die Display-Zeile nimmt dort zwei Woerter
+// auf. 'wrap' => true erlaubt genau dieser Zeile einen Umbruch, weil das
+// pauschale white-space: nowrap den laengeren Text sonst aus der Spalte
+// schiebt (Korridor 761-901 px). Schriftgroesse bleibt unangetastet.
 $about_stations = [
 	[
 		'figure' => '8 Jahre',
@@ -60,9 +66,12 @@ $about_stations = [
 		'text'   => 'Seitdem baue ich Websites. Schwerpunkt webbasierte Systeme.',
 	],
 	[
-		'figure' => "84\u{00A0}€ → 26\u{00A0}€",
-		'title'  => 'Eigener Onlineshop',
-		'text'   => 'Kosten pro Bestellung. D2C, auf eigenes Geld.',
+		// U+2060 bindet die Jahresspanne, damit der Halbgeviertstrich sie in
+		// schmalen Spalten nicht zu "2019-" / "2023" trennt.
+		'figure' => 'Eigenes Geld',
+		'title'  => "Eigener Onlineshop\u{00A0}· 2019\u{2060}–\u{2060}2023",
+		'text'   => 'Vier Jahre Anzeigen auf eigene Rechnung. Wer sein eigenes Budget ausgibt, rechnet anders als jemand, der fremdes verwaltet.',
+		'wrap'   => true,
 	],
 	[
 		'figure' => sprintf( "%d\u{00A0}%%", $e3_cpl_reduction_percent ),
@@ -140,7 +149,7 @@ get_header();
 						class="hu-about__station"
 						data-hu-reveal
 					>
-						<p class="hu-about__station-figure"><?php echo esc_html( $station['figure'] ); ?></p>
+						<p class="hu-about__station-figure<?php echo empty( $station['wrap'] ) ? '' : ' hu-about__station-figure--words'; ?>"><?php echo esc_html( $station['figure'] ); ?></p>
 						<h2 class="hu-about__station-title"><?php echo esc_html( $station['title'] ); ?></h2>
 						<p class="hu-about__station-text"><?php echo esc_html( $station['text'] ); ?></p>
 						<?php if ( ! empty( $station['url'] ) ) : ?>
