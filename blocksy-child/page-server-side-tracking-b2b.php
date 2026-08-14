@@ -35,20 +35,20 @@ $setup_cta_label = 'Setup-Empfehlung anfordern';
 
 // ── Route-spezifischer Preis- und Lieferkanon ─────────────────
 $standard_setup_price = function_exists( 'hu_tracking_price' )
-	? hu_tracking_price( 'standard', 'setup', 'display', '890 €' )
-	: '890 €';
+	? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' )
+	: '1.290 €';
 $standard_care_price = function_exists( 'hu_tracking_price' )
 	? hu_tracking_price( 'standard', 'care', 'display', '99 € / Monat' )
 	: '99 € / Monat';
 $pro_setup_price = function_exists( 'hu_tracking_price' )
-	? hu_tracking_price( 'pro', 'setup', 'display', '1.290 €' )
-	: '1.290 €';
+	? hu_tracking_price( 'pro', 'setup', 'display', '1.900 €' )
+	: '1.900 €';
 $pro_care_price = function_exists( 'hu_tracking_price' )
 	? hu_tracking_price( 'pro', 'care', 'display', '149 € / Monat' )
 	: '149 € / Monat';
 $individual_setup_price = function_exists( 'hu_tracking_price' )
-	? hu_tracking_price( 'individual', 'setup', 'display', 'ab 2.500 €' )
-	: 'ab 2.500 €';
+	? hu_tracking_price( 'individual', 'setup', 'display', 'ab 3.500 €' )
+	: 'ab 3.500 €';
 $individual_care_price = function_exists( 'hu_tracking_price' )
 	? hu_tracking_price( 'individual', 'care', 'display', 'ab 199 € / Monat' )
 	: 'ab 199 € / Monat';

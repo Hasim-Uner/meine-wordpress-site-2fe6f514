@@ -198,7 +198,7 @@ function hu_get_forced_singular_seo_map() {
 	$e3_cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', 'über 85 %' ) : 'über 85 %';
 	$e3_cpl_before    = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
 	$e3_cpl_after     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
-	$tracking_setup_price = function_exists( 'hu_tracking_price' ) ? hu_tracking_price( 'standard', 'setup', 'display', '890 €' ) : '890 €';
+	$tracking_setup_price = function_exists( 'hu_tracking_price' ) ? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' ) : '1.290 €';
 
 	return (array) apply_filters(
 		'hu_forced_singular_seo_map',

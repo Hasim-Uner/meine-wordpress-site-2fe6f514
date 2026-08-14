@@ -168,13 +168,19 @@ function hu_entry_setup_price( $with_net = false ) {
 // ── Server-Side-Tracking: Einrichtung + laufende Kontrolle ───
 // Eigener Preispfad fuer /server-side-tracking-b2b/. Die Werte standen zuvor
 // als Literale in Template, FAQ und Meta-Description und konnten dort driften.
-define( 'HU_TRACKING_STANDARD_SETUP', 890 );
+//
+// Die Setup-Betraege sind die Endkunden-Obergrenze fuer dieselbe Leistung. Der
+// White-Label-Pfad weiter unten liegt bewusst darunter; werden diese Werte
+// gesenkt, muss der White-Label-Block mitgeprueft werden, sonst zahlen
+// Agenturen mehr als Endkunden — auf zwei indexierten Seiten nachlesbar.
+// Die Monatsbeitraege der Tracking Care bleiben davon unberuehrt.
+define( 'HU_TRACKING_STANDARD_SETUP', 1290 );
 define( 'HU_TRACKING_STANDARD_CARE_MONTHLY', 99 );
 define( 'HU_TRACKING_STANDARD_INCLUDED_MINUTES', 30 );
-define( 'HU_TRACKING_PRO_SETUP', 1290 );
+define( 'HU_TRACKING_PRO_SETUP', 1900 );
 define( 'HU_TRACKING_PRO_CARE_MONTHLY', 149 );
 define( 'HU_TRACKING_PRO_INCLUDED_MINUTES', 60 );
-define( 'HU_TRACKING_CUSTOM_SETUP_MIN', 2500 );
+define( 'HU_TRACKING_CUSTOM_SETUP_MIN', 3500 );
 define( 'HU_TRACKING_CUSTOM_CARE_MONTHLY_MIN', 199 );
 define( 'HU_TRACKING_RESPONSE_BUSINESS_DAYS', 2 );
 define( 'HU_TRACKING_DURATION_WEEKS_MIN', 2 );

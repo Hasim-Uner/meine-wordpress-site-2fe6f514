@@ -148,7 +148,14 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Server-Side Tracking einrichten lassen',
 					'url'         => $urls['solar_tracking'] ?? home_url( '/server-side-tracking-b2b/' ),
-					'description' => 'Server-GTM, GA4, Google Ads und Meta CAPI über eine eigene Tracking-Subdomain: Einrichtung, Testbetrieb und laufende Kontrolle mit Preisen ab 890 € netto.',
+					'description' => sprintf(
+						// Preis aus dem Tracking-Kanon statt als Literal: die Zahl stand
+						// hier zuletzt eine Anhebung lang falsch im Routen-Index.
+						'Server-GTM, GA4, Google Ads und Meta CAPI über eine eigene Tracking-Subdomain: Einrichtung, Testbetrieb und laufende Kontrolle mit Preisen ab %s netto.',
+						function_exists( 'hu_tracking_price' )
+							? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' )
+							: '1.290 €'
+					),
 				],
 				[
 					'label'       => 'B2B Solar Leads für Gewerbe',
