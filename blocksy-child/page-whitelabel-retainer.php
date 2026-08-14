@@ -66,6 +66,10 @@ $lead_count             = hu_e3_metric( 'lead_count' );
 $sales_conversion_lift = hu_e3_metric( 'sales_conversion_uplift' );
 $timeframe              = hu_e3_metric( 'timeframe', 'display_dative' );
 $test_sprint_price      = hu_whitelabel_price( 'test_sprint' );
+$test_sprint_price_card = hu_whitelabel_price( 'test_sprint', 'display_fixed', $test_sprint_price );
+$tracking_audit_price   = hu_whitelabel_price( 'tracking_audit', 'display', 'Festpreis nach Umfangsklärung' );
+$server_side_price      = hu_whitelabel_price( 'server_side', 'display', 'Festpreis nach Umfangsklärung' );
+$landingpage_price      = hu_whitelabel_price( 'landingpage', 'display', 'Festpreis nach Umfangsklärung' );
 
 $proof_metrics = [
 	[
@@ -131,7 +135,7 @@ $entry_projects = [
 		'key'       => 'testsprint',
 		'tag'       => 'WordPress',
 		'title'     => 'WordPress-Test-Sprint',
-		'price'     => $test_sprint_price,
+		'price'     => $test_sprint_price_card,
 		'copy'      => 'Eine vorab schriftlich abgegrenzte technische Aufgabe als kleinster Einstieg in die erste Zusammenarbeit.',
 		'card_line' => 'Eine abgegrenzte Aufgabe zum Festpreis — inklusive Umsetzung, Funktionstest, technischer Dokumentation und einer Korrekturrunde.',
 	],
@@ -139,7 +143,7 @@ $entry_projects = [
 		'key'     => 'tracking',
 		'tag'     => 'Tracking',
 		'title'   => 'Tracking-Audit',
-		'price'   => 'Festpreis nach Umfangsklärung',
+		'price'   => $tracking_audit_price,
 		'deliver' => 'Schriftlicher Befund + priorisierte Fixliste',
 		'copy'    => 'GA4, GTM und Consent-Bestand eures Kunden geprüft: Was misst, was fehlt, was verfälscht. Danach wisst ihr, worauf jede weitere Maßnahme aufsetzt.',
 	],
@@ -147,7 +151,7 @@ $entry_projects = [
 		'key'     => 'tracking',
 		'tag'     => 'Server',
 		'title'   => 'Server-Side-Setup',
-		'price'   => 'Festpreis nach Umfangsklärung',
+		'price'   => $server_side_price,
 		'deliver' => 'Produktives Setup + Doku + Übergabe',
 		'copy'    => 'Eigener Server-Side-Container, Enhanced Conversions, Meta CAPI, Consent Mode V2 — produktiv geschaltet und dokumentiert, nicht nur konfiguriert.',
 	],
@@ -155,7 +159,7 @@ $entry_projects = [
 		'key'     => 'landingpage',
 		'tag'     => 'Landingpage',
 		'title'   => 'Landingpage',
-		'price'   => 'Festpreis nach Umfangsklärung',
+		'price'   => $landingpage_price,
 		'deliver' => 'Live-Page + Doku, bereit für Traffic',
 		'copy'    => 'Individuelles Template mit klarer Funnel-Logik, sauberen Core Web Vitals und belastbarer Messbarkeit ab dem ersten Klick.',
 	],
@@ -167,7 +171,10 @@ $presales_scoping = [
 	'copy'     => 'Ich schätze technische Anforderungen, Aufwand und Machbarkeit vorab mit euch ein, bevor ihr dem Kunden etwas zusagt.',
 ];
 
-$entry_bullets = [ 'NDA', 'Fixer Scope', 'Festpreis nach Umfangsklärung', 'Keine Verlängerungsfalle' ];
+// "nach Umfangsklärung" stand hier neben der Test-Sprint-Karte, die als
+// einzige Position der Seite einen festen Betrag trägt — und liess ihn weich
+// aussehen. Ohne den Zusatz gilt der Punkt fuer alle vier Erstprojekte.
+$entry_bullets = [ 'NDA', 'Fixer Scope', 'Festpreis vorab', 'Keine Verlängerungsfalle' ];
 
 $solution_modes = [
 	'hintergrund' => [
@@ -454,7 +461,7 @@ $fitcheck_steps = [
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Einstieg</span>
 				<h2 class="nx-headline-section">Kein Blind-Retainer. Erst ein Erstprojekt mit fixem Scope.</h2>
-				<p class="wl-section-lede">Der WordPress-Test-Sprint ist der kleinste Einstieg zum festen Preis. Größere Erstprojekte folgen mit fester Lieferung und einem Festpreis nach Umfangsklärung. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt.</p>
+				<p class="wl-section-lede">Der WordPress-Test-Sprint ist der kleinste Einstieg zum festen Preis. Bei den größeren Erstprojekten nennt die Karte die Untergrenze; der verbindliche Festpreis steht nach der Umfangsklärung schriftlich fest, bevor die Arbeit beginnt. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt.</p>
 			</div>
 
 			<div class="wl-entry__presales nx-reveal">

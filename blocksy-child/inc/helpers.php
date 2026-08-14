@@ -982,15 +982,28 @@ function nexus_get_whitelabel_page_url() {
  * @return array<int, array{key: string, question: string, answer: string}>
  */
 function nexus_get_whitelabel_faq_items() {
-	$test_sprint_price = function_exists( 'hu_whitelabel_price' )
+	$test_sprint_price  = function_exists( 'hu_whitelabel_price' )
 		? hu_whitelabel_price( 'test_sprint' )
 		: 'dem schriftlich bestätigten Festpreis';
+	$audit_price        = function_exists( 'hu_whitelabel_price' )
+		? hu_whitelabel_price( 'tracking_audit', 'display', 'einem Festpreis nach Umfangsklärung' )
+		: 'einem Festpreis nach Umfangsklärung';
+	$server_side_price  = function_exists( 'hu_whitelabel_price' )
+		? hu_whitelabel_price( 'server_side', 'display', 'einem Festpreis nach Umfangsklärung' )
+		: 'einem Festpreis nach Umfangsklärung';
+	$landingpage_price  = function_exists( 'hu_whitelabel_price' )
+		? hu_whitelabel_price( 'landingpage', 'display', 'einem Festpreis nach Umfangsklärung' )
+		: 'einem Festpreis nach Umfangsklärung';
 
 	return [
 		[
 			'key'      => 'abrechnung',
 			'question' => 'Wie rechnest du ab — Retainer oder Projekt?',
-			'answer'   => sprintf( 'Der WordPress-Test-Sprint ist mit %s der kleinste Einstieg und hat einen vorab schriftlich abgegrenzten Umfang. Tracking-Audit, Server-Side-Setup, Landingpage und weitere größere Erstprojekte werden nach der Umfangsklärung als Festpreis angeboten. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt und erhält einen vorab vereinbarten Leistungsrahmen.', $test_sprint_price ),
+			// Die Antwort nennt dieselben Betraege wie die Angebotskarten. Stuende
+			// hier nur "Festpreis nach Umfangsklaerung", widerspraeche die FAQ den
+			// Karten direkt darueber — und die FAQ geht zusaetzlich als FAQPage-
+			// Schema raus.
+			'answer'   => sprintf( 'Der WordPress-Test-Sprint ist mit %1$s der kleinste Einstieg und hat einen vorab schriftlich abgegrenzten Umfang. Die größeren Erstprojekte starten beim Tracking-Audit %2$s, beim Server-Side-Setup %3$s und bei der Landingpage %4$s; der verbindliche Festpreis wird nach der Umfangsklärung schriftlich vereinbart. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt und erhält einen vorab vereinbarten Leistungsrahmen.', $test_sprint_price, $audit_price, $server_side_price, $landingpage_price ),
 		],
 		[
 			'key'      => 'sprint-scope',

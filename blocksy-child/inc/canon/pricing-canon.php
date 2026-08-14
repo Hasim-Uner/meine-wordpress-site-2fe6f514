@@ -296,7 +296,22 @@ function hu_tracking_delivery_weeks_display() {
 // ── White-Label-Nebenpfad ────────────────────────────────────────
 // Der Partner-Funnel hat eine eigene Einstiegsebene. Sie bleibt bewusst
 // getrennt vom WGOS-Foundation- und Add-on-Modell oben.
+//
+// Die drei groesseren Erstprojekte liegen rund 30 % unter dem jeweiligen
+// Endkundenpreis der Tracking-Leiter weiter oben. Das ist die Marge der
+// Agentur und zugleich das, wofuer sie zahlt beziehungsweise nicht zahlt:
+// kein Endkundenkontakt, keine Akquise, Wiederholungsgeschaeft.
+//
+// "ab" statt Spanne ist Absicht: die Untergrenze sortiert aus, ohne dass eine
+// Obergrenze jemanden verschreckt, der seinen Scope noch nicht kennt. Ein
+// Stundensatz gehoert weder als Zahl noch als Herleitung auf die Seite.
+//
+// Der Audit ist bewusst der guenstigste Punkt der Leiter. Er ist kein
+// Ertragsprodukt, sondern der Tueroeffner, der das Setup verkauft.
 define( 'HU_WHITELABEL_TEST_SPRINT_PRICE', 590 );
+define( 'HU_WHITELABEL_TRACKING_AUDIT_MIN', 690 );
+define( 'HU_WHITELABEL_SERVER_SIDE_MIN', 1290 );
+define( 'HU_WHITELABEL_LANDINGPAGE_MIN', 1900 );
 
 /**
  * Return the canonical White-Label pricing model.
@@ -305,9 +320,25 @@ define( 'HU_WHITELABEL_TEST_SPRINT_PRICE', 590 );
  */
 function hu_whitelabel_pricing_canon() {
 	return [
-		'test_sprint' => [
+		'test_sprint'      => [
 			'value'   => HU_WHITELABEL_TEST_SPRINT_PRICE,
 			'display' => sprintf( '%d € netto', HU_WHITELABEL_TEST_SPRINT_PRICE ),
+			// Der einzige feste Betrag der Seite. Auf der Angebotskarte traegt er
+			// das Wort "Festpreis", weil dort zuvor "Festpreis nach
+			// Umfangsklaerung" danebenstand und ihn weich aussehen liess.
+			'display_fixed' => sprintf( 'Festpreis %d € netto', HU_WHITELABEL_TEST_SPRINT_PRICE ),
+		],
+		'tracking_audit'   => [
+			'value'   => HU_WHITELABEL_TRACKING_AUDIT_MIN,
+			'display' => sprintf( 'ab %d € netto', HU_WHITELABEL_TRACKING_AUDIT_MIN ),
+		],
+		'server_side'      => [
+			'value'   => HU_WHITELABEL_SERVER_SIDE_MIN,
+			'display' => 'ab ' . hu_format_eur( HU_WHITELABEL_SERVER_SIDE_MIN ) . ' netto',
+		],
+		'landingpage'      => [
+			'value'   => HU_WHITELABEL_LANDINGPAGE_MIN,
+			'display' => 'ab ' . hu_format_eur( HU_WHITELABEL_LANDINGPAGE_MIN ) . ' netto',
 		],
 	];
 }
