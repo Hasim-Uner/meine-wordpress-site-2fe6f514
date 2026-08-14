@@ -120,10 +120,15 @@ $proof_metrics = [
 ];
 
 // ── Prüfbare Arbeiten neben der anonymisierten Zahlenkachel ─────
-// Die Kennzahlen oben stammen aus einem Mandat unter NDA und sind für einen
-// Fremden nicht nachprüfbar. Diese drei Seiten sind es: eigene bzw. offene
-// Projekte, kein NDA steht dagegen. Beschrieben wird die technische
-// Schwierigkeit — nicht der Kunde und nicht der Inhalt.
+// Die Kennzahlen oben sind für einen Fremden nicht nachprüfbar. Diese drei
+// Seiten sind es. Beschrieben wird jeweils die Aufgabe, nicht der Kunde und
+// nicht der Inhalt; Kennzahlen bleiben ausdrücklich aus diesem Block heraus,
+// damit keine der Seiten als Beleg für die Zahlen oben gelesen wird.
+//
+// Der Block nennt bewusst keine Code-Ebene mehr ("Quelltext lesen"): nicht
+// jede der drei Seiten liegt auf einem individuellen Template, und die
+// Aufforderung stünde zwei Abschnitte unter dem Versprechen individueller
+// Templates.
 $proof_references = [
 	[
 		'label' => 'civaka-azad.org',
@@ -131,9 +136,13 @@ $proof_references = [
 		'note'  => 'Informationsarchitektur für einen großen, über Jahre gewachsenen redaktionellen Bestand: Navigation, Archive und interne Verweise so strukturiert, dass ältere Beiträge auffindbar bleiben.',
 	],
 	[
-		'label' => 'conversionengine.de',
-		'url'   => 'https://conversionengine.de/',
-		'note'  => 'Onepage mit durchgehender Vertriebslogik: eine einzige Seite, die Argumentation, Einwandbehandlung und Abschluss ohne Seitenwechsel trägt.',
+		'label' => 'e3-newenergy.de',
+		'url'   => 'https://e3-newenergy.de/',
+		// Bewusst ohne Kennzahlen und ohne Zuordnung zum Fallbeispiel oben: die
+		// Seite steht hier als Referenz, nicht als Beleg für die Zahlen. Auch
+		// bewusst ohne Aussage zur Code-Ebene — die Seite läuft heute auf einem
+		// Page-Builder, und der Block daneben wirbt mit individuellen Templates.
+		'note'  => 'Solar und Wärmepumpe mit erklärungsbedürftigem Angebot: eine Strecke, die Beratung, Angebotsanfrage und Kontakt zusammenführt, statt sie über die Seite zu verteilen.',
 	],
 	[
 		'label' => 'hasimuener.org',
@@ -776,8 +785,8 @@ $fitcheck_steps = [
 			<p class="wl-proof__disclaimer">Fallbeispiel aus 2024–2025 · eigenes Projekt, kein White-Label-Mandat · keine pauschale Übertragbarkeitsgarantie.</p>
 
 			<div class="wl-proof__refs nx-reveal">
-				<h3 class="wl-proof__refs-title">Direkt prüfbar: drei Live-Umsetzungen</h3>
-				<p class="wl-proof__refs-lede">Die Zahlen oben stammen aus einem Mandat, dessen Kunde anonym bleibt. Diese drei Seiten sind offen — anschauen, Quelltext lesen, Ladeverhalten messen.</p>
+				<h3 class="wl-proof__refs-title">Direkt prüfbar: drei Live-Referenzen</h3>
+				<p class="wl-proof__refs-lede">Drei Seiten, die offen einsehbar sind — anschauen und selbst beurteilen, ob das Niveau passt.</p>
 				<ul class="wl-proof__refs-list" role="list">
 					<?php foreach ( $proof_references as $reference ) : ?>
 						<li class="wl-proof__ref">
