@@ -63,7 +63,12 @@ $portrait_url = function_exists( 'hu_get_portrait_image_url' )
 $cpl_before             = hu_e3_metric( 'cpl_before' );
 $cpl_after              = hu_e3_metric( 'cpl_after' );
 $lead_count             = hu_e3_metric( 'lead_count' );
-$sales_conversion_lift = hu_e3_metric( 'sales_conversion_uplift' );
+// Bewusst 'sales_conversion' statt 'sales_conversion_uplift': der Vorher-Wert
+// "1 – 5 %" gehoert nicht zu den kanonischen Zahlen dieser Seite (CPL 150 → 22 €,
+// 1.750+ Anfragen, 12 % Abschlussquote). Er brachte den geringsten Nutzen bei der
+// groessten Angriffsflaeche. Der Uplift-Schluessel bleibt fuer die Solar-Routen
+// unveraendert im Kanon.
+$sales_conversion       = hu_e3_metric( 'sales_conversion' );
 $timeframe              = hu_e3_metric( 'timeframe', 'display_dative' );
 $test_sprint_price      = hu_whitelabel_price( 'test_sprint' );
 $test_sprint_price_card = hu_whitelabel_price( 'test_sprint', 'display_fixed', $test_sprint_price );
@@ -81,8 +86,31 @@ $proof_metrics = [
 		'label' => 'qualifizierte Anfragen im selben Zeitraum',
 	],
 	[
-		'value' => $sales_conversion_lift,
-		'label' => 'Abschlussquote · gekaufte Portal-Leads vorher → eigene Anfragen nachher',
+		'value' => $sales_conversion,
+		'label' => 'Abschlussquote · eigene Anfragen',
+	],
+];
+
+// ── Prüfbare Arbeiten neben der anonymisierten Zahlenkachel ─────
+// Die Kennzahlen oben stammen aus einem Mandat unter NDA und sind für einen
+// Fremden nicht nachprüfbar. Diese drei Seiten sind es: eigene bzw. offene
+// Projekte, kein NDA steht dagegen. Beschrieben wird die technische
+// Schwierigkeit — nicht der Kunde und nicht der Inhalt.
+$proof_references = [
+	[
+		'label' => 'civaka-azad.org',
+		'url'   => 'https://civaka-azad.org/',
+		'note'  => 'Informationsarchitektur für einen großen, über Jahre gewachsenen redaktionellen Bestand: Navigation, Archive und interne Verweise so strukturiert, dass ältere Beiträge auffindbar bleiben.',
+	],
+	[
+		'label' => 'conversionengine.de',
+		'url'   => 'https://conversionengine.de/',
+		'note'  => 'Onepage mit durchgehender Vertriebslogik: eine einzige Seite, die Argumentation, Einwandbehandlung und Abschluss ohne Seitenwechsel trägt.',
+	],
+	[
+		'label' => 'hasimuener.org',
+		'url'   => 'https://hasimuener.org/',
+		'note'  => 'Editorial Design: Typografie, Raster und Lesefluss als eigentliche Aufgabe — Layout, das ohne Bildmaterial trägt.',
 	],
 ];
 
@@ -384,7 +412,7 @@ $fitcheck_steps = [
 						<span class="wl-hero__title-line wl-hero__title-line--em">Euer Name steht drauf.</span>
 					</h1>
 					<p class="wl-hero__lede">
-						Senior-Unterstützung für WordPress, Tracking und Automation — wenn intern technische Tiefe oder Kapazität fehlt. Ohne zusätzliche Festanstellung und unter eurem Namen.
+						Senior-Umsetzung für WordPress, Tracking und Automation — unter eurem Namen, ohne zusätzliche Festanstellung.
 					</p>
 
 					<div class="wl-hero__actions">
@@ -714,7 +742,32 @@ $fitcheck_steps = [
 
 			<p class="wl-proof__scope">Mein Verantwortungsbereich in dieser Arbeitsprobe: Landingpage und Kampagnensteuerung in Google Ads und Meta Ads — verbunden durch Tracking-Architektur, Consent Mode V2 und CRM-Attribution.</p>
 
-			<p class="wl-proof__disclaimer">Historisches Fallbeispiel aus dem Zeitraum 2024–2025 · kein White-Label-Mandat, sondern eigenes Projekt · keine pauschale Übertragbarkeitsgarantie.</p>
+			<p class="wl-proof__disclaimer">Fallbeispiel aus 2024–2025 · eigenes Projekt, kein White-Label-Mandat · keine pauschale Übertragbarkeitsgarantie.</p>
+
+			<div class="wl-proof__refs nx-reveal">
+				<h3 class="wl-proof__refs-title">Direkt prüfbar: drei Live-Umsetzungen</h3>
+				<p class="wl-proof__refs-lede">Die Zahlen oben stammen aus einem Mandat, dessen Kunde anonym bleibt. Diese drei Seiten sind offen — anschauen, Quelltext lesen, Ladeverhalten messen.</p>
+				<ul class="wl-proof__refs-list" role="list">
+					<?php foreach ( $proof_references as $reference ) : ?>
+						<li class="wl-proof__ref">
+							<a
+								class="wl-proof__ref-link"
+								href="<?php echo esc_url( $reference['url'] ); ?>"
+								target="_blank"
+								rel="noopener noreferrer"
+								data-track-action="ref_whitelabel_proof_site"
+								data-track-label="<?php echo esc_attr( $reference['label'] ); ?>"
+								data-track-category="engagement"
+								data-track-section="proof"
+							>
+								<?php echo esc_html( $reference['label'] ); ?>
+								<span class="wl-visually-hidden"> (öffnet in neuem Tab)</span>
+							</a>
+							<span class="wl-proof__ref-note"><?php echo esc_html( $reference['note'] ); ?></span>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
 
 			<div class="wl-proof__cta nx-reveal">
 				<p class="wl-proof__cta-copy">Dieselbe Mechanik unter eurem Namen — die Frage ist nur, ob sie zu eurem nächsten Kundenprojekt passt.</p>
