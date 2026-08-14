@@ -27,10 +27,18 @@ $mailto_url          = 'mailto:hallo@hasimuener.de';
 // neue Datenverarbeitung, kein REST-Endpunkt — die Core Web Vitals der Route
 // bleiben unangetastet.
 //
-// Das 4-Stunden-Versprechen steht ohnehin zweimal auf der Seite (Kontrakt-
-// Karte 02, FAQ "kapazitaet"). Hier trägt es zum ersten Mal einen CTA statt
-// als Fußnote zu enden.
-$task_brief_response = 'Einschätzung innerhalb von 4 Stunden werktags';
+// Das 4-Stunden-Versprechen steht ohnehin an vier Stellen der Seite
+// (Kontrakt-Karte 02 samt Bullet, Founder-Chip, FAQ "kapazitaet"). Hier trägt
+// es zum ersten Mal einen CTA statt als Fußnote zu enden.
+//
+// Bewusst "Antwort" und nicht "Einschätzung": eine Einschätzung zu Machbarkeit,
+// Aufwand und Preisrichtung ist auf eine freitextliche Aufgabenbeschreibung hin
+// in vier Stunden oft gar nicht möglich, ohne vorher Rückfragen zu stellen.
+// Zwei verschiedene Versprechen unter derselben Zahl wären genau der
+// Widerspruch, den der Test-Sprint-Block gerade losgeworden ist — und ein
+// Versprechen, das auf den ersten Bildschirm wandert, muss die haltbarste
+// Fassung sein, nicht die kühnste.
+$task_brief_response = 'Antwort innerhalb von 4 Stunden werktags';
 $task_brief_url      = $mailto_url . '?subject=' . rawurlencode( 'White-Label: konkrete Aufgabe' )
 	. '&body=' . rawurlencode(
 		"Aufgabe:\n\n\nGewünschter Zeitraum:\n\n\nZugänge vorhanden (WordPress, GA4, GTM):\n\n"
