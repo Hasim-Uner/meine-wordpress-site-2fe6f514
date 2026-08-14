@@ -1918,3 +1918,301 @@
 /* About-CTA sitzt direkt unter der Bullet-Liste. */
 .hu-hp .hu-about-text .hu-btn-primary { margin-top: var(--space-2); }
 .hu-hp .hu-about-text__note { margin-top: var(--space-4); }
+
+/* =============================================================
+   STARTSEITE ALS VERTEILER (14.08.2026)
+   Nur additiv. Dieses Stylesheet wird auch von der Solar-Money-Page
+   geladen (inc/enqueue.php F1a) — die Regeln der entfallenen
+   Startseiten-Sektionen bleiben deshalb bewusst stehen.
+   ============================================================= */
+
+/* ─── Hero ohne CTA ───────────────────────────────────────── */
+/* Die linke Spalte traegt nur noch Klammer und Subline. Ohne Stats,
+   Bullets und Buttons braucht sie vertikale Mitte, sonst haengt sie
+   oben neben einer 560px hohen Pipeline. */
+.hu-hp .hu-hero--hub .hu-hero__container { align-items: center; }
+.hu-hp .hu-hero__lede { max-width: 62ch; }
+.hu-hp .hu-hero--hub .hu-hero__sub { margin-bottom: 28px; }
+
+/* Sprungmarke statt Button: fuehrt auf den Einstieg direkt darunter.
+   Bewusst kein .hu-btn — der Hero soll keinen CTA tragen. */
+.hu-hp .hu-hero__cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fg-3);
+  font-size: 14px;
+  letter-spacing: -.005em;
+  padding: 6px 2px;
+  border-radius: 6px;
+  transition: color .2s ease;
+}
+.hu-hp .hu-hero__cue:hover { color: var(--accent); }
+.hu-hp .hu-hero__cue:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  color: var(--fg);
+}
+.hu-hp .hu-hero__cue svg { animation: hu-cue-nudge 2.4s ease-in-out infinite; }
+@keyframes hu-cue-nudge {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hu-hp .hu-hero__cue svg { animation: none; }
+}
+
+/* ─── Block 2 · Einstieg (Klick-Frage) ────────────────────── */
+.hu-hp .hu-section--entry { border-top: 0; padding-top: clamp(40px,5vw,72px); }
+
+.hu-hp .hu-entry {
+  padding: clamp(28px,3.4vw,44px);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(224,138,60,.07), transparent 70%),
+    var(--bg-2);
+  box-shadow: 0 30px 70px -60px rgba(0,0,0,.9);
+}
+.hu-hp .hu-entry__q {
+  font-size: clamp(28px,3.2vw,42px);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1.05;
+  margin: 12px 0 0;
+  text-wrap: balance;
+}
+.hu-hp .hu-entry__sub {
+  color: var(--fg-2);
+  font-size: 17px;
+  max-width: 58ch;
+  margin: 14px 0 0;
+}
+
+.hu-hp .hu-entry__options {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+/* Link, nicht Button: eine Antwort ist ein Ziel. Damit funktioniert die
+   Frage ohne JS, ist nativ fokussierbar und wird korrekt angesagt. */
+.hu-hp .hu-entry__opt {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "title arrow" "route arrow";
+  align-items: center;
+  column-gap: 18px;
+  padding: 16px 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,.015);
+  color: var(--fg);
+  transition: border-color .2s ease, background .2s ease, transform .2s cubic-bezier(.22,1,.36,1);
+}
+.hu-hp .hu-entry__opt-t {
+  grid-area: title;
+  font-weight: 600;
+  font-size: 16.5px;
+  line-height: 1.35;
+}
+.hu-hp .hu-entry__opt-s {
+  grid-area: route;
+  color: var(--fg-3);
+  font-size: 11.5px;
+  letter-spacing: .06em;
+  margin-top: 4px;
+}
+.hu-hp .hu-entry__opt-arrow {
+  grid-area: arrow;
+  color: var(--fg-4);
+  flex-shrink: 0;
+  transition: color .2s ease, transform .2s ease;
+}
+.hu-hp .hu-entry__opt:hover,
+.hu-hp .hu-entry__opt:focus-visible {
+  border-color: rgba(224,138,60,.5);
+  background: var(--accent-soft);
+  transform: translateX(3px);
+}
+.hu-hp .hu-entry__opt:hover .hu-entry__opt-arrow,
+.hu-hp .hu-entry__opt:focus-visible .hu-entry__opt-arrow {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+.hu-hp .hu-entry__opt:hover .hu-entry__opt-s,
+.hu-hp .hu-entry__opt:focus-visible .hu-entry__opt-s { color: var(--accent); }
+.hu-hp .hu-entry__opt:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hu-hp .hu-entry__opt,
+  .hu-hp .hu-entry__opt-arrow { transition: none; }
+  .hu-hp .hu-entry__opt:hover,
+  .hu-hp .hu-entry__opt:focus-visible { transform: none; }
+}
+
+.hu-hp .hu-entry__hint {
+  margin: 18px 0 0;
+  font-size: 13.5px;
+  color: var(--fg-3);
+}
+
+@media (max-width: 560px) {
+  .hu-hp .hu-entry__opt { padding: 14px 16px; column-gap: 12px; }
+  .hu-hp .hu-entry__opt-t { font-size: 15.5px; }
+}
+
+/* ─── Block 3 · Lebender Beweis ───────────────────────────── */
+.hu-hp .hu-liveproof {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 900px) { .hu-hp .hu-liveproof { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .hu-hp .hu-liveproof { grid-template-columns: 1fr; } }
+
+.hu-hp .hu-liveproof__tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 24px 22px;
+  border: 1px solid rgba(21,25,29,.14);
+  border-radius: 14px;
+  background: rgba(255,255,255,.42);
+}
+.hu-hp .hu-liveproof__value {
+  font-weight: 800;
+  font-size: clamp(30px,3vw,40px);
+  letter-spacing: -.04em;
+  line-height: 1;
+  color: var(--ink);
+}
+.hu-hp .hu-liveproof__max {
+  font-size: .5em;
+  font-weight: 600;
+  color: var(--ink-2);
+  letter-spacing: 0;
+}
+.hu-hp .hu-liveproof__label {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  margin-top: 6px;
+}
+.hu-hp .hu-liveproof__note {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+
+.hu-hp .hu-liveproof__cta {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+.hu-hp .hu-liveproof__closing {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+/* ─── Block 4 · Die drei Türen ────────────────────────────── */
+/* Reine Grid-Variante — die Karte selbst bleibt .hu-gateway. */
+.hu-hp .hu-gateways--doors {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+@media (max-width: 1040px) { .hu-hp .hu-gateways--doors { grid-template-columns: 1fr; } }
+
+.hu-hp .hu-gateways--doors .hu-gateway {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 26px 24px;
+}
+.hu-hp .hu-gateways--doors .hu-gateway__title {
+  font-size: clamp(19px,1.5vw,22px);
+  line-height: 1.2;
+}
+/* Der CTA sitzt buendig am unteren Kartenrand, damit die drei Tueren
+   trotz unterschiedlich langer Beschreibung auf einer Linie schliessen. */
+.hu-hp .hu-gateways--doors .hu-gateway__desc { flex: 1 1 auto; }
+.hu-hp .hu-gateways--doors .hu-gateway__foot { margin-top: 18px; }
+.hu-hp .hu-gateways--doors .hu-gateway__cta { white-space: normal; }
+
+/* ─── Block 5 · Beleg ─────────────────────────────────────── */
+.hu-hp .hu-case-note {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.hu-hp .hu-case-note__disclaimer {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+/* ─── Block 6 · Abgrenzung ────────────────────────────────── */
+.hu-hp .hu-selfqual {
+  font-size: 17.5px;
+  line-height: 1.65;
+  color: var(--fg-2);
+}
+.hu-hp .hu-selfqual p { margin: 0 0 18px; }
+.hu-hp .hu-selfqual__list-intro { color: var(--fg-3); margin-bottom: 10px; }
+.hu-hp .hu-selfqual__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.hu-hp .hu-selfqual__list li {
+  padding: 9px 16px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  font-size: 14.5px;
+  color: var(--fg-2);
+}
+
+/* ─── Block 7 · Abschluss ─────────────────────────────────── */
+.hu-hp .hu-section--close { border-top: 1px solid var(--line); }
+.hu-hp .hu-close { text-align: center; }
+.hu-hp .hu-close h2 {
+  font-size: clamp(32px,4vw,54px);
+  margin: 14px 0 0;
+  letter-spacing: -.03em;
+}
+.hu-hp .hu-close__sub {
+  color: var(--fg-2);
+  font-size: 17px;
+  max-width: 54ch;
+  margin: 18px auto 0;
+}
+.hu-hp .hu-close__actions {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.hu-hp .hu-close__signature {
+  margin-top: 26px;
+  font-size: 14px;
+  color: var(--fg-3);
+}
+.hu-hp .hu-close__signature strong { color: var(--fg); font-weight: 600; }

@@ -15,31 +15,14 @@
     revealEls.forEach(function (el) { el.classList.add('in'); });
   }
 
-  /* ── FAQ accordion ─────────────────────────────────────── */
-  document.querySelectorAll('.hu-hp .hu-faq-item__q').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var item = btn.closest('.hu-faq-item');
-      if (!item) return;
-      var isOpen = item.classList.contains('is-open');
-      /* close all */
-      document.querySelectorAll('.hu-hp .hu-faq-item.is-open').forEach(function (el) {
-        el.classList.remove('is-open');
-        el.querySelector('.hu-faq-item__icon').textContent = '+';
-        /* aria-expanded lief hier bisher nicht mit: Screenreader meldeten
-           jeden Eintrag dauerhaft als aufgeklappt. */
-        var q = el.querySelector('.hu-faq-item__q');
-        if (q) q.setAttribute('aria-expanded', 'false');
-      });
-      /* open clicked if it was closed */
-      if (!isOpen) {
-        item.classList.add('is-open');
-        item.querySelector('.hu-faq-item__icon').textContent = '−';
-      }
-      btn.setAttribute('aria-expanded', String(!isOpen));
-    });
-  });
-
   /* ── Smooth scroll for hash anchors ───────────────────── */
+  /* Der Fokus muss mitwandern: sonst springt die Seite optisch zum Ziel,
+     die Tastatur steht aber weiter im Hero und tabbt an der Sektion
+     vorbei. Reduced Motion bekommt den Sprung ohne Animation. */
+  var reduceMotion = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)')
+    : null;
+
   document.querySelectorAll('.hu-hp a[href^="#"]').forEach(function (a) {
     a.addEventListener('click', function (e) {
       var id = a.getAttribute('href').slice(1);
@@ -47,7 +30,20 @@
       var target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      target.scrollIntoView({
+        behavior: (reduceMotion && reduceMotion.matches) ? 'auto' : 'smooth',
+        block: 'start'
+      });
+
+      if (!target.hasAttribute('tabindex')) {
+        target.setAttribute('tabindex', '-1');
+      }
+      try { target.focus({ preventScroll: true }); } catch (err) { target.focus(); }
+
+      if (window.history && typeof window.history.replaceState === 'function') {
+        window.history.replaceState(null, '', '#' + id);
+      }
     });
   });
 
