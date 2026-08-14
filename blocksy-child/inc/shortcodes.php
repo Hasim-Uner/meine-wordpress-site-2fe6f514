@@ -126,7 +126,7 @@ function hu_home_urls() {
 		'e3'          => nexus_get_primary_public_url( 'e3', home_url( '/case-study-solar-leadgenerierung/' ) ),
 		'contact'     => nexus_get_primary_public_url( 'contact', home_url( '/kontakt/' ) ),
 		'github_repo' => 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514',
-		'linkedin'    => 'https://www.linkedin.com/in/hasim-%C3%BCner/',
+		'linkedin'    => 'https://www.linkedin.com/in/hasim-uener/',
 	];
 
 	return $urls;

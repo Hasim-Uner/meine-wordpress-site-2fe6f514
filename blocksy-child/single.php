@@ -589,7 +589,7 @@ get_template_part( 'template-parts/blog-header' );
 						<?php esc_html_e( 'Mehr über Haşim', 'blocksy-child' ); ?>
 					</a>
 					<a
-						href="https://www.linkedin.com/in/hasim-uener"
+						href="https://www.linkedin.com/in/hasim-uener/"
 						class="nexus-author-bio__link"
 						rel="noopener"
 						target="_blank"

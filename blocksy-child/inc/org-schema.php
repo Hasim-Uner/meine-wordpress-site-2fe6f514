@@ -40,7 +40,7 @@ function hu_brand_alternate_names() {
 
 function hu_person_same_as_urls() {
     return [
-        'https://www.linkedin.com/in/hasim-%C3%BCner/',
+        'https://www.linkedin.com/in/hasim-uener/',
         'https://github.com/Hasim-Uner/',
         'https://hasimuener.org/',
         'https://www.facebook.com/hasim.uner',

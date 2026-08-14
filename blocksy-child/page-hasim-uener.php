@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $request_url    = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
-$linkedin_url   = 'https://www.linkedin.com/in/hasim-%C3%BCner/';
+$linkedin_url   = 'https://www.linkedin.com/in/hasim-uener/';
 $mail_address   = 'hasim@hasimuener.de';
 
 // Portrait im 3:4-Ausschnitt. Der neue Hero setzt das Bild als eigene,
