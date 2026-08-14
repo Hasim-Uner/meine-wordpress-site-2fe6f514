@@ -16,6 +16,25 @@ $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 	? nexus_get_whitelabel_calendar_url()
 	: 'https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true';
 $mailto_url          = 'mailto:hallo@hasimuener.de';
+
+// ── Zweiter Ausgang: "Ich habe jetzt eine konkrete Aufgabe" ─────
+// Alle CTAs führten auf denselben Pfad: Fit-Check (3 Fragen) → 30-Minuten-
+// Gespräch. Wer einen akuten Bug oder eine Deadline hat, will die Aufgabe
+// loswerden, nicht ein Quiz ausfüllen und danach einen Termin suchen. Der
+// Betreff ist vorbelegt, damit die Mail nicht bei null anfängt.
+//
+// Bewusst mailto und kein Formular: kein zusätzliches Blocking-Asset, keine
+// neue Datenverarbeitung, kein REST-Endpunkt — die Core Web Vitals der Route
+// bleiben unangetastet.
+//
+// Das 4-Stunden-Versprechen steht ohnehin zweimal auf der Seite (Kontrakt-
+// Karte 02, FAQ "kapazitaet"). Hier trägt es zum ersten Mal einen CTA statt
+// als Fußnote zu enden.
+$task_brief_response = 'Einschätzung innerhalb von 4 Stunden werktags';
+$task_brief_url      = $mailto_url . '?subject=' . rawurlencode( 'White-Label: konkrete Aufgabe' )
+	. '&body=' . rawurlencode(
+		"Aufgabe:\n\n\nGewünschter Zeitraum:\n\n\nZugänge vorhanden (WordPress, GA4, GTM):\n\n"
+	);
 $imprint_url         = home_url( '/impressum/' );
 $privacy_url         = home_url( '/datenschutz/' );
 $current_year        = wp_date( 'Y' );
@@ -422,13 +441,13 @@ $fitcheck_steps = [
 								<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 							</svg>
 						</a>
-						<a href="#proof" class="nx-btn nx-btn--ghost" data-track-action="cta_whitelabel_hero_proof" data-track-category="navigation" data-track-section="hero">
-							Arbeitsprobe ansehen
+						<a href="<?php echo esc_url( $task_brief_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_hero_task_brief" data-track-category="lead_gen" data-track-section="hero">
+							<span>Aufgabe beschreiben — <?php echo esc_html( $task_brief_response ); ?></span>
 						</a>
 					</div>
 
 					<p class="wl-hero__fineprint">
-						30&nbsp;Min direkt mit mir · NDA möglich · keine Verkaufsshow.
+						Oder erst ansehen, was geliefert wird: <a href="#proof" data-track-action="cta_whitelabel_hero_proof" data-track-category="navigation" data-track-section="hero">Arbeitsprobe</a>. 30&nbsp;Min direkt mit mir · NDA möglich · keine Verkaufsshow.
 					</p>
 				</div>
 
@@ -562,6 +581,9 @@ $fitcheck_steps = [
 			<div class="wl-entry__actions nx-reveal">
 				<a href="#fit-check" class="nx-btn nx-btn--primary" data-track-action="cta_whitelabel_entry_to_fitcheck" data-track-category="navigation" data-track-section="entry">
 					Fit-Check starten — 3 Fragen, 60 Sekunden
+				</a>
+				<a href="<?php echo esc_url( $task_brief_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_entry_task_brief" data-track-category="lead_gen" data-track-section="entry">
+					Aufgabe beschreiben — <?php echo esc_html( $task_brief_response ); ?>
 				</a>
 				<p class="wl-entry__retainer-note">Wenn das Erstprojekt erfolgreich abgeschlossen ist, kann daraus ein Monats-Retainer mit vorab vereinbartem Leistungsrahmen entstehen.</p>
 			</div>
@@ -918,6 +940,12 @@ window.dataLayer.push({
 					<span class="wl-eyebrow">Nächster Schritt</span>
 					<h2 class="wl-cta__title">Passt das zu eurem Setup?</h2>
 					<p class="wl-cta__lede">Kurz prüfen, dann reden: 30&nbsp;Min, kein Pitch-Deck, keine Verkaufsshow. Danach wisst ihr, ob es passt — und wenn nicht, wisst ihr das auch.</p>
+					<div class="wl-cta__shortcut">
+						<p class="wl-cta__shortcut-copy">Ihr habt schon eine konkrete Aufgabe? Dann überspringt den Fit-Check.</p>
+						<a href="<?php echo esc_url( $task_brief_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_fitcheck_task_brief" data-track-category="lead_gen" data-track-section="fitcheck">
+							Aufgabe beschreiben — <?php echo esc_html( $task_brief_response ); ?>
+						</a>
+					</div>
 				</div>
 
 				<div class="wl-fitcheck__box" data-fitcheck data-test-sprint-price="<?php echo esc_attr( $test_sprint_price ); ?>">

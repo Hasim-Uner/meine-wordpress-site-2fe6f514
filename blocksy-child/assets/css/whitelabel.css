@@ -165,6 +165,37 @@ html {
 	border-color: hsl(23 60% 60%) !important;
 }
 
+/* ─── Zweiter Ausgang: "Aufgabe beschreiben" ─────────────────────────
+   Optisch gleichwertig zum goldenen Fit-Check-CTA, nicht untergeordnet:
+   gleiche Geometrie aus .nx-btn, volle Fläche statt Rahmen, aber ein
+   anderer Farbwert — zwei goldene Buttons nebeneinander läsen sich als
+   Fehler statt als zwei gleichrangige Wege.
+
+   Grund und Gegenwert stehen im Label, deshalb darf es umbrechen; .nx-btn
+   setzt white-space: nowrap, was den Satz sonst aus der Spalte schöbe. */
+
+.wl-page .wl-btn--task {
+	background: hsl(35 12% 94%);
+	border-color: hsl(35 12% 94%);
+	color: hsl(28 12% 10%);
+	box-shadow: 0 14px 30px hsl(28 10% 4% / 0.34);
+	white-space: normal;
+	text-align: center;
+	line-height: 1.25;
+	overflow-wrap: anywhere;
+}
+
+.wl-page .wl-btn--task:hover {
+	background: hsl(35 14% 99%);
+	border-color: hsl(35 14% 99%);
+	color: hsl(28 12% 10%);
+}
+
+.wl-page .wl-btn--task:focus-visible {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 3px;
+}
+
 .wl-page-footer {
 	padding: 1.5rem 1.25rem;
 	border-top: 1px solid var(--nx-border);
@@ -488,6 +519,24 @@ html {
 	font-size: 0.85rem;
 	color: hsl(30 6% 90% / 0.55);
 	margin: 0.5rem 0 0;
+}
+
+/* Die Arbeitsprobe war ein Ghost-Button neben dem Fit-Check. Sie ist ein
+   Sprungziel, kein Abschluss — als Textlink steht sie weiter zur Verfügung,
+   ohne mit den beiden echten Conversion-Wegen um Gewicht zu konkurrieren. */
+.wl-hero__fineprint a {
+	color: hsl(30 6% 90% / 0.82);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.wl-hero__fineprint a:hover {
+	color: hsl(23 60% 78%);
+}
+
+.wl-hero__fineprint a:focus-visible {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 2px;
 }
 
 /* ─── Ablauf-Kette (Hero right) ──────────────────────────────────────
@@ -1513,7 +1562,20 @@ html {
 	box-shadow: 0 0 0 4px hsl(23 50% 47% / 0.15);
 }
 
-.wl-entry__actions { position: relative; }
+/* Zwei gleichrangige Wege nebeneinander: Fit-Check für alle, die ihre
+   Aufgabe noch sortieren, "Aufgabe beschreiben" für alle, die sie kennen.
+   Die Notiz darunter bleibt auf eigener Zeile. */
+.wl-entry__actions {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	gap: 0.75rem;
+}
+
+.wl-entry__actions .wl-entry__retainer-note {
+	flex: 1 0 100%;
+}
 
 /* =====================================================================
    9. FINAL CTA
@@ -1562,6 +1624,26 @@ html {
 	line-height: 1.6;
 	margin: 0;
 	max-width: 56ch;
+}
+
+/* Abkürzung neben dem Fit-Check: wer die Aufgabe schon kennt, soll das Quiz
+   nicht durchlaufen müssen. Steht in der Copy-Spalte, nicht in
+   .wl-cta__actions — dort tauscht das Fit-Check-Skript Primary und Ghost
+   zwischen Termin- und Mail-Button, und ein dritter Button geriete in diese
+   Logik. */
+
+.wl-cta__shortcut {
+	margin-top: var(--nx-space-md);
+	padding-top: var(--nx-space-md);
+	border-top: 1px solid hsl(30 10% 100% / 0.1);
+}
+
+.wl-cta__shortcut-copy {
+	margin: 0 0 0.75rem;
+	max-width: 48ch;
+	font-size: 0.92rem;
+	line-height: 1.6;
+	color: hsl(30 6% 90% / 0.78);
 }
 
 .wl-cta__actions {
