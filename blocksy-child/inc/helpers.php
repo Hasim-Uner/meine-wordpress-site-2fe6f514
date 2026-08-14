@@ -994,6 +994,9 @@ function nexus_get_whitelabel_faq_items() {
 	$landingpage_price  = function_exists( 'hu_whitelabel_price' )
 		? hu_whitelabel_price( 'landingpage', 'display', 'einem Festpreis nach Umfangsklärung' )
 		: 'einem Festpreis nach Umfangsklärung';
+	$retainer_price     = function_exists( 'hu_whitelabel_price' )
+		? hu_whitelabel_price( 'retainer', 'display', 'einem vorab vereinbarten Monatsbeitrag' )
+		: 'einem vorab vereinbarten Monatsbeitrag';
 
 	return [
 		[
@@ -1003,7 +1006,7 @@ function nexus_get_whitelabel_faq_items() {
 			// hier nur "Festpreis nach Umfangsklaerung", widerspraeche die FAQ den
 			// Karten direkt darueber — und die FAQ geht zusaetzlich als FAQPage-
 			// Schema raus.
-			'answer'   => sprintf( 'Der WordPress-Test-Sprint ist mit %1$s der kleinste Einstieg und hat einen vorab schriftlich abgegrenzten Umfang. Die größeren Erstprojekte starten beim Tracking-Audit %2$s, beim Server-Side-Setup %3$s und bei der Landingpage %4$s; der verbindliche Festpreis wird nach der Umfangsklärung schriftlich vereinbart. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt und erhält einen vorab vereinbarten Leistungsrahmen.', $test_sprint_price, $audit_price, $server_side_price, $landingpage_price ),
+			'answer'   => sprintf( 'Der WordPress-Test-Sprint ist mit %1$s der kleinste Einstieg und hat einen vorab schriftlich abgegrenzten Umfang. Die größeren Erstprojekte starten beim Tracking-Audit %2$s, beim Server-Side-Setup %3$s und bei der Landingpage %4$s; der verbindliche Festpreis wird nach der Umfangsklärung schriftlich vereinbart. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt, startet %5$s und erhält einen vorab vereinbarten Leistungsrahmen.', $test_sprint_price, $audit_price, $server_side_price, $landingpage_price, $retainer_price ),
 		],
 		[
 			'key'      => 'sprint-scope',

@@ -102,6 +102,7 @@ $test_sprint_price_card = hu_whitelabel_price( 'test_sprint', 'display_fixed', $
 $tracking_audit_price   = hu_whitelabel_price( 'tracking_audit', 'display', 'Festpreis nach Umfangsklärung' );
 $server_side_price      = hu_whitelabel_price( 'server_side', 'display', 'Festpreis nach Umfangsklärung' );
 $landingpage_price      = hu_whitelabel_price( 'landingpage', 'display', 'Festpreis nach Umfangsklärung' );
+$retainer_price         = hu_whitelabel_price( 'retainer', 'display' );
 
 $proof_metrics = [
 	[
@@ -593,7 +594,7 @@ $fitcheck_steps = [
 				<a href="<?php echo esc_url( $task_brief_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_entry_task_brief" data-track-category="lead_gen" data-track-section="entry">
 					Aufgabe beschreiben — <?php echo esc_html( $task_brief_response ); ?>
 				</a>
-				<p class="wl-entry__retainer-note">Wenn das Erstprojekt erfolgreich abgeschlossen ist, kann daraus ein Monats-Retainer mit vorab vereinbartem Leistungsrahmen entstehen.</p>
+				<p class="wl-entry__retainer-note">Wenn das Erstprojekt erfolgreich abgeschlossen ist, kann daraus ein Monats-Retainer mit vorab vereinbartem Leistungsrahmen entstehen<?php echo $retainer_price ? ' — ' . esc_html( $retainer_price ) : ''; ?>.</p>
 			</div>
 		</div>
 	</section>
