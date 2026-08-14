@@ -20,6 +20,7 @@ $request_url  = $analysis_url;
 $e3_url       = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
 $results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
+$glossary_url = $primary_urls['glossary'] ?? home_url( '/glossar/' );
 $agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
 $about_url    = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
 $contact_url  = $primary_urls['contact'] ?? nexus_get_contact_url();
@@ -114,7 +115,7 @@ if ( $is_whitelabel_context ) {
 			<section class="ft__col" aria-labelledby="ft-ergebnisse">
 				<h3 id="ft-ergebnisse">Ergebnisse</h3>
 				<ul class="ft__list">
-					<li><a class="ft__link-strong" href="<?php echo esc_url( $results_url ); ?>" data-track-action="cta_footer_nav_results" data-track-category="trust" data-track-section="footer">Referenzen ansehen</a></li>
+					<li><a class="ft__link-strong" href="<?php echo esc_url( $results_url ); ?>" data-track-action="cta_footer_nav_results" data-track-category="trust" data-track-section="footer">Ergebnisse und Case Studies</a></li>
 					<li><a href="<?php echo esc_url( $e3_url ); ?>" data-track-action="cta_footer_nav_case_study_proof" data-track-category="trust" data-track-section="footer">Fallstudie: Solar Leadgenerierung</a></li>
 				</ul>
 			</section>
@@ -123,6 +124,7 @@ if ( $is_whitelabel_context ) {
 				<h3 id="ft-wissen">Wissen</h3>
 				<ul class="ft__list">
 					<li><a class="ft__link-strong" href="<?php echo esc_url( $blog_url ); ?>" data-track-action="cta_footer_nav_insights" data-track-category="navigation" data-track-section="footer">Insights</a></li>
+					<li><a href="<?php echo esc_url( $glossary_url ); ?>" data-track-action="cta_footer_nav_glossary" data-track-category="navigation" data-track-section="footer">Glossar für SEO, Tracking und Anfragesysteme</a></li>
 					<li><a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_footer_nav_agentur" data-track-category="navigation" data-track-section="footer">WordPress Agentur Hannover</a></li>
 				</ul>
 			</section>

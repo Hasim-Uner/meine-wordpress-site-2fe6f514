@@ -207,7 +207,7 @@ function hu_get_forced_singular_seo_map() {
 			// bzw. mit doppelter Description ausgeliefert wurden (Semrush Site
 			// Audit 2026-07-08). Nur 'description' gesetzt: Titel bleiben unberührt.
 			'stack-solar' => [
-				'description' => 'Der Performance-Stack für Solar- und SHK-Anbieter: Frontend, Managed Hosting, Server-Side Tracking, CRM und Marktcheck-Vorqualifizierung in fünf Schichten.',
+				'description' => 'Technischer Unterbau eigener Anfragesysteme: Frontend, Tracking, CRM und Vorqualifizierung für Solar- und Wärmepumpen-Anbieter.',
 			],
 			'owned-leads-statt-ad-miete' => [
 				'description' => 'Von gemieteter Ad-Nachfrage zu eigenen Leads: Warum Owned-Lead-Infrastruktur B2B-Anbieter unabhängiger macht als Dauer-Budget bei Meta und Google Ads.',

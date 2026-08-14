@@ -1,11 +1,9 @@
 <?php
 /**
  * Template Name: Stack Solar
- * Description: Performance-Stack für Solar-/SHK-Anbieter und Performance-Marketer.
- *              Frontend, Managed Hosting (HostPress als Partnerempfehlung mit
- *              transparenter Werbekennzeichnung), Server-Side Tracking, CRM und
- *              Marktcheck-Vorqualifizierung in fünf Schichten. Closed-Loop-Block
- *              erklärt den überproportionalen Compound-Effekt aus SST + Marktcheck.
+ * Description: Technischer Unterbau eigener Anfragesysteme für Solar- und
+ *              Wärmepumpen-Anbieter. Frontend, Hosting, Server-Side Tracking,
+ *              CRM und projektspezifische Vorqualifizierung in fünf Schichten.
  *
  * @package Blocksy_Child
  */
@@ -21,7 +19,20 @@ $analysis_url    = function_exists( 'hu_get_request_analysis_url' )
 	: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $sst_url         = home_url( '/server-side-tracking-b2b/' );
 $solar_money_url = home_url( '/solar-waermepumpen-leadgenerierung/' );
-$stack_agentur_url = home_url( '/stack-agentur/' );
+$whitelabel_url  = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
+
+// ── Zitierfähiger Proof: ausschließlich Werte aus dem E3-Canon ──
+$e3_canon          = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_metrics        = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
+$e3_case_url       = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : home_url( '/case-study-solar-leadgenerierung/' );
+$e3_cpl_before     = $e3_metrics['cpl_before']['display'] ?? '150 €';
+$e3_cpl_after      = $e3_metrics['cpl_after']['display'] ?? '22 €';
+$e3_lead_count     = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_conv_before    = $e3_metrics['sales_conversion_before']['display'] ?? '1 – 5 %';
+$e3_conv_after     = $e3_metrics['sales_conversion_after']['display'] ?? '12 %';
+$e3_timeframe      = $e3_metrics['timeframe']['display'] ?? '6 Monate';
+$e3_build_months   = $e3_metrics['build_months']['display'] ?? '3 Monate';
+$e3_tuning_months  = $e3_metrics['tuning_months']['display'] ?? '3 Monate';
 
 // ── Affiliate ─────────────────────────────────────────────────
 $hostpress_url        = function_exists( 'hu_get_affiliate_url' ) ? hu_get_affiliate_url( 'hostpress' ) : 'https://www.hostpress.de/wordpress-hosting/';
@@ -31,80 +42,77 @@ $hostpress_link_attrs = function_exists( 'hu_render_affiliate_anchor_attrs' ) ? 
 $layers = [
 	[
 		't' => 'Frontend & Page Speed',
-		's' => 'WordPress ohne Page-Builder, Blocksy-Child-Theme, Vanilla JS, conditional Asset-Loading pro Template. Diese Seite läuft selbst auf diesem Setup — TTFB im Ziel unter 200 ms, LCP unter 1,5 s. Das ist die Schwelle, ab der Google Ads den Qualitätsfaktor spürbar belohnt: niedrigerer CPC bei gleichem Gebot, mehr Klicks pro €.',
+		's' => 'Schlankes WordPress ohne Page-Builder, bedarfsgeladenes CSS und JavaScript sowie eine klar begrenzte Frontend-Schicht. Ziel ist eine stabile, schnelle Anfragestrecke; konkrete Ladezeiten lassen sich auf der jeweiligen Domain vor und nach einer Änderung vergleichen.',
 	],
 	[
 		't' => 'Managed Hosting (DE)',
-		's' => 'Managed WordPress Hosting bei HostPress: deutsche Serverstandorte, NVMe-Storage, Redis-Cache, CDN, tägliche Backups. Liefert dieselbe First-Party-Domain, die Layer 03 für Server-Side Tracking braucht — eine technische Voraussetzung, keine reine Hosting-Frage.',
+		's' => 'Managed Hosting bündelt Betrieb, Backups, Updates und Caching in einer verantworteten Umgebung. Die Hosting-Empfehlung ist ein separater Infrastrukturbaustein; Server-Side Tracking läuft über eine eigene First-Party-Subdomain.',
 	],
 	[
 		't' => 'Server-Side Tracking',
-		's' => 'GTM Server-Side-Container, GA4 Measurement Protocol, Meta CAPI, Consent Mode v2 — alles auf eigener First-Party-Domain. Effekt aus eigenen Projekten: Match-Rate der Meta CAPI verdoppelt sich typischerweise von 40–60 % auf 80–90 %. Das heißt nicht, dass Kunden plötzlich doppelt so oft kaufen — sondern dass das Werbekonto endlich sieht, was tatsächlich passiert ist. Folge zweiter Ordnung: Algorithmen optimieren auf echte Daten, der CPL sinkt nachhaltig.',
+		's' => 'Ein Server-Side-Container verbindet GA4, Werbeplattformen und CRM über eine kontrollierte First-Party-Datenstrecke. Der Nutzen ist eine belastbarere Zuordnung von Anfragequelle und Vertriebsstatus; wie stark sich die Datenqualität verbessert, muss je Setup gemessen werden.',
 	],
 	[
 		't' => 'CRM-Anbindung',
-		's' => 'Webhook vom Server ins CRM (HubSpot, Bitrix24, Pipedrive, Brevo) inkl. Lead-Score, Quelle und Kampagne. Time-to-Lead in Sekunden statt Stunden — der Vertrieb ruft an, solange der Interessent das Formular-Tab noch offen hat. Keine Excel-Übergaben, keine verlorenen Anfragen.',
+		's' => 'Anfragen werden mit Quelle, Kampagne und Qualifizierungsdaten an das vorhandene CRM übergeben. Der Vertrieb erhält den Kontext an einem Ort; Reaktionszeit und Übergabefehler können als eigene Prozesswerte gemessen werden.',
 	],
 	[
-		't' => 'Vorqualifizierung im Funnel',
-		's' => 'Marktcheck-Funnel filtert Mieter, Falschadressen, Liefergebiet-Misses und „nur-mal-gucken"-Anfragen vor dem Vertriebskontakt. SQL-Quote in Solar-Projekten typischerweise von branchenüblichen 20–35 % auf 60–80 %. Das Vertriebsteam telefoniert nur noch mit Hauseigentümern, die wirklich bauen wollen — gleicher Werbe-Spend, deutlich mehr Abschlüsse.',
+		't' => 'Vorqualifizierung im Anfrageweg',
+		's' => 'Die Vorqualifizierung erfasst die Kriterien, die Ihr Vertrieb vor dem Erstkontakt braucht. Welche Fragen, Mindestkriterien und Ausschlussregeln passen, wird erst in der Anfragesystem-Analyse festgelegt — nicht pauschal auf dieser Seite.',
 	],
 ];
 
-// ── Beweis-Block: Zahlen ──────────────────────────────────────
+// ── Beweis-Block: ausschließlich kanonische Fallwerte ─────────
 $proof_metrics = [
 	[
-		't' => 'CPL pro qualifiziertem Lead',
-		's' => '40–60 % günstiger im typischen Fall. Im voll ausgereiften Closed-Loop-Setup bis zu ×4–×5 effizienter gegenüber dem Vorher-Setup mit clientseitigem Tracking.',
-		'b' => 'Branchenschnitt 80–150 € pro Solar-Lead, je nach Region.',
+		't' => 'Kosten pro Anfrage im dokumentierten Fall',
+		's' => sprintf( '%s vorher für gekaufte Anfragen → %s nachher für eigene Anfragen.', $e3_cpl_before, $e3_cpl_after ),
+		'b' => sprintf( 'Anonymisierter mittelständischer PV-Installationsbetrieb · %s · keine Übertragbarkeitsgarantie.', $e3_timeframe ),
 	],
 	[
-		't' => 'Match-Rate Meta CAPI',
-		's' => 'Verdopplung von typisch 40–60 % auf 80–90 % nach Wechsel von clientseitigem auf serverseitiges Tracking.',
-		'b' => 'Effekt: Algorithmen sehen die echten Conversions, nicht nur die clientseitig durchgekommenen.',
+		't' => 'Qualifizierte Anfragen',
+		's' => sprintf( '%s im dokumentierten Zeitraum.', $e3_lead_count ),
+		'b' => 'Ergebnis des Falls, kein Mengenversprechen für andere Regionen oder Budgets.',
 	],
 	[
-		't' => 'SQL-Quote nach Marktcheck',
-		's' => '×2 bis ×3 — von branchenüblichen 20–35 % auf 60–80 % qualifizierte Anfragen pro 100 Leads.',
-		'b' => 'Mieter, Falschadressen und „nur-mal-gucken"-Anfragen werden vor dem Vertriebskontakt gefiltert.',
+		't' => 'Abschlussquote',
+		's' => sprintf( '%s bei gekauften Portal-Leads → %s beim eigenen Anfragesystem.', $e3_conv_before, $e3_conv_after ),
+		'b' => 'Gleicher dokumentierter Fall; Vertrieb, Angebot und Marktbedingungen bleiben relevante Voraussetzungen.',
 	],
 	[
-		't' => 'TTFB',
-		's' => 'Im Ziel unter 200 ms. Diese Seite läuft selbst auf dem Stack — messbar via WebPageTest.',
-		'b' => 'Voraussetzung für Google-Ads-Qualitätsfaktor und mobile Vorqualifizierung.',
-	],
-	[
-		't' => 'Time-to-Lead',
-		's' => 'In Sekunden statt Stunden. Webhook direkt vom GTM-Server ins CRM, kein Plugin-Umweg, kein Mail-Polling.',
-		'b' => 'Vertrieb meldet sich, solange der Interessent das Tab noch offen hat.',
+		't' => 'Umsetzung und Optimierung',
+		's' => sprintf( '%s Implementierung, anschließend %s Optimierung.', $e3_build_months, $e3_tuning_months ),
+		'b' => 'Der Zeitraum beschreibt den Fall, nicht eine pauschale Lieferzeit.',
 	],
 ];
 
 // ── FAQ ───────────────────────────────────────────────────────
 $faq = [
 	[
-		'question' => 'Wie ist „CPL 40–60 % günstiger" gemessen?',
-		'answer'   => 'Vergleichswert ist der durchschnittliche CPL des Kunden im selben Werbekonto vor dem Stack-Wechsel — gleicher Markt, gleiche Kampagnen, vergleichbares Budget. Der Branchenschnitt von 80–150 € basiert auf Erfahrungswerten aus Solar-/SHK-Performance-Marketing und variiert je nach Region und Saison. Erfahrungswerte aus eigenen Kundenprojekten, Detaildaten auf Anfrage.',
+		'question' => sprintf( 'Sind die %s auf %s auf andere Betriebe übertragbar?', $e3_cpl_before, $e3_cpl_after ),
+		'answer'   => sprintf( 'Nein. Die Werte dokumentieren einen mittelständischen PV-Installationsbetrieb über %s. Region, Angebot, Werbebudget und Vertriebsprozess unterscheiden sich. Der Fall belegt den Mechanismus aus eigenem Anfrageweg, Vorqualifizierung, Tracking und CRM — keinen Zielwert für Ihren Betrieb.', $e3_timeframe ),
 	],
 	[
-		'question' => 'Verdoppeln sich die Conversions wirklich, oder nur die Messung?',
-		'answer'   => 'Die Käufe verdoppeln sich nicht — die im Werbekonto messbaren Conversions verdoppeln sich. Vorher fehlen typischerweise 30–50 % der Conversions wegen ITP, Ad-Blockern und Consent-Ablehnung. Server-Side Tracking holt sie zurück. Folge zweiter Ordnung: die Algorithmen lernen besser, der echte CPL pro qualifiziertem Lead sinkt nachhaltig.',
+		'question' => 'Was verändert Server-Side Tracking tatsächlich?',
+		'answer'   => 'Server-Side Tracking erzeugt nicht automatisch mehr Nachfrage. Es verbessert die Verbindung zwischen Anfragequelle, Qualifizierung und späterem Vertriebsstatus. Ob sich dadurch Datenqualität oder Kosten verändern, muss im jeweiligen Setup gemessen werden.',
 	],
 	[
-		'question' => 'Warum wirkt der Compound-Effekt überproportional (bis zu ×4–×5)?',
-		'answer'   => 'Weil der Marktcheck definiert, was als Conversion zählt — und das Server-Side Tracking genau diese gefilterte Conversion zurück ans Werbekonto spielt. Meta und Google trainieren ihre Algorithmen dann nicht mehr auf „irgendwer, der das Formular ausgefüllt hat", sondern auf den tatsächlichen Käufer-Avatar: Hauseigentümer im Liefergebiet mit Bedarf und Budget. Lookalike-Audiences werden scharf, Optimization-Pools lernen die Richtigen. Jeder neue qualifizierte Lead schärft das Modell weiter — die Kosten pro qualifiziertem Lead sinken nicht linear, sondern in einer Kurve.',
+		'question' => 'Warum werden Tracking und Vorqualifizierung gemeinsam geplant?',
+		'answer'   => 'Die Vorqualifizierung definiert die betrieblichen Fit-Kriterien. Tracking und CRM zeigen anschließend, aus welcher Quelle passende Anfragen und weitergeführte Chancen kamen. Der Nutzen liegt in einer besseren Entscheidungsgrundlage; einen festen Multiplikator leitet die Seite daraus nicht ab.',
 	],
 	[
-		'question' => 'Was, wenn mein Setup andere Werte liefert?',
-		'answer'   => 'Möglich. Schlechtes Creative kompensiert kein Stack. Schlechte Zielgruppen-Definition auch nicht. Der Stack liefert die Infrastruktur, damit Marketing-Optimierung überhaupt funktioniert — er ersetzt kein Handwerk vor dem Klick.',
+		'question' => 'Ist der Stack ein eigenständiges Paket?',
+		'answer'   => 'Nein. Die Seite beschreibt eine mögliche Umsetzungsarchitektur. Der konkrete Umfang entsteht erst nach Marktcheck und Anfragesystem-Analyse; bestehende Website, Hosting, Tracking und CRM werden dabei auf Wiederverwendung geprüft.',
 	],
 	[
 		'question' => 'Ist die HostPress-Empfehlung ein Affiliate-Link?',
-		'answer'   => 'Ja. Bei einem Abschluss über meinen Link entsteht eine Vergütung — ohne Mehrkosten für dich. Die Empfehlung basiert auf eigenem Einsatz im Stack und auf Eignung für die Zielgruppe. Wäre HostPress technisch ungeeignet, würde es hier nicht stehen — egal welche Vergütung.',
+		'answer'   => 'Ja. Der Link ist als Werbung gekennzeichnet. Bei einem Abschluss kann eine Vergütung entstehen; die Wahl des Hosting-Anbieters bleibt vom Marktcheck und vom Umsetzungsumfang getrennt.',
 	],
 	[
-		'question' => 'Ich bin Agentur, nicht Solar-Anbieter — welcher Stack passt dann?',
-		'answer'   => 'Für Agenturen, technische Inhaber und CTOs mit eigenem Dev-Team gibt es einen separaten Dev-Stack auf eigenem Root-Server mit Git-Deployment, Restricted-Shell und Multi-Site-Hosting für Care-Plans. Details auf der Stack-Agentur-Seite.',
+		'question'   => 'Ich bin Agentur — ist diese Route der richtige Einstieg?',
+		'answer'     => 'Nein. Diese Seite richtet sich an Solar- und Wärmepumpen-Anbieter. Für Agenturen bleibt der getrennte White-Label-Einstieg.',
+		'url'        => $whitelabel_url,
+		'link_label' => 'Zum White-Label-Einstieg für Agenturen',
 	],
 ];
 
@@ -115,8 +123,8 @@ $tech_article_schema = [
 	'@context'         => 'https://schema.org',
 	'@type'            => 'TechArticle',
 	'@id'              => trailingslashit( $page_url ) . '#article',
-	'headline'         => 'Stack für Solar-/SHK-Anfragesysteme: Performance, Tracking und Vorqualifizierung',
-	'description'      => 'Performance-Stack für Solar-/SHK-Anbieter und Performance-Marketer. Frontend, Managed Hosting (DE), Server-Side Tracking, CRM-Anbindung und Marktcheck-Vorqualifizierung in fünf Schichten. Mit Closed-Loop-Effekt aus SST + Marktcheck: bis zu ×4–×5 Effizienz pro qualifiziertem Lead.',
+	'headline'         => 'Technischer Unterbau eines Anfragesystems für Solar und Wärmepumpe',
+	'description'      => 'Frontend, Hosting, Server-Side Tracking, CRM-Übergabe und projektspezifische Vorqualifizierung als technischer Unterbau eines eigenen Anfragesystems.',
 	'url'              => $page_url,
 	'mainEntityOfPage' => $page_url,
 	'author'           => $author_person,
@@ -150,12 +158,12 @@ get_header();
 
 	<section class="hu-intercept__hero" id="hero" aria-labelledby="hu-stack-solar-hero-title">
 		<div class="hu-intercept__container">
-			<p class="hu-intercept__eyebrow">Stack für Solar-/SHK-Anfragesysteme</p>
+			<p class="hu-intercept__eyebrow">Technischer Unterbau für eigene Anfragesysteme</p>
 			<h1 class="hu-intercept__title" id="hu-stack-solar-hero-title">
-				Der Stack, der CPL halbiert und 80 % der Schrott-Anfragen filtert
+				Wie Website, Tracking, Vorqualifizierung und CRM zu einem eigenen Anfrageweg werden.
 			</h1>
 			<p class="hu-intercept__lead">
-				Page Speed unter 1,5 Sekunden, server-seitiges Conversion-Tracking auf eigener Domain, Marktcheck als Vorfilter. Was Solar-Anbieter mit Ad-Budget tatsächlich brauchen — aus eigenen Projekten, nicht aus dem Werbeprospekt.
+				Diese Seite zeigt die fünf technischen Schichten hinter einem <a class="hu-intercept__inline-link" href="<?php echo esc_url( $solar_money_url ); ?>" data-track-action="stack_solar_to_money_page" data-track-category="internal_link" data-track-section="hero">eigenen Anfragesystem für Photovoltaik- und Wärmepumpen-Anbieter</a>. Welche davon Ihr Betrieb braucht, entscheidet erst der Marktcheck und anschließend die Anfragesystem-Analyse.
 			</p>
 		</div>
 	</section>
@@ -164,7 +172,7 @@ get_header();
 		<div class="hu-intercept__container">
 			<h2 class="hu-intercept__h2" id="hu-stack-solar-layers-title">Die fünf Schichten</h2>
 			<p class="hu-intercept__section-lead">
-				Managed-Setup, das in 2–4 Wochen produktiv ist. Fokus: Page Speed, DSGVO-konformes Tracking, saubere CRM-Übergabe, vorgefilterte Anfragen. Kein Dev-Team nötig.
+				Die fünf Schichten sind kein Paket von der Stange. Nach dem Marktcheck klärt die Analyse, welche bestehende Infrastruktur bleiben kann, wo Daten fehlen und welche Übergabe der Vertrieb tatsächlich braucht.
 			</p>
 
 			<?php
@@ -192,24 +200,24 @@ get_header();
 					</li>
 				<?php endforeach; ?>
 			</ol>
+			<p class="hu-intercept__section-lead">
+				Technische Vertiefung: <a class="hu-intercept__inline-link" href="<?php echo esc_url( $sst_url ); ?>" data-track-action="stack_solar_to_sst" data-track-category="internal_link" data-track-section="layers">Server-Side Tracking im Anfrageweg</a>.
+			</p>
 		</div>
 	</section>
 
 	<section class="hu-intercept__why" id="closed-loop" aria-labelledby="hu-stack-solar-loop-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-stack-solar-loop-title">Warum der Effekt überproportional ist — der Closed Loop</h2>
+			<h2 class="hu-intercept__h2" id="hu-stack-solar-loop-title">Warum die Verbindung wichtiger ist als ein einzelnes Tool</h2>
 			<p class="hu-intercept__section-lead">
-				Die einzelnen Schichten sind nichts Besonderes. Server-Side Tracking allein liefert bessere Match-Rates. Ein Vorqualifizierungs-Funnel allein hebt die SQL-Quote. Erst die Verbindung macht den Unterschied.
+				Tracking kann nur dann eine sinnvolle Budgetentscheidung unterstützen, wenn klar definiert ist, welche Anfrage zum Betrieb passt. Vorqualifizierung liefert diese Kriterien; CRM und Tracking verbinden sie mit Quelle und späterem Vertriebsstatus.
 			</p>
 			<div class="hu-intercept__card">
 				<p class="hu-intercept__card-text">
-					<strong>Der Marktcheck definiert, was als Conversion zählt. Das Server-Side Tracking spielt genau diese gefilterte Conversion zurück ans Werbekonto.</strong> Meta und Google trainieren ihre Algorithmen damit nicht mehr auf „irgendwer, der das Formular ausgefüllt hat", sondern auf den tatsächlichen Käufer-Avatar: Hauseigentümer im Liefergebiet mit Bedarf und Budget.
+					<strong>Die Vorqualifizierung legt nicht pauschal einen „guten Lead“ fest.</strong> Sie erfasst die Kriterien, die der Vertrieb tatsächlich nutzt — etwa Zielgebiet, Projektart, Projektwert, Rolle und Zeithorizont.
 				</p>
 				<p class="hu-intercept__card-text">
-					Lookalike-Audiences werden scharf. Optimization-Pools lernen die Richtigen. Jeder neue qualifizierte Lead schärft das Modell weiter.
-				</p>
-				<p class="hu-intercept__card-text">
-					Effekt: Die Werbekosten pro qualifiziertem Lead sinken nicht linear, sondern in einer Kurve. In voll ausgereiften Setups landen wir bei <strong>×4 bis ×5 Effizienz</strong> gegenüber dem Vorher-Setup mit clientseitigem Tracking und ungefiltertem Lead-Flow.
+					So wird sichtbar, welche Quelle nicht nur Formulare, sondern passende Anfragen erzeugt. Auswirkungen auf Kosten pro Anfrage, Abschlussquote und Reaktionszeit müssen im jeweiligen Setup gemessen werden.
 				</p>
 			</div>
 		</div>
@@ -217,9 +225,9 @@ get_header();
 
 	<section class="hu-intercept__system" id="zahlen" aria-labelledby="hu-stack-solar-numbers-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-stack-solar-numbers-title">Was sich in Zahlen niederschlägt</h2>
+			<h2 class="hu-intercept__h2" id="hu-stack-solar-numbers-title">Was der dokumentierte Fall belegt — und was nicht.</h2>
 			<p class="hu-intercept__section-lead">
-				Erfahrungswerte aus eigenen Solar-/SHK-Projekten mit diesem Stack. Bereiche, weil jeder Markt anders ist. Detaildaten auf Anfrage unter NDA.
+				Die einzige zitierfähige Ergebnisbasis ist der anonymisierte Fall eines mittelständischen PV-Installationsbetriebs. Er zeigt den Mechanismus aus eigenem Anfrageweg, Vorqualifizierung, Tracking und CRM über <?php echo esc_html( $e3_timeframe ); ?>; er ist keine Prognose für Ihren Betrieb.
 			</p>
 			<ol class="hu-intercept__layers">
 				<?php foreach ( $proof_metrics as $i => $m ) : ?>
@@ -234,7 +242,10 @@ get_header();
 				<?php endforeach; ?>
 			</ol>
 			<p class="hu-intercept__section-lead">
-				Keine Werbeversprechen — Erfahrungswerte. Vergleichbare Größenordnung in deinem Markt ist nicht garantiert, aber realistisch, wenn der Stack vollständig umgesetzt wird.
+				Ob dieselbe Architektur wirtschaftlich passt, hängt unter anderem von Region, Projektwert, Vertriebskapazität, bestehender Datenlage und Werbebudget ab. Das klärt zuerst der Marktcheck, danach die Anfragesystem-Analyse.
+			</p>
+			<p class="hu-intercept__section-lead">
+				<a class="hu-intercept__inline-link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="stack_solar_to_case" data-track-category="trust" data-track-section="zahlen">Dokumentierten Solar-Case mit allen Zahlen lesen</a>
 			</p>
 
 			<div class="hu-intercept__cta hu-intercept__cta--inline">
@@ -243,7 +254,7 @@ get_header();
 				   data-track-action="cta_marktcheck"
 				   data-track-category="stack_solar"
 				   data-track-section="zahlen">
-					Marktcheck starten — sieh, wo dein Anfragesystem Geld liegen lässt
+					Marktcheck mit Fit-Entscheid starten
 				</a>
 			</div>
 		</div>
@@ -257,6 +268,9 @@ get_header();
 					<details class="hu-intercept__faq-item" name="hu-faq-stack-solar">
 						<summary class="hu-intercept__faq-q"><?php echo esc_html( $item['question'] ); ?></summary>
 						<p class="hu-intercept__faq-a"><?php echo esc_html( $item['answer'] ); ?></p>
+						<?php if ( ! empty( $item['url'] ) ) : ?>
+							<p class="hu-intercept__faq-a"><a class="hu-intercept__inline-link" href="<?php echo esc_url( $item['url'] ); ?>" data-track-action="stack_solar_to_whitelabel" data-track-category="internal_link" data-track-section="faq"><?php echo esc_html( $item['link_label'] ); ?></a></p>
+						<?php endif; ?>
 					</details>
 				<?php endforeach; ?>
 			</div>

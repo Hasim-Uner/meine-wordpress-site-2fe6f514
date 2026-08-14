@@ -25,6 +25,10 @@ $gtm_guide_url   = home_url( '/server-side-tracking-gtm/' );
 $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 	? nexus_get_energy_systems_url()
 	: home_url( '/solar-waermepumpen-leadgenerierung/' );
+$e3_case_url     = function_exists( 'hu_e3_canon' )
+	? (string) ( hu_e3_canon()['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) )
+	: home_url( '/case-study-solar-leadgenerierung/' );
+$stack_solar_url = home_url( '/stack-solar/' );
 $marktcheck_url  = trailingslashit( $solar_money_url ) . '#marktcheck';
 $privacy_url     = function_exists( 'nexus_get_page_url' )
 	? nexus_get_page_url( [ 'datenschutz' ], home_url( '/datenschutz/' ) )
@@ -698,6 +702,9 @@ get_header();
 				</p>
 				<p class="hu-sst__callout-links">
 					Noch in der Messkonzept-Phase? <a href="<?php echo esc_url( $ga4_setup_url ); ?>" data-track-action="internal_ga4_setup" data-track-category="internal_link" data-track-section="umfang">GA4 Tracking Setup als Grundlage</a>. Technische Vertiefung: <a href="<?php echo esc_url( $gtm_guide_url ); ?>" data-track-action="internal_sst_gtm" data-track-category="internal_link" data-track-section="umfang">Server-Side Tracking mit GTM</a>.
+				</p>
+				<p class="hu-sst__callout-links">
+					Praxisbezug: <a href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="internal_sst_solar_case" data-track-category="internal_link" data-track-section="umfang">Tracking im dokumentierten Solar-Case</a>. Für Solar-/SHK-Systeme: <a href="<?php echo esc_url( $stack_solar_url ); ?>" data-track-action="internal_sst_stack_solar" data-track-category="internal_link" data-track-section="umfang">Tracking im technischen Gesamt-Stack</a>.
 				</p>
 			</aside>
 		</div>

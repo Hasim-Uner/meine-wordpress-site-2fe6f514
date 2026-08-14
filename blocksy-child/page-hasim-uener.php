@@ -24,6 +24,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $request_url    = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
+$e3_case_url    = function_exists( 'hu_e3_canon' )
+	? (string) ( hu_e3_canon()['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) )
+	: home_url( '/case-study-solar-leadgenerierung/' );
 $linkedin_url   = 'https://www.linkedin.com/in/hasim-uener/';
 $mail_address   = 'hasim@hasimuener.de';
 
@@ -65,6 +68,8 @@ $about_stations = [
 		'figure' => sprintf( "%d\u{00A0}%%", $e3_cpl_reduction_percent ),
 		'title'  => 'Anfrage-Systeme, heute',
 		'text'   => 'Weniger Kosten pro Anfrage, bei einem mittelständischen PV-Installationsbetrieb.',
+		'url'    => $e3_case_url,
+		'label'  => 'Dokumentierten Solar-Case ansehen',
 	],
 ];
 
@@ -138,6 +143,9 @@ get_header();
 						<p class="hu-about__station-figure"><?php echo esc_html( $station['figure'] ); ?></p>
 						<h2 class="hu-about__station-title"><?php echo esc_html( $station['title'] ); ?></h2>
 						<p class="hu-about__station-text"><?php echo esc_html( $station['text'] ); ?></p>
+						<?php if ( ! empty( $station['url'] ) ) : ?>
+							<a class="hu-about__station-link" href="<?php echo esc_url( $station['url'] ); ?>" data-track-action="about_station_solar_case" data-track-category="trust" data-track-section="stations"><?php echo esc_html( $station['label'] ); ?></a>
+						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>
 			</ul>

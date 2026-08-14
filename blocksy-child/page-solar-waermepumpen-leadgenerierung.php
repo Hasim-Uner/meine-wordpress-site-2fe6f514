@@ -27,6 +27,7 @@ $cro_url      = $primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#
 $about_url    = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
 $seo_url      = $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' );
 $paid_url     = $primary_urls['performance_marketing'] ?? home_url( '/performance-marketing/' );
+$stack_solar_url = home_url( '/stack-solar/' );
 
 // ── E3-Proof-Metriken (Canon) ──────────────────────────────────
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
@@ -109,7 +110,7 @@ $compare_good = [
 
 // 03 / Das System — Asset-Panel (links) + drei Schritte (rechts)
 $process_rows = [
-	[ 'e' => 'Fundament',          't' => 'Eigener Code statt Baukasten · Server in Frankfurt', 'url' => $cwv_url ],
+	[ 'e' => 'Fundament',          't' => 'Technischer Stack: Frontend, Hosting, Tracking und CRM', 'url' => $stack_solar_url ],
 	[ 'e' => 'Daten & Tracking',   't' => 'Jede Anfrage bis zur Anzeige zurückverfolgbar',      'url' => $tracking_url ],
 	[ 'e' => 'Weg zur Anfrage',    't' => 'Vorqualifizierung · Fit bekannt vor dem Anruf',      'url' => $cro_url ],
 ];
@@ -255,11 +256,17 @@ $deeper_clusters = [
 	[
 		'group' => 'Zielgruppen & Marktbild',
 		'items' => [
+			[ 't' => 'Wärmepumpen Leads kaufen? Die Alternative', 's' => 'Marktmodelle, Vorqualifizierung und CPL-Vergleich für den Heizungstausch.', 'url' => home_url( '/waermepumpen-leads/' ) ],
 			[ 't' => 'B2B Solar Leads (Gewerbe)',            's' => 'Buying-Center-Funnel für gewerbliche Photovoltaik-Projekte.',       'url' => home_url( '/b2b-solar-leads/' ) ],
 			[ 't' => 'Kunden gewinnen für Solarteure',       's' => 'Mythen-Aufklärung und fünf systematische Hebel im DACH-Mittelstand.', 'url' => home_url( '/kunden-gewinnen-solarteure/' ) ],
 		],
 	],
 ];
+
+$deeper_page_count = 0;
+foreach ( $deeper_clusters as $deeper_cluster ) {
+	$deeper_page_count += count( $deeper_cluster['items'] );
+}
 
 $faq_items = [
 	[
@@ -1252,7 +1259,7 @@ get_header();
 					<span class="hu-eyebrow">09 / Vertiefung</span>
 					<div>
 						<h2>Wenn Sie tiefer einsteigen wollen.</h2>
-						<p class="hu-lead">Acht Vertiefungs-Seiten zu Strategie, Lead-Qualität, Funnel-Architektur und Markteinordnung — jede kann unabhängig gelesen werden, alle führen zurück zum Marktcheck.</p>
+						<p class="hu-lead"><?php echo esc_html( sprintf( '%d Vertiefungs-Seiten zu Strategie, Lead-Qualität, Funnel-Architektur und Markteinordnung — jede kann unabhängig gelesen werden, alle führen zurück zum Marktcheck.', $deeper_page_count ) ); ?></p>
 					</div>
 				</div>
 				<div class="hu-deeper-clusters">

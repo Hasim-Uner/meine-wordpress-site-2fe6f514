@@ -13,6 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Der projekt-eigene Header wird weiter unten über `wp_body_open` gerendert.
+// Den Blocksy-Parent-Header serverseitig abschalten, damit dessen per CSS
+// versteckte Navigation und Offcanvas-Panels nicht zusätzlich im HTML landen.
+add_filter( 'blocksy:builder:header:enabled', '__return_false' );
+
 /**
  * Detect the blog area that uses the dedicated blog header template.
  *
@@ -414,7 +419,8 @@ function nexus_repair_primary_header_menu_items( $items, $args ) {
 		}
 
 		if ( 'E-Commerce Growth' === $title || '14283' === $legacy_id ) {
-			$item->url = $clean_urls['14283'];
+			$item->url   = $clean_urls['14283'];
+			$item->title = __( 'Ergebnisse', 'blocksy-child' );
 		}
 
 		if ( in_array( $title, $group_labels, true ) ) {

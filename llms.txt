@@ -17,6 +17,7 @@
 ## Solar- und Wärmepumpen-Leadgenerierung: Themen-Cluster
 - [Solar Leads kaufen Alternative](/solar-leads-kaufen-alternative/) - Intercept-Page für Kauf-Suchintent und Alternative zu Lead-Anbietern.
 - [Aroundhome Kosten für Handwerker](/aroundhome-solar-einordnung/) - anbieterunabhängiger Kosten-, Vertrags- und Portal-Fit-Entscheid mit CPO-Rechner.
+- [Wärmepumpen Leads kaufen – Alternative](/waermepumpen-leads/) - Intercept-Page für Wärmepumpen-Lead-Kauf: Marktmodelle, wärmepumpen-spezifische Vorqualifizierung und eigenes Anfragesystem als Alternative.
 - [Eigene Leadgenerierung vs. Portale](/eigene-leadgenerierung-vs-portale/) - Vergleich von Portal-Leads und eigenem Anfragesystem.
 - [Cost per Lead Photovoltaik](/cost-per-lead-photovoltaik/) - CPL-Analyse mit Szenarienvergleich und versteckten Kostentreibern.
 - [Qualifizierte PV-Anfragen](/qualifizierte-pv-anfragen/) - Merkmale hochwertiger Solar-Anfragen und Warnsignale.
@@ -28,5 +29,5 @@
 ## Sekundäre Einstiege und Wissen
 - [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und Anfragesystemen.
 - [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
-- [Stack Solar](/stack-solar/) - Performance-Stack für Solar-/SHK-Anbieter: Frontend, Managed Hosting, Server-Side Tracking, CRM-Anbindung und Marktcheck-Vorqualifizierung.
+- [Stack Solar](/stack-solar/) - Technischer Unterbau für Solar- und Wärmepumpen-Anbieter: Frontend, Hosting, Server-Side Tracking, CRM-Übergabe und projektspezifische Vorqualifizierung.
 - [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - sekundäre lokale B2B-Service-Seite.

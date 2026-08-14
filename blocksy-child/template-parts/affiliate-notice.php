@@ -28,7 +28,7 @@ $context_text = ( 'inline' === $context )
 	)
 	: sprintf(
 		/* translators: %s: provider name */
-		__( 'Werbung · Partnerlink. %s ist eine eigene Stack-Empfehlung. Wenn du über den Link abschließt, entsteht eine Vergütung — der Preis für dich bleibt identisch.', 'blocksy-child' ),
+		__( 'Werbung · Partnerlink. %s ist eine eigene Stack-Empfehlung. Wenn Sie über den Link abschließen, kann eine Vergütung entstehen. Die technische Einordnung bleibt davon getrennt.', 'blocksy-child' ),
 		$provider_label
 	);
 

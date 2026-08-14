@@ -185,7 +185,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Stack Solar',
 					'url'         => home_url( '/stack-solar/' ),
-					'description' => 'Performance-Stack für Solar-/SHK-Anbieter: Frontend, Managed Hosting, Server-Side Tracking, CRM-Anbindung und Marktcheck-Vorqualifizierung.',
+					'description' => 'Technischer Unterbau für Solar- und Wärmepumpen-Anbieter: Frontend, Hosting, Server-Side Tracking, CRM-Übergabe und projektspezifische Vorqualifizierung.',
 				],
 				[
 					'label'       => 'WordPress Agentur Hannover',

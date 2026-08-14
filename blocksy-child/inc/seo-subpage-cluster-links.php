@@ -2,7 +2,7 @@
 /**
  * Solar/B2B-Cluster: kontextuelle Querverlinkung der SEO-Subpages.
  *
- * Die acht Solar-Subpages sammeln Suchnachfrage, hingen aber bislang ohne
+ * Die Solar-Subpages sammeln Suchnachfrage, hingen aber bislang ohne
  * gegenseitige Kontextlinks im internen Linkgraph (Position 50+). Dieses Modul
  * vernetzt sie untereinander mit exakt benannten Ankern.
  *
@@ -105,7 +105,7 @@ function hu_get_current_solar_cluster_slug() {
 /**
  * Rendert die Cluster-Querverlinkung vor dem Footer der Cluster-Seiten.
  *
- * Greift am `get_footer`-Hook, sodass alle acht Subpages ohne Template-Eingriff
+ * Greift am `get_footer`-Hook, sodass alle Cluster-Subpages ohne Template-Eingriff
  * abgedeckt sind. Guard verhindert Ausgabe außerhalb des Clusters.
  *
  * @return void

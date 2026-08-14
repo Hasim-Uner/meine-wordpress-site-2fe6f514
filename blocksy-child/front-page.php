@@ -45,6 +45,7 @@ $e3_first_requests = $e3_metrics['first_requests_weeks']['display'] ?? '4–6 Wo
 $e3_cpl_after      = $e3_metrics['cpl_after']['display']         ?? '22 €';
 $contact_url       = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
 $agentur_hub_url   = home_url( '/wordpress-agentur-hannover/' );
+$solar_system_url  = home_url( '/solar-waermepumpen-leadgenerierung/#system' );
 $whitelabel_url    = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 // Portrait als WebP in Darstellungsgroesse (380px @2x) statt des 625-KB-Palette-PNG.
 $portrait_url      = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait-760.webp';
@@ -539,9 +540,9 @@ get_header();
 			</ol>
 
 			<div class="hu-phases__cta hu-reveal">
-				<a href="<?php echo esc_url( $agentur_hub_url ); ?>" class="hu-btn hu-btn-link"
-				   data-track-action="cta_home_phases_agentur" data-track-category="lead_gen" data-track-section="04">
-					Vollständige Methodenbibliothek im Agentur-Hub
+				<a href="<?php echo esc_url( $solar_system_url ); ?>" class="hu-btn hu-btn-link"
+				   data-track-action="cta_home_phases_solar_system" data-track-category="internal_link" data-track-section="04">
+					Aufbau des Solar-/SHK-Anfragesystems ansehen
 				</a>
 			</div>
 		</div>
@@ -771,10 +772,10 @@ get_header();
 			<div class="hu-faq">
 				<?php foreach ( $home_faq_items as $home_faq_index => $home_faq ) : ?>
 					<?php $home_faq_open = 0 === $home_faq_index; ?>
-					<div class="hu-faq-item<?php echo $home_faq_open ? ' is-open' : ''; ?>">
-						<button class="hu-faq-item__q" type="button" aria-expanded="<?php echo $home_faq_open ? 'true' : 'false'; ?>">
+					<div class="hu-faq-item<?php echo esc_attr( $home_faq_open ? ' is-open' : '' ); ?>">
+						<button class="hu-faq-item__q" type="button" aria-expanded="<?php echo esc_attr( $home_faq_open ? 'true' : 'false' ); ?>">
 							<span><?php echo esc_html( $home_faq['question'] ); ?></span>
-							<span class="hu-faq-item__icon" aria-hidden="true"><?php echo $home_faq_open ? "\u{2212}" : '+'; ?></span>
+							<span class="hu-faq-item__icon" aria-hidden="true"><?php echo esc_html( $home_faq_open ? "\u{2212}" : '+' ); ?></span>
 						</button>
 						<div class="hu-faq-item__a">
 							<div class="hu-faq-item__a-inner"><?php echo esc_html( $home_faq['answer'] ); ?></div>
