@@ -364,6 +364,15 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 	white-space: nowrap;
 }
 
+/* Wort- statt Zahlenzeile: nowrap haelt bei den Kennzahlen Wert und Einheit
+   zusammen, schoebe hier aber den laengeren Text zwischen 761 und 901 px aus
+   der Spalte. Der Umbruch faellt auf die einzige Wortfuge, Groesse und
+   Laufweite der Display-Zeile bleiben identisch. */
+.hu-about__station-figure--words {
+	white-space: normal;
+	text-wrap: balance;
+}
+
 .hu-about__station-title {
 	margin: 0;
 	font-family: var(--font-body, 'Figtree'), sans-serif;
