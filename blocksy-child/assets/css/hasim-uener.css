@@ -38,6 +38,12 @@
 	--hu-about-hero-ink-soft: hsl(32 7% 71%);
 	--hu-about-band-bg: hsl(28 12% 10%);
 	--hu-about-band-line: hsl(30 10% 100% / 0.24);
+	/* Akzent fuer Text im dunklen Band. #b46a3c erreicht auf hsl(28 12% 10%)
+	   nur 4,21:1 und faellt damit bei 13 px durch 1.4.3 — Lighthouse zog die
+	   Barrierefreiheit dadurch von 100 auf 96. Dieser Wert ist der bereits im
+	   Design-System vorhandene --accent-hover und kommt auf 5,27:1.
+	   Der Grundakzent bleibt unveraendert: auf Creme liegt er bei 5,13:1. */
+	--hu-about-band-accent: hsl(23 50% 54%);
 	--hu-about-radius: var(--radius-lg, 12px);
 
 	position: relative;
@@ -382,7 +388,7 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 	font-size: 0.8125rem;
 	font-weight: 650;
 	line-height: var(--leading-snug, 1.3);
-	color: var(--hu-about-accent);
+	color: var(--hu-about-band-accent);
 	text-decoration-thickness: 1px;
 	text-underline-offset: 0.22em;
 }
@@ -392,7 +398,7 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 }
 
 .hu-about__station-link:focus-visible {
-	outline: 2px solid var(--hu-about-accent);
+	outline: 2px solid var(--hu-about-band-accent);
 	outline-offset: 4px;
 }
 
