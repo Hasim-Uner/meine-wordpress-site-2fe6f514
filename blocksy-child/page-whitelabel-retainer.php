@@ -16,9 +16,27 @@ $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 	? nexus_get_whitelabel_calendar_url()
 	: 'https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true';
 $mailto_url          = 'mailto:hallo@hasimuener.de';
+
+// ── Zweiter Ausgang: "Ich habe jetzt eine konkrete Aufgabe" ─────
+// Alle CTAs führten auf denselben Pfad: Fit-Check (3 Fragen) → 30-Minuten-
+// Gespräch. Wer einen akuten Bug oder eine Deadline hat, will die Aufgabe
+// loswerden, nicht ein Quiz ausfüllen und danach einen Termin suchen. Der
+// Betreff ist vorbelegt, damit die Mail nicht bei null anfängt.
+//
+// Bewusst mailto und kein Formular: kein zusätzliches Blocking-Asset, keine
+// neue Datenverarbeitung, kein REST-Endpunkt — die Core Web Vitals der Route
+// bleiben unangetastet.
+//
+// Das 4-Stunden-Versprechen steht ohnehin zweimal auf der Seite (Kontrakt-
+// Karte 02, FAQ "kapazitaet"). Hier trägt es zum ersten Mal einen CTA statt
+// als Fußnote zu enden.
+$task_brief_response = 'Einschätzung innerhalb von 4 Stunden werktags';
+$task_brief_url      = $mailto_url . '?subject=' . rawurlencode( 'White-Label: konkrete Aufgabe' )
+	. '&body=' . rawurlencode(
+		"Aufgabe:\n\n\nGewünschter Zeitraum:\n\n\nZugänge vorhanden (WordPress, GA4, GTM):\n\n"
+	);
 $imprint_url         = home_url( '/impressum/' );
 $privacy_url         = home_url( '/datenschutz/' );
-$github_url          = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
 $current_year        = wp_date( 'Y' );
 
 // Diese Route hat eine eigene, geschlossene Seitennavigation. Der globale
@@ -64,9 +82,18 @@ $portrait_url = function_exists( 'hu_get_portrait_image_url' )
 $cpl_before             = hu_e3_metric( 'cpl_before' );
 $cpl_after              = hu_e3_metric( 'cpl_after' );
 $lead_count             = hu_e3_metric( 'lead_count' );
-$sales_conversion_lift = hu_e3_metric( 'sales_conversion_uplift' );
+// Bewusst 'sales_conversion' statt 'sales_conversion_uplift': der Vorher-Wert
+// "1 – 5 %" gehoert nicht zu den kanonischen Zahlen dieser Seite (CPL 150 → 22 €,
+// 1.750+ Anfragen, 12 % Abschlussquote). Er brachte den geringsten Nutzen bei der
+// groessten Angriffsflaeche. Der Uplift-Schluessel bleibt fuer die Solar-Routen
+// unveraendert im Kanon.
+$sales_conversion       = hu_e3_metric( 'sales_conversion' );
 $timeframe              = hu_e3_metric( 'timeframe', 'display_dative' );
 $test_sprint_price      = hu_whitelabel_price( 'test_sprint' );
+$test_sprint_price_card = hu_whitelabel_price( 'test_sprint', 'display_fixed', $test_sprint_price );
+$tracking_audit_price   = hu_whitelabel_price( 'tracking_audit', 'display', 'Festpreis nach Umfangsklärung' );
+$server_side_price      = hu_whitelabel_price( 'server_side', 'display', 'Festpreis nach Umfangsklärung' );
+$landingpage_price      = hu_whitelabel_price( 'landingpage', 'display', 'Festpreis nach Umfangsklärung' );
 
 $proof_metrics = [
 	[
@@ -78,8 +105,31 @@ $proof_metrics = [
 		'label' => 'qualifizierte Anfragen im selben Zeitraum',
 	],
 	[
-		'value' => $sales_conversion_lift,
-		'label' => 'Abschlussquote · gekaufte Portal-Leads vorher → eigene Anfragen nachher',
+		'value' => $sales_conversion,
+		'label' => 'Abschlussquote · eigene Anfragen',
+	],
+];
+
+// ── Prüfbare Arbeiten neben der anonymisierten Zahlenkachel ─────
+// Die Kennzahlen oben stammen aus einem Mandat unter NDA und sind für einen
+// Fremden nicht nachprüfbar. Diese drei Seiten sind es: eigene bzw. offene
+// Projekte, kein NDA steht dagegen. Beschrieben wird die technische
+// Schwierigkeit — nicht der Kunde und nicht der Inhalt.
+$proof_references = [
+	[
+		'label' => 'civaka-azad.org',
+		'url'   => 'https://civaka-azad.org/',
+		'note'  => 'Informationsarchitektur für einen großen, über Jahre gewachsenen redaktionellen Bestand: Navigation, Archive und interne Verweise so strukturiert, dass ältere Beiträge auffindbar bleiben.',
+	],
+	[
+		'label' => 'conversionengine.de',
+		'url'   => 'https://conversionengine.de/',
+		'note'  => 'Onepage mit durchgehender Vertriebslogik: eine einzige Seite, die Argumentation, Einwandbehandlung und Abschluss ohne Seitenwechsel trägt.',
+	],
+	[
+		'label' => 'hasimuener.org',
+		'url'   => 'https://hasimuener.org/',
+		'note'  => 'Editorial Design: Typografie, Raster und Lesefluss als eigentliche Aufgabe — Layout, das ohne Bildmaterial trägt.',
 	],
 ];
 
@@ -132,7 +182,7 @@ $entry_projects = [
 		'key'       => 'testsprint',
 		'tag'       => 'WordPress',
 		'title'     => 'WordPress-Test-Sprint',
-		'price'     => $test_sprint_price,
+		'price'     => $test_sprint_price_card,
 		'copy'      => 'Eine vorab schriftlich abgegrenzte technische Aufgabe als kleinster Einstieg in die erste Zusammenarbeit.',
 		'card_line' => 'Eine abgegrenzte Aufgabe zum Festpreis — inklusive Umsetzung, Funktionstest, technischer Dokumentation und einer Korrekturrunde.',
 	],
@@ -140,7 +190,7 @@ $entry_projects = [
 		'key'     => 'tracking',
 		'tag'     => 'Tracking',
 		'title'   => 'Tracking-Audit',
-		'price'   => 'Festpreis nach Umfangsklärung',
+		'price'   => $tracking_audit_price,
 		'deliver' => 'Schriftlicher Befund + priorisierte Fixliste',
 		'copy'    => 'GA4, GTM und Consent-Bestand eures Kunden geprüft: Was misst, was fehlt, was verfälscht. Danach wisst ihr, worauf jede weitere Maßnahme aufsetzt.',
 	],
@@ -148,7 +198,7 @@ $entry_projects = [
 		'key'     => 'tracking',
 		'tag'     => 'Server',
 		'title'   => 'Server-Side-Setup',
-		'price'   => 'Festpreis nach Umfangsklärung',
+		'price'   => $server_side_price,
 		'deliver' => 'Produktives Setup + Doku + Übergabe',
 		'copy'    => 'Eigener Server-Side-Container, Enhanced Conversions, Meta CAPI, Consent Mode V2 — produktiv geschaltet und dokumentiert, nicht nur konfiguriert.',
 	],
@@ -156,7 +206,7 @@ $entry_projects = [
 		'key'     => 'landingpage',
 		'tag'     => 'Landingpage',
 		'title'   => 'Landingpage',
-		'price'   => 'Festpreis nach Umfangsklärung',
+		'price'   => $landingpage_price,
 		'deliver' => 'Live-Page + Doku, bereit für Traffic',
 		'copy'    => 'Individuelles Template mit klarer Funnel-Logik, sauberen Core Web Vitals und belastbarer Messbarkeit ab dem ersten Klick.',
 	],
@@ -168,7 +218,10 @@ $presales_scoping = [
 	'copy'     => 'Ich schätze technische Anforderungen, Aufwand und Machbarkeit vorab mit euch ein, bevor ihr dem Kunden etwas zusagt.',
 ];
 
-$entry_bullets = [ 'NDA', 'Fixer Scope', 'Festpreis nach Umfangsklärung', 'Keine Verlängerungsfalle' ];
+// "nach Umfangsklärung" stand hier neben der Test-Sprint-Karte, die als
+// einzige Position der Seite einen festen Betrag trägt — und liess ihn weich
+// aussehen. Ohne den Zusatz gilt der Punkt fuer alle vier Erstprojekte.
+$entry_bullets = [ 'NDA', 'Fixer Scope', 'Festpreis vorab', 'Keine Verlängerungsfalle' ];
 
 $solution_modes = [
 	'hintergrund' => [
@@ -378,7 +431,7 @@ $fitcheck_steps = [
 						<span class="wl-hero__title-line wl-hero__title-line--em">Euer Name steht drauf.</span>
 					</h1>
 					<p class="wl-hero__lede">
-						Senior-Unterstützung für WordPress, Tracking und Automation — wenn intern technische Tiefe oder Kapazität fehlt. Ohne zusätzliche Festanstellung und unter eurem Namen.
+						Senior-Umsetzung für WordPress, Tracking und Automation — unter eurem Namen, ohne zusätzliche Festanstellung.
 					</p>
 
 					<div class="wl-hero__actions">
@@ -388,13 +441,13 @@ $fitcheck_steps = [
 								<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 							</svg>
 						</a>
-						<a href="#proof" class="nx-btn nx-btn--ghost" data-track-action="cta_whitelabel_hero_proof" data-track-category="navigation" data-track-section="hero">
-							Arbeitsprobe ansehen
+						<a href="<?php echo esc_url( $task_brief_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_hero_task_brief" data-track-category="lead_gen" data-track-section="hero">
+							<span>Aufgabe beschreiben — <?php echo esc_html( $task_brief_response ); ?></span>
 						</a>
 					</div>
 
 					<p class="wl-hero__fineprint">
-						30&nbsp;Min direkt mit mir · NDA möglich · keine Verkaufsshow.
+						Oder erst ansehen, was geliefert wird: <a href="#proof" data-track-action="cta_whitelabel_hero_proof" data-track-category="navigation" data-track-section="hero">Arbeitsprobe</a>. 30&nbsp;Min direkt mit mir · NDA möglich · keine Verkaufsshow.
 					</p>
 				</div>
 
@@ -455,7 +508,7 @@ $fitcheck_steps = [
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Einstieg</span>
 				<h2 class="nx-headline-section">Kein Blind-Retainer. Erst ein Erstprojekt mit fixem Scope.</h2>
-				<p class="wl-section-lede">Der WordPress-Test-Sprint ist der kleinste Einstieg zum festen Preis. Größere Erstprojekte folgen mit fester Lieferung und einem Festpreis nach Umfangsklärung. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt.</p>
+				<p class="wl-section-lede">Der WordPress-Test-Sprint ist der kleinste Einstieg zum festen Preis. Bei den größeren Erstprojekten nennt die Karte die Untergrenze; der verbindliche Festpreis steht nach der Umfangsklärung schriftlich fest, bevor die Arbeit beginnt. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt.</p>
 			</div>
 
 			<div class="wl-entry__presales nx-reveal">
@@ -528,6 +581,9 @@ $fitcheck_steps = [
 			<div class="wl-entry__actions nx-reveal">
 				<a href="#fit-check" class="nx-btn nx-btn--primary" data-track-action="cta_whitelabel_entry_to_fitcheck" data-track-category="navigation" data-track-section="entry">
 					Fit-Check starten — 3 Fragen, 60 Sekunden
+				</a>
+				<a href="<?php echo esc_url( $task_brief_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_entry_task_brief" data-track-category="lead_gen" data-track-section="entry">
+					Aufgabe beschreiben — <?php echo esc_html( $task_brief_response ); ?>
 				</a>
 				<p class="wl-entry__retainer-note">Wenn das Erstprojekt erfolgreich abgeschlossen ist, kann daraus ein Monats-Retainer mit vorab vereinbartem Leistungsrahmen entstehen.</p>
 			</div>
@@ -708,7 +764,32 @@ $fitcheck_steps = [
 
 			<p class="wl-proof__scope">Mein Verantwortungsbereich in dieser Arbeitsprobe: Landingpage und Kampagnensteuerung in Google Ads und Meta Ads — verbunden durch Tracking-Architektur, Consent Mode V2 und CRM-Attribution.</p>
 
-			<p class="wl-proof__disclaimer">Historisches Fallbeispiel aus dem Zeitraum 2024–2025 · kein White-Label-Mandat, sondern eigenes Projekt · keine pauschale Übertragbarkeitsgarantie.</p>
+			<p class="wl-proof__disclaimer">Fallbeispiel aus 2024–2025 · eigenes Projekt, kein White-Label-Mandat · keine pauschale Übertragbarkeitsgarantie.</p>
+
+			<div class="wl-proof__refs nx-reveal">
+				<h3 class="wl-proof__refs-title">Direkt prüfbar: drei Live-Umsetzungen</h3>
+				<p class="wl-proof__refs-lede">Die Zahlen oben stammen aus einem Mandat, dessen Kunde anonym bleibt. Diese drei Seiten sind offen — anschauen, Quelltext lesen, Ladeverhalten messen.</p>
+				<ul class="wl-proof__refs-list" role="list">
+					<?php foreach ( $proof_references as $reference ) : ?>
+						<li class="wl-proof__ref">
+							<a
+								class="wl-proof__ref-link"
+								href="<?php echo esc_url( $reference['url'] ); ?>"
+								target="_blank"
+								rel="noopener noreferrer"
+								data-track-action="ref_whitelabel_proof_site"
+								data-track-label="<?php echo esc_attr( $reference['label'] ); ?>"
+								data-track-category="engagement"
+								data-track-section="proof"
+							>
+								<?php echo esc_html( $reference['label'] ); ?>
+								<span class="wl-visually-hidden"> (öffnet in neuem Tab)</span>
+							</a>
+							<span class="wl-proof__ref-note"><?php echo esc_html( $reference['note'] ); ?></span>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
 
 			<div class="wl-proof__cta nx-reveal">
 				<p class="wl-proof__cta-copy">Dieselbe Mechanik unter eurem Namen — die Frage ist nur, ob sie zu eurem nächsten Kundenprojekt passt.</p>
@@ -859,6 +940,12 @@ window.dataLayer.push({
 					<span class="wl-eyebrow">Nächster Schritt</span>
 					<h2 class="wl-cta__title">Passt das zu eurem Setup?</h2>
 					<p class="wl-cta__lede">Kurz prüfen, dann reden: 30&nbsp;Min, kein Pitch-Deck, keine Verkaufsshow. Danach wisst ihr, ob es passt — und wenn nicht, wisst ihr das auch.</p>
+					<div class="wl-cta__shortcut">
+						<p class="wl-cta__shortcut-copy">Ihr habt schon eine konkrete Aufgabe? Dann überspringt den Fit-Check.</p>
+						<a href="<?php echo esc_url( $task_brief_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_fitcheck_task_brief" data-track-category="lead_gen" data-track-section="fitcheck">
+							Aufgabe beschreiben — <?php echo esc_html( $task_brief_response ); ?>
+						</a>
+					</div>
 				</div>
 
 				<div class="wl-fitcheck__box" data-fitcheck data-test-sprint-price="<?php echo esc_attr( $test_sprint_price ); ?>">
@@ -938,13 +1025,6 @@ do_action( 'blocksy:footer:before' );
 	<footer id="footer" class="wl-page-footer" aria-labelledby="wl-page-footer-heading" role="contentinfo">
 		<h2 id="wl-page-footer-heading" class="wl-visually-hidden">Seitenabschluss</h2>
 		<div class="nx-container wl-page-footer__inner">
-			<a class="wl-page-footer__github" href="<?php echo esc_url( $github_url ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="nav_whitelabel_footer_github" data-track-category="navigation" data-track-section="whitelabel_footer">
-				<svg class="wl-page-footer__github-icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-					<path fill="currentColor" d="M12 .297a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .297Z"/>
-				</svg>
-				<span>Projekt auf GitHub</span>
-				<span class="wl-visually-hidden"> (öffnet in neuem Tab)</span>
-			</a>
 			<p>&copy; <time datetime="<?php echo esc_attr( $current_year ); ?>"><?php echo esc_html( $current_year ); ?></time> Haşim Üner · White-Label-Partner für Agenturen</p>
 			<nav class="wl-page-footer__legal" aria-label="Rechtliches">
 				<a href="<?php echo esc_url( $imprint_url ); ?>" data-track-action="nav_whitelabel_footer_imprint" data-track-category="navigation" data-track-section="whitelabel_footer">Impressum</a>
