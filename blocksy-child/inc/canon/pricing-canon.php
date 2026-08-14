@@ -313,6 +313,17 @@ define( 'HU_WHITELABEL_TRACKING_AUDIT_MIN', 690 );
 define( 'HU_WHITELABEL_SERVER_SIDE_MIN', 1290 );
 define( 'HU_WHITELABEL_LANDINGPAGE_MIN', 1900 );
 
+// Der Retainer ist die versprochene Zielstufe des Partner-Funnels und trug
+// keine Zahl — damit war er eine Absichtserklaerung. Eine Untergrenze macht
+// ihn real, ohne dass eine Obergrenze jemanden verschreckt.
+//
+// 1.000 statt der zuerst vorgeschlagenen 1.500: HU_PERFORMANCE_RETAINER_PRICE
+// oben ist der Endkunden-Retainer und steht ebenfalls bei 1.500. Derselbe
+// Betrag hiesse, die Agentur zahlt so viel wie ein Endkunde — das bricht die
+// 30-%-Regel, die auf jeder anderen Sprosse dieser Leiter gilt. 1.000 haelt
+// sie und entspricht HU_PERFORMANCE_FOUNDING_RETAINER.
+define( 'HU_WHITELABEL_RETAINER_MIN', 1000 );
+
 /**
  * Return the canonical White-Label pricing model.
  *
@@ -339,6 +350,10 @@ function hu_whitelabel_pricing_canon() {
 		'landingpage'      => [
 			'value'   => HU_WHITELABEL_LANDINGPAGE_MIN,
 			'display' => 'ab ' . hu_format_eur( HU_WHITELABEL_LANDINGPAGE_MIN ) . ' netto',
+		],
+		'retainer'         => [
+			'value'   => HU_WHITELABEL_RETAINER_MIN,
+			'display' => 'ab ' . hu_format_eur( HU_WHITELABEL_RETAINER_MIN ) . ' / Monat netto',
 		],
 	];
 }
