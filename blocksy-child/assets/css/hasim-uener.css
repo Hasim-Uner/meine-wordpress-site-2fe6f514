@@ -7,8 +7,8 @@
 
    MOTION BRIEF
    Route / surface: /hasim-uener/, Hero und Stationen-Band.
-   Visitor decision / CTA: Person und Arbeitsansatz einordnen; Marktcheck ist
-   der unveraenderte primaere Ausgang am Seitenende.
+   Visitor decision / CTA: Person und Arbeitsansatz einordnen; am Seitenende
+   passend zwischen Direktmandat und White-Label verzweigen.
    Intensity: 2 — guided.
    Thesis: Portrait, Aussage und Stationen lesen sich als ein zusammenhaengendes
    System; Bewegung markiert nur diese Verbindung.
@@ -449,13 +449,12 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 }
 
 /* -----------------------------------------------------------
-   5 — CTA: unveraenderte Ausgaenge, aber als klarer Schlussakkord.
+   5 — CTA: ein Schlussakkord, zwei nach Zielgruppe getrennte Wege.
 ----------------------------------------------------------- */
 .hu-about__cta {
 	position: relative;
 	display: grid;
-	justify-items: start;
-	gap: var(--nx-space-md);
+	gap: var(--nx-space-xl);
 	padding: clamp(var(--nx-space-xl), 6vw, var(--nx-space-2xl));
 	overflow: hidden;
 	border: 1px solid var(--hu-about-line);
@@ -467,69 +466,150 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: min(36%, 14rem);
+	width: min(52%, 22rem);
 	height: 3px;
 	background-color: var(--hu-about-accent);
 	content: '';
 }
 
-.hu-about__cta-note {
-	margin: 0;
-	font-size: 0.875rem;
-	font-weight: 500;
-	color: var(--hu-about-ink-soft);
+.hu-about__cta-head {
+	display: grid;
+	gap: var(--nx-space-sm);
+	max-width: 46rem;
 }
 
-.hu-about__cta-btn {
+.hu-about__cta-kicker,
+.hu-about__path-label {
+	margin: 0;
+	font-size: 0.75rem;
+	font-weight: 700;
+	line-height: 1.35;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--hu-about-accent-strong);
+}
+
+.hu-about__cta-title {
+	max-width: 22ch;
+	margin: 0;
+	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
+	font-size: clamp(1.75rem, 4vw, 2.75rem);
+	font-weight: 600;
+	line-height: 1.08;
+	letter-spacing: -0.025em;
+	color: var(--hu-about-ink);
+	text-wrap: balance;
+}
+
+.hu-about__path-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	overflow: hidden;
+	border: 1px solid var(--hu-about-line);
+	border-radius: var(--hu-about-radius);
+	background-color: var(--hu-about-bg);
+}
+
+.hu-about__path {
+	display: grid;
+	grid-template-rows: auto auto 1fr auto;
+	align-content: start;
+	gap: var(--nx-space-md);
+	min-width: 0;
+	padding: clamp(var(--nx-space-lg), 4vw, var(--nx-space-xl));
+}
+
+.hu-about__path--direct {
+	background-color: var(--hu-about-bg);
+}
+
+.hu-about__path--whitelabel {
+	border-left: 1px solid var(--hu-about-line);
+	background-color: var(--hu-about-hero-bg);
+	color: var(--hu-about-hero-ink);
+}
+
+.hu-about__path--whitelabel .hu-about__path-label {
+	color: #d99a70;
+}
+
+.hu-about__path-title {
+	margin: 0;
+	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
+	font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+	font-weight: 600;
+	line-height: 1.2;
+	letter-spacing: -0.015em;
+	color: var(--hu-about-ink);
+	text-wrap: balance;
+}
+
+.hu-about__path--whitelabel .hu-about__path-title {
+	color: var(--hu-about-hero-ink);
+}
+
+.hu-about__path-text {
+	max-width: 36ch;
+	margin: 0;
+	font-size: 0.9375rem;
+	line-height: 1.6;
+	color: var(--hu-about-ink-soft);
+	text-wrap: pretty;
+}
+
+.hu-about__path--whitelabel .hu-about__path-text {
+	color: var(--hu-about-hero-ink-soft);
+}
+
+.hu-about__path-link {
 	display: inline-flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-between;
+	gap: var(--nx-space-md);
 	min-block-size: 48px;
 	min-inline-size: 44px;
-	padding: var(--nx-space-md) var(--nx-space-xl);
+	width: 100%;
+	padding: var(--nx-space-md) var(--nx-space-lg);
 	border: 1px solid var(--hu-about-accent-strong);
 	border-radius: var(--hu-about-radius);
-	background-color: var(--hu-about-accent-strong);
-	color: var(--hu-about-hero-ink);
 	font-size: 1rem;
 	font-weight: 650;
-	line-height: 1;
+	line-height: 1.25;
 	text-decoration: none;
 	transition:
 		background-color var(--nx-duration-fast) var(--nx-ease),
 		border-color var(--nx-duration-fast) var(--nx-ease),
+		color var(--nx-duration-fast) var(--nx-ease),
 		transform var(--nx-duration) var(--nx-ease);
 }
 
-.hu-about__cta-btn:active {
+.hu-about__path-link--primary {
+	background-color: var(--hu-about-accent-strong);
+	color: var(--hu-about-hero-ink);
+}
+
+.hu-about__path-link--secondary {
+	border-color: hsl(23 50% 66% / 0.72);
+	background-color: transparent;
+	color: var(--hu-about-hero-ink);
+}
+
+.hu-about__path-link > span {
+	flex: 0 0 auto;
+	font-size: 1.2em;
+	line-height: 1;
+	transition: transform var(--nx-duration-fast) var(--nx-ease);
+}
+
+.hu-about__path-link:active {
 	transform: translateY(0);
-}
-
-.hu-about__cta-secondary {
-	margin: var(--nx-space-sm) 0 0;
-	font-size: 1rem;
-}
-
-.hu-about__cta-secondary a {
-	display: inline-flex;
-	align-items: center;
-	min-block-size: 44px;
-	color: var(--hu-about-accent-strong);
-	font-weight: 650;
-	text-decoration: underline;
-	text-decoration-thickness: 1px;
-	text-underline-offset: 4px;
-}
-
-.hu-about__cta-target {
-	white-space: nowrap;
 }
 
 .hu-about__cta-links {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0 var(--nx-space-lg);
-	margin: var(--nx-space-md) 0 0;
+	margin: 0;
 	font-size: 0.875rem;
 }
 
@@ -543,19 +623,28 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 	text-underline-offset: 3px;
 }
 
-.hu-about :is(a, .hu-about__cta-btn):focus-visible {
+.hu-about a:focus-visible {
 	outline: 3px solid var(--hu-about-accent);
 	outline-offset: 3px;
 }
 
 @media (hover: hover) and (pointer: fine) {
-	.hu-about__cta-btn:hover {
+	.hu-about__path-link--primary:hover {
 		border-color: var(--hu-about-accent);
 		background-color: #854a2c;
 		transform: translateY(-2px);
 	}
 
-	.hu-about__cta-secondary a:hover,
+	.hu-about__path-link--secondary:hover {
+		border-color: #d99a70;
+		background-color: hsl(23 50% 66% / 0.12);
+		transform: translateY(-2px);
+	}
+
+	.hu-about__path-link:hover > span {
+		transform: translateX(3px);
+	}
+
 	.hu-about__cta-links a:hover {
 		color: var(--hu-about-ink);
 	}
@@ -576,6 +665,15 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 }
 
 @media (max-width: 760px) {
+	.hu-about__path-grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.hu-about__path--whitelabel {
+		border-top: 1px solid var(--hu-about-line);
+		border-left: 0;
+	}
+
 	.hu-about__hero {
 		padding-block:
 		calc(var(--nx-space-section) + var(--nx-space-sm))
@@ -689,9 +787,6 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 		border-left: 0;
 	}
 
-	.hu-about__cta-btn {
-		width: 100%;
-	}
 }
 
 @media (max-width: 420px) {
@@ -715,6 +810,16 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 
 	.hu-about__cta {
 		padding: var(--nx-space-lg);
+	}
+
+	.hu-about__path {
+		padding-inline: var(--nx-space-md);
+	}
+
+	.hu-about__path-link {
+		gap: var(--nx-space-sm);
+		padding-inline: var(--nx-space-md);
+		font-size: 0.9375rem;
 	}
 }
 
@@ -740,11 +845,13 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 
 	.hu-about__station::before,
 	.hu-about__station::after,
-	.hu-about__cta-btn {
+	.hu-about__path-link,
+	.hu-about__path-link > span {
 		transition: none;
 	}
 
-	.hu-about__cta-btn:hover {
+	.hu-about__path-link:hover,
+	.hu-about__path-link:hover > span {
 		transform: none;
 	}
 }
@@ -767,7 +874,7 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 		filter: none;
 	}
 
-	.hu-about__cta-btn {
+	.hu-about__path-link {
 		border: 2px solid ButtonText;
 		background: ButtonFace;
 		color: ButtonText;

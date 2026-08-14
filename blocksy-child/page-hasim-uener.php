@@ -57,7 +57,7 @@ $about_stations = [
 		'text'   => 'Seitdem baue ich Websites. Schwerpunkt webbasierte Systeme.',
 	],
 	[
-		'figure' => "70\u{00A0}€ → 26\u{00A0}€",
+		'figure' => "84\u{00A0}€ → 26\u{00A0}€",
 		'title'  => 'Eigener Onlineshop',
 		'text'   => 'Kosten pro Bestellung. D2C, auf eigenes Geld.',
 	],
@@ -176,24 +176,41 @@ get_header();
 				</p>
 			</section>
 
-			<!-- 5 — CTA: zwei Ausgaenge, danach die leisen Kontaktwege -->
-			<section class="hu-about__cta">
-				<p class="hu-about__cta-note">Sie betreiben selbst einen Solar- oder Wärmepumpenbetrieb</p>
-				<a
-					class="hu-about__cta-btn"
-					href="<?php echo esc_url( $request_url ); ?>"
-					data-track-action="cta_about_marktcheck"
-					data-track-category="lead_gen"
-					data-track-section="about_cta"
-				>Marktcheck anfragen</a>
-				<p class="hu-about__cta-secondary">
-					<a
-						href="<?php echo esc_url( $whitelabel_url ); ?>"
-						data-track-action="link_about_whitelabel"
-						data-track-category="lead_gen"
-						data-track-section="about_cta"
-					>Sie sind Agentur und suchen Umsetzung <span class="hu-about__cta-target"><span aria-hidden="true">→</span> White-Label</span></a>
-				</p>
+			<!-- 5 — CTA: zwei klar getrennte Wege, danach die leisen Kontaktwege -->
+			<section class="hu-about__cta" aria-labelledby="hu-about-cta-title">
+				<header class="hu-about__cta-head">
+					<p class="hu-about__cta-kicker">Zusammenarbeit</p>
+					<h2 class="hu-about__cta-title" id="hu-about-cta-title">Direkt für Betriebe. Im Hintergrund für Agenturen.</h2>
+				</header>
+
+				<div class="hu-about__path-grid">
+					<article class="hu-about__path hu-about__path--direct">
+						<p class="hu-about__path-label">Für Betriebe</p>
+						<h3 class="hu-about__path-title">Solar- oder Wärmepumpenbetrieb</h3>
+						<p class="hu-about__path-text">Sie wollen prüfen, ob ein eigenes Anfragesystem zu Region, Vertrieb und Projektwert passt.</p>
+						<a
+							class="hu-about__path-link hu-about__path-link--primary"
+							href="<?php echo esc_url( $request_url ); ?>"
+							data-track-action="cta_about_marktcheck"
+							data-track-category="lead_gen"
+							data-track-section="about_cta"
+						>Marktcheck starten <span aria-hidden="true">→</span></a>
+					</article>
+
+					<article class="hu-about__path hu-about__path--whitelabel">
+						<p class="hu-about__path-label">Für Agenturen</p>
+						<h3 class="hu-about__path-title">White-Label-Umsetzung</h3>
+						<p class="hu-about__path-text">Sie führen das Kundenprojekt. Ich übernehme die technische Umsetzung im Hintergrund.</p>
+						<a
+							class="hu-about__path-link hu-about__path-link--secondary"
+							href="<?php echo esc_url( $whitelabel_url ); ?>"
+							data-track-action="link_about_whitelabel"
+							data-track-category="lead_gen"
+							data-track-section="about_cta"
+						>White-Label ansehen <span aria-hidden="true">→</span></a>
+					</article>
+				</div>
+
 				<p class="hu-about__cta-links">
 					<a
 						href="<?php echo esc_url( $linkedin_url ); ?>"
