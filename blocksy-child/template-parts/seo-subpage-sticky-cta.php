@@ -12,6 +12,7 @@
  * Projektpruefung statt Marktcheck) setzen sie, damit Label und Ziel
  * zusammenpassen:
  * - region_label, lead, sub, label, track_action
+ * - hide_when_visible: CSS-Selektor eines Zielbereichs, in dem die Bar pausiert
  *
  * Barrierefreiheit:
  * - role="region" + aria-label fuer Screenreader-Orientierung
@@ -34,6 +35,7 @@ $hu_sticky_lead      = isset( $hu_sticky_args['lead'] ) ? (string) $hu_sticky_ar
 $hu_sticky_sub       = isset( $hu_sticky_args['sub'] ) ? (string) $hu_sticky_args['sub'] : 'Fit-Befund statt Standardbericht';
 $hu_sticky_label     = isset( $hu_sticky_args['label'] ) ? (string) $hu_sticky_args['label'] : 'Eigene Region jetzt prüfen';
 $hu_sticky_action    = isset( $hu_sticky_args['track_action'] ) ? (string) $hu_sticky_args['track_action'] : 'cta_sticky_marktcheck';
+$hu_sticky_hide_when = isset( $hu_sticky_args['hide_when_visible'] ) ? trim( (string) $hu_sticky_args['hide_when_visible'] ) : '';
 
 if ( '' === $hu_sticky_target && isset( $hu_sticky_args['marktcheck_url'] ) ) {
 	$hu_sticky_target = (string) $hu_sticky_args['marktcheck_url'];
@@ -46,11 +48,16 @@ if ( '' === $hu_sticky_target ) {
 }
 ?>
 
-<aside class="hu-sticky-cta"
-       id="hu-sticky-cta"
-       role="region"
-       aria-label="<?php echo esc_attr( $hu_sticky_region ); ?>"
-       hidden>
+<aside
+	class="hu-sticky-cta"
+	id="hu-sticky-cta"
+	role="region"
+	aria-label="<?php echo esc_attr( $hu_sticky_region ); ?>"
+	<?php if ( '' !== $hu_sticky_hide_when ) : ?>
+		data-sticky-hide-when-visible="<?php echo esc_attr( $hu_sticky_hide_when ); ?>"
+	<?php endif; ?>
+	hidden
+>
 	<div class="hu-sticky-cta__inner">
 		<p class="hu-sticky-cta__text">
 			<span class="hu-sticky-cta__lead"><?php echo esc_html( $hu_sticky_lead ); ?></span>

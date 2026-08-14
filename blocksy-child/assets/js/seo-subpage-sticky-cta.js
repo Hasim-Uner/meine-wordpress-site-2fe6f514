@@ -115,6 +115,23 @@
 		}
 
 		var hasShown = false;
+		var hideTargetVisible = false;
+		var hideSelector = bar.getAttribute( 'data-sticky-hide-when-visible' );
+		var hideTarget = null;
+
+		if ( hideSelector ) {
+			try {
+				hideTarget = document.querySelector( hideSelector );
+			} catch ( e ) {
+				hideTarget = null;
+			}
+		}
+
+		if ( hideTarget ) {
+			var initialTargetRect = hideTarget.getBoundingClientRect();
+			hideTargetVisible = initialTargetRect.bottom > 0 && initialTargetRect.top < window.innerHeight;
+		}
+
 		var onScroll = function () {
 			if ( hasShown ) {
 				return;
@@ -122,7 +139,10 @@
 
 			if ( window.scrollY >= SHOW_AFTER_SCROLL_PX ) {
 				hasShown = true;
-				showBar( bar );
+
+				if ( ! hideTargetVisible ) {
+					showBar( bar );
+				}
 			}
 		};
 
@@ -139,11 +159,25 @@
 			} );
 		}
 
+		if ( hideTarget && typeof window.IntersectionObserver === 'function' ) {
+			new window.IntersectionObserver( function ( entries ) {
+				entries.forEach( function ( entry ) {
+					hideTargetVisible = entry.isIntersecting;
+
+					if ( hideTargetVisible ) {
+						hideBar( bar );
+					} else if ( hasShown && isMobileViewport() && ! isRecentlyDismissed() ) {
+						showBar( bar );
+					}
+				} );
+			}, { threshold: 0.08 } ).observe( hideTarget );
+		}
+
 		// Bei Resize: bei Verlassen des Mobile-Viewports versteckt halten.
 		var onResize = function () {
 			if ( ! isMobileViewport() ) {
 				hideBar( bar );
-			} else if ( hasShown && bar.hasAttribute( 'hidden' ) ) {
+			} else if ( hasShown && ! hideTargetVisible && ! isRecentlyDismissed() && bar.hasAttribute( 'hidden' ) ) {
 				bar.removeAttribute( 'hidden' );
 				bar.classList.add( 'is-visible' );
 				setBodyPadding( bar );

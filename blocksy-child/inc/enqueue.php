@@ -61,6 +61,7 @@ function hu_enqueue_assets() {
 	$is_seo_cornerstone_template = $queried_id && 'page-seo-cornerstone.php' === get_page_template_slug( $queried_id );
 	$is_cluster_page = function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page();
 	$is_checkfox_decision = is_singular( 'post' ) && $queried_id && 'checkfox-solar-waermepumpe-einordnung' === get_post_field( 'post_name', $queried_id );
+	$is_sst_route = is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' );
 
 	$is_aroundhome_decision = is_singular( 'post' ) && $queried_id && 'aroundhome-solar-einordnung' === get_post_field( 'post_name', $queried_id );
 	$is_provider_decision   = $is_checkfox_decision || $is_aroundhome_decision;
@@ -88,13 +89,13 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-legal-modal-js', 'legal-modal.js' );
 	}
 
-	if ( is_front_page() && wp_script_is( 'ct-scripts', 'registered' ) ) {
+	if ( ( is_front_page() || $is_sst_route ) && wp_script_is( 'ct-scripts', 'registered' ) ) {
 		hu_mark_script_for_defer( 'ct-scripts' );
 	}
 
 	$calendar_embed = function_exists( 'nexus_get_audit_calendar_embed_config' ) ? nexus_get_audit_calendar_embed_config() : [];
 
-	if ( ! empty( $calendar_embed['origin'] ) && ! empty( $calendar_embed['cal_link'] ) && ! empty( $calendar_embed['url'] ) ) {
+	if ( ! $is_sst_route && ! empty( $calendar_embed['origin'] ) && ! empty( $calendar_embed['cal_link'] ) && ! empty( $calendar_embed['url'] ) ) {
 		hu_enqueue_js( 'nexus-cal-embed-js', 'cal-embed.js', [ 'nexus-core-js' ] );
 		wp_localize_script(
 			'nexus-cal-embed-js',
@@ -383,7 +384,11 @@ function hu_enqueue_assets() {
 	// contact.css/contact.js wie die Agentur-Seite. Das Page-Delta-Stylesheet
 	// lädt zuletzt und ist über .hu-sst gescopet – keine andere Intercept-Seite
 	// wird berührt.
-	if ( is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' ) ) {
+	if ( $is_sst_route ) {
+		$tracking_response_days = function_exists( 'hu_tracking_package_detail' )
+			? hu_tracking_package_detail( 'standard', 'response_business_days', '2' )
+			: '2';
+
 		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-sst-css', 'server-side-tracking.css', [ 'nexus-intercept-solar-leads-css', 'nexus-contact-css' ] );
 		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js' ] );
@@ -393,7 +398,7 @@ function hu_enqueue_assets() {
 			'NexusContactConfig',
 			[
 				'restEndpoint'    => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
-				'successMessage'  => 'Danke. Ihre Anfrage ist eingegangen. Sie erhalten eine Einschätzung zu Ihrem Tracking-Setup innerhalb von zwei Werktagen.',
+				'successMessage'  => sprintf( 'Danke. Ihre Anfrage ist eingegangen. Sie erhalten eine Einschätzung zu Ihrem Tracking-Setup innerhalb von %s Werktagen.', $tracking_response_days ),
 				'errorMessage'    => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
 				'callUrl'         => esc_url_raw(
 					function_exists( 'nexus_get_audit_calendar_url' )
@@ -823,8 +828,9 @@ function hu_get_non_deferred_script_handles() {
  */
 function hu_get_force_deferred_script_handles() {
 	$handles = [];
+	$is_sst_route = is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' );
 
-	if ( is_front_page() ) {
+	if ( is_front_page() || $is_sst_route ) {
 		$handles = [
 			'ct-scripts',
 			'nexus-core-js',

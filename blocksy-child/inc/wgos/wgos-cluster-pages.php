@@ -23,6 +23,7 @@ function nexus_get_wgos_cluster_page_data() {
 
 	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
 	$seo_url     = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) );
+	$sst_money_url = home_url( '/server-side-tracking-b2b/' );
 
 	// Die Cluster wordpress-seo-hannover, core-web-vitals und conversion-rate-optimization
 	// sind in die Agentur-Page integriert; 301-Redirects sitzen in inc/helpers.php
@@ -64,10 +65,10 @@ function nexus_get_wgos_cluster_page_data() {
 				'text'   => 'Wenn Tracking, Angebotsseiten und Conversion gemeinsam sauber werden muessen, ist die Agentur-Seite der klarere Startpunkt als ein isolierter Tracking-Fix.',
 			],
 			'adjacent_link'    => [
-				'kicker' => 'Angrenzendes Thema',
-				'label'  => 'WordPress SEO Hannover',
-				'url'    => $seo_url,
-				'text'   => 'Wenn organische Nachfrage sichtbar ist, aber nicht sauber gemessen oder priorisiert wird, schliesst die SEO-Seite die Luecke zwischen Sichtbarkeit und Datensignalen.',
+				'kicker' => 'Umsetzung nach dem Messkonzept',
+				'label'  => 'Server-Side Tracking einrichten lassen',
+				'url'    => $sst_money_url,
+				'text'   => 'Wenn Event-Logik, Consent und Conversion-Ziele stehen, führt diese Money-Page in Server-GTM, eigene Tracking-Subdomain, Paralleltest und laufende Kontrolle.',
 			],
 			'proof_note'       => 'Tracking wird erst dann kaufnah wertvoll, wenn Einstiegsseiten, Formulare und Leadquellen sauber unterscheidbar werden. Genau dort zahlt ein gutes GA4-Setup auf bessere Entscheidungen in SEO, Paid und Vertrieb ein.',
 			'faq_items'        => [

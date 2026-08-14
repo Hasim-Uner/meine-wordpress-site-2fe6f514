@@ -12,6 +12,7 @@ print_reindex() {
 - /wordpress-agentur-hannover/
 - /ergebnisse/
 - /ga4-tracking-setup/
+- /server-side-tracking-b2b/
 - /performance-marketing/
 - /blog/
 EOF
@@ -87,7 +88,8 @@ print_mapping() {
 - cold Solar/SHK demand -> /solar-waermepumpen-leadgenerierung/#marktcheck
 - proof -> /case-study-solar-leadgenerierung/
 - wordpress agentur hannover -> /wordpress-agentur-hannover/
-- ga4 tracking setup / server-side tracking / consent mode -> /ga4-tracking-setup/
+- ga4 tracking setup / google analytics 4 / consent mode grundlage -> /ga4-tracking-setup/
+- server-side tracking / sgtm / meta capi einrichten -> /server-side-tracking-b2b/
 - pv termine b2b / pv leads gewerbe / b2b photovoltaik -> /b2b-solar-leads/
 - leadgenerierung photovoltaik / photovoltaik leads -> /solar-waermepumpen-leadgenerierung/
 - checkfox* -> /checkfox-solar-waermepumpe-einordnung/

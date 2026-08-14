@@ -20,12 +20,18 @@
         var messageLabel = form.querySelector('[data-contact-message-label]');
         var messageHelp = form.querySelector('[data-contact-message-help]');
         var messageField = form.querySelector('[data-contact-message]');
+        var scopedMessagePlaceholder = messageField && messageField.hasAttribute('data-contact-message-placeholder')
+            ? messageField.getAttribute('data-contact-message-placeholder')
+            : null;
         var errorSummary = document.querySelector('[data-contact-error-summary]');
         var errorList = document.querySelector('[data-contact-error-list]');
         var intentFieldset = form.querySelector('[data-contact-intent]');
         var typeStatusBar = document.querySelector('[data-contact-type-status]');
         var typeExpandBtn = document.querySelector('[data-contact-type-expand]');
         var currentSubmitLabel = submitButton ? submitButton.textContent : '';
+        var scopedSubmitLabel = submitButton && submitButton.hasAttribute('data-contact-submit-label')
+            ? submitButton.getAttribute('data-contact-submit-label').trim()
+            : '';
         var flowSteps = Array.prototype.slice.call(form.querySelectorAll('[data-contact-step]'));
         var flowNextButton = form.querySelector('[data-contact-next]');
         var flowPrevButton = form.querySelector('[data-contact-prev]');
@@ -618,6 +624,25 @@
             }
 
             if (errors.length > 0) {
+                if (form.hasAttribute('data-contact-dom-error-order')) {
+                    var domErrorOrder = {
+                        request_type: 0,
+                        focus: 1,
+                        name: 2,
+                        email: 3,
+                        message: 4,
+                        consent: 5
+                    };
+
+                    errors.sort(function (left, right) {
+                        var leftOrder = Object.prototype.hasOwnProperty.call(domErrorOrder, left.field) ? domErrorOrder[left.field] : 99;
+                        var rightOrder = Object.prototype.hasOwnProperty.call(domErrorOrder, right.field) ? domErrorOrder[right.field] : 99;
+                        return leftOrder - rightOrder;
+                    });
+
+                    firstInvalid = form.querySelector('[aria-invalid="true"]') || firstInvalid;
+                }
+
                 showErrorSummary(errors);
                 pushContactEvent('contact_form_validation_error', {
                     contact_error_fields: errors.map(function (err) { return err.field; }).join(',')
@@ -768,11 +793,11 @@
             }
 
             if (messageField) {
-                messageField.placeholder = content.messagePlaceholder;
+                messageField.placeholder = scopedMessagePlaceholder !== null ? scopedMessagePlaceholder : content.messagePlaceholder;
                 messageField.minLength = content.messageMinlength;
             }
 
-            currentSubmitLabel = content.submitLabel;
+            currentSubmitLabel = scopedSubmitLabel || content.submitLabel;
 
             if (submitButton && !submitButton.disabled) {
                 submitButton.textContent = currentSubmitLabel;

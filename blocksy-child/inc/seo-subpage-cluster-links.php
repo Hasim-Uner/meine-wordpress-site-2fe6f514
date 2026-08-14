@@ -26,7 +26,6 @@ function hu_get_solar_cluster_link_map() {
 	return [
 		'solar-leads-kaufen-alternative'    => [ 'label' => 'Photovoltaik & Solar Leads kaufen – die Alternative', 'path' => '/solar-leads-kaufen-alternative/' ],
 		'waermepumpen-leads'                => [ 'label' => 'Wärmepumpen Leads kaufen – die Alternative', 'path' => '/waermepumpen-leads/' ],
-		'server-side-tracking-b2b'          => [ 'label' => 'Server-Side Tracking für B2B', 'path' => '/server-side-tracking-b2b/' ],
 		'b2b-solar-leads'                   => [ 'label' => 'PV-Termine B2B für Gewerbe-PV', 'path' => '/b2b-solar-leads/' ],
 		'eigene-leadgenerierung-vs-portale' => [ 'label' => 'Portal-Leads vs. eigenes System (TCO)', 'path' => '/eigene-leadgenerierung-vs-portale/' ],
 		'lead-funnel-solar'                 => [ 'label' => 'Lead-Funnel für Solar & Wärmepumpe', 'path' => '/lead-funnel-solar/' ],
@@ -47,13 +46,12 @@ function hu_get_solar_cluster_related_slugs( $slug ) {
 	$relations = [
 		'solar-leads-kaufen-alternative'    => [ 'waermepumpen-leads', 'solar-leads-kosten-studie', 'eigene-leadgenerierung-vs-portale' ],
 		'waermepumpen-leads'                => [ 'solar-leads-kaufen-alternative', 'cost-per-lead-photovoltaik', 'eigene-leadgenerierung-vs-portale' ],
-		'server-side-tracking-b2b'          => [ 'lead-funnel-solar', 'qualifizierte-pv-anfragen', 'cost-per-lead-photovoltaik' ],
 		'b2b-solar-leads'                   => [ 'qualifizierte-pv-anfragen', 'solar-leads-kaufen-alternative', 'kunden-gewinnen-solarteure' ],
 		'eigene-leadgenerierung-vs-portale' => [ 'solar-leads-kosten-studie', 'cost-per-lead-photovoltaik', 'solar-leads-kaufen-alternative' ],
-		'lead-funnel-solar'                 => [ 'qualifizierte-pv-anfragen', 'server-side-tracking-b2b', 'kunden-gewinnen-solarteure' ],
+		'lead-funnel-solar'                 => [ 'qualifizierte-pv-anfragen', 'b2b-solar-leads', 'kunden-gewinnen-solarteure' ],
 		'kunden-gewinnen-solarteure'        => [ 'solar-leads-kaufen-alternative', 'lead-funnel-solar', 'eigene-leadgenerierung-vs-portale' ],
 		'cost-per-lead-photovoltaik'        => [ 'solar-leads-kosten-studie', 'eigene-leadgenerierung-vs-portale', 'solar-leads-kaufen-alternative' ],
-		'qualifizierte-pv-anfragen'         => [ 'cost-per-lead-photovoltaik', 'lead-funnel-solar', 'server-side-tracking-b2b' ],
+		'qualifizierte-pv-anfragen'         => [ 'cost-per-lead-photovoltaik', 'lead-funnel-solar', 'b2b-solar-leads' ],
 		'solar-leads-kosten-studie'         => [ 'cost-per-lead-photovoltaik', 'eigene-leadgenerierung-vs-portale', 'solar-leads-kaufen-alternative' ],
 	];
 

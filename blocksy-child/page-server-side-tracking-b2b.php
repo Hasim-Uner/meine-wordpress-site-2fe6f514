@@ -20,6 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // ── URLs ───────────────────────────────────────────────────────
 $page_url        = home_url( '/server-side-tracking-b2b/' );
+$ga4_setup_url   = home_url( '/ga4-tracking-setup/' );
+$gtm_guide_url   = home_url( '/server-side-tracking-gtm/' );
 $solar_money_url = function_exists( 'nexus_get_energy_systems_url' )
 	? nexus_get_energy_systems_url()
 	: home_url( '/solar-waermepumpen-leadgenerierung/' );
@@ -29,6 +31,48 @@ $privacy_url     = function_exists( 'nexus_get_page_url' )
 	: home_url( '/datenschutz/' );
 $form_anchor     = '#anfrage';
 $rest_endpoint   = rest_url( 'nexus/v1/contact-request' );
+$setup_cta_label = 'Setup-Empfehlung anfordern';
+
+// ── Route-spezifischer Preis- und Lieferkanon ─────────────────
+$standard_setup_price = function_exists( 'hu_tracking_price' )
+	? hu_tracking_price( 'standard', 'setup', 'display', '890 €' )
+	: '890 €';
+$standard_care_price = function_exists( 'hu_tracking_price' )
+	? hu_tracking_price( 'standard', 'care', 'display', '99 € / Monat' )
+	: '99 € / Monat';
+$pro_setup_price = function_exists( 'hu_tracking_price' )
+	? hu_tracking_price( 'pro', 'setup', 'display', '1.290 €' )
+	: '1.290 €';
+$pro_care_price = function_exists( 'hu_tracking_price' )
+	? hu_tracking_price( 'pro', 'care', 'display', '149 € / Monat' )
+	: '149 € / Monat';
+$individual_setup_price = function_exists( 'hu_tracking_price' )
+	? hu_tracking_price( 'individual', 'setup', 'display', 'ab 2.500 €' )
+	: 'ab 2.500 €';
+$individual_care_price = function_exists( 'hu_tracking_price' )
+	? hu_tracking_price( 'individual', 'care', 'display', 'ab 199 € / Monat' )
+	: 'ab 199 € / Monat';
+$standard_terms = function_exists( 'hu_tracking_package_detail' )
+	? hu_tracking_package_detail( 'standard', 'terms', 'Nettopreise, monatlich kündbar, Hosting separat' )
+	: 'Nettopreise, monatlich kündbar, Hosting separat';
+$pro_terms = function_exists( 'hu_tracking_package_detail' )
+	? hu_tracking_package_detail( 'pro', 'terms', 'Nettopreise, monatlich kündbar, Hosting separat' )
+	: 'Nettopreise, monatlich kündbar, Hosting separat';
+$individual_terms = function_exists( 'hu_tracking_package_detail' )
+	? hu_tracking_package_detail( 'individual', 'terms', 'Nettopreise, Umfang nach Aufnahme, Hosting separat' )
+	: 'Nettopreise, Umfang nach Aufnahme, Hosting separat';
+$standard_minutes = function_exists( 'hu_tracking_package_detail' )
+	? hu_tracking_package_detail( 'standard', 'included_minutes', '30' )
+	: '30';
+$pro_minutes = function_exists( 'hu_tracking_package_detail' )
+	? hu_tracking_package_detail( 'pro', 'included_minutes', '60' )
+	: '60';
+$response_days = function_exists( 'hu_tracking_package_detail' )
+	? hu_tracking_package_detail( 'standard', 'response_business_days', '2' )
+	: '2';
+$delivery_window = function_exists( 'hu_tracking_delivery_weeks_display' )
+	? hu_tracking_delivery_weeks_display()
+	: '2 bis 3 Wochen';
 
 // ── Formular-Registries (bestehender Kontakt-Intake) ──────────
 $ad_platform_options = function_exists( 'nexus_get_contact_ad_platform_options' )
@@ -58,7 +102,7 @@ function hu_sst_icon_svg( $paths ) {
 $symptoms = [
 	[
 		't' => 'CRM und Werbekonten melden unterschiedliche Zahlen',
-		's' => 'Im CRM stehen 40 Anfragen, Google Ads meldet 61 Conversions, Meta noch einmal 25. Welche Zahl in die Budgetentscheidung geht, ist reine Auslegungssache.',
+		's' => 'Ohne gemeinsame Event-Definition und dokumentierten Datenfluss bleibt offen, welche Zahl für Budgetentscheidungen belastbar genug ist.',
 	],
 	[
 		't' => 'Conversions fehlen oder werden doppelt gezählt',
@@ -67,18 +111,6 @@ $symptoms = [
 	[
 		't' => 'Kampagnen optimieren auf unvollständige Signale',
 		's' => 'Smart Bidding lernt aus dem, was ankommt. Fehlen Signale systematisch bei bestimmten Browsern oder Endgeräten, verschiebt sich die Aussteuerung dorthin, wo gemessen wird — nicht dorthin, wo verkauft wird.',
-	],
-	[
-		't' => 'Consent-, Formular- oder Website-Änderungen beschädigen das Tracking',
-		's' => 'Ein Plugin-Update, ein neues Formular-Layout, eine geänderte Consent-Kategorie — und ein Event feuert nicht mehr. Auffallen tut es meist erst Wochen später im Monatsreport.',
-	],
-	[
-		't' => 'Unklar, welche Daten an welche Plattform gehen',
-		's' => 'Über die Jahre sind Tags, Pixel und Plugins dazugekommen. Wer heute belegen soll, welches System welche Felder erhält, findet keine Dokumentation, sondern einen Container mit 60 gewachsenen Tags.',
-	],
-	[
-		't' => 'GA4, Google Ads und Meta widersprechen sich',
-		's' => 'Drei Systeme, drei Attributionsmodelle, drei Zeitfenster. Ohne saubere Event-Definition und Deduplizierung ist der Vergleich zwischen ihnen wertlos.',
 	],
 ];
 
@@ -145,60 +177,28 @@ $flow_outputs = [
 // ── 6) Leistungsumfang ────────────────────────────────────────
 $setup_items = [
 	[
-		't' => 'Analyse des bestehenden Setups',
-		's' => 'Welche Container, Tags, Pixel und Plugins laufen heute, welche Events feuern doppelt, welche gar nicht.',
+		't' => 'Bestandsaufnahme und Messplan',
+		's' => 'Container, Tags, Pixel, Formulare und Conversion-Ziele werden geprüft. Danach steht schriftlich fest, welches Event wann feuert und was es transportiert.',
 	],
 	[
-		't' => 'Server-GTM-Container',
-		's' => 'Eigener serverseitiger Container, angelegt im Google-Konto des Kunden.',
+		't' => 'Server-GTM und eigene Subdomain',
+		's' => 'Server-Container, DNS-Anbindung und Stape-EU-Hosting werden in Ihren Konten eingerichtet — nicht in einer fremden Sammelinfrastruktur.',
 	],
 	[
-		't' => 'Stape-EU-Hosting im Kundenkonto',
-		's' => 'Der Hosting-Vertrag läuft auf den Kunden. Die Kosten dafür laufen separat und direkt über dieses Konto.',
+		't' => 'GA4, Google Ads und optional Meta CAPI',
+		's' => 'Die vereinbarten Plattformen werden angebunden; Enhanced Conversions und Deduplizierung nur dort, wo Formular, Consent und Datenlage es tragen.',
 	],
 	[
-		't' => 'Eigene Tracking-Subdomain',
-		's' => 'Einrichtung und DNS-Anbindung einer Subdomain der Kundendomain als Messendpunkt.',
+		't' => 'Consent-Signale im Datenfluss',
+		's' => 'Das vorhandene Consent-System wird mit Web- und Server-Container verbunden. Server-Side Tracking ersetzt weder Einwilligung noch rechtliche Prüfung.',
 	],
 	[
-		't' => 'GA4-Anbindung',
-		's' => 'Serverseitige Anbindung der bestehenden GA4-Property mit abgestimmter Event-Struktur.',
+		't' => 'Paralleltest vor der Umschaltung',
+		's' => 'Alte und neue Messung laufen zunächst nebeneinander. Fehlende, doppelte oder falsch zugeordnete Events werden in Ihren eigenen Konten sichtbar.',
 	],
 	[
-		't' => 'Google-Ads-Conversion-Tracking',
-		's' => 'Conversion-Aktionen sauber definiert, zugeordnet und gegen doppelte Zählung geprüft.',
-	],
-	[
-		't' => 'Enhanced Conversions, soweit technisch möglich',
-		's' => 'Abhängig von Formularaufbau, verfügbaren Feldern und Consent-Situation. Wo es nicht sinnvoll umsetzbar ist, sagen wir das vorher.',
-	],
-	[
-		't' => 'Consent-Tool-Anbindung',
-		's' => 'Verbindung des vorhandenen Consent-Systems mit Web- und Server-Container, damit Consent-Signale im Datenfluss ankommen.',
-	],
-	[
-		't' => 'Definierte Events und Conversions',
-		's' => 'Schriftlich festgelegt, welches Event was bedeutet, wann es feuert und welche Felder es transportiert.',
-	],
-	[
-		't' => 'Prüfung auf fehlende oder doppelte Events',
-		's' => 'Abgleich zwischen Website, Containern, GA4 und Werbekonten vor dem Livegang.',
-	],
-	[
-		't' => 'Testbetrieb',
-		's' => 'Paralleler Betrieb und Kontrolle, bevor die alte Messung abgelöst wird.',
-	],
-	[
-		't' => 'GTM-Versionierung',
-		's' => 'Jede Änderung als benannte Container-Version, damit nachvollziehbar bleibt, wann was geändert wurde.',
-	],
-	[
-		't' => 'Technische Dokumentation',
-		's' => 'Datenfluss, Event-Definitionen, Endpunkte und offene Punkte in einem Dokument, das auch ein Nachfolger lesen kann.',
-	],
-	[
-		't' => 'Übergabe aller Zugänge',
-		's' => 'Konten, Container und Hosting bleiben beim Kunden. Die Zugänge werden vollständig übergeben.',
+		't' => 'Versionierte Übergabe',
+		's' => 'Sie erhalten benannte GTM-Versionen, Event-Definitionen, Datenfluss-Dokumentation und alle Zugänge. Konten und Hosting bleiben bei Ihnen.',
 	],
 ];
 
@@ -206,73 +206,59 @@ $setup_items = [
 $packages = [
 	[
 		'key'      => 'standard',
-		'name'     => 'Tracking Care Standard',
-		'setup'    => '890 €',
-		'monthly'  => '99 € / Monat',
-		'terms'    => 'Nettopreise, monatlich kündbar, Hosting separat',
-		'lead'     => 'Für einen sauberen Erstaufbau auf einer Website mit klaren Haupt-Conversions.',
+		'name'     => 'Standard · GA4 + Google Ads',
+		'setup'    => $standard_setup_price,
+		'monthly'  => $standard_care_price,
+		'terms'    => $standard_terms,
+		'lead'     => 'Für eine Website mit klaren Haupt-Conversions und einem überschaubaren Google-Setup.',
 		'featured' => false,
 		'items'    => [
 			'Eine Website oder Domain',
-			'WordPress oder vergleichbarer Lead-Funnel',
-			'Server-GTM über Stape EU',
-			'Eigene Tracking-Subdomain',
-			'GA4 und Google Ads angebunden',
-			'Bis zu drei Haupt-Conversions',
-			'Consent-Anbindung',
-			'Enhanced Conversions, soweit möglich',
-			'Qualitätssicherung vor Livegang',
-			'Dokumentation und Übergabe',
-			'Monatlicher Funktionstest',
-			'Kontrolle der wichtigsten Conversion-Signale',
-			'Prüfung auf doppelte oder fehlende Events',
-			'Kurze Statusmeldung',
-			'Bis zu 30 Minuten kleinere Korrekturen pro Monat',
-			'Supportantwort innerhalb von zwei Werktagen',
+			'Server-GTM, eigene Subdomain und Consent-Anbindung',
+			'GA4, Google Ads und bis zu drei Haupt-Conversions',
+			'Paralleltest, Dokumentation und Übergabe',
+			sprintf( 'Monatlicher Funktionstest plus %s Minuten kleinere Korrekturen', $standard_minutes ),
+			sprintf( 'Supportantwort innerhalb von %s Werktagen', $response_days ),
 		],
-		'cta'      => 'Standard-Setup prüfen lassen',
+		'cta'      => $setup_cta_label,
 		'action'   => 'cta_package_standard',
 	],
 	[
 		'key'      => 'pro',
-		'name'     => 'Tracking Care Pro',
-		'setup'    => '1.290 €',
-		'monthly'  => '149 € / Monat',
-		'terms'    => 'Nettopreise, monatlich kündbar, Hosting separat',
-		'lead'     => 'Für Setups mit Meta-Ads, mehreren Formularen und mehr als einer Conversion-Strecke.',
+		'name'     => 'Pro · Google + Meta CAPI',
+		'setup'    => $pro_setup_price,
+		'monthly'  => $pro_care_price,
+		'terms'    => $pro_terms,
+		'lead'     => 'Für Google- und Meta-Kampagnen, mehrere Formulare oder mehrere Conversion-Strecken.',
 		'featured' => true,
 		'items'    => [
-			'Alles aus Tracking Care Standard',
+			'Alles aus Standard',
 			'Meta Pixel und Meta Conversion API',
-			'Event-Deduplizierung zwischen Pixel und CAPI',
+			'Deduplizierung zwischen Browser und Server',
 			'Bis zu acht definierte Events',
 			'Mehrere Formulare oder Conversion-Strecken',
-			'Ausführlichere Datenkontrolle',
-			'Bis zu 60 Minuten kleinere Anpassungen pro Monat',
-			'Priorisierte Bearbeitung',
+			sprintf( 'Monatliche Kontrolle plus %s Minuten kleinere Anpassungen', $pro_minutes ),
 		],
-		'cta'      => 'Pro-Setup anfragen',
+		'cta'      => $setup_cta_label,
 		'action'   => 'cta_package_pro',
 	],
 	[
-		'key'      => 'individuell',
-		'name'     => 'Individuelles Tracking-Setup',
-		'setup'    => 'ab 2.500 €',
-		'monthly'  => 'ab 199 € / Monat',
-		'terms'    => 'Nettopreise, Umfang nach Aufnahme, Hosting separat',
-		'lead'     => 'Wenn Systeme, Märkte oder Datenpipelines dazukommen, die über ein Standard-Setup hinausgehen.',
+		'key'      => 'individual',
+		'name'     => 'Individuell · CRM + Offline-Conversions',
+		'setup'    => $individual_setup_price,
+		'monthly'  => $individual_care_price,
+		'terms'    => $individual_terms,
+		'lead'     => 'Wenn CRM, Shop, mehrere Märkte oder individuelle Datenpipelines Teil der Messstrecke sind.',
 		'featured' => false,
 		'items'    => [
-			'CRM-Anbindung',
-			'Offline-Conversions',
-			'Leadstatus und Lead-Scoring',
-			'WooCommerce oder Shopify',
+			'CRM-Anbindung und Offline-Conversions',
+			'Leadstatus oder Lead-Scoring',
+			'Shop-Systeme mit Kauf- und Checkout-Events',
 			'Mehrere Domains oder Märkte',
-			'Microsoft Ads, LinkedIn Ads, TikTok',
-			'Eigene Infrastruktur auf Hetzner oder Google Cloud',
-			'Individuelle Datenpipelines',
+			'Weitere Werbeplattformen nach Aufnahme',
+			'Eigene Infrastruktur oder individuelle Datenpipelines',
 		],
-		'cta'      => 'Individuelles Setup besprechen',
+		'cta'      => $setup_cta_label,
 		'action'   => 'cta_package_individual',
 	],
 ];
@@ -302,32 +288,20 @@ $care_excluded = [
 // ── 9) Ablauf ─────────────────────────────────────────────────
 $process_steps = [
 	[
-		't' => 'Bestehendes Tracking prüfen',
-		's' => 'Aufnahme des Ist-Zustands: Container, Tags, Events, Consent-Lösung, bekannte Abweichungen.',
+		't' => 'Vorprüfung und Fit-Entscheid',
+		's' => 'Website, Kampagnen, Konten und bekannte Abweichungen einordnen. Wenn Server-Side Tracking nicht die richtige erste Baustelle ist, erfahren Sie es hier.',
 	],
 	[
-		't' => 'Plattformen und Conversion-Ziele definieren',
-		's' => 'Welche Systeme angebunden werden und was künftig als Conversion gilt — schriftlich, bevor gebaut wird.',
+		't' => 'Scope und Messplan',
+		's' => 'Plattformen, Events, Consent-Grenzen, Eigentum und Paket schriftlich festlegen — bevor Zugänge ausgetauscht oder Container gebaut werden.',
 	],
 	[
-		't' => 'Server-GTM, Hosting und Subdomain einrichten',
-		's' => 'Container anlegen, Stape-EU-Hosting im Kundenkonto aufsetzen, Subdomain verbinden.',
+		't' => 'Einrichtung und Paralleltest',
+		's' => 'Server-GTM, Subdomain und vereinbarte Plattformen einrichten. Neue und bisherige Messung nebeneinander prüfen und Abweichungen korrigieren.',
 	],
 	[
-		't' => 'Tags und Consent-Signale verbinden',
-		's' => 'Web-Container, Server-Container und Consent-Tool so verbinden, dass der Consent-Status im Datenfluss ankommt.',
-	],
-	[
-		't' => 'Events testen und parallel prüfen',
-		's' => 'Testbetrieb neben der bisherigen Messung, Abgleich der Zahlen, Korrektur der Abweichungen.',
-	],
-	[
-		't' => 'Dokumentation und Übergabe',
-		's' => 'Datenfluss und Event-Definitionen dokumentiert, Zugänge übergeben.',
-	],
-	[
-		't' => 'Laufende Qualitätskontrolle',
-		's' => 'Ab hier greift Tracking Care: regelmäßige Kontrolle statt Zufallsfund im Quartalsreport.',
+		't' => 'Übergabe und Tracking Care',
+		's' => 'Dokumentation, GTM-Versionen und Zugänge übergeben. Danach kontrolliert Tracking Care die Haupt-Conversions und meldet Auffälligkeiten.',
 	],
 ];
 
@@ -344,68 +318,39 @@ $security_items = [
 	'GTM-Versionen werden dokumentiert, damit Änderungen nachvollziehbar bleiben.',
 ];
 
-// ── 11) Erfahrungswert ────────────────────────────────────────
-// ACHTUNG, kein belegter Kanon: Diese Spanne ist die Eigenaussage des
-// Betreibers aus bisherigen Umstellungen, nicht aus einer Belegdatei und
-// nicht aus inc/canon/. Sie gilt nur auf dieser Seite und darf nicht auf
-// andere Seiten uebernommen oder als Referenzwert zitiert werden. Bewusst
-// "gemessene Conversions", nicht "Conversion Rate": serverseitiges Tracking
-// erhoeht die Erfassung, nicht die Kaufbereitschaft.
-$measured_uplift = '20 bis 40 Prozent';
-
-// ── 12) FAQ ───────────────────────────────────────────────────
+// ── 11) FAQ ───────────────────────────────────────────────────
 $faq = [
 	[
-		'question' => 'Was ist Server-Side Tracking?',
-		'answer'   => 'Beim Server-Side Tracking laufen Messsignale nicht mehr direkt vom Browser an die Werbe- und Analyseplattformen, sondern zunächst an einen kontrollierten Server-Endpunkt. Dort werden sie verarbeitet und gezielt weitergegeben. Der Vorteil liegt in der Kontrolle: Sie legen fest, welche Daten den Endpunkt in welche Richtung verlassen, und können das dokumentieren.',
+		'question' => 'Welches Problem löst Server-Side Tracking — und welches nicht?',
+		'answer'   => 'Server-Side Tracking macht den Datenfluss kontrollierbarer: Messsignale laufen zunächst an einen eigenen Endpunkt und werden von dort gezielt an GA4, Google Ads oder Meta weitergegeben. Das kann fehlende oder doppelte Events reduzieren und die Zuordnung stabilisieren. Es erzeugt aber keine zusätzliche Nachfrage und ersetzt weder ein gutes Angebot noch funktionierende Kampagnen.',
 	],
 	[
 		'question' => 'Was ist der Unterschied zwischen Client-Side und Server-Side Tracking?',
 		'answer'   => 'Client-Side bedeutet: der Browser des Besuchers sendet die Daten selbst an GA4, Google Ads oder Meta. Das ist einfach einzurichten, hängt aber von Browsereinstellungen, Erweiterungen und Skript-Laufzeiten ab. Server-Side bedeutet: der Browser sendet an einen eigenen Endpunkt, dieser verteilt weiter. In der Praxis ist meist ein hybrides Setup sinnvoll — beide Wege parallel, mit Deduplizierung, damit nichts doppelt gezählt wird.',
 	],
 	[
-		'question' => 'Brauche ich weiterhin ein Consent-Banner?',
-		'answer'   => 'Server-Side Tracking ersetzt kein Consent-Management. Die Einwilligungspflicht richtet sich nach dem, was tatsächlich passiert, nicht danach, wo der Code läuft. Das Setup wird so gebaut, dass Consent-Signale aus Ihrem bestehenden Consent-Tool im Datenfluss ankommen und dort berücksichtigt werden. Die rechtliche Bewertung Ihres konkreten Setups gehört zu Ihrer Rechtsberatung, nicht in dieses Angebot.',
+		'question' => 'Ist Server-Side Tracking automatisch DSGVO-konform?',
+		'answer'   => 'Nein. Der Serverweg ändert nicht automatisch die rechtliche Grundlage einer Verarbeitung. Server-Side Tracking ersetzt weder Consent-Management noch Rechtsberatung. Das technische Setup berücksichtigt die Signale Ihres vorhandenen Consent-Tools; die rechtliche Bewertung des konkreten Datenflusses bleibt eine separate Aufgabe.',
 	],
 	[
-		'question' => 'Funktioniert das mit WordPress?',
-		'answer'   => 'Ja. WordPress ist der Regelfall in diesen Projekten. Entscheidend ist weniger das CMS als der Aufbau der Formulare und Conversion-Strecken: welche Events auslösbar sind, welche Felder zur Verfügung stehen und wie das Consent-Tool eingebunden ist. Das wird in der Analyse vorab geprüft.',
-	],
-	[
-		'question' => 'Welche Plattformen können angebunden werden?',
-		'answer'   => 'Standardmäßig GA4 und Google Ads, im Pro-Setup zusätzlich Meta Pixel und Meta Conversion API mit Deduplizierung. Darüber hinaus sind Microsoft Ads, LinkedIn Ads, TikTok sowie CRM-Systeme mit REST-API oder Webhook möglich — das läuft über das individuelle Setup.',
+		'question' => 'Funktioniert das mit WordPress und meinen Werbeplattformen?',
+		'answer'   => 'WordPress ist der häufigste Ausgangspunkt. Standardmäßig werden GA4 und Google Ads angebunden, im Pro-Setup zusätzlich Meta Pixel und Meta Conversion API mit Deduplizierung. Weitere Plattformen, Shops oder CRM-Systeme werden nach technischer Aufnahme individuell bewertet.',
 	],
 	[
 		'question' => 'Wie viele Conversions kommen zusätzlich an?',
-		'answer'   => sprintf( 'In den Setups, die ich bisher umgestellt habe, kamen anschließend rund %s mehr Conversions in den Werbekonten an als vorher. Das ist ein Erfahrungswert, keine Zusage: Wie viel es im Einzelfall wird, hängt vom Anteil an Safari- und iOS-Traffic ab, vom Anteil der Werbeblocker, von der Consent-Rate und davon, wie sauber vorher gemessen wurde. Wichtig zur Einordnung: Es kaufen dadurch nicht mehr Menschen — es werden mehr der ohnehin stattfindenden Abschlüsse erfasst und richtig zugeordnet. Im Testbetrieb läuft die neue Messung neben der alten, damit Sie die Differenz an Ihren eigenen Zahlen sehen.', $measured_uplift ),
+		'answer'   => 'Eine seriöse Prozentzahl lässt sich vor dem Paralleltest nicht nennen. Das Ergebnis hängt vom bestehenden Setup, Browsermix, Consent-Verhalten und der bisherigen Event-Qualität ab. Deshalb läuft die neue Messung zunächst neben der alten. Entscheidend ist die nachvollziehbare Differenz in Ihren eigenen Konten — nicht eine pauschale Erfolgszahl.',
 	],
 	[
 		'question' => 'Was kostet Server-Side Tracking?',
-		'answer'   => 'Das Standard-Setup liegt bei 890 € netto einmalig plus 99 € netto pro Monat für die laufende Betreuung. Das Pro-Setup mit Meta CAPI und Event-Deduplizierung liegt bei 1.290 € netto einmalig plus 149 € netto pro Monat. Individuelle Setups beginnen bei 2.500 € netto einmalig, die Betreuung bei 199 € netto pro Monat. Alle Preise sind Nettopreise für Geschäftskunden.',
-	],
-	[
-		'question' => 'Was kostet das Hosting?',
-		'answer'   => 'Das Hosting des Server-Containers läuft über Stape und wird direkt über Ihr eigenes Konto abgerechnet — es ist in den genannten Preisen nicht enthalten. Der Grund dafür ist Eigentum: läuft das Hosting über unser Konto, hängt Ihre Datenebene an unserem Vertrag. Die aktuellen Tarife entnehmen Sie Stape direkt.',
+		'answer'   => sprintf( 'Standard kostet %1$s einmalig plus %2$s für Tracking Care. Pro mit Meta CAPI kostet %3$s einmalig plus %4$s. Individuelle Setups: %5$s einmalig; Betreuung: %6$s. Das Stape-Hosting ist nicht enthalten und läuft direkt über Ihr eigenes Konto. Alle genannten Preise sind Nettopreise für Geschäftskunden.', $standard_setup_price, $standard_care_price, $pro_setup_price, $pro_care_price, $individual_setup_price, $individual_care_price ),
 	],
 	[
 		'question' => 'Wie lange dauert die Einrichtung?',
-		'answer'   => 'Ein Standard-Setup ist in der Regel innerhalb von zwei bis drei Wochen produktiv, gerechnet ab Bereitstellung der Zugänge. Der größte Zeitfaktor ist selten die Technik, sondern die Abstimmung darüber, was künftig als Conversion gilt, und die Wartezeit auf DNS- und Kontofreigaben.',
-	],
-	[
-		'question' => 'Was passiert nach Website- oder Plugin-Updates?',
-		'answer'   => 'Updates können Formulare, Selektoren oder Consent-Kategorien verändern und damit Events beschädigen. Genau dafür gibt es die monatliche Kontrolle: der Funktionstest prüft die Haupt-Conversions, und Auffälligkeiten werden gemeldet, statt bis zum nächsten Report zu warten. Kleinere Korrekturen sind im vereinbarten Zeitrahmen enthalten.',
-	],
-	[
-		'question' => 'Gehören mir Container, Konten und Zugänge?',
-		'answer'   => 'Ja. Google-Konten, GTM-Container, GA4-Property, Werbekonten und das Stape-Hosting laufen auf Ihren Namen und in Ihren Konten. Am Ende der Einrichtung werden alle Zugänge übergeben. Bei einer Trennung bleibt die Datenebene bei Ihnen.',
-	],
-	[
-		'question' => 'Ist Server-Side Tracking vollständig ausfallsicher?',
-		'answer'   => 'Nein, und niemand sollte das behaupten. Ein Server-Endpunkt kann ausfallen, ein Plattform-API kann sich ändern, ein Website-Update kann ein Event brechen, und Consent-Ablehnung bleibt Consent-Ablehnung. Server-Side Tracking reduziert typische Datenverluste und macht den Datenfluss kontrollierbarer — es ersetzt keine laufende Kontrolle, sondern setzt sie voraus.',
+		'answer'   => sprintf( 'Ein Standard-Setup ist in der Regel innerhalb von %s produktiv, gerechnet ab Bereitstellung der Zugänge. Die größte Variable ist meist die Abstimmung der Conversion-Ziele sowie die Freigabe von DNS und Konten. Nach der Übergabe kontrolliert Tracking Care die Haupt-Conversions und meldet Auffälligkeiten nach Website- oder Plattformänderungen.', $delivery_window ),
 	],
 	[
 		'question' => 'Wann lohnt es sich nicht?',
-		'answer'   => 'Bei sehr wenig Traffic, ohne laufende Kampagnen oder ohne klar definierte Conversion-Ziele. Dann steht dem Aufwand kein Nutzen gegenüber, weil die Datenmenge zu klein ist, um Entscheidungen zu stützen. Auch wenn niemand im Betrieb auf die Zahlen reagiert, ist eine bessere Messung die falsche erste Baustelle.',
+		'answer'   => 'Bei sehr wenig Traffic, ohne laufende Kampagnen, ohne klar definierte Conversion-Ziele oder wenn niemand auf Basis der Daten Budget steuert. Dann ist eine bessere Messung nicht die erste Baustelle. Konten, Container und Hosting würden zwar bei Ihnen bleiben, aber der technische Aufwand hätte noch keinen belastbaren Entscheidungsnutzen.',
 	],
 ];
 
@@ -507,51 +452,90 @@ get_header();
 	<?php // ── 01 Hero ── dunkel ─────────────────────────────── ?>
 	<section class="hu-sst__band hu-sst__band--dark hu-sst__band--warm hu-sst__hero" id="hero" data-nx-theme="dark" aria-labelledby="hu-sst-hero-title">
 		<div class="hu-sst__container">
-			<p class="hu-sst__eyebrow">Server-Side Tracking</p>
-			<h1 class="hu-sst__h1" id="hu-sst-hero-title">
-				Server-Side Tracking für belastbare Conversion-Daten
-			</h1>
-			<p class="hu-sst__lead">
-				GA4, Google Ads und Meta CAPI über eine eigene Tracking-Domain – professionell eingerichtet, getestet und laufend kontrolliert.
-			</p>
-			<p class="hu-sst__lead-sub">
-				Für Unternehmen mit aktiven Kampagnen, WordPress-Websites, Lead-Funnels und messbaren Conversion-Zielen.
-			</p>
-			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
-			<div class="hu-sst__cta">
-				<a class="hu-sst__btn hu-sst__btn--primary"
-				   href="<?php echo esc_url( $form_anchor ); ?>"
-				   data-track-action="cta_form_tracking_check"
-				   data-track-category="server_side_tracking_b2b"
-				   data-track-section="hero">
-					Tracking-Setup prüfen lassen
-				</a>
-				<a class="hu-sst__btn hu-sst__btn--ghost"
-				   href="#umfang"
-				   data-track-action="cta_scope"
-				   data-track-category="server_side_tracking_b2b"
-				   data-track-section="hero">
-					Leistungsumfang ansehen
-				</a>
+			<div class="hu-sst__hero-grid">
+				<div class="hu-sst__hero-copy">
+					<p class="hu-sst__eyebrow">Server-Side Tracking für aktive Kampagnen</p>
+					<h1 class="hu-sst__h1" id="hu-sst-hero-title">
+						Server-Side Tracking, wenn CRM und Werbekonten widersprechen
+					</h1>
+					<p class="hu-sst__lead">
+						Ich prüfe Ihre Messstrecke und richte GA4, Google Ads und optional Meta CAPI über eine eigene Tracking-Subdomain ein — mit Paralleltest, Dokumentation und laufender Kontrolle.
+					</p>
+					<p class="hu-sst__lead-sub">
+						Für Unternehmen mit laufenden Kampagnen, klaren Conversion-Zielen und einer Person, die auf Basis dieser Daten Budget steuert.
+					</p>
+					<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
+					<div class="hu-sst__cta">
+						<a class="hu-sst__btn hu-sst__btn--primary"
+						   href="<?php echo esc_url( $form_anchor ); ?>"
+						   data-track-action="cta_form_tracking_check"
+						   data-track-category="server_side_tracking_b2b"
+						   data-track-section="hero">
+							<?php echo esc_html( $setup_cta_label ); ?>
+						</a>
+						<a class="hu-sst__btn hu-sst__btn--ghost"
+						   href="#pakete"
+						   data-track-action="cta_scope"
+						   data-track-category="server_side_tracking_b2b"
+						   data-track-section="hero">
+							Pakete &amp; Preise ansehen
+						</a>
+					</div>
+					<p class="hu-sst__cta-note">
+						Solar-, Wärmepumpen- oder SHK-Betrieb und nicht nur ein Messproblem?
+						<a href="<?php echo esc_url( $marktcheck_url ); ?>"
+						   data-track-action="cta_marktcheck_branch"
+						   data-track-category="server_side_tracking_b2b"
+						   data-track-section="hero">Gesamten Anfrageweg im Marktcheck einordnen</a>
+					</p>
+				</div>
+
+				<dl class="hu-sst__proof-strip" aria-label="Rahmen des Angebots">
+					<div>
+						<dt>Preis vorab</dt>
+						<dd>Setup ab <?php echo esc_html( $standard_setup_price ); ?> netto</dd>
+					</div>
+					<div>
+						<dt>Nachweis</dt>
+						<dd>Paralleltest in Ihren Konten</dd>
+					</div>
+					<div>
+						<dt>Eigentum</dt>
+						<dd>Konten und Hosting bleiben bei Ihnen</dd>
+					</div>
+				</dl>
+
+				<aside class="hu-sst__decision" aria-label="Ablauf der Vorprüfung">
+					<p class="hu-sst__decision-kicker">Vor dem Angebot</p>
+					<h2 class="hu-sst__decision-title">Was Sie zuerst erhalten</h2>
+					<ol class="hu-sst__decision-list" role="list">
+						<li>
+							<span class="hu-sst__decision-num">01</span>
+							<span><strong>Fit-Einschätzung</strong> — ist Server-Side Tracking jetzt die richtige Baustelle?</span>
+						</li>
+						<li>
+							<span class="hu-sst__decision-num">02</span>
+							<span><strong>Scope-Empfehlung</strong> — Standard, Pro oder individuelle Aufnahme.</span>
+						</li>
+						<li>
+							<span class="hu-sst__decision-num">03</span>
+							<span><strong>Offene Voraussetzungen</strong> — Konten, Consent, Events und technische Grenzen.</span>
+						</li>
+					</ol>
+					<p class="hu-sst__decision-note">Für die erste Einordnung reichen Name, geschäftliche E-Mail und Ihr konkretes Messproblem. Website und technische Details helfen, sind aber optional. Noch keine Zugangsdaten.</p>
+				</aside>
 			</div>
-			<p class="hu-sst__cta-note">
-				Solar-, Wärmepumpen- oder SHK-Betrieb?
-				<a href="<?php echo esc_url( $marktcheck_url ); ?>"
-				   data-track-action="cta_marktcheck_branch"
-				   data-track-category="server_side_tracking_b2b"
-				   data-track-section="hero">Zum Marktcheck mit Fit-Entscheid</a>
-			</p>
 		</div>
 	</section>
 
 	<?php // ── 02 Symptome ── hell ───────────────────────────── ?>
-	<section class="hu-sst__band hu-sst__band--light hu-sst__band--cream" id="symptome" data-nx-theme="light" aria-labelledby="hu-sst-symptome-title">
+	<section class="hu-sst__band hu-sst__band--light hu-sst__band--cream" id="symptome" data-nx-theme="light">
 		<div class="hu-sst__container">
 			<div class="hu-sst__section-head">
 				<p class="hu-sst__eyebrow">Ausgangslage</p>
-				<h2 class="hu-sst__h2" id="hu-sst-symptome-title">Die Zahlen widersprechen sich — und trotzdem wird auf sie hin entschieden</h2>
+				<h2 class="hu-sst__h2" id="hu-sst-symptome-title">Wenn Messsignale fehlen, wird Werbebudget nach einem verzerrten Bild verteilt</h2>
 				<p class="hu-sst__section-lead">
-					Diese sechs Muster kommen in Messgesprächen fast immer vor. Wer drei davon kennt, hat kein Reporting-Problem, sondern ein Datenerfassungsproblem.
+					Diese drei Muster sind keine reine Reporting-Frage. Sie verändern, welche Kampagnen Budget bekommen und welche Signale die Plattformen zum Lernen erhalten.
 				</p>
 			</div>
 			<div class="hu-sst__grid hu-sst__grid--3">
@@ -566,7 +550,7 @@ get_header();
 	</section>
 
 	<?php // ── 03 Unterschied ── dunkel ─────────────────────── ?>
-	<section class="hu-sst__band hu-sst__band--dark hu-sst__band--deep" id="unterschied" data-nx-theme="dark" aria-labelledby="hu-sst-unterschied-title">
+	<section class="hu-sst__band hu-sst__band--dark hu-sst__band--deep" id="unterschied" data-nx-theme="dark">
 		<div class="hu-sst__container">
 			<div class="hu-sst__section-head">
 				<p class="hu-sst__eyebrow">Der technische Unterschied</p>
@@ -576,7 +560,7 @@ get_header();
 			<div class="hu-sst__compare">
 				<article class="hu-sst__compare-col">
 					<h3 class="hu-sst__compare-title">Klassisches Tracking</h3>
-					<ol class="hu-sst__chain">
+					<ol class="hu-sst__chain" role="list">
 						<li class="hu-sst__chain-node">Browser</li>
 						<li class="hu-sst__chain-node">GA4, Google Ads, Meta</li>
 					</ol>
@@ -587,7 +571,7 @@ get_header();
 
 				<article class="hu-sst__compare-col hu-sst__compare-col--accent">
 					<h3 class="hu-sst__compare-title">Server-Side Tracking</h3>
-					<ol class="hu-sst__chain">
+					<ol class="hu-sst__chain" role="list">
 						<li class="hu-sst__chain-node">Browser</li>
 						<li class="hu-sst__chain-node">Kontrollierter Server-Endpunkt</li>
 						<li class="hu-sst__chain-node">GA4, Google Ads, Meta</li>
@@ -605,7 +589,7 @@ get_header();
 	</section>
 
 	<?php // ── 04 Fit / Non-Fit ── hell ─────────────────────── ?>
-	<section class="hu-sst__band hu-sst__band--light hu-sst__band--white" id="fit" data-nx-theme="light" aria-labelledby="hu-sst-fit-title">
+	<section class="hu-sst__band hu-sst__band--light hu-sst__band--white" id="fit" data-nx-theme="light">
 		<div class="hu-sst__container">
 			<div class="hu-sst__section-head">
 				<p class="hu-sst__eyebrow">Einordnung</p>
@@ -621,7 +605,7 @@ get_header();
 						<span class="hu-sst__split-badge" aria-hidden="true">✓</span>
 						Geeignet, wenn
 					</h3>
-					<ul class="hu-sst__list">
+					<ul class="hu-sst__list" role="list">
 						<?php foreach ( $fit_yes as $item ) : ?>
 							<li><?php echo esc_html( $item ); ?></li>
 						<?php endforeach; ?>
@@ -633,7 +617,7 @@ get_header();
 						<span class="hu-sst__split-badge" aria-hidden="true">×</span>
 						Nicht sinnvoll bei
 					</h3>
-					<ul class="hu-sst__list">
+					<ul class="hu-sst__list" role="list">
 						<?php foreach ( $fit_no as $item ) : ?>
 							<li><?php echo esc_html( $item ); ?></li>
 						<?php endforeach; ?>
@@ -655,7 +639,7 @@ get_header();
 			</div>
 
 			<figure class="hu-sst__flow">
-				<ol class="hu-sst__flow-chain">
+				<ol class="hu-sst__flow-chain" role="list">
 					<?php foreach ( $flow_chain as $index => $node ) : ?>
 						<li class="hu-sst__flow-node">
 							<span class="hu-sst__flow-step"><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
@@ -667,9 +651,9 @@ get_header();
 
 				<p class="hu-sst__flow-divider"><span>weitergegeben an</span></p>
 
-				<ul class="hu-sst__flow-outputs">
+				<ul class="hu-sst__flow-outputs" role="list">
 					<?php foreach ( $flow_outputs as $node ) : ?>
-						<li class="hu-sst__flow-node hu-sst__flow-node--output<?php echo $node['optional'] ? ' is-optional' : ''; ?>">
+						<li class="hu-sst__flow-node hu-sst__flow-node--output<?php echo esc_attr( $node['optional'] ? ' is-optional' : '' ); ?>">
 							<span class="hu-sst__flow-label"><?php echo esc_html( $node['label'] ); ?></span>
 							<span class="hu-sst__flow-note"><?php echo esc_html( $node['note'] ); ?></span>
 							<?php if ( $node['optional'] ) : ?>
@@ -687,11 +671,12 @@ get_header();
 	</section>
 
 	<?php // ── 06 Leistungsumfang ── hell ───────────────────── ?>
-	<section class="hu-sst__band hu-sst__band--light hu-sst__band--cream" id="umfang" data-nx-theme="light" aria-labelledby="hu-sst-umfang-title">
+	<section class="hu-sst__band hu-sst__band--light hu-sst__band--cream" id="umfang" data-nx-theme="light">
 		<div class="hu-sst__container">
 			<div class="hu-sst__section-head">
 				<p class="hu-sst__eyebrow">Leistungsumfang</p>
-				<h2 class="hu-sst__h2" id="hu-sst-umfang-title">Was bei der Einrichtung tatsächlich passiert</h2>
+				<h2 class="hu-sst__h2" id="hu-sst-umfang-title">Was in der Einrichtung tatsächlich entsteht</h2>
+				<p class="hu-sst__section-lead">Sechs Ergebnisse statt einer langen Tool-Liste: von der Bestandsaufnahme bis zu einem Datenfluss, den Ihr Team nachvollziehen und weiterbetreiben kann.</p>
 			</div>
 
 			<div class="hu-sst__grid hu-sst__grid--2">
@@ -707,9 +692,12 @@ get_header();
 			</div>
 
 			<aside class="hu-sst__callout">
-				<h3 class="hu-sst__callout-title">Eigentum und Kosten</h3>
+				<h3 class="hu-sst__callout-title">Der Paralleltest entscheidet — nicht eine pauschale Prozentzahl</h3>
 				<p>
-					<strong>Konten und Zugänge gehören dem Kunden.</strong> Google-Konten, GTM-Container, GA4-Property, Werbekonten und das Stape-Hosting laufen auf Ihren Namen. <strong>Die Hostingkosten laufen separat über Ihr eigenes Kundenkonto</strong> und sind in den Paketpreisen nicht enthalten.
+					Die bisherige und die neue Messung laufen zunächst nebeneinander. So werden fehlende, doppelte oder falsch zugeordnete Events in <strong>Ihren eigenen Konten</strong> sichtbar. Konten, Container und Hosting bleiben bei Ihnen; jede Änderung liegt als benannte GTM-Version vor.
+				</p>
+				<p class="hu-sst__callout-links">
+					Noch in der Messkonzept-Phase? <a href="<?php echo esc_url( $ga4_setup_url ); ?>" data-track-action="internal_ga4_setup" data-track-category="internal_link" data-track-section="umfang">GA4 Tracking Setup als Grundlage</a>. Technische Vertiefung: <a href="<?php echo esc_url( $gtm_guide_url ); ?>" data-track-action="internal_sst_gtm" data-track-category="internal_link" data-track-section="umfang">Server-Side Tracking mit GTM</a>.
 				</p>
 			</aside>
 		</div>
@@ -720,17 +708,17 @@ get_header();
 		<div class="hu-sst__container">
 			<div class="hu-sst__section-head">
 				<p class="hu-sst__eyebrow">Pakete</p>
-				<h2 class="hu-sst__h2" id="hu-sst-pakete-title">Einrichtung und Betreuung, mit Preis vorab</h2>
+				<h2 class="hu-sst__h2" id="hu-sst-pakete-title">Einrichtung und laufende Kontrolle — klar getrennt</h2>
 				<p class="hu-sst__section-lead">
-					Alle Preise sind Nettopreise für Geschäftskunden. Das Hosting des Server-Containers läuft separat über Ihr eigenes Konto.
+					Die einmalige Einrichtung baut die Messstrecke. Tracking Care kontrolliert sie danach regelmäßig. Alle Preise sind netto für Geschäftskunden; das Server-Hosting läuft separat über Ihr eigenes Konto.
 				</p>
 			</div>
 
 			<div class="hu-sst__pricing">
 				<?php foreach ( $packages as $package ) : ?>
-					<article class="hu-sst__price-card<?php echo $package['featured'] ? ' hu-sst__price-card--featured' : ''; ?>">
+					<article class="hu-sst__price-card<?php echo esc_attr( $package['featured'] ? ' hu-sst__price-card--featured' : '' ); ?>">
 						<?php if ( $package['featured'] ) : ?>
-							<p class="hu-sst__price-flag">Der häufigste Zuschnitt</p>
+							<p class="hu-sst__price-flag">Für Google Ads und Meta CAPI</p>
 						<?php endif; ?>
 						<h3 class="hu-sst__price-name"><?php echo esc_html( $package['name'] ); ?></h3>
 						<p class="hu-sst__price-lead"><?php echo esc_html( $package['lead'] ); ?></p>
@@ -745,12 +733,12 @@ get_header();
 							</div>
 						</dl>
 						<p class="hu-sst__price-terms"><?php echo esc_html( $package['terms'] ); ?></p>
-						<ul class="hu-sst__price-list">
+						<ul class="hu-sst__price-list" role="list">
 							<?php foreach ( $package['items'] as $item ) : ?>
 								<li><?php echo esc_html( $item ); ?></li>
 							<?php endforeach; ?>
 						</ul>
-						<a class="hu-sst__btn hu-sst__btn--<?php echo $package['featured'] ? 'primary' : 'ghost'; ?> hu-sst__btn--block"
+						<a class="hu-sst__btn hu-sst__btn--<?php echo esc_attr( $package['featured'] ? 'primary' : 'ghost' ); ?> hu-sst__btn--block"
 						   href="<?php echo esc_url( $form_anchor ); ?>"
 						   data-track-action="<?php echo esc_attr( $package['action'] ); ?>"
 						   data-track-category="server_side_tracking_b2b"
@@ -764,7 +752,7 @@ get_header();
 	</section>
 
 	<?php // ── 08 Tracking Care ── hell ─────────────────────── ?>
-	<section class="hu-sst__band hu-sst__band--light hu-sst__band--white" id="tracking-care" data-nx-theme="light" aria-labelledby="hu-sst-care-title">
+	<section class="hu-sst__band hu-sst__band--light hu-sst__band--white" id="tracking-care" data-nx-theme="light">
 		<div class="hu-sst__container">
 			<div class="hu-sst__section-head">
 				<p class="hu-sst__eyebrow">Tracking Care</p>
@@ -780,7 +768,7 @@ get_header();
 						<span class="hu-sst__split-badge" aria-hidden="true">✓</span>
 						Enthalten
 					</h3>
-					<ul class="hu-sst__list">
+					<ul class="hu-sst__list" role="list">
 						<?php foreach ( $care_included as $item ) : ?>
 							<li><?php echo esc_html( $item ); ?></li>
 						<?php endforeach; ?>
@@ -792,7 +780,7 @@ get_header();
 						<span class="hu-sst__split-badge" aria-hidden="true">×</span>
 						Nicht enthalten
 					</h3>
-					<ul class="hu-sst__list">
+					<ul class="hu-sst__list" role="list">
 						<?php foreach ( $care_excluded as $item ) : ?>
 							<li><?php echo esc_html( $item ); ?></li>
 						<?php endforeach; ?>
@@ -806,14 +794,15 @@ get_header();
 	</section>
 
 	<?php // ── 09 Ablauf ── dunkel ──────────────────────────── ?>
-	<section class="hu-sst__band hu-sst__band--dark hu-sst__band--warm" id="ablauf" data-nx-theme="dark" aria-labelledby="hu-sst-ablauf-title">
+	<section class="hu-sst__band hu-sst__band--dark hu-sst__band--warm" id="ablauf" data-nx-theme="dark">
 		<div class="hu-sst__container">
 			<div class="hu-sst__section-head">
 				<p class="hu-sst__eyebrow">Ablauf</p>
-				<h2 class="hu-sst__h2" id="hu-sst-ablauf-title">Sieben Schritte von der Aufnahme bis zur laufenden Kontrolle</h2>
+				<h2 class="hu-sst__h2" id="hu-sst-ablauf-title">Vom unklaren Zahlenbild zum kontrollierten Datenfluss</h2>
+				<p class="hu-sst__section-lead">Vier Entscheidungspunkte, damit Technik erst gebaut wird, wenn Ziel, Scope und Zuständigkeiten geklärt sind.</p>
 			</div>
 
-			<ol class="hu-sst__steps">
+			<ol class="hu-sst__steps" role="list">
 				<?php foreach ( $process_steps as $index => $step ) : ?>
 					<li class="hu-sst__step">
 						<span class="hu-sst__step-num"><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
@@ -828,14 +817,14 @@ get_header();
 	</section>
 
 	<?php // ── 10 Sicherheit ── hell ────────────────────────── ?>
-	<section class="hu-sst__band hu-sst__band--light hu-sst__band--cream" id="sicherheit" data-nx-theme="light" aria-labelledby="hu-sst-sicherheit-title">
+	<section class="hu-sst__band hu-sst__band--light hu-sst__band--cream" id="sicherheit" data-nx-theme="light">
 		<div class="hu-sst__container">
 			<div class="hu-sst__section-head">
 				<p class="hu-sst__eyebrow">Sicherheit und Eigentum</p>
 				<h2 class="hu-sst__h2" id="hu-sst-sicherheit-title">Ihre Datenebene bleibt Ihre Datenebene</h2>
 			</div>
 
-			<ul class="hu-sst__checklist">
+			<ul class="hu-sst__checklist" role="list">
 				<?php foreach ( $security_items as $item ) : ?>
 					<li>
 						<span class="hu-sst__item-mark" aria-hidden="true"><?php echo hu_sst_icon_svg( '<path d="M12 3l7 3v5.5c0 4.2-2.9 7.6-7 8.5-4.1-.9-7-4.3-7-8.5V6l7-3z"/>' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup ?></span>
@@ -850,32 +839,7 @@ get_header();
 		</div>
 	</section>
 
-	<?php // ── 11 Erfahrungswerte ── dunkel ─────────────────── ?>
-	<section class="hu-sst__band hu-sst__band--dark hu-sst__band--deep" id="nachweis" data-nx-theme="dark" aria-labelledby="hu-sst-nachweis-title">
-		<div class="hu-sst__container hu-sst__container--narrow">
-			<div class="hu-sst__section-head">
-				<p class="hu-sst__eyebrow">Einordnung</p>
-				<h2 class="hu-sst__h2" id="hu-sst-nachweis-title">Erfahrungswerte statt Logos</h2>
-			</div>
-
-			<div class="hu-sst__prose">
-				<p>
-					Ein großer Teil meiner Tracking-Arbeit läuft unter fremdem Namen, als technische Ebene hinter Agenturprojekten. Deshalb stehen hier keine Logos.
-				</p>
-				<p>
-					Aus den Setups, die ich bisher umgestellt habe: In den Werbekonten kommen anschließend rund <strong><?php echo esc_html( $measured_uplift ); ?> mehr Conversions</strong> an als vorher, und die Zuordnung zu Kampagne und Anzeigengruppe wird stabiler.
-				</p>
-				<p>
-					Das ist meine Erfahrung, keine Zusage. Wie viel es bei Ihnen wird, hängt an Ihrem Traffic: Anteil Safari und iOS, Werbeblocker, Consent-Rate und Zustand des bisherigen Setups. War vorher sauber gemessen, bleibt weniger übrig. War es kaputt, mehr.
-				</p>
-				<p>
-					Nachprüfbar ist es trotzdem. Im Testbetrieb läuft die neue Messung neben der alten — die Differenz sehen Sie in Ihren eigenen Konten, nicht in meiner Präsentation. Container, Hosting und Zugänge laufen auf Ihren Namen, jede Änderung liegt als benannte GTM-Version vor.
-				</p>
-			</div>
-		</div>
-	</section>
-
-	<?php // ── 12 FAQ ── hell ───────────────────────────────── ?>
+	<?php // ── 11 FAQ ── hell ───────────────────────────────── ?>
 	<section class="hu-sst__band hu-sst__band--light hu-sst__band--white" id="faq" data-nx-theme="light" aria-labelledby="hu-sst-faq-title">
 		<div class="hu-sst__container hu-sst__container--narrow">
 			<div class="hu-sst__section-head">
@@ -896,14 +860,14 @@ get_header();
 		</div>
 	</section>
 
-	<?php // ── 13 Formular ── dunkel ────────────────────────── ?>
+	<?php // ── 12 Formular ── dunkel ────────────────────────── ?>
 	<section class="hu-sst__band hu-sst__band--dark hu-sst__band--warm hu-sst__final" id="anfrage" data-nx-theme="dark" aria-labelledby="hu-sst-form-title">
 		<div class="hu-sst__container hu-sst__container--narrow">
 			<div class="hu-sst__section-head">
 				<p class="hu-sst__eyebrow">Anfrage</p>
-				<h2 class="hu-sst__h2" id="hu-sst-form-title">Tracking-Setup prüfen lassen</h2>
+				<h2 class="hu-sst__h2" id="hu-sst-form-title">Tracking-Setup einordnen lassen</h2>
 				<p class="hu-sst__section-lead">
-					Senden Sie mir Ihre Website und eine kurze Beschreibung Ihres aktuellen Setups. Sie erhalten eine ehrliche Einschätzung, ob Server-Side Tracking in Ihrem Fall sinnvoll ist und welches Paket technisch passt.
+					Beschreiben Sie kurz, welche Zahlen nicht zusammenpassen oder was künftig sauber gemessen werden soll. Sie erhalten eine Fit-Einschätzung, den passenden Scope und die offenen Voraussetzungen — vor einem Angebot.
 				</p>
 			</div>
 
@@ -915,6 +879,7 @@ get_header();
 			<form
 				class="contact-form hu-sst__form"
 				data-contact-form
+				data-contact-dom-error-order
 				action="<?php echo esc_url( $rest_endpoint ); ?>"
 				method="post"
 				novalidate
@@ -936,7 +901,7 @@ get_header();
 				// gemeinsame Formular-JS prueft ein gesetztes Radio und eine
 				// Focus-Option, deren data-types den Anfragetyp enthaelt.
 				?>
-				<div class="hu-sst__form-fixed">
+				<div class="hu-sst__form-fixed" hidden>
 					<input
 						id="contact-type-project"
 						type="radio"
@@ -961,67 +926,22 @@ get_header();
 						<p class="contact-field__error is-hidden" id="contact-name-error" aria-live="polite"></p>
 					</div>
 
-					<div class="contact-field">
-						<label for="contact-company">Unternehmen <span class="hu-sst__optional">optional</span></label>
-						<input id="contact-company" name="company" type="text" autocomplete="organization" maxlength="120">
-					</div>
-				</div>
-
-				<div class="contact-form__row">
 					<div class="contact-field" data-contact-field="email">
 						<label for="contact-email">Geschäftliche E-Mail</label>
 						<input id="contact-email" name="email" type="email" autocomplete="email" required aria-describedby="contact-email-error">
 						<p class="contact-field__error is-hidden" id="contact-email-error" aria-live="polite"></p>
 					</div>
-
-					<div class="contact-field">
-						<label for="contact-website">Website <span class="hu-sst__optional">optional</span></label>
-						<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="https://example.de">
-					</div>
-				</div>
-
-				<fieldset class="hu-sst__fieldset">
-					<legend>Verwendete Werbeplattformen <span class="hu-sst__optional">optional</span></legend>
-					<div class="hu-sst__checks">
-						<?php foreach ( $ad_platform_options as $platform_key => $platform_label ) : ?>
-							<label class="hu-sst__check" for="<?php echo esc_attr( 'contact-ad-platform-' . $platform_key ); ?>">
-								<input
-									id="<?php echo esc_attr( 'contact-ad-platform-' . $platform_key ); ?>"
-									type="checkbox"
-									name="<?php echo esc_attr( 'ad_platform_' . $platform_key ); ?>"
-									value="1"
-								>
-								<span><?php echo esc_html( $platform_label ); ?></span>
-							</label>
-						<?php endforeach; ?>
-					</div>
-				</fieldset>
-
-				<div class="contact-field" data-contact-field="ad_budget">
-					<label for="contact-ad_budget">Ungefähres monatliches Werbebudget <span class="hu-sst__optional">optional</span></label>
-					<select id="contact-ad_budget" name="ad_budget" aria-describedby="contact-ad_budget-error">
-						<option value="" selected>Bitte auswählen</option>
-						<?php foreach ( $ad_budget_options as $budget_key => $budget_label ) : ?>
-							<option value="<?php echo esc_attr( $budget_key ); ?>"><?php echo esc_html( $budget_label ); ?></option>
-						<?php endforeach; ?>
-					</select>
-					<p class="contact-field__error is-hidden" id="contact-ad_budget-error" aria-live="polite"></p>
 				</div>
 
 				<div class="contact-field">
-					<label for="contact-tracking-setup">Aktuelles Tracking-Setup <span class="hu-sst__optional">optional</span></label>
-					<p id="contact-tracking-setup-help" class="contact-field__help">Was heute läuft: GA4, Google Ads, Meta Pixel, Plugins, bereits vorhandener Server-Container.</p>
-					<textarea id="contact-tracking-setup" name="tracking_setup" rows="3" maxlength="2000" aria-describedby="contact-tracking-setup-help"></textarea>
-				</div>
-
-				<div class="contact-field">
-					<label for="contact-consent-tool">Verwendetes Consent-Tool <span class="hu-sst__optional">optional</span></label>
-					<input id="contact-consent-tool" name="consent_tool" type="text" maxlength="120" placeholder="z. B. Cookiebot, Usercentrics, Complianz">
+					<label for="contact-website">Website <span class="hu-sst__optional">optional</span></label>
+					<p id="contact-website-help" class="contact-field__help">Hilft bei der ersten technischen Einordnung; Zugänge sind dafür nicht nötig.</p>
+					<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="https://example.de" aria-describedby="contact-website-help">
 				</div>
 
 				<div class="contact-field" data-contact-field="message">
 					<label for="contact-message">Konkretes Problem oder Ziel</label>
-					<p id="contact-message-help" class="contact-field__help">Woran Sie merken, dass die Zahlen nicht stimmen — oder was Sie künftig sauber messen wollen.</p>
+					<p id="contact-message-help" class="contact-field__help">Welche Zahlen widersprechen sich — oder was soll künftig verlässlich als Conversion ankommen?</p>
 					<textarea
 						id="contact-message"
 						name="message"
@@ -1030,9 +950,59 @@ get_header();
 						minlength="24"
 						aria-describedby="contact-message-help contact-message-error"
 						data-contact-message
+						data-contact-message-placeholder="z. B. GA4 meldet weniger Anfragen als Google Ads; Meta zählt doppelt."
 					></textarea>
 					<p class="contact-field__error is-hidden" id="contact-message-error" aria-live="polite"></p>
 				</div>
+
+				<details class="hu-sst__form-details">
+					<summary>Technische Angaben <span>optional</span></summary>
+					<div class="hu-sst__form-details-body">
+						<div class="contact-field">
+							<label for="contact-company">Unternehmen <span class="hu-sst__optional">optional</span></label>
+							<input id="contact-company" name="company" type="text" autocomplete="organization" maxlength="120">
+						</div>
+
+						<fieldset class="hu-sst__fieldset">
+							<legend>Verwendete Werbeplattformen <span class="hu-sst__optional">optional</span></legend>
+							<div class="hu-sst__checks">
+								<?php foreach ( $ad_platform_options as $platform_key => $platform_label ) : ?>
+									<label class="hu-sst__check" for="<?php echo esc_attr( 'contact-ad-platform-' . $platform_key ); ?>">
+										<input
+											id="<?php echo esc_attr( 'contact-ad-platform-' . $platform_key ); ?>"
+											type="checkbox"
+											name="<?php echo esc_attr( 'ad_platform_' . $platform_key ); ?>"
+											value="1"
+										>
+										<span><?php echo esc_html( $platform_label ); ?></span>
+									</label>
+								<?php endforeach; ?>
+							</div>
+						</fieldset>
+
+						<div class="contact-field" data-contact-field="ad_budget">
+							<label for="contact-ad_budget">Ungefähres monatliches Werbebudget <span class="hu-sst__optional">optional</span></label>
+							<select id="contact-ad_budget" name="ad_budget" aria-describedby="contact-ad_budget-error">
+								<option value="" selected>Bitte auswählen</option>
+								<?php foreach ( $ad_budget_options as $budget_key => $budget_label ) : ?>
+									<option value="<?php echo esc_attr( $budget_key ); ?>"><?php echo esc_html( $budget_label ); ?></option>
+								<?php endforeach; ?>
+							</select>
+							<p class="contact-field__error is-hidden" id="contact-ad_budget-error" aria-live="polite"></p>
+						</div>
+
+						<div class="contact-field">
+							<label for="contact-tracking-setup">Aktuelles Tracking-Setup <span class="hu-sst__optional">optional</span></label>
+							<p id="contact-tracking-setup-help" class="contact-field__help">Was heute läuft: GA4, Google Ads, Meta Pixel, Plugins, bereits vorhandener Server-Container.</p>
+							<textarea id="contact-tracking-setup" name="tracking_setup" rows="3" maxlength="2000" aria-describedby="contact-tracking-setup-help"></textarea>
+						</div>
+
+						<div class="contact-field">
+							<label for="contact-consent-tool">Verwendetes Consent-Tool <span class="hu-sst__optional">optional</span></label>
+							<input id="contact-consent-tool" name="consent_tool" type="text" maxlength="120" placeholder="z. B. Cookiebot, Usercentrics, Complianz">
+						</div>
+					</div>
+				</details>
 
 				<label class="contact-consent" data-contact-field="consent">
 					<input type="checkbox" name="consent" value="1" required aria-describedby="contact-consent-error">
@@ -1048,8 +1018,8 @@ get_header();
 				</p>
 
 				<div class="contact-form__actions">
-					<button class="contact-submit" type="submit" data-contact-submit data-track-action="contact_submit" data-track-category="server_side_tracking_b2b" data-track-section="sst_form">
-						Tracking-Setup prüfen lassen
+					<button class="contact-submit" type="submit" data-contact-submit data-contact-submit-label="<?php echo esc_attr( $setup_cta_label ); ?>" data-track-action="contact_submit" data-track-category="server_side_tracking_b2b" data-track-section="sst_form">
+						<?php echo esc_html( $setup_cta_label ); ?>
 					</button>
 				</div>
 
@@ -1068,13 +1038,14 @@ get_template_part(
 	'template-parts/seo-subpage-sticky-cta',
 	null,
 	[
-		'cta_url'        => $form_anchor,
-		'track_category' => 'server_side_tracking_b2b',
-		'region_label'   => 'Schnellzugang zur Anfrage',
-		'lead'           => 'Tracking-Setup prüfen',
-		'sub'            => 'Einschätzung vor Angebot',
-		'label'          => 'Setup schildern',
-		'track_action'   => 'cta_sticky_form_tracking',
+		'cta_url'           => $form_anchor,
+		'track_category'    => 'server_side_tracking_b2b',
+		'region_label'      => 'Schnellzugang zur Anfrage',
+		'lead'              => 'Setup einordnen lassen',
+		'sub'               => 'Fit und Scope vor Angebot',
+		'label'             => $setup_cta_label,
+		'track_action'      => 'cta_sticky_form_tracking',
+		'hide_when_visible' => '#anfrage',
 	]
 );
 

@@ -165,6 +165,128 @@ function hu_entry_setup_price( $with_net = false ) {
 	return $with_net ? $price . ' netto' : $price;
 }
 
+// ── Server-Side-Tracking: Einrichtung + laufende Kontrolle ───
+// Eigener Preispfad fuer /server-side-tracking-b2b/. Die Werte standen zuvor
+// als Literale in Template, FAQ und Meta-Description und konnten dort driften.
+define( 'HU_TRACKING_STANDARD_SETUP', 890 );
+define( 'HU_TRACKING_STANDARD_CARE_MONTHLY', 99 );
+define( 'HU_TRACKING_STANDARD_INCLUDED_MINUTES', 30 );
+define( 'HU_TRACKING_PRO_SETUP', 1290 );
+define( 'HU_TRACKING_PRO_CARE_MONTHLY', 149 );
+define( 'HU_TRACKING_PRO_INCLUDED_MINUTES', 60 );
+define( 'HU_TRACKING_CUSTOM_SETUP_MIN', 2500 );
+define( 'HU_TRACKING_CUSTOM_CARE_MONTHLY_MIN', 199 );
+define( 'HU_TRACKING_RESPONSE_BUSINESS_DAYS', 2 );
+define( 'HU_TRACKING_DURATION_WEEKS_MIN', 2 );
+define( 'HU_TRACKING_DURATION_WEEKS_MAX', 3 );
+
+/**
+ * Return the canonical Server-Side-Tracking price and delivery model.
+ *
+ * @return array<string, mixed>
+ */
+function hu_tracking_pricing_canon() {
+	$monthly_terms = 'Nettopreise, monatlich kündbar, Hosting separat';
+
+	return [
+		'standard' => [
+			'setup'                  => [
+				'value'   => HU_TRACKING_STANDARD_SETUP,
+				'display' => hu_format_eur( HU_TRACKING_STANDARD_SETUP ),
+			],
+			'care'                   => [
+				'value'   => HU_TRACKING_STANDARD_CARE_MONTHLY,
+				'display' => hu_format_eur( HU_TRACKING_STANDARD_CARE_MONTHLY ) . ' / Monat',
+			],
+			'included_minutes'       => HU_TRACKING_STANDARD_INCLUDED_MINUTES,
+			'response_business_days' => HU_TRACKING_RESPONSE_BUSINESS_DAYS,
+			'terms'                  => $monthly_terms,
+		],
+		'pro'      => [
+			'setup'                  => [
+				'value'   => HU_TRACKING_PRO_SETUP,
+				'display' => hu_format_eur( HU_TRACKING_PRO_SETUP ),
+			],
+			'care'                   => [
+				'value'   => HU_TRACKING_PRO_CARE_MONTHLY,
+				'display' => hu_format_eur( HU_TRACKING_PRO_CARE_MONTHLY ) . ' / Monat',
+			],
+			'included_minutes'       => HU_TRACKING_PRO_INCLUDED_MINUTES,
+			'response_business_days' => HU_TRACKING_RESPONSE_BUSINESS_DAYS,
+			'terms'                  => $monthly_terms,
+		],
+		'individual' => [
+			'setup' => [
+				'value'   => HU_TRACKING_CUSTOM_SETUP_MIN,
+				'display' => 'ab ' . hu_format_eur( HU_TRACKING_CUSTOM_SETUP_MIN ),
+			],
+			'care'  => [
+				'value'   => HU_TRACKING_CUSTOM_CARE_MONTHLY_MIN,
+				'display' => 'ab ' . hu_format_eur( HU_TRACKING_CUSTOM_CARE_MONTHLY_MIN ) . ' / Monat',
+			],
+			'terms' => 'Nettopreise, Umfang nach Aufnahme, Hosting separat',
+		],
+		'delivery' => [
+			'weeks_min' => HU_TRACKING_DURATION_WEEKS_MIN,
+			'weeks_max' => HU_TRACKING_DURATION_WEEKS_MAX,
+		],
+	];
+}
+
+/**
+ * Return one display field from a Server-Side-Tracking price.
+ *
+ * @param string $package   Package key.
+ * @param string $component Price component: setup or care.
+ * @param string $field     Field key.
+ * @param string $fallback  Fallback value.
+ * @return string
+ */
+function hu_tracking_price( $package, $component, $field = 'display', $fallback = '' ) {
+	$prices = hu_tracking_pricing_canon();
+
+	if ( ! isset( $prices[ $package ][ $component ] ) || ! is_array( $prices[ $package ][ $component ] ) ) {
+		return $fallback;
+	}
+
+	if ( ! array_key_exists( $field, $prices[ $package ][ $component ] ) ) {
+		return $fallback;
+	}
+
+	return (string) $prices[ $package ][ $component ][ $field ];
+}
+
+/**
+ * Return one operational package detail from the tracking canon.
+ *
+ * @param string $package  Package key.
+ * @param string $field    Field key.
+ * @param string $fallback Fallback value.
+ * @return string
+ */
+function hu_tracking_package_detail( $package, $field, $fallback = '' ) {
+	$prices = hu_tracking_pricing_canon();
+
+	if ( ! isset( $prices[ $package ] ) || ! is_array( $prices[ $package ] ) || ! array_key_exists( $field, $prices[ $package ] ) ) {
+		return $fallback;
+	}
+
+	return (string) $prices[ $package ][ $field ];
+}
+
+/**
+ * Display the canonical delivery window for a standard tracking setup.
+ *
+ * @return string
+ */
+function hu_tracking_delivery_weeks_display() {
+	return sprintf(
+		'%d bis %d Wochen',
+		HU_TRACKING_DURATION_WEEKS_MIN,
+		HU_TRACKING_DURATION_WEEKS_MAX
+	);
+}
+
 // ── White-Label-Nebenpfad ────────────────────────────────────────
 // Der Partner-Funnel hat eine eigene Einstiegsebene. Sie bleibt bewusst
 // getrennt vom WGOS-Foundation- und Add-on-Modell oben.

@@ -198,6 +198,7 @@ function hu_get_forced_singular_seo_map() {
 	$e3_cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'display', 'über 85 %' ) : 'über 85 %';
 	$e3_cpl_before    = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
 	$e3_cpl_after     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
+	$tracking_setup_price = function_exists( 'hu_tracking_price' ) ? hu_tracking_price( 'standard', 'setup', 'display', '890 €' ) : '890 €';
 
 	return (array) apply_filters(
 		'hu_forced_singular_seo_map',
@@ -285,7 +286,7 @@ function hu_get_forced_singular_seo_map() {
 			// besitzt. CAPI steht dafuer in der Description.
 			'server-side-tracking-b2b' => [
 				'title'       => 'Server-Side Tracking einrichten lassen | GA4, Ads & Consent',
-				'description' => 'Server-Side Tracking für WordPress, GA4, Google Ads und Meta CAPI – eingerichtet, getestet, dokumentiert. Consent-Signale berücksichtigt. Setup ab 890 € netto.',
+				'description' => sprintf( 'Server-Side Tracking für GA4, Google Ads und Meta CAPI: geprüft, eingerichtet, parallel getestet und dokumentiert. Setup ab %s netto.', $tracking_setup_price ),
 			],
 			// Diese Seite besitzt laut docs/seo/query-ownership.csv ausschliesslich
 			// Gewerbe-PV-Intent: "pv termine b2b", "pv leads gewerbe", "b2b
