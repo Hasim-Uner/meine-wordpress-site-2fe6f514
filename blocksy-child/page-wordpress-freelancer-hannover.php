@@ -170,7 +170,7 @@ get_header();
 				<div class="hu-fr__hero-grid">
 					<div class="hu-fr__hero-copy">
 						<h1 id="hu-fr-title" class="hu-fr__seo-title">WordPress Freelancer Hannover</h1>
-						<p class="hu-fr__hero-title">Technik, Tracking und Funnel — ohne technische Übergaben.</p>
+						<p class="hu-fr__hero-title">Technik, Tracking und Funnel aus einer Hand.</p>
 						<p class="hu-fr__lede">Ich entwickle WordPress-Websites und Landingpages so, dass Code, Messung und Conversion-Logik zusammenpassen. Direkt mit mir — vom Scope bis zum Deployment.</p>
 
 						<ul class="hu-fr__hero-capabilities" role="list" aria-label="Schwerpunkte">
@@ -194,10 +194,10 @@ get_header();
 
 				<ul class="hu-fr__proofline" role="list" aria-label="Kurzbelege">
 					<li><strong>8+ Jahre</strong><span>WordPress &amp; Web</span></li>
-					<li><strong>99/100</strong><span>Mobile Performance*</span></li>
-					<li><strong>100/100</strong><span>Accessibility*</span></li>
+					<li><strong>92/100</strong><span>Mobile Performance*</span></li>
+					<li><strong>97/100</strong><span>Accessibility*</span></li>
 				</ul>
-				<p class="hu-fr__lab-note">* Lighthouse-Labtest auf hasimuener.de, August 2026. Kein Ersatz für CrUX-Felddaten.</p>
+				<p class="hu-fr__lab-note">* Lighthouse Mobile-Labtest dieser Seite, 16.08.2026, 23:25 MESZ. Werte können variieren; keine CrUX-Felddaten.</p>
 			</div>
 		</section>
 
