@@ -4,9 +4,9 @@
  * Komponenten einzufuehren. Die Systemgrafik und der Git-Workflow bleiben
  * die beiden visuellen Schwerpunktmomente der Route.
  *
- * Lighthouse-Follow-up 2026-08-16: Kontraste der kleinen Code-/Footer-Texte
- * absichtlich mit deutlicher Reserve ueber AA; die SVG-Daueranimation bleibt
- * statisch, weil Lighthouse sie als nicht-kompositierte Animation meldete.
+ * Lighthouse-Follow-up 2026-08-17: Code-Texte im Git-Workflow erhalten
+ * explizit maximale Kontrastreserve. Die SVG-Daueranimation bleibt statisch,
+ * weil Lighthouse sie als nicht-kompositierte Animation meldete.
  */
 
 .hu-fr__hero {
@@ -86,13 +86,21 @@
 	color: var(--fr-muted);
 }
 
-/* Accessibility: explicit high-contrast values for Lighthouse findings. */
-.hu-fr-git__topbar code {
-	color: #e2d9cf;
+/*
+ * Accessibility: WordPress/Theme-Code-Styles duerfen die dunkle Workflow-Karte
+ * nicht ueberschreiben. Weiss auf #171411/#211d19 liegt deutlich ueber AA/AAA.
+ */
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-git__topbar code,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-git__rows code {
+	color: #fffaf4 !important;
+	background: transparent !important;
+	text-shadow: none !important;
+	opacity: 1 !important;
 }
 
-.hu-fr-git__rows code {
-	color: #e0ad8b;
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-git__rows strong {
+	color: #fffaf4 !important;
+	opacity: 1 !important;
 }
 
 .hu-fr__lab-note {
