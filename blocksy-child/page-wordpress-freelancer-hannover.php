@@ -138,23 +138,23 @@ $faqs = [
 		'a' => sprintf( 'Eine individuell entwickelte WordPress-Website startet bei mir aktuell ab %s. Der Einstieg ist für kompakte Unternehmenswebsites mit klar abgegrenztem Scope gedacht. Größere Integrationen, Tracking-Setups oder Funnel-Projekte kalkuliere ich separat.', $website_start_price ),
 	],
 	[
-		'q' => 'Arbeitest du nur in Hannover?',
+		'q' => 'Arbeiten Sie nur in Hannover?',
 		'a' => 'Nein. Ich sitze in der Region Hannover und arbeite deutschlandweit remote. Für Projekte in Hannover und Umgebung sind persönliche Termine möglich, wenn sie wirklich helfen.',
 	],
 	[
-		'q' => 'Arbeitest du mit Elementor?',
+		'q' => 'Arbeiten Sie mit Elementor?',
 		'a' => 'Ja, wenn es für das Projekt sinnvoll ist. Standardmäßig bevorzuge ich einen schlanken Aufbau mit möglichst wenig Page-Builder-Abhängigkeit. Wenn ein Team Inhalte später sehr frei selbst umbauen muss, kann Elementor die pragmatischere Lösung sein.',
 	],
 	[
-		'q' => 'Kannst du ein vorhandenes Screendesign oder Figma-Design umsetzen?',
+		'q' => 'Können Sie ein vorhandenes Screendesign oder Figma-Design umsetzen?',
 		'a' => 'Ja. Ein vorhandenes Figma- oder Screendesign kann direkt in die technische Umsetzung gehen. Ich überführe es responsive in WordPress, versioniere die Änderungen und prüfe sie vor dem Deployment.',
 	],
 	[
 		'q' => 'Was ist der Unterschied zwischen Freelancer und Agentur?',
-		'a' => 'Du arbeitest direkt mit der Person, die strukturiert, entwickelt und technisch entscheidet. Das reduziert Übergaben und macht den Scope klarer. Wenn ein größeres Team-Setup sinnvoller ist, sage ich das vor Projektstart offen.',
+		'a' => 'Sie arbeiten direkt mit der Person, die strukturiert, entwickelt und technisch entscheidet. Das reduziert Übergaben und macht den Scope klarer. Wenn ein größeres Team-Setup sinnvoller ist, sage ich das vor Projektstart offen.',
 	],
 	[
-		'q' => 'Berücksichtigst du Barrierefreiheit und Core Web Vitals?',
+		'q' => 'Berücksichtigen Sie Barrierefreiheit und Core Web Vitals?',
 		'a' => 'Ja. Semantisches HTML, Kontraste, Tastaturbedienung, Formulare, Bildgrößen und Ladepfade gehören für mich zur technischen Qualität. Lighthouse ist dabei ein Labortest und nicht dasselbe wie echte Felddaten — ich trenne beides bewusst.',
 	],
 ];
@@ -246,7 +246,7 @@ get_header();
 					<p class="hu-fr__kicker">Kompetenz</p>
 					<h2 id="hu-fr-skills-title" class="hu-fr__h2">Vier Ebenen, die zusammenpassen müssen.</h2>
 				</div>
-				<p class="hu-fr__section-aside">Du musst Entwicklung, Tracking und Funnel nicht auf mehrere Ansprechpartner verteilen. Die technischen Entscheidungen bleiben in einem Scope.</p>
+				<p class="hu-fr__section-aside">Sie müssen Entwicklung, Tracking und Funnel nicht auf mehrere Ansprechpartner verteilen. Die technischen Entscheidungen bleiben in einem Scope.</p>
 			</div>
 
 			<div class="hu-fr__shell hu-fr__skill-list">
@@ -381,7 +381,7 @@ get_header();
 					<h2 id="hu-fr-final-title" class="hu-fr__h2">Wenn Website, Tracking und Funnel nicht getrennt gedacht werden sollen.</h2>
 				</div>
 				<div class="hu-fr__final-action">
-					<p>Beschreibe kurz Ausgangslage und Ziel. Du bekommst eine klare Rückmeldung, ob das Projekt passt und welcher Scope sinnvoll wäre.</p>
+					<p>Beschreiben Sie kurz Ausgangslage und Ziel. Sie bekommen eine klare Rückmeldung, ob das Projekt passt und welcher Scope sinnvoll wäre.</p>
 					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_final_project" data-track-category="lead_gen" data-track-section="final">Projekt prüfen lassen <span aria-hidden="true">↗</span></a>
 					<p class="hu-fr__route-links">Oder: <a href="<?php echo esc_url( $agentur_url ); ?>">WordPress Agentur Hannover</a> · <a href="<?php echo esc_url( $tracking_url ); ?>">Server-Side Tracking</a> · <a href="<?php echo esc_url( $about_url ); ?>">Über Haşim</a></p>
 				</div>
