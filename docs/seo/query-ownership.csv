@@ -27,20 +27,19 @@
 # Suchintent belegt getrennt ist. gap-report.sh meldet sie so lange als
 # REGISTRY-LUECKE. Das ist der gewollte Zustand, kein Versehen.
 #
-# Ownership-Linie WordPress/Tracking (2026-08-06): Beide Seiten bekommen im
-# 28d-Export Signal aus Queries ohne Solar-Bezug — zusammen 541 der 1.420
-# Domain-Impressionen. Damit die Vertiefung der Hannover-Seite nicht in die
-# Tracking-Seite laeuft, gilt eine Orts- und keine Themenregel:
+# Ownership-Linie WordPress/Tracking (2026-08-16): Lokale WordPress-Queries sind
+# nicht mehr pauschal eine einzige Route. Drei Intents bleiben strikt getrennt:
 #
-#   ortsqualifiziert (hannover / niedersachsen)  -> /wordpress-agentur-hannover/
-#   nicht ortsqualifiziert (tracking-Terme)      -> /server-side-tracking-b2b/
+#   Agentur-Intent (`wordpress agentur ...`)      -> /wordpress-agentur-hannover/
+#   Freelancer-Intent (`wordpress freelancer ...`)-> /wordpress-freelancer-hannover/
+#   White-Label-/Partner-Intent                   -> /whitelabel-retainer/
+#   nicht ortsqualifiziert (Tracking-Terme)       -> /server-side-tracking-b2b/
 #
-# Konkret: "wordpress seo hannover" und "wordpress wartung hannover" bleiben auf
-# der lokalen Money-Page. Die zugehoerigen Slugs /wordpress-seo-hannover/ und
-# /wordpress-wartung-hannover/ liefern 410 Gone (LIVE_STATUS.md) — die Eintraege
-# hier verhindern, dass sie als neue Seiten wiederauferstehen. Umgekehrt gehoeren
-# "agentur"-Tracking-Queries nicht auf die Hannover-Seite, auch wenn Tracking dort
-# fachlich vorkommt.
+# Die Trennung der Agentur- und Freelancer-Route ist in
+# docs/decisions/wordpress-freelancer-hannover.md belegt. "wordpress seo hannover"
+# und "wordpress wartung hannover" bleiben auf der Agentur-Money-Page; die alten
+# Spezial-Slugs liefern 410 Gone. Tracking-Queries laufen nicht in lokale
+# WordPress-Routen, nur weil Tracking dort fachlich vorkommt.
 query;owner_path;intent;status;source;distinct_from
 leadgenerierung photovoltaik;/solar-waermepumpen-leadgenerierung/;transactional;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte — GSC 28d 2026-07-30: /b2b-solar-leads/ rankt Pos. 46,2 (Owner-Entscheidung offen);
 leadgenerierung waermepumpe;/solar-waermepumpen-leadgenerierung/;transactional;owned;seo-meta.php forced-map;
@@ -64,7 +63,9 @@ lead funnel solar;/lead-funnel-solar/;informational;owned;seo-meta.php forced-ma
 server side tracking;/server-side-tracking-b2b/;commercial;owned;gsc-verlauf-2026-07-20.md#kannibalisierungs-karte;
 server side tracking agentur;/server-side-tracking-b2b/;commercial;owned;gsc-verlauf-2026-07-20.md#verlauf;
 server side tracking dsgvo;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 65,2) — Title traegt seit 2026-08-08 "Consent" statt "CAPI", damit dieses Signal beim Money-Page-Umbau nicht verloren geht — DSGVO-Deckung liegt in FAQ und Sicherheits-Sektion;
-wordpress agentur hannover;/wordpress-agentur-hannover/;local;owned;gsc-verlauf-2026-07-20.md#critical-1;
+wordpress agentur hannover;/wordpress-agentur-hannover/;local;owned;gsc-verlauf-2026-07-20.md#critical-1;wordpress freelancer hannover
+wordpress freelancer hannover;/wordpress-freelancer-hannover/;local;owned;docs/decisions/wordpress-freelancer-hannover.md;wordpress agentur hannover|wordpress freelancer
+wordpress freelancer;/wordpress-freelancer-hannover/;commercial;owned;docs/decisions/wordpress-freelancer-hannover.md;wordpress freelancer hannover|wordpress agentur hannover
 checkfox;/checkfox-solar-waermepumpe-einordnung/;navigational;owned;gsc-export-28d-2026-07-30.csv (Pos. 16,5, Vol. 1900);checkfox erfahrungen|checkfox serioes
 aroundhome erfahrungen;/aroundhome-solar-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 33,0);aroundhome
 aroundhome kosten;/aroundhome-solar-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 6,9);aroundhome
@@ -73,7 +74,7 @@ checkfox serioes;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-ve
 wattfox;/wattfox-solar-leads-einordnung/;navigational;owned;blog-provider-posts.php Publish-Seed — GSC 28d 2026-07-30: /solar-leads-kaufen-alternative/ rankt Pos. 30,7 (Owner-Konflikt offen);
 aroundhome;/aroundhome-solar-einordnung/;navigational;owned;seo-cockpit 28d 2026-07-26 + gap-report;
 daa leads;/daa-photovoltaik-leads-einordnung/;commercial;owned;blog-provider-posts.php Publish-Seed;
-wordpress hannover;/wordpress-agentur-hannover/;local;owned;seo-cockpit 28d 2026-07-26 (Pos. 26,8);wordpress agentur hannover
+wordpress hannover;/wordpress-agentur-hannover/;local;owned;seo-cockpit 28d 2026-07-26 (Pos. 26,8);wordpress agentur hannover|wordpress freelancer hannover
 pv leads gewerbe;/b2b-solar-leads/;commercial;owned;seo-cockpit 28d 2026-07-26 (23 Impr., Pos. 14,7);
 checkfox solar;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 9,0);checkfox
 checkfox erfahrung;/checkfox-solar-waermepumpe-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 9,0);checkfox erfahrungen
@@ -86,14 +87,14 @@ was ist checkfox;/checkfox-solar-waermepumpe-einordnung/;informational;owned;gsc
 aroundhome kosten fuer handwerker;/aroundhome-solar-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 4,5, 8 Impr.);aroundhome kosten
 aroundhome solaranlage;/aroundhome-solar-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 13,4, 8 Impr.);aroundhome
 wattfox leads kaufen;/wattfox-solar-leads-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 18,0, 2 Impr. auf /solar-leads-kaufen-alternative/) — Anbieter-Query bleibt beim Anbieterartikel;wattfox|solar leads kaufen
-# Ortsqualifizierte WordPress-Queries (2026-08-06). Alle ranken im 28d-Export
-# 2026-07-30 auf genau einer URL, es besteht kein Mehrfach-URL-Konflikt.
-# "woocommerce agentur hannover" steht bewusst in keyword-exclusions.csv.
-wordpress agenturen hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 28,8, 4 Impr.) — Plural-Variante;wordpress agentur hannover
-agentur wordpress hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 31,5, 6 Impr.) — Wortstellungs-Variante;wordpress agentur hannover
+# Ortsqualifizierte WordPress-Queries. Agentur- und Freelancer-Intent werden
+# seit 2026-08-16 getrennt; "woocommerce agentur hannover" steht bewusst in
+# keyword-exclusions.csv.
+wordpress agenturen hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 28,8, 4 Impr.) — Plural-Variante;wordpress agentur hannover|wordpress freelancer hannover
+agentur wordpress hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 31,5, 6 Impr.) — Wortstellungs-Variante;wordpress agentur hannover|wordpress freelancer hannover
 wordpress agentur niedersachsen;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 61,9, 17 Impr.) — Bundesland-Variante des lokalen Ankers;wordpress agentur hannover
-wordpress website hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 42,6, 8 Impr.);wordpress agentur hannover
-wordpress experte hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 43,0, 1 Impr.);wordpress agentur hannover
+wordpress website hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 42,6, 8 Impr.);wordpress agentur hannover|wordpress freelancer hannover
+wordpress experte hannover;/wordpress-freelancer-hannover/;local;owned;docs/decisions/wordpress-freelancer-hannover.md;wordpress agentur hannover|wordpress freelancer hannover
 wordpress entwicklung hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 54,0, 1 Impr.);wordpress agentur hannover
 wordpress seo hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 25,7, 9 Impr.) — /wordpress-seo-hannover/ ist 410 Gone, Signal bleibt auf der lokalen Money-Page;wordpress agentur hannover
 wordpress suchmaschinenoptimierung hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 26,4, 5 Impr.) — deutsche Variante von "wordpress seo hannover";wordpress seo hannover|wordpress agentur hannover

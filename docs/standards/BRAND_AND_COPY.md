@@ -132,8 +132,9 @@ steht damit sichtbar gegen die Identity-Zeile „Not: WordPress-Agentur". Das is
 eine bewusste Ausnahme, keine Drift:
 
 - Die Route existiert für eine lokale Suchanfrage, die genau diesen Begriff
-  benutzt. Ohne ihn rankt sie nicht, und sie ist die einzige Seite mit
-  lokalem Einstieg.
+  benutzt. Ohne ihn rankt sie nicht. Sie besitzt den **Agentur-Intent**
+  `wordpress agentur hannover`; der getrennte Freelancer-Intent gehört nicht
+  auf diese URL.
 - Der Begriff wird immer qualifiziert („für messbare B2B-Anfragen"), nie allein
   als Rollen-Claim gesetzt. Im Fließtext bleibt die Rolle `Spezialist für
   WordPress als Anfragesystem`, ausdrücklich abgegrenzt gegen die lokale
@@ -150,6 +151,45 @@ eine bewusste Ausnahme, keine Drift:
 
 Regressionen auf dieser Route findet
 `agents/skills/seo-drift/scripts/drift-report.sh`.
+
+## Nebenpfad: WordPress Freelancer Hannover
+
+`/wordpress-freelancer-hannover/` ist eine zweite, bewusst eng geführte lokale
+WordPress-Ausnahme. Sie richtet sich an **direkte Auftraggeber**, die gezielt mit
+einem einzelnen Freelancer arbeiten wollen. Sie ist weder eine zweite
+Agentur-Seite noch eine versteckte White-Label-Seite.
+
+- Primärer Query-Owner: `wordpress freelancer hannover`; der allgemeinere
+  Begriff `wordpress freelancer` darf als sekundärer Suchbegriff mitgeführt
+  werden. `wordpress experte hannover` kann diese Route unterstützen.
+- `WordPress Freelancer` darf auf **dieser Route** in SEO-Title, H1 und sichtbarer
+  Rollenbeschreibung stehen. Die globale Hard-Ban-Regel bleibt für alle anderen
+  Akquise-Routen bestehen.
+- Die Route **targetet nicht** `wordpress agentur hannover`. Dieser Begriff
+  bleibt bei `/wordpress-agentur-hannover/` und darf auf der Freelancer-Seite nur
+  als klarer Abgrenzungs-/Routing-Link vorkommen.
+- Die Route **targetet keine White-Label-Queries**. `White-Label` darf nur als
+  Verweis auf `/whitelabel-retainer/` erscheinen; Agenturen bleiben Zielgruppe
+  des separaten Agentur-Nebenpfads.
+- Differenzierung ist nicht „noch ein WordPress-Techniker“, sondern die
+  Verbindung aus Entwicklung, Tracking/Attribution, Server-Side Tracking,
+  Funnel/CRO, technischer SEO, Performance und Accessibility.
+- GitHub, versionierter Code, Staging, Review und kontrollierte Deployments
+  dürfen als Workflow-/Qualitätsbeleg sichtbar erklärt werden. KI-Unterstützung
+  ist Produktionsmittel, nicht das Wertversprechen.
+- Elementor und andere Page Builder sind zulässige Werkzeuge, aber kein
+  Rollen-Claim und kein Standardversprechen. Das Werkzeug folgt Wartbarkeit,
+  Performance und redaktionellem Bedarf des Projekts.
+- Lighthouse-Werte dürfen nur als **Labtest** bezeichnet werden. Sie sind kein
+  Ersatz für CrUX-/Felddaten und dürfen nicht als bestätigte Core Web Vitals
+  ausgegeben werden.
+- Öffentliche Referenzen müssen direkt prüfbar sein. White-Label-Kundennamen
+  bleiben unveröffentlicht, solange keine ausdrückliche Freigabe vorliegt.
+- Die Seite bleibt schlank: wenige fachliche Ebenen, starker Proof und klare
+  Zusammenarbeit statt eines gleichgewichtigen 15-Punkte-Leistungskatalogs.
+
+Diese Ausnahme erweitert die öffentliche Solar-/SHK-Kernpositionierung nicht.
+Sie ist ein eigenständiger SEO-/Akquise-Nebenpfad für direkte WordPress-Projekte.
 
 ## Brand Colors (Project Override)
 
