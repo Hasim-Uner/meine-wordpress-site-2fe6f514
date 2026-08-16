@@ -1,0 +1,40 @@
+name: Freelancer Lighthouse Live Audit
+
+on:
+  push:
+    branches:
+      - audit/freelancer-lighthouse-live
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Show Chrome version
+        run: google-chrome --version
+      - name: Run Lighthouse against production
+        run: |
+          npx --yes lighthouse@13.4.1 https://hasimuener.de/wordpress-freelancer-hannover/ \
+            --only-categories=performance,accessibility,best-practices,seo \
+            --form-factor=mobile \
+            --screenEmulation.mobile=true \
+            --chrome-flags='--headless --no-sandbox --disable-gpu' \
+            --output=json \
+            --output-path=./lighthouse.json
+          node - <<'NODE'
+          const r = require('./lighthouse.json');
+          const scores = Object.fromEntries(Object.entries(r.categories).map(([k,v]) => [k, Math.round(v.score * 100)]));
+          console.log('LIGHTHOUSE_SCORES=' + JSON.stringify(scores));
+          const contrast = r.audits['color-contrast'];
+          console.log('COLOR_CONTRAST_SCORE=' + contrast.score);
+          if (contrast.details && contrast.details.items) {
+            console.log('COLOR_CONTRAST_ITEMS=' + contrast.details.items.length);
+          }
+          NODE
