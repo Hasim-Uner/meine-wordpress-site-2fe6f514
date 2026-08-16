@@ -53,10 +53,10 @@ if ( $is_whitelabel_context ) {
 	$brand_tagline   = 'White-Label-Partner für Agenturen — SEO, WordPress, Tracking und Conversion. Unsichtbar im Hintergrund.';
 	$copyright_line  = 'Haşim Üner - White-Label-Partner für Agenturen';
 } elseif ( $is_freelancer_context ) {
-	$brand_tagline        = 'WordPress Freelancer aus Hannover — Entwicklung, Tracking, Funnel und technische SEO direkt aus einer Hand.';
+	$brand_tagline        = 'WordPress Freelancer aus Hannover — Entwicklung, Tracking und Funnel direkt mit Haşim Üner.';
 	$copyright_line       = 'Haşim Üner - WordPress Freelancer Hannover';
 	$request_url          = add_query_arg( [ 'type' => 'project', 'focus' => 'followup_scope' ], $contact_url );
-	$audit_cta_label      = 'WordPress-Projekt kurz beschreiben';
+	$audit_cta_label      = 'WordPress-Projekt prüfen lassen';
 	$audit_cta_microcopy  = 'Direkt mit mir · Scope und Preis vor Umsetzung';
 } else {
 	$brand_tagline   = 'Eigene Anfragesysteme für Solar-, Wärmepumpen- und Speicher-Anbieter, die Portal-Abhängigkeit messbar senken wollen.';
