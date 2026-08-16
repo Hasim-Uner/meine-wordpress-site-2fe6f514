@@ -32,6 +32,18 @@ wp_enqueue_style(
 	$asset_ver
 );
 
+$polish_path = get_stylesheet_directory() . '/assets/css/wordpress-freelancer-hannover-polish.css';
+$polish_url  = get_stylesheet_directory_uri() . '/assets/css/wordpress-freelancer-hannover-polish.css';
+if ( file_exists( $polish_path ) ) {
+	$polish_ver = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $polish_path ) : wp_get_theme()->get( 'Version' );
+	wp_enqueue_style(
+		'hu-wordpress-freelancer-hannover-polish',
+		$polish_url,
+		[ 'hu-wordpress-freelancer-hannover' ],
+		$polish_ver
+	);
+}
+
 $script_path = get_stylesheet_directory() . '/assets/js/wordpress-freelancer-hannover.js';
 $script_url  = get_stylesheet_directory_uri() . '/assets/js/wordpress-freelancer-hannover.js';
 $script_ver  = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $script_path ) : wp_get_theme()->get( 'Version' );
@@ -58,13 +70,14 @@ add_filter(
 );
 
 // Nutzt den bestehenden SEO-Resolver (inc/seo-meta.php) statt einen zweiten
-// Meta-Stack im Template aufzubauen.
+// Meta-Stack im Template aufzubauen. Der Title bleibt absichtlich eng auf dem
+// Freelancer-Intent; lokale WordPress-SEO-Queries gehoeren zur Agentur-Route.
 add_filter(
 	'hu_forced_singular_seo_map',
 	static function ( $map ) {
 		$map['wordpress-freelancer-hannover'] = [
-			'title'       => 'WordPress Freelancer Hannover | Entwicklung, Tracking & SEO',
-			'description' => 'WordPress Freelancer in Hannover für individuelle Entwicklung, Server-Side Tracking, Funnels, technische SEO und Performance. Direkt mit Haşim Üner.',
+			'title'       => 'WordPress Freelancer Hannover | Haşim Üner',
+			'description' => 'WordPress Freelancer in Hannover für individuelle Entwicklung, Tracking und Funnels. Direkte Zusammenarbeit, versionierter Code und klarer Scope.',
 		];
 		return $map;
 	}
@@ -86,7 +99,7 @@ $github_url     = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
 
 $portrait_url = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-relaxed-640x800.webp';
 
-$website_start_price = '2.900 €';
+$website_start_price = function_exists( 'hu_freelancer_website_price' ) ? hu_freelancer_website_price( true ) : 'Preis nach Scope';
 
 $e3_cpl_before = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
 $e3_cpl_after  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
@@ -122,7 +135,7 @@ $references = [
 $faqs = [
 	[
 		'q' => 'Was kostet ein WordPress Freelancer?',
-		'a' => sprintf( 'Eine individuell entwickelte WordPress-Website startet bei mir aktuell ab %s netto. Kleinere technische Aufgaben, Tracking-Setups oder bestehende Websites kalkuliere ich nach Scope. Vor der Umsetzung steht fest, was enthalten ist und was nicht.', $website_start_price ),
+		'a' => sprintf( 'Eine individuell entwickelte WordPress-Website startet bei mir aktuell ab %s. Der Einstieg ist für kompakte Unternehmenswebsites mit klar abgegrenztem Scope gedacht. Größere Integrationen, Tracking-Setups oder Funnel-Projekte kalkuliere ich separat.', $website_start_price ),
 	],
 	[
 		'q' => 'Arbeitest du nur in Hannover?',
@@ -134,11 +147,11 @@ $faqs = [
 	],
 	[
 		'q' => 'Kannst du ein vorhandenes Screendesign oder Figma-Design umsetzen?',
-		'a' => 'Ja. Ein vorhandenes Design kann direkt in die technische Umsetzung gehen. Mein Workflow ist KI-unterstützt, aber der Code bleibt versioniert, prüfbar und kontrolliert deploybar — Geschwindigkeit ersetzt keine Qualitätskontrolle.',
+		'a' => 'Ja. Ein vorhandenes Figma- oder Screendesign kann direkt in die technische Umsetzung gehen. Ich überführe es responsive in WordPress, versioniere die Änderungen und prüfe sie vor dem Deployment.',
 	],
 	[
-		'q' => 'Was ist der Unterschied zu einer klassischen WordPress-Agentur?',
-		'a' => 'Du arbeitest direkt mit der Person, die strukturiert, entwickelt und technisch entscheidet. Für größere Team-Setups gibt es weiterhin die separate WordPress-Agentur-Hannover-Seite; Agenturen, die Unterstützung im Hintergrund suchen, finden dafür den eigenen White-Label-Bereich.',
+		'q' => 'Was ist der Unterschied zwischen Freelancer und Agentur?',
+		'a' => 'Du arbeitest direkt mit der Person, die strukturiert, entwickelt und technisch entscheidet. Das reduziert Übergaben und macht den Scope klarer. Wenn ein größeres Team-Setup sinnvoller ist, sage ich das vor Projektstart offen.',
 	],
 	[
 		'q' => 'Berücksichtigst du Barrierefreiheit und Core Web Vitals?',
@@ -157,8 +170,8 @@ get_header();
 				<div class="hu-fr__hero-grid">
 					<div class="hu-fr__hero-copy">
 						<h1 id="hu-fr-title" class="hu-fr__seo-title">WordPress Freelancer Hannover</h1>
-						<p class="hu-fr__hero-title">Websites, die Anfragen erzeugen — nicht nur gut aussehen.</p>
-						<p class="hu-fr__lede">Ich verbinde WordPress-Entwicklung, Server-Side Tracking und Funnel-/Conversion-Logik zu einer sauberen Strecke — direkt mit mir, ohne Übergaben zwischen Technik und Marketing.</p>
+						<p class="hu-fr__hero-title">Technik, Tracking und Funnel — ohne technische Übergaben.</p>
+						<p class="hu-fr__lede">Ich entwickle WordPress-Websites und Landingpages so, dass Code, Messung und Conversion-Logik zusammenpassen. Direkt mit mir — vom Scope bis zum Deployment.</p>
 
 						<ul class="hu-fr__hero-capabilities" role="list" aria-label="Schwerpunkte">
 							<li>WordPress</li>
@@ -167,7 +180,7 @@ get_header();
 						</ul>
 
 						<div class="hu-fr__hero-actions">
-							<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt kurz beschreiben <span aria-hidden="true">↗</span></a>
+							<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt prüfen lassen <span aria-hidden="true">↗</span></a>
 							<a class="hu-fr__button hu-fr__button--secondary" href="#projekte" data-track-action="cta_freelancer_hero_references" data-track-category="navigation" data-track-section="hero">Referenzen ansehen</a>
 						</div>
 					</div>
@@ -195,7 +208,7 @@ get_header();
 						<p class="hu-fr__kicker">Der Unterschied</p>
 						<h2 id="hu-fr-system-title" class="hu-fr__h2">Eine Website ist nicht das Ende der Strecke.</h2>
 					</div>
-					<p>Viele WordPress-Projekte enden beim Launch. Für mich beginnt dort erst die Frage, ob die Seite messbar Nachfrage verarbeitet.</p>
+					<p>Viele WordPress-Projekte enden beim Launch. Entscheidend ist, ob Struktur, Messung und Nutzerweg danach zusammenpassen.</p>
 				</div>
 
 				<div class="hu-fr-system" aria-label="System aus Code, Tracking, Funnel und Anfrage">
@@ -233,7 +246,7 @@ get_header();
 					<p class="hu-fr__kicker">Kompetenz</p>
 					<h2 id="hu-fr-skills-title" class="hu-fr__h2">Vier Ebenen, die zusammenpassen müssen.</h2>
 				</div>
-				<p class="hu-fr__section-aside">Ich bin kein reiner Theme-Bauer und kein Marketer, der für jede technische Änderung ein Ticket schreiben muss.</p>
+				<p class="hu-fr__section-aside">Du musst Entwicklung, Tracking und Funnel nicht auf mehrere Ansprechpartner verteilen. Die technischen Entscheidungen bleiben in einem Scope.</p>
 			</div>
 
 			<div class="hu-fr__shell hu-fr__skill-list">
@@ -282,11 +295,11 @@ get_header();
 						<li>GitHub statt Datei-Chaos</li>
 						<li>Staging und nachvollziehbare Änderungen</li>
 						<li>Performance- und Accessibility-Checks</li>
-						<li>KI-unterstützter Workflow mit menschlicher Qualitätskontrolle</li>
+						<li>Review vor dem Deployment</li>
 					</ul>
 					<div class="hu-fr__builder-note">
 						<strong>Elementor? Kann ich.</strong>
-						<p>Ich setze Page Builder ein, wenn sie für die spätere Redaktion einen echten Vorteil bringen. Standard ist nicht „möglichst viele Plugins“, sondern die schlankste sinnvolle Lösung.</p>
+						<p>Page Builder setze ich ein, wenn sie für die spätere Redaktion einen echten Vorteil bringen. Standard ist die schlankste Lösung, die Redaktion und Wartung wirklich brauchen.</p>
 					</div>
 				</div>
 			</div>
@@ -307,6 +320,7 @@ get_header();
 					<div><strong><?php echo esc_html( $e3_leads ); ?></strong><span>qualifizierte Anfragen im aufgebauten System</span></div>
 					<div><strong>Technik + Marketing</strong><span>Landingpages, Tracking und Optimierung als eine Strecke</span></div>
 				</div>
+				<p class="hu-fr__case-note">Die Kennzahlen stammen aus dem dokumentierten Solar-Case und beschreiben das Gesamtsystem aus Landingpages, Tracking und Optimierung. Sie sind kein isolierter WordPress-Effekt und keine Ergebniszusage.</p>
 
 				<div class="hu-fr__references">
 					<?php foreach ( $references as $index => $reference ) : ?>
@@ -330,14 +344,14 @@ get_header();
 				<div>
 					<p class="hu-fr__kicker hu-fr__kicker--light">Preisrahmen</p>
 					<h2 id="hu-fr-pricing-title" class="hu-fr__h2 hu-fr__h2--light">Vor dem Projekt soll klar sein, worüber wir sprechen.</h2>
-					<p class="hu-fr__pricing-copy">Kein künstlicher Paketfriedhof. Ein klarer Einstieg und ein Scope, der vor der Umsetzung feststeht.</p>
+					<p class="hu-fr__pricing-copy">Für kompakte Unternehmensseiten gibt es einen klaren Einstieg. Größere Setups werden erst nach einem abgegrenzten Scope kalkuliert.</p>
 				</div>
 				<div class="hu-fr__price-panel">
-					<div class="hu-fr__price-row hu-fr__price-row--primary"><span>Individuelle WordPress-Website</span><strong>ab <?php echo esc_html( $website_start_price ); ?> netto</strong></div>
+					<div class="hu-fr__price-row hu-fr__price-row--primary"><span>Individuelle WordPress-Website</span><strong>ab <?php echo esc_html( $website_start_price ); ?></strong></div>
 					<div class="hu-fr__price-row"><span>Technische Aufgaben / bestehende Website</span><strong>nach Scope</strong></div>
 					<div class="hu-fr__price-row"><span>Tracking / Funnel / komplexere Integrationen</span><strong>nach Scope</strong></div>
-					<p>Custom Code ist kein Aufpreis-Label. Ich entscheide nach Projekt, was schlank und sinnvoll ist. Elementor ist möglich, wenn redaktionelle Flexibilität wichtiger ist.</p>
-					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_pricing_project" data-track-category="lead_gen" data-track-section="pricing">Scope kurz prüfen <span aria-hidden="true">↗</span></a>
+					<p>Der Einstieg gilt für eine kompakte Unternehmenswebsite mit klar abgegrenztem Umfang. Custom Code ist kein Aufpreis-Label. Elementor ist möglich, wenn redaktionelle Flexibilität den zusätzlichen Builder rechtfertigt.</p>
+					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_pricing_project" data-track-category="lead_gen" data-track-section="pricing">Projekt prüfen lassen <span aria-hidden="true">↗</span></a>
 				</div>
 			</div>
 		</section>
@@ -364,11 +378,11 @@ get_header();
 			<div class="hu-fr__shell hu-fr__final-grid">
 				<div>
 					<p class="hu-fr__kicker">Direkte Zusammenarbeit</p>
-					<h2 id="hu-fr-final-title" class="hu-fr__h2">Wenn WordPress, Tracking und Funnel nicht in drei Tickets zerfallen sollen.</h2>
+					<h2 id="hu-fr-final-title" class="hu-fr__h2">Wenn Website, Tracking und Funnel nicht getrennt gedacht werden sollen.</h2>
 				</div>
 				<div class="hu-fr__final-action">
-					<p>Beschreibe kurz, was vorhanden ist und was sich ändern soll. Ich sage dir, ob ich der richtige Fit bin und wie ich den Scope schneiden würde.</p>
-					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_final_project" data-track-category="lead_gen" data-track-section="final">Projekt kurz beschreiben <span aria-hidden="true">↗</span></a>
+					<p>Beschreibe kurz Ausgangslage und Ziel. Du bekommst eine klare Rückmeldung, ob das Projekt passt und welcher Scope sinnvoll wäre.</p>
+					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_final_project" data-track-category="lead_gen" data-track-section="final">Projekt prüfen lassen <span aria-hidden="true">↗</span></a>
 					<p class="hu-fr__route-links">Oder: <a href="<?php echo esc_url( $agentur_url ); ?>">WordPress Agentur Hannover</a> · <a href="<?php echo esc_url( $tracking_url ); ?>">Server-Side Tracking</a> · <a href="<?php echo esc_url( $about_url ); ?>">Über Haşim</a></p>
 				</div>
 			</div>
