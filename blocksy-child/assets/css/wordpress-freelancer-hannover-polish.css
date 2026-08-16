@@ -3,6 +3,10 @@
  * Verdichtet den bestehenden Light-Mode-Aufbau, ohne neue Effekte oder
  * Komponenten einzufuehren. Die Systemgrafik und der Git-Workflow bleiben
  * die beiden visuellen Schwerpunktmomente der Route.
+ *
+ * Lighthouse-Follow-up 2026-08-16: Kontraste der kleinen Code-/Footer-Texte
+ * absichtlich mit deutlicher Reserve ueber AA; die SVG-Daueranimation bleibt
+ * statisch, weil Lighthouse sie als nicht-kompositierte Animation meldete.
  */
 
 .hu-fr__hero {
@@ -80,6 +84,42 @@
 	font-size: 0.76rem;
 	line-height: 1.6;
 	color: var(--fr-muted);
+}
+
+/* Accessibility: explicit high-contrast values for Lighthouse findings. */
+.hu-fr-git__topbar code {
+	color: #e2d9cf;
+}
+
+.hu-fr-git__rows code {
+	color: #e0ad8b;
+}
+
+.hu-fr__lab-note {
+	color: #6b625b;
+}
+
+.hu-fr__final .hu-fr__kicker {
+	color: #6a321b;
+}
+
+.hu-fr__final-action > p:first-child {
+	color: #463f39;
+}
+
+.hu-fr__route-links {
+	color: #4f4740 !important;
+}
+
+/*
+ * Performance: statische Signal-Linie statt endloser stroke-dashoffset-
+ * Animation. Die Grafik bleibt als visuelles System erhalten, ohne den von
+ * Lighthouse gemeldeten nicht-kompositierten Animationspfad.
+ */
+.hu-fr-system__signal {
+	animation: none !important;
+	stroke-dasharray: none;
+	stroke-opacity: 0.92;
 }
 
 @media (max-width: 980px) {
