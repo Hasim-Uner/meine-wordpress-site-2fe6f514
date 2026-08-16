@@ -32,6 +32,18 @@ wp_enqueue_style(
 	$asset_ver
 );
 
+$script_path = get_stylesheet_directory() . '/assets/js/wordpress-freelancer-hannover.js';
+$script_url  = get_stylesheet_directory_uri() . '/assets/js/wordpress-freelancer-hannover.js';
+$script_ver  = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $script_path ) : wp_get_theme()->get( 'Version' );
+
+wp_enqueue_script(
+	'hu-wordpress-freelancer-hannover',
+	$script_url,
+	[],
+	$script_ver,
+	true
+);
+
 // Das Markup dieser Seite ist vollstaendig repo-eigen. Block-Styles sind hier
 // Render-Blocking-Overhead ohne Gegenwert und koennen vor wp_head entfernt werden.
 wp_dequeue_style( 'wp-block-library' );
@@ -72,11 +84,7 @@ $about_url      = home_url( '/hasim-uener/' );
 $e3_case_url    = home_url( '/case-study-solar-leadgenerierung/' );
 $github_url     = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
 
-$portrait_url    = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-portrait-800x1000.webp';
-$portrait_srcset = sprintf(
-	'%1$s/assets/img/hasim-freelancer-portrait-480x600.webp 480w, %1$s/assets/img/hasim-freelancer-portrait-800x1000.webp 800w',
-	get_stylesheet_directory_uri()
-);
+$portrait_url = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-relaxed-640x800.webp';
 
 $website_start_price = '2.900 €';
 
@@ -145,46 +153,48 @@ get_header();
 	<div class="hu-fr" data-track-page="wordpress_freelancer_hannover">
 
 		<section class="hu-fr__hero" aria-labelledby="hu-fr-title">
-			<div class="hu-fr__shell hu-fr__hero-grid">
-				<div class="hu-fr__hero-copy">
-					<p class="hu-fr__eyebrow">WordPress Freelancer · Hannover + remote</p>
-					<h1 id="hu-fr-title" class="hu-fr__h1">WordPress Freelancer Hannover.<br><span>Technik, Tracking und Marketing in einem System.</span></h1>
-					<p class="hu-fr__lede">Für Unternehmen, die nicht nur eine WordPress-Seite brauchen. Ich verbinde Entwicklung, Server-Side Tracking, Funnel-Logik und technische SEO — direkt, ohne Übergaben zwischen Entwickler und Marketing.</p>
+			<div class="hu-fr__shell">
+				<div class="hu-fr__hero-grid">
+					<div class="hu-fr__hero-copy">
+						<h1 id="hu-fr-title" class="hu-fr__seo-title">WordPress Freelancer Hannover</h1>
+						<p class="hu-fr__hero-title">Websites, die Anfragen erzeugen — nicht nur gut aussehen.</p>
+						<p class="hu-fr__lede">Ich verbinde WordPress-Entwicklung, Server-Side Tracking und Funnel-/Conversion-Logik zu einer sauberen Strecke — direkt mit mir, ohne Übergaben zwischen Technik und Marketing.</p>
 
-					<div class="hu-fr__hero-actions">
-						<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt kurz beschreiben <span aria-hidden="true">↗</span></a>
-						<a class="hu-fr__text-link" href="#arbeitsweise" data-track-action="cta_freelancer_hero_workflow" data-track-category="navigation" data-track-section="hero">So arbeite ich</a>
-					</div>
+						<ul class="hu-fr__hero-capabilities" role="list" aria-label="Schwerpunkte">
+							<li>WordPress</li>
+							<li>Server-Side Tracking</li>
+							<li>Funnel &amp; CRO</li>
+						</ul>
 
-					<ul class="hu-fr__proofline" role="list" aria-label="Kurzbelege">
-						<li><strong>8+ Jahre</strong><span>WordPress</span></li>
-						<li><strong>99/100</strong><span>Mobile Performance*</span></li>
-						<li><strong>100/100</strong><span>Accessibility*</span></li>
-					</ul>
-					<p class="hu-fr__lab-note">* Lighthouse-Labtest auf hasimuener.de, August 2026. Kein Ersatz für CrUX-Felddaten.</p>
-				</div>
-
-				<div class="hu-fr__hero-visual">
-					<div class="hu-fr__portrait-frame">
-						<img class="hu-fr__portrait" src="<?php echo esc_url( $portrait_url ); ?>" srcset="<?php echo esc_attr( $portrait_srcset ); ?>" sizes="(max-width: 760px) calc(100vw - 48px), 42vw" width="800" height="1000" alt="Haşim Üner, WordPress Freelancer aus der Region Hannover" fetchpriority="high" decoding="async">
-						<div class="hu-fr__portrait-label" aria-hidden="true">
-							<span>Code</span><span>Tracking</span><span>Funnel</span>
+						<div class="hu-fr__hero-actions">
+							<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt kurz beschreiben <span aria-hidden="true">↗</span></a>
+							<a class="hu-fr__button hu-fr__button--secondary" href="#projekte" data-track-action="cta_freelancer_hero_references" data-track-category="navigation" data-track-section="hero">Referenzen ansehen</a>
 						</div>
 					</div>
-					<div class="hu-fr__hero-orbit" aria-hidden="true">
-						<span class="hu-fr__orbit-dot hu-fr__orbit-dot--1"></span>
-						<span class="hu-fr__orbit-dot hu-fr__orbit-dot--2"></span>
-						<span class="hu-fr__orbit-dot hu-fr__orbit-dot--3"></span>
+
+					<div class="hu-fr__hero-visual">
+						<div class="hu-fr__portrait-frame">
+							<img class="hu-fr__portrait" src="<?php echo esc_url( $portrait_url ); ?>" sizes="(max-width: 760px) calc(100vw - 32px), 44vw" width="640" height="800" alt="Haşim Üner, WordPress Freelancer aus der Region Hannover" fetchpriority="high" decoding="async">
+						</div>
 					</div>
 				</div>
+
+				<ul class="hu-fr__proofline" role="list" aria-label="Kurzbelege">
+					<li><strong>8+ Jahre</strong><span>WordPress &amp; Web</span></li>
+					<li><strong>99/100</strong><span>Mobile Performance*</span></li>
+					<li><strong>100/100</strong><span>Accessibility*</span></li>
+				</ul>
+				<p class="hu-fr__lab-note">* Lighthouse-Labtest auf hasimuener.de, August 2026. Kein Ersatz für CrUX-Felddaten.</p>
 			</div>
 		</section>
 
 		<section class="hu-fr__system" aria-labelledby="hu-fr-system-title">
 			<div class="hu-fr__shell">
 				<div class="hu-fr__section-intro">
-					<p class="hu-fr__kicker">Der Unterschied</p>
-					<h2 id="hu-fr-system-title" class="hu-fr__h2">Eine Website ist nicht das Ende der Strecke.</h2>
+					<div>
+						<p class="hu-fr__kicker">Der Unterschied</p>
+						<h2 id="hu-fr-system-title" class="hu-fr__h2">Eine Website ist nicht das Ende der Strecke.</h2>
+					</div>
 					<p>Viele WordPress-Projekte enden beim Launch. Für mich beginnt dort erst die Frage, ob die Seite messbar Nachfrage verarbeitet.</p>
 				</div>
 
@@ -210,7 +220,7 @@ get_header();
 					<div class="hu-fr-system__labels">
 						<p><strong>Custom WordPress</strong><span>schlank, wartbar, ohne unnötigen Builder-Ballast</span></p>
 						<p><strong>Server-Side Tracking</strong><span>GA4, GTM, CAPI und Consent sauber zusammengedacht</span></p>
-						<p><strong>Funnel & CRO</strong><span>klare Wege statt nur hübscher Seiten</span></p>
+						<p><strong>Funnel &amp; CRO</strong><span>klare Wege statt nur hübscher Seiten</span></p>
 						<p><strong>Messbare Anfrage</strong><span>der eigentliche Zweck der Strecke</span></p>
 					</div>
 				</div>
@@ -221,7 +231,7 @@ get_header();
 			<div class="hu-fr__shell hu-fr__split-head">
 				<div>
 					<p class="hu-fr__kicker">Kompetenz</p>
-					<h2 id="hu-fr-skills-title" class="hu-fr__h2">Nicht zehn Gewerke. Vier Ebenen, die zusammenpassen müssen.</h2>
+					<h2 id="hu-fr-skills-title" class="hu-fr__h2">Vier Ebenen, die zusammenpassen müssen.</h2>
 				</div>
 				<p class="hu-fr__section-aside">Ich bin kein reiner Theme-Bauer und kein Marketer, der für jede technische Änderung ein Ticket schreiben muss.</p>
 			</div>
@@ -234,17 +244,17 @@ get_header();
 				</article>
 				<article class="hu-fr__skill-row">
 					<span class="hu-fr__skill-index">02</span>
-					<h3>Tracking & Attribution</h3>
+					<h3>Tracking &amp; Attribution</h3>
 					<p>Server-Side GTM, GA4, Meta CAPI, Consent Mode und saubere Übergaben. Tracking ist kein nachträglicher Pixel, sondern Teil der Architektur.</p>
 				</article>
 				<article class="hu-fr__skill-row">
 					<span class="hu-fr__skill-index">03</span>
-					<h3>Landingpages & Funnel</h3>
+					<h3>Landingpages &amp; Funnel</h3>
 					<p>Angebot, Reihenfolge, Formulare, Vorqualifizierung und Conversion. Der Nutzer soll nicht durch eine Website laufen, sondern einen nachvollziehbaren Weg haben.</p>
 				</article>
 				<article class="hu-fr__skill-row">
 					<span class="hu-fr__skill-index">04</span>
-					<h3>Technisches SEO, Performance & Accessibility</h3>
+					<h3>Technisches SEO, Performance &amp; Accessibility</h3>
 					<p>Crawlability, interne Struktur, Core Web Vitals, semantisches HTML und Barrierefreiheit werden beim Bauen berücksichtigt — nicht erst nach dem Launch angeklebt.</p>
 				</article>
 			</div>
@@ -255,10 +265,10 @@ get_header();
 				<div class="hu-fr-git" aria-label="Versionierter Entwicklungsworkflow">
 					<div class="hu-fr-git__topbar"><span></span><span></span><span></span><code>project/main</code></div>
 					<ol class="hu-fr-git__rows">
-						<li><span class="hu-fr-git__node"></span><code>brief/</code><strong>Ziel & Scope</strong></li>
+						<li><span class="hu-fr-git__node"></span><code>brief/</code><strong>Ziel &amp; Scope</strong></li>
 						<li><span class="hu-fr-git__node"></span><code>feature/</code><strong>Design → Code</strong></li>
-						<li><span class="hu-fr-git__node"></span><code>staging/</code><strong>Responsive & QA</strong></li>
-						<li><span class="hu-fr-git__node"></span><code>review/</code><strong>Performance & Accessibility</strong></li>
+						<li><span class="hu-fr-git__node"></span><code>staging/</code><strong>Responsive &amp; QA</strong></li>
+						<li><span class="hu-fr-git__node"></span><code>review/</code><strong>Performance &amp; Accessibility</strong></li>
 						<li><span class="hu-fr-git__node hu-fr-git__node--last"></span><code>main/</code><strong>kontrolliertes Deployment</strong></li>
 					</ol>
 					<a class="hu-fr-git__repo" href="<?php echo esc_url( $github_url ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="link_freelancer_github" data-track-category="trust" data-track-section="workflow">Öffentliches GitHub-Repo ansehen <span aria-hidden="true">↗</span></a>
@@ -282,7 +292,7 @@ get_header();
 			</div>
 		</section>
 
-		<section class="hu-fr__proof" aria-labelledby="hu-fr-proof-title">
+		<section class="hu-fr__proof" id="projekte" aria-labelledby="hu-fr-proof-title">
 			<div class="hu-fr__shell">
 				<div class="hu-fr__proof-head">
 					<div>
@@ -327,7 +337,7 @@ get_header();
 					<div class="hu-fr__price-row"><span>Technische Aufgaben / bestehende Website</span><strong>nach Scope</strong></div>
 					<div class="hu-fr__price-row"><span>Tracking / Funnel / komplexere Integrationen</span><strong>nach Scope</strong></div>
 					<p>Custom Code ist kein Aufpreis-Label. Ich entscheide nach Projekt, was schlank und sinnvoll ist. Elementor ist möglich, wenn redaktionelle Flexibilität wichtiger ist.</p>
-					<a class="hu-fr__button hu-fr__button--light" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_pricing_project" data-track-category="lead_gen" data-track-section="pricing">Scope kurz prüfen <span aria-hidden="true">↗</span></a>
+					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_pricing_project" data-track-category="lead_gen" data-track-section="pricing">Scope kurz prüfen <span aria-hidden="true">↗</span></a>
 				</div>
 			</div>
 		</section>
@@ -339,7 +349,7 @@ get_header();
 					<h2 id="hu-fr-faq-title" class="hu-fr__h2">Die Fragen vor dem ersten Projekt.</h2>
 					<p>Wenn danach noch etwas offen ist, reicht eine kurze Nachricht. Kein Pflicht-Call.</p>
 				</div>
-				<div class="hu-fr__faq-list">
+				<div class="hu-fr__faq-list" data-fr-accordion>
 					<?php foreach ( $faqs as $faq ) : ?>
 						<details class="hu-fr__faq-item">
 							<summary><?php echo esc_html( $faq['q'] ); ?><span aria-hidden="true">+</span></summary>
