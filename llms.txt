@@ -30,4 +30,5 @@
 - [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und Anfragesystemen.
 - [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
 - [Stack Solar](/stack-solar/) - Technischer Unterbau für Solar- und Wärmepumpen-Anbieter: Frontend, Hosting, Server-Side Tracking, CRM-Übergabe und projektspezifische Vorqualifizierung.
-- [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - sekundäre lokale B2B-Service-Seite.
+- [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - sekundäre lokale B2B-Service-Seite für den Agentur-Intent.
+- [WordPress Freelancer Hannover](/wordpress-freelancer-hannover/) - separater lokaler Freelancer-Einstieg für direkte WordPress-Projekte mit Entwicklung, Tracking, Funnel und technischer SEO.
