@@ -293,6 +293,25 @@ function hu_tracking_delivery_weeks_display() {
 	);
 }
 
+// ── WordPress-Freelancer-Nebenpfad ───────────────────────────────
+// Der lokale Freelancer-Einstieg ist ein eigener, klar begrenzter Preisanker.
+// Er gilt fuer kompakte individuelle Unternehmenswebsites mit definiertem Scope;
+// komplexere Integrationen, Tracking-Setups und Funnel-Projekte werden separat
+// kalkuliert. Der Wert lebt hier, damit Template und FAQ nicht auseinanderlaufen.
+define( 'HU_FREELANCER_WEBSITE_MIN', 3400 );
+
+/**
+ * Display the canonical starting price for the WordPress freelancer route.
+ *
+ * @param bool $with_net Append the "netto" qualifier.
+ * @return string
+ */
+function hu_freelancer_website_price( $with_net = false ) {
+	$price = hu_format_eur( HU_FREELANCER_WEBSITE_MIN );
+
+	return $with_net ? $price . ' netto' : $price;
+}
+
 // ── White-Label-Nebenpfad ────────────────────────────────────────
 // Der Partner-Funnel hat eine eigene Einstiegsebene. Sie bleibt bewusst
 // getrennt vom WGOS-Foundation- und Add-on-Modell oben.
