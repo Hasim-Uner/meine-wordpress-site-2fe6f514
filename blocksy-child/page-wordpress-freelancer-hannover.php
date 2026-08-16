@@ -194,10 +194,10 @@ get_header();
 
 				<ul class="hu-fr__proofline" role="list" aria-label="Kurzbelege">
 					<li><strong>8+ Jahre</strong><span>WordPress &amp; Web</span></li>
-					<li><strong>92/100</strong><span>Mobile Performance*</span></li>
-					<li><strong>97/100</strong><span>Accessibility*</span></li>
+					<li><strong>99/100</strong><span>Mobile Performance*</span></li>
+					<li><strong>100/100</strong><span>Barrierefreiheit*</span></li>
 				</ul>
-				<p class="hu-fr__lab-note">* Lighthouse Mobile-Labtest dieser Seite, 16.08.2026, 23:25 MESZ. Werte können variieren; keine CrUX-Felddaten.</p>
+				<p class="hu-fr__lab-note">* Lighthouse Mobile-Labtest dieser Seite, 17.08.2026, 00:22 MESZ. Werte können variieren; keine CrUX-Felddaten.</p>
 			</div>
 		</section>
 
