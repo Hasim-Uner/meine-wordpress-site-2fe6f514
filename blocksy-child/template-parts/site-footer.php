@@ -22,6 +22,8 @@ $results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
 $glossary_url = $primary_urls['glossary'] ?? home_url( '/glossar/' );
 $agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
+$freelancer_url = home_url( '/wordpress-freelancer-hannover/' );
+$tracking_url   = home_url( '/server-side-tracking-b2b/' );
 $about_url    = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
 $contact_url  = $primary_urls['contact'] ?? nexus_get_contact_url();
 $project_request_url = add_query_arg(
@@ -44,9 +46,18 @@ $is_whitelabel_context = is_page_template( 'page-whitelabel-retainer.php' )
 	|| is_page( 'whitelabel-retainer-proof' )
 	|| is_page( 'whitelabel' );
 
+$is_freelancer_context = is_page_template( 'page-wordpress-freelancer-hannover.php' )
+	|| is_page( 'wordpress-freelancer-hannover' );
+
 if ( $is_whitelabel_context ) {
 	$brand_tagline   = 'White-Label-Partner für Agenturen — SEO, WordPress, Tracking und Conversion. Unsichtbar im Hintergrund.';
 	$copyright_line  = 'Haşim Üner - White-Label-Partner für Agenturen';
+} elseif ( $is_freelancer_context ) {
+	$brand_tagline        = 'WordPress Freelancer aus Hannover — Entwicklung, Tracking, Funnel und technische SEO direkt aus einer Hand.';
+	$copyright_line       = 'Haşim Üner - WordPress Freelancer Hannover';
+	$request_url          = add_query_arg( [ 'type' => 'project', 'focus' => 'followup_scope' ], $contact_url );
+	$audit_cta_label      = 'WordPress-Projekt kurz beschreiben';
+	$audit_cta_microcopy  = 'Direkt mit mir · Scope und Preis vor Umsetzung';
 } else {
 	$brand_tagline   = 'Eigene Anfragesysteme für Solar-, Wärmepumpen- und Speicher-Anbieter, die Portal-Abhängigkeit messbar senken wollen.';
 	$copyright_line  = 'Haşim Üner - Anfragesysteme für Solar & Wärmepumpe';
@@ -126,6 +137,8 @@ if ( $is_whitelabel_context ) {
 					<li><a class="ft__link-strong" href="<?php echo esc_url( $blog_url ); ?>" data-track-action="cta_footer_nav_insights" data-track-category="navigation" data-track-section="footer">Insights</a></li>
 					<li><a href="<?php echo esc_url( $glossary_url ); ?>" data-track-action="cta_footer_nav_glossary" data-track-category="navigation" data-track-section="footer">Glossar für SEO, Tracking und Anfragesysteme</a></li>
 					<li><a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_footer_nav_agentur" data-track-category="navigation" data-track-section="footer">WordPress Agentur Hannover</a></li>
+					<li><a href="<?php echo esc_url( $freelancer_url ); ?>" data-track-action="cta_footer_nav_freelancer" data-track-category="navigation" data-track-section="footer">WordPress Freelancer Hannover</a></li>
+					<li><a href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="cta_footer_nav_tracking" data-track-category="navigation" data-track-section="footer">Server-Side Tracking</a></li>
 				</ul>
 			</section>
 
@@ -154,7 +167,7 @@ if ( $is_whitelabel_context ) {
 				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
 				LinkedIn
 			</a>
-			<?php if ( $is_whitelabel_context ) : ?>
+			<?php if ( $is_whitelabel_context || $is_freelancer_context ) : ?>
 			<a href="https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514" aria-label="Öffentliches GitHub-Repository" rel="me noopener noreferrer" target="_blank" data-track-action="cta_footer_social_github" data-track-category="trust" data-track-section="footer">
 				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.06c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.25 3.34.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.18 1.18.92-.26 1.91-.39 2.89-.39.98 0 1.97.13 2.89.39 2.21-1.49 3.18-1.18 3.18-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.39-5.25 5.68.41.35.78 1.04.78 2.1v3.11c0 .31.21.66.79.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
 				GitHub
