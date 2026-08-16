@@ -1,0 +1,46 @@
+name: Update Freelancer Lighthouse Proof
+
+on:
+  push:
+    branches:
+      - proof/freelancer-lighthouse-99-100
+
+permissions:
+  contents: write
+
+jobs:
+  update-proof:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: proof/freelancer-lighthouse-99-100
+          fetch-depth: 0
+      - name: Update verified Lighthouse proof
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('blocksy-child/page-wordpress-freelancer-hannover.php')
+          text = path.read_text()
+          replacements = {
+              '<li><strong>92/100</strong><span>Mobile Performance*</span></li>': '<li><strong>99/100</strong><span>Mobile Performance*</span></li>',
+              '<li><strong>97/100</strong><span>Accessibility*</span></li>': '<li><strong>100/100</strong><span>Barrierefreiheit*</span></li>',
+              '* Lighthouse Mobile-Labtest dieser Seite, 16.08.2026, 23:25 MESZ. Werte können variieren; keine CrUX-Felddaten.': '* Lighthouse Mobile-Labtest dieser Seite, 17.08.2026, 00:22 MESZ. Werte können variieren; keine CrUX-Felddaten.',
+          }
+          for old, new in replacements.items():
+              if old not in text:
+                  raise SystemExit(f'Expected proof string not found: {old}')
+              text = text.replace(old, new, 1)
+          path.write_text(text)
+          PY
+      - name: Commit proof update
+        run: |
+          if git diff --quiet -- blocksy-child/page-wordpress-freelancer-hannover.php; then
+            echo 'No proof changes needed.'
+            exit 0
+          fi
+          git config user.name 'Haşim Üner'
+          git config user.email 'hasimuener@gmail.com'
+          git add blocksy-child/page-wordpress-freelancer-hannover.php
+          git commit -m 'Update freelancer Lighthouse proof to 99 and 100'
+          git push origin HEAD:proof/freelancer-lighthouse-99-100
