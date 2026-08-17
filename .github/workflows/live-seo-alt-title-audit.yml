@@ -1,0 +1,205 @@
+name: Live SEO Alt/Title Audit
+
+on:
+  push:
+    branches:
+      - audit/live-seo-alt-title
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Crawl production HTML for titles, alts and internal link status
+        shell: bash
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from urllib.parse import urljoin, urlparse, urldefrag
+          from urllib.request import Request, urlopen
+          from urllib.error import HTTPError, URLError
+          import collections, re, xml.etree.ElementTree as ET
+
+          BASE = 'https://hasimuener.de/'
+          UA = 'Mozilla/5.0 (compatible; HasimSEOAudit/1.0)'
+
+          def fetch(url, timeout=20):
+              req = Request(url, headers={'User-Agent': UA, 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'})
+              try:
+                  with urlopen(req, timeout=timeout) as r:
+                      body = r.read()
+                      return r.status, r.geturl(), dict(r.headers), body
+              except HTTPError as e:
+                  try:
+                      body = e.read()
+                  except Exception:
+                      body = b''
+                  return e.code, e.geturl(), dict(e.headers), body
+              except URLError as e:
+                  return 0, url, {}, str(e).encode()
+
+          def same_host(url):
+              return urlparse(url).netloc.lower() in ('hasimuener.de', 'www.hasimuener.de', '')
+
+          class PageParser(HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.in_title = False
+                  self.title_parts = []
+                  self.links = []
+                  self.images = []
+                  self.robots = []
+              def handle_starttag(self, tag, attrs):
+                  d = dict(attrs)
+                  tag = tag.lower()
+                  if tag == 'title':
+                      self.in_title = True
+                  elif tag == 'a' and d.get('href'):
+                      self.links.append(d.get('href'))
+                  elif tag == 'img':
+                      self.images.append(d)
+                  elif tag == 'meta' and d.get('name','').lower() == 'robots':
+                      self.robots.append(d.get('content',''))
+              def handle_endtag(self, tag):
+                  if tag.lower() == 'title':
+                      self.in_title = False
+              def handle_data(self, data):
+                  if self.in_title:
+                      self.title_parts.append(data)
+              @property
+              def title(self):
+                  return re.sub(r'\s+', ' ', ''.join(self.title_parts)).strip()
+
+          # Sitemap discovery (index + nested sitemaps).
+          sitemap_urls = []
+          seen_sitemaps = set()
+          queue = [urljoin(BASE, 'sitemap_index.xml'), urljoin(BASE, 'sitemap.xml')]
+          while queue:
+              sm = queue.pop(0)
+              if sm in seen_sitemaps:
+                  continue
+              seen_sitemaps.add(sm)
+              status, final, headers, body = fetch(sm)
+              if status != 200 or not body.lstrip().startswith(b'<'):
+                  continue
+              try:
+                  root = ET.fromstring(body)
+              except Exception:
+                  continue
+              locs = []
+              for el in root.iter():
+                  if el.tag.lower().endswith('loc') and el.text:
+                      locs.append(el.text.strip())
+              if root.tag.lower().endswith('sitemapindex'):
+                  queue.extend([u for u in locs if same_host(u)])
+              else:
+                  sitemap_urls.extend([u for u in locs if same_host(u)])
+
+          # Homepage is always included; cap to avoid runaway crawl.
+          pages = []
+          for u in [BASE] + sitemap_urls:
+              u = urldefrag(u)[0]
+              if u not in pages and same_host(u):
+                  pages.append(u)
+          pages = pages[:350]
+
+          page_data = {}
+          all_internal_links = collections.defaultdict(set)
+          print('PAGES_DISCOVERED=', len(pages))
+
+          for url in pages:
+              status, final, headers, body = fetch(url)
+              ctype = headers.get('Content-Type','')
+              data = {'status': status, 'final': final, 'title': '', 'noindex': False, 'missing_alt': [], 'empty_alt': [], 'images': 0}
+              if status == 200 and ('text/html' in ctype or b'<html' in body[:1000].lower()):
+                  try:
+                      html = body.decode('utf-8', 'replace')
+                      p = PageParser(); p.feed(html)
+                      data['title'] = p.title
+                      data['noindex'] = any('noindex' in x.lower() for x in p.robots)
+                      data['images'] = len(p.images)
+                      for img in p.images:
+                          src = img.get('src') or img.get('data-src') or img.get('srcset') or '(no-src)'
+                          if 'alt' not in img:
+                              data['missing_alt'].append(src)
+                          elif img.get('alt','') == '':
+                              data['empty_alt'].append(src)
+                      for href in p.links:
+                          if not href or href.startswith(('#','mailto:','tel:','javascript:','data:')):
+                              continue
+                          absolute = urldefrag(urljoin(final, href))[0]
+                          if same_host(absolute):
+                              all_internal_links[absolute].add(url)
+                  except Exception as e:
+                      print('PARSE_ERROR', url, repr(e))
+              page_data[url] = data
+
+          print('\n=== DUPLICATE TITLES: INDEXABLE 200 PAGES ===')
+          by_title = collections.defaultdict(list)
+          for url, d in page_data.items():
+              if d['status'] == 200 and d['title'] and not d['noindex']:
+                  by_title[d['title']].append(url)
+          dup_count = 0
+          for title, urls in sorted(by_title.items()):
+              if len(urls) > 1:
+                  dup_count += 1
+                  print('DUP_TITLE:', repr(title))
+                  for u in urls: print('  ', u)
+          print('INDEXABLE_DUPLICATE_TITLE_GROUPS=', dup_count)
+
+          print('\n=== DUPLICATE TITLES INCLUDING NOINDEX ===')
+          by_title_all = collections.defaultdict(list)
+          for url, d in page_data.items():
+              if d['status'] == 200 and d['title']:
+                  by_title_all[d['title']].append((url, d['noindex']))
+          all_dup = 0
+          for title, rows in sorted(by_title_all.items()):
+              if len(rows) > 1:
+                  all_dup += 1
+                  print('DUP_TITLE_ALL:', repr(title))
+                  for u, ni in rows: print('  ', u, 'noindex='+str(ni))
+          print('ALL_DUPLICATE_TITLE_GROUPS=', all_dup)
+
+          print('\n=== IMG WITHOUT ALT ATTRIBUTE ===')
+          missing_total = 0
+          for url, d in page_data.items():
+              for src in d['missing_alt']:
+                  missing_total += 1
+                  print('MISSING_ALT:', url, '->', src)
+          print('MISSING_ALT_TOTAL=', missing_total)
+
+          print('\n=== IMG WITH EMPTY ALT (often correct for decorative images) ===')
+          empty_total = 0
+          for url, d in page_data.items():
+              for src in d['empty_alt']:
+                  empty_total += 1
+                  print('EMPTY_ALT:', url, '->', src)
+          print('EMPTY_ALT_TOTAL=', empty_total)
+
+          print('\n=== ORPHAN-LIKE SITEMAP PAGES (no discovered internal incoming links) ===')
+          orphan = 0
+          for url, d in page_data.items():
+              if url == BASE or d['status'] != 200 or d['noindex']:
+                  continue
+              canon = urldefrag(d['final'])[0]
+              if canon not in all_internal_links and url not in all_internal_links:
+                  orphan += 1
+                  print('NO_INLINK:', url, 'title=', repr(d['title']))
+          print('NO_INLINK_TOTAL=', orphan)
+
+          print('\n=== INTERNAL LINKS RETURNING REDIRECT OR 4XX ===')
+          redirect_count = 0; err_count = 0
+          for target in sorted(all_internal_links):
+              status, final, headers, body = fetch(target)
+              redirected = final.rstrip('/') != target.rstrip('/')
+              if status >= 400:
+                  err_count += 1
+                  print('4XX_LINK:', status, target, 'FROM', ' | '.join(sorted(all_internal_links[target])[:5]))
+              elif redirected:
+                  redirect_count += 1
+                  print('3XX_LINK:', target, '=>', final, 'FROM', ' | '.join(sorted(all_internal_links[target])[:5]))
+          print('INTERNAL_REDIRECT_TARGETS=', redirect_count)
+          print('INTERNAL_4XX_TARGETS=', err_count)
+          PY
