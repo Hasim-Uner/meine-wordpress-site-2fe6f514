@@ -257,7 +257,7 @@ function hu_maybe_migrate_legacy_internal_links() {
 	$all_done = true;
 
 	foreach ( hu_get_legacy_internal_link_cleanup_plan() as $slug => $plan ) {
-		$post = get_page_by_path( (string) $slug, OBJECT, 'post' );
+		$post = get_page_by_path( (string) $slug, 'OBJECT', 'post' );
 
 		// Missing or unpublished legacy content needs no retry loop on every hit.
 		if ( ! ( $post instanceof WP_Post ) || 'publish' !== (string) $post->post_status ) {
