@@ -1,0 +1,74 @@
+name: Legacy Link Context Audit
+
+on:
+  push:
+    branches:
+      - audit/live-seo-alt-title
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Print legacy internal-link anchors and context
+        shell: bash
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from urllib.parse import urljoin, urlparse
+          from urllib.request import Request, urlopen
+          import re
+
+          BASE='https://hasimuener.de/'
+          PAGES=[
+            'meta-ads-fuer-b2b','owned-leads-statt-ad-miete','server-side-tracking-gtm',
+            'wordpress-seo-keine-anfragen','b2b-landingpage-optimieren','design-ist-mehr-als-aesthetik',
+            'solar-leads-kaufen-lohnt-sich','wordpress-ttfb-google-ads-ladezeit'
+          ]
+          LEGACY={
+            '/case-studies/','/customer-journey-audit/','/datenhoheit-mit-server-side-gtm/',
+            '/e3-new-energy/','/growth-audit/','/uber-mich/','/wordpress-growth-operating-system/',
+            '/wordpress-tech-audit/','/conversion-rate-optimization/','/core-web-vitals/',
+            '/roi-rechner/','/wordpress-seo-hannover/'
+          }
+
+          class P(HTMLParser):
+            def __init__(self, page_url):
+              super().__init__(convert_charrefs=True); self.page_url=page_url; self.stack=[]; self.matches=[]; self.text=[]
+            def handle_starttag(self, tag, attrs):
+              d=dict(attrs); self.stack.append((tag,d,len(self.text)))
+            def handle_data(self,data):
+              s=re.sub(r'\s+',' ',data).strip()
+              if s: self.text.append(s)
+            def handle_endtag(self,tag):
+              for i in range(len(self.stack)-1,-1,-1):
+                t,d,start=self.stack[i]
+                if t==tag:
+                  self.stack=self.stack[:i]
+                  if tag=='a' and d.get('href'):
+                    href=urljoin(self.page_url,d['href'])
+                    path=urlparse(href).path
+                    if not path.endswith('/'): path += '/'
+                    if path in LEGACY:
+                      anchor=' '.join(self.text[start:])
+                      before=' '.join(self.text[max(0,start-18):start])
+                      self.matches.append((d['href'],anchor,before[-260:]))
+                  break
+
+          for slug in PAGES:
+            url=BASE+slug+'/'
+            try:
+              req=Request(url,headers={'User-Agent':'Mozilla/5.0 (compatible; HasimSEOAudit/1.0)'})
+              html=urlopen(req,timeout=20).read().decode('utf-8','replace')
+            except Exception as e:
+              print('FETCH_ERROR',url,repr(e)); continue
+            p=P(url); p.feed(html)
+            if p.matches:
+              print('\nSOURCE',url)
+              for href,anchor,before in p.matches:
+                print(' TARGET:',href)
+                print(' ANCHOR:',anchor)
+                print(' BEFORE:',before)
+          PY
