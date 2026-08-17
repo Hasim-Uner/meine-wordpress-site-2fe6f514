@@ -1,0 +1,46 @@
+name: Wire Legacy Link Migration
+
+on:
+  push:
+    branches:
+      - fix/legacy-internal-links
+
+permissions:
+  contents: write
+
+jobs:
+  wire:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/legacy-internal-links
+      - name: Wire migration module
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('blocksy-child/functions.php')
+          text = path.read_text()
+          needle = "\t'blog-pillar-posts.php', // Einmalige Live-Anlage strategischer Pillar-Beiträge\n"
+          addition = needle + "\t'legacy-internal-link-migration.php', // Einmalige Bereinigung alter interner Links in editor-owned Blogposts\n"
+          if "'legacy-internal-link-migration.php'" not in text:
+              if needle not in text:
+                  raise SystemExit('module insertion point not found')
+              text = text.replace(needle, addition, 1)
+              path.write_text(text)
+          PY
+          php -l blocksy-child/functions.php
+          php -l blocksy-child/inc/legacy-internal-link-migration.php
+      - name: Commit wiring
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "Nothing to commit"
+            exit 0
+          fi
+          git config user.name "Hasim-hannover"
+          git config user.email "hasimuener@gmail.com"
+          git add blocksy-child/functions.php
+          git commit -m "Wire legacy internal link migration"
+          git push origin HEAD:fix/legacy-internal-links
