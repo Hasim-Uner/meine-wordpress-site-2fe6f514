@@ -45,6 +45,7 @@ $modules = [
 	'cpo-calculator.php', // CPO-Rechner für Photovoltaik-Anfragen
 	'blog-provider-posts.php', // Einmalige Live-Anlage der Lead-Anbieter-Markteinordnungen
 	'blog-pillar-posts.php', // Einmalige Live-Anlage strategischer Pillar-Beiträge
+	'legacy-internal-link-migration.php', // Einmalige Bereinigung alter interner Links in editor-owned Blogposts
 	'robots-txt.php',     // Dynamische /robots.txt-Route für Search- und KI-Crawler
 	'llms-txt.php',       // Dynamische /llms.txt-Route für KI-Agenten und Entitätskontext
 	'seo-cockpit/seo-cockpit.php',    // Search Console basiertes SEO-Cockpit mit optionaler Koko-Erkennung
