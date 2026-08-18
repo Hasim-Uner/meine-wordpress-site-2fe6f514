@@ -9,12 +9,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$brand_text  = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
+$brand_text   = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
 $eyebrow_text = nexus_get_site_header_eyebrow();
 $panel_id     = 'nx-site-header-panel';
 $request_url  = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+$project_url  = function_exists( 'hu_get_navigation_project_request_url' )
+	? hu_get_navigation_project_request_url()
+	: add_query_arg( [ 'type' => 'project', 'focus' => 'followup_scope' ], home_url( '/kontakt/' ) );
 $audit_header_meta_items = function_exists( 'nexus_get_audit_header_meta_items' ) ? nexus_get_audit_header_meta_items() : [];
-$home_label   = sprintf(
+$home_label = sprintf(
 	/* translators: %s: site or brand name. */
 	__( 'Startseite - %s', 'blocksy-child' ),
 	$brand_text
@@ -26,6 +29,95 @@ if ( empty( $audit_header_meta_items ) ) {
 		'WordPress- und B2B-Fokus',
 	];
 }
+
+/*
+ * Strategische Hauptnavigation direkt im tatsächlich gerenderten Header.
+ * Das gespeicherte WordPress-Menü bleibt nur Legacy-/Backend-Zustand und kann
+ * die öffentliche Informationsarchitektur nicht mehr überschreiben.
+ */
+$primary_urls   = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+$solar_url      = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
+$freelancer_url = home_url( '/wordpress-freelancer-hannover/' );
+$whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
+$results_url    = function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : ( $primary_urls['results'] ?? home_url( '/ergebnisse/' ) );
+$about_url      = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
+
+$strategy_nav_items = [
+	[
+		'label'   => __( 'Solar & Wärmepumpen', 'blocksy-child' ),
+		'url'     => $solar_url,
+		'current' => function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context(),
+		'class'   => 'nav-solar-link',
+		'track'   => 'nav_header_solar',
+		'category'=> 'navigation',
+	],
+	[
+		'label'   => __( 'WordPress Freelancer', 'blocksy-child' ),
+		'url'     => $freelancer_url,
+		'current' => is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' ),
+		'class'   => 'nav-freelancer-link',
+		'track'   => 'nav_header_freelancer',
+		'category'=> 'navigation',
+	],
+	[
+		'label'   => __( 'Für Agenturen', 'blocksy-child' ),
+		'url'     => $whitelabel_url,
+		'current' => function_exists( 'nexus_is_agency_nav_context' ) && nexus_is_agency_nav_context(),
+		'class'   => 'nav-agency-link',
+		'track'   => 'nav_header_whitelabel',
+		'category'=> 'navigation',
+	],
+	[
+		'label'   => __( 'Ergebnisse', 'blocksy-child' ),
+		'url'     => $results_url,
+		'current' => function_exists( 'nexus_is_results_context' ) && nexus_is_results_context(),
+		'class'   => 'nav-results-link',
+		'track'   => 'nav_header_results',
+		'category'=> 'navigation',
+	],
+	[
+		'label'   => __( 'Über Haşim', 'blocksy-child' ),
+		'url'     => $about_url,
+		'current' => is_page( 'hasim-uener' ) || is_page( 'uber-mich' ) || is_page_template( 'page-hasim-uener.php' ),
+		'class'   => 'nav-about-link',
+		'track'   => 'nav_header_about',
+		'category'=> 'navigation',
+	],
+	[
+		'label'   => __( 'Projekt anfragen', 'blocksy-child' ),
+		'url'     => $project_url,
+		'current' => false,
+		'class'   => 'nav-cta-button nav-project-link',
+		'track'   => 'nav_header_project',
+		'category'=> 'lead_gen',
+	],
+];
+
+$render_strategy_navigation = static function ( $context ) use ( $strategy_nav_items ) {
+	$context = sanitize_key( $context );
+	$menu_class = 'nx-site-header__menu nx-site-header__menu--' . $context;
+
+	echo '<ul class="' . esc_attr( $menu_class ) . '">';
+	foreach ( $strategy_nav_items as $item ) {
+		$li_classes = 'menu-item ' . $item['class'];
+		if ( $item['current'] ) {
+			$li_classes .= ' current-menu-item current_page_item';
+		}
+		?>
+		<li class="<?php echo esc_attr( $li_classes ); ?>">
+			<a
+				href="<?php echo esc_url( $item['url'] ); ?>"
+				<?php echo $item['current'] ? ' aria-current="page"' : ''; // raw-ok -- static attribute ?>
+				data-track-action="<?php echo esc_attr( $item['track'] ); ?>"
+				data-track-category="<?php echo esc_attr( $item['category'] ); ?>"
+			>
+				<?php echo esc_html( $item['label'] ); ?>
+			</a>
+		</li>
+		<?php
+	}
+	echo '</ul>';
+};
 ?>
 
 <?php if ( function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page() ) : ?>
@@ -98,7 +190,7 @@ if ( empty( $audit_header_meta_items ) ) {
 			</div>
 
 			<nav class="nx-site-header__nav" aria-label="<?php esc_attr_e( 'Primäre Navigation', 'blocksy-child' ); ?>">
-				<?php nexus_render_site_header_menu( 'desktop' ); ?>
+				<?php $render_strategy_navigation( 'desktop' ); ?>
 			</nav>
 
 			<div class="nx-site-header__actions">
@@ -119,7 +211,7 @@ if ( empty( $audit_header_meta_items ) ) {
 
 		<div id="<?php echo esc_attr( $panel_id ); ?>" class="nx-site-header__panel" data-site-header-panel hidden>
 			<nav class="nx-site-header__mobile-nav" aria-label="<?php esc_attr_e( 'Mobiles Menü', 'blocksy-child' ); ?>">
-				<?php nexus_render_site_header_menu( 'mobile' ); ?>
+				<?php $render_strategy_navigation( 'mobile' ); ?>
 			</nav>
 		</div>
 	</div>
