@@ -5,8 +5,8 @@
  * die beiden visuellen Schwerpunktmomente der Route.
  *
  * Lighthouse-Follow-up 2026-08-17: Code-Texte im Git-Workflow erhalten
- * explizit maximale Kontrastreserve. Die SVG-Daueranimation bleibt statisch,
- * weil Lighthouse sie als nicht-kompositierte Animation meldete.
+ * explizit maximale Kontrastreserve. Die Systemgrafik startet Motion nur,
+ * wenn sie im Viewport sichtbar ist; offscreen bleibt sie komplett ruhig.
  */
 
 .hu-fr__hero {
@@ -120,14 +120,15 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-git__rows strong {
 }
 
 /*
- * Performance: statische Signal-Linie statt endloser stroke-dashoffset-
- * Animation. Die Grafik bleibt als visuelles System erhalten, ohne den von
- * Lighthouse gemeldeten nicht-kompositierten Animationspfad.
+ * Motion bleibt absichtlich JavaScript-gesteuert: kein Dauerlauf beim Laden,
+ * kein Offscreen-Paint. Sobald die Grafik sichtbar wird, bewegt der kleine
+ * Kupfer-Impuls sich entlang der Strecke; ausserhalb des Viewports pausiert er.
  */
 .hu-fr-system__signal {
 	animation: none !important;
-	stroke-dasharray: none;
-	stroke-opacity: 0.92;
+	stroke-dasharray: 44 340;
+	stroke-dashoffset: 0;
+	stroke-opacity: 0.96;
 }
 
 @media (max-width: 980px) {
@@ -167,5 +168,7 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-git__rows strong {
 @media (prefers-reduced-motion: reduce) {
 	.hu-fr-system__signal {
 		animation: none !important;
+		stroke-dasharray: none;
+		stroke-dashoffset: 0;
 	}
 }
