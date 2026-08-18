@@ -111,13 +111,13 @@ function hu_normalize_primary_strategy_navigation( $items, $args ) {
         return $items;
     }
 
-    $primary_urls  = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
-    $solar_url     = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
+    $primary_urls   = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+    $solar_url      = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
     $freelancer_url = home_url( '/wordpress-freelancer-hannover/' );
     $whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
-    $results_url   = function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : ( $primary_urls['results'] ?? home_url( '/ergebnisse/' ) );
-    $about_url     = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
-    $project_url   = hu_get_navigation_project_request_url();
+    $results_url    = function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : ( $primary_urls['results'] ?? home_url( '/ergebnisse/' ) );
+    $about_url      = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
+    $project_url    = hu_get_navigation_project_request_url();
 
     $is_solar      = function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context();
     $is_freelancer = is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' );
@@ -176,6 +176,39 @@ function hu_strategy_nav_tracking_attributes( $atts, $item, $args ) {
     return $atts;
 }
 add_filter( 'nav_menu_link_attributes', 'hu_strategy_nav_tracking_attributes', 90, 3 );
+
+/**
+ * Give the local Agentur SEO page an explicit route to direct freelancer work.
+ *
+ * The link sits directly below the global header and above the Agentur hero:
+ * visible enough to correct intent, small enough not to dilute the page's
+ * primary "WordPress Agentur Hannover" search focus.
+ */
+add_action( 'wp_enqueue_scripts', function() {
+    if ( ! is_page( 'wordpress-agentur-hannover' ) && ! is_page_template( 'page-wordpress-agentur.php' ) ) {
+        return;
+    }
+
+    $asset_path = get_stylesheet_directory() . '/assets/css/agentur-route-switch.css';
+    $asset_url  = get_stylesheet_directory_uri() . '/assets/css/agentur-route-switch.css';
+    $asset_ver  = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $asset_path ) : wp_get_theme()->get( 'Version' );
+
+    wp_enqueue_style( 'hu-agentur-route-switch', $asset_url, [], $asset_ver );
+}, 30 );
+
+add_action( 'wp_body_open', function() {
+    if ( ! is_page( 'wordpress-agentur-hannover' ) && ! is_page_template( 'page-wordpress-agentur.php' ) ) {
+        return;
+    }
+    ?>
+    <aside class="hu-route-switch" aria-label="Passender WordPress-Einstieg">
+        <div class="nx-container hu-route-switch__inner">
+            <span>Direkte Zusammenarbeit statt Agentur-Setup?</span>
+            <a href="<?php echo esc_url( home_url( '/wordpress-freelancer-hannover/' ) ); ?>" data-track-action="link_agentur_to_freelancer" data-track-category="navigation" data-track-section="intent_switch">WordPress Freelancer Hannover →</a>
+        </div>
+    </aside>
+    <?php
+}, 25 );
 
 /**
  * Legacy-Kompatibilitaet fuer alten Theme-Toggle-Shortcode.
