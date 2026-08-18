@@ -135,7 +135,7 @@ if ( $is_whitelabel_context ) {
 				<h3 id="ft-leistungen">Leistungen</h3>
 				<ul class="ft__list">
 					<li><a href="<?php echo esc_url( $energy_url ); ?>" data-track-action="cta_footer_nav_energy" data-track-category="navigation" data-track-section="footer">Solar &amp; Wärmepumpen</a></li>
-					<li><a class="ft__link-strong" href="<?php echo esc_url( $freelancer_url ); ?>" data-track-action="cta_footer_nav_freelancer" data-track-category="navigation" data-track-section="footer">WordPress Freelancer Hannover</a></li>
+					<li><a class="ft__link-strong" href="<?php echo esc_url( $freelancer_url ); ?>" data-track-action="cta_footer_nav_freelancer" data-track-category="navigation" data-track-section="footer">WordPress Freelancer</a></li>
 					<li><a href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="cta_footer_nav_tracking" data-track-category="navigation" data-track-section="footer">Server-Side Tracking B2B</a></li>
 					<li><a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_footer_nav_agentur" data-track-category="navigation" data-track-section="footer">WordPress Agentur Hannover</a></li>
 				</ul>
