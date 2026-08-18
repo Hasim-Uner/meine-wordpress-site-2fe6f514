@@ -1,0 +1,43 @@
+.hu-route-switch {
+	background: #0b0f12;
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	border-bottom: 1px solid rgba(224, 138, 60, 0.2);
+	color: rgba(242, 235, 221, 0.72);
+}
+
+.hu-route-switch__inner {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.55rem;
+	min-height: 38px;
+	font-size: 0.78rem;
+	line-height: 1.35;
+}
+
+.hu-route-switch__inner span {
+	font-weight: 500;
+}
+
+.hu-route-switch__inner a {
+	color: #f2ebdd;
+	font-weight: 700;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.18em;
+}
+
+.hu-route-switch__inner a:hover,
+.hu-route-switch__inner a:focus-visible {
+	color: #e08a3c;
+}
+
+@media (max-width: 720px) {
+	.hu-route-switch__inner {
+		align-items: flex-start;
+		justify-content: flex-start;
+		flex-direction: column;
+		gap: 0.18rem;
+		padding-top: 0.55rem;
+		padding-bottom: 0.55rem;
+	}
+}
