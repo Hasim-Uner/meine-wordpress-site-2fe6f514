@@ -1,34 +1,39 @@
 # Haşim Üner
 
-> Architekt für eigene Anfragesysteme für Solar-, Wärmepumpen- und Speicher-Anbieter im DACH-Raum. Fokus: Portal-Abhängigkeit durch eigene Website, Vorqualifizierung, Tracking und steuerbare Werbekanäle ersetzen. Primärer Einstieg ist der Marktcheck.
+> WordPress, Tracking und Conversion als zusammenhängendes System. Direkte Projekte laufen über den WordPress-Freelancer-/Projektpfad, Agenturen über White-Label. Solar, Wärmepumpe und Speicher bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.
 
 ## Primäre Einstiege
-- [Startseite](/) - Überblick über Positionierung, Proof und aktuelle Einstiege.
-- [Solar- und Wärmepumpen-Leadgenerierung](/solar-waermepumpen-leadgenerierung/) - Branchen-Landingpage für eigene Anfragesysteme gegen Portal-Abhängigkeit.
-- [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) - primärer Einstieg für kalten Solar-/SHK-Traffic.
-- [Kontakt](/kontakt/) - Anfragepfad für Analyse, Umsetzung und Weiterentwicklung nach Marktcheck-Fit.
+- [Startseite](/) - Fachliche Klammer und Verteiler auf direkte Projekte, White-Label und Solar/Wärmepumpe.
+- [WordPress Freelancer Hannover](/wordpress-freelancer-hannover/) - direkter Einstieg für WordPress-Projekte mit Entwicklung, Tracking, Funnel/CRO und technischer SEO.
+- [Für Agenturen: White-Label](/whitelabel-retainer/) - Umsetzungskapazität für Agenturen: WordPress, Tracking, CRO und technische SEO im Hintergrund.
+- [Solar- und Wärmepumpen-Leadgenerierung](/solar-waermepumpen-leadgenerierung/) - spezialisierte Branchen-Landingpage für eigene Anfragesysteme statt Portal-Abhängigkeit.
+- [Projekt anfragen](/kontakt/?type=project&focus=followup_scope) - generischer Anfragepfad für direkte WordPress-, Tracking-, CRO- und technische SEO-Projekte.
+- [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) - diagnostischer Einstieg ausschließlich für Solar-, Wärmepumpen- und Speicher-Intent.
+
+## Fachseiten und kommerzielle Suchintents
+- [Server-Side Tracking einrichten lassen](/server-side-tracking-b2b/) - Money Page für Server-Side Tracking, Server-GTM, GA4, Google Ads und Meta CAPI; direkter Projektpfad statt Solar-Marktcheck.
+- [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - lokale SEO-Seite für den Agentur-Intent; direkte Zusammenarbeit wird zur Freelancer-Route weitergeführt.
+- [WordPress Freelancer Hannover](/wordpress-freelancer-hannover/) - lokaler Freelancer-Intent für direkte Zusammenarbeit.
+- [White-Label für Agenturen](/whitelabel-retainer/) - Agentur-/Partner-Intent mit Fit-Check und scoped Erstprojekt.
 
 ## Proof und zitierfähige Quellen
-- [Solar Case Study](/case-study-solar-leadgenerierung/) - kaufnaher Proof-Case für Nachfrageaufbau, Vorqualifizierung, Tracking und Conversion.
-- [Was kosten Solar-Leads? Marktstudie](/solar-leads-kosten-studie/) - zitierfähige Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen, Cost-per-Order, Methodik und Case-Study-Benchmark.
 - [Ergebnisse](/ergebnisse/) - kuratierter Proof-Hub mit Cases, Kennzahlen und Kontext.
-- [Haşim Üner](/hasim-uener/) - Personenprofil des Autors und Betreibers.
+- [Solar Case Study](/case-study-solar-leadgenerierung/) - Proof-Case für Nachfrageaufbau, Vorqualifizierung, Tracking und Conversion.
+- [Was kosten Solar-Leads? Marktstudie](/solar-leads-kosten-studie/) - Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen, Cost-per-Order, Methodik und Case-Study-Benchmark.
+- [Haşim Üner](/hasim-uener/) - Personenprofil des Betreibers, Arbeitsweise und fachliche Kompetenz.
 
-## Solar- und Wärmepumpen-Leadgenerierung: Themen-Cluster
+## Solar- und Wärmepumpen-Cluster
 - [Solar Leads kaufen Alternative](/solar-leads-kaufen-alternative/) - Intercept-Page für Kauf-Suchintent und Alternative zu Lead-Anbietern.
-- [Aroundhome Kosten für Handwerker](/aroundhome-solar-einordnung/) - anbieterunabhängiger Kosten-, Vertrags- und Portal-Fit-Entscheid mit CPO-Rechner.
-- [Wärmepumpen Leads kaufen – Alternative](/waermepumpen-leads/) - Intercept-Page für Wärmepumpen-Lead-Kauf: Marktmodelle, wärmepumpen-spezifische Vorqualifizierung und eigenes Anfragesystem als Alternative.
+- [Aroundhome Kosten für Handwerker](/aroundhome-solar-einordnung/) - Kosten-, Vertrags- und Portal-Fit-Entscheid mit CPO-Rechner.
+- [Wärmepumpen Leads kaufen – Alternative](/waermepumpen-leads/) - Intercept-Page für Wärmepumpen-Lead-Kauf und eigene Anfragesysteme als Alternative.
 - [Eigene Leadgenerierung vs. Portale](/eigene-leadgenerierung-vs-portale/) - Vergleich von Portal-Leads und eigenem Anfragesystem.
 - [Cost per Lead Photovoltaik](/cost-per-lead-photovoltaik/) - CPL-Analyse mit Szenarienvergleich und versteckten Kostentreibern.
 - [Qualifizierte PV-Anfragen](/qualifizierte-pv-anfragen/) - Merkmale hochwertiger Solar-Anfragen und Warnsignale.
 - [Lead-Funnel Solar](/lead-funnel-solar/) - Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter.
-- [Server-Side Tracking einrichten lassen](/server-side-tracking-b2b/) - Server-GTM, GA4, Google Ads und Meta CAPI über eine eigene Tracking-Subdomain, mit Paketpreisen.
 - [B2B Solar Leads](/b2b-solar-leads/) - gewerbliche PV-Anfragen und Buying-Center-Logik.
 - [Kunden gewinnen für Solarteure](/kunden-gewinnen-solarteure/) - systematische Nachfragegewinnung für Solarteure.
 
-## Sekundäre Einstiege und Wissen
-- [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance und Anfragesystemen.
+## Wissen
+- [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance, Conversion und Anfragesystemen.
 - [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
-- [Stack Solar](/stack-solar/) - Technischer Unterbau für Solar- und Wärmepumpen-Anbieter: Frontend, Hosting, Server-Side Tracking, CRM-Übergabe und projektspezifische Vorqualifizierung.
-- [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - sekundäre lokale B2B-Service-Seite für den Agentur-Intent.
-- [WordPress Freelancer Hannover](/wordpress-freelancer-hannover/) - separater lokaler Freelancer-Einstieg für direkte WordPress-Projekte mit Entwicklung, Tracking, Funnel und technischer SEO.
+- [Stack Solar](/stack-solar/) - technischer Unterbau für Solar- und Wärmepumpen-Anbieter: Frontend, Hosting, Server-Side Tracking, CRM-Übergabe und Vorqualifizierung.
