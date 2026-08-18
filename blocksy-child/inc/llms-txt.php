@@ -30,16 +30,24 @@ function nexus_is_llms_txt_request() {
 /**
  * Normalize a public URL into the markdown path used inside llms.txt.
  *
+ * Query arguments are preserved because the generic project route uses them to
+ * distinguish a scoped project request from an unspecific contact visit.
+ *
  * @param string $url Absolute public URL.
  * @return string
  */
 function nexus_get_llms_txt_markdown_path( $url ) {
 	$url      = (string) $url;
 	$path     = wp_parse_url( $url, PHP_URL_PATH );
+	$query    = wp_parse_url( $url, PHP_URL_QUERY );
 	$fragment = wp_parse_url( $url, PHP_URL_FRAGMENT );
 	$path     = is_string( $path ) && '' !== $path ? $path : '/';
 
 	$markdown_path = '/' === $path ? '/' : trailingslashit( '/' . ltrim( $path, '/' ) );
+
+	if ( is_string( $query ) && '' !== $query ) {
+		$markdown_path .= '?' . $query;
+	}
 
 	if ( is_string( $fragment ) && '' !== $fragment ) {
 		$markdown_path .= '#' . ltrim( $fragment, '#' );
@@ -56,6 +64,22 @@ function nexus_get_llms_txt_markdown_path( $url ) {
 function nexus_get_llms_txt_sections() {
 	$urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 
+	$freelancer_url = $urls['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+	$whitelabel_url = $urls['whitelabel'] ?? (
+		function_exists( 'nexus_get_whitelabel_page_url' )
+			? nexus_get_whitelabel_page_url()
+			: home_url( '/whitelabel-retainer/' )
+	);
+	$project_url = function_exists( 'hu_get_navigation_project_request_url' )
+		? hu_get_navigation_project_request_url()
+		: add_query_arg(
+			[
+				'type'  => 'project',
+				'focus' => 'followup_scope',
+			],
+			$urls['contact'] ?? home_url( '/kontakt/' )
+		);
+
 	return [
 		[
 			'heading' => 'Primäre Einstiege',
@@ -63,22 +87,57 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Startseite',
 					'url'         => $urls['home'] ?? home_url( '/' ),
-					'description' => 'Überblick über Positionierung, Proof und primäre Einstiege.',
+					'description' => 'Fachliche Klammer und Verteiler auf direkte Projekte, White-Label und Solar/Wärmepumpe.',
+				],
+				[
+					'label'       => 'WordPress Freelancer Hannover',
+					'url'         => $freelancer_url,
+					'description' => 'Direkter Einstieg für WordPress-Projekte mit Entwicklung, Tracking, Funnel/CRO und technischer SEO.',
+				],
+				[
+					'label'       => 'Für Agenturen: White-Label',
+					'url'         => $whitelabel_url,
+					'description' => 'Umsetzungskapazität für Agenturen: WordPress, Tracking, CRO und technische SEO im Hintergrund.',
 				],
 				[
 					'label'       => 'Solar- und Wärmepumpen-Leadgenerierung',
 					'url'         => $urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ),
-					'description' => 'Branchen-Landingpage für eigene Anfragesysteme gegen Portal-Abhängigkeit: Website, Vorqualifizierung, Tracking und steuerbare Werbekanäle.',
+					'description' => 'Spezialisierte Branchen-Landingpage für eigene Anfragesysteme statt Portal-Abhängigkeit.',
+				],
+				[
+					'label'       => 'Projekt anfragen',
+					'url'         => $project_url,
+					'description' => 'Generischer Anfragepfad für direkte WordPress-, Tracking-, CRO- und technische SEO-Projekte.',
 				],
 				[
 					'label'       => 'Marktcheck',
 					'url'         => $urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
-					'description' => 'Primärer Einstieg für kalten Solar-/SHK-Traffic: händische Einordnung von Region, Anfragebremsen, Datenlage und nächstem sinnvollen Schritt.',
+					'description' => 'Diagnostischer Einstieg ausschließlich für Solar-, Wärmepumpen- und Speicher-Intent.',
+				],
+			],
+		],
+		[
+			'heading' => 'Fachseiten und kommerzielle Suchintents',
+			'links'   => [
+				[
+					'label'       => 'Server-Side Tracking einrichten lassen',
+					'url'         => $urls['solar_tracking'] ?? home_url( '/server-side-tracking-b2b/' ),
+					'description' => 'Money Page für Server-Side Tracking, Server-GTM, GA4, Google Ads und Meta CAPI; direkter Projektpfad statt Solar-Marktcheck.',
 				],
 				[
-					'label'       => 'Kontakt',
-					'url'         => $urls['contact'] ?? home_url( '/kontakt/' ),
-					'description' => 'Direkter Kontakt für Analyse, Umsetzung und Weiterentwicklung nach Marktcheck-Fit.',
+					'label'       => 'WordPress Agentur Hannover',
+					'url'         => $urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
+					'description' => 'Lokale SEO-Seite für den Agentur-Intent; direkte Zusammenarbeit wird zur Freelancer-Route weitergeführt.',
+				],
+				[
+					'label'       => 'WordPress Freelancer Hannover',
+					'url'         => $freelancer_url,
+					'description' => 'Lokaler Freelancer-Intent für direkte Zusammenarbeit.',
+				],
+				[
+					'label'       => 'White-Label für Agenturen',
+					'url'         => $whitelabel_url,
+					'description' => 'Agentur-/Partner-Intent mit Fit-Check und scoped Erstprojekt.',
 				],
 			],
 		],
@@ -86,29 +145,29 @@ function nexus_get_llms_txt_sections() {
 			'heading' => 'Proof und zitierfähige Quellen',
 			'links'   => [
 				[
-					'label'       => 'Solar Case Study',
-					'url'         => $urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
-					'description' => 'Kaufnaher Proof-Case: eigenes Anfragesystem, Vorqualifizierung, Tracking und Conversion statt Portal-Lead-Abhängigkeit.',
-				],
-				[
-					'label'       => 'Was kosten Solar-Leads? (Marktstudie)',
-					'url'         => $urls['solar_leads_cost_study'] ?? home_url( '/solar-leads-kosten-studie/' ),
-					'description' => 'Zitierfähige Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen je Modell, Cost-per-Order, Methodik und Case-Study-Benchmark.',
-				],
-				[
 					'label'       => 'Ergebnisse',
 					'url'         => $urls['results'] ?? home_url( '/ergebnisse/' ),
 					'description' => 'Kuratierter Proof-Hub mit Cases, Kennzahlen und Einordnung.',
 				],
 				[
+					'label'       => 'Solar Case Study',
+					'url'         => $urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
+					'description' => 'Proof-Case für Nachfrageaufbau, Vorqualifizierung, Tracking und Conversion.',
+				],
+				[
+					'label'       => 'Was kosten Solar-Leads? (Marktstudie)',
+					'url'         => $urls['solar_leads_cost_study'] ?? home_url( '/solar-leads-kosten-studie/' ),
+					'description' => 'Marktstudie zu Lead-Kosten im DACH-Raum: Preisspannen je Modell, Cost-per-Order, Methodik und Case-Study-Benchmark.',
+				],
+				[
 					'label'       => 'Haşim Üner',
 					'url'         => $urls['about'] ?? home_url( '/hasim-uener/' ),
-					'description' => 'Personenprofil des Autors und Betreibers: Stationen, Kompetenzen und Arbeitsweise.',
+					'description' => 'Personenprofil des Betreibers: Arbeitsweise und fachliche Kompetenz.',
 				],
 			],
 		],
 		[
-			'heading' => 'Solar- und Wärmepumpen-Leadgenerierung: Themen-Cluster',
+			'heading' => 'Solar- und Wärmepumpen-Cluster',
 			'links'   => [
 				[
 					'label'       => 'Photovoltaik & Solar Leads kaufen – Alternative',
@@ -118,12 +177,12 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Aroundhome Kosten für Handwerker',
 					'url'         => home_url( '/aroundhome-solar-einordnung/' ),
-					'description' => 'Anbieterunabhängiger Kosten-, Vertrags- und Portal-Fit-Entscheid mit CPO-Rechner auf Basis eigener Betriebswerte.',
+					'description' => 'Kosten-, Vertrags- und Portal-Fit-Entscheid mit CPO-Rechner auf Basis eigener Betriebswerte.',
 				],
 				[
 					'label'       => 'Wärmepumpen Leads kaufen – Alternative',
 					'url'         => home_url( '/waermepumpen-leads/' ),
-					'description' => 'Intercept-Page für Wärmepumpen-Lead-Kauf: Marktmodelle, wärmepumpen-spezifische Vorqualifizierung und eigenes Anfragesystem als Alternative.',
+					'description' => 'Intercept-Page für Wärmepumpen-Lead-Kauf und eigenes Anfragesystem als Alternative.',
 				],
 				[
 					'label'       => 'Eigene Leadgenerierung vs. Portale',
@@ -133,29 +192,17 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Cost per Lead Photovoltaik',
 					'url'         => $urls['solar_cpl'] ?? home_url( '/cost-per-lead-photovoltaik/' ),
-					'description' => 'CPL-Analyse mit Szenarienvergleich, versteckten Kostentreibern und Marktcheck-Anschluss.',
+					'description' => 'CPL-Analyse mit Szenarienvergleich und versteckten Kostentreibern.',
 				],
 				[
 					'label'       => 'Qualifizierte PV-Anfragen',
 					'url'         => home_url( '/qualifizierte-pv-anfragen/' ),
-					'description' => 'Vier-Merkmale-Modell für hochwertige Solar-Anfragen mit Warnsignalen und Messmethoden.',
+					'description' => 'Merkmale hochwertiger Solar-Anfragen, Warnsignale und Messmethoden.',
 				],
 				[
 					'label'       => 'Lead-Funnel Solar',
 					'url'         => $urls['solar_funnel'] ?? home_url( '/lead-funnel-solar/' ),
 					'description' => 'Funnel-Architektur von Erstkontakt bis Sales-Anschluss für Photovoltaik- und Wärmepumpen-Anbieter.',
-				],
-				[
-					'label'       => 'Server-Side Tracking einrichten lassen',
-					'url'         => $urls['solar_tracking'] ?? home_url( '/server-side-tracking-b2b/' ),
-					'description' => sprintf(
-						// Preis aus dem Tracking-Kanon statt als Literal: die Zahl stand
-						// hier zuletzt eine Anhebung lang falsch im Routen-Index.
-						'Server-GTM, GA4, Google Ads und Meta CAPI über eine eigene Tracking-Subdomain: Einrichtung, Testbetrieb und laufende Kontrolle mit Preisen ab %s netto.',
-						function_exists( 'hu_tracking_price' )
-							? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' )
-							: '1.290 €'
-					),
 				],
 				[
 					'label'       => 'B2B Solar Leads für Gewerbe',
@@ -165,17 +212,17 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Kunden gewinnen für Solarteure',
 					'url'         => home_url( '/kunden-gewinnen-solarteure/' ),
-					'description' => 'Pillar-Page mit Mythen-Aufklärung und fünf systematischen Hebeln für Solar-Betriebe im DACH-Mittelstand.',
+					'description' => 'Pillar-Page mit systematischen Hebeln für Solar-Betriebe im DACH-Mittelstand.',
 				],
 			],
 		],
 		[
-			'heading' => 'Sekundäre Einstiege und Wissen',
+			'heading' => 'Wissen',
 			'links'   => [
 				[
 					'label'       => 'Blog',
 					'url'         => $urls['blog'] ?? home_url( '/blog/' ),
-					'description' => 'Artikel zu SEO, Tracking, WordPress-Performance und Anfragesystemen.',
+					'description' => 'Artikel zu SEO, Tracking, WordPress-Performance, Conversion und Anfragesystemen.',
 				],
 				[
 					'label'       => 'Glossar',
@@ -185,12 +232,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Stack Solar',
 					'url'         => home_url( '/stack-solar/' ),
-					'description' => 'Technischer Unterbau für Solar- und Wärmepumpen-Anbieter: Frontend, Hosting, Server-Side Tracking, CRM-Übergabe und projektspezifische Vorqualifizierung.',
-				],
-				[
-					'label'       => 'WordPress Agentur Hannover',
-					'url'         => $urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
-					'description' => 'Sekundäre lokale B2B-Seite für WordPress-Systeme, technisches SEO, Tracking und CRO in Hannover.',
+					'description' => 'Technischer Unterbau für Solar- und Wärmepumpen-Anbieter: Frontend, Hosting, Server-Side Tracking, CRM-Übergabe und Vorqualifizierung.',
 				],
 			],
 		],
@@ -206,7 +248,7 @@ function nexus_get_llms_txt_content() {
 	$lines = [
 		'# Haşim Üner',
 		'',
-		'> Architekt für eigene Anfragesysteme für Solar- und Wärmepumpen-Anbieter im DACH-Raum. Ablösung von Portal-Abhängigkeit durch Website, Tracking, Vorqualifizierung und Werbekanal-Steuerung als ein verbundenes System. Primärer Einstieg ist der Marktcheck auf der Solar- und Wärmepumpen-Seite.',
+		'> WordPress, Tracking und Conversion als zusammenhängendes System. Direkte Projekte laufen über den WordPress-Freelancer-/Projektpfad, Agenturen über White-Label. Solar, Wärmepumpe und Speicher bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.',
 	];
 
 	foreach ( nexus_get_llms_txt_sections() as $section ) {
