@@ -14,6 +14,12 @@ Global contract for agents in this repo. Keep context small: read this file, the
    - Skill work: `agents/skills/CONTEXT.md`
 3. Only the files needed for the task.
 
+For positioning, public copy, offers, CTA routing, or schema identity work, also read:
+
+- `docs/standards/BRAND_AND_COPY.md`
+- `docs/architecture/CONVERSION_ROUTING.md`
+- `docs/seo/query-ownership.csv` when SEO ownership is touched
+
 ## Skill Routing
 
 - `agents/skills/` is the canonical skill source for every agent host.
@@ -64,13 +70,20 @@ These files cost more context than a whole task should. Locate the relevant line
 
 ## Product Defaults
 
-- Canonical public routes, entry points, and business positioning live in `llms.txt`; use it as the route index before adding or changing public URLs.
-- Diagnosis/analysis canon: `blocksy-child/inc/canon/diagnose-canon.php`
-- Analyse before implementation pitch. Clarity before feature count.
-- Do not reintroduce broad agency wording when it weakens the diagnosis-first funnel.
+- Canonical public routes and AI-facing route summaries live in `llms.txt`; use it as a route index before adding or changing public URLs.
+- Positioning and copy rules live in `docs/standards/BRAND_AND_COPY.md`.
+- CTA destination logic lives in `docs/architecture/CONVERSION_ROUTING.md`.
+- SEO query ownership lives in `docs/seo/query-ownership.csv`.
+- **Do not conflate SEO ownership with conversion routing.** A page can own a query and still send its CTA to a different next action.
+- Global fachliche Klammer: WordPress, technisches SEO, Tracking, Conversion.
+- Commercial entry paths:
+  - direct clients -> `/wordpress-freelancer-hannover/` / generic project request
+  - agencies -> `/whitelabel-retainer/`
+  - Solar / Wärmepumpe / Speicher -> `/solar-waermepumpen-leadgenerierung/` / Marktcheck
+- The Marktcheck is not a site-wide default CTA anymore. Use it only for the Energy cluster.
+- Diagnosis/analysis canon: `blocksy-child/inc/canon/diagnose-canon.php` remains valid for the Energy funnel.
 - Do not assume RankMath; use the custom WordPress SEO Cockpit where relevant.
-- Do not reintroduce Shopify as a current service focus unless the task is
-  explicitly about legacy cleanup.
+- Do not reintroduce Shopify as a current service focus unless the task is explicitly about legacy cleanup.
 
 ## Evidence and Measurement Defaults
 
@@ -91,7 +104,7 @@ These files cost more context than a whole task should. Locate the relevant line
   manual tasks separate when a request crosses workstreams.
 - Do not touch live-critical theme, deployment, hosting, or generated assets
   during planning-only work or without explicit scope.
-- Preserve the existing project language, positioning, and architecture.
+- Preserve the current project language, positioning, query ownership, and route contracts from the canonical docs above.
 - For repo audits, report findings under `Critical`, `High leverage`, `Polish`,
   `Manual WordPress tasks`, and `Agent tasks / repo tasks` as applicable.
 - In audits, distinguish repo fixes from editor, SEO Cockpit, WordPress admin,
@@ -121,24 +134,53 @@ These files cost more context than a whole task should. Locate the relevant line
 - Maintain the Hannover landing page layout and copy in `blocksy-child/page-wordpress-agentur.php`.
 - Do not duplicate Hannover page edits into the wrapper template.
 
-## Funnel Ladder
+## Funnel / Route Ladder
 
-1. Marktcheck: qualifier for fit, not a generic sale.
-2. Anfragesystem-Analyse: evidence-based fit and market check for suitable businesses.
-3. Anfragesystem-Umsetzung: build only after green/yellow fit.
-4. Optional performance and premium layers.
+There is no longer one universal funnel ladder for the whole site.
 
-Use `Umsetzungspartner` for a business that reaches the build stage. Do not reintroduce the retired `Founding Cohort 2026` frame, seat counters, or application deadlines — see `docs/decisions/0011-founding-cohort-2026-entfernt.md`. Customer-facing forbidden terms live in `blocksy-child/inc/canon/messaging-canon.php`.
+### Energy funnel
+
+1. Solar / Wärmepumpe / Speicher content or purchase intent
+2. Marktcheck
+3. Follow-up analysis if useful
+4. Implementation / continued optimization
+
+### Direct-project funnel
+
+1. WordPress / tracking / CRO / technical SEO intent
+2. Relevant specialist or Freelancer page
+3. `Projekt anfragen` / scope clarification
+4. Implementation / continued optimization
+
+### Agency funnel
+
+1. Agency / partner / White-Label intent
+2. White-Label page
+3. Fit-Check / scoped first project
+4. Optional retainer
+
+Use `Umsetzungspartner` for a business that reaches the Solar build stage. Do not reintroduce the retired `Founding Cohort 2026` frame, seat counters, or application deadlines — see `docs/decisions/0011-founding-cohort-2026-entfernt.md`. Customer-facing forbidden terms live in `blocksy-child/inc/canon/messaging-canon.php`.
 
 For any task that touches offer logic, marketcheck framing, proof architecture, qualification, CTA economics, or the WGOS public/delivery boundary, load `agents/skills/offer-funnel-intelligence/SKILL.md` before changing copy or templates.
 
 ## Required Patterns
 
-Internal URLs:
+Generic project request outside Energy and White-Label funnels:
 
 ```php
-$analysis_url = function_exists('hu_get_request_analysis_url') ? hu_get_request_analysis_url() : home_url('/');
-echo esc_url($analysis_url);
+$project_url = function_exists( 'hu_get_navigation_project_request_url' )
+    ? hu_get_navigation_project_request_url()
+    : home_url( '/kontakt/' );
+echo esc_url( $project_url );
+```
+
+Solar Marktcheck only inside Energy intent:
+
+```php
+$analysis_url = function_exists( 'hu_get_request_analysis_url' )
+    ? hu_get_request_analysis_url()
+    : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+echo esc_url( $analysis_url );
 ```
 
 Escaping:
@@ -165,11 +207,16 @@ data-track-section=""
 - Do not load or change n8n artifacts unless n8n is explicitly in scope.
 - Do not version editor-owned copy as if it were the live source of truth.
 - Do not write repetitive playbooks in `docs/`; create/update `agents/skills/<skill>/`.
+- Do not redirect or de-index a query-owning page just to simplify CTA routing.
+- Do not use `hu_get_request_analysis_url()` as a generic site-wide project CTA.
 
 ## Update Triggers
 
 - Runtime behavior, route status, or deploy scope changes: update `docs/architecture/LIVE_STATUS.md`.
 - Cross-system contracts or dependencies change: update `docs/architecture/SYSTEM_MAP.md`.
+- CTA-routing contract changes: update `docs/architecture/CONVERSION_ROUTING.md`.
+- Positioning or global public-copy rules change: update `docs/standards/BRAND_AND_COPY.md`.
+- Query ownership changes: update `docs/seo/query-ownership.csv` with evidence.
 - New repetitive workflow: add/update `agents/skills/<skill>/SKILL.md` plus scripts.
 - Skill added or removed: keep matching symlinks in both `.agents/skills/` and
   `.claude/skills/` synchronized with `agents/skills/`.
