@@ -1,0 +1,332 @@
+name: Phase 3 schema refactor
+
+on:
+  push:
+    branches:
+      - agent/intake-schema-phase-3
+
+permissions:
+  contents: write
+
+jobs:
+  refactor:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/intake-schema-phase-3
+          fetch-depth: 0
+
+      - name: Apply guarded architecture refactor
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+
+          def replace_exact(text, old, new, label, expected=1):
+              count = text.count(old)
+              if count != expected:
+                  raise SystemExit(f"{label}: expected {expected} occurrence(s), found {count}")
+              return text.replace(old, new)
+
+          # 1) Load the canonical commercial router and retire the temporary
+          # schema output-normalization module.
+          functions_path = Path('blocksy-child/functions.php')
+          functions = functions_path.read_text(encoding='utf-8')
+          functions = replace_exact(
+              functions,
+              "\t'contact-page.php',   // Kontakt-Route, schlanke Kontaktform und Mailversand\n\t'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect",
+              "\t'contact-page.php',   // Kontakt-Route, schlanke Kontaktform und Mailversand\n\t'commercial-routing.php', // Kanonische Geschäftswege: Direct, White-Label, Energy\n\t'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect",
+              'functions commercial router wiring',
+          )
+          functions = replace_exact(
+              functions,
+              "\t'schema-positioning.php', // Repositioning-Normalisierung der kanonischen Schema-Entitäten\n",
+              "",
+              'functions schema shim removal',
+          )
+          functions_path.write_text(functions, encoding='utf-8')
+
+          # 2) Keep the transport keys stable, but make the internal/public
+          # contact semantics match the new direct-project architecture.
+          contact_path = Path('blocksy-child/inc/contact-page.php')
+          contact = contact_path.read_text(encoding='utf-8')
+          contact = contact.replace("'Projektprüfung'", "'Projektanfrage'")
+          if "'Projektanfrage'" not in contact:
+              raise SystemExit('contact project label replacement failed')
+          contact = replace_exact(
+              contact,
+              "'description' => 'Der saubere Ersteinstieg, wenn zuerst Klarheit und Priorisierung gebraucht werden.',",
+              "'description' => 'Für Solar- und Wärmepumpen-Anbieter, wenn Markt, Anfrageweg und nächster sinnvoller Schritt zuerst eingeordnet werden sollen.',",
+              'contact marketcheck semantics',
+          )
+          contact = replace_exact(
+              contact,
+              "'description' => 'Für anspruchsvolle B2B-Projekte rund um WordPress, SEO, Tracking und Conversion.',",
+              "'description' => 'Für direkte Projekte rund um WordPress, Tracking, Conversion und technisches SEO.',",
+              'contact project semantics',
+          )
+          contact = replace_exact(
+              contact,
+              "'description' => 'Für planbare Growth-Kapazität und kontrollierte Weiterentwicklung ohne Abhängigkeit.',",
+              "'description' => 'Für planbare technische und fachliche Weiterentwicklung bestehender Websites und Setups.',",
+              'contact ongoing semantics',
+          )
+          contact_path.write_text(contact, encoding='utf-8')
+
+          # 3) Fold the canonical positioning directly into org-schema.php.
+          schema_path = Path('blocksy-child/inc/org-schema.php')
+          schema = schema_path.read_text(encoding='utf-8')
+
+          schema = replace_exact(
+              schema,
+              "return 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfragesysteme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';",
+              "return 'https://www.google.com/maps?cid=7273014379384770345';",
+              'stable GBP map URL',
+          )
+
+          catalog_helper = r'''
+
+/**
+ * Canonical offer catalog for the current business architecture.
+ *
+ * Search-intent ownership stays on the destination pages. This catalog only
+ * describes what the business offers and reuses the commercial route map so
+ * schema, navigation and conversion paths cannot drift independently.
+ *
+ * @return array<string, mixed>
+ */
+function hu_get_schema_offer_catalog() {
+    $routes = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+    $freelancer_url = $routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+    $tracking_url   = $routes['tracking_b2b'] ?? home_url( '/server-side-tracking-b2b/' );
+    $whitelabel_url = $routes['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
+    $energy_url     = $routes['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
+    $marketcheck_url = $routes['marketcheck'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+
+    return [
+        '@type'           => 'OfferCatalog',
+        'name'            => 'WordPress, Tracking, Conversion und spezialisierte Anfragesysteme',
+        'itemListElement' => [
+            [
+                '@type'       => 'Offer',
+                'name'        => 'WordPress-Entwicklung',
+                'description' => 'WordPress-Websites und Landingpages mit technischer SEO, Performance und sauberer Weiterentwicklung.',
+                'url'         => $freelancer_url,
+            ],
+            [
+                '@type'       => 'Offer',
+                'name'        => 'Server-Side Tracking & Attribution',
+                'description' => 'Server-GTM, GA4, Google Ads, Meta CAPI und nachvollziehbare Messkonzepte für belastbare Conversion-Signale.',
+                'url'         => $tracking_url,
+            ],
+            [
+                '@type'       => 'Offer',
+                'name'        => 'Conversion-Optimierung',
+                'description' => 'Optimierung von Landingpages, Funnels, Proof und Anfragewegen mit Fokus auf messbare Conversion.',
+                'url'         => $freelancer_url,
+            ],
+            [
+                '@type'       => 'Offer',
+                'name'        => 'White-Label für Agenturen',
+                'description' => 'WordPress-, Tracking-, CRO- und technische SEO-Umsetzung im Hintergrund für Agenturprojekte.',
+                'url'         => $whitelabel_url,
+            ],
+            [
+                '@type'       => 'Offer',
+                'name'        => 'Anfragesysteme für Solar & Wärmepumpe',
+                'description' => 'Spezialisierte Nachfrage- und Anfragewege für Solar-, Wärmepumpen- und Speicher-Anbieter.',
+                'url'         => $energy_url,
+            ],
+            [
+                '@type'       => 'Offer',
+                'name'        => 'Marktcheck für Solar & Wärmepumpe',
+                'description' => 'Diagnostischer Einstieg für den Energie-Cluster: Region, Anfragequalität, Datenlage und nächster sinnvoller Schritt.',
+                'url'         => $marketcheck_url,
+            ],
+        ],
+    ];
+}
+'''
+          anchor = "function hu_business_same_as_urls() {\n    return array_merge( hu_person_same_as_urls(), [ hu_brand_map_url() ] );\n}\n"
+          if schema.count(anchor) != 1:
+              raise SystemExit('schema catalog insertion anchor not unique')
+          schema = schema.replace(anchor, anchor + catalog_helper, 1)
+
+          schema = replace_exact(
+              schema,
+              "'jobTitle'    => 'Architekt für eigene Anfragesysteme',",
+              "'jobTitle'    => 'WordPress Freelancer und Tracking-Spezialist',",
+              'person job title',
+          )
+          schema = replace_exact(
+              schema,
+              "'description' => 'Architekt für eigene Anfragesysteme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum. Haşim Üner verbindet Bauunternehmer-DNA, Vertriebspraxis und Medienwissenschaft mit WordPress, Tracking, Vorqualifizierung und Werbekanal-Steuerung.',",
+              "'description' => 'Haşim Üner verbindet WordPress-Entwicklung, technisches SEO, Tracking und Conversion für direkte Projekte und White-Label-Agenturarbeit. Anfragesysteme für Solar- und Wärmepumpen-Anbieter sind eine spezialisierte Vertikale.',",
+              'person description',
+          )
+          old_person_knows = """        'knowsAbout'  => [
+            'B2B-Vertrieb',
+            'Solar- und Wärmepumpen-Leadgenerierung',
+            'WordPress',
+            'Technisches SEO',
+            'Server-Side Tracking',
+            'Conversion Rate Optimization',
+            'Medienwissenschaft',
+        ],"""
+          new_person_knows = """        'knowsAbout'  => [
+            'WordPress-Entwicklung',
+            'Technisches SEO',
+            'Tracking & Attribution',
+            'Server-Side Tracking',
+            'Conversion Rate Optimization',
+            'Landingpages & Funnel',
+            'Core Web Vitals',
+            'Performance Marketing',
+            'Solar- und Wärmepumpen-Leadgenerierung',
+        ],"""
+          schema = replace_exact(schema, old_person_knows, new_person_knows, 'person knowsAbout')
+
+          schema = replace_exact(
+              schema,
+              "    if ( is_front_page() ) {\n        $webpage['about'] = [ '@id' => home_url( '/#organization' ) ];\n    }",
+              "    if ( is_front_page() || 'wordpress-freelancer-hannover' === $slug ) {\n        $webpage['about'] = [ '@id' => home_url( '/#organization' ) ];\n    }",
+              'freelancer WebPage about link',
+          )
+
+          schema = replace_exact(
+              schema,
+              "'name'     => 'Haşim Üner | Architekt für eigene Anfragesysteme',",
+              "'name'     => 'Haşim Üner',",
+              'organization name',
+          )
+          schema = replace_exact(
+              schema,
+              "'description' => 'Architekt für eigene Anfragesysteme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',",
+              "'description' => 'WordPress-Entwicklung, technisches SEO, Tracking und Conversion für Unternehmen und Agenturen. Solar- und Wärmepumpen-Anfragesysteme bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.',",
+              'organization description',
+          )
+          old_org_knows = """        'knowsAbout' => [
+            'WordPress',
+            'Technisches SEO',
+            'Core Web Vitals',
+            'Conversion Rate Optimization',
+            'GA4 Tracking',
+            'Server-Side Tagging',
+            'B2B Lead Generation',
+        ],"""
+          new_org_knows = """        'knowsAbout' => [
+            'WordPress-Entwicklung',
+            'Technisches SEO',
+            'Tracking & Attribution',
+            'Server-Side Tracking',
+            'Conversion Rate Optimization',
+            'Landingpages & Funnel',
+            'Core Web Vitals',
+            'Performance Marketing',
+            'Solar- und Wärmepumpen-Leadgenerierung',
+        ],"""
+          schema = replace_exact(schema, old_org_knows, new_org_knows, 'organization knowsAbout')
+
+          org_start = schema.index("    $org = [")
+          website_marker = schema.index("    // WebSite schema", org_start)
+          offer_start = schema.rfind("        'hasOfferCatalog' => [", org_start, website_marker)
+          org_close = schema.rfind("    ];", org_start, website_marker)
+          if offer_start < 0 or org_close < 0 or offer_start > org_close:
+              raise SystemExit('organization offer catalog boundaries not found')
+          schema = schema[:offer_start] + "        'hasOfferCatalog' => hu_get_schema_offer_catalog(),\n" + schema[org_close:]
+
+          schema = replace_exact(
+              schema,
+              "'name'        => 'Haşim Üner | Architekt für eigene Anfragesysteme',",
+              "'name'        => 'Haşim Üner',",
+              'website name',
+          )
+          schema = replace_exact(
+              schema,
+              "'description' => 'Architekt für eigene Anfragesysteme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',",
+              "'description' => 'WordPress, technisches SEO, Tracking und Conversion als zusammenhängendes System. Direkte Projekte, White-Label für Agenturen und eine spezialisierte Solar-/Wärmepumpen-Vertikale.',",
+              'website description',
+          )
+
+          freelancer_definition = r'''        'wordpress-freelancer-hannover' => [
+            'name'        => 'WordPress Freelancer Hannover',
+            'description' => 'Direkte WordPress-Zusammenarbeit mit Entwicklung, technischer SEO, Tracking und Conversion-Optimierung aus Pattensen bei Hannover.',
+            'serviceType' => 'WordPress-Entwicklung',
+            'serviceOutput' => 'Technisch saubere WordPress-Websites und Landingpages mit messbaren Conversion-Pfaden, Tracking und kontrollierter Weiterentwicklung.',
+            'url'         => home_url( '/wordpress-freelancer-hannover/' ),
+            'areaServed'  => [
+                [
+                    '@type' => 'AdministrativeArea',
+                    'name'  => 'Region Hannover',
+                ],
+                [
+                    '@type' => 'AdministrativeArea',
+                    'name'  => 'DACH',
+                ],
+            ],
+            'hasOfferCatalog' => [
+                '@type'           => 'OfferCatalog',
+                'name'            => 'Leistungsfelder der direkten WordPress-Zusammenarbeit',
+                'itemListElement' => [
+                    [ '@type' => 'Offer', 'name' => 'WordPress-Entwicklung' ],
+                    [ '@type' => 'Offer', 'name' => 'Tracking & Attribution' ],
+                    [ '@type' => 'Offer', 'name' => 'Conversion-Optimierung' ],
+                    [ '@type' => 'Offer', 'name' => 'Technisches SEO' ],
+                ],
+            ],
+        ],
+
+'''
+          service_marker = "        'wordpress-agentur-hannover' => ["
+          if schema.count(service_marker) != 1:
+              raise SystemExit('freelancer service insertion marker not unique')
+          schema = schema.replace(service_marker, freelancer_definition + service_marker, 1)
+
+          schema = replace_exact(
+              schema,
+              "                'description'=> $def['description'],\n                'provider'   => ['@id' => home_url('/#organization')],",
+              "                'description'=> $def['description'],\n                'url'        => $def['url'] ?? home_url('/' . $slug . '/'),\n                'provider'   => ['@id' => home_url('/#organization')],",
+              'service url support',
+          )
+          schema = replace_exact(
+              schema,
+              "            if (isset($def['hasOfferCatalog'])) {\n                $service['hasOfferCatalog'] = $def['hasOfferCatalog'];\n            }\n\n            $schemas[] = $service;",
+              "            if (isset($def['hasOfferCatalog'])) {\n                $service['hasOfferCatalog'] = $def['hasOfferCatalog'];\n            }\n\n            if (isset($def['areaServed'])) {\n                $service['areaServed'] = $def['areaServed'];\n            }\n\n            $schemas[] = $service;",
+              'service areaServed support',
+          )
+
+          # Guard: no global identity may retain the retired title after this
+          # refactor. Blog/article copy can still discuss Anfragesysteme.
+          if "Haşim Üner | Architekt für eigene Anfragesysteme" in schema:
+              raise SystemExit('retired organization/website identity still present')
+          if "'jobTitle'    => 'Architekt für eigene Anfragesysteme'" in schema:
+              raise SystemExit('retired person job title still present')
+
+          schema_path.write_text(schema, encoding='utf-8')
+
+          shim = Path('blocksy-child/inc/schema-positioning.php')
+          if not shim.exists():
+              raise SystemExit('schema-positioning.php missing before migration')
+          shim.unlink()
+
+          # Remove this one-off workflow from the final branch state.
+          Path('.github/workflows/phase3-schema-refactor.yml').unlink()
+          PY
+
+      - name: Syntax check changed PHP
+        run: |
+          php -l blocksy-child/functions.php
+          php -l blocksy-child/inc/contact-page.php
+          php -l blocksy-child/inc/org-schema.php
+          php -l blocksy-child/page-kontakt.php
+
+      - name: Commit refactor result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "Integrate intake and schema architecture directly"
+          git push origin HEAD:agent/intake-schema-phase-3
