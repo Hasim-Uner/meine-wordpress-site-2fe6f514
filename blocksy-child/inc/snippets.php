@@ -6,6 +6,11 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+$commercial_routing_path = __DIR__ . '/commercial-routing.php';
+if ( file_exists( $commercial_routing_path ) ) {
+    require_once $commercial_routing_path;
+}
+
 add_shortcode( 'nexus_header_btn', function() {
     $portal_page = get_page_by_path( 'portal' );
     $link = $portal_page ? get_permalink( $portal_page ) : home_url( '/portal' );
@@ -25,12 +30,25 @@ add_shortcode( 'nexus_header_btn', function() {
  * @return string
  */
 function hu_get_navigation_project_request_url() {
+    if ( function_exists( 'hu_get_commercial_route' ) ) {
+        return hu_get_commercial_route(
+            'project_request',
+            add_query_arg(
+                [
+                    'type'  => 'project',
+                    'focus' => 'implementation_scope',
+                ],
+                function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' )
+            )
+        );
+    }
+
     $contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
 
     return add_query_arg(
         [
             'type'  => 'project',
-            'focus' => 'followup_scope',
+            'focus' => 'implementation_scope',
         ],
         $contact_url
     );
@@ -109,6 +127,24 @@ function hu_normalize_primary_strategy_navigation( $items, $args ) {
         || ! nexus_is_primary_header_menu_args( $args )
     ) {
         return $items;
+    }
+
+    if ( function_exists( 'hu_get_primary_navigation_contract' ) ) {
+        $normalized_items = [];
+
+        foreach ( hu_get_primary_navigation_contract() as $definition ) {
+            $classes = isset( $definition['class'] ) ? preg_split( '/\s+/', trim( (string) $definition['class'] ) ) : [];
+            $classes = is_array( $classes ) ? array_values( array_filter( $classes ) ) : [];
+
+            $normalized_items[] = hu_make_strategy_nav_item(
+                (string) ( $definition['label'] ?? '' ),
+                (string) ( $definition['url'] ?? home_url( '/' ) ),
+                $classes,
+                ! empty( $definition['current'] )
+            );
+        }
+
+        return $normalized_items;
     }
 
     $primary_urls   = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
@@ -200,11 +236,15 @@ add_action( 'wp_body_open', function() {
     if ( ! is_page( 'wordpress-agentur-hannover' ) && ! is_page_template( 'page-wordpress-agentur.php' ) ) {
         return;
     }
+
+    $freelancer_url = function_exists( 'hu_get_commercial_route' )
+        ? hu_get_commercial_route( 'freelancer', home_url( '/wordpress-freelancer-hannover/' ) )
+        : home_url( '/wordpress-freelancer-hannover/' );
     ?>
     <aside class="hu-route-switch" aria-label="Passender WordPress-Einstieg">
         <div class="nx-container hu-route-switch__inner">
             <span>Direkte Zusammenarbeit statt Agentur-Setup?</span>
-            <a href="<?php echo esc_url( home_url( '/wordpress-freelancer-hannover/' ) ); ?>" data-track-action="link_agentur_to_freelancer" data-track-category="navigation" data-track-section="intent_switch">WordPress Freelancer Hannover →</a>
+            <a href="<?php echo esc_url( $freelancer_url ); ?>" data-track-action="link_agentur_to_freelancer" data-track-category="navigation" data-track-section="intent_switch">WordPress Freelancer Hannover →</a>
         </div>
     </aside>
     <?php
