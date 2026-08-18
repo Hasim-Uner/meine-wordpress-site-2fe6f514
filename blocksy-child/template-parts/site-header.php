@@ -75,7 +75,58 @@ if ( function_exists( 'hu_get_primary_navigation_contract' ) ) {
 	];
 }
 
-$render_strategy_navigation = static function ( string $context ) use ( $strategy_nav_items ): void {
+/*
+ * Visuelle Navigationsebene: Die drei Geschäftswege bleiben semantisch Teil
+ * desselben Routing-Contracts, werden aber als kompakte Route-Cards gerendert.
+ * Ergebnisse, Über Haşim und die Projekt-CTA bleiben bewusst ruhiger.
+ */
+$route_visuals = [
+	'nav-solar-link' => [
+		'title'    => __( 'Solar & Wärmepumpe', 'blocksy-child' ),
+		'subtitle' => __( 'Anfragesysteme', 'blocksy-child' ),
+		'icon'     => 'energy',
+	],
+	'nav-freelancer-link' => [
+		'title'    => __( 'WordPress', 'blocksy-child' ),
+		'subtitle' => __( 'Direkte Projekte', 'blocksy-child' ),
+		'icon'     => 'code',
+	],
+	'nav-agency-link' => [
+		'title'    => __( 'Für Agenturen', 'blocksy-child' ),
+		'subtitle' => __( 'White-Label', 'blocksy-child' ),
+		'icon'     => 'layers',
+	],
+];
+
+$render_route_icon = static function ( string $icon ): void {
+	if ( 'energy' === $icon ) {
+		?>
+		<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+			<circle cx="12" cy="12" r="3.25"></circle>
+			<path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"></path>
+		</svg>
+		<?php
+		return;
+	}
+
+	if ( 'layers' === $icon ) {
+		?>
+		<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+			<path d="m12 3 8 4.5-8 4.5-8-4.5L12 3Z"></path>
+			<path d="m4 12 8 4.5 8-4.5M4 16.5l8 4.5 8-4.5"></path>
+		</svg>
+		<?php
+		return;
+	}
+	?>
+	<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+		<rect x="3" y="4.5" width="18" height="15" rx="2.5"></rect>
+		<path d="M3 8.5h18M10 12l-2 2 2 2M14 12l2 2-2 2"></path>
+	</svg>
+	<?php
+};
+
+$render_strategy_navigation = static function ( string $context ) use ( $strategy_nav_items, $route_visuals, $render_route_icon ): void {
 	$context    = sanitize_key( $context );
 	$menu_class = 'nx-site-header__menu nx-site-header__menu--' . $context;
 
@@ -85,15 +136,44 @@ $render_strategy_navigation = static function ( string $context ) use ( $strateg
 		if ( ! empty( $item['current'] ) ) {
 			$li_classes .= ' current-menu-item current_page_item';
 		}
+
+		$route_visual = null;
+		foreach ( $route_visuals as $route_class => $visual ) {
+			if ( false !== strpos( $li_classes, $route_class ) ) {
+				$route_visual = $visual;
+				$li_classes  .= ' nx-site-header__route-item';
+				break;
+			}
+		}
+
+		$is_project_cta = false !== strpos( $li_classes, 'nav-project-link' );
+		$link_label     = (string) ( $item['label'] ?? '' );
+		if ( is_array( $route_visual ) ) {
+			$link_label = (string) $route_visual['title'] . ' – ' . (string) $route_visual['subtitle'];
+		}
 		?>
 		<li class="<?php echo esc_attr( $li_classes ); ?>">
 			<a
 				href="<?php echo esc_url( (string) ( $item['url'] ?? home_url( '/' ) ) ); ?>"
 				<?php echo ! empty( $item['current'] ) ? ' aria-current="page"' : ''; // raw-ok -- static attribute ?>
+				aria-label="<?php echo esc_attr( $link_label ); ?>"
 				data-track-action="<?php echo esc_attr( (string) ( $item['track'] ?? 'nav_header' ) ); ?>"
 				data-track-category="<?php echo esc_attr( (string) ( $item['category'] ?? 'navigation' ) ); ?>"
 			>
-				<?php echo esc_html( (string) ( $item['label'] ?? '' ) ); ?>
+				<?php if ( is_array( $route_visual ) ) : ?>
+					<span class="nx-site-header__route-icon">
+						<?php $render_route_icon( (string) $route_visual['icon'] ); ?>
+					</span>
+					<span class="nx-site-header__route-copy">
+						<strong><?php echo esc_html( (string) $route_visual['title'] ); ?></strong>
+						<small><?php echo esc_html( (string) $route_visual['subtitle'] ); ?></small>
+					</span>
+				<?php else : ?>
+					<span><?php echo esc_html( (string) ( $item['label'] ?? '' ) ); ?></span>
+					<?php if ( $is_project_cta ) : ?>
+						<span class="nx-site-header__cta-arrow" aria-hidden="true">↗</span>
+					<?php endif; ?>
+				<?php endif; ?>
 			</a>
 		</li>
 		<?php
@@ -154,7 +234,27 @@ $render_strategy_navigation = static function ( string $context ) use ( $strateg
 </header>
 <?php return; endif; ?>
 
-<header class="nx-site-header" data-site-header role="banner">
+<?php
+/*
+ * Der Premium-Layer ist bewusst nur für den globalen Standard-Header geladen.
+ * Audit- und Energy-Header bleiben als fokussierte Spezialnavigation unberührt.
+ * Da der Header über wp_body_open gerendert wird, wird das kleine Stylesheet
+ * hier direkt referenziert; der Header ist bis zur JS-Reveal-Logik ohnehin
+ * verborgen, wodurch kein sichtbarer ungestylter Zwischenzustand entsteht.
+ */
+$premium_header_css_path = get_stylesheet_directory() . '/assets/css/site-header-premium.css';
+$premium_header_css_url  = get_stylesheet_directory_uri() . '/assets/css/site-header-premium.css';
+if ( is_file( $premium_header_css_path ) ) {
+	$premium_header_css_ver = function_exists( 'hu_get_asset_version' )
+		? hu_get_asset_version( $premium_header_css_path )
+		: (string) filemtime( $premium_header_css_path );
+	?>
+	<link rel="stylesheet" id="nexus-site-header-premium-css" href="<?php echo esc_url( add_query_arg( 'ver', $premium_header_css_ver, $premium_header_css_url ) ); ?>" media="all">
+	<?php
+}
+?>
+
+<header class="nx-site-header nx-site-header--premium" data-site-header role="banner">
 	<div class="nx-container">
 		<div class="nx-site-header__shell">
 			<div class="nx-site-header__brand-block">
@@ -192,9 +292,15 @@ $render_strategy_navigation = static function ( string $context ) use ( $strateg
 		</div>
 
 		<div id="<?php echo esc_attr( $panel_id ); ?>" class="nx-site-header__panel" data-site-header-panel hidden>
+			<div class="nx-site-header__panel-intro">
+				<span>Navigation</span>
+				<strong>Wählen Sie Ihren Weg.</strong>
+				<p>Direktes Projekt, White-Label oder Solar &amp; Wärmepumpe.</p>
+			</div>
 			<nav class="nx-site-header__mobile-nav" aria-label="<?php esc_attr_e( 'Mobiles Menü', 'blocksy-child' ); ?>">
 				<?php $render_strategy_navigation( 'mobile' ); ?>
 			</nav>
+			<p class="nx-site-header__panel-signature">WordPress · Tracking · Conversion</p>
 		</div>
 	</div>
 </header>
