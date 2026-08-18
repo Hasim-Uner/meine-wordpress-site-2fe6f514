@@ -12,7 +12,7 @@
  *   1 Hero            — Klammer, kein Button
  *   2 Einstieg        — eine Klick-Frage, eigenes Event, routet auf die Türen
  *   3 Lebender Beweis — an dieser Seite nachmessbar (Übernahme Agentur-Seite)
- *   4 Drei Türen      — Solar-Marktcheck · B2B-WordPress · White-Label
+ *   4 Drei Türen      — Solar-Marktcheck · WordPress Freelancer · White-Label
  *   5 Beleg           — E3-Case, genau einmal auf der Seite
  *   6 Abgrenzung      — Selbstqualifizierung statt vergrabener FAQ
  *   7 Abschluss       — für alle, die keinen der drei Wege wählen
@@ -52,7 +52,7 @@ $e3_cpl_after     = $e3_metrics['cpl_after']['display']         ?? '22 €';
 $primary_urls     = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $about_url        = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
 $contact_url      = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
-$agentur_hub_url  = home_url( '/wordpress-agentur-hannover/' );
+$freelancer_url   = home_url( '/wordpress-freelancer-hannover/' );
 $whitelabel_url   = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 $psi_url          = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/' ) );
 
@@ -74,7 +74,7 @@ $home_psi_mobile  = '99';
  * Barrierefreiheit der Startseite hängt nicht an einem Skript.
  *
  * Eigene Events: getrennt vom Marktcheck-Formular (cta_*) und vom
- * Agentur-Formular (quali_*), sonst ist nicht messbar, ob der Verteiler trägt.
+ * White-Label-Fit-Check, sonst ist nicht messbar, ob der Verteiler trägt.
  */
 $home_entry_options = [
 	[
@@ -85,8 +85,8 @@ $home_entry_options = [
 	],
 	[
 		'label'  => 'Über Google, organisch',
-		'route'  => 'WordPress als Anfragesystem',
-		'url'    => $agentur_hub_url,
+		'route'  => 'Direkte WordPress-Zusammenarbeit',
+		'url'    => $freelancer_url,
 		'action' => 'home_entry_organisch',
 	],
 	[
@@ -97,8 +97,8 @@ $home_entry_options = [
 	],
 	[
 		'label'  => 'Über Empfehlung und Netzwerk',
-		'route'  => 'WordPress als Anfragesystem',
-		'url'    => $agentur_hub_url,
+		'route'  => 'Direkte WordPress-Zusammenarbeit',
+		'url'    => $freelancer_url,
 		'action' => 'home_entry_empfehlung',
 	],
 	[
@@ -127,14 +127,12 @@ $home_doors = [
 	],
 	[
 		'badge'   => '02',
-		'kicker'  => 'B2B mit erklärungsbedürftigem Angebot',
-		'title'   => 'Ihre Website rankt und bringt trotzdem keine Anfragen.',
-		// Zweiter Satz traegt das Argument aus der geloeschten FAQ 2: Website und
-		// Kanaele sind ein System, nicht zwei Rechnungen.
-		'desc'    => 'Meist ist es kein Textproblem: Keine Seite besitzt die kaufnahe Suchanfrage, das Tracking ordnet nichts zu, und der Weg zum Formular ist nicht erkennbar. Website, Sichtbarkeit und Messung hängen hier an einer Architektur — sonst repariert man eine Hälfte und wundert sich über die andere.',
-		'url'     => $agentur_hub_url,
-		'label'   => 'WordPress als Anfragesystem ansehen',
-		'action'  => 'home_door_agentur',
+		'kicker'  => 'Direkte Zusammenarbeit · WordPress',
+		'title'   => 'Sie brauchen WordPress-Kompetenz ohne Agentur-Umweg.',
+		'desc'    => 'Website, Tracking und Funnel sollen technisch zusammenpassen — und Sie wollen direkt mit der Person arbeiten, die strukturiert, entwickelt und deployt.',
+		'url'     => $freelancer_url,
+		'label'   => 'WordPress Freelancer ansehen',
+		'action'  => 'home_door_freelancer',
 	],
 	[
 		'badge'   => '03',
