@@ -11,12 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define(
 	'HU_MESSAGE_VALUE_ANCHOR_ARCHITECTURE',
-	'Andere Agenturen verkaufen Optik. Wir bauen die Architektur, die Anfragen produziert. Das Design ist dabei.'
+	'WordPress, Tracking und Conversion gehören zusammen. Ich entwickle die technische Basis und messe, was daraus entsteht.'
 );
 
 define(
 	'HU_MESSAGE_VALUE_ANCHOR_PRICE',
-	'Sie würden bei einer WordPress-Agentur 15.000 € für Design ausgeben. Hier bekommen Sie für 9.900 € ein funktionierendes Anfragesystem. Das Design ist dabei.'
+	'Scope und Preis stehen vor dem Start fest. Kein Paketpreis ohne geklärten Umfang.'
 );
 
 /**
@@ -29,10 +29,11 @@ function hu_messaging_canon() {
 		'value_anchor_architecture' => HU_MESSAGE_VALUE_ANCHOR_ARCHITECTURE,
 		'value_anchor_price'        => HU_MESSAGE_VALUE_ANCHOR_PRICE,
 		'what_we_dont_sell'         => [
-			'Keine reine Design-Retusche ohne Anfragesystem.',
+			'Keine reine Design-Retusche ohne technischen oder messbaren Zweck.',
 			'Keine Reporting-Fassade ohne belastbare Datengrundlage.',
-			'Keine Anfrage-Volumengarantie ohne passendes Werbebudget und schriftliche Grundlage.',
+			'Keine Anfrage- oder Umsatzgarantie ohne belastbare Grundlage.',
 			'Keine Kundendaten-Blackbox, bei der Ownership unklar bleibt.',
+			'Kein Full-Service-Versprechen für Leistungen, die nicht zum vereinbarten Scope gehören.',
 		],
 		'forbidden_terms'           => [
 			'Pilotprojekt',
@@ -46,11 +47,14 @@ function hu_messaging_canon() {
 			'Modul',
 		],
 		'preferred_terms'           => [
+			'Projekt anfragen',
+			'direkte Zusammenarbeit',
+			'White-Label',
 			'Umsetzungspartner',
 			'Baustein',
 		],
 		'term_definitions'          => [
-			'Umsetzungspartner' => 'Betrieb, für den nach dem Marktcheck ein eigenes Anfragesystem gebaut wird; kein Mitgründer, kein Anteilseigner und keine gesellschaftsrechtliche Partnerschaft.',
+			'Umsetzungspartner' => 'Betrieb, für den im Solar-/Wärmepumpen-Funnel nach dem Marktcheck ein eigenes Anfragesystem umgesetzt wird; kein Mitgründer, kein Anteilseigner und keine gesellschaftsrechtliche Partnerschaft.',
 		],
 	];
 }
