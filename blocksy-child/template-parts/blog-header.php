@@ -16,16 +16,18 @@ $primary_urls       = function_exists( 'nexus_get_primary_public_url_map' ) ? ne
 $home_url           = $primary_urls['home'] ?? home_url( '/' );
 $blog_url           = $primary_urls['blog'] ?? home_url( '/blog/' );
 $energy_url         = $primary_urls['energy'] ?? ( function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' ) );
-$agentur_url        = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
+$freelancer_url     = home_url( '/wordpress-freelancer-hannover/' );
+$whitelabel_url     = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 $cases_url          = $primary_urls['results'] ?? ( function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/ergebnisse/' ) );
 $about_url          = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
-$audit_url          = $primary_urls['audit'] ?? ( function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
+$project_url        = function_exists( 'hu_get_navigation_project_request_url' ) ? hu_get_navigation_project_request_url() : add_query_arg( [ 'type' => 'project', 'focus' => 'followup_scope' ], home_url( '/kontakt/' ) );
 $brand_text         = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
 $panel_id           = 'nx-blog-header-panel';
 $about_page_id      = function_exists( 'nexus_get_page_id' ) ? nexus_get_page_id( [ 'hasim-uener', 'uber-mich' ] ) : 0;
 $is_blog_area       = is_home() || is_archive() || is_singular( 'post' );
 $is_energy_context  = function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context();
-$is_agency_context  = is_page( 'wordpress-agentur-hannover' ) || is_page_template( 'page-wordpress-agentur.php' );
+$is_freelancer_context = is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' );
+$is_whitelabel_context = function_exists( 'nexus_is_agency_nav_context' ) && nexus_is_agency_nav_context();
 $is_results_context = function_exists( 'nexus_is_results_context' ) && nexus_is_results_context();
 $home_label         = sprintf(
 	/* translators: %s: site or brand name. */
@@ -75,7 +77,7 @@ if ( is_category() ) {
 	];
 } elseif ( is_singular( 'post' ) ) {
 	$context_title = __( 'Artikel', 'blocksy-child' );
-	$context_text  = __( 'Zurück zur Übersicht, passende Kategorie öffnen oder Marktcheck starten.', 'blocksy-child' );
+	$context_text  = __( 'Zurück zur Übersicht, passende Kategorie öffnen oder ein Projekt anfragen.', 'blocksy-child' );
 
 	$post_categories = get_the_category();
 
@@ -89,13 +91,10 @@ if ( is_category() ) {
 	}
 }
 
+// Der Blog ist bereits über Kontextzeile und Unterleiste als Bereich markiert.
+// Die knappe Hauptnavigation bleibt deshalb auf die fünf strategischen Wege
+// beschränkt, statt einen sechsten "Blog"-Punkt in die Desktop-Leiste zu drücken.
 $primary_items = [
-	[
-		'label'   => __( 'Blog', 'blocksy-child' ),
-		'url'     => $blog_url,
-		'active'  => $is_blog_area,
-		'current' => is_home(),
-	],
 	[
 		'label'   => __( 'Solar & Wärmepumpen', 'blocksy-child' ),
 		'url'     => $energy_url,
@@ -103,10 +102,16 @@ $primary_items = [
 		'current' => $is_energy_context,
 	],
 	[
-		'label'   => __( 'WordPress Agentur', 'blocksy-child' ),
-		'url'     => $agentur_url,
-		'active'  => $is_agency_context,
-		'current' => $is_agency_context,
+		'label'   => __( 'WordPress Freelancer', 'blocksy-child' ),
+		'url'     => $freelancer_url,
+		'active'  => $is_freelancer_context,
+		'current' => $is_freelancer_context,
+	],
+	[
+		'label'   => __( 'Für Agenturen', 'blocksy-child' ),
+		'url'     => $whitelabel_url,
+		'active'  => $is_whitelabel_context,
+		'current' => $is_whitelabel_context,
 	],
 	[
 		'label'   => __( 'Ergebnisse', 'blocksy-child' ),
@@ -176,11 +181,11 @@ $primary_items = [
 			<div class="nexus-blog-header__actions">
 				<a
 					class="nexus-blog-header__cta nexus-blog-header__desktop-cta"
-					href="<?php echo esc_url( $audit_url ); ?>"
-					data-track-action="cta_blog_header_marktcheck"
+					href="<?php echo esc_url( $project_url ); ?>"
+					data-track-action="cta_blog_header_project"
 					data-track-category="lead_gen"
 				>
-					<?php esc_html_e( 'Marktcheck', 'blocksy-child' ); ?>
+					<?php esc_html_e( 'Projekt anfragen', 'blocksy-child' ); ?>
 				</a>
 
 				<button
@@ -223,11 +228,11 @@ $primary_items = [
 			<div class="nexus-blog-header__mobile-actions">
 				<a
 					class="nexus-blog-header__cta"
-					href="<?php echo esc_url( $audit_url ); ?>"
-					data-track-action="cta_blog_header_mobile_marktcheck"
+					href="<?php echo esc_url( $project_url ); ?>"
+					data-track-action="cta_blog_header_mobile_project"
 					data-track-category="lead_gen"
 				>
-					<?php esc_html_e( 'Marktcheck starten', 'blocksy-child' ); ?>
+					<?php esc_html_e( 'Projekt anfragen', 'blocksy-child' ); ?>
 				</a>
 			</div>
 		</div>
