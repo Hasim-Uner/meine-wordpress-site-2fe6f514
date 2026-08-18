@@ -163,7 +163,7 @@ function hu_get_wordpress_freelancer_service_schema() {
 				'name'  => 'DACH',
 			],
 		],
-		hasOfferCatalog' => [
+		'hasOfferCatalog' => [
 			'@type'           => 'OfferCatalog',
 			'name'            => 'Leistungsfelder der direkten WordPress-Zusammenarbeit',
 			'itemListElement' => [
