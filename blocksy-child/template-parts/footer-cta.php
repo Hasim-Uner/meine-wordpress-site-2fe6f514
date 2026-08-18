@@ -5,9 +5,13 @@
  * Wiederverwendbarer Bottom-CTA-Block für Service- und Blog-Seiten.
  * Tracking-ready mit data-track-* Attributen.
  *
- * Usage:
+ * Default = generische Projektanfrage. Spezialisierte Funnels müssen ihren
+ * Zielpfad und ihre Copy explizit übergeben. So kann der Solar-Marktcheck nicht
+ * versehentlich auf fachfremden WordPress-/Tracking-/CRO-Seiten erscheinen.
+ *
+ * Energy-Beispiel:
  *   set_query_var( 'cta_heading', 'Passt Ihr Betrieb für ein eigenes Anfragesystem?' );
- *   set_query_var( 'cta_text', 'Die Analyse prüft Fit, Marktbild und nächsten Schritt.' );
+ *   set_query_var( 'cta_text', 'Der Marktcheck prüft Fit, Marktbild und nächsten Schritt.' );
  *   set_query_var( 'cta_url', '/solar-waermepumpen-leadgenerierung/#marktcheck' );
  *   set_query_var( 'cta_button_text', 'Marktcheck mit Fit-Entscheid starten' );
  *   set_query_var( 'cta_action', 'cta_footer_analysis' );
@@ -22,11 +26,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$heading     = get_query_var( 'cta_heading', __( 'Passt Ihr Betrieb für ein eigenes Anfragesystem?', 'blocksy-child' ) );
-$text        = get_query_var( 'cta_text', __( 'Die Analyse prüft Fit, Marktbild und den nächsten sinnvollen Schritt.', 'blocksy-child' ) );
-$url         = get_query_var( 'cta_url', function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
-$button_text = get_query_var( 'cta_button_text', __( 'Marktcheck mit Fit-Entscheid starten', 'blocksy-child' ) );
-$action      = get_query_var( 'cta_action', 'cta_footer_analysis' );
+$project_url = function_exists( 'hu_get_navigation_project_request_url' )
+	? hu_get_navigation_project_request_url()
+	: add_query_arg(
+		[
+			'type'  => 'project',
+			'focus' => 'followup_scope',
+		],
+		home_url( '/kontakt/' )
+	);
+
+$heading     = get_query_var( 'cta_heading', __( 'Sie haben ein konkretes Projekt?', 'blocksy-child' ) );
+$text        = get_query_var( 'cta_text', __( 'Schicken Sie mir kurz Ziel, Ausgangslage und Scope. Ich sage Ihnen, ob und wie ich sinnvoll unterstützen kann.', 'blocksy-child' ) );
+$url         = get_query_var( 'cta_url', $project_url );
+$button_text = get_query_var( 'cta_button_text', __( 'Projekt anfragen', 'blocksy-child' ) );
+$action      = get_query_var( 'cta_action', 'cta_footer_project' );
 $imprint_url = nexus_get_page_url( [ 'impressum' ], home_url( '/impressum/' ) );
 $privacy_url = nexus_get_page_url( [ 'datenschutz' ], home_url( '/datenschutz/' ) );
 
