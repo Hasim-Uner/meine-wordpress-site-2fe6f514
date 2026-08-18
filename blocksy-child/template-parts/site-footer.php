@@ -2,8 +2,9 @@
 /**
  * Global site footer.
  *
- * Focused footer for CRO: one primary CTA, a small set of decision paths
- * and direct trust/support links.
+ * Header = focused decision paths. Footer = complete commercial, proof and
+ * knowledge architecture, including SEO entry pages that do not need a global
+ * header slot.
  *
  * @package Blocksy_Child
  */
@@ -15,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 $current_year = wp_date( 'Y' );
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $home_url     = $primary_urls['home'] ?? home_url( '/' );
+$energy_url   = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 $analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-$request_url  = $analysis_url;
 $e3_url       = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
 $results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
@@ -26,20 +27,24 @@ $freelancer_url = home_url( '/wordpress-freelancer-hannover/' );
 $tracking_url   = home_url( '/server-side-tracking-b2b/' );
 $about_url    = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
 $contact_url  = $primary_urls['contact'] ?? nexus_get_contact_url();
-$project_request_url = add_query_arg(
-	[
-		'type' => 'implementation',
-	],
-	$contact_url
-);
+$project_request_url = function_exists( 'hu_get_navigation_project_request_url' )
+	? hu_get_navigation_project_request_url()
+	: add_query_arg(
+		[
+			'type'  => 'project',
+			'focus' => 'followup_scope',
+		],
+		$contact_url
+	);
 $imprint_url      = $primary_urls['impressum'] ?? home_url( '/impressum/' );
 $privacy_url      = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
 $whitelabel_url   = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
-$hide_primary_cta    = function_exists( 'nexus_should_hide_footer_primary_cta' ) && nexus_should_hide_footer_primary_cta();
-$footer_class        = $hide_primary_cta ? 'ft ft--no-primary-cta ft--mobile-cta' : 'ft';
-$audit_cta_label     = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
-$audit_cta_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : 'Region · Vertrieb · Anfragequalität prüfen';
-$audit_footer_note   = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_get_audit_footer_note() : 'Marktcheck: Manueller Fit-Befund statt Software-Einheitsbrei — händische Einordnung von Region, Vertrieb und Anfragequalität.';
+$hide_primary_cta = function_exists( 'nexus_should_hide_footer_primary_cta' ) && nexus_should_hide_footer_primary_cta();
+$footer_class     = $hide_primary_cta ? 'ft ft--no-primary-cta ft--mobile-cta' : 'ft';
+$request_url      = $project_request_url;
+$audit_cta_label  = 'Projekt anfragen';
+$audit_cta_microcopy = 'Scope · Ziel · nächster sinnvoller Schritt';
+$audit_footer_note = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_get_audit_footer_note() : 'Marktcheck: Manueller Fit-Befund statt Software-Einheitsbrei — händische Einordnung von Region, Vertrieb und Anfragequalität.';
 
 $is_whitelabel_context = is_page_template( 'page-whitelabel-retainer.php' )
 	|| is_page( 'whitelabel-retainer' )
@@ -50,17 +55,20 @@ $is_freelancer_context = is_page_template( 'page-wordpress-freelancer-hannover.p
 	|| is_page( 'wordpress-freelancer-hannover' );
 
 if ( $is_whitelabel_context ) {
-	$brand_tagline   = 'White-Label-Partner für Agenturen — SEO, WordPress, Tracking und Conversion. Unsichtbar im Hintergrund.';
-	$copyright_line  = 'Haşim Üner - White-Label-Partner für Agenturen';
+	$brand_tagline       = 'White-Label-Partner für Agenturen — SEO, WordPress, Tracking und Conversion. Unsichtbar im Hintergrund.';
+	$copyright_line      = 'Haşim Üner - White-Label-Partner für Agenturen';
+	$request_url         = $whitelabel_url . '#fit-check';
+	$audit_cta_label     = 'Fit-Check starten';
+	$audit_cta_microcopy = 'Agenturfit · Scope · Zusammenarbeit';
 } elseif ( $is_freelancer_context ) {
-	$brand_tagline        = 'WordPress Freelancer aus Hannover — Entwicklung, Tracking und Funnel direkt mit Haşim Üner.';
-	$copyright_line       = 'Haşim Üner - WordPress Freelancer Hannover';
-	$request_url          = add_query_arg( [ 'type' => 'project', 'focus' => 'followup_scope' ], $contact_url );
-	$audit_cta_label      = 'WordPress-Projekt prüfen lassen';
-	$audit_cta_microcopy  = 'Direkt mit mir · Scope und Preis vor Umsetzung';
+	$brand_tagline       = 'WordPress Freelancer aus Hannover — Entwicklung, Tracking und Funnel direkt mit Haşim Üner.';
+	$copyright_line      = 'Haşim Üner - WordPress Freelancer Hannover';
+	$request_url         = $project_request_url;
+	$audit_cta_label     = 'WordPress-Projekt prüfen lassen';
+	$audit_cta_microcopy = 'Direkt mit mir · Scope und Preis vor Umsetzung';
 } else {
-	$brand_tagline   = 'Eigene Anfragesysteme für Solar-, Wärmepumpen- und Speicher-Anbieter, die Portal-Abhängigkeit messbar senken wollen.';
-	$copyright_line  = 'Haşim Üner - Anfragesysteme für Solar & Wärmepumpe';
+	$brand_tagline  = 'WordPress, technisches SEO, Tracking und Conversion als zusammenhängendes System — direkt mit Haşim Üner.';
+	$copyright_line = 'Haşim Üner - WordPress, Tracking & Conversion';
 }
 ?>
 
@@ -70,7 +78,7 @@ if ( $is_whitelabel_context ) {
 	<div class="ft__audit-shell">
 		<p class="ft__audit-note"><?php echo esc_html( $audit_footer_note ); ?></p>
 		<nav class="ft__audit-links" aria-label="Marktcheck-Footer-Navigation">
-			<a href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_footer_analysis" data-track-category="lead_gen">Marktcheck mit Fit-Entscheid starten</a>
+			<a href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_audit_footer_analysis" data-track-category="lead_gen">Marktcheck mit Fit-Entscheid starten</a>
 			<a href="<?php echo esc_url( $imprint_url ); ?>">Impressum</a>
 			<a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutz</a>
 		</nav>
@@ -82,12 +90,12 @@ if ( $is_whitelabel_context ) {
 <footer id="footer" class="ft ft--energy-minimal" aria-labelledby="ft-heading" role="contentinfo">
 	<h2 id="ft-heading" class="ft__sr">Footer-Navigation</h2>
 	<div class="ft__energy-shell">
-			<div class="ft__energy-brand">
-				<a class="ft__logo site-logo site-logo--accent" href="<?php echo esc_url( $home_url ); ?>" aria-label="Startseite - HAŞIM ÜNER">HAŞIM ÜNER</a>
-				<p class="ft__energy-tag">Leadgenerierung für Solar- und Wärmepumpen-Betriebe.</p>
-			</div>
-			<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_energy_footer_analysis" data-track-category="lead_gen" data-track-section="footer_energy" data-track-funnel-stage="energy_footer">Marktcheck mit Fit-Entscheid starten</a>
-			<nav class="ft__energy-legal" aria-label="Rechtliches">
+		<div class="ft__energy-brand">
+			<a class="ft__logo site-logo site-logo--accent" href="<?php echo esc_url( $home_url ); ?>" aria-label="Startseite - HAŞIM ÜNER">HAŞIM ÜNER</a>
+			<p class="ft__energy-tag">Leadgenerierung für Solar- und Wärmepumpen-Betriebe.</p>
+		</div>
+		<a class="ft__cta" href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_energy_footer_analysis" data-track-category="lead_gen" data-track-section="footer_energy" data-track-funnel-stage="energy_footer">Marktcheck mit Fit-Entscheid starten</a>
+		<nav class="ft__energy-legal" aria-label="Rechtliches">
 			<a href="<?php echo esc_url( $imprint_url ); ?>">Impressum</a>
 			<span aria-hidden="true">·</span>
 			<a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutz</a>
@@ -111,39 +119,40 @@ if ( $is_whitelabel_context ) {
 			<p class="ft__tag"><?php echo esc_html( $brand_tagline ); ?></p>
 			<?php if ( ! $hide_primary_cta ) : ?>
 			<div class="ft__cta-group">
-				<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_footer_analysis" data-track-category="lead_gen" data-track-section="footer" data-track-funnel-stage="footer_primary"><?php echo esc_html( $audit_cta_label ); ?></a>
+				<a class="ft__cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_footer_primary" data-track-category="lead_gen" data-track-section="footer" data-track-funnel-stage="footer_primary"><?php echo esc_html( $audit_cta_label ); ?></a>
 				<p class="ft__cta-note"><?php echo esc_html( $audit_cta_microcopy ); ?></p>
 			</div>
 			<?php else : ?>
 			<div class="ft__cta-group ft__cta-group--mobile-only">
-				<a class="ft__cta ft__cta--mobile-only" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_footer_analysis_mobile" data-track-category="lead_gen" data-track-section="footer" data-track-funnel-stage="footer_mobile"><?php echo esc_html( $audit_cta_label ); ?></a>
+				<a class="ft__cta ft__cta--mobile-only" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_footer_primary_mobile" data-track-category="lead_gen" data-track-section="footer" data-track-funnel-stage="footer_mobile"><?php echo esc_html( $audit_cta_label ); ?></a>
 				<p class="ft__cta-note ft__cta-note--mobile-only"><?php echo esc_html( $audit_cta_microcopy ); ?></p>
 			</div>
 			<?php endif; ?>
 		</div>
 
 		<nav class="ft__cols" aria-label="Footer-Navigation">
-			<section class="ft__col" aria-labelledby="ft-ergebnisse">
-				<h3 id="ft-ergebnisse">Ergebnisse</h3>
+			<section class="ft__col" aria-labelledby="ft-leistungen">
+				<h3 id="ft-leistungen">Leistungen</h3>
 				<ul class="ft__list">
-					<li><a class="ft__link-strong" href="<?php echo esc_url( $results_url ); ?>" data-track-action="cta_footer_nav_results" data-track-category="trust" data-track-section="footer">Ergebnisse und Case Studies</a></li>
-					<li><a href="<?php echo esc_url( $e3_url ); ?>" data-track-action="cta_footer_nav_case_study_proof" data-track-category="trust" data-track-section="footer">Fallstudie: Solar Leadgenerierung</a></li>
-				</ul>
-			</section>
-
-			<section class="ft__col" aria-labelledby="ft-wissen">
-				<h3 id="ft-wissen">Wissen</h3>
-				<ul class="ft__list">
-					<li><a class="ft__link-strong" href="<?php echo esc_url( $blog_url ); ?>" data-track-action="cta_footer_nav_insights" data-track-category="navigation" data-track-section="footer">Insights</a></li>
-					<li><a href="<?php echo esc_url( $glossary_url ); ?>" data-track-action="cta_footer_nav_glossary" data-track-category="navigation" data-track-section="footer">Glossar für SEO, Tracking und Anfragesysteme</a></li>
+					<li><a href="<?php echo esc_url( $energy_url ); ?>" data-track-action="cta_footer_nav_energy" data-track-category="navigation" data-track-section="footer">Solar &amp; Wärmepumpen</a></li>
+					<li><a class="ft__link-strong" href="<?php echo esc_url( $freelancer_url ); ?>" data-track-action="cta_footer_nav_freelancer" data-track-category="navigation" data-track-section="footer">WordPress Freelancer Hannover</a></li>
+					<li><a href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="cta_footer_nav_tracking" data-track-category="navigation" data-track-section="footer">Server-Side Tracking B2B</a></li>
 					<li><a href="<?php echo esc_url( $agentur_url ); ?>" data-track-action="cta_footer_nav_agentur" data-track-category="navigation" data-track-section="footer">WordPress Agentur Hannover</a></li>
-					<li><a href="<?php echo esc_url( $freelancer_url ); ?>" data-track-action="cta_footer_nav_freelancer" data-track-category="navigation" data-track-section="footer">WordPress Freelancer Hannover</a></li>
-					<li><a href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="cta_footer_nav_tracking" data-track-category="navigation" data-track-section="footer">Server-Side Tracking</a></li>
 				</ul>
 			</section>
 
-			<section class="ft__col" aria-labelledby="ft-kontakt">
-				<h3 id="ft-kontakt">Kontakt</h3>
+			<section class="ft__col" aria-labelledby="ft-proof-wissen">
+				<h3 id="ft-proof-wissen">Proof &amp; Wissen</h3>
+				<ul class="ft__list">
+					<li><a class="ft__link-strong" href="<?php echo esc_url( $results_url ); ?>" data-track-action="cta_footer_nav_results" data-track-category="trust" data-track-section="footer">Ergebnisse &amp; Case Studies</a></li>
+					<li><a href="<?php echo esc_url( $e3_url ); ?>" data-track-action="cta_footer_nav_case_study_proof" data-track-category="trust" data-track-section="footer">Fallstudie: Solar Leadgenerierung</a></li>
+					<li><a href="<?php echo esc_url( $blog_url ); ?>" data-track-action="cta_footer_nav_insights" data-track-category="navigation" data-track-section="footer">Insights</a></li>
+					<li><a href="<?php echo esc_url( $glossary_url ); ?>" data-track-action="cta_footer_nav_glossary" data-track-category="navigation" data-track-section="footer">Glossar für SEO, Tracking und Anfragesysteme</a></li>
+				</ul>
+			</section>
+
+			<section class="ft__col" aria-labelledby="ft-zusammenarbeit">
+				<h3 id="ft-zusammenarbeit">Zusammenarbeit</h3>
 				<ul class="ft__list">
 					<li><a class="ft__link-strong" href="<?php echo esc_url( $project_request_url ); ?>" data-track-action="cta_footer_nav_project" data-track-category="lead_gen" data-track-section="footer">Umsetzung besprechen</a></li>
 					<li><a href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="cta_footer_nav_whitelabel" data-track-category="lead_gen" data-track-section="footer">Für Agenturen: White-Label</a></li>
