@@ -27,15 +27,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array<string, mixed>
  */
 function hu_get_positioned_schema_offer_catalog() : array {
-	$project_url = function_exists( 'hu_get_navigation_project_request_url' )
-		? hu_get_navigation_project_request_url()
-		: home_url( '/kontakt/' );
 	$marketcheck_url = function_exists( 'hu_get_request_analysis_url' )
 		? hu_get_request_analysis_url()
 		: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 	$whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' )
 		? nexus_get_whitelabel_page_url()
 		: home_url( '/whitelabel-retainer/' );
+	$freelancer_url = home_url( '/wordpress-freelancer-hannover/' );
 
 	return [
 		'@type'           => 'OfferCatalog',
@@ -45,7 +43,7 @@ function hu_get_positioned_schema_offer_catalog() : array {
 				'@type'       => 'Offer',
 				'name'        => 'WordPress-Entwicklung',
 				'description' => 'WordPress-Websites und Landingpages mit technischer SEO, Performance und sauberer Weiterentwicklung.',
-				'url'         => home_url( '/wordpress-freelancer-hannover/' ),
+				'url'         => $freelancer_url,
 			],
 			[
 				'@type'       => 'Offer',
@@ -57,7 +55,7 @@ function hu_get_positioned_schema_offer_catalog() : array {
 				'@type'       => 'Offer',
 				'name'        => 'Conversion-Optimierung',
 				'description' => 'Optimierung von Landingpages, Funnels, Proof und Anfragewegen mit Fokus auf messbare Conversion.',
-				'url'         => $project_url,
+				'url'         => $freelancer_url,
 			],
 			[
 				'@type'       => 'Offer',
