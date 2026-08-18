@@ -19,34 +19,47 @@ $timeline_options     = function_exists( 'nexus_get_contact_timeline_options' ) 
 $calendar_url         = function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' );
 $requested_focus      = isset( $_GET['focus'] ) ? sanitize_key( wp_unslash( $_GET['focus'] ) ) : '';
 $requested_type       = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
-$public_type_keys     = [ 'audit', 'implementation', 'ongoing' ];
-if ( in_array( $requested_type, [ 'analysis', 'project' ], true ) ) {
-	$public_type_keys[] = 'analysis';
-	$public_type_keys[] = 'project';
+
+// Die allgemeine Kontaktseite ist jetzt ein direkter Projekt- und
+// Zusammenarbeits-Einstieg. Der Solar-Marktcheck bleibt weiterhin erreichbar,
+// wird aber nur bei einem expliziten `type=audit` in diese Oberfläche geholt.
+$public_type_keys = [ 'project', 'implementation', 'ongoing', 'general' ];
+if ( in_array( $requested_type, [ 'analysis', 'audit', 'client' ], true ) ) {
+	$public_type_keys[] = $requested_type;
 }
-$public_type_copy     = [
+$public_type_keys = array_values( array_unique( $public_type_keys ) );
+
+$public_type_copy = [
 	'audit'          => [
 		'label'       => 'Marktcheck',
-		'description' => 'Klarheit vor Umsetzung.',
+		'description' => 'Für Solar & Wärmepumpe: Markt, Anfrageweg und nächsten Schritt prüfen.',
 	],
 	'analysis'       => [
 		'label'       => 'Website-Analyse',
 		'description' => 'Klarheit vor Relaunch oder Optimierung.',
 	],
 	'project'        => [
-		'label'       => 'Projektprüfung',
-		'description' => 'B2B-Projekt sauber einordnen.',
+		'label'       => 'Projektanfrage',
+		'description' => 'WordPress, Tracking oder Conversion konkret besprechen.',
 	],
 	'implementation' => [
-		'label'       => 'Umsetzung',
-		'description' => 'Konkreter Bau oder Korrektur.',
+		'label'       => 'Umsetzung / Optimierung',
+		'description' => 'Ein klar umrissener technischer oder Conversion-Hebel.',
 	],
 	'ongoing'        => [
 		'label'       => 'Weiterentwicklung',
-		'description' => 'Planbare Systemarbeit.',
+		'description' => 'Planbare technische und fachliche Weiterentwicklung.',
+	],
+	'general'        => [
+		'label'       => 'Allgemeine Anfrage',
+		'description' => 'Kooperation, Frage oder Anliegen ohne festen Projektrahmen.',
+	],
+	'client'         => [
+		'label'       => 'Bestehendes Projekt',
+		'description' => 'Laufendes Thema oder nächste Priorität abstimmen.',
 	],
 ];
-$public_type_options  = array_intersect_key( $request_type_options, array_flip( $public_type_keys ) );
+$public_type_options = array_intersect_key( $request_type_options, array_flip( $public_type_keys ) );
 
 // Nur Themen anbieten, die zu mindestens einem der angebotenen Anfragetypen
 // passen. Sonst ist ein Thema wählbar, das der Backend-Contract
@@ -61,11 +74,11 @@ $public_focus_options = array_filter(
 		return ! empty( array_intersect( $focus_types, $offered_type_keys ) );
 	}
 );
-$selected_focus       = isset( $public_focus_options[ $requested_focus ] ) ? $requested_focus : '';
-$selected_type        = isset( $public_type_options[ $requested_type ] ) ? $requested_type : '';
+$selected_focus = isset( $public_focus_options[ $requested_focus ] ) ? $requested_focus : '';
+$selected_type  = isset( $public_type_options[ $requested_type ] ) ? $requested_type : '';
 
-if ( '' === $selected_type && isset( $public_type_options['audit'] ) ) {
-	$selected_type = 'audit';
+if ( '' === $selected_type && isset( $public_type_options['project'] ) ) {
+	$selected_type = 'project';
 }
 
 if ( '' !== $selected_focus ) {
@@ -75,10 +88,10 @@ if ( '' !== $selected_focus ) {
 	}
 }
 
-$has_explicit_type     = '' !== $requested_type && isset( $public_type_options[ $requested_type ] );
-$show_timeline_field   = in_array( $selected_type, [ 'analysis', 'project', 'implementation', 'ongoing' ], true );
-$show_budget_field     = in_array( $selected_type, [ 'implementation', 'ongoing' ], true );
-$type_copy_map         = [
+$has_explicit_type   = '' !== $requested_type && isset( $public_type_options[ $requested_type ] );
+$show_timeline_field = in_array( $selected_type, [ 'analysis', 'project', 'implementation', 'ongoing' ], true );
+$show_budget_field   = in_array( $selected_type, [ 'implementation', 'ongoing' ], true );
+$type_copy_map       = [
 	'audit'          => [
 		'focus_label'         => 'Was soll zuerst diagnostiziert werden?',
 		'focus_help'          => 'Wählen Sie die Fläche, auf der aktuell die größte Unklarheit liegt.',
@@ -98,12 +111,12 @@ $type_copy_map         = [
 		'timeline_label'      => 'Zeitfenster',
 	],
 	'project'        => [
-		'focus_label'         => 'Welcher Bereich soll zuerst geprüft werden?',
-		'focus_help'          => 'Wählen Sie den Bereich, in dem aktuell die größte geschäftliche Unklarheit liegt.',
+		'focus_label'         => 'Worum geht es in Ihrem Projekt?',
+		'focus_help'          => 'Wählen Sie den Bereich, der Ihrem Vorhaben am nächsten kommt.',
 		'message_label'       => 'Kurzbeschreibung',
-		'message_help'        => 'Welche URL ist relevant? Was ist das Angebot? Wo verliert das System heute Anfragen oder Klarheit?',
-		'message_placeholder' => "1. Website: Welche URL ist relevant?\n2. Angebot: Was verkaufen Sie und an wen?\n3. Engpass: Was soll die Seite besser leisten?",
-		'submit_label'        => 'Projekt prüfen',
+		'message_help'        => 'Was soll entstehen oder besser werden? Welche Website oder welches Setup ist betroffen?',
+		'message_placeholder' => "1. Vorhaben: Was soll umgesetzt oder verbessert werden?\n2. Ausgangslage: Welche Website oder welches Setup ist betroffen?\n3. Ziel: Was soll am Ende funktionieren oder messbar besser sein?",
+		'submit_label'        => 'Projekt anfragen',
 		'timeline_label'      => 'Zeitfenster',
 	],
 	'implementation' => [
@@ -143,27 +156,27 @@ $type_copy_map         = [
 		'timeline_label'      => 'Dringlichkeit',
 	],
 ];
-$current_type_copy     = isset( $type_copy_map[ $selected_type ] ) ? $type_copy_map[ $selected_type ] : $type_copy_map['audit'];
-$focus_label           = $current_type_copy['focus_label'];
-$focus_help            = $current_type_copy['focus_help'];
-$message_label         = $current_type_copy['message_label'];
-$message_help          = $current_type_copy['message_help'];
-$message_placeholder   = $current_type_copy['message_placeholder'];
-$submit_label          = $current_type_copy['submit_label'];
-$timeline_label        = $current_type_copy['timeline_label'];
-$message_minlength     = 24;
+$current_type_copy   = isset( $type_copy_map[ $selected_type ] ) ? $type_copy_map[ $selected_type ] : $type_copy_map['project'];
+$focus_label         = $current_type_copy['focus_label'];
+$focus_help          = $current_type_copy['focus_help'];
+$message_label       = $current_type_copy['message_label'];
+$message_help        = $current_type_copy['message_help'];
+$message_placeholder = $current_type_copy['message_placeholder'];
+$submit_label        = $current_type_copy['submit_label'];
+$timeline_label      = $current_type_copy['timeline_label'];
+$message_minlength   = 24;
 
-$is_scoped_landing     = $has_explicit_type;
-$current_type_label    = isset( $public_type_copy[ $selected_type ]['label'] ) ? (string) $public_type_copy[ $selected_type ]['label'] : 'Kontakt';
-$preselected_type      = ( $has_explicit_type || '' !== $selected_focus ) ? $selected_type : '';
+$is_scoped_landing  = $has_explicit_type;
+$current_type_label = isset( $public_type_copy[ $selected_type ]['label'] ) ? (string) $public_type_copy[ $selected_type ]['label'] : 'Kontakt';
+$preselected_type   = ( $has_explicit_type || '' !== $selected_focus ) ? $selected_type : '';
 
 $hero_eyebrow = $is_scoped_landing ? $current_type_label : 'Kontakt';
-$hero_title   = $is_scoped_landing ? $current_type_label : 'Sagen Sie kurz, worum es geht.';
+$hero_title   = $is_scoped_landing ? $current_type_label : 'Sagen Sie kurz, was Sie vorhaben.';
 $hero_lead    = $is_scoped_landing
 	? 'Vier kurze Schritte: Ziel, Hürde, Kontakt — händisch geprüfte Rückmeldung innerhalb von 48 Stunden.'
-	: 'Anliegen wählen, drei Fragen beantworten — händisch geprüfte Rückmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Vertriebsteam.';
+	: 'WordPress, Tracking, Conversion oder Weiterentwicklung: Anliegen wählen, kurz einordnen und direkt bei Haşim Üner landen.';
 
-$auto_scroll  = false;
+$auto_scroll = false;
 ?>
 
 <main id="main" class="site-main contact-page<?php echo esc_attr( $is_scoped_landing ? ' contact-page--scoped' : '' ); ?>" data-track-section="contact_page"<?php echo $auto_scroll ? ' data-contact-autoscroll' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- boolean attribute ?>>

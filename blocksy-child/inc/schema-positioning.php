@@ -1,21 +1,27 @@
 <?php
 /**
- * Positioning normalization for the site-wide schema graph.
+ * Canonical positioning layer for the site-wide schema graph.
  *
- * `org-schema.php` still owns route-specific schema generation. This module
- * changes only the canonical Person, Organization and WebSite identity nodes
- * plus the direct Freelancer service node. Keeping the normalization separate
- * makes the repositioning reviewable without rewriting the large schema
- * registry in one risky change.
- *
- * Once the migration is proven in production, these canonical values can be
- * folded back into org-schema.php in a dedicated refactor.
+ * `org-schema.php` continues to own the mature route-specific schema registry
+ * (FAQ, Article, Breadcrumb, specialist Service nodes). This module owns only
+ * the commercial identity contract: Person, Organization, WebSite and the
+ * direct Freelancer service. It normalizes those nodes at output time so the
+ * large route registry can evolve independently without reintroducing the
+ * retired Solar-only identity.
  *
  * @package Blocksy_Child
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+// The commercial router is the single source of truth for Direct, White-Label
+// and Energy destinations. Load it here as a compatibility bootstrap while the
+// legacy module loader in functions.php is still being simplified.
+$hu_commercial_routing_file = __DIR__ . '/commercial-routing.php';
+if ( is_file( $hu_commercial_routing_file ) ) {
+	require_once $hu_commercial_routing_file;
 }
 
 /**
@@ -27,13 +33,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array<string, mixed>
  */
 function hu_get_positioned_schema_offer_catalog() : array {
-	$marketcheck_url = function_exists( 'hu_get_request_analysis_url' )
-		? hu_get_request_analysis_url()
-		: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-	$whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' )
-		? nexus_get_whitelabel_page_url()
-		: home_url( '/whitelabel-retainer/' );
-	$freelancer_url = home_url( '/wordpress-freelancer-hannover/' );
+	$routes = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+	$marketcheck_url = $routes['marketcheck'] ?? (
+		function_exists( 'hu_get_request_analysis_url' )
+			? hu_get_request_analysis_url()
+			: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' )
+	);
+	$whitelabel_url = $routes['whitelabel'] ?? (
+		function_exists( 'nexus_get_whitelabel_page_url' )
+			? nexus_get_whitelabel_page_url()
+			: home_url( '/whitelabel-retainer/' )
+	);
+	$freelancer_url = $routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+	$tracking_url   = $routes['tracking_b2b'] ?? home_url( '/server-side-tracking-b2b/' );
+	$energy_url     = $routes['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 
 	return [
 		'@type'           => 'OfferCatalog',
@@ -49,7 +62,7 @@ function hu_get_positioned_schema_offer_catalog() : array {
 				'@type'       => 'Offer',
 				'name'        => 'Server-Side Tracking & Attribution',
 				'description' => 'Server-GTM, GA4, Google Ads, Meta CAPI und nachvollziehbare Messkonzepte für belastbare Conversion-Signale.',
-				'url'         => home_url( '/server-side-tracking-b2b/' ),
+				'url'         => $tracking_url,
 			],
 			[
 				'@type'       => 'Offer',
@@ -67,7 +80,7 @@ function hu_get_positioned_schema_offer_catalog() : array {
 				'@type'       => 'Offer',
 				'name'        => 'Anfragesysteme für Solar & Wärmepumpe',
 				'description' => 'Spezialisierte Nachfrage- und Anfragewege für Solar-, Wärmepumpen- und Speicher-Anbieter.',
-				'url'         => home_url( '/solar-waermepumpen-leadgenerierung/' ),
+				'url'         => $energy_url,
 			],
 			[
 				'@type'       => 'Offer',
@@ -103,6 +116,26 @@ function hu_normalize_positioned_schema_node( array $schema ) : array {
 			'Solar- und Wärmepumpen-Leadgenerierung',
 		];
 		$schema['hasOfferCatalog'] = hu_get_positioned_schema_offer_catalog();
+
+		// Use the stable Maps CID instead of a place URL whose path still carries
+		// the retired business descriptor. The CID identifies the same GBP entity.
+		$stable_map_url = 'https://www.google.com/maps?cid=7273014379384770345';
+		$schema['hasMap'] = $stable_map_url;
+		if ( isset( $schema['sameAs'] ) && is_array( $schema['sameAs'] ) ) {
+			$schema['sameAs'] = array_values(
+				array_unique(
+					array_merge(
+						array_filter(
+							$schema['sameAs'],
+							static function ( $url ) : bool {
+								return ! is_string( $url ) || false === strpos( $url, 'google.' ) || false === strpos( $url, '/maps/' );
+							}
+						),
+						[ $stable_map_url ]
+					)
+				)
+			);
+		}
 	}
 
 	if ( home_url( '/#website' ) === $id ) {
@@ -141,11 +174,14 @@ function hu_normalize_positioned_schema_node( array $schema ) : array {
  * @return array<string, mixed>
  */
 function hu_get_wordpress_freelancer_service_schema() : array {
+	$routes = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+	$freelancer_url = $routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+
 	return [
 		'@context'      => 'https://schema.org',
 		'@type'         => 'Service',
-		'@id'           => home_url( '/wordpress-freelancer-hannover/#service' ),
-		'url'           => home_url( '/wordpress-freelancer-hannover/' ),
+		'@id'           => trailingslashit( $freelancer_url ) . '#service',
+		'url'           => $freelancer_url,
 		'name'          => 'WordPress Freelancer Hannover',
 		'description'   => 'Direkte WordPress-Zusammenarbeit mit Entwicklung, technischer SEO, Tracking und Conversion-Optimierung aus Pattensen bei Hannover.',
 		'provider'      => [ '@id' => home_url( '/#organization' ) ],
@@ -187,9 +223,8 @@ function hu_get_wordpress_freelancer_service_schema() : array {
 }
 
 /**
- * Render the existing route-specific graph after normalizing only the canonical
- * identity nodes. This deliberately preserves all page-specific FAQ, Article,
- * Breadcrumb and Service logic already owned by org-schema.php.
+ * Render the existing route-specific graph and normalize the canonical
+ * commercial identity nodes without changing Article/FAQ/Breadcrumb logic.
  *
  * @return void
  */
