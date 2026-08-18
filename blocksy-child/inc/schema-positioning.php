@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return array<string, mixed>
  */
-function hu_get_positioned_schema_offer_catalog() {
+function hu_get_positioned_schema_offer_catalog() : array {
 	$project_url = function_exists( 'hu_get_navigation_project_request_url' )
 		? hu_get_navigation_project_request_url()
 		: home_url( '/kontakt/' );
@@ -87,7 +87,7 @@ function hu_get_positioned_schema_offer_catalog() {
  * @param array<string, mixed> $schema Schema node.
  * @return array<string, mixed>
  */
-function hu_normalize_positioned_schema_node( $schema ) {
+function hu_normalize_positioned_schema_node( array $schema ) : array {
 	$id = isset( $schema['@id'] ) ? (string) $schema['@id'] : '';
 
 	if ( home_url( '/#organization' ) === $id ) {
@@ -142,7 +142,7 @@ function hu_normalize_positioned_schema_node( $schema ) {
  *
  * @return array<string, mixed>
  */
-function hu_get_wordpress_freelancer_service_schema() {
+function hu_get_wordpress_freelancer_service_schema() : array {
 	return [
 		'@context'      => 'https://schema.org',
 		'@type'         => 'Service',
@@ -195,7 +195,7 @@ function hu_get_wordpress_freelancer_service_schema() {
  *
  * @return void
  */
-function hu_output_positioned_schema() {
+function hu_output_positioned_schema() : void {
 	if ( ! function_exists( 'hu_output_schema' ) ) {
 		return;
 	}
@@ -206,7 +206,7 @@ function hu_output_positioned_schema() {
 
 	$markup = preg_replace_callback(
 		'#<script type="application/ld\+json">(.*?)</script>#s',
-		static function ( $match ) {
+		static function ( array $match ) : string {
 			$decoded = json_decode( (string) $match[1], true );
 
 			if ( ! is_array( $decoded ) ) {
