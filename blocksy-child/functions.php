@@ -51,6 +51,7 @@ $modules = [
 	'enqueue.php',        // CSS/JS Asset-Management
 	'homepage-wow.php',   // Noindex-Testseite fuer visuelle Homepage-Variante
 	'seo-meta.php',       // OG Tags, Canonical, Indexierungssteuerung
+	'positioning-meta.php', // Repositioning-Overrides für globale Homepage-/Blog-Metadaten
 	'seo-subpage-cluster-links.php', // Kontextuelle Querverlinkung des Solar/B2B-Clusters
 	'org-schema.php',     // JSON-LD Structured Data
 	'schema-positioning.php', // Repositioning-Normalisierung der kanonischen Schema-Entitäten
