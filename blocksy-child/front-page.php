@@ -178,7 +178,7 @@ get_header();
 
 				<h1 class="hu-display hu-hero__title">
 					Websites, die Anfragen produzieren.<br>
-					<span class="hu-hero__title-2">Und die Technik, die belegt, welche.</span>
+					<span class="hu-hero__title-2">Und Technik, die Wirkung messbar macht.</span>
 				</h1>
 
 				<p class="hu-hero__sub">
