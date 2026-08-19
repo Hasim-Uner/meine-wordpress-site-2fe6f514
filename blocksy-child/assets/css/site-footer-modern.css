@@ -1,0 +1,505 @@
+/*
+ * Light route footer
+ *
+ * The standard footer deliberately contrasts the mostly dark site surfaces:
+ * warm paper, dark type, copper details. Audit and Energy special footers keep
+ * their existing focused treatment and do not load this file.
+ */
+
+.ft--modern {
+	--ftm-paper: #f6f1e9;
+	--ftm-paper-elevated: #fbf8f3;
+	--ftm-ink: #171411;
+	--ftm-muted: #67605a;
+	--ftm-soft: #8a8179;
+	--ftm-line: rgba(23, 20, 17, 0.13);
+	--ftm-line-strong: rgba(23, 20, 17, 0.22);
+	--ftm-copper: #b46a3c;
+	--ftm-copper-dark: #7f4023;
+	--ftm-dark: #171411;
+	--ftm-dark-muted: #b8afa7;
+	position: relative;
+	isolation: isolate;
+	margin: 0;
+	padding: clamp(76px, 8vw, 116px) 0 0;
+	background: var(--ftm-paper);
+	color: var(--ftm-ink);
+	border-top: 1px solid var(--ftm-line);
+}
+
+.ft--modern::before {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	left: 50%;
+	width: min(780px, 78vw);
+	height: 250px;
+	transform: translateX(-50%);
+	background: radial-gradient(circle at 50% 0%, rgba(180, 106, 60, 0.10), transparent 68%);
+	pointer-events: none;
+}
+
+.ft-modern__inner {
+	width: min(1240px, calc(100% - 40px));
+	margin-inline: auto;
+}
+
+.ft-modern__intro {
+	display: grid;
+	grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.58fr);
+	gap: clamp(32px, 6vw, 84px);
+	align-items: end;
+}
+
+.ft-modern__eyebrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 18px;
+	font-size: 0.72rem;
+	font-weight: 800;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--ftm-copper-dark);
+}
+
+.ft-modern__eyebrow::before {
+	content: '';
+	width: 28px;
+	height: 2px;
+	border-radius: 999px;
+	background: var(--ftm-copper);
+}
+
+.ft-modern__title {
+	max-width: 760px;
+	margin: 0;
+	font-size: clamp(2.6rem, 5vw, 5rem);
+	font-weight: 660;
+	letter-spacing: -0.045em;
+	line-height: 0.98;
+	color: var(--ftm-ink);
+}
+
+.ft-modern__intro-copy {
+	max-width: 430px;
+	margin: 0 0 4px;
+	font-size: clamp(1rem, 1.5vw, 1.18rem);
+	line-height: 1.66;
+	color: var(--ftm-muted);
+}
+
+.ft-modern__routes {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 14px;
+	margin-top: clamp(42px, 5vw, 64px);
+}
+
+.ft-modern__route {
+	position: relative;
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	grid-template-rows: auto auto;
+	column-gap: 16px;
+	row-gap: 5px;
+	min-height: 154px;
+	padding: 24px;
+	border: 1px solid var(--ftm-line);
+	border-radius: 24px;
+	background: var(--ftm-paper-elevated);
+	color: var(--ftm-ink);
+	text-decoration: none;
+	box-shadow: 0 10px 30px rgba(23, 20, 17, 0.025);
+	transition:
+		transform 180ms ease-out,
+		border-color 180ms ease-out,
+		box-shadow 180ms ease-out,
+		background 180ms ease-out;
+}
+
+.ft-modern__route:hover,
+.ft-modern__route:focus-visible {
+	color: var(--ftm-ink);
+	transform: translateY(-4px);
+	border-color: rgba(180, 106, 60, 0.48);
+	background: #fffaf4;
+	box-shadow: 0 18px 42px rgba(53, 36, 25, 0.09);
+}
+
+.ft-modern__route:focus-visible {
+	outline: 3px solid rgba(180, 106, 60, 0.28);
+	outline-offset: 3px;
+}
+
+.ft-modern__route-icon {
+	grid-row: 1 / span 2;
+	display: inline-grid;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	border: 1px solid rgba(180, 106, 60, 0.28);
+	border-radius: 14px;
+	background: rgba(180, 106, 60, 0.08);
+	color: var(--ftm-copper-dark);
+}
+
+.ft-modern__route-icon svg {
+	width: 21px;
+	height: 21px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.ft-modern__route-label {
+	align-self: end;
+	font-size: 1.05rem;
+	font-weight: 790;
+	letter-spacing: -0.01em;
+}
+
+.ft-modern__route-copy {
+	align-self: start;
+	font-size: 0.82rem;
+	line-height: 1.45;
+	color: var(--ftm-muted);
+}
+
+.ft-modern__route-arrow {
+	grid-row: 1 / span 2;
+	align-self: center;
+	display: grid;
+	place-items: center;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	border: 1px solid var(--ftm-line);
+	font-size: 1.08rem;
+	color: var(--ftm-copper-dark);
+	transition:
+		transform 180ms ease-out,
+		border-color 180ms ease-out,
+		background 180ms ease-out;
+}
+
+.ft-modern__route:hover .ft-modern__route-arrow,
+.ft-modern__route:focus-visible .ft-modern__route-arrow {
+	transform: translate(2px, -2px);
+	border-color: rgba(180, 106, 60, 0.44);
+	background: rgba(180, 106, 60, 0.08);
+}
+
+.ft-modern__cta-band {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 28px;
+	align-items: center;
+	margin-top: clamp(34px, 5vw, 58px);
+	padding: clamp(26px, 4vw, 42px);
+	border-radius: 28px;
+	background: var(--ftm-dark);
+	color: #fffaf4;
+	box-shadow: 0 20px 54px rgba(23, 20, 17, 0.16);
+}
+
+.ft-modern__cta-band--mobile-only {
+	display: none;
+}
+
+.ft-modern__cta-kicker {
+	margin: 0 0 6px;
+	font-size: 0.72rem;
+	font-weight: 800;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: #d79a73;
+}
+
+.ft-modern__cta-title {
+	margin: 0;
+	font-size: clamp(1.45rem, 2.5vw, 2.2rem);
+	font-weight: 680;
+	letter-spacing: -0.025em;
+	line-height: 1.08;
+	color: #fffaf4;
+}
+
+.ft-modern__cta-note {
+	margin: 10px 0 0;
+	font-size: 0.88rem;
+	line-height: 1.55;
+	color: var(--ftm-dark-muted);
+}
+
+.ft-modern__cta-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-height: 52px;
+	padding: 0 22px;
+	border: 1px solid rgba(255, 250, 244, 0.76);
+	border-radius: 999px;
+	background: #fffaf4;
+	color: var(--ftm-ink);
+	font-size: 0.9rem;
+	font-weight: 800;
+	text-decoration: none;
+	white-space: nowrap;
+	transition:
+		transform 180ms ease-out,
+		background 180ms ease-out,
+		border-color 180ms ease-out;
+}
+
+.ft-modern__cta-button:hover,
+.ft-modern__cta-button:focus-visible {
+	color: var(--ftm-ink);
+	transform: translateY(-2px);
+	background: #f2e3d6;
+	border-color: #f2e3d6;
+}
+
+.ft-modern__cta-button:focus-visible {
+	outline: 3px solid rgba(215, 154, 115, 0.42);
+	outline-offset: 3px;
+}
+
+.ft-modern__directory {
+	display: grid;
+	grid-template-columns: minmax(230px, 1.15fr) repeat(3, minmax(0, 1fr));
+	gap: clamp(30px, 5vw, 68px);
+	margin-top: clamp(58px, 7vw, 88px);
+	padding: clamp(42px, 5vw, 58px) 0;
+	border-top: 1px solid var(--ftm-line);
+}
+
+.ft-modern__brand {
+	max-width: 310px;
+}
+
+.ft-modern__logo.site-logo {
+	display: inline-block;
+	margin: 0 0 16px;
+	font-size: 1rem;
+	font-weight: 790;
+	letter-spacing: 0.18em;
+	color: var(--ftm-ink) !important;
+	text-decoration: none;
+}
+
+.ft-modern__brand p {
+	margin: 0;
+	font-size: 0.9rem;
+	line-height: 1.65;
+	color: var(--ftm-muted);
+}
+
+.ft-modern__col h3 {
+	margin: 0 0 18px;
+	font-size: 0.7rem;
+	font-weight: 820;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--ftm-soft);
+}
+
+.ft-modern__list {
+	display: grid;
+	gap: 11px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.ft-modern__list li {
+	margin: 0;
+}
+
+.ft-modern__list a {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	color: #322d29;
+	font-size: 0.9rem;
+	font-weight: 560;
+	line-height: 1.45;
+	text-decoration: none;
+	text-underline-offset: 4px;
+	transition: color 160ms ease-out, transform 160ms ease-out;
+}
+
+.ft-modern__list a:hover,
+.ft-modern__list a:focus-visible {
+	color: var(--ftm-copper-dark);
+	transform: translateX(2px);
+	text-decoration: underline;
+}
+
+.ft-modern__list a:focus-visible,
+.ft-modern__meta a:focus-visible,
+.ft-modern__social a:focus-visible {
+	outline: 2px solid rgba(180, 106, 60, 0.34);
+	outline-offset: 3px;
+}
+
+.ft-modern__bottom {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto auto;
+	gap: 24px;
+	align-items: center;
+	padding: 24px 0 30px;
+	border-top: 1px solid var(--ftm-line);
+	font-size: 0.78rem;
+	color: var(--ftm-soft);
+}
+
+.ft-modern__bottom p {
+	margin: 0;
+}
+
+.ft-modern__meta,
+.ft-modern__social {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.ft-modern__meta a,
+.ft-modern__social a {
+	color: var(--ftm-muted);
+	text-decoration: none;
+}
+
+.ft-modern__meta a:hover,
+.ft-modern__meta a:focus-visible,
+.ft-modern__social a:hover,
+.ft-modern__social a:focus-visible {
+	color: var(--ftm-ink);
+}
+
+.ft-modern__meta span {
+	color: rgba(23, 20, 17, 0.26);
+}
+
+.ft-modern__social a {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-weight: 700;
+}
+
+.ft-modern__social svg {
+	width: 15px;
+	height: 15px;
+	fill: currentColor;
+}
+
+@media (max-width: 1040px) {
+	.ft-modern__intro {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+
+	.ft-modern__intro-copy {
+		max-width: 620px;
+	}
+
+	.ft-modern__routes {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.ft-modern__route:last-child {
+		grid-column: 1 / -1;
+	}
+
+	.ft-modern__directory {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.ft-modern__brand {
+		max-width: 520px;
+	}
+}
+
+@media (max-width: 700px) {
+	.ft--modern {
+		padding-top: 68px;
+	}
+
+	.ft-modern__inner {
+		width: min(100% - 28px, 1240px);
+	}
+
+	.ft-modern__title {
+		font-size: clamp(2.45rem, 12vw, 3.55rem);
+	}
+
+	.ft-modern__routes {
+		grid-template-columns: 1fr;
+		gap: 10px;
+		margin-top: 34px;
+	}
+
+	.ft-modern__route,
+	.ft-modern__route:last-child {
+		grid-column: auto;
+		min-height: 126px;
+		padding: 20px;
+		border-radius: 20px;
+	}
+
+	.ft-modern__cta-band,
+	.ft-modern__cta-band--mobile-only {
+		grid-template-columns: 1fr;
+		gap: 20px;
+		padding: 26px 22px;
+		border-radius: 22px;
+	}
+
+	.ft-modern__cta-band--mobile-only {
+		display: grid;
+	}
+
+	.ft-modern__cta-button {
+		width: 100%;
+	}
+
+	.ft-modern__directory {
+		grid-template-columns: 1fr;
+		gap: 34px;
+		margin-top: 52px;
+		padding: 38px 0;
+	}
+
+	.ft-modern__bottom {
+		grid-template-columns: 1fr;
+		gap: 16px;
+		padding-bottom: 26px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ft-modern__route,
+	.ft-modern__route-arrow,
+	.ft-modern__cta-button,
+	.ft-modern__list a {
+		transition: none;
+	}
+
+	.ft-modern__route:hover,
+	.ft-modern__route:focus-visible,
+	.ft-modern__route:hover .ft-modern__route-arrow,
+	.ft-modern__route:focus-visible .ft-modern__route-arrow,
+	.ft-modern__cta-button:hover,
+	.ft-modern__cta-button:focus-visible,
+	.ft-modern__list a:hover,
+	.ft-modern__list a:focus-visible {
+		transform: none;
+	}
+}
