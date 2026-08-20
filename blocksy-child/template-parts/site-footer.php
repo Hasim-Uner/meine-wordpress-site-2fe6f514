@@ -47,6 +47,76 @@ $audit_cta_label  = 'Projekt anfragen';
 $audit_cta_microcopy = 'Scope · Ziel · nächster sinnvoller Schritt';
 $audit_footer_note = function_exists( 'nexus_get_audit_footer_note' ) ? nexus_get_audit_footer_note() : 'Marktcheck: Manueller Fit-Befund statt Software-Einheitsbrei — händische Einordnung von Region, Vertrieb und Anfragequalität.';
 
+/*
+ * Ausgang aus den fokussierten Footern.
+ *
+ * Energy- und Audit-Seiten rendern bewusst keinen globalen Header und keinen
+ * vollen Footer. Damit hatte das Cluster, das den groessten Teil des
+ * organischen Traffics traegt, ausser Marktcheck und mailto keinen Weg zurueck
+ * in die Seite. Dieselben drei Wege wie im Standard-Footer, aber ohne Rahmen
+ * und Kartenhintergrund: der Marktcheck-CTA darueber bleibt das optisch
+ * staerkste Element.
+ */
+$render_minimal_footer_routes = static function ( $section ) use ( $freelancer_url, $whitelabel_url, $energy_url, $results_url ) {
+	$routes = [
+		[
+			'url'   => $freelancer_url,
+			'label' => 'WordPress',
+			'copy'  => 'Direkte Projekte',
+			'track' => 'cta_footer_min_route_freelancer',
+			'icon'  => '<rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 9h18M7 6.5h.01M10 6.5h.01"></path>',
+		],
+		[
+			'url'   => $whitelabel_url,
+			'label' => 'Für Agenturen',
+			'copy'  => 'White-Label',
+			'track' => 'cta_footer_min_route_whitelabel',
+			'icon'  => '<path d="m12 3 8 5-8 5-8-5 8-5Z"></path><path d="m4 12 8 5 8-5M4 16l8 5 8-5"></path>',
+		],
+		[
+			'url'   => $energy_url,
+			'label' => 'Solar & Wärmepumpen',
+			'copy'  => 'Anfragesysteme',
+			'track' => 'cta_footer_min_route_energy',
+			'icon'  => '<circle cx="12" cy="12" r="3.5"></circle><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"></path>',
+		],
+	];
+	?>
+	<nav class="ft__routes" aria-label="Weitere Wege">
+		<p class="ft__routes-kicker">Weitere Wege</p>
+		<ul class="ft__routes-list">
+			<?php foreach ( $routes as $route ) : ?>
+				<li>
+					<a
+						class="ft__route"
+						href="<?php echo esc_url( (string) $route['url'] ); ?>"
+						data-track-action="<?php echo esc_attr( (string) $route['track'] ); ?>"
+						data-track-category="navigation"
+						data-track-section="<?php echo esc_attr( $section ); ?>"
+					>
+						<span class="ft__route-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24"><?php echo $route['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG paths ?></svg>
+						</span>
+						<span class="ft__route-text">
+							<span class="ft__route-title"><?php echo esc_html( (string) $route['label'] ); ?></span>
+							<span class="ft__route-copy"><?php echo esc_html( (string) $route['copy'] ); ?></span>
+						</span>
+					</a>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+		<p class="ft__routes-more">
+			<a
+				href="<?php echo esc_url( $results_url ); ?>"
+				data-track-action="cta_footer_min_route_results"
+				data-track-category="trust"
+				data-track-section="<?php echo esc_attr( $section ); ?>"
+			>Ergebnisse &amp; Case Studies</a>
+		</p>
+	</nav>
+	<?php
+};
+
 $is_whitelabel_context = is_page_template( 'page-whitelabel-retainer.php' )
 	|| is_page( 'whitelabel-retainer' )
 	|| is_page( 'whitelabel-retainer-proof' )
@@ -83,6 +153,7 @@ if ( $is_whitelabel_context ) {
 			<a href="<?php echo esc_url( $imprint_url ); ?>">Impressum</a>
 			<a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutz</a>
 		</nav>
+		<?php $render_minimal_footer_routes( 'footer_audit_routes' ); ?>
 	</div>
 </footer>
 <?php return; endif; ?>
@@ -96,6 +167,7 @@ if ( $is_whitelabel_context ) {
 			<p class="ft__energy-tag">Leadgenerierung für Solar- und Wärmepumpen-Betriebe.</p>
 		</div>
 		<a class="ft__cta" href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_energy_footer_analysis" data-track-category="lead_gen" data-track-section="footer_energy" data-track-funnel-stage="energy_footer">Marktcheck mit Fit-Entscheid starten</a>
+		<?php $render_minimal_footer_routes( 'footer_energy_routes' ); ?>
 		<nav class="ft__energy-legal" aria-label="Rechtliches">
 			<a href="<?php echo esc_url( $imprint_url ); ?>">Impressum</a>
 			<span aria-hidden="true">·</span>
