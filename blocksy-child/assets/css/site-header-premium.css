@@ -263,6 +263,18 @@
             inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
 
+    /*
+     * Die Desktop-Navigation muss hier explizit ausgeblendet werden.
+     * `site-header.css` blendet `.nx-site-header__nav` ab 1100px aus, aber die
+     * Premium-Regel weiter oben ist zweiklassig und damit spezifischer — eine
+     * Media Query erhöht die Spezifität nicht. Ohne diese Zeile bleiben die
+     * Routen-Karten sichtbar, sprengen den zweispaltigen Shell in eine zweite
+     * Zeile und überlagern die Wortmarke.
+     */
+    .nx-site-header--premium .nx-site-header__nav {
+        display: none;
+    }
+
     .nx-site-header--premium .nx-site-header__toggle {
         display: inline-flex;
         width: 46px;
