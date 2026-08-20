@@ -8,17 +8,21 @@
  * Suchanfrage — dieselbe Zielgruppe, dieselben Zahlen, dieselbe Blockfolge,
  * aber ohne eigenes Formular.
  *
- * Architektur (7 Blöcke):
+ * Architektur (6 Blöcke):
  *   1 Hero            — Klammer, kein Button
- *   2 Einstieg        — eine Klick-Frage, eigenes Event, routet auf die Türen
+ *   2 Drei Türen      — Solar-Marktcheck · WordPress Freelancer · White-Label
  *   3 Lebender Beweis — an dieser Seite nachmessbar (Übernahme Agentur-Seite)
- *   4 Drei Türen      — Solar-Marktcheck · WordPress Freelancer · White-Label
- *   5 Beleg           — E3-Case, genau einmal auf der Seite
- *   6 Abgrenzung      — Selbstqualifizierung statt vergrabener FAQ
- *   7 Abschluss       — für alle, die keinen der drei Wege wählen
+ *   4 Beleg           — E3-Case, genau einmal auf der Seite
+ *   5 Abgrenzung      — Selbstqualifizierung statt vergrabener FAQ
+ *   6 Abschluss       — für alle, die keinen der drei Wege wählen
  *
- * Der Marktcheck bleibt auf der Solar-Money-Page: diese Seite bekommt den
- * Einstieg, kein zweites vollständiges Formular.
+ * Genau eine Wegewahl. Der frühere Block 2 "Einstieg" stellte dieselbe
+ * Entscheidung ein zweites Mal und sortierte dabei nach dem Kanal, während er
+ * nach dem Segment routete; er ist entfallen und die Türen sind nach oben
+ * gerückt.
+ *
+ * Der Marktcheck bleibt auf der Solar-Money-Page: diese Seite verteilt nur,
+ * sie trägt kein zweites vollständiges Formular.
  *
  * Schema/SEO: Title + Description kommen aus inc/seo-meta.php
  * (hu_get_homepage_title / hu_get_homepage_description). Organization +
@@ -66,54 +70,20 @@ $psi_url          = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( ho
  */
 $home_psi_mobile  = '99';
 
-/* ── Block 2 · Einstieg: eine Klick-Frage, fünf Wege ──────
- *
- * Bewusst Links statt Buttons: eine Antwort führt direkt auf ein Ziel, es gibt
- * keinen zweiten Schritt und keinen Zustand. Damit ist die Frage ohne JS
- * bedienbar, nativ tastaturfähig und wird korrekt als Link angesagt — die
- * Barrierefreiheit der Startseite hängt nicht an einem Skript.
- *
- * Eigene Events: getrennt vom Marktcheck-Formular (cta_*) und vom
- * White-Label-Fit-Check, sonst ist nicht messbar, ob der Verteiler trägt.
- */
-$home_entry_options = [
-	[
-		'label'  => 'Wir kaufen Anfragen bei Portalen oder Lead-Anbietern',
-		'route'  => 'Marktcheck für Solar, Wärmepumpe, Speicher',
-		'url'    => $analysis_url,
-		'action' => 'home_entry_portale',
-	],
-	[
-		'label'  => 'Über Google, organisch',
-		'route'  => 'Direkte WordPress-Zusammenarbeit',
-		'url'    => $freelancer_url,
-		'action' => 'home_entry_organisch',
-	],
-	[
-		'label'  => 'Über bezahlte Kampagnen',
-		'route'  => 'Marktcheck für Solar, Wärmepumpe, Speicher',
-		'url'    => $analysis_url,
-		'action' => 'home_entry_paid',
-	],
-	[
-		'label'  => 'Über Empfehlung und Netzwerk',
-		'route'  => 'Direkte WordPress-Zusammenarbeit',
-		'url'    => $freelancer_url,
-		'action' => 'home_entry_empfehlung',
-	],
-	[
-		'label'  => 'Wir sind eine Agentur und suchen Umsetzungskapazität',
-		'route'  => 'White-Label-Retainer',
-		'url'    => $whitelabel_url,
-		'action' => 'home_entry_agentur',
-	],
-];
-
-/* ── Block 4 · Die drei Türen ─────────────────────────────
+/* ── Block 2 · Die drei Türen ─────────────────────────────
  *
  * Jede Tür ist über die Situation des Besuchers benannt, nicht über die
  * Leistung — der Besucher sucht sich, nicht das Angebot. Die E3-Zahlen stehen
- * bewusst in keiner Tür: sie gehören genau einmal auf die Seite, in Block 5.
+ * bewusst in keiner Tür: sie gehören genau einmal auf die Seite, in Block 4.
+ *
+ * Der frühere Block "Einstieg" (eine Klick-Frage, fünf Antworten) stand hier
+ * davor und stellte dieselbe Routing-Entscheidung ein zweites Mal. Er sortierte
+ * zusätzlich nach dem falschen Kriterium: gefragt war der Kanal ("Woher kommen
+ * Ihre Anfragen heute?"), geroutet wurde nach dem Segment. Ein Solarbetrieb mit
+ * organischen Anfragen landete damit im Freelancer-Angebot und eine
+ * Nicht-Solar-Firma mit Paid-Kampagnen im Solar-Marktcheck. Die drei Türen sind
+ * jetzt die einzige Wegewahl der Seite; die `home_entry_*`-Events entfallen,
+ * `home_door_*` bleibt und wird dadurch erstmals sauber interpretierbar.
  */
 $home_doors = [
 	[
@@ -186,12 +156,12 @@ get_header();
 				</p>
 
 				<?php
-				// Kein CTA im Hero: der Einstieg steht direkt darunter. Der Anker ist
+				// Kein CTA im Hero: die Wegewahl steht direkt darunter. Der Anker ist
 				// nur eine Sprungmarke fuer Tastatur und Screenreader, kein Button.
 				?>
-				<a class="hu-hero__cue" href="#einstieg"
-				   data-track-action="home_hero_to_entry" data-track-category="navigation" data-track-section="hero">
-					<span>Eine Frage, dann wissen Sie, welcher Weg passt</span>
+				<a class="hu-hero__cue" href="#wege"
+				   data-track-action="home_hero_to_routes" data-track-category="navigation" data-track-section="hero">
+					<span>Drei Wege — wählen Sie den, der Ihre Situation beschreibt</span>
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
 				</a>
 			</div>
@@ -314,32 +284,36 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     02 / EINSTIEG — eine Klick-Frage, eigenes Event
+	     02 / DIE DREI TÜREN — benannt über die Situation, nicht die Leistung
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section hu-section--entry" id="einstieg" data-track-section="einstieg" aria-labelledby="hu-entry-h">
-		<div class="hu-container hu-container--narrow">
-			<div class="hu-entry hu-reveal">
-				<span class="hu-eyebrow">01 / Einstieg</span>
-				<h2 id="hu-entry-h" class="hu-entry__q">Woher kommen Ihre Anfragen heute?</h2>
-				<p class="hu-entry__sub">Eine Antwort, ein Klick. Danach sehen Sie, was für Ihre Situation der nächste sinnvolle Schritt ist.</p>
+	<section class="hu-section hu-section--first" id="wege" data-track-section="tueren" aria-labelledby="hu-doors-h">
+		<div class="hu-container">
+			<div class="hu-proof-headline hu-head--gap hu-reveal">
+				<span class="hu-eyebrow">01 / Drei Wege</span>
+				<h2 id="hu-doors-h">Drei Wege. Wählen Sie den, der Ihre Situation beschreibt.</h2>
+			</div>
 
-				<ul class="hu-entry__options">
-					<?php foreach ( $home_entry_options as $opt ) : ?>
-						<li>
-							<a class="hu-entry__opt"
-							   href="<?php echo esc_url( $opt['url'] ); ?>"
-							   data-track-action="<?php echo esc_attr( $opt['action'] ); ?>"
-							   data-track-category="lead_gen"
-							   data-track-section="einstieg">
-								<span class="hu-entry__opt-t"><?php echo esc_html( $opt['label'] ); ?></span>
-								<span class="hu-entry__opt-s hu-mono"><?php echo esc_html( $opt['route'] ); ?></span>
-								<svg class="hu-entry__opt-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-							</a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-
-				<p class="hu-entry__hint">Kein Formular, keine E-Mail — der Klick führt Sie nur auf den passenden Weg.</p>
+			<div class="hu-gateways hu-gateways--doors hu-reveal" data-track-section="tueren">
+				<?php foreach ( $home_doors as $door ) : ?>
+					<a class="hu-gateway"
+					   href="<?php echo esc_url( $door['url'] ); ?>"
+					   data-track-action="<?php echo esc_attr( $door['action'] ); ?>"
+					   data-track-category="navigation"
+					   data-track-section="tueren">
+						<div class="hu-gateway__head">
+							<span class="hu-gateway__badge"><?php echo esc_html( $door['badge'] ); ?></span>
+							<span class="hu-gateway__kicker hu-mono"><?php echo esc_html( $door['kicker'] ); ?></span>
+						</div>
+						<h3 class="hu-gateway__title"><?php echo esc_html( $door['title'] ); ?></h3>
+						<p class="hu-gateway__desc"><?php echo esc_html( $door['desc'] ); ?></p>
+						<div class="hu-gateway__foot">
+							<span class="hu-gateway__cta">
+								<?php echo esc_html( $door['label'] ); ?>
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+							</span>
+						</div>
+					</a>
+				<?php endforeach; ?>
 			</div>
 		</div>
 	</section>
@@ -384,48 +358,14 @@ get_header();
 		</div>
 	</section>
 
-	<!-- ═══════════════════════════════════════════════════
-	     04 / DIE DREI TÜREN — benannt über die Situation, nicht die Leistung
-	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section" id="wege" data-track-section="tueren" aria-labelledby="hu-doors-h">
-		<div class="hu-container">
-			<div class="hu-proof-headline hu-head--gap hu-reveal">
-				<span class="hu-eyebrow">03 / Drei Wege</span>
-				<h2 id="hu-doors-h">Drei Wege. Wählen Sie den, der Ihre Situation beschreibt.</h2>
-			</div>
-
-			<div class="hu-gateways hu-gateways--doors hu-reveal" data-track-section="tueren">
-				<?php foreach ( $home_doors as $door ) : ?>
-					<a class="hu-gateway"
-					   href="<?php echo esc_url( $door['url'] ); ?>"
-					   data-track-action="<?php echo esc_attr( $door['action'] ); ?>"
-					   data-track-category="navigation"
-					   data-track-section="tueren">
-						<div class="hu-gateway__head">
-							<span class="hu-gateway__badge"><?php echo esc_html( $door['badge'] ); ?></span>
-							<span class="hu-gateway__kicker hu-mono"><?php echo esc_html( $door['kicker'] ); ?></span>
-						</div>
-						<h3 class="hu-gateway__title"><?php echo esc_html( $door['title'] ); ?></h3>
-						<p class="hu-gateway__desc"><?php echo esc_html( $door['desc'] ); ?></p>
-						<div class="hu-gateway__foot">
-							<span class="hu-gateway__cta">
-								<?php echo esc_html( $door['label'] ); ?>
-								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-							</span>
-						</div>
-					</a>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     05 / BELEG — genau einmal auf der Seite
+	     04 / BELEG — genau einmal auf der Seite
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--cream" id="beleg" data-track-section="beleg" aria-labelledby="hu-case-h">
 		<div class="hu-container hu-container--narrow">
 			<div class="hu-proof-headline hu-reveal">
-				<span class="hu-eyebrow hu-on-cream">04 / Beleg</span>
+				<span class="hu-eyebrow hu-on-cream">03 / Beleg</span>
 				<h2 id="hu-case-h" class="hu-on-cream--strong">Was dabei herauskommt, wenn Website, Tracking und Vertrieb zusammenhängen.</h2>
 				<p>
 					Bei einem mittelständischen PV-Installationsbetrieb sanken die Kosten pro qualifizierter Anfrage um <?php echo esc_html( $e3_cpl_reduction ); ?> — von <?php echo esc_html( $e3_cpl_before ); ?> auf <?php echo esc_html( $e3_cpl_after ); ?>, bei <?php echo esc_html( $e3_lead_count ); ?> Anfragen in <?php echo esc_html( $e3_timeframe_dat ); ?> und <?php echo esc_html( $e3_sales_conv ); ?> Abschlussquote.
@@ -443,12 +383,12 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     06 / ABGRENZUNG — Selbstqualifizierung, nicht im Aufklapper
+	     05 / ABGRENZUNG — Selbstqualifizierung, nicht im Aufklapper
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section" id="abgrenzung" data-track-section="abgrenzung" aria-labelledby="hu-fit-h">
 		<div class="hu-container hu-container--narrow">
 			<div class="hu-proof-headline hu-head--gap hu-reveal">
-				<span class="hu-eyebrow">05 / Abgrenzung</span>
+				<span class="hu-eyebrow">04 / Abgrenzung</span>
 				<h2 id="hu-fit-h">Wann ich der falsche Weg bin.</h2>
 			</div>
 
@@ -474,12 +414,12 @@ get_header();
 	</section>
 
 	<!-- ═══════════════════════════════════════════════════
-	     07 / ABSCHLUSS — für alle, die keinen der drei Wege wählen
+	     06 / ABSCHLUSS — für alle, die keinen der drei Wege wählen
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--close" id="cta" data-track-section="abschluss" aria-labelledby="hu-close-h">
 		<div class="hu-container">
 			<div class="hu-close hu-reveal">
-				<span class="hu-eyebrow hu-on-accent">06 / Nächster Schritt</span>
+				<span class="hu-eyebrow hu-on-accent">05 / Nächster Schritt</span>
 				<h2 id="hu-close-h" class="hu-display">Sie wissen noch nicht, welcher Weg passt?</h2>
 				<p class="hu-close__sub">
 					Dann schreiben Sie mir in zwei Sätzen, woran es gerade hakt. <?php echo esc_html( hu_response_promise( 'sentence' ) ); ?>

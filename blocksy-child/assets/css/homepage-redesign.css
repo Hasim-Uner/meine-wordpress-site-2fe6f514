@@ -76,6 +76,13 @@
   border-top: 1px solid var(--line);
   position: relative;
 }
+/* Erster Block unter dem Hero: keine Trennlinie, kleinerer Innenabstand. Der
+   Hero-Cue zeigt direkt hierher, eine Haarlinie dazwischen schneidet den
+   Gedanken ab. Diese Rolle trug zuvor der entfallene Einstiegsblock. */
+.hu-hp .hu-section--first {
+  border-top: 0;
+  padding-top: clamp(40px,5vw,72px);
+}
 .hu-hp .hu-section--cream {
   background: var(--bg-cream);
   color: var(--ink);
@@ -1960,111 +1967,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .hu-hp .hu-hero__cue svg { animation: none; }
-}
-
-/* ─── Block 2 · Einstieg (Klick-Frage) ────────────────────── */
-.hu-hp .hu-section--entry { border-top: 0; padding-top: clamp(40px,5vw,72px); }
-
-.hu-hp .hu-entry {
-  padding: clamp(28px,3.4vw,44px);
-  border: 1px solid var(--line-2);
-  border-radius: var(--radius-lg);
-  background:
-    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(224,138,60,.07), transparent 70%),
-    var(--bg-2);
-  box-shadow: 0 30px 70px -60px rgba(0,0,0,.9);
-}
-.hu-hp .hu-entry__q {
-  font-size: clamp(28px,3.2vw,42px);
-  font-weight: 800;
-  letter-spacing: -.03em;
-  line-height: 1.05;
-  margin: 12px 0 0;
-  text-wrap: balance;
-}
-.hu-hp .hu-entry__sub {
-  color: var(--fg-2);
-  font-size: 17px;
-  max-width: 58ch;
-  margin: 14px 0 0;
-}
-
-.hu-hp .hu-entry__options {
-  list-style: none;
-  margin: 28px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 10px;
-}
-
-/* Link, nicht Button: eine Antwort ist ein Ziel. Damit funktioniert die
-   Frage ohne JS, ist nativ fokussierbar und wird korrekt angesagt. */
-.hu-hp .hu-entry__opt {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas: "title arrow" "route arrow";
-  align-items: center;
-  column-gap: 18px;
-  padding: 16px 20px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: rgba(255,255,255,.015);
-  color: var(--fg);
-  transition: border-color .2s ease, background .2s ease, transform .2s cubic-bezier(.22,1,.36,1);
-}
-.hu-hp .hu-entry__opt-t {
-  grid-area: title;
-  font-weight: 600;
-  font-size: 16.5px;
-  line-height: 1.35;
-}
-.hu-hp .hu-entry__opt-s {
-  grid-area: route;
-  color: var(--fg-3);
-  font-size: 11.5px;
-  letter-spacing: .06em;
-  margin-top: 4px;
-}
-.hu-hp .hu-entry__opt-arrow {
-  grid-area: arrow;
-  color: var(--fg-4);
-  flex-shrink: 0;
-  transition: color .2s ease, transform .2s ease;
-}
-.hu-hp .hu-entry__opt:hover,
-.hu-hp .hu-entry__opt:focus-visible {
-  border-color: rgba(224,138,60,.5);
-  background: var(--accent-soft);
-  transform: translateX(3px);
-}
-.hu-hp .hu-entry__opt:hover .hu-entry__opt-arrow,
-.hu-hp .hu-entry__opt:focus-visible .hu-entry__opt-arrow {
-  color: var(--accent);
-  transform: translateX(3px);
-}
-.hu-hp .hu-entry__opt:hover .hu-entry__opt-s,
-.hu-hp .hu-entry__opt:focus-visible .hu-entry__opt-s { color: var(--accent); }
-.hu-hp .hu-entry__opt:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-@media (prefers-reduced-motion: reduce) {
-  .hu-hp .hu-entry__opt,
-  .hu-hp .hu-entry__opt-arrow { transition: none; }
-  .hu-hp .hu-entry__opt:hover,
-  .hu-hp .hu-entry__opt:focus-visible { transform: none; }
-}
-
-.hu-hp .hu-entry__hint {
-  margin: 18px 0 0;
-  font-size: 13.5px;
-  color: var(--fg-3);
-}
-
-@media (max-width: 560px) {
-  .hu-hp .hu-entry__opt { padding: 14px 16px; column-gap: 12px; }
-  .hu-hp .hu-entry__opt-t { font-size: 15.5px; }
 }
 
 /* ─── Block 3 · Lebender Beweis ───────────────────────────── */
