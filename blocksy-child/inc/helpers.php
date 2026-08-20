@@ -250,6 +250,30 @@ function nexus_get_audit_footer_note() {
 }
 
 /**
+ * Inline up-right arrow for "this leads somewhere" affordances.
+ *
+ * ↗ (U+2197) has Emoji_Presentation fallbacks in the system font stacks of
+ * macOS and iOS: statt eines Pfeils erscheint ein blau-weisser Kasten, im
+ * orangenen Header-CTA besonders auffaellig. Ein Variation Selector wuerde das
+ * fuer die meisten, aber nicht fuer alle Kombinationen aus Schrift und
+ * Systemversion loesen. Inline-SVG nimmt die Schrift ganz aus der Gleichung,
+ * erbt currentColor und traegt damit Hover-, Fokus- und Theme-Zustaende
+ * unveraendert weiter.
+ *
+ * Das Markup ist dekorativ: aria-hidden, focusable=false. Umgebende Container
+ * behalten ihre Groesse und Zentrierung.
+ *
+ * @param int $size Edge length in pixels.
+ * @return string
+ */
+function hu_arrow_up_right_svg( $size = 14 ) {
+	return sprintf(
+		'<svg class="hu-arrow-svg" width="%1$d" height="%1$d" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>',
+		(int) $size
+	);
+}
+
+/**
  * Shared opening for the closing Marktcheck section on the intercept routes.
  *
  * Six Seiten öffneten ihren Final-CTA mit demselben Satz und hängten nur eine

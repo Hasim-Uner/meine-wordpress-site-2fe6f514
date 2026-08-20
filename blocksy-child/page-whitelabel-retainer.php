@@ -15,7 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 	? nexus_get_whitelabel_calendar_url()
 	: 'https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true';
-$mailto_url          = 'mailto:hallo@hasimuener.de';
+$contact_email       = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'hallo@hasimuener.de';
+$mailto_url          = 'mailto:' . $contact_email;
 
 // ── Zweiter Ausgang: "Ich habe jetzt eine konkrete Aufgabe" ─────
 // Alle CTAs führten auf denselben Pfad: Fit-Check (3 Fragen) → 30-Minuten-
@@ -776,7 +777,7 @@ $fitcheck_steps = [
 		<div class="nx-container">
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Arbeitsprobe · offengelegt</span>
-				<h2 class="nx-headline-section">Keine Referenz-Logos. Eine offengelegte Arbeitsprobe.</h2>
+				<h2 class="nx-headline-section">Keine geliehenen Logos. Drei Umsetzungen, die ihr selbst prüfen könnt.</h2>
 				<p class="wl-section-lede">Was ich unter eurem Namen liefere, bleibt unter eurem Namen — NDA. Deshalb zeige ich ein eigenes, offengelegtes Projekt bis in die Zahlen: ein mittelständischer PV-Installationsbetrieb — von Google- und Meta-Kampagnen über die Landingpage bis zu Server-Side-Tracking, Consent Mode V2 und CRM-Attribution.</p>
 			</div>
 
@@ -945,7 +946,7 @@ window.dataLayer.push({
 
 			<p class="wl-faq__more">
 				Eure Frage fehlt? Direkter Draht:
-				<a href="<?php echo esc_url( $mailto_url ); ?>" data-track-action="mail_whitelabel_faq" data-track-category="contact" data-track-section="faq">hallo@hasimuener.de</a>
+				<a href="<?php echo esc_url( $mailto_url ); ?>" data-track-action="mail_whitelabel_faq" data-track-category="contact" data-track-section="faq"><?php echo esc_html( $contact_email ); ?></a>
 			</p>
 		</div>
 	</section>
@@ -1007,7 +1008,7 @@ window.dataLayer.push({
 								Termin wählen (30 Min, direkt mit mir)
 							</a>
 							<a href="<?php echo esc_url( $mailto_url ); ?>" class="nx-btn nx-btn--ghost" data-fitcheck-mail data-track-action="mail_whitelabel_fitcheck" data-track-category="contact" data-track-section="fitcheck_result">
-								Lieber schriftlich: hallo@hasimuener.de
+								Lieber schriftlich: <?php echo esc_html( $contact_email ); ?>
 							</a>
 						</div>
 					</div>

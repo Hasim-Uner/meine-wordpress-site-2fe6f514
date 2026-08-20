@@ -816,6 +816,16 @@ p.hero-stack,
     fill: currentColor;
 }
 
+/* Inline-Pfeil aus hu_arrow_up_right_svg(). Ersetzt die Glyphe U+2197, die auf
+   macOS und iOS mit Emoji-Praesentation gerendert wird. In Flex- und
+   Grid-Containern mit place-items: center wirkt vertical-align nicht und stoert
+   auch nicht; die Regel gilt dem Einsatz mitten im Fliesstext. */
+.hu-arrow-svg {
+    display: inline-block;
+    flex: 0 0 auto;
+    vertical-align: -0.125em;
+}
+
 /* --- Ausgang aus den Minimal-Footern: die drei Wege ---
    Bewusst ohne Rahmen und Kartenhintergrund im Ruhezustand. Der
    Marktcheck-CTA darueber ist der einzige vollflaechige Block; dieser

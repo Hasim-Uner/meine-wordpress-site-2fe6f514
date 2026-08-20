@@ -217,7 +217,7 @@ if ( file_exists( $footer_style_path ) ) {
 				</span>
 				<span class="ft-modern__route-label">WordPress</span>
 				<span class="ft-modern__route-copy">Direkte Projekte · Entwicklung, Tracking &amp; Conversion</span>
-				<span class="ft-modern__route-arrow" aria-hidden="true">↗</span>
+				<span class="ft-modern__route-arrow" aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
 			</a>
 
 			<a class="ft-modern__route" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="cta_footer_route_whitelabel" data-track-category="navigation" data-track-section="footer_routes">
@@ -226,7 +226,7 @@ if ( file_exists( $footer_style_path ) ) {
 				</span>
 				<span class="ft-modern__route-label">Für Agenturen</span>
 				<span class="ft-modern__route-copy">White-Label · Umsetzung im Hintergrund</span>
-				<span class="ft-modern__route-arrow" aria-hidden="true">↗</span>
+				<span class="ft-modern__route-arrow" aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
 			</a>
 
 			<a class="ft-modern__route" href="<?php echo esc_url( $energy_url ); ?>" data-track-action="cta_footer_route_energy" data-track-category="navigation" data-track-section="footer_routes">
@@ -235,7 +235,7 @@ if ( file_exists( $footer_style_path ) ) {
 				</span>
 				<span class="ft-modern__route-label">Solar &amp; Wärmepumpen</span>
 				<span class="ft-modern__route-copy">Anfragesysteme · Marktcheck &amp; Leadgenerierung</span>
-				<span class="ft-modern__route-arrow" aria-hidden="true">↗</span>
+				<span class="ft-modern__route-arrow" aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
 			</a>
 		</nav>
 
@@ -247,7 +247,7 @@ if ( file_exists( $footer_style_path ) ) {
 				<p class="ft-modern__cta-note"><?php echo esc_html( $audit_cta_microcopy ); ?></p>
 			</div>
 			<a class="ft-modern__cta-button" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_footer_primary" data-track-category="lead_gen" data-track-section="footer" data-track-funnel-stage="footer_primary">
-				<?php echo esc_html( $audit_cta_label ); ?> <span aria-hidden="true">↗</span>
+				<?php echo esc_html( $audit_cta_label ); ?> <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
 			</a>
 		</section>
 		<?php else : ?>
@@ -258,7 +258,7 @@ if ( file_exists( $footer_style_path ) ) {
 				<p class="ft-modern__cta-note"><?php echo esc_html( $audit_cta_microcopy ); ?></p>
 			</div>
 			<a class="ft-modern__cta-button" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_footer_primary_mobile" data-track-category="lead_gen" data-track-section="footer" data-track-funnel-stage="footer_mobile">
-				<?php echo esc_html( $audit_cta_label ); ?> <span aria-hidden="true">↗</span>
+				<?php echo esc_html( $audit_cta_label ); ?> <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
 			</a>
 		</section>
 		<?php endif; ?>

@@ -33,7 +33,7 @@ $e3_case_url    = function_exists( 'hu_e3_canon' )
 	? (string) ( hu_e3_canon()['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) )
 	: home_url( '/case-study-solar-leadgenerierung/' );
 $linkedin_url   = 'https://www.linkedin.com/in/hasim-uener/';
-$mail_address   = 'hasim@hasimuener.de';
+$mail_address   = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'hallo@hasimuener.de';
 
 // Portrait im 3:4-Ausschnitt. Der neue Hero setzt das Bild als eigene,
 // responsiv zugeschnittene Buehne ein statt es am Viewport anzuschneiden.

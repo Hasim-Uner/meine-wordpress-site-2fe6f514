@@ -283,7 +283,7 @@ get_header();
 						   data-track-action="cta_e3_case"
 						   data-track-category="b2b_solar_leads"
 						   data-track-section="hero">
-							Dokumentierten Fall prüfen <span aria-hidden="true">↗</span>
+							Dokumentierten Fall prüfen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
 						</a>
 					</div>
 					<p class="hu-b2b__microcopy">Region · Projektschwelle · Vertriebskapazität · händische Fit-Einordnung</p>
@@ -493,7 +493,7 @@ get_header();
 				   href="<?php echo esc_url( $solar_money_url ); ?>"
 				   data-track-action="cta_money_page"
 				   data-track-category="b2b_solar_leads"
-				   data-track-section="final">Privat- und Gewerbegeschäft kombiniert? Branchen-Seite ansehen <span aria-hidden="true">↗</span></a>
+				   data-track-section="final">Privat- und Gewerbegeschäft kombiniert? Branchen-Seite ansehen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a>
 			</div>
 		</div>
 	</section>

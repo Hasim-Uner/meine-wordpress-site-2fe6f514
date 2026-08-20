@@ -19,6 +19,29 @@ define(
 	'Scope und Preis stehen vor dem Start fest. Kein Paketpreis ohne geklärten Umfang.'
 );
 
+// ── Oeffentliche Kontaktadresse ───────────────────────────────────
+// Die White-Label-Seite nannte hallo@, die Solar-Seite hasim@, das
+// Organization-Schema info@ — drei Adressen fuer denselben Zweck, zwei davon
+// auf indexierten Seiten. Sichtbare Kontaktwege lesen ab hier.
+//
+// Ausgenommen: die im Impressum und in der Datenschutzerklaerung benannte
+// Adresse. Das ist ein rechtlich benannter Kontaktweg, keine Marketing-Copy,
+// und wird nicht nebenbei mitgezogen.
+//
+// Der tatsaechliche Absender der Transaktionsmails kommt aus der
+// Laufzeitkonfiguration (NEXUS_BREVO_FROM_EMAIL et al. in inc/mail.php), nicht
+// von hier. Wo Copy den Absender benennt, muss beides zusammenpassen.
+define( 'HU_CONTACT_EMAIL', 'hallo@hasimuener.de' );
+
+/**
+ * Public contact address for visible contact paths.
+ *
+ * @return string
+ */
+function hu_get_contact_email() {
+	return HU_CONTACT_EMAIL;
+}
+
 // ── Antwortzeit auf eine Anfrage ──────────────────────────────────
 // Startseite und White-Label-Seite versprachen "4 Stunden werktags", die
 // Kontaktseite als gemeinsames Ziel beider CTAs dagegen "in der Regel 48
@@ -64,6 +87,7 @@ function hu_messaging_canon() {
 	return [
 		'value_anchor_architecture' => HU_MESSAGE_VALUE_ANCHOR_ARCHITECTURE,
 		'value_anchor_price'        => HU_MESSAGE_VALUE_ANCHOR_PRICE,
+		'contact_email'             => HU_CONTACT_EMAIL,
 		'response_hours'            => HU_RESPONSE_HOURS,
 		'response_promise'          => hu_response_promise( 'sentence' ),
 		'what_we_dont_sell'         => [

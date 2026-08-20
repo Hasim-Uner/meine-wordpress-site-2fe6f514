@@ -180,7 +180,7 @@ get_header();
 						</ul>
 
 						<div class="hu-fr__hero-actions">
-							<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt prüfen lassen <span aria-hidden="true">↗</span></a>
+							<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt prüfen lassen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a>
 							<a class="hu-fr__button hu-fr__button--secondary" href="#projekte" data-track-action="cta_freelancer_hero_references" data-track-category="navigation" data-track-section="hero">Referenzen ansehen</a>
 						</div>
 					</div>
@@ -284,7 +284,7 @@ get_header();
 						<li><span class="hu-fr-git__node"></span><code>review/</code><strong>Performance &amp; Accessibility</strong></li>
 						<li><span class="hu-fr-git__node hu-fr-git__node--last"></span><code>main/</code><strong>kontrolliertes Deployment</strong></li>
 					</ol>
-					<a class="hu-fr-git__repo" href="<?php echo esc_url( $github_url ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="link_freelancer_github" data-track-category="trust" data-track-section="workflow">Öffentliches GitHub-Repo ansehen <span aria-hidden="true">↗</span></a>
+					<a class="hu-fr-git__repo" href="<?php echo esc_url( $github_url ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="link_freelancer_github" data-track-category="trust" data-track-section="workflow">Öffentliches GitHub-Repo ansehen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a>
 				</div>
 
 				<div class="hu-fr__workflow-copy">
@@ -328,7 +328,7 @@ get_header();
 							<span class="hu-fr__reference-index"><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
 							<div class="hu-fr__reference-main">
 								<p class="hu-fr__reference-tag"><?php echo esc_html( $reference['tag'] ); ?></p>
-								<h3><a href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="link_freelancer_reference" data-track-category="trust" data-track-section="references"><?php echo esc_html( $reference['name'] ); ?> <span aria-hidden="true">↗</span></a></h3>
+								<h3><a href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="link_freelancer_reference" data-track-category="trust" data-track-section="references"><?php echo esc_html( $reference['name'] ); ?> <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a></h3>
 							</div>
 							<p><?php echo esc_html( $reference['text'] ); ?></p>
 						</article>
@@ -351,7 +351,7 @@ get_header();
 					<div class="hu-fr__price-row"><span>Technische Aufgaben / bestehende Website</span><strong>nach Scope</strong></div>
 					<div class="hu-fr__price-row"><span>Tracking / Funnel / komplexere Integrationen</span><strong>nach Scope</strong></div>
 					<p>Der Einstieg gilt für eine kompakte Unternehmenswebsite mit klar abgegrenztem Umfang. Custom Code ist kein Aufpreis-Label. Elementor ist möglich, wenn redaktionelle Flexibilität den zusätzlichen Builder rechtfertigt.</p>
-					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_pricing_project" data-track-category="lead_gen" data-track-section="pricing">Projekt prüfen lassen <span aria-hidden="true">↗</span></a>
+					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_pricing_project" data-track-category="lead_gen" data-track-section="pricing">Projekt prüfen lassen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a>
 				</div>
 			</div>
 		</section>
@@ -382,7 +382,7 @@ get_header();
 				</div>
 				<div class="hu-fr__final-action">
 					<p>Beschreiben Sie kurz Ausgangslage und Ziel. Sie bekommen eine klare Rückmeldung, ob das Projekt passt und welcher Scope sinnvoll wäre.</p>
-					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_final_project" data-track-category="lead_gen" data-track-section="final">Projekt prüfen lassen <span aria-hidden="true">↗</span></a>
+					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_final_project" data-track-category="lead_gen" data-track-section="final">Projekt prüfen lassen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a>
 					<p class="hu-fr__route-links">Oder: <a href="<?php echo esc_url( $agentur_url ); ?>">WordPress Agentur Hannover</a> · <a href="<?php echo esc_url( $tracking_url ); ?>">Server-Side Tracking</a> · <a href="<?php echo esc_url( $about_url ); ?>">Über Haşim</a></p>
 				</div>
 			</div>

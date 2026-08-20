@@ -400,13 +400,21 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
     }
 
+    /*
+     * U+2197 traegt auf macOS und iOS eine Emoji-Praesentation: statt eines
+     * Pfeils erscheint ein blau-weisser Kasten. Ein Pseudo-Element kann kein
+     * SVG-Kind aufnehmen wie die uebrigen Pfeile im Theme, deshalb hier der
+     * Textzwang aus beiden Richtungen — Variation Selector 15 im Glyphen und
+     * font-variant-emoji fuer Engines, die ihn ignorieren.
+     */
     .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a::after {
-        content: '↗';
+        content: '↗\FE0E';
         position: absolute;
         top: 50%;
         right: 20px;
         color: color-mix(in srgb, var(--accent) 78%, var(--nx-text) 22%);
         font-size: 1rem;
+        font-variant-emoji: text;
         transform: translateY(-50%);
     }
 

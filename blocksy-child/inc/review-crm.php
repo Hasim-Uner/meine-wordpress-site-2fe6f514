@@ -946,7 +946,7 @@ function nexus_get_review_request_success_message( $payload ) {
 	$variant = isset( $payload['intake_variant'] ) ? sanitize_key( (string) $payload['intake_variant'] ) : '';
 
 	if ( 'energy_systems' === $variant ) {
-		return 'Eingegangen. Ihre Standortbestimmung liegt in der Bearbeitung. Sie erhalten spätestens 2 Werktage nach Eingang eine E-Mail von hasim@hasimuener.de — bei Eignung mit Vorschlag für ein 30-minütiges Erstgespräch, bei Nicht-Eignung mit konkretem Hinweis auf eine realistischere Alternative.';
+		return 'Eingegangen. Ihre Standortbestimmung liegt in der Bearbeitung. Sie erhalten spätestens 2 Werktage nach Eingang eine E-Mail von ' . hu_get_contact_email() . ' — bei Eignung mit Vorschlag für ein 30-minütiges Erstgespräch, bei Nicht-Eignung mit konkretem Hinweis auf eine realistischere Alternative.';
 	}
 
 	if ( nexus_is_growth_audit_simple_intake_variant( $variant ) ) {

@@ -52,6 +52,10 @@ $e3_timeframe_dative = $e3_metrics['timeframe']['display_dative'] ?? '6 Monaten'
 $diagnose_canon = function_exists( 'hu_diagnose_canon' ) ? hu_diagnose_canon() : [];
 $analysis_days  = (int) ( $diagnose_canon['primary_days'] ?? 7 );
 
+// Sichtbarer Kontaktweg aus dem messaging-canon. Diese Seite nannte hasim@,
+// die White-Label-Seite hallo@ — zwei Adressen auf zwei indexierten Seiten.
+$contact_email  = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'hallo@hasimuener.de';
+
 // Sofortkontakt-Setup: Preis aus dem pricing-canon, damit Nav-Label,
 // Rechner-CTA und Angebots-Panel nicht auseinanderlaufen.
 $entry_price     = function_exists( 'hu_entry_setup_price' ) ? hu_entry_setup_price() : '790 €';
@@ -580,11 +584,11 @@ get_header();
 								<style>.solara-landing .sol-cta-fineprint{display:none!important;}</style>
 								<p class="sol-cta-hint">
 									Aktivieren Sie JavaScript für den Marktcheck oder schreiben Sie direkt an
-									<a href="mailto:hasim@hasimuener.de" style="color:var(--accent);">hasim@hasimuener.de</a>.
+									<a href="mailto:<?php echo esc_attr( $contact_email ); ?>" style="color:var(--accent);"><?php echo esc_html( $contact_email ); ?></a>.
 								</p>
 								<a
 									class="sol-cta-submit"
-									href="mailto:hasim@hasimuener.de"
+									href="mailto:<?php echo esc_attr( $contact_email ); ?>"
 									data-track-action="cta_solar_noscript_mail"
 									data-track-category="lead_gen"
 									data-track-section="hero_noscript"

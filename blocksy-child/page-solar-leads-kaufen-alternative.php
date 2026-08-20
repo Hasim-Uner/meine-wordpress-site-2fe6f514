@@ -317,7 +317,7 @@ get_header();
 					   href="<?php echo esc_url( $e3_url ); ?>"
 					   data-track-action="cta_case_study"
 					   data-track-category="proof"
-					   data-track-section="hero">Methodik und Grenzen des Falls ansehen <span aria-hidden="true">↗</span></a>
+					   data-track-section="hero">Methodik und Grenzen des Falls ansehen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a>
 				</aside>
 			</div>
 
