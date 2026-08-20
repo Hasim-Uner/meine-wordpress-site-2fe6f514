@@ -151,20 +151,17 @@ get_template_part( 'template-parts/site-footer' );
 		border-radius: 999px;
 		background: rgba(180, 106, 60, 0.12) !important;
 		color: #e2a47c !important;
-		-webkit-text-fill-color: #e2a47c;
-		font-size: 0;
 		line-height: 1;
 		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
 	}
 
-	.ft--modern .ft-modern__route-arrow::before {
-		content: '↗';
-		font-family: Arial, Helvetica, sans-serif;
-		font-size: 17px;
-		font-weight: 700;
-		line-height: 1;
-		color: #e2a47c;
-		-webkit-text-fill-color: #e2a47c;
+	/* Der Pfeil ist Inline-SVG (hu_arrow_up_right_svg). Die frueheren
+	   font-size: 0 plus ::before-Glyphe in Arial waren der Versuch, die
+	   Emoji-Praesentation von U+2197 zu umgehen; das SVG braucht sie nicht und
+	   font-size: 0 wuerde nur noch alles ausser dem SVG verschlucken. */
+	.ft--modern .ft-modern__route-arrow > svg {
+		width: 17px;
+		height: 17px;
 	}
 
 	.ft--modern .ft-modern__route:hover .ft-modern__route-arrow,
@@ -201,17 +198,12 @@ get_template_part( 'template-parts/site-footer' );
 		border-radius: 999px;
 		background: #b46a3c;
 		color: #fffaf4 !important;
-		-webkit-text-fill-color: #fffaf4;
-		font-size: 0;
 		line-height: 1;
 	}
 
-	.ft--modern .ft-modern__cta-button > span::before {
-		content: '↗';
-		font-family: Arial, Helvetica, sans-serif;
-		font-size: 13px;
-		font-weight: 700;
-		line-height: 1;
+	.ft--modern .ft-modern__cta-button > span > svg {
+		width: 13px;
+		height: 13px;
 	}
 
 	.ft--modern .ft-modern__cta-button:hover,

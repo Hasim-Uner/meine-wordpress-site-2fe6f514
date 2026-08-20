@@ -16,8 +16,13 @@ $cwv_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_ge
 $tracking_url     = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) ) : home_url( '/ga4-tracking-setup/' );
 $cro_url          = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) ) : home_url( '/wordpress-agentur-hannover/#methode' );
 $seo_category_url = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo_category', home_url( '/category/seo/' ) ) : home_url( '/category/seo/' );
-$audit_url        = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-$audit_cta_label  = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
+// Cornerstone für technisches SEO — kein Energy-Kontext. Alle drei CTAs der
+// Seite führten bisher in den Solar-Marktcheck; sie führen jetzt auf die
+// generische Projektanfrage.
+$project_url      = function_exists( 'hu_get_commercial_route' )
+	? hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) )
+	: home_url( '/kontakt/' );
+$project_cta_label = 'Projekt anfragen';
 
 get_header();
 ?>
@@ -140,8 +145,8 @@ get_header();
 
 				<div class="seo-cornerstone__inline-cta">
 					<p>Wie tragfähig ist Ihr Fundament heute?</p>
-					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_inline_cornerstone_journey" data-track-category="lead_gen">
-						<?php echo esc_html( $audit_cta_label ); ?>
+					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_inline_cornerstone_project" data-track-category="lead_gen">
+						<?php echo esc_html( $project_cta_label ); ?>
 					</a>
 				</div>
 
@@ -198,8 +203,8 @@ get_header();
 				<p>Mit dieser Struktur wird aus "mehr Leads" ein steuerbarer Qualitätsprozess. Die operative Grundlage entsteht im Zusammenspiel aus <a href="<?php echo esc_url( $cro_url ); ?>">Conversion Rate Optimierung</a> und <a href="<?php echo esc_url( $tracking_url ); ?>">Tracking</a>.</p>
 
 				<div class="seo-cornerstone__inline-cta">
-					<p>Sie wollen sehen, wo Ihre Lead-Reibung entsteht? Befund per E-Mail <?php echo esc_html( hu_marketcheck_reply_label() ); ?>.</p>
-					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_inline_cornerstone_reibung" data-track-category="lead_gen">
+					<p>Sie wollen sehen, wo Ihre Lead-Reibung entsteht? <?php echo esc_html( hu_response_promise( 'sentence' ) ); ?></p>
+					<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_inline_cornerstone_reibung" data-track-category="lead_gen">
 						Lead-Reibung analysieren
 					</a>
 				</div>
@@ -377,7 +382,7 @@ get_header();
 					<p>Wenn Sie wissen wollen, wie belastbar Ihr technisches Fundament heute ist, starten Sie mit einer strukturierten Analyse von Technik, Tracking, Conversion-Logik und Lead-Übergabe.</p>
 					<div class="seo-cornerstone__cta-buttons">
 						<a class="nx-btn nx-btn--primary" href="<?php echo esc_url( $seo_url ); ?>" data-track-action="cta_seo_cornerstone_audit" data-track-category="lead_gen">Technisches SEO Audit anfragen</a>
-							<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $audit_url ); ?>" data-track-action="cta_seo_cornerstone_journey" data-track-category="lead_gen">Marktcheck</a>
+							<a class="nx-btn nx-btn--ghost" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_seo_cornerstone_project" data-track-category="lead_gen">Projekt anfragen</a>
 					</div>
 				</div>
 

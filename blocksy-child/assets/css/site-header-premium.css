@@ -6,9 +6,10 @@
  * The canonical menu data stays in inc/commercial-routing.php.
  */
 
+/* --nx-premium-card-bg und --nx-premium-card-border sind entfallen: die
+   Routen tragen im Ruhezustand keine Kartenflaeche mehr. Der Hover-Ton und der
+   Icon-Ton bleiben, sie tragen jetzt die Zustaende. */
 .nx-site-header--premium {
-    --nx-premium-card-bg: color-mix(in srgb, var(--nx-bg-elevated) 86%, white 3%);
-    --nx-premium-card-border: color-mix(in srgb, var(--nx-border) 76%, var(--accent) 12%);
     --nx-premium-card-hover: color-mix(in srgb, var(--accent) 10%, var(--nx-bg-elevated) 90%);
     --nx-premium-icon-bg: color-mix(in srgb, var(--accent) 11%, transparent);
     --nx-premium-soft-text: color-mix(in srgb, var(--nx-text-dim) 88%, var(--nx-text) 12%);
@@ -30,7 +31,18 @@
     gap: 5px;
 }
 
+/*
+ * Die Wortmarke ist der feste Teil der Leiste, die Nav der bewegliche. Ohne
+ * das schrumpfte die Markenspalte unter Druck und die Nav lief mit ihrem
+ * Ueberhang darueber.
+ */
+.nx-site-header--premium .nx-site-header__brand-block {
+    flex: 0 0 auto;
+    min-width: max-content;
+}
+
 .nx-site-header--premium .nx-site-header__brand.site-logo {
+    flex: 0 0 auto;
     font-size: clamp(0.9rem, 1.1vw, 1.05rem);
     letter-spacing: 0.14em;
     white-space: nowrap;
@@ -54,7 +66,20 @@
     gap: clamp(0.24rem, 0.5vw, 0.48rem);
 }
 
+/*
+ * Schrumpfbar statt starr. Vorher trugen die Karten eine feste Mindestbreite
+ * und die Items `flex: 0 0 auto`; sobald die Summe breiter war als die
+ * Nav-Spalte, lief der Ueberhang wegen `justify-content: flex-end` nach links
+ * aus dem Kasten heraus — genau ueber die Wortmarke. Gemessen war das ab etwa
+ * 1366px der Fall. Die Copy hat `min-width: 0` und Ellipsis, die Leiste kann
+ * also nachgeben, statt ueberzulaufen.
+ */
 .nx-site-header--premium .nx-site-header__menu--desktop > li {
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.nx-site-header--premium .nx-site-header__menu--desktop .nav-cta-button {
     flex: 0 0 auto;
 }
 
@@ -65,50 +90,55 @@
     font-size: 0.82rem;
 }
 
+/*
+ * Sechs Elemente nebeneinander, drei davon als Karte mit Rahmen, eigenem
+ * Hintergrund und Icon-Chip: jede Routen-Karte konkurrierte visuell mit dem
+ * CTA, und die Leiste hatte keine Hierarchie mehr. Im Ruhezustand tragen die
+ * Routen deshalb nur noch Icon, Titel und Subtitle. Rahmen und Hintergrund
+ * erscheinen erst, wenn sie etwas bedeuten: Hover, Fokus, aktuelle Seite.
+ */
 .nx-site-header--premium .nx-site-header__route-item > a {
     display: grid;
-    grid-template-columns: 32px minmax(0, 1fr);
-    gap: 9px;
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 8px;
     align-items: center;
     justify-content: stretch;
-    min-width: clamp(142px, 11.2vw, 174px);
-    min-height: 58px;
-    padding: 7px 10px 7px 8px;
-    border: 1px solid var(--nx-premium-card-border);
-    border-radius: 15px;
-    background: var(--nx-premium-card-bg);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    min-width: 0;
+    min-height: 46px;
+    padding: 5px 9px 5px 7px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: transparent;
+    box-shadow: none;
 }
 
 .nx-site-header--premium .nx-site-header__route-item > a:hover,
 .nx-site-header--premium .nx-site-header__route-item > a:focus-visible {
     color: var(--nx-text);
-    border-color: color-mix(in srgb, var(--accent) 45%, var(--nx-border));
+    border-color: color-mix(in srgb, var(--accent) 34%, var(--nx-border));
     background: var(--nx-premium-card-hover);
-    box-shadow:
-        0 10px 26px hsl(var(--accent-hsl) / 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    transform: translateY(-1px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .nx-site-header--premium .nx-site-header__route-item.current-menu-item > a,
 .nx-site-header--premium .nx-site-header__route-item.current_page_item > a,
 .nx-site-header--premium .nx-site-header__route-item > a[aria-current="page"] {
-    border-color: color-mix(in srgb, var(--accent) 58%, var(--nx-border));
-    background: color-mix(in srgb, var(--accent) 13%, var(--nx-bg-elevated) 87%);
-    box-shadow:
-        0 12px 30px hsl(var(--accent-hsl) / 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.055);
+    border-color: color-mix(in srgb, var(--accent) 48%, var(--nx-border));
+    background: color-mix(in srgb, var(--accent) 11%, var(--nx-bg-elevated) 89%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
 }
 
+/* Kein eigener Rahmen mehr: das Icon steht in Akzentfarbe direkt auf dem
+   Header-Grund. Ein Chip um ein Icon in einer Leiste ohne Karten ist der
+   Rahmen, der als Naechstes um Aufmerksamkeit konkurriert. */
 .nx-site-header--premium .nx-site-header__route-icon {
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
-    border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
-    border-radius: 10px;
-    background: var(--nx-premium-icon-bg);
+    width: 26px;
+    height: 26px;
+    border: 0;
+    border-radius: 0;
+    background: none;
     color: var(--accent);
 }
 
@@ -150,10 +180,31 @@
     white-space: nowrap;
 }
 
+/*
+ * Haarlinie statt Abstand allein. Ohne sie war die Leiste eine Reihe aus sechs
+ * gleichrangigen Elementen; mit ihr liest sie sich als Marke | drei Wege |
+ * sekundaer | CTA. Halbe Hoehe und zentriert, damit sie gliedert, ohne wie ein
+ * zweiter Rahmen zu wirken.
+ */
+.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link {
+    position: relative;
+    margin-inline-start: clamp(7px, 0.75vw, 13px);
+    padding-inline-start: clamp(7px, 0.75vw, 13px);
+}
+
+.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link::before {
+    content: '';
+    position: absolute;
+    inset-block: 26%;
+    inset-inline-start: 0;
+    width: 1px;
+    background: var(--nx-border);
+}
+
 .nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link > a,
 .nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link > a {
     min-width: auto;
-    padding-inline: clamp(8px, 0.8vw, 13px);
+    padding-inline: clamp(7px, 0.7vw, 12px);
     border-color: transparent;
     background: transparent;
     color: var(--nx-text-dim);
@@ -209,16 +260,19 @@
     }
 
     .nx-site-header--premium .nx-site-header__route-item > a {
-        min-width: 122px;
-        grid-template-columns: 28px minmax(0, 1fr);
-        gap: 7px;
-        padding-inline: 7px;
+        grid-template-columns: 24px minmax(0, 1fr);
+        gap: 6px;
+        padding-inline: 6px;
     }
 
     .nx-site-header--premium .nx-site-header__route-icon {
-        width: 28px;
-        height: 28px;
-        border-radius: 9px;
+        width: 24px;
+        height: 24px;
+    }
+
+    .nx-site-header--premium .nx-site-header__route-icon svg {
+        width: 17px;
+        height: 17px;
     }
 
     .nx-site-header--premium .nx-site-header__route-copy strong {
@@ -261,6 +315,18 @@
         box-shadow:
             0 16px 40px hsl(30 20% 3% / 0.26),
             inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    /*
+     * Die Desktop-Navigation muss hier explizit ausgeblendet werden.
+     * `site-header.css` blendet `.nx-site-header__nav` ab 1100px aus, aber die
+     * Premium-Regel weiter oben ist zweiklassig und damit spezifischer — eine
+     * Media Query erhöht die Spezifität nicht. Ohne diese Zeile bleiben die
+     * Routen-Karten sichtbar, sprengen den zweispaltigen Shell in eine zweite
+     * Zeile und überlagern die Wortmarke.
+     */
+    .nx-site-header--premium .nx-site-header__nav {
+        display: none;
     }
 
     .nx-site-header--premium .nx-site-header__toggle {
@@ -388,13 +454,21 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
     }
 
+    /*
+     * U+2197 traegt auf macOS und iOS eine Emoji-Praesentation: statt eines
+     * Pfeils erscheint ein blau-weisser Kasten. Ein Pseudo-Element kann kein
+     * SVG-Kind aufnehmen wie die uebrigen Pfeile im Theme, deshalb hier der
+     * Textzwang aus beiden Richtungen — Variation Selector 15 im Glyphen und
+     * font-variant-emoji fuer Engines, die ihn ignorieren.
+     */
     .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a::after {
-        content: '↗';
+        content: '↗\FE0E';
         position: absolute;
         top: 50%;
         right: 20px;
         color: color-mix(in srgb, var(--accent) 78%, var(--nx-text) 22%);
         font-size: 1rem;
+        font-variant-emoji: text;
         transform: translateY(-50%);
     }
 
@@ -405,10 +479,17 @@
         transform: translateY(-1px);
     }
 
+    /*
+     * Der Vollbild-Routenwaehler bleibt unveraendert: dort sind die Routen die
+     * ganze Seite und duerfen Karten sein. Rahmen und Chip-Hintergrund stehen
+     * hier explizit, weil die Desktop-Regel sie im Ruhezustand entfernt.
+     */
     .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-icon {
         width: 46px;
         height: 46px;
+        border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
         border-radius: 14px;
+        background: var(--nx-premium-icon-bg);
     }
 
     .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-icon svg {

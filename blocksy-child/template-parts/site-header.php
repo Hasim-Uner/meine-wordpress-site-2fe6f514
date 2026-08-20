@@ -171,7 +171,7 @@ $render_strategy_navigation = static function ( string $context ) use ( $strateg
 				<?php else : ?>
 					<span><?php echo esc_html( (string) ( $item['label'] ?? '' ) ); ?></span>
 					<?php if ( $is_project_cta ) : ?>
-						<span class="nx-site-header__cta-arrow" aria-hidden="true">↗</span>
+						<span class="nx-site-header__cta-arrow" aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
 					<?php endif; ?>
 				<?php endif; ?>
 			</a>

@@ -13,8 +13,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$audit_url       = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-$audit_cta_label = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
+// E-Commerce-Case ohne Energy-Bezug. Die drei CTAs fuehrten bisher in den
+// Solar-Marktcheck; der passende naechste Schritt ist die generische
+// Projektanfrage.
+$project_url       = function_exists( 'hu_get_commercial_route' )
+	? hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) )
+	: home_url( '/kontakt/' );
+$project_cta_label = 'Projekt anfragen';
 $cases_url       = function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/ergebnisse/' );
 $wgos_url        = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#methode' ) ) : home_url( '/wordpress-agentur-hannover/#methode' );
 $local_wp_url    = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ) : home_url( '/wordpress-agentur-hannover/' );
@@ -203,7 +208,7 @@ $faq_items = [
 $author_points = [
 	'Ich optimiere keine hübschen Oberflächen, sondern Nachfrage-Systeme mit klarer wirtschaftlicher Funktion.',
 	'WordPress, CRO, Performance und Prozesse greifen bei mir als ein Verbund statt als getrennte Disziplinen.',
-	'Der Einstieg bleibt bewusst diagnosegetrieben: erst der Marktcheck, dann Prioritäten und erst danach Umsetzung.',
+	'Der Einstieg bleibt bewusst diagnosegetrieben: erst Scope und Prioritäten klären, dann umsetzen.',
 ];
 
 get_header();
@@ -250,12 +255,12 @@ get_header();
 
 		<div class="cs-hero-ctas">
 			<a
-				href="<?php echo esc_url( $audit_url ); ?>"
+				href="<?php echo esc_url( $project_url ); ?>"
 				class="nx-btn nx-btn--primary"
-				data-track-action="cta_domdar_hero_audit"
+				data-track-action="cta_domdar_hero_project"
 				data-track-category="lead_gen"
 			>
-				<?php echo esc_html( $audit_cta_label ); ?>
+				<?php echo esc_html( $project_cta_label ); ?>
 			</a>
 			<a href="#architektur" class="nx-btn nx-btn--ghost">
 				Profit-Architektur ansehen
@@ -490,12 +495,12 @@ get_header();
 				</ul>
 				<div class="cs-hero-ctas cs-hero-ctas--left">
 					<a
-						href="<?php echo esc_url( $audit_url ); ?>"
+						href="<?php echo esc_url( $project_url ); ?>"
 						class="nx-btn nx-btn--primary"
-						data-track-action="cta_domdar_partner_audit"
+						data-track-action="cta_domdar_partner_project"
 						data-track-category="lead_gen"
 					>
-						<?php echo esc_html( $audit_cta_label ); ?>
+						<?php echo esc_html( $project_cta_label ); ?>
 					</a>
 					<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost">
 						Anfragesystem ansehen
@@ -540,19 +545,19 @@ get_header();
 				Welche Reibung kostet Sie gerade Marge?
 			</h2>
 			<p style="color:var(--nx-text-muted);max-width:560px;margin:0 auto 2rem;line-height:1.6;">
-				Im Marktcheck sehen Sie, wo Warenkorb, Conversion oder operative
-				Prozesse aktuell Ertrag kosten und welche Reihenfolge für Ihr Setup
-				wirklich Sinn ergibt.
+				Schreiben Sie kurz, wo Warenkorb, Conversion oder operative Prozesse
+				aktuell Ertrag kosten. Sie bekommen eine Einordnung, welche
+				Reihenfolge für Ihr Setup wirklich Sinn ergibt.
 			</p>
 
 			<div class="cs-cta-buttons">
 				<a
-					href="<?php echo esc_url( $audit_url ); ?>"
+					href="<?php echo esc_url( $project_url ); ?>"
 					class="nx-btn nx-btn--primary"
-					data-track-action="cta_domdar_nextstep_audit"
+					data-track-action="cta_domdar_nextstep_project"
 					data-track-category="lead_gen"
 				>
-					<?php echo esc_html( $audit_cta_label ); ?>
+					<?php echo esc_html( $project_cta_label ); ?>
 				</a>
 			</div>
 

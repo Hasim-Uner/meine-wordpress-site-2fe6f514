@@ -15,7 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 	? nexus_get_whitelabel_calendar_url()
 	: 'https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true';
-$mailto_url          = 'mailto:hallo@hasimuener.de';
+$contact_email       = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'hallo@hasimuener.de';
+$mailto_url          = 'mailto:' . $contact_email;
 
 // ── Zweiter Ausgang: "Ich habe jetzt eine konkrete Aufgabe" ─────
 // Alle CTAs führten auf denselben Pfad: Fit-Check (3 Fragen) → 30-Minuten-
@@ -27,18 +28,23 @@ $mailto_url          = 'mailto:hallo@hasimuener.de';
 // neue Datenverarbeitung, kein REST-Endpunkt — die Core Web Vitals der Route
 // bleiben unangetastet.
 //
-// Das 4-Stunden-Versprechen steht ohnehin an vier Stellen der Seite
-// (Kontrakt-Karte 02 samt Bullet, Founder-Chip, FAQ "kapazitaet"). Hier trägt
-// es zum ersten Mal einen CTA statt als Fußnote zu enden.
+// Das Antwortversprechen steht an vier Stellen der Seite (Kontrakt-Karte 02
+// samt Bullet, Founder-Chip, FAQ "kapazitaet"). Hier trägt es zum ersten Mal
+// einen CTA statt als Fußnote zu enden.
 //
 // Bewusst "Antwort" und nicht "Einschätzung": eine Einschätzung zu Machbarkeit,
 // Aufwand und Preisrichtung ist auf eine freitextliche Aufgabenbeschreibung hin
-// in vier Stunden oft gar nicht möglich, ohne vorher Rückfragen zu stellen.
-// Zwei verschiedene Versprechen unter derselben Zahl wären genau der
-// Widerspruch, den der Test-Sprint-Block gerade losgeworden ist — und ein
-// Versprechen, das auf den ersten Bildschirm wandert, muss die haltbarste
-// Fassung sein, nicht die kühnste.
-$task_brief_response = 'Antwort innerhalb von 4 Stunden werktags';
+// oft gar nicht möglich, ohne vorher Rückfragen zu stellen. Zwei verschiedene
+// Versprechen unter derselben Zahl wären genau der Widerspruch, den der
+// Test-Sprint-Block gerade losgeworden ist — und ein Versprechen, das auf den
+// ersten Bildschirm wandert, muss die haltbarste Fassung sein, nicht die
+// kühnste.
+//
+// Die Zahl kommt aus canon/messaging-canon.php: dieselbe Zusage endet auf
+// /kontakt/, und dort stand zuvor eine schwächere.
+$task_brief_response = function_exists( 'hu_response_promise' )
+	? hu_response_promise()
+	: 'Antwort innerhalb von 24 Stunden werktags';
 $task_brief_url      = $mailto_url . '?subject=' . rawurlencode( 'White-Label: konkrete Aufgabe' )
 	. '&body=' . rawurlencode(
 		"Aufgabe:\n\n\nGewünschter Zeitraum:\n\n\nZugänge vorhanden (WordPress, GA4, GTM):\n\n"
@@ -291,8 +297,12 @@ $contract_cards = [
 	[
 		'eyebrow' => '02',
 		'title'   => 'Verbindlich',
-		'copy'    => 'Antwort innerhalb von 4 Stunden werktags. Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
-		'bullets' => [ 'Antwort in 4 Stunden werktags', 'Starttermin vorab bestätigt', 'Dringendes separat priorisiert' ],
+		'copy'    => $task_brief_response . '. Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
+		'bullets' => [
+			function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : 'Antwort in 24 Stunden werktags',
+			'Starttermin vorab bestätigt',
+			'Dringendes separat priorisiert',
+		],
 	],
 	[
 		'eyebrow' => '03',
@@ -361,7 +371,7 @@ $founder_credentials = '8+ Jahre WordPress-Entwicklung · B.A. Medienwissenschaf
 // durch eine erfundene Vertretung überdeckt.
 $founder_availability = 'Verfügbarkeiten und Abwesenheiten werden vor Projektstart transparent eingeplant. Kritische Deadlines werden nur zugesagt, wenn die Umsetzung im vereinbarten Zeitraum abgesichert ist.';
 
-$founder_chips = [ 'NDA standardmäßig', 'Antwort innerhalb von 4 Stunden werktags' ];
+$founder_chips = [ 'NDA standardmäßig', $task_brief_response ];
 
 $faq_items = nexus_get_whitelabel_faq_items();
 
@@ -767,7 +777,7 @@ $fitcheck_steps = [
 		<div class="nx-container">
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Arbeitsprobe · offengelegt</span>
-				<h2 class="nx-headline-section">Keine Referenz-Logos. Eine offengelegte Arbeitsprobe.</h2>
+				<h2 class="nx-headline-section">Keine geliehenen Logos. Drei Umsetzungen, die ihr selbst prüfen könnt.</h2>
 				<p class="wl-section-lede">Was ich unter eurem Namen liefere, bleibt unter eurem Namen — NDA. Deshalb zeige ich ein eigenes, offengelegtes Projekt bis in die Zahlen: ein mittelständischer PV-Installationsbetrieb — von Google- und Meta-Kampagnen über die Landingpage bis zu Server-Side-Tracking, Consent Mode V2 und CRM-Attribution.</p>
 			</div>
 
@@ -936,7 +946,7 @@ window.dataLayer.push({
 
 			<p class="wl-faq__more">
 				Eure Frage fehlt? Direkter Draht:
-				<a href="<?php echo esc_url( $mailto_url ); ?>" data-track-action="mail_whitelabel_faq" data-track-category="contact" data-track-section="faq">hallo@hasimuener.de</a>
+				<a href="<?php echo esc_url( $mailto_url ); ?>" data-track-action="mail_whitelabel_faq" data-track-category="contact" data-track-section="faq"><?php echo esc_html( $contact_email ); ?></a>
 			</p>
 		</div>
 	</section>
@@ -998,7 +1008,7 @@ window.dataLayer.push({
 								Termin wählen (30 Min, direkt mit mir)
 							</a>
 							<a href="<?php echo esc_url( $mailto_url ); ?>" class="nx-btn nx-btn--ghost" data-fitcheck-mail data-track-action="mail_whitelabel_fitcheck" data-track-category="contact" data-track-section="fitcheck_result">
-								Lieber schriftlich: hallo@hasimuener.de
+								Lieber schriftlich: <?php echo esc_html( $contact_email ); ?>
 							</a>
 						</div>
 					</div>

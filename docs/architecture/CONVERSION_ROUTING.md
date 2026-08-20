@@ -73,6 +73,22 @@ Typical topics:
 
 Do **not** route these pages to the Solar Marktcheck merely because `hu_get_request_analysis_url()` exists as a shared helper.
 
+Cross-route pages that serve all three paths use the generic project request as
+well, even when they are not themselves an implementation page:
+
+- `/hasim-uener/` — the "Für Betriebe" card is the direct-project path, not the energy path
+- `/glossar/` — definitional layer below every cluster
+- the technical-SEO cornerstone template (`page-seo-cornerstone.php`)
+- the DOMDAR e-commerce case study — a cart-and-margin case with no energy context
+
+Use `hu_get_commercial_route( 'project_request' )` for those, with the label
+`Projekt anfragen`.
+
+Two Marktcheck links on non-energy pages are deliberate segmentation, not
+misrouting, and stay: the energy branch in `page-wordpress-agentur.php` and the
+energy branch in the `page-server-side-tracking-b2b.php` hero. Both name the
+energy vertical explicitly before they hand off.
+
 ### 3. Agency intent -> White-Label
 
 Use White-Label as primary route when intent explicitly involves:

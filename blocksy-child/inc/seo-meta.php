@@ -216,12 +216,12 @@ function hu_get_forced_singular_seo_map() {
 				'description' => 'Meta Ads für B2B: fünf Kampagnenstrukturen für planbare Anfragen statt teurer Reichweite — mit Consent, sauberem Tracking und CRM-Rückführung.',
 			],
 			'kontakt' => [
-				'title'       => 'Kontakt & Projektanfrage | Haşim Üner',
-				'description' => 'Projekt oder Frage kurz einordnen: ein Formular, händisch geprüfte Rückmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Vertriebsteam.',
+				'title'       => hu_get_contact_offer_title(),
+				'description' => hu_get_contact_offer_description(),
 			],
 			'kontaktiere-mich' => [
-				'title'       => 'Kontakt & Projektanfrage | Haşim Üner',
-				'description' => 'Projekt oder Frage kurz einordnen: ein Formular, händisch geprüfte Rückmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Vertriebsteam.',
+				'title'       => hu_get_contact_offer_title(),
+				'description' => hu_get_contact_offer_description(),
 			],
 			'hasim-uener' => [
 				'title'       => 'Haşim Üner | Websites, die Anfragen produzieren',
@@ -1020,7 +1020,10 @@ function hu_get_contact_offer_title() {
  * @return string
  */
 function hu_get_contact_offer_description() {
-	return 'Projekt oder Frage kurz einordnen: ein Formular, händisch geprüfte Rückmeldung innerhalb von 48 Stunden. Kein Pflicht-Call, kein Vertriebsteam.';
+	return sprintf(
+		'Projekt oder Frage kurz einordnen: ein Formular, händisch geprüfte Rückmeldung %s. Kein Pflicht-Call, kein Vertriebsteam.',
+		hu_response_promise( 'window' )
+	);
 }
 
 

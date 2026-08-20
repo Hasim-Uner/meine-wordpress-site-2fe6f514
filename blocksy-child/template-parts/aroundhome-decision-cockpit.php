@@ -163,7 +163,7 @@ $path_items = [
 					<span class="hu-aroundhome__card-index">01 / Öffentlich</span>
 					<h3>Das Modell</h3>
 					<p>Nach eigener Partnerseite zahlen Fachbetriebe pro übermittelter Anfrage; der Preis hängt vom angebotenen Produkt ab.</p>
-					<a href="<?php echo esc_url( $aroundhome_partner ); ?>" rel="noopener noreferrer" target="_blank" data-track-action="source_aroundhome_partner" data-track-category="external_link" data-track-section="aroundhome_short_answer">Anbieterangabe prüfen ↗</a>
+					<a href="<?php echo esc_url( $aroundhome_partner ); ?>" rel="noopener noreferrer" target="_blank" data-track-action="source_aroundhome_partner" data-track-category="external_link" data-track-section="aroundhome_short_answer">Anbieterangabe prüfen <?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></a>
 				</article>
 				<article class="hu-aroundhome__answer-card">
 					<span class="hu-aroundhome__card-index">02 / Vertrag</span>

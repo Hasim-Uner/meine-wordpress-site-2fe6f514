@@ -118,62 +118,36 @@ function nexus_is_primary_header_menu_args( $args ) {
 /**
  * Provide a sane navigation fallback if no WordPress menu is assigned.
  *
+ * Reads the one canonical navigation contract instead of keeping a second
+ * list. The hand-maintained copy here still carried the pre-repositioning
+ * navigation — "WordPress Agentur" as a main entry and "Marktcheck · 48 h"
+ * as the CTA. The header stopped calling it, but
+ * inc/seo-cockpit/seo-cockpit-links.php still reads it and turns it into
+ * internal link suggestions, so the retired navigation kept propagating from
+ * there.
+ *
+ * The shape (label/url/active/class/track) is kept for existing callers.
+ *
  * @return array<int, array<string, mixed>>
  */
 function nexus_get_site_header_fallback_items() {
-	$about_page_id = nexus_get_page_id( [ 'hasim-uener', 'uber-mich' ] );
-	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
-	$analysis_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-	$solar_url    = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
-	$agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
-	$results_url  = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
-	$agency_url   = $primary_urls['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
-	$request_cta  = 'Marktcheck · 48 h';
+	if ( ! function_exists( 'hu_get_primary_navigation_contract' ) ) {
+		return [];
+	}
 
-	return [
-		[
-			'label'  => __( 'Solar & Wärmepumpen', 'blocksy-child' ),
-			'url'    => $solar_url,
-			'active' => function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context(),
-			'class'  => '',
-			'track'  => 'solar',
-		],
-		[
-			'label'  => __( 'WordPress Agentur', 'blocksy-child' ),
-			'url'    => $agentur_url,
-			'active' => is_page( 'wordpress-agentur-hannover' ) || is_page_template( 'page-wordpress-agentur.php' ),
-			'class'  => '',
-			'track'  => 'agentur',
-		],
-		[
-			'label'  => __( 'Ergebnisse', 'blocksy-child' ),
-			'url'    => $results_url,
-			'active' => nexus_is_results_context(),
-			'class'  => '',
-			'track'  => 'results',
-		],
-		[
-			'label'  => __( 'Über Haşim', 'blocksy-child' ),
-			'url'    => $primary_urls['about'] ?? home_url( '/hasim-uener/' ),
-			'active' => $about_page_id ? is_page( $about_page_id ) : false,
-			'class'  => '',
-			'track'  => 'about',
-		],
-		[
-			'label'  => __( 'Für Agenturen', 'blocksy-child' ),
-			'url'    => $agency_url,
-			'active' => nexus_is_agency_nav_context(),
-			'class'  => '',
-			'track'  => 'whitelabel',
-		],
-		[
-			'label'  => $request_cta,
-			'url'    => $analysis_url,
-			'active' => false,
-			'class'  => 'nav-cta-button',
-			'track'  => 'analysis',
-		],
-	];
+	$items = [];
+
+	foreach ( hu_get_primary_navigation_contract() as $item ) {
+		$items[] = [
+			'label'  => (string) ( $item['label'] ?? '' ),
+			'url'    => (string) ( $item['url'] ?? '' ),
+			'active' => ! empty( $item['current'] ),
+			'class'  => (string) ( $item['class'] ?? '' ),
+			'track'  => (string) ( $item['track'] ?? '' ),
+		];
+	}
+
+	return $items;
 }
 
 /**
@@ -199,56 +173,14 @@ function nexus_is_agency_nav_context() {
 		|| is_page_template( 'page-whitelabel-retainer.php' );
 }
 
-/**
- * Render the menu markup for desktop or mobile header contexts.
- *
- * @param string $context Menu context, e.g. desktop or mobile.
- * @return void
+/*
+ * nexus_render_site_header_menu() stand hier bis zur Repositionierung und ist
+ * entfallen. template-parts/site-header.php rendert die Navigation seit dem
+ * Premium-Layer selbst aus hu_get_primary_navigation_contract(), und die
+ * Funktion hatte danach keinen Aufrufer mehr. Als zweiter Renderer mit eigener
+ * Markup-Variante war sie genau der Weg, auf dem die alte Navigation
+ * zurueckkommen konnte.
  */
-function nexus_render_site_header_menu( $context = 'desktop' ) {
-	$context    = sanitize_key( $context );
-	$location   = nexus_get_site_header_menu_location();
-	$menu_class = 'nx-site-header__menu nx-site-header__menu--' . $context;
-
-	if ( $location ) {
-		wp_nav_menu(
-			[
-				'theme_location' => $location,
-				'container'      => '',
-				'menu_class'     => $menu_class,
-				'fallback_cb'    => false,
-				'depth'          => 2,
-			]
-		);
-
-		return;
-	}
-
-	$fallback_items = nexus_get_site_header_fallback_items();
-
-	if ( empty( $fallback_items ) ) {
-		return;
-	}
-
-	echo '<ul class="' . esc_attr( $menu_class ) . '">';
-
-	foreach ( $fallback_items as $item ) {
-		$item_class = ! empty( $item['class'] ) ? ' ' . sanitize_html_class( $item['class'] ) : '';
-		$link_class = ! empty( $item['active'] ) ? ' aria-current="page"' : '';
-		$track_attr = ! empty( $item['track'] ) ? sprintf( ' data-track-action="nav_header_%s" data-track-category="navigation"', esc_attr( $item['track'] ) ) : '';
-
-		printf(
-			'<li class="menu-item%1$s"><a href="%2$s"%3$s%4$s>%5$s</a></li>',
-			esc_attr( $item_class ),
-			esc_url( $item['url'] ),
-			$link_class,
-			$track_attr,
-			esc_html( $item['label'] )
-		);
-	}
-
-	echo '</ul>';
-}
 
 /**
  * Remove side-funnel destinations from the primary header navigation.
@@ -502,12 +434,24 @@ add_action( 'template_redirect', 'nexus_redirect_legacy_menu_page_ids', 1 );
 /**
  * Swap legacy nav CTAs to the current analysis entry when a WordPress menu is assigned.
  *
+ * Nur im Energy-Kontext. Der Filter schreibt jeden Menü-CTA, dessen Titel auf
+ * der Liste unten steht, auf den Marktcheck um — darunter allgemeine Titel wie
+ * "Direkt anfragen", "Anfrage stellen" und "Audit starten". Seit der
+ * Repositionierung heisst die globale CTA "Projekt anfragen" und steht nicht
+ * auf der Liste; der Filter griff deshalb faktisch nicht mehr. Bei der
+ * naechsten Menuepflege haette schon ein "Anfrage stellen" gereicht, um die
+ * sitewide CTA wieder in den Solar-Trichter zu haengen.
+ *
  * @param array           $items Sorted menu item objects.
  * @param stdClass|string $args  Menu arguments.
  * @return array
  */
 function nexus_energy_nav_cta_label( $items, $args ) {
 	if ( ! nexus_is_primary_header_menu_args( $args ) ) {
+		return $items;
+	}
+
+	if ( ! function_exists( 'nexus_is_energy_systems_context' ) || ! nexus_is_energy_systems_context() ) {
 		return $items;
 	}
 

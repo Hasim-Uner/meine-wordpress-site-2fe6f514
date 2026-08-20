@@ -12,7 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$audit_url   = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'audit', home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) ) : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+// Das Glossar bedient alle drei Wege. Sein CTA ist deshalb die generische
+// Projektanfrage, nicht der Marktcheck des Energy-Clusters.
+$project_url = function_exists( 'hu_get_commercial_route' )
+	? hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) )
+	: home_url( '/kontakt/' );
 $wgos_url    = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#methode' ) ) : home_url( '/wordpress-agentur-hannover/#methode' );
 $summary     = function_exists( 'nexus_get_glossary_hub_summary' ) ? nexus_get_glossary_hub_summary() : [];
 $hub_sections = function_exists( 'nexus_get_glossary_hub_sections' ) ? nexus_get_glossary_hub_sections() : [];
@@ -35,7 +39,7 @@ $hub_sections = function_exists( 'nexus_get_glossary_hub_sections' ) ? nexus_get
 						</ul>
 
 						<div class="wgos-hero__actions">
-								<a href="<?php echo esc_url( $audit_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_glossary_hub_audit" data-track-category="lead_gen">Marktcheck mit Fit-Entscheid starten</a>
+								<a href="<?php echo esc_url( $project_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_glossary_hub_project" data-track-category="lead_gen">Projekt anfragen</a>
 						</div>
 
 						<p class="wgos-hero__microcopy">Glossar bedeutet hier nicht „zweites Lexikon neben dem Angebot“, sondern ein kontrollierter Begriffs-Layer mit klarer Rückführung auf die richtige Seite.</p>
