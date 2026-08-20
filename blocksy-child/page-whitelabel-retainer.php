@@ -27,18 +27,23 @@ $mailto_url          = 'mailto:hallo@hasimuener.de';
 // neue Datenverarbeitung, kein REST-Endpunkt — die Core Web Vitals der Route
 // bleiben unangetastet.
 //
-// Das 4-Stunden-Versprechen steht ohnehin an vier Stellen der Seite
-// (Kontrakt-Karte 02 samt Bullet, Founder-Chip, FAQ "kapazitaet"). Hier trägt
-// es zum ersten Mal einen CTA statt als Fußnote zu enden.
+// Das Antwortversprechen steht an vier Stellen der Seite (Kontrakt-Karte 02
+// samt Bullet, Founder-Chip, FAQ "kapazitaet"). Hier trägt es zum ersten Mal
+// einen CTA statt als Fußnote zu enden.
 //
 // Bewusst "Antwort" und nicht "Einschätzung": eine Einschätzung zu Machbarkeit,
 // Aufwand und Preisrichtung ist auf eine freitextliche Aufgabenbeschreibung hin
-// in vier Stunden oft gar nicht möglich, ohne vorher Rückfragen zu stellen.
-// Zwei verschiedene Versprechen unter derselben Zahl wären genau der
-// Widerspruch, den der Test-Sprint-Block gerade losgeworden ist — und ein
-// Versprechen, das auf den ersten Bildschirm wandert, muss die haltbarste
-// Fassung sein, nicht die kühnste.
-$task_brief_response = 'Antwort innerhalb von 4 Stunden werktags';
+// oft gar nicht möglich, ohne vorher Rückfragen zu stellen. Zwei verschiedene
+// Versprechen unter derselben Zahl wären genau der Widerspruch, den der
+// Test-Sprint-Block gerade losgeworden ist — und ein Versprechen, das auf den
+// ersten Bildschirm wandert, muss die haltbarste Fassung sein, nicht die
+// kühnste.
+//
+// Die Zahl kommt aus canon/messaging-canon.php: dieselbe Zusage endet auf
+// /kontakt/, und dort stand zuvor eine schwächere.
+$task_brief_response = function_exists( 'hu_response_promise' )
+	? hu_response_promise()
+	: 'Antwort innerhalb von 24 Stunden werktags';
 $task_brief_url      = $mailto_url . '?subject=' . rawurlencode( 'White-Label: konkrete Aufgabe' )
 	. '&body=' . rawurlencode(
 		"Aufgabe:\n\n\nGewünschter Zeitraum:\n\n\nZugänge vorhanden (WordPress, GA4, GTM):\n\n"
@@ -291,8 +296,12 @@ $contract_cards = [
 	[
 		'eyebrow' => '02',
 		'title'   => 'Verbindlich',
-		'copy'    => 'Antwort innerhalb von 4 Stunden werktags. Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
-		'bullets' => [ 'Antwort in 4 Stunden werktags', 'Starttermin vorab bestätigt', 'Dringendes separat priorisiert' ],
+		'copy'    => $task_brief_response . '. Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
+		'bullets' => [
+			function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : 'Antwort in 24 Stunden werktags',
+			'Starttermin vorab bestätigt',
+			'Dringendes separat priorisiert',
+		],
 	],
 	[
 		'eyebrow' => '03',
@@ -361,7 +370,7 @@ $founder_credentials = '8+ Jahre WordPress-Entwicklung · B.A. Medienwissenschaf
 // durch eine erfundene Vertretung überdeckt.
 $founder_availability = 'Verfügbarkeiten und Abwesenheiten werden vor Projektstart transparent eingeplant. Kritische Deadlines werden nur zugesagt, wenn die Umsetzung im vereinbarten Zeitraum abgesichert ist.';
 
-$founder_chips = [ 'NDA standardmäßig', 'Antwort innerhalb von 4 Stunden werktags' ];
+$founder_chips = [ 'NDA standardmäßig', $task_brief_response ];
 
 $faq_items = nexus_get_whitelabel_faq_items();
 

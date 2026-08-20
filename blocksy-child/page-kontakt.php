@@ -173,7 +173,7 @@ $preselected_type   = ( $has_explicit_type || '' !== $selected_focus ) ? $select
 $hero_eyebrow = $is_scoped_landing ? $current_type_label : 'Kontakt';
 $hero_title   = $is_scoped_landing ? $current_type_label : 'Sagen Sie kurz, was Sie vorhaben.';
 $hero_lead    = $is_scoped_landing
-	? 'Vier kurze Schritte: Ziel, Hürde, Kontakt — händisch geprüfte Rückmeldung innerhalb von 48 Stunden.'
+	? 'Vier kurze Schritte: Ziel, Hürde, Kontakt — händisch geprüfte Rückmeldung ' . hu_response_promise( 'window' ) . '.'
 	: 'WordPress, Tracking, Conversion oder Weiterentwicklung: Anliegen wählen, kurz einordnen und direkt bei Haşim Üner landen.';
 
 $auto_scroll = false;
@@ -403,7 +403,7 @@ $auto_scroll = false;
 				</form>
 
 				<div class="contact-form__postcopy">
-					<p class="contact-postcopy__lead">Antwort in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage. Händisch geprüft, kein Vertriebsteam.</p>
+					<p class="contact-postcopy__lead"><?php echo esc_html( hu_response_promise( 'sentence' ) ); ?> Händisch geprüft, kein Vertriebsteam.</p>
 				</div>
 			</section>
 	</div>

@@ -268,7 +268,10 @@ function hu_enqueue_assets() {
 			'NexusContactConfig',
 			[
 				'restEndpoint'     => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
-				'successMessage'   => 'Danke. Ihre Anfrage ist eingegangen. Ich analysiere Domain und Region in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, persönlich und händisch und sende den Befund per E-Mail.',
+				'successMessage'   => sprintf(
+					'Danke. Ihre Anfrage ist eingegangen. Sie erhalten %s eine persönliche, händisch geprüfte Rückmeldung per E-Mail.',
+					hu_response_promise( 'window' )
+				),
 				'errorMessage'     => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
 				'callUrl'          => esc_url_raw( function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' ) ),
 				'isScopedLanding'  => $contact_is_scoped_landing,
@@ -288,7 +291,10 @@ function hu_enqueue_assets() {
 			'NexusContactConfig',
 			[
 				'restEndpoint'    => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
-				'successMessage'  => 'Danke. Ihre Projektprüfung ist eingegangen. Sie erhalten in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, eine händisch geprüfte Rückmeldung.',
+				'successMessage'  => sprintf(
+					'Danke. Ihre Projektprüfung ist eingegangen. Sie erhalten %s eine händisch geprüfte Rückmeldung.',
+					hu_response_promise( 'window' )
+				),
 				'errorMessage'    => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
 				'callUrl'         => esc_url_raw( function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' ) ),
 				'isScopedLanding' => true,
@@ -385,10 +391,6 @@ function hu_enqueue_assets() {
 	// lädt zuletzt und ist über .hu-sst gescopet – keine andere Intercept-Seite
 	// wird berührt.
 	if ( $is_sst_route ) {
-		$tracking_response_days = function_exists( 'hu_tracking_package_detail' )
-			? hu_tracking_package_detail( 'standard', 'response_business_days', '2' )
-			: '2';
-
 		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-sst-css', 'server-side-tracking.css', [ 'nexus-intercept-solar-leads-css', 'nexus-contact-css' ] );
 		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js' ] );
@@ -398,7 +400,14 @@ function hu_enqueue_assets() {
 			'NexusContactConfig',
 			[
 				'restEndpoint'    => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
-				'successMessage'  => sprintf( 'Danke. Ihre Anfrage ist eingegangen. Sie erhalten eine Einschätzung zu Ihrem Tracking-Setup innerhalb von %s Werktagen.', $tracking_response_days ),
+				// Stand zuvor auf der Support-Frist der Tracking Care
+				// (response_business_days). Das ist die Reaktionszeit im
+				// laufenden Vertrag, nicht die Antwort auf eine Anfrage — und
+				// als Intake-Zusage war sie die zweite Antwortzeit der Seite.
+				'successMessage'  => sprintf(
+					'Danke. Ihre Anfrage ist eingegangen. Sie erhalten %s eine persönliche Rückmeldung zu Ihrem Tracking-Setup.',
+					hu_response_promise( 'window' )
+				),
 				'errorMessage'    => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
 				'callUrl'         => esc_url_raw(
 					function_exists( 'nexus_get_audit_calendar_url' )

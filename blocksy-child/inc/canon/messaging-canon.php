@@ -19,6 +19,42 @@ define(
 	'Scope und Preis stehen vor dem Start fest. Kein Paketpreis ohne geklärten Umfang.'
 );
 
+// ── Antwortzeit auf eine Anfrage ──────────────────────────────────
+// Startseite und White-Label-Seite versprachen "4 Stunden werktags", die
+// Kontaktseite als gemeinsames Ziel beider CTAs dagegen "in der Regel 48
+// Stunden, spaetestens 2 Werktage". Damit stand die schwaechste Fassung genau
+// dort, wo abgeschickt wird: das Versprechen brach im Formular.
+//
+// Nicht zu verwechseln mit HU_MARKETCHECK_REPLY_HOURS in
+// canon/diagnose-canon.php. Das ist die Bearbeitungszeit des Marktchecks bis
+// zum haendischen Befund, keine Antwortzeit auf eine Anfrage. Beide Werte
+// duerfen auseinanderlaufen, aber nur mit dieser Begruendung.
+define( 'HU_RESPONSE_HOURS', 24 );
+
+/**
+ * Display value for the canonical response promise.
+ *
+ * @param string $variant One of: phrase, sentence, compact, window.
+ * @return string
+ */
+function hu_response_promise( $variant = 'phrase' ) {
+	$window = sprintf( 'innerhalb von %d Stunden werktags', HU_RESPONSE_HOURS );
+
+	if ( 'window' === $variant ) {
+		return $window;
+	}
+
+	if ( 'compact' === $variant ) {
+		return sprintf( 'Antwort in %d Stunden werktags', HU_RESPONSE_HOURS );
+	}
+
+	if ( 'sentence' === $variant ) {
+		return sprintf( 'Antwort %s.', $window );
+	}
+
+	return sprintf( 'Antwort %s', $window );
+}
+
 /**
  * Return the canonical messaging model.
  *
@@ -28,6 +64,8 @@ function hu_messaging_canon() {
 	return [
 		'value_anchor_architecture' => HU_MESSAGE_VALUE_ANCHOR_ARCHITECTURE,
 		'value_anchor_price'        => HU_MESSAGE_VALUE_ANCHOR_PRICE,
+		'response_hours'            => HU_RESPONSE_HOURS,
+		'response_promise'          => hu_response_promise( 'sentence' ),
 		'what_we_dont_sell'         => [
 			'Keine reine Design-Retusche ohne technischen oder messbaren Zweck.',
 			'Keine Reporting-Fassade ohne belastbare Datengrundlage.',

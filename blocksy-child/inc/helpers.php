@@ -1026,7 +1026,7 @@ function nexus_get_whitelabel_faq_items() {
 		[
 			'key'      => 'kapazitaet',
 			'question' => 'Wie schnell reagierst du — und was ist mit Kapazität?',
-			'answer'   => 'Antwort innerhalb von 4 Stunden werktags. Wie viel Kapazität in welchem Zeitraum zur Verfügung steht, klären wir vor dem Angebot; Abwesenheiten werden dabei offen eingeplant. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
+			'answer'   => hu_response_promise( 'sentence' ) . ' Wie viel Kapazität in welchem Zeitraum zur Verfügung steht, klären wir vor dem Angebot; Abwesenheiten werden dabei offen eingeplant. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
 		],
 		[
 			'key'      => 'ownership',

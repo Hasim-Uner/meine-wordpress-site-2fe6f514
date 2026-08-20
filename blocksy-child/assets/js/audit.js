@@ -338,7 +338,7 @@
         form.hidden = true;
 
         if (successMessage) {
-          successMessage.textContent = (data && data.message) || config.successMessage || 'Ich prüfe die Seite und melde mich in der Regel innerhalb von 48 Stunden, spätestens 2 Werktage, per E-Mail.';
+          successMessage.textContent = (data && data.message) || config.successMessage || 'Der Befund kommt in der Regel 48 Stunden, spätestens 2 Werktage nach Eingang per E-Mail.';
         }
 
         if (successBox) {

@@ -482,7 +482,7 @@ get_header();
 				<span class="hu-eyebrow hu-on-accent">06 / Nächster Schritt</span>
 				<h2 id="hu-close-h" class="hu-display">Sie wissen noch nicht, welcher Weg passt?</h2>
 				<p class="hu-close__sub">
-					Dann schreiben Sie mir in zwei Sätzen, woran es gerade hakt. Antwort innerhalb von 4 Stunden werktags.
+					Dann schreiben Sie mir in zwei Sätzen, woran es gerade hakt. <?php echo esc_html( hu_response_promise( 'sentence' ) ); ?>
 				</p>
 
 				<div class="hu-close__actions">
