@@ -934,6 +934,12 @@ p.hero-stack,
     max-width: none;
     margin: 0;
 }
+/* Die Audit-Leiste ist breiter als der zentrierte Energy-Shell. Ohne Deckel
+   stehen die drei Karten auf grossen Schirmen so weit auseinander, dass sie
+   nicht mehr als eine Gruppe lesen. */
+.ft--audit-minimal .ft__routes-list {
+    max-width: 720px;
+}
 
 @media (max-width: 720px) {
     .ft__routes-list {
