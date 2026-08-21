@@ -76,6 +76,28 @@ if ( function_exists( 'hu_get_primary_navigation_contract' ) ) {
 }
 
 /*
+ * Der Projekt-CTA für die mobile Leiste.
+ *
+ * Unter 1101px ist die Desktop-Nav ausgeblendet, und damit lag auch die
+ * einzige Handlung des Headers hinter dem Burger. Auf einer Seite, deren Zweck
+ * Anfragen sind, stand auf dem Telefon eine 64px-Leiste mit Wortmarke, Burger
+ * und 209px Nichts dazwischen. Der Energy-Header macht auf derselben Breite
+ * längst das Richtige (Wortmarke + Marktcheck); der globale Header zieht nach.
+ *
+ * Bewusst dieselbe Quelle wie die Desktop-Nav statt eines zweiten Labels: der
+ * CTA darf nicht auseinanderlaufen. Sichtbar ist immer nur eine der beiden
+ * Instanzen — die jeweils andere liegt auf display:none und damit auch aus dem
+ * Accessibility-Baum.
+ */
+$mobile_cta_item = null;
+foreach ( $strategy_nav_items as $strategy_nav_item ) {
+	if ( false !== strpos( (string) ( $strategy_nav_item['class'] ?? '' ), 'nav-project-link' ) ) {
+		$mobile_cta_item = $strategy_nav_item;
+		break;
+	}
+}
+
+/*
  * Visuelle Navigationsebene: Die drei Geschäftswege bleiben semantisch Teil
  * desselben Routing-Contracts, werden aber als kompakte Route-Cards gerendert.
  * Ergebnisse, Über Haşim und die Projekt-CTA bleiben bewusst ruhiger.
@@ -276,6 +298,21 @@ if ( is_file( $premium_header_css_path ) ) {
 			</nav>
 
 			<div class="nx-site-header__actions">
+				<?php if ( is_array( $mobile_cta_item ) ) : ?>
+					<a
+						class="nx-site-header__mobile-cta"
+						href="<?php echo esc_url( (string) ( $mobile_cta_item['url'] ?? home_url( '/kontakt/' ) ) ); ?>"
+						aria-label="<?php echo esc_attr( (string) ( $mobile_cta_item['label'] ?? 'Projekt anfragen' ) ); ?>"
+						data-track-action="cta_header_mobile_project"
+						data-track-category="<?php echo esc_attr( (string) ( $mobile_cta_item['category'] ?? 'lead_gen' ) ); ?>"
+						data-track-section="header_mobile"
+					>
+						<span class="nx-site-header__mobile-cta-full"><?php echo esc_html( (string) ( $mobile_cta_item['label'] ?? 'Projekt anfragen' ) ); ?></span>
+						<span class="nx-site-header__mobile-cta-short"><?php esc_html_e( 'Anfragen', 'blocksy-child' ); ?></span>
+						<span class="nx-site-header__mobile-cta-arrow" aria-hidden="true"><?php echo hu_arrow_up_right_svg( 13 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
+					</a>
+				<?php endif; ?>
+
 				<button
 					type="button"
 					class="nx-site-header__toggle"
