@@ -243,6 +243,15 @@
     transform: translate(1px, -1px);
 }
 
+/*
+ * Der Mobile-CTA existiert im Markup immer, ist auf Desktop aber aus, weil dort
+ * derselbe CTA am Ende der Nav steht. Genau eine der beiden Instanzen ist
+ * sichtbar; display:none nimmt die andere auch aus dem Accessibility-Baum.
+ */
+.nx-site-header--premium .nx-site-header__mobile-cta {
+    display: none;
+}
+
 .nx-site-header--premium .nx-site-header__panel-intro,
 .nx-site-header--premium .nx-site-header__panel-signature {
     display: none;
@@ -326,6 +335,68 @@
      * Zeile und überlagern die Wortmarke.
      */
     .nx-site-header--premium .nx-site-header__nav {
+        display: none;
+    }
+
+    /*
+     * Wortmarke | Anfragen | Burger. Der Burger bleibt, der Vollbild-
+     * Routenwaehler dahinter ist die richtige Loesung fuer drei
+     * gleichrangige Wege — er war nur die einzige Handlung der Leiste, und
+     * eine versteckte Handlung ist auf dem Telefon keine.
+     */
+    .nx-site-header--premium .nx-site-header__actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .nx-site-header--premium .nx-site-header__mobile-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 46px;
+        padding: 0 14px;
+        border: 1px solid transparent;
+        border-radius: 14px;
+        background: linear-gradient(180deg, var(--accent-hover) 0%, var(--accent) 100%);
+        box-shadow: 0 10px 22px hsl(var(--accent-hsl) / 0.22);
+        color: var(--text-inverse);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        line-height: 1;
+        text-decoration: none;
+        white-space: nowrap;
+        transition:
+            background var(--nx-duration-fast) var(--nx-ease),
+            box-shadow var(--nx-duration-fast) var(--nx-ease),
+            transform var(--nx-duration-fast) var(--nx-ease);
+    }
+
+    .nx-site-header--premium .nx-site-header__mobile-cta:hover,
+    .nx-site-header--premium .nx-site-header__mobile-cta:focus-visible {
+        background: linear-gradient(180deg, color-mix(in srgb, var(--accent-hover) 82%, white) 0%, var(--accent-hover) 100%);
+        box-shadow: 0 12px 26px hsl(var(--accent-hsl) / 0.26);
+        color: var(--text-inverse);
+    }
+
+    .nx-site-header--premium .nx-site-header__mobile-cta:active {
+        transform: translateY(1px);
+    }
+
+    /* Das Kurzlabel greift erst, wenn das lange die Leiste sprengen wuerde. */
+    .nx-site-header--premium .nx-site-header__mobile-cta-short {
+        display: none;
+    }
+
+    .nx-site-header--premium .nx-site-header__mobile-cta-arrow {
+        display: inline-grid;
+        place-items: center;
+    }
+
+    /* Bei geoeffnetem Routenwaehler traegt der Panel-CTA die Handlung; zwei
+       gleiche Buttons uebereinander waeren nur Rauschen. */
+    .nx-site-header--premium.is-open .nx-site-header__mobile-cta {
         display: none;
     }
 
@@ -554,6 +625,28 @@
         font-weight: 650;
         letter-spacing: 0.12em;
         text-transform: uppercase;
+    }
+}
+
+/*
+ * Wortmarke, volles Label und Burger passen gemessen erst ab etwa 380px in die
+ * Leiste — und dort mit 2px Rest. Das ist keine Reserve, sondern Zufall: in
+ * Produktion laeuft eine andere Schrift als im Pruefstand. Die Schwelle liegt
+ * deshalb bei 430px, wo rund 30px Puffer bleiben. Darunter traegt der Button
+ * das kurze Label; das vollstaendige "Projekt anfragen" steht im
+ * Vollbild-Routenwaehler und im aria-label.
+ */
+@media (max-width: 429px) {
+    .nx-site-header--premium .nx-site-header__mobile-cta {
+        padding: 0 12px;
+    }
+
+    .nx-site-header--premium .nx-site-header__mobile-cta-full {
+        display: none;
+    }
+
+    .nx-site-header--premium .nx-site-header__mobile-cta-short {
+        display: inline;
     }
 }
 
