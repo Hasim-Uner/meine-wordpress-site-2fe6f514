@@ -828,6 +828,22 @@
 	white-space: nowrap;
 }
 
+.hu-fr__price-category {
+	min-inline-size: 0;
+}
+
+.hu-fr__price-category > span,
+.hu-fr__price-category > small {
+	display: block;
+}
+
+.hu-fr__price-category > small {
+	margin-top: var(--nx-space-1, 4px);
+	font-size: 0.76rem;
+	line-height: 1.45;
+	color: #b6aca2;
+}
+
 .hu-fr__price-row--primary {
 	padding: 26px 0;
 }
