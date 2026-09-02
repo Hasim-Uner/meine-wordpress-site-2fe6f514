@@ -786,6 +786,101 @@
 	text-underline-offset: 0.2em;
 }
 
+/* COMPARISON */
+.hu-fr__comparison {
+	padding: clamp(88px, 9vw, 120px) 0;
+	background: var(--fr-paper-2);
+}
+
+.hu-fr__comparison-scroll {
+	max-inline-size: 100%;
+	margin-top: clamp(42px, 5vw, 58px);
+	overflow-x: auto;
+	overscroll-behavior-inline: contain;
+	border: 1px solid var(--fr-line-strong);
+	border-radius: var(--fr-radius);
+	background: var(--fr-paper);
+}
+
+.hu-fr__comparison-scroll:focus-visible {
+	outline: 3px solid rgba(115, 57, 31, 0.35);
+	outline-offset: 4px;
+}
+
+.hu-fr__comparison-table {
+	width: 100%;
+	min-width: 64rem;
+	table-layout: fixed;
+	border-collapse: collapse;
+	text-align: start;
+}
+
+.hu-fr__comparison-criterion {
+	width: 24%;
+}
+
+.hu-fr__comparison-table th,
+.hu-fr__comparison-table td {
+	padding: 20px;
+	border-right: 1px solid var(--fr-line);
+	border-bottom: 1px solid var(--fr-line);
+	font-size: 0.88rem;
+	line-height: 1.5;
+	vertical-align: top;
+	color: var(--fr-muted);
+}
+
+.hu-fr__comparison-table tr > :last-child {
+	border-right: 0;
+}
+
+.hu-fr__comparison-table tbody tr:last-child > * {
+	border-bottom: 0;
+}
+
+.hu-fr__comparison-table thead th {
+	background: var(--fr-night);
+	font-family: var(--theme-font-heading, 'Satoshi', sans-serif);
+	font-size: 0.9rem;
+	font-weight: 650;
+	color: var(--fr-white);
+}
+
+.hu-fr__comparison-table tbody th {
+	background: rgba(236, 228, 218, 0.58);
+	font-weight: 700;
+	color: var(--fr-ink);
+}
+
+.hu-fr__comparison-cell--agency-advantage {
+	background: rgba(180, 106, 60, 0.14);
+}
+
+.hu-fr__comparison-state {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.75rem;
+	height: 1.75rem;
+	border: 1px solid var(--fr-copper-dark);
+	border-radius: 50%;
+	font-size: 0.82rem;
+	line-height: 1;
+	color: var(--fr-copper-dark);
+}
+
+.hu-fr__visually-hidden {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	margin: -1px !important;
+	padding: 0 !important;
+	overflow: hidden !important;
+	border: 0 !important;
+	clip-path: inset(50%) !important;
+	white-space: nowrap !important;
+}
+
 /* PRICING */
 .hu-fr__pricing {
 	padding: clamp(80px, 8vw, 112px) 0;
