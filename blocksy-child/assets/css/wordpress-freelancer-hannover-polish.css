@@ -56,6 +56,7 @@
 .hu-fr__skills,
 .hu-fr__workflow,
 .hu-fr__proof,
+.hu-fr__comparison,
 .hu-fr__faq {
 	padding: clamp(76px, 7.5vw, 104px) 0;
 }
@@ -158,6 +159,7 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-git__rows strong {
 	.hu-fr__skills,
 	.hu-fr__workflow,
 	.hu-fr__proof,
+	.hu-fr__comparison,
 	.hu-fr__faq,
 	.hu-fr__pricing,
 	.hu-fr__final {

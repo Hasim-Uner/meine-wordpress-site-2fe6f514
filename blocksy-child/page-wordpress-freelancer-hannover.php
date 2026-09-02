@@ -341,6 +341,84 @@ get_header();
 			</div>
 		</section>
 
+		<section class="hu-fr__comparison" aria-labelledby="hu-fr-comparison-title" data-track-section="comparison">
+			<div class="hu-fr__shell">
+				<p class="hu-fr__kicker">Vergleich</p>
+				<h2 id="hu-fr-comparison-title" class="hu-fr__h2">Direkte Zusammenarbeit, Agentur oder Baukasten.</h2>
+
+				<div class="hu-fr__comparison-scroll" role="region" aria-labelledby="hu-fr-comparison-caption" tabindex="0">
+					<table class="hu-fr__comparison-table">
+						<caption id="hu-fr-comparison-caption" class="hu-fr__visually-hidden">Vergleich: direkte Zusammenarbeit, Agentur und Baukasten</caption>
+						<colgroup>
+							<col class="hu-fr__comparison-criterion">
+							<col span="3">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">Kriterium</th>
+								<th scope="col">Direkte Zusammenarbeit</th>
+								<th scope="col">Agentur</th>
+								<th scope="col">Baukasten</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">Ansprechpartner</th>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+							</tr>
+							<tr>
+								<th scope="row">Code-Eigentum</th>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+							</tr>
+							<tr>
+								<th scope="row">Tracking-Tiefe</th>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+							</tr>
+							<tr>
+								<th scope="row">Reaktionszeit</th>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+							</tr>
+							<tr>
+								<th scope="row">Laufende Betreuung</th>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+							</tr>
+							<tr>
+								<th scope="row">Kosten</th>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+							</tr>
+							<tr>
+								<th scope="row">Skalierung bei vielen Projekten</th>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+								<td><!-- TODO: Copy --></td>
+							</tr>
+							<tr>
+								<th scope="row"><span class="hu-fr__visually-hidden">Offenes Entscheidungskriterium</span><!-- TODO: Copy --></th>
+								<td><!-- TODO: Copy --></td>
+								<td class="hu-fr__comparison-cell--agency-advantage">
+									<span class="hu-fr__comparison-state" role="img" aria-label="Vorteil Agentur"><span aria-hidden="true">★</span></span>
+									<!-- TODO: Copy -->
+								</td>
+								<td><!-- TODO: Copy --></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+
 		<section class="hu-fr__pricing" aria-labelledby="hu-fr-pricing-title">
 			<div class="hu-fr__shell hu-fr__pricing-grid">
 				<div>
