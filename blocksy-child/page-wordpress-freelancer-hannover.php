@@ -349,9 +349,10 @@ get_header();
 					<p class="hu-fr__pricing-copy">Für kompakte Unternehmensseiten gibt es einen klaren Einstieg. Größere Setups werden erst nach einem abgegrenzten Scope kalkuliert.</p>
 				</div>
 				<div class="hu-fr__price-panel">
-					<div class="hu-fr__price-row hu-fr__price-row--primary"><span>Individuelle WordPress-Website</span><strong>ab <?php echo esc_html( $website_start_price ); ?></strong></div>
-					<div class="hu-fr__price-row"><span>Technische Aufgaben / bestehende Website</span><strong>nach Scope</strong></div>
-					<div class="hu-fr__price-row"><span>Tracking / Funnel / komplexere Integrationen</span><strong>nach Scope</strong></div>
+					<div class="hu-fr__price-row hu-fr__price-row--primary"><span class="hu-fr__price-category"><span>Aufbau</span><small>Individuelle WordPress-Website</small></span><strong>ab <?php echo esc_html( $website_start_price ); ?></strong></div>
+					<div class="hu-fr__price-row"><span class="hu-fr__price-category"><span>Erweiterung / Integration</span></span><strong>nach Scope</strong></div>
+					<div class="hu-fr__price-row"><span class="hu-fr__price-category"><span>Laufender Betrieb</span><small><!-- TODO: Copy --></small></span><strong>nach Scope</strong></div>
+					<div class="hu-fr__price-row"><span class="hu-fr__price-category"><span>Nebenkosten</span><small>Hosting, Lizenzen</small></span><strong>nach Scope</strong></div>
 					<p>Der Einstieg gilt für eine kompakte Unternehmenswebsite mit klar abgegrenztem Umfang. Custom Code ist kein Aufpreis-Label. Elementor ist möglich, wenn redaktionelle Flexibilität den zusätzlichen Builder rechtfertigt.</p>
 					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_pricing_project" data-track-category="lead_gen" data-track-section="pricing">Projekt prüfen lassen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a>
 				</div>
