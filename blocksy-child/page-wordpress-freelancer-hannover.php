@@ -276,19 +276,7 @@ get_header();
 		</section>
 
 		<section class="hu-fr__workflow" id="arbeitsweise" aria-labelledby="hu-fr-workflow-title">
-			<div class="hu-fr__shell hu-fr__workflow-grid">
-				<div class="hu-fr-git" aria-label="Versionierter Entwicklungsworkflow">
-					<div class="hu-fr-git__topbar"><span></span><span></span><span></span><code>project/main</code></div>
-					<ol class="hu-fr-git__rows">
-						<li><span class="hu-fr-git__node"></span><code>brief/</code><strong>Ziel &amp; Scope</strong></li>
-						<li><span class="hu-fr-git__node"></span><code>feature/</code><strong>Design → Code</strong></li>
-						<li><span class="hu-fr-git__node"></span><code>staging/</code><strong>Responsive &amp; QA</strong></li>
-						<li><span class="hu-fr-git__node"></span><code>review/</code><strong>Performance &amp; Accessibility</strong></li>
-						<li><span class="hu-fr-git__node hu-fr-git__node--last"></span><code>main/</code><strong>kontrolliertes Deployment</strong></li>
-					</ol>
-					<a class="hu-fr-git__repo" href="<?php echo esc_url( $github_url ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="link_freelancer_github" data-track-category="trust" data-track-section="workflow">Öffentliches GitHub-Repo ansehen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a>
-				</div>
-
+			<div class="hu-fr__shell hu-fr__workflow-copy-shell">
 				<div class="hu-fr__workflow-copy">
 					<p class="hu-fr__kicker">Workflow</p>
 					<h2 id="hu-fr-workflow-title" class="hu-fr__h2">Sauber entwickeln statt live herumprobieren.</h2>
@@ -303,6 +291,50 @@ get_header();
 						<strong>Elementor? Kann ich.</strong>
 						<p>Page Builder setze ich ein, wenn sie für die spätere Redaktion einen echten Vorteil bringen. Standard ist die schlankste Lösung, die Redaktion und Wartung wirklich brauchen.</p>
 					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="hu-fr__repo-proof" aria-labelledby="hu-fr-repo-proof-title">
+			<div class="hu-fr__shell">
+				<p class="hu-fr__kicker">Repo-Beweis</p>
+				<h2 id="hu-fr-repo-proof-title" class="hu-fr__h2">Qualität im Repository prüfen.</h2>
+
+				<div class="hu-fr__repo-proof-grid">
+					<figure class="hu-fr-git">
+						<div class="hu-fr-git__topbar"><span></span><span></span><span></span><code>project/main</code></div>
+						<ol class="hu-fr-git__rows">
+							<li><span class="hu-fr-git__node"></span><code>brief/</code><strong>Ziel &amp; Scope</strong></li>
+							<li><span class="hu-fr-git__node"></span><code>feature/</code><strong>Design → Code</strong></li>
+							<li><span class="hu-fr-git__node"></span><code>staging/</code><strong>Responsive &amp; QA</strong></li>
+							<li><span class="hu-fr-git__node"></span><code>review/</code><strong>Performance &amp; Accessibility</strong></li>
+							<li><span class="hu-fr-git__node hu-fr-git__node--last"></span><code>main/</code><strong>kontrolliertes Deployment</strong></li>
+						</ol>
+						<figcaption><a class="hu-fr-git__repo" href="<?php echo esc_url( $github_url ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="link_freelancer_github" data-track-category="trust" data-track-section="repo_proof">Öffentliches GitHub-Repo ansehen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a></figcaption>
+					</figure>
+
+					<ul class="hu-fr__repo-artifacts" role="list">
+						<li>
+							<h3>Statische Analyse</h3>
+							<code>phpstan.neon</code>
+							<p><!-- TODO: Copy --></p>
+						</li>
+						<li>
+							<h3>Copy-Guard</h3>
+							<code>.github/workflows/copy-style.yml</code>
+							<p><!-- TODO: Copy --></p>
+						</li>
+						<li>
+							<h3>Lead-Path-Smoke</h3>
+							<code>scripts/smoke-lead-path-contract.sh</code>
+							<p><!-- TODO: Copy --></p>
+						</li>
+						<li>
+							<h3>Versionierte Deploys</h3>
+							<code>.github/workflows/deploy.yml</code>
+							<p><!-- TODO: Copy --></p>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</section>

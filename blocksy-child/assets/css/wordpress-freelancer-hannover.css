@@ -492,11 +492,8 @@
 	background: var(--fr-paper-2);
 }
 
-.hu-fr__workflow-grid {
-	display: grid;
-	grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-	gap: clamp(48px, 7vw, 88px);
-	align-items: center;
+.hu-fr__workflow-copy-shell .hu-fr__workflow-copy {
+	max-width: 760px;
 }
 
 .hu-fr-git {
@@ -674,6 +671,69 @@
 	font-size: 0.9rem !important;
 	line-height: 1.6 !important;
 	color: var(--fr-muted) !important;
+}
+
+/* REPOSITORY PROOF */
+.hu-fr__repo-proof {
+	padding: clamp(88px, 9vw, 120px) 0;
+	background: var(--fr-bg);
+}
+
+.hu-fr__repo-proof-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+	gap: clamp(48px, 7vw, 88px);
+	align-items: start;
+	margin-top: clamp(42px, 5vw, 58px);
+}
+
+.hu-fr__repo-proof .hu-fr-git {
+	min-inline-size: 0;
+	margin: 0;
+}
+
+.hu-fr__repo-artifacts {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1px;
+	min-inline-size: 0;
+	margin: 0;
+	padding: 1px;
+	background: var(--fr-line);
+	list-style: none;
+}
+
+.hu-fr__repo-artifacts li {
+	min-inline-size: 0;
+	padding: 22px;
+	background: var(--fr-paper);
+}
+
+.hu-fr__repo-artifacts h3 {
+	margin: 0;
+	font-size: 1.05rem;
+	line-height: 1.25;
+	color: var(--fr-ink) !important;
+}
+
+.hu-fr__repo-artifacts code {
+	display: block;
+	margin-top: var(--nx-space-2, 8px);
+	padding: 0;
+	background: transparent;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.7rem;
+	line-height: 1.45;
+	color: var(--fr-muted);
+	overflow-wrap: anywhere;
+	white-space: normal;
+}
+
+.hu-fr__repo-artifacts p {
+	margin: var(--nx-space-4, 16px) 0 0;
+	font-size: 0.88rem;
+	line-height: 1.6;
+	color: var(--fr-muted);
 }
 
 /* PROOF & REFERENCES */
@@ -988,7 +1048,7 @@
 /* RESPONSIVE */
 @media (max-width: 980px) {
 	.hu-fr__hero-grid,
-	.hu-fr__workflow-grid,
+	.hu-fr__repo-proof-grid,
 	.hu-fr__pricing-grid,
 	.hu-fr__faq-grid,
 	.hu-fr__final-grid,
@@ -1029,7 +1089,7 @@
 		max-width: 700px;
 	}
 
-	.hu-fr__workflow-grid,
+	.hu-fr__repo-proof-grid,
 	.hu-fr__pricing-grid,
 	.hu-fr__faq-grid,
 	.hu-fr__final-grid {
@@ -1123,6 +1183,10 @@
 	}
 
 	.hu-fr__case-strip {
+		grid-template-columns: 1fr;
+	}
+
+	.hu-fr__repo-artifacts {
 		grid-template-columns: 1fr;
 	}
 
