@@ -101,9 +101,11 @@ $portrait_url = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-r
 
 $website_start_price = function_exists( 'hu_freelancer_website_price' ) ? hu_freelancer_website_price( true ) : 'Preis nach Scope';
 
-$e3_cpl_before = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
-$e3_cpl_after  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
-$e3_leads      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
+$e3_cpl_before                   = hu_e3_metric( 'cpl_before' );
+$e3_cpl_after                    = hu_e3_metric( 'cpl_after' );
+$e3_leads                        = hu_e3_metric( 'lead_count' );
+$lighthouse_mobile_performance   = hu_e3_metric( 'freelancer_lighthouse_mobile_performance' );
+$lighthouse_accessibility        = hu_e3_metric( 'freelancer_lighthouse_accessibility' );
 
 $references = [
 	[
@@ -193,9 +195,9 @@ get_header();
 				</div>
 
 				<ul class="hu-fr__proofline" role="list" aria-label="Kurzbelege">
-					<li><strong>8+ Jahre</strong><span>WordPress &amp; Web</span></li>
-					<li><strong>99/100</strong><span>Mobile Performance*</span></li>
-					<li><strong>100/100</strong><span>Barrierefreiheit*</span></li>
+					<li><strong><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></strong><span>Cost per Lead vorher → nachher</span></li>
+					<li><strong><?php echo esc_html( $lighthouse_mobile_performance ); ?></strong><span>Mobile Performance*</span></li>
+					<li><strong><?php echo esc_html( $lighthouse_accessibility ); ?></strong><span>Barrierefreiheit*</span></li>
 				</ul>
 				<p class="hu-fr__lab-note">* Lighthouse Mobile-Labtest dieser Seite, 17.08.2026, 00:22 MESZ. Werte können variieren; keine CrUX-Felddaten.</p>
 			</div>
