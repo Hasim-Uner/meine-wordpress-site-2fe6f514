@@ -2146,3 +2146,307 @@
   color: var(--fg-3);
 }
 .hu-hp .hu-close__signature strong { color: var(--fg); font-weight: 600; }
+
+/* =============================================================
+   STARTSEITE · P1-INSTRUMENTENSYSTEM
+   Ausschliesslich der Verteiler: Die Datei wird auch auf anderen
+   Money-Pages geladen. Sechs Schriftrollen, zwei Eckenrollen und
+   explizite zweidimensionale Sektionskoepfe halten die sichtbare
+   Hierarchie stabil, ohne die Solar- oder Agentur-Templates zu aendern.
+   ============================================================= */
+.hu-hp--hub {
+  --hu-type-display: clamp(2.4375rem, 5vw, 3.8125rem);
+  --hu-type-h2: clamp(1.9375rem, 4vw, 3.0625rem);
+  --hu-type-h3: clamp(1.5625rem, 3vw, 2.4375rem);
+  --hu-type-large: clamp(1.25rem, 2.4vw, 1.9375rem);
+  --hu-type-medium: clamp(1.25rem, 2vw, 1.5625rem);
+  --hu-type-body: clamp(1rem, 1.5vw, 1.25rem);
+  --hu-radius-surface: 14px;
+  --hu-radius-control: 3px;
+  font-size: var(--hu-type-body);
+}
+
+.hu-hp--hub h1,
+.hu-hp--hub h2,
+.hu-hp--hub h3 {
+  text-wrap: balance;
+}
+
+.hu-hp--hub p {
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+.hu-hp--hub .hu-hero__title {
+  font-size: var(--hu-type-display);
+}
+
+.hu-hp--hub .hu-section-heading h2,
+.hu-hp--hub .hu-close h2 {
+  font-size: var(--hu-type-h2);
+}
+
+.hu-hp--hub .hu-gateways--doors .hu-gateway__title {
+  font-size: var(--hu-type-h3);
+}
+
+.hu-hp--hub .hu-case-metric__value {
+  font-size: var(--hu-type-large);
+}
+
+.hu-hp--hub .hu-liveproof__value {
+  font-size: var(--hu-type-medium);
+}
+
+.hu-hp--hub .hu-eyebrow,
+.hu-hp--hub .hu-tag,
+.hu-hp--hub .hu-hero__claim,
+.hu-hp--hub .hu-hero__sub,
+.hu-hp--hub .hu-hero__cue,
+.hu-hp--hub .hu-gateway__badge,
+.hu-hp--hub .hu-gateway__kicker,
+.hu-hp--hub .hu-gateway__desc,
+.hu-hp--hub .hu-gateway__cta,
+.hu-hp--hub .hu-section-heading__intro,
+.hu-hp--hub .hu-liveproof__max,
+.hu-hp--hub .hu-liveproof__label,
+.hu-hp--hub .hu-liveproof__note,
+.hu-hp--hub .hu-liveproof__closing,
+.hu-hp--hub .hu-case-metric__label,
+.hu-hp--hub .hu-case-note__disclaimer,
+.hu-hp--hub .hu-btn,
+.hu-hp--hub .hu-selfqual,
+.hu-hp--hub .hu-selfqual__list li,
+.hu-hp--hub .hu-close__sub,
+.hu-hp--hub .hu-close__signature {
+  font-size: var(--hu-type-body);
+}
+
+/* Sektionskoepfe: Titel links, Kontext rechts. Koepfe ohne Intro
+   behalten dieselbe Achse, duerfen fuer einen sauberen Umbruch aber
+   ueber beide Spalten laufen. */
+.hu-hp--hub .hu-section-heading {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: clamp(32px, 6vw, 88px);
+  align-items: end;
+  margin-bottom: clamp(40px, 5vw, 64px);
+  text-align: left;
+}
+
+.hu-hp--hub .hu-section-heading__primary {
+  min-width: 0;
+}
+
+.hu-hp--hub .hu-section-heading--solo .hu-section-heading__primary {
+  grid-column: 1 / -1;
+}
+
+.hu-hp--hub .hu-section-heading--solo h2 {
+  max-width: 23ch;
+}
+
+.hu-hp--hub .hu-section-heading h2 {
+  margin: 14px 0 0;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1;
+}
+
+.hu-hp--hub .hu-section-heading__intro {
+  max-width: 52ch;
+  margin: 0;
+  color: var(--fg-2);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.hu-hp--hub .hu-section--cream .hu-section-heading__intro {
+  color: var(--ink-2);
+}
+
+/* Lebender Beweis als Messreihe, nicht als Kartensammlung. */
+.hu-hp--hub .hu-liveproof {
+  gap: 0;
+  border-block: 1px solid rgba(21, 25, 29, .22);
+}
+
+.hu-hp--hub .hu-liveproof__tile {
+  min-width: 0;
+  padding: clamp(22px, 3vw, 34px);
+  border: 0;
+  border-left: 1px solid rgba(21, 25, 29, .22);
+  border-radius: 0;
+  background: transparent;
+}
+
+.hu-hp--hub .hu-liveproof__tile:first-child {
+  border-left: 0;
+}
+
+.hu-hp--hub .hu-liveproof__tile--link {
+  transition: color 180ms var(--nx-ease), background-color 180ms var(--nx-ease);
+}
+
+.hu-hp--hub .hu-liveproof__tile--link:hover,
+.hu-hp--hub .hu-liveproof__tile--link:focus-visible {
+  transform: none;
+  border-color: rgba(21, 25, 29, .22);
+  background: rgba(255, 255, 255, .34);
+}
+
+.hu-hp--hub .hu-liveproof__value {
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.hu-hp--hub .hu-liveproof__max {
+  margin-left: .18em;
+  color: var(--ink-2);
+  letter-spacing: -.02em;
+}
+
+.hu-hp--hub .hu-liveproof__label,
+.hu-hp--hub .hu-liveproof__note {
+  color: var(--ink-2);
+}
+
+/* Der Case bleibt im dunklen Instrumentenfluss. Seine drei kanonischen
+   Geschaeftskennzahlen bilden das Gegenstueck zur hellen Messreihe. */
+.hu-hp--hub .hu-case-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  border-block: 1px solid var(--line-2);
+}
+
+.hu-hp--hub .hu-case-metric {
+  min-width: 0;
+  padding: clamp(24px, 4vw, 44px);
+  border-left: 1px solid var(--line-2);
+}
+
+.hu-hp--hub .hu-case-metric:first-child {
+  border-left: 0;
+}
+
+.hu-hp--hub .hu-case-metric__value,
+.hu-hp--hub .hu-case-metric__label {
+  margin: 0;
+}
+
+.hu-hp--hub .hu-case-metric__value {
+  color: var(--fg);
+  font-weight: 800;
+  letter-spacing: -.035em;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.hu-hp--hub .hu-case-metric__label {
+  margin-top: 12px;
+  color: var(--fg-2);
+  line-height: 1.4;
+}
+
+.hu-hp--hub .hu-case-note {
+  align-items: flex-start;
+  margin-top: 24px;
+  text-align: left;
+}
+
+.hu-hp--hub .hu-case-note__disclaimer {
+  color: var(--fg-3);
+}
+
+/* Zwei Eckenrollen fuer alle sichtbaren Startseiten-Flaechen und Controls. */
+.hu-hp--hub .hu-gateway,
+.hu-hp--hub .hu-pipeline-wrap,
+.hu-hp--hub .hu-pipeline-wrap::before {
+  border-radius: var(--hu-radius-surface);
+}
+
+.hu-hp--hub .hu-tag,
+.hu-hp--hub .hu-hero__cue,
+.hu-hp--hub .hu-gateway__badge,
+.hu-hp--hub .hu-selfqual__list li,
+.hu-hp--hub .hu-btn:not(.hu-btn-link) {
+  border-radius: var(--hu-radius-control);
+}
+
+.hu-hp--hub .hu-selfqual__list li {
+  padding: 10px 14px;
+}
+
+.hu-hp--hub .hu-btn-primary {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .16) inset, 0 10px 22px -16px rgba(0, 0, 0, .72);
+}
+
+.hu-hp--hub .hu-tag .hu-dot,
+.hu-hp--hub .hu-gateway__badge {
+  box-shadow: none;
+}
+
+.hu-hp--hub .hu-tag .hu-dot--live {
+  animation: none;
+}
+
+@media (max-width: 900px) {
+  .hu-hp--hub .hu-liveproof__tile:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .hu-hp--hub .hu-liveproof__tile:nth-child(n + 3) {
+    border-top: 1px solid rgba(21, 25, 29, .22);
+  }
+}
+
+@media (max-width: 820px) {
+  .hu-hp--hub .hu-section-heading {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+  }
+
+  .hu-hp--hub .hu-section-heading--solo .hu-section-heading__primary {
+    grid-column: auto;
+  }
+
+  .hu-hp--hub .hu-section-heading__intro,
+  .hu-hp--hub .hu-liveproof__closing,
+  .hu-hp--hub .hu-close__sub {
+    text-align: left;
+  }
+
+  .hu-hp--hub .hu-liveproof__cta {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 620px) {
+  .hu-hp--hub .hu-case-metrics {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hu-hp--hub .hu-case-metric,
+  .hu-hp--hub .hu-case-metric:first-child {
+    border-left: 0;
+  }
+
+  .hu-hp--hub .hu-case-metric + .hu-case-metric {
+    border-top: 1px solid var(--line-2);
+  }
+}
+
+@media (max-width: 520px) {
+  .hu-hp--hub .hu-liveproof__tile,
+  .hu-hp--hub .hu-liveproof__tile:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .hu-hp--hub .hu-liveproof__tile:nth-child(n + 2) {
+    border-top: 1px solid rgba(21, 25, 29, .22);
+  }
+}
