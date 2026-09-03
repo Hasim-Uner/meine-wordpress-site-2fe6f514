@@ -14,3 +14,7 @@ parameters:
     - stubs/acf-stubs.php
     - stubs/theme-runtime-stubs.php
   treatPhpDocTypesAsCertain: false
+  ignoreErrors:
+    -
+      message: "#^Unreachable statement \\- code above always terminates\\.$#"
+      path: blocksy-child/inc/seo-cockpit/seo-cockpit-dashboard-v3.php
