@@ -76,14 +76,32 @@ html {
 	min-height: 64px;
 }
 
+/* Die Wortmarke ist der Rückweg zur Startseite und muss auch so aussehen:
+   Klickfläche über die volle Zeilenhöhe, sichtbarer Hover, eigener Fokusring. */
 .wl-site-header__brand {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
 	color: var(--nx-text);
 	font-family: var(--nx-font-heading);
 	font-size: 0.96rem;
 	font-weight: 700;
 	letter-spacing: 0.2em;
 	line-height: 1;
+	text-decoration: none;
 	white-space: nowrap;
+	transition: color var(--nx-duration-fast) var(--nx-ease);
+}
+
+.wl-site-header__brand:hover,
+.wl-site-header__brand:focus-visible {
+	color: var(--accent);
+}
+
+.wl-site-header__brand:focus-visible {
+	outline: 3px solid hsl(23 60% 78%);
+	outline-offset: 4px;
+	border-radius: 4px;
 }
 
 .wl-site-header__nav {
@@ -205,10 +223,37 @@ html {
 
 .wl-page-footer__inner {
 	display: grid;
-	grid-template-areas: "copyright legal";
+	grid-template-areas:
+		"site site"
+		"copyright legal";
 	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: center;
 	gap: 1rem 2rem;
+}
+
+/* Rückwege in die Site. Steht über der Rechtszeile, weil es Navigation ist
+   und kein Kleingedrucktes. */
+.wl-page-footer__site {
+	grid-area: site;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.65rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid var(--nx-border);
+}
+
+.wl-page-footer__site a {
+	color: var(--nx-text);
+	font-size: 0.88rem;
+	font-weight: 600;
+	text-decoration: none;
+	text-underline-offset: 0.2em;
+}
+
+.wl-page-footer__site a:hover {
+	color: var(--accent);
+	text-decoration: underline;
 }
 
 .wl-page-footer p {
@@ -248,11 +293,17 @@ html {
 
 	.wl-page-footer__inner {
 		grid-template-areas:
+			"site"
 			"copyright"
 			"legal";
 		grid-template-columns: minmax(0, 1fr);
 		justify-items: center;
 		text-align: center;
+	}
+
+	.wl-page-footer__site {
+		justify-content: center;
+		align-self: stretch;
 	}
 
 	.wl-page-footer__legal {

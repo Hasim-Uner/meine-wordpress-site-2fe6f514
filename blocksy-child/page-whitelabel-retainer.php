@@ -53,18 +53,51 @@ $imprint_url         = home_url( '/impressum/' );
 $privacy_url         = home_url( '/datenschutz/' );
 $current_year        = wp_date( 'Y' );
 
+/*
+ * Rückwege in die Site.
+ *
+ * Die Route hatte eine geschlossene Seitennavigation und dazu eine Wortmarke
+ * als <span>: kein Weg zurück zur Startseite, und die eine Stelle, an der jeder
+ * Besucher ihn zuerst sucht, war tot. Für eine Agentur, die vor dem Fit-Check
+ * prüfen will, wer hinter dem White-Label steht, war die Seite damit eine
+ * Sackgasse.
+ *
+ * Die Sprungmarken-Navigation bleibt wie sie ist — sie führt durch das Angebot.
+ * Zurück ins übrige Angebot führen die Wortmarke und der Footer.
+ */
+$wl_routes          = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+$wl_home_url        = $wl_routes['home'] ?? home_url( '/' );
+$wl_freelancer_url  = $wl_routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+$wl_energy_url      = $wl_routes['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
+$wl_brand_text      = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
+$wl_home_label      = sprintf(
+	/* translators: %s: site or brand name. */
+	__( 'Startseite - %s', 'blocksy-child' ),
+	$wl_brand_text
+);
+
 // Diese Route hat eine eigene, geschlossene Seitennavigation. Der globale
 // Header bleibt für alle anderen Requests unverändert registriert.
 remove_action( 'wp_body_open', 'nexus_render_site_header', 20 );
 add_action(
 	'wp_body_open',
-	static function () {
+	static function () use ( $wl_home_url, $wl_brand_text, $wl_home_label ) {
 		?>
 		<a class="wl-skip-link" href="#main">Direkt zum Inhalt</a>
 		<header class="wl-site-header" role="banner" data-track-section="whitelabel_header">
 			<div class="nx-container">
 				<div class="wl-site-header__shell">
-					<span class="wl-site-header__brand">HAŞIM ÜNER</span>
+					<a
+						class="site-logo wl-site-header__brand"
+						href="<?php echo esc_url( $wl_home_url ); ?>"
+						rel="home"
+						aria-label="<?php echo esc_attr( $wl_home_label ); ?>"
+						data-track-action="nav_whitelabel_home"
+						data-track-category="navigation"
+						data-track-section="whitelabel_header"
+					>
+						<?php echo esc_html( $wl_brand_text ); ?>
+					</a>
 
 					<nav class="wl-site-header__nav" aria-label="Navigation auf dieser Seite">
 						<ul role="list">
@@ -1053,6 +1086,14 @@ do_action( 'blocksy:footer:before' );
 	<footer id="footer" class="wl-page-footer" aria-labelledby="wl-page-footer-heading" role="contentinfo">
 		<h2 id="wl-page-footer-heading" class="wl-visually-hidden">Seitenabschluss</h2>
 		<div class="nx-container wl-page-footer__inner">
+			<?php /* Der Rückweg ins übrige Angebot: die Route endet nicht mehr im Nichts. */ ?>
+			<nav class="wl-page-footer__site" aria-label="Weitere Seiten">
+				<a href="<?php echo esc_url( $wl_home_url ); ?>" rel="home" data-track-action="nav_whitelabel_footer_home" data-track-category="navigation" data-track-section="whitelabel_footer">Startseite</a>
+				<span aria-hidden="true">·</span>
+				<a href="<?php echo esc_url( $wl_freelancer_url ); ?>" data-track-action="nav_whitelabel_footer_freelancer" data-track-category="navigation" data-track-section="whitelabel_footer">WordPress Freelancer</a>
+				<span aria-hidden="true">·</span>
+				<a href="<?php echo esc_url( $wl_energy_url ); ?>" data-track-action="nav_whitelabel_footer_energy" data-track-category="navigation" data-track-section="whitelabel_footer">Solar &amp; Wärmepumpen</a>
+			</nav>
 			<p>&copy; <time datetime="<?php echo esc_attr( $current_year ); ?>"><?php echo esc_html( $current_year ); ?></time> Haşim Üner · White-Label-Partner für Agenturen</p>
 			<nav class="wl-page-footer__legal" aria-label="Rechtliches">
 				<a href="<?php echo esc_url( $imprint_url ); ?>" data-track-action="nav_whitelabel_footer_imprint" data-track-category="navigation" data-track-section="whitelabel_footer">Impressum</a>
