@@ -55,9 +55,17 @@ $e3_cpl_after     = $e3_metrics['cpl_after']['display']         ?? '22 €';
 
 $primary_urls     = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $about_url        = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
+$contact_base_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+$contact_fallback = add_query_arg(
+	[
+		'type'  => 'project',
+		'focus' => 'implementation_scope',
+	],
+	$contact_base_url
+);
 $contact_url      = function_exists( 'hu_get_commercial_route' )
-	? hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) )
-	: ( function_exists( 'hu_get_navigation_project_request_url' ) ? hu_get_navigation_project_request_url() : home_url( '/kontakt/' ) );
+	? hu_get_commercial_route( 'project_request', $contact_fallback )
+	: ( function_exists( 'hu_get_navigation_project_request_url' ) ? hu_get_navigation_project_request_url() : $contact_fallback );
 $tracking_url     = function_exists( 'hu_get_commercial_route' )
 	? hu_get_commercial_route( 'tracking_b2b', home_url( '/server-side-tracking-b2b/' ) )
 	: home_url( '/server-side-tracking-b2b/' );
