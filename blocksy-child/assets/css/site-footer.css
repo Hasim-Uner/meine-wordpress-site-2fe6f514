@@ -1,0 +1,460 @@
+/*
+ * Site-Footer — Selbstauskunft.
+ *
+ * Ein Fuss fuer alle Seitentypen. Der Abschluss spricht nicht mehr alle
+ * gleichzeitig an, sondern laesst den Besucher sagen, wer er ist; jeder der
+ * drei Ich-Saetze fuehrt auf seinen kommerziellen Weg.
+ *
+ * Bewusst ohne --nx-*-Abhaengigkeit: alle Werte sind komponentenlokale
+ * --ft-*-Tokens, damit der Fuss auch dann korrekt aussieht, wenn nur diese eine
+ * Datei geladen ist. Einzige Ausnahmen sind die beiden Schriftfamilien, die als
+ * var(--nx-…, <System-Stack>) notiert sind: mit Designsystem greift die
+ * Hausschrift, ohne greift der Fallback — eine Abhaengigkeit entsteht dadurch
+ * nicht.
+ *
+ * Radius sitewide 3px wie im Header. Kein Verlauf, kein Weichzeichner, kein
+ * Schatten. Schwaechster Kontrast #9a9488 auf #0b0f12 = 6,38:1.
+ */
+
+.ft {
+    /* Farbklima von Kopf und Menue. */
+    --ft-ground: #0b0f12;
+    --ft-accent: #e08a3c;
+    --ft-accent-hi: #eda45f;
+    --ft-text: #f2ebdd;
+    --ft-text-mid: #c8c0b0;
+    --ft-text-dim: #9a9488;
+    --ft-line: #f2ebdd1c;
+    --ft-line-soft: #f2ebdd0f;
+    --ft-ease: cubic-bezier(.22, 1, .36, 1);
+    --ft-radius: 3px;
+
+    /* Abstandsleiter 4 / 8 / 12 / 16 / 24 / 32 / 48 / 72.
+       Bewusst lokal statt var(--nx-space-*): der Fuss muss auch ohne
+       design-system.css stimmen. Das ist die eine Stelle, an der dieses
+       Stylesheet der Absicht von scripts/lint-css-spacing.sh widerspricht —
+       die Isolationsanforderung wiegt hier schwerer als die geteilte Skala. */
+    --ft-1: 4px;
+    --ft-2: 8px;
+    --ft-3: 12px;
+    --ft-4: 16px;
+    --ft-5: 24px;
+    --ft-6: 32px;
+    --ft-7: 48px;
+    --ft-8: 72px;
+
+    --ft-font: var(--nx-font, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+    --ft-font-mono: var(--nx-font-mono, ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace);
+
+    position: relative;
+    margin-block-start: var(--ft-8);
+    padding-block: var(--ft-8) var(--ft-6);
+    background: var(--ft-ground);
+    color: var(--ft-text);
+    font-family: var(--ft-font);
+    line-height: 1.5;
+}
+
+/* Die 2px-Akzentkante markiert den Wechsel von hellem Koerper zu dunklem
+   Abschluss ueber die volle Breite. */
+.ft::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    height: 2px;
+    background: var(--ft-accent);
+}
+
+/* Der Fuss steht auf jeder Seite in einem anderen Kaskadenumfeld. Box-Modell,
+   Listen- und Link-Grundlagen deshalb lokal setzen statt auf einen globalen
+   Reset zu hoffen. */
+.ft,
+.ft *,
+.ft *::before,
+.ft *::after {
+    box-sizing: border-box;
+}
+
+.ft p,
+.ft ul,
+.ft dl,
+.ft dt,
+.ft dd,
+.ft h2,
+.ft h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.ft ul {
+    list-style: none;
+}
+
+.ft a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.ft svg {
+    display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.ft :focus-visible {
+    outline: 2px solid var(--ft-accent);
+    outline-offset: 3px;
+    border-radius: var(--ft-radius);
+}
+
+.ft__inner {
+    width: min(100% - var(--ft-6), 1200px);
+    margin-inline: auto;
+}
+
+/* Nur fuer Screenreader. Bis hierher war .ft__sr in keinem ausgelieferten
+   Stylesheet definiert — die Ueberschrift "Footer-Navigation" stand dadurch
+   sichtbar ueber dem Fuss. */
+.ft__sr:where(:not(:focus-within, :active)) {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip-path: inset(50%) !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+}
+
+/* ── 1. Selbstauskunft ─────────────────────────────────────────── */
+
+.ft-pick__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-block-start: 1px solid var(--ft-line-soft);
+}
+
+/* Kein Element im Ruhezustand gedimmt: die drei Saetze stehen in voller
+   Textfarbe. Nur beim Hover fallen die anderen zurueck. */
+.ft-pick__list:hover .ft-pick__item:not(:hover) {
+    opacity: .4;
+}
+
+.ft-pick__item {
+    border-block-end: 1px solid var(--ft-line-soft);
+    transition: opacity .18s linear;
+}
+
+.ft-pick__item > a {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--ft-4);
+    padding: var(--ft-5) 0 var(--ft-5) var(--ft-4);
+}
+
+.ft-pick__item > a::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 2px;
+    background: var(--ft-accent);
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    transition: transform .22s var(--ft-ease);
+}
+
+.ft-pick__item > a:hover::before,
+.ft-pick__item > a:focus-visible::before {
+    transform: scaleY(1);
+}
+
+.ft-pick__line {
+    font-size: clamp(1.25rem, 2.6vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -.025em;
+    line-height: 1.15;
+    color: var(--ft-text);
+    text-wrap: pretty;
+    transition: transform .22s var(--ft-ease);
+}
+
+.ft-pick__line b {
+    color: var(--ft-text);
+    font-weight: 800;
+}
+
+.ft-pick__item > a:hover .ft-pick__line {
+    transform: translateX(8px);
+}
+
+.ft-pick__item > a:hover .ft-pick__line b {
+    color: var(--ft-accent);
+}
+
+.ft-pick__go {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--ft-text-dim);
+    transition: color .14s linear, transform .18s var(--ft-ease);
+}
+
+.ft-pick__go svg {
+    width: 20px;
+    height: 20px;
+}
+
+.ft-pick__item > a:hover .ft-pick__go {
+    color: var(--ft-accent);
+    transform: translateX(4px);
+}
+
+/* Der Fokus darf nicht schwaecher antworten als der Zeiger. */
+.ft-pick__item > a:focus-visible .ft-pick__line {
+    transform: translateX(8px);
+}
+
+.ft-pick__item > a:focus-visible .ft-pick__line b,
+.ft-pick__item > a:focus-visible .ft-pick__go {
+    color: var(--ft-accent);
+}
+
+/* ── 2. Direktzeile ────────────────────────────────────────────── */
+
+.ft-direct {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ft-2) var(--ft-7);
+    padding-block: var(--ft-3);
+    border-block-end: 1px solid var(--ft-line-soft);
+}
+
+.ft-direct a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--ft-text);
+    font-size: 1.0625rem;
+    letter-spacing: -.01em;
+    transition: color .14s linear;
+}
+
+.ft-direct a:hover {
+    color: var(--ft-accent);
+}
+
+/* ── 3. Messprotokoll ──────────────────────────────────────────── */
+
+.ft-proof {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: var(--ft-5) var(--ft-6);
+    padding-block: var(--ft-6);
+    border-block-end: 1px solid var(--ft-line-soft);
+}
+
+.ft-proof__label {
+    display: block;
+    margin-block-end: var(--ft-1);
+    font-family: var(--ft-font-mono);
+    font-size: .6875rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ft-text-dim);
+}
+
+.ft-proof__value {
+    display: block;
+    font-family: var(--ft-font-mono);
+    font-size: .8125rem;
+    line-height: 1.45;
+    color: var(--ft-text-mid);
+    text-wrap: pretty;
+}
+
+/* ── 4. Verzeichnis ────────────────────────────────────────────── */
+
+.ft-dir {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr));
+    gap: var(--ft-6);
+    padding-block: var(--ft-6);
+    border-block-end: 1px solid var(--ft-line-soft);
+}
+
+.ft-dir__brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ft-3);
+}
+
+.ft-dir__logo {
+    font-size: .9375rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ft-text);
+    transition: color .14s linear;
+}
+
+.ft-dir__logo:hover {
+    color: var(--ft-accent);
+}
+
+.ft-dir__tag {
+    max-width: 34ch;
+    font-size: .875rem;
+    line-height: 1.6;
+    color: var(--ft-text-dim);
+    text-wrap: pretty;
+}
+
+.ft-dir__col h3 {
+    margin-block-end: var(--ft-3);
+    font-family: var(--ft-font-mono);
+    font-size: .6875rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ft-text-dim);
+}
+
+.ft-dir__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ft-1);
+}
+
+/* 15px, nicht fett: das Verzeichnis ist Nachschlagewerk, nicht Abschluss, und
+   darf mit der Selbstauskunft daruber nicht konkurrieren. */
+.ft-dir__list a {
+    display: block;
+    padding-block: var(--ft-2);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--ft-text-mid);
+    transition: color .14s linear;
+}
+
+.ft-dir__list a:hover {
+    color: var(--ft-accent);
+}
+
+/* ── 5. Schlusszeile ───────────────────────────────────────────── */
+
+.ft-end {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ft-3) var(--ft-5);
+    padding-block-start: var(--ft-5);
+    font-size: .8125rem;
+    color: var(--ft-text-dim);
+}
+
+.ft-end__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ft-2);
+}
+
+.ft-end__meta a,
+.ft-end__social a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ft-2);
+    min-height: 44px;
+    color: var(--ft-text-dim);
+    transition: color .14s linear;
+}
+
+.ft-end__meta a:hover,
+.ft-end__social a:hover {
+    color: var(--ft-accent);
+}
+
+.ft-end__social svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    stroke: none;
+}
+
+/* ── Umbrueche ─────────────────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+    .ft-dir {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--ft-5) var(--ft-6);
+    }
+
+    .ft-dir__brand {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 599px) {
+    .ft {
+        padding-block: var(--ft-7) var(--ft-5);
+    }
+
+    .ft__inner {
+        width: min(100% - var(--ft-5), 1200px);
+    }
+
+    .ft-direct {
+        gap: 0 var(--ft-5);
+    }
+
+    .ft-proof {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--ft-4);
+    }
+
+    .ft-dir {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ft-end {
+        justify-content: flex-start;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ft *,
+    .ft *::before,
+    .ft *::after {
+        transition: none !important;
+    }
+
+    .ft-pick__item > a::before {
+        transform: scaleY(1);
+        opacity: 0;
+    }
+
+    .ft-pick__item > a:hover::before,
+    .ft-pick__item > a:focus-visible::before {
+        opacity: 1;
+    }
+
+    .ft-pick__item > a:hover .ft-pick__line,
+    .ft-pick__item > a:focus-visible .ft-pick__line,
+    .ft-pick__item > a:hover .ft-pick__go {
+        transform: none;
+    }
+}
