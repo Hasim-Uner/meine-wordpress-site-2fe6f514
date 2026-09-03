@@ -2161,6 +2161,16 @@
   --hu-type-large: clamp(1.25rem, 2.4vw, 1.9375rem);
   --hu-type-medium: clamp(1.25rem, 2vw, 1.5625rem);
   --hu-type-body: clamp(1rem, 1.5vw, 1.25rem);
+  /* Karten tragen eine eigene, engere Rolle. Die Sektionsskala oben ist fuer
+     freistehende Ueberschriften gebaut; in einer Karte steht derselbe Wert in
+     einer Spalte von rund 380px und produzierte dort 39px-Titel ueber vier
+     Zeilen und 20px-Fliesstext ueber sieben. Die drei Tueren waren dadurch
+     hoeher als der Viewport, obwohl sie nebeneinander vergleichbar sein
+     sollen. Titel und Text bleiben deutlich ueber der Basisskala, die Karte
+     ist wieder in einem Blick erfassbar. */
+  --hu-type-card-title: clamp(1.375rem, 2.05vw, 1.75rem);
+  --hu-type-card-body: clamp(0.9375rem, 1.15vw, 1.0625rem);
+  --hu-type-card-label: clamp(0.6875rem, 0.85vw, 0.8125rem);
   --hu-radius-surface: 14px;
   --hu-radius-control: 3px;
   font-size: var(--hu-type-body);
@@ -2187,7 +2197,39 @@
 }
 
 .hu-hp--hub .hu-gateways--doors .hu-gateway__title {
-  font-size: var(--hu-type-h3);
+  font-size: var(--hu-type-card-title);
+  line-height: 1.14;
+  margin-bottom: 12px;
+}
+
+/* Kartentext, CTA und Marker laufen auf der Kartenrolle statt auf der
+   Sektionsrolle. */
+.hu-hp--hub .hu-gateway__desc,
+.hu-hp--hub .hu-gateway__cta {
+  font-size: var(--hu-type-card-body);
+}
+
+.hu-hp--hub .hu-gateway__badge,
+.hu-hp--hub .hu-gateway__kicker {
+  font-size: var(--hu-type-card-label);
+}
+
+.hu-hp--hub .hu-gateway__badge {
+  width: 28px;
+  height: 28px;
+}
+
+.hu-hp--hub .hu-gateways--doors .hu-gateway {
+  padding: 24px 24px 20px;
+}
+
+.hu-hp--hub .hu-gateways--doors .hu-gateway__desc {
+  margin-bottom: 12px;
+}
+
+.hu-hp--hub .hu-gateways--doors .hu-gateway__foot {
+  margin-top: 16px;
+  padding-top: 12px;
 }
 
 .hu-hp--hub .hu-case-metric__value {
@@ -2203,10 +2245,6 @@
 .hu-hp--hub .hu-hero__claim,
 .hu-hp--hub .hu-hero__sub,
 .hu-hp--hub .hu-hero__cue,
-.hu-hp--hub .hu-gateway__badge,
-.hu-hp--hub .hu-gateway__kicker,
-.hu-hp--hub .hu-gateway__desc,
-.hu-hp--hub .hu-gateway__cta,
 .hu-hp--hub .hu-section-heading__intro,
 .hu-hp--hub .hu-liveproof__max,
 .hu-hp--hub .hu-liveproof__label,
