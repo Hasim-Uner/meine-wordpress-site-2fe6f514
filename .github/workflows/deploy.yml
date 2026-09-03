@@ -94,6 +94,9 @@ jobs:
       - name: Build theme distribution
         run: npm run build:theme -- "$BUILD_OUTPUT_DIR"
 
+      - name: Stamp theme deployment
+        run: git rev-parse HEAD > "$BUILD_OUTPUT_DIR/.nexus-deploy-sha"
+
       - name: Prepare SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -149,3 +152,14 @@ jobs:
           bash scripts/smoke-live.sh "${SMOKE_BASE_URL:-https://hasimuener.de}"
         env:
           SMOKE_BASE_URL: ${{ vars.SMOKE_BASE_URL }}
+
+      - name: Trigger post-deploy WordPress cron
+        if: ${{ github.event_name != 'workflow_dispatch' || !inputs.dry_run }}
+        env:
+          SMOKE_BASE_URL: ${{ vars.SMOKE_BASE_URL }}
+        run: |
+          base_url="${SMOKE_BASE_URL:-https://hasimuener.de}"
+          cron_url="${base_url%/}/wp-cron.php?doing_wp_cron=$(date +%s)"
+          if ! curl -fsS --max-time 20 "$cron_url" >/dev/null; then
+            echo "::warning title=Post-deploy cron not triggered::WordPress cron could not be triggered; the next regular cron request can still process Search Console sync."
+          fi

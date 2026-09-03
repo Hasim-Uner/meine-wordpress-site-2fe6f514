@@ -396,58 +396,59 @@ get_header();
 						<tbody>
 							<tr>
 								<th scope="row">Ansprechpartner</th>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
+								<td>Die Person, die entwickelt und deployt.</td>
+								<td>Projektleitung; die Umsetzung liegt im Team.</td>
+								<td>Sie selbst, dazu der Support des Anbieters.</td>
 							</tr>
 							<tr>
 								<th scope="row">Code-Eigentum</th>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
+								<td>Ihr Repository, mit vollständigem Verlauf.</td>
+								<td>Je nach Vertrag — häufig bleibt der Code beim Dienstleister.</td>
+								<td>Kein Zugriff auf den Code.</td>
 							</tr>
 							<tr>
 								<th scope="row">Tracking-Tiefe</th>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
+								<td>Server-Side GTM, GA4, CAPI und Consent als Teil der Architektur.</td>
+								<td>Möglich, meist als eigenes Gewerk und eigene Rechnung.</td>
+								<td>Standard-Integrationen, keine eigene Attribution.</td>
 							</tr>
 							<tr>
 								<th scope="row">Reaktionszeit</th>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
+								<td>Antwort innerhalb von 24 Stunden werktags, direkt von mir.</td>
+								<td>Über Ticket und Priorisierung — dafür auch außerhalb meiner Zeiten.</td>
+								<td>Support des Anbieters, ohne Bezug zu Ihrem Projekt.</td>
 							</tr>
 							<tr>
 								<th scope="row">Laufende Betreuung</th>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
+								<td>Weiterentwicklung mit festem Stundenkontingent, monatlich kündbar.</td>
+								<td>Wartungsvertrag mit Vertretung im Team.</td>
+								<td>Updates übernimmt der Anbieter, die Inhalte Sie.</td>
 							</tr>
 							<tr>
 								<th scope="row">Kosten</th>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
+								<td>Aufbau ab <?php echo esc_html( $website_start_price ); ?>, danach nach Umfang.</td>
+								<td>In der Regel höher — Projektleitung und Team werden mitbezahlt.</td>
+								<td>Monatliches Abo, günstigster Einstieg.</td>
 							</tr>
 							<tr>
 								<th scope="row">Skalierung bei vielen Projekten</th>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
-								<td><!-- TODO: Copy --></td>
+								<td>Begrenzt. Eine Person, ein Kalender.</td>
+								<td>Mehrere Projekte parallel, planbare Kapazität.</td>
+								<td>Beliebig viele Seiten, überall dieselben Grenzen.</td>
 							</tr>
 							<tr>
-								<th scope="row"><span class="hu-fr__visually-hidden">Offenes Entscheidungskriterium</span><!-- TODO: Copy --></th>
-								<td><!-- TODO: Copy --></td>
+								<th scope="row">Wenn der Umsetzende ausfällt</th>
+								<td>Das Projekt pausiert. Code und Zugänge liegen bei Ihnen, ein anderer Entwickler kann übernehmen.</td>
 								<td class="hu-fr__comparison-cell--agency-advantage">
 									<span class="hu-fr__comparison-state" role="img" aria-label="Vorteil Agentur"><span aria-hidden="true">★</span></span>
-									<!-- TODO: Copy -->
+									Vertretung im Team, das Projekt läuft weiter.
 								</td>
-								<td><!-- TODO: Copy --></td>
+								<td>Läuft weiter — Sie arbeiten selbst daran.</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
+				<p class="hu-fr__comparison-hint">Tabelle seitlich scrollbar</p>
 			</div>
 		</section>
 
