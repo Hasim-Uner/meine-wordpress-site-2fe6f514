@@ -161,6 +161,10 @@
   border-radius: 0;
 }
 .hu-hp .hu-btn-link:hover { color: var(--accent); border-color: var(--accent); }
+.hu-hp .hu-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
 .hu-hp .hu-section--cream .hu-btn-link {
   color: var(--ink);
   border-color: rgba(21,25,29,.38);
@@ -1987,6 +1991,27 @@
   border-radius: 14px;
   background: rgba(255,255,255,.42);
 }
+.hu-hp .hu-liveproof__tile--link {
+  transition:
+    transform 180ms var(--nx-ease),
+    border-color 180ms var(--nx-ease),
+    background-color 180ms var(--nx-ease);
+}
+.hu-hp .hu-liveproof__tile--link:hover,
+.hu-hp .hu-liveproof__tile--link:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--accent-2);
+  background: rgba(255,255,255,.72);
+}
+.hu-hp .hu-liveproof__tile--link:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hu-hp .hu-liveproof__tile--link { transition: none; }
+  .hu-hp .hu-liveproof__tile--link:hover,
+  .hu-hp .hu-liveproof__tile--link:focus-visible { transform: none; }
+}
 .hu-hp .hu-liveproof__value {
   font-weight: 800;
   font-size: clamp(30px,3vw,40px);
@@ -2088,6 +2113,9 @@
   border-radius: 999px;
   font-size: 14.5px;
   color: var(--fg-2);
+}
+.hu-hp .hu-selfqual__cta {
+  margin-top: var(--nx-space-lg);
 }
 
 /* ─── Block 7 · Abschluss ─────────────────────────────────── */

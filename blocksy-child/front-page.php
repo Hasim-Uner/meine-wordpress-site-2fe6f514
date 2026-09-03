@@ -55,7 +55,12 @@ $e3_cpl_after     = $e3_metrics['cpl_after']['display']         ?? '22 €';
 
 $primary_urls     = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $about_url        = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
-$contact_url      = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+$contact_url      = function_exists( 'hu_get_commercial_route' )
+	? hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) )
+	: ( function_exists( 'hu_get_navigation_project_request_url' ) ? hu_get_navigation_project_request_url() : home_url( '/kontakt/' ) );
+$tracking_url     = function_exists( 'hu_get_commercial_route' )
+	? hu_get_commercial_route( 'tracking_b2b', home_url( '/server-side-tracking-b2b/' ) )
+	: home_url( '/server-side-tracking-b2b/' );
 $freelancer_url   = home_url( '/wordpress-freelancer-hannover/' );
 $whitelabel_url   = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 $psi_url          = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/' ) );
@@ -123,7 +128,14 @@ $home_proof_tiles = [
 	[ 'value' => '100', 'max' => '/100', 'label' => 'Barrierefreiheit',    'note' => '' ],
 	[ 'value' => '100', 'max' => '/100', 'label' => 'SEO & Best Practices', 'note' => '' ],
 	[ 'value' => $home_psi_mobile, 'max' => '', 'label' => 'PageSpeed mobil', 'note' => '(Lighthouse, mobil — nicht aufgerundet)' ],
-	[ 'value' => 'Aktiv', 'max' => '', 'label' => 'Server-Side Tracking', 'note' => '(GA4 + sGTM, eigener Server)' ],
+	[
+		'value'  => 'Aktiv',
+		'max'    => '',
+		'label'  => 'Server-Side Tracking',
+		'note'   => '(GA4 + sGTM, eigener Server)',
+		'url'    => $tracking_url,
+		'action' => 'home_proof_tracking_page',
+	],
 ];
 
 get_header();
@@ -331,7 +343,16 @@ get_header();
 
 			<div class="hu-liveproof hu-reveal">
 				<?php foreach ( $home_proof_tiles as $tile ) : ?>
+					<?php $is_linked_tile = ! empty( $tile['url'] ); ?>
+					<?php if ( $is_linked_tile ) : ?>
+					<a class="hu-liveproof__tile hu-liveproof__tile--link"
+					   href="<?php echo esc_url( (string) $tile['url'] ); ?>"
+					   data-track-action="<?php echo esc_attr( (string) ( $tile['action'] ?? '' ) ); ?>"
+					   data-track-category="proof"
+					   data-track-section="beweis">
+					<?php else : ?>
 					<div class="hu-liveproof__tile">
+					<?php endif; ?>
 						<span class="hu-liveproof__value">
 							<?php echo esc_html( $tile['value'] ); ?><?php if ( '' !== $tile['max'] ) : ?><span class="hu-liveproof__max"><?php echo esc_html( $tile['max'] ); ?></span><?php endif; ?>
 						</span>
@@ -339,12 +360,16 @@ get_header();
 						<?php if ( '' !== $tile['note'] ) : ?>
 							<span class="hu-liveproof__note"><?php echo esc_html( $tile['note'] ); ?></span>
 						<?php endif; ?>
+					<?php if ( $is_linked_tile ) : ?>
+					</a>
+					<?php else : ?>
 					</div>
+					<?php endif; ?>
 				<?php endforeach; ?>
 			</div>
 
 			<div class="hu-liveproof__cta hu-reveal">
-				<a href="<?php echo esc_url( $psi_url ); ?>" class="hu-btn hu-btn-ghost" target="_blank" rel="noopener"
+				<a href="<?php echo esc_url( $psi_url ); ?>" class="hu-btn hu-btn-link" target="_blank" rel="noopener"
 				   data-track-action="home_proof_pagespeed" data-track-category="proof" data-track-section="beweis">
 					Diese Seite bei PageSpeed Insights testen
 					<svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -409,6 +434,11 @@ get_header();
 					<li>reine Design-Relaunches ohne Lead-Logik</li>
 					<li>reine Shop-Projekte</li>
 				</ul>
+				<a href="<?php echo esc_url( $contact_url ); ?>" class="hu-btn hu-btn-link hu-selfqual__cta"
+				   data-track-action="home_fit_project" data-track-category="lead_gen" data-track-section="abgrenzung">
+					Sie suchen genau diese Verbindung aus Website, Messung und Vertrieb?
+					<span aria-hidden="true">→</span> Projekt anfragen
+				</a>
 			</div>
 		</div>
 	</section>
