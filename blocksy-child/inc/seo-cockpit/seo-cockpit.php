@@ -9,14 +9,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// SEO Cockpit ist ein reines Admin-Dashboard — nicht im Frontend laden.
-if ( ! is_admin() && ! wp_doing_ajax() && ! ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+// SEO Cockpit ist ein Admin-/Background-System — Frontend-Requests bleiben leicht.
+if ( ! is_admin() && ! wp_doing_ajax() && ! wp_doing_cron() && ! ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
 	return;
 }
 
 $nexus_seo_cockpit_modules = [
 	'seo-cockpit-core.php',
 	'seo-cockpit-api.php',
+	'seo-cockpit-search-console-control.php',
 	'seo-cockpit-koko.php',
 	'seo-cockpit-links.php',
 	'seo-cockpit-leads.php',
