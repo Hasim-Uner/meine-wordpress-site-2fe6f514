@@ -1,6 +1,6 @@
 <?php
 /**
- * Runtime diagnostics and permission preflight for Search Console sitemap writes.
+ * Runtime diagnostics and HTTP compatibility for Search Console sitemap writes.
  *
  * @package Blocksy_Child
  */
@@ -33,6 +33,34 @@ function nexus_is_seo_cockpit_sitemap_submit_request( $url, $args = [] ) {
 
 	return false !== strpos( $path, '/webmasters/v3/sites/' ) && false !== strpos( $path, '/sitemaps/' );
 }
+
+/**
+ * Make the bodyless sitemap PUT explicit on the wire.
+ *
+ * Google documents this endpoint as a PUT without a request body. On the live
+ * WordPress hosting stack, omitting the body also omitted Content-Length and
+ * Google's frontend rejected the request with HTTP 411 Length Required.
+ * Content-Length: 0 describes an empty body and therefore keeps the request
+ * bodyless while making its zero-byte length explicit.
+ *
+ * @param array<string, mixed> $args Request args.
+ * @param string               $url  Request URL.
+ * @return array<string, mixed>
+ */
+function nexus_prepare_seo_cockpit_sitemap_submit_request( $args, $url ) {
+	if ( ! nexus_is_seo_cockpit_sitemap_submit_request( $url, $args ) ) {
+		return $args;
+	}
+
+	$headers = isset( $args['headers'] ) && is_array( $args['headers'] ) ? $args['headers'] : [];
+	$headers['Content-Length'] = '0';
+
+	$args['headers'] = $headers;
+	$args['body']    = '';
+
+	return $args;
+}
+add_filter( 'http_request_args', 'nexus_prepare_seo_cockpit_sitemap_submit_request', 20, 2 );
 
 /**
  * Return the Search Console permission level for the configured property.
@@ -69,9 +97,6 @@ function nexus_get_seo_cockpit_property_permission_level( $force = false ) {
 
 /**
  * Give opaque non-JSON Search Console errors a visible HTTP status.
- *
- * Google documents this endpoint as a bodyless PUT. This helper deliberately
- * does not alter the request transport; it only improves the response signal.
  *
  * @param array<string, mixed>|WP_Error $response HTTP response.
  * @param array<string, mixed>          $args     Request args.
@@ -146,6 +171,10 @@ function nexus_capture_seo_cockpit_sitemap_http_debug( $response, $context, $cla
 	$state = nexus_get_seo_cockpit_gsc_control_state();
 	$state['last_api_checked_at'] = current_time( 'timestamp' );
 	$state['last_api_url']        = esc_url_raw( (string) $url );
+	$state['last_http_method']     = sanitize_key( strtolower( (string) ( $args['method'] ?? '' ) ) );
+
+	$headers = isset( $args['headers'] ) && is_array( $args['headers'] ) ? $args['headers'] : [];
+	$state['last_http_content_length'] = sanitize_text_field( (string) ( $headers['Content-Length'] ?? $headers['content-length'] ?? '' ) );
 
 	if ( is_wp_error( $response ) ) {
 		$state['last_http_status']       = 0;
@@ -226,15 +255,20 @@ function nexus_render_seo_cockpit_sitemap_runtime_notice() {
 		return;
 	}
 
-	$permission = nexus_get_seo_cockpit_property_permission_level( false );
-	$state      = nexus_get_seo_cockpit_gsc_control_state();
-	$level      = is_wp_error( $permission ) ? $permission->get_error_message() : (string) $permission;
-	$status     = absint( $state['last_http_status'] ?? 0 );
-	$message    = (string) ( $state['last_http_message'] ?? '' );
-	$body       = (string) ( $state['last_http_body_excerpt'] ?? '' );
+	$permission    = nexus_get_seo_cockpit_property_permission_level( false );
+	$state         = nexus_get_seo_cockpit_gsc_control_state();
+	$level         = is_wp_error( $permission ) ? $permission->get_error_message() : (string) $permission;
+	$status        = absint( $state['last_http_status'] ?? 0 );
+	$message       = (string) ( $state['last_http_message'] ?? '' );
+	$body          = (string) ( $state['last_http_body_excerpt'] ?? '' );
+	$method        = strtoupper( (string) ( $state['last_http_method'] ?? '' ) );
+	$content_length = (string) ( $state['last_http_content_length'] ?? '' );
 	?>
 	<div class="notice notice-info">
 		<p><strong>Search-Console-Diagnose:</strong> Property-Berechtigung: <code><?php echo esc_html( $level ); ?></code>.</p>
+		<?php if ( '' !== $method ) : ?>
+			<p>Gesendeter API-Request: <code><?php echo esc_html( $method ); ?></code> · Content-Length: <code><?php echo '' !== $content_length ? esc_html( $content_length ) : 'nicht gesetzt'; ?></code>.</p>
+		<?php endif; ?>
 		<?php if ( array_key_exists( 'last_http_status', $state ) ) : ?>
 			<p>Letzter Sitemap-API-Aufruf: <strong><?php echo 0 === $status ? 'Transportfehler' : 'HTTP ' . esc_html( (string) $status ); ?></strong><?php echo '' !== $message ? ' · ' . esc_html( $message ) : ''; ?>.</p>
 			<?php if ( '' !== $body ) : ?>
