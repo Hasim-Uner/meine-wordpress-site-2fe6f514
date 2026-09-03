@@ -17,6 +17,7 @@ if ( ! is_admin() && ! wp_doing_ajax() && ! wp_doing_cron() && ! ( defined( 'RES
 $nexus_seo_cockpit_modules = [
 	'seo-cockpit-core.php',
 	'seo-cockpit-api.php',
+	'seo-cockpit-http-compat.php',
 	'seo-cockpit-search-console-control.php',
 	'seo-cockpit-koko.php',
 	'seo-cockpit-links.php',
