@@ -23,6 +23,7 @@ $contact_url    = add_query_arg(
 );
 $e3_url         = home_url( '/case-study-solar-leadgenerierung/' );
 $marktcheck_url = home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+$freelancer_url = home_url( '/wordpress-freelancer-hannover/' );
 $psi_url        = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-agentur-hannover/' ) );
 $hero_asset_url = get_stylesheet_directory_uri() . '/assets/img/landing/wordpress-agentur-system-hero';
 
@@ -1024,7 +1025,57 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 10 — FOKUSMARKT ENERGIE
+     SECTION 10 — WARTUNG UND LAUFENDE BETREUUNG
+     ═══════════════════════════════════════════════ -->
+<section class="nx-section" data-nx-theme="light" id="wordpress-wartung" aria-labelledby="wordpress-wartung-title">
+	<div class="nx-container">
+		<div class="nx-section-header">
+			<p class="wp-agentur-eyebrow">WordPress-Wartung in Hannover</p>
+			<h2 class="nx-headline-section" id="wordpress-wartung-title">Wartung und laufende Betreuung</h2>
+			<p class="nx-subheadline wp-agentur-section-intro">
+				Eine stabile WordPress-Seite braucht einen kontrollierten Betrieb. Welches Modell dazu passt, hängt davon ab, was tatsächlich betreut werden soll — und welche Verfügbarkeit Ihr Unternehmen benötigt.
+			</p>
+		</div>
+
+		<ol class="wp-agentur-local-grid wp-agentur-local-grid--quad wp-agentur-maintenance-grid">
+			<li class="wp-agentur-local-card">
+				<span class="wp-agentur-decision-card__num" aria-hidden="true">01</span>
+				<h3>Was an WordPress überhaupt gewartet werden muss</h3>
+				<p>Eine WordPress-Installation besteht nicht nur aus dem Core. Plugins, Theme und die eingesetzte PHP-Version entwickeln sich unabhängig voneinander weiter. Updates können Schnittstellen, Formulare oder Darstellungen verändern. Deshalb müssen Aktualisierungen auf Kompatibilität geprüft, bekannte Sicherheitslücken eingeordnet und Backups so organisiert werden, dass sich ein brauchbarer Stand wiederherstellen lässt.</p>
+				<p>Nach einer Änderung gehört außerdem ein Funktionstest der wichtigen Seitenpfade dazu: Kommen Formulare noch an, arbeitet das Tracking weiter und bleiben zentrale Inhalte erreichbar? WordPress-Wartung ist damit mehr als ein Klick auf „Aktualisieren“. Sie braucht einen kontrollierten Ablauf, eine Prüfung danach und einen dokumentierten Rückweg, falls eine Änderung nicht trägt.</p>
+			</li>
+
+			<li class="wp-agentur-local-card">
+				<span class="wp-agentur-decision-card__num" aria-hidden="true">02</span>
+				<h3>Was Wartung kostet, hängt vom Modell ab</h3>
+				<p><strong>Pauschalvertrag:</strong> Sie zahlen regelmäßig für klar benannte Routinen. Größere Fehlerbehebungen, neue Funktionen, Inhalte, Lizenzkosten oder Umbauten sind typischerweise nicht enthalten.</p>
+				<p><strong>Stundenpaket:</strong> Ein vereinbartes Kontingent lässt sich für wechselnde Aufgaben einsetzen. Es schafft jedoch keine ständige Erreichbarkeit; auch der Umgang mit ungenutzten Stunden muss vorab geklärt sein.</p>
+				<p><strong>Hosting inklusive:</strong> Serverbetrieb, Backups oder Standard-Updates können enthalten sein. Individuelle Plugins, Tracking, Formulare, Conversion-Strecken und Weiterentwicklung gehören deshalb nicht automatisch dazu.</p>
+				<p><strong>Selbst übernehmen:</strong> Der externe Vertrag entfällt. Dafür liegen Prüfung, Dokumentation, Wiederherstellung und die Koordination bei Problemen intern. Entscheidend ist bei jedem Modell die Leistungsbeschreibung: Was wird geprüft, was nur aktualisiert und welche Arbeiten werden separat beauftragt?</p>
+			</li>
+
+			<li class="wp-agentur-local-card">
+				<span class="wp-agentur-decision-card__num" aria-hidden="true">03</span>
+				<h3>Die Grenze: keine zugesicherte Bereitschaft</h3>
+				<p>Ich biete keinen klassischen Wartungsvertrag mit zugesicherter Reaktionszeit oder permanenter Verfügbarkeit an. Als Einzelperson wäre das ein Versprechen, das ich nicht zuverlässig halten kann. Wenn Ihr Betrieb eine 24/7-Zusage, vertraglich festgelegte Fristen und Vertretung bei Ausfall braucht, ist ein Anbieter mit Team und geregelter Rufbereitschaft die passendere Wahl.</p>
+				<p>Diese Grenze gilt auch dann, wenn die technische Aufgabe selbst in meinen Leistungsbereich fällt. Sie trennt planbare Betreuung von einem Bereitschaftsdienst.</p>
+			</li>
+
+			<li class="wp-agentur-local-card">
+				<span class="wp-agentur-decision-card__num" aria-hidden="true">04</span>
+				<h3>Stattdessen: ein Weiterentwicklungs-Retainer</h3>
+				<p>Für WordPress-Systeme, die ich gebaut oder vorab technisch geprüft habe, biete ich laufende Betreuung als Weiterentwicklungs-Retainer an. Das vereinbarte Monatskontingent fließt in priorisierte, planbare Arbeiten: kontrollierte Aktualisierungen, technische Pflege sowie Verbesserungen an Performance, Tracking, Formularen oder Conversion-Strecken — innerhalb des abgestimmten Scopes.</p>
+				<p>Das ist keine Notfallbereitschaft und kein Ersatz für einen Supportvertrag mit zugesicherter Reaktionszeit. Umfang und Preis des Kontingents stehen vor dem Start fest. Voraussetzungen, Leistungsrahmen und den Einstieg über ein abgegrenztes Erstprojekt finden Sie unter „Laufender Betrieb“ auf der Freelancer-Seite.</p>
+				<a href="<?php echo esc_url( $freelancer_url ); ?>" class="nx-btn nx-btn--ghost wp-agentur-maintenance-cta" data-track-action="cta_wartung_to_freelancer" data-track-category="navigation" data-track-section="wordpress_wartung">
+					Laufenden Betrieb ansehen <span aria-hidden="true">→</span>
+				</a>
+			</li>
+		</ol>
+	</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 11 — FOKUSMARKT ENERGIE
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="fokusmarkt">
 	<div class="nx-container">
@@ -1064,7 +1115,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 11 — STANDORT (2 cards)
+     SECTION 12 — STANDORT
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="standort">
 	<div class="nx-container">
@@ -1076,7 +1127,7 @@ get_header();
 			</p>
 		</div>
 
-		<div class="wp-agentur-local-grid wp-agentur-local-grid--duo" data-ag-reveal>
+		<div class="wp-agentur-local-grid wp-agentur-local-grid--single" data-ag-reveal>
 			<div class="wp-agentur-local-card wp-agentur-local-card--icon">
 				<span class="wp-agentur-local-icon" aria-hidden="true">
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false">
@@ -1086,18 +1137,6 @@ get_header();
 				</span>
 				<h3>Vor Ort in der Region Hannover</h3>
 				<p>Persönliche Reviews, Workshops und Strategie-Sessions in Pattensen bei Hannover — oder remote im DACH-Raum.</p>
-			</div>
-			<div class="wp-agentur-local-card wp-agentur-local-card--icon" id="wordpress-wartung">
-				<span class="wp-agentur-local-icon" aria-hidden="true">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-						<path d="M12 3 4.5 6v5.2c0 4.4 3.1 8.5 7.5 9.8 4.4-1.3 7.5-5.4 7.5-9.8V6L12 3Z"/>
-						<path d="m9.2 12 2 2 3.6-3.8"/>
-					</svg>
-				</span>
-				<h3>WordPress-Wartung in Hannover</h3>
-				<p>Ein Wartungsvertrag umfasst Updates, Monitoring, Backups und Weiterentwicklung — bewusst nur im Rahmen laufender Mandate. Wartung an einem System, das ich nicht gebaut oder geprüft habe, ist Symptompflege: Sie hält die Seite am Leben, ohne dass jemand für Ladezeit, Tracking oder Anfragepfad geradesteht.</p>
-				<p>Der Unterschied zeigt sich beim Plugin-Update. Reine Wartung stellt fest, dass es eingespielt wurde. Wartung an einem bekannten System stellt fest, ob danach noch dieselbe Anzahl Anfragen ankommt — weil klar ist, welche Seite welchen Anfragepfad trägt und wo gemessen wird. Deshalb steht am Anfang die Projektprüfung und nicht der Vertrag.</p>
-				<p>Wenn Sie eine bestehende WordPress-Seite übergeben wollen, ist die Projektprüfung der richtige Einstieg — danach lässt sich über laufende Betreuung sprechen.</p>
 			</div>
 		</div>
 
@@ -1123,7 +1162,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 12 — FAQ (Accordion)
+     SECTION 13 — FAQ (Accordion)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section" data-nx-theme="light" id="faq">
 	<div class="nx-container">
@@ -1158,7 +1197,7 @@ get_header();
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     SECTION 13 — FINAL CTA (Editorial, ruhig, eine Aufforderung)
+     SECTION 14 — FINAL CTA (Editorial, ruhig, eine Aufforderung)
      ═══════════════════════════════════════════════ -->
 <section class="nx-section ag-close" data-nx-theme="dark" id="cta">
 	<div class="ag-close-bg" aria-hidden="true">

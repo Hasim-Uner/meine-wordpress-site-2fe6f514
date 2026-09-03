@@ -812,9 +812,9 @@ function hu_output_schema()
     $service_definitions = [
         'wordpress-agentur-hannover' => [
             'name'        => 'WordPress Agentur Hannover',
-            'description' => 'WordPress Agentur in Hannover für B2B-Unternehmen: technisches SEO, Wartungsvertrag, Tracking, Conversion und Angebotsseiten als ein verbundenes System mit kontrollierter Weiterentwicklung.',
+            'description' => 'WordPress Agentur in Hannover für B2B-Unternehmen: technisches SEO, laufende Betreuung, Tracking, Conversion und Angebotsseiten als ein verbundenes System mit kontrollierter Weiterentwicklung.',
             'serviceType' => 'WordPress Agentur',
-            'serviceOutput' => 'Steuerbares WordPress-System mit Angebotsseiten, technischem SEO, Wartung, Datenebene, KPI-Klarheit und vollen Zugängen',
+            'serviceOutput' => 'Steuerbares WordPress-System mit Angebotsseiten, technischem SEO, laufender Betreuung, Datenebene, KPI-Klarheit und vollen Zugängen',
             'hasOfferCatalog' => [
                 '@type'           => 'OfferCatalog',
                 'name'            => 'Leistungsbereiche der WordPress Agentur Hannover',
@@ -833,8 +833,8 @@ function hu_output_schema()
                     ],
                     [
                         '@type'       => 'Offer',
-                        'name'        => 'WordPress-Wartung in Hannover',
-                        'description' => 'Wartungsvertrag mit Updates, Monitoring und kontrollierter Weiterentwicklung für etablierte WordPress-Systeme im Rahmen laufender Mandate.',
+                        'name'        => 'Laufende WordPress-Betreuung in Hannover',
+                        'description' => 'Planbare technische Pflege und kontrollierte Weiterentwicklung für vorab geprüfte WordPress-Systeme im Rahmen eines Weiterentwicklungs-Retainers.',
                         'url'         => home_url('/wordpress-agentur-hannover/#wordpress-wartung'),
                     ],
                 ],
