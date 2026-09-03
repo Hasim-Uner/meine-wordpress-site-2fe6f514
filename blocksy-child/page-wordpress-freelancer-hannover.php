@@ -448,6 +448,7 @@ get_header();
 						</tbody>
 					</table>
 				</div>
+				<p class="hu-fr__comparison-hint">Tabelle seitlich scrollbar</p>
 			</div>
 		</section>
 
