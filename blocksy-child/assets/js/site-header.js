@@ -28,6 +28,8 @@
         var pointerMoveRaf = 0;
         var pendingPointerY = 0;
         var pointerMoveEvent = window.PointerEvent ? 'pointermove' : 'mousemove';
+        var usesFullscreenRouteChooser = header.classList.contains('nx-site-header--premium');
+        var inertedPageChildren = [];
 
         function syncHeaderHeight() {
             var height = Math.max(76, Math.ceil(header.getBoundingClientRect().height + 12));
@@ -135,14 +137,79 @@
             scheduleHide();
         }
 
+        /*
+         * Das mobile Panel bedeckt den Viewport vollständig. Solange es offen
+         * ist, darf der Tastaturfokus deshalb nicht in den verdeckten
+         * Seiteninhalt weiterlaufen. Vorhandene inert-Zustände werden bewahrt,
+         * damit andere Overlays beim Schließen nicht versehentlich entsperren.
+         */
+        function setOutsideContentInert(isInert) {
+            if (!usesFullscreenRouteChooser || !document.body || !('inert' in window.HTMLElement.prototype)) {
+                return;
+            }
+
+            if (isInert) {
+                if (inertedPageChildren.length) {
+                    return;
+                }
+
+                var headerRoot = header;
+                while (headerRoot.parentElement && headerRoot.parentElement !== document.body) {
+                    headerRoot = headerRoot.parentElement;
+                }
+
+                Array.prototype.forEach.call(document.body.children, function (child) {
+                    if (child === headerRoot) {
+                        return;
+                    }
+
+                    inertedPageChildren.push({
+                        element: child,
+                        wasInert: child.inert
+                    });
+                    child.inert = true;
+                });
+                return;
+            }
+
+            inertedPageChildren.forEach(function (entry) {
+                entry.element.inert = entry.wasInert;
+            });
+            inertedPageChildren = [];
+        }
+
+        function focusPanelStart() {
+            var firstPanelLink = panel && panel.querySelector('a[href]');
+
+            if (!usesFullscreenRouteChooser || !firstPanelLink) {
+                return;
+            }
+
+            window.requestAnimationFrame(function () {
+                if (!panel.hidden && header.classList.contains('is-open')) {
+                    firstPanelLink.focus({ preventScroll: true });
+                }
+            });
+        }
+
         function setPanelState(isOpen) {
             if (!toggle || !panel) {
                 return;
             }
 
+            var panelHadFocus = usesFullscreenRouteChooser && panel.contains(document.activeElement);
+
             header.classList.toggle('is-open', isOpen);
             toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
             panel.hidden = !isOpen;
+            setOutsideContentInert(isOpen);
+
+            if (isOpen && usesFullscreenRouteChooser) {
+                focusPanelStart();
+            } else if (usesFullscreenRouteChooser && panelHadFocus && !desktopMedia.matches) {
+                toggle.focus({ preventScroll: true });
+            }
+
             updateVisibility(isOpen);
 
             queueHeaderHeightSync();

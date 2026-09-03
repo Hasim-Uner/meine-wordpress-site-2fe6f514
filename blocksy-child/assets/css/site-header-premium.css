@@ -1,682 +1,775 @@
 /*
- * Premium commercial navigation layer.
+ * Premium commercial navigation layer · Variante A „Instrument“.
  *
- * Desktop: three compact route cards expose the commercial architecture.
- * Mobile/tablet: the existing burger opens a full-screen route chooser.
- * The canonical menu data stays in inc/commercial-routing.php.
+ * Breakpoint-Vertrag: Jede Regel, die ein Breakpoint zurücknehmen muss, wird
+ * im Breakpoint mindestens so spezifisch geschrieben wie die Ausgangsregel.
+ *
+ * Motion Brief: Intensität 1. Die wachsende Kupferkante bestätigt Wegwahl und
+ * aktiven Kontext; Panel und Burger geben nur unmittelbares Zustandsfeedback.
+ * Keine bewegungsbezogene Runtime-Logik; statische Endzustände bei Reduced Motion.
  */
 
-/* --nx-premium-card-bg und --nx-premium-card-border sind entfallen: die
-   Routen tragen im Ruhezustand keine Kartenflaeche mehr. Der Hover-Ton und der
-   Icon-Ton bleiben, sie tragen jetzt die Zustaende. */
-.nx-site-header--premium {
-    --nx-premium-card-hover: color-mix(in srgb, var(--accent) 10%, var(--nx-bg-elevated) 90%);
-    --nx-premium-icon-bg: color-mix(in srgb, var(--accent) 11%, transparent);
-    --nx-premium-soft-text: color-mix(in srgb, var(--nx-text-dim) 88%, var(--nx-text) 12%);
+.nx-site-header.nx-site-header--premium {
+    --nx-premium-accent: #e08a3c;
+    --nx-premium-accent-hover: color-mix(in srgb, var(--nx-premium-accent) 88%, #f2ebdd);
+    --nx-premium-ground: #0b0f12;
+    --nx-premium-surface: #11161a;
+    --nx-premium-line: rgb(242 235 221 / 0.11);
+    --nx-premium-line-soft: rgb(242 235 221 / 0.06);
+    --nx-premium-text: #f2ebdd;
+    --nx-premium-text-mid: #c8c0b0;
+    --nx-premium-text-dim: #8a8478;
+    --nx-premium-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+    block-size: 64px;
+    padding: 0;
+    border-block-end: 1px solid var(--nx-premium-line);
+    background: var(--nx-premium-ground);
+    color: var(--nx-premium-text);
+    color-scheme: dark;
 }
 
-.nx-site-header--premium .nx-site-header__shell {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: clamp(0.8rem, 1.35vw, 1.35rem);
-    min-height: 78px;
-    padding: 9px 12px 9px 16px;
-    border-radius: 22px;
-    border-color: color-mix(in srgb, var(--accent) 20%, var(--nx-border));
-    box-shadow:
-        0 18px 54px hsl(30 22% 3% / 0.28),
-        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+.nx-site-header.nx-site-header--premium > .nx-container {
+    block-size: 100%;
 }
 
-.nx-site-header--premium .nx-site-header__brand-block {
-    gap: 5px;
-}
-
-/*
- * Die Wortmarke ist der feste Teil der Leiste, die Nav der bewegliche. Ohne
- * das schrumpfte die Markenspalte unter Druck und die Nav lief mit ihrem
- * Ueberhang darueber.
- */
-.nx-site-header--premium .nx-site-header__brand-block {
-    flex: 0 0 auto;
-    min-width: max-content;
-}
-
-.nx-site-header--premium .nx-site-header__brand.site-logo {
-    flex: 0 0 auto;
-    font-size: clamp(0.9rem, 1.1vw, 1.05rem);
-    letter-spacing: 0.14em;
-    white-space: nowrap;
-}
-
-.nx-site-header--premium .nx-site-header__eyebrow {
-    font-size: 0.59rem;
-    letter-spacing: 0.13em;
-}
-
-.nx-site-header--premium .nx-site-header__nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 0;
-}
-
-.nx-site-header--premium .nx-site-header__menu--desktop {
-    width: 100%;
-    justify-content: flex-end;
-    gap: clamp(0.24rem, 0.5vw, 0.48rem);
-}
-
-/*
- * Schrumpfbar statt starr. Vorher trugen die Karten eine feste Mindestbreite
- * und die Items `flex: 0 0 auto`; sobald die Summe breiter war als die
- * Nav-Spalte, lief der Ueberhang wegen `justify-content: flex-end` nach links
- * aus dem Kasten heraus — genau ueber die Wortmarke. Gemessen war das ab etwa
- * 1366px der Fall. Die Copy hat `min-width: 0` und Ellipsis, die Leiste kann
- * also nachgeben, statt ueberzulaufen.
- */
-.nx-site-header--premium .nx-site-header__menu--desktop > li {
-    flex: 0 1 auto;
-    min-width: 0;
-}
-
-.nx-site-header--premium .nx-site-header__menu--desktop .nav-cta-button {
-    flex: 0 0 auto;
-}
-
-.nx-site-header--premium .nx-site-header__menu--desktop > li > a {
-    min-height: 46px;
-    padding: 0 11px;
-    border-radius: 13px;
-    font-size: 0.82rem;
-}
-
-/*
- * Sechs Elemente nebeneinander, drei davon als Karte mit Rahmen, eigenem
- * Hintergrund und Icon-Chip: jede Routen-Karte konkurrierte visuell mit dem
- * CTA, und die Leiste hatte keine Hierarchie mehr. Im Ruhezustand tragen die
- * Routen deshalb nur noch Icon, Titel und Subtitle. Rahmen und Hintergrund
- * erscheinen erst, wenn sie etwas bedeuten: Hover, Fokus, aktuelle Seite.
- */
-.nx-site-header--premium .nx-site-header__route-item > a {
-    display: grid;
-    grid-template-columns: 26px minmax(0, 1fr);
-    gap: 8px;
-    align-items: center;
-    justify-content: stretch;
-    min-width: 0;
-    min-height: 46px;
-    padding: 5px 9px 5px 7px;
-    border: 1px solid transparent;
-    border-radius: 12px;
-    background: transparent;
-    box-shadow: none;
-}
-
-.nx-site-header--premium .nx-site-header__route-item > a:hover,
-.nx-site-header--premium .nx-site-header__route-item > a:focus-visible {
-    color: var(--nx-text);
-    border-color: color-mix(in srgb, var(--accent) 34%, var(--nx-border));
-    background: var(--nx-premium-card-hover);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
-
-.nx-site-header--premium .nx-site-header__route-item.current-menu-item > a,
-.nx-site-header--premium .nx-site-header__route-item.current_page_item > a,
-.nx-site-header--premium .nx-site-header__route-item > a[aria-current="page"] {
-    border-color: color-mix(in srgb, var(--accent) 48%, var(--nx-border));
-    background: color-mix(in srgb, var(--accent) 11%, var(--nx-bg-elevated) 89%);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
-}
-
-/* Kein eigener Rahmen mehr: das Icon steht in Akzentfarbe direkt auf dem
-   Header-Grund. Ein Chip um ein Icon in einer Leiste ohne Karten ist der
-   Rahmen, der als Naechstes um Aufmerksamkeit konkurriert. */
-.nx-site-header--premium .nx-site-header__route-icon {
-    display: grid;
-    place-items: center;
-    width: 26px;
-    height: 26px;
+.nx-site-header.nx-site-header--premium .nx-site-header__shell {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--nx-space-lg);
+    block-size: 100%;
+    min-block-size: 0;
+    padding: 0;
     border: 0;
     border-radius: 0;
-    background: none;
-    color: var(--accent);
-}
-
-.nx-site-header--premium .nx-site-header__route-icon svg {
-    width: 19px;
-    height: 19px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.7;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.nx-site-header--premium .nx-site-header__route-copy {
-    display: grid;
-    gap: 2px;
-    min-width: 0;
-    line-height: 1.1;
-    text-align: left;
-}
-
-.nx-site-header--premium .nx-site-header__route-copy strong {
-    overflow: hidden;
-    color: var(--nx-text);
-    font-size: 0.78rem;
-    font-weight: 760;
-    letter-spacing: -0.01em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.nx-site-header--premium .nx-site-header__route-copy small {
-    overflow: hidden;
-    color: var(--nx-premium-soft-text);
-    font-size: 0.64rem;
-    font-weight: 560;
-    letter-spacing: 0.01em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/*
- * Haarlinie statt Abstand allein. Ohne sie war die Leiste eine Reihe aus sechs
- * gleichrangigen Elementen; mit ihr liest sie sich als Marke | drei Wege |
- * sekundaer | CTA. Halbe Hoehe und zentriert, damit sie gliedert, ohne wie ein
- * zweiter Rahmen zu wirken.
- */
-.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link {
-    position: relative;
-    margin-inline-start: clamp(7px, 0.75vw, 13px);
-    padding-inline-start: clamp(7px, 0.75vw, 13px);
-}
-
-.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link::before {
-    content: '';
-    position: absolute;
-    inset-block: 26%;
-    inset-inline-start: 0;
-    width: 1px;
-    background: var(--nx-border);
-}
-
-.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link > a,
-.nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link > a {
-    min-width: auto;
-    padding-inline: clamp(7px, 0.7vw, 12px);
-    border-color: transparent;
     background: transparent;
-    color: var(--nx-text-dim);
-    white-space: nowrap;
+    box-shadow: none;
+    transform: none;
 }
 
-.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link > a:hover,
-.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link > a:focus-visible,
-.nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link > a:hover,
-.nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link > a:focus-visible {
-    color: var(--nx-text);
-    background: color-mix(in srgb, var(--nx-bg-glass-light) 78%, transparent);
-    border-color: var(--nx-border);
+/* Der Scrollzustand darf die geforderten 64px nicht wieder auf 56px kürzen. */
+.nx-site-header.nx-site-header--premium.nexus-flight-mode .nx-site-header__shell {
+    block-size: 100%;
+    min-block-size: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
 }
 
-.nx-site-header--premium .nx-site-header__menu .nav-cta-button > a {
-    gap: 8px;
-    min-height: 46px;
-    padding-inline: 15px;
-    border-radius: 13px;
-    white-space: nowrap;
+.nx-site-header.nx-site-header--premium .nx-site-header__brand-block {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    min-inline-size: max-content;
+    block-size: 100%;
 }
 
-.nx-site-header--premium .nx-site-header__cta-arrow {
-    display: inline-grid;
-    place-items: center;
-    width: 17px;
-    height: 17px;
-    font-size: 0.82rem;
+.nx-site-header.nx-site-header--premium .nx-site-header__eyebrow {
+    display: none;
+}
+
+.nx-site-header.nx-site-header--premium .nx-site-header__brand.site-logo {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 44px;
+    color: var(--nx-premium-text);
+    font-family: var(--nx-font-mono);
+    font-size: var(--nx-text-xs);
+    font-weight: 500;
+    letter-spacing: 0.19em;
     line-height: 1;
-    transition: transform var(--nx-duration-fast) var(--nx-ease);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 140ms linear;
 }
 
-.nx-site-header--premium .nav-cta-button > a:hover .nx-site-header__cta-arrow,
-.nx-site-header--premium .nav-cta-button > a:focus-visible .nx-site-header__cta-arrow {
-    transform: translate(1px, -1px);
+.nx-site-header.nx-site-header--premium a:focus-visible,
+.nx-site-header.nx-site-header--premium button:focus-visible {
+    border-radius: 3px;
+    outline: 2px solid var(--nx-premium-accent);
+    outline-offset: 3px;
 }
 
-/*
- * Der Mobile-CTA existiert im Markup immer, ist auf Desktop aber aus, weil dort
- * derselbe CTA am Ende der Nav steht. Genau eine der beiden Instanzen ist
- * sichtbar; display:none nimmt die andere auch aus dem Accessibility-Baum.
- */
-.nx-site-header--premium .nx-site-header__mobile-cta {
+.nx-site-header.nx-site-header--premium .nx-site-header__actions,
+.nx-site-header.nx-site-header--premium .nx-site-header__mobile-cta,
+.nx-site-header.nx-site-header--premium .nx-site-header__panel-intro,
+.nx-site-header.nx-site-header--premium .nx-site-header__panel-signature {
     display: none;
 }
 
-.nx-site-header--premium .nx-site-header__panel-intro,
-.nx-site-header--premium .nx-site-header__panel-signature {
-    display: none;
+.nx-site-header.nx-site-header--premium .nx-site-header__cta-arrow,
+.nx-site-header.nx-site-header--premium .nx-site-header__mobile-cta-arrow {
+    display: inline-grid;
+    flex: 0 0 auto;
+    place-items: center;
+    inline-size: 14px;
+    block-size: 14px;
+    transition: transform 150ms var(--nx-premium-ease);
 }
 
-/* Tight desktop: keep route cards visible, reduce secondary detail first. */
-@media (min-width: 1101px) and (max-width: 1279px) {
-    .nx-site-header--premium .nx-site-header__shell {
-        gap: 0.7rem;
-    }
-
-    .nx-site-header--premium .nx-site-header__brand.site-logo {
-        font-size: 0.88rem;
-        letter-spacing: 0.1em;
-    }
-
-    .nx-site-header--premium .nx-site-header__route-item > a {
-        grid-template-columns: 24px minmax(0, 1fr);
-        gap: 6px;
-        padding-inline: 6px;
-    }
-
-    .nx-site-header--premium .nx-site-header__route-icon {
-        width: 24px;
-        height: 24px;
-    }
-
-    .nx-site-header--premium .nx-site-header__route-icon svg {
-        width: 17px;
-        height: 17px;
-    }
-
-    .nx-site-header--premium .nx-site-header__route-copy strong {
-        font-size: 0.72rem;
-    }
-
-    .nx-site-header--premium .nx-site-header__route-copy small {
-        display: none;
-    }
-
-    .nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link > a,
-    .nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link > a {
-        padding-inline: 7px;
-        font-size: 0.76rem;
-    }
-
-    .nx-site-header--premium .nx-site-header__menu .nav-cta-button > a {
-        padding-inline: 12px;
-        font-size: 0.78rem;
-    }
+.nx-site-header.nx-site-header--premium .nx-site-header__cta-arrow svg,
+.nx-site-header.nx-site-header--premium .nx-site-header__mobile-cta-arrow svg {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
 }
 
-/* Full-screen route chooser on tablet/mobile. */
-@media (max-width: 1100px) {
-    body:has(.nx-site-header--premium.is-open) {
-        overflow: hidden;
-    }
-
-    .nx-site-header--premium .nx-site-header__shell {
+/* Desktop navigation ----------------------------------------------------- */
+@media (min-width: 1101px) {
+    .nx-site-header.nx-site-header--premium .nx-site-header__nav {
         position: relative;
-        z-index: 4;
-        grid-template-columns: minmax(0, 1fr) auto;
-        min-height: 64px;
-        padding: 8px 10px 8px 14px;
-        border-radius: 18px;
-    }
-
-    .nx-site-header--premium.is-open .nx-site-header__shell {
-        border-color: color-mix(in srgb, var(--accent) 34%, var(--nx-border));
-        box-shadow:
-            0 16px 40px hsl(30 20% 3% / 0.26),
-            inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    }
-
-    /*
-     * Die Desktop-Navigation muss hier explizit ausgeblendet werden.
-     * `site-header.css` blendet `.nx-site-header__nav` ab 1100px aus, aber die
-     * Premium-Regel weiter oben ist zweiklassig und damit spezifischer — eine
-     * Media Query erhöht die Spezifität nicht. Ohne diese Zeile bleiben die
-     * Routen-Karten sichtbar, sprengen den zweispaltigen Shell in eine zweite
-     * Zeile und überlagern die Wortmarke.
-     */
-    .nx-site-header--premium .nx-site-header__nav {
-        display: none;
-    }
-
-    /*
-     * Wortmarke | Anfragen | Burger. Der Burger bleibt, der Vollbild-
-     * Routenwaehler dahinter ist die richtige Loesung fuer drei
-     * gleichrangige Wege — er war nur die einzige Handlung der Leiste, und
-     * eine versteckte Handlung ist auf dem Telefon keine.
-     */
-    .nx-site-header--premium .nx-site-header__actions {
         display: flex;
         align-items: center;
-        gap: 8px;
+        min-inline-size: 0;
+        block-size: 100%;
+        padding-inline-start: var(--nx-space-md);
     }
 
-    .nx-site-header--premium .nx-site-header__mobile-cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        min-height: 46px;
-        padding: 0 14px;
-        border: 1px solid transparent;
-        border-radius: 14px;
-        background: linear-gradient(180deg, var(--accent-hover) 0%, var(--accent) 100%);
-        box-shadow: 0 10px 22px hsl(var(--accent-hsl) / 0.22);
-        color: var(--text-inverse);
-        font-size: 0.82rem;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-        line-height: 1;
-        text-decoration: none;
-        white-space: nowrap;
-        transition:
-            background var(--nx-duration-fast) var(--nx-ease),
-            box-shadow var(--nx-duration-fast) var(--nx-ease),
-            transform var(--nx-duration-fast) var(--nx-ease);
-    }
-
-    .nx-site-header--premium .nx-site-header__mobile-cta:hover,
-    .nx-site-header--premium .nx-site-header__mobile-cta:focus-visible {
-        background: linear-gradient(180deg, color-mix(in srgb, var(--accent-hover) 82%, white) 0%, var(--accent-hover) 100%);
-        box-shadow: 0 12px 26px hsl(var(--accent-hsl) / 0.26);
-        color: var(--text-inverse);
-    }
-
-    .nx-site-header--premium .nx-site-header__mobile-cta:active {
-        transform: translateY(1px);
-    }
-
-    /* Das Kurzlabel greift erst, wenn das lange die Leiste sprengen wuerde. */
-    .nx-site-header--premium .nx-site-header__mobile-cta-short {
-        display: none;
-    }
-
-    .nx-site-header--premium .nx-site-header__mobile-cta-arrow {
-        display: inline-grid;
-        place-items: center;
-    }
-
-    /* Bei geoeffnetem Routenwaehler traegt der Panel-CTA die Handlung; zwei
-       gleiche Buttons uebereinander waeren nur Rauschen. */
-    .nx-site-header--premium.is-open .nx-site-header__mobile-cta {
-        display: none;
-    }
-
-    .nx-site-header--premium .nx-site-header__toggle {
-        display: inline-flex;
-        width: 46px;
-        height: 46px;
-        border-radius: 14px;
-        background: color-mix(in srgb, var(--nx-bg-elevated) 84%, white 4%);
-    }
-
-    .nx-site-header--premium.is-open .nx-site-header__toggle {
-        border-color: color-mix(in srgb, var(--accent) 42%, var(--nx-border));
-        background: color-mix(in srgb, var(--accent) 10%, var(--nx-bg-elevated) 90%);
-    }
-
-    .nx-site-header--premium .nx-site-header__panel {
-        position: fixed;
-        z-index: 3;
-        inset: 0;
-        display: grid;
-        align-content: start;
-        gap: clamp(24px, 4vh, 38px);
-        width: 100%;
-        min-height: 100dvh;
-        margin: 0;
-        padding:
-            calc(112px + env(safe-area-inset-top))
-            max(20px, env(safe-area-inset-right))
-            max(28px, env(safe-area-inset-bottom))
-            max(20px, env(safe-area-inset-left));
-        overflow-y: auto;
-        border: 0;
-        border-radius: 0;
-        background:
-            radial-gradient(circle at 82% 12%, hsl(var(--accent-hsl) / 0.09), transparent 34%),
-            radial-gradient(circle at 10% 88%, hsl(var(--accent-hsl) / 0.055), transparent 34%),
-            var(--nx-bg-elevated);
-        box-shadow: none;
-        animation: nxPremiumMenuIn 260ms var(--nx-ease) both;
-    }
-
-    .nx-site-header--premium .nx-site-header__panel[hidden] {
-        display: none;
-    }
-
-    .nx-site-header--premium .nx-site-header__panel::before {
+    .nx-site-header.nx-site-header--premium .nx-site-header__nav::before {
         content: '';
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        background-image:
-            linear-gradient(color-mix(in srgb, var(--nx-border) 24%, transparent) 1px, transparent 1px),
-            linear-gradient(90deg, color-mix(in srgb, var(--nx-border) 24%, transparent) 1px, transparent 1px);
-        background-size: 42px 42px;
-        mask-image: linear-gradient(to bottom, transparent 2%, black 24%, black 74%, transparent 100%);
-        opacity: 0.22;
-    }
-
-    .nx-site-header--premium .nx-site-header__panel-intro,
-    .nx-site-header--premium .nx-site-header__mobile-nav,
-    .nx-site-header--premium .nx-site-header__panel-signature {
-        position: relative;
-        z-index: 1;
-        width: min(680px, 100%);
-        margin-inline: auto;
-    }
-
-    .nx-site-header--premium .nx-site-header__panel-intro {
-        display: grid;
-        gap: 7px;
-    }
-
-    .nx-site-header--premium .nx-site-header__panel-intro > span {
-        color: var(--accent);
-        font-size: 0.67rem;
-        font-weight: 760;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-    }
-
-    .nx-site-header--premium .nx-site-header__panel-intro > strong {
-        max-width: 620px;
-        color: var(--nx-text);
-        font-family: var(--theme-font-heading, 'Satoshi', sans-serif);
-        font-size: clamp(2rem, 7vw, 3.55rem);
-        font-weight: 650;
-        letter-spacing: -0.04em;
-        line-height: 0.98;
-    }
-
-    .nx-site-header--premium .nx-site-header__panel-intro > p {
-        max-width: 520px;
-        margin: 4px 0 0;
-        color: var(--nx-text-dim);
-        font-size: clamp(0.92rem, 2.8vw, 1.03rem);
-        line-height: 1.55;
-    }
-
-    .nx-site-header--premium .nx-site-header__menu--mobile {
-        display: grid;
-        gap: 11px;
-    }
-
-    .nx-site-header--premium .nx-site-header__menu--mobile > li {
-        margin: 0;
-    }
-
-    .nx-site-header--premium .nx-site-header__menu--mobile > li > a {
-        width: 100%;
-        min-height: 56px;
-        justify-content: flex-start;
-        border-radius: 18px;
-    }
-
-    .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a {
-        position: relative;
-        grid-template-columns: 46px minmax(0, 1fr);
-        gap: 13px;
-        min-width: 0;
-        min-height: 86px;
-        padding: 14px 54px 14px 14px;
-        border: 1px solid color-mix(in srgb, var(--nx-border) 72%, var(--accent) 14%);
-        border-radius: 22px;
-        background: color-mix(in srgb, var(--nx-bg-elevated) 86%, white 4%);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
-    }
-
-    /*
-     * U+2197 traegt auf macOS und iOS eine Emoji-Praesentation: statt eines
-     * Pfeils erscheint ein blau-weisser Kasten. Ein Pseudo-Element kann kein
-     * SVG-Kind aufnehmen wie die uebrigen Pfeile im Theme, deshalb hier der
-     * Textzwang aus beiden Richtungen — Variation Selector 15 im Glyphen und
-     * font-variant-emoji fuer Engines, die ihn ignorieren.
-     */
-    .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a::after {
-        content: '↗\FE0E';
         position: absolute;
-        top: 50%;
-        right: 20px;
-        color: color-mix(in srgb, var(--accent) 78%, var(--nx-text) 22%);
-        font-size: 1rem;
-        font-variant-emoji: text;
+        inset-block-start: 50%;
+        inset-inline-start: 0;
+        inline-size: 1px;
+        block-size: var(--nx-space-lg);
+        background: var(--nx-premium-line);
         transform: translateY(-50%);
     }
 
-    .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a:hover,
-    .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a:focus-visible {
-        border-color: color-mix(in srgb, var(--accent) 58%, var(--nx-border));
-        background: color-mix(in srgb, var(--accent) 12%, var(--nx-bg-elevated) 88%);
-        transform: translateY(-1px);
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0;
+        inline-size: 100%;
+        block-size: 100%;
     }
 
-    /*
-     * Der Vollbild-Routenwaehler bleibt unveraendert: dort sind die Routen die
-     * ganze Seite und duerfen Karten sein. Rahmen und Chip-Hintergrund stehen
-     * hier explizit, weil die Desktop-Regel sie im Ruhezustand entfernt.
-     */
-    .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-icon {
-        width: 46px;
-        height: 46px;
-        border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
-        border-radius: 14px;
-        background: var(--nx-premium-icon-bg);
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop > li {
+        flex: 0 0 auto;
+        min-inline-size: 0;
+        margin: 0;
     }
 
-    .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-icon svg {
-        width: 24px;
-        height: 24px;
-    }
-
-    .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-copy {
-        gap: 5px;
-    }
-
-    .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-copy strong {
-        font-size: clamp(1rem, 4vw, 1.22rem);
-        letter-spacing: -0.02em;
-    }
-
-    .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-copy small {
-        display: block;
-        font-size: 0.76rem;
-    }
-
-    .nx-site-header--premium .nx-site-header__menu--mobile .nav-results-link > a,
-    .nx-site-header--premium .nx-site-header__menu--mobile .nav-about-link > a {
-        min-height: 48px;
-        padding: 0 6px;
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop > li > a {
+        min-block-size: 44px;
         border: 0;
-        border-bottom: 1px solid color-mix(in srgb, var(--nx-border) 78%, transparent);
         border-radius: 0;
         background: transparent;
-        color: var(--nx-text);
-        font-size: clamp(1rem, 3.8vw, 1.16rem);
-        font-weight: 650;
+        box-shadow: none;
+        transform: none;
     }
 
-    .nx-site-header--premium .nx-site-header__menu--mobile .nav-results-link > a:hover,
-    .nx-site-header--premium .nx-site-header__menu--mobile .nav-results-link > a:focus-visible,
-    .nx-site-header--premium .nx-site-header__menu--mobile .nav-about-link > a:hover,
-    .nx-site-header--premium .nx-site-header__menu--mobile .nav-about-link > a:focus-visible {
-        padding-left: 10px;
-        border-color: color-mix(in srgb, var(--accent) 48%, var(--nx-border));
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        align-self: stretch;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item + .nx-site-header__route-item::before {
+        content: '';
+        position: absolute;
+        inset-block-start: 50%;
+        inset-inline-start: 0;
+        inline-size: 1px;
+        block-size: var(--nx-space-lg);
+        background: var(--nx-premium-line-soft);
+        transform: translateY(-50%);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item::after {
+        content: '';
+        position: absolute;
+        inset-inline: var(--nx-space-md);
+        inset-block-end: -1px;
+        block-size: 2px;
+        background: var(--nx-premium-accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 170ms var(--nx-premium-ease);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item > a {
+        display: inline-flex;
+        align-items: center;
+        padding-inline: var(--nx-space-md);
+        color: var(--nx-premium-text-mid);
+        font-family: var(--nx-font);
+        font-size: var(--nx-text-sm);
+        font-weight: 600;
+        letter-spacing: 0;
+        line-height: 1;
+        white-space: nowrap;
+        transition: color 140ms linear;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-copy {
+        display: block;
+        min-inline-size: 0;
+        line-height: 1;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-copy strong {
+        color: inherit;
+        font: inherit;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-copy small,
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-arrow {
+        display: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item.current-menu-item::after,
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item.current_page_item::after {
+        transform: scaleX(1);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item.current-menu-item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item.current_page_item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item > a[aria-current='page'],
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item > a:focus-visible {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        color: var(--nx-premium-text);
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link {
+        margin-inline-start: auto;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link > a {
+        padding-inline: var(--nx-space-sm);
+        color: var(--nx-premium-text-dim);
+        font-family: var(--nx-font);
+        font-size: var(--nx-text-xs);
+        font-weight: 500;
+        letter-spacing: 0;
+        white-space: nowrap;
+        transition: color 140ms linear;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link.current-menu-item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link.current_page_item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link > a[aria-current='page'],
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link.current-menu-item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link.current_page_item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link > a[aria-current='page'],
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link > a:focus-visible,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link > a:focus-visible {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        color: var(--nx-premium-text-mid);
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-cta-button {
+        margin-inline-start: var(--nx-space-md);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-cta-button > a {
+        display: inline-flex;
+        gap: var(--nx-space-sm);
+        min-inline-size: 44px;
+        min-block-size: 44px;
+        padding-inline: var(--nx-space-md);
+        border: 0;
+        border-radius: 3px;
+        background: var(--nx-premium-accent);
+        box-shadow: none;
+        color: var(--nx-premium-ground) !important;
+        font-family: var(--nx-font);
+        font-size: var(--nx-text-sm);
+        font-weight: 700;
+        letter-spacing: 0;
+        line-height: 1;
+        white-space: nowrap;
+        transition: background-color 140ms linear;
+    }
+}
+
+@media (min-width: 1101px) and (max-width: 1279px) {
+    .nx-site-header.nx-site-header--premium .nx-site-header__shell {
+        column-gap: var(--nx-space-md);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__nav {
+        padding-inline-start: var(--nx-space-sm);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item::after {
+        inset-inline: var(--nx-space-sm);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link > a {
+        padding-inline: var(--nx-space-sm);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-cta-button {
+        margin-inline-start: var(--nx-space-sm);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-cta-button > a {
+        padding-inline: calc(var(--nx-space-sm) + var(--nx-space-xs));
+    }
+}
+
+@media (min-width: 1101px) and (hover: hover) and (pointer: fine) {
+    .nx-site-header.nx-site-header--premium .nx-site-header__brand.site-logo:hover {
+        color: var(--nx-premium-accent);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item:hover::after {
+        transform: scaleX(1);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__route-item > a:hover {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        color: var(--nx-premium-text);
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-results-link > a:hover,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--desktop .nav-about-link > a:hover {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        color: var(--nx-premium-text-mid);
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nav-cta-button > a:hover {
+        border: 0;
+        background: var(--nx-premium-accent-hover);
+        box-shadow: none;
+        color: var(--nx-premium-ground) !important;
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nav-cta-button > a:hover .nx-site-header__cta-arrow {
+        transform: translate(2px, -2px);
+    }
+}
+
+/* Full-screen route chooser on tablet/mobile ---------------------------- */
+@media (max-width: 1100px) {
+    body:has(.nx-site-header.nx-site-header--premium.is-open) {
+        overflow: hidden;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__shell {
+        position: relative;
+        z-index: 4;
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: var(--nx-space-sm);
+        block-size: 100%;
+        min-block-size: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .nx-site-header.nx-site-header--premium.is-open .nx-site-header__shell {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__nav {
+        display: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__actions {
+        display: flex;
+        align-items: center;
+        justify-self: end;
+        gap: var(--nx-space-sm);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__mobile-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--nx-space-sm);
+        min-inline-size: 44px;
+        min-block-size: 44px;
+        padding-inline: var(--nx-space-md);
+        border: 0;
+        border-radius: 3px;
+        background: var(--nx-premium-accent);
+        box-shadow: none;
+        color: var(--nx-premium-ground);
+        font-family: var(--nx-font);
+        font-size: var(--nx-text-sm);
+        font-weight: 700;
+        letter-spacing: 0;
+        line-height: 1;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background-color 140ms linear;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__mobile-cta-short {
+        display: none;
+    }
+
+    .nx-site-header.nx-site-header--premium.is-open .nx-site-header__mobile-cta {
+        display: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__toggle {
+        display: inline-flex;
+        inline-size: 44px;
+        block-size: 44px;
+        padding: 0;
+        border: 1px solid var(--nx-premium-line);
+        border-radius: 3px;
+        background: transparent;
+        box-shadow: none;
+        color: var(--nx-premium-text);
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium.is-open .nx-site-header__toggle {
+        border-color: color-mix(in srgb, var(--nx-premium-accent) 58%, var(--nx-premium-line));
         background: transparent;
         transform: none;
     }
 
-    .nx-site-header--premium .nx-site-header__menu--mobile .nav-cta-button {
-        margin-top: 8px;
+    .nx-site-header.nx-site-header--premium .nx-site-header__toggle-line {
+        inline-size: 17px;
+        block-size: 2px;
+        border-radius: 0;
+        background: currentColor;
+        transition:
+            opacity 170ms var(--nx-premium-ease),
+            transform 170ms var(--nx-premium-ease);
     }
 
-    .nx-site-header--premium .nx-site-header__menu--mobile .nav-cta-button > a {
-        justify-content: center;
-        min-height: 60px;
-        border-radius: 18px;
-        font-size: 0.98rem;
+    .nx-site-header.nx-site-header--premium .nx-site-header__panel {
+        position: fixed;
+        z-index: 3;
+        inset: 0;
+        display: grid;
+        grid-template-rows: auto auto minmax(var(--nx-space-lg), 1fr);
+        align-items: start;
+        gap: var(--nx-space-lg);
+        inline-size: 100%;
+        block-size: 100dvh;
+        min-block-size: 100svh;
+        margin: 0;
+        padding:
+            calc(64px + env(safe-area-inset-top) + var(--nx-space-lg))
+            max(var(--nx-space-md), env(safe-area-inset-right))
+            max(var(--nx-space-lg), env(safe-area-inset-bottom))
+            max(var(--nx-space-md), env(safe-area-inset-left));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        border: 0;
+        border-radius: 0;
+        background: var(--nx-premium-surface);
+        box-shadow: none;
+        animation: nxPremiumMenuIn var(--nx-duration) var(--nx-premium-ease) both;
     }
 
-    .nx-site-header--premium .nx-site-header__panel-signature {
+    .nx-site-header.nx-site-header--premium .nx-site-header__panel[hidden] {
+        display: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__panel-intro,
+    .nx-site-header.nx-site-header--premium .nx-site-header__mobile-nav,
+    .nx-site-header.nx-site-header--premium .nx-site-header__panel-signature {
+        position: relative;
+        z-index: 1;
+        inline-size: min(40rem, 100%);
+        margin-inline: auto;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__panel-intro {
+        display: grid;
+        gap: var(--nx-space-sm);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__panel-intro > span {
+        color: var(--nx-premium-accent);
+        font-family: var(--nx-font-mono);
+        font-size: var(--nx-text-xs);
+        font-weight: 500;
+        letter-spacing: 0.16em;
+        line-height: 1;
+        text-transform: uppercase;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__panel-intro > strong {
+        color: var(--nx-premium-text);
+        font-family: var(--nx-font);
+        font-size: var(--nx-text-2xl);
+        font-weight: 700;
+        letter-spacing: -0.028em;
+        line-height: 1.1;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__panel-intro > p {
+        max-inline-size: 52ch;
+        margin: 0;
+        color: var(--nx-premium-text-dim);
+        font-family: var(--nx-font);
+        font-size: var(--nx-text-sm);
+        line-height: 1.55;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0 var(--nx-space-md);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile > li {
+        min-inline-size: 0;
+        margin: 0;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item {
+        grid-column: 1 / -1;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: var(--nx-space-md);
+        inline-size: 100%;
+        min-block-size: 72px;
+        padding: var(--nx-space-md) 0;
+        border: 0;
+        border-block-start: 1px solid var(--nx-premium-line-soft);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        color: var(--nx-premium-text);
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-agency-link > a {
+        border-block-end: 1px solid var(--nx-premium-line-soft);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-copy {
+        display: grid;
+        gap: var(--nx-space-xs);
+        min-inline-size: 0;
+        text-align: start;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-copy strong {
+        overflow-wrap: anywhere;
+        color: var(--nx-premium-text);
+        font-family: var(--nx-font);
+        font-size: var(--nx-text-xl);
+        font-weight: 700;
+        letter-spacing: -0.018em;
+        line-height: 1.2;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-copy small {
         display: block;
-        margin-top: auto;
-        padding-top: 8px;
-        color: color-mix(in srgb, var(--nx-text-dim) 82%, var(--accent) 18%);
-        font-size: 0.69rem;
-        font-weight: 650;
-        letter-spacing: 0.12em;
+        overflow-wrap: anywhere;
+        color: var(--nx-premium-text-dim);
+        font-family: var(--nx-font-mono);
+        font-size: var(--nx-text-xs);
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        line-height: 1.35;
+        text-transform: uppercase;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-arrow {
+        display: inline-grid;
+        place-items: center;
+        inline-size: 18px;
+        block-size: 18px;
+        color: var(--nx-premium-accent);
+        transition: transform 150ms var(--nx-premium-ease);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-arrow svg {
+        display: block;
+        inline-size: 100%;
+        block-size: 100%;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item.current-menu-item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item.current_page_item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a[aria-current='page'],
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a:focus-visible {
+        background: transparent;
+        box-shadow: none;
+        color: var(--nx-premium-text);
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-results-link,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-about-link {
+        margin-block-start: var(--nx-space-sm);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-results-link > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-about-link > a {
+        display: inline-flex;
+        justify-content: flex-start;
+        inline-size: auto;
+        min-block-size: 44px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        color: var(--nx-premium-text-dim);
+        font-family: var(--nx-font);
+        font-size: var(--nx-text-sm);
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 1.2;
+        transform: none;
+        transition: color 140ms linear;
+        white-space: nowrap;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-results-link.current-menu-item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-results-link.current_page_item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-results-link > a[aria-current='page'],
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-about-link.current-menu-item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-about-link.current_page_item > a,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-about-link > a[aria-current='page'],
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-results-link > a:focus-visible,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-about-link > a:focus-visible {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        color: var(--nx-premium-text-mid);
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-cta-button {
+        grid-column: 1 / -1;
+        margin-block-start: var(--nx-space-md);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-cta-button > a {
+        display: inline-flex;
+        justify-content: center;
+        gap: var(--nx-space-sm);
+        inline-size: 100%;
+        min-block-size: 48px;
+        padding-inline: var(--nx-space-md);
+        border: 0;
+        border-radius: 3px;
+        background: var(--nx-premium-accent);
+        box-shadow: none;
+        color: var(--nx-premium-ground) !important;
+        font-family: var(--nx-font);
+        font-size: var(--nx-text-sm);
+        font-weight: 700;
+        letter-spacing: 0;
+        line-height: 1;
+        transform: none;
+        transition: background-color 140ms linear;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__panel-signature {
+        display: block;
+        align-self: end;
+        margin: 0 auto;
+        padding-block-start: var(--nx-space-lg);
+        color: var(--nx-premium-text-dim);
+        font-family: var(--nx-font-mono);
+        font-size: var(--nx-text-xs);
+        font-weight: 500;
+        letter-spacing: 0.16em;
+        line-height: 1.4;
         text-transform: uppercase;
     }
 }
 
-/*
- * Wortmarke, volles Label und Burger passen gemessen erst ab etwa 380px in die
- * Leiste — und dort mit 2px Rest. Das ist keine Reserve, sondern Zufall: in
- * Produktion laeuft eine andere Schrift als im Pruefstand. Die Schwelle liegt
- * deshalb bei 430px, wo rund 30px Puffer bleiben. Darunter traegt der Button
- * das kurze Label; das vollstaendige "Projekt anfragen" steht im
- * Vollbild-Routenwaehler und im aria-label.
- */
-@media (max-width: 429px) {
-    .nx-site-header--premium .nx-site-header__mobile-cta {
-        padding: 0 12px;
+@media (max-width: 1100px) and (hover: hover) and (pointer: fine) {
+    .nx-site-header.nx-site-header--premium .nx-site-header__brand.site-logo:hover {
+        color: var(--nx-premium-accent);
     }
 
-    .nx-site-header--premium .nx-site-header__mobile-cta-full {
-        display: none;
+    .nx-site-header.nx-site-header--premium .nx-site-header__mobile-cta:hover,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-cta-button > a:hover {
+        background: var(--nx-premium-accent-hover);
+        box-shadow: none;
+        color: var(--nx-premium-ground) !important;
+        transform: none;
     }
 
-    .nx-site-header--premium .nx-site-header__mobile-cta-short {
-        display: inline;
+    .nx-site-header.nx-site-header--premium .nx-site-header__toggle:hover {
+        border-color: color-mix(in srgb, var(--nx-premium-accent) 42%, var(--nx-premium-line));
+        background: transparent;
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a:hover {
+        background: transparent;
+        box-shadow: none;
+        color: var(--nx-premium-text);
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a:hover .nx-site-header__route-arrow {
+        transform: translateX(3px);
+    }
+
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-results-link > a:hover,
+    .nx-site-header.nx-site-header--premium .nx-site-header__menu--mobile .nav-about-link > a:hover {
+        background: transparent;
+        color: var(--nx-premium-text-mid);
+        transform: none;
+    }
+
+    .nx-site-header.nx-site-header--premium .nav-cta-button > a:hover .nx-site-header__cta-arrow,
+    .nx-site-header.nx-site-header--premium .nx-site-header__mobile-cta:hover .nx-site-header__mobile-cta-arrow {
+        transform: translate(2px, -2px);
     }
 }
 
-@media (max-width: 520px) {
-    .nx-site-header--premium .nx-site-header__panel {
-        gap: 22px;
-        padding-top: calc(104px + env(safe-area-inset-top));
+/* Nur unter 400px wechselt die Leiste auf das kurze Label. */
+@media (max-width: 399px) {
+    .nx-site-header.nx-site-header--premium .nx-site-header__mobile-cta {
+        padding-inline: calc(var(--nx-space-sm) + var(--nx-space-xs));
     }
 
-    .nx-site-header--premium .nx-site-header__panel-intro > strong {
-        font-size: clamp(2rem, 11vw, 3rem);
+    .nx-site-header.nx-site-header--premium .nx-site-header__mobile-cta-full {
+        display: none;
     }
 
-    .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-item > a {
-        min-height: 78px;
-        padding: 12px 48px 12px 12px;
-        border-radius: 19px;
-    }
-
-    .nx-site-header--premium .nx-site-header__menu--mobile .nx-site-header__route-icon {
-        width: 42px;
-        height: 42px;
-        border-radius: 13px;
+    .nx-site-header.nx-site-header--premium .nx-site-header__mobile-cta-short {
+        display: inline;
     }
 }
 
 @keyframes nxPremiumMenuIn {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(calc(-1 * var(--nx-space-sm)));
     }
 
     to {
@@ -686,14 +779,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .nx-site-header--premium .nx-site-header__panel {
-        animation: none;
-    }
-
-    .nx-site-header--premium .nx-site-header__route-item > a,
-    .nx-site-header--premium .nx-site-header__cta-arrow,
-    .nx-site-header--premium .nx-site-header__menu--mobile .nav-results-link > a,
-    .nx-site-header--premium .nx-site-header__menu--mobile .nav-about-link > a {
-        transition-duration: 0.01ms !important;
+    .nx-site-header.nx-site-header--premium,
+    .nx-site-header.nx-site-header--premium *,
+    .nx-site-header.nx-site-header--premium *::before,
+    .nx-site-header.nx-site-header--premium *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
     }
 }

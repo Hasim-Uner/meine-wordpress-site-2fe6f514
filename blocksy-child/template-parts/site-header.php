@@ -99,56 +99,27 @@ foreach ( $strategy_nav_items as $strategy_nav_item ) {
 
 /*
  * Visuelle Navigationsebene: Die drei Geschäftswege bleiben semantisch Teil
- * desselben Routing-Contracts, werden aber als kompakte Route-Cards gerendert.
- * Ergebnisse, Über Haşim und die Projekt-CTA bleiben bewusst ruhiger.
+ * desselben Routing-Contracts. Ihre Zweckangaben erscheinen nur im mobilen
+ * Routenwähler; die Desktop-Leiste zeigt die kompakten Titel ohne Icons.
+ * Ergebnisse und Über Haşim bleiben bewusst ruhige Sekundärziele; die
+ * Projekt-CTA behält ihre eigenständige Rolle.
  */
 $route_visuals = [
 	'nav-solar-link' => [
 		'title'    => __( 'Solar & Wärmepumpe', 'blocksy-child' ),
 		'subtitle' => __( 'Anfragesysteme', 'blocksy-child' ),
-		'icon'     => 'energy',
 	],
 	'nav-freelancer-link' => [
 		'title'    => __( 'WordPress', 'blocksy-child' ),
 		'subtitle' => __( 'Direkte Projekte', 'blocksy-child' ),
-		'icon'     => 'code',
 	],
 	'nav-agency-link' => [
 		'title'    => __( 'Für Agenturen', 'blocksy-child' ),
 		'subtitle' => __( 'White-Label', 'blocksy-child' ),
-		'icon'     => 'layers',
 	],
 ];
 
-$render_route_icon = static function ( string $icon ): void {
-	if ( 'energy' === $icon ) {
-		?>
-		<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-			<circle cx="12" cy="12" r="3.25"></circle>
-			<path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"></path>
-		</svg>
-		<?php
-		return;
-	}
-
-	if ( 'layers' === $icon ) {
-		?>
-		<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-			<path d="m12 3 8 4.5-8 4.5-8-4.5L12 3Z"></path>
-			<path d="m4 12 8 4.5 8-4.5M4 16.5l8 4.5 8-4.5"></path>
-		</svg>
-		<?php
-		return;
-	}
-	?>
-	<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-		<rect x="3" y="4.5" width="18" height="15" rx="2.5"></rect>
-		<path d="M3 8.5h18M10 12l-2 2 2 2M14 12l2 2-2 2"></path>
-	</svg>
-	<?php
-};
-
-$render_strategy_navigation = static function ( string $context ) use ( $strategy_nav_items, $route_visuals, $render_route_icon ): void {
+$render_strategy_navigation = static function ( string $context ) use ( $strategy_nav_items, $route_visuals ): void {
 	$context    = sanitize_key( $context );
 	$menu_class = 'nx-site-header__menu nx-site-header__menu--' . $context;
 
@@ -183,12 +154,14 @@ $render_strategy_navigation = static function ( string $context ) use ( $strateg
 				data-track-category="<?php echo esc_attr( (string) ( $item['category'] ?? 'navigation' ) ); ?>"
 			>
 				<?php if ( is_array( $route_visual ) ) : ?>
-					<span class="nx-site-header__route-icon">
-						<?php $render_route_icon( (string) $route_visual['icon'] ); ?>
-					</span>
 					<span class="nx-site-header__route-copy">
 						<strong><?php echo esc_html( (string) $route_visual['title'] ); ?></strong>
 						<small><?php echo esc_html( (string) $route_visual['subtitle'] ); ?></small>
+					</span>
+					<span class="nx-site-header__route-arrow" aria-hidden="true">
+						<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+							<path d="M5 12h14M13 6l6 6-6 6"></path>
+						</svg>
 					</span>
 				<?php else : ?>
 					<span><?php echo esc_html( (string) ( $item['label'] ?? '' ) ); ?></span>
