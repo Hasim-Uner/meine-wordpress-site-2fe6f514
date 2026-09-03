@@ -848,6 +848,11 @@
 
 /* COMPARISON */
 .hu-fr__comparison {
+	/* Deckend, kein rgba(): unter der fixierten Kriterien-Spalte scrollt der
+	   Text der Nachbarspalte durch, sobald der Hintergrund transparent ist.
+	   Entspricht rgba(236, 228, 218, 0.58) über var(--fr-paper). */
+	--hu-fr-comparison-criterion-bg: #f4ede5;
+	--hu-fr-comparison-line: var(--fr-line);
 	padding: clamp(88px, 9vw, 120px) 0;
 	background: var(--fr-paper-2);
 }
@@ -856,22 +861,33 @@
 	max-inline-size: 100%;
 	margin-top: clamp(42px, 5vw, 58px);
 	overflow-x: auto;
-	overscroll-behavior-inline: contain;
+	overscroll-behavior-x: contain;
 	border: 1px solid var(--fr-line-strong);
 	border-radius: var(--fr-radius);
 	background: var(--fr-paper);
 }
 
+/* Der Container ist per tabindex="0" ein Tabstopp. Ohne eigenen Ring ist
+   dieser Stopp unsichtbar. */
 .hu-fr__comparison-scroll:focus-visible {
-	outline: 3px solid rgba(115, 57, 31, 0.35);
-	outline-offset: 4px;
+	outline: 2px solid var(--fr-copper-dark);
+	outline-offset: 3px;
 }
 
+/* Ab 768px keine Mindestbreite: die Tabelle füllt ihren Container und scrollt
+   gar nicht erst. Seitliches Scrollen gibt es nur unterhalb — dort, wo die
+   Kriterien-Spalte fixiert ist und der Hinweis darunter steht. Beides hängt an
+   derselben Grenze, damit es keinen Bereich gibt, in dem die Tabelle stumm
+   scrollt oder der Hinweis etwas Falsches behauptet. */
 .hu-fr__comparison-table {
 	width: 100%;
-	min-width: 64rem;
 	table-layout: fixed;
-	border-collapse: collapse;
+	/* Pflicht für die fixierte Kriterien-Spalte: mit `border-collapse: collapse`
+	   ignorieren Chrome und Safari `position: sticky` an Tabellenzellen.
+	   Doppelte Linien entstehen dadurch nicht — die Zellen zeichnen ohnehin nur
+	   je eine Kante (border-right/border-bottom), nie beide Seiten einer Fuge. */
+	border-collapse: separate;
+	border-spacing: 0;
 	text-align: start;
 }
 
@@ -907,9 +923,20 @@
 }
 
 .hu-fr__comparison-table tbody th {
-	background: rgba(236, 228, 218, 0.58);
+	background: var(--hu-fr-comparison-criterion-bg);
 	font-weight: 700;
 	color: var(--fr-ink);
+}
+
+/* Kein JavaScript, keine Verlaufskante: ein Satz, der nur dort steht, wo die
+   Tabelle garantiert breiter ist als ihr Container. */
+.hu-fr__comparison-hint {
+	display: none;
+	margin: var(--nx-space-3, 12px) 0 0;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.7rem;
+	letter-spacing: 0.04em;
+	color: var(--fr-muted);
 }
 
 .hu-fr__comparison-cell--agency-advantage {
@@ -1205,6 +1232,53 @@
 	.hu-fr__faq-grid,
 	.hu-fr__final-grid {
 		gap: var(--nx-space-12, 48px);
+	}
+}
+
+/* Mobil bleibt die Tabelle eine Tabelle. Gestapelte Zellen (display: block auf
+   table/tr/th/td) nehmen dem Element seine Tabellenrolle: `scope` wird
+   wirkungslos, Screenreader können Zellen keiner Spalte mehr zuordnen.
+   Stattdessen wird die Kriterien-Spalte fixiert — der Leser wischt, die Zeile
+   bleibt beschriftet. */
+@media (max-width: 767px) {
+	/* Garantiert breiter als der Container: breitester Fall hier ist Shell 728px
+	   (100% - 32px bei 760px) minus 2px Containerrahmen = 726px. Damit stimmt
+	   der Hinweis unter der Tabelle in diesem ganzen Bereich. */
+	.hu-fr__comparison-table {
+		min-width: 730px;
+	}
+
+	/* Schmaler als die 24% des Desktops, damit neben der fixierten Spalte eine
+	   Datenspalte am Stück sichtbar bleibt: 390px - 32px Shell - 2px Rahmen
+	   - 140px = 216px für eine 197px breite Spalte. */
+	.hu-fr__comparison-criterion {
+		width: 8.75rem;
+	}
+
+	.hu-fr__comparison-table th,
+	.hu-fr__comparison-table td {
+		padding: 16px 12px;
+	}
+
+	.hu-fr__comparison-table thead th:first-child,
+	.hu-fr__comparison-table th[scope="row"] {
+		position: sticky;
+		left: 0;
+		z-index: 1;
+		/* Kante statt Rahmen: der Schatten liegt über der durchlaufenden
+		   Nachbarspalte. border-right entfällt, sonst stünden hier zwei Linien. */
+		border-right: 0;
+		box-shadow: 1px 0 0 var(--hu-fr-comparison-line);
+	}
+
+	/* Die Kopfzelle muss über den Zeilenköpfen liegen. Ihr Hintergrund bleibt
+	   var(--fr-night) — deckend und Teil der Kopfzeile. */
+	.hu-fr__comparison-table thead th:first-child {
+		z-index: 2;
+	}
+
+	.hu-fr__comparison-hint {
+		display: block;
 	}
 }
 
