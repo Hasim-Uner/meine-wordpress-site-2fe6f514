@@ -28,6 +28,7 @@ $nexus_seo_cockpit_modules = [
 	'seo-cockpit-command-center.php',
 	'seo-cockpit-export.php',
 	'seo-cockpit-ui.php',
+	'seo-cockpit-dashboard-v3.php',
 ];
 
 foreach ( $nexus_seo_cockpit_modules as $nexus_seo_cockpit_module ) {
