@@ -417,7 +417,7 @@ get_header();
 					<span class="hu-eyebrow">03 / Beleg</span>
 					<h2 id="hu-case-h">Was dabei herauskommt, wenn Website, Tracking und Vertrieb gemeinsam&nbsp;wirken.</h2>
 				</div>
-				<p class="hu-section-heading__intro">Dokumentierter Referenzfall: <?php echo esc_html( $e3_case_label ); ?>.</p>
+				<p class="hu-section-heading__intro">Der übertragbare Mechanismus: Landingpage, Messung und Vorqualifizierung arbeiten als zusammenhängende Strecke. Dokumentierter Referenzfall: <?php echo esc_html( $e3_case_label ); ?>.</p>
 			</div>
 
 			<dl class="hu-case-metrics hu-reveal">
@@ -430,7 +430,7 @@ get_header();
 			</dl>
 
 			<div class="hu-case-note hu-reveal">
-				<p class="hu-case-note__disclaimer">Referenzfall, keine pauschale Übertragbarkeitsgarantie.</p>
+				<small class="hu-case-note__disclaimer">Referenzfall, keine pauschale Übertragbarkeitsgarantie.</small>
 				<a href="<?php echo esc_url( $e3_case_url ); ?>" class="hu-btn hu-btn-link"
 				   data-track-action="home_case_study" data-track-category="proof" data-track-section="beleg">
 					Vollständige Case Study
@@ -495,13 +495,13 @@ get_header();
 						Direkt schreiben
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 					</a>
-					<a href="<?php echo esc_url( $about_url ); ?>" class="hu-btn hu-btn-link"
-					   data-track-action="home_close_about" data-track-category="trust" data-track-section="abschluss">
-						Über Haşim
-					</a>
 				</div>
 
 				<div class="hu-close__signature">— <strong>Haşim Üner</strong> · persönlich, nicht durch ein Vertriebsteam</div>
+				<a href="<?php echo esc_url( $about_url ); ?>" class="hu-close__about hu-btn hu-btn-link"
+				   data-track-action="home_close_about" data-track-category="trust" data-track-section="abschluss">
+					Über Haşim
+				</a>
 			</div>
 		</div>
 	</section>

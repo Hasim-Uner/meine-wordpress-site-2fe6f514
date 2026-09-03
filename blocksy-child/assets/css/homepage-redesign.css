@@ -2357,7 +2357,15 @@
 }
 
 .hu-hp--hub .hu-case-note__disclaimer {
+  display: block;
   color: var(--fg-3);
+}
+
+.hu-hp--hub .hu-close__about {
+  width: fit-content;
+  min-height: 44px;
+  justify-content: center;
+  margin: 8px auto 0;
 }
 
 /* Zwei Eckenrollen fuer alle sichtbaren Startseiten-Flaechen und Controls. */
