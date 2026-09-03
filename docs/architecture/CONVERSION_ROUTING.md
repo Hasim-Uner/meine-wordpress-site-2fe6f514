@@ -153,6 +153,35 @@ Expected route:
 
 The page owns its own local Fit-Check CTA.
 
+### Footer: Selbstauskunft statt Sammel-CTA
+
+The global footer does not carry one CTA for everybody any more. It asks the
+visitor to say who they are, and each of the three sentences routes into the
+matching cluster above:
+
+| Sentence | Destination | Event |
+|---|---|---|
+| Ich bin **Agentur** … | `/whitelabel-retainer/` | `cta_footer_pick_agency` |
+| Ich bin **Solar- oder Wärmepumpenbetrieb** … | `/solar-waermepumpen-leadgenerierung/` | `cta_footer_pick_energy` |
+| Ich habe **eine Seite** … | `/wordpress-freelancer-hannover/` | `cta_footer_pick_project` |
+
+All three carry `data-track-category="lead_gen"` and
+`data-track-section="footer"`. The direct line adds `cta_footer_direct_mail`
+and `cta_footer_direct_phone`.
+
+Retired with the CTA band and the merged minimal footers:
+`cta_footer_primary`, `cta_footer_primary_mobile`, `cta_footer_route_*`,
+`cta_footer_min_route_*`, `cta_energy_footer_analysis`,
+`cta_audit_footer_analysis`, `cta_footer_nav_project` and
+`cta_footer_social_github`. The remaining `cta_footer_nav_*` values in the
+directory are unchanged, so directory reporting stays comparable across the
+rebuild.
+
+Note for the Energy cluster: the footer no longer repeats the Marktcheck CTA.
+The Marktcheck stays the cluster's primary action on
+`/solar-waermepumpen-leadgenerierung/#marktcheck` and in
+`template-parts/footer-cta.php`; the footer's job is the self-selection above.
+
 ## Migration checklist
 
 When auditing an existing page:

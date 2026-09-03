@@ -76,22 +76,19 @@
     box-sizing: border-box;
 }
 
-.ft p,
-.ft ul,
-.ft dl,
-.ft dt,
-.ft dd,
-.ft h2,
-.ft h3 {
+/* :where() haelt den Reset auf Spezifitaet 0. Als ".ft dl" geschrieben schlaegt
+   er sonst jede Komponentenregel mit nur einer Klasse — genau das hatte dem
+   Messprotokoll seine Innenabstaende weggenommen. */
+:where(.ft) :where(p, ul, ol, dl, dt, dd, h2, h3, figure) {
     margin: 0;
     padding: 0;
 }
 
-.ft ul {
+:where(.ft) :where(ul, ol) {
     list-style: none;
 }
 
-.ft a {
+:where(.ft) :where(a) {
     color: inherit;
     text-decoration: none;
 }
