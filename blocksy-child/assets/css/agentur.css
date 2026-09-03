@@ -1338,7 +1338,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   10. ABGRENZUNG — 3 negative items
+   9. ABGRENZUNG — 3 negative items
    --------------------------------------------------------------------------- */
 .wp-agentur-pain-grid {
   display: grid;
@@ -1391,6 +1391,32 @@
 }
 
 /* ---------------------------------------------------------------------------
+   10. WARTUNG UND LAUFENDE BETREUUNG — ordered 2x2 content cards
+   --------------------------------------------------------------------------- */
+#wordpress-wartung {
+  background: var(--ag-bg);
+}
+
+.wp-agentur-maintenance-grid {
+  padding: 0;
+  list-style: none;
+}
+
+.wp-agentur-maintenance-grid .wp-agentur-local-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.wp-agentur-maintenance-grid strong {
+  color: var(--ag-text);
+}
+
+.wp-agentur-maintenance-cta {
+  align-self: flex-start;
+  margin-top: var(--ag-space-lg);
+}
+
+/* ---------------------------------------------------------------------------
    11. FOKUSMARKT ENERGIE — single CTA section
    --------------------------------------------------------------------------- */
 #fokusmarkt {
@@ -1426,6 +1452,10 @@
    ausfuehrliche Antworten, und das ist die Wahrheit. */
 .wp-agentur-local-grid--duo {
   align-items: start;
+}
+
+.wp-agentur-local-grid--single {
+  max-width: 720px;
 }
 
 .wp-agentur-local-card {

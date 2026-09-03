@@ -716,7 +716,7 @@ function nexus_get_agentur_faq_items() {
 		],
 		[
 			'question' => 'Bieten Sie WordPress-Wartung in Hannover an?',
-			'answer'   => 'Ja, aber bewusst nur im Rahmen laufender Mandate: Updates, Monitoring, Backups und Weiterentwicklung für Systeme, die ich gebaut oder geprüft habe. Ein reiner Wartungsvertrag für eine fremde Installation ist Symptompflege — die Seite bleibt am Leben, aber niemand steht für Ladezeit, Tracking und Anfragepfad gerade. Wer eine bestehende WordPress-Seite übergeben möchte, startet mit der Projektprüfung; laufende Betreuung schließt sich daran an.',
+			'answer'   => 'Ja, als planbare laufende Betreuung für Systeme, die ich gebaut oder vorab technisch geprüft habe. Dafür gibt es einen Weiterentwicklungs-Retainer mit vereinbartem Monatskontingent, aber keinen klassischen Wartungsvertrag mit zugesicherter Reaktionszeit oder permanenter Verfügbarkeit. Wer eine 24/7-Zusage und Vertretung bei Ausfall braucht, ist bei einem Anbieter mit Team besser aufgehoben. Bei einer bestehenden WordPress-Seite beginnt die Zusammenarbeit mit der technischen Prüfung; erst danach lässt sich der laufende Scope sinnvoll festlegen.',
 		],
 		[
 			'question' => 'Arbeiten Sie auch außerhalb von Hannover in Niedersachsen?',
