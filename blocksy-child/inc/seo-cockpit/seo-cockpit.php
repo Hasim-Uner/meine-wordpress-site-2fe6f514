@@ -9,6 +9,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// IndexNow alone needs a tiny frontend footprint so search engines can read
+// the runtime ownership key from /{key}.txt. The rest of the cockpit stays
+// Admin-/Background-only.
+$nexus_seo_cockpit_indexnow_path = __DIR__ . '/seo-cockpit-indexnow.php';
+if ( file_exists( $nexus_seo_cockpit_indexnow_path ) ) {
+	require_once $nexus_seo_cockpit_indexnow_path;
+}
+unset( $nexus_seo_cockpit_indexnow_path );
+
 // SEO Cockpit ist ein Admin-/Background-System — Frontend-Requests bleiben leicht.
 if ( ! is_admin() && ! wp_doing_ajax() && ! wp_doing_cron() && ! ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
 	return;
