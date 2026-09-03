@@ -41,7 +41,16 @@ $imprint_url      = $primary_urls['impressum'] ?? home_url( '/impressum/' );
 $privacy_url      = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
 $whitelabel_url   = $routes['whitelabel'] ?? ( function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' ) );
 $hide_primary_cta = function_exists( 'nexus_should_hide_footer_primary_cta' ) && nexus_should_hide_footer_primary_cta();
-$footer_class     = $hide_primary_cta ? 'ft ft--modern ft--no-primary-cta ft--mobile-cta' : 'ft ft--modern';
+$hide_route_band  = is_front_page();
+$footer_classes   = [ 'ft', 'ft--modern' ];
+if ( $hide_primary_cta ) {
+	$footer_classes[] = 'ft--no-primary-cta';
+	$footer_classes[] = 'ft--mobile-cta';
+}
+if ( $hide_route_band ) {
+	$footer_classes[] = 'ft--home';
+}
+$footer_class = implode( ' ', $footer_classes );
 $request_url      = $project_request_url;
 $audit_cta_label  = 'Projekt anfragen';
 $audit_cta_microcopy = 'Scope · Ziel · nächster sinnvoller Schritt';
@@ -202,6 +211,7 @@ if ( file_exists( $footer_style_path ) ) {
 
 <footer id="footer" class="<?php echo esc_attr( $footer_class ); ?>" aria-labelledby="ft-heading" role="contentinfo">
 	<div class="ft-modern__inner">
+		<?php if ( ! $hide_route_band ) : ?>
 		<div class="ft-modern__intro">
 			<div>
 				<p class="ft-modern__eyebrow">Drei Wege, ein technischer Partner</p>
@@ -238,6 +248,9 @@ if ( file_exists( $footer_style_path ) ) {
 				<span class="ft-modern__route-arrow" aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
 			</a>
 		</nav>
+		<?php else : ?>
+		<h2 id="ft-heading" class="ft__sr">Footer-Navigation</h2>
+		<?php endif; ?>
 
 		<?php if ( ! $hide_primary_cta ) : ?>
 		<section class="ft-modern__cta-band" aria-label="Projektanfrage">

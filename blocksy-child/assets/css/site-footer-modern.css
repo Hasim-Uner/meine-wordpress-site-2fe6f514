@@ -405,6 +405,40 @@
 	fill: currentColor;
 }
 
+/* Die Startseite hat ihre drei kommerziellen Wege bereits als Hauptinhalt.
+ * Im Footer bleibt deshalb nur der naechste Schritt plus Verzeichnis. */
+.ft--home {
+	--fth-type-h3: clamp(1.5625rem, 3vw, 2.4375rem);
+	--fth-type-body: clamp(1rem, 1.5vw, 1.25rem);
+	padding-top: clamp(44px, 6vw, 72px);
+}
+
+.ft--home .ft-modern__cta-band {
+	margin-top: 0;
+	border-radius: 14px;
+}
+
+.ft--home .ft-modern__cta-button {
+	border-radius: 3px;
+	color: var(--ftm-ink);
+	opacity: 1;
+}
+
+.ft--home .ft-modern__cta-title {
+	font-size: var(--fth-type-h3);
+}
+
+.ft--home .ft-modern__cta-kicker,
+.ft--home .ft-modern__cta-note,
+.ft--home .ft-modern__cta-button,
+.ft--home .ft-modern__logo.site-logo,
+.ft--home .ft-modern__brand p,
+.ft--home .ft-modern__col h3,
+.ft--home .ft-modern__list a,
+.ft--home .ft-modern__bottom {
+	font-size: var(--fth-type-body);
+}
+
 @media (max-width: 1040px) {
 	.ft-modern__intro {
 		grid-template-columns: 1fr;

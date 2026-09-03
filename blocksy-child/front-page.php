@@ -43,15 +43,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 // nicht in einen relativen Anker umschreiben, hier existiert kein Formular.
 $analysis_url     = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 
-$e3_canon         = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
-$e3_case_url      = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : home_url( '/case-study-solar-leadgenerierung/' );
-$e3_metrics       = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_lead_count    = $e3_metrics['lead_count']['display']        ?? '1.750+';
-$e3_sales_conv    = $e3_metrics['sales_conversion']['display']  ?? '12 %';
-$e3_cpl_reduction = $e3_metrics['cpl_reduction']['display']     ?? 'über 85 %';
-$e3_timeframe_dat = $e3_metrics['timeframe']['display_dative']  ?? '6 Monaten';
-$e3_cpl_before    = $e3_metrics['cpl_before']['display']        ?? '150 €';
-$e3_cpl_after     = $e3_metrics['cpl_after']['display']         ?? '22 €';
+$e3_canon      = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_case_url   = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : home_url( '/case-study-solar-leadgenerierung/' );
+$e3_case_label = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : '';
+$e3_metric     = static function ( $key, $field = 'display' ) {
+	return function_exists( 'hu_e3_metric' ) ? hu_e3_metric( $key, $field ) : '';
+};
+$e3_case_metrics = [
+	[
+		'value' => trim( $e3_metric( 'cpl_before' ) . ' → ' . $e3_metric( 'cpl_after' ) ),
+		'label' => 'Kosten pro qualifizierter Anfrage',
+	],
+	[
+		'value' => $e3_metric( 'lead_count' ),
+		'label' => 'qualifizierte Anfragen',
+	],
+	[
+		'value' => $e3_metric( 'sales_conversion' ),
+		'label' => 'Abschlussquote',
+	],
+];
 
 $primary_urls     = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $about_url        = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
@@ -111,7 +122,7 @@ $home_doors = [
 	[
 		'badge'   => '02',
 		'kicker'  => 'Direkte Zusammenarbeit · WordPress',
-		'title'   => 'Sie brauchen WordPress-Kompetenz ohne Agentur-Umweg.',
+		'title'   => "Sie brauchen WordPress-Kompetenz, direkt\u{00A0}umgesetzt.",
 		'desc'    => 'Website, Tracking und Funnel sollen technisch zusammenpassen — und Sie wollen direkt mit der Person arbeiten, die strukturiert, entwickelt und deployt.',
 		'url'     => $freelancer_url,
 		'label'   => 'WordPress Freelancer ansehen',
@@ -308,9 +319,11 @@ get_header();
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--first" id="wege" data-track-section="tueren" aria-labelledby="hu-doors-h">
 		<div class="hu-container">
-			<div class="hu-proof-headline hu-head--gap hu-reveal">
-				<span class="hu-eyebrow">01 / Drei Wege</span>
-				<h2 id="hu-doors-h">Drei Wege. Wählen Sie den, der Ihre Situation beschreibt.</h2>
+			<div class="hu-section-heading hu-section-heading--solo hu-reveal">
+				<div class="hu-section-heading__primary">
+					<span class="hu-eyebrow">01 / Drei Wege</span>
+					<h2 id="hu-doors-h">Drei Wege. Wählen Sie den, der Ihre Situation&nbsp;beschreibt.</h2>
+				</div>
 			</div>
 
 			<div class="hu-gateways hu-gateways--doors hu-reveal" data-track-section="tueren">
@@ -343,10 +356,12 @@ get_header();
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section hu-section--cream" id="lebender-beweis" data-track-section="beweis" aria-labelledby="hu-proof-h">
 		<div class="hu-container">
-			<div class="hu-proof-headline hu-reveal">
-				<span class="hu-eyebrow hu-on-cream">02 / Lebender Beweis</span>
-				<h2 id="hu-proof-h" class="hu-on-cream--strong">Ich verkaufe Ladezeit, Tracking und SEO. Prüfen Sie es an dieser Seite.</h2>
-				<p>Keine gekauften Siegel, keine geliehenen Logos. Diese Seite selbst — jederzeit von Ihnen nachmessbar.</p>
+			<div class="hu-section-heading hu-reveal">
+				<div class="hu-section-heading__primary">
+					<span class="hu-eyebrow hu-on-cream">02 / Lebender Beweis</span>
+					<h2 id="hu-proof-h" class="hu-on-cream--strong">Ich verkaufe Ladezeit, Tracking und SEO. Prüfen Sie es an dieser Seite.</h2>
+				</div>
+				<p class="hu-section-heading__intro">Keine gekauften Siegel, keine geliehenen Logos. Diese Seite selbst — jederzeit von Ihnen nachmessbar.</p>
 			</div>
 
 			<div class="hu-liveproof hu-reveal">
@@ -395,15 +410,24 @@ get_header();
 	<!-- ═══════════════════════════════════════════════════
 	     04 / BELEG — genau einmal auf der Seite
 	     ═══════════════════════════════════════════════════ -->
-	<section class="hu-section hu-section--cream" id="beleg" data-track-section="beleg" aria-labelledby="hu-case-h">
-		<div class="hu-container hu-container--narrow">
-			<div class="hu-proof-headline hu-reveal">
-				<span class="hu-eyebrow hu-on-cream">03 / Beleg</span>
-				<h2 id="hu-case-h" class="hu-on-cream--strong">Was dabei herauskommt, wenn Website, Tracking und Vertrieb zusammenhängen.</h2>
-				<p>
-					Bei einem mittelständischen PV-Installationsbetrieb sanken die Kosten pro qualifizierter Anfrage um <?php echo esc_html( $e3_cpl_reduction ); ?> — von <?php echo esc_html( $e3_cpl_before ); ?> auf <?php echo esc_html( $e3_cpl_after ); ?>, bei <?php echo esc_html( $e3_lead_count ); ?> Anfragen in <?php echo esc_html( $e3_timeframe_dat ); ?> und <?php echo esc_html( $e3_sales_conv ); ?> Abschlussquote.
-				</p>
+	<section class="hu-section" id="beleg" data-track-section="beleg" aria-labelledby="hu-case-h">
+		<div class="hu-container">
+			<div class="hu-section-heading hu-reveal">
+				<div class="hu-section-heading__primary">
+					<span class="hu-eyebrow">03 / Beleg</span>
+					<h2 id="hu-case-h">Was dabei herauskommt, wenn Website, Tracking und Vertrieb gemeinsam&nbsp;wirken.</h2>
+				</div>
+				<p class="hu-section-heading__intro">Dokumentierter Referenzfall: <?php echo esc_html( $e3_case_label ); ?>.</p>
 			</div>
+
+			<dl class="hu-case-metrics hu-reveal">
+				<?php foreach ( $e3_case_metrics as $metric ) : ?>
+					<div class="hu-case-metric">
+						<dt class="hu-case-metric__value"><?php echo esc_html( $metric['value'] ); ?></dt>
+						<dd class="hu-case-metric__label"><?php echo esc_html( $metric['label'] ); ?></dd>
+					</div>
+				<?php endforeach; ?>
+			</dl>
 
 			<div class="hu-case-note hu-reveal">
 				<p class="hu-case-note__disclaimer">Referenzfall, keine pauschale Übertragbarkeitsgarantie.</p>
@@ -420,9 +444,11 @@ get_header();
 	     ═══════════════════════════════════════════════════ -->
 	<section class="hu-section" id="abgrenzung" data-track-section="abgrenzung" aria-labelledby="hu-fit-h">
 		<div class="hu-container hu-container--narrow">
-			<div class="hu-proof-headline hu-head--gap hu-reveal">
-				<span class="hu-eyebrow">04 / Abgrenzung</span>
-				<h2 id="hu-fit-h">Wann ich der falsche Weg bin.</h2>
+			<div class="hu-section-heading hu-section-heading--solo hu-reveal">
+				<div class="hu-section-heading__primary">
+					<span class="hu-eyebrow">04 / Abgrenzung</span>
+					<h2 id="hu-fit-h">Wann ich der falsche Weg bin.</h2>
+				</div>
 			</div>
 
 			<div class="hu-selfqual hu-reveal">
