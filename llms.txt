@@ -25,6 +25,7 @@
 ## Solar- und Wärmepumpen-Cluster
 - [Photovoltaik & Solar Leads kaufen – Alternative](/solar-leads-kaufen-alternative/) - Intercept-Page für Kauf-Suchintent: Lead-Anbieter einordnen und eigene Anfragesysteme als Alternative bewerten.
 - [Aroundhome Kosten für Handwerker](/aroundhome-solar-einordnung/) - Kosten-, Vertrags- und Portal-Fit-Entscheid mit CPO-Rechner auf Basis eigener Betriebswerte.
+- [Checkfox für Solar- und Wärmepumpen-Betriebe](/checkfox-solar-waermepumpe-einordnung/) - Portal-Mechanik, Seriositätsfrage und Kosten-Logik für Solar- und Wärmepumpen-Betriebe, mit CPO-Rechner auf Basis eigener Betriebswerte.
 - [Wärmepumpen Leads kaufen – Alternative](/waermepumpen-leads/) - Intercept-Page für Wärmepumpen-Lead-Kauf und eigenes Anfragesystem als Alternative.
 - [Eigene Leadgenerierung vs. Portale](/eigene-leadgenerierung-vs-portale/) - Vergleich von Portal-Leads und eigenem Anfragesystem: Mieten vs. Besitzen, TCO und Datenbesitz.
 - [Cost per Lead Photovoltaik](/cost-per-lead-photovoltaik/) - CPL-Analyse mit Szenarienvergleich und versteckten Kostentreibern.
