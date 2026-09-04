@@ -166,6 +166,18 @@ $toc_items = [
 		<ul class="hu-checkfox__sources">
 			<li><strong>Seriositätsprüfung:</strong> Anbieterangaben, Impressum, Vertragswerk, Datenschutzhinweise und Reklamationsregeln des jeweiligen Anbieters. Öffentliche Bewertungen liefern zusätzliche Perspektiven, ersetzen aber die Prüfung Ihres konkreten Vertrags nicht.</li>
 			<li><strong>Rechenlogik:</strong> Die voreingestellten Werte im Rechner sind Beispiele, keine Checkfox-Konditionen. Anfragepreis, Abschlussquote und Vertriebszeit stammen aus Ihrem Betrieb — erst damit wird die Rechnung belastbar.</li>
+			<?php
+			// Der Rechner arbeitet sonst nur mit Beispielwerten. Ein belegter
+			// eigener Referenzwert zeigt, welche Groessenordnung ein Kanalwechsel
+			// annehmen kann — als Prozentwert, nicht als Betrag, weil die
+			// absoluten Zahlen betriebsspezifisch sind und ohne Kontext mehr
+			// Genauigkeit vortaeuschen, als sie haben.
+			$cpl_reduction = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction' ) : '';
+			$case_url      = function_exists( 'hu_e3_canon' ) ? (string) ( hu_e3_canon()['url'] ?? '' ) : '';
+			if ( '' !== $cpl_reduction ) :
+				?>
+			<li><strong>Eigener Referenzwert:</strong> In dem von mir dokumentierten Solar-Projekt sanken die Kosten pro Anfrage um <?php echo esc_html( $cpl_reduction ); ?>, nachdem gekaufte Anfragen durch einen eigenen Anfrageweg ersetzt wurden. Das ist ein Betrieb, kein Marktmittelwert, und es ist keine Aussage über Checkfox — es zeigt nur, in welcher Größenordnung sich die Rechnung oben bewegen kann, wenn der Kanal wechselt. Ihre eigene Ausgangslage kann deutlich darunter oder darüber liegen<?php if ( '' !== $case_url ) : ?>. <a href="<?php echo esc_url( $case_url ); ?>" data-track-action="checkfox_deeper_case" data-track-category="internal_link" data-track-section="checkfox_methodology">Der dokumentierte Fall im Detail</a><?php endif; ?>.</li>
+			<?php endif; ?>
 			<li><strong>Grenzen:</strong> Diese Seite nennt keine Preise, Exklusivitätsregeln oder Qualitätsquoten eines Anbieters. Solche Angaben sind vertragsabhängig und ohne Einsicht in Ihren Vertrag nicht belegbar. Marktmechaniken ändern sich; maßgeblich ist immer Ihr aktueller Vertragsstand.</li>
 			<li><strong>Vertiefung:</strong> <a href="<?php echo esc_url( $tco_url ); ?>" data-track-action="checkfox_deeper_tco" data-track-category="internal_link" data-track-section="checkfox_methodology">TCO-Vergleich Portal vs. eigenes System</a>, <a href="<?php echo esc_url( $solar_url ); ?>" data-track-action="checkfox_deeper_solar" data-track-category="internal_link" data-track-section="checkfox_methodology">Photovoltaik-Anfragen</a>, <a href="<?php echo esc_url( $heatpump_url ); ?>" data-track-action="checkfox_deeper_heatpump" data-track-category="internal_link" data-track-section="checkfox_methodology">Wärmepumpen-Anfragen</a>.</li>
 		</ul>
@@ -177,7 +189,20 @@ $toc_items = [
 			<p>Wenn Anfragepreis, Abschlussquote und Vertriebsaufwand stehen, ordnen wir den Kanal mit Region, Projektwert und Portalabhängigkeit ein.</p>
 			<a class="hu-checkfox__button hu-checkfox__button--primary" href="<?php echo esc_url( $analysis_url ); ?>" data-track-action="cta_checkfox_final_marktcheck" data-track-category="lead_gen" data-track-section="checkfox_final">Marktcheck mit meinen Zahlen starten</a>
 			<?php // Das Portrait sitzt in der Autorenbox direkt darunter, hier waere es doppelt. ?>
-			<p class="hu-checkfox__byline">Einordnung von <?php echo esc_html( get_the_author() ); ?> · zuletzt aktualisiert am <?php echo esc_html( get_the_modified_date( 'd. F Y' ) ); ?></p>
+			<?php
+			// get_the_modified_date() liefert das Datum des gespeicherten Posts.
+			// Der sichtbare Inhalt dieser Seite steht aber in dieser Datei, und
+			// die aendert sich unabhaengig davon. Sonst behauptet die Byline ein
+			// Datum, das nicht zu dem passt, was darueber steht. Dieselbe Quelle
+			// speist hu_get_decision_cockpit_modified_time() im Schema.
+			$byline_date = function_exists( 'hu_get_subpage_last_updated_label' )
+				? hu_get_subpage_last_updated_label( __FILE__ )
+				: '';
+			if ( '' === $byline_date ) {
+				$byline_date = get_the_modified_date( 'd. F Y' );
+			}
+			?>
+			<p class="hu-checkfox__byline">Einordnung von <?php echo esc_html( get_the_author() ); ?> · zuletzt aktualisiert am <?php echo esc_html( $byline_date ); ?></p>
 		</div>
 	</section>
 </article>
