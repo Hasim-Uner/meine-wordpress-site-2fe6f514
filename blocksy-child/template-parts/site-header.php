@@ -229,26 +229,6 @@ $render_strategy_navigation = static function ( string $context ) use ( $strateg
 </header>
 <?php return; endif; ?>
 
-<?php
-/*
- * Der Premium-Layer ist bewusst nur für den globalen Standard-Header geladen.
- * Audit- und Energy-Header bleiben als fokussierte Spezialnavigation unberührt.
- * Da der Header über wp_body_open gerendert wird, wird das kleine Stylesheet
- * hier direkt referenziert; der Header ist bis zur JS-Reveal-Logik ohnehin
- * verborgen, wodurch kein sichtbarer ungestylter Zwischenzustand entsteht.
- */
-$premium_header_css_path = get_stylesheet_directory() . '/assets/css/site-header-premium.css';
-$premium_header_css_url  = get_stylesheet_directory_uri() . '/assets/css/site-header-premium.css';
-if ( is_file( $premium_header_css_path ) ) {
-	$premium_header_css_ver = function_exists( 'hu_get_asset_version' )
-		? hu_get_asset_version( $premium_header_css_path )
-		: (string) filemtime( $premium_header_css_path );
-	?>
-	<link rel="stylesheet" id="nexus-site-header-premium-css" href="<?php echo esc_url( add_query_arg( 'ver', $premium_header_css_ver, $premium_header_css_url ) ); ?>" media="all">
-	<?php
-}
-?>
-
 <header class="nx-site-header nx-site-header--premium" data-site-header role="banner">
 	<div class="nx-container">
 		<div class="nx-site-header__shell">

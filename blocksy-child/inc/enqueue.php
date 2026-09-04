@@ -80,6 +80,25 @@ function hu_enqueue_assets() {
 	// ── GLOBAL: Custom Header ──────────────────────────────────────
 	hu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-design-system' ] );
 
+	/*
+	 * Der Standard-Header wurde bisher erst in wp_body_open() um einen rohen
+	 * <link> fuer den Premium-Layer ergaenzt. Dadurch kannte WordPress keine
+	 * Abhaengigkeit zum Basis-Header und der Premium-Layer blieb selbst dann im
+	 * Dokument, wenn site-header.css in der Head-Kette fehlte. Als regulärer
+	 * Handle zieht er jetzt Basis-CSS und Design-System verbindlich mit.
+	 *
+	 * Audit-, Energy- und Blog-Kontexte rendern eigene Header-Varianten und
+	 * brauchen diesen zusaetzlichen Layer nicht.
+	 */
+	$uses_premium_site_header = ( ! function_exists( 'nexus_is_blog_header_context' ) || ! nexus_is_blog_header_context() )
+		&& ( ! function_exists( 'nexus_is_audit_page' ) || ! nexus_is_audit_page() )
+		&& ( ! function_exists( 'nexus_is_energy_systems_context' ) || ! nexus_is_energy_systems_context() )
+		&& ( ! function_exists( 'hu_is_energy_demo_request_path' ) || ! hu_is_energy_demo_request_path() );
+
+	if ( $uses_premium_site_header ) {
+		hu_enqueue_css( 'nexus-site-header-premium', 'site-header-premium.css', [ 'nexus-site-header-css' ] );
+	}
+
 	// ── GLOBAL: Core JS (Scroll-Spy, FAQ, Counter, Progress Bar) ──
 	hu_enqueue_js( 'nexus-core-js', 'nexus-core.js' );
 	hu_enqueue_js( 'nexus-site-header-js', 'site-header.js', [ 'nexus-core-js' ] );
