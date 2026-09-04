@@ -173,6 +173,36 @@ function nexus_get_seo_cockpit_eurostat_time_codes( $response ) {
 }
 
 /**
+ * Verify that the request really reduced every non-time dimension to one item.
+ *
+ * @param array<string, mixed>|WP_Error $response Eurostat response.
+ * @return bool
+ */
+function nexus_seo_cockpit_eurostat_has_singleton_non_time_dimensions( $response ) {
+	if ( is_wp_error( $response ) || ! is_array( $response ) ) {
+		return false;
+	}
+
+	$ids   = is_array( $response['id'] ?? null ) ? $response['id'] : [];
+	$sizes = is_array( $response['size'] ?? null ) ? $response['size'] : [];
+
+	if ( empty( $ids ) || count( $ids ) !== count( $sizes ) ) {
+		return false;
+	}
+
+	foreach ( $ids as $position => $id ) {
+		if ( 'time' === (string) $id ) {
+			continue;
+		}
+		if ( ! isset( $sizes[ $position ] ) || 1 !== (int) $sizes[ $position ] ) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
  * Read one JSON-stat value by linear position.
  *
  * @param array<string, mixed>|WP_Error $response Eurostat response.
@@ -201,22 +231,23 @@ function nexus_get_seo_cockpit_eurostat_value_at( $response, $position ) {
 /**
  * Convert one filtered two-period response into a compact signal.
  *
- * All non-time dimensions are constrained to one position by the request, so
- * the JSON-stat linear value positions map directly to chronological time.
- *
  * @param array<string, mixed>|WP_Error $response Eurostat response.
  * @return array<string, mixed>
  */
 function nexus_get_seo_cockpit_eurostat_series_summary( $response ) {
 	$empty = [
-		'value'     => null,
-		'previous'  => null,
-		'period'    => '',
-		'delta_pp'  => null,
-		'updated'   => '',
+		'value'    => null,
+		'previous' => null,
+		'period'   => '',
+		'delta_pp' => null,
+		'updated'  => '',
 	];
 
 	if ( is_wp_error( $response ) || ! is_array( $response ) ) {
+		return $empty;
+	}
+
+	if ( ! nexus_seo_cockpit_eurostat_has_singleton_non_time_dimensions( $response ) ) {
 		return $empty;
 	}
 
@@ -271,6 +302,9 @@ function nexus_get_seo_cockpit_eurostat_summary( $force = false ) {
 		}
 
 		$series[ $signal ] = nexus_get_seo_cockpit_eurostat_series_summary( $response );
+		if ( ! isset( $series[ $signal ]['value'] ) || ! is_numeric( $series[ $signal ]['value'] ) ) {
+			$errors[ $signal ] = 'Eurostat-Antwort konnte nicht eindeutig auf die erwartete Zeitreihe reduziert werden.';
+		}
 	}
 
 	$available = false;
@@ -282,11 +316,11 @@ function nexus_get_seo_cockpit_eurostat_summary( $force = false ) {
 	}
 
 	return [
-		'is_available' => $available,
-		'errors'       => $errors,
-		'dataset'      => 'nrg_ind_ren',
-		'de_total'     => $series['de_total'] ?? [],
-		'eu_total'     => $series['eu_total'] ?? [],
+		'is_available'   => $available,
+		'errors'         => $errors,
+		'dataset'        => 'nrg_ind_ren',
+		'de_total'       => $series['de_total'] ?? [],
+		'eu_total'       => $series['eu_total'] ?? [],
 		'de_electricity' => $series['de_electricity'] ?? [],
 		'eu_electricity' => $series['eu_electricity'] ?? [],
 	];
@@ -314,11 +348,11 @@ function nexus_render_seo_cockpit_eurostat_metric_card( $label, $series, $contex
 			if ( null !== $delta ) {
 				echo esc_html( sprintf( '%1$s%2$s %-Punkte vs. Vorjahr', $delta > 0 ? '+' : '', number_format_i18n( $delta, 1 ) ) );
 			} else {
-				echo esc_html( $context );
+				echo esc_html( 'kein Vorjahresvergleich' );
 			}
 			?>
 		</span>
-		<?php if ( '' !== $context ) : ?><span class="nexus-seo-cockpit__research-trend"><?php echo esc_html( $context ); ?></span><?php endif; ?>
+		<span class="nexus-seo-cockpit__research-trend"><?php echo esc_html( $context ); ?></span>
 	</article>
 	<?php
 }
@@ -351,7 +385,7 @@ function nexus_render_seo_cockpit_eurostat_panel( $summary, $can_manage ) {
 			</div>
 		</div>
 
-		<p class="nexus-seo-cockpit__hint">Kostenlose EU-Primärdaten ohne API-Key. V1 vergleicht Deutschland mit EU27 bei erneuerbarer Energie insgesamt und beim Anteil erneuerbarer Stromerzeugung. Die Werte sind Kontextsignale, kein SEO- oder Lead-Score.</p>
+		<p class="nexus-seo-cockpit__hint">Kostenlose EU-Primärdaten ohne API-Key. V1 vergleicht Deutschland mit EU27 bei erneuerbarer Energie insgesamt und beim Anteil erneuerbaren Stroms. Die Werte sind Kontextsignale, kein SEO- oder Lead-Score.</p>
 
 		<?php if ( $available ) : ?>
 			<div class="nexus-seo-cockpit__metrics nexus-seo-cockpit__research-energy-metrics">
