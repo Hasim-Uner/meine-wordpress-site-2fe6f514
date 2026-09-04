@@ -243,7 +243,7 @@ function nexus_render_seo_cockpit_research_page_v3() {
 			</div>
 			<?php if ( $can_manage && '' !== $api_key ) : ?>
 				<div class="nexus-seo-cockpit__toolbar-actions">
-					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_seo-cockpit_research_refresh' ) ); ?>">
+					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_seo_cockpit_research_refresh' ) ); ?>">
 						<?php wp_nonce_field( 'nexus_seo_cockpit_research_refresh' ); ?>
 						<button type="submit" class="button">CrUX neu laden</button>
 					</form>
