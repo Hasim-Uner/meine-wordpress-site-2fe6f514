@@ -104,17 +104,8 @@ function hu_normalize_positioned_schema_node( array $schema ) : array {
 	if ( home_url( '/#organization' ) === $id ) {
 		$schema['name']        = 'Haşim Üner';
 		$schema['description'] = 'WordPress-Entwicklung, technisches SEO, Tracking und Conversion für Unternehmen und Agenturen. Solar- und Wärmepumpen-Anfragesysteme bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.';
-		$schema['knowsAbout']  = [
-			'WordPress-Entwicklung',
-			'Technisches SEO',
-			'Tracking & Attribution',
-			'Server-Side Tracking',
-			'Conversion Rate Optimization',
-			'Landingpages & Funnel',
-			'Core Web Vitals',
-			'Performance Marketing',
-			'Solar- und Wärmepumpen-Leadgenerierung',
-		];
+		// Eine Quelle fuer beide Knoten; siehe hu_get_identity_knows_about().
+		$schema['knowsAbout']  = hu_get_identity_knows_about();
 		$schema['hasOfferCatalog'] = hu_get_positioned_schema_offer_catalog();
 
 		// hu_brand_map_url() liefert diese CID-URL inzwischen selbst. Der Block
@@ -149,17 +140,8 @@ function hu_normalize_positioned_schema_node( array $schema ) : array {
 	if ( function_exists( 'hu_person_schema_id' ) && hu_person_schema_id() === $id ) {
 		$schema['jobTitle']    = 'WordPress Freelancer und Tracking-Spezialist';
 		$schema['description'] = 'Haşim Üner verbindet WordPress-Entwicklung, technisches SEO, Tracking und Conversion für direkte Projekte und White-Label-Agenturarbeit. Anfragesysteme für Solar- und Wärmepumpen-Anbieter sind eine spezialisierte Vertikale.';
-		$schema['knowsAbout']  = [
-			'WordPress-Entwicklung',
-			'Technisches SEO',
-			'Tracking & Attribution',
-			'Server-Side Tracking',
-			'Conversion Rate Optimization',
-			'Landingpages & Funnel',
-			'Core Web Vitals',
-			'Performance Marketing',
-			'Solar- und Wärmepumpen-Leadgenerierung',
-		];
+		// Eine Quelle fuer beide Knoten; siehe hu_get_identity_knows_about().
+		$schema['knowsAbout']  = hu_get_identity_knows_about();
 	}
 
 	$freelancer_webpage_id = home_url( '/wordpress-freelancer-hannover/#webpage' );
