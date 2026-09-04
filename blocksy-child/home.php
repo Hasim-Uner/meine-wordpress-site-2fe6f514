@@ -71,7 +71,7 @@ $dossiers = [
 		'number'      => '02',
 		'title'       => 'WordPress & Performance',
 		'description' => 'Relaunch, technische Architektur, Ladezeit und Messprotokolle — ohne Labwerte mit Felddaten zu verwechseln.',
-		'category'    => $resolve_dossier_category( [ 'performance-marketing', 'wordpress', 'seo-sichtbarkeit' ] ),
+		'category'    => $resolve_dossier_category( [ 'wordpress-performance', 'performance-marketing', 'wordpress', 'seo-sichtbarkeit' ] ),
 	],
 	[
 		'number'      => '03',
