@@ -37,6 +37,7 @@ $nexus_seo_cockpit_modules = [
 	'seo-cockpit-research.php',
 	'seo-cockpit-research-energy-charts.php',
 	'seo-cockpit-research-destatis.php',
+	'seo-cockpit-research-eurostat.php',
 	'seo-cockpit-research-v2.php',
 	'seo-cockpit-research-v3.php',
 	'seo-cockpit-command-center.php',
