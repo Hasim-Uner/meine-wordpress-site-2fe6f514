@@ -4,7 +4,7 @@
  *
  * Loest die beiden alten Ueber-Mich-Templates ab (template-about.php,
  * template-about-editorial.php). Sechs Bloecke, keine Story-Strecke:
- * Hero, vier Stationen, Haltung, Werdegang, CTA, Schlusszeile.
+ * Hero, vier Stationen, Haltung, fuenf Arbeitsregeln, CTA, Schlusszeile.
  *
  * Route statt Template-Auswahl: die Seite haengt am Slug, damit die
  * Zuordnung nicht mehr im WP-Admin gewaehlt werden muss. Der Seeder
@@ -14,11 +14,16 @@
  * Hero und Stationen-Band haengen direkt an .hu-about statt am Inhalts-
  * container: beide brauchen die volle Breite fuer Anschnitt und Farbbruch.
  *
- * Der Werdegang steht zwischen Haltung und CTA, weil die Haltung eine
- * Behauptung ist und der Werdegang ihre Belege liefert. Die fruehere
+ * Die Arbeitsregeln stehen zwischen Haltung und CTA, weil die Haltung eine
+ * Behauptung ist und die Regeln zeigen, wonach entschieden wird. Die fruehere
  * Kompetenzleiste (WordPress, Tracking, Ads, CRO, Automatisierung) ist
  * ersatzlos entfallen: fuenf Etiketten sagen weniger als die Absaetze,
  * die jetzt an ihrer Stelle stehen.
+ *
+ * Gliederung: H1 ist der Name, die fuenf Regeln sind die einzigen H2 im
+ * Fliesstext, dazu die CTA-Ueberschrift. Die Stationen-Labels sind bewusst
+ * keine Ueberschriften — sie beschriften eine Grafik und hatten die
+ * Gliederung mit fast identischen Woertern verdoppelt.
  *
  * @package Blocksy_Child
  */
@@ -98,47 +103,55 @@ $about_stations = [
 	],
 ];
 
-// Werdegang: fuenf Kapitel, jedes mit einer tragenden Ueberschrift. Die vier
-// Stationen im dunklen Band sind der Index, diese Absaetze sind der Beleg —
-// deshalb wiederholen sich Vertrieb, Shop und Studium hier bewusst, aber mit
-// dem Detail, das eine Kennzahlzeile nicht tragen kann.
+// Fuenf Arbeitsregeln statt einer zweiten Biografie. Die vier Stationen im
+// dunklen Band tragen den Lebenslauf; hier steht, wonach entschieden wird.
+// Beides doppelt zu erzaehlen hatte die Gliederung der Seite verdoppelt.
+//
+// Die Anker-IDs sind fest vergeben und werden nicht aus der Ueberschrift
+// erzeugt: sie sind oeffentliche Sprungziele und sollen eine spaetere
+// Textaenderung ueberleben.
 //
 // Bewusst statisch und ohne data-hu-reveal: die Seite hat mit Portrait und
 // Systemlinie bereits ihre eine erlaubte Bewegungsgruppe.
-$about_vita = [
+$about_rules = [
 	[
-		'title'      => 'Woher ich komme',
+		'id'         => 'schwaechstes-glied',
+		'title'      => 'Das schwächste Glied zuerst',
 		'paragraphs' => [
-			'Mein Vater ist Bauunternehmer, Putz und Hochbau. Ich bin mit einem Betrieb am Küchentisch aufgewachsen: Angebote, Termine, Kunden, die anrufen, wenn etwas klemmt. Deshalb ist meine erste Frage an eine Website, was sie dem Betrieb bringt.',
+			'Zwischen der Suchanfrage und dem Auftrag liegen ein Dutzend Übergänge, und die Kette reißt immer nur an einer Stelle. Conversion-Arbeit an einer Seite, die niemand findet, ist verschwendetes Geld. Sichtbarkeit für eine Seite, die niemanden überzeugt, ist teuer eingekauftes Desinteresse.',
+			'Ich suche deshalb zuerst das schwächste Glied und arbeite daran, auch wenn es nicht das ist, wonach gefragt wurde. Meine Arbeit endet an der Stelle, an der Ihr Vertrieb übernimmt — was danach im Telefonat passiert, kann ich vorbereiten, aber nicht ersetzen.',
 		],
 	],
 	[
-		'title'      => 'Acht Jahre B2B-Vertrieb',
+		'id'         => 'defekt-oder-stellschraube',
+		'title'      => 'Defekt oder Stellschraube',
 		'paragraphs' => [
-			'Firmenkundengeschäft, überwiegend Telekommunikation: Verträge für Unternehmen und die Mobilfunkverträge ihrer Mitarbeiter.',
-			'In meinen Verkäufen war der Preis selten der Grund, warum ein Abschluss nicht zustande kam. Häufiger war es der falsche Ansprechpartner, ein Angebot mit zu vielen Optionen oder ein Unternehmen, das mit dem Zustand ganz gut leben konnte. Drei Gründe, die eine Website heute klären kann, bevor jemand zum Telefon greift.',
+			'Manches ist einfach kaputt: ein Formular, das auf dem Handy nicht abschickt, eine Seite, die vier Sekunden lädt, ein Tracking, das die Hälfte nicht zuordnet. Das repariert man, und es kostet nichts außer Arbeit.',
+			'Anderes ist eine Stellschraube, und die hat zwei Enden. Ein kürzeres Formular bringt mehr Anfragen und schlechtere. Ein Rabatt hebt die Conversion und senkt die Marge. Mehr Reichweite bringt mehr Kontakte und teurere. Hier gibt es kein Rezept, nur die Frage, welche Zahl steigen soll und welche dafür sinken darf.',
+			'Meine Antwort darauf ist meistens dieselbe: Zwei Anfragen, mit denen Ihr Vertrieb arbeiten kann, sind mehr wert als zehn, die er abtelefonieren muss. Aus acht Jahren Firmenkundenvertrieb weiß ich, woran ein Abschluss scheitert — selten am Preis, häufiger am falschen Ansprechpartner oder an einem Angebot mit zu vielen Optionen.',
 		],
 	],
 	[
-		'title'      => 'Vier Jahre eigener Onlineshop',
+		'id'         => 'zugaenge',
+		'title'      => 'Sie behalten die Zugänge',
 		'paragraphs' => [
-			'2019 bis 2023, nachhaltige Produkte: umweltfreundlich, langlebig, erklärungsbedürftig. Anzeigen, Produktseiten, Warenkorb, Checkout, E-Mail-Strecken — alles in meiner Hand, alles auf eigene Rechnung.',
-			'2023 gab es meinen Lieferanten in China nicht mehr. Ich habe den Shop geschlossen, statt monatelang Ersatz zu suchen. Eine schnelle Entscheidung, aus dem Bauch — aber eine klare.',
-			'Eine bessere Conversion war für mich wertlos, wenn hinterher weniger übrig blieb. Rabatte, Gratisversand, kürzere Formulare: Jede dieser Stellschrauben hebt eine Zahl und senkt eine andere. Wer sie nicht zusammen betrachtet, optimiert sich ärmer. Dieselbe Rechnung führe ich heute für Anfragen: Zwei Anfragen, mit denen Ihr Vertrieb arbeiten kann, sind mehr wert als zehn, die er abtelefonieren muss.',
+			'Alles läuft auf Ihrem Hosting, Ihrer Domain, Ihrem Google-Konto. Ich brauche Zugriff und besitze nichts davon. Was ich einrichte, dokumentiere ich so, dass ein anderer Entwickler es übernehmen kann, ohne mich anzurufen.',
+			'Sie arbeiten mit einem Einzelnen. Das bringt kurze Wege, und es bedeutet, dass ich ausfallen kann. Was ich hinterlasse, ist deshalb so gebaut, dass Sie ohne mich weiterkommen.',
 		],
 	],
 	[
-		'title'      => 'Medienwissenschaft',
+		'id'         => 'ueberzeugen',
+		'title'      => 'Überzeugen ja, täuschen nein',
 		'paragraphs' => [
-			'Medientheorie, Mediensoziologie, Medienpsychologie, Medientechnik, webbasierte Informationssysteme. Meine Bachelorarbeit habe ich über persuasive Online-Werbung geschrieben. Mein Befund damals: Die Formate überzeugten kaum. Interaktiv waren sie, vor allem aber störend — Pop-ups, Unterbrechungen.',
-			'Überzeugen ist deshalb nichts Anrüchiges. Es wird es erst, wenn eins von zwei Dingen fehlt: dass das Versprechen hält, oder dass der Weg dorthin ehrlich war. Kein erfundener Countdown, keine Knappheit, die keine ist, keine Kosten, die erst im letzten Schritt auftauchen. Bei einem Projekt fange ich deshalb bei der Frage an, was Sie tatsächlich liefern können. Alles andere verschiebt das Problem nur ins Erstgespräch.',
+			'Meine Bachelorarbeit habe ich über persuasive Online-Werbung geschrieben, mit dem Befund, dass die Formate damals kaum überzeugten. Interaktiv waren sie, vor allem aber störend.',
+			'Überzeugen bleibt trotzdem legitim, solange zwei Dinge stimmen: Das Versprechen hält, und der Weg dorthin war ehrlich. Kein erfundener Countdown, keine Knappheit, die keine ist, keine Kosten, die erst im letzten Schritt auftauchen. Das prüfe ich im Erstgespräch, indem ich frage, was Sie bei einer Verdopplung der Anfragen tatsächlich noch bedienen könnten.',
 		],
 	],
 	[
-		'title'      => 'Arbeiten mit KI',
+		'id'         => 'werkzeuge',
+		'title'      => 'Was Werkzeuge nicht übernehmen',
 		'paragraphs' => [
-			'Ich arbeite täglich mit KI-Werkzeugen: beim Recherchieren, beim Bauen, beim Gegenlesen. Das Potenzial ist da — mehr Varianten prüfen, schneller zu einem belastbaren Stand kommen. Es zählt nur, wenn die Qualität dabei oben bleibt.',
-			'Was die Werkzeuge nicht liefern, ist der Kontext Ihres Betriebs, ein Gefühl dafür, was ein Kunde meint, wenn er etwas anderes sagt, und die Entscheidung, in welcher Reihenfolge gebaut wird. Das ist der Teil der Arbeit, der geblieben ist — und der schwierigere.',
+			'KI verschiebt, was Aufwand kostet — nicht, wer die Verantwortung trägt. Der Kontext Ihres Betriebs, das Gefühl dafür, was ein Kunde meint, wenn er etwas anderes sagt, und die Entscheidung über die Reihenfolge bleiben Arbeit. Ein Ergebnis, das schnell da ist und nicht taugt, hat niemandem geholfen.',
 		],
 	],
 ];
@@ -186,7 +199,8 @@ get_header();
 						data-hu-reveal
 					>
 						<p class="hu-about__station-figure<?php echo empty( $station['wrap'] ) ? '' : ' hu-about__station-figure--words'; ?>"><?php echo esc_html( $station['figure'] ); ?></p>
-						<h2 class="hu-about__station-title"><?php echo esc_html( $station['title'] ); ?></h2>
+						<?php /* Beschriftung einer Grafik, kein Kapitel: als <h2> stand die Timeline mit fast denselben Woertern ein zweites Mal in der Gliederung der Seite. */ ?>
+					<p class="hu-about__station-title"><strong><?php echo esc_html( $station['title'] ); ?></strong></p>
 						<p class="hu-about__station-text"><?php echo esc_html( $station['text'] ); ?></p>
 						<?php if ( ! empty( $station['url'] ) ) : ?>
 							<a class="hu-about__station-link" href="<?php echo esc_url( $station['url'] ); ?>" data-track-action="about_station_solar_case" data-track-category="trust" data-track-section="stations"><?php echo esc_html( $station['label'] ); ?></a>
@@ -205,16 +219,14 @@ get_header();
 				</p>
 			</section>
 
-			<!-- 4 — WERDEGANG: die Belege hinter der Haltung -->
-			<section class="hu-about__vita" aria-label="Werdegang">
-				<?php foreach ( $about_vita as $chapter ) : ?>
-					<article class="hu-about__vita-item">
-						<h2 class="hu-about__vita-title"><?php echo esc_html( $chapter['title'] ); ?></h2>
-						<div class="hu-about__vita-body">
-							<?php foreach ( $chapter['paragraphs'] as $paragraph ) : ?>
-								<p><?php echo esc_html( $paragraph ); ?></p>
-							<?php endforeach; ?>
-						</div>
+			<!-- 4 — ARBEITSREGELN: wonach entschieden wird -->
+			<section class="hu-about__rules" aria-label="Arbeitsweise">
+				<?php foreach ( $about_rules as $rule ) : ?>
+					<article class="hu-about__rule">
+						<h2 class="hu-about__rule-title" id="<?php echo esc_attr( $rule['id'] ); ?>"><?php echo esc_html( $rule['title'] ); ?></h2>
+						<?php foreach ( $rule['paragraphs'] as $paragraph ) : ?>
+							<p class="hu-about__rule-text"><?php echo esc_html( $paragraph ); ?></p>
+						<?php endforeach; ?>
 					</article>
 				<?php endforeach; ?>
 			</section>
