@@ -850,6 +850,12 @@ function hu_get_noindex_follow_slugs() {
 		'wordpress-wartung-hannover',
 		'roi-rechner',
 		'seo',
+		// Ab 2026-09-04 auf /solar-leads-kaufen-alternative/ umgeleitet. Der
+		// Eintrag hier haelt beide Slugs aus der Sitemap; das Redirect-Ziel
+		// bleibt indexierbar. Beides sind Posts, keine Pages — siehe die
+		// erweiterte Aufloesung in nexus_get_sitemap_excluded_ids().
+		'solar-leads-kaufen-lohnt-sich',
+		'photovoltaik-leads-tco-rechnung',
 		// '/whitelabel-retainer/' ist bewusst nicht mehr hier gelistet: die
 		// Agenturseite ist ab sofort ein indexierbarer Einstieg mit eigenem
 		// Navigationspunkt "Für Agenturen". Die beiden Alias-Slugs bleiben
@@ -1567,7 +1573,11 @@ function nexus_get_sitemap_excluded_ids() {
 
 	$ids = [];
 	foreach ( nexus_get_sitemap_excluded_slugs() as $slug ) {
-		$page = get_page_by_path( $slug );
+		// Auch `post` aufloesen, nicht nur `page`. Bis 2026-09-04 waren alle
+		// ausgeschlossenen Slugs zufaellig Seiten, deshalb fiel die Luecke nicht
+		// auf; ein noindex- oder 301-Blogpost blieb in der Sitemap stehen und
+		// erzeugte genau das Mischsignal, das dieser Filter verhindern soll.
+		$page = get_page_by_path( $slug, OBJECT, [ 'page', 'post' ] );
 		if ( $page instanceof WP_Post ) {
 			$ids[] = (int) $page->ID;
 		}
@@ -1584,7 +1594,9 @@ function nexus_get_sitemap_excluded_ids() {
  * oder 301-Redirect. Google würde sonst Crawl-Budget auf Dead-End-URLs verschwenden.
  */
 add_filter( 'wp_sitemaps_posts_query_args', function ( $args, $post_type ) {
-	if ( 'page' !== $post_type ) {
+	// IDs sind global eindeutig, deshalb ist es unschaedlich, dieselbe
+	// Ausschlussliste an beide Abfragen zu geben.
+	if ( ! in_array( $post_type, [ 'page', 'post' ], true ) ) {
 		return $args;
 	}
 
