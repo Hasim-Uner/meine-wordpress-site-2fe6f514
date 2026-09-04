@@ -563,14 +563,10 @@ function hu_get_post_schema_image_object( $post_id ) {
 }
 
 /**
- * Return schema copy and modification time for the repo-owned Aroundhome view.
+ * Return the cockpit template path for a slug, or an empty string.
  *
- * The WordPress post remains the route container, but its editor title, excerpt
- * and modified date no longer describe the content rendered by single.php.
- *
- * @param int    $post_id              Queried post ID.
- * @param string $fallback_description Existing schema description.
- * @return array{headline: string, description: string, dateModified: string}
+ * @param string $slug Post slug.
+ * @return string Absolute filesystem path, or '' when the slug has no cockpit.
  */
 function hu_get_decision_cockpit_template( $slug ) {
     $templates = [
@@ -612,6 +608,16 @@ function hu_get_decision_cockpit_modified_time( $post_id, $slug ) {
     return $modified;
 }
 
+/**
+ * Return schema copy and modification time for the repo-owned Aroundhome view.
+ *
+ * The WordPress post remains the route container, but its editor title, excerpt
+ * and modified date no longer describe the content rendered by single.php.
+ *
+ * @param int    $post_id              Queried post ID.
+ * @param string $fallback_description Existing schema description.
+ * @return array{headline: string, description: string, dateModified: string}
+ */
 function hu_get_aroundhome_decision_schema_data( $post_id, $fallback_description ) {
     $forced_seo  = function_exists( 'hu_get_forced_singular_seo' ) ? hu_get_forced_singular_seo( $post_id ) : [];
     $description = ! empty( $forced_seo['description'] ) ? (string) $forced_seo['description'] : $fallback_description;
