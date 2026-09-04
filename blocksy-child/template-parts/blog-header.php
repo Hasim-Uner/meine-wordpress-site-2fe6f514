@@ -12,6 +12,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Article System V1 pilot: the three most important provider articles use a
+// deliberately quiet reading header instead of the full commercial blog menu.
+// The rest of the blog keeps the existing navigation unchanged until the
+// reader system has been validated live.
+$article_system_v1_slugs = [
+	'aroundhome-solar-einordnung',
+	'checkfox-solar-waermepumpe-einordnung',
+	'wattfox-solar-leads-einordnung',
+];
+
+if ( is_singular( 'post' ) ) {
+	$article_system_v1_slug = (string) get_post_field( 'post_name', get_queried_object_id() );
+
+	if ( in_array( $article_system_v1_slug, $article_system_v1_slugs, true ) ) {
+		get_template_part(
+			'template-parts/article-reader-header',
+			null,
+			[
+				'slug' => $article_system_v1_slug,
+			]
+		);
+		return;
+	}
+}
+
 $primary_urls       = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $home_url           = $primary_urls['home'] ?? home_url( '/' );
 $blog_url           = $primary_urls['blog'] ?? home_url( '/blog/' );

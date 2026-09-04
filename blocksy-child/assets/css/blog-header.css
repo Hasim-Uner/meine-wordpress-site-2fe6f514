@@ -532,3 +532,440 @@
     border-color: var(--nx-border);
     box-shadow: var(--nx-shadow-sm);
 }
+
+/* =============================================================
+   Article System V1 — quiet reading mode for flagship articles
+   ============================================================= */
+
+.nexus-article-reader-header {
+    position: relative;
+    z-index: 12;
+    width: 100%;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 16%, var(--nx-border));
+    background: #0b0f12;
+    color: var(--nx-text);
+}
+
+.nexus-article-reader-header__inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(1rem, 2.4vw, 2.5rem);
+    min-height: 64px;
+    padding-block: 10px;
+}
+
+.nexus-article-reader-header__brand.site-logo {
+    color: var(--nx-text);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.nexus-article-reader-header__trail,
+.nexus-article-reader-header__meta {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.nexus-article-reader-header__trail {
+    gap: 0.55rem;
+    overflow: hidden;
+    color: var(--nx-text-dim);
+    font-size: 0.82rem;
+}
+
+.nexus-article-reader-header__trail a {
+    color: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.nexus-article-reader-header__trail a:last-of-type {
+    overflow: hidden;
+    color: var(--nx-text-muted);
+    text-overflow: ellipsis;
+}
+
+.nexus-article-reader-header__trail a:hover,
+.nexus-article-reader-header__trail a:focus-visible,
+.nexus-article-reader-header__brand:hover,
+.nexus-article-reader-header__brand:focus-visible {
+    color: var(--accent-hover);
+}
+
+.nexus-article-reader-header__meta {
+    justify-content: flex-end;
+    gap: 0.75rem;
+    color: var(--nx-text-dim);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.nexus-article-reader-header__meta span + span::before {
+    content: '·';
+    margin-right: 0.75rem;
+    color: color-mix(in srgb, var(--nx-text-dim) 55%, transparent);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--with-blog-header {
+    padding-top: clamp(2rem, 5vw, 4.75rem) !important;
+}
+
+.nexus-article-reader-header ~ .nexus-share-rail,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-bottom-share,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-rating,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-related-content,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta {
+    display: none !important;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-next {
+    width: min(900px, calc(100% - 40px));
+    margin-inline: auto;
+}
+
+/* Generic provider article pilot (Wattfox): text first, no duplicate cover or
+   promotional bridge, and the existing generated TOC becomes a static index. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial {
+    width: min(900px, calc(100% - 40px));
+    margin-inline: auto;
+    padding: 0 0 clamp(2rem, 5vw, 4rem);
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial::before {
+    content: 'Anbieter-Einordnung';
+    display: block;
+    margin-bottom: 1rem;
+    color: var(--accent-hover);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial .nexus-meta-top,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial .nexus-hero-footer,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-context {
+    display: none !important;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial .nexus-title {
+    max-width: 24ch;
+    margin-bottom: 1.25rem;
+    color: var(--nx-text);
+    font-size: clamp(2.35rem, 6vw, 4.6rem);
+    font-weight: 730;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+    text-wrap: balance;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial .nexus-subtitle {
+    max-width: 64ch;
+    margin: 0;
+    color: var(--nx-text-muted);
+    font-size: clamp(1.05rem, 1.5vw, 1.22rem);
+    line-height: 1.65;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-post-layout {
+    display: block;
+    width: min(900px, calc(100% - 40px));
+    margin-inline: auto;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar {
+    width: 100%;
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .sticky-toc {
+    position: static;
+    inset: auto;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem 1.5rem;
+    align-items: start;
+    padding: 1rem 0;
+    border: 1px solid var(--nx-border);
+    border-width: 1px 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .sticky-toc h2 {
+    margin: 0;
+    color: var(--accent-hover);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    line-height: 1.7;
+    text-transform: uppercase;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .sticky-toc ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .sticky-toc li {
+    margin: 0;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .sticky-toc a {
+    color: var(--nx-text-muted);
+    font-size: 0.86rem;
+    text-decoration: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .sticky-toc a:hover,
+.nexus-article-reader-header ~ .nexus-single-container .sticky-toc a:focus-visible {
+    color: var(--nx-text);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content {
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-inline-cta {
+    display: none !important;
+}
+
+/* Checkfox pilot: same reading rhythm, no second sticky navigation layer. */
+.nexus-article-reader-header ~ .nexus-single-container .hu-checkfox {
+    width: min(960px, calc(100% - 40px));
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-checkfox__hero {
+    display: block;
+    max-width: 900px;
+    margin-inline: auto;
+    padding: 0 0 clamp(2rem, 5vw, 4rem);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-checkfox__decision-visual,
+.nexus-article-reader-header ~ .nexus-single-container .hu-checkfox__hero-note,
+.nexus-article-reader-header ~ .nexus-single-container .hu-checkfox__bar-cta {
+    display: none !important;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-checkfox__hero h1 {
+    max-width: 24ch;
+    margin-bottom: 1.25rem;
+    font-size: clamp(2.35rem, 6vw, 4.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-checkfox__hero-lead {
+    max-width: 64ch;
+    margin-bottom: 1.4rem;
+    font-size: clamp(1.05rem, 1.5vw, 1.22rem) !important;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-checkfox__bar {
+    position: static !important;
+    inset: auto !important;
+    z-index: auto;
+    display: block;
+    max-width: 900px;
+    min-height: 0;
+    margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+    padding: 1rem 0;
+    border: 1px solid var(--checkfox-line);
+    border-width: 1px 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-checkfox__toc ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem 1rem;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-checkfox__toc a {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--checkfox-muted);
+    font-size: 0.86rem;
+}
+
+/* Aroundhome pilot: retain the useful calculators and decision content but
+   remove the separate art direction so the article belongs to the same site. */
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome {
+    --ah-ink-bg: #0b0f12;
+    --ah-ink-surface: #11161a;
+    --ah-ink-surface-2: #171d22;
+    --ah-ink-text: #f2ebdd;
+    --ah-ink-muted: #b9b1a3;
+    --ah-ink-line: #303940;
+    --ah-paper-bg: #0b0f12;
+    --ah-paper-surface: #11161a;
+    --ah-paper-surface-2: #171d22;
+    --ah-paper-text: #f2ebdd;
+    --ah-paper-muted: #b9b1a3;
+    --ah-paper-line: #303940;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__hero {
+    padding-block: 0 clamp(2rem, 5vw, 4rem);
+    border-bottom: 0;
+    background: transparent;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__hero-grid {
+    display: block;
+    max-width: 900px;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__decision-sheet,
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__hero-note,
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__band--paper::before {
+    display: none !important;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__hero h1 {
+    max-width: 24ch;
+    margin-bottom: 1.25rem;
+    font-size: clamp(2.35rem, 6vw, 4.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__hero-lead {
+    max-width: 64ch;
+    margin-bottom: 1.4rem;
+    font-size: clamp(1.05rem, 1.5vw, 1.22rem) !important;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__jump {
+    position: static !important;
+    inset: auto !important;
+    max-width: 900px;
+    margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+    border: 1px solid var(--ah-paper-line);
+    border-width: 1px 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__jump .hu-aroundhome__inner {
+    width: 100%;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__jump ul {
+    flex-wrap: wrap;
+    gap: 0.45rem 1rem;
+    padding-block: 1rem;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__jump a {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ah-paper-muted);
+    font-size: 0.86rem;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__band,
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__band--ink,
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__band--paper {
+    border-top: 1px solid color-mix(in srgb, var(--ah-ink-line) 72%, transparent);
+    background: #0b0f12;
+    color: var(--ah-ink-text);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__inner {
+    width: min(900px, calc(100% - 40px));
+}
+
+@media (max-width: 980px) {
+    .nexus-article-reader-header__inner {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .nexus-article-reader-header__meta {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        padding-top: 0.5rem;
+        border-top: 1px solid color-mix(in srgb, var(--nx-border) 70%, transparent);
+    }
+}
+
+@media (max-width: 640px) {
+    .nexus-article-reader-header__inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem 1rem;
+        padding-block: 12px;
+    }
+
+    .nexus-article-reader-header__brand.site-logo {
+        margin-right: auto;
+    }
+
+    .nexus-article-reader-header__trail {
+        order: 3;
+        width: 100%;
+        font-size: 0.76rem;
+    }
+
+    .nexus-article-reader-header__meta {
+        order: 4;
+        width: 100%;
+        padding-top: 0.55rem;
+        font-size: 0.64rem;
+    }
+
+    .nexus-article-reader-header__author {
+        display: none;
+    }
+
+    .nexus-article-reader-header ~ .nexus-single-container--with-blog-header {
+        padding-top: 2rem !important;
+    }
+
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial,
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-post-layout,
+    .nexus-article-reader-header ~ .nexus-single-container .hu-checkfox,
+    .nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__inner {
+        width: min(100% - 28px, 900px);
+    }
+
+    .nexus-article-reader-header ~ .nexus-single-container .sticky-toc {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+    }
+
+    .nexus-article-reader-header ~ .nexus-single-container .hu-checkfox__hero h1,
+    .nexus-article-reader-header ~ .nexus-single-container .hu-aroundhome__hero h1,
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial .nexus-title {
+        font-size: clamp(2.15rem, 11vw, 3.4rem);
+    }
+}
