@@ -439,7 +439,22 @@ function nexus_get_seo_cockpit_primary_menu_links() {
 	$links    = [];
 	$location = function_exists( 'nexus_get_site_header_menu_location' ) ? nexus_get_site_header_menu_location() : '';
 
-	if ( '' !== $location ) {
+	/*
+	 * The visible standard header is repo-controlled. Read its canonical
+	 * fallback view first; a stored WordPress menu is only a compatibility
+	 * fallback for installations on which the contract is unavailable.
+	 */
+	if ( function_exists( 'nexus_get_site_header_fallback_items' ) ) {
+		foreach ( (array) nexus_get_site_header_fallback_items() as $item ) {
+			if ( empty( $item['url'] ) ) {
+				continue;
+			}
+
+			$links[] = (string) $item['url'];
+		}
+	}
+
+	if ( empty( $links ) && '' !== $location ) {
 		$locations = get_nav_menu_locations();
 		$menu_id   = isset( $locations[ $location ] ) ? absint( $locations[ $location ] ) : 0;
 		$items     = $menu_id ? wp_get_nav_menu_items( $menu_id ) : [];
@@ -463,17 +478,49 @@ function nexus_get_seo_cockpit_primary_menu_links() {
 		}
 	}
 
-	if ( empty( $links ) && function_exists( 'nexus_get_site_header_fallback_items' ) ) {
-		foreach ( (array) nexus_get_site_header_fallback_items() as $item ) {
-			if ( empty( $item['url'] ) ) {
-				continue;
-			}
+	return nexus_normalize_seo_cockpit_internal_link_list( $links );
+}
 
-			$links[] = (string) $item['url'];
+/**
+ * Return the tracking hooks emitted by the repo-owned standard header.
+ *
+ * This is diagnostic metadata only; it does not add runtime measurement.
+ *
+ * @return array<int, string>
+ */
+function nexus_get_seo_cockpit_site_header_tracking_actions() {
+	if ( ! function_exists( 'hu_get_site_header_navigation_contract' ) ) {
+		return [];
+	}
+
+	$contract    = hu_get_site_header_navigation_contract();
+	$definitions = (array) ( $contract['routes'] ?? [] );
+
+	foreach ( (array) ( $contract['groups'] ?? [] ) as $group ) {
+		$definitions = array_merge( $definitions, (array) ( $group['items'] ?? [] ) );
+	}
+
+	$definitions = array_merge( $definitions, (array) ( $contract['meta']['links'] ?? [] ) );
+
+	if ( ! empty( $contract['cta'] ) && is_array( $contract['cta'] ) ) {
+		$definitions[] = $contract['cta'];
+	}
+
+	if ( ! empty( $contract['toggle'] ) && is_array( $contract['toggle'] ) ) {
+		$definitions[] = $contract['toggle'];
+	}
+
+	$actions = [];
+
+	foreach ( $definitions as $definition ) {
+		$action = sanitize_key( (string) ( $definition['track'] ?? '' ) );
+
+		if ( '' !== $action ) {
+			$actions[] = $action;
 		}
 	}
 
-	return nexus_normalize_seo_cockpit_internal_link_list( $links );
+	return array_values( array_unique( $actions ) );
 }
 
 /**
@@ -517,9 +564,10 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 
 	$sources = [
 		'site_header' => [
-			'key'   => 'site_header',
-			'label' => 'Header-Navigation',
-			'links' => array_merge(
+			'key'              => 'site_header',
+			'label'            => 'Header-Navigation',
+			'tracking_actions' => nexus_get_seo_cockpit_site_header_tracking_actions(),
+			'links'            => array_merge(
 				[ $home_url ],
 				$primary_links
 			),
@@ -582,7 +630,7 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 	];
 
 	foreach ( $sources as $key => $source ) {
-		$normalized               = nexus_normalize_seo_cockpit_internal_link_list( (array) ( $source['links'] ?? [] ) );
+		$normalized               = nexus_normalize_seo_cockpit_internal_link_list( (array) $source['links'] );
 		$target_counts            = nexus_get_seo_cockpit_internal_target_counts( $normalized );
 		$sources[ $key ]['links'] = $normalized;
 		$sources[ $key ]['link_count'] = count( $normalized );
@@ -670,8 +718,9 @@ function nexus_get_seo_cockpit_sitewide_outgoing_context( $url, $context = [] ) 
 	$shells     = nexus_get_seo_cockpit_sitewide_shell_definitions();
 	$shell_key  = nexus_get_seo_cockpit_sitewide_shell_key_for_url( $url, $context );
 	$shell      = isset( $shells[ $shell_key ] ) ? $shells[ $shell_key ] : $shells['default'];
-	$target_map = [];
-	$areas      = [];
+	$target_map       = [];
+	$areas            = [];
+	$tracking_actions = [];
 
 	foreach ( (array) ( $shell['source_keys'] ?? [] ) as $source_key ) {
 		if ( empty( $sources[ $source_key ] ) || ! is_array( $sources[ $source_key ] ) ) {
@@ -692,11 +741,14 @@ function nexus_get_seo_cockpit_sitewide_outgoing_context( $url, $context = [] ) 
 		}
 
 		$areas[] = [
-			'key'            => (string) ( $source['key'] ?? $source_key ),
-			'label'          => (string) ( $source['label'] ?? $source_key ),
-			'link_count'     => max( 0, (int) ( $source['link_count'] ?? 0 ) ),
-			'unique_targets' => max( 0, (int) ( $source['unique_targets'] ?? 0 ) ),
+			'key'              => (string) ( $source['key'] ?? $source_key ),
+			'label'            => (string) ( $source['label'] ?? $source_key ),
+			'link_count'       => max( 0, (int) ( $source['link_count'] ?? 0 ) ),
+			'unique_targets'   => max( 0, (int) ( $source['unique_targets'] ?? 0 ) ),
+			'tracking_actions' => array_values( array_filter( array_map( 'sanitize_key', (array) ( $source['tracking_actions'] ?? [] ) ) ) ),
 		];
+
+		$tracking_actions = array_merge( $tracking_actions, (array) ( $source['tracking_actions'] ?? [] ) );
 	}
 
 	return [
@@ -706,6 +758,7 @@ function nexus_get_seo_cockpit_sitewide_outgoing_context( $url, $context = [] ) 
 		'outgoing_unique_urls' => count( $target_map ),
 		'top_targets'         => nexus_get_seo_cockpit_ranked_link_list( $target_map, 5, 'sitewide' ),
 		'sources'             => $areas,
+		'tracking_actions'    => array_values( array_unique( array_filter( array_map( 'sanitize_key', $tracking_actions ) ) ) ),
 	];
 }
 
@@ -718,7 +771,7 @@ function nexus_get_seo_cockpit_sitewide_outgoing_context( $url, $context = [] ) 
  * @return array<string, mixed>
  */
 function nexus_get_seo_cockpit_internal_link_graph() {
-	$cache_key = nexus_get_seo_cockpit_cache_key( 'link_graph', [ home_url( '/' ), 'sitewide_v4' ] );
+	$cache_key = nexus_get_seo_cockpit_cache_key( 'link_graph', [ home_url( '/' ), 'sitewide_v5' ] );
 	$cached    = get_transient( $cache_key );
 
 	if ( is_array( $cached ) ) {
@@ -957,6 +1010,7 @@ function nexus_get_seo_cockpit_internal_link_context( $url, $context = [] ) {
 			'shell'                => (string) ( $sitewide_outgoing['shell'] ?? '' ),
 			'shell_label'          => (string) ( $sitewide_outgoing['shell_label'] ?? '' ),
 			'sources'              => isset( $sitewide_outgoing['sources'] ) && is_array( $sitewide_outgoing['sources'] ) ? $sitewide_outgoing['sources'] : [],
+			'tracking_actions'     => isset( $sitewide_outgoing['tracking_actions'] ) && is_array( $sitewide_outgoing['tracking_actions'] ) ? $sitewide_outgoing['tracking_actions'] : [],
 		],
 		'totals'               => [
 			'incoming_links'       => (int) ( $totals_payload['incoming_links'] ?? 0 ),

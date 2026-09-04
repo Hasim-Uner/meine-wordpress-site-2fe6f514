@@ -984,6 +984,11 @@ function nexus_render_seo_cockpit_detail_view( $detail ) {
 			$sitewide_links = isset( $link_context['sitewide'] ) && is_array( $link_context['sitewide'] ) ? $link_context['sitewide'] : [];
 			$total_links    = isset( $link_context['totals'] ) && is_array( $link_context['totals'] ) ? $link_context['totals'] : [];
 			$sitewide_labels = [];
+			$sitewide_tracking_actions = array_values(
+				array_filter(
+					array_map( 'sanitize_key', (array) ( $sitewide_links['tracking_actions'] ?? [] ) )
+				)
+			);
 
 			foreach ( (array) ( $sitewide_links['sources'] ?? [] ) as $source ) {
 				if ( empty( $source['label'] ) ) {
@@ -1018,6 +1023,7 @@ function nexus_render_seo_cockpit_detail_view( $detail ) {
 				<li><strong>Globale Linkziele:</strong> <?php echo esc_html( number_format_i18n( (float) ( $sitewide_links['outgoing_unique_urls'] ?? 0 ) ) ); ?></li>
 				<li><strong>Globale Linkplatzierungen:</strong> <?php echo esc_html( number_format_i18n( (float) ( $sitewide_links['outgoing_links'] ?? 0 ) ) ); ?></li>
 				<li><strong>Sitewide-Bereiche:</strong> <?php echo esc_html( ! empty( $sitewide_labels ) ? implode( ', ', $sitewide_labels ) : '—' ); ?></li>
+				<li><strong>Tracking-Hooks der Shell:</strong> <?php echo esc_html( ! empty( $sitewide_tracking_actions ) ? implode( ', ', $sitewide_tracking_actions ) : '—' ); ?></li>
 				<li><strong>Linkgraph-Notiz:</strong> <?php echo esc_html( (string) ( $link_context['note'] ?? 'Noch nicht gemessen' ) ); ?></li>
 			</ul>
 		</section>

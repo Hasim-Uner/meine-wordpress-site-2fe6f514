@@ -9,14 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$brand_text   = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
-$eyebrow_text = nexus_get_site_header_eyebrow();
-$panel_id     = 'nx-site-header-panel';
-$routes       = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
-$request_url  = $routes['marketcheck'] ?? ( function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
-$project_url  = $routes['project_request'] ?? ( function_exists( 'hu_get_navigation_project_request_url' )
-	? hu_get_navigation_project_request_url()
-	: add_query_arg( [ 'type' => 'project', 'focus' => 'implementation_scope' ], home_url( '/kontakt/' ) ) );
+$brand_text = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
+$routes     = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+$request_url = $routes['marketcheck'] ?? ( function_exists( 'hu_get_request_analysis_url' )
+	? hu_get_request_analysis_url()
+	: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
 $audit_header_meta_items = function_exists( 'nexus_get_audit_header_meta_items' ) ? nexus_get_audit_header_meta_items() : [];
 $home_label = sprintf(
 	/* translators: %s: site or brand name. */
@@ -30,151 +27,6 @@ if ( empty( $audit_header_meta_items ) ) {
 		'Solar- und Wärmepumpen-Fokus',
 	];
 }
-
-/*
- * Eine zentrale Navigationsquelle: derselbe Contract wird auch beim
- * WordPress-Menü-Rebuild verwendet. So können Theme-Wechsel oder Altzustände
- * nicht wieder "WordPress Agentur" bzw. den Marktcheck als globale CTA setzen.
- */
-if ( function_exists( 'hu_get_primary_navigation_contract' ) ) {
-	$strategy_nav_items = hu_get_primary_navigation_contract();
-} else {
-	$strategy_nav_items = [
-		[
-			'label'    => __( 'WordPress Freelancer', 'blocksy-child' ),
-			'url'      => home_url( '/wordpress-freelancer-hannover/' ),
-			'current'  => false,
-			'class'    => 'nav-freelancer-link',
-			'track'    => 'nav_header_freelancer',
-			'category' => 'navigation',
-		],
-		[
-			'label'    => __( 'Für Agenturen', 'blocksy-child' ),
-			'url'      => home_url( '/whitelabel-retainer/' ),
-			'current'  => false,
-			'class'    => 'nav-agency-link',
-			'track'    => 'nav_header_whitelabel',
-			'category' => 'navigation',
-		],
-		[
-			'label'    => __( 'Solar & Wärmepumpen', 'blocksy-child' ),
-			'url'      => home_url( '/solar-waermepumpen-leadgenerierung/' ),
-			'current'  => false,
-			'class'    => 'nav-solar-link',
-			'track'    => 'nav_header_solar',
-			'category' => 'navigation',
-		],
-		[
-			'label'    => __( 'Projekt anfragen', 'blocksy-child' ),
-			'url'      => $project_url,
-			'current'  => false,
-			'class'    => 'nav-cta-button nav-project-link',
-			'track'    => 'nav_header_project',
-			'category' => 'lead_gen',
-		],
-	];
-}
-
-/*
- * Der Projekt-CTA für die mobile Leiste.
- *
- * Unter 1101px ist die Desktop-Nav ausgeblendet, und damit lag auch die
- * einzige Handlung des Headers hinter dem Burger. Auf einer Seite, deren Zweck
- * Anfragen sind, stand auf dem Telefon eine 64px-Leiste mit Wortmarke, Burger
- * und 209px Nichts dazwischen. Der Energy-Header macht auf derselben Breite
- * längst das Richtige (Wortmarke + Marktcheck); der globale Header zieht nach.
- *
- * Bewusst dieselbe Quelle wie die Desktop-Nav statt eines zweiten Labels: der
- * CTA darf nicht auseinanderlaufen. Sichtbar ist immer nur eine der beiden
- * Instanzen — die jeweils andere liegt auf display:none und damit auch aus dem
- * Accessibility-Baum.
- */
-$mobile_cta_item = null;
-foreach ( $strategy_nav_items as $strategy_nav_item ) {
-	if ( false !== strpos( (string) ( $strategy_nav_item['class'] ?? '' ), 'nav-project-link' ) ) {
-		$mobile_cta_item = $strategy_nav_item;
-		break;
-	}
-}
-
-/*
- * Visuelle Navigationsebene: Die drei Geschäftswege bleiben semantisch Teil
- * desselben Routing-Contracts. Ihre Zweckangaben erscheinen nur im mobilen
- * Routenwähler; die Desktop-Leiste zeigt die kompakten Titel ohne Icons.
- * Ergebnisse und Über Haşim bleiben bewusst ruhige Sekundärziele; die
- * Projekt-CTA behält ihre eigenständige Rolle.
- */
-$route_visuals = [
-	'nav-solar-link' => [
-		'title'    => __( 'Solar & Wärmepumpe', 'blocksy-child' ),
-		'subtitle' => __( 'Anfragesysteme', 'blocksy-child' ),
-	],
-	'nav-freelancer-link' => [
-		'title'    => __( 'WordPress', 'blocksy-child' ),
-		'subtitle' => __( 'Direkte Projekte', 'blocksy-child' ),
-	],
-	'nav-agency-link' => [
-		'title'    => __( 'Für Agenturen', 'blocksy-child' ),
-		'subtitle' => __( 'White-Label', 'blocksy-child' ),
-	],
-];
-
-$render_strategy_navigation = static function ( string $context ) use ( $strategy_nav_items, $route_visuals ): void {
-	$context    = sanitize_key( $context );
-	$menu_class = 'nx-site-header__menu nx-site-header__menu--' . $context;
-
-	echo '<ul class="' . esc_attr( $menu_class ) . '">';
-	foreach ( $strategy_nav_items as $item ) {
-		$li_classes = 'menu-item ' . (string) ( $item['class'] ?? '' );
-		if ( ! empty( $item['current'] ) ) {
-			$li_classes .= ' current-menu-item current_page_item';
-		}
-
-		$route_visual = null;
-		foreach ( $route_visuals as $route_class => $visual ) {
-			if ( false !== strpos( $li_classes, $route_class ) ) {
-				$route_visual = $visual;
-				$li_classes  .= ' nx-site-header__route-item';
-				break;
-			}
-		}
-
-		$is_project_cta = false !== strpos( $li_classes, 'nav-project-link' );
-		$link_label     = (string) ( $item['label'] ?? '' );
-		if ( is_array( $route_visual ) ) {
-			$link_label = (string) $route_visual['title'] . ' – ' . (string) $route_visual['subtitle'];
-		}
-		?>
-		<li class="<?php echo esc_attr( $li_classes ); ?>">
-			<a
-				href="<?php echo esc_url( (string) ( $item['url'] ?? home_url( '/' ) ) ); ?>"
-				<?php echo ! empty( $item['current'] ) ? ' aria-current="page"' : ''; // raw-ok -- static attribute ?>
-				aria-label="<?php echo esc_attr( $link_label ); ?>"
-				data-track-action="<?php echo esc_attr( (string) ( $item['track'] ?? 'nav_header' ) ); ?>"
-				data-track-category="<?php echo esc_attr( (string) ( $item['category'] ?? 'navigation' ) ); ?>"
-			>
-				<?php if ( is_array( $route_visual ) ) : ?>
-					<span class="nx-site-header__route-copy">
-						<strong><?php echo esc_html( (string) $route_visual['title'] ); ?></strong>
-						<small><?php echo esc_html( (string) $route_visual['subtitle'] ); ?></small>
-					</span>
-					<span class="nx-site-header__route-arrow" aria-hidden="true">
-						<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-							<path d="M5 12h14M13 6l6 6-6 6"></path>
-						</svg>
-					</span>
-				<?php else : ?>
-					<span><?php echo esc_html( (string) ( $item['label'] ?? '' ) ); ?></span>
-					<?php if ( $is_project_cta ) : ?>
-						<span class="nx-site-header__cta-arrow" aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
-					<?php endif; ?>
-				<?php endif; ?>
-			</a>
-		</li>
-		<?php
-	}
-	echo '</ul>';
-};
 ?>
 
 <?php if ( function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page() ) : ?>
@@ -229,68 +81,172 @@ $render_strategy_navigation = static function ( string $context ) use ( $strateg
 </header>
 <?php return; endif; ?>
 
-<header class="nx-site-header nx-site-header--premium" data-site-header role="banner">
-	<div class="nx-container">
-		<div class="nx-site-header__shell">
-			<div class="nx-site-header__brand-block">
-				<?php if ( '' !== $eyebrow_text ) : ?>
-					<span class="nx-site-header__eyebrow"><?php echo esc_html( $eyebrow_text ); ?></span>
-				<?php endif; ?>
-				<a
-					class="site-logo nx-site-header__brand"
-					href="<?php echo esc_url( home_url( '/' ) ); ?>"
-					rel="home"
-					aria-label="<?php echo esc_attr( $home_label ); ?>"
-				>
-					<?php echo esc_html( $brand_text ); ?>
-				</a>
-			</div>
+<?php
+$panel_id          = 'nx-site-header-sheet';
+$header_contract   = function_exists( 'hu_get_site_header_navigation_contract' )
+	? hu_get_site_header_navigation_contract()
+	: [];
+$route_items       = isset( $header_contract['routes'] ) && is_array( $header_contract['routes'] ) ? $header_contract['routes'] : [];
+$navigation_groups = isset( $header_contract['groups'] ) && is_array( $header_contract['groups'] ) ? $header_contract['groups'] : [];
+$meta              = isset( $header_contract['meta'] ) && is_array( $header_contract['meta'] ) ? $header_contract['meta'] : [];
+$toggle_tracking   = isset( $header_contract['toggle'] ) && is_array( $header_contract['toggle'] ) ? $header_contract['toggle'] : [];
+$project_url       = $routes['project_request'] ?? ( function_exists( 'hu_get_navigation_project_request_url' )
+	? hu_get_navigation_project_request_url()
+	: home_url( '/kontakt/' ) );
+$cta_item          = isset( $header_contract['cta'] ) && is_array( $header_contract['cta'] )
+	? $header_contract['cta']
+	: [
+		'label'       => __( 'Projekt anfragen', 'blocksy-child' ),
+		'short_label' => __( 'Anfragen', 'blocksy-child' ),
+		'url'         => $project_url,
+		'track'       => 'nav_header_project',
+		'category'    => 'lead_gen',
+		'section'     => 'header',
+	];
+$response_promise = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : '';
+?>
 
-			<nav class="nx-site-header__nav" aria-label="<?php esc_attr_e( 'Primäre Navigation', 'blocksy-child' ); ?>">
-				<?php $render_strategy_navigation( 'desktop' ); ?>
-			</nav>
+<header class="nx-site-header nx-site-header--sheet is-visible" data-site-header role="banner">
+	<div class="nx-container nx-site-header__bar">
+		<a
+			class="nx-site-header__brand site-logo"
+			href="<?php echo esc_url( home_url( '/' ) ); ?>"
+			rel="home"
+			aria-label="<?php echo esc_attr( $home_label ); ?>"
+			data-site-header-bar-link
+			data-track-action="nav_header_about"
+			data-track-category="navigation"
+			data-track-section="header"
+		>
+			<?php echo esc_html( $brand_text ); ?>
+		</a>
 
-			<div class="nx-site-header__actions">
-				<?php if ( is_array( $mobile_cta_item ) ) : ?>
-					<a
-						class="nx-site-header__mobile-cta"
-						href="<?php echo esc_url( (string) ( $mobile_cta_item['url'] ?? home_url( '/kontakt/' ) ) ); ?>"
-						aria-label="<?php echo esc_attr( (string) ( $mobile_cta_item['label'] ?? 'Projekt anfragen' ) ); ?>"
-						data-track-action="cta_header_mobile_project"
-						data-track-category="<?php echo esc_attr( (string) ( $mobile_cta_item['category'] ?? 'lead_gen' ) ); ?>"
-						data-track-section="header_mobile"
-					>
-						<span class="nx-site-header__mobile-cta-full"><?php echo esc_html( (string) ( $mobile_cta_item['label'] ?? 'Projekt anfragen' ) ); ?></span>
-						<span class="nx-site-header__mobile-cta-short"><?php esc_html_e( 'Anfragen', 'blocksy-child' ); ?></span>
-						<span class="nx-site-header__mobile-cta-arrow" aria-hidden="true"><?php echo hu_arrow_up_right_svg( 13 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
-					</a>
-				<?php endif; ?>
+		<div class="nx-site-header__actions">
+			<span class="nx-site-header__status">
+				<i aria-hidden="true"></i>
+				<?php esc_html_e( 'WordPress · Tracking · Conversion', 'blocksy-child' ); ?>
+			</span>
 
-				<button
-					type="button"
-					class="nx-site-header__toggle"
-					data-site-header-toggle
-					aria-expanded="false"
-					aria-controls="<?php echo esc_attr( $panel_id ); ?>"
-					aria-label="<?php esc_attr_e( 'Navigation öffnen', 'blocksy-child' ); ?>"
-				>
-					<span class="nx-site-header__toggle-line"></span>
-					<span class="nx-site-header__toggle-line"></span>
-					<span class="nx-site-header__toggle-line"></span>
-				</button>
-			</div>
+			<a
+				class="nx-site-header__cta"
+				href="<?php echo esc_url( (string) ( $cta_item['url'] ?? $project_url ) ); ?>"
+				aria-label="<?php echo esc_attr( (string) ( $cta_item['label'] ?? 'Projekt anfragen' ) ); ?>"
+				data-site-header-bar-link
+				data-track-action="<?php echo esc_attr( (string) ( $cta_item['track'] ?? 'nav_header_project' ) ); ?>"
+				data-track-category="<?php echo esc_attr( (string) ( $cta_item['category'] ?? 'lead_gen' ) ); ?>"
+				data-track-section="<?php echo esc_attr( (string) ( $cta_item['section'] ?? 'header' ) ); ?>"
+			>
+				<span class="nx-site-header__cta-full"><?php echo esc_html( (string) ( $cta_item['label'] ?? 'Projekt anfragen' ) ); ?></span>
+				<span class="nx-site-header__cta-short"><?php echo esc_html( (string) ( $cta_item['short_label'] ?? 'Anfragen' ) ); ?></span>
+			</a>
+
+			<button
+				type="button"
+				class="nx-site-header__toggle"
+				data-site-header-toggle
+				aria-expanded="false"
+				aria-controls="<?php echo esc_attr( $panel_id ); ?>"
+				aria-label="<?php esc_attr_e( 'Navigation öffnen', 'blocksy-child' ); ?>"
+				data-track-action="<?php echo esc_attr( (string) ( $toggle_tracking['track'] ?? 'nav_menu_toggle' ) ); ?>"
+				data-track-category="<?php echo esc_attr( (string) ( $toggle_tracking['category'] ?? 'navigation' ) ); ?>"
+				data-track-section="<?php echo esc_attr( (string) ( $toggle_tracking['section'] ?? 'header' ) ); ?>"
+			>
+				<span class="nx-site-header__toggle-label" data-label-open="<?php esc_attr_e( 'Menü', 'blocksy-child' ); ?>" data-label-close="<?php esc_attr_e( 'Schließen', 'blocksy-child' ); ?>"><?php esc_html_e( 'Menü', 'blocksy-child' ); ?></span>
+				<span class="nx-site-header__toggle-glyph" aria-hidden="true"><span></span><span></span></span>
+			</button>
 		</div>
+	</div>
 
-		<div id="<?php echo esc_attr( $panel_id ); ?>" class="nx-site-header__panel" data-site-header-panel hidden>
-			<div class="nx-site-header__panel-intro">
-				<span>Navigation</span>
-				<strong>Wählen Sie Ihren Weg.</strong>
-				<p>Direktes Projekt, White-Label oder Solar &amp; Wärmepumpe.</p>
-			</div>
-			<nav class="nx-site-header__mobile-nav" aria-label="<?php esc_attr_e( 'Mobiles Menü', 'blocksy-child' ); ?>">
-				<?php $render_strategy_navigation( 'mobile' ); ?>
+	<span class="nx-site-header__scanline" aria-hidden="true"></span>
+
+	<div
+		id="<?php echo esc_attr( $panel_id ); ?>"
+		class="nx-site-header__sheet"
+		data-site-header-panel
+		role="dialog"
+		aria-modal="true"
+		aria-label="<?php esc_attr_e( 'Navigation', 'blocksy-child' ); ?>"
+		aria-hidden="true"
+		inert
+	>
+		<div class="nx-container nx-site-header__sheet-grid">
+			<nav class="nx-site-header__sheet-main" aria-label="<?php esc_attr_e( 'Hauptnavigation', 'blocksy-child' ); ?>">
+				<ul class="nx-site-header__routes">
+					<?php foreach ( $route_items as $route_item ) : ?>
+						<?php
+						$route_classes = 'nx-site-header__route ' . (string) ( $route_item['class'] ?? '' );
+						if ( ! empty( $route_item['current'] ) ) {
+							$route_classes .= ' is-current';
+						}
+						?>
+						<li class="<?php echo esc_attr( $route_classes ); ?>">
+							<a
+								href="<?php echo esc_url( (string) ( $route_item['url'] ?? home_url( '/' ) ) ); ?>"
+								<?php echo ! empty( $route_item['current'] ) ? ' aria-current="page"' : ''; // raw-ok -- static attribute. ?>
+								data-track-action="<?php echo esc_attr( (string) ( $route_item['track'] ?? '' ) ); ?>"
+								data-track-category="<?php echo esc_attr( (string) ( $route_item['category'] ?? 'navigation' ) ); ?>"
+								data-track-section="<?php echo esc_attr( (string) ( $route_item['section'] ?? 'header' ) ); ?>"
+							>
+								<span class="nx-site-header__route-copy">
+									<span class="nx-site-header__route-kicker"><?php echo esc_html( (string) ( $route_item['kicker'] ?? '' ) ); ?></span>
+									<strong class="nx-site-header__route-title"><?php echo esc_html( (string) ( $route_item['label'] ?? '' ) ); ?></strong>
+								</span>
+								<span class="nx-site-header__route-desc"><?php echo esc_html( (string) ( $route_item['desc'] ?? '' ) ); ?></span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+
+				<div class="nx-site-header__groups">
+					<?php foreach ( $navigation_groups as $navigation_group ) : ?>
+						<div class="nx-site-header__group">
+							<p class="nx-site-header__group-title"><?php echo esc_html( (string) ( $navigation_group['title'] ?? '' ) ); ?></p>
+							<ul>
+								<?php foreach ( (array) ( $navigation_group['items'] ?? [] ) as $group_item ) : ?>
+									<li<?php echo ! empty( $group_item['current'] ) ? ' class="is-current"' : ''; // raw-ok -- static attribute. ?>>
+										<a
+											href="<?php echo esc_url( (string) ( $group_item['url'] ?? home_url( '/' ) ) ); ?>"
+											<?php echo ! empty( $group_item['current'] ) ? ' aria-current="page"' : ''; // raw-ok -- static attribute. ?>
+											data-track-action="<?php echo esc_attr( (string) ( $group_item['track'] ?? '' ) ); ?>"
+											data-track-category="<?php echo esc_attr( (string) ( $group_item['category'] ?? 'navigation' ) ); ?>"
+											data-track-section="<?php echo esc_attr( (string) ( $group_item['section'] ?? 'header' ) ); ?>"
+										>
+											<?php echo esc_html( (string) ( $group_item['label'] ?? '' ) ); ?>
+										</a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endforeach; ?>
+				</div>
+
+				<?php if ( '' !== $response_promise ) : ?>
+					<div class="nx-site-header__sheet-foot">
+						<?php echo esc_html( $response_promise ); ?>
+					</div>
+				<?php endif; ?>
 			</nav>
-			<p class="nx-site-header__panel-signature">WordPress · Tracking · Conversion</p>
+
+			<div class="nx-site-header__meta" aria-label="<?php esc_attr_e( 'Kontakt und Standort', 'blocksy-child' ); ?>">
+				<p class="nx-site-header__meta-title"><?php esc_html_e( 'Direkter Draht', 'blocksy-child' ); ?></p>
+				<ul>
+					<?php foreach ( (array) ( $meta['links'] ?? [] ) as $meta_link ) : ?>
+						<li>
+							<a
+								href="<?php echo esc_url( (string) ( $meta_link['url'] ?? '' ) ); ?>"
+								data-track-action="<?php echo esc_attr( (string) ( $meta_link['track'] ?? '' ) ); ?>"
+								data-track-category="<?php echo esc_attr( (string) ( $meta_link['category'] ?? 'navigation' ) ); ?>"
+								data-track-section="<?php echo esc_attr( (string) ( $meta_link['section'] ?? 'header' ) ); ?>"
+							>
+								<?php echo esc_html( (string) ( $meta_link['label'] ?? '' ) ); ?>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+				<?php if ( ! empty( $meta['location'] ) ) : ?>
+					<p class="nx-site-header__location"><?php echo esc_html( (string) $meta['location'] ); ?></p>
+				<?php endif; ?>
+			</div>
 		</div>
 	</div>
 </header>

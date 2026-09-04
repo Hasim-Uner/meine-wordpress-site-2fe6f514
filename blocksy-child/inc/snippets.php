@@ -113,8 +113,8 @@ function hu_make_strategy_nav_item( $title, $url, $classes = [], $current = fals
  * Canonical public header architecture.
  *
  * Header = business/navigation priorities, not the complete SEO inventory.
- * `/wordpress-agentur-hannover/` remains indexable and internally linked, but
- * its local search intent no longer occupies a global navigation slot.
+ * The three commercial routes lead; narrower services, proof and legal links
+ * follow in the secondary groups of the same repo-owned contract.
  *
  * @param array           $items Stored menu items.
  * @param stdClass|string $args  Menu arguments.
@@ -194,8 +194,16 @@ function hu_strategy_nav_tracking_attributes( $atts, $item, $args ) {
         'nav-solar-link'      => [ 'nav_header_solar', 'navigation' ],
         'nav-freelancer-link' => [ 'nav_header_freelancer', 'navigation' ],
         'nav-agency-link'     => [ 'nav_header_whitelabel', 'navigation' ],
+        'nav-tracking-link'   => [ 'nav_header_freelancer', 'navigation' ],
+        'nav-agentur-link'    => [ 'nav_header_freelancer', 'navigation' ],
         'nav-results-link'    => [ 'nav_header_results', 'navigation' ],
+        'nav-case-link'       => [ 'nav_header_results', 'navigation' ],
+        'nav-blog-link'       => [ 'nav_header_results', 'navigation' ],
+        'nav-glossary-link'   => [ 'nav_header_results', 'navigation' ],
         'nav-about-link'      => [ 'nav_header_about', 'navigation' ],
+        'nav-contact-link'    => [ 'nav_header_project', 'lead_gen' ],
+        'nav-imprint-link'    => [ 'nav_header_about', 'navigation' ],
+        'nav-privacy-link'    => [ 'nav_header_about', 'navigation' ],
         'nav-project-link'    => [ 'nav_header_project', 'lead_gen' ],
     ];
 
@@ -206,6 +214,7 @@ function hu_strategy_nav_tracking_attributes( $atts, $item, $args ) {
 
         $atts['data-track-action']   = $tracking[0];
         $atts['data-track-category'] = $tracking[1];
+        $atts['data-track-section']  = 'header';
         break;
     }
 

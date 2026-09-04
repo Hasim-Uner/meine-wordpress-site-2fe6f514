@@ -81,11 +81,6 @@ parameters:
 			path: blocksy-child/inc/seo-cockpit/seo-cockpit-links.php
 
 		-
-			message: "#^Offset 'links' on array\\{key\\: 'audit_footer', label\\: 'Audit\\-Footer', links\\: array\\{mixed, mixed, mixed\\}\\}\\|array\\{key\\: 'audit_header', label\\: 'Audit\\-Header', links\\: array\\{mixed, mixed\\}\\}\\|array\\{key\\: 'blog_header', label\\: 'Blog\\-Header', links\\: array\\{mixed, mixed, mixed, mixed, mixed\\}\\}\\|array\\{key\\: 'site_footer', label\\: 'Footer', links\\: array\\{mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed, \\.\\.\\.\\}\\}\\|array\\{key\\: 'site_header', label\\: 'Header\\-Navigation', links\\: array\\} on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: blocksy-child/inc/seo-cockpit/seo-cockpit-links.php
-
-		-
 			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
 			count: 2
 			path: blocksy-child/inc/seo-cockpit/seo-cockpit-ui.php

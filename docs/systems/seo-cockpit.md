@@ -51,6 +51,9 @@ Repo-seitig vorhanden:
   - Kannibalisierung
   - Money-Page-Unterperformance
   - Orphan-/Bridge-/Indexierungs-Signale
+- Sitewide-Linkgraph aus dem repo-eigenen Standard-Header statt aus einem
+  möglicherweise veralteten WordPress-Menü; die Detailansicht zeigt zusätzlich
+  die statischen Shell-Tracking-Hooks einschließlich `nav_menu_toggle`
 - browserseitige Lead-Attribution für neue Audit-Leads über
   - Formular-Landingpage
   - ersten internen Einstieg der Session
