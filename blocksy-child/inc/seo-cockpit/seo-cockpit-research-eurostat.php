@@ -346,7 +346,7 @@ function nexus_render_seo_cockpit_eurostat_metric_card( $label, $series, $contex
 		<span class="nexus-seo-cockpit__research-trend <?php echo esc_attr( $class ); ?>">
 			<?php
 			if ( null !== $delta ) {
-				echo esc_html( sprintf( '%1$s%2$s %-Punkte vs. Vorjahr', $delta > 0 ? '+' : '', number_format_i18n( $delta, 1 ) ) );
+				echo esc_html( sprintf( '%1$s%2$s %%-Punkte vs. Vorjahr', $delta > 0 ? '+' : '', number_format_i18n( $delta, 1 ) ) );
 			} else {
 				echo esc_html( 'kein Vorjahresvergleich' );
 			}
