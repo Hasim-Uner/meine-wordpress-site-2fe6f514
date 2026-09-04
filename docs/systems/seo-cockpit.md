@@ -196,6 +196,32 @@ wird vor dem Frontend-Early-Return geladen, damit die Root-Keydatei ausgeliefert
 werden kann. Es rendert keine sonstige Frontend-UI und führt keine API-Requests
 bei normalen Seitenaufrufen aus.
 
+## AI-Sichtbarkeit: warum es dafür keine Cockpit-Sektion gibt
+
+Stand 2026-09-04. Geprüft, bewusst nicht gebaut — die Datenlage trägt keine
+Sektion, und eine Sektion ohne Daten wäre eine erfundene Sektion.
+
+| Quelle | Verfügbar | Über API abrufbar |
+|---|---|---|
+| GSC Generative-AI-Report (AI Overviews + AI Mode, Impressionen) | ja, seit 2026-08-31 weltweit ausgerollt | **nein** |
+| GSC Web-Performance (Klicks, Impressionen, Position) | ja | ja, bereits angebunden |
+| Bing Webmaster Tools / Copilot-Sichtbarkeit | Dashboard | nicht als eigene AI-Dimension |
+| AI-Referral-Sessions (`utm_source=chatgpt.com`, Perplexity, Claude) | nur im Analytics-Layer | abhängig von Koko/GA4, nicht von einer AI-API |
+| AI-Crawler-Requests | nur im Server-Log | keine API, kein Repo-Zugriff |
+
+Der entscheidende Punkt: Die Search Console zeigt den Generative-AI-Report
+ausschließlich im UI. Der `searchAnalytics`-Endpunkt weist generative Werte für
+`type` mit `Invalid value at 'type'` zurück und akzeptiert weiterhin nur `web`,
+`image`, `video`, `news`, `discover` und `googleNews`. Es gibt also keinen
+offiziellen Weg, die AI-Impressionen in das Cockpit zu holen. Scraping des UI
+ist keine Option, Platzhalterzahlen erst recht nicht.
+
+Auslösebedingung für den Bau: sobald `searchAnalytics` einen generativen
+`type`-Wert akzeptiert. Dann ist es eine Erweiterung der bestehenden
+Search-Console-Anbindung, keine neue Datenarchitektur. Bis dahin bleibt die
+belastbarste AI-Messung der Referral-Traffic im vorhandenen Analytics-Layer —
+das ist eine Analytics-Aufgabe, keine Cockpit-Aufgabe.
+
 ## Nicht im Repo verifiziert
 
 - echte Google-OAuth-Credentials
