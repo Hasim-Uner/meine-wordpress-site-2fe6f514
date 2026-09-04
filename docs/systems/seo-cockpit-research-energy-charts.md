@@ -20,31 +20,45 @@ Verwendete v2-Endpunkte:
 - `/v2/solar_share_daily_avg?country=de&year=-1`
 - `/v2/price_current?bzn=DE-LU`
 
-Die v2-API liefert ein einheitliches, selbstbeschreibendes Response-Envelope mit stabilen Series-IDs, Zeitstempeln, Einheit, Datenverfügbarkeit und Lizenzfeld. Die Integration liest keine Legacy-v1-Strukturen.
+Die v2-API liefert ein einheitliches, selbstbeschreibendes Response-Envelope mit Series-IDs, Zeitstempeln, Einheiten, Datenverfügbarkeit und Lizenzfeld. Die Integration liest keine Legacy-v1-Strukturen.
 
 ## Angezeigte Signale
 
-V2 zeigt bewusst nur vier kleine, fachlich nachvollziehbare Signale:
+Der Layer zeigt bewusst nur fachlich nachvollziehbare Signale:
 
-1. installierte PV-Leistung in Deutschland aus dem neuesten verfügbaren Jahreswert
-2. Veränderung der installierten PV-Leistung gegenüber dem vorherigen Jahreswert, absolut und prozentual
-3. durchschnittlicher Solaranteil an der Last über die letzten bis zu 30 verfügbaren Tageswerte plus Vergleich mit den vorherigen 30 Werten
-4. aktueller Day-Ahead-Preis für die Gebotszone DE-LU
+1. tatsächlich installierte PV-Leistung in Deutschland aus der aktuellen Solar-Ist-Serie
+2. Veränderung dieser Ist-Leistung gegenüber dem vorherigen verfügbaren Ist-Jahreswert, absolut und prozentual
+3. ein explizit als Planung/Ziel ausgewiesenes Solar-Ausbauziel getrennt vom Ist-Bestand
+4. durchschnittlicher Solaranteil an der Last über die letzten bis zu 30 verfügbaren Tageswerte plus Vergleich mit dem vorherigen Fenster, sofern vorhanden
+5. aktueller Day-Ahead-Preis für die Gebotszone DE-LU
 
 Die UI bewertet den Strompreis nicht als positiv oder negativ. Marktpreise sind Kontext, kein SEO- oder Business-Score.
 
-## Serienauflösung
+## Ist-Bestand und Ausbauziel
 
-Die API beschreibt Serien über stabile snake_case-IDs. Für installierte PV-Leistung gilt:
+Die Antwort von `installed_power` kann mehrere Solar-Reihen gleichzeitig enthalten, insbesondere Solar DC, Solar AC und zukünftige Plan-/Zielreihen. Diese dürfen fachlich nicht addiert werden.
 
-- falls eine aggregierte Serie `solar` vorhanden ist, wird nur diese verwendet
-- andernfalls werden verfügbare `solar_*`-Serien summiert
+Für die aktuelle installierte PV-Leistung gilt deshalb:
 
-Damit werden Aggregate und AC/DC-Teilserien nicht gleichzeitig doppelt gezählt.
+- bevorzugt wird eine explizite Solar-DC-Serie, weil sie die installierte Modulleistung beschreibt
+- eine nicht geplante Solar-/AC-Serie dient nur als Fallback, falls keine eindeutige DC-Serie vorhanden ist
+- Serien, deren ID oder Beschreibung auf `planned`, `plan`, `target`, `EEG` oder `Ziel` hinweist, werden niemals als aktueller Bestand interpretiert
+- Werte mit einem Berichtsjahr nach dem aktuellen Kalenderjahr werden nicht als aktueller Ist-Wert verwendet
+- AC, DC und geplante Reihen werden nicht miteinander summiert
 
-Für den Solaranteil wird zuerst nach `solar_share_of_load`, dann `solar_share`, dann `solar` gesucht; andernfalls wird die erste Serie mit `solar` in der ID verwendet.
+Ein explizit erkannter Plan-/Zielwert wird separat als Ausbauziel angezeigt. Damit kann beispielsweise ein Ziel für 2030 sichtbar sein, ohne dass es als bereits installierte Leistung oder als reales Jahreswachstum erscheint.
 
-Fehlende oder nichtnumerische Werte werden übersprungen und nie als Null interpretiert.
+## Solaranteil
+
+Für `/solar_share_daily_avg` versucht der Adapter die Serie in dieser Reihenfolge eindeutig aufzulösen:
+
+1. bekannte IDs wie `solar_share_of_load`, `solar_share`, `solar_share_daily_avg` oder `share`
+2. Serienbeschreibung mit `solar` und `share`
+3. bei genau einer gelieferten Serie diese einzige Serie
+4. eine explizite Prozent-Serie
+5. bei genau einem numerischen Wert je Datenzeile dessen Serien-ID
+
+Erst nach erfolgreicher Serienauflösung werden die letzten bis zu 30 numerischen Tageswerte gemittelt. Sind genügend ältere Werte vorhanden, wird das vorherige 30-Tage-Fenster als Vergleich genutzt. Eine uneindeutige Antwort wird als Provider-Fehler sichtbar gemacht und nicht still als `0` interpretiert.
 
 ## Caching und Rate-Nutzung
 
@@ -61,7 +75,8 @@ Die Abfragen sind fest allowlisted; der Admin kann keine freien Endpunkte oder Q
 
 - HTTP- und Netzwerkfehler werden als `WP_Error` behandelt
 - Teilfehler lassen die anderen Provider-Signale sichtbar
-- wenn alle drei Abfragen scheitern, wird der Provider als nicht verfügbar markiert
+- uneindeutige Ist- oder Solaranteil-Serien werden als Fehler gemeldet statt geraten
+- wenn alle drei Provider-Abfragen scheitern, wird der Provider als nicht verfügbar markiert
 - fehlende Daten erscheinen als `—`, nicht als `0`
 - Provider-Fehler sind im Admin aufklappbar
 
@@ -74,7 +89,8 @@ Vor einer Veröffentlichung abgeleiteter Zahlen in Blogartikeln oder Grafiken mu
 ## Code-Orte
 
 - Provider: `blocksy-child/inc/seo-cockpit/seo-cockpit-research-energy-charts.php`
-- Multi-Provider-Renderer: `blocksy-child/inc/seo-cockpit/seo-cockpit-research-v2.php`
+- Energy-Charts-Renderer: `blocksy-child/inc/seo-cockpit/seo-cockpit-research-v2.php`
+- aktiver Drei-Provider-Renderer: `blocksy-child/inc/seo-cockpit/seo-cockpit-research-v3.php`
 - Basis-CrUX-/Research-Modul: `blocksy-child/inc/seo-cockpit/seo-cockpit-research.php`
 - Styles: `blocksy-child/assets/css/seo-cockpit-research.css`
 - Loader: `blocksy-child/inc/seo-cockpit/seo-cockpit.php`
@@ -83,7 +99,7 @@ Vor einer Veröffentlichung abgeleiteter Zahlen in Blogartikeln oder Grafiken mu
 
 - keine automatische Blog-Veröffentlichung aus Marktdaten
 - keine Content-Ideen aus Daten ohne GSC-Kontext
-- kein MaStR, Destatis oder Eurostat in diesem Provider
+- kein MaStR oder Eurostat in diesem Provider
 - keine Speicherung einer eigenen langfristigen Markt-Zeitreihe außerhalb der Provider-Caches
 - keine erfundenen Marktprognosen oder Scores
 
