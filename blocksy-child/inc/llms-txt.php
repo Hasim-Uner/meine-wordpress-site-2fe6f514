@@ -72,10 +72,13 @@ function nexus_get_llms_txt_sections() {
 	);
 	$project_url = function_exists( 'hu_get_navigation_project_request_url' )
 		? hu_get_navigation_project_request_url()
+		// Fallback muss denselben Focus tragen wie der eigene Fallback von
+		// hu_get_navigation_project_request_url(); sonst veroeffentlicht der
+		// Route-Index fuer AI-Agents einen anderen Intake-Kontext als die Site.
 		: add_query_arg(
 			[
 				'type'  => 'project',
-				'focus' => 'followup_scope',
+				'focus' => 'implementation_scope',
 			],
 			$urls['contact'] ?? home_url( '/kontakt/' )
 		);
