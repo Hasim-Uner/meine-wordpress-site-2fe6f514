@@ -42,6 +42,26 @@ function hu_get_contact_email() {
 	return HU_CONTACT_EMAIL;
 }
 
+// Telefonnummer als zweiter direkter Weg. Impressum und Datenschutz tragen die
+// Nummer bis heute je einmal hart im Template; der Fuss holt sie hier, damit
+// eine dritte Kopie gar nicht erst entsteht.
+define( 'HU_CONTACT_PHONE', '+4917676596580' );
+define( 'HU_CONTACT_PHONE_DISPLAY', '0176 76596580' );
+
+/**
+ * Public phone number for visible contact paths.
+ *
+ * @param string $variant One of: link, display.
+ * @return string
+ */
+function hu_get_contact_phone( $variant = 'display' ) {
+	if ( 'link' === $variant ) {
+		return 'tel:' . HU_CONTACT_PHONE;
+	}
+
+	return HU_CONTACT_PHONE_DISPLAY;
+}
+
 // ── Antwortzeit auf eine Anfrage ──────────────────────────────────
 // Startseite und White-Label-Seite versprachen "4 Stunden werktags", die
 // Kontaktseite als gemeinsames Ziel beider CTAs dagegen "in der Regel 48
