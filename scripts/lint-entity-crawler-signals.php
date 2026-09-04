@@ -308,6 +308,25 @@ foreach ( array_merge( $person_same_as, $business_same_as ) as $url ) {
 	);
 }
 
+// Schema and visible content must tell the same story. The person hub surfaces
+// a subset of the profiles as rel="me" links; every URL it links must be a
+// profile the Person node actually claims, or the page corroborates something
+// the graph does not say (and vice versa: a sameAs nobody can see is asserted,
+// not verifiable).
+$about_template = (string) file_get_contents( __DIR__ . '/../blocksy-child/page-hasim-uener.php' );
+
+foreach ( [ 'https://www.linkedin.com/in/hasim-uener/', 'https://github.com/Hasim-hannover', 'https://hasimuener.org/' ] as $visible_profile ) {
+	hu_lint_assert(
+		false !== strpos( $about_template, $visible_profile ),
+		"person hub links the profile visibly: {$visible_profile}"
+	);
+
+	hu_lint_assert(
+		in_array( $visible_profile, $person_same_as, true ),
+		"Person.sameAs claims the profile the person hub links: {$visible_profile}"
+	);
+}
+
 // Hard bans from docs/standards/BRAND_AND_COPY.md must not survive in the graph
 // builder, not even where the positioning layer would overwrite them at render
 // time. A masked claim is still a claim any direct caller can emit.
