@@ -1,0 +1,130 @@
+/*
+ * SEO Cockpit Research Intelligence
+ * Small additive layer; base surfaces and metric cards come from
+ * seo-cockpit-admin.css.
+ */
+
+.nexus-seo-cockpit__research-intro {
+    margin-bottom: 16px;
+}
+
+.nexus-seo-cockpit__research-key-form {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--nsc-border);
+}
+
+.nexus-seo-cockpit__research-key-form > label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.nexus-seo-cockpit__research-key-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.nexus-seo-cockpit__research-key-row input[type="password"] {
+    width: min(520px, 100%);
+    min-height: 36px;
+}
+
+.nexus-seo-cockpit__research-key-form .description {
+    margin: 8px 0 0;
+    color: var(--nsc-ink-soft);
+}
+
+.nexus-seo-cockpit__research-stack {
+    display: grid;
+    gap: 16px;
+    margin: 16px 0;
+}
+
+.nexus-seo-cockpit__research-metrics {
+    overflow: hidden;
+}
+
+.nexus-seo-cockpit__research-metrics .nexus-seo-cockpit__metric-card {
+    min-height: 162px;
+}
+
+.nexus-seo-cockpit__research-trend {
+    display: block;
+    margin-top: 9px;
+    color: #c5ced7;
+    font-size: 11px;
+    font-weight: 650;
+    position: relative;
+}
+
+.nexus-seo-cockpit__research-trend.is-positive {
+    color: #8be0a2;
+}
+
+.nexus-seo-cockpit__research-trend.is-negative {
+    color: #ffb5b5;
+}
+
+.nexus-seo-cockpit__research-history-note {
+    margin-top: 14px;
+}
+
+.nexus-seo-cockpit__research-providers {
+    margin-top: 16px;
+}
+
+.nexus-seo-cockpit__research-provider-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.nexus-seo-cockpit__research-provider-grid article {
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid var(--nsc-border);
+    border-radius: var(--nsc-radius-sm);
+    background: var(--nsc-surface-muted);
+}
+
+.nexus-seo-cockpit__research-provider-grid article > strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--nsc-ink);
+    font-size: 14px;
+}
+
+.nexus-seo-cockpit__research-provider-grid .nexus-seo-cockpit__status {
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.nexus-seo-cockpit__research-provider-grid p {
+    margin: 0;
+    color: var(--nsc-ink-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+@media (max-width: 1100px) {
+    .nexus-seo-cockpit__research-provider-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 782px) {
+    .nexus-seo-cockpit__research-provider-grid,
+    .nexus-seo-cockpit__research-metrics .nexus-seo-cockpit__metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .nexus-seo-cockpit__research-key-row {
+        align-items: stretch;
+    }
+
+    .nexus-seo-cockpit__research-key-row input[type="password"] {
+        width: 100%;
+    }
+}
