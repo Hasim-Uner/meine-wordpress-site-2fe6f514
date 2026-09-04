@@ -69,14 +69,14 @@ function nexus_get_seo_cockpit_energy_charts_cache_key( $endpoint, $query = [] )
  * @return array<string, mixed>|WP_Error
  */
 function nexus_get_seo_cockpit_energy_charts_response( $endpoint, $query = [], $ttl = 21600, $force = false ) {
-	$allowed = array_keys( nexus_get_seo_cockpit_energy_charts_queries() );
+	$allowed  = array_keys( nexus_get_seo_cockpit_energy_charts_queries() );
 	$endpoint = sanitize_key( (string) $endpoint );
 
 	if ( ! in_array( $endpoint, $allowed, true ) ) {
 		return new WP_Error( 'nexus_energy_charts_endpoint', 'Nicht freigegebener Energy-Charts-Endpunkt.' );
 	}
 
-	$query = is_array( $query ) ? $query : [];
+	$query     = is_array( $query ) ? $query : [];
 	$cache_key = nexus_get_seo_cockpit_energy_charts_cache_key( $endpoint, $query );
 
 	if ( ! $force ) {
@@ -184,25 +184,129 @@ function nexus_get_seo_cockpit_energy_charts_series_unit( $response, $series_id 
 }
 
 /**
- * Pick installed-solar series without double counting aggregate and AC/DC data.
+ * Return a display/search string for one series descriptor.
+ *
+ * @param string               $id     Stable series id.
+ * @param array<string, mixed> $series Series descriptor.
+ * @return string
+ */
+function nexus_get_seo_cockpit_energy_charts_series_search_text( $id, $series ) {
+	$parts = [
+		(string) $id,
+		(string) ( $series['name'] ?? '' ),
+		(string) ( $series['label'] ?? '' ),
+		(string) ( $series['title'] ?? '' ),
+		(string) ( $series['description'] ?? '' ),
+	];
+
+	return strtolower( implode( ' ', array_filter( array_map( 'trim', $parts ) ) ) );
+}
+
+/**
+ * Return whether a series descriptor represents a planned/target series.
+ *
+ * @param string               $id     Stable series id.
+ * @param array<string, mixed> $series Series descriptor.
+ * @return bool
+ */
+function nexus_is_seo_cockpit_energy_charts_planned_series( $id, $series ) {
+	$text = nexus_get_seo_cockpit_energy_charts_series_search_text( $id, $series );
+
+	foreach ( [ 'planned', 'plan', 'target', 'eeg', 'ziel' ] as $needle ) {
+		if ( false !== strpos( $text, $needle ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Return the installed-solar series used as the actual PV stock.
+ *
+ * Energy-Charts publishes Solar DC, Solar AC and future EEG target series in
+ * the same response. DC is preferred because it is the commonly cited module
+ * capacity. AC is a fallback. Planned series are never treated as installed.
+ *
+ * @param array<string, mixed>|WP_Error $response Installed-power response.
+ * @return string
+ */
+function nexus_get_seo_cockpit_energy_charts_installed_solar_series_id( $response ) {
+	$map = nexus_get_seo_cockpit_energy_charts_series_map( $response );
+
+	foreach ( [ 'solar_dc', 'photovoltaics_dc', 'photovoltaic_dc', 'pv_dc' ] as $candidate ) {
+		if ( isset( $map[ $candidate ] ) && ! nexus_is_seo_cockpit_energy_charts_planned_series( $candidate, $map[ $candidate ] ) ) {
+			return $candidate;
+		}
+	}
+
+	foreach ( $map as $id => $series ) {
+		$text = nexus_get_seo_cockpit_energy_charts_series_search_text( $id, $series );
+		if ( false !== strpos( $text, 'solar' ) && false !== strpos( $text, 'dc' ) && ! nexus_is_seo_cockpit_energy_charts_planned_series( $id, $series ) ) {
+			return $id;
+		}
+	}
+
+	if ( isset( $map['solar'] ) && ! nexus_is_seo_cockpit_energy_charts_planned_series( 'solar', $map['solar'] ) ) {
+		return 'solar';
+	}
+
+	foreach ( $map as $id => $series ) {
+		$text = nexus_get_seo_cockpit_energy_charts_series_search_text( $id, $series );
+		if ( false !== strpos( $text, 'solar' ) && ! nexus_is_seo_cockpit_energy_charts_planned_series( $id, $series ) ) {
+			return $id;
+		}
+	}
+
+	return '';
+}
+
+/**
+ * Keep backwards compatibility with the original helper while returning only
+ * one real installed-PV series instead of summing AC/DC/target series.
  *
  * @param array<string, mixed>|WP_Error $response Installed-power response.
  * @return array<int, string>
  */
 function nexus_get_seo_cockpit_energy_charts_solar_series_ids( $response ) {
-	$map = nexus_get_seo_cockpit_energy_charts_series_map( $response );
-	if ( isset( $map['solar'] ) ) {
-		return [ 'solar' ];
-	}
+	$id = nexus_get_seo_cockpit_energy_charts_installed_solar_series_id( $response );
 
-	$ids = [];
-	foreach ( array_keys( $map ) as $id ) {
-		if ( 0 === strpos( $id, 'solar_' ) ) {
-			$ids[] = $id;
+	return '' !== $id ? [ $id ] : [];
+}
+
+/**
+ * Return the planned solar target series, if one is explicitly described.
+ *
+ * @param array<string, mixed>|WP_Error $response Installed-power response.
+ * @return string
+ */
+function nexus_get_seo_cockpit_energy_charts_solar_target_series_id( $response ) {
+	$map = nexus_get_seo_cockpit_energy_charts_series_map( $response );
+
+	foreach ( $map as $id => $series ) {
+		$text = nexus_get_seo_cockpit_energy_charts_series_search_text( $id, $series );
+		if ( false !== strpos( $text, 'solar' ) && nexus_is_seo_cockpit_energy_charts_planned_series( $id, $series ) ) {
+			return $id;
 		}
 	}
 
-	return $ids;
+	return '';
+}
+
+/**
+ * Return a human-readable series name.
+ *
+ * @param array<string, mixed>|WP_Error $response Provider response.
+ * @param string                        $series_id Stable series id.
+ * @return string
+ */
+function nexus_get_seo_cockpit_energy_charts_series_name( $response, $series_id ) {
+	$map = nexus_get_seo_cockpit_energy_charts_series_map( $response );
+	if ( isset( $map[ $series_id ]['name'] ) && '' !== trim( (string) $map[ $series_id ]['name'] ) ) {
+		return sanitize_text_field( (string) $map[ $series_id ]['name'] );
+	}
+
+	return '' !== $series_id ? ucwords( str_replace( '_', ' ', $series_id ) ) : '';
 }
 
 /**
@@ -210,9 +314,10 @@ function nexus_get_seo_cockpit_energy_charts_solar_series_ids( $response ) {
  *
  * @param array<string, mixed>|WP_Error $response Provider response.
  * @param array<int, string>            $series_ids Series ids to sum.
+ * @param int|null                      $max_year Optional maximum reporting year.
  * @return array<int, array{timestamp:string,value:float}>
  */
-function nexus_get_seo_cockpit_energy_charts_summed_rows( $response, $series_ids ) {
+function nexus_get_seo_cockpit_energy_charts_summed_rows( $response, $series_ids, $max_year = null ) {
 	if ( is_wp_error( $response ) || ! is_array( $response ) || empty( $series_ids ) ) {
 		return [];
 	}
@@ -220,6 +325,12 @@ function nexus_get_seo_cockpit_energy_charts_summed_rows( $response, $series_ids
 	$rows = [];
 	foreach ( (array) ( $response['data'] ?? [] ) as $row ) {
 		if ( ! is_array( $row ) || ! is_array( $row['values'] ?? null ) ) {
+			continue;
+		}
+
+		$timestamp = sanitize_text_field( (string) ( $row['timestamp'] ?? '' ) );
+		$year      = absint( substr( $timestamp, 0, 4 ) );
+		if ( null !== $max_year && $year > (int) $max_year ) {
 			continue;
 		}
 
@@ -235,7 +346,7 @@ function nexus_get_seo_cockpit_energy_charts_summed_rows( $response, $series_ids
 
 		if ( $found ) {
 			$rows[] = [
-				'timestamp' => sanitize_text_field( (string) ( $row['timestamp'] ?? '' ) ),
+				'timestamp' => $timestamp,
 				'value'     => $sum,
 			];
 		}
@@ -247,20 +358,52 @@ function nexus_get_seo_cockpit_energy_charts_summed_rows( $response, $series_ids
 /**
  * Pick the most likely solar-share series from a daily-average response.
  *
+ * The endpoint may expose only one percentage series and its stable id can
+ * differ from the generic intraday solar endpoint. Descriptor/unit fallbacks
+ * therefore come before a final first-numeric-series fallback.
+ *
  * @param array<string, mixed>|WP_Error $response Provider response.
  * @return string
  */
 function nexus_get_seo_cockpit_energy_charts_solar_share_series_id( $response ) {
 	$map = nexus_get_seo_cockpit_energy_charts_series_map( $response );
-	foreach ( [ 'solar_share_of_load', 'solar_share', 'solar' ] as $candidate ) {
+	foreach ( [ 'solar_share_of_load', 'solar_share', 'solar_share_daily_avg', 'share' ] as $candidate ) {
 		if ( isset( $map[ $candidate ] ) ) {
 			return $candidate;
 		}
 	}
 
-	foreach ( array_keys( $map ) as $id ) {
-		if ( false !== strpos( $id, 'solar' ) ) {
+	foreach ( $map as $id => $series ) {
+		$text = nexus_get_seo_cockpit_energy_charts_series_search_text( $id, $series );
+		if ( false !== strpos( $text, 'solar' ) && false !== strpos( $text, 'share' ) ) {
 			return $id;
+		}
+	}
+
+	if ( 1 === count( $map ) ) {
+		return (string) array_key_first( $map );
+	}
+
+	foreach ( $map as $id => $series ) {
+		$unit = (string) ( $series['unit'] ?? '' );
+		if ( '%' === trim( $unit ) ) {
+			return $id;
+		}
+	}
+
+	foreach ( (array) ( is_array( $response ) ? ( $response['data'] ?? [] ) : [] ) as $row ) {
+		if ( ! is_array( $row ) || ! is_array( $row['values'] ?? null ) ) {
+			continue;
+		}
+
+		$numeric_ids = [];
+		foreach ( $row['values'] as $id => $value ) {
+			if ( is_numeric( $value ) ) {
+				$numeric_ids[] = sanitize_key( (string) $id );
+			}
+		}
+		if ( 1 === count( $numeric_ids ) ) {
+			return $numeric_ids[0];
 		}
 	}
 
@@ -366,12 +509,15 @@ function nexus_get_seo_cockpit_energy_charts_summary( $force = false ) {
 	$solar_avg = nexus_get_seo_cockpit_energy_charts_response( 'solar_share_daily_avg', $queries['solar_share_daily_avg'], 6 * HOUR_IN_SECONDS, $force );
 	$price     = nexus_get_seo_cockpit_energy_charts_response( 'price_current', $queries['price_current'], 30 * MINUTE_IN_SECONDS, $force );
 
-	$solar_ids   = nexus_get_seo_cockpit_energy_charts_solar_series_ids( $installed );
-	$solar_rows  = nexus_get_seo_cockpit_energy_charts_summed_rows( $installed, $solar_ids );
-	$latest      = ! empty( $solar_rows ) ? $solar_rows[ count( $solar_rows ) - 1 ] : null;
-	$previous    = count( $solar_rows ) > 1 ? $solar_rows[ count( $solar_rows ) - 2 ] : null;
-	$solar_unit  = ! empty( $solar_ids ) ? nexus_get_seo_cockpit_energy_charts_series_unit( $installed, $solar_ids[0] ) : '';
-	$solar_delta = null;
+	$current_year = (int) wp_date( 'Y' );
+	$solar_ids    = nexus_get_seo_cockpit_energy_charts_solar_series_ids( $installed );
+	$solar_rows   = nexus_get_seo_cockpit_energy_charts_summed_rows( $installed, $solar_ids, $current_year );
+	$latest       = ! empty( $solar_rows ) ? $solar_rows[ count( $solar_rows ) - 1 ] : null;
+	$previous     = count( $solar_rows ) > 1 ? $solar_rows[ count( $solar_rows ) - 2 ] : null;
+	$solar_id     = ! empty( $solar_ids ) ? $solar_ids[0] : '';
+	$solar_unit   = '' !== $solar_id ? nexus_get_seo_cockpit_energy_charts_series_unit( $installed, $solar_id ) : '';
+	$solar_name   = '' !== $solar_id ? nexus_get_seo_cockpit_energy_charts_series_name( $installed, $solar_id ) : '';
+	$solar_delta  = null;
 	$solar_growth_pct = null;
 
 	if ( is_array( $latest ) && is_array( $previous ) ) {
@@ -380,6 +526,11 @@ function nexus_get_seo_cockpit_energy_charts_summary( $force = false ) {
 			$solar_growth_pct = ( $solar_delta / (float) $previous['value'] ) * 100;
 		}
 	}
+
+	$target_id   = nexus_get_seo_cockpit_energy_charts_solar_target_series_id( $installed );
+	$target_rows = '' !== $target_id ? nexus_get_seo_cockpit_energy_charts_summed_rows( $installed, [ $target_id ] ) : [];
+	$target      = ! empty( $target_rows ) ? $target_rows[ count( $target_rows ) - 1 ] : null;
+	$target_unit = '' !== $target_id ? nexus_get_seo_cockpit_energy_charts_series_unit( $installed, $target_id ) : '';
 
 	$share_id     = nexus_get_seo_cockpit_energy_charts_solar_share_series_id( $solar_avg );
 	$share_values = nexus_get_seo_cockpit_energy_charts_series_values( $solar_avg, $share_id );
@@ -391,6 +542,13 @@ function nexus_get_seo_cockpit_energy_charts_summary( $force = false ) {
 		if ( is_wp_error( $response ) ) {
 			$errors[ $key ] = $response->get_error_message();
 		}
+	}
+
+	if ( ! is_wp_error( $installed ) && ( '' === $solar_id || ! is_array( $latest ) ) ) {
+		$errors['installed_power'] = 'Die aktuelle Solar-Ist-Serie konnte nicht eindeutig aus der Energy-Charts-Antwort gelesen werden.';
+	}
+	if ( ! is_wp_error( $solar_avg ) && ( '' === $share_id || empty( $share_values ) ) ) {
+		$errors['solar_share'] = 'Die tägliche Solaranteil-Serie konnte nicht eindeutig aus der Energy-Charts-Antwort gelesen werden.';
 	}
 
 	$license = '';
@@ -409,16 +567,25 @@ function nexus_get_seo_cockpit_energy_charts_summary( $force = false ) {
 		'generated_at' => ! is_wp_error( $installed ) ? sanitize_text_field( (string) ( $installed['generated_at'] ?? '' ) ) : '',
 		'license'      => $license,
 		'solar_installed' => [
-			'value'      => is_array( $latest ) ? (float) $latest['value'] : null,
-			'unit'       => $solar_unit,
-			'period'     => is_array( $latest ) ? (string) $latest['timestamp'] : '',
-			'delta'      => $solar_delta,
-			'growth_pct' => $solar_growth_pct,
+			'value'        => is_array( $latest ) ? (float) $latest['value'] : null,
+			'unit'         => $solar_unit,
+			'period'       => is_array( $latest ) ? (string) $latest['timestamp'] : '',
+			'delta'        => $solar_delta,
+			'growth_pct'   => $solar_growth_pct,
+			'series_id'    => $solar_id,
+			'series_label' => $solar_name,
+		],
+		'solar_target' => [
+			'value'      => is_array( $target ) ? (float) $target['value'] : null,
+			'unit'       => $target_unit,
+			'period'     => is_array( $target ) ? (string) $target['timestamp'] : '',
+			'series_id'  => $target_id,
 		],
 		'solar_share_30d' => [
-			'value'    => $share_window['current'],
-			'previous' => $share_window['previous'],
-			'unit'     => '%' ,
+			'value'     => $share_window['current'],
+			'previous'  => $share_window['previous'],
+			'unit'      => '%',
+			'series_id' => $share_id,
 		],
 		'price_current' => $price_value,
 	];

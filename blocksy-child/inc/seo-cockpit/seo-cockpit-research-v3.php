@@ -31,6 +31,59 @@ remove_action( 'admin_menu', 'nexus_register_seo_cockpit_research_page_v2', 40 )
 add_action( 'admin_menu', 'nexus_register_seo_cockpit_research_page_v3', 40 );
 
 /**
+ * Convert CrUX's expected 404/no-data response into an admin-facing state.
+ *
+ * @param array<string, mixed>|WP_Error $result CrUX result.
+ * @return array<string, mixed>|WP_Error
+ */
+function nexus_normalize_seo_cockpit_crux_display_result( $result ) {
+	if ( ! is_wp_error( $result ) ) {
+		return $result;
+	}
+
+	$message = (string) $result->get_error_message();
+	if ( 'nexus_crux_http' === $result->get_error_code() && false !== stripos( $message, 'HTTP 404' ) ) {
+		return new WP_Error(
+			'nexus_crux_no_data',
+			'Für diese Origin liegen aktuell noch keine veröffentlichten CrUX-Felddaten vor. Das ist typischerweise der Fall, wenn die anonymisierte Chrome-Stichprobe noch nicht ausreicht.'
+		);
+	}
+
+	return $result;
+}
+
+/**
+ * Render one CrUX form factor with a neutral empty-sample state.
+ *
+ * @param string                        $label Display label.
+ * @param array<string, mixed>|WP_Error $current Current CrUX response.
+ * @param array<string, mixed>|WP_Error $history CrUX history response.
+ * @return void
+ */
+function nexus_render_seo_cockpit_crux_metric_group_v3( $label, $current, $history ) {
+	$current = nexus_normalize_seo_cockpit_crux_display_result( $current );
+	$history = nexus_normalize_seo_cockpit_crux_display_result( $history );
+
+	if ( is_wp_error( $current ) && 'nexus_crux_no_data' === $current->get_error_code() ) {
+		?>
+		<section class="nexus-seo-cockpit__panel nexus-seo-cockpit__research-metrics">
+			<div class="nexus-seo-cockpit__panel-head">
+				<div>
+					<p class="nexus-seo-cockpit__eyebrow">CrUX · <?php echo esc_html( $label ); ?></p>
+					<h2>Noch keine ausreichende CrUX-Stichprobe</h2>
+				</div>
+				<span class="nexus-seo-cockpit__chip">Stand —</span>
+			</div>
+			<p class="notice notice-info inline"><?php echo esc_html( $current->get_error_message() ); ?></p>
+		</section>
+		<?php
+		return;
+	}
+
+	nexus_render_seo_cockpit_crux_metric_group( $label, $current, $history );
+}
+
+/**
  * Render the Destatis GENESIS provider panel.
  *
  * @param array<string, mixed> $summary Destatis summary.
@@ -148,18 +201,18 @@ function nexus_render_seo_cockpit_research_page_v3() {
 		wp_die( 'Nicht erlaubt.' );
 	}
 
-	$api_key      = nexus_get_seo_cockpit_crux_api_key();
-	$origin       = nexus_get_seo_cockpit_crux_origin();
-	$can_manage   = nexus_current_user_can_manage_seo_cockpit();
-	$uses_const   = nexus_seo_cockpit_crux_uses_constant();
-	$notice       = isset( $_GET['research_notice'] ) ? sanitize_key( (string) wp_unslash( $_GET['research_notice'] ) ) : '';
-	$phone        = '' !== $api_key ? nexus_get_seo_cockpit_crux_record( 'PHONE', false ) : new WP_Error( 'nexus_crux_missing_key', 'CrUX ist noch nicht konfiguriert.' );
-	$phone_hist   = '' !== $api_key ? nexus_get_seo_cockpit_crux_record( 'PHONE', true ) : $phone;
-	$desktop      = '' !== $api_key ? nexus_get_seo_cockpit_crux_record( 'DESKTOP', false ) : $phone;
-	$desktop_hist = '' !== $api_key ? nexus_get_seo_cockpit_crux_record( 'DESKTOP', true ) : $phone;
-	$energy       = function_exists( 'nexus_get_seo_cockpit_energy_charts_summary' ) ? nexus_get_seo_cockpit_energy_charts_summary() : [ 'is_available' => false ];
+	$api_key        = nexus_get_seo_cockpit_crux_api_key();
+	$origin         = nexus_get_seo_cockpit_crux_origin();
+	$can_manage     = nexus_current_user_can_manage_seo_cockpit();
+	$uses_const     = nexus_seo_cockpit_crux_uses_constant();
+	$notice         = isset( $_GET['research_notice'] ) ? sanitize_key( (string) wp_unslash( $_GET['research_notice'] ) ) : '';
+	$phone          = '' !== $api_key ? nexus_get_seo_cockpit_crux_record( 'PHONE', false ) : new WP_Error( 'nexus_crux_missing_key', 'CrUX ist noch nicht konfiguriert.' );
+	$phone_hist     = '' !== $api_key ? nexus_get_seo_cockpit_crux_record( 'PHONE', true ) : $phone;
+	$desktop        = '' !== $api_key ? nexus_get_seo_cockpit_crux_record( 'DESKTOP', false ) : $phone;
+	$desktop_hist   = '' !== $api_key ? nexus_get_seo_cockpit_crux_record( 'DESKTOP', true ) : $phone;
+	$energy         = function_exists( 'nexus_get_seo_cockpit_energy_charts_summary' ) ? nexus_get_seo_cockpit_energy_charts_summary() : [ 'is_available' => false ];
 	$destatis_token = function_exists( 'nexus_get_seo_cockpit_destatis_api_token' ) ? nexus_get_seo_cockpit_destatis_api_token() : '';
-	$destatis     = '' !== $destatis_token && function_exists( 'nexus_get_seo_cockpit_destatis_summary' ) ? nexus_get_seo_cockpit_destatis_summary() : [ 'is_available' => false, 'errors' => [] ];
+	$destatis       = '' !== $destatis_token && function_exists( 'nexus_get_seo_cockpit_destatis_summary' ) ? nexus_get_seo_cockpit_destatis_summary() : [ 'is_available' => false, 'errors' => [] ];
 	?>
 	<div class="wrap nexus-seo-cockpit nexus-seo-cockpit__research">
 		<p class="nexus-seo-cockpit__eyebrow">Research Intelligence</p>
@@ -228,8 +281,8 @@ function nexus_render_seo_cockpit_research_page_v3() {
 
 		<?php if ( '' !== $api_key ) : ?>
 			<div class="nexus-seo-cockpit__research-stack">
-				<?php nexus_render_seo_cockpit_crux_metric_group( 'Mobil', $phone, $phone_hist ); ?>
-				<?php nexus_render_seo_cockpit_crux_metric_group( 'Desktop', $desktop, $desktop_hist ); ?>
+				<?php nexus_render_seo_cockpit_crux_metric_group_v3( 'Mobil', $phone, $phone_hist ); ?>
+				<?php nexus_render_seo_cockpit_crux_metric_group_v3( 'Desktop', $desktop, $desktop_hist ); ?>
 			</div>
 		<?php else : ?>
 			<section class="nexus-seo-cockpit__panel nexus-seo-cockpit__panel--setup">
