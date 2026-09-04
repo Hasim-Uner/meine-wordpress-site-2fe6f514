@@ -56,19 +56,24 @@ function nexus_format_seo_cockpit_research_value( $value, $unit = '', $decimals 
  * @return void
  */
 function nexus_render_seo_cockpit_energy_charts_panel( $summary, $can_manage ) {
-	$available = ! empty( $summary['is_available'] );
-	$installed = is_array( $summary['solar_installed'] ?? null ) ? $summary['solar_installed'] : [];
-	$share     = is_array( $summary['solar_share_30d'] ?? null ) ? $summary['solar_share_30d'] : [];
-	$price     = is_array( $summary['price_current'] ?? null ) ? $summary['price_current'] : [];
-	$errors    = is_array( $summary['errors'] ?? null ) ? $summary['errors'] : [];
-	$period    = trim( (string) ( $installed['period'] ?? '' ) );
-	$period    = '' !== $period ? substr( $period, 0, 4 ) : '—';
-	$growth    = isset( $installed['growth_pct'] ) && is_numeric( $installed['growth_pct'] ) ? (float) $installed['growth_pct'] : null;
-	$delta     = isset( $installed['delta'] ) && is_numeric( $installed['delta'] ) ? (float) $installed['delta'] : null;
-	$share_now = isset( $share['value'] ) && is_numeric( $share['value'] ) ? (float) $share['value'] : null;
-	$share_prev = isset( $share['previous'] ) && is_numeric( $share['previous'] ) ? (float) $share['previous'] : null;
+	$available   = ! empty( $summary['is_available'] );
+	$installed   = is_array( $summary['solar_installed'] ?? null ) ? $summary['solar_installed'] : [];
+	$target      = is_array( $summary['solar_target'] ?? null ) ? $summary['solar_target'] : [];
+	$share       = is_array( $summary['solar_share_30d'] ?? null ) ? $summary['solar_share_30d'] : [];
+	$price       = is_array( $summary['price_current'] ?? null ) ? $summary['price_current'] : [];
+	$errors      = is_array( $summary['errors'] ?? null ) ? $summary['errors'] : [];
+	$period      = trim( (string) ( $installed['period'] ?? '' ) );
+	$period      = '' !== $period ? substr( $period, 0, 4 ) : '—';
+	$target_period = trim( (string) ( $target['period'] ?? '' ) );
+	$target_period = '' !== $target_period ? substr( $target_period, 0, 4 ) : '';
+	$growth      = isset( $installed['growth_pct'] ) && is_numeric( $installed['growth_pct'] ) ? (float) $installed['growth_pct'] : null;
+	$delta       = isset( $installed['delta'] ) && is_numeric( $installed['delta'] ) ? (float) $installed['delta'] : null;
+	$target_now  = isset( $target['value'] ) && is_numeric( $target['value'] ) ? (float) $target['value'] : null;
+	$share_now   = isset( $share['value'] ) && is_numeric( $share['value'] ) ? (float) $share['value'] : null;
+	$share_prev  = isset( $share['previous'] ) && is_numeric( $share['previous'] ) ? (float) $share['previous'] : null;
 	$share_delta = null !== $share_now && null !== $share_prev ? $share_now - $share_prev : null;
-	$price_now = isset( $price['value'] ) && is_numeric( $price['value'] ) ? (float) $price['value'] : null;
+	$price_now   = isset( $price['value'] ) && is_numeric( $price['value'] ) ? (float) $price['value'] : null;
+	$series_label = trim( (string) ( $installed['series_label'] ?? '' ) );
 	?>
 	<section class="nexus-seo-cockpit__panel nexus-seo-cockpit__panel--primary nexus-seo-cockpit__research-energy">
 		<div class="nexus-seo-cockpit__panel-head">
@@ -87,17 +92,20 @@ function nexus_render_seo_cockpit_energy_charts_panel( $summary, $can_manage ) {
 			</div>
 		</div>
 
-		<p class="nexus-seo-cockpit__hint">Öffentliche Primärdaten für Solar-Dossiers und Marktanalysen. V2 liest bewusst nur wenige stabile Signale: installierte PV-Leistung, Veränderung zum vorherigen Jahreswert, Solaranteil der letzten 30 Tage und den aktuellen Day-Ahead-Preis für DE-LU.</p>
+		<p class="nexus-seo-cockpit__hint">Öffentliche Primärdaten für Solar-Dossiers und Marktanalysen. Installierter PV-Bestand und künftige Ausbauziele werden getrennt behandelt; zusätzlich zeigt der Layer den Solaranteil der letzten 30 Tage und den aktuellen Day-Ahead-Preis für DE-LU.</p>
 
 		<div class="nexus-seo-cockpit__metrics nexus-seo-cockpit__research-energy-metrics">
 			<article class="nexus-seo-cockpit__metric-card">
 				<span class="nexus-seo-cockpit__metric-label">Installierte PV-Leistung · Stand <?php echo esc_html( $period ); ?></span>
 				<strong class="nexus-seo-cockpit__metric-value"><?php echo esc_html( nexus_format_seo_cockpit_research_value( $installed['value'] ?? null, (string) ( $installed['unit'] ?? '' ), 1 ) ); ?></strong>
-				<span class="nexus-seo-cockpit__research-trend">kumulierte installierte Leistung</span>
+				<span class="nexus-seo-cockpit__research-trend"><?php echo esc_html( '' !== $series_label ? $series_label . ' · Ist-Wert' : 'Ist-Wert ohne Ausbauplanung' ); ?></span>
+				<?php if ( null !== $target_now ) : ?>
+					<span class="nexus-seo-cockpit__research-trend is-neutral">EEG-Ausbauziel<?php echo '' !== $target_period ? ' ' . esc_html( $target_period ) : ''; ?>: <?php echo esc_html( nexus_format_seo_cockpit_research_value( $target_now, (string) ( $target['unit'] ?? '' ), 1 ) ); ?></span>
+				<?php endif; ?>
 			</article>
 
 			<article class="nexus-seo-cockpit__metric-card">
-				<span class="nexus-seo-cockpit__metric-label">PV-Veränderung · vorheriger Jahreswert</span>
+				<span class="nexus-seo-cockpit__metric-label">PV-Veränderung · vorheriger Ist-Jahreswert</span>
 				<strong class="nexus-seo-cockpit__metric-value"><?php echo esc_html( null !== $growth ? ( ( $growth > 0 ? '+' : '' ) . number_format_i18n( $growth, 1 ) . ' %' ) : '—' ); ?></strong>
 				<?php if ( null !== $delta ) : ?>
 					<span class="nexus-seo-cockpit__research-trend <?php echo esc_attr( $delta >= 0 ? 'is-positive' : 'is-negative' ); ?>"><?php echo esc_html( ( $delta > 0 ? '+' : '' ) . nexus_format_seo_cockpit_research_value( $delta, (string) ( $installed['unit'] ?? '' ), 1 ) ); ?></span>
@@ -109,6 +117,8 @@ function nexus_render_seo_cockpit_energy_charts_panel( $summary, $can_manage ) {
 				<strong class="nexus-seo-cockpit__metric-value"><?php echo esc_html( nexus_format_seo_cockpit_research_value( $share_now, '%', 1 ) ); ?></strong>
 				<?php if ( null !== $share_delta ) : ?>
 					<span class="nexus-seo-cockpit__research-trend <?php echo esc_attr( $share_delta >= 0 ? 'is-positive' : 'is-negative' ); ?>"><?php echo esc_html( ( $share_delta > 0 ? '+' : '' ) . number_format_i18n( $share_delta, 1 ) . ' %-Punkte vs. vorige 30 Tage' ); ?></span>
+				<?php elseif ( null !== $share_now ) : ?>
+					<span class="nexus-seo-cockpit__research-trend">noch kein vollständiges Vergleichsfenster</span>
 				<?php endif; ?>
 			</article>
 
