@@ -1659,6 +1659,7 @@ function nexus_get_legacy_offer_redirect_map() {
 	// nexus_redirect_legacy_offer_paths() unterdrueckt die Weiterleitung dann,
 	// statt in eine Schleife oder auf eine 404 zu laufen.
 	$about_url   = nexus_get_primary_public_url( 'about', home_url( '/hasim-uener/' ) );
+	$solar_alternative_url = nexus_get_primary_public_url( 'solar_leads_alternative', home_url( '/solar-leads-kaufen-alternative/' ) );
 
 	return [
 		// High-probability external entry paths. Internal/historical tool,
@@ -1683,6 +1684,18 @@ function nexus_get_legacy_offer_redirect_map() {
 		// Historische Kategorie, die im Live-Log weiterhin von Googlebot
 		// gecrawlt wurde, aber aktuell als 404 endet.
 		'/category/owned-leads/'                  => $portal_url,
+		// Belegte Kannibalisierung, nicht nur Stille: Der Pillar-Post rankte im
+		// GSC-Export 28d (2026-07-30) auf Pos. 45-81 fuer "leadgenerierung
+		// photovoltaik", "waermepumpen leads", "solar leads" und "leads solar" —
+		// vier Queries, die docs/seo/query-ownership.csv anderen Seiten zuschreibt.
+		// Er selbst besitzt keine Query. Das Ziel ist der Owner von "solar leads
+		// kaufen" und damit der naechstliegende Intent.
+		'/solar-leads-kaufen-lohnt-sich/'         => $solar_alternative_url,
+		// Alter Slug desselben Posts. Er zeigt ueber
+		// hu_blog_pillar_redirect_legacy_slugs() (Prioritaet 6) auf
+		// /solar-leads-kaufen-lohnt-sich/ und liefe ab jetzt in eine Kette. Dieser
+		// Eintrag laeuft auf Prioritaet 2 und damit vorher, also direkt aufs Endziel.
+		'/photovoltaik-leads-tco-rechnung/'       => $solar_alternative_url,
 	];
 }
 

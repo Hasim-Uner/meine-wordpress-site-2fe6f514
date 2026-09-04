@@ -3,7 +3,7 @@
 - Zielgruppe: SHK-Betriebe, Heizungsbauer, Wärmepumpen-Anbieter (Geschäftsführer/Inhaber)
 - Zweck: redaktioneller Gastbeitrag für Fachmedien (z. B. SBZ, SHK-/Haustechnik-Medien) — KEIN Werbetext
 - Primärer CTA: keiner (bewusst; Link nur in der Autoren-Byline)
-- Byline-Link-Ziel: `/solar-leads-kaufen-lohnt-sich/` (kanonischer Pillar)
+- Byline-Link-Ziel: `/solar-leads-kaufen-alternative/` (Query-Owner „solar leads kaufen"). Vorher `/solar-leads-kaufen-lohnt-sich/` — diese URL wird seit 2026-09-04 per 301 hierher konsolidiert. Ein Fachmedien-Backlink ist nach Veröffentlichung nicht mehr korrigierbar und darf deshalb nicht auf eine Weiterleitung zeigen.
 - Bezug: eigenständige Fassung, KEIN Duplikat des Website-Pillars (Exklusivität für die Redaktion)
 - Status: Entwurf für Outreach — vor Versand an das jeweilige Medium redaktionell anpassen
 - Regeln: kein Marktcheck-CTA, kein Affiliate, keine Preis-/Angebotsnennungen, Canon-konform
@@ -80,4 +80,4 @@ eigenen Auftragsliste: Was kostet ein gewonnener Auftrag — und wem gehört der
 *Haşim Üner entwickelt eigene Anfragesysteme für Solar-, Wärmepumpen- und Speicher-Anbieter —
 von der schnellen Website über die Vorprüfung bis zum Nachverfolgen jeder Anfrage bis zum
 Auftrag. Eine ausführliche Analyse zur Wirtschaftlichkeit gekaufter Leads hat er unter
-https://hasimuener.de/solar-leads-kaufen-lohnt-sich/ veröffentlicht.*
+https://hasimuener.de/solar-leads-kaufen-alternative/ veröffentlicht.*

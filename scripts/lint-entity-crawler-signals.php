@@ -232,6 +232,70 @@ hu_lint_assert(
 	'llms.txt repeats at most the two deliberate cross-section entries'
 );
 
+// --- Redirects ------------------------------------------------------------
+
+echo "\n########## Redirect-Matrix ##########\n\n";
+
+$redirect_map = nexus_get_legacy_offer_redirect_map();
+$retired      = nexus_get_retired_gone_paths();
+
+/**
+ * Reduce an absolute or relative URL to its comparable path.
+ *
+ * @param string $url URL or path.
+ * @return string
+ */
+$to_path = static function ( $url ) {
+	$path = (string) wp_parse_url( (string) $url, PHP_URL_PATH );
+
+	return '' === $path || '/' === $path ? '/' : rtrim( $path, '/' ) . '/';
+};
+
+$source_paths = array_map( $to_path, array_keys( $redirect_map ) );
+
+foreach ( $redirect_map as $source => $target ) {
+	$target_path = $to_path( $target );
+
+	// A target that is itself a source produces a 301 chain. Every hop costs
+	// crawl budget and dilutes the signal the consolidation was meant to bundle.
+	hu_lint_assert(
+		! in_array( $target_path, $source_paths, true ),
+		"redirect target is not itself redirected: {$source} -> {$target_path}"
+	);
+
+	// A target that is retired answers 410, so the redirect would land on a
+	// dead end instead of a successor.
+	hu_lint_assert(
+		! in_array( $target_path, $retired, true ),
+		"redirect target is not a retired (410) path: {$source} -> {$target_path}"
+	);
+
+	hu_lint_assert(
+		$to_path( $source ) !== $target_path,
+		"redirect does not loop onto itself: {$source}"
+	);
+}
+
+// A path cannot both redirect and answer 410; whichever hook runs first wins
+// and the other rule becomes a lie in the source.
+$conflicting = array_intersect( $source_paths, $retired );
+
+hu_lint_assert(
+	[] === $conflicting,
+	'no path is both redirected and retired (conflict: ' . implode( ', ', $conflicting ) . ')'
+);
+
+// The route index must not advertise a path that redirects.
+foreach ( $llms_paths as $path ) {
+	$bare = strtok( strtok( $path, '?' ), '#' );
+	$bare = '/' === $bare ? '/' : rtrim( $bare, '/' ) . '/';
+
+	hu_lint_assert(
+		! in_array( $bare, $source_paths, true ),
+		"llms.txt route is not a redirect source: {$bare}"
+	);
+}
+
 // --- Entity graph ---------------------------------------------------------
 
 echo "\n########## Person / Organization ##########\n\n";
