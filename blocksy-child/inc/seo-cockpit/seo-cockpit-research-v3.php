@@ -2,7 +2,7 @@
 /**
  * SEO Cockpit Research Intelligence V3 renderer.
  *
- * Adds Destatis GENESIS building-stock data to the CrUX and Energy-Charts
+ * Adds Destatis GENESIS and Eurostat data to the CrUX and Energy-Charts
  * research workspace while keeping provider logic in separate modules.
  *
  * @package Blocksy_Child
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Replace the V2 Research submenu callback with the three-provider renderer.
+ * Replace the V2 Research submenu callback with the multi-provider renderer.
  *
  * @return void
  */
@@ -192,7 +192,7 @@ function nexus_render_seo_cockpit_destatis_panel( $summary, $can_manage ) {
 }
 
 /**
- * Render the three-provider Research Intelligence page.
+ * Render the Research Intelligence page.
  *
  * @return void
  */
@@ -213,6 +213,7 @@ function nexus_render_seo_cockpit_research_page_v3() {
 	$energy         = function_exists( 'nexus_get_seo_cockpit_energy_charts_summary' ) ? nexus_get_seo_cockpit_energy_charts_summary() : [ 'is_available' => false ];
 	$destatis_token = function_exists( 'nexus_get_seo_cockpit_destatis_api_token' ) ? nexus_get_seo_cockpit_destatis_api_token() : '';
 	$destatis       = '' !== $destatis_token && function_exists( 'nexus_get_seo_cockpit_destatis_summary' ) ? nexus_get_seo_cockpit_destatis_summary() : [ 'is_available' => false, 'errors' => [] ];
+	$eurostat       = function_exists( 'nexus_get_seo_cockpit_eurostat_summary' ) ? nexus_get_seo_cockpit_eurostat_summary() : [ 'is_available' => false, 'errors' => [] ];
 	?>
 	<div class="wrap nexus-seo-cockpit nexus-seo-cockpit__research">
 		<p class="nexus-seo-cockpit__eyebrow">Research Intelligence</p>
@@ -228,6 +229,8 @@ function nexus_render_seo_cockpit_research_page_v3() {
 			<div class="notice notice-success is-dismissible"><p>Destatis-Einstellungen gespeichert.</p></div>
 		<?php elseif ( 'destatis_refresh' === $notice ) : ?>
 			<div class="notice notice-success is-dismissible"><p>Destatis-Cache geleert. Die Ansicht lädt frische Gebäudedaten.</p></div>
+		<?php elseif ( 'eurostat_refresh' === $notice ) : ?>
+			<div class="notice notice-success is-dismissible"><p>Eurostat-Cache geleert. Die Ansicht lädt frische EU-Vergleichsdaten.</p></div>
 		<?php elseif ( 'destatis_constant' === $notice ) : ?>
 			<div class="notice notice-info is-dismissible"><p>Der Destatis-Token kommt aus <code>NEXUS_DESTATIS_API_TOKEN</code> und wird deshalb hier nicht überschrieben.</p></div>
 		<?php elseif ( 'constant' === $notice ) : ?>
@@ -239,6 +242,7 @@ function nexus_render_seo_cockpit_research_page_v3() {
 				<span class="nexus-seo-cockpit__status-dot <?php echo '' !== $api_key ? 'is-connected' : 'is-warning'; ?>"><?php echo esc_html( '' !== $api_key ? 'CrUX konfiguriert' : 'CrUX-Key fehlt' ); ?></span>
 				<span class="nexus-seo-cockpit__status-dot <?php echo ! empty( $energy['is_available'] ) ? 'is-connected' : 'is-warning'; ?>"><?php echo esc_html( ! empty( $energy['is_available'] ) ? 'Energy-Charts aktiv' : 'Energy-Charts prüfen' ); ?></span>
 				<span class="nexus-seo-cockpit__status-dot <?php echo ! empty( $destatis['is_available'] ) ? 'is-connected' : 'is-warning'; ?>"><?php echo esc_html( '' === $destatis_token ? 'Destatis-Token fehlt' : ( ! empty( $destatis['is_available'] ) ? 'Destatis aktiv' : 'Destatis prüfen' ) ); ?></span>
+				<span class="nexus-seo-cockpit__status-dot <?php echo ! empty( $eurostat['is_available'] ) ? 'is-connected' : 'is-warning'; ?>"><?php echo esc_html( ! empty( $eurostat['is_available'] ) ? 'Eurostat aktiv' : 'Eurostat prüfen' ); ?></span>
 				<span><strong>Origin:</strong> <code><?php echo esc_html( $origin ?: 'nicht ermittelbar' ); ?></code></span>
 			</div>
 			<?php if ( $can_manage && '' !== $api_key ) : ?>
@@ -298,6 +302,9 @@ function nexus_render_seo_cockpit_research_page_v3() {
 
 		<?php nexus_render_seo_cockpit_energy_charts_panel( $energy, $can_manage ); ?>
 		<?php nexus_render_seo_cockpit_destatis_panel( $destatis, $can_manage ); ?>
+		<?php if ( function_exists( 'nexus_render_seo_cockpit_eurostat_panel' ) ) : ?>
+			<?php nexus_render_seo_cockpit_eurostat_panel( $eurostat, $can_manage ); ?>
+		<?php endif; ?>
 
 		<section class="nexus-seo-cockpit__panel nexus-seo-cockpit__research-providers">
 			<div class="nexus-seo-cockpit__panel-head">
@@ -307,7 +314,7 @@ function nexus_render_seo_cockpit_research_page_v3() {
 				<article><strong>CrUX</strong><span class="nexus-seo-cockpit__status is-positive">angebunden</span><p>Core Web Vitals und TTFB aus realen Chrome-Nutzungsdaten.</p></article>
 				<article><strong>Energy-Charts</strong><span class="nexus-seo-cockpit__status is-positive">angebunden</span><p>PV-Leistung, Solaranteil und DE-LU-Day-Ahead-Preis aus der Fraunhofer-ISE-API.</p></article>
 				<article><strong>Destatis GENESIS</strong><span class="nexus-seo-cockpit__status is-positive">angebunden</span><p>Wohngebäudebestand Deutschland und Niedersachsen, inklusive Struktur nach Zahl der Wohnungen.</p></article>
-				<article><strong>Eurostat</strong><span class="nexus-seo-cockpit__status is-neutral">noch nicht angebunden</span><p>EU-Vergleiche zu Energie, Gebäuden und wirtschaftlichen Indikatoren.</p></article>
+				<article><strong>Eurostat</strong><span class="nexus-seo-cockpit__status is-positive">angebunden</span><p>Deutschland-vs.-EU27-Vergleiche zu erneuerbarer Energie und erneuerbarem Strom.</p></article>
 			</div>
 		</section>
 	</div>
