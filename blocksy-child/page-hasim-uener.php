@@ -3,17 +3,22 @@
  * Personenseite auf /hasim-uener/.
  *
  * Loest die beiden alten Ueber-Mich-Templates ab (template-about.php,
- * template-about-editorial.php). Fuenf Bloecke, keine Story-Strecke:
- * Hero, vier Stationen, Kompetenzraster, Haltung, CTA.
+ * template-about-editorial.php). Sechs Bloecke, keine Story-Strecke:
+ * Hero, vier Stationen, Haltung, Werdegang, CTA, Schlusszeile.
  *
  * Route statt Template-Auswahl: die Seite haengt am Slug, damit die
  * Zuordnung nicht mehr im WP-Admin gewaehlt werden muss. Der Seeder
  * nexus_maybe_ensure_about_page() in inc/helpers.php benennt die alte
  * Seite um und setzt dieses Template.
  *
- * Bloecke 1, 2 und 4 haengen direkt an .hu-about statt am Inhalts-
- * container: Hero und Stationen-Band brauchen die volle Breite fuer
- * Anschnitt und Farbbruch.
+ * Hero und Stationen-Band haengen direkt an .hu-about statt am Inhalts-
+ * container: beide brauchen die volle Breite fuer Anschnitt und Farbbruch.
+ *
+ * Der Werdegang steht zwischen Haltung und CTA, weil die Haltung eine
+ * Behauptung ist und der Werdegang ihre Belege liefert. Die fruehere
+ * Kompetenzleiste (WordPress, Tracking, Ads, CRO, Automatisierung) ist
+ * ersatzlos entfallen: fuenf Etiketten sagen weniger als die Absaetze,
+ * die jetzt an ihrer Stelle stehen.
  *
  * @package Blocksy_Child
  */
@@ -33,6 +38,9 @@ $e3_case_url    = function_exists( 'hu_e3_canon' )
 	? (string) ( hu_e3_canon()['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) )
 	: home_url( '/case-study-solar-leadgenerierung/' );
 $linkedin_url   = 'https://www.linkedin.com/in/hasim-uener/';
+// Wie in site-header, /whitelabel-retainer/ und Person.sameAs literal gehalten;
+// fuer die Zweitdomain gibt es im Theme bisher keinen Helper.
+$blog_url       = 'https://hasimuener.org/';
 $mail_address   = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'hallo@hasimuener.de';
 
 // Portrait im 3:4-Ausschnitt. Der neue Hero setzt das Bild als eigene,
@@ -47,6 +55,9 @@ $portrait_srcset = sprintf(
 // Der Prozentwert kommt aus dem E3-Canon, damit eine Korrektur dort auch hier
 // ankommt. Bewusst ohne das "ueber" der Canon-Display-Form: auf dieser Seite
 // steht die nackte Zahl, ohne Betrag, Zeitraum, Region oder Firmennamen.
+// Das vorangestellte Minus (U+2212, nicht der Bindestrich) gibt der Zahl die
+// Richtung, die sie als Display-Zeile allein nicht hat. Es untertreibt
+// gegenueber dem kanonischen "ueber 85 %" und behauptet damit nichts Neues.
 $e3_cpl_reduction_percent = defined( 'HU_E3_CPL_REDUCTION_PERCENT' ) ? (int) HU_E3_CPL_REDUCTION_PERCENT : 85;
 
 // Vier gleichwertige Stationen, kein Zeitstrahl. Reihenfolge ist die
@@ -75,11 +86,11 @@ $about_stations = [
 		// schmalen Spalten nicht zu "2019-" / "2023" trennt.
 		'figure' => 'Eigenes Geld',
 		'title'  => "Eigener Onlineshop\u{00A0}· 2019\u{2060}–\u{2060}2023",
-		'text'   => 'Vier Jahre Anzeigen auf eigene Rechnung. Wer sein eigenes Budget ausgibt, rechnet anders als jemand, der fremdes verwaltet.',
+		'text'   => 'Vier Jahre Anzeigen auf eigene Rechnung.',
 		'wrap'   => true,
 	],
 	[
-		'figure' => sprintf( "%d\u{00A0}%%", $e3_cpl_reduction_percent ),
+		'figure' => sprintf( "\u{2212}%d\u{00A0}%%", $e3_cpl_reduction_percent ),
 		'title'  => 'Anfrage-Systeme, heute',
 		'text'   => 'Weniger Kosten pro Anfrage, bei einem mittelständischen PV-Installationsbetrieb.',
 		'url'    => $e3_case_url,
@@ -87,28 +98,48 @@ $about_stations = [
 	],
 ];
 
-// Kompetenzraster: ein Wort je Kachel, Icon rein dekorativ (aria-hidden).
-// Die Pfade sind bewusst kurz gehalten — 24er-Viewbox, currentColor, kein Fill.
-$about_skills = [
+// Werdegang: fuenf Kapitel, jedes mit einer tragenden Ueberschrift. Die vier
+// Stationen im dunklen Band sind der Index, diese Absaetze sind der Beleg —
+// deshalb wiederholen sich Vertrieb, Shop und Studium hier bewusst, aber mit
+// dem Detail, das eine Kennzahlzeile nicht tragen kann.
+//
+// Bewusst statisch und ohne data-hu-reveal: die Seite hat mit Portrait und
+// Systemlinie bereits ihre eine erlaubte Bewegungsgruppe.
+$about_vita = [
 	[
-		'label' => 'WordPress',
-		'path'  => '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M7 6.5h.01"/>',
+		'title'      => 'Woher ich komme',
+		'paragraphs' => [
+			'Mein Vater ist Bauunternehmer, Putz und Hochbau. Ich bin mit einem Betrieb am Küchentisch aufgewachsen: Angebote, Termine, Kunden, die anrufen, wenn etwas klemmt. Deshalb ist meine erste Frage an eine Website, was sie dem Betrieb bringt.',
+		],
 	],
 	[
-		'label' => 'Tracking',
-		'path'  => '<path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 4-5 3 3 5-6"/>',
+		'title'      => 'Acht Jahre B2B-Vertrieb',
+		'paragraphs' => [
+			'Firmenkundengeschäft, überwiegend Telekommunikation: Verträge für Unternehmen und die Mobilfunkverträge ihrer Mitarbeiter.',
+			'In meinen Verkäufen war der Preis selten der Grund, warum ein Abschluss nicht zustande kam. Häufiger war es der falsche Ansprechpartner, ein Angebot mit zu vielen Optionen oder ein Unternehmen, das mit dem Zustand ganz gut leben konnte. Drei Gründe, die eine Website heute klären kann, bevor jemand zum Telefon greift.',
+		],
 	],
 	[
-		'label' => 'Ads',
-		'path'  => '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>',
+		'title'      => 'Vier Jahre eigener Onlineshop',
+		'paragraphs' => [
+			'2019 bis 2023, nachhaltige Produkte: umweltfreundlich, langlebig, erklärungsbedürftig. Anzeigen, Produktseiten, Warenkorb, Checkout, E-Mail-Strecken — alles in meiner Hand, alles auf eigene Rechnung.',
+			'2023 gab es meinen Lieferanten in China nicht mehr. Ich habe den Shop geschlossen, statt monatelang Ersatz zu suchen. Eine schnelle Entscheidung, aus dem Bauch — aber eine klare.',
+			'Eine bessere Conversion war für mich wertlos, wenn hinterher weniger übrig blieb. Rabatte, Gratisversand, kürzere Formulare: Jede dieser Stellschrauben hebt eine Zahl und senkt eine andere. Wer sie nicht zusammen betrachtet, optimiert sich ärmer. Dieselbe Rechnung führe ich heute für Anfragen: Zwei Anfragen, mit denen Ihr Vertrieb arbeiten kann, sind mehr wert als zehn, die er abtelefonieren muss.',
+		],
 	],
 	[
-		'label' => 'CRO',
-		'path'  => '<path d="M4 5h16l-6 7v6l-4 2v-8Z"/>',
+		'title'      => 'Medienwissenschaft',
+		'paragraphs' => [
+			'Medientheorie, Mediensoziologie, Medienpsychologie, Medientechnik, webbasierte Informationssysteme. Meine Bachelorarbeit habe ich über persuasive Online-Werbung geschrieben. Mein Befund damals: Die Formate überzeugten kaum. Interaktiv waren sie, vor allem aber störend — Pop-ups, Unterbrechungen.',
+			'Überzeugen ist deshalb nichts Anrüchiges. Es wird es erst, wenn eins von zwei Dingen fehlt: dass das Versprechen hält, oder dass der Weg dorthin ehrlich war. Kein erfundener Countdown, keine Knappheit, die keine ist, keine Kosten, die erst im letzten Schritt auftauchen. Bei einem Projekt fange ich deshalb bei der Frage an, was Sie tatsächlich liefern können. Alles andere verschiebt das Problem nur ins Erstgespräch.',
+		],
 	],
 	[
-		'label' => 'Automatisierung',
-		'path'  => '<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/>',
+		'title'      => 'Arbeiten mit KI',
+		'paragraphs' => [
+			'Ich arbeite täglich mit KI-Werkzeugen: beim Recherchieren, beim Bauen, beim Gegenlesen. Das Potenzial ist da — mehr Varianten prüfen, schneller zu einem belastbaren Stand kommen. Es zählt nur, wenn die Qualität dabei oben bleibt.',
+			'Was die Werkzeuge nicht liefern, ist der Kontext Ihres Betriebs, ein Gefühl dafür, was ein Kunde meint, wenn er etwas anderes sagt, und die Entscheidung, in welcher Reihenfolge gebaut wird. Das ist der Teil der Arbeit, der geblieben ist — und der schwierigere.',
+		],
 	],
 ];
 
@@ -167,35 +198,25 @@ get_header();
 
 		<div class="hu-about__inner">
 
-			<!-- 3 — KOMPETENZRASTER -->
-			<section class="hu-about__skills" aria-label="Kompetenzen">
-				<ul class="hu-about__skill-grid" role="list">
-					<?php foreach ( $about_skills as $skill ) : ?>
-						<li class="hu-about__skill">
-							<svg
-								class="hu-about__skill-icon"
-								viewBox="0 0 24 24"
-								width="24"
-								height="24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="1.5"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								aria-hidden="true"
-								focusable="false"
-							><?php echo $skill['path']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- statische SVG-Pfade aus dem Array oben. ?></svg>
-							<span class="hu-about__skill-label"><?php echo esc_html( $skill['label'] ); ?></span>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</section>
-
-			<!-- 4 — HALTUNG -->
+			<!-- 3 — HALTUNG -->
 			<section class="hu-about__stance">
 				<p class="hu-about__stance-text">
 					Die meisten Websites, die ich übernehme, sind technisch nicht kaputt. Sie sind nur nie darauf ausgelegt worden, dass am Ende jemand anruft: Das Formular ist versteckt, niemand misst, welche Anfrage woher kommt, und der Vertrieb erfährt es zuletzt. Ich fange deshalb nicht bei der Gestaltung an, sondern bei der Frage, was am Ende passieren soll — und ändere den Ansatz, wenn die Zahlen etwas anderes sagen.
 				</p>
+			</section>
+
+			<!-- 4 — WERDEGANG: die Belege hinter der Haltung -->
+			<section class="hu-about__vita" aria-label="Werdegang">
+				<?php foreach ( $about_vita as $chapter ) : ?>
+					<article class="hu-about__vita-item">
+						<h2 class="hu-about__vita-title"><?php echo esc_html( $chapter['title'] ); ?></h2>
+						<div class="hu-about__vita-body">
+							<?php foreach ( $chapter['paragraphs'] as $paragraph ) : ?>
+								<p><?php echo esc_html( $paragraph ); ?></p>
+							<?php endforeach; ?>
+						</div>
+					</article>
+				<?php endforeach; ?>
 			</section>
 
 			<!-- 5 — CTA: zwei klar getrennte Wege, danach die leisen Kontaktwege -->
@@ -209,7 +230,7 @@ get_header();
 					<article class="hu-about__path hu-about__path--direct">
 						<p class="hu-about__path-label">Für Betriebe</p>
 						<h3 class="hu-about__path-title">Direktes Projekt</h3>
-						<p class="hu-about__path-text">Sie wollen Website, Tracking oder Conversion konkret umsetzen — direkt mit mir, ohne Agenturkette dazwischen.</p>
+						<p class="hu-about__path-text">Sie sprechen mit dem, der es baut. Keine Zwischenebene, kein Account Manager. Wenn ich ausfalle, sage ich Ihnen das am selben Tag und wir verschieben — dafür wissen Sie immer, woran Sie sind.</p>
 						<a
 							class="hu-about__path-link hu-about__path-link--primary"
 							href="<?php echo esc_url( $request_url ); ?>"
@@ -222,7 +243,8 @@ get_header();
 					<article class="hu-about__path hu-about__path--whitelabel">
 						<p class="hu-about__path-label">Für Agenturen</p>
 						<h3 class="hu-about__path-title">White-Label-Umsetzung</h3>
-						<p class="hu-about__path-text">Sie führen das Kundenprojekt. Ich übernehme die technische Umsetzung im Hintergrund.</p>
+						<?php /* Dritter Satz weicht bewusst vom Entwurf ab: /whitelabel-retainer/ verkauft kein Stundenkontingent, sondern ein Erstprojekt mit fixem Scope, aus dem erst danach ein Monats-Retainer entstehen kann. Die Karte darf der Zielseite nicht widersprechen. */ ?>
+						<p class="hu-about__path-text">Sie führen das Kundenprojekt, ich übernehme die technische Umsetzung im Hintergrund. Nach außen tritt Ihre Agentur auf. Scope und Preis stehen vor dem Start fest; laufende Kapazität vereinbaren wir erst nach dem Erstprojekt.</p>
 						<a
 							class="hu-about__path-link hu-about__path-link--secondary"
 							href="<?php echo esc_url( $whitelabel_url ); ?>"
@@ -250,6 +272,18 @@ get_header();
 					>E-Mail</a>
 				</p>
 			</section>
+
+			<!-- 6 — SCHLUSSZEILE: der einzige Verweis nach draussen, bewusst leise -->
+			<p class="hu-about__coda">
+				Abseits der Arbeit schreibe ich auf <a
+					href="<?php echo esc_url( $blog_url ); ?>"
+					rel="me noopener noreferrer"
+					target="_blank"
+					data-track-action="link_about_blog"
+					data-track-category="navigation"
+					data-track-section="about_coda"
+				>hasimuener.org</a> über Medien und Öffentlichkeit. Andere Baustelle, gleiche Neugier.
+			</p>
 
 		</div>
 	</div>

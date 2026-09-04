@@ -15,7 +15,10 @@
    Focal moment: einmaliger Portrait- und Linien-Einzug beim ersten Paint.
    Continuity: die Linie setzt sich durch die vier biografischen Stationen fort.
    Feedback states: Fokus, Hover und Active der bestehenden Links.
-   Explicitly static: Aussage, Zahlen, Kompetenzleiste, Haltung und CTA.
+   Explicitly static: Aussage, Zahlen, Haltung, Werdegang, CTA und Schlusszeile.
+   Der Werdegang ist der laengste Block der Seite und bekommt bewusst keine
+   Reveal-Choreografie: fuenf nacheinander einblendende Textkapitel waeren eine
+   zweite Bewegungsgruppe und wuerden das Lesen ausbremsen.
    Max moving groups: eine (Portrait plus zusammengehoerige Systemlinie).
    Runtime / payload: kein neues JS, keine Abhaengigkeit, bestehendes WebP bleibt.
    CWV: keine belastbare Feld-Baseline im Repo; feste Bildmasse, srcset und
@@ -412,49 +415,7 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 }
 
 /* -----------------------------------------------------------
-   3 — Kompetenzen: eine ruhige Werkzeugleiste ohne Card-Grid.
------------------------------------------------------------ */
-.hu-about__skill-grid {
-	display: grid;
-	grid-template-columns: repeat(5, minmax(0, 1fr));
-	margin: 0;
-	padding: 0;
-	border-block: 1px solid var(--hu-about-line);
-	list-style: none;
-}
-
-.hu-about__skill {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: var(--nx-space-md);
-	min-width: 0;
-	padding: var(--nx-space-lg) var(--nx-space-md);
-	border: 0;
-	border-radius: 0;
-	text-align: center;
-}
-
-.hu-about__skill + .hu-about__skill {
-	border-left: 1px solid var(--hu-about-line);
-}
-
-.hu-about__skill-icon {
-	flex: 0 0 auto;
-	color: var(--hu-about-accent-strong);
-}
-
-.hu-about__skill-label {
-	min-width: 0;
-	font-size: 0.8125rem;
-	font-weight: 650;
-	letter-spacing: 0.01em;
-	color: var(--hu-about-ink);
-	overflow-wrap: anywhere;
-}
-
-/* -----------------------------------------------------------
-   4 — Haltung: dieselbe Display-Stimme wie der Hero, mit einer
+   3 — Haltung: dieselbe Display-Stimme wie der Hero, mit einer
    kupfernen Achse statt eines weiteren Kartenstils.
 ----------------------------------------------------------- */
 .hu-about__stance {
@@ -480,6 +441,66 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 	line-height: 1.52;
 	letter-spacing: -0.015em;
 	color: var(--hu-about-ink);
+	text-wrap: pretty;
+}
+
+/* -----------------------------------------------------------
+   4 — Werdegang: Ueberschrift und Fliesstext in zwei Spalten, getrennt
+   durch dieselben Haarlinien, die vorher die Kompetenzleiste gerahmt
+   haben. Die Ueberschriftenspalte bleibt schmal, damit der Lesetext
+   sein Mass behaelt statt auf Containerbreite zu laufen.
+----------------------------------------------------------- */
+.hu-about__vita {
+	display: grid;
+	border-top: 1px solid var(--hu-about-line);
+}
+
+.hu-about__vita-item {
+	display: grid;
+	grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+	gap: clamp(var(--nx-space-lg), 4vw, var(--nx-space-2xl));
+	padding-block: clamp(var(--nx-space-xl), 4vw, var(--nx-space-2xl));
+	border-bottom: 1px solid var(--hu-about-line);
+}
+
+.hu-about__vita-title {
+	position: relative;
+	align-self: start;
+	margin: 0;
+	padding-inline-start: calc(var(--nx-space-lg) + var(--nx-space-xs));
+	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
+	font-size: clamp(1.125rem, 1.7vw, 1.375rem);
+	font-weight: 600;
+	line-height: var(--leading-snug, 1.3);
+	letter-spacing: -0.015em;
+	color: var(--hu-about-ink);
+	text-wrap: balance;
+}
+
+/* Kupferner Merker statt einer Nummer: die vier Stationen im Band sind
+   gezaehlt, diese fuenf Kapitel sind es nicht — eine zweite Zaehlung
+   wuerde eine Reihenfolge behaupten, die es nicht gibt. */
+.hu-about__vita-title::before {
+	position: absolute;
+	top: 0.6em;
+	left: 0;
+	width: var(--nx-space-md);
+	height: 2px;
+	background-color: var(--hu-about-accent);
+	content: '';
+}
+
+.hu-about__vita-body {
+	display: grid;
+	gap: var(--nx-space-md);
+	max-width: 62ch;
+}
+
+.hu-about__vita-body p {
+	margin: 0;
+	font-size: 1rem;
+	line-height: 1.68;
+	color: var(--hu-about-ink-soft);
 	text-wrap: pretty;
 }
 
@@ -658,6 +679,29 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 	text-underline-offset: 3px;
 }
 
+/* -----------------------------------------------------------
+   6 — Schlusszeile: steht ausserhalb der CTA-Karte, damit sie nicht
+   als dritter Weg gelesen wird. Sie traegt zugleich den unteren
+   Abschluss des Inhaltscontainers, der bei 0 endet.
+----------------------------------------------------------- */
+.hu-about__coda {
+	max-width: 56ch;
+	margin: 0;
+	padding-block-end: clamp(var(--nx-space-3xl), 8vw, var(--nx-space-section));
+	font-size: 0.9375rem;
+	font-style: italic;
+	line-height: 1.6;
+	color: var(--hu-about-ink-soft);
+	text-wrap: pretty;
+}
+
+.hu-about__coda a {
+	color: var(--hu-about-accent-strong);
+	font-style: normal;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
 .hu-about a:focus-visible {
 	outline: 3px solid var(--hu-about-accent);
 	outline-offset: 3px;
@@ -683,6 +727,10 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 	.hu-about__cta-links a:hover {
 		color: var(--hu-about-ink);
 	}
+
+	.hu-about__coda a:hover {
+		color: var(--hu-about-ink);
+	}
 }
 
 /* -----------------------------------------------------------
@@ -696,6 +744,13 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 
 	.hu-about__station-figure {
 		font-size: clamp(1.75rem, 3.7vw, 2.125rem);
+	}
+
+	/* Unter 900 px bliebe der Textspalte weniger als ihr Lesemass; die
+	   Ueberschrift setzt sich deshalb ueber den Absatz statt daneben. */
+	.hu-about__vita-item {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--nx-space-md);
 	}
 }
 
@@ -798,30 +853,6 @@ html.hu-about-anim .hu-about__station:not(.is-in)::after {
 	.hu-about__station-figure {
 		font-size: clamp(2rem, 8vw, 2.5rem);
 	}
-}
-
-@media (max-width: 620px) {
-	.hu-about__skill-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-
-	.hu-about__skill + .hu-about__skill {
-		border-left: 0;
-	}
-
-	.hu-about__skill:nth-child(even) {
-		border-left: 1px solid var(--hu-about-line);
-	}
-
-	.hu-about__skill:nth-child(n + 3) {
-		border-top: 1px solid var(--hu-about-line);
-	}
-
-	.hu-about__skill:last-child {
-		grid-column: 1 / -1;
-		border-left: 0;
-	}
-
 }
 
 @media (max-width: 420px) {

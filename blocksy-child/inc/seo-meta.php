@@ -225,7 +225,9 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'hasim-uener' => [
 				'title'       => 'Haşim Üner | Websites, die Anfragen produzieren',
-				'description' => 'Haşim Üner aus Pattensen bei Hannover baut Websites, die Anfragen produzieren — und die Technik dahinter: WordPress, Tracking, Ads, CRO, Automatisierung.',
+				// Die fruehere Aufzaehlung spiegelte die Kompetenzleiste der Seite.
+				// Die ist entfallen; jetzt steht hier der Werdegang, der sie ersetzt.
+				'description' => 'Haşim Üner aus Pattensen bei Hannover baut Websites, die Anfragen produzieren — und die Technik dahinter. Acht Jahre B2B-Vertrieb, vier Jahre eigener Onlineshop, Medienwissenschaft.',
 			],
 			// 'wgos' / 'wordpress-growth-operating-system' sowie Tool-/Audit-Legacy-Routen:
 			// Seiten sind noindex, sitemap-excluded oder geschuetzte 301-Einstiege,
