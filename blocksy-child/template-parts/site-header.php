@@ -103,7 +103,10 @@ $cta_item          = isset( $header_contract['cta'] ) && is_array( $header_contr
 		'category'    => 'lead_gen',
 		'section'     => 'header',
 	];
-$response_promise = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : '';
+$response_promise    = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : '';
+$meta_links          = isset( $meta['links'] ) && is_array( $meta['links'] ) ? array_values( $meta['links'] ) : [];
+$direct_meta_links   = array_slice( $meta_links, 0, 2 );
+$adjacent_meta_links = array_slice( $meta_links, 2 );
 ?>
 
 <header class="nx-site-header nx-site-header--sheet is-visible" data-site-header role="banner">
@@ -138,6 +141,10 @@ $response_promise = function_exists( 'hu_response_promise' ) ? hu_response_promi
 			>
 				<span class="nx-site-header__cta-full"><?php echo esc_html( (string) ( $cta_item['label'] ?? 'Projekt anfragen' ) ); ?></span>
 				<span class="nx-site-header__cta-short"><?php echo esc_html( (string) ( $cta_item['short_label'] ?? 'Anfragen' ) ); ?></span>
+				<svg class="nx-site-header__cta-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+					<path d="M7 17 17 7"></path>
+					<path d="M8 7h9v9"></path>
+				</svg>
 			</a>
 
 			<button
@@ -220,31 +227,71 @@ $response_promise = function_exists( 'hu_response_promise' ) ? hu_response_promi
 					<?php endforeach; ?>
 				</div>
 
-				<?php if ( '' !== $response_promise ) : ?>
-					<div class="nx-site-header__sheet-foot">
-						<?php echo esc_html( $response_promise ); ?>
-					</div>
-				<?php endif; ?>
+				<div class="nx-site-header__sheet-foot">
+					<?php if ( '' !== $response_promise ) : ?>
+						<span class="nx-site-header__response-promise"><?php echo esc_html( $response_promise ); ?></span>
+					<?php endif; ?>
+					<a
+						class="nx-site-header__cta nx-site-header__sheet-cta"
+						href="<?php echo esc_url( (string) ( $cta_item['url'] ?? $project_url ) ); ?>"
+						data-track-action="<?php echo esc_attr( (string) ( $cta_item['track'] ?? 'nav_header_project' ) ); ?>"
+						data-track-category="<?php echo esc_attr( (string) ( $cta_item['category'] ?? 'lead_gen' ) ); ?>"
+						data-track-section="<?php echo esc_attr( (string) ( $cta_item['section'] ?? 'header' ) ); ?>"
+					>
+						<span><?php echo esc_html( (string) ( $cta_item['label'] ?? 'Projekt anfragen' ) ); ?></span>
+						<svg class="nx-site-header__cta-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+							<path d="M7 17 17 7"></path>
+							<path d="M8 7h9v9"></path>
+						</svg>
+					</a>
+				</div>
 			</nav>
 
 			<div class="nx-site-header__meta" aria-label="<?php esc_attr_e( 'Kontakt und Standort', 'blocksy-child' ); ?>">
-				<p class="nx-site-header__meta-title"><?php esc_html_e( 'Direkter Draht', 'blocksy-child' ); ?></p>
-				<ul>
-					<?php foreach ( (array) ( $meta['links'] ?? [] ) as $meta_link ) : ?>
-						<li>
-							<a
-								href="<?php echo esc_url( (string) ( $meta_link['url'] ?? '' ) ); ?>"
-								data-track-action="<?php echo esc_attr( (string) ( $meta_link['track'] ?? '' ) ); ?>"
-								data-track-category="<?php echo esc_attr( (string) ( $meta_link['category'] ?? 'navigation' ) ); ?>"
-								data-track-section="<?php echo esc_attr( (string) ( $meta_link['section'] ?? 'header' ) ); ?>"
-							>
-								<?php echo esc_html( (string) ( $meta_link['label'] ?? '' ) ); ?>
-							</a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
+				<?php if ( ! empty( $direct_meta_links ) ) : ?>
+					<div class="nx-site-header__meta-block">
+						<p class="nx-site-header__meta-title"><?php esc_html_e( 'Direkt', 'blocksy-child' ); ?></p>
+						<ul>
+							<?php foreach ( $direct_meta_links as $meta_link ) : ?>
+								<li>
+									<a
+										href="<?php echo esc_url( (string) ( $meta_link['url'] ?? '' ) ); ?>"
+										data-track-action="<?php echo esc_attr( (string) ( $meta_link['track'] ?? '' ) ); ?>"
+										data-track-category="<?php echo esc_attr( (string) ( $meta_link['category'] ?? 'navigation' ) ); ?>"
+										data-track-section="<?php echo esc_attr( (string) ( $meta_link['section'] ?? 'header' ) ); ?>"
+									>
+										<?php echo esc_html( (string) ( $meta_link['label'] ?? '' ) ); ?>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php endif; ?>
 				<?php if ( ! empty( $meta['location'] ) ) : ?>
-					<p class="nx-site-header__location"><?php echo esc_html( (string) $meta['location'] ); ?></p>
+					<div class="nx-site-header__meta-block">
+						<p class="nx-site-header__meta-title"><?php esc_html_e( 'Standort', 'blocksy-child' ); ?></p>
+						<p class="nx-site-header__location"><?php echo esc_html( (string) $meta['location'] ); ?></p>
+					</div>
+				<?php endif; ?>
+				<?php if ( ! empty( $adjacent_meta_links ) ) : ?>
+					<div class="nx-site-header__meta-block">
+						<p class="nx-site-header__meta-title"><?php esc_html_e( 'Nebenan', 'blocksy-child' ); ?></p>
+						<ul>
+							<?php foreach ( $adjacent_meta_links as $meta_link ) : ?>
+								<li>
+									<a
+										href="<?php echo esc_url( (string) ( $meta_link['url'] ?? '' ) ); ?>"
+										data-track-action="<?php echo esc_attr( (string) ( $meta_link['track'] ?? '' ) ); ?>"
+										data-track-category="<?php echo esc_attr( (string) ( $meta_link['category'] ?? 'navigation' ) ); ?>"
+										data-track-section="<?php echo esc_attr( (string) ( $meta_link['section'] ?? 'header' ) ); ?>"
+									>
+										<span><?php echo esc_html( (string) ( $meta_link['label'] ?? '' ) ); ?></span>
+										<span class="nx-site-header__external-mark" aria-hidden="true">↗</span>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
 				<?php endif; ?>
 			</div>
 		</div>
