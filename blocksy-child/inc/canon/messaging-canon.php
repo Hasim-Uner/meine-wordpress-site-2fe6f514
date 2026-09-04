@@ -24,6 +24,11 @@ define(
 // Organization-Schema info@ — drei Adressen fuer denselben Zweck, zwei davon
 // auf indexierten Seiten. Sichtbare Kontaktwege lesen ab hier.
 //
+// Primaer ist kontakt@. hallo@ bleibt als Alias bestehen und nimmt Post an,
+// wird aber nirgends mehr ausgegeben: zwei aktive Adressen sitewide sind eine
+// Frage zu viel fuer den Empfaenger. Die Kopfnavigation nannte kontakt@ schon,
+// waehrend der Canon noch hallo@ fuehrte — hier laeuft beides wieder zusammen.
+//
 // Ausgenommen: die im Impressum und in der Datenschutzerklaerung benannte
 // Adresse. Das ist ein rechtlich benannter Kontaktweg, keine Marketing-Copy,
 // und wird nicht nebenbei mitgezogen.
@@ -31,7 +36,7 @@ define(
 // Der tatsaechliche Absender der Transaktionsmails kommt aus der
 // Laufzeitkonfiguration (NEXUS_BREVO_FROM_EMAIL et al. in inc/mail.php), nicht
 // von hier. Wo Copy den Absender benennt, muss beides zusammenpassen.
-define( 'HU_CONTACT_EMAIL', 'hallo@hasimuener.de' );
+define( 'HU_CONTACT_EMAIL', 'kontakt@hasimuener.de' );
 
 /**
  * Public contact address for visible contact paths.
@@ -77,18 +82,27 @@ define( 'HU_RESPONSE_HOURS', 24 );
 /**
  * Display value for the canonical response promise.
  *
- * @param string $variant One of: phrase, sentence, compact, window.
+ * `value` ist der nackte Wert ohne Rahmensatz. Der Fuss setzt ihn in ein <b>
+ * und braucht deshalb die Zusage getrennt vom Label — sonst stuende die Zahl
+ * ein weiteres Mal hart im Template.
+ *
+ * @param string $variant One of: phrase, sentence, compact, window, value.
  * @return string
  */
 function hu_response_promise( $variant = 'phrase' ) {
-	$window = sprintf( 'innerhalb von %d Stunden werktags', HU_RESPONSE_HOURS );
+	$value  = sprintf( '%d Stunden werktags', HU_RESPONSE_HOURS );
+	$window = sprintf( 'innerhalb von %s', $value );
+
+	if ( 'value' === $variant ) {
+		return $value;
+	}
 
 	if ( 'window' === $variant ) {
 		return $window;
 	}
 
 	if ( 'compact' === $variant ) {
-		return sprintf( 'Antwort in %d Stunden werktags', HU_RESPONSE_HOURS );
+		return sprintf( 'Antwort in %s', $value );
 	}
 
 	if ( 'sentence' === $variant ) {

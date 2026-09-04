@@ -51,7 +51,7 @@ $github_url     = 'https://github.com/Hasim-hannover';
 // Wie in site-header, /whitelabel-retainer/ und Person.sameAs literal gehalten;
 // fuer die Zweitdomain gibt es im Theme bisher keinen Helper.
 $blog_url       = 'https://hasimuener.org/';
-$mail_address   = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'hallo@hasimuener.de';
+$mail_address   = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
 
 // Portrait im 3:4-Ausschnitt. Der neue Hero setzt das Bild als eigene,
 // responsiv zugeschnittene Buehne ein statt es am Viewport anzuschneiden.

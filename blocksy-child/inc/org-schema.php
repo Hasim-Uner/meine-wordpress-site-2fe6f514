@@ -769,7 +769,7 @@ function hu_output_schema()
         'url'      => home_url(),
         'description' => 'WordPress-Entwicklung, technisches SEO, Tracking und Conversion für Unternehmen und Agenturen. Solar- und Wärmepumpen-Anfragesysteme bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.',
         'telephone'   => '+49 176 76596580',
-        'email'       => function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'hallo@hasimuener.de',
+        'email'       => function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de',
         'logo'        => function_exists( 'hu_get_brand_logo_url' ) ? hu_get_brand_logo_url() : content_url( '/uploads/2025/08/cropped-Logo-hasim-uener-1.webp' ),
         'image'       => hu_get_profile_image_url(),
         'founder'     => hu_person_schema_ref(),

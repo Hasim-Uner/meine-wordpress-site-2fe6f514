@@ -62,7 +62,7 @@ function hu_get_brand_logo_url() {
 	return 'https://hasimuener.de/wp-content/uploads/logo.webp';
 }
 function hu_get_contact_email() {
-	return 'hallo@hasimuener.de';
+	return 'kontakt@hasimuener.de';
 }
 function untrailingslashit( $string ) {
 	return rtrim( (string) $string, '/' );

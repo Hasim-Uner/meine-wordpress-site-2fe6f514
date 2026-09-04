@@ -234,7 +234,7 @@
       if (!a.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a.email)) errs.email = 'Bitte eine gültige geschäftliche E-Mail angeben.';
       // Konsumenten-Provider auf geschäftliche E-Mail-Felder ausschließen.
       if (a.email && /^[^\s@]+@(gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(com|de|net|at|ch)$/i.test(a.email)) {
-        errs.email = 'Bitte nutzen Sie Ihre geschäftliche E-Mail-Adresse (Firmen-Domain) — so kann ich Betrieb und Region eindeutig zuordnen. Keine eigene Domain? Schreiben Sie direkt an hallo@hasimuener.de.';
+        errs.email = 'Bitte nutzen Sie Ihre geschäftliche E-Mail-Adresse (Firmen-Domain) — so kann ich Betrieb und Region eindeutig zuordnen. Keine eigene Domain? Schreiben Sie direkt an kontakt@hasimuener.de.';
       }
       if (!a.postal_code || !/^[0-9]{4,5}$/.test(String(a.postal_code).trim())) errs.postal_code = 'Bitte die Firmen-PLZ angeben — vierstellig (AT, CH) oder fünfstellig (DE).';
       if (!a.consent_privacy) errs.consent_privacy = 'Bitte den Datenschutzhinweis bestätigen.';
