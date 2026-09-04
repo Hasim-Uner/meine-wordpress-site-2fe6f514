@@ -88,6 +88,25 @@ Die Support-Frist der Tracking Care (`HU_TRACKING_RESPONSE_BUSINESS_DAYS`) ist
 eine dritte, vertragliche Größe im laufenden Mandat. Sie gehört nicht in
 Intake-Bestätigungen.
 
+## Sichtbare Kontaktwege
+
+Eine Adresse, eine Nummer, beide aus dem Canon. Zwei aktive Adressen sitewide
+sind eine Frage zu viel für den Empfänger.
+
+| Weg | Wert | Quelle |
+|---|---|---|
+| E-Mail | `kontakt@hasimuener.de` | `hu_get_contact_email()` in `inc/canon/messaging-canon.php` |
+| Telefon | `0176 76596580` / `tel:+4917676596580` | `hu_get_contact_phone()` ebenda |
+
+`hallo@` bleibt als Alias bestehen und nimmt Post an, wird aber in keiner
+sichtbaren Copy, keinem Schema und keinem Formularhinweis mehr ausgegeben.
+`hasim@` und `info@` sind ebenfalls raus.
+
+Ausgenommen bleiben die in Impressum und Datenschutzerklärung benannten
+Adressen: rechtlich benannte Kontaktwege, keine Marketing-Copy. Der Absender
+der Transaktionsmails kommt aus der Laufzeitkonfiguration (`inc/mail.php`),
+nicht aus dem Canon — wo Copy den Absender benennt, muss beides zusammenpassen.
+
 ## Tone
 
 - Klar, direkt, technisch verständlich, entscheidungssicher

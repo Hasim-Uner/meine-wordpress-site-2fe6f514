@@ -166,16 +166,42 @@ matching cluster above:
 | Ich habe **eine Seite** … | `/wordpress-freelancer-hannover/` | `cta_footer_pick_project` |
 
 All three carry `data-track-category="lead_gen"` and
-`data-track-section="footer"`. The direct line adds `cta_footer_direct_mail`
-and `cta_footer_direct_phone`.
+`data-track-section="footer"`. The direct line under them adds three more, all
+`lead_gen`:
+
+| Direct path | Destination | Event |
+|---|---|---|
+| E-Mail | `mailto:` the canonical address | `cta_footer_mail` |
+| Telefon | `tel:` the canonical number | `cta_footer_tel` |
+| Kontaktformular | `/kontakt/` | `cta_footer_form` |
+
+Below that the footer has one directory line and one sender line, no columns:
+
+| Directory link | Destination | Event | Category |
+|---|---|---|---|
+| Über Haşim | `/hasim-uener/` | `cta_footer_nav_about` | `navigation` |
+| Fallstudie Solar | `/case-study-solar-leadgenerierung/` | `cta_footer_nav_case_study_proof` | `trust` |
+| Blog | `/blog/` | `cta_footer_nav_insights` | `navigation` |
+| Glossar | `/glossar/` | `cta_footer_nav_glossary` | `navigation` |
+| Impressum | `/impressum/` | `cta_footer_nav_imprint` | `navigation` |
+| Datenschutz | `/datenschutz/` | `cta_footer_nav_privacy` | `navigation` |
 
 Retired with the CTA band and the merged minimal footers:
 `cta_footer_primary`, `cta_footer_primary_mobile`, `cta_footer_route_*`,
 `cta_footer_min_route_*`, `cta_energy_footer_analysis`,
 `cta_audit_footer_analysis`, `cta_footer_nav_project` and
-`cta_footer_social_github`. The remaining `cta_footer_nav_*` values in the
-directory are unchanged, so directory reporting stays comparable across the
-rebuild.
+`cta_footer_social_github`.
+
+Retired with the two-volume footer, when the service and proof columns went:
+`cta_footer_nav_freelancer`, `cta_footer_nav_tracking`, `cta_footer_nav_energy`,
+`cta_footer_nav_agentur`, `cta_footer_nav_results`, `cta_footer_nav_whitelabel`
+and `cta_footer_nav_contact`. Their targets were all already linked from the
+header menu in the same document, or are reachable from the direct line above.
+`cta_footer_direct_mail` and `cta_footer_direct_phone` were replaced by
+`cta_footer_mail` and `cta_footer_tel`; that is a deliberate rename, so the
+direct-line series restarts here. The three `cta_footer_pick_*` values and the
+four surviving `cta_footer_nav_*` values are unchanged, so route reporting and
+directory reporting stay comparable across the rebuild.
 
 Note for the Energy cluster: the footer no longer repeats the Marktcheck CTA.
 The Marktcheck stays the cluster's primary action on

@@ -54,7 +54,7 @@ $analysis_days  = (int) ( $diagnose_canon['primary_days'] ?? 7 );
 
 // Sichtbarer Kontaktweg aus dem messaging-canon. Diese Seite nannte hasim@,
 // die White-Label-Seite hallo@ — zwei Adressen auf zwei indexierten Seiten.
-$contact_email  = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'hallo@hasimuener.de';
+$contact_email  = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
 
 // Sofortkontakt-Setup: Preis aus dem pricing-canon, damit Nav-Label,
 // Rechner-CTA und Angebots-Panel nicht auseinanderlaufen.

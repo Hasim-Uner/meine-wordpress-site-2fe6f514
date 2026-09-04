@@ -32,6 +32,19 @@ body.nx-blog-header-active .ct-mobile-menu {
    .nexus-blog-header mitzubenutzen: der Blog-Header ist ein eigener Baustein
    mit eigener Navigation und bleibt unangetastet. */
 .nx-site-header {
+    /* Ein Orangeton fuer Kopf und Fuss.
+       site-header-premium.css und site-footer.css malen beide mit dem
+       bernsteinfarbenen Akzent; diese Basisdatei zog dagegen das kupferne
+       var(--accent) aus dem Designsystem. Auf Audit-, Energy- und Blog-Routen
+       laedt der Premium-Layer nicht (siehe inc/enqueue.php) — dort standen also
+       zwei Orangetoene uebereinander: kupferner Kopf, bernsteinfarbener Fuss.
+       Die Ueberschreibung ist auf .nx-site-header begrenzt und laesst
+       var(--accent) fuer den Rest der Seite unangetastet — ein sitewide
+       Umlackieren waere ein eigener Auftrag. */
+    --accent: #e08a3c;
+    --accent-hsl: 28 73% 56%;
+    --accent-hover: hsl(28 73% 63%);
+
     --nx-site-header-shell-height: 64px;
     position: fixed;
     top: 0;

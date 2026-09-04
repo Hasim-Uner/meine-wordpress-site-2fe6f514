@@ -414,7 +414,7 @@ get_header();
 							</tr>
 							<tr>
 								<th scope="row">Reaktionszeit</th>
-								<td>Antwort innerhalb von 24 Stunden werktags, direkt von mir.</td>
+								<td><?php echo esc_html( function_exists( 'hu_response_promise' ) ? hu_response_promise( 'phrase' ) : 'Antwort innerhalb von 24 Stunden werktags' ); ?>, direkt von mir.</td>
 								<td>Über Ticket und Priorisierung — dafür auch außerhalb meiner Zeiten.</td>
 								<td>Support des Anbieters, ohne Bezug zu Ihrem Projekt.</td>
 							</tr>

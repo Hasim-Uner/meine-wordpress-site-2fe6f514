@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 	? nexus_get_whitelabel_calendar_url()
 	: 'https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true';
-$contact_email       = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'hallo@hasimuener.de';
+$contact_email       = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
 $mailto_url          = 'mailto:' . $contact_email;
 
 // ── Zweiter Ausgang: "Ich habe jetzt eine konkrete Aufgabe" ─────
