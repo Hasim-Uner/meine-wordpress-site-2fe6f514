@@ -177,10 +177,23 @@ function nexus_get_llms_txt_sections() {
 					'url'         => $urls['solar_leads_alternative'] ?? home_url( '/solar-leads-kaufen-alternative/' ),
 					'description' => 'Intercept-Page für Kauf-Suchintent: Lead-Anbieter einordnen und eigene Anfragesysteme als Alternative bewerten.',
 				],
+				// Aufnahmekriterium fuer die Provider-Markteinordnungen: nur die
+				// Beitraege mit eigenem Entscheidungs- und Rechenlayer stehen hier.
+				// Aroundhome und Checkfox tragen den CPO-Rechner auf Basis eigener
+				// Betriebswerte und gelten auch in scripts/smoke-live.sh als
+				// Money-Routen. Die uebrigen drei (Wattfox, DAA, Leadfluss) sind
+				// Markteinordnungen ohne eigene Rechengrundlage und bleiben ueber
+				// /blog/ und die Sitemap auffindbar — llms.txt ist ein Routen-Index,
+				// kein Abzug des gesamten Bestands.
 				[
 					'label'       => 'Aroundhome Kosten für Handwerker',
 					'url'         => home_url( '/aroundhome-solar-einordnung/' ),
 					'description' => 'Kosten-, Vertrags- und Portal-Fit-Entscheid mit CPO-Rechner auf Basis eigener Betriebswerte.',
+				],
+				[
+					'label'       => 'Checkfox für Solar- und Wärmepumpen-Betriebe',
+					'url'         => home_url( '/checkfox-solar-waermepumpe-einordnung/' ),
+					'description' => 'Portal-Mechanik, Seriositätsfrage und Kosten-Logik für Solar- und Wärmepumpen-Betriebe, mit CPO-Rechner auf Basis eigener Betriebswerte.',
 				],
 				[
 					'label'       => 'Wärmepumpen Leads kaufen – Alternative',
