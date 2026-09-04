@@ -1577,9 +1577,26 @@ function nexus_get_sitemap_excluded_ids() {
 		// ausgeschlossenen Slugs zufaellig Seiten, deshalb fiel die Luecke nicht
 		// auf; ein noindex- oder 301-Blogpost blieb in der Sitemap stehen und
 		// erzeugte genau das Mischsignal, das dieser Filter verhindern soll.
-		$page = get_page_by_path( $slug, OBJECT, [ 'page', 'post' ] );
-		if ( $page instanceof WP_Post ) {
-			$ids[] = (int) $page->ID;
+		//
+		// get_posts() statt get_page_by_path(): Letzteres braucht die Konstante
+		// OBJECT als zweites Argument, um einen abweichenden Post-Typ zu
+		// akzeptieren, und die kennen die WordPress-Stubs der statischen Analyse
+		// nicht. Die Abfrage entspricht hu_lead_provider_find_post_id_by_slug().
+		$post_ids = get_posts(
+			[
+				'name'                   => (string) $slug,
+				'post_type'              => [ 'page', 'post' ],
+				'post_status'            => [ 'publish', 'draft', 'pending', 'future', 'private' ],
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			]
+		);
+
+		if ( ! empty( $post_ids ) ) {
+			$ids[] = (int) $post_ids[0];
 		}
 	}
 
