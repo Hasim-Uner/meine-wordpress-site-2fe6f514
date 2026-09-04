@@ -12,6 +12,7 @@ Stattdessen:
 
 - WordPress bleibt die operative Schicht
 - Google Search Console liefert die externe SEO-Sicht
+- Chrome UX Report liefert im Research-Layer reale Web-Performance-Felddaten
 - IndexNow meldet neue, geänderte und gelöschte URLs an teilnehmende Suchmaschinen
 - Koko Analytics liefert optional die lokale Traffic-Sicht
 - das interne Audit-CRM liefert jetzt zusätzlich Lead- und Attributionssignale
@@ -23,6 +24,7 @@ Repo-seitig vorhanden:
 
 - Top-Level-Admin-Menü `SEO Cockpit`
 - visuelles Dashboard V3 als Command Center
+- eigenes Untermenü `SEO Cockpit -> Research` für externe Primärdaten
 - kompaktes Snapshot-Widget im Standard-WordPress-Dashboard
 - priorisierte Queue im Admin, die SEO-Signale jetzt gegen Business-Wert, Funnel-Nähe und Confidence gewichtet
 - Revenue Command Center V1 mit Today Revenue Queue für Anfrage-/Umsatzwirkung statt Traffic-Priorisierung
@@ -43,6 +45,14 @@ Repo-seitig vorhanden:
   - Top Pages
   - Top Queries
   - Device-Split
+- Research-Intelligence-Layer V1 mit
+  - Chrome UX Report API als erster Primärdaten-Provider
+  - Origin-Level-Daten für Mobil und Desktop
+  - LCP, INP, CLS und TTFB am p75
+  - CrUX-History mit bis zu 40 Wochenpunkten beziehungsweise ungefähr sechs Monaten
+  - eigenem Cache und manuellem Refresh
+  - API-Key aus WordPress-Option oder bevorzugt `NEXUS_CRUX_API_KEY`
+  - sichtbarer Provider-Roadmap für Destatis GENESIS, Eurostat und Energy-Charts ohne vorgetäuschte Anbindung
 - heuristische Insight-Typen für
   - Quick Wins
   - CTR-Chancen
@@ -70,6 +80,44 @@ Repo-seitig vorhanden:
   - asynchroner Ausführung automatischer Meldungen per Single WP-Cron Event
   - lokalem Verlauf der letzten 50 Meldungen
   - eigenem Untermenü `SEO Cockpit -> IndexNow`
+
+## Research Intelligence V1
+
+Research Intelligence ist bewusst ein eigenes Admin-Untermenü und kein weiterer Block im bereits dichten Command Center. V1 bindet nur CrUX an; die übrigen Datenquellen sind sichtbar als Roadmap markiert, werden aber nicht abgefragt und erzeugen keine Kennzahlen.
+
+Code-Orte:
+
+- `blocksy-child/inc/seo-cockpit/seo-cockpit-research.php`
+- `blocksy-child/assets/css/seo-cockpit-research.css`
+- Loader: `blocksy-child/inc/seo-cockpit/seo-cockpit.php`
+
+CrUX-Vertrag:
+
+- Endpoint aktuell: `https://chromeuxreport.googleapis.com/v1/records:queryRecord`
+- Endpoint Verlauf: `https://chromeuxreport.googleapis.com/v1/records:queryHistoryRecord`
+- Methode: `POST`
+- Granularität: Origin, getrennt nach `PHONE` und `DESKTOP`
+- Metriken: `largest_contentful_paint`, `interaction_to_next_paint`, `cumulative_layout_shift`, `experimental_time_to_first_byte`
+- Verlauf: `collectionPeriodCount = 40`
+- Current-Cache: 6 Stunden
+- History-Cache: 12 Stunden
+- kein Frontend-Request; Abruf nur im Admin/Background-Kontext
+
+Credential-Vertrag:
+
+- bevorzugt Runtime-Konstante `NEXUS_CRUX_API_KEY`
+- alternativ WordPress-Option `nexus_seo_cockpit_research_settings`
+- der Key wird nie ins Repo geschrieben
+- ein leer gesendetes Key-Feld überschreibt einen bereits gespeicherten Key nicht
+- `Key entfernen` löscht nur den WordPress-Option-Wert; eine Runtime-Konstante bleibt maßgeblich
+
+UI-Vertrag:
+
+- View-Capability reicht zum Lesen der Research-Seite
+- Manage-Capability ist für Key-Speicherung und manuellen Refresh erforderlich
+- API-Fehler und fehlende CrUX-Abdeckung werden sichtbar als fehlende Daten ausgegeben, nicht als Nullwerte
+- TTFB wird als Diagnosemetrik gekennzeichnet; LCP, INP und CLS als Core Web Vitals
+- der Trend vergleicht den ersten mit dem letzten numerischen p75-Wert der verfügbaren History-Serie; niedrigere Werte werden positiv dargestellt
 
 ## Revenue Command Center V1
 
@@ -180,6 +228,8 @@ das ist eine Analytics-Aufgabe, keine Cockpit-Aufgabe.
 - echte Search-Console-Property-Verbindung
 - echtes Refresh-Token
 - installierte Koko-Analytics-Instanz
+- produktiver `NEXUS_CRUX_API_KEY` beziehungsweise gespeicherter CrUX-Key
+- echte CrUX-Antwort für `hasimuener.de` nach Deploy
 - Live-Erreichbarkeit der generierten IndexNow-Keydatei nach dem ersten Deploy
 - erste echte IndexNow-Antwort auf der Produktionsdomain
 
@@ -190,6 +240,7 @@ Code-Orte:
 - `blocksy-child/inc/seo-cockpit/seo-cockpit.php`
 - `blocksy-child/assets/css/seo-cockpit-admin.css`
 - `blocksy-child/inc/seo-cockpit/seo-cockpit-dashboard-v3.php`
+- `blocksy-child/inc/seo-cockpit/seo-cockpit-research.php`
 - `blocksy-child/inc/seo-cockpit/seo-cockpit-indexnow.php`
 
 Wichtige technische Entscheidungen:
@@ -202,6 +253,7 @@ Wichtige technische Entscheidungen:
 - Koko nur optional als zweiter Traffic-Layer
 - Audit-CRM als dritter Datenlayer für Lead-Kontext und Priorisierung
 - Revenue Command Center als vierter operativer Layer für Today Queue, Lead-Follow-up, Page Queue, Conversion Leaks und Manual Checks
+- Research Intelligence als getrennte Primärdaten-Schicht; V1 nur CrUX, keine vorgetäuschten Provider-Daten
 - IndexNow als eigener Indexing-Control-Layer ohne Google- oder Bing-Account-Credentials
 
 ## CSV-Exportvertrag
@@ -224,6 +276,8 @@ diese Zeilen als `VERSCHWUNDEN` priorisiert.
 
 ## Nächster Ausbau
 
+- CrUX nach Deploy mit einem echten API-Key und der Produktions-Origin verifizieren
+- als nächsten Research-Provider eine Quelle mit hoher Blog-Relevanz anbinden; bevorzugte Kandidaten: Destatis GENESIS oder Energy-Charts
 - IndexNow nach dem ersten Live-Deploy mit echter Keydatei und einer Test-URL verifizieren
 - CTA-Klickpfade jenseits des Audit-Intakes serverseitig oder über einen belastbaren Event-Layer versionieren
 - stärkerer Koko-Layer jenseits der aktuellen Top-Page-Zuordnung
