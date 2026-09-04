@@ -111,6 +111,7 @@ require_once __DIR__ . '/../blocksy-child/inc/robots-txt.php';
 require_once __DIR__ . '/../blocksy-child/inc/org-schema.php';
 require_once __DIR__ . '/../blocksy-child/inc/helpers.php';
 require_once __DIR__ . '/../blocksy-child/inc/llms-txt.php';
+require_once __DIR__ . '/../blocksy-child/inc/schema-positioning.php';
 
 // --- robots.txt -----------------------------------------------------------
 
@@ -307,6 +308,31 @@ foreach ( array_merge( $person_same_as, $business_same_as ) as $url ) {
 		"sameAs entry is an absolute https URL: {$url}"
 	);
 }
+
+// The strongest guard against the bug class this file exists for: the
+// positioning layer rewrites the identity nodes at render time, so a wrong
+// value in the graph builder stays invisible in the HTML while every direct
+// caller of hu_get_person_node() still gets it. If builder and normalizer
+// agree, normalizing is a no-op. Any future divergence — jobTitle,
+// description, knowsAbout, anything — fails here instead of hiding.
+$normalized_person = hu_normalize_positioned_schema_node( $person );
+$person_drift      = [];
+
+foreach ( $normalized_person as $field => $value ) {
+	if ( ! array_key_exists( $field, $person ) || $person[ $field ] !== $value ) {
+		$person_drift[] = $field;
+	}
+}
+
+hu_lint_assert(
+	[] === $person_drift,
+	'positioning layer is a no-op on the Person node (drifting: ' . implode( ', ', $person_drift ) . ')'
+);
+
+hu_lint_assert(
+	! in_array( 'Medienwissenschaft', (array) $person['knowsAbout'], true ),
+	'Person.knowsAbout carries no publicist topic — sameAs links the spheres, knowsAbout states the expertise'
+);
 
 // Schema and visible content must tell the same story. The person hub surfaces
 // a subset of the profiles as rel="me" links; every URL it links must be a

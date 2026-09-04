@@ -125,6 +125,31 @@ function hu_person_schema_ref( $include_same_as = false, $name = 'Haşim Üner' 
 }
 
 /**
+ * Canonical topical profile of the commercial identity.
+ *
+ * Person and Organization answer the same question — "womit kennt sich diese
+ * Entitaet aus" — and must answer it identically. One function so the graph
+ * builder here and the normalizer in schema-positioning.php cannot drift
+ * apart; they did, and the divergence was invisible because the normalizer
+ * overwrote the builder at render time.
+ *
+ * @return array<int, string>
+ */
+function hu_get_identity_knows_about() {
+    return [
+        'WordPress-Entwicklung',
+        'Technisches SEO',
+        'Tracking & Attribution',
+        'Server-Side Tracking',
+        'Conversion Rate Optimization',
+        'Landingpages & Funnel',
+        'Core Web Vitals',
+        'Performance Marketing',
+        'Solar- und Wärmepumpen-Leadgenerierung',
+    ];
+}
+
+/**
  * Build the canonical Person node for the site.
  *
  * Emitted once per request (site-wide) so every @id reference resolves to a
@@ -163,15 +188,15 @@ function hu_get_person_node() {
             'name'   => 'Universität Paderborn',
             'sameAs' => 'https://de.wikipedia.org/wiki/Universit%C3%A4t_Paderborn',
         ],
-        'knowsAbout'  => [
-            'B2B-Vertrieb',
-            'Solar- und Wärmepumpen-Leadgenerierung',
-            'WordPress',
-            'Technisches SEO',
-            'Server-Side Tracking',
-            'Conversion Rate Optimization',
-            'Medienwissenschaft',
-        ],
+        // Muss mit hu_normalize_positioned_schema_node() uebereinstimmen — der
+        // Lint prueft, dass der Normalizer auf diesem Knoten ein No-Op ist.
+        // 'Medienwissenschaft' und 'B2B-Vertrieb' standen hier als Quellwerte
+        // und wurden nur beim Rendern ersetzt. Medienwissenschaft gehoert zur
+        // publizistischen Sphaere (hasimuener.org, ORCID) und hat am
+        // kommerziellen Person-Knoten nichts zu suchen: knowsAbout traegt die
+        // fachliche Aussage, waehrend sameAs die Identitaet ueber beide
+        // Spaeren hinweg belegt.
+        'knowsAbout'  => hu_get_identity_knows_about(),
     ];
 }
 
