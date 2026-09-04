@@ -572,18 +572,50 @@ function hu_get_post_schema_image_object( $post_id ) {
  * @param string $fallback_description Existing schema description.
  * @return array{headline: string, description: string, dateModified: string}
  */
-function hu_get_aroundhome_decision_schema_data( $post_id, $fallback_description ) {
-    $forced_seo  = function_exists( 'hu_get_forced_singular_seo' ) ? hu_get_forced_singular_seo( $post_id ) : [];
-    $description = ! empty( $forced_seo['description'] ) ? (string) $forced_seo['description'] : $fallback_description;
-    $modified    = (string) get_post_modified_time( DATE_W3C, true, $post_id );
-    $template    = get_stylesheet_directory() . '/template-parts/aroundhome-decision-cockpit.php';
+function hu_get_decision_cockpit_template( $slug ) {
+    $templates = [
+        'aroundhome-solar-einordnung'           => 'aroundhome-decision-cockpit.php',
+        'checkfox-solar-waermepumpe-einordnung' => 'checkfox-decision-cockpit.php',
+    ];
 
-    if ( is_file( $template ) ) {
+    if ( empty( $templates[ (string) $slug ] ) ) {
+        return '';
+    }
+
+    return get_stylesheet_directory() . '/template-parts/' . $templates[ (string) $slug ];
+}
+
+/**
+ * Return the effective dateModified for a post whose visible substance lives in
+ * a slug-specific decision-cockpit template.
+ *
+ * Beide Cockpit-Posts sind Sonderfaelle: Der gespeicherte Artikel ist nur noch
+ * ein Teil der Seite, den Rest rendert das Theme. `post_modified` steht deshalb
+ * still, waehrend sich der sichtbare Inhalt aendert — die Seite behauptet dann
+ * ein Aktualisierungsdatum, das nicht zu dem passt, was der Leser sieht.
+ *
+ * @param int    $post_id Post ID.
+ * @param string $slug    Post slug.
+ * @return string RFC 3339 timestamp.
+ */
+function hu_get_decision_cockpit_modified_time( $post_id, $slug ) {
+    $modified = (string) get_post_modified_time( DATE_W3C, true, $post_id );
+    $template = hu_get_decision_cockpit_template( $slug );
+
+    if ( '' !== $template && is_file( $template ) ) {
         $template_modified = filemtime( $template );
         if ( false !== $template_modified ) {
             $modified = gmdate( DATE_W3C, $template_modified );
         }
     }
+
+    return $modified;
+}
+
+function hu_get_aroundhome_decision_schema_data( $post_id, $fallback_description ) {
+    $forced_seo  = function_exists( 'hu_get_forced_singular_seo' ) ? hu_get_forced_singular_seo( $post_id ) : [];
+    $description = ! empty( $forced_seo['description'] ) ? (string) $forced_seo['description'] : $fallback_description;
+    $modified    = hu_get_decision_cockpit_modified_time( $post_id, 'aroundhome-solar-einordnung' );
 
     return [
         'headline'     => 'Aroundhome-Kosten für Handwerker: Rechnen Sie den Auftrag, nicht den Lead.',
@@ -640,6 +672,12 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
         $route_schema = hu_get_aroundhome_decision_schema_data( $post_id, $description );
         $title        = $route_schema['headline'];
         $description  = $route_schema['description'];
+    }
+
+    // Checkfox braucht keine eigene Headline, aber dasselbe Datum aus dem
+    // Cockpit-Template: der sichtbare Inhalt liegt dort, nicht im Post.
+    if ( 'checkfox-solar-waermepumpe-einordnung' === $slug ) {
+        $route_schema['dateModified'] = hu_get_decision_cockpit_modified_time( $post_id, $slug );
     }
 
     $type = 'WebPage';
@@ -1349,6 +1387,10 @@ function hu_output_schema()
                 $route_schema      = hu_get_aroundhome_decision_schema_data( $post_id, $post_description );
                 $post_headline     = $route_schema['headline'];
                 $post_description  = $route_schema['description'];
+            }
+
+            if ( 'checkfox-solar-waermepumpe-einordnung' === $post_slug ) {
+                $route_schema['dateModified'] = hu_get_decision_cockpit_modified_time( $post_id, $post_slug );
             }
             $post_image        = hu_get_post_schema_image_object( $post_id );
             $published_date    = get_post_time( DATE_W3C, true, $post_id );
