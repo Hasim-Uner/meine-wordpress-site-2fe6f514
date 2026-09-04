@@ -117,9 +117,12 @@ function hu_normalize_positioned_schema_node( array $schema ) : array {
 		];
 		$schema['hasOfferCatalog'] = hu_get_positioned_schema_offer_catalog();
 
-		// Use the stable Maps CID instead of a place URL whose path still carries
-		// the retired business descriptor. The CID identifies the same GBP entity.
-		$stable_map_url = 'https://www.google.com/maps?cid=7273014379384770345';
+		// hu_brand_map_url() liefert diese CID-URL inzwischen selbst. Der Block
+		// bleibt als Regressionsschutz, falls wieder eine Maps-Place-URL mit dem
+		// zurueckgezogenen Rollen-Claim im Pfad in den Graph geraet.
+		$stable_map_url = function_exists( 'hu_brand_map_url' )
+			? hu_brand_map_url()
+			: 'https://www.google.com/maps?cid=7273014379384770345';
 		$schema['hasMap'] = $stable_map_url;
 		if ( isset( $schema['sameAs'] ) && is_array( $schema['sameAs'] ) ) {
 			$schema['sameAs'] = array_values(

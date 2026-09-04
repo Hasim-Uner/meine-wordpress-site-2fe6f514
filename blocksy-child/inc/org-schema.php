@@ -38,10 +38,30 @@ function hu_brand_alternate_names() {
     ];
 }
 
+/**
+ * Web presences of the natural person Haşim Üner.
+ *
+ * `sameAs` is an identity claim ("this node IS that presence"), not a topical
+ * one. Everything listed here is a profile of the person and is reciprocally
+ * verifiable: the ORCID record (given name "Haşim", family name "Üner",
+ * Pattensen bei Hannover) lists hasimuener.org, the YouTube channel and the
+ * personal GitHub account as its own researcher URLs, and the personal GitHub
+ * profile links back to hasimuener.de.
+ *
+ * The publicist profiles (hasimuener.org, ORCID, X, YouTube) describe the same
+ * person under a different subject focus. They belong on the Person node and
+ * must NOT be copied onto the business nodes — see hu_business_same_as_urls().
+ *
+ * GitHub: `Hasim-hannover` is the personal user account. `Hasim-Uner` is the
+ * organization account that owns the production repositories and belongs to
+ * the Organization node. Both accounts exist; do not collapse them again.
+ *
+ * @return array<int, string>
+ */
 function hu_person_same_as_urls() {
     return [
         'https://www.linkedin.com/in/hasim-uener/',
-        'https://github.com/Hasim-Uner/',
+        'https://github.com/Hasim-hannover',
         'https://hasimuener.org/',
         'https://www.facebook.com/hasim.uner',
         'https://orcid.org/0009-0008-7500-2015',
@@ -51,24 +71,40 @@ function hu_person_same_as_urls() {
 }
 
 /**
- * Canonical Google Business Profile (Maps) place URL for the brand.
+ * Canonical Google Business Profile (Maps) URL for the business.
+ *
+ * The CID form identifies the same GBP entity as the older place URL but
+ * carries no descriptor in its path. The place URL still spelled out the
+ * retired role claim "Architekt für eigene Anfragesysteme", which is a hard ban
+ * in docs/standards/BRAND_AND_COPY.md.
  *
  * @return string
  */
 function hu_brand_map_url() {
-    return 'https://www.google.de/maps/place/Ha%C5%9Fim+%C3%9Cner+%7C+Architekt+f%C3%BC+eigene+Anfragesysteme/@52.2736456,9.7534204,17z/data=!3m1!4b1!4m6!3m5!1s0x47baa159a829529f:0x64eef00b41898f29!8m2!3d52.2736456!4d9.7559953!16s%2Fg%2F11lv7g2w9d';
+    return 'https://www.google.com/maps?cid=7273014379384770345';
 }
 
 /**
- * sameAs profile set for the business entities (Organization, LocalBusiness,
- * ProfessionalService). Mirrors the person profiles and adds the Google
- * Business Profile place, so every business node exposes one consistent set
- * instead of drifting subsets.
+ * Web presences of the business entity (Organization / LocalBusiness).
+ *
+ * Deliberately a different, smaller set than hu_person_same_as_urls(). Person
+ * and Organization are two nodes with two @ids; declaring the same `sameAs`
+ * list on both tells a knowledge graph they are one entity and makes the
+ * founder/worksFor relations between them meaningless. It would also attach the
+ * publicist presences — a media-studies journal that explicitly separates
+ * itself from the commercial work — to the WordPress/tracking business.
+ *
+ * Only presences that genuinely represent the business belong here: the Google
+ * Business Profile and the GitHub organization that owns the public production
+ * code. Fewer, correct entries beat a long mirrored list.
  *
  * @return array<int, string>
  */
 function hu_business_same_as_urls() {
-    return array_merge( hu_person_same_as_urls(), [ hu_brand_map_url() ] );
+    return [
+        'https://github.com/Hasim-Uner',
+        hu_brand_map_url(),
+    ];
 }
 
 /**
@@ -103,7 +139,11 @@ function hu_get_person_node() {
         '@id'         => hu_person_schema_id(),
         'name'        => 'Haşim Üner',
         'alternateName' => hu_brand_alternate_names(),
-        'jobTitle'    => 'Architekt für eigene Anfragesysteme',
+        // Muss mit hu_normalize_positioned_schema_node() uebereinstimmen. Der
+        // frueher hier stehende Claim "Architekt fuer eigene Anfragesysteme"
+        // ist ein Hard Ban (docs/standards/BRAND_AND_COPY.md) und wurde bisher
+        // nur beim Rendern ueberschrieben — im Graph-Builder blieb er stehen.
+        'jobTitle'    => 'WordPress Freelancer und Tracking-Spezialist',
         'url'         => hu_person_profile_url(),
         'image'       => hu_get_profile_image_url(),
         'worksFor'    => [ '@id' => home_url( '/#organization' ) ],
@@ -117,7 +157,7 @@ function hu_get_person_node() {
         // Die eigene Domain gehoert in die Person-sameAs, nicht in die der
         // Geschaeftsknoten — dort ist sie bereits 'url'.
         'sameAs'      => array_values( array_unique( array_merge( [ home_url( '/' ) ], hu_person_same_as_urls() ) ) ),
-        'description' => 'Architekt für eigene Anfragesysteme mit Fokus auf Solar- und Wärmepumpen-Anbieter im DACH-Raum. Haşim Üner verbindet Bauunternehmer-DNA, Vertriebspraxis und Medienwissenschaft mit WordPress, Tracking, Vorqualifizierung und Werbekanal-Steuerung.',
+        'description' => 'Haşim Üner verbindet WordPress-Entwicklung, technisches SEO, Tracking und Conversion für direkte Projekte und White-Label-Agenturarbeit. Anfragesysteme für Solar- und Wärmepumpen-Anbieter sind eine spezialisierte Vertikale.',
         'alumniOf'    => [
             '@type'  => 'CollegeOrUniversity',
             'name'   => 'Universität Paderborn',
@@ -651,10 +691,14 @@ function hu_output_schema()
         '@context' => 'https://schema.org',
         '@type'    => ['Organization', 'LocalBusiness'],
         '@id'      => home_url('/#organization'),
-        'name'     => 'Haşim Üner | Architekt für eigene Anfragesysteme',
-        'alternateName' => array_merge( [ 'Haşim Üner' ], hu_brand_alternate_names() ),
+        // Name und Description muessen mit hu_normalize_positioned_schema_node()
+        // uebereinstimmen. Der Rollen-Claim "Architekt fuer eigene
+        // Anfragesysteme" ist ein Hard Ban (docs/standards/BRAND_AND_COPY.md)
+        // und wurde bisher nur beim Rendern entfernt.
+        'name'     => 'Haşim Üner',
+        'alternateName' => hu_brand_alternate_names(),
         'url'      => home_url(),
-        'description' => 'Architekt für eigene Anfragesysteme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',
+        'description' => 'WordPress-Entwicklung, technisches SEO, Tracking und Conversion für Unternehmen und Agenturen. Solar- und Wärmepumpen-Anfragesysteme bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.',
         'telephone'   => '+49 176 76596580',
         'email'       => function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'hallo@hasimuener.de',
         'logo'        => function_exists( 'hu_get_brand_logo_url' ) ? hu_get_brand_logo_url() : content_url( '/uploads/2025/08/cropped-Logo-hasim-uener-1.webp' ),
@@ -784,9 +828,11 @@ function hu_output_schema()
         '@type'       => 'WebSite',
         '@id'         => home_url('/#website'),
         'url'         => home_url('/'),
-        'name'        => 'Haşim Üner | Architekt für eigene Anfragesysteme',
-        'alternateName' => array_merge( [ 'Haşim Üner' ], hu_brand_alternate_names() ),
-        'description' => 'Architekt für eigene Anfragesysteme: Solar- und Wärmepumpen-Anbieter im DACH-Raum lösen Portal-Abhängigkeit ab und senken Leadkosten messbar — durch Website, Tracking, Vorqualifizierung und Kanal-Steuerung als ein verbundenes System.',
+        // Wie beim Organization-Knoten: mit hu_normalize_positioned_schema_node()
+        // konsistent halten, statt den Hard-Ban-Claim erst beim Rendern zu ersetzen.
+        'name'        => 'Haşim Üner',
+        'alternateName' => hu_brand_alternate_names(),
+        'description' => 'WordPress, technisches SEO, Tracking und Conversion als zusammenhängendes System. Direkte Projekte, White-Label für Agenturen und eine spezialisierte Solar-/Wärmepumpen-Vertikale.',
         'inLanguage'  => 'de',
         'publisher'   => ['@id' => home_url('/#organization')],
         'potentialAction' => [

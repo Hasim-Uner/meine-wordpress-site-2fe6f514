@@ -43,6 +43,11 @@ $e3_case_url    = function_exists( 'hu_e3_canon' )
 	? (string) ( hu_e3_canon()['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) )
 	: home_url( '/case-study-solar-leadgenerierung/' );
 $linkedin_url   = 'https://www.linkedin.com/in/hasim-uener/';
+// Persoenlicher GitHub-Account, nicht die Organisation Hasim-Uner mit den
+// Produktions-Repos. Der Link steht hier, weil Person.sameAs ihn behauptet:
+// eine sichtbare rel="me"-Verknuepfung macht die Schema-Aussage nachpruefbar,
+// statt sie nur zu erklaeren. Siehe hu_person_same_as_urls() in inc/org-schema.php.
+$github_url     = 'https://github.com/Hasim-hannover';
 // Wie in site-header, /whitelabel-retainer/ und Person.sameAs literal gehalten;
 // fuer die Zweitdomain gibt es im Theme bisher keinen Helper.
 $blog_url       = 'https://hasimuener.org/';
@@ -276,6 +281,14 @@ get_header();
 						data-track-category="navigation"
 						data-track-section="about_cta"
 					>LinkedIn</a>
+					<a
+						href="<?php echo esc_url( $github_url ); ?>"
+						rel="me noopener noreferrer"
+						target="_blank"
+						data-track-action="link_about_github"
+						data-track-category="navigation"
+						data-track-section="about_cta"
+					>GitHub</a>
 					<a
 						href="mailto:<?php echo esc_attr( $mail_address ); ?>"
 						data-track-action="link_about_mail"
