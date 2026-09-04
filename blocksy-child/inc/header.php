@@ -138,13 +138,22 @@ function nexus_get_site_header_fallback_items() {
 	$items = [];
 
 	foreach ( hu_get_primary_navigation_contract() as $item ) {
-		$items[] = [
-			'label'  => (string) ( $item['label'] ?? '' ),
-			'url'    => (string) ( $item['url'] ?? '' ),
-			'active' => ! empty( $item['current'] ),
-			'class'  => (string) ( $item['class'] ?? '' ),
-			'track'  => (string) ( $item['track'] ?? '' ),
-		];
+		if ( ! is_array( $item ) ) {
+			continue;
+		}
+
+		$item['label']    = (string) ( $item['label'] ?? '' );
+		$item['url']      = (string) ( $item['url'] ?? '' );
+		$item['active']   = ! empty( $item['current'] );
+		$item['class']    = (string) ( $item['class'] ?? '' );
+		$item['track']    = (string) ( $item['track'] ?? '' );
+		$item['category'] = (string) ( $item['category'] ?? 'navigation' );
+		$item['section']  = (string) ( $item['section'] ?? 'header' );
+		$item['kind']     = (string) ( $item['kind'] ?? 'group' );
+		$item['kicker']   = (string) ( $item['kicker'] ?? '' );
+		$item['desc']     = (string) ( $item['desc'] ?? '' );
+
+		$items[] = $item;
 	}
 
 	return $items;
@@ -176,7 +185,7 @@ function nexus_is_agency_nav_context() {
 /*
  * nexus_render_site_header_menu() stand hier bis zur Repositionierung und ist
  * entfallen. template-parts/site-header.php rendert die Navigation seit dem
- * Premium-Layer selbst aus hu_get_primary_navigation_contract(), und die
+ * Vollflächen-Sheet selbst aus hu_get_primary_navigation_contract(), und die
  * Funktion hatte danach keinen Aufrufer mehr. Als zweiter Renderer mit eigener
  * Markup-Variante war sie genau der Weg, auf dem die alte Navigation
  * zurueckkommen konnte.

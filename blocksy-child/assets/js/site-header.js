@@ -2,16 +2,24 @@
     function initSiteHeader() {
         var header = document.querySelector('[data-site-header]');
 
-        if (!header) {
+        if (!header || header.hasAttribute('data-site-header-ready')) {
             return;
         }
 
+        header.setAttribute('data-site-header-ready', '');
+
         var toggle = header.querySelector('[data-site-header-toggle]');
         var panel = header.querySelector('[data-site-header-panel]');
+        var toggleLabel = toggle ? toggle.querySelector('.nx-site-header__toggle-label') : null;
         var desktopMedia = window.matchMedia('(min-width: 1101px)');
-        // Ein echter Zeiger, der die obere Kante ansteuern kann. Ein Handy hat
-        // den nicht -- dort braucht es einen anderen Weg zur Navigation.
         var hoverMedia = window.matchMedia('(hover: hover) and (pointer: fine)');
+        var usesFullscreenSheet = Boolean(
+            toggle &&
+            panel &&
+            header.classList.contains('nx-site-header--sheet')
+        );
+        var supportsInert = typeof window.HTMLElement !== 'undefined' &&
+            'inert' in window.HTMLElement.prototype;
         var isCondensed = null;
         var isVisible = null;
         var isPointerInside = false;
@@ -28,11 +36,15 @@
         var pointerMoveRaf = 0;
         var pendingPointerY = 0;
         var pointerMoveEvent = window.PointerEvent ? 'pointermove' : 'mousemove';
-        var usesFullscreenRouteChooser = header.classList.contains('nx-site-header--premium');
         var inertedPageChildren = [];
+        var inertedBarLinks = [];
+        var cachedScrollY = window.scrollY;
+        var lastScrollY = cachedScrollY;
 
         function syncHeaderHeight() {
-            var height = Math.max(76, Math.ceil(header.getBoundingClientRect().height + 12));
+            var measuredHeight = Math.ceil(header.getBoundingClientRect().height);
+            var height = usesFullscreenSheet ? Math.max(64, measuredHeight) : Math.max(76, measuredHeight + 12);
+
             document.documentElement.style.setProperty('--nx-header-height', height + 'px');
         }
 
@@ -41,8 +53,6 @@
                 return;
             }
 
-            // Double-rAF: Read getBoundingClientRect after browser layout pass
-            // to avoid forced reflow when called after classList writes.
             headerHeightRaf = window.requestAnimationFrame(function () {
                 headerHeightRaf = window.requestAnimationFrame(function () {
                     headerHeightRaf = 0;
@@ -76,16 +86,6 @@
                 header.classList.contains('is-open') ||
                 header.hasAttribute('data-site-header-pin');
         }
-
-        // Eine Seite kann den Header selbst einblenden — etwa am Seitenende, wenn
-        // ihre eigene Sprungnavigation die Orientierung wieder abgibt.
-        header.addEventListener('nexus:header-pin', function () {
-            updateVisibility(false);
-        });
-
-        // Cache scrollY um Forced Reflow nach DOM-Writes zu vermeiden.
-        var cachedScrollY = window.scrollY;
-        var lastScrollY = cachedScrollY;
 
         function readScrollY() {
             cachedScrollY = window.scrollY;
@@ -137,14 +137,57 @@
             scheduleHide();
         }
 
-        /*
-         * Das mobile Panel bedeckt den Viewport vollständig. Solange es offen
-         * ist, darf der Tastaturfokus deshalb nicht in den verdeckten
-         * Seiteninhalt weiterlaufen. Vorhandene inert-Zustände werden bewahrt,
-         * damit andere Overlays beim Schließen nicht versehentlich entsperren.
-         */
+        function makeElementsInert(elements) {
+            var state = [];
+
+            Array.prototype.forEach.call(elements, function (element) {
+                var entry = {
+                    element: element,
+                    wasInert: supportsInert ? element.inert : false,
+                    hadAriaHidden: element.hasAttribute('aria-hidden'),
+                    ariaHidden: element.getAttribute('aria-hidden'),
+                    hadTabIndex: element.hasAttribute('tabindex'),
+                    tabIndex: element.getAttribute('tabindex')
+                };
+
+                state.push(entry);
+
+                if (supportsInert) {
+                    element.inert = true;
+                } else {
+                    element.setAttribute('aria-hidden', 'true');
+                    if (element.matches('a, button, input, select, textarea, [tabindex]')) {
+                        element.setAttribute('tabindex', '-1');
+                    }
+                }
+            });
+
+            return state;
+        }
+
+        function restoreInertElements(state) {
+            state.forEach(function (entry) {
+                if (supportsInert) {
+                    entry.element.inert = entry.wasInert;
+                    return;
+                }
+
+                if (entry.hadAriaHidden) {
+                    entry.element.setAttribute('aria-hidden', entry.ariaHidden);
+                } else {
+                    entry.element.removeAttribute('aria-hidden');
+                }
+
+                if (entry.hadTabIndex) {
+                    entry.element.setAttribute('tabindex', entry.tabIndex);
+                } else {
+                    entry.element.removeAttribute('tabindex');
+                }
+            });
+        }
+
         function setOutsideContentInert(isInert) {
-            if (!usesFullscreenRouteChooser || !document.body || !('inert' in window.HTMLElement.prototype)) {
+            if (!usesFullscreenSheet || !document.body) {
                 return;
             }
 
@@ -154,69 +197,168 @@
                 }
 
                 var headerRoot = header;
+                var pageChildren = [];
+
                 while (headerRoot.parentElement && headerRoot.parentElement !== document.body) {
                     headerRoot = headerRoot.parentElement;
                 }
 
                 Array.prototype.forEach.call(document.body.children, function (child) {
-                    if (child === headerRoot) {
-                        return;
+                    if (child !== headerRoot) {
+                        pageChildren.push(child);
                     }
-
-                    inertedPageChildren.push({
-                        element: child,
-                        wasInert: child.inert
-                    });
-                    child.inert = true;
                 });
+
+                inertedPageChildren = makeElementsInert(pageChildren);
                 return;
             }
 
-            inertedPageChildren.forEach(function (entry) {
-                entry.element.inert = entry.wasInert;
-            });
+            restoreInertElements(inertedPageChildren);
             inertedPageChildren = [];
         }
 
-        function focusPanelStart() {
-            var firstPanelLink = panel && panel.querySelector('a[href]');
+        function setBarLinksInert(isInert) {
+            if (!usesFullscreenSheet) {
+                return;
+            }
 
-            if (!usesFullscreenRouteChooser || !firstPanelLink) {
+            if (isInert) {
+                if (!inertedBarLinks.length) {
+                    inertedBarLinks = makeElementsInert(header.querySelectorAll('[data-site-header-bar-link]'));
+                }
+                return;
+            }
+
+            restoreInertElements(inertedBarLinks);
+            inertedBarLinks = [];
+        }
+
+        function setScrollLock(isLocked) {
+            if (!usesFullscreenSheet || !document.body) {
+                return;
+            }
+
+            document.documentElement.classList.toggle('nx-site-menu-open', isLocked);
+            document.body.classList.toggle('nx-site-menu-open', isLocked);
+        }
+
+        function getPanelFocusables() {
+            if (!usesFullscreenSheet) {
+                return [];
+            }
+
+            return Array.prototype.filter.call(
+                panel.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+                function (element) {
+                    return element.getAttribute('aria-hidden') !== 'true' && !element.hasAttribute('disabled');
+                }
+            );
+        }
+
+        function focusPanelStart() {
+            var firstPanelLink = getPanelFocusables()[0];
+
+            if (!firstPanelLink) {
                 return;
             }
 
             window.requestAnimationFrame(function () {
-                if (!panel.hidden && header.classList.contains('is-open')) {
+                if (header.classList.contains('is-open')) {
                     firstPanelLink.focus({ preventScroll: true });
                 }
             });
         }
 
-        function setPanelState(isOpen) {
-            if (!toggle || !panel) {
+        function updateToggleCopy(isOpen) {
+            if (!toggle) {
                 return;
             }
 
-            var panelHadFocus = usesFullscreenRouteChooser && panel.contains(document.activeElement);
+            toggle.setAttribute('aria-label', isOpen ? 'Navigation schließen' : 'Navigation öffnen');
+
+            if (!toggleLabel) {
+                return;
+            }
+
+            toggleLabel.textContent = isOpen
+                ? toggleLabel.getAttribute('data-label-close') || 'Schließen'
+                : toggleLabel.getAttribute('data-label-open') || 'Menü';
+        }
+
+        function setPanelState(isOpen, returnFocus) {
+            if (!usesFullscreenSheet) {
+                return;
+            }
+
+            var wasOpen = header.classList.contains('is-open');
 
             header.classList.toggle('is-open', isOpen);
             toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-            panel.hidden = !isOpen;
-            setOutsideContentInert(isOpen);
+            updateToggleCopy(isOpen);
 
-            if (isOpen && usesFullscreenRouteChooser) {
+            if (isOpen) {
+                panel.removeAttribute('inert');
+                if (supportsInert) {
+                    panel.inert = false;
+                }
+                panel.setAttribute('aria-hidden', 'false');
+                setOutsideContentInert(true);
+                setBarLinksInert(true);
+                setScrollLock(true);
+                showHeader(false);
                 focusPanelStart();
-            } else if (usesFullscreenRouteChooser && panelHadFocus && !desktopMedia.matches) {
-                toggle.focus({ preventScroll: true });
-            }
+            } else {
+                panel.setAttribute('inert', '');
+                if (supportsInert) {
+                    panel.inert = true;
+                }
+                panel.setAttribute('aria-hidden', 'true');
+                setOutsideContentInert(false);
+                setBarLinksInert(false);
+                setScrollLock(false);
 
-            updateVisibility(isOpen);
+                if (wasOpen && returnFocus !== false) {
+                    toggle.focus({ preventScroll: true });
+                }
+
+                if (wasOpen) {
+                    updateVisibility(false);
+                }
+            }
 
             queueHeaderHeightSync();
         }
 
         function closePanel() {
-            setPanelState(false);
+            setPanelState(false, true);
+        }
+
+        function trapPanelFocus(event) {
+            if (
+                !usesFullscreenSheet ||
+                !header.classList.contains('is-open') ||
+                event.key !== 'Tab'
+            ) {
+                return;
+            }
+
+            var focusables = [toggle].concat(getPanelFocusables());
+            var first = focusables[0];
+            var last = focusables[focusables.length - 1];
+            var active = document.activeElement;
+
+            if (!focusables.length) {
+                event.preventDefault();
+                return;
+            }
+
+            if (event.shiftKey && (active === first || focusables.indexOf(active) === -1)) {
+                event.preventDefault();
+                last.focus({ preventScroll: true });
+            } else if (!event.shiftKey && active === last) {
+                event.preventDefault();
+                first.focus({ preventScroll: true });
+            }
         }
 
         function updateFlightMode() {
@@ -238,11 +380,12 @@
 
             scrollRaf = window.requestAnimationFrame(function () {
                 scrollRaf = 0;
-                // Batch-Read: scrollY einmal lesen, bevor DOM-Writes passieren.
                 readScrollY();
+
                 var scrollDelta = cachedScrollY - lastScrollY;
-                lastScrollY = cachedScrollY;
                 var nextCondensed = cachedScrollY > 36;
+
+                lastScrollY = cachedScrollY;
 
                 if (isCondensed !== nextCondensed) {
                     isCondensed = nextCondensed;
@@ -255,17 +398,22 @@
                     return;
                 }
 
-                // Seiten mit eigener sticky Sprungnavigation schalten die
-                // Scroll-Einblendung ab, damit nicht zwei Leisten konkurrieren.
                 if (!scrollRevealEnabled) {
                     hideHeader();
                     return;
                 }
 
-                // Am Zeigergeraet blendet nur die obere Bildschirmkante ein.
-                // Auf Touch gibt es die nicht, und der Menue-Knopf steckt im
-                // versteckten Header -- ohne diese Einblendung waere die
-                // Navigation dort nur am Seitenende erreichbar.
+                if (usesFullscreenSheet) {
+                    if (cachedScrollY <= 36) {
+                        showHeader(false);
+                    } else if (scrollDelta <= -scrollRevealDelta) {
+                        showHeader(true);
+                    } else if (scrollDelta >= scrollHideDelta) {
+                        hideHeader();
+                    }
+                    return;
+                }
+
                 if (hoverMedia.matches) {
                     hideHeader();
                     return;
@@ -273,10 +421,7 @@
 
                 if (scrollDelta <= -scrollRevealDelta) {
                     showHeader(true);
-                    return;
-                }
-
-                if (scrollDelta >= scrollHideDelta) {
+                } else if (scrollDelta >= scrollHideDelta) {
                     hideHeader();
                 }
             });
@@ -293,10 +438,9 @@
 
             if (nextNearTopEdge) {
                 showHeader(false);
-                return;
+            } else {
+                updateVisibility(false);
             }
-
-            updateVisibility(false);
         }
 
         function queuePointerProximity(clientY) {
@@ -305,7 +449,6 @@
                     isNearTopEdge = false;
                     updateVisibility(false);
                 }
-
                 return;
             }
 
@@ -321,57 +464,61 @@
             });
         }
 
-        if (toggle && panel) {
+        if (usesFullscreenSheet) {
             toggle.addEventListener('click', function () {
-                setPanelState(toggle.getAttribute('aria-expanded') !== 'true');
+                setPanelState(toggle.getAttribute('aria-expanded') !== 'true', true);
             });
 
             panel.querySelectorAll('a').forEach(function (link) {
                 link.addEventListener('click', closePanel);
             });
 
-            document.addEventListener('click', function (event) {
-                if (header.contains(event.target)) {
-                    return;
-                }
-
-                closePanel();
-            });
-
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'Escape') {
+            panel.addEventListener('click', function (event) {
+                if (
+                    event.target === panel ||
+                    event.target.classList.contains('nx-site-header__sheet-grid')
+                ) {
                     closePanel();
                 }
             });
 
-            if (typeof desktopMedia.addEventListener === 'function') {
-                desktopMedia.addEventListener('change', function (event) {
-                    if (event.matches) {
-                        closePanel();
-                    }
+            document.addEventListener('click', function (event) {
+                if (!header.contains(event.target)) {
+                    closePanel();
+                }
+            });
 
-                    if (!event.matches) {
-                        isNearTopEdge = false;
-                    }
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && header.classList.contains('is-open')) {
+                    event.preventDefault();
+                    closePanel();
+                    return;
+                }
 
-                    updateVisibility(false);
-                    queueHeaderHeightSync();
-                });
-            } else if (typeof desktopMedia.addListener === 'function') {
-                desktopMedia.addListener(function (event) {
-                    if (event.matches) {
-                        closePanel();
-                    }
+                trapPanelFocus(event);
+            });
 
-                    if (!event.matches) {
-                        isNearTopEdge = false;
-                    }
-
-                    updateVisibility(false);
-                    queueHeaderHeightSync();
-                });
-            }
+            setPanelState(false, false);
         }
+
+        function handleDesktopMediaChange() {
+            if (!desktopMedia.matches) {
+                isNearTopEdge = false;
+            }
+
+            updateVisibility(false);
+            queueHeaderHeightSync();
+        }
+
+        if (typeof desktopMedia.addEventListener === 'function') {
+            desktopMedia.addEventListener('change', handleDesktopMediaChange);
+        } else if (typeof desktopMedia.addListener === 'function') {
+            desktopMedia.addListener(handleDesktopMediaChange);
+        }
+
+        header.addEventListener('nexus:header-pin', function () {
+            updateVisibility(false);
+        });
 
         header.addEventListener('mouseenter', function () {
             isPointerInside = true;
@@ -408,11 +555,6 @@
             updateVisibility(false);
         });
 
-        // Der Footer ist der zweite Weg zur Navigation: wer unten ankommt, hat
-        // zu Ende gelesen und will weiter. Das ist zugleich der einzige Reveal,
-        // der auf Touch und am Zeigergeraet gleich funktioniert -- und der
-        // einzige, ueber den ein Erstbesucher ueberhaupt erfaehrt, dass es ein
-        // Menue gibt, wenn er nie an die obere Kante faehrt.
         var pageEnd = document.getElementById('footer');
 
         if (pageEnd && typeof window.IntersectionObserver === 'function') {
@@ -428,12 +570,15 @@
             }, { rootMargin: '0px 0px -25% 0px' }).observe(pageEnd);
         }
 
-        readScrollY();
-        lastScrollY = cachedScrollY;
         updateFlightMode();
-        // Bewusst kein Einblenden beim Laden: das Aufblitzen ueber dem
-        // Hero-Bereich war der Grund fuer diese Aenderung.
-        setHeaderVisibility(false);
+
+        if (usesFullscreenSheet) {
+            header.classList.add('is-auto-managed');
+            setHeaderVisibility(cachedScrollY <= 36);
+        } else {
+            setHeaderVisibility(false);
+        }
+
         syncHeaderHeight();
 
         window.addEventListener('scroll', queueScrollUpdate, { passive: true });
@@ -449,4 +594,4 @@
     } else {
         initSiteHeader();
     }
-})();
+}());
