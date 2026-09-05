@@ -14,6 +14,6 @@
         "phpstan/phpstan": "^1.12"
     },
     "scripts": {
-        "analyse:php": "phpstan analyse --no-progress --debug --memory-limit=2G"
+        "analyse:php": "phpstan analyse --no-progress --memory-limit=4G"
     }
 }
