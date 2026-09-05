@@ -13,6 +13,15 @@ html {
     scrollbar-gutter: stable;
 }
 
+/* Die Leiste liegt fixed ueber dem Inhalt und belegt keine Hoehe im
+   Dokumentfluss. Seiten, deren erster Block direkt darunter beginnt
+   (Startseite-Hero), brauchen die Leistenhoehe als Layoutwert, sonst
+   startet ihr Inhalt hinter der Leiste. Mit `block-size` unten synchron
+   halten; Konsumenten setzen zusaetzlich 64px als Fallback. */
+:root {
+    --nx-site-header-height: 64px;
+}
+
 html.nx-site-menu-open,
 body.nx-site-menu-open {
     overflow: hidden;
@@ -179,6 +188,18 @@ body.nx-site-menu-open {
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__cta-short {
+    display: none;
+}
+
+/* Offenes Menue: genau eine Handlungsaufforderung.
+   site-header.js setzt beim Oeffnen alle `[data-site-header-bar-link]` auf
+   `inert`, weil das Sheet ein `aria-modal`-Dialog ist. Der Button in der
+   Leiste blieb dabei sichtbar, war aber nicht mehr klickbar — waehrend im
+   Sheet derselbe orangefarbene Button mit demselben Label ein zweites Mal
+   stand. Im offenen Zustand traegt deshalb nur noch das Sheet die Aktion,
+   die Leiste nur noch Wortmarke und Schliessen. Der Umschalter sitzt am
+   rechten Rand und bleibt stehen; es entsteht kein Sprung. */
+.nx-site-header.nx-site-header--sheet.is-open > .nx-site-header__bar .nx-site-header__cta {
     display: none;
 }
 
