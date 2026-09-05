@@ -169,6 +169,17 @@
     transform: translateY(0);
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .glossary-autolink__popover {
+        transition: none;
+        transform: none;
+    }
+
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .glossary-autolink__popover::after {
+        transform: rotate(45deg);
+    }
+}
+
 /* Lists stay typographic and understated. */
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content ul,
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content ol {
