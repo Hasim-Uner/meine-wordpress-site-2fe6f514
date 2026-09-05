@@ -4,6 +4,12 @@
    Smaller viewports: compact disclosure above the article.
    ============================================================= */
 
+/* Reader articles use the editorial back-to-top control. Keep Blocksy's
+   built-in control out of the same viewport so only one affordance remains. */
+.ct-back-to-top {
+    display: none !important;
+}
+
 .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar.nexus-reader-toc {
     z-index: 24;
 }
