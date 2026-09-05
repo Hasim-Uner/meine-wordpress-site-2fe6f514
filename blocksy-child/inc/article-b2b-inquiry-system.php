@@ -38,15 +38,22 @@ function hu_enqueue_b2b_inquiry_system_article_assets() : void {
 		return;
 	}
 
-	$path     = get_stylesheet_directory() . '/assets/css/article-b2b-inquiry-system.css';
-	$url      = get_stylesheet_directory_uri() . '/assets/css/article-b2b-inquiry-system.css';
-	$version  = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $path ) : wp_get_theme()->get( 'Version' );
+	$path    = get_stylesheet_directory() . '/assets/css/article-b2b-inquiry-system.css';
+	$url     = get_stylesheet_directory_uri() . '/assets/css/article-b2b-inquiry-system.css';
+	$version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $path ) : wp_get_theme()->get( 'Version' );
 
 	wp_enqueue_style(
 		'nexus-b2b-inquiry-system-css',
 		$url,
 		[ 'nexus-single-editorial-css' ],
 		$version
+	);
+
+	// The reader canvas is dark. Keep the diagram stylesheet portable, then
+	// bind its semantic colors to the active reader tokens at render time.
+	wp_add_inline_style(
+		'nexus-b2b-inquiry-system-css',
+		'.single-post .b2b-inquiry-article{--b2b-ink:var(--nx-text);--b2b-muted:var(--nx-text-muted);--b2b-rule:rgba(255,255,255,.15);--b2b-soft:rgba(255,255,255,.045);--b2b-accent:var(--accent-hover,#d58a5d)}'
 	);
 }
 add_action( 'wp_enqueue_scripts', 'hu_enqueue_b2b_inquiry_system_article_assets', 35 );
