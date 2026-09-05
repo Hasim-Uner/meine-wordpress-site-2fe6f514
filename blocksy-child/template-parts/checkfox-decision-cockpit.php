@@ -29,10 +29,14 @@ $contract_items = [
 	'kuendigungsfrist' => 'Kündigungsfrist bekannt',
 ];
 
+$checkfox_faqs = function_exists( 'nexus_get_checkfox_faq_items' ) ? nexus_get_checkfox_faq_items() : [];
+
 $toc_items = [
+	'kurzantwort'          => 'Kurzantwort',
 	'portal-kostenrechner' => 'Kostenrechner',
 	'vertragscheck'        => 'Vertragscheck',
 	'wann-sinnvoll'        => 'Wann sinnvoll?',
+	'faq'                  => 'FAQ',
 	'quellen'              => 'Quellen',
 ];
 ?>
@@ -87,6 +91,20 @@ $toc_items = [
 			data-track-section="checkfox_bar"
 		>Marktcheck</a>
 	</div>
+
+	<?php
+	// Die Hauptfrage der Route ("checkfox serioes": 785 Impressionen auf Pos. 8,6
+	// bei 0 Klicks, 90d-Export 2026-09-01) wurde bisher erst ueber vier Sektionen
+	// verteilt beantwortet. Der Block stellt die Antwort an den Anfang: fuer
+	// Leser, die nur die Frage im Kopf haben, und fuer Retrieval-Systeme, die
+	// einen Seitenanfang in einen Chunk schneiden.
+	?>
+	<section class="hu-checkfox__section" id="kurzantwort" tabindex="-1" data-track-section="checkfox_short_answer">
+		<h2>Die kurze Antwort</h2>
+		<p class="hu-checkfox__section-lead"><strong>Seriosität und Wirtschaftlichkeit sind zwei getrennte Fragen — und nur die zweite entscheidet, ob sich der Kanal für Sie lohnt.</strong></p>
+		<p>Ob ein Portal seriös arbeitet, prüfen Sie an belegbaren Merkmalen: Impressum, Datenschutzhinweise und ein Vertragswerk, das Exklusivität, parallele Empfänger, Reklamation und Kündigungsfrist regelt. Das können Sie vor der Unterschrift selbst nachsehen.</p>
+		<p>Ob sich der Kanal rechnet, zeigt eine andere Zahl: <strong>Anfragepreis geteilt durch Ihre Abschlussquote</strong> ergibt die Kosten pro gewonnenem Auftrag. Ein seriöser Anbieter kann für Ihren Betrieb trotzdem zu teuer sein — und ein günstiger Stückpreis rettet keine niedrige Abschlussquote.</p>
+	</section>
 
 	<section class="hu-checkfox__section" id="portal-kostenrechner" tabindex="-1" data-track-section="checkfox_calculator">
 		<h2>Kosten pro Auftrag berechnen</h2>
@@ -159,6 +177,30 @@ $toc_items = [
 			</div>
 		</div>
 	</section>
+
+	<?php
+	// Dasselbe Array speist den FAQPage-Node in inc/org-schema.php. Sichtbare
+	// Antwort und Schema koennen deshalb nicht auseinanderlaufen — Schema ohne
+	// sichtbare Entsprechung waere ein Verstoss gegen die Structured-Data-Regeln.
+	?>
+	<?php if ( ! empty( $checkfox_faqs ) ) : ?>
+		<section class="hu-checkfox__section" id="faq" tabindex="-1" data-track-section="checkfox_faq">
+			<h2>Häufige Fragen zu Checkfox</h2>
+			<div class="hu-checkfox__faq">
+				<?php foreach ( $checkfox_faqs as $faq_item ) : ?>
+					<details
+						id="faq-<?php echo esc_attr( $faq_item['key'] ); ?>"
+						data-track-action="toggle_checkfox_faq"
+						data-track-category="engagement"
+						data-track-section="checkfox_faq"
+					>
+						<summary><?php echo esc_html( $faq_item['question'] ); ?></summary>
+						<p><?php echo esc_html( $faq_item['answer'] ); ?></p>
+					</details>
+				<?php endforeach; ?>
+			</div>
+		</section>
+	<?php endif; ?>
 
 	<section class="hu-checkfox__section hu-checkfox__method" id="quellen" tabindex="-1" data-track-section="checkfox_methodology">
 		<h2>Quellen, Methodik und Grenzen</h2>

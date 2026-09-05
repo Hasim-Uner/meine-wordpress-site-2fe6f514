@@ -781,6 +781,54 @@ function nexus_get_aroundhome_faq_items() {
 }
 
 /**
+ * Return the FAQ set for the Checkfox decision page.
+ *
+ * Gleiche Bauart wie nexus_get_aroundhome_faq_items(): sichtbare Antworten und
+ * FAQPage-Node lesen dasselbe Array und koennen nicht auseinanderlaufen.
+ *
+ * Die Fragen stammen aus echten Suchanfragen der Route
+ * (seo-research/2026-09/, 90d: "checkfox serioes" 785 Impressionen,
+ * "checkfox erfahrungen" 311, "checkfox bewertung" 69, "was ist checkfox" 27) —
+ * nicht aus erfundenen Prompt-Beispielen.
+ *
+ * Die Antworten halten die Linie der Seite: keine Preise, Exklusivitaetsregeln
+ * oder Qualitaetsquoten eines Anbieters, keine Rechtsauskunft und kein Urteil
+ * ueber konkrete Vertraege. Was hier steht, muss der Betrieb selbst pruefen
+ * koennen.
+ *
+ * @return array<int, array{key: string, question: string, answer: string}>
+ */
+function nexus_get_checkfox_faq_items() {
+	return [
+		[
+			'key'      => 'serioesitaet',
+			'question' => 'Ist Checkfox seriös?',
+			'answer'   => 'Seriosität lässt sich an prüfbaren Merkmalen festmachen statt am Bauchgefühl: vollständiges Impressum, nachvollziehbare Datenschutzhinweise und ein einsehbares Vertragswerk, in dem Exklusivität, Anzahl paralleler Empfänger, Reklamationsgründe und Kündigungsfrist geregelt sind. Diese Prüfung können Sie vor der Unterschrift selbst durchführen. Ob sich der Kanal für Ihren Betrieb rechnet, ist eine davon getrennte Frage — sie entscheidet sich an Ihrer Abschlussquote und Ihrer Vertriebszeit, nicht an der Seriosität des Anbieters.',
+		],
+		[
+			'key'      => 'was-ist',
+			'question' => 'Was ist Checkfox?',
+			'answer'   => 'Checkfox tritt als Portal auf: Endkundenanfragen aus dem Solar- und Wärmepumpen-Bereich werden gesammelt und an ausführende Betriebe weitergegeben. Der Weg lautet Endkunde → Portal → Verteilung laut Vertrag → Betrieb. Die Nachfrage entsteht damit über die Reichweite des Portals, nicht über Ihre eigene. Wie viele Betriebe eine Anfrage parallel erhalten und welche Exklusivität gilt, steht im jeweiligen Vertrag und nicht in einer allgemeinen Marktaussage.',
+		],
+		[
+			'key'      => 'kosten-pro-auftrag',
+			'question' => 'Was kostet eine Anfrage bei Checkfox?',
+			'answer'   => 'Diese Seite nennt bewusst keinen Preis: Konditionen sind vertragsabhängig und ohne Einsicht in Ihr konkretes Angebot nicht belegbar. Entscheidend ist ohnehin nicht der Stückpreis, sondern was ein gewonnener Auftrag kostet. Die Rechnung lautet: Anfragepreis geteilt durch Abschlussquote. Rechenbeispiel mit frei gewählten Zahlen: 100 € pro Anfrage bei 10 % Abschlussquote ergeben 1.000 € pro Auftrag, nicht 100 €. Setzen Sie Ihre eigenen Werte ein — erst damit wird die Rechnung belastbar.',
+		],
+		[
+			'key'      => 'erfahrungen',
+			'question' => 'Welche Erfahrungen gibt es mit Checkfox?',
+			'answer'   => 'Öffentliche Bewertungen schwanken stark und bilden meist Einzelfälle ab; sie ersetzen die Prüfung Ihres konkreten Vertrags nicht. Diese Seite sammelt deshalb keine Erfahrungsberichte, sondern gibt zwei überprüfbare Schritte an die Hand: den Vertragscheck vor der Unterschrift und die Rechnung Kosten pro Auftrag nach den ersten Anfragen. Beides können Sie nachrechnen, einen fremden Erfahrungsbericht nicht.',
+		],
+		[
+			'key'      => 'beratung',
+			'question' => 'Ersetzt diese Einordnung eine Rechts- oder Vertragsberatung?',
+			'answer'   => 'Nein. Die Seite ist eine wirtschaftliche Entscheidungshilfe und keine Rechtsberatung. Rechtliche Fragen und die Auslegung Ihres konkreten Vertrags gehören in eine qualifizierte rechtliche Prüfung.',
+		],
+	];
+}
+
+/**
  * Return the objection set for the anonymized solar methodology case.
  *
  * Shared between the page template and centralized JSON-LD output, so the
