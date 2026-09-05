@@ -26,11 +26,14 @@
         var isFocusInside = false;
         var isNearTopEdge = false;
         var isAtPageEnd = false;
+        var isInTopZone = false;
+        var isScrollRevealed = false;
         var hideTimer = 0;
         var idleHideDelay = 1700;
         var scrollRevealDelta = 5;
         var scrollHideDelta = 8;
         var topEdgeThreshold = 76;
+        var topZoneThreshold = 120;
         var headerHeightRaf = 0;
         var scrollRaf = 0;
         var pointerMoveRaf = 0;
@@ -81,8 +84,12 @@
 
         var scrollRevealEnabled = header.getAttribute('data-site-header-scroll-reveal') !== 'off';
 
+        /* isInTopZone und isScrollRevealed werden ausschliesslich fuer die
+           Vollflaechen-Leiste gesetzt; die Sonderheader (Audit, Energy, Blog)
+           behalten ihr bisheriges Timer-Verhalten. */
         function shouldPinHeader() {
             return isPointerInside || isFocusInside || isNearTopEdge || isAtPageEnd ||
+                isInTopZone || isScrollRevealed ||
                 header.classList.contains('is-open') ||
                 header.hasAttribute('data-site-header-pin');
         }
@@ -393,6 +400,30 @@
                     queueHeaderHeightSync();
                 }
 
+                /* Vollflaechen-Leiste: Sichtbarkeit ist ein Zustand, kein Timer.
+                   Oben immer sichtbar, beim Abwaertsscrollen weg, beim
+                   Aufwaertsscrollen zurueck — und dann bleibt sie stehen, bis
+                   wieder abwaerts gescrollt wird. */
+                if (usesFullscreenSheet && scrollRevealEnabled) {
+                    isInTopZone = cachedScrollY <= topZoneThreshold;
+
+                    if (isInTopZone) {
+                        isScrollRevealed = false;
+                    } else if (scrollDelta <= -scrollRevealDelta) {
+                        isScrollRevealed = true;
+                    } else if (scrollDelta >= scrollHideDelta) {
+                        isScrollRevealed = false;
+                    }
+
+                    if (shouldPinHeader()) {
+                        showHeader(false);
+                    } else {
+                        hideHeader();
+                    }
+
+                    return;
+                }
+
                 if (shouldPinHeader()) {
                     showHeader(false);
                     return;
@@ -400,17 +431,6 @@
 
                 if (!scrollRevealEnabled) {
                     hideHeader();
-                    return;
-                }
-
-                if (usesFullscreenSheet) {
-                    if (cachedScrollY <= 36) {
-                        showHeader(false);
-                    } else if (scrollDelta <= -scrollRevealDelta) {
-                        showHeader(true);
-                    } else if (scrollDelta >= scrollHideDelta) {
-                        hideHeader();
-                    }
                     return;
                 }
 
@@ -574,7 +594,8 @@
 
         if (usesFullscreenSheet) {
             header.classList.add('is-auto-managed');
-            setHeaderVisibility(cachedScrollY <= 36);
+            isInTopZone = cachedScrollY <= topZoneThreshold;
+            setHeaderVisibility(isInTopZone);
         } else {
             setHeaderVisibility(false);
         }
