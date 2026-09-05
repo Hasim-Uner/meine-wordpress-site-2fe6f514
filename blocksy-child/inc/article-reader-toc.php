@@ -4,7 +4,7 @@
  *
  * The TTFB reader is now the default presentation for every WordPress post.
  * Existing pilot posts still enter through template-parts/blog-header.php;
- * all other posts receive the same reader shell from wp_body_open().
+ * all other posts receive the same reader shell at that exact template slot.
  *
  * @package Blocksy_Child
  */
@@ -50,16 +50,23 @@ function hu_is_article_reader_toc_request() : bool {
 }
 
 /**
- * Render the reader header for posts that are not part of the old six-post
- * pilot. The legacy blog header is still called later by single.php, so hide
- * that duplicate surface immediately. Once the document is available, move
- * the reader next to the single-post main element so the exact same sibling
- * selectors used by the original TTFB pilot continue to apply.
+ * Render the reader header immediately before the legacy blog-header template
+ * on posts that were not part of the original six-post pilot.
+ *
+ * WordPress fires this dynamic action exactly where single.php calls
+ * get_template_part( 'template-parts/blog-header' ). This gives every migrated
+ * post the same server-rendered sibling structure as the TTFB pilot, so the
+ * existing Article System CSS works without JavaScript relocation.
+ *
+ * The legacy blog header still loads immediately afterwards for compatibility,
+ * but is hidden on these migrated posts to avoid a duplicate navigation layer.
  *
  * @return void
  */
-function hu_render_default_article_reader_header() : void {
-	if ( ! hu_is_article_reader_request() ) {
+function hu_render_default_article_reader_at_blog_header_slot() : void {
+	static $rendered = false;
+
+	if ( $rendered || ! hu_is_article_reader_request() ) {
 		return;
 	}
 
@@ -70,6 +77,8 @@ function hu_render_default_article_reader_header() : void {
 		return;
 	}
 
+	$rendered = true;
+
 	get_template_part(
 		'template-parts/article-reader-header',
 		null,
@@ -78,16 +87,11 @@ function hu_render_default_article_reader_header() : void {
 		]
 	);
 
-	// The old blog header may live inside a theme wrapper, so scope by body
-	// rather than by sibling relationship to prevent a duplicate header flash.
+	// The original blog header is included next by WordPress. Keep it out of the
+	// visual and accessibility tree while the old compatibility branch exists.
 	echo '<style id="nexus-default-reader-header-compat">body.single-post .nexus-blog-header{display:none!important}</style>';
-
-	// article-reader-body.css intentionally scopes many rules with
-	// ".nexus-article-reader-header ~ .nexus-single-container". Recreate that
-	// proven pilot DOM relationship for migrated posts after parsing completes.
-	echo '<script id="nexus-default-reader-dom-align">document.addEventListener("DOMContentLoaded",function(){var r=document.querySelector(".nexus-article-reader-header"),m=document.querySelector(".nexus-single-container");if(r&&m&&m.parentNode&&r.parentNode!==m.parentNode){m.parentNode.insertBefore(r,m);}else if(r&&m&&m.parentNode&&r.nextElementSibling!==m){m.parentNode.insertBefore(r,m);}var h=document.querySelector(".nexus-blog-header");if(h){h.remove();}});</script>';
 }
-add_action( 'wp_body_open', 'hu_render_default_article_reader_header', 25 );
+add_action( 'get_template_part_template-parts/blog-header', 'hu_render_default_article_reader_at_blog_header_slot', 5, 3 );
 
 /**
  * Enqueue the reader TOC for every single post. The JavaScript itself guards
