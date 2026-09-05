@@ -52,8 +52,9 @@ function hu_is_article_reader_toc_request() : bool {
 /**
  * Render the reader header for posts that are not part of the old six-post
  * pilot. The legacy blog header is still called later by single.php, so hide
- * that duplicate surface on these migrated posts. This keeps the rollout
- * centralized without changing editor-owned article content.
+ * that duplicate surface immediately. Once the document is available, move
+ * the reader next to the single-post main element so the exact same sibling
+ * selectors used by the original TTFB pilot continue to apply.
  *
  * @return void
  */
@@ -77,10 +78,14 @@ function hu_render_default_article_reader_header() : void {
 		]
 	);
 
-	// single.php still calls template-parts/blog-header.php after get_header().
-	// On migrated posts that surface is now redundant and must not create a
-	// second visible navigation layer.
-	echo '<style id="nexus-default-reader-header-compat">.single-post .nexus-article-reader-header~.nexus-blog-header{display:none!important}</style>';
+	// The old blog header may live inside a theme wrapper, so scope by body
+	// rather than by sibling relationship to prevent a duplicate header flash.
+	echo '<style id="nexus-default-reader-header-compat">body.single-post .nexus-blog-header{display:none!important}</style>';
+
+	// article-reader-body.css intentionally scopes many rules with
+	// ".nexus-article-reader-header ~ .nexus-single-container". Recreate that
+	// proven pilot DOM relationship for migrated posts after parsing completes.
+	echo '<script id="nexus-default-reader-dom-align">document.addEventListener("DOMContentLoaded",function(){var r=document.querySelector(".nexus-article-reader-header"),m=document.querySelector(".nexus-single-container");if(r&&m&&m.parentNode&&r.parentNode!==m.parentNode){m.parentNode.insertBefore(r,m);}else if(r&&m&&m.parentNode&&r.nextElementSibling!==m){m.parentNode.insertBefore(r,m);}var h=document.querySelector(".nexus-blog-header");if(h){h.remove();}});</script>';
 }
 add_action( 'wp_body_open', 'hu_render_default_article_reader_header', 25 );
 
@@ -96,13 +101,13 @@ function hu_enqueue_article_reader_toc_assets() : void {
 		return;
 	}
 
-	$style_path      = get_stylesheet_directory() . '/assets/css/article-reader-toc.css';
-	$script_path     = get_stylesheet_directory() . '/assets/js/article-reader-toc.js';
-	$style_url       = get_stylesheet_directory_uri() . '/assets/css/article-reader-toc.css';
-	$script_url      = get_stylesheet_directory_uri() . '/assets/js/article-reader-toc.js';
+	$style_path       = get_stylesheet_directory() . '/assets/css/article-reader-toc.css';
+	$script_path      = get_stylesheet_directory() . '/assets/js/article-reader-toc.js';
+	$style_url        = get_stylesheet_directory_uri() . '/assets/css/article-reader-toc.css';
+	$script_url       = get_stylesheet_directory_uri() . '/assets/js/article-reader-toc.js';
 	$fallback_version = wp_get_theme()->get( 'Version' );
-	$style_version   = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $style_path ) : $fallback_version;
-	$script_version  = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $script_path ) : $fallback_version;
+	$style_version    = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $style_path ) : $fallback_version;
+	$script_version   = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $script_path ) : $fallback_version;
 
 	wp_enqueue_style(
 		'nexus-article-reader-toc-css',
