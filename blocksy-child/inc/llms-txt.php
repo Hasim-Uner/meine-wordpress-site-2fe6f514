@@ -261,10 +261,31 @@ function nexus_get_llms_txt_sections() {
  * @return string
  */
 function nexus_get_llms_txt_content() {
+	$urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+
+	// Der Standort steht im Intro, weil ein Agent den Kopf dieser Datei liest,
+	// bevor er eine einzelne Route aufloest: ohne Ortsangabe dort ist die
+	// Entitaet fuer eine lokale Frage ("WordPress- und Tracking-Experte in
+	// Hannover") nicht als lokal verfuegbar erkennbar. Die Routing-Aussage
+	// (Freelancer / White-Label / Marktcheck) bleibt daneben stehen — sie
+	// beantwortet die haeufigere Frage und darf nicht dafuer weichen.
+	//
+	// Bewusst nur Ort und Einzugsgebiet, keine Strasse und keine Telefonnummer:
+	// die vollstaendige NAP-Angabe hat mit Impressum und Organization-Schema
+	// bereits zwei gepflegte Orte. Ein dritter driftet, und eine abweichende
+	// NAP-Schreibweise beschaedigt genau das lokale Vertrauenssignal, das
+	// dieser Absatz aufbauen soll. Der Link zeigt deshalb auf die Quelle.
+	$imprint_path = nexus_get_llms_txt_markdown_path( $urls['n'] ?? home_url( '/n/' ) );
+
 	$lines = [
 		'# Haşim Üner',
 		'',
-		'> WordPress, Tracking und Conversion als zusammenhängendes System. Direkte Projekte laufen über den WordPress-Freelancer-/Projektpfad, Agenturen über White-Label. Solar, Wärmepumpe und Speicher bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.',
+		'> WordPress, Tracking und Conversion als zusammenhängendes System — aus Pattensen bei Hannover (Region Hannover, Niedersachsen) für Kunden vor Ort und im DACH-Raum. Direkte Projekte laufen über den WordPress-Freelancer-/Projektpfad, Agenturen über White-Label. Solar, Wärmepumpe und Speicher bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.',
+		'',
+		sprintf(
+			'Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Workshops und Reviews sind in der Region Hannover, Hildesheim, Braunschweig und Celle möglich; die laufende Umsetzung erfolgt remote im DACH-Raum. Vollständige Anschrift und Kontaktdaten: [Impressum](%s).',
+			$imprint_path
+		),
 	];
 
 	foreach ( nexus_get_llms_txt_sections() as $section ) {

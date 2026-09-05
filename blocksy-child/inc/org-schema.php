@@ -751,6 +751,130 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
     return $webpage;
 }
 
+/**
+ * Canonical geo coordinates of the business seat (Pattensen bei Hannover).
+ *
+ * One source for the `geo` property of the Organization/LocalBusiness node and
+ * for the midpoint of the on-site GeoCircle in areaServed. Two hardcoded pairs
+ * drift silently: the node would then claim a seat at one point and an on-site
+ * radius around another.
+ *
+ * @return array<string, string>
+ */
+function hu_get_business_geo_coordinates() {
+    return [
+        'latitude'  => '52.2736456',
+        'longitude' => '9.7559953',
+    ];
+}
+
+/**
+ * Machine-readable service area of the business.
+ *
+ * Two layers, deliberately:
+ *
+ * 1. A GeoCircle that states the physical on-site radius as a number instead of
+ *    leaving it implicit in a list of city names. `name`/`description` bound the
+ *    claim against the remote DACH work — areaServed is a union, not an
+ *    exclusion, so the circle narrows nothing.
+ * 2. Named places, each with BOTH a Wikidata URI and the German Wikipedia
+ *    article. Wikidata is the identifier a knowledge graph resolves; Wikipedia
+ *    stays because it is the human-verifiable form and was the previous claim.
+ *    sameAs takes an array, so this is additive — not a replacement.
+ *
+ * The Q-IDs were resolved on 2026-09-05 from the exact Wikipedia titles already
+ * asserted here, via the de.wikipedia `pageprops`/`wikibase_item` lookup, so
+ * both URIs of a place describe the same subject by construction. Do not paste
+ * a Q-ID from a suggestion without that round trip: a plausible-looking ID
+ * points anywhere. Two IDs proposed for this change did — Q511874 is a Swedish
+ * literary prize, Q3874 is Gießen. scripts/lint-entity-crawler-signals.php
+ * guards the shape; only the round trip guards the meaning.
+ *
+ * DACH stays without sameAs. There is no unambiguous single Wikidata item for
+ * the commercial DACH region, and an invented one would be exactly the failure
+ * this docblock exists to prevent.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function hu_get_business_area_served() {
+    $geo = hu_get_business_geo_coordinates();
+
+    return [
+        [
+            '@type'       => 'GeoCircle',
+            'name'        => 'Vor-Ort-Radius Region Hannover',
+            'description' => 'Umkreis um den Sitz in Pattensen bei Hannover für persönliche Termine, Workshops und Reviews. Die laufende Umsetzung erfolgt darüber hinaus remote im DACH-Raum.',
+            'geoMidpoint' => array_merge(
+                [ '@type' => 'GeoCoordinates' ],
+                $geo
+            ),
+            // Meter. Deckt die Orte ab, die der Standortblock auf
+            // /wordpress-agentur-hannover/ als an einem Tag machbar nennt.
+            'geoRadius'   => '100000',
+        ],
+        [
+            '@type'  => 'City',
+            'name'   => 'Hannover',
+            'sameAs' => [
+                'https://www.wikidata.org/wiki/Q1715',
+                'https://de.wikipedia.org/wiki/Hannover',
+            ],
+        ],
+        [
+            '@type'  => 'City',
+            'name'   => 'Pattensen',
+            'sameAs' => [
+                'https://www.wikidata.org/wiki/Q501636',
+                'https://de.wikipedia.org/wiki/Pattensen',
+            ],
+        ],
+        [
+            '@type'  => 'City',
+            'name'   => 'Braunschweig',
+            'sameAs' => [
+                'https://www.wikidata.org/wiki/Q2773',
+                'https://de.wikipedia.org/wiki/Braunschweig',
+            ],
+        ],
+        [
+            '@type'  => 'City',
+            'name'   => 'Wolfsburg',
+            'sameAs' => [
+                'https://www.wikidata.org/wiki/Q3014',
+                'https://de.wikipedia.org/wiki/Wolfsburg',
+            ],
+        ],
+        [
+            '@type'  => 'City',
+            'name'   => 'Hildesheim',
+            'sameAs' => [
+                'https://www.wikidata.org/wiki/Q3185',
+                'https://de.wikipedia.org/wiki/Hildesheim',
+            ],
+        ],
+        [
+            '@type'  => 'AdministrativeArea',
+            'name'   => 'Region Hannover',
+            'sameAs' => [
+                'https://www.wikidata.org/wiki/Q5963',
+                'https://de.wikipedia.org/wiki/Region_Hannover',
+            ],
+        ],
+        [
+            '@type'  => 'AdministrativeArea',
+            'name'   => 'Niedersachsen',
+            'sameAs' => [
+                'https://www.wikidata.org/wiki/Q1197',
+                'https://de.wikipedia.org/wiki/Niedersachsen',
+            ],
+        ],
+        [
+            '@type' => 'AdministrativeArea',
+            'name'  => 'DACH',
+        ],
+    ];
+}
+
 function hu_output_schema()
 {
     $google_maps_url = hu_brand_map_url();
@@ -781,11 +905,10 @@ function hu_output_schema()
             'postalCode'      => '30982',
             'addressCountry'  => 'DE'
         ],
-        'geo' => [
-            '@type'     => 'GeoCoordinates',
-            'latitude'  => '52.2736456',
-            'longitude' => '9.7559953'
-        ],
+        'geo' => array_merge(
+            [ '@type' => 'GeoCoordinates' ],
+            hu_get_business_geo_coordinates()
+        ),
         'priceRange'  => '€€',
         'currenciesAccepted' => 'EUR',
         'paymentAccepted'    => 'Überweisung',
@@ -809,47 +932,7 @@ function hu_output_schema()
             'B2B Lead Generation',
         ],
         'knowsLanguage' => ['de', 'en', 'tr'],
-        'areaServed' => [
-            [
-                '@type'  => 'City',
-                'name'   => 'Hannover',
-                'sameAs' => 'https://de.wikipedia.org/wiki/Hannover'
-            ],
-            [
-                '@type'  => 'City',
-                'name'   => 'Pattensen',
-                'sameAs' => 'https://de.wikipedia.org/wiki/Pattensen'
-            ],
-            [
-                '@type'  => 'City',
-                'name'   => 'Braunschweig',
-                'sameAs' => 'https://de.wikipedia.org/wiki/Braunschweig'
-            ],
-            [
-                '@type'  => 'City',
-                'name'   => 'Wolfsburg',
-                'sameAs' => 'https://de.wikipedia.org/wiki/Wolfsburg'
-            ],
-            [
-                '@type'  => 'City',
-                'name'   => 'Hildesheim',
-                'sameAs' => 'https://de.wikipedia.org/wiki/Hildesheim'
-            ],
-            [
-                '@type'  => 'AdministrativeArea',
-                'name'   => 'Region Hannover',
-                'sameAs' => 'https://de.wikipedia.org/wiki/Region_Hannover'
-            ],
-            [
-                '@type'  => 'AdministrativeArea',
-                'name'   => 'Niedersachsen',
-                'sameAs' => 'https://de.wikipedia.org/wiki/Niedersachsen'
-            ],
-            [
-                '@type' => 'AdministrativeArea',
-                'name'  => 'DACH'
-            ],
-        ],
+        'areaServed' => hu_get_business_area_served(),
         'hasOfferCatalog' => [
             '@type'           => 'OfferCatalog',
             'name'            => 'Anfragesysteme für Solar-, Wärmepumpen- und Speicher-Anbieter',

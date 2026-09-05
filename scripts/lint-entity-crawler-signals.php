@@ -430,6 +430,108 @@ foreach ( $banned as $term ) {
 	);
 }
 
+// --- areaServed -----------------------------------------------------------
+
+echo "\n########## areaServed ##########\n\n";
+
+// The local layer of the entity claim. It is asserted in JSON-LD only, so a
+// wrong value here is invisible on the page and still read by every knowledge
+// graph. These checks cover shape and internal consistency; the meaning of a
+// Q-ID can only be verified against Wikidata itself (see the docblock on
+// hu_get_business_area_served()).
+$area_served  = hu_get_business_area_served();
+$business_geo = hu_get_business_geo_coordinates();
+
+$geo_circles = array_values(
+	array_filter(
+		$area_served,
+		static function ( $area ) {
+			return 'GeoCircle' === ( $area['@type'] ?? '' );
+		}
+	)
+);
+
+hu_lint_assert(
+	1 === count( $geo_circles ),
+	'areaServed carries exactly one GeoCircle'
+);
+
+// A circle around a different point than the seat claims an on-site radius the
+// business does not have. One helper feeds both, so this can only fail if a
+// future edit hardcodes coordinates again.
+hu_lint_assert(
+	isset( $geo_circles[0] )
+		&& ( $geo_circles[0]['geoMidpoint']['latitude'] ?? null ) === $business_geo['latitude']
+		&& ( $geo_circles[0]['geoMidpoint']['longitude'] ?? null ) === $business_geo['longitude'],
+	'GeoCircle midpoint equals the business geo coordinates'
+);
+
+hu_lint_assert(
+	isset( $geo_circles[0]['geoRadius'] )
+		&& 1 === preg_match( '/^[0-9]+$/', (string) $geo_circles[0]['geoRadius'] ),
+	'GeoCircle carries a numeric geoRadius (meters)'
+);
+
+$wikidata_uris = [];
+
+foreach ( $area_served as $area ) {
+	$name    = (string) ( $area['name'] ?? '(unnamed)' );
+	$same_as = (array) ( $area['sameAs'] ?? [] );
+
+	if ( [] === $same_as ) {
+		continue;
+	}
+
+	$wikidata = array_values(
+		array_filter(
+			$same_as,
+			static function ( $url ) {
+				return 1 === preg_match( '#^https://www\.wikidata\.org/wiki/Q[0-9]+$#', (string) $url );
+			}
+		)
+	);
+
+	$wikipedia = array_values(
+		array_filter(
+			$same_as,
+			static function ( $url ) {
+				return 1 === preg_match( '#^https://de\.wikipedia\.org/wiki/#', (string) $url );
+			}
+		)
+	);
+
+	// Wikidata is what a graph resolves, Wikipedia is what a human can check.
+	// Dropping either one weakens a different reader.
+	hu_lint_assert(
+		1 === count( $wikidata ) && 1 === count( $wikipedia ),
+		"areaServed place carries one Wikidata URI and one Wikipedia article: {$name}"
+	);
+
+	$wikidata_uris = array_merge( $wikidata_uris, $wikidata );
+}
+
+hu_lint_assert(
+	count( $wikidata_uris ) > 0,
+	'areaServed carries Wikidata identifiers at all'
+);
+
+// The realistic mistake is a pasted Q-ID that belongs to another place. A
+// duplicate is the one form of that mistake a static check can see.
+hu_lint_assert(
+	count( $wikidata_uris ) === count( array_unique( $wikidata_uris ) ),
+	'no Wikidata identifier is claimed for two different places'
+);
+
+// The llms.txt intro is the first thing an AI agent reads; without the seat and
+// the region there, a local prompt cannot resolve the entity as locally
+// available no matter how complete the JSON-LD is.
+foreach ( [ 'Pattensen', 'Region Hannover', 'Niedersachsen' ] as $local_anchor ) {
+	hu_lint_assert(
+		false !== mb_strpos( $llms_rendered, $local_anchor ),
+		"llms.txt intro carries the local anchor: {$local_anchor}"
+	);
+}
+
 /**
  * @param mixed $value Value to serialize.
  * @return string
