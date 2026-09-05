@@ -1,0 +1,290 @@
+/* ============================================================
+   Article System — editorial reader body
+   Quiet, publication-like treatment for flagship reader posts.
+   Keeps TOC and sharing intact while removing the SaaS/AI card look.
+   ============================================================ */
+
+/* Remove the synthetic grid/glow canvas on reader posts. */
+.nexus-article-reader-header ~ .nexus-single-container {
+    background: #0b0f12;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container::before,
+.nexus-article-reader-header ~ .nexus-single-container::after {
+    display: none;
+}
+
+/* Let the copy sit directly on the page instead of inside one giant glass card. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content {
+    width: 100%;
+    max-width: 720px;
+    margin-inline: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    color: var(--nx-text-secondary);
+    font-size: clamp(1.02rem, 1.1vw, 1.09rem);
+    line-height: 1.78;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content p {
+    margin: 0 0 1.45rem;
+    color: var(--nx-text-secondary);
+    line-height: 1.78;
+    text-wrap: pretty;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content > p.lead-para {
+    max-width: 62ch;
+    margin-bottom: 2rem;
+    color: var(--nx-text-muted);
+    font-size: clamp(1.08rem, 1.5vw, 1.22rem);
+    font-weight: 450;
+    line-height: 1.68;
+}
+
+/* Headings behave like editorial chapter markers, not dashboard cards. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content h2 {
+    margin: clamp(3.7rem, 8vw, 5.2rem) 0 1.2rem;
+    padding-top: 1.45rem;
+    border-top: 1px solid color-mix(in srgb, var(--nx-border) 72%, transparent);
+    color: var(--nx-text);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    line-height: 1.14;
+    text-wrap: balance;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content h2:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content h3 {
+    margin: 2.7rem 0 0.85rem;
+    color: var(--nx-text);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 650;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content h4,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content h5 {
+    margin: 2.2rem 0 0.7rem;
+    color: var(--nx-text);
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content strong {
+    color: var(--nx-text);
+    font-weight: 650;
+}
+
+/* Links read like links inside an article, not accent-colored UI controls. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content a:not(.nexus-btn):not(.nexus-inline-cta__btn):not(.callout-cta) {
+    color: var(--nx-text);
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in srgb, var(--accent-hover) 58%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content a:not(.nexus-btn):not(.nexus-inline-cta__btn):not(.callout-cta):hover,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content a:not(.nexus-btn):not(.nexus-inline-cta__btn):not(.callout-cta):focus-visible {
+    color: var(--accent-hover);
+    text-decoration-color: currentColor;
+}
+
+/* Lists stay typographic and understated. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content ul,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content ol {
+    margin: 0 0 1.7rem;
+    padding-left: 1.35rem;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content li {
+    padding-left: 0.2rem;
+    color: var(--nx-text-secondary);
+    line-height: 1.7;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content li + li {
+    margin-top: 0.45rem;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content li::marker {
+    color: color-mix(in srgb, var(--accent-hover) 72%, var(--nx-text-dim));
+}
+
+/* Quotes are editorial marginalia rather than another rounded box. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content blockquote,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content blockquote.pull-quote {
+    margin: 2.6rem 0;
+    padding: 0.15rem 0 0.15rem 1.35rem;
+    border: 0;
+    border-left: 2px solid color-mix(in srgb, var(--accent-hover) 72%, var(--nx-border));
+    border-radius: 0;
+    background: transparent;
+    color: var(--nx-text);
+    font-family: inherit;
+    font-size: clamp(1.08rem, 1.6vw, 1.22rem);
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.6;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content blockquote.pull-quote::before {
+    display: none;
+}
+
+/* Images and captions: closer to magazine/editorial conventions. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content figure {
+    margin: 2.8rem 0;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content img {
+    border-radius: 4px;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content figcaption {
+    margin-top: 0.65rem;
+    color: var(--nx-text-dim);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* Tables become flat reference material instead of card UI. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content table {
+    margin: 2.6rem 0;
+    border: 0;
+    border-top: 1px solid var(--nx-border);
+    border-bottom: 1px solid var(--nx-border);
+    border-radius: 0;
+    background: transparent;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content th,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content td {
+    padding: 0.85rem 0.7rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--nx-border) 78%, transparent);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content th {
+    background: transparent;
+    color: var(--nx-text-muted);
+    font-size: 0.82rem;
+    font-weight: 650;
+    letter-spacing: 0.025em;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Inline technical notation should not look like a pill. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content code {
+    padding: 0.05em 0.22em;
+    border: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--nx-border) 86%, transparent);
+    border-radius: 0;
+    background: transparent;
+    color: var(--nx-text);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content pre {
+    margin: 2.3rem 0;
+    border-radius: 5px;
+    box-shadow: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content pre code {
+    border: 0;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content hr {
+    margin: 3rem 0;
+    border-color: color-mix(in srgb, var(--nx-border) 78%, transparent);
+}
+
+/* Reduce the "AI dashboard" feel of optional editor components. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .section-divider {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 16px;
+    margin: clamp(3.8rem, 8vw, 5rem) 0 1.25rem;
+    padding-top: 1.4rem;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .section-divider-num {
+    padding-top: 0.28rem;
+    color: var(--nx-text-dim);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    opacity: 1;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .formula-block,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .callout,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .casestudy,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .comparison,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .hu-pillar-cta {
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .callout,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .casestudy,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .hu-pillar-cta {
+    background: color-mix(in srgb, var(--nx-text) 3%, transparent);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .stat-row {
+    gap: 20px;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .stat-row .stat-card {
+    padding: 1.1rem 0;
+    border: 0;
+    border-top: 1px solid var(--nx-border);
+    border-radius: 0;
+    background: transparent;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .stat-row .stat-value {
+    font-size: clamp(1.55rem, 2.5vw, 2rem);
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content {
+        max-width: 100%;
+        font-size: 1rem;
+        line-height: 1.72;
+    }
+
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content p {
+        line-height: 1.72;
+    }
+
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content h2 {
+        margin-top: 3.4rem;
+        padding-top: 1.15rem;
+    }
+
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .section-divider {
+        grid-template-columns: 1fr;
+        gap: 0.45rem;
+    }
+}
