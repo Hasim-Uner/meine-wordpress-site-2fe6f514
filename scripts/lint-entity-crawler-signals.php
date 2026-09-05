@@ -106,6 +106,17 @@ function add_query_arg( $args, $url ) {
 
 	return $url . ( false === strpos( $url, '?' ) ? '?' : '&' ) . $query;
 }
+// Needed by inc/commercial-routing.php, which schema-positioning.php bootstraps
+// to resolve the offer catalog's destination routes.
+function sanitize_key( $key ) {
+	return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( (string) $key ) );
+}
+// The route map is filterable at runtime. Returning the unfiltered value is the
+// right stub here: this harness asserts what the theme itself states, and a
+// filter that only exists on the live site is not part of that claim.
+function apply_filters( $hook, $value ) {
+	return $value;
+}
 
 require_once __DIR__ . '/../blocksy-child/inc/robots-txt.php';
 require_once __DIR__ . '/../blocksy-child/inc/org-schema.php';
@@ -450,6 +461,58 @@ foreach ( $banned as $term ) {
 	hu_lint_assert(
 		false === mb_strpos( $graph, $term ),
 		"retired claim absent from the identity nodes: {$term}"
+	);
+}
+
+// --- OfferCatalog ---------------------------------------------------------
+
+echo "\n########## OfferCatalog ##########\n\n";
+
+// The same bug class as the Person no-op above, for the node where it actually
+// bit. hu_normalize_positioned_schema_node() replaces hasOfferCatalog wholesale
+// at render time, so a second catalog literal in the graph builder reaches no
+// page and drifts unseen — one did, naming the Energy vertical as the umbrella
+// and pointing at /wgos-assets/… routes. hu_output_schema() builds $org inline
+// and offers no builder function to diff, so the guard is structural: the
+// builder must delegate instead of restating.
+$org_source = (string) file_get_contents( __DIR__ . '/../blocksy-child/inc/org-schema.php' );
+
+hu_lint_assert(
+	1 === preg_match(
+		"#'hasOfferCatalog'\s*=>\s*function_exists\(\s*'hu_get_positioned_schema_offer_catalog'\s*\)#",
+		$org_source
+	),
+	'Organization builder delegates hasOfferCatalog to the positioning layer instead of restating it'
+);
+
+// An Offer states commercial terms; the Service states what is being sold. A
+// bare Offer with only name and description asserts a sale without ever naming
+// the thing — which is what an answer engine reads the catalog for.
+$catalog = hu_get_positioned_schema_offer_catalog();
+
+hu_lint_assert(
+	'OfferCatalog' === ( $catalog['@type'] ?? '' ) && ! empty( $catalog['itemListElement'] ),
+	'positioned offer catalog is an OfferCatalog and carries entries'
+);
+
+foreach ( (array) ( $catalog['itemListElement'] ?? [] ) as $entry ) {
+	$service = is_array( $entry ) && isset( $entry['itemOffered'] ) ? (array) $entry['itemOffered'] : [];
+	$label   = (string) ( $service['name'] ?? '(unbenannt)' );
+
+	hu_lint_assert(
+		'Offer' === ( $entry['@type'] ?? '' ) && 'Service' === ( $service['@type'] ?? '' ),
+		"catalog entry is an Offer wrapping a Service: {$label}"
+	);
+
+	hu_lint_assert(
+		'' !== trim( (string) ( $service['description'] ?? '' ) )
+			&& 1 === preg_match( '#^https://#', (string) ( $service['url'] ?? '' ) ),
+		"catalog Service carries a description and an absolute URL: {$label}"
+	);
+
+	hu_lint_assert(
+		home_url( '/#organization' ) === ( $service['provider']['@id'] ?? '' ),
+		"catalog Service names the Organization as provider: {$label}"
 	);
 }
 

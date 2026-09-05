@@ -941,43 +941,26 @@ function hu_output_schema()
         ],
         'knowsLanguage' => ['de', 'en', 'tr'],
         'areaServed' => hu_get_business_area_served(),
-        'hasOfferCatalog' => [
-            '@type'           => 'OfferCatalog',
-            'name'            => 'Anfragesysteme für Solar-, Wärmepumpen- und Speicher-Anbieter',
-            'itemListElement' => [
-                [
-                    '@type'       => 'Offer',
-                    'name'        => 'Marktcheck',
-                    'description' => 'Diagnostischer Einstieg: Anfragebremsen, Datenlage, Sichtbarkeit, Region und Conversion-Reihenfolge einordnen.',
-                    'url'         => function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
-                ],
-                [
-                    '@type'       => 'Offer',
-                    'name'        => 'Eigenes Anfragesystem für Solar- und Wärmepumpen-Anbieter',
-                    'description' => 'Aufbau eigener Anfragesysteme zur Ablösung von Portal-Leads: Website, Tracking, Vorqualifizierung und Kanal-Steuerung als verbundenes System.',
-                    'url'         => home_url('/solar-waermepumpen-leadgenerierung/'),
-                ],
-                [
-                    '@type'       => 'Offer',
-                    'name'        => 'WordPress Agentur Hannover',
-                    'description' => 'Sekundäre lokale B2B-Seite in Hannover: WordPress-System, technisches SEO, Tracking und Conversion als verbundenes Anfragesystem.',
-                    'url'         => home_url('/wordpress-agentur-hannover/'),
-                ],
-                [
-                    '@type'       => 'Offer',
-                    'name'        => 'Speed & Core Web Vitals',
-                    'description' => 'Performance-Arbeit mit Fokus auf LCP, INP, CLS, Server-Antwortzeiten und tragfähige Anfragesystem-Basis.',
-                    'url'         => home_url('/wgos-assets/cwv-optimierung/'),
-                ],
-                [
-                    '@type'       => 'Offer',
-                    'name'        => 'Conversion-Optimierung',
-                    'description' => 'Systematische Optimierung von Angebotsseiten und Nutzerpfaden für mehr qualifizierte Anfragen.',
-                    'url'         => home_url('/wordpress-agentur-hannover/#methode'),
-                ],
-            ],
-        ],
+        // Eine Quelle fuer den Katalog, wie bei knowsAbout. Hier stand bis
+        // 2026-09-05 ein zweiter, eigener OfferCatalog — Energy-benannt, mit
+        // Angeboten auf /wgos-assets/… und einer Beschreibung, die die eigene
+        // Money-Page als "Sekundaere lokale B2B-Seite" bezeichnete. Er hat nie
+        // eine Seite erreicht: hu_normalize_positioned_schema_node() ersetzt
+        // hasOfferCatalog beim Rendern vollstaendig. Genau die Drift, vor der
+        // die Kommentare an 'name', 'description' und knowsAbout weiter oben
+        // warnen — nur unbemerkt, weil fuer diesen Knoten die No-op-Pruefung
+        // fehlte. Sie steht jetzt in scripts/lint-entity-crawler-signals.php.
+        'hasOfferCatalog' => function_exists( 'hu_get_positioned_schema_offer_catalog' )
+            ? hu_get_positioned_schema_offer_catalog()
+            : null,
     ];
+
+    // Der Guard oben haelt den Knoten gueltig, falls die Positionierungsschicht
+    // einmal nicht geladen ist. Ein 'hasOfferCatalog' => null im JSON-LD waere
+    // eine Aussage ueber ein leeres Angebot; die Eigenschaft gehoert dann raus.
+    if ( null === $org['hasOfferCatalog'] ) {
+        unset( $org['hasOfferCatalog'] );
+    }
 
     // WebSite schema — root node of the knowledge graph.
     // Multiple schemas (blog/category CollectionPage, agentur WebPage,
