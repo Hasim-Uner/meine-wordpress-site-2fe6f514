@@ -207,9 +207,32 @@ hu_lint_assert(
 	'llms.txt lists routes at all'
 );
 
+// Links outside the route lists are advertised just as loudly. The intro
+// carries one to the imprint as the NAP source, and it was not covered here: a
+// wrong URL-map key rendered a dead /n/ silently, because every resolver falls
+// back to a hardcoded default instead of failing. Validate every markdown link;
+// the list-item set above stays separate for the count and duplicate rules,
+// which are about the route index itself, not about links in prose.
+preg_match_all( '/\[[^\]]+\]\(([^)]+)\)/', $llms_rendered, $all_link_matches );
+$llms_linked_paths = array_values( array_unique( $all_link_matches[1] ) );
+
+// The key the intro reads must exist in the map. This is the check that would
+// have caught the dead imprint link: a missing key is invisible at runtime.
+$primary_url_map = nexus_get_primary_public_url_map();
+
+hu_lint_assert(
+	isset( $primary_url_map['impressum'] ),
+	'primary URL map exposes the imprint route under the key llms.txt reads'
+);
+
+hu_lint_assert(
+	false !== mb_strpos( $llms_rendered, '](' . nexus_get_llms_txt_markdown_path( $primary_url_map['impressum'] ?? '' ) . ')' ),
+	'llms.txt intro links the imprint route the URL map resolves'
+);
+
 $retired = nexus_get_retired_gone_paths();
 
-foreach ( $llms_paths as $path ) {
+foreach ( $llms_linked_paths as $path ) {
 	hu_lint_assert(
 		'/' === substr( $path, 0, 1 ),
 		"llms.txt route is root-relative: {$path}"
@@ -286,7 +309,7 @@ hu_lint_assert(
 );
 
 // The route index must not advertise a path that redirects.
-foreach ( $llms_paths as $path ) {
+foreach ( $llms_linked_paths as $path ) {
 	$bare = strtok( strtok( $path, '?' ), '#' );
 	$bare = '/' === $bare ? '/' : rtrim( $bare, '/' ) . '/';
 
@@ -427,6 +450,129 @@ foreach ( $banned as $term ) {
 	hu_lint_assert(
 		false === mb_strpos( $graph, $term ),
 		"retired claim absent from the identity nodes: {$term}"
+	);
+}
+
+// --- areaServed -----------------------------------------------------------
+
+echo "\n########## areaServed ##########\n\n";
+
+// The local layer of the entity claim. It is asserted in JSON-LD only, so a
+// wrong value here is invisible on the page and still read by every knowledge
+// graph. These checks cover shape and internal consistency; the meaning of a
+// Q-ID can only be verified against Wikidata itself (see the docblock on
+// hu_get_business_area_served()).
+$area_served  = hu_get_business_area_served();
+$business_geo = hu_get_business_geo_coordinates();
+
+$geo_circles = array_values(
+	array_filter(
+		$area_served,
+		static function ( $area ) {
+			return 'GeoCircle' === ( $area['@type'] ?? '' );
+		}
+	)
+);
+
+hu_lint_assert(
+	1 === count( $geo_circles ),
+	'areaServed carries exactly one GeoCircle'
+);
+
+// A circle around a different point than the seat claims an on-site radius the
+// business does not have. One helper feeds both, so this can only fail if a
+// future edit hardcodes coordinates again.
+hu_lint_assert(
+	isset( $geo_circles[0] )
+		&& ( $geo_circles[0]['geoMidpoint']['latitude'] ?? null ) === $business_geo['latitude']
+		&& ( $geo_circles[0]['geoMidpoint']['longitude'] ?? null ) === $business_geo['longitude'],
+	'GeoCircle midpoint equals the business geo coordinates'
+);
+
+hu_lint_assert(
+	isset( $geo_circles[0]['geoRadius'] )
+		&& 1 === preg_match( '/^[0-9]+$/', (string) $geo_circles[0]['geoRadius'] ),
+	'GeoCircle carries a numeric geoRadius (meters)'
+);
+
+$wikidata_uris = [];
+
+foreach ( $area_served as $area ) {
+	$name    = (string) ( $area['name'] ?? '(unnamed)' );
+	$same_as = (array) ( $area['sameAs'] ?? [] );
+
+	if ( [] === $same_as ) {
+		continue;
+	}
+
+	$wikidata = array_values(
+		array_filter(
+			$same_as,
+			static function ( $url ) {
+				return 1 === preg_match( '#^https://www\.wikidata\.org/wiki/Q[0-9]+$#', (string) $url );
+			}
+		)
+	);
+
+	$wikipedia = array_values(
+		array_filter(
+			$same_as,
+			static function ( $url ) {
+				return 1 === preg_match( '#^https://de\.wikipedia\.org/wiki/#', (string) $url );
+			}
+		)
+	);
+
+	// Wikidata is what a graph resolves, Wikipedia is what a human can check.
+	// Dropping either one weakens a different reader.
+	hu_lint_assert(
+		1 === count( $wikidata ) && 1 === count( $wikipedia ),
+		"areaServed place carries one Wikidata URI and one Wikipedia article: {$name}"
+	);
+
+	$wikidata_uris = array_merge( $wikidata_uris, $wikidata );
+}
+
+hu_lint_assert(
+	count( $wikidata_uris ) > 0,
+	'areaServed carries Wikidata identifiers at all'
+);
+
+// The realistic mistake is a pasted Q-ID that belongs to another place. A
+// duplicate is the one form of that mistake a static check can see.
+hu_lint_assert(
+	count( $wikidata_uris ) === count( array_unique( $wikidata_uris ) ),
+	'no Wikidata identifier is claimed for two different places'
+);
+
+// Same rule as for Person.sameAs and the person hub: schema and visible content
+// must tell the same story. A city the graph claims as service area but that
+// appears nowhere on the local money page is an assertion nothing corroborates,
+// and the two lists drifted exactly that way before (Wolfsburg in the graph,
+// Celle in the copy). Only the named cities are checked — the administrative
+// areas and DACH are broader than any single sentence has to spell out.
+$agentur_template = (string) file_get_contents( __DIR__ . '/../blocksy-child/page-wordpress-agentur.php' );
+
+foreach ( $area_served as $area ) {
+	if ( 'City' !== ( $area['@type'] ?? '' ) ) {
+		continue;
+	}
+
+	$city = (string) ( $area['name'] ?? '' );
+
+	hu_lint_assert(
+		false !== mb_strpos( $agentur_template, $city ),
+		"areaServed city is named on the local money page: {$city}"
+	);
+}
+
+// The llms.txt intro is the first thing an AI agent reads; without the seat and
+// the region there, a local prompt cannot resolve the entity as locally
+// available no matter how complete the JSON-LD is.
+foreach ( [ 'Pattensen', 'Region Hannover', 'Niedersachsen' ] as $local_anchor ) {
+	hu_lint_assert(
+		false !== mb_strpos( $llms_rendered, $local_anchor ),
+		"llms.txt intro carries the local anchor: {$local_anchor}"
 	);
 }
 

@@ -1123,7 +1123,7 @@ get_header();
 			<p class="wp-agentur-eyebrow">Standort</p>
 			<h2 class="nx-headline-section">Aus Hannover für den DACH-Raum.</h2>
 			<p class="nx-subheadline wp-agentur-section-intro">
-				Der Sitz ist Pattensen bei Hannover. Persönliche Termine, Workshops und Reviews sind in Hannover und im weiteren Niedersachsen möglich — Hildesheim, Braunschweig und Celle sind an einem Tag machbar. Die Umsetzung funktioniert genauso sauber remote.
+				Der Sitz ist Pattensen bei Hannover. Persönliche Termine, Workshops und Reviews sind in Hannover und im weiteren Niedersachsen möglich — Hildesheim, Braunschweig, Wolfsburg und Celle sind an einem Tag machbar. Die Umsetzung funktioniert genauso sauber remote.
 			</p>
 		</div>
 

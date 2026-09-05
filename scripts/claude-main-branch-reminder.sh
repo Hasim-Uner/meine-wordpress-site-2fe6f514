@@ -46,10 +46,33 @@ if [ -n "$status_porcelain" ]; then
   notes+=("Es liegen uncommittete Aenderungen im Arbeitsverzeichnis.")
 fi
 
-[ "${#notes[@]}" -gt 0 ] || exit 0
+# Der Hinweis beschreibt einen Zustand, keinen Vorgang. Ohne Gedaechtnis meldet
+# er denselben unveraenderten Zustand nach jeder Antwort erneut und wird dadurch
+# zu Rauschen, das die eigentliche Aussage begraebt. Der Hook spricht deshalb
+# nur, wenn sich die Meldung seit dem letzten Mal geaendert hat — also bei einem
+# neuen Commit, geaenderten Arbeitsdateien oder einem Branch-Wechsel.
+#
+# Der Zustand liegt im .git-Verzeichnis: pro Clone, nie eingecheckt.
+state_file="$(git rev-parse --git-dir 2>/dev/null || true)/claude-main-branch-reminder.state"
+
+if [ "${#notes[@]}" -eq 0 ]; then
+  # Nichts mehr offen. Merken zuruecksetzen, damit derselbe Hinweis spaeter
+  # wieder durchkommt, statt als vermeintliche Wiederholung zu verstummen.
+  rm -f "$state_file" 2>/dev/null || true
+  exit 0
+fi
 
 msg="$(printf '%s ' "${notes[@]}")"
 msg="${msg% }"
+
+previous=""
+[ -f "$state_file" ] && previous="$(cat "$state_file" 2>/dev/null || true)"
+
+if [ "$msg" = "$previous" ]; then
+  exit 0
+fi
+
+printf '%s' "$msg" > "$state_file" 2>/dev/null || true
 
 json_escape() {
   local value="$1"
