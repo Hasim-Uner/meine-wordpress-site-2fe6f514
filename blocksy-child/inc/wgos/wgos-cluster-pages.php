@@ -25,6 +25,13 @@ function nexus_get_wgos_cluster_page_data() {
 	$seo_url     = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) );
 	$sst_money_url = home_url( '/server-side-tracking-b2b/' );
 
+	// Ergebniszahlen kommen ausschliesslich aus inc/canon/e3-proof-canon.php.
+	$e3_cpl_before  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
+	$e3_cpl_after   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
+	$e3_lead_count  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
+	$e3_case_url    = home_url( '/case-study-solar-leadgenerierung/' );
+	$response_hours = defined( 'HU_RESPONSE_HOURS' ) ? (int) HU_RESPONSE_HOURS : 24;
+
 	// Die Cluster wordpress-seo-hannover, core-web-vitals und conversion-rate-optimization
 	// sind in die Agentur-Page integriert; 301-Redirects sitzen in inc/helpers.php
 	// (nexus_redirect_legacy_offer_paths). Daten-Arrays wurden hier entfernt, damit
@@ -62,7 +69,7 @@ function nexus_get_wgos_cluster_page_data() {
 				'kicker' => 'Breiterer Einstieg',
 				'label'  => 'WordPress Agentur Hannover',
 				'url'    => $agentur_url,
-				'text'   => 'Wenn Tracking, Angebotsseiten und Conversion gemeinsam sauber werden muessen, ist die Agentur-Seite der klarere Startpunkt als ein isolierter Tracking-Fix.',
+				'text'   => 'Wenn Tracking, Angebotsseiten und Conversion gemeinsam sauber werden müssen, ist die Agentur-Seite der klarere Startpunkt als ein isolierter Tracking-Fix.',
 			],
 			'adjacent_link'    => [
 				'kicker' => 'Umsetzung nach dem Messkonzept',
@@ -99,25 +106,32 @@ function nexus_get_wgos_cluster_page_data() {
 			'schema_description' => 'GA4 Tracking Setup: Event-Logik, GTM, Consent Mode und Server Side Tracking für B2B-WordPress-Websites.',
 		],
 		'performance-marketing' => [
-			'eyebrow'          => 'Paid-Kontext im Anfragesystem',
+			'eyebrow'          => 'Google Ads und Meta Ads im Anfragesystem',
 			'title'            => 'Performance Marketing',
-			'lead'             => 'Paid darf Nachfrage verstärken, aber keine strukturellen Fehler verdecken. Ohne Fundament wird Budget nur schneller verbrannt.',
+			'lead'             => 'Kampagnen liefern Klicks, aber im Vertrieb kommen Anfragen an, mit denen niemand arbeiten kann. Das liegt selten am Kanal und meistens an der Messung und der Zielseite dahinter.',
 			'intro'            => [
-				'Viele Teams starten mit Kampagnen, bevor technische Basis, Tracking und Angebotsseite stabil stehen. Dann werden Klicks eingekauft, aber Reibung bleibt unangetastet.',
-				'Das Ergebnis sind teure Leads, unsaubere Attribution und Landing Pages, die den Traffic nicht in qualifizierte Gespräche übersetzen.',
-				'Performance Marketing ist deshalb kein Startpunkt, sondern ein Aktivierungslayer. Erst wenn Seite und Messbarkeit tragen, lohnt sich Reichweite wirklich.',
+				'Das Budget läuft, die Klickpreise steigen, und am Monatsende steht die Frage, welche Kampagne die zwei brauchbaren Anfragen gebracht hat. Beantworten kann sie niemand, weil im Konto jedes abgeschickte Formular gleich viel zählt.',
+				'Die Ursache sitzt fast nie in der Anzeige. Wenn Conversions doppelt gezählt werden, nach dem Consent-Banner wegbrechen oder Newsletter-Anmeldung und Projektanfrage dasselbe Signal auslösen, optimiert der Algorithmus auf ein Ziel, das es im Vertrieb nicht gibt. Er wird dabei zuverlässig besser — nur in die falsche Richtung.',
+				'Deshalb steht hier die Messung vor dem Budget. Wer die Reihenfolge umdreht, kauft Reichweite auf eine Seite ein, die nicht verkauft, und bezahlt diesen Fehler mit jedem einzelnen Klick.',
 			],
 			'system'           => [
-				'Performance Marketing sitzt nie isoliert vor Technik und Messbarkeit. Die bezahlte Verstärkung kommt erst dann nach vorne, wenn die wichtigen Signale und Seitentypen bereits stabil laufen.',
-				'Wir betrachten deshalb immer die Kombination aus Diagnose, Tracking, Angebot und Landing Page. Paid wird so zum Hebel für ein System, nicht zum Ersatz dafür.',
+				'Am Anfang steht keine Kampagne, sondern eine Bestandsaufnahme: Welche Conversion wird tatsächlich gemessen, welcher Teil davon ist eine echte Anfrage, und auf welcher Seite landet der bezahlte Klick?',
+				'Danach wird in dieser Reihenfolge gearbeitet: erst die Messung, dann die Zielseite, dann das Budget. Jeder Schritt ist einzeln beauftragbar — wenn nur die Signale klemmen, braucht es keine neue Landingpage.',
+				'Kampagnen betreue ich dort, wo sie an WordPress, Tracking und Conversion hängen. Mediaplanung für große Multi-Markt-Budgets oder Kreativproduktion für Bewegtbild gehören nicht dazu.',
 			],
 			'assets'           => [
-				'growth-audit'              => 'Klärt zuerst, ob wirklich Paid der Engpass ist oder ob Fundament und Angebot bremsen.',
-				'tracking-audit'            => 'Sichert, dass Kampagnendaten und Conversion-Signale überhaupt belastbar sind.',
-				'ga4-event-blueprint'       => 'Definiert, welche Events und KPI-Schritte für Kampagnensteuerung wirklich zählen.',
-				'technical-seo-audit'       => 'Verhindert, dass bezahlter Traffic auf technisch schwache Seiten trifft.',
-				'landing-page-neu'          => 'Baut die Seite, die Kampagnenversprechen sauber in eine Anfrage überführt.',
-				'landing-page-optimierung'  => 'Hebt bestehende Kampagnenseiten an den größten Conversion-Bremsen an.',
+				'growth-audit'              => 'Klärt zuerst, ob wirklich das Budget der Engpass ist oder Messung, Seite und Angebot davor.',
+				'tracking-audit'            => 'Prüft, welche Conversion-Signale doppelt zählen, fehlen oder am Consent scheitern.',
+				'ga4-event-blueprint'       => 'Trennt echte Anfragen von Nebenkontakten, damit die Gebotslogik auf das richtige Ziel lernt.',
+				'technical-seo-audit'       => 'Verhindert, dass bezahlter Traffic auf langsame oder technisch defekte Seiten trifft.',
+				'landing-page-neu'          => 'Baut die Zielseite, die das Anzeigenversprechen ohne Bruch in eine Anfrage überführt.',
+				'landing-page-optimierung'  => 'Nimmt bestehenden Kampagnenseiten die größten Abbruchgründe im Formular und im Einstieg.',
+			],
+			'cta'              => [
+				'route'        => 'project_request',
+				'label'        => 'Projekt anfragen',
+				'microcopy'    => sprintf( 'Kurze Beschreibung von Kampagne und Ziel genügt · Antwort innerhalb von %d Stunden', $response_hours ),
+				'closing_note' => 'Schreiben Sie kurz, welche Kanäle laufen, was eine Anfrage aktuell kostet und wo es hakt. Sie bekommen eine Einschätzung, welcher Schritt zuerst zählt — auch dann, wenn das gegen ein neues Kampagnen-Budget spricht.',
 			],
 			'blogs'            => [
 				[
@@ -133,18 +147,66 @@ function nexus_get_wgos_cluster_page_data() {
 				'kicker' => 'Breiterer Einstieg',
 				'label'  => 'WordPress Agentur Hannover',
 				'url'    => $agentur_url,
-				'text'   => 'Wenn Kampagnen nicht isoliert, sondern zusammen mit Angebotsseiten, Tracking und Conversion sauber aufgebaut werden sollen, ist die Agentur-Seite der sinnvollere Einstieg.',
+				'text'   => 'Wenn nicht nur die Kampagne ansteht, sondern Website, Tracking und Conversion zusammen aufgebaut werden sollen, ist die Agentur-Seite der passendere Einstieg.',
 			],
+			// Label folgt der tatsaechlichen Zieladresse: $seo_url zeigt auf den
+			// Technisches-SEO-Abschnitt der Agentur-Seite. Der frueher hier
+			// stehende Name "WordPress SEO Hannover" gehoert zu einem Slug, der
+			// laut nexus_get_retired_gone_paths() 410 liefert.
 			'adjacent_link'    => [
 				'kicker' => 'Angrenzendes Thema',
-				'label'  => 'WordPress SEO Hannover',
+				'label'  => 'Technisches SEO',
 				'url'    => $seo_url,
-				'text'   => 'Wenn Paid auf technisch schwache oder schlecht verlinkte Seitentypen trifft, fuehrt die SEO-Seite direkt in den relevanten Fundament-Cluster.',
+				'text'   => 'Wenn bezahlter Traffic auf langsame oder schlecht verlinkte Seiten trifft, verbrennt das Budget an der Technik statt an der Anzeige. Der SEO-Abschnitt zeigt, was dort zuerst geprüft wird.',
 			],
-			'meta_title'       => 'Performance Marketing für B2B | Haşim Üner',
-			'meta_description' => 'Performance Marketing als Aktivierungslayer: erst Tracking, Technik und Landing Page, dann Reichweite mit sauberer Priorisierung.',
+			'proof_metrics'    => [
+				[
+					'value' => $e3_cpl_before . ' → ' . $e3_cpl_after,
+					'label' => 'Kosten pro Anfrage im Solar-Projekt, sechs Monate',
+				],
+				[
+					'value' => $e3_lead_count,
+					'label' => 'qualifizierte Anfragen über das eigene System',
+				],
+				[
+					'value' => sprintf( 'Antwort in %d h', $response_hours ),
+					'label' => 'Einschätzung zur Ausgangslage, auch wenn sie gegen ein Budget spricht',
+				],
+			],
+			'proof_note'       => sprintf(
+				'Die belastbaren Zahlen kommen aus einem Solar-Projekt: Kosten pro Anfrage von %s auf %s, %s qualifizierte Anfragen. Der Hebel lag dort nicht in der Kampagne, sondern in Messung und Anfragestrecke davor. Ob sich das übertragen lässt, hängt an Marktgröße, Angebot und Wettbewerb — die Case Study legt die Herleitung offen, statt die Zahl allein zu zeigen.',
+				$e3_cpl_before,
+				$e3_cpl_after,
+				$e3_lead_count
+			),
+			'proof_links'      => [
+				[
+					'label' => 'Case Study ansehen',
+					'url'   => $e3_case_url,
+				],
+			],
+			'faq_items'        => [
+				[
+					'question' => 'Übernehmen Sie auch nur die Kampagnen, ohne alles andere anzufassen?',
+					'answer'   => 'Ja, wenn Messung und Zielseite bereits tragen. Wenn nicht, sage ich das vorher. Kampagnenbetreuung auf einem Setup, das falsche Conversions meldet, kostet Budget und liefert Daten, aus denen sich nichts ableiten lässt.',
+				],
+				[
+					'question' => 'Warum zuerst das Tracking und nicht sofort mehr Budget?',
+					'answer'   => 'Weil Google Ads und Meta auf das optimieren, was gemeldet wird. Zählt jedes Formular gleich, lernt das System, billige Kontakte einzukaufen statt teure Projektanfragen. Mehr Budget verstärkt diesen Fehler, es korrigiert ihn nicht.',
+				],
+				[
+					'question' => 'Welche Kanäle betreuen Sie — und welche nicht?',
+					'answer'   => 'Google Ads und Meta Ads im B2B-Kontext, dort wo sie an WordPress, Tracking und Conversion hängen. Nicht dabei: Mediaplanung für große Multi-Markt-Budgets, Kreativproduktion für Bewegtbild und Marktplatz-Werbung.',
+				],
+				[
+					'question' => 'Was kostet das?',
+					'answer'   => 'Scope und Preis stehen vor dem Start fest, ein Paketpreis ohne geklärten Umfang nicht. Wie groß der erste Schritt ist, hängt davon ab, ob nur die Messung nachgezogen wird oder auch die Zielseite. Beschreiben Sie kurz die Ausgangslage, dann kommt eine konkrete Einschätzung zurück.',
+				],
+			],
+			'meta_title'       => 'Performance Marketing B2B: Google Ads & Meta | Haşim Üner',
+			'meta_description' => 'Google Ads und Meta Ads für B2B: erst saubere Conversion-Messung, dann Zielseite, dann Budget. Damit Kampagnen auf echte Anfragen optimieren statt auf Formular-Klicks.',
 			'schema_name'      => 'Performance Marketing für B2B-WordPress-Websites',
-			'schema_description' => 'Performance Marketing: Paid-Aktivierung erst nach technischem Fundament, Tracking und conversion-starken Zielseiten.',
+			'schema_description' => 'Google Ads und Meta Ads für B2B: Conversion-Messung, Zielseite und Budget in dieser Reihenfolge, damit Kampagnen auf qualifizierte Anfragen optimieren.',
 		],
 	];
 
@@ -280,7 +342,7 @@ function nexus_get_wgos_cluster_page_proof_metrics() {
 		],
 		[
 			'value' => '3 Proof-Routen',
-			'label' => 'Case Study, DOMDAR und Ergebnisse sind oeffentlich einsehbar',
+			'label' => 'Case Study, DOMDAR und Ergebnisse sind öffentlich einsehbar',
 		],
 	];
 }
@@ -321,12 +383,42 @@ function nexus_render_wgos_cluster_page( $page ) {
 	$cards         = nexus_get_wgos_cluster_page_asset_cards( $page );
 	$blogs         = isset( $page['blogs'] ) && is_array( $page['blogs'] ) ? $page['blogs'] : [];
 	$faq_items     = isset( $page['faq_items'] ) && is_array( $page['faq_items'] ) ? $page['faq_items'] : [];
-	$proof_metrics = nexus_get_wgos_cluster_page_proof_metrics();
+	// Das gemeinsame Proof-Band nennt den Marktcheck. Seiten, die per 'cta' auf
+	// den Projektweg laufen, wuerden sonst im Band einen Einstieg bewerben, den
+	// ihr eigener CTA nicht mehr anbietet; sie setzen deshalb 'proof_metrics'.
+	$proof_metrics = isset( $page['proof_metrics'] ) && is_array( $page['proof_metrics'] )
+		? $page['proof_metrics']
+		: nexus_get_wgos_cluster_page_proof_metrics();
 	$method_steps  = nexus_get_wgos_cluster_page_method_steps();
 	$proof_note    = isset( $page['proof_note'] ) ? (string) $page['proof_note'] : '';
 	$proof_links   = isset( $page['proof_links'] ) && is_array( $page['proof_links'] ) ? $page['proof_links'] : [];
 	$audit_cta_label         = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
 	$audit_compact_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : 'Händische Analyse · Befund innerhalb von 48 Stunden · priorisierte Hebel';
+	$closing_note            = 'Der Marktcheck zeigt, ob dieses Cluster jetzt dran ist oder ob Fundament, Messbarkeit oder Angebotslogik zuerst korrigiert werden müssen.';
+
+	// Der Marktcheck gehoert laut docs/architecture/CONVERSION_ROUTING.md #1 in den
+	// Energie-Pfad; BRAND_AND_COPY.md fuehrt "Marktcheck als globaler CTA auf
+	// fachfremden WordPress-/Tracking-/CRO-Seiten" als Hard Ban. Cluster-Seiten
+	// ausserhalb des Energie-Intents setzen deshalb 'cta' und bekommen den
+	// generischen Projektweg. Ohne 'cta' bleibt alles wie bisher, damit die
+	// Energie-Geschwister unveraendert ausliefern.
+	$cta = isset( $page['cta'] ) && is_array( $page['cta'] ) ? $page['cta'] : [];
+
+	if ( isset( $cta['route'] ) && function_exists( 'hu_get_commercial_route' ) ) {
+		$audit_url = hu_get_commercial_route( (string) $cta['route'], $audit_url );
+	}
+
+	if ( isset( $cta['label'] ) && '' !== (string) $cta['label'] ) {
+		$audit_cta_label = (string) $cta['label'];
+	}
+
+	if ( isset( $cta['microcopy'] ) && '' !== (string) $cta['microcopy'] ) {
+		$audit_compact_microcopy = (string) $cta['microcopy'];
+	}
+
+	if ( isset( $cta['closing_note'] ) && '' !== (string) $cta['closing_note'] ) {
+		$closing_note = (string) $cta['closing_note'];
+	}
 
 	ob_start();
 	?>
@@ -527,7 +619,7 @@ function nexus_render_wgos_cluster_page( $page ) {
 				<div class="nx-card nx-card--flat nx-cluster-cta">
 					<span class="nx-cluster-cta__kicker">Nächster Schritt</span>
 					<h2 class="nx-headline-section">Erst die Lage klären. Dann den richtigen Baustein priorisieren.</h2>
-					<p>Der Marktcheck zeigt, ob dieses Cluster jetzt dran ist oder ob Fundament, Messbarkeit oder Angebotslogik zuerst korrigiert werden müssen.</p>
+					<p><?php echo esc_html( $closing_note ); ?></p>
 					<div class="nx-cluster-hero__actions">
 						<a href="<?php echo esc_url( $audit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_cluster_footer_audit" data-track-category="lead_gen"><?php echo esc_html( $audit_cta_label ); ?></a>
 						<a href="<?php echo esc_url( $results_url ); ?>" class="nx-btn nx-btn--ghost">Ergebnisse ansehen</a>
@@ -800,7 +892,7 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 		'supporting_link' => [
 			'label' => 'WordPress SEO Hannover',
 			'url'   => $seo_url,
-			'text'  => 'Wenn Sie fuer dieses Thema einen kaufnahen Einstieg suchen, ist die SEO-Seite der direkte Anschluss zwischen technischer Basis, Sichtbarkeit und Anfragepfad.',
+			'text'  => 'Wenn Sie für dieses Thema einen kaufnahen Einstieg suchen, ist die SEO-Seite der direkte Anschluss zwischen technischer Basis, Sichtbarkeit und Anfragepfad.',
 		],
 	];
 
