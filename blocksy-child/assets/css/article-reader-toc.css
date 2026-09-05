@@ -1,7 +1,7 @@
 /* =============================================================
    Article Reader TOC V1
-   Desktop: quiet right-side section rail that expands on hover/focus.
-   Tablet/mobile: compact disclosure above the article.
+   Desktop/laptop: quiet right-side section rail that expands on hover/focus.
+   Smaller viewports: compact disclosure above the article.
    ============================================================= */
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar.nexus-reader-toc {
@@ -25,11 +25,11 @@
     display: none;
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1100px) {
     .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar.nexus-reader-toc {
         position: fixed !important;
         top: 50%;
-        right: max(24px, calc((100vw - 1360px) / 2));
+        right: clamp(14px, 2.2vw, 28px);
         width: auto !important;
         margin: 0 !important;
         transform: translateY(-50%);
@@ -172,7 +172,7 @@
     }
 }
 
-@media (max-width: 1399px) {
+@media (max-width: 1099px) {
     .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar.nexus-reader-toc {
         position: static !important;
         inset: auto !important;
