@@ -1,6 +1,6 @@
 <?php
 /**
- * Minimal reader header for the first Article System V1 pilot posts.
+ * Minimal reader header for Article System posts.
  *
  * Keeps article reading separate from the commercial site navigation: one
  * brand link, one route back to the Werkstatt and one dossier link. No CTA,
@@ -24,12 +24,64 @@ $slug         = sanitize_title( (string) $args['slug'] );
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $home_url     = $primary_urls['home'] ?? home_url( '/' );
 $blog_url     = $primary_urls['blog'] ?? home_url( '/blog/' );
-$dossier_url  = function_exists( 'nexus_get_category_url' )
-	? nexus_get_category_url( 'leadgenerierung', $blog_url )
-	: $blog_url;
 $brand_text   = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
 $author_name  = get_the_author();
 $reading_time = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time() : 0;
+
+// Prefer the canonical Werkstatt taxonomy. Some articles intentionally live in
+// more than one dossier; the order below chooses the most specific reading
+// context instead of relying on WordPress' category ordering.
+$dossier_priority = [
+	'wordpress-performance',
+	'tracking',
+	'cro',
+	'leadgenerierung',
+];
+$dossier_labels = [
+	'leadgenerierung'       => 'Eigene Anfragen & Leadökonomie',
+	'wordpress-performance' => 'WordPress & Performance',
+	'tracking'              => 'Tracking & Messbarkeit',
+	'cro'                   => 'Conversion & Anfragearchitektur',
+];
+
+if ( function_exists( 'hu_get_positioned_blog_dossier_taxonomy' ) ) {
+	$canonical_dossiers = hu_get_positioned_blog_dossier_taxonomy();
+	foreach ( $canonical_dossiers as $dossier_key => $dossier_data ) {
+		if ( ! empty( $dossier_data['name'] ) ) {
+			$dossier_labels[ (string) $dossier_key ] = (string) $dossier_data['name'];
+		}
+	}
+}
+
+$post_categories = get_the_category();
+$post_cat_slugs  = ! empty( $post_categories ) && ! is_wp_error( $post_categories )
+	? array_map( 'strval', wp_list_pluck( $post_categories, 'slug' ) )
+	: [];
+$dossier_slug = '';
+
+foreach ( $dossier_priority as $candidate_slug ) {
+	if ( in_array( $candidate_slug, $post_cat_slugs, true ) ) {
+		$dossier_slug = $candidate_slug;
+		break;
+	}
+}
+
+// Stable route fallbacks keep the header correct even before a taxonomy
+// migration has run on a freshly deployed environment.
+if ( '' === $dossier_slug ) {
+	$slug_dossier_fallbacks = [
+		'aroundhome-solar-einordnung'            => 'leadgenerierung',
+		'checkfox-solar-waermepumpe-einordnung'  => 'leadgenerierung',
+		'wattfox-solar-leads-einordnung'          => 'leadgenerierung',
+		'wordpress-ttfb-google-ads-ladezeit'      => 'wordpress-performance',
+	];
+	$dossier_slug = $slug_dossier_fallbacks[ $slug ] ?? 'leadgenerierung';
+}
+
+$dossier_label = $dossier_labels[ $dossier_slug ] ?? 'Werkstatt';
+$dossier_url   = function_exists( 'nexus_get_category_url' )
+	? nexus_get_category_url( $dossier_slug, $blog_url )
+	: $blog_url;
 
 $updated_label = get_the_modified_date( 'd. F Y' );
 $template_map  = [
@@ -51,7 +103,13 @@ $home_label = sprintf(
 );
 ?>
 
-<header class="nexus-article-reader-header" role="banner" data-article-system-v1>
+<header
+	class="nexus-article-reader-header"
+	role="banner"
+	data-article-system-v1
+	data-article-system="v2"
+	data-reader-dossier="<?php echo esc_attr( $dossier_slug ); ?>"
+>
 	<div class="nx-container nexus-article-reader-header__inner">
 		<a
 			class="nexus-article-reader-header__brand site-logo"
@@ -65,7 +123,7 @@ $home_label = sprintf(
 		<nav class="nexus-article-reader-header__trail" aria-label="<?php esc_attr_e( 'Artikelpfad', 'blocksy-child' ); ?>">
 			<a href="<?php echo esc_url( $blog_url ); ?>" data-track-action="article_reader_back_blog" data-track-category="navigation" data-track-section="article_reader_header">Werkstatt</a>
 			<span aria-hidden="true">/</span>
-			<a href="<?php echo esc_url( $dossier_url ); ?>" data-track-action="article_reader_open_dossier" data-track-category="navigation" data-track-section="article_reader_header">Eigene Anfragen &amp; Leadökonomie</a>
+			<a href="<?php echo esc_url( $dossier_url ); ?>" data-track-action="article_reader_open_dossier" data-track-category="navigation" data-track-section="article_reader_header"><?php echo esc_html( $dossier_label ); ?></a>
 		</nav>
 
 		<div class="nexus-article-reader-header__meta" aria-label="<?php esc_attr_e( 'Artikelmetadaten', 'blocksy-child' ); ?>">
@@ -79,3 +137,11 @@ $home_label = sprintf(
 		</div>
 	</div>
 </header>
+
+<?php if ( 'leadgenerierung' !== $dossier_slug ) : ?>
+	<style id="nexus-article-reader-dossier-label">
+		.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial::before {
+			content: <?php echo wp_json_encode( $dossier_label ); ?>;
+		}
+	</style>
+<?php endif; ?>
