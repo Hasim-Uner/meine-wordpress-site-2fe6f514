@@ -114,7 +114,16 @@ $home_label = sprintf(
 	__( 'Startseite - %s', 'blocksy-child' ),
 	$brand_text
 );
+
+// The reader partial is rendered after wp_head(), so its small, route-specific
+// presentation layer is emitted inline here instead of being enqueued too late.
+$reader_body_css_path = get_stylesheet_directory() . '/assets/css/article-reader-body.css';
+$reader_body_css      = is_readable( $reader_body_css_path ) ? file_get_contents( $reader_body_css_path ) : '';
 ?>
+
+<?php if ( is_string( $reader_body_css ) && '' !== $reader_body_css ) : ?>
+	<style id="nexus-article-reader-body-css"><?php echo $reader_body_css; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted local theme CSS. ?></style>
+<?php endif; ?>
 
 <header
 	class="nexus-article-reader-header"
