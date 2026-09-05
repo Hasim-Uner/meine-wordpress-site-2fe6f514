@@ -13,17 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Reader-only share hardening. This is enqueued here because this partial is
-// the authoritative gate for Article System posts; footer scripts can still
-// be queued safely before wp_footer runs.
-if ( function_exists( 'hu_enqueue_js' ) ) {
-	hu_enqueue_js(
-		'nexus-article-reader-share-js',
-		'article-reader-share.js',
-		[ 'nexus-single-editorial-js' ]
-	);
-}
-
 $args = wp_parse_args(
 	$args ?? [],
 	[
@@ -119,6 +108,9 @@ $home_label = sprintf(
 // presentation layer is emitted inline here instead of being enqueued too late.
 $reader_body_css_path = get_stylesheet_directory() . '/assets/css/article-reader-body.css';
 $reader_body_css      = is_readable( $reader_body_css_path ) ? file_get_contents( $reader_body_css_path ) : '';
+$reader_share_js_url  = get_stylesheet_directory_uri() . '/assets/js/article-reader-share.js';
+$reader_share_js_path = get_stylesheet_directory() . '/assets/js/article-reader-share.js';
+$reader_share_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $reader_share_js_path ) : wp_get_theme()->get( 'Version' );
 ?>
 
 <?php if ( is_string( $reader_body_css ) && '' !== $reader_body_css ) : ?>
@@ -159,6 +151,8 @@ $reader_body_css      = is_readable( $reader_body_css_path ) ? file_get_contents
 		</div>
 	</div>
 </header>
+
+<script id="nexus-article-reader-share-loader" src="<?php echo esc_url( add_query_arg( 'ver', rawurlencode( (string) $reader_share_version ), $reader_share_js_url ) ); ?>"></script>
 
 <?php if ( 'leadgenerierung' !== $dossier_slug ) : ?>
 	<style id="nexus-article-reader-dossier-label">
