@@ -752,3 +752,62 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 		animation-iteration-count: 1 !important;
 	}
 }
+
+/* ── FAQ disclosure ─────────────────────────────────────── */
+
+/*
+ * Uebernimmt bewusst die Optik des Vertragschecks: gleiche Flaeche, gleiche
+ * Plus/Minus-Marke. Zwei Aufklapp-Muster auf einer Seite, die verschieden
+ * aussehen, lesen sich wie zwei Bausteine aus verschiedenen Seiten.
+ */
+.hu-checkfox__faq {
+	display: grid;
+	gap: 10px;
+}
+
+.hu-checkfox__faq > details {
+	border: 1px solid var(--checkfox-line);
+	border-radius: 14px;
+	background: var(--checkfox-surface);
+}
+
+.hu-checkfox__faq > details > summary {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 52px;
+	padding: 12px 18px;
+	color: var(--checkfox-text);
+	font-weight: 700;
+	cursor: pointer;
+	list-style: none;
+}
+
+.hu-checkfox__faq > details > summary::-webkit-details-marker {
+	display: none;
+}
+
+.hu-checkfox__faq > details > summary::before {
+	content: '+';
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	flex: 0 0 auto;
+	border: 1px solid var(--checkfox-copper);
+	border-radius: 6px;
+	color: var(--checkfox-copper-light);
+	font-size: 1rem;
+	line-height: 1;
+}
+
+.hu-checkfox__faq > details[open] > summary::before {
+	content: '−';
+}
+
+.hu-checkfox__faq > details > p {
+	margin: 0;
+	padding: 0 18px 18px;
+	color: var(--checkfox-muted);
+}

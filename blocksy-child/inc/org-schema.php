@@ -1568,6 +1568,35 @@ function hu_output_schema()
             }
         }
 
+        if ( 'checkfox-solar-waermepumpe-einordnung' === $slug && function_exists( 'nexus_get_checkfox_faq_items' ) ) {
+            $checkfox_url          = home_url( '/checkfox-solar-waermepumpe-einordnung/' );
+            $checkfox_faq_entities = array_map(
+                static function ( $item ) {
+                    return [
+                        '@type'          => 'Question',
+                        'name'           => (string) $item['question'],
+                        'acceptedAnswer' => [
+                            '@type' => 'Answer',
+                            'text'  => (string) $item['answer'],
+                        ],
+                    ];
+                },
+                nexus_get_checkfox_faq_items()
+            );
+
+            if ( ! empty( $checkfox_faq_entities ) ) {
+                $schemas[] = [
+                    '@context'   => 'https://schema.org',
+                    '@type'      => 'FAQPage',
+                    '@id'        => $checkfox_url . '#faq',
+                    'url'        => $checkfox_url,
+                    'inLanguage' => 'de',
+                    'publisher'  => [ '@id' => home_url( '/#organization' ) ],
+                    'mainEntity' => $checkfox_faq_entities,
+                ];
+            }
+        }
+
         /**
          * FAQ schema from save-time cache.
          *
