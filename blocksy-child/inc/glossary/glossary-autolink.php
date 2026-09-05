@@ -33,6 +33,25 @@ function nexus_get_solar_pillar_autolink_mappings() {
 }
 
 /**
+ * Return contextual alias terms that need glossary-style explanation but whose
+ * click target is an existing query owner rather than a separate glossary URL.
+ *
+ * @return array<string, array<string, string>> Exact phrase => config.
+ */
+function nexus_get_contextual_glossary_aliases() {
+	/**
+	 * Filter contextual glossary aliases.
+	 *
+	 * Expected config keys: url, tooltip, title (optional), class (optional),
+	 * linked_key (optional). The first occurrence per post is linked and gets the
+	 * same accessible popover treatment as registry terms.
+	 *
+	 * @param array<string, array<string, string>> $aliases Alias configs.
+	 */
+	return apply_filters( 'nexus_contextual_glossary_aliases', [] );
+}
+
+/**
  * Auto-link glossary terms in blog post content.
  *
  * @param string $content Post content.
@@ -102,6 +121,25 @@ function nexus_glossary_autolink( $content ) {
 				'linked_key' => 'glossary:' . ( '' !== $slug ? $slug : mb_strtolower( $title ) ),
 			];
 		}
+	}
+
+	foreach ( nexus_get_contextual_glossary_aliases() as $phrase => $config ) {
+		$phrase = trim( (string) $phrase );
+		$config = is_array( $config ) ? $config : [];
+		$url    = trim( (string) ( $config['url'] ?? '' ) );
+		$tip    = trim( wp_strip_all_tags( (string) ( $config['tooltip'] ?? '' ) ) );
+
+		if ( '' === $phrase || '' === $url || '' === $tip || mb_strlen( $phrase ) < 3 || isset( $terms[ $phrase ] ) ) {
+			continue;
+		}
+
+		$terms[ $phrase ] = [
+			'url'        => $url,
+			'title'      => trim( (string) ( $config['title'] ?? sprintf( 'Glossar: %s', $phrase ) ) ),
+			'tooltip'    => $tip,
+			'class'      => trim( (string) ( $config['class'] ?? 'glossary-autolink glossary-autolink--alias' ) ),
+			'linked_key' => trim( (string) ( $config['linked_key'] ?? 'glossary_alias:' . sanitize_title( $phrase ) ) ),
+		];
 	}
 
 	foreach ( nexus_get_solar_pillar_autolink_mappings() as $phrase => $url ) {
@@ -175,8 +213,6 @@ function nexus_glossary_autolink( $content ) {
 				$linked[ $key ] = true;
 				$link_count++;
 
-				// Registry glossary terms get a real definition popover. Explicit
-				// pillar mappings remain normal links because they have no definition.
 				if ( '' !== $tooltip ) {
 					$tooltip_id = 'glossary-tip-' . sanitize_html_class( str_replace( ':', '-', $key ) );
 
