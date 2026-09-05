@@ -12,15 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Article System V2: keep the three provider pilots and add the first
-// non-Energy article. This validates the reader shell across the broader
-// WordPress · Tracking · Conversion positioning without changing all posts at
-// once.
+// Article System V2: keep the provider pilots and expand the reader shell one
+// dossier at a time. WordPress & Performance and Tracking & Messbarkeit now
+// each have a non-Energy article in the shared reading system.
 $article_system_reader_slugs = [
 	'aroundhome-solar-einordnung',
 	'checkfox-solar-waermepumpe-einordnung',
 	'wattfox-solar-leads-einordnung',
 	'wordpress-ttfb-google-ads-ladezeit',
+	'server-side-tracking-gtm',
 ];
 
 if ( is_singular( 'post' ) ) {
