@@ -283,7 +283,7 @@ function nexus_get_llms_txt_content() {
 		'> WordPress, Tracking und Conversion als zusammenhängendes System — aus Pattensen bei Hannover (Region Hannover, Niedersachsen) für Kunden vor Ort und im DACH-Raum. Direkte Projekte laufen über den WordPress-Freelancer-/Projektpfad, Agenturen über White-Label. Solar, Wärmepumpe und Speicher bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.',
 		'',
 		sprintf(
-			'Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Workshops und Reviews sind in der Region Hannover, Hildesheim, Braunschweig und Celle möglich; die laufende Umsetzung erfolgt remote im DACH-Raum. Vollständige Anschrift und Kontaktdaten: [Impressum](%s).',
+			'Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Workshops und Reviews sind in der Region Hannover, Hildesheim, Braunschweig, Wolfsburg und Celle möglich; die laufende Umsetzung erfolgt remote im DACH-Raum. Vollständige Anschrift und Kontaktdaten: [Impressum](%s).',
 			$imprint_path
 		),
 	];

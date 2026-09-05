@@ -853,6 +853,14 @@ function hu_get_business_area_served() {
             ],
         ],
         [
+            '@type'  => 'City',
+            'name'   => 'Celle',
+            'sameAs' => [
+                'https://www.wikidata.org/wiki/Q3933',
+                'https://de.wikipedia.org/wiki/Celle',
+            ],
+        ],
+        [
             '@type'  => 'AdministrativeArea',
             'name'   => 'Region Hannover',
             'sameAs' => [

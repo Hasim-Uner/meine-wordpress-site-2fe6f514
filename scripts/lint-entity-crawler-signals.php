@@ -522,6 +522,27 @@ hu_lint_assert(
 	'no Wikidata identifier is claimed for two different places'
 );
 
+// Same rule as for Person.sameAs and the person hub: schema and visible content
+// must tell the same story. A city the graph claims as service area but that
+// appears nowhere on the local money page is an assertion nothing corroborates,
+// and the two lists drifted exactly that way before (Wolfsburg in the graph,
+// Celle in the copy). Only the named cities are checked — the administrative
+// areas and DACH are broader than any single sentence has to spell out.
+$agentur_template = (string) file_get_contents( __DIR__ . '/../blocksy-child/page-wordpress-agentur.php' );
+
+foreach ( $area_served as $area ) {
+	if ( 'City' !== ( $area['@type'] ?? '' ) ) {
+		continue;
+	}
+
+	$city = (string) ( $area['name'] ?? '' );
+
+	hu_lint_assert(
+		false !== mb_strpos( $agentur_template, $city ),
+		"areaServed city is named on the local money page: {$city}"
+	);
+}
+
 // The llms.txt intro is the first thing an AI agent reads; without the seat and
 // the region there, a local prompt cannot resolve the entity as locally
 // available no matter how complete the JSON-LD is.
