@@ -70,10 +70,10 @@ foreach ( $dossier_priority as $candidate_slug ) {
 // migration has run on a freshly deployed environment.
 if ( '' === $dossier_slug ) {
 	$slug_dossier_fallbacks = [
-		'aroundhome-solar-einordnung'            => 'leadgenerierung',
-		'checkfox-solar-waermepumpe-einordnung'  => 'leadgenerierung',
-		'wattfox-solar-leads-einordnung'          => 'leadgenerierung',
-		'wordpress-ttfb-google-ads-ladezeit'      => 'wordpress-performance',
+		'aroundhome-solar-einordnung'           => 'leadgenerierung',
+		'checkfox-solar-waermepumpe-einordnung' => 'leadgenerierung',
+		'wattfox-solar-leads-einordnung'         => 'leadgenerierung',
+		'wordpress-ttfb-google-ads-ladezeit'     => 'wordpress-performance',
 	];
 	$dossier_slug = $slug_dossier_fallbacks[ $slug ] ?? 'leadgenerierung';
 }
@@ -142,6 +142,15 @@ $home_label = sprintf(
 	<style id="nexus-article-reader-dossier-label">
 		.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial::before {
 			content: <?php echo wp_json_encode( $dossier_label ); ?>;
+		}
+
+		/* The generic single template still carries an Energy-first author CTA
+		   and next-step fallback. Until that global contract is refactored, keep
+		   those surfaces out of non-Energy reader posts instead of showing a
+		   Solar Marktcheck below a WordPress, Tracking or CRO article. */
+		.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio,
+		.nexus-article-reader-header ~ .nexus-single-container .nexus-article-next {
+			display: none !important;
 		}
 	</style>
 <?php endif; ?>
