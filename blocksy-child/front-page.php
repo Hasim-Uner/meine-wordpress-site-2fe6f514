@@ -173,7 +173,7 @@ get_header();
 				<div class="hu-hero__eyebrow">
 					<span class="hu-tag">
 						<span class="hu-dot hu-dot--live"></span>
-						<span class="hu-mono">WORDPRESS · TECHNISCHES SEO · TRACKING · CONVERSION</span>
+						<span class="hu-mono">WORDPRESS · SEO · TRACKING · CONVERSION</span>
 					</span>
 				</div>
 

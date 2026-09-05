@@ -23,10 +23,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Global homepage title: fachliche Klammer, not a duplicate local Freelancer
  * or Solar money-page query.
  *
+ * The hero eyebrow shortens the visible label to "SEO" so the fachliche Klammer
+ * stays on one line. The full term therefore carries its search weight here and
+ * in the description below; no money page owns "technisches seo" in
+ * docs/seo/query-ownership.csv, so this does not cannibalize a specialist route.
+ *
  * @return string
  */
 function hu_positioned_homepage_seo_title() : string {
-	return 'WordPress, Tracking & Conversion | Haşim Üner';
+	return 'WordPress, technisches SEO & Tracking | Haşim Üner';
 }
 add_filter( 'hu_homepage_seo_title', 'hu_positioned_homepage_seo_title', 20 );
 
