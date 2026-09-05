@@ -4,6 +4,7 @@
  *
  * Nur erster Treffer pro Begriff pro Post wird verlinkt.
  * Keine Verlinkung innerhalb von Headings, Links, Buttons oder Code-Blöcken.
+ * Glossar-Links erhalten eine kurze Definition als zugänglichen Hover-/Fokus-Popover.
  *
  * @package Blocksy_Child
  */
@@ -133,10 +134,10 @@ function nexus_glossary_autolink( $content ) {
 	} );
 
 	// Verlinke max. 1x pro Begriff, max. 8 Glossar-Links pro Post.
-	$linked       = [];
-	$link_count   = 0;
-	$max_links    = 8;
-	$current_url  = get_permalink();
+	$linked      = [];
+	$link_count  = 0;
+	$max_links   = 8;
+	$current_url = get_permalink();
 
 	foreach ( $terms as $title => $config ) {
 		if ( $link_count >= $max_links ) {
@@ -161,13 +162,11 @@ function nexus_glossary_autolink( $content ) {
 		// Callback für sicheres Ersetzen: nur außerhalb von geschützten Tags.
 		$content = preg_replace_callback(
 			'/(?<![<\/\w])(\b' . $escaped_title . '\b)(?![^<]*<\/(a|h[1-6]|code|pre|button|summary)>)/iu',
-				static function ( $matches ) use ( $url, $config, &$linked, &$link_count ) {
+			static function ( $matches ) use ( $url, $config, &$linked, &$link_count ) {
 				$matched_text = $matches[1];
 				$key          = (string) $config['linked_key'];
 				$class        = (string) $config['class'];
-				$tooltip      = isset( $config['tooltip'] ) && '' !== (string) $config['tooltip']
-					? (string) $config['tooltip']
-					: (string) $config['title'];
+				$tooltip      = isset( $config['tooltip'] ) ? trim( (string) $config['tooltip'] ) : '';
 
 				if ( isset( $linked[ $key ] ) ) {
 					return $matched_text;
@@ -176,11 +175,26 @@ function nexus_glossary_autolink( $content ) {
 				$linked[ $key ] = true;
 				$link_count++;
 
+				// Registry glossary terms get a real definition popover. Explicit
+				// pillar mappings remain normal links because they have no definition.
+				if ( '' !== $tooltip ) {
+					$tooltip_id = 'glossary-tip-' . sanitize_html_class( str_replace( ':', '-', $key ) );
+
+					return sprintf(
+						'<span class="glossary-autolink-wrap"><a href="%1$s" class="%2$s" aria-describedby="%3$s">%4$s</a><span id="%3$s" class="glossary-autolink__popover" role="tooltip">%5$s</span></span>',
+						esc_url( $url ),
+						esc_attr( $class ),
+						esc_attr( $tooltip_id ),
+						esc_html( $matched_text ),
+						esc_html( $tooltip )
+					);
+				}
+
 				return sprintf(
 					'<a href="%s" class="%s" title="%s">%s</a>',
 					esc_url( $url ),
 					esc_attr( $class ),
-					esc_attr( $tooltip ),
+					esc_attr( (string) $config['title'] ),
 					esc_html( $matched_text )
 				);
 			},
