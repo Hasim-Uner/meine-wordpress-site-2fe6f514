@@ -104,6 +104,71 @@
     text-decoration-color: currentColor;
 }
 
+/* Glossary definitions: one quiet editorial note on hover/focus, not a SaaS card. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .glossary-autolink-wrap {
+    position: relative;
+    display: inline;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .glossary-autolink {
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    cursor: help;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .glossary-autolink__popover {
+    position: absolute;
+    z-index: 40;
+    left: 0;
+    bottom: calc(100% + 0.65rem);
+    width: max-content;
+    max-width: min(330px, calc(100vw - 2rem));
+    padding: 0.8rem 0.9rem;
+    border: 1px solid color-mix(in srgb, var(--nx-border) 82%, transparent);
+    border-radius: 4px;
+    background: #151a1f;
+    color: var(--nx-text-secondary);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+    font-size: 0.82rem;
+    font-weight: 450;
+    line-height: 1.5;
+    letter-spacing: 0;
+    text-align: left;
+    white-space: normal;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(4px);
+    transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .glossary-autolink__popover::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 1rem;
+    width: 8px;
+    height: 8px;
+    border-right: 1px solid color-mix(in srgb, var(--nx-border) 82%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--nx-border) 82%, transparent);
+    background: #151a1f;
+    transform: translateY(-4px) rotate(45deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .glossary-autolink-wrap:hover .glossary-autolink__popover {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .glossary-autolink-wrap:focus-within .glossary-autolink__popover {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
 /* Lists stay typographic and understated. */
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content ul,
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content ol {
