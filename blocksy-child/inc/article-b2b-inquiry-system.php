@@ -59,6 +59,30 @@ function hu_enqueue_b2b_inquiry_system_article_assets() : void {
 add_action( 'wp_enqueue_scripts', 'hu_enqueue_b2b_inquiry_system_article_assets', 35 );
 
 /**
+ * Remove article-specific FAQ schema state.
+ *
+ * Visible FAQs stay in the article for readers. Google no longer exposes FAQ
+ * rich results, so this post should rely on the central BlogPosting graph and
+ * must not keep a stale FAQPage cache from an older opt-in version.
+ *
+ * @param int $post_id Post ID.
+ * @return void
+ */
+function hu_clear_b2b_inquiry_faq_schema_state( $post_id ) : void {
+	$post_id = absint( $post_id );
+	if ( $post_id <= 0 ) {
+		return;
+	}
+
+	$cache_meta_key = function_exists( 'hu_get_faq_schema_cache_meta_key' )
+		? hu_get_faq_schema_cache_meta_key()
+		: '_hu_faq_schema_entities_json';
+
+	delete_post_meta( $post_id, 'enable_faq_schema' );
+	delete_post_meta( $post_id, $cache_meta_key );
+}
+
+/**
  * Replace the legacy article body with the reviewed flagship source once.
  *
  * @return void
@@ -68,7 +92,7 @@ function hu_maybe_refresh_b2b_inquiry_system_article() : void {
 		return;
 	}
 
-	$version    = '2026-09-05-b2b-inquiry-v2';
+	$version    = '2026-09-05-b2b-inquiry-v3-schema-cleanup';
 	$option_key = 'hu_article_b2b_inquiry_system_version';
 
 	if ( (string) get_option( $option_key, '' ) === $version ) {
@@ -93,7 +117,8 @@ function hu_maybe_refresh_b2b_inquiry_system_article() : void {
 
 	// An editor may already have applied the reviewed version manually.
 	if ( $new_title === $current_title && false !== strpos( $current_content, $new_marker ) ) {
-		delete_post_meta( $post_id, 'enable_faq_schema' );
+		hu_clear_b2b_inquiry_faq_schema_state( $post_id );
+		update_post_meta( $post_id, '_hu_article_b2b_inquiry_system_version', $version );
 		update_option( $option_key, $version, false );
 		return;
 	}
@@ -152,7 +177,7 @@ function hu_maybe_refresh_b2b_inquiry_system_article() : void {
 
 	update_post_meta( $post_id, 'seo_title', 'Website bringt keine Anfragen? 7 typische B2B-Lecks' );
 	update_post_meta( $post_id, 'seo_description', 'Website hat Traffic, aber kaum Anfragen? So finden Sie Lecks in Suchintention, Proof, Formular, Tracking und Vertriebsübergabe.' );
-	delete_post_meta( $post_id, 'enable_faq_schema' );
+	hu_clear_b2b_inquiry_faq_schema_state( $post_id );
 	update_post_meta( $post_id, '_hu_article_b2b_inquiry_system_version', $version );
 	update_option( $option_key, $version, false );
 }
