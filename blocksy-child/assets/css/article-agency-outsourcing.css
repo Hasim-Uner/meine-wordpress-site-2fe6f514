@@ -1,0 +1,219 @@
+/* Agency outsourcing flagship article — editorial diagrams only. */
+
+.single-post .agency-outsourcing-article {
+    --ao-ink: var(--nx-text);
+    --ao-muted: var(--nx-text-muted);
+    --ao-rule: rgba(255, 255, 255, 0.15);
+    --ao-soft: rgba(255, 255, 255, 0.045);
+    --ao-accent: var(--accent-hover, #d58a5d);
+}
+
+.single-post .agency-outsourcing-article__lede {
+    max-width: 62ch;
+    color: var(--ao-muted);
+    font-size: clamp(1.08rem, 1.5vw, 1.22rem);
+    line-height: 1.68;
+}
+
+.single-post .agency-outsourcing-note,
+.single-post .agency-outsourcing-cta {
+    margin: 2.6rem 0;
+    padding: 1.2rem 1.35rem;
+    border-left: 2px solid var(--ao-accent);
+    background: var(--ao-soft);
+}
+
+.single-post .agency-outsourcing-note p,
+.single-post .agency-outsourcing-cta p {
+    margin: 0;
+}
+
+.single-post .agency-outsourcing-note p + p,
+.single-post .agency-outsourcing-cta p + p {
+    margin-top: 0.45rem;
+}
+
+.single-post .agency-outsourcing-note--quiet {
+    border-left-color: var(--ao-rule);
+}
+
+.single-post .agency-delivery-flow,
+.single-post .agency-control-model,
+.single-post .agency-risk-matrix,
+.single-post .agency-readiness-checklist {
+    margin: 3rem 0;
+}
+
+.single-post .agency-delivery-flow figcaption,
+.single-post .agency-control-model figcaption {
+    margin-bottom: 1.1rem;
+    color: var(--ao-muted);
+    font-size: 0.86rem;
+    line-height: 1.5;
+}
+
+.single-post .agency-delivery-flow__track {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--ao-rule);
+    border-bottom: 1px solid var(--ao-rule);
+    list-style: none;
+}
+
+.single-post .agency-delivery-flow__track li {
+    min-height: 132px;
+    margin: 0;
+    padding: 1rem 1rem 1.1rem;
+    border-right: 1px solid var(--ao-rule);
+    border-bottom: 1px solid var(--ao-rule);
+}
+
+.single-post .agency-delivery-flow__track li:nth-child(3n) {
+    border-right: 0;
+}
+
+.single-post .agency-delivery-flow__track li:nth-last-child(-n + 3) {
+    border-bottom: 0;
+}
+
+.single-post .agency-delivery-flow__track span {
+    display: block;
+    margin-bottom: 1.25rem;
+    color: var(--ao-accent);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+}
+
+.single-post .agency-delivery-flow__track strong,
+.single-post .agency-control-model__grid strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--ao-ink);
+    font-size: 1rem;
+}
+
+.single-post .agency-delivery-flow__track small {
+    display: block;
+    color: var(--ao-muted);
+    font-size: 0.82rem;
+    line-height: 1.48;
+}
+
+.single-post .agency-control-model__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: stretch;
+    border-top: 1px solid var(--ao-rule);
+    border-bottom: 1px solid var(--ao-rule);
+}
+
+.single-post .agency-control-model__grid section {
+    padding: 1.15rem 1rem;
+}
+
+.single-post .agency-control-model__grid p {
+    margin: 0;
+    color: var(--ao-muted);
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
+.single-post .agency-control-model__eyebrow {
+    display: block;
+    margin-bottom: 0.9rem;
+    color: var(--ao-accent);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.single-post .agency-control-model__bridge {
+    display: grid;
+    width: 42px;
+    place-items: center;
+    border-right: 1px solid var(--ao-rule);
+    border-left: 1px solid var(--ao-rule);
+    color: var(--ao-muted);
+}
+
+.single-post .agency-risk-matrix {
+    overflow-x: auto;
+    border-top: 1px solid var(--ao-rule);
+    border-bottom: 1px solid var(--ao-rule);
+}
+
+.single-post .agency-risk-matrix table {
+    min-width: 680px;
+    margin: 0;
+    border: 0;
+}
+
+.single-post .agency-risk-matrix th,
+.single-post .agency-risk-matrix td {
+    vertical-align: top;
+}
+
+.single-post .agency-readiness-checklist {
+    padding: 1.2rem 0;
+    border-top: 1px solid var(--ao-rule);
+    border-bottom: 1px solid var(--ao-rule);
+}
+
+.single-post .agency-readiness-checklist ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 2rem;
+    margin: 0;
+    padding-left: 1.35rem;
+}
+
+.single-post .agency-readiness-checklist li {
+    margin: 0;
+}
+
+.single-post .agency-outsourcing-cta__eyebrow {
+    color: var(--ao-accent);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+    .single-post .agency-delivery-flow__track {
+        grid-template-columns: 1fr;
+    }
+
+    .single-post .agency-delivery-flow__track li,
+    .single-post .agency-delivery-flow__track li:nth-child(3n),
+    .single-post .agency-delivery-flow__track li:nth-last-child(-n + 3) {
+        min-height: 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--ao-rule);
+    }
+
+    .single-post .agency-delivery-flow__track li:last-child {
+        border-bottom: 0;
+    }
+
+    .single-post .agency-control-model__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .single-post .agency-control-model__bridge {
+        width: auto;
+        min-height: 36px;
+        border: 0;
+        border-top: 1px solid var(--ao-rule);
+        border-bottom: 1px solid var(--ao-rule);
+    }
+
+    .single-post .agency-readiness-checklist ol {
+        grid-template-columns: 1fr;
+    }
+}
