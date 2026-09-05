@@ -1,4 +1,65 @@
-/* Agency outsourcing flagship article — editorial diagrams only. */
+/* Agency outsourcing flagship article — hero graphic + editorial diagrams. */
+
+/*
+ * This stylesheet is enqueued only on /wordpress-projekte-auslagern/.
+ * The generated bridge graphic contains meaningful process labels, so the
+ * cover must never crop it like a photography hero. Let the image keep its
+ * native 16:9 composition and give it a wider editorial stage than the text.
+ */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial {
+    width: min(980px, calc(100% - 40px));
+    margin-bottom: clamp(1.5rem, 3vw, 2.4rem);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover {
+    width: min(1240px, calc(100% - 32px));
+    margin: 0 auto clamp(3.2rem, 6vw, 5.2rem);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover .nexus-hero-image {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: auto;
+    padding: clamp(4px, 0.55vw, 8px);
+    overflow: hidden;
+    border: 1px solid rgba(213, 138, 93, 0.28);
+    border-radius: clamp(14px, 1.7vw, 22px);
+    background: #f2efe9;
+    box-shadow: 0 28px 78px rgba(0, 0, 0, 0.34);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover .nexus-hero-image img {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: auto;
+    object-fit: contain !important;
+    object-position: center;
+    border-radius: clamp(10px, 1.2vw, 16px);
+}
+
+@media (max-width: 700px) {
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial {
+        width: min(100% - 28px, 980px);
+        margin-bottom: 1.35rem;
+    }
+
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover {
+        width: calc(100% - 20px);
+        margin-bottom: 3rem;
+    }
+
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover .nexus-hero-image {
+        padding: 3px;
+        border-radius: 12px;
+    }
+
+    .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover .nexus-hero-image img {
+        border-radius: 9px;
+    }
+}
 
 .single-post .agency-outsourcing-article {
     --ao-ink: var(--nx-text);
