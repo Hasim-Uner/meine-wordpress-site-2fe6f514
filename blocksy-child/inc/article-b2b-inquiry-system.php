@@ -92,7 +92,7 @@ function hu_maybe_refresh_b2b_inquiry_system_article() : void {
 		return;
 	}
 
-	$version    = '2026-09-05-b2b-inquiry-v3-schema-cleanup';
+	$version    = '2026-09-06-b2b-inquiry-v4-title-recovery';
 	$option_key = 'hu_article_b2b_inquiry_system_version';
 
 	if ( (string) get_option( $option_key, '' ) === $version ) {
@@ -108,15 +108,48 @@ function hu_maybe_refresh_b2b_inquiry_system_article() : void {
 		return;
 	}
 
-	$legacy_title    = 'Warum WordPress-Websites trotz SEO keine Anfragen liefern';
+	$legacy_titles = [
+		'Warum WordPress-Websites trotz SEO keine Anfragen liefern',
+		'WordPress-Websites trotz SEO keine Anfragen liefern',
+	];
 	$new_title       = 'Website bringt keine Anfragen? So entsteht ein messbares B2B-Anfragesystem';
 	$current_title   = (string) get_post_field( 'post_title', $post_id );
 	$current_content = (string) get_post_field( 'post_content', $post_id );
 	$new_marker      = 'data-b2b-inquiry-system="v2"';
 	$v1_marker       = 'data-b2b-inquiry-system="v1"';
+	$new_excerpt     = 'Traffic allein verkauft nichts. Dieser Leitfaden zeigt sieben typische Lecks zwischen Suchintention, Zielseite, Proof, Formular, Tracking und Vertrieb – und wie daraus ein messbarer B2B-Anfragepfad wird.';
 
 	// An editor may already have applied the reviewed version manually.
 	if ( $new_title === $current_title && false !== strpos( $current_content, $new_marker ) ) {
+		hu_clear_b2b_inquiry_faq_schema_state( $post_id );
+		update_post_meta( $post_id, '_hu_article_b2b_inquiry_system_version', $version );
+		update_option( $option_key, $version, false );
+		return;
+	}
+
+	$is_legacy_title = in_array( $current_title, $legacy_titles, true );
+
+	// Some installations already received the reviewed v2 body while the post
+	// title stayed on the truncated legacy variant. Repair only title/meta here;
+	// do not overwrite the reviewed body a second time.
+	if ( $is_legacy_title && false !== strpos( $current_content, $new_marker ) ) {
+		$result = wp_update_post(
+			wp_slash(
+				[
+					'ID'           => $post_id,
+					'post_title'   => $new_title,
+					'post_excerpt' => $new_excerpt,
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $result ) || ! $result ) {
+			return;
+		}
+
+		update_post_meta( $post_id, 'seo_title', 'Website bringt keine Anfragen? 7 typische B2B-Lecks' );
+		update_post_meta( $post_id, 'seo_description', 'Website hat Traffic, aber kaum Anfragen? So finden Sie Lecks in Suchintention, Proof, Formular, Tracking und Vertriebsübergabe.' );
 		hu_clear_b2b_inquiry_faq_schema_state( $post_id );
 		update_post_meta( $post_id, '_hu_article_b2b_inquiry_system_version', $version );
 		update_option( $option_key, $version, false );
@@ -138,7 +171,7 @@ function hu_maybe_refresh_b2b_inquiry_system_article() : void {
 		}
 	}
 
-	$is_legacy_editor_copy = $legacy_title === $current_title && $remaining_markers >= 2;
+	$is_legacy_editor_copy = $is_legacy_title && $remaining_markers >= 2;
 	$is_managed_v1         = $new_title === $current_title && false !== strpos( $current_content, $v1_marker );
 
 	// Never overwrite materially edited content. The only accepted sources are
@@ -156,8 +189,6 @@ function hu_maybe_refresh_b2b_inquiry_system_article() : void {
 	if ( false === $new_content || '' === trim( $new_content ) || false === strpos( $new_content, $new_marker ) ) {
 		return;
 	}
-
-	$new_excerpt = 'Traffic allein verkauft nichts. Dieser Leitfaden zeigt sieben typische Lecks zwischen Suchintention, Zielseite, Proof, Formular, Tracking und Vertrieb – und wie daraus ein messbarer B2B-Anfragepfad wird.';
 
 	$result = wp_update_post(
 		wp_slash(
