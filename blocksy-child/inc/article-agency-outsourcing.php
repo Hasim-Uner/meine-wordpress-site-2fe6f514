@@ -28,6 +28,32 @@ function hu_is_agency_outsourcing_article() : bool {
 }
 
 /**
+ * Register White-Label as a glossary-style alias to the existing money page.
+ *
+ * This keeps the commercial query owner on /whitelabel-retainer/ while blog
+ * readers still receive the same hover/focus explanation as registry terms.
+ *
+ * @param array<string, array<string, string>> $aliases Existing aliases.
+ * @return array<string, array<string, string>>
+ */
+function hu_agency_outsourcing_glossary_aliases( $aliases ) : array {
+	$aliases = is_array( $aliases ) ? $aliases : [];
+	$url     = function_exists( 'nexus_get_whitelabel_page_url' )
+		? nexus_get_whitelabel_page_url()
+		: home_url( '/whitelabel-retainer/' );
+
+	$aliases['White-Label'] = [
+		'url'        => $url,
+		'title'      => 'Glossar: White-Label',
+		'tooltip'    => 'White-Label bedeutet, dass die technische Umsetzung im Hintergrund erfolgt, während Kundenbeziehung, Marke und Kommunikation bei der Agentur bleiben.',
+		'linked_key' => 'glossary_alias:white-label',
+	];
+
+	return $aliases;
+}
+add_filter( 'nexus_contextual_glossary_aliases', 'hu_agency_outsourcing_glossary_aliases' );
+
+/**
  * Load article-specific editorial diagrams.
  *
  * @return void
