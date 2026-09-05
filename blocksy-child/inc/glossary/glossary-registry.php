@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function nexus_get_glossary_registry_version() {
-	return '2026-05-26-glossary-v4';
+	return '2026-09-05-glossary-v5-b2b-inquiry';
 }
 
 /**
