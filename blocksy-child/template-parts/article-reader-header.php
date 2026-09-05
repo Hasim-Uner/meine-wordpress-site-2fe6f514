@@ -28,9 +28,9 @@ $brand_text   = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wor
 $author_name  = get_the_author();
 $reading_time = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time() : 0;
 
-// Prefer the canonical Werkstatt taxonomy. Some articles intentionally live in
-// more than one dossier; the order below chooses the most specific reading
-// context instead of relying on WordPress' category ordering.
+// Prefer the canonical Werkstatt taxonomy. A small route map keeps the reader
+// context intentional for the flagship articles even when an older WordPress
+// category assignment still reflects the previous blog model.
 $dossier_priority = [
 	'wordpress-performance',
 	'tracking',
@@ -42,6 +42,13 @@ $dossier_labels = [
 	'wordpress-performance' => 'WordPress & Performance',
 	'tracking'              => 'Tracking & Messbarkeit',
 	'cro'                   => 'Conversion & Anfragearchitektur',
+];
+$slug_dossier_overrides = [
+	'aroundhome-solar-einordnung'           => 'leadgenerierung',
+	'checkfox-solar-waermepumpe-einordnung' => 'leadgenerierung',
+	'wattfox-solar-leads-einordnung'         => 'leadgenerierung',
+	'wordpress-ttfb-google-ads-ladezeit'     => 'wordpress-performance',
+	'server-side-tracking-gtm'               => 'tracking',
 ];
 
 if ( function_exists( 'hu_get_positioned_blog_dossier_taxonomy' ) ) {
@@ -57,25 +64,19 @@ $post_categories = get_the_category();
 $post_cat_slugs  = ! empty( $post_categories ) && ! is_wp_error( $post_categories )
 	? array_map( 'strval', wp_list_pluck( $post_categories, 'slug' ) )
 	: [];
-$dossier_slug = '';
+$dossier_slug = $slug_dossier_overrides[ $slug ] ?? '';
 
-foreach ( $dossier_priority as $candidate_slug ) {
-	if ( in_array( $candidate_slug, $post_cat_slugs, true ) ) {
-		$dossier_slug = $candidate_slug;
-		break;
+if ( '' === $dossier_slug ) {
+	foreach ( $dossier_priority as $candidate_slug ) {
+		if ( in_array( $candidate_slug, $post_cat_slugs, true ) ) {
+			$dossier_slug = $candidate_slug;
+			break;
+		}
 	}
 }
 
-// Stable route fallbacks keep the header correct even before a taxonomy
-// migration has run on a freshly deployed environment.
 if ( '' === $dossier_slug ) {
-	$slug_dossier_fallbacks = [
-		'aroundhome-solar-einordnung'           => 'leadgenerierung',
-		'checkfox-solar-waermepumpe-einordnung' => 'leadgenerierung',
-		'wattfox-solar-leads-einordnung'         => 'leadgenerierung',
-		'wordpress-ttfb-google-ads-ladezeit'     => 'wordpress-performance',
-	];
-	$dossier_slug = $slug_dossier_fallbacks[ $slug ] ?? 'leadgenerierung';
+	$dossier_slug = 'leadgenerierung';
 }
 
 $dossier_label = $dossier_labels[ $dossier_slug ] ?? 'Werkstatt';
