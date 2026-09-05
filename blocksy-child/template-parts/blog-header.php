@@ -12,25 +12,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Article System V1 pilot: the three most important provider articles use a
-// deliberately quiet reading header instead of the full commercial blog menu.
-// The rest of the blog keeps the existing navigation unchanged until the
-// reader system has been validated live.
-$article_system_v1_slugs = [
+// Article System V2: keep the three provider pilots and add the first
+// non-Energy article. This validates the reader shell across the broader
+// WordPress · Tracking · Conversion positioning without changing all posts at
+// once.
+$article_system_reader_slugs = [
 	'aroundhome-solar-einordnung',
 	'checkfox-solar-waermepumpe-einordnung',
 	'wattfox-solar-leads-einordnung',
+	'wordpress-ttfb-google-ads-ladezeit',
 ];
 
 if ( is_singular( 'post' ) ) {
-	$article_system_v1_slug = (string) get_post_field( 'post_name', get_queried_object_id() );
+	$article_system_reader_slug = (string) get_post_field( 'post_name', get_queried_object_id() );
 
-	if ( in_array( $article_system_v1_slug, $article_system_v1_slugs, true ) ) {
+	if ( in_array( $article_system_reader_slug, $article_system_reader_slugs, true ) ) {
 		get_template_part(
 			'template-parts/article-reader-header',
 			null,
 			[
-				'slug' => $article_system_v1_slug,
+				'slug' => $article_system_reader_slug,
 			]
 		);
 		return;
