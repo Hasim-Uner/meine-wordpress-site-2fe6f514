@@ -13,9 +13,15 @@ defined( 'HU_FEATURE_READINESS_DIAGNOSIS_ROUTE' ) || define( 'HU_FEATURE_READINE
 defined( 'HU_FEATURE_READINESS_SUBMIT' ) || define( 'HU_FEATURE_READINESS_SUBMIT', true );
 defined( 'HU_FEATURE_ENERGY_DEMO_ROUTE' ) || define( 'HU_FEATURE_ENERGY_DEMO_ROUTE', true );
 
-// Keep the one-time editor-content migration isolated in its own module. This
-// early loader is intentionally tiny; the migration itself runs later on init.
-$hu_article_content_hygiene_path = __DIR__ . '/article-content-hygiene.php';
-if ( file_exists( $hu_article_content_hygiene_path ) ) {
-	require_once $hu_article_content_hygiene_path;
+// Keep the one-time editor-content migrations isolated in small modules. The
+// loaders are intentionally tiny; migrations themselves run later on init.
+$hu_article_content_hygiene_paths = [
+	__DIR__ . '/article-content-hygiene.php',
+	__DIR__ . '/article-content-hygiene-ttfb.php',
+];
+
+foreach ( $hu_article_content_hygiene_paths as $hu_article_content_hygiene_path ) {
+	if ( file_exists( $hu_article_content_hygiene_path ) ) {
+		require_once $hu_article_content_hygiene_path;
+	}
 }
