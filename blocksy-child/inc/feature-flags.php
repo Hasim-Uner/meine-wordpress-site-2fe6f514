@@ -21,6 +21,7 @@ $hu_article_content_hygiene_paths = [
 	__DIR__ . '/article-content-hygiene-landingpage.php',
 	__DIR__ . '/article-b2b-inquiry-system.php',
 	__DIR__ . '/article-agency-outsourcing.php',
+	__DIR__ . '/article-agency-outsourcing-hero.php',
 ];
 
 foreach ( $hu_article_content_hygiene_paths as $hu_article_content_hygiene_path ) {
