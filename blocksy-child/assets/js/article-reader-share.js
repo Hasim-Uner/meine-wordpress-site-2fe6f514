@@ -1,7 +1,7 @@
 /* ============================================================
    Article System — robust share actions
-   Delegated capture handling keeps dynamically inserted reader actions
-   reliable across browsers and avoids duplicate legacy handlers.
+   The reader shell has its own share behavior so legacy single-post
+   handlers cannot break the Article System controls.
    ============================================================ */
 (function () {
     'use strict';
@@ -10,6 +10,25 @@
 
     function isReaderArticle() {
         return !!document.querySelector('.nexus-article-reader-header');
+    }
+
+    function makeReaderRailInteractive() {
+        if (!isReaderArticle() || document.getElementById('nexus-reader-share-fix')) return;
+
+        /*
+         * Reader posts can hide the legacy author bio. single-editorial.js uses
+         * that hidden node as the share rail's end marker, so offsetTop becomes
+         * 0 and the rail never receives .is-visible. Keep the reader rail
+         * independently interactive instead of coupling sharing to that marker.
+         */
+        var style = document.createElement('style');
+        style.id = 'nexus-reader-share-fix';
+        style.textContent = [
+            '@media (min-width:1280px){',
+            '.nexus-article-reader-header~.nexus-share-rail{display:flex!important;opacity:1!important;pointer-events:auto!important;}',
+            '}'
+        ].join('');
+        document.head.appendChild(style);
     }
 
     function getShareData() {
@@ -23,14 +42,23 @@
     }
 
     function openExternal(url) {
-        var link = document.createElement('a');
-        link.href = url;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+        var popup = null;
+
+        try {
+            popup = window.open(url, '_blank');
+        } catch (e) {
+            popup = null;
+        }
+
+        if (popup) {
+            try {
+                popup.opener = null;
+            } catch (e) {}
+            return;
+        }
+
+        /* Popup blockers should not turn a share action into a dead button. */
+        window.location.href = url;
     }
 
     function legacyCopy(text) {
@@ -38,8 +66,10 @@
         input.value = text;
         input.setAttribute('readonly', '');
         input.style.position = 'fixed';
-        input.style.opacity = '0';
+        input.style.left = '-9999px';
+        input.style.top = '0';
         document.body.appendChild(input);
+        input.focus();
         input.select();
         input.setSelectionRange(0, input.value.length);
 
@@ -58,17 +88,26 @@
         if (!button) return;
 
         var originalLabel = button.getAttribute('aria-label') || '';
-        button.setAttribute('aria-label', ok ? 'Link kopiert' : 'Link konnte nicht kopiert werden');
+        var originalTitle = button.getAttribute('title');
+        var message = ok ? 'Link kopiert' : 'Link konnte nicht kopiert werden';
+
+        button.setAttribute('aria-label', message);
+        button.setAttribute('title', message);
         button.classList.toggle('is-copied', ok);
 
         window.setTimeout(function () {
             if (originalLabel) button.setAttribute('aria-label', originalLabel);
+            if (originalTitle === null) {
+                button.removeAttribute('title');
+            } else {
+                button.setAttribute('title', originalTitle);
+            }
             button.classList.remove('is-copied');
         }, 1800);
     }
 
     function copyUrl(text, button) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
+        if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
             navigator.clipboard.writeText(text).then(function () {
                 indicateCopy(button, true);
             }).catch(function () {
@@ -91,10 +130,13 @@
         } catch (e) {}
     }
 
+    makeReaderRailInteractive();
+
     document.addEventListener('click', function (event) {
         if (!isReaderArticle()) return;
 
-        var button = event.target.closest('[data-nexus-share]');
+        var target = event.target;
+        var button = target && target.closest ? target.closest('[data-nexus-share]') : null;
         if (!button) return;
 
         var type = button.getAttribute('data-nexus-share');
@@ -102,6 +144,7 @@
         var encodedUrl = encodeURIComponent(share.url);
         var encodedTitle = encodeURIComponent(share.title);
 
+        /* This reader-specific handler owns the action; suppress legacy listeners. */
         event.preventDefault();
         event.stopImmediatePropagation();
 
@@ -116,9 +159,15 @@
                 trackShare(type);
                 break;
 
+            case 'twitter':
+            case 'x':
+                openExternal('https://twitter.com/intent/tweet?url=' + encodedUrl + '&text=' + encodedTitle);
+                trackShare(type);
+                break;
+
             case 'email':
                 trackShare(type);
-                window.location.href = 'mailto:?subject=' + encodedTitle + '&body=' + encodedUrl;
+                window.location.href = 'mailto:?subject=' + encodedTitle + '&body=' + encodeURIComponent(share.title + '\n\n' + share.url);
                 break;
 
             case 'copy':
