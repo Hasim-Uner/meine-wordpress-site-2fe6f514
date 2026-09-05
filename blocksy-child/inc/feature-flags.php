@@ -18,6 +18,7 @@ defined( 'HU_FEATURE_ENERGY_DEMO_ROUTE' ) || define( 'HU_FEATURE_ENERGY_DEMO_ROU
 $hu_article_content_hygiene_paths = [
 	__DIR__ . '/article-content-hygiene.php',
 	__DIR__ . '/article-content-hygiene-ttfb.php',
+	__DIR__ . '/article-content-hygiene-landingpage.php',
 ];
 
 foreach ( $hu_article_content_hygiene_paths as $hu_article_content_hygiene_path ) {
