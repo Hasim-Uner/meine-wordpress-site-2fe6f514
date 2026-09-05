@@ -329,9 +329,31 @@
     color: var(--ft-text-dim);
 }
 
+/*
+ * Die Zeile trug frueher ein <p> und damit Blocksys
+ * `p { margin-block-end: var(--theme-content-spacing) }` — eine geerbte
+ * Abmessung unter dem eigenen --ft-7-Unterschnitt, die in diesem Fuss nie
+ * vorgesehen war. Mit dem <div> faellt sie weg; der Abstand nach unten kommt
+ * jetzt allein aus padding-block. margin bleibt hier explizit auf 0, damit die
+ * Datei ihre Zusicherung haelt, auch allein geladen korrekt auszusehen.
+ */
+.ft-imprint {
+    margin: 0;
+}
+
 .ft-imprint b {
     color: var(--ft-text-mid);
     font-weight: 500;
+}
+
+/*
+ * Die sichtbare Anschrift. <address> ist in jeder Engine kursiv voreingestellt,
+ * und die Absenderzeile ist Versalien-Mono — kursiv bricht das Bild. Blocksys
+ * Reset setzt zwar `font: inherit` auf <address>, aber dieser Fuss soll auch
+ * ohne Elternstylesheet stimmen.
+ */
+.ft-imprint__address {
+    font-style: normal;
 }
 
 .ft-imprint__sep {

@@ -135,8 +135,25 @@ $imprint = [
 	[
 		'text' => sprintf( '© %s Haşim Üner', $current_year ),
 	],
+	/*
+	 * Vollstaendige Anschrift statt nur des Ortes. Strasse und PLZ standen
+	 * bisher ausschliesslich im Impressum, in der Datenschutzerklaerung und im
+	 * JSON-LD des Organization-Knotens — sichtbar an keiner Stelle. Der String
+	 * ist bewusst zeichengleich mit 'streetAddress' + 'postalCode' +
+	 * 'addressLocality' aus hu_output_schema() (inc/org-schema.php), damit
+	 * sichtbare Angabe, JSON-LD und Google Business Profile dieselbe Zeichenkette
+	 * tragen. Wer sie hier aendert, aendert sie dort mit.
+	 *
+	 * Der regionale Zusatz bleibt ein eigener Eintrag: 'Region Hannover' ist
+	 * kein Bestandteil der postalischen Anschrift und wuerde den Abgleich
+	 * verwaessern, wenn er in derselben Zeichenkette staende.
+	 */
 	[
-		'text' => 'Pattensen, Region Hannover',
+		'text'    => 'Warschauer Str. 5, 30982 Pattensen',
+		'address' => true,
+	],
+	[
+		'text' => 'Region Hannover',
 	],
 	[
 		'text' => 'remote in DACH',
@@ -233,17 +250,31 @@ if ( file_exists( $footer_style_path ) ) {
 			<?php endforeach; ?>
 		</nav>
 
-		<p class="ft-imprint">
+		<?php
+		/*
+		 * <div> statt <p>: <address> ist Flow-Content und in einem <p> nicht
+		 * erlaubt — der Parser wuerde das <p> davor schliessen und die
+		 * Flex-Zeile in zwei Bloecke zerreissen. Das Layout haengt ohnehin an
+		 * der Klasse, nicht am Element.
+		 */
+		?>
+		<div class="ft-imprint">
 			<?php foreach ( $imprint as $index => $entry ) : ?>
 				<?php if ( $index > 0 ) : ?>
 					<span class="ft-imprint__sep" aria-hidden="true">·</span>
 				<?php endif; ?>
-				<span><?php
-					echo esc_html( (string) $entry['text'] );
-					if ( isset( $entry['value'] ) ) {
-						?><b><?php echo esc_html( (string) $entry['value'] ); ?></b><?php
-					}
-				?></span>
+				<?php
+				$entry_html = esc_html( (string) $entry['text'] );
+
+				if ( isset( $entry['value'] ) ) {
+					$entry_html .= '<b>' . esc_html( (string) $entry['value'] ) . '</b>';
+				}
+				?>
+				<?php if ( ! empty( $entry['address'] ) ) : ?>
+					<address class="ft-imprint__address"><?php echo $entry_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Textteile oben einzeln escaped, <b> ist statisches Markup ?></address>
+				<?php else : ?>
+					<span><?php echo $entry_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Textteile oben einzeln escaped, <b> ist statisches Markup ?></span>
+				<?php endif; ?>
 			<?php endforeach; ?>
 
 			<a
@@ -255,6 +286,6 @@ if ( file_exists( $footer_style_path ) ) {
 			>
 				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
 			</a>
-		</p>
+		</div>
 	</div>
 </footer>
