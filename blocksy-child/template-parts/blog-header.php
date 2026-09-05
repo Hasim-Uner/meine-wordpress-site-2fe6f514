@@ -12,15 +12,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Article System V2: keep the provider pilots and expand the reader shell one
-// dossier at a time. WordPress & Performance and Tracking & Messbarkeit now
-// each have a non-Energy article in the shared reading system.
+// Article System V2: expand the reader shell one dossier at a time. Alongside
+// the provider pilots, WordPress & Performance, Tracking & Messbarkeit and
+// Conversion & Anfragearchitektur now each have a representative article.
 $article_system_reader_slugs = [
 	'aroundhome-solar-einordnung',
 	'checkfox-solar-waermepumpe-einordnung',
 	'wattfox-solar-leads-einordnung',
 	'wordpress-ttfb-google-ads-ladezeit',
 	'server-side-tracking-gtm',
+	'b2b-landingpage-optimieren',
 ];
 
 if ( is_singular( 'post' ) ) {

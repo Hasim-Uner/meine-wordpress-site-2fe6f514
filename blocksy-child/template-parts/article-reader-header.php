@@ -49,6 +49,7 @@ $slug_dossier_overrides = [
 	'wattfox-solar-leads-einordnung'         => 'leadgenerierung',
 	'wordpress-ttfb-google-ads-ladezeit'     => 'wordpress-performance',
 	'server-side-tracking-gtm'               => 'tracking',
+	'b2b-landingpage-optimieren'              => 'cro',
 ];
 
 if ( function_exists( 'hu_get_positioned_blog_dossier_taxonomy' ) ) {
