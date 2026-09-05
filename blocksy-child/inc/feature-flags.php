@@ -20,6 +20,7 @@ $hu_article_content_hygiene_paths = [
 	__DIR__ . '/article-content-hygiene-ttfb.php',
 	__DIR__ . '/article-content-hygiene-landingpage.php',
 	__DIR__ . '/article-b2b-inquiry-system.php',
+	__DIR__ . '/article-agency-outsourcing.php',
 ];
 
 foreach ( $hu_article_content_hygiene_paths as $hu_article_content_hygiene_path ) {
