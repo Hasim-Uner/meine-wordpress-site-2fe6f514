@@ -48,14 +48,36 @@ Identische Firmierung + Adresse + URL in:
 - Gelbe Seiten / 11880 / Das Örtliche
 - LinkedIn-Unternehmensseite (+ persönliches Profil mit „Solar-Anfragesysteme" in der Headline)
 - Xing (im DACH-B2B noch relevant)
-- North Data / Companyhouse (Entitäts-Bestätigung über Handelsregister-Daten)
+- North Data / Companyhouse — setzt einen Handelsregister-Eintrag voraus. Einzelunternehmen ohne
+  HR-Eintrag tauchen dort nicht auf; dann ist die Zeile gegenstandslos, nicht offen.
 
 > **NAP-Disziplin:** Eine einzige kanonische Schreibweise. Abweichungen (mal „GmbH", mal ohne;
 > mal „Str.", mal „Straße") verwässern das Entitätssignal.
 
+> **Bestand prüfen, bevor etwas angelegt wird.** Verzeichnisse tragen Firmen oft ungefragt ein,
+> aus Altdaten und mit falscher Schreibweise. Drei Google-Suchen zeigen den Ist-Stand:
+> `"<Telefonnummer>"`, `"<Straße + Hausnummer>" <Ort>`, `"<Name>" <Ort>`. Ein korrigierter
+> Alteintrag ist mehr wert als ein neu angelegter daneben — zwei widersprüchliche Einträge
+> schaden mehr, als der zweite nützt.
+>
+> Der Links-Bericht der Search Console ersetzt diese Suche **nicht**: Citations sind häufig
+> reine Namens-/Adressnennungen ohne Link und tauchen dort gar nicht auf. Automatisieren lässt
+> sich das ohnehin nicht — die Search-Console-API gibt Links nicht heraus (nur Search Analytics,
+> Sitemaps, URL-Inspection), der Bericht existiert ausschließlich in der Weboberfläche.
+
 ### 1.3 Entitäts-Anker setzen
 
-- `sameAs` in `org-schema.php` prüfen: LinkedIn, Xing, GitHub, GBP-URL hinterlegen (sobald live).
+- `sameAs` in `org-schema.php` ergänzen — aber **auf den richtigen Knoten**. Person und
+  Organization sind zwei Entitäten mit zwei `@id`s; dieselbe Profilliste auf beiden behauptet,
+  sie seien dieselbe, und entwertet `founder`/`worksFor` zwischen ihnen. Persönliche Profile
+  (LinkedIn-Personenprofil, Xing, privates GitHub) gehören in `hu_person_same_as_urls()`,
+  Geschäftspräsenzen (GBP, GitHub-Organisation, künftige Verzeichniseinträge) in
+  `hu_business_same_as_urls()`. `scripts/lint-entity-crawler-signals.php` erzwingt, dass die
+  beiden Listen sich nicht überschneiden — ein Eintrag am falschen Knoten bricht die CI.
+- Die GBP-URL ist bereits hinterlegt (`hu_brand_map_url()`, CID-Form). Nicht doppelt anlegen.
+- Nur eintragen, was existiert und reziprok prüfbar ist. Eine erfundene oder unbestätigte
+  Profil-URL ist eine Identitätsbehauptung, die niemand bestätigt — das schwächt den Graph,
+  statt ihn zu stärken.
 - E3 New Energy als referenzierbare Entität: wenn E3 öffentlich auf dich verlinkt
   (z. B. „Umgesetzt von …" im Footer oder einer Case-Page), ist das der **wertvollste
   einzelne Backlink**, den du kurzfristig bekommen kannst — themenrelevant, echt, im Solar-Umfeld.
@@ -118,7 +140,7 @@ Für das lokale Commercial-Keyword **„wordpress agentur hannover"** (aktuell P
 Dieselbe kanonische NAP-Schreibweise (Firmierung · Pattensen/Region Hannover · `/wordpress-agentur-hannover/`) in:
 
 - **Regional:** Branchenbuch Region Hannover, Das Örtliche / Gelbe Seiten Hannover, regionale B2B-/Mittelstandsverzeichnisse.
-- **IHK Hannover:** Mitglieds-/Firmenverzeichnis-Eintrag (starkes lokales Entitätssignal).
+- **IHK Hannover — nur falls Mitgliedschaft besteht, Stand 2026-09 ungeklärt.** Die IHK-Mitgliedschaft ist keine Aufgabe, die man erledigt: sie entsteht automatisch mit der Gewerbeanmeldung, Freiberufler sind ausgenommen. Ohne Gewerbeanmeldung gibt es keinen Eintrag und die Zeile ist gegenstandslos. Besteht Mitgliedschaft, ist der Firmenverzeichnis-Eintrag **eine vertrauenswürdige Nennung unter mehreren** — nicht der starke lokale Hebel, als der er hier bis 2026-09 stand. GBP plus drei, vier saubere Standardverzeichnisse wiegen schwerer. Nice-to-have, keine Priorität.
 - **B2B-Standard DACH:** wlw.de, 11880, Cylex, Yelp DE — mit identischer NAP.
 - **NAP-Disziplin gilt absolut:** eine Schreibweise überall, identisch zum Impressum (siehe Phase 1.2). Solar- und Agentur-Citations nutzen dieselbe Entität — **nicht** zwei konkurrierende Profile anlegen.
 
