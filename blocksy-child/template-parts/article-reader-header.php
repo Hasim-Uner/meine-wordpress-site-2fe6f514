@@ -13,6 +13,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Reader-only share hardening. This is enqueued here because this partial is
+// the authoritative gate for Article System posts; footer scripts can still
+// be queued safely before wp_footer runs.
+if ( function_exists( 'hu_enqueue_js' ) ) {
+	hu_enqueue_js(
+		'nexus-article-reader-share-js',
+		'article-reader-share.js',
+		[ 'nexus-single-editorial-js' ]
+	);
+}
+
 $args = wp_parse_args(
 	$args ?? [],
 	[
