@@ -26,3 +26,10 @@ foreach ( $hu_article_content_hygiene_paths as $hu_article_content_hygiene_path 
 		require_once $hu_article_content_hygiene_path;
 	}
 }
+
+// Reader UI is runtime behaviour rather than editor-content migration. Load
+// the module early so it can register its conditional wp_enqueue_scripts hook.
+$hu_article_reader_toc_path = __DIR__ . '/article-reader-toc.php';
+if ( file_exists( $hu_article_reader_toc_path ) ) {
+	require_once $hu_article_reader_toc_path;
+}
