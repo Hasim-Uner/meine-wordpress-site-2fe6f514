@@ -11,7 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$audit_url    = nexus_get_primary_public_url( 'audit', home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
+$project_url = function_exists( 'hu_get_commercial_route' )
+	? hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) )
+	: home_url( '/kontakt/' );
 $glossary_url = function_exists( 'nexus_get_glossary_hub_url' ) ? nexus_get_glossary_hub_url() : home_url( '/glossar/' );
 ?>
 
@@ -26,6 +28,19 @@ $glossary_url = function_exists( 'nexus_get_glossary_hub_url' ) ? nexus_get_glos
 		if ( '' === trim( wp_strip_all_tags( (string) $content ) ) && is_array( $definition ) && function_exists( 'nexus_get_glossary_term_content_html' ) ) {
 			$content = nexus_get_glossary_term_content_html( $definition );
 		}
+
+		/*
+		 * Registry content historically carried a Solar-marketcheck CTA on every
+		 * glossary term. Commercial routing now belongs to this global template:
+		 * informational glossary pages must not jump into the Energy funnel.
+		 * Keep stripping the legacy generated section until the registry renderer
+		 * itself is simplified in a future migration.
+		 */
+		$content = preg_replace(
+			'#<section class="wgos-section wgos-section--white wgos-final-cta">.*?</section>\s*$#s',
+			'',
+			(string) $content
+		);
 		?>
 
 		<div class="wgos-wrapper glossary-wrapper"
@@ -56,7 +71,7 @@ $glossary_url = function_exists( 'nexus_get_glossary_hub_url' ) ? nexus_get_glos
 
 					<div class="wgos-hero__actions">
 						<a href="<?php echo esc_url( $glossary_url ); ?>" class="wgos-btn wgos-btn--outline">Zum Glossar</a>
-						<a href="<?php echo esc_url( $audit_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_glossary_hero_audit" data-track-category="lead_gen"><?php echo esc_html( nexus_get_audit_cta_label() ); ?></a>
+						<a href="<?php echo esc_url( $project_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_glossary_hero_project" data-track-category="project">Projekt anfragen</a>
 					</div>
 
 					<p class="wgos-hero__microcopy">Diese Begriffsseite ist Teil eines kontrollierten Glossar-Layers. Head Terms bleiben auf den Primary URLs, damit Definition und Angebots-Intent sauber getrennt bleiben.</p>
@@ -64,6 +79,20 @@ $glossary_url = function_exists( 'nexus_get_glossary_hub_url' ) ? nexus_get_glos
 			</section>
 
 			<?php echo apply_filters( 'the_content', $content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+
+			<section class="wgos-section wgos-section--white wgos-final-cta">
+				<div class="wgos-container">
+					<div class="wgos-final-cta__inner">
+						<span class="wgos-principle-kicker">Nächster Schritt</span>
+						<h2 class="wgos-h2">Begriff verstanden. Jetzt den tatsächlichen Engpass klären.</h2>
+						<p class="wgos-prose">Wenn ein Thema für Ihre Website praktisch relevant wird, ist die nächste Frage nicht, welches Schlagwort als Nächstes optimiert wird. Entscheidend ist, ob der Engpass bei WordPress, Tracking, technischer SEO oder Conversion liegt und welcher Scope ihn sinnvoll löst.</p>
+						<div class="wgos-hero__actions">
+							<a href="<?php echo esc_url( $glossary_url ); ?>" class="wgos-btn wgos-btn--outline">Zurück zum Glossar</a>
+							<a href="<?php echo esc_url( $project_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_glossary_term_project" data-track-category="project">Projekt und Scope klären</a>
+						</div>
+					</div>
+				</div>
+			</section>
 		</div>
 	<?php endwhile; ?>
 </main>
