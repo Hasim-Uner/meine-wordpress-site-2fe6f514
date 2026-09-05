@@ -207,9 +207,32 @@ hu_lint_assert(
 	'llms.txt lists routes at all'
 );
 
+// Links outside the route lists are advertised just as loudly. The intro
+// carries one to the imprint as the NAP source, and it was not covered here: a
+// wrong URL-map key rendered a dead /n/ silently, because every resolver falls
+// back to a hardcoded default instead of failing. Validate every markdown link;
+// the list-item set above stays separate for the count and duplicate rules,
+// which are about the route index itself, not about links in prose.
+preg_match_all( '/\[[^\]]+\]\(([^)]+)\)/', $llms_rendered, $all_link_matches );
+$llms_linked_paths = array_values( array_unique( $all_link_matches[1] ) );
+
+// The key the intro reads must exist in the map. This is the check that would
+// have caught the dead imprint link: a missing key is invisible at runtime.
+$primary_url_map = nexus_get_primary_public_url_map();
+
+hu_lint_assert(
+	isset( $primary_url_map['impressum'] ),
+	'primary URL map exposes the imprint route under the key llms.txt reads'
+);
+
+hu_lint_assert(
+	false !== mb_strpos( $llms_rendered, '](' . nexus_get_llms_txt_markdown_path( $primary_url_map['impressum'] ?? '' ) . ')' ),
+	'llms.txt intro links the imprint route the URL map resolves'
+);
+
 $retired = nexus_get_retired_gone_paths();
 
-foreach ( $llms_paths as $path ) {
+foreach ( $llms_linked_paths as $path ) {
 	hu_lint_assert(
 		'/' === substr( $path, 0, 1 ),
 		"llms.txt route is root-relative: {$path}"
@@ -286,7 +309,7 @@ hu_lint_assert(
 );
 
 // The route index must not advertise a path that redirects.
-foreach ( $llms_paths as $path ) {
+foreach ( $llms_linked_paths as $path ) {
 	$bare = strtok( strtok( $path, '?' ), '#' );
 	$bare = '/' === $bare ? '/' : rtrim( $bare, '/' ) . '/';
 

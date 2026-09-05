@@ -275,7 +275,7 @@ function nexus_get_llms_txt_content() {
 	// bereits zwei gepflegte Orte. Ein dritter driftet, und eine abweichende
 	// NAP-Schreibweise beschaedigt genau das lokale Vertrauenssignal, das
 	// dieser Absatz aufbauen soll. Der Link zeigt deshalb auf die Quelle.
-	$imprint_path = nexus_get_llms_txt_markdown_path( $urls['n'] ?? home_url( '/n/' ) );
+	$imprint_path = nexus_get_llms_txt_markdown_path( $urls['impressum'] ?? home_url( '/impressum/' ) );
 
 	$lines = [
 		'# Haşim Üner',
