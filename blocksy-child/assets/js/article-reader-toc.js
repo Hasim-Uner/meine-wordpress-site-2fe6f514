@@ -1,7 +1,7 @@
 /* =============================================================
    Article Reader TOC V1
    Enhances the existing NexusCore-generated #toc-list.
-   Desktop expansion is CSS-driven (hover/focus); mobile uses a compact toggle.
+   Desktop/laptop expansion is CSS-driven (hover/focus); smaller viewports use a compact toggle.
    ============================================================= */
 (function () {
     'use strict';
@@ -39,11 +39,11 @@
         shell.insertBefore(toggle, shell.firstChild);
 
         var countNode = toggle.querySelector('.nexus-reader-toc__toggle-count');
-        var media = window.matchMedia ? window.matchMedia('(max-width: 1399px)') : null;
+        var media = window.matchMedia ? window.matchMedia('(max-width: 1099px)') : null;
         var hydrated = false;
 
         function isMobileLayout() {
-            return media ? media.matches : window.innerWidth <= 1399;
+            return media ? media.matches : window.innerWidth <= 1099;
         }
 
         function syncActiveAria() {
