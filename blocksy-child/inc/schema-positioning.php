@@ -30,6 +30,20 @@ if ( is_file( $hu_commercial_routing_file ) ) {
  * SEO query ownership stays on the destination pages; this catalog describes
  * what the business offers and does not redirect or replace those pages.
  *
+ * This is the ONE source for the Organization catalog. hu_output_schema() in
+ * org-schema.php builds the node and this function fills its hasOfferCatalog,
+ * so builder and normalizer cannot state two different catalogs — they did,
+ * and the divergence was invisible because hu_normalize_positioned_schema_node()
+ * overwrote the builder at render time. scripts/lint-entity-crawler-signals.php
+ * asserts the no-op.
+ *
+ * Shape: OfferCatalog › Offer › itemOffered › Service. An Offer is the
+ * commercial wrapper, the Service is the thing being offered — a bare Offer
+ * carrying name and description states a price without ever naming what is for
+ * sale. The URL sits on the Service because it identifies the service, not the
+ * offer, and `provider` keeps each Service self-describing when a consumer
+ * lifts it out of the surrounding Organization node.
+ *
  * @return array<string, mixed>
  */
 function hu_get_positioned_schema_offer_catalog() : array {
@@ -48,46 +62,60 @@ function hu_get_positioned_schema_offer_catalog() : array {
 	$tracking_url   = $routes['tracking_b2b'] ?? home_url( '/server-side-tracking-b2b/' );
 	$energy_url     = $routes['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 
+	$offer = static function ( string $name, string $description, string $url, string $service_type ) : array {
+		return [
+			'@type'       => 'Offer',
+			'itemOffered' => [
+				'@type'       => 'Service',
+				'name'        => $name,
+				'description' => $description,
+				'url'         => $url,
+				'serviceType' => $service_type,
+				'provider'    => [ '@id' => home_url( '/#organization' ) ],
+			],
+		];
+	};
+
 	return [
 		'@type'           => 'OfferCatalog',
 		'name'            => 'WordPress, Tracking, Conversion und spezialisierte Anfragesysteme',
 		'itemListElement' => [
-			[
-				'@type'       => 'Offer',
-				'name'        => 'WordPress-Entwicklung',
-				'description' => 'WordPress-Websites und Landingpages mit technischer SEO, Performance und sauberer Weiterentwicklung.',
-				'url'         => $freelancer_url,
-			],
-			[
-				'@type'       => 'Offer',
-				'name'        => 'Server-Side Tracking & Attribution',
-				'description' => 'Server-GTM, GA4, Google Ads, Meta CAPI und nachvollziehbare Messkonzepte für belastbare Conversion-Signale.',
-				'url'         => $tracking_url,
-			],
-			[
-				'@type'       => 'Offer',
-				'name'        => 'Conversion-Optimierung',
-				'description' => 'Optimierung von Landingpages, Funnels, Proof und Anfragewegen mit Fokus auf messbare Conversion.',
-				'url'         => $freelancer_url,
-			],
-			[
-				'@type'       => 'Offer',
-				'name'        => 'White-Label für Agenturen',
-				'description' => 'WordPress-, Tracking-, CRO- und technische SEO-Umsetzung im Hintergrund für Agenturprojekte.',
-				'url'         => $whitelabel_url,
-			],
-			[
-				'@type'       => 'Offer',
-				'name'        => 'Anfragesysteme für Solar & Wärmepumpe',
-				'description' => 'Spezialisierte Nachfrage- und Anfragewege für Solar-, Wärmepumpen- und Speicher-Anbieter.',
-				'url'         => $energy_url,
-			],
-			[
-				'@type'       => 'Offer',
-				'name'        => 'Marktcheck für Solar & Wärmepumpe',
-				'description' => 'Diagnostischer Einstieg für den Energie-Cluster: Region, Anfragequalität, Datenlage und nächster sinnvoller Schritt.',
-				'url'         => $marketcheck_url,
-			],
+			$offer(
+				'WordPress-Entwicklung',
+				'WordPress-Websites und Landingpages mit technischer SEO, Performance und sauberer Weiterentwicklung.',
+				$freelancer_url,
+				'WordPress-Entwicklung'
+			),
+			$offer(
+				'Server-Side Tracking & Attribution',
+				'Server-GTM, GA4, Google Ads, Meta CAPI und nachvollziehbare Messkonzepte für belastbare Conversion-Signale.',
+				$tracking_url,
+				'Tracking & Attribution'
+			),
+			$offer(
+				'Conversion-Optimierung',
+				'Optimierung von Landingpages, Funnels, Proof und Anfragewegen mit Fokus auf messbare Conversion.',
+				$freelancer_url,
+				'Conversion Rate Optimization'
+			),
+			$offer(
+				'White-Label für Agenturen',
+				'WordPress-, Tracking-, CRO- und technische SEO-Umsetzung im Hintergrund für Agenturprojekte.',
+				$whitelabel_url,
+				'White-Label-Umsetzung'
+			),
+			$offer(
+				'Anfragesysteme für Solar & Wärmepumpe',
+				'Spezialisierte Nachfrage- und Anfragewege für Solar-, Wärmepumpen- und Speicher-Anbieter.',
+				$energy_url,
+				'Anfragesystem'
+			),
+			$offer(
+				'Marktcheck für Solar & Wärmepumpe',
+				'Diagnostischer Einstieg für den Energie-Cluster: Region, Anfragequalität, Datenlage und nächster sinnvoller Schritt.',
+				$marketcheck_url,
+				'Marktcheck'
+			),
 		],
 	];
 }
