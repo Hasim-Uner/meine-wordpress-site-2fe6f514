@@ -249,6 +249,20 @@
   position: relative;
   overflow: hidden;
 }
+
+/* Kopffreiheit nur dort, wo die globale Leiste ueberhaupt steht.
+   Die Leiste liegt fixed ueber dem Inhalt und belegt keine Hoehe im Fluss.
+   Mit den 40-56px oben begann das Eyebrow bei 56px (Desktop) bzw. 40px
+   (Mobil) und lag damit hinter der 64px hohen Leiste — der Abstand fehlte
+   nicht nur, er war negativ. Der Hero haelt die Leistenhoehe jetzt selbst
+   frei und setzt darunter rund 3-5mm sichtbaren Abstand (12-18px).
+   Bewusst auf `--hub` gescoped: `homepage-redesign.css` laedt auch auf der
+   Solar-Money-Page, deren Hero dieselbe `.hu-hero`-Basis nutzt — dort ist
+   der globale Header unterdrueckt (`inc/header.php`), eine Kopffreiheit
+   waere dort eine leere Flaeche. */
+.hu-hp .hu-hero--hub {
+  padding-block-start: calc(var(--nx-site-header-height, 64px) + clamp(12px,1.4vw,18px));
+}
 .hu-hp .hu-hero__grid-bg {
   position: absolute;
   inset: 0;
