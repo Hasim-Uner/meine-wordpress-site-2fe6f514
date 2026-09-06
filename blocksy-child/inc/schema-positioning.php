@@ -174,8 +174,10 @@ function hu_normalize_positioned_schema_node( array $schema ) : array {
 
 	$freelancer_webpage_id = home_url( '/wordpress-freelancer-hannover/#webpage' );
 	if ( $freelancer_webpage_id === $id ) {
-		$schema['mainEntity'] = [ '@id' => home_url( '/wordpress-freelancer-hannover/#service' ) ];
-		$schema['about']      = [ '@id' => home_url( '/#organization' ) ];
+		$schema['name']        = 'WordPress Freelancer Hannover – Entwicklung, Tracking & Conversion';
+		$schema['description'] = 'WordPress-Websites, Landingpages und Anfragestrecken inklusive Tracking. Direkte Zusammenarbeit aus der Region Hannover, remote im DACH-Raum.';
+		$schema['mainEntity']  = [ '@id' => home_url( '/wordpress-freelancer-hannover/#service' ) ];
+		$schema['about']       = [ '@id' => home_url( '/#organization' ) ];
 	}
 
 	return $schema;
@@ -184,52 +186,93 @@ function hu_normalize_positioned_schema_node( array $schema ) : array {
 /**
  * Build the Service node for the direct Freelancer money page.
  *
+ * The page itself owns the local/direct query. This node therefore mirrors the
+ * four visible offer blocks and the visible Hannover/DACH service scope instead
+ * of emitting a second, generic service catalog that can drift from the page.
+ *
  * @return array<string, mixed>
  */
 function hu_get_wordpress_freelancer_service_schema() : array {
-	$routes = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+	$routes         = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
 	$freelancer_url = $routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+	$service_id     = trailingslashit( $freelancer_url ) . '#service';
+	$provider_id    = home_url( '/#organization' );
+
+	$offer = static function ( string $name, string $description, string $anchor, string $service_type ) use ( $freelancer_url, $provider_id ) : array {
+		return [
+			'@type'       => 'Offer',
+			'itemOffered' => [
+				'@type'       => 'Service',
+				'name'        => $name,
+				'description' => $description,
+				'url'         => trailingslashit( $freelancer_url ) . '#' . ltrim( $anchor, '#' ),
+				'serviceType' => $service_type,
+				'provider'    => [ '@id' => $provider_id ],
+			],
+		];
+	};
 
 	return [
-		'@context'      => 'https://schema.org',
-		'@type'         => 'Service',
-		'@id'           => trailingslashit( $freelancer_url ) . '#service',
-		'url'           => $freelancer_url,
-		'name'          => 'WordPress Freelancer Hannover',
-		'description'   => 'Direkte WordPress-Zusammenarbeit mit Entwicklung, technischer SEO, Tracking und Conversion-Optimierung aus Pattensen bei Hannover.',
-		'provider'      => [ '@id' => home_url( '/#organization' ) ],
-		'serviceType'   => 'WordPress-Entwicklung',
-		'serviceOutput' => 'Technisch saubere WordPress-Websites und Landingpages mit messbaren Conversion-Pfaden, Tracking und kontrollierter Weiterentwicklung.',
-		'areaServed'    => [
+		'@context'         => 'https://schema.org',
+		'@type'            => 'Service',
+		'@id'              => $service_id,
+		'url'              => $freelancer_url,
+		'name'             => 'WordPress Freelancer Hannover',
+		'description'      => 'WordPress-Websites, Landingpages und Anfragestrecken inklusive Tracking, technischer SEO und Conversion-Optimierung. Sitz in Pattensen in der Region Hannover; Projekte remote im DACH-Raum.',
+		'provider'         => [ '@id' => $provider_id ],
+		'serviceType'      => 'WordPress-Entwicklung, Tracking und Conversion-Optimierung',
+		'serviceOutput'    => 'Eine technisch übergebene Website oder Anfragestrecke mit nachvollziehbarer Messung, versioniertem Code und klarer Übergabe.',
+		'mainEntityOfPage' => [ '@id' => trailingslashit( $freelancer_url ) . '#webpage' ],
+		'audience'         => [
+			'@type'        => 'BusinessAudience',
+			'audienceType' => 'Unternehmen mit WordPress-, Tracking- oder Conversion-Projekten',
+		],
+		'areaServed'       => [
 			[
 				'@type' => 'AdministrativeArea',
 				'name'  => 'Region Hannover',
 			],
 			[
-				'@type' => 'AdministrativeArea',
-				'name'  => 'DACH',
+				'@type' => 'Country',
+				'name'  => 'Deutschland',
+			],
+			[
+				'@type' => 'Country',
+				'name'  => 'Österreich',
+			],
+			[
+				'@type' => 'Country',
+				'name'  => 'Schweiz',
 			],
 		],
-		'hasOfferCatalog' => [
+		'hasOfferCatalog'  => [
 			'@type'           => 'OfferCatalog',
-			'name'            => 'Leistungsfelder der direkten WordPress-Zusammenarbeit',
+			'name'            => 'Direkte WordPress-Zusammenarbeit',
 			'itemListElement' => [
-				[
-					'@type' => 'Offer',
-					'name'  => 'WordPress-Entwicklung',
-				],
-				[
-					'@type' => 'Offer',
-					'name'  => 'Tracking & Attribution',
-				],
-				[
-					'@type' => 'Offer',
-					'name'  => 'Conversion-Optimierung',
-				],
-				[
-					'@type' => 'Offer',
-					'name'  => 'Technisches SEO',
-				],
+				$offer(
+					'Website neu oder Relaunch',
+					'Neue technische Basis mit Seiten- und Inhaltsarchitektur, individueller WordPress-Umsetzung, technischer SEO, Messkonzept, Staging und versioniertem Deployment.',
+					'angebot-website',
+					'WordPress-Entwicklung'
+				),
+				$offer(
+					'Anfragestrecke für eine Kampagne',
+					'Landingpage, Vorqualifizierung, Danke-Seite, Conversion-Messung und technische Übergabe als durchgängiger Pfad vom Klick bis zur qualifizierten Anfrage.',
+					'angebot-funnel',
+					'Landingpage und Anfragestrecke'
+				),
+				$offer(
+					'Tracking und Attribution nachrüsten',
+					'Analyse der bestehenden Messkette sowie GA4, Google Tag Manager, Server-Side Tracking, Consent-Anbindung und Werbekanal-Rückkanal je Scope.',
+					'angebot-tracking',
+					'Tracking & Attribution'
+				),
+				$offer(
+					'Planbare Kapazität für Weiterentwicklung',
+					'Priorisierte technische Weiterentwicklung bestehender WordPress-Seiten mit neuen Bereichen, Performance-, SEO-, Tracking- und Conversion-Korrekturen.',
+					'angebot-weiterentwicklung',
+					'WordPress-Weiterentwicklung'
+				),
 			],
 		],
 	];
