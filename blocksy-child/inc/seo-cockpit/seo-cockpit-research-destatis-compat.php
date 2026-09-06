@@ -52,7 +52,8 @@ function nexus_get_seo_cockpit_destatis_logincheck_endpoint() {
  * Test the stored personal GENESIS token without exposing it in the UI.
  *
  * The official API accepts the personal token in the username request header
- * and an empty password header.
+ * and an empty password header. GENESIS also uses this endpoint to clean up
+ * requests that have been running for more than 15 minutes.
  *
  * @return array{ok:bool,message:string,checked_at:int}
  */
@@ -118,7 +119,12 @@ function nexus_test_seo_cockpit_destatis_connection() {
 }
 
 /**
- * Update the connection diagnostic during the existing background refresh.
+ * Update the connection diagnostic.
+ *
+ * This function is deliberately not registered as a second callback on the
+ * background-refresh hook. The async Research runner invokes it from inside
+ * its shared lock so logincheck and the table requests cannot overlap across
+ * multiple cron workers.
  *
  * @return void
  */
@@ -134,7 +140,6 @@ function nexus_refresh_seo_cockpit_destatis_connection_diagnostic() {
 		false
 	);
 }
-add_action( 'nexus_seo_cockpit_research_background_refresh', 'nexus_refresh_seo_cockpit_destatis_connection_diagnostic', 5 );
 
 /**
  * Surface the last background authentication result on the Research page.
