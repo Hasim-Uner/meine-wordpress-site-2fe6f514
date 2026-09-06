@@ -59,12 +59,22 @@ function nexus_preempt_seo_cockpit_research_provider_http( $preempt, $parsed_arg
 /**
  * Queue one background refresh without delaying the admin request.
  *
+ * A short queue lock prevents repeated page loads from scheduling overlapping
+ * cron requests while a previous Research refresh is still starting/running.
+ *
  * @return void
  */
 function nexus_schedule_seo_cockpit_research_background_refresh() {
-	$hook = 'nexus_seo_cockpit_research_background_refresh';
+	$hook       = 'nexus_seo_cockpit_research_background_refresh';
+	$queue_lock = 'nexus_seo_cockpit_research_schedule_lock';
+	$run_lock   = 'nexus_seo_cockpit_research_refresh_lock';
+
+	if ( get_transient( $queue_lock ) || get_transient( $run_lock ) ) {
+		return;
+	}
 
 	if ( false === wp_next_scheduled( $hook ) ) {
+		set_transient( $queue_lock, '1', MINUTE_IN_SECONDS );
 		wp_schedule_single_event( time(), $hook );
 	}
 
@@ -79,7 +89,9 @@ function nexus_schedule_seo_cockpit_research_background_refresh() {
  * Populate missing or expired Research provider caches in the background.
  *
  * Existing provider functions retain their own TTLs and therefore make no
- * remote request while their transient is still valid.
+ * remote request while their transient is still valid. The shared run lock is
+ * also used for the GENESIS logincheck so Destatis never gets parallel calls
+ * from multiple Research cron workers.
  *
  * @return void
  */
@@ -111,8 +123,17 @@ function nexus_run_seo_cockpit_research_background_refresh() {
 			? nexus_get_seo_cockpit_destatis_api_token()
 			: '';
 
-		if ( '' !== $destatis_token && function_exists( 'nexus_get_seo_cockpit_destatis_summary' ) ) {
-			nexus_get_seo_cockpit_destatis_summary();
+		if ( '' !== $destatis_token ) {
+			// GENESIS explicitly recommends logincheck when stale requests have
+			// exhausted the personal parallel-process quota. Run it once, inside
+			// this shared lock, before requesting the two building tables.
+			if ( function_exists( 'nexus_refresh_seo_cockpit_destatis_connection_diagnostic' ) ) {
+				nexus_refresh_seo_cockpit_destatis_connection_diagnostic();
+			}
+
+			if ( function_exists( 'nexus_get_seo_cockpit_destatis_summary' ) ) {
+				nexus_get_seo_cockpit_destatis_summary();
+			}
 		}
 
 		if ( function_exists( 'nexus_get_seo_cockpit_eurostat_summary' ) ) {
