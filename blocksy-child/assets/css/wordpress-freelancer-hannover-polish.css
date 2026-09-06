@@ -1,13 +1,311 @@
 /*
- * WordPress Freelancer Hannover — v4 polish layer
- * Deliberately small: the v4 base stylesheet owns the visual system.
+ * WordPress Freelancer Hannover — v4 visual-core polish
+ *
+ * Motion brief:
+ * - intensity 2 / guided
+ * - thesis: Die Messung wird als sichtbare Kontinuitaet durch die Seite gefuehrt.
+ * - focal moment: einmaliger Mess-Trace im Hero
+ * - continuity: TOC erst nach dem Hero, scroll-gebundene Anfrage-Strecke
+ * - static: Vergleich, Proof-Zahlen und Formularinhalte bleiben ruhig
  */
 
 .hu-wordpress-freelancer-page .site-main {
 	margin-top: 0;
 }
 
+.hu-fr {
+	--fr-copper-text: #96502d;
+}
+
 .hu-fr-section--light + .hu-fr-section--dark,
 .hu-fr-section--dark + .hu-fr-section--light {
 	border-top-width: 0;
+}
+
+/*
+ * Contrast repair.
+ * Blocksy/global heading colors can win in the cascade. The route now owns its
+ * heading color explicitly on both surfaces. Small copper copy on cream uses a
+ * darker text tone; the brighter copper remains the accent on dark surfaces.
+ */
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light h1,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light h2,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light h3 {
+	color: var(--fr-ink) !important;
+}
+
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--dark h1,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--dark h2,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--dark h3 {
+	color: var(--fr-light) !important;
+}
+
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__eyebrow,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr-situations a > span,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr-situations b,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr-offers header span,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr-process span,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr-proof-grid article > span,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr-projects small,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr-inquiry__measurement > span,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr-inquiry__measurement b,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr-form__backline button,
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr-inquiry__fallback a {
+	color: var(--fr-copper-text) !important;
+}
+
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-mark span {
+	color: var(--fr-copper-text);
+}
+
+body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-mark b {
+	color: #5d5750;
+}
+
+/* Force the north-east arrow into text presentation instead of color emoji. */
+.hu-fr a,
+.hu-fr button {
+	font-variant-emoji: text;
+}
+
+.hu-fr__button > span[aria-hidden="true"],
+.hu-fr-toc__cta > b[aria-hidden="true"] {
+	font-family: var(--theme-font-mono, "IBM Plex Mono", monospace);
+	font-style: normal;
+	font-weight: 500;
+}
+
+/* Active section marker: orientation without generic section reveals. */
+.hu-fr__section-mark::before {
+	transition: height 350ms var(--fr-ease), box-shadow 350ms var(--fr-ease), opacity 200ms linear;
+}
+
+.hu-fr-section.is-current .hu-fr__section-mark::before {
+	height: 72px;
+	box-shadow: 0 0 0 1px rgba(180, 106, 60, .08), 0 0 22px rgba(180, 106, 60, .12);
+}
+
+/* Hero focal moment: the word "Messung" receives one authored trace. */
+.hu-fr-hero h1 em {
+	position: relative;
+	display: inline-block;
+}
+
+.hu-fr-hero h1 em::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -.08em;
+	height: 2px;
+	background: linear-gradient(90deg, var(--fr-copper-hi), rgba(224, 138, 60, .15));
+	transform: scaleX(0);
+	transform-origin: left center;
+}
+
+.hu-fr-hero.is-motion-live h1 em::after {
+	transform: scaleX(1);
+	transition: transform 760ms var(--fr-ease) 180ms;
+}
+
+.hu-fr-portrait::after {
+	content: "";
+	position: absolute;
+	z-index: 3;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 18%;
+	background: linear-gradient(90deg, transparent, rgba(224, 138, 60, .16), rgba(243, 238, 229, .13), transparent);
+	transform: translateX(-180%);
+	opacity: 0;
+	pointer-events: none;
+}
+
+.hu-fr-hero.is-motion-live .hu-fr-portrait::after {
+	animation: huFrPortraitScan 1150ms var(--fr-ease) 260ms 1 both;
+}
+
+@keyframes huFrPortraitScan {
+	0% { transform: translateX(-180%); opacity: 0; }
+	18% { opacity: .9; }
+	82% { opacity: .55; }
+	100% { transform: translateX(620%); opacity: 0; }
+}
+
+/*
+ * The desktop TOC is deliberately absent in the hero. It enters only after the
+ * first decision screen has ended, then behaves like the supplied side scale.
+ */
+@media (min-width: 1280px) {
+	.hu-fr-toc {
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transform: translateY(-50%) translateX(14px);
+		transition: opacity 220ms linear, transform 350ms var(--fr-ease), visibility 0s linear 350ms;
+	}
+
+	.hu-fr-toc.is-available {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transform: translateY(-50%) translateX(0);
+		transition-delay: 0s;
+	}
+
+	/* Closed scale adapts to dark sections; expanded panel always remains paper. */
+	.hu-fr-toc.is-on-dark:not(:hover):not(:focus-within) .hu-fr-toc__spine {
+		color: #a9a197;
+	}
+
+	.hu-fr-toc.is-on-dark:not(:hover):not(:focus-within) .hu-fr-toc__scale::before {
+		background: rgba(243, 238, 229, .26);
+	}
+
+	.hu-fr-toc.is-on-dark:not(:hover):not(:focus-within) .hu-fr-toc__tick {
+		background: #a9a197;
+	}
+
+	.hu-fr-toc.is-on-dark:not(:hover):not(:focus-within) .hu-fr-toc__list a[aria-current="true"] .hu-fr-toc__tick {
+		background: var(--fr-copper-hi);
+	}
+}
+
+@media (max-width: 1279px) {
+	.hu-fr__page-progress {
+		opacity: 0;
+		transition: opacity 180ms linear;
+	}
+
+	.hu-fr.is-past-hero .hu-fr__page-progress {
+		opacity: 1;
+	}
+}
+
+/*
+ * The request route is the main dynamic story. The rail follows actual scroll
+ * progress; stations resolve one after another instead of firing a hidden
+ * one-shot transition while the visitor is still scrolling into the section.
+ */
+.hu-fr-route {
+	--fr-route-progress: 0;
+}
+
+.hu-fr-route__rail span,
+.hu-fr-route.is-active .hu-fr-route__rail span {
+	transform: scaleX(var(--fr-route-progress)) !important;
+	transition: none !important;
+}
+
+.hu-fr-route li {
+	opacity: .48;
+	transform: translateY(7px);
+	transition: opacity 260ms linear, transform 350ms var(--fr-ease);
+}
+
+.hu-fr-route li::before {
+	transform: scale(.78);
+	transition: transform 260ms var(--fr-ease), background-color 200ms linear, box-shadow 260ms var(--fr-ease);
+}
+
+.hu-fr-route li.is-passed {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.hu-fr-route li.is-passed::before {
+	background: var(--fr-light);
+	transform: scale(1.28);
+	box-shadow: 0 0 0 4px rgba(224, 138, 60, .2), 0 0 20px rgba(224, 138, 60, .18);
+}
+
+.hu-fr-route__note {
+	opacity: .7;
+	transform: translateY(8px);
+	transition: opacity 260ms linear, transform 350ms var(--fr-ease), border-color 260ms linear;
+}
+
+.hu-fr-route.is-complete .hu-fr-route__note {
+	opacity: 1;
+	transform: translateY(0);
+	border-color: rgba(224, 138, 60, .58);
+}
+
+/* Intentional interaction polish, pointer-only. */
+@media (hover: hover) and (pointer: fine) {
+	.hu-fr-offers article,
+	.hu-fr-proof-grid article {
+		transition: transform 220ms var(--fr-ease), border-color 180ms linear, box-shadow 220ms var(--fr-ease), background-color 180ms linear;
+	}
+
+	.hu-fr-offers article:hover,
+	.hu-fr-proof-grid article:hover {
+		transform: translateY(-4px);
+		border-color: rgba(150, 80, 45, .4);
+		box-shadow: 0 18px 36px rgba(23, 20, 17, .06);
+		background: #fffaf2;
+	}
+
+	.hu-fr-projects > a {
+		transition: padding-left 220ms var(--fr-ease), background-color 180ms linear;
+	}
+
+	.hu-fr-projects > a:hover {
+		padding-left: 12px;
+		background: rgba(255, 253, 249, .55);
+	}
+
+	.hu-fr-projects > a:hover strong {
+		color: var(--fr-copper-text);
+	}
+}
+
+@media (max-width: 760px) {
+	.hu-fr-route li {
+		opacity: 1;
+		transform: none;
+	}
+
+	.hu-fr-route li::before {
+		transform: scale(1);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-fr-hero h1 em::after {
+		transform: scaleX(1);
+	}
+
+	.hu-fr-portrait::after {
+		display: none;
+	}
+
+	.hu-fr__section-mark::before {
+		transition: none;
+	}
+
+	.hu-fr-route {
+		--fr-route-progress: 1;
+	}
+
+	.hu-fr-route li,
+	.hu-fr-route li.is-passed,
+	.hu-fr-route__note,
+	.hu-fr-route.is-complete .hu-fr-route__note {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.hu-fr-route li::before,
+	.hu-fr-route li.is-passed::before {
+		transform: scale(1);
+		transition: none;
+	}
+
+	.hu-fr-toc,
+	.hu-fr__page-progress {
+		transition: none !important;
+	}
 }
