@@ -295,18 +295,19 @@ get_header();
 			<div class="hu-fr__shell hu-fr__section-shell">
 				<div class="hu-fr__section-mark"><span>04</span><b>Vergleich</b></div>
 				<div>
-					<div class="hu-fr__split-head"><div><p class="hu-fr__eyebrow">Direkt, Agentur oder Baukasten</p><h2 id="hu-fr-vergleich-title">Nicht jede Zeile spricht für mich. Die Unterschiede, die im Ergebnis zählen.</h2></div><p>Ein Freelancer ist nicht automatisch besser. Der Vorteil entsteht nur dort, wo direkte Verantwortung, technische Tiefe und geringer Übergabeaufwand wirklich zum Projekt passen.</p></div>
+					<div class="hu-fr__split-head"><div><p class="hu-fr__eyebrow">Welches Setup passt zum Projekt?</p><h2 id="hu-fr-vergleich-title">Nicht jedes Projekt braucht einen Freelancer. Aber jedes Projekt braucht die richtige Struktur.</h2></div><p>Direkt mit mir ist vor allem dann sinnvoll, wenn der Scope überschaubar bleibt, technische Tiefe gefragt ist und möglichst wenig zwischen Projektleitung, Entwicklung und Tracking verloren gehen soll.</p></div>
 					<div class="hu-fr-table-wrap" role="region" aria-labelledby="hu-fr-vergleich-title" tabindex="0">
 						<table class="hu-fr-table">
 							<thead><tr><th>Kriterium</th><th>Direkt mit mir</th><th>Agentur</th><th>Baukasten</th></tr></thead>
 							<tbody>
-								<tr><th>Ansprechpartner</th><td>Die Person, die entwickelt und deployt.</td><td>Projektleitung und Team.</td><td>Sie selbst plus Anbieter-Support.</td></tr>
-								<tr><th>Code-Eigentum</th><td>Ihr Repository, vollständiger Verlauf.</td><td>Abhängig vom Vertrag und Setup.</td><td>Kein eigener Zugriff auf den Plattform-Code.</td></tr>
-								<tr><th>Messung</th><td>Tracking kann Teil derselben Architektur sein.</td><td>Möglich, oft eigenes Gewerk.</td><td>Standard-Integrationen.</td></tr>
-								<tr><th>Abstimmung</th><td>Direkt, ohne Account-Handover.</td><td>Mehr Rollen, dafür mehr Kapazität.</td><td>Kein Projektteam.</td></tr>
-								<tr><th>Weiterentwicklung</th><td>Planbar im vereinbarten Scope.</td><td>Retainer oder Wartungsmodell möglich.</td><td>Innerhalb der Plattformgrenzen.</td></tr>
-								<tr><th>Wenn ich ausfalle</th><td>Das Projekt pausiert; Code und Zugänge bleiben bei Ihnen.</td><td>Vertretung im Team ist möglich.</td><td>Die Plattform läuft weiter, Umsetzung bleibt bei Ihnen.</td></tr>
-								<tr><th>Kosten</th><td>Aufbau ab <?php echo esc_html( $website_price_net ); ?>.</td><td>Je nach Team- und Projektmodell.</td><td>Abo-Einstieg, eigene Zeit nicht eingerechnet.</td></tr>
+								<tr><th>Ansprechpartner</th><td>Sie sprechen mit der Person, die Architektur, Umsetzung und Deployment verantwortet.</td><td>Projektleitung koordiniert mehrere Rollen.</td><td>Sie setzen selbst um; Support hilft bei Plattformfragen.</td></tr>
+								<tr><th>Code &amp; Konten</th><td>Repository, Hosting und Messkonten liegen bei Ihnen.</td><td>Abhängig von Vertrag und Setup; Übergabe sollte geregelt sein.</td><td>Plattform-Code und Infrastruktur bleiben beim Anbieter.</td></tr>
+								<tr><th>Messung</th><td>Tracking kann Teil derselben technischen Umsetzung sein.</td><td>Gut möglich, oft über ein eigenes Spezialisten-Team.</td><td>Standard-Integrationen mit begrenzter technischer Tiefe.</td></tr>
+								<tr><th>Kapazität</th><td>Eine Person, deshalb bewusst begrenzte Parallelität.</td><td>Mehrere Rollen können parallel arbeiten und sich vertreten.</td><td>Die verfügbare Kapazität ist Ihre eigene Zeit.</td></tr>
+								<tr><th>Weiterentwicklung</th><td>Planbar innerhalb einer vereinbarten Kapazität und Prioritätenliste.</td><td>Retainer, Wartung und größere Teams sind möglich.</td><td>Innerhalb der Funktionen und Grenzen der Plattform.</td></tr>
+								<tr><th>Ausfallrisiko</th><td>Wenn ich ausfalle, pausiert das Projekt. Code, Zugänge und Verlauf bleiben bei Ihnen.</td><td>Vertretung im Team ist grundsätzlich möglich.</td><td>Die Plattform läuft weiter; Umsetzung und Entscheidungen bleiben bei Ihnen.</td></tr>
+								<tr><th>Kosten</th><td>Aufbau ab <?php echo esc_html( $website_price_net ); ?>.</td><td>Je nach Teamgröße, Leistungsumfang und Projektmodell.</td><td>Niedriger Abo-Einstieg; eigene Zeit und Grenzen der Plattform kommen hinzu.</td></tr>
+								<tr><th>Passt besonders, wenn …</th><td>Scope klar ist und direkte technische Verantwortung zählt.</td><td>viele Gewerke gleichzeitig laufen oder Vertretung wichtig ist.</td><td>die Seite einfach bleibt und Budget wichtiger als Individualität ist.</td></tr>
 							</tbody>
 						</table>
 					</div>
@@ -318,12 +319,12 @@ get_header();
 			<div class="hu-fr__shell hu-fr__section-shell">
 				<div class="hu-fr__section-mark"><span>05</span><b>Ablauf</b></div>
 				<div>
-					<p class="hu-fr__eyebrow">Drei Schritte bis zum ersten Deployment</p>
-					<h2 id="hu-fr-ablauf-title">Scope vor Code. Abnahme vor Livegang.</h2>
+					<p class="hu-fr__eyebrow">Drei Entscheidungen vor dem Livegang</p>
+					<h2 id="hu-fr-ablauf-title">Erst Scope. Dann Build. Dann kontrolliert live.</h2>
 					<ol class="hu-fr-process">
-						<li><span>01</span><h3>Abgleich, 30 Minuten</h3><p>Ausgangslage, Ziel und vorhandene Daten. Am Ende steht ein sinnvoller nächster Schritt — oder ein begründetes Nein.</p></li>
-						<li><span>02</span><h3>Angebot mit festem Umfang</h3><p>Was gebaut wird, was gemessen wird und was ausdrücklich nicht dazugehört. Nachträgliche Wünsche werden getrennt beauftragt.</p></li>
-						<li><span>03</span><h3>Umsetzung, Abnahme, Übergabe</h3><p>Entwicklung in Branches, Review auf Staging, kontrolliertes Deployment. Zugänge und Repository liegen von Anfang an bei Ihnen.</p></li>
+						<li><span>01</span><h3>Passt das Projekt? 30 Minuten.</h3><p>Wir klären Ausgangslage, Ziel, vorhandenes Setup und was wirklich gebaut werden muss. Danach gibt es einen klaren nächsten Schritt — oder ein begründetes Nein.</p></li>
+						<li><span>02</span><h3>Scope wird schriftlich</h3><p>Leistungen, Messung, Übergaben, Abnahmekriterien und Ausschlüsse stehen vor dem Start fest. Neue Wünsche werden sichtbar ergänzt statt still in den Scope gedrückt.</p></li>
+						<li><span>03</span><h3>Build → Staging → Abnahme → Live</h3><p>Entwicklung läuft versioniert, die Abnahme auf Staging und das Deployment kontrolliert. Zugänge und Repository liegen von Anfang an bei Ihnen.</p></li>
 					</ol>
 				</div>
 			</div>
@@ -333,8 +334,8 @@ get_header();
 			<div class="hu-fr__shell hu-fr__section-shell">
 				<div class="hu-fr__section-mark"><span>06</span><b>Position</b></div>
 				<div class="hu-fr-position">
-					<div><p class="hu-fr__eyebrow">Der Unterschied</p><h2 id="hu-fr-position-title">Ich bin teurer als ein Baukasten und meist günstiger als ein größeres Agentur-Setup.</h2><p>Der Unterschied soll nicht aus Design-Behauptungen kommen, sondern aus Verantwortung: Messung wird mitgebaut statt nachgeklebt, Änderungen werden versioniert und Entscheidungen bleiben später erklärbar.</p></div>
-					<aside><span>Wofür ich nicht der Richtige bin</span><ul><li>Baukasten-Projekte ohne individuelle Technik</li><li>24/7-Rufbereitschaft oder garantierte Vertretung</li><li>reines Design ohne technische Umsetzung</li><li>Projekte, bei denen nur der niedrigste Preis entscheidet</li></ul></aside>
+					<div><p class="hu-fr__eyebrow">Wofür Sie bezahlen</p><h2 id="hu-fr-position-title">Ich bin teurer als ein Baukasten und meist günstiger als ein größeres Agentur-Setup.</h2><p>Sie bezahlen nicht dafür, dass ich möglichst viele Seiten baue. Sie bezahlen dafür, dass Entwicklung, Messung und Übergabe zusammen gedacht werden — und Sie später nachvollziehen können, was geändert wurde, wem die Konten gehören und woher eine Anfrage kommt.</p></div>
+					<aside><span>Wann ein anderes Setup besser ist</span><ul><li>Sie brauchen 24/7-Support oder garantierte Vertretung: Dann ist ein Team sinnvoller.</li><li>Es geht nur um eine sehr einfache Präsenzseite: Dann kann ein Baukasten reichen.</li><li>Sie brauchen ausschließlich Branding oder UI ohne technische Umsetzung: Dann passt ein Designstudio besser.</li><li>Mehrere Gewerke müssen gleichzeitig mit hoher Kapazität laufen: Dann ist eine größere Agentur im Vorteil.</li></ul></aside>
 				</div>
 			</div>
 		</section>
