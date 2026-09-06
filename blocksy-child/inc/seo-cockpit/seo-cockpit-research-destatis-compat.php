@@ -95,7 +95,13 @@ function nexus_test_seo_cockpit_destatis_connection() {
 	$status = (int) wp_remote_retrieve_response_code( $response );
 	$body   = json_decode( (string) wp_remote_retrieve_body( $response ), true );
 	$body   = is_array( $body ) ? $body : [];
-	$api_status = sanitize_text_field( (string) ( $body['Status'] ?? $body['status'] ?? '' ) );
+
+	$raw_status = $body['Status'] ?? $body['status'] ?? '';
+	if ( is_array( $raw_status ) ) {
+		$api_status = sanitize_text_field( (string) ( $raw_status['Content'] ?? $raw_status['content'] ?? '' ) );
+	} else {
+		$api_status = sanitize_text_field( (string) $raw_status );
+	}
 
 	if ( $status >= 200 && $status < 300 && false !== stripos( $api_status, 'erfolgreich' ) ) {
 		$result['ok']      = true;
@@ -103,9 +109,9 @@ function nexus_test_seo_cockpit_destatis_connection() {
 		return $result;
 	}
 
-	$message = sanitize_text_field(
-		(string) ( $body['Status']['Content'] ?? $body['Content'] ?? $api_status ?? 'Unbekannte GENESIS-Antwort.' )
-	);
+	$message = '' !== $api_status
+		? $api_status
+		: sanitize_text_field( (string) ( $body['Content'] ?? 'Unbekannte GENESIS-Antwort.' ) );
 	$result['message'] = sprintf( 'GENESIS antwortet mit HTTP %1$d: %2$s', $status, $message ?: 'Authentifizierung nicht bestätigt.' );
 
 	return $result;
