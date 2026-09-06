@@ -55,7 +55,7 @@ function nexus_get_seo_cockpit_destatis_logincheck_endpoint() {
  * and an empty password header. GENESIS also uses this endpoint to clean up
  * requests that have been running for more than 15 minutes.
  *
- * @return array{ok:bool,message:string,checked_at:int}
+ * @return array{ok:bool,state:string,message:string,checked_at:int}
  */
 function nexus_test_seo_cockpit_destatis_connection() {
 	$token = function_exists( 'nexus_get_seo_cockpit_destatis_api_token' )
@@ -64,6 +64,7 @@ function nexus_test_seo_cockpit_destatis_connection() {
 
 	$result = [
 		'ok'         => false,
+		'state'      => 'error',
 		'message'    => 'Kein GENESIS API-Token hinterlegt.',
 		'checked_at' => time(),
 	];
@@ -75,7 +76,7 @@ function nexus_test_seo_cockpit_destatis_connection() {
 	$response = wp_remote_post(
 		nexus_get_seo_cockpit_destatis_logincheck_endpoint(),
 		[
-			'timeout' => 12,
+			'timeout' => 20,
 			'headers' => [
 				'Accept'       => 'application/json',
 				'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -89,7 +90,14 @@ function nexus_test_seo_cockpit_destatis_connection() {
 	);
 
 	if ( is_wp_error( $response ) ) {
-		$result['message'] = 'GENESIS-Verbindung fehlgeschlagen: ' . $response->get_error_message();
+		$error_message = $response->get_error_message();
+		if ( false !== stripos( $error_message, 'cURL error 28' ) || false !== stripos( $error_message, 'timed out' ) ) {
+			$result['state']   = 'temporary';
+			$result['message'] = 'GENESIS-Logincheck hat vorübergehend nicht geantwortet. Das ist ein Provider-Timeout und kein Hinweis auf einen ungültigen Token; der eigentliche Tabellenabruf wird unabhängig bewertet.';
+			return $result;
+		}
+
+		$result['message'] = 'GENESIS-Verbindung fehlgeschlagen: ' . $error_message;
 		return $result;
 	}
 
@@ -106,6 +114,7 @@ function nexus_test_seo_cockpit_destatis_connection() {
 
 	if ( $status >= 200 && $status < 300 && false !== stripos( $api_status, 'erfolgreich' ) ) {
 		$result['ok']      = true;
+		$result['state']   = 'success';
 		$result['message'] = 'GENESIS API-Token wurde erfolgreich authentifiziert.';
 		return $result;
 	}
@@ -161,7 +170,10 @@ function nexus_render_seo_cockpit_destatis_connection_notice() {
 		return;
 	}
 
-	$class   = ! empty( $status['ok'] ) ? 'notice notice-success' : 'notice notice-warning';
+	$state = sanitize_key( (string) ( $status['state'] ?? ( ! empty( $status['ok'] ) ? 'success' : 'error' ) ) );
+	$class = ! empty( $status['ok'] )
+		? 'notice notice-success'
+		: ( 'temporary' === $state ? 'notice notice-info' : 'notice notice-warning' );
 	$message = sanitize_text_field( (string) ( $status['message'] ?? '' ) );
 	if ( '' === $message ) {
 		return;
