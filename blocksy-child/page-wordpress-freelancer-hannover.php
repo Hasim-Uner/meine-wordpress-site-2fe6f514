@@ -151,16 +151,15 @@ $faqs = [
 ];
 
 $toc_items = [
-	'start'        => 'Start',
-	'einordnung'   => 'Ausgangslage',
-	'strecke'      => 'Die Strecke',
-	'angebote'     => 'Angebote',
-	'vergleich'    => 'Vergleich',
-	'ablauf'       => 'Ablauf',
-	'position'     => 'Position',
-	'nachweis'     => 'Nachweis',
-	'fragen'       => 'Fragen',
-	'anfrage'      => 'Anfrage',
+	'einordnung' => 'Einordnung',
+	'strecke'    => 'Die Strecke',
+	'angebote'   => 'Angebote',
+	'vergleich'  => 'Vergleich',
+	'ablauf'     => 'Ablauf',
+	'position'   => 'Position',
+	'nachweis'   => 'Nachweis',
+	'fragen'     => 'Fragen',
+	'anfrage'    => 'Anfrage',
 ];
 
 get_header();
@@ -172,8 +171,8 @@ get_header();
 
 		<nav class="hu-fr-toc" aria-label="Inhaltsverzeichnis">
 			<div class="hu-fr-toc__panel">
-				<span class="hu-fr-toc__spine" aria-hidden="true">Inhalt · 10</span>
-				<div class="hu-fr-toc__head"><b>Auf dieser Seite</b><span>10 Abschnitte</span></div>
+				<span class="hu-fr-toc__spine" aria-hidden="true">Inhalt · 09</span>
+				<div class="hu-fr-toc__head"><b>Auf dieser Seite</b><span>9 Abschnitte</span></div>
 				<div class="hu-fr-toc__scale">
 					<span class="hu-fr-toc__fill" data-fr-toc-fill aria-hidden="true"></span>
 					<ol class="hu-fr-toc__list">
@@ -191,22 +190,21 @@ get_header();
 			</div>
 		</nav>
 
-		<section class="hu-fr-section hu-fr-section--dark hu-fr-hero" id="start" data-fr-section aria-labelledby="hu-fr-title">
-			<div class="hu-fr__shell hu-fr__section-shell hu-fr__section-shell--hero">
-				<div class="hu-fr__section-mark"><span>01</span><b>Start</b></div>
+		<section class="hu-fr-section hu-fr-section--dark hu-fr-hero" id="start" aria-labelledby="hu-fr-title">
+			<div class="hu-fr__shell">
 				<div class="hu-fr-hero__grid">
 					<div class="hu-fr-hero__copy">
 						<p class="hu-fr__eyebrow">WordPress · Tracking · Conversion</p>
 						<h1 id="hu-fr-title">WordPress Freelancer Hannover, der die <em>Messung</em> mitbaut.</h1>
-						<p class="hu-fr-hero__lede">Entwicklung, Tracking und Anfrageweg kommen von einer Person. Sie müssen nicht zwischen drei Dienstleistern vermitteln, wenn eine Zahl nicht stimmt.</p>
+						<p class="hu-fr-hero__lede">Ich entwickle WordPress-Seiten, Landingpages und Anfragestrecken inklusive Tracking. So hängen Website, Werbekanal und CRM technisch zusammen — und Sie müssen nicht zwischen mehreren Dienstleistern vermitteln, wenn Anfragen oder Zahlen nicht stimmen.</p>
 						<div class="hu-fr__actions">
 							<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span aria-hidden="true">↗</span></a>
 							<a class="hu-fr__button hu-fr__button--ghost" href="#angebote" data-track-action="cta_freelancer_hero_pricing" data-track-category="navigation" data-track-section="hero">Was das kostet</a>
 						</div>
 						<ul class="hu-fr-hero__signals" role="list">
-							<li>Technisch fundiert</li>
-							<li>Messbar von Anfang an</li>
-							<li>Direkter Ansprechpartner</li>
+							<li>Code &amp; Konten gehören Ihnen</li>
+							<li>Tracking von Anfang an</li>
+							<li>Direkt mit dem Entwickler</li>
 						</ul>
 					</div>
 					<div class="hu-fr-hero__visual">
@@ -219,16 +217,16 @@ get_header();
 				</div>
 			</div>
 			<div class="hu-fr__shell hu-fr-hero__proofbar" aria-label="Kurzbelege">
-				<span><strong><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></strong> Kosten pro qualifizierter Anfrage*</span>
-				<span><strong><?php echo esc_html( $e3_leads ); ?></strong> qualifizierte Anfragen*</span>
-				<span><strong><?php echo esc_html( $lighthouse_mobile_performance ); ?></strong> Mobile Performance**</span>
-				<span><strong><?php echo esc_html( $response_promise ); ?></strong></span>
+				<span><strong><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></strong> CPL im dokumentierten Solar-Case*</span>
+				<span><strong><?php echo esc_html( $e3_leads ); ?></strong> qualifizierte Anfragen im selben System*</span>
+				<span><strong><?php echo esc_html( $lighthouse_mobile_performance ); ?></strong> Mobile Performance dieser Seite**</span>
+				<span><strong>≤ 24 h werktags</strong> Antwort auf Projektanfragen</span>
 			</div>
 		</section>
 
 		<div class="hu-fr__mobile-toc-wrap">
 			<details class="hu-fr-toc-m">
-				<summary>Auf dieser Seite — 10 Abschnitte <span aria-hidden="true">⌄</span></summary>
+				<summary>Auf dieser Seite — 9 Abschnitte <span aria-hidden="true">⌄</span></summary>
 				<ol>
 					<?php foreach ( $toc_items as $toc_id => $toc_label ) : ?>
 						<li><a href="#<?php echo esc_attr( $toc_id ); ?>"><?php echo esc_html( $toc_label ); ?></a></li>
@@ -239,16 +237,16 @@ get_header();
 
 		<section class="hu-fr-section hu-fr-section--light" id="einordnung" data-fr-section aria-labelledby="hu-fr-einordnung-title">
 			<div class="hu-fr__shell hu-fr__section-shell">
-				<div class="hu-fr__section-mark"><span>02</span><b>Einordnung</b></div>
+				<div class="hu-fr__section-mark"><span>01</span><b>Einordnung</b></div>
 				<div>
 					<p class="hu-fr__eyebrow">Typische Ausgangslagen</p>
-					<h2 id="hu-fr-einordnung-title">Womit kommen Sie?</h2>
-					<p class="hu-fr__intro">Vier Situationen, die bei direkten Projekten immer wieder auftauchen — dahinter liegt jeweils ein anderer Scope.</p>
+					<h2 id="hu-fr-einordnung-title">Wo steht Ihr Projekt gerade?</h2>
+					<p class="hu-fr__intro">Vier typische Ausgangslagen. Je nachdem, wo es gerade hängt, sieht auch die sinnvolle Lösung anders aus.</p>
 					<div class="hu-fr-situations">
-						<a href="#angebot-website"><span>01</span><h3>Wir haben keine Website — oder eine, die niemand mehr anfassen will.</h3><p>Neu-Aufbau oder Relaunch mit sauberer Architektur und Messung.</p><b>ab <?php echo esc_html( $website_price ); ?> ↘</b></a>
-						<a href="#angebot-funnel"><span>02</span><h3>Wir schalten Anzeigen auf eine Seite, die dafür nie gebaut wurde.</h3><p>Landingpage, Formular, Danke-Seite und Messung als eine Strecke.</p><b>auf Anfrage ↘</b></a>
-						<a href="#angebot-tracking"><span>03</span><h3>Die Seite läuft. Aber niemand kann sagen, woher die Anfragen kommen.</h3><p>Tracking und Attribution nachrüsten, ohne das ganze System neu zu bauen.</p><b>ab <?php echo esc_html( $tracking_price ); ?> ↘</b></a>
-						<a href="#angebot-weiterentwicklung"><span>04</span><h3>Es gibt eine Seite, aber keinen, der sie kontrolliert weiterentwickelt.</h3><p>Planbare technische Weiterentwicklung mit einem festen Ansprechpartner.</p><b>monatlich nach Scope ↘</b></a>
+						<a href="#angebot-website"><span>01</span><h3>Wir haben keine Website — oder eine, die niemand mehr anfassen will.</h3><p>Saubere technische Basis, klare Seitenstruktur und Messung von Anfang an.</p><b>ab <?php echo esc_html( $website_price ); ?> →</b></a>
+						<a href="#angebot-funnel"><span>02</span><h3>Wir schalten Anzeigen auf eine Seite, die dafür nie gebaut wurde.</h3><p>Landingpage, Formular, Danke-Seite und Tracking als eine durchgehende Anfragestrecke.</p><b>auf Anfrage →</b></a>
+						<a href="#angebot-tracking"><span>03</span><h3>Die Seite läuft. Aber niemand kann sagen, woher die Anfragen kommen.</h3><p>Belastbare Messung und Attribution, ohne die bestehende Website komplett neu aufzubauen.</p><b>ab <?php echo esc_html( $tracking_price ); ?> →</b></a>
+						<a href="#angebot-weiterentwicklung"><span>04</span><h3>Es gibt eine Website, aber niemanden, der sie verlässlich weiterentwickelt.</h3><p>Planbare Weiterentwicklung mit klaren Prioritäten und einem direkten Ansprechpartner.</p><b>monatlich nach Scope →</b></a>
 					</div>
 				</div>
 			</div>
@@ -256,7 +254,7 @@ get_header();
 
 		<section class="hu-fr-section hu-fr-section--dark" id="strecke" data-fr-section aria-labelledby="hu-fr-strecke-title">
 			<div class="hu-fr__shell hu-fr__section-shell">
-				<div class="hu-fr__section-mark"><span>03</span><b>Die Strecke</b></div>
+				<div class="hu-fr__section-mark"><span>02</span><b>Die Strecke</b></div>
 				<div>
 					<div class="hu-fr__split-head">
 						<div><p class="hu-fr__eyebrow">Eine Anfrage legt fünf Stationen zurück</p><h2 id="hu-fr-strecke-title">Vom ersten Klick bis zur Anfrage.</h2></div>
@@ -279,7 +277,7 @@ get_header();
 
 		<section class="hu-fr-section hu-fr-section--light" id="angebote" data-fr-section aria-labelledby="hu-fr-angebote-title">
 			<div class="hu-fr__shell hu-fr__section-shell">
-				<div class="hu-fr__section-mark"><span>04</span><b>Angebote</b></div>
+				<div class="hu-fr__section-mark"><span>03</span><b>Angebote</b></div>
 				<div>
 					<p class="hu-fr__eyebrow">Klare Leistungen. Transparente Einstiege.</p>
 					<h2 id="hu-fr-angebote-title">Vier Angebote. Jedes mit einem Ergebnis, das man abnehmen kann.</h2>
@@ -295,7 +293,7 @@ get_header();
 
 		<section class="hu-fr-section hu-fr-section--dark" id="vergleich" data-fr-section aria-labelledby="hu-fr-vergleich-title">
 			<div class="hu-fr__shell hu-fr__section-shell">
-				<div class="hu-fr__section-mark"><span>05</span><b>Vergleich</b></div>
+				<div class="hu-fr__section-mark"><span>04</span><b>Vergleich</b></div>
 				<div>
 					<div class="hu-fr__split-head"><div><p class="hu-fr__eyebrow">Direkt, Agentur oder Baukasten</p><h2 id="hu-fr-vergleich-title">Nicht jede Zeile spricht für mich. Die Unterschiede, die im Ergebnis zählen.</h2></div><p>Ein Freelancer ist nicht automatisch besser. Der Vorteil entsteht nur dort, wo direkte Verantwortung, technische Tiefe und geringer Übergabeaufwand wirklich zum Projekt passen.</p></div>
 					<div class="hu-fr-table-wrap" role="region" aria-labelledby="hu-fr-vergleich-title" tabindex="0">
@@ -318,7 +316,7 @@ get_header();
 
 		<section class="hu-fr-section hu-fr-section--light" id="ablauf" data-fr-section aria-labelledby="hu-fr-ablauf-title">
 			<div class="hu-fr__shell hu-fr__section-shell">
-				<div class="hu-fr__section-mark"><span>06</span><b>Ablauf</b></div>
+				<div class="hu-fr__section-mark"><span>05</span><b>Ablauf</b></div>
 				<div>
 					<p class="hu-fr__eyebrow">Drei Schritte bis zum ersten Deployment</p>
 					<h2 id="hu-fr-ablauf-title">Scope vor Code. Abnahme vor Livegang.</h2>
@@ -333,7 +331,7 @@ get_header();
 
 		<section class="hu-fr-section hu-fr-section--dark" id="position" data-fr-section aria-labelledby="hu-fr-position-title">
 			<div class="hu-fr__shell hu-fr__section-shell">
-				<div class="hu-fr__section-mark"><span>07</span><b>Position</b></div>
+				<div class="hu-fr__section-mark"><span>06</span><b>Position</b></div>
 				<div class="hu-fr-position">
 					<div><p class="hu-fr__eyebrow">Der Unterschied</p><h2 id="hu-fr-position-title">Ich bin teurer als ein Baukasten und meist günstiger als ein größeres Agentur-Setup.</h2><p>Der Unterschied soll nicht aus Design-Behauptungen kommen, sondern aus Verantwortung: Messung wird mitgebaut statt nachgeklebt, Änderungen werden versioniert und Entscheidungen bleiben später erklärbar.</p></div>
 					<aside><span>Wofür ich nicht der Richtige bin</span><ul><li>Baukasten-Projekte ohne individuelle Technik</li><li>24/7-Rufbereitschaft oder garantierte Vertretung</li><li>reines Design ohne technische Umsetzung</li><li>Projekte, bei denen nur der niedrigste Preis entscheidet</li></ul></aside>
@@ -343,7 +341,7 @@ get_header();
 
 		<section class="hu-fr-section hu-fr-section--light" id="nachweis" data-fr-section aria-labelledby="hu-fr-nachweis-title">
 			<div class="hu-fr__shell hu-fr__section-shell">
-				<div class="hu-fr__section-mark"><span>08</span><b>Nachweis</b></div>
+				<div class="hu-fr__section-mark"><span>07</span><b>Nachweis</b></div>
 				<div>
 					<p class="hu-fr__eyebrow">Keine Versprechen. Sondern prüfbare Arbeit.</p>
 					<h2 id="hu-fr-nachweis-title">Technik, die man messen und nachsehen kann.</h2>
@@ -364,7 +362,7 @@ get_header();
 
 		<section class="hu-fr-section hu-fr-section--dark" id="fragen" data-fr-section aria-labelledby="hu-fr-fragen-title">
 			<div class="hu-fr__shell hu-fr__section-shell">
-				<div class="hu-fr__section-mark"><span>09</span><b>Fragen</b></div>
+				<div class="hu-fr__section-mark"><span>08</span><b>Fragen</b></div>
 				<div class="hu-fr-faq-grid">
 					<div><p class="hu-fr__eyebrow">Häufige Fragen. Klare Antworten.</p><h2 id="hu-fr-fragen-title">Kurz und konkret.</h2></div>
 					<div class="hu-fr-faq" data-fr-accordion>
@@ -378,7 +376,7 @@ get_header();
 
 		<section class="hu-fr-section hu-fr-section--light" id="anfrage" data-fr-section aria-labelledby="hu-fr-anfrage-title">
 			<div class="hu-fr__shell hu-fr__section-shell">
-				<div class="hu-fr__section-mark"><span>10</span><b>Anfrage</b></div>
+				<div class="hu-fr__section-mark"><span>09</span><b>Anfrage</b></div>
 				<div class="hu-fr-inquiry">
 					<div class="hu-fr-inquiry__intro"><p class="hu-fr__eyebrow">Der erste Scope</p><h2 id="hu-fr-anfrage-title">Drei Angaben reichen für den ersten fachlichen Abgleich.</h2><p>Die erste Stufe fragt nur nach Ansprechpartner, Ausgangslage und Ziel. Kontakt und Einwilligung kommen erst danach. So bleibt die sichtbare Hürde klein, ohne Daten stillschweigend zu sammeln.</p></div>
 					<div class="hu-fr-inquiry__main">
