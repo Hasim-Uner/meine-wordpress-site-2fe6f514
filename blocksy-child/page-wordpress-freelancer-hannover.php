@@ -257,19 +257,19 @@ get_header();
 				<div class="hu-fr__section-mark"><span>02</span><b>Die Strecke</b></div>
 				<div>
 					<div class="hu-fr__split-head">
-						<div><p class="hu-fr__eyebrow">Eine Anfrage legt fünf Stationen zurück</p><h2 id="hu-fr-strecke-title">Vom ersten Klick bis zur Anfrage.</h2></div>
-						<p>Die Website ist nur eine Station. Verloren geht eine Anfrage meistens zwischen zwei Stationen — dort, wo Zuständigkeit und Information wechseln.</p>
+						<div><p class="hu-fr__eyebrow">Fünf Stationen. Vier Übergaben.</p><h2 id="hu-fr-strecke-title">Der kritische Teil liegt zwischen den Stationen.</h2></div>
+						<p>Vom ersten Klick bis ins CRM werden Erwartung, Quelle und Zuständigkeit weitergereicht. Genau an diesen Übergaben entstehen Messlücken, falsche Zuordnungen und unnötige Reibung.</p>
 					</div>
 					<div class="hu-fr-route" data-fr-route>
 						<div class="hu-fr-route__rail" aria-hidden="true"><span></span></div>
 						<ol>
-							<li><i>01</i><h3>Suche oder Anzeige</h3><p>Jemand sucht ein Problem, nicht Ihre Firma.</p><small>Üblich: SEO- oder Ads-Dienstleister</small></li>
-							<li><i>02</i><h3>Seite</h3><p>Erster Satz, Ladezeit, Struktur und Relevanz.</p><small>Üblich: Webdesigner oder Agentur</small></li>
-							<li><i>03</i><h3>Formular</h3><p>Welche Felder, welche Vorqualifizierung, welche Hürde.</p><small>Üblich: niemand ausdrücklich</small></li>
-							<li><i>04</i><h3>Messung</h3><p>Was ausgelöst wird und welche Quelle erhalten bleibt.</p><small>Üblich: Analytics-Dienstleister</small></li>
-							<li><i>05</i><h3>Postfach oder CRM</h3><p>Wer die Anfrage bekommt und wie schnell daraus ein Gespräch wird.</p><small>Üblich: der Vertrieb, ungefragt</small></li>
+							<li><i>01</i><h3>Suche oder Anzeige</h3><p>Hier entsteht die Erwartung: Suchintention, Anzeige und Versprechen.</p><small>Verantwortung meist: SEO oder Ads</small></li>
+							<li><i>02</i><h3>Seite</h3><p>Botschaft, Geschwindigkeit und Relevanz entscheiden, ob jemand bleibt.</p><small>Verantwortung meist: Web oder Content</small></li>
+							<li><i>03</i><h3>Formular</h3><p>Fragen sollen qualifizieren, ohne gute Anfragen unnötig auszubremsen.</p><small>Verantwortung oft: nicht klar geregelt</small></li>
+							<li><i>04</i><h3>Messung</h3><p>Quelle, Consent und Conversion müssen technisch sauber zusammenlaufen.</p><small>Verantwortung meist: Analytics</small></li>
+							<li><i>05</i><h3>Postfach oder CRM</h3><p>Anfrage, Herkunft und Status müssen beim richtigen Team ankommen.</p><small>Verantwortung meist: Vertrieb oder CRM</small></li>
 						</ol>
-						<div class="hu-fr-route__note"><strong>Drei Dienstleister = mehrere Übergaben.</strong><p>Bei mir bleibt die technische Verantwortung für diese Strecke in einem Scope.</p></div>
+						<div class="hu-fr-route__note"><strong>Jede Übergabe ist eine mögliche Messlücke.</strong><p>Mein Scope endet deshalb nicht automatisch am WordPress-Template. Wenn ich die Anfragestrecke baue, gehören Formular, Messung und technische Übergabe zum selben System.</p></div>
 					</div>
 				</div>
 			</div>
@@ -279,13 +279,13 @@ get_header();
 			<div class="hu-fr__shell hu-fr__section-shell">
 				<div class="hu-fr__section-mark"><span>03</span><b>Angebote</b></div>
 				<div>
-					<p class="hu-fr__eyebrow">Klare Leistungen. Transparente Einstiege.</p>
-					<h2 id="hu-fr-angebote-title">Vier Angebote. Jedes mit einem Ergebnis, das man abnehmen kann.</h2>
+					<p class="hu-fr__eyebrow">Vier klare Einstiege</p>
+					<h2 id="hu-fr-angebote-title">Kein Leistungskatalog. Vier klar abgegrenzte Ergebnisse.</h2>
 					<div class="hu-fr-offers">
-						<article id="angebot-website"><header><span>01 — Aufbau</span><strong>ab <?php echo esc_html( $website_price ); ?></strong></header><h3>Website neu oder Relaunch</h3><p>Für Unternehmen, die eine technische Basis brauchen, die die nächsten Jahre trägt.</p><ul><li>Seitenarchitektur und Inhaltsinventur</li><li>individuelle WordPress-Umsetzung</li><li>technisches SEO, Core Web Vitals, Accessibility-Basis</li><li>Messung von Anfang an mitgedacht</li><li>versioniertes Deployment und Abnahme auf Staging</li></ul><footer>Festpreis nach Scope. Zugänge, Repository und Konten gehören Ihnen.</footer></article>
-						<article id="angebot-funnel"><header><span>02 — Anfragestrecke</span><strong>auf Anfrage</strong></header><h3>Landingpage, Formular und Messung als ein Stück</h3><p>Für eine Kampagne mit einem klaren Ziel — nicht für eine weitere lose Landingpage.</p><ul><li>Landingpage auf Angebot und Zielgruppe</li><li>Formular mit Vorqualifizierung</li><li>Danke-Seite und Conversion-Auslösung</li><li>Server-Side-Messung und Werbekanal-Rückkanal</li><li>Auswertung, aus der eine Budgetentscheidung folgen kann</li></ul><footer>Sinnvoll bei laufendem oder geplantem Anzeigenbudget.</footer></article>
-						<article id="angebot-tracking"><header><span>03 — Messung</span><strong>ab <?php echo esc_html( $tracking_price ); ?></strong></header><h3>Tracking und Attribution nachrüsten</h3><p>Für Seiten, die laufen, aber keine belastbaren Zahlen liefern.</p><ul><li>GA4 und Google Tag Manager</li><li>Server-Side Tracking</li><li>Consent-Anbindung</li><li>Google Ads / Meta Rückkanal je Scope</li><li>prüfbare Event- und Datenlogik</li></ul><footer><a href="<?php echo esc_url( $tracking_url ); ?>">Tracking-Leistungsumfang ansehen ↗</a></footer></article>
-						<article id="angebot-weiterentwicklung"><header><span>04 — Weiterentwicklung</span><strong>nach Scope</strong></header><h3>Feste Kapazität für laufende Weiterentwicklung</h3><p>Für Unternehmen, deren Seite weitergebaut werden soll — kontrolliert statt als loses Ticket-Pingpong.</p><ul><li>neue Bereiche und Landingpages</li><li>technische Optimierung</li><li>Tracking- und Conversion-Korrekturen</li><li>klare Prioritäten statt offener Wunschliste</li><li>direkter Ansprechpartner</li></ul><footer>Umfang und Takt werden vor Start festgelegt.</footer></article>
+						<article id="angebot-website"><header><span>01 — Aufbau</span><strong>ab <?php echo esc_html( $website_price ); ?></strong></header><h3>Website neu oder Relaunch</h3><p>Für Unternehmen, die eine neue technische Basis brauchen — nicht nur ein neues Layout.</p><ul><li>Seiten- und Inhaltsarchitektur</li><li>individuelle WordPress-Umsetzung</li><li>responsive, performant und barrierearm</li><li>technisches SEO und Messkonzept</li><li>Staging, Abnahme und versioniertes Deployment</li></ul><footer>Ergebnis: eine übergebene, messbare Website in Ihren Konten und Ihrem Repository.</footer></article>
+						<article id="angebot-funnel"><header><span>02 — Anfragestrecke</span><strong>auf Anfrage</strong></header><h3>Anfragestrecke für eine Kampagne</h3><p>Für Ads- oder SEO-Traffic, der nicht auf einer allgemeinen Unternehmensseite enden soll.</p><ul><li>Landingpage auf Angebot und Such- oder Anzeigenintention</li><li>Formular mit sinnvoller Vorqualifizierung</li><li>Danke-Seite und Übergabelogik</li><li>Conversion- und Server-Side-Messung</li><li>Rückkanal zum Werbekanal oder CRM je Scope</li></ul><footer>Ergebnis: ein durchgängiger Pfad vom Klick bis zur qualifizierten Anfrage.</footer></article>
+						<article id="angebot-tracking"><header><span>03 — Messung</span><strong>ab <?php echo esc_html( $tracking_price ); ?></strong></header><h3>Tracking und Attribution nachrüsten</h3><p>Für Websites, auf denen Anfragen entstehen, aber Quelle, Consent und Conversion nicht verlässlich zusammenlaufen.</p><ul><li>Analyse der bestehenden Messkette</li><li>GA4 und Google Tag Manager</li><li>Server-Side Tracking je technischem Setup</li><li>Consent-Anbindung</li><li>Google Ads oder Meta Rückkanal je Scope</li></ul><footer>Ergebnis: belastbare Quellen- und Conversion-Daten. <a href="<?php echo esc_url( $tracking_url ); ?>">Tracking-Leistungsumfang ansehen ↗</a></footer></article>
+						<article id="angebot-weiterentwicklung"><header><span>04 — Weiterentwicklung</span><strong>nach Scope</strong></header><h3>Planbare Kapazität für Weiterentwicklung</h3><p>Für Unternehmen, die kein neues Projekt brauchen, sondern jemanden, der die bestehende Website technisch weiterführt.</p><ul><li>priorisierte technische Weiterentwicklung</li><li>neue Bereiche, Landingpages und Funktionen</li><li>Performance und technisches SEO</li><li>Tracking- und Conversion-Korrekturen</li><li>feste Kapazität und direkter Ansprechpartner</li></ul><footer>Ergebnis: kontinuierliche Weiterentwicklung ohne jedes Mal neues Onboarding.</footer></article>
 					</div>
 				</div>
 			</div>
