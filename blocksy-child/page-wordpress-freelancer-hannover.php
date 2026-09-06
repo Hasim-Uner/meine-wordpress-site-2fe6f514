@@ -307,7 +307,7 @@ get_header();
 								<tr><th>Weiterentwicklung</th><td>Planbar innerhalb einer vereinbarten Kapazität und Prioritätenliste.</td><td>Retainer, Wartung und größere Teams sind möglich.</td><td>Innerhalb der Funktionen und Grenzen der Plattform.</td></tr>
 								<tr><th>Ausfallrisiko</th><td>Wenn ich ausfalle, pausiert das Projekt. Code, Zugänge und Verlauf bleiben bei Ihnen.</td><td>Vertretung im Team ist grundsätzlich möglich.</td><td>Die Plattform läuft weiter; Umsetzung und Entscheidungen bleiben bei Ihnen.</td></tr>
 								<tr><th>Kosten</th><td>Aufbau ab <?php echo esc_html( $website_price_net ); ?>.</td><td>Je nach Teamgröße, Leistungsumfang und Projektmodell.</td><td>Niedriger Abo-Einstieg; eigene Zeit und Grenzen der Plattform kommen hinzu.</td></tr>
-								<tr><th>Passt besonders, wenn …</th><td>Scope klar ist und direkte technische Verantwortung zählt.</td><td>viele Gewerke gleichzeitig laufen oder Vertretung wichtig ist.</td><td>die Seite einfach bleibt und Budget wichtiger als Individualität ist.</td></tr>
+								<tr><th>Passt besonders, wenn …</th><td>der Umfang klar ist und direkte technische Verantwortung zählt.</td><td>viele Gewerke gleichzeitig laufen oder Vertretung wichtig ist.</td><td>die Seite einfach bleibt und Budget wichtiger als Individualität ist.</td></tr>
 							</tbody>
 						</table>
 					</div>
