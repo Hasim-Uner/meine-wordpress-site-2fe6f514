@@ -6,11 +6,38 @@
 
 	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	const sections = Array.from(root.querySelectorAll('[data-fr-section]'));
+	const hero = root.querySelector('#start');
+	const toc = root.querySelector('.hu-fr-toc');
 	const tocLinks = Array.from(root.querySelectorAll('[data-fr-toc-link]'));
 	const tocFill = root.querySelector('[data-fr-toc-fill]');
 	const pageProgress = root.querySelector('[data-fr-progress]');
+	const route = root.querySelector('[data-fr-route]');
+	const routeItems = route ? Array.from(route.querySelectorAll('li')) : [];
+
+	/*
+	 * U+2197 can be rendered as a color emoji by some platform/browser stacks.
+	 * VS15 forces the typographic glyph without changing the visible copy.
+	 */
+	root.querySelectorAll('a, button').forEach((control) => {
+		const walker = document.createTreeWalker(control, NodeFilter.SHOW_TEXT);
+		let node = walker.nextNode();
+		while (node) {
+			if (node.nodeValue && node.nodeValue.includes('\u2197')) {
+				node.nodeValue = node.nodeValue.replace(/\u2197(?!\uFE0E)/g, '\u2197\uFE0E');
+			}
+			node = walker.nextNode();
+		}
+	});
 
 	const setCurrent = (id) => {
+		let currentSection = null;
+
+		sections.forEach((section) => {
+			const isCurrent = section.id === id;
+			section.classList.toggle('is-current', isCurrent);
+			if (isCurrent) currentSection = section;
+		});
+
 		tocLinks.forEach((link) => {
 			if (link.getAttribute('href') === `#${id}`) {
 				link.setAttribute('aria-current', 'true');
@@ -18,6 +45,10 @@
 				link.removeAttribute('aria-current');
 			}
 		});
+
+		if (toc && currentSection) {
+			toc.classList.toggle('is-on-dark', currentSection.classList.contains('hu-fr-section--dark'));
+		}
 	};
 
 	if (sections.length) {
@@ -37,27 +68,77 @@
 		sections.forEach((section) => sectionObserver.observe(section));
 	}
 
+	const clamp01 = (value) => Math.min(1, Math.max(0, value));
 	let ticking = false;
-	const updateProgress = () => {
-		const doc = document.scrollingElement || document.documentElement;
-		const max = Math.max(1, doc.scrollHeight - doc.clientHeight);
-		const value = Math.min(1, Math.max(0, doc.scrollTop / max));
-		if (tocFill) tocFill.style.transform = `scaleY(${value})`;
-		if (pageProgress) pageProgress.style.transform = `scaleX(${value})`;
+
+	const updateRouteProgress = () => {
+		if (!route) return;
+
+		if (reduceMotion.matches || window.innerWidth <= 760) {
+			route.style.setProperty('--fr-route-progress', '1');
+			routeItems.forEach((item) => item.classList.add('is-passed'));
+			route.classList.add('is-complete');
+			return;
+		}
+
+		const rect = route.getBoundingClientRect();
+		const startLine = window.innerHeight * 0.78;
+		const endLine = window.innerHeight * 0.24;
+		const travel = Math.max(1, rect.height + startLine - endLine);
+		const value = clamp01((startLine - rect.top) / travel);
+
+		route.style.setProperty('--fr-route-progress', value.toFixed(4));
+
+		const lastIndex = Math.max(1, routeItems.length - 1);
+		routeItems.forEach((item, index) => {
+			const threshold = Math.max(0, (index / lastIndex) - 0.035);
+			item.classList.toggle('is-passed', value >= threshold);
+		});
+		route.classList.toggle('is-complete', value >= 0.92);
 	};
 
-	const requestProgress = () => {
+	const updateFrame = () => {
+		const doc = document.scrollingElement || document.documentElement;
+		const headerOffset = 96;
+		const heroBoundary = hero ? hero.offsetTop + hero.offsetHeight : 0;
+		const contentStart = Math.max(0, heroBoundary - headerOffset);
+		const pastHero = !hero || doc.scrollTop >= contentStart;
+
+		root.classList.toggle('is-past-hero', pastHero);
+		if (toc) toc.classList.toggle('is-available', pastHero);
+
+		const progressEnd = Math.max(contentStart + 1, doc.scrollHeight - doc.clientHeight);
+		const progressValue = clamp01((doc.scrollTop - contentStart) / (progressEnd - contentStart));
+		if (tocFill) tocFill.style.transform = `scaleY(${progressValue})`;
+		if (pageProgress) pageProgress.style.transform = `scaleX(${progressValue})`;
+
+		updateRouteProgress();
+	};
+
+	const requestFrame = () => {
 		if (ticking) return;
 		ticking = true;
 		requestAnimationFrame(() => {
 			ticking = false;
-			updateProgress();
+			updateFrame();
 		});
 	};
 
-	window.addEventListener('scroll', requestProgress, { passive: true });
-	window.addEventListener('resize', requestProgress, { passive: true });
-	updateProgress();
+	window.addEventListener('scroll', requestFrame, { passive: true });
+	window.addEventListener('resize', requestFrame, { passive: true });
+
+	if (typeof reduceMotion.addEventListener === 'function') {
+		reduceMotion.addEventListener('change', requestFrame);
+	} else if (typeof reduceMotion.addListener === 'function') {
+		reduceMotion.addListener(requestFrame);
+	}
+
+	requestAnimationFrame(() => {
+		if (hero && !reduceMotion.matches) {
+			hero.classList.add('is-motion-live');
+		}
+		updateFrame();
+	});
 
 	root.querySelectorAll('.hu-fr-toc-m a').forEach((link) => {
 		link.addEventListener('click', () => {
@@ -77,25 +158,6 @@
 				});
 			});
 		});
-	}
-
-	const route = root.querySelector('[data-fr-route]');
-	if (route) {
-		if (reduceMotion.matches || !('IntersectionObserver' in window)) {
-			route.classList.add('is-active');
-		} else {
-			const routeObserver = new IntersectionObserver(
-				(entries, observer) => {
-					entries.forEach((entry) => {
-						if (!entry.isIntersecting) return;
-						route.classList.add('is-active');
-						observer.unobserve(entry.target);
-					});
-				},
-				{ threshold: 0.28 }
-			);
-			routeObserver.observe(route);
-		}
 	}
 
 	const form = root.querySelector('[data-fr-form]');
