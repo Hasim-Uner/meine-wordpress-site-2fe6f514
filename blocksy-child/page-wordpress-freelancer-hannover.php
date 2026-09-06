@@ -3,16 +3,9 @@
  * Template Name: WordPress Freelancer Hannover
  * Template Post Type: page
  *
- * Schlanke lokale Money-Page fuer direkte WordPress-Projekte.
+ * Direkte Money-Page fuer WordPress-Projekte: Entwicklung, Tracking und
+ * Conversion als zusammenhaengende Strecke.
  * Route: /wordpress-freelancer-hannover/
- *
- * Die Seite ist bewusst KEINE zweite Agentur- oder White-Label-Seite:
- * - Agentur-Intent bleibt auf /wordpress-agentur-hannover/
- * - White-Label-Intent bleibt auf /whitelabel-retainer/
- * - Diese Route besitzt den Freelancer-Intent und verkauft direkte Zusammenarbeit.
- *
- * SEO title/meta werden ueber den bestehenden zentralen Resolver erweitert,
- * nicht als eigener Meta-Stack ausgegeben.
  *
  * @package Blocksy_Child
  */
@@ -56,8 +49,6 @@ wp_enqueue_script(
 	true
 );
 
-// Das Markup dieser Seite ist vollstaendig repo-eigen. Block-Styles sind hier
-// Render-Blocking-Overhead ohne Gegenwert und koennen vor wp_head entfernt werden.
 wp_dequeue_style( 'wp-block-library' );
 wp_dequeue_style( 'wp-block-library-theme' );
 
@@ -69,96 +60,107 @@ add_filter(
 	}
 );
 
-// Nutzt den bestehenden SEO-Resolver (inc/seo-meta.php) statt einen zweiten
-// Meta-Stack im Template aufzubauen. Der Title bleibt absichtlich eng auf dem
-// Freelancer-Intent; lokale WordPress-SEO-Queries gehoeren zur Agentur-Route.
 add_filter(
 	'hu_forced_singular_seo_map',
 	static function ( $map ) {
 		$map['wordpress-freelancer-hannover'] = [
 			'title'       => 'WordPress Freelancer Hannover | Haşim Üner',
-			'description' => 'WordPress Freelancer in Hannover für individuelle Entwicklung, Tracking und Funnels. Direkte Zusammenarbeit, versionierter Code und klarer Scope.',
+			'description' => 'WordPress Freelancer in Hannover für individuelle Entwicklung, Tracking und Conversion. Direkte Zusammenarbeit, versionierter Code und klarer Scope.',
 		];
 		return $map;
 	}
 );
 
-$contact_url = add_query_arg(
-	[
-		'type'  => 'project',
-		'focus' => 'followup_scope',
-	],
-	home_url( '/kontakt/' )
-);
+$project_url = function_exists( 'hu_get_navigation_project_request_url' )
+	? hu_get_navigation_project_request_url()
+	: add_query_arg( [ 'type' => 'project', 'focus' => 'followup_scope' ], home_url( '/kontakt/' ) );
+
 $agentur_url    = home_url( '/wordpress-agentur-hannover/' );
-$whitelabel_url = home_url( '/whitelabel-retainer/' );
+$whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 $tracking_url   = home_url( '/server-side-tracking-b2b/' );
 $about_url      = home_url( '/hasim-uener/' );
 $e3_case_url    = home_url( '/case-study-solar-leadgenerierung/' );
+$privacy_url    = home_url( '/datenschutz/' );
 $github_url     = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
+$rest_endpoint  = rest_url( 'nexus/v1/contact-request' );
+$portrait_url   = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-relaxed-640x800.webp';
 
-$portrait_url = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-relaxed-640x800.webp';
+$website_price     = function_exists( 'hu_freelancer_website_price' ) ? hu_freelancer_website_price() : '3.400 €';
+$website_price_net = function_exists( 'hu_freelancer_website_price' ) ? hu_freelancer_website_price( true ) : '3.400 € netto';
+$tracking_price    = function_exists( 'hu_tracking_price' ) ? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' ) : '1.290 €';
+$response_promise  = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'phrase' ) : 'Antwort innerhalb von 24 Stunden werktags';
 
-$website_start_price = function_exists( 'hu_freelancer_website_price' ) ? hu_freelancer_website_price( true ) : 'Preis nach Scope';
-
-$e3_cpl_before                   = hu_e3_metric( 'cpl_before' );
-$e3_cpl_after                    = hu_e3_metric( 'cpl_after' );
-$e3_leads                        = hu_e3_metric( 'lead_count' );
-$lighthouse_mobile_performance   = hu_e3_metric( 'freelancer_lighthouse_mobile_performance' );
-$lighthouse_accessibility        = hu_e3_metric( 'freelancer_lighthouse_accessibility' );
+$e3_cpl_before                 = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before' ) : '150 €';
+$e3_cpl_after                  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after' ) : '22 €';
+$e3_leads                      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count' ) : '1.750+';
+$lighthouse_mobile_performance = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'freelancer_lighthouse_mobile_performance' ) : '99/100';
+$lighthouse_accessibility      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'freelancer_lighthouse_accessibility' ) : '100/100';
 
 $references = [
 	[
 		'name' => 'civaka-azad.org',
 		'url'  => 'https://civaka-azad.org/',
 		'tag'  => 'Informationsarchitektur',
-		'text' => 'Ein über Jahre gewachsener redaktioneller Bestand: Navigation, Archive und interne Verweise so strukturiert, dass ältere Beiträge auffindbar bleiben.',
+		'text' => 'Gewachsener redaktioneller Bestand, klare Navigation und auffindbare Archive.',
 	],
 	[
 		'name' => 'e3-newenergy.de',
 		'url'  => 'https://e3-newenergy.de/',
 		'tag'  => 'WordPress · Funnel · Tracking',
-		'text' => 'Solar und Wärmepumpe mit erklärungsbedürftigem Angebot: Beratung, Angebotsanfrage und Kontakt in einer klaren Strecke statt über die Website verteilt.',
+		'text' => 'Erklärungsbedürftiges Angebot mit Anfrageweg, Tracking und Conversion als System.',
 	],
 	[
 		'name' => 'hasimuener.org',
 		'url'  => 'https://hasimuener.org/',
 		'tag'  => 'Editorial Design',
-		'text' => 'Typografie, Raster und Lesefluss als eigentliche Aufgabe — ein Layout, das auch ohne große Bildwelt trägt.',
+		'text' => 'Typografie, Raster und Lesefluss als tragende Gestaltung — ohne dekorative Überladung.',
 	],
 	[
 		'name' => 'kurdischer-rat.org',
 		'url'  => 'https://kurdischer-rat.org/',
-		'tag'  => 'Aktuelles Projekt',
-		'text' => 'Organisationswebsite mit klarer Informationshierarchie und einem technischen Workflow, der Änderungen versioniert und kontrolliert ausrollt.',
+		'tag'  => 'Organisation · Workflow',
+		'text' => 'Informationshierarchie mit versioniertem, kontrolliertem Deployment-Prozess.',
 	],
 ];
 
 $faqs = [
 	[
-		'q' => 'Was kostet ein WordPress Freelancer?',
-		'a' => sprintf( 'Eine individuell entwickelte WordPress-Website startet bei mir aktuell ab %s. Der Einstieg ist für kompakte Unternehmenswebsites mit klar abgegrenztem Scope gedacht. Größere Integrationen, Tracking-Setups oder Funnel-Projekte kalkuliere ich separat.', $website_start_price ),
+		'q' => 'Arbeiten Sie mit Elementor?',
+		'a' => 'Ja, wenn es für Redaktion und Betrieb sinnvoll ist. Standardmäßig bevorzuge ich die schlankste Lösung, die das Projekt wirklich braucht — nicht den Builder mit den meisten Optionen.',
+	],
+	[
+		'q' => 'Wem gehören Zugänge, Konten und Code?',
+		'a' => 'Ihnen. Repository, Hosting, Analytics- und Werbekonten sollen nicht an meine Person gebunden sein. Das reduziert Lock-in und macht einen späteren Wechsel technisch möglich.',
+	],
+	[
+		'q' => 'Können Sie ein vorhandenes Figma-Design umsetzen?',
+		'a' => 'Ja. Ein vorhandenes Screendesign kann direkt in die responsive WordPress-Umsetzung gehen. Vor dem Build prüfe ich nur, ob Zustände, Formulare und mobile Varianten vollständig beschrieben sind.',
+	],
+	[
+		'q' => 'Bieten Sie einen Wartungsvertrag mit Rufbereitschaft?',
+		'a' => 'Nein. Laufende Weiterentwicklung ist möglich, aber ohne 24/7-Rufbereitschaft. Wenn Ihr Betrieb verbindliche Vertretung und garantierte Reaktionszeiten braucht, ist ein Agentur- oder Team-Setup die bessere Wahl.',
+	],
+	[
+		'q' => 'Wie lange dauert ein Projekt?',
+		'a' => 'Das hängt vom Scope ab. Vor Start steht ein abgegrenzter Umfang mit Meilensteinen. Kleine Korrekturen sind etwas anderes als ein Relaunch mit Tracking, Migration und mehreren Freigabeschleifen.',
 	],
 	[
 		'q' => 'Arbeiten Sie nur in Hannover?',
-		'a' => 'Nein. Ich sitze in der Region Hannover und arbeite deutschlandweit remote. Für Projekte in Hannover und Umgebung sind persönliche Termine möglich, wenn sie wirklich helfen.',
+		'a' => 'Nein. Ich sitze in der Region Hannover und arbeite im gesamten DACH-Raum remote. Persönliche Termine sind möglich, wenn sie für Workshop, Kick-off oder Review einen echten Vorteil bringen.',
 	],
-	[
-		'q' => 'Arbeiten Sie mit Elementor?',
-		'a' => 'Ja, wenn es für das Projekt sinnvoll ist. Standardmäßig bevorzuge ich einen schlanken Aufbau mit möglichst wenig Page-Builder-Abhängigkeit. Wenn ein Team Inhalte später sehr frei selbst umbauen muss, kann Elementor die pragmatischere Lösung sein.',
-	],
-	[
-		'q' => 'Können Sie ein vorhandenes Screendesign oder Figma-Design umsetzen?',
-		'a' => 'Ja. Ein vorhandenes Figma- oder Screendesign kann direkt in die technische Umsetzung gehen. Ich überführe es responsive in WordPress, versioniere die Änderungen und prüfe sie vor dem Deployment.',
-	],
-	[
-		'q' => 'Was ist der Unterschied zwischen Freelancer und Agentur?',
-		'a' => 'Sie arbeiten direkt mit der Person, die strukturiert, entwickelt und technisch entscheidet. Das reduziert Übergaben und macht den Scope klarer. Wenn ein größeres Team-Setup sinnvoller ist, sage ich das vor Projektstart offen.',
-	],
-	[
-		'q' => 'Berücksichtigen Sie Barrierefreiheit und Core Web Vitals?',
-		'a' => 'Ja. Semantisches HTML, Kontraste, Tastaturbedienung, Formulare, Bildgrößen und Ladepfade gehören für mich zur technischen Qualität. Lighthouse ist dabei ein Labortest und nicht dasselbe wie echte Felddaten — ich trenne beides bewusst.',
-	],
+];
+
+$toc_items = [
+	'start'        => 'Start',
+	'einordnung'   => 'Ausgangslage',
+	'strecke'      => 'Die Strecke',
+	'angebote'     => 'Angebote',
+	'vergleich'    => 'Vergleich',
+	'ablauf'       => 'Ablauf',
+	'position'     => 'Position',
+	'nachweis'     => 'Nachweis',
+	'fragen'       => 'Fragen',
+	'anfrage'      => 'Anfrage',
 ];
 
 get_header();
@@ -166,342 +168,245 @@ get_header();
 
 <main id="main" class="site-main">
 	<div class="hu-fr" data-track-page="wordpress_freelancer_hannover">
+		<div class="hu-fr__page-progress" aria-hidden="true"><span data-fr-progress></span></div>
 
-		<section class="hu-fr__hero" aria-labelledby="hu-fr-title">
-			<div class="hu-fr__shell">
-				<div class="hu-fr__hero-grid">
-					<div class="hu-fr__hero-copy">
-						<h1 id="hu-fr-title" class="hu-fr__seo-title">WordPress Freelancer Hannover</h1>
-						<p class="hu-fr__hero-title">Technik, Tracking und Funnel aus einer Hand.</p>
-						<p class="hu-fr__lede">Ich entwickle WordPress-Websites und Landingpages so, dass Code, Messung und Conversion-Logik zusammenpassen. Direkt mit mir — vom Scope bis zum Deployment.</p>
+		<nav class="hu-fr-toc" aria-label="Inhaltsverzeichnis">
+			<div class="hu-fr-toc__panel">
+				<span class="hu-fr-toc__spine" aria-hidden="true">Inhalt · 10</span>
+				<div class="hu-fr-toc__head"><b>Auf dieser Seite</b><span>10 Abschnitte</span></div>
+				<div class="hu-fr-toc__scale">
+					<span class="hu-fr-toc__fill" data-fr-toc-fill aria-hidden="true"></span>
+					<ol class="hu-fr-toc__list">
+						<?php foreach ( $toc_items as $toc_id => $toc_label ) : ?>
+							<li><a href="#<?php echo esc_attr( $toc_id ); ?>" data-fr-toc-link><span class="hu-fr-toc__label"><?php echo esc_html( $toc_label ); ?></span><i class="hu-fr-toc__tick" aria-hidden="true"></i></a></li>
+						<?php endforeach; ?>
+					</ol>
+				</div>
+				<div class="hu-fr-toc__act">
+					<a class="hu-fr-toc__cta" href="#anfrage" aria-label="Projekt anfragen" data-track-action="cta_freelancer_toc_project" data-track-category="lead_gen" data-track-section="toc">
+						<span>Projekt anfragen</span><b aria-hidden="true">↗</b>
+					</a>
+					<p><?php echo esc_html( $response_promise ); ?></p>
+				</div>
+			</div>
+		</nav>
 
-						<ul class="hu-fr__hero-capabilities" role="list" aria-label="Schwerpunkte">
-							<li>WordPress</li>
-							<li>Server-Side Tracking</li>
-							<li>Funnel &amp; CRO</li>
+		<section class="hu-fr-section hu-fr-section--dark hu-fr-hero" id="start" data-fr-section aria-labelledby="hu-fr-title">
+			<div class="hu-fr__shell hu-fr__section-shell hu-fr__section-shell--hero">
+				<div class="hu-fr__section-mark"><span>01</span><b>Start</b></div>
+				<div class="hu-fr-hero__grid">
+					<div class="hu-fr-hero__copy">
+						<p class="hu-fr__eyebrow">WordPress · Tracking · Conversion</p>
+						<h1 id="hu-fr-title">WordPress Freelancer Hannover, der die <em>Messung</em> mitbaut.</h1>
+						<p class="hu-fr-hero__lede">Entwicklung, Tracking und Anfrageweg kommen von einer Person. Sie müssen nicht zwischen drei Dienstleistern vermitteln, wenn eine Zahl nicht stimmt.</p>
+						<div class="hu-fr__actions">
+							<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span aria-hidden="true">↗</span></a>
+							<a class="hu-fr__button hu-fr__button--ghost" href="#angebote" data-track-action="cta_freelancer_hero_pricing" data-track-category="navigation" data-track-section="hero">Was das kostet</a>
+						</div>
+						<ul class="hu-fr-hero__signals" role="list">
+							<li>Technisch fundiert</li>
+							<li>Messbar von Anfang an</li>
+							<li>Direkter Ansprechpartner</li>
 						</ul>
-
-						<div class="hu-fr__hero-actions">
-							<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt prüfen lassen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a>
-							<a class="hu-fr__button hu-fr__button--secondary" href="#projekte" data-track-action="cta_freelancer_hero_references" data-track-category="navigation" data-track-section="hero">Referenzen ansehen</a>
-						</div>
 					</div>
-
-					<div class="hu-fr__hero-visual">
-						<div class="hu-fr__portrait-frame">
-							<img class="hu-fr__portrait" src="<?php echo esc_url( $portrait_url ); ?>" sizes="(max-width: 760px) calc(100vw - 32px), 44vw" width="640" height="800" alt="Haşim Üner, WordPress Freelancer aus der Region Hannover" fetchpriority="high" decoding="async">
-						</div>
-					</div>
-				</div>
-
-				<ul class="hu-fr__proofline" role="list" aria-label="Kurzbelege">
-					<li><strong><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></strong><span>Cost per Lead vorher → nachher</span></li>
-					<li><strong><?php echo esc_html( $lighthouse_mobile_performance ); ?></strong><span>Mobile Performance*</span></li>
-					<li><strong><?php echo esc_html( $lighthouse_accessibility ); ?></strong><span>Barrierefreiheit*</span></li>
-				</ul>
-				<p class="hu-fr__lab-note">* Lighthouse Mobile-Labtest dieser Seite, 17.08.2026, 00:22 MESZ. Werte können variieren; keine CrUX-Felddaten.</p>
-			</div>
-		</section>
-
-		<section class="hu-fr__system" aria-labelledby="hu-fr-system-title">
-			<div class="hu-fr__shell">
-				<div class="hu-fr__section-intro">
-					<div>
-						<p class="hu-fr__kicker">Der Unterschied</p>
-						<h2 id="hu-fr-system-title" class="hu-fr__h2">Eine Website ist nicht das Ende der Strecke.</h2>
-					</div>
-					<p>Viele WordPress-Projekte enden beim Launch. Entscheidend ist, ob Struktur, Messung und Nutzerweg danach zusammenpassen.</p>
-				</div>
-
-				<div class="hu-fr-system" aria-label="System aus Code, Tracking, Funnel und Anfrage">
-					<svg class="hu-fr-system__svg" viewBox="0 0 1000 300" role="img" aria-labelledby="hu-fr-system-graphic-title hu-fr-system-graphic-desc">
-						<title id="hu-fr-system-graphic-title">Vom WordPress-Code zur qualifizierten Anfrage</title>
-						<desc id="hu-fr-system-graphic-desc">Vier verbundene Ebenen: Custom WordPress, Tracking, Funnel und Anfrage.</desc>
-						<defs>
-							<linearGradient id="huFrCopper" x1="0" x2="1">
-								<stop offset="0" stop-color="#b46a3c" stop-opacity="0.18"/>
-								<stop offset="0.5" stop-color="#b46a3c" stop-opacity="1"/>
-								<stop offset="1" stop-color="#b46a3c" stop-opacity="0.18"/>
-							</linearGradient>
-						</defs>
-						<path class="hu-fr-system__rail" d="M120 150 C250 150 250 80 380 80 S510 220 640 220 S770 150 900 150"/>
-						<path class="hu-fr-system__signal" d="M120 150 C250 150 250 80 380 80 S510 220 640 220 S770 150 900 150"/>
-						<g class="hu-fr-system__node" transform="translate(120 150)"><circle r="44"/><text y="-4">01</text><text y="17">Code</text></g>
-						<g class="hu-fr-system__node" transform="translate(380 80)"><circle r="44"/><text y="-4">02</text><text y="17">Tracking</text></g>
-						<g class="hu-fr-system__node" transform="translate(640 220)"><circle r="44"/><text y="-4">03</text><text y="17">Funnel</text></g>
-						<g class="hu-fr-system__node hu-fr-system__node--result" transform="translate(900 150)"><circle r="52"/><text y="-4">04</text><text y="17">Anfrage</text></g>
-					</svg>
-
-					<div class="hu-fr-system__labels">
-						<p><strong>Custom WordPress</strong><span>schlank, wartbar, ohne unnötigen Builder-Ballast</span></p>
-						<p><strong>Server-Side Tracking</strong><span>GA4, GTM, CAPI und Consent sauber zusammengedacht</span></p>
-						<p><strong>Funnel &amp; CRO</strong><span>klare Wege statt nur hübscher Seiten</span></p>
-						<p><strong>Messbare Anfrage</strong><span>der eigentliche Zweck der Strecke</span></p>
+					<div class="hu-fr-hero__visual">
+						<figure class="hu-fr-portrait">
+							<img src="<?php echo esc_url( $portrait_url ); ?>" width="640" height="800" sizes="(max-width: 900px) 88vw, 430px" alt="Haşim Üner, WordPress Freelancer aus der Region Hannover" fetchpriority="high" decoding="async">
+							<figcaption><strong>Haşim Üner</strong><span>Entwicklung · Messung · Anfrageweg</span></figcaption>
+						</figure>
+						<blockquote>„Technik sollte Probleme lösen — nicht neue Messlücken schaffen.“</blockquote>
 					</div>
 				</div>
 			</div>
+			<div class="hu-fr__shell hu-fr-hero__proofbar" aria-label="Kurzbelege">
+				<span><strong><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></strong> Kosten pro qualifizierter Anfrage*</span>
+				<span><strong><?php echo esc_html( $e3_leads ); ?></strong> qualifizierte Anfragen*</span>
+				<span><strong><?php echo esc_html( $lighthouse_mobile_performance ); ?></strong> Mobile Performance**</span>
+				<span><strong><?php echo esc_html( $response_promise ); ?></strong></span>
+			</div>
 		</section>
 
-		<section class="hu-fr__skills" aria-labelledby="hu-fr-skills-title">
-			<div class="hu-fr__shell hu-fr__split-head">
+		<div class="hu-fr__mobile-toc-wrap">
+			<details class="hu-fr-toc-m">
+				<summary>Auf dieser Seite — 10 Abschnitte <span aria-hidden="true">⌄</span></summary>
+				<ol>
+					<?php foreach ( $toc_items as $toc_id => $toc_label ) : ?>
+						<li><a href="#<?php echo esc_attr( $toc_id ); ?>"><?php echo esc_html( $toc_label ); ?></a></li>
+					<?php endforeach; ?>
+				</ol>
+			</details>
+		</div>
+
+		<section class="hu-fr-section hu-fr-section--light" id="einordnung" data-fr-section aria-labelledby="hu-fr-einordnung-title">
+			<div class="hu-fr__shell hu-fr__section-shell">
+				<div class="hu-fr__section-mark"><span>02</span><b>Einordnung</b></div>
 				<div>
-					<p class="hu-fr__kicker">Kompetenz</p>
-					<h2 id="hu-fr-skills-title" class="hu-fr__h2">Vier Ebenen, die zusammenpassen müssen.</h2>
-				</div>
-				<p class="hu-fr__section-aside">Sie müssen Entwicklung, Tracking und Funnel nicht auf mehrere Ansprechpartner verteilen. Die technischen Entscheidungen bleiben in einem Scope.</p>
-			</div>
-
-			<div class="hu-fr__shell hu-fr__skill-list">
-				<article class="hu-fr__skill-row">
-					<span class="hu-fr__skill-index">01</span>
-					<h3>WordPress-Entwicklung</h3>
-					<p>Individuelle Templates, bestehende Websites, technische Fehler, WooCommerce und Funktionen, die nicht vom nächsten Plugin abhängen sollen.</p>
-				</article>
-				<article class="hu-fr__skill-row">
-					<span class="hu-fr__skill-index">02</span>
-					<h3>Tracking &amp; Attribution</h3>
-					<p>Server-Side GTM, GA4, Meta CAPI, Consent Mode und saubere Übergaben. Tracking ist kein nachträglicher Pixel, sondern Teil der Architektur.</p>
-				</article>
-				<article class="hu-fr__skill-row">
-					<span class="hu-fr__skill-index">03</span>
-					<h3>Landingpages &amp; Funnel</h3>
-					<p>Angebot, Reihenfolge, Formulare, Vorqualifizierung und Conversion. Der Nutzer soll nicht durch eine Website laufen, sondern einen nachvollziehbaren Weg haben.</p>
-				</article>
-				<article class="hu-fr__skill-row">
-					<span class="hu-fr__skill-index">04</span>
-					<h3>Technisches SEO, Performance &amp; Accessibility</h3>
-					<p>Crawlability, interne Struktur, Core Web Vitals, semantisches HTML und Barrierefreiheit werden beim Bauen berücksichtigt — nicht erst nach dem Launch angeklebt.</p>
-				</article>
-			</div>
-		</section>
-
-		<section class="hu-fr__workflow" id="arbeitsweise" aria-labelledby="hu-fr-workflow-title">
-			<div class="hu-fr__shell hu-fr__workflow-copy-shell">
-				<div class="hu-fr__workflow-copy">
-					<p class="hu-fr__kicker">Workflow</p>
-					<h2 id="hu-fr-workflow-title" class="hu-fr__h2">Sauber entwickeln statt live herumprobieren.</h2>
-					<p>Größere Änderungen entstehen versioniert, werden geprüft und kontrolliert ausgerollt. Das macht Änderungen nachvollziehbar und reduziert das Risiko, dass ein schneller Fix die nächste Baustelle erzeugt.</p>
-					<ul class="hu-fr__checks" role="list">
-						<li>GitHub statt Datei-Chaos</li>
-						<li>Staging und nachvollziehbare Änderungen</li>
-						<li>Performance- und Accessibility-Checks</li>
-						<li>Review vor dem Deployment</li>
-					</ul>
-					<div class="hu-fr__builder-note">
-						<strong>Elementor? Kann ich.</strong>
-						<p>Page Builder setze ich ein, wenn sie für die spätere Redaktion einen echten Vorteil bringen. Standard ist die schlankste Lösung, die Redaktion und Wartung wirklich brauchen.</p>
+					<p class="hu-fr__eyebrow">Typische Ausgangslagen</p>
+					<h2 id="hu-fr-einordnung-title">Womit kommen Sie?</h2>
+					<p class="hu-fr__intro">Vier Situationen, die bei direkten Projekten immer wieder auftauchen — dahinter liegt jeweils ein anderer Scope.</p>
+					<div class="hu-fr-situations">
+						<a href="#angebot-website"><span>01</span><h3>Wir haben keine Website — oder eine, die niemand mehr anfassen will.</h3><p>Neu-Aufbau oder Relaunch mit sauberer Architektur und Messung.</p><b>ab <?php echo esc_html( $website_price ); ?> ↘</b></a>
+						<a href="#angebot-funnel"><span>02</span><h3>Wir schalten Anzeigen auf eine Seite, die dafür nie gebaut wurde.</h3><p>Landingpage, Formular, Danke-Seite und Messung als eine Strecke.</p><b>auf Anfrage ↘</b></a>
+						<a href="#angebot-tracking"><span>03</span><h3>Die Seite läuft. Aber niemand kann sagen, woher die Anfragen kommen.</h3><p>Tracking und Attribution nachrüsten, ohne das ganze System neu zu bauen.</p><b>ab <?php echo esc_html( $tracking_price ); ?> ↘</b></a>
+						<a href="#angebot-weiterentwicklung"><span>04</span><h3>Es gibt eine Seite, aber keinen, der sie kontrolliert weiterentwickelt.</h3><p>Planbare technische Weiterentwicklung mit einem festen Ansprechpartner.</p><b>monatlich nach Scope ↘</b></a>
 					</div>
 				</div>
 			</div>
 		</section>
 
-		<section class="hu-fr__repo-proof" aria-labelledby="hu-fr-repo-proof-title">
-			<div class="hu-fr__shell">
-				<p class="hu-fr__kicker">Repo-Beweis</p>
-				<h2 id="hu-fr-repo-proof-title" class="hu-fr__h2">Qualität im Repository prüfen.</h2>
-
-				<div class="hu-fr__repo-proof-grid">
-					<figure class="hu-fr-git">
-						<div class="hu-fr-git__topbar"><span></span><span></span><span></span><code>project/main</code></div>
-						<ol class="hu-fr-git__rows">
-							<li><span class="hu-fr-git__node"></span><code>brief/</code><strong>Ziel &amp; Scope</strong></li>
-							<li><span class="hu-fr-git__node"></span><code>feature/</code><strong>Design → Code</strong></li>
-							<li><span class="hu-fr-git__node"></span><code>staging/</code><strong>Responsive &amp; QA</strong></li>
-							<li><span class="hu-fr-git__node"></span><code>review/</code><strong>Performance &amp; Accessibility</strong></li>
-							<li><span class="hu-fr-git__node hu-fr-git__node--last"></span><code>main/</code><strong>kontrolliertes Deployment</strong></li>
+		<section class="hu-fr-section hu-fr-section--dark" id="strecke" data-fr-section aria-labelledby="hu-fr-strecke-title">
+			<div class="hu-fr__shell hu-fr__section-shell">
+				<div class="hu-fr__section-mark"><span>03</span><b>Die Strecke</b></div>
+				<div>
+					<div class="hu-fr__split-head">
+						<div><p class="hu-fr__eyebrow">Eine Anfrage legt fünf Stationen zurück</p><h2 id="hu-fr-strecke-title">Vom ersten Klick bis zur Anfrage.</h2></div>
+						<p>Die Website ist nur eine Station. Verloren geht eine Anfrage meistens zwischen zwei Stationen — dort, wo Zuständigkeit und Information wechseln.</p>
+					</div>
+					<div class="hu-fr-route" data-fr-route>
+						<div class="hu-fr-route__rail" aria-hidden="true"><span></span></div>
+						<ol>
+							<li><i>01</i><h3>Suche oder Anzeige</h3><p>Jemand sucht ein Problem, nicht Ihre Firma.</p><small>Üblich: SEO- oder Ads-Dienstleister</small></li>
+							<li><i>02</i><h3>Seite</h3><p>Erster Satz, Ladezeit, Struktur und Relevanz.</p><small>Üblich: Webdesigner oder Agentur</small></li>
+							<li><i>03</i><h3>Formular</h3><p>Welche Felder, welche Vorqualifizierung, welche Hürde.</p><small>Üblich: niemand ausdrücklich</small></li>
+							<li><i>04</i><h3>Messung</h3><p>Was ausgelöst wird und welche Quelle erhalten bleibt.</p><small>Üblich: Analytics-Dienstleister</small></li>
+							<li><i>05</i><h3>Postfach oder CRM</h3><p>Wer die Anfrage bekommt und wie schnell daraus ein Gespräch wird.</p><small>Üblich: der Vertrieb, ungefragt</small></li>
 						</ol>
-						<figcaption><a class="hu-fr-git__repo" href="<?php echo esc_url( $github_url ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="link_freelancer_github" data-track-category="trust" data-track-section="repo_proof">Öffentliches GitHub-Repo ansehen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a></figcaption>
-					</figure>
-
-					<ul class="hu-fr__repo-artifacts" role="list">
-						<li>
-							<h3>Statische Analyse</h3>
-							<code>phpstan.neon</code>
-							<p><!-- TODO: Copy --></p>
-						</li>
-						<li>
-							<h3>Copy-Guard</h3>
-							<code>.github/workflows/copy-style.yml</code>
-							<p><!-- TODO: Copy --></p>
-						</li>
-						<li>
-							<h3>Lead-Path-Smoke</h3>
-							<code>scripts/smoke-lead-path-contract.sh</code>
-							<p><!-- TODO: Copy --></p>
-						</li>
-						<li>
-							<h3>Versionierte Deploys</h3>
-							<code>.github/workflows/deploy.yml</code>
-							<p><!-- TODO: Copy --></p>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</section>
-
-		<section class="hu-fr__proof" id="projekte" aria-labelledby="hu-fr-proof-title">
-			<div class="hu-fr__shell">
-				<div class="hu-fr__proof-head">
-					<div>
-						<p class="hu-fr__kicker">Proof</p>
-						<h2 id="hu-fr-proof-title" class="hu-fr__h2">Direkt prüfbar. Nicht nur behauptet.</h2>
+						<div class="hu-fr-route__note"><strong>Drei Dienstleister = mehrere Übergaben.</strong><p>Bei mir bleibt die technische Verantwortung für diese Strecke in einem Scope.</p></div>
 					</div>
-					<a class="hu-fr__text-link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="link_freelancer_e3_case" data-track-category="trust" data-track-section="proof">Dokumentierten Case ansehen</a>
 				</div>
+			</div>
+		</section>
 
-				<div class="hu-fr__case-strip">
-					<div><strong><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></strong><span>Cost per Lead im dokumentierten Solar-Case</span></div>
-					<div><strong><?php echo esc_html( $e3_leads ); ?></strong><span>qualifizierte Anfragen im aufgebauten System</span></div>
-					<div><strong>Technik + Marketing</strong><span>Landingpages, Tracking und Optimierung als eine Strecke</span></div>
+		<section class="hu-fr-section hu-fr-section--light" id="angebote" data-fr-section aria-labelledby="hu-fr-angebote-title">
+			<div class="hu-fr__shell hu-fr__section-shell">
+				<div class="hu-fr__section-mark"><span>04</span><b>Angebote</b></div>
+				<div>
+					<p class="hu-fr__eyebrow">Klare Leistungen. Transparente Einstiege.</p>
+					<h2 id="hu-fr-angebote-title">Vier Angebote. Jedes mit einem Ergebnis, das man abnehmen kann.</h2>
+					<div class="hu-fr-offers">
+						<article id="angebot-website"><header><span>01 — Aufbau</span><strong>ab <?php echo esc_html( $website_price ); ?></strong></header><h3>Website neu oder Relaunch</h3><p>Für Unternehmen, die eine technische Basis brauchen, die die nächsten Jahre trägt.</p><ul><li>Seitenarchitektur und Inhaltsinventur</li><li>individuelle WordPress-Umsetzung</li><li>technisches SEO, Core Web Vitals, Accessibility-Basis</li><li>Messung von Anfang an mitgedacht</li><li>versioniertes Deployment und Abnahme auf Staging</li></ul><footer>Festpreis nach Scope. Zugänge, Repository und Konten gehören Ihnen.</footer></article>
+						<article id="angebot-funnel"><header><span>02 — Anfragestrecke</span><strong>auf Anfrage</strong></header><h3>Landingpage, Formular und Messung als ein Stück</h3><p>Für eine Kampagne mit einem klaren Ziel — nicht für eine weitere lose Landingpage.</p><ul><li>Landingpage auf Angebot und Zielgruppe</li><li>Formular mit Vorqualifizierung</li><li>Danke-Seite und Conversion-Auslösung</li><li>Server-Side-Messung und Werbekanal-Rückkanal</li><li>Auswertung, aus der eine Budgetentscheidung folgen kann</li></ul><footer>Sinnvoll bei laufendem oder geplantem Anzeigenbudget.</footer></article>
+						<article id="angebot-tracking"><header><span>03 — Messung</span><strong>ab <?php echo esc_html( $tracking_price ); ?></strong></header><h3>Tracking und Attribution nachrüsten</h3><p>Für Seiten, die laufen, aber keine belastbaren Zahlen liefern.</p><ul><li>GA4 und Google Tag Manager</li><li>Server-Side Tracking</li><li>Consent-Anbindung</li><li>Google Ads / Meta Rückkanal je Scope</li><li>prüfbare Event- und Datenlogik</li></ul><footer><a href="<?php echo esc_url( $tracking_url ); ?>">Tracking-Leistungsumfang ansehen ↗</a></footer></article>
+						<article id="angebot-weiterentwicklung"><header><span>04 — Weiterentwicklung</span><strong>nach Scope</strong></header><h3>Feste Kapazität für laufende Weiterentwicklung</h3><p>Für Unternehmen, deren Seite weitergebaut werden soll — kontrolliert statt als loses Ticket-Pingpong.</p><ul><li>neue Bereiche und Landingpages</li><li>technische Optimierung</li><li>Tracking- und Conversion-Korrekturen</li><li>klare Prioritäten statt offener Wunschliste</li><li>direkter Ansprechpartner</li></ul><footer>Umfang und Takt werden vor Start festgelegt.</footer></article>
+					</div>
 				</div>
-				<p class="hu-fr__case-note">Die Kennzahlen stammen aus dem dokumentierten Solar-Case und beschreiben das Gesamtsystem aus Landingpages, Tracking und Optimierung. Sie sind kein isolierter WordPress-Effekt und keine Ergebniszusage.</p>
+			</div>
+		</section>
 
-				<div class="hu-fr__references">
-					<?php foreach ( $references as $index => $reference ) : ?>
-						<article class="hu-fr__reference">
-							<span class="hu-fr__reference-index"><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
-							<div class="hu-fr__reference-main">
-								<p class="hu-fr__reference-tag"><?php echo esc_html( $reference['tag'] ); ?></p>
-								<h3><a href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="link_freelancer_reference" data-track-category="trust" data-track-section="references"><?php echo esc_html( $reference['name'] ); ?> <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a></h3>
+		<section class="hu-fr-section hu-fr-section--dark" id="vergleich" data-fr-section aria-labelledby="hu-fr-vergleich-title">
+			<div class="hu-fr__shell hu-fr__section-shell">
+				<div class="hu-fr__section-mark"><span>05</span><b>Vergleich</b></div>
+				<div>
+					<div class="hu-fr__split-head"><div><p class="hu-fr__eyebrow">Direkt, Agentur oder Baukasten</p><h2 id="hu-fr-vergleich-title">Nicht jede Zeile spricht für mich. Die Unterschiede, die im Ergebnis zählen.</h2></div><p>Ein Freelancer ist nicht automatisch besser. Der Vorteil entsteht nur dort, wo direkte Verantwortung, technische Tiefe und geringer Übergabeaufwand wirklich zum Projekt passen.</p></div>
+					<div class="hu-fr-table-wrap" role="region" aria-labelledby="hu-fr-vergleich-title" tabindex="0">
+						<table class="hu-fr-table">
+							<thead><tr><th>Kriterium</th><th>Direkt mit mir</th><th>Agentur</th><th>Baukasten</th></tr></thead>
+							<tbody>
+								<tr><th>Ansprechpartner</th><td>Die Person, die entwickelt und deployt.</td><td>Projektleitung und Team.</td><td>Sie selbst plus Anbieter-Support.</td></tr>
+								<tr><th>Code-Eigentum</th><td>Ihr Repository, vollständiger Verlauf.</td><td>Abhängig vom Vertrag und Setup.</td><td>Kein eigener Zugriff auf den Plattform-Code.</td></tr>
+								<tr><th>Messung</th><td>Tracking kann Teil derselben Architektur sein.</td><td>Möglich, oft eigenes Gewerk.</td><td>Standard-Integrationen.</td></tr>
+								<tr><th>Abstimmung</th><td>Direkt, ohne Account-Handover.</td><td>Mehr Rollen, dafür mehr Kapazität.</td><td>Kein Projektteam.</td></tr>
+								<tr><th>Weiterentwicklung</th><td>Planbar im vereinbarten Scope.</td><td>Retainer oder Wartungsmodell möglich.</td><td>Innerhalb der Plattformgrenzen.</td></tr>
+								<tr><th>Wenn ich ausfalle</th><td>Das Projekt pausiert; Code und Zugänge bleiben bei Ihnen.</td><td>Vertretung im Team ist möglich.</td><td>Die Plattform läuft weiter, Umsetzung bleibt bei Ihnen.</td></tr>
+								<tr><th>Kosten</th><td>Aufbau ab <?php echo esc_html( $website_price_net ); ?>.</td><td>Je nach Team- und Projektmodell.</td><td>Abo-Einstieg, eigene Zeit nicht eingerechnet.</td></tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="hu-fr-section hu-fr-section--light" id="ablauf" data-fr-section aria-labelledby="hu-fr-ablauf-title">
+			<div class="hu-fr__shell hu-fr__section-shell">
+				<div class="hu-fr__section-mark"><span>06</span><b>Ablauf</b></div>
+				<div>
+					<p class="hu-fr__eyebrow">Drei Schritte bis zum ersten Deployment</p>
+					<h2 id="hu-fr-ablauf-title">Scope vor Code. Abnahme vor Livegang.</h2>
+					<ol class="hu-fr-process">
+						<li><span>01</span><h3>Abgleich, 30 Minuten</h3><p>Ausgangslage, Ziel und vorhandene Daten. Am Ende steht ein sinnvoller nächster Schritt — oder ein begründetes Nein.</p></li>
+						<li><span>02</span><h3>Angebot mit festem Umfang</h3><p>Was gebaut wird, was gemessen wird und was ausdrücklich nicht dazugehört. Nachträgliche Wünsche werden getrennt beauftragt.</p></li>
+						<li><span>03</span><h3>Umsetzung, Abnahme, Übergabe</h3><p>Entwicklung in Branches, Review auf Staging, kontrolliertes Deployment. Zugänge und Repository liegen von Anfang an bei Ihnen.</p></li>
+					</ol>
+				</div>
+			</div>
+		</section>
+
+		<section class="hu-fr-section hu-fr-section--dark" id="position" data-fr-section aria-labelledby="hu-fr-position-title">
+			<div class="hu-fr__shell hu-fr__section-shell">
+				<div class="hu-fr__section-mark"><span>07</span><b>Position</b></div>
+				<div class="hu-fr-position">
+					<div><p class="hu-fr__eyebrow">Der Unterschied</p><h2 id="hu-fr-position-title">Ich bin teurer als ein Baukasten und meist günstiger als ein größeres Agentur-Setup.</h2><p>Der Unterschied soll nicht aus Design-Behauptungen kommen, sondern aus Verantwortung: Messung wird mitgebaut statt nachgeklebt, Änderungen werden versioniert und Entscheidungen bleiben später erklärbar.</p></div>
+					<aside><span>Wofür ich nicht der Richtige bin</span><ul><li>Baukasten-Projekte ohne individuelle Technik</li><li>24/7-Rufbereitschaft oder garantierte Vertretung</li><li>reines Design ohne technische Umsetzung</li><li>Projekte, bei denen nur der niedrigste Preis entscheidet</li></ul></aside>
+				</div>
+			</div>
+		</section>
+
+		<section class="hu-fr-section hu-fr-section--light" id="nachweis" data-fr-section aria-labelledby="hu-fr-nachweis-title">
+			<div class="hu-fr__shell hu-fr__section-shell">
+				<div class="hu-fr__section-mark"><span>08</span><b>Nachweis</b></div>
+				<div>
+					<p class="hu-fr__eyebrow">Keine Versprechen. Sondern prüfbare Arbeit.</p>
+					<h2 id="hu-fr-nachweis-title">Technik, die man messen und nachsehen kann.</h2>
+					<div class="hu-fr-proof-grid">
+						<article><span>Arbeitsweise</span><h3>Kein Herumprobieren im Live-System</h3><code>brief → feature → staging → review → main</code><p>Größere Änderungen laufen versioniert und kontrolliert. Das Repository bleibt nachvollziehbar.</p><a href="<?php echo esc_url( $github_url ); ?>" target="_blank" rel="noopener noreferrer">Repository ansehen ↗</a></article>
+						<article><span>Diese Seite</span><h3>Labwerte offen benannt</h3><dl><div><dt>Mobile Performance</dt><dd><?php echo esc_html( $lighthouse_mobile_performance ); ?></dd></div><div><dt>Barrierefreiheit</dt><dd><?php echo esc_html( $lighthouse_accessibility ); ?></dd></div></dl><p>Labtests sind keine CrUX-Felddaten. Deshalb werden sie hier auch nicht als solche verkauft.</p></article>
+						<article><span>Fallbeispiel</span><h3>Dokumentierter Solar-Case</h3><dl><div><dt>Kosten pro qualifizierter Anfrage</dt><dd><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></dd></div><div><dt>Qualifizierte Anfragen</dt><dd><?php echo esc_html( $e3_leads ); ?></dd></div></dl><p>Das Ergebnis stammt aus dem Gesamtsystem aus Angebot, Landingpages, Tracking und Optimierung — nicht aus WordPress allein.</p><a href="<?php echo esc_url( $e3_case_url ); ?>">Case ansehen ↗</a></article>
+					</div>
+					<div class="hu-fr-projects">
+						<?php foreach ( $references as $index => $reference ) : ?>
+							<a href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener noreferrer"><span><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span><div><small><?php echo esc_html( $reference['tag'] ); ?></small><strong><?php echo esc_html( $reference['name'] ); ?> ↗</strong></div><p><?php echo esc_html( $reference['text'] ); ?></p></a>
+						<?php endforeach; ?>
+					</div>
+					<p class="hu-fr__proof-note">* Fallzahlen und CPL stammen aus dem dokumentierten Solar-Case. ** Lighthouse-Labtest; Werte können je Messung variieren.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="hu-fr-section hu-fr-section--dark" id="fragen" data-fr-section aria-labelledby="hu-fr-fragen-title">
+			<div class="hu-fr__shell hu-fr__section-shell">
+				<div class="hu-fr__section-mark"><span>09</span><b>Fragen</b></div>
+				<div class="hu-fr-faq-grid">
+					<div><p class="hu-fr__eyebrow">Häufige Fragen. Klare Antworten.</p><h2 id="hu-fr-fragen-title">Kurz und konkret.</h2></div>
+					<div class="hu-fr-faq" data-fr-accordion>
+						<?php foreach ( $faqs as $faq ) : ?>
+							<details><summary><?php echo esc_html( $faq['q'] ); ?><span aria-hidden="true">+</span></summary><div><p><?php echo esc_html( $faq['a'] ); ?></p></div></details>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="hu-fr-section hu-fr-section--light" id="anfrage" data-fr-section aria-labelledby="hu-fr-anfrage-title">
+			<div class="hu-fr__shell hu-fr__section-shell">
+				<div class="hu-fr__section-mark"><span>10</span><b>Anfrage</b></div>
+				<div class="hu-fr-inquiry">
+					<div class="hu-fr-inquiry__intro"><p class="hu-fr__eyebrow">Der erste Scope</p><h2 id="hu-fr-anfrage-title">Drei Angaben reichen für den ersten fachlichen Abgleich.</h2><p>Die erste Stufe fragt nur nach Ansprechpartner, Ausgangslage und Ziel. Kontakt und Einwilligung kommen erst danach. So bleibt die sichtbare Hürde klein, ohne Daten stillschweigend zu sammeln.</p></div>
+					<div class="hu-fr-inquiry__main">
+						<form class="hu-fr-form" data-fr-form action="<?php echo esc_url( $rest_endpoint ); ?>" method="post" novalidate>
+							<input type="hidden" name="request_type" value="project">
+							<div class="hu-fr-form__honeypot" aria-hidden="true"><label>Website <input type="text" name="company_website" tabindex="-1" autocomplete="off"></label></div>
+
+							<div class="hu-fr-form__step" data-fr-form-step="brief">
+								<label><span>Name / Ansprechpartner</span><input type="text" name="name" autocomplete="name" required placeholder="Max Mustermann"></label>
+								<label><span>Womit kommen Sie?</span><select name="focus" required><option value="">Bitte wählen</option><option value="relaunch">Website neu oder Relaunch</option><option value="implementation_scope">Konkrete WordPress-Umsetzung</option><option value="tracking">Tracking &amp; Analytics</option><option value="conversion">Conversion &amp; Anfrageweg</option><option value="website_strategy">Positionierung / Seitenbotschaft</option></select></label>
+								<label><span>Was soll am Ende besser funktionieren?</span><textarea name="message" rows="4" minlength="24" required placeholder="Zwei bis drei Sätze reichen für den ersten Scope."></textarea></label>
+								<button class="hu-fr__button hu-fr__button--primary" type="button" data-fr-form-next data-track-action="cta_freelancer_form_next" data-track-category="lead_gen" data-track-section="inquiry">Weiter zur E-Mail <span aria-hidden="true">→</span></button>
 							</div>
-							<p><?php echo esc_html( $reference['text'] ); ?></p>
-						</article>
-					<?php endforeach; ?>
-				</div>
 
-				<p class="hu-fr__whitelabel-proof">Weitere Umsetzungen laufen als White-Label-Projekte. Die Namen veröffentliche ich bewusst nicht. <a href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="link_freelancer_whitelabel" data-track-category="navigation" data-track-section="proof">White-Label für Agenturen</a></p>
-			</div>
-		</section>
-
-		<section class="hu-fr__comparison" aria-labelledby="hu-fr-comparison-title" data-track-section="comparison">
-			<div class="hu-fr__shell">
-				<p class="hu-fr__kicker">Vergleich</p>
-				<h2 id="hu-fr-comparison-title" class="hu-fr__h2">Direkte Zusammenarbeit, Agentur oder Baukasten.</h2>
-
-				<div class="hu-fr__comparison-scroll" role="region" aria-labelledby="hu-fr-comparison-caption" tabindex="0">
-					<table class="hu-fr__comparison-table">
-						<caption id="hu-fr-comparison-caption" class="hu-fr__visually-hidden">Vergleich: direkte Zusammenarbeit, Agentur und Baukasten</caption>
-						<colgroup>
-							<col class="hu-fr__comparison-criterion">
-							<col span="3">
-						</colgroup>
-						<thead>
-							<tr>
-								<th scope="col">Kriterium</th>
-								<th scope="col">Direkte Zusammenarbeit</th>
-								<th scope="col">Agentur</th>
-								<th scope="col">Baukasten</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">Ansprechpartner</th>
-								<td>Die Person, die entwickelt und deployt.</td>
-								<td>Projektleitung; die Umsetzung liegt im Team.</td>
-								<td>Sie selbst, dazu der Support des Anbieters.</td>
-							</tr>
-							<tr>
-								<th scope="row">Code-Eigentum</th>
-								<td>Ihr Repository, mit vollständigem Verlauf.</td>
-								<td>Je nach Vertrag — häufig bleibt der Code beim Dienstleister.</td>
-								<td>Kein Zugriff auf den Code.</td>
-							</tr>
-							<tr>
-								<th scope="row">Tracking-Tiefe</th>
-								<td>Server-Side GTM, GA4, CAPI und Consent als Teil der Architektur.</td>
-								<td>Möglich, meist als eigenes Gewerk und eigene Rechnung.</td>
-								<td>Standard-Integrationen, keine eigene Attribution.</td>
-							</tr>
-							<tr>
-								<th scope="row">Reaktionszeit</th>
-								<td><?php echo esc_html( function_exists( 'hu_response_promise' ) ? hu_response_promise( 'phrase' ) : 'Antwort innerhalb von 24 Stunden werktags' ); ?>, direkt von mir.</td>
-								<td>Über Ticket und Priorisierung — dafür auch außerhalb meiner Zeiten.</td>
-								<td>Support des Anbieters, ohne Bezug zu Ihrem Projekt.</td>
-							</tr>
-							<tr>
-								<th scope="row">Laufende Betreuung</th>
-								<td>Weiterentwicklung mit festem Stundenkontingent, monatlich kündbar.</td>
-								<td>Wartungsvertrag mit Vertretung im Team.</td>
-								<td>Updates übernimmt der Anbieter, die Inhalte Sie.</td>
-							</tr>
-							<tr>
-								<th scope="row">Kosten</th>
-								<td>Aufbau ab <?php echo esc_html( $website_start_price ); ?>, danach nach Umfang.</td>
-								<td>In der Regel höher — Projektleitung und Team werden mitbezahlt.</td>
-								<td>Monatliches Abo, günstigster Einstieg.</td>
-							</tr>
-							<tr>
-								<th scope="row">Skalierung bei vielen Projekten</th>
-								<td>Begrenzt. Eine Person, ein Kalender.</td>
-								<td>Mehrere Projekte parallel, planbare Kapazität.</td>
-								<td>Beliebig viele Seiten, überall dieselben Grenzen.</td>
-							</tr>
-							<tr>
-								<th scope="row">Wenn der Umsetzende ausfällt</th>
-								<td>Das Projekt pausiert. Code und Zugänge liegen bei Ihnen, ein anderer Entwickler kann übernehmen.</td>
-								<td class="hu-fr__comparison-cell--agency-advantage">
-									<span class="hu-fr__comparison-state" role="img" aria-label="Vorteil Agentur"><span aria-hidden="true">★</span></span>
-									Vertretung im Team, das Projekt läuft weiter.
-								</td>
-								<td>Läuft weiter — Sie arbeiten selbst daran.</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<p class="hu-fr__comparison-hint">Tabelle seitlich scrollbar</p>
-			</div>
-		</section>
-
-		<section class="hu-fr__pricing" aria-labelledby="hu-fr-pricing-title">
-			<div class="hu-fr__shell hu-fr__pricing-grid">
-				<div>
-					<p class="hu-fr__kicker hu-fr__kicker--light">Preisrahmen</p>
-					<h2 id="hu-fr-pricing-title" class="hu-fr__h2 hu-fr__h2--light">Vor dem Projekt soll klar sein, worüber wir sprechen.</h2>
-					<p class="hu-fr__pricing-copy">Für kompakte Unternehmensseiten gibt es einen klaren Einstieg. Größere Setups werden erst nach einem abgegrenzten Scope kalkuliert.</p>
-				</div>
-				<div class="hu-fr__price-panel">
-					<div class="hu-fr__price-row hu-fr__price-row--primary"><span class="hu-fr__price-category"><span>Aufbau</span><small>Individuelle WordPress-Website</small></span><strong>ab <?php echo esc_html( $website_start_price ); ?></strong></div>
-					<div class="hu-fr__price-row"><span class="hu-fr__price-category"><span>Erweiterung / Integration</span></span><strong>nach Scope</strong></div>
-					<div class="hu-fr__price-row"><span class="hu-fr__price-category"><span>Laufender Betrieb</span><small><!-- TODO: Copy --></small></span><strong>nach Scope</strong></div>
-					<div class="hu-fr__price-row"><span class="hu-fr__price-category"><span>Nebenkosten</span><small>Hosting, Lizenzen</small></span><strong>nach Scope</strong></div>
-					<p>Der Einstieg gilt für eine kompakte Unternehmenswebsite mit klar abgegrenztem Umfang. Custom Code ist kein Aufpreis-Label. Elementor ist möglich, wenn redaktionelle Flexibilität den zusätzlichen Builder rechtfertigt.</p>
-					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_pricing_project" data-track-category="lead_gen" data-track-section="pricing">Projekt prüfen lassen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a>
+							<div class="hu-fr-form__step" data-fr-form-step="contact" hidden>
+								<div class="hu-fr-form__backline"><button type="button" data-fr-form-back>← Angaben ändern</button><span>Schritt 2 von 2</span></div>
+								<label><span>E-Mail</span><input type="email" name="email" autocomplete="email" required placeholder="name@unternehmen.de"></label>
+								<label class="hu-fr-form__consent"><input type="checkbox" name="consent" value="1" required><span>Ich stimme der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage zu. <a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutz</a>.</span></label>
+								<button class="hu-fr__button hu-fr__button--primary" type="submit" data-fr-form-submit data-track-action="cta_freelancer_form_submit" data-track-category="lead_gen" data-track-section="inquiry">Projekt anfragen <span aria-hidden="true">↗</span></button>
+							</div>
+							<p class="hu-fr-form__status" data-fr-form-status role="status" aria-live="polite"></p>
+						</form>
+						<aside class="hu-fr-inquiry__measurement"><span>Was ein gutes Formular sichtbar macht</span><ol><li><b>01</b> Einstieg und Ausgangslage</li><li><b>02</b> Auswahl des Projektkontexts</li><li><b>03</b> tatsächliches Absenden</li><li><b>04</b> später: Auftrag oder kein Auftrag</li></ol><p>Gemessen werden soll nur, was eine Entscheidung verbessert. Keine zwanzig Events, weil das Dashboard dann voller aussieht.</p></aside>
+					</div>
+					<div class="hu-fr-inquiry__fallback"><span>Lieber ohne Formular?</span><a href="<?php echo esc_url( $project_url ); ?>">Projektanfrage auf der Kontaktseite öffnen ↗</a></div>
 				</div>
 			</div>
 		</section>
-
-		<section class="hu-fr__faq" aria-labelledby="hu-fr-faq-title">
-			<div class="hu-fr__shell hu-fr__faq-grid">
-				<div class="hu-fr__faq-intro">
-					<p class="hu-fr__kicker">FAQ</p>
-					<h2 id="hu-fr-faq-title" class="hu-fr__h2">Die Fragen vor dem ersten Projekt.</h2>
-					<p>Wenn danach noch etwas offen ist, reicht eine kurze Nachricht. Kein Pflicht-Call.</p>
-				</div>
-				<div class="hu-fr__faq-list" data-fr-accordion>
-					<?php foreach ( $faqs as $faq ) : ?>
-						<details class="hu-fr__faq-item">
-							<summary><?php echo esc_html( $faq['q'] ); ?><span aria-hidden="true">+</span></summary>
-							<div><p><?php echo esc_html( $faq['a'] ); ?></p></div>
-						</details>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
-
-		<section class="hu-fr__final" aria-labelledby="hu-fr-final-title">
-			<div class="hu-fr__shell hu-fr__final-grid">
-				<div>
-					<p class="hu-fr__kicker">Direkte Zusammenarbeit</p>
-					<h2 id="hu-fr-final-title" class="hu-fr__h2">Wenn Website, Tracking und Funnel nicht getrennt gedacht werden sollen.</h2>
-				</div>
-				<div class="hu-fr__final-action">
-					<p>Beschreiben Sie kurz Ausgangslage und Ziel. Sie bekommen eine klare Rückmeldung, ob das Projekt passt und welcher Scope sinnvoll wäre.</p>
-					<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_freelancer_final_project" data-track-category="lead_gen" data-track-section="final">Projekt prüfen lassen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span></a>
-					<p class="hu-fr__route-links">Oder: <a href="<?php echo esc_url( $agentur_url ); ?>">WordPress Agentur Hannover</a> · <a href="<?php echo esc_url( $tracking_url ); ?>">Server-Side Tracking</a> · <a href="<?php echo esc_url( $about_url ); ?>">Über Haşim</a></p>
-				</div>
-			</div>
-		</section>
-
 	</div>
 </main>
 
