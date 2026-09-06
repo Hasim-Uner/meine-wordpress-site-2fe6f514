@@ -652,3 +652,228 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 		transition: none !important;
 	}
 }
+
+/*
+ * v8 — Inquiry visual core
+ * The request area stays on the light chapter canvas, but the actual form is
+ * treated as one technical dark workspace. This creates a deliberate contrast
+ * and, more importantly, makes native form states explicit instead of allowing
+ * browser/theme focus rules to wash the selected value out.
+ */
+#anfrage .hu-fr-inquiry__intro {
+	display: block;
+	max-width: 980px;
+}
+
+#anfrage .hu-fr-inquiry__intro h2 {
+	max-width: 17ch;
+	margin-bottom: 24px;
+}
+
+#anfrage .hu-fr-inquiry__intro > p:last-child {
+	max-width: 68ch;
+	margin: 0;
+	color: var(--fr-muted);
+	font-size: 1.08rem;
+	line-height: 1.7;
+}
+
+#anfrage .hu-fr-inquiry__main {
+	display: grid;
+	grid-template-columns: minmax(0, 1.48fr) minmax(300px, .52fr);
+	gap: 0;
+	margin-top: 44px;
+	border: 1px solid #2f383d;
+	background: var(--fr-night);
+	box-shadow: 0 24px 64px rgba(23, 20, 17, .1);
+}
+
+#anfrage .hu-fr-form {
+	padding: clamp(28px, 3vw, 42px);
+	border: 0;
+	background: var(--fr-night);
+	color: var(--fr-light);
+}
+
+#anfrage .hu-fr-form__step {
+	gap: 22px 18px;
+}
+
+#anfrage .hu-fr-form label > span {
+	margin-bottom: 9px;
+	color: #b7afa4;
+	font-weight: 600;
+}
+
+#anfrage .hu-fr-form input,
+#anfrage .hu-fr-form select,
+#anfrage .hu-fr-form textarea {
+	width: 100%;
+	min-height: 56px;
+	border: 1px solid #3a454b;
+	border-radius: 2px;
+	background: #11171b !important;
+	color: #f3eee5 !important;
+	-webkit-text-fill-color: #f3eee5 !important;
+	caret-color: var(--fr-copper-hi);
+	box-shadow: none;
+	color-scheme: dark;
+	transition: border-color 160ms linear, background-color 160ms linear, box-shadow 180ms var(--fr-ease);
+}
+
+#anfrage .hu-fr-form input,
+#anfrage .hu-fr-form select {
+	padding: 0 16px;
+}
+
+#anfrage .hu-fr-form textarea {
+	min-height: 174px;
+	padding: 16px;
+	line-height: 1.6;
+	resize: vertical;
+}
+
+#anfrage .hu-fr-form input::placeholder,
+#anfrage .hu-fr-form textarea::placeholder {
+	color: #817a72 !important;
+	-webkit-text-fill-color: #817a72 !important;
+	opacity: 1;
+}
+
+#anfrage .hu-fr-form select option {
+	background: #11171b;
+	color: #f3eee5;
+}
+
+#anfrage .hu-fr-form select option:checked {
+	background: var(--fr-copper-hi);
+	color: #12100e;
+}
+
+#anfrage .hu-fr-form input:hover,
+#anfrage .hu-fr-form select:hover,
+#anfrage .hu-fr-form textarea:hover {
+	border-color: #5a666c;
+}
+
+#anfrage .hu-fr-form input:focus,
+#anfrage .hu-fr-form select:focus,
+#anfrage .hu-fr-form textarea:focus,
+#anfrage .hu-fr-form input:focus-visible,
+#anfrage .hu-fr-form select:focus-visible,
+#anfrage .hu-fr-form textarea:focus-visible {
+	outline: 0;
+	border-color: var(--fr-copper-hi);
+	background: #141b1f !important;
+	color: #fffaf3 !important;
+	-webkit-text-fill-color: #fffaf3 !important;
+	box-shadow: 0 0 0 3px rgba(224, 138, 60, .14);
+}
+
+#anfrage .hu-fr-form input:-webkit-autofill,
+#anfrage .hu-fr-form input:-webkit-autofill:hover,
+#anfrage .hu-fr-form input:-webkit-autofill:focus {
+	-webkit-text-fill-color: #f3eee5 !important;
+	box-shadow: 0 0 0 1000px #11171b inset !important;
+	transition: background-color 9999s ease-out 0s;
+}
+
+#anfrage .hu-fr-form input[aria-invalid="true"],
+#anfrage .hu-fr-form select[aria-invalid="true"],
+#anfrage .hu-fr-form textarea[aria-invalid="true"] {
+	border-color: #df7265;
+	box-shadow: 0 0 0 3px rgba(223, 114, 101, .12);
+}
+
+#anfrage .hu-fr-form__backline {
+	border-bottom-color: #30383d;
+	color: #a9a197;
+}
+
+#anfrage .hu-fr-form__backline button {
+	color: var(--fr-copper-hi) !important;
+}
+
+#anfrage .hu-fr-form__consent {
+	color: #aaa196;
+}
+
+#anfrage .hu-fr-form__status.is-error {
+	color: #f28a7d;
+}
+
+#anfrage .hu-fr-form__status.is-success {
+	color: #7fd6a2;
+}
+
+#anfrage .hu-fr-inquiry__measurement {
+	padding: clamp(28px, 2.4vw, 36px);
+	border: 0;
+	border-left: 1px solid #30383d;
+	background: #151c20;
+	color: #c4bbb0;
+}
+
+body.hu-wordpress-freelancer-page .hu-fr #anfrage .hu-fr-inquiry__measurement > span,
+body.hu-wordpress-freelancer-page .hu-fr #anfrage .hu-fr-inquiry__measurement b {
+	color: var(--fr-copper-hi) !important;
+}
+
+#anfrage .hu-fr-inquiry__measurement li {
+	color: #c5bcb1;
+	line-height: 1.5;
+}
+
+#anfrage .hu-fr-inquiry__measurement p {
+	border-top-color: #343d42;
+	color: #969087;
+	line-height: 1.65;
+}
+
+#anfrage .hu-fr-inquiry__fallback {
+	margin-top: 18px;
+	padding-top: 0;
+}
+
+#anfrage .hu-fr-inquiry__fallback span {
+	color: #756e66;
+}
+
+@media (min-width: 1280px) {
+	/* More clearance between the chapter marker column and the fixed TOC rail. */
+	.hu-fr-toc {
+		left: max(10px, calc((100vw - var(--fr-shell)) / 2 - 104px));
+	}
+}
+
+@media (max-width: 980px) {
+	#anfrage .hu-fr-inquiry__main {
+		grid-template-columns: 1fr;
+	}
+
+	#anfrage .hu-fr-inquiry__measurement {
+		border-left: 0;
+		border-top: 1px solid #30383d;
+	}
+}
+
+@media (max-width: 760px) {
+	#anfrage .hu-fr-inquiry__intro h2 {
+		max-width: none;
+	}
+
+	#anfrage .hu-fr-form {
+		padding: 22px;
+	}
+
+	#anfrage .hu-fr-form__step {
+		grid-template-columns: 1fr;
+	}
+
+	#anfrage .hu-fr-form__step > label,
+	#anfrage .hu-fr-form__step > .hu-fr__button,
+	#anfrage .hu-fr-form__backline,
+	#anfrage .hu-fr-form__consent {
+		grid-column: 1;
+	}
+}
