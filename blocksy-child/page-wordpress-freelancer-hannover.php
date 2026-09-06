@@ -64,8 +64,8 @@ add_filter(
 	'hu_forced_singular_seo_map',
 	static function ( $map ) {
 		$map['wordpress-freelancer-hannover'] = [
-			'title'       => 'WordPress Freelancer Hannover | Haşim Üner',
-			'description' => 'WordPress Freelancer in Hannover für individuelle Entwicklung, Tracking und Conversion. Direkte Zusammenarbeit, versionierter Code und klarer Scope.',
+			'title'       => 'WordPress Freelancer Hannover | Tracking & Conversion',
+			'description' => 'WordPress-Websites, Landingpages und Tracking aus einer Hand. Direkt mit dem Entwickler in der Region Hannover – klarer Scope und versionierter Code.',
 		];
 		return $map;
 	}
@@ -198,7 +198,7 @@ get_header();
 						<h1 id="hu-fr-title">WordPress Freelancer Hannover, der die <em>Messung</em> mitbaut.</h1>
 						<p class="hu-fr-hero__lede">Ich entwickle WordPress-Seiten, Landingpages und Anfragestrecken inklusive Tracking. So hängen Website, Werbekanal und CRM technisch zusammen — und Sie müssen nicht zwischen mehreren Dienstleistern vermitteln, wenn Anfragen oder Zahlen nicht stimmen.</p>
 						<div class="hu-fr__actions">
-							<a class="hu-fr__button hu-fr__button--primary" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span aria-hidden="true">↗</span></a>
+							<a class="hu-fr__button hu-fr__button--primary" href="#anfrage" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span aria-hidden="true">↗</span></a>
 							<a class="hu-fr__button hu-fr__button--ghost" href="#angebote" data-track-action="cta_freelancer_hero_pricing" data-track-category="navigation" data-track-section="hero">Was das kostet</a>
 						</div>
 						<ul class="hu-fr-hero__signals" role="list">
@@ -286,6 +286,10 @@ get_header();
 						<article id="angebot-funnel"><header><span>02 — Anfragestrecke</span><strong>auf Anfrage</strong></header><h3>Anfragestrecke für eine Kampagne</h3><p>Für Ads- oder SEO-Traffic, der nicht auf einer allgemeinen Unternehmensseite enden soll.</p><ul><li>Landingpage auf Angebot und Such- oder Anzeigenintention</li><li>Formular mit sinnvoller Vorqualifizierung</li><li>Danke-Seite und Übergabelogik</li><li>Conversion- und Server-Side-Messung</li><li>Rückkanal zum Werbekanal oder CRM je Scope</li></ul><footer>Ergebnis: ein durchgängiger Pfad vom Klick bis zur qualifizierten Anfrage.</footer></article>
 						<article id="angebot-tracking"><header><span>03 — Messung</span><strong>ab <?php echo esc_html( $tracking_price ); ?></strong></header><h3>Tracking und Attribution nachrüsten</h3><p>Für Websites, auf denen Anfragen entstehen, aber Quelle, Consent und Conversion nicht verlässlich zusammenlaufen.</p><ul><li>Analyse der bestehenden Messkette</li><li>GA4 und Google Tag Manager</li><li>Server-Side Tracking je technischem Setup</li><li>Consent-Anbindung</li><li>Google Ads oder Meta Rückkanal je Scope</li></ul><footer>Ergebnis: belastbare Quellen- und Conversion-Daten. <a href="<?php echo esc_url( $tracking_url ); ?>">Tracking-Leistungsumfang ansehen ↗</a></footer></article>
 						<article id="angebot-weiterentwicklung"><header><span>04 — Weiterentwicklung</span><strong>nach Scope</strong></header><h3>Planbare Kapazität für Weiterentwicklung</h3><p>Für Unternehmen, die kein neues Projekt brauchen, sondern jemanden, der die bestehende Website technisch weiterführt.</p><ul><li>priorisierte technische Weiterentwicklung</li><li>neue Bereiche, Landingpages und Funktionen</li><li>Performance und technisches SEO</li><li>Tracking- und Conversion-Korrekturen</li><li>feste Kapazität und direkter Ansprechpartner</li></ul><footer>Ergebnis: kontinuierliche Weiterentwicklung ohne jedes Mal neues Onboarding.</footer></article>
+					</div>
+					<div class="hu-fr__actions" aria-label="Nächster Schritt">
+						<p class="hu-fr__intro">Passt einer dieser Einstiege zu Ihrem Projekt?</p>
+						<a class="hu-fr__button hu-fr__button--primary" href="#anfrage" data-track-action="cta_freelancer_offers_project" data-track-category="lead_gen" data-track-section="offers">Projekt anfragen <span aria-hidden="true">↗</span></a>
 					</div>
 				</div>
 			</div>
