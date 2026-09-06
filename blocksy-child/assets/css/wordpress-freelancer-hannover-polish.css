@@ -1,11 +1,11 @@
 /*
- * WordPress Freelancer Hannover — v4 visual-core polish
+ * WordPress Freelancer Hannover — visual-core polish v6
  *
  * Motion brief:
  * - intensity 2 / guided
- * - thesis: Die Messung wird als sichtbare Kontinuitaet durch die Seite gefuehrt.
+ * - thesis: Messung und Anfrageweg werden als sichtbare Kontinuitaet gefuehrt.
  * - focal moment: einmaliger Mess-Trace im Hero
- * - continuity: TOC erst nach dem Hero, scroll-gebundene Anfrage-Strecke
+ * - continuity: kompakter Context-Dock nach dem Hero + scroll-gebundene Strecke
  * - static: Vergleich, Proof-Zahlen und Formularinhalte bleiben ruhig
  */
 
@@ -22,12 +22,7 @@
 	border-top-width: 0;
 }
 
-/*
- * Contrast repair.
- * Blocksy/global heading colors can win in the cascade. The route now owns its
- * heading color explicitly on both surfaces. Small copper copy on cream uses a
- * darker text tone; the brighter copper remains the accent on dark surfaces.
- */
+/* Contrast: route owns heading colors explicitly. */
 body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light h1,
 body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light h2,
 body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light h3 {
@@ -62,20 +57,12 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 	color: #5d5750;
 }
 
-/* Force the north-east arrow into text presentation instead of color emoji. */
 .hu-fr a,
 .hu-fr button {
 	font-variant-emoji: text;
 }
 
-.hu-fr__button > span[aria-hidden="true"],
-.hu-fr-toc__cta > b[aria-hidden="true"] {
-	font-family: var(--theme-font-mono, "IBM Plex Mono", monospace);
-	font-style: normal;
-	font-weight: 500;
-}
-
-/* Active section marker: orientation without generic section reveals. */
+/* Active chapter marker. */
 .hu-fr__section-mark::before {
 	transform: scaleY(.82);
 	transform-origin: top center;
@@ -87,7 +74,7 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 	box-shadow: 0 0 0 1px rgba(180, 106, 60, .08), 0 0 22px rgba(180, 106, 60, .12);
 }
 
-/* Hero focal moment: the word "Messung" receives one authored trace. */
+/* Hero: one authored measurement trace, then quiet. */
 .hu-fr-hero h1 em {
 	position: relative;
 	display: inline-block;
@@ -136,41 +123,203 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 }
 
 /*
- * The desktop TOC is deliberately absent in the hero. It enters only after the
- * first decision screen has ended, then behaves like the supplied side scale.
+ * Desktop navigation: no side rail. After the hero a compact, constant-contrast
+ * context dock sits below the global header. At rest it shows the current
+ * chapter and ten position dots. Hover/focus opens the full index in place.
  */
 @media (min-width: 1280px) {
+	.hu-fr-section {
+		scroll-margin-top: 154px;
+	}
+
 	.hu-fr-toc {
+		--fr-toc-progress: 0;
+		display: block;
+		position: fixed;
+		z-index: 76;
+		top: calc(var(--header-height, 78px) + 10px);
+		left: 50%;
+		right: auto;
+		width: min(820px, calc(100vw - 220px));
 		opacity: 0;
 		visibility: hidden;
 		pointer-events: none;
-		transform: translateY(-50%) translateX(14px);
-		transition: opacity 220ms linear, transform 350ms var(--fr-ease), visibility 0s linear 350ms;
+		transform: translate(-50%, -10px);
+		transition: opacity 180ms linear, transform 300ms var(--fr-ease), visibility 0s linear 300ms;
 	}
 
 	.hu-fr-toc.is-available {
 		opacity: 1;
 		visibility: visible;
 		pointer-events: auto;
-		transform: translateY(-50%) translateX(0);
+		transform: translate(-50%, 0);
 		transition-delay: 0s;
 	}
 
-	/* Closed scale adapts to dark sections; expanded panel always remains paper. */
-	.hu-fr-toc.is-on-dark:not(:hover):not(:focus-within) .hu-fr-toc__spine {
-		color: #a9a197;
+	.hu-fr-toc__panel,
+	.hu-fr-toc:hover .hu-fr-toc__panel,
+	.hu-fr-toc:focus-within .hu-fr-toc__panel {
+		position: relative;
+		width: 100%;
+		margin: 0;
+		padding: 0 16px 9px;
+		border: 1px solid #2b3236;
+		border-radius: 3px;
+		background: rgba(11, 15, 18, .965);
+		box-shadow: 0 12px 34px rgba(0, 0, 0, .16);
+		color: var(--fr-light);
+		pointer-events: auto;
+		backdrop-filter: blur(10px);
 	}
 
-	.hu-fr-toc.is-on-dark:not(:hover):not(:focus-within) .hu-fr-toc__scale::before {
-		background: rgba(243, 238, 229, .26);
-	}
-
-	.hu-fr-toc.is-on-dark:not(:hover):not(:focus-within) .hu-fr-toc__tick {
-		background: #a9a197;
-	}
-
-	.hu-fr-toc.is-on-dark:not(:hover):not(:focus-within) .hu-fr-toc__list a[aria-current="true"] .hu-fr-toc__tick {
+	.hu-fr-toc__panel::after {
+		content: "";
+		position: absolute;
+		left: 16px;
+		right: 16px;
+		bottom: -1px;
+		height: 2px;
 		background: var(--fr-copper-hi);
+		transform: scaleX(var(--fr-toc-progress));
+		transform-origin: left center;
+	}
+
+	.hu-fr-toc__spine,
+	.hu-fr-toc__act,
+	.hu-fr-toc__fill {
+		display: none !important;
+	}
+
+	.hu-fr-toc__head,
+	.hu-fr-toc:hover .hu-fr-toc__head,
+	.hu-fr-toc:focus-within .hu-fr-toc__head {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 16px;
+		height: 35px;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		opacity: 1;
+		color: #e9e2d8;
+		font-family: var(--theme-font-mono, "IBM Plex Mono", monospace);
+		font-size: 10px;
+		letter-spacing: .11em;
+		text-transform: uppercase;
+	}
+
+	.hu-fr-toc__head b {
+		font-weight: 600;
+	}
+
+	.hu-fr-toc__head span {
+		color: var(--fr-copper-hi);
+		font-weight: 600;
+	}
+
+	.hu-fr-toc__scale {
+		position: relative;
+		max-height: 25px;
+		overflow: hidden;
+		transition: max-height 300ms var(--fr-ease), padding 300ms var(--fr-ease);
+	}
+
+	.hu-fr-toc:hover .hu-fr-toc__scale,
+	.hu-fr-toc:focus-within .hu-fr-toc__scale {
+		max-height: 92px;
+		padding-top: 8px;
+	}
+
+	.hu-fr-toc__scale::before {
+		content: "";
+		position: absolute;
+		top: 10px;
+		left: 8px;
+		right: 8px;
+		bottom: auto;
+		width: auto;
+		height: 1px;
+		background: rgba(243, 238, 229, .2);
+	}
+
+	.hu-fr-toc:hover .hu-fr-toc__scale::before,
+	.hu-fr-toc:focus-within .hu-fr-toc__scale::before {
+		opacity: 0;
+	}
+
+	.hu-fr-toc__list {
+		display: grid;
+		grid-template-columns: repeat(10, minmax(0, 1fr));
+		gap: 0;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.hu-fr-toc:hover .hu-fr-toc__list,
+	.hu-fr-toc:focus-within .hu-fr-toc__list {
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		gap: 4px 10px;
+	}
+
+	.hu-fr-toc__list a {
+		display: flex;
+		min-height: 24px;
+		align-items: center;
+		justify-content: center;
+		gap: 7px;
+		padding: 0;
+		color: #a9a197;
+		text-decoration: none;
+		pointer-events: auto;
+	}
+
+	.hu-fr-toc__label {
+		order: 2;
+		width: 0;
+		height: 0;
+		overflow: hidden;
+		opacity: 0;
+		transform: none;
+		color: #cfc7bd;
+		font-size: 10px;
+		line-height: 1.2;
+		white-space: nowrap;
+		transition: opacity 150ms linear, color 150ms linear;
+	}
+
+	.hu-fr-toc:hover .hu-fr-toc__label,
+	.hu-fr-toc:focus-within .hu-fr-toc__label {
+		width: auto;
+		height: auto;
+		opacity: 1;
+	}
+
+	.hu-fr-toc__tick,
+	.hu-fr-toc:hover .hu-fr-toc__tick,
+	.hu-fr-toc:focus-within .hu-fr-toc__tick {
+		order: 1;
+		flex: 0 0 auto;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: #77716a;
+		opacity: .65;
+		transition: transform 180ms var(--fr-ease), background-color 150ms linear, opacity 150ms linear;
+	}
+
+	.hu-fr-toc__list a[aria-current="true"] .hu-fr-toc__tick {
+		width: 8px;
+		height: 8px;
+		background: var(--fr-copper-hi);
+		opacity: 1;
+		transform: scale(1.08);
+	}
+
+	.hu-fr-toc__list a[aria-current="true"] .hu-fr-toc__label {
+		color: #fff8ef;
+		font-weight: 650;
 	}
 }
 
@@ -185,11 +334,57 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 	}
 }
 
-/*
- * The request route is the main dynamic story. The rail follows actual scroll
- * progress; stations resolve one after another instead of firing a hidden
- * one-shot transition while the visitor is still scrolling into the section.
- */
+/* Situation cards: footer labels must never collide with body copy. */
+.hu-fr-situations a {
+	display: flex;
+	min-height: 250px;
+	flex-direction: column;
+}
+
+.hu-fr-situations b {
+	position: static;
+	left: auto;
+	bottom: auto;
+	display: block;
+	margin-top: auto;
+	padding-top: 20px;
+	line-height: 1.35;
+}
+
+/* The five-station route gets the full content width; the handoff note follows it. */
+@media (min-width: 761px) {
+	.hu-fr-route__rail {
+		right: 0;
+	}
+
+	.hu-fr-route ol {
+		margin-right: 0;
+		gap: clamp(18px, 2.1vw, 34px);
+	}
+
+	.hu-fr-route__note {
+		position: static;
+		top: auto;
+		right: auto;
+		width: auto;
+		display: grid;
+		grid-template-columns: minmax(220px, .55fr) minmax(0, 1fr);
+		gap: 28px;
+		align-items: center;
+		margin-top: 30px;
+		padding: 20px 0 0;
+		border: 0;
+		border-top: 1px solid #343b3f;
+		background: transparent;
+	}
+
+	.hu-fr-route__note strong,
+	.hu-fr-route__note p {
+		margin: 0;
+	}
+}
+
+/* Scroll-bound route: stations resolve as the visitor moves through the section. */
 .hu-fr-route {
 	--fr-route-progress: 0;
 }
@@ -231,10 +426,10 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 .hu-fr-route.is-complete .hu-fr-route__note {
 	opacity: 1;
 	transform: translateY(0);
-	border-color: rgba(224, 138, 60, .58);
+	border-top-color: rgba(224, 138, 60, .58);
 }
 
-/* Intentional interaction polish, pointer-only. */
+/* Pointer-only polish: supporting, not decorative. */
 @media (hover: hover) and (pointer: fine) {
 	.hu-fr-offers article,
 	.hu-fr-proof-grid article {
@@ -315,6 +510,7 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 	}
 
 	.hu-fr-toc,
+	.hu-fr-toc__scale,
 	.hu-fr__page-progress,
 	.hu-fr-projects > a,
 	.hu-fr-projects > a > * {
