@@ -1,12 +1,11 @@
 /*
- * WordPress Freelancer Hannover — visual-core polish v6
+ * WordPress Freelancer Hannover — visual-core polish v7
  *
- * Motion brief:
- * - intensity 2 / guided
- * - thesis: Messung und Anfrageweg werden als sichtbare Kontinuitaet gefuehrt.
- * - focal moment: einmaliger Mess-Trace im Hero
- * - continuity: kompakter Context-Dock nach dem Hero + scroll-gebundene Strecke
- * - static: Vergleich, Proof-Zahlen und Formularinhalte bleiben ruhig
+ * Thesis:
+ * - the hero is the unnumbered entry screen, not a chapter
+ * - the actual page chapters begin with 01 Einordnung
+ * - desktop orientation lives in a quiet left-side rail after the hero
+ * - the five-station request route remains the main scroll-bound motion moment
  */
 
 .hu-wordpress-freelancer-page .site-main {
@@ -22,7 +21,7 @@
 	border-top-width: 0;
 }
 
-/* Contrast: route owns heading colors explicitly. */
+/* Route-owned contrast. */
 body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light h1,
 body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light h2,
 body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light h3 {
@@ -62,6 +61,58 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 	font-variant-emoji: text;
 }
 
+/*
+ * Hero is deliberately unnumbered. Removing the chapter gutter also gives the
+ * hero its normal full shell width instead of reserving 150px for a marker.
+ */
+.hu-fr-hero .hu-fr__section-mark {
+	display: none !important;
+}
+
+.hu-fr__section-shell--hero {
+	display: block;
+}
+
+.hu-fr-hero__grid {
+	width: 100%;
+}
+
+/* Visible chapter numbering starts after the hero. */
+#einordnung .hu-fr__section-mark span,
+#strecke .hu-fr__section-mark span,
+#angebote .hu-fr__section-mark span,
+#vergleich .hu-fr__section-mark span,
+#ablauf .hu-fr__section-mark span,
+#position .hu-fr__section-mark span,
+#nachweis .hu-fr__section-mark span,
+#fragen .hu-fr__section-mark span,
+#anfrage .hu-fr__section-mark span {
+	font-size: 0;
+}
+
+#einordnung .hu-fr__section-mark span::after,
+#strecke .hu-fr__section-mark span::after,
+#angebote .hu-fr__section-mark span::after,
+#vergleich .hu-fr__section-mark span::after,
+#ablauf .hu-fr__section-mark span::after,
+#position .hu-fr__section-mark span::after,
+#nachweis .hu-fr__section-mark span::after,
+#fragen .hu-fr__section-mark span::after,
+#anfrage .hu-fr__section-mark span::after {
+	display: block;
+	font-size: 11px;
+}
+
+#einordnung .hu-fr__section-mark span::after { content: "01"; }
+#strecke .hu-fr__section-mark span::after { content: "02"; }
+#angebote .hu-fr__section-mark span::after { content: "03"; }
+#vergleich .hu-fr__section-mark span::after { content: "04"; }
+#ablauf .hu-fr__section-mark span::after { content: "05"; }
+#position .hu-fr__section-mark span::after { content: "06"; }
+#nachweis .hu-fr__section-mark span::after { content: "07"; }
+#fragen .hu-fr__section-mark span::after { content: "08"; }
+#anfrage .hu-fr__section-mark span::after { content: "09"; }
+
 /* Active chapter marker. */
 .hu-fr__section-mark::before {
 	transform: scaleY(.82);
@@ -74,7 +125,7 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 	box-shadow: 0 0 0 1px rgba(180, 106, 60, .08), 0 0 22px rgba(180, 106, 60, .12);
 }
 
-/* Hero: one authored measurement trace, then quiet. */
+/* Hero focal moment: one authored measurement trace, then quiet. */
 .hu-fr-hero h1 em {
 	position: relative;
 	display: inline-block;
@@ -123,28 +174,28 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 }
 
 /*
- * Desktop navigation: no side rail. After the hero a compact, constant-contrast
- * context dock sits below the global header. At rest it shows the current
- * chapter and ten position dots. Hover/focus opens the full index in place.
+ * Desktop TOC: a quiet vertical rail in the left outer margin. It stays absent
+ * in the hero. Hover/focus opens the labels to the right; the reading canvas
+ * itself never shifts.
  */
 @media (min-width: 1280px) {
 	.hu-fr-section {
-		scroll-margin-top: 154px;
+		scroll-margin-top: 96px;
 	}
 
 	.hu-fr-toc {
 		--fr-toc-progress: 0;
-		display: block;
 		position: fixed;
 		z-index: 76;
-		top: calc(var(--header-height, 78px) + 10px);
-		left: 50%;
+		top: 50%;
+		left: max(14px, calc((100vw - var(--fr-shell)) / 2 - 76px));
 		right: auto;
-		width: min(820px, calc(100vw - 220px));
+		width: 46px;
+		height: 390px;
 		opacity: 0;
 		visibility: hidden;
 		pointer-events: none;
-		transform: translate(-50%, -10px);
+		transform: translate(-8px, -50%);
 		transition: opacity 180ms linear, transform 300ms var(--fr-ease), visibility 0s linear 300ms;
 	}
 
@@ -152,169 +203,225 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 		opacity: 1;
 		visibility: visible;
 		pointer-events: auto;
-		transform: translate(-50%, 0);
+		transform: translate(0, -50%);
 		transition-delay: 0s;
 	}
 
-	.hu-fr-toc__panel,
-	.hu-fr-toc:hover .hu-fr-toc__panel,
-	.hu-fr-toc:focus-within .hu-fr-toc__panel {
+	.hu-fr-toc__panel {
 		position: relative;
-		width: 100%;
-		margin: 0;
-		padding: 0 16px 9px;
-		border: 1px solid #2b3236;
-		border-radius: 3px;
-		background: rgba(11, 15, 18, .965);
-		box-shadow: 0 12px 34px rgba(0, 0, 0, .16);
-		color: var(--fr-light);
-		pointer-events: auto;
-		backdrop-filter: blur(10px);
-	}
-
-	.hu-fr-toc__panel::after {
-		content: "";
-		position: absolute;
-		left: 16px;
-		right: 16px;
-		bottom: -1px;
-		height: 2px;
-		background: var(--fr-copper-hi);
-		transform: scaleX(var(--fr-toc-progress));
-		transform-origin: left center;
-	}
-
-	.hu-fr-toc__spine,
-	.hu-fr-toc__act,
-	.hu-fr-toc__fill {
-		display: none !important;
-	}
-
-	.hu-fr-toc__head,
-	.hu-fr-toc:hover .hu-fr-toc__head,
-	.hu-fr-toc:focus-within .hu-fr-toc__head {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		gap: 16px;
-		height: 35px;
+		width: 46px;
+		height: 390px;
 		margin: 0;
 		padding: 0;
 		border: 0;
-		opacity: 1;
-		color: #e9e2d8;
+		background: transparent;
+		box-shadow: none;
+		color: var(--fr-light);
+		overflow: hidden;
+		pointer-events: auto;
+		transition: width 300ms var(--fr-ease), background-color 180ms linear, border-color 180ms linear, box-shadow 220ms var(--fr-ease);
+	}
+
+	.hu-fr-toc:hover .hu-fr-toc__panel,
+	.hu-fr-toc:focus-within .hu-fr-toc__panel {
+		width: 248px;
+		border: 1px solid #2b3236;
+		background: rgba(11, 15, 18, .98);
+		box-shadow: 0 18px 44px rgba(0, 0, 0, .2);
+	}
+
+	.hu-fr-toc__spine {
+		position: absolute;
+		top: 6px;
+		left: 12px;
+		display: block;
+		color: #8f8981;
 		font-family: var(--theme-font-mono, "IBM Plex Mono", monospace);
-		font-size: 10px;
-		letter-spacing: .11em;
+		font-size: 9px;
+		font-weight: 600;
+		letter-spacing: .15em;
+		line-height: 1;
 		text-transform: uppercase;
+		writing-mode: vertical-rl;
+		transition: opacity 120ms linear;
 	}
 
-	.hu-fr-toc__head b {
-		font-weight: 600;
+	.hu-fr-toc__spine {
+		font-size: 0;
 	}
 
+	.hu-fr-toc__spine::after {
+		content: "INHALT · 09";
+		font-size: 9px;
+	}
+
+	.hu-fr-toc:hover .hu-fr-toc__spine,
+	.hu-fr-toc:focus-within .hu-fr-toc__spine {
+		opacity: 0;
+	}
+
+	.hu-fr-toc__head {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		display: flex;
+		height: 48px;
+		align-items: center;
+		justify-content: space-between;
+		gap: 14px;
+		padding: 0 18px;
+		border-bottom: 1px solid #292f33;
+		opacity: 0;
+		color: #eee7dd;
+		font-family: var(--theme-font-mono, "IBM Plex Mono", monospace);
+		text-transform: uppercase;
+		pointer-events: none;
+		transition: opacity 120ms linear;
+	}
+
+	.hu-fr-toc:hover .hu-fr-toc__head,
+	.hu-fr-toc:focus-within .hu-fr-toc__head {
+		opacity: 1;
+	}
+
+	.hu-fr-toc__head b,
 	.hu-fr-toc__head span {
+		font-size: 0;
+	}
+
+	.hu-fr-toc__head b::after {
+		content: "Inhalt";
+		font-size: 10px;
+		font-weight: 650;
+		letter-spacing: .12em;
+	}
+
+	.hu-fr-toc__head span::after {
+		content: "09 Abschnitte";
 		color: var(--fr-copper-hi);
+		font-size: 9px;
 		font-weight: 600;
+		letter-spacing: .1em;
+	}
+
+	.hu-fr-toc__act {
+		display: none !important;
 	}
 
 	.hu-fr-toc__scale {
-		position: relative;
-		max-height: 25px;
-		overflow: hidden;
-		transition: max-height 300ms var(--fr-ease), padding 300ms var(--fr-ease);
+		position: absolute;
+		top: 78px;
+		bottom: 16px;
+		left: 15px;
+		width: 18px;
+		transition: top 300ms var(--fr-ease), left 300ms var(--fr-ease), width 300ms var(--fr-ease);
 	}
 
 	.hu-fr-toc:hover .hu-fr-toc__scale,
 	.hu-fr-toc:focus-within .hu-fr-toc__scale {
-		max-height: 92px;
-		padding-top: 8px;
+		top: 62px;
+		left: 18px;
+		width: 210px;
 	}
 
 	.hu-fr-toc__scale::before {
 		content: "";
 		position: absolute;
-		top: 10px;
+		top: 0;
+		bottom: 0;
 		left: 8px;
-		right: 8px;
-		bottom: auto;
-		width: auto;
-		height: 1px;
-		background: rgba(243, 238, 229, .2);
+		width: 1px;
+		background: rgba(196, 188, 178, .22);
 	}
 
-	.hu-fr-toc:hover .hu-fr-toc__scale::before,
-	.hu-fr-toc:focus-within .hu-fr-toc__scale::before {
-		opacity: 0;
+	.hu-fr-toc__fill {
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		bottom: 0;
+		left: 8px;
+		display: block !important;
+		width: 1px;
+		background: var(--fr-copper-hi);
+		transform-origin: top center;
 	}
 
 	.hu-fr-toc__list {
+		position: relative;
+		z-index: 2;
 		display: grid;
-		grid-template-columns: repeat(10, minmax(0, 1fr));
+		height: 100%;
+		grid-template-rows: repeat(9, minmax(0, 1fr));
 		gap: 0;
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
 
-	.hu-fr-toc:hover .hu-fr-toc__list,
-	.hu-fr-toc:focus-within .hu-fr-toc__list {
-		grid-template-columns: repeat(5, minmax(0, 1fr));
-		gap: 4px 10px;
+	.hu-fr-toc__list li:first-child {
+		display: none;
 	}
 
 	.hu-fr-toc__list a {
 		display: flex;
-		min-height: 24px;
+		min-height: 0;
 		align-items: center;
-		justify-content: center;
-		gap: 7px;
+		justify-content: flex-start;
+		gap: 12px;
 		padding: 0;
-		color: #a9a197;
+		color: #aaa39a;
+		font-family: var(--theme-font-mono, "IBM Plex Mono", monospace);
 		text-decoration: none;
-		pointer-events: auto;
+	}
+
+	.hu-fr-toc__tick {
+		order: 1;
+		flex: 0 0 auto;
+		width: 7px;
+		height: 7px;
+		margin-left: 5px;
+		border: 1px solid #7c756e;
+		border-radius: 50%;
+		background: var(--fr-night);
+		opacity: .9;
+		transition: width 180ms var(--fr-ease), height 180ms var(--fr-ease), margin 180ms var(--fr-ease), background-color 150ms linear, border-color 150ms linear, box-shadow 180ms var(--fr-ease);
 	}
 
 	.hu-fr-toc__label {
 		order: 2;
 		width: 0;
-		height: 0;
 		overflow: hidden;
 		opacity: 0;
-		transform: none;
 		color: #cfc7bd;
 		font-size: 10px;
 		line-height: 1.2;
 		white-space: nowrap;
-		transition: opacity 150ms linear, color 150ms linear;
+		transition: opacity 120ms linear, color 120ms linear;
 	}
 
 	.hu-fr-toc:hover .hu-fr-toc__label,
 	.hu-fr-toc:focus-within .hu-fr-toc__label {
 		width: auto;
-		height: auto;
 		opacity: 1;
 	}
 
-	.hu-fr-toc__tick,
-	.hu-fr-toc:hover .hu-fr-toc__tick,
-	.hu-fr-toc:focus-within .hu-fr-toc__tick {
-		order: 1;
-		flex: 0 0 auto;
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: #77716a;
-		opacity: .65;
-		transition: transform 180ms var(--fr-ease), background-color 150ms linear, opacity 150ms linear;
+	.hu-fr-toc__list a[href="#einordnung"] .hu-fr-toc__label {
+		font-size: 0;
+	}
+
+	.hu-fr-toc__list a[href="#einordnung"] .hu-fr-toc__label::after {
+		content: "Einordnung";
+		font-size: 10px;
 	}
 
 	.hu-fr-toc__list a[aria-current="true"] .hu-fr-toc__tick {
-		width: 8px;
-		height: 8px;
+		width: 11px;
+		height: 11px;
+		margin-left: 3px;
+		border-color: var(--fr-copper-hi);
 		background: var(--fr-copper-hi);
-		opacity: 1;
-		transform: scale(1.08);
+		box-shadow: 0 0 0 4px rgba(224, 138, 60, .12);
 	}
 
 	.hu-fr-toc__list a[aria-current="true"] .hu-fr-toc__label {
@@ -323,6 +430,7 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 	}
 }
 
+/* Mobile keeps a native, compact disclosure; the hero is not listed. */
 @media (max-width: 1279px) {
 	.hu-fr__page-progress {
 		opacity: 0;
@@ -332,9 +440,35 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 	.hu-fr.is-past-hero .hu-fr__page-progress {
 		opacity: 1;
 	}
+
+	.hu-fr-toc-m li:first-child {
+		display: none;
+	}
+
+	.hu-fr-toc-m summary {
+		font-size: 0;
+	}
+
+	.hu-fr-toc-m summary::before {
+		content: "Auf dieser Seite — 9 Abschnitte";
+		font-size: 11px;
+	}
+
+	.hu-fr-toc-m summary span {
+		font-size: 11px;
+	}
+
+	.hu-fr-toc-m a[href="#einordnung"] {
+		font-size: 0;
+	}
+
+	.hu-fr-toc-m a[href="#einordnung"]::after {
+		content: "Einordnung";
+		font-size: 14px;
+	}
 }
 
-/* Situation cards: footer labels must never collide with body copy. */
+/* Situation cards: footer labels stay in document flow. */
 .hu-fr-situations a {
 	display: flex;
 	min-height: 250px;
@@ -351,7 +485,7 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 	line-height: 1.35;
 }
 
-/* The five-station route gets the full content width; the handoff note follows it. */
+/* The five-station route gets the full content width; handoff note follows it. */
 @media (min-width: 761px) {
 	.hu-fr-route__rail {
 		right: 0;
@@ -429,7 +563,7 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 	border-top-color: rgba(224, 138, 60, .58);
 }
 
-/* Pointer-only polish: supporting, not decorative. */
+/* Pointer-only support polish. */
 @media (hover: hover) and (pointer: fine) {
 	.hu-fr-offers article,
 	.hu-fr-proof-grid article {
@@ -510,6 +644,7 @@ body.hu-wordpress-freelancer-page .hu-fr .hu-fr-section--light .hu-fr__section-m
 	}
 
 	.hu-fr-toc,
+	.hu-fr-toc__panel,
 	.hu-fr-toc__scale,
 	.hu-fr__page-progress,
 	.hu-fr-projects > a,
