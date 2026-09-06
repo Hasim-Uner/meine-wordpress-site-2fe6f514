@@ -9,38 +9,68 @@
 	const hero = root.querySelector('#start');
 	const toc = root.querySelector('.hu-fr-toc');
 	const tocLinks = Array.from(root.querySelectorAll('[data-fr-toc-link]'));
+	const tocHeadTitle = root.querySelector('.hu-fr-toc__head b');
+	const tocHeadMeta = root.querySelector('.hu-fr-toc__head span');
 	const tocFill = root.querySelector('[data-fr-toc-fill]');
 	const pageProgress = root.querySelector('[data-fr-progress]');
 	const route = root.querySelector('[data-fr-route]');
 	const routeItems = route ? Array.from(route.querySelectorAll('li')) : [];
 
 	/*
-	 * U+2197 can be rendered as a color emoji by some platform/browser stacks.
-	 * VS15 forces the typographic glyph without changing the visible copy.
+	 * Diagonal Unicode arrows fall back to color emoji on some macOS/Firefox
+	 * stacks. Normalize route-local decorative arrows to a text arrow.
 	 */
 	root.querySelectorAll('a, button').forEach((control) => {
 		const walker = document.createTreeWalker(control, NodeFilter.SHOW_TEXT);
 		let node = walker.nextNode();
 		while (node) {
-			if (node.nodeValue && node.nodeValue.includes('\u2197')) {
-				node.nodeValue = node.nodeValue.replace(/\u2197(?!\uFE0E)/g, '\u2197\uFE0E');
+			if (node.nodeValue && /[\u2197\u2198]/.test(node.nodeValue)) {
+				node.nodeValue = node.nodeValue.replace(/[\u2197\u2198]/g, '\u2192\uFE0E');
 			}
 			node = walker.nextNode();
 		}
 	});
 
+	/* Stable measurement hooks without adding another tracking runtime. */
+	tocLinks.forEach((link, index) => {
+		const id = (link.getAttribute('href') || '').replace('#', '') || String(index + 1);
+		if (!link.dataset.trackAction) link.dataset.trackAction = `freelancer_toc_${id}`;
+		if (!link.dataset.trackCategory) link.dataset.trackCategory = 'navigation';
+		if (!link.dataset.trackSection) link.dataset.trackSection = 'context_dock';
+	});
+
+	root.querySelectorAll('.hu-fr-situations a').forEach((link, index) => {
+		if (!link.dataset.trackAction) link.dataset.trackAction = `freelancer_scope_select_${index + 1}`;
+		if (!link.dataset.trackCategory) link.dataset.trackCategory = 'navigation';
+		if (!link.dataset.trackSection) link.dataset.trackSection = 'einordnung';
+	});
+
+	root.querySelectorAll('.hu-fr-proof-grid a, .hu-fr-projects > a').forEach((link, index) => {
+		if (!link.dataset.trackAction) link.dataset.trackAction = `freelancer_proof_link_${index + 1}`;
+		if (!link.dataset.trackCategory) link.dataset.trackCategory = 'trust';
+		if (!link.dataset.trackSection) link.dataset.trackSection = 'nachweis';
+	});
+
 	const setCurrent = (id) => {
 		let currentSection = null;
+		let currentIndex = -1;
+		let currentLabel = '';
 
-		sections.forEach((section) => {
+		sections.forEach((section, index) => {
 			const isCurrent = section.id === id;
 			section.classList.toggle('is-current', isCurrent);
-			if (isCurrent) currentSection = section;
+			if (isCurrent) {
+				currentSection = section;
+				currentIndex = index;
+			}
 		});
 
 		tocLinks.forEach((link) => {
-			if (link.getAttribute('href') === `#${id}`) {
+			const isCurrent = link.getAttribute('href') === `#${id}`;
+			if (isCurrent) {
 				link.setAttribute('aria-current', 'true');
+				const label = link.querySelector('.hu-fr-toc__label');
+				currentLabel = label ? label.textContent.trim() : '';
 			} else {
 				link.removeAttribute('aria-current');
 			}
@@ -49,6 +79,11 @@
 		if (toc && currentSection) {
 			toc.classList.toggle('is-on-dark', currentSection.classList.contains('hu-fr-section--dark'));
 		}
+
+		if (tocHeadTitle && currentIndex >= 0) {
+			tocHeadTitle.textContent = `${String(currentIndex + 1).padStart(2, '0')} · ${currentLabel || id}`;
+		}
+		if (tocHeadMeta) tocHeadMeta.textContent = 'Inhalt';
 	};
 
 	if (sections.length) {
@@ -109,6 +144,7 @@
 
 		const progressEnd = Math.max(contentStart + 1, doc.scrollHeight - doc.clientHeight);
 		const progressValue = clamp01((doc.scrollTop - contentStart) / (progressEnd - contentStart));
+		if (toc) toc.style.setProperty('--fr-toc-progress', progressValue.toFixed(4));
 		if (tocFill) tocFill.style.transform = `scaleY(${progressValue})`;
 		if (pageProgress) pageProgress.style.transform = `scaleX(${progressValue})`;
 
@@ -140,7 +176,10 @@
 		updateFrame();
 	});
 
-	root.querySelectorAll('.hu-fr-toc-m a').forEach((link) => {
+	root.querySelectorAll('.hu-fr-toc-m a').forEach((link, index) => {
+		if (!link.dataset.trackAction) link.dataset.trackAction = `freelancer_mobile_toc_${index + 1}`;
+		if (!link.dataset.trackCategory) link.dataset.trackCategory = 'navigation';
+		if (!link.dataset.trackSection) link.dataset.trackSection = 'mobile_toc';
 		link.addEventListener('click', () => {
 			const details = link.closest('details');
 			if (details) details.open = false;
@@ -150,7 +189,13 @@
 	const accordion = root.querySelector('[data-fr-accordion]');
 	if (accordion) {
 		const items = Array.from(accordion.querySelectorAll('details'));
-		items.forEach((item) => {
+		items.forEach((item, index) => {
+			const summary = item.querySelector('summary');
+			if (summary) {
+				if (!summary.dataset.trackAction) summary.dataset.trackAction = `freelancer_faq_${index + 1}`;
+				if (!summary.dataset.trackCategory) summary.dataset.trackCategory = 'engagement';
+				if (!summary.dataset.trackSection) summary.dataset.trackSection = 'fragen';
+			}
 			item.addEventListener('toggle', () => {
 				if (!item.open) return;
 				items.forEach((other) => {
