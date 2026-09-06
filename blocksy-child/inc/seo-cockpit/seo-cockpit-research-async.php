@@ -89,9 +89,13 @@ function nexus_schedule_seo_cockpit_research_background_refresh() {
  * Populate missing or expired Research provider caches in the background.
  *
  * Existing provider functions retain their own TTLs and therefore make no
- * remote request while their transient is still valid. The shared run lock is
- * also used for the GENESIS logincheck so Destatis never gets parallel calls
- * from multiple Research cron workers.
+ * remote request while their transient is still valid. The shared run lock
+ * prevents overlapping provider refreshes.
+ *
+ * GENESIS is special: the actual table request is the primary connection
+ * proof. logincheck is only a fallback/cleanup call when table retrieval fails,
+ * so a slow diagnostic endpoint cannot make a healthy data connection appear
+ * broken.
  *
  * @return void
  */
@@ -124,15 +128,24 @@ function nexus_run_seo_cockpit_research_background_refresh() {
 			: '';
 
 		if ( '' !== $destatis_token ) {
-			// GENESIS explicitly recommends logincheck when stale requests have
-			// exhausted the personal parallel-process quota. Run it once, inside
-			// this shared lock, before requesting the two building tables.
-			if ( function_exists( 'nexus_refresh_seo_cockpit_destatis_connection_diagnostic' ) ) {
-				nexus_refresh_seo_cockpit_destatis_connection_diagnostic();
-			}
+			$destatis_summary = function_exists( 'nexus_get_seo_cockpit_destatis_summary' )
+				? nexus_get_seo_cockpit_destatis_summary()
+				: [ 'is_available' => false ];
 
-			if ( function_exists( 'nexus_get_seo_cockpit_destatis_summary' ) ) {
-				nexus_get_seo_cockpit_destatis_summary();
+			if ( is_array( $destatis_summary ) && ! empty( $destatis_summary['is_available'] ) ) {
+				update_option(
+					'nexus_seo_cockpit_destatis_connection_status',
+					[
+						'ok'         => true,
+						'message'    => 'GENESIS-Datenabruf erfolgreich. Die API-Verbindung ist aktiv.',
+						'checked_at' => time(),
+					],
+					false
+				);
+			} elseif ( function_exists( 'nexus_refresh_seo_cockpit_destatis_connection_diagnostic' ) ) {
+				// If the real table request fails, use logincheck once as a cleanup
+				// and diagnostic path. A later background run retries the tables.
+				nexus_refresh_seo_cockpit_destatis_connection_diagnostic();
 			}
 		}
 
