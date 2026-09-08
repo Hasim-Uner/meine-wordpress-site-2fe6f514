@@ -45,6 +45,7 @@ $nexus_seo_cockpit_modules = [
 	'seo-cockpit-research-async.php',
 	'seo-cockpit-audit-canonical-fetch.php',
 	'seo-cockpit-audit.php',
+	'seo-cockpit-audit-intelligence.php',
 	'seo-cockpit-audit-runtime.php',
 	'seo-cockpit-audit-ui.php',
 	'seo-cockpit-command-center.php',
