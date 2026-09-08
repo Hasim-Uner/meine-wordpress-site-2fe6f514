@@ -520,7 +520,7 @@ function nexus_seo_audit_crawl_url( $url ) {
 		'post_id'             => absint( $policy['post_id'] ?? 0 ),
 		'expected_noindex'    => ! empty( $policy['expected_noindex'] ),
 		'expected_robots'     => (string) ( $policy['expected_robots'] ?? '' ),
-		'excluded_from_score' => ! empty( $policy['expected_noindex'] ),
+		'excluded_from_score' => false,
 		'redirect_url'        => '',
 		'status_code'         => 0,
 		'is_html'             => false,
@@ -573,6 +573,10 @@ function nexus_seo_audit_crawl_url( $url ) {
 
 	if ( 200 === $page['status_code'] && $page['is_html'] ) {
 		$page = array_merge( $page, nexus_seo_audit_parse_html( wp_remote_retrieve_body( $response ), $url ) );
+
+		if ( ! empty( $page['expected_noindex'] ) && nexus_seo_audit_page_has_noindex( $page ) ) {
+			$page['excluded_from_score'] = true;
+		}
 	}
 
 	$page['issues'] = nexus_seo_audit_page_issues( $page );
