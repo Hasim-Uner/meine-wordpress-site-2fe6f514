@@ -1,10 +1,11 @@
 <?php
 /**
- * Solar/B2B-Cluster: kontextuelle Querverlinkung der SEO-Subpages.
+ * Kontextuelle Querverlinkung fuer SEO-Cluster.
  *
  * Die Solar-Subpages sammeln Suchnachfrage, hingen aber bislang ohne
  * gegenseitige Kontextlinks im internen Linkgraph (Position 50+). Dieses Modul
- * vernetzt sie untereinander mit exakt benannten Ankern.
+ * vernetzt sie untereinander mit exakt benannten Ankern. Zusaetzlich verbindet
+ * es die Agentur-Money-Page mit der technischen Stack-Vertiefung.
  *
  * Eine Quelle der Wahrheit:
  *  - rendert die Links sichtbar vor dem Footer auf den Cluster-Seiten
@@ -159,3 +160,59 @@ function hu_render_solar_cluster_links() {
 	<?php
 }
 add_action( 'get_footer', 'hu_render_solar_cluster_links' );
+
+/**
+ * Give the indexable Agentur-Stack page a stable SERP description.
+ *
+ * The page is repo-owned and currently has no editor description, so the
+ * central forced-meta filter is the deterministic place for this hygiene fix.
+ *
+ * @param array<string,array<string,string>> $map Forced singular SEO map.
+ * @return array<string,array<string,string>>
+ */
+function hu_add_agency_stack_seo_meta( $map ) {
+	$map = is_array( $map ) ? $map : [];
+
+	$map['stack-agentur'] = array_merge(
+		isset( $map['stack-agentur'] ) && is_array( $map['stack-agentur'] ) ? $map['stack-agentur'] : [],
+		[
+			'description' => 'Technischer Agentur-Stack für White-Label-WordPress: Root-Server, Git-Deployment, Staging, Tracking und skalierbare Übergaben – transparent dokumentiert.',
+		]
+	);
+
+	return $map;
+}
+add_filter( 'hu_forced_singular_seo_map', 'hu_add_agency_stack_seo_meta', 30 );
+
+/**
+ * Add one contextual incoming link from the Agentur money page to the
+ * technical stack detail page. This keeps /stack-agentur/ out of orphan state
+ * without promoting it into the global primary navigation.
+ *
+ * @return void
+ */
+function hu_render_agency_stack_related_link() {
+	if ( is_admin() || ! is_page( 'whitelabel-retainer' ) ) {
+		return;
+	}
+
+	$stack_url = home_url( '/stack-agentur/' );
+	?>
+	<section class="nx-section wl-tech agency-stack-related" aria-label="Technischer Unterbau für Agenturprojekte" data-track-section="agency_stack_related">
+		<div class="nx-container">
+			<div class="wl-section-header nx-reveal">
+				<span class="wl-eyebrow"><?php esc_html_e( 'Technischer Unterbau', 'blocksy-child' ); ?></span>
+				<h2><?php esc_html_e( 'Server, Git-Deployment und Übergaben im Detail', 'blocksy-child' ); ?></h2>
+				<p><?php esc_html_e( 'Wer die Lieferstrecke technisch prüfen will, findet hier den Stack hinter White-Label-Projekten.', 'blocksy-child' ); ?></p>
+				<a class="nx-btn nx-btn--ghost"
+				   href="<?php echo esc_url( $stack_url ); ?>"
+				   data-track-action="agency_stack_link_click"
+				   data-track-category="internal_link">
+					<?php esc_html_e( 'Agentur-Stack ansehen', 'blocksy-child' ); ?>
+				</a>
+			</div>
+		</div>
+	</section>
+	<?php
+}
+add_action( 'get_footer', 'hu_render_agency_stack_related_link', 20 );
