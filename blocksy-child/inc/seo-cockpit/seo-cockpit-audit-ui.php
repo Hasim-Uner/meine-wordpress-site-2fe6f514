@@ -86,8 +86,8 @@ function nexus_render_seo_audit_page() {
 		<?php if ( in_array( $status, [ 'queued', 'running' ], true ) ) : ?>
 			<?php $total = max( 1, absint( $state['total_urls'] ?? 0 ) ); $done = min( $total, absint( $state['processed_urls'] ?? 0 ) ); $progress = (int) round( $done / $total * 100 ); ?>
 			<section class="nexus-audit__panel nexus-audit__progress-card">
-				<div class="nexus-audit__progress-copy"><div><span class="nexus-audit__status">läuft</span><h2>Website wird geprüft</h2><p><?php echo esc_html( $done ); ?> von <?php echo esc_html( $total ); ?> URLs verarbeitet.</p></div><strong><?php echo esc_html( $progress ); ?>%</strong></div>
-				<div class="nexus-audit__progress"><span style="width:<?php echo esc_attr( $progress ); ?>%"></span></div>
+				<div class="nexus-audit__progress-copy"><div><span class="nexus-audit__status">läuft</span><h2>Website wird geprüft</h2><p><?php echo esc_html( (string) $done ); ?> von <?php echo esc_html( (string) $total ); ?> URLs verarbeitet.</p></div><strong><?php echo esc_html( (string) $progress ); ?>%</strong></div>
+				<div class="nexus-audit__progress"><span style="width:<?php echo esc_attr( (string) $progress ); ?>%"></span></div>
 			</section>
 			<script>window.setTimeout(function(){window.location.reload();},5000);</script>
 		<?php elseif ( 'failed' === $status ) : ?>
@@ -97,18 +97,18 @@ function nexus_render_seo_audit_page() {
 		<?php else : ?>
 			<?php $score = absint( $state['health_score'] ?? 0 ); $counts = (array) ( $state['severity_counts'] ?? [] ); $issues = (array) ( $state['issues'] ?? [] ); $pages = (array) ( $state['pages'] ?? [] ); $cat = (array) ( $state['category_scores'] ?? [] ); ?>
 			<section class="nexus-audit__summary">
-				<div class="nexus-audit__score-card nexus-audit__panel"><div class="nexus-audit__score-ring"><strong><?php echo esc_html( $score ); ?></strong><span>/ 100</span></div><div><p class="nexus-audit__eyebrow">SEO Health</p><h2><?php echo esc_html( $score >= 90 ? 'Sehr sauber' : ( $score >= 75 ? 'Solide Basis' : ( $score >= 55 ? 'Optimierungsbedarf' : 'Kritischer Zustand' ) ) ); ?></h2><p>Letzter Lauf: <?php echo esc_html( (string) ( $state['finished_at'] ?? '' ) ); ?></p></div></div>
-				<div class="nexus-audit__metric nexus-audit__panel"><span>URLs</span><strong><?php echo esc_html( count( $pages ) ); ?></strong><small>geprüft</small></div>
-				<div class="nexus-audit__metric nexus-audit__panel"><span>Kritisch</span><strong><?php echo esc_html( absint( $counts['critical'] ?? 0 ) ); ?></strong><small>sofort prüfen</small></div>
-				<div class="nexus-audit__metric nexus-audit__panel"><span>Hoch</span><strong><?php echo esc_html( absint( $counts['high'] ?? 0 ) ); ?></strong><small>hohe Priorität</small></div>
-				<div class="nexus-audit__metric nexus-audit__panel"><span>Befunde</span><strong><?php echo esc_html( count( $issues ) ); ?></strong><small>inkl. Hinweise</small></div>
+				<div class="nexus-audit__score-card nexus-audit__panel"><div class="nexus-audit__score-ring"><strong><?php echo esc_html( (string) $score ); ?></strong><span>/ 100</span></div><div><p class="nexus-audit__eyebrow">SEO Health</p><h2><?php echo esc_html( $score >= 90 ? 'Sehr sauber' : ( $score >= 75 ? 'Solide Basis' : ( $score >= 55 ? 'Optimierungsbedarf' : 'Kritischer Zustand' ) ) ); ?></h2><p>Letzter Lauf: <?php echo esc_html( (string) ( $state['finished_at'] ?? '' ) ); ?></p></div></div>
+				<div class="nexus-audit__metric nexus-audit__panel"><span>URLs</span><strong><?php echo esc_html( (string) count( $pages ) ); ?></strong><small>geprüft</small></div>
+				<div class="nexus-audit__metric nexus-audit__panel"><span>Kritisch</span><strong><?php echo esc_html( (string) absint( $counts['critical'] ?? 0 ) ); ?></strong><small>sofort prüfen</small></div>
+				<div class="nexus-audit__metric nexus-audit__panel"><span>Hoch</span><strong><?php echo esc_html( (string) absint( $counts['high'] ?? 0 ) ); ?></strong><small>hohe Priorität</small></div>
+				<div class="nexus-audit__metric nexus-audit__panel"><span>Befunde</span><strong><?php echo esc_html( (string) count( $issues ) ); ?></strong><small>inkl. Hinweise</small></div>
 			</section>
 
 			<section class="nexus-audit__panel">
 				<div class="nexus-audit__section-head"><div><p class="nexus-audit__eyebrow">Score-Modell</p><h2>Bereiche</h2></div><p>Nicht gemessene Daten werden nicht als Null gewertet.</p></div>
 				<div class="nexus-audit__categories">
 					<?php foreach ( $categories as $key => $config ) : $value = array_key_exists( $key, $cat ) ? $cat[ $key ] : null; ?>
-						<div class="nexus-audit__category"><div><strong><?php echo esc_html( (string) $config['label'] ); ?></strong><small>Gewicht <?php echo esc_html( absint( $config['weight'] ) ); ?></small></div><?php if ( null === $value ) : ?><span class="nexus-audit__not-measured">nicht bewertet</span><?php else : ?><strong class="nexus-audit__category-score"><?php echo esc_html( absint( $value ) ); ?></strong><?php endif; ?></div>
+						<div class="nexus-audit__category"><div><strong><?php echo esc_html( (string) $config['label'] ); ?></strong><small>Gewicht <?php echo esc_html( (string) absint( $config['weight'] ) ); ?></small></div><?php if ( null === $value ) : ?><span class="nexus-audit__not-measured">nicht bewertet</span><?php else : ?><strong class="nexus-audit__category-score"><?php echo esc_html( (string) absint( $value ) ); ?></strong><?php endif; ?></div>
 					<?php endforeach; ?>
 				</div>
 			</section>
@@ -126,12 +126,12 @@ function nexus_render_seo_audit_page() {
 				<div class="nexus-audit__section-head"><div><p class="nexus-audit__eyebrow">URL-Ebene</p><h2>Alle geprüften Seiten</h2></div></div>
 				<div class="nexus-audit__table-wrap"><table class="widefat striped nexus-audit__table"><thead><tr><th>Score</th><th>URL</th><th>HTTP</th><th>Title</th><th>H1</th><th>Befunde</th></tr></thead><tbody>
 				<?php usort( $pages, static function( $a, $b ) { return absint( $a['score'] ?? 0 ) <=> absint( $b['score'] ?? 0 ); } ); foreach ( $pages as $page ) : if ( ! is_array( $page ) ) { continue; } $h1 = is_array( $page['h1'] ?? null ) ? $page['h1'] : []; ?>
-					<tr><td><strong class="nexus-audit__page-score"><?php echo esc_html( absint( $page['score'] ?? 0 ) ); ?></strong></td><td class="nexus-audit__url"><a href="<?php echo esc_url( (string) ( $page['url'] ?? '' ) ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( (string) ( $page['url'] ?? '' ) ); ?></a></td><td><?php echo esc_html( absint( $page['status_code'] ?? 0 ) ?: '—' ); ?></td><td><?php echo esc_html( (string) ( $page['title'] ?? '—' ) ); ?></td><td><?php echo esc_html( (string) ( $h1[0] ?? '—' ) ); ?></td><td><?php echo esc_html( nexus_seo_audit_actionable_count( $page ) ); ?></td></tr>
+					<tr><td><strong class="nexus-audit__page-score"><?php echo esc_html( (string) absint( $page['score'] ?? 0 ) ); ?></strong></td><td class="nexus-audit__url"><a href="<?php echo esc_url( (string) ( $page['url'] ?? '' ) ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( (string) ( $page['url'] ?? '' ) ); ?></a></td><td><?php echo esc_html( (string) ( absint( $page['status_code'] ?? 0 ) ?: '—' ) ); ?></td><td><?php echo esc_html( (string) ( $page['title'] ?? '—' ) ); ?></td><td><?php echo esc_html( (string) ( $h1[0] ?? '—' ) ); ?></td><td><?php echo esc_html( (string) nexus_seo_audit_actionable_count( $page ) ); ?></td></tr>
 				<?php endforeach; ?>
 				</tbody></table></div>
 			</section>
 
-			<?php if ( $history ) : ?><section class="nexus-audit__panel"><div class="nexus-audit__section-head"><div><p class="nexus-audit__eyebrow">Verlauf</p><h2>Letzte Audit-Läufe</h2></div></div><div class="nexus-audit__history"><?php foreach ( array_slice( $history, 0, 6 ) as $run ) : if ( ! is_array( $run ) ) { continue; } ?><div class="nexus-audit__history-item"><strong><?php echo esc_html( absint( $run['health_score'] ?? 0 ) ); ?>/100</strong><span><?php echo esc_html( (string) ( $run['finished_at'] ?? '' ) ); ?></span><small><?php echo esc_html( absint( $run['total_urls'] ?? 0 ) ); ?> URLs</small></div><?php endforeach; ?></div></section><?php endif; ?>
+			<?php if ( $history ) : ?><section class="nexus-audit__panel"><div class="nexus-audit__section-head"><div><p class="nexus-audit__eyebrow">Verlauf</p><h2>Letzte Audit-Läufe</h2></div></div><div class="nexus-audit__history"><?php foreach ( array_slice( $history, 0, 6 ) as $run ) : if ( ! is_array( $run ) ) { continue; } ?><div class="nexus-audit__history-item"><strong><?php echo esc_html( (string) absint( $run['health_score'] ?? 0 ) ); ?>/100</strong><span><?php echo esc_html( (string) ( $run['finished_at'] ?? '' ) ); ?></span><small><?php echo esc_html( (string) absint( $run['total_urls'] ?? 0 ) ); ?> URLs</small></div><?php endforeach; ?></div></section><?php endif; ?>
 		<?php endif; ?>
 	</div>
 	<?php
