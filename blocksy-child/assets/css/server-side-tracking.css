@@ -7,4 +7,36 @@
    ========================================================================== */
 
 @import url("./server-side-tracking-base.css?v=20260909-1");
-@import url("./server-side-tracking-cro.css?v=20260909-1");
+@import url("./server-side-tracking-cro.css?v=20260909-2");
+
+/* Desktop-Feinschliff: Auf Hover/Fokus des gesamten Messstrahls werden alle
+   Abschnittsnamen gleichzeitig eingeblendet. Nur aria-current bleibt als
+   aktiver Weg hervorgehoben; alle übrigen Labels bleiben bewusst neutral. */
+@media (min-width: 1360px) {
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link {
+		transition: inline-size 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1));
+	}
+
+	.hu-sst .hu-money-rail--toc:hover .hu-money-toc__link,
+	.hu-sst .hu-money-rail--toc:focus-within .hu-money-toc__link {
+		inline-size: 220px;
+	}
+
+	.hu-sst .hu-money-rail--toc:hover .hu-money-toc__label,
+	.hu-sst .hu-money-rail--toc:focus-within .hu-money-toc__label {
+		max-inline-size: 170px;
+		padding: 0.36rem 0.62rem;
+		border-color: rgba(246, 244, 239, 0.07);
+		background: rgba(23, 20, 17, 0.88);
+		color: rgba(246, 244, 239, 0.62);
+		opacity: 1;
+		transform: translate(0, -50%);
+	}
+
+	.hu-sst .hu-money-rail--toc:hover .hu-money-toc__link[aria-current="true"] .hu-money-toc__label,
+	.hu-sst .hu-money-rail--toc:focus-within .hu-money-toc__link[aria-current="true"] .hu-money-toc__label {
+		border-color: rgba(229, 149, 115, 0.24);
+		background: rgba(23, 20, 17, 0.96);
+		color: var(--sst-on-dark, #f6f4ef);
+	}
+}
