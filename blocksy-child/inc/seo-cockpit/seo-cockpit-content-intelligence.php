@@ -2,9 +2,9 @@
 /**
  * SEO Cockpit Content Intelligence.
  *
- * Connects cached primary-source research data with cached Search Console
- * query/page data. V1 is deterministic, admin/background-only and never
- * generates or publishes content automatically.
+ * Cached primary-source data -> persisted observations -> deterministic
+ * market signals -> cached Search Console matching -> content opportunities.
+ * No LLM and no automatic publishing in V1.
  *
  * @package Blocksy_Child
  */
@@ -13,69 +13,43 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Return a safe float without forcing PHPStan into literal-number shapes.
- *
- * @param mixed $value Raw value.
- * @return float
- */
+/** @param mixed $value @return float */
 function nexus_ci_number( $value ) {
 	return is_numeric( $value ) ? (float) $value : 0.0;
 }
 
-/**
- * Persistent bounded history option.
- *
- * @return string
- */
 function nexus_ci_history_option_name() {
 	return 'nexus_content_intelligence_history_v1';
 }
 
-/**
- * Read the bounded observation history.
- *
- * @return array<string, array<int, array<string, mixed>>>
- */
+/** @return array<string,array<int,array<string,mixed>>> */
 function nexus_ci_get_history() {
 	$history = get_option( nexus_ci_history_option_name(), [] );
 	return is_array( $history ) ? $history : [];
 }
 
 /**
- * Build one normalized numeric observation.
- *
- * @param string              $provider Provider key.
- * @param string              $metric Metric key.
- * @param string              $label Human label.
  * @param mixed               $value Numeric value.
- * @param string              $unit Unit.
- * @param string              $period Source period.
- * @param array<string,mixed> $meta Comparison metadata.
+ * @param array<string,mixed> $meta Metadata.
  * @return array<string,mixed>|null
  */
 function nexus_ci_observation( $provider, $metric, $label, $value, $unit = '', $period = '', $meta = [] ) {
 	if ( ! is_numeric( $value ) ) {
 		return null;
 	}
-
 	return [
-		'provider'     => sanitize_key( $provider ),
-		'metric'       => sanitize_key( $metric ),
-		'label'        => sanitize_text_field( $label ),
-		'value'        => (float) $value,
-		'unit'         => sanitize_text_field( $unit ),
-		'period'       => sanitize_text_field( $period ),
-		'meta'         => is_array( $meta ) ? $meta : [],
-		'captured_at'  => time(),
+		'provider'    => sanitize_key( (string) $provider ),
+		'metric'      => sanitize_key( (string) $metric ),
+		'label'       => sanitize_text_field( (string) $label ),
+		'value'       => (float) $value,
+		'unit'        => sanitize_text_field( (string) $unit ),
+		'period'      => sanitize_text_field( (string) $period ),
+		'meta'        => is_array( $meta ) ? $meta : [],
+		'captured_at' => time(),
 	];
 }
 
-/**
- * Return normalized observations from already-existing provider summaries.
- *
- * @return array<int, array<string,mixed>>
- */
+/** @return array<int,array<string,mixed>> */
 function nexus_ci_current_observations() {
 	$items = [];
 
@@ -84,9 +58,7 @@ function nexus_ci_current_observations() {
 		if ( is_array( $energy ) && ! empty( $energy['is_available'] ) ) {
 			$installed = (array) ( $energy['solar_installed'] ?? [] );
 			$item = nexus_ci_observation(
-				'energy_charts',
-				'solar_installed',
-				'Installierte PV-Leistung Deutschland',
+				'energy_charts', 'solar_installed', 'Installierte PV-Leistung Deutschland',
 				$installed['value'] ?? null,
 				(string) ( $installed['unit'] ?? '' ),
 				(string) ( $installed['period'] ?? '' ),
@@ -103,12 +75,8 @@ function nexus_ci_current_observations() {
 			$share_now = isset( $share['value'] ) && is_numeric( $share['value'] ) ? (float) $share['value'] : null;
 			$share_old = isset( $share['previous'] ) && is_numeric( $share['previous'] ) ? (float) $share['previous'] : null;
 			$item = nexus_ci_observation(
-				'energy_charts',
-				'solar_share_30d',
-				'Solaranteil letzte 30 Tage',
-				$share_now,
-				'%',
-				wp_date( 'Y-m-d' ),
+				'energy_charts', 'solar_share_30d', 'Solaranteil letzte 30 Tage',
+				$share_now, '%', wp_date( 'Y-m-d' ),
 				[
 					'previous' => $share_old,
 					'delta_pp' => null !== $share_now && null !== $share_old ? $share_now - $share_old : null,
@@ -120,9 +88,7 @@ function nexus_ci_current_observations() {
 
 			$price = (array) ( $energy['price_current'] ?? [] );
 			$item  = nexus_ci_observation(
-				'energy_charts',
-				'day_ahead_price',
-				'Day-Ahead-Preis DE-LU',
+				'energy_charts', 'day_ahead_price', 'Day-Ahead-Preis DE-LU',
 				$price['value'] ?? null,
 				(string) ( $price['unit'] ?? '' ),
 				wp_date( 'Y-m-d' )
@@ -137,14 +103,11 @@ function nexus_ci_current_observations() {
 	if ( '' !== $destatis_token && function_exists( 'nexus_get_seo_cockpit_destatis_summary' ) ) {
 		$destatis = nexus_get_seo_cockpit_destatis_summary();
 		if ( is_array( $destatis ) && ! empty( $destatis['is_available'] ) ) {
-			foreach ( [ 'de' => 'Deutschland', 'ni' => 'Niedersachsen' ] as $scope => $label ) {
+			foreach ( [ 'de' => 'Deutschland', 'ni' => 'Niedersachsen' ] as $scope => $scope_label ) {
 				$data = (array) ( $destatis[ $scope ] ?? [] );
 				$item = nexus_ci_observation(
-					'destatis',
-					$scope . '_residential_buildings',
-					'Wohngebäude ' . $label,
-					$data['total'] ?? null,
-					'Gebäude',
+					'destatis', $scope . '_residential_buildings', 'Wohngebäude ' . $scope_label,
+					$data['total'] ?? null, 'Gebäude',
 					isset( $data['year'] ) && is_numeric( $data['year'] ) ? (string) absint( $data['year'] ) : '',
 					[
 						'one_two'       => isset( $data['one_two'] ) && is_numeric( $data['one_two'] ) ? (float) $data['one_two'] : null,
@@ -170,12 +133,8 @@ function nexus_ci_current_observations() {
 			foreach ( $labels as $key => $label ) {
 				$data = (array) ( $eurostat[ $key ] ?? [] );
 				$item = nexus_ci_observation(
-					'eurostat',
-					$key,
-					$label,
-					$data['value'] ?? null,
-					'%',
-					(string) ( $data['period'] ?? '' ),
+					'eurostat', $key, $label,
+					$data['value'] ?? null, '%', (string) ( $data['period'] ?? '' ),
 					[
 						'previous' => isset( $data['previous'] ) && is_numeric( $data['previous'] ) ? (float) $data['previous'] : null,
 						'delta_pp' => isset( $data['delta_pp'] ) && is_numeric( $data['delta_pp'] ) ? (float) $data['delta_pp'] : null,
@@ -191,35 +150,20 @@ function nexus_ci_current_observations() {
 	return $items;
 }
 
-/**
- * Persist distinct observations after the existing Research background run.
- * Keeps at most 36 distinct states per metric; this is small enough for a
- * non-autoloaded WordPress option and avoids a separate schema for V1.
- *
- * @return void
- */
+/** Persist at most 36 distinct states per metric. */
 function nexus_ci_capture_history() {
 	$history = nexus_ci_get_history();
-
 	foreach ( nexus_ci_current_observations() as $observation ) {
-		$key = (string) $observation['provider'] . '.' . (string) $observation['metric'];
+		$key  = (string) $observation['provider'] . '.' . (string) $observation['metric'];
 		$rows = isset( $history[ $key ] ) && is_array( $history[ $key ] ) ? $history[ $key ] : [];
 		$fingerprint = hash(
 			'sha256',
-			wp_json_encode(
-				[
-					$observation['value'],
-					$observation['period'],
-					$observation['meta'],
-				]
-			)
+			wp_json_encode( [ $observation['value'], $observation['period'], $observation['meta'] ] )
 		);
-
 		$latest_fingerprint = ! empty( $rows ) ? (string) ( $rows[0]['fingerprint'] ?? '' ) : '';
 		if ( $fingerprint === $latest_fingerprint ) {
 			continue;
 		}
-
 		$observation['fingerprint'] = $fingerprint;
 		array_unshift( $rows, $observation );
 		$history[ $key ] = array_slice( $rows, 0, 36 );
@@ -234,56 +178,34 @@ function nexus_ci_capture_history() {
 }
 add_action( 'nexus_seo_cockpit_research_background_refresh', 'nexus_ci_capture_history', 20 );
 
-/**
- * Signal definitions. Scores intentionally stay deterministic in V1.
- *
- * @return array<string,array<string,mixed>>
- */
+/** @return array<string,array<string,mixed>> */
 function nexus_ci_signal_definitions() {
 	return [
 		'energy_charts.solar_installed' => [
-			'title'      => 'PV-Ausbau Deutschland verändert sich deutlich',
-			'comparison' => 'growth_pct',
-			'threshold'  => 3.0,
-			'business'   => 25,
-			'keywords'   => [ 'solar', 'photovoltaik', 'pv', 'solaranlage', 'solarleads', 'speicher' ],
-			'context'    => 'Installierte PV-Leistung und Ausbaugeschwindigkeit sind ein belastbares Signal für Markt- und Vertriebsinhalte.',
+			'title' => 'PV-Ausbau Deutschland verändert sich deutlich', 'comparison' => 'growth_pct', 'threshold' => 3.0, 'business' => 25,
+			'keywords' => [ 'solar', 'photovoltaik', 'pv', 'solaranlage', 'solarleads', 'speicher' ],
+			'context' => 'Installierte PV-Leistung und Ausbaugeschwindigkeit sind ein belastbares Signal für Markt- und Vertriebsinhalte.',
 		],
 		'energy_charts.solar_share_30d' => [
-			'title'      => 'Solaranteil bewegt sich deutlich',
-			'comparison' => 'delta_pp',
-			'threshold'  => 3.0,
-			'business'   => 18,
-			'keywords'   => [ 'solar', 'photovoltaik', 'pv', 'speicher', 'eigenverbrauch', 'strom' ],
-			'context'    => 'Ein deutlicher 30-Tage-Shift kann für Speicher-, Eigenverbrauchs- und Marktargumente relevant sein.',
+			'title' => 'Solaranteil bewegt sich deutlich', 'comparison' => 'delta_pp', 'threshold' => 3.0, 'business' => 18,
+			'keywords' => [ 'solar', 'photovoltaik', 'pv', 'speicher', 'eigenverbrauch', 'strom' ],
+			'context' => 'Ein deutlicher 30-Tage-Shift kann für Speicher-, Eigenverbrauchs- und Marktargumente relevant sein.',
 		],
 		'eurostat.de_total' => [
-			'title'      => 'Deutschlands Erneuerbaren-Anteil verändert sich',
-			'comparison' => 'delta_pp',
-			'threshold'  => 0.5,
-			'business'   => 14,
-			'keywords'   => [ 'erneuerbare', 'solar', 'photovoltaik', 'pv', 'energiewende', 'wärmepump' ],
-			'context'    => 'Eurostat liefert den belastbaren Deutschland-/EU-Kontext für datenbasierte Marktanalysen.',
+			'title' => 'Deutschlands Erneuerbaren-Anteil verändert sich', 'comparison' => 'delta_pp', 'threshold' => 0.5, 'business' => 14,
+			'keywords' => [ 'erneuerbare', 'solar', 'photovoltaik', 'pv', 'energiewende', 'wärmepump' ],
+			'context' => 'Eurostat liefert den belastbaren Deutschland-/EU-Kontext für datenbasierte Marktanalysen.',
 		],
 		'eurostat.de_electricity' => [
-			'title'      => 'Erneuerbarer Strom in Deutschland verändert sich',
-			'comparison' => 'delta_pp',
-			'threshold'  => 0.5,
-			'business'   => 16,
-			'keywords'   => [ 'erneuerbare', 'solar', 'photovoltaik', 'pv', 'strom', 'speicher', 'energiewende' ],
-			'context'    => 'Der Strommix ist Kontext für Solar-, Speicher- und Elektrifizierungsinhalte.',
+			'title' => 'Erneuerbarer Strom in Deutschland verändert sich', 'comparison' => 'delta_pp', 'threshold' => 0.5, 'business' => 16,
+			'keywords' => [ 'erneuerbare', 'solar', 'photovoltaik', 'pv', 'strom', 'speicher', 'energiewende' ],
+			'context' => 'Der Strommix ist Kontext für Solar-, Speicher- und Elektrifizierungsinhalte.',
 		],
 	];
 }
 
-/**
- * Freshness points from the source period.
- *
- * @param string $period Source period.
- * @return int
- */
 function nexus_ci_freshness_score( $period ) {
-	$year    = preg_match( '/(20\d{2})/', $period, $match ) ? (int) $match[1] : 0;
+	$year    = preg_match( '/(20\d{2})/', (string) $period, $match ) ? (int) $match[1] : 0;
 	$current = (int) wp_date( 'Y' );
 	if ( $year >= $current ) {
 		return 15;
@@ -294,22 +216,11 @@ function nexus_ci_freshness_score( $period ) {
 	return $year > 0 ? 8 : 10;
 }
 
-/**
- * Format one relative change.
- *
- * @param float  $change Change.
- * @param string $kind growth_pct or delta_pp.
- * @return string
- */
 function nexus_ci_change_label( $change, $kind ) {
 	return ( $change > 0 ? '+' : '' ) . number_format_i18n( $change, 1 ) . ( 'growth_pct' === $kind ? ' %' : ' %-Punkte' );
 }
 
-/**
- * Build current material signals from the latest persisted observations.
- *
- * @return array<int,array<string,mixed>>
- */
+/** @return array<int,array<string,mixed>> */
 function nexus_ci_signals() {
 	$history     = nexus_ci_get_history();
 	$definitions = nexus_ci_signal_definitions();
@@ -328,26 +239,24 @@ function nexus_ci_signals() {
 		if ( null === $change || abs( $change ) < $limit ) {
 			continue;
 		}
-
 		$signals[] = [
-			'provider'      => (string) ( $latest['provider'] ?? '' ),
-			'label'         => (string) ( $latest['label'] ?? '' ),
-			'value'         => nexus_ci_number( $latest['value'] ?? null ),
-			'unit'          => (string) ( $latest['unit'] ?? '' ),
-			'period'        => (string) ( $latest['period'] ?? '' ),
-			'title'         => (string) $definition['title'],
-			'context'       => (string) $definition['context'],
-			'change_label'  => nexus_ci_change_label( $change, $kind ),
-			'keywords'      => (array) $definition['keywords'],
-			'market_score'  => (int) min( 35, round( 15 * ( abs( $change ) / max( 0.01, $limit ) ) ) ),
-			'fresh_score'   => nexus_ci_freshness_score( (string) ( $latest['period'] ?? '' ) ),
-			'business_score'=> (int) $definition['business'],
+			'provider'       => (string) ( $latest['provider'] ?? '' ),
+			'label'          => (string) ( $latest['label'] ?? '' ),
+			'value'          => nexus_ci_number( $latest['value'] ?? null ),
+			'unit'           => (string) ( $latest['unit'] ?? '' ),
+			'period'         => (string) ( $latest['period'] ?? '' ),
+			'title'          => (string) $definition['title'],
+			'context'        => (string) $definition['context'],
+			'change_label'   => nexus_ci_change_label( $change, $kind ),
+			'keywords'       => (array) $definition['keywords'],
+			'market_score'   => (int) min( 35, round( 15 * ( abs( $change ) / max( 0.01, $limit ) ) ) ),
+			'fresh_score'    => nexus_ci_freshness_score( (string) ( $latest['period'] ?? '' ) ),
+			'business_score' => (int) $definition['business'],
 		];
 	}
 
 	$destatis_rows = isset( $history['destatis.de_residential_buildings'] ) && is_array( $history['destatis.de_residential_buildings'] )
-		? $history['destatis.de_residential_buildings']
-		: [];
+		? $history['destatis.de_residential_buildings'] : [];
 	if ( count( $destatis_rows ) >= 2 ) {
 		$latest   = $destatis_rows[0];
 		$previous = null;
@@ -362,34 +271,21 @@ function nexus_ci_signals() {
 			$new = nexus_ci_number( $latest['value'] ?? null );
 			$pct = $old > 0 ? ( ( $new - $old ) / $old ) * 100 : 0.0;
 			$signals[] = [
-				'provider'       => 'destatis',
-				'label'          => 'Wohngebäudebestand Deutschland',
-				'value'          => $new,
-				'unit'           => 'Gebäude',
-				'period'         => (string) ( $latest['period'] ?? '' ),
-				'title'          => 'Neue Destatis-Gebäudestrukturdaten verfügbar',
-				'context'        => 'Ein neues Berichtsjahr ist ein Freshness-Signal für Marktpotenzial-, PV- und Wärmepumpen-Inhalte.',
-				'change_label'   => nexus_ci_change_label( $pct, 'growth_pct' ),
-				'keywords'       => [ 'wärmepump', 'heizung', 'shk', 'gebäude', 'solar', 'photovoltaik', 'pv' ],
-				'market_score'   => 22,
-				'fresh_score'    => 15,
-				'business_score' => 24,
+				'provider' => 'destatis', 'label' => 'Wohngebäudebestand Deutschland', 'value' => $new, 'unit' => 'Gebäude',
+				'period' => (string) ( $latest['period'] ?? '' ), 'title' => 'Neue Destatis-Gebäudestrukturdaten verfügbar',
+				'context' => 'Ein neues Berichtsjahr ist ein Freshness-Signal für Marktpotenzial-, PV- und Wärmepumpen-Inhalte.',
+				'change_label' => nexus_ci_change_label( $pct, 'growth_pct' ),
+				'keywords' => [ 'wärmepump', 'heizung', 'shk', 'gebäude', 'solar', 'photovoltaik', 'pv' ],
+				'market_score' => 22, 'fresh_score' => 15, 'business_score' => 24,
 			];
 		}
 	}
-
 	return $signals;
 }
 
-/**
- * Conservative substring matcher for Search Console queries.
- *
- * @param string            $query Query.
- * @param array<int,string> $keywords Keywords.
- * @return bool
- */
+/** @param array<int,string> $keywords */
 function nexus_ci_query_matches( $query, $keywords ) {
-	$query = function_exists( 'nexus_normalize_seo_cockpit_query' ) ? nexus_normalize_seo_cockpit_query( $query ) : strtolower( trim( $query ) );
+	$query = function_exists( 'nexus_normalize_seo_cockpit_query' ) ? nexus_normalize_seo_cockpit_query( $query ) : strtolower( trim( (string) $query ) );
 	foreach ( $keywords as $keyword ) {
 		$needle = function_exists( 'nexus_normalize_seo_cockpit_query' ) ? nexus_normalize_seo_cockpit_query( $keyword ) : strtolower( trim( $keyword ) );
 		if ( '' === $needle ) {
@@ -406,10 +302,8 @@ function nexus_ci_query_matches( $query, $keywords ) {
 }
 
 /**
- * Match one signal to the cached 28-day query/page dataset.
- *
  * @param array<string,mixed> $signal Signal.
- * @param array<string,mixed> $snapshot Cached GSC snapshot.
+ * @param array<string,mixed> $snapshot GSC snapshot.
  * @return array<string,mixed>
  */
 function nexus_ci_match_gsc( $signal, $snapshot ) {
@@ -441,10 +335,7 @@ function nexus_ci_match_gsc( $signal, $snapshot ) {
 		$page_click[ $page ] = nexus_ci_number( $page_click[ $page ] ?? null ) + $clicks;
 		$page_pos_w[ $page ] = nexus_ci_number( $page_pos_w[ $page ] ?? null ) + ( $position * $weight );
 		$page_pos_n[ $page ] = nexus_ci_number( $page_pos_n[ $page ] ?? null ) + $weight;
-		$queries[] = [
-			'query'       => $query,
-			'impressions' => $impressions,
-		];
+		$queries[] = [ 'query' => $query, 'impressions' => $impressions ];
 	}
 
 	$pages = [];
@@ -452,25 +343,25 @@ function nexus_ci_match_gsc( $signal, $snapshot ) {
 	foreach ( $page_impr as $page => $impressions ) {
 		$samples = nexus_ci_number( $page_pos_n[ $page ] ?? null );
 		$average = $samples > 0 ? nexus_ci_number( $page_pos_w[ $page ] ?? null ) / $samples : 0.0;
-		$total  += nexus_ci_number( $impressions );
+		$total += nexus_ci_number( $impressions );
 		$pages[] = [
-			'url'         => (string) $page,
+			'url' => (string) $page,
 			'impressions' => nexus_ci_number( $impressions ),
-			'clicks'      => nexus_ci_number( $page_click[ $page ] ?? null ),
-			'position'    => $average,
+			'clicks' => nexus_ci_number( $page_click[ $page ] ?? null ),
+			'position' => $average,
 		];
 	}
 
 	usort( $pages, static function ( $a, $b ) {
-		return nexus_ci_number( $b['impressions'] ?? null ) <=> nexus_ci_number( $a['impressions'] ?? null );
+		return nexus_ci_number( $b['impressions'] ) <=> nexus_ci_number( $a['impressions'] );
 	} );
 	usort( $queries, static function ( $a, $b ) {
-		return nexus_ci_number( $b['impressions'] ?? null ) <=> nexus_ci_number( $a['impressions'] ?? null );
+		return nexus_ci_number( $b['impressions'] ) <=> nexus_ci_number( $a['impressions'] );
 	} );
 
 	$best          = ! empty( $pages ) ? $pages[0] : null;
-	$best_impr     = is_array( $best ) ? nexus_ci_number( $best['impressions'] ?? null ) : 0.0;
-	$best_position = is_array( $best ) ? nexus_ci_number( $best['position'] ?? null ) : 0.0;
+	$best_impr     = is_array( $best ) ? nexus_ci_number( $best['impressions'] ) : 0.0;
+	$best_position = is_array( $best ) ? nexus_ci_number( $best['position'] ) : 0.0;
 	$share         = $total > 0 ? $best_impr / $total : 0.0;
 
 	$search_score = $total >= 500 ? 12 : ( $total >= 100 ? 10 : ( $total >= 25 ? 7 : ( $total >= 10 ? 4 : 0 ) ) );
@@ -511,27 +402,22 @@ function nexus_ci_match_gsc( $signal, $snapshot ) {
 	}
 
 	$context = is_array( $best ) && function_exists( 'nexus_get_seo_cockpit_wp_context_for_url' )
-		? nexus_get_seo_cockpit_wp_context_for_url( (string) ( $best['url'] ?? '' ) )
-		: [];
+		? nexus_get_seo_cockpit_wp_context_for_url( (string) $best['url'] ) : [];
 
 	return [
-		'impressions'   => $total,
-		'page_count'    => count( $pages ),
-		'best_page'     => $best,
-		'top_queries'   => array_slice( $queries, 0, 5 ),
-		'search_score'  => $search_score,
-		'action'        => $action,
-		'action_label'  => $label,
+		'impressions' => $total,
+		'page_count' => count( $pages ),
+		'best_page' => $best,
+		'top_queries' => array_slice( $queries, 0, 5 ),
+		'search_score' => $search_score,
+		'action' => $action,
+		'action_label' => $label,
 		'action_reason' => $reason,
-		'target_context'=> is_array( $context ) ? $context : [],
+		'target_context' => is_array( $context ) ? $context : [],
 	];
 }
 
-/**
- * Return the existing 28-day GSC snapshot only; never make a live GSC request.
- *
- * @return array<string,mixed>
- */
+/** @return array<string,mixed> */
 function nexus_ci_cached_gsc_snapshot() {
 	if ( ! function_exists( 'nexus_get_seo_cockpit_snapshot_cache_key' ) ) {
 		return [];
@@ -540,41 +426,26 @@ function nexus_ci_cached_gsc_snapshot() {
 	return is_array( $snapshot ) ? $snapshot : [];
 }
 
-/**
- * Build scored opportunities.
- *
- * @return array<int,array<string,mixed>>
- */
+/** @return array<int,array<string,mixed>> */
 function nexus_ci_opportunities() {
 	$snapshot = nexus_ci_cached_gsc_snapshot();
 	$items    = [];
-
 	foreach ( nexus_ci_signals() as $signal ) {
 		$gsc = ! empty( $snapshot ) ? nexus_ci_match_gsc( $signal, $snapshot ) : [
-			'impressions'   => 0.0,
-			'page_count'    => 0,
-			'best_page'     => null,
-			'top_queries'   => [],
-			'search_score'  => 0,
-			'action'        => 'watch',
-			'action_label'  => 'Search Console fehlt',
+			'impressions' => 0.0, 'page_count' => 0, 'best_page' => null, 'top_queries' => [], 'search_score' => 0,
+			'action' => 'watch', 'action_label' => 'Search Console fehlt',
 			'action_reason' => 'Ohne Search-Console-Kontext erzeugt Content Intelligence bewusst keine Content-Empfehlung.',
-			'target_context'=> [],
+			'target_context' => [],
 		];
 		$signal['gsc'] = $gsc;
 		$signal['priority_score'] = min(
 			100,
-			(int) $signal['market_score'] +
-			(int) $signal['fresh_score'] +
-			(int) $signal['business_score'] +
-			5 +
-			(int) ( $gsc['search_score'] ?? 0 )
+			(int) $signal['market_score'] + (int) $signal['fresh_score'] + (int) $signal['business_score'] + 5 + (int) $gsc['search_score']
 		);
 		$items[] = $signal;
 	}
-
 	usort( $items, static function ( $a, $b ) {
-		return (int) ( $b['priority_score'] ?? 0 ) <=> (int) ( $a['priority_score'] ?? 0 );
+		return (int) $b['priority_score'] <=> (int) $a['priority_score'];
 	} );
 	return $items;
 }
@@ -585,12 +456,8 @@ function nexus_ci_admin_slug() {
 
 function nexus_ci_register_admin_page() {
 	add_submenu_page(
-		nexus_get_seo_cockpit_menu_slug(),
-		'Content Intelligence',
-		'Opportunities',
-		nexus_get_seo_cockpit_view_cap(),
-		nexus_ci_admin_slug(),
-		'nexus_ci_render_admin_page'
+		nexus_get_seo_cockpit_menu_slug(), 'Content Intelligence', 'Opportunities',
+		nexus_get_seo_cockpit_view_cap(), nexus_ci_admin_slug(), 'nexus_ci_render_admin_page'
 	);
 }
 add_action( 'admin_menu', 'nexus_ci_register_admin_page', 41 );
@@ -628,15 +495,14 @@ function nexus_ci_render_admin_page() {
 	if ( ! nexus_current_user_can_view_seo_cockpit() ) {
 		wp_die( 'Nicht erlaubt.' );
 	}
-
-	$history = nexus_ci_get_history();
-	$items   = nexus_ci_opportunities();
+	$history   = nexus_ci_get_history();
+	$items     = nexus_ci_opportunities();
 	$snapshots = 0;
 	foreach ( $history as $rows ) {
 		$snapshots += is_array( $rows ) ? count( $rows ) : 0;
 	}
 	$high = count( array_filter( $items, static function ( $item ) {
-		return (int) ( $item['priority_score'] ?? 0 ) >= 70;
+		return (int) $item['priority_score'] >= 70;
 	} ) );
 	$with_gsc = count( array_filter( $items, static function ( $item ) {
 		return nexus_ci_number( $item['gsc']['impressions'] ?? null ) >= 20;
@@ -646,18 +512,11 @@ function nexus_ci_render_admin_page() {
 	<div class="wrap nexus-seo-cockpit nexus-seo-cockpit__research">
 		<p class="nexus-seo-cockpit__eyebrow">Content Intelligence</p>
 		<div class="nexus-seo-cockpit__panel-head">
-			<div>
-				<h1>Marktsignale mit Search Console verbinden</h1>
-				<p class="nexus-seo-cockpit__hint">Primärdaten → Veränderung → GSC-Nachfrage → Content-Maßnahme. V1 ist regelbasiert und veröffentlicht nichts automatisch.</p>
-			</div>
+			<div><h1>Marktsignale mit Search Console verbinden</h1><p class="nexus-seo-cockpit__hint">Primärdaten → Veränderung → GSC-Nachfrage → Content-Maßnahme. V1 ist regelbasiert und veröffentlicht nichts automatisch.</p></div>
 			<?php if ( nexus_current_user_can_manage_seo_cockpit() ) : ?>
-				<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_ci_refresh' ) ); ?>">
-					<?php wp_nonce_field( 'nexus_ci_refresh' ); ?>
-					<button type="submit" class="button button-primary">Research aktualisieren</button>
-				</form>
+			<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_ci_refresh' ) ); ?>"><?php wp_nonce_field( 'nexus_ci_refresh' ); ?><button type="submit" class="button button-primary">Research aktualisieren</button></form>
 			<?php endif; ?>
 		</div>
-
 		<div class="nexus-ci-summary">
 			<article><span class="nexus-ci-meta">Snapshots</span><strong><?php echo esc_html( number_format_i18n( $snapshots ) ); ?></strong></article>
 			<article><span class="nexus-ci-meta">Marktsignale</span><strong><?php echo esc_html( number_format_i18n( count( $items ) ) ); ?></strong></article>
@@ -665,47 +524,22 @@ function nexus_ci_render_admin_page() {
 			<article><span class="nexus-ci-meta">Mit GSC-Nachfrage</span><strong><?php echo esc_html( number_format_i18n( $with_gsc ) ); ?></strong></article>
 		</div>
 		<p class="nexus-ci-meta">Letzte Research-Aufnahme: <?php echo esc_html( $last ? wp_date( 'd.m.Y H:i', $last ) : 'noch keine' ); ?></p>
-
 		<?php if ( empty( $items ) ) : ?>
-			<div class="nexus-ci-card"><h2>Noch kein materielles Marktsignal</h2><p>Nach dem ersten Background-Refresh werden die Primärdaten historisiert. Ohne überschrittene Schwelle erzeugt das System bewusst keine Aufgabe.</p></div>
-		<?php else : ?>
-			<div class="nexus-ci-list">
-			<?php foreach ( $items as $item ) :
-				$gsc     = is_array( $item['gsc'] ?? null ) ? $item['gsc'] : [];
-				$best    = is_array( $gsc['best_page'] ?? null ) ? $gsc['best_page'] : null;
-				$context = is_array( $gsc['target_context'] ?? null ) ? $gsc['target_context'] : [];
-			?>
-				<article class="nexus-ci-card">
-					<div class="nexus-ci-head">
-						<div>
-							<p class="nexus-seo-cockpit__eyebrow"><?php echo esc_html( strtoupper( str_replace( '_', ' ', (string) $item['provider'] ) ) . ' · ' . (string) $item['period'] ); ?></p>
-							<h2><?php echo esc_html( (string) $item['title'] ); ?></h2>
-							<p><?php echo esc_html( (string) $item['context'] ); ?></p>
-							<p class="nexus-ci-meta"><?php echo esc_html( (string) $item['label'] . ': ' . number_format_i18n( nexus_ci_number( $item['value'] ?? null ), 1 ) . ' ' . (string) $item['unit'] . ' · Veränderung ' . (string) $item['change_label'] ); ?></p>
-						</div>
-						<span class="nexus-ci-score"><?php echo esc_html( (string) $item['priority_score'] ); ?></span>
-					</div>
-					<div class="nexus-ci-action">
-						<strong><?php echo esc_html( (string) ( $gsc['action_label'] ?? 'Beobachten' ) ); ?></strong>
-						<p><?php echo esc_html( (string) ( $gsc['action_reason'] ?? '' ) ); ?></p>
-						<?php if ( is_array( $best ) ) :
-							$url = (string) ( $best['url'] ?? '' );
-						?>
-							<p><strong>Ziel:</strong> <a href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( '' !== (string) ( $context['post_title'] ?? '' ) ? (string) $context['post_title'] : $url ); ?></a></p>
-						<?php endif; ?>
-					</div>
-					<div class="nexus-ci-gsc">
-						<div><span class="nexus-ci-meta">Impressionen · 28 Tage</span><strong><?php echo esc_html( number_format_i18n( nexus_ci_number( $gsc['impressions'] ?? null ), 0 ) ); ?></strong></div>
-						<div><span class="nexus-ci-meta">Passende URLs</span><strong><?php echo esc_html( number_format_i18n( absint( $gsc['page_count'] ?? 0 ) ) ); ?></strong></div>
-						<div><span class="nexus-ci-meta">Beste URL · Ø Position</span><strong><?php echo esc_html( is_array( $best ) ? number_format_i18n( nexus_ci_number( $best['position'] ?? null ), 1 ) : '—' ); ?></strong></div>
-					</div>
-					<?php foreach ( (array) ( $gsc['top_queries'] ?? [] ) as $query ) : ?>
-						<span class="nexus-ci-query"><?php echo esc_html( (string) ( $query['query'] ?? '' ) . ' · ' . number_format_i18n( nexus_ci_number( $query['impressions'] ?? null ), 0 ) . ' Impr.' ); ?></span>
-					<?php endforeach; ?>
-				</article>
-			<?php endforeach; ?>
-			</div>
-		<?php endif; ?>
+		<div class="nexus-ci-card"><h2>Noch kein materielles Marktsignal</h2><p>Nach dem ersten Background-Refresh werden die Primärdaten historisiert. Ohne überschrittene Schwelle erzeugt das System bewusst keine Aufgabe.</p></div>
+		<?php else : ?><div class="nexus-ci-list">
+		<?php foreach ( $items as $item ) :
+			$gsc     = is_array( $item['gsc'] ?? null ) ? $item['gsc'] : [];
+			$best    = is_array( $gsc['best_page'] ?? null ) ? $gsc['best_page'] : null;
+			$context = is_array( $gsc['target_context'] ?? null ) ? $gsc['target_context'] : [];
+		?>
+		<article class="nexus-ci-card">
+			<div class="nexus-ci-head"><div><p class="nexus-seo-cockpit__eyebrow"><?php echo esc_html( strtoupper( str_replace( '_', ' ', (string) $item['provider'] ) ) . ' · ' . (string) $item['period'] ); ?></p><h2><?php echo esc_html( (string) $item['title'] ); ?></h2><p><?php echo esc_html( (string) $item['context'] ); ?></p><p class="nexus-ci-meta"><?php echo esc_html( (string) $item['label'] . ': ' . number_format_i18n( nexus_ci_number( $item['value'] ?? null ), 1 ) . ' ' . (string) $item['unit'] . ' · Veränderung ' . (string) $item['change_label'] ); ?></p></div><span class="nexus-ci-score"><?php echo esc_html( (string) $item['priority_score'] ); ?></span></div>
+			<div class="nexus-ci-action"><strong><?php echo esc_html( (string) ( $gsc['action_label'] ?? 'Beobachten' ) ); ?></strong><p><?php echo esc_html( (string) ( $gsc['action_reason'] ?? '' ) ); ?></p>
+			<?php if ( is_array( $best ) ) : $url = (string) $best['url']; ?><p><strong>Ziel:</strong> <a href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( '' !== (string) ( $context['post_title'] ?? '' ) ? (string) $context['post_title'] : $url ); ?></a></p><?php endif; ?></div>
+			<div class="nexus-ci-gsc"><div><span class="nexus-ci-meta">Impressionen · 28 Tage</span><strong><?php echo esc_html( number_format_i18n( nexus_ci_number( $gsc['impressions'] ?? null ), 0 ) ); ?></strong></div><div><span class="nexus-ci-meta">Passende URLs</span><strong><?php echo esc_html( number_format_i18n( absint( $gsc['page_count'] ?? 0 ) ) ); ?></strong></div><div><span class="nexus-ci-meta">Beste URL · Ø Position</span><strong><?php echo esc_html( is_array( $best ) ? number_format_i18n( nexus_ci_number( $best['position'] ), 1 ) : '—' ); ?></strong></div></div>
+			<?php foreach ( (array) ( $gsc['top_queries'] ?? [] ) as $query ) : ?><span class="nexus-ci-query"><?php echo esc_html( (string) ( $query['query'] ?? '' ) . ' · ' . number_format_i18n( nexus_ci_number( $query['impressions'] ?? null ), 0 ) . ' Impr.' ); ?></span><?php endforeach; ?>
+		</article>
+		<?php endforeach; ?></div><?php endif; ?>
 	</div>
 	<?php
 }
