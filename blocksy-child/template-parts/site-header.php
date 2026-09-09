@@ -103,6 +103,13 @@ $cta_item          = isset( $header_contract['cta'] ) && is_array( $header_contr
 		'category'    => 'lead_gen',
 		'section'     => 'header',
 	];
+
+// This route owns its intake. Keep the canonical cross-page contact URL intact.
+if ( is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' ) ) {
+	$project_url     = '#anfrage';
+	$cta_item['url'] = $project_url;
+}
+
 $response_promise    = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : '';
 $meta_links          = isset( $meta['links'] ) && is_array( $meta['links'] ) ? array_values( $meta['links'] ) : [];
 $direct_meta_links   = array_slice( $meta_links, 0, 2 );

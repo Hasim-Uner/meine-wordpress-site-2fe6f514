@@ -443,6 +443,9 @@
          * Respektiert Header-Höhe.
          */
         initSmoothScroll: function (headerOffset) {
+            // The freelancer route uses native fragments, focus and reduced-motion behavior.
+            if (document.body.classList.contains('hu-wordpress-freelancer-page')) return;
+
             headerOffset = headerOffset || 100;
 
             document.addEventListener('click', function (e) {

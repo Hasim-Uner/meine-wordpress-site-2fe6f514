@@ -4,209 +4,40 @@
 	const root = document.querySelector('.hu-fr');
 	if (!root) return;
 
-	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-	const sections = Array.from(root.querySelectorAll('[data-fr-section]'));
-	const hero = root.querySelector('#start');
-	const toc = root.querySelector('.hu-fr-toc');
-	const tocLinks = Array.from(root.querySelectorAll('[data-fr-toc-link]'));
-	const tocHeadTitle = root.querySelector('.hu-fr-toc__head b');
-	const tocHeadMeta = root.querySelector('.hu-fr-toc__head span');
-	const tocFill = root.querySelector('[data-fr-toc-fill]');
-	const pageProgress = root.querySelector('[data-fr-progress]');
-	const route = root.querySelector('[data-fr-route]');
-	const routeItems = route ? Array.from(route.querySelectorAll('li')) : [];
-
-	/*
-	 * Diagonal Unicode arrows fall back to color emoji on some macOS/Firefox
-	 * stacks. Normalize route-local decorative arrows to a text arrow.
-	 */
-	root.querySelectorAll('a, button').forEach((control) => {
-		const walker = document.createTreeWalker(control, NodeFilter.SHOW_TEXT);
-		let node = walker.nextNode();
-		while (node) {
-			if (node.nodeValue && /[\u2197\u2198]/.test(node.nodeValue)) {
-				node.nodeValue = node.nodeValue.replace(/[\u2197\u2198]/g, '\u2192\uFE0E');
-			}
-			node = walker.nextNode();
-		}
-	});
-
-	/* Stable measurement hooks without adding another tracking runtime. */
-	tocLinks.forEach((link, index) => {
-		const id = (link.getAttribute('href') || '').replace('#', '') || String(index + 1);
-		if (!link.dataset.trackAction) link.dataset.trackAction = `freelancer_toc_${id}`;
-		if (!link.dataset.trackCategory) link.dataset.trackCategory = 'navigation';
-		if (!link.dataset.trackSection) link.dataset.trackSection = 'context_dock';
-	});
-
-	root.querySelectorAll('.hu-fr-situations a').forEach((link, index) => {
-		if (!link.dataset.trackAction) link.dataset.trackAction = `freelancer_scope_select_${index + 1}`;
-		if (!link.dataset.trackCategory) link.dataset.trackCategory = 'navigation';
-		if (!link.dataset.trackSection) link.dataset.trackSection = 'einordnung';
-	});
-
-	root.querySelectorAll('.hu-fr-proof-grid a, .hu-fr-projects > a').forEach((link, index) => {
-		if (!link.dataset.trackAction) link.dataset.trackAction = `freelancer_proof_link_${index + 1}`;
-		if (!link.dataset.trackCategory) link.dataset.trackCategory = 'trust';
-		if (!link.dataset.trackSection) link.dataset.trackSection = 'nachweis';
-	});
-
-	const setCurrent = (id) => {
-		let currentSection = null;
-		let currentIndex = -1;
-		let currentLabel = '';
-
-		sections.forEach((section, index) => {
-			const isCurrent = section.id === id;
-			section.classList.toggle('is-current', isCurrent);
-			if (isCurrent) {
-				currentSection = section;
-				currentIndex = index;
-			}
-		});
-
-		tocLinks.forEach((link) => {
-			const isCurrent = link.getAttribute('href') === `#${id}`;
-			if (isCurrent) {
-				link.setAttribute('aria-current', 'true');
-				const label = link.querySelector('.hu-fr-toc__label');
-				currentLabel = label ? label.textContent.trim() : '';
-			} else {
-				link.removeAttribute('aria-current');
-			}
-		});
-
-		if (toc && currentSection) {
-			toc.classList.toggle('is-on-dark', currentSection.classList.contains('hu-fr-section--dark'));
-		}
-
-		if (tocHeadTitle && currentIndex >= 0) {
-			tocHeadTitle.textContent = `${String(currentIndex + 1).padStart(2, '0')} · ${currentLabel || id}`;
-		}
-		if (tocHeadMeta) tocHeadMeta.textContent = 'Inhalt';
+	/* Preserve existing measurement hooks without loading a tracking runtime. */
+	const addHooks = (element, action, category, section) => {
+		if (!element.dataset.trackAction) element.dataset.trackAction = action;
+		if (!element.dataset.trackCategory) element.dataset.trackCategory = category;
+		if (!element.dataset.trackSection) element.dataset.trackSection = section;
 	};
 
-	if (sections.length) {
-		setCurrent(sections[0].id);
-	}
-
-	if ('IntersectionObserver' in window && sections.length) {
-		const visible = new Map();
-		const sectionObserver = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => visible.set(entry.target.id, entry.isIntersecting));
-				const current = sections.find((section) => visible.get(section.id));
-				if (current) setCurrent(current.id);
-			},
-			{ rootMargin: '-18% 0px -66% 0px', threshold: 0 }
-		);
-		sections.forEach((section) => sectionObserver.observe(section));
-	}
-
-	const clamp01 = (value) => Math.min(1, Math.max(0, value));
-	let ticking = false;
-
-	const updateRouteProgress = () => {
-		if (!route) return;
-
-		if (reduceMotion.matches || window.innerWidth <= 760) {
-			route.style.setProperty('--fr-route-progress', '1');
-			routeItems.forEach((item) => item.classList.add('is-passed'));
-			route.classList.add('is-complete');
-			return;
+	root.querySelectorAll('.hu-fr-nav a[href^="#"]').forEach((link) => {
+		const id = link.getAttribute('href').slice(1);
+		if (id === 'anfrage') {
+			addHooks(link, 'cta_freelancer_toc_project', 'lead_gen', 'toc');
+		} else {
+			addHooks(link, `freelancer_toc_${id === 'arbeitsweise' ? 'ablauf' : id}`, 'navigation', 'context_dock');
 		}
-
-		const rect = route.getBoundingClientRect();
-		const startLine = window.innerHeight * 0.78;
-		const endLine = window.innerHeight * 0.24;
-		const travel = Math.max(1, rect.height + startLine - endLine);
-		const value = clamp01((startLine - rect.top) / travel);
-
-		route.style.setProperty('--fr-route-progress', value.toFixed(4));
-
-		const lastIndex = Math.max(1, routeItems.length - 1);
-		routeItems.forEach((item, index) => {
-			const threshold = Math.max(0, (index / lastIndex) - 0.035);
-			item.classList.toggle('is-passed', value >= threshold);
-		});
-		route.classList.toggle('is-complete', value >= 0.92);
-	};
-
-	const updateFrame = () => {
-		const doc = document.scrollingElement || document.documentElement;
-		const headerOffset = 96;
-		const heroBoundary = hero ? hero.offsetTop + hero.offsetHeight : 0;
-		const contentStart = Math.max(0, heroBoundary - headerOffset);
-		const pastHero = !hero || doc.scrollTop >= contentStart;
-
-		root.classList.toggle('is-past-hero', pastHero);
-		if (toc) toc.classList.toggle('is-available', pastHero);
-
-		const progressEnd = Math.max(contentStart + 1, doc.scrollHeight - doc.clientHeight);
-		const progressValue = clamp01((doc.scrollTop - contentStart) / (progressEnd - contentStart));
-		if (toc) toc.style.setProperty('--fr-toc-progress', progressValue.toFixed(4));
-		if (tocFill) tocFill.style.transform = `scaleY(${progressValue})`;
-		if (pageProgress) pageProgress.style.transform = `scaleX(${progressValue})`;
-
-		updateRouteProgress();
-	};
-
-	const requestFrame = () => {
-		if (ticking) return;
-		ticking = true;
-		requestAnimationFrame(() => {
-			ticking = false;
-			updateFrame();
-		});
-	};
-
-	window.addEventListener('scroll', requestFrame, { passive: true });
-	window.addEventListener('resize', requestFrame, { passive: true });
-
-	if (typeof reduceMotion.addEventListener === 'function') {
-		reduceMotion.addEventListener('change', requestFrame);
-	} else if (typeof reduceMotion.addListener === 'function') {
-		reduceMotion.addListener(requestFrame);
-	}
-
-	requestAnimationFrame(() => {
-		if (hero && !reduceMotion.matches) {
-			hero.classList.add('is-motion-live');
-		}
-		updateFrame();
 	});
 
-	root.querySelectorAll('.hu-fr-toc-m a').forEach((link, index) => {
-		if (!link.dataset.trackAction) link.dataset.trackAction = `freelancer_mobile_toc_${index + 1}`;
-		if (!link.dataset.trackCategory) link.dataset.trackCategory = 'navigation';
-		if (!link.dataset.trackSection) link.dataset.trackSection = 'mobile_toc';
-		link.addEventListener('click', () => {
-			const details = link.closest('details');
-			if (details) details.open = false;
-		});
+	/* Keep earlier proof identities even though case and working evidence moved. */
+	root.querySelectorAll('.hu-fr-evidence__links a').forEach((link, index) => {
+		const action = ['freelancer_proof_link_1', 'freelancer_proof_checks', 'freelancer_proof_performance'][index];
+		if (action) addHooks(link, action, 'trust', 'nachweis');
+	});
+	root.querySelectorAll('#nachweis a').forEach((link) => {
+		addHooks(link, 'freelancer_proof_link_2', 'trust', 'nachweis');
+	});
+	root.querySelectorAll('.hu-fr-projects__grid h4 a').forEach((link, index) => {
+		addHooks(link, `freelancer_proof_link_${index + 3}`, 'trust', 'nachweis');
 	});
 
-	const accordion = root.querySelector('[data-fr-accordion]');
-	if (accordion) {
-		const items = Array.from(accordion.querySelectorAll('details'));
-		items.forEach((item, index) => {
-			const summary = item.querySelector('summary');
-			if (summary) {
-				if (!summary.dataset.trackAction) summary.dataset.trackAction = `freelancer_faq_${index + 1}`;
-				if (!summary.dataset.trackCategory) summary.dataset.trackCategory = 'engagement';
-				if (!summary.dataset.trackSection) summary.dataset.trackSection = 'fragen';
-			}
-			item.addEventListener('toggle', () => {
-				if (!item.open) return;
-				items.forEach((other) => {
-					if (other !== item && other.open) other.open = false;
-				});
-			});
-		});
-	}
+	root.querySelectorAll('.hu-fr-faq summary').forEach((summary, index) => {
+		addHooks(summary, `freelancer_faq_${index + 1}`, 'engagement', 'fragen');
+	});
 
 	const form = root.querySelector('[data-fr-form]');
-	if (!form) return;
+	if (!form || typeof window.fetch !== 'function' || typeof window.FormData !== 'function') return;
 
 	const briefStep = form.querySelector('[data-fr-form-step="brief"]');
 	const contactStep = form.querySelector('[data-fr-form-step="contact"]');
@@ -214,15 +45,36 @@
 	const backButton = form.querySelector('[data-fr-form-back]');
 	const submitButton = form.querySelector('[data-fr-form-submit]');
 	const status = form.querySelector('[data-fr-form-status]');
+	const focusSelect = form.querySelector('[name="focus"]');
+	if (!briefStep || !contactStep || !nextButton || !backButton || !submitButton || !status || !focusSelect) return;
+
+	let isSubmitting = false;
+	let isSubmitted = false;
+	const failureMessage = 'Die Anfrage wurde nicht bestätigt. Ihre Angaben bleiben erhalten. Bitte versuchen Sie es später erneut oder schreiben Sie mir eine E-Mail.';
+	const fieldSelector = 'input:not([type="hidden"]), select, textarea';
+
+	status.setAttribute('tabindex', '-1');
+	status.setAttribute('aria-atomic', 'true');
 
 	const setStatus = (message = '', type = '') => {
-		if (!status) return;
 		status.textContent = message;
 		status.classList.toggle('is-error', type === 'error');
 		status.classList.toggle('is-success', type === 'success');
 	};
 
+	const showStep = (step, focusField = null) => {
+		briefStep.hidden = step !== briefStep;
+		contactStep.hidden = step !== contactStep;
+		if (focusField) focusField.focus();
+	};
+
 	const markValidity = (field) => {
+		field.setCustomValidity('');
+		if (field.required && field.type !== 'checkbox' && !field.value.trim()) {
+			field.setCustomValidity('Bitte dieses Feld ausfüllen.');
+		} else if (field.name === 'message' && field.value.trim().length < field.minLength) {
+			field.setCustomValidity(`Bitte beschreiben Sie Ihr Projekt mit mindestens ${field.minLength} Zeichen.`);
+		}
 		const valid = field.checkValidity();
 		if (valid) field.removeAttribute('aria-invalid');
 		else field.setAttribute('aria-invalid', 'true');
@@ -230,96 +82,105 @@
 	};
 
 	const validateStep = (step) => {
-		const fields = Array.from(step.querySelectorAll('input:not([type="hidden"]), select, textarea'))
-			.filter((field) => !field.disabled);
+		const fields = Array.from(step.querySelectorAll(fieldSelector)).filter((field) => !field.disabled);
 		let firstInvalid = null;
 		fields.forEach((field) => {
 			if (!markValidity(field) && !firstInvalid) firstInvalid = field;
 		});
-		if (firstInvalid) {
-			firstInvalid.focus();
-			return false;
-		}
-		return true;
+		if (!firstInvalid) return true;
+		showStep(step, firstInvalid);
+		setStatus(firstInvalid.validationMessage, 'error');
+		firstInvalid.reportValidity();
+		return false;
 	};
 
-	form.addEventListener('input', (event) => {
+	const updateValidity = (event) => {
 		const field = event.target;
-		if (field instanceof HTMLInputElement || field instanceof HTMLSelectElement || field instanceof HTMLTextAreaElement) {
-			if (field.hasAttribute('aria-invalid')) markValidity(field);
-		}
+		if (field.matches(fieldSelector) && field.hasAttribute('aria-invalid')) markValidity(field);
+	};
+	form.addEventListener('input', updateValidity);
+	form.addEventListener('change', updateValidity);
+	form.addEventListener('focusout', (event) => {
+		const field = event.target;
+		if (field.matches(fieldSelector) && field.required) markValidity(field);
 	});
 
-	if (nextButton && briefStep && contactStep) {
-		nextButton.addEventListener('click', () => {
-			setStatus();
-			if (!validateStep(briefStep)) {
-				setStatus('Bitte die drei Angaben kurz vervollständigen.', 'error');
-				return;
-			}
-			briefStep.hidden = true;
-			contactStep.hidden = false;
-			const email = contactStep.querySelector('input[type="email"]');
-			if (email) email.focus({ preventScroll: true });
-			contactStep.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'center' });
-		});
-	}
+	const nextStep = () => {
+		setStatus();
+		if (validateStep(briefStep)) showStep(contactStep, contactStep.querySelector('[name="email"]'));
+	};
+	nextButton.addEventListener('click', nextStep);
+	backButton.addEventListener('click', () => {
+		if (isSubmitting) return;
+		setStatus();
+		showStep(briefStep, briefStep.querySelector(fieldSelector));
+	});
 
-	if (backButton && briefStep && contactStep) {
-		backButton.addEventListener('click', () => {
+	root.querySelectorAll('[data-fr-project-focus]').forEach((link) => {
+		link.addEventListener('click', (event) => {
+			if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || isSubmitting || isSubmitted) return;
+			const value = link.dataset.frProjectFocus;
+			if (!Array.from(focusSelect.options).some((option) => option.value === value)) return;
+			focusSelect.value = value;
+			markValidity(focusSelect);
 			setStatus();
-			contactStep.hidden = true;
-			briefStep.hidden = false;
-			const first = briefStep.querySelector('input, select, textarea');
-			if (first) first.focus({ preventScroll: true });
+			showStep(briefStep);
+			/* Keep the link's native anchor navigation and the visitor's typed brief. */
 		});
-	}
+	});
 
 	form.addEventListener('submit', async (event) => {
 		event.preventDefault();
+		if (isSubmitting || isSubmitted) return;
+		if (!briefStep.hidden) {
+			nextStep();
+			return;
+		}
 		setStatus();
+		if (!validateStep(briefStep) || !validateStep(contactStep)) return;
 
-		if (briefStep && !validateStep(briefStep)) {
-			if (contactStep) contactStep.hidden = true;
-			briefStep.hidden = false;
-			setStatus('Bitte die Projektangaben prüfen.', 'error');
-			return;
-		}
-		if (contactStep && !validateStep(contactStep)) {
-			setStatus('Bitte E-Mail und Datenschutz-Zustimmung prüfen.', 'error');
-			return;
-		}
-
-		if (submitButton) {
-			submitButton.disabled = true;
-			submitButton.setAttribute('aria-busy', 'true');
-		}
-
+		/* Serialize before disabling controls. Field names match the existing REST contract. */
 		const data = Object.fromEntries(new FormData(form).entries());
 		data.consent = Boolean(form.querySelector('[name="consent"]:checked'));
+		isSubmitting = true;
+		submitButton.disabled = true;
+		backButton.disabled = true;
+		form.setAttribute('aria-busy', 'true');
+		setStatus('Ihre Anfrage wird gesendet …');
 
+		const controller = typeof window.AbortController === 'function' ? new AbortController() : null;
+		const timeout = controller ? window.setTimeout(() => controller.abort(), 20000) : null;
 		try {
 			const response = await fetch(form.action, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 				credentials: 'same-origin',
 				body: JSON.stringify(data),
+				...(controller ? { signal: controller.signal } : {}),
 			});
-			const payload = await response.json().catch(() => ({}));
-			if (!response.ok || !payload.ok) {
-				throw new Error(payload.error || 'Die Anfrage konnte gerade nicht gesendet werden.');
+			const payload = await response.json().catch(() => null);
+			if (!response.ok || !payload || payload.ok !== true) {
+				setStatus(payload && typeof payload.error === 'string' ? payload.error : failureMessage, 'error');
+				return;
 			}
-			if (briefStep) briefStep.hidden = true;
-			if (contactStep) contactStep.hidden = true;
-			setStatus(payload.message || 'Danke. Die Anfrage ist eingegangen.', 'success');
+			isSubmitted = true;
+			briefStep.hidden = true;
+			contactStep.hidden = true;
 			form.reset();
-		} catch (error) {
-			setStatus(error instanceof Error ? error.message : 'Die Anfrage konnte gerade nicht gesendet werden.', 'error');
+			setStatus(typeof payload.message === 'string' && payload.message ? payload.message : 'Danke. Ihre Anfrage ist eingegangen.', 'success');
+		} catch {
+			setStatus(failureMessage, 'error');
 		} finally {
-			if (submitButton) {
-				submitButton.disabled = false;
-				submitButton.removeAttribute('aria-busy');
-			}
+			if (timeout !== null) window.clearTimeout(timeout);
+			isSubmitting = false;
+			submitButton.disabled = false;
+			backButton.disabled = false;
+			form.removeAttribute('aria-busy');
+			status.focus();
 		}
 	});
+
+	/* Server markup stays hidden until submission and validation handlers are ready. */
+	showStep(briefStep);
+	form.hidden = false;
 })();

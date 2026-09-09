@@ -3,7 +3,8 @@
  * Global site footer.
  *
  * Ein Fuss fuer alle Seitentypen — Home, Solar/Energy und Audit rendern
- * dieselbe Komponente.
+ * dieselbe Komponente. Auf der Freelancer-Route entfaellt die erneute
+ * Zielgruppenwahl; das Kontaktformular bleibt beim seitenlokalen Intake.
  *
  * Er hatte drei Jobs gleichzeitig in vier gleich schweren Bloecken: abschliessen,
  * navigieren, Vertrauen belegen. Jetzt gibt es zwei Lautstaerken. Laut sind die
@@ -33,6 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $current_year = wp_date( 'Y' );
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $routes       = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+$is_freelancer_page = is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' );
 
 $energy_url     = $routes['energy'] ?? ( $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ) );
 $freelancer_url = $routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
@@ -42,6 +44,7 @@ $e3_url         = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgeneri
 $blog_url       = $primary_urls['blog'] ?? home_url( '/blog/' );
 $glossary_url   = $primary_urls['glossary'] ?? home_url( '/glossar/' );
 $contact_url    = $routes['contact'] ?? ( $primary_urls['contact'] ?? nexus_get_contact_url() );
+$form_url       = $is_freelancer_page ? '#anfrage' : $contact_url;
 $imprint_url    = $primary_urls['impressum'] ?? home_url( '/impressum/' );
 $privacy_url    = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
 
@@ -101,7 +104,7 @@ if ( '' !== $phone_link && '' !== $phone_display ) {
 
 $direct[] = [
 	'label' => 'Kontaktformular',
-	'url'   => $contact_url,
+	'url'   => $form_url,
 	'track' => 'cta_footer_form',
 ];
 
@@ -203,7 +206,8 @@ if ( file_exists( $footer_style_path ) ) {
 		 * sichtbar ueber dem Fuss. Ersatzlos aufgeloest.
 		 */
 		?>
-		<nav class="ft-pick" aria-labelledby="ft-pick-kicker">
+		<nav class="ft-pick" <?php if ( $is_freelancer_page ) : ?>aria-label="Direkter Kontakt"<?php else : ?>aria-labelledby="ft-pick-kicker"<?php endif; ?>>
+			<?php if ( ! $is_freelancer_page ) : ?>
 			<span class="ft-pick__kicker" id="ft-pick-kicker">Was trifft zu?</span>
 
 			<ul class="ft-pick__list">
@@ -225,6 +229,7 @@ if ( file_exists( $footer_style_path ) ) {
 					</li>
 				<?php endforeach; ?>
 			</ul>
+			<?php endif; ?>
 
 			<p class="ft-direct">
 				<span class="ft-direct__label">Lieber direkt</span>

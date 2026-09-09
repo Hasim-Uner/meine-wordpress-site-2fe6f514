@@ -129,9 +129,16 @@ Canonical helper: `hu_get_navigation_project_request_url()`
 
 Expected destination:
 
-`/kontakt/?type=project&focus=followup_scope`
+`/kontakt/?type=project&focus=implementation_scope`
 
 Use outside the dedicated Solar and White-Label funnels.
+
+Route-local exception for `/wordpress-freelancer-hannover/`: its project buttons,
+the rendered header bar and header menu CTA, and the footer's `Kontaktformular`
+link use `#anfrage`, the page's existing intake. This view-specific choice does
+not change `hu_get_navigation_project_request_url()`, `project_request` in the
+commercial route map, or the standalone `/kontakt/` fallback. Links from other
+routes continue to use the canonical contact destination above.
 
 ### Solar Marktcheck
 
@@ -155,7 +162,7 @@ The page owns its own local Fit-Check CTA.
 
 ### Footer: Selbstauskunft statt Sammel-CTA
 
-The global footer does not carry one CTA for everybody any more. It asks the
+The global footer does not carry one CTA for everybody any more. By default it asks the
 visitor to say who they are, and each of the three sentences routes into the
 matching cluster above:
 
@@ -174,6 +181,12 @@ All three carry `data-track-category="lead_gen"` and
 | E-Mail | `mailto:` the canonical address | `cta_footer_mail` |
 | Telefon | `tel:` the canonical number | `cta_footer_tel` |
 | Kontaktformular | `/kontakt/` | `cta_footer_form` |
+
+On `/wordpress-freelancer-hannover/`, the three self-selection sentences are
+omitted: the visitor is already in the direct-project path. Mail and telephone
+remain, and `Kontaktformular` points to `#anfrage`. The directory and sender
+lines remain. Existing tracking action names on rendered links are unchanged;
+the three `cta_footer_pick_*` actions are simply absent on this route.
 
 Below that the footer has one directory line and one sender line, no columns:
 

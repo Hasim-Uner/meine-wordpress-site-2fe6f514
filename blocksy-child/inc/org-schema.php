@@ -1680,7 +1680,9 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'wordpress-agentur-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'wgos', 'wordpress-growth-operating-system' ], true )
+                in_array( $slug, [ 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'wgos', 'wordpress-growth-operating-system' ], true )
+                // Freelancer FAQs are template-owned; editor caches may describe old, invisible questions.
+                || is_page_template( 'page-wordpress-freelancer-hannover.php' )
                 || ( function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page( $slug ) )
                 || ( function_exists( 'hu_is_seo_cornerstone_article' ) && hu_is_seo_cornerstone_article() )
                 // Die Solar Case Study emittiert ihren FAQPage-Knoten oben selbst.
