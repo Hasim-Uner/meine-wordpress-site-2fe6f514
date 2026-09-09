@@ -35,7 +35,7 @@ $privacy_url     = function_exists( 'nexus_get_page_url' )
 	: home_url( '/datenschutz/' );
 $form_anchor     = '#anfrage';
 $rest_endpoint   = rest_url( 'nexus/v1/contact-request' );
-$setup_cta_label = 'Setup-Empfehlung anfordern';
+$setup_cta_label = 'Tracking-Setup prüfen lassen';
 
 // ── Route-spezifischer Preis- und Lieferkanon ─────────────────
 $standard_setup_price = function_exists( 'hu_tracking_price' )
@@ -345,6 +345,10 @@ $faq = [
 		'answer'   => 'Eine seriöse Prozentzahl lässt sich vor dem Paralleltest nicht nennen. Das Ergebnis hängt vom bestehenden Setup, Browsermix, Consent-Verhalten und der bisherigen Event-Qualität ab. Deshalb läuft die neue Messung zunächst neben der alten. Entscheidend ist die nachvollziehbare Differenz in Ihren eigenen Konten — nicht eine pauschale Erfolgszahl.',
 	],
 	[
+		'question' => 'Brauche ich eine Server-Side-Tracking-Agentur oder einen spezialisierten Freelancer?',
+		'answer'   => 'Für die Qualität des Setups ist weniger die Unternehmensform entscheidend als die Person, die Messkonzept, Server-GTM, Consent, Deduplizierung und Tests tatsächlich verantwortet. Als spezialisierter Freelancer plane und implementiere ich die Messstrecke selbst — ohne Übergabe zwischen Vertrieb, Projektmanagement und Technik. Für größere Setups mit mehreren Märkten, Shops oder komplexen Datenpipelines wird der Umfang vorab klar abgegrenzt.',
+	],
+	[
 		'question' => 'Was kostet Server-Side Tracking?',
 		'answer'   => sprintf( 'Standard kostet %1$s einmalig plus %2$s für Tracking Care. Pro mit Meta CAPI kostet %3$s einmalig plus %4$s. Individuelle Setups: %5$s einmalig; Betreuung: %6$s. Das Stape-Hosting ist nicht enthalten und läuft direkt über Ihr eigenes Konto. Alle genannten Preise sind Nettopreise für Geschäftskunden.', $standard_setup_price, $standard_care_price, $pro_setup_price, $pro_care_price, $individual_setup_price, $individual_care_price ),
 	],
@@ -458,12 +462,12 @@ get_header();
 		<div class="hu-sst__container">
 			<div class="hu-sst__hero-grid">
 				<div class="hu-sst__hero-copy">
-					<p class="hu-sst__eyebrow">Server-Side Tracking für aktive Kampagnen</p>
+					<p class="hu-sst__eyebrow">Spezialisierter Freelancer · Server-Side Tracking</p>
 					<h1 class="hu-sst__h1" id="hu-sst-hero-title">
-						Server-Side Tracking, wenn CRM und Werbekonten widersprechen
+						Server-Side Tracking einrichten lassen — mit Paralleltest statt Prozentversprechen
 					</h1>
 					<p class="hu-sst__lead">
-						Ich prüfe Ihre Messstrecke und richte GA4, Google Ads und optional Meta CAPI über eine eigene Tracking-Subdomain ein — mit Paralleltest, Dokumentation und laufender Kontrolle.
+						Als spezialisierter Freelancer prüfe ich Ihre Messstrecke und richte GA4, Google Ads und optional Meta CAPI über eine eigene Tracking-Subdomain ein — mit Paralleltest, Dokumentation und laufender Kontrolle.
 					</p>
 					<p class="hu-sst__lead-sub">
 						Für Unternehmen mit laufenden Kampagnen, klaren Conversion-Zielen und einer Person, die auf Basis dieser Daten Budget steuert.
@@ -602,6 +606,16 @@ get_header();
 					Server-Side Tracking ist eine technische Leistung mit klaren Voraussetzungen. Fehlen sie, ist das Ergebnis Aufwand ohne Wirkung.
 				</p>
 			</div>
+
+			<aside class="hu-sst__callout">
+				<h3 class="hu-sst__callout-title">Server-Side-Tracking-Agentur oder spezialisierter Freelancer?</h3>
+				<p>
+					Für die technische Umsetzung ist weniger die Unternehmensform entscheidend als die Person, die Messkonzept, Server-GTM, Consent, Deduplizierung und Tests tatsächlich verantwortet. Als <strong>spezialisierter Freelancer</strong> plane und implementiere ich das Setup selbst — ohne Übergabe zwischen Vertrieb, Projektmanagement und Technik.
+				</p>
+				<p>
+					Das ist besonders sinnvoll, wenn Sie einen direkten technischen Ansprechpartner wollen. Bei größeren Setups mit mehreren Märkten, Shops oder individuellen Datenpipelines wird der Umfang vorab klar abgegrenzt.
+				</p>
+			</aside>
 
 			<div class="hu-sst__split">
 				<article class="hu-sst__split-col hu-sst__split-col--yes">
@@ -872,7 +886,7 @@ get_header();
 		<div class="hu-sst__container hu-sst__container--narrow">
 			<div class="hu-sst__section-head">
 				<p class="hu-sst__eyebrow">Anfrage</p>
-				<h2 class="hu-sst__h2" id="hu-sst-form-title">Tracking-Setup einordnen lassen</h2>
+				<h2 class="hu-sst__h2" id="hu-sst-form-title">Tracking-Setup prüfen lassen</h2>
 				<p class="hu-sst__section-lead">
 					Beschreiben Sie kurz, welche Zahlen nicht zusammenpassen oder was künftig sauber gemessen werden soll. Sie erhalten eine Fit-Einschätzung, den passenden Scope und die offenen Voraussetzungen — vor einem Angebot.
 				</p>
@@ -895,7 +909,6 @@ get_header();
 					<label for="contact-company-website">Website</label>
 					<input id="contact-company-website" type="text" name="company_website" tabindex="-1" autocomplete="off">
 				</div>
-
 				<input type="hidden" name="ads_source" id="ads_source" value="">
 				<input type="hidden" name="ads_keyword" id="ads_keyword" value="">
 				<input type="hidden" name="utm_medium" id="utm_medium" value="">
@@ -1048,7 +1061,7 @@ get_template_part(
 		'cta_url'           => $form_anchor,
 		'track_category'    => 'server_side_tracking_b2b',
 		'region_label'      => 'Schnellzugang zur Anfrage',
-		'lead'              => 'Setup einordnen lassen',
+		'lead'              => 'Tracking-Setup prüfen lassen',
 		'sub'               => 'Fit und Scope vor Angebot',
 		'label'             => $setup_cta_label,
 		'track_action'      => 'cta_sticky_form_tracking',
