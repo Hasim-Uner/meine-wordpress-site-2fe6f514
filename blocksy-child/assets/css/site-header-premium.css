@@ -1,25 +1,18 @@
 /*
  * Full-screen commercial navigation.
  *
- * Motion brief: intensity 2. One 420ms scanline marks the state change; the
- * content follows in a restrained 40–280ms stagger. Hover motion only clarifies
- * route choice. Reduced-motion users receive the same states without movement.
- *
- * This component deliberately owns every value it consumes. It must remain
- * usable even when the theme design-token layer fails to load.
+ * Der Standard-Header bleibt dauerhaft sichtbar. Das geoeffnete Menue ist ein
+ * echtes, deckendes Viewport-Sheet und darf nie mit Seiteninhalt vermischt
+ * werden. Alle Regeln sind bewusst auf `.nx-site-header--sheet` begrenzt,
+ * damit Audit-, Energy- und Blog-Header unberuehrt bleiben.
  */
+
+:root {
+    --nx-site-header-height: 64px;
+}
 
 html {
     scrollbar-gutter: stable;
-}
-
-/* Die Leiste liegt fixed ueber dem Inhalt und belegt keine Hoehe im
-   Dokumentfluss. Seiten, deren erster Block direkt darunter beginnt
-   (Startseite-Hero), brauchen die Leistenhoehe als Layoutwert, sonst
-   startet ihr Inhalt hinter der Leiste. Mit `block-size` unten synchron
-   halten; Konsumenten setzen zusaetzlich 64px als Fallback. */
-:root {
-    --nx-site-header-height: 64px;
 }
 
 html.nx-site-menu-open,
@@ -35,30 +28,25 @@ body.nx-site-menu-open {
     --sheet-text: #f2ebdd;
     --sheet-text-mid: #c8c0b0;
     --sheet-text-dim: #9a9488;
-    --sheet-line: #f2ebdd1c;
-    --sheet-line-soft: #f2ebdd0f;
+    --sheet-line: rgb(242 235 221 / 0.11);
+    --sheet-line-soft: rgb(242 235 221 / 0.06);
     --sheet-ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --sheet-unit-1: 4px;
-    --sheet-unit-2: 8px;
-    --sheet-unit-3: 12px;
-    --sheet-unit-4: 16px;
-    --sheet-unit-5: 24px;
-    --sheet-unit-6: 32px;
-    --sheet-unit-7: 48px;
-    --sheet-unit-8: 72px;
     --sheet-font: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --sheet-font-heading: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --sheet-font-mono: ui-monospace, "SFMono-Regular", "Cascadia Code", "Roboto Mono", monospace;
 
     position: fixed;
     inset-block-start: 0;
     inset-inline: 0;
     z-index: 1004;
-    inline-size: 100%;
-    block-size: 64px;
+    display: block;
+    width: 100%;
+    height: 64px;
+    min-height: 64px;
     padding: 0;
-    border-block-end: 1px solid var(--sheet-line);
+    border: 0;
+    border-bottom: 1px solid var(--sheet-line);
     background: var(--sheet-ground);
+    box-shadow: none;
     color: var(--sheet-text);
     color-scheme: dark;
     opacity: 1;
@@ -75,40 +63,39 @@ body.nx-site-menu-open {
     box-sizing: border-box;
 }
 
+/* Die Leiste bleibt auf Desktop und Mobile immer sichtbar. Die fruehere
+   is-auto-managed-Regel, die sie beim Abwaertsscrollen ausblendete, ist
+   absichtlich entfallen. */
 .nx-site-header.nx-site-header--sheet > .nx-site-header__bar {
     position: relative;
     z-index: 3;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--sheet-unit-4);
-    inline-size: min(1280px, calc(100% - var(--sheet-unit-7)));
-    max-inline-size: none;
-    block-size: 64px;
-    margin-inline: auto;
+    gap: 16px;
+    width: min(1280px, calc(100% - 48px));
+    max-width: none;
+    height: 64px;
+    min-height: 64px;
+    margin: 0 auto;
     padding: 0;
     pointer-events: auto;
     opacity: 1;
-    transform: translateY(0);
-    transition:
-        opacity 240ms var(--sheet-ease),
-        transform 320ms var(--sheet-ease);
-}
-
-.nx-site-header.nx-site-header--sheet.is-auto-managed:not(.is-visible):not(.is-open):not(:focus-within) > .nx-site-header__bar {
-    opacity: 0;
-    transform: translateY(-100%);
+    transform: none;
+    transition: none;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__brand.site-logo {
     display: inline-flex;
     flex: 0 0 auto;
     align-items: center;
-    block-size: 44px;
+    width: auto;
+    min-width: 0;
+    height: 44px;
     min-height: 44px !important;
-    min-inline-size: 0;
-    min-block-size: 44px;
-    overflow-wrap: anywhere;
+    margin: 0;
+    padding: 0;
+    overflow-wrap: normal;
     color: var(--sheet-text);
     font-family: var(--sheet-font-mono);
     font-size: 0.75rem;
@@ -118,7 +105,6 @@ body.nx-site-menu-open {
     text-decoration: none;
     text-transform: uppercase;
     white-space: nowrap;
-    transition: color 140ms linear;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__actions {
@@ -126,19 +112,19 @@ body.nx-site-menu-open {
     flex: 0 1 auto;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--sheet-unit-3);
-    min-inline-size: 0;
+    gap: 12px;
+    min-width: 0;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__status {
     display: none;
     align-items: center;
-    gap: var(--sheet-unit-2);
+    gap: 8px;
+    height: 20px;
+    padding-right: 16px;
+    border-right: 1px solid var(--sheet-line);
     color: var(--sheet-text-dim);
     font-family: var(--sheet-font-mono);
-    block-size: 20px;
-    padding-inline-end: var(--sheet-unit-4);
-    border-inline-end: 1px solid var(--sheet-line);
     font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: 0.12em;
@@ -149,8 +135,8 @@ body.nx-site-menu-open {
 .nx-site-header.nx-site-header--sheet .nx-site-header__status i {
     display: block;
     flex: 0 0 auto;
-    inline-size: var(--sheet-unit-1);
-    block-size: var(--sheet-unit-1);
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
     background: var(--sheet-accent);
 }
@@ -160,10 +146,12 @@ body.nx-site-menu-open {
     flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    gap: var(--sheet-unit-2);
-    min-inline-size: 44px;
-    min-block-size: 44px;
-    padding-inline: var(--sheet-unit-4);
+    gap: 8px;
+    width: auto;
+    min-width: 44px;
+    min-height: 44px;
+    margin: 0;
+    padding: 0 16px;
     border: 0;
     border-radius: 3px;
     background: var(--sheet-accent);
@@ -176,29 +164,19 @@ body.nx-site-menu-open {
     line-height: 1;
     text-decoration: none;
     white-space: nowrap;
-    transition: background-color 140ms linear;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__cta-icon {
     display: block;
     flex: 0 0 auto;
-    inline-size: 13px;
-    block-size: 13px;
-    transition: transform 150ms var(--sheet-ease);
+    width: 13px;
+    height: 13px;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__cta-short {
     display: none;
 }
 
-/* Offenes Menue: genau eine Handlungsaufforderung.
-   site-header.js setzt beim Oeffnen alle `[data-site-header-bar-link]` auf
-   `inert`, weil das Sheet ein `aria-modal`-Dialog ist. Der Button in der
-   Leiste blieb dabei sichtbar, war aber nicht mehr klickbar — waehrend im
-   Sheet derselbe orangefarbene Button mit demselben Label ein zweites Mal
-   stand. Im offenen Zustand traegt deshalb nur noch das Sheet die Aktion,
-   die Leiste nur noch Wortmarke und Schliessen. Der Umschalter sitzt am
-   rechten Rand und bleibt stehen; es entsteht kein Sprung. */
 .nx-site-header.nx-site-header--sheet.is-open > .nx-site-header__bar .nx-site-header__cta {
     display: none;
 }
@@ -209,12 +187,13 @@ body.nx-site-menu-open {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: var(--sheet-unit-3);
-    inline-size: auto;
-    block-size: 44px;
-    min-inline-size: 44px;
-    min-block-size: 44px;
-    padding: 0 var(--sheet-unit-3);
+    gap: 12px;
+    width: auto;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    margin: 0;
+    padding: 0 12px;
     border: 1px solid var(--sheet-line);
     border-radius: 3px;
     background: transparent;
@@ -228,41 +207,38 @@ body.nx-site-menu-open {
     line-height: 1;
     text-transform: uppercase;
     transform: none;
-    transition:
-        border-color 140ms linear,
-        color 140ms linear;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__toggle-label {
     display: none;
-    min-inline-size: 0;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__toggle-glyph {
     position: relative;
     display: block;
     flex: 0 0 auto;
-    inline-size: 18px;
-    block-size: 12px;
+    width: 18px;
+    height: 12px;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__toggle-glyph > span {
     position: absolute;
-    inset-inline-start: 0;
+    left: 0;
     display: block;
-    inline-size: 18px;
-    block-size: 2px;
+    width: 18px;
+    height: 2px;
+    border-radius: 0;
     background: currentColor;
     transform-origin: center;
     transition: transform 180ms var(--sheet-ease);
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__toggle-glyph > span:first-child {
-    inset-block-start: 1px;
+    top: 1px;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__toggle-glyph > span:last-child {
-    inset-block-end: 1px;
+    bottom: 1px;
 }
 
 .nx-site-header.nx-site-header--sheet.is-open .nx-site-header__toggle-glyph > span:first-child {
@@ -276,56 +252,56 @@ body.nx-site-menu-open {
 .nx-site-header.nx-site-header--sheet .nx-site-header__scanline {
     position: absolute;
     z-index: 4;
-    inset-block-end: -1px;
-    inset-inline-start: 0;
+    right: 0;
+    bottom: -1px;
+    left: 0;
     display: block;
-    inline-size: 100%;
-    block-size: 2px;
+    width: 100%;
+    height: 2px;
     background: var(--sheet-accent);
     pointer-events: none;
     transform: scaleX(0);
     transform-origin: left center;
+    transition: transform 260ms var(--sheet-ease);
 }
 
 .nx-site-header.nx-site-header--sheet.is-open .nx-site-header__scanline {
-    animation: nxSiteHeaderScanline 420ms var(--sheet-ease) both;
+    transform: scaleX(1);
 }
 
-@keyframes nxSiteHeaderScanline {
-    0% {
-        transform: scaleX(0);
-    }
-
-    100% {
-        transform: scaleX(1);
-    }
-}
-
+/* Das Sheet ist eine eigenstaendige, deckende Ebene. Genau das verhindert
+   den im Mobile-Screenshot sichtbaren Mix aus Menue und Seiteninhalt. */
 .nx-site-header.nx-site-header--sheet .nx-site-header__sheet {
     position: fixed;
     z-index: 2;
-    inset-block-start: 64px;
-    inset-inline: 0;
+    top: 64px;
+    right: 0;
+    bottom: auto;
+    left: 0;
     display: block;
-    inline-size: 100%;
-    block-size: calc(100vh - 64px);
-    block-size: calc(100dvh - 64px);
-    min-block-size: 0;
+    width: 100%;
+    max-width: none;
+    height: calc(100vh - 64px);
+    height: calc(100dvh - 64px);
+    min-height: 0;
+    margin: 0;
     padding: 0;
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
     border: 0;
+    border-radius: 0;
     background: var(--sheet-ground);
+    box-shadow: none;
     color: var(--sheet-text);
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-10px);
+    transform: translateY(-8px);
     visibility: hidden;
     transition:
         opacity 160ms linear,
-        transform 160ms var(--sheet-ease),
-        visibility 0s linear 160ms;
+        transform 180ms var(--sheet-ease),
+        visibility 0s linear 180ms;
 }
 
 .nx-site-header.nx-site-header--sheet.is-open .nx-site-header__sheet {
@@ -334,31 +310,32 @@ body.nx-site-menu-open {
     transform: translateY(0);
     visibility: visible;
     transition:
-        opacity 240ms linear,
-        transform 260ms var(--sheet-ease),
+        opacity 180ms linear,
+        transform 220ms var(--sheet-ease),
         visibility 0s linear;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__sheet-grid {
     display: flex;
     flex-direction: column;
-    gap: var(--sheet-unit-7);
-    inline-size: min(1280px, calc(100% - var(--sheet-unit-7)));
-    max-inline-size: none;
-    min-block-size: 100%;
-    margin-inline: auto;
-    padding: var(--sheet-unit-7) 0 var(--sheet-unit-6);
+    gap: 32px;
+    width: min(1280px, calc(100% - 48px));
+    max-width: none;
+    min-height: 100%;
+    margin: 0 auto;
+    padding: 32px 0 28px;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__sheet-main {
     display: block;
     order: 1;
-    min-inline-size: 0;
+    min-width: 0;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__routes,
 .nx-site-header.nx-site-header--sheet .nx-site-header__groups ul,
 .nx-site-header.nx-site-header--sheet .nx-site-header__meta ul {
+    display: block;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -366,81 +343,30 @@ body.nx-site-menu-open {
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__route {
     position: relative;
+    display: block;
     margin: 0;
-    border-block-end: 1px solid var(--sheet-line-soft);
-    opacity: 0;
-    transform: translateY(14px);
-    transition:
-        opacity 160ms var(--sheet-ease),
-        transform 160ms var(--sheet-ease);
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid var(--sheet-line-soft);
+    background: transparent;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__route:first-child {
-    border-block-start: 1px solid var(--sheet-line-soft);
+    border-top: 1px solid var(--sheet-line-soft);
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__route::before {
     content: "";
     position: absolute;
-    inset-block: 0;
-    inset-inline-start: 0;
-    inline-size: 2px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 2px;
     background: var(--sheet-accent);
     pointer-events: none;
     transform: scaleY(0);
     transform-origin: center;
-    transition: transform 220ms var(--sheet-ease);
-}
-
-.nx-site-header.nx-site-header--sheet .nx-site-header__route > a {
-    display: grid;
-    gap: var(--sheet-unit-1) var(--sheet-unit-5);
-    inline-size: 100%;
-    min-block-size: 44px;
-    padding: var(--sheet-unit-5) 0 var(--sheet-unit-5) var(--sheet-unit-4);
-    color: var(--sheet-text);
-    text-decoration: none;
-}
-
-.nx-site-header.nx-site-header--sheet .nx-site-header__route-copy {
-    display: grid;
-    gap: var(--sheet-unit-1);
-    min-inline-size: 0;
-}
-
-.nx-site-header.nx-site-header--sheet .nx-site-header__route-kicker {
-    color: var(--sheet-text-dim);
-    font-family: var(--sheet-font-mono);
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    line-height: 1.3;
-    text-transform: uppercase;
-    transition: color 180ms linear;
-}
-
-.nx-site-header.nx-site-header--sheet .nx-site-header__route-title {
-    display: block;
-    overflow-wrap: anywhere;
-    color: var(--sheet-text);
-    font-family: var(--sheet-font-heading);
-    font-size: clamp(1.75rem, 4.2vw, 2.9rem);
-    font-weight: 800;
-    letter-spacing: -0.035em;
-    line-height: 1.02;
-    transform: translateX(0);
-    transition: transform 220ms var(--sheet-ease);
-}
-
-.nx-site-header.nx-site-header--sheet .nx-site-header__route-desc {
-    display: block;
-    max-inline-size: 58ch;
-    color: var(--sheet-text-dim);
-    font-family: var(--sheet-font);
-    font-size: 0.9rem;
-    font-weight: 450;
-    line-height: 1.55;
-    transition: color 140ms linear;
+    transition: transform 180ms var(--sheet-ease);
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__route.is-current::before,
@@ -448,54 +374,116 @@ body.nx-site-menu-open {
     transform: scaleY(1);
 }
 
+.nx-site-header.nx-site-header--sheet .nx-site-header__route > a {
+    display: grid;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    margin: 0;
+    padding: 20px 0 20px 14px;
+    border: 0;
+    background: transparent;
+    color: var(--sheet-text);
+    text-align: left;
+    text-decoration: none;
+}
+
+.nx-site-header.nx-site-header--sheet .nx-site-header__route-copy {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+}
+
+.nx-site-header.nx-site-header--sheet .nx-site-header__route-kicker {
+    display: block;
+    margin: 0;
+    color: var(--sheet-text-dim);
+    font-family: var(--sheet-font-mono);
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
 .nx-site-header.nx-site-header--sheet .nx-site-header__route.is-current .nx-site-header__route-kicker {
     color: var(--sheet-accent);
+}
+
+.nx-site-header.nx-site-header--sheet .nx-site-header__route-title {
+    display: block;
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: var(--sheet-text);
+    font-family: var(--sheet-font);
+    font-size: clamp(1.3rem, 6vw, 1.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+}
+
+.nx-site-header.nx-site-header--sheet .nx-site-header__route-desc {
+    display: block;
+    max-width: 58ch;
+    margin: 0;
+    color: var(--sheet-text-dim);
+    font-family: var(--sheet-font);
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__groups {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--sheet-unit-6);
-    margin-block-start: var(--sheet-unit-7);
-    opacity: 0;
-    transform: translateY(14px);
-    transition:
-        opacity 160ms var(--sheet-ease),
-        transform 160ms var(--sheet-ease);
+    gap: 24px;
+    margin: 32px 0 0;
+    padding: 0;
 }
 
-.nx-site-header.nx-site-header--sheet .nx-site-header__group {
+.nx-site-header.nx-site-header--sheet .nx-site-header__group,
+.nx-site-header.nx-site-header--sheet .nx-site-header__meta-block {
     display: grid;
-    gap: var(--sheet-unit-3);
-    align-content: start;
-    min-inline-size: 0;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__group-title,
 .nx-site-header.nx-site-header--sheet .nx-site-header__meta-title {
     margin: 0;
+    padding: 0;
     color: var(--sheet-text-dim);
     font-family: var(--sheet-font-mono);
-    font-size: 0.68rem;
+    font-size: 0.64rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.13em;
     line-height: 1.3;
     text-transform: uppercase;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__group li,
 .nx-site-header.nx-site-header--sheet .nx-site-header__meta li {
+    display: block;
     margin: 0;
+    padding: 0;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__group a,
 .nx-site-header.nx-site-header--sheet .nx-site-header__meta a {
     display: inline-flex;
     align-items: center;
-    min-inline-size: 44px;
-    min-block-size: 44px;
-    max-inline-size: 100%;
+    width: auto;
+    min-width: 44px;
+    min-height: 44px;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
     overflow-wrap: anywhere;
+    border: 0;
+    background: transparent;
     color: var(--sheet-text-mid);
     font-family: var(--sheet-font);
     font-size: 0.9375rem;
@@ -504,9 +492,6 @@ body.nx-site-menu-open {
     text-decoration-color: transparent;
     text-decoration-thickness: 1px;
     text-underline-offset: 4px;
-    transition:
-        color 140ms linear,
-        text-decoration-color 140ms linear;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__group .is-current > a {
@@ -518,55 +503,36 @@ body.nx-site-menu-open {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--sheet-unit-4);
-    min-block-size: 44px;
-    margin-block-start: var(--sheet-unit-7);
-    padding-block-start: var(--sheet-unit-5);
-    border-block-start: 1px solid var(--sheet-line);
+    gap: 16px;
+    min-height: 44px;
+    margin: 32px 0 0;
+    padding: 20px 0 0;
+    border-top: 1px solid var(--sheet-line);
     color: var(--sheet-text-dim);
     font-family: var(--sheet-font-mono);
     font-size: 0.72rem;
     font-weight: 500;
     letter-spacing: 0.04em;
     line-height: 1.45;
-    opacity: 0;
-    transform: translateY(14px);
-    transition:
-        opacity 160ms var(--sheet-ease),
-        transform 160ms var(--sheet-ease);
-}
-
-.nx-site-header.nx-site-header--sheet .nx-site-header__response-promise {
-    display: block;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__sheet-cta {
-    margin-inline-start: auto;
+    margin-left: auto;
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__meta {
     display: grid;
-    gap: var(--sheet-unit-5);
+    gap: 24px;
     align-content: start;
     order: 2;
-    min-inline-size: 0;
-    padding-block-start: var(--sheet-unit-6);
-    border-block-start: 1px solid var(--sheet-line);
-    opacity: 0;
-    transform: translateY(14px);
-    transition:
-        opacity 160ms var(--sheet-ease),
-        transform 160ms var(--sheet-ease);
-}
-
-.nx-site-header.nx-site-header--sheet .nx-site-header__meta-block {
-    display: grid;
-    gap: var(--sheet-unit-2);
-    min-inline-size: 0;
+    min-width: 0;
+    margin: 0;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--sheet-line);
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__location {
-    max-inline-size: 30ch;
+    max-width: 30ch;
     margin: 0;
     color: var(--sheet-text-dim);
     font-family: var(--sheet-font);
@@ -575,40 +541,7 @@ body.nx-site-menu-open {
 }
 
 .nx-site-header.nx-site-header--sheet .nx-site-header__external-mark {
-    margin-inline-start: var(--sheet-unit-1);
-}
-
-.nx-site-header.nx-site-header--sheet.is-open .nx-site-header__route,
-.nx-site-header.nx-site-header--sheet.is-open .nx-site-header__groups,
-.nx-site-header.nx-site-header--sheet.is-open .nx-site-header__sheet-foot,
-.nx-site-header.nx-site-header--sheet.is-open .nx-site-header__meta {
-    opacity: 1;
-    transform: translateY(0);
-    transition-duration: 360ms;
-}
-
-.nx-site-header.nx-site-header--sheet.is-open .nx-site-header__meta {
-    transition-delay: 40ms;
-}
-
-.nx-site-header.nx-site-header--sheet.is-open .nx-site-header__route:nth-child(1) {
-    transition-delay: 80ms;
-}
-
-.nx-site-header.nx-site-header--sheet.is-open .nx-site-header__route:nth-child(2) {
-    transition-delay: 130ms;
-}
-
-.nx-site-header.nx-site-header--sheet.is-open .nx-site-header__route:nth-child(3) {
-    transition-delay: 180ms;
-}
-
-.nx-site-header.nx-site-header--sheet.is-open .nx-site-header__groups {
-    transition-delay: 230ms;
-}
-
-.nx-site-header.nx-site-header--sheet.is-open .nx-site-header__sheet-foot {
-    transition-delay: 280ms;
+    margin-left: 4px;
 }
 
 .nx-site-header.nx-site-header--sheet a:focus-visible,
@@ -631,37 +564,75 @@ body.nx-site-menu-open {
         color: var(--sheet-ground);
     }
 
-    .nx-site-header.nx-site-header--sheet .nx-site-header__cta:hover .nx-site-header__cta-icon {
-        transform: translate(2px, -2px);
-    }
-
     .nx-site-header.nx-site-header--sheet .nx-site-header__toggle:hover {
         border-color: var(--sheet-accent);
         color: var(--sheet-accent-hi);
     }
 
-    .nx-site-header.nx-site-header--sheet .nx-site-header__routes:hover .nx-site-header__route:not(:hover):not(:focus-within) {
-        opacity: 0.45;
-    }
-
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route:hover::before,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route:focus-within::before {
+    .nx-site-header.nx-site-header--sheet .nx-site-header__route:hover::before {
         transform: scaleY(1);
     }
 
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route:hover .nx-site-header__route-title,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route:focus-within .nx-site-header__route-title {
-        transform: translateX(8px);
-    }
-
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route:hover .nx-site-header__route-kicker,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route:focus-within .nx-site-header__route-kicker {
+    .nx-site-header.nx-site-header--sheet .nx-site-header__route:hover .nx-site-header__route-kicker {
         color: var(--sheet-accent);
     }
 
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route:hover .nx-site-header__route-desc,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route:focus-within .nx-site-header__route-desc {
+    .nx-site-header.nx-site-header--sheet .nx-site-header__route:hover .nx-site-header__route-desc {
         color: var(--sheet-text-mid);
+    }
+}
+
+@media (max-width: 479px) {
+    .nx-site-header.nx-site-header--sheet > .nx-site-header__bar,
+    .nx-site-header.nx-site-header--sheet .nx-site-header__sheet-grid {
+        width: calc(100% - 32px);
+    }
+
+    .nx-site-header.nx-site-header--sheet > .nx-site-header__bar {
+        gap: 8px;
+    }
+
+    .nx-site-header.nx-site-header--sheet .nx-site-header__actions {
+        gap: 8px;
+    }
+
+    .nx-site-header.nx-site-header--sheet .nx-site-header__cta {
+        padding: 0 12px;
+    }
+
+    .nx-site-header.nx-site-header--sheet .nx-site-header__cta-full {
+        display: none;
+    }
+
+    .nx-site-header.nx-site-header--sheet .nx-site-header__cta-short {
+        display: inline;
+    }
+
+    .nx-site-header.nx-site-header--sheet .nx-site-header__sheet-grid {
+        gap: 24px;
+        padding-top: 22px;
+    }
+
+    .nx-site-header.nx-site-header--sheet .nx-site-header__route > a {
+        padding-block: 17px;
+    }
+
+    .nx-site-header.nx-site-header--sheet .nx-site-header__groups {
+        margin-top: 24px;
+    }
+
+    .nx-site-header.nx-site-header--sheet .nx-site-header__sheet-foot {
+        align-items: stretch;
+        margin-top: 24px;
+    }
+
+    .nx-site-header.nx-site-header--sheet .nx-site-header__response-promise {
+        width: 100%;
+    }
+
+    .nx-site-header.nx-site-header--sheet .nx-site-header__sheet-cta {
+        width: 100%;
+        margin-left: 0;
     }
 }
 
@@ -675,29 +646,6 @@ body.nx-site-menu-open {
     }
 }
 
-@media (max-width: 479px) {
-    .nx-site-header.nx-site-header--sheet > .nx-site-header__bar {
-        gap: var(--sheet-unit-2);
-    }
-
-    .nx-site-header.nx-site-header--sheet .nx-site-header__cta {
-        padding-inline: var(--sheet-unit-3);
-    }
-
-    .nx-site-header.nx-site-header--sheet .nx-site-header__cta-full {
-        display: none;
-    }
-
-    .nx-site-header.nx-site-header--sheet .nx-site-header__cta-short {
-        display: inline;
-    }
-
-    .nx-site-header.nx-site-header--sheet .nx-site-header__toggle {
-        padding-inline: var(--sheet-unit-3);
-    }
-
-}
-
 @media (min-width: 600px) {
     .nx-site-header.nx-site-header--sheet .nx-site-header__toggle-label {
         display: inline;
@@ -707,7 +655,7 @@ body.nx-site-menu-open {
 @media (min-width: 640px) and (max-width: 1023px) {
     .nx-site-header.nx-site-header--sheet .nx-site-header__groups {
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: var(--sheet-unit-5);
+        gap: 20px;
     }
 }
 
@@ -720,22 +668,22 @@ body.nx-site-menu-open {
 @media (min-width: 1024px) {
     .nx-site-header.nx-site-header--sheet .nx-site-header__sheet-grid {
         display: grid;
-        grid-template-columns: 240px minmax(0, 1fr);
-        gap: var(--sheet-unit-8);
-        padding-block: var(--sheet-unit-7);
+        grid-template-columns: 220px minmax(0, 1fr);
+        gap: 56px;
+        padding-block: 40px;
     }
 
     .nx-site-header.nx-site-header--sheet .nx-site-header__sheet-main {
         grid-column: 2;
         grid-row: 1;
         order: initial;
-        padding-inline-start: var(--sheet-unit-8);
-        border-inline-start: 1px solid var(--sheet-line);
+        padding-left: 56px;
+        border-left: 1px solid var(--sheet-line);
     }
 
     .nx-site-header.nx-site-header--sheet .nx-site-header__meta {
         position: sticky;
-        inset-block-start: var(--sheet-unit-7);
+        top: 40px;
         grid-column: 1;
         grid-row: 1;
         order: initial;
@@ -745,12 +693,16 @@ body.nx-site-menu-open {
     }
 
     .nx-site-header.nx-site-header--sheet .nx-site-header__route > a {
-        padding-block: var(--sheet-unit-6);
+        padding-block: 24px;
+    }
+
+    .nx-site-header.nx-site-header--sheet .nx-site-header__route-title {
+        font-size: clamp(1.75rem, 3vw, 2.5rem);
     }
 
     .nx-site-header.nx-site-header--sheet .nx-site-header__groups {
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: var(--sheet-unit-5);
+        gap: 20px;
     }
 }
 
@@ -758,61 +710,44 @@ body.nx-site-menu-open {
     .nx-site-header.nx-site-header--sheet .nx-site-header__route > a {
         grid-template-columns: minmax(0, 1fr) 300px;
         align-items: baseline;
-        gap: var(--sheet-unit-5);
+        gap: 24px;
     }
 
     .nx-site-header.nx-site-header--sheet .nx-site-header__route-desc {
-        max-inline-size: 300px;
+        max-width: 300px;
     }
 }
 
 @media (max-width: 782px) {
     .admin-bar .nx-site-header.nx-site-header--sheet {
-        inset-block-start: 46px;
+        top: 46px;
     }
 
     .admin-bar .nx-site-header.nx-site-header--sheet .nx-site-header__sheet {
-        inset-block-start: 110px;
-        block-size: calc(100vh - 110px);
-        block-size: calc(100dvh - 110px);
+        top: 110px;
+        height: calc(100vh - 110px);
+        height: calc(100dvh - 110px);
     }
 }
 
 @media (min-width: 783px) {
     .admin-bar .nx-site-header.nx-site-header--sheet {
-        inset-block-start: 32px;
+        top: 32px;
     }
 
     .admin-bar .nx-site-header.nx-site-header--sheet .nx-site-header__sheet {
-        inset-block-start: 96px;
-        block-size: calc(100vh - 96px);
-        block-size: calc(100dvh - 96px);
+        top: 96px;
+        height: calc(100vh - 96px);
+        height: calc(100dvh - 96px);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .nx-site-header.nx-site-header--sheet > .nx-site-header__bar,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__cta,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__cta-icon,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__toggle,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__toggle-glyph > span,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__scanline,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__sheet,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route::before,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route-title,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__route-kicker,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__groups,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__group a,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__sheet-foot,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__meta,
-    .nx-site-header.nx-site-header--sheet .nx-site-header__meta a {
+    .nx-site-header.nx-site-header--sheet *,
+    .nx-site-header.nx-site-header--sheet *::before,
+    .nx-site-header.nx-site-header--sheet *::after {
         animation: none !important;
         scroll-behavior: auto !important;
         transition: none !important;
-    }
-
-    .nx-site-header.nx-site-header--sheet.is-open .nx-site-header__scanline {
-        transform: scaleX(1);
     }
 }
