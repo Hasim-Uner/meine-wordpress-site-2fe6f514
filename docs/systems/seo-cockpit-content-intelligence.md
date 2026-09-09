@@ -1,30 +1,30 @@
-# SEO Cockpit – Content Intelligence V1
+# SEO Cockpit – Content Intelligence V1.1
 
 Stand: 2026-09-10.
 
 ## Zweck
 
-Content Intelligence verbindet den bestehenden Research-Layer mit der bereits angebundenen Google Search Console. Das System bloggt nicht automatisch. Es erkennt belastbare Marktsignale und leitet nur dann eine Content-Maßnahme ab, wenn zusätzlich Search-Console-Kontext vorhanden ist.
+Content Intelligence verbindet den bestehenden Research-Layer mit der Google Search Console. Das System bloggt nicht automatisch. Es erkennt belastbare Marktsignale und prüft anschließend, ob dafür tatsächlich direkte Suchnachfrage und eine passende bestehende Seite vorhanden sind.
 
 Pipeline:
 
-`Research-Provider -> persistierte Beobachtung -> deterministisches Marktsignal -> GSC-Matching -> Content-Opportunity`
+`Research-Provider -> persistierte Beobachtung -> Marktsignal -> Intent-Korridor -> GSC-Matching -> Seiten-Fit -> Content-Maßnahme`
 
 ## Datenquellen
 
-V1 nutzt ausschließlich bereits vorhandene Provider:
+V1.1 nutzt ausschließlich bereits vorhandene Provider:
 
 - Fraunhofer ISE Energy-Charts
 - Destatis GENESIS
 - Eurostat
 
-CrUX bleibt bewusst im technischen Research-/Performance-Layer und erzeugt in V1 keine Solar-/SHK-Content-Opportunity.
+CrUX bleibt bewusst im technischen Research-/Performance-Layer und erzeugt keine Solar-/SHK-Content-Opportunity.
 
 ## Persistenz
 
-V1 hält eine bewusst kleine, begrenzte Historie in der nicht automatisch geladenen WordPress-Option `nexus_content_intelligence_history_v1`.
+Die begrenzte Historie liegt in der nicht automatisch geladenen WordPress-Option `nexus_content_intelligence_history_v1`.
 
-Pro Metrik werden höchstens 36 unterschiedliche Zustände gespeichert. Identische Zustände werden per SHA-256-Fingerprint nicht erneut aufgenommen. Das reicht für die erste Signal- und Freshness-Logik, ohne eine zusätzliche Datenbanktabelle einzuführen.
+Pro Metrik werden höchstens 36 unterschiedliche Zustände gespeichert. Identische Zustände werden per SHA-256-Fingerprint nicht erneut aufgenommen.
 
 Gespeichert werden:
 
@@ -34,11 +34,11 @@ Gespeichert werden:
 - Vergleichsmetadaten wie YoY-Wachstum oder Prozentpunkt-Differenz
 - Capture-Zeitpunkt
 
-Die Persistenz läuft nach dem vorhandenen Hook `nexus_seo_cockpit_research_background_refresh` mit Priorität 20. Externe Provider werden dadurch nie beim Rendern der Opportunities-Seite abgefragt.
+Die Persistenz läuft nach dem vorhandenen Hook `nexus_seo_cockpit_research_background_refresh` mit Priorität 20. Externe Provider werden nie beim Rendern der Opportunities-Seite abgefragt.
 
 ## Signal Engine
 
-V1 ist regelbasiert, nicht KI-basiert.
+Die Signal Engine bleibt regelbasiert.
 
 Aktive Regeln:
 
@@ -48,61 +48,74 @@ Aktive Regeln:
 - Eurostat: Anteil erneuerbaren Stroms Deutschland, Signal ab 0,5 Prozentpunkten
 - Destatis: neues Berichtsjahr für den Wohngebäudebestand, sobald zwei unterschiedliche Berichtsperioden historisiert sind
 
-Day-Ahead-Preise werden historisiert, lösen in V1 aber bewusst keine automatische Content-Empfehlung aus.
+Day-Ahead-Preise werden historisiert, lösen aber noch keine automatische Content-Empfehlung aus.
 
-## Search-Console-Matching
+## V1.1: Intent-Korridore
 
-Die Opportunities-Seite verwendet ausschließlich den vorhandenen gecachten 28-Tage-GSC-Snapshot. Sie löst keine Live-Abfrage der Search Console aus.
+V1 hatte Solar-/PV-Begriffe zu breit gematcht. Dadurch konnten kommerzielle Queries wie `photovoltaik leads`, `pv termine b2b` oder Anbieter-Suchen einem Markt-/Daten-Signal zugeordnet werden.
 
-Für jedes Marktsignal werden passende Query-/Page-Zeilen anhand eines konservativen Branchen-Keywordsets gruppiert. Nicht-Ziel-Queries aus der bestehenden SEO-Cockpit-Logik bleiben ausgeschlossen.
+V1.1 verlangt deshalb pro Signal zwei Komponenten gleichzeitig:
 
-Ermittelt werden:
+1. einen fachlichen Gegenstand, zum Beispiel `PV`, `Photovoltaik`, `Solar` oder `Erneuerbare`,
+2. einen passenden Markt-/Daten-Kontext, zum Beispiel `Ausbau`, `Zubau`, `Leistung`, `Anteil`, `Strommix`, `Deutschland`, `Eurostat` oder `Statistik`.
 
-- relevante Impressionen
-- passende URLs
-- stärkste bestehende URL
-- impressionsgewichtete Durchschnittsposition
-- Top-Queries
-- Anteil der stärksten URL an der passenden Nachfrage
+Kommerzielle Lead-Intent-Begriffe wie `Lead`, `Termine`, `Anfragen`, `kaufen`, `Anbieter`, `B2B`, `Checkfox`, `Kosten` oder `Preis` werden für diese Marktsignale ausgeschlossen.
+
+Ein Query muss einen Fit von mindestens 60/100 erreichen, bevor seine GSC-Daten in die Opportunity einfließen.
+
+## Seiten-Fit
+
+Eine rankende URL wird nicht mehr automatisch als Content-Ziel übernommen.
+
+Der Seiten-Fit bewertet URL, WordPress-Titel, SEO-Titel und Description gegen denselben Themenkorridor. Kommerzielle Lead-Ausrichtung reduziert den Fit deutlich.
+
+Das verhindert zum Beispiel, dass die zentrale B2B-Solar-Leadseite automatisch als Ziel für einen Eurostat-Strommix-Artikel vorgeschlagen wird, nur weil sie für allgemeine PV-Queries Impressionen erhält.
+
+## Drei getrennte Scores
+
+V1.1 zeigt keine künstliche Gesamtpriorität mehr, sondern drei getrennte Dimensionen:
+
+### Marktsignal 0–100
+
+Bewertet Stärke der Veränderung, Aktualität, Business-Relevanz und Datenqualität.
+
+### SEO-Chance 0–100
+
+Bewertet ausschließlich direkt passende GSC-Impressionen, Rankingposition und Zahl der passenden Queries.
+
+### Bestehender Content-Fit 0–100
+
+Bewertet, ob die aktuell rankende Seite fachlich wirklich zum Marktsignal passt.
+
+Diese Trennung ist absichtlich: Ein wichtiges Marktsignal kann eine geringe SEO-Chance haben; eine gute SEO-Chance kann gleichzeitig ohne passende bestehende Zielseite auftreten.
 
 ## Maßnahmen
 
-V1 erzeugt vier konservative Zustände:
+V1.1 erzeugt konservative Zustände:
 
-- `Beobachten`: reales Marktsignal, aber zu wenig GSC-Nachfrage
-- `Seite aktualisieren`: eine vorhandene URL ist bereits das klare Ziel
-- `Seite erweitern`: vorhandene URL bündelt Nachfrage, hat aber Ranking-Potenzial
-- `Eigene Seite prüfen`: Nachfrage verteilt sich auf mehrere URLs; vor einer neuen URL muss Kannibalisierung ausgeschlossen werden
+- `Marktbeobachtung`: Signal relevant, aber keine ausreichende direkte Suchnachfrage
+- `Passende Seite aktualisieren`: direkte Nachfrage plus guter bestehender Seiten-Fit
+- `Passende Seite erweitern`: gute Nachfrage, guter Seiten-Fit und Ranking-Potenzial
+- `Neue Analyse prüfen`: direkte Nachfrage vorhanden, aber keine ausreichend passende bestehende Seite
 
-Es gibt absichtlich kein automatisches `CREATE` ohne Prüfung.
-
-## Prioritätsscore
-
-Maximal 100 Punkte:
-
-- Marktstärke: 35
-- Aktualität: 15
-- Business-Relevanz: 25
-- Search-Console-Chance: 20
-- Datenqualität: 5
-
-Der Score priorisiert Arbeit. Er ist keine Aussage über Marktqualität, Leadqualität oder einen garantierten SEO-Effekt.
+`Neue Analyse prüfen` ist noch keine automatische CREATE-Anweisung. Vor einer neuen URL muss Kannibalisierung geprüft werden.
 
 ## Admin UI
 
-Neues Untermenü:
+Unter `SEO Cockpit -> Opportunities` werden angezeigt:
 
-`SEO Cockpit -> Opportunities`
-
-Die Seite zeigt:
-
-- Anzahl persistierter Beobachtungen
+- Snapshots
 - aktive Marktsignale
-- Opportunities mit Score >= 70
-- Opportunities mit belastbarer GSC-Nachfrage
-- pro Signal: Primärdatenwert, Veränderung, Empfehlung, Ziel-URL und passende Queries
+- SEO-Chancen >= 60
+- konkrete Maßnahmen
+- pro Signal die drei getrennten Scores
+- Intent-Korridor
+- nur direkt passende GSC-Queries
+- aktuell rankende URL mit Kennzeichnung, ob sie wirklich als Ziel bestätigt ist
 
-Der Button `Research aktualisieren` reiht den vorhandenen Background-Refresh ein. Nach dem Provider-Refresh wird automatisch die Historie aktualisiert.
+## Refresh
+
+Der explizite Button `Research aktualisieren` nutzt den manuellen, authentifizierten Refresh-Pfad und ist nicht von einem sofort laufenden WP-Cron abhängig. Die normale Research-Seite bleibt weiterhin asynchron.
 
 ## Sicherheits- und Qualitätsgrenzen
 
@@ -118,12 +131,16 @@ Der Button `Research aktualisieren` reiht den vorhandenen Background-Refresh ein
 
 ## Nächste Stufe
 
-Nach realer Beobachtung der V1-Ausgaben kann V2 ergänzen:
+Nach Prüfung der realen V1.1-Ausgaben kann V1.2/V2 ergänzen:
 
 1. Signal-Status wie erledigt/ignoriert
-2. Content-Freshness-Mapping auf konkrete bestehende Artikel
+2. Content-Freshness-Mapping auf konkrete Textstellen bestehender Artikel
 3. Briefing-Generator aus Primärdaten + GSC + internen Links
 4. optional LLM für Briefings/Entwürfe hinter manueller Freigabe
-5. Benachrichtigung nur bei neuem Signal oberhalb eines definierten Scores
+5. Benachrichtigung nur bei neuem Signal oberhalb definierter Schwellen
 
-Code: `blocksy-child/inc/seo-cockpit/seo-cockpit-content-intelligence.php`.
+Code:
+
+- `blocksy-child/inc/seo-cockpit/seo-cockpit-content-intelligence.php`
+- `blocksy-child/inc/seo-cockpit/seo-cockpit-content-intelligence-refresh.php`
+- `blocksy-child/inc/seo-cockpit/seo-cockpit-content-intelligence-v11.php`
