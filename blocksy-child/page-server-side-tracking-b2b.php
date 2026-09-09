@@ -220,7 +220,8 @@ $packages = [
 			'Eine Website oder Domain',
 			'Server-GTM, eigene Subdomain und Consent-Anbindung',
 			'GA4, Google Ads und bis zu drei Haupt-Conversions',
-			'Paralleltest, Dokumentation und Übergabe',
+			'Paralleltest inklusive Prüfung und Vermeidung von Doppelzählungen',
+			'Dokumentation und Übergabe',
 			sprintf( 'Monatlicher Funktionstest plus %s Minuten kleinere Korrekturen', $standard_minutes ),
 			sprintf( 'Supportantwort innerhalb von %s Werktagen', $response_days ),
 		],
@@ -237,10 +238,10 @@ $packages = [
 		'featured' => true,
 		'items'    => [
 			'Alles aus Standard',
-			'Meta Pixel und Meta Conversion API',
-			'Deduplizierung zwischen Browser und Server',
+			'Meta Pixel und Meta Conversion API mit event_id-Deduplizierung',
 			'Bis zu acht definierte Events',
 			'Mehrere Formulare oder Conversion-Strecken',
+			'Erweiterte QA über mehrere Events und Plattformen',
 			sprintf( 'Monatliche Kontrolle plus %s Minuten kleinere Anpassungen', $pro_minutes ),
 		],
 		'cta'      => $setup_cta_label,
@@ -338,7 +339,7 @@ $faq = [
 	],
 	[
 		'question' => 'Funktioniert das mit WordPress und meinen Werbeplattformen?',
-		'answer'   => 'WordPress ist der häufigste Ausgangspunkt. Standardmäßig werden GA4 und Google Ads angebunden, im Pro-Setup zusätzlich Meta Pixel und Meta Conversion API mit Deduplizierung. Weitere Plattformen, Shops oder CRM-Systeme werden nach technischer Aufnahme individuell bewertet.',
+		'answer'   => 'WordPress ist der häufigste Ausgangspunkt. Standardmäßig werden GA4 und Google Ads angebunden; der Paralleltest umfasst die Prüfung und Vermeidung von Doppelzählungen. Im Pro-Setup kommen Meta Pixel und Meta Conversion API hinzu, dort mit event_id-Deduplizierung und erweiterter QA. Weitere Plattformen, Shops oder CRM-Systeme werden nach technischer Aufnahme individuell bewertet.',
 	],
 	[
 		'question' => 'Wie viele Conversions kommen zusätzlich an?',
@@ -926,7 +927,7 @@ get_header();
 				data-contact-dom-error-order
 				action="<?php echo esc_url( $rest_endpoint ); ?>"
 				method="post"
-				novalidate
+				novalate
 			>
 				<div class="contact-form__honeypot" aria-hidden="true">
 					<label for="contact-company-website">Website</label>
