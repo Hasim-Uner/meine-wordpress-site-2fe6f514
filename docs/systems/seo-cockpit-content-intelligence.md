@@ -4,7 +4,7 @@ Stand: 2026-09-10.
 
 ## Zweck
 
-Content Intelligence verbindet den bestehenden Research-Layer mit der bereits angebundenen Google Search Console. Das System soll nicht automatisch bloggen, sondern belastbare Marktsignale erkennen und daraus nur dann eine Content-Maßnahme ableiten, wenn zusätzlich Search-Console-Nachfrage vorhanden ist.
+Content Intelligence verbindet den bestehenden Research-Layer mit der bereits angebundenen Google Search Console. Das System bloggt nicht automatisch. Es erkennt belastbare Marktsignale und leitet nur dann eine Content-Maßnahme ab, wenn zusätzlich Search-Console-Kontext vorhanden ist.
 
 Pipeline:
 
@@ -22,22 +22,19 @@ CrUX bleibt bewusst im technischen Research-/Performance-Layer und erzeugt in V1
 
 ## Persistenz
 
-Neue Tabelle: `{prefix}nexus_research_snapshots`.
+V1 hält eine bewusst kleine, begrenzte Historie in der nicht automatisch geladenen WordPress-Option `nexus_content_intelligence_history_v1`.
 
-Gespeichert werden nur normalisierte numerische Beobachtungen mit:
+Pro Metrik werden höchstens 36 unterschiedliche Zustände gespeichert. Identische Zustände werden per SHA-256-Fingerprint nicht erneut aufgenommen. Das reicht für die erste Signal- und Freshness-Logik, ohne eine zusätzliche Datenbanktabelle einzuführen.
 
-- Provider
-- Metric-Key
+Gespeichert werden:
+
+- Provider und Metrik
 - Wert und Einheit
 - Quellperiode
-- Quell-Update
 - Vergleichsmetadaten wie YoY-Wachstum oder Prozentpunkt-Differenz
 - Capture-Zeitpunkt
-- SHA-256-Fingerprint zur Deduplizierung identischer Beobachtungen
 
-Retention: 730 Tage.
-
-Die Persistenz läuft nach dem vorhandenen Hook `nexus_seo_cockpit_research_background_refresh` mit Priorität 20. Dadurch werden keine externen Provider während des Admin-Renderings abgefragt.
+Die Persistenz läuft nach dem vorhandenen Hook `nexus_seo_cockpit_research_background_refresh` mit Priorität 20. Externe Provider werden dadurch nie beim Rendern der Opportunities-Seite abgefragt.
 
 ## Signal Engine
 
@@ -51,7 +48,7 @@ Aktive Regeln:
 - Eurostat: Anteil erneuerbaren Stroms Deutschland, Signal ab 0,5 Prozentpunkten
 - Destatis: neues Berichtsjahr für den Wohngebäudebestand, sobald zwei unterschiedliche Berichtsperioden historisiert sind
 
-Day-Ahead-Preise werden bereits historisiert, lösen in V1 aber bewusst keine automatische Content-Empfehlung aus.
+Day-Ahead-Preise werden historisiert, lösen in V1 aber bewusst keine automatische Content-Empfehlung aus.
 
 ## Search-Console-Matching
 
@@ -105,7 +102,7 @@ Die Seite zeigt:
 - Opportunities mit belastbarer GSC-Nachfrage
 - pro Signal: Primärdatenwert, Veränderung, Empfehlung, Ziel-URL und passende Queries
 
-Der Button `Research aktualisieren` reiht den vorhandenen Background-Refresh ein. Nach dem Provider-Refresh wird automatisch ein neuer Snapshot aufgenommen.
+Der Button `Research aktualisieren` reiht den vorhandenen Background-Refresh ein. Nach dem Provider-Refresh wird automatisch die Historie aktualisiert.
 
 ## Sicherheits- und Qualitätsgrenzen
 
@@ -129,4 +126,4 @@ Nach realer Beobachtung der V1-Ausgaben kann V2 ergänzen:
 4. optional LLM für Briefings/Entwürfe hinter manueller Freigabe
 5. Benachrichtigung nur bei neuem Signal oberhalb eines definierten Scores
 
-Code: `blocksy-child/inc/seo-cockpit/seo-cockpit-content-intelligence-v1.php`.
+Code: `blocksy-child/inc/seo-cockpit/seo-cockpit-content-intelligence.php`.
