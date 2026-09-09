@@ -38,6 +38,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 $request_url    = function_exists( 'hu_get_commercial_route' )
 	? hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) )
 	: home_url( '/kontakt/' );
+$freelancer_url = function_exists( 'hu_get_commercial_route' )
+	? hu_get_commercial_route( 'freelancer', home_url( '/wordpress-freelancer-hannover/' ) )
+	: home_url( '/wordpress-freelancer-hannover/' );
 $whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 $e3_case_url    = function_exists( 'hu_e3_canon' )
 	? (string) ( hu_e3_canon()['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) )
@@ -247,7 +250,7 @@ get_header();
 					<article class="hu-about__path hu-about__path--direct">
 						<p class="hu-about__path-label">Für Betriebe</p>
 						<h3 class="hu-about__path-title">Direktes Projekt</h3>
-						<p class="hu-about__path-text">Sie sprechen mit dem, der es baut. Keine Zwischenebene, kein Account Manager. Wenn ich ausfalle, sage ich Ihnen das am selben Tag und wir verschieben — dafür wissen Sie immer, woran Sie sind.</p>
+						<p class="hu-about__path-text">Sie sprechen mit dem, der es baut. Keine Zwischenebene, kein Account Manager. Wenn ich ausfalle, sage ich Ihnen das am selben Tag und wir verschieben — dafür wissen Sie immer, woran Sie sind. Die <a href="<?php echo esc_url( $freelancer_url ); ?>" data-track-action="link_about_freelancer" data-track-category="internal_link" data-track-section="about_cta">Leistungen und Preise für direkte WordPress-Projekte</a> finden Sie in einer eigenen Übersicht.</p>
 						<a
 							class="hu-about__path-link hu-about__path-link--primary"
 							href="<?php echo esc_url( $request_url ); ?>"
