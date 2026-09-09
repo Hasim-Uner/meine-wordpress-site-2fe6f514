@@ -40,8 +40,8 @@ add_filter( 'body_class', static function ( $classes ) {
 } );
 add_filter( 'hu_forced_singular_seo_map', static function ( $map ) {
 	$map['wordpress-freelancer-hannover'] = [
-		'title'       => 'WordPress Freelancer Hannover | Tracking & Conversion',
-		'description' => 'WordPress-Websites, Landingpages und Tracking direkt mit dem Entwickler in der Region Hannover. Klarer Projektumfang, versionierter Code und Konten in Ihrer Hand.',
+		'title'       => 'WordPress Freelancer Hannover | Entwicklung & Tracking',
+		'description' => 'WordPress Freelancer aus Hannover für Relaunch, Landingpages, Weiterentwicklung und Tracking. Direkter Ansprechpartner, klarer Scope und versionierter Code.',
 	];
 	return $map;
 } );
@@ -67,7 +67,6 @@ $e3_leads         = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_coun
 $e3_timeframe     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative' ) : '6 Monaten';
 $references = [
 	[ 'name' => 'civaka-azad.org', 'url' => 'https://civaka-azad.org/', 'tag' => 'Informationsarchitektur', 'text' => 'Gewachsener redaktioneller Bestand, Navigation und auffindbare Archive.' ],
-	[ 'name' => 'e3-newenergy.de', 'url' => 'https://e3-newenergy.de/', 'tag' => 'WordPress · Funnel · Tracking', 'text' => 'Erklärungsbedürftiges Angebot mit Anfrageweg und Messung. Der Case oben zeigt den Zusammenhang.' ],
 	[ 'name' => 'hasimuener.org', 'url' => 'https://hasimuener.org/', 'tag' => 'Eigenes Projekt · Editorial Design', 'text' => 'Typografie, Raster und Lesefluss für eine eigene redaktionelle Website.' ],
 	[ 'name' => 'kurdischer-rat.org', 'url' => 'https://kurdischer-rat.org/', 'tag' => 'Organisation · Workflow', 'text' => 'Informationshierarchie und ein versionierter Prozess für die Veröffentlichung.' ],
 ];
@@ -86,14 +85,14 @@ get_header();
 	<section class="hu-fr-hero" aria-labelledby="hu-fr-title">
 		<div class="hu-fr__shell hu-fr-hero__grid">
 			<div class="hu-fr-hero__copy">
-				<p class="hu-fr__eyebrow">Direkt mit Haşim Üner · Region Hannover</p>
-				<h1 id="hu-fr-title">WordPress Freelancer Hannover, der die <em>Messung mitbaut.</em></h1>
-				<p class="hu-fr__lead">Ich entwickle Ihre WordPress-Website oder Landingpage – mit schnellen Seiten, technischem SEO und einem nachvollziehbaren Weg von der Anfrage bis zur Übergabe an Ihr Team.</p>
+				<p class="hu-fr__eyebrow">Haşim Üner · WordPress-Entwickler · Region Hannover</p>
+				<h1 id="hu-fr-title">WordPress Freelancer Hannover, der <em>Entwicklung und Messung verbindet.</em></h1>
+				<p class="hu-fr__lead">Ich entwickle WordPress-Websites, Relaunches und Landingpages. Wo es zum Projekt gehört, verbinde ich Formular, Tracking und CRM direkt mit der Umsetzung – statt diese Übergänge später zwischen mehreren Dienstleistern zu reparieren.</p>
 				<div class="hu-fr__actions">
 					<a class="hu-fr__button hu-fr__button--primary" href="#anfrage" data-track-action="cta_freelancer_hero_project" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span class="hu-fr__arrow" aria-hidden="true"></span></a>
-					<a class="hu-fr__text-link" href="#nachweis">Arbeit ansehen <span aria-hidden="true">↓</span></a>
+					<a class="hu-fr__text-link" href="#nachweis">Projektbeispiel ansehen <span aria-hidden="true">↓</span></a>
 				</div>
-				<ul class="hu-fr-hero__assurances"><li>Direkter Kontakt zum Entwickler</li><li>Code &amp; Konten gehören Ihnen</li></ul>
+				<ul class="hu-fr-hero__assurances"><li>Direkter Kontakt zum Entwickler</li><li>Staging vor dem Livegang</li><li>Code &amp; Konten gehören Ihnen</li></ul>
 			</div>
 			<figure class="hu-fr-portrait">
 				<img src="<?php echo esc_url( $portrait_url ); ?>" width="640" height="800" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" fetchpriority="high" decoding="async">
@@ -120,9 +119,9 @@ get_header();
 
 	<section class="hu-fr-section hu-fr-proof" id="nachweis" aria-labelledby="hu-fr-proof-title">
 		<div class="hu-fr__shell hu-fr__split">
-			<div><p class="hu-fr__eyebrow">01 / Dokumentierter Solar-Case</p><h2 id="hu-fr-proof-title">Vom Lead-Einkauf zum eigenen Anfragesystem.</h2><a class="hu-fr__text-link" href="<?php echo esc_url( $e3_case_url ); ?>">Umsetzung und Ergebnisse ansehen <span class="hu-fr__arrow" aria-hidden="true"></span></a></div>
+			<div><p class="hu-fr__eyebrow">01 / Ausgewähltes Großprojekt</p><h2 id="hu-fr-proof-title">Vom Lead-Einkauf zum eigenen Anfragesystem.</h2><a class="hu-fr__text-link" href="<?php echo esc_url( $e3_case_url ); ?>">Umsetzung und Ergebnisse ansehen <span class="hu-fr__arrow" aria-hidden="true"></span></a></div>
 			<div>
-				<p>Für einen mittelständischen PV-Installationsbetrieb wurden Angebot, Landingpages, Tracking und laufende Optimierung zu einer eigenen Anfragestrecke verbunden.</p>
+				<p>Eines meiner umfangreichsten Projekte: Für einen mittelständischen PV-Installationsbetrieb wurden Website, Landingpages, Tracking und laufende Optimierung zu einer durchgängigen Anfragestrecke verbunden. Weitere öffentlich prüfbare Arbeiten finden Sie weiter unten.</p>
 				<dl class="hu-fr-metrics">
 					<div><dt>Vorher: eingekaufte Leads</dt><dd><?php echo esc_html( $e3_cpl_before ); ?></dd><dd class="hu-fr-metrics__unit">pro Lead</dd></div>
 					<div><dt>Nach der Aufbauphase</dt><dd><?php echo esc_html( $e3_cpl_after ); ?></dd><dd class="hu-fr-metrics__unit">pro eigener Anfrage</dd></div>
@@ -135,26 +134,26 @@ get_header();
 
 	<section class="hu-fr-section hu-fr-section--paper" id="angebote" aria-labelledby="hu-fr-offers-title">
 		<div class="hu-fr__shell">
-			<div class="hu-fr__section-head" id="einordnung"><p class="hu-fr__eyebrow">02 / Leistungen &amp; Preise</p><h2 id="hu-fr-offers-title">Wo braucht Ihr Projekt Unterstützung?</h2><p>Eine neue Website, ein besserer Anfrageweg oder verlässliche Messung: Wir grenzen den Einstieg ab, bevor die Umsetzung beginnt.</p></div>
+			<div class="hu-fr__section-head" id="einordnung"><p class="hu-fr__eyebrow">02 / Leistungen &amp; Preise</p><h2 id="hu-fr-offers-title">Was soll sich konkret verbessern?</h2><p>Neubau, Kampagnenstrecke, Tracking oder laufende Weiterentwicklung: Der Einstieg richtet sich nach der Aufgabe. Umfang, Abhängigkeiten und Abnahme stehen vor dem Start fest.</p></div>
 			<div class="hu-fr-offers">
 				<article class="hu-fr-offer" id="angebot-website">
 					<div class="hu-fr-offer__heading"><span class="hu-fr__index" aria-hidden="true">01</span><h3>Website neu oder Relaunch</h3><p class="hu-fr-offer__price">ab <?php echo esc_html( $website_price ); ?></p></div>
-					<div><p>Für Unternehmen, deren Website neu aufgebaut werden soll oder technisch und inhaltlich nicht mehr zum Angebot passt.</p><ul><li>WordPress-Aufbau mit pflegbaren Seiten und klarer Navigation</li><li>Performance, technisches SEO und Messkonzept von Beginn an</li><li>Vorschau zur Abnahme, kontrollierter Livegang und Übergabe</li></ul><p class="hu-fr__note">Einstieg für einen klar begrenzten Unternehmensauftritt. Seitenumfang, Inhalte, Migration und Integrationen bestimmen das konkrete Angebot.</p></div>
+					<div><p>Für Unternehmen, deren Website neu aufgebaut werden soll oder technisch und inhaltlich nicht mehr zum Angebot passt.</p><ul><li>WordPress-Aufbau mit pflegbaren Seiten und klarer Navigation</li><li>Performance, technisches SEO und Messkonzept von Beginn an</li><li>Vorschau zur Abnahme, kontrollierter Livegang und Übergabe</li></ul><p><strong>Ergebnis:</strong> eine pflegbare WordPress-Website mit klarer technischer Übergabe und vorbereiteter Messung.</p><p class="hu-fr__note">Einstieg für einen klar begrenzten Unternehmensauftritt. Seitenumfang, Inhalte, Migration und Integrationen bestimmen das konkrete Angebot.</p></div>
 					<a class="hu-fr__text-link" href="#anfrage" data-fr-project-focus="relaunch" data-track-action="cta_freelancer_offer_website" data-track-category="lead_gen" data-track-section="offers">Website anfragen <span class="hu-fr__arrow" aria-hidden="true"></span></a>
 				</article>
 				<article class="hu-fr-offer" id="angebot-funnel">
 					<div class="hu-fr-offer__heading"><span class="hu-fr__index" aria-hidden="true">02</span><h3>Anfragestrecke für eine Kampagne</h3><p class="hu-fr-offer__price">Nach vereinbartem Umfang</p></div>
-					<div><p>Sie investieren in Ads oder SEO. Jetzt müssen Seite, Formular und Übergabe zu Ihrem Angebot und Vertrieb passen.</p><ul><li>Landingpage und Formular mit den nötigen Qualifizierungsfragen</li><li>Bestätigung und vereinbarte Übergabe an Postfach oder CRM</li><li>Messung der vereinbarten Anfrageziele und Prüfung der Datenwege</li></ul></div>
+					<div><p>Sie investieren in Ads oder SEO. Jetzt müssen Seite, Formular und Übergabe zu Ihrem Angebot und Vertrieb passen.</p><ul><li>Landingpage und Formular mit den nötigen Qualifizierungsfragen</li><li>Bestätigung und vereinbarte Übergabe an Postfach oder CRM</li><li>Messung der vereinbarten Anfrageziele und Prüfung der Datenwege</li></ul><p><strong>Ergebnis:</strong> ein durchgängiger Anfrageweg von der Landingpage bis zum vereinbarten Empfänger.</p></div>
 					<a class="hu-fr__text-link" href="#anfrage" data-fr-project-focus="conversion" data-track-action="cta_freelancer_offer_funnel" data-track-category="lead_gen" data-track-section="offers">Anfrageweg besprechen <span class="hu-fr__arrow" aria-hidden="true"></span></a>
 				</article>
 				<article class="hu-fr-offer" id="angebot-tracking">
 					<div class="hu-fr-offer__heading"><span class="hu-fr__index" aria-hidden="true">03</span><h3>Tracking &amp; Attribution nachrüsten</h3><p class="hu-fr-offer__price">ab <?php echo esc_html( $tracking_price ); ?> netto</p><p class="hu-fr__note">Einrichtung; laufende Betreuung separat.</p></div>
-					<div><p>Ihre Website steht, aber Sie wissen nicht zuverlässig, welche Quellen und Kampagnen Anfragen bringen.</p><ul><li>GA4, Google Tag Manager und definierte Anfrageziele</li><li>Prüfung von Auslösung, Einwilligung und Quellenzuordnung</li><li>Server-Side Tracking und weitere Integrationen je nach Setup</li></ul><a class="hu-fr__inline-link" href="<?php echo esc_url( $tracking_url ); ?>">Details zu Tracking und Paketen <span class="hu-fr__arrow" aria-hidden="true"></span></a></div>
+					<div><p>Ihre Website steht, aber Sie wissen nicht zuverlässig, welche Quellen und Kampagnen Anfragen bringen.</p><ul><li>GA4, Google Tag Manager und definierte Anfrageziele</li><li>Prüfung von Auslösung, Einwilligung und Quellenzuordnung</li><li>Server-Side Tracking und weitere Integrationen je nach Setup</li></ul><p><strong>Ergebnis:</strong> eine nachvollziehbare Messkette für die vereinbarten Anfrageziele.</p><a class="hu-fr__inline-link" href="<?php echo esc_url( $tracking_url ); ?>">Details zu Tracking und Paketen <span class="hu-fr__arrow" aria-hidden="true"></span></a></div>
 					<a class="hu-fr__text-link" href="#anfrage" data-fr-project-focus="tracking" data-track-action="cta_freelancer_offer_tracking" data-track-category="lead_gen" data-track-section="offers">Tracking anfragen <span class="hu-fr__arrow" aria-hidden="true"></span></a>
 				</article>
 				<article class="hu-fr-offer hu-fr-offer--compact" id="angebot-weiterentwicklung">
 					<div class="hu-fr-offer__heading"><span class="hu-fr__index" aria-hidden="true">04</span><h3>Planbare Weiterentwicklung</h3><p class="hu-fr-offer__price">Nach Kapazität und Aufgaben</p></div>
-					<div><p>Für wiederkehrende Verbesserungen an einer bestehenden Website. Wir vereinbaren Prioritäten, verfügbare Kapazität und Abnahme. Neue Aufgaben bleiben im Änderungsverlauf nachvollziehbar.</p></div>
+					<div><p>Für wiederkehrende Verbesserungen an einer bestehenden Website. Wir vereinbaren Prioritäten, verfügbare Kapazität und Abnahme. Neue Aufgaben bleiben im Änderungsverlauf nachvollziehbar.</p><p><strong>Ergebnis:</strong> priorisierte Weiterentwicklung mit dokumentierten Änderungen und klaren Abnahmen.</p></div>
 					<a class="hu-fr__text-link" href="#anfrage" data-fr-project-focus="implementation_scope" data-track-action="cta_freelancer_offer_retainer" data-track-category="lead_gen" data-track-section="offers">Aufgaben besprechen <span class="hu-fr__arrow" aria-hidden="true"></span></a>
 				</article>
 			</div>
@@ -164,7 +163,7 @@ get_header();
 
 	<section class="hu-fr-section hu-fr-system" id="strecke" aria-labelledby="hu-fr-system-title">
 		<div class="hu-fr__shell">
-			<div class="hu-fr__section-head"><p class="hu-fr__eyebrow">03 / Vom ersten Klick zur Übergabe</p><h2 id="hu-fr-system-title">Die Website ist ein Teil der Strecke.</h2><p>Ich verbinde WordPress-Entwicklung mit Marketingverständnis. So können wir die Übergänge mitplanen, an denen Anfragen sonst verloren gehen.</p></div>
+			<div class="hu-fr__section-head"><p class="hu-fr__eyebrow">03 / Vom ersten Klick zur Übergabe</p><h2 id="hu-fr-system-title">Die Website ist ein Teil der Strecke.</h2><p>Eine technisch saubere Website kann trotzdem Anfragen verlieren, wenn Formular, Messung oder Übergabe nicht mitgedacht sind. Deshalb plane ich die entscheidenden Übergänge mit, sofern sie zum Projekt gehören.</p></div>
 			<ol class="hu-fr-route">
 				<li><span class="hu-fr__index">01 / Einstieg</span><h3>Suche oder Anzeige</h3><p>Mit welchem Anliegen kommt der Besucher auf die Seite?</p></li>
 				<li><span class="hu-fr__index">02 / Seite</span><h3>Angebot verstehen</h3><p>Inhalt, Tempo und nächster Schritt passen zur Erwartung.</p></li>
@@ -187,12 +186,13 @@ get_header();
 				</ol>
 			</div>
 			<div class="hu-fr-evidence"><div><p class="hu-fr__eyebrow">Einsehbarer Arbeitsnachweis</p><h3>Diese Website hat einen öffentlichen Änderungsverlauf.</h3><p>Im Repository sehen Sie Codeänderungen und die automatisierten Prüfungen dieser Website, darunter PHP-Syntax sowie Regeln für CSS und deutsche Texte.</p></div><div class="hu-fr-evidence__links"><a class="hu-fr__text-link" href="<?php echo esc_url( $github_url . '/commits/main/' ); ?>" target="_blank" rel="noopener noreferrer">Änderungsverlauf auf GitHub <span class="hu-fr__arrow" aria-hidden="true"></span></a><a class="hu-fr__text-link" href="<?php echo esc_url( $github_url . '/blob/main/.github/workflows/ci.yml' ); ?>" target="_blank" rel="noopener noreferrer">Automatisierte Prüfungen ansehen <span class="hu-fr__arrow" aria-hidden="true"></span></a><a class="hu-fr__text-link" href="<?php echo esc_url( $pagespeed_url ); ?>" target="_blank" rel="noopener noreferrer">Diese Seite mit PageSpeed prüfen <span class="hu-fr__arrow" aria-hidden="true"></span></a></div></div>
-			<details class="hu-fr-fit" id="vergleich"><summary>Freelancer, Agentur oder Baukasten: Wann passt welches Modell?</summary><div id="position"><dl><div><dt>Direkt mit mir</dt><dd>Sie brauchen technische Umsetzung mit klarer Verantwortung und können Prioritäten und Freigaben in Ihrem Team klären.</dd></div><div><dt>Agentur oder größeres Team</dt><dd>Sie brauchen garantierte Vertretung, 24/7-Bereitschaft oder mehrere Gewerke gleichzeitig mit hoher Kapazität.</dd></div><div><dt>Baukasten</dt><dd>Eine einfache Präsenzseite ohne besondere Integrationen und Messanforderungen reicht Ihnen.</dd></div></dl><p>Sie suchen Unterstützung für Ihre Agentur? <a href="<?php echo esc_url( $whitelabel_url ); ?>">Zur Zusammenarbeit als White-Label-Partner.</a></p></div></details>
-			<div class="hu-fr-projects" id="projekte"><h3>Weitere Einblicke in meine Arbeit</h3><div class="hu-fr-projects__grid">
+			<details class="hu-fr-fit" id="vergleich"><summary>Freelancer, Agentur oder Baukasten: Wann passt welches Modell?</summary><div id="position"><dl><div><dt>Direkt mit mir</dt><dd>Sie brauchen technische Umsetzung mit klarer Verantwortung und können Prioritäten und Freigaben in Ihrem Team klären.</dd></div><div><dt>Agentur oder größeres Team</dt><dd>Sie brauchen garantierte Vertretung, 24/7-Bereitschaft oder mehrere Gewerke gleichzeitig mit hoher Kapazität.</dd></div><div><dt>Baukasten</dt><dd>Eine einfache Präsenzseite ohne besondere Integrationen und Messanforderungen reicht Ihnen.</dd></div></dl></div></details>
+			<div class="hu-fr-projects" id="projekte"><h3>Weitere öffentlich prüfbare Arbeiten</h3><p>Der Case oben zeigt ein umfangreiches Projekt in der Tiefe. Diese Arbeiten zeigen weitere Schwerpunkte – direkt auf den jeweiligen Websites prüfbar.</p><div class="hu-fr-projects__grid">
 				<?php foreach ( $references as $reference ) : ?>
 					<article><p class="hu-fr__eyebrow"><?php echo esc_html( $reference['tag'] ); ?></p><h4><a href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $reference['name'] ); ?> <span class="hu-fr__arrow" aria-hidden="true"></span></a></h4><p><?php echo esc_html( $reference['text'] ); ?></p></article>
 				<?php endforeach; ?>
 			</div></div>
+			<aside class="hu-fr-evidence" aria-labelledby="hu-fr-agency-title"><div><p class="hu-fr__eyebrow">Für Agenturen</p><h3 id="hu-fr-agency-title">Technische Delivery im Hintergrund.</h3><p>WordPress-, Tracking- und technische Umsetzung übernehme ich auch White-Label. Sie bleiben Ansprechpartner für Ihren Kunden; Scope, Übergabe und Zusammenarbeit werden vor dem Start geklärt.</p></div><div><a class="hu-fr__text-link" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="cta_freelancer_agency_bridge" data-track-category="segmentation" data-track-section="arbeitsweise">White-Label-Zusammenarbeit ansehen <span class="hu-fr__arrow" aria-hidden="true"></span></a></div></aside>
 		</div>
 	</section>
 
