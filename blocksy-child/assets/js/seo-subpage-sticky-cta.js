@@ -125,6 +125,7 @@
 			} catch ( e ) {
 				hideTarget = null;
 			}
+		}
 
 		if ( hideTarget ) {
 			var initialTargetRect = hideTarget.getBoundingClientRect();
