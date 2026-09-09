@@ -125,7 +125,6 @@
 			} catch ( e ) {
 				hideTarget = null;
 			}
-		}
 
 		if ( hideTarget ) {
 			var initialTargetRect = hideTarget.getBoundingClientRect();
@@ -198,14 +197,13 @@
  * Money-Page Rails — progressive enhancement for long commercial pages.
  *
  * The Server-Side-Tracking route is the pilot. Future money pages can opt in
- * with data-money-page on their root without introducing a second runtime.
+ * with data-money-page on their root and data-money-section on the chapters.
  */
 ( function () {
 	'use strict';
 
-	var DESKTOP_QUERY = '(min-width: 1380px)';
 	var TRACKING_ROOT_SELECTOR = '.hu-sst[data-track-page="server-side-tracking-b2b"]';
-	var SECTION_IDS = [
+	var TRACKING_SECTION_IDS = [
 		'symptome',
 		'unterschied',
 		'fit',
@@ -217,7 +215,7 @@
 		'faq',
 		'anfrage'
 	];
-	var SECTION_LABELS = {
+	var TRACKING_SECTION_LABELS = {
 		symptome: 'Ausgangslage',
 		unterschied: 'Messprinzip',
 		fit: 'Für wen?',
@@ -245,7 +243,15 @@
 	}
 
 	function collectSections( root ) {
-		return SECTION_IDS.map( function ( id ) {
+		var declaredSections = Array.prototype.slice.call( root.querySelectorAll( '[data-money-section]' ) );
+
+		if ( declaredSections.length ) {
+			return declaredSections.filter( function ( section ) {
+				return Boolean( section.id );
+			} );
+		}
+
+		return TRACKING_SECTION_IDS.map( function ( id ) {
 			return root.querySelector( '#' + id );
 		} ).filter( function ( section ) {
 			return Boolean( section );
@@ -257,11 +263,17 @@
 			return '';
 		}
 
-		if ( SECTION_LABELS[ section.id ] ) {
-			return SECTION_LABELS[ section.id ];
+		var explicitLabel = section.getAttribute( 'data-money-label' );
+
+		if ( explicitLabel ) {
+			return explicitLabel;
 		}
 
-		var eyebrow = section.querySelector( '.hu-sst__eyebrow' );
+		if ( TRACKING_SECTION_LABELS[ section.id ] ) {
+			return TRACKING_SECTION_LABELS[ section.id ];
+		}
+
+		var eyebrow = section.querySelector( '.hu-sst__eyebrow, [data-money-eyebrow]' );
 		var heading = section.querySelector( 'h2' );
 
 		return ( eyebrow && eyebrow.textContent.trim() ) || ( heading && heading.textContent.trim() ) || section.id;
@@ -312,9 +324,9 @@
 		var kicker = createElement( 'p', 'hu-money-rail__kicker', 'Projekt-Rahmen' );
 		var current = createElement( 'p', 'hu-money-context__current', 'Ausgangslage' );
 		var proofList = createElement( 'dl', 'hu-money-context__proof' );
-		var proofRows = root.querySelectorAll( '.hu-sst__proof-strip > div' );
-		var primaryCta = root.querySelector( '.hu-sst__cta .hu-sst__btn--primary' );
-		var cta = createElement( 'a', 'hu-money-context__cta', primaryCta ? primaryCta.textContent.trim() : 'Tracking-Setup prüfen lassen' );
+		var proofRows = root.querySelectorAll( '.hu-sst__proof-strip > div, [data-money-proof-row]' );
+		var primaryCta = root.querySelector( '.hu-sst__cta .hu-sst__btn--primary, [data-money-primary-cta]' );
+		var cta = createElement( 'a', 'hu-money-context__cta', primaryCta ? primaryCta.textContent.trim() : 'Projekt anfragen' );
 
 		rail.setAttribute( 'aria-label', 'Projekt-Rahmen und Schnellzugang' );
 		current.setAttribute( 'data-money-current-label', '' );
@@ -322,8 +334,8 @@
 		rail.appendChild( current );
 
 		Array.prototype.slice.call( proofRows, 0, 3 ).forEach( function ( row ) {
-			var sourceTerm = row.querySelector( 'dt' );
-			var sourceValue = row.querySelector( 'dd' );
+			var sourceTerm = row.querySelector( 'dt, [data-money-proof-term]' );
+			var sourceValue = row.querySelector( 'dd, [data-money-proof-value]' );
 
 			if ( ! sourceTerm || ! sourceValue ) {
 				return;
@@ -339,9 +351,9 @@
 			rail.appendChild( proofList );
 		}
 
-		cta.href = '#anfrage';
+		cta.href = primaryCta ? primaryCta.getAttribute( 'href' ) || '#anfrage' : '#anfrage';
 		cta.setAttribute( 'data-track-action', 'cta_money_rail_tracking' );
-		cta.setAttribute( 'data-track-category', 'server_side_tracking_b2b' );
+		cta.setAttribute( 'data-track-category', root.getAttribute( 'data-track-page' ) || 'money_page' );
 		cta.setAttribute( 'data-track-section', 'money_rail' );
 		rail.appendChild( cta );
 		root.insertBefore( rail, root.firstChild );
@@ -351,7 +363,7 @@
 
 	function buildMobileToc( root, sections ) {
 		var firstSection = sections[0];
-		var container = firstSection ? firstSection.querySelector( '.hu-sst__container' ) : null;
+		var container = firstSection ? firstSection.querySelector( '.hu-sst__container, [data-money-container]' ) : null;
 
 		if ( ! container ) {
 			return null;
@@ -372,7 +384,8 @@
 		container.insertBefore( wrapper, container.firstChild );
 
 		list.addEventListener( 'click', function ( event ) {
-			var link = event.target.closest( 'a[href^="#"]' );
+			var target = event.target;
+			var link = target && typeof target.closest === 'function' ? target.closest( 'a[href^="#"]' ) : null;
 
 			if ( link ) {
 				details.removeAttribute( 'open' );
@@ -398,8 +411,8 @@
 		root.setAttribute( 'data-money-rails-ready', 'true' );
 		root.classList.add( 'hu-money-page-active' );
 
-		var hero = root.querySelector( '#hero' );
-		var formSection = root.querySelector( '#anfrage' );
+		var hero = root.querySelector( '#hero, [data-money-hero]' );
+		var formSection = root.querySelector( '#anfrage, [data-money-final]' );
 		var leftRail = buildLeftRail( root, sections );
 		var rightRail = buildRightRail( root );
 		buildMobileToc( root, sections );
@@ -502,11 +515,6 @@
 				requestUpdate();
 			} );
 			resizeObserver.observe( root );
-		}
-
-		if ( window.matchMedia( DESKTOP_QUERY ).matches ) {
-			leftRail.setAttribute( 'data-money-desktop-ready', 'true' );
-			rightRail.setAttribute( 'data-money-desktop-ready', 'true' );
 		}
 	}
 
