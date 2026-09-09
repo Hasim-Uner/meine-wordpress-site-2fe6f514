@@ -197,7 +197,7 @@ html:has(> body.hu-wordpress-freelancer-page) { scroll-behavior: auto; }
 .hu-fr-process li::before { content: "0" counter(fr-process); position: absolute; left: 0; top: 0; color: var(--fr-accent); font-size: .875rem; font-weight: 700; }
 .hu-fr-process h3 { margin-bottom: var(--nx-space-sm); }
 .hu-fr-process p { color: var(--fr-muted); }
-.hu-fr-evidence { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: var(--nx-space-2xl); padding: var(--nx-space-xl); margin-top: var(--nx-space-2xl); border: 1px solid var(--fr-rule); background: var(--fr-paper); }
+.hu-fr-evidence { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); align-items: center; gap: var(--nx-space-2xl); padding: var(--nx-space-xl); margin-top: var(--nx-space-2xl); border: 1px solid var(--fr-rule); background: var(--fr-paper); }
 .hu-fr-evidence > * { min-width: 0; }
 .hu-fr-evidence__links { display: grid; align-content: center; justify-items: start; gap: var(--nx-space-sm); }
 .hu-fr-fit { margin-top: var(--nx-space-lg); border-block: 1px solid var(--fr-rule); }
@@ -207,13 +207,15 @@ html:has(> body.hu-wordpress-freelancer-page) { scroll-behavior: auto; }
 .hu-fr-fit dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--nx-space-lg); margin: 0 0 var(--nx-space-lg); }
 .hu-fr-fit dt { font-weight: 700; margin-bottom: var(--nx-space-sm); }
 .hu-fr-fit dd { margin: 0; color: var(--fr-muted); }
-.hu-fr-projects { margin-top: var(--nx-space-2xl); }
-.hu-fr-projects > h3 { margin-bottom: var(--nx-space-lg); }
-.hu-fr-projects__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--nx-space-lg) var(--nx-space-2xl); }
-.hu-fr-projects article { padding-top: var(--nx-space-lg); border-top: 1px solid var(--fr-rule); }
+.hu-fr-projects { margin-top: var(--nx-space-3xl); }
+.hu-fr-projects > h3 { max-width: 30ch; margin-bottom: var(--nx-space-md); }
+.hu-fr-projects > p { max-width: 86ch; margin-bottom: var(--nx-space-xl); color: var(--fr-muted); }
+.hu-fr-projects__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--nx-space-xl); }
+.hu-fr-projects article { display: grid; grid-template-rows: auto auto 1fr; align-content: start; min-height: 180px; padding-block: var(--nx-space-lg); border-top: 1px solid var(--fr-rule); }
 .hu-fr-projects h4 { margin-bottom: var(--nx-space-sm); }
-.hu-fr-projects h4 a { display: inline-flex; align-items: center; min-height: 44px; gap: var(--nx-space-sm); color: var(--fr-ink); }
-.hu-fr-projects article > p:last-child { color: var(--fr-muted); }
+.hu-fr-projects h4 a { display: inline-flex; align-items: center; width: max-content; max-width: 100%; min-height: 44px; gap: var(--nx-space-sm); color: var(--fr-ink); text-decoration: none; overflow-wrap: normal; word-break: normal; white-space: nowrap; }
+.hu-fr-projects h4 .hu-fr__arrow { flex: 0 0 auto; font-size: .9em; line-height: 1; }
+.hu-fr-projects article > p:last-child { max-width: 38ch; color: var(--fr-muted); }
 .hu-fr-projects .hu-fr__eyebrow { margin-bottom: var(--nx-space-xs); font-size: .75rem; }
 .hu-fr-faq details { border-top: 1px solid var(--fr-rule); }
 .hu-fr-faq details:last-child { border-bottom: 1px solid var(--fr-rule); }
@@ -274,12 +276,14 @@ html:has(> body.hu-wordpress-freelancer-page) { scroll-behavior: auto; }
 @media (hover: hover) and (pointer: fine) {
 	.hu-fr .hu-fr__button--primary:hover { background: #efb685; border-color: #efb685; color: #1c1916; }
 	.hu-fr summary:hover { color: var(--fr-accent); }
+	.hu-fr-projects h4 a:hover { color: var(--fr-accent); }
 }
 @media (max-width: 1023px) {
 	.hu-fr-hero__grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, .8fr); gap: var(--nx-space-xl); }
 	.hu-fr__split, .hu-fr-offer { gap: var(--nx-space-lg) var(--nx-space-xl); }
 	.hu-fr-evidence { gap: var(--nx-space-lg); }
 	.hu-fr-route { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--nx-space-xl); }
+	.hu-fr-projects__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 767px) {
 	.hu-fr-nav__links { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--nx-space-xs); padding-inline: var(--nx-space-sm); }
@@ -298,7 +302,9 @@ html:has(> body.hu-wordpress-freelancer-page) { scroll-behavior: auto; }
 	.hu-fr-offer > .hu-fr__text-link { grid-column: 1; }
 	.hu-fr-evidence, .hu-fr-form { padding: var(--nx-space-lg); }
 	.hu-fr-fit dl { grid-template-columns: minmax(0, 1fr); }
-	.hu-fr-projects__grid { gap: var(--nx-space-lg); }
+	.hu-fr-projects { margin-top: var(--nx-space-2xl); }
+	.hu-fr-projects__grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+	.hu-fr-projects article { min-height: 0; }
 }
 @media (max-width: 479px) {
 	.hu-fr__shell { padding-inline: var(--nx-space-md); }
