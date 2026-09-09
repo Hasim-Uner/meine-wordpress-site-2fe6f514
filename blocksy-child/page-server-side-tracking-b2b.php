@@ -927,7 +927,7 @@ get_header();
 				data-contact-dom-error-order
 				action="<?php echo esc_url( $rest_endpoint ); ?>"
 				method="post"
-				novalate
+				novalidate
 			>
 				<div class="contact-form__honeypot" aria-hidden="true">
 					<label for="contact-company-website">Website</label>
