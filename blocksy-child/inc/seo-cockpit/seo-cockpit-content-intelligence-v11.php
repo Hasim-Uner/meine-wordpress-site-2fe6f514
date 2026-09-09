@@ -256,13 +256,13 @@ function nexus_ci_v11_seo_score( $impressions, $position, $query_count ) {
  * @return array<string,mixed>
  */
 function nexus_ci_v11_match_gsc( $signal, $snapshot ) {
-	$rows     = (array) ( $snapshot['query_page_rows'] ?? [] );
-	$profile  = nexus_ci_v11_profile_for_signal( $signal );
+	$rows      = (array) ( $snapshot['query_page_rows'] ?? [] );
+	$profile   = nexus_ci_v11_profile_for_signal( $signal );
 	$page_impr = [];
 	$page_click = [];
 	$page_pos_w = [];
 	$page_pos_n = [];
-	$queries  = [];
+	$queries   = [];
 
 	foreach ( $rows as $row ) {
 		$page  = function_exists( 'nexus_get_seo_cockpit_row_key' ) ? nexus_get_seo_cockpit_row_key( $row, 0 ) : (string) ( $row['keys'][0] ?? '' );
@@ -319,7 +319,7 @@ function nexus_ci_v11_match_gsc( $signal, $snapshot ) {
 	} );
 
 	$best          = ! empty( $pages ) ? $pages[0] : null;
-	$best_position = is_array( $best ) ? nexus_ci_number( $best['position'] ?? null ) : 0.0;
+	$best_position = is_array( $best ) ? nexus_ci_number( $best['position'] ) : 0.0;
 	$page_fit      = nexus_ci_v11_page_fit( $best, $profile );
 	$content_fit   = (int) ( $page_fit['score'] ?? 0 );
 	$seo_score     = nexus_ci_v11_seo_score( $total, $best_position, count( $queries ) );
@@ -400,8 +400,8 @@ function nexus_ci_v11_opportunities() {
 	}
 
 	usort( $items, static function ( $a, $b ) {
-		$left  = max( (int) ( $a['market_score'] ?? 0 ), (int) ( $a['v11']['seo_score'] ?? 0 ) );
-		$right = max( (int) ( $b['market_score'] ?? 0 ), (int) ( $b['v11']['seo_score'] ?? 0 ) );
+		$left  = max( (int) $a['market_score'], (int) ( $a['v11']['seo_score'] ?? 0 ) );
+		$right = max( (int) $b['market_score'], (int) ( $b['v11']['seo_score'] ?? 0 ) );
 		return $right <=> $left;
 	} );
 
