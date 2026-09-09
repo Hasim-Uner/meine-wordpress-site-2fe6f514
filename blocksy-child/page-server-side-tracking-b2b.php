@@ -207,68 +207,87 @@ $setup_items = [
 ];
 
 // ── 7) Pakete ─────────────────────────────────────────────────
+// Setup und laufende Betreuung werden bewusst getrennt dargestellt. Die
+// Paketkarten beantworten nur die Frage: Welcher Einrichtungsumfang passt?
 $packages = [
 	[
 		'key'      => 'standard',
-		'name'     => 'Standard · GA4 + Google Ads',
+		'name'     => 'Basis · GA4 + Google Ads',
 		'setup'    => $standard_setup_price,
-		'monthly'  => $standard_care_price,
-		'terms'    => $standard_terms,
-		'lead'     => 'Für eine Website mit klaren Haupt-Conversions und einem überschaubaren Google-Setup.',
+		'lead'     => 'Für eine Website mit klaren Haupt-Conversions und Google Ads als zentralem Paid-Kanal.',
 		'featured' => false,
+		'flag'     => '',
 		'items'    => [
-			'Eine Website oder Domain',
-			'Server-GTM, eigene Subdomain und Consent-Anbindung',
+			'Bestandsaufnahme und Messplan',
+			'Server-GTM, eigene Tracking-Subdomain und Consent-Anbindung',
 			'GA4, Google Ads und bis zu drei Haupt-Conversions',
-			'Paralleltest inklusive Prüfung und Vermeidung von Doppelzählungen',
-			'Dokumentation und Übergabe',
-			sprintf( 'Monatlicher Funktionstest plus %s Minuten kleinere Korrekturen', $standard_minutes ),
-			sprintf( 'Supportantwort innerhalb von %s Werktagen', $response_days ),
+			'Enhanced Conversions, soweit Formular und Consent es technisch tragen',
+			'Paralleltest mit Prüfung auf fehlende und doppelte Events',
+			'Dokumentation, GTM-Versionen und Übergabe',
 		],
-		'cta'      => $setup_cta_label,
+		'cta'      => 'Basis-Setup prüfen lassen',
 		'action'   => 'cta_package_standard',
 	],
 	[
 		'key'      => 'pro',
-		'name'     => 'Pro · Google + Meta CAPI',
+		'name'     => 'Performance · Google + Meta',
 		'setup'    => $pro_setup_price,
-		'monthly'  => $pro_care_price,
-		'terms'    => $pro_terms,
-		'lead'     => 'Für Google- und Meta-Kampagnen, mehrere Formulare oder mehrere Conversion-Strecken.',
+		'lead'     => 'Für Unternehmen, die Google und Meta parallel für Leadgenerierung einsetzen oder mehrere Conversion-Strecken messen.',
 		'featured' => true,
+		'flag'     => 'Empfohlen für Leadgenerierung',
 		'items'    => [
-			'Alles aus Standard',
+			'Alles aus Basis',
 			'Meta Pixel und Meta Conversion API mit event_id-Deduplizierung',
 			'Bis zu acht definierte Events',
 			'Mehrere Formulare oder Conversion-Strecken',
-			'Erweiterte QA über mehrere Events und Plattformen',
-			sprintf( 'Monatliche Kontrolle plus %s Minuten kleinere Anpassungen', $pro_minutes ),
+			'Plattformübergreifende QA in GA4, Google Ads und Meta',
+			'Dokumentation, GTM-Versionen und Übergabe',
 		],
-		'cta'      => $setup_cta_label,
+		'cta'      => 'Performance-Setup prüfen lassen',
 		'action'   => 'cta_package_pro',
 	],
 	[
 		'key'      => 'individual',
-		'name'     => 'Individuell · CRM + Offline-Conversions',
+		'name'     => 'Tracking & CRM · Individuell',
 		'setup'    => $individual_setup_price,
-		'monthly'  => $individual_care_price,
-		'terms'    => $individual_terms,
-		'lead'     => 'Wenn CRM, Shop, mehrere Märkte oder individuelle Datenpipelines Teil der Messstrecke sind.',
+		'lead'     => 'Wenn CRM, Offline-Conversions, mehrere Domains oder individuelle Datenpipelines Teil der Messstrecke sind.',
 		'featured' => false,
+		'flag'     => '',
 		'items'    => [
 			'CRM-Anbindung und Offline-Conversions',
-			'Leadstatus oder Lead-Scoring',
-			'Shop-Systeme mit Kauf- und Checkout-Events',
-			'Mehrere Domains oder Märkte',
-			'Weitere Werbeplattformen nach Aufnahme',
-			'Eigene Infrastruktur oder individuelle Datenpipelines',
+			'Leadstatus, Lead-Scoring oder Sales-Qualität als Rücksignal',
+			'Mehrere Domains, Märkte oder Funnel',
+			'Shop- und Checkout-Events, falls für die Messstrecke relevant',
+			'Weitere Werbeplattformen nach technischer Aufnahme',
+			'Individueller Messplan, Datenpipeline und QA',
 		],
-		'cta'      => $setup_cta_label,
+		'cta'      => 'Individuelles Setup besprechen',
 		'action'   => 'cta_package_individual',
 	],
 ];
 
 // ── 8) Tracking Care ──────────────────────────────────────────
+$care_tiers = [
+	[
+		'name'  => 'Basis Care',
+		'price' => $standard_care_price,
+		'lead'  => sprintf( 'Monatlicher Funktionstest der Haupt-Conversions plus %s Minuten kleinere Korrekturen.', $standard_minutes ),
+		'terms' => $standard_terms,
+	],
+	[
+		'name'  => 'Performance Care',
+		'price' => $pro_care_price,
+		'lead'  => sprintf( 'Erweiterte Kontrolle über Google und Meta plus %s Minuten kleinere Anpassungen.', $pro_minutes ),
+		'terms' => $pro_terms,
+	],
+	[
+		'name'  => 'Individuelle Betreuung',
+		'price' => $individual_care_price,
+		'lead'  => 'Für CRM-, Offline-Conversion- und Mehrsystem-Setups; Prüfumfang nach technischer Aufnahme.',
+		'terms' => $individual_terms,
+	],
+];
+
 $care_included = [
 	'Regelmäßige Prüfung der Haupt-Conversions',
 	'Kontrolle von GA4 und Werbeplattformen',
@@ -277,6 +296,7 @@ $care_included = [
 	'Erkennung fehlender oder doppelter Events',
 	'GTM-Versionierung',
 	'Kleinere Fehlerkorrekturen im vereinbarten Zeitrahmen',
+	sprintf( 'Supportantwort innerhalb von %s Werktagen im laufenden Care-Vertrag', $response_days ),
 	'Kurze Statusmeldung bei Auffälligkeiten',
 ];
 
@@ -339,7 +359,7 @@ $faq = [
 	],
 	[
 		'question' => 'Funktioniert das mit WordPress und meinen Werbeplattformen?',
-		'answer'   => 'WordPress ist der häufigste Ausgangspunkt. Standardmäßig werden GA4 und Google Ads angebunden; der Paralleltest umfasst die Prüfung und Vermeidung von Doppelzählungen. Im Pro-Setup kommen Meta Pixel und Meta Conversion API hinzu, dort mit event_id-Deduplizierung und erweiterter QA. Weitere Plattformen, Shops oder CRM-Systeme werden nach technischer Aufnahme individuell bewertet.',
+		'answer'   => 'WordPress ist der häufigste Ausgangspunkt. Im Basis-Setup werden GA4 und Google Ads angebunden; der Paralleltest umfasst die Prüfung auf fehlende oder doppelte Events. Im Performance-Setup kommen Meta Pixel und Meta Conversion API mit event_id-Deduplizierung sowie eine erweiterte plattformübergreifende QA hinzu. Weitere Plattformen, Shops oder CRM-Systeme werden nach technischer Aufnahme individuell bewertet.',
 	],
 	[
 		'question' => 'Wie viele Conversions kommen zusätzlich an?',
@@ -351,11 +371,11 @@ $faq = [
 	],
 	[
 		'question' => 'Was kostet Server-Side Tracking?',
-		'answer'   => sprintf( 'Standard kostet %1$s einmalig plus %2$s für Tracking Care. Pro mit Meta CAPI kostet %3$s einmalig plus %4$s. Individuelle Setups: %5$s einmalig; Betreuung: %6$s. Das Stape-Hosting ist nicht enthalten und läuft direkt über Ihr eigenes Konto. Alle genannten Preise sind Nettopreise für Geschäftskunden.', $standard_setup_price, $standard_care_price, $pro_setup_price, $pro_care_price, $individual_setup_price, $individual_care_price ),
+		'answer'   => sprintf( 'Basis kostet %1$s einmalig, Performance mit Meta CAPI %2$s. Individuelle Tracking- und CRM-Setups starten bei %3$s. Die laufende Betreuung ist separat ausgewiesen: Basis Care %4$s, Performance Care %5$s und individuelle Betreuung %6$s. Das Stape-Hosting ist nicht enthalten und läuft direkt über Ihr eigenes Konto. Alle genannten Preise sind Nettopreise für Geschäftskunden.', $standard_setup_price, $pro_setup_price, $individual_setup_price, $standard_care_price, $pro_care_price, $individual_care_price ),
 	],
 	[
 		'question' => 'Wie lange dauert die Einrichtung?',
-		'answer'   => sprintf( 'Ein Standard-Setup ist in der Regel innerhalb von %s produktiv, gerechnet ab Bereitstellung der Zugänge. Die größte Variable ist meist die Abstimmung der Conversion-Ziele sowie die Freigabe von DNS und Konten. Nach der Übergabe kontrolliert Tracking Care die Haupt-Conversions und meldet Auffälligkeiten nach Website- oder Plattformänderungen.', $delivery_window ),
+		'answer'   => sprintf( 'Ein Basis-Setup ist in der Regel innerhalb von %s produktiv, gerechnet ab Bereitstellung der Zugänge. Die größte Variable ist meist die Abstimmung der Conversion-Ziele sowie die Freigabe von DNS und Konten. Nach der Übergabe kontrolliert Tracking Care die Haupt-Conversions und meldet Auffälligkeiten nach Website- oder Plattformänderungen.', $delivery_window ),
 	],
 	[
 		'question' => 'Wann lohnt es sich nicht?',
@@ -560,6 +580,20 @@ get_header();
 		</div>
 	</section>
 
+	<nav class="hu-sst__toc-band" aria-label="Auf dieser Seite" data-nx-theme="dark">
+		<div class="hu-sst__container hu-sst__toc">
+			<p class="hu-sst__toc-label">Auf dieser Seite</p>
+			<ul class="hu-sst__toc-list" role="list">
+				<li><a href="#symptome" data-track-action="toc_problem" data-track-category="server_side_tracking_b2b" data-track-section="toc">Problem verstehen</a></li>
+				<li><a href="#unterschied" data-track-action="toc_principle" data-track-category="server_side_tracking_b2b" data-track-section="toc">So funktioniert es</a></li>
+				<li><a href="#umfang" data-track-action="toc_scope" data-track-category="server_side_tracking_b2b" data-track-section="toc">Leistungsumfang</a></li>
+				<li><a class="hu-sst__toc-link--strong" href="#pakete" data-track-action="toc_packages" data-track-category="server_side_tracking_b2b" data-track-section="toc">Pakete &amp; Preise</a></li>
+				<li><a href="#ablauf" data-track-action="toc_process" data-track-category="server_side_tracking_b2b" data-track-section="toc">Ablauf</a></li>
+				<li><a href="#faq" data-track-action="toc_faq" data-track-category="server_side_tracking_b2b" data-track-section="toc">FAQ</a></li>
+			</ul>
+		</div>
+	</nav>
+
 	<?php // ── 02 Symptome ── hell ───────────────────────────── ?>
 	<section class="hu-sst__band hu-sst__band--light hu-sst__band--cream" id="symptome" data-nx-theme="light">
 		<div class="hu-sst__container">
@@ -752,18 +786,18 @@ get_header();
 	<section class="hu-sst__band hu-sst__band--dark hu-sst__band--deep" id="pakete" data-nx-theme="dark" aria-labelledby="hu-sst-pakete-title">
 		<div class="hu-sst__container">
 			<div class="hu-sst__section-head">
-				<p class="hu-sst__eyebrow">Pakete</p>
-				<h2 class="hu-sst__h2" id="hu-sst-pakete-title">Einrichtung und laufende Kontrolle — klar getrennt</h2>
+				<p class="hu-sst__eyebrow">Setup-Pakete</p>
+				<h2 class="hu-sst__h2" id="hu-sst-pakete-title">Wählen Sie nach Systemkomplexität — nicht nach Tool-Namen</h2>
 				<p class="hu-sst__section-lead">
-					Die einmalige Einrichtung baut die Messstrecke. Tracking Care kontrolliert sie danach regelmäßig. Alle Preise sind netto für Geschäftskunden; das Server-Hosting läuft separat über Ihr eigenes Konto.
+					Basis für Google, Performance für Google plus Meta, individuell sobald CRM oder Offline-Conversions Teil der Messstrecke werden. Die Karten zeigen ausschließlich die einmalige Einrichtung; laufende Betreuung steht separat darunter.
 				</p>
 			</div>
 
 			<div class="hu-sst__pricing">
 				<?php foreach ( $packages as $package ) : ?>
 					<article class="hu-sst__price-card<?php echo esc_attr( $package['featured'] ? ' hu-sst__price-card--featured' : '' ); ?>">
-						<?php if ( $package['featured'] ) : ?>
-							<p class="hu-sst__price-flag">Für Google Ads und Meta CAPI</p>
+						<?php if ( ! empty( $package['flag'] ) ) : ?>
+							<p class="hu-sst__price-flag"><?php echo esc_html( $package['flag'] ); ?></p>
 						<?php endif; ?>
 						<h3 class="hu-sst__price-name"><?php echo esc_html( $package['name'] ); ?></h3>
 						<p class="hu-sst__price-lead"><?php echo esc_html( $package['lead'] ); ?></p>
@@ -772,12 +806,8 @@ get_header();
 								<dt>Einrichtung</dt>
 								<dd><?php echo esc_html( $package['setup'] ); ?></dd>
 							</div>
-							<div>
-								<dt>Betreuung</dt>
-								<dd><?php echo esc_html( $package['monthly'] ); ?></dd>
-							</div>
 						</dl>
-						<p class="hu-sst__price-terms"><?php echo esc_html( $package['terms'] ); ?></p>
+						<p class="hu-sst__price-terms">Einmaliger Nettopreis · Hosting separat</p>
 						<ul class="hu-sst__price-list" role="list">
 							<?php foreach ( $package['items'] as $item ) : ?>
 								<li><?php echo esc_html( $item ); ?></li>
@@ -800,14 +830,25 @@ get_header();
 	<section class="hu-sst__band hu-sst__band--light hu-sst__band--white" id="tracking-care" data-nx-theme="light">
 		<div class="hu-sst__container">
 			<div class="hu-sst__section-head">
-				<p class="hu-sst__eyebrow">Tracking Care</p>
-				<h2 class="hu-sst__h2" id="hu-sst-care-title">Der Monatsbeitrag bezahlt nicht Hosting, sondern Verantwortung</h2>
+				<p class="hu-sst__eyebrow">Laufende Betreuung</p>
+				<h2 class="hu-sst__h2" id="hu-sst-care-title">Nach der Übergabe: Tracking Care</h2>
 				<p class="hu-sst__section-lead">
-					Ein Tracking-Setup ist kein Möbelstück, das einmal aufgebaut wird und dann steht. Website-Updates, Plugin-Wechsel und Plattformänderungen greifen laufend hinein. Tracking Care ist die regelmäßige Kontrolle, die den Unterschied zwischen „läuft" und „lief mal" bemerkt.
+					Website, Consent-Tool und Werbeplattformen ändern sich. Tracking Care prüft die Haupt-Conversions regelmäßig und macht Auffälligkeiten sichtbar, bevor falsche Daten über Wochen stehen bleiben.
 				</p>
 			</div>
 
-			<div class="hu-sst__split">
+			<div class="hu-sst__care-pricing" aria-label="Preise für laufende Tracking-Betreuung">
+				<?php foreach ( $care_tiers as $tier ) : ?>
+					<article class="hu-sst__care-card">
+						<h3 class="hu-sst__care-name"><?php echo esc_html( $tier['name'] ); ?></h3>
+						<p class="hu-sst__care-price"><?php echo esc_html( $tier['price'] ); ?></p>
+						<p class="hu-sst__care-lead"><?php echo esc_html( $tier['lead'] ); ?></p>
+						<p class="hu-sst__care-terms"><?php echo esc_html( $tier['terms'] ); ?></p>
+					</article>
+				<?php endforeach; ?>
+			</div>
+
+			<div class="hu-sst__split hu-sst__care-scope">
 				<article class="hu-sst__split-col hu-sst__split-col--yes">
 					<h3 class="hu-sst__split-title">
 						<span class="hu-sst__split-badge" aria-hidden="true">✓</span>
