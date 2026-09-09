@@ -46,25 +46,28 @@ add_filter( 'hu_forced_singular_seo_map', static function ( $map ) {
 	return $map;
 } );
 
-$whitelabel_url   = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
-$tracking_url     = home_url( '/server-side-tracking-b2b/' );
-$about_url        = home_url( '/hasim-uener/' );
-$e3_case_url      = home_url( '/case-study-solar-leadgenerierung/' );
-$privacy_url      = home_url( '/datenschutz/' );
-$github_url       = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
-$pagespeed_url    = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-freelancer-hannover/' ) );
-$rest_endpoint    = rest_url( 'nexus/v1/contact-request' );
-$portrait_url     = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-relaxed-640x800.webp';
-$contact_email    = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
-$contact_phone    = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone() : '0176 76596580';
-$contact_tel      = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone( 'link' ) : 'tel:+4917676596580';
-$website_price    = function_exists( 'hu_freelancer_website_price' ) ? hu_freelancer_website_price( true ) : '3.400 € netto';
-$tracking_price   = function_exists( 'hu_tracking_price' ) ? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' ) : '1.290 €';
-$response_promise = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'phrase' ) : 'Antwort innerhalb von 24 Stunden werktags';
-$e3_cpl_before    = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before' ) : '150 €';
-$e3_cpl_after     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after' ) : '22 €';
-$e3_leads         = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count' ) : '1.750+';
-$e3_timeframe     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative' ) : '6 Monaten';
+$whitelabel_url      = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
+$tracking_url        = home_url( '/server-side-tracking-b2b/' );
+$about_url           = home_url( '/hasim-uener/' );
+$e3_case_url         = home_url( '/case-study-solar-leadgenerierung/' );
+$privacy_url         = home_url( '/datenschutz/' );
+$github_url          = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
+$pagespeed_url       = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-freelancer-hannover/' ) );
+$rest_endpoint       = rest_url( 'nexus/v1/contact-request' );
+$portrait_url        = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-relaxed-640x800.webp';
+$contact_email       = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
+$contact_phone       = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone() : '0176 76596580';
+$contact_tel         = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone( 'link' ) : 'tel:+4917676596580';
+$website_price       = function_exists( 'hu_freelancer_website_price' ) ? hu_freelancer_website_price( true ) : '3.400 € netto';
+$tracking_price      = function_exists( 'hu_tracking_price' ) ? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' ) : '1.290 €';
+$response_promise    = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'phrase' ) : 'Antwort innerhalb von 24 Stunden werktags';
+$e3_cpl_before       = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before' ) : '150 €';
+$e3_cpl_after        = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after' ) : '22 €';
+$e3_cpl_reduction    = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_reduction', 'value' ) : '85';
+$e3_lead_conversion  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_conversion' ) : '12 %';
+$e3_sales_conversion = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion' ) : '15 %';
+$e3_leads            = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count' ) : '1.750+';
+$e3_timeframe        = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative' ) : '6 Monaten';
 $references = [
 	[ 'name' => 'civaka-azad.org', 'url' => 'https://civaka-azad.org/', 'tag' => 'Informationsarchitektur', 'text' => 'Gewachsener redaktioneller Bestand, Navigation und auffindbare Archive.' ],
 	[ 'name' => 'hasimuener.org', 'url' => 'https://hasimuener.org/', 'tag' => 'Eigenes Projekt · Editorial Design', 'text' => 'Typografie, Raster und Lesefluss für eine eigene redaktionelle Website.' ],
@@ -96,7 +99,7 @@ get_header();
 			</div>
 			<figure class="hu-fr-portrait">
 				<img src="<?php echo esc_url( $portrait_url ); ?>" width="640" height="800" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" fetchpriority="high" decoding="async">
-				<figcaption><strong>Haşim Üner</strong><span>Pattensen bei Hannover · remote im DACH-Raum</span><a href="<?php echo esc_url( $about_url ); ?>">Mehr über mich <span class="hu-fr__arrow" aria-hidden="true"></span></a></figcaption>
+				<figcaption><strong>Haşim Üner</strong><span>8 Jahre WordPress-Entwicklung · Pattensen bei Hannover · remote im DACH-Raum</span><a href="<?php echo esc_url( $about_url ); ?>">Mehr über mich <span class="hu-fr__arrow" aria-hidden="true"></span></a></figcaption>
 			</figure>
 		</div>
 	</section>
@@ -123,11 +126,12 @@ get_header();
 			<div>
 				<p>Eines meiner umfangreichsten Projekte: Für einen mittelständischen PV-Installationsbetrieb wurden Website, Landingpages, Tracking und laufende Optimierung zu einer durchgängigen Anfragestrecke verbunden. Weitere öffentlich prüfbare Arbeiten finden Sie weiter unten.</p>
 				<dl class="hu-fr-metrics">
-					<div><dt>Vorher: eingekaufte Leads</dt><dd><?php echo esc_html( $e3_cpl_before ); ?></dd><dd class="hu-fr-metrics__unit">pro Lead</dd></div>
-					<div><dt>Nach der Aufbauphase</dt><dd><?php echo esc_html( $e3_cpl_after ); ?></dd><dd class="hu-fr-metrics__unit">pro eigener Anfrage</dd></div>
-					<div><dt>Qualifizierte Anfragen</dt><dd><?php echo esc_html( $e3_leads ); ?></dd><dd class="hu-fr-metrics__unit">in <?php echo esc_html( $e3_timeframe ); ?></dd></div>
+					<div><dt>Kosten pro Anfrage</dt><dd>−<?php echo esc_html( $e3_cpl_reduction ); ?> %</dd><dd class="hu-fr-metrics__unit"><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></dd></div>
+					<div><dt>Lead-Conversion-Rate</dt><dd><?php echo esc_html( $e3_lead_conversion ); ?></dd><dd class="hu-fr-metrics__unit">auf der Anfragestrecke</dd></div>
+					<div><dt>Abschlussquote</dt><dd><?php echo esc_html( $e3_sales_conversion ); ?></dd><dd class="hu-fr-metrics__unit">inkl. Beitrag des Vertriebs</dd></div>
 				</dl>
-				<p class="hu-fr__note">Ergebnis des gesamten Systems einschließlich Kampagnen und Optimierung. Der Vergleich beschreibt unterschiedliche Wege der Leadgewinnung; er isoliert keinen WordPress-Effekt und ist keine Ergebnisgarantie für andere Projekte.</p>
+				<p><strong><?php echo esc_html( $e3_leads ); ?> qualifizierte Anfragen</strong> in <?php echo esc_html( $e3_timeframe ); ?>.</p>
+				<p class="hu-fr__note">Ergebnisse des gesamten Systems aus Kampagnen, Landingpages, Tracking, Vorqualifizierung, laufender Optimierung und Vertrieb. Die Werte stammen aus diesem dokumentierten Projekt und sind keine Prognose für andere Unternehmen.</p>
 			</div>
 		</div>
 	</section>
