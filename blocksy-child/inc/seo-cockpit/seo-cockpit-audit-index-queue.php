@@ -20,6 +20,11 @@ const NEXUS_SEO_AUDIT_INDEX_QUEUE_LOCK  = 'nexus_seo_cockpit_audit_google_index_
 /**
  * Count Google Inspection coverage inside the current audit state.
  *
+ * Errors created by the old inline inspection path remain retryable until this
+ * queue has attempted that URL once. That lets an already completed audit heal
+ * itself after this module is deployed instead of permanently inheriting old
+ * transient API failures.
+ *
  * @param array<string,mixed> $state Audit state.
  * @return array{indexable:int,inspected:int,errors:int,pending:int}
  */
@@ -42,7 +47,7 @@ function nexus_seo_audit_index_queue_counts( $state ) {
 			continue;
 		}
 
-		if ( ! empty( $page['google_index_error'] ) ) {
+		if ( ! empty( $page['google_index_queue_attempted'] ) && ! empty( $page['google_index_error'] ) ) {
 			$counts['errors']++;
 			continue;
 		}
@@ -98,7 +103,7 @@ function nexus_seo_audit_index_queue_refresh_findings( $state ) {
 	$findings = is_array( $state['intelligence']['google_findings'] ?? null ) ? $state['intelligence']['google_findings'] : [];
 
 	foreach ( (array) ( $state['pages'] ?? [] ) as $page ) {
-		if ( ! is_array( $page ) || empty( $page['google_index_error'] ) || ! function_exists( 'nexus_seo_audit_page_is_indexable_scope' ) || ! nexus_seo_audit_page_is_indexable_scope( $page ) ) {
+		if ( ! is_array( $page ) || empty( $page['google_index_queue_attempted'] ) || empty( $page['google_index_error'] ) || ! function_exists( 'nexus_seo_audit_page_is_indexable_scope' ) || ! nexus_seo_audit_page_is_indexable_scope( $page ) ) {
 			continue;
 		}
 
@@ -133,8 +138,8 @@ function nexus_seo_audit_index_queue_refresh_findings( $state ) {
  * @return void
  */
 function nexus_seo_audit_index_queue_save_state( $state ) {
-	$filter = 'nexus_seo_audit_intelligence_filter_state';
-	$hook   = 'pre_update_option_' . NEXUS_SEO_AUDIT_STATE_OPTION;
+	$filter     = 'nexus_seo_audit_intelligence_filter_state';
+	$hook       = 'pre_update_option_' . NEXUS_SEO_AUDIT_STATE_OPTION;
 	$had_filter = false !== has_filter( $hook, $filter );
 
 	if ( $had_filter ) {
@@ -201,7 +206,7 @@ function nexus_seo_audit_index_queue_process( $limit = 2 ) {
 			if ( $processed >= $limit ) {
 				break;
 			}
-			if ( ! is_array( $page ) || ! nexus_seo_audit_page_is_indexable_scope( $page ) || ! empty( $page['google_index'] ) || ! empty( $page['google_index_error'] ) ) {
+			if ( ! is_array( $page ) || ! nexus_seo_audit_page_is_indexable_scope( $page ) || ! empty( $page['google_index'] ) || ! empty( $page['google_index_queue_attempted'] ) ) {
 				continue;
 			}
 
@@ -212,11 +217,16 @@ function nexus_seo_audit_index_queue_process( $limit = 2 ) {
 
 			$result = nexus_get_seo_cockpit_url_inspection( $url, false );
 			if ( is_wp_error( $result ) ) {
-				$state['pages'][ $index ]['google_index_error']      = $result->get_error_message();
-				$state['pages'][ $index ]['google_index_error_code'] = (string) $result->get_error_code();
+				$state['pages'][ $index ]['google_index_error']           = $result->get_error_message();
+				$state['pages'][ $index ]['google_index_error_code']      = (string) $result->get_error_code();
+				$state['pages'][ $index ]['google_index_queue_attempted'] = true;
 			} else {
 				$state['pages'][ $index ]['google_index'] = nexus_seo_audit_intelligence_slim_inspection( $result );
-				unset( $state['pages'][ $index ]['google_index_error'], $state['pages'][ $index ]['google_index_error_code'] );
+				unset(
+					$state['pages'][ $index ]['google_index_error'],
+					$state['pages'][ $index ]['google_index_error_code'],
+					$state['pages'][ $index ]['google_index_queue_attempted']
+				);
 			}
 
 			$processed++;
