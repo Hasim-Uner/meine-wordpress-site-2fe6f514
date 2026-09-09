@@ -14,7 +14,8 @@ define( 'HU_E3_CPL_BEFORE', 150 );
 define( 'HU_E3_CPL_AFTER', 22 );
 define( 'HU_E3_CPL_REDUCTION_PERCENT', 85 );
 define( 'HU_E3_LEAD_COUNT', 1750 );
-define( 'HU_E3_SALES_CONVERSION_PERCENT', 12 );
+define( 'HU_E3_LEAD_CONVERSION_PERCENT', 12 );
+define( 'HU_E3_SALES_CONVERSION_PERCENT', 15 );
 define( 'HU_E3_SALES_CONVERSION_BEFORE_LOW', 1 );
 define( 'HU_E3_SALES_CONVERSION_BEFORE_HIGH', 5 );
 define( 'HU_E3_TIMEFRAME_MONTHS', 6 );
@@ -73,10 +74,16 @@ function hu_e3_canon() {
 				'counter_target' => '1750',
 				'label'          => 'qualifizierte Anfragen',
 			],
-			'sales_conversion' => [
-				'value'          => HU_E3_SALES_CONVERSION_PERCENT,
+			'lead_conversion'  => [
+				'value'          => HU_E3_LEAD_CONVERSION_PERCENT,
 				'display'        => '12 %',
 				'counter_target' => '12',
+				'label'          => 'Lead-Conversion-Rate',
+			],
+			'sales_conversion' => [
+				'value'          => HU_E3_SALES_CONVERSION_PERCENT,
+				'display'        => '15 %',
+				'counter_target' => '15',
 				'label'          => 'Abschlussquote',
 			],
 			'sales_conversion_before' => [
@@ -87,8 +94,8 @@ function hu_e3_canon() {
 			],
 			'sales_conversion_after' => [
 				'value'          => HU_E3_SALES_CONVERSION_PERCENT,
-				'display'        => '12 %',
-				'counter_target' => '12',
+				'display'        => '15 %',
+				'counter_target' => '15',
 				'label'          => 'Abschlussquote nachher (eigenes Anfragesystem)',
 			],
 			'sales_conversion_uplift' => [
@@ -96,9 +103,9 @@ function hu_e3_canon() {
 				// Wert ist der laengste im Proof-Band; mit normalen Leerzeichen
 				// rutschte in der grossen Stat-Darstellung das Prozentzeichen
 				// allein in die naechste Zeile. Umbrechen darf er nur am Pfeil.
-				'display' => "1\u{00A0}–\u{00A0}5\u{00A0}% → 12\u{00A0}%",
-				'short'   => '6× bis 12× höhere Abschlussquote',
-				'label'   => 'Anstieg der Abschlussquote durch eigenes System',
+				'display' => "1\u{00A0}–\u{00A0}5\u{00A0}% → 15\u{00A0}%",
+				'short'   => '3× bis 15× höhere Abschlussquote',
+				'label'   => 'Anstieg der Abschlussquote durch eigenes System und Vertrieb',
 			],
 			'timeframe'        => [
 				'value'          => HU_E3_TIMEFRAME_MONTHS,
@@ -142,9 +149,9 @@ function hu_e3_canon() {
 			],
 		],
 		'summary'    => [
-			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 5 % auf 12 %, 6 Monate.',
-			'proof'      => 'Referenz mittelständischer PV-Installationsbetrieb: 1.750+ qualifizierte Anfragen, Abschlussquote von 1 – 5 % auf 12 % und über 85 % weniger Kosten pro Anfrage.',
-			'conversion' => 'Die Abschlussquote stieg im selben Zeitraum von 1 – 5 % (gekaufte Portal-Leads) auf 12 % (eigenes Anfragesystem).',
+			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, 12 % Lead-Conversion-Rate und 15 % Abschlussquote, 6 Monate.',
+			'proof'      => 'Referenz mittelständischer PV-Installationsbetrieb: 1.750+ qualifizierte Anfragen, 12 % Lead-Conversion-Rate, 15 % Abschlussquote und über 85 % weniger Kosten pro Anfrage.',
+			'conversion' => 'Im selben Projekt lag die Lead-Conversion-Rate bei 12 % und die Abschlussquote bei 15 %; an der Abschlussquote hatte der Vertrieb einen wesentlichen Anteil.',
 		],
 	];
 }
