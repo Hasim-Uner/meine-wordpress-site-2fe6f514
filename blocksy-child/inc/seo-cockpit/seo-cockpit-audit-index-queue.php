@@ -2,10 +2,11 @@
 /**
  * Resilient Google URL Inspection queue for the SEO Site Audit.
  *
- * The audit crawler may finish faster than dozens of external URL Inspection
- * requests can complete reliably inside option-save hooks. This queue fills
- * missing inspection data after the technical crawl has completed, in small
- * cached batches, without changing the deterministic technical score.
+ * The audit crawler and Google's external URL Inspection API are deliberately
+ * separated: crawl-state saves only attach already cached inspection results;
+ * missing Google data is filled after the technical audit in small batches.
+ * This keeps external API latency and quotas from blocking the deterministic
+ * technical crawl or its score.
  *
  * @package Blocksy_Child
  */
@@ -87,6 +88,90 @@ function nexus_seo_audit_index_queue_refresh_summary( $state ) {
 }
 
 /**
+ * Attach only already cached Google results to pages added by this crawl save.
+ *
+ * No external HTTP request is allowed here. New URL Inspection requests belong
+ * exclusively to the post-audit queue below.
+ *
+ * @param array<string,mixed> $state     New audit state.
+ * @param array<string,mixed> $old_state Previously saved state.
+ * @return array<string,mixed>
+ */
+function nexus_seo_audit_index_queue_attach_cached( $state, $old_state ) {
+	if ( ! function_exists( 'nexus_get_seo_cockpit_cached_url_inspection' ) || ! function_exists( 'nexus_seo_audit_intelligence_slim_inspection' ) ) {
+		return $state;
+	}
+
+	$old_count = is_array( $old_state['pages'] ?? null ) ? count( $old_state['pages'] ) : 0;
+	$new_count = is_array( $state['pages'] ?? null ) ? count( $state['pages'] ) : 0;
+	if ( $new_count <= $old_count ) {
+		return $state;
+	}
+
+	for ( $index = $old_count; $index < $new_count; $index++ ) {
+		$page = $state['pages'][ $index ] ?? null;
+		if ( ! is_array( $page ) || ! nexus_seo_audit_page_is_indexable_scope( $page ) || ! empty( $page['google_index'] ) ) {
+			continue;
+		}
+
+		$cached = nexus_get_seo_cockpit_cached_url_inspection( (string) ( $page['url'] ?? '' ) );
+		if ( is_array( $cached ) && ! empty( $cached ) ) {
+			$state['pages'][ $index ]['google_index'] = nexus_seo_audit_intelligence_slim_inspection( $cached );
+		}
+	}
+
+	return $state;
+}
+
+/**
+ * Lightweight replacement for the original intelligence state filter.
+ *
+ * It preserves HTML capture, architecture, Google findings and site checks, but
+ * removes network URL Inspection calls from the option-save path.
+ *
+ * @param mixed  $value     New option value.
+ * @param mixed  $old_value Previous option value.
+ * @param string $option    Option name.
+ * @return mixed
+ */
+function nexus_seo_audit_index_queue_filter_state( $value, $old_value, $option ) {
+	if ( ! is_array( $value ) || empty( $value['run_id'] ) ) {
+		return $value;
+	}
+
+	$old_value = is_array( $old_value ) ? $old_value : [];
+	if ( function_exists( 'nexus_seo_audit_intelligence_merge_capture' ) ) {
+		$value = nexus_seo_audit_intelligence_merge_capture( $value );
+	}
+	$value = nexus_seo_audit_index_queue_attach_cached( $value, $old_value );
+
+	if ( 'completed' === (string) ( $value['status'] ?? '' ) ) {
+		if ( function_exists( 'nexus_seo_audit_intelligence_architecture' ) ) {
+			$value = nexus_seo_audit_intelligence_architecture( $value );
+		}
+		if ( function_exists( 'nexus_seo_audit_intelligence_google_findings' ) ) {
+			$value = nexus_seo_audit_intelligence_google_findings( $value );
+		}
+		if ( function_exists( 'nexus_seo_audit_intelligence_site_checks' ) ) {
+			$value = nexus_seo_audit_intelligence_site_checks( $value );
+		}
+		$value = nexus_seo_audit_index_queue_refresh_summary( $value );
+		if ( ! isset( $value['intelligence'] ) || ! is_array( $value['intelligence'] ) ) {
+			$value['intelligence'] = [];
+		}
+		$value['intelligence']['generated_at'] = current_time( 'mysql' );
+	}
+
+	return $value;
+}
+
+// The intelligence module is loaded immediately before this queue module.
+// Replace only its audit-state filter; all other intelligence functions remain
+// the shared implementation used here and by the UI.
+remove_filter( 'pre_update_option_' . NEXUS_SEO_AUDIT_STATE_OPTION, 'nexus_seo_audit_intelligence_filter_state', 20 );
+add_filter( 'pre_update_option_' . NEXUS_SEO_AUDIT_STATE_OPTION, 'nexus_seo_audit_index_queue_filter_state', 20, 3 );
+
+/**
  * Rebuild Google findings and expose queue/API failures explicitly.
  *
  * @param array<string,mixed> $state Audit state.
@@ -128,29 +213,37 @@ function nexus_seo_audit_index_queue_refresh_findings( $state ) {
 }
 
 /**
- * Persist a queue update without re-running expensive completed-audit checks.
+ * Persist a queue update without re-running completed-audit site checks.
  *
- * The existing intelligence pre-update filter performs robots/sitemap checks on
- * every completed-state save. Queue ticks only change Google inspection data,
- * so temporarily removing that filter avoids unnecessary site-level requests.
+ * Queue ticks only change Google inspection data, so both the legacy filter
+ * (for backward compatibility) and the active queue-aware filter are removed
+ * for this one save.
  *
  * @param array<string,mixed> $state Audit state.
  * @return void
  */
 function nexus_seo_audit_index_queue_save_state( $state ) {
-	$filter     = 'nexus_seo_audit_intelligence_filter_state';
-	$hook       = 'pre_update_option_' . NEXUS_SEO_AUDIT_STATE_OPTION;
-	$had_filter = false !== has_filter( $hook, $filter );
+	$hook           = 'pre_update_option_' . NEXUS_SEO_AUDIT_STATE_OPTION;
+	$legacy_filter  = 'nexus_seo_audit_intelligence_filter_state';
+	$queue_filter   = 'nexus_seo_audit_index_queue_filter_state';
+	$had_legacy     = false !== has_filter( $hook, $legacy_filter );
+	$had_queue      = false !== has_filter( $hook, $queue_filter );
 
-	if ( $had_filter ) {
-		remove_filter( $hook, $filter, 20 );
+	if ( $had_legacy ) {
+		remove_filter( $hook, $legacy_filter, 20 );
+	}
+	if ( $had_queue ) {
+		remove_filter( $hook, $queue_filter, 20 );
 	}
 
 	try {
 		nexus_seo_audit_save_state( $state );
 	} finally {
-		if ( $had_filter ) {
-			add_filter( $hook, $filter, 20, 3 );
+		if ( $had_legacy ) {
+			add_filter( $hook, $legacy_filter, 20, 3 );
+		}
+		if ( $had_queue ) {
+			add_filter( $hook, $queue_filter, 20, 3 );
 		}
 	}
 }
