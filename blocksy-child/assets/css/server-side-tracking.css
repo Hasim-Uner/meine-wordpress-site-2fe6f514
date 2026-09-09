@@ -13,10 +13,6 @@
    Abschnittsnamen gleichzeitig eingeblendet. Nur aria-current bleibt als
    aktiver Weg hervorgehoben; alle übrigen Labels bleiben bewusst neutral. */
 @media (min-width: 1360px) {
-	.hu-sst .hu-money-rail--toc .hu-money-toc__link {
-		transition: inline-size 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1));
-	}
-
 	.hu-sst .hu-money-rail--toc:hover .hu-money-toc__link,
 	.hu-sst .hu-money-rail--toc:focus-within .hu-money-toc__link {
 		inline-size: 220px;
