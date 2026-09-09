@@ -1,16 +1,18 @@
 /* ==========================================================================
-   /server-side-tracking-b2b/ — CRO-Delta nach dem Rail-Experiment
+   /server-side-tracking-b2b/ — CRO-Delta
    --------------------------------------------------------------------------
-   Diese Datei ist bewusst klein und ausschließlich auf die SST-Money-Page
-   begrenzt. Sie ersetzt dort die experimentellen Money-Rails durch eine
-   ruhige Inline-Navigation und trennt Setup- von Care-Preisen visuell.
+   Mobile und kleinere Desktops nutzen die ruhige Inline-Navigation. Auf
+   breiten Desktops wird das bestehende Scroll-Spy-TOC als schmaler Messstrahl
+   links neben der Leseflaeche inszeniert. Setup- und Care-Preise bleiben
+   visuell getrennt.
    ========================================================================== */
 
-/* #305/#306: Die seitlichen Messinstrument-Rails und das per JS erzeugte
-   Mobile-TOC werden auf dieser Route nicht mehr dargestellt. Das statische
-   Inhaltsverzeichnis im Template bleibt ohne JavaScript vollständig nutzbar. */
-.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail,
-.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-money-mobile-toc {
+/* Das per JS erzeugte Mobile-TOC und die rechte Kontext-Rail bleiben auf
+   dieser Route aus. Unterhalb des Desktop-Rail-Breakpoints dient das statische
+   Inhaltsverzeichnis direkt hinter dem Hero als robuste Navigation. */
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-money-mobile-toc,
+.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--context,
+.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--toc {
 	display: none;
 }
 
@@ -103,6 +105,235 @@
 	}
 }
 
+/* ── Desktop: schwebender Messstrahl links der Leseflaeche ────────── */
+@media (min-width: 1360px) {
+	.hu-sst .hu-sst__toc-band {
+		display: none;
+	}
+
+	.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--toc {
+		position: fixed;
+		z-index: 76;
+		top: 44%;
+		inset-inline-start: max(28px, calc(50vw - 640px));
+		display: block;
+		inline-size: 58px;
+		max-block-size: min(520px, 72vh);
+		padding: 14px 0;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		box-shadow: none;
+		color: var(--sst-on-dark, #f6f4ef);
+		overflow: visible;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transform: translateY(-50%) translateY(7px);
+		transition: opacity 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			transform 220ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			visibility 0s linear 220ms;
+	}
+
+	.hu-sst[data-track-page="server-side-tracking-b2b"]
+		> .hu-money-rail--toc::before,
+	.hu-sst[data-track-page="server-side-tracking-b2b"]
+		> .hu-money-rail--toc::after {
+		content: none;
+	}
+
+	.hu-sst.is-money-rails-active:not(.is-money-form-visible)
+		> .hu-money-rail--toc {
+		opacity: 0.86;
+		visibility: visible;
+		pointer-events: auto;
+		transform: translateY(-50%);
+		transition-delay: 0s;
+	}
+
+	.hu-sst.is-money-rails-active:not(.is-money-form-visible)
+		> .hu-money-rail--toc:hover,
+	.hu-sst.is-money-rails-active:not(.is-money-form-visible)
+		> .hu-money-rail--toc:focus-within {
+		opacity: 1;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-rail__kicker {
+		max-inline-size: none;
+		margin: 0 0 7px;
+		padding-inline-start: 3px;
+		overflow: visible;
+		font-size: 0.52rem;
+		font-weight: 700;
+		letter-spacing: 0.13em;
+		line-height: 1.2;
+		text-transform: uppercase;
+		white-space: nowrap;
+		color: rgba(246, 244, 239, 0.34);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-rail__progress {
+		position: absolute;
+		top: 43px;
+		bottom: 19px;
+		inset-inline-start: 31px;
+		inline-size: 1px;
+		background: rgba(246, 244, 239, 0.18);
+		box-shadow: none;
+		pointer-events: none;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-rail__progress-fill {
+		display: block;
+		inline-size: 1px;
+		block-size: 100%;
+		background: linear-gradient(180deg, #f0b196 0%, var(--sst-copper-action, #e59573) 100%);
+		box-shadow: 0 0 9px rgba(229, 149, 115, 0.34);
+		transform-origin: top center;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__list {
+		display: grid;
+		gap: 0;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__item {
+		position: relative;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__item::before {
+		content: "";
+		position: absolute;
+		z-index: 1;
+		inset-inline-start: 25px;
+		inset-block-start: 50%;
+		inline-size: 13px;
+		block-size: 1px;
+		background: rgba(246, 244, 239, 0.2);
+		transform: translateY(-50%);
+		transition: inline-size 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			background-color 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1));
+		pointer-events: none;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link {
+		position: relative;
+		display: grid;
+		grid-template-columns: 18px 10px;
+		align-items: center;
+		gap: 7px;
+		inline-size: 54px;
+		min-block-size: 34px;
+		padding: 0;
+		color: rgba(246, 244, 239, 0.38);
+		font-size: 0.72rem;
+		line-height: 1;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__num {
+		font-size: 0.54rem;
+		font-weight: 650;
+		letter-spacing: 0.05em;
+		text-align: end;
+		color: rgba(246, 244, 239, 0.32);
+		font-variant-numeric: tabular-nums;
+		transition: color 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1));
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__marker {
+		position: relative;
+		z-index: 2;
+		inline-size: 5px;
+		block-size: 5px;
+		border: 1px solid rgba(246, 244, 239, 0.34);
+		border-radius: 1px;
+		background: #171411;
+		box-shadow: none;
+		transition: inline-size 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			block-size 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			background-color 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			border-color 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1));
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__label {
+		position: absolute;
+		z-index: 4;
+		inset-inline-start: 49px;
+		inset-block-start: 50%;
+		display: block;
+		max-inline-size: 0;
+		padding: 0;
+		border: 1px solid transparent;
+		border-radius: 999px;
+		background: rgba(23, 20, 17, 0.94);
+		box-shadow: 0 12px 34px -22px rgba(0, 0, 0, 0.9);
+		overflow: hidden;
+		opacity: 0;
+		transform: translate(7px, -50%);
+		font-size: 0.7rem;
+		font-weight: 650;
+		line-height: 1.2;
+		color: rgba(246, 244, 239, 0.82);
+		pointer-events: none;
+		transition: max-inline-size 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			padding 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			opacity 150ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			transform 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+			border-color 180ms var(--sst-ease, cubic-bezier(0.16, 1, 0.3, 1));
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link::after {
+		content: none;
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link[aria-current="true"] {
+		color: var(--sst-on-dark, #f6f4ef);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link[aria-current="true"] .hu-money-toc__num {
+		color: var(--sst-copper-action, #e59573);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link[aria-current="true"] .hu-money-toc__marker {
+		inline-size: 8px;
+		block-size: 8px;
+		border-color: var(--sst-copper-action, #e59573);
+		background: var(--sst-copper-action, #e59573);
+		box-shadow: 0 0 0 4px rgba(229, 149, 115, 0.09), 0 0 10px rgba(229, 149, 115, 0.3);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__item:has(.hu-money-toc__link[aria-current="true"])::before {
+		inline-size: 18px;
+		background: rgba(229, 149, 115, 0.72);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link[aria-current="true"] .hu-money-toc__label,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link:hover .hu-money-toc__label,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link:focus-visible .hu-money-toc__label {
+		max-inline-size: 170px;
+		padding: 0.36rem 0.62rem;
+		border-color: rgba(246, 244, 239, 0.1);
+		opacity: 1;
+		transform: translate(0, -50%);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link[aria-current="true"] .hu-money-toc__label {
+		border-color: rgba(229, 149, 115, 0.2);
+		color: var(--sst-on-dark, #f6f4ef);
+	}
+
+	.hu-sst .hu-money-rail--toc .hu-money-toc__link:focus-visible {
+		outline: 1px solid rgba(229, 149, 115, 0.58);
+		outline-offset: 3px;
+		border-radius: 2px;
+	}
+}
+
 /* ── Setup-Pakete: nur einmaliger Projektpreis ─────────────────────── */
 .hu-sst #pakete .hu-sst__price-figures {
 	grid-template-columns: minmax(0, 1fr);
@@ -184,8 +415,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.hu-sst .hu-sst__toc-list a {
-		transition: none;
+	.hu-sst .hu-sst__toc-list a,
+	.hu-sst .hu-money-rail--toc,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__item::before,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__num,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__marker,
+	.hu-sst .hu-money-rail--toc .hu-money-toc__label {
+		transition: none !important;
 	}
 
 	.hu-sst #pakete .hu-sst__price-card--featured {
