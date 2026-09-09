@@ -101,9 +101,22 @@ get_header();
 			</figure>
 		</div>
 	</section>
-	<nav class="hu-fr-nav" aria-label="Auf dieser Seite">
-		<div class="hu-fr__shell"><a href="#nachweis">Nachweis</a><a href="#angebote">Leistungen &amp; Preise</a><a href="#strecke">Anfrageweg</a><a href="#arbeitsweise">Zusammenarbeit</a><a href="#fragen">Fragen</a><a href="#anfrage">Projekt anfragen <span class="hu-fr__arrow" aria-hidden="true"></span></a></div>
-	</nav>
+	<div class="hu-fr-body">
+	<div class="hu-fr-nav-slot">
+		<nav class="hu-fr-nav" aria-label="Auf dieser Seite">
+			<button class="hu-fr-nav__toggle" type="button" aria-expanded="false" aria-controls="hu-fr-nav-links" hidden><span>Auf dieser Seite</span><span class="hu-fr-nav__current" aria-hidden="true">Übersicht</span><span class="hu-fr-nav__chevron" aria-hidden="true">+</span></button>
+			<div class="hu-fr-nav__heading" aria-hidden="true"><span>Index</span><span class="hu-fr-nav__hint">Auf dieser Seite</span></div>
+			<div class="hu-fr-nav__links" id="hu-fr-nav-links">
+				<a href="#nachweis" aria-label="Nachweis"><span class="hu-fr-nav__number" aria-hidden="true">01</span><span class="hu-fr-nav__label">Nachweis</span></a>
+				<a href="#angebote" aria-label="Leistungen &amp; Preise"><span class="hu-fr-nav__number" aria-hidden="true">02</span><span class="hu-fr-nav__label">Leistungen &amp; Preise</span></a>
+				<a href="#strecke" aria-label="Anfrageweg"><span class="hu-fr-nav__number" aria-hidden="true">03</span><span class="hu-fr-nav__label">Anfrageweg</span></a>
+				<a href="#arbeitsweise" aria-label="Zusammenarbeit"><span class="hu-fr-nav__number" aria-hidden="true">04</span><span class="hu-fr-nav__label">Zusammenarbeit</span></a>
+				<a href="#fragen" aria-label="Fragen"><span class="hu-fr-nav__number" aria-hidden="true">05</span><span class="hu-fr-nav__label">Fragen</span></a>
+				<a href="#anfrage" aria-label="Projekt anfragen"><span class="hu-fr-nav__number" aria-hidden="true">06</span><span class="hu-fr-nav__label">Projekt anfragen <span class="hu-fr__arrow" aria-hidden="true"></span></span></a>
+			</div>
+		</nav>
+	</div>
+	<div class="hu-fr-content">
 
 	<section class="hu-fr-section hu-fr-proof" id="nachweis" aria-labelledby="hu-fr-proof-title">
 		<div class="hu-fr__shell hu-fr__split">
@@ -217,6 +230,8 @@ get_header();
 			</div>
 		</div>
 	</section>
+	</div>
+	</div>
 </div>
 
 <?php get_footer(); ?>

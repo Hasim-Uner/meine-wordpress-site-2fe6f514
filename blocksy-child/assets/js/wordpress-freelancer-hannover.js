@@ -4,6 +4,71 @@
 	const root = document.querySelector('.hu-fr');
 	if (!root) return;
 
+	/* CSS owns the sticky position; enhancement adds disclosure and orientation. */
+	const nav = root.querySelector('.hu-fr-nav');
+	const toggle = nav?.querySelector('.hu-fr-nav__toggle');
+	const list = nav?.querySelector('.hu-fr-nav__links');
+	const chevron = toggle?.querySelector('.hu-fr-nav__chevron');
+	const currentLabel = toggle?.querySelector('.hu-fr-nav__current');
+	// Cached pre-TOC HTML must still reach the independent form initialization.
+	if (nav && toggle && list && chevron && currentLabel) {
+		const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+		const sections = links.map((link) => document.getElementById(link.hash.slice(1)));
+		const rail = window.matchMedia('(min-width: 1280px) and (min-height: 600px) and (hover: hover) and (pointer: fine)');
+		const setExpanded = (expanded) => {
+			toggle.setAttribute('aria-expanded', String(expanded));
+			chevron.textContent = expanded ? '−' : '+';
+			list.hidden = !rail.matches && !expanded;
+		};
+		const syncMode = () => {
+			toggle.hidden = rail.matches;
+			if (!rail.matches && list.contains(document.activeElement)) toggle.focus();
+			setExpanded(false);
+		};
+		toggle.addEventListener('click', () => setExpanded(toggle.getAttribute('aria-expanded') !== 'true'));
+		nav.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && !rail.matches) {
+				setExpanded(false);
+				toggle.focus();
+			}
+		});
+		links.forEach((link, index) => {
+			if (sections[index]) sections[index].setAttribute('tabindex', '-1');
+			link.addEventListener('click', () => setExpanded(false));
+		});
+		rail.addEventListener('change', syncMode);
+		syncMode();
+		nav.parentElement.classList.add('is-enhanced');
+
+		if ('IntersectionObserver' in window) {
+			let observer;
+			let readingLine = 0;
+			const updateCurrent = () => {
+				let current = -1;
+				sections.forEach((section, index) => {
+					if (section && section.getBoundingClientRect().top <= readingLine + 1) current = index;
+				});
+				links.forEach((link, index) => {
+					if (index === current) link.setAttribute('aria-current', 'location');
+					else link.removeAttribute('aria-current');
+				});
+				currentLabel.textContent = current < 0 ? 'Übersicht' : links[current].getAttribute('aria-label');
+			};
+			const observeSections = () => {
+				if (observer) observer.disconnect();
+				const firstSection = sections.find(Boolean);
+				const anchorOffset = firstSection ? parseFloat(getComputedStyle(firstSection).scrollMarginTop) || 0 : 0;
+				// Keep short/zoomed viewports aligned with the native anchor clearance.
+				readingLine = Math.min(window.innerHeight - 1, Math.max(Math.round(window.innerHeight * 0.35), Math.ceil(anchorOffset) + 1));
+				observer = new IntersectionObserver(updateCurrent, { rootMargin: `-${readingLine}px 0px -${window.innerHeight - readingLine - 1}px 0px` });
+				sections.filter(Boolean).forEach((section) => observer.observe(section));
+				updateCurrent();
+			};
+			window.addEventListener('resize', observeSections);
+			observeSections();
+		}
+	}
+
 	/* Preserve existing measurement hooks without loading a tracking runtime. */
 	const addHooks = (element, action, category, section) => {
 		if (!element.dataset.trackAction) element.dataset.trackAction = action;
