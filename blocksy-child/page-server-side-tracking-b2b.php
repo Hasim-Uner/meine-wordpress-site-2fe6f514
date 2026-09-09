@@ -513,25 +513,48 @@ get_header();
 					</div>
 				</dl>
 
-				<aside class="hu-sst__decision" aria-label="Ablauf der Vorprüfung">
-					<p class="hu-sst__decision-kicker">Vor dem Angebot</p>
-					<h2 class="hu-sst__decision-title">Was Sie zuerst erhalten</h2>
-					<ol class="hu-sst__decision-list" role="list">
-						<li>
-							<span class="hu-sst__decision-num">01</span>
-							<span><strong>Fit-Einschätzung</strong> — ist Server-Side Tracking jetzt die richtige Baustelle?</span>
-						</li>
-						<li>
-							<span class="hu-sst__decision-num">02</span>
-							<span><strong>Scope-Empfehlung</strong> — Standard, Pro oder individuelle Aufnahme.</span>
-						</li>
-						<li>
-							<span class="hu-sst__decision-num">03</span>
-							<span><strong>Offene Voraussetzungen</strong> — Konten, Consent, Events und technische Grenzen.</span>
-						</li>
-					</ol>
-					<p class="hu-sst__decision-note">Für die erste Einordnung reichen Name, geschäftliche E-Mail und Ihr konkretes Messproblem. Website und technische Details helfen, sind aber optional. Noch keine Zugangsdaten.</p>
-				</aside>
+				<figure class="hu-sst__decision" aria-labelledby="hu-sst-parallel-title">
+					<p class="hu-sst__decision-kicker">Paralleltest · vor Umschaltung</p>
+					<h2 class="hu-sst__decision-title" id="hu-sst-parallel-title">So prüfe ich Browser- und Server-Signale gegeneinander</h2>
+					<svg viewBox="0 0 560 360" role="img" aria-labelledby="hu-sst-parallel-svg-title hu-sst-parallel-svg-desc" style="display:block;width:100%;height:auto;margin:0 0 1rem;" xmlns="http://www.w3.org/2000/svg">
+						<title id="hu-sst-parallel-svg-title">Ablauf des Paralleltests für Server-Side Tracking</title>
+						<desc id="hu-sst-parallel-svg-desc">Dasselbe Browser-Ereignis läuft über die bisherige und die neue serverseitige Messstrecke. Anschließend werden Event, Deduplizierung, Consent und Parameter in den Kundenkonten verglichen.</desc>
+						<defs>
+							<marker id="hu-sst-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+								<path d="M 0 0 L 10 5 L 0 10 z" fill="#e59573"/>
+							</marker>
+						</defs>
+						<rect x="190" y="12" width="180" height="48" rx="16" fill="#211d19" stroke="#6b5a4f"/>
+						<circle cx="216" cy="36" r="8" fill="#e59573"/>
+						<text x="236" y="41" fill="#f6f4ef" font-size="15" font-weight="700" font-family="inherit">Browser-Event</text>
+
+						<path d="M280 60 V78 H138 V94" fill="none" stroke="#e59573" stroke-width="2" marker-end="url(#hu-sst-arrow)"/>
+						<path d="M280 60 V78 H422 V94" fill="none" stroke="#e59573" stroke-width="2" marker-end="url(#hu-sst-arrow)"/>
+
+						<rect x="22" y="98" width="232" height="92" rx="18" fill="#1d1a17" stroke="#5f554d"/>
+						<text x="42" y="124" fill="#b8b4aa" font-size="12" font-weight="700" letter-spacing="1.2" font-family="inherit">BISHERIGE MESSUNG</text>
+						<text x="42" y="151" fill="#f6f4ef" font-size="15" font-weight="700" font-family="inherit">Browser → Plattform</text>
+						<text x="42" y="174" fill="#aaa49b" font-size="12.5" font-family="inherit">bestehende Events bleiben aktiv</text>
+
+						<rect x="306" y="98" width="232" height="92" rx="18" fill="#2a211c" stroke="#e59573" stroke-opacity="0.72"/>
+						<text x="326" y="124" fill="#e59573" font-size="12" font-weight="700" letter-spacing="1.2" font-family="inherit">NEUE MESSUNG</text>
+						<text x="326" y="151" fill="#f6f4ef" font-size="15" font-weight="700" font-family="inherit">Subdomain → Server-GTM</text>
+						<text x="326" y="174" fill="#c7bcb4" font-size="12.5" font-family="inherit">serverseitiger Weg parallel aktiv</text>
+
+						<path d="M138 190 V214 H280" fill="none" stroke="#8b7d73" stroke-width="1.7"/>
+						<path d="M422 190 V214 H280" fill="none" stroke="#e59573" stroke-width="1.7" marker-end="url(#hu-sst-arrow)"/>
+
+						<rect x="74" y="218" width="412" height="98" rx="20" fill="#171411" stroke="#76645a"/>
+						<text x="98" y="246" fill="#f6f4ef" font-size="15" font-weight="700" font-family="inherit">Abgleich in Ihren Konten</text>
+						<circle cx="104" cy="269" r="4" fill="#e59573"/>
+						<text x="118" y="274" fill="#bdb7af" font-size="12.5" font-family="inherit">Event vorhanden · event_id / Deduplizierung</text>
+						<circle cx="104" cy="294" r="4" fill="#e59573"/>
+						<text x="118" y="299" fill="#bdb7af" font-size="12.5" font-family="inherit">Consent-Status · Parameter · Quelle</text>
+
+						<text x="280" y="344" text-anchor="middle" fill="#e59573" font-size="12.5" font-weight="700" font-family="inherit">GA4 · Google Ads · Meta CAPI · CRM</text>
+					</svg>
+					<figcaption class="hu-sst__decision-note">Entscheidend ist die nachvollziehbare Differenz in Ihren Konten — nicht eine pauschale Datenrückholquote.</figcaption>
+				</figure>
 			</div>
 		</div>
 	</section>
