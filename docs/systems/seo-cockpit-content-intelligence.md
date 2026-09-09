@@ -129,4 +129,4 @@ Nach realer Beobachtung der V1-Ausgaben kann V2 ergänzen:
 4. optional LLM für Briefings/Entwürfe hinter manueller Freigabe
 5. Benachrichtigung nur bei neuem Signal oberhalb eines definierten Scores
 
-Code: `blocksy-child/inc/seo-cockpit/seo-cockpit-content-intelligence.php`.
+Code: `blocksy-child/inc/seo-cockpit/seo-cockpit-content-intelligence-v1.php`.
