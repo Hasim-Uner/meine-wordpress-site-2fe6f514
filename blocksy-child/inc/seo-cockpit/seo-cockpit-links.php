@@ -555,6 +555,10 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 	$about_url      = $routes['about'] ?? ( $primary_urls['about'] ?? home_url( '/hasim-uener/' ) );
 	$contact_url    = $routes['contact'] ?? ( $primary_urls['contact'] ?? home_url( '/kontakt/' ) );
 	$glossary_url   = $primary_urls['glossary'] ?? home_url( '/glossar/' );
+	$reader_leadgen_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'leadgenerierung', $blog_url ) : $blog_url;
+	$reader_wordpress_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'wordpress-performance', $blog_url ) : $blog_url;
+	$reader_tracking_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'tracking', $blog_url ) : $blog_url;
+	$reader_cro_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'cro', $blog_url ) : $blog_url;
 	$imprint_url    = $primary_urls['impressum'] ?? home_url( '/impressum/' );
 	$privacy_url    = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
 	$primary_links  = nexus_get_seo_cockpit_primary_menu_links();
@@ -582,6 +586,26 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 				$about_url,
 				$contact_url,
 			],
+		],
+		'reader_header_leadgen' => [
+			'key'   => 'reader_header_leadgen',
+			'label' => 'Artikel-Header (Leadökonomie)',
+			'links' => [ $home_url, $blog_url, $reader_leadgen_url ],
+		],
+		'reader_header_wordpress' => [
+			'key'   => 'reader_header_wordpress',
+			'label' => 'Artikel-Header (WordPress & Performance)',
+			'links' => [ $home_url, $blog_url, $reader_wordpress_url ],
+		],
+		'reader_header_tracking' => [
+			'key'   => 'reader_header_tracking',
+			'label' => 'Artikel-Header (Tracking)',
+			'links' => [ $home_url, $blog_url, $reader_tracking_url ],
+		],
+		'reader_header_cro' => [
+			'key'   => 'reader_header_cro',
+			'label' => 'Artikel-Header (CRO)',
+			'links' => [ $home_url, $blog_url, $reader_cro_url ],
 		],
 		'audit_header' => [
 			'key'   => 'audit_header',
@@ -665,6 +689,26 @@ function nexus_get_seo_cockpit_sitewide_shell_definitions() {
 			'label'       => 'Blog-Shell',
 			'source_keys' => [ 'blog_header', 'site_footer' ],
 		],
+		'reader_leadgen' => [
+			'key'         => 'reader_leadgen',
+			'label'       => 'Artikel-Shell · Leadökonomie',
+			'source_keys' => [ 'reader_header_leadgen', 'site_footer' ],
+		],
+		'reader_wordpress' => [
+			'key'         => 'reader_wordpress',
+			'label'       => 'Artikel-Shell · WordPress & Performance',
+			'source_keys' => [ 'reader_header_wordpress', 'site_footer' ],
+		],
+		'reader_tracking' => [
+			'key'         => 'reader_tracking',
+			'label'       => 'Artikel-Shell · Tracking',
+			'source_keys' => [ 'reader_header_tracking', 'site_footer' ],
+		],
+		'reader_cro' => [
+			'key'         => 'reader_cro',
+			'label'       => 'Artikel-Shell · CRO',
+			'source_keys' => [ 'reader_header_cro', 'site_footer' ],
+		],
 		'audit'   => [
 			'key'         => 'audit',
 			'label'       => 'Audit-Shell',
@@ -699,6 +743,19 @@ function nexus_get_seo_cockpit_sitewide_shell_key_for_url( $url, $context = [] )
 
 	if ( '/wordpress-freelancer-hannover/' === $path ) {
 		return 'freelancer';
+	}
+
+	$reader_shells = [
+		'/aroundhome-solar-einordnung/'           => 'reader_leadgen',
+		'/checkfox-solar-waermepumpe-einordnung/' => 'reader_leadgen',
+		'/wattfox-solar-leads-einordnung/'         => 'reader_leadgen',
+		'/wordpress-ttfb-google-ads-ladezeit/'     => 'reader_wordpress',
+		'/server-side-tracking-gtm/'               => 'reader_tracking',
+		'/b2b-landingpage-optimieren/'              => 'reader_cro',
+	];
+
+	if ( isset( $reader_shells[ $path ] ) ) {
+		return $reader_shells[ $path ];
 	}
 
 	if (
@@ -781,7 +838,7 @@ function nexus_get_seo_cockpit_sitewide_outgoing_context( $url, $context = [] ) 
  * @return array<string, mixed>
  */
 function nexus_get_seo_cockpit_internal_link_graph() {
-	$cache_key = nexus_get_seo_cockpit_cache_key( 'link_graph', [ home_url( '/' ), 'sitewide_v6' ] );
+	$cache_key = nexus_get_seo_cockpit_cache_key( 'link_graph', [ home_url( '/' ), 'sitewide_v7' ] );
 	$cached    = get_transient( $cache_key );
 
 	if ( is_array( $cached ) ) {
