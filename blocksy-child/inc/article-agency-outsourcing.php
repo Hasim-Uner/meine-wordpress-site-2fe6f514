@@ -54,7 +54,7 @@ function hu_agency_outsourcing_glossary_aliases( $aliases ) : array {
 add_filter( 'nexus_contextual_glossary_aliases', 'hu_agency_outsourcing_glossary_aliases' );
 
 /**
- * Load article-specific editorial diagrams.
+ * Load article-specific editorial assets.
  *
  * @return void
  */
@@ -63,15 +63,26 @@ function hu_enqueue_agency_outsourcing_article_assets() : void {
 		return;
 	}
 
-	$path    = get_stylesheet_directory() . '/assets/css/article-agency-outsourcing.css';
-	$url     = get_stylesheet_directory_uri() . '/assets/css/article-agency-outsourcing.css';
-	$version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $path ) : wp_get_theme()->get( 'Version' );
+	$style_path    = get_stylesheet_directory() . '/assets/css/article-agency-outsourcing.css';
+	$style_url     = get_stylesheet_directory_uri() . '/assets/css/article-agency-outsourcing.css';
+	$style_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $style_path ) : wp_get_theme()->get( 'Version' );
+	$script_path   = get_stylesheet_directory() . '/assets/js/article-agency-outsourcing-ui.js';
+	$script_url    = get_stylesheet_directory_uri() . '/assets/js/article-agency-outsourcing-ui.js';
+	$script_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $script_path ) : wp_get_theme()->get( 'Version' );
 
 	wp_enqueue_style(
 		'hu-agency-outsourcing-article',
-		$url,
+		$style_url,
 		[ 'nexus-single-editorial-css' ],
-		$version
+		$style_version
+	);
+
+	wp_enqueue_script(
+		'hu-agency-outsourcing-article-ui',
+		$script_url,
+		[ 'nexus-single-editorial-js' ],
+		$script_version,
+		true
 	);
 }
 add_action( 'wp_enqueue_scripts', 'hu_enqueue_agency_outsourcing_article_assets', 35 );
