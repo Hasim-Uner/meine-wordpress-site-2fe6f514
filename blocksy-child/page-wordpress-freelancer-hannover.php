@@ -68,11 +68,9 @@ $e3_lead_conversion  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_c
 $e3_sales_conversion = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion' ) : '15 %';
 $e3_leads            = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count' ) : '1.750+';
 $e3_timeframe        = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display_dative' ) : '6 Monaten';
-$references = [
-	[ 'name' => 'civaka-azad.org', 'url' => 'https://civaka-azad.org/', 'tag' => 'Informationsarchitektur', 'text' => 'Redaktioneller Bestand mit vielen Inhalten: Navigation und Archive so strukturiert, dass Themen auffindbar bleiben.' ],
-	[ 'name' => 'hasimuener.org', 'url' => 'https://hasimuener.org/', 'tag' => 'Eigenes Projekt · Editorial Design', 'text' => 'Eigenes redaktionelles Projekt: Typografie, Raster und Lesefluss als tragende Gestaltung statt dekorativer Effekte.' ],
-	[ 'name' => 'kurdischer-rat.org', 'url' => 'https://kurdischer-rat.org/', 'tag' => 'Organisation · Workflow', 'text' => 'Organisationswebsite mit klarer Informationshierarchie und einem versionierten Prozess für kontrollierte Veröffentlichungen.' ],
-];
+// Dieselben Referenzen zeigt der Ergebnisse-Hub. Die Liste liegt im Canon,
+// damit die beiden Proof-Oberflaechen nicht auseinanderlaufen.
+$references = function_exists( 'hu_public_reference_projects' ) ? hu_public_reference_projects() : [];
 $faqs = [
 	[ 'q' => 'Übernehmen Sie eine bestehende WordPress-Website?', 'a' => 'Ja. Vor einer Zusage prüfe ich Theme, Plugins, Zugänge und die konkrete Aufgabe. Daraus wird eine begrenzte Weiterentwicklung, eine technische Bereinigung oder ein Relaunch. Ein Neubau ist keine Voraussetzung.' ],
 	[ 'q' => 'Arbeiten Sie auch mit unserem Page Builder?', 'a' => 'Die Entscheidung hängt vom vorhandenen Aufbau und der Aufgabe ab. Ein funktionierender Editor muss nicht ersetzt werden. Wo Performance, Wartbarkeit oder eine Integration an Grenzen stoßen, klären wir den nötigen Eingriff vorab.' ],

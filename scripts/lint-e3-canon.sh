@@ -6,7 +6,7 @@ TARGETS=(
   "blocksy-child/front-page.php"
   "blocksy-child/page-anfrage.php"
   "blocksy-child/page-case-e3.php"
-  "blocksy-child/page-case-studies-e-commerce.php"
+  "blocksy-child/page-ergebnisse.php"
   "blocksy-child/page-solar-waermepumpen-leadgenerierung.php"
   "blocksy-child/page-wordpress-agentur.php"
   "blocksy-child/page-wgos.php"

@@ -587,11 +587,12 @@ function hu_enqueue_assets() {
 
 	// ── P) Template: Ergebnisse Hub ────────────────────────────────
 	if (
-		is_page_template( 'page-case-studies-e-commerce.php' )
+		is_page_template( 'page-ergebnisse.php' )
+		|| is_page_template( 'page-case-studies-e-commerce.php' )
 		|| is_page( 'case-studies-e-commerce' )
 		|| is_page( 'ergebnisse' )
 	) {
-		hu_enqueue_css( 'nexus-results-css', 'results.css', [ 'nexus-design-system' ] );
+		hu_enqueue_css( 'hu-ergebnisse-css', 'ergebnisse.css', [ 'nexus-design-system' ] );
 	}
 
 	// ── P2) Template: Whitelabel-Retainer ──────────────────────────

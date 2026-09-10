@@ -49,17 +49,34 @@ function hu_e3_canon() {
 				'display' => '22 €',
 				'label'   => 'Kosten pro eigener Anfrage nachher',
 			],
-			// Route-spezifische Labtest-Werte der Freelancer-Seite. Sie leben hier,
-			// damit jede sichtbare Hero-Kennzahl denselben Canon-Zugriff nutzt.
-			'freelancer_lighthouse_mobile_performance' => [
+			// Labtest-Werte dieser Website. Sie leben hier, damit jede sichtbare
+			// Kennzahl denselben Canon-Zugriff nutzt: Startseite und
+			// Ergebnisse-Hub zeigen sonst zwei Staende derselben Messung.
+			// Lighthouse ist ein Labormesswert und ersetzt keine Felddaten —
+			// sichtbare Copy muss das mitfuehren.
+			'site_lighthouse_performance' => [
 				'value'   => 99,
-				'display' => '99/100',
-				'label'   => 'Mobile Performance im Lighthouse-Labtest',
+				'display' => '99',
+				'max'     => '/100',
+				'label'   => 'PageSpeed mobil',
 			],
-			'freelancer_lighthouse_accessibility' => [
+			'site_lighthouse_accessibility' => [
 				'value'   => 100,
-				'display' => '100/100',
-				'label'   => 'Barrierefreiheit im Lighthouse-Labtest',
+				'display' => '100',
+				'max'     => '/100',
+				'label'   => 'Barrierefreiheit',
+			],
+			'site_lighthouse_seo' => [
+				'value'   => 100,
+				'display' => '100',
+				'max'     => '/100',
+				'label'   => 'SEO',
+			],
+			'site_lighthouse_best_practices' => [
+				'value'   => 100,
+				'display' => '100',
+				'max'     => '/100',
+				'label'   => 'Best Practices',
 			],
 			'cpl_reduction'    => [
 				'value'                => HU_E3_CPL_REDUCTION_PERCENT,

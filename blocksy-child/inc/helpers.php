@@ -991,13 +991,41 @@ function nexus_get_results_page_id() {
 		return $canonical_page_id;
 	}
 
-	$template_page_id = nexus_get_page_id_by_template( 'page-case-studies-e-commerce.php' );
+	// Der Hub hiess bis 2026-09 page-case-studies-e-commerce.php. In WordPress
+	// gespeicherte Template-Zuweisungen zeigen weiter auf den alten Namen, also
+	// bleibt er als zweiter Versuch stehen.
+	foreach ( [ 'page-ergebnisse.php', 'page-case-studies-e-commerce.php' ] as $template ) {
+		$template_page_id = nexus_get_page_id_by_template( $template );
 
-	if ( $template_page_id ) {
-		return $template_page_id;
+		if ( $template_page_id ) {
+			return $template_page_id;
+		}
 	}
 
 	return nexus_get_page_id( [ 'case-studies-e-commerce', 'case-studies' ] );
+}
+
+/**
+ * Determine whether the current request renders the results hub itself.
+ *
+ * Enger als nexus_is_results_context(): nur die Hub-Route, nicht der ganze
+ * Proof-Bereich. wp_head laeuft vor template_include, deshalb entscheidet hier
+ * die Seite, nicht das aufgeloeste Template.
+ *
+ * @return bool
+ */
+function hu_is_results_hub_request() {
+	if ( is_admin() || ! is_page() ) {
+		return false;
+	}
+
+	$results_page_id = nexus_get_results_page_id();
+
+	if ( $results_page_id && is_page( $results_page_id ) ) {
+		return true;
+	}
+
+	return is_page( [ 'ergebnisse', 'case-studies-e-commerce', 'case-studies' ] );
 }
 
 /**
@@ -1150,6 +1178,7 @@ function nexus_is_results_context() {
 		|| is_page( 'whitelabel' )
 		|| is_page_template( 'page-case-e3.php' )
 		|| is_page_template( 'page-case-study-domdar.php' )
+		|| is_page_template( 'page-ergebnisse.php' )
 		|| is_page_template( 'page-case-studies-e-commerce.php' )
 		|| is_page_template( 'page-whitelabel-retainer.php' );
 }
@@ -1959,6 +1988,7 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-hasim-uener.php',
 		'page-wordpress-agentur.php',
 		'page-wordpress-agentur-hannover.php',
+		'page-ergebnisse.php',
 		'page-case-studies-e-commerce.php',
 		'page-e3-new-energy.php',
 		'page-case-e3.php',
@@ -2089,8 +2119,8 @@ function nexus_force_results_route_templates( $template ) {
 	}
 
 	$route_templates = [
-		'case-studies-e-commerce'   => get_stylesheet_directory() . '/page-case-studies-e-commerce.php',
-		'ergebnisse'                => get_stylesheet_directory() . '/page-case-studies-e-commerce.php',
+		'case-studies-e-commerce'   => get_stylesheet_directory() . '/page-ergebnisse.php',
+		'ergebnisse'                => get_stylesheet_directory() . '/page-ergebnisse.php',
 		'whitelabel-retainer'       => get_stylesheet_directory() . '/page-whitelabel-retainer.php',
 		'whitelabel-retainer-proof' => get_stylesheet_directory() . '/page-whitelabel-retainer.php',
 		'whitelabel'                => get_stylesheet_directory() . '/page-whitelabel-retainer.php',

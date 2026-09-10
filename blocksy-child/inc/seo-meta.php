@@ -242,15 +242,15 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'ergebnisse' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study eines PV-Installationsbetriebs, Systemlogik und konkrete nächste Schritte.',
+				'description' => 'Ergebnisse und Arbeitsbelege: dokumentierter Case eines PV-Installationsbetriebs, öffentlich prüfbare WordPress-Projekte und die messbare Technik dieser Website.',
 			],
 			'case-studies-e-commerce' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study eines PV-Installationsbetriebs, Systemlogik und konkrete nächste Schritte.',
+				'description' => 'Ergebnisse und Arbeitsbelege: dokumentierter Case eines PV-Installationsbetriebs, öffentlich prüfbare WordPress-Projekte und die messbare Technik dieser Website.',
 			],
 			'case-studies' => [
 				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse aus WordPress-, SEO-, Tracking- und CRO-Projekten: Case Study eines PV-Installationsbetriebs, Systemlogik und konkrete nächste Schritte.',
+				'description' => 'Ergebnisse und Arbeitsbelege: dokumentierter Case eines PV-Installationsbetriebs, öffentlich prüfbare WordPress-Projekte und die messbare Technik dieser Website.',
 			],
 			'case-study-solar-leadgenerierung' => [
 				'title'       => hu_get_e3_methodology_case_title(),

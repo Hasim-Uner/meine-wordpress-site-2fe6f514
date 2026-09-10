@@ -1,0 +1,719 @@
+/* ==========================================================================
+   Ergebnisse-Hub — /ergebnisse/
+   Vertrauensschicht fuer alle drei kommerziellen Wege.
+
+   Motion Brief
+   ------------
+   Intensitaet:     1 von 3. Wer hier landet, prueft — er will nicht bespasst
+                    werden. Bewegung darf die Lesereihenfolge stuetzen und
+                    sonst nichts.
+   These:           "Belege treten ruhig ein und bleiben stehen."
+   Fokalmoment:     Genau einer — die Nachher-Spalte der Vorher/Nachher-Bilanz
+                    kommt 120 ms nach der Vorher-Spalte an. Die Veraenderung
+                    liest sich dadurch als Veraenderung, nicht als zweite Zahl.
+   Wiederverwendung: .nx-reveal/.nx-visible aus NexusCore.initReveal(). Kein
+                    routeneigenes Motion-Runtime, keine neue Abhaengigkeit.
+   Varianten:       Ohne JS bleibt alles sichtbar (die .hu-js-Klasse setzt
+                    functions.php erst, wenn Skripte wirklich laufen).
+                    prefers-reduced-motion zeigt den Endzustand sofort.
+   Abnahme:         Kein Element ist ohne JS unsichtbar; keine Bewegung laeuft
+                    laenger als 600 ms; Tastaturfokus ist auf jedem Ziel sichtbar.
+   ========================================================================== */
+
+.hu-erg {
+	/* Drei Textstufen, alle gegen den dunkelsten Punkt des Verlaufs gerechnet.
+	   --erg-dim stand auf 44 % und lag mit 3,9:1 unter AA — es traegt hier
+	   Hinweise, Einordnungen und Vorher-Werte, also echten Lesetext. */
+	--erg-ink: hsl(30 4% 92%);
+	--erg-muted: hsl(30 3% 62%);
+	--erg-dim: hsl(30 3% 52%);
+	--erg-line: hsl(30 6% 100% / 0.09);
+	--erg-line-strong: hsl(30 6% 100% / 0.16);
+	--erg-surface: hsl(30 5% 8% / 0.6);
+	--erg-surface-solid: hsl(30 5% 9%);
+	--erg-admin-offset: 0px;
+	background:
+		radial-gradient(ellipse 70% 50% at 50% -8%, hsl(var(--accent-hsl) / 0.1) 0%, transparent 68%),
+		linear-gradient(180deg, hsl(30 5% 8%) 0%, var(--nx-bg-deep) 46%, hsl(28 8% 6%) 100%);
+	color: var(--erg-ink);
+	font-family: var(--nx-font);
+	font-size: 1rem;
+	line-height: 1.65;
+}
+
+.admin-bar .hu-erg { --erg-admin-offset: var(--wp-admin--admin-bar--height, 32px); }
+.hu-erg *,
+.hu-erg *::before,
+.hu-erg *::after { box-sizing: border-box; }
+
+.hu-erg :is(h1, h2, h3) {
+	margin: 0 0 var(--nx-space-md);
+	color: var(--erg-ink);
+	font-family: var(--nx-font-heading);
+	font-weight: 700;
+	letter-spacing: -0.032em;
+	line-height: 1.14;
+	text-wrap: balance;
+	overflow-wrap: break-word;
+	hyphens: auto;
+}
+
+.hu-erg h2 { font-size: clamp(1.9rem, 3.2vw, 2.85rem); }
+.hu-erg h3 { font-size: clamp(1.15rem, 1.6vw, 1.35rem); letter-spacing: -0.02em; }
+.hu-erg p { margin: 0 0 var(--nx-space-md); text-wrap: pretty; }
+.hu-erg p:last-child { margin-bottom: 0; }
+.hu-erg ul,
+.hu-erg ol { margin: 0; padding: 0; list-style: none; }
+
+.hu-erg :is(a, button, summary, [tabindex]):focus-visible {
+	outline: 3px solid var(--nx-gold);
+	outline-offset: 3px;
+	border-radius: var(--nx-radius-sm);
+}
+
+.hu-erg [id] { scroll-margin-top: calc(var(--nx-site-header-height, 64px) + var(--erg-admin-offset) + var(--nx-space-xl)); }
+
+.hu-erg__shell {
+	width: 100%;
+	max-width: 1180px;
+	margin-inline: auto;
+	padding-inline: var(--nx-space-lg);
+}
+
+.hu-erg__eyebrow {
+	margin: 0 0 var(--nx-space-md);
+	color: var(--nx-gold);
+	font-size: 0.8125rem;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: 0.085em;
+	text-transform: uppercase;
+}
+
+.hu-erg__lede {
+	max-width: 62ch;
+	color: var(--erg-muted);
+	font-size: clamp(1.02rem, 1.3vw, 1.14rem);
+	line-height: 1.7;
+}
+
+.hu-erg .hu-erg__note {
+	max-width: 68ch;
+	color: var(--erg-dim);
+	font-size: 0.875rem;
+	line-height: 1.65;
+}
+
+.hu-erg .hu-erg__note a { color: var(--erg-muted); }
+.hu-erg .hu-erg__note a:is(:hover, :focus-visible) { color: var(--nx-gold); }
+
+.hu-erg__head { max-width: 780px; margin-bottom: var(--nx-space-2xl); }
+
+.hu-erg .hu-erg__link {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--nx-space-sm);
+	min-height: 44px;
+	color: var(--nx-gold);
+	font-weight: 600;
+	text-decoration: none;
+	border-bottom: 1px solid hsl(var(--accent-hsl) / 0.35);
+	transition: color var(--nx-duration) var(--nx-ease),
+		border-color var(--nx-duration) var(--nx-ease);
+}
+
+.hu-erg .hu-erg__link:is(:hover, :focus-visible) {
+	color: var(--nx-gold-hover);
+	border-bottom-color: var(--nx-gold-hover);
+}
+
+.hu-erg .hu-erg__link--quiet {
+	color: var(--erg-muted);
+	border-bottom-color: var(--erg-line-strong);
+}
+
+.hu-erg .hu-erg__link--quiet:is(:hover, :focus-visible) { color: var(--erg-ink); }
+
+/* Chips: gelieferte Gewerke, nie ein Anspruch auf Wirkung.
+   ========================================================================== */
+
+.hu-erg-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--nx-space-sm);
+	margin-bottom: var(--nx-space-lg);
+}
+
+.hu-erg-chips li {
+	padding: 0.42rem 0.85rem;
+	border: 1px solid var(--erg-line);
+	border-radius: var(--nx-radius-pill);
+	background: var(--erg-surface);
+	color: var(--erg-muted);
+	font-size: 0.8125rem;
+	line-height: 1.45;
+}
+
+.hu-erg-chips--quiet li {
+	border-color: transparent;
+	background: hsl(30 6% 100% / 0.045);
+	font-size: 0.75rem;
+	letter-spacing: 0.02em;
+}
+
+/* 01 — Hero
+   ========================================================================== */
+
+.hu-erg-hero {
+	padding-block: calc(var(--nx-site-header-height, 64px) + var(--nx-space-3xl)) var(--nx-space-2xl);
+	border-bottom: 1px solid var(--erg-line);
+}
+
+.hu-erg-hero__title {
+	max-width: 20ch;
+	margin-bottom: var(--nx-space-lg);
+	font-size: clamp(2.6rem, 6vw, 4.6rem);
+	line-height: 1.02;
+	letter-spacing: -0.042em;
+}
+
+.hu-erg-hero__lede {
+	max-width: 56ch;
+	margin-bottom: var(--nx-space-lg);
+	color: var(--erg-muted);
+	font-size: clamp(1.06rem, 1.5vw, 1.28rem);
+	line-height: 1.62;
+}
+
+.hu-erg-hero__scope {
+	margin-bottom: var(--nx-space-2xl);
+	color: var(--erg-dim);
+	font-size: 0.8125rem;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+}
+
+.hu-erg-inventory {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--nx-space-lg);
+	margin-bottom: var(--nx-space-2xl);
+	padding-block: var(--nx-space-lg);
+	border-block: 1px solid var(--erg-line);
+}
+
+.hu-erg-inventory li { min-width: 0; }
+
+.hu-erg-inventory strong {
+	display: block;
+	margin-bottom: 0.3rem;
+	font-family: var(--nx-font-heading);
+	font-size: clamp(1.02rem, 1.5vw, 1.16rem);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+}
+
+.hu-erg-inventory span {
+	display: block;
+	color: var(--erg-dim);
+	font-size: 0.875rem;
+	line-height: 1.55;
+}
+
+.hu-erg-hero__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--nx-space-xl);
+	margin-bottom: var(--nx-space-lg);
+}
+
+.hu-erg-hero__note { max-width: 58ch; }
+
+/* Sektionsrhythmus
+   ========================================================================== */
+
+.hu-erg-section { padding-block: var(--nx-space-section); }
+.hu-erg-section--alt { background: hsl(30 6% 100% / 0.022); border-block: 1px solid var(--erg-line); }
+
+/* 02 — Vorher/Nachher-Bilanz
+   ========================================================================== */
+
+.hu-erg-case__client {
+	margin-bottom: var(--nx-space-sm);
+	color: var(--erg-ink);
+	font-family: var(--nx-font-mono);
+	font-size: 0.8125rem;
+	letter-spacing: 0.02em;
+}
+
+.hu-erg-ledger {
+	margin-bottom: var(--nx-space-xl);
+	border-top: 1px solid var(--erg-line-strong);
+}
+
+.hu-erg-ledger__row {
+	display: grid;
+	grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr) auto minmax(0, 1fr);
+	gap: var(--nx-space-md) var(--nx-space-lg);
+	align-items: baseline;
+	padding-block: var(--nx-space-lg);
+	border-bottom: 1px solid var(--erg-line);
+}
+
+.hu-erg-ledger__label {
+	color: var(--erg-muted);
+	font-size: 0.9375rem;
+	font-weight: 600;
+}
+
+.hu-erg-ledger__cell { display: block; min-width: 0; }
+
+.hu-erg-ledger__state {
+	display: block;
+	margin-bottom: 0.2rem;
+	color: var(--erg-dim);
+	font-size: 0.6875rem;
+	letter-spacing: 0.11em;
+	text-transform: uppercase;
+}
+
+.hu-erg-ledger__value {
+	display: block;
+	font-family: var(--nx-font-heading);
+	font-size: clamp(1.05rem, 2vw, 1.5rem);
+	font-weight: 700;
+	letter-spacing: -0.022em;
+	line-height: 1.2;
+	overflow-wrap: break-word;
+	hyphens: auto;
+}
+
+.hu-erg-ledger__cell--before .hu-erg-ledger__value { color: var(--erg-dim); }
+
+/* inline-block, damit die Kupferlinie den Wert traegt und nicht die ganze
+   Rasterzelle: als Block lief sie als loser Strich durch die Spalte. */
+.hu-erg-ledger__cell--after .hu-erg-ledger__value {
+	display: inline-block;
+	color: var(--erg-ink);
+	padding-bottom: var(--nx-space-xs);
+	background-image: linear-gradient(90deg, var(--nx-gold), hsl(var(--accent-hsl) / 0));
+	background-repeat: no-repeat;
+	background-position: 0 100%;
+	background-size: 100% 2px;
+}
+
+.hu-erg-ledger__arrow {
+	align-self: center;
+	color: var(--nx-gold);
+	font-size: 1.1rem;
+}
+
+.hu-erg-case__band {
+	margin-bottom: var(--nx-space-2xl);
+	padding: var(--nx-space-lg);
+	border: 1px solid var(--erg-line-strong);
+	border-radius: var(--nx-radius-md);
+	background: var(--erg-surface);
+	color: var(--erg-muted);
+	font-size: clamp(0.95rem, 1.4vw, 1.06rem);
+	line-height: 1.7;
+}
+
+.hu-erg-case__band strong {
+	color: var(--erg-ink);
+	font-family: var(--nx-font-heading);
+	font-size: 1.15em;
+	font-weight: 700;
+}
+
+.hu-erg-case__band span { color: var(--erg-dim); padding-inline: 0.35rem; }
+
+.hu-erg-case__foot {
+	display: grid;
+	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+	gap: var(--nx-space-2xl);
+	align-items: start;
+}
+
+.hu-erg-case__scope h3 { margin-bottom: var(--nx-space-md); }
+.hu-erg-case__scope .hu-erg__note { margin-bottom: var(--nx-space-lg); }
+
+.hu-erg-defs {
+	padding: var(--nx-space-lg);
+	border: 1px solid var(--erg-line);
+	border-left: 2px solid var(--nx-gold);
+	border-radius: var(--nx-radius-md);
+	background: var(--erg-surface);
+}
+
+/* Beschriftung, keine Abschnittsueberschrift: .hu-erg h3 ist spezifischer
+   als eine einzelne Klasse und haette sie sonst auf H3-Groesse gezogen. */
+.hu-erg .hu-erg-defs__title {
+	margin-bottom: var(--nx-space-md);
+	font-size: 0.9375rem;
+	letter-spacing: 0.01em;
+}
+
+.hu-erg-defs__list { margin-bottom: var(--nx-space-md); }
+.hu-erg-defs__list > div + div { margin-top: var(--nx-space-md); }
+
+.hu-erg-defs dt {
+	color: var(--erg-ink);
+	font-size: 0.875rem;
+	font-weight: 700;
+}
+
+.hu-erg-defs dd {
+	margin: 0.2rem 0 0;
+	color: var(--erg-muted);
+	font-size: 0.875rem;
+	line-height: 1.6;
+}
+
+/* 03 — Oeffentlich pruefbare Arbeiten
+   ========================================================================== */
+
+.hu-erg-works {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--nx-space-lg);
+}
+
+.hu-erg-work {
+	display: flex;
+	flex-direction: column;
+	padding: var(--nx-space-xl);
+	border: 1px solid var(--erg-line);
+	border-radius: var(--nx-radius-lg);
+	background: var(--erg-surface-solid);
+	transition: border-color var(--nx-duration) var(--nx-ease),
+		transform var(--nx-duration) var(--nx-ease);
+}
+
+.hu-erg-work h3 { margin-bottom: var(--nx-space-xs); }
+
+/* Als reine Textzeile war das Ziel 23px hoch. Der Link traegt die Karte —
+   er bekommt eine eigene Trefferflaeche. */
+.hu-erg-work h3 a {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--nx-space-xs);
+	min-height: 44px;
+	color: var(--erg-ink);
+	text-decoration: none;
+	overflow-wrap: anywhere;
+}
+
+.hu-erg-work h3 a:is(:hover, :focus-visible) { color: var(--nx-gold); }
+
+.hu-erg-work__role {
+	margin-bottom: var(--nx-space-sm);
+	color: var(--erg-dim);
+	font-size: 0.8125rem;
+}
+
+.hu-erg-work > p:not(.hu-erg__eyebrow):not(.hu-erg-work__role) {
+	margin-bottom: var(--nx-space-lg);
+	color: var(--erg-muted);
+	font-size: 0.9375rem;
+}
+
+.hu-erg-work .hu-erg-chips { margin-top: auto; margin-bottom: 0; }
+
+@media (hover: hover) and (pointer: fine) {
+	.hu-erg-work:hover { border-color: var(--erg-line-strong); transform: translateY(-3px); }
+}
+
+/* 04 — Technischer Eigenbeweis
+   ========================================================================== */
+
+.hu-erg-tiles {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+	gap: var(--nx-space-md);
+	margin-bottom: var(--nx-space-lg);
+}
+
+.hu-erg-tile {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+	padding: var(--nx-space-lg);
+	border: 1px solid var(--erg-line);
+	border-radius: var(--nx-radius-lg);
+	background: var(--erg-surface-solid);
+	text-decoration: none;
+}
+
+.hu-erg-tile strong {
+	display: flex;
+	align-items: center;
+	gap: 0.45rem;
+	color: var(--erg-ink);
+	font-family: var(--nx-font-heading);
+	font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+	font-weight: 700;
+	letter-spacing: -0.04em;
+	line-height: 1;
+}
+
+.hu-erg-tile strong small {
+	color: var(--erg-dim);
+	font-size: 0.42em;
+	font-weight: 600;
+	letter-spacing: 0;
+}
+
+.hu-erg-tile > span { color: var(--erg-muted); font-size: 0.875rem; line-height: 1.4; }
+.hu-erg-tile em { color: var(--erg-dim); font-size: 0.75rem; font-style: normal; }
+
+.hu-erg-tile--live {
+	border-color: hsl(var(--accent-hsl) / 0.3);
+	transition: border-color var(--nx-duration) var(--nx-ease);
+}
+
+.hu-erg-tile--live strong { font-size: clamp(1.4rem, 2.4vw, 1.8rem); }
+.hu-erg-tile--live:is(:hover, :focus-visible) { border-color: var(--nx-gold); }
+
+.hu-erg-tile__pulse {
+	flex: none;
+	width: 9px;
+	height: 9px;
+	border-radius: var(--nx-radius-pill);
+	background: var(--nx-gold);
+	box-shadow: 0 0 0 0 hsl(var(--accent-hsl) / 0.55);
+	animation: hu-erg-pulse 2.4s var(--nx-ease) infinite;
+}
+
+@keyframes hu-erg-pulse {
+	70% { box-shadow: 0 0 0 9px hsl(var(--accent-hsl) / 0); }
+	100% { box-shadow: 0 0 0 0 hsl(var(--accent-hsl) / 0); }
+}
+
+.hu-erg-tiles__note { margin-bottom: var(--nx-space-2xl); }
+
+.hu-erg-chain {
+	margin-bottom: var(--nx-space-2xl);
+	padding: var(--nx-space-xl);
+	border: 1px solid var(--erg-line);
+	border-radius: var(--nx-radius-lg);
+	background: var(--erg-surface);
+}
+
+.hu-erg .hu-erg-chain__title {
+	margin-bottom: var(--nx-space-lg);
+	font-size: 0.9375rem;
+	letter-spacing: 0.01em;
+}
+
+.hu-erg-chain__flow {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: var(--nx-space-md);
+}
+
+.hu-erg-chain__flow li {
+	position: relative;
+	min-width: 0;
+	padding-top: var(--nx-space-md);
+	border-top: 1px solid var(--erg-line-strong);
+}
+
+.hu-erg-chain__flow li::before {
+	content: "";
+	position: absolute;
+	top: -3px;
+	left: 0;
+	width: 5px;
+	height: 5px;
+	border-radius: var(--nx-radius-pill);
+	background: var(--nx-gold);
+}
+
+.hu-erg-chain__index {
+	display: block;
+	margin-bottom: 0.25rem;
+	color: var(--nx-gold);
+	font-family: var(--nx-font-mono);
+	font-size: 0.6875rem;
+	letter-spacing: 0.08em;
+}
+
+.hu-erg-chain__flow strong {
+	display: block;
+	color: var(--erg-ink);
+	font-size: 0.9375rem;
+	font-weight: 700;
+	overflow-wrap: break-word;
+	hyphens: auto;
+}
+
+.hu-erg-chain__flow small { display: block; color: var(--erg-dim); font-size: 0.75rem; line-height: 1.5; }
+
+.hu-erg-tech__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--nx-space-lg) var(--nx-space-xl);
+}
+
+/* 05 — White-Label
+   ========================================================================== */
+
+.hu-erg-wl {
+	display: grid;
+	grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+	gap: var(--nx-space-2xl);
+	align-items: start;
+}
+
+.hu-erg-wl .hu-erg__note { margin-top: var(--nx-space-lg); }
+.hu-erg .hu-erg-wl__subtitle { margin-bottom: var(--nx-space-md); font-size: 0.9375rem; letter-spacing: 0.01em; }
+
+/* 06 — Drei naechste Wege
+   ========================================================================== */
+
+.hu-erg-next__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--nx-space-lg);
+	margin-bottom: var(--nx-space-xl);
+}
+
+.hu-erg-next__card {
+	display: flex;
+	flex-direction: column;
+	padding: var(--nx-space-xl);
+	border: 1px solid var(--erg-line);
+	border-radius: var(--nx-radius-lg);
+	background: var(--erg-surface-solid);
+}
+
+.hu-erg-next__index {
+	display: block;
+	margin-bottom: var(--nx-space-md);
+	color: var(--erg-dim);
+	font-family: var(--nx-font-mono);
+	font-size: 0.75rem;
+	letter-spacing: 0.08em;
+}
+
+.hu-erg-next__card h3 { margin-bottom: var(--nx-space-sm); }
+
+.hu-erg-next__card > p {
+	color: var(--erg-muted);
+	font-size: 0.9375rem;
+}
+
+/* Der CTA sitzt unten buendig, damit die drei Karten eine Fluchtlinie haben.
+   Das kanonische Marktcheck-Label ist laenger als eine Knopfzeile — es darf
+   umbrechen statt abgeschnitten zu werden. */
+.hu-erg .hu-erg-next__cta {
+	display: block;
+	margin-top: auto;
+	width: 100%;
+	padding: var(--nx-space-md);
+	white-space: normal;
+	text-align: center;
+	line-height: 1.3;
+}
+
+/* Als Flex-Geschwister stand der Pfeil neben dem zweizeiligen Label in der
+   Mitte. Im Blockfluss haengt er dort, wo der Satz endet. */
+.hu-erg .hu-erg-next__cta > span { margin-left: var(--nx-space-sm); }
+
+.hu-erg-next__card .hu-erg__note { margin-top: var(--nx-space-md); }
+.hu-erg-next__foot { max-width: 74ch; }
+
+/* Reveal — Endzustand ist der Normalfall, Verstecken die Ausnahme.
+   ========================================================================== */
+
+.hu-js .hu-erg .nx-reveal {
+	opacity: 0;
+	transform: translateY(16px);
+	transition: opacity 520ms var(--nx-ease), transform 520ms var(--nx-ease);
+}
+
+.hu-js .hu-erg .nx-reveal.nx-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* Der einzige Fokalmoment: die Nachher-Spalte kommt nach der Vorher-Spalte an. */
+.hu-js .hu-erg .nx-reveal .hu-erg-ledger__cell--after,
+.hu-js .hu-erg .nx-reveal .hu-erg-ledger__arrow {
+	opacity: 0;
+	transition: opacity 380ms var(--nx-ease) 120ms;
+}
+
+.hu-js .hu-erg .nx-reveal.nx-visible .hu-erg-ledger__cell--after,
+.hu-js .hu-erg .nx-reveal.nx-visible .hu-erg-ledger__arrow {
+	opacity: 1;
+}
+
+.hu-js .hu-erg .nx-reveal .hu-erg-ledger__cell--after .hu-erg-ledger__value {
+	background-size: 0 2px;
+	transition: background-size 420ms var(--nx-ease) 220ms;
+}
+
+.hu-js .hu-erg .nx-reveal.nx-visible .hu-erg-ledger__cell--after .hu-erg-ledger__value {
+	background-size: 100% 2px;
+}
+
+/* Responsive
+   ========================================================================== */
+
+@media (max-width: 960px) {
+	.hu-erg-case__foot,
+	.hu-erg-wl { grid-template-columns: minmax(0, 1fr); gap: var(--nx-space-xl); }
+	.hu-erg-works,
+	.hu-erg-next__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.hu-erg-chain__flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+	.hu-erg-hero { padding-block: calc(var(--nx-site-header-height, 64px) + var(--nx-space-2xl)) var(--nx-space-xl); }
+	.hu-erg-section { padding-block: var(--nx-space-3xl); }
+	.hu-erg-inventory { grid-template-columns: minmax(0, 1fr); gap: var(--nx-space-md); }
+	.hu-erg-works,
+	.hu-erg-next__grid,
+	.hu-erg-chain__flow { grid-template-columns: minmax(0, 1fr); }
+	.hu-erg-hero__actions { flex-direction: column; align-items: flex-start; gap: var(--nx-space-md); }
+
+	/* Die Bilanz kippt in zwei Zeilen: Merkmal oben, Vorher/Nachher darunter.
+	   Der Pfeil bleibt zwischen den Werten, sonst geht die Richtung verloren. */
+	.hu-erg-ledger__row {
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+		gap: var(--nx-space-sm) var(--nx-space-md);
+	}
+
+	.hu-erg-ledger__label { grid-column: 1 / -1; }
+	.hu-erg-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.hu-erg-tech__links { flex-direction: column; gap: var(--nx-space-md); }
+}
+
+/* Reduced motion: Endzustand, keine Bewegung, kein Dauerpuls.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-js .hu-erg .nx-reveal,
+	.hu-js .hu-erg .nx-reveal .hu-erg-ledger__cell--after,
+	.hu-js .hu-erg .nx-reveal .hu-erg-ledger__arrow {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.hu-js .hu-erg .nx-reveal .hu-erg-ledger__cell--after .hu-erg-ledger__value {
+		background-size: 100% 2px;
+		transition: none;
+	}
+
+	.hu-erg-tile__pulse { animation: none; }
+	.hu-erg-work,
+	.hu-erg-tile--live,
+	.hu-erg .hu-erg__link { transition: none; }
+
+	@media (hover: hover) and (pointer: fine) {
+		.hu-erg-work:hover { transform: none; }
+	}
+}
