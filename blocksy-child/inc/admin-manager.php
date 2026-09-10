@@ -67,3 +67,10 @@ function hu_save_nexus_profile_fields( $user_id ) {
 }
 add_action( 'personal_options_update', 'hu_save_nexus_profile_fields' );
 add_action( 'edit_user_profile_update', 'hu_save_nexus_profile_fields' );
+
+// Additional Nexus backend workspaces stay isolated in their own bootstrap.
+$nexus_crm_sales_bootstrap = __DIR__ . '/crm-sales.php';
+if ( file_exists( $nexus_crm_sales_bootstrap ) ) {
+    require_once $nexus_crm_sales_bootstrap;
+}
+unset( $nexus_crm_sales_bootstrap );
