@@ -22,6 +22,7 @@ $tracking_url   = $routes['tracking_b2b'] ?? home_url( '/server-side-tracking-b2
 $contact_url    = function_exists( 'hu_get_navigation_project_request_url' )
 	? hu_get_navigation_project_request_url()
 	: home_url( '/kontakt/' );
+$results_url    = home_url( '/ergebnisse/' );
 $psi_url        = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/' ) );
 
 $e3_canon      = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
@@ -78,18 +79,29 @@ $home_proof_tiles = [
 	],
 ];
 
+$e3_cpl_reduction    = $e3_metric( 'cpl_reduction', 'value' );
+$e3_cpl_before       = $e3_metric( 'cpl_before' );
+$e3_cpl_after        = $e3_metric( 'cpl_after' );
+$e3_lead_count       = $e3_metric( 'lead_count' );
+$e3_lead_conversion  = $e3_metric( 'lead_conversion' );
+$e3_sales_conversion = $e3_metric( 'sales_conversion' );
+$e3_timeframe        = $e3_metric( 'timeframe', 'display_dative' );
+
 $e3_case_metrics = [
 	[
-		'value' => trim( $e3_metric( 'cpl_before' ) . ' → ' . $e3_metric( 'cpl_after' ) ),
-		'label' => 'Kosten pro Anfrage',
-	],
-	[
-		'value' => $e3_metric( 'lead_count' ),
+		'value' => $e3_lead_count,
 		'label' => 'qualifizierte Anfragen',
+		'note'  => 'in ' . $e3_timeframe,
 	],
 	[
-		'value' => $e3_metric( 'sales_conversion' ),
+		'value' => $e3_lead_conversion,
+		'label' => 'Lead-Conversion-Rate',
+		'note'  => 'auf der Anfragestrecke',
+	],
+	[
+		'value' => $e3_sales_conversion,
 		'label' => 'Abschlussquote',
+		'note'  => 'inkl. Beitrag des Vertriebs',
 	],
 ];
 
@@ -101,10 +113,18 @@ wp_enqueue_style(
 	function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $home_art_css_path ) : ( file_exists( $home_art_css_path ) ? (string) filemtime( $home_art_css_path ) : null )
 );
 
+$home_art_v3_css_path = get_stylesheet_directory() . '/assets/css/homepage-art-v3.css';
+wp_enqueue_style(
+	'nexus-home-art-v3-css',
+	get_stylesheet_directory_uri() . '/assets/css/homepage-art-v3.css',
+	[ 'nexus-home-art-css' ],
+	function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $home_art_v3_css_path ) : ( file_exists( $home_art_v3_css_path ) ? (string) filemtime( $home_art_v3_css_path ) : null )
+);
+
 get_header();
 ?>
 
-<div class="hu-hp hu-hp--art" id="top" data-track-section="homepage">
+<div class="hu-hp hu-hp--art hu-hp--art-v3" id="top" data-track-section="homepage">
 	<section class="hu-hero hu-hero--hub" id="hero" data-track-section="hero" aria-labelledby="hu-home-title">
 		<div class="hu-container hu-hero__container">
 			<div class="hu-hero__lede">
@@ -234,28 +254,68 @@ get_header();
 		</div>
 	</section>
 
-	<section class="hu-section hu-section--case" id="beleg" data-track-section="beleg" aria-labelledby="hu-case-h">
+	<section class="hu-section hu-section--case hu-case-v3" id="beleg" data-track-section="beleg" aria-labelledby="hu-case-h">
 		<div class="hu-container">
-			<div class="hu-section-heading hu-reveal">
-				<div><span class="hu-eyebrow">Dokumentierter Projektfall</span><h2 id="hu-case-h">Was passiert, wenn Website, Messung und Vertrieb als Strecke arbeiten.</h2></div>
-				<p>Landingpages, Kampagnen, Tracking, Vorqualifizierung und Vertrieb wurden im Referenzfall <?php echo esc_html( $e3_case_label ); ?> miteinander verbunden.</p>
+			<div class="hu-case-v3__head hu-reveal">
+				<div>
+					<span class="hu-eyebrow">Ausgewähltes Großprojekt · Gesamtfunnel</span>
+					<h2 id="hu-case-h">Vom ersten Besuch bis zur Vertriebsübergabe.</h2>
+				</div>
+				<div class="hu-case-v3__intro">
+					<p>Ein Beispiel aus meiner Projektarbeit: Für einen <?php echo esc_html( $e3_case_label ); ?> wurden Website, Landingpages, Kampagnen, Tracking, Vorqualifizierung und Vertriebsübergabe als Gesamtfunnel aufgebaut und laufend optimiert.</p>
+					<p class="hu-case-v3__stack">Website <span>·</span> Landingpages <span>·</span> Kampagnen <span>·</span> Tracking <span>·</span> Vorqualifizierung <span>·</span> Vertrieb</p>
+				</div>
 			</div>
-			<dl class="hu-case-metrics hu-reveal">
-				<?php foreach ( $e3_case_metrics as $metric ) : ?>
-					<div><dt><?php echo esc_html( $metric['value'] ); ?></dt><dd><?php echo esc_html( $metric['label'] ); ?></dd></div>
-				<?php endforeach; ?>
-			</dl>
-			<div class="hu-case-foot hu-reveal"><small>Ergebnis des gesamten Systems, keine Prognose für andere Projekte.</small><a class="hu-inline-link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_case_study" data-track-category="proof" data-track-section="beleg">Case Study ansehen <span aria-hidden="true">→</span></a></div>
+
+			<div class="hu-case-v3__proof hu-reveal">
+				<div class="hu-case-v3__primary">
+					<span class="hu-case-v3__index">01 / Effizienz</span>
+					<strong>−<?php echo esc_html( $e3_cpl_reduction ); ?> %</strong>
+					<span>Kosten pro Anfrage</span>
+					<small><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></small>
+				</div>
+				<dl class="hu-case-v3__metrics">
+					<?php foreach ( $e3_case_metrics as $index => $metric ) : ?>
+						<div>
+							<span class="hu-case-v3__index">0<?php echo esc_html( (string) ( $index + 2 ) ); ?> / Ergebnis</span>
+							<dt><?php echo esc_html( $metric['value'] ); ?></dt>
+							<dd><?php echo esc_html( $metric['label'] ); ?><small><?php echo esc_html( $metric['note'] ); ?></small></dd>
+						</div>
+					<?php endforeach; ?>
+				</dl>
+			</div>
+
+			<div class="hu-case-v3__foot hu-reveal">
+				<p>Ausgewählter Referenzfall. Die Werte zeigen das Gesamtsystem und isolieren keinen WordPress-Effekt. Sie sind keine Prognose für andere Projekte.</p>
+				<div class="hu-case-v3__links">
+					<a class="hu-inline-link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_case_study" data-track-category="proof" data-track-section="beleg">Großprojekt im Detail <span aria-hidden="true">→</span></a>
+					<a class="hu-inline-link hu-inline-link--quiet" href="<?php echo esc_url( $results_url ); ?>" data-track-action="home_more_results" data-track-category="proof" data-track-section="beleg">Weitere Arbeiten ansehen <span aria-hidden="true">→</span></a>
+				</div>
+			</div>
 		</div>
 	</section>
 
 	<section class="hu-section hu-section--fit" id="abgrenzung" data-track-section="abgrenzung" aria-labelledby="hu-fit-h">
-		<div class="hu-container hu-fit">
-			<div class="hu-reveal"><span class="hu-eyebrow">Passt nicht für jedes Projekt</span><h2 id="hu-fit-h">Relevant wird mein Setup, wenn die Übergänge zählen.</h2></div>
-			<div class="hu-fit__copy hu-reveal">
-				<p>Wenn es nur um ein visuelles Redesign oder eine einfache Visitenkarte geht, ist mein Setup unnötig. Relevant bin ich, wenn Website, Messung und Anfrageübergabe zusammen funktionieren sollen.</p>
-				<p>Sie arbeiten direkt mit mir. Scope und Preis stehen vor dem Start fest; Code, Konten und Zugänge bleiben in Ihrer Hand.</p>
+		<div class="hu-container hu-fit hu-fit-v3">
+			<div class="hu-fit-v3__lead hu-reveal">
+				<span class="hu-eyebrow">Passt nicht für jedes Projekt</span>
+				<h2 id="hu-fit-h">Relevant wird mein Setup, wenn die Übergänge zählen.</h2>
 				<a class="hu-inline-link" href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="abgrenzung">Mehr über Haşim Üner <span aria-hidden="true">→</span></a>
+			</div>
+			<div class="hu-fit-v3__matrix hu-reveal">
+				<div class="hu-fit-v3__row hu-fit-v3__row--muted">
+					<span>Unnötig, wenn</span>
+					<p>es nur um ein visuelles Redesign oder eine einfache Visitenkarte geht.</p>
+				</div>
+				<div class="hu-fit-v3__row hu-fit-v3__row--active">
+					<span>Relevant, wenn</span>
+					<p>Website, Messung und Anfrageübergabe als zusammenhängende Strecke funktionieren sollen.</p>
+				</div>
+				<ul class="hu-fit-v3__facts" aria-label="Zusammenarbeit">
+					<li><strong>Direkter Kontakt</strong><span>Sie arbeiten mit mir, nicht über Projektmanager.</span></li>
+					<li><strong>Scope &amp; Preis vor Start</strong><span>Umfang, Abhängigkeiten und Kosten werden vorab geklärt.</span></li>
+					<li><strong>Code &amp; Konten bleiben bei Ihnen</strong><span>Code, Konten und Zugänge bleiben in Ihrer Hand.</span></li>
+				</ul>
 			</div>
 		</div>
 	</section>
