@@ -85,7 +85,7 @@ $e3_cpl_after        = $e3_metric( 'cpl_after' );
 $e3_lead_count       = $e3_metric( 'lead_count' );
 $e3_lead_conversion  = $e3_metric( 'lead_conversion' );
 $e3_sales_conversion = $e3_metric( 'sales_conversion' );
-$e3_timeframe        = $e3_metric( 'timeframe' );
+$e3_timeframe        = $e3_metric( 'timeframe', 'display_dative' );
 
 $e3_case_metrics = [
 	[
@@ -314,7 +314,7 @@ get_header();
 				<ul class="hu-fit-v3__facts" aria-label="Zusammenarbeit">
 					<li><strong>Direkter Kontakt</strong><span>Sie arbeiten mit mir, nicht über Projektmanager.</span></li>
 					<li><strong>Scope &amp; Preis vor Start</strong><span>Umfang, Abhängigkeiten und Kosten werden vorab geklärt.</span></li>
-					<li><strong>Ihre Systeme bleiben Ihre</strong><span>Code, Konten und Zugänge bleiben in Ihrer Hand.</span></li>
+					<li><strong>Code &amp; Konten bleiben bei Ihnen</strong><span>Code, Konten und Zugänge bleiben in Ihrer Hand.</span></li>
 				</ul>
 			</div>
 		</div>
