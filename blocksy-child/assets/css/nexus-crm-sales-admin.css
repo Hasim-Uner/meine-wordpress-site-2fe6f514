@@ -1,0 +1,310 @@
+.nexus-crm-sales-shell {
+	--crm-accent: #b46a3c;
+	--crm-text: #1d2327;
+	--crm-muted: #646970;
+	--crm-border: #dcdcde;
+	--crm-surface: #fff;
+	--crm-soft: #f6f7f7;
+	--crm-danger: #b32d2e;
+	max-width: 1600px;
+}
+
+.nexus-crm-sales-shell * { box-sizing: border-box; }
+
+.nexus-crm-sales-head,
+.nexus-crm-panel-head,
+.nexus-crm-head-actions,
+.nexus-crm-activity-meta,
+.nexus-crm-activity-links {
+	display: flex;
+	align-items: center;
+}
+
+.nexus-crm-sales-head {
+	justify-content: space-between;
+	gap: 24px;
+	margin: 24px 0;
+}
+
+.nexus-crm-sales-head h1,
+.nexus-crm-panel h2,
+.nexus-crm-stage h3,
+.nexus-crm-activity h3 { margin: 0; }
+
+.nexus-crm-sales-head > div:first-child > p:last-child,
+.nexus-crm-muted,
+.nexus-crm-empty,
+.nexus-crm-activity p { color: var(--crm-muted); }
+
+.nexus-crm-head-actions {
+	justify-content: flex-end;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.nexus-crm-head-actions form { margin: 0; }
+
+.nexus-crm-eyebrow {
+	margin: 0 0 4px;
+	color: var(--crm-accent);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+}
+
+.nexus-crm-kpis {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 12px;
+	margin: 0 0 20px;
+}
+
+.nexus-crm-kpis > div,
+.nexus-crm-panel,
+.nexus-crm-stage {
+	background: var(--crm-surface);
+	border: 1px solid var(--crm-border);
+	border-radius: 12px;
+}
+
+.nexus-crm-kpis > div { padding: 16px; }
+
+.nexus-crm-kpis span {
+	display: block;
+	margin-bottom: 8px;
+	color: var(--crm-muted);
+	font-size: 12px;
+}
+
+.nexus-crm-kpis strong {
+	display: block;
+	font-size: 24px;
+	line-height: 1.1;
+}
+
+.nexus-crm-sales-grid,
+.nexus-crm-detail-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
+	margin: 0 0 20px;
+}
+
+.nexus-crm-panel {
+	padding: 20px;
+	margin: 0 0 20px;
+}
+
+.nexus-crm-sales-grid .nexus-crm-panel,
+.nexus-crm-detail-grid .nexus-crm-panel { margin-bottom: 0; }
+
+.nexus-crm-panel-head {
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+
+.nexus-crm-panel-head h2 { font-size: 18px; }
+
+.nexus-crm-count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 28px;
+	height: 28px;
+	padding: 0 8px;
+	border-radius: 999px;
+	background: var(--crm-soft);
+	color: var(--crm-text);
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.nexus-crm-action-list {
+	display: grid;
+	gap: 8px;
+}
+
+.nexus-crm-action-list a,
+.nexus-crm-deal {
+	display: block;
+	padding: 12px;
+	border: 1px solid var(--crm-border);
+	border-radius: 8px;
+	background: var(--crm-surface);
+	color: var(--crm-text);
+	text-decoration: none;
+}
+
+.nexus-crm-action-list a:hover,
+.nexus-crm-action-list a:focus-visible,
+.nexus-crm-deal:hover,
+.nexus-crm-deal:focus-visible {
+	border-color: var(--crm-accent);
+	box-shadow: 0 0 0 1px var(--crm-accent);
+}
+
+.nexus-crm-action-list strong,
+.nexus-crm-action-list span,
+.nexus-crm-deal strong,
+.nexus-crm-deal span,
+.nexus-crm-deal b,
+.nexus-crm-deal small { display: block; }
+
+.nexus-crm-action-list span,
+.nexus-crm-deal span,
+.nexus-crm-deal small {
+	margin-top: 4px;
+	color: var(--crm-muted);
+	font-size: 12px;
+	line-height: 1.45;
+}
+
+.nexus-crm-deal b {
+	margin-top: 8px;
+	font-size: 14px;
+}
+
+.nexus-crm-deal small.is-overdue {
+	color: var(--crm-danger);
+	font-weight: 700;
+}
+
+.nexus-crm-form {
+	display: grid;
+	gap: 12px;
+}
+
+.nexus-crm-form label,
+.nexus-crm-automation legend { font-weight: 600; }
+
+.nexus-crm-form input[type="text"],
+.nexus-crm-form input[type="email"],
+.nexus-crm-form input[type="datetime-local"],
+.nexus-crm-form select,
+.nexus-crm-form textarea {
+	width: 100%;
+	margin-top: 4px;
+}
+
+.nexus-crm-pipeline-section { overflow: hidden; }
+
+.nexus-crm-pipeline {
+	display: grid;
+	grid-template-columns: repeat(7, minmax(240px, 1fr));
+	gap: 12px;
+	overflow-x: auto;
+	padding: 4px 4px 12px;
+	scrollbar-gutter: stable;
+}
+
+.nexus-crm-stage {
+	min-height: 240px;
+	padding: 12px;
+	background: var(--crm-soft);
+}
+
+.nexus-crm-stage > header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid var(--crm-border);
+}
+
+.nexus-crm-stage h3 { font-size: 14px; }
+.nexus-crm-stage > header span { font-size: 12px; font-weight: 700; }
+
+.nexus-crm-stage-list {
+	display: grid;
+	gap: 8px;
+	padding-top: 12px;
+}
+
+.nexus-crm-automation {
+	display: grid;
+	gap: 12px;
+	margin: 4px 0;
+	padding: 16px;
+	border: 1px solid var(--crm-border);
+	border-radius: 8px;
+	background: var(--crm-soft);
+}
+
+.nexus-crm-automation legend { padding: 0 4px; }
+
+.nexus-crm-form .nexus-crm-check {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.nexus-crm-form .nexus-crm-check input { margin: 0; }
+
+.nexus-crm-timeline {
+	display: grid;
+	gap: 12px;
+}
+
+.nexus-crm-activity {
+	padding: 16px;
+	border: 1px solid var(--crm-border);
+	border-radius: 8px;
+	background: var(--crm-surface);
+}
+
+.nexus-crm-activity-meta {
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 8px;
+	color: var(--crm-muted);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: .03em;
+}
+
+.nexus-crm-activity h3 { font-size: 15px; }
+
+.nexus-crm-activity p {
+	margin: 8px 0 0;
+	white-space: normal;
+}
+
+.nexus-crm-activity-links {
+	gap: 8px;
+	margin-top: 12px;
+}
+
+.nexus-crm-activity-links a { font-weight: 600; }
+
+.nexus-crm-empty {
+	margin: 0;
+	padding: 16px;
+	border: 1px dashed var(--crm-border);
+	border-radius: 8px;
+	background: var(--crm-soft);
+}
+
+@media (max-width: 1180px) {
+	.nexus-crm-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 782px) {
+	.nexus-crm-sales-head,
+	.nexus-crm-panel-head,
+	.nexus-crm-activity-meta {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.nexus-crm-head-actions { justify-content: flex-start; }
+
+	.nexus-crm-kpis,
+	.nexus-crm-sales-grid,
+	.nexus-crm-detail-grid { grid-template-columns: 1fr; }
+
+	.nexus-crm-panel { padding: 16px; }
+	.nexus-crm-pipeline { grid-template-columns: repeat(7, minmax(220px, 85vw)); }
+}
