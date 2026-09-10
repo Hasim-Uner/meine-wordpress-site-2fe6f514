@@ -1,0 +1,760 @@
+/* Homepage art direction v3 — engineered editorial system / 2026-09
+ * Layered after homepage-art.css so the previous art direction remains a
+ * reversible baseline. Uses the shared Nexus spacing/font tokens only.
+ */
+
+.hu-hp--art-v3 {
+  --hu-section-pad: clamp(var(--nx-space-3xl), 8vw, calc(var(--nx-space-section) + var(--nx-space-xl)));
+  --hu-dark: hsl(30 6% 7%);
+  --hu-dark-2: hsl(30 5% 10%);
+  --hu-dark-3: hsl(30 4% 14%);
+  --hu-warm-line: hsl(30 8% 18% / .16);
+  --hu-copper-soft: hsl(23 50% 47% / .08);
+  --hu-copper-line: hsl(23 50% 47% / .42);
+  font-family: var(--nx-font);
+}
+
+.hu-hp--art-v3 .hu-display,
+.hu-hp--art-v3 .hu-section-heading h2,
+.hu-hp--art-v3 .hu-fit h2,
+.hu-hp--art-v3 .hu-close h2,
+.hu-hp--art-v3 .hu-gateway h3,
+.hu-hp--art-v3 .hu-case-v3 h2 {
+  font-family: var(--nx-font-heading);
+}
+
+.hu-hp--art-v3 .hu-eyebrow,
+.hu-hp--art-v3 .hu-gateway__kicker,
+.hu-hp--art-v3 .hu-gateway__badge,
+.hu-hp--art-v3 .hu-case-v3__index,
+.hu-hp--art-v3 .hu-case-v3__stack,
+.hu-hp--art-v3 .hu-fit-v3__row > span {
+  font-family: var(--nx-font-mono);
+}
+
+.hu-hp--art-v3 .hu-section {
+  padding-block: var(--hu-section-pad);
+}
+
+.hu-hp--art-v3 .hu-section-heading {
+  grid-template-columns: minmax(0, 1.05fr) minmax(18rem, .72fr);
+  gap: clamp(var(--nx-space-xl), 6vw, calc(var(--nx-space-section) + var(--nx-space-md)));
+  margin-bottom: clamp(var(--nx-space-xl), 4vw, var(--nx-space-2xl));
+}
+
+.hu-hp--art-v3 .hu-section-heading h2,
+.hu-hp--art-v3 .hu-fit h2 {
+  max-width: 17ch;
+  font-size: clamp(2.5rem, 4.4vw, 4.25rem);
+  line-height: .98;
+  letter-spacing: -.052em;
+}
+
+.hu-hp--art-v3 .hu-section-heading > p {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+/* HERO — keep the strong composition, tighten its relationship to the page. */
+.hu-hp--art-v3 .hu-hero--hub {
+  padding-bottom: clamp(var(--nx-space-3xl), 7vw, var(--nx-space-section));
+}
+
+.hu-hp--art-v3 .hu-hero__container {
+  position: relative;
+}
+
+.hu-hp--art-v3 .hu-hero__lede {
+  position: relative;
+  z-index: 3;
+}
+
+.hu-hp--art-v3 .hu-hero__cue {
+  border-bottom: 1px solid transparent;
+}
+
+/* ROUTING — one editorial decision matrix instead of three detached cards. */
+.hu-hp--art-v3 .hu-section--routes {
+  background:
+    linear-gradient(90deg, transparent 0, transparent calc(50% - 1px), hsl(30 8% 18% / .025) 50%, transparent calc(50% + 1px)),
+    var(--hu-bg);
+}
+
+.hu-hp--art-v3 .hu-gateways {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border-block: 1px solid var(--hu-line-strong);
+}
+
+.hu-hp--art-v3 .hu-gateway {
+  min-height: 22rem;
+  padding: var(--nx-space-xl);
+  border: 0;
+  border-inline-end: 1px solid var(--hu-line);
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+  box-shadow: none;
+  transition:
+    background-color var(--nx-duration) var(--nx-ease),
+    color var(--nx-duration) var(--nx-ease);
+}
+
+.hu-hp--art-v3 .hu-gateway:last-child {
+  border-inline-end: 0;
+}
+
+.hu-hp--art-v3 .hu-gateway::after {
+  content: '';
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline: var(--nx-space-xl);
+  block-size: 2px;
+  background: var(--hu-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--nx-duration) var(--nx-ease);
+}
+
+.hu-hp--art-v3 .hu-gateway__top {
+  margin-bottom: var(--nx-space-2xl);
+}
+
+.hu-hp--art-v3 .hu-gateway__icon {
+  inline-size: var(--nx-space-2xl);
+  block-size: var(--nx-space-2xl);
+  place-items: start;
+}
+
+.hu-hp--art-v3 .hu-gateway__badge {
+  font-size: clamp(2.5rem, 4vw, 4.5rem);
+  line-height: .8;
+  letter-spacing: -.07em;
+  color: hsl(30 8% 18% / .13);
+  font-weight: 700;
+}
+
+.hu-hp--art-v3 .hu-gateway__kicker {
+  color: var(--hu-accent-dark);
+  font-size: .6875rem;
+  font-weight: 700;
+}
+
+.hu-hp--art-v3 .hu-gateway h3 {
+  max-width: 14ch;
+  margin: var(--nx-space-md) 0 var(--nx-space-md);
+  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+  line-height: 1.02;
+}
+
+.hu-hp--art-v3 .hu-gateway > p {
+  max-width: 36ch;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.hu-hp--art-v3 .hu-gateway__cta {
+  padding-top: var(--nx-space-2xl);
+  border-top: 1px solid var(--hu-line);
+}
+
+/* TECHNICAL PROOF — a readout rail, not four independent cards. */
+.hu-hp--art-v3 .hu-section--ink {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(hsl(30 10% 100% / .025) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(30 10% 100% / .025) 1px, transparent 1px),
+    var(--hu-dark);
+  background-size: 4rem 4rem, 4rem 4rem, auto;
+}
+
+.hu-hp--art-v3 .hu-section--ink::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  inline-size: 3px;
+  background: var(--hu-accent);
+}
+
+.hu-hp--art-v3 .hu-liveproof {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 0;
+  border-block: 1px solid hsl(30 10% 100% / .14);
+  background: hsl(30 6% 5% / .48);
+}
+
+.hu-hp--art-v3 .hu-liveproof__tile {
+  min-height: 13rem;
+  padding: var(--nx-space-xl);
+  justify-content: space-between;
+  border: 0;
+  border-inline-end: 1px solid hsl(30 10% 100% / .12);
+  background: transparent;
+}
+
+.hu-hp--art-v3 .hu-liveproof__tile:last-child {
+  border-inline-end: 0;
+}
+
+.hu-hp--art-v3 .hu-liveproof__tile strong {
+  order: 1;
+  font-family: var(--nx-font-heading);
+  font-size: clamp(3rem, 4vw, 4.75rem);
+  line-height: .9;
+  letter-spacing: -.065em;
+}
+
+.hu-hp--art-v3 .hu-liveproof__tile span {
+  order: 2;
+  margin-top: auto;
+  padding-top: var(--nx-space-xl);
+  font-size: .9375rem;
+}
+
+.hu-hp--art-v3 .hu-liveproof__tile em {
+  order: 3;
+}
+
+/* CASE — selected large project, framed as one deep proof surface among more work. */
+.hu-hp--art-v3 .hu-section--case {
+  position: relative;
+  background: var(--hu-paper);
+  overflow: hidden;
+}
+
+.hu-hp--art-v3 .hu-section--case::before {
+  content: 'CASE / 01';
+  position: absolute;
+  inset-block-start: var(--nx-space-2xl);
+  inset-inline-end: var(--hu-pad);
+  font-family: var(--nx-font-mono);
+  font-size: clamp(4rem, 10vw, 10rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.08em;
+  color: hsl(30 8% 18% / .035);
+  pointer-events: none;
+}
+
+.hu-hp--art-v3 .hu-case-v3__head {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(20rem, .72fr);
+  gap: clamp(var(--nx-space-xl), 7vw, var(--nx-space-section));
+  align-items: end;
+  margin-bottom: var(--nx-space-2xl);
+}
+
+.hu-hp--art-v3 .hu-case-v3__head h2 {
+  margin: 0;
+  max-width: 15ch;
+  font-size: clamp(2.75rem, 5vw, 4.75rem);
+  line-height: .96;
+  letter-spacing: -.058em;
+  color: var(--hu-ink);
+}
+
+.hu-hp--art-v3 .hu-case-v3__intro p {
+  margin: 0;
+  max-width: 52ch;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--hu-ink-2);
+}
+
+.hu-hp--art-v3 .hu-case-v3__stack {
+  margin-top: var(--nx-space-lg) !important;
+  font-size: .6875rem !important;
+  line-height: 1.8 !important;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--hu-ink-3) !important;
+}
+
+.hu-hp--art-v3 .hu-case-v3__stack span {
+  color: var(--hu-accent);
+}
+
+.hu-hp--art-v3 .hu-case-v3__proof {
+  display: grid;
+  grid-template-columns: minmax(18rem, .92fr) minmax(0, 1.58fr);
+  border-block: 1px solid var(--hu-line-strong);
+}
+
+.hu-hp--art-v3 .hu-case-v3__primary {
+  min-height: 24rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--nx-space-2xl) var(--nx-space-2xl) var(--nx-space-2xl) 0;
+  border-inline-end: 1px solid var(--hu-line-strong);
+  background:
+    radial-gradient(circle at 20% 90%, var(--hu-copper-soft), transparent 52%);
+}
+
+.hu-hp--art-v3 .hu-case-v3__index {
+  display: block;
+  margin-bottom: auto;
+  font-size: .625rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--hu-ink-3);
+}
+
+.hu-hp--art-v3 .hu-case-v3__primary strong {
+  display: block;
+  font-family: var(--nx-font-heading);
+  font-size: clamp(5rem, 9vw, 9rem);
+  line-height: .76;
+  letter-spacing: -.085em;
+  color: var(--hu-ink);
+}
+
+.hu-hp--art-v3 .hu-case-v3__primary > span:not(.hu-case-v3__index) {
+  margin-top: var(--nx-space-xl);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--hu-ink);
+}
+
+.hu-hp--art-v3 .hu-case-v3__primary > small {
+  margin-top: var(--nx-space-sm);
+  font-family: var(--nx-font-mono);
+  font-size: .75rem;
+  letter-spacing: .06em;
+  color: var(--hu-accent-dark);
+}
+
+.hu-hp--art-v3 .hu-case-v3__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+}
+
+.hu-hp--art-v3 .hu-case-v3__metrics > div {
+  min-width: 0;
+  min-height: 24rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--nx-space-2xl) var(--nx-space-xl);
+  border-inline-end: 1px solid var(--hu-line);
+}
+
+.hu-hp--art-v3 .hu-case-v3__metrics > div:last-child {
+  border-inline-end: 0;
+}
+
+.hu-hp--art-v3 .hu-case-v3__metrics .hu-case-v3__index {
+  margin-bottom: auto;
+}
+
+.hu-hp--art-v3 .hu-case-v3__metrics dt {
+  font-family: var(--nx-font-heading);
+  font-size: clamp(2.75rem, 4.4vw, 4.75rem);
+  font-weight: 800;
+  line-height: .9;
+  letter-spacing: -.065em;
+  color: var(--hu-ink);
+  white-space: nowrap;
+}
+
+.hu-hp--art-v3 .hu-case-v3__metrics dd {
+  margin: var(--nx-space-lg) 0 0;
+  font-size: .9375rem;
+  font-weight: 650;
+  line-height: 1.35;
+  color: var(--hu-ink-2);
+}
+
+.hu-hp--art-v3 .hu-case-v3__metrics dd small {
+  display: block;
+  margin-top: var(--nx-space-sm);
+  font-size: .75rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--hu-ink-3);
+}
+
+.hu-hp--art-v3 .hu-case-v3__foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--nx-space-xl);
+  align-items: center;
+  padding-top: var(--nx-space-xl);
+}
+
+.hu-hp--art-v3 .hu-case-v3__foot > p {
+  max-width: 62ch;
+  margin: 0;
+  font-size: .8125rem;
+  line-height: 1.55;
+  color: var(--hu-ink-3);
+}
+
+.hu-hp--art-v3 .hu-case-v3__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nx-space-lg);
+  justify-content: flex-end;
+}
+
+.hu-hp--art-v3 .hu-inline-link--quiet {
+  color: var(--hu-ink-2);
+  border-bottom-color: var(--hu-line-strong);
+}
+
+/* FIT — turn a sparse two-column block into a compact decision surface. */
+.hu-hp--art-v3 .hu-section--fit {
+  background: var(--hu-paper-2);
+}
+
+.hu-hp--art-v3 .hu-fit-v3 {
+  grid-template-columns: minmax(18rem, .76fr) minmax(0, 1.24fr);
+  gap: clamp(var(--nx-space-2xl), 8vw, calc(var(--nx-space-section) + var(--nx-space-xl)));
+  align-items: start;
+}
+
+.hu-hp--art-v3 .hu-fit-v3__lead {
+  position: sticky;
+  top: calc(var(--nx-site-header-height, 64px) + var(--nx-space-xl));
+}
+
+.hu-hp--art-v3 .hu-fit-v3__lead h2 {
+  margin-bottom: var(--nx-space-xl);
+}
+
+.hu-hp--art-v3 .hu-fit-v3__matrix {
+  border-block: 1px solid var(--hu-line-strong);
+}
+
+.hu-hp--art-v3 .hu-fit-v3__row {
+  display: grid;
+  grid-template-columns: minmax(8rem, .42fr) minmax(0, 1fr);
+  gap: var(--nx-space-xl);
+  align-items: start;
+  padding-block: var(--nx-space-xl);
+  border-bottom: 1px solid var(--hu-line);
+}
+
+.hu-hp--art-v3 .hu-fit-v3__row > span {
+  font-size: .6875rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--hu-ink-3);
+}
+
+.hu-hp--art-v3 .hu-fit-v3__row p {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  line-height: 1.3;
+  letter-spacing: -.025em;
+  color: var(--hu-ink-2);
+}
+
+.hu-hp--art-v3 .hu-fit-v3__row--active > span {
+  color: var(--hu-accent-dark);
+}
+
+.hu-hp--art-v3 .hu-fit-v3__row--active p {
+  color: var(--hu-ink);
+  font-weight: 650;
+}
+
+.hu-hp--art-v3 .hu-fit-v3__facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: var(--nx-space-xl) 0 0;
+}
+
+.hu-hp--art-v3 .hu-fit-v3__facts li {
+  min-width: 0;
+  padding-inline: var(--nx-space-lg);
+  border-inline-end: 1px solid var(--hu-line);
+}
+
+.hu-hp--art-v3 .hu-fit-v3__facts li:first-child {
+  padding-inline-start: 0;
+}
+
+.hu-hp--art-v3 .hu-fit-v3__facts li:last-child {
+  padding-inline-end: 0;
+  border-inline-end: 0;
+}
+
+.hu-hp--art-v3 .hu-fit-v3__facts strong,
+.hu-hp--art-v3 .hu-fit-v3__facts span {
+  display: block;
+}
+
+.hu-hp--art-v3 .hu-fit-v3__facts strong {
+  font-size: .875rem;
+  color: var(--hu-ink);
+}
+
+.hu-hp--art-v3 .hu-fit-v3__facts span {
+  margin-top: var(--nx-space-sm);
+  font-size: .75rem;
+  line-height: 1.5;
+  color: var(--hu-ink-3);
+}
+
+/* FINAL CTA — copper is the signal, not the entire canvas. */
+.hu-hp--art-v3 .hu-section--close {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(hsl(30 10% 100% / .022) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(30 10% 100% / .022) 1px, transparent 1px),
+    var(--hu-dark);
+  background-size: 4rem 4rem, 4rem 4rem, auto;
+  color: #f3efe7;
+}
+
+.hu-hp--art-v3 .hu-section--close::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: 3px;
+  background: linear-gradient(90deg, var(--hu-accent) 0 24%, transparent 24% 100%);
+}
+
+.hu-hp--art-v3 .hu-section--close::after {
+  content: '→';
+  position: absolute;
+  inset-inline-end: var(--hu-pad);
+  inset-block-end: calc(var(--nx-space-3xl) * -1);
+  font-family: var(--nx-font-heading);
+  font-size: clamp(12rem, 28vw, 28rem);
+  line-height: 1;
+  color: hsl(23 50% 47% / .055);
+  pointer-events: none;
+}
+
+.hu-hp--art-v3 .hu-close {
+  position: relative;
+  z-index: 1;
+  max-width: 58rem;
+}
+
+.hu-hp--art-v3 .hu-section--close .hu-eyebrow {
+  color: hsl(35 10% 85% / .55);
+}
+
+.hu-hp--art-v3 .hu-section--close .hu-eyebrow::before {
+  background: var(--hu-accent);
+}
+
+.hu-hp--art-v3 .hu-close h2 {
+  max-width: 14ch;
+  color: #f3efe7;
+  font-size: clamp(3rem, 6vw, 6rem);
+  line-height: .92;
+  letter-spacing: -.065em;
+}
+
+.hu-hp--art-v3 .hu-close p {
+  max-width: 50ch;
+  margin: var(--nx-space-xl) 0 var(--nx-space-xl);
+  color: hsl(35 8% 76%);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+.hu-hp--art-v3 .hu-close .hu-btn-primary {
+  min-height: 3.5rem;
+  padding-inline: var(--nx-space-xl);
+  background: var(--hu-accent);
+  color: hsl(30 6% 7%);
+  border-radius: var(--nx-radius-sm);
+  box-shadow: none;
+}
+
+.hu-hp--art-v3 .hu-close small {
+  margin-top: var(--nx-space-md);
+  color: hsl(35 8% 70%);
+}
+
+/* Motion thesis: hierarchy through quiet opacity, movement only on decisions. */
+.hu-js .hu-hp--art-v3 .hu-reveal {
+  transform: none;
+  transition: opacity 480ms var(--nx-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hu-hp--art-v3 .hu-gateway:hover {
+    transform: none;
+    background: hsl(35 14% 98% / .7);
+  }
+
+  .hu-hp--art-v3 .hu-gateway:hover::after {
+    transform: scaleX(1);
+  }
+
+  .hu-hp--art-v3 .hu-liveproof__tile--link:hover {
+    background: hsl(30 10% 100% / .025);
+  }
+
+  .hu-hp--art-v3 .hu-close .hu-btn-primary:hover {
+    background: hsl(23 50% 54%);
+  }
+}
+
+@media (max-width: 1180px) {
+  .hu-hp--art-v3 .hu-case-v3__head,
+  .hu-hp--art-v3 .hu-fit-v3 {
+    grid-template-columns: 1fr;
+    gap: var(--nx-space-2xl);
+  }
+
+  .hu-hp--art-v3 .hu-fit-v3__lead {
+    position: static;
+  }
+}
+
+@media (max-width: 960px) {
+  .hu-hp--art-v3 .hu-gateways {
+    grid-template-columns: 1fr;
+    border-block-end: 0;
+  }
+
+  .hu-hp--art-v3 .hu-gateway {
+    min-height: 0;
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--hu-line-strong);
+  }
+
+  .hu-hp--art-v3 .hu-gateway__top {
+    margin-bottom: var(--nx-space-xl);
+  }
+
+  .hu-hp--art-v3 .hu-case-v3__proof {
+    grid-template-columns: 1fr;
+  }
+
+  .hu-hp--art-v3 .hu-case-v3__primary {
+    min-height: 18rem;
+    padding-inline: 0;
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--hu-line-strong);
+  }
+
+  .hu-hp--art-v3 .hu-case-v3__metrics > div {
+    min-height: 16rem;
+  }
+
+  .hu-hp--art-v3 .hu-liveproof {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hu-hp--art-v3 .hu-liveproof__tile:nth-child(2) {
+    border-inline-end: 0;
+  }
+
+  .hu-hp--art-v3 .hu-liveproof__tile:nth-child(-n+2) {
+    border-block-end: 1px solid hsl(30 10% 100% / .12);
+  }
+}
+
+@media (max-width: 720px) {
+  .hu-hp--art-v3 .hu-section-heading,
+  .hu-hp--art-v3 .hu-case-v3__head {
+    grid-template-columns: 1fr;
+    gap: var(--nx-space-xl);
+  }
+
+  .hu-hp--art-v3 .hu-case-v3__metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .hu-hp--art-v3 .hu-case-v3__metrics > div {
+    min-height: 0;
+    padding: var(--nx-space-xl) 0;
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--hu-line);
+  }
+
+  .hu-hp--art-v3 .hu-case-v3__metrics > div:last-child {
+    border-block-end: 0;
+  }
+
+  .hu-hp--art-v3 .hu-case-v3__metrics .hu-case-v3__index {
+    margin-bottom: var(--nx-space-xl);
+  }
+
+  .hu-hp--art-v3 .hu-case-v3__foot {
+    grid-template-columns: 1fr;
+  }
+
+  .hu-hp--art-v3 .hu-case-v3__links {
+    justify-content: flex-start;
+  }
+
+  .hu-hp--art-v3 .hu-fit-v3__row {
+    grid-template-columns: 1fr;
+    gap: var(--nx-space-md);
+  }
+
+  .hu-hp--art-v3 .hu-fit-v3__facts {
+    grid-template-columns: 1fr;
+  }
+
+  .hu-hp--art-v3 .hu-fit-v3__facts li,
+  .hu-hp--art-v3 .hu-fit-v3__facts li:first-child,
+  .hu-hp--art-v3 .hu-fit-v3__facts li:last-child {
+    padding: var(--nx-space-lg) 0;
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--hu-line);
+  }
+
+  .hu-hp--art-v3 .hu-fit-v3__facts li:last-child {
+    border-block-end: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .hu-hp--art-v3 .hu-liveproof {
+    grid-template-columns: 1fr;
+  }
+
+  .hu-hp--art-v3 .hu-liveproof__tile,
+  .hu-hp--art-v3 .hu-liveproof__tile:nth-child(2) {
+    min-height: 10rem;
+    border-inline-end: 0;
+    border-block-end: 1px solid hsl(30 10% 100% / .12);
+  }
+
+  .hu-hp--art-v3 .hu-liveproof__tile:last-child {
+    border-block-end: 0;
+  }
+
+  .hu-hp--art-v3 .hu-case-v3__primary strong {
+    font-size: clamp(4.5rem, 24vw, 7rem);
+  }
+
+  .hu-hp--art-v3 .hu-section--case::before {
+    display: none;
+  }
+
+  .hu-hp--art-v3 .hu-close h2 {
+    font-size: clamp(2.75rem, 13vw, 4.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hu-js .hu-hp--art-v3 .hu-reveal,
+  .hu-hp--art-v3 .hu-gateway,
+  .hu-hp--art-v3 .hu-gateway::after,
+  .hu-hp--art-v3 .hu-gateway__cta span {
+    transition: none;
+  }
+}
