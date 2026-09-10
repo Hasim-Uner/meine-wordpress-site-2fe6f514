@@ -23,6 +23,7 @@ $modules = [
 	'canon/diagnose-canon.php', // Kanonische Diagnose-Stufen, Preise und Scope-Grenzen
 	'canon/pricing-canon.php', // Kanonische Foundation-, Performance- und Premium-Preise
 	'canon/messaging-canon.php', // Zentrale Wertanker, Abgrenzungen und Begriffsschutz
+	'canon/reference-canon.php', // Kanonische, oeffentlich pruefbare Referenzprojekte
 	'mail.php',           // Zentraler Brevo-Mail-Router für Transaktionsmails
 	'crm.php',            // Gemeinsame CRM-Grundlage für Kontakte, Blog-Abos und Projektanfragen
 	'wgos/wgos-access.php',    // Interne WGOS-Clientrolle, Dashboard-Capability und Backend-Sperre
@@ -82,13 +83,16 @@ function blocksy_child_register_slim_nav_menu() {
 }
 
 // ── 1c. SCROLL-REVEAL: NUR VERSTECKEN, WENN JS WIRKLICH LAEUFT ───
-// Die Startseite blendet ihre Sektionen per .hu-reveal ein. Ohne dieses
-// Signal war der Ausgangszustand opacity:0 — faellt homepage-redesign.js
-// aus, bleibt die halbe Seite unsichtbar. Das Flag setzt die Klasse vor
-// dem ersten Paint, das CSS versteckt erst dann.
+// Startseite und Ergebnisse-Hub blenden ihre Sektionen beim Scrollen ein.
+// Ohne dieses Signal waere der Ausgangszustand opacity:0 — faellt das
+// Reveal-Skript aus, bliebe die halbe Seite unsichtbar. Das Flag setzt die
+// Klasse vor dem ersten Paint, das CSS versteckt erst dann.
 add_action( 'wp_head', 'hu_mark_reveal_capable', 0 );
 function hu_mark_reveal_capable() {
-	if ( ! is_front_page() ) {
+	$is_reveal_route = is_front_page()
+		|| ( function_exists( 'hu_is_results_hub_request' ) && hu_is_results_hub_request() );
+
+	if ( ! $is_reveal_route ) {
 		return;
 	}
 

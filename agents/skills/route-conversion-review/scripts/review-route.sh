@@ -51,8 +51,7 @@ case "${SLUG}" in
     CARRIER_SLUG="e3-new-energy"
     ;;
   ergebnisse)
-    CARRIER_NOTE="Legacy-Dateiname aus der E-Commerce-Zeit, traegt heute den Ergebnisse-Hub."
-    CARRIER_SLUG="case-studies-e-commerce"
+    CARRIER_SLUG="ergebnisse"
     ;;
 esac
 

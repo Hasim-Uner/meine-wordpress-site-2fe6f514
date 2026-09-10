@@ -2,6 +2,21 @@
 
 ## 2026-09
 
+### `/ergebnisse/`: Vertrauensschicht statt zweiter Solar-Landingpage
+
+- **Befund:** Der Repo-Vertrag definiert `/ergebnisse/` als Proof-Hub für alle drei kommerziellen Wege. Die Seite tat das Gegenteil. Der Hero sagte „Ergebnisse für Solar- und Wärmepumpen-Anbieter", der primäre CTA war der Marktcheck, und der Abschluss lautete sinngemäß „Proof passt? Dann Marktcheck." Für eine Agentur und für einen Mittelständler mit Relaunch-Bedarf endete die Seite damit im Nichts.
+- **Derselbe Fall stand dreimal drin.** Hero-Kacheln, Case-Karte und der Block „Laufender Proof" zeigten alle die E3-Zahlen. Drei Verpackungen eines Falls lesen sich nicht wie mehr Proof, sondern wie die Frage, ob es überhaupt mehr als einen gibt. `Laufender Proof` ist ersatzlos raus.
+- **Neuer Aufbau, sechs Blöcke:** Hero mit Belegübersicht (ein Großprojekt, drei prüfbare Websites, ein laufendes System) → dokumentiertes Großprojekt als Vorher/Nachher-Bilanz → drei öffentlich prüfbare Websites → technischer Eigenbeweis dieser Website → White-Label als erklärte Lücke → drei getrennte nächste Schritte.
+- **Kein Angebots-CTA vor dem Schluss.** Wer auf dieser Seite landet, prüft. Der Hero führt nur noch nach unten: Großprojekt oder technische Belege.
+- **Der Abschluss trägt drei verschiedene Ziele**, nicht drei Wege zu demselben Formular: Marktcheck für Solar/Wärmepumpe/Speicher, `Projekt anfragen` für direkte WordPress-Projekte, `Aufgabe beschreiben` für Agenturen. Der Marktcheck-Link bleibt zulässig, weil die Energy-Karte die Vertikale vor dem Link benennt — dieselbe Segmentierung wie auf der Agentur- und der Tracking-Route.
+- **Begriffsfehler korrigiert:** Die Seite nannte die 15 % „Sales-Conversion", die Startseite dieselbe Zahl „Abschlussquote" und führte daneben 12 % Lead-Conversion-Rate. Beide Begriffe werden jetzt am Fall definiert und tragen sitewide die Canon-Labels. Bei jemandem, der Attribution verkauft, ist das kein Detail.
+- **Vorher/Nachher statt nackter Kacheln.** Vier Zeilen: Kosten pro Anfrage, Abschlussquote, Anfragequelle, Zuordnung. Zwei tragen Zahlen, zwei die strukturelle Veränderung — ohne die letzten beiden liest sich der Fall wie ein Rabatt auf Leadkosten.
+- **Technischer Eigenbeweis ausgebaut:** vier Labtest-Werte, Server-Side-Tracking als Live-Kachel, die Messkette der Seite in fünf Stationen, dazu PageSpeed, Änderungsverlauf und CI-Prüfungen als externe Links. Lighthouse ist als Labormesswert benannt, nicht als Felddaten.
+- **White-Label ehrlich statt leer:** Die Lücke wird erklärt und die Lieferobjekte benannt, statt Referenzen zu erfinden oder den Abschnitt wegzulassen.
+- **Zahlen und Referenzen liegen jetzt zentral.** Die vier Labtest-Werte sind aus `front-page.php` in `inc/canon/e3-proof-canon.php` gewandert (die verwaisten `freelancer_lighthouse_*`-Schlüssel sind darin aufgegangen); die drei öffentlichen Referenzen stehen im neuen `inc/canon/reference-canon.php` und speisen `/ergebnisse/` und `/wordpress-freelancer-hannover/` aus einer Quelle.
+- **Technisch:** `page-case-studies-e-commerce.php` → `page-ergebnisse.php`, `assets/css/results.css` → `assets/css/ergebnisse.css` (vollständig neu, die toten `.wl-*`-Regeln sind entfallen). Die Route `/ergebnisse/` bleibt unverändert; `nexus_force_results_route_templates()` deckt den alten Dateinamen weiter ab, gespeicherte Template-Zuweisungen in WordPress brechen also nicht. Motion nutzt `NexusCore.initReveal()`, kein zusätzliches Runtime.
+- **Gemessen, nicht geschätzt:** Layout-Audit bei 390 und 1280 px ohne harte Befunde; Motion- und Spacing-Guard grün.
+
 ### `/whitelabel-retainer/`: Reihenfolge umgebaut, Fit-Check raus, Formular rein
 
 - **Befund:** Die Route war inhaltlich stark, aber in falscher Reihenfolge aufgebaut. Die hinteren Sektionen (Lieferfelder, Kontrakt, Referenzen, FAQ) sind im deutschen White-Label-Feld konkurrenzlos; die ersten sechs bestanden aus Aussagen, die jeder Wettbewerber wörtlich genauso trifft. Kein Redesign — Design, Farben, Komponenten und Motion bleiben. Geändert sind Reihenfolge, Copy und drei Korrekturen.

@@ -24,7 +24,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck | Solar proof / case study |
 | `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page | Tracking project request / scope clarification | White-Label bridge for agencies |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition page | Project request | Explicit bridge to Freelancer page |
-| `/ergebnisse/` | Proof / evaluation | Proof hub | Context-dependent project request | Relevant case / route |
+| `/ergebnisse/` | Proof / evaluation, all three routes | Proof hub / trust layer | Three-way close: Marktcheck, `Projekt anfragen`, White-Label `Aufgabe beschreiben` | Case study, public references, tracking money page |
 | `/case-study-solar-leadgenerierung/` | Solar proof | Evidence page | Solar Marktcheck | Energy money page |
 
 ## Homepage: Auswahl vor der spezialisierten Anfrage
@@ -45,6 +45,48 @@ Es entsteht keine neue Analytics-Laufzeit.
 Nur auf der Homepage schließt die direkte Footer-Zeile Neubau ein:
 „Ich plane eine WordPress-Website oder möchte meine bestehende verbessern.“
 Ihr Ziel und `cta_footer_pick_project` bleiben erhalten.
+
+## Ergebnisse-Hub: Vertrauensschicht, kein vierter Weg
+
+`/ergebnisse/` gehört allen drei Routen. Bis 2026-09 sagte der Hero
+„Ergebnisse für Solar- und Wärmepumpen-Anbieter“ und der primäre CTA war der
+Marktcheck — damit war die Seite faktisch eine zweite Energy-Landingpage, und
+Agenturen sowie direkte WordPress-Interessenten fanden am Ende keinen für sie
+passenden Schritt.
+
+Regeln für diese Route:
+
+- Hero und Zwischenabschnitte tragen **keinen** Angebots-CTA. Wer hier landet,
+  prüft; der nächste Schritt kommt am Schluss.
+- Der Abschluss zeigt genau drei Wege mit drei **verschiedenen** Zielen:
+  Marktcheck (Energy), `Projekt anfragen` (direkt), `Aufgabe beschreiben`
+  (Agentur). Keine vierte Option.
+- Der Marktcheck-Link ist hier zulässig, weil die Energy-Karte die Vertikale
+  vor dem Link benennt — dieselbe Segmentierung wie in
+  `page-wordpress-agentur.php` und im Hero von `page-server-side-tracking-b2b.php`.
+  Als Seiten-CTA bleibt er verboten.
+- Kennzahlen kommen aus `inc/canon/e3-proof-canon.php`, öffentliche Referenzen
+  aus `inc/canon/reference-canon.php`. Der Hub darf keine eigene Fassung einer
+  Zahl oder Referenz führen, die schon auf Startseite oder Freelancer-Route
+  steht.
+- Der globale Footer-Selbstauskunftsblock bleibt darunter stehen. Er ordnet
+  Besucher einer Route zu; der Abschlussblock der Seite nennt die konkrete
+  nächste Handlung. Das ist bewusst keine Dopplung.
+
+Tracking auf der Route. Zurückgezogen mit dem Umbau:
+`cta_results_hero_request`, `cta_results_case_study_methodology`,
+`cta_results_to_agentur`, `cta_results_footer_request`. Neu und stabil zu
+halten:
+
+| Aktion | Kategorie | Abschnitt |
+|---|---|---|
+| `results_hero_to_case`, `results_hero_to_proof` | `navigation` | `hero` |
+| `cta_results_case_study` | `trust` | `grossprojekt` |
+| `results_reference_open` | `trust` | `arbeiten` |
+| `results_proof_pagespeed`, `results_proof_github_history`, `results_proof_github_ci`, `results_proof_tracking_page` | `proof` | `technik` |
+| `cta_results_whitelabel` | `segmentation` | `whitelabel` |
+| `cta_results_next_energy`, `cta_results_next_project`, `cta_results_next_agency`, `cta_results_next_unsure` | `lead_gen` | `weiter` |
+| `results_next_to_freelancer`, `results_next_to_energy` | `navigation` | `weiter` |
 
 ## Cluster rules
 
@@ -103,10 +145,11 @@ well, even when they are not themselves an implementation page:
 Use `hu_get_commercial_route( 'project_request' )` for those, with the label
 `Projekt anfragen`.
 
-Two Marktcheck links on non-energy pages are deliberate segmentation, not
-misrouting, and stay: the energy branch in `page-wordpress-agentur.php` and the
-energy branch in the `page-server-side-tracking-b2b.php` hero. Both name the
-energy vertical explicitly before they hand off.
+Three Marktcheck links on non-energy pages are deliberate segmentation, not
+misrouting, and stay: the energy branch in `page-wordpress-agentur.php`, the
+energy branch in the `page-server-side-tracking-b2b.php` hero, and the energy
+card in the `page-ergebnisse.php` close. All three name the energy vertical
+explicitly before they hand off.
 
 ### 3. Agency intent -> White-Label
 

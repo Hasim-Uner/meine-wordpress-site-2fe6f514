@@ -65,10 +65,18 @@ $home_doors = [
 	],
 ];
 
+/*
+ * Die drei Labtest-Kacheln kommen aus dem Canon. Sie standen bis 2026-09 als
+ * Literale hier und ein zweites Mal im Ergebnisse-Hub — zwei Staende derselben
+ * Messung sind auf einer Seite, die Attribution verkauft, teuer.
+ *
+ * Die kombinierte Kachel "SEO & Best Practices" gilt nur, solange beide
+ * Canon-Werte gleich sind; laufen sie auseinander, gehoert sie getrennt.
+ */
 $home_proof_tiles = [
-	[ 'value' => '100', 'max' => '/100', 'label' => 'Barrierefreiheit', 'note' => '' ],
-	[ 'value' => '100', 'max' => '/100', 'label' => 'SEO & Best Practices', 'note' => '' ],
-	[ 'value' => '99', 'max' => '', 'label' => 'PageSpeed mobil', 'note' => 'Lighthouse, mobil' ],
+	[ 'value' => $e3_metric( 'site_lighthouse_accessibility' ), 'max' => $e3_metric( 'site_lighthouse_accessibility', 'max' ), 'label' => 'Barrierefreiheit', 'note' => '' ],
+	[ 'value' => $e3_metric( 'site_lighthouse_seo' ), 'max' => $e3_metric( 'site_lighthouse_seo', 'max' ), 'label' => 'SEO & Best Practices', 'note' => '' ],
+	[ 'value' => $e3_metric( 'site_lighthouse_performance' ), 'max' => '', 'label' => 'PageSpeed mobil', 'note' => 'Lighthouse, mobil' ],
 	[
 		'value'  => 'Aktiv',
 		'max'    => '',

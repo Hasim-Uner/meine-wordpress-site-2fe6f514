@@ -341,7 +341,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 	}
 
 	if (
-		'page-case-studies-e-commerce.php' === $template
+		in_array( $template, [ 'page-ergebnisse.php', 'page-case-studies-e-commerce.php' ], true )
 		|| in_array( $post_slug, [ 'ergebnisse', 'case-studies-e-commerce', 'case-studies' ], true )
 	) {
 		$links = array_merge(
