@@ -1,0 +1,200 @@
+name: One-time SEO Cockpit reader shell fix
+
+on:
+  push:
+    branches:
+      - fix/seo-cockpit-link-graph
+    paths:
+      - .github/workflows/one-time-seo-cockpit-reader-shell-fix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/seo-cockpit-link-graph
+          fetch-depth: 0
+
+      - name: Align Article System reader shells
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+
+          path = Path('blocksy-child/inc/seo-cockpit/seo-cockpit-links.php')
+          text = path.read_text(encoding='utf-8')
+
+          def replace_once(old: str, new: str, label: str) -> None:
+              global text
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected exactly one match, found {count}')
+              text = text.replace(old, new, 1)
+
+          replace_once(
+          """\t$glossary_url   = $primary_urls['glossary'] ?? home_url( '/glossar/' );
+          \t$imprint_url    = $primary_urls['impressum'] ?? home_url( '/impressum/' );
+          """,
+          """\t$glossary_url   = $primary_urls['glossary'] ?? home_url( '/glossar/' );
+          \t$reader_leadgen_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'leadgenerierung', $blog_url ) : $blog_url;
+          \t$reader_wordpress_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'wordpress-performance', $blog_url ) : $blog_url;
+          \t$reader_tracking_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'tracking', $blog_url ) : $blog_url;
+          \t$reader_cro_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'cro', $blog_url ) : $blog_url;
+          \t$imprint_url    = $primary_urls['impressum'] ?? home_url( '/impressum/' );
+          """,
+          'reader dossier URLs',
+          )
+
+          replace_once(
+          """\t\t'blog_header' => [
+          \t\t\t'key'   => 'blog_header',
+          \t\t\t'label' => 'Blog-Header',
+          \t\t\t'links' => [
+          \t\t\t\t$home_url,
+          \t\t\t\t$blog_url,
+          \t\t\t\t$energy_url,
+          \t\t\t\t$freelancer_url,
+          \t\t\t\t$whitelabel_url,
+          \t\t\t\t$cases_url,
+          \t\t\t\t$about_url,
+          \t\t\t\t$contact_url,
+          \t\t\t],
+          \t\t],
+          \t\t'audit_header' => [
+          """,
+          """\t\t'blog_header' => [
+          \t\t\t'key'   => 'blog_header',
+          \t\t\t'label' => 'Blog-Header',
+          \t\t\t'links' => [
+          \t\t\t\t$home_url,
+          \t\t\t\t$blog_url,
+          \t\t\t\t$energy_url,
+          \t\t\t\t$freelancer_url,
+          \t\t\t\t$whitelabel_url,
+          \t\t\t\t$cases_url,
+          \t\t\t\t$about_url,
+          \t\t\t\t$contact_url,
+          \t\t\t],
+          \t\t],
+          \t\t'reader_header_leadgen' => [
+          \t\t\t'key'   => 'reader_header_leadgen',
+          \t\t\t'label' => 'Artikel-Header (Leadökonomie)',
+          \t\t\t'links' => [ $home_url, $blog_url, $reader_leadgen_url ],
+          \t\t],
+          \t\t'reader_header_wordpress' => [
+          \t\t\t'key'   => 'reader_header_wordpress',
+          \t\t\t'label' => 'Artikel-Header (WordPress & Performance)',
+          \t\t\t'links' => [ $home_url, $blog_url, $reader_wordpress_url ],
+          \t\t],
+          \t\t'reader_header_tracking' => [
+          \t\t\t'key'   => 'reader_header_tracking',
+          \t\t\t'label' => 'Artikel-Header (Tracking)',
+          \t\t\t'links' => [ $home_url, $blog_url, $reader_tracking_url ],
+          \t\t],
+          \t\t'reader_header_cro' => [
+          \t\t\t'key'   => 'reader_header_cro',
+          \t\t\t'label' => 'Artikel-Header (CRO)',
+          \t\t\t'links' => [ $home_url, $blog_url, $reader_cro_url ],
+          \t\t],
+          \t\t'audit_header' => [
+          """,
+          'reader header sources',
+          )
+
+          replace_once(
+          """\t\t'blog'    => [
+          \t\t\t'key'         => 'blog',
+          \t\t\t'label'       => 'Blog-Shell',
+          \t\t\t'source_keys' => [ 'blog_header', 'site_footer' ],
+          \t\t],
+          \t\t'audit'   => [
+          """,
+          """\t\t'blog'    => [
+          \t\t\t'key'         => 'blog',
+          \t\t\t'label'       => 'Blog-Shell',
+          \t\t\t'source_keys' => [ 'blog_header', 'site_footer' ],
+          \t\t],
+          \t\t'reader_leadgen' => [
+          \t\t\t'key'         => 'reader_leadgen',
+          \t\t\t'label'       => 'Artikel-Shell · Leadökonomie',
+          \t\t\t'source_keys' => [ 'reader_header_leadgen', 'site_footer' ],
+          \t\t],
+          \t\t'reader_wordpress' => [
+          \t\t\t'key'         => 'reader_wordpress',
+          \t\t\t'label'       => 'Artikel-Shell · WordPress & Performance',
+          \t\t\t'source_keys' => [ 'reader_header_wordpress', 'site_footer' ],
+          \t\t],
+          \t\t'reader_tracking' => [
+          \t\t\t'key'         => 'reader_tracking',
+          \t\t\t'label'       => 'Artikel-Shell · Tracking',
+          \t\t\t'source_keys' => [ 'reader_header_tracking', 'site_footer' ],
+          \t\t],
+          \t\t'reader_cro' => [
+          \t\t\t'key'         => 'reader_cro',
+          \t\t\t'label'       => 'Artikel-Shell · CRO',
+          \t\t\t'source_keys' => [ 'reader_header_cro', 'site_footer' ],
+          \t\t],
+          \t\t'audit'   => [
+          """,
+          'reader shell definitions',
+          )
+
+          replace_once(
+          """\tif ( '/wordpress-freelancer-hannover/' === $path ) {
+          \t\treturn 'freelancer';
+          \t}
+
+          \tif (
+          """,
+          """\tif ( '/wordpress-freelancer-hannover/' === $path ) {
+          \t\treturn 'freelancer';
+          \t}
+
+          \t$reader_shells = [
+          \t\t'/aroundhome-solar-einordnung/'           => 'reader_leadgen',
+          \t\t'/checkfox-solar-waermepumpe-einordnung/' => 'reader_leadgen',
+          \t\t'/wattfox-solar-leads-einordnung/'         => 'reader_leadgen',
+          \t\t'/wordpress-ttfb-google-ads-ladezeit/'     => 'reader_wordpress',
+          \t\t'/server-side-tracking-gtm/'               => 'reader_tracking',
+          \t\t'/b2b-landingpage-optimieren/'              => 'reader_cro',
+          \t];
+
+          \tif ( isset( $reader_shells[ $path ] ) ) {
+          \t\treturn $reader_shells[ $path ];
+          \t}
+
+          \tif (
+          """,
+          'reader shell detection',
+          )
+
+          replace_once("'sitewide_v6'", "'sitewide_v7'", 'link graph cache version')
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Validate PHP syntax
+        run: php -l blocksy-child/inc/seo-cockpit/seo-cockpit-links.php
+
+      - name: Verify expected diff
+        shell: bash
+        run: |
+          grep -q "'sitewide_v7'" blocksy-child/inc/seo-cockpit/seo-cockpit-links.php
+          grep -q "reader_header_wordpress" blocksy-child/inc/seo-cockpit/seo-cockpit-links.php
+          grep -q "wordpress-ttfb-google-ads-ladezeit" blocksy-child/inc/seo-cockpit/seo-cockpit-links.php
+          git diff --check
+
+      - name: Commit patch and remove one-time workflow
+        shell: bash
+        run: |
+          git config user.name "Hasim-hannover"
+          git config user.email "hasimuener@gmail.com"
+          git rm .github/workflows/one-time-seo-cockpit-reader-shell-fix.yml
+          git add blocksy-child/inc/seo-cockpit/seo-cockpit-links.php
+          git commit -m "fix: model Article System reader headers in SEO cockpit"
+          git push origin HEAD:fix/seo-cockpit-link-graph
