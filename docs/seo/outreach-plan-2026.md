@@ -13,7 +13,7 @@ Aufbauend auf `docs/seo/offpage-authority-playbook.md` (Phase 2: themenrelevante
 | --- | --- | --- |
 | Kanonischer Pillar (live) | `blocksy-child/assets/content/blog/photovoltaik-leads-tco-rechnung.md` | Byline-Ziel, Beweis der Substanz |
 | Gastbeitrag SHK/Wärmepumpe | `content/blog-drafts/gastbeitrag-waermepumpe-shk-anfragen.md` | Fachmedien-Pitch (SBZ u. a.) |
-| Proof-Zahlen (E3, kanonisch) | 150 € → 22 € pro Anfrage, 1.750+ Anfragen, 12 % Abschluss | Daten-Aufhänger im Pitch |
+| Proof-Zahlen (E3, kanonisch) | 150 € → 22 € pro Anfrage, 1.750+ Anfragen, 15 % Abschluss | Daten-Aufhänger im Pitch |
 
 ## Zielliste (Reihenfolge = Priorität)
 
@@ -64,7 +64,7 @@ Aufbauend auf `docs/seo/offpage-authority-playbook.md` (Phase 2: themenrelevante
 >
 > kurzer Datenpunkt aus einem realen Projekt, falls er in Ihre nächste Ausgabe passt: Ein
 > Energie-Anbieter kam mit gekauften Anfragen auf 150 € pro Kontakt. Nach Aufbau eines eigenen
-> Anfrage-Wegs lagen die eigenen Anfragen bei 22 € — bei 12 % Abschlussquote und über 1.750
+> Anfrage-Wegs lagen die eigenen Anfragen bei 22 € — bei 15 % Abschlussquote und über 1.750
 > Anfragen in sechs Monaten. Die vollständige, konservativ gerechnete Analyse (inkl. der
 > Kosten-pro-Auftrag-Logik) steht hier: https://hasimuener.de/solar-leads-kaufen-lohnt-sich/
 >

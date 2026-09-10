@@ -38,6 +38,7 @@ $modules = [
 	'header.php',         // Eigener globaler Header + Navigation
 	'review-crm.php',     // Growth-Audit-Intake + WordPress CRM
 	'contact-page.php',   // Kontakt-Route, schlanke Kontaktform und Mailversand
+	'whitelabel-request.php', // Vierfeldriges Agentur-Formular der White-Label-Route
 	'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect
 	'analysis-intake.php', // REST-Endpoint, CRM-Sync, Brevo-Mails und n8n-Webhook für die Analyse
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails

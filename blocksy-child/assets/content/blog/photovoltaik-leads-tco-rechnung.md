@@ -216,7 +216,7 @@ Der Fall eines mittelständischen PV-Installationsbetriebs wird oft zu groß erz
 - **Vorher:** 150 € pro gekaufter Anfrage
 - **Nachher:** 22 € pro eigener Anfrage
 - Über 1.750 qualifizierte Anfragen
-- 12 % Abschlussquote nach dem Aufbau
+- 15 % Abschlussquote nach dem Aufbau
 - Zeitraum: 6 Monate
 
 Man könnte daraus eine noch spektakulärere Zahl bauen. Machen wir bewusst nicht. Vorsichtig und mit allen Kosten gerechnet – Aufbau, Optimierung, Übergangsmonate – sinken die Kosten pro Auftrag um rund 71 Prozent (von etwa 5.000 € auf etwa 1.450 €). Wer hohe Auftragswerte verkauft, braucht keine überzogene Zahl. Er braucht eine, die ein Chef im Kopf nicht sofort auseinandernimmt.

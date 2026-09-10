@@ -425,7 +425,7 @@ get_header();
 				<div class="wp-agentur-proof-value"><span class="wp-agentur-proof-num"><?php echo esc_html( $e3_lead_count ); ?></span></div>
 				<div class="wp-agentur-proof-label">Qualifizierte Anfragen</div>
 			</div>
-			<?php // Eine nackte Abschlussquote ist ohne Ausgangswert nicht lesbar: 12 %
+			<?php // Eine nackte Abschlussquote ist ohne Ausgangswert nicht lesbar: 15 %
 				// koennen gut oder schlecht sein. Der Canon fuehrt den Vorher-Wert bereits. ?>
 			<div class="wp-agentur-proof-item" data-ag-reveal style="--agr-d:140ms">
 				<div class="wp-agentur-proof-value wp-agentur-proof-value--delta">
@@ -1413,7 +1413,7 @@ get_header();
 		update();
 	})();
 
-	// ─── Count-up: Endwert steht serverseitig im Markup ("1.750+", "12 %", "39"),
+	// ─── Count-up: Endwert steht serverseitig im Markup ("1.750+", "15 %", "39"),
 	//     JS liest ihn, zählt hoch und stellt den Originaltext exakt wieder her. ───
 	(function () {
 		var counters = document.querySelectorAll('.ag-counter');

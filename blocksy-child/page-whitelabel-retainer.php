@@ -1,9 +1,10 @@
 <?php
 /**
  * Template Name: Whitelabel & Weiterentwicklung
- * Description: White-Label-Partner-Funnel für Agenturen — Diagnose-first:
- *              Engpass → Erstprojekt (fixer Scope + Preis) → Fit-Check vor Call.
- *              Hero rechts zeigt die Ablauf-Kette (wird im Folge-PR animiert).
+ * Description: White-Label-Partner-Funnel für Agenturen. Zehn Sektionen:
+ *              Lieferfelder und Marge vor dem Ablauf, Kontrakt und prüfbare
+ *              Belege vor der Einordnung, Abschluss über drei gleichrangige
+ *              Wege statt über ein vorgeschaltetes Quiz.
  *
  * @package Blocksy_Child
  */
@@ -16,61 +17,64 @@ $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 	? nexus_get_whitelabel_calendar_url()
 	: 'https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true';
 $contact_email       = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
-$mailto_url          = 'mailto:' . $contact_email;
 
-// ── Zweiter Ausgang: "Ich habe jetzt eine konkrete Aufgabe" ─────
-// Alle CTAs führten auf denselben Pfad: Fit-Check (3 Fragen) → 30-Minuten-
-// Gespräch. Wer einen akuten Bug oder eine Deadline hat, will die Aufgabe
-// loswerden, nicht ein Quiz ausfüllen und danach einen Termin suchen. Der
-// Betreff ist vorbelegt, damit die Mail nicht bei null anfängt.
+// ── Der zweite Ausgang ist jetzt ein Formular, kein mailto ──────
+// Der Sekundaer-CTA war ein `mailto:` mit vorformuliertem Body. Am
+// Firmenrechner oeffnet das ein Mailprogramm, das viele nicht nutzen, oder gar
+// nichts — und ein mailto-Klick ist kein Abschluss, sondern ein Klick. Die
+// Conversion dieser Route war damit nicht messbar.
 //
-// Bewusst mailto und kein Formular: kein zusätzliches Blocking-Asset, keine
-// neue Datenverarbeitung, kein REST-Endpunkt — die Core Web Vitals der Route
-// bleiben unangetastet.
-//
-// Das Antwortversprechen steht an vier Stellen der Seite (Kontrakt-Karte 02
-// samt Bullet, Founder-Chip, FAQ "kapazitaet"). Hier trägt es zum ersten Mal
-// einen CTA statt als Fußnote zu enden.
-//
-// Bewusst "Antwort" und nicht "Einschätzung": eine Einschätzung zu Machbarkeit,
-// Aufwand und Preisrichtung ist auf eine freitextliche Aufgabenbeschreibung hin
-// oft gar nicht möglich, ohne vorher Rückfragen zu stellen. Zwei verschiedene
-// Versprechen unter derselben Zahl wären genau der Widerspruch, den der
-// Test-Sprint-Block gerade losgeworden ist — und ein Versprechen, das auf den
-// ersten Bildschirm wandert, muss die haltbarste Fassung sein, nicht die
-// kühnste.
-//
-// Die Zahl kommt aus canon/messaging-canon.php: dieselbe Zusage endet auf
-// /kontakt/, und dort stand zuvor eine schwächere.
+// Das Formular liegt in Sektion 10 und wird ueber `?case=` vorbelegt, damit die
+// drei Wege im Posteingang unterscheidbar bleiben. Der Endpunkt gehoert der
+// Route allein (inc/whitelabel-request.php) und feuert ein eigenes Event.
+$wl_page_url = get_permalink();
+if ( ! $wl_page_url ) {
+	$wl_page_url = function_exists( 'nexus_get_whitelabel_page_url' )
+		? nexus_get_whitelabel_page_url()
+		: home_url( '/whitelabel-retainer/' );
+}
+
+$wl_form_anchor = '#aufgabe';
+$wl_form_url    = static function ( $case ) use ( $wl_page_url, $wl_form_anchor ) {
+	return add_query_arg(
+		[
+			'type' => 'whitelabel',
+			'case' => $case,
+		],
+		$wl_page_url
+	) . $wl_form_anchor;
+};
+$wl_form_task_url  = $wl_form_url( 'aufgabe' );
+$wl_form_offer_url = $wl_form_url( 'angebotsphase' );
+$wl_form_endpoint  = rest_url( 'nexus/v1/whitelabel-request' );
+
+// Das Antwortversprechen steht an mehreren Stellen der Seite (Kontrakt-Karte 02
+// samt Bullet, Founder-Chip, FAQ "kapazitaet", Eckdaten). Die Zahl kommt aus
+// canon/messaging-canon.php: dieselbe Zusage endet auf /kontakt/.
 $task_brief_response = function_exists( 'hu_response_promise' )
 	? hu_response_promise()
 	: 'Antwort innerhalb von 24 Stunden werktags';
-$task_brief_url      = $mailto_url . '?subject=' . rawurlencode( 'White-Label: konkrete Aufgabe' )
-	. '&body=' . rawurlencode(
-		"Aufgabe:\n\n\nGewünschter Zeitraum:\n\n\nZugänge vorhanden (WordPress, GA4, GTM):\n\n"
-	);
-$imprint_url         = home_url( '/impressum/' );
-$privacy_url         = home_url( '/datenschutz/' );
-$current_year        = wp_date( 'Y' );
+
+$imprint_url  = home_url( '/impressum/' );
+$privacy_url  = home_url( '/datenschutz/' );
+$current_year = wp_date( 'Y' );
 
 /*
  * Rückwege in die Site.
  *
  * Die Route hatte eine geschlossene Seitennavigation und dazu eine Wortmarke
  * als <span>: kein Weg zurück zur Startseite, und die eine Stelle, an der jeder
- * Besucher ihn zuerst sucht, war tot. Für eine Agentur, die vor dem Fit-Check
- * prüfen will, wer hinter dem White-Label steht, war die Seite damit eine
- * Sackgasse.
+ * Besucher ihn zuerst sucht, war tot.
  *
- * Die Sprungmarken-Navigation bleibt wie sie ist — sie führt durch das Angebot.
- * Zurück ins übrige Angebot führen die Wortmarke und der Footer.
+ * Der Fuss trug zusaetzlich "WordPress Freelancer" und "Solar & Wärmepumpen".
+ * Fuer einen Agenturbesucher sind das die zwei irrelevantesten Ziele der
+ * Website — und sie erzeugen genau den Wettbewerbsgedanken, den der Margenblock
+ * in Sektion 03 gerade aufloest. Es bleiben Startseite, Impressum, Datenschutz.
  */
-$wl_routes          = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
-$wl_home_url        = $wl_routes['home'] ?? home_url( '/' );
-$wl_freelancer_url  = $wl_routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
-$wl_energy_url      = $wl_routes['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
-$wl_brand_text      = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
-$wl_home_label      = sprintf(
+$wl_routes     = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+$wl_home_url   = $wl_routes['home'] ?? home_url( '/' );
+$wl_brand_text = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
+$wl_home_label = sprintf(
 	/* translators: %s: site or brand name. */
 	__( 'Startseite - %s', 'blocksy-child' ),
 	$wl_brand_text
@@ -81,7 +85,7 @@ $wl_home_label      = sprintf(
 remove_action( 'wp_body_open', 'nexus_render_site_header', 20 );
 add_action(
 	'wp_body_open',
-	static function () use ( $wl_home_url, $wl_brand_text, $wl_home_label ) {
+	static function () use ( $wl_home_url, $wl_brand_text, $wl_home_label, $wl_form_task_url ) {
 		?>
 		<a class="wl-skip-link" href="#main">Direkt zum Inhalt</a>
 		<header class="wl-site-header" role="banner" data-track-section="whitelabel_header">
@@ -102,15 +106,15 @@ add_action(
 					<nav class="wl-site-header__nav" aria-label="Navigation auf dieser Seite">
 						<ul role="list">
 							<li><a href="#lieferfelder" data-track-action="nav_whitelabel_services" data-track-category="navigation" data-track-section="whitelabel_header">Lieferfelder</a></li>
-							<li><a href="#ablauf" data-track-action="nav_whitelabel_process" data-track-category="navigation" data-track-section="whitelabel_header">Ablauf</a></li>
-							<li><a href="#proof" data-track-action="nav_whitelabel_proof" data-track-category="navigation" data-track-section="whitelabel_header">Fallstudie</a></li>
+							<li><a href="#einstieg" data-track-action="nav_whitelabel_pricing" data-track-category="navigation" data-track-section="whitelabel_header">Preise</a></li>
+							<li><a href="#proof" data-track-action="nav_whitelabel_proof" data-track-category="navigation" data-track-section="whitelabel_header">Belege</a></li>
 							<li><a href="#faq" data-track-action="nav_whitelabel_faq" data-track-category="navigation" data-track-section="whitelabel_header">FAQ</a></li>
 						</ul>
 					</nav>
 
-					<a class="wl-site-header__cta" href="#fit-check" aria-label="Fit-Check starten" data-track-action="cta_whitelabel_header_to_fitcheck" data-track-category="lead_gen" data-track-section="whitelabel_header">
-						<span class="wl-site-header__cta-full">Fit-Check starten</span>
-						<span class="wl-site-header__cta-short" aria-hidden="true">Fit-Check</span>
+					<a class="wl-site-header__cta" href="<?php echo esc_url( $wl_form_task_url ); ?>" data-wl-form-link data-track-action="cta_whitelabel_header_task_brief" data-track-category="lead_gen" data-track-section="whitelabel_header">
+						<span class="wl-site-header__cta-full">Aufgabe beschreiben</span>
+						<span class="wl-site-header__cta-short" aria-hidden="true">Aufgabe</span>
 					</a>
 				</div>
 			</div>
@@ -126,48 +130,30 @@ $portrait_url = function_exists( 'hu_get_portrait_image_url' )
 	? hu_get_portrait_image_url()
 	: home_url( '/wp-content/uploads/2026/01/Hasim-Uener-Prtraeit_Startseite.webp' );
 
-$cpl_before             = hu_e3_metric( 'cpl_before' );
-$cpl_after              = hu_e3_metric( 'cpl_after' );
-$lead_count             = hu_e3_metric( 'lead_count' );
-// Bewusst 'sales_conversion' statt 'sales_conversion_uplift': der Vorher-Wert
-// "1 – 5 %" gehoert nicht zu den kanonischen Zahlen dieser Seite (CPL 150 → 22 €,
-// 1.750+ Anfragen, 12 % Abschlussquote). Er brachte den geringsten Nutzen bei der
-// groessten Angriffsflaeche. Der Uplift-Schluessel bleibt fuer die Solar-Routen
-// unveraendert im Kanon.
-$sales_conversion       = hu_e3_metric( 'sales_conversion' );
-$timeframe              = hu_e3_metric( 'timeframe', 'display_dative' );
+$about_url = function_exists( 'nexus_get_page_url' )
+	? nexus_get_page_url( [ 'hasim-uener', 'uber-mich' ], home_url( '/hasim-uener/' ) )
+	: home_url( '/hasim-uener/' );
+
+$stack_agentur_url = home_url( '/stack-agentur/' );
+$outsourcing_url   = home_url( '/wordpress-projekte-auslagern/' );
+$tracking_b2b_url  = home_url( '/server-side-tracking-b2b/' );
+
 $test_sprint_price      = hu_whitelabel_price( 'test_sprint' );
 $test_sprint_price_card = hu_whitelabel_price( 'test_sprint', 'display_fixed', $test_sprint_price );
 $tracking_audit_price   = hu_whitelabel_price( 'tracking_audit', 'display', 'Festpreis nach Umfangsklärung' );
 $server_side_price      = hu_whitelabel_price( 'server_side', 'display', 'Festpreis nach Umfangsklärung' );
 $landingpage_price      = hu_whitelabel_price( 'landingpage', 'display', 'Festpreis nach Umfangsklärung' );
-$retainer_price         = hu_whitelabel_price( 'retainer', 'display' );
+$retainer_price_hours   = hu_whitelabel_price( 'retainer', 'display_hours', hu_whitelabel_price( 'retainer' ) );
 
-$proof_metrics = [
-	[
-		'value' => sprintf( '%1$s → %2$s', $cpl_before, $cpl_after ),
-		'label' => sprintf( 'Kosten pro qualifizierter Anfrage · in %s', $timeframe ),
-	],
-	[
-		'value' => $lead_count,
-		'label' => 'qualifizierte Anfragen im selben Zeitraum',
-	],
-	[
-		'value' => $sales_conversion,
-		'label' => 'Abschlussquote · eigene Anfragen',
-	],
-];
-
-// ── Prüfbare Arbeiten neben der anonymisierten Zahlenkachel ─────
-// Die Kennzahlen oben sind für einen Fremden nicht nachprüfbar. Diese drei
-// Seiten sind es. Beschrieben wird jeweils die Aufgabe, nicht der Kunde und
-// nicht der Inhalt; Kennzahlen bleiben ausdrücklich aus diesem Block heraus,
-// damit keine der Seiten als Beleg für die Zahlen oben gelesen wird.
+// ── Prüfbare Arbeiten statt anonymisierter Zahlen ───────────────
+// Der Kennzahlen-Kasten (150 € → 22 €, 1.750+, Abschlussquote) ist von dieser
+// Route entfernt. Grund: e3-newenergy.de steht zwei Absaetze weiter unten als
+// klickbare Live-Referenz. Anonymisierter Case plus namentliche Referenz heben
+// die Anonymisierung gegenseitig auf. Aus demselben Grund fuehrt diese Seite
+// keinen Link auf die Case Study — sonst entstuende dieselbe Verbindung einen
+// Klick weiter. Die Kennzahlen auf den Solar-Routen bleiben unveraendert.
 //
-// Der Block nennt bewusst keine Code-Ebene mehr ("Quelltext lesen"): nicht
-// jede der drei Seiten liegt auf einem individuellen Template, und die
-// Aufforderung stünde zwei Abschnitte unter dem Versprechen individueller
-// Templates.
+// Beschrieben wird jeweils die Aufgabe, nicht der Kunde und nicht der Inhalt.
 $proof_references = [
 	[
 		'label' => 'civaka-azad.org',
@@ -177,10 +163,10 @@ $proof_references = [
 	[
 		'label' => 'e3-newenergy.de',
 		'url'   => 'https://e3-newenergy.de/',
-		// Bewusst ohne Kennzahlen und ohne Zuordnung zum Fallbeispiel oben: die
-		// Seite steht hier als Referenz, nicht als Beleg für die Zahlen. Auch
-		// bewusst ohne Aussage zur Code-Ebene — die Seite läuft heute auf einem
-		// Page-Builder, und der Block daneben wirbt mit individuellen Templates.
+		// Bewusst ohne Kennzahlen: die Seite steht hier als Referenz, nicht als
+		// Beleg. Auch bewusst ohne Aussage zur Code-Ebene — die Seite läuft heute
+		// auf einem Page-Builder, und der Block daneben wirbt mit individuellen
+		// Templates.
 		'note'  => 'Solar und Wärmepumpe mit erklärungsbedürftigem Angebot: eine Strecke, die Beratung, Angebotsanfrage und Kontakt zusammenführt, statt sie über die Seite zu verteilen.',
 	],
 	[
@@ -190,26 +176,9 @@ $proof_references = [
 	],
 ];
 
-$problem_cards = [
-	[
-		'eyebrow' => 'Kapazität',
-		'title'   => 'Deadline steht. Team ist voll.',
-		'copy'    => 'Akquise, Strategie, Kundentermine — euer Kalender ist dicht. Die technische Umsetzung rutscht in den Abend, und die Deadline rückt trotzdem näher.',
-	],
-	[
-		'eyebrow' => 'Tiefe',
-		'title'   => 'Technische Spezialfälle blockieren die Delivery.',
-		'copy'    => 'Server-Side, Consent Mode V2 oder Core Web Vitals brauchen Spezialwissen und klare Verantwortung. Fehlt intern die Kapazität, geraten Qualität, Dokumentation und Abnahme unter Zeitdruck.',
-	],
-	[
-		'eyebrow' => 'Marge',
-		'title'   => 'Zusätzliche Senior-Kapazität muss planbar bleiben.',
-		'copy'    => 'Eine Festanstellung bringt Such- und Auslastungsrisiko mit. Projektweise Unterstützung braucht klare Briefings, einheitliche Qualitätsstandards und eine eindeutig geregelte Verantwortung.',
-	],
-];
-
-// ── Hero-Ablauf-Kette: vier Stationen eines Mandats ─────────────
-// Statisches HTML; wird im Folge-PR zur animierten Inline-SVG.
+// ── Ablauf-Kette: vier Stationen eines Mandats ──────────────────
+// Stand bis hierher im Hero und nahm dort den Platz ein, den die Aussage
+// braucht. Sie gehoert zum Ablauf, also in die Sektion, die den Ablauf erklaert.
 $flow_steps = [
 	[ 'num' => '01', 'title' => 'Ihr Kunde', 'desc' => 'Anfrage an eure Agentur' ],
 	[ 'num' => '02', 'title' => 'Eure Agentur', 'desc' => 'Kundenkontakt bleibt bei euch' ],
@@ -217,23 +186,9 @@ $flow_steps = [
 	[ 'num' => '04', 'title' => 'Ergebnis unter eurem Namen', 'desc' => 'Euer Branding, eure Marge' ],
 ];
 
-// ── Test-Sprint: Detail-Scope unterhalb der kompakten Angebotskarten ──
-$test_sprint_scope = [
-	'duration'         => 'max. ein Arbeitstag',
-	'deliver'          => 'Umsetzung, Funktionstest, kurze technische Dokumentation und eine Korrekturrunde',
-	'suitable'         => [
-		'Template- oder Komponentenanpassung',
-		'kleiner PHP-/JS-/CSS-Fix',
-		'Performanceproblem',
-		'technischer SEO-Fix',
-		'fehlerhafte WordPress-Funktion',
-		'Umsetzung eines vorhandenen Layouts',
-	],
-	'scope_note'       => 'Der Aufgabenumfang wird vor Beginn schriftlich festgelegt. Erweiterungen sind ein eigenes Angebot.',
-	'intro_price_note' => 'Einmaliger Einstiegspreis für die erste Zusammenarbeit.',
-];
-
 // ── Erstprojekte: fixer Scope, Festpreis vorab (Einstieg vor Retainer) ──
+// Die Test-Sprint-Detailsektion ist entfallen: ihr Inhalt stand dreimal auf der
+// Seite (eigene Sektion, Angebotskarte, FAQ 2). Er steht jetzt in der Karte.
 $entry_projects = [
 	[
 		'key'       => 'testsprint',
@@ -242,6 +197,7 @@ $entry_projects = [
 		'price'     => $test_sprint_price_card,
 		'copy'      => 'Eine vorab schriftlich abgegrenzte technische Aufgabe als kleinster Einstieg in die erste Zusammenarbeit.',
 		'card_line' => 'Eine abgegrenzte Aufgabe zum Festpreis — inklusive Umsetzung, Funktionstest, technischer Dokumentation und einer Korrekturrunde.',
+		'note'      => 'Max. ein Arbeitstag. Der Aufgabenumfang wird vor Beginn schriftlich festgelegt; Erweiterungen sind ein eigenes Angebot.',
 	],
 	[
 		'key'     => 'tracking',
@@ -275,9 +231,6 @@ $presales_scoping = [
 	'copy'     => 'Ich schätze technische Anforderungen, Aufwand und Machbarkeit vorab mit euch ein, bevor ihr dem Kunden etwas zusagt.',
 ];
 
-// "nach Umfangsklärung" stand hier neben der Test-Sprint-Karte, die als
-// einzige Position der Seite einen festen Betrag trägt — und liess ihn weich
-// aussehen. Ohne den Zusatz gilt der Punkt fuer alle vier Erstprojekte.
 $entry_bullets = [ 'NDA', 'Fixer Scope', 'Festpreis vorab', 'Keine Verlängerungsfalle' ];
 
 $solution_modes = [
@@ -287,7 +240,7 @@ $solution_modes = [
 	],
 	'kundencall'  => [
 		'label' => 'Mit im Kunden-Call',
-		'copy'  => 'Als euer Senior-Tech-Lead beantworte ich technische Fragen direkt im Call. Rolle, Kommunikation und Freigaben klären wir vorab.',
+		'copy'  => 'Als euer Technik-Lead beantworte ich technische Fragen direkt im Call. Rolle, Kommunikation und Freigaben klären wir vorab.',
 	],
 ];
 
@@ -347,12 +300,20 @@ $contract_cards = [
 
 $comparison_columns = [ 'Senior einstellen', 'Projektweise extern', 'White-Label-Partner' ];
 
+// Vier Zeilen statt sechs. "Qualität" und "Diskretion" sind gestrichen: beide
+// werden im Kontrakt (Sektion 05) und in der FAQ praeziser beantwortet als eine
+// Tabellenzelle es kann.
+//
+// Die mittlere Spalte war so vorsichtig formuliert, dass sie nichts aussagte
+// ("wird pro Auftrag vereinbart" in jeder Zeile). Sie benennt jetzt den
+// tatsaechlichen Unterschied — Verhandlung pro Auftrag statt einmal geregelt —
+// ohne Zahlen zu erfinden und ohne andere Anbieter schlechtzumachen.
 $comparison_rows = [
 	[
 		'label' => 'Verfügbar ab',
 		'cells' => [
 			'Monate: Suche, Kündigungsfrist, Einarbeitung',
-			'Abhängig von der vereinbarten externen Kapazität',
+			'Pro Auftrag neu: Ausschreibung, Angebote vergleichen, Briefing aufsetzen',
 			'Nach einem Fit-Gespräch und NDA',
 		],
 	],
@@ -360,7 +321,7 @@ $comparison_rows = [
 		'label' => 'Fixkostenrisiko',
 		'cells' => [
 			'Volles Gehalt, auch in schwachen Monaten',
-			'Projektbezogene Kosten ohne laufende Personalbindung',
+			'Keines — dafür beginnt die Auswahl bei jedem Projekt von vorn',
 			'Retainer oder Projektpreis — passend zum vereinbarten Bedarf',
 		],
 	],
@@ -368,41 +329,21 @@ $comparison_rows = [
 		'label' => 'Skill-Breite',
 		'cells' => [
 			'Eine Person, ein Schwerpunkt',
-			'Je nach beauftragtem Profil und Projektscope',
+			'So breit wie das jeweils beauftragte Profil — Schnittstellen koordiniert ihr',
 			'SEO, WordPress, Tracking, CRO, Automation aus einer Hand',
-		],
-	],
-	[
-		'label' => 'Qualität',
-		'cells' => [
-			'Zeigt sich nach der Probezeit',
-			'Standards und Dokumentation werden pro Auftrag vereinbart',
-			'Ein Standard — prüfbar am Erstprojekt',
-		],
-	],
-	[
-		'label' => 'Diskretion',
-		'cells' => [
-			'Intern — Know-how geht mit der Person',
-			'NDA und Sichtbarkeit werden pro Auftrag geregelt',
-			'NDA standardmäßig, Sichtbarkeit wählbar',
 		],
 	],
 	[
 		'label' => 'Verantwortung',
 		'cells' => [
 			'Führung und QA liegen bei euch',
-			'Koordination und Abnahme werden pro Auftrag festgelegt',
+			'Koordination und Abnahme bleiben bei euch, in jedem Auftrag erneut',
 			'Lieferung inklusive Doku und Abnahme',
 		],
 	],
 ];
 
 $founder_credentials = '8+ Jahre WordPress-Entwicklung · B.A. Medienwissenschaften · Performance-Marketing und Leadgenerierung für D2C und B2B · Hannover';
-
-// Ein-Personen-Modell: Kapazität und Abwesenheiten werden benannt, nicht
-// durch eine erfundene Vertretung überdeckt.
-$founder_availability = 'Verfügbarkeiten und Abwesenheiten werden vor Projektstart transparent eingeplant. Kritische Deadlines werden nur zugesagt, wenn die Umsetzung im vereinbarten Zeitraum abgesichert ist.';
 
 $founder_chips = [ 'NDA standardmäßig', $task_brief_response ];
 
@@ -417,40 +358,98 @@ $tech_bullets = [
 
 $hero_chips = [ 'GA4', 'GTM', 'Server-Side', 'Consent V2', 'WordPress', 'n8n' ];
 
-// ── Fit-Check: 3 Klickfragen vor der Terminbuchung ──────────────
-// Rein clientseitig (kein REST, keine Speicherung) — Antworten sind
-// Enum-Werte und fließen nur in data-track-Events + mailto-Vorlage.
-// Die Antworten ordnen Vorhaben, Scope-Reife und zeitlichen Anlass ein.
-$fitcheck_steps = [
+// ── Eckdaten: maschinenlesbare Zusammenfassung am Ende der FAQ ──
+// Zweck ist generative Suche: ohne diesen Block muessen Systeme die Antwort aus
+// zehn Sektionen zusammensuchen. Bewusst eine schlichte Definitionsliste und
+// kein Kartendesign — der Block ist Zusammenfassung, nicht Angebot.
+$wl_facts = [
 	[
-		'key'      => 'vorhaben',
-		'question' => 'Was soll konkret geliefert werden?',
-		'options'  => [
-			'testsprint'  => 'Eine klar abgegrenzte WordPress-Aufgabe',
-			'tracking'    => 'Tracking oder Server-Side-Setup',
-			'landingpage' => 'Eine Landingpage',
-			'retainer'    => 'Laufende technische Kapazität',
-		],
+		'term' => 'Leistungen',
+		'desc' => 'WordPress-Entwicklung, technisches SEO, Core Web Vitals, GA4 und GTM, Server-Side-Tracking, Consent Mode V2, Meta CAPI, CRO, Landingpages, CRM-Anbindung, Automation',
 	],
 	[
-		'key'      => 'klarheit',
-		'question' => 'Wie klar ist der Scope bereits?',
-		'options'  => [
-			'vorhanden' => 'Briefing oder Layout ist vorhanden',
-			'offen'     => 'Ziel ist klar, technischer Scope noch offen',
-			'einordnen' => 'Erst technische Einordnung nötig',
-		],
+		'term' => 'Einstieg',
+		'desc' => sprintf( 'WordPress-Test-Sprint, %s, Festpreis, max. ein Arbeitstag', $test_sprint_price ),
 	],
 	[
-		'key'      => 'anlass',
-		'question' => 'Wie konkret ist der Anlass?',
-		'options'  => [
-			'konkret' => 'Ein konkretes Kundenprojekt steht an',
-			'planung' => 'Ein Projekt ist in Vorbereitung',
-			'spaeter' => 'Kapazität für später klären',
-		],
+		'term' => 'Erstprojekte',
+		'desc' => sprintf(
+			'Tracking-Audit %1$s, Server-Side-Setup %2$s, Landingpage %3$s',
+			str_replace( ' netto', '', $tracking_audit_price ),
+			str_replace( ' netto', '', $server_side_price ),
+			$landingpage_price
+		),
+	],
+	[
+		'term' => 'Laufend',
+		'desc' => sprintf(
+			'%s, monatlich kündbar',
+			hu_whitelabel_price( 'retainer', 'display_hours_plain', 'nach Vereinbarung' )
+		),
+	],
+	[
+		'term' => 'Vertragsform',
+		'desc' => 'Subunternehmer, Vertrag mit der Agentur, NDA standardmäßig, Auftragsverarbeitung nach DSGVO',
+	],
+	[
+		'term' => 'Antwortzeit',
+		'desc' => function_exists( 'hu_response_promise' ) ? hu_response_promise( 'value' ) : '24 Stunden werktags',
+	],
+	[
+		'term' => 'Sichtbarkeit',
+		'desc' => 'im Hintergrund oder als Technik-Lead im Kundengespräch, Entscheidung liegt bei der Agentur',
+	],
+	[
+		'term' => 'Sitz',
+		'desc' => 'Pattensen bei Hannover, Zusammenarbeit remote im gesamten deutschsprachigen Raum',
 	],
 ];
+
+// ── Drei Wege im Abschluss ──────────────────────────────────────
+// Das vorgeschaltete Quiz ist ersatzlos entfallen. Es qualifizierte den
+// Anbieter, nicht den Kaeufer, und stand zwischen dem Interessenten und dem,
+// was der eigentlich wollte: "3 Fragen, 60 Sekunden" versprach Geschwindigkeit
+// und endete in einem 30-Minuten-Termin. Dieselbe Mechanik ist auf der
+// Startseite bereits entfernt.
+//
+// Weg 2 ist der Neuzugang: er unterstuetzt die Agentur in ihrem eigenen
+// Verkaufsprozess, statt ihr etwas zu verkaufen, und ist damit
+// niedrigschwelliger als jedes Angebot. Der Satz stand bisher als grauer
+// Nachsatz auf der Seite.
+$wl_ways = [
+	[
+		'title'  => 'Ihr habt eine konkrete Aufgabe.',
+		'copy'   => 'Beschreibt sie in vier Zeilen, ich antworte innerhalb von 24 Stunden werktags mit Einschätzung, Aufwand und Preis.',
+		'label'  => 'Aufgabe beschreiben',
+		'url'    => $wl_form_task_url,
+		'action' => 'cta_whitelabel_way_task',
+		'form'   => true,
+	],
+	[
+		'title'  => 'Ihr steckt in der Angebotsphase.',
+		'copy'   => 'Schickt mir, was euer Kunde will. Ich sage euch, ob es machbar ist und was es kostet, bevor ihr etwas zusagt. Kostet nichts und ist keine Beauftragung.',
+		'label'  => 'Vorhaben schildern',
+		'url'    => $wl_form_offer_url,
+		'action' => 'cta_whitelabel_way_offer',
+		'form'   => true,
+	],
+	[
+		'title'  => 'Ihr wollt erst reden.',
+		'copy'   => '30 Minuten, direkt mit mir, kein Deck.',
+		'label'  => 'Termin wählen',
+		'url'    => $whitelabel_fit_url,
+		'action' => 'cta_whitelabel_way_call',
+		'form'   => false,
+	],
+];
+
+$wl_access_options = function_exists( 'hu_whitelabel_request_access_options' )
+	? hu_whitelabel_request_access_options()
+	: [
+		'ja'        => 'Ja',
+		'teilweise' => 'Teilweise',
+		'nein'      => 'Nein',
+	];
 ?>
 
 <div class="wl-page" data-track-section="whitelabel_page">
@@ -463,7 +462,11 @@ $fitcheck_steps = [
 	</noscript>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 01 — HERO (dark, Ablauf-Kette rechts)
+	     SECTION 01 — HERO
+	     "Ihr verkauft es, ich liefere es" ist die Definition von White Label:
+	     jeder Wettbewerber sagt das. Die eine Aussage, die im gesichteten
+	     DACH-Feld niemand kopieren kann, ist die Kombination aus Umsetzung und
+	     Messkette in einer Person. Sie stand bisher in Sektion 7.
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-hero" data-nx-theme="dark" id="hero">
 		<div class="wl-hero__bg" aria-hidden="true">
@@ -474,98 +477,98 @@ $fitcheck_steps = [
 
 		<div class="nx-container">
 			<header class="wl-hero__top">
-				<span class="wl-hero__mark">
-					<span class="wl-hero__mark-rule" aria-hidden="true"></span>
-					White-Label-Partner für Agenturen
-				</span>
 				<span class="wl-hero__status">
 					<span class="wl-status-dot" aria-hidden="true"></span>
-					White-Label · NDA standardmäßig
+					NDA standardmäßig
 				</span>
 			</header>
 
-			<div class="wl-hero__grid">
+			<div class="wl-hero__grid wl-hero__grid--solo">
 				<div class="wl-hero__copy">
+					<?php /* Der Kicker trägt „White-Label“ und „Agenturen“ für Suche und
+					        Entity-Erkennung, die H1 trägt die Aussage. */ ?>
+					<span class="wl-eyebrow wl-hero__kicker">White-Label für Agenturen</span>
 					<h1 class="wl-hero__title">
-						<span class="wl-hero__title-line">Ihr verkauft es.</span>
-						<span class="wl-hero__title-line">Ich liefere es.</span>
-						<span class="wl-hero__title-line wl-hero__title-line--em">Euer Name steht drauf.</span>
+						Gebaut und gemessen von derselben Person.
 					</h1>
 					<p class="wl-hero__lede">
-						Senior-Umsetzung für WordPress, Tracking und Automation — unter eurem Namen, ohne zusätzliche Festanstellung.
+						WordPress-Umsetzung, technisches SEO und die vollständige Messkette — GA4, Server-Side, Consent Mode V2, CRM-Anbindung. Keine Übergabe zwischen Entwicklung und Tracking, weil es keine zweite Partei gibt.
 					</p>
 
 					<div class="wl-hero__actions">
-						<a href="#fit-check" class="nx-btn nx-btn--primary" data-track-action="cta_whitelabel_hero_to_fitcheck" data-track-category="navigation" data-track-section="hero">
-							<span>Fit-Check starten — 3 Fragen, 60 Sekunden</span>
+						<a href="<?php echo esc_url( $wl_form_task_url ); ?>" class="nx-btn nx-btn--primary" data-wl-form-link data-track-action="cta_whitelabel_hero_task_brief" data-track-category="lead_gen" data-track-section="hero">
+							<span>Aufgabe beschreiben</span>
 							<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
 								<path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 							</svg>
 						</a>
-						<a href="<?php echo esc_url( $task_brief_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_hero_task_brief" data-track-category="lead_gen" data-track-section="hero">
-							<span>Aufgabe beschreiben — <?php echo esc_html( $task_brief_response ); ?></span>
+						<a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_hero_call" data-track-category="lead_gen" data-track-section="hero">
+							<span>30 Minuten buchen</span>
 						</a>
 					</div>
 
 					<p class="wl-hero__fineprint">
-						Oder erst ansehen, was geliefert wird: <a href="#proof" data-track-action="cta_whitelabel_hero_proof" data-track-category="navigation" data-track-section="hero">Arbeitsprobe</a>. 30&nbsp;Min direkt mit mir · NDA möglich · keine Verkaufsshow.
+						NDA ab dem ersten Gespräch · Zugänge bleiben in euren Accounts · Vertrag mit eurer Agentur, nicht mit eurem Kunden
 					</p>
-				</div>
 
-				<aside class="wl-flow" id="ablauf" aria-label="Ablauf eines White-Label-Mandats">
-					<header class="wl-flow__head">
-						<span class="wl-flow__kicker">Der Ablauf</span>
-						<span class="wl-flow__sub">Ein Mandat, vier Stationen</span>
-					</header>
-					<ol class="wl-flow__list">
-						<?php foreach ( $flow_steps as $flow_i => $step ) : ?>
-							<li class="wl-flow__step<?php echo 3 === $flow_i ? ' wl-flow__step--final' : ''; ?>">
-								<span class="wl-flow__num"><?php echo esc_html( $step['num'] ); ?></span>
-								<div class="wl-flow__body">
-									<span class="wl-flow__title"><?php echo esc_html( $step['title'] ); ?></span>
-									<span class="wl-flow__desc"><?php echo esc_html( $step['desc'] ); ?></span>
-								</div>
-							</li>
-						<?php endforeach; ?>
-					</ol>
-					<div class="wl-flow__chips" role="list" aria-label="Stack-Komponenten">
+					<ul class="wl-hero__chips" role="list" aria-label="Stack-Komponenten">
 						<?php foreach ( $hero_chips as $chip ) : ?>
-							<span class="wl-chip" role="listitem"><?php echo esc_html( $chip ); ?></span>
+							<li><span class="wl-chip"><?php echo esc_html( $chip ); ?></span></li>
 						<?php endforeach; ?>
-					</div>
-				</aside>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 02 — PROBLEM
+	     SECTION 02 — WAS IHR ZUKAUFT (Lieferfelder)
+	     Stand als Sektion 7 unter fünf Abschnitten, die jeder Wettbewerber
+	     wörtlich genauso trifft. Der Lückensatz ist das Argument, nicht die
+	     Aufzählung darunter.
 	     ═══════════════════════════════════════════════ -->
-	<section class="nx-section wl-problem" id="problem">
+	<section class="nx-section wl-stack" id="lieferfelder">
 		<div class="nx-container">
 			<div class="wl-section-header nx-reveal">
-				<span class="wl-eyebrow">Problem</span>
-				<h2 class="nx-headline-section">Verkaufen könnt ihr. Liefern ist der Engpass.</h2>
-				<p class="wl-section-lede">Drei Engpässe, die jede Performance- und Webdesign-Agentur kennt. Alle drei lösbar — ohne eine einzige Neueinstellung.</p>
+				<span class="wl-eyebrow">Was ihr zukauft</span>
+				<h2 class="nx-headline-section">Drei Felder, die zusammengehören</h2>
+				<p class="wl-section-lede">Die meisten Agenturen kaufen die Umsetzung bei einem Anbieter und das Tracking bei einem anderen — oder das Tracking gar nicht. Die Lücke dazwischen fällt erst auf, wenn der Kunde fragt, warum im GA4 andere Zahlen stehen als im Ads-Konto. Ich decke beide Seiten ab. Deshalb gibt es diese Lücke nicht.</p>
 			</div>
 
-			<div class="wl-problem__grid reveal-stagger">
-				<?php foreach ( $problem_cards as $card ) : ?>
-					<article class="wl-problem-card">
-						<span class="wl-eyebrow"><?php echo esc_html( $card['eyebrow'] ); ?></span>
-						<h3 class="wl-problem-card__title"><?php echo esc_html( $card['title'] ); ?></h3>
-						<p class="wl-problem-card__copy"><?php echo esc_html( $card['copy'] ); ?></p>
+			<div class="wl-stack__grid reveal-stagger">
+				<?php foreach ( $stack_fields as $card ) : ?>
+					<article class="wl-stack-card">
+						<header class="wl-stack-card__head">
+							<span class="wl-stack-card__tag"><?php echo esc_html( $card['tag'] ); ?></span>
+						</header>
+						<h3 class="wl-stack-card__title"><?php echo esc_html( $card['title'] ); ?></h3>
+						<p class="wl-stack-card__copy"><?php echo esc_html( $card['copy'] ); ?></p>
+						<ul class="wl-stack-card__chips" aria-label="Komponenten">
+							<?php foreach ( $card['chips'] as $chip ) : ?>
+								<li><span class="wl-chip wl-chip--mono"><?php echo esc_html( $chip ); ?></span></li>
+							<?php endforeach; ?>
+						</ul>
+						<p class="wl-stack-card__entry"><?php echo esc_html( $card['entry'] ); ?></p>
 					</article>
 				<?php endforeach; ?>
 			</div>
+
+			<p class="wl-stack__crosscut nx-reveal"><?php echo esc_html( $stack_crosscut ); ?></p>
 		</div>
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 03 — EINSTIEG (Erstprojekte mit Preis)
+	     SECTION 03 — EINSTIEG, PREISE, EURE MARGE
+	     Die Problem-Sektion mit drei Kacheln (Kapazität, Tiefe, Marge) ist
+	     ersatzlos entfallen: sie beschrieb der Agentur ihren eigenen Alltag.
+	     Dieselben drei Gründe stehen jetzt als drei Sätze über dem Angebot.
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-entry" id="einstieg">
 		<div class="nx-container">
+			<p class="wl-entry__intro nx-reveal">
+				Drei Gründe, warum Agenturen hier landen: Der Kalender ist voll. Ein technischer Spezialfall blockiert die Abnahme. Oder eine Festanstellung lohnt für den tatsächlichen Bedarf nicht. Alle drei lassen sich mit einem abgegrenzten Erstprojekt prüfen, bevor irgendjemand über eine längere Zusammenarbeit spricht.
+			</p>
+
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Einstieg</span>
 				<h2 class="nx-headline-section">Kein Blind-Retainer. Erst ein Erstprojekt mit fixem Scope.</h2>
@@ -595,43 +598,37 @@ $fitcheck_steps = [
 								</div>
 							</dl>
 						<?php endif; ?>
+						<?php if ( ! empty( $project['note'] ) ) : ?>
+							<p class="wl-entry-card__note"><?php echo esc_html( $project['note'] ); ?></p>
+						<?php endif; ?>
 					</article>
 				<?php endforeach; ?>
 			</div>
 
-			<section class="wl-test-sprint-details nx-reveal" aria-labelledby="test-sprint-details-title">
-				<div class="wl-test-sprint-details__header">
-					<span class="wl-eyebrow">WordPress-Test-Sprint</span>
-					<h3 id="test-sprint-details-title">Was der Test-Sprint umfasst</h3>
-				</div>
-				<div class="wl-test-sprint-details__grid">
-					<div class="wl-test-sprint-details__item">
-						<h4>Rahmen</h4>
-						<dl>
-							<div>
-								<dt>Laufzeit</dt>
-								<dd><?php echo esc_html( $test_sprint_scope['duration'] ); ?></dd>
-							</div>
-							<div>
-								<dt>Lieferung</dt>
-								<dd><?php echo esc_html( $test_sprint_scope['deliver'] ); ?></dd>
-							</div>
-						</dl>
-					</div>
-					<div class="wl-test-sprint-details__item">
-						<h4>Geeignet für</h4>
-						<ul>
-							<?php foreach ( $test_sprint_scope['suitable'] as $item ) : ?>
-								<li><?php echo esc_html( $item ); ?></li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-				</div>
-				<div class="wl-test-sprint-details__notes">
-					<p><?php echo esc_html( $test_sprint_scope['scope_note'] ); ?></p>
-					<p><?php echo esc_html( $test_sprint_scope['intro_price_note'] ); ?></p>
-				</div>
-			</section>
+			<?php /* Der Margenblock steht direkt unter den Preiskarten: er beantwortet
+			        die Frage, die die Karten aufwerfen. Er setzt voraus, dass der
+			        White-Label-Preis für Server-Side unter dem öffentlichen
+			        Endkundenpreis auf /server-side-tracking-b2b/ liegt — beide Werte
+			        kommen aus canon/pricing-canon.php. */ ?>
+			<div class="wl-margin nx-reveal">
+				<h3 class="wl-margin__title">Was ihr daran verdient</h3>
+				<p class="wl-margin__copy">
+					Diese Preise liegen rund 30 % unter dem, was ich Endkunden für dieselbe Leistung berechne. Diese Endkundenpreise stehen öffentlich auf <a href="<?php echo esc_url( $tracking_b2b_url ); ?>" data-track-action="link_whitelabel_margin_pricing" data-track-category="internal_link" data-track-section="einstieg">derselben Website</a> — ihr könnt nachrechnen, statt es mir zu glauben. Die Differenz ist eure Marge. Was ihr eurem Kunden dafür berechnet, geht mich nichts an, und ich erfahre es auch nicht.
+				</p>
+			</div>
+
+			<?php /* Der Retainer stand bisher nur als grauer Nachsatz unter den CTAs und
+			        war damit eine Absichtserklärung. Als eigene Karte auf vierter Ebene
+			        ist er ein Angebot mit Zahl und Grenze. Ein Stundensatz steht
+			        nirgends auf dieser Seite — das Kontingent ist die Einheit. */ ?>
+			<article class="wl-entry-card wl-entry-card--retainer nx-reveal">
+				<header class="wl-entry-card__head">
+					<span class="wl-entry-card__tag">Retainer</span>
+					<span class="wl-entry-card__price"><?php echo esc_html( $retainer_price_hours ); ?></span>
+				</header>
+				<h3 class="wl-entry-card__title">Laufende Kapazität</h3>
+				<p class="wl-entry-card__copy">Ein festes Kontingent pro Monat, monatlich kündbar. Entsteht nach einem erfolgreichen Erstprojekt, nicht davor. Ausdrücklich ohne Rufbereitschaft und ohne Reaktionszeit-Zusage über die 24 Stunden werktags hinaus.</p>
+			</article>
 
 			<ul class="wl-entry__bullets nx-reveal" aria-label="Rahmen Erstprojekt">
 				<?php foreach ( $entry_bullets as $bullet ) : ?>
@@ -640,29 +637,49 @@ $fitcheck_steps = [
 			</ul>
 
 			<div class="wl-entry__actions nx-reveal">
-				<a href="#fit-check" class="nx-btn nx-btn--primary" data-track-action="cta_whitelabel_entry_to_fitcheck" data-track-category="navigation" data-track-section="entry">
-					Fit-Check starten — 3 Fragen, 60 Sekunden
+				<a href="<?php echo esc_url( $wl_form_task_url ); ?>" class="nx-btn nx-btn--primary" data-wl-form-link data-track-action="cta_whitelabel_entry_task_brief" data-track-category="lead_gen" data-track-section="entry">
+					Aufgabe beschreiben
 				</a>
-				<a href="<?php echo esc_url( $task_brief_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_entry_task_brief" data-track-category="lead_gen" data-track-section="entry">
-					Aufgabe beschreiben — <?php echo esc_html( $task_brief_response ); ?>
+				<a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_entry_call" data-track-category="lead_gen" data-track-section="entry">
+					30 Minuten buchen
 				</a>
-				<p class="wl-entry__retainer-note">Wenn das Erstprojekt erfolgreich abgeschlossen ist, kann daraus ein Monats-Retainer mit vorab vereinbartem Leistungsrahmen entstehen<?php echo $retainer_price ? ' — ' . esc_html( $retainer_price ) : ''; ?>.</p>
 			</div>
 		</div>
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 04 — LÖSUNG (Arbeitsmodus-Toggle)
+	     SECTION 04 — WIE ES LÄUFT
+	     Ablauf-Kette (vorher im Hero), Sichtbarkeitsmodi (vorher eigene
+	     Sektion) und das Briefing-Muster in einer Sektion. Die Modi standen
+	     zusätzlich im Ablauf-Diagramm und in Kontrakt-Regel 01.
 	     ═══════════════════════════════════════════════ -->
-	<section class="nx-section wl-solution" data-nx-theme="dark" id="loesung">
+	<section class="nx-section wl-solution" data-nx-theme="dark" id="ablauf">
 		<div class="nx-container">
-			<div class="wl-section-header wl-section-header--center nx-reveal">
-				<span class="wl-eyebrow">Arbeitsmodus</span>
-				<h2 class="nx-headline-section">Zwei Modi. Volle Kontrolle.</h2>
-				<p class="wl-section-lede">Sichtbarkeit ist eine Einstellung, keine Grenze — ihr entscheidet pro Projekt.</p>
+			<div class="wl-section-header nx-reveal">
+				<span class="wl-eyebrow">Ablauf</span>
+				<h2 class="nx-headline-section">Wie es läuft</h2>
+			</div>
+
+			<div class="wl-flow nx-reveal" aria-label="Ablauf eines White-Label-Mandats">
+				<header class="wl-flow__head">
+					<span class="wl-flow__kicker">Der Ablauf</span>
+					<span class="wl-flow__sub">Ein Mandat, vier Stationen</span>
+				</header>
+				<ol class="wl-flow__list">
+					<?php foreach ( $flow_steps as $flow_i => $step ) : ?>
+						<li class="wl-flow__step<?php echo 3 === $flow_i ? ' wl-flow__step--final' : ''; ?>">
+							<span class="wl-flow__num"><?php echo esc_html( $step['num'] ); ?></span>
+							<div class="wl-flow__body">
+								<span class="wl-flow__title"><?php echo esc_html( $step['title'] ); ?></span>
+								<span class="wl-flow__desc"><?php echo esc_html( $step['desc'] ); ?></span>
+							</div>
+						</li>
+					<?php endforeach; ?>
+				</ol>
 			</div>
 
 			<div class="wl-mode" id="wl-mode" data-wl-mode="hintergrund">
+				<h3 class="wl-mode__title">Zwei Modi. Volle Kontrolle.</h3>
 				<div class="wl-mode__control nx-reveal">
 					<fieldset class="wl-mode__switch">
 						<legend class="wl-visually-hidden">Arbeitsmodus wählen</legend>
@@ -680,7 +697,7 @@ $fitcheck_steps = [
 								class="wl-mode__label"
 								data-track-action="toggle_whitelabel_mode_<?php echo esc_attr( $mode_key ); ?>"
 								data-track-category="engagement"
-								data-track-section="loesung"
+								data-track-section="ablauf"
 							><?php echo esc_html( $mode['label'] ); ?></label>
 						<?php endforeach; ?>
 					</fieldset>
@@ -697,50 +714,25 @@ $fitcheck_steps = [
 
 				<p class="wl-mode__footer">Egal wie: euer Branding, eure Marge, eure Kundenbeziehung bleiben bei euch.</p>
 			</div>
+
+			<div class="wl-briefing nx-reveal">
+				<h3 class="wl-briefing__title">Womit ich sofort anfangen kann</h3>
+				<p class="wl-briefing__copy">Ein Briefing, mit dem es losgeht, braucht vier Angaben: was am Ende funktionieren soll, einen Zugang zu Staging oder Live, das Design oder die Vorlage, falls es eine gibt, und den Termin, an dem euer Kunde das Ergebnis sieht. Was ich nicht brauche, ist ein Lastenheft. Was fehlt, frage ich per Mail nach — nicht in einem Workshop.</p>
+			</div>
 		</div>
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 05 — LIEFERFELDER (zwei Gruppen)
-	     ═══════════════════════════════════════════════ -->
-	<section class="nx-section wl-stack" id="lieferfelder">
-		<div class="nx-container">
-			<div class="wl-section-header nx-reveal">
-				<span class="wl-eyebrow">Lieferfelder</span>
-				<h2 class="nx-headline-section">Ein System, keine Einzelteile.</h2>
-				<p class="wl-section-lede">Alles zahlt auf denselben Zweck ein: Kundenprojekte, die messbar Anfragen bringen. Einzeln als Erstprojekt, kombiniert im Retainer — immer unter eurem Namen.</p>
-			</div>
-
-			<div class="wl-stack__grid reveal-stagger">
-				<?php foreach ( $stack_fields as $card ) : ?>
-					<article class="wl-stack-card">
-						<header class="wl-stack-card__head">
-							<span class="wl-stack-card__tag"><?php echo esc_html( $card['tag'] ); ?></span>
-						</header>
-						<h3 class="wl-stack-card__title"><?php echo esc_html( $card['title'] ); ?></h3>
-						<p class="wl-stack-card__copy"><?php echo esc_html( $card['copy'] ); ?></p>
-						<ul class="wl-stack-card__chips" aria-label="Komponenten">
-							<?php foreach ( $card['chips'] as $chip ) : ?>
-								<li><span class="wl-chip wl-chip--mono"><?php echo esc_html( $chip ); ?></span></li>
-							<?php endforeach; ?>
-						</ul>
-						<p class="wl-stack-card__entry"><?php echo esc_html( $card['entry'] ); ?></p>
-					</article>
-				<?php endforeach; ?>
-			</div>
-
-			<p class="wl-stack__crosscut nx-reveal"><?php echo esc_html( $stack_crosscut ); ?></p>
-		</div>
-	</section>
-
-	<!-- ═══════════════════════════════════════════════
-	     SECTION 06 — KONTRAKT / SICHERHEIT
+	     SECTION 05 — DER KONTRAKT
+	     Inhaltlich unverändert. „Diskret. Verbindlich. Planbar." war eine
+	     Adjektivreihe, die jeder Anbieter über sich schreibt; die neue
+	     Überschrift benennt, wo die drei Regeln stehen.
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-contract" id="kontrakt">
 		<div class="nx-container">
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">White-Label-Kontrakt</span>
-				<h2 class="nx-headline-section">Diskret. Verbindlich. Planbar.</h2>
+				<h2 class="nx-headline-section">Drei Regeln, die im Vertrag stehen</h2>
 				<p class="wl-section-lede">Drei Regeln, schriftlich im Kontrakt — prüfbar ab der ersten Minute, ohne Sternchen.</p>
 			</div>
 
@@ -762,19 +754,153 @@ $fitcheck_steps = [
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 07 — VERGLEICH (Einordnung)
+	     SECTION 06 — WAS ICH ZEIGEN KANN
+	     Erst die drei klickbaren Referenzen, dann der Code, dann die Herkunft
+	     der Messtechnik. Wer klicken kann, prüft — statt zu glauben.
+	     ═══════════════════════════════════════════════ -->
+	<section class="nx-section wl-proof" data-nx-theme="dark" id="proof">
+		<div class="nx-container">
+			<div class="wl-section-header nx-reveal">
+				<span class="wl-eyebrow">Was ich zeigen kann</span>
+				<h2 class="nx-headline-section">Keine geliehenen Logos. Drei Umsetzungen, die ihr selbst prüfen könnt.</h2>
+				<p class="wl-section-lede">Was ich unter eurem Namen liefere, bleibt unter eurem Namen — NDA. Deshalb steht hier, was offen einsehbar ist.</p>
+			</div>
+
+			<div class="wl-proof__refs nx-reveal">
+				<h3 class="wl-proof__refs-title">Direkt prüfbar: drei Live-Referenzen</h3>
+				<p class="wl-proof__refs-lede">Drei Seiten, die offen einsehbar sind — anschauen und selbst beurteilen, ob das Niveau passt.</p>
+				<ul class="wl-proof__refs-list" role="list">
+					<?php foreach ( $proof_references as $reference ) : ?>
+						<li class="wl-proof__ref">
+							<a
+								class="wl-proof__ref-link"
+								href="<?php echo esc_url( $reference['url'] ); ?>"
+								target="_blank"
+								rel="noopener noreferrer"
+								data-track-action="ref_whitelabel_proof_site"
+								data-track-label="<?php echo esc_attr( $reference['label'] ); ?>"
+								data-track-category="engagement"
+								data-track-section="proof"
+							>
+								<?php echo esc_html( $reference['label'] ); ?>
+								<span class="wl-visually-hidden"> (öffnet in neuem Tab)</span>
+							</a>
+							<span class="wl-proof__ref-note"><?php echo esc_html( $reference['note'] ); ?></span>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+
+			<div class="wl-tech nx-reveal">
+				<h3 class="wl-tech__title">Technischer Beleg</h3>
+				<p class="wl-tech__lede">Individuelle Templates, bedarfsgesteuertes Asset-Loading und dokumentierte Übergabe — passend zum vorhandenen WordPress-Setup.</p>
+
+				<div class="wl-tech__split">
+					<ul class="wl-tech__bullets">
+						<?php foreach ( $tech_bullets as $bullet ) : ?>
+							<li><?php echo esc_html( $bullet ); ?></li>
+						<?php endforeach; ?>
+					</ul>
+
+					<figure class="wl-tech__code" aria-hidden="true">
+						<figcaption class="wl-tech__code-head">
+							<span class="wl-tech__code-dot wl-tech__code-dot--r"></span>
+							<span class="wl-tech__code-dot wl-tech__code-dot--y"></span>
+							<span class="wl-tech__code-dot wl-tech__code-dot--g"></span>
+							<span class="wl-tech__code-file">inc/enqueue.php</span>
+						</figcaption>
+<pre class="wl-tech__code-body" tabindex="-1"><span class="wl-tech__c">// Bedarfsgesteuertes Asset-Loading pro Template</span>
+<span class="wl-tech__k">if</span> ( is_page_template( <span class="wl-tech__s">'page-whitelabel.php'</span> ) ) {
+    hu_enqueue_css( <span class="wl-tech__s">'whitelabel'</span>, <span class="wl-tech__s">'whitelabel.css'</span>, [ <span class="wl-tech__s">'design-system'</span> ] );
+    hu_enqueue_js(  <span class="wl-tech__s">'whitelabel'</span>,  <span class="wl-tech__s">'whitelabel.js'</span> );
+}
+
+<span class="wl-tech__c">// Server-Side Event auf Lead-Submit</span>
+window.dataLayer.push({
+    <span class="wl-tech__p">event</span>: <span class="wl-tech__s">'lead_qualified'</span>,
+    <span class="wl-tech__p">source</span>: <span class="wl-tech__s">'whitelabel_partner'</span>,
+    <span class="wl-tech__p">value</span>: leadValue
+});</pre>
+					</figure>
+				</div>
+			</div>
+
+			<?php /* Ersetzt den anonymisierten Case samt Kennzahlen-Kasten. Ohne Zahlen
+			        gibt es auch nichts zu disclaimern — die Fußnote ist mitentfallen. */ ?>
+			<div class="wl-proof__origin nx-reveal">
+				<h3 class="wl-proof__origin-title">Woher die Messtechnik kommt</h3>
+				<p class="wl-proof__origin-copy">Für einen mittelständischen PV-Installationsbetrieb habe ich Landingpage, Kampagnensteuerung in Google und Meta Ads und die gesamte Messkette verantwortet: Server-Side-Tracking, Consent Mode V2, CRM-Attribution vom Klick bis zum Abschluss. Kein White-Label-Mandat, sondern ein Projekt, an dem sich zeigen lässt, wie die Teile zusammenspielen.</p>
+				<p class="wl-proof__origin-copy">Für euch ist daran nicht das Ergebnis interessant, sondern was es voraussetzt: eine Messkette, die durchhält, auch nach dem dritten Plugin-Update. Genau das baue ich unter eurem Namen.</p>
+			</div>
+
+			<p class="wl-proof__docs nx-reveal">
+				Stack und Übergabe könnt ihr vorab prüfen: der <a href="<?php echo esc_url( $stack_agentur_url ); ?>" data-track-action="link_whitelabel_stack_agentur" data-track-category="internal_link" data-track-section="proof">Agentur-Stack</a> zeigt Infrastruktur und Deployment, der <a href="<?php echo esc_url( $outsourcing_url ); ?>" data-track-action="link_whitelabel_outsourcing_guide" data-track-category="internal_link" data-track-section="proof">Auslagerungs-Leitfaden</a> Rollen, Übergaben und Kontrollpunkte.
+			</p>
+		</div>
+	</section>
+
+	<!-- ═══════════════════════════════════════════════
+	     SECTION 07 — WER LIEFERT
+	     ═══════════════════════════════════════════════ -->
+	<section class="nx-section wl-founder" id="person">
+		<div class="nx-container">
+			<div class="wl-founder__grid nx-reveal">
+				<figure class="wl-founder__media">
+					<img
+						class="wl-founder__photo"
+						src="<?php echo esc_url( $portrait_url ); ?>"
+						alt="Haşim Üner, White-Label-Partner für Agenturen"
+						width="640"
+						height="800"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+				<div class="wl-founder__body">
+					<span class="wl-eyebrow">Wer liefert</span>
+					<h2 class="nx-headline-section">Eine Person. Kein Ticketsystem.</h2>
+					<p class="wl-founder__copy">
+						Kein Delivery-Team, keine Vermittlungsplattform. Haşim Üner — Technical SEO, Server-Side-Tracking, WordPress &amp; Core Web Vitals, Landingpages, Automation. Die Arbeitsprobe oben: von der Tracking-Architektur bis zur letzten Zeile Code aus einer Hand. Im Fit-Gespräch sitzt ihr mit genau der Person, die nachher euren Code schreibt.
+					</p>
+
+					<?php /* Das Ein-Personen-Modell hat ein Ausfallrisiko. Es wegzuargumentieren
+					        wäre unglaubwürdig; geregelt wird der Umgang damit. Ersetzt den
+					        Verfügbarkeits-Satz, der das Thema nur streifte. */ ?>
+					<h3 class="wl-founder__risk-title">Was passiert, wenn ich ausfalle</h3>
+					<p class="wl-founder__copy">Eine Person hat ein Ausfallrisiko, und das lässt sich nicht wegargumentieren. Regeln lässt sich der Umgang damit. Wenn ich ausfalle, erfahrt ihr es am selben Tag — nicht, wenn die Deadline verstrichen ist. Und weil der Code versioniert in eurem Repository liegt, die Zugänge in euren Accounts sind und jede Übergabe dokumentiert wird, kann jeder andere Entwickler dort weitermachen, wo ich aufgehört habe.</p>
+					<p class="wl-founder__copy">Das ist kein Ersatz für ein Team. Es ist der Grund, warum ein Ausfall bei mir Zeit kostet und nichts sonst.</p>
+					<p class="wl-founder__availability">Kritische Deadlines werden nur zugesagt, wenn die Umsetzung im vereinbarten Zeitraum abgesichert ist.</p>
+
+					<p class="wl-founder__credentials"><?php echo esc_html( $founder_credentials ); ?></p>
+					<?php /* An genau dieser Stelle will der Leser die Person prüfen. Bis hierher
+					        führte kein Weg dorthin — ein verschenktes E-E-A-T-Signal. */ ?>
+					<p class="wl-founder__about">
+						<a href="<?php echo esc_url( $about_url ); ?>" data-track-action="link_whitelabel_about_person" data-track-category="internal_link" data-track-section="person">Werdegang, Arbeitsweise und Kontakt auf der Über-Seite</a>
+					</p>
+					<ul class="wl-founder__chips" aria-label="Rahmendaten">
+						<?php foreach ( $founder_chips as $chip ) : ?>
+							<li><span class="wl-chip"><?php echo esc_html( $chip ); ?></span></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ═══════════════════════════════════════════════
+	     SECTION 08 — EINORDNUNG (Vergleich)
 	     ═══════════════════════════════════════════════ -->
 	<section class="nx-section wl-compare-section" id="vergleich">
 		<div class="nx-container">
 			<div class="wl-section-header nx-reveal">
 				<span class="wl-eyebrow">Einordnung</span>
 				<h2 class="nx-headline-section">Senior einstellen, projektweise extern vergeben — oder andocken?</h2>
-				<p class="wl-section-lede">Drei Wege zu Senior-Kapazität. Ohne Fantasiezahlen — die Unterschiede liegen in Anlaufzeit, Risiko und Tiefe.</p>
+				<p class="wl-section-lede">Drei Wege zu derselben Kapazität. Ohne Fantasiezahlen — die Unterschiede liegen in Anlaufzeit, Risiko und Tiefe.</p>
 			</div>
 
 			<div class="wl-compare-wrap nx-reveal">
 				<table class="wl-compare">
-					<caption class="wl-visually-hidden">Vergleich der drei Wege zu Senior-Kapazität: Senior einstellen, projektweise extern vergeben, White-Label-Partner</caption>
+					<caption class="wl-visually-hidden">Vergleich der drei Wege: Senior einstellen, projektweise extern vergeben, White-Label-Partner</caption>
 					<thead>
 						<tr>
 							<th scope="col" class="wl-compare__crit"><span class="wl-visually-hidden">Kriterium</span></th>
@@ -804,142 +930,7 @@ $fitcheck_steps = [
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 08 — ARBEITSPROBE (offengelegter Case)
-	     ═══════════════════════════════════════════════ -->
-	<section class="nx-section wl-proof" data-nx-theme="dark" id="proof">
-		<div class="nx-container">
-			<div class="wl-section-header nx-reveal">
-				<span class="wl-eyebrow">Arbeitsprobe · offengelegt</span>
-				<h2 class="nx-headline-section">Keine geliehenen Logos. Drei Umsetzungen, die ihr selbst prüfen könnt.</h2>
-				<p class="wl-section-lede">Was ich unter eurem Namen liefere, bleibt unter eurem Namen — NDA. Deshalb zeige ich ein eigenes, offengelegtes Projekt bis in die Zahlen: ein mittelständischer PV-Installationsbetrieb — von Google- und Meta-Kampagnen über die Landingpage bis zu Server-Side-Tracking, Consent Mode V2 und CRM-Attribution.</p>
-			</div>
-
-			<div class="wl-proof__grid nx-reveal" role="list" aria-label="Kennzahlen der Arbeitsprobe">
-				<?php foreach ( $proof_metrics as $metric ) : ?>
-					<div class="wl-proof__item" role="listitem">
-						<div class="wl-proof__value"><?php echo esc_html( $metric['value'] ); ?></div>
-						<div class="wl-proof__label"><?php echo esc_html( $metric['label'] ); ?></div>
-					</div>
-				<?php endforeach; ?>
-			</div>
-
-			<p class="wl-proof__scope">Mein Verantwortungsbereich in dieser Arbeitsprobe: Landingpage und Kampagnensteuerung in Google Ads und Meta Ads — verbunden durch Tracking-Architektur, Consent Mode V2 und CRM-Attribution.</p>
-
-			<p class="wl-proof__disclaimer">Fallbeispiel aus 2024–2025 · eigenes Projekt, kein White-Label-Mandat · keine pauschale Übertragbarkeitsgarantie.</p>
-
-			<div class="wl-proof__refs nx-reveal">
-				<h3 class="wl-proof__refs-title">Direkt prüfbar: drei Live-Referenzen</h3>
-				<p class="wl-proof__refs-lede">Drei Seiten, die offen einsehbar sind — anschauen und selbst beurteilen, ob das Niveau passt.</p>
-				<ul class="wl-proof__refs-list" role="list">
-					<?php foreach ( $proof_references as $reference ) : ?>
-						<li class="wl-proof__ref">
-							<a
-								class="wl-proof__ref-link"
-								href="<?php echo esc_url( $reference['url'] ); ?>"
-								target="_blank"
-								rel="noopener noreferrer"
-								data-track-action="ref_whitelabel_proof_site"
-								data-track-label="<?php echo esc_attr( $reference['label'] ); ?>"
-								data-track-category="engagement"
-								data-track-section="proof"
-							>
-								<?php echo esc_html( $reference['label'] ); ?>
-								<span class="wl-visually-hidden"> (öffnet in neuem Tab)</span>
-							</a>
-							<span class="wl-proof__ref-note"><?php echo esc_html( $reference['note'] ); ?></span>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
-
-			<div class="wl-proof__cta nx-reveal">
-				<p class="wl-proof__cta-copy">Dieselbe Mechanik unter eurem Namen — die Frage ist nur, ob sie zu eurem nächsten Kundenprojekt passt.</p>
-				<a href="#fit-check" class="nx-btn nx-btn--ghost" data-track-action="cta_whitelabel_proof_to_fitcheck" data-track-category="navigation" data-track-section="proof">
-					Fit-Check starten — 3 Fragen, 60 Sekunden
-				</a>
-			</div>
-		</div>
-	</section>
-
-	<!-- ═══════════════════════════════════════════════
-	     SECTION 09 — WER LIEFERT (Founder-Strip)
-	     ═══════════════════════════════════════════════ -->
-	<section class="nx-section wl-founder" id="person">
-		<div class="nx-container">
-			<div class="wl-founder__grid nx-reveal">
-				<figure class="wl-founder__media">
-					<img
-						class="wl-founder__photo"
-						src="<?php echo esc_url( $portrait_url ); ?>"
-						alt="Haşim Üner, White-Label-Partner für Agenturen"
-						width="640"
-						height="800"
-						loading="lazy"
-						decoding="async"
-					/>
-				</figure>
-				<div class="wl-founder__body">
-					<span class="wl-eyebrow">Wer liefert</span>
-					<h2 class="nx-headline-section">Eine Person. Kein Ticketsystem.</h2>
-					<p class="wl-founder__copy">
-						Kein Delivery-Team, keine Vermittlungsplattform. Haşim Üner — Technical SEO, Server-Side-Tracking, WordPress &amp; Core Web Vitals, Landingpages, Automation. Die Arbeitsprobe oben: von der Tracking-Architektur bis zur letzten Zeile Code aus einer Hand. Im Fit-Gespräch sitzt ihr mit genau der Person, die nachher euren Code schreibt.
-					</p>
-					<p class="wl-founder__availability"><?php echo esc_html( $founder_availability ); ?></p>
-					<p class="wl-founder__credentials"><?php echo esc_html( $founder_credentials ); ?></p>
-					<ul class="wl-founder__chips" aria-label="Rahmendaten">
-						<?php foreach ( $founder_chips as $chip ) : ?>
-							<li><span class="wl-chip"><?php echo esc_html( $chip ); ?></span></li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- ═══════════════════════════════════════════════
-	     SECTION 10 — TECHNISCHER BELEG
-	     ═══════════════════════════════════════════════ -->
-	<section class="nx-section wl-tech" id="technik">
-		<div class="nx-container">
-			<div class="wl-section-header nx-reveal">
-				<span class="wl-eyebrow">Technischer Beleg</span>
-				<h2 class="nx-headline-section">Nachvollziehbarer Code, gezielte Abhängigkeiten.</h2>
-				<p class="wl-section-lede">Individuelle Templates, bedarfsgesteuertes Asset-Loading und dokumentierte Übergabe — passend zum vorhandenen WordPress-Setup.</p>
-			</div>
-
-			<div class="wl-tech__split nx-reveal">
-				<ul class="wl-tech__bullets">
-					<?php foreach ( $tech_bullets as $bullet ) : ?>
-						<li><?php echo esc_html( $bullet ); ?></li>
-					<?php endforeach; ?>
-				</ul>
-
-				<figure class="wl-tech__code" aria-hidden="true">
-					<figcaption class="wl-tech__code-head">
-						<span class="wl-tech__code-dot wl-tech__code-dot--r"></span>
-						<span class="wl-tech__code-dot wl-tech__code-dot--y"></span>
-						<span class="wl-tech__code-dot wl-tech__code-dot--g"></span>
-						<span class="wl-tech__code-file">inc/enqueue.php</span>
-					</figcaption>
-<pre class="wl-tech__code-body" tabindex="-1"><span class="wl-tech__c">// Bedarfsgesteuertes Asset-Loading pro Template</span>
-<span class="wl-tech__k">if</span> ( is_page_template( <span class="wl-tech__s">'page-whitelabel.php'</span> ) ) {
-    hu_enqueue_css( <span class="wl-tech__s">'whitelabel'</span>, <span class="wl-tech__s">'whitelabel.css'</span>, [ <span class="wl-tech__s">'design-system'</span> ] );
-    hu_enqueue_js(  <span class="wl-tech__s">'whitelabel'</span>,  <span class="wl-tech__s">'whitelabel.js'</span> );
-}
-
-<span class="wl-tech__c">// Server-Side Event auf Lead-Submit</span>
-window.dataLayer.push({
-    <span class="wl-tech__p">event</span>: <span class="wl-tech__s">'lead_qualified'</span>,
-    <span class="wl-tech__p">source</span>: <span class="wl-tech__s">'whitelabel_partner'</span>,
-    <span class="wl-tech__p">value</span>: leadValue
-});</pre>
-				</figure>
-			</div>
-		</div>
-	</section>
-
-	<!-- ═══════════════════════════════════════════════
-	     SECTION 11 — FAQ (Einwände vor dem Gespräch)
+	     SECTION 09 — FAQ (Einwände vor dem Gespräch)
 	     nexus-core initFaqAccordion() wirkt dokument-weit auf <details>:
 	     diese FAQ muss die einzige <details>-Gruppe der Seite bleiben.
 	     ═══════════════════════════════════════════════ -->
@@ -978,80 +969,156 @@ window.dataLayer.push({
 			</div>
 
 			<p class="wl-faq__more">
-				Eure Frage fehlt? Direkter Draht:
-				<a href="<?php echo esc_url( $mailto_url ); ?>" data-track-action="mail_whitelabel_faq" data-track-category="contact" data-track-section="faq"><?php echo esc_html( $contact_email ); ?></a>
+				Eure Frage fehlt?
+				<a href="<?php echo esc_url( $wl_form_task_url ); ?>" data-wl-form-link data-track-action="cta_whitelabel_faq_task_brief" data-track-category="lead_gen" data-track-section="faq">Stellt sie im Formular</a> — Antwort <?php echo esc_html( function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : 'innerhalb von 24 Stunden werktags' ); ?>.
 			</p>
+
+			<div class="wl-facts nx-reveal">
+				<h3 class="wl-facts__title">Eckdaten</h3>
+				<dl class="wl-facts__list">
+					<?php foreach ( $wl_facts as $fact ) : ?>
+						<div class="wl-facts__row">
+							<dt><?php echo esc_html( $fact['term'] ); ?></dt>
+							<dd><?php echo esc_html( $fact['desc'] ); ?></dd>
+						</div>
+					<?php endforeach; ?>
+				</dl>
+			</div>
 		</div>
 	</section>
 
 	<!-- ═══════════════════════════════════════════════
-	     SECTION 12 — FIT-CHECK (3 Fragen → Termin)
-	     Rein clientseitig: Quiz ist SSR-hidden, die Ergebnis-CTAs sind
-	     SSR-sichtbar — ohne JS bleiben Buchung + Mail direkt nutzbar.
-	     Keine <details> (FAQ-Accordion-Kollision), keine Speicherung.
+	     SECTION 10 — NÄCHSTER SCHRITT
+	     Drei gleichrangige Wege statt eines Quiz. Das Formular darunter ist
+	     das Ziel von Weg 1 und Weg 2; `?case=` unterscheidet beide im
+	     Posteingang, ohne dass es zwei Formulare braucht.
 	     ═══════════════════════════════════════════════ -->
-	<section class="nx-section wl-cta wl-fitcheck" data-nx-theme="dark" id="fit-check">
+	<section class="nx-section wl-cta" data-nx-theme="dark" id="naechster-schritt">
 		<div class="wl-cta__bg" aria-hidden="true">
 			<div class="wl-hero__bg-warmth"></div>
 			<div class="wl-hero__bg-vignette"></div>
 		</div>
 		<div class="nx-container">
-			<div class="wl-cta__shell nx-reveal">
-				<div class="wl-cta__copy">
-					<span class="wl-eyebrow">Nächster Schritt</span>
-					<h2 class="wl-cta__title">Passt das zu eurem Setup?</h2>
-					<p class="wl-cta__lede">Kurz prüfen, dann reden: 30&nbsp;Min, kein Pitch-Deck, keine Verkaufsshow. Danach wisst ihr, ob es passt — und wenn nicht, wisst ihr das auch.</p>
-					<div class="wl-cta__shortcut">
-						<p class="wl-cta__shortcut-copy">Ihr habt schon eine konkrete Aufgabe? Dann überspringt den Fit-Check.</p>
-						<a href="<?php echo esc_url( $task_brief_url ); ?>" class="nx-btn wl-btn--task" data-track-action="cta_whitelabel_fitcheck_task_brief" data-track-category="lead_gen" data-track-section="fitcheck">
-							Aufgabe beschreiben — <?php echo esc_html( $task_brief_response ); ?>
-						</a>
-					</div>
+			<div class="wl-section-header wl-section-header--center nx-reveal">
+				<span class="wl-eyebrow">Nächster Schritt</span>
+				<h2 class="nx-headline-section">Drei Wege, je nachdem wo ihr steht</h2>
+			</div>
+
+			<div class="wl-ways reveal-stagger">
+				<?php foreach ( $wl_ways as $way ) : ?>
+					<article class="wl-way">
+						<h3 class="wl-way__title"><?php echo esc_html( $way['title'] ); ?></h3>
+						<p class="wl-way__copy"><?php echo esc_html( $way['copy'] ); ?></p>
+						<a
+							class="wl-way__link"
+							href="<?php echo esc_url( $way['url'] ); ?>"
+							<?php if ( $way['form'] ) : ?>data-wl-form-link<?php endif; ?>
+							data-track-action="<?php echo esc_attr( $way['action'] ); ?>"
+							data-track-category="lead_gen"
+							data-track-section="naechster_schritt"
+						><?php echo esc_html( $way['label'] ); ?></a>
+					</article>
+				<?php endforeach; ?>
+			</div>
+
+			<div class="wl-request" id="aufgabe">
+				<div class="wl-request__head">
+					<h3 class="wl-request__title">Aufgabe beschreiben</h3>
+					<p class="wl-request__lede">Vier Angaben genügen. Ich antworte <?php echo esc_html( function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : 'innerhalb von 24 Stunden werktags' ); ?> persönlich.</p>
 				</div>
 
-				<div class="wl-fitcheck__box" data-fitcheck data-test-sprint-price="<?php echo esc_attr( $test_sprint_price ); ?>">
-					<div class="wl-fitcheck__quiz" data-fitcheck-quiz hidden>
-						<?php foreach ( $fitcheck_steps as $step_i => $step ) : ?>
-							<div class="wl-fitcheck__step" data-fitcheck-step="<?php echo (int) ( $step_i + 1 ); ?>"<?php echo 0 !== $step_i ? ' hidden' : ''; ?>>
-								<span class="wl-fitcheck__kicker">Schritt <?php echo (int) ( $step_i + 1 ); ?> von <?php echo count( $fitcheck_steps ); ?> · bleibt im Browser</span>
-								<h3 class="wl-fitcheck__q"><?php echo esc_html( $step['question'] ); ?></h3>
-								<div class="wl-fitcheck__opts">
-									<?php foreach ( $step['options'] as $opt_value => $opt_label ) : ?>
-										<button
-											type="button"
-											class="wl-fitcheck__opt"
-											data-fitcheck-key="<?php echo esc_attr( $step['key'] ); ?>"
-											data-fitcheck-value="<?php echo esc_attr( $opt_value ); ?>"
-											data-fitcheck-label="<?php echo esc_attr( $opt_label ); ?>"
-											data-track-action="fitcheck_<?php echo esc_attr( $step['key'] ); ?>_<?php echo esc_attr( $opt_value ); ?>"
-											data-track-category="lead_gen"
-											data-track-section="fitcheck_step_<?php echo (int) ( $step_i + 1 ); ?>"
-										><?php echo esc_html( $opt_label ); ?></button>
-									<?php endforeach; ?>
-								</div>
-							</div>
-						<?php endforeach; ?>
+				<div class="wl-request__error-summary is-hidden" role="alert" aria-live="assertive" data-wl-error-summary>
+					<p class="wl-request__error-title">Bitte prüft folgende Felder:</p>
+					<ul class="wl-request__error-list" data-wl-error-list></ul>
+				</div>
+
+				<form
+					class="wl-request__form"
+					data-wl-request-form
+					action="<?php echo esc_url( $wl_form_endpoint ); ?>"
+					method="post"
+					novalidate
+				>
+					<div class="wl-request__honeypot" aria-hidden="true">
+						<label for="wl-company-website">Website</label>
+						<input id="wl-company-website" type="text" name="company_website" tabindex="-1" autocomplete="off">
 					</div>
 
-					<div class="wl-fitcheck__result" data-fitcheck-result role="group" aria-labelledby="wl-fitcheck-result-title" aria-describedby="wl-fitcheck-result-note" tabindex="-1">
-						<h3 id="wl-fitcheck-result-title" class="wl-visually-hidden">Ergebnis des Fit-Checks</h3>
-						<p id="wl-fitcheck-result-note" class="wl-fitcheck__result-note" data-fitcheck-note role="status" aria-live="polite" aria-atomic="true" hidden>Aus euren Antworten ergibt sich eine passende nächste Option.</p>
-						<div class="wl-cta__actions">
-							<a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" class="nx-btn nx-btn--primary" data-fitcheck-book data-track-action="cta_whitelabel_fitcheck_book" data-track-category="lead_gen" data-track-section="fitcheck_result">
-								Termin wählen (30 Min, direkt mit mir)
-							</a>
-							<a href="<?php echo esc_url( $mailto_url ); ?>" class="nx-btn nx-btn--ghost" data-fitcheck-mail data-track-action="mail_whitelabel_fitcheck" data-track-category="contact" data-track-section="fitcheck_result">
-								Lieber schriftlich: <?php echo esc_html( $contact_email ); ?>
-							</a>
+					<?php /* Serverseitig immer der Standardwert: die Route wird gecacht, und
+					        ein aus der URL gerenderter Wert landete sonst im Cache des
+					        nächsten Besuchers. Das Skript setzt ihn clientseitig aus
+					        ?case= nach. */ ?>
+					<input type="hidden" name="case" value="aufgabe" data-wl-case>
+
+					<div class="wl-request__field">
+						<label class="wl-request__label" for="wl-task">Aufgabe <span class="wl-request__req" aria-hidden="true">*</span></label>
+						<textarea
+							class="wl-request__input wl-request__input--area"
+							id="wl-task"
+							name="task"
+							rows="5"
+							required
+							aria-required="true"
+							placeholder="Was soll am Ende funktionieren?"
+						></textarea>
+					</div>
+
+					<div class="wl-request__row">
+						<div class="wl-request__field">
+							<label class="wl-request__label" for="wl-timeframe">Gewünschter Zeitraum</label>
+							<input
+								class="wl-request__input"
+								id="wl-timeframe"
+								name="timeframe"
+								type="text"
+								autocomplete="off"
+								placeholder="z. B. KW 42 oder Ende November"
+							>
+						</div>
+
+						<div class="wl-request__field">
+							<label class="wl-request__label" for="wl-email">E-Mail <span class="wl-request__req" aria-hidden="true">*</span></label>
+							<input
+								class="wl-request__input"
+								id="wl-email"
+								name="email"
+								type="email"
+								required
+								aria-required="true"
+								autocomplete="email"
+								placeholder="name@agentur.de"
+							>
 						</div>
 					</div>
 
-					<p class="wl-fitcheck__skip">
-						<a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" data-fitcheck-skip hidden data-track-action="cta_whitelabel_fitcheck_skip" data-track-category="lead_gen" data-track-section="fitcheck">
-							Scope schon klar? Direkt 30-Minuten-Termin wählen
-						</a>
+					<fieldset class="wl-request__field wl-request__fieldset">
+						<legend class="wl-request__label">Zugänge vorhanden — WordPress, GA4, GTM</legend>
+						<div class="wl-request__choices">
+							<?php foreach ( $wl_access_options as $access_value => $access_label ) : ?>
+								<span class="wl-request__choice">
+									<input
+										type="radio"
+										id="wl-access-<?php echo esc_attr( $access_value ); ?>"
+										name="access"
+										value="<?php echo esc_attr( $access_value ); ?>"
+									>
+									<label for="wl-access-<?php echo esc_attr( $access_value ); ?>"><?php echo esc_html( $access_label ); ?></label>
+								</span>
+							<?php endforeach; ?>
+						</div>
+					</fieldset>
+
+					<div class="wl-request__actions">
+						<button class="nx-btn nx-btn--primary" type="submit" data-wl-submit>Aufgabe senden</button>
+						<a class="wl-request__aux" href="<?php echo esc_url( $whitelabel_fit_url ); ?>" data-track-action="cta_whitelabel_form_call" data-track-category="lead_gen" data-track-section="naechster_schritt">Lieber 30 Minuten sprechen</a>
+					</div>
+
+					<p class="wl-request__legal">
+						Die Angaben werden für die Beantwortung eurer Anfrage verarbeitet. Details in der <a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutzerklärung</a>.
 					</p>
-				</div>
+
+					<div class="wl-request__feedback" data-wl-feedback aria-live="polite" role="status"></div>
+				</form>
 			</div>
 		</div>
 	</section>
@@ -1061,10 +1128,10 @@ window.dataLayer.push({
 		<div class="wl-sticky-cta__inner">
 			<div class="wl-sticky-cta__label">
 				<strong>White-Label-Partner</strong>
-				<span>3 Fragen · dann 30&nbsp;Min direkt mit mir</span>
+				<span>Vier Zeilen · Antwort in 24 Stunden werktags</span>
 			</div>
-			<a href="#fit-check" class="nx-btn nx-btn--primary" data-track-action="cta_sticky_whitelabel_to_fitcheck" data-track-category="navigation" data-track-section="sticky_mobile">
-				Fit-Check starten
+			<a href="<?php echo esc_url( $wl_form_task_url ); ?>" class="nx-btn nx-btn--primary" data-wl-form-link data-track-action="cta_sticky_whitelabel_task_brief" data-track-category="lead_gen" data-track-section="sticky_mobile">
+				Aufgabe beschreiben
 			</a>
 		</div>
 	</div>
@@ -1086,13 +1153,11 @@ do_action( 'blocksy:footer:before' );
 	<footer id="footer" class="wl-page-footer" aria-labelledby="wl-page-footer-heading" role="contentinfo">
 		<h2 id="wl-page-footer-heading" class="wl-visually-hidden">Seitenabschluss</h2>
 		<div class="nx-container wl-page-footer__inner">
-			<?php /* Der Rückweg ins übrige Angebot: die Route endet nicht mehr im Nichts. */ ?>
+			<?php /* Der Rückweg ins übrige Angebot: die Route endet nicht mehr im Nichts.
+			        Freelancer- und Solar-Link sind entfallen — für einen Agenturbesucher
+			        die zwei irrelevantesten Ziele der Website. */ ?>
 			<nav class="wl-page-footer__site" aria-label="Weitere Seiten">
 				<a href="<?php echo esc_url( $wl_home_url ); ?>" rel="home" data-track-action="nav_whitelabel_footer_home" data-track-category="navigation" data-track-section="whitelabel_footer">Startseite</a>
-				<span aria-hidden="true">·</span>
-				<a href="<?php echo esc_url( $wl_freelancer_url ); ?>" data-track-action="nav_whitelabel_footer_freelancer" data-track-category="navigation" data-track-section="whitelabel_footer">WordPress Freelancer</a>
-				<span aria-hidden="true">·</span>
-				<a href="<?php echo esc_url( $wl_energy_url ); ?>" data-track-action="nav_whitelabel_footer_energy" data-track-category="navigation" data-track-section="whitelabel_footer">Solar &amp; Wärmepumpen</a>
 			</nav>
 			<p>&copy; <time datetime="<?php echo esc_attr( $current_year ); ?>"><?php echo esc_html( $current_year ); ?></time> Haşim Üner · White-Label-Partner für Agenturen</p>
 			<nav class="wl-page-footer__legal" aria-label="Rechtliches">

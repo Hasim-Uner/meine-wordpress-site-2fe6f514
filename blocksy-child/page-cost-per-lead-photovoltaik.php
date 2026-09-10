@@ -28,8 +28,8 @@ $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
-$e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
-$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 5 % → 12 %';
+$e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
+$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 5 % → 15 %';
 $e3_conv_before      = $e3_metrics['sales_conversion_before']['display'] ?? '1 – 5 %';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 

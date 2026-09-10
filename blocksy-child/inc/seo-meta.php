@@ -355,8 +355,20 @@ function hu_get_forced_singular_seo_map() {
 			// docs/standards/BRAND_AND_COPY.md: Agenturen, „ihr/euch“,
 			// sichtbar immer „White-Label“, Einstieg über das Erstprojekt.
 			'whitelabel-retainer' => [
-				'title'       => 'White-Label-Partner für Agenturen: WordPress, SEO, Tracking',
-				'description' => 'White-Label-Partner für Agenturen: WordPress, technisches SEO, Tracking und CRO unter eurem Namen. Einstieg über ein Erstprojekt mit fixem Scope und Festpreis.',
+				'title'       => 'White-Label für Agenturen: WordPress, SEO, Tracking',
+				'description' => 'White-Label für Agenturen: WordPress-Umsetzung, technisches SEO und die vollständige Messkette aus einer Hand. Einstieg über ein Erstprojekt mit fixem Scope und Festpreis.',
+			],
+			// Die Stack-Seite trug „White-Label“ in Title UND Description und
+			// zielte damit auf dasselbe Signal wie /whitelabel-retainer/. Zwei
+			// Seiten, die um dieselbe Query konkurrieren, schwaechen beide. Der
+			// Stack behaelt seinen eigentlichen Gegenstand — Infrastruktur und
+			// Deployment —, der kontextuelle Link auf die Agentur-Route bleibt.
+			//
+			// Nur Title und Description wandern hierher: die sichtbare Copy der
+			// Seite ist editor-/templateseitig und bleibt unangetastet.
+			'stack-agentur' => [
+				'title'       => 'Agentur-Stack: Root-Server, Git-Deployment, Restricted Shell',
+				'description' => 'Dev-Stack für Web-Agenturen: eigener Root-Server in Deutschland, CI/CD über GitHub Actions und Rsync, Restricted Deploy-Shell und Multi-Site-Hosting für Care-Plans.',
 			],
 		]
 	);
@@ -992,7 +1004,7 @@ function hu_get_e3_methodology_case_title() {
  * @return string
  */
 function hu_get_e3_methodology_case_description() {
-	return 'Ein mittelständischer PV-Installationsbetrieb senkte den CPL mit eigenem Anfragesystem statt Portal-Leads um über 85 %: 1.750+ qualifizierte PV- & Wärmepumpen-Anfragen, 12 % Abschluss.';
+	return 'Ein mittelständischer PV-Installationsbetrieb senkte den CPL mit eigenem Anfragesystem statt Portal-Leads um über 85 %: 1.750+ qualifizierte PV- & Wärmepumpen-Anfragen, 15 % Abschluss.';
 }
 
 /**

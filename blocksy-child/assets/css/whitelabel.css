@@ -183,8 +183,8 @@ html {
 	border-color: hsl(23 60% 60%) !important;
 }
 
-/* ─── Zweiter Ausgang: "Aufgabe beschreiben" ─────────────────────────
-   Optisch gleichwertig zum goldenen Fit-Check-CTA, nicht untergeordnet:
+/* ─── Zweiter Ausgang: "30 Minuten buchen" ───────────────────────────
+   Optisch gleichwertig zum goldenen Primär-CTA, nicht untergeordnet:
    gleiche Geometrie aus .nx-btn, volle Fläche statt Rahmen, aber ein
    anderer Farbwert — zwei goldene Buttons nebeneinander läsen sich als
    Fehler statt als zwei gleichrangige Wege.
@@ -572,9 +572,9 @@ html {
 	margin: 0.5rem 0 0;
 }
 
-/* Die Arbeitsprobe war ein Ghost-Button neben dem Fit-Check. Sie ist ein
-   Sprungziel, kein Abschluss — als Textlink steht sie weiter zur Verfügung,
-   ohne mit den beiden echten Conversion-Wegen um Gewicht zu konkurrieren. */
+/* Der Nachsatz trägt heute die Metazeile und keinen Link mehr. Die Regeln
+   bleiben, damit ein späterer Textlink hier nicht ungestylt landet — als
+   Textlink, nie als dritter Button neben den zwei Conversion-Wegen. */
 .wl-hero__fineprint a {
 	color: hsl(30 6% 90% / 0.82);
 	text-decoration: underline;
@@ -590,10 +590,9 @@ html {
 	outline-offset: 2px;
 }
 
-/* ─── Ablauf-Kette (Hero right) ──────────────────────────────────────
-   Vier Stationen eines Mandats als vertikale Kette. Statisch —
-   die Animations-Ebene (Linien zeichnen, Stufen faden) kommt im
-   Folge-PR und darf nur transform/opacity anfassen. */
+/* ─── Ablauf-Kette (Sektion 04) ──────────────────────────────────────
+   Vier Stationen eines Mandats als vertikale Kette. Stand bis zum Umbau
+   im Hero und nahm dort den Platz ein, den die Aussage braucht. */
 
 .wl-flow {
 	position: relative;
@@ -709,15 +708,6 @@ html {
 
 .wl-flow__step--final .wl-flow__title { color: hsl(23 60% 78%); }
 
-.wl-flow__chips {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.4rem;
-	margin-top: 0.85rem;
-	padding-top: 0.95rem;
-	border-top: 1px solid hsl(30 10% 100% / 0.06);
-}
-
 /* ─── Chips (shared) ─────────────────────────────────────────────────── */
 
 .wl-chip {
@@ -741,52 +731,6 @@ html {
 	background: hsl(23 50% 47% / 0.08);
 	border-color: hsl(23 50% 47% / 0.22);
 	color: hsl(23 50% 70%);
-}
-
-/* =====================================================================
-   2. PROBLEM
-   ===================================================================== */
-
-.wl-problem {
-	background: linear-gradient(180deg, hsl(30 6% 5%) 0%, hsl(30 6% 7%) 100%);
-}
-
-.wl-problem__grid {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: clamp(1rem, 2vw, 1.5rem);
-}
-
-@media (max-width: 860px) { .wl-problem__grid { grid-template-columns: 1fr; } }
-
-.wl-problem-card {
-	padding: clamp(1.5rem, 2.4vw, 1.85rem);
-	background: var(--nx-card-gradient);
-	border: 1px solid var(--nx-border);
-	border-radius: 14px;
-	transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.wl-problem-card:hover {
-	transform: translateY(-2px);
-	border-color: hsl(23 50% 47% / 0.4);
-}
-
-.wl-problem-card__title {
-	font-family: var(--nx-font-heading);
-	font-size: 1.2rem;
-	font-weight: 600;
-	line-height: 1.3;
-	color: var(--nx-text);
-	margin: 0.8rem 0 0.65rem;
-	letter-spacing: -0.01em;
-}
-
-.wl-problem-card__copy {
-	font-size: 0.97rem;
-	line-height: 1.6;
-	color: var(--nx-text-secondary);
-	margin: 0;
 }
 
 /* =====================================================================
@@ -1029,66 +973,6 @@ html {
 	pointer-events: none;
 }
 
-.wl-proof__grid {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	max-width: none;
-	margin: 0 auto;
-	border: 1px solid hsl(30 10% 100% / 0.08);
-	border-radius: 14px;
-	overflow: hidden;
-	background: linear-gradient(180deg, hsl(30 5% 9% / 0.6), hsl(28 8% 6% / 0.7));
-}
-
-.wl-proof__item {
-	min-width: 0;
-	padding: clamp(1.75rem, 3vw, 2.5rem) clamp(1rem, 2vw, 1.5rem);
-	text-align: center;
-}
-
-.wl-proof__item + .wl-proof__item {
-	border-inline-start: 1px solid hsl(30 10% 100% / 0.08);
-}
-
-.wl-proof__value {
-	font-family: var(--nx-font-heading);
-	font-size: clamp(2rem, 3.6vw, 2.9rem);
-	font-weight: 600;
-	color: var(--accent);
-	letter-spacing: -0.02em;
-	line-height: 1.1;
-	font-variant-numeric: tabular-nums;
-}
-
-/* Die dritte Kachel trug die Uplift-Spanne "1 – 5 % → 12 %" und brauchte
-   dafuer einen eigenen, kleineren Schriftgrad. Sie zeigt jetzt nur noch
-   "12 %" und liegt damit in derselben Laenge wie die beiden anderen — die
-   Sonderregel machte sie hier nur noch kleiner als ihre Nachbarn. */
-
-.wl-proof__label {
-	font-size: 0.83rem;
-	text-transform: uppercase;
-	letter-spacing: 0.12em;
-	color: hsl(30 6% 90% / 0.62);
-	margin-top: 0.5rem;
-}
-
-.wl-proof__scope {
-	margin: 1.5rem auto 0;
-	max-width: 62ch;
-	font-size: 0.92rem;
-	line-height: 1.6;
-	color: hsl(30 6% 90% / 0.78);
-	text-align: center;
-}
-
-.wl-proof__disclaimer {
-	margin: 0.75rem 0 0;
-	font-size: 0.83rem;
-	color: hsl(30 6% 90% / 0.62);
-	text-align: center;
-}
-
 /* ─── Prüfbare Live-Umsetzungen ──────────────────────────────────────
    Gegengewicht zur anonymisierten Zahlenkachel: drei Seiten, die ein
    Fremder anklicken kann. Reines Layout — keine neuen Assets, keine
@@ -1172,86 +1056,35 @@ html {
 	}
 }
 
-.wl-proof__cta {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
-	align-items: center;
-	gap: var(--nx-space-md);
-	max-width: 960px;
-	margin: var(--nx-space-lg) auto 0;
-}
-
-.wl-proof__cta-copy {
-	max-width: 62ch;
-	margin: 0;
-	color: hsl(30 6% 90% / 0.78);
-	line-height: 1.6;
-}
-
-.wl-proof__cta .nx-btn {
-	max-width: 100%;
-	white-space: normal;
-	overflow-wrap: anywhere;
-	line-height: 1.25;
-	text-align: center;
-}
-
-@media (max-width: 820px) {
-	.wl-proof__grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-
-	.wl-proof__item:first-child {
-		grid-column: 1 / -1;
-	}
-
-	.wl-proof__item:nth-child(2),
-	.wl-proof__item:nth-child(3) {
-		border-top: 1px solid hsl(30 10% 100% / 0.08);
-	}
-
-	.wl-proof__item:nth-child(2) {
-		border-inline-start: 0;
-	}
-}
-
-@media (max-width: 760px) {
-	.wl-proof__grid,
-	.wl-proof__cta {
-		grid-template-columns: minmax(0, 1fr);
-	}
-
-	.wl-proof__item:first-child {
-		grid-column: auto;
-	}
-
-	.wl-proof__item + .wl-proof__item {
-		border-inline-start: 0;
-		border-top: 1px solid hsl(30 10% 100% / 0.08);
-	}
-
-	.wl-proof__cta-copy {
-		text-align: center;
-	}
-
-	.wl-proof__cta .nx-btn {
-		width: 100%;
-	}
-}
-
-@media (max-width: 420px) {
-	.wl-proof__value,
-	.wl-proof__label {
-		overflow-wrap: anywhere;
-	}
-}
-
 /* =====================================================================
    7. TECH SPLIT
    ===================================================================== */
 
+/* Block statt Sektion: liegt in der Belege-Sektion (dunkel) und grenzt sich
+   dort über Rahmen und Flächenton ab, nicht über einen Seitenhintergrund. */
 .wl-tech {
-	background: linear-gradient(180deg, hsl(30 6% 5%) 0%, hsl(30 6% 6%) 100%);
+	margin: var(--nx-space-lg) auto 0;
+	max-width: 960px;
+	padding: clamp(1.5rem, 3vw, 2.25rem);
+	background: hsl(28 8% 8% / 0.75);
+	border: 1px solid hsl(30 10% 100% / 0.08);
+	border-radius: 18px;
+}
+
+.wl-tech__title {
+	margin: 0;
+	font-family: var(--nx-font-heading);
+	font-size: clamp(1.25rem, 2vw, 1.5rem);
+	font-weight: 500;
+	color: var(--nx-text);
+}
+
+.wl-tech__lede {
+	margin: 0.5rem 0 var(--nx-space-md);
+	max-width: 62ch;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: hsl(30 6% 90% / 0.78);
 }
 
 .wl-tech__split {
@@ -1484,108 +1317,6 @@ html {
 	font-weight: 600;
 }
 
-.wl-test-sprint-details {
-	margin: 0 0 1.75rem;
-	padding: clamp(1.5rem, 3vw, 2.25rem);
-	background: hsl(28 8% 8% / 0.9);
-	border: 1px solid hsl(23 50% 47% / 0.22);
-	border-radius: 18px;
-}
-
-.wl-test-sprint-details__header {
-	margin-bottom: 1.4rem;
-}
-
-.wl-test-sprint-details__header h3 {
-	margin: 0.45rem 0 0;
-	font-family: var(--nx-font-heading);
-	font-size: clamp(1.35rem, 2.2vw, 1.75rem);
-	font-weight: 500;
-	line-height: 1.2;
-	color: var(--nx-text);
-}
-
-.wl-test-sprint-details__grid {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: clamp(1.25rem, 2.5vw, 2rem);
-}
-
-.wl-test-sprint-details__item h4 {
-	margin: 0 0 0.65rem;
-	font-family: var(--nx-font-mono);
-	font-size: 0.7rem;
-	font-weight: 600;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	color: hsl(23 50% 70%);
-}
-
-.wl-test-sprint-details__item ul,
-.wl-test-sprint-details__item dl {
-	margin: 0;
-	color: hsl(30 6% 90% / 0.76);
-	font-size: 0.86rem;
-	line-height: 1.55;
-}
-
-.wl-test-sprint-details__item ul {
-	padding-inline-start: 1.1rem;
-}
-
-.wl-test-sprint-details__item dl {
-	display: grid;
-	gap: 0.9rem;
-}
-
-.wl-test-sprint-details__item dt {
-	margin: 0 0 0.2rem;
-	font-family: var(--nx-font-mono);
-	font-size: 0.66rem;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	color: hsl(30 6% 90% / 0.62);
-}
-
-.wl-test-sprint-details__item dd {
-	margin: 0;
-}
-
-.wl-test-sprint-details__notes {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 0.75rem 2rem;
-	margin-top: 1.4rem;
-	padding-top: 1.1rem;
-	border-top: 1px solid hsl(30 10% 100% / 0.07);
-}
-
-.wl-test-sprint-details__notes p {
-	margin: 0;
-	font-size: 0.82rem;
-	line-height: 1.5;
-	color: hsl(30 6% 90% / 0.72);
-}
-
-.wl-test-sprint-details__notes p:last-child {
-	font-weight: 600;
-	color: hsl(23 60% 78%);
-}
-
-@media (max-width: 900px) {
-	.wl-test-sprint-details__grid,
-	.wl-test-sprint-details__notes {
-		grid-template-columns: minmax(0, 1fr);
-	}
-}
-
-.wl-entry__retainer-note {
-	font-size: 0.88rem;
-	color: hsl(30 6% 90% / 0.6);
-	margin: 0.8rem 0 0;
-	max-width: 56ch;
-}
-
 .wl-entry__bullets {
 	position: relative;
 	list-style: none;
@@ -1613,19 +1344,15 @@ html {
 	box-shadow: 0 0 0 4px hsl(23 50% 47% / 0.15);
 }
 
-/* Zwei gleichrangige Wege nebeneinander: Fit-Check für alle, die ihre
-   Aufgabe noch sortieren, "Aufgabe beschreiben" für alle, die sie kennen.
-   Die Notiz darunter bleibt auf eigener Zeile. */
+/* Zwei gleichrangige Wege nebeneinander: die Aufgabe schriftlich oder das
+   Gespräch. Der Retainer-Nachsatz ist hier entfallen — er hat als eigene
+   Karte über dem Block eine Zahl und eine Grenze bekommen. */
 .wl-entry__actions {
 	position: relative;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
 	gap: 0.75rem;
-}
-
-.wl-entry__actions .wl-entry__retainer-note {
-	flex: 1 0 100%;
 }
 
 /* =====================================================================
@@ -1675,26 +1402,6 @@ html {
 	line-height: 1.6;
 	margin: 0;
 	max-width: 56ch;
-}
-
-/* Abkürzung neben dem Fit-Check: wer die Aufgabe schon kennt, soll das Quiz
-   nicht durchlaufen müssen. Steht in der Copy-Spalte, nicht in
-   .wl-cta__actions — dort tauscht das Fit-Check-Skript Primary und Ghost
-   zwischen Termin- und Mail-Button, und ein dritter Button geriete in diese
-   Logik. */
-
-.wl-cta__shortcut {
-	margin-top: var(--nx-space-md);
-	padding-top: var(--nx-space-md);
-	border-top: 1px solid hsl(30 10% 100% / 0.1);
-}
-
-.wl-cta__shortcut-copy {
-	margin: 0 0 0.75rem;
-	max-width: 48ch;
-	font-size: 0.92rem;
-	line-height: 1.6;
-	color: hsl(30 6% 90% / 0.78);
 }
 
 .wl-cta__actions {
@@ -2472,114 +2179,6 @@ thead .wl-compare__col--hl {
 }
 
 /* =====================================================================
-   18. FIT-CHECK (3 Fragen → Termin, rein clientseitig)
-   SSR: Quiz hidden, Ergebnis sichtbar — JS invertiert beim Enhancen.
-   ===================================================================== */
-
-.wl-fitcheck .wl-cta__shell { align-items: start; }
-
-.wl-fitcheck__box { min-width: min(380px, 100%); }
-
-@media (min-width: 821px) { .wl-fitcheck__box { width: 400px; } }
-
-.wl-fitcheck__kicker {
-	display: block;
-	font-family: var(--nx-font-mono);
-	font-size: 0.68rem;
-	text-transform: uppercase;
-	letter-spacing: 0.16em;
-	color: hsl(23 50% 70%);
-	margin-bottom: 0.6rem;
-}
-
-.wl-fitcheck__q {
-	font-family: var(--nx-font-heading);
-	font-size: 1.1rem;
-	font-weight: 500;
-	color: var(--nx-text);
-	margin: 0 0 0.9rem;
-	line-height: 1.3;
-}
-
-.wl-fitcheck__opts {
-	display: grid;
-	gap: 0.5rem;
-}
-
-.wl-fitcheck__opt {
-	appearance: none;
-	width: 100%;
-	text-align: left;
-	cursor: pointer;
-	padding: 0.8rem 1rem;
-	font: inherit;
-	font-size: 0.92rem;
-	font-weight: 500;
-	line-height: 1.4;
-	color: hsl(30 6% 90% / 0.88);
-	background: hsl(30 10% 100% / 0.04);
-	border: 1px solid hsl(30 6% 90% / 0.42);
-	border-radius: 12px;
-	transition: border-color 0.15s ease, background-color 0.15s ease;
-}
-
-.wl-fitcheck__opt:hover {
-	border-color: hsl(23 60% 60%);
-	background: hsl(23 50% 47% / 0.06);
-}
-
-.wl-fitcheck__opt:focus-visible {
-	outline: 2px solid hsl(23 60% 60%);
-	outline-offset: 2px;
-}
-
-.wl-fitcheck__opt.is-selected {
-	border-color: var(--accent);
-	background: hsl(23 50% 47% / 0.1);
-	color: hsl(23 60% 78%);
-}
-
-.wl-fitcheck__result:focus {
-	border-radius: 12px;
-	outline: 3px solid hsl(23 60% 60%);
-	outline-offset: 6px;
-}
-
-.wl-fitcheck__result-note {
-	font-size: 0.9rem;
-	color: hsl(23 60% 78%);
-	margin: 0 0 0.8rem;
-}
-
-.wl-fitcheck .wl-cta__actions .nx-btn {
-	width: 100%;
-	max-width: 100%;
-	padding-inline: 1rem;
-	line-height: 1.25;
-	overflow-wrap: anywhere;
-	text-align: center;
-	white-space: normal;
-}
-
-.wl-fitcheck__skip {
-	margin: 0.9rem 0 0;
-	font-size: 0.82rem;
-}
-
-.wl-fitcheck__skip a {
-	color: hsl(30 6% 90% / 0.55);
-	text-decoration: underline;
-	text-underline-offset: 3px;
-}
-
-.wl-fitcheck__skip a:hover { color: hsl(23 60% 78%); }
-
-.wl-fitcheck__skip a:focus-visible {
-	outline: 2px solid hsl(23 60% 60%);
-	outline-offset: 3px;
-}
-
-/* =====================================================================
    19. MOTION LAYER (Minimal-Version, analog Solar-Muster)
    Reines CSS mit backwards-Fill: läuft ohne JS durch, Endzustand ist
    immer der sichtbare Normalzustand — kein opacity:0 ohne Fallback.
@@ -2599,24 +2198,24 @@ thead .wl-compare__col--hl {
 	.wl-page .wl-hero__lede { animation: wl-rise 0.55s ease-out 0.1s backwards; }
 	.wl-page .wl-hero__actions { animation: wl-rise-fade 0.5s ease-out 0.2s backwards; }
 
-	/* Ablauf-Kette: Karte → Stationen nacheinander, Linien ziehen nach */
-	.wl-page .wl-flow { animation: wl-rise-fade 0.5s ease-out 0.15s backwards; }
+	.wl-page .wl-hero__fineprint { animation: wl-rise-fade 0.5s ease-out 0.3s backwards; }
+	.wl-page .wl-hero__chips { animation: wl-rise-fade 0.45s ease-out 0.4s backwards; }
 
-	.wl-page .wl-flow__step { animation: wl-step-in 0.45s ease-out backwards; }
-	.wl-page .wl-flow__step:nth-child(1) { animation-delay: 0.35s; }
-	.wl-page .wl-flow__step:nth-child(2) { animation-delay: 0.7s; }
-	.wl-page .wl-flow__step:nth-child(3) { animation-delay: 1.05s; }
-	.wl-page .wl-flow__step:nth-child(4) { animation-delay: 1.4s; }
+	/* Ablauf-Kette: Stationen nacheinander, Linien ziehen nach. Der Einstieg
+	   kommt aus dem Scroll-Reveal des Wrappers, die Staffelung von hier. */
+	.wl-page .nx-reveal.is-visible .wl-flow__step { animation: wl-step-in 0.45s ease-out backwards; }
+	.wl-page .nx-reveal.is-visible .wl-flow__step:nth-child(1) { animation-delay: 0.05s; }
+	.wl-page .nx-reveal.is-visible .wl-flow__step:nth-child(2) { animation-delay: 0.2s; }
+	.wl-page .nx-reveal.is-visible .wl-flow__step:nth-child(3) { animation-delay: 0.35s; }
+	.wl-page .nx-reveal.is-visible .wl-flow__step:nth-child(4) { animation-delay: 0.5s; }
 
-	.wl-page .wl-flow__step::before {
+	.wl-page .nx-reveal.is-visible .wl-flow__step::before {
 		transform-origin: top;
 		animation: wl-line-draw 0.4s ease-out backwards;
 	}
-	.wl-page .wl-flow__step:nth-child(1)::before { animation-delay: 0.55s; }
-	.wl-page .wl-flow__step:nth-child(2)::before { animation-delay: 0.9s; }
-	.wl-page .wl-flow__step:nth-child(3)::before { animation-delay: 1.25s; }
-
-	.wl-page .wl-flow__chips { animation: wl-rise-fade 0.45s ease-out 1.6s backwards; }
+	.wl-page .nx-reveal.is-visible .wl-flow__step:nth-child(1)::before { animation-delay: 0.15s; }
+	.wl-page .nx-reveal.is-visible .wl-flow__step:nth-child(2)::before { animation-delay: 0.3s; }
+	.wl-page .nx-reveal.is-visible .wl-flow__step:nth-child(3)::before { animation-delay: 0.45s; }
 }
 
 /* =====================================================================
@@ -2635,18 +2234,581 @@ thead .wl-compare__col--hl {
 
 	.wl-status-dot { animation: none; }
 	.wl-sticky-cta { transition: none; }
-	.wl-problem-card,
 	.wl-stack-card,
-	.wl-contract-card { transition: none; }
+	.wl-contract-card,
+	.wl-way { transition: none; }
 
 	.wl-mode__label,
 	.wl-faq__summary,
 	.wl-faq__icon,
-	.wl-fitcheck__opt { transition: none; }
+	.wl-request__input { transition: none; }
 
 	/* !important nötig: die aktiven Panel-Regeln (data-attr + :has) haben
 	   höhere Spezifität als ein einfacher Klassen-Selektor. */
 	.wl-mode__panel { transition: none !important; }
 
 	.wl-faq__item[open] .wl-faq__answer { animation: none; }
+}
+
+/* =====================================================================
+   18. UMBAU 2026-09 — neue Bausteine der zehn Sektionen
+   Jeder Block folgt einem bereits vorhandenen Muster: Karten übernehmen
+   Rahmen und Radius der Stack-Karten, Flächen auf Dunkel den Ton der
+   Proof-Referenzen. Keine neuen Farben, keine neuen Radien, keine neue
+   Motion — nur Anordnung.
+   ===================================================================== */
+
+/* ─── Hero ohne rechte Spalte ────────────────────────────────────────
+   Die Ablauf-Kette ist in Sektion 04 gewandert. Ohne zweite Spalte wäre
+   die Copy sonst über die volle Containerbreite gelaufen. */
+
+.wl-hero__grid--solo {
+	grid-template-columns: minmax(0, 1fr);
+	align-items: start;
+}
+
+.wl-hero__grid--solo .wl-hero__copy {
+	max-width: 68ch;
+}
+
+.wl-hero__kicker {
+	margin-bottom: 0.9rem;
+}
+
+.wl-hero__chips {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin: var(--nx-space-md) 0 0;
+	padding: 0;
+}
+
+/* ─── Sektion 03: Einstieg ───────────────────────────────────────────── */
+
+/* Drei Sätze an der Stelle, an der vorher drei Kacheln standen. */
+.wl-entry__intro {
+	max-width: 68ch;
+	margin: 0 0 clamp(2rem, 4vw, 3rem);
+	font-size: clamp(1rem, 1.4vw, 1.125rem);
+	line-height: 1.65;
+	color: hsl(30 6% 90% / 0.82);
+}
+
+.wl-entry-card__note {
+	margin: 0.85rem 0 0;
+	padding-top: 0.85rem;
+	border-top: 1px solid hsl(30 10% 100% / 0.08);
+	font-size: 0.85rem;
+	line-height: 1.55;
+	color: hsl(30 6% 90% / 0.6);
+}
+
+/* Der Retainer ist die vierte Ebene: eine Karte im Muster der
+   Angebotskarten, aber allein stehend und deutlich abgesetzt. */
+.wl-entry-card--retainer {
+	max-width: 520px;
+	/* Untere Marge, weil die Rahmenbedingungen direkt folgen: .wl-entry__bullets
+	   trägt selbst keinen Abstand nach oben. */
+	margin: var(--nx-space-lg) 0;
+	border-color: hsl(23 50% 47% / 0.35);
+}
+
+.wl-margin {
+	max-width: 760px;
+	margin: var(--nx-space-lg) 0 0;
+	padding: clamp(1.35rem, 2.6vw, 1.85rem);
+	background: hsl(28 8% 8% / 0.75);
+	border: 1px solid hsl(30 10% 100% / 0.08);
+	border-radius: 18px;
+}
+
+.wl-margin__title {
+	margin: 0 0 0.65rem;
+	font-family: var(--nx-font-heading);
+	font-size: clamp(1.2rem, 2vw, 1.45rem);
+	font-weight: 500;
+	color: var(--nx-text);
+}
+
+.wl-margin__copy {
+	margin: 0;
+	font-size: 0.97rem;
+	line-height: 1.65;
+	color: hsl(30 6% 90% / 0.82);
+}
+
+.wl-margin__copy a {
+	color: hsl(23 60% 78%);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.wl-margin__copy a:hover { color: hsl(23 65% 85%); }
+
+.wl-margin__copy a:focus-visible {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 2px;
+}
+
+/* ─── Sektion 04: Wie es läuft ──────────────────────────────────────── */
+
+.wl-solution .wl-flow {
+	max-width: 720px;
+	margin: 0 auto;
+}
+
+/* Die Kette stand im Hero allein in ihrer Spalte. In Sektion 04 folgen ihr
+   zwei weitere Blöcke, und die brauchen Luft. */
+.wl-solution .wl-mode {
+	margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.wl-mode__title,
+.wl-briefing__title {
+	margin: 0 0 0.75rem;
+	font-family: var(--nx-font-heading);
+	font-size: clamp(1.25rem, 2vw, 1.5rem);
+	font-weight: 500;
+	color: var(--nx-text);
+	text-align: center;
+}
+
+.wl-briefing {
+	max-width: 760px;
+	margin: var(--nx-space-lg) auto 0;
+	padding-top: var(--nx-space-md);
+	border-top: 1px solid hsl(30 10% 100% / 0.1);
+}
+
+.wl-briefing__copy {
+	margin: 0;
+	font-size: 0.97rem;
+	line-height: 1.65;
+	color: hsl(30 6% 90% / 0.82);
+	text-align: center;
+}
+
+/* ─── Sektion 06: Belege ────────────────────────────────────────────── */
+
+.wl-proof__origin {
+	max-width: 760px;
+	margin: var(--nx-space-lg) auto 0;
+}
+
+.wl-proof__origin-title {
+	margin: 0 0 0.75rem;
+	font-family: var(--nx-font-heading);
+	font-size: clamp(1.25rem, 2vw, 1.5rem);
+	font-weight: 500;
+	color: var(--nx-text);
+}
+
+.wl-proof__origin-copy {
+	margin: 0 0 0.9rem;
+	font-size: 0.97rem;
+	line-height: 1.65;
+	color: hsl(30 6% 90% / 0.82);
+}
+
+.wl-proof__origin-copy:last-child { margin-bottom: 0; }
+
+/* Textlinks, keine Buttons: die beiden Seiten sind Nachweise zum Prüfen,
+   kein Abschluss. */
+.wl-proof__docs {
+	max-width: 760px;
+	margin: var(--nx-space-md) auto 0;
+	font-size: 0.95rem;
+	line-height: 1.65;
+	color: hsl(30 6% 90% / 0.7);
+}
+
+.wl-proof__docs a {
+	color: hsl(23 60% 78%);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.wl-proof__docs a:hover { color: hsl(23 65% 85%); }
+
+.wl-proof__docs a:focus-visible {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 2px;
+}
+
+/* ─── Sektion 07: Wer liefert ───────────────────────────────────────── */
+
+.wl-founder__risk-title {
+	margin: var(--nx-space-md) 0 0.65rem;
+	font-family: var(--nx-font-heading);
+	font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+	font-weight: 500;
+	color: var(--nx-text);
+}
+
+.wl-founder__about {
+	margin: 0.85rem 0 0;
+	font-size: 0.95rem;
+	line-height: 1.6;
+}
+
+.wl-founder__about a {
+	color: var(--accent);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.wl-founder__about a:hover { color: hsl(23 60% 45%); }
+
+.wl-founder__about a:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+/* ─── Sektion 09: Eckdaten ──────────────────────────────────────────── */
+
+/* Bewusst eine schlichte Definitionsliste und kein Kartendesign: der Block
+   ist Zusammenfassung für Maschinen, kein weiteres Angebot. */
+.wl-facts {
+	max-width: 860px;
+	margin: var(--nx-space-lg) 0 0;
+	padding-top: var(--nx-space-md);
+	border-top: 1px solid var(--nx-border);
+}
+
+.wl-facts__title {
+	margin: 0 0 var(--nx-space-sm);
+	font-family: var(--nx-font);
+	font-size: 0.72rem;
+	font-weight: 600;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--nx-text-secondary);
+}
+
+.wl-facts__list {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.55rem;
+}
+
+.wl-facts__row {
+	display: grid;
+	grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+	gap: 0.35rem 1.25rem;
+}
+
+.wl-facts__row dt {
+	margin: 0;
+	font-weight: 600;
+	color: var(--nx-text);
+	font-size: 0.92rem;
+}
+
+.wl-facts__row dd {
+	margin: 0;
+	font-size: 0.92rem;
+	line-height: 1.6;
+	color: var(--nx-text-secondary);
+}
+
+@media (max-width: 640px) {
+	.wl-facts__row { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ─── Sektion 10: drei Wege ─────────────────────────────────────────── */
+
+/* Gleichrangig gestaltet: kein Weg trägt einen Primary-Button, weil keiner
+   der drei der richtige für alle ist. */
+.wl-ways {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: clamp(1rem, 2vw, 1.5rem);
+	margin-bottom: var(--nx-space-lg);
+}
+
+@media (max-width: 860px) {
+	.wl-ways { grid-template-columns: minmax(0, 1fr); }
+}
+
+.wl-way {
+	display: flex;
+	flex-direction: column;
+	gap: 0.65rem;
+	padding: clamp(1.35rem, 2.4vw, 1.75rem);
+	background: linear-gradient(180deg, hsl(30 5% 9% / 0.6), hsl(28 8% 6% / 0.7));
+	border: 1px solid hsl(30 10% 100% / 0.08);
+	border-radius: 14px;
+	transition: border-color 0.3s ease;
+}
+
+.wl-way:hover { border-color: hsl(23 50% 47% / 0.4); }
+
+.wl-way__title {
+	margin: 0;
+	font-family: var(--nx-font-heading);
+	font-size: 1.12rem;
+	font-weight: 500;
+	line-height: 1.3;
+	color: var(--nx-text);
+}
+
+.wl-way__copy {
+	margin: 0;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: hsl(30 6% 90% / 0.78);
+}
+
+.wl-way__link {
+	margin-top: auto;
+	align-self: flex-start;
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: hsl(23 60% 78%);
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+}
+
+.wl-way__link:hover { color: hsl(23 65% 85%); }
+
+.wl-way__link:focus-visible {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 3px;
+}
+
+/* ─── Sektion 10: Formular ──────────────────────────────────────────── */
+
+/* Ersetzt den mailto-CTA. Im Muster des Kontaktformulars, aber mit vier
+   Feldern und ohne dessen Schrittlogik — vier Felder brauchen keine. */
+.wl-request {
+	max-width: 760px;
+	margin: 0 auto;
+	padding: clamp(1.5rem, 3vw, 2.25rem);
+	background: linear-gradient(140deg, hsl(30 5% 10% / 0.7), hsl(28 8% 6% / 0.7));
+	border: 1px solid hsl(30 10% 100% / 0.08);
+	border-radius: 18px;
+	scroll-margin-top: 6rem;
+}
+
+.wl-request__head { margin-bottom: var(--nx-space-md); }
+
+.wl-request__title {
+	margin: 0;
+	font-family: var(--nx-font-heading);
+	font-size: clamp(1.35rem, 2.2vw, 1.6rem);
+	font-weight: 500;
+	color: var(--nx-text);
+}
+
+.wl-request__lede {
+	margin: 0.45rem 0 0;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: hsl(30 6% 90% / 0.72);
+}
+
+.wl-request__honeypot {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.wl-request__form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--nx-space-sm);
+}
+
+.wl-request__row {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--nx-space-sm);
+}
+
+@media (max-width: 640px) {
+	.wl-request__row { grid-template-columns: minmax(0, 1fr); }
+}
+
+.wl-request__field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	min-width: 0;
+}
+
+.wl-request__fieldset {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.wl-request__label {
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	color: hsl(30 6% 90% / 0.88);
+	padding: 0;
+}
+
+.wl-request__req { color: var(--accent); }
+
+.wl-request__input {
+	width: 100%;
+	padding: 0.7rem 0.85rem;
+	font: inherit;
+	font-size: 0.95rem;
+	color: var(--nx-text);
+	background: hsl(28 8% 4% / 0.7);
+	border: 1px solid hsl(30 10% 100% / 0.12);
+	border-radius: 10px;
+	transition: border-color 0.2s ease;
+}
+
+.wl-request__input--area {
+	resize: vertical;
+	min-height: 7.5rem;
+	line-height: 1.55;
+}
+
+.wl-request__input::placeholder { color: hsl(30 6% 90% / 0.38); }
+
+.wl-request__input:hover { border-color: hsl(30 10% 100% / 0.22); }
+
+.wl-request__input:focus-visible {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 1px;
+	border-color: hsl(23 50% 47% / 0.5);
+}
+
+.wl-request__choices {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 0.15rem;
+}
+
+.wl-request__choice input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+}
+
+.wl-request__choice label {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.5rem 0.95rem;
+	font-size: 0.9rem;
+	color: hsl(30 6% 90% / 0.78);
+	background: hsl(28 8% 4% / 0.7);
+	border: 1px solid hsl(30 10% 100% / 0.12);
+	border-radius: 999px;
+	cursor: pointer;
+	transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.wl-request__choice label:hover { border-color: hsl(30 10% 100% / 0.24); }
+
+.wl-request__choice input:checked + label {
+	color: hsl(23 60% 82%);
+	border-color: hsl(23 50% 47% / 0.55);
+	background: hsl(23 50% 47% / 0.12);
+}
+
+.wl-request__choice input:focus-visible + label {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 2px;
+}
+
+.wl-request__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.75rem 1.25rem;
+	margin-top: 0.35rem;
+}
+
+.wl-request__aux {
+	font-size: 0.92rem;
+	color: hsl(30 6% 90% / 0.7);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.wl-request__aux:hover { color: hsl(23 60% 78%); }
+
+.wl-request__aux:focus-visible {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 3px;
+}
+
+.wl-request__legal {
+	margin: 0;
+	font-size: 0.82rem;
+	line-height: 1.55;
+	color: hsl(30 6% 90% / 0.55);
+}
+
+.wl-request__legal a {
+	color: hsl(30 6% 90% / 0.78);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.wl-request__legal a:focus-visible {
+	outline: 2px solid hsl(23 60% 60%);
+	outline-offset: 2px;
+}
+
+.wl-request__feedback:empty { display: none; }
+
+.wl-request__feedback {
+	margin: 0;
+	padding: 0.75rem 0.95rem;
+	border-radius: 10px;
+	font-size: 0.92rem;
+	line-height: 1.55;
+}
+
+.wl-request__feedback.is-success {
+	color: hsl(145 45% 78%);
+	background: hsl(145 45% 40% / 0.12);
+	border: 1px solid hsl(145 45% 45% / 0.35);
+}
+
+.wl-request__feedback.is-error {
+	color: hsl(8 70% 82%);
+	background: hsl(8 60% 45% / 0.12);
+	border: 1px solid hsl(8 60% 50% / 0.35);
+}
+
+.wl-request__error-summary {
+	max-width: 760px;
+	margin: 0 auto var(--nx-space-sm);
+	padding: 0.9rem 1.1rem;
+	border: 1px solid hsl(8 60% 50% / 0.4);
+	border-radius: 12px;
+	background: hsl(8 60% 45% / 0.1);
+}
+
+.wl-request__error-summary.is-hidden { display: none; }
+
+.wl-request__error-title {
+	margin: 0 0 0.4rem;
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: hsl(8 70% 84%);
+}
+
+.wl-request__error-list {
+	margin: 0;
+	padding-left: 1.15rem;
+	font-size: 0.9rem;
+	line-height: 1.6;
+	color: hsl(8 70% 84%);
 }

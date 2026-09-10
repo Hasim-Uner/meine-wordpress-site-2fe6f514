@@ -51,8 +51,8 @@ $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
-$e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
-$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 5 % → 12 %';
+$e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
+$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 5 % → 15 %';
 $e3_conv_before      = $e3_metrics['sales_conversion_before']['display'] ?? '1 – 5 %';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
@@ -185,7 +185,7 @@ $objections = [
 	],
 	[
 		'question' => 'Warum schließen gekaufte Wärmepumpen-Leads so selten ab?',
-		'answer'   => 'Weil der Heizungstausch beratungsintensiv ist und der Datensatz mehrfach verkauft wird: Der Endkunde spricht parallel mit drei Betrieben, während Bestandsheizung, Sanierungsstand und Fördersituation ungeklärt sind. Typische Abschlussquoten liegen bei 1 – 5 %. Im eigenen System stieg die Quote bei einem mittelständischen PV-Installationsbetrieb auf 12 %, weil die Vorqualifizierung vor dem ersten Anruf passiert.',
+		'answer'   => 'Weil der Heizungstausch beratungsintensiv ist und der Datensatz mehrfach verkauft wird: Der Endkunde spricht parallel mit drei Betrieben, während Bestandsheizung, Sanierungsstand und Fördersituation ungeklärt sind. Typische Abschlussquoten liegen bei 1 – 5 %. Im eigenen System stieg die Quote bei einem mittelständischen PV-Installationsbetrieb auf 15 %, weil die Vorqualifizierung vor dem ersten Anruf passiert.',
 	],
 	[
 		'question' => 'Funktioniert ein eigenes Anfragesystem für Wärmepumpe und Photovoltaik zusammen?',

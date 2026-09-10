@@ -390,7 +390,7 @@ Die kanonischen Fakten reichen:
 150 EUR Kosten pro gekaufter Anfrage vorher
 22 EUR Kosten pro eigener Anfrage nachher
 1.750+ qualifizierte Anfragen
-12 % Abschlussquote nach Aufbau
+15 % Abschlussquote nach Aufbau
 6 Monate Zeitraum
 ```
 

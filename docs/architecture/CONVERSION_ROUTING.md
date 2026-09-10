@@ -20,7 +20,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | --- | --- | --- | --- | --- |
 | `/` | Brand / mixed / undecided | Global hub and fachliche Klammer | Choose one of the three paths or `Projekt anfragen` | Solar / Freelancer / White-Label |
 | `/wordpress-freelancer-hannover/` | Direct clients seeking one freelancer | Direct WordPress money page | `Projekt anfragen` / scope clarification | Proof / tracking specialist pages |
-| `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label Fit-Check / scoped first project | Proof / direct contact |
+| `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase`) or scoped first project | 30-minute call / proof |
 | `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck | Solar proof / case study |
 | `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page | Tracking project request / scope clarification | White-Label bridge for agencies |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition page | Project request | Explicit bridge to Freelancer page |
@@ -158,7 +158,7 @@ Expected route:
 
 `/whitelabel-retainer/`
 
-The page owns its own local Fit-Check CTA.
+The page owns its own local request form (`nexus/v1/whitelabel-request`) and its own success event `whitelabel_request_submit`.
 
 ### Footer: Selbstauskunft statt Sammel-CTA
 

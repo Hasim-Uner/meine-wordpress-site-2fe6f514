@@ -60,6 +60,17 @@ get_template_part( 'template-parts/blog-header' );
 		$tracking_url    = home_url( '/server-side-tracking-b2b/' );
 		$portal_url      = home_url( '/eigene-leadgenerierung-vs-portale/' );
 		$cpl_url         = home_url( '/cost-per-lead-photovoltaik/' );
+		// ── Agentur-Leitfaden: kein Ausgang in den Solar-Marktcheck ─────
+		// /wordpress-projekte-auslagern/ lesen ausschliesslich Agenturen. Der
+		// generische Marktcheck-Ausgang fuehrt sie aus der Agentur-Positionierung
+		// heraus in die Energie-Vertikale — auf dieser einen Route ist die
+		// White-Label-Seite der passende naechste Schritt. Alle anderen
+		// Beitraege behalten den Marktcheck unveraendert.
+		$is_agency_outsourcing = function_exists( 'hu_is_agency_outsourcing_article' )
+			&& hu_is_agency_outsourcing_article();
+		$whitelabel_route_url  = function_exists( 'nexus_get_whitelabel_page_url' )
+			? nexus_get_whitelabel_page_url()
+			: home_url( '/whitelabel-retainer/' );
 		$post_categories = get_the_category();
 		$post_cat_slugs  = wp_list_pluck( $post_categories, 'slug' );
 		$primary_cat     = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
@@ -219,11 +230,17 @@ get_template_part( 'template-parts/blog-header' );
 				'url'      => $article_context['secondary_url'],
 				'category' => $context_secondary_category,
 			],
-			[
-				'label'    => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
-				'url'      => $audit_url,
-				'category' => 'lead_gen',
-			],
+			$is_agency_outsourcing
+				? [
+					'label'    => __( 'White-Label-Zusammenarbeit ansehen', 'blocksy-child' ),
+					'url'      => $whitelabel_route_url,
+					'category' => 'lead_gen',
+				]
+				: [
+					'label'    => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
+					'url'      => $audit_url,
+					'category' => 'lead_gen',
+				],
 		];
 
 		if ( $category_url ) {
@@ -399,15 +416,27 @@ get_template_part( 'template-parts/blog-header' );
 
 				<div class="nexus-inline-cta" id="nexus-inline-cta" hidden aria-hidden="true">
 					<div class="nexus-inline-cta__inner">
-						<span class="nexus-inline-cta__tag">System-Diagnose</span>
-						<h3 class="nexus-inline-cta__headline">Wo verliert Ihr Anfragepfad Wirkung?</h3>
-						<p class="nexus-inline-cta__sub">Prüfung von Website, Tracking und Vorqualifizierung - Befund per E-Mail <?php echo esc_html( hu_marketcheck_reply_label() ); ?>.</p>
-						<a href="<?php echo esc_url( $audit_url ); ?>"
-							class="nexus-btn nexus-btn--primary nexus-inline-cta__btn"
-							data-track-action="cta_blog_inline"
-							data-track-category="lead_gen">
-							Regionalen Marktcheck starten
-						</a>
+						<?php if ( $is_agency_outsourcing ) : ?>
+							<span class="nexus-inline-cta__tag">Für Agenturen</span>
+							<h3 class="nexus-inline-cta__headline">Ihr sucht die Kapazität, die dieser Leitfaden beschreibt?</h3>
+							<p class="nexus-inline-cta__sub">WordPress-Umsetzung, technisches SEO und Tracking unter eurem Namen — Einstieg über ein Erstprojekt mit fixem Scope.</p>
+							<a href="<?php echo esc_url( $whitelabel_route_url ); ?>"
+								class="nexus-btn nexus-btn--primary nexus-inline-cta__btn"
+								data-track-action="cta_blog_inline_whitelabel"
+								data-track-category="lead_gen">
+								White-Label-Zusammenarbeit ansehen
+							</a>
+						<?php else : ?>
+							<span class="nexus-inline-cta__tag">System-Diagnose</span>
+							<h3 class="nexus-inline-cta__headline">Wo verliert Ihr Anfragepfad Wirkung?</h3>
+							<p class="nexus-inline-cta__sub">Prüfung von Website, Tracking und Vorqualifizierung - Befund per E-Mail <?php echo esc_html( hu_marketcheck_reply_label() ); ?>.</p>
+							<a href="<?php echo esc_url( $audit_url ); ?>"
+								class="nexus-btn nexus-btn--primary nexus-inline-cta__btn"
+								data-track-action="cta_blog_inline"
+								data-track-category="lead_gen">
+								Regionalen Marktcheck starten
+							</a>
+						<?php endif; ?>
 					</div>
 				</div>
 
@@ -569,13 +598,13 @@ get_template_part( 'template-parts/blog-header' );
 				<div class="nexus-author-bio__links">
 					<?php if ( ! $is_provider_decision_request ) : ?>
 					<a
-						href="<?php echo esc_url( $audit_url ); ?>"
+						href="<?php echo esc_url( $is_agency_outsourcing ? $whitelabel_route_url : $audit_url ); ?>"
 						class="nexus-author-bio__link"
-						data-track-action="cta_author_bio_marktcheck"
+						data-track-action="<?php echo esc_attr( $is_agency_outsourcing ? 'cta_author_bio_whitelabel' : 'cta_author_bio_marktcheck' ); ?>"
 						data-track-category="lead_gen"
 					>
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-						<?php esc_html_e( 'Marktcheck starten', 'blocksy-child' ); ?>
+						<?php echo esc_html( $is_agency_outsourcing ? __( 'White-Label für Agenturen', 'blocksy-child' ) : __( 'Marktcheck starten', 'blocksy-child' ) ); ?>
 					</a>
 					<?php endif; ?>
 					<?php $about_url = function_exists( 'nexus_get_page_url' ) ? nexus_get_page_url( [ 'hasim-uener', 'uber-mich' ], home_url( '/hasim-uener/' ) ) : home_url( '/hasim-uener/' ); ?>

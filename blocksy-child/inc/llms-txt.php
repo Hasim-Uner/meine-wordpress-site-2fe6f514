@@ -140,7 +140,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'White-Label für Agenturen',
 					'url'         => $whitelabel_url,
-					'description' => 'Agentur-/Partner-Intent mit Fit-Check und scoped Erstprojekt.',
+					'description' => 'Agentur-/Partner-Intent: Aufgabe beschreiben, Erstprojekt mit fixem Scope, Retainer erst danach.',
 				],
 			],
 		],

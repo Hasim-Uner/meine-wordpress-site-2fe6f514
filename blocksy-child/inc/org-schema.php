@@ -1573,9 +1573,9 @@ function hu_output_schema()
                 '@type'    => 'AboutPage',
                 '@id'      => $whitelabel_url . '#about',
                 'url'      => $whitelabel_url,
-                'name'     => 'White-Label-Partner für Agenturen',
-                'headline' => 'Ihr verkauft es. Ich liefere es. Euer Name steht drauf.',
-                'description' => 'Senior-Unterstützung für WordPress, Tracking und Automation als White-Label-Partner für Agenturen: Einstieg über ein klar abgegrenztes Erstprojekt, Retainer erst nach erfolgreicher Zusammenarbeit.',
+                'name'     => 'White-Label für Agenturen',
+                'headline' => 'Gebaut und gemessen von derselben Person.',
+                'description' => 'White-Label für Agenturen: WordPress-Umsetzung, technisches SEO und die vollständige Messkette — GA4, Server-Side, Consent Mode V2, CRM-Anbindung — aus einer Hand. Einstieg über ein Erstprojekt mit fixem Scope, Retainer erst danach.',
                 'inLanguage' => 'de',
                 'about'    => ['@id' => home_url('/#organization')],
                 'mainEntity' => hu_person_schema_ref(),
@@ -1583,6 +1583,107 @@ function hu_output_schema()
             ];
 
             $schemas[] = $whitelabelPage;
+
+            /*
+             * Service-Knoten der Agentur-Route.
+             *
+             * Die Seite beschrieb bis hierher nur sich selbst (AboutPage) und
+             * ihre FAQ. Was sie tatsaechlich anbietet — vier Erstprojekte mit
+             * Preisuntergrenze, in DE, AT und CH — stand ausschliesslich als
+             * Fliesstext da. Die Betraege kommen aus dem Pricing-Canon, damit
+             * Angebotskarte, FAQ und Schema nicht auseinanderlaufen koennen.
+             *
+             * Bewusst kein zweiter Person- oder Organization-Knoten: `provider`
+             * referenziert die bestehende Entity aus /hasim-uener/.
+             */
+            if ( function_exists( 'hu_whitelabel_pricing_canon' ) ) {
+                $whitelabel_prices = hu_whitelabel_pricing_canon();
+                $whitelabel_offers = [];
+
+                $whitelabel_offer_map = [
+                    'test_sprint'    => [
+                        'name'        => 'WordPress-Test-Sprint',
+                        'description' => 'Eine vorab schriftlich abgegrenzte technische WordPress-Aufgabe zum Festpreis, maximal ein Arbeitstag — inklusive Umsetzung, Funktionstest, technischer Dokumentation und einer Korrekturrunde.',
+                        'exact'       => true,
+                    ],
+                    'tracking_audit' => [
+                        'name'        => 'Tracking-Audit',
+                        'description' => 'GA4, GTM und Consent-Bestand geprüft: schriftlicher Befund und priorisierte Fixliste.',
+                        'exact'       => false,
+                    ],
+                    'server_side'    => [
+                        'name'        => 'Server-Side-Setup',
+                        'description' => 'Eigener Server-Side-Container, Enhanced Conversions, Meta CAPI und Consent Mode V2 — produktiv geschaltet, dokumentiert und übergeben.',
+                        'exact'       => false,
+                    ],
+                    'landingpage'    => [
+                        'name'        => 'Landingpage',
+                        'description' => 'Individuelles Template mit Funnel-Logik, sauberen Core Web Vitals und Messbarkeit ab dem ersten Klick.',
+                        'exact'       => false,
+                    ],
+                ];
+
+                foreach ( $whitelabel_offer_map as $offer_key => $offer ) {
+                    if ( empty( $whitelabel_prices[ $offer_key ]['value'] ) ) {
+                        continue;
+                    }
+
+                    $price_spec = [
+                        '@type'                 => 'UnitPriceSpecification',
+                        'priceCurrency'         => 'EUR',
+                        'valueAddedTaxIncluded'  => false,
+                    ];
+
+                    // "ab" ist eine Untergrenze, kein Preis. minPrice sagt das
+                    // maschinenlesbar; price waere eine Zusage, die die Seite
+                    // ausdruecklich nicht macht.
+                    if ( $offer['exact'] ) {
+                        $price_spec['price'] = (int) $whitelabel_prices[ $offer_key ]['value'];
+                    } else {
+                        $price_spec['minPrice'] = (int) $whitelabel_prices[ $offer_key ]['value'];
+                    }
+
+                    $whitelabel_offers[] = [
+                        '@type'           => 'Offer',
+                        'itemOffered'     => [
+                            '@type'       => 'Service',
+                            'name'        => $offer['name'],
+                            'description' => $offer['description'],
+                        ],
+                        'priceSpecification' => $price_spec,
+                        'availability'    => 'https://schema.org/InStock',
+                    ];
+                }
+
+                if ( ! empty( $whitelabel_offers ) ) {
+                    $schemas[] = [
+                        '@context'    => 'https://schema.org',
+                        '@type'       => 'Service',
+                        '@id'         => $whitelabel_url . '#service',
+                        'name'        => 'White-Label-Umsetzung für Agenturen',
+                        'description' => 'WordPress-Entwicklung, technisches SEO, Core Web Vitals, GA4 und GTM, Server-Side-Tracking, Consent Mode V2, Meta CAPI, CRO, Landingpages, CRM-Anbindung und Automation als Subunternehmer für Agenturen — Vertrag mit der Agentur, NDA standardmäßig.',
+                        'serviceType' => 'White-Label-Umsetzung für Agenturen',
+                        'url'         => $whitelabel_url,
+                        'inLanguage'  => 'de',
+                        'provider'    => hu_person_schema_ref(),
+                        'areaServed'  => [
+                            [ '@type' => 'Country', 'name' => 'DE' ],
+                            [ '@type' => 'Country', 'name' => 'AT' ],
+                            [ '@type' => 'Country', 'name' => 'CH' ],
+                        ],
+                        'audience'    => [
+                            '@type'        => 'BusinessAudience',
+                            'audienceType' => 'Web-, Performance- und Marketing-Agenturen',
+                        ],
+                        'mainEntityOfPage' => [ '@id' => $whitelabel_url . '#about' ],
+                        'hasOfferCatalog'  => [
+                            '@type'           => 'OfferCatalog',
+                            'name'            => 'Erstprojekte',
+                            'itemListElement' => $whitelabel_offers,
+                        ],
+                    ];
+                }
+            }
 
             if ( function_exists( 'nexus_get_whitelabel_faq_items' ) ) {
                 $whitelabel_faq_entities = array_map(
