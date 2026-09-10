@@ -16,16 +16,15 @@
         if (!isReaderArticle() || document.getElementById('nexus-reader-share-fix')) return;
 
         /*
-         * Reader posts can hide the legacy author bio. single-editorial.js uses
-         * that hidden node as the share rail's end marker, so offsetTop becomes
-         * 0 and the rail never receives .is-visible. Keep the reader rail
-         * independently interactive instead of coupling sharing to that marker.
+         * Keep the rail available on wide screens, but leave opacity and
+         * pointer-events to single-editorial.js. This prevents the rail from
+         * sitting over the hero before the actual reading section starts.
          */
         var style = document.createElement('style');
         style.id = 'nexus-reader-share-fix';
         style.textContent = [
             '@media (min-width:1280px){',
-            '.nexus-article-reader-header~.nexus-share-rail{display:flex!important;opacity:1!important;pointer-events:auto!important;}',
+            '.nexus-article-reader-header~.nexus-share-rail{display:flex!important;}',
             '}'
         ].join('');
         document.head.appendChild(style);
