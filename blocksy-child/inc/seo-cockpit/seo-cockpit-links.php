@@ -361,8 +361,14 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 		$links = array_merge(
 			$links,
 			[
-				$primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
+				$primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
+				function_exists( 'hu_get_commercial_route' )
+					? hu_get_commercial_route( 'freelancer', home_url( '/wordpress-freelancer-hannover/' ) )
+					: home_url( '/wordpress-freelancer-hannover/' ),
 				$contact_url,
+				function_exists( 'nexus_get_whitelabel_page_url' )
+					? nexus_get_whitelabel_page_url()
+					: home_url( '/whitelabel-retainer/' ),
 			]
 		);
 	}
@@ -535,32 +541,27 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 		return $sources;
 	}
 
-	$primary_urls     = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
-	$home_url         = $primary_urls['home'] ?? home_url( '/' );
-	$blog_url         = $primary_urls['blog'] ?? home_url( '/blog/' );
-	$audit_url        = $primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-	$cases_url        = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
-	$agentur_url      = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
-	$wartung_url      = $primary_urls['wartung'] ?? home_url( '/wordpress-agentur-hannover/#wordpress-wartung' );
-	$wgos_url         = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#methode' );
-	$e3_url           = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
-	$domdar_url       = $primary_urls['domdar'] ?? home_url( '/case-study-domdar/' );
-	$whitelabel_url   = $primary_urls['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
-	$seo_url          = $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' );
-	$cwv_url          = $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' );
-	$tracking_url     = $primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' );
-	$tools_url        = $primary_urls['tools'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-	$about_url        = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
-	$contact_url      = $primary_urls['contact'] ?? home_url( '/kontakt/' );
-	$implementation_url = add_query_arg(
-		[
-			'type' => 'implementation',
-		],
-		$contact_url
-	);
-	$imprint_url     = $primary_urls['impressum'] ?? home_url( '/impressum/' );
-	$privacy_url     = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
-	$primary_links   = nexus_get_seo_cockpit_primary_menu_links();
+	$primary_urls   = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+	$routes         = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+	$home_url       = $primary_urls['home'] ?? home_url( '/' );
+	$blog_url       = $primary_urls['blog'] ?? home_url( '/blog/' );
+	$audit_url      = $primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+	$cases_url      = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
+	$wgos_url       = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#methode' );
+	$e3_url         = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
+	$energy_url     = $routes['energy'] ?? ( $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ) );
+	$freelancer_url = $routes['freelancer'] ?? ( $primary_urls['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' ) );
+	$whitelabel_url = $routes['whitelabel'] ?? ( $primary_urls['whitelabel'] ?? home_url( '/whitelabel-retainer/' ) );
+	$about_url      = $routes['about'] ?? ( $primary_urls['about'] ?? home_url( '/hasim-uener/' ) );
+	$contact_url    = $routes['contact'] ?? ( $primary_urls['contact'] ?? home_url( '/kontakt/' ) );
+	$glossary_url   = $primary_urls['glossary'] ?? home_url( '/glossar/' );
+	$reader_leadgen_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'leadgenerierung', $blog_url ) : $blog_url;
+	$reader_wordpress_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'wordpress-performance', $blog_url ) : $blog_url;
+	$reader_tracking_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'tracking', $blog_url ) : $blog_url;
+	$reader_cro_url = function_exists( 'nexus_get_category_url' ) ? nexus_get_category_url( 'cro', $blog_url ) : $blog_url;
+	$imprint_url    = $primary_urls['impressum'] ?? home_url( '/impressum/' );
+	$privacy_url    = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
+	$primary_links  = nexus_get_seo_cockpit_primary_menu_links();
 
 	$sources = [
 		'site_header' => [
@@ -577,11 +578,34 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 			'label' => 'Blog-Header',
 			'links' => [
 				$home_url,
-				$wgos_url,
+				$blog_url,
+				$energy_url,
+				$freelancer_url,
+				$whitelabel_url,
 				$cases_url,
 				$about_url,
-				$audit_url,
+				$contact_url,
 			],
+		],
+		'reader_header_leadgen' => [
+			'key'   => 'reader_header_leadgen',
+			'label' => 'Artikel-Header (Leadökonomie)',
+			'links' => [ $home_url, $blog_url, $reader_leadgen_url ],
+		],
+		'reader_header_wordpress' => [
+			'key'   => 'reader_header_wordpress',
+			'label' => 'Artikel-Header (WordPress & Performance)',
+			'links' => [ $home_url, $blog_url, $reader_wordpress_url ],
+		],
+		'reader_header_tracking' => [
+			'key'   => 'reader_header_tracking',
+			'label' => 'Artikel-Header (Tracking)',
+			'links' => [ $home_url, $blog_url, $reader_tracking_url ],
+		],
+		'reader_header_cro' => [
+			'key'   => 'reader_header_cro',
+			'label' => 'Artikel-Header (CRO)',
+			'links' => [ $home_url, $blog_url, $reader_cro_url ],
 		],
 		'audit_header' => [
 			'key'   => 'audit_header',
@@ -595,25 +619,26 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 			'key'   => 'site_footer',
 			'label' => 'Footer',
 			'links' => [
-				$home_url,
-				$audit_url,
-				$privacy_url,
-				$audit_url,
-				$agentur_url,
-				$wartung_url,
-				$wgos_url,
-				$cases_url,
-				$e3_url,
-				$domdar_url,
 				$whitelabel_url,
-				$blog_url,
-				$seo_url,
-				$cwv_url,
-				$tracking_url,
-				$tools_url,
-				$implementation_url,
-				$about_url,
+				$energy_url,
+				$freelancer_url,
 				$contact_url,
+				$about_url,
+				$e3_url,
+				$blog_url,
+				$glossary_url,
+				$imprint_url,
+				$privacy_url,
+			],
+		],
+		'freelancer_footer' => [
+			'key'   => 'freelancer_footer',
+			'label' => 'Footer (Freelancer)',
+			'links' => [
+				$about_url,
+				$e3_url,
+				$blog_url,
+				$glossary_url,
 				$imprint_url,
 				$privacy_url,
 			],
@@ -654,10 +679,35 @@ function nexus_get_seo_cockpit_sitewide_shell_definitions() {
 			'label'       => 'Standard-Shell',
 			'source_keys' => [ 'site_header', 'site_footer' ],
 		],
+		'freelancer' => [
+			'key'         => 'freelancer',
+			'label'       => 'Freelancer-Shell',
+			'source_keys' => [ 'site_header', 'freelancer_footer' ],
+		],
 		'blog'    => [
 			'key'         => 'blog',
 			'label'       => 'Blog-Shell',
 			'source_keys' => [ 'blog_header', 'site_footer' ],
+		],
+		'reader_leadgen' => [
+			'key'         => 'reader_leadgen',
+			'label'       => 'Artikel-Shell · Leadökonomie',
+			'source_keys' => [ 'reader_header_leadgen', 'site_footer' ],
+		],
+		'reader_wordpress' => [
+			'key'         => 'reader_wordpress',
+			'label'       => 'Artikel-Shell · WordPress & Performance',
+			'source_keys' => [ 'reader_header_wordpress', 'site_footer' ],
+		],
+		'reader_tracking' => [
+			'key'         => 'reader_tracking',
+			'label'       => 'Artikel-Shell · Tracking',
+			'source_keys' => [ 'reader_header_tracking', 'site_footer' ],
+		],
+		'reader_cro' => [
+			'key'         => 'reader_cro',
+			'label'       => 'Artikel-Shell · CRO',
+			'source_keys' => [ 'reader_header_cro', 'site_footer' ],
 		],
 		'audit'   => [
 			'key'         => 'audit',
@@ -689,6 +739,23 @@ function nexus_get_seo_cockpit_sitewide_shell_key_for_url( $url, $context = [] )
 
 	if ( $audit_path === $path ) {
 		return 'audit';
+	}
+
+	if ( '/wordpress-freelancer-hannover/' === $path ) {
+		return 'freelancer';
+	}
+
+	$reader_shells = [
+		'/aroundhome-solar-einordnung/'           => 'reader_leadgen',
+		'/checkfox-solar-waermepumpe-einordnung/' => 'reader_leadgen',
+		'/wattfox-solar-leads-einordnung/'         => 'reader_leadgen',
+		'/wordpress-ttfb-google-ads-ladezeit/'     => 'reader_wordpress',
+		'/server-side-tracking-gtm/'               => 'reader_tracking',
+		'/b2b-landingpage-optimieren/'              => 'reader_cro',
+	];
+
+	if ( isset( $reader_shells[ $path ] ) ) {
+		return $reader_shells[ $path ];
 	}
 
 	if (
@@ -771,7 +838,7 @@ function nexus_get_seo_cockpit_sitewide_outgoing_context( $url, $context = [] ) 
  * @return array<string, mixed>
  */
 function nexus_get_seo_cockpit_internal_link_graph() {
-	$cache_key = nexus_get_seo_cockpit_cache_key( 'link_graph', [ home_url( '/' ), 'sitewide_v5' ] );
+	$cache_key = nexus_get_seo_cockpit_cache_key( 'link_graph', [ home_url( '/' ), 'sitewide_v7' ] );
 	$cached    = get_transient( $cache_key );
 
 	if ( is_array( $cached ) ) {
