@@ -1,10 +1,9 @@
 <?php
 /**
  * Template Name: Stack Agentur
- * Description: Dev-Stack für Web-Agenturen, technische Inhaber und CTOs mit
- *              eigenem Dev-Team. Eigener Root-Server (DE), CI/CD via GitHub
- *              Actions + Rsync, Restricted Deploy-Shell, Multi-Site-Hosting
- *              für Care-Plans und White-Label-Modelle. Kein Affiliate.
+ * Description: Technische Zusammenarbeit für White-Label-WordPress-Projekte:
+ *              vorhandene Setups übernehmen, Git/Staging sauber nutzen und
+ *              Projekte nachvollziehbar dokumentieren und übergeben.
  *
  * @package Blocksy_Child
  */
@@ -14,67 +13,81 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // ── URLs ───────────────────────────────────────────────────────
-$page_url        = home_url( '/stack-agentur/' );
-$whitelabel_url  = function_exists( 'nexus_get_whitelabel_page_url' )
+$page_url       = home_url( '/stack-agentur/' );
+$whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' )
 	? nexus_get_whitelabel_page_url()
 	: home_url( '/whitelabel-retainer/' );
-$stack_solar_url = home_url( '/stack-solar/' );
+$outsourcing_url = home_url( '/wordpress-projekte-auslagern/' );
 
-// ── Inhalte: 4 Schichten ─────────────────────────────────────
+// ── Inhalte: Zusammenarbeit statt Technik-Theater ─────────────
 $layers = [
 	[
-		't' => 'Eigener Root-Server (DE)',
-		's' => 'Hetzner- oder Open-Stack-VPS in Deutschland mit vollem Root-Zugriff. Freie Konfiguration von Nginx-Server-Blocks, PHP-OPcache, MySQL-Tuning, System-Cron statt wp-cron — Voraussetzung für anspruchsvolle WooCommerce- und Hochlast-WordPress-Setups. Voller Schreibzugriff auf wp-config, vhost-Konfiguration und Crontab — Dinge, die Managed-Plattformen prinzipbedingt einschränken.',
+		't' => 'Bestehenden Stack zuerst verstehen',
+		's' => 'Hosting, Theme oder Builder, Plugins, Git, Staging und Deployment werden vor dem Start geprüft. Was funktioniert, bleibt bestehen. Ich baue nicht um, nur um meinen eigenen Stack durchzusetzen.',
 	],
 	[
-		't' => 'CI/CD via GitHub Actions + Rsync',
-		's' => 'git push → GitHub Actions → inkrementeller Rsync-Deploy via ED25519-Key in ein vordefiniertes Theme-Verzeichnis. Deploy-Dauer in Sekunden, Rollback per Git-Historie ebenso schnell. Branching-Strategie kompatibel mit Pull-Request-Reviews, Feature-Branches und Production-Hotfixes. Siehe öffentliches Setup in diesem Repo (.github/workflows/deploy.yml).',
+		't' => 'Git & Deployment nachvollziehbar halten',
+		's' => 'Ich arbeite im vorhandenen Repository und passe mich an euren Workflow an. Änderungen bleiben versioniert und prüfbar. Falls noch kein sauberer Ablauf existiert, definieren wir gemeinsam einen einfachen Weg für Entwicklung, Review und Livegang.',
 	],
 	[
-		't' => 'Restricted Deploy-Shell',
-		's' => 'authorized_keys mit rrsync-Wrapper: der Deploy-Key kann nur Rsync-Schreiboperationen in genau ein Zielverzeichnis ausführen. Kein Shell-Zugriff, kein Lateral Movement bei kompromittiertem Key. Erfüllt anspruchsvolle B2B-Sicherheitsaudits und reduziert die Angriffsfläche gegenüber typischen FTP- oder SSH-Push-Setups erheblich.',
+		't' => 'Staging, Zugänge & Rollen sauber trennen',
+		's' => 'Entwicklung und Live-System werden sinnvoll getrennt. Zugänge, Verantwortlichkeiten und Freigaben sind vor dem ersten Eingriff klar, damit niemand im Projekt rätseln muss, wer was ändern darf oder wo getestet wird.',
 	],
 	[
-		't' => 'White-Label Care-Plan-Infrastruktur',
-		's' => 'Multi-Site-Hosting auf einem dedizierten VPS, eigene Nameserver, gebrandete Status-Reports, isolierte PHP-Pools pro Site. Für Agenturen, die wiederkehrende Umsätze (MRR) aus Pflegeverträgen bauen wollen, ohne selbst DevOps-Team und Monitoring-Stack aufzubauen. Ich übernehme den unsichtbaren technischen Unterbau, die Agentur fakturiert ihren Kunden.',
+		't' => 'Dokumentation & Übergabe ohne Lock-in',
+		's' => 'Besonderheiten, technische Entscheidungen und relevante Änderungen werden nachvollziehbar festgehalten. Code, Zugänge und Projektwissen bleiben bei Agentur und Kunde — die Zusammenarbeit darf nicht von mir als Einzelperson abhängig werden.',
 	],
 ];
 
-// ── Warum-nicht-Managed-Block ────────────────────────────────
-$why_root = [
+$principles = [
 	[
-		't' => 'Was Managed-Plattformen blockieren',
-		's' => 'Kein Root-SSH, eingeschränkter wp-config-Schreibzugriff, gebundene PHP-Versionen, fester Caching-Stack, kein System-Cron, keine eigenen Nameserver. Für ein Solar-Money-Page-Setup ist das okay — für eine Agentur mit 15+ Kunden-Sites, eigenem Tooling und individueller Compliance ist es ein Engpass.',
+		't' => 'Managed Hosting ist völlig okay',
+		's' => 'Raidboxes, HostPress oder andere Managed-Setups sind kein Nachteil, wenn sie zum Projekt passen. Ein Infrastrukturwechsel ist keine Voraussetzung für die Zusammenarbeit.',
 	],
 	[
-		't' => 'Was der Root-Stack ermöglicht',
-		's' => 'Eigene Nginx-Konfiguration pro Site, dedizierte PHP-FPM-Pools, MySQL-Tuning, System-Cron, Custom-Mailrouting, eigene SSL-Strategie, Multi-Site auf einer Maschine ohne Plattform-Aufschlag. Volle Kontrolle, volle Verantwortung — und damit auch volle Möglichkeit, die Margen pro Care-Plan-Site zu drücken.',
+		't' => 'Individuelle Infrastruktur nur bei echtem Bedarf',
+		's' => 'Eigene Server, spezielle Deployments oder individuelle Server-Konfigurationen sind möglich — aber nur dann sinnvoll, wenn Last, Sicherheit, Integrationen oder Betriebsmodell sie tatsächlich rechtfertigen.',
 	],
 ];
 
 // ── FAQ ───────────────────────────────────────────────────────
 $faq = [
 	[
-		'question' => 'Warum kein Managed Hosting für den Agentur-Stack?',
-		'answer'   => 'Weil die Anforderungen anders sind. Managed-Plattformen wie HostPress oder Raidboxes liefern ein verlässliches, sicheres Setup für einzelne Money-Pages — Root-SSH, freier wp-config-Schreibzugriff und Git-Push direkt auf den Server werden aber prinzipbedingt eingeschränkt. Für Agenturen mit 15+ Kunden-Sites, eigenem Tooling und individueller Compliance ist ein eigener VPS skalierbarer und im Care-Plan-Modell deutlich margenfreundlicher.',
+		'question' => 'Muss unsere Agentur ihren bestehenden Stack ändern?',
+		'answer'   => 'Nein. Ich versuche zuerst, mich in euren vorhandenen Workflow einzufügen. Hosting, Theme-Stack, Builder, Git-Strategie und Deployment bleiben bestehen, wenn sie technisch sinnvoll funktionieren.',
 	],
 	[
-		'question' => 'Wie sicher ist der Deploy-Key wirklich?',
-		'answer'   => 'Der ED25519-Key landet als Single-Purpose-Key in authorized_keys, eingegrenzt durch einen rrsync-Wrapper auf genau ein Zielverzeichnis. Kein interaktiver Shell-Zugriff, kein sudo, kein Lateral Movement im Falle einer Kompromittierung. Das ist deutlich sicherer als typische SFTP- oder Voll-SSH-Setups — und übersteht in der Regel B2B-Sicherheitsaudits ohne Nachbesserung.',
+		'question' => 'Arbeitest du auch in bestehenden WordPress-Installationen?',
+		'answer'   => 'Ja. Ein großer Teil der White-Label-Arbeit besteht aus Weiterentwicklung, Fehlerbehebung, Performance-Optimierung und technischen Erweiterungen in bestehenden Installationen — nicht aus Greenfield-Projekten.',
 	],
 	[
-		'question' => 'Wie funktioniert das White-Label-Modell technisch?',
-		'answer'   => 'Multi-Site-Hosting auf dediziertem VPS unter den Nameservern der Agentur. Endkunden sehen die Agentur als Anbieter, technische Wartung läuft im Hintergrund unsichtbar. Status-Reports werden im Agentur-Branding ausgeliefert. Abrechnung erfolgt zwischen Agentur und Endkunde — ich bin Subunternehmer, nicht sichtbarer Provider.',
+		'question' => 'Wie läuft die Zusammenarbeit mit Git?',
+		'answer'   => 'Wenn ein Repository und ein Branching- oder Review-Prozess vorhanden sind, arbeite ich darin. Falls nicht, reicht oft ein schlanker Workflow mit klarer Trennung zwischen Entwicklung und Produktion. Entscheidend ist Nachvollziehbarkeit, nicht Prozess-Theater.',
 	],
 	[
-		'question' => 'Kann ich mit einem Solar-Kunden auf diesen Stack umziehen?',
-		'answer'   => 'Wenn der Solar-Kunde explizit eigenen Root-Server, Multi-Site-Hosting oder Compliance-Anforderungen jenseits Managed-Hosting hat — ja. Für die meisten Solar-Anbieter ist aber der Performance-Stack mit Managed Hosting die schnellere und kostengünstigere Antwort. Details dort auf der Stack-Solar-Seite.',
+		'question' => 'Wie funktioniert White-Label in der Praxis?',
+		'answer'   => 'Die Agentur bleibt gegenüber ihrem Kunden Ansprechpartnerin. Ich arbeite im Hintergrund an den vereinbarten technischen Aufgaben, stimme mich mit dem Agenturteam ab und trete gegenüber dem Endkunden nur auf, wenn das ausdrücklich gewünscht ist.',
 	],
 	[
-		'question' => 'Gibt es eine Liste „beste WordPress-Hoster für Agenturen"?',
-		'answer'   => 'Nicht hier. Diese Seite ist eine Architektur-Entscheidung, keine Marktübersicht. Welcher Hetzner-Tarif, welche Distribution, welcher Backup-Provider — das hängt am Mengengerüst und an der Compliance-Lage der Agentur. Klären wir im Gespräch.',
+		'question' => 'Was bleibt nach Projektende bei uns?',
+		'answer'   => 'Code, Dokumentation, Zugänge und relevante technische Entscheidungen bleiben bei Agentur beziehungsweise Kunde. Es gibt keinen proprietären Sonderweg und keinen künstlichen Lock-in.',
 	],
 ];
+
+// ── SEO: alte Root-Server-Positionierung überschreiben ───────
+function hu_stack_agentur_grounded_seo_override( $map ) {
+	$map = is_array( $map ) ? $map : [];
+	$map['stack-agentur'] = array_merge(
+		isset( $map['stack-agentur'] ) && is_array( $map['stack-agentur'] ) ? $map['stack-agentur'] : [],
+		[
+			'title'       => 'White-Label WordPress: Git, Staging & Übergabe für Agenturen',
+			'description' => 'Technische Zusammenarbeit für Agenturen: vorhandene WordPress-Setups übernehmen, Git und Staging sauber nutzen, Änderungen dokumentieren und ohne Lock-in übergeben.',
+		]
+	);
+
+	return $map;
+}
+add_filter( 'hu_forced_singular_seo_map', 'hu_stack_agentur_grounded_seo_override', 99 );
 
 // ── Schema.org: TechArticle + FAQPage ────────────────────────
 $author_person = function_exists( 'hu_get_canonical_author_person' ) ? hu_get_canonical_author_person() : [ '@type' => 'Person', 'name' => 'Haşim Üner', 'url' => home_url( '/' ) ];
@@ -83,8 +96,8 @@ $tech_article_schema = [
 	'@context'         => 'https://schema.org',
 	'@type'            => 'TechArticle',
 	'@id'              => trailingslashit( $page_url ) . '#article',
-	'headline'         => 'Stack für Agenturen: Root-Server, Git-Deployment, Restricted-Shell, White-Label Care-Plans',
-	'description'      => 'Dev-Stack für Web-Agenturen und technische Inhaber. Eigener Root-Server in Deutschland, CI/CD via GitHub Actions und Rsync, Restricted Deploy-Shell, Multi-Site-Hosting für Care-Plans und White-Label-Modelle. Kein Affiliate — diese Setups bauen wir gemeinsam.',
+	'headline'         => 'White-Label WordPress: Git, Staging, Dokumentation und Übergabe für Agenturen',
+	'description'      => 'Technische Zusammenarbeit für Agenturen: bestehende WordPress-Setups übernehmen, Git und Staging sauber nutzen, Rollen klären und Projekte nachvollziehbar übergeben.',
 	'url'              => $page_url,
 	'mainEntityOfPage' => $page_url,
 	'author'           => $author_person,
@@ -118,21 +131,21 @@ get_header();
 
 	<section class="hu-intercept__hero" id="hero" aria-labelledby="hu-stack-agentur-hero-title">
 		<div class="hu-intercept__container">
-			<p class="hu-intercept__eyebrow">Stack für Agenturen und technische Inhaber</p>
+			<p class="hu-intercept__eyebrow">Technische Zusammenarbeit im White-Label</p>
 			<h1 class="hu-intercept__title" id="hu-stack-agentur-hero-title">
-				Root-Server, Git-Deployment, White-Label — Infrastruktur, die mit deiner Agentur skaliert
+				So füge ich mich in bestehende Agentur-Setups ein.
 			</h1>
 			<p class="hu-intercept__lead">
-				Eigener Root-Server statt Managed-Plattform. Git-Push-Deployment in Sekunden, Restricted-Shell für B2B-Audits, Multi-Site-Hosting für Care-Plans und White-Label-Modelle. Kein Affiliate — diese Setups bauen wir gemeinsam.
+				Git, Staging, Zugänge, Deployment und Übergabe werden vor Projektstart geklärt. Ich übernehme vorhandene Prozesse, statt einer Agentur einen neuen Technik-Stack aufzudrücken.
 			</p>
 		</div>
 	</section>
 
-	<section class="hu-intercept__system" id="layers" aria-labelledby="hu-stack-agentur-layers-title">
+	<section class="hu-intercept__system" id="zusammenarbeit" aria-labelledby="hu-stack-agentur-layers-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-stack-agentur-layers-title">Die vier Schichten</h2>
+			<h2 class="hu-intercept__h2" id="hu-stack-agentur-layers-title">Vier Dinge, die vor dem ersten Projekt geklärt sind</h2>
 			<p class="hu-intercept__section-lead">
-				Open-Stack auf eigenem Root-Server. Volle Kontrolle über Konfiguration, Deployment-Pipeline und Multi-Site-Architektur — Voraussetzung für skalierbare Care-Plan-Modelle und White-Label-Setups.
+				Die technische Zusammenarbeit soll für euer Team möglichst unspektakulär sein: vorhandenen Ablauf verstehen, sauber darin arbeiten und das Projekt nachvollziehbar hinterlassen.
 			</p>
 			<ol class="hu-intercept__layers">
 				<?php foreach ( $layers as $i => $layer ) : ?>
@@ -148,11 +161,14 @@ get_header();
 		</div>
 	</section>
 
-	<section class="hu-intercept__why" id="warum-root" aria-labelledby="hu-stack-agentur-why-title">
+	<section class="hu-intercept__why" id="infrastruktur" aria-labelledby="hu-stack-agentur-why-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-stack-agentur-why-title">Warum Root-Server statt Managed-Plattform?</h2>
+			<h2 class="hu-intercept__h2" id="hu-stack-agentur-why-title">Kein Infrastrukturwechsel als Voraussetzung</h2>
+			<p class="hu-intercept__section-lead">
+				Die richtige technische Lösung hängt vom Projekt ab — nicht davon, welches Setup ich persönlich bevorzuge.
+			</p>
 			<div class="hu-intercept__grid hu-intercept__grid--two">
-				<?php foreach ( $why_root as $row ) : ?>
+				<?php foreach ( $principles as $row ) : ?>
 					<article class="hu-intercept__card">
 						<h3 class="hu-intercept__card-title"><?php echo esc_html( $row['t'] ); ?></h3>
 						<p class="hu-intercept__card-text"><?php echo esc_html( $row['s'] ); ?></p>
@@ -165,8 +181,8 @@ get_header();
 				   href="<?php echo esc_url( $whitelabel_url ); ?>"
 				   data-track-action="cta_whitelabel"
 				   data-track-category="stack_agentur"
-				   data-track-section="warum_root">
-					White-Label-Gespräch anfragen
+				   data-track-section="infrastruktur">
+					White-Label-Zusammenarbeit ansehen
 				</a>
 			</div>
 		</div>
@@ -174,7 +190,7 @@ get_header();
 
 	<section class="hu-intercept__faq" id="faq" aria-labelledby="hu-stack-agentur-faq-title">
 		<div class="hu-intercept__container">
-			<h2 class="hu-intercept__h2" id="hu-stack-agentur-faq-title">Häufige Fragen zum Agentur-Stack</h2>
+			<h2 class="hu-intercept__h2" id="hu-stack-agentur-faq-title">Häufige Fragen zur technischen Zusammenarbeit</h2>
 			<div class="hu-intercept__faq-list">
 				<?php foreach ( $faq as $item ) : ?>
 					<details class="hu-intercept__faq-item" name="hu-faq-stack-agentur">
@@ -182,6 +198,24 @@ get_header();
 						<p class="hu-intercept__faq-a"><?php echo esc_html( $item['answer'] ); ?></p>
 					</details>
 				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+
+	<section class="hu-intercept__why" id="auslagerung" aria-labelledby="hu-stack-agentur-outsourcing-title">
+		<div class="hu-intercept__container">
+			<h2 class="hu-intercept__h2" id="hu-stack-agentur-outsourcing-title">Wenn ihr Projekte regelmäßig auslagert</h2>
+			<p class="hu-intercept__section-lead">
+				Der technische Ablauf ist nur ein Teil. Rollen, Briefing, Freigaben und Qualitätskontrolle habe ich im Auslagerungs-Leitfaden separat zusammengefasst.
+			</p>
+			<div class="hu-intercept__cta hu-intercept__cta--inline">
+				<a class="hu-intercept__cta-primary"
+				   href="<?php echo esc_url( $outsourcing_url ); ?>"
+				   data-track-action="cta_outsourcing_guide"
+				   data-track-category="stack_agentur"
+				   data-track-section="auslagerung">
+					Projekte sauber auslagern
+				</a>
 			</div>
 		</div>
 	</section>
