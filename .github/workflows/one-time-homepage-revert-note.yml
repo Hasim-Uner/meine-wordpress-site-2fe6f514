@@ -1,9 +1,0 @@
-name: One-time homepage revert note
-on:
-  push:
-    branches: [revert/homepage-astra-layout]
-jobs:
-  note:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Homepage revert branch prepared"
