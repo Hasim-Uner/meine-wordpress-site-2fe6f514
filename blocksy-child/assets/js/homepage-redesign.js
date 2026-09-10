@@ -47,4 +47,27 @@
     });
   });
 
+  /* ── Hero-Anfragefluss: Dauerbewegung nur im Sichtfeld ─── */
+  /* Die Sequenz läuft endlos. Außerhalb des Viewports und im
+     Hintergrund-Tab kostet sie nur Rechenzeit, also ruht sie dort.
+     Ohne IntersectionObserver läuft sie weiter — das ist der
+     unschädliche Fall, kein kaputter Zustand. */
+  var flow = document.querySelector('.hu-hp .hu-flow');
+  if (flow) {
+    var flowInView = true;
+    var syncFlow = function () {
+      flow.classList.toggle('is-paused', document.hidden || !flowInView);
+    };
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        flowInView = entries[0].isIntersecting;
+        syncFlow();
+      }, { threshold: 0 }).observe(flow);
+    }
+
+    document.addEventListener('visibilitychange', syncFlow);
+    syncFlow();
+  }
+
 })();

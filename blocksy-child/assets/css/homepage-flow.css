@@ -1,0 +1,248 @@
+/* Homepage-Hero — Anfragefluss (Traffic → Website → Qualifikation → Vertrieb)
+ *
+ * Ersetzt die frühere HTML/CSS-Systemgrafik (.hu-system-*) durch eine
+ * skalierbare SVG-Komposition. Keine externen Dateien, kein Bild-Request,
+ * kein Layout-Shift: das viewBox-Verhältnis reserviert die Höhe selbst.
+ *
+ * Motion Brief
+ *   Route/Surface        Startseite, Hero rechts
+ *   Besucherentscheidung „Passt dieses System zu meinem Vorhaben?" → drei Wege
+ *   Intensität           2 (Guided) — eine choreografierte Sequenz, sonst still
+ *   Thesis               Eine Anfrage wird sichtbar durch die Strecke geführt:
+ *                        sie läuft zu, wird gefiltert, kommt qualifiziert an.
+ *   Focal moment         Der Durchlauf durch den Trichter in Karte 03/04
+ *   Statisch             Alle Karteninhalte, Balken, Texte, Trichter
+ *   Bewegte Gruppen      max. 3 gleichzeitig (Signale, Messring, ein Puls)
+ *   Runtime-Delta        0 kB Abhängigkeit; ~26 Zeilen Route-JS nur zum Pausieren
+ *   Coarse pointer       Kompakte Variante, gleiche Sequenz, kein Hover nötig
+ *   Reduced motion       Wege werden durchgezogene Kupferlinien, Endzustand steht
+ *   Kein JS              Sequenz läuft; nur das Pausieren außerhalb des Sichtfelds
+ *                        entfällt
+ */
+
+.hu-hp .hu-flow {
+  /* Auf die Seiten-Tokens gemappt, mit Literal-Fallback für den Solo-Fall. */
+  --hu-flow-copper: var(--hu-accent, #b46a3c);
+  --hu-flow-copper-light: #e0975f;
+  --hu-flow-copper-text: var(--hu-accent-dark, #8f4f27);
+  --hu-flow-ink: var(--hu-ink, #141516);
+  --hu-flow-ink-2: var(--hu-ink-2, #4d5053);
+  --hu-flow-card: #16150f;
+  --hu-flow-card-top: #272420;
+  --hu-flow-card-edge: #322e28;
+  --hu-flow-inner: #211f1a;
+  --hu-flow-line: #38342d;
+  --hu-flow-shape: #3d372e;
+  --hu-flow-on-card: #f3f0ea;
+  --hu-flow-on-card-dim: #b9b3aa;
+  --hu-flow-trace: rgba(20, 21, 22, .2);
+  --hu-flow-takt: 7.5s;
+
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  margin-inline: auto;
+  color: var(--hu-flow-ink);
+  font-family: var(--nx-font, 'Figtree', system-ui, sans-serif);
+  line-height: 1;
+}
+
+.hu-hp .hu-flow svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Spezifischer als `.hu-hp .hu-flow svg` oben — sonst gewinnt dessen
+ * display:block gegen das Umschalten der Varianten. */
+.hu-hp .hu-flow svg.hu-flow__m {
+  display: none;
+  max-width: 27.5rem;
+  margin-inline: auto;
+}
+
+@container (max-width: 680px) {
+  .hu-hp .hu-flow svg.hu-flow__d { display: none; }
+  .hu-hp .hu-flow svg.hu-flow__m { display: block; }
+}
+
+@supports not (container-type: inline-size) {
+  @media (max-width: 860px) {
+    .hu-hp .hu-flow svg.hu-flow__d { display: none; }
+    .hu-hp .hu-flow svg.hu-flow__m { display: block; }
+  }
+}
+
+/* ── Flächen ────────────────────────────────────────────────── */
+.hu-hp .hu-flow .stop-a { stop-color: var(--hu-flow-card-top); }
+.hu-hp .hu-flow .stop-b { stop-color: var(--hu-flow-card); }
+
+.hu-hp .hu-flow .karte { stroke: var(--hu-flow-card-edge); stroke-width: 1; }
+.hu-hp .hu-flow .glanz { fill: none; stroke: rgba(255, 255, 255, .07); stroke-width: 1; }
+.hu-hp .hu-flow .innen { fill: var(--hu-flow-inner); }
+.hu-hp .hu-flow .linie { fill: var(--hu-flow-line); }
+.hu-hp .hu-flow .form { fill: var(--hu-flow-shape); }
+.hu-hp .hu-flow .kupfer { fill: var(--hu-flow-copper); }
+.hu-hp .hu-flow .kontur { fill: none; stroke: #6f665b; stroke-width: 1.5; }
+.hu-hp .hu-flow .empfang { fill: #191713; stroke: #8e867c; stroke-width: 1.5; }
+.hu-hp .hu-flow .ring-punkt { fill: none; stroke: var(--hu-flow-copper); stroke-width: 1.5; }
+.hu-hp .hu-flow .puls-ring { fill: none; stroke: var(--hu-flow-copper-light); stroke-width: 1.75; }
+.hu-hp .hu-flow .ankunft { fill: var(--hu-flow-copper-light); }
+.hu-hp .hu-flow .icon-linie { fill: none; stroke: var(--hu-flow-on-card); stroke-width: 1.6; stroke-linecap: round; }
+
+.hu-hp .hu-flow .weg {
+  fill: none;
+  stroke: var(--hu-flow-trace);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 5;
+}
+
+.hu-hp .hu-flow .ring-basis {
+  fill: none;
+  stroke: var(--hu-flow-copper);
+  stroke-width: 1.25;
+  opacity: .28;
+}
+
+.hu-hp .hu-flow .ring-lauf {
+  fill: none;
+  stroke: var(--hu-flow-copper);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.hu-hp .hu-flow .ring-d { stroke-dasharray: 230 2546; }
+.hu-hp .hu-flow .ring-m { stroke-dasharray: 180 1936; }
+
+/* ── Schrift ────────────────────────────────────────────────── */
+.hu-hp .hu-flow text { font-family: inherit; }
+
+.hu-hp .hu-flow .mono {
+  font-family: var(--nx-font-mono, 'JetBrains Mono', ui-monospace, monospace);
+}
+
+.hu-hp .hu-flow .nr { font-size: 17px; font-weight: 700; fill: var(--hu-flow-copper-light); }
+.hu-hp .hu-flow .titel { font-size: 18px; font-weight: 700; letter-spacing: .09em; fill: var(--hu-flow-on-card); }
+.hu-hp .hu-flow .quelle { font-size: 19px; font-weight: 500; fill: var(--hu-flow-on-card); }
+.hu-hp .hu-flow .notiz { font-size: 17px; font-weight: 400; fill: var(--hu-flow-on-card-dim); }
+.hu-hp .hu-flow .icon-t { font-size: 14px; font-weight: 700; fill: var(--hu-flow-on-card); }
+.hu-hp .hu-flow .marke { font-size: 26px; font-weight: 600; fill: #ede9e2; }
+.hu-hp .hu-flow .aussen { font-size: 17px; font-weight: 700; letter-spacing: .12em; fill: var(--hu-flow-ink); }
+.hu-hp .hu-flow .aussen-sub { font-size: 16px; font-weight: 400; fill: var(--hu-flow-ink-2); }
+.hu-hp .hu-flow .ergebnis { font-size: 16px; font-weight: 700; letter-spacing: .1em; fill: var(--hu-flow-copper-text); }
+
+/* ── Bewegung ───────────────────────────────────────────────── */
+.hu-hp .hu-flow .sig { fill: var(--hu-flow-copper); offset-rotate: 0deg; opacity: 0; }
+.hu-hp .hu-flow .sig-hell { fill: var(--hu-flow-copper-light); }
+/* Aussortiertes bleibt grau — Kupfer gehört dem qualifizierten Signal. */
+.hu-hp .hu-flow .sig-aus { fill: #8a8177; }
+.hu-hp .hu-flow .sig-kern { filter: drop-shadow(0 0 5px rgba(180, 100, 58, .55)); }
+
+@supports not (offset-path: path("M0 0")) {
+  .hu-hp .hu-flow .sig { display: none; }
+  .hu-hp .hu-flow .weg { stroke: var(--hu-flow-copper); stroke-dasharray: none; opacity: .5; }
+}
+
+.hu-hp .hu-flow .sig,
+.hu-hp .hu-flow .puls,
+.hu-hp .hu-flow .ankunft,
+.hu-hp .hu-flow .ring-lauf {
+  animation-duration: var(--hu-flow-takt);
+  animation-timing-function: var(--ease-linear, linear);
+  animation-iteration-count: infinite;
+  animation-delay: var(--v, 0s);
+}
+
+@keyframes hu-flow-zulauf {
+  0% { offset-distance: 0%; opacity: 0; }
+  4% { opacity: 1; }
+  22% { opacity: 1; }
+  27% { offset-distance: 100%; opacity: 0; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes hu-flow-uebergabe {
+  0%, 30% { offset-distance: 0%; opacity: 0; }
+  33% { opacity: 1; }
+  47% { opacity: 1; }
+  51% { offset-distance: 100%; opacity: 0; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes hu-flow-durchlauf {
+  0%, 51% { offset-distance: 0%; opacity: 0; }
+  54% { opacity: 1; }
+  72% { opacity: 1; }
+  76% { offset-distance: 100%; opacity: 0; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes hu-flow-ausschuss {
+  0%, 51% { offset-distance: 0%; opacity: 0; }
+  54% { opacity: .9; }
+  62% { opacity: .35; }
+  68% { offset-distance: 100%; opacity: 0; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes hu-flow-puls {
+  0%, 26% { transform: scale(1); opacity: 0; }
+  29% { transform: scale(1.04); opacity: .85; }
+  40% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* Die Balken stehen still auf ihrem echten Wert. Nur die Ankunft der
+ * qualifizierten Anfrage hebt den Kupferbalken kurz an — der Ruhezustand
+ * ist damit auch der richtige Zustand. */
+@keyframes hu-flow-ankunft {
+  0%, 72% { opacity: 0; }
+  78% { opacity: .85; }
+  92%, 100% { opacity: 0; }
+}
+
+@keyframes hu-flow-ring { to { stroke-dashoffset: calc(-1 * var(--len)); } }
+
+.hu-hp .hu-flow .puls {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: hu-flow-puls;
+}
+
+.hu-hp .hu-flow .ankunft { animation-name: hu-flow-ankunft; }
+.hu-hp .hu-flow .ring-lauf { animation-name: hu-flow-ring; }
+
+/* Dauerbewegung ruht außerhalb des Sichtfelds und im Hintergrund-Tab.
+ * Die Klasse setzt homepage-redesign.js; ohne JS läuft die Sequenz weiter. */
+.hu-hp .hu-flow.is-paused .sig,
+.hu-hp .hu-flow.is-paused .puls,
+.hu-hp .hu-flow.is-paused .ankunft,
+.hu-hp .hu-flow.is-paused .ring-lauf {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Endzustand statt Sequenz: die laufenden Teile verschwinden, alles
+   * Inhaltstragende (Karten, Trichter, Balken, Texte) bleibt sichtbar. */
+  .hu-hp .hu-flow .sig,
+  .hu-hp .hu-flow .puls,
+  .hu-hp .hu-flow .ankunft,
+  .hu-hp .hu-flow .ring-lauf {
+    animation: none;
+    display: none;
+  }
+
+  /* Ohne Signale muss die Strecke selbst lesbar bleiben. */
+  .hu-hp .hu-flow .weg {
+    stroke: var(--hu-flow-copper);
+    stroke-dasharray: none;
+    opacity: .5;
+  }
+
+  .hu-hp .hu-flow .ring-basis { opacity: .45; }
+}
+
+@media (max-width: 1180px) {
+  .hu-hp .hu-flow { width: min(100%, 56.25rem); }
+}
