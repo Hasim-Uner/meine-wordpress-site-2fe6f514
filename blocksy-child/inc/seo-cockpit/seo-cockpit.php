@@ -46,6 +46,7 @@ $nexus_seo_cockpit_modules = [
 	'seo-cockpit-content-intelligence.php',
 	'seo-cockpit-content-intelligence-refresh.php',
 	'seo-cockpit-content-intelligence-v11.php',
+	'seo-cockpit-content-intelligence-state.php',
 	'seo-cockpit-audit-canonical-fetch.php',
 	'seo-cockpit-audit.php',
 	'seo-cockpit-audit-intelligence.php',
