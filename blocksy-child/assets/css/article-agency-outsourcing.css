@@ -1,5 +1,5 @@
 /* Premium editorial template for /wordpress-projekte-auslagern/.
- * Route-scoped only. No JS, no external fonts, no layout-affecting media swaps.
+ * Route-scoped: stronger hero framing, readable TOC and delayed share rail.
  */
 
 .single-post .nexus-article-reader-header {
@@ -18,8 +18,9 @@
     padding: clamp(3.25rem, 6vw, 6.25rem) max(24px, calc((100vw - 1280px) / 2)) 0;
     overflow: clip;
     background:
-        radial-gradient(circle at 80% 12%, rgba(224, 138, 60, 0.12), transparent 31%),
-        linear-gradient(180deg, #0b0f12 0%, #0d1114 100%);
+        radial-gradient(circle at 82% 18%, rgba(224, 138, 60, 0.17), transparent 30%),
+        radial-gradient(circle at 96% 74%, rgba(224, 138, 60, 0.07), transparent 22%),
+        linear-gradient(180deg, #0a0d10 0%, #10100f 100%);
     color: #f2ebdd;
 }
 
@@ -74,29 +75,51 @@
     color: rgba(242, 235, 221, 0.62);
 }
 
+/* Give the editorial artwork its own surface so it reads as a key asset,
+   not as an image pasted onto the dark hero. */
 .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover {
+    position: relative;
     display: block !important;
     grid-column: 2;
     grid-row: 1;
     align-self: center;
     width: auto !important;
-    max-width: 620px;
+    max-width: 650px;
     margin: 0 0 clamp(4rem, 7vw, 6.5rem) !important;
+    padding: clamp(8px, 0.8vw, 12px);
     justify-self: end;
+    border: 1px solid rgba(242, 235, 221, 0.12);
+    border-radius: clamp(22px, 2.2vw, 30px);
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(224, 138, 60, 0.055));
+    box-shadow:
+        0 42px 110px rgba(0, 0, 0, 0.48),
+        0 0 0 1px rgba(224, 138, 60, 0.07) inset;
+}
+
+.single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover::before {
+    position: absolute;
+    inset: 14% -6% -10% 16%;
+    z-index: -1;
+    border-radius: 42px;
+    background: rgba(224, 138, 60, 0.11);
+    filter: blur(48px);
+    content: '';
+    pointer-events: none;
 }
 
 .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover .nexus-hero-image {
     min-height: 0 !important;
     height: auto !important;
     aspect-ratio: auto !important;
-    padding: clamp(4px, 0.55vw, 7px);
+    padding: clamp(3px, 0.35vw, 5px);
     overflow: hidden;
-    border: 1px solid rgba(224, 138, 60, 0.27);
-    border-radius: clamp(16px, 1.8vw, 24px);
-    background: #f2efe9;
+    border: 1px solid rgba(224, 138, 60, 0.42);
+    border-radius: clamp(15px, 1.7vw, 22px);
+    background: #f3efe7;
     box-shadow:
-        0 38px 95px rgba(0, 0, 0, 0.42),
-        0 1px 0 rgba(255, 255, 255, 0.08) inset;
+        0 14px 36px rgba(0, 0, 0, 0.22),
+        0 1px 0 rgba(255, 255, 255, 0.62) inset;
 }
 
 .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover .nexus-hero-image img {
@@ -170,37 +193,155 @@
     display: block !important;
     grid-column: 2;
     grid-row: 1;
-    position: sticky !important;
-    top: 110px;
     align-self: start;
-    width: 100%;
     color: #20252a;
 }
 
-.single-post .nexus-article-reader-header ~ .nexus-single-container .sticky-toc {
-    padding: 1.35rem 1.4rem 1.45rem !important;
-    border: 1px solid #e0e3e5 !important;
-    border-radius: 18px !important;
-    background: rgba(255, 255, 255, 0.88) !important;
-    box-shadow: 0 18px 48px rgba(25, 31, 36, 0.07) !important;
-    backdrop-filter: blur(12px);
+/* The share rail must not sit over the hero. It becomes interactive only
+   once the first real article section is reached (body.ao-share-ready). */
+@media (min-width: 1280px) {
+    body.single-post .nexus-article-reader-header ~ .nexus-share-rail {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        border-color: rgba(224, 138, 60, 0.28);
+        background: rgba(17, 20, 22, 0.94);
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+        transition: opacity 220ms ease, transform 220ms ease !important;
+    }
+
+    body.single-post.ao-share-ready .nexus-article-reader-header ~ .nexus-share-rail {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+
+    body.single-post .nexus-article-reader-header ~ .nexus-share-rail .nexus-share-rail__label {
+        color: #a7a097;
+    }
+
+    body.single-post .nexus-article-reader-header ~ .nexus-share-rail .nexus-share-rail__btn {
+        color: #d7d0c3;
+    }
 }
 
-.single-post .nexus-article-reader-header ~ .nexus-single-container .sticky-toc,
-.single-post .nexus-article-reader-header ~ .nexus-single-container .sticky-toc * {
-    color: #30363b;
+/* Desktop TOC: dark, compact rail on the light reading surface. The old
+   translucent white capsule had too little separation from the page. */
+@media (min-width: 1100px) {
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar.nexus-reader-toc {
+        position: fixed !important;
+        top: 50% !important;
+        right: clamp(14px, 2vw, 28px) !important;
+        width: auto !important;
+        margin: 0 !important;
+        transform: translateY(-50%) !important;
+        z-index: 24;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc {
+        width: 52px !important;
+        max-height: min(72vh, 720px);
+        padding: 13px 10px !important;
+        overflow: hidden;
+        border: 1px solid rgba(224, 138, 60, 0.28) !important;
+        border-radius: 18px !important;
+        background: #171a1d !important;
+        box-shadow:
+            0 18px 46px rgba(17, 22, 26, 0.18),
+            0 0 0 1px rgba(255, 255, 255, 0.025) inset !important;
+        backdrop-filter: none;
+        transition:
+            width 180ms ease,
+            padding 180ms ease,
+            background-color 180ms ease,
+            border-color 180ms ease,
+            box-shadow 180ms ease;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc:hover,
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc:focus-within {
+        width: 330px !important;
+        padding: 16px 18px !important;
+        border-color: rgba(224, 138, 60, 0.46) !important;
+        background: #121619 !important;
+        box-shadow: 0 24px 64px rgba(17, 22, 26, 0.25) !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc h2 {
+        color: #e08a3c !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc a::before {
+        background: #747b80 !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc li.is-subsection a::before {
+        opacity: 0.72;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc a.active::before,
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc a[aria-current="true"]::before {
+        background: #e08a3c !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc:hover a,
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc:focus-within a {
+        color: #b9c0c4 !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc:hover li.is-subsection a,
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc:focus-within li.is-subsection a {
+        color: #8f979c !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc a:hover,
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc a:focus-visible,
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc a.active,
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc a[aria-current="true"] {
+        color: #f4eee4 !important;
+    }
 }
 
-.single-post .nexus-article-reader-header ~ .nexus-single-container .sticky-toc a {
-    color: #5c646a !important;
-    text-decoration: none !important;
-    transition: color 180ms ease, transform 180ms ease;
-}
+/* Tablet/mobile TOC remains inline and light, with real contrast. */
+@media (max-width: 1099px) {
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar.nexus-reader-toc {
+        position: static !important;
+        inset: auto !important;
+        width: 100% !important;
+        margin: 0 0 clamp(1.7rem, 4vw, 2.5rem) !important;
+        transform: none !important;
+    }
 
-.single-post .nexus-article-reader-header ~ .nexus-single-container .sticky-toc a:hover,
-.single-post .nexus-article-reader-header ~ .nexus-single-container .sticky-toc a[aria-current="true"],
-.single-post .nexus-article-reader-header ~ .nexus-single-container .sticky-toc .is-active > a {
-    color: #b85f18 !important;
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc {
+        width: 100% !important;
+        padding: 0 !important;
+        border: 1px solid #d9dde0 !important;
+        border-width: 1px 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        backdrop-filter: none;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .nexus-reader-toc__toggle {
+        color: #20252a !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .nexus-reader-toc__toggle-label {
+        color: #b85f18 !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .nexus-reader-toc__toggle-count,
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .nexus-reader-toc__toggle-mark {
+        color: #697177 !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc a {
+        color: #4f575d !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc a.active,
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc a:hover {
+        color: #a95617 !important;
+    }
 }
 
 .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content h2 {
@@ -548,19 +689,9 @@
         gap: 2.4rem !important;
     }
 
-    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar {
-        grid-column: 1;
-        grid-row: 1;
-        position: static !important;
-    }
-
     .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content {
         grid-column: 1;
         grid-row: 2;
-    }
-
-    .single-post .nexus-article-reader-header ~ .nexus-single-container .sticky-toc {
-        backdrop-filter: none;
     }
 }
 
@@ -575,13 +706,22 @@
         line-height: 1.01;
     }
 
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover {
+        padding: 5px;
+        border-radius: 17px;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover::before {
+        display: none;
+    }
+
     .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover .nexus-hero-image {
         padding: 3px;
-        border-radius: 14px;
+        border-radius: 13px;
     }
 
     .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover .nexus-hero-image img {
-        border-radius: 10px;
+        border-radius: 9px;
     }
 
     .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-context {
@@ -625,7 +765,8 @@
 
 @media (prefers-reduced-motion: reduce) {
     .single-post .agency-delivery-flow__track li,
-    .single-post .nexus-article-reader-header ~ .nexus-single-container .sticky-toc a {
-        transition: none;
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-reader-toc .sticky-toc,
+    body.single-post .nexus-article-reader-header ~ .nexus-share-rail {
+        transition: none !important;
     }
 }
