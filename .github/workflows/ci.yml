@@ -141,3 +141,12 @@ jobs:
       - name: Verify built style.css keeps the theme header
         run: |
           grep -q '^Theme Name: Blocksy Child$' .build/blocksy-child/style.css
+
+  deploy-production:
+    needs: validate
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    uses: ./.github/workflows/deploy.yml
+    with:
+      ref: ${{ github.sha }}
+      dry_run: false
+    secrets: inherit

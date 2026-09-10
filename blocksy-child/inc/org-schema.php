@@ -674,6 +674,13 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
     $description = $excerpt ? wp_strip_all_tags( $excerpt ) : wp_strip_all_tags( $title );
     $route_schema = [];
 
+    // Die Homepage ist template-owned. Derselbe gefilterte Inhalt wie in
+    // Title/Description verhindert veraltete Editor-Texte im WebPage-Knoten.
+    if ( is_front_page() ) {
+        $title       = html_entity_decode( wp_strip_all_tags( hu_get_homepage_title() ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+        $description = html_entity_decode( wp_strip_all_tags( hu_get_homepage_description() ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+    }
+
     if ( 'aroundhome-solar-einordnung' === $slug ) {
         $route_schema = hu_get_aroundhome_decision_schema_data( $post_id, $description );
         $title        = $route_schema['headline'];

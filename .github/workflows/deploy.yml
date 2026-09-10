@@ -1,11 +1,18 @@
 name: Deploy Theme (Production)
 
 on:
-  workflow_run:
-    workflows:
-      - CI
-    types:
-      - completed
+  workflow_call:
+    inputs:
+      ref:
+        description: Git ref to deploy
+        required: false
+        default: main
+        type: string
+      dry_run:
+        description: Preview rsync changes without writing to the server
+        required: false
+        default: false
+        type: boolean
   workflow_dispatch:
     inputs:
       ref:
@@ -35,12 +42,6 @@ env:
 
 jobs:
   deploy:
-    if: >
-      (github.event_name == 'workflow_run' &&
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main') ||
-      github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment: production
@@ -49,7 +50,7 @@ jobs:
       - name: Checkout deployment ref
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || inputs.ref }}
+          ref: ${{ inputs.ref }}
 
       - name: Validate deploy config
         run: bash scripts/verify-deploy-config.sh "$SSH_PORT" "$DEPLOY_PATH"
@@ -121,7 +122,7 @@ jobs:
             "mkdir -p '$safe_deploy_path' && test -d '$safe_deploy_path'"
 
       - name: Preview rsync changes
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        if: ${{ inputs.dry_run }}
         run: |
           rsync -azvn --delete-delay --itemize-changes --exclude '.DS_Store' \
             -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o BatchMode=yes -o StrictHostKeyChecking=yes" \
@@ -129,32 +130,23 @@ jobs:
             "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH_NORMALIZED"
 
       - name: Deploy via rsync over SSH
-        if: ${{ github.event_name != 'workflow_dispatch' || !inputs.dry_run }}
+        if: ${{ !inputs.dry_run }}
         run: |
           rsync -az --delete-delay --itemize-changes --exclude '.DS_Store' \
             -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o BatchMode=yes -o StrictHostKeyChecking=yes" \
             "$BUILD_OUTPUT_DIR/" \
             "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH_NORMALIZED"
 
-      # Bis hierher endete der Deploy. Ob die Seite danach noch antwortet, hat
-      # niemand geprueft — und bei kleinen Besucherzahlen sieht ein toter Monat
-      # aus wie ein ruhiger. Der Smoke prueft nur Vitalzeichen (200, Title,
-      # eine H1, kein noindex, Canonical), kein Aussehen und kein Formular.
-      #
-      # Rot heisst: nachsehen. Zurueckgerollt wird von Hand — die Dateien
-      # liegen zu diesem Zeitpunkt bereits auf dem Server.
       - name: Live smoke test
-        if: ${{ github.event_name != 'workflow_dispatch' || !inputs.dry_run }}
+        if: ${{ !inputs.dry_run }}
         run: |
-          # Kurz warten: Seiten-Cache und OPcache brauchen einen Moment, bis
-          # sie das neue Theme ausliefern.
           sleep 20
           bash scripts/smoke-live.sh "${SMOKE_BASE_URL:-https://hasimuener.de}"
         env:
           SMOKE_BASE_URL: ${{ vars.SMOKE_BASE_URL }}
 
       - name: Trigger post-deploy WordPress cron
-        if: ${{ github.event_name != 'workflow_dispatch' || !inputs.dry_run }}
+        if: ${{ !inputs.dry_run }}
         env:
           SMOKE_BASE_URL: ${{ vars.SMOKE_BASE_URL }}
         run: |
