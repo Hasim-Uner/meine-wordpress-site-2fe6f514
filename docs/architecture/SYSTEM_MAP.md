@@ -46,6 +46,17 @@ Kritische Dateien:
 - `blocksy-child/inc/org-schema.php`
 - `blocksy-child/page-wgos.php`
 
+### Homepage-Verträge (2026-09-10)
+
+- Der Startseiten-Verteiler führt zu den drei spezialisierten Angebotsseiten;
+  der Energy-Auswahlklick springt nicht mehr direkt zum Marktcheck-Formular.
+  Die Anfragewege selbst bleiben unverändert. Die Hook-Abgrenzung steht in
+  `CONVERSION_ROUTING.md`.
+- Der generische Homepage-WebPage-Knoten übernimmt Titel und Beschreibung aus
+  `hu_get_homepage_title()` / `hu_get_homepage_description()` einschließlich
+  der vorhandenen Positionierungsfilter. Die sichtbare Homepage bleibt
+  template-owned; alte Editor-Texte sind dafür keine zweite Schema-Quelle.
+
 ## Crawl- und KI-Signale
 
 Die Website stellt repo-seitig drei komplementäre Discovery-Flächen bereit:

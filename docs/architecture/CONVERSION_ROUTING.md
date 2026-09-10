@@ -27,6 +27,25 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/ergebnisse/` | Proof / evaluation | Proof hub | Context-dependent project request | Relevant case / route |
 | `/case-study-solar-leadgenerierung/` | Solar proof | Evidence page | Solar Marktcheck | Energy money page |
 
+## Homepage: Auswahl vor der spezialisierten Anfrage
+
+Die Homepage ist ein Verteiler für gemischten Brand-Traffic. Ihre drei Karten
+führen zuerst zu `/solar-waermepumpen-leadgenerierung/`,
+`/wordpress-freelancer-hannover/` und `/whitelabel-retainer/`.
+Die Energy-Karte trägt keinen `#marktcheck`-Anker mehr; der Marktcheck bleibt
+auf der Branchenseite und auf kaufnahen Energy-Unterseiten der primäre CTA.
+Der Hero-Sprung führt zu `#wege`, der allgemeine Kontaktabschluss nutzt
+`hu_get_navigation_project_request_url()`.
+
+Der Energy-Auswahlhook heißt `home_door_energy` (zuvor Formular-Sprung
+`home_door_marktcheck`). Beide dürfen in der Auswertung nicht als dasselbe
+Verhalten behandelt werden. Die anderen zwei Auswahlhooks bleiben stabil.
+Es entsteht keine neue Analytics-Laufzeit.
+
+Nur auf der Homepage schließt die direkte Footer-Zeile Neubau ein:
+„Ich plane eine WordPress-Website oder möchte meine bestehende verbessern.“
+Ihr Ziel und `cta_footer_pick_project` bleiben erhalten.
+
 ## Cluster rules
 
 ### 1. Energy cluster -> Marktcheck

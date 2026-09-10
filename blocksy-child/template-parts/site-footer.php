@@ -73,9 +73,9 @@ $picks = [
 		'track'  => 'cta_footer_pick_energy',
 	],
 	[
-		'pre'    => 'Ich habe ',
-		'strong' => 'eine Seite',
-		'post'   => ', die zu wenig Anfragen bringt.',
+		'pre'    => is_front_page() ? 'Ich plane ' : 'Ich habe ',
+		'strong' => is_front_page() ? 'eine WordPress-Website' : 'eine Seite',
+		'post'   => is_front_page() ? ' oder möchte meine bestehende verbessern.' : ', die zu wenig Anfragen bringt.',
 		'url'    => $freelancer_url,
 		'track'  => 'cta_footer_pick_project',
 	],
