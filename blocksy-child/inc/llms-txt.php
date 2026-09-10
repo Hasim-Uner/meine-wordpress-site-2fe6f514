@@ -100,7 +100,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Für Agenturen: White-Label',
 					'url'         => $whitelabel_url,
-					'description' => 'Umsetzungskapazität für Agenturen: WordPress, Tracking, CRO und technische SEO im Hintergrund.',
+					'description' => 'Umsetzungskapazität für Agenturen: WordPress-Umsetzung, technisches SEO und die vollständige Messkette aus einer Hand.',
 				],
 				[
 					'label'       => 'Solar- und Wärmepumpen-Leadgenerierung',

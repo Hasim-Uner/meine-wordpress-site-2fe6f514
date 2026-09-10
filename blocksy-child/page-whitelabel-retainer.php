@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 $whitelabel_fit_url = function_exists( 'nexus_get_whitelabel_calendar_url' )
 	? nexus_get_whitelabel_calendar_url()
 	: 'https://cal.com/hasim-uener/whitelabel-fit-gesprach?overlayCalendar=true';
-$contact_email       = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
 
 // ── Der zweite Ausgang ist jetzt ein Formular, kein mailto ──────
 // Der Sekundaer-CTA war ein `mailto:` mit vorformuliertem Body. Am
