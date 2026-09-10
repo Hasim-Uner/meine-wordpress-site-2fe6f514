@@ -156,7 +156,7 @@ There is no longer one universal funnel ladder for the whole site.
 
 1. Agency / partner / White-Label intent
 2. White-Label page
-3. Fit-Check / scoped first project
+3. Request form (`Aufgabe beschreiben`) / scoped first project
 4. Optional retainer
 
 Use `Umsetzungspartner` for a business that reaches the Solar build stage. Do not reintroduce the retired `Founding Cohort 2026` frame, seat counters, or application deadlines — see `docs/decisions/0011-founding-cohort-2026-entfernt.md`. Customer-facing forbidden terms live in `blocksy-child/inc/canon/messaging-canon.php`.

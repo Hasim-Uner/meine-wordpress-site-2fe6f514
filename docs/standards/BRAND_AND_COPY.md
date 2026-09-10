@@ -20,7 +20,7 @@ Skills reference this file instead of duplicating brand rules.
 Die Website hat drei gleichberechtigte kommerzielle Einstiege mit unterschiedlicher Zielgruppe und unterschiedlichem nächsten Schritt:
 
 1. **Direkte Unternehmen / WordPress-Projekte** → `/wordpress-freelancer-hannover/` bzw. generische Projektanfrage
-2. **Agenturen** → `/whitelabel-retainer/` bzw. White-Label-Fit-Check
+2. **Agenturen** → `/whitelabel-retainer/` bzw. Aufgabe beschreiben / Erstprojekt
 3. **Solar / Wärmepumpe / Speicher** → `/solar-waermepumpen-leadgenerierung/` bzw. Marktcheck
 
 Die Startseite ist die fachliche Klammer und der Verteiler. Sie soll **keinen der drei Wege künstlich zum universellen Hauptfunnel machen**.
@@ -45,7 +45,7 @@ Die Startseite ist die fachliche Klammer und der Verteiler. Sie soll **keinen de
 - `/whitelabel-retainer/` = eigener Agentur-Einstieg
 - Zielgruppe: Performance-, Web-, SEO- und Full-Service-Agenturen mit Umsetzungsbedarf
 - Lieferfelder: WordPress, Tracking, CRO, technische SEO, Landingpages/Funnel
-- Primärer nächster Schritt: Fit-Check / Erstprojekt mit klarem Scope
+- Primärer nächster Schritt: Aufgabe beschreiben (Formular der Route) oder Erstprojekt mit klarem Scope; der 30-Minuten-Termin ist der dritte, gleichrangige Weg
 - Keine erfundenen Agentur-Referenzen; keine Akquise im Kundenstamm der Partner
 
 ### Solar / Wärmepumpe / Speicher
@@ -60,7 +60,7 @@ Die Startseite ist die fachliche Klammer und der Verteiler. Sie soll **keinen de
 **Suchintention, Seitenrolle und Conversion-Ziel sind getrennte Entscheidungen.** Eine Seite darf ihre Query besitzen und trotzdem auf einen anderen nächsten Schritt führen.
 
 - Energie-/Portal-/PV-/Wärmepumpen-Intent → Marktcheck
-- Agentur-/White-Label-/Partner-Intent → White-Label-Fit-Check
+- Agentur-/White-Label-/Partner-Intent → White-Label-Formular „Aufgabe beschreiben“
 - Direkter WordPress-, Tracking-, CRO-, technischer SEO- oder Landingpage-Intent → Projektanfrage; eine Fachseite bleibt dabei selbst Query-Owner
 - Startseite / unspezifischer Brand-Traffic → Wahl zwischen den drei Einstiegen bzw. generische Projektanfrage
 - Eine rankende Fachseite **nicht** auf eine andere Money Page umleiten, nur weil deren CTA besser passt

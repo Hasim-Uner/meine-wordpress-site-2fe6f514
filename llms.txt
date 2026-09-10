@@ -7,7 +7,7 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 ## Primäre Einstiege
 - [Startseite](/) - Fachliche Klammer und Verteiler auf direkte Projekte, White-Label und Solar/Wärmepumpe.
 - [WordPress Freelancer Hannover](/wordpress-freelancer-hannover/) - Direkter Einstieg für WordPress-Projekte mit Entwicklung, Tracking, Funnel/CRO und technischer SEO.
-- [Für Agenturen: White-Label](/whitelabel-retainer/) - Umsetzungskapazität für Agenturen: WordPress, Tracking, CRO und technische SEO im Hintergrund.
+- [Für Agenturen: White-Label](/whitelabel-retainer/) - Umsetzungskapazität für Agenturen: WordPress-Umsetzung, technisches SEO und die vollständige Messkette aus einer Hand.
 - [Solar- und Wärmepumpen-Leadgenerierung](/solar-waermepumpen-leadgenerierung/) - Spezialisierte Branchen-Landingpage für eigene Anfragesysteme statt Portal-Abhängigkeit.
 - [Projekt anfragen](/kontakt/?type=project&focus=implementation_scope) - Generischer Anfragepfad für direkte WordPress-, Tracking-, CRO- und technische SEO-Projekte.
 - [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) - Diagnostischer Einstieg ausschließlich für Solar-, Wärmepumpen- und Speicher-Intent.
@@ -16,7 +16,7 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 - [Server-Side Tracking einrichten lassen](/server-side-tracking-b2b/) - Money Page für Server-Side Tracking, Server-GTM, GA4, Google Ads und Meta CAPI; direkter Projektpfad statt Solar-Marktcheck.
 - [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - Lokale SEO-Seite für den Agentur-Intent; direkte Zusammenarbeit wird zur Freelancer-Route weitergeführt.
 - [WordPress Freelancer Hannover](/wordpress-freelancer-hannover/) - Lokaler Freelancer-Intent für direkte Zusammenarbeit.
-- [White-Label für Agenturen](/whitelabel-retainer/) - Agentur-/Partner-Intent mit Fit-Check und scoped Erstprojekt.
+- [White-Label für Agenturen](/whitelabel-retainer/) - Agentur-/Partner-Intent: Aufgabe beschreiben, Erstprojekt mit fixem Scope, Retainer erst danach.
 
 ## Proof und zitierfähige Quellen
 - [Ergebnisse](/ergebnisse/) - Kuratierter Proof-Hub mit Cases, Kennzahlen und Einordnung.

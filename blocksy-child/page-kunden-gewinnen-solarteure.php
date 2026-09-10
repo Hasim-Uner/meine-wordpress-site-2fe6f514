@@ -28,7 +28,7 @@ $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['met
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
-$e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '12 %';
+$e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 
 $myths = [
@@ -104,7 +104,7 @@ $faq = [
 	],
 	[
 		'question' => 'Wie viele neue Kunden sind realistisch pro Monat?',
-		'answer'   => 'Das hängt von Region, Projektwert und Ad-Budget ab. Im DACH-Mittelstand sind 8–25 zusätzliche qualifizierte Anfragen pro Monat realistisch, bei Abschlussquoten von 8–15 % – siehe Case-Study-Referenz mit 12 % Abschlussquote.',
+		'answer'   => 'Das hängt von Region, Projektwert und Ad-Budget ab. Im DACH-Mittelstand sind 8–25 zusätzliche qualifizierte Anfragen pro Monat realistisch, bei Abschlussquoten von 8–15 % – siehe Case-Study-Referenz mit 15 % Abschlussquote.',
 	],
 	[
 		'question' => 'Brauche ich dafür eine neue Website?',

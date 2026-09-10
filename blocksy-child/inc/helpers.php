@@ -89,7 +89,7 @@ function nexus_get_public_proof_data() {
 				'context' => 'im aufgebauten System',
 			],
 			'sales_conversion' => [
-				'value'   => $e3_metrics['sales_conversion']['display'] ?? '12 %',
+				'value'   => $e3_metrics['sales_conversion']['display'] ?? '15 %',
 				'label'   => 'Abschlussquote',
 				'context' => 'vom Lead bis zum Abschluss',
 			],
@@ -1066,9 +1066,12 @@ function nexus_get_whitelabel_faq_items() {
 	$landingpage_price  = function_exists( 'hu_whitelabel_price' )
 		? hu_whitelabel_price( 'landingpage', 'display', 'einem Festpreis nach Umfangsklärung' )
 		: 'einem Festpreis nach Umfangsklärung';
+	// Kontingent statt nackter Untergrenze: "ab 1.000 € / Monat" sagte nicht,
+	// wofuer. Die Retainer-Karte auf der Route traegt dieselbe Zahl aus
+	// demselben Canon-Feld.
 	$retainer_price     = function_exists( 'hu_whitelabel_price' )
-		? hu_whitelabel_price( 'retainer', 'display', 'einem vorab vereinbarten Monatsbeitrag' )
-		: 'einem vorab vereinbarten Monatsbeitrag';
+		? hu_whitelabel_price( 'retainer', 'display_hours_sentence', 'mit einem vorab vereinbarten Monatskontingent' )
+		: 'mit einem vorab vereinbarten Monatskontingent';
 
 	return [
 		[

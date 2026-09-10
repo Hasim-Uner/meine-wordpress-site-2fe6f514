@@ -25,7 +25,7 @@ $aroundhome_faqs     = function_exists( 'nexus_get_aroundhome_faq_items' ) ? nex
 $case_cpl_before     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
 $case_cpl_after      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
 $case_leads          = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
-$case_conversion     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '12 %' ) : '12 %';
+$case_conversion     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '15 %' ) : '15 %';
 $case_timeframe      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display', '6 Monate' ) : '6 Monate';
 
 $contract_items = [

@@ -27,7 +27,7 @@ $e3_canon         = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics       = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_case_label    = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_cpl_after     = $e3_metrics['cpl_after']['display'] ?? '22 €';
-$e3_conv_after    = $e3_metrics['sales_conversion']['display'] ?? '12 %';
+$e3_conv_after    = $e3_metrics['sales_conversion']['display'] ?? '15 %';
 $e3_timeframe     = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 
 $study_year    = '2026';
@@ -136,7 +136,7 @@ $faqs = [
 	],
 	[
 		'question' => 'Wie wird der Cost-per-Order berechnet?',
-		'answer'   => 'CPO = Cost-per-Lead geteilt durch die Abschlussquote. Beispiel: 70 € Lead-Preis bei 2 % Abschlussquote ergibt 3.500 € pro Abschluss. Ein eigenes System mit 22 € pro Anfrage und 12 % Abschlussquote ergibt rund 183 € pro Abschluss (Referenzwerte Case Study).',
+		'answer'   => 'CPO = Cost-per-Lead geteilt durch die Abschlussquote. Beispiel: 70 € Lead-Preis bei 2 % Abschlussquote ergibt 3.500 € pro Abschluss. Ein eigenes System mit 22 € pro Anfrage und 15 % Abschlussquote ergibt rund 147 € pro Abschluss (Referenzwerte Case Study).',
 	],
 	[
 		'question' => 'Sind die Zahlen dieser Studie repräsentativ?',

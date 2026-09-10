@@ -329,7 +329,14 @@ function hu_freelancer_website_price( $with_net = false ) {
 // Ertragsprodukt, sondern der Tueroeffner, der das Setup verkauft.
 define( 'HU_WHITELABEL_TEST_SPRINT_PRICE', 590 );
 define( 'HU_WHITELABEL_TRACKING_AUDIT_MIN', 690 );
-define( 'HU_WHITELABEL_SERVER_SIDE_MIN', 1290 );
+
+// 900 statt zuvor 1.290: HU_TRACKING_STANDARD_SETUP oben ist der oeffentlich
+// auf /server-side-tracking-b2b/ genannte Endkundenpreis fuer dieselbe
+// Leistung und steht ebenfalls bei 1.290. Bei identischem Betrag hat die
+// Agentur keinen Margenspielraum — der Kaufgrund fehlt, und beide Zahlen sind
+// auf indexierten Seiten nachlesbar. 900 haelt den rund 30-prozentigen
+// Abstand, den jede andere Sprosse dieser Leiter einhaelt.
+define( 'HU_WHITELABEL_SERVER_SIDE_MIN', 900 );
 define( 'HU_WHITELABEL_LANDINGPAGE_MIN', 1900 );
 
 // Der Retainer ist die versprochene Zielstufe des Partner-Funnels und trug
@@ -341,7 +348,12 @@ define( 'HU_WHITELABEL_LANDINGPAGE_MIN', 1900 );
 // Betrag hiesse, die Agentur zahlt so viel wie ein Endkunde — das bricht die
 // 30-%-Regel, die auf jeder anderen Sprosse dieser Leiter gilt. 1.000 haelt
 // sie und entspricht HU_PERFORMANCE_FOUNDING_RETAINER.
+//
+// Das Stundenkontingent gehoert zur Zahl: "ab 1.000 € / Monat" allein sagt
+// nicht, wofuer. Ein Stundensatz steht dabei weder als Zahl noch als
+// Herleitung auf der Seite — das Kontingent ist die Einheit, nicht die Stunde.
 define( 'HU_WHITELABEL_RETAINER_MIN', 1000 );
+define( 'HU_WHITELABEL_RETAINER_HOURS', 12 );
 
 /**
  * Return the canonical White-Label pricing model.
@@ -373,6 +385,26 @@ function hu_whitelabel_pricing_canon() {
 		'retainer'         => [
 			'value'   => HU_WHITELABEL_RETAINER_MIN,
 			'display' => 'ab ' . hu_format_eur( HU_WHITELABEL_RETAINER_MIN ) . ' / Monat netto',
+			// Kontingent-Fassungen. Die Angebotskarte traegt die kompakte Zeile,
+			// die FAQ den Satzbaustein — beide lesen dieselbe Zahl, damit Karte
+			// und Antwort nicht auseinanderlaufen koennen.
+			'display_hours' => sprintf(
+				'%1$d Stunden / Monat · %2$s netto',
+				HU_WHITELABEL_RETAINER_HOURS,
+				hu_format_eur( HU_WHITELABEL_RETAINER_MIN )
+			),
+			// Ohne Praeposition fuer den Eckdaten-Block, mit fuer den Fliesstext
+			// der FAQ. Zwei Fassungen aus einer Zahl statt zweier Literale.
+			'display_hours_plain' => sprintf(
+				'%1$d Stunden im Monat für %2$s netto',
+				HU_WHITELABEL_RETAINER_HOURS,
+				hu_format_eur( HU_WHITELABEL_RETAINER_MIN )
+			),
+			'display_hours_sentence' => sprintf(
+				'bei %1$d Stunden im Monat für %2$s netto',
+				HU_WHITELABEL_RETAINER_HOURS,
+				hu_format_eur( HU_WHITELABEL_RETAINER_MIN )
+			),
 		],
 	];
 }
