@@ -1,39 +1,113 @@
-/* Route-specific reader refinements for /wordpress-projekte-auslagern/. */
+/* Route-specific editorial refinements for /wordpress-projekte-auslagern/. */
 (function () {
     'use strict';
 
     if (typeof document === 'undefined') return;
 
+    var sectionLabels = {
+        'wann-auslagern': 'Einordnung',
+        'delivery-kette': 'Der Ablauf',
+        'kontrollverlust': 'Kontrolle',
+        'freelancer-auswaehlen': 'Auswahl',
+        'warnsignale': 'Risiken',
+        'kosten': 'Wirtschaftlichkeit',
+        'klein-starten': 'Einstieg',
+        'checkliste': 'Checkliste',
+        'zusammenarbeit': 'Zusammenarbeit',
+        'faq': 'FAQ'
+    };
+
+    function padIndex(index) {
+        return String(index + 1).padStart(2, '0');
+    }
+
+    function enhanceSections(article) {
+        var headings = Array.prototype.slice.call(article.querySelectorAll('h2'));
+
+        headings.forEach(function (heading, index) {
+            if (heading.dataset.aoEditorialReady === 'true') return;
+
+            var marker = document.createElement('div');
+            marker.className = 'ao-section-label';
+            marker.setAttribute('aria-hidden', 'true');
+
+            var number = document.createElement('span');
+            number.className = 'ao-section-label__index';
+            number.textContent = padIndex(index);
+
+            var kicker = document.createElement('span');
+            kicker.className = 'ao-section-label__kicker';
+            kicker.textContent = sectionLabels[heading.id] || 'Abschnitt';
+
+            marker.appendChild(number);
+            marker.appendChild(kicker);
+            heading.parentNode.insertBefore(marker, heading);
+            heading.dataset.aoEditorialReady = 'true';
+        });
+    }
+
+    function injectSidebarCta(sidebar) {
+        if (!sidebar || sidebar.querySelector('.ao-sidebar-cta')) return;
+
+        var toc = sidebar.querySelector('.sticky-toc');
+        if (!toc) return;
+
+        var card = document.createElement('aside');
+        card.className = 'ao-sidebar-cta';
+        card.setAttribute('aria-label', 'White-Label Zusammenarbeit');
+        card.innerHTML = '' +
+            '<span class="ao-sidebar-cta__eyebrow">Zusammen mehr möglich machen</span>' +
+            '<h3 class="ao-sidebar-cta__title">Zuverlässiger WordPress-Partner für deine Agentur</h3>' +
+            '<p class="ao-sidebar-cta__text">Technische Umsetzung im Hintergrund – mit sauberem Scope, QA, Tracking und Übergabe.</p>' +
+            '<a class="ao-sidebar-cta__button" href="/whitelabel-retainer/" data-track-action="cta_sidebar_whitelabel" data-track-category="lead_gen">Zusammenarbeit ansehen →</a>';
+
+        toc.insertAdjacentElement('afterend', card);
+    }
+
+    function enhanceToc(sidebar) {
+        if (!sidebar) return;
+
+        var list = sidebar.querySelector('#toc-list');
+        if (!list) return;
+
+        function markItems() {
+            var topLevelIndex = 0;
+            Array.prototype.slice.call(list.children).forEach(function (item) {
+                if (item.tagName !== 'LI') return;
+
+                if (item.classList.contains('is-subsection')) {
+                    item.removeAttribute('data-ao-index');
+                    return;
+                }
+
+                item.setAttribute('data-ao-index', padIndex(topLevelIndex));
+                topLevelIndex += 1;
+            });
+        }
+
+        markItems();
+
+        var observer = new MutationObserver(markItems);
+        observer.observe(list, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
+
     function init() {
-        var rail = document.querySelector('.nexus-share-rail');
         var article = document.querySelector('.agency-outsourcing-article');
-        if (!rail || !article) return;
+        if (!article) return;
 
-        var startMarker = article.querySelector('h2') || article;
-        var endMarker = document.querySelector('.nexus-related-content') ||
-                        document.querySelector('.nexus-rating') ||
-                        document.querySelector('.nexus-author-bio');
-        var ticking = false;
+        document.body.classList.remove('ao-share-ready');
+        enhanceSections(article);
 
-        function update() {
-            var start = startMarker.getBoundingClientRect().top + window.scrollY - 180;
-            var end = endMarker ? endMarker.getBoundingClientRect().top + window.scrollY - 240 : Number.MAX_SAFE_INTEGER;
-            var y = window.scrollY;
-            var visible = y >= start && y < end;
-
-            document.body.classList.toggle('ao-share-ready', visible);
-            ticking = false;
+        var sidebar = document.querySelector('.nexus-sidebar');
+        if (sidebar) {
+            injectSidebarCta(sidebar);
+            enhanceToc(sidebar);
         }
-
-        function onScroll() {
-            if (ticking) return;
-            ticking = true;
-            window.requestAnimationFrame(update);
-        }
-
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll);
-        update();
     }
 
     if (document.readyState === 'loading') {
