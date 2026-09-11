@@ -63,11 +63,11 @@ function hu_enqueue_agency_outsourcing_article_assets() : void {
 		return;
 	}
 
-	$style_path    = get_stylesheet_directory() . '/assets/css/article-agency-outsourcing.css';
-	$style_url     = get_stylesheet_directory_uri() . '/assets/css/article-agency-outsourcing.css';
-	$style_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $style_path ) : wp_get_theme()->get( 'Version' );
-	$script_path   = get_stylesheet_directory() . '/assets/js/article-agency-outsourcing-ui.js';
-	$script_url    = get_stylesheet_directory_uri() . '/assets/js/article-agency-outsourcing-ui.js';
+	$style_path     = get_stylesheet_directory() . '/assets/css/article-agency-outsourcing.css';
+	$style_url      = get_stylesheet_directory_uri() . '/assets/css/article-agency-outsourcing.css';
+	$style_version  = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $style_path ) : wp_get_theme()->get( 'Version' );
+	$script_path    = get_stylesheet_directory() . '/assets/js/article-agency-outsourcing-ui.js';
+	$script_url     = get_stylesheet_directory_uri() . '/assets/js/article-agency-outsourcing-ui.js';
 	$script_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $script_path ) : wp_get_theme()->get( 'Version' );
 
 	wp_enqueue_style(
@@ -114,7 +114,7 @@ function hu_find_agency_outsourcing_article_id() : int {
 }
 
 /**
- * Seed the reviewed agency article once.
+ * Seed the reviewed agency article once per managed content version.
  *
  * Existing editor-owned content at the same slug is never overwritten.
  *
@@ -125,7 +125,7 @@ function hu_maybe_seed_agency_outsourcing_article() : void {
 		return;
 	}
 
-	$version    = '2026-09-06-agency-outsourcing-v1';
+	$version    = '2026-09-11-agency-outsourcing-v2';
 	$option_key = 'hu_agency_outsourcing_article_version';
 
 	if ( (string) get_option( $option_key, '' ) === $version ) {
@@ -154,7 +154,7 @@ function hu_maybe_seed_agency_outsourcing_article() : void {
 	}
 
 	$content = file_get_contents( $source_path );
-	if ( false === $content || '' === trim( $content ) || false === strpos( $content, 'data-agency-outsourcing="v1"' ) ) {
+	if ( false === $content || '' === trim( $content ) || false === strpos( $content, 'data-agency-outsourcing="v2"' ) ) {
 		return;
 	}
 
@@ -170,10 +170,10 @@ function hu_maybe_seed_agency_outsourcing_article() : void {
 	$post_data = [
 		'post_type'      => 'post',
 		'post_status'    => 'publish',
-		'post_title'     => 'WordPress-Projekte auslagern: So arbeiten Agenturen mit Freelancern ohne Kontrollverlust',
+		'post_title'     => 'WordPress-Projekte auslagern: Klare Prozesse für Agenturen und Freelancer',
 		'post_name'      => 'wordpress-projekte-auslagern',
 		'post_content'   => trim( $content ),
-		'post_excerpt'   => 'Externe WordPress-Kapazität entlastet nur, wenn Übergaben funktionieren. Ein Leitfaden für Agenturen zu Scope, Figma-Handoff, Staging, QA, Tracking, Deployment und sauberer Rückgabe.',
+		'post_excerpt'   => 'WordPress-Projekte extern umsetzen lassen: So organisieren Agenturen Scope, Handoff, Staging, QA, Tracking, Deployment und Handover mit Freelancern.',
 		'post_author'    => $author_id,
 		'comment_status' => 'closed',
 		'ping_status'    => 'closed',
@@ -208,8 +208,8 @@ function hu_maybe_seed_agency_outsourcing_article() : void {
 		false
 	);
 
-	update_post_meta( $post_id, 'seo_title', 'WordPress-Projekte auslagern: Leitfaden für Agenturen' );
-	update_post_meta( $post_id, 'seo_description', 'WordPress-Projekte extern umsetzen lassen, ohne Kontrolle zu verlieren: Briefing, Scope, Staging, QA, Tracking, Deployment und Handover für Agenturen.' );
+	update_post_meta( $post_id, 'seo_title', 'WordPress-Projekte auslagern: Prozesse für Agenturen' );
+	update_post_meta( $post_id, 'seo_description', 'WordPress-Projekte sauber auslagern: klare Prozesse für Scope, Handoff, Staging, QA, Tracking, Deployment und Handover mit Freelancern.' );
 	update_post_meta( $post_id, '_hu_agency_outsourcing_seeded', '1' );
 	update_post_meta( $post_id, '_hu_agency_outsourcing_seed_version', $version );
 	update_option( $option_key, $version, false );
