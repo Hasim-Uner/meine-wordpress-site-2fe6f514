@@ -184,7 +184,7 @@ function nexus_get_audit_cta_copy() {
 
 	$copy = [
 		'label'             => 'Marktcheck mit Fit-Entscheid starten',
-		'compact_microcopy' => 'Händische Analyse · Befund per E-Mail in ' . hu_marketcheck_reply_label( true ),
+		'compact_microcopy' => 'Händische Analyse · Befund per E-Mail, ' . hu_marketcheck_reply_label( true ),
 		'header_meta_items' => [
 			'Manueller Marktcheck',
 			'Fokus: Solar, Wärmepumpe, Speicher',
@@ -285,7 +285,7 @@ function hu_arrow_up_right_svg( $size = 14 ) {
 function nexus_get_marketcheck_final_lead_in() {
 	$reply = function_exists( 'hu_marketcheck_reply_label' )
 		? hu_marketcheck_reply_label()
-		: 'in der Regel 48 Stunden, spätestens 2 Werktage';
+		: 'spätestens 2 Werktage';
 
 	// Kein Gedankenstrich am Ende: die aufrufenden Seiten haengen ihre eigene
 	// Zusage mit einem an. Zwei Striche in einem Satz lesen sich holprig.

@@ -21,18 +21,31 @@ body.nx-site-menu-open {
     overscroll-behavior: none;
 }
 
+/* Farbklima und Schrift folgen seit 09/2026 dem Gutachten-Standard aus
+   assets/css/anfragestrecke.css. Der Kopf ist dort die fuenfte dunkle
+   Tafel: derselbe Grund (#17140f), derselbe Stempel (#ef8b4d), dieselben
+   Schriften. Vorher stand er auf #0b0f12 mit #e08a3c und Figtree — ein
+   zweites Farb- und Schriftsystem ueber jeder Seite.
+
+   Die Umstellung laeuft gestaffelt: dieser Kopf und der Fuss ziehen
+   zuerst nach, die uebrigen Routen folgen. Bis dahin steht der neue Kopf
+   bewusst auch ueber Seiten im alten Kleid.
+
+   Kontraste auf #17140f: Text 16,3:1 · Mid 10,2:1 · Dim 7,8:1 ·
+   Akzent 7,4:1. Jeder Wert liegt ueber dem vorherigen Stand oder gleich
+   auf — die Umstellung kostet keine Lesbarkeit. */
 .nx-site-header.nx-site-header--sheet {
-    --sheet-ground: #0b0f12;
-    --sheet-accent: #e08a3c;
-    --sheet-accent-hi: #eda45f;
-    --sheet-text: #f2ebdd;
+    --sheet-ground: #17140f;
+    --sheet-accent: #ef8b4d;
+    --sheet-accent-hi: #f5a571;
+    --sheet-text: #f4f1ec;
     --sheet-text-mid: #c8c0b0;
-    --sheet-text-dim: #9a9488;
-    --sheet-line: rgb(242 235 221 / 0.11);
-    --sheet-line-soft: rgb(242 235 221 / 0.06);
+    --sheet-text-dim: #b0a89e;
+    --sheet-line: rgb(244 241 236 / 0.11);
+    --sheet-line-soft: rgb(244 241 236 / 0.06);
     --sheet-ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --sheet-font: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --sheet-font-mono: ui-monospace, "SFMono-Regular", "Cascadia Code", "Roboto Mono", monospace;
+    --sheet-font: "Newsreader", Georgia, "Times New Roman", serif;
+    --sheet-font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", "Roboto Mono", monospace;
 
     position: fixed;
     inset-block-start: 0;

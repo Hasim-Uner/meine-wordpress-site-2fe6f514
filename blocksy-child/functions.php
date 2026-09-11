@@ -24,6 +24,7 @@ $modules = [
 	'canon/pricing-canon.php', // Kanonische Foundation-, Performance- und Premium-Preise
 	'canon/messaging-canon.php', // Zentrale Wertanker, Abgrenzungen und Begriffsschutz
 	'canon/reference-canon.php', // Kanonische, oeffentlich pruefbare Referenzprojekte
+	'canon/market-canon.php', // Fremde Marktzahlen mit Quelle — streng getrennt von eigenen Ergebnissen
 	'mail.php',           // Zentraler Brevo-Mail-Router für Transaktionsmails
 	'crm.php',            // Gemeinsame CRM-Grundlage für Kontakte, Blog-Abos und Projektanfragen
 	'wgos/wgos-access.php',    // Interne WGOS-Clientrolle, Dashboard-Capability und Backend-Sperre
@@ -107,18 +108,30 @@ function hu_preload_self_hosted_fonts() {
 	$is_visual_homepage_test = function_exists( 'hu_is_homepage_wow_request' ) && hu_is_homepage_wow_request();
 	$critical_figtree_font = ( is_front_page() || $is_visual_homepage_test ) ? 'figtree-600.woff2' : 'figtree-400.woff2';
 
-	if ( file_exists( $font_dir . '/fonts/Satoshi-Variable.woff2' ) ) {
-		printf(
-			'<link rel="preload" href="%s/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>' . "\n",
-			esc_url( $font_uri )
-		);
-	}
+	// Die Anfragestrecke steht vollstaendig im Gutachten-Standard: dort ist
+	// Newsreader die Schrift des LCP-Elements, und Satoshi/Figtree kommen auf
+	// der Seite nicht vor. Ein Preload fuer sie waere dort verschwendete
+	// Bandbreite im kritischen Pfad.
+	//
+	// Auf allen uebrigen Routen bleibt es beim bisherigen Paar. Newsreader
+	// wird dort zwar von Kopf und Fuss gebraucht, aber nicht ueber der
+	// Falz — deshalb kein dritter Preload, sondern font-display: swap.
+	$is_strecke = is_page( 'solar-waermepumpen-leadgenerierung' )
+		|| is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' );
 
-	if ( file_exists( $font_dir . '/fonts/' . $critical_figtree_font ) ) {
+	$critical_fonts = $is_strecke
+		? [ 'Newsreader-Variable-latin.woff2', 'IBMPlexMono-500-latin.woff2' ]
+		: [ 'Satoshi-Variable.woff2', $critical_figtree_font ];
+
+	foreach ( $critical_fonts as $critical_font ) {
+		if ( ! file_exists( $font_dir . '/fonts/' . $critical_font ) ) {
+			continue;
+		}
+
 		printf(
 			'<link rel="preload" href="%1$s/%2$s" as="font" type="font/woff2" crossorigin>' . "\n",
 			esc_url( $font_uri ),
-			esc_attr( $critical_figtree_font )
+			esc_attr( $critical_font )
 		);
 	}
 }

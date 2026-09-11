@@ -321,15 +321,22 @@ function hu_enqueue_assets() {
 		);
 	}
 
-	// ── F1a) Solar-/Wärmepumpen-Leadgenerierung (SOLARA Redesign) ──
-	// Nutzt das geteilte .hu-hp-Brand-Kit (homepage-redesign.css) plus ein
-	// schlankes Page-Delta-Stylesheet; legacy energy-systems / review-funnel
-	// werden hier bewusst NICHT geladen — das Template rendert einen
-	// mehrstufigen Marktcheck im Hero (REST → CRM). Die Stufenzahl steht im
-	// diagnose-canon, nicht hier.
+	// ── F1a) Solar-/Wärmepumpen-Leadgenerierung (Anfragestrecke) ──
+	// Die Seite steht im Gutachten-Standard und bringt ihr Designsystem
+	// vollstaendig selbst mit: eigene Tokens unter .strecke-doc, eigene
+	// Schriftfamilien, kein .hu-hp-Brand-Kit. homepage-redesign.css und
+	// solar-leadgenerierung-solara.css werden deshalb NICHT mehr geladen —
+	// sie brachten das Karten-/Creme-System der uebrigen Domain mit, gegen
+	// das dieses Blatt gerade gebaut ist.
+	//
+	// solar-leadgenerierung-solara.js bleibt: darin lebt der mehrstufige
+	// Marktcheck (REST → CRM) samt Ankerbehandlung. Es haengt an
+	// .solara-landing, das die Seite weiterhin als Wurzelklasse traegt.
+	// anfragestrecke.js kommt daneben und macht nur Rechner, die beiden
+	// Aufbau-Bewegungen und die Kapitelmarke.
 	if ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) ) {
-		hu_enqueue_css( 'nexus-home-redesign-css', 'homepage-redesign.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-solar-leadgen-solara-css', 'solar-leadgenerierung-solara.css', [ 'nexus-home-redesign-css' ] );
+		hu_enqueue_css( 'nexus-anfragestrecke-css', 'anfragestrecke.css', [ 'nexus-design-system' ] );
+		hu_enqueue_js( 'nexus-anfragestrecke-js', 'anfragestrecke.js', [] );
 		hu_enqueue_js( 'nexus-solar-leadgen-solara-js', 'solar-leadgenerierung-solara.js', [ 'nexus-core-js' ] );
 
 		$marktcheck_cfg = [

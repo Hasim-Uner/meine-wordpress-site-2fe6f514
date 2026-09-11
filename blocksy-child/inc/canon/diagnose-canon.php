@@ -28,9 +28,9 @@ define( 'HU_MARKETCHECK_STEPS', 5 );
 define( 'HU_MARKETCHECK_FIT_QUESTIONS', 4 );
 define( 'HU_MARKETCHECK_MINUTES', 2 );
 
-// Antwortzeit auf den Marktcheck: Normalfall und Obergrenze gehoeren zusammen.
-// Getrennt gepflegt versprach die Startseite 48 Stunden und die Money Page nur
-// die 2 Werktage — dieselbe Zusage in zwei Staerken.
+// Antwortzeit auf den Marktcheck. Sichtbar ist ausschliesslich die Obergrenze
+// (siehe hu_marketcheck_reply_label). HU_MARKETCHECK_REPLY_HOURS bleibt als
+// internes Arbeitsziel bestehen — es steuert nichts, was ein Besucher liest.
 define( 'HU_MARKETCHECK_REPLY_HOURS', 48 );
 define( 'HU_MARKETCHECK_REPLY_MAX_DAYS', 2 );
 
@@ -101,20 +101,25 @@ function hu_marketcheck_length_label() {
 /**
  * Display value for the marketcheck reply promise.
  *
- * Normal case and hard cap always travel together. Kept in one place because
- * the promise appears on every route that sends traffic into the marketcheck,
- * and the halves had already drifted apart across pages.
+ * Eine einzige Fassung, ueberall: "spaetestens 2 Werktage". Bis 2026-09 stand
+ * hier zusaetzlich der Normalfall ("in der Regel 48 Stunden"), womit dieselbe
+ * Zusage auf der Seite in zwei Staerken auftrat — die Money Page nannte die
+ * Obergrenze, andere Routen die weichere Haelfte davor. Zwei Fristen fuer
+ * denselben Befund lesen sich nicht als Praezision, sondern als Vorbehalt.
  *
- * @param bool $short Drop the leading "in der Regel" for tight lines.
+ * Nicht zu verwechseln mit hu_response_promise() aus canon/messaging-canon.php:
+ * das ist die Antwortzeit auf eine gewoehnliche Anfrage (24 Stunden werktags)
+ * und bleibt bewusst die schnellere Zusage. Der Marktcheck ist ein haendisch
+ * geschriebener Befund, keine Antwort auf eine E-Mail.
+ *
+ * @param bool $short Beibehalten fuer Aufrufer, die eine knappe Fassung wollen;
+ *                    beide Varianten sind seit der Vereinheitlichung gleich.
  * @return string
  */
 function hu_marketcheck_reply_label( $short = false ) {
-	$normal = sprintf( '%d Stunden', HU_MARKETCHECK_REPLY_HOURS );
-	$cap    = sprintf( 'spätestens %d Werktage', HU_MARKETCHECK_REPLY_MAX_DAYS );
+	unset( $short );
 
-	return $short
-		? sprintf( '%s, %s', $normal, $cap )
-		: sprintf( 'in der Regel %s, %s', $normal, $cap );
+	return sprintf( 'spätestens %d Werktage', HU_MARKETCHECK_REPLY_MAX_DAYS );
 }
 
 /**

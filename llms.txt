@@ -8,7 +8,7 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 - [Startseite](/) - Fachliche Klammer und Verteiler auf direkte Projekte, White-Label und Solar/Wärmepumpe.
 - [WordPress Freelancer Hannover](/wordpress-freelancer-hannover/) - Direkter Einstieg für WordPress-Projekte mit Entwicklung, Tracking, Funnel/CRO und technischer SEO.
 - [Für Agenturen: White-Label](/whitelabel-retainer/) - Umsetzungskapazität für Agenturen: WordPress-Umsetzung, technisches SEO und die vollständige Messkette aus einer Hand.
-- [Solar- und Wärmepumpen-Leadgenerierung](/solar-waermepumpen-leadgenerierung/) - Spezialisierte Branchen-Landingpage für eigene Anfragesysteme statt Portal-Abhängigkeit.
+- [Anfragestrecke für Photovoltaik, Wärmepumpe und Speicher](/solar-waermepumpen-leadgenerierung/) - Money Page des Energie-Clusters. Definiert den Begriff „eigenes Anfragesystem“, beschreibt die fünf Stationen einer Anfragestrecke, rechnet Cost per Order gegen Lead-Einkauf und führt eine Angebotsleiter von 0 € (Marktcheck) über 790 € und 690 € bis zum Aufbau. Enthält den dokumentierten Fall mit 150 € auf 22 € pro qualifizierter Anfrage.
 - [Projekt anfragen](/kontakt/?type=project&focus=implementation_scope) - Generischer Anfragepfad für direkte WordPress-, Tracking-, CRO- und technische SEO-Projekte.
 - [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) - Diagnostischer Einstieg ausschließlich für Solar-, Wärmepumpen- und Speicher-Intent.
 

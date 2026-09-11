@@ -337,7 +337,7 @@ function nexus_get_wgos_cluster_page_proof_metrics() {
 			'label' => 'B2B-Fokus auf WordPress-, SEO-, Tracking- und CRO-Systeme',
 		],
 		[
-			'value' => 'Befund in 48 h',
+			'value' => function_exists( 'hu_marketcheck_reply_label' ) ? ucfirst( hu_marketcheck_reply_label() ) : 'Spätestens 2 Werktage',
 			'label' => 'Marktcheck-Einstieg mit priorisierten Hebeln',
 		],
 		[
@@ -393,7 +393,7 @@ function nexus_render_wgos_cluster_page( $page ) {
 	$proof_note    = isset( $page['proof_note'] ) ? (string) $page['proof_note'] : '';
 	$proof_links   = isset( $page['proof_links'] ) && is_array( $page['proof_links'] ) ? $page['proof_links'] : [];
 	$audit_cta_label         = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
-	$audit_compact_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : 'Händische Analyse · Befund innerhalb von 48 Stunden · priorisierte Hebel';
+	$audit_compact_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : 'Händische Analyse · Befund spätestens 2 Werktage · priorisierte Hebel';
 	$closing_note            = 'Der Marktcheck zeigt, ob dieses Cluster jetzt dran ist oder ob Fundament, Messbarkeit oder Angebotslogik zuerst korrigiert werden müssen.';
 
 	// Der Marktcheck gehoert laut docs/architecture/CONVERSION_ROUTING.md #1 in den

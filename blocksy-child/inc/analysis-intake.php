@@ -501,7 +501,7 @@ function hu_send_analysis_lead_confirmation( array $payload ) {
 				<div style="font-size:14px; line-height:1.85; color:#c5ced7;">
 					<strong style="color:#f7f3ee;">1.</strong> Ihre Analyse ist gespeichert — ich sehe alle Antworten und das Signal.<br>
 					<strong style="color:#f7f3ee;">2.</strong> Sie können direkt einen 30-Min-Slot buchen — ich bereite das Gespräch mit Ihren Daten vor.<br>
-					<strong style="color:#f7f3ee;">3.</strong> Falls Sie nichts buchen, melde ich mich persönlich innerhalb von 48 Stunden.
+					<strong style="color:#f7f3ee;">3.</strong> Falls Sie nichts buchen, melde ich mich persönlich — %5$s.
 				</div>
 				<div style="margin-top:14px;">
 					<a href="%4$s" style="display:inline-block; background:#E08A3C; color:#1A0F05; padding:12px 22px; border-radius:999px; font-weight:600; text-decoration:none;">Termin buchen</a>
@@ -511,7 +511,11 @@ function hu_send_analysis_lead_confirmation( array $payload ) {
 		esc_html( $payload['signal_label'] ),
 		(int) $payload['score'],
 		'',
-		esc_url( $calcom_url )
+		esc_url( $calcom_url ),
+		// Befundfrist aus dem Diagnose-Canon statt hart "48 Stunden" im
+		// Mailtext. Die Bestaetigungsmail ist die Stelle, an der die Zusage
+		// am teuersten ist, wenn sie von der Seite abweicht.
+		esc_html( function_exists( 'hu_marketcheck_reply_label' ) ? hu_marketcheck_reply_label() : 'spätestens 2 Werktage' )
 	);
 
 	$html = function_exists( 'nexus_get_contact_email_shell' )

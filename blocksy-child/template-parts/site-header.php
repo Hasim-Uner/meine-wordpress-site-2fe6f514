@@ -74,7 +74,7 @@ if ( empty( $audit_header_meta_items ) ) {
 
 			<a class="nx-site-header__energy-cta" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_energy_header_analysis" data-track-category="lead_gen" data-track-section="energy_header" data-track-funnel-stage="energy_header">
 				<span class="nx-site-header__energy-cta-label">Marktcheck</span>
-				<span class="nx-site-header__energy-cta-microcopy" aria-hidden="true">Befund in 48 h</span>
+				<span class="nx-site-header__energy-cta-microcopy" aria-hidden="true">Befund <?php echo esc_html( function_exists( 'hu_marketcheck_reply_label' ) ? hu_marketcheck_reply_label() : 'spätestens 2 Werktage' ); ?></span>
 			</a>
 		</div>
 	</div>

@@ -42,6 +42,8 @@ function hu_pricing_canon() {
 		'performance_min_duration_months' => HU_PERFORMANCE_MIN_DURATION_MTHS,
 		'premium_layer_setup'             => HU_PREMIUM_LAYER_SETUP,
 		'premium_layer_retainer'          => HU_PREMIUM_LAYER_RETAINER,
+		'entry_setup_price'               => HU_ENTRY_SETUP_PRICE,
+		'analysis_price'                  => HU_ANALYSIS_PRICE,
 		'founding_discount_percent'       => HU_FOUNDING_DISCOUNT_PERCENT,
 		'value_anchor_market_min'         => HU_VALUE_ANCHOR_MARKET_MIN,
 		'value_anchor_market_max'         => HU_VALUE_ANCHOR_MARKET_MAX,
@@ -161,6 +163,28 @@ define( 'HU_ENTRY_SETUP_PRICE', 790 );
  */
 function hu_entry_setup_price( $with_net = false ) {
 	$price = sprintf( '%d €', HU_ENTRY_SETUP_PRICE );
+
+	return $with_net ? $price . ' netto' : $price;
+}
+
+// ── Anfragesystem-Analyse: dritte Stufe der Angebotsleiter ──────
+// Schriftlicher Befund zu Anfragequellen, Tracking, Funnel und
+// Vertriebsanschluss. Steht zwischen Sofortkontakt-Setup (790 EUR) und
+// Foundation-Aufbau und wird bei Umsetzung auf den Aufbau angerechnet.
+//
+// Die Anrechenbarkeit gehoert zum Preis und wird deshalb hier mitgefuehrt:
+// ohne sie liest sich der Betrag als zusaetzliche Huerde vor dem Aufbau,
+// mit ihr als vorgezogener Teil davon.
+define( 'HU_ANALYSIS_PRICE', 690 );
+
+/**
+ * Display value of the Anfragesystem-Analyse price.
+ *
+ * @param bool $with_net Append the "netto" qualifier.
+ * @return string
+ */
+function hu_analysis_price( $with_net = false ) {
+	$price = hu_format_eur( HU_ANALYSIS_PRICE );
 
 	return $with_net ? $price . ' netto' : $price;
 }
