@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════
-   ANFRAGESTRECKE — Rechner, zwei Bewegungen, Kapitelmarke
+   ANFRAGESTRECKE — Rechner, gezielte Bewegungen, Kapitelmarke
    /solar-waermepumpen-leadgenerierung/
 
    Bewusst klein und ohne Abhaengigkeiten. Der Marktcheck selbst
@@ -23,6 +23,107 @@
     ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   } catch (e) {
     ruhig = false;
+  }
+
+  /* ── Energy-Header + Kapitelregister ───────────────────────────
+     Der globale Header-Controller besitzt bereits einen Pin-Vertrag.
+     Die Money-Page nutzt ihn explizit: der Header bleibt sichtbar und
+     seine tatsaechlich gemessene Hoehe wird zum Offset fuer Register,
+     Kapitelmarken und Sprungziele. Damit konkurrieren nicht mehr ein
+     64-px-Annahmewert und ein hoeherer Energy-Header miteinander.
+
+     Auf dem Telefon bleibt das Register bewusst im Dokumentfluss. Eine
+     zweite sticky Leiste unter dem festen Header kostet dort zu viel
+     Nutzflaeche und fuehrt beim Ankersprung zu einem doppelten Offset. */
+
+  function kopfUndRegister() {
+    var header = document.querySelector('[data-site-header].nx-site-header--energy');
+    var register = wurzel.querySelector('[data-strecke-leiste]');
+    var mobil = null;
+    var breit = null;
+
+    try {
+      mobil = window.matchMedia('(max-width: 768px)');
+      breit = window.matchMedia('(min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine)');
+    } catch (e) {
+      mobil = null;
+      breit = null;
+    }
+
+    if (header) {
+      header.setAttribute('data-site-header-pin', '');
+      header.classList.add('is-visible');
+
+      try {
+        header.dispatchEvent(new CustomEvent('nexus:header-pin'));
+      } catch (e) {
+        try {
+          header.dispatchEvent(new Event('nexus:header-pin'));
+        } catch (ignored) {}
+      }
+    }
+
+    function sync() {
+      var headerHoehe = 64;
+
+      if (header) {
+        var rect = header.getBoundingClientRect();
+        var top = 0;
+        try {
+          top = parseFloat(window.getComputedStyle(header).top) || 0;
+        } catch (e) {
+          top = 0;
+        }
+        headerHoehe = Math.max(64, Math.ceil(rect.height + Math.max(0, top)));
+      }
+
+      wurzel.style.setProperty('--nx-site-header-height', headerHoehe + 'px');
+
+      if (register && mobil) {
+        if (mobil.matches) {
+          register.style.setProperty('position', 'static', 'important');
+          register.style.setProperty('top', 'auto', 'important');
+        } else {
+          register.style.removeProperty('position');
+          register.style.removeProperty('top');
+        }
+      }
+
+      var sprungZusatz = 64;
+      if (mobil && mobil.matches) {
+        sprungZusatz = 16;
+      } else if (breit && breit.matches) {
+        sprungZusatz = 24;
+      }
+
+      [].slice.call(wurzel.querySelectorAll('[id]')).forEach(function (ziel) {
+        ziel.style.scrollMarginTop = (headerHoehe + sprungZusatz) + 'px';
+      });
+    }
+
+    sync();
+    window.requestAnimationFrame(sync);
+    window.addEventListener('resize', sync, { passive: true });
+
+    if (mobil) {
+      if (typeof mobil.addEventListener === 'function') {
+        mobil.addEventListener('change', sync);
+      } else if (typeof mobil.addListener === 'function') {
+        mobil.addListener(sync);
+      }
+    }
+
+    if (breit) {
+      if (typeof breit.addEventListener === 'function') {
+        breit.addEventListener('change', sync);
+      } else if (typeof breit.addListener === 'function') {
+        breit.addListener(sync);
+      }
+    }
+
+    if (header && 'ResizeObserver' in window) {
+      new ResizeObserver(sync).observe(header);
+    }
   }
 
   /* ── Rechner ───────────────────────────────────────────────────
@@ -193,6 +294,71 @@
     window.setTimeout(aufdecken, 6000);
   }
 
+  /* ── Marktcheck-Schrittwechsel ─────────────────────────────────
+     Das Intake-Skript ersetzt jeden Schritt als kompletten DOM-Knoten.
+     Ohne Uebergang teleportiert besonders der Wechsel von Frage 04 zum
+     Kontaktformular. Diese Bewegung erklaert keinen Inhalt, sie verhindert
+     nur den harten visuellen Schnitt: 200 ms, transform + opacity, kein
+     Layout und keine Animation beim ersten Rendern. */
+
+  function marktcheckBewegung() {
+    var mount = wurzel.querySelector('#sol-quiz-mount');
+    if (!mount || ruhig || !('MutationObserver' in window)) {
+      return;
+    }
+
+    var letzter = null;
+    var initialisiert = false;
+    var geplant = false;
+
+    function aktuellesElement() {
+      return mount.querySelector('.sol-quiz, .sol-quiz-success');
+    }
+
+    function bewegen() {
+      geplant = false;
+      var aktuell = aktuellesElement();
+
+      if (!aktuell || aktuell === letzter) {
+        return;
+      }
+
+      letzter = aktuell;
+
+      if (!initialisiert) {
+        initialisiert = true;
+        return;
+      }
+
+      if (typeof aktuell.animate !== 'function') {
+        return;
+      }
+
+      aktuell.animate(
+        [
+          { opacity: 0, transform: 'translateY(8px)' },
+          { opacity: 1, transform: 'translateY(0)' }
+        ],
+        {
+          duration: 200,
+          easing: 'cubic-bezier(0.23, 1, 0.32, 1)'
+        }
+      );
+    }
+
+    function planen() {
+      if (geplant) {
+        return;
+      }
+      geplant = true;
+      window.requestAnimationFrame(bewegen);
+    }
+
+    var beobachter = new MutationObserver(planen);
+    beobachter.observe(mount, { childList: true, subtree: true });
+    planen();
+  }
+
   /* ── Kapitelmarke ──────────────────────────────────────────────
      Der aktive Abschnitt faerbt seine Nummer in der Randspalte. Das
      einzige Element der Seite, das mitlaeuft. */
@@ -272,9 +438,11 @@
   }
 
   function start() {
+    kopfUndRegister();
     rechner();
     einmalig(wurzel.querySelector('.buehne'), 0.25, 1400);
     einmalig(wurzel.querySelector('.schrieb'), 0.3, 0);
+    marktcheckBewegung();
     kapitelmarke();
     leiste();
   }
