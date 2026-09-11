@@ -11,6 +11,13 @@ Scope: `agents/skills/`.
   have a same-named relative symlink in both `.agents/skills/` for Codex and
   `.claude/skills/` for Claude Code.
 - Never edit skill content through either symlink directory.
+- `emil-design-eng`, `animate`, `review-animations` und `improve-animations` sind
+  unverändert aus `emilkowalski/skills` übernommen (MIT). Sie sind Fremdbestand:
+  nicht lokal umschreiben, sondern bei Bedarf aus dem Upstream neu ziehen. Ihre
+  Beispiele sind React/Motion-lastig — die Regeln gelten, die Syntax wird auf
+  Vanilla CSS/JS dieses Themes übersetzt.
+- Diese vier setzen keine eigenen Motion-Tokens. Verbindlich bleiben
+  `--ease-default`, `--duration-*` aus `design-system.css`.
 - Keep `SKILL.md` short: trigger, first command, hard rules, deliverable.
 - Move repeated checklists, scaffolds, and scans into scripts.
 - Keep large `guides/` trees out of default context; retrieve or open only task-matching guides.
@@ -31,6 +38,10 @@ Scope: `agents/skills/`.
 | `wordpress-cro-content-design-audit` | B2B-CRO, Page-Kritik, CTA-/Proof-Hierarchie | cro, cta, proof, page critique, conversion |
 | `seo-conversion-copywriting` | Verkaufsorientierte deutsche Copy schreiben: Money-Pages, Landingpages, Leistungsseiten | copywriting, copy, text, hero, headline, cta-label, meta description |
 | `b2b-design-system` | Visual System, Motion Direction, UI-Komponenten, Premium-Polish | design, ui, component, polish, visual, dynamik, motion, animation, microinteraction, scroll effect, hover, entrance |
+| `emil-design-eng` | Vendored: Craft-Bar für UI-Polish und Motion-Entscheidungen | design engineering, craft, polish, taste, easing, interaction detail |
+| `animate` | Vendored: eine einzelne Animation von Grund auf bauen | animate, motion hinzufügen, transition bauen, entrance |
+| `review-animations` | Vendored: bestehende Motion streng gegen die Craft-Bar prüfen | animation review, motion kritik, easing prüfen |
+| `improve-animations` | Vendored: Motion-Bestand auditieren, priorisierte Pläne statt Edits | animation audit, motion roadmap, improve animations |
 | `modern-web-guidance` | Moderne Web-Standards fuer WordPress-Frontend, CSS, Vanilla JS, Forms, A11y, CWV | frontend, html, css, javascript, vanilla js, forms, a11y, cwv, browser api |
 | `growth-audit-optimizer` | Legacy-Optimierung fuer `/growth-audit/` | growth audit, legacy audit, instant results |
 | `landing-page-builder` | Neue Paid-/Kampagnen-Landingpages | landing page, paid, campaign, ads |
