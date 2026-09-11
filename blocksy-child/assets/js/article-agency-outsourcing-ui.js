@@ -1,4 +1,7 @@
-/* Stable route-specific editorial refinements for /wordpress-projekte-auslagern/. */
+/* Route-specific editorial refinements for /wordpress-projekte-auslagern/.
+ * This file owns the route-specific share visibility. The global editorial
+ * script may still toggle .is-visible, but this route ignores that state.
+ */
 (function () {
     'use strict';
 
@@ -17,20 +20,26 @@
         'faq': 'FAQ'
     };
 
+    var featureSections = {
+        'delivery-kette': true,
+        'kontrollverlust': true,
+        'checkliste': true
+    };
+
     function padIndex(index) {
         return String(index + 1).padStart(2, '0');
     }
 
-    function injectStableStyles() {
-        ['ao-editorial-refinement-v2', 'ao-editorial-refinement-v3'].forEach(function (id) {
+    function injectStyles() {
+        ['ao-editorial-refinement-v2', 'ao-editorial-refinement-v3', 'ao-editorial-refinement-v4'].forEach(function (id) {
             var oldStyle = document.getElementById(id);
             if (oldStyle) oldStyle.remove();
         });
 
-        if (document.getElementById('ao-editorial-refinement-v4')) return;
+        if (document.getElementById('ao-editorial-refinement-v5')) return;
 
         var style = document.createElement('style');
-        style.id = 'ao-editorial-refinement-v4';
+        style.id = 'ao-editorial-refinement-v5';
         style.textContent = [
             '.single-post .nexus-blog-header__context-links{display:none!important;}',
             '.single-post .nexus-article-hero--editorial::before{display:none!important;content:none!important;}',
@@ -40,13 +49,14 @@
             '.single-post .nexus-article-reader-header~.nexus-single-container .nexus-title{max-width:15.5ch!important;font-size:clamp(3rem,4.35vw,4.75rem)!important;line-height:1.005!important;letter-spacing:-.043em!important;}',
             '.single-post .nexus-article-reader-header~.nexus-single-container .nexus-article-cover{width:min(100%,750px)!important;max-width:750px!important;border-color:rgba(217,121,44,.42)!important;box-shadow:0 34px 86px rgba(0,0,0,.40),0 0 0 1px rgba(255,255,255,.025) inset!important;}',
             '.single-post .nexus-article-reader-header~.nexus-single-container .nexus-article-cover::after{border-color:rgba(217,121,44,.08)!important;}',
-            '.single-post .nexus-article-reader-header~.nexus-single-container .nexus-article-cover::before{background:rgba(217,121,44,.12)!important;filter:blur(62px)!important;}',
             '}',
 
-            '@media (min-width:1280px){',
-            'body.single-post .nexus-share-rail{left:30px!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:translateY(-50%) translateX(-8px)!important;transition:opacity .18s ease,transform .18s ease,visibility .18s ease!important;}',
-            'body.single-post.ao-share-ready .nexus-share-rail{opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:translateY(-50%) translateX(0)!important;}',
+            /* One explicit route state. Global .is-visible no longer decides visibility here. */
+            '@media (min-width:1180px){',
+            'body.single-post .nexus-share-rail{display:flex!important;left:30px!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:translateY(-50%) translateX(-8px)!important;transition:opacity .18s ease,transform .18s ease,visibility .18s ease!important;}',
+            'body.single-post .nexus-share-rail.ao-route-visible{opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:translateY(-50%) translateX(0)!important;}',
             '}',
+            '@media (max-width:1179px){body.single-post .nexus-share-rail{display:none!important;}}',
 
             '.single-post .nexus-article-reader-header~.nexus-single-container .nexus-post-layout{position:relative!important;}',
             '.single-post .nexus-article-reader-header~.nexus-single-container .nexus-post-layout::before{position:absolute;top:0;left:50%;width:100vw;height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent 0%,rgba(217,121,44,.28) 30%,rgba(217,121,44,.12) 62%,transparent 100%);content:"";}',
@@ -67,23 +77,17 @@
             '.single-post .nexus-sidebar #toc-list a{display:block!important;min-width:0!important;color:#666c71!important;font-size:.68rem!important;line-height:1.35!important;text-decoration:none!important;white-space:normal!important;overflow:visible!important;opacity:1!important;transform:none!important;}',
             '.single-post .nexus-sidebar #toc-list a.active,.single-post .nexus-sidebar #toc-list a[aria-current="location"],.single-post .nexus-sidebar #toc-list a:hover,.single-post .nexus-sidebar #toc-list a:focus-visible{color:#a85218!important;font-weight:650!important;}',
             '.single-post .ao-sidebar-cta{display:block!important;width:230px!important;margin-top:.8rem!important;padding:1.05rem .95rem 1rem!important;opacity:1!important;transform:none!important;max-height:none!important;overflow:visible!important;border:1px solid rgba(217,121,44,.28)!important;pointer-events:auto!important;box-shadow:0 14px 34px rgba(17,20,22,.12)!important;transition:none!important;}',
-            '.single-post .ao-sidebar-cta__title{font-size:1.16rem!important;line-height:1.1!important;}',
-            '.single-post .ao-sidebar-cta__text{font-size:.70rem!important;line-height:1.47!important;}',
-            '.single-post .ao-sidebar-cta__button{width:100%!important;min-height:36px!important;font-size:.67rem!important;}',
             '}',
 
             '.single-post .nexus-article-content h2{max-width:20ch!important;font-size:clamp(2.02rem,2.72vw,2.88rem)!important;line-height:1.075!important;}',
             '.single-post .ao-section-label{position:relative!important;margin-top:clamp(4.25rem,5.8vw,5.6rem)!important;}',
             '.single-post .ao-section-label--feature::after{position:absolute;right:.1rem;top:.25rem;z-index:-1;color:rgba(23,25,27,.038);font-family:ui-serif,Georgia,serif;font-size:clamp(4.6rem,6.5vw,6.3rem);font-weight:500;line-height:.75;letter-spacing:-.06em;content:attr(data-ao-index);pointer-events:none;}',
 
-            '@media (min-width:1100px){',
-            '.single-post .agency-delivery-flow,.single-post .agency-control-model,.single-post .agency-risk-matrix{width:calc(100% + 48px)!important;max-width:808px!important;margin-right:-48px!important;}',
-            '}',
+            '@media (min-width:1100px){.single-post .agency-delivery-flow,.single-post .agency-control-model,.single-post .agency-risk-matrix{width:calc(100% + 48px)!important;max-width:808px!important;margin-right:-48px!important;}}',
 
             '.single-post .agency-outsourcing-note{display:grid!important;grid-template-columns:32px minmax(0,1fr)!important;column-gap:.9rem!important;align-items:start!important;padding:1.35rem 1.45rem!important;border:0!important;border-top:1px solid #ded9d1!important;border-bottom:1px solid #ded9d1!important;border-left:2px solid #d9792c!important;border-radius:0 10px 10px 0!important;background:linear-gradient(100deg,rgba(217,121,44,.05),rgba(255,253,249,.55))!important;box-shadow:none!important;opacity:1!important;transform:none!important;}',
             '.single-post .agency-outsourcing-note::before{float:none!important;grid-column:1!important;grid-row:1 / span 2!important;display:grid!important;width:28px!important;height:28px!important;margin:.05rem 0 0!important;place-items:center!important;border:1px solid rgba(217,121,44,.22)!important;border-radius:50%!important;background:rgba(217,121,44,.07)!important;color:#ca6a24!important;font-size:1.42rem!important;line-height:1!important;}',
             '.single-post .agency-outsourcing-note p{grid-column:2!important;}',
-            '.single-post .agency-outsourcing-note--quiet{background:linear-gradient(100deg,rgba(90,98,104,.05),rgba(255,253,249,.5))!important;border-left-color:#aeb4b8!important;}',
 
             '.single-post .agency-readiness-checklist{padding-top:1.25rem!important;border-top:1px solid #dcd9d2!important;opacity:1!important;transform:none!important;}',
             '.single-post .agency-readiness-checklist ol{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;column-gap:1.8rem!important;row-gap:0!important;}',
@@ -91,8 +95,7 @@
             '.single-post .agency-readiness-checklist li::before{position:absolute!important;top:1.02rem!important;left:0!important;width:38px!important;height:auto!important;border:0!important;border-radius:0!important;background:transparent!important;color:#c56823!important;font-family:ui-serif,Georgia,serif!important;font-size:1.28rem!important;font-weight:500!important;line-height:1!important;text-align:left!important;}',
             '.single-post .agency-readiness-checklist li:nth-last-child(-n+2){border-bottom:1px solid #e1ded8!important;}',
 
-            /* Never hide article blocks while scrolling. */
-            '.single-post .ao-reveal,.single-post .ao-reveal.is-visible,.single-post .agency-delivery-flow,.single-post .agency-control-model,.single-post .agency-risk-matrix{opacity:1!important;transform:none!important;transition:none!important;}',
+            '.single-post .nexus-reveal,.single-post .nexus-reveal.is-in,.single-post .ao-reveal,.single-post .ao-reveal.is-visible{opacity:1!important;transform:none!important;transition:none!important;}',
 
             '@media (max-width:1099px){.single-post .ao-sidebar-cta{display:none!important;}}',
             '@media (max-width:700px){',
@@ -100,7 +103,8 @@
             '.single-post .agency-readiness-checklist ol{grid-template-columns:1fr!important;}',
             '.single-post .agency-readiness-checklist li:nth-last-child(-n+2){border-bottom:0!important;}',
             '.single-post .agency-readiness-checklist li:last-child{border-bottom:1px solid #e1ded8!important;}',
-            '}'
+            '}',
+            '@media (prefers-reduced-motion:reduce){body.single-post .nexus-share-rail{transition:none!important;}}'
         ].join('');
 
         document.head.appendChild(style);
@@ -108,11 +112,6 @@
 
     function enhanceSections(article) {
         var headings = Array.prototype.slice.call(article.querySelectorAll('h2'));
-        var featureSections = {
-            'delivery-kette': true,
-            'kontrollverlust': true,
-            'checkliste': true
-        };
 
         headings.forEach(function (heading, index) {
             if (heading.dataset.aoEditorialReady === 'true') return;
@@ -121,7 +120,6 @@
             marker.className = 'ao-section-label';
             marker.setAttribute('aria-hidden', 'true');
             marker.setAttribute('data-ao-index', padIndex(index));
-
             if (featureSections[heading.id]) marker.classList.add('ao-section-label--feature');
 
             var number = document.createElement('span');
@@ -175,7 +173,12 @@
 
         markItems();
         var observer = new MutationObserver(markItems);
-        observer.observe(list, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'aria-current'] });
+        observer.observe(list, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class', 'aria-current']
+        });
     }
 
     function setupShareRail(article, headings) {
@@ -183,17 +186,20 @@
         if (!rail) return;
 
         var startMarker = headings && headings.length > 1 ? headings[1] : article.querySelector('h2');
-        var endMarker = document.querySelector('.nexus-article-next') || document.querySelector('.nexus-rating') || document.querySelector('.nexus-author-bio');
+        var endMarker = document.querySelector('.nexus-article-next') ||
+                        document.querySelector('.nexus-rating') ||
+                        document.querySelector('.nexus-author-bio');
         var ticking = false;
 
-        document.body.classList.remove('ao-share-ready');
+        rail.classList.remove('ao-route-visible');
 
         function update() {
-            var y = window.scrollY;
-            var offset = Math.min(220, window.innerHeight * 0.28);
-            var start = startMarker ? startMarker.getBoundingClientRect().top + window.scrollY - offset : Number.MAX_SAFE_INTEGER;
-            var end = endMarker ? endMarker.getBoundingClientRect().top + window.scrollY - 260 : Number.MAX_SAFE_INTEGER;
-            document.body.classList.toggle('ao-share-ready', y >= start && y < end);
+            var viewportTrigger = Math.min(210, window.innerHeight * 0.27);
+            var startReached = !!startMarker && startMarker.getBoundingClientRect().top <= viewportTrigger;
+            var beforeEnd = !endMarker || endMarker.getBoundingClientRect().top > Math.max(280, window.innerHeight * 0.34);
+            var desktop = window.innerWidth >= 1180;
+
+            rail.classList.toggle('ao-route-visible', desktop && startReached && beforeEnd);
             ticking = false;
         }
 
@@ -229,12 +235,11 @@
         var article = document.querySelector('.agency-outsourcing-article');
         if (!article) return;
 
-        injectStableStyles();
+        injectStyles();
         removeDuplicateHeroCategory();
 
         var headings = enhanceSections(article);
         var sidebar = document.querySelector('.nexus-sidebar');
-
         if (sidebar) {
             injectSidebarCta(sidebar);
             enhanceToc(sidebar);
