@@ -62,10 +62,11 @@ $home_label         = sprintf(
 	$brand_text
 );
 
-// Die Checkfox-Entscheidungsseite ersetzt die Kontextzeile durch ihre eigene
-// sticky Sprungnavigation im Artikel. Zwei Orientierungsleisten uebereinander
-// waeren dort nur doppelte Hoehe ohne zusaetzliche Information.
-$suppress_context_links = is_single( 'checkfox-solar-waermepumpe-einordnung' );
+// Entscheidungssseiten mit eigener Orientierung sowie der Agentur-Leitfaden
+// brauchen keine zweite Kontextzeile über dem Hero. Beim Agentur-Leitfaden
+// würde dort dieselbe Kategorie direkt zweimal hintereinander erscheinen.
+$suppress_context_links = is_single( 'checkfox-solar-waermepumpe-einordnung' )
+	|| is_single( 'wordpress-projekte-auslagern' );
 
 $context_title = __( 'Blog', 'blocksy-child' );
 $context_text  = __( 'Analysen zu Anfragesystemen, Portal-Kosten, Tracking und Conversion.', 'blocksy-child' );
@@ -159,10 +160,9 @@ $primary_items = [
 	class="nexus-blog-header"
 	data-site-header
 	<?php
-	// Auf der Checkfox-Entscheidungsseite uebernimmt die seiteninterne Leiste die
+	// Auf Seiten mit unterdrückter Kontextzeile übernimmt der Inhalt selbst die
 	// Orientierung. Der Header blendet sich dort nicht mehr beim Scrollen ein;
-	// Tastaturfokus und Zeiger an der Oberkante holen ihn weiterhin hervor, und
-	// am Seitenende pinnt ihn die Seite selbst wieder ein.
+	// Tastaturfokus und Zeiger an der Oberkante holen ihn weiterhin hervor.
 	echo $suppress_context_links ? ' data-site-header-scroll-reveal="off"' : ''; // raw-ok -- static attribute
 	?>
 	role="banner"
