@@ -465,7 +465,11 @@ function nexus_energy_nav_cta_label( $items, $args ) {
 	}
 
 	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-	$request_cta = 'Marktcheck · 48 h';
+	// Frueher hart 'Marktcheck · 48 h'. Das Kurzlabel trug den Normalfall,
+	// waehrend die Money Page die Obergrenze nannte — dieselbe Zusage in zwei
+	// Staerken. Seit der Vereinheitlichung gibt es nur noch eine Fassung, und
+	// sie kommt aus dem Canon.
+	$request_cta = 'Marktcheck · ' . ( function_exists( 'hu_marketcheck_reply_label' ) ? hu_marketcheck_reply_label() : 'spätestens 2 Werktage' );
 
 	foreach ( $items as $item ) {
 		$legacy_analysis_label = 'Analyse ' . 'starten';

@@ -267,9 +267,18 @@ function hu_get_forced_singular_seo_map() {
 			// 'wordpress-wartung-hannover' + 'wordpress-seo-hannover' + 'ki-integration-wordpress' entfernt:
 			// alte Service-Slugs bleiben noindex/sitemap-excluded, aber ohne erzwungene 301-Pflicht;
 			// /ki-integration-wordpress/ ist noindex. Keine eigenstaendigen SEO-Signale mehr noetig.
+			// Title und Description sprechen die Kaufentscheidung an, nicht die
+			// Kategorie: "selbst generieren statt kaufen" ist die Frage, mit der
+			// ein Betrieb sucht. Die beiden Preise stehen in der Description,
+			// weil sie vorqualifizieren — wer 14.900 € nicht ausgeben will,
+			// klickt erst gar nicht, und das ist erwuenscht.
 			'solar-waermepumpen-leadgenerierung' => [
-				'title'       => 'Leadgenerierung Photovoltaik & Wärmepumpe ohne Portale',
-				'description' => sprintf( 'Leadgenerierung für Photovoltaik und Wärmepumpe: eigene qualifizierte Anfragen statt geteilter Portal-Leads. Marktcheck plus Case Study: %s weniger CPL.', $e3_cpl_reduction ),
+				'title'       => 'Photovoltaik-Anfragen selbst generieren statt Leads kaufen',
+				'description' => sprintf(
+					'Eigenes Anfragesystem für Photovoltaik und Wärmepumpe: Anfragen auf Ihrer Domain, vorqualifiziert, serverseitig gemessen. Aufbau ab %s, Einstieg ab %s.',
+					hu_seo_price_display( 'foundation_price_standard', 14900 ),
+					hu_seo_price_display( 'entry_setup_price', 790 )
+				),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
 				'title'       => 'Leadgenerierung Photovoltaik & Wärmepumpe ohne Portale',
@@ -1523,12 +1532,95 @@ function hu_get_seo_meta() {
 		$meta['og_title'] = __( 'Seite nicht gefunden (404)', 'blocksy-child' ) . ' · ' . get_bloginfo( 'name' );
 	}
 
+	// Routen-eigene Social-Kachel vor dem globalen Fallback.
+	//
+	// Der globale Fallback ist das Portraet im Hochformat. Als Social-Karte
+	// wird es auf 1200x630 beschnitten, wobei je nach Plattform der Kopf
+	// oder die Schultern uebrig bleiben — und die Kachel sagt nichts
+	// darueber, worum es auf der Seite geht. Wo eine Route eine eigene
+	// Kachel im Theme mitbringt, geht sie vor.
+	if ( empty( $meta['og_image'] ) ) {
+		$route_image = hu_get_route_social_image();
+
+		if ( '' !== $route_image ) {
+			$meta = hu_apply_social_image_meta(
+				$meta,
+				[
+					'url'    => $route_image,
+					'width'  => 1200,
+					'height' => 630,
+					'type'   => 'image/png',
+				]
+			);
+		}
+	}
+
 	// Global OG-Image Fallback: Profilbild als Default wenn kein seitenspezifisches Bild gesetzt ist.
 	if ( empty( $meta['og_image'] ) ) {
 		$meta = hu_apply_social_image_meta( $meta, hu_get_social_image_meta( hu_get_profile_image_url() ) );
 	}
 
 	return $meta;
+}
+
+/**
+ * Format a canonical price for use inside a meta description.
+ *
+ * Meta-Descriptions nennen Preise, und Preise leben im Pricing-Canon. Ein
+ * Literal als Fallback waere eine zweite Quelle fuer denselben Betrag —
+ * der Fallback bekommt deshalb nur die nackte Zahl, nie eine fertige
+ * Preisangabe.
+ *
+ * @param string $key      Key inside hu_pricing_canon().
+ * @param int    $fallback Raw amount in EUR if the canon is unavailable.
+ * @return string
+ */
+function hu_seo_price_display( $key, $fallback ) {
+	$canon = function_exists( 'hu_pricing_canon' ) ? hu_pricing_canon() : [];
+	$value = (int) ( $canon[ $key ] ?? $fallback );
+
+	return function_exists( 'hu_format_eur' )
+		? hu_format_eur( $value )
+		: number_format( (float) $value, 0, ',', '.' ) . ' €';
+}
+
+/**
+ * Return a theme-shipped 1200x630 social image for the current route.
+ *
+ * Themeeigene Dateien statt Medienbibliothek: die Kachel gehoert zum
+ * Template und wird mit ihm deployt. Waere sie ein Upload, haenge das
+ * Social-Bild einer versionierten Seite an einer Editor-Handlung.
+ *
+ * Die Masse setzt der Aufrufer fest: hu_get_social_image_meta() ermittelt
+ * sie ueber attachment_url_to_postid() und findet fuer eine Theme-Datei
+ * nichts. Jede hier eingetragene Kachel muss deshalb 1200x630 als PNG sein.
+ * Generator: scripts/build-anfragestrecke-og-image.py.
+ *
+ * @return string Absolute URL or empty string.
+ */
+function hu_get_route_social_image() {
+	$routes = [
+		'solar-waermepumpen-leadgenerierung' => 'anfragestrecke-og.png',
+	];
+
+	$slug = '';
+
+	if ( is_page() ) {
+		$queried = get_queried_object();
+		$slug    = ( $queried instanceof WP_Post ) ? (string) $queried->post_name : '';
+	}
+
+	if ( '' === $slug || ! isset( $routes[ $slug ] ) ) {
+		return '';
+	}
+
+	$relative = 'assets/img/' . $routes[ $slug ];
+
+	if ( ! file_exists( trailingslashit( get_stylesheet_directory() ) . $relative ) ) {
+		return '';
+	}
+
+	return trailingslashit( get_stylesheet_directory_uri() ) . $relative;
 }
 
 /**

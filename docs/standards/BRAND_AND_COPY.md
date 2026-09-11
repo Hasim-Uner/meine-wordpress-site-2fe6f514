@@ -77,12 +77,20 @@ gehören nie als Literal in Template, FAQ, Meta-Description oder E-Mail.
 | Zusage | Wert | Quelle | Gilt für |
 |---|---|---|---|
 | Antwort auf eine Anfrage | 24 Stunden werktags | `hu_response_promise()` in `inc/canon/messaging-canon.php` | Jede Anfragestrecke: Startseite, White-Label, Kontakt, Fachseiten |
-| Marktcheck-Befund | in der Regel 48 Stunden, spätestens 2 Werktage | `hu_marketcheck_reply_label()` in `inc/canon/diagnose-canon.php` | Nur Marktcheck und Analyse-Intake im Energy-Funnel |
+| Marktcheck-Befund | spätestens 2 Werktage | `hu_marketcheck_reply_label()` in `inc/canon/diagnose-canon.php` | Nur Marktcheck und Analyse-Intake im Energy-Funnel |
 
 Der Marktcheck-Wert ist eine **Bearbeitungszeit** bis zum händischen Befund,
 keine Antwortzeit. Wo beides nebeneinander steht, muss die Marktcheck-Zusage
 das Wort „Befund" tragen, sonst liest sie sich als zweite, schwächere
 Antwortzeit.
+
+Seit 2026-09-11 nennt die Marktcheck-Zusage **nur noch die Obergrenze**. Vorher
+stand dort „in der Regel 48 Stunden, spätestens 2 Werktage": dieselbe Zusage in
+zwei Stärken, wobei manche Routen nur die weichere Hälfte zeigten. Zwei Fristen
+für denselben Befund lesen sich nicht als Präzision, sondern als Vorbehalt.
+`HU_MARKETCHECK_REPLY_HOURS` bleibt als internes Arbeitsziel im Canon, steuert
+aber keine sichtbare Copy mehr. Kurzlabels wie „Marktcheck · 48 h" sind damit
+hinfällig.
 
 Die Support-Frist der Tracking Care (`HU_TRACKING_RESPONSE_BUSINESS_DAYS`) ist
 eine dritte, vertragliche Größe im laufenden Mandat. Sie gehört nicht in

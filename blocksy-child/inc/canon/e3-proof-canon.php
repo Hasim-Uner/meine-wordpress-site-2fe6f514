@@ -103,10 +103,17 @@ function hu_e3_canon() {
 				'counter_target' => '15',
 				'label'          => 'Abschlussquote',
 			],
+			// Die Vorher-Quote ist die einzige Zahl dieses Falls, die nicht
+			// gemessen wurde: sie ist eine Marktannahme ueber gekaufte
+			// Portal-Leads. `display` traegt die Spanne fuer Stellen, die sie
+			// ausdruecklich als Annahme rahmen; `display_hedged` ist die
+			// vorsichtige Fassung fuer Vergleichstabellen, in denen die Spanne
+			// neben gemessenen Werten wie eine Messung aussaehe.
 			'sales_conversion_before' => [
 				'value'           => HU_E3_SALES_CONVERSION_BEFORE_LOW,
 				'value_high'      => HU_E3_SALES_CONVERSION_BEFORE_HIGH,
 				'display'         => '1 – 5 %',
+				'display_hedged'  => 'einstellig',
 				'label'           => 'Abschlussquote vorher (gekaufte Portal-Leads)',
 			],
 			'sales_conversion_after' => [

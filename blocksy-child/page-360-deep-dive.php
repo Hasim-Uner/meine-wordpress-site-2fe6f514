@@ -28,7 +28,7 @@ $audit_url = function_exists( 'nexus_get_audit_url' )
 		</p>
 		<div class="deepdive-trust">
 			<span>✓ Diagnose statt Pitch</span>
-			<span>✓ Persönliche Analyse innerhalb von 48 Stunden</span>
+			<span>✓ Persönliche Analyse, <?php echo esc_html( function_exists( 'hu_marketcheck_reply_label' ) ? hu_marketcheck_reply_label() : 'spätestens 2 Werktage' ); ?></span>
 			<span>✓ Priorisierte Entscheidungsvorlage</span>
 		</div>
 	</section>

@@ -22,21 +22,26 @@
  * Hausschrift, ohne greift der Fallback — eine Abhaengigkeit entsteht dadurch
  * nicht.
  *
- * Ein Farbsystem: Akzent #e08a3c wie im Premium-Header, Grund #0b0f12, kein
+ * Ein Farbsystem: Akzent #ef8b4d wie im Premium-Header, Grund #17140f, kein
  * Flaechenverlauf, keine Eckradien ausser am Fokusring. Schwaechster Kontrast
- * #a8a294 auf #0b0f12 = 7,6:1.
+ * #b0a89e auf #17140f = 7,8:1.
+ *
+ * Seit 09/2026 ist dieses Farbklima das des Gutachten-Standards aus
+ * assets/css/anfragestrecke.css — Fuss und Kopf sind dieselbe dunkle Tafel
+ * wie die vier im Dokument. Vorher: Grund #0b0f12, Akzent #e08a3c,
+ * schwaechster Kontrast 7,6:1.
  */
 
 .ft {
     /* Farbklima von Kopf und Menue. */
-    --ft-ground: #0b0f12;
-    --ft-accent: #e08a3c;
-    --ft-text: #f2ebdd;
+    --ft-ground: #17140f;
+    --ft-accent: #ef8b4d;
+    --ft-text: #f4f1ec;
     --ft-text-mid: #c8c0b0;
-    --ft-text-dim: #a8a294;
-    --ft-line: #f2ebdd1c;
-    --ft-line-soft: #f2ebdd0f;
-    --ft-hairline: #e08a3c66;
+    --ft-text-dim: #b0a89e;
+    --ft-line: #f4f1ec1c;
+    --ft-line-soft: #f4f1ec0f;
+    --ft-hairline: #ef8b4d66;
     --ft-ease: cubic-bezier(.22, 1, .36, 1);
 
     /* Abstandsleiter 4 / 8 / 12 / 16 / 24 / 32 / 48 / 72.
@@ -53,8 +58,13 @@
     --ft-7: 48px;
     --ft-8: 72px;
 
-    --ft-font: var(--nx-font, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
-    --ft-font-mono: var(--nx-font-mono, ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace);
+    /* Schriften direkt, nicht mehr ueber var(--nx-…): die Hausschrift des
+       Designsystems ist Figtree, der Standard dieses Fusses ist seit 09/2026
+       Newsreader. Ein var(--nx-font, …) wuerde den Fuss also je nach
+       geladener Datei in zwei verschiedenen Schriften zeigen. Die
+       Systemketten dahinter bleiben als Fallback stehen. */
+    --ft-font: "Newsreader", Georgia, "Times New Roman", serif;
+    --ft-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
     position: relative;
     margin-block-start: var(--ft-8);

@@ -18,6 +18,9 @@ function cja_audit_shortcode() {
 	$css_path            = get_stylesheet_directory() . '/assets/css/cja-audit.css';
 	$js_path             = get_stylesheet_directory() . '/assets/js/cja-audit.js';
 	$request_url         = function_exists( 'nexus_get_primary_request_url' ) ? nexus_get_primary_request_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
+	// Befundfrist aus dem Diagnose-Canon. Stand hier dreimal als "48 Stunden"
+	// im Markup und widersprach damit der Money Page.
+	$cja_reply           = function_exists( 'hu_marketcheck_reply_label' ) ? hu_marketcheck_reply_label() : 'spätestens 2 Werktage';
 	$legacy_webhook_url  = (string) apply_filters( 'cja_audit_webhook_url', 'https://n8n.hasimuener.de/webhook/cja-analyze' );
 	$default_start_url   = (string) preg_replace( '#/webhook/[^/?]+$#', '/webhook/audit', $legacy_webhook_url );
 	$default_status_url  = (string) preg_replace( '#/webhook/[^/?]+$#', '/webhook/audit-status', $legacy_webhook_url );
@@ -71,7 +74,7 @@ function cja_audit_shortcode() {
 
 		<div class="cja-phase cja-hero" id="cja-input">
 			<span class="cja-overline">Manueller Marktcheck für Solar- und Wärmepumpen-Anbieter</span>
-			<h1 class="cja-headline">Händische Analyse deiner Region innerhalb von 48 Stunden.</h1>
+			<h1 class="cja-headline">Händische Analyse deiner Region, <?php echo esc_html( $cja_reply ); ?>.</h1>
 			<p class="cja-subtitle">Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Ich prüfe Performance, Messbarkeit, Vertrauen, Anfragepfad und Vorqualifizierung deiner Domain händisch — und sende dir die priorisierten Hebel per E-Mail.</p>
 
 			<div class="cja-input-group">
@@ -79,10 +82,10 @@ function cja_audit_shortcode() {
 				<input type="text" id="cja-url-input" placeholder="ihre-domain.de" autocomplete="off" inputmode="url" autocapitalize="off" spellcheck="false" aria-describedby="cja-error">
 				<button id="cja-submit" type="button" data-track-action="cja_start_analysis" data-track-category="lead_gen" data-track-section="growth_audit_input" data-track-funnel-stage="audit_input">Marktcheck mit Fit-Entscheid starten</button>
 			</div>
-			<p class="cja-input-help">Starten Sie mit Ihrer Startseite oder der wichtigsten Angebotsseite. Ich analysiere Domain und Region innerhalb von 48 Stunden persönlich und händisch.</p>
+			<p class="cja-input-help">Starten Sie mit Ihrer Startseite oder der wichtigsten Angebotsseite. Ich analysiere Domain und Region persönlich und händisch, der Befund kommt <?php echo esc_html( $cja_reply ); ?>.</p>
 
 			<div class="cja-trust-line" aria-label="Diagnose-Vertrauen">
-				<span>Händische Analyse · Befund in 48 h</span>
+				<span>Händische Analyse · Befund <?php echo esc_html( $cja_reply ); ?></span>
 				<span>Fokus: Solar, Wärmepumpe, Speicher</span>
 				<span>Priorisierte Hebel statt Tool-Score</span>
 			</div>
