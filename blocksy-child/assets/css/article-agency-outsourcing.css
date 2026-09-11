@@ -1,6 +1,13 @@
 /* Premium editorial template for /wordpress-projekte-auslagern/.
- * Route-scoped only. Keeps the existing artwork and turns the article into
- * a branded editorial / authority layout without adding external assets.
+ *
+ * Route-scoped only. Keeps the existing artwork and turns the article into a
+ * branded editorial / authority layout without adding external assets.
+ *
+ * Single source of truth for this route. The companion script used to inject a
+ * second stylesheet at runtime, which repainted the layout after first paint.
+ * Those rules now live here; the script only manages behaviour and state.
+ *
+ * Motion follows design-system.css. No local easing or duration values.
  */
 
 :root {
@@ -14,11 +21,26 @@
     --ao-line: #dedbd4;
     --ao-accent: #d9792c;
     --ao-accent-soft: rgba(217, 121, 44, 0.13);
+
+    /* Route aliases onto the shared motion scale. */
+    --ao-ease: var(--ease-default, cubic-bezier(0.16, 1, 0.3, 1));
+    --ao-press: var(--duration-fast, 120ms);
+    --ao-state: var(--duration-normal, 200ms);
+    --ao-enter: var(--duration-slow, 350ms);
 }
 
 /* The extra reader header is redundant on this flagship route. */
 .single-post .nexus-article-reader-header {
     display: none !important;
+}
+
+.single-post .nexus-blog-header__context-links {
+    display: none !important;
+}
+
+.single-post .nexus-article-hero--editorial::before {
+    display: none !important;
+    content: none !important;
 }
 
 /* -------------------------------------------------------------
@@ -80,6 +102,14 @@
     border-radius: 999px;
     color: #ef944d !important;
     text-decoration: none !important;
+    transition:
+        border-color var(--ao-state) var(--ao-ease),
+        background-color var(--ao-state) var(--ao-ease);
+}
+
+.single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-meta-top a:focus-visible {
+    outline: 2px solid #ef944d;
+    outline-offset: 3px;
 }
 
 .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-meta-top .separator {
@@ -104,6 +134,7 @@
     color: rgba(245, 239, 229, 0.68) !important;
     font-size: clamp(1.02rem, 1.2vw, 1.17rem) !important;
     line-height: 1.63 !important;
+    text-wrap: pretty;
 }
 
 .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-hero-footer {
@@ -155,7 +186,8 @@
 }
 
 /* Artwork gets its own framed stage. The outer surface creates separation
-   from the hero while the inner orange line makes the artwork feel deliberate. */
+   from the hero while the inner orange line makes the artwork feel deliberate.
+   This is the LCP element: it never animates. */
 .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover {
     position: relative;
     display: block !important;
@@ -222,17 +254,56 @@
     border-radius: clamp(10px, 1.15vw, 16px) !important;
 }
 
-/* Share rail: visible, but safely outside the title column. */
-@media (min-width: 1280px) {
-    body.single-post .nexus-article-reader-header ~ .nexus-share-rail,
+@media (min-width: 1100px) {
+    .single-post .nexus-article-reader-header ~ .nexus-single-container {
+        grid-template-columns: minmax(0, 0.94fr) minmax(470px, 1.06fr) !important;
+        column-gap: clamp(4.2rem, 5.8vw, 6.4rem) !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-title {
+        max-width: 15.8ch !important;
+        font-size: clamp(3rem, 4.25vw, 4.65rem) !important;
+        line-height: 1.01 !important;
+        letter-spacing: -0.041em !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover {
+        width: min(100%, 745px) !important;
+        max-width: 745px !important;
+    }
+}
+
+/* -------------------------------------------------------------
+   SHARE RAIL
+   Route owns one visibility state, driven by the companion script.
+   ------------------------------------------------------------- */
+@media (min-width: 1180px) {
     body.single-post .nexus-share-rail {
-        left: 32px !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
+        display: flex !important;
+        left: max(22px, calc((100vw - 1280px) / 2 - 62px)) !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: translateY(-50%) translateX(-6px) !important;
         border: 1px solid rgba(245, 239, 229, 0.14) !important;
         background: rgba(20, 20, 19, 0.92) !important;
         box-shadow: 0 22px 58px rgba(0, 0, 0, 0.22) !important;
         backdrop-filter: blur(12px);
+        transition:
+            opacity var(--ao-state) var(--ao-ease),
+            transform var(--ao-state) var(--ao-ease),
+            visibility 0s linear var(--ao-state) !important;
+    }
+
+    body.single-post .nexus-share-rail.ao-route-visible {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: translateY(-50%) translateX(0) !important;
+        transition:
+            opacity var(--ao-state) var(--ao-ease),
+            transform var(--ao-state) var(--ao-ease),
+            visibility 0s !important;
     }
 
     body.single-post .nexus-share-rail__label {
@@ -241,11 +312,30 @@
 
     body.single-post .nexus-share-rail__btn {
         color: rgba(245, 239, 229, 0.78) !important;
+        transition:
+            color var(--ao-state) var(--ao-ease),
+            transform var(--ao-press) var(--ao-ease);
     }
 
-    body.single-post .nexus-share-rail__btn:hover,
     body.single-post .nexus-share-rail__btn:focus-visible {
+        outline: 2px solid #ef944d;
+        outline-offset: 2px;
+    }
+
+    body.single-post .nexus-share-rail__btn:active {
+        transform: scale(0.95);
+    }
+}
+
+@media (min-width: 1180px) and (hover: hover) and (pointer: fine) {
+    body.single-post .nexus-share-rail__btn:hover {
         color: #ef944d !important;
+    }
+}
+
+@media (max-width: 1179px) {
+    body.single-post .nexus-share-rail {
+        display: none !important;
     }
 }
 
@@ -292,7 +382,7 @@
     border-radius: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
-    color: var(--ao-copy) !important;
+    color: #4f5559 !important;
     --nx-text: var(--ao-ink);
     --nx-text-secondary: var(--ao-copy);
     --nx-text-muted: var(--ao-muted);
@@ -307,20 +397,42 @@
     --ao-accent: #d9792c;
 }
 
-.single-post .agency-outsourcing-article__lede {
+/* Specificity is deliberate: it must outrank the `> p` reading-rhythm rule
+   below, which would otherwise flatten the opening emphasis to body size. */
+.single-post .agency-outsourcing-article > p.agency-outsourcing-article__lede {
     max-width: 64ch;
     margin: 0 0 2rem;
     color: #30363a !important;
     font-size: clamp(1.14rem, 1.4vw, 1.28rem) !important;
     font-weight: 480;
     line-height: 1.68 !important;
+    text-wrap: pretty;
 }
 
+/* Base reading surface: covers nested copy too (notes, checklist, model grid),
+   which is why it stays a descendant selector. */
 .single-post .nexus-article-content p,
 .single-post .nexus-article-content li {
     color: var(--ao-copy) !important;
     font-size: clamp(1rem, 1.05vw, 1.075rem) !important;
     line-height: 1.78 !important;
+}
+
+/* Reading rhythm for the main flow. These are direct children of
+   .agency-outsourcing-article, never of .nexus-article-content — the previous
+   `.nexus-article-content > p` rule matched nothing and silently did nothing.
+   Must stay after the base rule: equal specificity, so source order decides. */
+.single-post .agency-outsourcing-article > p,
+.single-post .agency-outsourcing-article > ul,
+.single-post .agency-outsourcing-article > ol,
+.single-post .agency-outsourcing-article > ul li,
+.single-post .agency-outsourcing-article > ol li {
+    font-size: 1.01rem !important;
+    line-height: 1.72 !important;
+}
+
+.single-post .agency-outsourcing-article > p {
+    text-wrap: pretty;
 }
 
 .single-post .nexus-article-content strong {
@@ -332,16 +444,24 @@
     text-decoration-color: rgba(169, 86, 23, 0.34) !important;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.18em;
+    transition: text-decoration-color var(--ao-state) var(--ao-ease);
+}
+
+.single-post .nexus-article-content a:focus-visible {
+    outline: 2px solid #a95617;
+    outline-offset: 2px;
+    border-radius: 2px;
 }
 
 /* Editorial section marker is injected by route-specific JS. */
 .single-post .ao-section-label {
+    position: relative;
     display: grid;
     grid-template-columns: 42px 1fr;
     gap: 1.15rem;
     align-items: center;
-    margin: clamp(4.7rem, 7vw, 6.5rem) 0 0;
-    padding-top: 1.8rem;
+    margin: clamp(4.5rem, 6vw, 5.8rem) 0 0;
+    padding-top: 1.1rem;
     border-top: 1px solid var(--ao-line);
 }
 
@@ -350,7 +470,7 @@
 }
 
 .single-post .ao-section-label__index {
-    color: #252a2e;
+    color: #25292c;
     font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
     font-size: 0.71rem;
     font-weight: 750;
@@ -367,7 +487,7 @@
 }
 
 .single-post .ao-section-label__kicker {
-    color: #737a80;
+    color: #7a7f82;
     font-family: var(--font-sans, system-ui, sans-serif);
     font-size: 0.69rem;
     font-weight: 700;
@@ -376,141 +496,156 @@
 }
 
 .single-post .nexus-article-content h2 {
+    max-width: 21ch !important;
     margin: 0.65rem 0 1.25rem !important;
     padding: 0 !important;
     border: 0 !important;
     color: #151719 !important;
     font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif !important;
-    font-size: clamp(2.15rem, 3.15vw, 3.25rem) !important;
+    font-size: clamp(2.08rem, 2.65vw, 2.82rem) !important;
     font-weight: 500 !important;
-    line-height: 1.06 !important;
-    letter-spacing: -0.037em !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.03em !important;
     text-wrap: balance;
 }
 
 .single-post .nexus-article-content h3 {
-    margin: 2.8rem 0 0.85rem !important;
-    color: #1d2023 !important;
-    font-size: clamp(1.26rem, 1.65vw, 1.5rem) !important;
+    margin: 2.6rem 0 0.72rem !important;
+    color: #202326 !important;
+    font-size: clamp(1.2rem, 1.45vw, 1.38rem) !important;
     font-weight: 680 !important;
-    line-height: 1.22 !important;
-    letter-spacing: -0.024em;
+    line-height: 1.28 !important;
+    letter-spacing: -0.018em !important;
+    text-wrap: balance;
 }
 
-/* Core callout */
-.single-post .agency-outsourcing-note,
-.single-post .agency-outsourcing-cta {
-    position: relative;
-    margin: 2.8rem 0;
-    padding: clamp(1.2rem, 2vw, 1.55rem) clamp(1.3rem, 2.4vw, 1.75rem);
-    overflow: hidden;
-    border: 1px solid #e1ddd6;
-    border-left: 3px solid var(--ao-accent);
-    border-radius: 12px;
-    background: rgba(255, 253, 249, 0.88);
-    box-shadow: 0 12px 34px rgba(25, 31, 36, 0.04);
-}
-
-.single-post .agency-outsourcing-note::before {
-    float: left;
-    margin: 0.05rem 1rem 0 0;
-    color: var(--ao-accent);
-    font-family: ui-serif, Georgia, serif;
-    font-size: 2rem;
-    line-height: 1;
-    content: "“";
-}
-
-.single-post .agency-outsourcing-note p,
-.single-post .agency-outsourcing-cta p {
-    margin: 0;
-}
-
-.single-post .agency-outsourcing-note p + p,
-.single-post .agency-outsourcing-cta p + p {
-    margin-top: 0.45rem;
-}
-
-.single-post .agency-outsourcing-note--quiet {
-    border-left-color: #aeb4b8;
-    background: #f0efeb;
-    box-shadow: none;
-}
-
-/* Process / model / tables */
+/* -------------------------------------------------------------
+   PROCESS MODULES
+   Flat editorial grids, not dashboard cards.
+   ------------------------------------------------------------- */
 .single-post .agency-delivery-flow,
 .single-post .agency-control-model,
-.single-post .agency-risk-matrix,
+.single-post .agency-risk-matrix {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 2.2rem 0 2.8rem !important;
+    box-shadow: none !important;
+}
+
 .single-post .agency-readiness-checklist {
     margin: clamp(3rem, 5vw, 4.4rem) 0;
+}
+
+.single-post .agency-delivery-flow {
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
 }
 
 .single-post .agency-delivery-flow figcaption,
 .single-post .agency-control-model figcaption {
     margin-bottom: 1rem;
-    color: #6c7378 !important;
+    color: #666c70 !important;
     font-size: 0.82rem;
-    line-height: 1.52;
+    line-height: 1.5;
 }
 
 .single-post .agency-delivery-flow__track {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    list-style: none;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-top: 1px solid #dcd8d1 !important;
+    border-left: 1px solid #dcd8d1 !important;
+    list-style: none !important;
 }
 
+/* A cell in a seamless grid must not lift: that would tear the shared borders.
+   The hover state raises the surface instead. */
 .single-post .agency-delivery-flow__track li {
-    min-height: 145px;
-    margin: 0;
-    padding: 1.15rem 1.1rem;
-    border: 1px solid #e1ded7 !important;
-    border-radius: 12px;
-    background: var(--ao-paper-2);
-    box-shadow: 0 9px 28px rgba(25, 31, 36, 0.035);
-    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    min-height: 150px !important;
+    margin: 0 !important;
+    padding: 1.15rem 1.1rem !important;
+    border: 0 !important;
+    border-right: 1px solid #dcd8d1 !important;
+    border-bottom: 1px solid #dcd8d1 !important;
+    border-radius: 0 !important;
+    background: rgba(255, 253, 249, 0.34) !important;
+    box-shadow: none !important;
+    transition: background-color var(--ao-state) var(--ao-ease);
 }
 
-.single-post .agency-delivery-flow__track span {
+.single-post .agency-delivery-flow__track li span {
     display: block;
-    margin-bottom: 1.25rem;
-    color: #c76d27;
+    color: #c66a29 !important;
     font-family: var(--font-mono, ui-monospace, monospace);
-    font-size: 0.69rem;
+    font-size: 0.63rem !important;
     font-weight: 700;
     letter-spacing: 0.08em;
+    transition: color var(--ao-state) var(--ao-ease);
 }
 
-.single-post .agency-delivery-flow__track strong,
+.single-post .agency-delivery-flow__track li strong {
+    display: block;
+    margin-top: 1.05rem !important;
+    margin-bottom: 0.38rem;
+    color: #222629 !important;
+    font-size: 0.97rem !important;
+}
+
+.single-post .agency-delivery-flow__track li small {
+    margin-top: 0.5rem !important;
+    color: #6a7074 !important;
+    font-size: 0.77rem !important;
+    line-height: 1.5 !important;
+}
+
 .single-post .agency-control-model__grid strong {
     display: block;
     margin-bottom: 0.38rem;
     color: #202428 !important;
 }
 
-.single-post .agency-delivery-flow__track small,
 .single-post .agency-control-model__grid p {
     color: #6a7176 !important;
     font-size: 0.81rem !important;
     line-height: 1.52 !important;
 }
 
+.single-post .agency-control-model {
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid #ddd9d2 !important;
+    border-radius: 10px !important;
+    background: #fffdf9 !important;
+}
+
+.single-post .agency-control-model figcaption {
+    margin: 0 !important;
+    padding: 1rem 1.15rem !important;
+    border-bottom: 1px solid #e1ddd6 !important;
+}
+
 .single-post .agency-control-model__grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr) 42px minmax(0, 1fr);
+    gap: 0 !important;
     align-items: stretch;
     overflow: hidden;
-    border: 1px solid #e0ddd6;
-    border-radius: 14px;
-    background: var(--ao-paper-2);
-    box-shadow: 0 13px 38px rgba(25, 31, 36, 0.04);
 }
 
 .single-post .agency-control-model__grid section {
-    padding: 1.3rem 1.15rem;
+    padding: 1.55rem 1.25rem !important;
+    border: 0 !important;
+    border-right: 1px solid #e1ddd6 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.single-post .agency-control-model__grid section:last-of-type {
+    border-right: 0 !important;
 }
 
 .single-post .agency-control-model__eyebrow,
@@ -531,23 +666,23 @@
     place-items: center;
     border-right: 1px solid #e5e2dc;
     border-left: 1px solid #e5e2dc;
-    color: #9aa0a4;
-    background: #f1f0ec;
+    background: #f1eee8 !important;
+    color: #92979a !important;
 }
 
 .single-post .agency-risk-matrix {
-    overflow-x: auto;
-    border: 1px solid #e0ddd6;
-    border-radius: 14px;
-    background: var(--ao-paper-2);
-    box-shadow: 0 12px 36px rgba(25, 31, 36, 0.04);
+    overflow: auto !important;
+    border: 1px solid #ddd9d2 !important;
+    border-radius: 10px !important;
+    background: #fffdf9 !important;
 }
 
 .single-post .agency-risk-matrix table {
     min-width: 680px;
-    margin: 0;
-    border: 0;
+    margin: 0 !important;
+    border: 0 !important;
     background: transparent;
+    box-shadow: none !important;
 }
 
 .single-post .agency-risk-matrix th,
@@ -558,23 +693,80 @@
 }
 
 .single-post .agency-risk-matrix th {
-    color: #1d2124 !important;
-    background: #efeee9 !important;
+    background: #f1eee8 !important;
+    color: #25292c !important;
+    font-size: 0.75rem !important;
 }
 
 .single-post .agency-risk-matrix td {
-    color: #50575c !important;
+    color: #5f6569 !important;
+    font-size: 0.86rem !important;
+    line-height: 1.5 !important;
 }
 
+/* -------------------------------------------------------------
+   NOTES
+   Editorial emphasis, not another card.
+   ------------------------------------------------------------- */
+.single-post .agency-outsourcing-note {
+    position: relative;
+    display: grid !important;
+    grid-template-columns: 30px minmax(0, 1fr) !important;
+    column-gap: 0.85rem !important;
+    align-items: start !important;
+    margin: 2.8rem 0;
+    padding: 1.25rem 1.15rem !important;
+    overflow: hidden;
+    border: 0 !important;
+    border-left: 2px solid var(--ao-accent) !important;
+    border-radius: 0 !important;
+    background: linear-gradient(90deg, rgba(217, 121, 44, 0.055), rgba(255, 253, 249, 0)) !important;
+    box-shadow: none !important;
+}
+
+.single-post .agency-outsourcing-note::before {
+    display: grid;
+    place-items: center;
+    width: 26px !important;
+    height: 26px !important;
+    margin: 0.05rem 0 0 !important;
+    border: 1px solid rgba(217, 121, 44, 0.22) !important;
+    border-radius: 50% !important;
+    background: rgba(217, 121, 44, 0.06) !important;
+    color: #c76a27 !important;
+    font-family: ui-serif, Georgia, serif;
+    font-size: 1.22rem !important;
+    line-height: 1;
+    content: "“";
+}
+
+.single-post .agency-outsourcing-note p {
+    grid-column: 2 !important;
+    margin: 0;
+}
+
+.single-post .agency-outsourcing-note p + p {
+    margin-top: 0.45rem;
+}
+
+.single-post .agency-outsourcing-note--quiet {
+    border-left-color: #b3b7b9 !important;
+    background: linear-gradient(90deg, rgba(95, 102, 107, 0.045), rgba(255, 253, 249, 0)) !important;
+}
+
+/* -------------------------------------------------------------
+   READINESS CHECKLIST
+   ------------------------------------------------------------- */
 .single-post .agency-readiness-checklist {
-    padding-top: 1.1rem;
-    border-top: 1px solid var(--ao-line);
+    padding-top: 1rem !important;
+    border-top: 1px solid #dcd9d2 !important;
 }
 
 .single-post .agency-readiness-checklist ol {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    column-gap: 1.8rem !important;
+    row-gap: 0 !important;
     margin: 0;
     padding: 0;
     counter-reset: readiness;
@@ -582,35 +774,57 @@
 }
 
 .single-post .agency-readiness-checklist li {
-    position: relative;
-    min-height: 68px;
-    margin: 0;
-    padding: 0.95rem 0.95rem 0.95rem 3rem;
-    border: 1px solid #e1ded7;
-    border-radius: 11px;
-    background: var(--ao-paper-2);
+    position: relative !important;
+    min-height: 82px !important;
+    margin: 0 !important;
+    padding: 1rem 0.2rem 1.05rem 3.1rem !important;
+    border: 0 !important;
+    border-top: 1px solid #e1ded8 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
     counter-increment: readiness;
 }
 
 .single-post .agency-readiness-checklist li::before {
-    position: absolute;
-    top: 0.95rem;
-    left: 0.95rem;
-    color: #c76d27;
-    font-family: var(--font-mono, ui-monospace, monospace);
-    font-size: 0.7rem;
-    font-weight: 750;
+    position: absolute !important;
+    top: 0.98rem !important;
+    left: 0 !important;
+    width: 36px !important;
+    height: auto !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #c56823 !important;
+    font-family: ui-serif, Georgia, serif !important;
+    font-size: 1.2rem !important;
+    font-weight: 500 !important;
+    line-height: 1 !important;
+    text-align: left !important;
     content: counter(readiness, decimal-leading-zero);
 }
 
+/* -------------------------------------------------------------
+   CLOSING CTA
+   One commercial moment: compact, horizontal, near the end.
+   ------------------------------------------------------------- */
 .single-post .agency-outsourcing-cta {
-    padding: clamp(1.5rem, 2.6vw, 2rem);
-    border: 1px solid rgba(217, 121, 44, 0.28);
-    border-left: 3px solid var(--ao-accent);
-    background:
-        radial-gradient(circle at 92% 15%, rgba(217, 121, 44, 0.18), transparent 32%),
-        #101214;
-    box-shadow: 0 20px 55px rgba(20, 25, 29, 0.16);
+    position: relative;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 1.3rem 2rem !important;
+    align-items: center !important;
+    margin: 2.1rem 0 0 !important;
+    padding: 1.35rem 1.45rem !important;
+    overflow: hidden;
+    border: 1px solid rgba(217, 121, 44, 0.34) !important;
+    border-radius: 12px !important;
+    background: linear-gradient(105deg, #111416 0%, #171515 68%, #352317 100%) !important;
+    box-shadow: 0 16px 36px rgba(19, 20, 21, 0.10) !important;
+}
+
+.single-post .agency-outsourcing-cta p {
+    margin: 0 !important;
 }
 
 .single-post .agency-outsourcing-cta p,
@@ -619,8 +833,41 @@
     color: #f2ebdf !important;
 }
 
+.single-post .agency-outsourcing-cta__eyebrow {
+    margin-bottom: 0.35rem !important;
+    color: #e58a3d !important;
+    font-size: 0.61rem !important;
+    letter-spacing: 0.13em !important;
+    text-transform: uppercase !important;
+}
+
+.single-post .agency-outsourcing-cta strong {
+    color: #f4efe7 !important;
+    font-size: 1.05rem !important;
+    line-height: 1.35 !important;
+}
+
+.single-post .agency-outsourcing-cta .callout-cta {
+    margin: 0 !important;
+    white-space: nowrap !important;
+    transition:
+        background-color var(--ao-state) var(--ao-ease),
+        transform var(--ao-press) var(--ao-ease);
+}
+
+.single-post .agency-outsourcing-cta .callout-cta:focus-visible {
+    outline: 2px solid #f2ebdf;
+    outline-offset: 3px;
+}
+
+/* Instant feedback on press: the button confirms the interface heard the user. */
+.single-post .agency-outsourcing-cta .callout-cta:active {
+    transform: scale(0.97);
+}
+
 /* -------------------------------------------------------------
    RIGHT SIDEBAR / TOC
+   Deliberately quiet: a reading rail, not a widget.
    ------------------------------------------------------------- */
 .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar {
     display: block !important;
@@ -636,27 +883,42 @@
 }
 
 @media (min-width: 1100px) {
-    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar.nexus-reader-toc,
-    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar {
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-post-layout {
+        grid-template-columns: minmax(0, 780px) 205px !important;
+        gap: clamp(3.3rem, 4.4vw, 4rem) !important;
+        align-items: start !important;
+        max-width: 1040px !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-article-content {
+        max-width: 780px !important;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar,
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-sidebar.nexus-reader-toc {
         position: sticky !important;
-        top: 108px !important;
+        top: 112px !important;
         right: auto !important;
-        width: 100% !important;
+        width: 205px !important;
+        max-width: 205px !important;
+        align-self: start !important;
+        justify-self: end !important;
         transform: none !important;
     }
 
     .single-post .nexus-sidebar .sticky-toc,
     .single-post .nexus-reader-toc .sticky-toc {
-        width: 100% !important;
-        max-height: none !important;
+        width: 205px !important;
+        max-height: calc(100vh - 145px) !important;
         margin: 0 !important;
-        padding: 1.15rem 1.1rem 1.25rem !important;
-        overflow: visible !important;
-        border: 1px solid #dfdcd5 !important;
-        border-radius: 13px !important;
-        background: rgba(255, 253, 249, 0.86) !important;
-        box-shadow: 0 12px 34px rgba(28, 32, 35, 0.045) !important;
-        backdrop-filter: blur(10px);
+        padding: 0.3rem 0 0.4rem 1rem !important;
+        overflow: auto !important;
+        border: 0 !important;
+        border-left: 1px solid #d9d6cf !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
         transition: none !important;
     }
 
@@ -668,12 +930,12 @@
     .single-post .nexus-sidebar .sticky-toc .nexus-reader-toc__label {
         display: block !important;
         margin: 0 0 0.85rem !important;
-        color: #262a2d !important;
+        color: #777c7f !important;
         font-family: var(--font-sans, system-ui, sans-serif) !important;
-        font-size: 0.72rem !important;
+        font-size: 0.58rem !important;
         font-weight: 760 !important;
-        letter-spacing: 0.02em !important;
-        text-transform: none !important;
+        letter-spacing: 0.13em !important;
+        text-transform: uppercase !important;
     }
 
     .single-post .nexus-sidebar #toc-list {
@@ -685,21 +947,15 @@
     }
 
     .single-post .nexus-sidebar #toc-list::before {
-        position: absolute;
-        top: 0.45rem;
-        bottom: 0.45rem;
-        left: 6px;
-        width: 1px;
-        background: #d6d8d6;
-        content: "";
+        display: none !important;
     }
 
     .single-post .nexus-sidebar #toc-list li {
         position: relative;
         display: grid !important;
-        grid-template-columns: 24px minmax(0, 1fr);
-        gap: 0.45rem;
-        align-items: start;
+        grid-template-columns: 24px minmax(0, 1fr) !important;
+        gap: 0.42rem !important;
+        align-items: start !important;
         margin: 0 !important;
         padding: 0.28rem 0 !important;
     }
@@ -710,107 +966,63 @@
 
     .single-post .nexus-sidebar #toc-list li::before {
         grid-column: 1;
-        position: relative;
-        z-index: 2;
-        display: grid;
-        width: 13px;
-        height: 13px;
-        margin-top: 0.18rem;
-        place-items: center;
-        border: 1px solid #b4b8ba;
-        border-radius: 50%;
-        background: var(--ao-paper-2);
-        color: transparent;
-        content: "";
+        display: block !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: #a4a6a7 !important;
+        font-family: var(--font-mono, ui-monospace, monospace) !important;
+        font-size: 0.58rem !important;
+        font-weight: 700 !important;
+        line-height: 1.45 !important;
+        content: attr(data-ao-index) !important;
+        transition: color var(--ao-state) var(--ao-ease);
     }
 
-    .single-post .nexus-sidebar #toc-list li:has(a.active)::before,
-    .single-post .nexus-sidebar #toc-list li:has(a[aria-current="location"])::before {
-        border-color: var(--ao-accent);
-        background: var(--ao-accent);
-        box-shadow: 0 0 0 3px rgba(217, 121, 44, 0.12);
+    .single-post .nexus-sidebar #toc-list li.is-current::before {
+        color: #c76a27 !important;
     }
 
     .single-post .nexus-sidebar #toc-list a {
         grid-column: 2;
-        min-width: 0;
-        color: #687076 !important;
-        font-size: 0.75rem !important;
-        line-height: 1.35 !important;
+        display: block !important;
+        min-width: 0 !important;
+        overflow: visible !important;
+        opacity: 1 !important;
+        color: #71767a !important;
+        font-size: 0.66rem !important;
+        line-height: 1.34 !important;
         text-decoration: none !important;
-        transition: color 160ms ease;
+        white-space: normal !important;
+        transform: none !important;
+        transition: color var(--ao-state) var(--ao-ease);
     }
 
     .single-post .nexus-sidebar #toc-list a.active,
-    .single-post .nexus-sidebar #toc-list a[aria-current="location"],
-    .single-post .nexus-sidebar #toc-list a:hover,
+    .single-post .nexus-sidebar #toc-list a[aria-current="location"] {
+        color: #242729 !important;
+        font-weight: 700 !important;
+    }
+
     .single-post .nexus-sidebar #toc-list a:focus-visible {
-        color: #b55d1d !important;
+        outline: 2px solid #b55d1d;
+        outline-offset: 2px;
+        border-radius: 2px;
     }
 }
 
-/* Sidebar conversion card, injected by route-specific JS. */
-.single-post .ao-sidebar-cta {
-    position: relative;
-    margin-top: 0.9rem;
-    padding: 1.2rem 1.15rem 1.15rem;
-    overflow: hidden;
-    border: 1px solid rgba(217, 121, 44, 0.30);
-    border-radius: 13px;
-    background:
-        radial-gradient(circle at 102% 105%, rgba(217, 121, 44, 0.44), transparent 38%),
-        linear-gradient(150deg, #121416 0%, #0c0e10 100%);
-    box-shadow: 0 18px 45px rgba(19, 22, 24, 0.16);
-    color: #f4eee4;
-}
+@media (min-width: 1100px) and (hover: hover) and (pointer: fine) {
+    .single-post .nexus-sidebar #toc-list a:hover {
+        color: #242729 !important;
+    }
 
-.single-post .ao-sidebar-cta__eyebrow {
-    display: block;
-    margin-bottom: 0.65rem;
-    color: #e98a43;
-    font-family: var(--font-mono, ui-monospace, monospace);
-    font-size: 0.61rem;
-    font-weight: 760;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-}
-
-.single-post .ao-sidebar-cta__title {
-    margin: 0 0 0.65rem !important;
-    color: #f7f0e6 !important;
-    font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif !important;
-    font-size: 1.43rem !important;
-    font-weight: 500 !important;
-    line-height: 1.08 !important;
-    letter-spacing: -0.025em;
-}
-
-.single-post .ao-sidebar-cta__text {
-    margin: 0 0 0.9rem !important;
-    color: rgba(244, 238, 228, 0.67) !important;
-    font-size: 0.76rem !important;
-    line-height: 1.5 !important;
-}
-
-.single-post .ao-sidebar-cta__button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 38px;
-    padding: 0.62rem 0.85rem;
-    border-radius: 8px;
-    background: #f4efe7;
-    color: #17191b !important;
-    font-size: 0.72rem;
-    font-weight: 750;
-    text-decoration: none !important;
-    transition: transform 160ms ease, background-color 160ms ease;
-}
-
-.single-post .ao-sidebar-cta__button:hover,
-.single-post .ao-sidebar-cta__button:focus-visible {
-    transform: translateY(-1px);
-    background: #fff;
+    .single-post .nexus-sidebar #toc-list li:hover::before {
+        color: #c76a27 !important;
+    }
 }
 
 /* -------------------------------------------------------------
@@ -830,12 +1042,58 @@
     clip-path: inset(0 -100vmax);
 }
 
-@media (hover: hover) {
+/* -------------------------------------------------------------
+   HOVER STATES
+   Gated: touch devices fire hover on tap.
+   ------------------------------------------------------------- */
+@media (hover: hover) and (pointer: fine) {
     .single-post .agency-delivery-flow__track li:hover {
-        transform: translateY(-2px);
-        border-color: rgba(217, 121, 44, 0.42) !important;
-        box-shadow: 0 14px 34px rgba(25, 31, 36, 0.07);
+        background: var(--ao-paper-2) !important;
     }
+
+    .single-post .agency-delivery-flow__track li:hover span {
+        color: #b35c1d !important;
+    }
+
+    .single-post .nexus-article-content a:hover {
+        text-decoration-color: rgba(169, 86, 23, 0.9) !important;
+    }
+
+    .single-post .agency-outsourcing-cta .callout-cta:hover {
+        background: #f09a4c;
+    }
+
+    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-meta-top a:hover {
+        border-color: rgba(217, 121, 44, 0.95);
+        background: rgba(217, 121, 44, 0.12);
+    }
+}
+
+/* -------------------------------------------------------------
+   ENTRANCE MOTION
+   Opt-in only: the script adds .ao-motion to <html> when motion is
+   allowed and IntersectionObserver exists. Without it every block
+   renders at its final state, so content is never trapped invisible.
+   The hero cover is the LCP element and deliberately never animates.
+   ------------------------------------------------------------- */
+.single-post .nexus-reveal,
+.single-post .nexus-reveal.is-in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.ao-motion .single-post .ao-reveal {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+        opacity var(--ao-enter) var(--ao-ease),
+        transform var(--ao-enter) var(--ao-ease);
+}
+
+.ao-motion .single-post .ao-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* -------------------------------------------------------------
@@ -845,12 +1103,8 @@
     .single-post .nexus-article-reader-header ~ .nexus-single-container {
         grid-template-columns: minmax(0, 0.96fr) minmax(390px, 1.04fr);
         column-gap: clamp(2.8rem, 5vw, 4.8rem);
-        padding-left: max(34px, calc((100vw - 1180px) / 2));
         padding-right: max(34px, calc((100vw - 1180px) / 2));
-    }
-
-    .single-post .nexus-article-reader-header ~ .nexus-single-container .nexus-title {
-        font-size: clamp(2.75rem, 4.8vw, 4.4rem) !important;
+        padding-left: max(34px, calc((100vw - 1180px) / 2));
     }
 }
 
@@ -896,10 +1150,6 @@
     .single-post .nexus-sidebar .sticky-toc a {
         color: #50585e !important;
     }
-
-    .single-post .ao-sidebar-cta {
-        display: none;
-    }
 }
 
 @media (max-width: 900px) {
@@ -929,6 +1179,45 @@
         width: min(100%, 760px) !important;
         max-width: 760px !important;
         margin: 0 auto 3.5rem !important;
+    }
+}
+
+@media (max-width: 800px) {
+    .single-post .agency-delivery-flow__track {
+        grid-template-columns: 1fr !important;
+    }
+
+    .single-post .agency-delivery-flow__track li {
+        min-height: 0 !important;
+    }
+
+    .single-post .agency-readiness-checklist ol {
+        grid-template-columns: 1fr !important;
+    }
+
+    .single-post .agency-control-model__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .single-post .agency-control-model__grid section {
+        border-right: 0 !important;
+        border-bottom: 1px solid #e1ddd6 !important;
+    }
+
+    .single-post .agency-control-model__bridge {
+        width: auto;
+        min-height: 34px;
+        border: 0;
+        border-top: 1px solid #e5e2dc;
+        border-bottom: 1px solid #e5e2dc;
+    }
+
+    .single-post .agency-outsourcing-cta {
+        grid-template-columns: 1fr !important;
+    }
+
+    .single-post .agency-outsourcing-cta .callout-cta {
+        white-space: normal !important;
     }
 }
 
@@ -967,32 +1256,45 @@
     .single-post .nexus-article-content h2 {
         font-size: clamp(1.95rem, 9vw, 2.65rem) !important;
     }
-
-    .single-post .agency-delivery-flow__track,
-    .single-post .agency-readiness-checklist ol {
-        grid-template-columns: 1fr;
-    }
-
-    .single-post .agency-delivery-flow__track li {
-        min-height: 0;
-    }
-
-    .single-post .agency-control-model__grid {
-        grid-template-columns: 1fr;
-    }
-
-    .single-post .agency-control-model__bridge {
-        width: auto;
-        min-height: 34px;
-        border: 0;
-        border-top: 1px solid #e5e2dc;
-        border-bottom: 1px solid #e5e2dc;
-    }
 }
 
+/* -------------------------------------------------------------
+   REDUCED MOTION
+   Fewer and gentler, not zero: opacity still aids comprehension,
+   movement does not.
+   ------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-    .single-post .agency-delivery-flow__track li,
-    .single-post .ao-sidebar-cta__button {
+    /* Colour and opacity stay: they carry state, not movement. Only the
+       transforms and the travelling entrance are removed. */
+    .single-post .agency-outsourcing-cta .callout-cta:active,
+    body.single-post .nexus-share-rail__btn:active {
+        transform: none !important;
+    }
+
+    .single-post .agency-outsourcing-cta .callout-cta,
+    body.single-post .nexus-share-rail__btn {
+        transition-property: background-color, color !important;
+    }
+
+    body.single-post .nexus-share-rail {
+        transform: translateY(-50%) !important;
+        transition:
+            opacity var(--ao-state) var(--ao-ease),
+            visibility 0s linear var(--ao-state) !important;
+    }
+
+    body.single-post .nexus-share-rail.ao-route-visible {
+        transform: translateY(-50%) !important;
+        transition:
+            opacity var(--ao-state) var(--ao-ease),
+            visibility 0s !important;
+    }
+
+    /* Safety net: the script skips the reveal entirely under reduced motion,
+       so this only matters if the setting is switched mid-session. */
+    .ao-motion .single-post .ao-reveal {
+        opacity: 1 !important;
+        transform: none !important;
         transition: none !important;
     }
 }
