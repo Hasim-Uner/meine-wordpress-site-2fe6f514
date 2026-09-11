@@ -36,7 +36,20 @@
   --haar: #dedad3;
   --strich: #171412;
 
-  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  /* Die Textschrift ist die Hausschrift der Domain, nicht mehr Newsreader.
+     Die Serif war der Vorlage treu, lief auf dem Schirm aber weniger klar
+     als Satoshi — bei kleinen Graden verliert eine Schrift mit hohem
+     Strichkontrast genau die Schaerfe, auf der die uebrige Domain steht.
+
+     Der Tokenname bleibt --serif, damit dieser Wechsel nicht durch jede
+     Regel der Datei laeuft. Er benennt die Rolle (Textschrift), nicht die
+     Gattung. */
+  --serif: var(--theme-font-family, "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  --serif-display: var(--theme-font-heading, "Satoshi", "Figtree", sans-serif);
+
+  /* Mono bleibt. Ziffern, Marken und Tabellenspalten haengen an den
+     tabellarischen Ziffern von IBM Plex Mono: mit einer Proportionalschrift
+     flattern Rechner-, Leiter- und Fallspalten sichtbar untereinander. */
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
 
   --rand: 11.5rem;
@@ -69,11 +82,17 @@
   background: var(--papier);
   color: var(--tinte);
   font-family: var(--serif);
-  font-optical-sizing: auto;
-  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
-  line-height: 1.6;
+  /* Eine Grotesk traegt bei gleichem Grad mehr Flaeche als eine Serif.
+     Der Satz stand mit Newsreader bei 17-19 px; unveraendert uebernommen
+     wirkte Satoshi darin zu gross und der Zeilenfall zu locker. Beides
+     eine Stufe zurueck. */
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.58;
   text-wrap: pretty;
-  font-variant-numeric: oldstyle-nums proportional-nums;
+  /* Mediaevalziffern waren an die Serif gebunden. Satoshi setzt
+     Versalziffern, und im Fliesstext dieser Seite stehen fast nur Betraege
+     und Prozentwerte — die sollen wie Zahlen aussehen, nicht wie Text. */
+  font-variant-numeric: normal;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -106,10 +125,16 @@
   box-sizing: border-box;
 }
 
-/* font-family muss hier stehen, nicht nur an .strecke-doc: style.css setzt
-   `h1, h2, h3, h4, h5, h6 { font-family: var(--theme-font-heading) }` und
-   unterbricht damit die Vererbung. Ohne diese Zeile steht der ganze
-   Fliesstext in Newsreader und jede Ueberschrift in Figtree. */
+/* Ueberschriften tragen Satoshi, der Fliesstext Figtree — dieselbe
+   Rollenverteilung wie auf der uebrigen Domain.
+
+   Die font-family muss hier stehen, nicht nur an .strecke-doc: style.css
+   setzt `h1, h2, h3, h4, h5, h6 { font-family: var(--theme-font-heading) }`
+   und unterbricht damit die Vererbung.
+
+   Gewicht 500 statt 400: Newsreader trug die Ueberschriften ueber den
+   Strichkontrast, eine Grotesk braucht dafuer etwas mehr Gewicht, sonst
+   steht die Ueberschrift nicht vom Vorspann ab. */
 .strecke-doc h1,
 .strecke-doc h2,
 .strecke-doc h3,
@@ -117,11 +142,11 @@
 .strecke-doc h5,
 .strecke-doc h6 {
   margin: 0;
-  font-family: var(--serif);
-  font-weight: 400;
+  font-family: var(--serif-display);
+  font-weight: 500;
   text-wrap: balance;
-  line-height: 1.08;
-  letter-spacing: -0.012em;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   color: inherit;
 }
 
@@ -209,9 +234,16 @@
    transform, nicht ueber width — sonst rechnet der Browser Layout. */
 .strecke-doc .kapitel {
   position: sticky;
-  top: calc(var(--nx-site-header-height, 64px) + 1.4rem);
+  /* Muss unter dem waagerechten Register stehen. Wo das Register
+     senkrecht am Rand haengt, reicht die Header-Hoehe — die Regel dafuer
+     steht im Breitband-Block weiter unten. */
+  top: calc(var(--nx-site-header-height, 64px) + 4rem);
   align-self: start;
   padding-top: 0.55rem;
+}
+
+@media (min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
+  .strecke-doc .kapitel { top: calc(var(--nx-site-header-height, 64px) + 1.5rem); }
 }
 
 .strecke-doc .kapitel .nr {
@@ -288,14 +320,14 @@
 .strecke-doc section { padding-block: var(--s6); }
 .strecke-doc section + section { border-top: 1px solid var(--haar); }
 
-/* Sprungziele muessen unter dem festen Header und der Kapitelleiste
-   landen, nicht darunter verschwinden. Der Ankerhandler der Seite liest
-   diesen Wert aus dem Computed Style. */
-.strecke-doc [id] { scroll-margin-top: calc(var(--nx-site-header-height, 64px) + 4.5rem); }
+/* Sprungziele muessen unter dem festen Header und dem waagerechten
+   Register landen, nicht darunter verschwinden. Der Ankerhandler der
+   Seite liest diesen Wert aus dem Computed Style. */
+.strecke-doc [id] { scroll-margin-top: calc(var(--nx-site-header-height, 64px) + 4rem); }
 
-@media (max-width: 900px) {
-  /* Ohne Kapitelleiste reicht die Header-Hoehe. */
-  .strecke-doc [id] { scroll-margin-top: calc(var(--nx-site-header-height, 64px) + 1.25rem); }
+@media (min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
+  /* Dort steht das Register senkrecht am Rand und nimmt keine Hoehe weg. */
+  .strecke-doc [id] { scroll-margin-top: calc(var(--nx-site-header-height, 64px) + 1.5rem); }
 }
 
 .strecke-doc h2.kopf {
@@ -421,58 +453,88 @@
 
 .strecke-doc .satzlink:hover { color: var(--stempel); }
 
-/* ══ Kapitelleiste ════════════════════════════════════════════
-   Die Seite ist lang. Diese Zeile ist Orientierung, keine zweite
-   Navigation — deshalb nur Nummern und kurze Titel, und unter 900 px
-   verschwindet sie, statt den Header zu verdraengen. */
+/* ══ Kapitelregister ═══════════════════════════════════════════
+   Zwei Fassungen, ein Markup.
 
-.strecke-doc .leiste {
+   Schmale Schirme: eine flache waagerechte Leiste unter dem Header.
+   Breite Schirme mit Zeiger: eine senkrechte Leiste am linken Rand,
+   die im Ruhezustand nur die Nummern traegt und bei Hover oder
+   Tastaturfokus auf die Titel aufklappt. Die Seite hat links ohnehin
+   eine Randspalte — das Register setzt sich davor, ohne den Satz zu
+   verschieben.
+
+   Das Aufklappen laeuft ueber width. Das ist Layout, und die Regel
+   dieser Datei lautet sonst "niemals Layout animieren". Hier ist es
+   vertretbar, weil das Element position:fixed ist: es liegt ausserhalb
+   des Flusses, sein Wachsen bewegt keinen Satz und loest kein Reflow
+   des Dokuments aus. Eine transform-Loesung haette die Schrift
+   mitskaliert.
+   ══════════════════════════════════════════════════════════════ */
+
+.strecke-doc .register {
   position: sticky;
   top: var(--nx-site-header-height, 64px);
   z-index: 40;
-  background: var(--papier);
-  border-bottom: 1px solid var(--haar);
-}
-
-.strecke-doc .leiste .in {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  min-height: 52px;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+  min-height: 48px;
+  background: var(--papier);
+  border-bottom: 1px solid var(--haar);
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
-.strecke-doc .leiste .stand {
+.strecke-doc .register::-webkit-scrollbar { display: none; }
+
+.strecke-doc .register .marke {
   font-family: var(--mono);
   font-size: var(--mono-s);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--matt);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.strecke-doc .leiste nav {
+.strecke-doc .register .marke-kuerzel { display: none; }
+
+.strecke-doc .register .eintraege {
   display: flex;
-  gap: clamp(0.9rem, 2vw, 1.4rem);
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.4rem);
 }
 
-.strecke-doc .leiste nav a {
+.strecke-doc .register a {
   position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding-block: 0.4rem;
   font-family: var(--mono);
   font-size: var(--mono-m);
-  letter-spacing: 0.13em;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--grau);
   text-decoration: none;
-  padding-block: 0.4rem;
+  white-space: nowrap;
   transition: color var(--t-norm) var(--ease-weich);
 }
 
-.strecke-doc .leiste nav a::after {
+.strecke-doc .register a .nr {
+  color: var(--matt);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--t-norm) var(--ease-weich);
+}
+
+.strecke-doc .register a::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0.1rem;
+  bottom: 0.15rem;
   height: 1px;
   background: var(--stempel);
   transform: scaleX(0);
@@ -480,12 +542,98 @@
   transition: transform var(--t-norm) var(--ease-aus);
 }
 
-.strecke-doc .leiste nav a:hover { color: var(--tinte); }
-.strecke-doc .leiste nav a[aria-current="true"] { color: var(--stempel); }
-.strecke-doc .leiste nav a[aria-current="true"]::after { transform: scaleX(1); }
+.strecke-doc .register a:hover { color: var(--tinte); }
 
-@media (max-width: 900px) {
-  .strecke-doc .leiste { display: none; }
+.strecke-doc .register a[aria-current="true"] { color: var(--stempel); }
+.strecke-doc .register a[aria-current="true"] .nr { color: var(--stempel); }
+.strecke-doc .register a[aria-current="true"]::after { transform: scaleX(1); }
+
+/* ── Senkrechte Fassung ──────────────────────────────────────
+   Nur wo genug Breite, genug Hoehe und ein echter Zeiger da ist.
+   Auf einem Touchgeraet gibt es keinen Hover, mit dem sich die
+   Leiste oeffnen liesse — dort bleibt die waagerechte Fassung. */
+@media (min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
+  .strecke-doc .register {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: block;
+    width: 3.5rem;
+    min-height: 0;
+    max-height: 78vh;
+    padding: 0.9rem 0.5rem;
+    overflow: hidden auto;
+    background: var(--papier);
+    border: 1px solid var(--haar);
+    border-left: 0;
+    border-radius: 0 3px 3px 0;
+    transition: width var(--t-norm) var(--ease-aus);
+  }
+
+  .strecke-doc .register:hover,
+  .strecke-doc .register:focus-within { width: 15rem; }
+
+  .strecke-doc .register .marke {
+    display: block;
+    padding: 0 0.4rem 0.7rem;
+    margin-bottom: 0.3rem;
+    border-bottom: 1px solid var(--haar);
+    font-size: var(--mono-s);
+  }
+
+  .strecke-doc .register .marke-kuerzel { display: block; }
+  .strecke-doc .register .marke-voll { display: none; }
+
+  .strecke-doc .register:hover .marke-kuerzel,
+  .strecke-doc .register:focus-within .marke-kuerzel { display: none; }
+
+  .strecke-doc .register:hover .marke-voll,
+  .strecke-doc .register:focus-within .marke-voll { display: block; }
+
+  .strecke-doc .register .eintraege {
+    display: block;
+  }
+
+  .strecke-doc .register a {
+    gap: 0.7rem;
+    min-height: 38px;
+    padding: 0.35rem 0.4rem;
+    font-size: var(--mono-s);
+    letter-spacing: 0.09em;
+    align-items: center;
+    transition:
+      color var(--t-norm) var(--ease-weich),
+      background-color var(--t-norm) var(--ease-weich);
+  }
+
+  .strecke-doc .register a:hover { background-color: var(--zone); }
+
+  /* Die Titel sind im Ruhezustand nicht nur unsichtbar, sondern aus dem
+     Rendering genommen. Blieben sie mit opacity:0 stehen, waeren sie im
+     Screenreader doppelt und im Tastaturlauf breiter als die Leiste. */
+  .strecke-doc .register a .txt { display: none; }
+
+  .strecke-doc .register:hover a .txt,
+  .strecke-doc .register:focus-within a .txt { display: block; }
+
+  .strecke-doc .register a::after { display: none; }
+
+  .strecke-doc .register a[aria-current="true"] { background-color: var(--zone); }
+
+  .strecke-doc .register a[aria-current="true"]::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.3rem;
+    bottom: 0.3rem;
+    width: 2px;
+    background: var(--stempel);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strecke-doc .register { transition: none; }
 }
 
 /* ══ Breadcrumb ═══════════════════════════════════════════════ */
@@ -1122,7 +1270,11 @@
 
 .strecke-doc .eingabe input {
   width: 4.6rem;
-  padding: 0.25rem 0.35rem;
+  /* Das Feld kam auf 31 px Hoehe und lag damit unter dem Mindestmass fuer
+     ein Bedienelement. Die Polsterung traegt es auf 44 px, ohne die Zeile
+     zu verschieben: die Eingabezeile ist ohnehin hoeher. */
+  min-height: 44px;
+  padding: 0.55rem 0.35rem;
   font-family: var(--mono);
   font-size: 1.05rem;
   font-weight: 500;
@@ -1871,4 +2023,635 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ══ Marktcheck-Strecke ═══════════════════════════════════════
+   solar-leadgenerierung-solara.js ersetzt den Inhalt von
+   #sol-quiz-mount durch die mehrstufige Sequenz. Deren Klassen
+   (sol-quiz-*, sol-sr, sol-mono) wurden bis 09/2026 ausschliesslich
+   von solar-leadgenerierung-solara.css getragen. Diese Datei loest
+   jenes Stylesheet auf der Route ab und muss die Strecke deshalb
+   vollstaendig mitbringen — sonst steht das Formular nackt da, und
+   das ist das Gate der Seite.
+
+   Alles hier laeuft im dunklen Token-Satz von .tafel.
+   ══════════════════════════════════════════════════════════════ */
+
+/* Kam ebenfalls aus dem alten Stylesheet. Ohne .sol-sr stehen die
+   Live-Region und die Fieldset-Legende sichtbar im Panel — die
+   Ueberschrift des Schritts erscheint dann doppelt. */
+.strecke-doc .sol-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.strecke-doc .sol-mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+}
+
+/* ── Kopfzeile des Panels ─────────────────────────────────── */
+
+/* Das Skript setzt oben in den Mount eine Zeile "Marktcheck · Fit
+   geprueft · spaetestens 2 Werktage" plus "Fit-Check". Direkt darueber
+   steht bereits der Beleg mit Form, Frist, Pruefer, Absage-Fall und
+   Kosten — dieselbe Zusage, zweimal untereinander, einmal davon als
+   Wiederholung der Frist. Die Zeile bleibt im DOM (das Skript baut sie),
+   sichtbar ist sie nicht. */
+.strecke-doc .sol-cta-head { display: none; }
+
+/* ── Fortschritt ─────────────────────────────────────────── */
+
+.strecke-doc .sol-quiz-progress { margin-bottom: 1.5rem; }
+
+.strecke-doc .sol-quiz-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--matt);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.5rem;
+}
+
+.strecke-doc .sol-quiz-progress-track {
+  height: 2px;
+  background: var(--haar);
+  overflow: hidden;
+}
+
+.strecke-doc .sol-quiz-progress-fill {
+  height: 100%;
+  background: var(--stempel);
+  /* width kommt als Inline-Style aus dem Skript. Der Uebergang laeuft
+     auf width, weil die Spur eine feste Hoehe hat und nichts umbricht:
+     hier loest die Breite kein Reflow des Satzes aus. */
+  transition: width var(--t-norm) var(--ease-weich);
+}
+
+.strecke-doc .sol-quiz-progress-shimmer { display: none; }
+
+.strecke-doc .sol-quiz-dots {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+}
+
+.strecke-doc .sol-quiz-dot {
+  width: 100%;
+  height: 1px;
+  background: var(--haar);
+  transition: background-color var(--t-norm) var(--ease-weich);
+}
+
+.strecke-doc .sol-quiz-dot.is-done { background: var(--stempel); opacity: 0.45; }
+.strecke-doc .sol-quiz-dot.is-active { background: var(--stempel); }
+
+/* ── Frage ───────────────────────────────────────────────── */
+
+.strecke-doc .sol-quiz-label {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--stempel);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.strecke-doc .sol-quiz-title {
+  font-family: var(--serif-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.018em;
+  margin: 0 0 0.5rem;
+  text-wrap: balance;
+}
+
+.strecke-doc .sol-quiz-title:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 3px;
+}
+
+.strecke-doc .sol-quiz-hint {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--grau);
+  margin-bottom: 1.2rem;
+}
+
+/* ── Antwortoptionen ─────────────────────────────────────── */
+
+.strecke-doc .sol-quiz-options {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid var(--haar);
+}
+
+.strecke-doc .sol-quiz-opt {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) 1.1rem;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--haar);
+  cursor: pointer;
+  transition: background-color var(--t-norm) var(--ease-weich);
+}
+
+.strecke-doc .sol-quiz-opt:hover { background-color: var(--zone); }
+
+/* Das Radio bleibt bedienbar und fuer Screenreader da, ist aber
+   visuell durch die Zeile selbst ersetzt. Der Fokusring wandert
+   deshalb auf das Label. */
+.strecke-doc .sol-quiz-opt-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+}
+
+.strecke-doc .sol-quiz-opt:has(.sol-quiz-opt-input:focus-visible) {
+  outline: 2px solid var(--stempel);
+  outline-offset: 2px;
+}
+
+.strecke-doc .sol-quiz-opt-idx {
+  grid-column: 1;
+  grid-row: 1;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  color: var(--matt);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--t-norm) var(--ease-weich);
+}
+
+.strecke-doc .sol-quiz-opt-body {
+  grid-column: 2;
+  grid-row: 1;
+  display: block;
+}
+
+.strecke-doc .sol-quiz-opt-t {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.35;
+  margin-bottom: 0.15rem;
+}
+
+.strecke-doc .sol-quiz-opt-s {
+  display: block;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--grau);
+}
+
+/* Ohne feste Masse rendert ein SVG ohne width/height mit seiner
+   Ersatzgroesse — im Panel stand deshalb ein 300-px-Pfeil. */
+.strecke-doc .sol-quiz-opt-arrow {
+  grid-column: 3;
+  grid-row: 1;
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  color: var(--stempel);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity var(--t-norm) var(--ease-weich),
+    transform var(--t-norm) var(--ease-aus);
+}
+
+.strecke-doc .sol-quiz-opt-arrow svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.strecke-doc .sol-quiz-opt:hover .sol-quiz-opt-arrow,
+.strecke-doc .sol-quiz-opt.is-sel .sol-quiz-opt-arrow {
+  opacity: 1;
+  transform: none;
+}
+
+.strecke-doc .sol-quiz-opt.is-sel { background-color: var(--zone); }
+.strecke-doc .sol-quiz-opt.is-sel .sol-quiz-opt-idx { color: var(--stempel); }
+
+/* Die gewaehlte Zeile bekommt eine Kante, keine Flaeche. */
+.strecke-doc .sol-quiz-opt.is-sel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--stempel);
+}
+
+/* ── Kontaktschritt ──────────────────────────────────────── */
+
+.strecke-doc .sol-quiz-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.strecke-doc .sol-quiz-rationale {
+  grid-column: 1 / -1;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--stempel);
+  margin-bottom: 0.3rem;
+}
+
+.strecke-doc .sol-quiz-rationale-h {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stempel);
+  margin-bottom: 0.35rem;
+}
+
+.strecke-doc .sol-quiz-rationale-b {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--grau);
+}
+
+.strecke-doc .sol-quiz-field { display: block; }
+.strecke-doc .sol-quiz-field--full { grid-column: 1 / -1; }
+
+.strecke-doc .sol-quiz-field-lbl {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--matt);
+  margin-bottom: 0.35rem;
+}
+
+.strecke-doc .sol-quiz-field-lbl-req { color: var(--stempel); }
+
+.strecke-doc .sol-quiz-field input,
+.strecke-doc .sol-quiz-field select {
+  width: 100%;
+  padding: 0.6rem 0.1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--tinte);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--haar);
+  border-radius: 0;
+  transition: border-color var(--t-norm) var(--ease-weich);
+}
+
+.strecke-doc .sol-quiz-field select {
+  /* Ein natives Select auf dunklem Grund zeigt sonst die helle
+     Systemflaeche. Das Aufklappmenue selbst bleibt nativ. */
+  color-scheme: dark;
+  padding-inline-start: 0;
+}
+
+.strecke-doc .sol-quiz-field input::placeholder { color: var(--matt); }
+.strecke-doc .sol-quiz-field input:hover,
+.strecke-doc .sol-quiz-field select:hover { border-bottom-color: var(--matt); }
+
+.strecke-doc .sol-quiz-field input:focus-visible,
+.strecke-doc .sol-quiz-field select:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 2px;
+  border-bottom-color: var(--stempel);
+}
+
+.strecke-doc .sol-quiz-field input[aria-invalid="true"],
+.strecke-doc .sol-quiz-field select[aria-invalid="true"] {
+  border-bottom-color: var(--stempel);
+  border-bottom-width: 2px;
+}
+
+.strecke-doc .sol-quiz-field-err {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--stempel);
+}
+
+/* Honigtopf. Nie sichtbar, nie im Tastaturlauf. */
+.strecke-doc .sol-quiz-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.strecke-doc .sol-quiz-consent-wrap {
+  grid-column: 1 / -1;
+  margin-top: 0.3rem;
+}
+
+.strecke-doc .sol-quiz-consent {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: start;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--grau);
+  cursor: pointer;
+}
+
+.strecke-doc .sol-quiz-consent input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  margin: 0.15rem 0 0;
+  accent-color: var(--stempel);
+  flex-shrink: 0;
+}
+
+.strecke-doc .sol-quiz-consent input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 2px;
+}
+
+.strecke-doc .sol-quiz-consent a {
+  color: var(--stempel);
+  text-underline-offset: 3px;
+}
+
+.strecke-doc .sol-quiz-error {
+  grid-column: 1 / -1;
+  padding: 0.8rem 0.9rem;
+  border-left: 2px solid var(--stempel);
+  background: var(--zone);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--tinte);
+}
+
+.strecke-doc .sol-quiz-submit {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 46px;
+  margin-top: 0.6rem;
+  padding: 0.65rem 1.15rem;
+  background: var(--stempel);
+  color: #17140f;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border: 1px solid var(--stempel);
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    background-color var(--t-mikro) ease,
+    color var(--t-mikro) ease;
+}
+
+.strecke-doc .sol-quiz-submit:hover {
+  background: transparent;
+  color: var(--stempel);
+}
+
+.strecke-doc .sol-quiz-submit[aria-busy="true"] {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.strecke-doc .sol-quiz-submit-arrow {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  transition: transform 180ms var(--ease-aus);
+}
+
+.strecke-doc .sol-quiz-submit-arrow svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.strecke-doc .sol-quiz-submit:hover .sol-quiz-submit-arrow { transform: translateX(3px); }
+
+.strecke-doc .sol-quiz-fineprint {
+  grid-column: 1 / -1;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--matt);
+  line-height: 1.7;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .strecke-doc .sol-quiz-form { grid-template-columns: 1fr; }
+}
+
+/* ── Schrittnavigation ───────────────────────────────────── */
+
+.strecke-doc .sol-quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--haar);
+}
+
+.strecke-doc .sol-quiz-back,
+.strecke-doc .sol-quiz-next {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 0;
+  padding: 0.5rem 0;
+  min-height: 44px;
+  cursor: pointer;
+  transition: color var(--t-norm) var(--ease-weich);
+}
+
+.strecke-doc .sol-quiz-back { color: var(--grau); }
+.strecke-doc .sol-quiz-next { color: var(--stempel); }
+.strecke-doc .sol-quiz-back:hover,
+.strecke-doc .sol-quiz-next:hover { color: var(--tinte); }
+
+.strecke-doc .sol-quiz-back.is-dis,
+.strecke-doc .sol-quiz-next.is-dis {
+  color: var(--haar);
+  cursor: default;
+}
+
+.strecke-doc .sol-quiz-back:focus-visible,
+.strecke-doc .sol-quiz-next:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 2px;
+}
+
+/* ── Erfolgsansicht ──────────────────────────────────────── */
+
+.strecke-doc .sol-quiz-success-icon {
+  display: block;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--stempel);
+  margin-bottom: 1rem;
+}
+
+.strecke-doc .sol-quiz-success-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.strecke-doc .sol-quiz-success-h {
+  font-family: var(--serif-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 0.6rem;
+}
+
+.strecke-doc .sol-quiz-success-h:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 3px;
+}
+
+.strecke-doc .sol-quiz-success-ticket {
+  font-size: var(--mono-s);
+  text-transform: uppercase;
+  color: var(--matt);
+  margin-bottom: 0.7rem;
+}
+
+.strecke-doc .sol-quiz-success-ticket-id { color: var(--stempel); }
+
+.strecke-doc .sol-quiz-success-sub {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--grau);
+  margin-bottom: 0.9rem;
+}
+
+.strecke-doc .sol-quiz-success-deadline {
+  padding: 0.7rem 0;
+  border-block: 1px solid var(--haar);
+  font-size: 0.9rem;
+  color: var(--grau);
+  margin-bottom: 1rem;
+}
+
+.strecke-doc .sol-quiz-success-deadline strong {
+  color: var(--tinte);
+  font-weight: 500;
+}
+
+.strecke-doc .sol-quiz-success-proof {
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--stempel);
+  margin-bottom: 1.2rem;
+}
+
+.strecke-doc .sol-quiz-success-proof-label {
+  display: block;
+  font-size: var(--mono-s);
+  text-transform: uppercase;
+  color: var(--stempel);
+  margin-bottom: 0.3rem;
+}
+
+.strecke-doc .sol-quiz-success-proof-body {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--grau);
+}
+
+.strecke-doc .sol-quiz-success-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-bottom: 0.9rem;
+}
+
+.strecke-doc .sol-quiz-success-row a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 46px;
+  padding: 0.6rem 1.1rem;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--stempel);
+  transition:
+    background-color var(--t-mikro) ease,
+    color var(--t-mikro) ease;
+}
+
+.strecke-doc .sol-quiz-success-row a svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  display: block;
+}
+
+.strecke-doc .sol-quiz-success-row a.is-primary {
+  background: var(--stempel);
+  color: #17140f;
+}
+
+.strecke-doc .sol-quiz-success-row a.is-primary:hover {
+  background: transparent;
+  color: var(--stempel);
+}
+
+.strecke-doc .sol-quiz-success-row a.is-ghost {
+  background: transparent;
+  color: var(--tinte);
+  border-color: var(--strich);
+}
+
+.strecke-doc .sol-quiz-success-row a.is-ghost:hover {
+  background: var(--strich);
+  color: var(--papier);
+}
+
+.strecke-doc .sol-quiz-success-fineprint {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--matt);
+  line-height: 1.7;
 }

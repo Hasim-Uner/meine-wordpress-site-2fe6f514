@@ -58,12 +58,13 @@
     --ft-7: 48px;
     --ft-8: 72px;
 
-    /* Schriften direkt, nicht mehr ueber var(--nx-…): die Hausschrift des
-       Designsystems ist Figtree, der Standard dieses Fusses ist seit 09/2026
-       Newsreader. Ein var(--nx-font, …) wuerde den Fuss also je nach
-       geladener Datei in zwei verschiedenen Schriften zeigen. Die
-       Systemketten dahinter bleiben als Fallback stehen. */
-    --ft-font: "Newsreader", Georgia, "Times New Roman", serif;
+    /* Schriften direkt, nicht ueber var(--nx-…): so steht der Fuss auch
+       dann richtig, wenn nur diese eine Datei geladen ist. Textschrift ist
+       die Hausschrift Figtree; ein Zwischenstand setzte hier Newsreader und
+       ist zurueckgenommen. Die Mono-Rolle liegt bei IBM Plex Mono, damit
+       Kennzahlen im Fuss dieselben tabellarischen Ziffern tragen wie auf
+       der Anfragestrecke. Systemketten bleiben als Fallback. */
+    --ft-font: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --ft-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
     position: relative;

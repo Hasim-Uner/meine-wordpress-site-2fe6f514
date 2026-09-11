@@ -21,11 +21,18 @@ body.nx-site-menu-open {
     overscroll-behavior: none;
 }
 
-/* Farbklima und Schrift folgen seit 09/2026 dem Gutachten-Standard aus
+/* Das Farbklima folgt seit 09/2026 dem Gutachten-Standard aus
    assets/css/anfragestrecke.css. Der Kopf ist dort die fuenfte dunkle
-   Tafel: derselbe Grund (#17140f), derselbe Stempel (#ef8b4d), dieselben
-   Schriften. Vorher stand er auf #0b0f12 mit #e08a3c und Figtree — ein
-   zweites Farb- und Schriftsystem ueber jeder Seite.
+   Tafel: derselbe Grund (#17140f), derselbe Stempel (#ef8b4d). Vorher
+   stand er auf #0b0f12 mit #e08a3c — ein zweites Farbsystem ueber jeder
+   Seite.
+
+   Die Textschrift bleibt Figtree. Ein Zwischenstand setzte hier
+   Newsreader, weil die Anfragestrecke eine Serif trug; die ist wieder
+   raus, weil sie auf dem Schirm weniger klar lief als die Hausschrift.
+   Nur die Mono-Rolle liegt jetzt bei IBM Plex Mono statt bei der
+   Systemschrift — dieselbe Familie, die auf der Anfragestrecke die
+   Ziffern traegt.
 
    Die Umstellung laeuft gestaffelt: dieser Kopf und der Fuss ziehen
    zuerst nach, die uebrigen Routen folgen. Bis dahin steht der neue Kopf
@@ -44,7 +51,7 @@ body.nx-site-menu-open {
     --sheet-line: rgb(244 241 236 / 0.11);
     --sheet-line-soft: rgb(244 241 236 / 0.06);
     --sheet-ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --sheet-font: "Newsreader", Georgia, "Times New Roman", serif;
+    --sheet-font: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --sheet-font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", "Roboto Mono", monospace;
 
     position: fixed;
