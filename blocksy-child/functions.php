@@ -108,20 +108,12 @@ function hu_preload_self_hosted_fonts() {
 	$is_visual_homepage_test = function_exists( 'hu_is_homepage_wow_request' ) && hu_is_homepage_wow_request();
 	$critical_figtree_font = ( is_front_page() || $is_visual_homepage_test ) ? 'figtree-600.woff2' : 'figtree-400.woff2';
 
-	// Die Anfragestrecke steht vollstaendig im Gutachten-Standard: dort ist
-	// Newsreader die Schrift des LCP-Elements, und Satoshi/Figtree kommen auf
-	// der Seite nicht vor. Ein Preload fuer sie waere dort verschwendete
-	// Bandbreite im kritischen Pfad.
-	//
-	// Auf allen uebrigen Routen bleibt es beim bisherigen Paar. Newsreader
-	// wird dort zwar von Kopf und Fuss gebraucht, aber nicht ueber der
-	// Falz — deshalb kein dritter Preload, sondern font-display: swap.
-	$is_strecke = is_page( 'solar-waermepumpen-leadgenerierung' )
-		|| is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' );
-
-	$critical_fonts = $is_strecke
-		? [ 'Newsreader-Variable-latin.woff2', 'IBMPlexMono-500-latin.woff2' ]
-		: [ 'Satoshi-Variable.woff2', $critical_figtree_font ];
+	// Satoshi und Figtree tragen den Satz auf jeder Route, auch auf der
+	// Anfragestrecke. IBM Plex Mono bekommt dort keinen eigenen Preload:
+	// es traegt Ziffern und Labels, nicht das LCP-Element, und ein dritter
+	// Font im kritischen Pfad kostet mehr als er einbringt. font-display:
+	// swap deckt den Nachlauf ab.
+	$critical_fonts = [ 'Satoshi-Variable.woff2', $critical_figtree_font ];
 
 	foreach ( $critical_fonts as $critical_font ) {
 		if ( ! file_exists( $font_dir . '/fonts/' . $critical_font ) ) {

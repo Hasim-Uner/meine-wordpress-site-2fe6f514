@@ -610,26 +610,37 @@ get_header();
 	?>
 	<div class="solara-landing strecke-doc" data-track-section="anfragestrecke">
 
-		<!-- ════════ Kapitelleiste ════════ -->
-		<div class="leiste">
-			<div class="blatt in">
-				<span class="stand">Anfragestrecke · Photovoltaik, Wärmepumpe, Speicher</span>
-				<nav aria-label="Abschnitte dieses Dokuments" data-strecke-leiste>
-					<?php foreach ( array_slice( $chapters, 0, 5 ) as $chapter ) : ?>
-						<a href="#<?php echo esc_attr( $chapter['id'] ); ?>"
-							data-track-action="chapter_jump"
-							data-track-category="navigation"
-							data-track-section="chapter_bar"
-						><?php echo esc_html( $chapter['nr'] . ' ' . $chapter['kurz'] ); ?></a>
-					<?php endforeach; ?>
-					<a href="#marktcheck"
-						data-track-action="cta_strecke_bar_to_marktcheck"
-						data-track-category="lead_gen"
-						data-track-section="chapter_bar"
-					>Marktcheck</a>
-				</nav>
+		<?php
+		// ════════ Kapitelregister ════════
+		//
+		// Auf breiten Schirmen eine schmale senkrechte Leiste am linken
+		// Rand, die nur die Nummern zeigt und bei Hover oder Tastaturfokus
+		// auf die volle Breite mit Titeln aufklappt. Darunter eine flache
+		// waagerechte Leiste unter dem Header.
+		//
+		// Dieselbe Liste in beiden Fassungen, ein Markup: der Unterschied
+		// liegt vollstaendig im Stylesheet. Ein zweites, per Media Query
+		// ausgeblendetes Markup haette dieselben Anker doppelt im Dokument
+		// und damit doppelt im Tastaturlauf.
+		?>
+		<nav class="register" aria-label="Abschnitte dieses Dokuments" data-strecke-leiste>
+			<span class="marke" aria-hidden="true">
+				<span class="marke-kuerzel">Reg.</span>
+				<span class="marke-voll">Register</span>
+			</span>
+			<div class="eintraege">
+				<?php foreach ( $chapters as $chapter ) : ?>
+					<a href="#<?php echo esc_attr( $chapter['id'] ); ?>"
+						data-track-action="chapter_jump"
+						data-track-category="navigation"
+						data-track-section="register"
+					>
+						<span class="nr"><?php echo esc_html( $chapter['nr'] ); ?></span>
+						<span class="txt"><?php echo esc_html( $chapter['titel'] ); ?></span>
+					</a>
+				<?php endforeach; ?>
 			</div>
-		</div>
+		</nav>
 
 		<!-- ════════ Dokumentkopf ════════ -->
 		<div class="blatt kopfteil">
