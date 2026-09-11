@@ -6,13 +6,13 @@
  *
  * Motion Brief
  *   Route/Surface        Startseite, Hero rechts
- *   Besucherentscheidung „Passt dieses System zu meinem Vorhaben?" → drei Wege
+ *   Besucherentscheidung „Passt dieses System zu meinem Vorhaben?“ → drei Wege
  *   Intensität           2 (Guided) — eine choreografierte Sequenz, sonst still
  *   Thesis               Eine Anfrage wird sichtbar durch die Strecke geführt:
  *                        sie läuft zu, wird gefiltert, kommt qualifiziert an.
  *   Focal moment         Der Durchlauf durch den Trichter in Karte 03/04
- *   Statisch             Alle Karteninhalte, Balken, Texte, Trichter
- *   Bewegte Gruppen      max. 3 gleichzeitig (Signale, Messring, ein Puls)
+ *   Statisch             Karteninhalte, Texte und Trichter
+ *   Bewegte Gruppen      Signale, Messring, CTA-Puls und CRM-Balken
  *   Runtime-Delta        0 kB Abhängigkeit; ~26 Zeilen Route-JS nur zum Pausieren
  *   Coarse pointer       Kompakte Variante, gleiche Sequenz, kein Hover nötig
  *   Reduced motion       Wege werden durchgezogene Kupferlinien, Endzustand steht
@@ -193,13 +193,21 @@
   100% { transform: scale(1); opacity: 0; }
 }
 
-/* Die Balken stehen still auf ihrem echten Wert. Nur die Ankunft der
- * qualifizierten Anfrage hebt den Kupferbalken kurz an — der Ruhezustand
- * ist damit auch der richtige Zustand. */
+/* Wie in der Referenz: alle vier CRM-Balken wachsen im letzten Drittel
+ * des Takts aus ihrem kompakten Ruhezustand auf volle Höhe. */
+@keyframes hu-flow-balken {
+  0%, 70% { transform: scaleY(.18); }
+  82%, 95% { transform: scaleY(1); }
+  100% { transform: scaleY(.18); }
+}
+
+/* Zusätzlicher Ankunftsimpuls auf dem Kupferbalken. Er folgt derselben
+ * Wachstumsrichtung, damit der vierte Balken nicht statisch darüberliegt. */
 @keyframes hu-flow-ankunft {
-  0%, 72% { opacity: 0; }
-  78% { opacity: .85; }
-  92%, 100% { opacity: 0; }
+  0%, 72% { opacity: 0; transform: scaleY(.18); }
+  78% { opacity: .45; transform: scaleY(.72); }
+  82%, 92% { opacity: .85; transform: scaleY(1); }
+  100% { opacity: 0; transform: scaleY(.18); }
 }
 
 @keyframes hu-flow-ring { to { stroke-dashoffset: calc(-1 * var(--len)); } }
@@ -210,7 +218,42 @@
   animation-name: hu-flow-puls;
 }
 
-.hu-hp .hu-flow .ankunft { animation-name: hu-flow-ankunft; }
+/* Die bestehenden SVGs haben für die CRM-Balken keine eigene Klasse.
+ * Deshalb werden die vier Balken in Desktop und Mobile über ihre eindeutigen
+ * SVG-Koordinaten adressiert. So bleibt das Markup unverändert. */
+.hu-hp .hu-flow .hu-flow__d rect.form[x="938"][y="412"],
+.hu-hp .hu-flow .hu-flow__d rect.form[x="982"][y="392"],
+.hu-hp .hu-flow .hu-flow__d rect.form[x="1026"][y="370"],
+.hu-hp .hu-flow .hu-flow__d rect.kupfer[x="1070"][y="348"],
+.hu-hp .hu-flow .hu-flow__m rect.form[x="232"][y="674"],
+.hu-hp .hu-flow .hu-flow__m rect.form[x="264"][y="660"],
+.hu-hp .hu-flow .hu-flow__m rect.form[x="296"][y="646"],
+.hu-hp .hu-flow .hu-flow__m rect.kupfer[x="328"][y="630"] {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation-name: hu-flow-balken;
+  animation-duration: var(--hu-flow-takt);
+  animation-timing-function: var(--ease-linear, linear);
+  animation-iteration-count: infinite;
+}
+
+.hu-hp .hu-flow .hu-flow__d rect.form[x="938"][y="412"],
+.hu-hp .hu-flow .hu-flow__m rect.form[x="232"][y="674"] { animation-delay: 0s; }
+
+.hu-hp .hu-flow .hu-flow__d rect.form[x="982"][y="392"],
+.hu-hp .hu-flow .hu-flow__m rect.form[x="264"][y="660"] { animation-delay: .12s; }
+
+.hu-hp .hu-flow .hu-flow__d rect.form[x="1026"][y="370"],
+.hu-hp .hu-flow .hu-flow__m rect.form[x="296"][y="646"] { animation-delay: .24s; }
+
+.hu-hp .hu-flow .hu-flow__d rect.kupfer[x="1070"][y="348"],
+.hu-hp .hu-flow .hu-flow__m rect.kupfer[x="328"][y="630"] { animation-delay: .36s; }
+
+.hu-hp .hu-flow .ankunft {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation-name: hu-flow-ankunft;
+}
 .hu-hp .hu-flow .ring-lauf { animation-name: hu-flow-ring; }
 
 /* Dauerbewegung ruht außerhalb des Sichtfelds und im Hintergrund-Tab.
@@ -218,7 +261,15 @@
 .hu-hp .hu-flow.is-paused .sig,
 .hu-hp .hu-flow.is-paused .puls,
 .hu-hp .hu-flow.is-paused .ankunft,
-.hu-hp .hu-flow.is-paused .ring-lauf {
+.hu-hp .hu-flow.is-paused .ring-lauf,
+.hu-hp .hu-flow.is-paused .hu-flow__d rect.form[x="938"][y="412"],
+.hu-hp .hu-flow.is-paused .hu-flow__d rect.form[x="982"][y="392"],
+.hu-hp .hu-flow.is-paused .hu-flow__d rect.form[x="1026"][y="370"],
+.hu-hp .hu-flow.is-paused .hu-flow__d rect.kupfer[x="1070"][y="348"],
+.hu-hp .hu-flow.is-paused .hu-flow__m rect.form[x="232"][y="674"],
+.hu-hp .hu-flow.is-paused .hu-flow__m rect.form[x="264"][y="660"],
+.hu-hp .hu-flow.is-paused .hu-flow__m rect.form[x="296"][y="646"],
+.hu-hp .hu-flow.is-paused .hu-flow__m rect.kupfer[x="328"][y="630"] {
   animation-play-state: paused;
 }
 
@@ -231,6 +282,18 @@
   .hu-hp .hu-flow .ring-lauf {
     animation: none;
     display: none;
+  }
+
+  .hu-hp .hu-flow .hu-flow__d rect.form[x="938"][y="412"],
+  .hu-hp .hu-flow .hu-flow__d rect.form[x="982"][y="392"],
+  .hu-hp .hu-flow .hu-flow__d rect.form[x="1026"][y="370"],
+  .hu-hp .hu-flow .hu-flow__d rect.kupfer[x="1070"][y="348"],
+  .hu-hp .hu-flow .hu-flow__m rect.form[x="232"][y="674"],
+  .hu-hp .hu-flow .hu-flow__m rect.form[x="264"][y="660"],
+  .hu-hp .hu-flow .hu-flow__m rect.form[x="296"][y="646"],
+  .hu-hp .hu-flow .hu-flow__m rect.kupfer[x="328"][y="630"] {
+    animation: none;
+    transform: none;
   }
 
   /* Ohne Signale muss die Strecke selbst lesbar bleiben. */
