@@ -27,16 +27,11 @@
         var style = document.createElement('style');
         style.id = 'ao-editorial-refinement-v2';
         style.textContent = [
-            /* The category already exists in the hero meta. The context strip above it is redundant. */
             '.single-post .nexus-blog-header__context-links{display:none!important;}',
-
-            /* Share rail: hidden until JS marks the second main section as reached. */
             '@media (min-width:1280px){',
             'body.single-post .nexus-share-rail{left:34px!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:translateY(-50%) translateX(-10px)!important;transition:opacity .22s ease,transform .22s ease,visibility .22s ease!important;}',
             'body.single-post.ao-share-ready .nexus-share-rail{opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:translateY(-50%) translateX(0)!important;}',
             '}',
-
-            /* Reading column + quieter, narrower TOC. */
             '@media (min-width:1100px){',
             '.single-post .nexus-article-reader-header~.nexus-single-container .nexus-post-layout{grid-template-columns:minmax(0,820px) 244px!important;gap:clamp(3.1rem,4.5vw,4.7rem)!important;max-width:1135px!important;}',
             '.single-post .nexus-article-reader-header~.nexus-single-container .nexus-sidebar,.single-post .nexus-article-reader-header~.nexus-single-container .nexus-sidebar.nexus-reader-toc{top:116px!important;max-width:244px!important;justify-self:end!important;}',
@@ -52,31 +47,23 @@
             '.single-post .ao-sidebar-cta__text{font-size:.72rem!important;line-height:1.45!important;}',
             '.single-post .ao-sidebar-cta__button{width:100%!important;min-height:36px!important;font-size:.69rem!important;}',
             '}',
-
-            /* Callout: less generic card, more editorial quotation. */
             '.single-post .agency-outsourcing-note{display:grid!important;grid-template-columns:34px minmax(0,1fr)!important;column-gap:.85rem!important;align-items:start!important;padding:1.3rem 1.45rem!important;border:1px solid #e2ded7!important;border-left:2px solid #d9792c!important;border-radius:11px!important;background:linear-gradient(135deg,#fffdf9 0%,#faf7f1 100%)!important;box-shadow:0 12px 30px rgba(27,31,34,.035)!important;}',
             '.single-post .agency-outsourcing-note::before{float:none!important;grid-column:1!important;grid-row:1 / span 2!important;margin:.05rem 0 0!important;width:30px!important;height:30px!important;display:grid!important;place-items:center!important;border-radius:50%!important;background:rgba(217,121,44,.10)!important;color:#d9792c!important;font-size:1.55rem!important;line-height:1!important;}',
             '.single-post .agency-outsourcing-note p{grid-column:2!important;}',
             '.single-post .agency-outsourcing-note p:first-of-type{color:#202428!important;font-size:1.02rem!important;line-height:1.5!important;}',
             '.single-post .agency-outsourcing-note p+p{margin-top:.35rem!important;color:#62686d!important;font-size:.94rem!important;line-height:1.55!important;}',
             '.single-post .agency-outsourcing-note--quiet{background:#f2f0eb!important;border-left-color:#aeb4b8!important;}',
-
-            /* Checklist: fix number/text collision and reduce the boxy feeling. */
             '.single-post .agency-readiness-checklist{padding-top:1.35rem!important;}',
             '.single-post .agency-readiness-checklist ol{gap:.8rem!important;}',
             '.single-post .agency-readiness-checklist li{min-height:82px!important;padding:1.08rem 1.05rem 1.08rem 3.65rem!important;border:1px solid #e1ded7!important;border-radius:12px!important;background:linear-gradient(135deg,#fffdf9 0%,#fbf9f5 100%)!important;box-shadow:0 8px 22px rgba(28,32,35,.025)!important;}',
             '.single-post .agency-readiness-checklist li::before{top:1.18rem!important;left:1.15rem!important;width:28px!important;height:28px!important;display:grid!important;place-items:center!important;border:1px solid rgba(217,121,44,.25)!important;border-radius:50%!important;background:rgba(217,121,44,.07)!important;color:#bd6422!important;font-size:.67rem!important;}',
-
-            /* Slightly calmer headline rhythm. */
             '.single-post .nexus-article-content h2{max-width:19ch!important;font-size:clamp(2.05rem,2.85vw,3rem)!important;line-height:1.07!important;}',
             '.single-post .ao-section-label{margin-top:clamp(4.25rem,6vw,5.7rem)!important;}',
-
             '@media (max-width:700px){',
             '.single-post .agency-outsourcing-note{grid-template-columns:28px minmax(0,1fr)!important;padding:1.1rem!important;column-gap:.7rem!important;}',
             '.single-post .agency-outsourcing-note::before{width:26px!important;height:26px!important;font-size:1.35rem!important;}',
             '.single-post .agency-readiness-checklist li{padding-left:3.35rem!important;}',
             '}',
-
             '@media (prefers-reduced-motion:reduce){body.single-post .nexus-share-rail{transition:none!important;}}'
         ].join('');
         document.head.appendChild(style);
@@ -206,12 +193,38 @@
         }
     }
 
+    function removeDuplicateHeroCategory() {
+        var container = document.querySelector('.nexus-single-container');
+        var hero = document.querySelector('.nexus-article-hero--editorial');
+        if (!container || !hero) return;
+
+        var keep = hero.querySelector('.nexus-meta-top .nexus-hero-category') ||
+                   hero.querySelector('.nexus-meta-top a') ||
+                   hero.querySelector('.nexus-hero-category');
+        if (!keep) return;
+
+        var label = (keep.textContent || '').trim().replace(/\s+/g, ' ');
+        if (!label) return;
+
+        Array.prototype.slice.call(container.querySelectorAll('a, span, p, div')).forEach(function (node) {
+            if (node === keep || node.contains(keep) || keep.contains(node)) return;
+            if (node.closest('.nexus-sidebar') || node.closest('.agency-outsourcing-article')) return;
+
+            var text = (node.textContent || '').trim().replace(/\s+/g, ' ');
+            if (text !== label) return;
+
+            node.style.setProperty('display', 'none', 'important');
+            node.setAttribute('aria-hidden', 'true');
+        });
+    }
+
     function init() {
         var article = document.querySelector('.agency-outsourcing-article');
         if (!article) return;
 
         injectRefinementStyles();
         removeDuplicateCategoryContext();
+        removeDuplicateHeroCategory();
 
         var headings = enhanceSections(article);
         var sidebar = document.querySelector('.nexus-sidebar');
