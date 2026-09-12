@@ -1,0 +1,1340 @@
+<!--
+  referenz.html — maßgebliche Vorlage für /solar-waermepumpen-leadgenerierung/
+  Stand 12.09.2026 · Fassung nach Copy-Durchgang 2 · unverändert archiviert
+
+  Diese Datei ist eigenständiges HTML, kein WordPress. Sie wird nicht
+  hochgeladen und nicht deployt. Sie ist die Quelle für Copy, Reihenfolge,
+  Zahlen und Verhalten — übersetzt wird sie in die Templates des Child-Themes.
+
+  Drei Stellen dürfen NICHT übernommen werden:
+
+  1. Die <link>-Tags auf fonts.googleapis.com direkt unter diesem Kommentar.
+     Die Domain hostet Schriften selbst; functions.php entfernt Google-Fonts
+     aktiv wieder (remove_google_fonts()).
+  2. Die Regel `.stufe@media (max-width:760px)` im <style>-Block. Das ist ein
+     ungültiger Selektor — er verschluckt den gesamten folgenden Mobilblock,
+     wodurch die Angebotsleiter auf dem Telefon vierspaltig bleibt. In der
+     Umsetzung als echte Media Query gebaut.
+  3. `--matt: #8a837a`. Ergibt auf Weiß 3,74:1 und reißt WCAG AA genau dort,
+     wo der pflichtige Quellenhinweis unter der Marktzeile steht. In der
+     Umsetzung auf #736b62 (5,24:1) korrigiert.
+
+  Die umgesetzte Fassung verwendet außerdem die Hausschrift (Satoshi/Figtree)
+  statt Newsreader — siehe README.md in diesem Ordner.
+-->
+<title>Die Anfragestrecke</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,400;0,500;0,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --papier:#ffffff; --zone:#f7f6f3; --zone2:#efece6;
+  --tinte:#171412; --grau:#5b554d; --matt:#8a837a;
+  --stempel:#b8420f;
+  --haar:#dedad3; --strich:#171412;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",monospace;
+  --rand:11.5rem;          /* linke Randspalte */
+  --marg:12.5rem;          /* rechte Marginalie */
+  --satz:62ch;
+  /* Abstandsskala - jeder Wert im Dokument stammt hieraus */
+  --s0:.35rem; --s1:.7rem; --s2:1.1rem; --s3:1.75rem; --s4:2.75rem;
+  --s5:clamp(2.5rem,5vw,3.75rem); --s6:clamp(3.5rem,7.5vw,6.5rem);
+  /* Mono-Stufen - drei, nicht sieben */
+  --mono-s:.62rem; --mono-m:.7rem; --mono-l:.82rem;
+  /* Bewegung */
+  --ease-aus:cubic-bezier(.22,1,.36,1);
+  --ease-weich:cubic-bezier(.4,0,.2,1);
+  --t-mikro:130ms; --t-norm:200ms; --t-gross:620ms;
+}
+
+/* --- Tafel: dunkle Fläche für Beweis und Handlung. Tokens werden lokal umdefiniert,
+      dadurch stimmen alle Kindelemente automatisch. --- */
+.tafel{
+  --papier:#17140f; --zone:#211d18;
+  --tinte:#f4f1ec; --grau:#a9a199; --matt:#948c81;
+  --stempel:#ef8b4d;
+  --haar:#332e28; --strich:#f4f1ec;
+  background:#17140f; color:#f4f1ec; border-radius:3px;
+  padding:clamp(1.4rem,3.5vw,2.4rem);
+}
+
+*{box-sizing:border-box}
+body{background:var(--papier);color:var(--tinte);font-family:var(--serif);
+  font-optical-sizing:auto;font-size:clamp(1.0625rem,1rem + .3vw,1.1875rem);line-height:1.6;
+  margin:0;-webkit-font-smoothing:antialiased;text-wrap:pretty;
+  font-variant-numeric:oldstyle-nums proportional-nums}
+h1,h2,h3,h4{margin:0;font-weight:400;text-wrap:balance;line-height:1.08;letter-spacing:-.012em}
+p{margin:0}
+a{color:inherit}
+table{border-collapse:collapse;width:100%}
+:focus-visible{outline:2px solid var(--stempel);outline-offset:2px}
+
+/* ---------- Raster ---------- */
+.blatt{max-width:calc(var(--rand) + var(--satz) + var(--marg) + 8rem);margin:0 auto;
+  padding-inline:clamp(1.25rem,4vw,3rem)}
+.reihe{display:grid;grid-template-columns:var(--rand) minmax(0,1fr) var(--marg);
+  gap:0 clamp(1.5rem,3.5vw,3.25rem)}
+.reihe > .spalte-links{grid-column:1}
+.reihe > .haupt{grid-column:2;max-width:var(--satz)}
+.reihe > .marg{grid-column:3}
+.reihe > .voll{grid-column:2 / -1}
+.reihe > .ganz{grid-column:1 / -1}
+
+/* ---------- Typo-Bausteine ---------- */
+.mono{font-family:var(--mono);font-size:var(--mono-m);letter-spacing:.14em;text-transform:uppercase;
+  font-weight:500;color:var(--grau);font-variant-numeric:tabular-nums}
+.zahl{font-family:var(--mono);font-variant-numeric:tabular-nums;font-feature-settings:"tnum";white-space:nowrap}
+.stempelfarbe{color:var(--stempel)}
+
+/* laufende Nummer in der Randspalte */
+.kapitel{position:sticky;top:5.5rem;align-self:start;padding-top:.55rem}
+.kapitel .nr{font-family:var(--mono);font-size:2.25rem;font-weight:300;line-height:1;
+  color:var(--matt);letter-spacing:-.04em;font-variant-numeric:tabular-nums;display:block;
+  transition:color var(--t-gross) var(--ease-weich)}
+.kapitel .titel{font-family:var(--mono);font-size:var(--mono-m);letter-spacing:.15em;
+  text-transform:uppercase;color:var(--grau);margin-top:.6rem;display:block;line-height:1.6}
+.kapitel .strich{display:block;width:2.5rem;height:1px;background:var(--haar);margin-top:.9rem;
+  transform-origin:left;transition:background-color var(--t-gross) var(--ease-weich),
+                                   transform var(--t-gross) var(--ease-aus)}
+section.aktiv .kapitel .nr{color:var(--stempel)}
+section.aktiv .kapitel .strich{background:var(--stempel);transform:scaleX(1.6)}
+
+/* Marginalie */
+.marg .note{font-size:.82rem;line-height:1.55;color:var(--grau);padding-top:.55rem;
+  border-top:1px solid var(--haar)}
+.marg .note b{color:var(--tinte);font-weight:500}
+.marg .note + .note{margin-top:1.5rem}
+.marg .label{font-family:var(--mono);font-size:var(--mono-s);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--stempel);display:block;margin-bottom:.4rem}
+
+/* Abschnittsrahmen */
+section{padding-block:var(--s6)}
+section + section{border-top:1px solid var(--haar)}
+h2.kopf{font-size:clamp(1.85rem,1.3rem + 2.4vw,3.1rem);letter-spacing:-.022em;max-width:20ch}
+h2.kopf.leise{font-size:clamp(1.5rem,1.2rem + 1.4vw,2.2rem);max-width:24ch}
+.vorspann{margin-top:1.4rem;color:var(--grau);font-size:1.05em;max-width:58ch}
+.vorspann em{font-style:italic;color:var(--tinte)}
+
+/* Schaltflächen: keine Pillen, keine Radien */
+.tun{display:inline-flex;align-items:center;gap:.6rem;min-height:46px;padding:.65rem 1.15rem;
+  background:var(--stempel);color:var(--papier);text-decoration:none;
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;
+  border:1px solid var(--stempel);border-radius:0;transition:background .16s ease,color .16s ease}
+.tun:hover{background:transparent;color:var(--stempel)}
+.tun.still{background:transparent;color:var(--tinte);border-color:var(--strich)}
+.tun.still:hover{background:var(--strich);color:var(--papier)}
+.tun .pf{transition:transform .18s cubic-bezier(.22,1,.36,1)}
+.tun:hover .pf{transform:translateX(3px)}
+.textlink{position:relative;color:var(--stempel);text-decoration:none;
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;
+  padding-bottom:3px;transition:color var(--t-norm) var(--ease-weich)}
+.textlink::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:currentColor;transform-origin:left;
+  transition:transform var(--t-norm) var(--ease-aus)}
+.textlink:hover{color:var(--tinte)}
+.textlink:hover::after{transform:scaleX(1.02)}
+
+/* ---------- Kopfleiste ---------- */
+.leiste{position:sticky;top:0;z-index:40;background:var(--papier);border-bottom:1px solid var(--haar)}
+.leiste .in{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:52px}
+.leiste .sig{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;font-weight:600;
+  text-decoration:none}
+.leiste .sig i{font-style:normal;color:var(--stempel)}
+.leiste nav{display:flex;gap:1.4rem}
+.leiste nav a{position:relative;font-family:var(--mono);font-size:var(--mono-m);letter-spacing:.13em;
+  text-transform:uppercase;color:var(--grau);text-decoration:none;padding-block:.4rem;
+  transition:color var(--t-norm) var(--ease-weich)}
+.leiste nav a::after{content:"";position:absolute;left:0;right:0;bottom:.1rem;height:1px;
+  background:var(--stempel);transform:scaleX(0);transform-origin:left;
+  transition:transform var(--t-norm) var(--ease-aus)}
+.leiste nav a:hover{color:var(--tinte)}
+.leiste nav a[aria-current="true"]{color:var(--stempel)}
+.leiste nav a[aria-current="true"]::after{transform:scaleX(1)}
+@media (max-width:900px){.leiste nav{display:none}}
+
+/* ---------- Dokumentkopf ---------- */
+.kopfteil{padding-block:clamp(3rem,6vw,5.5rem) var(--s5)}
+.gegenstand{font-family:var(--mono);font-size:var(--mono-m);letter-spacing:.18em;text-transform:uppercase;
+  color:var(--stempel);margin-bottom:1.6rem}
+h1{font-size:clamp(2.4rem,1.4rem + 4.6vw,5.2rem);letter-spacing:-.028em;line-height:1.02;
+  max-width:17ch;font-weight:400}
+h1 em{font-style:italic;font-weight:300}
+.aufriss{margin-top:2rem;font-size:clamp(1.08rem,1rem + .4vw,1.28rem);line-height:1.58;
+  max-width:60ch}
+.aufriss .erst{font-weight:500}
+
+/* Metadaten-Zeile wie im Gutachtenkopf */
+.meta{margin-top:2.6rem;border-top:1px solid var(--strich);border-bottom:1px solid var(--haar)}
+.meta dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0}
+.meta div{padding:.9rem 1rem .9rem 0;border-right:1px solid var(--haar)}
+.meta div:last-child{border-right:0}
+.meta dt{font-family:var(--mono);font-size:var(--mono-s);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--matt);margin-bottom:.3rem}
+.meta dd{margin:0;font-size:.93rem;line-height:1.35}
+@media (max-width:720px){.meta dl{grid-template-columns:1fr 1fr}
+  .meta div{border-bottom:1px solid var(--haar)}
+  .meta div:nth-child(2n){border-right:0}}
+
+/* ---------- Messschrieb ---------- */
+.schrieb{margin-top:var(--s5)}
+.schrieb .tafel{margin-top:0}
+.schrieb .kopfzeile{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  padding-bottom:.7rem;border-bottom:1px solid var(--strich);flex-wrap:wrap}
+.schrieb .kopfzeile h2{font-size:1.2rem;font-weight:500;letter-spacing:-.01em}
+.schrieb svg{width:100%;height:auto;display:block;margin-top:1.5rem}
+.werte{margin-top:1.5rem}
+.werte tr{border-bottom:1px solid var(--haar)}
+.werte tr:last-child{border-bottom:0}
+.werte th{text-align:left;font-weight:400;font-size:.95rem;padding:.75rem 0;color:var(--grau)}
+.werte td{text-align:right;padding:.75rem 0;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:1.02rem;font-weight:500;white-space:nowrap}
+.werte td.gross{font-size:1.45rem;color:var(--stempel);letter-spacing:-.02em}
+.werte .quelle td,.werte .quelle th{font-size:.76rem;color:var(--matt);font-family:var(--mono);
+  text-align:left;line-height:1.55;padding-top:1rem;letter-spacing:.01em}
+
+.ausgang{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2.4rem;align-items:center}
+
+/* Messschrieb: Kurve zeichnet sich einmal. Ohne JS steht sie fertig da. */
+.schrieb.armed .kurve{stroke-dasharray:620;stroke-dashoffset:620}
+.schrieb.armed .punkte{opacity:0}
+.schrieb.lauf .kurve{stroke-dashoffset:0;
+  transition:stroke-dashoffset 1.2s var(--ease-weich)}
+.schrieb.lauf .punkte{opacity:1;transition:opacity 400ms var(--ease-weich) 900ms}
+@media (prefers-reduced-motion:reduce){
+  .schrieb.armed .kurve,.schrieb.lauf .kurve{stroke-dasharray:none;stroke-dashoffset:0;transition:none}
+  .schrieb.armed .punkte,.schrieb.lauf .punkte{opacity:1;transition:none}
+}
+
+/* ---------- Marktzeile ---------- */
+.markt{margin-top:var(--s5)}
+.markt > div > .mono{display:block;padding-bottom:.8rem;border-bottom:1px solid var(--strich)}
+.marktzeile{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.marktzeile > div{padding:1.5rem 1.4rem 1.4rem 0;border-right:1px solid var(--haar)}
+.marktzeile > div:last-child{border-right:0;padding-right:0}
+.marktzeile .w{display:block;font-size:clamp(1.5rem,1.1rem + 1.4vw,2.1rem);font-weight:500;
+  color:var(--stempel);letter-spacing:-.035em;line-height:1;margin-bottom:.6rem}
+.marktzeile p{font-size:.93rem;color:var(--grau);line-height:1.5}
+.belegzeile{margin-top:1.1rem;padding-top:.9rem;border-top:1px solid var(--haar);
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;color:var(--matt);line-height:1.7}
+@media (max-width:760px){
+  .marktzeile{grid-template-columns:1fr}
+  .marktzeile > div{border-right:0;border-bottom:1px solid var(--haar);padding-right:0}
+  .marktzeile > div:last-child{border-bottom:0}
+}
+
+/* ---------- Hauptgrafik ---------- */
+.bild{margin-top:var(--s5)}
+.bild figure{margin:0}
+.bildkopf{display:flex;justify-content:space-between;align-items:baseline;gap:1.5rem;flex-wrap:wrap;
+  padding-bottom:.9rem;border-bottom:1px solid var(--haar);margin-bottom:1.5rem}
+.bildkopf figcaption{font-size:clamp(1.05rem,.95rem + .5vw,1.35rem);font-weight:500;
+  letter-spacing:-.015em;max-width:42ch;line-height:1.25}
+.quotient{display:flex;align-items:baseline;gap:.75rem;padding-left:1.25rem;
+  border-left:2px solid var(--stempel);flex-shrink:0}
+.quotient .q{font-size:clamp(2.1rem,1.5rem + 2vw,3rem);font-weight:500;color:var(--stempel);
+  letter-spacing:-.05em;line-height:.9}
+.quotient .qt{font-family:var(--mono);font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--grau);line-height:1.7;align-self:center}
+.buehne{position:relative;overflow:hidden}
+.buehne svg{width:100%;height:auto;display:block}
+.blende{position:absolute;inset:0;background:var(--papier);transform:translateX(101%)}
+.buehne.armed .blende,.buehne.lauf .blende{will-change:transform}
+.buehne.fertig .blende{will-change:auto;display:none}
+.buehne.armed .blende{transform:translateX(0)}
+.buehne.lauf .blende{transform:translateX(101%);
+  transition:transform 1.05s cubic-bezier(.22,1,.36,1)}
+.bildfuss{margin-top:1.5rem;padding-top:1.1rem;border-top:1px solid var(--haar);
+  font-size:.92rem;color:var(--grau);max-width:78ch;line-height:1.6}
+.bildfuss b{color:var(--tinte);font-weight:500}
+.wischhinweis{display:none}
+@media (max-width:900px){
+  .buehne{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+  .buehne svg{min-width:700px}
+  .buehne::after{content:"";position:absolute;top:0;right:0;bottom:0;width:2.5rem;
+    background:linear-gradient(to right,transparent,var(--papier));pointer-events:none}
+  .bildkopf{margin-bottom:1.1rem;gap:1rem}
+  .quotient{padding-left:1rem}
+  .wischhinweis{display:block;margin-top:.7rem;font-family:var(--mono);font-size:.62rem;
+    letter-spacing:.13em;text-transform:uppercase;color:var(--matt)}
+}
+@media (prefers-reduced-motion:reduce){
+  .buehne.armed .blende,.buehne.lauf .blende{transform:translateX(101%);transition:none}
+}
+
+/* ---------- Stationen ---------- */
+.strecke{margin-top:var(--s4);border-top:1px solid var(--strich)}
+.station{display:grid;grid-template-columns:2.5rem minmax(0,1.05fr) minmax(0,.95fr);
+  gap:clamp(1rem,2.5vw,2.25rem);padding-block:1.85rem;border-bottom:1px solid var(--haar);
+  align-items:start}
+.station .i{font-family:var(--mono);font-size:var(--mono-l);font-weight:600;color:var(--stempel);
+  padding-top:.28rem;font-variant-numeric:tabular-nums}
+.station h3{font-size:1.28rem;font-weight:500;margin-bottom:.55rem;letter-spacing:-.012em}
+.station .bau{color:var(--grau);font-size:.97rem}
+.station .sicht{padding-left:1.15rem;border-left:2px solid var(--stempel)}
+.station .sicht .l{font-family:var(--mono);font-size:var(--mono-s);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--stempel);display:block;margin-bottom:.4rem;font-weight:500}
+.station .sicht p{font-size:.97rem}
+.station .fehlt{grid-column:2 / -1;margin-top:.45rem;font-size:.9rem;color:var(--grau);font-style:italic}
+.station .fehlt b{font-style:normal;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--matt);display:block;margin-bottom:.25rem;font-weight:500}
+@media (max-width:760px){
+  .station{grid-template-columns:2rem 1fr}
+  .station .sicht,.station .fehlt{grid-column:2}
+}
+
+/* ---------- Zielbild ---------- */
+.montag{margin-top:var(--s4);padding:clamp(1.4rem,3.5vw,2.2rem);background:var(--zone);
+  border-left:3px solid var(--stempel);border-radius:0 3px 3px 0}
+.montag > .mono{display:block;margin-bottom:.9rem;color:var(--stempel)}
+.montag p{font-size:1.05rem;max-width:62ch;line-height:1.65}
+.montag .nachsatz{margin-top:1rem;font-size:.88rem;color:var(--grau)}
+
+/* ---------- Voraussetzungen ---------- */
+.bedingungen{margin-top:var(--s4);border-top:1px solid var(--strich)}
+.bedingungen > div{display:grid;grid-template-columns:2.5rem minmax(0,14rem) minmax(0,1fr);
+  gap:clamp(1rem,2.5vw,2.25rem);padding-block:1.5rem;border-bottom:1px solid var(--haar);
+  align-items:baseline}
+.bedingungen .i{font-family:var(--mono);font-size:var(--mono-l);color:var(--stempel);font-weight:600}
+.bedingungen h3{font-size:1.1rem;font-weight:500}
+.bedingungen p{color:var(--grau);font-size:.97rem}
+@media (max-width:760px){.bedingungen > div{grid-template-columns:2rem 1fr;row-gap:.5rem}
+  .bedingungen p{grid-column:2}}
+
+/* ---------- Rechenblatt ---------- */
+.rechenblatt{margin-top:var(--s4);display:grid;grid-template-columns:1fr 1fr;
+  gap:clamp(1.5rem,4vw,3.5rem)}
+.weg{border-top:2px solid var(--strich);padding-top:1.1rem}
+.weg.b{border-top-color:var(--stempel)}
+.weg > .mono{display:block;margin-bottom:1.4rem}
+.weg.b > .mono{color:var(--stempel)}
+.eingabe{display:grid;grid-template-columns:1fr auto;align-items:center;gap:1rem;
+  padding-block:.6rem;border-bottom:1px solid var(--haar)}
+.eingabe label{font-size:.93rem;color:var(--grau);line-height:1.35}
+.eingabe .feld{display:flex;align-items:baseline;gap:.35rem}
+.eingabe{transition:background-color var(--t-norm) var(--ease-weich)}
+.eingabe:hover{background-color:var(--zone)}
+.eingabe input{width:4.6rem;padding:.25rem .35rem;font-family:var(--mono);font-size:1.05rem;
+  font-weight:500;font-variant-numeric:tabular-nums;text-align:right;color:var(--stempel);
+  background:transparent;border:0;border-bottom:1.5px solid var(--stempel);border-radius:0;
+  transition:border-color var(--t-norm) var(--ease-weich),
+             background-color var(--t-norm) var(--ease-weich)}
+.eingabe input:hover{background-color:var(--zone2)}
+.eingabe input:focus-visible{outline:2px solid var(--stempel);outline-offset:2px;
+  border-bottom-width:2px;background-color:var(--zone2)}
+.eingabe input:focus-visible + .einheit{color:var(--stempel)}
+.eingabe .einheit{transition:color var(--t-norm) var(--ease-weich)}
+.eingabe input::-webkit-outer-spin-button,.eingabe input::-webkit-inner-spin-button{
+  -webkit-appearance:none;margin:0}
+.eingabe input[type=number]{-moz-appearance:textfield}
+.eingabe .einheit{font-family:var(--mono);font-size:.78rem;color:var(--matt);width:1.9rem}
+.summe{margin-top:1.5rem}
+.summe .z{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  padding-block:.45rem;font-size:.9rem}
+.summe .z span{color:var(--grau)}
+.summe .z b{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:500}
+.summe .haupt{margin-top:1.1rem;padding-top:1.1rem;border-top:1px solid var(--strich)}
+.summe .haupt .k{font-family:var(--mono);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--matt);display:block;margin-bottom:.3rem}
+.summe .haupt .w{display:inline-block;font-family:var(--mono);
+  font-size:clamp(1.9rem,1.4rem + 1.6vw,2.6rem);font-weight:500;
+  letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1}
+.summe .haupt .w.frisch{animation:wert var(--t-gross) var(--ease-aus)}
+@keyframes wert{
+  0%{opacity:.45;transform:translateY(-2px)}
+  100%{opacity:1;transform:none}
+}
+.weg.b .summe .haupt .w{color:var(--stempel)}
+.fuss{margin-top:2rem;padding-top:1.1rem;border-top:1px solid var(--haar);font-size:.88rem;
+  color:var(--grau)}
+.fuss b{color:var(--tinte);font-weight:500}
+@media (max-width:760px){.rechenblatt{grid-template-columns:1fr}}
+
+/* ---------- Gegenüberstellung ---------- */
+.fall{margin-top:var(--s4);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.fall table{min-width:30rem}
+.fall table{font-size:.97rem}
+.fall thead th{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--matt);font-weight:500;text-align:left;padding-bottom:.8rem;border-bottom:1px solid var(--strich)}
+.fall thead th:nth-child(2),.fall thead th:nth-child(3){text-align:right}
+.fall tbody th{text-align:left;font-weight:400;color:var(--grau);padding:.85rem 1rem .85rem 0}
+.fall tbody td{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  padding:.85rem 0;white-space:nowrap;font-size:1rem}
+.fall tbody tr{border-bottom:1px solid var(--haar)}
+.fall tbody td.nach{color:var(--stempel);font-weight:500}
+.fall tbody td.vor{color:var(--grau)}
+.fall tfoot td,.fall tfoot th{padding-top:1rem;font-size:.78rem;color:var(--matt);
+  font-family:var(--mono);text-align:left;line-height:1.55;font-weight:400}
+
+/* ---------- Phasen ---------- */
+.phasen{margin-top:var(--s4);display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+  border-top:1px solid var(--strich)}
+.phasen > div{padding:1.4rem 1.4rem 1.4rem 0;border-right:1px solid var(--haar)}
+.phasen > div:last-child{border-right:0;padding-right:0}
+.phasen .ph{display:block;font-family:var(--mono);font-size:var(--mono-s);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--stempel);margin-bottom:.7rem;font-weight:500}
+.phasen p{font-size:.95rem;color:var(--grau);line-height:1.55}
+.phasen p b{color:var(--tinte);font-weight:500}
+@media (max-width:820px){
+  .phasen{grid-template-columns:1fr}
+  .phasen > div{border-right:0;border-bottom:1px solid var(--haar);padding-right:0}
+  .phasen > div:last-child{border-bottom:0}
+}
+
+/* ---------- Leiter ---------- */
+.leiter{margin-top:var(--s4);border-top:1px solid var(--strich)}
+.stufe{display:grid;grid-template-columns:2.5rem minmax(0,1.15fr) minmax(0,1.25fr) 8.5rem;
+  gap:clamp(.9rem,2.5vw,2rem);padding-block:1.6rem;border-bottom:1px solid var(--haar);
+  align-items:start}
+.stufe .i{font-family:var(--mono);font-size:var(--mono-l);color:var(--stempel);font-weight:600;padding-top:.25rem}
+.stufe h3{font-size:1.15rem;font-weight:500;margin-bottom:.3rem}
+.stufe .takt{display:block;font-family:var(--mono);font-size:var(--mono-s);letter-spacing:.09em;
+  text-transform:uppercase;color:var(--matt);line-height:1.8;text-wrap:balance}
+.stufe p{font-size:.95rem;color:var(--grau)}
+.stufe .preis{text-align:right}
+.stufe .preis .p{font-family:var(--mono);font-size:1.3rem;font-weight:500;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;display:block;line-height:1.1}
+.stufe .preis .n{font-family:var(--mono);font-size:.6rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--matt);display:block;margin-top:.35rem;line-height:1.5}
+.stufe@media (max-width:760px){
+  .stufe{grid-template-columns:2rem 1fr;row-gap:.6rem}
+  .stufe p,.stufe .preis{grid-column:2}
+  .stufe .preis{text-align:left}
+}
+
+/* ---------- Ausstieg ---------- */
+.ausstieg{margin-top:var(--s4);padding-top:1.1rem;border-top:2px solid var(--strich)}
+.ausstieg > .mono{display:block;margin-bottom:1.2rem}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem clamp(1.5rem,4vw,3rem)}
+.ag p{font-size:.95rem;color:var(--grau);padding-left:1rem;border-left:1px solid var(--haar)}
+.ag p b{display:block;color:var(--tinte);font-weight:500;margin-bottom:.2rem}
+@media (max-width:760px){.ag{grid-template-columns:1fr}}
+
+/* ---------- Passung ---------- */
+.passung{margin-top:var(--s4);display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,4vw,3.5rem)}
+.passung > div > .mono{display:block;padding-bottom:.8rem;border-bottom:2px solid var(--strich)}
+.passung .ja > .mono{border-bottom-color:var(--stempel);color:var(--stempel)}
+.passung ul{margin:0;padding:0;list-style:none}
+.passung li{padding-block:1rem;border-bottom:1px solid var(--haar)}
+.passung li b{display:block;font-weight:500;font-size:1rem;margin-bottom:.2rem}
+.passung li span{color:var(--grau);font-size:.92rem}
+@media (max-width:760px){.passung{grid-template-columns:1fr}}
+
+/* ---------- Marktcheck ---------- */
+.gate{margin-top:var(--s4);background:var(--zone);padding:clamp(1.5rem,4vw,2.2rem);border-radius:3px;
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(1.5rem,4vw,3rem)}
+.gate ol{margin:1.5rem 0 0;padding:0;list-style:none;counter-reset:g}
+.gate ol li{counter-increment:g;display:grid;grid-template-columns:2rem 1fr;gap:.5rem;
+  padding-block:.6rem;border-bottom:1px solid var(--haar);font-size:.96rem}
+.gate ol li::before{content:counter(g,decimal-leading-zero);font-family:var(--mono);font-size:.68rem;
+  color:var(--stempel);padding-top:.35rem;font-weight:500}
+.gate .schein{align-self:start}
+.gate .schein .mono{display:block;padding-bottom:.7rem;border-bottom:1px solid var(--strich);
+  margin-bottom:.3rem}
+.gate .schein .z{display:flex;justify-content:space-between;gap:1rem;padding-block:.55rem;
+  border-bottom:1px solid var(--haar);font-size:.88rem}
+.gate .schein .z span{color:var(--grau)}
+.gate .schein .z b{font-weight:500;text-align:right}
+.gate .schein .tun{width:100%;justify-content:center;margin-top:1.3rem}
+.gate .schein .klein{font-family:var(--mono);font-size:.6rem;letter-spacing:.09em;color:var(--matt);
+  margin-top:.8rem;text-align:center;line-height:1.7;text-transform:uppercase}
+@media (max-width:820px){.gate{grid-template-columns:1fr}}
+
+/* ---------- Fragen ---------- */
+.fragen{margin-top:var(--s4);border-top:1px solid var(--strich)}
+.fragen details{border-bottom:1px solid var(--haar)}
+.fragen summary{cursor:pointer;list-style:none;padding:1.15rem 2.5rem 1.15rem 0;position:relative;
+  font-size:1.12rem;font-weight:500;letter-spacing:-.01em;
+  transition:color var(--t-norm) var(--ease-weich)}
+.fragen summary::-webkit-details-marker{display:none}
+.fragen summary:hover{color:var(--stempel)}
+.fragen summary::after{content:"";position:absolute;right:.6rem;top:1.55rem;width:11px;height:11px;
+  border-right:1.5px solid var(--stempel);border-bottom:1.5px solid var(--stempel);
+  transform:rotate(45deg);transform-origin:60% 60%;
+  transition:transform var(--t-norm) var(--ease-aus)}
+.fragen details[open] summary::after{transform:rotate(-135deg)}
+.fragen .huelle{display:grid;grid-template-rows:0fr;
+  transition:grid-template-rows var(--t-norm) var(--ease-weich)}
+.fragen details[open] .huelle{grid-template-rows:1fr}
+.fragen .huelle > div{overflow:hidden}
+.fragen .antwort{padding:0 3rem 1.5rem 0;color:var(--grau);max-width:64ch;font-size:1rem}
+.fragen .antwort .erst{color:var(--tinte)}
+.fragen .antwort b{color:var(--tinte);font-weight:500}
+
+/* ---------- Verweise ---------- */
+.verweise{margin-top:var(--s4);border-top:1px solid var(--strich)}
+.verweise a{position:relative;display:grid;
+  grid-template-columns:2.5rem minmax(0,1fr) minmax(0,.85fr) 1.5rem;
+  gap:clamp(.8rem,2.5vw,2rem);align-items:baseline;padding-block:1.05rem;
+  border-bottom:1px solid var(--haar);text-decoration:none}
+.verweise a > *{transition:transform var(--t-norm) var(--ease-aus),
+                           color var(--t-norm) var(--ease-weich)}
+.verweise a:hover > *{transform:translateX(6px)}
+.verweise a:hover .p{transform:translateX(12px)}
+.verweise a:hover .f{color:var(--stempel)}
+.verweise a::before{content:"";position:absolute;left:-1rem;top:0;bottom:0;width:2px;
+  background:var(--stempel);transform:scaleY(0);transform-origin:center;
+  transition:transform var(--t-norm) var(--ease-aus)}
+.verweise a:hover::before{transform:scaleY(1)}
+.verweise .i{font-family:var(--mono);font-size:.68rem;color:var(--matt);font-variant-numeric:tabular-nums}
+.verweise .f{font-size:1rem;font-weight:500}
+.verweise .z{color:var(--grau);font-size:.88rem}
+.verweise .p{color:var(--stempel);font-family:var(--mono);text-align:right}
+@media (max-width:760px){
+  .verweise a{grid-template-columns:2rem 1fr 1.5rem;row-gap:.2rem}
+  .verweise .z{grid-column:2;grid-row:2}
+}
+
+/* ---------- Abschluss ---------- */
+.abschluss{padding-block:clamp(2rem,4vw,3rem) clamp(3rem,6vw,4.5rem)}
+.abschluss .tafel{padding:clamp(1.8rem,4.5vw,3.2rem)}
+.abschluss h2{font-size:clamp(1.9rem,1.3rem + 2.6vw,3.4rem);letter-spacing:-.025em;max-width:16ch}
+.abschluss .aufriss{color:var(--grau);margin-top:1.4rem;max-width:52ch}
+.protokoll{margin-top:.55rem}
+.protokoll .z{display:flex;justify-content:space-between;gap:.7rem;padding-block:.55rem;
+  border-bottom:1px solid var(--haar);font-family:var(--mono);font-size:.64rem;letter-spacing:.03em}
+.protokoll .z span{color:var(--matt);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.protokoll .z b{font-weight:400;text-align:right;white-space:nowrap}
+
+
+/* ---------- Schmale Schirme: Randspalten auflösen ---------- */
+@media (max-width:1080px){
+  .reihe{grid-template-columns:minmax(0,1fr)}
+  .reihe > .spalte-links,.reihe > .haupt,.reihe > .marg,.reihe > .voll,.reihe > .ganz{grid-column:1}
+  .reihe > .haupt{max-width:68ch}
+  .kapitel{position:static;display:flex;align-items:baseline;gap:.9rem;margin-bottom:1.6rem;padding-top:0}
+  .kapitel .nr{font-size:1.5rem}
+  .kapitel .titel{margin-top:0}
+  .kapitel .strich{display:none}
+  .marg{margin-top:2.5rem;max-width:62ch}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+
+<header class="leiste">
+  <div class="blatt in">
+    <a class="sig" href="#">HAŞIM ÜNER<i>.</i></a>
+    <nav id="nav">
+      <a href="#strecke">01 Strecke</a>
+      <a href="#anteil">02 Ihr Anteil</a>
+      <a href="#rechnung">03 Rechnung</a>
+      <a href="#fall">04 Fall</a>
+      <a href="#leiter">05 Leiter</a>
+      <a href="#marktcheck">Marktcheck</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ DOKUMENTKOPF ============ -->
+<div class="blatt kopfteil">
+  <div class="reihe">
+    <div class="haupt" style="grid-column:1 / 3;max-width:none">
+      <p class="gegenstand">Gegenstand · Anfragegewinnung für Photovoltaik, Wärmepumpe und Speicher</p>
+      <h1>Anfragen, die auf <em>Ihrer</em> Domain entstehen.</h1>
+      <p class="aufriss"><span class="erst">Ein eigenes Anfragesystem ist eine Anfragestrecke auf Ihrer
+      Domain.</span> Anzeige oder Suche führt auf Ihre Seite. Ein Formular qualifiziert vor, bevor jemand
+      Ihren Vertrieb erreicht. Serverseitiges Tracking macht jede Anfrage bis zur auslösenden Anzeige
+      zurückverfolgbar. Ein Alarm erreicht Ihren Vertrieb in unter 60 Sekunden. Code, Konten und Daten
+      gehören Ihrem Betrieb.</p>
+
+      <div class="meta">
+        <dl>
+          <div><dt>Für wen</dt><dd>Solar- und SHK-Betriebe mit eigenem Vertrieb</dd></div>
+          <div><dt>Einstieg</dt><dd>Marktcheck, kostenlos · Befund ≤ 2 Werktage</dd></div>
+          <div><dt>Aufbau</dt><dd><span class="zahl">14.900 €</span> netto · ab <span class="zahl">790 €</span> kleiner Einstieg</dd></div>
+          <div><dt>Bearbeitet von</dt><dd>Haşim Üner, Pattensen · 1:1, kein Team</dd></div>
+        </dl>
+      </div>
+
+      <div class="ausgang">
+        <a class="tun" href="#strecke">So funktioniert es <span class="pf" aria-hidden="true">→</span></a>
+        <a class="tun still" href="#leiter">Einstieg ab 790 €</a>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <!-- Messschrieb -->
+  <div class="reihe schrieb">
+    <div class="haupt tafel" style="grid-column:1 / 3;max-width:none">
+      <div class="kopfzeile">
+        <h2>Kosten pro qualifizierter Anfrage</h2>
+        <span class="mono">Dokumentierter Fall · PV-Mittelstand · 6 Monate</span>
+      </div>
+      <svg viewBox="0 0 620 150" role="img" aria-label="Die Kosten pro qualifizierter Anfrage fallen von 150 Euro im ersten Monat auf 22 Euro im sechsten Monat">
+        <g stroke="var(--haar)" stroke-width="1">
+          <line x1="46" y1="18" x2="612" y2="18"/><line x1="46" y1="50" x2="612" y2="50"/>
+          <line x1="46" y1="82" x2="612" y2="82"/>
+        </g>
+        <line x1="46" y1="114" x2="612" y2="114" stroke="var(--strich)" stroke-width="1"/>
+        <g fill="var(--matt)" font-family="IBM Plex Mono, monospace" font-size="9">
+          <text x="0" y="21">150 €</text><text x="0" y="53">100 €</text>
+          <text x="8" y="85">50 €</text><text x="17" y="117">0 €</text>
+        </g>
+        <polyline class="kurve" points="58,18 168,45 278,66 388,93 498,107 600,111" fill="none"
+          stroke="var(--stempel)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        <g fill="var(--stempel)" class="punkte">
+          <circle cx="58" cy="18" r="3.5"/><circle cx="600" cy="111" r="4.5"/>
+        </g>
+        <g fill="var(--tinte)" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500">
+          <text x="69" y="15">150 €</text><text x="548" y="105">22 €</text>
+        </g>
+        <g fill="var(--matt)" font-family="IBM Plex Mono, monospace" font-size="8.5">
+          <text x="52" y="132">MONAT 1</text><text x="258" y="132">MONAT 3</text><text x="562" y="132">MONAT 6</text>
+        </g>
+      </svg>
+
+      <table class="werte">
+        <tbody>
+          <tr><th scope="row">Kosten pro qualifizierter Anfrage, Monat 6</th><td class="gross">22 €</td></tr>
+          <tr><th scope="row">Ausgangswert über Portale, Monat 1</th><td>150 €</td></tr>
+          <tr><th scope="row">Qualifizierte Anfragen im Zeitraum</th><td>1.750+</td></tr>
+          <tr><th scope="row">Abschlussquote Anfrage → Vertrag</th><td class="gross">15 %</td></tr>
+          <tr class="quelle"><th scope="row" colspan="2">Mittelständischer PV-Installationsbetrieb in DACH. Drei Monate Vorbereitung, ab Monat drei stabil. Reduktion über 85 %. Dokumentierte Werte eines einzelnen Betriebs, keine Prognose für Ihren.</th></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Marktzeile: fremde, überprüfbare Zahlen -->
+  <div class="reihe markt">
+    <div class="haupt" style="grid-column:1 / 3;max-width:none">
+      <span class="mono">Zum Vergleich · was der Markt aufruft</span>
+      <div class="marktzeile">
+        <div>
+          <span class="w zahl">25–200 €</span>
+          <p>kostet eine Photovoltaik-Anfrage 2026 je nach Anbieter und Exklusivität. Nicht exklusiv
+          liegt bei rund 30 €, exklusiv und vorqualifiziert bei rund 150 €.</p>
+        </div>
+        <div>
+          <span class="w zahl">3 bis 5</span>
+          <p>Betriebe bekommen denselben Kontakt. Wer als Vierter anruft, verkauft über den Preis
+          oder gar nicht.</p>
+        </div>
+        <div>
+          <span class="w zahl">2.000 €</span>
+          <p>pro gewonnenem Auftrag in einem dokumentierten Fall: 84.000 € Lead-Budget, 950 Anfragen,
+          42 Aufträge. Abschlussquote 4,4 %.</p>
+        </div>
+      </div>
+      <p class="belegzeile">Quellen: Anfragenfluss, CPL-Übersicht Handwerk 2026 · pv magazine,
+      Leitfaden PV-Leadkauf · A&amp;M Beratung, Leadportale im Handwerk. Fremde Zahlen,
+      nicht aus meinen Projekten.</p>
+    </div>
+  </div>
+
+
+  <div class="reihe bild">
+    <div class="haupt tafel" style="grid-column:1 / -1;max-width:none">
+      <figure>
+        <div class="bildkopf">
+          <div>
+            <figcaption>Derselbe Interessent, zwei Wege — und wo unterwegs etwas verloren geht.</figcaption>
+            <span class="mono" style="display:block;margin-top:.7rem">Beide Wege mit 2.000 € Werbe- bzw. Einkaufsbudget im Monat</span>
+          </div>
+          <div class="quotient">
+            <span class="q zahl">5×</span>
+            <span class="qt">so viele Aufträge<br>bei gleichem Budget</span>
+          </div>
+        </div>
+
+        <div class="buehne">
+        <svg viewBox="0 26 1180 450" role="img" aria-label="Vergleich zweier Wege bei gleichem Monatsbudget von 2000 Euro. Beim Einkauf über Portale entstehen 25 Anfragen, die an drei bis fünf Betriebe verteilt werden, am Telefon qualifiziert werden müssen und oft zu spät zurückgerufen werden; am Ende steht ein Auftrag im Monat zu 2000 Euro. Über die eigene Strecke entstehen 44 Anfragen, die exklusiv sind, sich im Formular selbst vorqualifizieren und binnen 60 Sekunden einen Alarm auslösen; am Ende stehen 5,3 Aufträge im Monat zu 501 Euro.">
+          <g stroke="#332e28" stroke-width="1" stroke-dasharray="2 5">
+            <line x1="330" y1="72" x2="330" y2="440"/><line x1="545" y1="72" x2="545" y2="440"/>
+            <line x1="755" y1="72" x2="755" y2="440"/><line x1="940" y1="72" x2="940" y2="440"/>
+          </g>
+          <g fill="#948c81" font-family="IBM Plex Mono, monospace" font-size="11.5" letter-spacing="1.6">
+            <text x="95" y="60">ANFRAGE ENTSTEHT</text>
+            <text x="330" y="60">VERTEILUNG</text>
+            <text x="545" y="60">QUALIFIZIERUNG</text>
+            <text x="755" y="60">RÜCKRUF</text>
+            <text x="940" y="60">AUFTRAG</text>
+          </g>
+
+        <path d="M95,125.0 C212,125.0 212,125.0 330,125.0 L330,175.0 C212,175.0 212,175.0 95,175.0 Z" fill="#565049" stroke="#8c8279" stroke-width="1"/>
+        <path d="M330,125.0 C438,125.0 438,135.0 545,135.0 L545,165.0 C438,165.0 438,175.0 330,175.0 Z" fill="#565049" stroke="#8c8279" stroke-width="1"/>
+        <path d="M545,135.0 C650,135.0 650,141.5 755,141.5 L755,158.5 C650,158.5 650,165.0 545,165.0 Z" fill="#565049" stroke="#8c8279" stroke-width="1"/>
+        <path d="M755,141.5 C848,141.5 848,146.0 940,146.0 L940,154.0 C848,154.0 848,158.5 755,158.5 Z" fill="#565049" stroke="#8c8279" stroke-width="1"/>
+
+        <path d="M95,324.0 C212,324.0 212,324.0 330,324.0 L330,412.0 C212,412.0 212,412.0 95,412.0 Z" fill="#8a4a1e" stroke="#ef8b4d" stroke-width="1.2"/>
+        <path d="M330,324.0 C438,324.0 438,345.0 545,345.0 L545,391.0 C438,391.0 438,412.0 330,412.0 Z" fill="#8a4a1e" stroke="#ef8b4d" stroke-width="1.2"/>
+        <path d="M545,345.0 C650,345.0 650,347.5 755,347.5 L755,388.5 C650,388.5 650,391.0 545,391.0 Z" fill="#8a4a1e" stroke="#ef8b4d" stroke-width="1.2"/>
+        <path d="M755,347.5 C848,347.5 848,350.0 940,350.0 L940,386.0 C848,386.0 848,388.5 755,388.5 Z" fill="#8a4a1e" stroke="#ef8b4d" stroke-width="1.2"/>
+          <g fill="#f4f1ec" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="500">
+            <text x="95" y="115">25 gekaufte Anfragen</text>
+            <text x="95" y="313">44 eigene Anfragen</text>
+          </g>
+
+          <g stroke="#7d746a" stroke-width="1.2" fill="none" marker-end="url(#pfeilgrau)">
+            <path d="M437,124 L437,96"/><path d="M650,131 L650,103"/><path d="M848,137 L848,109"/>
+          </g>
+          <g fill="#a9a199" font-family="IBM Plex Mono, monospace" font-size="11.5">
+            <text x="437" y="88" text-anchor="middle">an 3–5 Betriebe</text>
+            <text x="650" y="95" text-anchor="middle">15 Min Telefonzeit je Kontakt</text>
+            <text x="848" y="101" text-anchor="middle">zu spät angerufen</text>
+          </g>
+
+          <g stroke="#ef8b4d" stroke-width="1.2" fill="none" marker-end="url(#pfeilorange)">
+            <path d="M437,412 L437,436"/><path d="M650,394 L650,436"/><path d="M848,389 L848,436"/>
+          </g>
+          <g fill="#ef8b4d" font-family="IBM Plex Mono, monospace" font-size="11.5">
+            <text x="437" y="459" text-anchor="middle">bleibt exklusiv</text>
+            <text x="650" y="459" text-anchor="middle">Abbruch im Formular</text>
+            <text x="848" y="459" text-anchor="middle">Alarm unter 60 Sek.</text>
+          </g>
+
+          <g font-family="IBM Plex Mono, monospace">
+            <text x="962" y="152" fill="#f4f1ec" font-size="42" font-weight="500" letter-spacing="-1.5">1,0</text>
+            <text x="962" y="174" fill="#948c81" font-size="11.5">Auftrag / Monat</text>
+            <text x="962" y="192" fill="#948c81" font-size="11.5">2.000 € je Auftrag</text>
+            <text x="962" y="370" fill="#ef8b4d" font-size="42" font-weight="500" letter-spacing="-1.5">5,3</text>
+            <text x="962" y="392" fill="#948c81" font-size="11.5">Aufträge / Monat</text>
+            <text x="962" y="410" fill="#948c81" font-size="11.5">501 € je Auftrag</text>
+          </g>
+
+          <defs>
+            <marker id="pfeilgrau" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="5" markerHeight="5" orient="auto">
+              <polygon points="0,0 8,4 0,8" fill="#7d746a"/>
+            </marker>
+            <marker id="pfeilorange" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="5" markerHeight="5" orient="auto">
+              <polygon points="0,0 8,4 0,8" fill="#ef8b4d"/>
+            </marker>
+          </defs>
+        </svg>
+        <div class="blende" aria-hidden="true"></div>
+        </div>
+
+        <p class="wischhinweis">Seitwärts wischen für den vollen Verlauf →</p>
+        <p class="bildfuss">Beide Wege verlieren unterwegs. Der Unterschied liegt darin, <b>wo</b>:
+        Beim Einkauf bricht die Menge nach dem Kontakt weg — also nachdem der Kontakt bezahlt und
+        Vertriebszeit hineingeflossen ist. Auf der eigenen Strecke bricht sie im Formular weg, also
+        vor dem ersten Anruf und ohne Kosten. Bandbreiten der Anfragen maßstäblich, Verlauf danach
+        schematisch; Endwerte gerechnet mit den Annahmen aus Abschnitt 03.</p>
+      </figure>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ 01 STRECKE ============ -->
+<section id="strecke"><div class="blatt reihe">
+  <div class="spalte-links"><div class="kapitel">
+    <span class="nr">01</span><span class="titel">Die Strecke</span><span class="strich"></span>
+  </div></div>
+  <div class="voll">
+    <h2 class="kopf">Was eine Anfrage bei Ihnen durchläuft.</h2>
+    <p class="vorspann">Fünf Stationen. An jeder entscheidet sich, ob aus einem Klick ein Termin wird, und an jeder geht
+    heute etwas verloren, das auf keiner Rechnung steht: Vertriebszeit und Aufträge, die jemand
+    anders zuerst angerufen hat. Links steht, was gebaut wird. Rechts, was davon
+    auf Ihrem Schreibtisch ankommt.</p>
+
+    <div class="strecke">
+      <article class="station">
+        <span class="i">01</span>
+        <div>
+          <h3>Sichtbarkeit auf Ihrer Domain</h3>
+          <p class="bau">Anzeigen in Google und Meta sowie organische Suche führen auf eine Seite,
+          die Ihnen gehört. Nicht auf ein Portal-Formular, das Ihren Namen erst nach dem Kauf nennt.</p>
+        </div>
+        <div class="sicht"><span class="l">Auf Ihrem Schreibtisch</span>
+          <p>Der Interessent kennt Ihren Betriebsnamen, bevor er das Formular abschickt.</p></div>
+        <p class="fehlt"><b>Fehlt diese Station</b>Die Aufmerksamkeit gehört der Marke des Portals. Ein PV-Kontakt
+        geht dort üblicherweise an drei bis fünf Betriebe. Der Interessent hat also mehrere Angebote,
+        bevor der erste Rückruf kommt.</p>
+      </article>
+
+      <article class="station">
+        <span class="i">02</span>
+        <div>
+          <h3>Vorqualifizierung statt Fünf-Felder-Formular</h3>
+          <p class="bau">Das Formular fragt in Schritten, was über die Passung entscheidet: Objektart und
+          Dachsituation, Postleitzahl, Projektgröße, Zeithorizont, Eigentum. Wer nicht passt, bricht ab. Genau dafür ist es gebaut.</p>
+        </div>
+        <div class="sicht"><span class="l">Auf Ihrem Schreibtisch</span>
+          <p>Sie sehen Region, Objekt und Projektwert, bevor Sie zum Telefon greifen. Kein Erstgespräch
+          zur Feststellung, dass es eine Mietwohnung ist.</p></div>
+        <p class="fehlt"><b>Fehlt diese Station</b>Die Qualifizierung passiert am Telefon statt im Formular.
+        Bei 25 Anfragen im Monat und je einer Viertelstunde sind das über sechs Stunden Vertriebszeit,
+        bevor überhaupt ein Angebot geschrieben ist.</p>
+      </article>
+
+      <article class="station">
+        <span class="i">03</span>
+        <div>
+          <h3>Messung auf eigenem Server</h3>
+          <p class="bau">Serverseitiges Tracking auf einer Subdomain Ihrer Website, Server in Frankfurt.
+          Jede Anfrage bleibt bis zur auslösenden Anzeige zurückverfolgbar, auch bei Ad-Blockern und
+          abgelehnten Cookies. Die Messdaten laufen über Ihren Container, Ihre Konten.</p>
+        </div>
+        <div class="sicht"><span class="l">Auf Ihrem Schreibtisch</span>
+          <p>Sie können sagen, welche Anzeige den 40.000-€-Auftrag gebracht hat. Und welche 900 €
+          verbrannt hat, ohne eine einzige Anfrage.</p></div>
+        <p class="fehlt"><b>Fehlt diese Station</b>Optimiert wird auf Klickberichte. Das Budget wandert dahin,
+        wo geklickt wird, statt dahin, wo unterschrieben wird. Der Unterschied fällt erst auf,
+        wenn man beides nebeneinanderlegen kann.</p>
+      </article>
+
+      <article class="station">
+        <span class="i">04</span>
+        <div>
+          <h3>Anschluss an Ihren Vertrieb</h3>
+          <p class="bau">Alarm per SMS oder WhatsApp an den zuständigen Vertriebler in unter 60 Sekunden,
+          mit Ort, Projektart und Uhrzeit in der Nachricht. Automatische Eingangsbestätigung mit
+          Terminbuchungslink. Alle Anfragen nach Quelle getrennt in einer Übersicht — auch die,
+          die Sie weiter bei Portalen kaufen.</p>
+        </div>
+        <div class="sicht"><span class="l">Auf Ihrem Schreibtisch</span>
+          <p>Ihr Betrieb ist der Erste, der zurückmeldet. Auch um 20:30 Uhr, auch am Samstag.</p></div>
+        <p class="fehlt"><b>Fehlt diese Station</b>Die Anfrage liegt bis Montag im Sammelpostfach.
+        Bei einem Kontakt, den vier andere auch haben, entscheidet der erste Rückruf, nicht das beste
+        Angebot. Das ist der Auftrag, den man verliert, ohne je davon zu erfahren.</p>
+      </article>
+
+      <article class="station">
+        <span class="i">05</span>
+        <div>
+          <h3>Eigentum, schriftlich</h3>
+          <p class="bau">Code, Werbekonten, Tracking-Container, CRM und Domain laufen auf Ihren Zugängen.
+          Jede Komponente ist dokumentiert. Bei Vertragsende gibt es eine Übergabe mit Übersicht,
+          keine Abhängigkeitserklärung.</p>
+        </div>
+        <div class="sicht"><span class="l">Auf Ihrem Schreibtisch</span>
+          <p>Wenn die Zusammenarbeit endet, läuft die Strecke weiter. Ein anderer Dienstleister kann sie
+          übernehmen, ohne neu zu bauen.</p></div>
+        <p class="fehlt"><b>Fehlt diese Station</b>Man mietet ein System und merkt es erst beim Wechsel.
+        Drei Prüffragen für das, was Sie heute haben: Wem gehört der Code Ihrer Anfrageseite?
+        Wem das CRM? Wem der Tracking-Account?</p>
+      </article>
+    </div>
+
+    <div class="montag">
+      <span class="mono">Wenn die Strecke läuft</span>
+      <p>Montagmorgen, halb acht. In der Übersicht liegen elf Anfragen vom Wochenende, sortiert
+      nach Quelle. Vier davon sind Einfamilienhäuser im Umkreis von 40 Kilometern mit
+      Projektwerten über 20.000 €, die Dachform steht dabei. Drei sind Mietwohnungen und schon
+      aussortiert, ohne dass jemand telefoniert hat. Bei zwei Anfragen von Samstagabend hat Ihr
+      Vertriebler bereits am selben Abend zurückgerufen, weil die Nachricht auf seinem Handy
+      aufschlug, während der Interessent noch am Rechner saß. Und Sie sehen in einer Zeile,
+      welche Anzeige diese elf Anfragen gebracht hat und was sie gekostet hat.</p>
+      <p class="nachsatz">Das ist kein Versprechen für Ihren Betrieb. Es ist die Beschreibung
+      dessen, was die fünf Stationen zusammen erzeugen, wenn sie stehen.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ 02 ANTEIL ============ -->
+<section id="anteil"><div class="blatt reihe">
+  <div class="spalte-links"><div class="kapitel">
+    <span class="nr">02</span><span class="titel">Ihr Anteil</span><span class="strich"></span>
+  </div></div>
+  <div class="haupt">
+    <h2 class="kopf">Drei Dinge müssen bei Ihnen passieren.</h2>
+    <p class="vorspann">Ein Anfragesystem ist kein Zukauf, den man aufstellt und laufen lässt.
+    Diese drei Punkte entscheiden über das Ergebnis stärker als jede technische Entscheidung.
+    Deshalb stehen sie <em>vor</em> dem Preis.</p>
+
+    <div class="bedingungen">
+      <div>
+        <span class="i">01</span>
+        <h3>Zugänge</h3>
+        <p>Domain, Hosting, Werbekonten und CRM auf Ihren Namen. Wo noch nichts existiert, wird es auf
+        Ihren Namen angelegt. Rund zwei Stunden Ihrer Zeit in der ersten Woche.</p>
+      </div>
+      <div>
+        <span class="i">02</span>
+        <h3>Eine Person, die entscheidet</h3>
+        <p>Geschäftsführung oder Vertriebsleitung mit Entscheidungsbefugnis, erreichbar für etwa eine
+        Stunde alle zwei Wochen. Kein Gremium, keine Abstimmungsrunde.</p>
+      </div>
+      <div>
+        <span class="i">03</span>
+        <h3>Rückruf-Disziplin</h3>
+        <p>Der Alarm hilft nur, wenn jemand reagiert. Wer vorqualifizierte Anfragen zwei Tage liegen
+        lässt, braucht kein besseres System, sondern eine andere Absprache im Vertrieb.</p>
+      </div>
+    </div>
+  </div>
+  
+</div></section>
+
+<!-- ============ 03 RECHNUNG ============ -->
+<section id="rechnung"><div class="blatt reihe">
+  <div class="spalte-links"><div class="kapitel">
+    <span class="nr">03</span><span class="titel">Die Rechnung</span><span class="strich"></span>
+  </div></div>
+  <div class="voll">
+    <h2 class="kopf">Nicht pro Anfrage rechnen. Pro Auftrag.</h2>
+    <p class="vorspann">Ein Lead für 80 € ist billig, bis man weiß, wie viele davon zum Auftrag führen.
+    Hier steht deshalb die einzige Zahl, die im Betrieb zählt: was Sie ein gewonnener Auftrag im
+    jeweiligen Weg kostet. Alle Werte sind Ihre Annahmen — die Seite behauptet keine.</p>
+    <p class="vorspann" style="margin-top:.9rem;font-size:.95rem">Beide Spalten sind mit
+    <b>2.000 € im Monat</b> vorbelegt, damit der Vergleich am selben Budget hängt — dieselbe Rechnung
+    wie in der Grafik oben. In dem dokumentierten Marktfall lag der Wert für den Einkaufsweg
+    ebenfalls bei rund 2.000 € pro Auftrag. Die Voreinstellung ist also nicht schwarzgemalt.</p>
+
+    <div class="rechenblatt">
+      <div class="weg">
+        <span class="mono">Weg A · Anfragen einkaufen</span>
+        <div class="eingabe">
+          <label for="a1">Gekaufte Anfragen pro Monat</label>
+          <span class="feld"><input id="a1" type="number" min="0" max="500" value="25"><span class="einheit">Stk</span></span>
+        </div>
+        <div class="eingabe">
+          <label for="a2">Preis pro Anfrage</label>
+          <span class="feld"><input id="a2" type="number" min="0" max="1000" value="80"><span class="einheit">€</span></span>
+        </div>
+        <div class="eingabe">
+          <label for="a3">Abschlussquote auf diese Anfragen</label>
+          <span class="feld"><input id="a3" type="number" min="0.5" max="100" step="0.5" value="4"><span class="einheit">%</span></span>
+        </div>
+        <div class="summe">
+          <div class="z"><span>Einkauf pro Monat</span><b id="oA1">–</b></div>
+          <div class="z"><span>Aufträge pro Monat</span><b id="oA2">–</b></div>
+          <div class="haupt">
+            <span class="k">Kosten je gewonnener Auftrag</span>
+            <span class="w" id="oA3">–</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="weg b">
+        <span class="mono">Weg B · Eigene Strecke</span>
+        <div class="eingabe">
+          <label for="b1">Werbebudget pro Monat</label>
+          <span class="feld"><input id="b1" type="number" min="0" max="50000" step="100" value="2000"><span class="einheit">€</span></span>
+        </div>
+        <div class="eingabe">
+          <label for="b2">Kosten pro Anfrage, die Sie ansetzen</label>
+          <span class="feld"><input id="b2" type="number" min="1" max="1000" value="45"><span class="einheit">€</span></span>
+        </div>
+        <div class="eingabe">
+          <label for="b3">Abschlussquote auf vorqualifizierte Anfragen</label>
+          <span class="feld"><input id="b3" type="number" min="0.5" max="100" step="0.5" value="12"><span class="einheit">%</span></span>
+        </div>
+        <div class="summe">
+          <div class="z"><span>Budget + Aufbau/24 Mon. + Hosting</span><b id="oB1">–</b></div>
+          <div class="z"><span>Aufträge pro Monat</span><b id="oB2">–</b></div>
+          <div class="haupt">
+            <span class="k">Kosten je gewonnener Auftrag</span>
+            <span class="w" id="oB3">–</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="fuss"><b>Enthalten</b> — in Weg B der Aufbau mit 14.900 € auf 24 Monate verteilt, rund
+    50 € Hosting im Monat und Ihr Werbebudget. <b>Nicht enthalten</b> — die Vertriebszeit. Sie fällt
+    in beiden Wegen an, in Weg A aber pro unqualifizierter Anfrage: Wer 25 Kontakte im Monat je eine
+    Viertelstunde durchtelefoniert, um den einen zu finden, der unterschreibt, verbringt damit gut
+    sechs Stunden am Telefon. Voreingestellt sind bewusst vorsichtige Werte: 45 € statt der 22 € aus dem
+    dokumentierten Fall, 12 % statt 15 %.</p>
+  </div>
+</div></section>
+
+<!-- ============ 04 FALL ============ -->
+<section id="fall"><div class="blatt reihe">
+  <div class="spalte-links"><div class="kapitel">
+    <span class="nr">04</span><span class="titel">Der Fall</span><span class="strich"></span>
+  </div></div>
+  <div class="voll">
+    <h2 class="kopf">Sechs Monate, ein Betrieb, drei Phasen.</h2>
+    <p class="vorspann">Ein mittelständischer PV-Installationsbetrieb in DACH, sechs Monate.
+    Der Verlauf ist wichtiger als die Endzahl, weil er zeigt, wann nichts passiert und wie lange das
+    dauert.</p>
+
+    <div class="phasen">
+      <div>
+        <span class="ph">Monat 1–3 · Aufbau</span>
+        <p>Anfragestrecke, Vorqualifizierung und serverseitiges Tracking entstehen. Anzeigen laufen,
+        aber die Kosten pro Anfrage bleiben zunächst im dreistelligen Bereich — es gibt noch keine
+        Datengrundlage, auf die sich optimieren ließe. <b>In dieser Phase sieht ein Betrieb wenig
+        für sein Geld.</b> Wer das nicht aushält, sollte nicht anfangen.</p>
+      </div>
+      <div>
+        <span class="ph">Ab Monat 3 · Wirkung</span>
+        <p>Mit den ersten belastbaren Daten wird messbar, welche Anzeige zu welcher Anfrage und
+        welche Anfrage zu welchem Vertrag führt. Ab hier stabilisieren sich die Kosten pro
+        qualifizierter Anfrage bei 22 €. Zu Beginn waren es 150 €.</p>
+      </div>
+      <div>
+        <span class="ph">Monat 6 · Stand</span>
+        <p>1.750 qualifizierte Anfragen im Zeitraum, Abschlussquote 15 % von der Anfrage zum Vertrag,
+        Rückfluss auf das eingesetzte Werbebudget 34-fach. Der Betrieb hat die Konten, den Code und
+        die Daten.</p>
+      </div>
+    </div>
+
+    <div class="fall tafel">
+      <table>
+        <thead>
+          <tr><th scope="col">Kennzahl</th><th scope="col">Vorher · Portal-Einkauf</th><th scope="col">Nachher · eigene Strecke</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Kosten pro qualifizierter Anfrage</th><td class="vor">150 €</td><td class="nach">22 €</td></tr>
+          <tr><th scope="row">Abschlussquote Anfrage → Vertrag</th><td class="vor">einstellig</td><td class="nach">15 %</td></tr>
+          <tr><th scope="row">Qualifizierte Anfragen im Zeitraum</th><td class="vor">—</td><td class="nach">1.750+</td></tr>
+          <tr><th scope="row">Sicht auf Region, Dach, Projektwert</th><td class="vor">keine</td><td class="nach">vor dem Anruf</td></tr>
+          <tr><th scope="row">Exklusivität der Kontakte</th><td class="vor">je Tarif</td><td class="nach">immer</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="3">Drei Monate Vorbereitung, ab Monat drei stabil bei 22 €. Reduktion über 85 %. Die Vorher-Abschlussquote ist eine Marktannahme, keine gemessene Zahl dieses Betriebs.</td></tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="ausgang">
+      <a class="textlink" href="#">Vollständige Methodik in der Fallstudie →</a>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ 05 LEITER ============ -->
+<section id="leiter"><div class="blatt reihe">
+  <div class="spalte-links"><div class="kapitel">
+    <span class="nr">05</span><span class="titel">Die Leiter</span><span class="strich"></span>
+  </div></div>
+  <div class="voll">
+    <h2 class="kopf">Vier Stufen. Sie müssen nicht oben anfangen.</h2>
+    <p class="vorspann">Jede Stufe steht für sich und lässt sich einzeln buchen. Wer unten einsteigt,
+    hat nach zwei Monaten eigene Zahlen und entscheidet auf dieser Grundlage über die nächste.</p>
+
+    <div class="leiter">
+      <article class="stufe">
+        <span class="i">01</span>
+        <div><h3>Marktcheck</h3><span class="takt">2 Minuten · Befund ≤ 2 Werktage</span></div>
+        <p>Fünf Fragen, dann lese ich Ihre Antworten selbst und schreibe zurück, ob ein eigener
+        Anfrageweg bei Ihnen wirtschaftlich trägt. Auch wenn die Antwort nein ist — dann mit drei
+        Hebeln, die ohne mich funktionieren.</p>
+        <div class="preis"><span class="p">0 €</span><span class="n">kostenlos</span></div>
+      </article>
+
+      <article class="stufe">
+        <span class="i">02</span>
+        <div><h3>Sofortkontakt-Setup</h3><span class="takt">5 Werktage · keine Mindestlaufzeit</span></div>
+        <p>Wirkt auf die Anfragen, die Sie heute schon haben — auch auf gekaufte Leads von Aroundhome,
+        DAA oder Wattfox. Alarm unter 60 Sekunden, automatische Eingangsbestätigung mit Terminlink,
+        alle Quellen in einer Übersicht. Nach rund 60 Tagen wissen Sie mit eigenen Zahlen, was ein
+        gekaufter Lead pro gewonnenem Auftrag wirklich kostet.</p>
+        <div class="preis"><span class="p">790 €</span><span class="n">netto · einmalig</span></div>
+      </article>
+
+      <article class="stufe">
+        <span class="i">03</span>
+        <div><h3>Anfragesystem-Analyse</h3><span class="takt">7 Werktage · wird angerechnet</span></div>
+        <p>Anfragequellen, Tracking, Funnel und Vertriebsanschluss als schriftlicher Befund mit drei
+        priorisierten Hebeln und einer Wirtschaftlichkeits-Einordnung. Bei Umsetzung zahlen Sie sie
+        nicht doppelt.</p>
+        <div class="preis"><span class="p">690 €</span><span class="n">netto · anrechenbar</span></div>
+      </article>
+
+      <article class="stufe">
+        <span class="i">04</span>
+        <div><h3>Aufbau der Anfragestrecke</h3><span class="takt">nach Befund · Übergabe dokumentiert</span></div>
+        <p>Die fünf Stationen aus Abschnitt 01, gebaut auf Ihren Zugängen. Danach optional laufende
+        Weiterentwicklung mit wöchentlichem Reporting — monatlich kündbar, keine Rufbereitschaft.</p>
+        <div class="preis"><span class="p">14.900 €</span><span class="n">netto + ~50 €/Mon. Hosting</span></div>
+      </article>
+    </div>
+
+    <div class="ausstieg">
+      <span class="mono">Was Sie behalten, wenn wir aufhören</span>
+      <div class="ag">
+        <p><b>Auf jeder Stufe.</b> Der Befund gehört Ihnen, auch ohne Folgeauftrag. Jede fertige
+        Komponente läuft auf Ihren Konten und ist dokumentiert. Ein Abbruch hinterlässt kein totes
+        System, sondern die Teile, die bis dahin stehen. Bedienbar ohne mich.</p>
+        <p><b>Kein langer Vertrag.</b> Die laufende Weiterentwicklung ist monatlich kündbar.
+        Rufbereitschaft und eine Reaktionszeit im Störfall sage ich nicht zu; wer das braucht,
+        ist bei einer Agentur mit Team besser aufgehoben.</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ 06 PASSUNG ============ -->
+<section id="passung"><div class="blatt reihe">
+  <div class="spalte-links"><div class="kapitel">
+    <span class="nr">06</span><span class="titel">Passung</span><span class="strich"></span>
+  </div></div>
+  <div class="voll">
+    <h2 class="kopf leise">Lieber jetzt klären, ob es passt.</h2>
+        <p class="vorspann">Damit Sie nicht erst nach dem dritten Gespräch merken, dass es nicht
+    zusammenpasst. Die linke Spalte beschreibt die Betriebe, bei denen ein eigener Anfrageweg
+    trägt.</p>
+
+    <div class="passung">
+      <div class="ja">
+        <span class="mono">Passt</span>
+        <ul>
+          <li><b>Projektwerte ab ca. 15.000 € privat, 50.000 € gewerblich</b>
+            <span>Darunter trägt die Marge den Aufbau nicht.</span></li>
+          <li><b>Eigener Vertrieb, der abschließt</b>
+            <span>Ihr Team oder die Geschäftsführung — jemand, der zurückruft und nachfasst.</span></li>
+          <li><b>Definiertes Zielgebiet</b>
+            <span>Region oder Bundesland. Nicht „bundesweit, alles“.</span></li>
+          <li><b>Horizont 12 bis 24 Monate</b>
+            <span>Bereit, ein Asset aufzubauen statt Anfragen zu mieten.</span></li>
+        </ul>
+      </div>
+      <div>
+        <span class="mono">Passt nicht</span>
+        <ul>
+          <li><b>„Nächste Woche brauchen wir Leads.“</b>
+            <span>Dann kaufen Sie welche. Das ist keine Kritik, sondern der richtige Weg für diesen Zeitrahmen.</span></li>
+          <li><b>Reines Vermittlungsgeschäft</b>
+            <span>Wer Leads weiterverkauft, braucht kein eigenes System.</span></li>
+          <li><b>Kein Vertriebsprozess</b>
+            <span>Anfragen sterben, wenn niemand konsequent qualifiziert und nachfasst.</span></li>
+          <li><b>Sichtbarkeit nicht gewollt</b>
+            <span>Der eigene Anfrageweg lebt davon, dass Ihr Betrieb unterscheidbar wird.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ 07 MARKTCHECK ============ -->
+<section id="marktcheck"><div class="blatt reihe">
+  <div class="spalte-links"><div class="kapitel">
+    <span class="nr">07</span><span class="titel">Marktcheck</span><span class="strich"></span>
+  </div></div>
+  <div class="voll">
+    <h2 class="kopf">Erst rechnen lassen, dann entscheiden.</h2>
+    <p class="vorspann">Sie beantworten fünf Fragen, ich rechne Ihren Fall durch und schicke
+    Ihnen schriftlich, ob sich ein eigener Anfrageweg bei Ihnen trägt. Zwei Minuten Aufwand,
+    keine Kosten, kein Pflichtgespräch. Wenn es nicht passt, sage ich das und Sie bekommen
+    trotzdem drei Hebel, die ohne mich funktionieren.</p>
+    <p class="vorspann" style="margin-top:1rem">Andere Anbieter führen an dieser Stelle ins
+    Gespräch. Ich schicke ein Dokument. Was schriftlich steht, muss ich belegen können, und Sie
+    können es in Ruhe lesen, im Betrieb weiterreichen und ablehnen, ohne jemanden am Telefon
+    abwimmeln zu müssen.</p>
+
+    <div class="gate">
+      <div>
+        <span class="mono">Was im Befund steht</span>
+        <ol>
+          <li>Einordnung Ihres Marktumfelds anhand der Firmen-Postleitzahl — wie viele Betriebe
+          dort um dieselben Anfragen konkurrieren</li>
+          <li>Ob der Projektwert die Rechnung trägt, mit Ihren Zahlen durchgerechnet</li>
+          <li>Drei priorisierte Hebel mit konkretem nächstem Schritt — auch wenn ich absage</li>
+          <li>Eine klare Empfehlung: jetzt, später oder gar nicht</li>
+        </ol>
+        <p style="margin-top:1.1rem;font-size:.9rem;color:var(--grau)">Gefragt wird nach
+        Leistungsfokus, Projekt-Fit, Vertriebsverantwortung, Umsetzungshorizont und geschäftlichen
+        Eckdaten. Fünf Schritte, etwa zwei Minuten.</p>
+      </div>
+      <div class="schein tafel">
+        <span class="mono">Was Sie bekommen</span>
+        <div class="z"><span>Form</span><b>Befund per E-Mail</b></div>
+        <div class="z"><span>Frist</span><b>spätestens 2 Werktage</b></div>
+        <div class="z"><span>Geprüft von</span><b>Haşim Üner, persönlich</b></div>
+        <div class="z"><span>Auch bei Nein</span><b>drei priorisierte Hebel</b></div>
+        <div class="z"><span>Kosten</span><b>keine</b></div>
+        <a class="tun" href="#">Kostenlos prüfen lassen <span class="pf" aria-hidden="true">→</span></a>
+        <p class="klein">Keine Zahlungsdaten · kein Pflicht-Call<br>kontakt@hasimuener.de</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ 08 FRAGEN ============ -->
+<section id="fragen"><div class="blatt reihe">
+  <div class="spalte-links"><div class="kapitel">
+    <span class="nr">08</span><span class="titel">Fragen</span><span class="strich"></span>
+  </div></div>
+  <div class="haupt">
+    <h2 class="kopf leise">Was Betriebe vorher wissen wollen.</h2>
+    <p class="vorspann">Umgebaut für Maschinen und Menschen: Jede Antwort steht vollständig im ersten
+    Satz, ohne Rückverweis auf den Text darüber.</p>
+
+    <div class="fragen">
+      <details open>
+        <summary>Was ist ein eigenes Anfragesystem für Photovoltaik und Wärmepumpe?</summary>
+        <div class="huelle"><div><div class="antwort"><span class="erst">Ein eigenes Anfragesystem ist eine Anfragestrecke auf der
+        Domain des Installationsbetriebs: Anzeigen und organische Suche führen auf eine eigene Seite,
+        ein mehrstufiges Formular qualifiziert vor dem Erstkontakt vor, serverseitiges Tracking macht
+        jede Anfrage bis zur auslösenden Anzeige zurückverfolgbar, und ein Alarm erreicht den Vertrieb
+        in unter 60 Sekunden.</span> Code, Werbekonten, Tracking-Container und Daten liegen beim Betrieb.
+        Der Unterschied zum Lead-Einkauf liegt nicht im Preis pro Anfrage, sondern in Exklusivität,
+        Vorqualifizierung und Eigentum.</div></div></div>
+      </details>
+
+      <details>
+        <summary>Was kostet es, eigene Photovoltaik-Anfragen zu generieren statt zu kaufen?</summary>
+        <div class="huelle"><div><div class="antwort"><span class="erst">Der Aufbau einer eigenen Anfragestrecke liegt bei
+        14.900 € netto einmalig plus rund 50 € Hosting im Monat; das Werbebudget kommt separat hinzu
+        und bleibt auf dem Konto des Betriebs.</span> Zwei kleinere Stufen davor: die
+        Anfragesystem-Analyse für 690 € netto, die bei Umsetzung angerechnet wird, und das
+        Sofortkontakt-Setup für 790 € netto, das auf bereits vorhandene Anfragen wirkt.</div></div></div>
+      </details>
+
+      <details>
+        <summary>Warum ist Cost per Order aussagekräftiger als Cost per Lead?</summary>
+        <div class="huelle"><div><div class="antwort"><span class="erst">Cost per Order — die Kosten pro gewonnenem Auftrag —
+        berücksichtigt die Abschlussquote und ist deshalb die belastbarere Kennzahl.</span>
+        Rechenbeispiel: 2.000 € Monatsbudget ergeben bei 80 € pro Kontakt 25 Anfragen; bei 4 %
+        Abschlussquote ist das ein Auftrag, also 2.000 € pro Auftrag. Eine eigene Strecke mit 45 € pro Anfrage und 12 %
+        Abschlussquote kommt bei gleichem Budget auf einen deutlich niedrigeren Wert — nicht wegen des
+        niedrigeren Anfragepreises, sondern wegen der Vorqualifizierung.</div></div></div>
+      </details>
+
+      <details>
+        <summary>Funktioniert serverseitiges Tracking ohne Cookie-Banner?</summary>
+        <div class="huelle"><div><div class="antwort"><span class="erst">Serverseitiges Tracking verlagert die Messung vom
+        Browser auf einen eigenen Server und macht Anfragen auch bei Ad-Blockern und abgelehnten
+        Cookies zurückverfolgbar — es ersetzt aber keine erforderliche Einwilligung.</span> Welche
+        Messung einwilligungspflichtig ist, hängt von den eingesetzten Diensten ab; das ist eine
+        rechtliche Bewertung und keine technische.</div></div></div>
+      </details>
+
+      <details>
+        <summary>Wie unterscheidet sich das von einer Performance-Agentur?</summary>
+        <div class="huelle"><div><div class="antwort"><span class="erst">Der Unterschied ist Eigentum: Bei vielen Agenturmodellen
+        liegen Landingpage-Code, Werbekonto und Tracking-Container beim Dienstleister, hier liegen sie
+        beim Betrieb.</span> Drei Prüffragen: Wem gehört der Code Ihrer Anfrageseite? Wem gehört das
+        CRM? Wem gehört der Tracking-Account? Wenn die Antwort dreimal „uns“ ist, brauchen Sie keinen
+        Wechsel.</div></div></div>
+      </details>
+
+    </div>
+  </div>
+  
+</div></section>
+
+<!-- ============ 09 VERWEISE ============ -->
+<section id="verweise"><div class="blatt reihe">
+  <div class="spalte-links"><div class="kapitel">
+    <span class="nr">09</span><span class="titel">Verweise</span><span class="strich"></span>
+  </div></div>
+  <div class="voll">
+    <h2 class="kopf leise">Die Seiten, auf denen die Zahlen herkommen.</h2>
+    <p class="vorspann">Zehn Seiten zu Strategie, Lead-Qualität, Funnel-Architektur und Markteinordnung,
+    nach der Frage sortiert, die dahintersteckt. Jede ist unabhängig lesbar.</p>
+
+    <div class="verweise">
+      <a href="#"><span class="i">01</span><span class="f">Was kosten Solar-Leads am Markt?</span><span class="z">Marktstudie DACH, Preise je Modell</span><span class="p">→</span></a>
+      <a href="#"><span class="i">02</span><span class="f">Soll ich PV-Leads überhaupt kaufen?</span><span class="z">Einordnung der Anbieter und die Alternative</span><span class="p">→</span></a>
+      <a href="#"><span class="i">03</span><span class="f">Was ist ein realistischer CPL in Photovoltaik?</span><span class="z">Drei Szenarien, versteckte Kostentreiber</span><span class="p">→</span></a>
+      <a href="#"><span class="i">04</span><span class="f">Woran erkenne ich eine qualifizierte PV-Anfrage?</span><span class="z">Vier Merkmale plus Warnsignale</span><span class="p">→</span></a>
+      <a href="#"><span class="i">05</span><span class="f">Portal oder eigenes System über 24 Monate?</span><span class="z">Vergleich über acht Kriterien</span><span class="p">→</span></a>
+      <a href="#"><span class="i">06</span><span class="f">Wie ist ein Solar-Funnel aufgebaut?</span><span class="z">Fünf Stufen einer belastbaren Architektur</span><span class="p">→</span></a>
+      <a href="#"><span class="i">07</span><span class="f">Wie funktioniert Server-Side-Tracking im B2B?</span><span class="z">GA4, Meta CAPI, Consent Mode v2</span><span class="p">→</span></a>
+      <a href="#"><span class="i">08</span><span class="f">Was gilt bei Wärmepumpen-Leads anders?</span><span class="z">Marktmodelle und CPL im Heizungstausch</span><span class="p">→</span></a>
+      <a href="#"><span class="i">09</span><span class="f">Wie läuft gewerbliche PV-Leadgenerierung?</span><span class="z">Buying-Center-Funnel im B2B</span><span class="p">→</span></a>
+      <a href="#"><span class="i">10</span><span class="f">Wie gewinnen Solarteure systematisch Kunden?</span><span class="z">Fünf Hebel im DACH-Mittelstand</span><span class="p">→</span></a>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ ABSCHLUSS ============ -->
+<div class="abschluss"><div class="blatt"><div class="tafel reihe">
+  <div class="haupt" style="grid-column:1 / 3;max-width:none">
+    <h2>Zwei Minuten kosten Sie die Antwort.</h2>
+    <p class="aufriss" style="color:var(--grau)">Fünf Fragen, dann rechne ich Ihren Fall durch und
+    schreibe Ihnen, ob er trägt. Ich arbeite 1:1 und nehme jeweils nur wenige Betriebe parallel an,
+    deshalb entscheidet die Rechnung über die Zusammenarbeit und nicht ein Vertriebsgespräch.
+    Falls Ihr Fall nicht trägt, erfahren Sie das in zwei Werktagen statt nach dem dritten Termin.</p>
+    <div class="ausgang">
+      <a class="tun" href="#marktcheck">Kostenlos prüfen lassen <span class="pf" aria-hidden="true">→</span></a>
+      <a class="tun still" href="#leiter">Einstieg ab 790 €</a>
+    </div>
+  </div>
+  <div class="marg">
+    <div class="protokoll">
+      <div class="z"><span>Antwort</span><b>≤ 2 Werktage</b></div>
+      <div class="z"><span>Sitz</span><b>Pattensen · Hannover</b></div>
+      <div class="z"><span>Arbeitsweise</span><b>remote in DACH, 1:1</b></div>
+      <div class="z"><span>Messung</span><b>ohne Cookie-Banner</b></div>
+      <div class="z"><span>Kontakt</span><b>kontakt@hasimuener.de</b></div>
+    </div>
+  </div>
+</div></div></div>
+
+<script>
+(function(){
+  var ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var eur = new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0});
+  var num = new Intl.NumberFormat('de-DE',{maximumFractionDigits:2});
+  var AUFBAU = 14900, MONATE = 24, HOSTING = 50;
+  function v(id){ var n = parseFloat(document.getElementById(id).value); return isFinite(n) ? n : 0; }
+  function set(id,t){
+    var el = document.getElementById(id);
+    if (el.textContent === t) return;
+    el.textContent = t;
+    if (!el.classList.contains('w') || ruhig) return;
+    el.classList.remove('frisch');
+    void el.offsetWidth;              // Neustart der Animation erzwingen
+    el.classList.add('frisch');
+  }
+
+  function rechne(){
+    var leads = v('a1'), preis = v('a2'), qA = v('a3')/100;
+    var einkauf = leads*preis, auftrA = leads*qA;
+    set('oA1', eur.format(einkauf) + ' / Mon.');
+    set('oA2', num.format(auftrA));
+    set('oA3', auftrA > 0 ? eur.format(einkauf/auftrA) : '–');
+
+    var budget = v('b1'), cpl = v('b2'), qB = v('b3')/100;
+    var kostenB = budget + AUFBAU/MONATE + HOSTING;
+    var leadsB = cpl > 0 ? budget/cpl : 0, auftrB = leadsB*qB;
+    set('oB1', eur.format(kostenB) + ' / Mon.');
+    set('oB2', num.format(auftrB));
+    set('oB3', auftrB > 0 ? eur.format(kostenB/auftrB) : '–');
+  }
+  ['a1','a2','a3','b1','b2','b3'].forEach(function(id){
+    var el = document.getElementById(id);
+    el.addEventListener('input', rechne);
+    el.addEventListener('change', rechne);
+  });
+  rechne();
+
+  // Einmalige Aufbau-Bewegungen. Alles ist ohne JS und ohne Bewegung vollstaendig sichtbar:
+  // scharfgeschaltet wird nur, was beim Laden noch unter dem Sichtfeld liegt.
+  function einmalig(el, schwelle, nachlauf){
+    if (!el || ruhig) return;
+    if (el.getBoundingClientRect().top < window.innerHeight * 0.85) return;
+    el.classList.add('armed');
+    var b = new IntersectionObserver(function(eintraege){
+      eintraege.forEach(function(e){
+        if (!e.isIntersecting) return;
+        el.classList.add('lauf');
+        b.disconnect();
+        if (nachlauf) setTimeout(function(){ el.classList.add('fertig'); }, nachlauf);
+      });
+    }, {threshold: schwelle});
+    b.observe(el);
+  }
+  einmalig(document.querySelector('.buehne'), 0.25, 1400);
+  einmalig(document.querySelector('.schrieb'), 0.3, 0);
+
+  // Aktiver Abschnitt faerbt seine Kapitelmarke
+  var abschnitte = Array.prototype.slice.call(document.querySelectorAll('section[id]'));
+  if ('IntersectionObserver' in window) {
+    var marke = new IntersectionObserver(function(eintraege){
+      eintraege.forEach(function(e){
+        e.target.classList.toggle('aktiv', e.isIntersecting);
+      });
+    }, {rootMargin: '-45% 0px -45% 0px'});
+    abschnitte.forEach(function(a){ marke.observe(a); });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('#nav a'));
+  var ziele = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function markiere(){
+    var y = window.scrollY + window.innerHeight*0.3, akt = -1;
+    ziele.forEach(function(s,i){ if(s && s.offsetTop <= y) akt = i; });
+    links.forEach(function(a,i){
+      if(i===akt) a.setAttribute('aria-current','true'); else a.removeAttribute('aria-current');
+    });
+  }
+  var t = false;
+  window.addEventListener('scroll', function(){
+    if(!t){ t = true; requestAnimationFrame(function(){ markiere(); t = false; }); }
+  }, {passive:true});
+  markiere();
+})();
+</script>
