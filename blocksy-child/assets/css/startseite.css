@@ -47,10 +47,14 @@
   gap: 0;
 }
 
+/* Innenabstand auf beiden Seiten, ausser aussen — sonst klebt der Wert
+   an der Trennlinie seines linken Nachbarn. */
 .startseite .messwerte > div {
-  padding-right: var(--s2);
+  padding-inline: var(--s2);
   border-right: 1px solid var(--haar);
 }
+
+.startseite .messwerte > div:first-child { padding-left: 0; }
 
 .startseite .messwerte > div:last-child {
   border-right: 0;
@@ -109,6 +113,8 @@
     gap: var(--s3) 0;
   }
 
+  .startseite .messwerte > div:nth-child(2n + 1) { padding-left: 0; }
+
   .startseite .messwerte > div:nth-child(2n) {
     border-right: 0;
     padding-right: 0;
@@ -128,7 +134,10 @@
 
 .startseite .weg-z {
   display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1.25fr) minmax(0, 1.3fr) 10.5rem;
+  /* Der Titel braucht knapp 180 px, der Fliesstext jede Zeile, die er
+     kriegen kann: bei 1,25 zu 1,3 stand links Luft und rechts ein
+     sechszeiliger Absatz mit 35 Zeichen Zeilenlaenge. */
+  grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1.5fr) 10.5rem;
   gap: clamp(var(--s1), 2.5vw, var(--s3));
   align-items: start;
   padding-block: var(--s3);
@@ -138,13 +147,8 @@
 }
 
 .startseite .weg-z > * {
-  transition:
-    transform var(--t-norm) var(--ease-aus),
-    color var(--t-norm) var(--ease-weich);
+  transition: transform var(--t-norm) var(--ease-aus);
 }
-
-.startseite .weg-z:hover > * { transform: translateX(6px); }
-.startseite .weg-z:hover h3 { color: var(--stempel); }
 
 .startseite .weg-z::before {
   content: "";
@@ -158,7 +162,19 @@
   transition: transform var(--t-norm) var(--ease-aus);
 }
 
-.startseite .weg-z:hover::before { transform: scaleY(1); }
+/* Die Kante links ist die Markierung, nicht die Ueberschrift. Sie stand
+   vorher zusaetzlich zu einem Farbwechsel an der h3, der die Zeile von
+   18:1 auf 5,5:1 gezogen hat — die wichtigste Zeile des Abschnitts wurde
+   beim Hover schlechter lesbar. Jetzt traegt die Kante den Zustand und
+   der Titel bleibt, wo er ist.
+
+   Beides nur mit echtem Zeiger: auf einem Beruehrungsschirm bleibt
+   :hover nach dem Tippen haengen, und die Zeile staende dauerhaft
+   6 px verschoben mit ausgefahrener Kante. */
+@media (hover: hover) and (pointer: fine) {
+  .startseite .weg-z:hover > * { transform: translateX(6px); }
+  .startseite .weg-z:hover::before { transform: scaleY(1); }
+}
 
 .startseite .weg-z .i {
   font-family: var(--mono);
@@ -191,7 +207,19 @@
   color: var(--grau);
 }
 
-.startseite .weg-z .rahmen { text-align: right; }
+/* Pfeil neben den Preis, Notiz darunter ueber die volle Spaltenbreite.
+   Vorher stand der Pfeil als dritte Zeile allein unter einer umbrechenden
+   Notiz und sah aus, als haette ihn jemand vergessen. Die Umordnung
+   betrifft zwei Zeichen ohne eigene Aussage — der Pfeil ist
+   aria-hidden, und der Linkname kommt aus der ganzen Zeile. */
+.startseite .weg-z .rahmen {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 0 var(--s1);
+  text-align: right;
+}
 
 .startseite .weg-z .rahmen .p {
   display: block;
@@ -205,7 +233,8 @@
 }
 
 .startseite .weg-z .rahmen .n {
-  display: block;
+  order: 2;
+  flex-basis: 100%;
   font-family: var(--mono);
   font-size: var(--mono-s);
   letter-spacing: 0.09em;
@@ -216,8 +245,7 @@
 }
 
 .startseite .weg-z .rahmen .pf {
-  display: block;
-  margin-top: var(--s1);
+  order: 1;
   color: var(--stempel);
   font-family: var(--mono);
   font-size: 1.05rem;
@@ -233,12 +261,9 @@
   .startseite .weg-z p,
   .startseite .weg-z .rahmen { grid-column: 2; }
 
-  .startseite .weg-z .rahmen { text-align: left; }
-
-  .startseite .weg-z .rahmen .pf {
-    display: inline-block;
-    margin-left: var(--s1);
-    margin-top: 0;
+  .startseite .weg-z .rahmen {
+    justify-content: flex-start;
+    text-align: left;
   }
 }
 
@@ -253,9 +278,11 @@
 }
 
 .startseite .gemein > div {
-  padding: var(--s3) var(--s2) 0 0;
+  padding: var(--s3) var(--s2) 0;
   border-right: 1px solid var(--haar);
 }
+
+.startseite .gemein > div:first-child { padding-left: 0; }
 
 .startseite .gemein > div:last-child {
   border-right: 0;
@@ -286,8 +313,12 @@
 
 @media (max-width: 900px) {
   .startseite .gemein { grid-template-columns: 1fr 1fr; }
-  .startseite .gemein > div:nth-child(2n) { border-right: 0; }
   .startseite .gemein > div { padding-bottom: var(--s2); }
+  .startseite .gemein > div:nth-child(2n + 1) { padding-left: 0; }
+  .startseite .gemein > div:nth-child(2n) {
+    border-right: 0;
+    padding-right: 0;
+  }
 }
 
 @media (max-width: 480px) {
@@ -309,9 +340,11 @@
 }
 
 .startseite .arbeit > div {
-  padding: var(--s3) var(--s2) 0 0;
+  padding: var(--s3) var(--s2) 0;
   border-right: 1px solid var(--haar);
 }
+
+.startseite .arbeit > div:first-child { padding-left: 0; }
 
 .startseite .arbeit > div:last-child {
   border-right: 0;
@@ -353,9 +386,11 @@
 }
 
 .startseite .fallzeile > div {
-  padding-right: var(--s3);
+  padding-inline: var(--s3);
   border-right: 1px solid var(--haar);
 }
+
+.startseite .fallzeile > div:first-child { padding-left: 0; }
 
 .startseite .fallzeile > div:last-child {
   border-right: 0;

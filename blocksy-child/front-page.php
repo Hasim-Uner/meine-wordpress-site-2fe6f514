@@ -252,7 +252,7 @@ get_header();
 						</div>
 						<div>
 							<dt>Rahmen</dt>
-							<dd>Projekte ab <span class="zahl"><?php echo esc_html( $preis_direkt ); ?></span> netto · Solar-Aufbau <span class="zahl"><?php echo esc_html( $aufbau_energie ); ?></span></dd>
+							<dd>Projekte ab <span class="zahl"><?php echo esc_html( $preis_direkt ); ?></span>&nbsp;netto · Solar-Aufbau <span class="zahl"><?php echo esc_html( $aufbau_energie ); ?></span></dd>
 						</div>
 						<div>
 							<dt>Arbeitsweise</dt>

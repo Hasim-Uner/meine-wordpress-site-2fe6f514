@@ -111,6 +111,10 @@ if ( is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordp
 
 $cta_url   = (string) ( $cta_item['url'] ?? $project_url );
 $cta_label = (string) ( $cta_item['label'] ?? 'Projekt anfragen' );
+// Das Kurzwort traegt den Knopf unter 1081 px, wo die Navigation in die
+// Klappe geht. Der Knopf selbst bleibt stehen — der wichtigste
+// Handlungsweg der Domain gehoert nicht hinter ein Menue.
+$cta_short = (string) ( $cta_item['short_label'] ?? 'Anfragen' );
 
 /*
  * Eine Liste fuer beide Ausgaben. Die Zeile zeigt sie waagerecht, das
@@ -174,10 +178,11 @@ $leiste_location  = (string) ( $meta['location'] ?? '' );
 			<a
 				class="tun"
 				href="<?php echo esc_url( $cta_url ); ?>"
+				aria-label="<?php echo esc_attr( $cta_label ); ?>"
 				data-track-action="<?php echo esc_attr( (string) ( $cta_item['track'] ?? 'nav_header_project' ) ); ?>"
 				data-track-category="<?php echo esc_attr( (string) ( $cta_item['category'] ?? 'lead_gen' ) ); ?>"
 				data-track-section="<?php echo esc_attr( (string) ( $cta_item['section'] ?? 'header' ) ); ?>"
-			><?php echo esc_html( $cta_label ); ?></a>
+			><span class="lang"><?php echo esc_html( $cta_label ); ?></span><span class="kurz"><?php echo esc_html( $cta_short ); ?></span></a>
 
 			<button
 				type="button"

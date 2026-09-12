@@ -33,6 +33,10 @@
      --zone und bleibt sichtbar leichter als --grau (7,36:1). */
   --matt: #736b62;
   --stempel: #b8420f;
+  /* Spiegelt --stempel-tief aus system.css. Die Route traegt ihre Tokens
+     noch lokal, bis sie auf das System umzieht; bis dahin muss der Wert
+     hier stehen, sonst erbt .strecke-doc den hellen Ton auf der Tafel. */
+  --stempel-tief: #8a300b;
   --haar: #dedad3;
   --strich: #171412;
 
@@ -110,6 +114,7 @@
   --grau: #a9a199;
   --matt: #9c948a;
   --stempel: #ef8b4d;
+  --stempel-tief: #f8b184;
   --haar: #332e28;
   --strich: #f4f1ec;
 
@@ -439,7 +444,10 @@
 }
 
 .strecke-doc .textlink:hover { color: var(--tinte); }
-.strecke-doc .textlink:hover::after { transform: scaleX(1.02); }
+
+@media (hover: hover) and (pointer: fine) {
+  .strecke-doc .textlink:hover::after { transform: scaleX(1.02); }
+}
 
 /* Fliesstextlinks: der Satz bleibt Satz, die Linie markiert. */
 .strecke-doc .satzlink {
@@ -448,10 +456,17 @@
   text-decoration-color: var(--stempel);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
-  transition: color var(--t-norm) var(--ease-weich);
+  transition:
+    text-decoration-color var(--t-norm) var(--ease-weich),
+    text-decoration-thickness var(--t-norm) var(--ease-weich);
 }
 
-.strecke-doc .satzlink:hover { color: var(--stempel); }
+/* Die Linie markiert, nicht die Textfarbe — sonst faellt der Satz beim
+   Hover von 18:1 auf 5,5:1. Gleiche Regel wie in system.css. */
+.strecke-doc .satzlink:hover {
+  text-decoration-color: var(--stempel-tief);
+  text-decoration-thickness: 2px;
+}
 
 /* ══ Kapitelregister ═══════════════════════════════════════════
    Zwei Fassungen, ein Markup.
@@ -663,7 +678,7 @@
   transition: color var(--t-norm) var(--ease-weich);
 }
 
-.strecke-doc .pfad a:hover { color: var(--stempel); }
+.strecke-doc .pfad a:hover { color: var(--tinte); }
 .strecke-doc .pfad li[aria-current="page"] { color: var(--grau); }
 
 .strecke-doc .pfad .tr {
@@ -1800,11 +1815,11 @@
   font-size: 1.12rem;
   font-weight: 500;
   letter-spacing: -0.01em;
-  transition: color var(--t-norm) var(--ease-weich);
+  transition: background-color var(--t-norm) var(--ease-weich);
 }
 
 .strecke-doc .fragen summary::-webkit-details-marker { display: none; }
-.strecke-doc .fragen summary:hover { color: var(--stempel); }
+.strecke-doc .fragen summary:hover { background: var(--zone); }
 
 .strecke-doc .fragen summary::after {
   content: "";
@@ -1877,7 +1892,7 @@
 
 .strecke-doc .verweise a:hover > * { transform: translateX(6px); }
 .strecke-doc .verweise a:hover .p { transform: translateX(12px); }
-.strecke-doc .verweise a:hover .f { color: var(--stempel); }
+.strecke-doc .verweise a:hover .f { color: var(--stempel-tief); }
 
 .strecke-doc .verweise a::before {
   content: "";

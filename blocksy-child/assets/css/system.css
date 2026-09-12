@@ -48,6 +48,12 @@
      --zone und bleibt sichtbar leichter als --grau (7,36:1). */
   --matt: #736b62;
   --stempel: #b8420f;
+  /* Der Ton, den ein Hover annimmt — dunkler als der Stempel, nicht
+     heller. Gemessen: --stempel liegt auf Papier bei 5,49:1, --stempel-tief
+     bei 8,37:1 und auf --zone bei 7,75:1. Der Unterschied ist der Grund,
+     warum es ihn gibt: ein Hover, der von 18:1 auf 5,5:1 faellt, markiert
+     nicht, er blasst ab. */
+  --stempel-tief: #8a300b;
   --haar: #dedad3;
   --strich: #171412;
 
@@ -118,6 +124,10 @@ body.nx-custom-header-active {
   --grau: #a9a199;
   --matt: #9c948a;
   --stempel: #ef8b4d;
+  /* Auf der Tafel zeigt derselbe Token in die andere Richtung: heller,
+     weil mehr Kontrast auf dunklem Grund heller heisst. 7,41:1 auf
+     10,16:1. */
+  --stempel-tief: #f8b184;
   --haar: #332e28;
   --strich: #f4f1ec;
 
@@ -141,9 +151,24 @@ body.nx-custom-header-active {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Kopf und Fuss brauchen dasselbe Kastenmodell wie der Satz. Bis hierher
+   stand die Regel nur unter .doku — Leiste und Fuss rechneten also
+   content-box, und jeder Innenabstand kam dort auf die gesetzte Hoehe
+   obendrauf statt hineinzuzaehlen. Sichtbar wurde es am Knopf der Leiste:
+   32 px min-height ergaben gemessene 45 px in einer 52 px hohen Zeile,
+   und der orange Block sah aus, als stiesse er oben und unten an. */
+.doku,
 .doku *,
 .doku *::before,
-.doku *::after {
+.doku *::after,
+.leiste,
+.leiste *,
+.leiste *::before,
+.leiste *::after,
+.fuss,
+.fuss *,
+.fuss *::before,
+.fuss *::after {
   box-sizing: border-box;
 }
 
@@ -217,9 +242,13 @@ body.nx-custom-header-active {
   font-variant-numeric: tabular-nums;
 }
 
+/* Mono traegt bei gleichem Grad mehr Flaeche als die Textschrift. Steht
+   ein Betrag mitten im Satz, wirkt er ohne diese Stufe groesser als der
+   Text, der ihn traegt. */
 .doku .zahl,
 .fuss .zahl {
   font-family: var(--mono);
+  font-size: 0.95em;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
   white-space: nowrap;
@@ -361,7 +390,15 @@ body.nx-custom-header-active {
 
 /* ══ Schaltflaechen ═══════════════════════════════════════════
    Keine Pillen, keine Radien. Der Hover kehrt die Flaeche um, statt
-   sie zu vergroessern — Layout wird nie animiert. */
+   sie zu vergroessern — Layout wird nie animiert.
+
+   REGEL FUER JEDEN HOVER IM SYSTEM: er geht zu mehr Tinte, nie zu
+   weniger. Wo ein Element im Ruhezustand schon dunkel ist, bleibt es
+   dunkel und der Akzent wandert auf die Markierung — Linie, Kante,
+   Pfeil, Flaeche. Vorher liefen beide Richtungen nebeneinander: der
+   .textlink gewann beim Hover 13 Kontraststufen, die Fusszeile verlor
+   dabei 70 Prozent. Zwei Richtungen in einem System sind keine
+   Sprache. */
 
 .doku .tun,
 .leiste .tun,
@@ -391,7 +428,12 @@ body.nx-custom-header-active {
 .leiste .tun:hover,
 .fuss .tun:hover {
   background: transparent;
-  color: var(--stempel);
+  /* Nicht --stempel: die Umkehr von voller Flaeche auf Umriss allein
+     laesst den Knopf leichter wirken, ohne dass der Kontrast steigt
+     (5,49:1 vorher wie nachher). Mit dem tieferen Ton gewinnt der
+     Umriss-Zustand, statt nur anders auszusehen. */
+  color: var(--stempel-tief);
+  border-color: var(--stempel-tief);
 }
 
 .doku .tun.still,
@@ -415,9 +457,15 @@ body.nx-custom-header-active {
   transition: transform 180ms var(--ease-aus);
 }
 
-.doku .tun:hover .pf,
-.leiste .tun:hover .pf,
-.fuss .tun:hover .pf { transform: translate(3px, -0.5px); }
+/* Bewegung nur, wo ein Zeiger sie ausloest und wieder wegnimmt. Auf einem
+   Beruehrungsschirm bleibt :hover nach dem Tippen haengen — der Pfeil
+   staende dann dauerhaft verrutscht, und das sieht nach Fehler aus, nicht
+   nach Rueckmeldung. Gilt fuer jede Bewegung in dieser Datei. */
+@media (hover: hover) and (pointer: fine) {
+  .doku .tun:hover .pf,
+  .leiste .tun:hover .pf,
+  .fuss .tun:hover .pf { transform: translate(3px, -0.5px); }
+}
 
 .doku .textlink,
 .fuss .textlink {
@@ -451,8 +499,11 @@ body.nx-custom-header-active {
 
 .doku .textlink:hover,
 .fuss .textlink:hover { color: var(--tinte); }
-.doku .textlink:hover::after,
-.fuss .textlink:hover::after { transform: scaleX(1.02); }
+
+@media (hover: hover) and (pointer: fine) {
+  .doku .textlink:hover::after,
+  .fuss .textlink:hover::after { transform: scaleX(1.02); }
+}
 
 /* Fliesstextlinks: der Satz bleibt Satz, die Linie markiert. */
 .doku .satzlink {
@@ -461,10 +512,17 @@ body.nx-custom-header-active {
   text-decoration-color: var(--stempel);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
-  transition: color var(--t-norm) var(--ease-weich);
+  transition:
+    text-decoration-color var(--t-norm) var(--ease-weich),
+    text-decoration-thickness var(--t-norm) var(--ease-weich);
 }
 
-.doku .satzlink:hover { color: var(--stempel); }
+/* Der Satz bleibt Satz. Die Linie wird dicker und tiefer — das ist die
+   Markierung, nicht die Textfarbe. */
+.doku .satzlink:hover {
+  text-decoration-color: var(--stempel-tief);
+  text-decoration-thickness: 2px;
+}
 
 .doku .ausgang {
   display: flex;
@@ -472,6 +530,20 @@ body.nx-custom-header-active {
   gap: var(--s1);
   margin-top: var(--s4);
   align-items: center;
+}
+
+/* Auf schmalen Schirmen untereinander und gleich breit. Nebeneinander
+   passen sie nicht, und untereinander mit Eigenbreite standen zwei
+   verschieden lange Bloecke uebereinander — die Rangfolge trug dann die
+   Breite statt der Farbe. Jetzt traegt sie die Farbe: voll oben, Umriss
+   darunter. */
+@media (max-width: 560px) {
+  .doku .ausgang {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .doku .ausgang .tun { justify-content: center; }
 }
 
 /* ══ Dokumentkopf ═════════════════════════════════════════════ */
@@ -491,7 +563,10 @@ body.nx-custom-header-active {
   font-size: clamp(2.1rem, 1.3rem + 4vw, 4.4rem);
   letter-spacing: -0.028em;
   line-height: 1.04;
-  max-width: 17ch;
+  /* 17ch stammt aus der Vorlage und galt fuer eine Serif bei 5,2 rem. Die
+     Grotesk laeuft schmaler und deckelt bei 4,4 rem — bei 17ch stand die
+     Zeile auf grossen Schirmen als schmale Saeule neben viel Leerraum. */
+  max-width: 20ch;
 }
 
 .doku .aufriss {
@@ -518,12 +593,20 @@ body.nx-custom-header-active {
   margin: 0;
 }
 
+/* Innenabstand auf beiden Seiten, ausser aussen. Vorher stand links 0 und
+   der Text der zweiten bis vierten Zelle klebte an der Trennlinie seines
+   linken Nachbarn — bei 390 px am deutlichsten, weil dort zwei Spalten
+   dicht nebeneinander stehen. */
 .doku .meta div {
-  padding: var(--s2) var(--s2) var(--s2) 0;
+  padding: var(--s2);
   border-right: 1px solid var(--haar);
 }
 
-.doku .meta div:last-child { border-right: 0; }
+.doku .meta div:first-child { padding-left: 0; }
+.doku .meta div:last-child {
+  border-right: 0;
+  padding-right: 0;
+}
 
 .doku .meta dt {
   font-family: var(--mono);
@@ -543,7 +626,13 @@ body.nx-custom-header-active {
 @media (max-width: 720px) {
   .doku .meta dl { grid-template-columns: 1fr 1fr; }
   .doku .meta div { border-bottom: 1px solid var(--haar); }
-  .doku .meta div:nth-child(2n) { border-right: 0; }
+  /* Im zweispaltigen Raster ist jede ungerade Zelle die aussen linke und
+     jede gerade die aussen rechte. */
+  .doku .meta div:nth-child(2n + 1) { padding-left: 0; }
+  .doku .meta div:nth-child(2n) {
+    border-right: 0;
+    padding-right: 0;
+  }
 }
 
 /* ══ Fragen ═══════════════════════════════════════════════════
@@ -567,11 +656,14 @@ body.nx-custom-header-active {
   font-size: 1.12rem;
   font-weight: 500;
   letter-spacing: -0.01em;
-  transition: color var(--t-norm) var(--ease-weich);
+  transition: background-color var(--t-norm) var(--ease-weich);
 }
 
 .doku .fragen summary::-webkit-details-marker { display: none; }
-.doku .fragen summary:hover { color: var(--stempel); }
+
+/* Eine Flaeche statt einer Textfarbe: die Frage steht bei 18:1 und soll
+   dort bleiben. Der Winkel rechts ist ohnehin schon der Akzent. */
+.doku .fragen summary:hover { background: var(--zone); }
 
 .doku .fragen summary::after {
   content: "";
@@ -627,6 +719,9 @@ body.nx-custom-header-active {
 .fuss .protokoll .z {
   display: flex;
   justify-content: space-between;
+  /* Bricht der Wert auf zwei Zeilen, soll seine erste Zeile neben dem
+     Label stehen und nicht darueber. */
+  align-items: baseline;
   gap: var(--s1);
   padding-block: var(--s0);
   border-bottom: 1px solid var(--haar);
@@ -759,16 +854,29 @@ body.nx-custom-header-active {
 }
 
 .leiste nav a:hover { color: var(--tinte); }
-.leiste nav a[aria-current="page"] { color: var(--stempel); }
+/* Die laufende Route ist das staerkste Element der Zeile: 8,37:1 gegen
+   die 7,36:1 der uebrigen Links. Mit --stempel stuende sie bei 5,49:1
+   und damit schwaecher als das, wovon sie sich abheben soll. */
+.leiste nav a[aria-current="page"] { color: var(--stempel-tief); }
 .leiste nav a[aria-current="page"]::after { transform: scaleX(1); }
 
 /* Die Leisten-Schaltflaeche ist schmaler als die im Satz: sie sitzt in
-   einer 52px-Zeile und darf sie nicht auseinanderdruecken. */
+   einer 52 px hohen Zeile und darf sie nicht ausfuellen. Gemessen stand
+   sie bei 47 px und liess oben und unten 2,5 px — der Block sah aus, als
+   stiesse er an. Die min-height muss dafuer die 46 px der Basisregel
+   ueberschreiben, deshalb steht sie hier noch einmal. */
 .leiste .tun {
-  min-height: 34px;
+  min-height: 32px;
   padding: var(--s0) var(--s2);
   font-size: 0.7rem;
+  line-height: 1.2;
 }
+
+/* Auf schmalen Schirmen traegt der Knopf das Kurzwort. Er verschwindet
+   dort nicht mit der Navigation: der wichtigste Handlungsweg der Seite
+   gehoert nicht hinter eine Klappe. */
+.leiste .tun .lang { display: inline; }
+.leiste .tun .kurz { display: none; }
 
 /* ── Klappe und Blatt fuer schmale Schirme ──────────────────── */
 
@@ -861,9 +969,23 @@ body.nx-custom-header-active {
 }
 
 @media (max-width: 1080px) {
-  .leiste .rechts > nav,
-  .leiste .rechts > .tun { display: none; }
+  .leiste .rechts > nav { display: none; }
   .leiste[data-leiste-bereit] .klappe { display: inline-flex; }
+
+  /* Kurzwort statt Satz, damit Wortmarke, Knopf und Klappe bei 360 px
+     nebeneinander passen. */
+  .leiste .tun .lang { display: none; }
+  .leiste .tun .kurz { display: inline; }
+  .leiste .rechts { gap: var(--s2); }
+}
+
+/* Im geoeffneten Blatt steht der Knopf noch einmal in voller Breite. Der
+   in der Zeile bleibt daneben stehen — beide fuehren aufs selbe Ziel und
+   tragen denselben Messwert, aber der in der Zeile ist der, den jemand
+   sucht, ohne das Menue zu oeffnen. */
+@media (max-width: 420px) {
+  .leiste .in { gap: var(--s1); }
+  .leiste .tun { padding-inline: var(--s1); }
 }
 
 /* ══ Fuss ═════════════════════════════════════════════════════
@@ -903,14 +1025,19 @@ body.nx-custom-header-active {
   justify-content: space-between;
   gap: var(--s2);
   padding-block: var(--s2);
+  padding-inline: var(--s2);
+  margin-inline: calc(var(--s2) * -1);
   text-decoration: none;
   color: var(--tinte);
   font-size: 1.02rem;
-  transition: color var(--t-norm) var(--ease-weich);
+  transition: background-color var(--t-norm) var(--ease-weich);
 }
 
 .fuss .wahl a b { font-weight: 500; }
-.fuss .wahl a:hover { color: var(--stempel); }
+
+/* Der Satz steht bei 17:1. Beim Hover uebernimmt die Flaeche, nicht die
+   Schrift — sonst faellt die wichtigste Zeile des Fusses auf 5:1. */
+.fuss .wahl a:hover { background: var(--zone2); }
 
 .fuss .wahl a .pf {
   color: var(--stempel);
@@ -918,7 +1045,9 @@ body.nx-custom-header-active {
   transition: transform var(--t-norm) var(--ease-aus);
 }
 
-.fuss .wahl a:hover .pf { transform: translateX(4px); }
+@media (hover: hover) and (pointer: fine) {
+  .fuss .wahl a:hover .pf { transform: translateX(4px); }
+}
 
 .fuss .direkt {
   display: flex;
@@ -948,12 +1077,14 @@ body.nx-custom-header-active {
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
   padding-block: var(--s0);
-  transition: color var(--t-norm) var(--ease-weich), text-decoration-color var(--t-norm) var(--ease-weich);
+  transition:
+    text-decoration-color var(--t-norm) var(--ease-weich),
+    text-decoration-thickness var(--t-norm) var(--ease-weich);
 }
 
 .fuss .direkt a:hover {
-  color: var(--stempel);
-  text-decoration-color: var(--stempel);
+  text-decoration-color: var(--stempel-tief);
+  text-decoration-thickness: 2px;
 }
 
 .fuss .verzeichnis {
@@ -975,7 +1106,9 @@ body.nx-custom-header-active {
   transition: color var(--t-norm) var(--ease-weich);
 }
 
-.fuss .verzeichnis a:hover { color: var(--stempel); }
+/* Grau auf Tinte, wie in der Leiste: dieselbe Bewegung fuer dieselbe
+   Sache. Vorher ging diese Zeile auf den Stempel und verlor dabei. */
+.fuss .verzeichnis a:hover { color: var(--tinte); }
 
 .fuss .absender {
   display: grid;
@@ -1013,7 +1146,7 @@ body.nx-custom-header-active {
   transition: color var(--t-norm) var(--ease-weich);
 }
 
-.fuss .schluss a:hover { color: var(--stempel); }
+.fuss .schluss a:hover { color: var(--stempel-tief); }
 
 .fuss .schluss svg {
   width: 17px;
