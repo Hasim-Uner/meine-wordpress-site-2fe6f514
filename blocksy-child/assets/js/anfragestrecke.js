@@ -20,8 +20,9 @@
 
   /* Der Marktcheck besitzt seit 09/2026 einen eigenen visuellen Layer.
      Er bleibt als separate Datei wartbar, wird aber nur auf dieser Route
-     geladen. Die URL wird aus dem bereits versionierten Script abgeleitet;
-     dadurch traegt das CSS dieselbe Cache-Version wie anfragestrecke.js. */
+     geladen. Neben der Script-Version traegt das CSS eine eigene Revision,
+     damit reine CSS-Aenderungen nicht an einem alten Browser-/CDN-Cache
+     haengen bleiben. */
   function marktcheckStyles() {
     if (document.querySelector('link[data-strecke-marketcheck-style]')) {
       return;
@@ -41,6 +42,7 @@
       '/assets/js/anfragestrecke.js',
       '/assets/css/anfragestrecke-marketcheck.css'
     );
+    href += (href.indexOf('?') === -1 ? '?' : '&') + 'mc=e4d2c1c';
 
     var link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -225,13 +227,10 @@
       }
 
       el.classList.remove('frisch');
-      void el.offsetWidth; // Neustart der Animation erzwingen
+      void el.offsetWidth;
       el.classList.add('frisch');
     }
 
-    /* Division durch null gibt einen Gedankenstrich, nicht NaN und nicht
-       Unendlich. Wer die Abschlussquote auf 0 stellt, bekommt keinen
-       unendlich teuren Auftrag angezeigt, sondern keine Aussage. */
     function jeAuftrag(kosten, auftraege) {
       return auftraege > 0 ? euro.format(kosten / auftraege) : '–';
     }
@@ -273,11 +272,7 @@
     rechne();
   }
 
-  /* ── Zwei Aufbau-Bewegungen, mehr nicht ────────────────────────
-     Scharfgeschaltet wird nur, was beim Laden unterhalb des Sichtfelds
-     liegt. Was schon sichtbar ist, bleibt sichtbar — eine Grafik, die
-     beim Seitenaufruf erst verschwindet, um sich dann aufzubauen, haelt
-     den Leser auf, statt ihm etwas zu erklaeren. */
+  /* ── Zwei Aufbau-Bewegungen, mehr nicht ──────────────────────── */
 
   function einmalig(el, schwelle, nachlauf) {
     if (!el || ruhig || !('IntersectionObserver' in window)) {
@@ -289,7 +284,6 @@
     }
 
     el.classList.add('armed');
-
     var ausgeloest = false;
 
     function aufdecken() {
@@ -297,7 +291,6 @@
         return;
       }
       ausgeloest = true;
-
       el.classList.add('lauf');
       beobachter.disconnect();
 
@@ -317,22 +310,10 @@
     }, { threshold: schwelle });
 
     beobachter.observe(el);
-
-    // Reissleine. `armed` deckt die Grafik zu, bis der Beobachter meldet.
-    // Meldet er nie — weil das Element hoeher als das Sichtfeld ist und die
-    // Schwelle nie erreicht wird, weil ein Vorfahre es aus dem Fluss nimmt,
-    // oder weil ein Fehler den Beobachter stillgelegt hat —, bliebe die
-    // Hauptgrafik dauerhaft unsichtbar. Eine zugedeckte Grafik ist der
-    // schlimmere Fehler als eine, die ohne Aufbau dasteht.
     window.setTimeout(aufdecken, 6000);
   }
 
-  /* ── Marktcheck-Schrittwechsel ─────────────────────────────────
-     Das Intake-Skript ersetzt jeden Schritt als kompletten DOM-Knoten.
-     Ohne Uebergang teleportiert besonders der Wechsel von Frage 04 zum
-     Kontaktformular. Diese Bewegung erklaert keinen Inhalt, sie verhindert
-     nur den harten visuellen Schnitt: 200 ms, transform + opacity, kein
-     Layout und keine Animation beim ersten Rendern. */
+  /* ── Marktcheck-Schrittwechsel ───────────────────────────────── */
 
   function marktcheckBewegung() {
     var mount = wurzel.querySelector('#sol-quiz-mount');
@@ -392,9 +373,7 @@
     planen();
   }
 
-  /* ── Kapitelmarke ──────────────────────────────────────────────
-     Der aktive Abschnitt faerbt seine Nummer in der Randspalte. Das
-     einzige Element der Seite, das mitlaeuft. */
+  /* ── Kapitelmarke ────────────────────────────────────────────── */
 
   function kapitelmarke() {
     var abschnitte = [].slice.call(wurzel.querySelectorAll('section[id]'));
@@ -413,8 +392,7 @@
     });
   }
 
-  /* ── Kapitelleiste ─────────────────────────────────────────────
-     Markiert den Eintrag, dessen Abschnitt gerade oben steht. */
+  /* ── Kapitelleiste ───────────────────────────────────────────── */
 
   function leiste() {
     var nav = wurzel.querySelector('[data-strecke-leiste]');
