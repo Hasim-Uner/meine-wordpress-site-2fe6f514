@@ -108,9 +108,11 @@ function hu_marketcheck_length_label() {
  * denselben Befund lesen sich nicht als Praezision, sondern als Vorbehalt.
  *
  * Nicht zu verwechseln mit hu_response_promise() aus canon/messaging-canon.php:
- * das ist die Antwortzeit auf eine gewoehnliche Anfrage (24 Stunden werktags)
- * und bleibt bewusst die schnellere Zusage. Der Marktcheck ist ein haendisch
- * geschriebener Befund, keine Antwort auf eine E-Mail.
+ * das ist die Antwortzeit auf eine gewoehnliche Anfrage. Seit 2026-09-12 nennen
+ * beide dieselbe Frist von zwei Werktagen; getrennt bleiben sie trotzdem, weil
+ * es zwei Vorgaenge sind. Der Marktcheck ist ein haendisch geschriebener
+ * Befund, keine Antwort auf eine E-Mail — laeuft einer der beiden Werte,
+ * laeuft er allein.
  *
  * @param bool $short Beibehalten fuer Aufrufer, die eine knappe Fassung wollen;
  *                    beide Varianten sind seit der Vereinheitlichung gleich.

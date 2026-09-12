@@ -71,27 +71,43 @@ function hu_get_contact_phone( $variant = 'display' ) {
 // Startseite und White-Label-Seite versprachen "4 Stunden werktags", die
 // Kontaktseite als gemeinsames Ziel beider CTAs dagegen "in der Regel 48
 // Stunden, spaetestens 2 Werktage". Damit stand die schwaechste Fassung genau
-// dort, wo abgeschickt wird: das Versprechen brach im Formular.
+// dort, wo abgeschickt wird: das Versprechen brach im Formular. Seither liest
+// jede sichtbare Stelle aus dieser Datei.
 //
-// Nicht zu verwechseln mit HU_MARKETCHECK_REPLY_HOURS in
-// canon/diagnose-canon.php. Das ist die Bearbeitungszeit des Marktchecks bis
-// zum haendischen Befund, keine Antwortzeit auf eine Anfrage. Beide Werte
-// duerfen auseinanderlaufen, aber nur mit dieser Begruendung.
-define( 'HU_RESPONSE_HOURS', 24 );
+// Seit 2026-09-12 ist die Zusage in Werktagen formuliert, nicht in Stunden.
+// Die Stundenangabe war eine zweite Zeitrechnung neben dem Marktcheck-Label
+// ("spaetestens 2 Werktage") und nebenbei die haertere Zusage fuer den
+// Absender: wer freitags abends schreibt, bekam ein 24-Stunden-Versprechen,
+// das erst montags einloesbar war. Ein Mass fuer beide Vorgaenge.
+//
+// HU_MARKETCHECK_REPLY_HOURS in canon/diagnose-canon.php bleibt davon
+// unberuehrt: das ist die interne Bearbeitungszeit des Marktchecks bis zum
+// haendischen Befund, keine Antwortzeit auf eine Anfrage. Sie steuert seit
+// 2026-09-11 keine sichtbare Copy mehr.
+define( 'HU_RESPONSE_BUSINESS_DAYS', 2 );
 
 /**
  * Display value for the canonical response promise.
  *
- * `value` ist der nackte Wert ohne Rahmensatz. Der Fuss setzt ihn in ein <b>
- * und braucht deshalb die Zusage getrennt vom Label — sonst stuende die Zahl
- * ein weiteres Mal hart im Template.
+ * Fuenf Fassungen derselben Zusage, damit kein Aufrufer sie selbst
+ * zusammensetzt:
+ *
+ * - `value`    der nackte Wert fuer Label-Spalten ("spätestens 2 Werktage").
+ *              Der Fuss setzt ihn in ein <b> und braucht ihn deshalb ohne
+ *              Rahmensatz.
+ * - `window`   die Praepositionalfassung fuer den Fliesstext ("Sie erhalten
+ *              … eine Rueckmeldung"). Dativ, deshalb "Werktagen".
+ * - `compact`  eine Zeile fuer Metadaten und Microcopy.
+ * - `sentence` ein abgeschlossener Satz.
+ * - `phrase`   derselbe Satz ohne Punkt, fuer Aufrufer, die selbst
+ *              interpunktieren.
  *
  * @param string $variant One of: phrase, sentence, compact, window, value.
  * @return string
  */
 function hu_response_promise( $variant = 'phrase' ) {
-	$value  = sprintf( '%d Stunden werktags', HU_RESPONSE_HOURS );
-	$window = sprintf( 'innerhalb von %s', $value );
+	$value  = sprintf( 'spätestens %d Werktage', HU_RESPONSE_BUSINESS_DAYS );
+	$window = sprintf( 'spätestens in %d Werktagen', HU_RESPONSE_BUSINESS_DAYS );
 
 	if ( 'value' === $variant ) {
 		return $value;
@@ -102,7 +118,7 @@ function hu_response_promise( $variant = 'phrase' ) {
 	}
 
 	if ( 'compact' === $variant ) {
-		return sprintf( 'Antwort in %s', $value );
+		return sprintf( 'Antwort %s', $value );
 	}
 
 	if ( 'sentence' === $variant ) {
@@ -122,7 +138,7 @@ function hu_messaging_canon() {
 		'value_anchor_architecture' => HU_MESSAGE_VALUE_ANCHOR_ARCHITECTURE,
 		'value_anchor_price'        => HU_MESSAGE_VALUE_ANCHOR_PRICE,
 		'contact_email'             => HU_CONTACT_EMAIL,
-		'response_hours'            => HU_RESPONSE_HOURS,
+		'response_business_days'    => HU_RESPONSE_BUSINESS_DAYS,
 		'response_promise'          => hu_response_promise( 'sentence' ),
 		'what_we_dont_sell'         => [
 			'Keine reine Design-Retusche ohne technischen oder messbaren Zweck.',

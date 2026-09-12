@@ -392,11 +392,11 @@ $references = [
 ];
 
 // ── Abschluss: Protokollzeile ──────────────────────────────────
-// "Befund", nicht "Antwort": der Fuss der Domain verspricht eine Antwort auf
-// eine gewoehnliche Anfrage innerhalb von 24 Stunden werktags. Stuende hier
-// "Antwort · spätestens 2 Werktage", laesen sich beide Zeilen auf derselben
-// Seite als Widerspruch. Es sind zwei Zusagen, und diese hier gilt dem
-// haendisch geschriebenen Marktcheck-Befund.
+// "Befund", nicht "Antwort": es sind zwei Vorgaenge. Der Fuss der Domain
+// verspricht eine Antwort auf eine gewoehnliche Anfrage, diese Zeile den
+// haendisch geschriebenen Marktcheck-Befund. Seit der Vereinheitlichung am
+// 2026-09-12 nennen beide dieselbe Frist — das Label unterscheidet sie, nicht
+// die Zahl, und genau so ist es gemeint.
 $protocol_rows = [
 	[ 'k' => 'Befund',      'v' => $marketcheck_reply ],
 	[ 'k' => 'Sitz',        'v' => 'Pattensen · Hannover' ],

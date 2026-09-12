@@ -1,0 +1,463 @@
+/* ══════════════════════════════════════════════════════════════
+   STARTSEITE — was nur hier steht
+
+   Das Kleid kommt aus system.css. Diese Datei traegt die fuenf
+   Bausteine, die es nur auf der Startseite gibt: den Pruefstand, die
+   drei Wege, die gemeinsame Strecke, die Arbeitsweise, die Fallzeile
+   und die Eignung.
+
+   Kein Farbwert, kein Abstand ausserhalb der Tokens. Wer hier eine
+   Zahl braucht, die es im System nicht gibt, braucht einen Token.
+
+   Abgeloest hat sie fuenf Stylesheets, die diese Route zusammen mit
+   139 KB belastet haben: homepage.css, homepage-redesign.css,
+   homepage-art.css, homepage-art-v3.css und homepage-flow.css. Die
+   ersten beiden leben weiter — sie tragen Agentur-, WGOS- und
+   Case-Routen — und laden nur auf der Startseite nicht mehr.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ══ Pruefstand ═══════════════════════════════════════════════
+   Die Messwerte dieser Seite, auf der Seite. Er steht auf Platz zwei
+   und nicht auf Platz vier: wer hier ankommt, hat noch keinen Grund
+   zu glauben, was unten steht. */
+
+.startseite .pruefstand { margin-top: var(--s5); }
+
+.startseite .pruefstand .kopfzeile {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  padding-bottom: var(--s1);
+  border-bottom: 1px solid var(--haar);
+  margin-bottom: var(--s3);
+}
+
+.startseite .pruefstand h2 {
+  font-size: clamp(1.1rem, 0.95rem + 0.6vw, 1.45rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  max-width: 36ch;
+}
+
+.startseite .messwerte {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+
+.startseite .messwerte > div {
+  padding-right: var(--s2);
+  border-right: 1px solid var(--haar);
+}
+
+.startseite .messwerte > div:last-child {
+  border-right: 0;
+  padding-right: 0;
+}
+
+.startseite .messwerte .w {
+  display: block;
+  font-family: var(--mono);
+  /* Deckel bei 2.4rem statt 2.9rem: "Server-Side-Tracking" steht als
+     laengste Beschriftung unter der schmalsten Zelle. */
+  font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.4rem);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--stempel);
+  font-variant-numeric: tabular-nums;
+}
+
+.startseite .messwerte .b {
+  display: block;
+  margin-top: var(--s1);
+  font-size: 0.9rem;
+  color: var(--grau);
+  line-height: 1.45;
+}
+
+.startseite .messwerte a {
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--t-norm) var(--ease-weich);
+}
+
+.startseite .messwerte a:hover .b { color: var(--tinte); }
+
+.startseite .pruefstand .nachweis {
+  margin-top: var(--s3);
+  padding-top: var(--s2);
+  border-top: 1px solid var(--haar);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.startseite .pruefstand .nachweis p {
+  font-size: 0.92rem;
+  color: var(--grau);
+  max-width: 54ch;
+}
+
+@media (max-width: 760px) {
+  .startseite .messwerte {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s3) 0;
+  }
+
+  .startseite .messwerte > div:nth-child(2n) {
+    border-right: 0;
+    padding-right: 0;
+  }
+}
+
+/* ══ Die drei Wege ════════════════════════════════════════════
+   Entscheidungszeilen, keine Karten. Der Preisrahmen steht in der
+   Zeile: er ist der staerkste Sortiereffekt der Seite. Wer mit einer
+   anderen Groessenordnung im Kopf kommt, merkt es in der ersten
+   Minute statt im ersten Gespraech. */
+
+.startseite .wege {
+  margin-top: var(--s4);
+  border-top: 1px solid var(--strich);
+}
+
+.startseite .weg-z {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1.25fr) minmax(0, 1.3fr) 10.5rem;
+  gap: clamp(var(--s1), 2.5vw, var(--s3));
+  align-items: start;
+  padding-block: var(--s3);
+  border-bottom: 1px solid var(--haar);
+  position: relative;
+  text-decoration: none;
+}
+
+.startseite .weg-z > * {
+  transition:
+    transform var(--t-norm) var(--ease-aus),
+    color var(--t-norm) var(--ease-weich);
+}
+
+.startseite .weg-z:hover > * { transform: translateX(6px); }
+.startseite .weg-z:hover h3 { color: var(--stempel); }
+
+.startseite .weg-z::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--s2) * -1);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--stempel);
+  transform: scaleY(0);
+  transition: transform var(--t-norm) var(--ease-aus);
+}
+
+.startseite .weg-z:hover::before { transform: scaleY(1); }
+
+.startseite .weg-z .i {
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  color: var(--stempel);
+  font-weight: 600;
+  padding-top: var(--s0);
+}
+
+.startseite .weg-z h3 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-bottom: var(--s0);
+  letter-spacing: -0.015em;
+}
+
+.startseite .weg-z .fuerwen {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--matt);
+  line-height: 1.8;
+  text-wrap: balance;
+}
+
+.startseite .weg-z p {
+  font-size: 0.97rem;
+  color: var(--grau);
+}
+
+.startseite .weg-z .rahmen { text-align: right; }
+
+.startseite .weg-z .rahmen .p {
+  display: block;
+  font-family: var(--mono);
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.startseite .weg-z .rahmen .n {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--matt);
+  margin-top: var(--s0);
+  line-height: 1.6;
+}
+
+.startseite .weg-z .rahmen .pf {
+  display: block;
+  margin-top: var(--s1);
+  color: var(--stempel);
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+@media (max-width: 900px) {
+  .startseite .weg-z {
+    grid-template-columns: 2rem 1fr;
+    row-gap: var(--s1);
+  }
+
+  .startseite .weg-z p,
+  .startseite .weg-z .rahmen { grid-column: 2; }
+
+  .startseite .weg-z .rahmen { text-align: left; }
+
+  .startseite .weg-z .rahmen .pf {
+    display: inline-block;
+    margin-left: var(--s1);
+    margin-top: 0;
+  }
+}
+
+/* ══ Gemeinsame Strecke ═══════════════════════════════════════ */
+
+.startseite .gemein {
+  margin-top: var(--s4);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--strich);
+}
+
+.startseite .gemein > div {
+  padding: var(--s3) var(--s2) 0 0;
+  border-right: 1px solid var(--haar);
+}
+
+.startseite .gemein > div:last-child {
+  border-right: 0;
+  padding-right: 0;
+}
+
+.startseite .gemein .s {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--stempel);
+  margin-bottom: var(--s1);
+}
+
+.startseite .gemein h3 {
+  font-size: 1.02rem;
+  font-weight: 500;
+  margin-bottom: var(--s0);
+}
+
+.startseite .gemein p {
+  font-size: 0.9rem;
+  color: var(--grau);
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .startseite .gemein { grid-template-columns: 1fr 1fr; }
+  .startseite .gemein > div:nth-child(2n) { border-right: 0; }
+  .startseite .gemein > div { padding-bottom: var(--s2); }
+}
+
+@media (max-width: 480px) {
+  .startseite .gemein { grid-template-columns: minmax(0, 1fr); }
+  .startseite .gemein > div {
+    border-right: 0;
+    padding-right: 0;
+  }
+}
+
+/* ══ Arbeitsweise ═════════════════════════════════════════════ */
+
+.startseite .arbeit {
+  margin-top: var(--s4);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--strich);
+}
+
+.startseite .arbeit > div {
+  padding: var(--s3) var(--s2) 0 0;
+  border-right: 1px solid var(--haar);
+}
+
+.startseite .arbeit > div:last-child {
+  border-right: 0;
+  padding-right: 0;
+}
+
+.startseite .arbeit h3 {
+  font-size: 1.02rem;
+  font-weight: 500;
+  margin-bottom: var(--s0);
+}
+
+.startseite .arbeit p {
+  font-size: 0.92rem;
+  color: var(--grau);
+  line-height: 1.5;
+}
+
+@media (max-width: 760px) {
+  .startseite .arbeit { grid-template-columns: minmax(0, 1fr); }
+
+  .startseite .arbeit > div {
+    border-right: 0;
+    border-bottom: 1px solid var(--haar);
+    padding: var(--s2) 0;
+  }
+
+  .startseite .arbeit > div:last-child { border-bottom: 0; }
+}
+
+/* ══ Der Fall, kompakt ════════════════════════════════════════ */
+
+.startseite .fall { margin-top: var(--s4); }
+
+.startseite .fallzeile {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+}
+
+.startseite .fallzeile > div {
+  padding-right: var(--s3);
+  border-right: 1px solid var(--haar);
+}
+
+.startseite .fallzeile > div:last-child {
+  border-right: 0;
+  padding-right: 0;
+}
+
+.startseite .fallzeile .w {
+  display: block;
+  font-family: var(--mono);
+  /* "150 € → 22 €" ist der laengste Wert der Zeile und bestimmt den
+     Deckel. Mit 2.4rem riss er die erste Zelle bei 1024 px auf. */
+  font-size: clamp(1.4rem, 1rem + 1.4vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+  color: var(--stempel);
+  font-variant-numeric: tabular-nums;
+}
+
+.startseite .fallzeile .b {
+  display: block;
+  margin-top: var(--s1);
+  font-size: 0.88rem;
+  color: var(--grau);
+  line-height: 1.45;
+}
+
+.startseite .fall .methodik {
+  margin-top: var(--s3);
+  padding-top: var(--s2);
+  border-top: 1px solid var(--haar);
+  font-size: 0.9rem;
+  color: var(--grau);
+  max-width: 70ch;
+}
+
+@media (max-width: 700px) {
+  .startseite .fallzeile {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s2);
+  }
+
+  .startseite .fallzeile > div {
+    border-right: 0;
+    padding-right: 0;
+  }
+}
+
+/* ══ Eignung ══════════════════════════════════════════════════ */
+
+.startseite .eignung {
+  margin-top: var(--s4);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(var(--s3), 4vw, var(--s5));
+}
+
+.startseite .eignung > div > .mono {
+  display: block;
+  padding-bottom: var(--s1);
+  border-bottom: 2px solid var(--strich);
+}
+
+.startseite .eignung .ja > .mono {
+  border-bottom-color: var(--stempel);
+  color: var(--stempel);
+}
+
+.startseite .eignung ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.startseite .eignung li {
+  padding-block: var(--s2);
+  border-bottom: 1px solid var(--haar);
+  font-size: 0.97rem;
+}
+
+.startseite .eignung li b {
+  display: block;
+  font-weight: 500;
+  margin-bottom: var(--s0);
+}
+
+.startseite .eignung li span {
+  color: var(--grau);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 760px) {
+  .startseite .eignung { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .startseite *,
+  .startseite *::before,
+  .startseite *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

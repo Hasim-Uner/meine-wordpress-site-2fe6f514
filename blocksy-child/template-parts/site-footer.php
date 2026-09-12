@@ -2,27 +2,30 @@
 /**
  * Global site footer.
  *
- * Ein Fuss fuer alle Seitentypen — Home, Solar/Energy und Audit rendern
- * dieselbe Komponente. Auf der Freelancer-Route entfaellt die erneute
- * Zielgruppenwahl; das Kontaktformular bleibt beim seitenlokalen Intake.
+ * Ein Fuss fuer alle Seitentypen. Seit 2026-09 steht er auf dem
+ * Designsystem (`assets/css/system.css`) statt auf einem eigenen
+ * Farbsystem — `site-footer.css` ist damit abgeloest, nicht ergaenzt.
  *
- * Er hatte drei Jobs gleichzeitig in vier gleich schweren Bloecken: abschliessen,
- * navigieren, Vertrauen belegen. Jetzt gibt es zwei Lautstaerken. Laut sind die
- * drei Ich-Saetze, jeder fuehrt auf seinen kommerziellen Weg (Agentur, Energie,
- * direktes Projekt — die drei Einstiege aus AGENTS.md), plus die Direktzeile
- * darunter. Leise sind Verzeichnis- und Absenderzeile.
+ * Zwei Lautstaerken bleiben. Laut sind die drei Ich-Saetze, jeder fuehrt
+ * auf seinen kommerziellen Weg (Agentur, Energie, direktes Projekt — die
+ * drei Einstiege aus AGENTS.md), plus die Direktzeile darunter. Leise
+ * sind Verzeichnis- und Absenderzeile.
  *
- * Ersatzlos entfallen: die Spalten "Leistungen", "Belege" und "Person &
- * Kontakt" samt Spaltenkoepfen, die Markenzeile mit Claim und das
- * Messprotokoll als eigener Streifen. Die Leistungsziele stehen sitewide im
- * Hauptmenue; ein zweiter Link vom selben Dokument auf dasselbe Ziel bringt
- * intern nichts dazu. Der Claim steht in Titel, Meta-Description und Kopf. Die
- * vier Protokollangaben lesen sich in der Absenderzeile wie das Briefpapier,
- * das sie sind.
+ * Neu ist die Absenderzeile als `.protokoll`: eine Zeile je Angabe, Mono,
+ * Label links und Wert rechts — dasselbe Muster, das den Abschluss eines
+ * Dokuments traegt. Vorher standen dieselben Angaben als eine lange,
+ * durch Mittelpunkte getrennte Zeile, in der Anschrift, Antwortzeit und
+ * Messhinweis gleich schwer nebeneinander lagen.
  *
- * Die drei cta_footer_pick_*-Werte bleiben unveraendert, damit die Zeitreihe
- * ueber den Umbau hinweg vergleichbar bleibt; dasselbe gilt fuer die
- * cta_footer_nav_*-Werte der ueberlebenden Verzeichnisziele.
+ * Die Ich-Saetze entfallen auf der Startseite. Dort stehen die drei Wege
+ * seit dem Umbau als Abschnitt 01 im Seiteninhalt; ein zweites Mal
+ * dieselben drei Ziele in anderer Reihenfolge im Fuss ist keine Fuehrung,
+ * sondern Wiederholung. Auf der Freelancer-Route entfaellt die erneute
+ * Zielgruppenwahl wie bisher.
+ *
+ * Die drei cta_footer_pick_*-Werte bleiben unveraendert, damit die
+ * Zeitreihe ueber den Umbau hinweg vergleichbar bleibt; dasselbe gilt
+ * fuer die cta_footer_nav_*-Werte der Verzeichnisziele.
  *
  * @package Blocksy_Child
  */
@@ -35,6 +38,7 @@ $current_year = wp_date( 'Y' );
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $routes       = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
 $is_freelancer_page = is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' );
+$shows_picks        = ! $is_freelancer_page && ! is_front_page();
 
 $energy_url     = $routes['energy'] ?? ( $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ) );
 $freelancer_url = $routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
@@ -53,9 +57,9 @@ $phone_link    = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phon
 $phone_display = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone( 'display' ) : '';
 
 /*
- * Die drei Ich-Saetze. Der fette Teil benennt, wer spricht; der Rest sagt, was
- * fehlt. Aufgeteilt in drei Stuecke, damit jedes einzeln durch esc_html() geht
- * und trotzdem ein echtes <b> im Satz stehen kann.
+ * Die drei Ich-Saetze. Der fette Teil benennt, wer spricht; der Rest sagt,
+ * was fehlt. Aufgeteilt in drei Stuecke, damit jedes einzeln durch
+ * esc_html() geht und trotzdem ein echtes <b> im Satz stehen kann.
  */
 $picks = [
 	[
@@ -73,9 +77,9 @@ $picks = [
 		'track'  => 'cta_footer_pick_energy',
 	],
 	[
-		'pre'    => is_front_page() ? 'Ich plane ' : 'Ich habe ',
-		'strong' => is_front_page() ? 'eine WordPress-Website' : 'eine Seite',
-		'post'   => is_front_page() ? ' oder möchte meine bestehende verbessern.' : ', die zu wenig Anfragen bringt.',
+		'pre'    => 'Ich habe ',
+		'strong' => 'eine Seite',
+		'post'   => ', die zu wenig Anfragen bringt.',
 		'url'    => $freelancer_url,
 		'track'  => 'cta_footer_pick_project',
 	],
@@ -83,8 +87,8 @@ $picks = [
 
 /*
  * Direktzeile: drei Wege, kein Formularzwang. "Kontaktformular" statt
- * "Direktkontakt" — wer nicht mailen will, sucht ein Formular und findet es
- * neben Adresse und Nummer statt in einer Linkspalte.
+ * "Direktkontakt" — wer nicht mailen will, sucht ein Formular und findet
+ * es neben Adresse und Nummer statt in einer Linkspalte.
  */
 $direct = [
 	[
@@ -109,9 +113,9 @@ $direct[] = [
 ];
 
 /*
- * Verzeichnis: eine Zeile statt drei Spalten. "Ergebnisse & Case Studies" und
- * "Fallstudie: Solar Leadgenerierung" waren zwei Links auf einen Fall — der
- * Fall bleibt, der Hub faellt weg.
+ * Verzeichnis: eine Zeile statt drei Spalten. "Ergebnisse & Case Studies"
+ * und "Fallstudie: Solar Leadgenerierung" waren zwei Links auf einen Fall
+ * — der Fall bleibt, der Hub faellt weg.
  */
 $directory = [
 	[ $about_url, 'Über Haşim', 'cta_footer_nav_about', 'navigation' ],
@@ -123,128 +127,95 @@ $directory = [
 ];
 
 /*
- * Absenderzeile. Die Antwortzeit kommt aus dem Messaging-Canon, damit sie nicht
- * ein weiteres Mal irgendwo hart steht und beim naechsten Wechsel gegen
- * /kontakt/ auseinanderlaeuft. Die uebrigen Angaben sind konstant.
+ * Absenderzeile, zwei Spalten, eine Zeile je Angabe. Die Antwortzeit kommt
+ * aus dem Messaging-Canon, damit sie nicht ein weiteres Mal irgendwo hart
+ * steht und beim naechsten Wechsel gegen /kontakt/ auseinanderlaeuft.
+ *
+ * Die Anschrift ist bewusst zeichengleich mit 'streetAddress' +
+ * 'postalCode' + 'addressLocality' aus hu_output_schema()
+ * (inc/org-schema.php), damit sichtbare Angabe, JSON-LD und Google
+ * Business Profile dieselbe Zeichenkette tragen. Wer sie hier aendert,
+ * aendert sie dort mit. Der regionale Zusatz bleibt eine eigene Zeile:
+ * 'Region Hannover' ist kein Bestandteil der postalischen Anschrift und
+ * wuerde den Abgleich verwaessern.
  */
-$response_value = '';
-if ( function_exists( 'hu_response_promise' ) ) {
-	$response_value = hu_response_promise( 'value' );
-} elseif ( defined( 'HU_RESPONSE_HOURS' ) ) {
-	$response_value = sprintf( '%d Stunden werktags', HU_RESPONSE_HOURS );
-}
+$response_value = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'value' ) : '';
 
-$imprint = [
-	[
-		'text' => sprintf( '© %s Haşim Üner', $current_year ),
-	],
-	/*
-	 * Vollstaendige Anschrift statt nur des Ortes. Strasse und PLZ standen
-	 * bisher ausschliesslich im Impressum, in der Datenschutzerklaerung und im
-	 * JSON-LD des Organization-Knotens — sichtbar an keiner Stelle. Der String
-	 * ist bewusst zeichengleich mit 'streetAddress' + 'postalCode' +
-	 * 'addressLocality' aus hu_output_schema() (inc/org-schema.php), damit
-	 * sichtbare Angabe, JSON-LD und Google Business Profile dieselbe Zeichenkette
-	 * tragen. Wer sie hier aendert, aendert sie dort mit.
-	 *
-	 * Der regionale Zusatz bleibt ein eigener Eintrag: 'Region Hannover' ist
-	 * kein Bestandteil der postalischen Anschrift und wuerde den Abgleich
-	 * verwaessern, wenn er in derselben Zeichenkette staende.
-	 */
-	[
-		'text'    => 'Warschauer Str. 5, 30982 Pattensen',
-		'address' => true,
-	],
-	[
-		'text' => 'Region Hannover',
-	],
-	[
-		'text' => 'remote in DACH',
-	],
-];
+$sender_left = [];
 
 if ( '' !== $response_value ) {
-	$imprint[] = [
-		'text'  => 'Antwort in ',
+	$sender_left[] = [
+		'label' => 'Antwort',
 		'value' => $response_value,
 	];
 }
 
-$imprint[] = [
-	'text'  => 'Messung ',
-	'value' => 'ohne Cookie-Banner',
+$sender_left[] = [
+	'label'   => 'Sitz',
+	'value'   => 'Warschauer Str. 5, 30982 Pattensen',
+	'address' => true,
 ];
 
-$pick_arrow = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>';
+$sender_left[] = [
+	'label' => 'Region',
+	'value' => 'Region Hannover',
+];
 
-/*
- * Der Fuss sitzt unter dem nutzbaren Seiteninhalt. Sein Stylesheet deshalb an
- * dieser Stelle laden statt ein weiteres renderblockierendes Asset in den
- * Dokumentkopf zu haengen.
- */
-$footer_style_path = get_stylesheet_directory() . '/assets/css/site-footer.css';
-$footer_style_url  = get_stylesheet_directory_uri() . '/assets/css/site-footer.css';
-if ( file_exists( $footer_style_path ) ) {
-	$footer_style_version = function_exists( 'hu_get_asset_version' )
-		? hu_get_asset_version( $footer_style_path )
-		: (string) filemtime( $footer_style_path );
-	$footer_style_url = add_query_arg( 'ver', $footer_style_version, $footer_style_url );
-}
+$sender_right = [
+	[
+		'label' => 'Arbeitsweise',
+		'value' => 'remote in DACH, 1:1',
+	],
+	[
+		'label' => 'Messung',
+		'value' => 'ohne Cookie-Banner',
+	],
+];
+
+$pick_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>';
 ?>
-<link rel="stylesheet" id="nexus-site-footer-css" href="<?php echo esc_url( $footer_style_url ); ?>" media="all">
 
-<footer id="footer" class="ft" role="contentinfo">
-	<div class="ft__scale" aria-hidden="true"></div>
+<footer id="footer" class="fuss" role="contentinfo">
+	<div class="blatt">
+		<?php if ( $shows_picks ) : ?>
+			<nav class="wahl" aria-labelledby="fuss-wahl">
+				<span class="mono" id="fuss-wahl">Was trifft zu?</span>
 
-	<div class="ft__inner">
-		<?php
-		/*
-		 * Der Kicker ist die sichtbare Ueberschrift der Routen und benennt
-		 * gleichzeitig die Navigation. Vorher stand hier eine per .ft__sr
-		 * versteckte h2 "Footer-Navigation" — die Klasse war in keinem
-		 * ausgelieferten Stylesheet definiert, also stand die Ueberschrift
-		 * sichtbar ueber dem Fuss. Ersatzlos aufgeloest.
-		 */
-		?>
-		<nav class="ft-pick" <?php if ( $is_freelancer_page ) : ?>aria-label="Direkter Kontakt"<?php else : ?>aria-labelledby="ft-pick-kicker"<?php endif; ?>>
-			<?php if ( ! $is_freelancer_page ) : ?>
-			<span class="ft-pick__kicker" id="ft-pick-kicker">Was trifft zu?</span>
+				<ul>
+					<?php foreach ( $picks as $pick ) : ?>
+						<li>
+							<a
+								href="<?php echo esc_url( (string) $pick['url'] ); ?>"
+								data-track-action="<?php echo esc_attr( (string) $pick['track'] ); ?>"
+								data-track-category="lead_gen"
+								data-track-section="footer"
+							>
+								<span><?php
+									echo esc_html( (string) $pick['pre'] );
+									?><b><?php echo esc_html( (string) $pick['strong'] ); ?></b><?php
+									echo esc_html( (string) $pick['post'] );
+								?></span>
+								<span class="pf" aria-hidden="true"><?php echo $pick_arrow; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</nav>
+		<?php endif; ?>
 
-			<ul class="ft-pick__list">
-				<?php foreach ( $picks as $pick ) : ?>
-					<li class="ft-pick__item">
-						<a
-							href="<?php echo esc_url( (string) $pick['url'] ); ?>"
-							data-track-action="<?php echo esc_attr( (string) $pick['track'] ); ?>"
-							data-track-category="lead_gen"
-							data-track-section="footer"
-						>
-							<span class="ft-pick__line"><?php
-								echo esc_html( (string) $pick['pre'] );
-								?><b><?php echo esc_html( (string) $pick['strong'] ); ?></b><?php
-								echo esc_html( (string) $pick['post'] );
-							?></span>
-							<span class="ft-pick__go" aria-hidden="true"><?php echo $pick_arrow; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
-						</a>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-			<?php endif; ?>
+		<p class="direkt">
+			<span class="was">Lieber direkt</span>
+			<?php foreach ( $direct as $entry ) : ?>
+				<a
+					href="<?php echo esc_url( (string) $entry['url'], [ 'http', 'https', 'mailto', 'tel' ] ); ?>"
+					data-track-action="<?php echo esc_attr( (string) $entry['track'] ); ?>"
+					data-track-category="lead_gen"
+					data-track-section="footer"
+				><?php echo esc_html( (string) $entry['label'] ); ?></a>
+			<?php endforeach; ?>
+		</p>
 
-			<p class="ft-direct">
-				<span class="ft-direct__label">Lieber direkt</span>
-				<?php foreach ( $direct as $entry ) : ?>
-					<a
-						href="<?php echo esc_url( (string) $entry['url'], [ 'http', 'https', 'mailto', 'tel' ] ); ?>"
-						data-track-action="<?php echo esc_attr( (string) $entry['track'] ); ?>"
-						data-track-category="lead_gen"
-						data-track-section="footer"
-					><?php echo esc_html( (string) $entry['label'] ); ?></a>
-				<?php endforeach; ?>
-			</p>
-		</nav>
-
-		<nav class="ft-close" aria-label="Weitere Seiten">
+		<nav class="verzeichnis" aria-label="Weitere Seiten">
 			<?php foreach ( $directory as $link ) : ?>
 				<a
 					href="<?php echo esc_url( (string) $link[0] ); ?>"
@@ -255,41 +226,33 @@ if ( file_exists( $footer_style_path ) ) {
 			<?php endforeach; ?>
 		</nav>
 
-		<?php
-		/*
-		 * <div> statt <p>: <address> ist Flow-Content und in einem <p> nicht
-		 * erlaubt — der Parser wuerde das <p> davor schliessen und die
-		 * Flex-Zeile in zwei Bloecke zerreissen. Das Layout haengt ohnehin an
-		 * der Klasse, nicht am Element.
-		 */
-		?>
-		<div class="ft-imprint">
-			<?php foreach ( $imprint as $index => $entry ) : ?>
-				<?php if ( $index > 0 ) : ?>
-					<span class="ft-imprint__sep" aria-hidden="true">·</span>
-				<?php endif; ?>
-				<?php
-				$entry_html = esc_html( (string) $entry['text'] );
-
-				if ( isset( $entry['value'] ) ) {
-					$entry_html .= '<b>' . esc_html( (string) $entry['value'] ) . '</b>';
-				}
-				?>
-				<?php if ( ! empty( $entry['address'] ) ) : ?>
-					<address class="ft-imprint__address"><?php echo $entry_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Textteile oben einzeln escaped, <b> ist statisches Markup ?></address>
-				<?php else : ?>
-					<span><?php echo $entry_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Textteile oben einzeln escaped, <b> ist statisches Markup ?></span>
-				<?php endif; ?>
+		<div class="absender">
+			<?php foreach ( [ $sender_left, $sender_right ] as $sender_column ) : ?>
+				<div class="protokoll">
+					<?php foreach ( $sender_column as $entry ) : ?>
+						<div class="z">
+							<span><?php echo esc_html( (string) $entry['label'] ); ?></span>
+							<?php if ( ! empty( $entry['address'] ) ) : ?>
+								<address><?php echo esc_html( (string) $entry['value'] ); ?></address>
+							<?php else : ?>
+								<b><?php echo esc_html( (string) $entry['value'] ); ?></b>
+							<?php endif; ?>
+						</div>
+					<?php endforeach; ?>
+				</div>
 			<?php endforeach; ?>
+		</div>
+
+		<div class="schluss">
+			<span><?php echo esc_html( sprintf( '© %s Haşim Üner', $current_year ) ); ?></span>
 
 			<a
-				class="ft-imprint__social"
 				href="https://www.linkedin.com/in/hasim-uener/"
 				aria-label="LinkedIn-Profil"
 				rel="me noopener noreferrer"
 				target="_blank"
 			>
-				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.3 6.5a1.78 1.78 0 0 1-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
 			</a>
 		</div>
 	</div>

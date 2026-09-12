@@ -39,7 +39,7 @@ $wl_form_endpoint  = rest_url( 'nexus/v1/whitelabel-request' );
 
 $task_brief_response = function_exists( 'hu_response_promise' )
 	? hu_response_promise()
-	: 'Antwort innerhalb von 24 Stunden werktags';
+	: 'Antwort spätestens in 2 Werktagen';
 
 $imprint_url  = home_url( '/impressum/' );
 $privacy_url  = home_url( '/datenschutz/' );
@@ -99,8 +99,7 @@ add_action(
 );
 
 get_header();
-?>
-<?php
+
 $test_sprint_price = hu_whitelabel_price( 'test_sprint', 'display_fixed', hu_whitelabel_price( 'test_sprint' ) );
 $retainer_price    = hu_whitelabel_price( 'retainer', 'display_hours', hu_whitelabel_price( 'retainer' ) );
 $contact_email     = hu_get_contact_email();
@@ -159,7 +158,7 @@ $proof_references = [
 	<section class="wl-section wl-services" id="lieferfelder" aria-labelledby="wl-services-title">
 		<div class="nx-container">
 			<header class="wl-section-heading wl-section-heading--split">
-				<div><p class="wl-eyebrow">Wobei ich euer Team entlaste</p><h2 id="wl-services-title">Die Lücke zwischen<br>versprochen und geliefert.</h2></div>
+				<div><p class="wl-eyebrow">01 / Wobei ich euer Team entlaste</p><h2 id="wl-services-title">Die Lücke zwischen<br>versprochen und geliefert.</h2></div>
 				<p>Für Web-, Design- und Performance-Agenturen, die ihre Kunden selbst führen und die technische Umsetzung gezielt ergänzen möchten.</p>
 			</header>
 			<div class="wl-service-row">
@@ -176,7 +175,7 @@ $proof_references = [
 
 	<section class="wl-section wl-proof" id="proof" aria-labelledby="wl-proof-title">
 		<div class="nx-container">
-			<header class="wl-section-heading"><p class="wl-eyebrow">Zusammenarbeit, die nachvollziehbar bleibt</p><h2 id="wl-proof-title">Ihr bekommt mehr als<br>„ist jetzt fertig“.</h2><p>Vor dem Start legen wir fest, woran ihr die Lieferung abnehmt. Die Dokumentation gehört zur Aufgabe – damit euer Team danach übernehmen kann.</p></header>
+			<header class="wl-section-heading"><p class="wl-eyebrow">02 / Nachvollziehbare Übergabe</p><h2 id="wl-proof-title">Ihr bekommt mehr als<br>„ist jetzt fertig“.</h2><p>Vor dem Start legen wir fest, woran ihr die Lieferung abnehmt. Die Dokumentation gehört zur Aufgabe – damit euer Team danach übernehmen kann.</p></header>
 			<div class="wl-handover">
 				<div class="wl-handover__brief"><span class="wl-label">Illustratives Übergabemuster</span><h3>Formular → CRM</h3><p>So kann eine Übergabe für eine abgegrenzte Formular-Aufgabe aufgebaut sein. Der konkrete Umfang wird vor Projektbeginn vereinbart.</p><span class="wl-handover__note">Muster zur Orientierung, kein Kundenbeleg.</span></div>
 				<dl class="wl-handover__list">
@@ -197,7 +196,7 @@ $proof_references = [
 
 	<section class="wl-section wl-dark wl-pricing" id="einstieg" aria-labelledby="wl-pricing-title">
 		<div class="nx-container">
-			<header class="wl-section-heading wl-section-heading--split"><div><p class="wl-eyebrow">Klein starten. Zusammenarbeit prüfen.</p><h2 id="wl-pricing-title">Erst eine gute Lieferung.<br>Dann der nächste Schritt.</h2></div><p>Ein erstes Projekt zeigt euch, wie ich arbeite. Ein Retainer wird erst relevant, wenn ihr regelmäßig Unterstützung braucht und die Zusammenarbeit passt.</p></header>
+			<header class="wl-section-heading wl-section-heading--split"><div><p class="wl-eyebrow">03 / Klein starten. Zusammenarbeit prüfen.</p><h2 id="wl-pricing-title">Erst eine gute Lieferung.<br>Dann der nächste Schritt.</h2></div><p>Ein erstes Projekt zeigt euch, wie ich arbeite. Ein Retainer wird erst relevant, wenn ihr regelmäßig Unterstützung braucht und die Zusammenarbeit passt.</p></header>
 			<div class="wl-entry">
 				<div class="wl-entry__main"><p class="wl-label">Der kleinste bezahlte Einstieg</p><h3>WordPress-Test-Sprint</h3><p class="wl-price"><?php echo esc_html( $test_sprint_price ); ?></p><p>Eine technische WordPress-Aufgabe, die wir vorab schriftlich abgrenzen. Zum Beispiel einen konkreten Formularfehler beheben oder eine vorhandene Komponente anpassen.</p><a class="wl-button wl-button--light" href="<?php echo esc_url( $wl_form_task_url ); ?>" data-wl-form-link data-track-action="cta_whitelabel_entry_task_brief" data-track-category="lead_gen" data-track-section="entry">Aufgabe für den Einstieg beschreiben <span aria-hidden="true">↗</span></a></div>
 				<div class="wl-entry__scope"><h4>Das gehört dazu</h4><ul class="wl-checklist"><li>Schriftlicher Umfang und Abnahmekriterien</li><li>Umsetzung und Funktionstest</li><li>Technische Dokumentation</li><li>Eine Korrekturrunde im vereinbarten Umfang</li></ul><p class="wl-small">Maximal ein Arbeitstag Umsetzungsaufwand; Termin nach Abstimmung. Kein Relaunch, keine vollständige Landingpage oder komplette Tracking-Einrichtung. Lizenzen und Erweiterungen separat.</p></div>
@@ -211,7 +210,7 @@ $proof_references = [
 	<section class="wl-section wl-partner" id="zusammenarbeit" aria-labelledby="wl-partner-title">
 		<div class="nx-container wl-partner__grid">
 			<div class="wl-founder"><img src="<?php echo esc_url( $portrait_url ); ?>" alt="Haşim Üner, WordPress-Entwickler und White-Label-Partner" width="480" height="600" loading="lazy" decoding="async"><div><h3>Haşim Üner</h3><p>WordPress-Entwicklung, Tracking<br>und technische Anfragestrecken.</p><a href="<?php echo esc_url( $about_url ); ?>">Mehr über mich <span aria-hidden="true">↗</span></a></div></div>
-			<div><header class="wl-section-heading"><p class="wl-eyebrow">Direkt. Verbindlich. In eurem Team.</p><h2 id="wl-partner-title">Ihr führt den Kunden.<br>Wir klären die Technik.</h2></header>
+			<div><header class="wl-section-heading"><p class="wl-eyebrow">04 / Direkt. Verbindlich. In eurem Team.</p><h2 id="wl-partner-title">Ihr führt den Kunden.<br>Wir klären die Technik.</h2></header>
 				<ol class="wl-process"><li><span class="wl-number">01</span><div><h3>Aufgabe &amp; Machbarkeit</h3><p>Ihr beschreibt Vorhaben, Bestand und Wunschzeitraum. Ich melde mich mit Rückfragen und einer ersten Einschätzung zu Passung und Kapazität.</p></div></li><li><span class="wl-number">02</span><div><h3>Umfang &amp; Start</h3><p>Wir vereinbaren Preis, Termin und Abnahme. NDA, benötigte Zugänge und Ansprechpartner stehen vor der Umsetzung fest.</p></div></li><li><span class="wl-number">03</span><div><h3>Umsetzung &amp; Übergabe</h3><p>Ihr prüft die vereinbarte Lieferung. Danach erhaltet ihr Dokumentation und Änderungen in eurem bestehenden Workflow.</p></div></li></ol>
 				<details class="wl-working-details"><summary>Wie ich in eurer Agentur auftrete</summary><p>Standardmäßig arbeite ich im Hintergrund. Bei Bedarf bin ich als technischer Ansprechpartner in euren Kundenterminen dabei – nach eurer Freigabe und unter eurem Branding. Vertrag und Rechnung laufen über eure Agentur; keine Akquise in eurem Kundenstamm.</p></details>
 				<p class="wl-fit-note"><strong>Passt besonders gut:</strong> Ihr sucht einen direkten technischen Partner für konkrete Projekte oder laufende Weiterentwicklung. Wenn ihr mehrere parallele Entwickler oder eine garantierte Rund-um-die-Uhr-Bereitschaft braucht, klären wir diese Anforderung vor einem Angebot.</p>
@@ -220,7 +219,7 @@ $proof_references = [
 	</section>
 
 	<section class="wl-section wl-faq-section" id="faq" aria-labelledby="wl-faq-title">
-		<div class="nx-container wl-faq-layout"><header class="wl-section-heading"><p class="wl-eyebrow">Vor dem ersten Projekt</p><h2 id="wl-faq-title">Die Fragen<br>dahinter.</h2><p>Zugänge, Kapazität, Abrechnung und was nach der Übergabe passiert.</p></header><div class="wl-faq">
+		<div class="nx-container wl-faq-layout"><header class="wl-section-heading"><p class="wl-eyebrow">05 / Vor dem ersten Projekt</p><h2 id="wl-faq-title">Die Fragen<br>dahinter.</h2><p>Zugänge, Kapazität, Abrechnung und was nach der Übergabe passiert.</p></header><div class="wl-faq">
 			<?php foreach ( $faq_items as $item ) : ?>
 				<details class="wl-faq__item" name="hu-faq-whitelabel"><summary id="wl-faq-summary-<?php echo esc_attr( $item['key'] ); ?>" class="wl-faq__summary" aria-controls="wl-faq-answer-<?php echo esc_attr( $item['key'] ); ?>" data-track-action="faq_whitelabel_open" data-track-label="<?php echo esc_attr( $item['key'] ); ?>" data-track-category="engagement" data-track-section="faq"><span><?php echo esc_html( $item['question'] ); ?></span><span class="wl-faq__icon" aria-hidden="true"></span></summary><div id="wl-faq-answer-<?php echo esc_attr( $item['key'] ); ?>" class="wl-faq__answer"><p><?php echo esc_html( $item['answer'] ); ?></p></div></details>
 			<?php endforeach; ?>
@@ -229,7 +228,7 @@ $proof_references = [
 
 	<section class="wl-section wl-dark wl-cta" id="naechster-schritt" aria-labelledby="wl-cta-title">
 		<div class="nx-container wl-contact-grid">
-			<div class="wl-contact-copy"><p class="wl-eyebrow">Der nächste Schritt ist überschaubar</p><h2 id="wl-cta-title">Was soll ich<br>euch abnehmen?</h2><p class="wl-lede">Ein paar Sätze reichen. Was soll entstehen oder besser funktionieren? Was ist schon da? Bis wann braucht ihr Unterstützung?</p><div class="wl-response"><strong><?php echo esc_html( $task_brief_response ); ?>.</strong><p>Ich antworte persönlich mit einer ersten Einschätzung oder gezielten Rückfragen. Ein Auftrag entsteht erst durch ein vereinbartes Angebot.</p></div><p>Ihr seid noch in der Angebotsphase?<br><a href="<?php echo esc_url( $wl_form_offer_url ); ?>" data-wl-form-link data-track-action="cta_whitelabel_way_offer" data-track-category="lead_gen" data-track-section="naechster_schritt">Vorhaben zur technischen Einschätzung beschreiben <span aria-hidden="true">↗</span></a></p><p class="wl-small">Lieber direkt sprechen?<br><a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" data-track-action="cta_whitelabel_form_call" data-track-category="lead_gen" data-track-section="naechster_schritt">30 Minuten zur Zusammenarbeit buchen</a></p></div>
+			<div class="wl-contact-copy"><p class="wl-eyebrow">06 / Der nächste Schritt</p><h2 id="wl-cta-title">Was soll ich<br>euch abnehmen?</h2><p class="wl-lede">Ein paar Sätze reichen. Was soll entstehen oder besser funktionieren? Was ist schon da? Bis wann braucht ihr Unterstützung?</p><div class="wl-response"><strong><?php echo esc_html( $task_brief_response ); ?>.</strong><p>Ich antworte persönlich mit einer ersten Einschätzung oder gezielten Rückfragen. Ein Auftrag entsteht erst durch ein vereinbartes Angebot.</p></div><p>Ihr seid noch in der Angebotsphase?<br><a href="<?php echo esc_url( $wl_form_offer_url ); ?>" data-wl-form-link data-track-action="cta_whitelabel_way_offer" data-track-category="lead_gen" data-track-section="naechster_schritt">Vorhaben zur technischen Einschätzung beschreiben <span aria-hidden="true">↗</span></a></p><p class="wl-small">Lieber direkt sprechen?<br><a href="<?php echo esc_url( $whitelabel_fit_url ); ?>" data-track-action="cta_whitelabel_form_call" data-track-category="lead_gen" data-track-section="naechster_schritt">30 Minuten zur Zusammenarbeit buchen</a></p></div>
 			<div class="wl-request" id="aufgabe">
 				<div class="wl-request__head"><p class="wl-label" data-wl-case-label aria-live="polite">Konkrete Aufgabe</p><h3>Beschreibt euer Vorhaben.</h3><p>Nur Aufgabe und E-Mail sind Pflichtfelder.</p></div>
 				<div id="wl-form-errors" class="wl-request__error-summary is-hidden" role="alert" tabindex="-1" data-wl-error-summary><strong>Bitte prüft eure Angaben.</strong><ul data-wl-error-list></ul></div>

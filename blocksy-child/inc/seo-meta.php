@@ -53,9 +53,21 @@ add_filter( 'document_title_parts', 'hu_document_title_overrides' );
  * @return string
  */
 function hu_get_homepage_title() {
+	/*
+	 * Die Startseite ist ein Verteiler auf drei Wege und besitzt in
+	 * docs/seo/query-ownership.csv keine Query. Bis 2026-09-12 trug sie
+	 * trotzdem "Anfragesysteme für Solar & Wärmepumpe" und stand damit im
+	 * Revier der Money Page, die diese Intention tatsaechlich besitzt —
+	 * zwei Seiten mit demselben Keyword-Ziel, genau das, was die Registry
+	 * verhindern soll.
+	 *
+	 * Der neue Titel benennt die fachliche Klammer aus AGENTS.md und die
+	 * Person. Dass die Startseite damit selbst nichts holt, ist fuer einen
+	 * Verteiler normal und kein Anlass, sie mit Keywords zu fuellen.
+	 */
 	return (string) apply_filters(
 		'hu_homepage_seo_title',
-		'Anfragesysteme für Solar & Wärmepumpe | Haşim Üner'
+		'Haşim Üner — WordPress, Tracking und Conversion'
 	);
 }
 
@@ -65,12 +77,19 @@ function hu_get_homepage_title() {
  * @return string
  */
 function hu_get_homepage_description() {
-	$cpl_before = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
-	$cpl_after  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
-
+	/*
+	 * Wie beim Titel: der Solar-Fall gehoert auf die Money Page, nicht in
+	 * die Beschreibung des Verteilers. Die Beschreibung nennt jetzt, was
+	 * gemacht wird und fuer wen — dieselbe Aussage wie der Aufriss im
+	 * Dokumentkopf, nur kurz genug fuer das Suchergebnis.
+	 *
+	 * Sie enthaelt bewusst keine Kennzahl mehr. Eine CPL-Zahl im Snippet
+	 * ohne den Fall daneben ist eine Behauptung ohne Beleg; der Fall steht
+	 * einen Klick weiter auf der Seite selbst.
+	 */
 	return (string) apply_filters(
 		'hu_homepage_seo_description',
-		sprintf( 'Eigene Anfragen statt Portal-Leads: Marktcheck, Vorqualifizierung und Tracking für Solar- und Wärmepumpen-Anbieter. Case Study: CPL von %s auf %s.', $cpl_before, $cpl_after )
+		'WordPress-Seiten, auf denen Anfragen entstehen, und die Messung, die zeigt, woher sie kamen. Für Unternehmen, Agenturen und Solarbetriebe im DACH-Raum.'
 	);
 }
 

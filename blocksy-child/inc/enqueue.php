@@ -77,31 +77,36 @@ function hu_enqueue_assets() {
 	// ── GLOBAL: Design System (Single Source of Truth) ─────────────
 	hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
 
-	// ── GLOBAL: Custom Header ──────────────────────────────────────
-	hu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-design-system' ] );
-
 	/*
-	 * Der Standard-Header wurde bisher erst in wp_body_open() um einen rohen
-	 * <link> fuer den Premium-Layer ergaenzt. Dadurch kannte WordPress keine
-	 * Abhaengigkeit zum Basis-Header und der Premium-Layer blieb selbst dann im
-	 * Dokument, wenn site-header.css in der Head-Kette fehlte. Als regulärer
-	 * Handle zieht er jetzt Basis-CSS und Design-System verbindlich mit.
-	 *
-	 * Audit-, Energy- und Blog-Kontexte rendern eigene Header-Varianten und
-	 * brauchen diesen zusaetzlichen Layer nicht.
+	 * Das Gutachten-Designsystem: Tokens auf :root, Kopf und Fuss, die
+	 * Bausteine der umgestellten Routen. Global, weil Kopf und Fuss auf jeder
+	 * Route erscheinen — auch auf denen, die ihren Seiteninhalt noch im alten
+	 * Kleid rendern. Loest site-header-premium.css und site-footer.css ab.
 	 */
-	$uses_premium_site_header = ( ! function_exists( 'nexus_is_blog_header_context' ) || ! nexus_is_blog_header_context() )
-		&& ( ! function_exists( 'nexus_is_audit_page' ) || ! nexus_is_audit_page() )
-		&& ( ! function_exists( 'nexus_is_energy_systems_context' ) || ! nexus_is_energy_systems_context() )
-		&& ( ! function_exists( 'hu_is_energy_demo_request_path' ) || ! hu_is_energy_demo_request_path() );
+	hu_enqueue_css( 'nexus-system-css', 'system.css', [ 'nexus-design-system' ] );
 
-	if ( $uses_premium_site_header ) {
-		hu_enqueue_css( 'nexus-site-header-premium', 'site-header-premium.css', [ 'nexus-site-header-css' ] );
-	}
+	// ── GLOBAL: Custom Header ──────────────────────────────────────
+	// Traegt nur noch die Audit-Variante; die Standardleiste steht in system.css.
+	hu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-system-css' ] );
 
 	// ── GLOBAL: Core JS (Scroll-Spy, FAQ, Counter, Progress Bar) ──
 	hu_enqueue_js( 'nexus-core-js', 'nexus-core.js' );
 	hu_enqueue_js( 'nexus-site-header-js', 'site-header.js', [ 'nexus-core-js' ] );
+
+	/*
+	 * Die Leiste bringt ihr eigenes, kleines Skript mit: Klappblatt auf
+	 * schmalen Schirmen, gemessene Hoehe als --leiste-h. site-header.js bleibt
+	 * fuer Blog- und Audit-Kopf zustaendig und findet auf den Leisten-Routen
+	 * kein [data-site-header] mehr.
+	 */
+	$uses_leiste = ( ! function_exists( 'nexus_is_blog_header_context' ) || ! nexus_is_blog_header_context() )
+		&& ( ! function_exists( 'nexus_is_audit_page' ) || ! nexus_is_audit_page() )
+		&& ( ! function_exists( 'nexus_is_energy_systems_context' ) || ! nexus_is_energy_systems_context() )
+		&& ( ! function_exists( 'hu_is_energy_demo_request_path' ) || ! hu_is_energy_demo_request_path() );
+
+	if ( $uses_leiste ) {
+		hu_enqueue_js( 'nexus-leiste-js', 'leiste.js', [] );
+	}
 
 	// ── GLOBAL: Legal Page Modal (Datenschutz / Impressum Overlay) ──
 	if ( ! is_page( 'datenschutz' ) && ! is_page( 'impressum' ) ) {
@@ -179,12 +184,18 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-post-visual-css', 'post-visual.css', [ 'nexus-design-system' ] );
 	}
 
-	// ── A) Startseite (homepage.css nur auf Front, nicht Blog-Index) ──
-	if ( is_front_page() ) {
-		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-home-redesign-css', 'homepage-redesign.css', [ 'nexus-home-css' ] );
-		hu_enqueue_js( 'nexus-home-redesign-js', 'homepage-redesign.js', [ 'nexus-core-js' ] );
-	}
+	/*
+	 * ── A) Startseite ──────────────────────────────────────────────
+	 * Seit dem Umbau auf den Gutachten-Standard (2026-09-12) laedt die Route
+	 * nur noch system.css plus ihr eigenes Delta; front-page.php haengt
+	 * startseite.css und startseite.js selbst an.
+	 *
+	 * Abgehaengt sind homepage.css, homepage-redesign.css, homepage-art.css,
+	 * homepage-art-v3.css, homepage-flow.css und homepage-redesign.js — rund
+	 * 139 KB CSS, von denen die neue Seite keine Regel mehr benutzt.
+	 * homepage.css und homepage-redesign.css bleiben im Repo: Agentur-,
+	 * WGOS- und Case-Routen weiter unten in dieser Datei haengen daran.
+	 */
 
 	// ── B) Blog archive surfaces ──────────────────────────────────
 	if ( is_home() || is_category() ) {
