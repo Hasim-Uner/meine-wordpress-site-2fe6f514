@@ -302,13 +302,17 @@
 		if ( firstRow && ! form.querySelector( '.hu-sst__form-intro-hint' ) ) firstRow.insertAdjacentElement( 'beforebegin', el( 'p', 'hu-sst__form-intro-hint', 'Keine Zugangsdaten erforderlich. Sie erhalten zunächst eine Fit- und Scope-Einschätzung.' ) );
 		if ( details ) {
 			var summary = details.querySelector( 'summary' );
-			if ( summary ) summary.textContent = 'Technische Angaben ergänzen — optional';
+			if ( summary ) {
+				summary.textContent = 'Technische Angaben ergänzen — optional';
+				track( summary, 'form_optional_details_open', 'request_form' );
+			}
 		}
 		var submit = form.querySelector( '[data-contact-submit]' );
 		if ( submit ) {
 			submit.textContent = 'Setup-Empfehlung anfordern';
 			submit.setAttribute( 'data-contact-submit-label', 'Setup-Empfehlung anfordern' );
-			submit.setAttribute( 'data-track-action', 'form_submit_tracking' );
+			submit.setAttribute( 'data-track-action', 'contact_submit_server_side_tracking' );
+			submit.setAttribute( 'data-track-funnel-action', 'form_submit_tracking' );
 		}
 	}
 
