@@ -118,52 +118,40 @@
 		node.setAttribute( 'data-track-section', section );
 	}
 
-	function stat( label, value, meta, modifier ) {
-		var card = el( 'article', 'hu-sst-verify__lane' + ( modifier ? ' ' + modifier : '' ) );
+	function protocolRow( label, value, meta, modifier ) {
+		var row = el( 'article', 'hu-sst-verify__lane ' + modifier );
 		var head = el( 'div', 'hu-sst-verify__lane-head' );
 		head.appendChild( el( 'span', 'hu-sst-verify__lane-label', label ) );
-		head.appendChild( el( 'span', 'hu-sst-verify__lane-state', modifier === 'is-reality' ? 'Referenz' : 'gemessen' ) );
-		card.appendChild( head );
+		head.appendChild( el( 'span', 'hu-sst-verify__lane-state', modifier === 'is-reality' ? 'Referenz' : 'Messung' ) );
+		row.appendChild( head );
 		var metric = el( 'div', 'hu-sst-verify__metric' );
 		metric.appendChild( el( 'strong', '', value ) );
 		metric.appendChild( el( 'span', '', 'Leads' ) );
-		card.appendChild( metric );
-		var bar = el( 'div', 'hu-sst-verify__bar' );
-		bar.setAttribute( 'aria-hidden', 'true' );
-		bar.appendChild( el( 'span', '' ) );
-		card.appendChild( bar );
-		card.appendChild( el( 'p', 'hu-sst-verify__lane-meta', meta ) );
-		return card;
-	}
-
-	function checkRow( label, value, strong ) {
-		var row = el( 'div', 'hu-sst-verify__check' + ( strong ? ' is-strong' : '' ) );
-		row.appendChild( el( 'span', 'hu-sst-verify__check-dot', '' ) );
-		row.appendChild( el( 'span', 'hu-sst-verify__check-label', label ) );
-		row.appendChild( el( 'strong', 'hu-sst-verify__check-value', value ) );
+		row.appendChild( metric );
+		row.appendChild( el( 'p', 'hu-sst-verify__lane-meta', meta ) );
 		return row;
 	}
 
-	function buildHeroConsole( root ) {
+	function buildHeroProtocol( root ) {
 		var figure = root.querySelector( '#hero .hu-sst__decision' );
 		if ( ! figure || figure.getAttribute( 'data-verification-console' ) === 'true' ) return;
 		figure.setAttribute( 'data-verification-console', 'true' );
 		figure.classList.add( 'hu-sst-verify' );
 		figure.textContent = '';
-		figure.setAttribute( 'aria-label', 'Beispielansicht eines Vergleichs zwischen tatsächlichen CRM-Leads, bestehendem Browser-Tracking und neuer serverseitiger Messung.' );
+		figure.setAttribute( 'aria-label', 'Beispiel eines Messprotokolls: tatsächliche CRM-Leads im Vergleich mit bestehendem Browser-Tracking und neuer serverseitiger Messung.' );
 
 		var topbar = el( 'div', 'hu-sst-verify__topbar' );
 		var brand = el( 'div', 'hu-sst-verify__brand' );
 		brand.appendChild( el( 'span', 'hu-sst-verify__pulse', '' ) );
-		brand.appendChild( el( 'span', '', 'TRACKING VERIFICATION' ) );
+		brand.appendChild( el( 'span', '', 'MESSPROTOKOLL / LEAD-RECONCILIATION' ) );
 		topbar.appendChild( brand );
-		topbar.appendChild( el( 'span', 'hu-sst-verify__mode', 'TESTBETRIEB' ) );
+		topbar.appendChild( el( 'span', 'hu-sst-verify__mode', 'BEISPIEL' ) );
 		figure.appendChild( topbar );
 
-		var titleWrap = el( 'div', 'hu-sst-verify__intro' );
-		titleWrap.appendChild( el( 'p', 'hu-sst-verify__kicker', 'Drei Schienen · ein Vergleich' ) );
-		titleWrap.appendChild( el( 'h2', 'hu-sst-verify__title', 'Wie nah liegt die Messung an der Realität?' ) );
-		figure.appendChild( titleWrap );
+		var intro = el( 'div', 'hu-sst-verify__intro' );
+		intro.appendChild( el( 'p', 'hu-sst-verify__kicker', 'Gegenprobe vor Umschaltung' ) );
+		intro.appendChild( el( 'h2', 'hu-sst-verify__title', 'Ein Lead. Drei Schienen. Eine Referenz.' ) );
+		figure.appendChild( intro );
 
 		var event = el( 'div', 'hu-sst-verify__event' );
 		event.appendChild( el( 'span', 'hu-sst-verify__event-dot', '' ) );
@@ -172,30 +160,23 @@
 		figure.appendChild( event );
 
 		var lanes = el( 'div', 'hu-sst-verify__lanes' );
-		lanes.appendChild( stat( 'Realität · CRM/Formular', '31', '31 echte Eingänge · Referenzwert', 'is-reality' ) );
-		lanes.appendChild( stat( 'Bestehendes Tracking', '27', '87 % der tatsächlichen Leads erkannt', 'is-legacy' ) );
-		lanes.appendChild( stat( 'Neue Server-Strecke', '30', '97 % der tatsächlichen Leads erkannt', 'is-server' ) );
+		lanes.appendChild( protocolRow( 'Realität / CRM', '31', '100 % · tatsächlich eingegangen', 'is-reality' ) );
+		lanes.appendChild( protocolRow( 'Bestand / Browser', '27', '87 % · vier Leads fehlen', 'is-legacy' ) );
+		lanes.appendChild( protocolRow( 'Neue Server-Strecke', '30', '97 % · ein Lead offen', 'is-server' ) );
 		figure.appendChild( lanes );
-
-		var checks = el( 'div', 'hu-sst-verify__checks' );
-		checks.appendChild( checkRow( 'CRM-Abgleich', '31 / 31', false ) );
-		checks.appendChild( checkRow( 'Browser-Signal', '27 / 31', false ) );
-		checks.appendChild( checkRow( 'Server-Signal', '30 / 31', true ) );
-		checks.appendChild( checkRow( 'Consent & Deduplizierung', 'geprüft', false ) );
-		figure.appendChild( checks );
 
 		var footer = el( 'div', 'hu-sst-verify__footer' );
 		var result = el( 'div', 'hu-sst-verify__result' );
-		result.appendChild( el( 'span', '', 'Messnähe zur Realität' ) );
-		result.appendChild( el( 'strong', '', 'Neu +10 Prozentpunkte' ) );
+		result.appendChild( el( 'span', '', 'Differenz zur Referenz' ) );
+		result.appendChild( el( 'strong', '', 'Bestand −4 · Server −1' ) );
 		footer.appendChild( result );
 		var gate = el( 'div', 'hu-sst-verify__gate' );
 		gate.appendChild( el( 'span', 'hu-sst-verify__gate-dot', '' ) );
-		gate.appendChild( el( 'strong', '', 'READY FOR REVIEW' ) );
+		gate.appendChild( el( 'strong', '', 'PRÜFBAR' ) );
 		footer.appendChild( gate );
 		figure.appendChild( footer );
 
-		figure.appendChild( el( 'figcaption', 'hu-sst-verify__caption', 'Beispieldaten zur Darstellung des Prüfprinzips — keine Kundenergebnisse und kein pauschales Uplift-Versprechen.' ) );
+		figure.appendChild( el( 'figcaption', 'hu-sst-verify__caption', 'Beispieldaten zur Darstellung des Prüfprinzips. Im Projekt werden ausschließlich reale Kundendaten und technisch erklärbare Abweichungen dokumentiert.' ) );
 	}
 
 	function hero( root ) {
@@ -203,43 +184,38 @@
 		var h1 = root.querySelector( '#hero .hu-sst__h1' );
 		var lead = root.querySelector( '#hero .hu-sst__lead' );
 		var sub = root.querySelector( '#hero .hu-sst__lead-sub' );
-		if ( eyebrow ) eyebrow.textContent = 'Server-Side Tracking · B2B-Leadgenerierung';
-		if ( h1 ) h1.textContent = 'Server-Side Tracking, das sich gegen Ihre echten Leads prüfen lässt';
-		if ( lead ) lead.textContent = 'Ich baue die neue Messstrecke zunächst neben dem Bestand auf. CRM oder Formular bilden die Realität; bestehendes Browser-Tracking und neue Server-Strecke werden dagegen verglichen.';
-		if ( sub ) sub.textContent = 'Erst wenn Abweichungen erklärbar sind, wird umgestellt. GA4, Google Ads und optional Meta CAPI laufen in Ihren Konten — mit eigener Tracking-Subdomain und dokumentierter Übergabe.';
+		if ( eyebrow ) eyebrow.textContent = 'Tracking Verification · Server-Side Tracking';
+		if ( h1 ) h1.textContent = 'Server-Side Tracking, das sich an echten Leads beweisen muss.';
+		if ( lead ) lead.textContent = 'Formular oder CRM ist die Referenz. Bestehendes Browser-Tracking und neue Server-Strecke laufen im Testzeitraum daneben. Erst wenn die Abweichungen erklärt sind, wird umgestellt.';
+		if ( sub ) sub.textContent = 'Sie erhalten nicht nur Container und Tags, sondern Messplan, Parallelprüfung, Abnahmeprotokoll und dokumentierte Übergabe.';
 
 		var proofItems = root.querySelectorAll( '#hero .hu-sst__proof-strip > div' );
 		if ( proofItems.length >= 3 ) {
 			var terms = [
-				[ 'Referenz', 'CRM / Formular als Ground Truth' ],
-				[ 'Vergleich', 'Realität ↔ Bestand ↔ Server' ],
-				[ 'Eigentum', 'Konten und Hosting bleiben bei Ihnen' ]
+				[ 'Referenz', 'Formular / CRM' ],
+				[ 'Gegenprobe', 'Bestand ↔ Server' ],
+				[ 'Abnahme', 'erst prüfen, dann umstellen' ]
 			];
 			Array.prototype.forEach.call( proofItems, function ( item, index ) {
 				var dt = item.querySelector( 'dt' );
 				var dd = item.querySelector( 'dd' );
-				if ( terms[ index ] && dt && dd ) {
-					dt.textContent = terms[ index ][0];
-					dd.textContent = terms[ index ][1];
+				if ( terms[index] && dt && dd ) {
+					dt.textContent = terms[index][0];
+					dd.textContent = terms[index][1];
 				}
 			} );
 		}
 
 		var cta = root.querySelector( '#hero .hu-sst__cta' );
 		if ( cta && ! root.querySelector( '.hu-sst__hero-microcopy' ) ) {
-			cta.insertAdjacentElement( 'afterend', el(
-				'p',
-				'hu-sst__cta-note hu-sst__hero-microcopy',
-				'Erste Einordnung ohne Zugangsdaten. Sie erhalten zuerst eine Fit- und Scope-Einschätzung.'
-			) );
+			cta.insertAdjacentElement( 'afterend', el( 'p', 'hu-sst__cta-note hu-sst__hero-microcopy', 'Erste Einordnung ohne Zugangsdaten. Technische Zugänge werden erst nach geklärtem Scope benötigt.' ) );
 		}
-
-		buildHeroConsole( root );
+		buildHeroProtocol( root );
 	}
 
 	function proof( root ) {
 		if ( root.querySelector( '#proof' ) ) return;
-		var anchor = root.querySelector( '.hu-sst__toc-band' ) || root.querySelector( '#hero' );
+		var anchor = root.querySelector( '#symptome' );
 		if ( ! anchor ) return;
 
 		var section = el( 'section', 'hu-sst__band hu-sst__band--light hu-sst__band--white hu-sst__proof-zone hu-sst-reconcile' );
@@ -248,21 +224,21 @@
 		section.setAttribute( 'aria-labelledby', 'hu-sst-proof-title' );
 		var container = el( 'div', 'hu-sst__container' );
 		var head = el( 'div', 'hu-sst__section-head' );
-		head.appendChild( el( 'p', 'hu-sst__eyebrow', 'Das Prüfprinzip' ) );
-		var heading = el( 'h2', 'hu-sst__h2', 'Drei Schienen. Eine Referenz.' );
+		head.appendChild( el( 'p', 'hu-sst__eyebrow', '02 · Gegenprobe' ) );
+		var heading = el( 'h2', 'hu-sst__h2', 'Nicht Tracking gegen Tracking. Messung gegen Realität.' );
 		heading.id = 'hu-sst-proof-title';
 		head.appendChild( heading );
-		head.appendChild( el( 'p', 'hu-sst__section-lead', 'Nicht Tracking gegen Tracking vergleichen: Die tatsächlichen Formular- oder CRM-Eingänge sind die Referenz. Dagegen werden Bestand und neue Server-Strecke gemessen.' ) );
+		head.appendChild( el( 'p', 'hu-sst__section-lead', 'Der tatsächliche Formular- oder CRM-Eingang ist die Referenz. Bestand und neue Server-Strecke werden gegen denselben Lead und denselben Zeitraum geprüft.' ) );
 		container.appendChild( head );
 
 		var layout = el( 'div', 'hu-sst-reconcile__layout' );
 		var report = el( 'article', 'hu-sst-reconcile__report' );
 		var reportTop = el( 'div', 'hu-sst-reconcile__report-top' );
-		reportTop.appendChild( el( 'span', 'hu-sst-reconcile__report-label', 'VERIFICATION SUMMARY' ) );
-		reportTop.appendChild( el( 'span', 'hu-sst-reconcile__report-state', 'Beispiel' ) );
+		reportTop.appendChild( el( 'span', 'hu-sst-reconcile__report-label', 'ABNAHMEPROTOKOLL / BEISPIEL' ) );
+		reportTop.appendChild( el( 'span', 'hu-sst-reconcile__report-state', 'Lead-Reconciliation' ) );
 		report.appendChild( reportTop );
-		report.appendChild( el( 'h3', 'hu-sst-reconcile__title', 'Lead-Reconciliation' ) );
-		report.appendChild( el( 'p', 'hu-sst-reconcile__period', 'Beispielzeitraum · gleicher Lead-Event · identische Referenz' ) );
+		report.appendChild( el( 'h3', 'hu-sst-reconcile__title', 'Gleicher Lead. Gleiche Referenz.' ) );
+		report.appendChild( el( 'p', 'hu-sst-reconcile__period', 'Beispielzeitraum · lead_submit · identische correlation_id' ) );
 
 		var rows = el( 'div', 'hu-sst-reconcile__rows' );
 		[
@@ -274,85 +250,97 @@
 			row.appendChild( el( 'span', 'hu-sst-reconcile__name', item[0] ) );
 			row.appendChild( el( 'strong', 'hu-sst-reconcile__count', item[1] ) );
 			row.appendChild( el( 'span', 'hu-sst-reconcile__rate', item[2] ) );
-			var bar = el( 'span', 'hu-sst-reconcile__mini-bar' );
-			bar.appendChild( el( 'i', '' ) );
-			row.appendChild( bar );
 			rows.appendChild( row );
 		} );
 		report.appendChild( rows );
 
 		var delta = el( 'div', 'hu-sst-reconcile__delta' );
-		delta.appendChild( el( 'span', '', 'Neue Messstrecke näher an der Realität' ) );
-		delta.appendChild( el( 'strong', '', '+10 PP' ) );
+		delta.appendChild( el( 'span', '', 'Abweichung zur Realität' ) );
+		delta.appendChild( el( 'strong', '', 'Alt −4 / Neu −1' ) );
 		report.appendChild( delta );
-		report.appendChild( el( 'p', 'hu-sst-reconcile__disclaimer', 'Beispieldaten. Im Projekt werden ausschließlich die realen Kundendaten und technisch erklärbare Abweichungen dokumentiert.' ) );
+		report.appendChild( el( 'p', 'hu-sst-reconcile__disclaimer', 'Beispieldaten. Entscheidend ist im Projekt nicht eine pauschale Prozentzahl, sondern ob jede Abweichung technisch erklärbar ist.' ) );
 		layout.appendChild( report );
 
 		var explanation = el( 'div', 'hu-sst-reconcile__explain' );
 		[
-			[ '01', 'Realität', 'Formular oder CRM zählt den tatsächlich eingegangenen Lead. Das ist die Referenz für den Vergleich.' ],
-			[ '02', 'Bestand', 'Das bisherige Browser-Tracking bleibt im Testzeitraum aktiv und wird nur beobachtet.' ],
-			[ '03', 'Neue Strecke', 'Die serverseitige Messung läuft parallel. Erst danach wird entschieden, was produktiv bleibt.' ]
+			[ '01', 'Referenz', 'Tatsächlich eingegangene Leads aus Formular oder CRM.' ],
+			[ '02', 'Bestand', 'Das bisherige Tracking bleibt während der Gegenprobe unangetastet.' ],
+			[ '03', 'Neue Strecke', 'Server-Signale werden daneben gemessen und erst nach der Prüfung freigegeben.' ]
 		].forEach( function ( item ) {
-			var card = el( 'article', 'hu-sst-reconcile__explain-card' );
-			card.appendChild( el( 'span', 'hu-sst-reconcile__num', item[0] ) );
-			card.appendChild( el( 'h3', '', item[1] ) );
-			card.appendChild( el( 'p', '', item[2] ) );
-			explanation.appendChild( card );
+			var row = el( 'article', 'hu-sst-reconcile__explain-card' );
+			row.appendChild( el( 'span', 'hu-sst-reconcile__num', item[0] ) );
+			row.appendChild( el( 'h3', '', item[1] ) );
+			row.appendChild( el( 'p', '', item[2] ) );
+			explanation.appendChild( row );
 		} );
 		layout.appendChild( explanation );
 		container.appendChild( layout );
-
-		var note = el( 'p', 'hu-sst__note hu-sst-reconcile__note' );
-		note.appendChild( document.createTextNode( 'Später kann derselbe Vergleich automatisiert in einem Kundenportal laufen. Für das Setup entscheidend ist zuerst die saubere Datenkette — nicht eine zusätzliche Software-Schicht.' ) );
-		container.appendChild( note );
-
 		section.appendChild( container );
 		anchor.insertAdjacentElement( 'afterend', section );
 	}
 
 	function decisionPath( root ) {
-		var fit = root.querySelector( '#fit' );
 		var principle = root.querySelector( '#unterschied' );
-		if ( fit && principle ) principle.parentNode.insertBefore( fit, principle );
-
 		var architecture = root.querySelector( '#architektur' );
 		var flow = architecture ? architecture.querySelector( '.hu-sst__flow' ) : null;
 		var container = principle ? principle.querySelector( '.hu-sst__container' ) : null;
+
 		if ( flow && container ) {
 			var head = el( 'div', 'hu-sst__section-head hu-sst__mechanism-head' );
-			head.appendChild( el( 'p', 'hu-sst__eyebrow', 'Kontrollierter Datenfluss' ) );
-			head.appendChild( el( 'h2', 'hu-sst__h2', 'So wird aus Browser-Signalen ein nachvollziehbarer Datenfluss' ) );
+			head.appendChild( el( 'p', 'hu-sst__eyebrow', 'Technischer Datenfluss' ) );
+			head.appendChild( el( 'h2', 'hu-sst__h2', 'Browser → eigener Endpunkt → Server → Plattform.' ) );
 			container.appendChild( head );
 			container.appendChild( flow );
 			architecture.remove();
 		}
 
-		var list = root.querySelector( '.hu-sst__toc-list' );
-		if ( list ) {
-			list.textContent = '';
-			[
-				[ 'proof', 'Vergleich', 'toc_verification' ],
-				[ 'unterschied', 'Lösung', 'toc_principle' ],
-				[ 'pakete', 'Pakete', 'toc_packages' ],
-				[ 'ablauf', 'Ablauf', 'toc_process' ],
-				[ 'anfrage', 'Anfrage', 'toc_request' ]
-			].forEach( function ( item ) {
-				var li = el( 'li' );
-				var a = el( 'a', item[0] === 'pakete' ? 'hu-sst__toc-link--strong' : '', item[1] );
-				a.href = '#' + item[0];
-				track( a, item[2], 'toc' );
-				li.appendChild( a );
-				list.appendChild( li );
-			} );
+		var symptomHead = root.querySelector( '#symptome .hu-sst__section-head' );
+		if ( symptomHead ) {
+			var sEyebrow = symptomHead.querySelector( '.hu-sst__eyebrow' );
+			var sTitle = symptomHead.querySelector( '.hu-sst__h2' );
+			if ( sEyebrow ) sEyebrow.textContent = '01 · Befund';
+			if ( sTitle ) sTitle.textContent = 'Wenn CRM und Werbeplattformen verschiedene Wahrheiten erzählen.';
 		}
 
 		var compareHead = root.querySelector( '#unterschied .hu-sst__section-head' );
 		if ( compareHead ) {
 			var eyebrow = compareHead.querySelector( '.hu-sst__eyebrow' );
 			var h2 = compareHead.querySelector( '.hu-sst__h2' );
-			if ( eyebrow ) eyebrow.textContent = 'Zielarchitektur';
-			if ( h2 ) h2.textContent = 'Browser bleibt wichtig. Der direkte Plattformweg muss es nicht.';
+			if ( eyebrow ) eyebrow.textContent = '03 · System';
+			if ( h2 ) h2.textContent = 'Browser bleibt wichtig. Der Datenweg wird kontrollierbar.';
+		}
+
+		var scopeHead = root.querySelector( '#umfang .hu-sst__section-head' );
+		if ( scopeHead ) {
+			var scopeEyebrow = scopeHead.querySelector( '.hu-sst__eyebrow' );
+			var scopeTitle = scopeHead.querySelector( '.hu-sst__h2' );
+			var scopeLead = scopeHead.querySelector( '.hu-sst__section-lead' );
+			if ( scopeEyebrow ) scopeEyebrow.textContent = 'Lieferumfang';
+			if ( scopeTitle ) scopeTitle.textContent = 'Was Sie am Ende tatsächlich besitzen.';
+			if ( scopeLead ) scopeLead.textContent = 'Keine lose Tag-Sammlung: sechs nachvollziehbare Arbeitsergebnisse von Messplan und Server-GTM bis Gegenprobe und Übergabe.';
+		}
+
+		var fit = root.querySelector( '#fit' );
+		var packages = root.querySelector( '#pakete' );
+		if ( fit && packages && fit.nextElementSibling !== packages ) packages.parentNode.insertBefore( fit, packages );
+
+		var list = root.querySelector( '.hu-sst__toc-list' );
+		if ( list ) {
+			list.textContent = '';
+			[
+				[ 'symptome', 'Befund', 'toc_problem' ],
+				[ 'proof', 'Gegenprobe', 'toc_verification' ],
+				[ 'unterschied', 'System', 'toc_system' ],
+				[ 'pakete', 'Leistung & Preis', 'toc_packages' ],
+				[ 'anfrage', 'Anfrage', 'toc_request' ]
+			].forEach( function ( item ) {
+				var li = el( 'li' );
+				var a = el( 'a', '', item[1] );
+				a.href = '#' + item[0];
+				track( a, item[2], 'toc' );
+				li.appendChild( a );
+				list.appendChild( li );
+			} );
 		}
 	}
 
@@ -366,9 +354,9 @@
 			if ( careContainer && pricing && scope ) {
 				care.setAttribute( 'data-cro-compressed', 'true' );
 				var head = care.querySelector( '.hu-sst__section-head' );
-				if ( head ) head.insertAdjacentElement( 'afterend', el( 'p', 'hu-sst__section-lead hu-sst__care-summary', 'Monatlicher Funktionstest, kleinere Korrekturen und Meldung bei Auffälligkeiten · ab ' + ( firstPrice ? firstPrice.textContent.trim() : '99 € / Monat' ) ) );
+				if ( head ) head.insertAdjacentElement( 'afterend', el( 'p', 'hu-sst__section-lead hu-sst__care-summary', 'Optional nach Go-live: Funktionstest, kleinere Korrekturen und Meldung bei Auffälligkeiten · ab ' + ( firstPrice ? firstPrice.textContent.trim() : '99 € / Monat' ) ) );
 				var details = el( 'details', 'hu-sst__faq-item' );
-				details.appendChild( el( 'summary', 'hu-sst__faq-q', 'Leistungsumfang Tracking Care ansehen' ) );
+				details.appendChild( el( 'summary', 'hu-sst__faq-q', 'Tracking Care im Detail' ) );
 				var body = el( 'div', 'hu-sst__faq-a' );
 				body.appendChild( pricing );
 				body.appendChild( scope );
@@ -395,10 +383,12 @@
 	function packageAndForm( root ) {
 		var packagesHead = root.querySelector( '#pakete .hu-sst__section-head' );
 		if ( packagesHead ) {
+			var eyebrow = packagesHead.querySelector( '.hu-sst__eyebrow' );
 			var title = packagesHead.querySelector( '.hu-sst__h2' );
 			var lead = packagesHead.querySelector( '.hu-sst__section-lead' );
-			if ( title ) title.textContent = 'Vom verifizierten Setup bis zum CRM-Rücksignal';
-			if ( lead ) lead.textContent = 'Server-Side Tracking ist die Infrastruktur. Je nach Paket kommen Meta CAPI, mehrere Conversion-Strecken oder CRM- und Offline-Signale hinzu.';
+			if ( eyebrow ) eyebrow.textContent = '04 · Leistung & Preis';
+			if ( title ) title.textContent = 'Drei Ausbaustufen. Ein Prüfprinzip.';
+			if ( lead ) lead.textContent = 'Der Unterschied liegt im Umfang der angeschlossenen Systeme. Messplan, Server-Strecke, Gegenprobe und dokumentierte Übergabe bleiben das gemeinsame Fundament.';
 		}
 
 		var cards = root.querySelectorAll( '#pakete .hu-sst__price-card' );
@@ -407,6 +397,17 @@
 			var individualLead = cards[2].querySelector( '.hu-sst__price-lead' );
 			if ( individualName ) individualName.textContent = 'Lead-to-Revenue · CRM';
 			if ( individualLead ) individualLead.textContent = 'Für B2B-Leadstrecken, bei denen qualifizierte Leads, Termine oder gewonnene Aufträge zurück in die Werbeplattformen sollen.';
+		}
+
+		Array.prototype.slice.call( cards ).forEach( function ( card ) {
+			var lead = card.querySelector( '.hu-sst__price-lead' );
+			if ( lead && ! lead.querySelector( 'strong' ) ) lead.insertBefore( el( 'strong', '', 'Geeignet für' ), lead.firstChild );
+		} );
+
+		var requestHead = root.querySelector( '#anfrage .hu-sst__section-head' );
+		if ( requestHead ) {
+			var requestEyebrow = requestHead.querySelector( '.hu-sst__eyebrow' );
+			if ( requestEyebrow ) requestEyebrow.textContent = '05 · Anfrage';
 		}
 
 		var form = root.querySelector( '#anfrage form[data-contact-form]' );
@@ -419,11 +420,6 @@
 			cta_package_individual: 'Lead-to-Revenue · CRM'
 		};
 
-		Array.prototype.slice.call( root.querySelectorAll( '#pakete .hu-sst__price-card' ) ).forEach( function ( card ) {
-			var lead = card.querySelector( '.hu-sst__price-lead' );
-			if ( lead && ! lead.querySelector( 'strong' ) ) lead.insertBefore( el( 'strong', '', 'Ideal für' ), lead.firstChild );
-		} );
-
 		var status = el( 'p', 'hu-sst__package-selection' );
 		status.hidden = true;
 		if ( details ) form.insertBefore( status, details );
@@ -432,7 +428,7 @@
 			var button = root.querySelector( '[data-track-action="' + action + '"]' );
 			if ( ! button ) return;
 			button.addEventListener( 'click', function () {
-				var label = labels[ action ];
+				var label = labels[action];
 				if ( details ) details.open = true;
 				status.textContent = '';
 				status.appendChild( el( 'strong', '', 'Vorausgewählt: ' ) );
@@ -446,7 +442,7 @@
 		} );
 
 		var firstRow = form.querySelector( '.contact-form__row' );
-		if ( firstRow && ! form.querySelector( '.hu-sst__form-intro-hint' ) ) firstRow.insertAdjacentElement( 'beforebegin', el( 'p', 'hu-sst__form-intro-hint', 'Keine Zugangsdaten erforderlich. Sie erhalten zunächst eine Fit- und Scope-Einschätzung.' ) );
+		if ( firstRow && ! form.querySelector( '.hu-sst__form-intro-hint' ) ) firstRow.insertAdjacentElement( 'beforebegin', el( 'p', 'hu-sst__form-intro-hint', 'Keine Zugangsdaten erforderlich. Für die erste Einordnung reichen Website und Messproblem.' ) );
 		if ( details ) {
 			var summary = details.querySelector( 'summary' );
 			if ( summary ) {
@@ -476,9 +472,9 @@
 			item.appendChild( body );
 			list.appendChild( item );
 		}
-		add( 'Was bedeutet „Realität“ im Vergleich?', 'Als Referenz dienen die tatsächlich im Formular oder CRM eingegangenen Leads. Diese Zahl wird nicht aus GA4, Google Ads oder Meta übernommen. Bestand und neue Messstrecke werden gegen dieselbe Referenz geprüft.' );
-		add( 'Muss ich mein bestehendes Tracking abschalten?', 'Nein. Während des Testbetriebs bleibt die bisherige Messung aktiv. Die neue Server-Strecke läuft daneben. Nach dem Vergleich wird entschieden, welche direkte Altstrecke abgeschaltet werden kann; Browser-Signale bleiben Teil eines hybriden Setups.' );
-		add( 'Was passiert nach dem Setup?', 'Sie erhalten Dokumentation, benannte GTM-Versionen und die vereinbarten Zugänge. Der Vergleich von Realität, Bestand und neuer Messstrecke wird dokumentiert. Danach kann das Setup bei Ihnen bleiben oder über Tracking Care kontrolliert werden.' );
+		add( 'Was bedeutet „Realität“ im Vergleich?', 'Als Referenz dienen die tatsächlich im Formular oder CRM eingegangenen Leads. Diese Zahl wird nicht aus GA4, Google Ads oder Meta übernommen.' );
+		add( 'Muss ich mein bestehendes Tracking abschalten?', 'Nein. Während der Gegenprobe bleibt die bisherige Messung aktiv. Die neue Server-Strecke läuft daneben. Erst nach der Prüfung wird entschieden, welche direkte Altstrecke abgeschaltet werden kann.' );
+		add( 'Was passiert nach dem Setup?', 'Sie erhalten Messplan, benannte GTM-Versionen, dokumentierten Datenfluss und die vereinbarten Zugänge. Der Vergleich von Referenz, Bestand und neuer Strecke wird dokumentiert.' );
 
 		var order = [ 'Was kostet Server-Side Tracking', 'Was bedeutet „Realität“ im Vergleich', 'Muss ich mein bestehendes Tracking abschalten', 'Wann lohnt es sich nicht', 'Wie lange dauert die Einrichtung', 'Funktioniert das mit WordPress', 'Was passiert nach dem Setup', 'Welches Problem löst Server-Side Tracking', 'Was ist der Unterschied zwischen Client-Side und Server-Side Tracking', 'Ist Server-Side Tracking automatisch DSGVO-konform', 'Wie viele Conversions kommen zusätzlich an', 'Brauche ich eine Server-Side-Tracking-Agentur' ];
 		var items = Array.prototype.slice.call( list.children );
@@ -500,22 +496,23 @@
 		links.forEach( function ( link ) {
 			var id = link.getAttribute( 'href' ).slice( 1 );
 			var target = document.getElementById( id );
-			if ( target ) map[ id ] = { target: target, link: link };
+			if ( target ) map[id] = { target: target, link: link };
 		} );
 		var observer = new window.IntersectionObserver( function ( entries ) {
 			entries.forEach( function ( entry ) {
-				if ( ! entry.isIntersecting || ! map[ entry.target.id ] ) return;
+				if ( ! entry.isIntersecting || ! map[entry.target.id] ) return;
 				links.forEach( function ( link ) { link.removeAttribute( 'aria-current' ); } );
-				map[ entry.target.id ].link.setAttribute( 'aria-current', 'location' );
+				map[entry.target.id].link.setAttribute( 'aria-current', 'location' );
 			} );
 		}, { rootMargin: '-28% 0px -62% 0px', threshold: 0 } );
-		Object.keys( map ).forEach( function ( id ) { observer.observe( map[ id ].target ); } );
+		Object.keys( map ).forEach( function ( id ) { observer.observe( map[id].target ); } );
 	}
 
 	function init() {
 		var root = document.querySelector( ROOT );
 		if ( ! root || root.getAttribute( 'data-sst-funnel-ready' ) === 'true' ) return;
 		root.setAttribute( 'data-sst-funnel-ready', 'true' );
+		root.setAttribute( 'data-sst-design', 'protocol' );
 		hero( root );
 		proof( root );
 		decisionPath( root );
