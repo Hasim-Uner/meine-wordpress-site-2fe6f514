@@ -1,6 +1,6 @@
 /**
  * White-Label Retainer — page-whitelabel-retainer.php
- * Sticky-CTA, Arbeitsmodus-Toggle und das vierfeldrige Agentur-Formular.
+ * Sticky-CTA, native FAQ und das Agentur-Formular.
  * Wird nur auf Whitelabel-Routen geladen (inc/enqueue.php, Block P2).
  *
  * Das vorgeschaltete Quiz (3 Klickfragen → Termin) ist ersatzlos entfallen:
@@ -95,20 +95,6 @@
 		updateSticky();
 	}
 
-	// ─── Arbeitsmodus-Toggle ───
-	// JS setzt data-wl-mode als primären CSS-Schlüssel; die :has()-Regeln in
-	// whitelabel.css decken nur den No-JS-Fall ab (Radio-Zustand direkt).
-	var mode = document.getElementById('wl-mode');
-	if (mode) {
-		mode.addEventListener('change', function (e) {
-			var radio = e.target;
-			if (!radio || radio.name !== 'wl-mode' || !radio.checked) {
-				return;
-			}
-			mode.setAttribute('data-wl-mode', radio.value);
-		});
-	}
-
 	// ─── FAQ: nativen <details>-Zustand mit explizitem ARIA spiegeln ───
 	document.querySelectorAll('.wl-faq__item').forEach(function (item) {
 		var summary = item.querySelector('.wl-faq__summary');
@@ -136,12 +122,17 @@
 		var errorList    = document.querySelector('[data-wl-error-list]');
 		var submitLabel  = submitButton ? submitButton.textContent : 'Aufgabe senden';
 		var validCases   = ['aufgabe', 'angebotsphase'];
+		var caseLabel    = document.querySelector('[data-wl-case-label]');
+		var isSubmitting = false;
 
 		var setCase = function (value) {
 			if (!caseField || validCases.indexOf(value) === -1) {
 				return;
 			}
 			caseField.value = value;
+			if (caseLabel) {
+				caseLabel.textContent = value === 'angebotsphase' ? 'Technische Einschätzung zur Angebotsphase' : 'Konkrete Aufgabe';
+			}
 		};
 
 		// Serverseitig steht immer "aufgabe" im Feld, weil die Route gecacht
@@ -208,7 +199,7 @@
 
 		document.querySelectorAll('[data-wl-form-link]').forEach(function (link) {
 			link.addEventListener('click', function (event) {
-				if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) {
+				if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
 					return;
 				}
 
@@ -233,16 +224,23 @@
 
 		form.addEventListener('submit', function (event) {
 			event.preventDefault();
+			if (isSubmitting) {
+				return;
+			}
 
 			var task  = form.querySelector('#wl-task');
 			var email = form.querySelector('#wl-email');
 			var errors = [];
+			var invalidTask = !task || task.value.trim().length < 12;
+			var invalidEmail = !email || !email.value.trim() || email.validity.typeMismatch;
+			if (task) task.setAttribute('aria-invalid', invalidTask ? 'true' : 'false');
+			if (email) email.setAttribute('aria-invalid', invalidEmail ? 'true' : 'false');
 
-			if (!task || task.value.trim().length < 12) {
+			if (invalidTask) {
 				errors.push('Bitte die Aufgabe kurz beschreiben — vier Zeilen genügen.');
 			}
 
-			if (!email || !email.value.trim() || email.validity.typeMismatch) {
+			if (invalidEmail) {
 				errors.push('Bitte eine gültige E-Mail-Adresse angeben.');
 			}
 
@@ -250,9 +248,8 @@
 
 			if (errors.length) {
 				setFeedback('', null);
-				var firstInvalid = errors.length && task && task.value.trim().length < 12 ? task : email;
-				if (firstInvalid) {
-					try { firstInvalid.focus(); } catch (error) { /* Fokus optional */ }
+				if (errorSummary) {
+					errorSummary.focus();
 				}
 				return;
 			}
@@ -266,6 +263,8 @@
 				'case': caseField ? caseField.value : 'aufgabe'
 			};
 
+			isSubmitting = true;
+			form.setAttribute('aria-busy', 'true');
 			if (submitButton) {
 				submitButton.disabled = true;
 				submitButton.textContent = 'Wird gesendet …';
@@ -289,6 +288,7 @@
 							: 'Das hat gerade nicht geklappt. Bitte noch einmal versuchen.';
 						showErrors([message]);
 						setFeedback(message, 'error');
+						if (errorSummary) errorSummary.focus();
 						return;
 					}
 
@@ -296,6 +296,7 @@
 					setFeedback(result.data.message || 'Danke. Die Aufgabe ist da.', 'success');
 					form.reset();
 					setCase(payload['case']);
+					if (feedback) feedback.focus();
 
 					track('whitelabel_request_submit', {
 						event_category: 'lead_gen',
@@ -307,13 +308,24 @@
 					var message = 'Verbindung fehlgeschlagen. Bitte noch einmal versuchen.';
 					showErrors([message]);
 					setFeedback(message, 'error');
+					if (errorSummary) errorSummary.focus();
 				})
 				.finally(function () {
+					isSubmitting = false;
+					form.removeAttribute('aria-busy');
 					if (submitButton) {
 						submitButton.disabled = false;
 						submitButton.textContent = submitLabel;
 					}
 				});
 		});
+		form.addEventListener('input', function (event) {
+			if (event.target.hasAttribute('aria-invalid')) {
+				event.target.removeAttribute('aria-invalid');
+			}
+		});
+		// Erst nach Registrierung des Submit-Handlers aktivieren. Ohne JS bleibt
+		// der sichtbare E-Mail-Kontakt verfügbar statt einer JSON-Ergebnisseite.
+		if (submitButton) submitButton.disabled = false;
 	}
 })();

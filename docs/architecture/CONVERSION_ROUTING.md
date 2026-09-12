@@ -222,6 +222,13 @@ Expected route:
 
 The page owns its own local request form (`nexus/v1/whitelabel-request`) and its own success event `whitelabel_request_submit`.
 
+The primary action is “Aufgabe beschreiben” and leads to `#aufgabe`. The paid
+WordPress test sprint is the smallest scoped entry; a retainer follows a successful
+first project. Presales uses the same form with `?case=angebotsphase` and a visible
+context label. The calendar remains a secondary option. Both required fields
+(task and email), optional timeframe/access, REST payload and success event are
+preserved. Without the form script, an explicit email fallback remains available.
+
 ### Footer: Selbstauskunft statt Sammel-CTA
 
 The global footer does not carry one CTA for everybody any more. By default it asks the
