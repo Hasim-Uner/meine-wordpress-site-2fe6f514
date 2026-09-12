@@ -551,8 +551,15 @@ hu_lint_assert(
 	"footer prints the postal address the Organization node claims: {$visible_nap}"
 );
 
+// Auf das Element pruefen, nicht auf eine Klasse: die Pruefung meint die
+// Auszeichnung, und eine Klasse ist eine Gestaltungsentscheidung. Bis
+// 2026-09-12 stand hier '<address class="ft-imprint__address">'. Der Fuss
+// steht seither auf dem Designsystem, die Klasse ist mit site-footer.css
+// entfallen — und die Pruefung schlug fehl, obwohl die Adresse unveraendert
+// in einem <address> steht. Ein Guard, der beim Umbenennen einer Klasse
+// anschlaegt, misst die Klasse und nicht das Signal.
 hu_lint_assert(
-	false !== strpos( $footer_source, '<address class="ft-imprint__address">' ),
+	1 === preg_match( '#<address[ >]#', $footer_source ),
 	'footer marks the address up as <address>, not as loose prose'
 );
 
