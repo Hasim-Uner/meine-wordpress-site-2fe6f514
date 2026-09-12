@@ -1794,6 +1794,11 @@ function nexus_get_legacy_offer_redirect_map() {
 		// zwei FAQ). Die Seite trug 16 Impressionen und 0 Klicks in 90 Tagen
 		// (Export 2026-09-01) und besitzt laut query-ownership.csv keine Query.
 		'/stack-agentur/'                         => $whitelabel_url,
+		// Der Solar-Stack beschrieb dieselben fuenf Schichten, die die Money Page
+		// als fuenf Stationen fuehrt — dort mit Gegenrechnung und konkreten
+		// Zahlen. 31 Impressionen, 0 Klicks in 90 Tagen (Export 2026-09-01),
+		// keine eigene Query in query-ownership.csv.
+		'/stack-solar/'                           => $energy_url,
 	];
 }
 

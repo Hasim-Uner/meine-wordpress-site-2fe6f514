@@ -159,7 +159,7 @@ Ein guter Anfrage-Weg braucht keinen überladenen Werkzeugkasten, sondern vier D
 - eine kurze, klare Formularstrecke,
 - ein sauberes Nachverfolgen jeder Anfrage bis zum Auftrag.
 
-Der passende technische Aufbau ist auf [Stack Solar](/stack-solar/) im Detail dokumentiert.
+Der passende technische Aufbau ist in der [Anfragestrecke](/solar-waermepumpen-leadgenerierung/) als fünf Stationen dokumentiert.
 
 **Werbung · Partnerlink:** [HostPress](https://www.hostpress.de/wordpress-hosting/) ist in diesem Aufbau die bevorzugte Hosting-Basis und zugleich ein Partner – wenn Sie über den Link abschließen, entsteht eine Vergütung, ohne Mehrkosten für Sie. Der Anbieter setzt auf schnelles, gemanagtes WordPress-Hosting mit Serverstandorten in Deutschland und täglichen Backups. [Raidboxes](https://raidboxes.io/en/platform/wordpress-management/) ist die zweite sinnvolle Option, wenn zentrale Verwaltung, Backups und Staging im Vordergrund stehen.
 
