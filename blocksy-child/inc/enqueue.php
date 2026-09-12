@@ -372,7 +372,6 @@ function hu_enqueue_assets() {
 		'qualifizierte-pv-anfragen'         => 'page-qualifizierte-pv-anfragen.php',
 		'solar-leads-kosten-studie'         => 'page-solar-leads-kosten-studie.php',
 		'stack-solar'                       => 'page-stack-solar.php',
-		'stack-agentur'                     => 'page-stack-agentur.php',
 	];
 
 	foreach ( $intercept_routes as $slug => $template ) {
@@ -654,7 +653,6 @@ function hu_disable_core_block_styles_on_custom_templates() {
 		'page-kontakt.php',
 		'page-case-studies-e-commerce.php',
 		'page-stack-solar.php',
-		'page-stack-agentur.php',
 	];
 	$hardcoded_slugs = [
 		'solar-waermepumpen-leadgenerierung',
@@ -677,7 +675,6 @@ function hu_disable_core_block_styles_on_custom_templates() {
 		'ergebnisse',
 		'case-studies-e-commerce',
 		'stack-solar',
-		'stack-agentur',
 	];
 
 	if ( is_front_page() || is_home() || in_array( $template, $hardcoded_templates, true ) || is_page( $hardcoded_slugs ) ) {

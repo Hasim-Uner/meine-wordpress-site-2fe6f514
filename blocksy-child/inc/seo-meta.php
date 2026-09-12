@@ -375,10 +375,6 @@ function hu_get_forced_singular_seo_map() {
 			//
 			// Nur Title und Description wandern hierher: die sichtbare Copy der
 			// Seite ist editor-/templateseitig und bleibt unangetastet.
-			'stack-agentur' => [
-				'title'       => 'Agentur-Stack: Root-Server, Git-Deployment, Restricted Shell',
-				'description' => 'Dev-Stack für Web-Agenturen: eigener Root-Server in Deutschland, CI/CD über GitHub Actions und Rsync, Restricted Deploy-Shell und Multi-Site-Hosting für Care-Plans.',
-			],
 		]
 	);
 }

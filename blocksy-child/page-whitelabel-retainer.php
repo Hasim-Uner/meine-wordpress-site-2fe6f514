@@ -133,7 +133,6 @@ $about_url = function_exists( 'nexus_get_page_url' )
 	? nexus_get_page_url( [ 'hasim-uener', 'uber-mich' ], home_url( '/hasim-uener/' ) )
 	: home_url( '/hasim-uener/' );
 
-$stack_agentur_url = home_url( '/stack-agentur/' );
 $outsourcing_url   = home_url( '/wordpress-projekte-auslagern/' );
 $tracking_b2b_url  = home_url( '/server-side-tracking-b2b/' );
 
@@ -824,6 +823,11 @@ window.dataLayer.push({
 				</div>
 			</div>
 
+			<div class="wl-tech nx-reveal">
+				<h3 class="wl-tech__title">Ein Infrastrukturwechsel ist keine Voraussetzung</h3>
+				<p class="wl-tech__lede">Wer Technik auslagert, rechnet mit dem Umbau, der angeblich vorher nötig ist. Der entfällt hier: Hosting, Theme-Stack, Builder und Deployment bleiben bestehen, wenn sie funktionieren. Managed Hosting wie Raidboxes oder HostPress ist dabei kein Nachteil — eigene Server lohnen sich erst, wenn Last, Sicherheit oder Integrationen sie rechtfertigen. Ich arbeite in eurem Repository und eurem Ablauf, statt euch meinen aufzudrücken. Ein großer Teil dieser Arbeit ist ohnehin Weiterentwicklung an bestehenden Installationen, nicht Neubau auf grüner Wiese.</p>
+			</div>
+
 			<?php /* Ersetzt den anonymisierten Case samt Kennzahlen-Kasten. Ohne Zahlen
 			        gibt es auch nichts zu disclaimern — die Fußnote ist mitentfallen. */ ?>
 			<div class="wl-proof__origin nx-reveal">
@@ -833,7 +837,7 @@ window.dataLayer.push({
 			</div>
 
 			<p class="wl-proof__docs nx-reveal">
-				Stack und Übergabe könnt ihr vorab prüfen: der <a href="<?php echo esc_url( $stack_agentur_url ); ?>" data-track-action="link_whitelabel_stack_agentur" data-track-category="internal_link" data-track-section="proof">Agentur-Stack</a> zeigt Infrastruktur und Deployment, der <a href="<?php echo esc_url( $outsourcing_url ); ?>" data-track-action="link_whitelabel_outsourcing_guide" data-track-category="internal_link" data-track-section="proof">Auslagerungs-Leitfaden</a> Rollen, Übergaben und Kontrollpunkte.
+				Rollen, Übergaben und Kontrollpunkte stehen im <a href="<?php echo esc_url( $outsourcing_url ); ?>" data-track-action="link_whitelabel_outsourcing_guide" data-track-category="internal_link" data-track-section="proof">Auslagerungs-Leitfaden</a>.
 			</p>
 		</div>
 	</section>
