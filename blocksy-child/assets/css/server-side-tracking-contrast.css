@@ -1,0 +1,614 @@
+/* ========================================================================== 
+   /server-side-tracking-b2b/ — Contrast + cascade hardening
+   --------------------------------------------------------------------------
+   Applies from first paint via the route attribute. This file deliberately
+   does not depend on data-sst-design being added by deferred JavaScript.
+   It also neutralises the legacy dark-band classes still present in the PHP
+   template so the verification-protocol design cannot fall back to the old
+   low-contrast SaaS presentation.
+   ========================================================================== */
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] {
+	--vp-paper: #fbfaf7;
+	--vp-paper-2: #f3efe8;
+	--vp-paper-3: #ebe5dc;
+	--vp-ink: #211d18;
+	--vp-body: #4f4942;
+	--vp-muted: #655e56;
+	--vp-faint: #766e65;
+	--vp-line: #d5cdc3;
+	--vp-line-strong: #bdb2a6;
+	--vp-copper: #a95b34;
+	--vp-copper-dark: #7f3f23;
+	--vp-dark: #171410;
+	--vp-dark-panel: #201c17;
+	--vp-dark-line: #4b433b;
+	--vp-on-dark: #fbf8f2;
+	--vp-on-dark-body: #d0c8bf;
+	--vp-on-dark-muted: #b1a79d;
+	background: var(--vp-paper);
+	color: var(--vp-ink);
+}
+
+/* ── First-paint theme normalisation ─────────────────────────────── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) {
+	background: var(--vp-paper) !important;
+	color: var(--vp-ink) !important;
+	box-shadow: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(#proof, #pakete) {
+	background: var(--vp-paper-2) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) :is(p, li, dd) {
+	color: var(--vp-body);
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) :is(h1, h2, h3, h4, strong, dt) {
+	color: var(--vp-ink);
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) a:not(.hu-sst__btn) {
+	color: var(--vp-copper-dark);
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) .hu-sst__eyebrow {
+	color: var(--vp-copper) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(
+	#hero,
+	#symptome,
+	#proof,
+	#fit,
+	#unterschied,
+	#umfang,
+	#pakete,
+	#tracking-care,
+	#sicherheit,
+	#ablauf,
+	#faq
+) :is(.hu-sst__section-lead, .hu-sst__lead, .hu-sst__lead-sub, .hu-sst__note) {
+	color: var(--vp-body) !important;
+}
+
+/* Hero must never inherit the old dark-band button/text treatment. */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__h1,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__lead,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__lead-sub,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__cta-note {
+	color: var(--vp-ink) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__lead,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__lead-sub,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__cta-note {
+	color: var(--vp-body) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__btn--primary {
+	border-color: #c96f45 !important;
+	background: #ef9a72 !important;
+	color: #1c1713 !important;
+	box-shadow: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__btn--primary:is(:hover, :focus-visible) {
+	border-color: #b95e38 !important;
+	background: #f3aa88 !important;
+	color: #15110e !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__btn--ghost,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__btn--ghost {
+	border-color: #82786e !important;
+	background: transparent !important;
+	color: var(--vp-ink) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #hero .hu-sst__btn--ghost:is(:hover, :focus-visible),
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__btn--ghost:is(:hover, :focus-visible) {
+	border-color: var(--vp-ink) !important;
+	background: var(--vp-ink) !important;
+	color: var(--vp-paper) !important;
+}
+
+/* ── Sticky protocol index ───────────────────────────────────────── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__toc-band {
+	background: rgba(251, 250, 247, 0.98) !important;
+	border-color: var(--vp-line-strong) !important;
+	box-shadow: 0 10px 30px -26px rgba(33, 29, 24, 0.5) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__toc-list a {
+	color: #5c544c !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__toc-list a::before {
+	color: var(--vp-copper-dark) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] .hu-sst__toc-list a[aria-current="location"] {
+	background: #eee5dc !important;
+	color: #1d1915 !important;
+}
+
+/* ── 01 Befund: ledger rows, no feature-card look ───────────────── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__grid--3 {
+	display: grid !important;
+	grid-template-columns: 1fr !important;
+	gap: 0 !important;
+	border-top: 1px solid var(--vp-line-strong);
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__card {
+	display: grid !important;
+	grid-template-columns: minmax(230px, 0.72fr) minmax(0, 1.28fr) !important;
+	gap: clamp(1.25rem, 4vw, 4rem) !important;
+	align-items: start;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: clamp(1.25rem, 2.8vw, 2rem) 0 !important;
+	border: 0 !important;
+	border-bottom: 1px solid var(--vp-line) !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	transform: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__card::before {
+	display: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__card-title {
+	margin: 0 !important;
+	font-size: clamp(1.05rem, 1.7vw, 1.32rem);
+	line-height: 1.28;
+	color: var(--vp-ink) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__card-text {
+	margin: 0 !important;
+	max-width: 66ch;
+	font-size: 0.98rem;
+	line-height: 1.68;
+	color: var(--vp-body) !important;
+}
+
+/* ── 02 Gegenprobe: clean report with readable metadata ─────────── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #proof .hu-sst-reconcile__report,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #proof .hu-sst-reconcile__explain {
+	background: transparent !important;
+	box-shadow: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #proof :is(
+	.hu-sst-reconcile__period,
+	.hu-sst-reconcile__disclaimer,
+	.hu-sst-reconcile__note,
+	.hu-sst-reconcile__explain-card p
+) {
+	color: #625a52 !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #proof .hu-sst-reconcile__row,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #proof .hu-sst-reconcile__explain-card {
+	border-color: var(--vp-line) !important;
+}
+
+/* ── 03 System: light editorial shell, one deliberate dark diagram ─ */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied {
+	background: var(--vp-paper) !important;
+	color: var(--vp-ink) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__compare {
+	border-top: 1px solid var(--vp-line-strong) !important;
+	border-bottom: 1px solid var(--vp-line-strong) !important;
+	background: transparent !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__compare > * {
+	background: transparent !important;
+	border-color: var(--vp-line) !important;
+	box-shadow: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__compare :is(h3, strong) {
+	color: var(--vp-ink) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__compare :is(p, li, span) {
+	color: var(--vp-body) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow {
+	background: var(--vp-dark) !important;
+	color: var(--vp-on-dark) !important;
+	border: 1px solid #302a24 !important;
+	border-radius: 4px !important;
+	box-shadow: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow :is(h3, h4, strong, .hu-sst__flow-label) {
+	color: var(--vp-on-dark) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow :is(p, span, li, .hu-sst__flow-note) {
+	color: var(--vp-on-dark-body) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied :is(.hu-sst__flow-node, .hu-sst__flow-output) {
+	border-color: var(--vp-dark-line) !important;
+	background: var(--vp-dark-panel) !important;
+	box-shadow: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow-index,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow-arrow,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow-kicker {
+	color: #f0a47f !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #unterschied .hu-sst__flow-caption {
+	color: #c8beb4 !important;
+}
+
+/* ── Lieferumfang: six numbered report rows ──────────────────────── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__grid {
+	display: grid !important;
+	grid-template-columns: 1fr !important;
+	gap: 0 !important;
+	border-top: 1px solid var(--vp-line-strong);
+	counter-reset: vp-scope;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card {
+	counter-increment: vp-scope;
+	display: grid !important;
+	grid-template-columns: 4rem minmax(220px, 0.55fr) minmax(0, 1fr) !important;
+	gap: clamp(1rem, 3vw, 3rem) !important;
+	align-items: start;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 1.4rem 0 !important;
+	border: 0 !important;
+	border-bottom: 1px solid var(--vp-line) !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	transform: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card::before {
+	content: "0" counter(vp-scope) !important;
+	position: static !important;
+	display: block !important;
+	width: auto !important;
+	height: auto !important;
+	background: transparent !important;
+	font-family: var(--vp-mono, ui-monospace, monospace);
+	font-size: 0.68rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	color: var(--vp-copper-dark) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card-title {
+	margin: 0 !important;
+	color: var(--vp-ink) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card-text {
+	margin: 0 !important;
+	color: var(--vp-body) !important;
+	line-height: 1.66;
+}
+
+/* ── 04 Leistung & Preis: light decision matrix, no dark card wall ─ */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete {
+	background: var(--vp-paper-2) !important;
+	color: var(--vp-ink) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__pricing {
+	display: grid !important;
+	grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+	gap: 0 !important;
+	border-top: 2px solid var(--vp-ink) !important;
+	border-bottom: 1px solid var(--vp-line-strong) !important;
+	background: transparent !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete :is(.hu-sst__price-card, .hu-sst__price-card--featured) {
+	min-height: 0 !important;
+	padding: clamp(1.25rem, 2.6vw, 2rem) !important;
+	border: 0 !important;
+	border-right: 1px solid var(--vp-line) !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	transform: none !important;
+	color: var(--vp-ink) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__price-card:last-child {
+	border-right: 0 !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__price-card--featured {
+	background: #eee3d9 !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete :is(
+	.hu-sst__price-name,
+	.hu-sst__price-value,
+	.hu-sst__price-card strong
+) {
+	color: var(--vp-ink) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete :is(
+	.hu-sst__price-lead,
+	.hu-sst__price-meta,
+	.hu-sst__price-list,
+	.hu-sst__price-list li,
+	.hu-sst__price-note
+) {
+	color: var(--vp-body) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete :is(.hu-sst__price-label, .hu-sst__price-flag, .hu-sst__price-lead strong) {
+	color: var(--vp-copper-dark) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__price-flag {
+	border: 0 !important;
+	background: transparent !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__price-list {
+	border-top: 1px solid var(--vp-line) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__price-list li::before {
+	color: var(--vp-copper-dark) !important;
+}
+
+/* ── Secondary sections: keep text AA-readable, lose card noise ─── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(#fit, #tracking-care, #sicherheit, #ablauf, #faq) :is(
+	.hu-sst__card,
+	.hu-sst__fit-card,
+	.hu-sst__step,
+	.hu-sst__faq-item
+) {
+	box-shadow: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(#fit, #sicherheit, #ablauf) :is(
+	.hu-sst__fit-card,
+	.hu-sst__card,
+	.hu-sst__step
+) {
+	background: transparent !important;
+	border-color: var(--vp-line) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(#fit, #tracking-care, #sicherheit, #ablauf, #faq) :is(p, li) {
+	color: var(--vp-body) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] :is(#tracking-care, #sicherheit, #faq) .hu-sst__faq-q {
+	color: var(--vp-ink) !important;
+}
+
+/* ── 05 Anfrage: intentional dark ending with stronger contrast ─── */
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage.hu-sst__band--dark,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage.hu-sst__band--deep,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage.hu-sst__band--warm {
+	background: var(--vp-dark) !important;
+	color: var(--vp-on-dark) !important;
+	border-top: 0 !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage :is(.hu-sst__h2, h2, h3, strong) {
+	color: var(--vp-on-dark) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__eyebrow {
+	color: #f0a47f !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage :is(
+	.hu-sst__section-lead,
+	.hu-sst__request-copy p,
+	.hu-sst__request-note,
+	.hu-sst__cta-note
+) {
+	color: var(--vp-on-dark-body) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__section-head::after {
+	border-color: #4a4139 !important;
+	color: var(--vp-on-dark-muted) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form {
+	--theme-form-text-initial-color: #201b17;
+	--theme-form-text-focus-color: #201b17;
+	padding: clamp(1.3rem, 3vw, 2rem) !important;
+	border: 1px solid #c9beb2 !important;
+	border-radius: 6px !important;
+	background: #fffdfa !important;
+	box-shadow: none !important;
+	color: #201b17 !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form :is(p, li, span) {
+	color: #514941;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form :is(label, legend, strong) {
+	color: #201b17 !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form-intro-hint {
+	border-color: #d7cec4 !important;
+	color: #5b524a !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .contact-field__help,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__optional,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form-hint {
+	color: #5d544c !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage :is(
+	input:not([type="checkbox"]):not([type="radio"]),
+	select,
+	textarea
+) {
+	border-color: #746a61 !important;
+	background: #fffdfa !important;
+	color: #1d1916 !important;
+	box-shadow: none !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage :is(
+	input:not([type="checkbox"]):not([type="radio"]),
+	select,
+	textarea
+)::placeholder {
+	color: #776e66 !important;
+	opacity: 1;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage :is(
+	input:not([type="checkbox"]):not([type="radio"]),
+	select,
+	textarea
+):focus {
+	border-color: var(--vp-copper-dark) !important;
+	background: #ffffff !important;
+	box-shadow: 0 0 0 3px rgba(127, 63, 35, 0.12) !important;
+	outline: 0;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form-details {
+	border-color: #d7cec4 !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__form-details > summary,
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .contact-consent a {
+	color: var(--vp-copper-dark) !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .hu-sst__check {
+	border-color: #cfc5ba !important;
+	background: #f4efe8 !important;
+	color: #332d28 !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .contact-consent {
+	color: #49423c !important;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .contact-submit {
+	border-color: #c96f45 !important;
+	background: #ef9a72 !important;
+	color: #191411 !important;
+	font-weight: 760;
+}
+
+.hu-sst[data-track-page="server-side-tracking-b2b"] #anfrage .contact-submit:is(:hover, :focus-visible) {
+	border-color: #b95e38 !important;
+	background: #f3aa88 !important;
+	color: #15110e !important;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+	.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete .hu-sst__pricing {
+		grid-template-columns: 1fr !important;
+	}
+
+	.hu-sst[data-track-page="server-side-tracking-b2b"] #pakete :is(.hu-sst__price-card, .hu-sst__price-card--featured) {
+		border-right: 0 !important;
+		border-bottom: 1px solid var(--vp-line) !important;
+	}
+}
+
+@media (max-width: 720px) {
+	.hu-sst[data-track-page="server-side-tracking-b2b"] #symptome .hu-sst__card,
+	.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card {
+		grid-template-columns: 1fr !important;
+		gap: 0.6rem !important;
+	}
+
+	.hu-sst[data-track-page="server-side-tracking-b2b"] #umfang .hu-sst__card::before {
+		margin-bottom: 0.2rem;
+	}
+}
