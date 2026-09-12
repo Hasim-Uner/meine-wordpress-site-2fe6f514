@@ -1,20 +1,17 @@
 /* ========================================================================== 
    /server-side-tracking-b2b/ — CSS composition
    --------------------------------------------------------------------------
-   Basis bleibt byte-identisch zum Stand vor dem CRO-Delta. Die folgenden
-   Imports halten Navigation/Preise und den Funnel-Redesign-Delta getrennt.
-   Alle Dateien sind route-spezifisch und werden nur über nexus-sst-css geladen.
+   Basis, CRO und Formular-/TOC-Verhalten bleiben erhalten. Die sichtbare
+   Produktoberflaeche kommt ausschliesslich aus dem Verification-Protocol-
+   Layer; die verworfenen SaaS-/Dashboard-Layer werden nicht mehr geladen.
    ========================================================================== */
 
 @import url("./server-side-tracking-base.css?v=20260909-1");
 @import url("./server-side-tracking-cro.css?v=20260909-2");
 @import url("./server-side-tracking-funnel.css?v=20260912-2");
-@import url("./server-side-tracking-product.css?v=20260912-1");
-@import url("./server-side-tracking-product-polish.css?v=20260912-1");
+@import url("./server-side-tracking-protocol.css?v=20260912-1");
 
-/* Desktop-Feinschliff: Auf Hover/Fokus des gesamten Messstrahls werden alle
-   Abschnittsnamen gleichzeitig eingeblendet. Nur aria-current bleibt als
-   aktiver Weg hervorgehoben; alle übrigen Labels bleiben bewusst neutral. */
+/* Desktop-Feinschliff fuer den globalen Money-Rail-Fallback. */
 @media (min-width: 1360px) {
 	.hu-sst .hu-money-rail--toc:hover .hu-money-toc__link,
 	.hu-sst .hu-money-rail--toc:focus-within .hu-money-toc__link {
