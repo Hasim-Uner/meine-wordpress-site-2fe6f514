@@ -96,16 +96,6 @@ parameters:
 			path: blocksy-child/inc/seo-cockpit/seo-cockpit-ui.php
 
 		-
-			message: "#^Offset 'description' on .* in isset\\(\\) always exists and is not nullable\\.$#"
-			count: 1
-			path: blocksy-child/page-kontakt.php
-
-		-
-			message: "#^Ternary operator condition is always false\\.$#"
-			count: 1
-			path: blocksy-child/page-kontakt.php
-
-		-
 			message: "#^Call to sprintf contains 0 placeholders, 1 value given\\.$#"
 			count: 1
 			path: blocksy-child/page-qualifizierte-pv-anfragen.php
