@@ -118,7 +118,113 @@
 		node.setAttribute( 'data-track-section', section );
 	}
 
+	function stat( label, value, meta, modifier ) {
+		var card = el( 'article', 'hu-sst-verify__lane' + ( modifier ? ' ' + modifier : '' ) );
+		var head = el( 'div', 'hu-sst-verify__lane-head' );
+		head.appendChild( el( 'span', 'hu-sst-verify__lane-label', label ) );
+		head.appendChild( el( 'span', 'hu-sst-verify__lane-state', modifier === 'is-reality' ? 'Referenz' : 'gemessen' ) );
+		card.appendChild( head );
+		var metric = el( 'div', 'hu-sst-verify__metric' );
+		metric.appendChild( el( 'strong', '', value ) );
+		metric.appendChild( el( 'span', '', 'Leads' ) );
+		card.appendChild( metric );
+		var bar = el( 'div', 'hu-sst-verify__bar' );
+		bar.setAttribute( 'aria-hidden', 'true' );
+		bar.appendChild( el( 'span', '' ) );
+		card.appendChild( bar );
+		card.appendChild( el( 'p', 'hu-sst-verify__lane-meta', meta ) );
+		return card;
+	}
+
+	function checkRow( label, value, strong ) {
+		var row = el( 'div', 'hu-sst-verify__check' + ( strong ? ' is-strong' : '' ) );
+		row.appendChild( el( 'span', 'hu-sst-verify__check-dot', '' ) );
+		row.appendChild( el( 'span', 'hu-sst-verify__check-label', label ) );
+		row.appendChild( el( 'strong', 'hu-sst-verify__check-value', value ) );
+		return row;
+	}
+
+	function buildHeroConsole( root ) {
+		var figure = root.querySelector( '#hero .hu-sst__decision' );
+		if ( ! figure || figure.getAttribute( 'data-verification-console' ) === 'true' ) return;
+		figure.setAttribute( 'data-verification-console', 'true' );
+		figure.classList.add( 'hu-sst-verify' );
+		figure.textContent = '';
+		figure.setAttribute( 'aria-label', 'Beispielansicht eines Vergleichs zwischen tatsächlichen CRM-Leads, bestehendem Browser-Tracking und neuer serverseitiger Messung.' );
+
+		var topbar = el( 'div', 'hu-sst-verify__topbar' );
+		var brand = el( 'div', 'hu-sst-verify__brand' );
+		brand.appendChild( el( 'span', 'hu-sst-verify__pulse', '' ) );
+		brand.appendChild( el( 'span', '', 'TRACKING VERIFICATION' ) );
+		topbar.appendChild( brand );
+		topbar.appendChild( el( 'span', 'hu-sst-verify__mode', 'TESTBETRIEB' ) );
+		figure.appendChild( topbar );
+
+		var titleWrap = el( 'div', 'hu-sst-verify__intro' );
+		titleWrap.appendChild( el( 'p', 'hu-sst-verify__kicker', 'Drei Schienen · ein Vergleich' ) );
+		titleWrap.appendChild( el( 'h2', 'hu-sst-verify__title', 'Wie nah liegt die Messung an der Realität?' ) );
+		figure.appendChild( titleWrap );
+
+		var event = el( 'div', 'hu-sst-verify__event' );
+		event.appendChild( el( 'span', 'hu-sst-verify__event-dot', '' ) );
+		event.appendChild( el( 'code', '', 'lead_submit' ) );
+		event.appendChild( el( 'span', 'hu-sst-verify__event-id', 'correlation_id · 8F29-C7' ) );
+		figure.appendChild( event );
+
+		var lanes = el( 'div', 'hu-sst-verify__lanes' );
+		lanes.appendChild( stat( 'Realität · CRM/Formular', '31', '31 echte Eingänge · Referenzwert', 'is-reality' ) );
+		lanes.appendChild( stat( 'Bestehendes Tracking', '27', '87 % der tatsächlichen Leads erkannt', 'is-legacy' ) );
+		lanes.appendChild( stat( 'Neue Server-Strecke', '30', '97 % der tatsächlichen Leads erkannt', 'is-server' ) );
+		figure.appendChild( lanes );
+
+		var checks = el( 'div', 'hu-sst-verify__checks' );
+		checks.appendChild( checkRow( 'CRM-Abgleich', '31 / 31', false ) );
+		checks.appendChild( checkRow( 'Browser-Signal', '27 / 31', false ) );
+		checks.appendChild( checkRow( 'Server-Signal', '30 / 31', true ) );
+		checks.appendChild( checkRow( 'Consent & Deduplizierung', 'geprüft', false ) );
+		figure.appendChild( checks );
+
+		var footer = el( 'div', 'hu-sst-verify__footer' );
+		var result = el( 'div', 'hu-sst-verify__result' );
+		result.appendChild( el( 'span', '', 'Messnähe zur Realität' ) );
+		result.appendChild( el( 'strong', '', 'Neu +10 Prozentpunkte' ) );
+		footer.appendChild( result );
+		var gate = el( 'div', 'hu-sst-verify__gate' );
+		gate.appendChild( el( 'span', 'hu-sst-verify__gate-dot', '' ) );
+		gate.appendChild( el( 'strong', '', 'READY FOR REVIEW' ) );
+		footer.appendChild( gate );
+		figure.appendChild( footer );
+
+		figure.appendChild( el( 'figcaption', 'hu-sst-verify__caption', 'Beispieldaten zur Darstellung des Prüfprinzips — keine Kundenergebnisse und kein pauschales Uplift-Versprechen.' ) );
+	}
+
 	function hero( root ) {
+		var eyebrow = root.querySelector( '#hero .hu-sst__eyebrow' );
+		var h1 = root.querySelector( '#hero .hu-sst__h1' );
+		var lead = root.querySelector( '#hero .hu-sst__lead' );
+		var sub = root.querySelector( '#hero .hu-sst__lead-sub' );
+		if ( eyebrow ) eyebrow.textContent = 'Server-Side Tracking · B2B-Leadgenerierung';
+		if ( h1 ) h1.textContent = 'Server-Side Tracking, das sich gegen Ihre echten Leads prüfen lässt';
+		if ( lead ) lead.textContent = 'Ich baue die neue Messstrecke zunächst neben dem Bestand auf. CRM oder Formular bilden die Realität; bestehendes Browser-Tracking und neue Server-Strecke werden dagegen verglichen.';
+		if ( sub ) sub.textContent = 'Erst wenn Abweichungen erklärbar sind, wird umgestellt. GA4, Google Ads und optional Meta CAPI laufen in Ihren Konten — mit eigener Tracking-Subdomain und dokumentierter Übergabe.';
+
+		var proofItems = root.querySelectorAll( '#hero .hu-sst__proof-strip > div' );
+		if ( proofItems.length >= 3 ) {
+			var terms = [
+				[ 'Referenz', 'CRM / Formular als Ground Truth' ],
+				[ 'Vergleich', 'Realität ↔ Bestand ↔ Server' ],
+				[ 'Eigentum', 'Konten und Hosting bleiben bei Ihnen' ]
+			];
+			Array.prototype.forEach.call( proofItems, function ( item, index ) {
+				var dt = item.querySelector( 'dt' );
+				var dd = item.querySelector( 'dd' );
+				if ( terms[ index ] && dt && dd ) {
+					dt.textContent = terms[ index ][0];
+					dd.textContent = terms[ index ][1];
+				}
+			} );
+		}
+
 		var cta = root.querySelector( '#hero .hu-sst__cta' );
 		if ( cta && ! root.querySelector( '.hu-sst__hero-microcopy' ) ) {
 			cta.insertAdjacentElement( 'afterend', el(
@@ -128,19 +234,7 @@
 			) );
 		}
 
-		if ( window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches || typeof Element === 'undefined' || ! Element.prototype.animate ) return;
-		Array.prototype.slice.call( root.querySelectorAll( '#hero .hu-sst__decision svg path[marker-end]' ) ).forEach( function ( path, index ) {
-			path.style.strokeDasharray = '10 8';
-			var animation = path.animate(
-				[ { opacity: 0.42, strokeDashoffset: '24' }, { opacity: 1, strokeDashoffset: '0' } ],
-				{ duration: 880, delay: 180 + index * 180, easing: 'cubic-bezier(0.23, 1, 0.32, 1)', fill: 'both' }
-			);
-			if ( animation.finished ) animation.finished.then( function () {
-				path.style.strokeDasharray = '';
-				path.style.strokeDashoffset = '';
-				path.style.opacity = '';
-			} ).catch( function () {} );
-		} );
+		buildHeroConsole( root );
 	}
 
 	function proof( root ) {
@@ -148,42 +242,71 @@
 		var anchor = root.querySelector( '.hu-sst__toc-band' ) || root.querySelector( '#hero' );
 		if ( ! anchor ) return;
 
-		var section = el( 'section', 'hu-sst__band hu-sst__band--light hu-sst__band--white hu-sst__proof-zone' );
+		var section = el( 'section', 'hu-sst__band hu-sst__band--light hu-sst__band--white hu-sst__proof-zone hu-sst-reconcile' );
 		section.id = 'proof';
 		section.setAttribute( 'data-nx-theme', 'light' );
+		section.setAttribute( 'aria-labelledby', 'hu-sst-proof-title' );
 		var container = el( 'div', 'hu-sst__container' );
 		var head = el( 'div', 'hu-sst__section-head' );
-		head.appendChild( el( 'p', 'hu-sst__eyebrow', 'Nachweis vor Umschaltung' ) );
-		head.appendChild( el( 'h2', 'hu-sst__h2', 'Nicht einfach umschalten. Erst gegentesten.' ) );
-		head.appendChild( el( 'p', 'hu-sst__section-lead', 'Die neue Messstrecke muss sich in Ihren Konten gegen den Bestand beweisen, bevor sie produktiv die Verantwortung übernimmt.' ) );
+		head.appendChild( el( 'p', 'hu-sst__eyebrow', 'Das Prüfprinzip' ) );
+		var heading = el( 'h2', 'hu-sst__h2', 'Drei Schienen. Eine Referenz.' );
+		heading.id = 'hu-sst-proof-title';
+		head.appendChild( heading );
+		head.appendChild( el( 'p', 'hu-sst__section-lead', 'Nicht Tracking gegen Tracking vergleichen: Die tatsächlichen Formular- oder CRM-Eingänge sind die Referenz. Dagegen werden Bestand und neue Server-Strecke gemessen.' ) );
 		container.appendChild( head );
 
-		var grid = el( 'div', 'hu-sst__grid hu-sst__grid--3' );
-		[
-			[ '01 · Bestand bleibt aktiv', 'Die vorhandene Messung bleibt während des Tests erhalten. Es gibt keinen Blindflug durch eine harte Sofort-Umschaltung.' ],
-			[ '02 · Neue Strecke läuft parallel', 'Browser- und Server-Signale werden auf Event, Consent, Parameter und Deduplizierung gegeneinander geprüft.' ],
-			[ '03 · Umschaltung nach QA', 'Erst wenn fehlende, doppelte oder falsch zugeordnete Events geklärt sind, wird die neue Messstrecke zum produktiven Standard.' ]
-		].forEach( function ( item ) {
-			var card = el( 'article', 'hu-sst__card' );
-			card.appendChild( el( 'h3', 'hu-sst__card-title', item[0] ) );
-			card.appendChild( el( 'p', 'hu-sst__card-text', item[1] ) );
-			grid.appendChild( card );
-		} );
-		container.appendChild( grid );
+		var layout = el( 'div', 'hu-sst-reconcile__layout' );
+		var report = el( 'article', 'hu-sst-reconcile__report' );
+		var reportTop = el( 'div', 'hu-sst-reconcile__report-top' );
+		reportTop.appendChild( el( 'span', 'hu-sst-reconcile__report-label', 'VERIFICATION SUMMARY' ) );
+		reportTop.appendChild( el( 'span', 'hu-sst-reconcile__report-state', 'Beispiel' ) );
+		report.appendChild( reportTop );
+		report.appendChild( el( 'h3', 'hu-sst-reconcile__title', 'Lead-Reconciliation' ) );
+		report.appendChild( el( 'p', 'hu-sst-reconcile__period', 'Beispielzeitraum · gleicher Lead-Event · identische Referenz' ) );
 
-		var caseSource = root.querySelector( 'a[data-track-action="internal_sst_solar_case"]' );
-		if ( caseSource ) {
-			var callout = el( 'aside', 'hu-sst__callout' );
-			callout.appendChild( el( 'h3', 'hu-sst__callout-title', 'Tracking als Teil eines realen Lead-Systems' ) );
-			callout.appendChild( el( 'p', '', 'Tracking, Formulare und CRM-Übergaben waren Teil eines dokumentierten Lead-Funnels. Die Case-Ergebnisse sind ein Systemergebnis — kein isoliertes Versprechen, das allein Server-Side Tracking zugeschrieben wird.' ) );
-			var line = el( 'p', 'hu-sst__callout-links' );
-			var link = el( 'a', '', 'Dokumentierten Case ansehen' );
-			link.href = caseSource.href;
-			track( link, 'case_tracking_proof', 'proof' );
-			line.appendChild( link );
-			callout.appendChild( line );
-			container.appendChild( callout );
-		}
+		var rows = el( 'div', 'hu-sst-reconcile__rows' );
+		[
+			[ 'Realität / CRM', '31', '100 %', 'is-reality' ],
+			[ 'Bestehendes Browser-Tracking', '27', '87 %', 'is-legacy' ],
+			[ 'Neue Server-Strecke', '30', '97 %', 'is-server' ]
+		].forEach( function ( item ) {
+			var row = el( 'div', 'hu-sst-reconcile__row ' + item[3] );
+			row.appendChild( el( 'span', 'hu-sst-reconcile__name', item[0] ) );
+			row.appendChild( el( 'strong', 'hu-sst-reconcile__count', item[1] ) );
+			row.appendChild( el( 'span', 'hu-sst-reconcile__rate', item[2] ) );
+			var bar = el( 'span', 'hu-sst-reconcile__mini-bar' );
+			bar.appendChild( el( 'i', '' ) );
+			row.appendChild( bar );
+			rows.appendChild( row );
+		} );
+		report.appendChild( rows );
+
+		var delta = el( 'div', 'hu-sst-reconcile__delta' );
+		delta.appendChild( el( 'span', '', 'Neue Messstrecke näher an der Realität' ) );
+		delta.appendChild( el( 'strong', '', '+10 PP' ) );
+		report.appendChild( delta );
+		report.appendChild( el( 'p', 'hu-sst-reconcile__disclaimer', 'Beispieldaten. Im Projekt werden ausschließlich die realen Kundendaten und technisch erklärbare Abweichungen dokumentiert.' ) );
+		layout.appendChild( report );
+
+		var explanation = el( 'div', 'hu-sst-reconcile__explain' );
+		[
+			[ '01', 'Realität', 'Formular oder CRM zählt den tatsächlich eingegangenen Lead. Das ist die Referenz für den Vergleich.' ],
+			[ '02', 'Bestand', 'Das bisherige Browser-Tracking bleibt im Testzeitraum aktiv und wird nur beobachtet.' ],
+			[ '03', 'Neue Strecke', 'Die serverseitige Messung läuft parallel. Erst danach wird entschieden, was produktiv bleibt.' ]
+		].forEach( function ( item ) {
+			var card = el( 'article', 'hu-sst-reconcile__explain-card' );
+			card.appendChild( el( 'span', 'hu-sst-reconcile__num', item[0] ) );
+			card.appendChild( el( 'h3', '', item[1] ) );
+			card.appendChild( el( 'p', '', item[2] ) );
+			explanation.appendChild( card );
+		} );
+		layout.appendChild( explanation );
+		container.appendChild( layout );
+
+		var note = el( 'p', 'hu-sst__note hu-sst-reconcile__note' );
+		note.appendChild( document.createTextNode( 'Später kann derselbe Vergleich automatisiert in einem Kundenportal laufen. Für das Setup entscheidend ist zuerst die saubere Datenkette — nicht eine zusätzliche Software-Schicht.' ) );
+		container.appendChild( note );
+
 		section.appendChild( container );
 		anchor.insertAdjacentElement( 'afterend', section );
 	}
@@ -209,7 +332,7 @@
 		if ( list ) {
 			list.textContent = '';
 			[
-				[ 'symptome', 'Problem', 'toc_problem' ],
+				[ 'proof', 'Vergleich', 'toc_verification' ],
 				[ 'unterschied', 'Lösung', 'toc_principle' ],
 				[ 'pakete', 'Pakete', 'toc_packages' ],
 				[ 'ablauf', 'Ablauf', 'toc_process' ],
@@ -222,6 +345,14 @@
 				li.appendChild( a );
 				list.appendChild( li );
 			} );
+		}
+
+		var compareHead = root.querySelector( '#unterschied .hu-sst__section-head' );
+		if ( compareHead ) {
+			var eyebrow = compareHead.querySelector( '.hu-sst__eyebrow' );
+			var h2 = compareHead.querySelector( '.hu-sst__h2' );
+			if ( eyebrow ) eyebrow.textContent = 'Zielarchitektur';
+			if ( h2 ) h2.textContent = 'Browser bleibt wichtig. Der direkte Plattformweg muss es nicht.';
 		}
 	}
 
@@ -262,6 +393,22 @@
 	}
 
 	function packageAndForm( root ) {
+		var packagesHead = root.querySelector( '#pakete .hu-sst__section-head' );
+		if ( packagesHead ) {
+			var title = packagesHead.querySelector( '.hu-sst__h2' );
+			var lead = packagesHead.querySelector( '.hu-sst__section-lead' );
+			if ( title ) title.textContent = 'Vom verifizierten Setup bis zum CRM-Rücksignal';
+			if ( lead ) lead.textContent = 'Server-Side Tracking ist die Infrastruktur. Je nach Paket kommen Meta CAPI, mehrere Conversion-Strecken oder CRM- und Offline-Signale hinzu.';
+		}
+
+		var cards = root.querySelectorAll( '#pakete .hu-sst__price-card' );
+		if ( cards.length >= 3 ) {
+			var individualName = cards[2].querySelector( '.hu-sst__price-name' );
+			var individualLead = cards[2].querySelector( '.hu-sst__price-lead' );
+			if ( individualName ) individualName.textContent = 'Lead-to-Revenue · CRM';
+			if ( individualLead ) individualLead.textContent = 'Für B2B-Leadstrecken, bei denen qualifizierte Leads, Termine oder gewonnene Aufträge zurück in die Werbeplattformen sollen.';
+		}
+
 		var form = root.querySelector( '#anfrage form[data-contact-form]' );
 		if ( ! form ) return;
 		var details = form.querySelector( '.hu-sst__form-details' );
@@ -269,7 +416,7 @@
 		var labels = {
 			cta_package_standard: 'Basis · GA4 + Google Ads',
 			cta_package_pro: 'Performance · Google + Meta',
-			cta_package_individual: 'Tracking & CRM · Individuell'
+			cta_package_individual: 'Lead-to-Revenue · CRM'
 		};
 
 		Array.prototype.slice.call( root.querySelectorAll( '#pakete .hu-sst__price-card' ) ).forEach( function ( card ) {
@@ -329,10 +476,11 @@
 			item.appendChild( body );
 			list.appendChild( item );
 		}
-		add( 'Muss ich mein bestehendes Tracking abschalten?', 'Nein. Die bisherige Messung bleibt während des Paralleltests aktiv. Erst nach der QA auf fehlende, doppelte oder falsch zugeordnete Events wird die neue Messstrecke zum produktiven Standard.' );
-		add( 'Was passiert nach dem Setup?', 'Sie erhalten Dokumentation, benannte GTM-Versionen und die vereinbarten Zugänge. Danach kann das Setup bei Ihnen bleiben oder über Tracking Care regelmäßig kontrolliert werden; neue Plattformen und größere Umbauten werden separat kalkuliert.' );
+		add( 'Was bedeutet „Realität“ im Vergleich?', 'Als Referenz dienen die tatsächlich im Formular oder CRM eingegangenen Leads. Diese Zahl wird nicht aus GA4, Google Ads oder Meta übernommen. Bestand und neue Messstrecke werden gegen dieselbe Referenz geprüft.' );
+		add( 'Muss ich mein bestehendes Tracking abschalten?', 'Nein. Während des Testbetriebs bleibt die bisherige Messung aktiv. Die neue Server-Strecke läuft daneben. Nach dem Vergleich wird entschieden, welche direkte Altstrecke abgeschaltet werden kann; Browser-Signale bleiben Teil eines hybriden Setups.' );
+		add( 'Was passiert nach dem Setup?', 'Sie erhalten Dokumentation, benannte GTM-Versionen und die vereinbarten Zugänge. Der Vergleich von Realität, Bestand und neuer Messstrecke wird dokumentiert. Danach kann das Setup bei Ihnen bleiben oder über Tracking Care kontrolliert werden.' );
 
-		var order = [ 'Was kostet Server-Side Tracking', 'Wann lohnt es sich nicht', 'Wie lange dauert die Einrichtung', 'Muss ich mein bestehendes Tracking abschalten', 'Funktioniert das mit WordPress', 'Was passiert nach dem Setup', 'Welches Problem löst Server-Side Tracking', 'Was ist der Unterschied zwischen Client-Side und Server-Side Tracking', 'Ist Server-Side Tracking automatisch DSGVO-konform', 'Wie viele Conversions kommen zusätzlich an', 'Brauche ich eine Server-Side-Tracking-Agentur' ];
+		var order = [ 'Was kostet Server-Side Tracking', 'Was bedeutet „Realität“ im Vergleich', 'Muss ich mein bestehendes Tracking abschalten', 'Wann lohnt es sich nicht', 'Wie lange dauert die Einrichtung', 'Funktioniert das mit WordPress', 'Was passiert nach dem Setup', 'Welches Problem löst Server-Side Tracking', 'Was ist der Unterschied zwischen Client-Side und Server-Side Tracking', 'Ist Server-Side Tracking automatisch DSGVO-konform', 'Wie viele Conversions kommen zusätzlich an', 'Brauche ich eine Server-Side-Tracking-Agentur' ];
 		var items = Array.prototype.slice.call( list.children );
 		items.sort( function ( a, b ) {
 			function rank( item ) {
@@ -342,6 +490,26 @@
 			}
 			return rank( a ) - rank( b );
 		} ).forEach( function ( item ) { list.appendChild( item ); } );
+	}
+
+	function activeToc( root ) {
+		if ( typeof window.IntersectionObserver !== 'function' ) return;
+		var links = Array.prototype.slice.call( root.querySelectorAll( '.hu-sst__toc-list a[href^="#"]' ) );
+		if ( ! links.length ) return;
+		var map = {};
+		links.forEach( function ( link ) {
+			var id = link.getAttribute( 'href' ).slice( 1 );
+			var target = document.getElementById( id );
+			if ( target ) map[ id ] = { target: target, link: link };
+		} );
+		var observer = new window.IntersectionObserver( function ( entries ) {
+			entries.forEach( function ( entry ) {
+				if ( ! entry.isIntersecting || ! map[ entry.target.id ] ) return;
+				links.forEach( function ( link ) { link.removeAttribute( 'aria-current' ); } );
+				map[ entry.target.id ].link.setAttribute( 'aria-current', 'location' );
+			} );
+		}, { rootMargin: '-28% 0px -62% 0px', threshold: 0 } );
+		Object.keys( map ).forEach( function ( id ) { observer.observe( map[ id ].target ); } );
 	}
 
 	function init() {
@@ -354,6 +522,7 @@
 		collapseLongSections( root );
 		packageAndForm( root );
 		faq( root );
+		activeToc( root );
 	}
 
 	if ( document.readyState === 'loading' ) document.addEventListener( 'DOMContentLoaded', init );

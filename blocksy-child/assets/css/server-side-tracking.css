@@ -9,6 +9,7 @@
 @import url("./server-side-tracking-base.css?v=20260909-1");
 @import url("./server-side-tracking-cro.css?v=20260909-2");
 @import url("./server-side-tracking-funnel.css?v=20260912-2");
+@import url("./server-side-tracking-product.css?v=20260912-1");
 
 /* Desktop-Feinschliff: Auf Hover/Fokus des gesamten Messstrahls werden alle
    Abschnittsnamen gleichzeitig eingeblendet. Nur aria-current bleibt als
