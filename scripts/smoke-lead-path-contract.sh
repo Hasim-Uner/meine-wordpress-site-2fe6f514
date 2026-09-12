@@ -27,7 +27,9 @@ forbid_pattern() {
 }
 
 CORE_JS="$ROOT/assets/js/nexus-core.js"
-SOLAR_JS="$ROOT/assets/js/solar-leadgenerierung-solara.js"
+SOLAR_BOOTSTRAP="$ROOT/assets/js/solar-leadgenerierung-solara.js"
+SOLAR_JS="$ROOT/assets/js/solar-marketcheck-compact.js"
+SOLAR_CSS="$ROOT/assets/css/solar-marketcheck-compact.css"
 CRM_PHP="$ROOT/inc/review-crm.php"
 COCKPIT_LEADS="$ROOT/inc/seo-cockpit/seo-cockpit-leads.php"
 COCKPIT_COMMAND="$ROOT/inc/seo-cockpit/seo-cockpit-command-center.php"
@@ -35,12 +37,20 @@ DIAGNOSE_CANON="$ROOT/inc/canon/diagnose-canon.php"
 PRICING_CANON="$ROOT/inc/canon/pricing-canon.php"
 
 require_file "$CORE_JS"
+require_file "$SOLAR_BOOTSTRAP"
 require_file "$SOLAR_JS"
+require_file "$SOLAR_CSS"
 require_file "$CRM_PHP"
 require_file "$COCKPIT_LEADS"
 require_file "$COCKPIT_COMMAND"
 require_file "$DIAGNOSE_CANON"
 require_file "$PRICING_CANON"
+
+# The stable WordPress handle is a bootstrap now. It must load the compact
+# two-view controller and its matching stylesheet using the actual repo paths.
+require_pattern "solar-marketcheck-compact\.js" "$SOLAR_BOOTSTRAP"
+require_pattern "solar-marketcheck-compact\.css" "$SOLAR_BOOTSTRAP"
+forbid_pattern "solar-marktcheck-compact\.css" "$SOLAR_BOOTSTRAP"
 
 # Frontend attribution helper must still expose the fields consumed by the CRM.
 require_pattern "getLeadAttributionPayload" "$CORE_JS"
@@ -54,7 +64,7 @@ done
 require_pattern "/wp-json/nexus/v1/audit-request" "$SOLAR_JS"
 require_pattern "intake_variant:[[:space:]]*'energy_systems'" "$SOLAR_JS"
 require_pattern "audit_type:[[:space:]]*'b2b_system_intake'" "$SOLAR_JS"
-require_pattern "Object\\.keys\\(attribution\\)" "$SOLAR_JS"
+require_pattern "attribution\(\)" "$SOLAR_JS"
 
 # The active intake must submit actual answers. Team size and portal pressure
 # used to fabricate lead volume, CPL and a bottleneck in the browser, which made
@@ -69,15 +79,27 @@ forbid_pattern "mapMarginLossToBottleneck" "$SOLAR_JS"
 require_pattern "no_owner" "$SOLAR_JS"
 require_pattern "no_owner" "$CRM_PHP"
 
-# Other routes promise the length of this intake before the visitor reaches it.
-# That promise reads from the diagnosis canon, so the canon has to keep matching
-# the form: the intake grew from three steps to five while the homepage, the
-# case study and the test route still advertised a sixty-second, three-step
-# marketcheck.
-js_steps="$(grep -cE "^[[:space:]]*key: '" "$SOLAR_JS")"
+# The redesign groups all four fit signals into one visible view and contact
+# into a second view. HU_MARKETCHECK_STEPS remains the canonical number of data
+# groups (four fit signals + contact), while HU_MARKETCHECK_FIT_QUESTIONS guards
+# the actual qualification inputs. Do not equate visible screens with contract
+# groups again.
+fit_questions="$(grep -oE "define\( 'HU_MARKETCHECK_FIT_QUESTIONS', [0-9]+" "$DIAGNOSE_CANON" | grep -oE '[0-9]+$')"
 canon_steps="$(grep -oE "define\( 'HU_MARKETCHECK_STEPS', [0-9]+" "$DIAGNOSE_CANON" | grep -oE '[0-9]+$')"
+[[ -n "$fit_questions" ]] || fail "missing HU_MARKETCHECK_FIT_QUESTIONS in $DIAGNOSE_CANON"
 [[ -n "$canon_steps" ]] || fail "missing HU_MARKETCHECK_STEPS in $DIAGNOSE_CANON"
-[[ "$js_steps" == "$canon_steps" ]] || fail "intake has $js_steps steps, HU_MARKETCHECK_STEPS says $canon_steps"
+[[ "$canon_steps" == "$((fit_questions + 1))" ]] || fail "marketcheck contract groups must equal fit questions + contact"
+
+js_fit_questions=0
+for field in solution_focus business_fit sales_team_size project_timing; do
+  if grep -Eq "^[[:space:]]*$field:[[:space:]]*\[" "$SOLAR_JS"; then
+    js_fit_questions=$((js_fit_questions + 1))
+  fi
+done
+[[ "$js_fit_questions" == "$fit_questions" ]] || fail "compact intake exposes $js_fit_questions fit fields, canon says $fit_questions"
+require_pattern "Schritt 1 von 2" "$SOLAR_JS"
+require_pattern "Schritt 2 von 2" "$SOLAR_JS"
+forbid_pattern "sol-quiz-progress" "$SOLAR_JS"
 
 # The build price may not live as literal copy in templates. It drifted once
 # already: the money page moved to the canon, three other routes kept quoting
