@@ -42,14 +42,14 @@ if ( '' === $requested_type && isset( $focus_options[ $requested_focus ] ) ) {
 	}
 }
 
-$type_focus_options = array_filter(
+$public_focus_options = array_filter(
 	$focus_options,
 	static function ( $focus_definition ) use ( $selected_type ) {
 		$focus_types = isset( $focus_definition['types'] ) ? (array) $focus_definition['types'] : [];
 		return in_array( $selected_type, $focus_types, true );
 	}
 );
-$selected_focus = isset( $type_focus_options[ $requested_focus ] ) ? $requested_focus : '';
+$selected_focus = isset( $public_focus_options[ $requested_focus ] ) ? $requested_focus : '';
 
 $hero_titles = [
 	'audit'          => 'Was soll zuerst geprüft werden?',
@@ -148,7 +148,7 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 							<p id="contact-focus-help" class="contact-field__help" data-contact-focus-help>Wählen Sie den Bereich, der Ihrem Anliegen am nächsten kommt.</p>
 							<select id="contact-focus" name="focus" required data-contact-focus-select aria-describedby="contact-focus-help contact-focus-error">
 								<option value="" <?php selected( '', $selected_focus ); ?> disabled>Bitte auswählen</option>
-								<?php foreach ( $type_focus_options as $focus_key => $focus_definition ) : ?>
+								<?php foreach ( $public_focus_options as $focus_key => $focus_definition ) : ?>
 									<option value="<?php echo esc_attr( $focus_key ); ?>" data-types="<?php echo esc_attr( implode( ',', array_map( 'sanitize_key', (array) $focus_definition['types'] ) ) ); ?>" <?php selected( $selected_focus, $focus_key ); ?>><?php echo esc_html( $focus_definition['label'] ); ?></option>
 								<?php endforeach; ?>
 							</select>
