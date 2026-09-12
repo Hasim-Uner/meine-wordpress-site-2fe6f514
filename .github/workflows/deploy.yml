@@ -140,10 +140,16 @@ jobs:
       - name: Live smoke test
         if: ${{ !inputs.dry_run }}
         run: |
-          sleep 20
+          # Rsync writes directly into the active theme. A short grace period is
+          # enough; the smoke script handles transient network errors itself.
+          sleep 5
           bash scripts/smoke-live.sh "${SMOKE_BASE_URL:-https://hasimuener.de}"
         env:
           SMOKE_BASE_URL: ${{ vars.SMOKE_BASE_URL }}
+          SMOKE_CONNECT_TIMEOUT: '4'
+          SMOKE_MAX_TIME: '8'
+          SMOKE_RETRIES: '1'
+          SMOKE_RETRY_MAX_TIME: '18'
 
       - name: Trigger post-deploy WordPress cron
         if: ${{ !inputs.dry_run }}
