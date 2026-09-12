@@ -1154,7 +1154,7 @@ function nexus_get_whitelabel_faq_items() {
 		[
 			'key'      => 'start',
 			'question' => 'Wie schnell können wir starten?',
-			'answer'   => 'Nach dem Fit-Gespräch folgen NDA, Zugänge und ein Erstprojekt mit fixem Scope; den Starttermin legen wir dabei gemeinsam fest. Erst nach dessen erfolgreichem Abschluss entscheidet ihr über ein weiteres Projekt oder einen Retainer.',
+			'answer'   => 'Beschreibt zuerst eure Aufgabe und den gewünschten Zeitraum. Ich prüfe Passung und Kapazität; offene Fragen klären wir per E-Mail oder im Gespräch. Danach vereinbaren wir Umfang, Preis und Starttermin. NDA und benötigte Zugänge stehen vor der Umsetzung fest. Nach dem erfolgreichen Erstprojekt entscheidet ihr über ein weiteres Projekt oder einen Retainer.',
 		],
 		[
 			'key'      => 'recht',

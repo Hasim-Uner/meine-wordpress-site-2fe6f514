@@ -13,6 +13,13 @@ Nicht verifiziert:
 - exakte Live-Konfiguration in WordPress-Admin
 - exakte n8n-, GTM-, GA4-, Consent- und CRM-Setups
 
+## White-Label: Entwurf im Review, 2026-09-12
+
+- `/whitelabel-retainer/`: heller Einstieg und dunkle Angebots-/Anfrageflächen nach dem aktuellen Gutachten-Design der Solar-Seite; Farben aus dem gemeinsamen `system.css`. Leistungen, illustriertes Übergabemuster und öffentliche Portfolioverweise erklären die Zusammenarbeit. Das Muster ist ausdrücklich kein Kundenbeleg; öffentliche Referenzen erhalten keine anonymisierten Solar-Kennzahlen.
+- Primärziel ist die konkrete Aufgabe im bestehenden Formular. Der bezahlte WordPress-Test-Sprint steht vor dem Retainer; größere Einstiegsprojekte sind aufklappbar. Preise bleiben im Canon. Die unzutreffende Gleichsetzung von Preisdifferenz und Agenturmarge entfällt; Antwortfenster und verfügbare Umsetzungskapazität werden getrennt erklärt.
+- Formular mit zwei Pflichtfeldern, sichtbarem Angebotsphasen-Kontext, optionalen Zugangsangaben, Fehlerfokus, Schutz vor gleichzeitigem Doppelversand und E-Mail-Ausweg ohne JavaScript. Endpoint und Erfolgs-Event bleiben erhalten. Die zentrale Start-FAQ beschreibt denselben Ablauf wie das Template und das FAQ-Schema.
+- Motion Brief: Intensität 1; statische Inhalte, unmittelbare Formularzustände, native Details und dezente Button-Farbwechsel. Keine Reveal-Kette, kein zusätzlicher Animations- oder Tracking-Runtime. Mobiler CTA verschwindet vor dem Formular und ist im versteckten Zustand nicht fokussierbar; reduzierte Bewegung deaktiviert weiches Scrollen. PHP-gerendertes Template mit DOM-basierten Formularprüfungen. Die Browserrichtlinie blockiert die Live-Seite und das Öffnen der lokalen Vorschau; die visuelle Prüfung bleibt vor Veröffentlichung offen. Keine Aussage zu gemessenen Live-CWV oder zugestellten Live-Anfragen. Veröffentlichung erfolgt erst nach Review und Freigabe.
+
 ## Designsystem, Kopf, Fuß und Startseite: Umsetzung 2026-09-12, Veröffentlichung noch ausstehend
 
 Dieser Abschnitt hat Vorrang vor älteren Beschreibungen von Startseite, Kopf und Fuß weiter unten.
