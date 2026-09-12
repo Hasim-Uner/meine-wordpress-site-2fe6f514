@@ -18,6 +18,39 @@
     return;
   }
 
+  /* Der Marktcheck besitzt seit 09/2026 einen eigenen visuellen Layer.
+     Er bleibt als separate Datei wartbar, wird aber nur auf dieser Route
+     geladen. Die URL wird aus dem bereits versionierten Script abgeleitet;
+     dadurch traegt das CSS dieselbe Cache-Version wie anfragestrecke.js. */
+  function marktcheckStyles() {
+    if (document.querySelector('link[data-strecke-marketcheck-style]')) {
+      return;
+    }
+
+    var script = document.currentScript;
+    if (!script || !script.src || script.src.indexOf('/assets/js/anfragestrecke.js') === -1) {
+      var scripts = document.querySelectorAll('script[src*="/assets/js/anfragestrecke.js"]');
+      script = scripts.length ? scripts[scripts.length - 1] : null;
+    }
+
+    if (!script || !script.src) {
+      return;
+    }
+
+    var href = script.src.replace(
+      '/assets/js/anfragestrecke.js',
+      '/assets/css/anfragestrecke-marketcheck.css'
+    );
+
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    link.setAttribute('data-strecke-marketcheck-style', '');
+    document.head.appendChild(link);
+  }
+
+  marktcheckStyles();
+
   var ruhig = false;
   try {
     ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
