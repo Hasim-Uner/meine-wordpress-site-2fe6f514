@@ -563,7 +563,7 @@ function nexus_get_primary_public_url_map() {
 		home_url( '/wordpress-agentur-hannover/' )
 	);
 	$wgos_url    = trailingslashit( $agentur_url ) . '#methode';
-	$asset_url   = trailingslashit( $agentur_url ) . '#asset-uebersicht';
+	$asset_url   = trailingslashit( $agentur_url ) . '#methode';
 	$seo_url     = trailingslashit( $agentur_url ) . '#technisches-seo';
 	$cro_url     = trailingslashit( $agentur_url ) . '#methode';
 	$wartung_url = trailingslashit( $agentur_url ) . '#wordpress-wartung';
@@ -1140,6 +1140,16 @@ function nexus_get_whitelabel_faq_items() {
 			'key'      => 'exit',
 			'question' => 'Wie kommen wir wieder raus?',
 			'answer'   => 'Projekte enden mit der Abnahme, Retainer ohne Verlängerungsfalle. Durch Doku und Ownership in euren Accounts könnt ihr jederzeit intern übernehmen oder wechseln. Partner bleiben, weil die Lieferung stimmt — nicht, weil der Ausstieg wehtut.',
+		],
+		[
+			'key'      => 'stack',
+			'question' => 'Müssen wir unseren bestehenden Stack ändern?',
+			'answer'   => 'Nein. Hosting, Theme-Stack, Builder, Git-Strategie und Deployment bleiben bestehen, wenn sie technisch funktionieren. Ich füge mich in euren vorhandenen Workflow ein. Existiert noch keiner, reicht meist eine schlanke Trennung zwischen Entwicklung und Produktion — entscheidend ist Nachvollziehbarkeit, nicht Prozess-Theater.',
+		],
+		[
+			'key'      => 'bestand',
+			'question' => 'Arbeitest du auch in bestehenden WordPress-Installationen?',
+			'answer'   => 'Ja. Ein großer Teil der White-Label-Arbeit besteht aus Weiterentwicklung, Fehlerbehebung, Performance-Arbeit und technischen Erweiterungen in laufenden Installationen — nicht aus Projekten auf grüner Wiese.',
 		],
 		[
 			'key'      => 'start',
@@ -1740,6 +1750,9 @@ function nexus_get_legacy_offer_redirect_map() {
 	// statt in eine Schleife oder auf eine 404 zu laufen.
 	$about_url   = nexus_get_primary_public_url( 'about', home_url( '/hasim-uener/' ) );
 	$solar_alternative_url = nexus_get_primary_public_url( 'solar_leads_alternative', home_url( '/solar-leads-kaufen-alternative/' ) );
+	$whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' )
+		? nexus_get_whitelabel_page_url()
+		: home_url( '/whitelabel-retainer/' );
 
 	return [
 		// High-probability external entry paths. Internal/historical tool,
@@ -1776,6 +1789,16 @@ function nexus_get_legacy_offer_redirect_map() {
 		// /solar-leads-kaufen-lohnt-sich/ und liefe ab jetzt in eine Kette. Dieser
 		// Eintrag laeuft auf Prioritaet 2 und damit vorher, also direkt aufs Endziel.
 		'/photovoltaik-leads-tco-rechnung/'       => $solar_alternative_url,
+		// Der technische Agentur-Stack ist als eigener Absatz in die
+		// White-Label-Seite gewandert (Infrastrukturwechsel als Einwand, dazu
+		// zwei FAQ). Die Seite trug 16 Impressionen und 0 Klicks in 90 Tagen
+		// (Export 2026-09-01) und besitzt laut query-ownership.csv keine Query.
+		'/stack-agentur/'                         => $whitelabel_url,
+		// Der Solar-Stack beschrieb dieselben fuenf Schichten, die die Money Page
+		// als fuenf Stationen fuehrt — dort mit Gegenrechnung und konkreten
+		// Zahlen. 31 Impressionen, 0 Klicks in 90 Tagen (Export 2026-09-01),
+		// keine eigene Query in query-ownership.csv.
+		'/stack-solar/'                           => $energy_url,
 	];
 }
 

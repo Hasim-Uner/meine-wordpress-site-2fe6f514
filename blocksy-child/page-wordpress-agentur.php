@@ -76,53 +76,6 @@ $e3_timeframe      = $e3_metric( 'timeframe' );
 $e3_timeframe_dat  = $e3_metric( 'timeframe', 'display_dative' );
 $e3_time_counter   = $e3_metric( 'timeframe', 'counter_target' );
 
-// ═══ Methodenbausteine aus der Asset Registry ═══
-$wgos_assets = function_exists( 'nexus_get_wgos_asset_registry' ) ? nexus_get_wgos_asset_registry() : [];
-
-// Gruppiere Assets nach core_area (nur publish)
-$asset_groups = [
-	'Strategie'             => [],
-	'Technisches Fundament' => [],
-	'Messbarkeit'           => [],
-	'Sichtbarkeit'          => [],
-	'Conversion'            => [],
-	'Weiterentwicklung'     => [],
-];
-
-$area_meta = [
-	'Strategie' => [
-		'color' => '#D97757',
-		'icon'  => '🎯',
-		'desc'  => 'Welche Seite trägt welche Anfrage — und welche nicht.',
-	],
-	'Technisches Fundament' => [
-		'color' => '#1F8A5B',
-		'icon'  => '⚡',
-		'desc'  => 'Schnell, stabil, wartbar — ohne dass jedes Plugin-Update zur Krise wird.',
-	],
-	'Messbarkeit' => [
-		'color' => '#2A6FDB',
-		'icon'  => '📈',
-		'desc'  => 'Sie wissen, welcher Kanal echte Projekte bringt — nicht nur Klicks.',
-	],
-	'Sichtbarkeit' => [
-		'color' => '#C05D3F',
-		'icon'  => '🔎',
-		'desc'  => 'Die Suchanfragen, die kaufnahe Besucher liefern.',
-	],
-	'Conversion' => [
-		'color' => '#8B4789',
-		'icon'  => '💡',
-		'desc'  => 'Was auf der Seite passieren muss, damit der Besucher jetzt handelt.',
-	],
-	'Weiterentwicklung' => [
-		'color' => '#1F8A5B',
-		'icon'  => '🚀',
-		'desc'  => 'Welche Änderung erzeugt als Nächstes Wirkung — datenbasiert, nicht aus dem Bauch.',
-	],
-];
-
-// ═══ Icon-Set (SVG statt Emoji) — Stroke-Style konsistent zur übrigen Site ═══
 $wp_agentur_icon_paths = [
 	'Strategie'             => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>',
 	'Technisches Fundament' => '<path d="M13 2 4 14h6l-1 8 9-12h-6z"/>',
@@ -142,25 +95,6 @@ if ( ! function_exists( 'hu_agentur_icon_svg' ) ) {
 		}
 		return '<svg width="' . (int) $size . '" height="' . (int) $size . '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . $inner . '</svg>';
 	}
-}
-
-foreach ( $wgos_assets as $slug => $asset ) {
-	if ( 'publish' !== ( $asset['status'] ?? '' ) ) {
-		continue;
-	}
-	$core_area = $asset['core_area'] ?? '';
-	if ( isset( $asset_groups[ $core_area ] ) ) {
-		$asset_groups[ $core_area ][] = $asset;
-	} else {
-		$asset_groups[ $core_area ]   = isset( $asset_groups[ $core_area ] ) ? $asset_groups[ $core_area ] : [];
-		$asset_groups[ $core_area ][] = $asset;
-	}
-}
-
-// Gesamt-Anzahl Bausteine (publish) fuer Hero-Microcopy
-$total_assets = 0;
-foreach ( $asset_groups as $items ) {
-	$total_assets += count( $items );
 }
 
 // ═══ FAQ-Daten (canonical aus helpers.php; JSON-LD schema kommt via inc/org-schema.php) ═══
@@ -591,24 +525,14 @@ get_header();
 				'Weiterentwicklung'     => [ 'num' => '06', 'title' => 'Weiterentwicklung', 'icon' => '🚀', 'desc' => 'Welche Änderung erzeugt als Nächstes Wirkung — datenbasiert.' ],
 			];
 			foreach ( $phase_labels as $area => $p ) :
-				$count         = count( $asset_groups[ $area ] ?? [] );
-				$phase_slug    = sanitize_title( $area );
-				$track_section = 'methode_' . $phase_slug;
 			?>
 				<li>
-					<a class="wgos-steps__link" href="#acc-<?php echo esc_attr( $phase_slug ); ?>"
-					   data-track-action="cta_method_phase_open"
-					   data-track-category="navigation"
-					   data-track-section="<?php echo esc_attr( $track_section ); ?>">
+					<div class="wgos-steps__link wgos-steps__link--static">
 						<span class="step-num"><?php echo esc_html( $p['num'] ); ?></span>
 						<span class="step-icon" aria-hidden="true"><?php echo hu_agentur_icon_svg( $wp_agentur_icon_paths[ $area ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-						<h3>
-							<?php echo esc_html( $p['title'] ); ?>
-							<small><?php echo (int) $count; ?> Bausteine</small>
-						</h3>
+						<h3><?php echo esc_html( $p['title'] ); ?></h3>
 						<p><?php echo esc_html( $p['desc'] ); ?></p>
-						<span class="wgos-steps__more" aria-hidden="true">Bausteine ansehen →</span>
-					</a>
+					</div>
 				</li>
 			<?php endforeach; ?>
 		</ol>
@@ -661,104 +585,6 @@ get_header();
 			</div>
 		</div>
 
-		<p class="wp-agentur-process-link">
-			<a href="#asset-uebersicht" data-track-action="cta_method_to_library" data-track-category="navigation" data-track-section="methode">Alle <span class="ag-counter"><?php echo (int) $total_assets; ?></span> Bausteine in der Methodenbibliothek ansehen ↓</a>
-		</p>
-	</div>
-</section>
-
-<!-- ═══════════════════════════════════════════════
-     SECTION 06 — METHODENBIBLIOTHEK (Accordion, dynamisch)
-     ═══════════════════════════════════════════════ -->
-<section class="nx-section" data-nx-theme="light" id="asset-uebersicht">
-	<div class="nx-container">
-		<div class="nx-section-header">
-			<p class="wp-agentur-eyebrow">Methodenbibliothek</p>
-			<h2 class="nx-headline-section">Die Bausteine hinter der Anfragesystem-Methode.</h2>
-			<p class="nx-subheadline wp-agentur-section-intro">
-				Diese Bausteine bilden die Anfragesystem-Methode. Welche zuerst gebaut werden, entscheidet die Analyse — nicht der Katalog.
-			</p>
-		</div>
-
-		<div class="ag-lib-filter" data-lib-filter hidden>
-			<div class="ag-lib-filter__chips" role="group" aria-label="Methodenbibliothek nach Kernbereich filtern">
-				<button type="button" class="ag-lib-chip is-active" data-lib-cat="all" aria-pressed="true">
-					Alle
-					<span class="ag-lib-chip__n"><?php echo (int) $total_assets; ?></span>
-				</button>
-				<?php foreach ( $asset_groups as $area => $assets ) :
-					if ( empty( $assets ) ) {
-						continue;
-					}
-					$chip_slug  = sanitize_title( $area );
-					$chip_label = function_exists( 'hue_kernbereich_label' )
-						? hue_kernbereich_label( hue_get_wgos_kernbereich_key( $area ) )
-						: $area;
-				?>
-					<button type="button" class="ag-lib-chip" data-lib-cat="<?php echo esc_attr( $chip_slug ); ?>" aria-pressed="false">
-						<?php echo esc_html( $chip_label ); ?>
-						<span class="ag-lib-chip__n"><?php echo (int) count( $assets ); ?></span>
-					</button>
-				<?php endforeach; ?>
-			</div>
-			<p class="ag-lib-filter__status" role="status" data-lib-status><?php echo (int) $total_assets; ?> von <?php echo (int) $total_assets; ?> Bausteinen sichtbar</p>
-		</div>
-
-		<div class="accordion" id="asset-accordion">
-			<?php foreach ( $asset_groups as $area => $assets ) :
-				if ( empty( $assets ) ) {
-					continue;
-				}
-				$meta       = $area_meta[ $area ] ?? [ 'color' => '#D97757', 'icon' => '📦', 'desc' => '' ];
-				$count      = count( $assets );
-				$area_slug  = sanitize_title( $area );
-				$area_label = function_exists( 'hue_kernbereich_label' )
-					? hue_kernbereich_label( hue_get_wgos_kernbereich_key( $area ) )
-					: $area;
-			?>
-				<div class="acc-item" id="acc-<?php echo esc_attr( $area_slug ); ?>" data-acc="<?php echo esc_attr( $area_slug ); ?>">
-					<button class="acc-trigger" aria-expanded="false" aria-controls="body-<?php echo esc_attr( $area_slug ); ?>" data-track-action="toggle_methodenbibliothek" data-track-category="engagement" data-track-section="<?php echo esc_attr( $area_slug ); ?>">
-						<div class="acc-trigger-left">
-							<div class="acc-icon" style="background: <?php echo esc_attr( $meta['color'] ); ?>15; color: <?php echo esc_attr( $meta['color'] ); ?>;"><?php echo hu_agentur_icon_svg( $wp_agentur_icon_paths[ $area ] ?? '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-							<div class="acc-info">
-								<div class="acc-title"><?php echo esc_html( $area_label ); ?></div>
-								<div class="acc-desc"><?php echo esc_html( $meta['desc'] ); ?></div>
-							</div>
-						</div>
-						<div class="acc-meta">
-							<span class="acc-count"><?php echo (int) $count; ?> <?php echo 1 === $count ? 'Baustein' : 'Bausteine'; ?></span>
-							<div class="acc-chevron" aria-hidden="true">
-								<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-									<path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								</svg>
-							</div>
-						</div>
-					</button>
-					<div class="acc-body" id="body-<?php echo esc_attr( $area_slug ); ?>">
-						<div class="acc-body-inner">
-							<div class="assets-grid">
-								<?php foreach ( $assets as $asset_i => $asset ) :
-									$asset_title = esc_html( $asset['title'] ?? '' );
-									$asset_desc  = esc_html( $asset['excerpt'] ?? '' );
-									$asset_url   = esc_url( function_exists( 'nexus_get_wgos_asset_detail_url' )
-										? ( nexus_get_wgos_asset_detail_url( $asset ) ?: nexus_get_wgos_asset_anchor_url( $asset['slug'] ?? '' ) )
-										: '#asset-uebersicht'
-									);
-								?>
-									<a href="<?php echo $asset_url; // raw-ok pre-escaped via esc_url at assignment ?>" class="asset-card" style="--agc-i: <?php echo (int) min( (int) $asset_i, 9 ); ?>;" data-track-action="cta_asset_card" data-track-category="navigation" data-track-section="methodenbibliothek">
-										<div class="asset-header">
-											<div class="asset-icon" style="color: <?php echo esc_attr( $meta['color'] ); ?>;"><?php echo hu_agentur_icon_svg( '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h5M9.5 15.5h5"/>', 20 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-											<div class="asset-title"><?php echo $asset_title; // raw-ok pre-escaped via esc_html at assignment ?></div>
-										</div>
-										<p class="asset-desc"><?php echo $asset_desc; // raw-ok pre-escaped via esc_html at assignment ?></p>
-									</a>
-								<?php endforeach; ?>
-							</div>
-						</div>
-					</div>
-				</div>
-			<?php endforeach; ?>
-		</div>
 	</div>
 </section>
 
@@ -1282,53 +1108,6 @@ get_header();
 		io.observe(hero);
 	})();
 
-	// ─── Generic accordion factory ───
-	function initAccordion(containerSelector, itemSelector, triggerSelector, bodySelector) {
-		var container = document.querySelector(containerSelector);
-		if (!container) return;
-
-		container.querySelectorAll(itemSelector).forEach(function(item) {
-			var trigger = item.querySelector(triggerSelector);
-			var body    = item.querySelector(bodySelector);
-			if (!trigger || !body) return;
-
-			trigger.addEventListener('click', function() {
-				var isOpen = item.classList.contains('is-open');
-				item.classList.toggle('is-open', !isOpen);
-				trigger.setAttribute('aria-expanded', String(!isOpen));
-			});
-		});
-	}
-
-	// Nur die Methodenbibliothek: die darf bewusst mehrfach offen bleiben.
-	// Das FAQ laeuft ueber NexusCore.initFaqAccordion und oeffnet dort
-	// exklusiv -- diese Fabrik schloss keine Geschwister.
-	initAccordion('#asset-accordion', '.acc-item',  '.acc-trigger',  '.acc-body');
-
-	// ─── Auto-open accordion target via hash (#acc-<slug>) ───
-	(function () {
-		function openFromHash() {
-			var hash = window.location.hash;
-			if (!hash || hash.indexOf('#acc-') !== 0) return;
-			var target = document.querySelector(hash);
-			if (!target || !target.classList.contains('acc-item')) return;
-			var trigger = target.querySelector('.acc-trigger');
-			if (!target.classList.contains('is-open')) {
-				target.classList.add('is-open');
-				if (trigger) trigger.setAttribute('aria-expanded', 'true');
-			}
-			// Smooth scroll respecting any sticky header offset
-			setTimeout(function () {
-				target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-			}, 60);
-		}
-		window.addEventListener('hashchange', openFromHash);
-		if (window.location.hash.indexOf('#acc-') === 0) {
-			// Defer to allow layout to settle
-			setTimeout(openFromHash, 120);
-		}
-	})();
-
 	// ─── Multi-Step Vorqualifizierung (Micro-Commitment) ───
 	(function () {
 		var root = document.getElementById('quali');
@@ -1529,67 +1308,6 @@ get_header();
 				(next === 'after' ? tabs[1] : tabs[0]).focus();
 			});
 		});
-	})();
-
-	// ─── Methodenbibliothek: Kategorie-Filter + Status (aria-live) ───
-	(function () {
-		var filter = document.querySelector('[data-lib-filter]');
-		var acc = document.getElementById('asset-accordion');
-		if (!filter || !acc) return;
-		var chips = [].slice.call(filter.querySelectorAll('[data-lib-cat]'));
-		var items = [].slice.call(acc.querySelectorAll('.acc-item'));
-		var status = filter.querySelector('[data-lib-status]');
-		if (!chips.length || !items.length) return;
-
-		var total = 0;
-		var counts = {};
-		items.forEach(function (item) {
-			var n = item.querySelectorAll('.asset-card').length;
-			counts[item.getAttribute('data-acc')] = n;
-			total += n;
-		});
-
-		function openItem(item) {
-			if (item.classList.contains('is-open')) return;
-			item.classList.add('is-open');
-			var trigger = item.querySelector('.acc-trigger');
-			if (trigger) trigger.setAttribute('aria-expanded', 'true');
-		}
-
-		function apply(cat) {
-			var visible = 0;
-			chips.forEach(function (chip) {
-				var active = chip.getAttribute('data-lib-cat') === cat;
-				chip.classList.toggle('is-active', active);
-				chip.setAttribute('aria-pressed', active ? 'true' : 'false');
-			});
-			items.forEach(function (item) {
-				var slug = item.getAttribute('data-acc');
-				var show = cat === 'all' || slug === cat;
-				item.hidden = !show;
-				if (show) visible += counts[slug] || 0;
-				if (show && cat !== 'all') openItem(item);
-			});
-			if (status) status.textContent = visible + ' von ' + total + ' Bausteinen sichtbar';
-		}
-
-		// Deeplinks (#acc-…) dürfen nie in einen weggefilterten Bereich laufen.
-		function ensureHashVisible() {
-			var hash = window.location.hash;
-			if (!hash || hash.indexOf('#acc-') !== 0) return;
-			var target;
-			try { target = document.querySelector(hash); } catch (e) { return; }
-			if (target && target.hidden) apply('all');
-		}
-
-		filter.hidden = false;
-		chips.forEach(function (chip) {
-			chip.addEventListener('click', function () {
-				apply(chip.getAttribute('data-lib-cat'));
-			});
-		});
-		window.addEventListener('hashchange', ensureHashVisible);
-		ensureHashVisible();
 	})();
 
 	// ─── Hero-Viz Animationstrigger (Balken & Pfeil) ───

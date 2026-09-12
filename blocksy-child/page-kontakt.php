@@ -167,13 +167,18 @@ $timeline_label      = $current_type_copy['timeline_label'];
 $message_minlength   = 24;
 
 $is_scoped_landing  = $has_explicit_type;
+// Das Thema wurde oben bereits gegen den Anfragetyp validiert (siehe
+// invalid_focus_type). Liegt ein gueltiger Wert vor, ist die Frage beantwortet
+// und wird nicht erneut gestellt — der Wert bleibt im Payload erhalten.
+$is_scoped_focus    = ( '' !== $selected_focus );
+$visible_step_count = 4 - ( $is_scoped_landing ? 1 : 0 ) - ( $is_scoped_focus ? 1 : 0 );
 $current_type_label = isset( $public_type_copy[ $selected_type ]['label'] ) ? (string) $public_type_copy[ $selected_type ]['label'] : 'Kontakt';
 $preselected_type   = ( $has_explicit_type || '' !== $selected_focus ) ? $selected_type : '';
 
 $hero_eyebrow = $is_scoped_landing ? $current_type_label : 'Kontakt';
 $hero_title   = $is_scoped_landing ? $current_type_label : 'Sagen Sie kurz, was Sie vorhaben.';
 $hero_lead    = $is_scoped_landing
-	? 'Vier kurze Schritte: Ziel, Hürde, Kontakt — händisch geprüfte Rückmeldung ' . hu_response_promise( 'window' ) . '.'
+	? 'Kurz einordnen, Kontakt hinterlassen — händisch geprüfte Rückmeldung ' . hu_response_promise( 'window' ) . '.'
 	: 'WordPress, Tracking, Conversion oder Weiterentwicklung: Anliegen wählen, kurz einordnen und direkt bei Haşim Üner landen.';
 
 $auto_scroll = false;
@@ -230,8 +235,8 @@ $auto_scroll = false;
 					<?php endif; ?>
 
 					<div class="contact-flow-progress" aria-label="Kontakt-Fortschritt">
-						<span data-contact-step-label>Schritt 1 von 4</span>
-						<strong data-contact-progress-value>25%</strong>
+						<span data-contact-step-label><?php echo esc_html( sprintf( 'Schritt 1 von %d', $visible_step_count ) ); ?></span>
+						<strong data-contact-progress-value><?php echo esc_html( (string) (int) round( 100 / max( 1, $visible_step_count ) ) . '%' ); ?></strong>
 						<div class="contact-flow-progress__bar" aria-hidden="true">
 							<span data-contact-progress-fill></span>
 						</div>
@@ -272,7 +277,12 @@ $auto_scroll = false;
 							</fieldset>
 						</section>
 
-						<section class="contact-flow-step" data-contact-step="focus" data-contact-step-label="Thema">
+						<section
+							class="contact-flow-step"
+							data-contact-step="focus"
+							data-contact-step-label="Thema"
+							<?php echo $is_scoped_focus ? 'data-contact-step-skip="true"' : ''; // raw-ok phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static boolean state ?>
+						>
 							<div class="contact-field" data-contact-field="focus">
 								<label for="contact-focus" data-contact-focus-label><?php echo esc_html( $focus_label ); ?></label>
 								<p id="contact-focus-help" class="contact-field__help" data-contact-focus-help><?php echo esc_html( $focus_help ); ?></p>

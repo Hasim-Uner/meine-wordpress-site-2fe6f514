@@ -371,8 +371,6 @@ function hu_enqueue_assets() {
 		'cost-per-lead-photovoltaik'        => 'page-cost-per-lead-photovoltaik.php',
 		'qualifizierte-pv-anfragen'         => 'page-qualifizierte-pv-anfragen.php',
 		'solar-leads-kosten-studie'         => 'page-solar-leads-kosten-studie.php',
-		'stack-solar'                       => 'page-stack-solar.php',
-		'stack-agentur'                     => 'page-stack-agentur.php',
 	];
 
 	foreach ( $intercept_routes as $slug => $template ) {
@@ -403,11 +401,6 @@ function hu_enqueue_assets() {
 	// (data-track-page). Isoliert – berührt keine andere Intercept-Seite.
 	if ( is_page( 'waermepumpen-leads' ) || is_page_template( 'page-waermepumpen-leads.php' ) ) {
 		hu_enqueue_css( 'nexus-waermepumpen-leads-css', 'waermepumpen-leads.css', [ 'nexus-intercept-solar-leads-css' ] );
-	}
-
-	// ── F1a-int-aff) Affiliate-Disclosure-CSS auf Seiten mit Partnerlinks ──
-	if ( is_page( 'stack-solar' ) || is_page_template( 'page-stack-solar.php' ) ) {
-		hu_enqueue_css( 'nexus-affiliate-notice-css', 'affiliate-notice.css', [ 'nexus-intercept-solar-leads-css' ] );
 	}
 
 	// ── F1a-int-sst) Money-Page-Layout NUR auf /server-side-tracking-b2b/ ──
@@ -653,8 +646,6 @@ function hu_disable_core_block_styles_on_custom_templates() {
 		'page-wordpress-agentur-hannover.php',
 		'page-kontakt.php',
 		'page-case-studies-e-commerce.php',
-		'page-stack-solar.php',
-		'page-stack-agentur.php',
 	];
 	$hardcoded_slugs = [
 		'solar-waermepumpen-leadgenerierung',
@@ -676,8 +667,6 @@ function hu_disable_core_block_styles_on_custom_templates() {
 		'kontakt',
 		'ergebnisse',
 		'case-studies-e-commerce',
-		'stack-solar',
-		'stack-agentur',
 	];
 
 	if ( is_front_page() || is_home() || in_array( $template, $hardcoded_templates, true ) || is_page( $hardcoded_slugs ) ) {

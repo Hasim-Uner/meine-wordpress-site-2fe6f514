@@ -206,9 +206,6 @@ function hu_get_forced_singular_seo_map() {
 			// Eindeutige Meta-Descriptions für Seiten/Beiträge, die sonst ohne
 			// bzw. mit doppelter Description ausgeliefert wurden (Semrush Site
 			// Audit 2026-07-08). Nur 'description' gesetzt: Titel bleiben unberührt.
-			'stack-solar' => [
-				'description' => 'Technischer Unterbau eigener Anfragesysteme: Frontend, Tracking, CRM und Vorqualifizierung für Solar- und Wärmepumpen-Anbieter.',
-			],
 			'owned-leads-statt-ad-miete' => [
 				'description' => 'Von gemieteter Ad-Nachfrage zu eigenen Leads: Warum Owned-Lead-Infrastruktur B2B-Anbieter unabhängiger macht als Dauer-Budget bei Meta und Google Ads.',
 			],
@@ -375,10 +372,6 @@ function hu_get_forced_singular_seo_map() {
 			//
 			// Nur Title und Description wandern hierher: die sichtbare Copy der
 			// Seite ist editor-/templateseitig und bleibt unangetastet.
-			'stack-agentur' => [
-				'title'       => 'Agentur-Stack: Root-Server, Git-Deployment, Restricted Shell',
-				'description' => 'Dev-Stack für Web-Agenturen: eigener Root-Server in Deutschland, CI/CD über GitHub Actions und Rsync, Restricted Deploy-Shell und Multi-Site-Hosting für Care-Plans.',
-			],
 		]
 	);
 }

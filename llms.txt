@@ -39,4 +39,3 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 ## Wissen
 - [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance, Conversion und Anfragesystemen.
 - [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
-- [Stack Solar](/stack-solar/) - Technischer Unterbau für Solar- und Wärmepumpen-Anbieter: Frontend, Hosting, Server-Side Tracking, CRM-Übergabe und Vorqualifizierung.

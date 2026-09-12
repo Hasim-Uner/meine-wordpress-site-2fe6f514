@@ -245,11 +245,6 @@ function nexus_get_llms_txt_sections() {
 					'url'         => $urls['glossary'] ?? home_url( '/glossar/' ),
 					'description' => 'Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.',
 				],
-				[
-					'label'       => 'Stack Solar',
-					'url'         => home_url( '/stack-solar/' ),
-					'description' => 'Technischer Unterbau für Solar- und Wärmepumpen-Anbieter: Frontend, Hosting, Server-Side Tracking, CRM-Übergabe und Vorqualifizierung.',
-				],
 			],
 		],
 	];
