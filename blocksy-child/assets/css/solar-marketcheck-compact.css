@@ -1,0 +1,210 @@
+/* Solar Marktcheck — 2-step compact intake */
+.strecke-doc #marktcheck .gate {
+  overflow: hidden;
+}
+
+.strecke-doc #marktcheck #sol-quiz-mount {
+  min-width: 0;
+}
+
+.strecke-doc #marktcheck .mc2-shell {
+  max-width: 46rem;
+  margin: 0 auto;
+}
+
+.strecke-doc #marktcheck .mc2-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--nx-space-md, 12px);
+  margin-bottom: var(--nx-space-xl, 24px);
+  padding-bottom: var(--nx-space-md, 12px);
+  border-bottom: 1px solid var(--haar);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--matt);
+}
+
+.strecke-doc #marktcheck .mc2-topline span:first-child {
+  color: var(--stempel);
+}
+
+.strecke-doc #marktcheck .mc2-title {
+  margin: 0;
+  max-width: 28ch;
+  font-family: var(--serif-display);
+  font-size: clamp(1.45rem, 1.15rem + .9vw, 2rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  color: var(--tinte);
+}
+
+.strecke-doc #marktcheck .mc2-intro {
+  margin-top: var(--nx-space-md, 12px);
+  max-width: 58ch;
+  color: var(--grau);
+  font-size: .94rem;
+  line-height: 1.55;
+}
+
+.strecke-doc #marktcheck .mc2-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--nx-space-xl, 24px);
+  margin-top: var(--nx-space-2xl, 32px);
+}
+
+.strecke-doc #marktcheck .mc2-field {
+  min-width: 0;
+}
+
+.strecke-doc #marktcheck .mc2-field label {
+  display: block;
+  margin-bottom: var(--nx-space-xs, 4px);
+  font-size: .94rem;
+  font-weight: 600;
+  color: var(--tinte);
+}
+
+.strecke-doc #marktcheck .mc2-help {
+  min-height: 1.25rem;
+  margin: 0 0 var(--nx-space-sm, 8px);
+  font-family: var(--mono);
+  font-size: .59rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--matt);
+}
+
+.strecke-doc #marktcheck .mc2-field select,
+.strecke-doc #marktcheck .mc2-field input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--nx-space-md, 12px);
+  border: 1px solid var(--haar);
+  border-radius: 0;
+  background: #211d18;
+  color: var(--tinte);
+  font: inherit;
+  font-size: .93rem;
+  transition: border-color var(--t-norm) var(--ease-weich), background-color var(--t-norm) var(--ease-weich);
+}
+
+.strecke-doc #marktcheck .mc2-field select:hover,
+.strecke-doc #marktcheck .mc2-field input:hover {
+  border-color: var(--matt);
+  background: #272119;
+}
+
+.strecke-doc #marktcheck .mc2-field select:focus-visible,
+.strecke-doc #marktcheck .mc2-field input:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 2px;
+  border-color: var(--stempel);
+}
+
+.strecke-doc #marktcheck .mc2-field.is-error select,
+.strecke-doc #marktcheck .mc2-field.is-error input {
+  border-color: var(--stempel);
+}
+
+.strecke-doc #marktcheck .mc2-error {
+  margin: var(--nx-space-sm, 8px) 0 0;
+  color: var(--stempel);
+  font-size: .78rem;
+  line-height: 1.4;
+}
+
+.strecke-doc #marktcheck .mc2-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--nx-space-md, 12px);
+  margin-top: var(--nx-space-2xl, 32px);
+}
+
+.strecke-doc #marktcheck .mc2-primary {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--nx-space-sm, 8px);
+  min-height: 50px;
+  padding: 0 var(--nx-space-xl, 24px);
+  border: 1px solid var(--stempel);
+  border-radius: 0;
+  background: var(--stempel);
+  color: #17140f;
+  font-family: var(--mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--t-mikro) ease, color var(--t-mikro) ease;
+}
+
+.strecke-doc #marktcheck .mc2-primary:hover {
+  background: transparent;
+  color: var(--stempel);
+}
+
+.strecke-doc #marktcheck .mc2-footnote {
+  margin-top: var(--nx-space-md, 12px);
+  text-align: right;
+  font-family: var(--mono);
+  font-size: .58rem;
+  line-height: 1.6;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--matt);
+}
+
+/* Kontakt = sichtbarer Schritt 2. Alte 5er-Progress-Anzeige verschwindet. */
+.strecke-doc #marktcheck.has-mc2-contact .sol-quiz-progress,
+.strecke-doc #marktcheck.has-mc2-contact .sol-quiz-rationale,
+.strecke-doc #marktcheck.has-mc2-contact .sol-quiz-label {
+  display: none;
+}
+
+.strecke-doc #marktcheck.has-mc2-contact #sol-quiz-mount::before {
+  content: "Schritt 2 von 2 · Kontaktdaten";
+}
+
+.strecke-doc #marktcheck.has-mc2-contact .sol-quiz-title {
+  margin-top: 0;
+  font-size: clamp(1.45rem, 1.15rem + .8vw, 1.9rem);
+}
+
+.strecke-doc #marktcheck.has-mc2-contact .sol-quiz-hint {
+  margin-bottom: var(--nx-space-xl, 24px);
+}
+
+@media (max-width: 760px) {
+  .strecke-doc #marktcheck .mc2-grid {
+    grid-template-columns: 1fr;
+    gap: var(--nx-space-lg, 16px);
+  }
+
+  .strecke-doc #marktcheck .mc2-help {
+    min-height: 0;
+  }
+
+  .strecke-doc #marktcheck .mc2-actions,
+  .strecke-doc #marktcheck .mc2-primary {
+    width: 100%;
+  }
+
+  .strecke-doc #marktcheck .mc2-footnote {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strecke-doc #marktcheck .mc2-field select,
+  .strecke-doc #marktcheck .mc2-field input,
+  .strecke-doc #marktcheck .mc2-primary {
+    transition: none;
+  }
+}
