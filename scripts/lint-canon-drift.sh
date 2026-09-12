@@ -18,6 +18,12 @@ PATHS=(
   ":(exclude)docs/audits/**"
   ":(exclude)docs/decisions/**"
   ":(exclude)docs/references/**"
+  # Archivierte Auftrags- und Vorlagentexte. Sie zitieren Preise im Wortlaut,
+  # in dem sie beauftragt wurden, und sind genau deshalb belegkraeftig — sie
+  # nachtraeglich auf den Canon umzuschreiben wuerde ihren Zweck zerstoeren.
+  # Nichts davon wird ausgeliefert. Gleiche Begruendung wie bei audits,
+  # decisions und references darueber.
+  ":(exclude)docs/briefings/**"
 )
 
 if [[ -n "${HEAD_REF}" ]]; then
