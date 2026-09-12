@@ -1,10 +1,12 @@
-/* ==========================================================================
-   /server-side-tracking-b2b/ — Funnel-Redesign 2026-09
+/* ========================================================================== 
+   /server-side-tracking-b2b/ — Premium Service Funnel
    --------------------------------------------------------------------------
-   Progressive-enhancement delta. Die serverseitige Seite bleibt ohne JS
-   voll nutzbar; diese Regeln stylen nur die verdichtete CRO-Struktur.
+   Design delta only. Content, REST contract, schema and SEO ownership stay
+   untouched. The visual language borrows the proven Freelancer-page patterns:
+   a real sticky index, paper-like inquiry card and purposeful system motion.
    ========================================================================== */
 
+/* ── Existing CRO additions ───────────────────────────────────────── */
 .hu-sst .hu-sst__proof-zone .hu-sst__card {
 	position: relative;
 	min-height: 100%;
@@ -52,28 +54,592 @@
 	color: var(--sst-copper-action);
 }
 
-.hu-sst .hu-sst__package-selection {
-	margin: 0 0 var(--nx-space-md, 1rem);
-	padding: var(--nx-space-md, 1rem);
+.hu-sst .hu-sst__btn,
+.hu-sst .contact-submit {
+	transition:
+		transform 150ms var(--sst-ease),
+		background-color var(--sst-dur) var(--sst-ease),
+		border-color var(--sst-dur) var(--sst-ease),
+		color var(--sst-dur) var(--sst-ease);
+}
+
+.hu-sst .hu-sst__btn:active,
+.hu-sst .contact-submit:active {
+	transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.hu-sst #pakete .hu-sst__price-card {
+		transition:
+			transform 180ms var(--sst-ease),
+			border-color 180ms var(--sst-ease),
+			box-shadow 180ms var(--sst-ease);
+	}
+
+	.hu-sst #pakete .hu-sst__price-card:hover {
+		transform: translateY(-3px);
+		border-color: rgba(229, 149, 115, 0.34);
+	}
+
+	.hu-sst #pakete .hu-sst__price-card--featured:hover {
+		transform: translateY(-6px);
+	}
+}
+
+/* ── Hero: Signal Integrity Console ──────────────────────────────── */
+.hu-sst #hero .hu-sst__decision {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	padding: clamp(1.05rem, 2.4vw, 1.5rem);
 	border: 1px solid rgba(229, 149, 115, 0.3);
-	border-radius: var(--sst-radius);
-	background: rgba(229, 149, 115, 0.08);
-	color: var(--sst-on-dark-2);
-	font-size: 0.9rem;
-	line-height: 1.5;
+	border-radius: clamp(18px, 2.4vw, 26px);
+	background:
+		radial-gradient(circle at 78% 18%, rgba(229, 149, 115, 0.16), transparent 31%),
+		radial-gradient(circle at 20% 78%, rgba(229, 149, 115, 0.08), transparent 38%),
+		linear-gradient(145deg, rgba(42, 33, 28, 0.97), rgba(17, 15, 13, 0.985));
+	box-shadow:
+		0 34px 70px -44px rgba(0, 0, 0, 0.95),
+		inset 0 1px 0 rgba(255, 255, 255, 0.05),
+		inset 0 0 0 1px rgba(255, 255, 255, 0.018);
 }
 
-.hu-sst .hu-sst__package-selection strong {
-	color: var(--sst-on-dark);
+.hu-sst #hero .hu-sst__decision::before {
+	content: "";
+	position: absolute;
+	z-index: -1;
+	inset: 0;
+	background-image:
+		linear-gradient(rgba(246, 244, 239, 0.025) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(246, 244, 239, 0.025) 1px, transparent 1px);
+	background-size: 34px 34px;
+	mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 92%);
+	pointer-events: none;
 }
 
-.hu-sst .hu-sst__form-intro-hint {
-	margin: 0 0 var(--nx-space-lg, 1.5rem);
-	color: var(--sst-on-dark-3);
-	font-size: 0.9rem;
+.hu-sst #hero .hu-sst__decision::after {
+	content: "";
+	position: absolute;
+	z-index: 4;
+	inset-inline: 0;
+	top: -22%;
+	height: 22%;
+	background: linear-gradient(
+		to bottom,
+		transparent,
+		rgba(229, 149, 115, 0.075),
+		rgba(229, 149, 115, 0.18),
+		transparent
+	);
+	filter: blur(0.5px);
+	animation: hu-sst-scan 5.4s linear infinite;
+	pointer-events: none;
+}
+
+.hu-sst #hero .hu-sst__decision-kicker {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+	margin-bottom: 0.72rem;
+	color: #dcb097;
+	letter-spacing: 0.12em;
+}
+
+.hu-sst #hero .hu-sst__decision-kicker::before {
+	content: "";
+	flex: 0 0 8px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #7fd5a3;
+	box-shadow: 0 0 0 0 rgba(127, 213, 163, 0.34);
+	animation: hu-sst-live 2.2s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+}
+
+.hu-sst #hero .hu-sst__decision-title {
+	max-width: 19ch;
+	margin-bottom: 0.9rem;
+	font-size: clamp(1.2rem, 2vw, 1.55rem);
+	line-height: 1.17;
+	letter-spacing: -0.025em;
+}
+
+.hu-sst #hero .hu-sst__decision svg {
+	position: relative;
+	z-index: 2;
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 0.5rem 0 0.8rem !important;
+	padding: 0.25rem;
+	filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.2));
+}
+
+.hu-sst #hero .hu-sst__decision svg rect {
+	transition:
+		stroke 220ms var(--sst-ease),
+		filter 220ms var(--sst-ease);
+}
+
+.hu-sst #hero .hu-sst__decision svg rect[stroke="#e59573"] {
+	filter: drop-shadow(0 0 8px rgba(229, 149, 115, 0.18));
+	animation: hu-sst-node-glow 3s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+
+.hu-sst #hero .hu-sst__decision svg path[marker-end] {
+	stroke-dasharray: 9 9;
+	animation: hu-sst-data-flow 1.8s linear infinite;
+	filter: drop-shadow(0 0 4px rgba(229, 149, 115, 0.32));
+}
+
+.hu-sst #hero .hu-sst__decision svg circle {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: hu-sst-packet 2.4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+}
+
+.hu-sst #hero .hu-sst__decision-note {
+	position: relative;
+	z-index: 5;
+	margin-top: 0.35rem;
+	padding: 0.9rem 1rem;
+	border: 1px solid rgba(229, 149, 115, 0.17);
+	border-radius: 12px;
+	background: rgba(12, 10, 9, 0.43);
+	backdrop-filter: blur(7px);
+	color: rgba(246, 244, 239, 0.72);
+	font-size: 0.83rem;
 	line-height: 1.55;
 }
 
+@keyframes hu-sst-data-flow {
+	to { stroke-dashoffset: -36; }
+}
+
+@keyframes hu-sst-scan {
+	0% { transform: translateY(0); opacity: 0; }
+	12% { opacity: 1; }
+	82% { opacity: 0.8; }
+	100% { transform: translateY(560%); opacity: 0; }
+}
+
+@keyframes hu-sst-live {
+	0%, 100% { box-shadow: 0 0 0 0 rgba(127, 213, 163, 0.32); }
+	48% { box-shadow: 0 0 0 8px rgba(127, 213, 163, 0); }
+}
+
+@keyframes hu-sst-node-glow {
+	from { filter: drop-shadow(0 0 4px rgba(229, 149, 115, 0.12)); }
+	to { filter: drop-shadow(0 0 14px rgba(229, 149, 115, 0.32)); }
+}
+
+@keyframes hu-sst-packet {
+	0%, 100% { transform: scale(0.88); opacity: 0.62; }
+	48% { transform: scale(1.22); opacity: 1; }
+}
+
+/* ── Sticky TOC: same interaction family as the Freelancer page ──── */
+.hu-sst .hu-sst__toc-band {
+	z-index: 75;
+	background: rgba(23, 20, 17, 0.97);
+	border-color: rgba(246, 244, 239, 0.1);
+	backdrop-filter: blur(14px);
+}
+
+.hu-sst .hu-sst__toc-list {
+	counter-reset: hu-sst-toc;
+}
+
+.hu-sst .hu-sst__toc-list li {
+	counter-increment: hu-sst-toc;
+}
+
+.hu-sst .hu-sst__toc-list a::before {
+	content: "0" counter(hu-sst-toc);
+	flex: 0 0 1.8rem;
+	font-size: 0.65rem;
+	font-weight: 700;
+	letter-spacing: 0.045em;
+	color: rgba(229, 149, 115, 0.72);
+	font-variant-numeric: tabular-nums;
+}
+
+.hu-sst .hu-sst__toc-list a[href="#pakete"] {
+	color: #f1b397;
+}
+
+@media (max-width: 1379px) {
+	.hu-sst .hu-sst__toc-band {
+		position: sticky;
+		top: var(--nx-header-height, 64px);
+	}
+
+	.hu-sst .hu-sst__toc {
+		grid-template-columns: auto minmax(0, 1fr);
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.hu-sst .hu-sst__toc-list {
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		scrollbar-width: none;
+	}
+
+	.hu-sst .hu-sst__toc-list::-webkit-scrollbar {
+		display: none;
+	}
+
+	.hu-sst .hu-sst__toc-list li {
+		flex: 0 0 auto;
+	}
+
+	.hu-sst .hu-sst__toc-list a {
+		width: auto;
+		white-space: nowrap;
+	}
+}
+
+@media (min-width: 1380px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
+	.hu-sst .hu-sst__toc-band {
+		position: fixed;
+		z-index: 90;
+		top: 50%;
+		left: 12px;
+		display: block !important;
+		width: 64px;
+		border: 1px solid rgba(229, 149, 115, 0.22);
+		border-radius: 12px;
+		background: #211d19;
+		box-shadow: 0 20px 48px -28px rgba(0, 0, 0, 0.92);
+		transform: translateY(-50%);
+		overflow: hidden;
+		transition:
+			width 210ms var(--sst-ease),
+			border-color 180ms var(--sst-ease),
+			box-shadow 180ms var(--sst-ease);
+	}
+
+	.hu-sst .hu-sst__toc-band:is(:hover, :focus-within) {
+		width: 248px;
+		border-color: rgba(229, 149, 115, 0.56);
+		box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.96);
+	}
+
+	.hu-sst .hu-sst__toc {
+		display: block;
+		width: 100%;
+		padding: 0.55rem;
+	}
+
+	.hu-sst .hu-sst__toc-label {
+		display: flex;
+		align-items: center;
+		min-height: 36px;
+		margin: 0;
+		padding: 0 0.48rem;
+		overflow: hidden;
+		white-space: nowrap;
+		font-size: 0.58rem;
+		color: rgba(246, 244, 239, 0.46);
+	}
+
+	.hu-sst .hu-sst__toc-label::before {
+		content: "INDEX";
+		flex: 0 0 42px;
+		color: rgba(246, 244, 239, 0.5);
+	}
+
+	.hu-sst .hu-sst__toc-label {
+		font-size: 0;
+	}
+
+	.hu-sst .hu-sst__toc-band:is(:hover, :focus-within) .hu-sst__toc-label {
+		font-size: 0.64rem;
+		letter-spacing: 0.09em;
+	}
+
+	.hu-sst .hu-sst__toc-list {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.18rem;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		overflow: visible;
+	}
+
+	.hu-sst .hu-sst__toc-list a {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		width: 100%;
+		min-height: 42px;
+		padding: 0.42rem 0.5rem;
+		border: 0;
+		border-radius: 7px;
+		overflow: hidden;
+		white-space: nowrap;
+		color: transparent;
+		font-size: 0.78rem;
+		font-weight: 650;
+		text-decoration: none;
+		transition:
+			background-color 160ms var(--sst-ease),
+			color 160ms var(--sst-ease);
+	}
+
+	.hu-sst .hu-sst__toc-band:is(:hover, :focus-within) .hu-sst__toc-list a {
+		color: rgba(246, 244, 239, 0.72);
+	}
+
+	.hu-sst .hu-sst__toc-list a::before {
+		flex-basis: 2rem;
+		color: rgba(229, 149, 115, 0.68);
+		text-align: center;
+	}
+
+	.hu-sst .hu-sst__toc-list a:is(:hover, :focus-visible) {
+		background: #372b22;
+		color: #f5d3b4 !important;
+	}
+
+	.hu-sst .hu-sst__toc-list a[href="#pakete"] {
+		background: rgba(229, 149, 115, 0.06);
+	}
+
+	.hu-sst:has(#symptome:target) .hu-sst__toc-list a[href="#symptome"],
+	.hu-sst:has(#unterschied:target) .hu-sst__toc-list a[href="#unterschied"],
+	.hu-sst:has(#pakete:target) .hu-sst__toc-list a[href="#pakete"],
+	.hu-sst:has(#ablauf:target) .hu-sst__toc-list a[href="#ablauf"],
+	.hu-sst:has(#anfrage:target) .hu-sst__toc-list a[href="#anfrage"] {
+		background: #372b22;
+		color: #f5d3b4;
+	}
+
+	.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--toc,
+	.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--context {
+		display: none !important;
+	}
+}
+
+/* ── Inquiry: Freelancer-page paper card adapted to service intent ── */
+.hu-sst #anfrage {
+	border-top: 1px solid rgba(229, 149, 115, 0.16);
+}
+
+.hu-sst #anfrage .hu-sst__container--narrow {
+	max-width: 1180px;
+	display: grid;
+	grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
+	gap: clamp(2.25rem, 6vw, 5.5rem);
+	align-items: start;
+}
+
+.hu-sst #anfrage .hu-sst__section-head {
+	position: sticky;
+	top: calc(var(--nx-header-height, 64px) + 2rem);
+	max-width: 470px;
+	margin: 0;
+}
+
+.hu-sst #anfrage .hu-sst__section-head::after {
+	content: "Name, geschäftliche E-Mail und Ihr konkretes Messproblem reichen für die erste Einordnung. Technische Details können Sie freiwillig ergänzen.";
+	display: block;
+	margin-top: 1.5rem;
+	padding-top: 1.2rem;
+	border-top: 1px solid rgba(246, 244, 239, 0.14);
+	color: rgba(246, 244, 239, 0.58);
+	font-size: 0.86rem;
+	line-height: 1.62;
+}
+
+.hu-sst #anfrage .contact-error-summary {
+	grid-column: 2;
+	margin: 0 0 1rem;
+}
+
+.hu-sst #anfrage .hu-sst__form {
+	--theme-form-text-initial-color: #1c1916;
+	--theme-form-text-focus-color: #1c1916;
+	grid-column: 2;
+	margin: 0;
+	padding: clamp(1.25rem, 3.2vw, 2rem);
+	border: 1px solid #d6cec3;
+	border-radius: 14px;
+	background: #fffdf9;
+	box-shadow: 0 28px 70px -48px rgba(0, 0, 0, 0.88);
+	color: #1c1916;
+}
+
+.hu-sst #anfrage .hu-sst__form-intro-hint {
+	margin: 0 0 1.3rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid #ded5ca;
+	color: #6a6057;
+	font-size: 0.84rem;
+}
+
+.hu-sst #anfrage .contact-form__row {
+	gap: 1rem;
+}
+
+.hu-sst #anfrage .contact-field {
+	margin-bottom: 1.05rem;
+}
+
+.hu-sst #anfrage .contact-field label,
+.hu-sst #anfrage .hu-sst__fieldset legend {
+	display: block;
+	margin-bottom: 0.42rem;
+	color: #1c1916;
+	font-size: 0.92rem;
+	font-weight: 700;
+	line-height: 1.45;
+}
+
+.hu-sst #anfrage .contact-field__help {
+	margin: -0.1rem 0 0.45rem;
+	color: #665e56;
+	font-size: 0.82rem;
+	line-height: 1.5;
+}
+
+.hu-sst #anfrage .hu-sst__optional {
+	color: #746b62;
+	font-weight: 450;
+}
+
+.hu-sst #anfrage :is(
+	input:not([type="checkbox"]):not([type="radio"]),
+	select,
+	textarea
+) {
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+	min-height: 50px;
+	padding: 0.72rem 0.85rem;
+	border: 1px solid #8b8176;
+	border-radius: 8px;
+	background: #fffdf9;
+	color: #1c1916;
+	box-shadow: none;
+	font-size: 0.96rem;
+	line-height: 1.5;
+	transition:
+		border-color 160ms var(--sst-ease),
+		box-shadow 160ms var(--sst-ease),
+		background-color 160ms var(--sst-ease);
+}
+
+.hu-sst #anfrage textarea {
+	min-height: 142px;
+	resize: vertical;
+}
+
+.hu-sst #anfrage :is(
+	input:not([type="checkbox"]):not([type="radio"]),
+	select,
+	textarea
+):focus {
+	border-color: #884323;
+	background: #fff;
+	box-shadow: 0 0 0 3px rgba(136, 67, 35, 0.1);
+	outline: 0;
+}
+
+.hu-sst #anfrage .hu-sst__form-details {
+	margin: 1.2rem 0;
+	padding: 0;
+	border: 0;
+	border-block: 1px solid #ded5ca;
+	background: transparent;
+}
+
+.hu-sst #anfrage .hu-sst__form-details > summary {
+	padding: 1rem 0;
+	color: #884323;
+	font-size: 0.9rem;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.hu-sst #anfrage .hu-sst__form-details-body {
+	padding: 0.25rem 0 0.35rem;
+}
+
+.hu-sst #anfrage .hu-sst__checks {
+	gap: 0.55rem;
+}
+
+.hu-sst #anfrage .hu-sst__check {
+	border-color: #d6cec3;
+	background: #f8f4ee;
+	color: #3a342e;
+}
+
+.hu-sst #anfrage .hu-sst__package-selection {
+	margin: 0 0 1rem;
+	padding: 0.9rem 1rem;
+	border: 1px solid rgba(136, 67, 35, 0.22);
+	border-radius: 8px;
+	background: #f4eee5;
+	color: #5e574f;
+	font-size: 0.86rem;
+}
+
+.hu-sst #anfrage .hu-sst__package-selection strong {
+	color: #1c1916;
+}
+
+.hu-sst #anfrage .contact-consent {
+	color: #4f4841;
+	font-size: 0.86rem;
+	line-height: 1.62;
+}
+
+.hu-sst #anfrage .contact-consent a {
+	color: #884323;
+}
+
+.hu-sst #anfrage .contact-consent input {
+	accent-color: #884323;
+}
+
+.hu-sst #anfrage .hu-sst__form-hint {
+	margin: 1rem 0 1.2rem;
+	color: #71685f;
+	font-size: 0.78rem;
+	line-height: 1.55;
+}
+
+.hu-sst #anfrage .contact-submit {
+	width: 100%;
+	min-height: 54px;
+	border-color: #e3a16d;
+	background: #e3a16d;
+	color: #1c1916;
+	font-weight: 750;
+}
+
+.hu-sst #anfrage .contact-submit:hover {
+	border-color: #efb685;
+	background: #efb685;
+	color: #1c1916;
+}
+
+.hu-sst #anfrage .contact-form__feedback:not(:empty) {
+	margin-top: 1rem;
+	padding: 0.9rem 1rem;
+	border-left: 3px solid #884323;
+	background: #f4eee5;
+	color: #3a342e;
+}
+
+/* ── Compact care/security still stay secondary ──────────────────── */
 .hu-sst #tracking-care .hu-sst__care-summary {
 	margin-top: calc(var(--nx-space-lg, 1.5rem) * -1);
 	margin-bottom: var(--nx-space-lg, 1.5rem);
@@ -92,62 +658,78 @@
 	margin-top: var(--nx-space-sm, 0.5rem);
 }
 
-.hu-sst .hu-sst__btn,
-.hu-sst .contact-submit {
-	transition: transform 150ms var(--sst-ease),
-		background-color var(--sst-dur) var(--sst-ease),
-		border-color var(--sst-dur) var(--sst-ease),
-		color var(--sst-dur) var(--sst-ease);
-}
-
-.hu-sst .hu-sst__btn:active,
-.hu-sst .contact-submit:active {
-	transform: scale(0.97);
-}
-
-@media (hover: hover) and (pointer: fine) {
-	.hu-sst #pakete .hu-sst__price-card {
-		transition: transform 180ms var(--sst-ease),
-			border-color 180ms var(--sst-ease),
-			box-shadow 180ms var(--sst-ease);
+@media (max-width: 840px) {
+	.hu-sst #anfrage .hu-sst__container--narrow {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 1.75rem;
 	}
 
-	.hu-sst #pakete .hu-sst__price-card:hover {
-		transform: translateY(-3px);
-		border-color: rgba(229, 149, 115, 0.34);
+	.hu-sst #anfrage .hu-sst__section-head,
+	.hu-sst #anfrage .hu-sst__form,
+	.hu-sst #anfrage .contact-error-summary {
+		grid-column: 1;
 	}
 
-	.hu-sst #pakete .hu-sst__price-card--featured:hover {
-		transform: translateY(-6px);
+	.hu-sst #anfrage .hu-sst__section-head {
+		position: static;
+		max-width: 680px;
+	}
+
+	.hu-sst #anfrage .hu-sst__section-head::after {
+		max-width: 62ch;
 	}
 }
 
 @media (max-width: 600px) {
-	.hu-sst .hu-sst__toc-list {
-		display: flex;
-		flex-wrap: nowrap;
-		gap: var(--nx-space-lg, 1.5rem);
-		overflow-x: auto;
-		overscroll-behavior-inline: contain;
-		scrollbar-width: thin;
-		padding-bottom: var(--nx-space-xs, 0.25rem);
+	.hu-sst .hu-sst__toc {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.25rem;
+		padding-top: 0.65rem;
+		padding-bottom: 0.65rem;
 	}
 
-	.hu-sst .hu-sst__toc-list li {
-		flex: 0 0 auto;
+	.hu-sst .hu-sst__toc-label {
+		display: none;
+	}
+
+	.hu-sst .hu-sst__toc-list {
+		gap: 0.8rem;
 	}
 
 	.hu-sst .hu-sst__toc-list a {
-		width: auto;
-		white-space: nowrap;
-		border-bottom-color: transparent;
+		min-height: 40px;
+		padding-inline: 0.15rem;
+		font-size: 0.78rem;
+	}
+
+	.hu-sst #hero .hu-sst__decision {
+		padding: 0.9rem;
+		border-radius: 18px;
+	}
+
+	.hu-sst #hero .hu-sst__decision-title {
+		font-size: 1.15rem;
+	}
+
+	.hu-sst #anfrage .hu-sst__form {
+		padding: 1rem;
+		border-radius: 10px;
 	}
 }
 
 @media (prefers-reduced-motion: reduce) {
 	.hu-sst .hu-sst__btn,
 	.hu-sst .contact-submit,
-	.hu-sst #pakete .hu-sst__price-card {
+	.hu-sst #pakete .hu-sst__price-card,
+	.hu-sst #hero .hu-sst__decision::after,
+	.hu-sst #hero .hu-sst__decision-kicker::before,
+	.hu-sst #hero .hu-sst__decision svg rect,
+	.hu-sst #hero .hu-sst__decision svg path[marker-end],
+	.hu-sst #hero .hu-sst__decision svg circle,
+	.hu-sst .hu-sst__toc-band,
+	.hu-sst .hu-sst__toc-list a,
+	.hu-sst #anfrage :is(input, select, textarea) {
+		animation: none !important;
 		transition: none !important;
 	}
 
@@ -156,18 +738,5 @@
 	.hu-sst #pakete .hu-sst__price-card:hover,
 	.hu-sst #pakete .hu-sst__price-card--featured:hover {
 		transform: none;
-	}
-}
-
-/* Die fruehere dynamische Desktop-Rail wird fuer diese Route zugunsten der
-   kurzen, immer sichtbaren 5-Punkte-Navigation nicht mehr aufgebaut. */
-@media (min-width: 1360px) {
-	.hu-sst .hu-sst__toc-band {
-		display: block !important;
-	}
-
-	.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--toc,
-	.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--context {
-		display: none !important;
 	}
 }
