@@ -1,10 +1,10 @@
 /*
  * Marktcheck — zusammenhaengender Conversion-Block
- * Route: /solar-waermepumpen-leadgenerierung/
+ * /solar-waermepumpen-leadgenerierung/
  *
- * Wird ausschliesslich von anfragestrecke.js auf der Money-Page geladen.
- * Ziel: Befund, Leistungsversprechen und Intake als ein System lesen lassen,
- * statt als helles Modul + dunkle Karte + separaten Formularzustand.
+ * Dieser Layer baut Abschnitt 07 als ein Arbeitsdokument auf:
+ * Befundumfang → Lieferumfang → Fit-Pruefung. Der Uebergang zwischen
+ * Papier und dunkler Arbeitsflaeche bleibt bewusst kurz, aber sichtbar.
  */
 
 .strecke-doc #marktcheck {
@@ -17,28 +17,22 @@
   content: "";
   position: absolute;
   z-index: -1;
-  left: 0;
-  right: 0;
+  inset-inline: 0;
   top: clamp(18rem, 26vw, 25rem);
   bottom: clamp(1.25rem, 3vw, 2.5rem);
   background: linear-gradient(
     180deg,
-    rgba(247, 246, 243, 0) 0,
-    rgba(247, 246, 243, 0.88) 5rem,
+    rgb(247 246 243 / 0) 0,
+    rgb(247 246 243 / 0.88) 5rem,
     #f7f6f3 11rem,
     #f7f6f3 calc(100% - 5rem),
-    rgba(247, 246, 243, 0) 100%
+    rgb(247 246 243 / 0) 100%
   );
   pointer-events: none;
 }
 
-.strecke-doc #marktcheck .kopf {
-  max-width: 15ch;
-}
-
-.strecke-doc #marktcheck .vorspann {
-  max-width: 62ch;
-}
+.strecke-doc #marktcheck .kopf { max-width: 15ch; }
+.strecke-doc #marktcheck .vorspann { max-width: 62ch; }
 
 .strecke-doc #marktcheck .vorspann.klein {
   max-width: 72ch;
@@ -47,57 +41,39 @@
   color: var(--matt);
 }
 
-/* Ein Rahmen, zwei Phasen: erst Befundumfang, dann die eigentliche Pruefung. */
+/* ── Gemeinsamer Rahmen ─────────────────────────────────────── */
+
 .strecke-doc #marktcheck .gate {
   position: relative;
   display: block;
   margin-top: clamp(2.6rem, 5vw, 4rem);
   padding: 0;
-  background: transparent;
+  overflow: hidden;
+  background: #fff;
   border: 1px solid var(--haar);
   border-radius: 3px;
-  overflow: hidden;
-  box-shadow: 0 28px 72px rgba(23, 20, 18, 0.06);
+  box-shadow: 0 28px 72px rgb(23 20 18 / 0.06);
 }
 
-/* Eine durchgehende Stempelkante bindet beide Phasen zusammen. */
+/* Durchgehende Stempelkante: dieselbe Linie ueber alle drei Phasen. */
 .strecke-doc #marktcheck .gate::before {
   content: "";
   position: absolute;
   z-index: 8;
-  top: 0;
-  bottom: 0;
+  inset-block: 0;
   left: 0;
   width: 3px;
-  background: linear-gradient(180deg, #b8420f 0 44%, #ef8b4d 56% 100%);
+  background: linear-gradient(180deg, #b8420f 0 43%, #ef8b4d 57% 100%);
   pointer-events: none;
 }
+
+/* ── Phase 01: Befundumfang ─────────────────────────────────── */
 
 .strecke-doc #marktcheck .gate > div:first-child {
   position: relative;
   padding: clamp(1.6rem, 3vw, 2.4rem);
   padding-bottom: clamp(2rem, 3.5vw, 2.8rem);
-  background: rgba(255, 255, 255, 0.92);
-}
-
-/* Der helle Teil laeuft als sehr schmale Lichtkante in die dunkle Phase.
-   Die naechste Flaeche beginnt dadurch nicht mehr wie ein neuer Screen. */
-.strecke-doc #marktcheck .gate > div:first-child::after {
-  content: "";
-  position: absolute;
-  z-index: 4;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 1.35rem;
-  transform: translateY(100%);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.86) 0,
-    rgba(239, 139, 77, 0.07) 45%,
-    rgba(23, 20, 15, 0) 100%
-  );
-  pointer-events: none;
+  background: rgb(255 255 255 / 0.96);
 }
 
 .strecke-doc #marktcheck .gate > div:first-child > .mono {
@@ -107,18 +83,19 @@
   color: var(--stempel);
 }
 
-.strecke-doc #marktcheck .gate > div:first-child > .mono::before {
-  content: "01";
+.strecke-doc #marktcheck .gate > div:first-child > .mono::before,
+.strecke-doc #marktcheck .gate .schein > .mono::before {
   display: inline-grid;
   place-items: center;
   width: 1.75rem;
   height: 1.75rem;
-  border: 1px solid var(--haar);
-  color: var(--stempel);
+  border: 1px solid currentColor;
   font-family: var(--mono);
   font-size: 0.58rem;
   letter-spacing: 0;
 }
+
+.strecke-doc #marktcheck .gate > div:first-child > .mono::before { content: "01"; }
 
 .strecke-doc #marktcheck .gate ol {
   display: grid;
@@ -141,41 +118,39 @@
   border-top: 1px solid var(--haar);
 }
 
-/*
- * Die dunkle Phase ist keine Karte mehr, sondern die zweite Haelfte
- * desselben Arbeitsdokuments. Links steht der Lieferumfang, rechts laeuft
- * die Pruefung. Das Intake bleibt dadurch an seinem Beleg verankert.
- */
+/* ── Papier → Arbeitsflaeche ──────────────────────────────────
+   Kein 1-px-Schnitt. Die ersten ~4rem der dunklen Phase sind reine
+   Material-Transition; dort liegt bewusst kein Text. */
+
 .strecke-doc #marktcheck .gate .schein {
-  position: relative;
   display: grid;
   grid-template-columns: minmax(16rem, 0.82fr) minmax(0, 1.38fr);
   grid-auto-rows: auto;
   gap: 0;
   align-items: start;
   margin: 0;
-  padding: clamp(1.55rem, 2.4vw, 2rem) 0 0;
+  padding: clamp(3.4rem, 5vw, 4.4rem) 0 0;
+  border: 0;
   border-radius: 0;
-  border-top: 0;
-  background: linear-gradient(180deg, #2a231c 0, #17140f 2rem, #17140f 100%);
+  background: linear-gradient(
+    180deg,
+    #f7f6f3 0,
+    #e8ddd3 0.65rem,
+    #b99176 1.45rem,
+    #684a37 2.35rem,
+    #30251d 3.25rem,
+    #17140f 4.35rem,
+    #17140f 100%
+  );
 }
 
-.strecke-doc #marktcheck .gate .schein::before {
-  content: "";
-  position: absolute;
-  z-index: 5;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, #b8420f 0, #ef8b4d 58%, rgba(239, 139, 77, 0) 100%);
-  pointer-events: none;
-}
+/* ── Phase 02: Lieferumfang ─────────────────────────────────── */
 
 .strecke-doc #marktcheck .gate .schein > .mono {
   grid-column: 1;
+  display: block;
   margin: 0 clamp(1.4rem, 3vw, 2.25rem);
-  padding-top: clamp(1.8rem, 3.5vw, 2.6rem);
+  padding-top: clamp(1.6rem, 3vw, 2.2rem);
   padding-bottom: 0.9rem;
   color: var(--stempel);
   border-bottom-color: var(--haar);
@@ -183,16 +158,7 @@
 
 .strecke-doc #marktcheck .gate .schein > .mono::before {
   content: "02";
-  display: inline-grid;
-  place-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
   margin-right: 0.65rem;
-  border: 1px solid var(--haar);
-  color: var(--stempel);
-  font-family: var(--mono);
-  font-size: 0.58rem;
-  letter-spacing: 0;
   vertical-align: middle;
 }
 
@@ -202,14 +168,14 @@
   padding-block: 0.7rem;
 }
 
-.strecke-doc #marktcheck .gate .schein > .z span {
-  padding-right: 0.8rem;
-}
+.strecke-doc #marktcheck .gate .schein > .z span { padding-right: 0.8rem; }
 
 .strecke-doc #marktcheck .gate .schein > .person {
   grid-column: 1;
   margin: 1.25rem clamp(1.4rem, 3vw, 2.25rem) clamp(1.8rem, 3.5vw, 2.6rem);
 }
+
+/* ── Phase 03: Fit-Pruefung ─────────────────────────────────── */
 
 .strecke-doc #marktcheck #sol-quiz-mount {
   grid-column: 2;
@@ -218,7 +184,7 @@
   min-height: 100%;
   padding: clamp(1.8rem, 3.5vw, 2.6rem);
   border-left: 1px solid var(--haar);
-  background: linear-gradient(180deg, #221d17 0, #1d1914 5rem, #1d1914 100%);
+  background: linear-gradient(180deg, #211c16 0, #1d1914 5rem, #1d1914 100%);
 }
 
 .strecke-doc #marktcheck #sol-quiz-mount::before {
@@ -232,10 +198,7 @@
   color: var(--stempel);
 }
 
-/* Der Fortschritt bildet die Klammer zwischen Fragen und Kontaktschritt. */
-.strecke-doc #marktcheck .sol-quiz-progress {
-  margin-bottom: 1.8rem;
-}
+.strecke-doc #marktcheck .sol-quiz-progress { margin-bottom: 1.8rem; }
 
 .strecke-doc #marktcheck .sol-quiz-progress-track {
   height: 3px;
@@ -243,27 +206,19 @@
 }
 
 .strecke-doc #marktcheck .sol-quiz-progress-fill {
-  box-shadow: 0 0 0 1px rgba(239, 139, 77, 0.08);
+  box-shadow: 0 0 0 1px rgb(239 139 77 / 0.08);
 }
 
 .strecke-doc #marktcheck .sol-quiz-title {
-  font-size: clamp(1.45rem, 1.2rem + 0.65vw, 1.85rem);
   max-width: 24ch;
+  font-size: clamp(1.45rem, 1.2rem + 0.65vw, 1.85rem);
 }
 
-.strecke-doc #marktcheck .sol-quiz-hint {
-  max-width: 56ch;
-}
+.strecke-doc #marktcheck .sol-quiz-hint { max-width: 56ch; }
+.strecke-doc #marktcheck .sol-quiz-opt { padding-inline: 0.65rem 0.4rem; }
+.strecke-doc #marktcheck .sol-quiz-opt.is-sel { background: #272119; }
 
-.strecke-doc #marktcheck .sol-quiz-opt {
-  padding-inline: 0.65rem 0.4rem;
-}
-
-.strecke-doc #marktcheck .sol-quiz-opt.is-sel {
-  background: #272119;
-}
-
-/* Kontaktdaten bekommen eine klarere Eingabe-Affordanz als die Fragen. */
+/* Kontaktdaten sind echte Eingabefelder, nicht nur Unterstriche. */
 .strecke-doc #marktcheck .sol-quiz-field input,
 .strecke-doc #marktcheck .sol-quiz-field select {
   min-height: 46px;
@@ -288,7 +243,7 @@
   margin-bottom: 0.55rem;
   padding: 0.9rem 1rem;
   border-left: 2px solid var(--stempel);
-  background: rgba(239, 139, 77, 0.055);
+  background: rgb(239 139 77 / 0.055);
 }
 
 .strecke-doc #marktcheck .sol-quiz-submit {
@@ -296,11 +251,10 @@
   margin-top: 0.85rem;
 }
 
-.strecke-doc #marktcheck .sol-quiz-nav {
-  margin-top: 1.7rem;
-}
+.strecke-doc #marktcheck .sol-quiz-nav { margin-top: 1.7rem; }
 
-/* Nach dem Conversion-Block wieder bewusst in den Dokumentrhythmus. */
+/* ── Rueckkehr in den Dokumentrhythmus ─────────────────────── */
+
 .strecke-doc #marktcheck + #fragen {
   border-top: 0;
   padding-top: clamp(4.5rem, 8vw, 7rem);
@@ -315,8 +269,8 @@
   background: var(--haar);
 }
 
+/* Im nutzbaren Viewport unter dem festen Energy-Header zentrieren. */
 @media (min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
-  /* Im nutzbaren Viewport unter dem festen Energy-Header zentrieren. */
   .strecke-doc .register {
     top: calc(50% + 2.75rem);
     max-height: calc(100vh - 7rem);
@@ -326,7 +280,7 @@
 @media (max-width: 980px) {
   .strecke-doc #marktcheck .gate .schein {
     grid-template-columns: 1fr;
-    padding-top: 1rem;
+    padding-top: 3.5rem;
   }
 
   .strecke-doc #marktcheck #sol-quiz-mount {
@@ -339,36 +293,34 @@
 }
 
 @media (max-width: 760px) {
-  .strecke-doc #marktcheck::before {
-    top: 19rem;
-  }
+  .strecke-doc #marktcheck::before { top: 19rem; }
 
-  .strecke-doc #marktcheck .vorspann.klein {
-    padding-left: 0.85rem;
-  }
+  .strecke-doc #marktcheck .vorspann.klein { padding-left: 0.85rem; }
 
-  .strecke-doc #marktcheck .gate ol {
-    grid-template-columns: 1fr;
-  }
-
-  .strecke-doc #marktcheck .gate ol li {
-    min-height: 0;
-  }
+  .strecke-doc #marktcheck .gate ol { grid-template-columns: 1fr; }
+  .strecke-doc #marktcheck .gate ol li { min-height: 0; }
 
   .strecke-doc #marktcheck .gate > div:first-child,
-  .strecke-doc #marktcheck #sol-quiz-mount {
-    padding: 1.35rem;
+  .strecke-doc #marktcheck #sol-quiz-mount { padding: 1.35rem; }
+
+  .strecke-doc #marktcheck .gate .schein {
+    padding-top: 3.25rem;
+    background: linear-gradient(
+      180deg,
+      #f7f6f3 0,
+      #ddcdbf 0.55rem,
+      #8c6750 1.45rem,
+      #3d2e23 2.35rem,
+      #17140f 3.25rem,
+      #17140f 100%
+    );
   }
 
   .strecke-doc #marktcheck .gate .schein > .mono,
   .strecke-doc #marktcheck .gate .schein > .z,
-  .strecke-doc #marktcheck .gate .schein > .person {
-    margin-inline: 1.35rem;
-  }
+  .strecke-doc #marktcheck .gate .schein > .person { margin-inline: 1.35rem; }
 
-  .strecke-doc #marktcheck .sol-quiz-opt {
-    padding-inline: 0;
-  }
+  .strecke-doc #marktcheck .sol-quiz-opt { padding-inline: 0; }
 
   .strecke-doc #marktcheck + #fragen::before {
     width: calc(100% - 2.5rem);
@@ -376,7 +328,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .strecke-doc #marktcheck * {
-    scroll-behavior: auto;
-  }
+  .strecke-doc #marktcheck * { scroll-behavior: auto; }
 }
