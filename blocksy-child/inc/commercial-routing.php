@@ -117,10 +117,6 @@ function hu_get_commercial_route( $key, $fallback = '' ) {
  */
 function hu_get_site_header_navigation_contract() {
 	$routes      = hu_get_commercial_route_map();
-	$public_urls = function_exists( 'nexus_get_primary_public_url_map' )
-		? nexus_get_primary_public_url_map()
-		: [];
-
 	return [
 		'toggle' => [
 			'track'    => 'nav_menu_toggle',
@@ -143,8 +139,8 @@ function hu_get_site_header_navigation_contract() {
 			[
 				'kind'     => 'route',
 				'kicker'   => __( 'Für Agenturen', 'blocksy-child' ),
-				'label'    => __( 'White-Label-Retainer', 'blocksy-child' ),
-				'desc'     => __( 'Technik im Hintergrund, unter Ihrem Namen. Feste Kapazität statt Projektpoker.', 'blocksy-child' ),
+				'label'    => __( 'White-Label', 'blocksy-child' ),
+				'desc'     => __( 'Technik im Hintergrund, unter Ihrem Namen. Erstprojekt mit festem Umfang, Retainer erst danach.', 'blocksy-child' ),
 				'url'      => $routes['whitelabel'],
 				'current'  => function_exists( 'nexus_is_agency_nav_context' ) && nexus_is_agency_nav_context(),
 				'class'    => 'nav-agency-link',
@@ -154,7 +150,7 @@ function hu_get_site_header_navigation_contract() {
 			],
 			[
 				'kind'     => 'route',
-				'kicker'   => __( 'Vertikale', 'blocksy-child' ),
+				'kicker'   => __( 'Spezialisierung', 'blocksy-child' ),
 				'label'    => __( 'Solar & Wärmepumpe', 'blocksy-child' ),
 				'desc'     => __( 'Anfragesysteme für Betriebe, die keine gekauften Portalleads mehr wollen.', 'blocksy-child' ),
 				'url'      => $routes['energy'],
@@ -167,32 +163,7 @@ function hu_get_site_header_navigation_contract() {
 		],
 		'groups' => [
 			[
-				'title' => __( 'Leistungen', 'blocksy-child' ),
-				'items' => [
-					[
-						'kind'     => 'group',
-						'label'    => __( 'Server-Side-Tracking B2B', 'blocksy-child' ),
-						'url'      => $routes['tracking_b2b'],
-						'current'  => is_page( 'server-side-tracking-b2b' ),
-						'class'    => 'nav-tracking-link',
-						'track'    => 'nav_header_freelancer',
-						'category' => 'navigation',
-						'section'  => 'header',
-					],
-					[
-						'kind'     => 'group',
-						'label'    => __( 'WordPress-Agentur Hannover', 'blocksy-child' ),
-						'url'      => $routes['agentur_local'],
-						'current'  => is_page( 'wordpress-agentur-hannover' ) || is_page( 'wordpress-agentur' ) || is_page_template( 'page-wordpress-agentur.php' ),
-						'class'    => 'nav-agentur-link',
-						'track'    => 'nav_header_freelancer',
-						'category' => 'navigation',
-						'section'  => 'header',
-					],
-				],
-			],
-			[
-				'title' => __( 'Belege', 'blocksy-child' ),
+				'title' => __( 'Belege & Person', 'blocksy-child' ),
 				'items' => [
 					[
 						'kind'     => 'group',
@@ -206,75 +177,10 @@ function hu_get_site_header_navigation_contract() {
 					],
 					[
 						'kind'     => 'group',
-						'label'    => __( 'Case Study Solar', 'blocksy-child' ),
-						'url'      => $public_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
-						'current'  => is_page( 'case-study-solar-leadgenerierung' ) || is_page_template( 'page-case-e3.php' ),
-						'class'    => 'nav-case-link',
-						'track'    => 'nav_header_results',
-						'category' => 'navigation',
-						'section'  => 'header',
-					],
-					[
-						'kind'     => 'group',
-						'label'    => __( 'Blog', 'blocksy-child' ),
-						'url'      => $public_urls['blog'] ?? home_url( '/blog/' ),
-						'current'  => is_home() || is_singular( 'post' ) || is_category() || is_tag() || is_author(),
-						'class'    => 'nav-blog-link',
-						'track'    => 'nav_header_results',
-						'category' => 'navigation',
-						'section'  => 'header',
-					],
-					[
-						'kind'     => 'group',
-						'label'    => __( 'Glossar', 'blocksy-child' ),
-						'url'      => $public_urls['glossary'] ?? home_url( '/glossar/' ),
-						'current'  => ( function_exists( 'nexus_is_glossary_hub_page' ) && nexus_is_glossary_hub_page() ) || is_singular( 'glossary_term' ),
-						'class'    => 'nav-glossary-link',
-						'track'    => 'nav_header_results',
-						'category' => 'navigation',
-						'section'  => 'header',
-					],
-				],
-			],
-			[
-				'title' => __( 'Person & Kontakt', 'blocksy-child' ),
-				'items' => [
-					[
-						'kind'     => 'group',
 						'label'    => __( 'Über Haşim', 'blocksy-child' ),
 						'url'      => $routes['about'],
 						'current'  => is_page( 'hasim-uener' ) || is_page( 'uber-mich' ) || is_page_template( 'page-hasim-uener.php' ),
 						'class'    => 'nav-about-link',
-						'track'    => 'nav_header_about',
-						'category' => 'navigation',
-						'section'  => 'header',
-					],
-					[
-						'kind'     => 'group',
-						'label'    => __( 'Kontakt', 'blocksy-child' ),
-						'url'      => $routes['contact'],
-						'current'  => is_page( 'kontakt' ),
-						'class'    => 'nav-contact-link',
-						'track'    => 'nav_header_project',
-						'category' => 'lead_gen',
-						'section'  => 'header',
-					],
-					[
-						'kind'     => 'group',
-						'label'    => __( 'Impressum', 'blocksy-child' ),
-						'url'      => $public_urls['impressum'] ?? home_url( '/impressum/' ),
-						'current'  => is_page( 'impressum' ),
-						'class'    => 'nav-imprint-link',
-						'track'    => 'nav_header_about',
-						'category' => 'navigation',
-						'section'  => 'header',
-					],
-					[
-						'kind'     => 'group',
-						'label'    => __( 'Datenschutz', 'blocksy-child' ),
-						'url'      => $public_urls['datenschutz'] ?? home_url( '/datenschutz/' ),
-						'current'  => is_page( 'datenschutz' ),
-						'class'    => 'nav-privacy-link',
 						'track'    => 'nav_header_about',
 						'category' => 'navigation',
 						'section'  => 'header',
