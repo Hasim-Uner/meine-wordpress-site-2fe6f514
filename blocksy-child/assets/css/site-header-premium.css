@@ -674,7 +674,7 @@ body.nx-site-menu-open {
 
 @media (min-width: 640px) and (max-width: 1023px) {
     .nx-site-header.nx-site-header--sheet .nx-site-header__groups {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), max-content));
         gap: 20px;
     }
 }
@@ -721,7 +721,7 @@ body.nx-site-menu-open {
     }
 
     .nx-site-header.nx-site-header--sheet .nx-site-header__groups {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), max-content));
         gap: 20px;
     }
 }
