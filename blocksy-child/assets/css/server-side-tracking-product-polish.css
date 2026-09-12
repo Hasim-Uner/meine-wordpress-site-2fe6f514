@@ -1,0 +1,29 @@
+/* Explicit disclosure for the illustrative verification numbers. */
+.hu-sst .hu-sst-verify__caption {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.6rem;
+	color: rgba(246, 244, 239, 0.62);
+	background: rgba(255, 255, 255, 0.018);
+}
+
+.hu-sst .hu-sst-verify__caption::before {
+	content: "BEISPIELDATEN";
+	flex: 0 0 auto;
+	padding: 0.18rem 0.34rem;
+	border: 1px solid rgba(229, 149, 115, 0.26);
+	border-radius: 5px;
+	background: rgba(229, 149, 115, 0.08);
+	font-size: 0.52rem;
+	font-weight: 780;
+	letter-spacing: 0.08em;
+	line-height: 1.2;
+	color: #eeb092;
+}
+
+@media (max-width: 520px) {
+	.hu-sst .hu-sst-verify__caption {
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+}
