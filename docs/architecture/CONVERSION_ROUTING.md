@@ -29,22 +29,35 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 
 ## Homepage: Auswahl vor der spezialisierten Anfrage
 
-Die Homepage ist ein Verteiler für gemischten Brand-Traffic. Ihre drei Karten
-führen zuerst zu `/solar-waermepumpen-leadgenerierung/`,
-`/wordpress-freelancer-hannover/` und `/whitelabel-retainer/`.
-Die Energy-Karte trägt keinen `#marktcheck`-Anker mehr; der Marktcheck bleibt
+Die Homepage ist ein Verteiler für gemischten Brand-Traffic. Seit dem Umbau
+auf den Gutachten-Standard (2026-09-12) stehen ihre drei Wege als
+Entscheidungszeilen in Abschnitt 01 — mit Preisrahmen in der Zeile — und
+führen zu `/wordpress-freelancer-hannover/`, `/whitelabel-retainer/` und
+`/solar-waermepumpen-leadgenerierung/`.
+Die Energy-Zeile trägt keinen `#marktcheck`-Anker; der Marktcheck bleibt
 auf der Branchenseite und auf kaufnahen Energy-Unterseiten der primäre CTA.
-Der Hero-Sprung führt zu `#wege`, der allgemeine Kontaktabschluss nutzt
+Der Sprung aus dem Dokumentkopf führt zu `#wege`, beide Kontakt-CTAs nutzen
 `hu_get_navigation_project_request_url()`.
 
-Der Energy-Auswahlhook heißt `home_door_energy` (zuvor Formular-Sprung
-`home_door_marktcheck`). Beide dürfen in der Auswertung nicht als dasselbe
-Verhalten behandelt werden. Die anderen zwei Auswahlhooks bleiben stabil.
-Es entsteht keine neue Analytics-Laufzeit.
+**Die drei Wege stehen im Seiteninhalt genau einmal.** Vorher standen sie
+dreimal — Hauptmenü, Kartenabschnitt, Schlussliste im Fuß — und in drei
+verschiedenen Reihenfolgen. Deshalb unterdrückt `template-parts/site-footer.php`
+die Selbstauskunft auf der Startseite; im Hauptmenü bleiben die Wege.
 
-Nur auf der Homepage schließt die direkte Footer-Zeile Neubau ein:
-„Ich plane eine WordPress-Website oder möchte meine bestehende verbessern.“
-Ihr Ziel und `cta_footer_pick_project` bleiben erhalten.
+Die Preisrahmen lesen den Pricing-Canon: `HU_FREELANCER_WEBSITE_MIN` (direkt),
+`HU_WHITELABEL_TEST_SPRINT_PRICE` mit `HU_WHITELABEL_RETAINER_MIN` im Fließtext
+(Agentur), `HU_ENTRY_SETUP_PRICE` mit `HU_FOUNDATION_PRICE_STANDARD` (Energie).
+Ein Stundensatz steht nicht dabei — die White-Label-Zielseite nennt
+ausdrücklich keinen, und zwei Aussagen dazu auf zwei indexierten Seiten wären
+ein Widerspruch.
+
+Die drei Auswahlhooks `home_door_freelancer`, `home_door_whitelabel` und
+`home_door_energy` bleiben unverändert, damit die Zeitreihe über den Umbau
+hinweg vergleichbar bleibt. Neu sind `home_head_contact` (zweiter CTA im
+Dokumentkopf) und `home_close_mail`. Entfallen sind `home_more_results`,
+`home_about` und `home_proof_wordpress` samt ihren Flächen; `/ergebnisse/` und
+`/hasim-uener/` bleiben über Hauptmenü und Fußverzeichnis erreichbar.
+Es entsteht keine neue Analytics-Laufzeit.
 
 ## Ergebnisse-Hub: Vertrauensschicht, kein vierter Weg
 
@@ -244,8 +257,11 @@ All three carry `data-track-category="lead_gen"` and
 | Telefon | `tel:` the canonical number | `cta_footer_tel` |
 | Kontaktformular | `/kontakt/` | `cta_footer_form` |
 
-On `/wordpress-freelancer-hannover/`, the three self-selection sentences are
-omitted: the visitor is already in the direct-project path. Mail and telephone
+On `/wordpress-freelancer-hannover/` and on the front page, the three
+self-selection sentences are omitted. On the freelancer route the visitor is
+already in the direct-project path; on the front page the same three ways
+stand in section 01 of the page itself, and repeating them in the footer in a
+different order takes the meaning out of both orders. Mail and telephone
 remain, and `Kontaktformular` points to `#anfrage`. The directory and sender
 lines remain. Existing tracking action names on rendered links are unchanged;
 the three `cta_footer_pick_*` actions are simply absent on this route.

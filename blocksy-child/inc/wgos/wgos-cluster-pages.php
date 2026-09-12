@@ -30,7 +30,8 @@ function nexus_get_wgos_cluster_page_data() {
 	$e3_cpl_after   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
 	$e3_lead_count  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
 	$e3_case_url    = home_url( '/case-study-solar-leadgenerierung/' );
-	$response_hours = defined( 'HU_RESPONSE_HOURS' ) ? (int) HU_RESPONSE_HOURS : 24;
+	$response_compact = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : 'Antwort spätestens 2 Werktage';
+	$response_window  = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : 'spätestens in 2 Werktagen';
 
 	// Die Cluster wordpress-seo-hannover, core-web-vitals und conversion-rate-optimization
 	// sind in die Agentur-Page integriert; 301-Redirects sitzen in inc/helpers.php
@@ -130,7 +131,7 @@ function nexus_get_wgos_cluster_page_data() {
 			'cta'              => [
 				'route'        => 'project_request',
 				'label'        => 'Projekt anfragen',
-				'microcopy'    => sprintf( 'Kurze Beschreibung von Kampagne und Ziel genügt · Antwort innerhalb von %d Stunden', $response_hours ),
+				'microcopy'    => sprintf( 'Kurze Beschreibung von Kampagne und Ziel genügt · Antwort %s', $response_window ),
 				'closing_note' => 'Schreiben Sie kurz, welche Kanäle laufen, was eine Anfrage aktuell kostet und wo es hakt. Sie bekommen eine Einschätzung, welcher Schritt zuerst zählt — auch dann, wenn das gegen ein neues Kampagnen-Budget spricht.',
 			],
 			'blogs'            => [
@@ -169,7 +170,7 @@ function nexus_get_wgos_cluster_page_data() {
 					'label' => 'qualifizierte Anfragen über das eigene System',
 				],
 				[
-					'value' => sprintf( 'Antwort in %d h', $response_hours ),
+					'value' => $response_compact,
 					'label' => 'Einschätzung zur Ausgangslage, auch wenn sie gegen ein Budget spricht',
 				],
 			],

@@ -52,7 +52,14 @@ $wl_form_endpoint  = rest_url( 'nexus/v1/whitelabel-request' );
 // canon/messaging-canon.php: dieselbe Zusage endet auf /kontakt/.
 $task_brief_response = function_exists( 'hu_response_promise' )
 	? hu_response_promise()
-	: 'Antwort innerhalb von 24 Stunden werktags';
+	: 'Antwort spätestens in 2 Werktagen';
+
+// Drei weitere Stellen nannten die Zusage bis 2026-09-12 hart im Markup und
+// waren damit die einzigen der Seite, die beim Canon-Wechsel stehen blieben:
+// die Aufgaben-Karte, die Retainer-Abgrenzung und der Sticky-CTA.
+$response_window  = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : 'spätestens in 2 Werktagen';
+$response_value   = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'value' ) : 'spätestens 2 Werktage';
+$response_compact = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : 'Antwort spätestens 2 Werktage';
 
 $imprint_url  = home_url( '/impressum/' );
 $privacy_url  = home_url( '/datenschutz/' );
@@ -283,7 +290,7 @@ $contract_cards = [
 		'title'   => 'Verbindlich',
 		'copy'    => $task_brief_response . '. Verfügbarkeit, Starttermin und Delivery-Fenster werden vor Projektbeginn verbindlich vereinbart. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
 		'bullets' => [
-			function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : 'Antwort in 24 Stunden werktags',
+			function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : 'Antwort spätestens 2 Werktage',
 			'Starttermin vorab bestätigt',
 			'Dringendes separat priorisiert',
 		],
@@ -391,7 +398,7 @@ $wl_facts = [
 	],
 	[
 		'term' => 'Antwortzeit',
-		'desc' => function_exists( 'hu_response_promise' ) ? hu_response_promise( 'value' ) : '24 Stunden werktags',
+		'desc' => function_exists( 'hu_response_promise' ) ? hu_response_promise( 'value' ) : 'spätestens 2 Werktage',
 	],
 	[
 		'term' => 'Sichtbarkeit',
@@ -417,7 +424,7 @@ $wl_facts = [
 $wl_ways = [
 	[
 		'title'  => 'Ihr habt eine konkrete Aufgabe.',
-		'copy'   => 'Beschreibt sie in vier Zeilen, ich antworte innerhalb von 24 Stunden werktags mit Einschätzung, Aufwand und Preis.',
+		'copy'   => sprintf( 'Beschreibt sie in vier Zeilen, ich antworte %s mit Einschätzung, Aufwand und Preis.', $response_window ),
 		'label'  => 'Aufgabe beschreiben',
 		'url'    => $wl_form_task_url,
 		'action' => 'cta_whitelabel_way_task',
@@ -625,7 +632,7 @@ $wl_access_options = function_exists( 'hu_whitelabel_request_access_options' )
 					<span class="wl-entry-card__price"><?php echo esc_html( $retainer_price_hours ); ?></span>
 				</header>
 				<h3 class="wl-entry-card__title">Laufende Kapazität</h3>
-				<p class="wl-entry-card__copy">Ein festes Kontingent pro Monat, monatlich kündbar. Entsteht nach einem erfolgreichen Erstprojekt, nicht davor. Ausdrücklich ohne Rufbereitschaft und ohne Reaktionszeit-Zusage über die 24 Stunden werktags hinaus.</p>
+				<p class="wl-entry-card__copy">Ein festes Kontingent pro Monat, monatlich kündbar. Entsteht nach einem erfolgreichen Erstprojekt, nicht davor. Ausdrücklich ohne Rufbereitschaft und ohne Reaktionszeit-Zusage über die <?php echo esc_html( $response_value ); ?> hinaus.</p>
 			</article>
 
 			<ul class="wl-entry__bullets nx-reveal" aria-label="Rahmen Erstprojekt">
@@ -973,7 +980,7 @@ window.dataLayer.push({
 
 			<p class="wl-faq__more">
 				Eure Frage fehlt?
-				<a href="<?php echo esc_url( $wl_form_task_url ); ?>" data-wl-form-link data-track-action="cta_whitelabel_faq_task_brief" data-track-category="lead_gen" data-track-section="faq">Stellt sie im Formular</a> — Antwort <?php echo esc_html( function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : 'innerhalb von 24 Stunden werktags' ); ?>.
+				<a href="<?php echo esc_url( $wl_form_task_url ); ?>" data-wl-form-link data-track-action="cta_whitelabel_faq_task_brief" data-track-category="lead_gen" data-track-section="faq">Stellt sie im Formular</a> — Antwort <?php echo esc_html( function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : 'spätestens in 2 Werktagen' ); ?>.
 			</p>
 
 			<div class="wl-facts nx-reveal">
@@ -1027,7 +1034,7 @@ window.dataLayer.push({
 			<div class="wl-request" id="aufgabe">
 				<div class="wl-request__head">
 					<h3 class="wl-request__title">Aufgabe beschreiben</h3>
-					<p class="wl-request__lede">Vier Angaben genügen. Ich antworte <?php echo esc_html( function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : 'innerhalb von 24 Stunden werktags' ); ?> persönlich.</p>
+					<p class="wl-request__lede">Vier Angaben genügen. Ich antworte <?php echo esc_html( function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : 'spätestens in 2 Werktagen' ); ?> persönlich.</p>
 				</div>
 
 				<div class="wl-request__error-summary is-hidden" role="alert" aria-live="assertive" data-wl-error-summary>
@@ -1131,7 +1138,7 @@ window.dataLayer.push({
 		<div class="wl-sticky-cta__inner">
 			<div class="wl-sticky-cta__label">
 				<strong>White-Label-Partner</strong>
-				<span>Vier Zeilen · Antwort in 24 Stunden werktags</span>
+				<span>Vier Zeilen · <?php echo esc_html( $response_compact ); ?></span>
 			</div>
 			<a href="<?php echo esc_url( $wl_form_task_url ); ?>" class="nx-btn nx-btn--primary" data-wl-form-link data-track-action="cta_sticky_whitelabel_task_brief" data-track-category="lead_gen" data-track-section="sticky_mobile">
 				Aufgabe beschreiben

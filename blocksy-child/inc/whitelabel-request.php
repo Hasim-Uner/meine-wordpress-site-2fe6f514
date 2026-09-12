@@ -209,7 +209,7 @@ function hu_handle_whitelabel_request_submission( WP_REST_Request $request ) {
 
 	$response_promise = function_exists( 'hu_response_promise' )
 		? hu_response_promise( 'window' )
-		: 'innerhalb von 24 Stunden werktags';
+		: 'spätestens in 2 Werktagen';
 
 	return new WP_REST_Response(
 		[
@@ -357,7 +357,7 @@ function hu_send_whitelabel_request_confirmation( $payload ) {
 	$contact_email    = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : '';
 	$response_promise = function_exists( 'hu_response_promise' )
 		? hu_response_promise( 'window' )
-		: 'innerhalb von 24 Stunden werktags';
+		: 'spätestens in 2 Werktagen';
 
 	$headers = [];
 
