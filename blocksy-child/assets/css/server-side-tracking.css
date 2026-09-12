@@ -1,13 +1,14 @@
 /* ==========================================================================
    /server-side-tracking-b2b/ — CSS composition
    --------------------------------------------------------------------------
-   Basis bleibt byte-identisch zum Stand vor dem CRO-Delta. Der zweite Import
-   enthält ausschließlich die neue Inline-TOC-/Preislogik. Beide Dateien sind
-   route-spezifisch und werden nur über nexus-sst-css geladen.
+   Basis bleibt byte-identisch zum Stand vor dem CRO-Delta. Die folgenden
+   Imports halten Navigation/Preise und den Funnel-Redesign-Delta getrennt.
+   Alle Dateien sind route-spezifisch und werden nur über nexus-sst-css geladen.
    ========================================================================== */
 
 @import url("./server-side-tracking-base.css?v=20260909-1");
 @import url("./server-side-tracking-cro.css?v=20260909-2");
+@import url("./server-side-tracking-funnel.css?v=20260912-1");
 
 /* Desktop-Feinschliff: Auf Hover/Fokus des gesamten Messstrahls werden alle
    Abschnittsnamen gleichzeitig eingeblendet. Nur aria-current bleibt als

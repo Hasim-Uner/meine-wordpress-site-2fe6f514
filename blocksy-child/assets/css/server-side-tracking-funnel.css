@@ -1,0 +1,173 @@
+/* ==========================================================================
+   /server-side-tracking-b2b/ — Funnel-Redesign 2026-09
+   --------------------------------------------------------------------------
+   Progressive-enhancement delta. Die serverseitige Seite bleibt ohne JS
+   voll nutzbar; diese Regeln stylen nur die verdichtete CRO-Struktur.
+   ========================================================================== */
+
+.hu-sst .hu-sst__proof-zone .hu-sst__card {
+	position: relative;
+	min-height: 100%;
+	overflow: hidden;
+}
+
+.hu-sst .hu-sst__proof-zone .hu-sst__card::before {
+	content: "";
+	position: absolute;
+	inset: 0 auto 0 0;
+	width: 2px;
+	background: var(--sst-copper);
+	opacity: 0.56;
+}
+
+.hu-sst .hu-sst__proof-zone .hu-sst__callout {
+	margin-top: clamp(var(--nx-space-lg, 1.5rem), 3vw, var(--nx-space-xl, 2rem));
+}
+
+.hu-sst .hu-sst__proof-zone .hu-sst__callout-links {
+	margin-bottom: 0;
+}
+
+.hu-sst .hu-sst__hero-microcopy {
+	margin-top: calc(var(--nx-space-sm, 0.5rem) * -1);
+	margin-bottom: var(--nx-space-sm, 0.5rem);
+}
+
+.hu-sst .hu-sst__mechanism-head {
+	margin-top: clamp(var(--nx-space-2xl, 3rem), 6vw, var(--nx-space-section, 6rem));
+	padding-top: clamp(var(--nx-space-xl, 2rem), 4vw, var(--nx-space-2xl, 3rem));
+	border-top: 1px solid var(--sst-dark-line);
+}
+
+.hu-sst #unterschied .hu-sst__flow {
+	margin-top: 0;
+}
+
+.hu-sst #pakete .hu-sst__price-lead strong {
+	display: block;
+	margin-bottom: var(--nx-space-xs, 0.25rem);
+	font-size: 0.72rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--sst-copper-action);
+}
+
+.hu-sst .hu-sst__package-selection {
+	margin: 0 0 var(--nx-space-md, 1rem);
+	padding: var(--nx-space-md, 1rem);
+	border: 1px solid rgba(229, 149, 115, 0.3);
+	border-radius: var(--sst-radius);
+	background: rgba(229, 149, 115, 0.08);
+	color: var(--sst-on-dark-2);
+	font-size: 0.9rem;
+	line-height: 1.5;
+}
+
+.hu-sst .hu-sst__package-selection strong {
+	color: var(--sst-on-dark);
+}
+
+.hu-sst .hu-sst__form-intro-hint {
+	margin: 0 0 var(--nx-space-lg, 1.5rem);
+	color: var(--sst-on-dark-3);
+	font-size: 0.9rem;
+	line-height: 1.55;
+}
+
+.hu-sst #tracking-care .hu-sst__care-summary {
+	margin-top: calc(var(--nx-space-lg, 1.5rem) * -1);
+	margin-bottom: var(--nx-space-lg, 1.5rem);
+}
+
+.hu-sst #tracking-care .hu-sst__faq-item,
+.hu-sst #sicherheit .hu-sst__faq-item {
+	margin-top: var(--nx-space-lg, 1.5rem);
+}
+
+.hu-sst #tracking-care .hu-sst__faq-a .hu-sst__care-pricing {
+	margin-top: var(--nx-space-md, 1rem);
+}
+
+.hu-sst #sicherheit .hu-sst__faq-a .hu-sst__checklist {
+	margin-top: var(--nx-space-sm, 0.5rem);
+}
+
+.hu-sst .hu-sst__btn,
+.hu-sst .contact-submit {
+	transition: transform 150ms var(--sst-ease),
+		background-color var(--sst-dur) var(--sst-ease),
+		border-color var(--sst-dur) var(--sst-ease),
+		color var(--sst-dur) var(--sst-ease);
+}
+
+.hu-sst .hu-sst__btn:active,
+.hu-sst .contact-submit:active {
+	transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.hu-sst #pakete .hu-sst__price-card {
+		transition: transform 180ms var(--sst-ease),
+			border-color 180ms var(--sst-ease),
+			box-shadow 180ms var(--sst-ease);
+	}
+
+	.hu-sst #pakete .hu-sst__price-card:hover {
+		transform: translateY(-3px);
+		border-color: rgba(229, 149, 115, 0.34);
+	}
+
+	.hu-sst #pakete .hu-sst__price-card--featured:hover {
+		transform: translateY(-6px);
+	}
+}
+
+@media (max-width: 600px) {
+	.hu-sst .hu-sst__toc-list {
+		display: flex;
+		flex-wrap: nowrap;
+		gap: var(--nx-space-lg, 1.5rem);
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		scrollbar-width: thin;
+		padding-bottom: var(--nx-space-xs, 0.25rem);
+	}
+
+	.hu-sst .hu-sst__toc-list li {
+		flex: 0 0 auto;
+	}
+
+	.hu-sst .hu-sst__toc-list a {
+		width: auto;
+		white-space: nowrap;
+		border-bottom-color: transparent;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-sst .hu-sst__btn,
+	.hu-sst .contact-submit,
+	.hu-sst #pakete .hu-sst__price-card {
+		transition: none !important;
+	}
+
+	.hu-sst .hu-sst__btn:active,
+	.hu-sst .contact-submit:active,
+	.hu-sst #pakete .hu-sst__price-card:hover,
+	.hu-sst #pakete .hu-sst__price-card--featured:hover {
+		transform: none;
+	}
+}
+
+/* Die fruehere dynamische Desktop-Rail wird fuer diese Route zugunsten der
+   kurzen, immer sichtbaren 5-Punkte-Navigation nicht mehr aufgebaut. */
+@media (min-width: 1360px) {
+	.hu-sst .hu-sst__toc-band {
+		display: block !important;
+	}
+
+	.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--toc,
+	.hu-sst[data-track-page="server-side-tracking-b2b"] > .hu-money-rail--context {
+		display: none !important;
+	}
+}
