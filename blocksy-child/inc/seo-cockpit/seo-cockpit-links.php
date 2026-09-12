@@ -259,7 +259,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 			$links[] = $primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 			$links[] = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#methode' );
 			$links[] = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
-			$links[] = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' );
+			$links[] = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wordpress-agentur-hannover/#methode' );
 			$links   = array_merge( $links, nexus_get_seo_cockpit_structured_internal_urls( (array) ( $cluster_page['blogs'] ?? [] ) ) );
 			$links   = array_merge( $links, nexus_get_seo_cockpit_structured_internal_urls( (array) ( $cluster_page['proof_links'] ?? [] ) ) );
 
@@ -305,7 +305,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 				$primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#technisches-seo' ),
 				$primary_urls['wartung'] ?? home_url( '/wordpress-agentur-hannover/#wordpress-wartung' ),
 				$primary_urls['cro'] ?? home_url( '/wordpress-agentur-hannover/#methode' ),
-				function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( 'tracking-audit' ) : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' ),
+				function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( 'tracking-audit' ) : home_url( '/wordpress-agentur-hannover/#methode' ),
 			],
 			$solar_cluster_urls
 		);

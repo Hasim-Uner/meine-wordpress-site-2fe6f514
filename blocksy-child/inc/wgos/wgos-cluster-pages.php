@@ -317,7 +317,7 @@ function nexus_get_wgos_cluster_page_asset_cards( $page ) {
 
 		$cards[] = [
 			'title'   => is_array( $asset ) && ! empty( $asset['title'] ) ? (string) $asset['title'] : ucwords( str_replace( '-', ' ', (string) $slug ) ),
-			'url'     => function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( (string) $slug ) : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' ),
+			'url'     => function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( (string) $slug ) : home_url( '/wordpress-agentur-hannover/#methode' ),
 			'context' => (string) $context,
 		];
 	}
@@ -378,7 +378,7 @@ function nexus_get_wgos_cluster_page_method_steps() {
 function nexus_render_wgos_cluster_page( $page ) {
 	$audit_url     = nexus_get_audit_url();
 	$wgos_url      = function_exists( 'nexus_get_wgos_url' ) ? nexus_get_wgos_url() : home_url( '/wordpress-agentur-hannover/#methode' );
-	$asset_hub_url = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wordpress-agentur-hannover/#asset-uebersicht' );
+	$asset_hub_url = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wordpress-agentur-hannover/#methode' );
 	$results_url   = nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) );
 	$cards         = nexus_get_wgos_cluster_page_asset_cards( $page );
 	$blogs         = isset( $page['blogs'] ) && is_array( $page['blogs'] ) ? $page['blogs'] : [];

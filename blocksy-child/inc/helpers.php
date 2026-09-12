@@ -563,7 +563,7 @@ function nexus_get_primary_public_url_map() {
 		home_url( '/wordpress-agentur-hannover/' )
 	);
 	$wgos_url    = trailingslashit( $agentur_url ) . '#methode';
-	$asset_url   = trailingslashit( $agentur_url ) . '#asset-uebersicht';
+	$asset_url   = trailingslashit( $agentur_url ) . '#methode';
 	$seo_url     = trailingslashit( $agentur_url ) . '#technisches-seo';
 	$cro_url     = trailingslashit( $agentur_url ) . '#methode';
 	$wartung_url = trailingslashit( $agentur_url ) . '#wordpress-wartung';
