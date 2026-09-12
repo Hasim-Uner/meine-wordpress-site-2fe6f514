@@ -758,6 +758,19 @@
 
             if (focusSelect.selectedOptions.length && focusSelect.selectedOptions[0].disabled) {
                 focusSelect.value = '';
+
+                // Der Themenschritt wird uebersprungen, wenn schon ein gueltiger Wert
+                // aus der URL kam (/kontakt/?type=project&focus=implementation_scope).
+                // Wechselt der Besucher danach den Anfragetyp, kann genau dieser Wert
+                // hier ungueltig werden. Bliebe der Schritt dann uebersprungen, stuende
+                // ein leeres Pflichtfeld unsichtbar im Formular und der Versand wuerde
+                // stumm blockieren — derselbe stille Lead-Verlust, den die
+                // invalid_focus_type-Pruefung serverseitig verhindert.
+                var focusStep = form.querySelector('[data-contact-step="focus"]');
+                if (focusStep && focusStep.getAttribute('data-contact-step-skip') === 'true') {
+                    focusStep.setAttribute('data-contact-step-skip', 'false');
+                    updateContactFlowUi();
+                }
             }
         }
 
