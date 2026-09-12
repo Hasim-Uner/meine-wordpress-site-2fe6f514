@@ -1,10 +1,10 @@
 <?php
 /**
- * Native contact page for the canonical /kontakt/ path.
+ * Native contact page for /kontakt/.
  *
- * The public surface is a direct-project intake. Request type stays in the
- * payload for REST/CRM compatibility, but visitors start with the actual
- * project topic instead of choosing an internal taxonomy first.
+ * Publicly this is the direct-project intake. `request_type` remains part of
+ * the payload for REST/CRM compatibility, but it is no longer an extra user
+ * decision before the actual topic.
  *
  * @package Blocksy_Child
  */
@@ -21,31 +21,20 @@ $calendar_url         = function_exists( 'nexus_get_audit_calendar_url' ) ? nexu
 $agency_url           = home_url( '/whitelabel-retainer/' ) . '#aufgabe';
 $energy_url           = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $contact_email        = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
-$response_window      = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : '';
+$response_window      = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : 'zeitnah';
 $response_sentence    = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'sentence' ) : 'Ich antworte persönlich per E-Mail.';
 $requested_focus      = isset( $_GET['focus'] ) ? sanitize_key( wp_unslash( $_GET['focus'] ) ) : '';
 $requested_type       = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
+$selected_type        = isset( $request_type_options[ $requested_type ] ) ? $requested_type : 'project';
 
-// /kontakt/ ist der generische Direkteinstieg. Spezielle Typen bleiben für
-// bestehende Deep-Links verfügbar, werden aber nicht als zusätzliche Frage
-// im Formular exponiert.
-$public_type_keys = [ 'project', 'implementation', 'ongoing', 'general' ];
-if ( in_array( $requested_type, [ 'analysis', 'audit', 'client' ], true ) ) {
-	$public_type_keys[] = $requested_type;
-}
-$public_type_keys    = array_values( array_unique( $public_type_keys ) );
-$public_type_options = array_intersect_key( $request_type_options, array_flip( $public_type_keys ) );
-
-$selected_type = isset( $public_type_options[ $requested_type ] ) ? $requested_type : 'project';
-
-// Ein bestehender ?focus=-Deep-Link darf nicht an einem neuen project-Default
-// zerbrechen. Ohne expliziten type wird aus dem Focus ein kompatibler Typ
-// abgeleitet; mit explizitem type bleibt dieser autoritativ.
+// Alte ?focus=-Deep-Links bleiben funktionsfähig. Ohne expliziten Typ wird
+// aus dem Fokus ein kompatibler Backend-Typ abgeleitet; sichtbar bleibt nur
+// die eigentliche Themenwahl.
 if ( '' === $requested_type && isset( $focus_options[ $requested_focus ] ) ) {
 	$focus_types = isset( $focus_options[ $requested_focus ]['types'] ) ? (array) $focus_options[ $requested_focus ]['types'] : [];
 	if ( ! in_array( $selected_type, $focus_types, true ) ) {
 		foreach ( [ 'project', 'implementation', 'ongoing', 'general', 'analysis', 'audit', 'client' ] as $candidate_type ) {
-			if ( isset( $public_type_options[ $candidate_type ] ) && in_array( $candidate_type, $focus_types, true ) ) {
+			if ( isset( $request_type_options[ $candidate_type ] ) && in_array( $candidate_type, $focus_types, true ) ) {
 				$selected_type = $candidate_type;
 				break;
 			}
@@ -60,108 +49,30 @@ $type_focus_options = array_filter(
 		return in_array( $selected_type, $focus_types, true );
 	}
 );
+$selected_focus = isset( $type_focus_options[ $requested_focus ] ) ? $requested_focus : '';
 
-$selected_focus = '';
-if ( isset( $type_focus_options[ $requested_focus ] ) ) {
-	$selected_focus = $requested_focus;
-}
-
-$type_copy_map = [
-	'audit'          => [
-		'label'               => 'Marktcheck',
-		'hero_title'          => 'Was soll zuerst geprüft werden?',
-		'hero_lead'           => 'Kurz einordnen, Ausgangslage beschreiben und den nächsten sinnvollen Schritt klären.',
-		'focus_label'         => 'Was soll zuerst diagnostiziert werden?',
-		'focus_help'          => 'Wählen Sie die Fläche, auf der aktuell die größte Unklarheit liegt.',
-		'message_label'       => 'Ausgangslage und Ziel',
-		'message_help'        => 'Welche URL ist relevant? Was bremst gerade? Welches Ergebnis wünschen Sie sich?',
-		'message_placeholder' => "1. Seite: Welche URL ist relevant?\n2. Unklarheit: Was bremst gerade?\n3. Ziel: Was soll sich verbessern?",
-		'submit_label'        => 'Marktcheck anfragen',
-		'timeline_label'      => 'Zeitfenster',
-	],
-	'analysis'       => [
-		'label'               => 'Website-Analyse',
-		'hero_title'          => 'Was soll an Ihrer Website geprüft werden?',
-		'hero_lead'           => 'Die Ausgangslage knapp einordnen, damit Analyse und nächster Schritt nicht bei null beginnen.',
-		'focus_label'         => 'Was soll an der Website analysiert werden?',
-		'focus_help'          => 'Wählen Sie den Bereich, in dem aktuell die größte Unklarheit liegt.',
-		'message_label'       => 'Ausgangslage und Ziel',
-		'message_help'        => 'Welche URL ist relevant? Was bremst gerade? Welche Entscheidung soll die Analyse erleichtern?',
-		'message_placeholder' => "1. Seite: Welche URL ist relevant?\n2. Hürde: Was bremst gerade?\n3. Ziel: Welche Entscheidung soll danach leichter werden?",
-		'submit_label'        => 'Website-Analyse anfragen',
-		'timeline_label'      => 'Zeitfenster',
-	],
-	'project'        => [
-		'label'               => 'Projektanfrage',
-		'hero_title'          => 'Was soll auf Ihrer Website besser funktionieren?',
-		'hero_lead'           => 'WordPress, Tracking, Conversion oder technisches SEO: Thema wählen, Ziel beschreiben und direkt bei mir landen.',
-		'focus_label'         => 'Welcher Bereich soll zuerst geprüft werden?',
-		'focus_help'          => 'Wählen Sie den Bereich, in dem aktuell die größte geschäftliche Unklarheit liegt.',
-		'message_label'       => 'Ausgangslage und Ziel',
-		'message_help'        => 'Welche Website ist betroffen, was soll besser funktionieren und woran würden Sie ein gutes Ergebnis erkennen?',
-		'message_placeholder' => "1. Website: Welche URL ist relevant?\n2. Vorhaben: Was soll entstehen oder besser werden?\n3. Ziel: Woran erkennen Sie ein gutes Ergebnis?",
-		'submit_label'        => 'Projekt anfragen',
-		'timeline_label'      => 'Zeitfenster',
-	],
-	'implementation' => [
-		'label'               => 'Umsetzung / Optimierung',
-		'hero_title'          => 'Was soll konkret umgesetzt oder korrigiert werden?',
-		'hero_lead'           => 'Ein klar umrissenes technisches oder Conversion-Thema direkt einordnen und den Scope klären.',
-		'focus_label'         => 'Was soll umgesetzt oder korrigiert werden?',
-		'focus_help'          => 'Wählen Sie den Hebel, der Ihrem Umsetzungsbedarf am nächsten kommt.',
-		'message_label'       => 'Ausgangslage und Ziel',
-		'message_help'        => 'Was ist das Ziel, was steht aktuell im Weg und welches Ergebnis wünschen Sie sich?',
-		'message_placeholder' => "1. Ziel: Was soll erreicht werden?\n2. Hürde: Was steht aktuell im Weg?\n3. Ergebnis: Was soll sich konkret verbessern?",
-		'submit_label'        => 'Umsetzung anfragen',
-		'timeline_label'      => 'Zeitfenster',
-	],
-	'ongoing'        => [
-		'label'               => 'Weiterentwicklung',
-		'hero_title'          => 'Was soll planbar weiterentwickelt werden?',
-		'hero_lead'           => 'Bestehendes Setup, Engpass und nächste Priorität kurz einordnen.',
-		'focus_label'         => 'Was soll laufend weiterentwickelt werden?',
-		'focus_help'          => 'Wählen Sie den Bereich, der dauerhaft sauber betreut oder weiterentwickelt werden soll.',
-		'message_label'       => 'Ausgangslage und Ziel',
-		'message_help'        => 'Was läuft bereits, was blockiert und was soll planbar besser werden?',
-		'message_placeholder' => "1. System: Was läuft bereits?\n2. Engpass: Was blockiert oder kostet Wirkung?\n3. Weiterentwicklung: Was soll planbar besser werden?",
-		'submit_label'        => 'Weiterentwicklung anfragen',
-		'timeline_label'      => 'Zeitfenster',
-	],
-	'general'        => [
-		'label'               => 'Allgemeine Anfrage',
-		'hero_title'          => 'Worum geht es?',
-		'hero_lead'           => 'Frage, Kooperation oder kurzes Anliegen ohne festen Projektrahmen.',
-		'focus_label'         => 'Worum geht es?',
-		'focus_help'          => 'Wählen Sie den Bereich, damit Ihre Nachricht direkt passend eingeordnet werden kann.',
-		'message_label'       => 'Ihre Nachricht',
-		'message_help'        => 'Schildern Sie kurz Anlass und gewünschte Rückmeldung.',
-		'message_placeholder' => 'Worum geht es und welche Rückmeldung wäre hilfreich?',
-		'submit_label'        => 'Anfrage senden',
-		'timeline_label'      => 'Zeitfenster',
-	],
-	'client'         => [
-		'label'               => 'Bestehendes Projekt',
-		'hero_title'          => 'Was ist der nächste Schritt im laufenden Projekt?',
-		'hero_lead'           => 'Status, Blocker oder nächste Priorität kurz beschreiben.',
-		'focus_label'         => 'Wobei kann ich unterstützen?',
-		'focus_help'          => 'Wählen Sie den Bereich, damit Priorisierung und Rückmeldung direkt anschließen können.',
-		'message_label'       => 'Status und nächster Schritt',
-		'message_help'        => 'Beschreiben Sie kurz Status, Blocker oder die nächste Entscheidung.',
-		'message_placeholder' => 'Worum geht es gerade, was blockiert und was soll als Nächstes entschieden werden?',
-		'submit_label'        => 'Kundenanliegen senden',
-		'timeline_label'      => 'Dringlichkeit',
-	],
+$hero_titles = [
+	'audit'          => 'Was soll zuerst geprüft werden?',
+	'analysis'       => 'Was soll an Ihrer Website geprüft werden?',
+	'project'        => 'Was soll auf Ihrer Website besser funktionieren?',
+	'implementation' => 'Was soll konkret umgesetzt oder korrigiert werden?',
+	'ongoing'        => 'Was soll planbar weiterentwickelt werden?',
+	'general'        => 'Worum geht es?',
+	'client'         => 'Was ist der nächste Schritt im laufenden Projekt?',
+];
+$submit_labels = [
+	'audit'          => 'Marktcheck anfragen',
+	'analysis'       => 'Website-Analyse anfragen',
+	'project'        => 'Projekt anfragen',
+	'implementation' => 'Umsetzung anfragen',
+	'ongoing'        => 'Weiterentwicklung anfragen',
+	'general'        => 'Anfrage senden',
+	'client'         => 'Kundenanliegen senden',
 ];
 
-$current_type_copy   = isset( $type_copy_map[ $selected_type ] ) ? $type_copy_map[ $selected_type ] : $type_copy_map['project'];
-$current_type_label  = $current_type_copy['label'];
-$focus_label         = $current_type_copy['focus_label'];
-$focus_help          = $current_type_copy['focus_help'];
-$message_label       = $current_type_copy['message_label'];
-$message_help        = $current_type_copy['message_help'];
-$message_placeholder = $current_type_copy['message_placeholder'];
-$submit_label        = $current_type_copy['submit_label'];
-$timeline_label      = $current_type_copy['timeline_label'];
+$current_type_label  = isset( $request_type_options[ $selected_type ]['label'] ) ? (string) $request_type_options[ $selected_type ]['label'] : 'Projektanfrage';
+$hero_title          = isset( $hero_titles[ $selected_type ] ) ? $hero_titles[ $selected_type ] : $hero_titles['project'];
+$submit_label        = isset( $submit_labels[ $selected_type ] ) ? $submit_labels[ $selected_type ] : $submit_labels['project'];
 $message_minlength   = 'general' === $selected_type ? 18 : 24;
 $show_timeline_field = in_array( $selected_type, [ 'analysis', 'project', 'implementation', 'ongoing', 'client' ], true );
 $show_budget_field   = in_array( $selected_type, [ 'implementation', 'ongoing' ], true );
@@ -173,24 +84,22 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 	<div class="contact-page__shell">
 		<aside class="contact-intro" aria-labelledby="contact-title">
 			<p class="contact-eyebrow"><?php echo esc_html( $current_type_label ); ?></p>
-			<h1 id="contact-title" class="contact-title"><?php echo esc_html( $current_type_copy['hero_title'] ); ?></h1>
-			<p class="contact-lead"><?php echo esc_html( $current_type_copy['hero_lead'] ); ?></p>
+			<h1 id="contact-title" class="contact-title"><?php echo esc_html( $hero_title ); ?></h1>
+			<p class="contact-lead">WordPress, Tracking, Conversion oder technisches SEO: Thema wählen, Ziel beschreiben und direkt bei mir landen.</p>
 
 			<div class="contact-intro__facts" aria-label="Ablauf">
 				<p><span>01</span><strong>Einordnen</strong> Thema und Ausgangslage statt langer Briefing-Fragebogen.</p>
 				<p><span>02</span><strong>Prüfen</strong> Ich lese jede Anfrage selbst.</p>
-				<p><span>03</span><strong>Antwort</strong> <?php echo esc_html( $response_sentence ); ?></p>
+				<p><span>03</span><strong>Antwort</strong> Persönlich <?php echo esc_html( $response_window ); ?>.</p>
 			</div>
 
 			<nav class="contact-route-list" aria-label="Andere Einstiege">
 				<p class="contact-route-list__label">Andere Einstiege</p>
 				<a href="<?php echo esc_url( $agency_url ); ?>" data-track-action="contact_route_agency" data-track-category="contact" data-track-section="contact_routes">
-					<span>Für Agenturen</span>
-					<strong>White-Label-Aufgabe beschreiben</strong>
+					<span>Für Agenturen</span><strong>White-Label-Aufgabe beschreiben</strong>
 				</a>
 				<a href="<?php echo esc_url( $energy_url ); ?>" data-track-action="contact_route_energy" data-track-category="contact" data-track-section="contact_routes">
-					<span>Solar &amp; Wärmepumpe</span>
-					<strong>Zum Marktcheck</strong>
+					<span>Solar &amp; Wärmepumpe</span><strong>Zum Marktcheck</strong>
 				</a>
 			</nav>
 
@@ -209,13 +118,7 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 				<ul class="contact-error-summary__list" data-contact-error-list></ul>
 			</div>
 
-			<form
-				class="contact-form contact-form--superflow"
-				data-contact-form
-				action="<?php echo esc_url( $rest_endpoint ); ?>"
-				method="post"
-				novalidate
-			>
+			<form class="contact-form contact-form--superflow" data-contact-form action="<?php echo esc_url( $rest_endpoint ); ?>" method="post" novalidate>
 				<div class="contact-form__honeypot" aria-hidden="true">
 					<label for="contact-company-website">Website</label>
 					<input id="contact-company-website" type="text" name="company_website" tabindex="-1" autocomplete="off">
@@ -227,16 +130,7 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 				<input type="hidden" name="utm_campaign" id="utm_campaign" value="">
 				<input type="hidden" name="gclid" id="gclid" value="">
 				<input type="hidden" name="matchtype" id="matchtype" value="">
-
-				<input
-					type="radio"
-					name="request_type"
-					value="<?php echo esc_attr( $selected_type ); ?>"
-					data-contact-type-input
-					checked
-					required
-					hidden
-				>
+				<input type="radio" name="request_type" value="<?php echo esc_attr( $selected_type ); ?>" data-contact-type-input checked required hidden>
 
 				<div class="contact-flow-progress" aria-label="Fortschritt">
 					<div>
@@ -247,27 +141,15 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 				</div>
 
 				<div class="contact-flow-stage">
-					<section
-						class="contact-flow-step"
-						data-contact-step="focus"
-						data-contact-step-label="Thema"
-						<?php echo $is_scoped_focus ? 'data-contact-step-skip="true"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static boolean attribute ?>
-					>
-						<div class="contact-step-head">
-							<span>01</span>
-							<p>Worum geht es?</p>
-						</div>
+					<section class="contact-flow-step" data-contact-step="focus" data-contact-step-label="Thema" <?php echo $is_scoped_focus ? 'data-contact-step-skip="true"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static boolean attribute ?>>
+						<div class="contact-step-head"><span>01</span><p>Worum geht es?</p></div>
 						<div class="contact-field" data-contact-field="focus">
-							<label for="contact-focus" data-contact-focus-label><?php echo esc_html( $focus_label ); ?></label>
-							<p id="contact-focus-help" class="contact-field__help" data-contact-focus-help><?php echo esc_html( $focus_help ); ?></p>
+							<label for="contact-focus" data-contact-focus-label>Welcher Bereich soll zuerst geprüft werden?</label>
+							<p id="contact-focus-help" class="contact-field__help" data-contact-focus-help>Wählen Sie den Bereich, der Ihrem Anliegen am nächsten kommt.</p>
 							<select id="contact-focus" name="focus" required data-contact-focus-select aria-describedby="contact-focus-help contact-focus-error">
 								<option value="" <?php selected( '', $selected_focus ); ?> disabled>Bitte auswählen</option>
 								<?php foreach ( $type_focus_options as $focus_key => $focus_definition ) : ?>
-									<option
-										value="<?php echo esc_attr( $focus_key ); ?>"
-										data-types="<?php echo esc_attr( implode( ',', array_map( 'sanitize_key', (array) $focus_definition['types'] ) ) ); ?>"
-										<?php selected( $selected_focus, $focus_key ); ?>
-									><?php echo esc_html( $focus_definition['label'] ); ?></option>
+									<option value="<?php echo esc_attr( $focus_key ); ?>" data-types="<?php echo esc_attr( implode( ',', array_map( 'sanitize_key', (array) $focus_definition['types'] ) ) ); ?>" <?php selected( $selected_focus, $focus_key ); ?>><?php echo esc_html( $focus_definition['label'] ); ?></option>
 								<?php endforeach; ?>
 							</select>
 							<p class="contact-field__error is-hidden" id="contact-focus-error" aria-live="polite"></p>
@@ -275,24 +157,11 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 					</section>
 
 					<section class="contact-flow-step" data-contact-step="message" data-contact-step-label="Ausgangslage">
-						<div class="contact-step-head">
-							<span><?php echo esc_html( $is_scoped_focus ? '01' : '02' ); ?></span>
-							<p>Was soll besser werden?</p>
-						</div>
+						<div class="contact-step-head"><span><?php echo esc_html( $is_scoped_focus ? '01' : '02' ); ?></span><p>Was soll besser werden?</p></div>
 						<div class="contact-field" data-contact-field="message">
-							<label for="contact-message" data-contact-message-label><?php echo esc_html( $message_label ); ?></label>
-							<p id="contact-message-help" class="contact-field__help" data-contact-message-help><?php echo esc_html( $message_help ); ?></p>
-							<textarea
-								id="contact-message"
-								name="message"
-								rows="6"
-								required
-								minlength="<?php echo esc_attr( (string) $message_minlength ); ?>"
-								aria-describedby="contact-message-help contact-message-error"
-								placeholder="<?php echo esc_attr( $message_placeholder ); ?>"
-								data-contact-message
-								data-contact-message-placeholder="<?php echo esc_attr( $message_placeholder ); ?>"
-							></textarea>
+							<label for="contact-message" data-contact-message-label>Ausgangslage und Ziel</label>
+							<p id="contact-message-help" class="contact-field__help" data-contact-message-help>Welche Website ist betroffen, was bremst gerade und welches Ergebnis wünschen Sie sich?</p>
+							<textarea id="contact-message" name="message" rows="6" required minlength="<?php echo esc_attr( (string) $message_minlength ); ?>" aria-describedby="contact-message-help contact-message-error" data-contact-message></textarea>
 							<p class="contact-field__error is-hidden" id="contact-message-error" aria-live="polite"></p>
 						</div>
 
@@ -301,9 +170,8 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 								<label for="contact-website">Website <span>optional</span></label>
 								<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="https://example.de">
 							</div>
-
 							<div class="contact-field<?php echo esc_attr( $show_timeline_field ? '' : ' is-hidden' ); ?>" data-contact-context-field="timeline">
-								<label for="contact-timeline" data-contact-timeline-label><?php echo esc_html( $timeline_label ); ?> <span>optional</span></label>
+								<label for="contact-timeline" data-contact-timeline-label>Zeitfenster <span>optional</span></label>
 								<select id="contact-timeline" name="timeline" data-contact-timeline-select>
 									<option value="" selected>Optional auswählen</option>
 									<?php foreach ( $timeline_options as $timeline_key => $timeline_option_label ) : ?>
@@ -315,10 +183,7 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 					</section>
 
 					<section class="contact-flow-step" data-contact-step="identity" data-contact-step-label="Kontakt">
-						<div class="contact-step-head">
-							<span><?php echo esc_html( $is_scoped_focus ? '02' : '03' ); ?></span>
-							<p>Wie erreiche ich Sie?</p>
-						</div>
+						<div class="contact-step-head"><span><?php echo esc_html( $is_scoped_focus ? '02' : '03' ); ?></span><p>Wie erreiche ich Sie?</p></div>
 						<div class="contact-form__row">
 							<div class="contact-field" data-contact-field="name">
 								<label for="contact-name">Name</label>
@@ -333,10 +198,7 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 						</div>
 
 						<details class="contact-optional" data-contact-optional>
-							<summary class="contact-optional__toggle">
-								<span>Mehr Kontext <small>optional</small></span>
-								<span aria-hidden="true">+</span>
-							</summary>
+							<summary class="contact-optional__toggle"><span>Mehr Kontext <small>optional</small></span><span aria-hidden="true">+</span></summary>
 							<div class="contact-optional__body">
 								<div class="contact-field">
 									<label for="contact-linkedin">LinkedIn <span>optional</span></label>
@@ -356,10 +218,7 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 
 						<label class="contact-consent" data-contact-field="consent">
 							<input type="checkbox" name="consent" value="1" required aria-describedby="contact-consent-error">
-							<span>
-								Ich stimme zu, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet werden.
-								Mehr dazu in der <a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutzerklärung</a>.
-							</span>
+							<span>Ich stimme zu, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet werden. Mehr dazu in der <a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutzerklärung</a>.</span>
 							<p class="contact-field__error is-hidden" id="contact-consent-error" aria-live="polite"></p>
 						</label>
 					</section>
@@ -368,15 +227,7 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 				<div class="contact-form__actions contact-form__actions--flow">
 					<button class="contact-btn contact-btn--ghost" type="button" data-contact-prev hidden>Zurück</button>
 					<button class="contact-btn contact-btn--primary" type="button" data-contact-next hidden>Weiter</button>
-					<button
-						class="contact-submit"
-						type="submit"
-						data-contact-submit
-						data-contact-submit-label="<?php echo esc_attr( $submit_label ); ?>"
-						data-track-action="contact_submit"
-						data-track-category="contact"
-						data-track-section="contact_superflow"
-					><?php echo esc_html( $submit_label ); ?></button>
+					<button class="contact-submit" type="submit" data-contact-submit data-contact-submit-label="<?php echo esc_attr( $submit_label ); ?>" data-track-action="contact_submit" data-track-category="contact" data-track-section="contact_superflow"><?php echo esc_html( $submit_label ); ?></button>
 					<a class="contact-form__aux-link" href="<?php echo esc_url( $calendar_url ); ?>" data-track-action="cta_click_contact_call_superflow" data-track-category="contact" data-track-section="contact_superflow">Direkt Termin buchen</a>
 				</div>
 
@@ -384,8 +235,7 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 			</form>
 
 			<footer class="contact-form__postcopy">
-				<span>Persönlich geprüft</span>
-				<p><?php echo esc_html( $response_sentence ); ?> Kein Vertriebsteam.</p>
+				<span>Persönlich geprüft</span><p><?php echo esc_html( $response_sentence ); ?> Kein Vertriebsteam.</p>
 			</footer>
 		</section>
 	</div>
