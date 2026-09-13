@@ -1,10 +1,10 @@
 <?php
 /**
- * Blog home — editorial Werkstatt.
+ * Blog home — Werkstatt im gemeinsamen Gutachten-Standard.
  *
- * Reader-first entry for WordPress, Tracking, Conversion and the
- * Solar/Wärmepumpe specialization. The regular WordPress loop stays the source
- * of truth; this template only gives it a deliberate editorial hierarchy.
+ * Der WordPress-Loop bleibt die Quelle der Beiträge. Dieses Template ordnet
+ * Einstieg, Dossiers und Chronik in denselben visuellen Mantel wie Startseite,
+ * Kopf und Fuß ein, ohne die kommerziellen Routen zu vermischen.
  *
  * @package Blocksy_Child
  */
@@ -111,20 +111,45 @@ $entry_paths = [
 	],
 ];
 
+/**
+ * Read the display data for the current loop post without changing routing.
+ *
+ * @param int $post_id Current post ID.
+ * @return array<string, mixed>
+ */
+$get_post_display = static function ( $post_id ) {
+	$post_categories  = get_the_category( $post_id );
+	$primary_category = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
+	$primary_label    = $primary_category instanceof WP_Term
+		? ( function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $primary_category ) : $primary_category->name )
+		: '';
+	$reading_time = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time( $post_id ) : 0;
+	$excerpt      = wp_strip_all_tags( get_the_excerpt() );
+
+	return [
+		'category'     => $primary_category,
+		'category_name' => $primary_label,
+		'reading_time' => $reading_time,
+		'excerpt'      => $excerpt ? wp_trim_words( $excerpt, 30, '…' ) : '',
+	];
+};
+
 $blog_form_nonce  = wp_create_nonce( 'nexus_blog_notify_subscribe' );
 $blog_notify_copy = function_exists( 'nexus_get_blog_notify_copy' ) ? nexus_get_blog_notify_copy() : [];
 $privacy_url      = function_exists( 'nexus_get_page_url' )
 	? nexus_get_page_url( [ 'datenschutz' ], home_url( '/datenschutz/' ) )
 	: home_url( '/datenschutz/' );
 
-// The blog index owns one additional presentation layer and reuses the existing
-// subscription endpoint. Enqueue before get_header() so wp_head() can print the
-// assets without widening the global frontend bundle.
+// Der Blog-Index verwendet das gemeinsame Designsystem plus ein schmales
+// Blog-Delta. blog-archive.js bleibt ausschließlich für Modalsteuerung und
+// progressive Reveals erhalten; die alte Blog-Archive-CSS wird hier nicht mehr
+// geladen.
 if ( function_exists( 'hu_enqueue_css' ) ) {
-	hu_enqueue_css( 'nexus-blog-home-v2-css', 'blog-home-v2.css', [ 'nexus-blog-archive-css' ] );
+	hu_enqueue_css( 'nexus-blog-home-v2-css', 'blog-home-v2.css', [ 'nexus-design-system' ] );
 }
 
 if ( function_exists( 'hu_enqueue_js' ) ) {
+	hu_enqueue_js( 'nexus-blog-archive-js', 'blog-archive.js', [ 'nexus-core-js' ] );
 	hu_enqueue_js( 'nexus-blog-notify-js', 'blog-notify.js', [ 'nexus-core-js' ] );
 	wp_localize_script(
 		'nexus-blog-notify-js',
@@ -141,239 +166,265 @@ if ( function_exists( 'hu_enqueue_js' ) ) {
 get_header();
 ?>
 
-<main id="main" class="site-main blog-bell blog-bell--werkstatt hu-hp" data-track-section="blog_archive">
-	<section class="blog-bell__hero blog-workshop__hero" aria-labelledby="blog-archive-heading">
-		<div class="blog-bell__container blog-workshop__hero-grid">
-			<div class="blog-workshop__hero-copy">
-				<span class="blog-bell__eyebrow">
-					<span class="blog-bell__eyebrow-dot" aria-hidden="true"></span>
-					Werkstatt
-				</span>
-				<h1 id="blog-archive-heading" class="blog-bell__title">Was ich messe, baue und zerlege.</h1>
-				<p class="blog-bell__lead">Messprotokolle, Entscheidungsmodelle und Baupläne aus echten WordPress-, Tracking- und Anfragesystemen.</p>
-			</div>
-			<div class="blog-workshop__hero-index" aria-label="Thematische Schwerpunkte">
-				<span>WordPress</span>
-				<span>Tracking</span>
-				<span>Conversion</span>
-				<span>Solar / SHK</span>
-			</div>
+<main id="main" tabindex="-1" class="site-main doku blog-index blog-bell" data-track-section="blog_archive">
+	<header class="blatt kopfteil blog-index__kopf" aria-labelledby="blog-archive-heading">
+		<p class="gegenstand">Werkstatt / Blog</p>
+		<h1 id="blog-archive-heading">Was ich messe, baue und zerlege.</h1>
+		<p class="aufriss">Messprotokolle, Entscheidungsmodelle und Baupläne aus echten WordPress-, Tracking- und Anfragesystemen.</p>
+
+		<div class="meta blog-index__meta" aria-label="Einordnung des Blogs">
+			<dl>
+				<div>
+					<dt>Fokus</dt>
+					<dd>WordPress · Tracking · Conversion</dd>
+				</div>
+				<div>
+					<dt>Format</dt>
+					<dd>Analysen & Bauprotokolle</dd>
+				</div>
+				<div>
+					<dt>Vertikale</dt>
+					<dd>Solar / Wärmepumpe / Speicher</dd>
+				</div>
+				<div>
+					<dt>Prinzip</dt>
+					<dd>Proof vor Behauptung</dd>
+				</div>
+			</dl>
 		</div>
-	</section>
+	</header>
 
 	<?php if ( ! is_paged() ) : ?>
-		<section class="blog-workshop__section blog-workshop__section--start" aria-labelledby="blog-start-heading" data-track-section="blog_start_here">
-			<div class="blog-bell__container">
-				<div class="blog-workshop__section-head">
-					<span class="blog-workshop__section-kicker">Start hier</span>
-					<h2 id="blog-start-heading">Drei Wege. Ein technisches Fundament.</h2>
+		<section id="einstieg" data-track-section="blog_start_here">
+			<div class="blatt reihe">
+				<div class="spalte-links">
+					<div class="kapitel" aria-hidden="true">
+						<span class="nr">01</span>
+						<span class="titel">Einstieg</span>
+						<span class="strich"></span>
+					</div>
 				</div>
 
-				<div class="blog-workshop__entry-grid">
-					<?php foreach ( $entry_paths as $index => $entry ) : ?>
-						<a
-							class="blog-workshop__entry"
-							href="<?php echo esc_url( (string) $entry['url'] ); ?>"
-							data-track-action="<?php echo esc_attr( (string) $entry['track'] ); ?>"
-							data-track-category="navigation"
-							data-reveal
-						>
-							<span class="blog-workshop__entry-number"><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
-							<span class="blog-workshop__entry-kicker"><?php echo esc_html( (string) $entry['kicker'] ); ?></span>
-							<strong><?php echo esc_html( (string) $entry['title'] ); ?></strong>
-							<span class="blog-workshop__entry-copy"><?php echo esc_html( (string) $entry['copy'] ); ?></span>
-							<span class="blog-workshop__entry-arrow" aria-hidden="true">→</span>
-						</a>
-					<?php endforeach; ?>
+				<div class="voll">
+					<p class="mono stempelfarbe">Start hier</p>
+					<h2 class="kopf">Drei Wege. Ein technisches Fundament.</h2>
+					<p class="vorspann">Der Blog ist keine vierte Leistung. Er zeigt, wie die drei realen Arbeitskontexte technisch zusammenhängen.</p>
+
+					<div class="blog-index__entry-grid">
+						<?php foreach ( $entry_paths as $index => $entry ) : ?>
+							<a
+								class="blog-index__entry"
+								href="<?php echo esc_url( (string) $entry['url'] ); ?>"
+								data-track-action="<?php echo esc_attr( (string) $entry['track'] ); ?>"
+								data-track-category="navigation"
+								data-reveal
+							>
+								<span class="blog-index__entry-number"><?php echo esc_html( sprintf( '%02d', $index + 1 ) ); ?></span>
+								<span class="blog-index__entry-kicker"><?php echo esc_html( (string) $entry['kicker'] ); ?></span>
+								<strong><?php echo esc_html( (string) $entry['title'] ); ?></strong>
+								<span class="blog-index__entry-copy"><?php echo esc_html( (string) $entry['copy'] ); ?></span>
+								<span class="blog-index__entry-arrow" aria-hidden="true">→</span>
+							</a>
+						<?php endforeach; ?>
+					</div>
 				</div>
 			</div>
 		</section>
 	<?php endif; ?>
 
-	<section class="blog-bell__main blog-workshop__main" data-track-section="blog_archive_grid">
-		<div class="blog-bell__container">
-			<?php if ( have_posts() ) : ?>
-				<?php if ( ! is_paged() ) : ?>
-					<?php
-					$post_index = 0;
-					while ( have_posts() ) :
-						the_post();
-						$post_index++;
+	<?php if ( have_posts() ) : ?>
+		<?php if ( ! is_paged() ) : ?>
+			<?php
+			the_post();
+			$focus_id   = get_the_ID();
+			$focus_data = $get_post_display( $focus_id );
+			?>
+			<section id="aktuell" data-track-section="blog_focus">
+				<div class="blatt reihe">
+					<div class="spalte-links">
+						<div class="kapitel" aria-hidden="true">
+							<span class="nr">02</span>
+							<span class="titel">Aktuell</span>
+							<span class="strich"></span>
+						</div>
+					</div>
 
-						$post_id          = get_the_ID();
-						$post_categories  = get_the_category( $post_id );
-						$primary_category = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
-						$primary_label    = $primary_category instanceof WP_Term
-							? ( function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $primary_category ) : $primary_category->name )
-							: '';
-						$reading_time = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time( $post_id ) : 0;
-						$excerpt      = wp_strip_all_tags( get_the_excerpt() );
-						$excerpt      = $excerpt ? wp_trim_words( $excerpt, 30, '…' ) : '';
-						?>
-
-						<?php if ( 1 === $post_index ) : ?>
-							<section class="blog-workshop__focus" aria-labelledby="blog-focus-heading" data-track-section="blog_focus" data-reveal>
-								<div class="blog-workshop__focus-label">
-									<span class="blog-workshop__section-kicker">Aktuell im Fokus</span>
-									<span class="blog-workshop__focus-rule" aria-hidden="true"></span>
-								</div>
-								<a class="blog-workshop__focus-link" href="<?php the_permalink(); ?>" data-track-action="blog_focus_open" data-track-category="content">
-									<div class="blog-workshop__focus-meta">
-										<?php if ( $primary_category instanceof WP_Term ) : ?><span><?php echo esc_html( $primary_label ); ?></span><?php endif; ?>
-										<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></time>
-										<?php if ( $reading_time > 0 ) : ?><span><?php echo esc_html( sprintf( '%d Min.', $reading_time ) ); ?></span><?php endif; ?>
-									</div>
-									<h2 id="blog-focus-heading"><?php the_title(); ?></h2>
-									<?php if ( '' !== $excerpt ) : ?><p><?php echo esc_html( $excerpt ); ?></p><?php endif; ?>
-									<span class="blog-workshop__focus-action">Arbeit öffnen <span aria-hidden="true">→</span></span>
-								</a>
-							</section>
-
-							<section class="blog-workshop__dossiers" aria-labelledby="blog-dossiers-heading" data-track-section="blog_dossiers">
-								<div class="blog-workshop__section-head blog-workshop__section-head--split">
-									<div>
-										<span class="blog-workshop__section-kicker">Dossiers</span>
-										<h2 id="blog-dossiers-heading">Vier Felder, die zusammengehören.</h2>
-									</div>
-									<p>Die Themen sind getrennt, die Systeme nicht. Hier wird sichtbar, wo Technik, Messung und wirtschaftliche Wirkung ineinandergreifen.</p>
-								</div>
-
-								<div class="blog-workshop__dossier-list">
-									<?php foreach ( $dossiers as $dossier ) : ?>
-										<a
-											class="blog-workshop__dossier"
-											href="<?php echo esc_url( (string) $dossier['category']['url'] ); ?>"
-											data-track-action="<?php echo esc_attr( 'blog_dossier_' . sanitize_title( (string) $dossier['title'] ) ); ?>"
-											data-track-category="navigation"
-											data-reveal
-										>
-											<span class="blog-workshop__dossier-number"><?php echo esc_html( (string) $dossier['number'] ); ?></span>
-											<span class="blog-workshop__dossier-body">
-												<strong><?php echo esc_html( (string) $dossier['title'] ); ?></strong>
-												<span><?php echo esc_html( (string) $dossier['description'] ); ?></span>
-											</span>
-											<span class="blog-workshop__dossier-link"><?php echo esc_html( (string) $dossier['category']['label'] ); ?> <span aria-hidden="true">→</span></span>
-										</a>
-									<?php endforeach; ?>
-								</div>
-							</section>
-
-							<section class="blog-workshop__latest" aria-labelledby="blog-latest-heading" data-track-section="blog_latest">
-								<div class="blog-workshop__section-head blog-workshop__section-head--split">
-									<div>
-										<span class="blog-workshop__section-kicker">Neue Arbeiten</span>
-										<h2 id="blog-latest-heading">Chronologisch. Ohne Algorithmus.</h2>
-									</div>
-									<p>Was zuletzt veröffentlicht oder überarbeitet wurde, steht oben.</p>
-								</div>
-
-								<?php if ( ! empty( $blog_categories ) ) : ?>
-									<nav class="blog-bell__filter blog-workshop__filter" aria-label="<?php esc_attr_e( 'Artikel nach Kategorie filtern', 'blocksy-child' ); ?>">
-										<div class="blog-bell__filter-inner">
-											<span class="blog-bell__filter-label">Themen</span>
-											<a class="blog-bell__chip is-active" href="<?php echo esc_url( $blog_url ); ?>" aria-current="page" data-track-action="blog_filter_all" data-track-category="navigation">Alle</a>
-											<?php foreach ( $blog_categories as $category ) : ?>
-												<?php
-												$category_url   = get_category_link( $category->term_id );
-												$category_label = function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $category ) : $category->name;
-												if ( is_wp_error( $category_url ) ) {
-													continue;
-												}
-												?>
-												<a class="blog-bell__chip" href="<?php echo esc_url( $category_url ); ?>" data-track-action="<?php echo esc_attr( 'blog_filter_' . $category->slug ); ?>" data-track-category="navigation"><?php echo esc_html( $category_label ); ?></a>
-											<?php endforeach; ?>
-										</div>
-									</nav>
+					<div class="haupt">
+						<p class="mono stempelfarbe">Aktuell im Fokus</p>
+						<article class="tafel blog-index__focus" data-reveal>
+							<div class="blog-index__post-meta">
+								<?php if ( $focus_data['category'] instanceof WP_Term ) : ?>
+									<span><?php echo esc_html( (string) $focus_data['category_name'] ); ?></span>
 								<?php endif; ?>
+								<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></time>
+								<?php if ( (int) $focus_data['reading_time'] > 0 ) : ?><span><?php echo esc_html( sprintf( '%d Min.', (int) $focus_data['reading_time'] ) ); ?></span><?php endif; ?>
+							</div>
+							<h2><?php the_title(); ?></h2>
+							<?php if ( '' !== $focus_data['excerpt'] ) : ?><p><?php echo esc_html( (string) $focus_data['excerpt'] ); ?></p><?php endif; ?>
+							<a class="textlink" href="<?php the_permalink(); ?>" data-track-action="blog_focus_open" data-track-category="content">Arbeit öffnen →</a>
+						</article>
+					</div>
 
-								<div class="blog-workshop__latest-list">
-						<?php else : ?>
-							<article class="blog-workshop__latest-item" data-reveal>
-								<a href="<?php the_permalink(); ?>" aria-labelledby="blog-workshop-title-<?php echo esc_attr( (string) $post_id ); ?>">
-									<div class="blog-workshop__latest-meta">
-										<span class="blog-workshop__latest-index"><?php echo esc_html( sprintf( '%02d', $post_index - 1 ) ); ?></span>
-										<?php if ( $primary_category instanceof WP_Term ) : ?><span><?php echo esc_html( $primary_label ); ?></span><?php endif; ?>
-										<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></time>
-										<?php if ( $reading_time > 0 ) : ?><span><?php echo esc_html( sprintf( '%d Min.', $reading_time ) ); ?></span><?php endif; ?>
-									</div>
-									<h3 id="blog-workshop-title-<?php echo esc_attr( (string) $post_id ); ?>"><?php the_title(); ?></h3>
-									<?php if ( '' !== $excerpt ) : ?><p><?php echo esc_html( $excerpt ); ?></p><?php endif; ?>
-									<span class="blog-workshop__latest-arrow" aria-hidden="true">→</span>
+					<aside class="marg">
+						<div class="note">
+							<span class="label">Leselogik</span>
+							<b>Der neueste Beitrag steht nicht in einer Kartenwand.</b><br>
+							Er bekommt einmal Vorrang. Danach folgt die Chronik.
+						</div>
+					</aside>
+				</div>
+			</section>
+
+			<section id="dossiers" data-track-section="blog_dossiers">
+				<div class="blatt reihe">
+					<div class="spalte-links">
+						<div class="kapitel" aria-hidden="true">
+							<span class="nr">03</span>
+							<span class="titel">Dossiers</span>
+							<span class="strich"></span>
+						</div>
+					</div>
+
+					<div class="voll">
+						<h2 class="kopf">Vier Felder, die zusammengehören.</h2>
+						<p class="vorspann">Die Themen sind getrennt, die Systeme nicht. Hier wird sichtbar, wo Technik, Messung und wirtschaftliche Wirkung ineinandergreifen.</p>
+
+						<div class="blog-index__dossier-list">
+							<?php foreach ( $dossiers as $dossier ) : ?>
+								<a
+									class="blog-index__dossier"
+									href="<?php echo esc_url( (string) $dossier['category']['url'] ); ?>"
+									data-track-action="<?php echo esc_attr( 'blog_dossier_' . sanitize_title( (string) $dossier['title'] ) ); ?>"
+									data-track-category="navigation"
+									data-reveal
+								>
+									<span class="blog-index__dossier-number"><?php echo esc_html( (string) $dossier['number'] ); ?></span>
+									<span class="blog-index__dossier-body">
+										<strong><?php echo esc_html( (string) $dossier['title'] ); ?></strong>
+										<span><?php echo esc_html( (string) $dossier['description'] ); ?></span>
+									</span>
+									<span class="blog-index__dossier-link"><?php echo esc_html( (string) $dossier['category']['label'] ); ?> →</span>
+								</a>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				</div>
+			</section>
+		<?php endif; ?>
+
+		<section id="chronik" data-track-section="blog_latest">
+			<div class="blatt reihe">
+				<div class="spalte-links">
+					<div class="kapitel" aria-hidden="true">
+						<span class="nr"><?php echo esc_html( is_paged() ? '01' : '04' ); ?></span>
+						<span class="titel"><?php echo esc_html( is_paged() ? 'Archiv' : 'Chronik' ); ?></span>
+						<span class="strich"></span>
+					</div>
+				</div>
+
+				<div class="voll">
+					<p class="mono stempelfarbe"><?php echo esc_html( is_paged() ? 'Weitere Arbeiten' : 'Neue Arbeiten' ); ?></p>
+					<h2 class="kopf"><?php echo esc_html( is_paged() ? 'Weitere Arbeiten.' : 'Chronologisch. Ohne Algorithmus.' ); ?></h2>
+					<p class="vorspann">Was zuletzt veröffentlicht oder überarbeitet wurde, steht oben.</p>
+
+					<?php if ( ! empty( $blog_categories ) ) : ?>
+						<nav class="blog-index__filter" aria-label="<?php esc_attr_e( 'Artikel nach Kategorie filtern', 'blocksy-child' ); ?>">
+							<span class="blog-index__filter-label">Themen</span>
+							<a class="is-active" href="<?php echo esc_url( $blog_url ); ?>" aria-current="page" data-track-action="blog_filter_all" data-track-category="navigation">Alle</a>
+							<?php foreach ( $blog_categories as $category ) : ?>
+								<?php
+								$category_url   = get_category_link( $category->term_id );
+								$category_label = function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $category ) : $category->name;
+								if ( is_wp_error( $category_url ) ) {
+									continue;
+								}
+								?>
+								<a href="<?php echo esc_url( $category_url ); ?>" data-track-action="<?php echo esc_attr( 'blog_filter_' . $category->slug ); ?>" data-track-category="navigation"><?php echo esc_html( $category_label ); ?></a>
+							<?php endforeach; ?>
+						</nav>
+					<?php endif; ?>
+
+					<div class="blog-index__latest-list">
+						<?php
+						$post_index = 0;
+						while ( have_posts() ) :
+							the_post();
+							$post_index++;
+							$post_id   = get_the_ID();
+							$post_data = $get_post_display( $post_id );
+							?>
+							<article class="blog-index__post" data-reveal>
+								<a href="<?php the_permalink(); ?>" aria-labelledby="blog-index-title-<?php echo esc_attr( (string) $post_id ); ?>">
+									<span class="blog-index__post-index"><?php echo esc_html( sprintf( '%02d', $post_index ) ); ?></span>
+									<span class="blog-index__post-body">
+										<span class="blog-index__post-meta">
+											<?php if ( $post_data['category'] instanceof WP_Term ) : ?><span><?php echo esc_html( (string) $post_data['category_name'] ); ?></span><?php endif; ?>
+											<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></time>
+											<?php if ( (int) $post_data['reading_time'] > 0 ) : ?><span><?php echo esc_html( sprintf( '%d Min.', (int) $post_data['reading_time'] ) ); ?></span><?php endif; ?>
+										</span>
+										<h3 id="blog-index-title-<?php echo esc_attr( (string) $post_id ); ?>"><?php the_title(); ?></h3>
+										<?php if ( '' !== $post_data['excerpt'] ) : ?><span class="blog-index__post-excerpt"><?php echo esc_html( (string) $post_data['excerpt'] ); ?></span><?php endif; ?>
+									</span>
+									<span class="blog-index__post-arrow" aria-hidden="true">→</span>
 								</a>
 							</article>
-						<?php endif; ?>
-					<?php endwhile; ?>
-								</div>
-							</section>
-				<?php else : ?>
-					<section class="blog-workshop__latest blog-workshop__latest--paged" aria-labelledby="blog-latest-heading">
-						<div class="blog-workshop__section-head">
-							<span class="blog-workshop__section-kicker">Archiv</span>
-							<h2 id="blog-latest-heading">Weitere Arbeiten.</h2>
-						</div>
-						<div class="blog-workshop__latest-list">
-							<?php
-							$post_index = 0;
-							while ( have_posts() ) :
-								the_post();
-								$post_index++;
-								$post_id          = get_the_ID();
-								$post_categories  = get_the_category( $post_id );
-								$primary_category = ! empty( $post_categories ) && ! is_wp_error( $post_categories ) ? $post_categories[0] : null;
-								$primary_label    = $primary_category instanceof WP_Term ? ( function_exists( 'hu_get_public_category_label' ) ? hu_get_public_category_label( $primary_category ) : $primary_category->name ) : '';
-								$reading_time     = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time( $post_id ) : 0;
-								$excerpt          = wp_strip_all_tags( get_the_excerpt() );
-								$excerpt          = $excerpt ? wp_trim_words( $excerpt, 24, '…' ) : '';
-								?>
-								<article class="blog-workshop__latest-item" data-reveal>
-									<a href="<?php the_permalink(); ?>">
-										<div class="blog-workshop__latest-meta">
-											<span class="blog-workshop__latest-index"><?php echo esc_html( sprintf( '%02d', $post_index ) ); ?></span>
-											<?php if ( $primary_category instanceof WP_Term ) : ?><span><?php echo esc_html( $primary_label ); ?></span><?php endif; ?>
-											<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></time>
-											<?php if ( $reading_time > 0 ) : ?><span><?php echo esc_html( sprintf( '%d Min.', $reading_time ) ); ?></span><?php endif; ?>
-										</div>
-										<h3><?php the_title(); ?></h3>
-										<?php if ( '' !== $excerpt ) : ?><p><?php echo esc_html( $excerpt ); ?></p><?php endif; ?>
-										<span class="blog-workshop__latest-arrow" aria-hidden="true">→</span>
-									</a>
-								</article>
-							<?php endwhile; ?>
-						</div>
-					</section>
-				<?php endif; ?>
+						<?php endwhile; ?>
+					</div>
 
-				<nav class="blog-bell__pagination" aria-label="<?php esc_attr_e( 'Seiten', 'blocksy-child' ); ?>">
-					<?php
-					the_posts_pagination(
-						[
-							'mid_size'  => 1,
-							'prev_text' => esc_html__( 'Zurück', 'blocksy-child' ),
-							'next_text' => esc_html__( 'Weiter', 'blocksy-child' ),
-						]
-					);
-					?>
-				</nav>
-			<?php else : ?>
-				<p class="blog-bell__empty"><?php esc_html_e( 'Aktuell sind keine Beiträge veröffentlicht.', 'blocksy-child' ); ?></p>
-			<?php endif; ?>
-
-			<aside class="blog-workshop__notify" aria-labelledby="blog-workshop-notify-heading" data-track-section="blog_archive_email">
-				<div>
-					<span class="blog-workshop__section-kicker">Neue Arbeiten</span>
-					<h2 id="blog-workshop-notify-heading">Nur eine Mail, wenn etwas Neues online ist.</h2>
-					<p>Kein Newsletter-Rauschen. Keine Sales-Serie. Nur der Hinweis auf einen neuen Beitrag.</p>
+					<nav class="blog-index__pagination" aria-label="<?php esc_attr_e( 'Seiten', 'blocksy-child' ); ?>">
+						<?php
+						the_posts_pagination(
+							[
+								'mid_size'  => 1,
+								'prev_text' => esc_html__( 'Zurück', 'blocksy-child' ),
+								'next_text' => esc_html__( 'Weiter', 'blocksy-child' ),
+							]
+						);
+						?>
+					</nav>
 				</div>
-				<button type="button" class="blog-workshop__notify-button" data-blog-bell-open aria-haspopup="dialog" aria-controls="blog-bell-modal">
-					E-Mail-Updates aktivieren <span aria-hidden="true">→</span>
-				</button>
-			</aside>
+			</div>
+		</section>
+	<?php else : ?>
+		<section>
+			<div class="blatt reihe">
+				<div class="haupt">
+					<p><?php esc_html_e( 'Aktuell sind keine Beiträge veröffentlicht.', 'blocksy-child' ); ?></p>
+				</div>
+			</div>
+		</section>
+	<?php endif; ?>
+
+	<section class="abschluss blog-index__abschluss" data-track-section="blog_archive_email">
+		<div class="blatt">
+			<div class="tafel">
+				<div class="reihe">
+					<div class="spalte-links">
+						<p class="mono">Benachrichtigung</p>
+					</div>
+					<div class="haupt">
+						<h2>Nur eine Mail, wenn etwas Neues online ist.</h2>
+						<p class="aufriss">Kein Newsletter-Rauschen. Keine Sales-Serie. Nur der Hinweis auf einen neuen Beitrag.</p>
+						<div class="ausgang">
+							<button type="button" class="tun blog-index__notify-button" data-blog-bell-open aria-haspopup="dialog" aria-controls="blog-bell-modal" aria-expanded="false">
+								E-Mail-Updates aktivieren <span class="pf" aria-hidden="true">→</span>
+							</button>
+						</div>
+					</div>
+					<aside class="marg">
+						<div class="note">
+							<span class="label">Versprechen</span>
+							Nur neue Artikel. Keine Werbemails. Jederzeit abmelden.
+						</div>
+					</aside>
+				</div>
+			</div>
 		</div>
 	</section>
 </main>
 
 <button
-	class="blog-bell__bell blog-workshop__bell"
+	class="blog-index__bell"
 	type="button"
 	id="blog-bell-trigger"
 	aria-label="<?php esc_attr_e( 'Neue Artikel per E-Mail abonnieren', 'blocksy-child' ); ?>"
@@ -381,15 +432,12 @@ get_header();
 	aria-expanded="false"
 	aria-controls="blog-bell-modal"
 >
-	<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-		<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-		<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-	</svg>
-	<span class="blog-bell__bell-label">E-Mail-Updates</span>
+	<span aria-hidden="true">↗</span>
+	<span class="blog-index__bell-label">E-Mail-Updates</span>
 </button>
 
 <div
-	class="blog-bell__modal blog-workshop__modal"
+	class="blog-bell__modal"
 	id="blog-bell-modal"
 	role="dialog"
 	aria-modal="true"
@@ -398,16 +446,12 @@ get_header();
 >
 	<div class="blog-bell__modal-backdrop" data-blog-bell-dismiss></div>
 
-	<div class="blog-bell__modal-panel" role="document">
-		<button class="blog-bell__modal-close" type="button" data-blog-bell-dismiss aria-label="<?php esc_attr_e( 'Schließen', 'blocksy-child' ); ?>">
-			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-				<path d="M18 6L6 18M6 6l12 12"></path>
-			</svg>
-		</button>
+	<div class="blog-bell__modal-panel doku tafel" role="document" tabindex="-1">
+		<button class="blog-bell__modal-close" type="button" data-blog-bell-dismiss aria-label="<?php esc_attr_e( 'Schließen', 'blocksy-child' ); ?>">×</button>
 
-		<span class="blog-bell__eyebrow">Blog-Benachrichtigungen</span>
-		<h2 id="blog-bell-modal-title" class="blog-bell__modal-title"><?php echo esc_html( $blog_notify_copy['headline'] ?? 'Neue Artikel per E-Mail' ); ?></h2>
-		<p class="blog-bell__modal-body"><?php echo esc_html( $blog_notify_copy['body'] ?? 'Ich schicke nur dann eine kurze Mail, wenn ein neuer Beitrag online ist. Kein Newsletter-Rauschen. Keine Sales-Mails.' ); ?></p>
+		<p class="gegenstand">Blog-Benachrichtigungen</p>
+		<h2 id="blog-bell-modal-title"><?php echo esc_html( $blog_notify_copy['headline'] ?? 'Neue Artikel per E-Mail' ); ?></h2>
+		<p class="aufriss"><?php echo esc_html( $blog_notify_copy['body'] ?? 'Ich schicke nur dann eine kurze Mail, wenn ein neuer Beitrag online ist. Kein Newsletter-Rauschen. Keine Sales-Mails.' ); ?></p>
 
 		<form class="blog-bell__form" data-blog-notify-form novalidate>
 			<div class="blog-bell__honeypot" aria-hidden="true">
@@ -416,20 +460,14 @@ get_header();
 			</div>
 			<input type="hidden" name="nonce" value="<?php echo esc_attr( $blog_form_nonce ); ?>">
 			<input type="hidden" name="contextPostId" value="0">
-			<label class="screen-reader-text" for="blog-bell-email"><?php esc_html_e( 'E-Mail-Adresse', 'blocksy-child' ); ?></label>
+			<label class="mono" for="blog-bell-email"><?php esc_html_e( 'E-Mail-Adresse', 'blocksy-child' ); ?></label>
 			<input id="blog-bell-email" class="blog-bell__input" type="email" name="email" placeholder="<?php echo esc_attr( $blog_notify_copy['placeholder'] ?? 'Ihre E-Mail-Adresse' ); ?>" autocomplete="email" required>
-			<button type="submit" class="blog-bell__submit">
-				<?php echo esc_html( $blog_notify_copy['button'] ?? 'Artikel-Benachrichtigungen aktivieren' ); ?>
-				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+			<button type="submit" class="tun blog-bell__submit">
+				<?php echo esc_html( $blog_notify_copy['button'] ?? 'Artikel-Benachrichtigungen aktivieren' ); ?> <span class="pf" aria-hidden="true">→</span>
 			</button>
-			<ul class="blog-bell__trust">
-				<li>Nur neue Artikel</li>
-				<li>Keine Werbemails</li>
-				<li>Jederzeit abmelden</li>
-			</ul>
 			<p class="blog-bell__hint">
 				<?php esc_html_e( 'Double-Opt-In über E-Mail.', 'blocksy-child' ); ?>
-				<a href="<?php echo esc_url( $privacy_url ); ?>"><?php esc_html_e( 'Datenschutz', 'blocksy-child' ); ?></a>
+				<a class="satzlink" href="<?php echo esc_url( $privacy_url ); ?>"><?php esc_html_e( 'Datenschutz', 'blocksy-child' ); ?></a>
 			</p>
 			<div class="blog-bell__feedback" data-blog-notify-feedback aria-live="polite"></div>
 		</form>
