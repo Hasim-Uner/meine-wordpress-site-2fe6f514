@@ -175,6 +175,87 @@ $sender_right = [
 $pick_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>';
 ?>
 
+<?php if ( is_page( 'kontakt' ) ) : ?>
+	<style id="contact-density-polish">
+		.contact-page.contact-page--scoped {
+			padding-top: clamp(2.25rem, 3.8vw, 3.5rem);
+			padding-bottom: clamp(1.75rem, 2.5vw, 2.5rem);
+		}
+
+		.contact-page--scoped .contact-page__shell {
+			width: min(100%, 84rem);
+			grid-template-columns: minmax(13.25rem, 0.42fr) minmax(0, 1.58fr);
+			gap: clamp(2rem, 3.6vw, 3.25rem);
+		}
+
+		.contact-page--scoped .contact-title {
+			max-width: 12ch;
+			font-size: clamp(2.35rem, 1.7rem + 1.8vw, 3.5rem);
+			line-height: 1.01;
+			letter-spacing: -0.04em;
+		}
+
+		.contact-page--scoped .contact-lead {
+			max-width: 32ch;
+			font-size: 0.9rem;
+			line-height: 1.58;
+		}
+
+		.contact-page--scoped .contact-intro__facts {
+			margin-top: 1.15rem;
+		}
+
+		.contact-page--scoped .contact-intro__facts p {
+			padding-block: 0.66rem;
+			font-size: 0.79rem;
+		}
+
+		.contact-page--scoped .contact-direct-mail {
+			margin-top: 1rem;
+		}
+
+		.fuss {
+			padding-top: clamp(2rem, 3vw, 3rem);
+		}
+
+		.fuss .wahl {
+			margin-bottom: var(--s3);
+		}
+
+		.fuss .wahl > .mono {
+			padding-block: var(--s1);
+		}
+
+		@media (max-width: 980px) and (min-width: 821px) {
+			.contact-page--scoped .contact-page__shell {
+				width: min(100%, 72rem);
+				grid-template-columns: minmax(13rem, 0.55fr) minmax(0, 1.45fr);
+				gap: 2rem;
+			}
+
+			.contact-page--scoped .contact-title {
+				font-size: clamp(2.3rem, 4.2vw, 3.15rem);
+			}
+		}
+
+		@media (max-width: 820px) {
+			.contact-page.contact-page--scoped {
+				padding-top: 2rem;
+				padding-bottom: 2rem;
+			}
+
+			.contact-page--scoped .contact-page__shell {
+				grid-template-columns: 1fr;
+				gap: 2.25rem;
+			}
+
+			.fuss {
+				padding-top: var(--s4);
+			}
+		}
+	</style>
+<?php endif; ?>
+
 <footer id="footer" class="fuss" role="contentinfo">
 	<div class="blatt">
 		<?php if ( $shows_picks ) : ?>
