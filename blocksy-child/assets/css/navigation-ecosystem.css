@@ -1,0 +1,228 @@
+/* Navigation Ecosystem — shared wayfinding layer for commercial and proof routes. */
+
+:root {
+	--hu-wayfinding-offset: 76px;
+	--hu-wayfinding-max: 1240px;
+	--hu-wayfinding-focus: #b94f2f;
+}
+
+.hu-skip-link {
+	position: fixed;
+	z-index: 100000;
+	top: 0.5rem;
+	left: 0.5rem;
+	padding: 0.75rem 1rem;
+	background: #fff;
+	color: #111;
+	border: 2px solid currentColor;
+	transform: translateY(-180%);
+	transition: transform 120ms ease;
+}
+
+.hu-skip-link:focus {
+	transform: translateY(0);
+}
+
+.hu-wayfinding-breadcrumb {
+	width: min(calc(100% - 2rem), var(--hu-wayfinding-max));
+	margin-inline: auto;
+	padding-block: 0.75rem;
+	font-size: 0.82rem;
+	line-height: 1.4;
+}
+
+.hu-wayfinding-breadcrumb ol {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem 0.55rem;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.hu-wayfinding-breadcrumb li {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+}
+
+.hu-wayfinding-breadcrumb li:not(:last-child)::after {
+	content: "/";
+	opacity: 0.45;
+}
+
+.hu-wayfinding-breadcrumb a {
+	color: inherit;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+}
+
+.hu-wayfinding-breadcrumb [aria-current="page"] {
+	font-weight: 650;
+}
+
+.hu-page-toc {
+	width: min(calc(100% - 2rem), var(--hu-wayfinding-max));
+	margin: 1rem auto 2rem;
+	border-top: 1px solid currentColor;
+	border-bottom: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+}
+
+.hu-page-toc summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 48px;
+	cursor: pointer;
+	font-weight: 700;
+	list-style: none;
+}
+
+.hu-page-toc summary::-webkit-details-marker {
+	display: none;
+}
+
+.hu-page-toc summary::after {
+	content: "+";
+	font-size: 1.1rem;
+	line-height: 1;
+}
+
+.hu-page-toc details[open] summary::after {
+	content: "−";
+}
+
+.hu-page-toc ul {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0 0 0.85rem;
+	list-style: none;
+}
+
+.hu-page-toc a {
+	display: block;
+	min-height: 44px;
+	padding: 0.65rem 0;
+	color: inherit;
+	text-decoration: none;
+	border-left: 2px solid transparent;
+}
+
+.hu-page-toc a:hover,
+.hu-page-toc a:focus-visible,
+.hu-page-toc a[aria-current="location"] {
+	border-left-color: currentColor;
+	padding-left: 0.7rem;
+}
+
+.hu-page-toc a:focus-visible,
+.hu-wayfinding-breadcrumb a:focus-visible,
+.hu-next-step a:focus-visible {
+	outline: 3px solid var(--hu-wayfinding-focus);
+	outline-offset: 3px;
+}
+
+body.hu-wayfinding-active :is(section, [id]):target,
+body.hu-wayfinding-active [data-hu-scroll-target] {
+	scroll-margin-top: calc(var(--hu-wayfinding-offset) + 1rem);
+}
+
+/* Existing in-page systems: same current-location semantics without rewriting their design. */
+body.hu-wayfinding-active :is(.about-index, .wl-site-header__nav, .hu-sst__toc-band, #nav) a[aria-current="location"] {
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.28em;
+}
+
+.hu-next-step {
+	width: min(calc(100% - 2rem), var(--hu-wayfinding-max));
+	margin: clamp(3rem, 7vw, 6rem) auto;
+	padding-block: clamp(1.5rem, 4vw, 2.5rem);
+	border-top: 1px solid currentColor;
+}
+
+.hu-next-step__eyebrow {
+	margin: 0 0 0.5rem;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	opacity: 0.68;
+}
+
+.hu-next-step__title {
+	margin: 0;
+	max-width: 20ch;
+	font-size: clamp(1.55rem, 3vw, 2.45rem);
+	line-height: 1.08;
+}
+
+.hu-next-step__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem 1.25rem;
+	margin-top: 1.35rem;
+}
+
+.hu-next-step__primary,
+.hu-next-step__secondary {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	font-weight: 700;
+}
+
+.hu-next-step__primary {
+	padding: 0.75rem 1rem;
+	border: 1px solid currentColor;
+	text-decoration: none;
+}
+
+.hu-next-step__secondary {
+	text-underline-offset: 0.22em;
+}
+
+@media (min-width: 1380px) and (min-height: 720px) {
+	.hu-page-toc[data-hu-rail="true"] {
+		position: fixed;
+		z-index: 45;
+		top: calc(var(--hu-wayfinding-offset) + 1.25rem);
+		left: max(1rem, calc(50vw - 720px));
+		width: 180px;
+		max-height: calc(100vh - var(--hu-wayfinding-offset) - 2.5rem);
+		margin: 0;
+		overflow: auto;
+		background: transparent;
+	}
+
+	.hu-page-toc[data-hu-rail="true"] details {
+		display: block;
+	}
+
+	.hu-page-toc[data-hu-rail="true"] summary {
+		pointer-events: none;
+		cursor: default;
+	}
+
+	.hu-page-toc[data-hu-rail="true"] summary::after {
+		display: none;
+	}
+}
+
+@media (max-width: 900px), (max-height: 680px) {
+	.hu-page-toc {
+		position: static !important;
+		max-height: none !important;
+		overflow: visible !important;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hu-skip-link,
+	.hu-page-toc a {
+		transition: none !important;
+		scroll-behavior: auto !important;
+	}
+}
