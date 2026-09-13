@@ -3,8 +3,8 @@
  * Article System reader bootstrap and table of contents.
  *
  * Every published WordPress post uses the same reader shell. The reader header
- * is rendered directly by template-parts/blog-header.php; this file only owns
- * request detection and the TOC assets.
+ * is rendered directly by template-parts/blog-header.php; this file owns
+ * request detection, TOC assets and the visual single-post contract.
  *
  * @package Blocksy_Child
  */
@@ -68,3 +68,22 @@ function hu_enqueue_article_reader_toc_assets() : void {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'hu_enqueue_article_reader_toc_assets', 30 );
+
+/**
+ * The single template owns presentation. Article-specific modules may keep
+ * their content and routing logic, but must not repaint the entire page.
+ *
+ * @return void
+ */
+function hu_enforce_shared_article_reader_assets() : void {
+	if ( ! hu_is_article_reader_request() ) {
+		return;
+	}
+
+	// /wordpress-projekte-auslagern/ previously replaced the complete reader
+	// with a separate dark flagship layout. Keep its content/CTA logic but drop
+	// that route-specific visual and behavioural shell.
+	wp_dequeue_style( 'hu-agency-outsourcing-article' );
+	wp_dequeue_script( 'hu-agency-outsourcing-article-ui' );
+}
+add_action( 'wp_enqueue_scripts', 'hu_enforce_shared_article_reader_assets', 100 );
