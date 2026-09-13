@@ -48,5 +48,8 @@ jobs:
           python3 scripts/prune-style-single-legacy.py \
             /tmp/blocksy-child-style.css \
             blocksy-child/assets/css/single.css
-          ! grep -q 'NEXUS SINGLE PAGE LAYOUT' /tmp/blocksy-child-style.css
+          if grep -q 'NEXUS SINGLE PAGE LAYOUT' /tmp/blocksy-child-style.css; then
+            echo 'Superseded single-post block is still present after prune.' >&2
+            exit 1
+          fi
           grep -q 'NEXUS ARCHIVE LAYOUT' /tmp/blocksy-child-style.css
