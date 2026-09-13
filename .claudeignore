@@ -2,12 +2,21 @@
 node_modules/**
 vendor/**
 .build/**
-agents/skills/modern-web-guidance/guides/**
 blocksy-child/readiness/node_modules/**
 package-lock.json
 composer.lock
 
-# Human-facing changelogs
+# Heavy specialist references are opt-in
+agents/skills/modern-web-guidance/guides/**
+
+# Binary image assets: keep SVG source visible, ignore raster binaries
+**/*.webp
+**/*.avif
+**/*.png
+**/*.jpg
+**/*.jpeg
+
+# Human-facing changelogs and ephemeral memory
 CHANGELOG.md
 .ai/**
 

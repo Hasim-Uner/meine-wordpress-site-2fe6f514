@@ -1,39 +1,28 @@
-# Agent Skills Index
+# Agent Skills
 
-This directory contains the repo-specific agent skills. For skill authoring or
-unclear routing, use `agents/skills/CONTEXT.md` as the one local context;
-otherwise follow `AGENTS.md` and load only the matching skill.
+This directory is the canonical store for repo-specific agent skills.
 
-All skills are exposed through symlinks in `.agents/skills/` for Codex and
-`.claude/skills/` for Claude Code. `agents/skills/` stays the single source of
-truth; edit skills here, never through either discovery directory.
+The router sees only the reduced public surface listed in `PRIMARY_SKILLS.txt`. Focused implementation workflows remain here as internal specialists and are loaded only through a primary skill.
 
-## High-priority routing
+## Discovery
 
-- `offer-funnel-intelligence` — offer logic, funnel strategy, marketcheck, proof, qualification, sales-fit, WGOS boundary
-- `wordpress-cro-content-design-audit` — page-level CRO, conversion copy, CTA/proof hierarchy, content design
-- `wordpress-performance-marketing` — full audit across SEO, CRO, tracking, and performance marketing
-- `seo-agent` — general SEO triage
-- `seo-live-qa` — live SEO, canonical, redirect, noindex, indexing checks
-- `page-speed-audit` — Core Web Vitals and speed diagnosis
-- `modern-web-guidance` — frontend, HTML, CSS, JS, forms, accessibility, Core Web Vitals
+- Canonical content: `agents/skills/`
+- Codex discovery: `.agents/skills/`
+- Claude Code discovery: `.claude/skills/`
 
-## Rule of thumb
+The two discovery directories contain symlinks only for primary skills. Do not edit through them.
 
-Use `offer-funnel-intelligence` first when the task asks whether the website or offer creates better qualified leads, whether the marketcheck is strong enough, whether proof is used well, or whether WGOS belongs in public copy or only in delivery.
+## How to route
 
-Use `wordpress-cro-content-design-audit` when the task is narrower: improve one page, hero, CTA, proof block, FAQ, form flow, or section order.
+1. Read `AGENTS.md`.
+2. Read one local `CONTEXT.md`.
+3. Pick one primary skill from `PRIMARY_SKILLS.txt`.
+4. Let that skill delegate to internal specialists when needed.
+5. Open only task-relevant files/references.
+6. Prefer deterministic scripts over repeated LLM review.
 
-Use `seo-conversion-copywriting` when der Text selbst entsteht — Money-Page, Landingpage, Leistungsseite, Hero, CTA, FAQ. Die Kritik an einer bestehenden Seite bleibt bei `wordpress-cro-content-design-audit`.
+`agents/skills/CONTEXT.md` contains the complete primary-to-specialist map.
 
-Use `modern-web-guidance` before implementation when frontend templates, CSS, JS, forms, accessibility, or Core Web Vitals are touched.
+## Why specialists remain
 
-## Canonical skill table
-
-The canonical routing table lives in:
-
-```text
-agents/skills/CONTEXT.md
-```
-
-Do not duplicate long rules here. Keep this file as a discoverable index only.
+Specialist skills keep tested scripts, narrow workflows, vendored upstream material, and route-specific knowledge without forcing every agent host to discover all of them. This preserves capability while reducing routing ambiguity and default context.

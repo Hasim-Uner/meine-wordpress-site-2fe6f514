@@ -1,222 +1,110 @@
 # AGENTS.md
 
-Global contract for agents in this repo. Keep context small: read this file, then exactly one matching local `CONTEXT.md`, then only task-relevant files.
+Global contract for agents in this repository. Keep context small: load the global contract, one local context, one primary skill, then only task-relevant files.
 
-## Load Order
+## Load order
 
 1. `AGENTS.md`
-2. One local context:
-   - Theme-wide work: `blocksy-child/CONTEXT.md`
+2. Exactly one local context:
+   - Theme/runtime: `blocksy-child/CONTEXT.md`
    - PHP modules/registries: `blocksy-child/inc/CONTEXT.md`
-   - Shared sections/CTA surfaces: `blocksy-child/template-parts/CONTEXT.md`
+   - Shared sections: `blocksy-child/template-parts/CONTEXT.md`
    - Durable docs: `docs/CONTEXT.md`
    - Draft content: `content/CONTEXT.md`
-   - Skill work: `agents/skills/CONTEXT.md`
-3. Only the files needed for the task.
+   - Agent/skill architecture: `agents/skills/CONTEXT.md`
+3. Exactly one primary skill from `agents/skills/PRIMARY_SKILLS.txt`.
+4. Only files required by that task. A primary skill may delegate to internal specialist skills.
 
-For positioning, public copy, offers, CTA routing, or schema identity work, also read:
+## Canonical sources
 
-- `docs/standards/BRAND_AND_COPY.md`
-- `docs/architecture/CONVERSION_ROUTING.md`
-- `docs/seo/query-ownership.csv` when SEO ownership is touched
+- Public routes / route summaries: `llms.txt`
+- Positioning / brand / public copy: `docs/standards/BRAND_AND_COPY.md`
+- CTA routing: `docs/architecture/CONVERSION_ROUTING.md`
+- SEO ownership: `docs/seo/query-ownership.csv`
+- Live route/runtime status: `docs/architecture/LIVE_STATUS.md`
+- Cross-system dependencies: `docs/architecture/SYSTEM_MAP.md`
 
-## Skill Routing
+Load a canonical source only when the task touches its contract. Never duplicate these rules in agent instructions.
 
-- `agents/skills/` is the canonical skill source for every agent host.
-- Codex discovers the skills through `.agents/skills/`; Claude Code discovers
-  the same skills through `.claude/skills/`. Both directories contain symlinks
-  only; never edit a skill through an exposure path.
-- Select and load the matching `agents/skills/<skill>/SKILL.md` before
-  implementation. Use `agents/skills/CONTEXT.md` as the one local context when
-  the task is skill work or routing is unclear.
-- For broad website, SEO, offer, tracking, CRO, landing-page, lead-generation,
-  or content-automation work, start with
-  `agents/skills/wordpress-performance-marketing/scripts/render-checklist.sh full`.
-- For frontend HTML, CSS, JavaScript, forms, accessibility, or Core Web Vitals,
-  also load `modern-web-guidance` before implementation.
-- Keep changes small, reviewable, and limited to one coherent intent per commit
-  or PR.
+## Skill routing
 
-## Token Rules
+`agents/skills/` is the canonical store. Codex and Claude Code only discover the reduced public surface exposed through `.agents/skills/` and `.claude/skills/`.
 
-- Start with `rg --files`; avoid broad `find .` unless excluding generated/ignored paths.
-- Do not load `node_modules`, `.build`, lockfiles, historical audits, references, plans, or workflow JSON unless the task explicitly needs them.
-- Prefer `rg -n "pattern" path/` over opening whole directories.
-- For pure layout/template work, keep searches scoped to templates/assets and avoid heavy backend modules such as `blocksy-child/inc/seo-cockpit/`, `blocksy-child/inc/wgos/`, and `blocksy-child/inc/glossary/` unless they are in scope.
-- Do not create root plans, fix logs, or temporary markdown. Use `.ai/memory/` for ephemeral notes.
+Primary routes:
+- `frontend-system` — HTML, CSS, JS, accessibility, browser APIs, UI craft, motion.
+- `seo-intelligence` — SEO triage, live QA, drift, internal links.
+- `seo-cockpit-dev` — SEO Cockpit implementation and diagnostics.
+- `editorial-seo` — blog/archive/article UX and cornerstone content.
+- `conversion-copy` — buyer research, teardown, sales copy, iterative copy improvement.
+- `offer-funnel-intelligence` — offer, proof, qualification, Marktcheck, funnel economics.
+- `conversion-architecture` — page CRO, route review, campaign landing pages.
+- `wordpress-growth-architecture` — forms, lead routing, REST, CRM.
+- `performance-marketing` — cross-site SEO/CRO/tracking audit and Core Web Vitals.
+- `deploy-qa` — release smoke, registries, navigation migration and release gates.
+- `revenue-learning-loop` — post-release evidence, KPI learning, keep/revert decisions.
 
-### Never read whole
+Internal specialist skills are implementation details. Do not route directly to them unless a primary skill explicitly delegates there.
 
-These files cost more context than a whole task should. Locate the relevant lines with
-`rg -n`, then read only that range with an offset. This applies even when the file is in scope.
+## Context discipline
 
-| Datei | ~Tokens |
-|---|---|
-| `blocksy-child/inc/wgos/wgos-asset-registry-data.php` | 34k — reine Datenliste, keine Logik |
-| `blocksy-child/inc/review-crm.php` | 34k |
-| `blocksy-child/assets/css/agentur.css` | 25k |
-| `blocksy-child/inc/seo-cockpit/seo-cockpit-ui.php` | 23k |
-| `blocksy-child/page-solar-waermepumpen-leadgenerierung.php` | 19k |
-| `blocksy-child/page-wordpress-agentur.php` | 19k |
+- Start with `rg --files`; avoid broad `find .`.
+- Search with `rg -n` before opening large files.
+- Do not scan `node_modules`, `vendor`, `.build`, plans, historical audits, large references, binary assets, or inactive n8n exports unless explicitly needed.
+- Do not read large files wholesale. Read the smallest relevant ranges.
+- For layout/template work, stay in templates/assets unless backend behavior is in scope.
+- Do not create root-level scratch plans or fix logs. Use `.ai/memory/` for ephemeral notes.
+- Prefer repo-verifiable evidence over generic recommendations. Never invent analytics, rankings, keyword volumes, conversions, or runtime state.
 
-## Stack
+## WordPress/runtime rules
 
-- Deployable WordPress child theme: `blocksy-child/`
-- PHP templates/modules, CSS, vanilla JS, self-hosted fonts
-- ACF-backed metadata and WordPress REST integrations
-- GitHub Actions SSH-Rsync deploy via `.github/workflows/deploy.yml`
-- n8n artifacts are inactive; ignore `automations/n8n/` unless the user explicitly asks for n8n work
-- No formal test suite is checked in
-
-## Product Defaults
-
-- Canonical public routes and AI-facing route summaries live in `llms.txt`; use it as a route index before adding or changing public URLs.
-- Positioning and copy rules live in `docs/standards/BRAND_AND_COPY.md`.
-- CTA destination logic lives in `docs/architecture/CONVERSION_ROUTING.md`.
-- SEO query ownership lives in `docs/seo/query-ownership.csv`.
-- **Do not conflate SEO ownership with conversion routing.** A page can own a query and still send its CTA to a different next action.
-- Public role: WordPress Freelancer; connected expertise: technisches SEO, Tracking, Conversion.
-- Commercial entry paths:
-  - direct clients -> `/` (homepage owns Freelancer queries and offer) / generic project request
-  - agencies -> `/whitelabel-retainer/`
-  - Solar / Wärmepumpe / Speicher -> `/solar-waermepumpen-leadgenerierung/` / Marktcheck
-- The Marktcheck is not a site-wide default CTA anymore. Use it only for the Energy cluster.
-- Diagnosis/analysis canon: `blocksy-child/inc/canon/diagnose-canon.php` remains valid for the Energy funnel.
-- Do not assume RankMath; use the custom WordPress SEO Cockpit where relevant.
-- Do not reintroduce Shopify as a current service focus unless the task is explicitly about legacy cleanup.
-
-## Evidence and Measurement Defaults
-
-- Prefer repo-verifiable findings over generic marketing advice.
-- Never invent keyword volumes, rankings, Search Console clicks, analytics
-  numbers, GA4 events, or conversion data.
-- Mark assumptions clearly. Report missing evidence; add a placeholder only
-  when it belongs to the requested deliverable.
-- Never commit secrets or API keys. Do not add analytics IDs, cookies, pixels,
-  consent code, or third-party scripts unless explicitly requested.
-- Tracking plans may use neutral event names and `data-track-*` attributes, but
-  runtime tracking changes must be explicit and kept separate from planning.
-
-## Workstream and Audit Protocol
-
-- Classify work as strategy, docs/agent instructions, theme/template, backend,
-  WordPress admin/editor, analytics, or external platform. Keep code changes and
-  manual tasks separate when a request crosses workstreams.
-- Do not touch live-critical theme, deployment, hosting, or generated assets
-  during planning-only work or without explicit scope.
-- Preserve the current project language, positioning, query ownership, and route contracts from the canonical docs above.
-- For repo audits, report findings under `Critical`, `High leverage`, `Polish`,
-  `Manual WordPress tasks`, and `Agent tasks / repo tasks` as applicable.
-- In audits, distinguish repo fixes from editor, SEO Cockpit, WordPress admin,
-  analytics, and external-platform work.
-
-## Git, PR, and Deploy
-
-- Publishing requires explicit scope. When publishing is requested, `main` is
-  the default target for small, reversible changes unless the task requests a
-  branch or the risk rules below require a PR.
-- Prefer a PR for non-visual contracts or data-writing changes such as tracking
-  and GA4 event names, REST contracts, schema, registry or seeder versions, and
-  for large, hard-to-reverse `blocksy-child/` changes.
-- A `main` push that matches the CI path filters can start the production deploy
-  after successful checks; a failed CI run must not deploy the live site. The
-  deploy builds and rsyncs `blocksy-child/`.
-- Workflow files, build scripts, and package configuration outside
-  `blocksy-child/` can still affect deployment output. Instruction and research
-  paths such as `agents/`, `docs/`, and `seo-research/` are not copied into the
-  deployed child theme.
-- After a merged PR, start new work from updated `main`; do not keep using the
-  squash-merged branch.
-
-## Sonderrouten & Schatten-Templates
-
-- `blocksy-child/page-wordpress-agentur-hannover.php` is a native slug safety wrapper only.
-- Maintain the Hannover landing page layout and copy in `blocksy-child/page-wordpress-agentur.php`.
-- Do not duplicate Hannover page edits into the wrapper template.
-
-## Funnel / Route Ladder
-
-There is no longer one universal funnel ladder for the whole site.
-
-### Energy funnel
-
-1. Solar / Wärmepumpe / Speicher content or purchase intent
-2. Marktcheck
-3. Follow-up analysis if useful
-4. Implementation / continued optimization
-
-### Direct-project funnel
-
-1. WordPress / tracking / CRO / technical SEO intent
-2. Relevant specialist or Freelancer page
-3. `Projekt anfragen` / scope clarification
-4. Implementation / continued optimization
-
-### Agency funnel
-
-1. Agency / partner / White-Label intent
-2. White-Label page
-3. Request form (`Aufgabe beschreiben`) / scoped first project
-4. Optional retainer
-
-Use `Umsetzungspartner` for a business that reaches the Solar build stage. Do not reintroduce the retired `Founding Cohort 2026` frame, seat counters, or application deadlines — see `docs/decisions/0011-founding-cohort-2026-entfernt.md`. Customer-facing forbidden terms live in `blocksy-child/inc/canon/messaging-canon.php`.
-
-For any task that touches offer logic, marketcheck framing, proof architecture, qualification, CTA economics, or the WGOS public/delivery boundary, load `agents/skills/offer-funnel-intelligence/SKILL.md` before changing copy or templates.
-
-## Required Patterns
-
-Generic project request outside Energy and White-Label funnels:
-
-```php
-$project_url = function_exists( 'hu_get_navigation_project_request_url' )
-    ? hu_get_navigation_project_request_url()
-    : home_url( '/kontakt/' );
-echo esc_url( $project_url );
-```
-
-Solar Marktcheck only inside Energy intent:
-
-```php
-$analysis_url = function_exists( 'hu_get_request_analysis_url' )
-    ? hu_get_request_analysis_url()
-    : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-echo esc_url( $analysis_url );
-```
-
-Escaping:
-
-```php
-echo esc_html($label);
-echo esc_attr($id);
-echo esc_url($url);
-```
-
-Tracking hooks:
-
-```html
-data-track-action=""
-data-track-category=""
-data-track-section=""
-```
-
-## Do Not
-
-- Do not change `.github/workflows/deploy.yml` unless deploy behavior is the task.
+- Deployable runtime is `blocksy-child/`.
+- `functions.php` stays a thin bootstrap; modules belong in `inc/`.
+- Keep canonical/meta/schema/robots logic centralized.
+- Use `home_url()` for internal URLs and escape output.
+- Preserve `data-track-*` hooks on conversion surfaces.
+- Do not add React/Vue/Angular, client-side routing, heavy libraries, analytics code, IDs, pixels, cookies, or third-party scripts unless explicitly requested.
+- Prefer vanilla JS, native browser APIs, progressive enhancement, feature detection, and `prefers-reduced-motion`.
 - Do not move or rename `blocksy-child/`.
-- Do not duplicate SEO/meta/schema logic across templates, modules, and editor content.
-- Do not load or change n8n artifacts unless n8n is explicitly in scope.
-- Do not version editor-owned copy as if it were the live source of truth.
-- Do not write repetitive playbooks in `docs/`; create/update `agents/skills/<skill>/`.
-- Do not redirect or de-index a query-owning page just to simplify CTA routing.
-- Do not use `hu_get_request_analysis_url()` as a generic site-wide project CTA.
+- Ignore `automations/n8n/` unless n8n is explicitly in scope.
 
-## Update Triggers
+## Product boundaries
 
-- Runtime behavior, route status, or deploy scope changes: update `docs/architecture/LIVE_STATUS.md`.
-- Cross-system contracts or dependencies change: update `docs/architecture/SYSTEM_MAP.md`.
-- CTA-routing contract changes: update `docs/architecture/CONVERSION_ROUTING.md`.
-- Positioning or global public-copy rules change: update `docs/standards/BRAND_AND_COPY.md`.
-- Query ownership changes: update `docs/seo/query-ownership.csv` with evidence.
-- New repetitive workflow: add/update `agents/skills/<skill>/SKILL.md` plus scripts.
-- Skill added or removed: keep matching symlinks in both `.agents/skills/` and
-  `.claude/skills/` synchronized with `agents/skills/`.
+- Public role: WordPress Freelancer; connected expertise: technical SEO, tracking, conversion.
+- Energy intent routes through the Solar/Wärmepumpe cluster and Marktcheck.
+- Generic WordPress/tracking/CRO/technical-SEO intent routes to project enquiry.
+- Agency intent routes to White-Label.
+- SEO query ownership and CTA routing are separate contracts.
+- Do not reintroduce retired positioning, seat counters, deadlines, Shopify focus, or site-wide Marktcheck routing.
+
+For exact wording and route behavior, read the canonical sources instead of restating them here.
+
+## Validation
+
+Use deterministic checks before LLM re-review.
+
+After a coherent code change, run the narrowest relevant lint/test first. Before push or PR, run at minimum:
+
+```bash
+npm run lint:architecture
+npm run lint:php
+```
+
+Also run task-specific CI scripts named by the routed skill. Fix from exit codes and error output; do not substitute prose review for a failing validator.
+
+## Git / deploy
+
+- Keep one coherent intent per commit/PR.
+- Prefer a PR for architecture, tracking contracts, REST contracts, schema, registries, deployment configuration, or large theme changes.
+- `main` may deploy production after CI passes.
+- Never change `.github/workflows/deploy.yml` unless deploy behavior is the task.
+- After a merged PR, continue from updated `main`.
+
+## Update triggers
+
+Update the canonical source when its contract changes:
+- runtime/route status → `docs/architecture/LIVE_STATUS.md`
+- cross-system dependencies → `docs/architecture/SYSTEM_MAP.md`
+- CTA routing → `docs/architecture/CONVERSION_ROUTING.md`
+- positioning/public copy → `docs/standards/BRAND_AND_COPY.md`
+- SEO ownership → `docs/seo/query-ownership.csv`
+- repeatable agent workflow → primary skill or delegated specialist skill
