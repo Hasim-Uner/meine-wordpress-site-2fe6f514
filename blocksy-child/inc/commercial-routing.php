@@ -115,7 +115,7 @@ function hu_get_commercial_route( $key, $fallback = '' ) {
  * @return array<string, mixed>
  */
 function hu_get_site_header_navigation_contract() {
-	$routes      = hu_get_commercial_route_map();
+	$routes = hu_get_commercial_route_map();
 	return [
 		'toggle' => [
 			'track'    => 'nav_menu_toggle',
@@ -132,6 +132,18 @@ function hu_get_site_header_navigation_contract() {
 				'current'  => is_front_page(),
 				'class'    => 'nav-freelancer-link',
 				'track'    => 'nav_header_freelancer',
+				'category' => 'navigation',
+				'section'  => 'header',
+			],
+			[
+				'kind'     => 'route',
+				'kicker'   => __( 'Messung', 'blocksy-child' ),
+				'label'    => __( 'Tracking', 'blocksy-child' ),
+				'desc'     => __( 'Server-Side Tracking mit Gegenprobe gegen Formular oder CRM und dokumentierter Abnahme.', 'blocksy-child' ),
+				'url'      => $routes['tracking_b2b'],
+				'current'  => is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' ),
+				'class'    => 'nav-tracking-link',
+				'track'    => 'nav_header_tracking',
 				'category' => 'navigation',
 				'section'  => 'header',
 			],
@@ -246,3 +258,184 @@ function hu_get_primary_navigation_contract() {
 
 	return $items;
 }
+
+/**
+ * Wayfinding contract for important public routes.
+ *
+ * This deliberately does not change query ownership, canonicals, titles or
+ * redirects. It only describes orientation inside and between existing owners.
+ * Search intent -> owning page -> next best action remains the invariant.
+ *
+ * @return array<string, mixed>
+ */
+function hu_get_wayfinding_context() {
+	if ( is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' ) ) {
+		return [
+			'key'        => 'tracking',
+			'label'      => 'Server-Side Tracking',
+			'breadcrumb' => true,
+			'toc_mode'   => 'existing',
+			'next'       => [], // Die Tracking-Seite endet bereits in ihrer eigenen Anfrage-Sektion.
+		];
+	}
+
+	if ( function_exists( 'nexus_is_agency_nav_context' ) && nexus_is_agency_nav_context() ) {
+		return [
+			'key'        => 'whitelabel',
+			'label'      => 'White-Label',
+			'breadcrumb' => true,
+			'toc_mode'   => 'existing',
+			'next'       => [], // Die Seite besitzt bereits einen eigenen, formularnahen Abschluss.
+		];
+	}
+
+	if ( function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context() ) {
+		return [
+			'key'        => 'energy',
+			'label'      => 'Solar & Wärmepumpe',
+			'breadcrumb' => false, // Eigene Energy-Dokumentnavigation; keine zweite Hierarchie darüberlegen.
+			'toc_mode'   => 'existing',
+			'next'       => [],
+		];
+	}
+
+	if ( is_page( 'ergebnisse' ) || is_page_template( 'page-ergebnisse.php' ) ) {
+		return [
+			'key'        => 'results',
+			'label'      => 'Ergebnisse',
+			'breadcrumb' => true,
+			'toc_mode'   => 'generated',
+			'toc'        => [
+				[ 'id' => 'grossprojekt', 'label' => 'Fallstudie' ],
+				[ 'id' => 'arbeiten', 'label' => 'Öffentliche Arbeiten' ],
+				[ 'id' => 'technik', 'label' => 'Technischer Beleg' ],
+				[ 'id' => 'weiter', 'label' => 'Nächster Schritt' ],
+			],
+			'next'       => [], // Drei-Wege-Close der Seite bleibt alleiniger Abschluss.
+		];
+	}
+
+	if ( is_page( 'hasim-uener' ) || is_page( 'uber-mich' ) || is_page_template( 'page-hasim-uener.php' ) ) {
+		return [
+			'key'        => 'about',
+			'label'      => 'Über Haşim',
+			'breadcrumb' => true,
+			'toc_mode'   => 'existing',
+			'next'       => [], // Der bestehende About-Abschluss führt bereits zu Projekt und White-Label.
+		];
+	}
+
+	return [];
+}
+
+/**
+ * Whether the current request participates in the shared wayfinding layer.
+ *
+ * @return bool
+ */
+function hu_wayfinding_is_active() {
+	return [] !== hu_get_wayfinding_context();
+}
+
+add_filter( 'body_class', function ( $classes ) {
+	if ( hu_wayfinding_is_active() ) {
+		$context   = hu_get_wayfinding_context();
+		$classes[] = 'hu-wayfinding-active';
+		$classes[] = 'hu-wayfinding-' . sanitize_html_class( (string) ( $context['key'] ?? 'page' ) );
+	}
+	return $classes;
+} );
+
+add_action( 'wp_enqueue_scripts', function () {
+	if ( is_admin() || ! hu_wayfinding_is_active() ) {
+		return;
+	}
+
+	$dir = get_stylesheet_directory();
+	$uri = get_stylesheet_directory_uri();
+	$css = '/assets/css/navigation-ecosystem.css';
+	$js  = '/assets/js/navigation-ecosystem.js';
+
+	if ( is_file( $dir . $css ) ) {
+		wp_enqueue_style( 'hu-navigation-ecosystem', $uri . $css, [], (string) filemtime( $dir . $css ) );
+	}
+	if ( is_file( $dir . $js ) ) {
+		wp_enqueue_script( 'hu-navigation-ecosystem', $uri . $js, [], (string) filemtime( $dir . $js ), true );
+	}
+}, 40 );
+
+/**
+ * Render a visible breadcrumb only. Structured BreadcrumbList data remains in
+ * the existing schema layer so this component cannot create duplicate JSON-LD.
+ *
+ * @return void
+ */
+function hu_render_wayfinding_breadcrumb() {
+	$context = hu_get_wayfinding_context();
+	if ( empty( $context['breadcrumb'] ) || empty( $context['label'] ) ) {
+		return;
+	}
+	?>
+	<nav class="hu-wayfinding-breadcrumb" aria-label="Breadcrumb" data-track-section="breadcrumb">
+		<ol>
+			<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>" data-track-action="breadcrumb_home" data-track-category="navigation">Startseite</a></li>
+			<li><span aria-current="page"><?php echo esc_html( (string) $context['label'] ); ?></span></li>
+		</ol>
+	</nav>
+	<?php
+}
+add_action( 'wp_body_open', 'hu_render_wayfinding_breadcrumb', 30 );
+
+/**
+ * Render a semantic TOC only on routes that do not already own a local index.
+ * Existing TOCs are enhanced in-place by navigation-ecosystem.js.
+ *
+ * @return void
+ */
+function hu_render_generated_page_toc() {
+	$context = hu_get_wayfinding_context();
+	$items   = isset( $context['toc'] ) && is_array( $context['toc'] ) ? $context['toc'] : [];
+	if ( 'generated' !== ( $context['toc_mode'] ?? '' ) || [] === $items ) {
+		return;
+	}
+	?>
+	<nav class="hu-page-toc" aria-label="Auf dieser Seite" data-hu-rail="true" data-track-section="page_toc">
+		<details open>
+			<summary>Auf dieser Seite</summary>
+			<ul role="list">
+				<?php foreach ( $items as $item ) : ?>
+					<li><a href="#<?php echo esc_attr( (string) $item['id'] ); ?>" data-track-action="toc_<?php echo esc_attr( sanitize_key( (string) $item['id'] ) ); ?>" data-track-category="navigation"><?php echo esc_html( (string) $item['label'] ); ?></a></li>
+				<?php endforeach; ?>
+			</ul>
+		</details>
+	</nav>
+	<?php
+}
+add_action( 'wp_body_open', 'hu_render_generated_page_toc', 31 );
+
+/**
+ * Render one recommended next action plus one safe alternative.
+ * Pages with their own intentional closing architecture opt out in the contract.
+ *
+ * @return void
+ */
+function hu_render_wayfinding_next_step() {
+	$context = hu_get_wayfinding_context();
+	$next    = isset( $context['next'] ) && is_array( $context['next'] ) ? $context['next'] : [];
+	if ( empty( $next['primary']['url'] ) || empty( $next['primary']['label'] ) ) {
+		return;
+	}
+	?>
+	<nav class="hu-next-step" aria-label="Nächster sinnvoller Schritt" data-track-section="next_step">
+		<p class="hu-next-step__eyebrow">Nächster sinnvoller Schritt</p>
+		<p class="hu-next-step__title"><?php echo esc_html( (string) ( $next['title'] ?? 'Weiter zum nächsten Schritt.' ) ); ?></p>
+		<div class="hu-next-step__links">
+			<a class="hu-next-step__primary" href="<?php echo esc_url( (string) $next['primary']['url'] ); ?>" data-track-action="wayfinding_next_primary" data-track-category="lead_gen"><?php echo esc_html( (string) $next['primary']['label'] ); ?> <span aria-hidden="true">→</span></a>
+			<?php if ( ! empty( $next['secondary']['url'] ) && ! empty( $next['secondary']['label'] ) ) : ?>
+				<a class="hu-next-step__secondary" href="<?php echo esc_url( (string) $next['secondary']['url'] ); ?>" data-track-action="wayfinding_next_secondary" data-track-category="navigation"><?php echo esc_html( (string) $next['secondary']['label'] ); ?></a>
+			<?php endif; ?>
+		</div>
+	</nav>
+	<?php
+}
+add_action( 'get_footer', 'hu_render_wayfinding_next_step', 5 );
