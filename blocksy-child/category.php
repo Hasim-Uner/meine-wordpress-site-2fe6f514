@@ -244,19 +244,17 @@ $category_cta = $is_energy_category
 					<?php endif; ?>
 				</div>
 
-				<?php if ( have_posts() || get_query_var( 'paged' ) ) : ?>
-					<nav class="blog-category__pagination" aria-label="<?php esc_attr_e( 'Seiten', 'blocksy-child' ); ?>">
-						<?php
-						the_posts_pagination(
-							[
-								'mid_size'  => 1,
-								'prev_text' => __( 'Zurück', 'blocksy-child' ),
-								'next_text' => __( 'Weiter', 'blocksy-child' ),
-							]
-						);
-						?>
-					</nav>
-				<?php endif; ?>
+				<nav class="blog-category__pagination" aria-label="<?php esc_attr_e( 'Seiten', 'blocksy-child' ); ?>">
+					<?php
+					the_posts_pagination(
+						[
+							'mid_size'  => 1,
+							'prev_text' => __( 'Zurück', 'blocksy-child' ),
+							'next_text' => __( 'Weiter', 'blocksy-child' ),
+						]
+					);
+					?>
+				</nav>
 			</div>
 		</div>
 	</section>
