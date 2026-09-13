@@ -44,13 +44,14 @@ Bis dahin dürfen dort keine abweichenden Werte entstehen.
 
 `design-system.css` ist derzeit noch notwendig, weil aktive Alt-Routen `--nx-*` konsumieren. Es ist **nicht** der Design-Core für neue Seiten.
 
-Der gemessene Stand vom 14.09.2026 beträgt **39 CSS-Dateien mit NX-Namen** außerhalb des Providers. Davon sind **34 tatsächlich an Tokens gekoppelt, die `design-system.css` deklariert**. Fünf Dateien tragen lediglich historische NX-Namen, deren Token der Provider gar nicht besitzt. `scripts/baselines/legacy-nx-consumers.txt` friert trotzdem alle 39 als sichtbare Legacy-Schuld ein; die Liste darf nur schrumpfen.
+Der Ausgangsstand vom 14.09.2026 betrug **39 CSS-Dateien mit NX-Namen** außerhalb des Providers. Davon waren **34 tatsächlich an Tokens gekoppelt, die `design-system.css` deklariert**; fünf Dateien trugen lediglich historische NX-Namen, deren Token der Provider gar nicht besitzt.
 
-Die fünf provider-unabhängigen NX-Verbraucher sind aktuell:
+Der erste Source-Abbau ist bereits erfolgt: `server-side-tracking-cro.css` verwendet für die Care-Preis-Typografie jetzt den kanonischen `--serif-display`-Token statt `--nx-font-display`. Die shrink-only Baseline steht damit aktuell bei **38 NX-Verbraucherdateien**. Die Zahl darf nur sinken.
+
+Die verbleibenden vier provider-unabhängigen NX-Verbraucher sind aktuell:
 
 - `anfragestrecke.css`
 - `b2b-solar-leads-page.css`
-- `server-side-tracking-cro.css`
 - `server-side-tracking-protocol.css`
 - `solar-leads-kaufen-alternative-page.css`
 
@@ -69,7 +70,7 @@ Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu v
 
 ### Gemessene Legacy-Cluster
 
-Die 39 Verbraucher verteilen sich nicht gleichmäßig. Für die Migration gelten diese Cluster:
+Die verbleibenden Verbraucher verteilen sich nicht gleichmäßig. Für die Migration gelten diese Cluster:
 
 1. **Globale Shell / Blocker:** `style.css` und `site-header.css`. Solange diese beiden breit `--nx-*` konsumieren, kann der Legacy-Provider nicht sicher global abgeschaltet werden.
 2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`, `case-study.css`, `ergebnisse.css`.
@@ -139,7 +140,7 @@ Route-CSS soll **nicht** enthalten:
 ## 6. Migrationsreihenfolge
 
 1. **Globale Shell:** `style.css` und `site-header.css` inventarisieren und ihre wirklich global benötigten Primitive von den alten Seiten-/Blocksy-Regeln trennen. Das ist der Hauptblocker für einen bedingten Legacy-Provider.
-2. **Kleine provider-unabhängige NX-Dateien:** die fünf oben gemessenen Dateien auf Canon-/Route-Tokens umstellen und aus der NX-Baseline entfernen.
+2. **Kleine provider-unabhängige NX-Dateien:** die vier verbleibenden Dateien oben auf Canon-/Route-Tokens umstellen und aus der NX-Baseline entfernen.
 3. **Solar-Anfragestrecke:** Token-Spiegel physisch entfernen; gemeinsame Gutachten-Primitives aus `system.css` konsumieren, nur echte Solar-Deltas behalten. Das JS-gemessene Header-/Register-Token wird gemeinsam mit seinen CSS-Verbrauchern migriert, nicht isoliert umbenannt.
 4. **Editorial-Solar-Legacy:** die generischen `.solar-page`-Variablen `--serif`/`--mono` eindeutig umbenennen oder auf Core-Rollen migrieren; eingefrorene Guard-Ausnahme danach löschen.
 5. **Service-Routen:** aktive `cro.css`, `ga4.css`, `meta-ads.css`, `performance.css`, `seo-cornerstone.css` nach Nutzung und Geschäftswert einzeln migrieren oder stilllegen.
@@ -162,4 +163,4 @@ bash scripts/lint-css-motion.sh
 
 `audit-css-architecture.py` schützt die neue Canon-Token-Familie und die exakt eingefrorenen Übergangsausnahmen.
 
-`audit-legacy-nx-css.py` schützt den Abbaupfad: Neue NX-Verbraucher scheitern, und sobald eine Datei bereinigt ist, wird ihre Baseline-Zeile als veraltet gemeldet. Die Zahl 39 ist damit kein Zielwert, sondern eine Obergrenze, die nur sinken darf. Zusätzlich zeigt der Audit, welche Dateien den Legacy-Provider wirklich benötigen und welche lediglich alte NX-Namen tragen.
+`audit-legacy-nx-css.py` schützt den Abbaupfad: Neue NX-Verbraucher scheitern, und sobald eine Datei bereinigt ist, wird ihre Baseline-Zeile als veraltet gemeldet. Die Baseline ist damit kein Zielwert, sondern eine Obergrenze, die nur sinken darf. Zusätzlich zeigt der Audit, welche Dateien den Legacy-Provider wirklich benötigen und welche lediglich alte NX-Namen tragen.
