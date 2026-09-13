@@ -3,8 +3,13 @@
 
 `design-system.css` is a compatibility provider, not the design target for new
 surfaces. This script inventories every stylesheet that still consumes an
-`--nx-*` custom property. Once `scripts/baselines/legacy-nx-consumers.txt`
-exists, the inventory becomes a shrink-only contract:
+`--nx-*` custom property and distinguishes two cases:
+
+- provider-coupled tokens: actually declared by `design-system.css`;
+- unresolved legacy names: NX-looking variables not declared by that provider,
+  which therefore resolve through another layer or their `var()` fallback.
+
+`scripts/baselines/legacy-nx-consumers.txt` is a shrink-only contract:
 
 - a new consumer fails the build;
 - a stale baseline entry fails the build and must be removed;
@@ -27,6 +32,7 @@ STYLE_CSS = ROOT / "blocksy-child" / "style.css"
 PROVIDER = CSS_DIR / "design-system.css"
 BASELINE = ROOT / "scripts" / "baselines" / "legacy-nx-consumers.txt"
 NX_USE_RE = re.compile(r"var\(\s*(--nx-[a-zA-Z0-9_-]+)")
+NX_DECL_RE = re.compile(r"(?m)^\s*(--nx-[a-zA-Z0-9_-]+)\s*:")
 
 
 def rel(path: Path) -> str:
@@ -53,6 +59,11 @@ def read_baseline() -> set[str] | None:
 
 
 def main() -> int:
+    if not PROVIDER.is_file():
+        print(f"Missing legacy provider: {rel(PROVIDER)}", file=sys.stderr)
+        return 1
+
+    provider_tokens = set(NX_DECL_RE.findall(PROVIDER.read_text(encoding="utf-8")))
     consumers: dict[str, Counter[str]] = {}
 
     for path in css_files():
@@ -63,12 +74,42 @@ def main() -> int:
         if tokens:
             consumers[rel(path)] = Counter(tokens)
 
+    coupled_files: list[str] = []
+    fallback_only_files: list[str] = []
+    unresolved_tokens: set[str] = set()
+
     print(f"Legacy --nx-* consumer files: {len(consumers)}")
+    print(f"NX tokens declared by design-system.css: {len(provider_tokens)}")
+
     for path in sorted(consumers):
         token_counts = consumers[path]
+        used_tokens = set(token_counts)
+        coupled = sorted(used_tokens & provider_tokens)
+        unresolved = sorted(used_tokens - provider_tokens)
         uses = sum(token_counts.values())
-        token_list = ", ".join(sorted(token_counts))
-        print(f"- {path}: {uses} uses / {len(token_counts)} tokens :: {token_list}")
+
+        if coupled:
+            coupled_files.append(path)
+        else:
+            fallback_only_files.append(path)
+        unresolved_tokens.update(unresolved)
+
+        coupled_label = ", ".join(coupled) if coupled else "none"
+        unresolved_label = ", ".join(unresolved) if unresolved else "none"
+        print(
+            f"- {path}: {uses} uses / {len(used_tokens)} tokens"
+            f" | provider={coupled_label} | unresolved={unresolved_label}"
+        )
+
+    print("\nProvider coupling summary:")
+    print(f"- files actually coupled to design-system.css tokens: {len(coupled_files)}")
+    print(f"- files with NX names but no provider-declared token: {len(fallback_only_files)}")
+    if fallback_only_files:
+        print("- fallback-only files:")
+        for path in fallback_only_files:
+            print(f"  - {path}")
+    if unresolved_tokens:
+        print("- NX names not declared by design-system.css: " + ", ".join(sorted(unresolved_tokens)))
 
     baseline = read_baseline()
     if baseline is None:
