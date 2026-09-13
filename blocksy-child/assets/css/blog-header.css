@@ -61,7 +61,6 @@
 	text-overflow: ellipsis;
 	text-decoration: none;
 	white-space: nowrap;
-	transition: color var(--t-norm) var(--ease-weich);
 }
 
 .nexus-article-reader-header__trail a:hover,
@@ -126,11 +125,5 @@
 
 	.nexus-article-reader-header__meta {
 		display: none;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.nexus-article-reader-header__trail a {
-		transition: none;
 	}
 }
