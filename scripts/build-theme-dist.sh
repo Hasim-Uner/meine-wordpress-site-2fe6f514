@@ -38,6 +38,15 @@ rsync -a --delete \
   "$source_dir/" "$output_dir/"
 
 style_file="$output_dir/style.css"
+sst_css_dir="$output_dir/assets/css"
+sst_entry="$sst_css_dir/server-side-tracking.css"
+sst_layers=(
+  "server-side-tracking-base.css"
+  "server-side-tracking-cro.css"
+  "server-side-tracking-funnel.css"
+  "server-side-tracking-protocol.css"
+  "server-side-tracking-contrast.css"
+)
 react_funnels=(
   "energie-fahrplan"
   "readiness"
@@ -53,6 +62,37 @@ minify_js_file() {
   local file="$1"
 
   "$terser_bin" "$file" --compress --mangle -o "$file"
+}
+
+build_sst_css_bundle() {
+  if [ ! -f "$sst_entry" ]; then
+    return
+  fi
+
+  local bundle_input
+  bundle_input="$(mktemp)"
+
+  for layer in "${sst_layers[@]}"; do
+    if [ ! -f "$sst_css_dir/$layer" ]; then
+      echo "Missing Server-Side-Tracking CSS layer: $layer" >&2
+      rm -f "$bundle_input"
+      exit 1
+    fi
+    cat "$sst_css_dir/$layer" >> "$bundle_input"
+    printf '\n' >> "$bundle_input"
+  done
+
+  # The source entry documents composition with @import. In the deployment
+  # package the imports are replaced by the concatenated layers above, while
+  # entry-local rules remain last so their cascade order is unchanged.
+  sed '/^[[:space:]]*@import[[:space:]]/d' "$sst_entry" >> "$bundle_input"
+  "$lightningcss_bin" --minify "$bundle_input" -o "$sst_entry"
+  rm -f "$bundle_input"
+
+  # Source layers are authoring units only. Production needs one request.
+  for layer in "${sst_layers[@]}"; do
+    rm -f "$sst_css_dir/$layer"
+  done
 }
 
 build_react_funnel() {
@@ -78,6 +118,8 @@ for funnel in "${react_funnels[@]}"; do
   build_react_funnel "$funnel"
 done
 
+build_sst_css_bundle
+
 if [ -f "$style_file" ]; then
   style_header="$(awk 'NR == 1 && /^\/\*/ { in_header = 1 } in_header { print; if ($0 ~ /\*\//) exit }' "$style_file")"
   style_header_end_line="$(awk 'NR == 1 && /^\/\*/ { in_header = 1 } in_header && /\*\// { print NR; exit }' "$style_file")"
@@ -100,7 +142,7 @@ if [ -f "$style_file" ]; then
   rm -f "$style_body_input" "$style_body_output"
 fi
 
-find "$output_dir" -type f -name '*.css' ! -name '*.min.css' ! -path "$style_file" -print0 | while IFS= read -r -d '' file; do
+find "$output_dir" -type f -name '*.css' ! -name '*.min.css' ! -path "$style_file" ! -path "$sst_entry" -print0 | while IFS= read -r -d '' file; do
   minify_css_file "$file"
 done
 
@@ -109,5 +151,19 @@ find "$output_dir" -type f -name '*.js' ! -name '*.min.js' -print0 | while IFS= 
 done
 
 grep -q '^Theme Name: Blocksy Child$' "$style_file"
+
+# Deployment contract: SST ships as one CSS file without runtime @imports.
+if [ -f "$sst_entry" ]; then
+  if grep -q '@import' "$sst_entry"; then
+    echo "Server-Side-Tracking deployment CSS still contains @import." >&2
+    exit 1
+  fi
+  for layer in "${sst_layers[@]}"; do
+    if [ -e "$sst_css_dir/$layer" ]; then
+      echo "Server-Side-Tracking source layer leaked into deployment package: $layer" >&2
+      exit 1
+    fi
+  done
+fi
 
 echo "Built deployment package at $output_dir"

@@ -93,6 +93,9 @@ jobs:
       - name: Validate repository architecture
         run: bash scripts/validate-architecture.sh
 
+      - name: Audit theme asset references
+        run: python3 scripts/audit-theme-assets.py
+
       - name: Smoke test lead path contract
         run: bash scripts/smoke-lead-path-contract.sh
 
