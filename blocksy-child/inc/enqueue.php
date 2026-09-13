@@ -280,8 +280,8 @@ function hu_enqueue_assets() {
 	// Slug-Route statt Template-Auswahl: die beiden alten Ueber-Mich-
 	// Templates sind entfallen, die Seite haengt jetzt am Dateinamen.
 	if ( hu_is_person_page() ) {
-		hu_enqueue_css( 'nexus-about-css', 'hasim-uener.css', [ 'nexus-design-system' ] );
-		hu_enqueue_js( 'nexus-about-js', 'hasim-uener.js', [] );
+		hu_enqueue_css( 'nexus-about-css', 'hasim-uener.css', [ 'nexus-system-css' ] );
+		// Native disclosures and static document layout need no route-local script.
 	}
 
 	// ── E2) Kontakt ───────────────────────────────────────────────

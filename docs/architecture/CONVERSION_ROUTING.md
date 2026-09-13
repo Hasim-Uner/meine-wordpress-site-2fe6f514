@@ -45,6 +45,27 @@ Die Homepage benötigt kein eigenes Formular-JavaScript. `#anfrage` und
 Routing, Inhalte, Weiterleitung, Analytics-Zuordnung und Nachkontrolle:
 `docs/decisions/homepage-freelancer-konsolidierung.md`.
 
+## Über Haşim: persönliche Methodik und Belege
+
+`/hasim-uener/` erklärt Person und Arbeitsweise; Leistungen und Preisrahmen
+bleiben auf der Homepage. Die Seite führt durch persönlichen Hintergrund,
+Engpass-Priorisierung, Defekt/Gestaltung/Hypothese, unterschiedliche
+Besucherbedürfnisse, Gestaltung und Übergabe. Ein kanonischer Solar-Fall und
+eine öffentliche WordPress-Arbeit belegen den Ansatz mit getrenntem Kontext.
+
+- Hero: `about_read_method` springt zu `#arbeitsweise` (Navigation).
+- Besucherbeispiele: direkte Anbieterwahl → `/#angebote`
+  (`link_about_freelancer`), Lösungsprüfung → `/ergebnisse/`
+  (`about_view_results`), Orientierung → `/blog/` (`about_read_expertise`).
+- Abschluss: `cta_about_project` → kanonische Projektanfrage;
+  `link_about_whitelabel` → eigene White-Label-Seite.
+- `about_station_solar_case` bleibt als Aktion erhalten; der Beleg steht jetzt
+  im Abschnitt `about_method`. Neue Beleg-Links: `about_reference_open` und
+  `about_code_history`. Bestehende Profil-/Mail-Actions bleiben erhalten.
+- Native `<details>` erläutern Besucherbedürfnisse ohne zusätzliche
+  JavaScript-Laufzeit. Profil, Kontaktformular, Consent und CRM bleiben in ihren
+  bisherigen Zuständigkeiten. Kein Solar-Marktcheck als allgemeiner Seiten-CTA.
+
 ## Ergebnisse-Hub: Vertrauensschicht, kein vierter Weg
 
 `/ergebnisse/` gehört allen drei Routen. Bis 2026-09 sagte der Hero
@@ -136,7 +157,7 @@ Do **not** route these pages to the Solar Marktcheck merely because `hu_get_requ
 Cross-route pages that serve all three paths use the generic project request as
 well, even when they are not themselves an implementation page:
 
-- `/hasim-uener/` — the "Für Betriebe" card is the direct-project path, not the energy path
+- `/hasim-uener/` — the final project request uses the direct-project path; the agency bridge leads to White-Label
 - `/glossar/` — definitional layer below every cluster
 - the technical-SEO cornerstone template (`page-seo-cornerstone.php`)
 - the DOMDAR e-commerce case study — a cart-and-margin case with no energy context
