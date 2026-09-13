@@ -1,1 +1,0 @@
-/* Homepage JS intentionally empty. Sticky sidebar navigation was removed. */
