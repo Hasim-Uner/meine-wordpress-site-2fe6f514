@@ -10,6 +10,7 @@
     "build:theme": "bash scripts/build-theme-dist.sh",
     "lint:architecture": "bash scripts/validate-architecture.sh",
     "lint:css-architecture": "python3 scripts/audit-css-architecture.py",
+    "lint:legacy-css": "python3 scripts/audit-legacy-nx-css.py",
     "lint:php": "find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l"
   },
   "devDependencies": {
