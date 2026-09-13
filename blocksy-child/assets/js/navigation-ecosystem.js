@@ -96,6 +96,35 @@
 		targets.forEach(function (target) { observer.observe(target); });
 	}
 
+	function normalizeEnergyNav() {
+		if (!document.body.classList.contains('hu-wayfinding-energy')) return;
+		var nav = document.getElementById('nav');
+		if (!nav) return;
+
+		var stages = [
+			['strecke', 'System', 'toc_energy_system'],
+			['rechnung', 'Wirtschaftlichkeit', 'toc_energy_economics'],
+			['fall', 'Case', 'toc_energy_case'],
+			['leiter', 'Einstieg', 'toc_energy_entry'],
+			['fragen', 'FAQ', 'toc_energy_faq']
+		].filter(function (stage) {
+			return !!document.getElementById(stage[0]);
+		});
+
+		if (stages.length < 3) return;
+		nav.textContent = '';
+		if (!nav.getAttribute('aria-label')) nav.setAttribute('aria-label', 'Auf dieser Seite');
+		stages.forEach(function (stage) {
+			var link = document.createElement('a');
+			link.href = '#' + stage[0];
+			link.textContent = stage[1];
+			link.setAttribute('data-track-action', stage[2]);
+			link.setAttribute('data-track-category', 'navigation');
+			link.setAttribute('data-track-section', 'energy_toc');
+			nav.appendChild(link);
+		});
+	}
+
 	function placeGeneratedToc(nav) {
 		var hero = document.querySelector('.hu-erg-hero, main [data-track-section="hero"], main #hero');
 		if (hero && hero.parentNode) hero.insertAdjacentElement('afterend', nav);
@@ -137,6 +166,7 @@
 
 	function init() {
 		document.body.classList.add('hu-wayfinding-active');
+		normalizeEnergyNav();
 		updateStickyOffset();
 		window.addEventListener('resize', updateStickyOffset, { passive: true });
 
