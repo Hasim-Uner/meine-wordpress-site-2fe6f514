@@ -179,7 +179,7 @@ $pick_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 	<style id="contact-density-polish">
 		.contact-page.contact-page--scoped {
 			padding-top: clamp(2.25rem, 3.8vw, 3.5rem);
-			padding-bottom: clamp(1.75rem, 2.5vw, 2.5rem);
+			padding-bottom: 0;
 		}
 
 		.contact-page--scoped .contact-page__shell {
@@ -215,11 +215,19 @@ $pick_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 		}
 
 		.fuss {
-			padding-top: clamp(2rem, 3vw, 3rem);
+			padding-top: 0;
+			border-top: 0;
+		}
+
+		.fuss > .blatt {
+			max-width: 84rem;
+			padding-inline: clamp(1.25rem, 4vw, 3rem);
 		}
 
 		.fuss .wahl {
+			margin-top: 0;
 			margin-bottom: var(--s3);
+			padding-top: clamp(1.1rem, 2vw, 1.5rem);
 		}
 
 		.fuss .wahl > .mono {
@@ -241,7 +249,7 @@ $pick_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 		@media (max-width: 820px) {
 			.contact-page.contact-page--scoped {
 				padding-top: 2rem;
-				padding-bottom: 2rem;
+				padding-bottom: 0;
 			}
 
 			.contact-page--scoped .contact-page__shell {
@@ -250,7 +258,7 @@ $pick_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 			}
 
 			.fuss {
-				padding-top: var(--s4);
+				padding-top: 0;
 			}
 		}
 	</style>
