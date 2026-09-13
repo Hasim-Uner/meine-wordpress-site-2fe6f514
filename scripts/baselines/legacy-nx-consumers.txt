@@ -25,7 +25,6 @@ blocksy-child/assets/css/related-content.css
 blocksy-child/assets/css/seo-cornerstone.css
 blocksy-child/assets/css/seo.css
 blocksy-child/assets/css/server-side-tracking-base.css
-blocksy-child/assets/css/server-side-tracking-cro.css
 blocksy-child/assets/css/server-side-tracking-funnel.css
 blocksy-child/assets/css/server-side-tracking-protocol.css
 blocksy-child/assets/css/single-editorial.css

@@ -46,6 +46,7 @@ style_file="$output_dir/style.css"
 sst_css_dir="$output_dir/assets/css"
 sst_entry="$sst_css_dir/server-side-tracking.css"
 anfragestrecke_css="$sst_css_dir/anfragestrecke.css"
+single_css="$sst_css_dir/single.css"
 sst_layers=(
   "server-side-tracking-base.css"
   "server-side-tracking-cro.css"
@@ -131,6 +132,14 @@ build_sst_css_bundle
 # ship two owners for the same Gutachten custom-property family.
 if [ -f "$anfragestrecke_css" ]; then
   python3 "$root_dir/scripts/collapse-gutachten-token-mirror.py" "$anfragestrecke_css"
+fi
+
+# The source still carries one historical single-post base block in style.css.
+# Dedicated single.css is loaded later on every single-post/SEO-cornerstone
+# surface and owns those selectors. Keep the source migration reviewable, but
+# do not ship both generations in the deployment package.
+if [ -f "$style_file" ] && [ -f "$single_css" ]; then
+  python3 "$root_dir/scripts/prune-style-single-legacy.py" "$style_file" "$single_css"
 fi
 
 if [ -f "$style_file" ]; then
