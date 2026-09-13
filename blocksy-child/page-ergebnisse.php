@@ -31,7 +31,7 @@ $routes         = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_comm
 $energy_url     = $routes['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 $whitelabel_url = $routes['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
 $tracking_url   = $routes['tracking_b2b'] ?? home_url( '/server-side-tracking-b2b/' );
-$freelancer_url = $routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+$freelancer_url = $routes['freelancer'] ?? home_url( '/' );
 
 $marketcheck_url   = function_exists( 'hu_get_request_analysis_url' )
 	? hu_get_request_analysis_url()

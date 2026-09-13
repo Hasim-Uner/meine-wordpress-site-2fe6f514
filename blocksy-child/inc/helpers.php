@@ -1757,6 +1757,8 @@ function nexus_get_legacy_offer_redirect_map() {
 	return [
 		// High-probability external entry paths. Internal/historical tool,
 		// WGOS and service slugs are no longer forced through 301 redirects.
+		// Content and query ownership moved to / by the homepage consolidation.
+		'/wordpress-freelancer-hannover/' => home_url( '/' ),
 		'/growth-audit/'             => $request_url,
 		'/audit/'                    => $request_url,
 		'/customer-journey-audit/'   => $request_url,
@@ -1900,6 +1902,19 @@ function nexus_append_current_query_to_redirect_url( $target_url ) {
 }
 
 /**
+ * Retain campaign context without carrying WordPress routing back to the old post.
+ * A redirect to /?page_id=OLD would otherwise resolve the retired page again.
+ *
+ * @return string
+ */
+function nexus_get_freelancer_redirect_url() {
+	return remove_query_arg(
+		[ 'page_id', 'p', 'pagename', 'name', 'attachment', 'attachment_id', 'post_type', 'page', 'paged', 'feed', 'preview', 'preview_id', 'preview_nonce', 'rest_route', 's' ],
+		nexus_append_current_query_to_redirect_url( home_url( '/' ) )
+	);
+}
+
+/**
  * Redirect protected legacy entry slugs to their current canonical destinations.
  *
  * @return void
@@ -1910,6 +1925,14 @@ function nexus_redirect_legacy_offer_paths() {
 	}
 
 	$current_path = nexus_get_current_request_path();
+	// Also handle ?page_id= and legacy template assignments before redirect_canonical.
+	$is_retired_freelancer = '/wordpress-freelancer-hannover/' === $current_path
+		|| ( ! is_front_page() && ( is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' ) ) );
+	if ( $is_retired_freelancer ) {
+		wp_safe_redirect( nexus_get_freelancer_redirect_url(), 301 );
+		exit;
+	}
+
 	$redirect_map = nexus_get_legacy_offer_redirect_map();
 
 	if ( empty( $redirect_map[ $current_path ] ) ) {

@@ -58,7 +58,7 @@ function hu_get_positioned_schema_offer_catalog() : array {
 			? nexus_get_whitelabel_page_url()
 			: home_url( '/whitelabel-retainer/' )
 	);
-	$freelancer_url = $routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+	$freelancer_url = $routes['freelancer'] ?? home_url( '/' );
 	$tracking_url   = $routes['tracking_b2b'] ?? home_url( '/server-side-tracking-b2b/' );
 	$energy_url     = $routes['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 
@@ -172,11 +172,11 @@ function hu_normalize_positioned_schema_node( array $schema ) : array {
 		$schema['knowsAbout']  = hu_get_identity_knows_about();
 	}
 
-	$freelancer_webpage_id = home_url( '/wordpress-freelancer-hannover/#webpage' );
+	$freelancer_webpage_id = home_url( '/#webpage' );
 	if ( $freelancer_webpage_id === $id ) {
-		$schema['name']        = 'WordPress Freelancer Hannover – Entwicklung, Tracking & Conversion';
-		$schema['description'] = 'WordPress-Websites, Landingpages und Anfragestrecken inklusive Tracking. Direkte Zusammenarbeit aus der Region Hannover, remote im DACH-Raum.';
-		$schema['mainEntity']  = [ '@id' => home_url( '/wordpress-freelancer-hannover/#service' ) ];
+		$schema['name']        = hu_get_homepage_title();
+		$schema['description'] = hu_get_homepage_description();
+		$schema['mainEntity']  = [ '@id' => home_url( '/#service' ) ];
 		$schema['about']       = [ '@id' => home_url( '/#organization' ) ];
 	}
 
@@ -194,7 +194,7 @@ function hu_normalize_positioned_schema_node( array $schema ) : array {
  */
 function hu_get_wordpress_freelancer_service_schema() : array {
 	$routes         = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
-	$freelancer_url = $routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+	$freelancer_url = $routes['freelancer'] ?? home_url( '/' );
 	$service_id     = trailingslashit( $freelancer_url ) . '#service';
 	$provider_id    = home_url( '/#organization' );
 
@@ -218,7 +218,7 @@ function hu_get_wordpress_freelancer_service_schema() : array {
 		'@id'              => $service_id,
 		'url'              => $freelancer_url,
 		'name'             => 'WordPress Freelancer Hannover',
-		'description'      => 'WordPress-Websites, Landingpages und Anfragestrecken inklusive Tracking, technischer SEO und Conversion-Optimierung. Sitz in Pattensen in der Region Hannover; Projekte remote im DACH-Raum.',
+		'description'      => 'WordPress-Websites, Landingpages und Anfragestrecken; Tracking, technisches SEO und Conversion-Optimierung nach vereinbartem Umfang. Sitz in Pattensen in der Region Hannover; Projekte remote im DACH-Raum.',
 		'provider'         => [ '@id' => $provider_id ],
 		'serviceType'      => 'WordPress-Entwicklung, Tracking und Conversion-Optimierung',
 		'serviceOutput'    => 'Eine technisch übergebene Website oder Anfragestrecke mit nachvollziehbarer Messung, versioniertem Code und klarer Übergabe.',
@@ -318,7 +318,7 @@ function hu_output_positioned_schema() : void {
 		echo $markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON-LD generated from wp_json_encode.
 	}
 
-	if ( is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' ) ) {
+	if ( is_front_page() ) {
 		$freelancer_schema = hu_get_wordpress_freelancer_service_schema();
 		$json              = wp_json_encode( $freelancer_schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
 

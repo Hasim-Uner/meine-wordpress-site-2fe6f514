@@ -1795,10 +1795,7 @@ function hu_output_schema()
                 || ( function_exists( 'hu_is_seo_cornerstone_article' ) && hu_is_seo_cornerstone_article() )
                 // Die Solar Case Study emittiert ihren FAQPage-Knoten oben selbst.
                 || ( function_exists( 'hu_is_e3_methodology_case_post' ) && hu_is_e3_methodology_case_post( $post_id ) )
-                // Die Startseite ist Verteiler und traegt keine FAQ mehr —
-                // weder im Template noch sichtbar. Der Zweig bleibt, damit aus
-                // altem Editor-Inhalt kein FAQPage fuer Fragen entsteht, die
-                // auf der Seite nicht stehen.
+                // Homepage FAQs are template-owned. Never publish stale editor FAQ data.
                 || is_front_page()
             );
 

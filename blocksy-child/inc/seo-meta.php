@@ -53,43 +53,21 @@ add_filter( 'document_title_parts', 'hu_document_title_overrides' );
  * @return string
  */
 function hu_get_homepage_title() {
-	/*
-	 * Die Startseite ist ein Verteiler auf drei Wege und besitzt in
-	 * docs/seo/query-ownership.csv keine Query. Bis 2026-09-12 trug sie
-	 * trotzdem "Anfragesysteme für Solar & Wärmepumpe" und stand damit im
-	 * Revier der Money Page, die diese Intention tatsaechlich besitzt —
-	 * zwei Seiten mit demselben Keyword-Ziel, genau das, was die Registry
-	 * verhindern soll.
-	 *
-	 * Der neue Titel benennt die fachliche Klammer aus AGENTS.md und die
-	 * Person. Dass die Startseite damit selbst nichts holt, ist fuer einen
-	 * Verteiler normal und kein Anlass, sie mit Keywords zu fuellen.
-	 */
 	return (string) apply_filters(
 		'hu_homepage_seo_title',
-		'Haşim Üner — WordPress, Tracking und Conversion'
+		'WordPress Freelancer Hannover | Haşim Üner'
 	);
 }
 
 /**
- * Return the enforced homepage SEO description.
+ * Homepage and direct Freelancer query ownership were consolidated at /.
  *
  * @return string
  */
 function hu_get_homepage_description() {
-	/*
-	 * Wie beim Titel: der Solar-Fall gehoert auf die Money Page, nicht in
-	 * die Beschreibung des Verteilers. Die Beschreibung nennt jetzt, was
-	 * gemacht wird und fuer wen — dieselbe Aussage wie der Aufriss im
-	 * Dokumentkopf, nur kurz genug fuer das Suchergebnis.
-	 *
-	 * Sie enthaelt bewusst keine Kennzahl mehr. Eine CPL-Zahl im Snippet
-	 * ohne den Fall daneben ist eine Behauptung ohne Beleg; der Fall steht
-	 * einen Klick weiter auf der Seite selbst.
-	 */
 	return (string) apply_filters(
 		'hu_homepage_seo_description',
-		'WordPress-Seiten, auf denen Anfragen entstehen, und die Messung, die zeigt, woher sie kamen. Für Unternehmen, Agenturen und Solarbetriebe im DACH-Raum.'
+		'WordPress Freelancer aus der Region Hannover für Websites, Relaunches, Landingpages und Tracking. Direkter Kontakt, klarer Umfang und dokumentierte Übergabe.'
 	);
 }
 
@@ -842,6 +820,7 @@ function hu_get_noindex_nofollow_slugs() {
  */
 function hu_get_noindex_follow_slugs() {
 	return [
+		'wordpress-freelancer-hannover', // Retired; 301 to the homepage, excluded from sitemaps.
 		'alle-loesungen',
 		'alle-loesungen-im-detail',
 		'anfrage',

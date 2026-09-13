@@ -75,9 +75,9 @@ These files cost more context than a whole task should. Locate the relevant line
 - CTA destination logic lives in `docs/architecture/CONVERSION_ROUTING.md`.
 - SEO query ownership lives in `docs/seo/query-ownership.csv`.
 - **Do not conflate SEO ownership with conversion routing.** A page can own a query and still send its CTA to a different next action.
-- Global fachliche Klammer: WordPress, technisches SEO, Tracking, Conversion.
+- Public role: WordPress Freelancer; connected expertise: technisches SEO, Tracking, Conversion.
 - Commercial entry paths:
-  - direct clients -> `/wordpress-freelancer-hannover/` / generic project request
+  - direct clients -> `/` (homepage owns Freelancer queries and offer) / generic project request
   - agencies -> `/whitelabel-retainer/`
   - Solar / Wärmepumpe / Speicher -> `/solar-waermepumpen-leadgenerierung/` / Marktcheck
 - The Marktcheck is not a site-wide default CTA anymore. Use it only for the Energy cluster.

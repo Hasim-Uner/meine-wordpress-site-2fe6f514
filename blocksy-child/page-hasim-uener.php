@@ -39,8 +39,8 @@ $request_url    = function_exists( 'hu_get_commercial_route' )
 	? hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) )
 	: home_url( '/kontakt/' );
 $freelancer_url = function_exists( 'hu_get_commercial_route' )
-	? hu_get_commercial_route( 'freelancer', home_url( '/wordpress-freelancer-hannover/' ) )
-	: home_url( '/wordpress-freelancer-hannover/' );
+	? hu_get_commercial_route( 'freelancer', home_url( '/' ) )
+	: home_url( '/' );
 $whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 $e3_case_url    = function_exists( 'hu_e3_canon' )
 	? (string) ( hu_e3_canon()['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) )

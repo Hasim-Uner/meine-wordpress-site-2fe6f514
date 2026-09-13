@@ -64,7 +64,7 @@ function nexus_get_llms_txt_markdown_path( $url ) {
 function nexus_get_llms_txt_sections() {
 	$urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 
-	$freelancer_url = $urls['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+	$freelancer_url = $urls['freelancer'] ?? home_url( '/' );
 	$whitelabel_url = $urls['whitelabel'] ?? (
 		function_exists( 'nexus_get_whitelabel_page_url' )
 			? nexus_get_whitelabel_page_url()
@@ -88,14 +88,9 @@ function nexus_get_llms_txt_sections() {
 			'heading' => 'Primäre Einstiege',
 			'links'   => [
 				[
-					'label'       => 'Startseite',
-					'url'         => $urls['home'] ?? home_url( '/' ),
-					'description' => 'Fachliche Klammer und Verteiler auf direkte Projekte, White-Label und Solar/Wärmepumpe.',
-				],
-				[
 					'label'       => 'WordPress Freelancer Hannover',
 					'url'         => $freelancer_url,
-					'description' => 'Direkter Einstieg für WordPress-Projekte mit Entwicklung, Tracking, Funnel/CRO und technischer SEO.',
+					'description' => 'Startseite und direkter Einstieg für WordPress-Websites, Relaunches, Landingpages und Tracking. Leistungen, Preisrahmen, öffentliche Referenzen und Projektanfrage.',
 				],
 				[
 					'label'       => 'Für Agenturen: White-Label',
@@ -131,11 +126,6 @@ function nexus_get_llms_txt_sections() {
 					'label'       => 'WordPress Agentur Hannover',
 					'url'         => $urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
 					'description' => 'Lokale SEO-Seite für den Agentur-Intent; direkte Zusammenarbeit wird zur Freelancer-Route weitergeführt.',
-				],
-				[
-					'label'       => 'WordPress Freelancer Hannover',
-					'url'         => $freelancer_url,
-					'description' => 'Lokaler Freelancer-Intent für direkte Zusammenarbeit.',
 				],
 				[
 					'label'       => 'White-Label für Agenturen',
@@ -275,7 +265,7 @@ function nexus_get_llms_txt_content() {
 	$lines = [
 		'# Haşim Üner',
 		'',
-		'> WordPress, Tracking und Conversion als zusammenhängendes System — aus Pattensen bei Hannover (Region Hannover, Niedersachsen) für Kunden vor Ort und im DACH-Raum. Direkte Projekte laufen über den WordPress-Freelancer-/Projektpfad, Agenturen über White-Label. Solar, Wärmepumpe und Speicher bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.',
+		'> WordPress Freelancer für Websites, Landingpages, Tracking und Conversion — aus Pattensen bei Hannover (Region Hannover, Niedersachsen) für Kunden vor Ort und im DACH-Raum. Direkte Projekte laufen über den WordPress-Freelancer-/Projektpfad, Agenturen über White-Label. Solar, Wärmepumpe und Speicher bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.',
 		'',
 		sprintf(
 			'Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Workshops und Reviews sind in der Region Hannover, Hildesheim, Braunschweig, Wolfsburg und Celle möglich; die laufende Umsetzung erfolgt remote im DACH-Raum. Vollständige Anschrift und Kontaktdaten: [Impressum](%s).',

@@ -103,12 +103,6 @@ $cta_item          = isset( $header_contract['cta'] ) && is_array( $header_contr
 		'section'     => 'header',
 	];
 
-// This route owns its intake. Keep the canonical cross-page contact URL intact.
-if ( is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' ) ) {
-	$project_url     = '#anfrage';
-	$cta_item['url'] = $project_url;
-}
-
 $cta_url   = (string) ( $cta_item['url'] ?? $project_url );
 $cta_label = (string) ( $cta_item['label'] ?? 'Projekt anfragen' );
 

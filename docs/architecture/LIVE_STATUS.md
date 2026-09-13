@@ -1,5 +1,21 @@
 # Live Status
 
+## Homepage-Konsolidierung – Repository-Stand 2026-09-13
+
+Die Startseite übernimmt die Freelancer-Inhalte und Suchintention. Vier direkte
+Leistungsangebote, öffentliche Referenzen und der bestehende Kontaktablauf
+ersetzen den reinen Drei-Wege-Verteiler. White-Label und Solar/Wärmepumpe bleiben
+Spezialangebote. Die alte Freelancer-URL erhält einen 301 auf `/`; interne
+Links, Service-Schema und Query-Ownership ziehen mit. Alte CSS-/Formularskripte
+entfallen, der WordPress-Datensatz wird nicht automatisch gelöscht.
+
+Dieser Stand ist eine vorbereitete Repo-Änderung, kein bestätigter Live-Deploy.
+Visuelle Browserprüfung ist in dieser Sitzung durch die Browser-URL-Richtlinie
+blockiert; sie bleibt zusammen mit dem Live-Redirect-/Kontakt-Smoke offen.
+Entscheidung und Nachkontrolle: `../decisions/homepage-freelancer-konsolidierung.md`.
+Die älteren Homepage-/Freelancer-Abschnitte unten dokumentieren den Vorgängerstand.
+
+
 Statusbasis: Repo-Inhalt zum jeweiligen Commit; kein händisch gepflegtes Tagesdatum.
 
 Basis dieses Status:

@@ -1,6 +1,6 @@
 # Conversion Routing Architecture
 
-Status: active decision, 2026-08-18
+Status: active decision, updated 2026-09-13
 
 This document separates **SEO ownership** from **conversion routing**. It exists to prevent a recurring failure mode: sending every page to the same funnel or moving a ranking query owner merely because another page has the preferred CTA.
 
@@ -18,8 +18,8 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 
 | Route | Primary audience / intent | Page role | Primary CTA | Secondary CTA / bridge |
 | --- | --- | --- | --- | --- |
-| `/` | Brand / mixed / undecided | Global hub and fachliche Klammer | Choose one of the three paths or `Projekt anfragen` | Solar / Freelancer / White-Label |
-| `/wordpress-freelancer-hannover/` | Direct clients seeking one freelancer | Direct WordPress money page | `Projekt anfragen` / scope clarification | Proof / tracking specialist pages |
+| `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` with offer-specific focus | Proof / White-Label / Solar / tracking specialist |
+| `/wordpress-freelancer-hannover/` | Retired direct-client route | 301 to `/`; excluded from sitemap | Homepage takes over content and query ownership | Legacy content anchors remain on `/` |
 | `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase`) or scoped first project | 30-minute call / proof |
 | `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck | Solar proof / case study |
 | `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page | Tracking project request / scope clarification | White-Label bridge for agencies |
@@ -27,37 +27,23 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/ergebnisse/` | Proof / evaluation, all three routes | Proof hub / trust layer | Three-way close: Marktcheck, `Projekt anfragen`, White-Label `Aufgabe beschreiben` | Case study, public references, tracking money page |
 | `/case-study-solar-leadgenerierung/` | Solar proof | Evidence page | Solar Marktcheck | Energy money page |
 
-## Homepage: Auswahl vor der spezialisierten Anfrage
+## Homepage: direkter Freelancer-Einstieg
 
-Die Homepage ist ein Verteiler für gemischten Brand-Traffic. Seit dem Umbau
-auf den Gutachten-Standard (2026-09-12) stehen ihre drei Wege als
-Entscheidungszeilen in Abschnitt 01 — mit Preisrahmen in der Zeile — und
-führen zu `/wordpress-freelancer-hannover/`, `/whitelabel-retainer/` und
-`/solar-waermepumpen-leadgenerierung/`.
-Die Energy-Zeile trägt keinen `#marktcheck`-Anker; der Marktcheck bleibt
-auf der Branchenseite und auf kaufnahen Energy-Unterseiten der primäre CTA.
-Der Sprung aus dem Dokumentkopf führt zu `#wege`, beide Kontakt-CTAs nutzen
-`hu_get_navigation_project_request_url()`.
+Seit der Betreiberentscheidung vom 2026-09-13 übernimmt `/` die Inhalte und
+Suchintention der früheren Freelancer-Route. Die Seite führt vom
+WordPress-Freelancer-Hero zu konkreten Leistungen, Preisrahmen, öffentlichen
+Arbeiten, Zusammenarbeit und Projektanfrage. White-Label und Solar/Wärmepumpe
+bleiben als gezielte Brücken erreichbar. Der Solar-Fall ist abgegrenzter Proof.
 
-**Die drei Wege stehen im Seiteninhalt genau einmal.** Vorher standen sie
-dreimal — Hauptmenü, Kartenabschnitt, Schlussliste im Fuß — und in drei
-verschiedenen Reihenfolgen. Deshalb unterdrückt `template-parts/site-footer.php`
-die Selbstauskunft auf der Startseite; im Hauptmenü bleiben die Wege.
+Die Hero- und Abschluss-CTAs führen zur kanonischen Projektanfrage. Die vier
+Angebote verwenden `hu_get_contact_intake_url('project', focus)` mit `relaunch`,
+`conversion`, `tracking` oder `implementation_scope`. Der gemeinsame
+Kontaktablauf überspringt dadurch die bereits beantwortete Themenauswahl.
+Die Homepage benötigt kein eigenes Formular-JavaScript. `#anfrage` und
+`#kontakt` bleiben als Anker des Abschlussblocks erhalten.
 
-Die Preisrahmen lesen den Pricing-Canon: `HU_FREELANCER_WEBSITE_MIN` (direkt),
-`HU_WHITELABEL_TEST_SPRINT_PRICE` mit `HU_WHITELABEL_RETAINER_MIN` im Fließtext
-(Agentur), `HU_ENTRY_SETUP_PRICE` mit `HU_FOUNDATION_PRICE_STANDARD` (Energie).
-Ein Stundensatz steht nicht dabei — die White-Label-Zielseite nennt
-ausdrücklich keinen, und zwei Aussagen dazu auf zwei indexierten Seiten wären
-ein Widerspruch.
-
-Die drei Auswahlhooks `home_door_freelancer`, `home_door_whitelabel` und
-`home_door_energy` bleiben unverändert, damit die Zeitreihe über den Umbau
-hinweg vergleichbar bleibt. Neu sind `home_head_contact` (zweiter CTA im
-Dokumentkopf) und `home_close_mail`. Entfallen sind `home_more_results`,
-`home_about` und `home_proof_wordpress` samt ihren Flächen; `/ergebnisse/` und
-`/hasim-uener/` bleiben über Hauptmenü und Fußverzeichnis erreichbar.
-Es entsteht keine neue Analytics-Laufzeit.
+Routing, Inhalte, Weiterleitung, Analytics-Zuordnung und Nachkontrolle:
+`docs/decisions/homepage-freelancer-konsolidierung.md`.
 
 ## Ergebnisse-Hub: Vertrauensschicht, kein vierter Weg
 
@@ -208,12 +194,10 @@ Expected destination:
 
 Use outside the dedicated Solar and White-Label funnels.
 
-Route-local exception for `/wordpress-freelancer-hannover/`: its project buttons,
-the rendered header bar and header menu CTA, and the footer's `Kontaktformular`
-link use `#anfrage`, the page's existing intake. This view-specific choice does
-not change `hu_get_navigation_project_request_url()`, `project_request` in the
-commercial route map, or the standalone `/kontakt/` fallback. Links from other
-routes continue to use the canonical contact destination above.
+Die frühere lokale Formularausnahme der Freelancer-Seite entfällt mit ihrer
+Konsolidierung auf `/`. Homepage, Header und Footer verwenden den gemeinsamen
+Kontaktweg; Angebotslinks tragen die passende Vorauswahl. Alte Formularanker
+zeigen auf den Anfrageabschluss der Homepage.
 
 ### Solar Marktcheck
 
@@ -252,7 +236,7 @@ matching cluster above:
 |---|---|---|
 | Ich bin **Agentur** … | `/whitelabel-retainer/` | `cta_footer_pick_agency` |
 | Ich bin **Solar- oder Wärmepumpenbetrieb** … | `/solar-waermepumpen-leadgenerierung/` | `cta_footer_pick_energy` |
-| Ich habe **eine Seite** … | `/wordpress-freelancer-hannover/` | `cta_footer_pick_project` |
+| Ich habe **eine Seite** … | `/` | `cta_footer_pick_project` |
 
 All three carry `data-track-category="lead_gen"` and
 `data-track-section="footer"`. The direct line under them adds three more, all
@@ -264,14 +248,11 @@ All three carry `data-track-category="lead_gen"` and
 | Telefon | `tel:` the canonical number | `cta_footer_tel` |
 | Kontaktformular | `/kontakt/` | `cta_footer_form` |
 
-On `/wordpress-freelancer-hannover/` and on the front page, the three
-self-selection sentences are omitted. On the freelancer route the visitor is
-already in the direct-project path; on the front page the same three ways
-stand in section 01 of the page itself, and repeating them in the footer in a
-different order takes the meaning out of both orders. Mail and telephone
-remain, and `Kontaktformular` points to `#anfrage`. The directory and sender
-lines remain. Existing tracking action names on rendered links are unchanged;
-the three `cta_footer_pick_*` actions are simply absent on this route.
+On the front page the three self-selection sentences are omitted: direct
+projects are already the primary offer and specialist bridges are visible.
+Mail and telephone remain; `Kontaktformular` leads to the shared contact page.
+The directory and sender lines remain. Existing tracking action names on
+rendered links are unchanged; `cta_footer_pick_*` are absent on the homepage.
 
 Below that the footer has one directory line and one sender line, no columns:
 

@@ -17,7 +17,7 @@ $posts_page_id = (int) get_option( 'page_for_posts' );
 $blog_url      = $posts_page_id ? get_permalink( $posts_page_id ) : home_url( '/blog/' );
 $route_map     = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
 
-$freelancer_url = $route_map['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+$freelancer_url = $route_map['freelancer'] ?? home_url( '/' );
 $whitelabel_url = $route_map['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
 $energy_url     = $route_map['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 

@@ -57,9 +57,8 @@ function hu_get_commercial_route_map() {
 
 	$routes = [
 		'home'            => home_url( '/' ),
-		'freelancer'      => function_exists( 'nexus_get_page_url' )
-			? nexus_get_page_url( [ 'wordpress-freelancer-hannover' ], home_url( '/wordpress-freelancer-hannover/' ) )
-			: home_url( '/wordpress-freelancer-hannover/' ),
+		// The homepage now owns the direct Freelancer offer and queries.
+		'freelancer'      => home_url( '/' ),
 		'project_request' => hu_get_contact_intake_url( 'project', 'implementation_scope' ),
 		'contact'         => function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' ),
 		'whitelabel'      => function_exists( 'nexus_get_whitelabel_page_url' )
@@ -127,10 +126,10 @@ function hu_get_site_header_navigation_contract() {
 			[
 				'kind'     => 'route',
 				'kicker'   => __( 'Direkte Projekte', 'blocksy-child' ),
-				'label'    => __( 'WordPress-Umsetzung', 'blocksy-child' ),
+				'label'    => __( 'WordPress Freelancer', 'blocksy-child' ),
 				'desc'     => __( 'Neubau, Relaunch und Weiterentwicklung — mit Messung, die von Anfang an mitgebaut wird.', 'blocksy-child' ),
 				'url'      => $routes['freelancer'],
-				'current'  => is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' ),
+				'current'  => is_front_page(),
 				'class'    => 'nav-freelancer-link',
 				'track'    => 'nav_header_freelancer',
 				'category' => 'navigation',

@@ -330,6 +330,75 @@ foreach ( $llms_linked_paths as $path ) {
 	);
 }
 
+// --- Homepage/Freelancer content migration --------------------------------
+// Exercise the real redirect handler; intercept headers instead of exiting PHP.
+function wp_unslash( $value ) { return stripslashes( (string) $value ); }
+function is_admin() { return false; }
+function wp_doing_ajax() { return false; }
+function is_feed() { return false; }
+function is_front_page() { return ! empty( $GLOBALS['hu_migration_front'] ); }
+function is_page( $slug = '' ) { return $slug === ( $GLOBALS['hu_migration_slug'] ?? '' ); }
+function is_page_template( $template = '' ) { return $template === ( $GLOBALS['hu_migration_template'] ?? '' ); }
+function wp_safe_redirect( $url, $status = 302 ) { throw new RuntimeException( $url, $status ); }
+function remove_query_arg( $keys, $url ) {
+	$parts = explode( '?', $url, 2 );
+	if ( count( $parts ) < 2 ) { return $url; }
+	$kept = array_filter( explode( '&', $parts[1] ), static function ( $part ) use ( $keys ) {
+		return ! in_array( rawurldecode( explode( '=', $part, 2 )[0] ), $keys, true );
+	} );
+	return $parts[0] . ( $kept ? '?' . implode( '&', $kept ) : '' );
+}
+
+require_once __DIR__ . '/../blocksy-child/inc/seo-meta.php';
+
+echo "\n########## Homepage consolidation ##########\n\n";
+$scenarios = [
+	[ '/wordpress-freelancer-hannover/', '', '', '', false, home_url( '/' ) ],
+	[ '/wordpress-freelancer-hannover', '', '', '', false, home_url( '/' ) ],
+	[ '/wordpress-freelancer-hannover/', 'utm_source=google&utm_campaign=WP%20Hannover&gclid=abc&focus=relaunch', '', '', false, home_url( '/?utm_source=google&utm_campaign=WP%20Hannover&gclid=abc&focus=relaunch' ) ],
+	[ '/', 'page_id=123&utm_source=mail', 'wordpress-freelancer-hannover', '', false, home_url( '/?utm_source=mail' ) ],
+	[ '/', 'pagename=wordpress-freelancer-hannover&paged=2', 'wordpress-freelancer-hannover', '', false, home_url( '/' ) ],
+	[ '/old-template-alias/', 'preview=true&preview_id=123', '', 'page-wordpress-freelancer-hannover.php', false, home_url( '/' ) ],
+	[ '/', '', '', 'page-wordpress-freelancer-hannover.php', true, null ],
+	[ '/wordpress-agentur-hannover/', '', 'wordpress-agentur-hannover', '', false, null ],
+	[ '/whitelabel-retainer/', '', 'whitelabel-retainer', '', false, null ],
+	[ '/solar-waermepumpen-leadgenerierung/', '', 'solar-waermepumpen-leadgenerierung', '', false, null ],
+];
+foreach ( $scenarios as $i => [ $path, $query, $slug, $template, $front, $expected ] ) {
+	$_SERVER['REQUEST_URI'] = $path . ( $query ? '?' . $query : '' );
+	$_SERVER['QUERY_STRING'] = $query;
+	$GLOBALS['hu_migration_slug'] = $slug;
+	$GLOBALS['hu_migration_template'] = $template;
+	$GLOBALS['hu_migration_front'] = $front;
+	$actual = null;
+	$status = null;
+	try {
+		nexus_redirect_legacy_offer_paths();
+	} catch ( RuntimeException $redirect ) {
+		$actual = $redirect->getMessage();
+		$status = $redirect->getCode();
+	}
+	hu_lint_assert( $actual === $expected && ( null === $expected || 301 === $status ), 'migration scenario ' . ( $i + 1 ) . ': ' . $path );
+}
+$_SERVER['REQUEST_URI'] = '/';
+$_SERVER['QUERY_STRING'] = '';
+$GLOBALS['hu_migration_front'] = true;
+$GLOBALS['hu_migration_slug'] = '';
+$GLOBALS['hu_migration_template'] = '';
+
+hu_lint_assert( home_url( '/' ) === hu_get_commercial_route( 'freelancer' ), 'Freelancer commercial route owns root' );
+hu_lint_assert( in_array( 'wordpress-freelancer-hannover', nexus_get_sitemap_excluded_slugs(), true ), 'retired Freelancer route excluded from sitemap' );
+$service = hu_get_wordpress_freelancer_service_schema();
+$homepage = hu_normalize_positioned_schema_node( [ '@id' => home_url( '/#webpage' ) ] );
+hu_lint_assert( home_url( '/#service' ) === $service['@id'] && home_url( '/' ) === $service['url'], 'Service identity and URL move to homepage' );
+hu_lint_assert( $service['@id'] === $homepage['mainEntity']['@id'], 'homepage WebPage references its Service' );
+hu_lint_assert( hu_get_homepage_title() === $homepage['name'], 'homepage schema and SEO title agree' );
+$template_html = (string) file_get_contents( __DIR__ . '/../blocksy-child/front-page.php' );
+foreach ( $service['hasOfferCatalog']['itemListElement'] as $offer ) {
+	$anchor = wp_parse_url( $offer['itemOffered']['url'], PHP_URL_FRAGMENT );
+	hu_lint_assert( false !== strpos( $template_html, "'id' => '" . $anchor . "'" ), 'Service offer retains visible homepage anchor: ' . $anchor );
+}
+
 // --- Entity graph ---------------------------------------------------------
 
 echo "\n########## Person / Organization ##########\n\n";
