@@ -218,10 +218,8 @@ function hu_get_forced_singular_seo_map() {
 				'description' => hu_get_contact_offer_description(),
 			],
 			'hasim-uener' => [
-				'title'       => 'Haşim Üner | Websites, die Anfragen produzieren',
-				// Die fruehere Aufzaehlung spiegelte die Kompetenzleiste der Seite.
-				// Die ist entfallen; jetzt steht hier der Werdegang, der sie ersetzt.
-				'description' => 'Haşim Üner aus Pattensen bei Hannover baut Websites, die Anfragen produzieren — und die Technik dahinter. Acht Jahre B2B-Vertrieb, vier Jahre eigener Onlineshop, Medienwissenschaft.',
+				'title'       => 'Über Haşim Üner | Arbeitsweise für B2B-Websites',
+				'description' => 'Wie Haşim Üner B2B-Websites entwickelt: Kommunikation verstehen, Engpässe erkennen, bewusst gestalten und Wirkung prüfen. Persönlicher Hintergrund und Projektbelege.',
 			],
 			// 'wgos' / 'wordpress-growth-operating-system' sowie Tool-/Audit-Legacy-Routen:
 			// Seiten sind noindex, sitemap-excluded oder geschuetzte 301-Einstiege,

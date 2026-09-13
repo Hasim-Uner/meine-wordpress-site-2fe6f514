@@ -1,5 +1,28 @@
 # Live Status
 
+## Über Haşim – Methodikseite, Repository-Stand 2026-09-13
+
+- `/hasim-uener/` übernimmt den abgestimmten persönlichen Methodiktext in
+  verdichteter Form: Hintergrund, Engpass, Defekt/Gestaltung/Hypothese,
+  Besucherwege, Gestaltung und langfristige Übergabe.
+- Das Layout verwendet `system.css`: heller Lesebereich, nummerierte Kapitel,
+  bestehendes responsives Porträt und dunkler Projektbeleg/Abschluss. Die alte
+  Stationsanimation und das gesamte separate Seiten-JavaScript entfallen.
+- Pauschale Behauptungen über Formularlänge, Kosten und Abschlüsse entfallen.
+  Der Solar-Fall liest Zahlen und Zeitraum aus dem Canon; die öffentliche
+  WordPress-Arbeit bleibt davon getrennt. Biografische Aussagen zu Studium,
+  Vater und eigenem Werbebudget stammen aus dem Betreibertext.
+- Titel/Beschreibung bilden die Methodikseite ab. Der bestehende ProfilePage-
+  und Person-Bezug bleibt erhalten; unsichtbare Editor-FAQ-Caches werden auf
+  dieser Template-Seite nicht ausgegeben. Commercial Query-Ownership bleibt
+  auf Homepage und Fachseiten.
+- Anfrage-, Profil- und Mail-Verweise behalten ihre Ziele und bestehenden
+  Actions. Neue Links erklären die drei unterschiedlichen Besucherwege.
+- PR-Stand; Veröffentlichung nicht vorausgesetzt. Browser-URL-Richtlinie
+  verhindert die visuelle Prüfung in dieser Sitzung. Desktop/Mobil und der
+  Kontaktabschluss bleiben vor Freigabe visuell zu prüfen.
+
+
 ## Homepage-Konsolidierung – Repository-Stand 2026-09-13
 
 Die Startseite übernimmt die Freelancer-Inhalte und Suchintention. Vier direkte
@@ -9,9 +32,9 @@ Spezialangebote. Die alte Freelancer-URL erhält einen 301 auf `/`; interne
 Links, Service-Schema und Query-Ownership ziehen mit. Alte CSS-/Formularskripte
 entfallen, der WordPress-Datensatz wird nicht automatisch gelöscht.
 
-Dieser Stand ist eine vorbereitete Repo-Änderung, kein bestätigter Live-Deploy.
-Visuelle Browserprüfung ist in dieser Sitzung durch die Browser-URL-Richtlinie
-blockiert; sie bleibt zusammen mit dem Live-Redirect-/Kontakt-Smoke offen.
+PR #345 ist gemergt; der Betreiber hat die Veröffentlichung bestätigt.
+Eine eigene visuelle Liveprüfung sowie der Live-Redirect-/Kontakt-Smoke sind
+in dieser Sitzung wegen der Browser-URL-Richtlinie weiterhin nicht bestätigt.
 Entscheidung und Nachkontrolle: `../decisions/homepage-freelancer-konsolidierung.md`.
 Die älteren Homepage-/Freelancer-Abschnitte unten dokumentieren den Vorgängerstand.
 

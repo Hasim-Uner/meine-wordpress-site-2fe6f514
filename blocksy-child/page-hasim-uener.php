@@ -1,321 +1,177 @@
 <?php
 /**
- * Personenseite auf /hasim-uener/.
+ * Personal methodology page at /hasim-uener/.
  *
- * Loest die beiden alten Ueber-Mich-Templates ab (template-about.php,
- * template-about-editorial.php). Sechs Bloecke, keine Story-Strecke:
- * Hero, vier Stationen, Haltung, fuenf Arbeitsregeln, CTA, Schlusszeile.
- *
- * Route statt Template-Auswahl: die Seite haengt am Slug, damit die
- * Zuordnung nicht mehr im WP-Admin gewaehlt werden muss. Der Seeder
- * nexus_maybe_ensure_about_page() in inc/helpers.php benennt die alte
- * Seite um und setzt dieses Template.
- *
- * Hero und Stationen-Band haengen direkt an .hu-about statt am Inhalts-
- * container: beide brauchen die volle Breite fuer Anschnitt und Farbbruch.
- *
- * Die Arbeitsregeln stehen zwischen Haltung und CTA, weil die Haltung eine
- * Behauptung ist und die Regeln zeigen, wonach entschieden wird. Die fruehere
- * Kompetenzleiste (WordPress, Tracking, Ads, CRO, Automatisierung) ist
- * ersatzlos entfallen: fuenf Etiketten sagen weniger als die Absaetze,
- * die jetzt an ihrer Stelle stehen.
- *
- * Gliederung: H1 ist der Name, die fuenf Regeln sind die einzigen H2 im
- * Fliesstext, dazu die CTA-Ueberschrift. Die Stationen-Labels sind bewusst
- * keine Ueberschriften — sie beschriften eine Grafik und hatten die
- * Gliederung mit fast identischen Woertern verdoppelt.
+ * The homepage owns the Freelancer offer. This page explains the person,
+ * decision process and evidence behind it, using the shared document system.
+ * Existing profile identities, request routes and public anchors remain intact.
  *
  * @package Blocksy_Child
  */
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Die Über-Seite gehört zu allen drei Wegen, nicht zum Energy-Cluster. Der
-// primäre CTA ist deshalb die generische Projektanfrage; den Marktcheck
-// erreicht Energy-Traffic über Header und Footer.
-$request_url    = function_exists( 'hu_get_commercial_route' )
-	? hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) )
-	: home_url( '/kontakt/' );
-$freelancer_url = function_exists( 'hu_get_commercial_route' )
-	? hu_get_commercial_route( 'freelancer', home_url( '/' ) )
-	: home_url( '/' );
-$whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
-$e3_case_url    = function_exists( 'hu_e3_canon' )
-	? (string) ( hu_e3_canon()['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) )
-	: home_url( '/case-study-solar-leadgenerierung/' );
-$linkedin_url   = 'https://www.linkedin.com/in/hasim-uener/';
-// Persoenlicher GitHub-Account, nicht die Organisation Hasim-Uner mit den
-// Produktions-Repos. Der Link steht hier, weil Person.sameAs ihn behauptet:
-// eine sichtbare rel="me"-Verknuepfung macht die Schema-Aussage nachpruefbar,
-// statt sie nur zu erklaeren. Siehe hu_person_same_as_urls() in inc/org-schema.php.
-$github_url     = 'https://github.com/Hasim-hannover';
-// Wie in site-header, /whitelabel-retainer/ und Person.sameAs literal gehalten;
-// fuer die Zweitdomain gibt es im Theme bisher keinen Helper.
-$blog_url       = 'https://hasimuener.org/';
+$routes         = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+$request_url    = $routes['project_request'] ?? home_url( '/kontakt/?type=project&focus=implementation_scope' );
+$freelancer_url = $routes['freelancer'] ?? home_url( '/' );
+$whitelabel_url = $routes['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
+$results_url    = $routes['results'] ?? home_url( '/ergebnisse/' );
 $mail_address   = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
-
-// Portrait im 3:4-Ausschnitt. Der neue Hero setzt das Bild als eigene,
-// responsiv zugeschnittene Buehne ein statt es am Viewport anzuschneiden.
-// Zwei Groessen: 400 deckt Mobil und 1x-Desktop, 800 die Retina-Faelle.
-$portrait_url    = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait-400x533.webp';
+$response       = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'phrase' ) : 'Antwort spätestens in 2 Werktagen';
+// Visible rel=me links corroborate the existing canonical Person.sameAs graph.
+$linkedin_url   = 'https://www.linkedin.com/in/hasim-uener/';
+$github_url     = 'https://github.com/Hasim-hannover';
+$blog_url       = 'https://hasimuener.org/';
+$repo_url       = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
+$portrait_url   = get_stylesheet_directory_uri() . '/assets/img/hasim-portrait-400x533.webp';
 $portrait_srcset = sprintf(
 	'%1$s/assets/img/hasim-portrait-400x533.webp 400w, %1$s/assets/img/hasim-portrait-800x1067.webp 800w',
 	get_stylesheet_directory_uri()
 );
-
-// Der Prozentwert kommt aus dem E3-Canon, damit eine Korrektur dort auch hier
-// ankommt. Bewusst ohne das "ueber" der Canon-Display-Form: auf dieser Seite
-// steht die nackte Zahl, ohne Betrag, Zeitraum, Region oder Firmennamen.
-// Das vorangestellte Minus (U+2212, nicht der Bindestrich) gibt der Zahl die
-// Richtung, die sie als Display-Zeile allein nicht hat. Es untertreibt
-// gegenueber dem kanonischen "ueber 85 %" und behauptet damit nichts Neues.
-$e3_cpl_reduction_percent = defined( 'HU_E3_CPL_REDUCTION_PERCENT' ) ? (int) HU_E3_CPL_REDUCTION_PERCENT : 85;
-
-// Vier gleichwertige Stationen, kein Zeitstrahl. Reihenfolge ist die
-// Lesereihenfolge und zugleich die Reveal-Reihenfolge. Die Kennzahl steht als
-// eigene Display-Zeile ueber Titel und Satz; geschuetzte Leerzeichen halten
-// Wert und Einheit zusammen, damit die Einheit nicht allein umbricht.
-//
-// Nicht jede Station traegt eine Zahl: Station 3 belegt unternehmerisches
-// Risiko, keine zweite Kostensenkung. Die Display-Zeile nimmt dort zwei Woerter
-// auf. 'wrap' => true erlaubt genau dieser Zeile einen Umbruch, weil das
-// pauschale white-space: nowrap den laengeren Text sonst aus der Spalte
-// schiebt (Korridor 761-901 px). Schriftgroesse bleibt unangetastet.
-$about_stations = [
-	[
-		'figure' => '8 Jahre',
-		'title'  => 'B2B-Vertrieb',
-		'text'   => 'Ich weiß, wie eine Anfrage klingt, aus der ein Auftrag wird.',
-	],
-	[
-		'figure' => 'Studium',
-		'title'  => 'Medienwissenschaft',
-		'text'   => 'Seitdem baue ich Websites. Schwerpunkt webbasierte Systeme.',
-	],
-	[
-		// U+2060 bindet die Jahresspanne, damit der Halbgeviertstrich sie in
-		// schmalen Spalten nicht zu "2019-" / "2023" trennt.
-		'figure' => 'Eigenes Geld',
-		'title'  => "Eigener Onlineshop\u{00A0}· 2019\u{2060}–\u{2060}2023",
-		'text'   => 'Vier Jahre Anzeigen auf eigene Rechnung.',
-		'wrap'   => true,
-	],
-	[
-		'figure' => sprintf( "\u{2212}%d\u{00A0}%%", $e3_cpl_reduction_percent ),
-		'title'  => 'Anfrage-Systeme, heute',
-		'text'   => 'Weniger Kosten pro Anfrage, bei einem mittelständischen PV-Installationsbetrieb.',
-		'url'    => $e3_case_url,
-		'label'  => 'Dokumentierten Solar-Case ansehen',
-	],
-];
-
-// Fuenf Arbeitsregeln statt einer zweiten Biografie. Die vier Stationen im
-// dunklen Band tragen den Lebenslauf; hier steht, wonach entschieden wird.
-// Beides doppelt zu erzaehlen hatte die Gliederung der Seite verdoppelt.
-//
-// Die Anker-IDs sind fest vergeben und werden nicht aus der Ueberschrift
-// erzeugt: sie sind oeffentliche Sprungziele und sollen eine spaetere
-// Textaenderung ueberleben.
-//
-// Bewusst statisch und ohne data-hu-reveal: die Seite hat mit Portrait und
-// Systemlinie bereits ihre eine erlaubte Bewegungsgruppe.
-$about_rules = [
-	[
-		'id'         => 'schwaechstes-glied',
-		'title'      => 'Das schwächste Glied zuerst',
-		'paragraphs' => [
-			'Zwischen der Suchanfrage und dem Auftrag liegen ein Dutzend Übergänge, und die Kette reißt immer nur an einer Stelle. Conversion-Arbeit an einer Seite, die niemand findet, ist verschwendetes Geld. Sichtbarkeit für eine Seite, die niemanden überzeugt, ist teuer eingekauftes Desinteresse.',
-			'Ich suche deshalb zuerst das schwächste Glied und arbeite daran, auch wenn es nicht das ist, wonach gefragt wurde. Meine Arbeit endet an der Stelle, an der Ihr Vertrieb übernimmt — was danach im Telefonat passiert, kann ich vorbereiten, aber nicht ersetzen.',
-		],
-	],
-	[
-		'id'         => 'defekt-oder-stellschraube',
-		'title'      => 'Defekt oder Stellschraube',
-		'paragraphs' => [
-			'Manches ist einfach kaputt: ein Formular, das auf dem Handy nicht abschickt, eine Seite, die vier Sekunden lädt, ein Tracking, das die Hälfte nicht zuordnet. Das repariert man, und es kostet nichts außer Arbeit.',
-			'Anderes ist eine Stellschraube, und die hat zwei Enden. Ein kürzeres Formular bringt mehr Anfragen und schlechtere. Ein Rabatt hebt die Conversion und senkt die Marge. Mehr Reichweite bringt mehr Kontakte und teurere. Hier gibt es kein Rezept, nur die Frage, welche Zahl steigen soll und welche dafür sinken darf.',
-			'Meine Antwort darauf ist meistens dieselbe: Zwei Anfragen, mit denen Ihr Vertrieb arbeiten kann, sind mehr wert als zehn, die er abtelefonieren muss. Aus acht Jahren Firmenkundenvertrieb weiß ich, woran ein Abschluss scheitert — selten am Preis, häufiger am falschen Ansprechpartner oder an einem Angebot mit zu vielen Optionen.',
-		],
-	],
-	[
-		'id'         => 'zugaenge',
-		'title'      => 'Sie behalten die Zugänge',
-		'paragraphs' => [
-			'Alles läuft auf Ihrem Hosting, Ihrer Domain, Ihrem Google-Konto. Ich brauche Zugriff und besitze nichts davon. Was ich einrichte, dokumentiere ich so, dass ein anderer Entwickler es übernehmen kann, ohne mich anzurufen.',
-			'Sie arbeiten mit einem Einzelnen. Das bringt kurze Wege, und es bedeutet, dass ich ausfallen kann. Was ich hinterlasse, ist deshalb so gebaut, dass Sie ohne mich weiterkommen.',
-		],
-	],
-	[
-		'id'         => 'ueberzeugen',
-		'title'      => 'Überzeugen ja, täuschen nein',
-		'paragraphs' => [
-			'Meine Bachelorarbeit habe ich über persuasive Online-Werbung geschrieben, mit dem Befund, dass die Formate damals kaum überzeugten. Interaktiv waren sie, vor allem aber störend.',
-			'Überzeugen bleibt trotzdem legitim, solange zwei Dinge stimmen: Das Versprechen hält, und der Weg dorthin war ehrlich. Kein erfundener Countdown, keine Knappheit, die keine ist, keine Kosten, die erst im letzten Schritt auftauchen. Das prüfe ich im Erstgespräch, indem ich frage, was Sie bei einer Verdopplung der Anfragen tatsächlich noch bedienen könnten.',
-		],
-	],
-	[
-		'id'         => 'werkzeuge',
-		'title'      => 'Was Werkzeuge nicht übernehmen',
-		'paragraphs' => [
-			'KI verschiebt, was Aufwand kostet — nicht, wer die Verantwortung trägt. Der Kontext Ihres Betriebs, das Gefühl dafür, was ein Kunde meint, wenn er etwas anderes sagt, und die Entscheidung über die Reihenfolge bleiben Arbeit. Ein Ergebnis, das schnell da ist und nicht taugt, hat niemandem geholfen.',
-		],
-	],
-];
-
+$e3_canon     = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
+$e3_case_url  = $e3_canon['url'] ?? home_url( '/case-study-solar-leadgenerierung/' );
+$e3_metric    = static function ( $key, $field = 'display', $fallback = '' ) {
+	return function_exists( 'hu_e3_metric' ) ? hu_e3_metric( $key, $field, $fallback ) : $fallback;
+};
+$public_reference = null;
+if ( function_exists( 'hu_public_reference_projects' ) ) {
+	foreach ( hu_public_reference_projects() as $reference ) {
+		if ( 'civaka-azad.org' === $reference['name'] ) {
+			$public_reference = $reference;
+			break;
+		}
+	}
+}
 get_header();
 ?>
 
-<main id="main" class="site-main">
-	<div class="hu-about" data-track-section="about_page">
-
-		<!-- 1 — HERO -->
-		<header class="hu-about__hero">
-			<div class="hu-about__hero-inner">
-				<div class="hu-about__hero-copy">
-					<h1 class="hu-about__h1">Haşim Üner</h1>
-					<p class="hu-about__lead">
-						<span class="hu-about__lead-main">Ich baue Websites, die Anfragen produzieren — und die Technik dahinter.</span>
-						<span class="hu-about__lead-place">Pattensen bei Hannover.</span>
-					</p>
-				</div>
-				<div class="hu-about__hero-visual">
-					<img
-						class="hu-about__portrait"
-						src="<?php echo esc_url( $portrait_url ); ?>"
-						srcset="<?php echo esc_attr( $portrait_srcset ); ?>"
-						sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 42vw, 480px"
-						alt="Porträt von Haşim Üner"
-						width="400"
-						height="533"
-						fetchpriority="high"
-						decoding="async"
-					>
-					<span class="hu-about__portrait-axis" aria-hidden="true"></span>
-				</div>
+<div class="doku hu-about" id="about-content">
+	<header class="blatt kopfteil">
+		<div class="about-hero">
+			<div class="about-hero-copy">
+				<p class="gegenstand">Über Haşim Üner · WordPress Freelancer</p>
+				<h1>Eine Website kommuniziert mit ihrer ganzen Konstruktion.</h1>
+				<p class="aufriss">Was Menschen finden, verstehen und als Nächstes tun, entsteht aus vielen Entscheidungen. Ich verbinde WordPress-Entwicklung, SEO, Gestaltung und Tracking, damit diese Entscheidungen zusammenpassen.</p>
+				<a class="textlink about-start" href="#arbeitsweise" data-track-action="about_read_method" data-track-category="navigation" data-track-section="about_hero">So arbeite ich <span aria-hidden="true">↓</span></a>
 			</div>
-			<span class="hu-about__hero-signal" aria-hidden="true"></span>
-		</header>
+			<figure class="about-portrait">
+				<img src="<?php echo esc_url( $portrait_url ); ?>" srcset="<?php echo esc_attr( $portrait_srcset ); ?>" sizes="(max-width: 640px) 38vw, (max-width: 960px) 30vw, 320px" width="400" height="533" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" fetchpriority="high" decoding="async">
+				<figcaption><strong>Haşim Üner</strong><span>Pattensen bei Hannover.<br>Direkte Zusammenarbeit im DACH-Raum.</span></figcaption>
+			</figure>
+		</div>
+		<nav class="about-index" aria-label="Auf dieser Seite">
+			<a href="#hintergrund">01 Hintergrund</a>
+			<a href="#arbeitsweise">02 Entscheidungen</a>
+			<a href="#besucherwege">03 Orientierung</a>
+			<a href="#gestaltung">04 Gestaltung</a>
+			<a href="#zugaenge">05 Weiterentwicklung</a>
+		</nav>
+	</header>
 
-		<!-- 2 — VIER STATIONEN -->
-		<section class="hu-about__band" aria-label="Stationen">
-			<ul class="hu-about__station-grid" role="list">
-				<?php foreach ( $about_stations as $station ) : ?>
-					<li
-						class="hu-about__station"
-						data-hu-reveal
-					>
-						<p class="hu-about__station-figure<?php echo empty( $station['wrap'] ) ? '' : ' hu-about__station-figure--words'; ?>"><?php echo esc_html( $station['figure'] ); ?></p>
-						<?php /* Beschriftung einer Grafik, kein Kapitel: als <h2> stand die Timeline mit fast denselben Woertern ein zweites Mal in der Gliederung der Seite. */ ?>
-					<p class="hu-about__station-title"><strong><?php echo esc_html( $station['title'] ); ?></strong></p>
-						<p class="hu-about__station-text"><?php echo esc_html( $station['text'] ); ?></p>
-						<?php if ( ! empty( $station['url'] ) ) : ?>
-							<a class="hu-about__station-link" href="<?php echo esc_url( $station['url'] ); ?>" data-track-action="about_station_solar_case" data-track-category="trust" data-track-section="stations"><?php echo esc_html( $station['label'] ); ?></a>
-						<?php endif; ?>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</section>
+	<section id="hintergrund" aria-labelledby="hintergrund-h">
+		<div class="blatt reihe">
+			<div class="spalte-links"><div class="kapitel"><span class="nr">01</span><span class="titel">Hintergrund</span><span class="strich" aria-hidden="true"></span></div></div>
+			<div class="voll about-copy">
+				<h2 class="kopf" id="hintergrund-h">Mich interessiert Kommunikation schon länger als Websites.</h2>
+				<p>Ich habe Medienwissenschaften studiert. Medientheorie, Medienpsychologie und Werbung zeigten mir unterschiedliche Perspektiven auf dieselbe Frage: Wie entsteht Wirkung? Wer spricht, in welchem Kontext und über welches Medium, verändert, was beim Gegenüber ankommt.</p>
+				<p>Heute begegnet mir diese Frage bei Websites ganz konkret. Die Navigation zeigt, was wichtig ist. Ein Formular bestimmt, welche Angaben wir erwarten und wie viel Aufwand eine Anfrage bedeutet. Geschwindigkeit und Gestaltung beeinflussen, wie selbstverständlich sich der Weg anfühlt.</p>
+				<p>Mein Vater war Bauunternehmer. Vielleicht kommt daher mein handwerklicher Blick: Was wir bauen, muss stehen, funktionieren und seiner Aufgabe gerecht werden. Bei einer Website besteht diese Konstruktion aus Code, Struktur, Sprache und Gestaltung.</p>
+				<p>Die wirtschaftliche Perspektive kenne ich aus dem B2B-Vertrieb und aus Werbung für eigene Projekte. Als jeder Klick mein eigenes Geld kostete, wurde die Frage drängender: Welche Besucher werden zu passenden Anfragen – und können wir nachvollziehen, warum?</p>
+				<p class="about-thesis">Der Klick ist der Anfang einer Strecke. Ob sie funktioniert, entscheidet sich danach.</p>
+			</div>
+		</div>
+	</section>
 
-		<div class="hu-about__inner">
-
-			<!-- 3 — HALTUNG -->
-			<section class="hu-about__stance">
-				<p class="hu-about__stance-text">
-					Die meisten Websites, die ich übernehme, sind technisch nicht kaputt. Sie sind nur nie darauf ausgelegt worden, dass am Ende jemand anruft: Das Formular ist versteckt, niemand misst, welche Anfrage woher kommt, und der Vertrieb erfährt es zuletzt. Ich fange deshalb nicht bei der Gestaltung an, sondern bei der Frage, was am Ende passieren soll — und ändere den Ansatz, wenn die Zahlen etwas anderes sagen.
-				</p>
-			</section>
-
-			<!-- 4 — ARBEITSREGELN: wonach entschieden wird -->
-			<section class="hu-about__rules" aria-label="Arbeitsweise">
-				<?php foreach ( $about_rules as $rule ) : ?>
-					<article class="hu-about__rule">
-						<h2 class="hu-about__rule-title" id="<?php echo esc_attr( $rule['id'] ); ?>"><?php echo esc_html( $rule['title'] ); ?></h2>
-						<?php foreach ( $rule['paragraphs'] as $paragraph ) : ?>
-							<p class="hu-about__rule-text"><?php echo esc_html( $paragraph ); ?></p>
-						<?php endforeach; ?>
+	<section id="arbeitsweise" aria-labelledby="arbeitsweise-h" data-track-section="about_method">
+		<div class="blatt reihe">
+			<div class="spalte-links"><div class="kapitel"><span class="nr">02</span><span class="titel">Entscheidungen</span><span class="strich" aria-hidden="true"></span></div></div>
+			<div class="voll">
+				<div class="about-copy">
+					<h2 class="kopf" id="arbeitsweise-h">Wo verliert Ihre Website gerade Wirkung?</h2>
+					<p id="schwaechstes-glied">Vielleicht fehlt Sichtbarkeit. Vielleicht kommen Besucher, verstehen aber das Angebot nicht. Oder es entstehen Anfragen, deren Herkunft und Qualität niemand einordnen kann. Ich prüfe zuerst, welcher Engpass die nächste Änderung rechtfertigt.</p>
+					<p>Das gibt Ihrem Projekt eine begründete Priorität. Wie wir dann vorgehen, hängt davon ab, welche Art von Entscheidung vor uns liegt.</p>
+				</div>
+				<div class="about-decisions" id="defekt-oder-stellschraube">
+					<article class="about-decision">
+						<div><p class="mono">01 · Reparieren</p><h3>Defekt.</h3></div>
+						<div><p>Ein Formular überträgt keine Daten. Eine Seite, die gefunden werden soll, ist versehentlich von der Indexierung ausgeschlossen. Ein vereinbartes Event wird trotz erfüllter Auslösebedingungen nicht erfasst.</p><p class="about-verification"><strong>Die Aufgabe:</strong> Fehler eingrenzen, beheben und die Funktion erneut prüfen.</p></div>
 					</article>
-				<?php endforeach; ?>
-			</section>
-
-			<!-- 5 — CTA: zwei klar getrennte Wege, danach die leisen Kontaktwege -->
-			<section class="hu-about__cta" aria-labelledby="hu-about-cta-title">
-				<header class="hu-about__cta-head">
-					<p class="hu-about__cta-kicker">Zusammenarbeit</p>
-					<h2 class="hu-about__cta-title" id="hu-about-cta-title">Direkt für Betriebe. Im Hintergrund für Agenturen.</h2>
-				</header>
-
-				<div class="hu-about__path-grid">
-					<article class="hu-about__path hu-about__path--direct">
-						<p class="hu-about__path-label">Für Betriebe</p>
-						<h3 class="hu-about__path-title">Direktes Projekt</h3>
-						<p class="hu-about__path-text">Sie sprechen mit dem, der es baut. Keine Zwischenebene, kein Account Manager. Wenn ich ausfalle, sage ich Ihnen das am selben Tag und wir verschieben — dafür wissen Sie immer, woran Sie sind. Die <a href="<?php echo esc_url( $freelancer_url ); ?>" data-track-action="link_about_freelancer" data-track-category="internal_link" data-track-section="about_cta">Leistungen und Preise für direkte WordPress-Projekte</a> finden Sie in einer eigenen Übersicht.</p>
-						<a
-							class="hu-about__path-link hu-about__path-link--primary"
-							href="<?php echo esc_url( $request_url ); ?>"
-							data-track-action="cta_about_project"
-							data-track-category="lead_gen"
-							data-track-section="about_cta"
-						>Projekt anfragen <span aria-hidden="true">→</span></a>
+					<article class="about-decision">
+						<div><p class="mono">02 · Entwickeln</p><h3>Gestaltung.</h3></div>
+						<div><p>Für eine Seitenstruktur, einen Anfrageprozess oder eine technische Integration gibt es mehrere vernünftige Lösungen. Ich wäge sie anhand von Nutzerbedarf, Wartbarkeit und Ihrem verfügbaren Rahmen ab.</p><p class="about-verification"><strong>Die Aufgabe:</strong> Eine Lösung bewusst wählen, umsetzen und ihre Anforderungen prüfen.</p></div>
 					</article>
-
-					<article class="hu-about__path hu-about__path--whitelabel">
-						<p class="hu-about__path-label">Für Agenturen</p>
-						<h3 class="hu-about__path-title">White-Label-Umsetzung</h3>
-						<?php /* Dritter Satz weicht bewusst vom Entwurf ab: /whitelabel-retainer/ verkauft kein Stundenkontingent, sondern ein Erstprojekt mit fixem Scope, aus dem erst danach ein Monats-Retainer entstehen kann. Die Karte darf der Zielseite nicht widersprechen. */ ?>
-						<p class="hu-about__path-text">Sie führen das Kundenprojekt, ich übernehme die technische Umsetzung im Hintergrund. Nach außen tritt Ihre Agentur auf. Scope und Preis stehen vor dem Start fest; laufende Kapazität vereinbaren wir erst nach dem Erstprojekt.</p>
-						<a
-							class="hu-about__path-link hu-about__path-link--secondary"
-							href="<?php echo esc_url( $whitelabel_url ); ?>"
-							data-track-action="link_about_whitelabel"
-							data-track-category="lead_gen"
-							data-track-section="about_cta"
-						>White-Label ansehen <span aria-hidden="true">→</span></a>
+					<article class="about-decision">
+						<div><p class="mono">03 · Überprüfen</p><h3>Hypothese.</h3></div>
+						<div><p>Ob eine andere Headline stärker überzeugt oder ein zusätzliches Formularfeld sinnvoll qualifiziert, wissen wir vorher nicht sicher. Daten, Forschung und Erfahrung begründen eine Annahme. Wir legen fest, woran wir ihre Wirkung beurteilen.</p><p class="about-verification"><strong>Die Aufgabe:</strong> Die Annahme überprüfen. Ein A/B-Test braucht dafür ausreichend geeignete Daten; bei wenig Traffic helfen zunächst Nutzergespräche, Beobachtungen und die Qualität eingehender Anfragen.</p></div>
 					</article>
 				</div>
+				<aside class="tafel about-evidence" aria-labelledby="beleg-h">
+					<div><p class="mono">Dokumentierter Projektfall · Solar</p><h3 id="beleg-h">Von der Anfrage bis zur Übergabe mitgedacht.</h3><p>Bei einem mittelständischen PV-Installationsbetrieb wurden Angaben vor dem Erstkontakt strukturiert erfasst und im CRM priorisiert. Landingpages, Vorqualifizierung, Tracking und Vertriebsübergabe wurden gemeinsam weiterentwickelt.</p></div>
+					<div class="about-evidence-result"><p class="about-number"><?php echo esc_html( $e3_metric( 'cpl_before', 'display', '150 €' ) ); ?> → <?php echo esc_html( $e3_metric( 'cpl_after', 'display', '22 €' ) ); ?></p><p>Kosten pro qualifizierter Anfrage im dokumentierten Zeitraum von <?php echo esc_html( $e3_metric( 'timeframe', 'display_dative', '6 Monaten' ) ); ?>.</p></div>
+					<div class="about-evidence-source"><p>Das Ergebnis beschreibt das Gesamtsystem einschließlich Marketing und Vertrieb. Daraus lässt sich keine isolierte Wirkung eines einzelnen Bausteins oder eine Prognose für andere Projekte ableiten.</p><a class="textlink" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="about_station_solar_case" data-track-category="trust" data-track-section="about_method">Ausgangslage und Arbeitsschritte ansehen →</a></div>
+				</aside>
+			</div>
+		</div>
+	</section>
 
-				<p class="hu-about__cta-links">
-					<a
-						href="<?php echo esc_url( $linkedin_url ); ?>"
-						rel="me noopener noreferrer"
-						target="_blank"
-						data-track-action="link_about_linkedin"
-						data-track-category="navigation"
-						data-track-section="about_cta"
-					>LinkedIn</a>
-					<a
-						href="<?php echo esc_url( $github_url ); ?>"
-						rel="me noopener noreferrer"
-						target="_blank"
-						data-track-action="link_about_github"
-						data-track-category="navigation"
-						data-track-section="about_cta"
-					>GitHub</a>
-					<a
-						href="mailto:<?php echo esc_attr( $mail_address ); ?>"
-						data-track-action="link_about_mail"
-						data-track-category="navigation"
-						data-track-section="about_cta"
-					>E-Mail</a>
-				</p>
-			</section>
+	<section id="besucherwege" aria-labelledby="besucherwege-h">
+		<div class="blatt reihe">
+			<div class="spalte-links"><div class="kapitel"><span class="nr">03</span><span class="titel">Orientierung</span><span class="strich" aria-hidden="true"></span></div></div>
+			<div class="voll">
+				<div class="about-copy"><h2 class="kopf" id="besucherwege-h">Menschen kommen mit unterschiedlichen Fragen.</h2><p>Wer einen Anbieter sucht, braucht andere Informationen als jemand, der gerade erst sein Problem versteht. Eine B2B-Website sollte beide weiterbringen. Ihr nächster sinnvoller Schritt kann ein Gespräch sein, aber ebenso eine Erklärung oder ein Vergleich.</p></div>
+				<div class="fragen about-paths">
+					<details open><summary>„Ich brauche einen Anbieter.“</summary><div class="huelle"><div><div class="antwort"><p>Leistungen, Referenzen und ein verständlicher Ablauf helfen, die Zusammenarbeit einzuschätzen. Der Weg zur konkreten Anfrage sollte direkt erreichbar sein.</p><a class="satzlink" href="<?php echo esc_url( $freelancer_url . '#angebote' ); ?>" data-track-action="link_about_freelancer" data-track-category="internal_link" data-track-section="about_paths">Meine Leistungen und Preisrahmen</a></div></div></div></details>
+					<details><summary>„Ich brauche eine Lösung.“</summary><div class="huelle"><div><div class="antwort"><p>Das Problem ist klar, der Weg noch offen. Ein nachvollziehbarer Projektfall zeigt, welche Entscheidungen möglich sind und unter welchen Bedingungen ein Ansatz funktioniert.</p><a class="satzlink" href="<?php echo esc_url( $results_url ); ?>" data-track-action="about_view_results" data-track-category="trust" data-track-section="about_paths">Arbeiten und Ergebnisse einordnen</a></div></div></div></details>
+					<details><summary>„Ich möchte das Problem erst verstehen.“</summary><div class="huelle"><div><div class="antwort"><p>Eine konkrete Erklärung, ein Vergleich oder ein Werkzeug kann jetzt hilfreicher sein als eine Projektanfrage. Deshalb verbinde ich Fachinhalte mit passenden Vertiefungen.</p><a class="satzlink" href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" data-track-action="about_read_expertise" data-track-category="navigation" data-track-section="about_paths">Fachartikel lesen</a></div></div></div></details>
+				</div>
+				<p class="about-afterword">So wird eine Website langfristig zur Plattform: Angebote, Fachwissen, Fälle und Werkzeuge gehören zusammen. Menschen können finden, verstehen, vertiefen, wiederkommen und entscheiden. Vertrauen darf dabei über mehrere Besuche entstehen.</p>
+			</div>
+		</div>
+	</section>
 
-			<!-- 6 — SCHLUSSZEILE: der einzige Verweis nach draussen, bewusst leise -->
-			<p class="hu-about__coda">
-				Abseits der Arbeit schreibe ich auf <a
-					href="<?php echo esc_url( $blog_url ); ?>"
-					rel="me noopener noreferrer"
-					target="_blank"
-					data-track-action="link_about_blog"
-					data-track-category="navigation"
-					data-track-section="about_coda"
-				>hasimuener.org</a> über Medien und Öffentlichkeit. Andere Baustelle, gleiche Neugier.
-			</p>
+	<section id="gestaltung" aria-labelledby="gestaltung-h">
+		<div class="blatt reihe">
+			<div class="spalte-links"><div class="kapitel"><span class="nr">04</span><span class="titel">Gestaltung</span><span class="strich" aria-hidden="true"></span></div></div>
+			<div class="voll">
+				<div class="about-copy">
+					<h2 class="kopf" id="gestaltung-h">Gute Gestaltung macht Komplexität selbstverständlich.</h2>
+					<p>Auch technische Entwicklung ist für mich kreative Arbeit: Welche Informationen gehören zusammen? Wie lösen wir einen Prozess? Wie funktioniert dieselbe Aufgabe auf einem kleinen Bildschirm oder mit assistiven Technologien?</p>
+					<p>Typografie, Sprache, Bewegung und Interaktion sollen diese Entscheidungen spürbar machen. Eine B2B-Website darf Freude machen, weil sie verständlich ist, sich gut bedienen lässt und auch im Detail durchdacht wirkt.</p>
+					<p class="about-thesis">Sie sollte Menschen Gründe geben, freiwillig weiterzugehen.</p>
+				</div>
+				<?php if ( $public_reference ) : ?>
+					<aside class="about-reference" aria-labelledby="referenz-h"><p class="mono">Öffentliche Arbeit · <?php echo esc_html( $public_reference['discipline'] ); ?></p><h3 id="referenz-h"><?php echo esc_html( $public_reference['name'] ); ?></h3><p><?php echo esc_html( $public_reference['text'] ); ?></p><a class="textlink" href="<?php echo esc_url( $public_reference['url'] ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="about_reference_open" data-track-category="trust" data-track-section="about_design">Website ansehen ↗</a></aside>
+				<?php endif; ?>
+				<div class="about-copy about-principle" id="ueberzeugen"><h3>Überzeugen: ja. Täuschen: nein.</h3><p>Menschen sollen beurteilen können, ob ein Angebot zu ihnen passt. Dafür brauchen sie verständliche Informationen, belegbare Aussagen und transparente Bedingungen. Diese Haltung beeinflusst auch die Gestaltung: keine erfundene Knappheit, keine versteckten Kosten, keine künstlichen Hürden.</p></div>
+			</div>
+		</div>
+	</section>
 
+	<section id="zugaenge" aria-labelledby="zugaenge-h">
+		<div class="blatt reihe">
+			<div class="spalte-links"><div class="kapitel"><span class="nr">05</span><span class="titel">Weiterentwicklung</span><span class="strich" aria-hidden="true"></span></div></div>
+			<div class="voll about-copy">
+				<h2 class="kopf" id="zugaenge-h">Nach dem Launch muss die Arbeit weitergehen können.</h2>
+				<p>Angebote verändern sich, Inhalte wachsen und Daten werfen neue Fragen auf. Deshalb gehören nachvollziehbarer Code, klare Strukturen und Dokumentation zur Umsetzung. Domains, Konten und Daten bleiben beim Kunden. Zugänge und technische Entscheidungen werden so übergeben, dass auch ein anderer Entwickler weiterarbeiten kann.</p>
+				<p>Was das praktisch bedeutet, lässt sich an dieser Website sehen: Ihre Codebasis und Änderungshistorie sind öffentlich. <a class="satzlink" href="<?php echo esc_url( $repo_url . '/commits/main/' ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="about_code_history" data-track-category="trust" data-track-section="about_handover">Änderungen ansehen ↗</a></p>
+				<p id="werkzeuge">Neue Werkzeuge, auch KI, können die Umsetzung unterstützen. Die Verantwortung für Auswahl, Prüfung und Übergabe bleibt bei mir.</p>
+				<p class="about-thesis">Die Technik darf im Hintergrund bleiben. Für Besucher muss klar sein, was sie finden und wie es weitergeht. Für Ihr Unternehmen muss nachvollziehbar werden, ob die Website ihre Aufgabe erfüllt.</p>
+			</div>
+		</div>
+	</section>
+
+	<div class="abschluss" id="zusammenarbeit" data-track-section="about_cta">
+		<div class="blatt">
+			<div class="tafel about-close">
+				<div><p class="mono">Zusammenarbeit</p><h2 id="hu-about-cta-title">Woran soll Ihre Website als Nächstes wachsen?</h2><p class="aufriss">Beschreiben Sie kurz die Ausgangslage und was sich verbessern soll. Ich ordne ein, wo ich ansetzen würde und was wir für ein konkretes Angebot noch klären müssen.</p><div class="ausgang"><a class="tun" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_about_project" data-track-category="lead_gen" data-track-section="about_cta">Projekt beschreiben <span aria-hidden="true">→</span></a></div><p class="about-reply"><?php echo esc_html( $response ); ?></p></div>
+				<aside class="about-agency"><p class="mono">Für Agenturen</p><h3>Ihre Kundenführung. Meine Umsetzung.</h3><p>WordPress, Tracking und technische Weiterentwicklung unter Ihrem Namen. Umfang und Preis vereinbaren wir vor dem Erstprojekt.</p><a class="textlink" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="link_about_whitelabel" data-track-category="lead_gen" data-track-section="about_cta">White-Label ansehen →</a></aside>
+			</div>
+			<div class="about-personal">
+				<p>Abseits der Kundenarbeit schreibe ich auf <a class="satzlink" href="<?php echo esc_url( $blog_url ); ?>" rel="me noopener noreferrer" target="_blank" data-track-action="link_about_blog" data-track-category="navigation" data-track-section="about_coda">hasimuener.org</a> über Medien und Öffentlichkeit.</p>
+				<ul role="list"><li><a class="satzlink" href="<?php echo esc_url( $linkedin_url ); ?>" rel="me noopener noreferrer" target="_blank" data-track-action="link_about_linkedin" data-track-category="navigation" data-track-section="about_cta">LinkedIn ↗</a></li><li><a class="satzlink" href="<?php echo esc_url( $github_url ); ?>" rel="me noopener noreferrer" target="_blank" data-track-action="link_about_github" data-track-category="navigation" data-track-section="about_cta">GitHub ↗</a></li><li><a class="satzlink" href="<?php echo esc_url( 'mailto:' . $mail_address, [ 'mailto' ] ); ?>" data-track-action="link_about_mail" data-track-category="navigation" data-track-section="about_cta">E-Mail</a></li></ul>
+			</div>
 		</div>
 	</div>
-</main>
-
-<?php
-get_footer();
+</div>
+<?php get_footer(); ?>

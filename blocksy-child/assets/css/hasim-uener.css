@@ -1,941 +1,145 @@
-/* =============================================================
-   Personenseite /hasim-uener/ — Editorial Operator.
-
-   Der Name ist eine leise Identitaetszeile. Die bestehende Aussage und das
-   Portrait bilden gemeinsam den Hero; eine Kupferlinie fuehrt als einziges
-   Bewegungsmotiv in die vier Stationen weiter.
-
-   MOTION BRIEF
-   Route / surface: /hasim-uener/, Hero und Stationen-Band.
-   Visitor decision / CTA: Person und Arbeitsansatz einordnen; am Seitenende
-   passend zwischen Direktmandat und White-Label verzweigen.
-   Intensity: 2 — guided.
-   Thesis: Portrait, Aussage und Stationen lesen sich als ein zusammenhaengendes
-   System; Bewegung markiert nur diese Verbindung.
-   Focal moment: einmaliger Portrait- und Linien-Einzug beim ersten Paint.
-   Continuity: die Linie setzt sich durch die vier biografischen Stationen fort.
-   Feedback states: Fokus, Hover und Active der bestehenden Links.
-   Explicitly static: Aussage, Zahlen, Haltung, Arbeitsregeln, CTA und
-   Schlusszeile. Die Arbeitsregeln sind der laengste Block der Seite und
-   bekommen bewusst keine Reveal-Choreografie: fuenf nacheinander einblendende
-   Textbloecke waeren eine zweite Bewegungsgruppe und wuerden das Lesen
-   ausbremsen.
-   Max moving groups: eine (Portrait plus zusammengehoerige Systemlinie).
-   Runtime / payload: kein neues JS, keine Abhaengigkeit, bestehendes WebP bleibt.
-   CWV: keine belastbare Feld-Baseline im Repo; feste Bildmasse, srcset und
-   fetchpriority=high bleiben als LCP-Vertrag erhalten.
-   Mobile: kein Parallax oder Hover-Move; gestapelte, vollstaendige Komposition.
-   Reduced motion / no JS: sofortiger Endzustand, alle Inhalte bleiben sichtbar.
-   ============================================================= */
-
-.hu-about {
-	--hu-about-bg: hsl(35 12% 96%);
-	--hu-about-surface: hsl(34 13% 92%);
-	--hu-about-ink: hsl(30 10% 12%);
-	--hu-about-ink-soft: hsl(30 6% 38%);
-	--hu-about-accent: #b46a3c;
-	--hu-about-accent-strong: #754027;
-	--hu-about-line: hsl(23 24% 68% / 0.5);
-	--hu-about-hero-bg: hsl(30 8% 7%);
-	--hu-about-hero-surface: hsl(28 10% 10%);
-	--hu-about-hero-ink: hsl(35 16% 94%);
-	--hu-about-hero-ink-soft: hsl(32 7% 71%);
-	--hu-about-band-bg: hsl(28 12% 10%);
-	--hu-about-band-line: hsl(30 10% 100% / 0.24);
-	/* Akzent fuer Text im dunklen Band. #b46a3c erreicht auf hsl(28 12% 10%)
-	   nur 4,21:1 und faellt damit bei 13 px durch 1.4.3 — Lighthouse zog die
-	   Barrierefreiheit dadurch von 100 auf 96. Dieser Wert ist der bereits im
-	   Design-System vorhandene --accent-hover und kommt auf 5,27:1.
-	   Der Grundakzent bleibt unveraendert: auf Creme liegt er bei 5,13:1. */
-	--hu-about-band-accent: hsl(23 50% 54%);
-	--hu-about-radius: var(--radius-lg, 12px);
-
-	position: relative;
-	isolation: isolate;
-	background-color: var(--hu-about-bg);
-	color: var(--hu-about-ink);
-	font-family: var(--font-body, 'Figtree'), sans-serif;
-	line-height: var(--leading-normal, 1.55);
-}
-
-.hu-about__inner {
-	display: grid;
-	gap: clamp(var(--nx-space-3xl), 9vw, calc(var(--nx-space-section) + var(--nx-space-xl)));
-	max-width: 1000px;
-	margin-inline: auto;
-	padding: clamp(var(--nx-space-3xl), 8vw, var(--nx-space-section)) var(--nx-space-lg) 0;
-}
-
-/* -----------------------------------------------------------
-   1 — Hero: asymmetrische Editorial-Komposition. Der Name ist
-   Identitaet, nicht Billboard; die Aussage ist die Hauptstufe.
------------------------------------------------------------ */
-.hu-about__hero {
-	position: relative;
-	overflow: hidden;
-	overflow: clip;
-	padding-block:
-		clamp(calc(var(--nx-space-section) + var(--nx-space-md)), 10vw, calc(var(--nx-space-section) + var(--nx-space-2xl)))
-		clamp(var(--nx-space-3xl), 7vw, var(--nx-space-section));
-	color: var(--hu-about-hero-ink);
-	background-color: var(--hu-about-hero-bg);
-	background-image:
-		radial-gradient(circle at 82% 38%, hsl(23 50% 47% / 0.12), transparent 34%),
-		linear-gradient(135deg, hsl(30 9% 8%), var(--hu-about-hero-bg) 58%);
-}
-
-.hu-about__hero::before {
-	position: absolute;
-	inset: 0;
-	background-image:
-		linear-gradient(90deg, transparent 0 49.9%, hsl(35 14% 90% / 0.035) 50%, transparent 50.1%),
-		linear-gradient(hsl(35 14% 90% / 0.025) 1px, transparent 1px);
-	background-size: 100% 100%, 100% var(--nx-space-section);
-	content: '';
-	pointer-events: none;
-}
-
-.hu-about__hero-inner {
-	position: relative;
-	z-index: 1;
-	display: grid;
-	grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
-	grid-template-areas: 'copy visual';
-	align-items: center;
-	gap: clamp(var(--nx-space-2xl), 6vw, var(--nx-space-section));
-	max-width: 1200px;
-	margin-inline: auto;
-	padding-block: 0;
-	padding-inline: var(--nx-space-lg);
-}
-
-.hu-about__hero-copy {
-	grid-area: copy;
-	max-width: 44rem;
-}
-
-.hu-about__h1 {
-	display: flex;
-	align-items: center;
-	gap: var(--nx-space-md);
-	margin: 0 0 var(--nx-space-xl);
-	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
-	font-size: clamp(1.125rem, 1.5vw, 1.5rem);
-	font-weight: 600;
-	line-height: var(--leading-snug, 1.3);
-	letter-spacing: 0.08em;
-	text-transform: none;
-	color: var(--hu-about-hero-ink-soft);
-}
-
-.hu-about__h1::before {
-	flex: 0 0 var(--nx-space-2xl);
-	block-size: 1px;
-	background-color: var(--hu-about-accent);
-	content: '';
-}
-
-.hu-about__lead {
-	margin: 0;
-}
-
-.hu-about__lead-main {
-	display: block;
-	max-width: 14.5ch;
-	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
-	font-size: clamp(2.625rem, 4.5vw, 4.75rem);
-	font-weight: 600;
-	line-height: 1.02;
-	letter-spacing: -0.035em;
-	color: var(--hu-about-hero-ink);
-	text-wrap: balance;
-}
-
-.hu-about__lead-place {
-	display: block;
-	margin-block-start: var(--nx-space-lg);
-	font-size: 1rem;
-	font-weight: 500;
-	line-height: var(--leading-normal, 1.55);
-	letter-spacing: 0.04em;
-	color: var(--hu-about-hero-ink-soft);
-}
-
-.hu-about__hero-visual {
-	position: relative;
-	grid-area: visual;
-	justify-self: end;
-	width: min(100%, 30rem);
-	aspect-ratio: 4 / 5;
-	overflow: hidden;
-	border: 1px solid hsl(23 34% 60% / 0.34);
-	border-radius: var(--hu-about-radius);
-	background-color: var(--hu-about-hero-surface);
-	box-shadow: 0 32px 80px hsl(30 30% 2% / 0.42);
-	isolation: isolate;
-	animation: hu-about-portrait-in var(--duration-reveal, 600ms) var(--nx-ease) both;
-}
-
-.hu-about__hero-visual::after {
-	position: absolute;
-	inset: 0;
-	z-index: 1;
-	background-image:
-		linear-gradient(180deg, transparent 58%, hsl(28 20% 8% / 0.36)),
-		linear-gradient(135deg, hsl(23 50% 47% / 0.1), transparent 42%);
-	content: '';
-	pointer-events: none;
-}
-
-.hu-about__portrait {
-	position: static;
-	inset: auto;
-	display: block;
-	width: 100%;
-	max-width: none;
-	height: 100%;
-	aspect-ratio: auto;
-	object-fit: cover;
-	object-position: 50% 22%;
-	filter: saturate(0.58) sepia(0.12) contrast(1.04) brightness(0.9);
-	transform: scale(1.01);
-}
-
-.hu-about__portrait-axis {
-	position: absolute;
-	top: var(--nx-space-xl);
-	bottom: calc(var(--nx-space-2xl) * -1);
-	left: calc(var(--nx-space-lg) * -1);
-	z-index: 2;
-	width: 1px;
-	background-image: linear-gradient(var(--hu-about-accent), hsl(23 50% 47% / 0.16));
-	transform-origin: 50% 0;
-	animation: hu-about-axis-in var(--duration-reveal, 600ms) var(--nx-ease) 80ms both;
-}
-
-.hu-about__portrait-axis::after {
-	position: absolute;
-	right: -4px;
-	bottom: 0;
-	width: 9px;
-	aspect-ratio: 1;
-	border: 2px solid var(--hu-about-accent);
-	border-radius: 50%;
-	background-color: var(--hu-about-hero-bg);
-	content: '';
-}
-
-.hu-about__hero-signal {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	left: max(var(--nx-space-lg), calc((100vw - 1200px) / 2 + var(--nx-space-lg)));
-	height: 1px;
-	background-image: linear-gradient(90deg, var(--hu-about-accent), hsl(23 50% 47% / 0.12) 72%, transparent);
-	transform-origin: 0 50%;
-	animation: hu-about-signal-in var(--duration-reveal, 600ms) var(--nx-ease) 80ms both;
-}
-
-@keyframes hu-about-portrait-in {
-	from {
-		opacity: 0.55;
-		transform: translateY(12px) scale(0.985);
-	}
-}
-
-@keyframes hu-about-axis-in {
-	from {
-		transform: scaleY(0);
-	}
-}
-
-@keyframes hu-about-signal-in {
-	from {
-		transform: scaleX(0);
-	}
-}
-
-/* -----------------------------------------------------------
-   2 — Stationen: eine biografische Systemlinie statt vier
-   gleichfoermiger Karten. Die Inhalte selbst bleiben immer sichtbar.
------------------------------------------------------------ */
-.hu-about__band {
-	border-top: 1px solid hsl(23 50% 47% / 0.18);
-	padding-block: var(--nx-space-3xl);
-	background-color: var(--hu-about-band-bg);
-	color: var(--hu-about-hero-ink);
-}
-
-.hu-about__station-grid {
-	position: relative;
-	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: 0;
-	max-width: 1200px;
-	margin-inline: auto;
-	padding: 0 var(--nx-space-lg);
-	list-style: none;
-}
-
-.hu-about__station-grid::before {
-	position: absolute;
-	top: 6px;
-	right: calc(var(--nx-space-lg) + 6px);
-	left: calc(var(--nx-space-lg) + 6px);
-	height: 1px;
-	background-color: var(--hu-about-band-line);
-	content: '';
-}
-
-.hu-about__station {
-	--hu-about-delay: 0ms;
-
-	position: relative;
-	display: grid;
-	align-content: start;
-	gap: var(--nx-space-sm);
-	min-width: 0;
-	padding: var(--nx-space-xl) var(--nx-space-xl) 0 0;
-}
-
-.hu-about__station:nth-child(2) {
-	--hu-about-delay: 90ms;
-}
-
-.hu-about__station:nth-child(3) {
-	--hu-about-delay: 180ms;
-}
-
-.hu-about__station:nth-child(4) {
-	--hu-about-delay: 270ms;
-}
-
-.hu-about__station::before {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 1;
-	width: 12px;
-	aspect-ratio: 1;
-	border: 2px solid var(--hu-about-accent);
-	border-radius: 50%;
-	background-color: var(--hu-about-accent);
-	box-shadow: 0 0 0 6px hsl(23 50% 47% / 0.11);
-	content: '';
-	transition:
-		background-color var(--nx-duration) var(--nx-ease),
-		border-color var(--nx-duration) var(--nx-ease),
-		box-shadow var(--nx-duration) var(--nx-ease),
-		transform var(--nx-duration) var(--nx-ease);
-	transition-delay: var(--hu-about-delay);
-}
-
-.hu-about__station::after {
-	position: absolute;
-	top: 6px;
-	right: -6px;
-	left: 12px;
-	height: 1px;
-	background-color: var(--hu-about-accent);
-	content: '';
-	transform: scaleX(1);
-	transform-origin: 0 50%;
-	transition: transform var(--duration-reveal, 600ms) var(--nx-ease) var(--hu-about-delay);
-}
-
-.hu-about__station:last-child::after {
-	display: none;
-}
-
-html.hu-about-anim .hu-about__station:not(.is-in)::before {
-	background-color: var(--hu-about-band-bg);
-	box-shadow: none;
-	transform: scale(0.72);
-}
-
-html.hu-about-anim .hu-about__station:not(.is-in)::after {
-	transform: scaleX(0);
-}
-
-.hu-about__station-figure {
-	margin: 0 0 var(--nx-space-xs);
-	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
-	font-size: clamp(2rem, 3vw, 2.5rem);
-	font-weight: 650;
-	line-height: 1.05;
-	letter-spacing: -0.025em;
-	color: var(--hu-about-hero-ink);
-	white-space: nowrap;
-}
-
-/* Wort- statt Zahlenzeile: nowrap haelt bei den Kennzahlen Wert und Einheit
-   zusammen, schoebe hier aber den laengeren Text zwischen 761 und 901 px aus
-   der Spalte. Der Umbruch faellt auf die einzige Wortfuge, Groesse und
-   Laufweite der Display-Zeile bleiben identisch. */
-.hu-about__station-figure--words {
-	white-space: normal;
-	text-wrap: balance;
-}
-
-.hu-about__station-title {
-	margin: 0;
-	font-family: var(--font-body, 'Figtree'), sans-serif;
-	font-size: 1rem;
-	font-weight: 600;
-	line-height: var(--leading-snug, 1.3);
-	color: var(--hu-about-hero-ink);
-}
-
-/* Das <strong> traegt hier die Wichtigkeit, die vorher die Ueberschrift
-   ausgedrueckt hat. Die Schriftstaerke bleibt die der Beschriftung: das
-   Default-bold des Browsers waere schwerer als vorher. */
-.hu-about__station-title strong {
-	font-weight: inherit;
-}
-
-.hu-about__station-text {
-	max-width: 29ch;
-	margin: 0;
-	font-size: 0.875rem;
-	line-height: var(--leading-normal, 1.55);
-	color: var(--hu-about-hero-ink-soft);
-	text-wrap: pretty;
-}
-
-.hu-about__station-link {
-	display: inline-flex;
-	width: fit-content;
-	font-size: 0.8125rem;
-	font-weight: 650;
-	line-height: var(--leading-snug, 1.3);
-	color: var(--hu-about-band-accent);
-	text-decoration-thickness: 1px;
-	text-underline-offset: 0.22em;
-}
-
-.hu-about__station-link:hover {
-	color: var(--hu-about-hero-ink);
-}
-
-.hu-about__station-link:focus-visible {
-	outline: 2px solid var(--hu-about-band-accent);
-	outline-offset: 4px;
-}
-
-/* -----------------------------------------------------------
-   3 — Haltung: dieselbe Display-Stimme wie der Hero, mit einer
-   kupfernen Achse statt eines weiteren Kartenstils.
------------------------------------------------------------ */
-.hu-about__stance {
-	position: relative;
-	padding-inline-start: clamp(var(--nx-space-lg), 5vw, var(--nx-space-2xl));
-}
-
-.hu-about__stance::before {
-	position: absolute;
-	inset-block: 0;
-	left: 0;
-	width: 2px;
-	background-image: linear-gradient(var(--hu-about-accent), hsl(23 50% 47% / 0.12));
-	content: '';
-}
-
-.hu-about__stance-text {
-	max-width: 48ch;
-	margin: 0;
-	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
-	font-size: clamp(1.375rem, 2.5vw, 1.875rem);
-	font-weight: 500;
-	line-height: 1.52;
-	letter-spacing: -0.015em;
-	color: var(--hu-about-ink);
-	text-wrap: pretty;
-}
-
-/* -----------------------------------------------------------
-   4 — Arbeitsregeln: reiner Fliesstext mit Zwischenueberschriften,
-   keine Karten, Kaesten oder Icons. Genau ein gestalterisches Element,
-   die Akzent-Haarlinie des Zitatblocks, und zwar einmal fuer den
-   ganzen Abschnitt statt einmal pro Regel — sonst zerfaellt der
-   Zusammenhang in fuenf gleich gewichtete Bausteine.
------------------------------------------------------------ */
-.hu-about__rules {
-	position: relative;
-	display: grid;
-	gap: clamp(var(--nx-space-xl), 4vw, var(--nx-space-2xl));
-	padding-inline-start: clamp(var(--nx-space-lg), 5vw, var(--nx-space-2xl));
-}
-
-.hu-about__rules::before {
-	position: absolute;
-	inset-block: 0;
-	left: 0;
-	width: 2px;
-	background-image: linear-gradient(var(--hu-about-accent), hsl(23 50% 47% / 0.12));
-	content: '';
-}
-
-.hu-about__rule {
-	display: grid;
-	gap: var(--nx-space-md);
-}
-
-.hu-about__rule-title {
-	margin: 0;
-	max-width: 30ch;
-	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
-	font-size: clamp(1.25rem, 2vw, 1.5rem);
-	font-weight: 600;
-	line-height: var(--leading-snug, 1.3);
-	letter-spacing: -0.015em;
-	color: var(--hu-about-ink);
-	text-wrap: balance;
-}
-
-/* Lesemass aus dem Designsystem statt eines eigenen Werts: der Absatz
-   soll nicht auf die 1000 px des Inhaltscontainers laufen. */
-.hu-about__rule-text {
-	max-width: var(--measure-base, 60ch);
-	margin: 0;
-	font-size: 1rem;
-	line-height: 1.68;
-	color: var(--hu-about-ink-soft);
-	text-wrap: pretty;
-}
-
-/* -----------------------------------------------------------
-   5 — CTA: ein Schlussakkord, zwei nach Zielgruppe getrennte Wege.
------------------------------------------------------------ */
-.hu-about__cta {
-	position: relative;
-	display: grid;
-	gap: var(--nx-space-xl);
-	padding: clamp(var(--nx-space-xl), 6vw, var(--nx-space-2xl));
-	overflow: hidden;
-	border: 1px solid var(--hu-about-line);
-	border-radius: var(--hu-about-radius);
-	background-color: var(--hu-about-surface);
-}
-
-.hu-about__cta::before {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: min(52%, 22rem);
-	height: 3px;
-	background-color: var(--hu-about-accent);
-	content: '';
-}
-
-.hu-about__cta-head {
-	display: grid;
-	gap: var(--nx-space-sm);
-	max-width: 46rem;
-}
-
-.hu-about__cta-kicker,
-.hu-about__path-label {
-	margin: 0;
-	font-size: 0.75rem;
-	font-weight: 700;
-	line-height: 1.35;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	color: var(--hu-about-accent-strong);
-}
-
-.hu-about__cta-title {
-	max-width: 22ch;
-	margin: 0;
-	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
-	font-size: clamp(1.75rem, 4vw, 2.75rem);
-	font-weight: 600;
-	line-height: 1.08;
-	letter-spacing: -0.025em;
-	color: var(--hu-about-ink);
-	text-wrap: balance;
-}
-
-.hu-about__path-grid {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	overflow: hidden;
-	border: 1px solid var(--hu-about-line);
-	border-radius: var(--hu-about-radius);
-	background-color: var(--hu-about-bg);
-}
-
-.hu-about__path {
-	display: grid;
-	grid-template-rows: auto auto 1fr auto;
-	align-content: start;
-	gap: var(--nx-space-md);
-	min-width: 0;
-	padding: clamp(var(--nx-space-lg), 4vw, var(--nx-space-xl));
-}
-
-.hu-about__path--direct {
-	background-color: var(--hu-about-bg);
-}
-
-.hu-about__path--whitelabel {
-	border-left: 1px solid var(--hu-about-line);
-	background-color: var(--hu-about-hero-bg);
-	color: var(--hu-about-hero-ink);
-}
-
-.hu-about__path--whitelabel .hu-about__path-label {
-	color: #d99a70;
-}
-
-.hu-about__path-title {
-	margin: 0;
-	font-family: var(--font-display, 'Satoshi'), var(--font-body, 'Figtree'), sans-serif;
-	font-size: clamp(1.25rem, 2.2vw, 1.5rem);
-	font-weight: 600;
-	line-height: 1.2;
-	letter-spacing: -0.015em;
-	color: var(--hu-about-ink);
-	text-wrap: balance;
-}
-
-.hu-about__path--whitelabel .hu-about__path-title {
-	color: var(--hu-about-hero-ink);
-}
-
-.hu-about__path-text {
-	max-width: 36ch;
-	margin: 0;
-	font-size: 0.9375rem;
-	line-height: 1.6;
-	color: var(--hu-about-ink-soft);
-	text-wrap: pretty;
-}
-
-.hu-about__path--whitelabel .hu-about__path-text {
-	color: var(--hu-about-hero-ink-soft);
-}
-
-.hu-about__path-link {
-	display: inline-flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--nx-space-md);
-	min-block-size: 48px;
-	min-inline-size: 44px;
-	width: 100%;
-	padding: var(--nx-space-md) var(--nx-space-lg);
-	border: 1px solid var(--hu-about-accent-strong);
-	border-radius: var(--hu-about-radius);
-	font-size: 1rem;
-	font-weight: 650;
-	line-height: 1.25;
-	text-decoration: none;
-	transition:
-		background-color var(--nx-duration-fast) var(--nx-ease),
-		border-color var(--nx-duration-fast) var(--nx-ease),
-		color var(--nx-duration-fast) var(--nx-ease),
-		transform var(--nx-duration) var(--nx-ease);
-}
-
-.hu-about__path-link--primary {
-	background-color: var(--hu-about-accent-strong);
-	color: var(--hu-about-hero-ink);
-}
-
-.hu-about__path-link--secondary {
-	border-color: hsl(23 50% 66% / 0.72);
-	background-color: transparent;
-	color: var(--hu-about-hero-ink);
-}
-
-.hu-about__path-link > span {
-	flex: 0 0 auto;
-	font-size: 1.2em;
-	line-height: 1;
-	transition: transform var(--nx-duration-fast) var(--nx-ease);
-}
-
-.hu-about__path-link:active {
-	transform: translateY(0);
-}
-
-.hu-about__cta-links {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0 var(--nx-space-lg);
-	margin: 0;
-	font-size: 0.875rem;
-}
-
-.hu-about__cta-links a {
-	display: inline-flex;
-	align-items: center;
-	min-block-size: 44px;
-	min-inline-size: 44px;
-	color: var(--hu-about-ink-soft);
-	text-decoration: underline;
-	text-underline-offset: 3px;
-}
-
-/* -----------------------------------------------------------
-   6 — Schlusszeile: steht ausserhalb der CTA-Karte, damit sie nicht
-   als dritter Weg gelesen wird. Sie traegt zugleich den unteren
-   Abschluss des Inhaltscontainers, der bei 0 endet.
------------------------------------------------------------ */
-.hu-about__coda {
-	max-width: 56ch;
-	margin: 0;
-	padding-block-end: clamp(var(--nx-space-3xl), 8vw, var(--nx-space-section));
-	font-size: 0.9375rem;
-	font-style: italic;
-	line-height: 1.6;
-	color: var(--hu-about-ink-soft);
-	text-wrap: pretty;
-}
-
-.hu-about__coda a {
-	color: var(--hu-about-accent-strong);
-	font-style: normal;
-	text-decoration: underline;
-	text-underline-offset: 3px;
-}
-
-.hu-about a:focus-visible {
-	outline: 3px solid var(--hu-about-accent);
-	outline-offset: 3px;
-}
-
-@media (hover: hover) and (pointer: fine) {
-	.hu-about__path-link--primary:hover {
-		border-color: var(--hu-about-accent);
-		background-color: #854a2c;
-		transform: translateY(-2px);
-	}
-
-	.hu-about__path-link--secondary:hover {
-		border-color: #d99a70;
-		background-color: hsl(23 50% 66% / 0.12);
-		transform: translateY(-2px);
-	}
-
-	.hu-about__path-link:hover > span {
-		transform: translateX(3px);
-	}
-
-	.hu-about__cta-links a:hover {
-		color: var(--hu-about-ink);
-	}
-
-	.hu-about__coda a:hover {
-		color: var(--hu-about-ink);
-	}
-}
-
-/* -----------------------------------------------------------
-   Responsive composition
------------------------------------------------------------ */
-@media (max-width: 900px) {
-	.hu-about__hero-inner {
-		grid-template-columns: minmax(0, 1.08fr) minmax(17rem, 0.92fr);
-		gap: var(--nx-space-2xl);
-	}
-
-	.hu-about__station-figure {
-		font-size: clamp(1.75rem, 3.7vw, 2.125rem);
-	}
-
-}
-
-@media (max-width: 760px) {
-	.hu-about__path-grid {
-		grid-template-columns: minmax(0, 1fr);
-	}
-
-	.hu-about__path--whitelabel {
-		border-top: 1px solid var(--hu-about-line);
-		border-left: 0;
-	}
-
-	.hu-about__hero {
-		padding-block:
-		calc(var(--nx-space-section) + var(--nx-space-sm))
-		var(--nx-space-3xl);
-	}
-
-	.hu-about__hero-inner {
-		grid-template-columns: minmax(0, 1fr);
-		grid-template-areas:
-			'visual'
-			'copy';
-		gap: var(--nx-space-2xl);
-	}
-
-	.hu-about__hero-copy,
-	.hu-about__hero-visual {
-		justify-self: center;
-		width: min(100%, 34rem);
-	}
-
-	.hu-about__hero-visual {
-		aspect-ratio: 4 / 3;
-	}
-
-	.hu-about__portrait {
-		object-position: 50% 20%;
-	}
-
-	.hu-about__portrait-axis {
-		top: auto;
-		right: var(--nx-space-lg);
-		bottom: calc(var(--nx-space-2xl) * -1);
-		left: auto;
-		height: var(--nx-space-3xl);
-	}
-
-	.hu-about__h1 {
-		margin-block-end: var(--nx-space-lg);
-	}
-
-	.hu-about__lead-main {
-		max-width: 15ch;
-		font-size: clamp(2.25rem, 10vw, 3rem);
-		line-height: 1.04;
-	}
-
-	.hu-about__band {
-		padding-block: var(--nx-space-3xl);
-	}
-
-	.hu-about__station-grid {
-		grid-template-columns: minmax(0, 1fr);
-	}
-
-	.hu-about__station-grid::before {
-		top: 6px;
-		right: auto;
-		bottom: calc(var(--nx-space-2xl) + 6px);
-		left: calc(var(--nx-space-lg) + 6px);
-		width: 1px;
-		height: auto;
-	}
-
-	.hu-about__station {
-		padding: 0 0 var(--nx-space-2xl) var(--nx-space-2xl);
-	}
-
-	.hu-about__station:last-child {
-		padding-block-end: 0;
-	}
-
-	.hu-about__station::after {
-		top: 12px;
-		right: auto;
-		bottom: 0;
-		left: 6px;
-		width: 1px;
-		height: auto;
-		transform: scaleY(1);
-		transform-origin: 50% 0;
-	}
-
-	html.hu-about-anim .hu-about__station:not(.is-in)::after {
-		transform: scaleY(0);
-	}
-
-	.hu-about__station-figure {
-		font-size: clamp(2rem, 8vw, 2.5rem);
-	}
-}
-
-@media (max-width: 420px) {
-	.hu-about__hero-inner,
-	.hu-about__station-grid,
-	.hu-about__inner {
-		padding-inline: var(--nx-space-md);
-	}
-
-	.hu-about__hero-signal {
-		left: var(--nx-space-md);
-	}
-
-	.hu-about__station-grid::before {
-		left: calc(var(--nx-space-md) + 6px);
-	}
-
-	.hu-about__h1::before {
-		flex-basis: var(--nx-space-xl);
-	}
-
-	.hu-about__cta {
-		padding: var(--nx-space-lg);
-	}
-
-	.hu-about__path {
-		padding-inline: var(--nx-space-md);
-	}
-
-	.hu-about__path-link {
-		gap: var(--nx-space-sm);
-		padding-inline: var(--nx-space-md);
-		font-size: 0.9375rem;
-	}
-}
-
-/* -----------------------------------------------------------
-   Preference and platform fallbacks
------------------------------------------------------------ */
-@media (prefers-reduced-motion: reduce) {
-	.hu-about__hero-visual,
-	.hu-about__portrait-axis,
-	.hu-about__hero-signal {
-		animation: none;
-	}
-
-	html.hu-about-anim .hu-about__station:not(.is-in)::before {
-		background-color: var(--hu-about-accent);
-		box-shadow: 0 0 0 6px hsl(23 50% 47% / 0.11);
-		transform: none;
-	}
-
-	html.hu-about-anim .hu-about__station:not(.is-in)::after {
-		transform: scaleX(1);
-	}
-
-	.hu-about__station::before,
-	.hu-about__station::after,
-	.hu-about__path-link,
-	.hu-about__path-link > span {
-		transition: none;
-	}
-
-	.hu-about__path-link:hover,
-	.hu-about__path-link:hover > span {
-		transform: none;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) and (max-width: 760px) {
-	html.hu-about-anim .hu-about__station:not(.is-in)::after {
-		transform: scaleY(1);
-	}
-}
-
-@media (forced-colors: active) {
-	.hu-about__hero,
-	.hu-about__band {
-		border-color: CanvasText;
-		background: Canvas;
-		color: CanvasText;
-	}
-
-	.hu-about__portrait {
-		filter: none;
-	}
-
-	.hu-about__path-link {
-		border: 2px solid ButtonText;
-		background: ButtonFace;
-		color: ButtonText;
-	}
+/* Personal methodology in the shared document system (system.css).
+ * Motion intensity: 0. Text and evidence are always present; native details
+ * disclose visitor examples. Focus and disclosure feedback come from system.css.
+ * No scroll reveals, entrance timeline or page-specific JavaScript required.
+ */
+.hu-about .about-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 20rem);
+  gap: var(--s5);
+  align-items: center;
+}
+.hu-about .about-hero h1 {
+  font-size: clamp(2.05rem, 1.2rem + 3.2vw, 3.8rem);
+  max-width: 20ch;
+}
+.hu-about .about-start { margin-top: var(--s3); }
+.hu-about .about-portrait { margin: 0; }
+.hu-about .about-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+}
+.hu-about .about-portrait figcaption {
+  display: grid;
+  gap: var(--s0);
+  padding-top: var(--s2);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.hu-about .about-portrait figcaption span { color: var(--grau); }
+.hu-about .about-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s3);
+  margin-top: var(--s4);
+  padding-top: var(--s2);
+  border-top: 1px solid var(--haar);
+}
+.hu-about .about-index a {
+  padding-block: var(--s1);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  text-underline-offset: var(--s0);
+}
+.hu-about .about-copy { max-width: 68ch; }
+.hu-about .about-copy > p { margin-top: var(--s3); }
+.hu-about .about-copy > h2 + p { margin-top: var(--s4); }
+.hu-about .about-copy .about-thesis {
+  border-left: 2px solid var(--stempel);
+  padding: var(--s2) var(--s3);
+  margin-top: var(--s4);
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.5;
+}
+.hu-about .about-decisions {
+  margin-top: var(--s4);
+  border-top: 1px solid var(--strich);
+}
+.hu-about .about-decision {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.7fr) minmax(0, 1.3fr);
+  gap: var(--s3);
+  padding-block: var(--s4);
+  border-bottom: 1px solid var(--haar);
+}
+.hu-about .about-decision h3 {
+  font-size: clamp(1.5rem, 1.3rem + 0.7vw, 1.9rem);
+  margin-top: var(--s1);
+}
+.hu-about .about-decision .about-verification {
+  margin-top: var(--s2);
+  color: var(--grau);
+  font-size: 0.95rem;
+}
+.hu-about .about-verification strong { color: var(--tinte); font-weight: 500; }
+.hu-about .about-evidence {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--s3);
+  margin-top: var(--s4);
+}
+.hu-about .about-evidence h3 {
+  font-size: clamp(1.2rem, 1.1rem + 0.6vw, 1.5rem);
+  margin-block: var(--s2);
+  line-height: 1.25;
+}
+.hu-about .about-evidence p:not(.mono):not(.about-number) { color: var(--grau); font-size: 0.95rem; }
+.hu-about .about-evidence-result { border-left: 1px solid var(--haar); padding-left: var(--s3); align-self: center; }
+.hu-about .about-number {
+  color: var(--stempel);
+  font-family: var(--mono);
+  font-size: clamp(1.35rem, 1rem + 1vw, 1.8rem);
+  line-height: 1.2;
+  margin-bottom: var(--s2);
+  font-variant-numeric: tabular-nums;
+}
+.hu-about .about-evidence-source { grid-column: 1 / -1; padding-top: var(--s3); border-top: 1px solid var(--haar); }
+.hu-about .about-evidence-source .textlink { margin-top: var(--s2); }
+.hu-about .about-paths .antwort a { display: inline-block; margin-top: var(--s2); }
+.hu-about .about-afterword { max-width: 68ch; margin-top: var(--s4); }
+.hu-about .about-reference {
+  margin-top: var(--s4);
+  padding: var(--s3);
+  background: var(--zone);
+  border-left: 2px solid var(--stempel);
+}
+.hu-about .about-reference h3 { font-size: 1.4rem; margin-block: var(--s2); overflow-wrap: anywhere; }
+.hu-about .about-reference p:not(.mono) { color: var(--grau); max-width: 64ch; }
+.hu-about .about-reference .textlink { margin-top: var(--s3); }
+.hu-about .about-principle { margin-top: var(--s4); }
+.hu-about .about-principle h3 { font-size: 1.35rem; }
+.hu-about .about-close {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: var(--s4);
+}
+.hu-about .about-close h2 { margin-top: var(--s2); }
+.hu-about .about-agency { align-self: end; border-left: 1px solid var(--haar); padding-left: var(--s3); }
+.hu-about .about-agency h3 { font-size: 1.3rem; margin-block: var(--s2); }
+.hu-about .about-agency p:not(.mono) { color: var(--grau); font-size: 0.95rem; }
+.hu-about .about-agency .textlink { margin-top: var(--s3); }
+.hu-about .about-reply { margin-top: var(--s2); color: var(--grau); font-size: 0.9rem; }
+.hu-about .about-personal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s3);
+  padding-block: var(--s4);
+  color: var(--grau);
+  font-size: 0.9rem;
+}
+.hu-about .about-personal > p { max-width: 58ch; }
+.hu-about .about-personal ul { display: flex; flex-wrap: wrap; gap: var(--s3); margin: 0; padding: 0; list-style: none; }
+.hu-about .about-hero > *, .hu-about .about-decision > *, .hu-about .about-evidence > *, .hu-about .about-close > * { min-width: 0; }
+@media (max-width: 960px) {
+  .hu-about .about-hero { grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem); gap: var(--s3); }
+}
+@media (max-width: 640px) {
+  .hu-about .about-hero, .hu-about .about-decision, .hu-about .about-evidence, .hu-about .about-close { grid-template-columns: minmax(0, 1fr); }
+  .hu-about .about-portrait { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: var(--s3); align-items: center; }
+  .hu-about .about-portrait figcaption { padding-top: 0; }
+  .hu-about .about-evidence-result, .hu-about .about-agency { border-left: 0; border-top: 1px solid var(--haar); padding-left: 0; padding-top: var(--s3); }
 }
