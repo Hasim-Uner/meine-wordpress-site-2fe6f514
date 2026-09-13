@@ -1,0 +1,132 @@
+/* Final single-reader contract. Loaded after route-specific article assets. */
+
+.single-post .nexus-single-container {
+	background: var(--papier) !important;
+	color: var(--tinte) !important;
+}
+
+.single-post .nexus-single-container .nexus-post-layout {
+	grid-template-columns: minmax(10rem, 13rem) minmax(0, var(--satz)) !important;
+	gap: var(--s5) !important;
+	align-items: start !important;
+	width: min(100% - (var(--s3) * 2), 1120px) !important;
+	margin-inline: auto !important;
+	padding: 0 !important;
+}
+
+.single-post .nexus-single-container .nexus-sidebar.nexus-reader-toc {
+	position: sticky !important;
+	top: calc(58px + var(--s3)) !important;
+	align-self: start !important;
+}
+
+.single-post .nexus-single-container .nexus-article-content {
+	width: 100% !important;
+	max-width: var(--satz) !important;
+	margin-inline: auto !important;
+	background: transparent !important;
+	color: var(--grau) !important;
+	box-shadow: none !important;
+}
+
+/* Decision articles keep their calculators and contract tools, but not their
+   former standalone hero/navigation shell. */
+.single-post .nexus-article-content--decision {
+	max-width: var(--satz) !important;
+}
+
+.single-post .nexus-article-content--decision .hu-checkfox,
+.single-post .nexus-article-content--decision .hu-aroundhome {
+	width: 100% !important;
+	max-width: none !important;
+	margin: 0 !important;
+	background: transparent !important;
+	color: var(--tinte) !important;
+}
+
+.single-post .nexus-article-content--decision .hu-checkfox {
+	--checkfox-bg: var(--papier);
+	--checkfox-surface: var(--zone);
+	--checkfox-surface-2: var(--zone);
+	--checkfox-line: var(--haar);
+	--checkfox-text: var(--tinte);
+	--checkfox-muted: var(--grau);
+	--checkfox-copper: var(--stempel);
+	--checkfox-copper-light: var(--stempel);
+}
+
+.single-post .nexus-article-content--decision .hu-checkfox__hero,
+.single-post .nexus-article-content--decision .hu-checkfox__bar,
+.single-post .nexus-article-content--decision .hu-aroundhome__hero,
+.single-post .nexus-article-content--decision .hu-aroundhome__jump {
+	display: none !important;
+}
+
+.single-post .nexus-article-content--decision .hu-checkfox__section,
+.single-post .nexus-article-content--decision .hu-aroundhome__band {
+	width: 100% !important;
+	max-width: none !important;
+	margin: 0 !important;
+	padding: var(--s4) 0 !important;
+	border: 0 !important;
+	border-top: 1px solid var(--strich) !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	color: var(--tinte) !important;
+	box-shadow: none !important;
+}
+
+.single-post .nexus-article-content--decision .hu-aroundhome__inner {
+	width: 100% !important;
+	max-width: none !important;
+	margin: 0 !important;
+	padding-inline: 0 !important;
+}
+
+.single-post .nexus-article-content--decision :where(h2, h3, h4) {
+	color: var(--tinte) !important;
+	font-family: var(--serif-display) !important;
+}
+
+.single-post .nexus-article-content--decision :where(p, li, dd) {
+	color: var(--grau) !important;
+	font-family: var(--serif) !important;
+}
+
+.single-post .nexus-article-content--decision :where(a) {
+	color: var(--stempel);
+}
+
+.single-post .nexus-article-content--decision :where(.hu-checkfox__compare-lane, .hu-checkfox__contract, .hu-checkfox__faq details, .hu-aroundhome__ledger, .hu-aroundhome__answer-card, .hu-aroundhome__path-card, details) {
+	border-color: var(--haar) !important;
+	border-radius: 0 !important;
+	background: var(--zone) !important;
+	box-shadow: none !important;
+}
+
+/* One footer rhythm for every article. */
+.single-post .nexus-single-container .nexus-article-next,
+.single-post .nexus-single-container .nexus-rating,
+.single-post .nexus-single-container .nexus-author-bio,
+.single-post .nexus-single-container > .nexus-related-content {
+	width: min(100% - (var(--s3) * 2), 780px) !important;
+	margin-inline: auto !important;
+}
+
+@media (max-width: 980px) {
+	.single-post .nexus-single-container .nexus-post-layout {
+		grid-template-columns: 1fr !important;
+		gap: var(--s3) !important;
+	}
+
+	.single-post .nexus-single-container .nexus-sidebar.nexus-reader-toc {
+		position: static !important;
+		top: auto !important;
+	}
+}
+
+@media (max-width: 720px) {
+	.single-post .nexus-single-container .nexus-post-layout {
+		width: min(100% - (var(--s2) * 2), 1120px) !important;
+	}
+}

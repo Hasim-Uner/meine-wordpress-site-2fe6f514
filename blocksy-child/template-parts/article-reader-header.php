@@ -1,10 +1,10 @@
 <?php
 /**
- * Minimal reader header for Article System posts.
+ * Shared reader header for every Article System post.
  *
- * Keeps article reading separate from the commercial site navigation: one
- * brand link, one route back to the Werkstatt and one dossier link. No CTA,
- * dropdown or sticky full-site menu competes with the article itself.
+ * One brand link, one route back to the Werkstatt and one dossier link. The
+ * same shell is used for every single post; dossier differences change labels
+ * and content routing, never the page layout.
  *
  * @package Blocksy_Child
  */
@@ -28,9 +28,6 @@ $brand_text   = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wor
 $author_name  = get_the_author();
 $reading_time = function_exists( 'nexus_get_reading_time' ) ? (int) nexus_get_reading_time() : 0;
 
-// Prefer the canonical Werkstatt taxonomy. A small route map keeps the reader
-// context intentional for the flagship articles even when an older WordPress
-// category assignment still reflects the previous blog model.
 $dossier_priority = [
 	'wordpress-performance',
 	'tracking',
@@ -105,18 +102,10 @@ $home_label = sprintf(
 	$brand_text
 );
 
-// The reader partial is rendered after wp_head(), so its small, route-specific
-// presentation layer is emitted inline here instead of being enqueued too late.
-$reader_body_css_path = get_stylesheet_directory() . '/assets/css/article-reader-body.css';
-$reader_body_css      = is_readable( $reader_body_css_path ) ? file_get_contents( $reader_body_css_path ) : '';
 $reader_share_js_url  = get_stylesheet_directory_uri() . '/assets/js/article-reader-share.js';
 $reader_share_js_path = get_stylesheet_directory() . '/assets/js/article-reader-share.js';
 $reader_share_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $reader_share_js_path ) : wp_get_theme()->get( 'Version' );
 ?>
-
-<?php if ( is_string( $reader_body_css ) && '' !== $reader_body_css ) : ?>
-	<style id="nexus-article-reader-body-css"><?php echo $reader_body_css; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted local theme CSS. ?></style>
-<?php endif; ?>
 
 <header
 	class="nexus-article-reader-header"
@@ -155,19 +144,8 @@ $reader_share_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset
 
 <script id="nexus-article-reader-share-loader" src="<?php echo esc_url( add_query_arg( 'ver', rawurlencode( (string) $reader_share_version ), $reader_share_js_url ) ); ?>"></script>
 
-<?php if ( 'leadgenerierung' !== $dossier_slug ) : ?>
-	<style id="nexus-article-reader-dossier-label">
-		.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial::before {
-			content: <?php echo wp_json_encode( $dossier_label ); ?>;
-		}
-
-		/* The generic single template still carries an Energy-first author CTA
-		   and next-step fallback. Until that global contract is refactored, keep
-		   those surfaces out of non-Energy reader posts instead of showing a
-		   Solar Marktcheck below a WordPress, Tracking or CRO article. */
-		.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio,
-		.nexus-article-reader-header ~ .nexus-single-container .nexus-article-next {
-			display: none !important;
-		}
-	</style>
-<?php endif; ?>
+<style id="nexus-article-reader-dossier-label">
+	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial::before {
+		content: <?php echo wp_json_encode( $dossier_label ); ?>;
+	}
+</style>
