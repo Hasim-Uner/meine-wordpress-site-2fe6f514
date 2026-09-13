@@ -85,5 +85,17 @@ function hu_enforce_shared_article_reader_assets() : void {
 	// that route-specific visual and behavioural shell.
 	wp_dequeue_style( 'hu-agency-outsourcing-article' );
 	wp_dequeue_script( 'hu-agency-outsourcing-article-ui' );
+
+	$style_path       = get_stylesheet_directory() . '/assets/css/single-reader-unified.css';
+	$style_url        = get_stylesheet_directory_uri() . '/assets/css/single-reader-unified.css';
+	$fallback_version = wp_get_theme()->get( 'Version' );
+	$style_version    = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $style_path ) : $fallback_version;
+
+	wp_enqueue_style(
+		'nexus-single-reader-unified-css',
+		$style_url,
+		[ 'nexus-article-reader-toc-css', 'nexus-single-editorial-css', 'nexus-system-css' ],
+		$style_version
+	);
 }
 add_action( 'wp_enqueue_scripts', 'hu_enforce_shared_article_reader_assets', 100 );
