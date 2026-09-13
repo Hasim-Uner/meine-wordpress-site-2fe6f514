@@ -30,7 +30,7 @@ Neue Seiten verwenden diese Tokens. Sie definieren weder eine zweite Abstandsska
 
 ## 2. Uebergang: `anfragestrecke.css`
 
-`anfragestrecke.css` enthaelt noch einen historischen, wertgleichen Spiegel des Gutachten-Token-Satzes. Das ist die letzte bekannte produktive Doppeldefinition dieser Canon-Tokens.
+`anfragestrecke.css` enthaelt noch einen historischen, wertgleichen Spiegel des Gutachten-Token-Satzes. Das ist die letzte bekannte wertgleiche produktive Doppeldefinition dieser Canon-Tokens.
 
 Dieser Spiegel ist **transitional**, nicht eine zweite Quelle der Wahrheit:
 
@@ -54,6 +54,19 @@ Regeln:
 Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu verschmelzen. Beide Systeme haben unterschiedliche historische Semantik und Theme-Annahmen; ein blindes Zusammenlegen wuerde Cascade- und Kontrastfehler erzeugen.
 
 ## 4. Bewusste lokale Systeme
+
+### `energy-systems.css`
+
+Der alte Editorial-Solar-Layer unter `.solar-page` besitzt ein eigenes Paper/Ink-System. Darin kollidieren zwei historische generische Namen mit dem Gutachten-Core: `--serif` und `--mono`. Die Werte sind **nicht** identisch mit `system.css` und werden von den `.solar-*`-Komponenten aktiv benutzt.
+
+Diese Kollision wird deshalb nicht als zweiter Canon akzeptiert, sondern im Guard als wert- und selektorgenau eingefrorene Legacy-Ausnahme behandelt:
+
+- nur `energy-systems.css`;
+- nur unter `.solar-page`;
+- nur `--serif` und `--mono`;
+- nur mit den heute bekannten Werten.
+
+Jede Verschiebung nach `:root`, jeder weitere Core-Token und jede Wertaenderung bricht den Guard. Die spaetere Migration benennt diese beiden lokalen Variablen eindeutig (`--solar-*`) oder ersetzt sie durch passende Core-Rollen; danach wird die Ausnahme entfernt.
 
 ### `agentur.css`
 
@@ -84,11 +97,12 @@ Route-CSS soll **nicht** enthalten:
 ## 6. Migrationsreihenfolge
 
 1. **Solar-Anfragestrecke:** Token-Spiegel physisch entfernen; gemeinsame Gutachten-Primitives aus `system.css` konsumieren, nur echte Solar-Deltas behalten.
-2. **Header-/Legacy-Abhaengigkeiten:** `site-header.css` und sonstige globale Bausteine von nicht benoetigten `--nx-*` entkoppeln.
-3. **Service-Routen:** aktive `cro.css`, `ga4.css`, `meta-ads.css`, `performance.css`, `seo-cornerstone.css` nach Nutzung und Geschaeftswert einzeln migrieren oder stilllegen.
-4. **Agentur:** gemeinsame Primitive uebernehmen, `--ag-*` nur fuer echte Marken-/Kategorie-Semantik behalten.
-5. **Legacy-Core:** `design-system.css` nicht mehr global laden; danach Restverbraucher migrieren und Datei entfernen.
-6. **Alte `.hu-hp`-Familie:** nur noch dann behalten, wenn reale aktive Routen sie benoetigen.
+2. **Editorial-Solar-Legacy:** die generischen `.solar-page`-Variablen `--serif`/`--mono` eindeutig umbenennen oder auf Core-Rollen migrieren; eingefrorene Guard-Ausnahme danach loeschen.
+3. **Header-/Legacy-Abhaengigkeiten:** `site-header.css` und sonstige globale Bausteine von nicht benoetigten `--nx-*` entkoppeln.
+4. **Service-Routen:** aktive `cro.css`, `ga4.css`, `meta-ads.css`, `performance.css`, `seo-cornerstone.css` nach Nutzung und Geschaeftswert einzeln migrieren oder stilllegen.
+5. **Agentur:** gemeinsame Primitive uebernehmen, `--ag-*` nur fuer echte Marken-/Kategorie-Semantik behalten.
+6. **Legacy-Core:** `design-system.css` nicht mehr global laden; danach Restverbraucher migrieren und Datei entfernen.
+7. **Alte `.hu-hp`-Familie:** nur noch dann behalten, wenn reale aktive Routen sie benoetigen.
 
 ## 7. Guard
 
@@ -98,4 +112,4 @@ Lokaler Check:
 python3 scripts/audit-css-architecture.py
 ```
 
-Der Check ist absichtlich eng: Er schuetzt zuerst die neue Canon-Token-Familie, statt historische Systeme pauschal umzubenennen. Weitere Ownership-Regeln werden erst aktiviert, wenn die jeweiligen Legacy-Routen bereinigt sind.
+Der Check ist absichtlich eng: Er schuetzt zuerst die neue Canon-Token-Familie, statt historische Systeme pauschal umzubenennen. Bekannte Legacy-Kollisionen werden nur als exakte, migrationspflichtige Ausnahmen zugelassen. Weitere Ownership-Regeln werden erst aktiviert, wenn die jeweiligen Legacy-Routen bereinigt sind.
