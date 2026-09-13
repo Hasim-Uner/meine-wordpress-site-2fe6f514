@@ -1,0 +1,32 @@
+name: CSS Architecture
+
+on:
+  push:
+    paths:
+      - 'blocksy-child/assets/css/**'
+      - 'scripts/audit-css-architecture.py'
+      - 'scripts/collapse-gutachten-token-mirror.py'
+      - 'scripts/build-theme-dist.sh'
+      - 'docs/architecture/CSS_ARCHITECTURE.md'
+      - '.github/workflows/css-architecture.yml'
+  pull_request:
+    paths:
+      - 'blocksy-child/assets/css/**'
+      - 'scripts/audit-css-architecture.py'
+      - 'scripts/collapse-gutachten-token-mirror.py'
+      - 'scripts/build-theme-dist.sh'
+      - 'docs/architecture/CSS_ARCHITECTURE.md'
+      - '.github/workflows/css-architecture.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate CSS token ownership
+        run: python3 scripts/audit-css-architecture.py
