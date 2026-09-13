@@ -4,7 +4,10 @@ on:
   push:
     paths:
       - 'blocksy-child/assets/css/**'
+      - 'blocksy-child/style.css'
       - 'scripts/audit-css-architecture.py'
+      - 'scripts/audit-legacy-nx-css.py'
+      - 'scripts/baselines/legacy-nx-consumers.txt'
       - 'scripts/collapse-gutachten-token-mirror.py'
       - 'scripts/build-theme-dist.sh'
       - 'docs/architecture/CSS_ARCHITECTURE.md'
@@ -12,7 +15,10 @@ on:
   pull_request:
     paths:
       - 'blocksy-child/assets/css/**'
+      - 'blocksy-child/style.css'
       - 'scripts/audit-css-architecture.py'
+      - 'scripts/audit-legacy-nx-css.py'
+      - 'scripts/baselines/legacy-nx-consumers.txt'
       - 'scripts/collapse-gutachten-token-mirror.py'
       - 'scripts/build-theme-dist.sh'
       - 'docs/architecture/CSS_ARCHITECTURE.md'
@@ -30,3 +36,6 @@ jobs:
 
       - name: Validate CSS token ownership
         run: python3 scripts/audit-css-architecture.py
+
+      - name: Inventory legacy NX consumers
+        run: python3 scripts/audit-legacy-nx-css.py
