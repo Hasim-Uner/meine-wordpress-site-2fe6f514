@@ -385,7 +385,7 @@
 
 .hu-sst .hu-sst__care-price {
 	margin: 0 0 0.8rem;
-	font-family: var(--nx-font-display, "Satoshi", "Figtree", sans-serif);
+	font-family: var(--serif-display, "Satoshi", "Figtree", sans-serif);
 	font-size: clamp(1.45rem, 2.6vw, 1.85rem);
 	font-weight: 700;
 	line-height: 1.15;
