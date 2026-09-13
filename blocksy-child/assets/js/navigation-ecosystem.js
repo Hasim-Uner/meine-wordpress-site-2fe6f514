@@ -24,7 +24,8 @@
 			document.querySelector('.leiste'),
 			document.querySelector('.wl-site-header'),
 			document.querySelector('.nx-site-header'),
-			document.querySelector('[data-site-header]')
+			document.querySelector('[data-site-header]'),
+			document.getElementById('nav')
 		].filter(Boolean);
 		var offset = 0;
 		candidates.forEach(function (node) {
@@ -125,13 +126,7 @@
 		});
 	}
 
-	function placeGeneratedToc(nav) {
-		var hero = document.querySelector('.hu-erg-hero, main [data-track-section="hero"], main #hero');
-		if (hero && hero.parentNode) hero.insertAdjacentElement('afterend', nav);
-	}
-
 	function normalizeGeneratedToc(nav) {
-		placeGeneratedToc(nav);
 		var details = nav.querySelector('details');
 		if (!details) return;
 		var desktop = window.matchMedia('(min-width: 1380px) and (min-height: 720px)');
