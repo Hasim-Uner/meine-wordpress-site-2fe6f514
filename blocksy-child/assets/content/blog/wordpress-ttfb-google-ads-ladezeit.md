@@ -10,7 +10,7 @@
 - Hero-Bild: `content/blog-drafts/assets/wordpress-ttfb-google-ads-ladezeit-hero.png`
 - Hero-Bild Alt-Text: WordPress-Server-Antwortzeit als technische Grundlage einer schnellen Landingpage.
 - Primärer CTA: `WordPress-Setup ansehen`
-- Primäre CTA-URL: `/wordpress-freelancer-hannover/`
+- Primäre CTA-URL: `/`
 - Status: Veröffentlicht · WordPress-Editor ist Live-Owner
 
 > Hinweis: Dieser Beitrag trennt technische Messwerte bewusst von Werbeversprechen. TTFB ist ein Diagnosewert für Server- und Verbindungszeit. Ob eine Änderung Conversion-Rate, CPC oder CPL verbessert, muss im konkreten Setup gemessen werden.
@@ -157,7 +157,7 @@ Performance und Datenschutz sollten deshalb beide Teil der Architektur sein — 
 4. **Google Ads getrennt bewerten.** Landingpage-Erfahrung, Conversion-Rate, CPC und CPL vor und nach einer Änderung vergleichen — keine Wirkung aus TTFB allein ableiten.
 5. **Erst danach den Stack ändern.** Hosting-Wechsel, Cache-Umbau oder Server-Tuning nur dort, wo die Messung tatsächlich einen Engpass zeigt.
 
-Wenn Sie WordPress, Performance und Tracking nicht als drei Einzelbaustellen behandeln wollen, ist der [WordPress-Freelancer-Einstieg](/wordpress-freelancer-hannover/) der passende nächste Schritt.
+Wenn Sie WordPress, Performance und Tracking nicht als drei Einzelbaustellen behandeln wollen, ist der [WordPress-Freelancer-Einstieg](/) der passende nächste Schritt.
 
 ---
 

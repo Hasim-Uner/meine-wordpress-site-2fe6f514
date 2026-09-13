@@ -23,7 +23,7 @@ $contact_url    = add_query_arg(
 );
 $e3_url         = home_url( '/case-study-solar-leadgenerierung/' );
 $marktcheck_url = home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-$freelancer_url = home_url( '/wordpress-freelancer-hannover/' );
+$freelancer_url = home_url( '/' );
 $psi_url        = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/wordpress-agentur-hannover/' ) );
 $hero_asset_url = get_stylesheet_directory_uri() . '/assets/img/landing/wordpress-agentur-system-hero';
 

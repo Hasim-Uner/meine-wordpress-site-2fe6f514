@@ -7,7 +7,7 @@ Skills reference this file instead of duplicating brand rules.
 
 - Entity / Marke: **Haşim Üner**, hasimuener.de
 - Fachliche Klammer: **WordPress · Tracking · Conversion**
-- Öffentliche Rolle: direkter technischer Marketing-Freelancer für Unternehmen; für Agenturen zusätzlich White-Label-Partner
+- Öffentliche Rolle: WordPress Freelancer für Unternehmen; für Agenturen zusätzlich White-Label-Partner
 - Kernkompetenzen: WordPress-Entwicklung, technisches SEO, Tracking/Attribution, Server-Side Tracking, Landingpages/Funnel, Conversion-Optimierung
 - Performance-Marketing ist eine vorhandene Kompetenz und kann als Leistung sichtbar sein, ist aber **nicht** der globale Rollen-Claim
 - Solar, Wärmepumpe und Speicher bleiben eine **spezialisierte Vertikale mit eigenem Funnel und starkem Proof**, nicht mehr die einzige globale Positionierung
@@ -17,25 +17,25 @@ Skills reference this file instead of duplicating brand rules.
 
 **Haşim Üner verbindet WordPress-Entwicklung, Tracking und Conversion so, dass Websites, Landingpages und Anfragesysteme technisch zusammenpassen und messbar werden.**
 
-Die Website hat drei gleichberechtigte kommerzielle Einstiege mit unterschiedlicher Zielgruppe und unterschiedlichem nächsten Schritt:
+Die Website hat drei Geschäftspfade. Die Startseite priorisiert direkte WordPress-Projekte; die beiden Spezialisierungen bleiben klar erreichbar:
 
-1. **Direkte Unternehmen / WordPress-Projekte** → `/wordpress-freelancer-hannover/` bzw. generische Projektanfrage
+1. **Direkte Unternehmen / WordPress-Projekte** → `/` bzw. generische Projektanfrage
 2. **Agenturen** → `/whitelabel-retainer/` bzw. Aufgabe beschreiben / Erstprojekt
 3. **Solar / Wärmepumpe / Speicher** → `/solar-waermepumpen-leadgenerierung/` bzw. Marktcheck
 
-Die Startseite ist die fachliche Klammer und der Verteiler. Sie soll **keinen der drei Wege künstlich zum universellen Hauptfunnel machen**.
+Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie übernimmt die frühere Freelancer-Seite vollständig; deren URL leitet dauerhaft auf `/` weiter. White-Label und Solar/Wärmepumpe behalten ihre eigenen Anfragewege. Entscheidung: `docs/decisions/homepage-freelancer-konsolidierung.md`.
 
 ## Commercial Architecture
 
 ### Globaler Einstieg
 
-- `/` = fachliche Klammer + Verteiler
+- `/` = WordPress-Freelancer-Positionierung + direkte Leistungen, Proof und Projektanfrage
 - Globale sichtbare Kompetenz: WordPress, technisches SEO, Tracking, Conversion
 - Globaler generischer CTA außerhalb der Spezialfunnel: **Projekt anfragen**
 
 ### Direkte Zusammenarbeit
 
-- `/wordpress-freelancer-hannover/` = Money Page für `wordpress freelancer hannover`, `wordpress freelancer` und unterstützend `wordpress experte hannover`
+- `/` = Money Page für `wordpress freelancer hannover`, `wordpress freelancer` und unterstützend `wordpress experte hannover`
 - Zielgruppe: direkte Auftraggeber, die mit der ausführenden Person arbeiten wollen
 - Differenzierung: Entwicklung + Tracking/Attribution + Server-Side Tracking + Funnel/CRO + technisches SEO + Performance/Accessibility
 - Primärer nächster Schritt: Projektanfrage / Scope klären
@@ -62,7 +62,7 @@ Die Startseite ist die fachliche Klammer und der Verteiler. Sie soll **keinen de
 - Energie-/Portal-/PV-/Wärmepumpen-Intent → Marktcheck
 - Agentur-/White-Label-/Partner-Intent → White-Label-Formular „Aufgabe beschreiben“
 - Direkter WordPress-, Tracking-, CRO-, technischer SEO- oder Landingpage-Intent → Projektanfrage; eine Fachseite bleibt dabei selbst Query-Owner
-- Startseite / unspezifischer Brand-Traffic → Wahl zwischen den drei Einstiegen bzw. generische Projektanfrage
+- Startseite → direkte Projektanfrage; sichtbare Brücken für Agenturen und Solar/Wärmepumpe
 - Eine rankende Fachseite **nicht** auf eine andere Money Page umleiten, nur weil deren CTA besser passt
 - `/server-side-tracking-b2b/` bleibt z. B. Query-Owner für Server-Side-Tracking-Intent; der CTA muss deshalb nicht zum Solar-Marktcheck führen
 - `/wordpress-agentur-hannover/` bleibt Query-Owner für den lokalen Agentur-Intent, ist aber **keine globale Rollenbeschreibung** und braucht keinen Header-Slot
@@ -76,7 +76,7 @@ gehören nie als Literal in Template, FAQ, Meta-Description oder E-Mail.
 
 | Zusage | Wert | Quelle | Gilt für |
 |---|---|---|---|
-| Antwort auf eine Anfrage | 24 Stunden werktags | `hu_response_promise()` in `inc/canon/messaging-canon.php` | Jede Anfragestrecke: Startseite, White-Label, Kontakt, Fachseiten |
+| Antwort auf eine Anfrage | spätestens 2 Werktage | `hu_response_promise()` in `inc/canon/messaging-canon.php` | Jede Anfragestrecke: Startseite, White-Label, Kontakt, Fachseiten |
 | Marktcheck-Befund | spätestens 2 Werktage | `hu_marketcheck_reply_label()` in `inc/canon/diagnose-canon.php` | Nur Marktcheck und Analyse-Intake im Energy-Funnel |
 
 Der Marktcheck-Wert ist eine **Bearbeitungszeit** bis zum händischen Befund,
@@ -185,7 +185,7 @@ Regeln:
 `/wordpress-agentur-hannover/` bleibt eine bewusste lokale SEO-Route für den **Agentur-Intent** `wordpress agentur hannover`.
 
 - Sie ist **kein globaler Rollen-Claim** und kein primärer Navigationspunkt.
-- Der getrennte Freelancer-Intent gehört auf `/wordpress-freelancer-hannover/`.
+- Der getrennte Freelancer-Intent gehört auf `/`.
 - Der Begriff `WordPress Agentur Hannover` darf im SEO-Title/H1 dieser Route stehen, weil er die Suchintention besitzt.
 - Die Seite darf direkte Zusammenarbeit als Alternative sichtbar zur Freelancer-Route weiterführen.
 - Benachbarte Kategoriebegriffe nicht wahllos ergänzen. Der Versuch mit `Webdesign-Agentur`, `Internetagentur` und `Webagentur` verschlechterte 2026 die Money-Query ohne belegten Zusatznutzen.
@@ -193,7 +193,7 @@ Regeln:
 
 ## Route: WordPress Freelancer Hannover
 
-`/wordpress-freelancer-hannover/` ist der zentrale direkte WordPress-Einstieg.
+`/` ist der zentrale direkte WordPress-Einstieg.
 
 - Primärer Query-Owner: `wordpress freelancer hannover`
 - Sekundär: `wordpress freelancer`; unterstützend `wordpress experte hannover`

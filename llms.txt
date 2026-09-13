@@ -1,12 +1,11 @@
 # Haşim Üner
 
-> WordPress, Tracking und Conversion als zusammenhängendes System — aus Pattensen bei Hannover (Region Hannover, Niedersachsen) für Kunden vor Ort und im DACH-Raum. Direkte Projekte laufen über den WordPress-Freelancer-/Projektpfad, Agenturen über White-Label. Solar, Wärmepumpe und Speicher bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.
+> WordPress Freelancer für Websites, Landingpages, Tracking und Conversion — aus Pattensen bei Hannover (Region Hannover, Niedersachsen) für Kunden vor Ort und im DACH-Raum. Direkte Projekte laufen über den WordPress-Freelancer-/Projektpfad, Agenturen über White-Label. Solar, Wärmepumpe und Speicher bleiben eine spezialisierte Vertikale mit eigenem Marktcheck.
 
 Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Workshops und Reviews sind in der Region Hannover, Hildesheim, Braunschweig, Wolfsburg und Celle möglich; die laufende Umsetzung erfolgt remote im DACH-Raum. Vollständige Anschrift und Kontaktdaten: [Impressum](/impressum/).
 
 ## Primäre Einstiege
-- [Startseite](/) - Fachliche Klammer und Verteiler auf direkte Projekte, White-Label und Solar/Wärmepumpe.
-- [WordPress Freelancer Hannover](/wordpress-freelancer-hannover/) - Direkter Einstieg für WordPress-Projekte mit Entwicklung, Tracking, Funnel/CRO und technischer SEO.
+- [WordPress Freelancer Hannover](/) - Startseite und direkter Einstieg für WordPress-Websites, Relaunches, Landingpages und Tracking. Leistungen, Preisrahmen, öffentliche Referenzen und Projektanfrage.
 - [Für Agenturen: White-Label](/whitelabel-retainer/) - Umsetzungskapazität für Agenturen: WordPress-Umsetzung, technisches SEO und die vollständige Messkette aus einer Hand.
 - [Anfragestrecke für Photovoltaik, Wärmepumpe und Speicher](/solar-waermepumpen-leadgenerierung/) - Money Page des Energie-Clusters. Definiert den Begriff „eigenes Anfragesystem“, beschreibt die fünf Stationen einer Anfragestrecke, rechnet Cost per Order gegen Lead-Einkauf und führt eine Angebotsleiter von 0 € (Marktcheck) über 790 € und 690 € bis zum Aufbau. Enthält den dokumentierten Fall mit 150 € auf 22 € pro qualifizierter Anfrage.
 - [Projekt anfragen](/kontakt/?type=project&focus=implementation_scope) - Generischer Anfragepfad für direkte WordPress-, Tracking-, CRO- und technische SEO-Projekte.
@@ -15,7 +14,6 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 ## Fachseiten und kommerzielle Suchintents
 - [Server-Side Tracking einrichten lassen](/server-side-tracking-b2b/) - Money Page für Server-Side Tracking, Server-GTM, GA4, Google Ads und Meta CAPI; direkter Projektpfad statt Solar-Marktcheck.
 - [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - Lokale SEO-Seite für den Agentur-Intent; direkte Zusammenarbeit wird zur Freelancer-Route weitergeführt.
-- [WordPress Freelancer Hannover](/wordpress-freelancer-hannover/) - Lokaler Freelancer-Intent für direkte Zusammenarbeit.
 - [White-Label für Agenturen](/whitelabel-retainer/) - Agentur-/Partner-Intent: Aufgabe beschreiben, Erstprojekt mit fixem Scope, Retainer erst danach.
 
 ## Proof und zitierfähige Quellen

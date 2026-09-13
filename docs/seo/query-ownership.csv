@@ -31,7 +31,7 @@
 # nicht mehr pauschal eine einzige Route. Drei Intents bleiben strikt getrennt:
 #
 #   Agentur-Intent (`wordpress agentur ...`)      -> /wordpress-agentur-hannover/
-#   Freelancer-Intent (`wordpress freelancer ...`)-> /wordpress-freelancer-hannover/
+#   Freelancer-Intent (`wordpress freelancer ...`)-> / (Konsolidierung 2026-09-13)
 #   White-Label-/Partner-Intent                   -> /whitelabel-retainer/
 #   nicht ortsqualifiziert (Tracking-Terme)       -> /server-side-tracking-b2b/
 #
@@ -64,8 +64,8 @@ server side tracking;/server-side-tracking-b2b/;commercial;owned;gsc-verlauf-202
 server side tracking agentur;/server-side-tracking-b2b/;commercial;owned;gsc-verlauf-2026-07-20.md#verlauf;
 server side tracking dsgvo;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 65,2) — Title traegt seit 2026-08-08 "Consent" statt "CAPI", damit dieses Signal beim Money-Page-Umbau nicht verloren geht — DSGVO-Deckung liegt in FAQ und Sicherheits-Sektion;
 wordpress agentur hannover;/wordpress-agentur-hannover/;local;owned;gsc-verlauf-2026-07-20.md#critical-1;wordpress freelancer hannover
-wordpress freelancer hannover;/wordpress-freelancer-hannover/;local;owned;docs/decisions/wordpress-freelancer-hannover.md;wordpress agentur hannover|wordpress freelancer
-wordpress freelancer;/wordpress-freelancer-hannover/;commercial;owned;docs/decisions/wordpress-freelancer-hannover.md;wordpress freelancer hannover|wordpress agentur hannover
+wordpress freelancer hannover;/;local;owned;docs/decisions/homepage-freelancer-konsolidierung.md;wordpress agentur hannover|wordpress freelancer
+wordpress freelancer;/;commercial;owned;docs/decisions/homepage-freelancer-konsolidierung.md;wordpress freelancer hannover|wordpress agentur hannover
 checkfox;/checkfox-solar-waermepumpe-einordnung/;navigational;owned;gsc-export-28d-2026-07-30.csv (Pos. 16,5, Vol. 1900);checkfox erfahrungen|checkfox serioes
 aroundhome erfahrungen;/aroundhome-solar-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 33,0);aroundhome
 aroundhome kosten;/aroundhome-solar-einordnung/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 6,9);aroundhome
@@ -94,7 +94,7 @@ wordpress agenturen hannover;/wordpress-agentur-hannover/;local;owned;gsc-export
 agentur wordpress hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 31,5, 6 Impr.) — Wortstellungs-Variante;wordpress agentur hannover|wordpress freelancer hannover
 wordpress agentur niedersachsen;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 61,9, 17 Impr.) — Bundesland-Variante des lokalen Ankers;wordpress agentur hannover
 wordpress website hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 42,6, 8 Impr.);wordpress agentur hannover|wordpress freelancer hannover
-wordpress experte hannover;/wordpress-freelancer-hannover/;local;owned;docs/decisions/wordpress-freelancer-hannover.md;wordpress agentur hannover|wordpress freelancer hannover
+wordpress experte hannover;/;local;owned;docs/decisions/homepage-freelancer-konsolidierung.md;wordpress agentur hannover|wordpress freelancer hannover
 wordpress entwicklung hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 54,0, 1 Impr.);wordpress agentur hannover
 wordpress seo hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 25,7, 9 Impr.) — /wordpress-seo-hannover/ ist 410 Gone, Signal bleibt auf der lokalen Money-Page;wordpress agentur hannover
 wordpress suchmaschinenoptimierung hannover;/wordpress-agentur-hannover/;local;owned;gsc-export-28d-2026-07-30.csv (Pos. 26,4, 5 Impr.) — deutsche Variante von "wordpress seo hannover";wordpress seo hannover|wordpress agentur hannover

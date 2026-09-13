@@ -363,8 +363,8 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 			[
 				$primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
 				function_exists( 'hu_get_commercial_route' )
-					? hu_get_commercial_route( 'freelancer', home_url( '/wordpress-freelancer-hannover/' ) )
-					: home_url( '/wordpress-freelancer-hannover/' ),
+					? hu_get_commercial_route( 'freelancer', home_url( '/' ) )
+					: home_url( '/' ),
 				$contact_url,
 				function_exists( 'nexus_get_whitelabel_page_url' )
 					? nexus_get_whitelabel_page_url()
@@ -550,7 +550,7 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 	$wgos_url       = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#methode' );
 	$e3_url         = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
 	$energy_url     = $routes['energy'] ?? ( $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ) );
-	$freelancer_url = $routes['freelancer'] ?? ( $primary_urls['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' ) );
+	$freelancer_url = $routes['freelancer'] ?? ( $primary_urls['freelancer'] ?? home_url( '/' ) );
 	$whitelabel_url = $routes['whitelabel'] ?? ( $primary_urls['whitelabel'] ?? home_url( '/whitelabel-retainer/' ) );
 	$about_url      = $routes['about'] ?? ( $primary_urls['about'] ?? home_url( '/hasim-uener/' ) );
 	$contact_url    = $routes['contact'] ?? ( $primary_urls['contact'] ?? home_url( '/kontakt/' ) );
@@ -633,8 +633,9 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 		],
 		'freelancer_footer' => [
 			'key'   => 'freelancer_footer',
-			'label' => 'Footer (Freelancer)',
+			'label' => 'Footer (Freelancer-Startseite)',
 			'links' => [
+				$contact_url,
 				$about_url,
 				$e3_url,
 				$blog_url,
@@ -741,7 +742,7 @@ function nexus_get_seo_cockpit_sitewide_shell_key_for_url( $url, $context = [] )
 		return 'audit';
 	}
 
-	if ( '/wordpress-freelancer-hannover/' === $path ) {
+	if ( '/' === $path || '/wordpress-freelancer-hannover/' === $path ) {
 		return 'freelancer';
 	}
 

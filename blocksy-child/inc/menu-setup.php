@@ -111,7 +111,7 @@ function nexus_get_menu_setup_fallback_contract() {
 		],
 		[
 			'label' => 'WordPress Freelancer',
-			'url'   => home_url( '/wordpress-freelancer-hannover/' ),
+			'url'   => home_url( '/' ),
 			'class' => 'nav-freelancer-link',
 		],
 		[

@@ -46,16 +46,19 @@ Kritische Dateien:
 - `blocksy-child/inc/org-schema.php`
 - `blocksy-child/page-wgos.php`
 
-### Homepage-Verträge (2026-09-10)
+### Homepage-Verträge (2026-09-13)
 
-- Der Startseiten-Verteiler führt zu den drei spezialisierten Angebotsseiten;
-  der Energy-Auswahlklick springt nicht mehr direkt zum Marktcheck-Formular.
-  Die Anfragewege selbst bleiben unverändert. Die Hook-Abgrenzung steht in
-  `CONVERSION_ROUTING.md`.
-- Der generische Homepage-WebPage-Knoten übernimmt Titel und Beschreibung aus
-  `hu_get_homepage_title()` / `hu_get_homepage_description()` einschließlich
-  der vorhandenen Positionierungsfilter. Die sichtbare Homepage bleibt
-  template-owned; alte Editor-Texte sind dafür keine zweite Schema-Quelle.
+- `/` ist Marke und Freelancer-Money-Page. `hu_get_commercial_route_map()`
+  liefert für `home` und `freelancer` dieselbe URL. Spezialfunnel bleiben getrennt.
+- `inc/helpers.php` leitet den früheren Freelancer-Pfad und alte Seiten-ID-/
+  Template-Einstiege mit 301 nach `/` um; Routingparameter werden entfernt,
+  Kampagnenparameter erhalten. `inc/seo-meta.php` schließt den alten Slug aus
+  der Sitemap aus. Bestehende WordPress-Daten werden nicht gelöscht.
+- Homepage-WebPage und Freelancer-Service verwenden `/`, `/#webpage` und
+  `/#service`. Titel und Beschreibung kommen aus den zentralen Homepage-Helpers.
+- Inhalte sind template-owned. Editor-FAQ-Caches bleiben ausgeschlossen.
+- Vier Angebotslinks nutzen den vorhandenen Kontaktablauf mit passendem `focus`.
+  Details: `CONVERSION_ROUTING.md` und `../decisions/homepage-freelancer-konsolidierung.md`.
 
 ## Crawl- und KI-Signale
 

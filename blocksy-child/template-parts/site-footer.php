@@ -17,11 +17,9 @@
  * durch Mittelpunkte getrennte Zeile, in der Anschrift, Antwortzeit und
  * Messhinweis gleich schwer nebeneinander lagen.
  *
- * Die Ich-Saetze entfallen auf der Startseite. Dort stehen die drei Wege
- * seit dem Umbau als Abschnitt 01 im Seiteninhalt; ein zweites Mal
- * dieselben drei Ziele in anderer Reihenfolge im Fuss ist keine Fuehrung,
- * sondern Wiederholung. Auf der Freelancer-Route entfaellt die erneute
- * Zielgruppenwahl wie bisher.
+ * Auf der Startseite ist der direkte Freelancer-Pfad bereits ausgeführt.
+ * White-Label und Solar sind dort als Spezialisierungen verlinkt; die erneute
+ * Zielgruppenwahl im Footer entfällt. Kontakt läuft über die gemeinsame Route.
  *
  * Die drei cta_footer_pick_*-Werte bleiben unveraendert, damit die
  * Zeitreihe ueber den Umbau hinweg vergleichbar bleibt; dasselbe gilt
@@ -37,18 +35,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 $current_year = wp_date( 'Y' );
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $routes       = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
-$is_freelancer_page = is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' );
-$shows_picks        = ! $is_freelancer_page && ! is_front_page();
+$shows_picks = ! is_front_page();
 
 $energy_url     = $routes['energy'] ?? ( $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ) );
-$freelancer_url = $routes['freelancer'] ?? home_url( '/wordpress-freelancer-hannover/' );
+$freelancer_url = $routes['freelancer'] ?? home_url( '/' );
 $whitelabel_url = $routes['whitelabel'] ?? ( function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' ) );
 $about_url      = $routes['about'] ?? ( $primary_urls['about'] ?? home_url( '/hasim-uener/' ) );
 $e3_url         = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
 $blog_url       = $primary_urls['blog'] ?? home_url( '/blog/' );
 $glossary_url   = $primary_urls['glossary'] ?? home_url( '/glossar/' );
 $contact_url    = $routes['contact'] ?? ( $primary_urls['contact'] ?? nexus_get_contact_url() );
-$form_url       = $is_freelancer_page ? '#anfrage' : $contact_url;
+$form_url       = $contact_url;
 $imprint_url    = $primary_urls['impressum'] ?? home_url( '/impressum/' );
 $privacy_url    = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
 

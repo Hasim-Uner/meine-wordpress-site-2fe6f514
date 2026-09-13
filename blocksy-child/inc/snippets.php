@@ -149,14 +149,14 @@ function hu_normalize_primary_strategy_navigation( $items, $args ) {
 
     $primary_urls   = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
     $solar_url      = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
-    $freelancer_url = home_url( '/wordpress-freelancer-hannover/' );
+    $freelancer_url = home_url( '/' );
     $whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
     $results_url    = function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : ( $primary_urls['results'] ?? home_url( '/ergebnisse/' ) );
     $about_url      = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
     $project_url    = hu_get_navigation_project_request_url();
 
     $is_solar      = function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context();
-    $is_freelancer = is_page( 'wordpress-freelancer-hannover' ) || is_page_template( 'page-wordpress-freelancer-hannover.php' );
+    $is_freelancer = is_front_page();
     $is_whitelabel = function_exists( 'nexus_is_agency_nav_context' ) && nexus_is_agency_nav_context();
     $is_results    = function_exists( 'nexus_is_results_context' ) && nexus_is_results_context();
     $is_about      = is_page( 'hasim-uener' ) || is_page( 'uber-mich' ) || is_page_template( 'page-hasim-uener.php' );
@@ -247,8 +247,8 @@ add_action( 'wp_body_open', function() {
     }
 
     $freelancer_url = function_exists( 'hu_get_commercial_route' )
-        ? hu_get_commercial_route( 'freelancer', home_url( '/wordpress-freelancer-hannover/' ) )
-        : home_url( '/wordpress-freelancer-hannover/' );
+        ? hu_get_commercial_route( 'freelancer', home_url( '/' ) )
+        : home_url( '/' );
     ?>
     <aside class="hu-route-switch" aria-label="Passender WordPress-Einstieg">
         <div class="nx-container hu-route-switch__inner">
