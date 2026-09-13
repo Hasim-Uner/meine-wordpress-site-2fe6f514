@@ -83,6 +83,85 @@ $message_step_title  = $is_scoped_focus ? 'Wo liegt der Engpass?' : 'Was soll me
 $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' contact-page--scoped' : '' );
 ?>
 
+<style id="contact-density-polish">
+	.contact-page.contact-page--scoped {
+		padding-top: clamp(2.25rem, 3.8vw, 3.5rem);
+		padding-bottom: clamp(1.75rem, 2.5vw, 2.5rem);
+	}
+
+	.contact-page--scoped .contact-page__shell {
+		width: min(100%, 84rem);
+		grid-template-columns: minmax(13.25rem, 0.42fr) minmax(0, 1.58fr);
+		gap: clamp(2rem, 3.6vw, 3.25rem);
+	}
+
+	.contact-page--scoped .contact-title {
+		max-width: 12ch;
+		font-size: clamp(2.35rem, 1.7rem + 1.8vw, 3.5rem);
+		line-height: 1.01;
+		letter-spacing: -0.04em;
+	}
+
+	.contact-page--scoped .contact-lead {
+		max-width: 32ch;
+		font-size: 0.9rem;
+		line-height: 1.58;
+	}
+
+	.contact-page--scoped .contact-intro__facts {
+		margin-top: 1.15rem;
+	}
+
+	.contact-page--scoped .contact-intro__facts p {
+		padding-block: 0.66rem;
+		font-size: 0.79rem;
+	}
+
+	.contact-page--scoped .contact-direct-mail {
+		margin-top: 1rem;
+	}
+
+	body:has(.contact-page) .fuss {
+		padding-top: clamp(2rem, 3vw, 3rem);
+	}
+
+	body:has(.contact-page) .fuss .wahl {
+		margin-bottom: var(--s3);
+	}
+
+	body:has(.contact-page) .fuss .wahl > .mono {
+		padding-block: var(--s1);
+	}
+
+	@media (max-width: 980px) and (min-width: 821px) {
+		.contact-page--scoped .contact-page__shell {
+			width: min(100%, 72rem);
+			grid-template-columns: minmax(13rem, 0.55fr) minmax(0, 1.45fr);
+			gap: 2rem;
+		}
+
+		.contact-page--scoped .contact-title {
+			font-size: clamp(2.3rem, 4.2vw, 3.15rem);
+		}
+	}
+
+	@media (max-width: 820px) {
+		.contact-page.contact-page--scoped {
+			padding-top: 2rem;
+			padding-bottom: 2rem;
+		}
+
+		.contact-page--scoped .contact-page__shell {
+			grid-template-columns: 1fr;
+			gap: 2.25rem;
+		}
+
+		body:has(.contact-page) .fuss {
+			padding-top: var(--s4);
+		}
+	}
+</style>
+
 <main id="main" class="<?php echo esc_attr( $page_classes ); ?>" data-track-section="contact_page">
 	<div class="contact-page__shell">
 		<aside class="contact-intro" aria-labelledby="contact-title">
