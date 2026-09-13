@@ -104,3 +104,51 @@ function hu_enforce_shared_article_reader_assets() : void {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'hu_enforce_shared_article_reader_assets', 100 );
+
+/**
+ * Provider decision modules predate the shared single reader and still contain
+ * their own historical hero H1. Their hero is hidden when embedded, but a
+ * hidden H1 still creates two document H1 elements. Keep the first reader H1
+ * and demote only later duplicates server-side until the provider partials are
+ * fully componentised.
+ *
+ * @param string $html Complete front-end response.
+ * @return string
+ */
+function hu_normalize_embedded_provider_headings( string $html ) : string {
+	$h1_index = 0;
+
+	$normalized = preg_replace_callback(
+		'/<h1\b([^>]*)>(.*?)<\/h1>/is',
+		static function ( array $match ) use ( &$h1_index ) : string {
+			$h1_index++;
+
+			if ( 1 === $h1_index ) {
+				return $match[0];
+			}
+
+			$attributes = preg_replace( '/\s+id=("|\')nexus-article-title\1/i', '', $match[1] );
+			$attributes = is_string( $attributes ) ? $attributes : '';
+
+			return '<h2' . $attributes . '>' . $match[2] . '</h2>';
+		},
+		$html
+	);
+
+	return is_string( $normalized ) ? $normalized : $html;
+}
+
+/**
+ * Start response normalization only on the two embedded provider decision
+ * routes. Regular posts never pay for output buffering.
+ *
+ * @return void
+ */
+function hu_start_embedded_provider_heading_normalizer() : void {
+	if ( ! is_single( [ 'checkfox-solar-waermepumpe-einordnung', 'aroundhome-solar-einordnung' ] ) ) {
+		return;
+	}
+
+	ob_start( 'hu_normalize_embedded_provider_headings' );
+}
+add_action( 'template_redirect', 'hu_start_embedded_provider_heading_normalizer', 0 );
