@@ -102,17 +102,10 @@ $home_label = sprintf(
 	$brand_text
 );
 
-// Rendered after wp_head(): keep the final reader surface next to the markup.
-$reader_body_css_path = get_stylesheet_directory() . '/assets/css/article-reader-body.css';
-$reader_body_css      = is_readable( $reader_body_css_path ) ? file_get_contents( $reader_body_css_path ) : '';
 $reader_share_js_url  = get_stylesheet_directory_uri() . '/assets/js/article-reader-share.js';
 $reader_share_js_path = get_stylesheet_directory() . '/assets/js/article-reader-share.js';
 $reader_share_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $reader_share_js_path ) : wp_get_theme()->get( 'Version' );
 ?>
-
-<?php if ( is_string( $reader_body_css ) && '' !== $reader_body_css ) : ?>
-	<style id="nexus-article-reader-body-css"><?php echo $reader_body_css; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted local theme CSS. ?></style>
-<?php endif; ?>
 
 <header
 	class="nexus-article-reader-header"
