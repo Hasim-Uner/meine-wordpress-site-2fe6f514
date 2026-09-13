@@ -16,6 +16,11 @@ if [ ! -d "$source_dir" ]; then
   exit 1
 fi
 
+# Fail before packaging if the canonical Gutachten token owner and its one
+# transitional Solar mirror have drifted apart, or if another stylesheet has
+# started redefining the same core token family.
+python3 "$root_dir/scripts/audit-css-architecture.py"
+
 if [ "$output_dir" = "$root_dir" ] || [ "$output_dir" = "$source_dir" ]; then
   echo "Refusing to build into an unsafe output directory: $output_dir" >&2
   exit 1
@@ -40,6 +45,7 @@ rsync -a --delete \
 style_file="$output_dir/style.css"
 sst_css_dir="$output_dir/assets/css"
 sst_entry="$sst_css_dir/server-side-tracking.css"
+anfragestrecke_css="$sst_css_dir/anfragestrecke.css"
 sst_layers=(
   "server-side-tracking-base.css"
   "server-side-tracking-cro.css"
@@ -119,6 +125,13 @@ for funnel in "${react_funnels[@]}"; do
 done
 
 build_sst_css_bundle
+
+# system.css is globally loaded before the Solar route CSS. Source keeps the
+# mirror temporarily for a reviewable migration path, but production must not
+# ship two owners for the same Gutachten custom-property family.
+if [ -f "$anfragestrecke_css" ]; then
+  python3 "$root_dir/scripts/collapse-gutachten-token-mirror.py" "$anfragestrecke_css"
+fi
 
 if [ -f "$style_file" ]; then
   style_header="$(awk 'NR == 1 && /^\/\*/ { in_header = 1 } in_header { print; if ($0 ~ /\*\//) exit }' "$style_file")"
