@@ -109,6 +109,7 @@
 
 		function sync() {
 			if (desktop.matches) details.setAttribute('open', '');
+			else details.removeAttribute('open');
 		}
 		sync();
 		if (typeof desktop.addEventListener === 'function') desktop.addEventListener('change', sync);
