@@ -44,14 +44,31 @@ Bis dahin dürfen dort keine abweichenden Werte entstehen.
 
 `design-system.css` ist derzeit noch notwendig, weil aktive Alt-Routen `--nx-*` konsumieren. Es ist **nicht** der Design-Core für neue Seiten.
 
+Der gemessene Stand vom 14.09.2026 beträgt **39 CSS-Verbraucherdateien** außerhalb des Providers. `scripts/baselines/legacy-nx-consumers.txt` friert genau diese Menge ein. Die Liste darf nur schrumpfen.
+
 Regeln:
 
 - keine neue Route auf `--nx-*` aufbauen;
-- keine neuen generischen Komponenten dort erfinden;
-- bestehende Routen einzeln auf `system.css` migrieren;
-- sobald keine aktive Route den Legacy-Core mehr benötigt, wird das Stylesheet aus dem globalen Enqueue genommen und später entfernt.
+- keine neue CSS-Datei als `--nx-*`-Verbraucher hinzufügen;
+- bestehende Verbraucher einzeln auf `system.css` migrieren oder stilllegen;
+- ein bereinigter Verbraucher wird sofort aus der Baseline entfernt;
+- keine neuen generischen Komponenten in `design-system.css` erfinden;
+- erst wenn globale Shell und aktive Routen entkoppelt sind, wird `design-system.css` aus dem globalen Enqueue genommen.
 
 Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu verschmelzen. Beide Systeme haben unterschiedliche historische Semantik und Theme-Annahmen; ein blindes Zusammenlegen würde Cascade- und Kontrastfehler erzeugen.
+
+### Gemessene Legacy-Cluster
+
+Die 39 Verbraucher verteilen sich nicht gleichmäßig. Für die Migration gelten diese Cluster:
+
+1. **Globale Shell / Blocker:** `style.css` und `site-header.css`. Solange diese beiden breit `--nx-*` konsumieren, kann der Legacy-Provider nicht sicher global abgeschaltet werden.
+2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`, `case-study.css`, `ergebnisse.css`.
+3. **Service-Routen:** `cro.css`, `ga4.css`, `meta-ads.css`, `cwv.css`, `performance.css`, `seo-cornerstone.css`, `seo.css`.
+4. **Blog / Editorial:** `single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, Provider-Decision-Layer.
+5. **Solar / Tracking / Intercepts:** `energy-systems.css`, SST-Quellen, `solar-marketcheck-compact.css`, `sticky-cta.css` und die Solar-SEO-Deltas.
+6. **Kleine Restverbraucher:** Dateien mit nur wenigen NX-Verwendungen werden bevorzugt entfernt, sofern die Semantik eindeutig ist.
+
+Die Anzahl allein entscheidet nicht über die Reihenfolge. Global geladene Verbraucher haben Vorrang, weil sie die Abschaltung des Providers blockieren.
 
 ## 4. Bewusste lokale Systeme
 
@@ -92,24 +109,32 @@ Route-CSS soll **nicht** enthalten:
 - Kopien globaler Farb-/Spacing-/Motion-Tokens;
 - eine zweite `.tafel`, Button-, Fokus- oder Typografie-Grundfamilie;
 - ungescopte `:root`-Themes;
+- neue `--nx-*`-Abhängigkeiten;
 - globale Regeln, die nur zufällig von einer Route gebraucht werden.
 
 ## 6. Migrationsreihenfolge
 
-1. **Solar-Anfragestrecke:** Token-Spiegel physisch entfernen; gemeinsame Gutachten-Primitives aus `system.css` konsumieren, nur echte Solar-Deltas behalten.
-2. **Editorial-Solar-Legacy:** die generischen `.solar-page`-Variablen `--serif`/`--mono` eindeutig umbenennen oder auf Core-Rollen migrieren; eingefrorene Guard-Ausnahme danach löschen.
-3. **Header-/Legacy-Abhängigkeiten:** `site-header.css` und sonstige globale Bausteine von nicht benötigten `--nx-*` entkoppeln.
+1. **Globale Shell:** `style.css` und `site-header.css` inventarisieren und ihre wirklich global benötigten Primitive von den alten Seiten-/Blocksy-Regeln trennen. Das ist der Hauptblocker für einen bedingten Legacy-Provider.
+2. **Solar-Anfragestrecke:** Token-Spiegel physisch entfernen; gemeinsame Gutachten-Primitives aus `system.css` konsumieren, nur echte Solar-Deltas behalten. Das JS-gemessene Header-/Register-Token wird gemeinsam mit seinen CSS-Verbrauchern migriert, nicht isoliert umbenannt.
+3. **Editorial-Solar-Legacy:** die generischen `.solar-page`-Variablen `--serif`/`--mono` eindeutig umbenennen oder auf Core-Rollen migrieren; eingefrorene Guard-Ausnahme danach löschen.
 4. **Service-Routen:** aktive `cro.css`, `ga4.css`, `meta-ads.css`, `performance.css`, `seo-cornerstone.css` nach Nutzung und Geschäftswert einzeln migrieren oder stilllegen.
-5. **Agentur:** gemeinsame Primitive übernehmen, `--ag-*` nur für echte Marken-/Kategorie-Semantik behalten.
-6. **Legacy-Core:** `design-system.css` nicht mehr global laden; danach Restverbraucher migrieren und Datei entfernen.
-7. **Alte `.hu-hp`-Familie:** nur noch dann behalten, wenn reale aktive Routen sie benötigen.
+5. **Blog / Editorial:** `single.css` und die verbleibenden Reader-/CTA-Layer auf Gutachten-Primitives ziehen; neue Blog-Schichten bauen bereits auf dem neuen System auf und dürfen nicht zurück auf NX driften.
+6. **Schwere Legacy-Familien:** `homepage.css`, WGOS, Case-/Ergebnisse-Routen nur nach realer Routennutzung weiterführen oder abbauen.
+7. **Agentur:** gemeinsame Primitive übernehmen, `--ag-*` nur für echte Marken-/Kategorie-Semantik behalten.
+8. **Legacy-Core:** `design-system.css` nicht mehr global laden; danach Restverbraucher migrieren und Datei entfernen.
+9. **Alte `.hu-hp`-Familie:** nur noch behalten, wenn reale aktive Routen sie benötigen.
 
-## 7. Guard
+## 7. Guards
 
-Lokaler Check:
+Lokale Checks:
 
 ```bash
 python3 scripts/audit-css-architecture.py
+python3 scripts/audit-legacy-nx-css.py
+bash scripts/lint-css-spacing.sh
+bash scripts/lint-css-motion.sh
 ```
 
-Der Check ist absichtlich eng: Er schützt zuerst die neue Canon-Token-Familie, statt historische Systeme pauschal umzubenennen. Bekannte Legacy-Kollisionen werden nur als exakte, migrationspflichtige Ausnahmen zugelassen. Weitere Ownership-Regeln werden erst aktiviert, wenn die jeweiligen Legacy-Routen bereinigt sind.
+`audit-css-architecture.py` schützt die neue Canon-Token-Familie und die exakt eingefrorenen Übergangsausnahmen.
+
+`audit-legacy-nx-css.py` schützt den Abbaupfad: Neue NX-Verbraucher scheitern, und sobald eine Datei bereinigt ist, wird ihre Baseline-Zeile als veraltet gemeldet. Die Zahl 39 ist damit kein Zielwert, sondern eine Obergrenze, die nur sinken darf.

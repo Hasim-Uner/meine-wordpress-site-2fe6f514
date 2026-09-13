@@ -32,10 +32,11 @@ BASELINE_COLLAPSED_PADDING=(
   "single.css"
 )
 
-# Dateien mit eigener Spacing-Skala statt var(--nx-space-*). Historisch
-# gewachsen; neue Stylesheets sollen die gemeinsamen Tokens benutzen.
-# design-system.css steht hier, weil es die Skala DEFINIERT — das ist die
-# Quelle, nicht die Abweichung.
+# Dateien mit eigener Spacing-Skala statt des kanonischen Gutachten-Rasters.
+# Historisch gewachsene Legacy-Routen koennen weiterhin --nx-space-* nutzen;
+# neue oder migrierte Oberflaechen verwenden --s0 bis --s6 aus system.css.
+# design-system.css steht hier, weil es die alte NX-Skala definiert; agentur.css
+# traegt weiterhin seine bereits bestehende lokale Legacy-Skala.
 BASELINE_LOCAL_SCALE=(
   "agentur.css"
   "design-system.css"
@@ -189,7 +190,7 @@ done
 
 report_rule \
   "No new local spacing scales" \
-  "Consume var(--nx-space-*) from design-system.css instead of inventing a per-page scale. Alias the shared tokens if a local name helps." \
+  "Use --s0 through --s6 from system.css on new/migrated surfaces. Existing legacy files may keep --nx-space-* only while their NX footprint shrinks." \
   "${new_scales%$'\n'}"
 
 # 3. Baseline darf nur schrumpfen.
@@ -224,7 +225,7 @@ local_scale_total=0
 no_token_files=""
 for file in "${CSS_DIR}"/*.css; do
   defines_local_scale "${file}" && local_scale_total=$((local_scale_total + 1))
-  if ! grep -q 'var(--nx-space-\|var(--space-' "${file}"; then
+  if ! grep -qE 'var\(--s[0-6]\)|var\(--nx-space-|var\(--space-' "${file}"; then
     no_token_files+="$(basename "${file}") "
   fi
 done
@@ -235,8 +236,8 @@ echo "Text boxes with collapsed top padding:        ${collapsed_total}"
 echo "Files defining their own spacing scale:       ${local_scale_total}"
 echo "Files using no shared spacing token at all:   ${no_token_count} of ${total_files}"
 echo
-echo "The last number is the real debt: the shared scale in design-system.css"
-echo "only governs a page once that page actually consumes it."
+echo "The canonical spacing target is --s0 through --s6 in system.css."
+echo "Legacy --nx-space-* aliases still count while those routes are being migrated."
 echo
 echo "These shrink by editing CSS, not by editing this script."
 echo
