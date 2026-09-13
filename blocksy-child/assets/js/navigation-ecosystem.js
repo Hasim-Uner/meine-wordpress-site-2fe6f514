@@ -96,7 +96,13 @@
 		targets.forEach(function (target) { observer.observe(target); });
 	}
 
+	function placeGeneratedToc(nav) {
+		var hero = document.querySelector('.hu-erg-hero, main [data-track-section="hero"], main #hero');
+		if (hero && hero.parentNode) hero.insertAdjacentElement('afterend', nav);
+	}
+
 	function normalizeGeneratedToc(nav) {
+		placeGeneratedToc(nav);
 		var details = nav.querySelector('details');
 		if (!details) return;
 		var desktop = window.matchMedia('(min-width: 1380px) and (min-height: 720px)');
@@ -115,8 +121,9 @@
 	}
 
 	function focusTargetFromKeyboard(event) {
+		if (event.detail !== 0) return;
 		var link = event.target.closest('a[href^="#"]');
-		if (!link || (event.type === 'click' && event.detail !== 0)) return;
+		if (!link) return;
 		var target = document.getElementById(link.getAttribute('href').slice(1));
 		if (!target) return;
 		window.setTimeout(function () {
@@ -134,14 +141,12 @@
 
 		SELECTORS.forEach(function (selector) {
 			document.querySelectorAll(selector).forEach(function (nav) {
-				initScrollSpy(nav);
 				if (nav.classList.contains('hu-page-toc')) normalizeGeneratedToc(nav);
+				initScrollSpy(nav);
 			});
 		});
 
-		document.addEventListener('keydown', function (event) {
-			if (event.key === 'Enter' || event.key === ' ') focusTargetFromKeyboard(event);
-		});
+		document.addEventListener('click', focusTargetFromKeyboard);
 	}
 
 	if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
