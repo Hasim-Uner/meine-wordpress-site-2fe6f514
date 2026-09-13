@@ -115,7 +115,7 @@ function hu_get_commercial_route( $key, $fallback = '' ) {
  * @return array<string, mixed>
  */
 function hu_get_site_header_navigation_contract() {
-	$routes      = hu_get_commercial_route_map();
+	$routes = hu_get_commercial_route_map();
 	return [
 		'toggle' => [
 			'track'    => 'nav_menu_toggle',
@@ -132,6 +132,18 @@ function hu_get_site_header_navigation_contract() {
 				'current'  => is_front_page(),
 				'class'    => 'nav-freelancer-link',
 				'track'    => 'nav_header_freelancer',
+				'category' => 'navigation',
+				'section'  => 'header',
+			],
+			[
+				'kind'     => 'route',
+				'kicker'   => __( 'Messung', 'blocksy-child' ),
+				'label'    => __( 'Tracking', 'blocksy-child' ),
+				'desc'     => __( 'Server-Side Tracking mit Gegenprobe gegen Formular oder CRM und dokumentierter Abnahme.', 'blocksy-child' ),
+				'url'      => $routes['tracking_b2b'],
+				'current'  => is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' ),
+				'class'    => 'nav-tracking-link',
+				'track'    => 'nav_header_tracking',
 				'category' => 'navigation',
 				'section'  => 'header',
 			],
@@ -257,19 +269,13 @@ function hu_get_primary_navigation_contract() {
  * @return array<string, mixed>
  */
 function hu_get_wayfinding_context() {
-	$routes = hu_get_commercial_route_map();
-
 	if ( is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' ) ) {
 		return [
 			'key'        => 'tracking',
 			'label'      => 'Server-Side Tracking',
 			'breadcrumb' => true,
 			'toc_mode'   => 'existing',
-			'next'       => [
-				'title'     => 'Messproblem konkret einordnen.',
-				'primary'   => [ 'label' => 'Tracking-Projekt anfragen', 'url' => $routes['project_request'] ],
-				'secondary' => [ 'label' => 'Ergebnisse ansehen', 'url' => $routes['results'] ],
-			],
+			'next'       => [], // Die Tracking-Seite endet bereits in ihrer eigenen Anfrage-Sektion.
 		];
 	}
 
@@ -315,11 +321,7 @@ function hu_get_wayfinding_context() {
 			'label'      => 'Über Haşim',
 			'breadcrumb' => true,
 			'toc_mode'   => 'existing',
-			'next'       => [
-				'title'     => 'Die Arbeitsweise auf ein konkretes Projekt anwenden.',
-				'primary'   => [ 'label' => 'Projekt anfragen', 'url' => $routes['project_request'] ],
-				'secondary' => [ 'label' => 'Ergebnisse ansehen', 'url' => $routes['results'] ],
-			],
+			'next'       => [], // Der bestehende About-Abschluss führt bereits zu Projekt und White-Label.
 		];
 	}
 
