@@ -433,137 +433,6 @@ p.hero-stack,
     }
 }
 
-/* --- NEXUS ARCHIVE LAYOUT --- */
-
-/* Hero Anpassungen für Archive */
-.nexus-archive-container {
-    background: var(--nx-body-gradient);
-    min-height: 100vh;
-    color: var(--nx-text);
-}
-
-.nexus-archive-hero {
-    padding: 140px 20px 60px 20px;
-    text-align: center;
-    background: linear-gradient(to bottom, var(--nx-bg-deep) 0%, var(--nx-bg) 100%);
-    border-bottom: 1px solid var(--nx-border);
-}
-
-.nexus-archive-desc {
-    max-width: 700px;
-    margin: 0 auto;
-    font-size: 1.25rem;
-    line-height: 1.6;
-    color: var(--nx-text-dim);
-    margin-top: 24px;
-}
-
-/* Entfernt den Standard-Abstand von P-Tags in der Beschreibung */
-.nexus-archive-desc p {
-    margin-bottom: 0; 
-}
-
-/* --- DAS CARD GRID --- */
-.nexus-grid-wrapper {
-    max-width: 1200px;
-    margin: 80px auto;
-    padding: 0 20px;
-}
-
-.nexus-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 40px;
-}
-
-/* Die einzelne Karte */
-.nexus-card {
-    background: var(--nx-card-gradient);
-    border: 1px solid var(--nx-border);
-    border-radius: 8px;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.nexus-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--nx-border-gold);
-}
-
-.nexus-card-link {
-    text-decoration: none;
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    color: inherit;
-}
-
-.nexus-card-date {
-    font-size: 12px;
-    color: var(--nx-text-dim);
-    margin-bottom: 16px;
-    letter-spacing: 0.05em;
-}
-
-.nexus-card-title {
-    font-family: var(--theme-font-heading);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--nx-text);
-    margin-bottom: 16px;
-    line-height: 1.3;
-}
-
-.nexus-card-excerpt {
-    font-size: 1rem;
-    color: var(--nx-text-dim);
-    line-height: 1.6;
-    margin-bottom: 24px;
-    flex-grow: 1; /* Schiebt den Button nach unten */
-}
-
-.nexus-read-more {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--nx-accent-text);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-
-/* Pagination Styling */
-.nexus-pagination {
-    margin-top: 80px;
-    text-align: center;
-}
-
-.nexus-pagination .page-numbers {
-    display: inline-block;
-    padding: 10px 16px;
-    margin: 0 4px;
-    border: 1px solid var(--nx-border);
-    color: var(--nx-text);
-    text-decoration: none;
-    border-radius: 4px;
-}
-
-.nexus-pagination .page-numbers.current,
-.nexus-pagination .page-numbers:hover {
-    background: var(--cta);
-    color: #000;
-    border-color: var(--cta);
-    font-weight: 700;
-}
-
-/* Mobile Fix */
-@media (max-width: 600px) {
-    .nexus-card-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* NOTFALL-FIX: Versteckt den Hero auf allen Seiten, die KEIN Blogpost sind */
 body:not(.single-post) .nexus-article-hero,
 body:not(.single-post) .nexus-post-footer-cta {
@@ -1626,29 +1495,20 @@ section.blog-preview,
   background: hsl(var(--accent-hsl) / 0.12);
 }
 
-:root[data-nx-theme='light'] .nexus-single-container,
-:root[data-nx-theme='light'] .nexus-archive-container {
+:root[data-nx-theme='light'] .nexus-single-container {
   background: var(--nx-body-gradient);
   color: var(--nx-text);
 }
 
 :root[data-nx-theme='light'] .nexus-article-hero,
-:root[data-nx-theme='light'] .nexus-archive-hero,
 :root[data-nx-theme='light'] .nexus-hero-footer {
   border-bottom-color: var(--nx-border);
   border-top-color: var(--nx-border);
 }
 
-:root[data-nx-theme='light'] .nexus-archive-hero {
-  background: linear-gradient(to bottom, #fbf7f1 0%, #f1e9dc 100%);
-}
-
 :root[data-nx-theme='light'] .nexus-meta-top,
 :root[data-nx-theme='light'] .nexus-author-info .by,
 :root[data-nx-theme='light'] .nexus-post-footer-cta p,
-:root[data-nx-theme='light'] .nexus-archive-desc,
-:root[data-nx-theme='light'] .nexus-card-date,
-:root[data-nx-theme='light'] .nexus-card-excerpt,
 :root[data-nx-theme='light'] .share-label,
 :root[data-nx-theme='light'] .nexus-reading-time,
 :root[data-nx-theme='light'] .micro-cta-link,
@@ -1661,9 +1521,7 @@ section.blog-preview,
 :root[data-nx-theme='light'] .nexus-author-info .name,
 :root[data-nx-theme='light'] .nexus-article-content h2,
 :root[data-nx-theme='light'] .nexus-article-content h3,
-:root[data-nx-theme='light'] .nexus-post-footer-cta h3,
-:root[data-nx-theme='light'] .nexus-card-title,
-:root[data-nx-theme='light'] .nexus-pagination .page-numbers {
+:root[data-nx-theme='light'] .nexus-post-footer-cta h3 {
   color: var(--nx-text) !important;
 }
 
@@ -1676,10 +1534,8 @@ section.blog-preview,
 }
 
 :root[data-nx-theme='light'] .nexus-post-footer-cta,
-:root[data-nx-theme='light'] .nexus-card,
 :root[data-nx-theme='light'] .selection-card,
-:root[data-nx-theme='light'] .nexus-share-btn,
-:root[data-nx-theme='light'] .nexus-pagination .page-numbers {
+:root[data-nx-theme='light'] .nexus-share-btn {
   background: var(--nx-card-gradient);
   border-color: var(--nx-border) !important;
   box-shadow: var(--nx-shadow-sm);

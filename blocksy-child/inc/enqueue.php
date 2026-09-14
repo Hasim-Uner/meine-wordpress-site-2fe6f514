@@ -216,6 +216,7 @@ function hu_enqueue_assets() {
 
 	// ── C2) Sonstige Archiv-Seiten (Tag, Datum etc.) ──────────────
 	if ( is_archive() && ! is_home() && ! is_category() ) {
+		hu_enqueue_css( 'nexus-archive-css', 'archive.css', [ 'nexus-design-system' ] );
 		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
 	}
 
