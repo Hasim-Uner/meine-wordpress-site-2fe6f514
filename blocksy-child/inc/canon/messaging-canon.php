@@ -292,7 +292,7 @@ function hu_align_tracking_product_schema_markup( $markup ) {
 	$setup_value       = function_exists( 'hu_tracking_price' )
 		? (float) hu_tracking_price( 'standard', 'setup', 'value', '1290' )
 		: 1290.0;
-	$setup_value       = (int) $setup_value === $setup_value ? (int) $setup_value : $setup_value;
+	$setup_value       = (float) (int) $setup_value === $setup_value ? (int) $setup_value : $setup_value;
 
 	return (string) preg_replace_callback(
 		'#<script type="application/ld\+json">(.*?)</script>#s',
