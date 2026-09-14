@@ -698,16 +698,16 @@ get_header();
 					</div>
 
 					<div class="ausgang">
-						<a class="tun" href="#strecke"
+						<a class="tun" href="#marktcheck"
+							data-track-action="cta_strecke_kopf_to_marktcheck"
+							data-track-category="lead_gen"
+							data-track-section="dokumentkopf"
+						>Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
+						<a class="tun still" href="#strecke"
 							data-track-action="cta_strecke_kopf_to_stationen"
 							data-track-category="navigation"
 							data-track-section="dokumentkopf"
-						>Die fünf Stationen <span class="pf" aria-hidden="true">→</span></a>
-						<a class="tun still" href="#einstieg"
-							data-track-action="cta_strecke_kopf_to_leiter"
-							data-track-category="offer"
-							data-track-section="dokumentkopf"
-						>Einstieg ab <?php echo esc_html( $entry_price ); ?></a>
+						>Die fünf Stationen</a>
 					</div>
 				</div>
 			</div>
