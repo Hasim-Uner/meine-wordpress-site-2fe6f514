@@ -109,6 +109,7 @@ $is_tracking_context = is_page( 'ga4-tracking-setup' )
 	|| is_page_template( 'page-ga4.php' )
 	|| is_page( 'server-side-tracking-b2b' )
 	|| is_page_template( 'page-server-side-tracking-b2b.php' );
+$tracking_setup_url = (string) ( $routes['tracking_setup'] ?? home_url( '/ga4-tracking-setup/' ) );
 
 /*
  * Eine Liste fuer beide Ausgaben. Die Zeile zeigt sie waagerecht, das
@@ -122,7 +123,7 @@ foreach ( $route_items as $route_item ) {
 	$is_tracking_route = 'nav-tracking-link' === (string) ( $route_item['class'] ?? '' );
 	$leiste_links[] = [
 		'label'    => (string) ( $route_item['label'] ?? '' ),
-		'url'      => (string) ( $route_item['url'] ?? home_url( '/' ) ),
+		'url'      => $is_tracking_route ? $tracking_setup_url : (string) ( $route_item['url'] ?? home_url( '/' ) ),
 		'current'  => $is_tracking_route ? $is_tracking_context : ! empty( $route_item['current'] ),
 		'track'    => (string) ( $route_item['track'] ?? '' ),
 		'category' => (string) ( $route_item['category'] ?? 'navigation' ),
