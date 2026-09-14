@@ -111,7 +111,7 @@ if ( '' !== $current_pick_route ) {
 		array_filter(
 			$picks,
 			static function ( $pick ) use ( $current_pick_route ) {
-				return (string) ( $pick['route'] ?? '' ) !== $current_pick_route;
+				return (string) $pick['route'] !== $current_pick_route;
 			}
 		)
 	);
