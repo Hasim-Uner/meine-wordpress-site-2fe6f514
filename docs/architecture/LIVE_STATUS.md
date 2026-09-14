@@ -1,5 +1,15 @@
 # Live Status
 
+## GA4 – direkter Anfrageweg, Repository-Stand 2026-09-14
+
+Die drei Hauptbuttons auf `/ga4-tracking-setup/` heißen jetzt
+„Tracking-Projekt anfragen“ und führen zu
+`/kontakt/?type=project&focus=tracking`. Begleittexte und Antwortzusage folgen
+dem Projektweg; der Marktcheck-Hinweis im Kennzahlenband entfällt auf GA4.
+Die optionale CTA-Fokusangabe verwendet den bestehenden Kontakt-URL-Helfer.
+Die Performance-Marketing-Seite, Kontaktverarbeitung und Event-Namen bleiben
+unverändert. PR-Stand; Veröffentlichung und Live-Versand nicht vorausgesetzt.
+
 ## Ergebnisse – Arbeitsbelege, Repository-Stand 2026-09-14
 
 - `/ergebnisse/` zeigt WordPress-Arbeiten zuerst, ergänzt um eine technische

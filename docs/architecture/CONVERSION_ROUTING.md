@@ -23,9 +23,20 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase`) or scoped first project | 30-minute call / proof |
 | `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck | Solar proof / case study |
 | `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page | Tracking project request / scope clarification | White-Label bridge for agencies |
+| `/ga4-tracking-setup/` | GA4/GTM setup or troubleshooting | Specialist tracking money page | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition page | Project request | Explicit bridge to Freelancer page |
 | `/ergebnisse/` | Proof / evaluation, all three routes | Proof hub / trust layer | Three-way close: Marktcheck, `Projekt anfragen`, White-Label `Aufgabe beschreiben` | Case study, public references, tracking money page |
 | `/case-study-solar-leadgenerierung/` | Solar proof | Evidence page | Solar Marktcheck | Energy money page |
+
+## GA4: direkte Tracking-Anfrage
+
+GA4 verwendet für Hero, Proof und Abschluss dieselbe direkte Projektanfrage
+mit dem Fokus `tracking`. Der zentrale Kontaktablauf übernimmt die Vorauswahl.
+Die bestehenden Actions `cta_cluster_audit`, `cta_cluster_proof_audit` und
+`cta_cluster_footer_audit` bleiben erhalten; auf dieser Route bezeichnen sie
+ab dem Umbau vom 2026-09-14 Projektanfragen, keine Marktcheck-Starts.
+Der Hinweis auf den Marktcheck im gemeinsamen Kennzahlenband wird nur für
+GA4 durch die kanonische Antwortzusage zur Tracking-Anfrage ersetzt.
 
 ## Homepage: direkter Freelancer-Einstieg
 
