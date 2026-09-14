@@ -172,10 +172,9 @@ function hu_messaging_canon() {
 }
 
 /**
- * Tracking is one commercial product family. The global "Tracking" route owns
- * the broad setup decision; Server-Side Tracking remains the advanced service
- * below it. This filter is registered before commercial-routing.php is loaded,
- * so header, schema catalog and downstream route consumers resolve the same URL.
+ * Add explicit product-family routes without changing the SEO owner of the
+ * dedicated Server-Side Tracking service. Header navigation can use the broad
+ * setup route while schema and specialist links keep pointing at SST.
  *
  * @param array<string,string> $routes Commercial route map.
  * @return array<string,string>
@@ -185,7 +184,7 @@ function hu_position_tracking_product_route( $routes ) {
 		return $routes;
 	}
 
-	$routes['tracking_b2b']      = home_url( '/ga4-tracking-setup/' );
+	$routes['tracking_setup']    = home_url( '/ga4-tracking-setup/' );
 	$routes['tracking_advanced'] = home_url( '/server-side-tracking-b2b/' );
 
 	return $routes;
