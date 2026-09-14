@@ -1,0 +1,125 @@
+name: NX Migration Batch
+
+on:
+  push:
+    branches:
+      - refactor/remove-provider-independent-nx-2026-09
+    paths:
+      - '.github/workflows/nx-migration-batch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: refactor/remove-provider-independent-nx-2026-09
+
+      - name: Remove provider-independent NX consumers
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          font_targets = {
+              Path('blocksy-child/assets/css/b2b-solar-leads-page.css'): {
+                  '--nx-font-sans': '--serif',
+                  '--nx-font-display': '--serif-display',
+              },
+              Path('blocksy-child/assets/css/server-side-tracking-protocol.css'): {
+                  '--nx-font-display': '--serif-display',
+              },
+              Path('blocksy-child/assets/css/solar-leads-kaufen-alternative-page.css'): {
+                  '--nx-font-display': '--serif-display',
+              },
+          }
+
+          for path, replacements in font_targets.items():
+              text = path.read_text(encoding='utf-8')
+              before = set(re.findall(r'--nx-[a-z0-9-]+', text))
+              unexpected = before - set(replacements)
+              if unexpected:
+                  raise SystemExit(f'{path}: unexpected NX tokens: {sorted(unexpected)}')
+              if not before:
+                  raise SystemExit(f'{path}: expected an NX typography token')
+              for old, new in replacements.items():
+                  text = text.replace(old, new)
+              if re.search(r'--nx-[a-z0-9-]+', text):
+                  raise SystemExit(f'{path}: NX token remains after typography migration')
+              path.write_text(text, encoding='utf-8')
+
+          strecke_css = Path('blocksy-child/assets/css/anfragestrecke.css')
+          css = strecke_css.read_text(encoding='utf-8')
+          css_tokens = set(re.findall(r'--nx-[a-z0-9-]+', css))
+          if css_tokens != {'--nx-site-header-height'}:
+              raise SystemExit(f'{strecke_css}: unexpected NX token set: {sorted(css_tokens)}')
+          css = css.replace('--nx-site-header-height', '--strecke-header-height')
+          if re.search(r'--nx-[a-z0-9-]+', css):
+              raise SystemExit(f'{strecke_css}: NX token remains after route-local header migration')
+          strecke_css.write_text(css, encoding='utf-8')
+
+          strecke_js = Path('blocksy-child/assets/js/anfragestrecke.js')
+          js = strecke_js.read_text(encoding='utf-8')
+          if js.count("--nx-site-header-height") != 1:
+              raise SystemExit(f'{strecke_js}: expected exactly one NX site-header setter')
+          js = js.replace('--nx-site-header-height', '--strecke-header-height')
+          strecke_js.write_text(js, encoding='utf-8')
+
+          baseline = Path('scripts/baselines/legacy-nx-consumers.txt')
+          lines = baseline.read_text(encoding='utf-8').splitlines()
+          removed = {
+              'blocksy-child/assets/css/anfragestrecke.css',
+              'blocksy-child/assets/css/b2b-solar-leads-page.css',
+              'blocksy-child/assets/css/server-side-tracking-protocol.css',
+              'blocksy-child/assets/css/solar-leads-kaufen-alternative-page.css',
+          }
+          missing = removed - set(lines)
+          if missing:
+              raise SystemExit(f'baseline entries missing before migration: {sorted(missing)}')
+          new_lines = [line for line in lines if line not in removed]
+          consumers = [line for line in new_lines if line and not line.startswith('#')]
+          if len(consumers) != 34:
+              raise SystemExit(f'expected 34 NX consumers after migration, got {len(consumers)}')
+          baseline.write_text('\n'.join(new_lines) + '\n', encoding='utf-8')
+
+          doc = Path('docs/architecture/CSS_ARCHITECTURE.md')
+          text = doc.read_text(encoding='utf-8')
+          old = '''Der erste Source-Abbau ist bereits erfolgt: `server-side-tracking-cro.css` verwendet für die Care-Preis-Typografie jetzt den kanonischen `--serif-display`-Token statt `--nx-font-display`. Die shrink-only Baseline steht damit aktuell bei **38 NX-Verbraucherdateien**. Die Zahl darf nur sinken.\n\nDie verbleibenden vier provider-unabhängigen NX-Verbraucher sind aktuell:\n\n- `anfragestrecke.css`\n- `b2b-solar-leads-page.css`\n- `server-side-tracking-protocol.css`\n- `solar-leads-kaufen-alternative-page.css`\n\nSie sind bevorzugte kleine Migrationen, weil ihre Bereinigung nicht von einer Entkopplung des Legacy-Providers abhängt.'''
+          new = '''Der provider-unabhängige NX-Abbau ist abgeschlossen. `server-side-tracking-cro.css`, `b2b-solar-leads-page.css`, `server-side-tracking-protocol.css` und `solar-leads-kaufen-alternative-page.css` verwenden jetzt die kanonischen Typografie-Rollen. Die Anfragestrecke besitzt für ihre von JavaScript gemessene Energy-Header-Höhe den route-lokalen Token `--strecke-header-height` statt eines global benannten NX-Tokens.\n\nDie shrink-only Baseline steht damit aktuell bei **34 NX-Verbraucherdateien**. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.'''
+          if old not in text:
+              raise SystemExit('CSS_ARCHITECTURE.md: expected legacy status block not found')
+          text = text.replace(old, new)
+          old_step = '2. **Kleine provider-unabhängige NX-Dateien:** die vier verbleibenden Dateien oben auf Canon-/Route-Tokens umstellen und aus der NX-Baseline entfernen.'
+          new_step = '2. **Provider-unabhängige NX-Reste (erledigt):** reine Typografie-Aliase sind auf Canon-Tokens migriert; die Anfragestrecke nutzt für ihre gemessene Energy-Header-Höhe einen route-lokalen Token.'
+          if old_step not in text:
+              raise SystemExit('CSS_ARCHITECTURE.md: expected migration step not found')
+          text = text.replace(old_step, new_step)
+          doc.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Verify migration contracts
+        run: |
+          python3 scripts/audit-css-architecture.py
+          python3 scripts/audit-legacy-nx-css.py
+          bash scripts/lint-css-spacing.sh
+          bash scripts/lint-css-motion.sh
+          git diff --check
+
+      - name: Commit migrated sources
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            blocksy-child/assets/css/anfragestrecke.css \
+            blocksy-child/assets/js/anfragestrecke.js \
+            blocksy-child/assets/css/b2b-solar-leads-page.css \
+            blocksy-child/assets/css/server-side-tracking-protocol.css \
+            blocksy-child/assets/css/solar-leads-kaufen-alternative-page.css \
+            scripts/baselines/legacy-nx-consumers.txt \
+            docs/architecture/CSS_ARCHITECTURE.md
+          git commit -m 'Remove provider-independent NX consumers'
+          git push origin HEAD:refactor/remove-provider-independent-nx-2026-09
