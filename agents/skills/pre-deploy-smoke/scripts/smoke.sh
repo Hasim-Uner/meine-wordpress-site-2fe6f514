@@ -147,6 +147,26 @@ else
   pass "No blocked absolute tracking claims in deployable theme code"
 fi
 
+# --- 7. Energy proof-scope guard ---
+header "Energy Proof Scope"
+
+# Der E3-Canon ist ein dokumentierter PV-Referenzfall. Wärmepumpe und
+# Gewerbe-PV dürfen ihn verlinken, aber seine Ergebniskennzahlen nicht als
+# segmentspezifischen Proof laden oder ausgeben.
+proof_scope_hits=""
+for f in "$THEME/page-waermepumpen-leads.php" "$THEME/page-b2b-solar-leads.php"; do
+  [[ -f "$f" ]] || continue
+  found="$(grep -nE 'hu_e3_canon|\$e3_(canon|metrics|case_label|lead_count|sales_conversion|conv_uplift|conv_before|cpl_reduction|cpl_before|cpl_after|timeframe)' "$f" 2>/dev/null || true)"
+  [[ -n "$found" ]] && proof_scope_hits+="${found/#/$f:}"$'\n'
+done
+
+if [[ -n "${proof_scope_hits%$'\n'}" ]]; then
+  fail "Cross-segment E3 result metrics found on Wärmepumpe/Gewerbe-PV pages:"
+  echo "$proof_scope_hits" | head -20
+else
+  pass "Wärmepumpe and Gewerbe-PV keep E3 results outside segment-specific proof"
+fi
+
 # --- Verdict ---
 header "VERDICT"
 if (( FAIL )); then
