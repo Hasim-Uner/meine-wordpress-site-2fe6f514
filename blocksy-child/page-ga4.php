@@ -118,9 +118,9 @@ $individual_price = function_exists( 'hu_tracking_price' )
 $delivery_window = function_exists( 'hu_tracking_delivery_weeks_display' )
 	? hu_tracking_delivery_weeks_display()
 	: '2 bis 3 Wochen';
-$faq_items       = isset( $page['faq_items'] ) && is_array( $page['faq_items'] )
-	? $page['faq_items']
-	: [];
+$faq_items       = function_exists( 'hu_tracking_setup_faq_items' )
+	? hu_tracking_setup_faq_items()
+	: ( isset( $page['faq_items'] ) && is_array( $page['faq_items'] ) ? $page['faq_items'] : [] );
 
 get_header();
 ?>
