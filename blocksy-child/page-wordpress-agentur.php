@@ -79,15 +79,14 @@ add_action( 'wp_body_open', function () {
 		[ 'id' => 'faq', 'label' => 'FAQ' ],
 	];
 	?>
-	<nav class="hu-page-toc" aria-label="Auf dieser Seite" data-hu-rail="true" data-track-section="page_toc">
-		<details open>
-			<summary>Auf dieser Seite</summary>
-			<ul role="list">
-				<?php foreach ( $items as $item ) : ?>
-					<li><a href="#<?php echo esc_attr( $item['id'] ); ?>" data-track-action="toc_agentur_<?php echo esc_attr( sanitize_key( $item['id'] ) ); ?>" data-track-category="navigation"><?php echo esc_html( $item['label'] ); ?></a></li>
-				<?php endforeach; ?>
-			</ul>
-		</details>
+	<nav class="hu-page-toc hu-results-register" aria-label="Abschnitte dieses Dokuments" data-hu-rail="true" data-hu-results-register-ready="true" data-track-section="page_toc">
+		<span class="hu-results-register__marke" aria-hidden="true"><span class="hu-results-register__marke-short">Reg.</span><span class="hu-results-register__marke-full">Register</span></span>
+		<div class="hu-results-register__entries">
+			<?php foreach ( $items as $index => $item ) : ?>
+				<?php $number = str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ); ?>
+				<a href="#<?php echo esc_attr( $item['id'] ); ?>" data-track-action="toc_agentur_<?php echo esc_attr( sanitize_key( $item['id'] ) ); ?>" data-track-category="navigation"><span class="hu-results-register__nr"><?php echo esc_html( $number ); ?></span><span class="hu-results-register__txt"><?php echo esc_html( $item['label'] ); ?></span></a>
+			<?php endforeach; ?>
+		</div>
 	</nav>
 	<?php
 }, 31 );
