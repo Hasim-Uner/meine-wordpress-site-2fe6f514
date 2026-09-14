@@ -66,6 +66,7 @@ function hu_enqueue_assets() {
 	$is_aroundhome_decision = is_singular( 'post' ) && $queried_id && 'aroundhome-solar-einordnung' === get_post_field( 'post_name', $queried_id );
 	$is_provider_decision   = $is_checkfox_decision || $is_aroundhome_decision;
 	$is_audit_route = function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page();
+	$is_client_portal = is_page_template( 'template-portal.php' );
 
 	// ── Parent Theme ──────────────────────────────────────────────
 	wp_enqueue_style(
@@ -86,6 +87,11 @@ function hu_enqueue_assets() {
 	 * Kleid rendern. Loest site-header-premium.css und site-footer.css ab.
 	 */
 	hu_enqueue_css( 'nexus-system-css', 'system.css', [ 'blocksy-child-style' ] );
+
+	// ── Client Portal only ─────────────────────────────────────────
+	if ( $is_client_portal ) {
+		hu_enqueue_css( 'nexus-client-portal-css', 'client-portal.css', [ 'blocksy-child-style' ] );
+	}
 
 	// ── Audit header only ──────────────────────────────────────────
 	// Standardrouten verwenden .leiste aus system.css + leiste.js.
