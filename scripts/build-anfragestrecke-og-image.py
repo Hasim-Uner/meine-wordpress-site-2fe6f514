@@ -4,9 +4,9 @@
     python3 scripts/build-anfragestrecke-og-image.py
 
 Warum ein Skript und kein einmalig hochgeladenes Bild: Die Kachel zeigt
-die beiden CPL-Werte aus dem E3-Canon. Aendern die sich, muss sich das
-Bild mitaendern — mit einem Generator ist das eine Zeile statt einer
-Designrunde.
+die beiden CPL-Werte aus dem E3-Canon. Aendern die sich, liest der Generator
+die aktuellen Konstanten direkt aus dem Canon statt sie ein zweites Mal zu
+kennen.
 
 Die Schriften kommen aus blocksy-child/fonts/. Es sind dieselben Dateien,
 die die Seite ausliefert; das Bild kann deshalb nicht in einer anderen
@@ -18,6 +18,7 @@ Abhaengigkeiten: Pillow, fonttools, brotli.
 from __future__ import annotations
 
 import pathlib
+import re
 import sys
 import tempfile
 
@@ -34,6 +35,7 @@ except ImportError:  # pragma: no cover
 WURZEL = pathlib.Path(__file__).resolve().parent.parent
 FONTS = WURZEL / "blocksy-child" / "fonts"
 ZIEL = WURZEL / "blocksy-child" / "assets" / "img" / "anfragestrecke-og.png"
+E3_CANON = WURZEL / "blocksy-child" / "inc" / "canon" / "e3-proof-canon.php"
 
 BREITE, HOEHE = 1200, 630
 
@@ -45,10 +47,30 @@ MATT = (115, 107, 98)
 STEMPEL = (184, 66, 15)
 HAAR = (222, 218, 211)
 
-# Werte aus canon/e3-proof-canon.php.
-CPL_VORHER = "150 €"
-CPL_NACHHER = "22 €"
-ZEITRAUM = "6 Monate"
+
+def canon_int(name: str) -> int:
+    """Liest eine numerische define()-Konstante aus dem PHP-Canon.
+
+    Der Generator soll keine zweite Zahlenquelle sein. Wenn eine erwartete
+    Konstante fehlt oder nicht mehr numerisch definiert ist, bricht der Build
+    sichtbar ab statt still mit einem veralteten Fallback weiterzulaufen.
+    """
+    if not E3_CANON.exists():
+        sys.exit(f"E3-Canon fehlt: {E3_CANON}")
+
+    text = E3_CANON.read_text(encoding="utf-8")
+    pattern = re.compile(
+        rf"define\(\s*['\"]{re.escape(name)}['\"]\s*,\s*(\d+)\s*\);"
+    )
+    match = pattern.search(text)
+    if not match:
+        sys.exit(f"Numerischer Canon-Wert fehlt oder hat neues Format: {name}")
+    return int(match.group(1))
+
+
+CPL_VORHER = f"{canon_int('HU_E3_CPL_BEFORE')} €"
+CPL_NACHHER = f"{canon_int('HU_E3_CPL_AFTER')} €"
+ZEITRAUM = f"{canon_int('HU_E3_TIMEFRAME_MONTHS')} Monate"
 
 
 def entpacke(name: str, ordner: pathlib.Path) -> pathlib.Path:
