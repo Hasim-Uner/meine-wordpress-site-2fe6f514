@@ -99,7 +99,7 @@ function hu_marketcheck_duration_label() {
  * @return string
  */
 function hu_marketcheck_length_label() {
-	return sprintf( '%d Schritte · %s', HU_MARKETCHECK_VISIBLE_STEPS, hu_marketcheck_duration_label() );
+	return sprintf( '%d sichtbare Schritte · %s', HU_MARKETCHECK_VISIBLE_STEPS, hu_marketcheck_duration_label() );
 }
 
 /**
