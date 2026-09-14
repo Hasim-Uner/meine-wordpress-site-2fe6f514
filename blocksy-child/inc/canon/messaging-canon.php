@@ -172,6 +172,54 @@ function hu_messaging_canon() {
 }
 
 /**
+ * Canonical FAQ for the broad Conversion Tracking Setup product.
+ *
+ * The visible FAQ and the FAQPage JSON-LD both read this function so the
+ * commercial scope cannot drift between copy and structured data.
+ *
+ * @return array<int, array{question:string,answer:string}>
+ */
+function hu_tracking_setup_faq_items() {
+	$setup_price = function_exists( 'hu_tracking_price' )
+		? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' )
+		: '1.290 €';
+	$delivery_window = function_exists( 'hu_tracking_delivery_weeks_display' )
+		? hu_tracking_delivery_weeks_display()
+		: '2 bis 3 Wochen';
+
+	return [
+		[
+			'question' => 'Was kostet ein Conversion Tracking Setup?',
+			'answer'   => sprintf( 'Der klar abgegrenzte Basisscope startet bei %1$s netto und wird in der Regel in %2$s umgesetzt. Vor dem Start steht schriftlich fest, welche Systeme, Formulare und Conversions enthalten sind.', $setup_price, $delivery_window ),
+		],
+		[
+			'question' => 'Was ist im Basisscope ab 1.290 € enthalten?',
+			'answer'   => 'Bestandsaufnahme und Messplan, GTM- und GA4-Struktur beziehungsweise Bereinigung, CMP- und Consent-Mode-Anbindung im vereinbarten Setup, Google Ads sowie bis zu drei Haupt-Conversions. Dazu kommen Abnahmetests, Dokumentation und Übergabe.',
+		],
+		[
+			'question' => 'Ist Server-Side Tracking im Einstiegspreis enthalten?',
+			'answer'   => 'Nein, nicht automatisch. Server-GTM, eigene Tracking-Subdomain, Meta CAPI und Browser-Server-Deduplizierung sind eine eigene Erweiterungsentscheidung. Wenn ein sauberes clientseitiges Setup das Problem löst, wird keine zusätzliche Server-Infrastruktur verkauft.',
+		],
+		[
+			'question' => 'Wann ist Server-Side Tracking sinnvoll?',
+			'answer'   => 'Wenn Serversignale, Meta CAPI, Deduplizierung oder eine kontrolliertere technische Messstrecke für das konkrete Setup gebraucht werden. Server-Side Tracking ersetzt weder Einwilligung noch rechtliche Prüfung und verspricht keine 100-Prozent-Attribution.',
+		],
+		[
+			'question' => 'Kann das Tracking bis ins CRM und zu Offline Conversions erweitert werden?',
+			'answer'   => 'Ja. CRM-Status, eindeutige Lead-Zuordnung, Offline Conversions und qualifizierte Rücksignale können als eigener Revenue-Scope umgesetzt werden. Diese Ebene wird separat aufgenommen und kalkuliert.',
+		],
+		[
+			'question' => 'Wie wird geprüft, ob das Tracking wirklich funktioniert?',
+			'answer'   => 'Die Abnahme arbeitet mit definierten Testfällen: erfolgreicher und fehlgeschlagener Formularversand, Consent-Zustände, Conversion-Aktionen und – falls beauftragt – Deduplizierung sowie CRM-Übergaben. Übergeben werden Messplan, QA-Protokoll, GTM-Versionen und bekannte Grenzen.',
+		],
+		[
+			'question' => 'Brauche ich dafür einen Website-Relaunch?',
+			'answer'   => 'Nein. Wenn die Website funktioniert und nur die Messung unsauber ist, kann das Conversion Tracking als eigenständiges Projekt eingerichtet oder bereinigt werden.',
+		],
+	];
+}
+
+/**
  * Add explicit product-family routes without changing the SEO owner of the
  * dedicated Server-Side Tracking service. Header navigation can use the broad
  * setup route while schema and specialist links keep pointing at SST.
