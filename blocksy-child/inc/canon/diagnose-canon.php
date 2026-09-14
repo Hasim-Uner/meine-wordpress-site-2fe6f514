@@ -21,10 +21,13 @@ define( 'HU_REQUEST_ANALYSIS_DAYS', 7 );
 define( 'HU_REQUEST_ANALYSIS_OUTPUT_LABEL', 'schriftlicher Befund zu Anfrage-Quellen, Tracking, Funnel und Vertriebsanschluss' );
 define( 'HU_REQUEST_ANALYSIS_PRICE_LABEL', 'nur für passende Betriebe nach Potenzialcheck' );
 
-// Länge des Marktcheck-Intakes im Hero der Solar-Money-Page. Muss zu
-// QUIZ_STEPS in assets/js/solar-leadgenerierung-solara.js passen; der
-// Lead-Path-Smoke bricht ab, sobald Formular und Canon auseinanderlaufen.
+// Interner Intake-Vertrag: vier Fit-Signale plus Kontaktdaten ergeben fünf
+// Datengruppen. Die UI fasst sie bewusst in zwei sichtbare Schritte zusammen.
+// HU_MARKETCHECK_STEPS bleibt als Compatibility-Name fuer die Datengruppen
+// bestehen; oeffentliche Copy darf dafuer nur HU_MARKETCHECK_VISIBLE_STEPS
+// verwenden. Der Lead-Path-Smoke sichert beide Ebenen getrennt ab.
 define( 'HU_MARKETCHECK_STEPS', 5 );
+define( 'HU_MARKETCHECK_VISIBLE_STEPS', 2 );
 define( 'HU_MARKETCHECK_FIT_QUESTIONS', 4 );
 define( 'HU_MARKETCHECK_MINUTES', 2 );
 
@@ -52,6 +55,8 @@ function hu_diagnose_canon() {
 		'primary_output_label'       => HU_REQUEST_ANALYSIS_OUTPUT_LABEL,
 		'primary_price_label'        => HU_REQUEST_ANALYSIS_PRICE_LABEL,
 		'marketcheck_steps'          => HU_MARKETCHECK_STEPS,
+		'marketcheck_data_groups'    => HU_MARKETCHECK_STEPS,
+		'marketcheck_visible_steps'  => HU_MARKETCHECK_VISIBLE_STEPS,
 		'marketcheck_fit_questions'  => HU_MARKETCHECK_FIT_QUESTIONS,
 		'marketcheck_minutes'        => HU_MARKETCHECK_MINUTES,
 		'marketcheck_reply_hours'    => HU_MARKETCHECK_REPLY_HOURS,
@@ -85,17 +90,16 @@ function hu_marketcheck_duration_label() {
 }
 
 /**
- * Display value for the length of the marketcheck intake.
+ * Display value for the visible length of the marketcheck intake.
  *
  * Entry points on other routes make this promise before the visitor ever
- * sees the form, so both halves come from here. They used to be literal
- * copy, and the intake grew to five steps while three routes still
- * advertised a three-step, sixty-second marketcheck.
+ * sees the form. Public copy therefore follows the two rendered screens,
+ * not the five internal data groups used by qualification and CRM storage.
  *
  * @return string
  */
 function hu_marketcheck_length_label() {
-	return sprintf( '%d Schritte · %s', HU_MARKETCHECK_STEPS, hu_marketcheck_duration_label() );
+	return sprintf( '%d sichtbare Schritte · %s', HU_MARKETCHECK_VISIBLE_STEPS, hu_marketcheck_duration_label() );
 }
 
 /**
