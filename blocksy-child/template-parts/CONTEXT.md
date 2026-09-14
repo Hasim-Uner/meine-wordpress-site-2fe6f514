@@ -18,7 +18,6 @@ These files are reusable UI sections shared by multiple routes. They carry CTA h
 
 - `footer-cta.php`
 - `trust-section.php`
-- `service-system-map.php`
 - `audit-page-shell.php`
 
 If one of these changes behaviorally, verify the same surface on every page that includes it.

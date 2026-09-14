@@ -42,10 +42,10 @@ blocksy-child/
 │   ├── js/                    ← Frontend-Scripts (nexus-core, Seiten-spezifisch)
 │   └── fonts/                 ← Self-hosted Satoshi Variable Font
 ├── template-parts/            ← Wiederverwendbare Sektionen
-│   ├── kpi-block.php          ← KPI-Metrik als visueller Anker
 │   ├── breadcrumb.php         ← Breadcrumb + BreadcrumbList Schema
-│   ├── comparison-table.php   ← Vorher/Nachher Grid
-│   ├── service-system-map.php ← Wiederverwendbare 4-Ebenen-Systemsektion für Service-Landings
+│   ├── seo-subpage-byline.php ← Autoren-/Aktualisierungszeile für SEO-Seiten
+│   ├── seo-subpage-sticky-cta.php ← Geteilte Sticky-CTA für SEO-Seiten
+│   ├── single-reader.php      ← Editorialer Einzelbeitrag
 │   ├── trust-section.php      ← Trust-Badges in CTA-Nähe
 │   ├── related-content.php    ← Verwandte Inhalte (Flywheel)
 │   └── footer-cta.php         ← Conversion-optimierter Bottom-CTA
@@ -91,7 +91,7 @@ Pillar Pages, Content-Cluster, interne Verlinkung, Proof-Assets, Nurture-Flows.
 [Flywheel]   single.php: Related Content + Footer-CTA Template Parts
 [Measurement] inc/enqueue: data-track Attribute für Footer-CTAs
 [SEO]        inc/seo-meta: Zentralisierte OG/Canonical/Indexierung
-[CRO]        template-parts/comparison-table: Responsive Vorher/Nachher
+[CRO]        template-parts/footer-cta: Conversionpfad und Trust-Elemente
 ```
 
 ---
