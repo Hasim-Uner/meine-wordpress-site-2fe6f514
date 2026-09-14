@@ -1,0 +1,41 @@
+name: Temporary Fix Growth Audit Runner
+
+on:
+  push:
+    branches:
+      - cleanup/remove-growth-audit-legacy-ui-v3-2026-09-15
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: cleanup/remove-growth-audit-legacy-ui-v3-2026-09-15
+          fetch-depth: 0
+      - name: Patch runner assertion
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('.github/workflows/tmp-growth-audit-deadrefs-v3.yml')
+          text = path.read_text(encoding='utf-8')
+          needle = "          enqueue = read('blocksy-child/inc/enqueue.php')\n"
+          if text.count(needle) != 1:
+              raise SystemExit(f'expected one enqueue marker, found {text.count(needle)}')
+          insert = '''          # Retired inline Audit-only head tweak further down in the asset hub.\n          enqueue = read('blocksy-child/inc/enqueue.php')\n          marker = "\\t// ── H) Template: System-Diagnose Funnel"\n          if enqueue.count(marker) != 1:\n              raise SystemExit(f'enqueue.php: expected one retired System-Diagnose block, found {enqueue.count(marker)}')\n          start = enqueue.index(marker)\n          condition = "\\tif ( nexus_is_audit_page() ) {"\n          fn = enqueue.find(condition, start)\n          if fn < 0:\n              raise SystemExit('enqueue.php: retired Audit inline-style condition missing')\n          brace = enqueue.find('{', fn)\n          depth = 0\n          end = None\n          for i in range(brace, len(enqueue)):\n              if enqueue[i] == '{':\n                  depth += 1\n              elif enqueue[i] == '}':\n                  depth -= 1\n                  if depth == 0:\n                      end = i + 1\n                      break\n          if end is None:\n              raise SystemExit('enqueue.php: could not close retired Audit inline-style block')\n          while end < len(enqueue) and enqueue[end] == "\\n":\n              end += 1\n              if end < len(enqueue) and enqueue[end] != "\\n":\n                  break\n          write('blocksy-child/inc/enqueue.php', enqueue[:start] + enqueue[end:])\n\n'''
+          path.write_text(text.replace(needle, insert + needle, 1), encoding='utf-8')
+          PY
+      - name: Commit patched runner
+        shell: bash
+        run: |
+          git rm .github/workflows/tmp-fix-growth-audit-runner-v3.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/tmp-growth-audit-deadrefs-v3.yml
+          git diff --cached --check
+          git commit -m "fix: complete Growth Audit deadref cleanup assertions"
+          git push origin HEAD:cleanup/remove-growth-audit-legacy-ui-v3-2026-09-15
