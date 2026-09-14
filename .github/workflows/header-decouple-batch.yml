@@ -1,4 +1,5 @@
 name: Audit Header Decouple Batch
+# One-time migration runner; removed before PR.
 
 on:
   push:
