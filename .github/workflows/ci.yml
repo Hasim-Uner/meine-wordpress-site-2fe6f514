@@ -130,7 +130,23 @@ jobs:
         run: find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l
 
       - name: Install PHP analysis tooling
-        run: composer install --no-interaction --no-progress --prefer-dist
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            if composer install --no-interaction --no-progress --prefer-dist; then
+              exit 0
+            fi
+
+            if [[ "$attempt" -eq 3 ]]; then
+              echo "Composer install failed after 3 attempts." >&2
+              exit 1
+            fi
+
+            delay=$(( attempt * 5 ))
+            echo "::warning::Composer install failed on attempt ${attempt}; retrying in ${delay}s."
+            sleep "$delay"
+          done
 
       - name: PHP static analysis
         run: composer analyse:php
