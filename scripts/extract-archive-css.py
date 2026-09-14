@@ -65,10 +65,13 @@ style = replace_once(
     'archive card light selectors',
 )
 
+# These selectors are archive-exclusive declaration blocks. `.nexus-card-title`
+# itself also appears in the shared heading-family selector list and is allowed
+# there; only its extracted declaration block must disappear from style.css.
 for fragment in (
     '.nexus-archive-container', '.nexus-archive-hero', '.nexus-archive-desc',
-    '.nexus-card-grid', '.nexus-card-date', '.nexus-card-title',
-    '.nexus-card-excerpt', '.nexus-read-more', '.nexus-pagination',
+    '.nexus-card-grid', '.nexus-card-date {', '.nexus-card-title {',
+    '.nexus-card-excerpt {', '.nexus-read-more', '.nexus-pagination',
 ):
     if fragment in style:
         raise SystemExit(f'style.css: archive fragment remains after extraction: {fragment}')
