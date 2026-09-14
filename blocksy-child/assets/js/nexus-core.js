@@ -681,42 +681,6 @@
         },
 
 
-        /**
-         * 10. HEADER FLIGHT MODE
-         * Kompakter Header mit Glaseffekt beim Scrollen.
-         * Fügt .nexus-flight-mode ab 50px Scroll hinzu.
-         */
-        initHeaderFlight: function () {
-            var header = document.querySelector('.ct-header');
-            var isQueued = false;
-
-            if (document.querySelector('[data-site-header]')) return;
-            if (!header) return;
-
-            function update() {
-                isQueued = false;
-
-                if (window.scrollY > 50) {
-                    header.classList.add('nexus-flight-mode');
-                } else {
-                    header.classList.remove('nexus-flight-mode');
-                }
-            }
-
-            function queueUpdate() {
-                if (isQueued) {
-                    return;
-                }
-
-                isQueued = true;
-                window.requestAnimationFrame(update);
-            }
-
-            update();
-            window.addEventListener('scroll', queueUpdate, { passive: true });
-        },
-
-
         getPrimaryThemeToggle: function () {
             var toggles = Array.prototype.slice.call(document.querySelectorAll('.nx-theme-toggle[data-nx-theme-toggle]'));
             var toggle = null;
@@ -1078,9 +1042,6 @@
             runAfterNextPaint(function () {
                 self.initThemeToggle();
             });
-
-            // Header Flight Mode
-            this.initHeaderFlight();
 
             // Smooth Scroll
             this.initSmoothScroll();
