@@ -1,6 +1,8 @@
 <?php
 /** One segmented next step; $step comes from next.php. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+/** @var array{kind:string,kicker:string,title:string,desc:string,url:string,label:string,note:string,action:string} $step */
 ?>
 <article class="erg-next-row erg-next-row--<?php echo esc_attr( $step['kind'] ); ?>">
 	<div><p class="mono"><?php echo esc_html( $step['kicker'] ); ?></p><h3><?php echo esc_html( $step['title'] ); ?></h3><p><?php echo esc_html( $step['desc'] ); ?></p></div>
