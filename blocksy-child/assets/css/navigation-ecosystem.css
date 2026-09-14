@@ -117,9 +117,47 @@
 	padding-left: 0.7rem;
 }
 
+/* Shared disclosure for existing page indexes. The button only becomes
+ * visible after JS has taken over; without JS all links stay exposed. */
+.hu-toc-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	width: 100%;
+	min-height: 48px;
+	padding: 0.7rem 0;
+	border: 0;
+	border-top: 1px solid currentColor;
+	border-bottom: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	font-weight: 700;
+	text-align: left;
+	cursor: pointer;
+}
+
+.hu-toc-toggle[hidden],
+.hu-toc-panel[hidden] {
+	display: none !important;
+}
+
+.hu-toc-toggle__icon {
+	flex: 0 0 auto;
+	font-size: 1.1rem;
+	line-height: 1;
+}
+
+.hu-toc-panel--contents {
+	display: contents;
+}
+
 .hu-page-toc a:focus-visible,
 .hu-wayfinding-breadcrumb a:focus-visible,
-.hu-next-step a:focus-visible {
+.hu-next-step a:focus-visible,
+.hu-toc-toggle:focus-visible,
+body.hu-wayfinding-active :is(.about-index, .wl-site-header__nav, .hu-sst__toc-band, #nav) a:focus-visible {
 	outline: 3px solid var(--hu-wayfinding-focus);
 	outline-offset: 3px;
 }
@@ -201,12 +239,12 @@ body.hu-wayfinding-active :is(.about-index, .wl-site-header__nav, .hu-sst__toc-b
 		display: block;
 	}
 
-	.hu-page-toc[data-hu-rail="true"] summary {
+	.hu-page-toc[data-hu-toc-static="true"] summary {
 		pointer-events: none;
 		cursor: default;
 	}
 
-	.hu-page-toc[data-hu-rail="true"] summary::after {
+	.hu-page-toc[data-hu-toc-static="true"] summary::after {
 		display: none;
 	}
 }
@@ -217,11 +255,41 @@ body.hu-wayfinding-active :is(.about-index, .wl-site-header__nav, .hu-sst__toc-b
 		max-height: none !important;
 		overflow: visible !important;
 	}
+
+	.hu-toc-collapsible {
+		display: block !important;
+	}
+
+	.hu-toc-collapsible > .hu-toc-toggle {
+		display: flex;
+	}
+
+	.hu-toc-panel--contents {
+		display: block;
+		width: 100%;
+	}
+
+	.hu-toc-collapsible .hu-toc-panel--contents > a {
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+		padding-block: 0.65rem;
+	}
+
+	.hu-sst__toc-band.hu-toc-collapsible > .hu-toc-toggle {
+		width: min(calc(100% - 2rem), var(--hu-wayfinding-max));
+		margin-inline: auto;
+	}
+
+	.hu-sst__toc-band.hu-toc-collapsible .hu-sst__toc-label {
+		display: none;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
 	.hu-skip-link,
-	.hu-page-toc a {
+	.hu-page-toc a,
+	.hu-toc-toggle {
 		transition: none !important;
 		scroll-behavior: auto !important;
 	}
