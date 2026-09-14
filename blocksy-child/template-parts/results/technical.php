@@ -1,6 +1,8 @@
 <?php
 /** Results hub: technical verification. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+/** @var array<int, array{title:string,text:string,url:string,action:string,label:string}> $technical_proofs */
 ?>
 <section id="technik" aria-labelledby="technik-h" data-track-section="technik">
 	<div class="blatt reihe">
