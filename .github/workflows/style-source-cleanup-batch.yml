@@ -38,26 +38,10 @@ jobs:
               return source[:a] + source[b:], removed
 
           removals = [
-              (
-                  '/* Menü-Links: Clean & Spaced */',
-                  '/* --- Homepage Optimization: Hero Stack + Section Order --- */',
-                  'retired Blocksy menu and header CTA',
-              ),
-              (
-                  '@media (min-width: 1024px) {\n/* --- 2. NEXUS MEGA MENÜ (VIEWPORT FIX) --- */',
-                  '/* --- 3. INLINE-PFEIL --- */',
-                  'retired Blocksy mega menu',
-              ),
-              (
-                  '/* --- NEXUS SINGLE PAGE LAYOUT --- */',
-                  '/* --- NEXUS ARCHIVE LAYOUT --- */',
-                  'superseded single-post base',
-              ),
-              (
-                  '/* --- NEXUS FEINSCHLIFF: LESEZEIT & SHARING --- */',
-                  '/* --- NEXUS CLIENT PORTAL --- */',
-                  'superseded single-post share finishing',
-              ),
+              ('/* Menü-Links: Clean & Spaced */', '/* --- Homepage Optimization: Hero Stack + Section Order --- */', 'retired Blocksy menu and header CTA'),
+              ('@media (min-width: 1024px) {\n/* --- 2. NEXUS MEGA MENÜ (VIEWPORT FIX) --- */', '/* --- 3. INLINE-PFEIL --- */', 'retired Blocksy mega menu'),
+              ('/* --- NEXUS SINGLE PAGE LAYOUT --- */', '/* --- NEXUS ARCHIVE LAYOUT --- */', 'superseded single-post base'),
+              ('/* --- NEXUS FEINSCHLIFF: LESEZEIT & SHARING --- */', '/* --- NEXUS CLIENT PORTAL --- */', 'superseded single-post share finishing'),
           ]
 
           removed_total = ''
@@ -66,49 +50,22 @@ jobs:
               removed_total += removed
               print(f'Removed {label}: {removed.count(chr(10)) + 1} lines')
 
-          expected_removed_fragments = [
-              '.ct-header .ct-menu > li > a',
-              'NEXUS MEGA MENÜ (VIEWPORT FIX)',
-              '.nexus-single-container',
-              '.nexus-share-box',
-          ]
-          for fragment in expected_removed_fragments:
+          for fragment in ('.ct-header .ct-menu > li > a', 'NEXUS MEGA MENÜ (VIEWPORT FIX)', '.nexus-single-container', '.nexus-share-box'):
               if fragment not in removed_total:
                   raise SystemExit(f'style.css: expected cleanup fragment was not removed: {fragment}')
 
-          required_dead_markers = [
-              '/* Menü-Links: Clean & Spaced */',
-              'NEXUS MEGA MENÜ (VIEWPORT FIX)',
-              'NEXUS SINGLE PAGE LAYOUT',
-              'NEXUS FEINSCHLIFF: LESEZEIT & SHARING',
-          ]
-          for marker in required_dead_markers:
+          for marker in ('/* Menü-Links: Clean & Spaced */', 'NEXUS MEGA MENÜ (VIEWPORT FIX)', 'NEXUS SINGLE PAGE LAYOUT', 'NEXUS FEINSCHLIFF: LESEZEIT & SHARING'):
               if marker in text:
                   raise SystemExit(f'style.css: retired block marker remains: {marker}')
 
-          required_live_markers = [
-              'NEXUS ARCHIVE LAYOUT',
-              'NEXUS CLIENT PORTAL',
-              'LEGAL PAGE MODAL',
-              'Homepage Optimization: Hero Stack + Section Order',
-          ]
-          for marker in required_live_markers:
+          for marker in ('NEXUS ARCHIVE LAYOUT', 'NEXUS CLIENT PORTAL', 'LEGAL PAGE MODAL', 'Homepage Optimization: Hero Stack + Section Order'):
               if marker not in text:
                   raise SystemExit(f'style.css: live marker was lost: {marker}')
 
           single = Path('blocksy-child/assets/css/single.css').read_text(encoding='utf-8')
-          for selector in (
-              '.nexus-single-container',
-              '.nexus-article-hero',
-              '.nexus-meta-top',
-              '.nexus-title',
-              '.nexus-hero-footer',
-              '.nexus-share-box',
-              '.nexus-share-btn',
-          ):
+          for selector in ('.nexus-single-container', '.nexus-article-hero', '.nexus-meta-top', '.nexus-title', '.nexus-hero-footer', '.nexus-share-box', '.nexus-share-btn'):
               if selector not in single:
                   raise SystemExit(f'single.css no longer owns required selector: {selector}')
-
           style.write_text(text, encoding='utf-8')
 
           build = Path('scripts/build-theme-dist.sh')
@@ -131,8 +88,7 @@ jobs:
           step = '''      - name: Verify deployment single-style prune\n        run: |\n          cp blocksy-child/style.css /tmp/blocksy-child-style.css\n          python3 scripts/prune-style-single-legacy.py \\\n            /tmp/blocksy-child-style.css \\\n            blocksy-child/assets/css/single.css\n          if grep -q 'NEXUS SINGLE PAGE LAYOUT' /tmp/blocksy-child-style.css; then\n            echo 'Superseded single-post block is still present after prune.' >&2\n            exit 1\n          fi\n          grep -q 'NEXUS ARCHIVE LAYOUT' /tmp/blocksy-child-style.css\n'''
           if text.count(step) != 1:
               raise SystemExit('css-architecture.yml: retired prune verification step drifted')
-          text = text.replace(step, '')
-          workflow.write_text(text.rstrip() + '\n', encoding='utf-8')
+          workflow.write_text(text.replace(step, '').rstrip() + '\n', encoding='utf-8')
 
           doc = Path('docs/architecture/CSS_ARCHITECTURE.md')
           text = doc.read_text(encoding='utf-8')
@@ -143,8 +99,7 @@ jobs:
           a = text.index(start)
           b = text.index(end, a)
           replacement = '''### Source-Bereinigung von `style.css`\n\nDer historische `NEXUS SINGLE PAGE LAYOUT`-Block und sein altes Share-Finishing sind jetzt auch aus dem Authoring-Source entfernt. `assets/css/single.css` besitzt die produktiven Single-/SEO-Cornerstone-Selektoren vollständig; der frühere Deployment-Pruner ist deshalb entfallen.\n\nZusätzlich wurden die serverseitig nicht mehr renderbaren Blocksy-Menü-/CTA- und Mega-Menü-Blöcke aus `style.css` entfernt. Der Parent-Header ist über `blocksy:builder:header:enabled` deaktiviert; die aktuelle Standardnavigation wird als `.leiste` gerendert. Andere historische `.ct-header`-/`.ct-panel`-Regeln bleiben bewusst als separater Migrationsbestand bestehen und werden nicht durch einen pauschalen Selector-Guard mit diesem Schnitt vermischt. Archive- und Kundenportal-Blöcke bleiben ebenfalls bestehen, bis sie separat migriert oder ausgelagert sind.\n\n'''
-          text = text[:a] + replacement + text[b:]
-          doc.write_text(text, encoding='utf-8')
+          doc.write_text(text[:a] + replacement + text[b:], encoding='utf-8')
           PY
 
           git rm scripts/prune-style-single-legacy.py
@@ -168,11 +123,6 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A -- \
-            blocksy-child/style.css \
-            scripts/build-theme-dist.sh \
-            .github/workflows/css-architecture.yml \
-            docs/architecture/CSS_ARCHITECTURE.md \
-            scripts/prune-style-single-legacy.py
+          git add -A
           git commit -m 'Remove superseded global style source blocks'
           git push origin HEAD:refactor/style-source-cleanup-2026-09
