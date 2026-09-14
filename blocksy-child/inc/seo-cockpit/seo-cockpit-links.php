@@ -351,7 +351,6 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 				$primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#methode' ),
 				$contact_url,
 				$primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
-				$primary_urls['domdar'] ?? home_url( '/case-study-domdar/' ),
 				$primary_urls['whitelabel'] ?? home_url( '/whitelabel-retainer/' ),
 			]
 		);

@@ -641,10 +641,6 @@ function nexus_get_primary_public_url_map() {
 			home_url( '/server-side-tracking-b2b/' )
 		),
 		'request'              => $request_url,
-		'domdar'               => nexus_get_page_url(
-			[ 'case-study-domdar', 'domdar' ],
-			home_url( '/case-study-domdar/' )
-		),
 		'whitelabel'           => function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' ),
 		'seo_category'         => nexus_get_category_url( 'seo', home_url( '/category/seo/' ) ),
 		'tracking_category'    => nexus_get_category_url( 'tracking', home_url( '/category/tracking/' ) ),
@@ -1186,7 +1182,6 @@ function nexus_is_results_context() {
 		|| is_page( 'whitelabel-retainer' )
 		|| is_page( 'whitelabel-retainer-proof' )
 		|| is_page( 'whitelabel' )
-		|| is_page_template( 'page-case-study-domdar.php' )
 		|| is_page_template( 'page-ergebnisse.php' )
 		|| is_page_template( 'page-case-studies-e-commerce.php' )
 		|| is_page_template( 'page-whitelabel-retainer.php' );
@@ -2036,7 +2031,6 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-ergebnisse.php',
 		'page-case-studies-e-commerce.php',
 		'page-e3-new-energy.php',
-		'page-case-study-domdar.php',
 		'page-wgos.php',
 		'page-wgos-assets.php',
 		'page-solar-waermepumpen-leadgenerierung.php',

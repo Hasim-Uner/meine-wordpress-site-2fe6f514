@@ -633,11 +633,6 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-whitelabel-js', 'whitelabel.js', [ 'nexus-core-js' ] );
 	}
 
-	// ── Q) Template: Öffentliche Case Studies ──────────────────────
-	if ( is_page_template( 'page-case-study-domdar.php' ) || is_page( 'case-study-domdar' ) ) {
-		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-case-study-css', 'case-study.css', [ 'nexus-home-css' ] );
-	}
 }
 
 /**
