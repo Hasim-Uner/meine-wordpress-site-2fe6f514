@@ -41,6 +41,17 @@ function nexus_get_wgos_cluster_page_data() {
 		'ga4-tracking-setup' => [
 			'eyebrow'          => 'GA4 Tracking Setup · Messbarkeit im Anfragesystem',
 			'title'            => 'GA4 Tracking Setup für B2B-WordPress-Websites',
+			'cta'              => [
+				'route'        => 'project_request',
+				'focus'        => 'tracking',
+				'label'        => 'Tracking-Projekt anfragen',
+				'microcopy'    => $response_compact . ' · Tracking-Anliegen kurz beschreiben',
+				'closing_note' => 'Beschreiben Sie kurz Ihre Website, Ihr bestehendes Setup und was Sie einrichten oder korrigieren möchten. Im Kontaktformular ist Tracking bereits vorausgewählt.',
+			],
+			'proof_metrics'    => array_replace(
+				nexus_get_wgos_cluster_page_proof_metrics(),
+				[ 1 => [ 'value' => $response_compact, 'label' => 'Persönliche Rückmeldung zu Ihrem Tracking-Anliegen' ] ]
+			),
 			'lead'             => 'GA4 Tracking Setup heißt hier: Event-Logik, Consent, GTM und serverseitige Signale so bauen, dass Sie Anfragen, Einstiegsseiten und Leadqualität belastbar sehen.',
 			'intro'            => [
 				'Viele B2B-Unternehmen haben Google Analytics 4 technisch aktiv, aber kein belastbares Setup. Events feuern, Conversions sind unklar und das Team diskutiert über Zahlen statt über Entscheidungen.',
@@ -407,6 +418,12 @@ function nexus_render_wgos_cluster_page( $page ) {
 
 	if ( isset( $cta['route'] ) && function_exists( 'hu_get_commercial_route' ) ) {
 		$audit_url = hu_get_commercial_route( (string) $cta['route'], $audit_url );
+	}
+
+	if ( 'project_request' === ( $cta['route'] ?? '' ) && ! empty( $cta['focus'] ) ) {
+		$audit_url = function_exists( 'hu_get_contact_intake_url' )
+			? hu_get_contact_intake_url( 'project', (string) $cta['focus'] )
+			: add_query_arg( [ 'type' => 'project', 'focus' => sanitize_key( (string) $cta['focus'] ) ], home_url( '/kontakt/' ) );
 	}
 
 	if ( isset( $cta['label'] ) && '' !== (string) $cta['label'] ) {
