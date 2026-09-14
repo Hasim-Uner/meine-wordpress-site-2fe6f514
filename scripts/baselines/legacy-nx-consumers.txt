@@ -4,7 +4,6 @@ blocksy-child/assets/css/aroundhome-decision.css
 blocksy-child/assets/css/audit-results.css
 blocksy-child/assets/css/audit.css
 blocksy-child/assets/css/checkfox-decision.css
-blocksy-child/assets/css/cja-audit.css
 blocksy-child/assets/css/cro.css
 blocksy-child/assets/css/cwv.css
 blocksy-child/assets/css/deep-dive.css

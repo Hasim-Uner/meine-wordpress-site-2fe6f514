@@ -30,6 +30,11 @@ function hu_get_request_analysis_legacy_paths() {
 		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( $previous_analysis_path ), PHP_URL_PATH ), '/' ) ),
 		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/readiness-diagnose/' ), PHP_URL_PATH ), '/' ) ),
 		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/anfrage/' ), PHP_URL_PATH ), '/' ) ),
+		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/growth-audit/' ), PHP_URL_PATH ), '/' ) ),
+		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/audit/' ), PHP_URL_PATH ), '/' ) ),
+		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/customer-journey-audit/' ), PHP_URL_PATH ), '/' ) ),
+		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/360-audit/' ), PHP_URL_PATH ), '/' ) ),
+		trailingslashit( '/' . ltrim( (string) wp_parse_url( home_url( '/wordpress-tech-audit/' ), PHP_URL_PATH ), '/' ) ),
 	];
 }
 
@@ -82,4 +87,3 @@ function hu_redirect_legacy_request_analysis_paths() {
 	exit;
 }
 add_action( 'template_redirect', 'hu_redirect_legacy_request_analysis_paths', 5 );
-
