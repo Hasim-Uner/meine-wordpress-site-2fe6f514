@@ -1,0 +1,143 @@
+/* WordPress Agentur Hannover — lokale Entscheidungsseite.
+   Baut ausschliesslich auf system.css-Tokens auf; kein eigenes Farbsystem. */
+
+.agentur-decision .entscheidung-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s2);
+  margin-top: var(--s3);
+}
+
+.agentur-decision .entscheidung-karte {
+  border: 1px solid var(--haar);
+  background: var(--zone);
+  padding: var(--s3);
+  border-radius: 3px;
+}
+
+.agentur-decision .entscheidung-karte h3,
+.agentur-decision .vergleich-kopf strong {
+  margin: 0 0 var(--s1);
+}
+
+.agentur-decision .entscheidung-karte p:last-child {
+  margin-bottom: 0;
+}
+
+.agentur-decision .vergleich {
+  margin-top: var(--s3);
+  border-top: 1px solid var(--strich);
+}
+
+.agentur-decision .vergleich-zeile {
+  display: grid;
+  grid-template-columns: minmax(9rem, .85fr) repeat(2, minmax(0, 1.5fr));
+  gap: var(--s2);
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--haar);
+  align-items: start;
+}
+
+.agentur-decision .vergleich-zeile > * {
+  min-width: 0;
+}
+
+.agentur-decision .vergleich-zeile > :first-child {
+  font-family: var(--mono);
+  font-size: var(--mono-m);
+  color: var(--matt);
+  letter-spacing: .02em;
+}
+
+.agentur-decision .vergleich-kopf {
+  border-bottom-color: var(--strich);
+}
+
+.agentur-decision .vergleich-kopf > :first-child,
+.agentur-decision .vergleich-kopf strong {
+  color: var(--tinte);
+}
+
+.agentur-decision .beleg-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s2);
+  margin-top: var(--s3);
+}
+
+.agentur-decision .beleg-link {
+  display: block;
+  border-top: 1px solid var(--strich);
+  padding-top: var(--s2);
+  color: var(--tinte);
+  text-decoration: none;
+}
+
+.agentur-decision .beleg-link span {
+  display: block;
+  margin-bottom: var(--s0);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  color: var(--stempel);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.agentur-decision .beleg-link strong {
+  display: block;
+  margin-bottom: var(--s0);
+}
+
+.agentur-decision .beleg-link:hover strong,
+.agentur-decision .beleg-link:focus-visible strong {
+  text-decoration: underline;
+  text-underline-offset: .18em;
+}
+
+.agentur-decision .lokal-zeile {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s2);
+  margin-top: var(--s3);
+}
+
+.agentur-decision .lokal-zeile > div {
+  border-top: 1px solid var(--haar);
+  padding-top: var(--s1);
+}
+
+.agentur-decision .lokal-zeile dt {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  color: var(--matt);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+.agentur-decision .lokal-zeile dd {
+  margin: var(--s0) 0 0;
+}
+
+@media (max-width: 840px) {
+  .agentur-decision .entscheidung-grid,
+  .agentur-decision .beleg-links,
+  .agentur-decision .lokal-zeile {
+    grid-template-columns: 1fr;
+  }
+
+  .agentur-decision .vergleich-zeile {
+    grid-template-columns: 1fr;
+    gap: var(--s0);
+  }
+
+  .agentur-decision .vergleich-kopf {
+    display: none;
+  }
+
+  .agentur-decision .vergleich-zeile > :first-child {
+    margin-top: var(--s1);
+    color: var(--stempel);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+}
