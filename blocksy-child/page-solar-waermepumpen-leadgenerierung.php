@@ -82,9 +82,9 @@ $analysis_price   = $format_eur( (int) ( $pricing_canon['analysis_price'] ?? 690
 $diagnose_canon    = function_exists( 'hu_diagnose_canon' ) ? hu_diagnose_canon() : [];
 $analysis_days     = (int) ( $diagnose_canon['primary_days'] ?? 7 );
 $marketcheck_reply = function_exists( 'hu_marketcheck_reply_label' ) ? hu_marketcheck_reply_label() : 'spätestens 2 Werktage';
-$marketcheck_steps = (int) ( $diagnose_canon['marketcheck_steps'] ?? 5 );
-$marketcheck_fit_q = (int) ( $diagnose_canon['marketcheck_fit_questions'] ?? 4 );
-$marketcheck_mins  = (int) ( $diagnose_canon['marketcheck_minutes'] ?? 2 );
+$marketcheck_visible_steps = (int) ( $diagnose_canon['marketcheck_visible_steps'] ?? 2 );
+$marketcheck_fit_q        = (int) ( $diagnose_canon['marketcheck_fit_questions'] ?? 4 );
+$marketcheck_mins         = (int) ( $diagnose_canon['marketcheck_minutes'] ?? 2 );
 
 // ── Kontakt (Messaging-Canon) ──────────────────────────────────
 $contact_email = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
@@ -245,7 +245,7 @@ $ladder = [
 		'id'    => 'stufe-marktcheck',
 		'titel' => 'Marktcheck',
 		'takt'  => sprintf( '%d Minuten · Befund %s', $marketcheck_mins, $marketcheck_reply ),
-		'text'  => sprintf( '%d Fragen, dann lese ich Ihre Antworten selbst und schreibe zurück, ob ein eigener Anfrageweg bei Ihnen wirtschaftlich trägt. Auch wenn die Antwort nein ist — dann mit drei Hebeln, die ohne mich funktionieren.', $marketcheck_steps ),
+		'text'  => sprintf( '%d Fit-Fragen plus Kontaktdaten in %d Schritten. Danach lese ich Ihre Antworten selbst und schreibe zurück, ob ein eigener Anfrageweg bei Ihnen wirtschaftlich trägt. Auch wenn die Antwort nein ist — dann mit drei Hebeln, die ohne mich funktionieren.', $marketcheck_fit_q, $marketcheck_visible_steps ),
 		'preis' => '0 €',
 		'note'  => 'kostenlos',
 	],
@@ -466,7 +466,7 @@ $schema_blocks[] = [
 			'name'          => 'Marktcheck',
 			'price'         => '0',
 			'priceCurrency' => 'EUR',
-			'description'   => sprintf( '%d Fragen in etwa %d Minuten, danach ein händisch geprüfter schriftlicher Befund zu Betrieb und Region per E-Mail — %s.', $marketcheck_steps, $marketcheck_mins, $marketcheck_reply ),
+			'description'   => sprintf( '%d Fit-Fragen plus Kontaktdaten in %d Schritten, etwa %d Minuten. Danach ein händisch geprüfter schriftlicher Befund zu Betrieb und Region per E-Mail — %s.', $marketcheck_fit_q, $marketcheck_visible_steps, $marketcheck_mins, $marketcheck_reply ),
 			'availability'  => 'https://schema.org/InStock',
 		],
 		[
@@ -1250,8 +1250,9 @@ get_header();
 				<div class="voll">
 					<h2 class="kopf" id="marktcheck-titel">Marktcheck vor Angebot.</h2>
 					<p class="vorspann">
-						Kein Verkaufsgespräch, kein Pflicht-Call. <?php echo esc_html( (string) $marketcheck_steps ); ?>
-						Fragen, die ich selbst lese, und ein schriftlicher Befund zu Betrieb und Region.
+						Kein Verkaufsgespräch, kein Pflicht-Call. <?php echo esc_html( (string) $marketcheck_fit_q ); ?>
+						kurze Fit-Fragen plus Kontaktdaten in <?php echo esc_html( (string) $marketcheck_visible_steps ); ?> sichtbaren Schritten.
+						Danach lese ich Ihre Angaben selbst und schicke einen schriftlichen Befund zu Betrieb und Region.
 						Wenn es nicht passt, sage ich das — mit drei Hebeln, die Sie ohne mich umsetzen können.
 					</p>
 					<p class="vorspann klein">
@@ -1272,8 +1273,7 @@ get_header();
 							<p class="hinweis">
 								Gefragt wird nach Leistungsfokus, Projekt-Fit, Vertriebsverantwortung,
 								Umsetzungshorizont und geschäftlichen Eckdaten.
-								<?php echo esc_html( (string) $marketcheck_steps ); ?> Schritte, etwa
-								<?php echo esc_html( (string) $marketcheck_mins ); ?> Minuten.
+								<?php echo esc_html( sprintf( '%d Fit-Fragen · %d sichtbare Schritte · etwa %d Minuten.', $marketcheck_fit_q, $marketcheck_visible_steps, $marketcheck_mins ) ); ?>
 							</p>
 						</div>
 

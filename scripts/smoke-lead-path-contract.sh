@@ -95,9 +95,12 @@ require_pattern "no_owner" "$CRM_PHP"
 # groups again.
 fit_questions="$(grep -oE "define\( 'HU_MARKETCHECK_FIT_QUESTIONS', [0-9]+" "$DIAGNOSE_CANON" | grep -oE '[0-9]+$')"
 canon_steps="$(grep -oE "define\( 'HU_MARKETCHECK_STEPS', [0-9]+" "$DIAGNOSE_CANON" | grep -oE '[0-9]+$')"
+visible_steps="$(grep -oE "define\( 'HU_MARKETCHECK_VISIBLE_STEPS', [0-9]+" "$DIAGNOSE_CANON" | grep -oE '[0-9]+$')"
 [[ -n "$fit_questions" ]] || fail "missing HU_MARKETCHECK_FIT_QUESTIONS in $DIAGNOSE_CANON"
 [[ -n "$canon_steps" ]] || fail "missing HU_MARKETCHECK_STEPS in $DIAGNOSE_CANON"
+[[ -n "$visible_steps" ]] || fail "missing HU_MARKETCHECK_VISIBLE_STEPS in $DIAGNOSE_CANON"
 [[ "$canon_steps" == "$((fit_questions + 1))" ]] || fail "marketcheck contract groups must equal fit questions + contact"
+[[ "$visible_steps" == "2" ]] || fail "compact marketcheck must expose exactly two visible steps"
 
 js_fit_questions=0
 for field in solution_focus business_fit sales_team_size project_timing; do
@@ -108,6 +111,10 @@ done
 [[ "$js_fit_questions" == "$fit_questions" ]] || fail "compact intake exposes $js_fit_questions fit fields, canon says $fit_questions"
 require_pattern "Schritt 1 von 2" "$SOLAR_JS"
 require_pattern "Schritt 2 von 2" "$SOLAR_JS"
+require_pattern "marketcheck_visible_steps" "$SOLAR_PAGE"
+require_pattern "Fit-Fragen plus Kontaktdaten" "$SOLAR_PAGE"
+forbid_pattern '\$marketcheck_steps' "$SOLAR_PAGE"
+forbid_pattern "%d Fragen" "$SOLAR_PAGE"
 forbid_pattern "sol-quiz-progress" "$SOLAR_JS"
 
 # Funnel observability and post-submit trust are part of the public lead-path
