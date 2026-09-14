@@ -1,22 +1,25 @@
 # Audit Funnel
 
-Stand: 2026-05-26.
+Stand: 2026-09-15.
 
 ## Status
 
-Der frühere `Growth Audit` ist kein öffentlicher Hauptfunnel mehr. Geschützte Audit-Legacy-Einstiege leiten per 301 auf den Marktcheck; alte Tool-/ROI-/Service-Pfade liefern `410 Gone`:
+Der frühere `Growth Audit` ist kein öffentlicher Hauptfunnel mehr. Die alte Audit-UI wurde aus dem produktiven Theme entfernt. Geschützte Legacy-Einstiege leiten per 301 auf den Marktcheck; alte Tool-/ROI-/Service-Pfade liefern `410 Gone`:
 
 - Ziel: `/solar-waermepumpen-leadgenerierung/#marktcheck`
-- 301-Legacy: `/growth-audit/`, `/audit/`, `/customer-journey-audit/`, `/360-audit/`, `/system-diagnose/`, `/readiness-diagnose/`, `/anfrage/`
+- 301-Legacy: `/growth-audit/`, `/audit/`, `/customer-journey-audit/`, `/360-audit/`, `/wordpress-tech-audit/`, `/system-diagnose/`, `/readiness-diagnose/`, `/anfrage/`
 - 410-Legacy: `/kostenlose-tools/`, `/tools/`, `/website-performance-analyse/`, `/roi-rechner/`, `/audit-linkedin/`, alte Service-Slugs
+- Redirect-Owner: `blocksy-child/inc/system-diagnose-page.php`
 
 ## Aktiver Marktcheck
 
 - Render: `blocksy-child/page-solar-waermepumpen-leadgenerierung.php`
 - Frontend: `blocksy-child/assets/js/solar-leadgenerierung-solara.js`
+- Redirect-Kompatibilität: `blocksy-child/inc/system-diagnose-page.php`
+- Intake/CRM: `blocksy-child/inc/review-crm.php`, `blocksy-child/inc/analysis-intake.php`
 - Submit: `POST /wp-json/nexus/v1/audit-request`
 - Contract: `2026-05-26.audit-request.v1`, serverseitig in `NEXUS_REVIEW_REQUEST_CONTRACT_VERSION`
-- Persistenz: `nexus_review_request` im Audit-CRM
+- Persistenz: `nexus_review_request`
 - Mail: zentrale Mail-/Brevo-Schicht
 - n8n: nicht angebunden
 
@@ -32,25 +35,27 @@ Der aktive Submit-Endpunkt ist versioniert und gibt maschinenlesbare Contract-Si
 - Response-Header: `X-Nexus-Contract-Version` und `X-Nexus-Trace-Id`.
 - Fehlerstatus: `400` für Validierung/Contract-Drift, `429` für Rate-Limit, `500` für Storage-Fehler.
 
-## Legacy-Code
+## Retired UI / historische Artefakte
 
-Bleibt im Repo, ist aber nicht der öffentliche Default:
+Nicht mehr Teil der Runtime sind die frühere Audit-Seite, deren Shortcode-Shell und die dazugehörigen `cja-audit`-Assets. Öffentliche Audit-Aliasse werden ausschließlich über den zentralen Redirect-Controller abgefangen.
 
-- `blocksy-child/page-audit.php`
-- `blocksy-child/inc/audit-page.php`
-- `blocksy-child/inc/cja-shortcode.php`
-- `blocksy-child/template-parts/audit-page-shell.php`
-- `blocksy-child/assets/js/cja-audit.js`
+Noch im Repo verbleibende Artefakte gehören nicht zum aktiven Marktcheck und werden separat bewertet:
+
 - `blocksy-child/assets/js/audit-live.js`
-- `blocksy-child/assets/css/cja-audit.css`
 - `blocksy-child/assets/css/audit-results.css`
+- `blocksy-child/page-360-deep-dive.php`
+- `blocksy-child/assets/css/deep-dive.css`
+- historische n8n-Exports unter `automations/n8n/`
+
+Diese Dateien dürfen nicht als Beleg für einen aktiven Growth-Audit-Flow interpretiert werden.
 
 ## n8n
 
 Aktuell gibt es keinen produktiven n8n-Pfad für den Marktcheck. Workflow-Exports unter `automations/n8n/` gelten als historische oder vorbereitende Artefakte. Neue n8n-Arbeit braucht immer das Triplet aus Workflow-JSON, Doku und Flow-Map.
 
-## Risiken
+## Regeln
 
-- Legacy-Audit-Code und aktiver Marktcheck duerfen nicht vermischt werden.
-- Alte Doku oder Editor-Snippets können noch `48h`, `Growth Audit` oder n8n als aktiven Default suggerieren.
-- Public CTA-Logik muss beim Marktcheck bleiben, solange keine neue Funnel-Entscheidung dokumentiert ist.
+- Aktiver Marktcheck und historische Audit-Artefakte nicht vermischen.
+- Public CTA-Logik bleibt beim Marktcheck, solange keine neue Funnel-Entscheidung dokumentiert ist.
+- Alte Audit-UI nicht wieder als Fallback oder Editor-Shell einführen.
+- Redirect-Kompatibilität nur im zentralen Controller pflegen.
