@@ -34,16 +34,8 @@ Der aktive Submit-Endpunkt ist versioniert und gibt maschinenlesbare Contract-Si
 
 ## Legacy-Code
 
-Bleibt im Repo, ist aber nicht der öffentliche Default:
+Die frühere Growth-Audit-UI ist entfernt. Erhalten bleiben nur die 301-/410-Kompatibilitätsverträge sowie separat zu prüfende 360°-Deep-Dive-/Result-Artefakte (`audit-live.js`, `audit-results.css`).
 
-- `blocksy-child/page-audit.php`
-- `blocksy-child/inc/audit-page.php`
-- `blocksy-child/inc/cja-shortcode.php`
-- `blocksy-child/template-parts/audit-page-shell.php`
-- `blocksy-child/assets/js/cja-audit.js`
-- `blocksy-child/assets/js/audit-live.js`
-- `blocksy-child/assets/css/cja-audit.css`
-- `blocksy-child/assets/css/audit-results.css`
 
 ## n8n
 

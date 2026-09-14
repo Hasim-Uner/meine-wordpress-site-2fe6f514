@@ -1,35 +1,27 @@
 # Audit Page Layer
 
-Stand: 2026-05-15.
+Stand: 2026-09-15.
 
-Der Dateiname ist historisch. Die öffentlichen Audit-/Tool-Routen sind retired und leiten per 301 auf den Marktcheck der Solar-Landingpage.
+Die frühere Growth-Audit-UI ist aus dem Runtime-Code entfernt. Öffentliche Audit-/Tool-Routen sind retired und werden nur noch als URL-Kompatibilität behandelt.
 
 ## Aktueller Status
 
 - Öffentlicher Einstieg: `/solar-waermepumpen-leadgenerierung/#marktcheck`
 - Legacy-Routen: `/growth-audit/`, `/audit/`, `/customer-journey-audit/`, `/360-audit/`, `/system-diagnose/`
-- Redirect-Logik: `blocksy-child/inc/audit-page.php`, `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/seo-meta.php`
+- 301-Redirects: `blocksy-child/inc/system-diagnose-page.php`
+- Kompatibilitäts-URL: `nexus_get_audit_url()` in `blocksy-child/inc/helpers.php`
 - Aktiver Marktcheck: `blocksy-child/page-solar-waermepumpen-leadgenerierung.php` + `blocksy-child/assets/js/solar-leadgenerierung-solara.js`
 
-## Legacy Layer
+## Entfernte Legacy-UI
 
-Der frühere Audit-Code bleibt repo-seitig als Referenz erhalten, ist aber kein öffentlicher Default-Flow:
+`page-audit.php`, `inc/audit-page.php`, `inc/cja-shortcode.php`, `template-parts/audit-page-shell.php`, `assets/js/cja-audit.js` und `assets/css/cja-audit.css` sind entfernt. Der frühere Audit-Sonderheader samt `site-header.css`/`site-header.js` sowie das verwaiste `audit.css` sind ebenfalls entfernt.
 
-- `blocksy-child/page-audit.php`
-- `blocksy-child/inc/audit-page.php`
-- `blocksy-child/inc/cja-shortcode.php`
-- `blocksy-child/assets/js/cja-audit.js`
-- `blocksy-child/assets/js/audit-live.js`
-- `blocksy-child/template-parts/audit-page-shell.php`
+`audit-live.js` und `audit-results.css` gehören nicht zu diesem UI-Layer; sie bleiben bis zur separaten Prüfung des 360°-Deep-Dive-/Result-Vertrags unangetastet.
 
-## Editor-Snippet
+## Historische Referenz
 
-Nur die letzte historische Editor-Variante bleibt als Snapshot erhalten:
-
-- `docs/references/audit-page-editor-snippet-v3.html`
-
-V1/V2 wurden geloescht, weil sie nicht aktiv, nicht referenziert und durch V3 ersetzt waren.
+`docs/references/audit-page-editor-snippet-v3.html` ist nur Snapshot, kein ausführbarer Source of Truth.
 
 ## Regel
 
-Neue Marktcheck- oder Analyse-Logik gehört in versionierten Theme-Code. Editor-HTML darf nicht wieder funktionaler Source of Truth für Lead-Flows werden.
+Neue Marktcheck- oder Analyse-Logik gehört in versionierten Theme-Code. Editor-HTML oder retired Growth-Audit-Komponenten dürfen nicht wieder funktionaler Source of Truth für Lead-Flows werden.
