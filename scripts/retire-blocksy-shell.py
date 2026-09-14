@@ -3,10 +3,14 @@ from pathlib import Path
 
 
 def remove_between(text: str, start: str, end: str, label: str):
-    if text.count(start) != 1 or text.count(end) != 1:
-        raise SystemExit(f'{label}: marker drift start={text.count(start)} end={text.count(end)}')
+    start_count = text.count(start)
+    if start_count != 1:
+        raise SystemExit(f'{label}: marker drift start={start_count}')
     a = text.index(start)
-    b = text.index(end, a)
+    try:
+        b = text.index(end, a + len(start))
+    except ValueError as exc:
+        raise SystemExit(f'{label}: end marker missing after start') from exc
     if b <= a:
         raise SystemExit(f'{label}: invalid marker order')
     return text[:a] + text[b:], text[a:b]
