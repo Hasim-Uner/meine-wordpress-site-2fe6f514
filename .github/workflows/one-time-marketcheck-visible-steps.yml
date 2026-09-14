@@ -1,0 +1,124 @@
+name: One-time marketcheck visible-step patch
+
+on:
+  push:
+    branches:
+      - fix/marketcheck-visible-step-contract-2026-09
+    paths:
+      - .github/workflows/one-time-marketcheck-visible-steps.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/marketcheck-visible-step-contract-2026-09
+          fetch-depth: 0
+
+      - name: Patch public marketcheck step contract
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          page = Path('blocksy-child/page-solar-waermepumpen-leadgenerierung.php')
+          text = page.read_text()
+
+          replacements = [
+              (
+                  "$marketcheck_steps = (int) ( $diagnose_canon['marketcheck_steps'] ?? 5 );\n$marketcheck_fit_q = (int) ( $diagnose_canon['marketcheck_fit_questions'] ?? 4 );\n$marketcheck_mins  = (int) ( $diagnose_canon['marketcheck_minutes'] ?? 2 );",
+                  "$marketcheck_visible_steps = (int) ( $diagnose_canon['marketcheck_visible_steps'] ?? 2 );\n$marketcheck_fit_q        = (int) ( $diagnose_canon['marketcheck_fit_questions'] ?? 4 );\n$marketcheck_mins         = (int) ( $diagnose_canon['marketcheck_minutes'] ?? 2 );",
+              ),
+              (
+                  "\t\t'text'  => sprintf( '%d Fragen, dann lese ich Ihre Antworten selbst und schreibe zurück, ob ein eigener Anfrageweg bei Ihnen wirtschaftlich trägt. Auch wenn die Antwort nein ist — dann mit drei Hebeln, die ohne mich funktionieren.', $marketcheck_steps ),",
+                  "\t\t'text'  => sprintf( '%d Fit-Fragen plus Kontaktdaten in %d Schritten. Danach lese ich Ihre Antworten selbst und schreibe zurück, ob ein eigener Anfrageweg bei Ihnen wirtschaftlich trägt. Auch wenn die Antwort nein ist — dann mit drei Hebeln, die ohne mich funktionieren.', $marketcheck_fit_q, $marketcheck_visible_steps ),",
+              ),
+              (
+                  "\t\t\t'description'   => sprintf( '%d Fragen in etwa %d Minuten, danach ein händisch geprüfter schriftlicher Befund zu Betrieb und Region per E-Mail — %s.', $marketcheck_steps, $marketcheck_mins, $marketcheck_reply ),",
+                  "\t\t\t'description'   => sprintf( '%d Fit-Fragen plus Kontaktdaten in %d Schritten, etwa %d Minuten. Danach ein händisch geprüfter schriftlicher Befund zu Betrieb und Region per E-Mail — %s.', $marketcheck_fit_q, $marketcheck_visible_steps, $marketcheck_mins, $marketcheck_reply ),",
+              ),
+              (
+                  "\t\t\t\t\t<p class=\"vorspann\">\n\t\t\t\t\t\tKein Verkaufsgespräch, kein Pflicht-Call. <?php echo esc_html( (string) $marketcheck_steps ); ?>\n\t\t\t\t\t\tFragen, die ich selbst lese, und ein schriftlicher Befund zu Betrieb und Region.\n\t\t\t\t\t\tWenn es nicht passt, sage ich das — mit drei Hebeln, die Sie ohne mich umsetzen können.\n\t\t\t\t\t</p>",
+                  "\t\t\t\t\t<p class=\"vorspann\">\n\t\t\t\t\t\tKein Verkaufsgespräch, kein Pflicht-Call. <?php echo esc_html( (string) $marketcheck_fit_q ); ?>\n\t\t\t\t\t\tkurze Fit-Fragen plus Kontaktdaten in <?php echo esc_html( (string) $marketcheck_visible_steps ); ?> sichtbaren Schritten.\n\t\t\t\t\t\tDanach lese ich Ihre Angaben selbst und schicke einen schriftlichen Befund zu Betrieb und Region.\n\t\t\t\t\t\tWenn es nicht passt, sage ich das — mit drei Hebeln, die Sie ohne mich umsetzen können.\n\t\t\t\t\t</p>",
+              ),
+              (
+                  "\t\t\t\t\t\t\t\t<?php echo esc_html( (string) $marketcheck_steps ); ?> Schritte, etwa\n\t\t\t\t\t\t\t\t<?php echo esc_html( (string) $marketcheck_mins ); ?> Minuten.",
+                  "\t\t\t\t\t\t\t\t<?php echo esc_html( sprintf( '%d Fit-Fragen · %d sichtbare Schritte · etwa %d Minuten.', $marketcheck_fit_q, $marketcheck_visible_steps, $marketcheck_mins ) ); ?>",
+              ),
+          ]
+
+          for old, new in replacements:
+              if text.count(old) != 1:
+                  raise SystemExit(f'expected exactly one page anchor, found {text.count(old)}: {old[:120]!r}')
+              text = text.replace(old, new)
+
+          if '$marketcheck_steps' in text:
+              raise SystemExit('public page still reads internal $marketcheck_steps')
+          if '%d Fragen' in text:
+              raise SystemExit('public page still contains generic counted Fragen copy')
+          if 'marketcheck_visible_steps' not in text:
+              raise SystemExit('public page does not consume visible-step canon')
+
+          page.write_text(text)
+
+          smoke = Path('scripts/smoke-lead-path-contract.sh')
+          text = smoke.read_text()
+          old = '''fit_questions="$(grep -oE "define\\( 'HU_MARKETCHECK_FIT_QUESTIONS', [0-9]+" "$DIAGNOSE_CANON" | grep -oE '[0-9]+$')"
+canon_steps="$(grep -oE "define\\( 'HU_MARKETCHECK_STEPS', [0-9]+" "$DIAGNOSE_CANON" | grep -oE '[0-9]+$')"
+[[ -n "$fit_questions" ]] || fail "missing HU_MARKETCHECK_FIT_QUESTIONS in $DIAGNOSE_CANON"
+[[ -n "$canon_steps" ]] || fail "missing HU_MARKETCHECK_STEPS in $DIAGNOSE_CANON"
+[[ "$canon_steps" == "$((fit_questions + 1))" ]] || fail "marketcheck contract groups must equal fit questions + contact"
+'''
+          new = '''fit_questions="$(grep -oE "define\\( 'HU_MARKETCHECK_FIT_QUESTIONS', [0-9]+" "$DIAGNOSE_CANON" | grep -oE '[0-9]+$')"
+canon_steps="$(grep -oE "define\\( 'HU_MARKETCHECK_STEPS', [0-9]+" "$DIAGNOSE_CANON" | grep -oE '[0-9]+$')"
+visible_steps="$(grep -oE "define\\( 'HU_MARKETCHECK_VISIBLE_STEPS', [0-9]+" "$DIAGNOSE_CANON" | grep -oE '[0-9]+$')"
+[[ -n "$fit_questions" ]] || fail "missing HU_MARKETCHECK_FIT_QUESTIONS in $DIAGNOSE_CANON"
+[[ -n "$canon_steps" ]] || fail "missing HU_MARKETCHECK_STEPS in $DIAGNOSE_CANON"
+[[ -n "$visible_steps" ]] || fail "missing HU_MARKETCHECK_VISIBLE_STEPS in $DIAGNOSE_CANON"
+[[ "$canon_steps" == "$((fit_questions + 1))" ]] || fail "marketcheck contract groups must equal fit questions + contact"
+[[ "$visible_steps" == "2" ]] || fail "compact marketcheck must expose exactly two visible steps"
+'''
+          if text.count(old) != 1:
+              raise SystemExit(f'expected smoke canon anchor once, found {text.count(old)}')
+          text = text.replace(old, new)
+
+          anchor = '''require_pattern "Schritt 1 von 2" "$SOLAR_JS"
+require_pattern "Schritt 2 von 2" "$SOLAR_JS"
+forbid_pattern "sol-quiz-progress" "$SOLAR_JS"
+'''
+          replacement = '''require_pattern "Schritt 1 von 2" "$SOLAR_JS"
+require_pattern "Schritt 2 von 2" "$SOLAR_JS"
+require_pattern "marketcheck_visible_steps" "$SOLAR_PAGE"
+require_pattern "Fit-Fragen plus Kontaktdaten" "$SOLAR_PAGE"
+forbid_pattern '\\$marketcheck_steps' "$SOLAR_PAGE"
+forbid_pattern "%d Fragen" "$SOLAR_PAGE"
+forbid_pattern "sol-quiz-progress" "$SOLAR_JS"
+'''
+          if text.count(anchor) != 1:
+              raise SystemExit(f'expected smoke visible-step anchor once, found {text.count(anchor)}')
+          text = text.replace(anchor, replacement)
+          smoke.write_text(text)
+          PY
+
+      - name: Validate patch
+        shell: bash
+        run: |
+          php -l blocksy-child/inc/canon/diagnose-canon.php
+          php -l blocksy-child/page-solar-waermepumpen-leadgenerierung.php
+          bash scripts/smoke-lead-path-contract.sh
+          git diff --check
+
+      - name: Commit product change and remove one-time workflow
+        shell: bash
+        run: |
+          git rm .github/workflows/one-time-marketcheck-visible-steps.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add blocksy-child/page-solar-waermepumpen-leadgenerierung.php scripts/smoke-lead-path-contract.sh blocksy-child/inc/canon/diagnose-canon.php
+          git commit -m "Align public marketcheck step contract"
+          git push origin HEAD:fix/marketcheck-visible-step-contract-2026-09
