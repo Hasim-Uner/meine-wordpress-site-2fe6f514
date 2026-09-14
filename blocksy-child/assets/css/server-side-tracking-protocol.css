@@ -77,7 +77,7 @@
 .hu-sst[data-sst-design="protocol"] .hu-sst__h2,
 .hu-sst[data-sst-design="protocol"] .hu-sst__band--dark .hu-sst__h2,
 .hu-sst[data-sst-design="protocol"] .hu-sst__band--light .hu-sst__h2 {
-	font-family: var(--nx-font-display, "Satoshi", "Figtree", sans-serif);
+	font-family: var(--serif-display, "Satoshi", "Figtree", sans-serif);
 	color: var(--vp-ink);
 	letter-spacing: -0.04em;
 	text-wrap: balance;
@@ -290,7 +290,7 @@
 .hu-sst[data-sst-design="protocol"] .hu-sst-verify__title {
 	max-width: 17ch;
 	margin: 0;
-	font-family: var(--nx-font-display, "Satoshi", sans-serif);
+	font-family: var(--serif-display, "Satoshi", sans-serif);
 	font-size: clamp(1.55rem, 2.5vw, 2.2rem);
 	line-height: 1.05;
 	letter-spacing: -0.04em;

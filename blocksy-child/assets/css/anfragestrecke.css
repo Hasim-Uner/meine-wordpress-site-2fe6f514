@@ -237,13 +237,13 @@
   /* Muss unter dem waagerechten Register stehen. Wo das Register
      senkrecht am Rand haengt, reicht die Header-Hoehe — die Regel dafuer
      steht im Breitband-Block weiter unten. */
-  top: calc(var(--nx-site-header-height, 64px) + 4rem);
+  top: calc(var(--strecke-header-height, 64px) + 4rem);
   align-self: start;
   padding-top: 0.55rem;
 }
 
 @media (min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
-  .strecke-doc .kapitel { top: calc(var(--nx-site-header-height, 64px) + 1.5rem); }
+  .strecke-doc .kapitel { top: calc(var(--strecke-header-height, 64px) + 1.5rem); }
 }
 
 .strecke-doc .kapitel .nr {
@@ -323,11 +323,11 @@
 /* Sprungziele muessen unter dem festen Header und dem waagerechten
    Register landen, nicht darunter verschwinden. Der Ankerhandler der
    Seite liest diesen Wert aus dem Computed Style. */
-.strecke-doc [id] { scroll-margin-top: calc(var(--nx-site-header-height, 64px) + 4rem); }
+.strecke-doc [id] { scroll-margin-top: calc(var(--strecke-header-height, 64px) + 4rem); }
 
 @media (min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
   /* Dort steht das Register senkrecht am Rand und nimmt keine Hoehe weg. */
-  .strecke-doc [id] { scroll-margin-top: calc(var(--nx-site-header-height, 64px) + 1.5rem); }
+  .strecke-doc [id] { scroll-margin-top: calc(var(--strecke-header-height, 64px) + 1.5rem); }
 }
 
 .strecke-doc h2.kopf {
@@ -473,7 +473,7 @@
 
 .strecke-doc .register {
   position: sticky;
-  top: var(--nx-site-header-height, 64px);
+  top: var(--strecke-header-height, 64px);
   z-index: 40;
   display: flex;
   align-items: center;

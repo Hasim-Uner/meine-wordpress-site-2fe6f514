@@ -112,7 +112,7 @@
         headerHoehe = Math.max(64, Math.ceil(rect.height + Math.max(0, top)));
       }
 
-      wurzel.style.setProperty('--nx-site-header-height', headerHoehe + 'px');
+      wurzel.style.setProperty('--strecke-header-height', headerHoehe + 'px');
 
       if (register && mobil) {
         if (mobil.matches) {
