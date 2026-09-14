@@ -33,8 +33,8 @@ jobs:
                   raise SystemExit(f'enqueue.php: expected one line {stripped!r}, got {len(matches)}')
               return matches[0]
 
-          sst_line = "$is_sst_route = is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' );"
-          i = unique_index(sst_line)
+          route_anchor = "$is_provider_decision   = $is_checkfox_decision || $is_aroundhome_decision;"
+          i = unique_index(route_anchor)
           lines.insert(i + 1, "\t$is_audit_route = function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page();")
 
           i = unique_index('// ── GLOBAL: Design System (Single Source of Truth) ─────────────')
