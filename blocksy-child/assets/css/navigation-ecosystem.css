@@ -235,27 +235,6 @@ body.hu-wayfinding-active :is(.about-index, .wl-site-header__nav, .hu-sst__toc-b
 		background: transparent;
 	}
 
-	/* Results is a long proof document. Its TOC behaves as a reading rail,
-	 * not as another header. JS activates it only once section 02 reaches the
-	 * sticky-header line; until then the hero and first project chapter stay
-	 * visually clean. */
-	body.hu-wayfinding-results .hu-page-toc[data-hu-rail="true"][data-hu-results-toc-ready="true"] {
-		top: 50%;
-		left: max(1.5rem, calc(50vw - 620px));
-		width: 190px;
-		max-height: min(62vh, 520px);
-		transform: translateY(-48%);
-		opacity: 0;
-		visibility: hidden;
-		pointer-events: none;
-	}
-
-	body.hu-wayfinding-results .hu-page-toc[data-hu-rail="true"][data-hu-results-toc-ready="true"][data-hu-results-toc-visible="true"] {
-		opacity: 1;
-		visibility: visible;
-		pointer-events: auto;
-	}
-
 	.hu-page-toc[data-hu-rail="true"] details {
 		display: block;
 	}
@@ -270,8 +249,231 @@ body.hu-wayfinding-active :is(.about-index, .wl-site-header__nav, .hu-sst__toc-b
 	}
 }
 
+/* Results uses the same chapter-register language as the Solar money page.
+ * JS converts the generated semantic TOC into this shape; without JS the
+ * original details/summary TOC remains available as a readable fallback. */
+body.hu-wayfinding-results .hu-page-toc.hu-results-register {
+	--hu-results-paper: #ffffff;
+	--hu-results-zone: #f7f6f3;
+	--hu-results-ink: #171412;
+	--hu-results-gray: #5b554d;
+	--hu-results-muted: #736b62;
+	--hu-results-accent: #b8420f;
+	--hu-results-hair: #dedad3;
+	--hu-results-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+	position: sticky;
+	top: var(--hu-wayfinding-offset);
+	z-index: 40;
+	display: flex;
+	align-items: center;
+	gap: clamp(0.75rem, 2vw, 1.5rem);
+	width: 100%;
+	max-width: none;
+	min-height: 48px;
+	margin: 0;
+	padding-inline: clamp(1.25rem, 4vw, 3rem);
+	background: var(--hu-results-paper);
+	border: 0;
+	border-bottom: 1px solid var(--hu-results-hair);
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+
+body.hu-wayfinding-results .hu-page-toc.hu-results-register::-webkit-scrollbar {
+	display: none;
+}
+
+body.hu-wayfinding-results .hu-results-register__marke {
+	flex-shrink: 0;
+	font-family: var(--hu-results-mono);
+	font-size: 0.62rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	color: var(--hu-results-muted);
+}
+
+body.hu-wayfinding-results .hu-results-register__marke-short {
+	display: none;
+}
+
+body.hu-wayfinding-results .hu-results-register__entries {
+	display: flex;
+	align-items: center;
+	gap: clamp(0.75rem, 2vw, 1.4rem);
+}
+
+body.hu-wayfinding-results .hu-page-toc.hu-results-register a {
+	position: relative;
+	display: flex;
+	align-items: baseline;
+	gap: 0.4rem;
+	min-height: 44px;
+	padding: 0.4rem 0;
+	font-family: var(--hu-results-mono);
+	font-size: 0.7rem;
+	font-weight: 500;
+	letter-spacing: 0.11em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	color: var(--hu-results-gray);
+	text-decoration: none;
+	border-left: 0;
+	transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.hu-wayfinding-results .hu-page-toc.hu-results-register a:hover,
+body.hu-wayfinding-results .hu-page-toc.hu-results-register a:focus-visible,
+body.hu-wayfinding-results .hu-page-toc.hu-results-register a[aria-current="location"] {
+	padding-left: 0;
+	border-left: 0;
+}
+
+body.hu-wayfinding-results .hu-results-register__nr {
+	color: var(--hu-results-muted);
+	font-variant-numeric: tabular-nums;
+	transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.hu-wayfinding-results .hu-page-toc.hu-results-register a::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0.15rem;
+	height: 1px;
+	background: var(--hu-results-accent);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.hu-wayfinding-results .hu-page-toc.hu-results-register a:hover {
+	color: var(--hu-results-ink);
+}
+
+body.hu-wayfinding-results .hu-page-toc.hu-results-register a[aria-current="location"],
+body.hu-wayfinding-results .hu-page-toc.hu-results-register a[aria-current="location"] .hu-results-register__nr {
+	color: var(--hu-results-accent);
+}
+
+body.hu-wayfinding-results .hu-page-toc.hu-results-register a[aria-current="location"]::after {
+	transform: scaleX(1);
+}
+
+@media (min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register[data-hu-rail="true"] {
+		position: fixed;
+		top: calc(50% + 2.75rem);
+		left: 0;
+		z-index: 45;
+		display: block;
+		width: 3.5rem;
+		min-height: 0;
+		max-height: calc(100vh - 7rem);
+		margin: 0;
+		padding: 0.9rem 0.5rem;
+		overflow: hidden auto;
+		background: var(--hu-results-paper);
+		border: 1px solid var(--hu-results-hair);
+		border-left: 0;
+		border-radius: 0 3px 3px 0;
+		transform: translateY(-50%);
+		transition: width 200ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register[data-hu-results-toc-ready="true"] {
+		visibility: hidden;
+		pointer-events: none;
+	}
+
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register[data-hu-results-toc-ready="true"][data-hu-results-toc-visible="true"] {
+		visibility: visible;
+		pointer-events: auto;
+	}
+
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register:hover,
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register:focus-within {
+		width: 15rem;
+	}
+
+	body.hu-wayfinding-results .hu-results-register__marke {
+		display: block;
+		padding: 0 0.4rem 0.7rem;
+		margin-bottom: 0.3rem;
+		border-bottom: 1px solid var(--hu-results-hair);
+		font-size: 0.62rem;
+	}
+
+	body.hu-wayfinding-results .hu-results-register__marke-short {
+		display: block;
+	}
+
+	body.hu-wayfinding-results .hu-results-register__marke-full {
+		display: none;
+	}
+
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register:hover .hu-results-register__marke-short,
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register:focus-within .hu-results-register__marke-short {
+		display: none;
+	}
+
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register:hover .hu-results-register__marke-full,
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register:focus-within .hu-results-register__marke-full {
+		display: block;
+	}
+
+	body.hu-wayfinding-results .hu-results-register__entries {
+		display: block;
+	}
+
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register a {
+		align-items: center;
+		gap: 0.7rem;
+		min-height: 38px;
+		padding: 0.35rem 0.4rem;
+		font-size: 0.62rem;
+		letter-spacing: 0.09em;
+		transition:
+			color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+			background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register a:hover {
+		background-color: var(--hu-results-zone);
+	}
+
+	body.hu-wayfinding-results .hu-results-register__txt {
+		display: none;
+	}
+
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register:hover .hu-results-register__txt,
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register:focus-within .hu-results-register__txt {
+		display: block;
+	}
+
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register a::after {
+		display: none;
+	}
+
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register a[aria-current="location"] {
+		background-color: var(--hu-results-zone);
+	}
+
+	body.hu-wayfinding-results .hu-page-toc.hu-results-register a[aria-current="location"]::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 0.3rem;
+		bottom: 0.3rem;
+		width: 2px;
+		background: var(--hu-results-accent);
+	}
+}
+
 @media (max-width: 900px), (max-height: 680px) {
-	.hu-page-toc {
+	.hu-page-toc:not(.hu-results-register) {
 		position: static !important;
 		max-height: none !important;
 		overflow: visible !important;
@@ -309,6 +511,7 @@ body.hu-wayfinding-active :is(.about-index, .wl-site-header__nav, .hu-sst__toc-b
 
 @media (prefers-reduced-motion: reduce) {
 	.hu-skip-link,
+	.hu-page-toc,
 	.hu-page-toc a,
 	.hu-toc-toggle {
 		transition: none !important;
