@@ -62,6 +62,30 @@
     return html;
   }
 
+  function contactInput(name, label, type, placeholder, full, helper) {
+    var autocomplete = {
+      company: 'organization',
+      name: 'name',
+      email: 'email',
+      postal_code: 'postal-code'
+    }[name] || '';
+    var inputmode = {
+      email: 'email',
+      postal_code: 'numeric'
+    }[name] || '';
+    var attrs = '';
+
+    if (autocomplete) attrs += ' autocomplete="' + autocomplete + '"';
+    if (inputmode) attrs += ' inputmode="' + inputmode + '"';
+    if ('postal_code' === name) attrs += ' pattern="[0-9]{4,5}" maxlength="5"';
+
+    return '<div class="mc2-field' + (full ? ' mc2-field--full' : '') + '" data-field="' + name + '">' +
+      '<label for="mc2-' + name + '">' + label + '</label>' +
+      (helper ? '<p class="mc2-help">' + helper + '</p>' : '') +
+      '<input id="mc2-' + name + '" name="' + name + '" type="' + type + '" value="' + esc(answers[name] || '') + '" placeholder="' + placeholder + '"' + attrs + '>' +
+      '<p class="mc2-error" hidden></p></div>';
+  }
+
   function showFieldError(name, message) {
     var field = mount.querySelector('[data-field="' + name + '"]');
     if (!field) return;
@@ -116,6 +140,7 @@
         showFieldError(name, answers[name] ? '' : 'Bitte auswählen.');
       });
       if (invalid.length) {
+        track('system_intake_validation_error', {step:1, error_count:invalid.length});
         mount.querySelector('[name="' + invalid[0] + '"]').focus();
         return;
       }
@@ -123,13 +148,8 @@
       renderContact();
       animate();
     });
-  }
 
-  function contactInput(name, label, type, placeholder, full) {
-    return '<div class="mc2-field' + (full ? ' mc2-field--full' : '') + '" data-field="' + name + '">' +
-      '<label for="mc2-' + name + '">' + label + '</label>' +
-      '<input id="mc2-' + name + '" name="' + name + '" type="' + type + '" value="' + esc(answers[name] || '') + '" placeholder="' + placeholder + '">' +
-      '<p class="mc2-error" hidden></p></div>';
+    track('system_intake_step_view', {step:1, variant:'compact_2_step'});
   }
 
   function renderContact() {
@@ -137,17 +157,17 @@
     mount.innerHTML = '<div class="mc2-shell">' +
       '<div class="mc2-topline"><span>Schritt 2 von 2</span><span>Kontaktdaten</span></div>' +
       '<h3 class="mc2-title">Wohin darf der Befund?</h3>' +
-      '<p class="mc2-intro">Ich prüfe Region und Fit persönlich. Sie erhalten spätestens innerhalb von 2 Werktagen eine klare Rückmeldung.</p>' +
+      '<p class="mc2-intro">Ich brauche die Angaben für die regionale Prüfung und Ihre Rückmeldung. Kein Pflichttermin, kein Newsletter.</p>' +
       '<form class="mc2-form" novalidate><div class="mc2-grid">' +
-      contactInput('company','Unternehmen','text','Mustermann Solar GmbH',true) +
-      contactInput('name','Ansprechpartner','text','Max Mustermann',false) +
-      '<div class="mc2-field" data-field="position"><label for="mc2-position">Position</label><select id="mc2-position" name="position"><option value="">Bitte wählen</option><option>Geschäftsführung / Inhaber</option><option>Vertriebsleitung</option><option>Marketing / Web-Verantwortung</option><option>Andere</option></select><p class="mc2-error" hidden></p></div>' +
-      contactInput('email','Geschäftliche E-Mail','email','max@solar-betrieb.de',false) +
-      contactInput('postal_code','Firmen-PLZ','text','30159',false) +
+      contactInput('company','Unternehmen','text','Mustermann Solar GmbH',true,'Für die Einordnung des Betriebs') +
+      contactInput('name','Ansprechpartner','text','Max Mustermann',false,'Wer den Befund erhält') +
+      '<div class="mc2-field" data-field="position"><label for="mc2-position">Position</label><p class="mc2-help">Rolle im Unternehmen</p><select id="mc2-position" name="position"><option value="">Bitte wählen</option><option>Geschäftsführung / Inhaber</option><option>Vertriebsleitung</option><option>Marketing / Web-Verantwortung</option><option>Andere</option></select><p class="mc2-error" hidden></p></div>' +
+      contactInput('email','Geschäftliche E-Mail','email','max@solar-betrieb.de',false,'Firmen-Domain, keine Freemail-Adresse') +
+      contactInput('postal_code','Firmen-PLZ','text','30159',false,'Für die regionale Wettbewerbsprüfung') +
       '</div><div class="mc2-consent" data-field="consent_privacy"><label><input type="checkbox" name="consent_privacy"> <span>Ich akzeptiere die <a href="' + esc(CFG.privacyUrl || '/datenschutz/') + '" target="_blank" rel="noopener">Datenschutzhinweise</a> und möchte zu meiner Anfrage kontaktiert werden.</span></label><p class="mc2-error" hidden></p></div>' +
       '<div class="mc2-submit-error" hidden></div>' +
       '<div class="mc2-actions"><button class="mc2-back" type="button">← Zurück</button><button class="mc2-primary" type="submit">Marktcheck anfordern <span aria-hidden="true">→</span></button></div>' +
-      '<p class="mc2-footnote">Keine Zahlungsdaten · persönliche Prüfung · DSGVO</p></form></div>';
+      '<p class="mc2-footnote">Kein Pflichttermin · kein Newsletter · DSGVO</p></form></div>';
 
     if (answers.position) mount.querySelector('[name="position"]').value = answers.position;
     ['company','name','position','email','postal_code'].forEach(function (name) {
@@ -165,6 +185,14 @@
       animate();
     });
     mount.querySelector('form').addEventListener('submit', submit);
+    track('system_intake_step_view', {step:2, variant:'compact_2_step'});
+  }
+
+  function isFreemail(value) {
+    var at = String(value || '').lastIndexOf('@');
+    if (at < 0) return false;
+    var domain = String(value || '').slice(at + 1).trim().toLowerCase();
+    return /^(?:gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(?:com|de|net|at|ch)$/i.test(domain);
   }
 
   function validateContact() {
@@ -172,7 +200,11 @@
     if (!answers.company || answers.company.trim().length < 2) errors.company = 'Bitte Unternehmen angeben.';
     if (!answers.name || answers.name.trim().length < 2) errors.name = 'Bitte Ansprechpartner angeben.';
     if (!answers.position) errors.position = 'Bitte Position auswählen.';
-    if (!answers.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email)) errors.email = 'Bitte gültige E-Mail angeben.';
+    if (!answers.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email)) {
+      errors.email = 'Bitte gültige E-Mail angeben.';
+    } else if (isFreemail(answers.email)) {
+      errors.email = 'Bitte Ihre geschäftliche E-Mail-Adresse mit Firmen-Domain verwenden.';
+    }
     if (!answers.postal_code || !/^[0-9]{4,5}$/.test(answers.postal_code.trim())) errors.postal_code = 'Bitte Firmen-PLZ angeben.';
     if (!answers.consent_privacy) errors.consent_privacy = 'Bitte Datenschutzhinweis bestätigen.';
     return errors;
@@ -191,6 +223,7 @@
     var errors = validateContact();
     ['company','name','position','email','postal_code','consent_privacy'].forEach(function (name) { showFieldError(name, errors[name] || ''); });
     if (Object.keys(errors).length) {
+      track('system_intake_validation_error', {step:2, error_count:Object.keys(errors).length});
       form.elements[Object.keys(errors)[0]].focus();
       return;
     }
@@ -198,6 +231,7 @@
     var button = form.querySelector('.mc2-primary[type="submit"]');
     var errorBox = form.querySelector('.mc2-submit-error');
     button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
     button.textContent = 'Wird gesendet …';
     errorBox.hidden = true;
 
@@ -220,6 +254,8 @@
       company_website: ''
     }, attribution());
 
+    track('system_intake_submit_attempt', {step:2});
+
     fetch(CFG.restEndpoint || '/wp-json/nexus/v1/audit-request', {
       method: 'POST',
       credentials: 'same-origin',
@@ -228,23 +264,60 @@
     }).then(function (response) {
       return response.json().catch(function () { return {}; }).then(function (json) { return {ok:response.ok,json:json}; });
     }).then(function (result) {
-      if (!result.ok || !result.json || !result.json.ok) throw new Error((result.json && result.json.message) || 'Senden fehlgeschlagen.');
-      track('system_intake_submit_success', {funnel_stage:'lead_captured'});
+      if (!result.ok || !result.json || !result.json.ok) {
+        var error = new Error((result.json && result.json.message) || 'Senden fehlgeschlagen.');
+        error.field = result.json && result.json.error_details ? result.json.error_details.field || '' : '';
+        throw error;
+      }
+      track('system_intake_submit_success', {
+        funnel_stage:'lead_captured',
+        qualification_status:result.json.qualification && result.json.qualification.status ? result.json.qualification.status : ''
+      });
       renderSuccess(result.json.qualification || {});
       animate();
     }).catch(function (error) {
       button.disabled = false;
+      button.removeAttribute('aria-busy');
       button.innerHTML = 'Marktcheck anfordern <span aria-hidden="true">→</span>';
-      errorBox.textContent = error.message || 'Bitte erneut versuchen.';
-      errorBox.hidden = false;
-      track('system_intake_submit_error', {funnel_stage:'submit_error'});
+
+      if (error.field && mount.querySelector('[data-field="' + error.field + '"]')) {
+        showFieldError(error.field, error.message || 'Bitte prüfen.');
+        var fieldControl = mount.querySelector('[data-field="' + error.field + '"] input, [data-field="' + error.field + '"] select');
+        if (fieldControl) fieldControl.focus();
+      } else {
+        errorBox.textContent = error.message || 'Bitte erneut versuchen.';
+        errorBox.hidden = false;
+      }
+      track('system_intake_submit_error', {funnel_stage:'submit_error', error_field:error.field || ''});
     });
   }
 
   function renderSuccess(qualification) {
     var headline = qualification.headline || 'Danke. Ihr Marktcheck ist eingegangen.';
     var message = qualification.message || 'Ich prüfe Region und Fit persönlich und sende Ihnen spätestens innerhalb von 2 Werktagen eine klare Rückmeldung.';
-    mount.innerHTML = '<div class="mc2-shell mc2-success"><div class="mc2-success-mark">✓</div><p class="mc2-topline"><span>Marktcheck eingegangen</span></p><h3 class="mc2-title">' + esc(headline) + '</h3><p class="mc2-intro">' + esc(message) + '</p><div class="mc2-actions"><a class="mc2-primary mc2-linkbutton" href="' + esc(CFG.caseUrl || '/case-study-solar-leadgenerierung/') + '">Case Study ansehen <span aria-hidden="true">→</span></a></div><p class="mc2-footnote">Bestätigung an ' + esc(answers.email) + '</p></div>';
+    var deadline = qualification.response_deadline_human || '';
+    var ticket = qualification.ticket_id || '';
+    var status = qualification.status || '';
+    var caseLabel = 'qualified' === status ? 'Dokumentierten Fall ansehen' : 'Methode im Praxisfall ansehen';
+    var html = '<div class="mc2-shell mc2-success">' +
+      '<div class="mc2-success-mark">✓</div>' +
+      '<p class="mc2-topline"><span>Marktcheck eingegangen</span><span>Persönliche Prüfung</span></p>' +
+      '<h3 class="mc2-title">' + esc(headline) + '</h3>' +
+      '<p class="mc2-intro">' + esc(message) + '</p>';
+
+    if (deadline) {
+      html += '<p class="mc2-deadline"><strong>Rückmeldung spätestens:</strong> ' + esc(deadline) + '</p>';
+    }
+    if (ticket) {
+      html += '<p class="mc2-ticket">Referenz · ' + esc(ticket) + '</p>';
+    }
+
+    html += '<div class="mc2-success-actions">' +
+      '<a class="mc2-primary mc2-linkbutton" href="' + esc(CFG.caseUrl || '/case-study-solar-leadgenerierung/') + '">' + esc(caseLabel) + ' <span aria-hidden="true">→</span></a>' +
+      '<a class="mc2-secondary" href="/">Zur Startseite</a>' +
+      '</div><p class="mc2-footnote">Bestätigung an ' + esc(answers.email) + '</p></div>';
+
+    mount.innerHTML = html;
   }
 
   renderFit();
