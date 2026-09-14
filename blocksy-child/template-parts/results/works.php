@@ -1,6 +1,8 @@
 <?php
 /** Results hub: public WordPress work. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+/** @var array<int, array{role:string,name:string,discipline:string,url:string,text:string}> $references */
 ?>
 <section id="arbeiten" aria-labelledby="arbeiten-h" data-track-section="arbeiten">
 	<div class="blatt reihe">
