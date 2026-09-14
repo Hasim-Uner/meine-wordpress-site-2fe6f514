@@ -118,6 +118,36 @@
   margin: var(--s0) 0 0;
 }
 
+/*
+ * Sticky chapter register.
+ * Die Agentur-Seite nutzt absichtlich dieselbe hu-wayfinding-results-
+ * Normalisierung wie /ergebnisse/. Das gemeinsame Navigation-CSS übernimmt
+ * Typografie, Reg./Register-Zustand, Hover-Breite, Active-State und Scrollspy.
+ * Hier fehlt nur das data-hu-rail-Attribut des generierten Ergebnisse-TOC;
+ * deshalb spiegeln wir ausschließlich dessen Rail-Geometrie routenlokal.
+ */
+@media (min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
+  body.hu-agentur-decision-page.hu-wayfinding-results .hu-page-toc.hu-results-register {
+    position: fixed;
+    top: calc(50% + 2.75rem);
+    left: 0;
+    z-index: 45;
+    display: block;
+    width: 3.5rem;
+    min-height: 0;
+    max-height: calc(100vh - 7rem);
+    margin: 0;
+    padding: 0.9rem 0.5rem;
+    overflow: hidden auto;
+    background: var(--hu-results-paper);
+    border: 1px solid var(--hu-results-hair);
+    border-left: 0;
+    border-radius: 0 3px 3px 0;
+    transform: translateY(-50%);
+    transition: width 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
 @media (max-width: 840px) {
   .agentur-decision .entscheidung-grid,
   .agentur-decision .beleg-links,
@@ -139,5 +169,11 @@
     color: var(--stempel);
     text-transform: uppercase;
     letter-spacing: .07em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.hu-agentur-decision-page.hu-wayfinding-results .hu-page-toc.hu-results-register {
+    transition: none !important;
   }
 }
