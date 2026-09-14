@@ -74,19 +74,11 @@ Die verbleibenden Verbraucher verteilen sich nicht gleichmäßig. Für die Migra
 
 Die Anzahl allein entscheidet nicht über die Reihenfolge. Global geladene Verbraucher haben Vorrang, weil sie die Abschaltung des Providers blockieren.
 
-### Deployment-Deduplizierung von `style.css`
+### Source-Bereinigung von `style.css`
 
-`style.css` enthält im Authoring-Source noch einen historischen Block `NEXUS SINGLE PAGE LAYOUT`. Die gleichen Kernselektoren werden auf Single-Posts und der SEO-Cornerstone-Route bereits vom später geladenen `assets/css/single.css` neu besessen.
+Der historische `NEXUS SINGLE PAGE LAYOUT`-Block und sein altes Share-Finishing sind jetzt auch aus dem Authoring-Source entfernt. `assets/css/single.css` besitzt die produktiven Single-/SEO-Cornerstone-Selektoren vollständig; der frühere Deployment-Pruner ist deshalb entfallen.
 
-Der Deployment-Build entfernt deshalb ausschließlich diesen klar markierten Single-Block über `scripts/prune-style-single-legacy.py`. Der Guard prüft vorher, dass `single.css` weiterhin die kritischen Selektoren besitzt und dass der folgende `NEXUS ARCHIVE LAYOUT`-Block nicht berührt wird.
-
-Gemessener Stand der ersten Deduplizierung:
-
-- 131 Source-Zeilen weniger im Deployment-`style.css`;
-- 2.972 Bytes unminifizierter Doppelcode entfernt;
-- 19 Legacy-NX-Verwendungen weniger im ausgelieferten `style.css`.
-
-Der Archive-Block bleibt bestehen, weil `archive.php` dessen Markup weiterhin aktiv verwendet. Langfristig soll der Single-Block auch aus dem Authoring-Source verschwinden; der Build-Prune ist eine gesicherte Übergangsstufe, kein zweites dauerhaftes Quellsystem.
+Zusätzlich wurden die serverseitig nicht mehr renderbaren Blocksy-Menü-/CTA- und Mega-Menü-Blöcke aus `style.css` entfernt. Der Parent-Header ist über `blocksy:builder:header:enabled` deaktiviert; die aktuelle Standardnavigation wird als `.leiste` gerendert. Andere historische `.ct-header`-/`.ct-panel`-Regeln bleiben bewusst als separater Migrationsbestand bestehen und werden nicht durch einen pauschalen Selector-Guard mit diesem Schnitt vermischt. Archive- und Kundenportal-Blöcke bleiben ebenfalls bestehen, bis sie separat migriert oder ausgelagert sind.
 
 ## 4. Bewusste lokale Systeme
 

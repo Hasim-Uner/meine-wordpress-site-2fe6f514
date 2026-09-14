@@ -9,7 +9,6 @@ on:
       - 'scripts/audit-legacy-nx-css.py'
       - 'scripts/baselines/legacy-nx-consumers.txt'
       - 'scripts/collapse-gutachten-token-mirror.py'
-      - 'scripts/prune-style-single-legacy.py'
       - 'scripts/build-theme-dist.sh'
       - 'docs/architecture/CSS_ARCHITECTURE.md'
       - '.github/workflows/css-architecture.yml'
@@ -21,7 +20,6 @@ on:
       - 'scripts/audit-legacy-nx-css.py'
       - 'scripts/baselines/legacy-nx-consumers.txt'
       - 'scripts/collapse-gutachten-token-mirror.py'
-      - 'scripts/prune-style-single-legacy.py'
       - 'scripts/build-theme-dist.sh'
       - 'docs/architecture/CSS_ARCHITECTURE.md'
       - '.github/workflows/css-architecture.yml'
@@ -41,15 +39,3 @@ jobs:
 
       - name: Inventory legacy NX consumers
         run: python3 scripts/audit-legacy-nx-css.py
-
-      - name: Verify deployment single-style prune
-        run: |
-          cp blocksy-child/style.css /tmp/blocksy-child-style.css
-          python3 scripts/prune-style-single-legacy.py \
-            /tmp/blocksy-child-style.css \
-            blocksy-child/assets/css/single.css
-          if grep -q 'NEXUS SINGLE PAGE LAYOUT' /tmp/blocksy-child-style.css; then
-            echo 'Superseded single-post block is still present after prune.' >&2
-            exit 1
-          fi
-          grep -q 'NEXUS ARCHIVE LAYOUT' /tmp/blocksy-child-style.css
