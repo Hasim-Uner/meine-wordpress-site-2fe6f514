@@ -57,7 +57,7 @@ Regeln:
 - bestehende Verbraucher einzeln auf `system.css` migrieren oder stilllegen;
 - ein bereinigter Verbraucher wird sofort aus der Baseline entfernt;
 - keine neuen generischen Komponenten in `design-system.css` erfinden;
-- `design-system.css` ist auf der kanonischen Startseite und der Personenseite bereits aus dem Enqueue genommen; weitere Routen folgen erst nach eigenem Provider-Audit.
+- `design-system.css` ist auf der kanonischen Startseite, der Personenseite und dem Ergebnisse-Hub bereits aus dem Enqueue genommen; weitere Routen folgen erst nach eigenem Provider-Audit.
 
 Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu verschmelzen. Beide Systeme haben unterschiedliche historische Semantik und Theme-Annahmen; ein blindes Zusammenlegen würde Cascade- und Kontrastfehler erzeugen.
 
@@ -65,8 +65,8 @@ Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu v
 
 Die verbleibenden Verbraucher verteilen sich nicht gleichmäßig. Für die Migration gelten diese Cluster:
 
-1. **Globale Shell / Provider:** `site-header.css` und `style.css` sind von `--nx-*` entkoppelt. `design-system.css` wird auf der kanonischen Startseite und der Personenseite nicht mehr geladen. Auf allen übrigen Routen bleibt der Provider vorerst aktiv, weil er neben NX-Tokens auch unpräfixierte Tokens sowie globale `body`-/Heading-/Kompatibilitätsregeln bereitstellt.
-2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`, `case-study.css`, `ergebnisse.css`.
+1. **Globale Shell / Provider:** `site-header.css` und `style.css` sind von `--nx-*` entkoppelt. `design-system.css` wird auf der kanonischen Startseite, der Personenseite und dem Ergebnisse-Hub nicht mehr geladen. Auf allen übrigen Routen bleibt der Provider vorerst aktiv, weil er neben NX-Tokens auch unpräfixierte Tokens sowie globale `body`-/Heading-/Kompatibilitätsregeln bereitstellt.
+2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`, `case-study.css`. `ergebnisse.css` ist bereits vollständig entkoppelt.
 3. **Service-Routen:** `cro.css`, `ga4.css`, `meta-ads.css`, `cwv.css`, `performance.css`, `seo-cornerstone.css`, `seo.css`.
 4. **Blog / Editorial:** `single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, Provider-Decision-Layer.
 5. **Solar / Tracking / Intercepts:** `energy-systems.css`, SST-Quellen, `solar-marketcheck-compact.css`, `sticky-cta.css` und die Solar-SEO-Deltas.
@@ -78,14 +78,15 @@ Die Anzahl allein entscheidet nicht über die Reihenfolge. Global geladene Verbr
 
 Der historische `NEXUS SINGLE PAGE LAYOUT`-Block und sein altes Share-Finishing sind jetzt auch aus dem Authoring-Source entfernt. `assets/css/single.css` besitzt die produktiven Single-/SEO-Cornerstone-Selektoren vollständig; der frühere Deployment-Pruner ist deshalb entfallen.
 
-Zusätzlich wurden die serverseitig nicht mehr renderbaren Blocksy-Menü-/CTA- und Mega-Menü-Blöcke aus `style.css` entfernt. Der Parent-Header ist über `blocksy:builder:header:enabled` deaktiviert; die aktuelle Standardnavigation wird als `.leiste` gerendert. Der verbliebene Blocksy-Shell-Bestand (`.ct-header`, `.ct-panel`, Mega-Menü und Flight-Mode) ist anschließend ebenfalls entfernt worden: der Parent-Header ist serverseitig deaktiviert und diese Strukturen werden nicht mehr gerendert. Der zugehörige `initHeaderFlight()`-Fallback in `nexus-core.js` ist damit ebenfalls entfallen. Der Archive-Block ist anschließend aus `style.css` in `assets/css/archive.css` ausgelagert worden und wird nur auf sonstigen Archiv-Routen geladen. Die neue Datei verwendet keine `--nx-*`-Variablen. Der Kundenportal-Block ist ebenfalls aus `style.css` in `assets/css/client-portal.css` ausgelagert und wird ausschließlich über `template-portal.php` geladen; auch diese Datei ist NX-frei. Die globalen Cockpit-/Header-CTA-Regeln und die verbliebenen globalen Focus-Ringe konsumieren inzwischen ebenfalls direkt die Gutachten-Tokens statt `--nx-*`; `transition: all` wurde dort durch eigenschaftsspezifische Canon-Motion ersetzt und Reduced Motion ergänzt. Der alte Homepage-/Shortcode-Kompatibilitätsblock liegt jetzt bei seinem Legacy-Owner `homepage.css`, der Single-Light-Safety-Net bei `single.css`. Der nicht mehr gerenderte `.ft`-Light-Footer-Bridge ist entfernt. Damit enthält `style.css` **0 `var(--nx-...)`-Verwendungen** und blockiert den NX-Abbau nicht mehr selbst. Der globale Enqueue von `design-system.css` bleibt trotzdem bestehen, bis seine nicht-NX-benannten globalen Rollen und generischen Regeln separat auditiert sind.
+Zusätzlich wurden die serverseitig nicht mehr renderbaren Blocksy-Menü-/CTA- und Mega-Menü-Blöcke aus `style.css` entfernt. Der Parent-Header ist über `blocksy:builder:header:enabled` deaktiviert; die aktuelle Standardnavigation wird als `.leiste` gerendert. Der verbliebene Blocksy-Shell-Bestand (`.ct-header`, `.ct-panel`, Mega-Menü und Flight-Mode) ist anschließend ebenfalls entfernt worden: der Parent-Header ist serverseitig deaktiviert und diese Strukturen werden nicht mehr gerendert. Der zugehörige `initHeaderFlight()`-Fallback in `nexus-core.js` ist damit ebenfalls entfallen. Der Archive-Block ist anschließend aus `style.css` in `assets/css/archive.css` ausgelagert worden und wird nur auf sonstigen Archiv-Routen geladen. Die neue Datei verwendet keine `--nx-*`-Variablen. Der Kundenportal-Block ist ebenfalls aus `style.css` in `assets/css/client-portal.css` ausgelagert und wird ausschließlich über `template-portal.php` geladen; auch diese Datei ist NX-frei. Die globalen Cockpit-/Header-CTA-Regeln und die verbliebenen globalen Focus-Ringe konsumieren inzwischen ebenfalls direkt die Gutachten-Tokens statt `--nx-*`; `transition: all` wurde dort durch eigenschaftsspezifische Canon-Motion ersetzt und Reduced Motion ergänzt. Der alte Homepage-/Shortcode-Kompatibilitätsblock liegt jetzt bei seinem Legacy-Owner `homepage.css`, der Single-Light-Safety-Net bei `single.css`. Der nicht mehr gerenderte `.ft`-Light-Footer-Bridge ist entfernt. Damit enthält `style.css` **0 `var(--nx-...)`-Verwendungen** und blockiert den NX-Abbau nicht mehr selbst. Der Legacy-Provider bleibt auf den noch nicht entkoppelten Routen aktiv, bis deren nicht-NX-benannte Rollen und generischen Regeln einzeln auditiert sind.
 
 ### Ergebnisse-Hub
 
 `ergebnisse.css` verwendet seit dem Seitenumbau ausschließlich `system.css`
 und dessen Tokens. Der alte NX-Verbraucher entfällt aus der shrink-only
 Baseline; das verbleibende Stylesheet enthält nur Projekt-, Beleg- und
-Übergabelayouts. Die aktuelle Anzahl der Legacy-Verbraucher liefert der Guard.
+Übergabelayouts. Der Legacy-Provider wird auf dieser Route nicht mehr geladen.
+Die aktuelle Anzahl der Legacy-Verbraucher liefert der Guard.
 
 ## 4. Bewusste lokale Systeme
 
@@ -131,13 +132,13 @@ Route-CSS soll **nicht** enthalten:
 
 ## 6. Migrationsreihenfolge
 
-1. **Globale Shell (NX erledigt):** Audit-Header und `style.css` sind von `--nx-*` entkoppelt. Der Provider-Audit hat unpräfixierte Legacy-Tokens und globale Selektorwirkungen bestätigt; deshalb ist `design-system.css` zunächst nur auf Startseite und Personenseite abgeschaltet. Weitere Routen werden einzeln entkoppelt.
+1. **Globale Shell (NX erledigt):** Audit-Header und `style.css` sind von `--nx-*` entkoppelt. Der Provider-Audit hat unpräfixierte Legacy-Tokens und globale Selektorwirkungen bestätigt; deshalb ist `design-system.css` zunächst auf Startseite, Personenseite und Ergebnisse-Hub abgeschaltet. Weitere Routen werden einzeln entkoppelt.
 2. **Provider-unabhängige NX-Reste (erledigt):** reine Typografie-Aliase sind auf Canon-Tokens migriert; die Anfragestrecke nutzt für ihre gemessene Energy-Header-Höhe einen route-lokalen Token.
 3. **Solar-Anfragestrecke:** Token-Spiegel physisch entfernen; gemeinsame Gutachten-Primitives aus `system.css` konsumieren, nur echte Solar-Deltas behalten. Das JS-gemessene Header-/Register-Token wird gemeinsam mit seinen CSS-Verbrauchern migriert, nicht isoliert umbenannt.
 4. **Editorial-Solar-Legacy:** die generischen `.solar-page`-Variablen `--serif`/`--mono` eindeutig umbenennen oder auf Core-Rollen migrieren; eingefrorene Guard-Ausnahme danach löschen.
 5. **Service-Routen:** aktive `cro.css`, `ga4.css`, `meta-ads.css`, `performance.css`, `seo-cornerstone.css` nach Nutzung und Geschäftswert einzeln migrieren oder stilllegen.
 6. **Blog / Editorial:** `single.css` und die verbleibenden Reader-/CTA-Layer auf Gutachten-Primitives ziehen; neue Blog-Schichten bauen bereits auf dem neuen System auf und dürfen nicht zurück auf NX driften.
-7. **Schwere Legacy-Familien:** `homepage.css`, WGOS, Case-/Ergebnisse-Routen nur nach realer Routennutzung weiterführen oder abbauen.
+7. **Schwere Legacy-Familien:** `homepage.css`, WGOS und Case-Routen nur nach realer Routennutzung weiterführen oder abbauen.
 8. **Agentur:** gemeinsame Primitive übernehmen, `--ag-*` nur für echte Marken-/Kategorie-Semantik behalten.
 9. **Legacy-Core:** `design-system.css` nicht mehr global laden; danach Restverbraucher migrieren und Datei entfernen.
 10. **Alte `.hu-hp`-Familie:** nur noch behalten, wenn reale aktive Routen sie benötigen.
