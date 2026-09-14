@@ -151,6 +151,24 @@ if [ -f "$style_file" ]; then
     exit 1
   fi
 
+  # Production asset URLs must change on every deployed commit. The runtime
+  # intentionally uses the theme Version header instead of filemtime(), so the
+  # build stamps the immutable source version with the current Git revision.
+  # This prevents page/RUCSS/browser caches from pinning an older CSS payload
+  # after a deploy while keeping the source theme header human-readable.
+  source_theme_version="$(printf '%s\n' "$style_header" | sed -n 's/^Version:[[:space:]]*//p' | head -n 1)"
+  build_ref="$(git -C "$root_dir" rev-parse --short=12 HEAD 2>/dev/null || true)"
+
+  if [ -z "$source_theme_version" ]; then
+    source_theme_version="1.0.0"
+  fi
+  if [ -z "$build_ref" ]; then
+    build_ref="$(date -u +%Y%m%d%H%M%S)"
+  fi
+
+  deploy_asset_version="${source_theme_version}-${build_ref}"
+  style_header="$(printf '%s\n' "$style_header" | sed "s/^Version:.*/Version: ${deploy_asset_version}/")"
+
   style_body_input="$(mktemp)"
   style_body_output="$(mktemp)"
   tail -n +"$((style_header_end_line + 1))" "$style_file" > "$style_body_input"
@@ -173,6 +191,7 @@ find "$output_dir" -type f -name '*.js' ! -name '*.min.js' -print0 | while IFS= 
 done
 
 grep -q '^Theme Name: Blocksy Child$' "$style_file"
+grep -q '^Version: .\+-[0-9a-f]\{7,12\}$' "$style_file"
 
 # Deployment contract: SST ships as one CSS file without runtime @imports.
 if [ -f "$sst_entry" ]; then
