@@ -47,7 +47,7 @@ case "${SLUG}" in
     CARRIER_SLUG="wordpress-agentur"
     ;;
   case-study-solar-leadgenerierung)
-    CARRIER_NOTE="Alias-Wrapper page-case-e3.php bindet page-e3-new-energy.php ein. Geprueft wird der effektive Template-Traeger."
+    CARRIER_NOTE="Die kanonische Case Study wird von page-e3-new-energy.php getragen. Geprueft wird der effektive Template-Traeger."
     CARRIER_SLUG="e3-new-energy"
     ;;
   ergebnisse)

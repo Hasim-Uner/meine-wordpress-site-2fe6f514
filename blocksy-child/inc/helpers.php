@@ -1186,7 +1186,6 @@ function nexus_is_results_context() {
 		|| is_page( 'whitelabel-retainer' )
 		|| is_page( 'whitelabel-retainer-proof' )
 		|| is_page( 'whitelabel' )
-		|| is_page_template( 'page-case-e3.php' )
 		|| is_page_template( 'page-case-study-domdar.php' )
 		|| is_page_template( 'page-ergebnisse.php' )
 		|| is_page_template( 'page-case-studies-e-commerce.php' )
@@ -2037,7 +2036,6 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-ergebnisse.php',
 		'page-case-studies-e-commerce.php',
 		'page-e3-new-energy.php',
-		'page-case-e3.php',
 		'page-case-study-domdar.php',
 		'page-wgos.php',
 		'page-wgos-assets.php',
@@ -2199,7 +2197,6 @@ function nexus_force_energy_systems_route_template( $template ) {
 
 	$route_templates = [
 		'solar-waermepumpen-leadgenerierung'             => get_stylesheet_directory() . '/page-solar-waermepumpen-leadgenerierung.php',
-		'website-fuer-solar-und-waermepumpen-anbieter' => get_stylesheet_directory() . '/page-website-fuer-solar-und-waermepumpen-anbieter.php',
 		'solar-leads-kaufen-alternative'                 => get_stylesheet_directory() . '/page-solar-leads-kaufen-alternative.php',
 		'server-side-tracking-b2b'                       => get_stylesheet_directory() . '/page-server-side-tracking-b2b.php',
 		'b2b-solar-leads'                                => get_stylesheet_directory() . '/page-b2b-solar-leads.php',

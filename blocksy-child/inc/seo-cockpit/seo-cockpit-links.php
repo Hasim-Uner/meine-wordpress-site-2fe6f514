@@ -326,7 +326,7 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 		);
 	}
 
-	if ( in_array( $template, [ 'page-e3-new-energy.php', 'page-case-e3.php' ], true ) || in_array( $post_slug, [ 'e3-new-energy', 'case-e3' ], true ) ) {
+	if ( in_array( $template, [ 'page-e3-new-energy.php' ], true ) || in_array( $post_slug, [ 'e3-new-energy', 'case-e3' ], true ) ) {
 		$links = array_merge(
 			$links,
 			[

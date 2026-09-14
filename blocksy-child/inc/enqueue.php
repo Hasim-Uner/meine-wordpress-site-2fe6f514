@@ -471,7 +471,7 @@ function hu_enqueue_assets() {
 	}
 
 	// ── F1b) Schwester-Templates (Solar Case Study, Service-Landing) ────────
-	if ( is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page( 'case-study-solar-leadgenerierung' ) || is_page( 'e3-new-energy' ) || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' ) || is_page_template( 'page-e3-new-energy.php' ) || is_page_template( 'page-case-e3.php' ) ) {
+	if ( is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page( 'case-study-solar-leadgenerierung' ) || is_page( 'e3-new-energy' ) || is_page_template( 'page-e3-new-energy.php' ) ) {
 		// review-funnel.css/.js sind hier bewusst NICHT geladen: das JS bindet an
 		// #review-request-form, das kein Template im Theme rendert, und keines
 		// der beiden Templates benutzt eine .review-*-Klasse. Das waren 45 KB
@@ -668,7 +668,6 @@ function hu_disable_core_block_styles_on_custom_templates() {
 		'page-qualifizierte-pv-anfragen.php',
 		'page-solar-leads-kosten-studie.php',
 		'page-e3-new-energy.php',
-		'page-case-e3.php',
 		'page-wordpress-agentur.php',
 		'page-wordpress-agentur-hannover.php',
 		'page-kontakt.php',

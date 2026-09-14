@@ -679,7 +679,7 @@ function hu_is_e3_methodology_case_post( $post_id = 0 ) {
 	$template = (string) get_page_template_slug( $post_id );
 
 	return in_array( $slug, [ 'case-study-solar-leadgenerierung', 'e3-new-energy', 'case-e3' ], true )
-		|| in_array( $template, [ 'page-e3-new-energy.php', 'page-case-e3.php' ], true );
+		|| in_array( $template, [ 'page-e3-new-energy.php' ], true );
 }
 
 /**
