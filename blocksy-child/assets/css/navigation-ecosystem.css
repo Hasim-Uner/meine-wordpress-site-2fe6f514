@@ -235,6 +235,27 @@ body.hu-wayfinding-active :is(.about-index, .wl-site-header__nav, .hu-sst__toc-b
 		background: transparent;
 	}
 
+	/* Results is a long proof document. Its TOC behaves as a reading rail,
+	 * not as another header. JS activates it only once section 02 reaches the
+	 * sticky-header line; until then the hero and first project chapter stay
+	 * visually clean. */
+	body.hu-wayfinding-results .hu-page-toc[data-hu-rail="true"][data-hu-results-toc-ready="true"] {
+		top: 50%;
+		left: max(1.5rem, calc(50vw - 620px));
+		width: 190px;
+		max-height: min(62vh, 520px);
+		transform: translateY(-48%);
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+	}
+
+	body.hu-wayfinding-results .hu-page-toc[data-hu-rail="true"][data-hu-results-toc-ready="true"][data-hu-results-toc-visible="true"] {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+	}
+
 	.hu-page-toc[data-hu-rail="true"] details {
 		display: block;
 	}

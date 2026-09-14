@@ -17,6 +17,7 @@
 		'#nav'
 	];
 	var MOBILE_TOC_QUERY = '(max-width: 900px), (max-height: 680px)';
+	var DESKTOP_RAIL_QUERY = '(min-width: 1380px) and (min-height: 720px)';
 	var tocPanelCount = 0;
 
 	function samePageLinks(root) {
@@ -152,7 +153,7 @@
 		var summary = details ? details.querySelector('summary') : null;
 		if (!details || !summary) return;
 
-		var rail = window.matchMedia('(min-width: 1380px) and (min-height: 720px)');
+		var rail = window.matchMedia(DESKTOP_RAIL_QUERY);
 
 		function sync() {
 			if (rail.matches) {
@@ -178,6 +179,42 @@
 				details.removeAttribute('open');
 			}
 		});
+	}
+
+	function initResultsTocRail(nav) {
+		if (!document.body.classList.contains('hu-wayfinding-results')) return;
+
+		var trigger = document.getElementById('technik');
+		if (!trigger) return;
+
+		var rail = window.matchMedia(DESKTOP_RAIL_QUERY);
+		var queued = false;
+		nav.setAttribute('data-hu-results-toc-ready', 'true');
+
+		function evaluate() {
+			queued = false;
+
+			if (!rail.matches) {
+				nav.removeAttribute('data-hu-results-toc-visible');
+				return;
+			}
+
+			var threshold = getWayfindingOffset() + 24;
+			var visible = trigger.getBoundingClientRect().top <= threshold;
+			nav.setAttribute('data-hu-results-toc-visible', visible ? 'true' : 'false');
+		}
+
+		function queueEvaluate() {
+			if (queued) return;
+			queued = true;
+			window.requestAnimationFrame(evaluate);
+		}
+
+		evaluate();
+		window.addEventListener('scroll', queueEvaluate, { passive: true });
+		window.addEventListener('resize', queueEvaluate, { passive: true });
+		window.addEventListener('load', queueEvaluate, { once: true });
+		if (typeof rail.addEventListener === 'function') rail.addEventListener('change', evaluate);
 	}
 
 	function createPanelForDirectLinks(nav) {
@@ -286,7 +323,10 @@
 
 		SCROLLSPY_SELECTORS.forEach(function (selector) {
 			document.querySelectorAll(selector).forEach(function (nav) {
-				if (nav.classList.contains('hu-page-toc')) normalizeGeneratedToc(nav);
+				if (nav.classList.contains('hu-page-toc')) {
+					normalizeGeneratedToc(nav);
+					initResultsTocRail(nav);
+				}
 				initScrollSpy(nav);
 			});
 		});
