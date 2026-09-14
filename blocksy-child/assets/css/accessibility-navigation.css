@@ -9,8 +9,8 @@
 	left: 0.75rem;
 	max-width: min(28rem, calc(100vw - 1.5rem));
 	padding: 0.75rem 1rem;
-	background: #fff8f3;
-	color: #171412;
+	background: var(--papier);
+	color: var(--tinte);
 	border: 2px solid currentColor;
 	border-radius: 2px;
 	font-size: 0.875rem;
@@ -24,7 +24,7 @@
 .skip-to-content[data-skip-link]:focus,
 .skip-to-content[data-skip-link]:focus-visible {
 	transform: translateY(0);
-	outline: 3px solid #b8420f;
+	outline: 3px solid var(--stempel);
 	outline-offset: 3px;
 }
 
@@ -42,7 +42,7 @@
 }
 
 .leiste :focus-visible {
-	outline: 3px solid var(--stempel, #b8420f);
+	outline: 3px solid var(--stempel);
 	outline-offset: 3px;
 }
 
