@@ -254,6 +254,196 @@ body.hu-tracking-setup-page {
 	color: var(--tinte);
 }
 
+/* ── Technical proof / handover ledger ───────────────────────── */
+.hu-tracking-proof-ledger {
+	margin-top: var(--s4);
+	border-top: 1px solid var(--haar);
+	border-bottom: 1px solid var(--haar);
+}
+
+.hu-tracking-proof-ledger__eyebrow {
+	margin: 0;
+	padding: var(--s1) 0;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--matt);
+	border-bottom: 1px solid var(--haar);
+}
+
+.hu-tracking-proof-ledger__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.hu-tracking-proof-ledger__grid > div {
+	padding: var(--s2);
+}
+
+.hu-tracking-proof-ledger__grid > div + div {
+	border-left: 1px solid var(--haar);
+}
+
+.hu-tracking-proof-ledger__grid span {
+	display: block;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+.hu-tracking-proof-ledger__grid strong {
+	display: block;
+	margin-top: var(--s0);
+	font-family: var(--serif-display);
+	font-size: 1rem;
+	line-height: 1.3;
+	color: var(--tinte);
+}
+
+.hu-tracking-proof-ledger__grid p {
+	margin: var(--s1) 0 0 !important;
+	font-size: 0.9rem;
+	line-height: 1.5;
+	color: var(--grau);
+}
+
+/* ── Offer ladder ─────────────────────────────────────────────── */
+.hu-tracking-offer-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--s2);
+	margin-top: var(--s4);
+}
+
+.hu-tracking-offer-card {
+	min-width: 0;
+	padding: var(--s3);
+	border-top: 2px solid var(--tinte);
+	border-bottom: 1px solid var(--haar);
+}
+
+.hu-tracking-offer-card[data-level="advanced"] {
+	border-top-style: dashed;
+}
+
+.hu-tracking-offer-card[data-level="revenue"] {
+	border-top-color: var(--stempel);
+}
+
+.hu-tracking-offer-card__level {
+	margin: 0 !important;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-tracking-offer-card h3 {
+	margin: var(--s1) 0 0;
+	font-family: var(--serif-display);
+	font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+	line-height: 1.15;
+	color: var(--tinte);
+}
+
+.hu-tracking-offer-card__price {
+	margin: var(--s2) 0 0 !important;
+	font-family: var(--serif-display);
+	font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+	font-weight: 700;
+	line-height: 1.1;
+	color: var(--tinte);
+}
+
+.hu-tracking-offer-card__price small {
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-tracking-offer-card > p:not(.hu-tracking-offer-card__level):not(.hu-tracking-offer-card__price) {
+	margin: var(--s2) 0 0 !important;
+	font-size: 0.92rem;
+	line-height: 1.55;
+	color: var(--grau);
+}
+
+.hu-tracking-offer-card ul {
+	margin: var(--s2) 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.hu-tracking-offer-card li {
+	position: relative;
+	padding: var(--s1) 0 var(--s1) 1rem;
+	font-size: 0.88rem;
+	line-height: 1.45;
+	border-top: 1px solid var(--haar);
+}
+
+.hu-tracking-offer-card li::before {
+	content: "→";
+	position: absolute;
+	left: 0;
+	color: var(--stempel);
+}
+
+.hu-tracking-offer-card .satzlink {
+	display: inline-block;
+	margin-top: var(--s2);
+}
+
+.hu-tracking-offer-contract {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	margin-top: var(--s4);
+	border-top: 1px solid var(--haar);
+	border-bottom: 1px solid var(--haar);
+}
+
+.hu-tracking-offer-contract > div {
+	padding: var(--s2);
+}
+
+.hu-tracking-offer-contract > div + div {
+	border-left: 1px solid var(--haar);
+}
+
+.hu-tracking-offer-contract span {
+	display: block;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.hu-tracking-offer-contract b {
+	display: block;
+	margin-top: var(--s0);
+	font-size: 0.9rem;
+	line-height: 1.4;
+	color: var(--tinte);
+}
+
+.hu-tracking-offer-note {
+	max-width: 74ch;
+	margin: var(--s3) 0 0 !important;
+	padding-left: var(--s2);
+	border-left: 2px solid var(--stempel);
+	font-size: 0.9rem;
+	line-height: 1.55;
+	color: var(--grau);
+}
+
 /* Desktop rail: same dimensions and states as the Results register. */
 @media (min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
 	.hu-page-toc.hu-tracking-register[data-hu-rail="true"] {
@@ -353,9 +543,27 @@ body.hu-tracking-setup-page {
 }
 
 @media (max-width: 980px) {
-	.hu-tracking-chain {
+	.hu-tracking-chain,
+	.hu-tracking-offer-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		padding-top: 0;
+	}
+
+	.hu-tracking-offer-card[data-level="revenue"] {
+		grid-column: 1 / -1;
+	}
+
+	.hu-tracking-offer-contract {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.hu-tracking-offer-contract > div:nth-child(3) {
+		border-left: 0;
+		border-top: 1px solid var(--haar);
+	}
+
+	.hu-tracking-offer-contract > div:nth-child(4) {
+		border-top: 1px solid var(--haar);
 	}
 
 	.hu-tracking-chain::before,
@@ -377,11 +585,21 @@ body.hu-tracking-setup-page {
 	}
 
 	.hu-tracking-chain,
-	.hu-tracking-output {
+	.hu-tracking-output,
+	.hu-tracking-proof-ledger__grid,
+	.hu-tracking-offer-grid,
+	.hu-tracking-offer-contract {
 		grid-template-columns: 1fr;
 	}
 
-	.hu-tracking-output > div + div {
+	.hu-tracking-offer-card[data-level="revenue"] {
+		grid-column: auto;
+	}
+
+	.hu-tracking-output > div + div,
+	.hu-tracking-proof-ledger__grid > div + div,
+	.hu-tracking-offer-contract > div + div,
+	.hu-tracking-offer-contract > div:nth-child(3) {
 		border-left: 0;
 		border-top: 1px solid var(--haar);
 	}
