@@ -111,7 +111,8 @@ Service-Pitch darf hier NICHT dominant sein.
 ## 5. PROOF / CASE STUDY PAGES
 
 Beispiele:
-- page-case-study-domdar.php
+- page-e3-new-energy.php
+- page-ergebnisse.php
 
 Ziel:
 - Vertrauen massiv erhöhen

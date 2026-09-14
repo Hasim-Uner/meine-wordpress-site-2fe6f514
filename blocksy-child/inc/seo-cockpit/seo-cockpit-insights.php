@@ -771,7 +771,7 @@ function nexus_get_seo_cockpit_page_role( $context = [], $url = '' ) {
 		return 'about';
 	}
 
-	if ( in_array( $path, array_filter( [ $paths['results'] ?? '', $paths['e3'] ?? '', $paths['domdar'] ?? '', $paths['whitelabel'] ?? '' ] ), true ) ) {
+	if ( in_array( $path, array_filter( [ $paths['results'] ?? '', $paths['e3'] ?? '', $paths['whitelabel'] ?? '' ] ), true ) ) {
 		return 'results';
 	}
 

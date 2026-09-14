@@ -639,26 +639,6 @@ function hu_is_contact_offer_page() {
 }
 
 /**
- * Check whether current query is the DOMDAR case-study page.
- *
- * @return bool
- */
-function hu_is_domdar_case_study_page() {
-	if ( ! is_singular() ) {
-		return false;
-	}
-
-	$post_id = get_queried_object_id();
-	if ( ! $post_id ) {
-		return false;
-	}
-
-	$slug = get_post_field( 'post_name', $post_id );
-
-	return in_array( $slug, [ 'case-study-domdar', 'domdar' ], true );
-}
-
-/**
  * Check whether a post object is the E3 methodology case.
  *
  * @param int $post_id Post ID.

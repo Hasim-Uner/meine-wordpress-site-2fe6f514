@@ -353,8 +353,8 @@ function nexus_get_wgos_cluster_page_proof_metrics() {
 			'label' => 'Marktcheck-Einstieg mit priorisierten Hebeln',
 		],
 		[
-			'value' => '3 Proof-Routen',
-			'label' => 'Case Study, DOMDAR und Ergebnisse sind öffentlich einsehbar',
+			'value' => '2 Proof-Routen',
+			'label' => 'Case Study und Ergebnisse sind öffentlich einsehbar',
 		],
 	];
 }

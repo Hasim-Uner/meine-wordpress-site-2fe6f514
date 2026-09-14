@@ -168,7 +168,6 @@ well, even when they are not themselves an implementation page:
 - `/hasim-uener/` — the final project request uses the direct-project path; the agency bridge leads to White-Label
 - `/glossar/` — definitional layer below every cluster
 - the technical-SEO cornerstone template (`page-seo-cornerstone.php`)
-- the DOMDAR e-commerce case study — a cart-and-margin case with no energy context
 
 Use `hu_get_commercial_route( 'project_request' )` for those, with the label
 `Projekt anfragen`.
