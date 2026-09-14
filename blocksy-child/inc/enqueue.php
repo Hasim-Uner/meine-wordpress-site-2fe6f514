@@ -65,7 +65,6 @@ function hu_enqueue_assets() {
 
 	$is_aroundhome_decision = is_singular( 'post' ) && $queried_id && 'aroundhome-solar-einordnung' === get_post_field( 'post_name', $queried_id );
 	$is_provider_decision   = $is_checkfox_decision || $is_aroundhome_decision;
-	$is_audit_route = function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page();
 	$is_client_portal = is_page_template( 'template-portal.php' );
 	$is_results_hub = function_exists( 'hu_is_results_hub_request' ) && hu_is_results_hub_request();
 
@@ -101,26 +100,14 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-client-portal-css', 'client-portal.css', [ 'blocksy-child-style' ] );
 	}
 
-	// ── Audit header only ──────────────────────────────────────────
-	// Standardrouten verwenden .leiste aus system.css + leiste.js.
-	if ( $is_audit_route ) {
-		hu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-system-css' ] );
-	}
-
 	// ── GLOBAL: Core JS (Scroll-Spy, FAQ, Counter, Progress Bar) ──
 	hu_enqueue_js( 'nexus-core-js', 'nexus-core.js' );
-	if ( $is_audit_route ) {
-		hu_enqueue_js( 'nexus-site-header-js', 'site-header.js', [ 'nexus-core-js' ] );
-	}
 
 	/*
 	 * Die Leiste bringt ihr eigenes, kleines Skript mit: Klappblatt auf
-	 * schmalen Schirmen, gemessene Hoehe als --leiste-h. site-header.js bleibt
-	 * fuer Blog- und Audit-Kopf zustaendig und findet auf den Leisten-Routen
-	 * kein [data-site-header] mehr.
+	 * schmalen Schirmen und gemessene Hoehe als --leiste-h.
 	 */
 	$uses_leiste = ( ! function_exists( 'nexus_is_blog_header_context' ) || ! nexus_is_blog_header_context() )
-		&& ! $is_audit_route
 		&& ( ! function_exists( 'nexus_is_energy_systems_context' ) || ! nexus_is_energy_systems_context() )
 		&& ( ! function_exists( 'hu_is_energy_demo_request_path' ) || ! hu_is_energy_demo_request_path() );
 
@@ -554,18 +541,6 @@ function hu_enqueue_assets() {
 		);
 	}
 
-	// ── H) Template: System-Diagnose Funnel ──────────────────────────
-	if ( nexus_is_audit_page() ) {
-		wp_add_inline_style(
-			'blocksy-child-style',
-			'
-			body.page-growth-audit .entry-header {
-				display: none !important;
-			}
-		'
-		);
-	}
-
 	// ── H2) Template: 360° Deep-Dive ─────────────────────────────
 	if ( is_page_template( 'page-360-deep-dive.php' ) || is_page( '360-deep-dive' ) ) {
 		hu_enqueue_css( 'nexus-audit-results-css', 'audit-results.css', [ 'nexus-design-system' ] );
@@ -848,7 +823,6 @@ function hu_get_non_deferred_script_handles() {
 		'hu_non_deferred_script_handles',
 		[
 			'nexus-core-js',
-			'nexus-site-header-js',
 		]
 	);
 
@@ -880,7 +854,6 @@ function hu_get_force_deferred_script_handles() {
 		$handles = [
 			'ct-scripts',
 			'nexus-core-js',
-			'nexus-site-header-js',
 		];
 	}
 

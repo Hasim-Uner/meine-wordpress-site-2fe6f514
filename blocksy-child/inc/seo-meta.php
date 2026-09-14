@@ -621,15 +621,6 @@ function hu_is_seo_cornerstone_article() {
 
 
 /**
- * Check whether current query is the audit offer page.
- *
- * @return bool
- */
-function hu_is_audit_offer_page() {
-	return function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page();
-}
-
-/**
  * Check whether current query is the contact request page.
  *
  * @return bool

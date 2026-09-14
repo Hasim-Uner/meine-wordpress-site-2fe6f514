@@ -185,10 +185,6 @@ function nexus_get_audit_cta_copy() {
 	$copy = [
 		'label'             => 'Marktcheck mit Fit-Entscheid starten',
 		'compact_microcopy' => 'Händische Analyse · Befund per E-Mail, ' . hu_marketcheck_reply_label( true ),
-		'header_meta_items' => [
-			'Manueller Marktcheck',
-			'Fokus: Solar, Wärmepumpe, Speicher',
-		],
 		'footer_note'       => 'Marktcheck: Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region — ' . hu_marketcheck_reply_label() . ', per E-Mail.',
 	];
 
@@ -215,27 +211,6 @@ function nexus_get_audit_compact_microcopy() {
 	$copy = nexus_get_audit_cta_copy();
 
 	return isset( $copy['compact_microcopy'] ) ? (string) $copy['compact_microcopy'] : '';
-}
-
-/**
- * Return the compact metadata items used in the marketcheck header.
- *
- * @return array<int, string>
- */
-function nexus_get_audit_header_meta_items() {
-	$copy = nexus_get_audit_cta_copy();
-	$items = isset( $copy['header_meta_items'] ) && is_array( $copy['header_meta_items'] ) ? $copy['header_meta_items'] : [];
-
-	return array_values(
-		array_filter(
-			array_map(
-				static function ( $item ) {
-					return trim( (string) $item );
-				},
-				$items
-			)
-		)
-	);
 }
 
 /**
@@ -873,21 +848,6 @@ function nexus_get_e3_case_faq_items() {
 }
 
 /**
- * Resolve the primary audit page ID while supporting legacy slugs.
- *
- * @return int
- */
-function nexus_get_audit_page_id() {
-	$template_page_id = nexus_get_page_id_by_template( 'page-audit.php' );
-
-	if ( $template_page_id ) {
-		return $template_page_id;
-	}
-
-	return nexus_get_page_id( [ 'growth-audit', 'audit', 'customer-journey-audit', '360-audit' ] );
-}
-
-/**
  * Resolve the former audit page URL.
  *
  * The standalone Growth Audit and System-Diagnose page are retired; keep this
@@ -898,24 +858,6 @@ function nexus_get_audit_page_id() {
  */
 function nexus_get_audit_url() {
 	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-}
-
-/**
- * Determine whether the current request is the audit landing page.
- *
- * @return bool
- */
-function nexus_is_audit_page() {
-	$audit_page_id = nexus_get_audit_page_id();
-
-	if ( $audit_page_id && is_page( $audit_page_id ) ) {
-		return true;
-	}
-
-	return is_page_template( 'page-audit.php' )
-		|| is_page( 'growth-audit' )
-		|| is_page( 'audit' )
-		|| is_page( 'customer-journey-audit' );
 }
 
 /**

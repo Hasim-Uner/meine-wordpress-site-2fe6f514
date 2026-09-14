@@ -17,10 +17,6 @@
  * ueberhaupt sprechen durfte. Die Beschreibungen stehen jetzt dort, wo
  * entschieden wird: in Abschnitt 01 der Startseite.
  *
- * Die Audit-Variante bleibt unveraendert und laeuft weiter auf
- * site-header.css. Blog- und Energy-Kontexte erreichen diese Datei nicht
- * (siehe inc/header.php).
- *
  * Die data-track-Werte sind unveraendert uebernommen, damit die Zeitreihe
  * ueber den Umbau hinweg vergleichbar bleibt.
  *
@@ -33,53 +29,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $brand_text = function_exists( 'hu_get_site_wordmark_text' ) ? hu_get_site_wordmark_text() : 'HAŞIM ÜNER';
 $routes     = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
-$request_url = $routes['marketcheck'] ?? ( function_exists( 'hu_get_request_analysis_url' )
-	? hu_get_request_analysis_url()
-	: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
-$audit_header_meta_items = function_exists( 'nexus_get_audit_header_meta_items' ) ? nexus_get_audit_header_meta_items() : [];
 $home_label = sprintf(
 	/* translators: %s: site or brand name. */
 	__( 'Startseite - %s', 'blocksy-child' ),
 	$brand_text
 );
 
-if ( empty( $audit_header_meta_items ) ) {
-	$audit_header_meta_items = [
-		'Manueller Marktcheck',
-		'Solar- und Wärmepumpen-Fokus',
-	];
-}
 ?>
-
-<?php if ( function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page() ) : ?>
-<header class="nx-site-header nx-site-header--audit is-visible" data-site-header role="banner">
-	<div class="nx-container">
-		<div class="nx-site-header__shell nx-site-header__shell--audit">
-			<div class="nx-site-header__brand-block">
-				<span class="nx-site-header__eyebrow">Marktcheck</span>
-				<a
-					class="site-logo nx-site-header__brand"
-					href="<?php echo esc_url( home_url( '/' ) ); ?>"
-					rel="home"
-					aria-label="<?php echo esc_attr( $home_label ); ?>"
-				>
-					<?php echo esc_html( $brand_text ); ?>
-				</a>
-			</div>
-
-			<div class="nx-site-header__audit-meta" aria-label="Audit-Microcopy">
-				<?php foreach ( $audit_header_meta_items as $audit_header_meta_item ) : ?>
-					<span><?php echo esc_html( $audit_header_meta_item ); ?></span>
-				<?php endforeach; ?>
-			</div>
-
-			<div class="nx-site-header__audit-actions">
-				<a class="nx-site-header__audit-link" href="<?php echo esc_url( $request_url ); ?>" data-track-action="cta_audit_header_analysis" data-track-category="lead_gen" data-track-section="audit_header" data-track-funnel-stage="audit_header">Marktcheck</a>
-			</div>
-		</div>
-	</div>
-</header>
-<?php return; endif; ?>
 
 <?php
 $blatt_id        = 'leiste-blatt';
