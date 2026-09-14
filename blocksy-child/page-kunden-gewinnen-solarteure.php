@@ -61,7 +61,7 @@ $systematic_levers = [
 	],
 	[
 		't' => 'Server-Side Tracking',
-		's' => 'Saubere Attribution trotz Cookieless und Ad-Blockern. Reports zeigen, welcher Kanal welchen Auftrag produziert.',
+		's' => 'Serverseitige Messung kann Browsersignale robuster erfassen und Kanal-, Formular- und CRM-Signale zusammenführen. Wie vollständig die Attribution ist, hängt von Consent, Browsern, Plattformen und der verfügbaren Identifier- und CRM-Datenlage ab.',
 	],
 	[
 		't' => 'CRM-Anschluss & Reaktionszeit',

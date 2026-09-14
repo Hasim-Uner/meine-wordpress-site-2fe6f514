@@ -7,7 +7,7 @@ neu eingefügt bekommen muss.
 
 | Datei | Rolle | Stand |
 |---|---|---|
-| `referenz.html` | **maßgeblich für Copy, Reihenfolge, Zahlen, Verhalten.** Eigenständiges HTML, kein WordPress. Wird nicht deployt. | 12.09.2026, Fassung nach Copy-Durchgang 2 |
+| `referenz.html` | Historische Referenz für ursprüngliche Copy, Reihenfolge, Zahlen und Verhalten. Eigenständiges HTML, kein WordPress, wird nicht deployt. **Absolute Tracking-/Consent-/Rechtsaussagen daraus sind nicht maßgeblich; dafür gewinnen das deploybare Template und die aktuellen Messaging-Regeln.** | 12.09.2026, Fassung nach Copy-Durchgang 2 |
 | `auftrag.md` | Umbauauftrag: Zuordnung alt→neu, Rechnerspezifikation, Zahlenherkunft, Prüfliste | 11.09.2026, archiviert |
 | `copy-durchgang.md` | Begründung der Copy-Entscheidungen — warum Sätze gestrichen, gedreht oder ersetzt wurden | 12.09.2026, archiviert |
 | `seo-briefing.md` | **was tatsächlich an SEO-Signalen ausgeliefert wird**, mit Datei und Zeile | 12.09.2026, laufend zu pflegen |
@@ -23,10 +23,14 @@ hier, die nach einer Änderung an der Seite nachgezogen werden muss.
 
 ## Drei Dinge, die beim Lesen leicht schiefgehen
 
-**Die Referenz enthält drei Stellen, die nicht übernommen werden dürfen.** Google-Fonts
+**Die Referenz enthält vier Arten von Stellen, die nicht übernommen werden dürfen.** Google-Fonts
 per CDN, einen ungültigen Selektor `.stufe@media (…)`, der den ganzen Mobilblock
-verschluckt, und ein `--matt`, das auf Weiß die WCAG-AA-Schwelle reißt. Alle drei stehen
-im Kommentarkopf der Datei, mit Begründung.
+verschluckt, ein `--matt`, das auf Weiß die WCAG-AA-Schwelle reißt, sowie inzwischen
+überholte absolute Tracking-Aussagen wie individuelle Rückverfolgbarkeit trotz abgelehnter
+Cookies. Für Tracking gilt die produktive Regel: Server-Side kann Signalverluste reduzieren
+und Marketing-/CRM-Signale kontrollierter zusammenführen; Consent, Browser, Plattformen und
+verfügbare Identifikatoren begrenzen die individuelle Zuordnung. Server-Side ersetzt keine
+erforderliche Einwilligung und ist kein Versprechen auf vollständige Attribution.
 
 **Die umgesetzte Seite weicht an drei Stellen bewusst von der Referenz ab.** Sie läuft in
 der Hausschrift Satoshi/Figtree statt in Newsreader; der Marktcheck ist eine zweistufige
