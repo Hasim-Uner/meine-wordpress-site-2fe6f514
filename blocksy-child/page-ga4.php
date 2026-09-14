@@ -71,7 +71,7 @@ function hu_render_tracking_setup_toc() {
 		[ 'id' => 'umfang', 'label' => 'Umfang' ],
 		[ 'id' => 'pruefung', 'label' => 'Abnahme' ],
 		[ 'id' => 'ablauf', 'label' => 'Ablauf' ],
-		[ 'id' => 'angebot', 'label' => 'Angebot' ],
+		[ 'id' => 'angebot', 'label' => 'Setup & Preis' ],
 		[ 'id' => 'faq', 'label' => 'FAQ' ],
 	];
 	?>
@@ -112,6 +112,12 @@ $response_label  = function_exists( 'hu_response_promise' )
 $setup_price     = function_exists( 'hu_tracking_price' )
 	? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' )
 	: '1.290 €';
+$individual_price = function_exists( 'hu_tracking_price' )
+	? hu_tracking_price( 'individual', 'setup', 'display', 'ab 3.500 €' )
+	: 'ab 3.500 €';
+$delivery_window = function_exists( 'hu_tracking_delivery_weeks_display' )
+	? hu_tracking_delivery_weeks_display()
+	: '2 bis 3 Wochen';
 $faq_items       = isset( $page['faq_items'] ) && is_array( $page['faq_items'] )
 	? $page['faq_items']
 	: [];
@@ -133,9 +139,9 @@ get_header();
 				<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_tracking_project" data-track-category="lead_gen">
 					Tracking-Setup prüfen lassen <span class="pf" aria-hidden="true">→</span>
 				</a>
-				<a class="tun still" href="#umfang">Leistungsumfang ansehen</a>
+				<a class="tun still" href="#angebot">Setup &amp; Preis ansehen</a>
 			</div>
-			<p class="mono"><?php echo esc_html( $response_label ); ?> · Setup ab <?php echo esc_html( $setup_price ); ?> netto · dokumentierte Übergabe</p>
+			<p class="mono"><?php echo esc_html( $response_label ); ?> · Setup ab <?php echo esc_html( $setup_price ); ?> netto · <?php echo esc_html( $delivery_window ); ?> · dokumentierte Übergabe</p>
 
 			<div class="meta" aria-label="Produktüberblick">
 				<dl>
@@ -194,12 +200,12 @@ get_header();
 			<div class="haupt">
 				<p class="mono stempelfarbe">Ein Produkt, modularer Scope</p>
 				<h2 class="kopf">Was konkret eingerichtet wird.</h2>
-				<p class="vorspann">Sie können Google Analytics 4 und Google Tag Manager als eigenständiges Tracking-Projekt einrichten oder bereinigen lassen. Consent Mode, Google Ads Conversions, Server-Side und CRM werden nur dort ergänzt, wo sie zur Messaufgabe gehören.</p>
+				<p class="vorspann">GA4 und Google Tag Manager können als eigenständiges Tracking-Projekt eingerichtet oder bereinigt werden. Consent Mode und Google Ads gehören in den Basisscope, wenn diese Systeme im Projekt genutzt werden. Server-Side, Meta CAPI und CRM sind eigene Erweiterungsentscheidungen.</p>
 				<div class="protokoll">
-					<div class="z"><span>01 · Measurement</span><b>GTM-Struktur, GA4, Event- und Conversion-Plan, Formularmessung</b></div>
-					<div class="z"><span>02 · Consent &amp; Ads</span><b>CMP-Anbindung, Consent Mode, Google Ads, Enhanced Conversions soweit passend</b></div>
-					<div class="z"><span>03 · Server</span><b>Server-GTM, eigene Tracking-Subdomain, Deduplizierung, optional Meta CAPI</b></div>
-					<div class="z"><span>04 · Revenue</span><b>CRM-Status, Offline Conversions und Rückgabe qualifizierter Geschäftssignale</b></div>
+					<div class="z"><span>01 · Measurement</span><b>Bestandsaufnahme, GTM-Struktur, GA4, Event- und Conversion-Plan, Formularmessung</b></div>
+					<div class="z"><span>02 · Consent &amp; Ads</span><b>CMP-Anbindung, Consent Mode, Google Ads Conversions und Enhanced Conversions soweit passend</b></div>
+					<div class="z"><span>03 · Server</span><b>Server-GTM, eigene Tracking-Subdomain, Deduplizierung und Meta CAPI nur bei begründetem Bedarf</b></div>
+					<div class="z"><span>04 · Revenue</span><b>CRM-Status, Offline Conversions und Rückgabe qualifizierter Geschäftssignale für komplexere Setups</b></div>
 				</div>
 				<dl class="hu-tracking-output" aria-label="Ergebnis der Umsetzung">
 					<div><dt>Messlogik</dt><dd>Welche Conversion wann zählt</dd></div>
@@ -227,12 +233,21 @@ get_header();
 					<div class="z"><span>Formularfehler</span><b>keine Conversion bei fehlgeschlagenem Versand</b></div>
 					<div class="z"><span>Consent</span><b>definierter Datenfluss für die geprüften Einwilligungszustände</b></div>
 					<div class="z"><span>Ads</span><b>Conversion-Aktion, Parameter und Importweg nachvollziehbar</b></div>
-					<div class="z"><span>Deduplizierung</span><b>Browser- und Serversignal erzeugen keine Doppelzählung</b></div>
-					<div class="z"><span>CRM, falls beauftragt</span><b>Lead-ID und Statusübergabe bis zum definierten Geschäftssignal</b></div>
+					<div class="z"><span>Deduplizierung</span><b>Browser- und Serversignal erzeugen keine Doppelzählung, falls Server-Side beauftragt ist</b></div>
+					<div class="z"><span>CRM</span><b>Lead-ID und Statusübergabe bis zum definierten Geschäftssignal, falls CRM Teil des Scopes ist</b></div>
+				</div>
+
+				<div class="hu-tracking-proof-ledger" aria-label="Beispiel für die technische Übergabe">
+					<p class="hu-tracking-proof-ledger__eyebrow">Beispielstruktur der Übergabe · keine Kundendaten</p>
+					<div class="hu-tracking-proof-ledger__grid">
+						<div><span>01 · Messplan</span><strong>Event · Trigger · Parameter · Zielsystem</strong><p>Für jede Haupt-Conversion steht schriftlich fest, was zählt und wohin das Signal geht.</p></div>
+						<div><span>02 · QA-Protokoll</span><strong>Testfall · Consent · Soll · Ist</strong><p>Die Abnahme hält nicht nur den Endzustand fest, sondern auch den geprüften Weg dorthin.</p></div>
+						<div><span>03 · Handover</span><strong>GTM-Version · Zugänge · bekannte Grenzen</strong><p>Konten, Versionen und Dokumentation bleiben nachvollziehbar und in Ihrer Verfügung.</p></div>
+					</div>
 				</div>
 			</div>
 			<aside class="marg">
-				<p class="note"><span class="label">Proof-Prinzip</span>Ein technischer Nachweis ist stärker als eine allgemeine Aussage wie „Tracking funktioniert“. Aus realen Paralleltests kann später ein öffentlicher Messbericht im Ergebnisse-Bereich entstehen.</p>
+				<p class="note"><span class="label">Proof-Prinzip</span><b>Der Beleg ist die reproduzierbare Prüfung.</b> Solange kein eigener Tracking-Kundenfall veröffentlicht werden kann, zeige ich keine erfundene Erfolgsstory, sondern die technische Abnahme, an der das Projekt gemessen wird.</p>
 				<p class="note"><span class="label">Arbeitsbelege</span><a class="satzlink" href="<?php echo esc_url( $results_url ); ?>">Vorhandene Projekte und Ergebnisse ansehen.</a></p>
 			</aside>
 		</div>
@@ -260,16 +275,61 @@ get_header();
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">06</span><span class="titel">Angebot</span><span class="strich"></span></div></div>
 			<div class="voll">
 				<div class="tafel">
-					<p class="mono stempelfarbe">Separat kaufbar · ohne Relaunch-Pflicht</p>
-					<h2>Tracking kann ein eigenes Projekt sein.</h2>
-					<p class="aufriss">Wenn Ihre Website funktioniert und nur die Messung unsauber ist, müssen Sie kein größeres Website- oder Anfragesystem kaufen. Ich kläre zuerst den Engpass und grenze den nötigen Scope ab.</p>
-					<div class="meta"><dl>
-						<div><dt>Tracking Setup</dt><dd>ab <?php echo esc_html( $setup_price ); ?> netto</dd></div>
-						<div><dt>Server / CRM</dt><dd>nur nach technischem Scope</dd></div>
-						<div><dt>Übergabe</dt><dd>Prüfung + Dokumentation</dd></div>
-						<div><dt>Kontakt</dt><dd><?php echo esc_html( $response_label ); ?></dd></div>
-					</dl></div>
-					<div class="ausgang"><a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_tracking_project" data-track-category="lead_gen">Tracking-Anliegen beschreiben <span class="pf" aria-hidden="true">→</span></a></div>
+					<p class="mono stempelfarbe">Klarer Basisscope · Erweiterung nur bei Bedarf</p>
+					<h2>Was Sie ab <?php echo esc_html( $setup_price ); ?> netto konkret bekommen.</h2>
+					<p class="aufriss">Der Einstiegspreis gilt für ein klar abgegrenztes B2B-Setup. Vor dem Start steht schriftlich fest, welche Systeme, Formulare und Conversions enthalten sind. Komplexere Server-, Meta- oder CRM-Strecken werden nicht stillschweigend in denselben Scope gepackt.</p>
+
+					<div class="hu-tracking-offer-grid" aria-label="Tracking-Angebotsleiter">
+						<article class="hu-tracking-offer-card" data-level="core">
+							<p class="hu-tracking-offer-card__level">01 · Core Setup</p>
+							<h3>GA4, GTM, Consent &amp; Google Ads</h3>
+							<p class="hu-tracking-offer-card__price">ab <?php echo esc_html( $setup_price ); ?> <small>netto</small></p>
+							<p>Für eine Website mit klaren Haupt-Conversions und einem überschaubaren Google-Stack.</p>
+							<ul>
+								<li>Bestandsaufnahme und schriftlicher Messplan</li>
+								<li>GTM- und GA4-Struktur bzw. Bereinigung</li>
+								<li>CMP/Consent Mode im vereinbarten Setup</li>
+								<li>Google Ads und bis zu drei Haupt-Conversions</li>
+								<li>Abnahmetests, Dokumentation und Übergabe</li>
+							</ul>
+						</article>
+
+						<article class="hu-tracking-offer-card" data-level="advanced">
+							<p class="hu-tracking-offer-card__level">02 · Advanced</p>
+							<h3>Server-Side &amp; Meta CAPI</h3>
+							<p class="hu-tracking-offer-card__price">nach technischem Scope</p>
+							<p>Wenn Serversignale, eine eigene Tracking-Subdomain, Meta CAPI oder Deduplizierung Teil des eigentlichen Problems sind.</p>
+							<ul>
+								<li>Server-GTM und eigene Tracking-Subdomain</li>
+								<li>Browser-/Server-Deduplizierung</li>
+								<li>Enhanced Conversions und Meta CAPI soweit passend</li>
+								<li>Paralleltest vor der Umschaltung</li>
+							</ul>
+							<a class="satzlink" href="<?php echo esc_url( $server_side_url ); ?>">Server-Side Tracking im Detail</a>
+						</article>
+
+						<article class="hu-tracking-offer-card" data-level="revenue">
+							<p class="hu-tracking-offer-card__level">03 · Revenue</p>
+							<h3>CRM &amp; Offline Conversions</h3>
+							<p class="hu-tracking-offer-card__price"><?php echo esc_html( $individual_price ); ?> <small>netto</small></p>
+							<p>Wenn nicht das Formular, sondern Leadqualität, Angebot oder Auftrag das relevante Optimierungssignal sein soll.</p>
+							<ul>
+								<li>CRM-Status und eindeutige Lead-Zuordnung</li>
+								<li>Offline Conversions bzw. qualifizierte Rücksignale</li>
+								<li>mehrere Domains oder individuelle Datenstrecken nach Aufnahme</li>
+							</ul>
+						</article>
+					</div>
+
+					<div class="hu-tracking-offer-contract" aria-label="Rahmen des Tracking-Projekts">
+						<div><span>Scope</span><b>vor Projektstart schriftlich abgegrenzt</b></div>
+						<div><span>Umsetzung</span><b><?php echo esc_html( $delivery_window ); ?></b></div>
+						<div><span>Abnahme</span><b>Testprotokoll + Dokumentation</b></div>
+						<div><span>Ownership</span><b>Konten und Zugänge bleiben bei Ihnen</b></div>
+					</div>
+
+					<p class="hu-tracking-offer-note"><strong>Wichtig:</strong> „ab <?php echo esc_html( $setup_price ); ?>“ ist kein Lockpreis für beliebig viele Systeme. Wenn der Bestand oder die gewünschte Messkette größer ist, wird der Umfang vor der Umsetzung neu abgegrenzt – nicht während des Projekts nachverkauft.</p>
+					<div class="ausgang"><a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_tracking_project" data-track-category="lead_gen">Tracking-Setup prüfen lassen <span class="pf" aria-hidden="true">→</span></a></div>
 				</div>
 			</div>
 		</div>
