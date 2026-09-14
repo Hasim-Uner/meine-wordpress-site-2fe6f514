@@ -76,9 +76,15 @@ function hu_enqueue_assets() {
 		hu_get_asset_version( get_stylesheet_directory() . '/style.css' )
 	);
 
-	// ── GLOBAL: Legacy compatibility provider ─────────────────────
-	// Bleibt vorerst global, bis style.css als letzter Shell-Blocker entkoppelt ist.
-	hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
+	// ── Legacy compatibility provider ──────────────────────────────
+	// Die kanonische Startseite und die Personenseite stehen vollstaendig auf
+	// system.css und konsumieren weder NX- noch unpraefixierte Provider-Tokens.
+	// Alle anderen Routen behalten den Legacy-Provider, bis ihre impliziten
+	// Token-/Selector-Abhaengigkeiten einzeln nachgewiesen und migriert sind.
+	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() );
+	if ( $uses_legacy_design_system ) {
+		hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
+	}
 
 	/*
 	 * Das Gutachten-Designsystem: Tokens auf :root, Kopf und Fuss, die
