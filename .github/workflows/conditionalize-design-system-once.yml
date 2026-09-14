@@ -39,11 +39,17 @@ jobs:
               raise SystemExit(f'doc rule anchor count: {d.count(old_doc)}')
           d = d.replace(old_doc, new_doc)
 
-          old_cluster = """1. **Globale Shell / Blocker:** `site-header.css` ist entkoppelt; `style.css` ist NX-frei. Der globale Legacy-Provider ist damit nicht mehr wegen `style.css` blockiert; vor einer Conditionalisierung/Entfernung folgt ein separater Audit seiner nicht-NX-benannten globalen Token und generischen Regeln.\n"""
-          new_cluster = """1. **Globale Shell / Provider:** `site-header.css` und `style.css` sind NX-frei. `design-system.css` wird auf Startseite und Personenseite nicht mehr geladen; auf den übrigen Routen bleibt er vorerst aktiv, weil er neben NX-Tokens auch unpräfixierte Tokens sowie globale `body`-/Heading-/Kompatibilitätsregeln bereitstellt.\n"""
+          old_cluster = """1. **Globale Shell:** `site-header.css` und `style.css` sind von `--nx-*` entkoppelt. Der nächste Schritt ist ein separater Audit der noch global konsumierten, nicht-NX-benannten Rollen und generischen Regeln aus `design-system.css`; erst danach darf der Legacy-Provider bedingt geladen werden.\n"""
+          new_cluster = """1. **Globale Shell / Provider:** `site-header.css` und `style.css` sind von `--nx-*` entkoppelt. `design-system.css` wird auf der kanonischen Startseite und der Personenseite nicht mehr geladen. Auf allen übrigen Routen bleibt der Provider vorerst aktiv, weil er neben NX-Tokens auch unpräfixierte Tokens sowie globale `body`-/Heading-/Kompatibilitätsregeln bereitstellt.\n"""
           if d.count(old_cluster) != 1:
               raise SystemExit(f'doc cluster anchor count: {d.count(old_cluster)}')
-          docs.write_text(d.replace(old_cluster, new_cluster), encoding='utf-8')
+          d = d.replace(old_cluster, new_cluster)
+
+          old_order = """1. **Globale Shell (NX erledigt):** Audit-Header und `style.css` sind von `--nx-*` entkoppelt. Als Nächstes werden die noch global wirkenden, nicht-NX-benannten Provider-Rollen und generischen Regeln auditiert; erst dann wird `design-system.css` aus dem globalen Enqueue genommen oder bedingt geladen.\n"""
+          new_order = """1. **Globale Shell (NX erledigt):** Audit-Header und `style.css` sind von `--nx-*` entkoppelt. Der Provider-Audit hat unpräfixierte Legacy-Tokens und globale Selektorwirkungen bestätigt; deshalb ist `design-system.css` zunächst nur auf Startseite und Personenseite abgeschaltet. Weitere Routen werden einzeln entkoppelt.\n"""
+          if d.count(old_order) != 1:
+              raise SystemExit(f'doc order anchor count: {d.count(old_order)}')
+          docs.write_text(d.replace(old_order, new_order), encoding='utf-8')
           PY
 
       - name: Validate architecture and PHP
