@@ -4,13 +4,19 @@ ROOT = Path(__file__).resolve().parents[1]
 STYLE = ROOT / 'blocksy-child/style.css'
 HOME = ROOT / 'blocksy-child/assets/css/homepage.css'
 SINGLE = ROOT / 'blocksy-child/assets/css/single.css'
+BASELINE = ROOT / 'scripts/baselines/legacy-nx-consumers.txt'
 
 style = STYLE.read_text(encoding='utf-8')
 home = HOME.read_text(encoding='utf-8')
 single = SINGLE.read_text(encoding='utf-8')
+baseline = BASELINE.read_text(encoding='utf-8')
 
 if style.count('var(--nx-') != 29:
     raise SystemExit(f'Expected 29 style.css NX uses before migration, got {style.count("var(--nx-")}')
+
+baseline_entry = 'blocksy-child/style.css'
+if baseline.splitlines().count(baseline_entry) != 1:
+    raise SystemExit('Expected style.css exactly once in legacy NX baseline')
 
 home_marker = '/* ═══════════════════════════════════════════\n   HOMEPAGE FIXES – Februar 2026\n   ═══════════════════════════════════════════ */'
 footer_marker = ":root[data-nx-theme='light'] .ft {"
@@ -153,16 +159,25 @@ if single_insert < 0:
     raise SystemExit('single.css opening banner boundary not found')
 single = single[:single_insert + 2] + single_light_bridge + '\n' + single[single_insert + 2:]
 
+# style.css is no longer an NX consumer, so the shrink-only contract must shrink.
+baseline_lines = baseline.splitlines()
+baseline_lines.remove(baseline_entry)
+baseline = '\n'.join(baseline_lines) + '\n'
+
 if 'var(--nx-' in style:
     raise SystemExit(f'style.css still has {style.count("var(--nx-")} NX uses after migration')
 if footer_marker in style or home_marker in style or single_marker in style:
     raise SystemExit('A migrated route-owner marker still remains in style.css')
+if baseline_entry in baseline.splitlines():
+    raise SystemExit('style.css still present in legacy NX baseline')
 
 STYLE.write_text(style, encoding='utf-8')
 HOME.write_text(home, encoding='utf-8')
 SINGLE.write_text(single, encoding='utf-8')
+BASELINE.write_text(baseline, encoding='utf-8')
 
 print('style.css NX uses: 29 -> 0')
+print('Legacy NX consumer baseline: 32 -> 31 files')
 print('Moved legacy homepage rules to homepage.css')
 print('Moved single light safety net to single.css')
 print('Removed retired .ft light footer bridge')
