@@ -79,10 +79,15 @@ add_action( 'wp_body_open', function () {
 		[ 'id' => 'faq', 'label' => 'FAQ' ],
 	];
 	?>
-	<nav class="hu-page-toc" aria-label="Abschnitte dieses Dokuments" data-track-section="page_toc">
-		<?php foreach ( $items as $item ) : ?>
-			<a href="#<?php echo esc_attr( $item['id'] ); ?>" data-track-action="toc_agentur_<?php echo esc_attr( $item['id'] ); ?>" data-track-category="navigation"><?php echo esc_html( $item['label'] ); ?></a>
-		<?php endforeach; ?>
+	<nav class="hu-page-toc" aria-label="Auf dieser Seite" data-hu-rail="true" data-track-section="page_toc">
+		<details open>
+			<summary>Auf dieser Seite</summary>
+			<ul role="list">
+				<?php foreach ( $items as $item ) : ?>
+					<li><a href="#<?php echo esc_attr( $item['id'] ); ?>" data-track-action="toc_agentur_<?php echo esc_attr( sanitize_key( $item['id'] ) ); ?>" data-track-category="navigation"><?php echo esc_html( $item['label'] ); ?></a></li>
+				<?php endforeach; ?>
+			</ul>
+		</details>
 	</nav>
 	<?php
 }, 31 );
@@ -266,7 +271,7 @@ get_header();
 			<div class="haupt">
 				<p class="mono stempelfarbe">Lokal erreichbar, nicht lokal begrenzt</p>
 				<h2 class="kopf">Sitz in Pattensen bei Hannover. Umsetzung im DACH-Raum.</h2>
-				<p class="vorspann">Für Unternehmen aus Hannover sind persönliche Reviews und Workshops unkompliziert möglich. Nach Vereinbarung gilt das auch für Pattensen, Braunschweig, Wolfsburg, Hildesheim und Celle. Entwicklung, QA, Tracking und laufende Abstimmung funktionieren ebenso remote – deshalb ist die Zusammenarbeit nicht auf die Region begrenzt.</p>
+				<p class="vorspann">Für Unternehmen aus Hannover, Pattensen, Braunschweig, Wolfsburg, Hildesheim und Celle sind persönliche Reviews und Workshops nach Vereinbarung möglich. Entwicklung, QA, Tracking und laufende Abstimmung funktionieren ebenso remote – deshalb ist die Zusammenarbeit nicht auf die Region begrenzt.</p>
 
 				<dl class="lokal-zeile">
 					<div><dt>Sitz</dt><dd>Pattensen bei Hannover</dd></div>
