@@ -3,6 +3,178 @@
    Nutzt Design-System-Tokens aus design-system.css
    ========================================= */
 
+/* ═══════════════════════════════════════════
+   HOMEPAGE FIXES – Februar 2026
+   ═══════════════════════════════════════════ */
+
+/* --- FIX 1: Hero Stack-Text ausblenden ---
+   Betrifft: "Advanced WordPress · Technical SEO · Privacy-by-Design
+   Tracking (Server-Side + Consent Mode v2) · CRO · n8n Automation"
+   Falls Selektor nicht greift → Klasse "hero-stack-text"
+   manuell im Editor zuweisen */
+.hero-stack-text,
+.wp-block-paragraph.is-style-stack,
+p.hero-stack {
+  display: none !important;
+}
+
+
+/* --- FIX 2: Sekundärer Hero-CTA abschwächen ---
+   Primär: "Audit starten" (Gold, filled) → bleibt
+   Sekundär: "Case Studies ansehen" → visuell zurückgenommen
+   Falls Selektor nicht greift → Klasse "hero-cta-secondary"
+   manuell im Editor zuweisen */
+.wp-block-buttons .wp-block-button:nth-child(2) .wp-block-button__link,
+.hero-cta-secondary .wp-block-button__link,
+a.wp-block-button__link[href*="case-studies"] {
+  background: transparent !important;
+  color: var(--nx-text-muted) !important;
+  border: 1px solid var(--nx-border) !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+}
+
+.wp-block-buttons .wp-block-button:nth-child(2) .wp-block-button__link:hover,
+a.wp-block-button__link[href*="case-studies"]:hover {
+  border-color: var(--nx-border-hover) !important;
+  color: var(--nx-text-secondary) !important;
+  background: transparent !important;
+}
+
+
+/* --- FIX 3: Modell A (Ad-Miete) gedämpft, Modell B (Owned) leuchtet ---
+   Modell A = Schmerz → gedämpft, gestrichelt
+   Modell B = Lösung → goldener linker Rahmen
+   Falls Selektoren nicht greifen → Klassen "modell-a" / "modell-b"
+   manuell im Editor zuweisen */
+.modell-a,
+[class*="modell-a"],
+.model-a {
+  opacity: 0.65 !important;
+  border-style: dashed !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  filter: grayscale(20%);
+  transition: opacity 0.3s;
+}
+
+.modell-b,
+[class*="modell-b"],
+.model-b {
+  border-left: 3px solid var(--nx-gold) !important;
+  box-shadow: 0 0 30px rgba(212,175,55,0.06) !important;
+}
+
+
+/* --- FIX 4: Blog-Sektion ans Ende, Reihenfolge steuern ---
+   Nur wirksam wenn Homepage-Container display:flex oder grid hat */
+.homepage-blog-section,
+section.blog-preview,
+[class*="blog-section"] {
+  order: 99;
+}
+
+.homepage-faq-section,
+[class*="faq-section"] {
+  order: 95;
+}
+
+.homepage-selection-section,
+[class*="fuer-wen"],
+[class*="selection"] {
+  order: 90;
+}
+
+
+/* --- FIX 5: Selektion-Card "Für wen ist das nichts?" ---
+   Dunkle Card, abgesetzt, signalisiert Selektivität */
+.selection-card {
+  background: var(--nx-card-gradient);
+  border: 1px solid var(--nx-border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.selection-card-label {
+  font-size: 10px;
+  color: var(--nx-accent-text);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: block;
+}
+
+
+/* --- FIX 6: Micro-Conversion Text-Link ---
+   Kleiner Text-Link nach Modell A/B Sektion:
+   "Noch nicht sicher? Erst das System verstehen →" */
+.micro-cta-link {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  color: var(--nx-text-dim);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  margin: 16px 0 40px;
+  transition: color 0.2s;
+}
+
+.micro-cta-link:hover {
+  color: var(--nx-accent-text-hover);
+}
+
+/* STYLE-ROUTE-OWNER-BRIDGE
+   These selectors used to live in global style.css. They belong to the
+   legacy homepage/shortcode surface, whose base stylesheet is homepage.css.
+   Kept before the existing homepage rules so the historical cascade remains. */
+
+:root[data-nx-theme='light'] .micro-cta-link {
+  color: var(--nx-text-muted) !important;
+}
+
+:root[data-nx-theme='light'] .selection-card {
+  background: var(--nx-card-gradient);
+  border-color: var(--nx-border) !important;
+  box-shadow: var(--nx-shadow-sm);
+}
+
+:root[data-nx-theme='light'] body.home .hero-cta-secondary,
+:root[data-nx-theme='light'] body.home .wp-block-buttons .wp-block-button:last-child .wp-block-button__link,
+:root[data-nx-theme='light'] body.home a[href*="case-studies"].wp-block-button__link,
+:root[data-nx-theme='light'] body.home .wp-hero .wp-btn[href*="case-studies"],
+:root[data-nx-theme='light'] body.home .cs-page #hero a.wp-btn.wp-btn-secondary,
+:root[data-nx-theme='light'] body.home .cs-page #hero a[href*="case-studies"],
+:root[data-nx-theme='light'] .wp-block-buttons .wp-block-button:nth-child(2) .wp-block-button__link,
+:root[data-nx-theme='light'] .hero-cta-secondary .wp-block-button__link,
+:root[data-nx-theme='light'] a.wp-block-button__link[href*="case-studies"] {
+  color: var(--nx-text-secondary) !important;
+  border: 1px solid var(--nx-border) !important;
+}
+
+:root[data-nx-theme='light'] body.home .hero-cta-secondary:hover,
+:root[data-nx-theme='light'] body.home .wp-block-buttons .wp-block-button:last-child .wp-block-button__link:hover,
+:root[data-nx-theme='light'] body.home .wp-hero .wp-btn[href*="case-studies"]:hover,
+:root[data-nx-theme='light'] body.home .cs-page #hero a.wp-btn.wp-btn-secondary:hover,
+:root[data-nx-theme='light'] body.home .cs-page #hero a[href*="case-studies"]:hover,
+:root[data-nx-theme='light'] .wp-block-buttons .wp-block-button:nth-child(2) .wp-block-button__link:hover,
+:root[data-nx-theme='light'] a.wp-block-button__link[href*="case-studies"]:hover {
+  border-color: var(--nx-border-hover) !important;
+  color: var(--nx-text) !important;
+}
+
+:root[data-nx-theme='light'] body.home .cs-page #owned .wp-cards > .wp-success-card:first-child,
+:root[data-nx-theme='light'] .modell-a,
+:root[data-nx-theme='light'] [class*="modell-a"],
+:root[data-nx-theme='light'] .model-a {
+  border-color: var(--nx-border) !important;
+}
+
+:root[data-nx-theme='light'] .selection-card-label {
+  color: var(--nx-accent-text);
+}
+
 /* Backward-Compat: Alte Klassen referenzieren --gold etc.
    Diese werden jetzt via design-system.css bereitgestellt. */
 

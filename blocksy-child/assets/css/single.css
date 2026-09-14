@@ -3,6 +3,52 @@
    Warm-neutral article shell with copper accent
    ========================================= */
 
+/* STYLE-SINGLE-LIGHT-BRIDGE
+   Former global style.css safety net. Kept at the beginning of single.css so
+   later route-native rules retain the same cascade while global CSS is clean. */
+
+:root[data-nx-theme='light'] .nexus-single-container {
+  background: var(--nx-body-gradient);
+  color: var(--nx-text);
+}
+
+:root[data-nx-theme='light'] .nexus-article-hero,
+:root[data-nx-theme='light'] .nexus-hero-footer {
+  border-bottom-color: var(--nx-border);
+  border-top-color: var(--nx-border);
+}
+
+:root[data-nx-theme='light'] .nexus-meta-top,
+:root[data-nx-theme='light'] .nexus-author-info .by,
+:root[data-nx-theme='light'] .nexus-post-footer-cta p,
+:root[data-nx-theme='light'] .share-label,
+:root[data-nx-theme='light'] .nexus-reading-time {
+  color: var(--nx-text-muted) !important;
+}
+
+:root[data-nx-theme='light'] .nexus-title,
+:root[data-nx-theme='light'] .nexus-author-info .name,
+:root[data-nx-theme='light'] .nexus-article-content h2,
+:root[data-nx-theme='light'] .nexus-article-content h3,
+:root[data-nx-theme='light'] .nexus-post-footer-cta h3 {
+  color: var(--nx-text) !important;
+}
+
+:root[data-nx-theme='light'] .nexus-author-row img {
+  border-color: var(--nx-border);
+}
+
+:root[data-nx-theme='light'] .nexus-article-content {
+  color: var(--nx-text-secondary);
+}
+
+:root[data-nx-theme='light'] .nexus-post-footer-cta,
+:root[data-nx-theme='light'] .nexus-share-btn {
+  background: var(--nx-card-gradient);
+  border-color: var(--nx-border) !important;
+  box-shadow: var(--nx-shadow-sm);
+}
+
 .nexus-single-container {
     position: relative;
     isolation: isolate;
