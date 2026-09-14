@@ -46,16 +46,9 @@ Bis dahin dürfen dort keine abweichenden Werte entstehen.
 
 Der Ausgangsstand vom 14.09.2026 betrug **39 CSS-Dateien mit NX-Namen** außerhalb des Providers. Davon waren **34 tatsächlich an Tokens gekoppelt, die `design-system.css` deklariert**; fünf Dateien trugen lediglich historische NX-Namen, deren Token der Provider gar nicht besitzt.
 
-Der erste Source-Abbau ist bereits erfolgt: `server-side-tracking-cro.css` verwendet für die Care-Preis-Typografie jetzt den kanonischen `--serif-display`-Token statt `--nx-font-display`. Die shrink-only Baseline steht damit aktuell bei **38 NX-Verbraucherdateien**. Die Zahl darf nur sinken.
+Der provider-unabhängige NX-Abbau ist abgeschlossen. `server-side-tracking-cro.css`, `b2b-solar-leads-page.css`, `server-side-tracking-protocol.css` und `solar-leads-kaufen-alternative-page.css` verwenden jetzt die kanonischen Typografie-Rollen. Die Anfragestrecke besitzt für ihre von JavaScript gemessene Energy-Header-Höhe den route-lokalen Token `--strecke-header-height` statt eines global benannten NX-Tokens.
 
-Die verbleibenden vier provider-unabhängigen NX-Verbraucher sind aktuell:
-
-- `anfragestrecke.css`
-- `b2b-solar-leads-page.css`
-- `server-side-tracking-protocol.css`
-- `solar-leads-kaufen-alternative-page.css`
-
-Sie sind bevorzugte kleine Migrationen, weil ihre Bereinigung nicht von einer Entkopplung des Legacy-Providers abhängt.
+Die shrink-only Baseline steht damit aktuell bei **34 NX-Verbraucherdateien**. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.
 
 Regeln:
 
@@ -140,7 +133,7 @@ Route-CSS soll **nicht** enthalten:
 ## 6. Migrationsreihenfolge
 
 1. **Globale Shell:** `style.css` und `site-header.css` inventarisieren und ihre wirklich global benötigten Primitive von den alten Seiten-/Blocksy-Regeln trennen. Das ist der Hauptblocker für einen bedingten Legacy-Provider.
-2. **Kleine provider-unabhängige NX-Dateien:** die vier verbleibenden Dateien oben auf Canon-/Route-Tokens umstellen und aus der NX-Baseline entfernen.
+2. **Provider-unabhängige NX-Reste (erledigt):** reine Typografie-Aliase sind auf Canon-Tokens migriert; die Anfragestrecke nutzt für ihre gemessene Energy-Header-Höhe einen route-lokalen Token.
 3. **Solar-Anfragestrecke:** Token-Spiegel physisch entfernen; gemeinsame Gutachten-Primitives aus `system.css` konsumieren, nur echte Solar-Deltas behalten. Das JS-gemessene Header-/Register-Token wird gemeinsam mit seinen CSS-Verbrauchern migriert, nicht isoliert umbenannt.
 4. **Editorial-Solar-Legacy:** die generischen `.solar-page`-Variablen `--serif`/`--mono` eindeutig umbenennen oder auf Core-Rollen migrieren; eingefrorene Guard-Ausnahme danach löschen.
 5. **Service-Routen:** aktive `cro.css`, `ga4.css`, `meta-ads.css`, `performance.css`, `seo-cornerstone.css` nach Nutzung und Geschäftswert einzeln migrieren oder stilllegen.

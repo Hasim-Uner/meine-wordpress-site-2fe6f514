@@ -1,10 +1,8 @@
 # Legacy --nx-* consumer files frozen on 2026-09-14.
 # Shrink only. New files must use the canonical system.css architecture.
-blocksy-child/assets/css/anfragestrecke.css
 blocksy-child/assets/css/aroundhome-decision.css
 blocksy-child/assets/css/audit-results.css
 blocksy-child/assets/css/audit.css
-blocksy-child/assets/css/b2b-solar-leads-page.css
 blocksy-child/assets/css/case-study.css
 blocksy-child/assets/css/checkfox-decision.css
 blocksy-child/assets/css/cja-audit.css
@@ -26,11 +24,9 @@ blocksy-child/assets/css/seo-cornerstone.css
 blocksy-child/assets/css/seo.css
 blocksy-child/assets/css/server-side-tracking-base.css
 blocksy-child/assets/css/server-side-tracking-funnel.css
-blocksy-child/assets/css/server-side-tracking-protocol.css
 blocksy-child/assets/css/single-editorial.css
 blocksy-child/assets/css/single.css
 blocksy-child/assets/css/site-header.css
-blocksy-child/assets/css/solar-leads-kaufen-alternative-page.css
 blocksy-child/assets/css/solar-leads-kaufen-alternative.css
 blocksy-child/assets/css/solar-marketcheck-compact.css
 blocksy-child/assets/css/sticky-cta.css

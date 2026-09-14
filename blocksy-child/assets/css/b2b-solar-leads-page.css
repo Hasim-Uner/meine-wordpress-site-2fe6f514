@@ -31,7 +31,7 @@
 	--b2b-ease: cubic-bezier(0.22, 1, 0.36, 1);
 	background: var(--b2b-dark);
 	color: var(--b2b-on-dark);
-	font-family: var(--nx-font-sans, "Figtree", system-ui, sans-serif);
+	font-family: var(--serif, "Figtree", system-ui, sans-serif);
 }
 
 .hu-b2b .hu-intercept__container {
@@ -114,7 +114,7 @@
 .hu-b2b .hu-b2b__gate h2,
 .hu-b2b .hu-b2b__proof h2,
 .hu-b2b h3 {
-	font-family: var(--nx-font-display, "Satoshi", "Figtree", system-ui, sans-serif);
+	font-family: var(--serif-display, "Satoshi", "Figtree", system-ui, sans-serif);
 }
 
 .hu-b2b .hu-intercept__title {
