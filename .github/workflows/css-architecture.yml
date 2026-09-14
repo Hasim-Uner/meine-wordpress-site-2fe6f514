@@ -51,4 +51,4 @@ jobs:
             echo 'Superseded single-post block is still present after prune.' >&2
             exit 1
           fi
-          grep -q 'NEXUS ARCHIVE LAYOUT' blocksy-child/style.css
+          grep -q 'NEXUS ARCHIVE LAYOUT' /tmp/blocksy-child-style.css
