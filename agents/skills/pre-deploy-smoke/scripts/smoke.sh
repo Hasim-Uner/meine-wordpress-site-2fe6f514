@@ -127,6 +127,26 @@ for tpl in "$THEME"/template-parts/*.php "$THEME"/front-page.php "$THEME"/home.p
 done
 $unclosed_ok && pass "Template PHP tags balanced"
 
+# --- 6. Absolute tracking-claim guard ---
+header "Tracking Claim Guard"
+
+# Diese Muster sind technisch oder rechtlich zu absolut fuer produktive Copy.
+# Erlaubt bleiben praezise Aussagen ueber Signalqualitaet, Paralleltests,
+# Consent-Grenzen und explizite Hinweise, dass 100-%-Attribution nicht zugesagt wird.
+tracking_claims="$(
+  grep -RInE \
+    --include='*.php' --include='*.js' --include='*.html' \
+    'abgelehnten Cookies.*zurückverfolgbar|zurückverfolgbar.*abgelehnten Cookies|Saubere Attribution trotz Cookieless|Cookieless.*Attribution nicht mehr|macht jede Anfrage.*zurückverfolgbar|Jede Anfrage bleibt.*zurückverfolgbar' \
+    "$THEME" 2>/dev/null || true
+)"
+
+if [[ -n "$tracking_claims" ]]; then
+  fail "Absolute tracking/attribution claim found:"
+  echo "$tracking_claims" | head -20
+else
+  pass "No blocked absolute tracking claims in deployable theme code"
+fi
+
 # --- Verdict ---
 header "VERDICT"
 if (( FAIL )); then
