@@ -609,7 +609,7 @@ function hu_enqueue_assets() {
 		|| is_page( 'case-studies-e-commerce' )
 		|| is_page( 'ergebnisse' )
 	) {
-		hu_enqueue_css( 'hu-ergebnisse-css', 'ergebnisse.css', [ 'nexus-design-system' ] );
+		hu_enqueue_css( 'hu-ergebnisse-css', 'ergebnisse.css', [ 'nexus-system-css' ] );
 	}
 
 	// ── P2) Template: Whitelabel-Retainer ──────────────────────────

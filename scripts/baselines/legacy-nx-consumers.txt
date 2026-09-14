@@ -11,7 +11,6 @@ blocksy-child/assets/css/cwv.css
 blocksy-child/assets/css/deep-dive.css
 blocksy-child/assets/css/e3-case-v2.css
 blocksy-child/assets/css/energy-systems.css
-blocksy-child/assets/css/ergebnisse.css
 blocksy-child/assets/css/footer-cta.css
 blocksy-child/assets/css/ga4.css
 blocksy-child/assets/css/glossary.css

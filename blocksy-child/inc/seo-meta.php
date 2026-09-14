@@ -233,16 +233,16 @@ function hu_get_forced_singular_seo_map() {
 				'description' => sprintf( 'WordPress Agentur Hannover für messbare B2B-Anfragen: technisches SEO, Server-Side Tracking, CRO. Erst Projektprüfung, dann Umsetzung. CPL-Case: %s → %s.', $e3_cpl_before, $e3_cpl_after ),
 			],
 			'ergebnisse' => [
-				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse und Arbeitsbelege: dokumentierter Case eines PV-Installationsbetriebs, öffentlich prüfbare WordPress-Projekte und die messbare Technik dieser Website.',
+				'title'       => 'WordPress-Projekte & Ergebnisse | Haşim Üner',
+				'description' => 'WordPress-Arbeiten mit konkretem Umsetzungsumfang, eine technische Projektgeschichte, ein eingeordneter Solar-Fall und ein Übergabemuster für Agenturen.',
 			],
 			'case-studies-e-commerce' => [
-				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse und Arbeitsbelege: dokumentierter Case eines PV-Installationsbetriebs, öffentlich prüfbare WordPress-Projekte und die messbare Technik dieser Website.',
+				'title'       => 'WordPress-Projekte & Ergebnisse | Haşim Üner',
+				'description' => 'WordPress-Arbeiten mit konkretem Umsetzungsumfang, eine technische Projektgeschichte, ein eingeordneter Solar-Fall und ein Übergabemuster für Agenturen.',
 			],
 			'case-studies' => [
-				'title'       => 'Ergebnisse & Case Studies | WordPress, SEO, CRO',
-				'description' => 'Ergebnisse und Arbeitsbelege: dokumentierter Case eines PV-Installationsbetriebs, öffentlich prüfbare WordPress-Projekte und die messbare Technik dieser Website.',
+				'title'       => 'WordPress-Projekte & Ergebnisse | Haşim Üner',
+				'description' => 'WordPress-Arbeiten mit konkretem Umsetzungsumfang, eine technische Projektgeschichte, ein eingeordneter Solar-Fall und ein Übergabemuster für Agenturen.',
 			],
 			'case-study-solar-leadgenerierung' => [
 				'title'       => hu_get_e3_methodology_case_title(),
