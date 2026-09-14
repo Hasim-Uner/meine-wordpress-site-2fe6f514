@@ -170,3 +170,23 @@ function hu_messaging_canon() {
 		],
 	];
 }
+
+/**
+ * Add explicit product-family routes without changing the SEO owner of the
+ * dedicated Server-Side Tracking service. Header navigation can use the broad
+ * setup route while schema and specialist links keep pointing at SST.
+ *
+ * @param array<string,string> $routes Commercial route map.
+ * @return array<string,string>
+ */
+function hu_position_tracking_product_route( $routes ) {
+	if ( ! is_array( $routes ) ) {
+		return $routes;
+	}
+
+	$routes['tracking_setup']    = home_url( '/ga4-tracking-setup/' );
+	$routes['tracking_advanced'] = home_url( '/server-side-tracking-b2b/' );
+
+	return $routes;
+}
+add_filter( 'hu_commercial_route_map', 'hu_position_tracking_product_route', 20 );
