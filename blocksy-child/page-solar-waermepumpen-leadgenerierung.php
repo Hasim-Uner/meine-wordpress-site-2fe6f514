@@ -158,8 +158,8 @@ $stations = [
 	[
 		'id'    => 'station-messung',
 		'titel' => 'Messung auf eigenem Server',
-		'bau'   => 'Serverseitiges Tracking auf einer Subdomain Ihrer Website, Server in Frankfurt. Jede Anfrage bleibt bis zur auslösenden Anzeige zurückverfolgbar — auch bei Ad-Blockern und abgelehnten Cookies. Die Messdaten laufen über Ihren Container, Ihre Konten.',
-		'sicht' => 'Sie können sagen, welche Anzeige den 40.000-€-Auftrag gebracht hat. Und welche 900 € verbrannt hat, ohne eine einzige Anfrage.',
+		'bau'   => 'Serverseitiges Tracking auf einer Subdomain Ihrer Website, Server in Frankfurt. Browser-, Plattform- und CRM-Signale werden kontrollierter zusammengeführt; Consent und verfügbare Identifikatoren bestimmen, wie vollständig eine einzelne Anfrage einer Anzeige zugeordnet werden kann. Die Messdaten laufen über Ihren Container, Ihre Konten.',
+		'sicht' => 'Wo die nötigen Mess- und CRM-Signale vorliegen, sehen Sie deutlich besser, welche Anzeigen Anfragen und spätere Vertriebsresultate erzeugen — und wo Budget ohne verwertbare Anfrage bleibt.',
 		'fehlt' => 'Optimiert wird auf Klickberichte. Das Budget wandert dahin, wo geklickt wird — nicht dahin, wo unterschrieben wird. Der Unterschied fällt erst auf, wenn man beides nebeneinanderlegen kann.',
 	],
 	[
@@ -211,7 +211,7 @@ $phases = [
 	[
 		'label' => 'Ab Monat 3 · Wirkung',
 		'text'  => sprintf(
-			'Mit den ersten belastbaren Daten wird messbar, welche Anzeige zu welcher Anfrage und welche Anfrage zu welchem Vertrag führt. Ab hier stabilisieren sich die Kosten pro qualifizierter Anfrage bei %s — von %s zu Beginn.',
+			'Mit den ersten belastbaren Daten wird die Verbindung von Anzeige, Anfrage und Vertriebsstatus belastbarer; nicht jeder Kontakt bleibt unter jedem Consent- und Browserzustand individuell zuordenbar. Ab hier stabilisieren sich die Kosten pro qualifizierter Anfrage bei %s — von %s zu Beginn.',
 			esc_html( $e3_cpl_after ),
 			esc_html( $e3_cpl_before )
 		),
@@ -335,7 +335,7 @@ $faq_items = [
 	[
 		'id'   => 'faq-definition',
 		'q'    => 'Was ist ein eigenes Anfragesystem für Photovoltaik und Wärmepumpe?',
-		'lead' => 'Ein eigenes Anfragesystem ist eine Anfragestrecke auf der Domain des Installationsbetriebs: Anzeigen und organische Suche führen auf eine eigene Seite, ein mehrstufiges Formular qualifiziert vor dem Erstkontakt vor, serverseitiges Tracking macht jede Anfrage bis zur auslösenden Anzeige zurückverfolgbar, und ein Alarm erreicht den Vertrieb in unter 60 Sekunden.',
+		'lead' => 'Ein eigenes Anfragesystem ist eine Anfragestrecke auf der Domain des Installationsbetriebs: Anzeigen und organische Suche führen auf eine eigene Seite, ein mehrstufiges Formular qualifiziert vor dem Erstkontakt vor, serverseitiges Tracking führt verfügbare Marketing- und CRM-Signale kontrollierter zusammen, und ein Alarm erreicht den Vertrieb in unter 60 Sekunden.',
 		'rest' => 'Code, Werbekonten, Tracking-Container und Daten liegen beim Betrieb. Der Unterschied zum Lead-Einkauf liegt nicht im Preis pro Anfrage, sondern in Exklusivität, Vorqualifizierung und Eigentum.',
 		'open' => true,
 	],
@@ -354,7 +354,7 @@ $faq_items = [
 	[
 		'id'   => 'faq-tracking',
 		'q'    => 'Funktioniert serverseitiges Tracking ohne Cookie-Banner?',
-		'lead' => 'Serverseitiges Tracking verlagert die Messung vom Browser auf einen eigenen Server und macht Anfragen auch bei Ad-Blockern und abgelehnten Cookies zurückverfolgbar — es ersetzt aber keine erforderliche Einwilligung.',
+		'lead' => 'Serverseitiges Tracking ergänzt die Browsermessung um eine kontrollierte Server-Strecke und kann Signalverluste durch Browserbeschränkungen oder Blocker reduzieren. Es macht abgelehnte Einwilligungen nicht zu messbaren Nutzerprofilen und ersetzt keine erforderliche Einwilligung.',
 		'rest' => 'Welche Messung einwilligungspflichtig ist, hängt von den eingesetzten Diensten ab; das ist eine rechtliche Bewertung und keine technische.',
 	],
 	[
@@ -671,8 +671,8 @@ get_header();
 					<p class="aufriss">
 						<span class="erst">Ein eigenes Anfragesystem ist eine Anfragestrecke auf Ihrer Domain.</span>
 						Anzeige oder Suche führt auf Ihre Seite. Ein Formular qualifiziert vor, bevor jemand
-						Ihren Vertrieb erreicht. Serverseitiges Tracking macht jede Anfrage bis zur auslösenden
-						Anzeige zurückverfolgbar. Ein Alarm erreicht Ihren Vertrieb in unter 60 Sekunden.
+						Ihren Vertrieb erreicht. Serverseitiges Tracking führt verfügbare Marketing- und
+						CRM-Signale kontrollierter zusammen. Ein Alarm erreicht Ihren Vertrieb in unter 60 Sekunden.
 						Code, Konten und Daten gehören Ihrem Betrieb.
 					</p>
 
