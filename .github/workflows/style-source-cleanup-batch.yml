@@ -66,10 +66,6 @@ jobs:
               removed_total += removed
               print(f'Removed {label}: {removed.count(chr(10)) + 1} lines')
 
-          # Scope guard: prove that the intended selectors were inside the
-          # removed blocks. Do NOT assert that these selector fragments vanish
-          # globally; separate legacy light/mobile Blocksy rules still exist and
-          # are intentionally outside this cleanup.
           expected_removed_fragments = [
               '.ct-header .ct-menu > li > a',
               'NEXUS MEGA MENÜ (VIEWPORT FIX)',
@@ -80,10 +76,6 @@ jobs:
               if fragment not in removed_total:
                   raise SystemExit(f'style.css: expected cleanup fragment was not removed: {fragment}')
 
-          # Only block identity markers must be gone from the resulting source.
-          # Generic selectors such as `.ct-header .ct-menu > li > a` are not
-          # valid global absence checks because they also occur in other legacy
-          # sections that are migrated separately.
           required_dead_markers = [
               '/* Menü-Links: Clean & Spaced */',
               'NEXUS MEGA MENÜ (VIEWPORT FIX)',
@@ -140,7 +132,7 @@ jobs:
           if text.count(step) != 1:
               raise SystemExit('css-architecture.yml: retired prune verification step drifted')
           text = text.replace(step, '')
-          workflow.write_text(text, encoding='utf-8')
+          workflow.write_text(text.rstrip() + '\n', encoding='utf-8')
 
           doc = Path('docs/architecture/CSS_ARCHITECTURE.md')
           text = doc.read_text(encoding='utf-8')
@@ -176,7 +168,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add \
+          git add -A -- \
             blocksy-child/style.css \
             scripts/build-theme-dist.sh \
             .github/workflows/css-architecture.yml \
