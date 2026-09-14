@@ -27,6 +27,7 @@ forbid_pattern() {
 }
 
 CORE_JS="$ROOT/assets/js/nexus-core.js"
+SOLAR_PAGE="$ROOT/page-solar-waermepumpen-leadgenerierung.php"
 SOLAR_BOOTSTRAP="$ROOT/assets/js/solar-leadgenerierung-solara.js"
 SOLAR_JS="$ROOT/assets/js/solar-marketcheck-compact.js"
 SOLAR_CSS="$ROOT/assets/css/solar-marketcheck-compact.css"
@@ -37,6 +38,7 @@ DIAGNOSE_CANON="$ROOT/inc/canon/diagnose-canon.php"
 PRICING_CANON="$ROOT/inc/canon/pricing-canon.php"
 
 require_file "$CORE_JS"
+require_file "$SOLAR_PAGE"
 require_file "$SOLAR_BOOTSTRAP"
 require_file "$SOLAR_JS"
 require_file "$SOLAR_CSS"
@@ -45,6 +47,13 @@ require_file "$COCKPIT_LEADS"
 require_file "$COCKPIT_COMMAND"
 require_file "$DIAGNOSE_CANON"
 require_file "$PRICING_CANON"
+
+# The solar money page names the free marketcheck as its entry offer. Ready
+# buyers therefore need a direct primary path from the document head to the
+# actual gate; the explanatory five-station tour remains the secondary route.
+require_pattern 'data-track-action="cta_strecke_kopf_to_marktcheck"' "$SOLAR_PAGE"
+require_pattern '>Marktcheck starten[[:space:]]*<span' "$SOLAR_PAGE"
+require_pattern 'data-track-action="cta_strecke_kopf_to_stationen"' "$SOLAR_PAGE"
 
 # The stable WordPress handle is a bootstrap now. It must load the compact
 # two-view controller and its matching stylesheet using the actual repo paths.
