@@ -162,7 +162,7 @@ $own_system_layers = [
 	],
 	[
 		't' => 'Server-Side-Tracking (CAPI)',
-		's' => 'Eigener Container in Frankfurt, DSGVO-konform. Ad-Blocker, ITP und Cookieless brechen die Attribution nicht mehr.',
+		's' => 'Eigener Server-Container in Frankfurt. Die serverseitige Messstrecke kann Browserverluste reduzieren und Signale kontrollierter an die vereinbarten Plattformen weitergeben; Consent und rechtliche Anforderungen bleiben davon unberührt.',
 	],
 	[
 		't' => 'CRM-Anschluss & Lead-Scoring',
