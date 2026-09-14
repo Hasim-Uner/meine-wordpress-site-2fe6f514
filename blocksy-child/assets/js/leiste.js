@@ -64,8 +64,19 @@
             schliessen(leiste, klappe, blatt, false);
         });
 
-        /* Ein Klick im Blatt fuehrt auf ein Sprungziel derselben Seite. Das
-           Blatt muss dann zu sein, sonst landet der Sprung hinter ihm. */
+        /* Wenn Tastaturnutzer die geoeffnete Navigation verlassen, bleibt
+           kein grosses Blatt ueber dem Inhalt stehen. Der Fokus ist bereits
+           am neuen Ziel, deshalb wird er hier nicht zur Klappe zurueckgezogen. */
+        document.addEventListener('focusin', function (event) {
+            if (!leiste.classList.contains('offen') || leiste.contains(event.target)) {
+                return;
+            }
+
+            schliessen(leiste, klappe, blatt, false);
+        });
+
+        /* Ein Klick im Blatt navigiert weiter. Das Blatt muss dann zu sein,
+           damit es auf der Zielroute bzw. am Fragment nicht offen bleibt. */
         blatt.addEventListener('click', function (event) {
             if (event.target.closest('a')) {
                 schliessen(leiste, klappe, blatt, false);
@@ -73,9 +84,13 @@
         });
 
         window.addEventListener('resize', function () {
-            if (window.innerWidth >= BREITE_AB && leiste.classList.contains('offen')) {
-                schliessen(leiste, klappe, blatt, false);
+            if (window.innerWidth < BREITE_AB || !leiste.classList.contains('offen')) {
+                return;
             }
+
+            /* Ein Viewportwechsel darf den aktuell fokussierten Link nicht in
+               einem hidden gesetzten Blatt einschliessen. */
+            schliessen(leiste, klappe, blatt, blatt.contains(document.activeElement));
         }, { passive: true });
     }
 
@@ -88,13 +103,19 @@
     }
 
     function schliessen(leiste, klappe, blatt, fokusZurueck) {
+        /* Fokus zuerst aus dem Panel ziehen. Ein fokussierter Nachfahre darf
+           nicht erst unsichtbar werden und dann auf document.body fallen. */
+        if (fokusZurueck && blatt.contains(document.activeElement)) {
+            klappe.focus();
+        }
+
         blatt.hidden = true;
         leiste.classList.remove('offen');
         klappe.setAttribute('aria-expanded', 'false');
         klappe.setAttribute('aria-label', 'Navigation öffnen');
         beschriften(klappe, 'open');
 
-        if (fokusZurueck) {
+        if (fokusZurueck && document.activeElement !== klappe) {
             klappe.focus();
         }
     }
