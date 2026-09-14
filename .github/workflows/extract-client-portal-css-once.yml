@@ -1,0 +1,43 @@
+name: Extract Client Portal CSS Once
+
+on:
+  push:
+    branches:
+      - refactor/extract-client-portal-css-2026-09
+    paths:
+      - '.github/workflows/extract-client-portal-css-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/extract-client-portal-css-2026-09
+      - name: Apply extraction
+        run: python3 scripts/extract-client-portal-css.py
+      - name: Verify architecture
+        run: |
+          python3 scripts/audit-css-architecture.py
+          python3 scripts/audit-legacy-nx-css.py
+          bash scripts/lint-css-spacing.sh
+          bash scripts/lint-css-motion.sh
+          php -l blocksy-child/inc/enqueue.php
+          test -f blocksy-child/assets/css/client-portal.css
+          ! grep -q -- '--nx-' blocksy-child/assets/css/client-portal.css
+          ! grep -q 'transition: all' blocksy-child/assets/css/client-portal.css
+          ! grep -q '\.nexus-dashboard {' blocksy-child/style.css
+          ! grep -q '\.nexus-login {' blocksy-child/style.css
+          grep -q '\.nexus-nav-btn {' blocksy-child/style.css
+          grep -q 'nexus-client-portal-css' blocksy-child/inc/enqueue.php
+          git diff --check
+      - name: Commit product extraction
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add blocksy-child/style.css blocksy-child/assets/css/client-portal.css blocksy-child/inc/enqueue.php docs/architecture/CSS_ARCHITECTURE.md
+          git commit -m 'Extract client portal CSS from global stylesheet'
+          git push origin HEAD:refactor/extract-client-portal-css-2026-09
