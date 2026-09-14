@@ -1,0 +1,46 @@
+name: Migrate style route owners once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/migrate-style-route-owners-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Apply guarded migration
+        run: python3 scripts/migrate-style-route-owners.py
+
+      - name: Validate CSS architecture
+        run: python3 scripts/audit-css-architecture.py
+
+      - name: Validate legacy NX baseline
+        run: python3 scripts/audit-legacy-nx-css.py
+
+      - name: Validate spacing
+        run: bash scripts/lint-css-spacing.sh
+
+      - name: Validate motion
+        run: bash scripts/lint-css-motion.sh
+
+      - name: Show product diff
+        run: git diff --check && git diff --stat && git diff -- blocksy-child/style.css blocksy-child/assets/css/homepage.css blocksy-child/assets/css/single.css scripts/baselines/legacy-nx-consumers.txt
+
+      - name: Commit product migration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add blocksy-child/style.css blocksy-child/assets/css/homepage.css blocksy-child/assets/css/single.css scripts/baselines/legacy-nx-consumers.txt
+          git diff --cached --quiet && exit 1
+          git commit -m 'Finish global style NX decoupling'
+          git push origin HEAD:${GITHUB_REF_NAME}
