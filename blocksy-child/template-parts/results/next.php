@@ -1,6 +1,10 @@
 <?php
 /** Results hub: segmented close. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+/** @var array<int, array{kind:string,kicker:string,title:string,desc:string,url:string,label:string,note:string,action:string}> $next_steps */
+/** @var string $freelancer_url */
+/** @var string $energy_url */
 ?>
 <section id="weiter" aria-labelledby="weiter-h" data-track-section="weiter">
 	<div class="blatt reihe">
