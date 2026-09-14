@@ -1,6 +1,10 @@
 <?php
 /** Results hub: documented outcome proof. */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+/** @var string $e3_case_label */
+/** @var callable(string, string=, string=): string $metric */
+/** @var string $e3_case_url */
 ?>
 <section id="grossprojekt" aria-labelledby="grossprojekt-h" data-track-section="grossprojekt">
 	<div class="blatt reihe">
