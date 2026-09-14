@@ -67,6 +67,7 @@ function hu_enqueue_assets() {
 	$is_provider_decision   = $is_checkfox_decision || $is_aroundhome_decision;
 	$is_audit_route = function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page();
 	$is_client_portal = is_page_template( 'template-portal.php' );
+	$is_results_hub = function_exists( 'hu_is_results_hub_request' ) && hu_is_results_hub_request();
 
 	// ── Parent Theme ──────────────────────────────────────────────
 	wp_enqueue_style(
@@ -77,11 +78,12 @@ function hu_enqueue_assets() {
 	);
 
 	// ── Legacy compatibility provider ──────────────────────────────
-	// Die kanonische Startseite und die Personenseite stehen vollstaendig auf
-	// system.css und konsumieren weder NX- noch unpraefixierte Provider-Tokens.
-	// Alle anderen Routen behalten den Legacy-Provider, bis ihre impliziten
-	// Token-/Selector-Abhaengigkeiten einzeln nachgewiesen und migriert sind.
-	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() );
+	// Die kanonische Startseite, die Personenseite und der Ergebnisse-Hub
+	// stehen vollstaendig auf system.css und konsumieren weder NX- noch
+	// unpraefixierte Provider-Tokens. Alle anderen Routen behalten den
+	// Legacy-Provider, bis ihre impliziten Token-/Selector-Abhaengigkeiten
+	// einzeln nachgewiesen und migriert sind.
+	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub );
 	if ( $uses_legacy_design_system ) {
 		hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
 	}
@@ -616,12 +618,7 @@ function hu_enqueue_assets() {
 	}
 
 	// ── P) Template: Ergebnisse Hub ────────────────────────────────
-	if (
-		is_page_template( 'page-ergebnisse.php' )
-		|| is_page_template( 'page-case-studies-e-commerce.php' )
-		|| is_page( 'case-studies-e-commerce' )
-		|| is_page( 'ergebnisse' )
-	) {
+	if ( $is_results_hub ) {
 		hu_enqueue_css( 'hu-ergebnisse-css', 'ergebnisse.css', [ 'nexus-system-css' ] );
 	}
 
