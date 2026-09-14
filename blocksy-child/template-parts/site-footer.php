@@ -6,23 +6,21 @@
  * Designsystem (`assets/css/system.css`) statt auf einem eigenen
  * Farbsystem — `site-footer.css` ist damit abgeloest, nicht ergaenzt.
  *
- * Zwei Lautstaerken bleiben. Laut sind die drei Ich-Saetze, jeder fuehrt
- * auf seinen kommerziellen Weg (Agentur, Energie, direktes Projekt — die
- * drei Einstiege aus AGENTS.md), plus die Direktzeile darunter. Leise
- * sind Verzeichnis- und Absenderzeile.
+ * Zwei Lautstaerken bleiben. Laut sind die vier kommerziellen Wege aus dem
+ * globalen Routing-Contract: direktes WordPress-Projekt, Tracking,
+ * White-Label und Solar/Waermepumpe. Leise sind Query-Owner, Belege, Wissen,
+ * Rechtliches und die Absenderzeile.
  *
- * Neu ist die Absenderzeile als `.protokoll`: eine Zeile je Angabe, Mono,
- * Label links und Wert rechts — dasselbe Muster, das den Abschluss eines
- * Dokuments traegt. Vorher standen dieselben Angaben als eine lange,
- * durch Mittelpunkte getrennte Zeile, in der Anschrift, Antwortzeit und
- * Messhinweis gleich schwer nebeneinander lagen.
+ * Die Route, auf der sich jemand bereits befindet, wird in der lauten Wahl
+ * nicht noch einmal angeboten. Der Footer bleibt damit ein Orientierungs-
+ * und Wechselpunkt statt einer Sammlung von Selbstlinks.
  *
- * Auf der Startseite ist der direkte Freelancer-Pfad bereits ausgeführt.
- * White-Label und Solar sind dort als Spezialisierungen verlinkt; die erneute
- * Zielgruppenwahl im Footer entfällt. Kontakt läuft über die gemeinsame Route.
+ * Auf der Startseite ist der direkte Freelancer-Pfad bereits ausgefuehrt;
+ * die erneute Wegewahl im Footer entfaellt dort komplett. Kontakt laeuft ueber
+ * die gemeinsame Route.
  *
- * Die drei cta_footer_pick_*-Werte bleiben unveraendert, damit die
- * Zeitreihe ueber den Umbau hinweg vergleichbar bleibt; dasselbe gilt
+ * Die bestehenden cta_footer_pick_*-Werte bleiben fuer die historischen Wege
+ * unveraendert. Tracking erhaelt einen eigenen stabilen Wert. Dasselbe gilt
  * fuer die cta_footer_nav_*-Werte der Verzeichnisziele.
  *
  * @package Blocksy_Child
@@ -35,31 +33,63 @@ if ( ! defined( 'ABSPATH' ) ) {
 $current_year = wp_date( 'Y' );
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $routes       = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
-$shows_picks = ! is_front_page();
+$shows_picks  = ! is_front_page();
 
-$energy_url     = $routes['energy'] ?? ( $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ) );
-$freelancer_url = $routes['freelancer'] ?? home_url( '/' );
-$whitelabel_url = $routes['whitelabel'] ?? ( function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' ) );
-$about_url      = $routes['about'] ?? ( $primary_urls['about'] ?? home_url( '/hasim-uener/' ) );
-$e3_url         = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
-$blog_url       = $primary_urls['blog'] ?? home_url( '/blog/' );
-$glossary_url   = $primary_urls['glossary'] ?? home_url( '/glossar/' );
-$contact_url    = $routes['contact'] ?? ( $primary_urls['contact'] ?? nexus_get_contact_url() );
-$form_url       = $contact_url;
-$imprint_url    = $primary_urls['impressum'] ?? home_url( '/impressum/' );
-$privacy_url    = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
+$energy_url        = $routes['energy'] ?? ( $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ) );
+$freelancer_url    = $routes['freelancer'] ?? home_url( '/' );
+$tracking_url      = $routes['tracking_b2b'] ?? home_url( '/server-side-tracking-b2b/' );
+$whitelabel_url    = $routes['whitelabel'] ?? ( function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' ) );
+$agentur_local_url = $routes['agentur_local'] ?? home_url( '/wordpress-agentur-hannover/' );
+$results_url       = $routes['results'] ?? ( $primary_urls['results'] ?? home_url( '/ergebnisse/' ) );
+$about_url         = $routes['about'] ?? ( $primary_urls['about'] ?? home_url( '/hasim-uener/' ) );
+$e3_url            = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
+$blog_url          = $primary_urls['blog'] ?? home_url( '/blog/' );
+$glossary_url      = $primary_urls['glossary'] ?? home_url( '/glossar/' );
+$contact_url       = $routes['contact'] ?? ( $primary_urls['contact'] ?? nexus_get_contact_url() );
+$form_url          = $contact_url;
+$imprint_url       = $primary_urls['impressum'] ?? home_url( '/impressum/' );
+$privacy_url       = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
 
 $contact_email = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
 $phone_link    = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone( 'link' ) : '';
 $phone_display = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone( 'display' ) : '';
 
+$current_pick_route = '';
+
+if ( is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' ) ) {
+	$current_pick_route = 'tracking';
+} elseif ( is_page( 'whitelabel-retainer' ) || is_page_template( 'page-whitelabel-retainer.php' ) ) {
+	$current_pick_route = 'whitelabel';
+} elseif ( is_page( 'solar-waermepumpen-leadgenerierung' ) || is_page_template( 'page-solar-waermepumpen-leadgenerierung.php' ) ) {
+	$current_pick_route = 'energy';
+} elseif ( is_front_page() ) {
+	$current_pick_route = 'freelancer';
+}
+
 /*
- * Die drei Ich-Saetze. Der fette Teil benennt, wer spricht; der Rest sagt,
- * was fehlt. Aufgeteilt in drei Stuecke, damit jedes einzeln durch
- * esc_html() geht und trotzdem ein echtes <b> im Satz stehen kann.
+ * Die vier Wege folgen derselben Reihenfolge wie der globale Header:
+ * direkte Umsetzung, Messung, Agentur-Partnerschaft, Spezialisierung.
+ * Das ist absichtlich task-first statt rein zielgruppenbasiert.
  */
 $picks = [
 	[
+		'route'  => 'freelancer',
+		'pre'    => 'Ich habe ',
+		'strong' => 'eine Website',
+		'post'   => ', die neu gebaut oder besser werden soll.',
+		'url'    => $freelancer_url,
+		'track'  => 'cta_footer_pick_project',
+	],
+	[
+		'route'  => 'tracking',
+		'pre'    => 'Ich brauche ',
+		'strong' => 'belastbare Messung',
+		'post'   => ' für Anfragen, Kampagnen und CRM.',
+		'url'    => $tracking_url,
+		'track'  => 'cta_footer_pick_tracking',
+	],
+	[
+		'route'  => 'whitelabel',
 		'pre'    => 'Ich bin ',
 		'strong' => 'Agentur',
 		'post'   => ' und brauche Technik unter meinem Namen.',
@@ -67,20 +97,25 @@ $picks = [
 		'track'  => 'cta_footer_pick_agency',
 	],
 	[
+		'route'  => 'energy',
 		'pre'    => 'Ich bin ',
 		'strong' => 'Solar- oder Wärmepumpenbetrieb',
 		'post'   => ' und will eigene Anfragen statt Portalleads.',
 		'url'    => $energy_url,
 		'track'  => 'cta_footer_pick_energy',
 	],
-	[
-		'pre'    => 'Ich habe ',
-		'strong' => 'eine Seite',
-		'post'   => ', die zu wenig Anfragen bringt.',
-		'url'    => $freelancer_url,
-		'track'  => 'cta_footer_pick_project',
-	],
 ];
+
+if ( '' !== $current_pick_route ) {
+	$picks = array_values(
+		array_filter(
+			$picks,
+			static function ( $pick ) use ( $current_pick_route ) {
+				return (string) $pick['route'] !== $current_pick_route;
+			}
+		)
+	);
+}
 
 /*
  * Direktzeile: drei Wege, kein Formularzwang. "Kontaktformular" statt
@@ -110,13 +145,18 @@ $direct[] = [
 ];
 
 /*
- * Verzeichnis: eine Zeile statt drei Spalten. "Ergebnisse & Case Studies"
- * und "Fallstudie: Solar Leadgenerierung" waren zwei Links auf einen Fall
- * — der Fall bleibt, der Hub faellt weg.
+ * Verzeichnis: breit genug fuer Crawl- und Orientierungswege, aber deutlich
+ * leiser als die vier kommerziellen Entscheidungen. Die lokale Agentur-Seite
+ * bleibt bewusst hier statt im Header: Sie besitzt lokale WordPress-Queries,
+ * ist aber kein globaler Geschaeftspfad. Ergebnisse und Solar-Fallstudie sind
+ * getrennt, weil der Hub inzwischen auch technische und weitere oeffentliche
+ * Arbeiten belegt.
  */
 $directory = [
+	[ $results_url, 'Ergebnisse', 'cta_footer_nav_results', 'trust' ],
+	[ $agentur_local_url, 'WordPress Agentur Hannover', 'cta_footer_nav_agentur_local', 'navigation' ],
 	[ $about_url, 'Über Haşim', 'cta_footer_nav_about', 'navigation' ],
-	[ $e3_url, 'Fallstudie Solar', 'cta_footer_nav_case_study_proof', 'trust' ],
+	[ $e3_url, 'Solar-Fallstudie', 'cta_footer_nav_case_study_proof', 'trust' ],
 	[ $blog_url, 'Blog', 'cta_footer_nav_insights', 'navigation' ],
 	[ $glossary_url, 'Glossar', 'cta_footer_nav_glossary', 'navigation' ],
 	[ $imprint_url, 'Impressum', 'cta_footer_nav_imprint', 'navigation' ],
@@ -263,9 +303,9 @@ $pick_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 
 <footer id="footer" class="fuss" role="contentinfo">
 	<div class="blatt">
-		<?php if ( $shows_picks ) : ?>
+		<?php if ( $shows_picks && ! empty( $picks ) ) : ?>
 			<nav class="wahl" aria-labelledby="fuss-wahl">
-				<span class="mono" id="fuss-wahl">Was trifft zu?</span>
+				<span class="mono" id="fuss-wahl">Welcher Weg passt?</span>
 
 				<ul>
 					<?php foreach ( $picks as $pick ) : ?>
