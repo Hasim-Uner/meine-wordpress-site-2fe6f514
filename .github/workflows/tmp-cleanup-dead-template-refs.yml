@@ -1,0 +1,87 @@
+name: Temporary dead-template reference cleanup
+
+on:
+  push:
+    branches:
+      - cleanup/dead-template-references-2026-09-14
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: cleanup/dead-template-references-2026-09-14
+          fetch-depth: 0
+
+      - name: Apply asserted dead-reference cleanup
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_exact(path, old, new, expected=1):
+              p = Path(path)
+              text = p.read_text()
+              count = text.count(old)
+              if count != expected:
+                  raise SystemExit(f"{path}: expected {expected} occurrences, found {count}: {old!r}")
+              p.write_text(text.replace(old, new))
+
+          replace_exact('blocksy-child/inc/enqueue.php', " || is_page_template( 'page-website-fuer-solar-und-waermepumpen-anbieter.php' )", '')
+          replace_exact('blocksy-child/inc/enqueue.php', " || is_page_template( 'page-case-e3.php' )", '')
+          replace_exact('blocksy-child/inc/enqueue.php', "\t\t'page-case-e3.php',\n", '')
+
+          replace_exact('blocksy-child/inc/helpers.php', "\t\t|| is_page_template( 'page-case-e3.php' )\n", '')
+          replace_exact('blocksy-child/inc/helpers.php', "\t\t'page-case-e3.php',\n", '')
+          replace_exact('blocksy-child/inc/helpers.php', "\t\t'website-fuer-solar-und-waermepumpen-anbieter' => get_stylesheet_directory() . '/page-website-fuer-solar-und-waermepumpen-anbieter.php',\n", '')
+
+          replace_exact('blocksy-child/inc/seo-meta.php', "[ 'page-e3-new-energy.php', 'page-case-e3.php' ]", "[ 'page-e3-new-energy.php' ]")
+          replace_exact('blocksy-child/inc/seo-cockpit/seo-cockpit-links.php', "[ 'page-e3-new-energy.php', 'page-case-e3.php' ]", "[ 'page-e3-new-energy.php' ]")
+
+          replace_exact(
+              'agents/skills/route-conversion-review/scripts/review-route.sh',
+              'CARRIER_NOTE="Alias-Wrapper page-case-e3.php bindet page-e3-new-energy.php ein. Geprueft wird der effektive Template-Traeger."',
+              'CARRIER_NOTE="Die kanonische Case Study wird von page-e3-new-energy.php getragen. Geprueft wird der effektive Template-Traeger."'
+          )
+
+          replace_exact(
+              'blocksy-child/assets/css/energy-systems.css',
+              '   Scoped to .solar-page so .energy-hero (page-anfrage.php) is\n   untouched.',
+              '   Scoped to .solar-page; the retired intake template is no longer referenced.'
+          )
+          PY
+
+      - name: Verify deleted template filenames are gone from runtime files
+        shell: bash
+        run: |
+          ! grep -F "page-case-e3.php" \
+            blocksy-child/inc/enqueue.php \
+            blocksy-child/inc/helpers.php \
+            blocksy-child/inc/seo-meta.php \
+            blocksy-child/inc/seo-cockpit/seo-cockpit-links.php \
+            agents/skills/route-conversion-review/scripts/review-route.sh
+          ! grep -F "page-website-fuer-solar-und-waermepumpen-anbieter.php" \
+            blocksy-child/inc/enqueue.php \
+            blocksy-child/inc/helpers.php
+          ! grep -F "page-anfrage.php" blocksy-child/assets/css/energy-systems.css
+
+      - name: Commit cleanup
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            blocksy-child/inc/enqueue.php \
+            blocksy-child/inc/helpers.php \
+            blocksy-child/inc/seo-meta.php \
+            blocksy-child/inc/seo-cockpit/seo-cockpit-links.php \
+            agents/skills/route-conversion-review/scripts/review-route.sh \
+            blocksy-child/assets/css/energy-systems.css
+          git diff --cached --check
+          git commit -m "chore: remove dead template references"
+          git push origin HEAD:cleanup/dead-template-references-2026-09-14
