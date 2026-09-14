@@ -2,6 +2,10 @@
 /**
  * Canonical anonymized case-study proof metrics.
  *
+ * Nur im dokumentierten Fall gemessene bzw. direkt dokumentierte Werte duerfen
+ * hier als numerische Proof-Metrik leben. Marktannahmen und Vergleichswerte
+ * gehoeren nicht in diesen Canon.
+ *
  * @package Blocksy_Child
  */
 
@@ -16,16 +20,12 @@ define( 'HU_E3_CPL_REDUCTION_PERCENT', 85 );
 define( 'HU_E3_LEAD_COUNT', 1750 );
 define( 'HU_E3_LEAD_CONVERSION_PERCENT', 12 );
 define( 'HU_E3_SALES_CONVERSION_PERCENT', 15 );
-define( 'HU_E3_SALES_CONVERSION_BEFORE_LOW', 1 );
-define( 'HU_E3_SALES_CONVERSION_BEFORE_HIGH', 5 );
 define( 'HU_E3_TIMEFRAME_MONTHS', 6 );
 
 // Zwischenwerte der Strecke. Standen bis 2026-08 als Literale in
-// page-e3-new-energy.php und waren damit weder prüfbar noch mitpflegbar.
+// page-e3-new-energy.php und waren damit weder pruefbar noch mitpflegbar.
 define( 'HU_E3_CPL_RAMP_LOW', 70 );
 define( 'HU_E3_CPL_RAMP_HIGH', 100 );
-define( 'HU_E3_PORTAL_CONVERSION_AVG', 3 );
-define( 'HU_E3_PORTAL_COST_PER_DEAL', 5000 );
 define( 'HU_E3_BUILD_MONTHS', 3 );
 define( 'HU_E3_TUNING_MONTHS', 3 );
 
@@ -103,18 +103,16 @@ function hu_e3_canon() {
 				'counter_target' => '15',
 				'label'          => 'Abschlussquote',
 			],
-			// Die Vorher-Quote ist die einzige Zahl dieses Falls, die nicht
-			// gemessen wurde: sie ist eine Marktannahme ueber gekaufte
-			// Portal-Leads. `display` traegt die Spanne fuer Stellen, die sie
-			// ausdruecklich als Annahme rahmen; `display_hedged` ist die
-			// vorsichtige Fassung fuer Vergleichstabellen, in denen die Spanne
-			// neben gemessenen Werten wie eine Messung aussaehe.
+			// Kompatibilitaets-Key fuer bestehende Templates. Der fruehere Wert
+			// 1–5 % war keine Kohortenmessung dieses Falls und ist deshalb als
+			// numerische Proof-Metrik entfernt. Neue Copy darf daraus keinen
+			// Vorher/Nachher-Uplift ableiten.
 			'sales_conversion_before' => [
-				'value'           => HU_E3_SALES_CONVERSION_BEFORE_LOW,
-				'value_high'      => HU_E3_SALES_CONVERSION_BEFORE_HIGH,
-				'display'         => '1 – 5 %',
-				'display_hedged'  => 'einstellig',
-				'label'           => 'Abschlussquote vorher (gekaufte Portal-Leads)',
+				'value'          => null,
+				'display'        => 'nicht als Kohorte gemessen',
+				'display_hedged' => 'nicht als Kohorte gemessen',
+				'label'          => 'Abschlussquote vorher (keine belastbare Kohortenmessung)',
+				'status'         => 'not_measured',
 			],
 			'sales_conversion_after' => [
 				'value'          => HU_E3_SALES_CONVERSION_PERCENT,
@@ -122,14 +120,13 @@ function hu_e3_canon() {
 				'counter_target' => '15',
 				'label'          => 'Abschlussquote nachher (eigenes Anfragesystem)',
 			],
+			// Kompatibilitaets-Key: kein numerischer Uplift mehr, weil fuer die
+			// Vorher-Seite keine belastbare Kohortenmessung dokumentiert ist.
 			'sales_conversion_uplift' => [
-				// Geschuetzte Leerzeichen binden Spanne und Einheit zusammen. Der
-				// Wert ist der laengste im Proof-Band; mit normalen Leerzeichen
-				// rutschte in der grossen Stat-Darstellung das Prozentzeichen
-				// allein in die naechste Zeile. Umbrechen darf er nur am Pfeil.
-				'display' => "1\u{00A0}–\u{00A0}5\u{00A0}% → 15\u{00A0}%",
-				'short'   => '3× bis 15× höhere Abschlussquote',
-				'label'   => 'Anstieg der Abschlussquote durch eigenes System und Vertrieb',
+				'display' => '15 % nach Aufbau',
+				'short'   => '15 % Abschlussquote nach Aufbau',
+				'label'   => 'Abschlussquote nachher; Vorherwert nicht als Kohortenmessung dokumentiert',
+				'status'  => 'not_comparable',
 			],
 			'timeframe'        => [
 				'value'          => HU_E3_TIMEFRAME_MONTHS,
@@ -143,16 +140,6 @@ function hu_e3_canon() {
 				'value_high' => HU_E3_CPL_RAMP_HIGH,
 				'display'    => '70 – 100 €',
 				'label'      => 'Kosten pro Anfrage in der Aufbauphase',
-			],
-			'portal_conversion_avg' => [
-				'value'   => HU_E3_PORTAL_CONVERSION_AVG,
-				'display' => '3 %',
-				'label'   => 'durchschnittliche Abschlussquote auf Portal-Leads',
-			],
-			'portal_cost_per_deal'  => [
-				'value'   => HU_E3_PORTAL_COST_PER_DEAL,
-				'display' => '5.000 €',
-				'label'   => 'reine Anfrage-Kosten pro Abschluss vorher',
 			],
 			'build_months'     => [
 				'value'   => HU_E3_BUILD_MONTHS,
