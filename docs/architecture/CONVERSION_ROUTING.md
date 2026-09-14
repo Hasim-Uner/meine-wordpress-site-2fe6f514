@@ -66,47 +66,44 @@ eine öffentliche WordPress-Arbeit belegen den Ansatz mit getrenntem Kontext.
   JavaScript-Laufzeit. Profil, Kontaktformular, Consent und CRM bleiben in ihren
   bisherigen Zuständigkeiten. Kein Solar-Marktcheck als allgemeiner Seiten-CTA.
 
-## Ergebnisse-Hub: Vertrauensschicht, kein vierter Weg
+## Ergebnisse-Hub: Arbeitsbelege für die drei Geschäftspfade
 
-`/ergebnisse/` gehört allen drei Routen. Bis 2026-09 sagte der Hero
-„Ergebnisse für Solar- und Wärmepumpen-Anbieter“ und der primäre CTA war der
-Marktcheck — damit war die Seite faktisch eine zweite Energy-Landingpage, und
-Agenturen sowie direkte WordPress-Interessenten fanden am Ende keinen für sie
-passenden Schritt.
+`/ergebnisse/` folgt seit dem Umbau vom 2026-09-14 der Reihenfolge
+WordPress-Arbeiten → technische Projektgeschichte → Solar-Fall →
+Übergabemuster → passender nächster Schritt. Die bestehende generierte TOC
+kommt aus `inc/commercial-routing.php`; ihre Einträge folgen der DOM-Reihenfolge.
+Es gibt keine zweite seitenlokale TOC und keine eigene JavaScript-Laufzeit.
 
-Regeln für diese Route:
+- Öffentliche Projekte und deren Beitrag stammen unverändert aus
+  `inc/canon/reference-canon.php`. Ergänzte Prüfhinweise erklären, worauf
+  Besucher achten können; sie behaupten keine zusätzlichen Messergebnisse.
+- Die technische Projektgeschichte dokumentiert die Homepage-/Freelancer-
+  Zusammenführung am eigenen Projekt. Die Quellen verlinken die umgesetzte
+  Revision `569055ddd28214a9ff6e511369619f5a604eff07`. Technische Regeln sind
+  damit nachprüfbar; Rankings, Live-Tracking und Conversions werden nicht
+  daraus abgeleitet.
+- Solar-Kennzahlen stammen aus `inc/canon/e3-proof-canon.php`. Die frühere
+  angenommene Abschlussquote erscheint nicht mehr als gemessener Vorher-Wert.
+  CPL, Zeitraum, Anfrage- und Abschlussquote haben direkt sichtbaren Kontext.
+  Die bestehende Indexierungssperre der separaten Fallstudie bleibt erhalten.
+- Das Übergabemuster verwendet das eigene Projekt und ist ausdrücklich keine
+  veröffentlichte Agenturreferenz. Ein kundenspezifisches Abnahmeprotokoll oder
+  Tracking-Messprotokoll wird damit nicht vorgetäuscht.
+- Hero-Links führen zu Belegen. Der Abschluss hat drei getrennte Aktionen:
+  direkte Projektanfrage, White-Label-Aufgabe und Energy-Marktcheck. Die
+  Formulare und ihre Verarbeitung bleiben bei den bestehenden Routen.
+- Blocksy besitzt den Hauptbereich `#main`; das Template ergänzt nur
+  `#results-content`. Die bestehenden Abschnittsanker bleiben erhalten.
 
-- Hero und Zwischenabschnitte tragen **keinen** Angebots-CTA. Wer hier landet,
-  prüft; der nächste Schritt kommt am Schluss.
-- Der Abschluss zeigt genau drei Wege mit drei **verschiedenen** Zielen:
-  Marktcheck (Energy), `Projekt anfragen` (direkt), `Aufgabe beschreiben`
-  (Agentur). Keine vierte Option.
-- Der Marktcheck-Link ist hier zulässig, weil die Energy-Karte die Vertikale
-  vor dem Link benennt — dieselbe Segmentierung wie in
-  `page-wordpress-agentur.php` und im Hero von `page-server-side-tracking-b2b.php`.
-  Als Seiten-CTA bleibt er verboten.
-- Kennzahlen kommen aus `inc/canon/e3-proof-canon.php`, öffentliche Referenzen
-  aus `inc/canon/reference-canon.php`. Der Hub darf keine eigene Fassung einer
-  Zahl oder Referenz führen, die schon auf Startseite oder Freelancer-Route
-  steht.
-- Der globale Footer-Selbstauskunftsblock bleibt darunter stehen. Er ordnet
-  Besucher einer Route zu; der Abschlussblock der Seite nennt die konkrete
-  nächste Handlung. Das ist bewusst keine Dopplung.
-
-Tracking auf der Route. Zurückgezogen mit dem Umbau:
-`cta_results_hero_request`, `cta_results_case_study_methodology`,
-`cta_results_to_agentur`, `cta_results_footer_request`. Neu und stabil zu
-halten:
-
-| Aktion | Kategorie | Abschnitt |
-|---|---|---|
-| `results_hero_to_case`, `results_hero_to_proof` | `navigation` | `hero` |
-| `cta_results_case_study` | `trust` | `grossprojekt` |
-| `results_reference_open` | `trust` | `arbeiten` |
-| `results_proof_pagespeed`, `results_proof_github_history`, `results_proof_github_ci`, `results_proof_tracking_page` | `proof` | `technik` |
-| `cta_results_whitelabel` | `segmentation` | `whitelabel` |
-| `cta_results_next_energy`, `cta_results_next_project`, `cta_results_next_agency`, `cta_results_next_unsure` | `lead_gen` | `weiter` |
-| `results_next_to_freelancer`, `results_next_to_energy` | `navigation` | `weiter` |
+Tracking-Actions bleiben bei gleicher Handlung erhalten. Neu sind
+`results_hero_to_wordpress`, `results_proof_migration_scope`,
+`results_proof_migration_checks` und `results_proof_request_routing`.
+`results_proof_tracking_page` führt weiter zum Tracking-Angebot, steht jetzt
+aber im Abschnitt `whitelabel`; es ist kein Beleg für aktives Live-Tracking.
+`cta_results_next_unsure` entfällt mit dem zusätzlichen allgemeinen
+Anfrage-Link. Die drei segmentierten Abschluss-Actions sowie Case-,
+Referenz-, PageSpeed-, GitHub- und Angebotslinks bleiben bestehen.
+Keine externe Event-Konfiguration und kein Analytics-Runtime wurde verändert.
 
 ## Cluster rules
 

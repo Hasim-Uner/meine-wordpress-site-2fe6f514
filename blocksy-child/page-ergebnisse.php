@@ -1,17 +1,11 @@
 <?php
 /**
  * Template Name: Ergebnisse Hub
- * Description: Vertrauensschicht fuer alle drei kommerziellen Wege — Belege zuerst, Auswahl am Ende.
+ * Description: WordPress-Arbeiten, dokumentierter Projektfall und nachvollziehbare Übergabe.
  *
- * Rolle laut docs/architecture/CONVERSION_ROUTING.md: Proof-/Evaluierungs-Hub,
- * kein vierter Angebotsweg. Die Seite gehoert Besuchern aus allen drei Routen
- * (Energy, direkte WordPress-Projekte, Agenturen) und darf deshalb weder im
- * Hero noch im Abschluss einen davon zum Standard machen.
- *
- * Bis 2026-09 hiess die Datei page-case-studies-e-commerce.php und verdrahtete
- * den primaeren CTA mit dem Solar-Marktcheck. Der Marktcheck steht jetzt nur
- * noch in der Energy-Karte des Abschlussblocks, ausdruecklich benannt — die
- * erlaubte Segmentierung aus CONVERSION_ROUTING, kein globaler CTA.
+ * Evidence hub for all three commercial routes. Canonical facts stay in
+ * inc/canon/. Project inspection prompts are not claims of measured impact.
+ * Blocksy owns the main landmark. Native disclosures need no route JavaScript.
  *
  * @package Blocksy_Child
  */
@@ -61,358 +55,233 @@ $pagespeed_url = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_
 
 $references = function_exists( 'hu_public_reference_projects' ) ? hu_public_reference_projects() : [];
 
-/*
- * Vorher/Nachher des dokumentierten Falls. Zwei Zeilen tragen Zahlen aus dem
- * Canon, zwei beschreiben die strukturelle Veraenderung — ohne die beiden
- * letzten liest sich der Fall wie ein reiner Rabatt auf Leadkosten.
- */
-$case_ledger = [
-	[
-		'label'  => 'Kosten pro Anfrage',
-		'before' => $metric( 'cpl_before', 'display', '150 €' ),
-		'after'  => $metric( 'cpl_after', 'display', '22 €' ),
+// Reading prompts add context to the canonical reference facts without inventing
+// a previous state, client quote, result metric or authorship beyond that source.
+$inspection_notes = [
+	'civaka-azad.org' => [
+		'task' => 'Viele redaktionelle Inhalte brauchen mehr als eine ansprechende Startseite: Leser müssen Themen und ältere Beiträge wiederfinden können.',
+		'check' => 'Öffnen Sie die Navigation, folgen Sie einem Thema ins Archiv und anschließend in einen Beitrag. So lässt sich die Informationshierarchie an einem konkreten Weg beurteilen.',
 	],
-	[
-		'label'  => 'Abschlussquote',
-		'before' => $metric( 'sales_conversion_before', 'display', '1 – 5 %' ),
-		'after'  => $metric( 'sales_conversion', 'display', '15 %' ),
+	'hasimuener.org' => [
+		'task' => 'Ein redaktionelles Eigenprojekt, bei dem der Text die Gestaltung trägt: Hier zählen Lesbarkeit, Rhythmus und Orientierung über längere Beiträge hinweg.',
+		'check' => 'Vergleichen Sie einen längeren Beitrag auf schmalem und breitem Bildschirm: Zeilenlänge, Überschriften und Abstände bestimmen den Lesefluss.',
 	],
-	[
-		'label'  => 'Anfragequelle',
-		'before' => 'gekaufte Portal-Leads',
-		'after'  => 'eigener Anfrageweg',
-	],
-	[
-		'label'  => 'Zuordnung',
-		'before' => 'keine durchgängige Attribution',
-		'after'  => 'Tracking bis ins CRM',
+	'kurdischer-rat.org' => [
+		'task' => 'Eine Organisationswebsite muss unterschiedliche Informationen zusammenführen und sich geordnet weiterentwickeln lassen.',
+		'check' => 'Prüfen Sie die öffentlich sichtbare Gliederung und die Wege zu den Inhalten. Der interne Veröffentlichungsprozess lässt sich am Frontend allein nicht beurteilen.',
 	],
 ];
 
-$case_scope = [ 'Website', 'Landingpages', 'Tracking', 'CRM-Übergabe', 'Vorqualifizierung', 'Kampagnen', 'laufende Optimierung' ];
-
-/*
- * Begriffsdefinition direkt am Fall. Der Hub zeigte bis 2026-09 dieselbe Zahl
- * als "Sales-Conversion", waehrend die Startseite sie "Abschlussquote" nannte
- * und daneben eine zweite Quote fuehrte. Auf einer Seite, die Attribution
- * verkauft, ist das der teuerste kleine Fehler.
- */
-$case_definitions = [
+// Stable source links document a shipped revision, not a permanently green
+// live state. The deployment itself is not inferred from CI configuration.
+$proof_revision = '569055ddd28214a9ff6e511369619f5a604eff07';
+$source_base    = $github_url . '/blob/' . $proof_revision . '/';
+$implementation_evidence = [
 	[
-		'term' => $metric( 'lead_conversion', 'label', 'Lead-Conversion-Rate' ),
-		'text' => 'Besucher der Anfragestrecke, die eine Anfrage abschicken.',
+		'title' => 'Eine Angebotsseite, klare Zuständigkeit.',
+		'text' => 'Die frühere Freelancer-Seite ist in der Startseite aufgegangen. Inhalte, Angebotsanker, interne Ziele und die Zuständigkeit für Freelancer-Suchanfragen wurden zusammengeführt.',
+		'label' => 'Umfang der Zusammenführung lesen',
+		'path' => 'docs/decisions/homepage-freelancer-konsolidierung.md',
+		'action' => 'results_proof_migration_scope',
 	],
 	[
-		'term' => $metric( 'sales_conversion', 'label', 'Abschlussquote' ),
-		'text' => 'Qualifizierte Anfragen, aus denen ein Auftrag wird.',
-	],
-];
-
-// Labormesswerte dieser Route. Werte aus dem Canon, Einordnung in der Copy.
-$live_proof_tiles = [
-	[
-		'value' => $metric( 'site_lighthouse_performance', 'display', '99' ),
-		'max'   => $metric( 'site_lighthouse_performance', 'max', '/100' ),
-		'label' => 'PageSpeed mobil',
+		'title' => 'Alte Einstiege führen weiter.',
+		'text' => 'Die Weiterleitungslogik berücksichtigt die frühere Adresse, WordPress-URL-Varianten und Kampagnenparameter. Automatisierte Prüffälle sichern diese Regeln bei weiteren Änderungen ab.',
+		'label' => 'Prüffälle im Code ansehen',
+		'path' => 'scripts/lint-entity-crawler-signals.php',
+		'action' => 'results_proof_migration_checks',
 	],
 	[
-		'value' => $metric( 'site_lighthouse_accessibility', 'display', '100' ),
-		'max'   => $metric( 'site_lighthouse_accessibility', 'max', '/100' ),
-		'label' => 'Barrierefreiheit',
-	],
-	[
-		'value' => $metric( 'site_lighthouse_seo', 'display', '100' ),
-		'max'   => $metric( 'site_lighthouse_seo', 'max', '/100' ),
-		'label' => 'SEO',
-	],
-	[
-		'value' => $metric( 'site_lighthouse_best_practices', 'display', '100' ),
-		'max'   => $metric( 'site_lighthouse_best_practices', 'max', '/100' ),
-		'label' => 'Best Practices',
+		'title' => 'Das gewählte Anliegen bleibt erhalten.',
+		'text' => 'Wer auf der Startseite ein Relaunch-, Landingpage- oder Tracking-Projekt auswählt, kommt mit diesem Anliegen in die Kontaktstrecke. Die Themenauswahl muss dort nicht wiederholt werden.',
+		'label' => 'Anfragewege nachvollziehen',
+		'path' => 'docs/architecture/CONVERSION_ROUTING.md',
+		'action' => 'results_proof_request_routing',
 	],
 ];
 
-$measurement_chain = [
-	[ 'title' => 'Browser', 'note' => 'Einwilligung entscheidet' ],
-	[ 'title' => 'WordPress', 'note' => 'Seite und Formular' ],
-	[ 'title' => 'Tag Manager', 'note' => 'im Browser' ],
-	[ 'title' => 'Server-Container', 'note' => 'eigene Domain' ],
-	[ 'title' => 'GA4 und Ads', 'note' => 'Konten des Kunden' ],
-];
-
-$whitelabel_delivery = [ 'WordPress-Umsetzung', 'Landingpages', 'Tracking & Attribution', 'Performance', 'Technisches SEO', 'Dokumentation', 'Git-Workflow' ];
-
-/*
- * Der Abschluss. Drei Wege, drei verschiedene naechste Schritte — nicht drei
- * Varianten desselben Formulars. Die Energy-Karte benennt die Vertikale vor
- * dem Marktcheck-Link, sonst waere er hier ein fachfremder Default-CTA.
- */
 $next_steps = [
 	[
-		'kind'   => 'energy',
-		'index'  => '01',
-		'kicker' => 'Solar · Wärmepumpe · Speicher',
-		'title'  => 'Eigene Anfragen statt gekaufter Portal-Leads.',
-		'desc'   => 'Sie kaufen Anfragen zu und wollen wissen, ob sich ein eigener Anfrageweg für Ihren Betrieb rechnet.',
-		'url'    => $marketcheck_url,
-		'label'  => $marketcheck_label,
-		'note'   => '' !== $marketcheck_reply ? 'Befund ' . $marketcheck_reply . '.' : '',
+		'kind' => 'project', 'kicker' => 'Für Ihr Unternehmen',
+		'title' => 'Eine Website bauen oder gezielt verbessern.',
+		'desc' => 'Beschreiben Sie Ihre Ausgangslage und was sich ändern soll. Daraus klären wir den passenden Umfang.',
+		'url' => $project_url, 'label' => 'Projekt anfragen',
+		'note' => $response_promise, 'action' => 'cta_results_next_project',
+	],
+	[
+		'kind' => 'agency', 'kicker' => 'Für Ihre Agentur',
+		'title' => 'Ein Kundenprojekt zur Umsetzung übergeben.',
+		'desc' => 'Ein Briefing, Entwurf oder technisches Problem reicht für den Einstieg. Umfang und Abnahme klären wir vor dem Erstprojekt.',
+		'url' => $whitelabel_task_url, 'label' => 'Aufgabe beschreiben',
+		'note' => 'Laufende Kapazität ist nach dem Erstprojekt optional.', 'action' => 'cta_results_next_agency',
+	],
+	[
+		'kind' => 'energy', 'kicker' => 'Solar · Wärmepumpe · Speicher',
+		'title' => 'Einen eigenen Anfragekanal prüfen.',
+		'desc' => 'Im Marktcheck betrachten wir, ob ein eigener Anfrageweg zu Ihrem Betrieb, Ihrer Marge und Ihrer Bearbeitungskapazität passt.',
+		'url' => $marketcheck_url, 'label' => $marketcheck_label,
+		'note' => '' !== $marketcheck_reply ? 'Befund ' . $marketcheck_reply . '.' : '',
 		'action' => 'cta_results_next_energy',
-	],
-	[
-		'kind'   => 'project',
-		'index'  => '02',
-		'kicker' => 'Direktes WordPress-Projekt',
-		'title'  => 'Relaunch, Weiterentwicklung oder Tracking.',
-		'desc'   => 'Sie haben eine Website oder planen eine neue und brauchen jemanden, der Umsetzung und Messung zusammen verantwortet.',
-		'url'    => $project_url,
-		'label'  => 'Projekt anfragen',
-		'note'   => $response_promise,
-		'action' => 'cta_results_next_project',
-	],
-	[
-		'kind'   => 'agency',
-		'index'  => '03',
-		'kicker' => 'Agentur',
-		'title'  => 'Technische Umsetzung unter Ihrem Namen.',
-		'desc'   => 'Sie haben ein Kundenprojekt und brauchen Umsetzungskapazität, die im Hintergrund bleibt.',
-		'url'    => $whitelabel_task_url,
-		'label'  => 'Aufgabe beschreiben',
-		'note'   => 'Erstprojekt mit festem Scope, Retainer erst danach.',
-		'action' => 'cta_results_next_agency',
 	],
 ];
 
 get_header();
 ?>
-
-<main id="main" class="site-main hu-erg" data-track-page="results_hub">
-
-	<!-- 01 — Hero: Belege, keine Verkaufsfläche -->
-	<section class="hu-erg-hero" data-track-section="hero" aria-labelledby="hu-erg-title">
-		<div class="hu-erg__shell">
-			<p class="hu-erg__eyebrow">Arbeitsbelege</p>
-			<h1 class="hu-erg-hero__title" id="hu-erg-title">Ergebnisse und Arbeitsbelege.</h1>
-			<p class="hu-erg-hero__lede">Was ich gebaut habe, was sich dadurch verändert hat — und welcher Teil davon ohne mein Zutun überprüfbar ist.</p>
-			<p class="hu-erg-hero__scope">WordPress · Technisches SEO · Tracking · Conversion</p>
-
-			<ul class="hu-erg-inventory" role="list">
-				<li>
-					<strong>1 dokumentiertes Großprojekt</strong>
-					<span>Anfragesystem im Solar-Bereich, über sechs Monate belegt</span>
-				</li>
-				<li>
-					<strong>3 öffentlich prüfbare Websites</strong>
-					<span>direkt aufrufbar, ohne Freigabe durch mich</span>
-				</li>
-				<li>
-					<strong>1 laufendes System</strong>
-					<span>diese Website: Messwerte und Quellcode einsehbar</span>
-				</li>
-			</ul>
-
-			<div class="hu-erg-hero__actions">
-				<a class="hu-erg__link" href="#grossprojekt" data-track-action="results_hero_to_case" data-track-category="navigation" data-track-section="hero">Großprojekt ansehen <span aria-hidden="true">↓</span></a>
-				<a class="hu-erg__link hu-erg__link--quiet" href="#technik" data-track-action="results_hero_to_proof" data-track-category="navigation" data-track-section="hero">Technische Belege ansehen <span aria-hidden="true">↓</span></a>
+<div id="results-content" class="doku hu-erg" data-track-page="results_hub">
+	<header class="dokument-kopf blatt" data-track-section="hero">
+		<p class="dachzeile">Haşim Üner · Ausgewählte Arbeiten</p>
+		<div class="erg-hero">
+			<div>
+				<h1 id="hu-erg-title">Was ich gebaut habe.<br><span class="stempelfarbe">Was Sie prüfen können.</span></h1>
+				<p class="aufriss">WordPress-Projekte, eine dokumentierte Anfragestrecke und Einblicke in die technische Umsetzung. Mit meinem jeweiligen Anteil und den Belegen, die dazu gehören.</p>
 			</div>
-
-			<p class="hu-erg__note hu-erg-hero__note">Diese Seite ist zum Prüfen gebaut. Welcher nächste Schritt zu Ihnen passt, entscheiden Sie am Ende selbst.</p>
+			<aside class="erg-register" aria-label="Belege auf dieser Seite">
+				<p class="mono">Projekt · Umsetzung · Nachweis</p>
+				<dl>
+					<div><dt>WordPress</dt><dd>Öffentliche Arbeiten und eine technische Projektgeschichte</dd></div>
+					<div><dt>Solar</dt><dd><a href="#grossprojekt" data-track-action="results_hero_to_case" data-track-category="navigation" data-track-section="hero">Ein dokumentierter Fall mit eingeordneten Kennzahlen</a></dd></div>
+					<div><dt>White-Label</dt><dd>Ein Muster für Umfang, Prüfung und Übergabe</dd></div>
+				</dl>
+			</aside>
 		</div>
-	</section>
+		<div class="erg-hero-actions">
+			<a class="tun still" href="#arbeiten" data-track-action="results_hero_to_wordpress" data-track-category="navigation" data-track-section="hero">WordPress-Arbeiten ansehen <span aria-hidden="true">↓</span></a>
+			<a class="textlink" href="#technik" data-track-action="results_hero_to_proof" data-track-category="navigation" data-track-section="hero">Umsetzung im Detail <span aria-hidden="true">↓</span></a>
+		</div>
+	</header>
 
-	<!-- 02 — Flagship Case -->
-	<section class="hu-erg-section hu-erg-case" id="grossprojekt" data-track-section="grossprojekt" aria-labelledby="hu-erg-case-title">
-		<div class="hu-erg__shell">
-			<div class="hu-erg__head nx-reveal">
-				<p class="hu-erg__eyebrow">01 — Dokumentiertes Großprojekt</p>
-				<p class="hu-erg-case__client"><?php echo esc_html( ucfirst( $e3_case_label ) ); ?></p>
-				<h2 id="hu-erg-case-title">Vom gekauften Portal-Lead zum eigenen Anfrageweg.</h2>
-				<p class="hu-erg__lede">Website, Landingpages, Kampagnen, Tracking, Vorqualifizierung und die Übergabe an den Vertrieb wurden als eine zusammenhängende Strecke aufgebaut und anschließend nachgeschärft.</p>
-			</div>
-
-			<ol class="hu-erg-ledger nx-reveal" role="list" aria-label="Veränderung im dokumentierten Fall">
-				<?php foreach ( $case_ledger as $row ) : ?>
-					<li class="hu-erg-ledger__row">
-						<span class="hu-erg-ledger__label"><?php echo esc_html( $row['label'] ); ?></span>
-						<span class="hu-erg-ledger__cell hu-erg-ledger__cell--before">
-							<span class="hu-erg-ledger__state">vorher</span>
-							<span class="hu-erg-ledger__value"><?php echo esc_html( $row['before'] ); ?></span>
-						</span>
-						<span class="hu-erg-ledger__arrow" aria-hidden="true">→</span>
-						<span class="hu-erg-ledger__cell hu-erg-ledger__cell--after">
-							<span class="hu-erg-ledger__state">nachher</span>
-							<span class="hu-erg-ledger__value"><?php echo esc_html( $row['after'] ); ?></span>
-						</span>
-					</li>
-				<?php endforeach; ?>
-			</ol>
-
-			<p class="hu-erg-case__band nx-reveal">
-				<strong><?php echo esc_html( $metric( 'lead_count', 'display', '1.750+' ) ); ?></strong> qualifizierte Anfragen
-				<span aria-hidden="true">·</span>
-				<strong><?php echo esc_html( $metric( 'lead_conversion', 'display', '12 %' ) ); ?></strong> Lead-Conversion-Rate
-				<span aria-hidden="true">·</span>
-				<strong><?php echo esc_html( $metric( 'timeframe', 'display', '6 Monate' ) ); ?></strong> dokumentierter Zeitraum
-			</p>
-
-			<div class="hu-erg-case__foot nx-reveal">
-				<div class="hu-erg-case__scope">
-					<h3>Mein Anteil an der Umsetzung</h3>
-					<ul class="hu-erg-chips">
-						<?php foreach ( $case_scope as $scope_item ) : ?>
-							<li><?php echo esc_html( $scope_item ); ?></li>
-						<?php endforeach; ?>
-					</ul>
-					<p class="hu-erg__note">Die Werte entstanden aus dem Gesamtsystem inklusive Vertrieb und Kampagnen. Sie isolieren keinen WordPress-Effekt und sind keine Prognose für andere Unternehmen.</p>
-					<a class="hu-erg__link" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="cta_results_case_study" data-track-category="trust" data-track-section="grossprojekt">Vollständige Case Study lesen <span aria-hidden="true">→</span></a>
-				</div>
-
-				<div class="hu-erg-defs">
-					<h3 class="hu-erg-defs__title">Damit die Zahlen vergleichbar bleiben</h3>
-					<dl class="hu-erg-defs__list">
-						<?php foreach ( $case_definitions as $definition ) : ?>
-							<div>
-								<dt><?php echo esc_html( $definition['term'] ); ?></dt>
-								<dd><?php echo esc_html( $definition['text'] ); ?></dd>
+	<section id="arbeiten" aria-labelledby="arbeiten-h" data-track-section="arbeiten">
+		<div class="blatt reihe">
+			<div class="spalte-links"><div class="kapitel"><span class="nr">01</span><span class="titel">WordPress-Arbeiten</span><span class="strich" aria-hidden="true"></span></div></div>
+			<div class="voll">
+				<h2 class="kopf" id="arbeiten-h">Unterschiedliche Aufgaben. Konkrete Umsetzung.</h2>
+				<p class="vorspann">Die folgenden Websites zeigen meine Arbeit an Struktur, Gestaltung und Entwicklung. Das eigene redaktionelle Projekt ist als solches benannt.</p>
+				<div class="erg-projects">
+					<?php foreach ( $references as $reference ) :
+						$inspection = $inspection_notes[ $reference['name'] ] ?? null;
+						?>
+						<article class="erg-project">
+							<div class="erg-project-heading">
+								<p class="mono"><?php echo esc_html( $reference['role'] ); ?></p>
+								<h3><?php echo esc_html( $reference['name'] ); ?></h3>
+								<p class="erg-note"><?php echo esc_html( $reference['discipline'] ); ?></p>
+								<a class="textlink" href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="results_reference_open" data-track-category="trust" data-track-section="arbeiten">Website ansehen<span class="nur-vorlesen">: <?php echo esc_html( $reference['name'] ); ?> (neuer Tab)</span> <span aria-hidden="true">↗</span></a>
 							</div>
-						<?php endforeach; ?>
-					</dl>
-					<p class="hu-erg__note">Beide Werte stammen aus demselben Zeitraum und heißen auf dieser Website überall gleich.</p>
+							<div class="erg-project-body">
+								<?php if ( $inspection ) : ?><p><?php echo esc_html( $inspection['task'] ); ?></p><?php endif; ?>
+								<dl class="erg-contribution"><div><dt>Mein Beitrag</dt><dd><?php echo esc_html( $reference['text'] ); ?></dd></div></dl>
+								<?php if ( $inspection ) : ?>
+									<details class="erg-details"><summary>Worauf Sie beim Ansehen achten können</summary><div class="erg-answer"><p><?php echo esc_html( $inspection['check'] ); ?></p></div></details>
+								<?php endif; ?>
+							</div>
+						</article>
+					<?php endforeach; ?>
+				</div>
+				<p class="erg-note erg-after">Die Links zeigen den jeweiligen aktuellen Stand. Diese Arbeitsbelege dokumentieren meinen Umsetzungsumfang; für diese Projekte veröffentliche ich hier keine Vorher-Nachher-Zahlen zu Traffic oder Anfragen.</p>
+			</div>
+		</div>
+	</section>
+
+	<section id="technik" aria-labelledby="technik-h" data-track-section="technik">
+		<div class="blatt reihe">
+			<div class="spalte-links"><div class="kapitel"><span class="nr">02</span><span class="titel">Umsetzung im Detail</span><span class="strich" aria-hidden="true"></span></div></div>
+			<div class="voll">
+				<p class="mono erg-kicker">Technische Projektgeschichte · eigenes Projekt</p>
+				<h2 class="kopf" id="technik-h">Eine Website umbauen, ohne ihre Verbindungen zu verlieren.</h2>
+				<p class="vorspann">Auf hasimuener.de standen Startseite und Freelancer-Angebot auf zwei getrennten Seiten. Bei der Zusammenführung mussten auch Suchmaschinen, bestehende Verweise und Anfragewege berücksichtigt werden.</p>
+				<div class="tafel erg-migration">
+					<p class="mono">Umgesetzte Änderung</p>
+					<div class="erg-migration-path"><div><span>Früherer Einstieg</span><code>/wordpress-freelancer-hannover/</code></div><span class="erg-arrow" aria-hidden="true">→</span><div><span>Gemeinsames Ziel</span><strong>Die Startseite</strong></div></div>
+					<p class="erg-note">Mein Anteil: Angebotsstruktur, WordPress-Templates, Weiterleitungsregeln, interne Verlinkung und automatisierte Prüfungen.</p>
+				</div>
+				<div class="erg-evidence-list">
+					<?php foreach ( $implementation_evidence as $evidence ) : ?>
+						<article class="erg-evidence">
+							<h3><?php echo esc_html( $evidence['title'] ); ?></h3>
+							<div><p><?php echo esc_html( $evidence['text'] ); ?></p><a class="textlink" href="<?php echo esc_url( $source_base . $evidence['path'] ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="<?php echo esc_attr( $evidence['action'] ); ?>" data-track-category="proof" data-track-section="technik"><?php echo esc_html( $evidence['label'] ); ?><span class="nur-vorlesen"> (GitHub, neuer Tab)</span> <span aria-hidden="true">↗</span></a></div>
+						</article>
+					<?php endforeach; ?>
+				</div>
+				<p class="erg-note erg-after">Die Quellen zeigen die umgesetzte Version. Sie belegen technische Entscheidungen und Prüfregeln; eine Verbesserung von Rankings oder Anfragen lässt sich daraus allein nicht ableiten.</p>
+				<details class="erg-details erg-after">
+					<summary>Quellcode, Prüfprozess und aktuelle Performance ansehen</summary>
+					<div class="erg-answer">
+						<p>Sie können Änderungen und automatisierte Prüfungen im öffentlichen Repository nachvollziehen. PageSpeed Insights startet eine neue Messung; Ergebnisse hängen unter anderem von Gerät und Testbedingungen ab.</p>
+						<ul class="erg-source-links">
+							<li><a href="<?php echo esc_url( $github_url . '/commits/main/' ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="results_proof_github_history" data-track-category="proof" data-track-section="technik">Änderungsverlauf auf GitHub<span class="nur-vorlesen"> (neuer Tab)</span> ↗</a></li>
+							<li><a href="<?php echo esc_url( $source_base . '.github/workflows/ci.yml' ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="results_proof_github_ci" data-track-category="proof" data-track-section="technik">Automatisierte Prüfregeln<span class="nur-vorlesen"> (GitHub, neuer Tab)</span> ↗</a></li>
+							<li><a href="<?php echo esc_url( $pagespeed_url ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="results_proof_pagespeed" data-track-category="proof" data-track-section="technik">Diese Seite bei PageSpeed Insights prüfen<span class="nur-vorlesen"> (neuer Tab)</span> ↗</a></li>
+						</ul>
+						<p class="erg-note">Lighthouse liefert Labormesswerte. Eine hohe Punktzahl belegt weder vollständige Barrierefreiheit noch reale Geschäftsergebnisse.</p>
+					</div>
+				</details>
+			</div>
+		</div>
+	</section>
+
+	<section id="grossprojekt" aria-labelledby="grossprojekt-h" data-track-section="grossprojekt">
+		<div class="blatt reihe">
+				<div class="spalte-links"><div class="kapitel"><span class="nr">03</span><span class="titel">Solar-Fall</span><span class="strich" aria-hidden="true"></span></div></div>
+				<div class="voll">
+					<p class="mono erg-kicker"><?php echo esc_html( $e3_case_label ); ?> · anonymisiert</p>
+					<h2 class="kopf" id="grossprojekt-h">Von der Website bis zur Übergabe an den Vertrieb.</h2>
+					<p class="vorspann">In diesem Projekt habe ich Website, Landingpages, Vorqualifizierung, Tracking und CRM-Übergabe mit Kampagnen und laufender Optimierung verbunden. Der Betrachtungszeitraum umfasst <?php echo esc_html( $metric( 'timeframe' ) ); ?>.</p>
+					<div class="tafel erg-solar">
+						<p class="mono">Kosten pro Anfrage im dokumentierten Fall</p>
+						<dl class="erg-cpl"><div><dt>Gekaufte Anfrage · vorher</dt><dd><?php echo esc_html( $metric( 'cpl_before' ) ); ?></dd></div><div><dt>Eigene Anfrage · nachher</dt><dd><?php echo esc_html( $metric( 'cpl_after' ) ); ?></dd></div></dl>
+						<dl class="erg-solar-context"><div><dt>Qualifizierte Anfragen</dt><dd><?php echo esc_html( $metric( 'lead_count' ) ); ?></dd></div><div><dt>Abschlussquote</dt><dd><?php echo esc_html( $metric( 'sales_conversion' ) ); ?></dd></div><div><dt>Zeitraum</dt><dd><?php echo esc_html( $metric( 'timeframe' ) ); ?></dd></div></dl>
+						<p class="erg-note">Die CPL-Werte vergleichen Anfrage-Einkauf mit eigener Gewinnung. Sie sind kein vollständiger Vergleich der Kosten pro Auftrag: Aufbau, Betreuung, Software und Vertrieb müssen dafür mitgerechnet werden.</p>
+					</div>
+					<div class="erg-case-context">
+						<div><h3>Was sich im Prozess verändert hat</h3><p>Anfragen liefen durch eine eigene Strecke: Landingpage, qualifizierende Fragen und Übergabe ins CRM. So wurden Website und Kampagnen mit der anschließenden Bearbeitung verbunden.</p></div>
+						<div><h3>Wie die Ergebnisse einzuordnen sind</h3><p>Die Werte stammen aus einem einzelnen PV-Projekt. Kampagnen, Angebot und Vertrieb wirkten gemeinsam. Sie isolieren keinen WordPress-Effekt und sind keine Prognose für andere Betriebe oder Wärmepumpenprojekte.</p></div>
+					</div>
+					<details class="erg-details erg-after"><summary>Was Anfrage- und Abschlussquote jeweils bedeuten</summary><div class="erg-answer"><dl class="erg-definitions"><div><dt><?php echo esc_html( $metric( 'lead_conversion' ) ); ?> Lead-Conversion-Rate</dt><dd>Anteil der Besucher der Anfragestrecke, die eine Anfrage abschickten.</dd></div><div><dt><?php echo esc_html( $metric( 'sales_conversion' ) ); ?> Abschlussquote</dt><dd>Anteil der qualifizierten Anfragen, aus denen ein Auftrag wurde. Daran hatte der Vertrieb einen wesentlichen Anteil.</dd></div></dl></div></details>
+					<a class="textlink erg-after" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="cta_results_case_study" data-track-category="trust" data-track-section="grossprojekt">Fallstudie und Methodik lesen <span aria-hidden="true">→</span></a>
+				</div>
+		</div>
+	</section>
+
+	<section id="whitelabel" aria-labelledby="whitelabel-h" data-track-section="whitelabel">
+		<div class="blatt reihe">
+			<div class="spalte-links"><div class="kapitel"><span class="nr">04</span><span class="titel">Zusammenarbeit</span><span class="strich" aria-hidden="true"></span></div></div>
+			<div class="voll">
+				<h2 class="kopf" id="whitelabel-h">Eine Übergabe, mit der Ihr Team weiterarbeiten kann.</h2>
+				<p class="vorspann">Bei White-Label-Projekten bleiben Kundenbeziehung und Außenauftritt bei der Agentur. Vor der Umsetzung vereinbaren wir, was geliefert wird und woran Sie die Abnahme festmachen.</p>
+				<div class="erg-handover">
+					<p class="mono">Übergabemuster · Beispiel Seitenzusammenführung</p>
+					<p class="erg-note">Anhand der oben dokumentierten Arbeit an meiner eigenen Website. Das ist ein Muster für die Zusammenarbeit, keine veröffentlichte Agenturreferenz.</p>
+					<ol class="erg-handover-list">
+						<li><h3>Umfang festhalten</h3><p>Welche Inhalte ziehen um? Welche Adressen und Anfragewege müssen erhalten bleiben? Diese Entscheidungen stehen vor der Umsetzung fest.</p></li>
+						<li><h3>Prüfung nachvollziehbar machen</h3><p>Änderungen, Prüffälle und offene Punkte gehören zusammen. Eine bestandene Codeprüfung ersetzt dabei keine Funktionsprüfung der veröffentlichten Website.</p></li>
+						<li><h3>Weiterarbeit ermöglichen</h3><p>Quellcode, Änderungsstand und die Begründung wichtiger Entscheidungen übergeben. Damit kann Ihr Team die Umsetzung prüfen und anschließend weiterführen.</p></li>
+					</ol>
+				</div>
+				<div class="erg-related">
+					<a class="textlink" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="cta_results_whitelabel" data-track-category="segmentation" data-track-section="whitelabel">So läuft die White-Label-Zusammenarbeit <span aria-hidden="true">→</span></a>
+					<a class="textlink" href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="results_proof_tracking_page" data-track-category="proof" data-track-section="whitelabel">Leistungsumfang und Abnahme beim Tracking <span aria-hidden="true">→</span></a>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- 03 — Weitere öffentlich prüfbare Arbeiten -->
-	<?php if ( ! empty( $references ) ) : ?>
-	<section class="hu-erg-section hu-erg-section--alt" id="arbeiten" data-track-section="arbeiten" aria-labelledby="hu-erg-works-title">
-		<div class="hu-erg__shell">
-			<div class="hu-erg__head nx-reveal">
-				<p class="hu-erg__eyebrow">02 — Öffentlich prüfbar</p>
-				<h2 id="hu-erg-works-title">Drei Websites, die Sie direkt aufrufen können.</h2>
-				<p class="hu-erg__lede">Kein Zahlenmaterial, das ich selbst liefere. Struktur, Typografie, Ladeverhalten und Pflegbarkeit sehen Sie an der laufenden Website.</p>
-			</div>
-
-			<div class="hu-erg-works nx-reveal">
-				<?php foreach ( $references as $reference ) : ?>
-					<article class="hu-erg-work">
-						<p class="hu-erg__eyebrow"><?php echo esc_html( $reference['discipline'] ); ?></p>
-						<h3>
-							<a href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="results_reference_open" data-track-category="trust" data-track-section="arbeiten">
-								<?php echo esc_html( $reference['name'] ); ?> <span aria-hidden="true">↗</span>
-							</a>
-						</h3>
-						<p class="hu-erg-work__role"><?php echo esc_html( $reference['role'] ); ?></p>
-						<p><?php echo esc_html( $reference['text'] ); ?></p>
-						<ul class="hu-erg-chips hu-erg-chips--quiet">
-							<?php foreach ( $reference['stack'] as $stack_item ) : ?>
-								<li><?php echo esc_html( $stack_item ); ?></li>
-							<?php endforeach; ?>
-						</ul>
-					</article>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</section>
-	<?php endif; ?>
-
-	<!-- 04 — Technischer Eigenbeweis -->
-	<section class="hu-erg-section hu-erg-tech" id="technik" data-track-section="technik" aria-labelledby="hu-erg-tech-title">
-		<div class="hu-erg__shell">
-			<div class="hu-erg__head nx-reveal">
-				<p class="hu-erg__eyebrow">03 — Diese Website als Arbeitsprobe</p>
-				<h2 id="hu-erg-tech-title">Nicht behauptet. Hier im Produktivbetrieb.</h2>
-				<p class="hu-erg__lede">Performance, Barrierefreiheit, technisches SEO und Server-Side Tracking sind auf dieser Seite keine Folie im Angebot, sondern der laufende Zustand.</p>
-			</div>
-
-			<div class="hu-erg-tiles nx-reveal">
-				<?php foreach ( $live_proof_tiles as $tile ) : ?>
-					<div class="hu-erg-tile">
-						<strong><?php echo esc_html( $tile['value'] ); ?><?php if ( '' !== $tile['max'] ) : ?><small><?php echo esc_html( $tile['max'] ); ?></small><?php endif; ?></strong>
-						<span><?php echo esc_html( $tile['label'] ); ?></span>
-					</div>
-				<?php endforeach; ?>
-				<a class="hu-erg-tile hu-erg-tile--live" href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="results_proof_tracking_page" data-track-category="proof" data-track-section="technik">
-					<strong><span class="hu-erg-tile__pulse" aria-hidden="true"></span>Aktiv</strong>
-					<span>Server-Side Tracking</span>
-					<em>GA4 + Server-GTM</em>
-				</a>
-			</div>
-
-			<p class="hu-erg__note hu-erg-tiles__note">Lighthouse liefert Labormesswerte, gemessen an dieser Seite. Sie ersetzen keine Felddaten aus echtem Nutzerverkehr — prüfen können Sie beides selbst.</p>
-
-			<div class="hu-erg-chain nx-reveal">
-				<h3 class="hu-erg-chain__title">Die Messkette dieser Seite</h3>
-				<ol class="hu-erg-chain__flow" role="list">
-					<?php foreach ( $measurement_chain as $index => $step ) : ?>
-						<li>
-							<span class="hu-erg-chain__index" aria-hidden="true"><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-							<strong><?php echo esc_html( $step['title'] ); ?></strong>
-							<small><?php echo esc_html( $step['note'] ); ?></small>
-						</li>
+	<section id="weiter" aria-labelledby="weiter-h" data-track-section="weiter">
+		<div class="blatt reihe">
+			<div class="spalte-links"><div class="kapitel"><span class="nr">05</span><span class="titel">Nächster Schritt</span><span class="strich" aria-hidden="true"></span></div></div>
+			<div class="voll">
+				<h2 class="kopf" id="weiter-h">Was möchten Sie umsetzen?</h2>
+				<p class="vorspann">Wählen Sie den Einstieg, der zu Ihrem Vorhaben passt.</p>
+				<div class="erg-next">
+					<?php foreach ( $next_steps as $step ) : ?>
+						<article class="erg-next-row erg-next-row--<?php echo esc_attr( $step['kind'] ); ?>">
+							<div><p class="mono"><?php echo esc_html( $step['kicker'] ); ?></p><h3><?php echo esc_html( $step['title'] ); ?></h3><p><?php echo esc_html( $step['desc'] ); ?></p></div>
+							<div class="erg-next-action"><a class="tun" href="<?php echo esc_url( $step['url'] ); ?>" data-track-action="<?php echo esc_attr( $step['action'] ); ?>" data-track-category="lead_gen" data-track-section="weiter"><?php echo esc_html( $step['label'] ); ?> <span aria-hidden="true">→</span></a><?php if ( '' !== $step['note'] ) : ?><p class="erg-note"><?php echo esc_html( $step['note'] ); ?></p><?php endif; ?></div>
+						</article>
 					<?php endforeach; ?>
-				</ol>
-			</div>
-
-			<div class="hu-erg-tech__links nx-reveal">
-				<a class="hu-erg__link" href="<?php echo esc_url( $pagespeed_url ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="results_proof_pagespeed" data-track-category="proof" data-track-section="technik">Diese Seite bei PageSpeed Insights prüfen <span aria-hidden="true">↗</span></a>
-				<a class="hu-erg__link" href="<?php echo esc_url( $github_url . '/commits/main/' ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="results_proof_github_history" data-track-category="proof" data-track-section="technik">Änderungsverlauf auf GitHub <span aria-hidden="true">↗</span></a>
-				<a class="hu-erg__link" href="<?php echo esc_url( $github_url . '/blob/main/.github/workflows/ci.yml' ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="results_proof_github_ci" data-track-category="proof" data-track-section="technik">Automatisierte Prüfungen ansehen <span aria-hidden="true">↗</span></a>
+				</div>
+				<p class="erg-note erg-after">Leistungen und Preisrahmen finden Sie auf der <a href="<?php echo esc_url( $freelancer_url ); ?>" data-track-action="results_next_to_freelancer" data-track-category="navigation" data-track-section="weiter">Startseite</a>. Für Energieunternehmen erklärt die <a href="<?php echo esc_url( $energy_url ); ?>" data-track-action="results_next_to_energy" data-track-category="navigation" data-track-section="weiter">Branchenseite</a> den Anfrageweg genauer.</p>
 			</div>
 		</div>
 	</section>
-
-	<!-- 05 — White-Label: erklärte Lücke statt erfundener Referenz -->
-	<section class="hu-erg-section hu-erg-section--alt" id="whitelabel" data-track-section="whitelabel" aria-labelledby="hu-erg-wl-title">
-		<div class="hu-erg__shell hu-erg-wl">
-			<div class="nx-reveal">
-				<p class="hu-erg__eyebrow">04 — Nicht öffentliche Arbeit</p>
-				<h2 id="hu-erg-wl-title">White-Label heißt: Der Endkunde muss meinen Namen nicht kennen.</h2>
-				<p class="hu-erg__lede">Ein Teil meiner Arbeit entsteht für Agenturen und Partner. Diese Projekte laufen unter deren Namen und können hier nicht mit Kundenlogo stehen. Sichtbar bleibt, was geliefert wird.</p>
-				<p class="hu-erg__note">Keine erfundenen Agentur-Referenzen. Gibt ein Partner eine Nennung frei, steht sie hier — vorher nicht.</p>
-			</div>
-			<div class="nx-reveal">
-				<h3 class="hu-erg-wl__subtitle">Lieferobjekte</h3>
-				<ul class="hu-erg-chips">
-					<?php foreach ( $whitelabel_delivery as $delivery_item ) : ?>
-						<li><?php echo esc_html( $delivery_item ); ?></li>
-					<?php endforeach; ?>
-				</ul>
-				<a class="hu-erg__link" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="cta_results_whitelabel" data-track-category="segmentation" data-track-section="whitelabel">White-Label-Zusammenarbeit ansehen <span aria-hidden="true">→</span></a>
-			</div>
-		</div>
-	</section>
-
-	<!-- 06 — Drei nächste Wege -->
-	<section class="hu-erg-section hu-erg-next" id="weiter" data-track-section="weiter" aria-labelledby="hu-erg-next-title">
-		<div class="hu-erg__shell">
-			<div class="hu-erg__head nx-reveal">
-				<p class="hu-erg__eyebrow">05 — Nächster Schritt</p>
-				<h2 id="hu-erg-next-title">Was möchten Sie als Nächstes klären?</h2>
-				<p class="hu-erg__lede">Die Belege sind für alle drei Wege dieselben. Der sinnvolle nächste Schritt ist es nicht.</p>
-			</div>
-
-			<div class="hu-erg-next__grid nx-reveal">
-				<?php foreach ( $next_steps as $step ) : ?>
-					<article class="hu-erg-next__card hu-erg-next__card--<?php echo esc_attr( $step['kind'] ); ?>">
-						<span class="hu-erg-next__index" aria-hidden="true"><?php echo esc_html( $step['index'] ); ?></span>
-						<p class="hu-erg__eyebrow"><?php echo esc_html( $step['kicker'] ); ?></p>
-						<h3><?php echo esc_html( $step['title'] ); ?></h3>
-						<p><?php echo esc_html( $step['desc'] ); ?></p>
-						<a class="nx-btn nx-btn--primary hu-erg-next__cta" href="<?php echo esc_url( $step['url'] ); ?>" data-track-action="<?php echo esc_attr( $step['action'] ); ?>" data-track-category="lead_gen" data-track-section="weiter">
-							<?php echo esc_html( $step['label'] ); ?> <span aria-hidden="true">→</span>
-						</a>
-						<?php if ( '' !== $step['note'] ) : ?>
-							<p class="hu-erg__note"><?php echo esc_html( $step['note'] ); ?></p>
-						<?php endif; ?>
-					</article>
-				<?php endforeach; ?>
-			</div>
-
-			<p class="hu-erg__note hu-erg-next__foot">Sie sind unsicher, welcher Weg passt? Beschreiben Sie kurz Ihre Ausgangslage über den <a href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_results_next_unsure" data-track-category="lead_gen" data-track-section="weiter">Projektweg</a> — ich ordne ein, was sinnvoll ist. Wenn es ein WordPress-Projekt ist, finden Sie Leistungen und Preise auf der <a href="<?php echo esc_url( $freelancer_url ); ?>" data-track-action="results_next_to_freelancer" data-track-category="navigation" data-track-section="weiter">Freelancer-Seite</a>; für Solar- und Wärmepumpenbetriebe steht die <a href="<?php echo esc_url( $energy_url ); ?>" data-track-action="results_next_to_energy" data-track-category="navigation" data-track-section="weiter">Branchenseite</a> davor.</p>
-		</div>
-	</section>
-
-</main>
-
+</div>
 <?php get_footer(); ?>

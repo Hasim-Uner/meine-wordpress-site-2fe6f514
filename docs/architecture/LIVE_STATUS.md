@@ -1,5 +1,34 @@
 # Live Status
 
+## Ergebnisse – Arbeitsbelege, Repository-Stand 2026-09-14
+
+- `/ergebnisse/` zeigt WordPress-Arbeiten zuerst, ergänzt um eine technische
+  Projektgeschichte zur Homepage-Konsolidierung mit stabilen Quellverweisen.
+  Öffentliche Referenzfakten und Solar-Metriken bleiben in ihren Canons.
+- Solar-Zahlen haben Kostenabgrenzung und getrennte Definitionen. Die angenommene
+  frühere Abschlussquote, undatierte Lighthouse-Kacheln und die unbestätigte
+  Live-Tracking-Anzeige entfallen. Der separate Case behält seine Sperre.
+- White-Label wird durch ein ausdrücklich gekennzeichnetes Übergabemuster am
+  eigenen Projekt erklärt; keine neue Kundenreferenz oder Messung erfunden.
+- Layout: `system.css` plus gekapseltes `ergebnisse.css`, keine NX-Tokens,
+  keine Scroll-Reveals und kein Seiten-JavaScript. Die Legacy-CSS-Baseline
+  verliert den Ergebnisse-Verbraucher. Native Details bleiben ohne JS nutzbar.
+- Motion Brief: Intensität 0, kein fokales Bewegungselement; Text und Kennzahlen
+  statisch, Auf-/Zuklappen unmittelbar, Tastatur/Touch über native Elemente.
+  Fokus und reduzierte Bewegung verwenden den gemeinsamen Core. Keine neue
+  Laufzeitabhängigkeit; reale CWV wurden nicht erhoben.
+- Die gemeinsame TOC folgt der neuen Abschnittsreihenfolge. Hero-Links führen
+  zu Belegen, der Abschluss zu den drei bestehenden Anfragewegen. Blocksy
+  behält das einzige `main`; keine doppelte Hauptbereich-ID im Template.
+- Titel/Beschreibung angepasst; FAQ-Caches aus nicht sichtbarem Editor-Inhalt
+  werden auf dieser Template-Seite nicht ausgegeben. Keine neue URL oder
+  Commercial-Query-Ownership.
+- Umsetzung im PR; Veröffentlichung nicht vorausgesetzt. Die Browserrichtlinie
+  blockiert die visuelle Prüfung in dieser Sitzung. Die Prüfung von Desktop,
+  Mobil und Live-Kontakt bleibt offen; die lokalen Code-/DOM-Prüfungen sind
+  kein Ersatz dafür. Frontend-Grundlage: Modern Web Guidance `html`.
+
+
 ## Über Haşim – Methodikseite, Repository-Stand 2026-09-13
 
 - `/hasim-uener/` übernimmt den abgestimmten persönlichen Methodiktext in

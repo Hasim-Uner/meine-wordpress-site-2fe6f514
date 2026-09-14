@@ -306,9 +306,10 @@ function hu_get_wayfinding_context() {
 			'breadcrumb' => true,
 			'toc_mode'   => 'generated',
 			'toc'        => [
-				[ 'id' => 'grossprojekt', 'label' => 'Fallstudie' ],
-				[ 'id' => 'arbeiten', 'label' => 'Öffentliche Arbeiten' ],
-				[ 'id' => 'technik', 'label' => 'Technischer Beleg' ],
+				[ 'id' => 'arbeiten', 'label' => 'WordPress-Arbeiten' ],
+				[ 'id' => 'technik', 'label' => 'Umsetzung im Detail' ],
+				[ 'id' => 'grossprojekt', 'label' => 'Solar-Fall' ],
+				[ 'id' => 'whitelabel', 'label' => 'Übergabe' ],
 				[ 'id' => 'weiter', 'label' => 'Nächster Schritt' ],
 			],
 			'next'       => [], // Drei-Wege-Close der Seite bleibt alleiniger Abschluss.

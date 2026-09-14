@@ -80,6 +80,13 @@ Der historische `NEXUS SINGLE PAGE LAYOUT`-Block und sein altes Share-Finishing 
 
 Zusätzlich wurden die serverseitig nicht mehr renderbaren Blocksy-Menü-/CTA- und Mega-Menü-Blöcke aus `style.css` entfernt. Der Parent-Header ist über `blocksy:builder:header:enabled` deaktiviert; die aktuelle Standardnavigation wird als `.leiste` gerendert. Andere historische `.ct-header`-/`.ct-panel`-Regeln bleiben bewusst als separater Migrationsbestand bestehen und werden nicht durch einen pauschalen Selector-Guard mit diesem Schnitt vermischt. Archive- und Kundenportal-Blöcke bleiben ebenfalls bestehen, bis sie separat migriert oder ausgelagert sind.
 
+### Ergebnisse-Hub
+
+`ergebnisse.css` verwendet seit dem Seitenumbau ausschließlich `system.css`
+und dessen Tokens. Der alte NX-Verbraucher entfällt aus der shrink-only
+Baseline; das verbleibende Stylesheet enthält nur Projekt-, Beleg- und
+Übergabelayouts. Die aktuelle Anzahl der Legacy-Verbraucher liefert der Guard.
+
 ## 4. Bewusste lokale Systeme
 
 ### `energy-systems.css`
