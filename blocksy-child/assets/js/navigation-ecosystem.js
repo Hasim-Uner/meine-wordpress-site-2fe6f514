@@ -17,7 +17,7 @@
 		'#nav'
 	];
 	var MOBILE_TOC_QUERY = '(max-width: 900px), (max-height: 680px)';
-	var DESKTOP_RAIL_QUERY = '(min-width: 1380px) and (min-height: 720px)';
+	var DESKTOP_RAIL_QUERY = '(min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine)';
 	var tocPanelCount = 0;
 
 	function samePageLinks(root) {
@@ -148,12 +148,58 @@
 		});
 	}
 
+	function normalizeResultsRegister(nav) {
+		if (!document.body.classList.contains('hu-wayfinding-results')) return false;
+		if (nav.hasAttribute('data-hu-results-register-ready')) return true;
+
+		var links = samePageLinks(nav);
+		if (!links.length) return false;
+
+		var marker = document.createElement('span');
+		marker.className = 'hu-results-register__marke';
+		marker.setAttribute('aria-hidden', 'true');
+		marker.innerHTML = '<span class="hu-results-register__marke-short">Reg.</span><span class="hu-results-register__marke-full">Register</span>';
+
+		var entries = document.createElement('div');
+		entries.className = 'hu-results-register__entries';
+
+		links.forEach(function (link, index) {
+			var label = link.textContent.trim();
+			var number = index + 1 < 10 ? '0' + (index + 1) : String(index + 1);
+			var numberNode = document.createElement('span');
+			var textNode = document.createElement('span');
+
+			numberNode.className = 'hu-results-register__nr';
+			numberNode.textContent = number;
+			textNode.className = 'hu-results-register__txt';
+			textNode.textContent = label;
+
+			link.textContent = '';
+			link.appendChild(numberNode);
+			link.appendChild(textNode);
+			entries.appendChild(link);
+		});
+
+		nav.textContent = '';
+		nav.classList.add('hu-results-register');
+		nav.setAttribute('aria-label', 'Abschnitte dieses Dokuments');
+		nav.setAttribute('data-hu-results-register-ready', 'true');
+		nav.appendChild(marker);
+		nav.appendChild(entries);
+		return true;
+	}
+
 	function normalizeGeneratedToc(nav) {
+		if (normalizeResultsRegister(nav)) {
+			updateStickyOffset();
+			return;
+		}
+
 		var details = nav.querySelector('details');
 		var summary = details ? details.querySelector('summary') : null;
 		if (!details || !summary) return;
 
-		var rail = window.matchMedia(DESKTOP_RAIL_QUERY);
+		var rail = window.matchMedia('(min-width: 1380px) and (min-height: 720px)');
 
 		function sync() {
 			if (rail.matches) {
@@ -183,6 +229,7 @@
 
 	function initResultsTocRail(nav) {
 		if (!document.body.classList.contains('hu-wayfinding-results')) return;
+		if (!nav.classList.contains('hu-results-register')) return;
 
 		var trigger = document.getElementById('technik');
 		if (!trigger) return;
