@@ -25,52 +25,67 @@ jobs:
           from pathlib import Path
 
           enqueue = Path('blocksy-child/inc/enqueue.php')
-          text = enqueue.read_text(encoding='utf-8')
+          lines = enqueue.read_text(encoding='utf-8').splitlines()
 
-          old = "\t$is_sst_route = is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' );\n"
-          new = old + "\t$is_audit_route = function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page();\n"
-          if text.count(old) != 1:
-              raise SystemExit('enqueue.php: SST route anchor drifted')
-          text = text.replace(old, new, 1)
+          def unique_index(stripped):
+              matches = [i for i, line in enumerate(lines) if line.strip() == stripped]
+              if len(matches) != 1:
+                  raise SystemExit(f'enqueue.php: expected one line {stripped!r}, got {len(matches)}')
+              return matches[0]
 
-          old = "\t// ── GLOBAL: Design System (Single Source of Truth) ─────────────\n\thu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );\n"
-          new = "\t// ── GLOBAL: Legacy compatibility provider ─────────────────────\n\t// Bleibt vorerst global, bis style.css als letzter Shell-Blocker entkoppelt ist.\n\thu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );\n"
-          if text.count(old) != 1:
-              raise SystemExit('enqueue.php: design-system block drifted')
-          text = text.replace(old, new, 1)
+          sst_line = "$is_sst_route = is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' );"
+          i = unique_index(sst_line)
+          lines.insert(i + 1, "\t$is_audit_route = function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page();")
 
-          old = "\thu_enqueue_css( 'nexus-system-css', 'system.css', [ 'nexus-design-system' ] );\n\n\t// ── GLOBAL: Custom Header ──────────────────────────────────────\n\t// Traegt nur noch die Audit-Variante; die Standardleiste steht in system.css.\n\thu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-system-css' ] );\n\n\t// ── GLOBAL: Core JS (Scroll-Spy, FAQ, Counter, Progress Bar) ──\n\thu_enqueue_js( 'nexus-core-js', 'nexus-core.js' );\n\thu_enqueue_js( 'nexus-site-header-js', 'site-header.js', [ 'nexus-core-js' ] );\n"
-          new = "\thu_enqueue_css( 'nexus-system-css', 'system.css', [ 'blocksy-child-style' ] );\n\n\t// ── Audit header only ──────────────────────────────────────────\n\t// Standardrouten verwenden .leiste aus system.css + leiste.js. Blog- und\n\t// Energy-Kontexte rendern diesen Template-Part nicht.\n\tif ( $is_audit_route ) {\n\t\thu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-system-css' ] );\n\t}\n\n\t// ── GLOBAL: Core JS (Scroll-Spy, FAQ, Counter, Progress Bar) ──\n\thu_enqueue_js( 'nexus-core-js', 'nexus-core.js' );\n\n\tif ( $is_audit_route ) {\n\t\thu_enqueue_js( 'nexus-site-header-js', 'site-header.js', [ 'nexus-core-js' ] );\n\t}\n"
-          if text.count(old) != 1:
-              raise SystemExit('enqueue.php: system/header enqueue block drifted')
-          text = text.replace(old, new, 1)
+          i = unique_index('// ── GLOBAL: Design System (Single Source of Truth) ─────────────')
+          lines[i] = '\t// ── GLOBAL: Legacy compatibility provider ─────────────────────'
+          lines.insert(i + 1, '\t// Bleibt vorerst global, bis style.css als letzter Shell-Blocker entkoppelt ist.')
 
-          old = "\t\t&& ( ! function_exists( 'nexus_is_audit_page' ) || ! nexus_is_audit_page() )\n"
-          new = "\t\t&& ! $is_audit_route\n"
-          if text.count(old) != 1:
-              raise SystemExit('enqueue.php: leiste audit predicate drifted')
-          text = text.replace(old, new, 1)
+          i = unique_index("hu_enqueue_css( 'nexus-system-css', 'system.css', [ 'nexus-design-system' ] );")
+          lines[i] = "\thu_enqueue_css( 'nexus-system-css', 'system.css', [ 'blocksy-child-style' ] );"
+
+          css_line = "hu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-system-css' ] );"
+          i = unique_index(css_line)
+          lines[i] = "\tif ( $is_audit_route ) {\n\t\thu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-system-css' ] );\n\t}"
+          if i >= 2:
+              lines[i - 2] = '\t// ── Audit header only ──────────────────────────────────────────'
+              lines[i - 1] = '\t// Standardrouten verwenden .leiste aus system.css + leiste.js.'
+
+          js_line = "hu_enqueue_js( 'nexus-site-header-js', 'site-header.js', [ 'nexus-core-js' ] );"
+          i = unique_index(js_line)
+          lines[i] = "\tif ( $is_audit_route ) {\n\t\thu_enqueue_js( 'nexus-site-header-js', 'site-header.js', [ 'nexus-core-js' ] );\n\t}"
+
+          audit_predicate = "&& ( ! function_exists( 'nexus_is_audit_page' ) || ! nexus_is_audit_page() )"
+          i = unique_index(audit_predicate)
+          lines[i] = '\t\t&& ! $is_audit_route'
+
+          text = '\n'.join(lines) + '\n'
+          required = [
+              "$is_audit_route = function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page();",
+              "hu_enqueue_css( 'nexus-system-css', 'system.css', [ 'blocksy-child-style' ] );",
+              "if ( $is_audit_route ) {\n\t\thu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-system-css' ] );",
+              "if ( $is_audit_route ) {\n\t\thu_enqueue_js( 'nexus-site-header-js', 'site-header.js', [ 'nexus-core-js' ] );",
+              '&& ! $is_audit_route',
+          ]
+          for needle in required:
+              if needle not in text:
+                  raise SystemExit(f'enqueue.php: migration contract missing {needle!r}')
           enqueue.write_text(text, encoding='utf-8')
 
           doc = Path('docs/architecture/CSS_ARCHITECTURE.md')
           text = doc.read_text(encoding='utf-8')
-          old = 'Die shrink-only Baseline steht damit aktuell bei **34 NX-Verbraucherdateien**. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.'
-          new = 'Die shrink-only Baseline steht nach der Entkopplung des Audit-Headers aktuell bei **33 NX-Verbraucherdateien**. `site-header.css` besitzt nur noch die tatsächlich gerenderte Audit-Variante, verwendet Canon-Motion plus lokale Audit-Farbrollen und wird zusammen mit `site-header.js` nur noch auf der Audit-Route geladen. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.'
-          if text.count(old) != 1:
-              raise SystemExit('CSS_ARCHITECTURE.md: baseline status drifted')
-          text = text.replace(old, new, 1)
-
-          old = '1. **Globale Shell / Blocker:** `style.css` und `site-header.css`. Solange diese beiden breit `--nx-*` konsumieren, kann der Legacy-Provider nicht sicher global abgeschaltet werden.'
-          new = '1. **Globale Shell / Blocker:** `site-header.css` ist entkoppelt; `style.css` ist jetzt der verbleibende globale Shell-Blocker. Der Legacy-Provider kann erst bedingt geladen werden, wenn dessen aktive globale NX-Regeln isoliert oder migriert sind.'
-          if text.count(old) != 1:
-              raise SystemExit('CSS_ARCHITECTURE.md: shell cluster drifted')
-          text = text.replace(old, new, 1)
-
-          old = '1. **Globale Shell:** `style.css` und `site-header.css` inventarisieren und ihre wirklich global benötigten Primitive von den alten Seiten-/Blocksy-Regeln trennen. Das ist der Hauptblocker für einen bedingten Legacy-Provider.'
-          new = '1. **Globale Shell:** Audit-Header ist entkoppelt. `style.css` bleibt der letzte globale Blocker und wird als Nächstes in echte WordPress-/Font-Foundation versus alte Blocksy-/Route-Regeln zerlegt.'
-          if text.count(old) != 1:
-              raise SystemExit('CSS_ARCHITECTURE.md: migration step drifted')
-          text = text.replace(old, new, 1)
+          replacements = {
+              'Die shrink-only Baseline steht damit aktuell bei **34 NX-Verbraucherdateien**. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.':
+              'Die shrink-only Baseline steht nach der Entkopplung des Audit-Headers aktuell bei **33 NX-Verbraucherdateien**. `site-header.css` besitzt nur noch die tatsächlich gerenderte Audit-Variante, verwendet Canon-Motion plus lokale Audit-Farbrollen und wird zusammen mit `site-header.js` nur noch auf der Audit-Route geladen. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.',
+              '1. **Globale Shell / Blocker:** `style.css` und `site-header.css`. Solange diese beiden breit `--nx-*` konsumieren, kann der Legacy-Provider nicht sicher global abgeschaltet werden.':
+              '1. **Globale Shell / Blocker:** `site-header.css` ist entkoppelt; `style.css` ist jetzt der verbleibende globale Shell-Blocker. Der Legacy-Provider kann erst bedingt geladen werden, wenn dessen aktive globale NX-Regeln isoliert oder migriert sind.',
+              '1. **Globale Shell:** `style.css` und `site-header.css` inventarisieren und ihre wirklich global benötigten Primitive von den alten Seiten-/Blocksy-Regeln trennen. Das ist der Hauptblocker für einen bedingten Legacy-Provider.':
+              '1. **Globale Shell:** Audit-Header ist entkoppelt. `style.css` bleibt der letzte globale Blocker und wird als Nächstes in echte WordPress-/Font-Foundation versus alte Blocksy-/Route-Regeln zerlegt.',
+          }
+          for old, new in replacements.items():
+              if text.count(old) != 1:
+                  raise SystemExit(f'CSS_ARCHITECTURE.md: expected one migration anchor, got {text.count(old)}')
+              text = text.replace(old, new, 1)
           doc.write_text(text, encoding='utf-8')
           PY
 
