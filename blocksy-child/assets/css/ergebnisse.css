@@ -1,189 +1,55 @@
 /* Evidence hub in the shared document system (system.css).
+ * Funnel order: measured outcome -> public work -> technical verification -> close.
  * Motion brief: intensity 0, no focal animation. Reading and source inspection
  * stay available without JavaScript. Native details provide immediate state
  * feedback; system.css owns focus and reduced-motion behavior.
  */
 .hu-erg { overflow-wrap: anywhere; }
-.hu-erg .erg-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: var(--s5);
-  align-items: end;
-}
-.hu-erg .erg-hero h1 {
-  font-size: clamp(2.1rem, 1.25rem + 3.5vw, 4.2rem);
-  max-width: 20ch;
-}
-.hu-erg .erg-register {
-  border-top: 1px solid var(--strich);
-  padding-top: var(--s2);
-}
+.hu-erg .erg-hero { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--s5); align-items: end; }
+.hu-erg .erg-hero h1 { font-size: clamp(2.1rem, 1.25rem + 3.5vw, 4.2rem); max-width: 20ch; }
+.hu-erg .erg-register { border-top: 1px solid var(--strich); padding-top: var(--s2); }
 .hu-erg .erg-register dl { margin: var(--s2) 0 0; }
-.hu-erg .erg-register dl > div {
-  display: grid;
-  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
-  gap: var(--s2);
-  padding-block: var(--s2);
-  border-top: 1px solid var(--haar);
-  font-size: 0.9rem;
-  line-height: 1.45;
-}
+.hu-erg .erg-register dl > div { display: grid; grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr); gap: var(--s2); padding-block: var(--s2); border-top: 1px solid var(--haar); font-size: 0.9rem; line-height: 1.45; }
 .hu-erg .erg-register dt { font-weight: 500; }
 .hu-erg .erg-register dd { margin: 0; color: var(--grau); }
-.hu-erg .erg-hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--s2) var(--s3);
-  margin-top: var(--s4);
-}
 .hu-erg .erg-register a { text-underline-offset: var(--s0); }
+.hu-erg .erg-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s3); margin-top: var(--s4); }
 .hu-erg .erg-note { font-size: 0.9rem; color: var(--grau); line-height: 1.55; }
 .hu-erg .erg-after { margin-top: var(--s3); }
 .hu-erg .erg-kicker { margin-bottom: var(--s3); }
 .hu-erg .erg-projects { margin-top: var(--s4); }
-.hu-erg .erg-project {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: var(--s4);
-  padding-block: var(--s4);
-  border-top: 1px solid var(--strich);
-}
+.hu-erg .erg-project { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: var(--s4); padding-block: var(--s4); border-top: 1px solid var(--strich); }
 .hu-erg .erg-project + .erg-project { border-top-color: var(--haar); }
-.hu-erg .erg-project h3 {
-  font-size: clamp(1.3rem, 1.15rem + 0.7vw, 1.8rem);
-  margin-block: var(--s2);
-  line-height: 1.2;
-}
+.hu-erg .erg-project h3 { font-size: clamp(1.3rem, 1.15rem + 0.7vw, 1.8rem); margin-block: var(--s2); line-height: 1.2; }
 .hu-erg .erg-project-heading .textlink { margin-top: var(--s3); }
 .hu-erg .erg-contribution { margin: var(--s3) 0; }
-.hu-erg .erg-contribution dt,
-.hu-erg .erg-definitions dt { font-weight: 600; margin-bottom: var(--s1); }
-.hu-erg .erg-contribution dd,
-.hu-erg .erg-definitions dd { margin: 0; color: var(--grau); }
-.hu-erg .erg-details {
-  border-top: 1px solid var(--haar);
-  border-bottom: 1px solid var(--haar);
-}
-.hu-erg .erg-details > summary {
-  cursor: pointer;
-  min-height: 44px;
-  padding-block: var(--s2);
-  font-size: 0.95rem;
-  line-height: 1.5;
-  font-weight: 500;
-  list-style: revert;
-}
+.hu-erg .erg-contribution dt, .hu-erg .erg-definitions dt { font-weight: 600; margin-bottom: var(--s1); }
+.hu-erg .erg-contribution dd, .hu-erg .erg-definitions dd { margin: 0; color: var(--grau); }
+.hu-erg .erg-details { border-top: 1px solid var(--haar); border-bottom: 1px solid var(--haar); }
+.hu-erg .erg-details > summary { cursor: pointer; min-height: 44px; padding-block: var(--s2); font-size: 0.95rem; line-height: 1.5; font-weight: 500; list-style: revert; }
 .hu-erg .erg-details > summary::marker { color: var(--stempel); }
 .hu-erg .erg-details[open] > summary { color: var(--stempel); }
 .hu-erg .erg-answer { padding: var(--s2); }
-.hu-erg .erg-answer > * + * { margin-top: var(--s2); }
-.hu-erg .erg-migration { margin-top: var(--s4); }
-.hu-erg .erg-migration-path {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) auto minmax(0, 1fr);
-  gap: var(--s3);
-  align-items: center;
-  margin-block: var(--s3);
-}
-.hu-erg .erg-migration-path div > span {
-  display: block;
-  color: var(--grau);
-  font-size: 0.85rem;
-  margin-bottom: var(--s1);
-}
-.hu-erg .erg-migration-path code {
-  background: transparent;
-  padding: 0;
-  color: var(--tinte);
-  font-family: var(--mono);
-  font-size: 0.95rem;
-}
-.hu-erg .erg-migration-path strong { font-size: 1.3rem; font-weight: 500; }
-.hu-erg .erg-arrow { color: var(--stempel); font-size: 1.5rem; }
-.hu-erg .erg-evidence-list { margin-top: var(--s3); }
-.hu-erg .erg-evidence {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: var(--s3);
-  padding-block: var(--s3);
-  border-bottom: 1px solid var(--haar);
-}
+.hu-erg .erg-evidence-list { margin-top: var(--s4); border-top: 1px solid var(--strich); }
+.hu-erg .erg-evidence { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: var(--s3); padding-block: var(--s3); border-bottom: 1px solid var(--haar); }
 .hu-erg .erg-evidence h3 { font-size: 1.25rem; line-height: 1.3; }
 .hu-erg .erg-evidence p { color: var(--grau); }
 .hu-erg .erg-evidence .textlink { margin-top: var(--s2); }
-.hu-erg .erg-source-links { padding-left: var(--s3); }
-.hu-erg .erg-source-links a {
-  display: inline-block;
-  padding-block: var(--s1);
-  text-underline-offset: var(--s0);
-}
 .hu-erg .erg-solar { margin-top: var(--s4); }
-.hu-erg .erg-cpl {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--s3);
-  margin: var(--s3) 0;
-}
+.hu-erg .erg-cpl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); margin: var(--s3) 0; }
 .hu-erg .erg-cpl dt { font-size: 0.85rem; color: var(--grau); }
-.hu-erg .erg-cpl dd {
-  font-family: var(--mono);
-  font-size: clamp(2.1rem, 1.5rem + 2vw, 3.3rem);
-  font-weight: 400;
-  font-variant-numeric: tabular-nums;
-  line-height: 1.2;
-  margin: var(--s1) 0 0;
-  white-space: nowrap;
-}
+.hu-erg .erg-cpl dd { font-family: var(--mono); font-size: clamp(2.1rem, 1.5rem + 2vw, 3.3rem); font-weight: 400; font-variant-numeric: tabular-nums; line-height: 1.2; margin: var(--s1) 0 0; white-space: nowrap; }
 .hu-erg .erg-cpl > div:last-child dd { color: var(--stempel); }
-.hu-erg .erg-solar-context {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--s3);
-  border-block: 1px solid var(--haar);
-  padding-block: var(--s3);
-  margin: 0 0 var(--s3);
-}
+.hu-erg .erg-solar-context { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s3); border-block: 1px solid var(--haar); padding-block: var(--s3); margin: 0 0 var(--s3); }
 .hu-erg .erg-solar-context dt { color: var(--grau); font-size: 0.85rem; }
-.hu-erg .erg-solar-context dd {
-  margin: var(--s1) 0 0;
-  font-family: var(--mono);
-  font-size: 1.2rem;
-  font-variant-numeric: tabular-nums;
-}
-.hu-erg .erg-case-context {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--s4);
-  margin-top: var(--s4);
-}
+.hu-erg .erg-solar-context dd { margin: var(--s1) 0 0; font-family: var(--mono); font-size: 1.2rem; font-variant-numeric: tabular-nums; }
+.hu-erg .erg-case-context { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); margin-top: var(--s4); }
 .hu-erg .erg-case-context h3 { font-size: 1.3rem; line-height: 1.3; margin-bottom: var(--s2); }
 .hu-erg .erg-case-context p { color: var(--grau); }
 .hu-erg .erg-definitions { margin: 0; }
 .hu-erg .erg-definitions > div + div { margin-top: var(--s3); }
-.hu-erg .erg-handover {
-  margin-top: var(--s4);
-  padding: var(--s3);
-  background: var(--zone);
-  border-left: 2px solid var(--stempel);
-}
-.hu-erg .erg-handover > .erg-note { margin-top: var(--s2); }
-.hu-erg .erg-handover-list { margin: var(--s3) 0 0; padding-left: var(--s3); }
-.hu-erg .erg-handover-list li { padding-left: var(--s1); }
-.hu-erg .erg-handover-list li + li { margin-top: var(--s3); }
-.hu-erg .erg-handover-list li::marker { font-family: var(--mono); color: var(--stempel); }
-.hu-erg .erg-handover-list h3 { font-size: 1.2rem; line-height: 1.3; margin-bottom: var(--s1); }
-.hu-erg .erg-handover-list p { color: var(--grau); }
-.hu-erg .erg-related { display: grid; gap: var(--s2); margin-top: var(--s3); justify-items: start; }
 .hu-erg .erg-next { margin-top: var(--s4); border-top: 1px solid var(--strich); }
-.hu-erg .erg-next-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: var(--s4);
-  padding-block: var(--s4);
-  border-bottom: 1px solid var(--haar);
-  align-items: center;
-}
+.hu-erg .erg-next-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--s4); padding-block: var(--s4); border-bottom: 1px solid var(--haar); align-items: center; }
 .hu-erg .erg-next-row h3 { font-size: 1.4rem; line-height: 1.25; margin-block: var(--s2); }
 .hu-erg .erg-next-row h3 + p { color: var(--grau); }
 .hu-erg .erg-next-action .erg-note { margin-top: var(--s2); }
@@ -195,19 +61,12 @@
   .hu-erg .erg-register dd { margin-top: var(--s1); }
 }
 @media (max-width: 720px) {
-  .hu-erg .erg-project,
-  .hu-erg .erg-evidence,
-  .hu-erg .erg-case-context,
-  .hu-erg .erg-next-row { grid-template-columns: 1fr; gap: var(--s3); }
+  .hu-erg .erg-project, .hu-erg .erg-evidence, .hu-erg .erg-case-context, .hu-erg .erg-next-row { grid-template-columns: 1fr; gap: var(--s3); }
   .hu-erg .erg-register dl { grid-template-columns: 1fr; gap: 0; }
   .hu-erg .erg-register dl > div { display: grid; }
   .hu-erg .erg-register dd { margin-top: 0; }
   .hu-erg .erg-solar-context { grid-template-columns: 1fr; gap: var(--s2); }
   .hu-erg .erg-solar-context > div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s2); }
   .hu-erg .erg-solar-context dd { flex-shrink: 0; margin: 0; }
-  .hu-erg .erg-migration-path { grid-template-columns: 1fr; gap: var(--s2); }
-  .hu-erg .erg-arrow { transform: rotate(90deg); justify-self: start; }
 }
-@media (max-width: 380px) {
-  .hu-erg .erg-cpl { grid-template-columns: 1fr; }
-}
+@media (max-width: 380px) { .hu-erg .erg-cpl { grid-template-columns: 1fr; } }
