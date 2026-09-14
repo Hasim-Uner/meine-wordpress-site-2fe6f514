@@ -171,3 +171,9 @@
     letter-spacing: .07em;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  body.hu-agentur-decision-page.hu-wayfinding-results .hu-page-toc.hu-results-register {
+    transition: none !important;
+  }
+}
