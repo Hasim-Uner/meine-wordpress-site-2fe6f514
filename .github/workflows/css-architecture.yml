@@ -41,7 +41,6 @@ jobs:
 
       - name: Inventory legacy NX consumers
         run: python3 scripts/audit-legacy-nx-css.py
-
       - name: Verify deployment single-style prune
         run: |
           cp blocksy-child/style.css /tmp/blocksy-child-style.css
@@ -52,4 +51,4 @@ jobs:
             echo 'Superseded single-post block is still present after prune.' >&2
             exit 1
           fi
-          grep -q 'NEXUS ARCHIVE LAYOUT' /tmp/blocksy-child-style.css
+          grep -q 'NEXUS ARCHIVE LAYOUT' blocksy-child/style.css
