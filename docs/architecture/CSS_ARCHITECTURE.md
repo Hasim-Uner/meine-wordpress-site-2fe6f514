@@ -48,7 +48,7 @@ Der Ausgangsstand vom 14.09.2026 betrug **39 CSS-Dateien mit NX-Namen** außerha
 
 Der provider-unabhängige NX-Abbau ist abgeschlossen. `server-side-tracking-cro.css`, `b2b-solar-leads-page.css`, `server-side-tracking-protocol.css` und `solar-leads-kaufen-alternative-page.css` verwenden jetzt die kanonischen Typografie-Rollen. Die Anfragestrecke besitzt für ihre von JavaScript gemessene Energy-Header-Höhe den route-lokalen Token `--strecke-header-height` statt eines global benannten NX-Tokens.
 
-Die shrink-only Baseline steht nach der Entkopplung der globalen Shell aktuell bei **31 NX-Verbraucherdateien**. `site-header.css` besitzt nur noch die tatsächlich gerenderte Audit-Variante, verwendet Canon-Motion plus lokale Audit-Farbrollen und wird zusammen mit `site-header.js` nur noch auf der Audit-Route geladen. `style.css` konsumiert keine `--nx-*`-Variablen mehr und ist aus der Baseline entfernt. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.
+Die shrink-only Baseline steht nach der Entkopplung der globalen Shell aktuell bei **30 NX-Verbraucherdateien**. `site-header.css` besitzt nur noch die tatsächlich gerenderte Audit-Variante, verwendet Canon-Motion plus lokale Audit-Farbrollen und wird zusammen mit `site-header.js` nur noch auf der Audit-Route geladen. `style.css` konsumiert keine `--nx-*`-Variablen mehr und ist aus der Baseline entfernt. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.
 
 Regeln:
 
@@ -66,7 +66,7 @@ Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu v
 Die verbleibenden Verbraucher verteilen sich nicht gleichmäßig. Für die Migration gelten diese Cluster:
 
 1. **Globale Shell / Provider:** `site-header.css` und `style.css` sind von `--nx-*` entkoppelt. `design-system.css` wird auf der kanonischen Startseite, der Personenseite und dem Ergebnisse-Hub nicht mehr geladen. Auf allen übrigen Routen bleibt der Provider vorerst aktiv, weil er neben NX-Tokens auch unpräfixierte Tokens sowie globale `body`-/Heading-/Kompatibilitätsregeln bereitstellt.
-2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`, `case-study.css`. `ergebnisse.css` ist bereits vollständig entkoppelt.
+2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`. `ergebnisse.css` ist bereits vollständig entkoppelt.
 3. **Service-Routen:** `cro.css`, `ga4.css`, `meta-ads.css`, `cwv.css`, `performance.css`, `seo-cornerstone.css`, `seo.css`.
 4. **Blog / Editorial:** `single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, Provider-Decision-Layer.
 5. **Solar / Tracking / Intercepts:** `energy-systems.css`, SST-Quellen, `solar-marketcheck-compact.css`, `sticky-cta.css` und die Solar-SEO-Deltas.

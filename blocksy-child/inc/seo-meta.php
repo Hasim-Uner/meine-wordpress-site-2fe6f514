@@ -639,26 +639,6 @@ function hu_is_contact_offer_page() {
 }
 
 /**
- * Check whether current query is the DOMDAR case-study page.
- *
- * @return bool
- */
-function hu_is_domdar_case_study_page() {
-	if ( ! is_singular() ) {
-		return false;
-	}
-
-	$post_id = get_queried_object_id();
-	if ( ! $post_id ) {
-		return false;
-	}
-
-	$slug = get_post_field( 'post_name', $post_id );
-
-	return in_array( $slug, [ 'case-study-domdar', 'domdar' ], true );
-}
-
-/**
  * Check whether a post object is the E3 methodology case.
  *
  * @param int $post_id Post ID.
@@ -1006,24 +986,6 @@ function hu_get_e3_methodology_case_description() {
 }
 
 /**
- * Get the SEO title for the DOMDAR case study.
- *
- * @return string
- */
-function hu_get_domdar_case_study_title() {
-	return 'Case Study: DOMDAR | Sustainable Commerce | Haşim Üner';
-}
-
-/**
- * Get the SEO description for the DOMDAR case study.
- *
- * @return string
- */
-function hu_get_domdar_case_study_description() {
-	return 'Vom 54€ Warenkorb zur 120€ Profit-Maschine in 6 Wochen. Wie wir ohne Budget-Erhöhung die Conversion auf 4,6% steigerten.';
-}
-
-/**
  * Get the SEO title for the contact request page.
  *
  * @return string
@@ -1098,13 +1060,6 @@ function hu_get_resolved_document_title() {
 
 	if ( hu_is_contact_offer_page() ) {
 		return hu_get_contact_offer_title();
-	}
-
-	if ( hu_is_domdar_case_study_page() ) {
-		$post_id   = get_queried_object_id();
-		$seo_title = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
-
-		return '' !== $seo_title ? $seo_title : hu_get_domdar_case_study_title();
 	}
 
 	if ( is_singular() ) {
@@ -1417,19 +1372,6 @@ function hu_get_seo_meta() {
 		if ( hu_is_audit_offer_page() ) {
 			$meta['og_title']    = 'Marktcheck für Solar- und Wärmepumpen-Anbieter | Haşim Üner';
 			$meta['description'] = 'Manueller Marktcheck statt Software-Einheitsbrei: Region, Vertrieb und Anfragequalität händisch einordnen und den nächsten sinnvollen Schritt klären.';
-		}
-
-		if ( hu_is_domdar_case_study_page() ) {
-			$seo_title       = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
-			$seo_description = hu_get_stored_seo_value( $post_id, 'seo_description', 'rank_math_description' );
-
-			if ( '' === $seo_title ) {
-				$meta['og_title'] = hu_get_domdar_case_study_title();
-			}
-
-			if ( '' === $seo_description ) {
-				$meta['description'] = hu_get_domdar_case_study_description();
-			}
 		}
 
 		if ( in_array( $slug, [ 'wgos', 'wordpress-growth-operating-system' ], true ) ) {
