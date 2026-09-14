@@ -65,6 +65,7 @@ function hu_enqueue_assets() {
 
 	$is_aroundhome_decision = is_singular( 'post' ) && $queried_id && 'aroundhome-solar-einordnung' === get_post_field( 'post_name', $queried_id );
 	$is_provider_decision   = $is_checkfox_decision || $is_aroundhome_decision;
+	$is_audit_route = function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page();
 
 	// ── Parent Theme ──────────────────────────────────────────────
 	wp_enqueue_style(
@@ -74,7 +75,8 @@ function hu_enqueue_assets() {
 		hu_get_asset_version( get_stylesheet_directory() . '/style.css' )
 	);
 
-	// ── GLOBAL: Design System (Single Source of Truth) ─────────────
+	// ── GLOBAL: Legacy compatibility provider ─────────────────────
+	// Bleibt vorerst global, bis style.css als letzter Shell-Blocker entkoppelt ist.
 	hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
 
 	/*
@@ -83,15 +85,19 @@ function hu_enqueue_assets() {
 	 * Route erscheinen — auch auf denen, die ihren Seiteninhalt noch im alten
 	 * Kleid rendern. Loest site-header-premium.css und site-footer.css ab.
 	 */
-	hu_enqueue_css( 'nexus-system-css', 'system.css', [ 'nexus-design-system' ] );
+	hu_enqueue_css( 'nexus-system-css', 'system.css', [ 'blocksy-child-style' ] );
 
-	// ── GLOBAL: Custom Header ──────────────────────────────────────
-	// Traegt nur noch die Audit-Variante; die Standardleiste steht in system.css.
-	hu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-system-css' ] );
+	// ── Audit header only ──────────────────────────────────────────
+	// Standardrouten verwenden .leiste aus system.css + leiste.js.
+	if ( $is_audit_route ) {
+		hu_enqueue_css( 'nexus-site-header-css', 'site-header.css', [ 'nexus-system-css' ] );
+	}
 
 	// ── GLOBAL: Core JS (Scroll-Spy, FAQ, Counter, Progress Bar) ──
 	hu_enqueue_js( 'nexus-core-js', 'nexus-core.js' );
-	hu_enqueue_js( 'nexus-site-header-js', 'site-header.js', [ 'nexus-core-js' ] );
+	if ( $is_audit_route ) {
+		hu_enqueue_js( 'nexus-site-header-js', 'site-header.js', [ 'nexus-core-js' ] );
+	}
 
 	/*
 	 * Die Leiste bringt ihr eigenes, kleines Skript mit: Klappblatt auf
@@ -100,7 +106,7 @@ function hu_enqueue_assets() {
 	 * kein [data-site-header] mehr.
 	 */
 	$uses_leiste = ( ! function_exists( 'nexus_is_blog_header_context' ) || ! nexus_is_blog_header_context() )
-		&& ( ! function_exists( 'nexus_is_audit_page' ) || ! nexus_is_audit_page() )
+		&& ! $is_audit_route
 		&& ( ! function_exists( 'nexus_is_energy_systems_context' ) || ! nexus_is_energy_systems_context() )
 		&& ( ! function_exists( 'hu_is_energy_demo_request_path' ) || ! hu_is_energy_demo_request_path() );
 

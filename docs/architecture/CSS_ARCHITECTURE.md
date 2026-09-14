@@ -48,7 +48,7 @@ Der Ausgangsstand vom 14.09.2026 betrug **39 CSS-Dateien mit NX-Namen** außerha
 
 Der provider-unabhängige NX-Abbau ist abgeschlossen. `server-side-tracking-cro.css`, `b2b-solar-leads-page.css`, `server-side-tracking-protocol.css` und `solar-leads-kaufen-alternative-page.css` verwenden jetzt die kanonischen Typografie-Rollen. Die Anfragestrecke besitzt für ihre von JavaScript gemessene Energy-Header-Höhe den route-lokalen Token `--strecke-header-height` statt eines global benannten NX-Tokens.
 
-Die shrink-only Baseline steht damit aktuell bei **34 NX-Verbraucherdateien**. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.
+Die shrink-only Baseline steht nach der Entkopplung des Audit-Headers aktuell bei **33 NX-Verbraucherdateien**. `site-header.css` besitzt nur noch die tatsächlich gerenderte Audit-Variante, verwendet Canon-Motion plus lokale Audit-Farbrollen und wird zusammen mit `site-header.js` nur noch auf der Audit-Route geladen. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.
 
 Regeln:
 
@@ -65,7 +65,7 @@ Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu v
 
 Die verbleibenden Verbraucher verteilen sich nicht gleichmäßig. Für die Migration gelten diese Cluster:
 
-1. **Globale Shell / Blocker:** `style.css` und `site-header.css`. Solange diese beiden breit `--nx-*` konsumieren, kann der Legacy-Provider nicht sicher global abgeschaltet werden.
+1. **Globale Shell / Blocker:** `site-header.css` ist entkoppelt; `style.css` ist jetzt der verbleibende globale Shell-Blocker. Der Legacy-Provider kann erst bedingt geladen werden, wenn dessen aktive globale NX-Regeln isoliert oder migriert sind.
 2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`, `case-study.css`, `ergebnisse.css`.
 3. **Service-Routen:** `cro.css`, `ga4.css`, `meta-ads.css`, `cwv.css`, `performance.css`, `seo-cornerstone.css`, `seo.css`.
 4. **Blog / Editorial:** `single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, Provider-Decision-Layer.
@@ -132,7 +132,7 @@ Route-CSS soll **nicht** enthalten:
 
 ## 6. Migrationsreihenfolge
 
-1. **Globale Shell:** `style.css` und `site-header.css` inventarisieren und ihre wirklich global benötigten Primitive von den alten Seiten-/Blocksy-Regeln trennen. Das ist der Hauptblocker für einen bedingten Legacy-Provider.
+1. **Globale Shell:** Audit-Header ist entkoppelt. `style.css` bleibt der letzte globale Blocker und wird als Nächstes in echte WordPress-/Font-Foundation versus alte Blocksy-/Route-Regeln zerlegt.
 2. **Provider-unabhängige NX-Reste (erledigt):** reine Typografie-Aliase sind auf Canon-Tokens migriert; die Anfragestrecke nutzt für ihre gemessene Energy-Header-Höhe einen route-lokalen Token.
 3. **Solar-Anfragestrecke:** Token-Spiegel physisch entfernen; gemeinsame Gutachten-Primitives aus `system.css` konsumieren, nur echte Solar-Deltas behalten. Das JS-gemessene Header-/Register-Token wird gemeinsam mit seinen CSS-Verbrauchern migriert, nicht isoliert umbenannt.
 4. **Editorial-Solar-Legacy:** die generischen `.solar-page`-Variablen `--serif`/`--mono` eindeutig umbenennen oder auf Core-Rollen migrieren; eingefrorene Guard-Ausnahme danach löschen.
