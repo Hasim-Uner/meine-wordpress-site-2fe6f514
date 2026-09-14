@@ -4,7 +4,10 @@ body.hu-tracking-setup-page {
 	--hu-wayfinding-offset: 76px;
 }
 
-.hu-tracking-register {
+/* ── Register / TOC ──────────────────────────────────────────────
+   Exact interaction language of the results register: horizontal document
+   register by default, compact left rail on large pointer devices. */
+.hu-page-toc.hu-tracking-register {
 	position: sticky;
 	top: var(--hu-wayfinding-offset);
 	z-index: 40;
@@ -12,20 +15,23 @@ body.hu-tracking-setup-page {
 	align-items: center;
 	gap: clamp(0.75rem, 2vw, 1.5rem);
 	width: 100%;
+	max-width: none;
 	min-height: 48px;
 	margin: 0;
 	padding-inline: clamp(1.25rem, 4vw, 3rem);
 	background: var(--papier);
-	border-top: 1px solid var(--haar);
+	border: 0;
 	border-bottom: 1px solid var(--haar);
 	overflow-x: auto;
 	scrollbar-width: none;
 }
 
-.hu-tracking-register::-webkit-scrollbar { display: none; }
+.hu-page-toc.hu-tracking-register::-webkit-scrollbar {
+	display: none;
+}
 
 .hu-tracking-register__marke {
-	flex: 0 0 auto;
+	flex-shrink: 0;
 	font-family: var(--mono);
 	font-size: var(--mono-s);
 	font-weight: 500;
@@ -41,9 +47,9 @@ body.hu-tracking-setup-page {
 	gap: clamp(0.75rem, 2vw, 1.4rem);
 }
 
-.hu-tracking-register a {
+.hu-page-toc.hu-tracking-register a {
 	position: relative;
-	display: inline-flex;
+	display: flex;
 	align-items: baseline;
 	gap: 0.4rem;
 	min-height: 44px;
@@ -56,9 +62,29 @@ body.hu-tracking-setup-page {
 	white-space: nowrap;
 	color: var(--grau);
 	text-decoration: none;
+	border-left: 0;
+	transition: color var(--t-norm) var(--ease-weich);
 }
 
-.hu-tracking-register a::after {
+.hu-page-toc.hu-tracking-register a:hover,
+.hu-page-toc.hu-tracking-register a:focus-visible,
+.hu-page-toc.hu-tracking-register a[aria-current="location"] {
+	padding-left: 0;
+	border-left: 0;
+}
+
+.hu-page-toc.hu-tracking-register a:focus-visible {
+	outline: 3px solid var(--stempel);
+	outline-offset: 3px;
+}
+
+.hu-tracking-register__nr {
+	color: var(--matt);
+	font-variant-numeric: tabular-nums;
+	transition: color var(--t-norm) var(--ease-weich);
+}
+
+.hu-page-toc.hu-tracking-register a::after {
 	content: "";
 	position: absolute;
 	left: 0;
@@ -71,27 +97,23 @@ body.hu-tracking-setup-page {
 	transition: transform var(--t-norm) var(--ease-aus);
 }
 
-.hu-tracking-register a:hover,
-.hu-tracking-register a:focus-visible { color: var(--tinte); }
-
-.hu-tracking-register a:focus-visible {
-	outline: 3px solid var(--stempel);
-	outline-offset: 3px;
+.hu-page-toc.hu-tracking-register a:hover {
+	color: var(--tinte);
 }
 
-.hu-tracking-register a[aria-current="location"],
-.hu-tracking-register a[aria-current="location"] .hu-tracking-register__nr { color: var(--stempel); }
+.hu-page-toc.hu-tracking-register a[aria-current="location"],
+.hu-page-toc.hu-tracking-register a[aria-current="location"] .hu-tracking-register__nr {
+	color: var(--stempel);
+}
 
-.hu-tracking-register a[aria-current="location"]::after { transform: scaleX(1); }
-
-.hu-tracking-register__nr {
-	color: var(--matt);
-	font-variant-numeric: tabular-nums;
+.hu-page-toc.hu-tracking-register a[aria-current="location"]::after {
+	transform: scaleX(1);
 }
 
 .ga4-page .kopfteil .mono { margin-top: var(--s2); }
 .ga4-page .kopfteil .meta { margin-top: var(--s4); }
 
+/* ── Measurement chain ─────────────────────────────────────────── */
 .hu-tracking-chain {
 	position: relative;
 	display: grid;
@@ -149,7 +171,9 @@ body.hu-tracking-setup-page {
 	border: 1px solid var(--tinte);
 }
 
-.hu-tracking-chain__knoten[data-state="optional"] { border-top-style: dashed; }
+.hu-tracking-chain__knoten[data-state="optional"] {
+	border-top-style: dashed;
+}
 
 .hu-tracking-chain__nr,
 .hu-tracking-chain__status {
@@ -208,8 +232,13 @@ body.hu-tracking-setup-page {
 	border-bottom: 1px solid var(--haar);
 }
 
-.hu-tracking-output > div { padding: var(--s2); }
-.hu-tracking-output > div + div { border-left: 1px solid var(--haar); }
+.hu-tracking-output > div {
+	padding: var(--s2);
+}
+
+.hu-tracking-output > div + div {
+	border-left: 1px solid var(--haar);
+}
 
 .hu-tracking-output dt {
 	font-family: var(--mono);
@@ -225,10 +254,11 @@ body.hu-tracking-setup-page {
 	color: var(--tinte);
 }
 
+/* Desktop rail: same dimensions and states as the Results register. */
 @media (min-width: 1280px) and (min-height: 620px) and (hover: hover) and (pointer: fine) {
-	.hu-tracking-register {
+	.hu-page-toc.hu-tracking-register[data-hu-rail="true"] {
 		position: fixed;
-		top: 50%;
+		top: calc(50% + 2.75rem);
 		left: 0;
 		z-index: 45;
 		display: block;
@@ -246,33 +276,80 @@ body.hu-tracking-setup-page {
 		transition: width var(--t-norm) var(--ease-aus);
 	}
 
-	.hu-tracking-register:hover,
-	.hu-tracking-register:focus-within { width: 15rem; }
+	.hu-page-toc.hu-tracking-register:hover,
+	.hu-page-toc.hu-tracking-register:focus-within {
+		width: 15rem;
+	}
 
 	.hu-tracking-register__marke {
 		display: block;
 		padding: 0 0.4rem 0.7rem;
 		margin-bottom: 0.3rem;
 		border-bottom: 1px solid var(--haar);
+		font-size: 0;
 	}
 
-	.hu-tracking-register__eintraege { display: block; }
+	.hu-tracking-register__marke::before {
+		content: "Reg.";
+		font-family: var(--mono);
+		font-size: var(--mono-s);
+		font-weight: 500;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--matt);
+	}
 
-	.hu-tracking-register a {
-		display: flex;
+	.hu-page-toc.hu-tracking-register:hover .hu-tracking-register__marke::before,
+	.hu-page-toc.hu-tracking-register:focus-within .hu-tracking-register__marke::before {
+		content: "Register";
+	}
+
+	.hu-tracking-register__eintraege {
+		display: block;
+	}
+
+	.hu-page-toc.hu-tracking-register a {
 		align-items: center;
 		gap: 0.7rem;
 		min-height: 38px;
 		padding: 0.35rem 0.4rem;
 		font-size: var(--mono-s);
 		letter-spacing: 0.09em;
+		transition:
+			color var(--t-norm) var(--ease-weich),
+			background-color var(--t-norm) var(--ease-weich);
 	}
 
-	.hu-tracking-register__txt { display: none; }
-	.hu-tracking-register:hover .hu-tracking-register__txt,
-	.hu-tracking-register:focus-within .hu-tracking-register__txt { display: block; }
-	.hu-tracking-register a::after { display: none; }
-	.hu-tracking-register a[aria-current="location"] { background: var(--zone); }
+	.hu-page-toc.hu-tracking-register a:hover {
+		background-color: var(--zone);
+	}
+
+	.hu-tracking-register__txt {
+		display: none;
+	}
+
+	.hu-page-toc.hu-tracking-register:hover .hu-tracking-register__txt,
+	.hu-page-toc.hu-tracking-register:focus-within .hu-tracking-register__txt {
+		display: block;
+	}
+
+	.hu-page-toc.hu-tracking-register a::after {
+		display: none;
+	}
+
+	.hu-page-toc.hu-tracking-register a[aria-current="location"] {
+		background-color: var(--zone);
+	}
+
+	.hu-page-toc.hu-tracking-register a[aria-current="location"]::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 0.3rem;
+		bottom: 0.3rem;
+		width: 2px;
+		background: var(--stempel);
+	}
 }
 
 @media (max-width: 980px) {
@@ -280,20 +357,30 @@ body.hu-tracking-setup-page {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		padding-top: 0;
 	}
+
 	.hu-tracking-chain::before,
 	.hu-tracking-chain::after,
-	.hu-tracking-chain__knoten::before { display: none; }
+	.hu-tracking-chain__knoten::before {
+		display: none;
+	}
 }
 
 @media (max-width: 680px) {
-	.hu-tracking-register {
+	.hu-page-toc.hu-tracking-register {
 		position: sticky;
 		top: var(--hu-wayfinding-offset);
 		padding-inline: 1rem;
 	}
-	.hu-tracking-register__marke { display: none; }
+
+	.hu-tracking-register__marke {
+		display: none;
+	}
+
 	.hu-tracking-chain,
-	.hu-tracking-output { grid-template-columns: 1fr; }
+	.hu-tracking-output {
+		grid-template-columns: 1fr;
+	}
+
 	.hu-tracking-output > div + div {
 		border-left: 0;
 		border-top: 1px solid var(--haar);
@@ -305,7 +392,10 @@ body.hu-tracking-setup-page {
 		animation: none;
 		left: 4%;
 	}
-	.hu-tracking-register,
-	.hu-tracking-register a,
-	.hu-tracking-register a::after { transition: none; }
+
+	.hu-page-toc.hu-tracking-register,
+	.hu-page-toc.hu-tracking-register a,
+	.hu-page-toc.hu-tracking-register a::after {
+		transition: none;
+	}
 }
