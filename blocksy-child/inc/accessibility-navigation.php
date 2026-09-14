@@ -2,9 +2,8 @@
 /**
  * Global keyboard-navigation contract.
  *
- * Keeps the public skip link aligned with the actual main landmark without
- * renaming legacy template IDs. The historic `#primary` IDs remain untouched
- * because route CSS/JS may still depend on them.
+ * Keeps skip links, focus treatment and the public header aligned with the
+ * actual main landmark without renaming legacy template IDs.
  *
  * @package Blocksy_Child
  */
@@ -42,9 +41,9 @@ function hu_get_skip_link_target_id() {
 /**
  * Render the canonical global skip link.
  *
- * Styling intentionally matches the existing link; only target selection and
- * the explicit data hook change. The JS enhancement moves keyboard focus to
- * the landmark while native fragment navigation remains the fallback.
+ * Presentation lives in accessibility-navigation.css. Without CSS or JS this
+ * remains a normal native fragment link, so bypass navigation never depends on
+ * enhancement code.
  *
  * @return void
  */
@@ -52,7 +51,7 @@ function hu_render_accessible_skip_link() {
 	$target_id = hu_get_skip_link_target_id();
 
 	printf(
-		'<a href="#%1$s" class="skip-to-content" data-skip-link style="position:absolute;top:-100px;left:16px;background:#b46a3c;color:#fff8f3;padding:10px 16px;border:1px solid rgba(255,248,243,0.18);border-radius:999px;font-weight:800;font-size:13px;letter-spacing:0.01em;box-shadow:0 16px 34px rgba(180,106,60,0.28);z-index:99999;text-decoration:none;transition:top 0.2s ease;" onfocus="this.style.top=\'16px\'" onblur="this.style.top=\'-100px\'">%2$s</a>',
+		'<a href="#%1$s" class="skip-to-content" data-skip-link>%2$s</a>',
 		esc_attr( $target_id ),
 		esc_html__( 'Zum Hauptinhalt springen', 'blocksy-child' )
 	);
@@ -71,13 +70,23 @@ function hu_register_accessible_skip_link() {
 add_action( 'wp', 'hu_register_accessible_skip_link', 1 );
 
 /**
- * Add the keyboard-focus enhancement globally. It is deliberately tiny and
- * depends on nexus-core only for predictable asset ordering; it does not
- * depend on JavaScript for the underlying fragment fallback.
+ * Load the small global accessibility layer after the shared system styles.
+ * It owns focus visibility and practical pointer targets for the repo-owned
+ * header, while the JS keeps keyboard focus aligned with skip-link navigation.
  */
 add_action( 'wp_enqueue_scripts', function () {
 	if ( is_admin() ) {
 		return;
+	}
+
+	$css_path = get_stylesheet_directory() . '/assets/css/accessibility-navigation.css';
+	$css_url  = get_stylesheet_directory_uri() . '/assets/css/accessibility-navigation.css';
+	$css_ver  = is_file( $css_path ) ? (string) filemtime( $css_path ) : wp_get_theme()->get( 'Version' );
+
+	if ( function_exists( 'hu_enqueue_css' ) ) {
+		hu_enqueue_css( 'hu-accessibility-navigation-css', 'accessibility-navigation.css', [ 'nexus-system-css' ] );
+	} elseif ( is_file( $css_path ) ) {
+		wp_enqueue_style( 'hu-accessibility-navigation-css', $css_url, [], $css_ver );
 	}
 
 	if ( function_exists( 'hu_enqueue_js' ) ) {
@@ -85,9 +94,9 @@ add_action( 'wp_enqueue_scripts', function () {
 		return;
 	}
 
-	$path = get_stylesheet_directory() . '/assets/js/skip-link-focus.js';
-	$url  = get_stylesheet_directory_uri() . '/assets/js/skip-link-focus.js';
-	$ver  = is_file( $path ) ? (string) filemtime( $path ) : wp_get_theme()->get( 'Version' );
+	$js_path = get_stylesheet_directory() . '/assets/js/skip-link-focus.js';
+	$js_url  = get_stylesheet_directory_uri() . '/assets/js/skip-link-focus.js';
+	$js_ver  = is_file( $js_path ) ? (string) filemtime( $js_path ) : wp_get_theme()->get( 'Version' );
 
-	wp_enqueue_script( 'hu-skip-link-focus-js', $url, [ 'nexus-core-js' ], $ver, true );
+	wp_enqueue_script( 'hu-skip-link-focus-js', $js_url, [ 'nexus-core-js' ], $js_ver, true );
 }, 40 );
