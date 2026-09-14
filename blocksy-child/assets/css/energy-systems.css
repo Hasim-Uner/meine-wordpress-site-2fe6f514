@@ -330,8 +330,7 @@
    font stack). Paper / Ink palette with light/dark section rhythm,
    animated system architecture preview, comparison table as main
    attraction, FAQ as objection handler before final CTA.
-   Scoped to .solar-page so .energy-hero (page-anfrage.php) is
-   untouched.
+   Scoped to .solar-page; the retired intake template is no longer referenced.
    ══════════════════════════════════════════════════════════════ */
 .solar-page {
   --paper:        #f3efe5;
