@@ -4,7 +4,6 @@ body.hu-tracking-setup-page {
 	--hu-wayfinding-offset: 76px;
 }
 
-/* ── Register / TOC ────────────────────────────────────────────── */
 .hu-tracking-register {
 	position: sticky;
 	top: var(--hu-wayfinding-offset);
@@ -23,9 +22,7 @@ body.hu-tracking-setup-page {
 	scrollbar-width: none;
 }
 
-.hu-tracking-register::-webkit-scrollbar {
-	display: none;
-}
+.hu-tracking-register::-webkit-scrollbar { display: none; }
 
 .hu-tracking-register__marke {
 	flex: 0 0 auto;
@@ -71,13 +68,11 @@ body.hu-tracking-setup-page {
 	background: var(--stempel);
 	transform: scaleX(0);
 	transform-origin: left;
-	transition: transform var(--t-kurz) var(--ease-aus);
+	transition: transform var(--t-norm) var(--ease-aus);
 }
 
 .hu-tracking-register a:hover,
-.hu-tracking-register a:focus-visible {
-	color: var(--tinte);
-}
+.hu-tracking-register a:focus-visible { color: var(--tinte); }
 
 .hu-tracking-register a:focus-visible {
 	outline: 3px solid var(--stempel);
@@ -85,29 +80,18 @@ body.hu-tracking-setup-page {
 }
 
 .hu-tracking-register a[aria-current="location"],
-.hu-tracking-register a[aria-current="location"] .hu-tracking-register__nr {
-	color: var(--stempel);
-}
+.hu-tracking-register a[aria-current="location"] .hu-tracking-register__nr { color: var(--stempel); }
 
-.hu-tracking-register a[aria-current="location"]::after {
-	transform: scaleX(1);
-}
+.hu-tracking-register a[aria-current="location"]::after { transform: scaleX(1); }
 
 .hu-tracking-register__nr {
 	color: var(--matt);
 	font-variant-numeric: tabular-nums;
 }
 
-/* ── Hero tightening ───────────────────────────────────────────── */
-.ga4-page .kopfteil .mono {
-	margin-top: var(--s2);
-}
+.ga4-page .kopfteil .mono { margin-top: var(--s2); }
+.ga4-page .kopfteil .meta { margin-top: var(--s4); }
 
-.ga4-page .kopfteil .meta {
-	margin-top: var(--s4);
-}
-
-/* ── Measurement chain ────────────────────────────────────────── */
 .hu-tracking-chain {
 	position: relative;
 	display: grid;
@@ -165,9 +149,7 @@ body.hu-tracking-setup-page {
 	border: 1px solid var(--tinte);
 }
 
-.hu-tracking-chain__knoten[data-state="optional"] {
-	border-top-style: dashed;
-}
+.hu-tracking-chain__knoten[data-state="optional"] { border-top-style: dashed; }
 
 .hu-tracking-chain__nr,
 .hu-tracking-chain__status {
@@ -218,7 +200,6 @@ body.hu-tracking-setup-page {
 	color: var(--stempel);
 }
 
-/* ── Product outcome strip ────────────────────────────────────── */
 .hu-tracking-output {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -227,13 +208,8 @@ body.hu-tracking-setup-page {
 	border-bottom: 1px solid var(--haar);
 }
 
-.hu-tracking-output > div {
-	padding: var(--s2);
-}
-
-.hu-tracking-output > div + div {
-	border-left: 1px solid var(--haar);
-}
+.hu-tracking-output > div { padding: var(--s2); }
+.hu-tracking-output > div + div { border-left: 1px solid var(--haar); }
 
 .hu-tracking-output dt {
 	font-family: var(--mono);
@@ -267,13 +243,11 @@ body.hu-tracking-setup-page {
 		border-left: 0;
 		border-radius: 0 3px 3px 0;
 		transform: translateY(-50%);
-		transition: width var(--t-kurz) var(--ease-aus);
+		transition: width var(--t-norm) var(--ease-aus);
 	}
 
 	.hu-tracking-register:hover,
-	.hu-tracking-register:focus-within {
-		width: 15rem;
-	}
+	.hu-tracking-register:focus-within { width: 15rem; }
 
 	.hu-tracking-register__marke {
 		display: block;
@@ -282,9 +256,7 @@ body.hu-tracking-setup-page {
 		border-bottom: 1px solid var(--haar);
 	}
 
-	.hu-tracking-register__eintraege {
-		display: block;
-	}
+	.hu-tracking-register__eintraege { display: block; }
 
 	.hu-tracking-register a {
 		display: flex;
@@ -296,22 +268,11 @@ body.hu-tracking-setup-page {
 		letter-spacing: 0.09em;
 	}
 
-	.hu-tracking-register__txt {
-		display: none;
-	}
-
+	.hu-tracking-register__txt { display: none; }
 	.hu-tracking-register:hover .hu-tracking-register__txt,
-	.hu-tracking-register:focus-within .hu-tracking-register__txt {
-		display: block;
-	}
-
-	.hu-tracking-register a::after {
-		display: none;
-	}
-
-	.hu-tracking-register a[aria-current="location"] {
-		background: var(--zone);
-	}
+	.hu-tracking-register:focus-within .hu-tracking-register__txt { display: block; }
+	.hu-tracking-register a::after { display: none; }
+	.hu-tracking-register a[aria-current="location"] { background: var(--zone); }
 }
 
 @media (max-width: 980px) {
@@ -319,12 +280,9 @@ body.hu-tracking-setup-page {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		padding-top: 0;
 	}
-
 	.hu-tracking-chain::before,
 	.hu-tracking-chain::after,
-	.hu-tracking-chain__knoten::before {
-		display: none;
-	}
+	.hu-tracking-chain__knoten::before { display: none; }
 }
 
 @media (max-width: 680px) {
@@ -333,16 +291,9 @@ body.hu-tracking-setup-page {
 		top: var(--hu-wayfinding-offset);
 		padding-inline: 1rem;
 	}
-
-	.hu-tracking-register__marke {
-		display: none;
-	}
-
+	.hu-tracking-register__marke { display: none; }
 	.hu-tracking-chain,
-	.hu-tracking-output {
-		grid-template-columns: 1fr;
-	}
-
+	.hu-tracking-output { grid-template-columns: 1fr; }
 	.hu-tracking-output > div + div {
 		border-left: 0;
 		border-top: 1px solid var(--haar);
@@ -354,10 +305,7 @@ body.hu-tracking-setup-page {
 		animation: none;
 		left: 4%;
 	}
-
 	.hu-tracking-register,
 	.hu-tracking-register a,
-	.hu-tracking-register a::after {
-		transition: none;
-	}
+	.hu-tracking-register a::after { transition: none; }
 }
