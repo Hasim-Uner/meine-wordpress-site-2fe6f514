@@ -101,6 +101,26 @@ require_pattern "Schritt 1 von 2" "$SOLAR_JS"
 require_pattern "Schritt 2 von 2" "$SOLAR_JS"
 forbid_pattern "sol-quiz-progress" "$SOLAR_JS"
 
+# Funnel observability and post-submit trust are part of the public lead-path
+# contract. The backend already returns a precise response deadline and public
+# ticket reference; the frontend must surface them instead of collapsing the
+# success state to a generic thank-you. Validation/attempt events let the
+# conversion report distinguish hesitation from transport errors.
+for event_name in system_intake_step_view system_intake_validation_error system_intake_submit_attempt; do
+  require_pattern "$event_name" "$SOLAR_JS"
+done
+require_pattern "response_deadline_human" "$SOLAR_JS"
+require_pattern "ticket_id" "$SOLAR_JS"
+require_pattern "qualification_status" "$SOLAR_JS"
+require_pattern "error_details" "$SOLAR_JS"
+
+# Business-email validation exists server-side and must be mirrored before the
+# network request. Otherwise a visitor can finish both views only to receive a
+# known, deterministic rejection after submit.
+require_pattern "isFreemail" "$SOLAR_JS"
+require_pattern "geschäftliche E-Mail-Adresse mit Firmen-Domain" "$SOLAR_JS"
+require_pattern "invalid_business_email" "$CRM_PHP"
+
 # The build price may not live as literal copy in templates. It drifted once
 # already: the money page moved to the canon, three other routes kept quoting
 # the retired 12.000-18.000 range.
