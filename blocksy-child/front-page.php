@@ -118,7 +118,7 @@ get_header();
 			<p><span class="mono">Spezialisierung</span><a class="satzlink" href="<?php echo esc_url( $energy_url ); ?>" data-track-action="home_door_energy" data-track-category="navigation" data-track-section="tueren">Anfragesysteme für Solar und Wärmepumpe →</a></p>
 		</div>
 		<nav class="home-index" aria-label="Auf dieser Seite">
-			<a href="#angebote">01 Leistungen</a><a href="#nachweis">02 Arbeiten</a><a href="#arbeitsweise">03 Zusammenarbeit</a><a href="#fall">04 Solar-Fall</a><a href="#fragen">05 Fragen</a>
+			<a href="#angebote">01 Leistungen</a><a href="#nachweis">02 Arbeiten</a><a href="#arbeitsweise">03 Zusammenarbeit</a><a href="#fall">04 Ergebnis</a><a href="#fragen">05 Fragen</a>
 		</nav>
 	</div>
 
@@ -148,9 +148,35 @@ get_header();
 		<div class="blatt reihe">
 			<div class="spalte-links"><div class="kapitel"><span class="nr">02</span><span class="titel">Arbeiten</span><span class="strich" aria-hidden="true"></span></div></div>
 			<div class="voll">
-				<h2 class="kopf" id="nachweis-h">WordPress-Arbeit, die Sie sich ansehen können.</h2>
-				<p class="vorspann">Öffentliche Projekte mit unterschiedlichen Aufgaben. Die Beschreibung nennt meinen Beitrag; die verlinkte Website zeigt den aktuellen Stand.</p>
-				<div class="home-references" id="projekte">
+				<h2 class="kopf" id="nachweis-h">Ausgewählte Arbeiten. Von WordPress bis zum Vertriebsanschluss.</h2>
+				<p class="vorspann">Öffentliche Projekte zeigen die WordPress-Arbeit. Der ausgewählte B2B-Fall zeigt zusätzlich, wie Website, Anfragestrecke, Tracking und CRM als ein zusammenhängendes System entwickelt wurden.</p>
+
+				<article class="tafel home-featured-case" id="systemprojekt">
+					<div class="home-featured-case__head">
+						<div>
+							<p class="mono">Ausgewähltes Großprojekt · B2B · Solar</p>
+							<h3>Website war nur der Anfang.</h3>
+						</div>
+						<p>Für einen <?php echo esc_html( $e3_case_label ); ?> habe ich die digitale Strecke über mehrere Ebenen weiterentwickelt: Website und Landingpages, Formulare und Vorqualifizierung, Messung bis hin zu Server-Side Tracking sowie die strukturierte Übergabe der Leads ins CRM und an den Vertrieb.</p>
+					</div>
+					<ol class="home-system-path" aria-label="Umgesetzte B2B-Strecke">
+						<li><span class="mono">01</span><strong>WordPress</strong></li>
+						<li><span class="mono">02</span><strong>Landingpages</strong></li>
+						<li><span class="mono">03</span><strong>Formulare &amp; Qualifizierung</strong></li>
+						<li><span class="mono">04</span><strong>GA4 / GTM</strong></li>
+						<li><span class="mono">05</span><strong>Server-Side Tracking</strong></li>
+						<li><span class="mono">06</span><strong>CRM &amp; Lead-Routing</strong></li>
+						<li><span class="mono">07</span><strong>Vertriebsanschluss</strong></li>
+					</ol>
+					<div class="home-featured-case__footer">
+						<span class="mono">Gesamtfunnel · Entwicklung, Messung und Übergabe</span>
+						<a class="textlink" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_work_system_case" data-track-category="proof" data-track-section="beweis">Projektfall und Ergebnisse ansehen →</a>
+					</div>
+				</article>
+
+				<h3 class="home-reference-heading" id="projekte">Weitere öffentlich einsehbare Arbeiten</h3>
+				<p class="home-reference-intro">Hier ist die Website selbst der Beleg. Die Beschreibung nennt meinen Beitrag; der Link zeigt den aktuellen öffentlichen Stand.</p>
+				<div class="home-references">
 					<?php foreach ( $references as $reference ) : ?>
 						<article><p class="mono"><?php echo esc_html( $reference['tag'] ); ?></p><h3><a class="satzlink" href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener" data-track-action="home_reference_open" data-track-category="proof" data-track-section="beweis"><?php echo esc_html( $reference['name'] ); ?> ↗</a></h3><p><?php echo esc_html( $reference['text'] ); ?></p></article>
 					<?php endforeach; ?>
@@ -183,12 +209,21 @@ get_header();
 
 	<section id="fall" aria-labelledby="fall-h" data-track-section="beleg">
 		<div class="blatt reihe">
-			<div class="spalte-links"><div class="kapitel"><span class="nr">04</span><span class="titel">Spezialisierung</span><span class="strich" aria-hidden="true"></span></div></div>
+			<div class="spalte-links"><div class="kapitel"><span class="nr">04</span><span class="titel">Ergebnis</span><span class="strich" aria-hidden="true"></span></div></div>
 			<div class="voll">
-				<h2 class="kopf" id="fall-h">Wenn Website, Werbung und Vertrieb zusammenspielen.</h2>
-				<p class="vorspann">Ein anonymisierter Fall aus meiner Solar-Spezialisierung: <?php echo esc_html( $e3_case_label ); ?>. Hier ging die Arbeit über die Website hinaus und umfasste Anfragestrecke, Messung und Vertriebsanschluss.</p>
+				<h2 class="kopf" id="fall-h">Was das Gesamtsystem erreicht hat.</h2>
+				<p class="vorspann">Der dokumentierte Fall aus meiner Solar-Spezialisierung zeigt die Wirkung der gesamten Strecke. Die Kennzahlen beschreiben Website, Nachfrageaufbau, Tracking, CRM-Prozess und Vertrieb im Zusammenspiel.</p>
 				<div class="tafel home-case">
-					<dl><div><dt>Kosten pro qualifizierter Anfrage</dt><dd><?php echo esc_html( $e3_metric( 'cpl_before', 'display', '150 €' ) ); ?> → <?php echo esc_html( $e3_metric( 'cpl_after', 'display', '22 €' ) ); ?></dd></div><div><dt>Qualifizierte Anfragen in <?php echo esc_html( $e3_metric( 'timeframe', 'display_dative', '6 Monaten' ) ); ?></dt><dd><?php echo esc_html( $e3_metric( 'lead_count', 'display', '1.750+' ) ); ?></dd></div></dl>
+					<dl>
+						<div>
+							<dt>Weniger Kosten pro Anfrage</dt>
+							<dd><strong><?php echo esc_html( $e3_metric( 'cpl_reduction', 'display', 'über 85 %' ) ); ?></strong><small><?php echo esc_html( $e3_metric( 'cpl_before', 'display', '150 €' ) ); ?> → <?php echo esc_html( $e3_metric( 'cpl_after', 'display', '22 €' ) ); ?></small></dd>
+						</div>
+						<div>
+							<dt>Qualifizierte Anfragen</dt>
+							<dd><strong><?php echo esc_html( $e3_metric( 'lead_count', 'display', '1.750+' ) ); ?></strong><small>in <?php echo esc_html( $e3_metric( 'timeframe', 'display_dative', '6 Monaten' ) ); ?></small></dd>
+						</div>
+					</dl>
 					<p>Die Zahlen beschreiben dieses Gesamtsystem. Sie belegen keinen isolierten WordPress-Effekt und sind keine Prognose für Ihr Projekt.</p>
 					<a class="textlink" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_case_study" data-track-category="proof" data-track-section="beleg">Ausgangslage und Methodik lesen →</a>
 				</div>
