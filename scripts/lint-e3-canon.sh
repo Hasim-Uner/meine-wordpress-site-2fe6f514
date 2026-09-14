@@ -4,7 +4,6 @@ set -euo pipefail
 
 TARGETS=(
   "blocksy-child/front-page.php"
-  "blocksy-child/page-anfrage.php"
   "blocksy-child/page-case-e3.php"
   "blocksy-child/page-ergebnisse.php"
   "blocksy-child/page-solar-waermepumpen-leadgenerierung.php"
