@@ -34,51 +34,10 @@ jobs:
                   raise SystemExit(f'expected {expected} matches, found {count}: {old[:80]!r}')
               text = text.replace(old, new)
 
-          replace_exact("""/**
- * Get the SEO title for the DOMDAR case study.
- *
- * @return string
- */
-function hu_get_domdar_case_study_title() {
-\treturn 'Case Study: DOMDAR | Sustainable Commerce | Haşim Üner';
-}
-
-""")
-
-          replace_exact("""/**
- * Get the SEO description for the DOMDAR case study.
- *
- * @return string
- */
-function hu_get_domdar_case_study_description() {
-\treturn 'Vom 54€ Warenkorb zur 120€ Profit-Maschine in 6 Wochen. Wie wir ohne Budget-Erhöhung die Conversion auf 4,6% steigerten.';
-}
-
-""")
-
-          replace_exact("""
-\tif ( hu_is_domdar_case_study_page() ) {
-\t\t$post_id   = get_queried_object_id();
-\t\t$seo_title = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
-
-\t\treturn '' !== $seo_title ? $seo_title : hu_get_domdar_case_study_title();
-\t}
-""")
-
-          replace_exact("""
-\t\tif ( hu_is_domdar_case_study_page() ) {
-\t\t\t$seo_title       = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );
-\t\t\t$seo_description = hu_get_stored_seo_value( $post_id, 'seo_description', 'rank_math_description' );
-
-\t\t\tif ( '' === $seo_title ) {
-\t\t\t\t$meta['og_title'] = hu_get_domdar_case_study_title();
-\t\t\t}
-
-\t\t\tif ( '' === $seo_description ) {
-\t\t\t\t$meta['description'] = hu_get_domdar_case_study_description();
-\t\t\t}
-\t\t}
-""")
+          replace_exact("/**\n * Get the SEO title for the DOMDAR case study.\n *\n * @return string\n */\nfunction hu_get_domdar_case_study_title() {\n\treturn 'Case Study: DOMDAR | Sustainable Commerce | Haşim Üner';\n}\n\n")
+          replace_exact("/**\n * Get the SEO description for the DOMDAR case study.\n *\n * @return string\n */\nfunction hu_get_domdar_case_study_description() {\n\treturn 'Vom 54€ Warenkorb zur 120€ Profit-Maschine in 6 Wochen. Wie wir ohne Budget-Erhöhung die Conversion auf 4,6% steigerten.';\n}\n\n")
+          replace_exact("\n\tif ( hu_is_domdar_case_study_page() ) {\n\t\t$post_id   = get_queried_object_id();\n\t\t$seo_title = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );\n\n\t\treturn '' !== $seo_title ? $seo_title : hu_get_domdar_case_study_title();\n\t}\n")
+          replace_exact("\n\t\tif ( hu_is_domdar_case_study_page() ) {\n\t\t\t$seo_title       = hu_get_stored_seo_value( $post_id, 'seo_title', 'rank_math_title' );\n\t\t\t$seo_description = hu_get_stored_seo_value( $post_id, 'seo_description', 'rank_math_description' );\n\n\t\t\tif ( '' === $seo_title ) {\n\t\t\t\t$meta['og_title'] = hu_get_domdar_case_study_title();\n\t\t\t}\n\n\t\t\tif ( '' === $seo_description ) {\n\t\t\t\t$meta['description'] = hu_get_domdar_case_study_description();\n\t\t\t}\n\t\t}\n")
 
           path.write_text(text)
           PY
