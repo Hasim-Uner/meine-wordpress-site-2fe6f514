@@ -586,11 +586,6 @@ function hu_enqueue_assets() {
 		hu_enqueue_css( 'nexus-ga4-css', 'ga4.css', [ 'nexus-design-system' ] );
 	}
 
-	// ── N) Template: Meta Ads (Facebook & Instagram) ──────────────
-	if ( is_page_template( 'page-meta-ads.php' ) || is_page( 'meta-ads' ) ) {
-		hu_enqueue_css( 'nexus-meta-ads-css', 'meta-ads.css', [ 'nexus-design-system' ] );
-	}
-
 	// ── P) Template: Ergebnisse Hub ────────────────────────────────
 	if ( $is_results_hub ) {
 		hu_enqueue_css( 'hu-ergebnisse-css', 'ergebnisse.css', [ 'nexus-system-css' ] );

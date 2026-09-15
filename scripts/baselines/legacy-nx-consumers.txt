@@ -13,7 +13,6 @@ blocksy-child/assets/css/ga4.css
 blocksy-child/assets/css/glossary.css
 blocksy-child/assets/css/homepage-redesign.css
 blocksy-child/assets/css/homepage.css
-blocksy-child/assets/css/meta-ads.css
 blocksy-child/assets/css/performance.css
 blocksy-child/assets/css/related-content.css
 blocksy-child/assets/css/seo-cornerstone.css

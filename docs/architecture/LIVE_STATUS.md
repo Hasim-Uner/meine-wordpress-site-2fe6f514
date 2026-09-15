@@ -1,5 +1,12 @@
 # Live Status
 
+## Meta Ads – Legacy-Service konsolidiert, Repository-Stand 2026-09-15
+
+- `/meta-ads/` besitzt keine veröffentlichte WordPress-Seite mehr und wird als Legacy-Einstieg explizit auf den aktiven Beitrag `meta-ads-fuer-b2b` geführt.
+- Das Ziel wird in `nexus_get_legacy_offer_redirect_map()` über `get_permalink()` aufgelöst statt auf die aktuelle Autoren-Suffix-Struktur fest verdrahtet. Der Live-/REST-Check vom 15.09.2026 lieferte für Post 14605 aktuell `/meta-ads-fuer-b2b/hasim/`.
+- `page-meta-ads.php` und `assets/css/meta-ads.css` sind retired und entfernt; der aktive Beitrag, seine SEO-Metadaten und die normale Single-/Editorial-Architektur bleiben bestehen.
+- `meta-ads` ist nicht länger als eigenständige `noindex, follow`-Route klassifiziert. Historische Audit-/WGOS-Dokumente bleiben historische Snapshots und werden nicht in aktuelle Routing-Verträge umgedeutet.
+
 ## GA4 – direkter Anfrageweg, Repository-Stand 2026-09-14
 
 Die drei Hauptbuttons auf `/ga4-tracking-setup/` heißen jetzt
