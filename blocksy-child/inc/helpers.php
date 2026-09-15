@@ -1691,7 +1691,7 @@ function nexus_get_legacy_offer_redirect_map() {
 		: home_url( '/whitelabel-retainer/' );
 
 	$meta_ads_url  = home_url( '/meta-ads-fuer-b2b/' );
-	$meta_ads_post = get_page_by_path( 'meta-ads-fuer-b2b', OBJECT, 'post' );
+	$meta_ads_post = get_page_by_path( 'meta-ads-fuer-b2b', 'OBJECT', 'post' );
 	if ( $meta_ads_post instanceof WP_Post ) {
 		$resolved_meta_ads_url = get_permalink( $meta_ads_post );
 		if ( is_string( $resolved_meta_ads_url ) && '' !== $resolved_meta_ads_url ) {
