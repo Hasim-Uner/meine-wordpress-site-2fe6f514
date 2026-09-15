@@ -1690,6 +1690,15 @@ function nexus_get_legacy_offer_redirect_map() {
 		? nexus_get_whitelabel_page_url()
 		: home_url( '/whitelabel-retainer/' );
 
+	$meta_ads_url  = home_url( '/meta-ads-fuer-b2b/' );
+	$meta_ads_post = get_page_by_path( 'meta-ads-fuer-b2b', OBJECT, 'post' );
+	if ( $meta_ads_post instanceof WP_Post ) {
+		$resolved_meta_ads_url = get_permalink( $meta_ads_post );
+		if ( is_string( $resolved_meta_ads_url ) && '' !== $resolved_meta_ads_url ) {
+			$meta_ads_url = $resolved_meta_ads_url;
+		}
+	}
+
 	return [
 		// High-probability external entry paths. Internal/historical tool,
 		// WGOS and service slugs are no longer forced through 301 redirects.
@@ -1702,6 +1711,9 @@ function nexus_get_legacy_offer_redirect_map() {
 		'/wordpress-tech-audit/'     => $request_url,
 		'/wordpress-agentur/'        => $agentur_url,
 		'/alle-loesungen-im-detail/' => nexus_get_page_url( [ 'alle-loesungen' ], home_url( '/alle-loesungen/' ) ),
+		// Die alte Service-Landingpage existiert nicht mehr. Der redaktionelle B2B-Beitrag
+		// bleibt der fachlich naechste Inhalt; sein Permalink wird dynamisch aufgeloest.
+		'/meta-ads/'                 => $meta_ads_url,
 		// Personenseite: alter Slug mit Umlaut-Ersatz auf die ASCII-Route.
 		'/uber-mich/'                => $about_url,
 		// Anonymized case study: old company-named slugs redirect to the anonymized slug.

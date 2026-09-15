@@ -31,6 +31,7 @@ Quelle: nexus_get_legacy_offer_redirect_map() in blocksy-child/inc/helpers.php
 - /anfrage/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
 - /wordpress-agentur/ -> /wordpress-agentur-hannover/
 - /alle-loesungen-im-detail/ -> /alle-loesungen/
+- /meta-ads/ -> aktueller Permalink des Beitrags meta-ads-fuer-b2b
 - /e3-new-energy/ -> /case-study-solar-leadgenerierung/
 - /case-e3/ -> /case-study-solar-leadgenerierung/
 - /case-studies/e3-new-energy/ -> /case-study-solar-leadgenerierung/
@@ -72,7 +73,6 @@ blocksy-child/inc/seo-meta.php
 Diese Pfade existieren weiter, sind aber kein oeffentliches Primaerziel. Nicht
 als kaputte Route melden und nicht reaktivieren.
 - /case-studies/, /case-studies-e-commerce/  (noindex, follow)
-- /meta-ads/                                  (noindex, follow)
 - /alle-loesungen/, /loesungen/               (noindex, follow)
 - /case-study-solar-leadgenerierung/          (noindex bis Anonymisierungs-Hold faellt)
 - /wordpress-growth-operating-system/, /wgos-systemlandkarte/, /wgos-assets/*
