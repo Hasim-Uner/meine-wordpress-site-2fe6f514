@@ -8,12 +8,31 @@
 (function () {
     'use strict';
 
+    function mountHeroStyles() {
+        if (document.getElementById('home-system-visual-fix')) {
+            return;
+        }
+
+        var style = document.createElement('style');
+        style.id = 'home-system-visual-fix';
+        style.textContent = [
+            '.startseite .home-hero::before{content:none!important;display:none!important}',
+            '.startseite .home-system-visual{grid-column:2;grid-row:1;display:block;width:100%;height:auto;max-width:100%;align-self:center;justify-self:center;filter:saturate(.96) contrast(1.015);position:relative;z-index:1}',
+            '@media (max-width:820px){.startseite .home-system-visual{grid-column:1;grid-row:2;width:min(100%,44rem);justify-self:center}.startseite .home-portrait{grid-row:3}}',
+            '@media (max-width:520px){.startseite .home-system-visual{width:calc(100% + var(--s2));margin-inline:calc(var(--s1) * -1)}}',
+            '@media (prefers-reduced-motion:no-preference){.startseite .home-system-visual{animation:home-system-visual-drift 9s ease-in-out infinite alternate}}'
+        ].join('');
+        document.head.appendChild(style);
+    }
+
     function mountHeroVisual(wurzel) {
         var hero = wurzel.querySelector('.home-hero');
 
         if (!hero || hero.querySelector('.home-system-visual')) {
             return;
         }
+
+        mountHeroStyles();
 
         var visual = document.createElement('img');
         visual.className = 'home-system-visual';
