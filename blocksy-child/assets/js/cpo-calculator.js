@@ -329,7 +329,7 @@
 				return;
 			}
 			fields[key].removeAttribute('max');
-			fields[key].step = key === 'a2' || key === 'b1' ? '1' : '1';
+			fields[key].step = '1';
 		});
 
 		var extra = { a: {}, b: {} };
@@ -366,8 +366,8 @@
 			summe.parentNode.insertBefore(status, summe.nextSibling);
 		});
 
-		var foot = blatt.parentNode.querySelector('.fuss');
-		if (foot && !foot.hasAttribute('data-cpo-v2-status')) {
+		var foot = blatt.nextElementSibling;
+		if (foot && foot.classList.contains('fuss') && !foot.hasAttribute('data-cpo-v2-status')) {
 			foot.innerHTML = '<b>Vollkostenformel</b> — Lead-/Mediakosten + zuordenbarer Setup-/Produktionsanteil + Software/Support + interne Vertriebszeit, geteilt durch die tatsächlich gewonnenen Aufträge derselben Kohorte. Bei 0 Aufträgen lautet das Ergebnis bewusst „noch nicht bestimmbar“. Nicht abgeschlossene Kohorten werden als vorläufig markiert.';
 		}
 
