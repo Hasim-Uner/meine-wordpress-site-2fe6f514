@@ -253,7 +253,7 @@
   .startseite .home-close-note { border-left: 0; border-top: 1px solid var(--haar); padding-left: 0; padding-top: var(--s3); }
 }
 
-/* Hero system visual: Website → Messung → Anfrage → CRM. */
+/* Hero system visual: real generated content instead of a CSS background. */
 .startseite .home-hero {
   position: relative;
   grid-template-columns: minmax(0, 0.86fr) minmax(28rem, 1.14fr);
@@ -269,13 +269,15 @@
   z-index: 2;
 }
 .startseite .home-hero::before {
-  content: '';
+  content: url('/wp-content/themes/blocksy-child/assets/img/home-hero-system-copper.webp');
   grid-column: 2;
   grid-row: 1;
   display: block;
   width: 100%;
-  aspect-ratio: 1400 / 788;
-  background: url('/wp-content/themes/blocksy-child/assets/img/home-hero-system-copper.webp') center / contain no-repeat;
+  max-width: 100%;
+  height: auto;
+  line-height: 0;
+  overflow: hidden;
   filter: saturate(0.96) contrast(1.015);
   pointer-events: none;
   position: relative;
