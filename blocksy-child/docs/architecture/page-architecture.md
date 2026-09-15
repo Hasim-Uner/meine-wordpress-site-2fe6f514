@@ -52,9 +52,10 @@ Brand + Hauptkeyword Cluster
 
 ## 3. SERVICE LANDING PAGES
 
-Beispiele:
-- page-meta-ads.php
+Beispiel:
 - page-performance.php
+
+Retired am 2026-09-15: `page-meta-ads.php`. `/meta-ads/` ist nur noch ein Legacy-Einstieg und führt auf den veröffentlichten Beitrag `meta-ads-fuer-b2b`, der über `single.php` läuft.
 
 Entfernt am 2026-07-26: `page-seo.php`, `page-cro.php`, `page-cwv.php`. Ihre
 Cluster-Daten waren bereits geloescht, die Ziel-URLs liefern 410

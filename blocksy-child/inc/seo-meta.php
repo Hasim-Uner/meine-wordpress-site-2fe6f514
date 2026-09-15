@@ -810,7 +810,6 @@ function hu_get_noindex_follow_slugs() {
 		'thank-you',
 		'kontaktiere-mich',
 		'loesungen',
-		'meta-ads',
 		'360-deep-dive',
 		'readiness-diagnose',
 		'system-diagnose',
