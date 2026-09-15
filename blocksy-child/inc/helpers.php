@@ -185,10 +185,6 @@ function nexus_get_audit_cta_copy() {
 	$copy = [
 		'label'             => 'Marktcheck mit Fit-Entscheid starten',
 		'compact_microcopy' => 'Händische Analyse · Befund per E-Mail, ' . hu_marketcheck_reply_label( true ),
-		'header_meta_items' => [
-			'Manueller Marktcheck',
-			'Fokus: Solar, Wärmepumpe, Speicher',
-		],
 		'footer_note'       => 'Marktcheck: Manueller, tiefer Marktcheck statt Software-Einheitsbrei. Händische Analyse deiner Region — ' . hu_marketcheck_reply_label() . ', per E-Mail.',
 	];
 
@@ -215,27 +211,6 @@ function nexus_get_audit_compact_microcopy() {
 	$copy = nexus_get_audit_cta_copy();
 
 	return isset( $copy['compact_microcopy'] ) ? (string) $copy['compact_microcopy'] : '';
-}
-
-/**
- * Return the compact metadata items used in the marketcheck header.
- *
- * @return array<int, string>
- */
-function nexus_get_audit_header_meta_items() {
-	$copy = nexus_get_audit_cta_copy();
-	$items = isset( $copy['header_meta_items'] ) && is_array( $copy['header_meta_items'] ) ? $copy['header_meta_items'] : [];
-
-	return array_values(
-		array_filter(
-			array_map(
-				static function ( $item ) {
-					return trim( (string) $item );
-				},
-				$items
-			)
-		)
-	);
 }
 
 /**

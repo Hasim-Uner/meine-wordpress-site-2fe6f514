@@ -9,7 +9,7 @@ These files are reusable UI sections shared by multiple routes. They carry CTA h
 ## Rules
 
 - Keep one clear primary action per section.
-- Primary path stays audit-first unless the task explicitly changes funnel strategy.
+- Primary lead paths stay aligned with the current marketcheck/contact architecture unless the task explicitly changes funnel strategy.
 - Pass values into partials instead of hardcoding route-specific assumptions.
 - Keep tracking attributes intact on buttons and links.
 - Use partials for repeatable structure, not for hiding undocumented business logic.
@@ -18,6 +18,6 @@ These files are reusable UI sections shared by multiple routes. They carry CTA h
 
 - `footer-cta.php`
 - `trust-section.php`
-- `audit-page-shell.php`
+- `site-header.php`
 
 If one of these changes behaviorally, verify the same surface on every page that includes it.
