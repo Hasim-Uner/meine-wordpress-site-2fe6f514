@@ -1,9 +1,7 @@
 /**
  * Startseite.
  *
- * Kapitelmarkierung plus robuste Hero-Systemgrafik.
- * Die Grafik wird als echtes <img> eingesetzt, damit CSS-Optimierer keine
- * background-image-URL aus einem Pseudo-Element verschlucken koennen.
+ * Kapitelmarkierung plus Hero-Systemgrafik.
  */
 (function () {
     'use strict';
@@ -17,7 +15,7 @@
         style.id = 'home-system-visual-fix';
         style.textContent = [
             '.startseite .home-hero::before{content:none!important;display:none!important}',
-            '.startseite .home-system-visual{grid-column:2;grid-row:1;display:block;width:100%;height:auto;max-width:100%;align-self:center;justify-self:center;filter:saturate(.96) contrast(1.015);position:relative;z-index:1}',
+            '.startseite .home-system-visual{grid-column:2;grid-row:1;display:block;width:100%;height:auto;max-width:100%;align-self:center;justify-self:center;filter:saturate(.96) contrast(1.015);position:relative;z-index:1;border:0!important;outline:0!important}',
             '@media (max-width:820px){.startseite .home-system-visual{grid-column:1;grid-row:2;width:min(100%,44rem);justify-self:center}.startseite .home-portrait{grid-row:3}}',
             '@media (max-width:520px){.startseite .home-system-visual{width:calc(100% + var(--s2));margin-inline:calc(var(--s1) * -1)}}',
             '@media (prefers-reduced-motion:no-preference){.startseite .home-system-visual{animation:home-system-visual-drift 9s ease-in-out infinite alternate}}'
@@ -36,10 +34,10 @@
 
         var visual = document.createElement('img');
         visual.className = 'home-system-visual';
-        visual.src = '/wp-content/themes/blocksy-child/assets/img/home-hero-system-copper.webp';
+        visual.src = '/wp-content/themes/blocksy-child/assets/img/home-hero-system-copper.webp?v=552572126f70c712901828a5d659a338dcf77dbd';
         visual.alt = '';
-        visual.width = 1400;
-        visual.height = 788;
+        visual.width = 1200;
+        visual.height = 675;
         visual.loading = 'eager';
         visual.decoding = 'async';
         visual.fetchPriority = 'high';
@@ -72,8 +70,6 @@
             return;
         }
 
-        /* Das mittlere Zehntel des Sichtfelds. Enger als eine halbe Seite,
-           damit bei zwei sichtbaren Abschnitten nicht beide leuchten. */
         var marke = new window.IntersectionObserver(function (eintraege) {
             eintraege.forEach(function (eintrag) {
                 eintrag.target.classList.toggle('aktiv', eintrag.isIntersecting);
