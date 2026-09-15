@@ -14,7 +14,6 @@ TARGETS=(
   "blocksy-child/page-whitelabel-retainer.php"
   "blocksy-child/assets/js/homepage-mindmap-teaser.js"
   "blocksy-child/assets/js/homepage-mindmap-teaser.jsx"
-  "blocksy-child/template-parts/audit-page-shell.php"
   "docs/architecture/LIVE_STATUS.md"
   "docs/architecture/SYSTEM_MAP.md"
 )

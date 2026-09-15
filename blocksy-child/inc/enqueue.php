@@ -822,7 +822,6 @@ function hu_get_non_deferred_script_handles() {
 		'hu_non_deferred_script_handles',
 		[
 			'nexus-core-js',
-			'nexus-site-header-js',
 		]
 	);
 
@@ -854,7 +853,6 @@ function hu_get_force_deferred_script_handles() {
 		$handles = [
 			'ct-scripts',
 			'nexus-core-js',
-			'nexus-site-header-js',
 		];
 	}
 

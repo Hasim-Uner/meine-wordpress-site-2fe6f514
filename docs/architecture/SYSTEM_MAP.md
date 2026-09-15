@@ -1,6 +1,6 @@
 # System Map
 
-Stand: 2026-05-25. Diese Karte basiert auf dem Repo-Inhalt plus punktueller Live-Verifikation der frueheren System-Diagnose-Route.
+Stand: 2026-09-15. Diese Karte basiert auf dem aktuellen Repo-Inhalt plus punktueller Live-Verifikation der früheren System-Diagnose-Routen.
 
 ## Hauptsysteme
 
@@ -89,7 +89,7 @@ Marktcheck / System-Diagnose-Legacy:
 - Aktive Route: `/solar-waermepumpen-leadgenerierung/#marktcheck`
 - Legacy: `/system-diagnose/`, `/readiness-diagnose/` und `/anfrage/` leiten per 301 weiter
 - Contract: aktiver REST-Contract `2026-05-26.audit-request.v1`; historischer n8n-Contract `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt nur für Legacy-Kontext intern stabil
-- Status: fünfstufiger B2B-System-Intake im Hero der Solar-Landingpage; vier tatsächliche Fit-Signale (`solution_focus`, `business_fit`, `sales_team_size`, `project_timing`) führen zu den geschäftlichen Kontaktdaten. CPL, Anfragevolumen oder Engpass werden nicht aus anderen Antworten abgeleitet; die Firmen-PLZ bleibt Pflicht für die regionale Einordnung. Die fruehere 8-Schritt-React-App bleibt Legacy-Code
+- Status: fünfstufiger B2B-System-Intake im Hero der Solar-Landingpage; vier tatsächliche Fit-Signale (`solution_focus`, `business_fit`, `sales_team_size`, `project_timing`) führen zu den geschäftlichen Kontaktdaten. CPL, Anfragevolumen oder Engpass werden nicht aus anderen Antworten abgeleitet; die Firmen-PLZ bleibt Pflicht für die regionale Einordnung. Die frühere Audit-/Instant-Results-UI ist aus der Runtime entfernt
 - WordPress REST: `/wp-json/nexus/v1/audit-request`; Antworten tragen `contractVersion`, `traceId` sowie `X-Nexus-Contract-Version`/`X-Nexus-Trace-Id`
 - CRM: `nexus_review_request`, Audit-Typ `B2B-System-Intake`; Legacy-Energy-Intakes bleiben als `Marktcheck` rückwärtskompatibel
 - Mail: interne Admin-Benachrichtigung und Lead-Bestätigung über zentrale Brevo-/`wp_mail`-Schicht
@@ -97,9 +97,11 @@ Marktcheck / System-Diagnose-Legacy:
 - Default-Fragepfad: Leistungsfokus, wirtschaftlicher Projekt-Fit, Vertriebsverantwortung, Umsetzungshorizont, Firma, Name, Position, geschäftliche E-Mail und Firmen-PLZ; keine personenbezogenen Endkundendaten
 - Retention: für n8n nicht anwendbar, weil nichts an n8n gesendet wird
 
-Bekannte technische Touchpoints:
+Historische technische Touchpoints:
 
 - `blocksy-child/assets/js/audit-live.js`
+- `blocksy-child/assets/css/audit-results.css`
+- `blocksy-child/page-360-deep-dive.php`
 - historische Webhook-Namen `audit`, `audit-status`, `cja-analyze`
 
 Fachliche Regel:
@@ -115,7 +117,7 @@ Aktuelle Logik:
 
 1. Kalter Solar-/SHK-Traffic führt primär zu `/solar-waermepumpen-leadgenerierung/#marktcheck`.
 2. `/system-diagnose/`, `/readiness-diagnose/`, `/anfrage/`, `/growth-audit/`, alte Audit-Aliasse und `/wordpress-tech-audit/` leiten per 301 auf den Marktcheck; `/kostenlose-tools/`, `/tools/`, `/website-performance-analyse/`, `/roi-rechner/` und alte Service-Slugs liefern 410.
-3. Der fruehere Instant-Results- und 48h-Audit-Code bleibt im Repo als Legacy-Layer, ist aber nicht mehr der Default-Flow.
+3. Die frühere Audit-/Instant-Results-UI ist aus der Runtime entfernt; verbleibende Deep-Dive-/Result-Artefakte werden separat als historische 3B-Reste bewertet.
 4. Die Branchen-Landingpage für Solar-/Wärmepumpen-Anbieter führt ihre großen CTA-Flächen zum eigenen `#marktcheck` im Hero.
 
 ## Nexus CRM und Blog Notify
