@@ -1,25 +1,49 @@
 /**
  * Startseite.
  *
- * Eine Aufgabe: die laufende Kapitelnummer in der Randspalte faerbt sich,
- * sobald ihr Abschnitt im Blickfeld steht. Das ist das einzige Element der
- * Seite, das mitlaeuft, und es beantwortet die Frage "wo bin ich".
- *
- * Ohne dieses Skript oder ohne IntersectionObserver bleibt die Nummer grau.
- * Die Seite verliert dadurch nichts ausser dieser Markierung — alle Inhalte
- * und Links sind ohne JavaScript vollstaendig nutzbar.
- *
- * Unter prefers-reduced-motion laeuft die Markierung weiter: sie ist ein
- * Farbwechsel, keine Bewegung, und system.css schaltet die Uebergangsdauer
- * dort ohnehin hart.
+ * Kapitelmarkierung plus robuste Hero-Systemgrafik.
+ * Die Grafik wird als echtes <img> eingesetzt, damit CSS-Optimierer keine
+ * background-image-URL aus einem Pseudo-Element verschlucken koennen.
  */
 (function () {
     'use strict';
 
+    function mountHeroVisual(wurzel) {
+        var hero = wurzel.querySelector('.home-hero');
+
+        if (!hero || hero.querySelector('.home-system-visual')) {
+            return;
+        }
+
+        var visual = document.createElement('img');
+        visual.className = 'home-system-visual';
+        visual.src = '/wp-content/themes/blocksy-child/assets/img/home-hero-system-copper.webp';
+        visual.alt = '';
+        visual.width = 1400;
+        visual.height = 788;
+        visual.loading = 'eager';
+        visual.decoding = 'async';
+        visual.fetchPriority = 'high';
+        visual.setAttribute('aria-hidden', 'true');
+
+        var portrait = hero.querySelector('.home-portrait');
+        if (portrait) {
+            hero.insertBefore(visual, portrait);
+        } else {
+            hero.appendChild(visual);
+        }
+    }
+
     function init() {
         var wurzel = document.querySelector('.startseite');
 
-        if (!wurzel || !('IntersectionObserver' in window)) {
+        if (!wurzel) {
+            return;
+        }
+
+        mountHeroVisual(wurzel);
+
+        if (!('IntersectionObserver' in window)) {
             return;
         }
 
