@@ -48,7 +48,7 @@ Der Ausgangsstand vom 14.09.2026 betrug **39 CSS-Dateien mit NX-Namen** außerha
 
 Der provider-unabhängige NX-Abbau ist abgeschlossen. `server-side-tracking-cro.css`, `b2b-solar-leads-page.css`, `server-side-tracking-protocol.css` und `solar-leads-kaufen-alternative-page.css` verwenden jetzt die kanonischen Typografie-Rollen. Die Anfragestrecke besitzt für ihre von JavaScript gemessene Energy-Header-Höhe den route-lokalen Token `--strecke-header-height` statt eines global benannten NX-Tokens.
 
-Die shrink-only Baseline steht nach der Entkopplung der globalen Shell aktuell bei **30 NX-Verbraucherdateien**. `site-header.css` besitzt nur noch die tatsächlich gerenderte Audit-Variante, verwendet Canon-Motion plus lokale Audit-Farbrollen und wird zusammen mit `site-header.js` nur noch auf der Audit-Route geladen. `style.css` konsumiert keine `--nx-*`-Variablen mehr und ist aus der Baseline entfernt. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.
+Die shrink-only Baseline steht nach Entfernung der retired Audit-UI aktuell bei **28 NX-Verbraucherdateien**. Die Audit-only `site-header.css`/`site-header.js`-Schicht und das ungenutzte `audit.css` sind entfernt. `style.css` konsumiert keine `--nx-*`-Variablen mehr und ist aus der Baseline entfernt. Jeder verbleibende Verbraucher nutzt mindestens ein Token des Legacy-Providers; die Zahl darf nur sinken.
 
 Regeln:
 
@@ -65,7 +65,7 @@ Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu v
 
 Die verbleibenden Verbraucher verteilen sich nicht gleichmäßig. Für die Migration gelten diese Cluster:
 
-1. **Globale Shell / Provider:** `site-header.css` und `style.css` sind von `--nx-*` entkoppelt. `design-system.css` wird auf der kanonischen Startseite, der Personenseite und dem Ergebnisse-Hub nicht mehr geladen. Auf allen übrigen Routen bleibt der Provider vorerst aktiv, weil er neben NX-Tokens auch unpräfixierte Tokens sowie globale `body`-/Heading-/Kompatibilitätsregeln bereitstellt.
+1. **Globale Shell / Provider:** Die Standardnavigation läuft über `.leiste` in `system.css` plus `leiste.js`; die retired Audit-Header-Assets sind entfernt. `style.css` ist von `--nx-*` entkoppelt. `design-system.css` wird auf der kanonischen Startseite, der Personenseite und dem Ergebnisse-Hub nicht mehr geladen. Auf allen übrigen Routen bleibt der Provider vorerst aktiv, weil er neben NX-Tokens auch unpräfixierte Tokens sowie globale `body`-/Heading-/Kompatibilitätsregeln bereitstellt.
 2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`. `ergebnisse.css` ist bereits vollständig entkoppelt.
 3. **Service-Routen:** `cro.css`, `ga4.css`, `meta-ads.css`, `cwv.css`, `performance.css`, `seo-cornerstone.css`, `seo.css`.
 4. **Blog / Editorial:** `single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, Provider-Decision-Layer.
@@ -132,7 +132,7 @@ Route-CSS soll **nicht** enthalten:
 
 ## 6. Migrationsreihenfolge
 
-1. **Globale Shell (NX erledigt):** Audit-Header und `style.css` sind von `--nx-*` entkoppelt. Der Provider-Audit hat unpräfixierte Legacy-Tokens und globale Selektorwirkungen bestätigt; deshalb ist `design-system.css` zunächst auf Startseite, Personenseite und Ergebnisse-Hub abgeschaltet. Weitere Routen werden einzeln entkoppelt.
+1. **Globale Shell (NX erledigt):** Die retired Audit-Header-Schicht ist vollständig entfernt; `style.css` ist von `--nx-*` entkoppelt. Der Provider-Audit hat unpräfixierte Legacy-Tokens und globale Selektorwirkungen bestätigt; deshalb ist `design-system.css` zunächst auf Startseite, Personenseite und Ergebnisse-Hub abgeschaltet. Weitere Routen werden einzeln entkoppelt.
 2. **Provider-unabhängige NX-Reste (erledigt):** reine Typografie-Aliase sind auf Canon-Tokens migriert; die Anfragestrecke nutzt für ihre gemessene Energy-Header-Höhe einen route-lokalen Token.
 3. **Solar-Anfragestrecke:** Token-Spiegel physisch entfernen; gemeinsame Gutachten-Primitives aus `system.css` konsumieren, nur echte Solar-Deltas behalten. Das JS-gemessene Header-/Register-Token wird gemeinsam mit seinen CSS-Verbrauchern migriert, nicht isoliert umbenannt.
 4. **Editorial-Solar-Legacy:** die generischen `.solar-page`-Variablen `--serif`/`--mono` eindeutig umbenennen oder auf Core-Rollen migrieren; eingefrorene Guard-Ausnahme danach löschen.
