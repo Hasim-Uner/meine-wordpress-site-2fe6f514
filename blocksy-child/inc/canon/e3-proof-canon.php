@@ -103,8 +103,8 @@ function hu_e3_canon() {
 				'counter_target' => '15',
 				'label'          => 'Abschlussquote',
 			],
-			// Kompatibilitaets-Key fuer bestehende Templates. Der fruehere Wert
-			// 1–5 % war keine Kohortenmessung dieses Falls und ist deshalb als
+			// Kompatibilitaets-Key fuer bestehende Templates. Die frueher genannte
+			// Vorherquote war keine Kohortenmessung dieses Falls und ist deshalb als
 			// numerische Proof-Metrik entfernt. Neue Copy darf daraus keinen
 			// Vorher/Nachher-Uplift ableiten.
 			'sales_conversion_before' => [
