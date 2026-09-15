@@ -66,7 +66,6 @@ fi
 # join this list — shrink it instead. Same idea as phpstan-baseline.neon.
 BASELINE_REDUCED_MOTION=(
   "audit-results.css"
-  "audit.css"
   "blog-header.css"
   "blog-notify.css"
   "cluster-pillar.css"

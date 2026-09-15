@@ -621,15 +621,6 @@ function hu_is_seo_cornerstone_article() {
 
 
 /**
- * Check whether current query is the audit offer page.
- *
- * @return bool
- */
-function hu_is_audit_offer_page() {
-	return function_exists( 'nexus_is_audit_page' ) && nexus_is_audit_page();
-}
-
-/**
  * Check whether current query is the contact request page.
  *
  * @return bool
@@ -1054,10 +1045,6 @@ function hu_get_resolved_document_title() {
 		return '' !== $seo_title ? $seo_title : hu_get_post_title_pattern( $post_id );
 	}
 
-	if ( hu_is_audit_offer_page() ) {
-		return 'Marktcheck mit Fit-Entscheid | Haşim Üner';
-	}
-
 	if ( hu_is_contact_offer_page() ) {
 		return hu_get_contact_offer_title();
 	}
@@ -1367,11 +1354,6 @@ function hu_get_seo_meta() {
 		if ( 'technisches-seo-performance-fundament' === $slug ) {
 			$meta['og_title']    = 'Technisches SEO + Performance Marketing: Fundament fehlt';
 			$meta['description'] = 'Performance Marketing ohne technisches SEO-Fundament verbrennt Budget. So wirken Technik, CRO und Tracking zusammen - inklusive Entscheider-Checkliste.';
-		}
-
-		if ( hu_is_audit_offer_page() ) {
-			$meta['og_title']    = 'Marktcheck für Solar- und Wärmepumpen-Anbieter | Haşim Üner';
-			$meta['description'] = 'Manueller Marktcheck statt Software-Einheitsbrei: Region, Vertrieb und Anfragequalität händisch einordnen und den nächsten sinnvollen Schritt klären.';
 		}
 
 		if ( in_array( $slug, [ 'wgos', 'wordpress-growth-operating-system' ], true ) ) {

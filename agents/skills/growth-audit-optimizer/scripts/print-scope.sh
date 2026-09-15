@@ -16,15 +16,10 @@ Active assumptions
 
 Check first
 - blocksy-child/page-solar-waermepumpen-leadgenerierung.php
-- blocksy-child/page-audit.php
-- blocksy-child/inc/audit-page.php
-- blocksy-child/inc/cja-shortcode.php
-- blocksy-child/assets/js/cja-audit.js
-- blocksy-child/assets/css/cja-audit.css
+- blocksy-child/inc/system-diagnose-page.php
 - blocksy-child/inc/helpers.php
 - blocksy-child/inc/seo-meta.php
 - blocksy-child/front-page.php
-- blocksy-child/template-parts/site-header.php
 
 Look for
 - 30 Sekunden carryover

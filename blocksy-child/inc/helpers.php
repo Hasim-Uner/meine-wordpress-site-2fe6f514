@@ -873,21 +873,6 @@ function nexus_get_e3_case_faq_items() {
 }
 
 /**
- * Resolve the primary audit page ID while supporting legacy slugs.
- *
- * @return int
- */
-function nexus_get_audit_page_id() {
-	$template_page_id = nexus_get_page_id_by_template( 'page-audit.php' );
-
-	if ( $template_page_id ) {
-		return $template_page_id;
-	}
-
-	return nexus_get_page_id( [ 'growth-audit', 'audit', 'customer-journey-audit', '360-audit' ] );
-}
-
-/**
  * Resolve the former audit page URL.
  *
  * The standalone Growth Audit and System-Diagnose page are retired; keep this
@@ -898,24 +883,6 @@ function nexus_get_audit_page_id() {
  */
 function nexus_get_audit_url() {
 	return function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-}
-
-/**
- * Determine whether the current request is the audit landing page.
- *
- * @return bool
- */
-function nexus_is_audit_page() {
-	$audit_page_id = nexus_get_audit_page_id();
-
-	if ( $audit_page_id && is_page( $audit_page_id ) ) {
-		return true;
-	}
-
-	return is_page_template( 'page-audit.php' )
-		|| is_page( 'growth-audit' )
-		|| is_page( 'audit' )
-		|| is_page( 'customer-journey-audit' );
 }
 
 /**

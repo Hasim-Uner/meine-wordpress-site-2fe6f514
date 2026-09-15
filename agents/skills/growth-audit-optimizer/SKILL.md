@@ -1,11 +1,11 @@
 ---
 name: growth-audit-optimizer
-description: Inspect retired /growth-audit legacy code only when needed; public CRO and next-step work belongs to the Solar/SHK marketcheck on /solar-waermepumpen-leadgenerierung/#marktcheck.
+description: Maintain retired /growth-audit redirect compatibility when needed; public CRO and next-step work belongs to the Solar/SHK marketcheck on /solar-waermepumpen-leadgenerierung/#marktcheck.
 ---
 
 # Growth Audit Optimizer
 
-Use this skill only when the task explicitly needs the retired `/growth-audit/` code path, redirect behavior, or legacy audit copy. For public CRO work, use the Solar/SHK marketcheck on `/solar-waermepumpen-leadgenerierung/#marktcheck`.
+Use this skill only when the task explicitly needs the retired `/growth-audit/` redirect behavior, compatibility contract, or historical audit context. For public CRO work, use the Solar/SHK marketcheck on `/solar-waermepumpen-leadgenerierung/#marktcheck`.
 
 Run first:
 
@@ -23,7 +23,7 @@ sh agents/skills/growth-audit-optimizer/scripts/print-scope.sh
 
 ## Default Workflow
 
-1. Identify whether the task targets legacy `/growth-audit/` code or the active marketcheck path before changing copy.
+1. Identify whether the task targets legacy `/growth-audit/` redirect compatibility or the active marketcheck path before changing copy.
 2. Search audit-relevant strings across template, helper, JS, CSS, and SEO layers.
 3. Remove stale `30 Sekunden`, `48h`, manual-feedback, CRM-intake, or Shopify carryover from public-facing flow copy.
 4. Sharpen marketcheck hero, trust, expectation-setting, and result-to-next-step CTA logic.
