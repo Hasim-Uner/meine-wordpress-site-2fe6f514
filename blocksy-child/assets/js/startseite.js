@@ -34,7 +34,7 @@
 
         var visual = document.createElement('img');
         visual.className = 'home-system-visual';
-        visual.src = '/wp-content/themes/blocksy-child/assets/img/home-hero-system-copper.webp?v=552572126f70c712901828a5d659a338dcf77dbd';
+        visual.src = '/wp-content/themes/blocksy-child/assets/img/home-hero-system-copper.webp?v=ad12e6b1bbf47d4e58a7216650997b7d6408ed91';
         visual.alt = '';
         visual.width = 1200;
         visual.height = 675;
