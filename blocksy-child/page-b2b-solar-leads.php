@@ -37,17 +37,11 @@ $tracking_url  = $cluster_url( 'server-side-tracking-b2b', '/server-side-trackin
 // Kauf-Alternative — nicht auf diese Gewerbe-/Termin-Seite.
 $portal_alternative_url = $cluster_url( 'solar-leads-kaufen-alternative', '/solar-leads-kaufen-alternative/' );
 
-// ── E3-Canon ──────────────────────────────────────────────────
-$e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
-$e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
-$e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
-$e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
-$e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
-$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
-$e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
-$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 5 % → 15 %';
-$e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
+// ── Proof-Scope ────────────────────────────────────────────────
+// Der verlinkte E3-Fall ist ein PV-Systemcase, aber kein veröffentlichter
+// Gewerbe-PV-Pilot. Deshalb werden dessen CPL-, Lead- und Abschlusswerte auf
+// dieser Route nicht als Proof ausgespielt. Der Link bleibt als Methodik- und
+// Architekturbeleg erhalten; Ergebnisbelege für Gewerbe-PV brauchen eigene Daten.
 
 $pricing_canon = function_exists( 'hu_pricing_canon' ) ? hu_pricing_canon() : [];
 $duration_min  = isset( $pricing_canon['foundation_duration_weeks_min'] ) ? (int) $pricing_canon['foundation_duration_weeks_min'] : 8;
@@ -193,8 +187,8 @@ $faq = [
 		'answer'   => 'Privat- und Gewerbeprojekte unterscheiden sich bei Sprache, Prüfkriterien, Freigaben und Vertragslogik. Eine Hausbesitzer-Strecke kann deshalb eine gewerbliche Anfrage zwar erfassen, bereitet den Vertrieb aber nicht auf Buying-Center, technische Vorprüfung und Investitionsentscheidung vor.',
 	],
 	[
-		'question' => 'Ist die dokumentierte Fallstudie eine Ergebnisgarantie für Gewerbe-PV?',
-		'answer'   => sprintf( 'Nein. Der anonymisierte Fall eines %1$s belegt den Mechanismus eines eigenen Anfragewegs: %2$s qualifizierte Anfragen, Kosten pro Anfrage von %3$s auf %4$s und eine Abschlussquote von %5$s im dokumentierten Zeitraum von %6$s. Projekttyp, Markt, Budget und Vertrieb unterscheiden sich; deshalb ist der Fall keine pauschale Übertragbarkeitsgarantie.', $e3_case_label, $e3_lead_count, $e3_cpl_before, $e3_cpl_after, $e3_sales_conversion, $e3_timeframe ),
+		'question' => 'Ist die verlinkte Fallstudie ein Ergebnisbeleg für Gewerbe-PV?',
+		'answer'   => 'Nein. Der verlinkte PV-Fall dokumentiert die Architektur und Arbeitsweise eines eigenen Anfragewegs, ist aber kein veröffentlichter Gewerbe-PV-Pilot. Deshalb werden dessen CPL-, Lead- und Abschlusswerte auf dieser Seite nicht als Gewerbe-PV-Ergebnis verwendet. Belastbare Ergebnisclaims für diesen Projekttyp brauchen eigene Gewerbe-Daten.',
 	],
 	[
 		'question' => 'Geht es hier um Aroundhome, DAA oder Check24?',
@@ -216,7 +210,7 @@ $service_schema = [
 	'alternateName' => [ 'PV-Termine B2B', 'B2B Solar Leads', 'Gewerbe-PV-Anfragen' ],
 	'serviceType' => 'Vorqualifizierung und Terminlogik für gewerbliche PV-, Speicher- und PPA-Anbieter',
 	'url'         => $page_url,
-	'description' => sprintf( 'Buying-Center-taugliche Anfrage- und Terminarchitektur für gewerbliche Photovoltaik-Projekte: Qualifizierung vor dem Termin statt Provision pro Kalendereintrag. Referenz %1$s: %2$s niedrigere Cost per Lead in %3$s.', $e3_case_label, $e3_cpl_reduction, $e3_timeframe ),
+	'description' => 'Buying-Center-taugliche Anfrage- und Terminarchitektur für gewerbliche Photovoltaik-Projekte: projektspezifische Vorqualifizierung vor dem Termin, CRM-Kontext und Messung bis zur Vertriebsqualität. Keine Übertragung von Ergebniskennzahlen aus Privatkunden- oder anderen PV-Projekttypen.',
 	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 	'audience'    => [
@@ -283,7 +277,7 @@ get_header();
 						   data-track-action="cta_e3_case"
 						   data-track-category="b2b_solar_leads"
 						   data-track-section="hero">
-							Dokumentierten Fall prüfen <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
+							PV-Referenzfall zur Systemarchitektur <span aria-hidden="true"><?php echo hu_arrow_up_right_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG ?></span>
 						</a>
 					</div>
 					<p class="hu-b2b__microcopy">Region · Projektschwelle · Vertriebskapazität · händische Fit-Einordnung</p>
@@ -308,16 +302,16 @@ get_header();
 
 			<div class="hu-b2b__proof" aria-labelledby="hu-b2b-proof-title">
 				<div class="hu-b2b__proof-head">
-					<p class="hu-b2b__kicker">Dokumentierter Mechanismus</p>
-					<h2 id="hu-b2b-proof-title">Eigener Anfrageweg statt eingekaufter Kontakte</h2>
+					<p class="hu-b2b__kicker">Beleggrenze</p>
+					<h2 id="hu-b2b-proof-title">Was der PV-Referenzfall belegt — und was nicht.</h2>
 				</div>
-				<dl class="hu-b2b__proof-grid" aria-label="Ergebnisse des anonymisierten Referenzfalls">
-					<div><dt><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></dt><dd>Kosten pro Anfrage</dd></div>
-					<div><dt><?php echo esc_html( $e3_conv_uplift ); ?></dt><dd>Abschlussquote</dd></div>
-					<div><dt><?php echo esc_html( $e3_lead_count ); ?></dt><dd>qualifizierte Anfragen</dd></div>
-					<div><dt><?php echo esc_html( $e3_timeframe ); ?></dt><dd>dokumentierter Zeitraum</dd></div>
+				<dl class="hu-b2b__proof-grid" aria-label="Einordnung des verlinkten PV-Referenzfalls">
+					<div><dt>belegt</dt><dd>Aufbau eines eigenen Anfragewegs</dd></div>
+					<div><dt>belegt</dt><dd>Vorqualifizierung, Tracking und CRM-Verknüpfung als System</dd></div>
+					<div><dt>nicht belegt</dt><dd>CPL oder Abschlussquote für Gewerbe-PV</dd></div>
+					<div><dt>offen</dt><dd>eigener veröffentlichter Gewerbe-PV-Pilot</dd></div>
 				</dl>
-				<p class="hu-b2b__proof-note">Anonymisierter <?php echo esc_html( $e3_case_label ); ?>. Der Fall belegt den Mechanismus, nicht ein pauschal übertragbares Ergebnis.</p>
+				<p class="hu-b2b__proof-note">Der verlinkte Fall bleibt als Methodik-Referenz sichtbar. Ergebniskennzahlen werden bewusst nicht auf Gewerbe-PV übertragen.</p>
 			</div>
 		</div>
 	</section>
