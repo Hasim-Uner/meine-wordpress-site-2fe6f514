@@ -275,7 +275,7 @@
   display: block;
   width: 100%;
   aspect-ratio: 1400 / 788;
-  background: url('../img/home-hero-system-copper.webp') center / contain no-repeat;
+  background: url('/wp-content/themes/blocksy-child/assets/img/home-hero-system-copper.webp') center / contain no-repeat;
   filter: saturate(0.96) contrast(1.015);
   pointer-events: none;
   position: relative;
