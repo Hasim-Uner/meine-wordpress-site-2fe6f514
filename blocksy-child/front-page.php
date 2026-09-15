@@ -152,24 +152,61 @@ get_header();
 				<p class="vorspann">Öffentliche Projekte zeigen die WordPress-Arbeit. Der ausgewählte B2B-Fall zeigt zusätzlich, wie Website, Anfragestrecke, Tracking und CRM als ein zusammenhängendes System entwickelt wurden.</p>
 
 				<article class="tafel home-featured-case" id="systemprojekt">
-					<div class="home-featured-case__head">
+					<div class="home-featured-case__intro">
 						<div>
 							<p class="mono">Ausgewähltes Großprojekt · B2B · Solar</p>
-							<h3>Website war nur der Anfang.</h3>
+							<h3>Vom ersten Klick bis zum Vertriebsanschluss.</h3>
 						</div>
-						<p>Für einen <?php echo esc_html( $e3_case_label ); ?> habe ich die digitale Strecke über mehrere Ebenen weiterentwickelt: Website und Landingpages, Formulare und Vorqualifizierung, Messung bis hin zu Server-Side Tracking sowie die strukturierte Übergabe der Leads ins CRM und an den Vertrieb.</p>
+						<p>Für einen <?php echo esc_html( $e3_case_label ); ?> wurde nicht nur die Website weiterentwickelt, sondern die gesamte digitale Strecke: Website, Landingpages, Qualifizierung, Messung, Server-Side Tracking, CRM und die Übergabe an den Vertrieb.</p>
 					</div>
-					<ol class="home-system-path" aria-label="Umgesetzte B2B-Strecke">
-						<li><span class="mono">01</span><strong>WordPress</strong></li>
-						<li><span class="mono">02</span><strong>Landingpages</strong></li>
-						<li><span class="mono">03</span><strong>Formulare &amp; Qualifizierung</strong></li>
-						<li><span class="mono">04</span><strong>GA4 / GTM</strong></li>
-						<li><span class="mono">05</span><strong>Server-Side Tracking</strong></li>
-						<li><span class="mono">06</span><strong>CRM &amp; Lead-Routing</strong></li>
-						<li><span class="mono">07</span><strong>Vertriebsanschluss</strong></li>
-					</ol>
+
+					<div class="home-system-board" aria-label="Systemarchitektur der umgesetzten B2B-Strecke">
+						<div class="home-system-core">
+							<div class="home-system-band">
+								<div class="home-system-band__label"><span class="mono">Ebene 01</span><strong>Kundenerlebnis</strong></div>
+								<div class="home-system-flow">
+									<div class="home-system-node"><span class="mono">01</span><strong>Website</strong><small>Einstieg und Vertrauen</small></div>
+									<div class="home-system-node"><span class="mono">02</span><strong>Landingpages</strong><small>gezielte Angebotswege</small></div>
+									<div class="home-system-node"><span class="mono">03</span><strong>Qualifizierung</strong><small>Formulare und Vorfilter</small></div>
+									<div class="home-system-node"><span class="mono">04</span><strong>Anfrage</strong><small>klarer nächster Schritt</small></div>
+								</div>
+							</div>
+
+							<div class="home-system-band">
+								<div class="home-system-band__label"><span class="mono">Ebene 02</span><strong>Messung</strong></div>
+								<div class="home-system-measure">
+									<span>GA4</span><span>GTM</span><span>Server-Side Tracking</span><span>Attribution</span>
+								</div>
+							</div>
+
+							<div class="home-system-band">
+								<div class="home-system-band__label"><span class="mono">Ebene 03</span><strong>Vertriebsinfrastruktur</strong></div>
+								<div class="home-system-flow home-system-flow--sales">
+									<div class="home-system-node"><span class="mono">05</span><strong>CRM</strong><small>Lead-Erfassung</small></div>
+									<div class="home-system-node"><span class="mono">06</span><strong>Lead-Routing</strong><small>Zuordnung und Übergabe</small></div>
+									<div class="home-system-node"><span class="mono">07</span><strong>Vertrieb</strong><small>Anschluss an den Prozess</small></div>
+								</div>
+							</div>
+						</div>
+
+						<aside class="home-system-results" aria-label="Ergebnisse des dokumentierten Falls">
+							<div class="home-system-result">
+								<span class="mono">Ergebnis 01</span>
+								<strong><?php echo esc_html( $e3_metric( 'cpl_reduction', 'display', 'über 85 %' ) ); ?></strong>
+								<span>weniger Kosten pro Anfrage</span>
+								<small><?php echo esc_html( $e3_metric( 'cpl_before', 'display', '150 €' ) ); ?> → <?php echo esc_html( $e3_metric( 'cpl_after', 'display', '22 €' ) ); ?></small>
+							</div>
+							<div class="home-system-result">
+								<span class="mono">Ergebnis 02</span>
+								<strong><?php echo esc_html( $e3_metric( 'lead_count', 'display', '1.750+' ) ); ?></strong>
+								<span>qualifizierte Anfragen</span>
+								<small>in <?php echo esc_html( $e3_metric( 'timeframe', 'display_dative', '6 Monaten' ) ); ?></small>
+							</div>
+						</aside>
+					</div>
+
 					<div class="home-featured-case__footer">
-						<span class="mono">Gesamtfunnel · Entwicklung, Messung und Übergabe</span>
+						<span class="mono">System statt Einzelleistung · Entwicklung, Messung und Übergabe</span>
 						<a class="textlink" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_work_system_case" data-track-category="proof" data-track-section="beweis">Projektfall und Ergebnisse ansehen →</a>
 					</div>
 				</article>
