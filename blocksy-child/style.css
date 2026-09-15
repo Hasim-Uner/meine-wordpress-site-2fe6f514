@@ -1,7 +1,7 @@
 /*
 Theme Name: Blocksy Child
 Template: blocksy
-Version: 7.4.4-hero-native
+Version: 7.4.3-cohort-retired
 */
 
 :root {
@@ -61,79 +61,637 @@ Version: 7.4.4-hero-native
 }
 
 @font-face {
-    font-family: 'JetBrains Mono';
+    font-family: 'Satoshi';
     font-style: normal;
-    font-weight: 400;
+    font-weight: 300 900;
     font-display: swap;
-    src: url('/wp-content/themes/blocksy-child/fonts/jetbrains-mono-400.woff2') format('woff2');
+    src: url('/wp-content/themes/blocksy-child/fonts/Satoshi-Variable.woff2') format('woff2');
 }
 
 @font-face {
-    font-family: 'JetBrains Mono';
+    font-family: 'Satoshi';
+    font-style: italic;
+    font-weight: 300 900;
+    font-display: swap;
+    src: url('/wp-content/themes/blocksy-child/fonts/Satoshi-VariableItalic.woff2') format('woff2');
+}
+
+/* ── IBM Plex Mono: Ziffern, Marken und Tabellenspalten ────────────
+   Die Textschrift der Domain bleibt Satoshi/Figtree. Plex Mono traegt
+   auf der Anfragestrecke und in Kopf/Fuss ausschliesslich Ziffern,
+   Labels und Tabellenspalten — dafuer braucht es tabellarische Ziffern,
+   die eine Proportionalschrift nicht hat.
+
+   Newsreader stand hier bis 09/2026 als Fliesstextschrift und ist
+   wieder entfernt: auf dem Schirm lief die Serif weniger klar als
+   Satoshi, und Klarheit schlaegt Vorlagentreue.
+
+   Selbst gehostet, kein Google-CDN: auf einer Domain, die "Server in
+   Frankfurt" behauptet, waere ein Font-Request an fonts.gstatic.com der
+   erste Widerspruch im Quelltext. Je Subset latin und latin-ext —
+   latin-ext traegt das s-Cedille im Markennamen. */
+
+@font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/wp-content/themes/blocksy-child/fonts/IBMPlexMono-400-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/wp-content/themes/blocksy-child/fonts/IBMPlexMono-400-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('/wp-content/themes/blocksy-child/fonts/IBMPlexMono-500-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('/wp-content/themes/blocksy-child/fonts/IBMPlexMono-500-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'IBM Plex Mono';
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url('/wp-content/themes/blocksy-child/fonts/jetbrains-mono-600.woff2') format('woff2');
+    src: url('/wp-content/themes/blocksy-child/fonts/IBMPlexMono-600-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/*
- * NEXUS — Global Header Foundation
- * ────────────────────────────────────────────────────────────
- * Die eigentliche Header-Architektur lebt in assets/css/system.css.
- * style.css hält nur globale, nicht-routenspezifische Basisregeln.
- */
+@font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('/wp-content/themes/blocksy-child/fonts/IBMPlexMono-600-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 
-html {
-    scroll-behavior: smooth;
+:root {
+    --theme-font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --theme-font-heading: 'Satoshi', 'Figtree', sans-serif;
+    --hasim-audit-orange: #b46a3c;
+    --hasim-audit-orange-hover: hsl(23 50% 54%);
+    --theme-palette-color-1: var(--hasim-audit-orange);
+    --nx-gold: var(--hasim-audit-orange);
+    --nx-gold-hover: var(--hasim-audit-orange-hover);
+    --gold: var(--hasim-audit-orange);
+    --cta: var(--hasim-audit-orange);
+    --font-body: var(--theme-font-family);
+    --font-display: var(--theme-font-heading);
+    --brand-copper: var(--hasim-audit-orange);
+    --text-primary: hsl(30 4% 90%);
+    --nx-font-heading: var(--theme-font-heading);
+}
+
+:root[data-nx-theme='light'] {
+    --text-primary: hsl(30 10% 12%);
+}
+
+body,
+.ct-menu-link {
+    font-family: var(--theme-font-family);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--theme-font-heading);
+    letter-spacing: -0.01em;
+}
+
+/* --- 1b. WORDMARK --- */
+.site-logo,
+.site-logo-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto !important;
+    max-width: none !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    background: none !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    text-indent: 0 !important;
+    overflow: visible !important;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text-primary);
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.site-logo-container:empty::before {
+    content: 'HAŞIM ÜNER';
+}
+
+.site-logo:hover,
+.site-logo-container:hover {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+@media (max-width: 1023px) {
+    .site-logo,
+    .site-logo-container {
+        font-size: 12px;
+        letter-spacing: 0.18em;
+    }
+}
+
+.nexus-title,
+.nexus-card-title,
+.nx-headline-hero,
+.nx-headline-section,
+.nx-card__title,
+.nx-hero__title,
+.wp-hero-title,
+.wp-section-h2,
+.wp-success-title,
+.title-nexus,
+.wp-agentur-hero .nx-hero__title,
+.result-title,
+.result-section-title,
+.result-step-title,
+.finding-title,
+.detail-card-title,
+.deepdive-title,
+.deepdive-hero-title,
+.deepdive-section-title,
+.cro-page .cro-headline,
+.cro-page .cro-section-title,
+.cro-page .cro-step-title,
+.cro-page .cro-impact-title,
+.cro-page .cro-cta-headline,
+.ga4-page .ga4-headline,
+.ga4-page .ga4-section-title,
+.ga4-page .ga4-step-title,
+.ga4-page .ga4-cta-headline,
+.ma-page .ma-headline,
+.ma-page .ma-section-title,
+.ma-page .ma-step-title,
+.ma-page .ma-impact-title,
+.ma-page .ma-cta-headline,
+.pillar-hero__title,
+.pillar-featured__title,
+.pillar-section-title,
+.pillar-card__title,
+.pillar-sidebar__cta-title,
+.pillar-sidebar__nav-title,
+.tools-header__title,
+.tools-card__title,
+.hero-title,
+.related-content__title,
+.story-headline,
+.step-title,
+.milestone-title,
+.value-story-title,
+.cta-headline,
+.wgos-h2,
+.wgos-hero__title,
+.wgos-credit-phase__title,
+.journey-headline,
+.audit-usp-headline,
+.usp-title,
+.audit-faq-headline,
+.problem-title,
+.pm-step-title,
+.pm-cta-headline {
+    font-family: var(--theme-font-heading);
+}
+
+/* --- Homepage Optimization: Hero Stack + Section Order --- */
+/* 1a) Hero Stack-Text visuell ausblenden (reversibel) */
+.hero-stack-text,
+.wp-block-paragraph.is-style-stack,
+p.hero-stack,
+.wp-trust-stack {
+    display: none !important;
+}
+
+/* 1b/1c) FAQ vor Blog + Blog ans Ende (nur visuelle Reihenfolge) */
+.cs-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.homepage-faq-section,
+.cs-page #faq {
+    order: 98;
+}
+
+.homepage-blog-section {
+    order: 99;
+}
+
+.cs-page #blog {
+    order: 99;
+}
+
+/* --- 3. INLINE-PFEIL --- */
+/* Der Rest dieses Abschnitts war das Stylesheet des alten Fusses: .ft__top,
+   .ft__cols, .ft__legal, .ft__bottom, die Minimal-Varianten
+   .ft--energy-minimal / .ft--audit-minimal und der Routenblock .ft__routes.
+   Diese Markup-Struktur rendert seit der Zusammenlegung auf eine einzige
+   Footer-Variante niemand mehr; site-footer.css traegt den Fuss allein.
+
+   Der tote Block war nicht folgenlos: `.ft` setzte hier weiterhin einen
+   linear-gradient als Flaeche, eine border-top ueber die volle Breite, ein
+   zweites `--cta`-Orange und `.ft a { opacity: .72 }` — und `.ft` rendert
+   ja noch. Die Verlaufsflaeche gewann site-footer.css zurueck (spaeter im
+   Dokument), Linie, Orange und Deckkraft nicht. Deshalb faellt er hier ganz.
+
+   Uebrig bleibt der Inline-Pfeil, weil hu_arrow_up_right_svg() in
+   inc/helpers.php ihn weiterhin ausgibt. */
+
+/* Inline-Pfeil aus hu_arrow_up_right_svg(). Ersetzt die Glyphe U+2197, die auf
+   macOS und iOS mit Emoji-Praesentation gerendert wird. In Flex- und
+   Grid-Containern mit place-items: center wirkt vertical-align nicht und stoert
+   auch nicht; die Regel gilt dem Einsatz mitten im Fliesstext. */
+.hu-arrow-svg {
+    display: inline-block;
+    flex: 0 0 auto;
+    vertical-align: -0.125em;
+}
+
+/* --- LEGAL PAGE MODAL --- */
+.legal-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.legal-modal--open {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+}
+.legal-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+.legal-modal__panel {
+    position: relative;
+    z-index: 1;
+    width: min(94vw, 1180px);
+    max-height: 92vh;
+    margin-top: 4vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--theme-palette-color-5, #0a0a0a);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+    transform: translateY(12px);
+    transition: transform 0.3s ease;
+}
+.legal-modal--open .legal-modal__panel {
+    transform: translateY(0);
+}
+.legal-modal__close {
+    position: sticky;
+    top: 12px;
+    float: right;
+    margin: 12px 12px 0 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+.legal-modal__close:hover,
+.legal-modal__close:focus-visible {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+.legal-modal__body {
+    padding: 0 clamp(1rem, 3vw, 2rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+/* Override page-level padding/background inside modal */
+.legal-modal__body .privacy-page,
+.legal-modal__body .imprint-page {
+    padding: 0 !important;
+    background: none !important;
+}
+.legal-modal__body .imprint-page::before { display: none; }
+.legal-modal__body .privacy-shell,
+.legal-modal__body .imprint-shell {
+    max-width: none;
+}
+.legal-modal__loader {
+    padding: 4rem 2rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.95rem;
+}
+@media (max-width: 640px) {
+    .legal-modal__panel {
+        width: 100vw;
+        max-height: 100vh;
+        margin-top: 0;
+        border-radius: 0;
+    }
+}
+
+/* NOTFALL-FIX: Versteckt den Hero auf allen Seiten, die KEIN Blogpost sind */
+body:not(.single-post) .nexus-article-hero,
+body:not(.single-post) .nexus-post-footer-cta {
+    display: none !important;
+}
+
+/* Setzt das Layout auf normalen Seiten zurück */
+body:not(.single-post) .nexus-single-container {
+    background: transparent !important;
+    min-height: auto !important;
+    display: block !important;
+}
+
+/* Korrigiert die Verschachtelung optisch */
+body:not(.single-post) .nexus-article-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+}
+
+/* --- NEXUS HEADER BUTTON --- */
+.nexus-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none !important;
+    transition:
+        background-color var(--t-norm) var(--ease-weich),
+        border-color var(--t-norm) var(--ease-weich),
+        color var(--t-norm) var(--ease-weich),
+        transform var(--t-norm) var(--ease-aus),
+        box-shadow var(--t-norm) var(--ease-weich);
+    line-height: 1;
+}
+
+/* Zustand: Ausgeloggt (Ghost Button) */
+.nexus-nav-btn {
+    background: color-mix(in srgb, var(--tinte) 6%, transparent);
+    border: 1px solid var(--haar);
+    color: var(--tinte) !important;
+}
+.nexus-nav-btn:hover {
+    background: color-mix(in srgb, var(--tinte) 10%, transparent);
+    border-color: color-mix(in srgb, var(--stempel) 32%, var(--haar));
+    transform: translateY(-1px);
+}
+
+/* Zustand: Eingeloggt (Active / Stempel) */
+.nexus-nav-btn.active {
+    background: color-mix(in srgb, var(--stempel) 15%, transparent);
+    border: 1px solid color-mix(in srgb, var(--stempel) 30%, transparent);
+    color: var(--stempel) !important;
+}
+.nexus-nav-btn.active:hover {
+    background: color-mix(in srgb, var(--stempel) 25%, transparent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--stempel) 20%, transparent);
+}
+
+/* Statuspunkt */
+.indicator {
+    font-size: 1.2em;
+    line-height: 0;
+    color: var(--stempel);
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* --- NEXUS HEADER CTA (Gold, prominent) --- */
+.nexus-header-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-decoration: none !important;
+    background: var(--stempel);
+    color: var(--papier) !important;
+    border: none;
+    transition:
+        background-color var(--t-norm) var(--ease-weich),
+        transform var(--t-norm) var(--ease-aus),
+        box-shadow var(--t-norm) var(--ease-weich);
+    line-height: 1;
+}
+.nexus-header-cta:hover {
+    background: color-mix(in srgb, var(--stempel) 88%, var(--tinte));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--stempel) 30%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
+    .nexus-nav-btn,
+    .nexus-header-cta {
+        transition: none;
+        transform: none;
+    }
+
+    .indicator {
+        animation: none;
     }
 }
 
-body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+/* --- NEXUS: Hide Customizer Shortcut X (only in Customizer) --- */
+body.wp-customizer .ct-customizer-shortcut {
+    display: none !important;
 }
 
-img,
-svg,
-video,
-canvas {
-    max-width: 100%;
+/* --- ACTIVE WORDMARK / SHORTCODE CTA STABILITY --- */
+.site-logo,
+.site-logo-container {
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
-img {
-    height: auto;
+.nexus-header-cta {
+    transform: none !important;
+    margin-top: 0 !important;
 }
 
-/* Accessibility: retain visible focus globally. */
-:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: 2px solid var(--stempel, #b46a3c);
+/* === ACCESSIBILITY FIX 1: Sichtbare Focus-States für CTAs und Navigation === */
+.wp-block-button__link:focus,
+.wp-block-button__link:focus-visible,
+.ct-button:focus,
+.ct-button:focus-visible,
+a[href*="customer-journey-audit"]:focus,
+a[href*="customer-journey-audit"]:focus-visible,
+a[href*="growth-audit"]:focus,
+a[href*="growth-audit"]:focus-visible,
+a[href*="wordpress-growth-operating-system"]:focus,
+a[href*="wordpress-growth-operating-system"]:focus-visible,
+.nav-cta-button a:focus,
+.nav-cta-button a:focus-visible,
+button:focus,
+button:focus-visible {
+    outline: 2px solid var(--stempel);
     outline-offset: 3px;
+    border-radius: 4px;
 }
 
-/* WordPress admin bar offset for fixed/sticky custom headers. */
-body.admin-bar {
-    --wp-adminbar-h: 32px;
+/* ACCESSIBILITY FIX 1b: Focus-Styling für Header-/Menü-Links */
+.ct-header a:focus,
+.ct-header a:focus-visible,
+.header-navigation a:focus,
+.header-navigation a:focus-visible {
+    outline: 2px solid var(--stempel);
+    outline-offset: 2px;
 }
 
-@media screen and (max-width: 782px) {
-    body.admin-bar {
-        --wp-adminbar-h: 46px;
+/* ACCESSIBILITY FIX 1c: Focus-Styling für Anker-Navigation auf WGOS-Seite */
+.ct-scrollspy-nav a:focus,
+.ct-scrollspy-nav a:focus-visible,
+.wp-block-navigation a:focus,
+.wp-block-navigation a:focus-visible,
+.wgos-smart-nav a:focus,
+.wgos-smart-nav a:focus-visible {
+    outline: 2px solid var(--stempel);
+    outline-offset: 2px;
+}
+
+/* === ACCESSIBILITY FIX 2: Höherer Kontrast für kleine Gold-Labels === */
+.hero-label,
+.section-label,
+.module-number,
+.badge-text,
+.eyebrow-text,
+[class*="label"],
+[class*="badge"] {
+    color: #E8C84A;
+}
+
+/* === WGOS FIX 3: Credits-Tabellen mobil horizontal scrollbar machen === */
+@media (max-width: 768px) {
+    .wp-block-table table,
+    .credits-table table,
+    .wgos-table-wrap table,
+    .wgos-credits-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+    }
+
+    .wp-block-table table td,
+    .wp-block-table table th,
+    .wgos-credits-table td,
+    .wgos-credits-table th {
+        min-width: 120px;
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+
+    /* WGOS FIX 3b: Sichtbarer Scrollhinweis vor Tabellen auf Mobile */
+    .wp-block-table::before,
+    .wgos-table-wrap::before {
+        content: "\2190 Tabelle scrollbar \2192";
+        display: block;
+        font-size: 11px;
+        color: #555;
+        text-align: center;
+        margin-bottom: 8px;
+        letter-spacing: 0.06em;
     }
 }
 
-/* Legacy browser fallback. */
-@supports not (color: color-mix(in srgb, #000 50%, #fff)) {
-    .nexus-header-cta:hover {
-        background: #96552f;
-    }
+/* === HOMEPAGE FIX 4: Sekundären Hero-CTA visuell abschwächen === */
+body.home .hero-cta-secondary,
+body.home .wp-block-buttons .wp-block-button:last-child .wp-block-button__link,
+body.home a[href*="case-studies"].wp-block-button__link,
+body.home .wp-hero .wp-btn[href*="case-studies"] {
+    background: transparent !important;
+    color: #666 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    font-weight: 400 !important;
 }
 
-/* Accessibility helper. */
+/* HOMEPAGE FIX 4b: Dezenter Hover statt Konkurrenz zum Primär-CTA */
+body.home .hero-cta-secondary:hover,
+body.home .wp-block-buttons .wp-block-button:last-child .wp-block-button__link:hover,
+body.home .wp-hero .wp-btn[href*="case-studies"]:hover {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    color: #999 !important;
+}
+
+/* === WGOS FIX 5: Garantie-Reihenfolge per CSS (Punkte vor Disclaimer) === */
+.wgos-guarantee-section,
+[class*="garantie"],
+[id*="garantie"],
+#garantie .wgos-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* WGOS FIX 5b: Garantie-Punkte priorisieren */
+#garantie .wgos-checklist--guarantee {
+    order: 2;
+}
+
+/* WGOS FIX 5c: Disclaimer-/Erwartungs-Text ans Ende stellen */
+.wgos-guarantee-disclaimer,
+.guarantee-note,
+em[class*="disclaimer"],
+#garantie .wgos-expectation,
+#garantie .wgos-prose {
+    order: 99;
+    margin-top: 16px;
+    color: #444;
+    font-size: 12px;
+}
+
+/* === ACCESSIBILITY HELPER: Screenreader-only Textklasse === */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -144,4 +702,92 @@ body.admin-bar {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+/* === WGOS FIX 3c: CSS-Fallback, falls Counter-Inhalt leer bleibt === */
+.wgos-trust-value[data-fallback]:empty::before {
+    content: attr(data-fallback);
+}
+
+/* === WGOS: Social Proof Strip Mobile === */
+@media (max-width: 600px) {
+  .wgos-proof-strip {
+    gap: 20px !important;
+  }
+  .wgos-proof-strip .proof-item {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    padding: 16px 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .wgos-proof-strip .proof-item:last-child {
+    border-bottom: none !important;
+  }
+}
+
+/* === WGOS: Credits-Tabelle Mobile scrollbar === */
+@media (max-width: 768px) {
+  .wp-block-table table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+  .wp-block-table table td,
+  .wp-block-table table th {
+    min-width: 110px;
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+  .wp-block-table::before {
+    content: "\2190 Tabelle scrollbar \2192";
+    display: block;
+    font-size: 11px;
+    color: #444;
+    text-align: center;
+    margin-bottom: 8px;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* === WGOS: Modul-Text nach Mindmap kürzen === */
+/* Die langen Modul-Beschreibungen werden auf 2 Zeilen begrenzt
+   wenn die Mindmap aktiv ist – verhindert Redundanz */
+.wgos-module-text-block {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #888;
+}
+
+/* === ACCESSIBILITY: Focus States === */
+.wp-block-button__link:focus,
+.ct-button:focus,
+a[href*="customer-journey-audit"]:focus,
+a[href*="growth-audit"]:focus,
+a[href*="wordpress-growth-operating-system"]:focus,
+button:focus {
+  outline: 2px solid var(--stempel);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* === ACCESSIBILITY: Screenreader-only Klasse === */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Light-theme contrast for the global mobile table scroll hint.
+   WGOS keeps the component rules; the global shell owns only the readable hint. */
+:root[data-nx-theme='light'] .wp-block-table::before,
+:root[data-nx-theme='light'] .wgos-table-wrap::before {
+  color: var(--text-secondary) !important;
 }
