@@ -70,10 +70,12 @@ $faqs = [
 ];
 
 if ( function_exists( 'hu_enqueue_css' ) ) {
+	hu_enqueue_css( 'hu-navigation-ecosystem', 'navigation-ecosystem.css', [ 'nexus-system-css' ] );
 	hu_enqueue_css( 'nexus-startseite-css', 'startseite.css', [ 'nexus-system-css' ] );
 	hu_enqueue_css( 'nexus-startseite-rest-css', 'startseite-rest-v1.css', [ 'nexus-startseite-css' ] );
 }
 if ( function_exists( 'hu_enqueue_js' ) ) {
+	hu_enqueue_js( 'hu-navigation-ecosystem', 'navigation-ecosystem.js', [] );
 	hu_enqueue_js( 'nexus-startseite-js', 'startseite.js', [] );
 }
 get_header();
@@ -109,10 +111,18 @@ get_header();
 			<p><span class="mono">Für Agenturen</span><a class="satzlink" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="home_door_whitelabel" data-track-category="navigation" data-track-section="tueren">WordPress-Umsetzung unter Ihrem Namen →</a></p>
 			<p><span class="mono">Spezialisierung</span><a class="satzlink" href="<?php echo esc_url( $energy_url ); ?>" data-track-action="home_door_energy" data-track-category="navigation" data-track-section="tueren">Anfragesysteme für Solar und Wärmepumpe →</a></p>
 		</div>
-		<nav class="home-index" aria-label="Auf dieser Seite">
-			<a href="#angebote">01 Leistungen</a><a href="#nachweis">02 Arbeiten</a><a href="#arbeitsweise">03 Zusammenarbeit</a><a href="#fragen">04 Fragen</a>
-		</nav>
 	</div>
+
+	<nav class="home-index hu-page-toc home-toc" aria-label="Auf dieser Seite" data-hu-rail="true" data-track-section="page_toc">
+		<span class="home-toc__mark" aria-hidden="true"><span class="home-toc__mark-short">TOC</span><span class="home-toc__mark-full">Auf dieser Seite</span></span>
+		<div class="home-toc__entries">
+			<a href="#angebote" data-track-action="toc_angebote" data-track-category="navigation"><span class="home-toc__nr">01</span><span class="home-toc__txt">Leistungen</span></a>
+			<a href="#nachweis" data-track-action="toc_nachweis" data-track-category="navigation"><span class="home-toc__nr">02</span><span class="home-toc__txt">Arbeiten</span></a>
+			<a href="#arbeitsweise" data-track-action="toc_arbeitsweise" data-track-category="navigation"><span class="home-toc__nr">03</span><span class="home-toc__txt">Zusammenarbeit</span></a>
+			<a href="#fragen" data-track-action="toc_fragen" data-track-category="navigation"><span class="home-toc__nr">04</span><span class="home-toc__txt">Fragen</span></a>
+			<a href="#anfrage" data-track-action="toc_anfrage" data-track-category="lead_gen"><span class="home-toc__nr">05</span><span class="home-toc__txt">Anfrage</span></a>
+		</div>
+	</nav>
 
 	<section id="angebote" aria-labelledby="angebote-h" data-track-section="angebote">
 		<div class="blatt reihe">
