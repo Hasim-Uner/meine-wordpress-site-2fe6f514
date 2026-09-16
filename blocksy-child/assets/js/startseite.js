@@ -165,6 +165,11 @@
 @keyframes home-v9-arrow-a{0%,10%,34%,100%{opacity:.32;transform:translate(-58%,-55%)}18%,28%{opacity:1;transform:translate(-50%,-55%)}}
 @keyframes home-v9-arrow-b{0%,50%,88%,100%{opacity:.32;transform:translate(-58%,-55%)}62%,80%{opacity:1;transform:translate(-50%,-55%)}}
 @keyframes home-v9-filter{0%,54%,84%,100%{opacity:.74;transform:translate(-50%,-50%) scale(.96)}64%,77%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}}
+
+/* Hero V9.3 – Premium-Hierarchie: Kategorie einzeilig, Positionierung dominant. */
+.startseite .home-hero.home-hero-v9 .home-title-primary{max-width:none!important;white-space:nowrap!important;font-size:clamp(1.9rem,2.05vw,2.15rem)!important;font-weight:540!important;line-height:1.04!important;letter-spacing:-.034em!important;color:color-mix(in srgb,var(--tinte) 68%,var(--papier))!important}
+.startseite .home-hero.home-hero-v9 .home-title-secondary{margin-top:.5em!important;max-width:12ch!important;font-size:clamp(3.6rem,4.4vw,4.95rem)!important;font-weight:650!important;line-height:.92!important;letter-spacing:-.056em!important;color:var(--tinte)!important}
+@media (max-width:640px){.startseite .home-hero.home-hero-v9 .home-title-primary{font-size:clamp(1.28rem,5.2vw,1.58rem)!important;letter-spacing:-.025em!important}.startseite .home-hero.home-hero-v9 .home-title-secondary{margin-top:.48em!important;font-size:clamp(2.65rem,12vw,3.35rem)!important}}
 `;
         document.head.appendChild(style);
     }
@@ -256,7 +261,7 @@
         if (eyebrow) eyebrow.textContent = 'WordPress · Tracking · CRM';
 
         var heading = copy.querySelector('h1');
-        if (heading) heading.innerHTML = '<span class="home-title-primary">WordPress<br>Freelancer<br>Hannover<span class="home-title-stop">.</span></span><span class="home-title-secondary">Von der Website<br>bis zur Anfrage<span class="home-title-stop">.</span></span>';
+        if (heading) heading.innerHTML = '<span class="home-title-primary">WordPress Freelancer Hannover.</span><span class="home-title-secondary">Von der Website<br>bis zur Anfrage<span class="home-title-stop">.</span></span>';
 
         var intro = copy.querySelector('.aufriss');
         if (intro) intro.textContent = 'Ich entwickle WordPress-Websites, die Angebote verständlich machen und Anfragen sauber bis ins CRM führen. Direkt mit mir – ohne Übergabe an ein fremdes Entwicklerteam.';
