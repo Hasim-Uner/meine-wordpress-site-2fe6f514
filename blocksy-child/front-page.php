@@ -40,46 +40,38 @@ $project_link = static function ( $focus ) use ( $contact_url ) {
 };
 $offers = [
 	[
-		'id' => 'angebot-website', 'nr' => '01', 'title' => 'Website neu oder Relaunch',
-		'problem' => 'Ihr Angebot ist weiter als Ihre Website.',
-		'text' => 'Ich entwickle eine WordPress-Website, die Ihr Angebot verständlich macht und zum nächsten Schritt führt. Bei einem Relaunch berücksichtige ich bestehende Inhalte, URLs und Weiterleitungen.',
-		'scope' => 'Seitenstruktur · WordPress-Entwicklung · technisches SEO · Staging und Übergabe',
-		'price' => 'Ab ' . $website_price, 'focus' => 'relaunch', 'cta' => 'Website-Projekt anfragen',
+		'id' => 'angebot-website', 'nr' => '01', 'title' => 'WordPress-Entwicklung',
+		'problem' => 'Neu bauen, relaunchen oder gezielt weiterentwickeln.',
+		'text' => 'Ich entwickle und überarbeite WordPress-Websites so, dass Struktur, Technik und Nutzerführung zusammenpassen. Bestehende Inhalte, URLs und funktionierende Systeme bleiben dort erhalten, wo das sinnvoll ist.',
+		'scope' => 'Relaunch · Bestandsentwicklung · technisches SEO · Performance · Staging und Übergabe',
+		'price' => 'Ab ' . $website_price, 'focus' => 'relaunch', 'cta' => 'WordPress-Projekt anfragen',
 	],
 	[
-		'id' => 'angebot-funnel', 'nr' => '02', 'title' => 'Landingpage und Anfragestrecke',
-		'problem' => 'Die Kampagne läuft. Die passenden Anfragen fehlen.',
-		'text' => 'Eine Landingpage mit passendem Angebot, verständlichem Formular und klarer Bestätigung. Vorqualifizierung, Conversion-Messung und Lead-Übergabe werden im vereinbarten Umfang mitgebaut.',
-		'scope' => 'Landingpage · Formular · Danke-Seite · Messung und Übergabe nach Bedarf',
+		'id' => 'angebot-funnel', 'nr' => '02', 'title' => 'Anfragestrecken & Landingpages',
+		'problem' => 'Traffic ist nur dann wertvoll, wenn der nächste Schritt funktioniert.',
+		'text' => 'Ich baue Landingpages, Formulare und Qualifizierungswege so, dass Angebot, Anfrage und Übergabe logisch zusammenpassen. Der Umfang reicht vom einzelnen Conversion-Weg bis zur kompletten Anfragestrecke.',
+		'scope' => 'Landingpage · Formular · Qualifizierung · Danke-Seite · Lead-Übergabe',
 		'price' => 'Projektpreis nach Umfang', 'focus' => 'conversion', 'cta' => 'Anfragestrecke besprechen',
 	],
 	[
-		'id' => 'angebot-tracking', 'nr' => '03', 'title' => 'Tracking nachvollziehbar machen',
-		'problem' => 'Werbeplattform, Analytics und CRM erzählen verschiedene Geschichten.',
-		'text' => 'Ich prüfe die Messkette und setze GA4, GTM und Consent-Anbindung passend zu Ihrem Setup um. Server-Side Tracking und Rückmeldungen an Werbekanäle ergänzen wir dort, wo sie gebraucht werden.',
-		'scope' => 'Messkonzept · Ereignisse prüfen · Consent berücksichtigen · Abnahme dokumentieren',
+		'id' => 'angebot-tracking', 'nr' => '03', 'title' => 'Tracking & CRM',
+		'problem' => 'Eine Anfrage ist erst dann messbar, wenn die Strecke bis ins System reicht.',
+		'text' => 'Ich prüfe und entwickle die Messkette von GA4 und GTM bis zu Consent, Server-Side Tracking und CRM-Übergabe. Ergänzt wird nur, was für Ihr Setup und Ihre Daten tatsächlich gebraucht wird.',
+		'scope' => 'GA4 · GTM · Consent · Server-Side Tracking · Attribution · CRM-Anbindung',
 		'price' => 'Standard-Setup ab ' . $tracking_price . ' netto', 'focus' => 'tracking', 'cta' => 'Tracking-Projekt anfragen',
-	],
-	[
-		'id' => 'angebot-weiterentwicklung', 'nr' => '04', 'title' => 'Bestehendes WordPress weiterentwickeln',
-		'problem' => 'Es gibt konkrete Aufgaben, aber niemanden, der sie umsetzt.',
-		'text' => 'Neue Bereiche, technische Fehler, Ladezeit oder ein Formular, das nicht sauber arbeitet: Wir priorisieren die nächste sinnvolle Änderung. Ein kompletter Neubau ist dafür keine Voraussetzung.',
-		'scope' => 'Bestand prüfen · Aufgabe begrenzen · Änderung testen · kontrolliert veröffentlichen',
-		'price' => 'Umfang und Budget vor Start', 'focus' => 'implementation_scope', 'cta' => 'Aufgabe beschreiben',
 	],
 ];
 $faqs = [
-	[ 'q' => 'Übernehmen Sie eine bestehende WordPress-Website?', 'a' => 'Ja. Vor einer Zusage prüfe ich Theme, Plugins, Zugänge und die konkrete Aufgabe. Daraus wird eine begrenzte Weiterentwicklung, eine technische Bereinigung oder ein Relaunch. Ein Neubau ist keine Voraussetzung.' ],
-	[ 'q' => 'Arbeiten Sie auch mit unserem Page Builder?', 'a' => 'Die Entscheidung hängt vom vorhandenen Aufbau und der Aufgabe ab. Ein funktionierender Editor muss nicht ersetzt werden. Wo Performance, Wartbarkeit oder eine Integration an Grenzen stoßen, klären wir den nötigen Eingriff vorab.' ],
-	[ 'q' => 'Was brauchen Sie von unserem Team?', 'a' => 'Eine Person, die Entscheidungen trifft, die nötigen Zugänge sowie vorhandene Texte und Gestaltungsvorgaben. Fehlende Inhalte, Branding, Übersetzungen und zusätzliche Schnittstellen klären wir im Angebot. Sie sind nicht automatisch im Einstiegspreis enthalten.' ],
-	[ 'q' => 'Wann kann das Projekt starten und wie lange dauert es?', 'a' => 'Das hängt von meiner freien Kapazität, dem Umfang und Ihren Vorarbeiten ab. Nach der ersten Einordnung erhalten Sie einen realistischen Zeitrahmen. Inhaltslieferung, Freigaben und technische Abhängigkeiten werden dabei berücksichtigt.' ],
-	[ 'q' => 'Gehören Website, Konten und Code anschließend uns?', 'a' => 'Ja. Code, Repository, Hosting und eingesetzte Konten liegen in Ihrer Hand. Zur Übergabe gehören die vereinbarte Dokumentation und Zugänge. Eine weitere Betreuung ist möglich, aber keine Voraussetzung dafür, die Website weiterzuführen.' ],
-	[ 'q' => 'Was passiert nach meiner Anfrage?', 'a' => 'Ich prüfe Ausgangslage und Ziel und melde mich innerhalb der genannten Antwortzeit mit einer ersten Einordnung. Passt die Aufgabe, klären wir Scope, Zugänge, Zeitrahmen und Angebot. Passt sie nicht, sage ich das ebenfalls.' ],
-	[ 'q' => 'Müssen wir aus Hannover kommen?', 'a' => 'Nein. Ich arbeite aus Pattensen in der Region Hannover und betreue Projekte remote im gesamten DACH-Raum. Abstimmung und Abnahme funktionieren über einen gemeinsamen, dokumentierten Projektstand.' ],
+	[ 'q' => 'Übernehmen Sie eine bestehende WordPress-Website?', 'a' => 'Ja. Vor einer Zusage prüfe ich Theme, Plugins, Zugänge und die konkrete Aufgabe. Daraus wird eine gezielte Weiterentwicklung, eine technische Bereinigung oder ein Relaunch. Ein Neubau ist keine Voraussetzung.' ],
+	[ 'q' => 'Arbeiten Sie mit unserem bestehenden Theme oder Page Builder?', 'a' => 'Wenn der vorhandene Aufbau technisch tragfähig ist, muss er nicht ersetzt werden. Erst wenn Performance, Wartbarkeit oder eine Integration klare Grenzen setzen, besprechen wir einen tieferen Eingriff.' ],
+	[ 'q' => 'Was brauchen Sie von unserem Team?', 'a' => 'Eine Person für Entscheidungen und Freigaben, die nötigen Zugänge sowie vorhandene Inhalte und Gestaltungsvorgaben. Fehlende Texte, Branding, Übersetzungen oder zusätzliche Schnittstellen werden vor dem Start sauber abgegrenzt.' ],
+	[ 'q' => 'Wie lange dauert ein Projekt?', 'a' => 'Das hängt von Umfang, Ausgangslage und Ihren Vorarbeiten ab. Nach der ersten Einordnung erhalten Sie einen realistischen Zeitrahmen. Inhaltslieferung, Freigaben und technische Abhängigkeiten werden dabei ausdrücklich berücksichtigt.' ],
+	[ 'q' => 'Gehören Website, Konten und Code anschließend uns?', 'a' => 'Ja. Code, Repository, Hosting und eingesetzte Konten liegen in Ihrer Hand. Zur Übergabe gehören die vereinbarte Dokumentation und Zugänge. Eine weitere Betreuung ist möglich, aber keine Voraussetzung.' ],
 ];
 
 if ( function_exists( 'hu_enqueue_css' ) ) {
 	hu_enqueue_css( 'nexus-startseite-css', 'startseite.css', [ 'nexus-system-css' ] );
+	hu_enqueue_css( 'nexus-startseite-rest-css', 'startseite-rest-v1.css', [ 'nexus-startseite-css' ] );
 }
 if ( function_exists( 'hu_enqueue_js' ) ) {
 	hu_enqueue_js( 'nexus-startseite-js', 'startseite.js', [] );
@@ -118,7 +110,7 @@ get_header();
 			<p><span class="mono">Spezialisierung</span><a class="satzlink" href="<?php echo esc_url( $energy_url ); ?>" data-track-action="home_door_energy" data-track-category="navigation" data-track-section="tueren">Anfragesysteme für Solar und Wärmepumpe →</a></p>
 		</div>
 		<nav class="home-index" aria-label="Auf dieser Seite">
-			<a href="#angebote">01 Leistungen</a><a href="#nachweis">02 Arbeiten</a><a href="#arbeitsweise">03 Zusammenarbeit</a><a href="#fall">04 Ergebnis</a><a href="#fragen">05 Fragen</a>
+			<a href="#angebote">01 Leistungen</a><a href="#nachweis">02 Arbeiten</a><a href="#arbeitsweise">03 Zusammenarbeit</a><a href="#fragen">04 Fragen</a>
 		</nav>
 	</div>
 
@@ -126,9 +118,9 @@ get_header();
 		<div class="blatt reihe">
 			<div class="spalte-links"><div class="kapitel"><span class="nr">01</span><span class="titel">Leistungen</span><span class="strich" aria-hidden="true"></span></div></div>
 			<div class="voll">
-				<h2 class="kopf" id="angebote-h">Was soll Ihre Website als Nächstes leisten?</h2>
-				<p class="vorspann">Ein neues Projekt oder eine konkrete Verbesserung: Sie müssen kein Gesamtpaket buchen, wenn eine begrenzte Aufgabe reicht.</p>
-				<div class="home-offers">
+				<h2 class="kopf" id="angebote-h">Drei Kernbereiche. Ein Verantwortungsweg.</h2>
+				<p class="vorspann">Website, Anfrage und Messung werden nicht als getrennte Gewerke behandelt. Sie buchen nur den Teil, den Ihr Projekt tatsächlich braucht.</p>
+				<div class="home-offers home-offers-v2">
 					<?php foreach ( $offers as $offer ) : ?>
 						<article class="home-offer" id="<?php echo esc_attr( $offer['id'] ); ?>">
 							<div><span class="mono"><?php echo esc_html( $offer['nr'] ); ?></span><h3><?php echo esc_html( $offer['title'] ); ?></h3><p class="home-price"><?php echo esc_html( $offer['price'] ); ?></p></div>
@@ -139,7 +131,7 @@ get_header();
 						</article>
 					<?php endforeach; ?>
 				</div>
-				<p class="home-note">Die Preisrahmen beziehen sich auf den vereinbarten Leistungsumfang. Umfangreiche Migrationen, Texte, zusätzliche Integrationen, Hosting, Lizenzen und Werbebudget klären wir separat. Sie erhalten vor dem Start ein konkretes Angebot.</p>
+				<p class="home-note">Preis und Umfang werden vor Projektstart konkret festgelegt. Migrationen, Inhalte, zusätzliche Integrationen, Hosting, Lizenzen und Werbebudget werden nur dann Teil des Projekts, wenn sie ausdrücklich vereinbart sind.</p>
 			</div>
 		</div>
 	</section>
@@ -232,46 +224,22 @@ get_header();
 		<div class="blatt reihe">
 			<div class="spalte-links"><div class="kapitel"><span class="nr">03</span><span class="titel">Zusammenarbeit</span><span class="strich" aria-hidden="true"></span></div></div>
 			<div class="voll" id="strecke">
-				<h2 class="kopf" id="arbeitsweise-h">Ein Ansprechpartner. Ein prüfbarer Projektstand.</h2>
-				<p class="vorspann" id="position">Als WordPress Freelancer übernehme ich die technische Umsetzung selbst. Sie wissen vor dem Start, was geliefert wird, und vor der Veröffentlichung, was sich geändert hat.</p>
-				<ol class="home-process" id="ablauf">
-					<li><span class="mono">01 · Einordnen</span><h3>Aufgabe und Grenzen klären</h3><p>Wir prüfen Bestand, Ziel und Abhängigkeiten. Daraus entstehen Leistungsumfang, Preis und Zeitrahmen. Zusätzliche Wünsche stimmen wir vor der Umsetzung ab.</p></li>
-					<li><span class="mono">02 · Umsetzen</span><h3>Am echten Stand abstimmen</h3><p>Sie sehen die Arbeit auf einer Testumgebung. Änderungen bleiben nachvollziehbar, Rückfragen landen direkt bei mir.</p></li>
-					<li><span class="mono">03 · Übergeben</span><h3>Die wichtigen Wege abnehmen</h3><p>Vor dem Livegang prüfen wir die vereinbarten Funktionen: beispielsweise mobile Nutzung, Formular, Bestätigung und Lead-Eingang. Sie erhalten die passende Dokumentation.</p></li>
+				<h2 class="kopf" id="arbeitsweise-h">Klarer Scope. Sichtbarer Stand. Saubere Übergabe.</h2>
+				<p class="vorspann" id="position">Ich übernehme die technische Umsetzung selbst. Sie wissen vor dem Start, was gebaut wird, sehen den Stand vor der Veröffentlichung und erhalten am Ende einen nachvollziehbaren Übergabepunkt.</p>
+				<ol class="home-process home-process-v2" id="ablauf">
+					<li><span class="mono">01 · Klären</span><h3>Was wird gebaut – und was nicht?</h3><p>Wir prüfen Ausgangslage, Ziel und Abhängigkeiten. Daraus entstehen Scope, Preis und Zeitrahmen. Zusätzliche Wünsche werden nicht stillschweigend Teil des Projekts.</p></li>
+					<li><span class="mono">02 · Bauen</span><h3>Am echten Stand arbeiten.</h3><p>Sie sehen die Umsetzung auf einer Testumgebung. Änderungen bleiben nachvollziehbar und technische Rückfragen landen direkt bei mir.</p></li>
+					<li><span class="mono">03 · Prüfen & übergeben</span><h3>Die wichtigen Wege gemeinsam abnehmen.</h3><p>Vor dem Livegang prüfen wir die vereinbarten Funktionen. Danach erhalten Sie Dokumentation, Zugänge und den Stand, mit dem Ihr Team weiterarbeiten kann.</p></li>
 				</ol>
-				<div class="home-fit" id="eignung"><h3 id="vergleich">Wann diese Zusammenarbeit passt</h3><p>Sie brauchen jemanden, der eine konkrete WordPress-Aufgabe technisch verantwortet, und haben intern einen Ansprechpartner für Inhalte und Freigaben. Wenn zusätzlich Tracking oder eine CRM-Anbindung nötig ist, planen wir beides mit ein. Messung wird passend zu Consent und den verfügbaren Daten umgesetzt.</p></div>
-			</div>
-		</div>
-	</section>
-
-	<section id="fall" aria-labelledby="fall-h" data-track-section="beleg">
-		<div class="blatt reihe">
-			<div class="spalte-links"><div class="kapitel"><span class="nr">04</span><span class="titel">Ergebnis</span><span class="strich" aria-hidden="true"></span></div></div>
-			<div class="voll">
-				<h2 class="kopf" id="fall-h">Was das Gesamtsystem erreicht hat.</h2>
-				<p class="vorspann">Der dokumentierte Fall aus meiner Solar-Spezialisierung zeigt die Wirkung der gesamten Strecke. Die Kennzahlen beschreiben Website, Nachfrageaufbau, Tracking, CRM-Prozess und Vertrieb im Zusammenspiel.</p>
-				<div class="tafel home-case">
-					<dl>
-						<div>
-							<dt>Weniger Kosten pro Anfrage</dt>
-							<dd><strong><?php echo esc_html( $e3_metric( 'cpl_reduction', 'display', 'über 85 %' ) ); ?></strong><small><?php echo esc_html( $e3_metric( 'cpl_before', 'display', '150 €' ) ); ?> → <?php echo esc_html( $e3_metric( 'cpl_after', 'display', '22 €' ) ); ?></small></dd>
-						</div>
-						<div>
-							<dt>Qualifizierte Anfragen</dt>
-							<dd><strong><?php echo esc_html( $e3_metric( 'lead_count', 'display', '1.750+' ) ); ?></strong><small>in <?php echo esc_html( $e3_metric( 'timeframe', 'display_dative', '6 Monaten' ) ); ?></small></dd>
-						</div>
-					</dl>
-					<p>Die Zahlen beschreiben dieses Gesamtsystem. Sie belegen keinen isolierten WordPress-Effekt und sind keine Prognose für Ihr Projekt.</p>
-					<a class="textlink" href="<?php echo esc_url( $e3_case_url ); ?>" data-track-action="home_case_study" data-track-category="proof" data-track-section="beleg">Ausgangslage und Methodik lesen →</a>
-				</div>
+				<div class="home-fit home-fit-v2" id="eignung"><h3 id="vergleich">Passt, wenn Verantwortung klar sein soll.</h3><div><p>Sie brauchen einen direkten technischen Ansprechpartner und intern jemanden für Inhalte und Freigaben. Tracking oder CRM werden nur dann mit eingeplant, wenn sie Teil der Aufgabe sind.</p><div class="home-fit-facts"><span>Direkter Ansprechpartner</span><span>Testumgebung vor Livegang</span><span>Dokumentierte Übergabe</span></div></div></div>
 			</div>
 		</div>
 	</section>
 
 	<section id="fragen" aria-labelledby="fragen-h" data-track-section="fragen">
 		<div class="blatt reihe">
-			<div class="spalte-links"><div class="kapitel"><span class="nr">05</span><span class="titel">Fragen</span><span class="strich" aria-hidden="true"></span></div></div>
-			<div class="voll"><h2 class="kopf" id="fragen-h">Vor der Zusammenarbeit.</h2><div class="fragen">
+			<div class="spalte-links"><div class="kapitel"><span class="nr">04</span><span class="titel">Fragen</span><span class="strich" aria-hidden="true"></span></div></div>
+			<div class="voll"><h2 class="kopf" id="fragen-h">Was vor dem Start geklärt sein sollte.</h2><div class="fragen">
 				<?php foreach ( $faqs as $faq ) : ?>
 					<details><summary><?php echo esc_html( $faq['q'] ); ?></summary><div class="huelle"><div><p class="antwort"><?php echo esc_html( $faq['a'] ); ?></p></div></div></details>
 				<?php endforeach; ?>
@@ -280,9 +248,9 @@ get_header();
 	</section>
 
 	<div class="abschluss" id="anfrage" data-track-section="abschluss" tabindex="-1">
-		<div class="blatt" id="kontakt"><div class="tafel home-close">
-			<div><p class="mono">Der nächste Schritt</p><h2>Was möchten Sie an Ihrer Website verändern?</h2><p class="aufriss">Beschreiben Sie kurz Ihre Ausgangslage, den Engpass und das gewünschte Ergebnis. Ich melde mich mit einer ersten fachlichen Einordnung und den Fragen, die für ein konkretes Angebot noch offen sind.</p><div class="ausgang"><a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_close_contact" data-track-category="lead_gen" data-track-section="abschluss">Projekt beschreiben <span aria-hidden="true">→</span></a><a class="tun still" href="<?php echo esc_url( 'mailto:' . $contact_email, [ 'mailto' ] ); ?>" data-track-action="home_close_mail" data-track-category="lead_gen" data-track-section="abschluss">Per E-Mail anfragen</a></div></div>
-			<div class="home-close-note"><strong><?php echo esc_html( $response ); ?></strong><p>Sie sprechen direkt mit mir. Für die erste Anfrage brauchen Sie kein fertiges Briefing und keinen gebuchten Termin.</p></div>
+		<div class="blatt" id="kontakt"><div class="tafel home-close home-close-v2">
+			<div><p class="mono">Der nächste Schritt</p><h2>Was soll als Nächstes besser funktionieren?</h2><p class="aufriss">Schicken Sie mir Ausgangslage, Engpass und Ziel. Ich prüfe die Aufgabe selbst und melde mich mit einer ersten fachlichen Einordnung – ohne Vertriebsübergabe und ohne fertiges Briefing.</p><div class="ausgang"><a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_close_contact" data-track-category="lead_gen" data-track-section="abschluss">Projekt beschreiben <span aria-hidden="true">→</span></a><a class="tun still" href="<?php echo esc_url( 'mailto:' . $contact_email, [ 'mailto' ] ); ?>" data-track-action="home_close_mail" data-track-category="lead_gen" data-track-section="abschluss">Per E-Mail anfragen</a></div></div>
+			<div class="home-close-note"><strong><?php echo esc_html( $response ); ?></strong><p>Direkt bei mir. Kein gebuchter Termin und kein fertiges Briefing nötig.</p></div>
 		</div></div>
 	</div>
 </div>
