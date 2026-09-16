@@ -409,3 +409,186 @@
   .startseite .home-hero-v9 .home-title-primary{font-size:clamp(2rem,8.8vw,2.45rem)!important}
   .startseite .home-hero-v9 .home-title-secondary{font-size:clamp(2.65rem,12vw,3.35rem)!important}
 }
+
+/* Homepage Register – dieselbe Navigationssprache wie die übrigen Money Pages. */
+.startseite .home-hero.home-hero-v9{
+  min-height:auto!important;
+}
+.startseite .kopfteil{
+  padding-bottom:clamp(1.4rem,2.3vw,2.2rem)!important;
+}
+.startseite .home-toc.hu-page-toc{
+  position:sticky;
+  top:var(--hu-wayfinding-offset,76px);
+  z-index:44;
+  display:flex!important;
+  align-items:center;
+  gap:clamp(.8rem,2vw,1.5rem);
+  width:100%;
+  max-width:none;
+  min-height:48px;
+  margin:0;
+  padding:0 clamp(1rem,4vw,3rem);
+  overflow-x:auto;
+  overflow-y:hidden;
+  scrollbar-width:none;
+  background:color-mix(in srgb,var(--papier) 94%,transparent);
+  border:0;
+  border-top:1px solid var(--haar);
+  border-bottom:1px solid var(--haar);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+.startseite .home-toc.hu-page-toc::-webkit-scrollbar{display:none}
+.startseite .home-toc__mark{
+  flex:0 0 auto;
+  font-family:var(--mono);
+  font-size:.61rem;
+  font-weight:650;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:color-mix(in srgb,var(--tinte) 55%,var(--papier));
+  white-space:nowrap;
+}
+.startseite .home-toc__mark-short{display:none}
+.startseite .home-toc__entries{
+  display:flex;
+  align-items:center;
+  gap:clamp(.8rem,2vw,1.5rem);
+  min-width:max-content;
+}
+.startseite .home-toc.hu-page-toc a{
+  position:relative;
+  display:flex;
+  align-items:baseline;
+  gap:.38rem;
+  min-height:46px;
+  padding:.45rem 0!important;
+  border-left:0!important;
+  color:color-mix(in srgb,var(--tinte) 68%,var(--papier));
+  font-family:var(--mono);
+  font-size:.66rem;
+  font-weight:560;
+  letter-spacing:.08em;
+  text-decoration:none;
+  text-transform:uppercase;
+  white-space:nowrap;
+  transition:color var(--t-norm) var(--ease-aus);
+}
+.startseite .home-toc.hu-page-toc a::after{
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:.14rem;
+  height:1px;
+  background:var(--stempel);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform var(--t-norm) var(--ease-aus);
+}
+.startseite .home-toc__nr{
+  color:color-mix(in srgb,var(--tinte) 46%,var(--papier));
+  font-variant-numeric:tabular-nums;
+  transition:color var(--t-norm) var(--ease-aus);
+}
+.startseite .home-toc.hu-page-toc a:hover,
+.startseite .home-toc.hu-page-toc a:focus-visible{
+  padding-left:0!important;
+  color:var(--tinte);
+}
+.startseite .home-toc.hu-page-toc a[aria-current="location"],
+.startseite .home-toc.hu-page-toc a[aria-current="location"] .home-toc__nr{
+  color:var(--stempel);
+}
+.startseite .home-toc.hu-page-toc a[aria-current="location"]::after{
+  transform:scaleX(1);
+}
+
+@media (min-width:1280px) and (min-height:620px) and (hover:hover) and (pointer:fine){
+  .startseite .home-toc.hu-page-toc[data-hu-rail="true"]{
+    position:fixed!important;
+    top:calc(50% + 2.4rem)!important;
+    left:0!important;
+    z-index:45;
+    display:block!important;
+    width:3.55rem!important;
+    max-width:none!important;
+    min-height:0;
+    max-height:calc(100vh - 7rem);
+    margin:0!important;
+    padding:.72rem .45rem!important;
+    overflow:hidden auto;
+    background:color-mix(in srgb,var(--papier) 97%,transparent);
+    border:1px solid var(--haar)!important;
+    border-left:0!important;
+    border-radius:0 3px 3px 0;
+    transform:translateY(-50%);
+    box-shadow:0 10px 28px color-mix(in srgb,var(--tinte) 5%,transparent);
+    transition:width 200ms cubic-bezier(.22,1,.36,1);
+  }
+  .startseite .home-toc.hu-page-toc[data-hu-rail="true"]:hover,
+  .startseite .home-toc.hu-page-toc[data-hu-rail="true"]:focus-within{
+    width:14.75rem!important;
+  }
+  .startseite .home-toc__mark{
+    display:block;
+    padding:0 .35rem .62rem;
+    margin-bottom:.28rem;
+    border-bottom:1px solid var(--haar);
+    font-size:.58rem;
+  }
+  .startseite .home-toc__mark-short{display:block}
+  .startseite .home-toc__mark-full{display:none}
+  .startseite .home-toc.hu-page-toc:hover .home-toc__mark-short,
+  .startseite .home-toc.hu-page-toc:focus-within .home-toc__mark-short{display:none}
+  .startseite .home-toc.hu-page-toc:hover .home-toc__mark-full,
+  .startseite .home-toc.hu-page-toc:focus-within .home-toc__mark-full{display:block}
+  .startseite .home-toc__entries{display:block;min-width:0}
+  .startseite .home-toc.hu-page-toc a{
+    width:13.6rem;
+    min-height:38px;
+    gap:.68rem;
+    padding:.34rem .4rem!important;
+    font-size:.61rem;
+    letter-spacing:.075em;
+  }
+  .startseite .home-toc.hu-page-toc a::after{
+    left:.4rem;
+    right:auto;
+    bottom:.16rem;
+    width:1.7rem;
+  }
+  .startseite .home-toc__nr{flex:0 0 1.55rem}
+  .startseite .home-toc__txt{
+    opacity:0;
+    transform:translateX(-.18rem);
+    transition:opacity 160ms ease,transform 180ms cubic-bezier(.22,1,.36,1);
+  }
+  .startseite .home-toc.hu-page-toc:hover .home-toc__txt,
+  .startseite .home-toc.hu-page-toc:focus-within .home-toc__txt{
+    opacity:1;
+    transform:none;
+  }
+}
+
+@media (max-width:640px){
+  .startseite .home-toc.hu-page-toc{
+    gap:.7rem;
+    padding-inline:.85rem;
+  }
+  .startseite .home-toc__mark-full{display:none}
+  .startseite .home-toc__mark-short{display:block}
+  .startseite .home-toc__entries{gap:.9rem}
+  .startseite .home-toc.hu-page-toc a{font-size:.6rem;letter-spacing:.065em}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .startseite .home-toc.hu-page-toc,
+  .startseite .home-toc.hu-page-toc a,
+  .startseite .home-toc.hu-page-toc a::after,
+  .startseite .home-toc__nr,
+  .startseite .home-toc__txt{
+    transition:none!important;
+  }
+}
