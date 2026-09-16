@@ -1,9 +1,8 @@
 /**
- * Startseite – Hero V9.
+ * Startseite – Hero V9 + Arbeiten V2.
  *
- * Präzise B2B-Strecke: Quellen → Website → Anfrage → CRM.
- * Segmentierung bleibt bewusst sekundär, ist aber klar lesbar und sauber
- * zwischen Anfrage und CRM verankert.
+ * Präzise B2B-Strecke im Hero. Der Arbeiten-Abschnitt folgt derselben
+ * Sprache: weniger Blockmasse, mehr System, Proof und kontrollierter Raum.
  */
 (function () {
     'use strict';
@@ -53,7 +52,6 @@
 .startseite .home-portrait figcaption strong{font-size:.8rem!important;color:var(--tinte)}
 .startseite .home-portrait figcaption span{color:color-mix(in srgb,var(--tinte) 68%,var(--papier))!important;font-size:.62rem!important}
 .startseite .home-portrait figcaption a{justify-self:start;font-size:.61rem!important}
-
 .startseite .home-flow-v9{grid-column:2;grid-row:1;position:relative;width:calc(100% + 4.2rem);min-width:0;min-height:25rem;display:grid;align-content:center;align-self:start;margin-top:.15rem;margin-left:-3.25rem;isolation:isolate;overflow:visible}
 .startseite .home-flow-v9__grid{position:absolute;inset:2% -2% 4% -2%;z-index:-3;opacity:.17;pointer-events:none;background-image:linear-gradient(color-mix(in srgb,var(--tinte) 3%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--tinte) 3%,transparent) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(90deg,transparent 0,#000 10%,#000 90%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 10%,#000 90%,transparent 100%)}
 .startseite .home-flow-v9__track{position:relative;display:grid;grid-template-columns:minmax(6.35rem,.8fr) repeat(3,minmax(0,1fr));gap:clamp(.9rem,1.45vw,1.3rem);align-items:center;padding-block:5rem 5.5rem}
@@ -83,6 +81,66 @@
 .startseite .home-flow-v9__tags span{padding:.22rem .4rem;border:1px solid color-mix(in srgb,var(--tinte) 18%,var(--haar));border-radius:999px;background:color-mix(in srgb,var(--papier) 94%,var(--stempel) 6%);font-family:var(--mono);font-size:.43rem;font-weight:600;color:color-mix(in srgb,var(--tinte) 76%,var(--papier))}
 .startseite .home-flow-v9__arrow{position:absolute;top:50%;z-index:4;color:var(--stempel);font-size:1.28rem;line-height:1;transform:translate(-50%,-55%);background:var(--papier);padding:0 .14rem}
 .startseite .home-flow-v9__arrow--a{left:46.5%}.startseite .home-flow-v9__arrow--b{left:72.5%}
+
+/* Abschnitt 02 – Arbeiten. Editoriale Systemarchitektur statt Großtafel. */
+.startseite #nachweis .voll>.kopf{max-width:18ch;letter-spacing:-.035em}
+.startseite #nachweis .voll>.vorspann{max-width:68ch;color:color-mix(in srgb,var(--tinte) 72%,var(--papier));line-height:1.55}
+.startseite #nachweis .home-featured-case-v2{position:relative;margin-top:var(--s4);padding:0!important;overflow:visible!important;background:transparent!important;color:var(--tinte)!important;border:0!important;border-top:1px solid var(--strich)!important;border-bottom:1px solid var(--strich)!important;border-radius:0!important;box-shadow:none!important}
+.startseite #nachweis .home-featured-case-v2::before{content:'';position:absolute;left:0;top:-1px;width:clamp(4rem,8vw,7rem);height:2px;background:var(--stempel)}
+.startseite #nachweis .home-featured-case__intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(22rem,.88fr);gap:clamp(var(--s3),4vw,var(--s5));align-items:start;padding:var(--s4) 0 var(--s3)}
+.startseite #nachweis .home-featured-case__intro .mono{color:var(--stempel);font-size:.72rem;letter-spacing:.12em}
+.startseite #nachweis .home-featured-case__intro h3{max-width:13ch;margin-top:var(--s2);font-size:clamp(2.25rem,1.72rem + 1.65vw,3.35rem);line-height:.98;letter-spacing:-.047em;color:var(--tinte)}
+.startseite #nachweis .home-featured-case__intro>p{max-width:50ch;margin-top:.2rem;color:color-mix(in srgb,var(--tinte) 72%,var(--papier));font-size:clamp(.96rem,.9rem + .15vw,1.05rem);line-height:1.62}
+.startseite #nachweis .home-system-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(13rem,.28fr);gap:clamp(var(--s3),3vw,var(--s4));margin:0;padding:var(--s3) 0 var(--s4);border-top:1px solid var(--haar)}
+.startseite #nachweis .home-system-core{position:relative;min-width:0;padding:var(--s2);border:1px solid color-mix(in srgb,var(--tinte) 10%,var(--haar));border-radius:8px;background:color-mix(in srgb,var(--zone) 52%,var(--papier));overflow:hidden;isolation:isolate}
+.startseite #nachweis .home-system-core::before{content:'';position:absolute;inset:0;z-index:-1;opacity:.42;background-image:linear-gradient(color-mix(in srgb,var(--tinte) 2.8%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--tinte) 2.8%,transparent) 1px,transparent 1px);background-size:46px 46px;pointer-events:none}
+.startseite #nachweis .home-system-band{position:relative;display:grid;grid-template-columns:minmax(7.25rem,.24fr) minmax(0,1fr);gap:var(--s2);align-items:stretch;padding:var(--s2)}
+.startseite #nachweis .home-system-band+.home-system-band{border-top:1px solid color-mix(in srgb,var(--tinte) 9%,var(--haar))}
+.startseite #nachweis .home-system-band__label{display:grid;align-content:start;gap:.35rem;padding:.35rem .6rem 0 0}
+.startseite #nachweis .home-system-band__label .mono{color:var(--stempel);font-size:.61rem;letter-spacing:.11em}
+.startseite #nachweis .home-system-band__label strong{font-size:.83rem;line-height:1.25;color:var(--tinte)}
+.startseite #nachweis .home-system-flow{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;align-items:stretch}
+.startseite #nachweis .home-system-flow::before{content:'';position:absolute;top:1.7rem;left:.8rem;right:.8rem;height:1px;background:color-mix(in srgb,var(--stempel) 32%,var(--haar));z-index:0}
+.startseite #nachweis .home-system-core .home-system-band:first-child .home-system-flow::after{content:'';position:absolute;top:calc(1.7rem - 3px);left:4%;width:7px;height:7px;border-radius:50%;background:var(--stempel);box-shadow:0 0 0 5px color-mix(in srgb,var(--stempel) 7%,transparent);z-index:3;opacity:.85}
+.startseite #nachweis .home-system-flow--sales{grid-template-columns:repeat(3,minmax(0,1fr))}
+.startseite #nachweis .home-system-node{position:relative;z-index:1;min-width:0;min-height:6.8rem;display:grid;align-content:start;gap:.35rem;padding:.8rem;background:color-mix(in srgb,var(--papier) 97%,var(--zone));border:1px solid color-mix(in srgb,var(--tinte) 11%,var(--haar));border-radius:5px;box-shadow:0 7px 18px color-mix(in srgb,var(--tinte) 3%,transparent)}
+.startseite #nachweis .home-system-node::before{content:'';width:.48rem;height:.48rem;border-radius:50%;background:var(--stempel);box-shadow:0 0 0 4px var(--papier)}
+.startseite #nachweis .home-system-node .mono{color:var(--stempel);font-size:.62rem}
+.startseite #nachweis .home-system-node strong{font-size:.84rem;line-height:1.2;color:var(--tinte);overflow-wrap:anywhere}
+.startseite #nachweis .home-system-node small{color:color-mix(in srgb,var(--tinte) 62%,var(--papier));font-size:.69rem;line-height:1.35}
+.startseite #nachweis .home-system-measure{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem;align-items:center;padding:.55rem;border:1px solid color-mix(in srgb,var(--stempel) 28%,var(--haar));border-radius:5px;background:color-mix(in srgb,var(--papier) 92%,var(--stempel) 8%)}
+.startseite #nachweis .home-system-measure::before,.startseite #nachweis .home-system-measure::after{display:none}
+.startseite #nachweis .home-system-measure span{display:grid;place-items:center;min-height:2.7rem;padding:.4rem .35rem;background:var(--papier);border:1px solid color-mix(in srgb,var(--tinte) 9%,var(--haar));border-radius:3px;font-family:var(--mono);font-size:.62rem;color:color-mix(in srgb,var(--tinte) 72%,var(--papier));line-height:1.25;text-align:center}
+.startseite #nachweis .home-system-results{display:grid;grid-template-rows:repeat(2,minmax(0,1fr));gap:0;min-width:0;border-left:1px solid var(--haar);padding-left:var(--s3)}
+.startseite #nachweis .home-system-result{display:flex;flex-direction:column;justify-content:center;min-width:0;padding:var(--s2) 0;background:transparent;border:0;border-bottom:1px solid var(--haar);border-radius:0}
+.startseite #nachweis .home-system-result:last-child{border-bottom:0}
+.startseite #nachweis .home-system-result .mono{margin:0 0 var(--s2);color:color-mix(in srgb,var(--tinte) 54%,var(--papier));font-size:.62rem;letter-spacing:.1em}
+.startseite #nachweis .home-system-result strong{display:block;margin:0;font-family:var(--mono);font-size:clamp(2.25rem,1.7rem + 1.7vw,3.65rem);line-height:.9;letter-spacing:-.055em;color:var(--stempel)}
+.startseite #nachweis .home-system-result>span{margin-top:.75rem;font-size:.86rem;font-weight:700;line-height:1.28;color:var(--tinte)}
+.startseite #nachweis .home-system-result small{margin-top:.4rem;color:color-mix(in srgb,var(--tinte) 58%,var(--papier));font-family:var(--mono);font-size:.65rem;line-height:1.35}
+.startseite #nachweis .home-featured-case__footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2) var(--s3);margin:0;padding:var(--s3) 0;border-top:1px solid var(--haar)}
+.startseite #nachweis .home-featured-case__footer .mono{color:color-mix(in srgb,var(--tinte) 54%,var(--papier));font-size:.65rem}
+.startseite #nachweis .home-featured-case__footer .textlink{font-size:.77rem;letter-spacing:.07em}
+.startseite #nachweis .home-reference-heading{margin-top:clamp(var(--s4),5vw,var(--s6));font-size:clamp(1.35rem,1.15rem + .55vw,1.7rem);letter-spacing:-.02em}
+.startseite #nachweis .home-reference-intro{max-width:58ch;margin-top:.55rem;color:color-mix(in srgb,var(--tinte) 64%,var(--papier));font-size:.92rem;line-height:1.55}
+.startseite #nachweis .home-references{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:var(--s3);border-top:1px solid var(--strich);border-bottom:1px solid var(--haar)}
+.startseite #nachweis .home-references article{min-width:0;padding:var(--s3) var(--s2) var(--s3) 0;border:0;border-right:1px solid var(--haar)}
+.startseite #nachweis .home-references article+article{padding-left:var(--s2)}
+.startseite #nachweis .home-references article:last-child{border-right:0;padding-right:0}
+.startseite #nachweis .home-references .mono{color:color-mix(in srgb,var(--tinte) 54%,var(--papier));font-size:.62rem;letter-spacing:.1em}
+.startseite #nachweis .home-references h3{margin:.8rem 0 .7rem;font-size:1.14rem;line-height:1.2;overflow-wrap:anywhere}
+.startseite #nachweis .home-references article>p:last-child{max-width:34ch;color:color-mix(in srgb,var(--tinte) 62%,var(--papier));font-size:.82rem;line-height:1.52}
+.startseite #nachweis .home-technical{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:var(--s3);align-items:start;margin-top:var(--s4);padding:var(--s3);background:color-mix(in srgb,var(--zone) 62%,var(--papier));border:0;border-left:2px solid var(--stempel)}
+.startseite #nachweis .home-technical h3{margin:0;font-size:1.08rem;line-height:1.25}
+.startseite #nachweis .home-technical p{margin-top:.55rem;color:color-mix(in srgb,var(--tinte) 62%,var(--papier));font-size:.86rem;line-height:1.5}
+.startseite #nachweis .home-technical ul{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:.55rem 1rem;margin:0;padding:.1rem 0 0;list-style:none;font-size:.78rem}
+.startseite #nachweis>.blatt .ausgang{margin-top:var(--s3)}
+@media (hover:hover) and (pointer:fine){.startseite #nachweis .home-system-node{transition:transform var(--t-norm) var(--ease-aus),border-color var(--t-norm) var(--ease-aus),box-shadow var(--t-norm) var(--ease-aus)}.startseite #nachweis .home-system-node:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--stempel) 34%,var(--haar));box-shadow:0 12px 26px color-mix(in srgb,var(--tinte) 5%,transparent)}}
+@media (max-width:1000px){.startseite #nachweis .home-featured-case__intro{grid-template-columns:minmax(0,1fr) minmax(18rem,.8fr)}.startseite #nachweis .home-system-board{grid-template-columns:1fr}.startseite #nachweis .home-system-results{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;border-left:0;border-top:1px solid var(--haar);padding:var(--s2) 0 0;gap:var(--s3)}.startseite #nachweis .home-system-result{border-bottom:0}.startseite #nachweis .home-references{grid-template-columns:1fr}.startseite #nachweis .home-references article,.startseite #nachweis .home-references article+article{padding:var(--s3) 0;border-right:0;border-bottom:1px solid var(--haar)}.startseite #nachweis .home-references article:last-child{border-bottom:0}.startseite #nachweis .home-references article>p:last-child{max-width:60ch}.startseite #nachweis .home-technical{grid-template-columns:1fr}}
+@media (max-width:760px){.startseite #nachweis .home-featured-case__intro{grid-template-columns:1fr;gap:var(--s2)}.startseite #nachweis .home-featured-case__intro h3{max-width:16ch}.startseite #nachweis .home-system-core{padding:.35rem}.startseite #nachweis .home-system-band{grid-template-columns:1fr;gap:.65rem;padding:.85rem}.startseite #nachweis .home-system-band__label{padding:0}.startseite #nachweis .home-system-flow{grid-template-columns:repeat(2,minmax(0,1fr))}.startseite #nachweis .home-system-flow--sales{grid-template-columns:repeat(3,minmax(0,1fr))}.startseite #nachweis .home-system-flow::before,.startseite #nachweis .home-system-core .home-system-band:first-child .home-system-flow::after{display:none}.startseite #nachweis .home-system-node{min-height:6rem}.startseite #nachweis .home-system-measure{grid-template-columns:repeat(2,minmax(0,1fr))}.startseite #nachweis .home-system-results{grid-template-columns:1fr;gap:0}.startseite #nachweis .home-system-result{padding:var(--s3) 0;border-bottom:1px solid var(--haar)}.startseite #nachweis .home-system-result:last-child{border-bottom:0}.startseite #nachweis .home-featured-case__footer{align-items:flex-start}.startseite #nachweis .home-technical ul{display:grid;gap:.7rem}}
+@media (max-width:520px){.startseite #nachweis .home-system-flow--sales{grid-template-columns:1fr}.startseite #nachweis .home-system-node{min-height:auto}.startseite #nachweis .home-reference-heading{font-size:1.3rem}}
+@media (prefers-reduced-motion:no-preference){.startseite #nachweis .home-system-core .home-system-band:first-child .home-system-flow::after{animation:home-case-signal 7.6s cubic-bezier(.4,0,.2,1) 1.1s infinite both}}
+@keyframes home-case-signal{0%,8%{left:4%;opacity:0;transform:scale(.7)}12%{opacity:1}28%{left:29%;opacity:1;transform:scale(1)}46%{left:55%;opacity:1}64%{left:81%;opacity:1;transform:scale(1)}72%,100%{left:94%;opacity:0;transform:scale(.75)}}
 
 @media (max-width:1240px){.startseite .home-hero.home-hero-v9{grid-template-columns:minmax(0,1.06fr) minmax(30rem,.94fr);gap:1.25rem}.startseite .home-flow-v9{width:calc(100% + 2.2rem);margin-left:-1.8rem}.startseite .home-flow-v9__track{gap:.72rem}.startseite .home-flow-v9__disc{width:5.1rem;height:5.1rem}.startseite .home-flow-v9__stage--request .home-flow-v9__disc{width:6.15rem;height:6.15rem}.startseite .home-flow-v9__stage--crm .home-flow-v9__disc{width:5.2rem;height:5.2rem}.startseite .home-flow-v9__filter{left:76%;top:calc(50% + 2.95rem)}}
 @media (max-width:980px){.startseite .home-hero.home-hero-v9{grid-template-columns:1fr;min-height:auto;gap:1.65rem;padding-block:1.35rem 2rem}.startseite .home-hero-v9>.home-hero-copy{grid-column:1;grid-row:1}.startseite .home-flow-v9{grid-column:1;grid-row:2;width:min(100%,46rem);min-height:23rem;justify-self:center;margin:0}.startseite .home-flow-v9__track{padding-block:4.6rem 5.2rem}}
@@ -236,9 +294,35 @@
         hero.appendChild(buildFlow());
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initHero, { once: true });
-    } else {
+    function initWorks() {
+        var section = document.querySelector('.startseite #nachweis');
+        if (!section || section.dataset.worksV2 === 'true') {
+            return;
+        }
+
+        section.dataset.worksV2 = 'true';
+
+        var intro = section.querySelector(':scope .voll > .vorspann');
+        if (intro) {
+            intro.textContent = 'Öffentliche Projekte zeigen die Umsetzung. Der ausgewählte B2B-Fall zeigt die komplette Strecke: Website, Anfrage, Messung, CRM und die Übergabe an den Vertrieb.';
+        }
+
+        var featured = section.querySelector('.home-featured-case');
+        if (featured) {
+            featured.classList.remove('tafel');
+            featured.classList.add('home-featured-case-v2');
+        }
+    }
+
+    function initPage() {
+        mountStyles();
         initHero();
+        initWorks();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPage, { once: true });
+    } else {
+        initPage();
     }
 })();
