@@ -251,7 +251,7 @@ get_header();
 			<div class="spalte-links"><div class="kapitel"><span class="nr">04</span><span class="titel">Fragen</span><span class="strich" aria-hidden="true"></span></div></div>
 			<div class="voll"><h2 class="kopf" id="fragen-h">Was vor dem Start geklärt sein sollte.</h2><div class="fragen">
 				<?php foreach ( $faqs as $faq ) : ?>
-					<details><summary><?php echo esc_html( $faq['q'] ); ?></summary><div class="huelle"><div><p class="antwort"><?php echo esc_html( $faq['a'] ); ?></p></div></div></details>
+					<details name="home-faq"><summary><?php echo esc_html( $faq['q'] ); ?></summary><div class="huelle"><div><p class="antwort"><?php echo esc_html( $faq['a'] ); ?></p></div></div></details>
 				<?php endforeach; ?>
 			</div></div>
 		</div>
