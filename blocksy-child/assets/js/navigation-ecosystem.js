@@ -71,6 +71,14 @@
 		return Number.isFinite(parsed) ? parsed : 76;
 	}
 
+	function getScrollSpyThreshold(nav) {
+		var threshold = getWayfindingOffset() + 24;
+		if (nav && nav.classList.contains('home-toc')) {
+			threshold = Math.max(threshold, window.innerHeight * 0.34);
+		}
+		return threshold;
+	}
+
 	function initScrollSpy(nav) {
 		var links = samePageLinks(nav);
 		if (!links.length) return;
@@ -86,7 +94,7 @@
 
 		function evaluate() {
 			queued = false;
-			var threshold = getWayfindingOffset() + 24;
+			var threshold = getScrollSpyThreshold(nav);
 			var nextId = targets[0].id;
 			var atDocumentEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
 
@@ -264,6 +272,53 @@
 		if (typeof rail.addEventListener === 'function') rail.addEventListener('change', evaluate);
 	}
 
+	function initHomeTocRail(nav) {
+		if (!nav || !nav.classList.contains('home-toc')) return;
+		var trigger = document.getElementById('nachweis');
+		if (!trigger) return;
+
+		var queued = false;
+		nav.setAttribute('data-hu-home-toc-ready', 'true');
+
+		function setVisible(visible) {
+			nav.setAttribute('data-hu-home-toc-visible', visible ? 'true' : 'false');
+			nav.setAttribute('aria-hidden', visible ? 'false' : 'true');
+			if (visible) {
+				nav.hidden = false;
+				nav.style.removeProperty('display');
+			} else {
+				nav.hidden = true;
+				nav.style.setProperty('display', 'none', 'important');
+			}
+		}
+
+		function evaluate() {
+			queued = false;
+			var threshold = getScrollSpyThreshold(nav);
+			setVisible(trigger.getBoundingClientRect().top <= threshold);
+		}
+
+		function queueEvaluate() {
+			if (queued) return;
+			queued = true;
+			window.requestAnimationFrame(evaluate);
+		}
+
+		evaluate();
+		window.addEventListener('scroll', queueEvaluate, { passive: true });
+		window.addEventListener('resize', queueEvaluate, { passive: true });
+		window.addEventListener('load', queueEvaluate, { once: true });
+	}
+
+	function normalizeHomeWorks() {
+		var section = document.querySelector('.startseite #nachweis');
+		if (!section) return;
+		var heading = section.querySelector(':scope .voll > .kopf');
+		var intro = section.querySelector(':scope .voll > .vorspann');
+		if (heading) heading.textContent = 'Ausgewählte Arbeiten.';
+		if (intro) intro.textContent = 'WordPress-Projekte und ein dokumentierter B2B-Fall über die komplette Strecke bis ins CRM.';
+	}
+
 	function createPanelForDirectLinks(nav) {
 		var panel = document.createElement('div');
 		panel.className = 'hu-toc-panel hu-toc-panel--contents';
@@ -373,6 +428,7 @@
 				if (nav.classList.contains('hu-page-toc')) {
 					normalizeGeneratedToc(nav);
 					initResultsTocRail(nav);
+					initHomeTocRail(nav);
 				}
 				initScrollSpy(nav);
 			});
@@ -382,6 +438,7 @@
 			document.querySelectorAll(selector).forEach(enhanceResponsiveToc);
 		});
 
+		window.setTimeout(normalizeHomeWorks, 0);
 		document.addEventListener('click', focusTargetFromKeyboard);
 	}
 
