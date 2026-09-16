@@ -382,3 +382,112 @@
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(0, -4px, 0); }
 }
+
+/* Hero V6 polish: tighter rhythm, stronger alignment, less dead space. */
+html .startseite .home-hero.home-hero-v6 {
+  min-height: min(45rem, calc(100svh - 6.25rem)) !important;
+  padding-block: clamp(1.45rem, 2.8vw, 3rem) !important;
+  align-items: start !important;
+  gap: clamp(2.25rem, 4vw, 4.8rem) !important;
+  transform: translateY(-0.65rem);
+}
+html .startseite .home-hero-v6 > .home-hero-copy {
+  padding-top: 0.15rem;
+}
+html .startseite .home-hero-v6 .gegenstand {
+  margin-bottom: clamp(1rem, 1.3vw, 1.35rem) !important;
+}
+html .startseite .home-hero-v6 .home-title-primary {
+  line-height: .91 !important;
+}
+html .startseite .home-hero-v6 .home-title-secondary {
+  margin-top: .17em !important;
+  line-height: .95 !important;
+}
+html .startseite .home-hero-v6 .aufriss {
+  max-width: 39ch !important;
+  margin-top: clamp(1.05rem, 1.45vw, 1.45rem) !important;
+  line-height: 1.54 !important;
+}
+html .startseite .home-hero-v6 .ausgang {
+  margin-top: clamp(1.05rem, 1.4vw, 1.45rem) !important;
+  gap: .72rem !important;
+}
+html .startseite .home-hero-v6 .home-trust-row {
+  margin-top: .78rem !important;
+  gap: .5rem .78rem !important;
+}
+html .startseite .home-hero-v6 .home-portrait {
+  width: min(16.8rem, 100%) !important;
+  margin-top: .72rem !important;
+  padding: .56rem !important;
+  border-radius: 9px !important;
+  box-shadow: 0 9px 24px color-mix(in srgb, var(--tinte) 7%, transparent) !important;
+}
+html .startseite .home-hero-v6 .home-portrait img {
+  width: 3.18rem !important;
+  height: 3.18rem !important;
+}
+html .startseite .home-hero-v6 .home-portrait figcaption {
+  line-height: 1.25 !important;
+}
+html .startseite .home-hero-v6 .home-leadflow {
+  min-height: 26rem !important;
+  margin-top: -0.8rem;
+  margin-left: -0.55rem;
+  transform: translateY(-0.35rem);
+}
+html .startseite .home-hero-v6 .home-leadflow__grid {
+  opacity: .4 !important;
+}
+html .startseite .home-hero-v6 .home-leadflow__note {
+  top: .65rem !important;
+}
+html .startseite .home-hero-v6 .home-leadflow__track {
+  padding-block: 2.7rem 3.15rem !important;
+}
+html .startseite .home-hero-v6 .home-leadflow__stage {
+  gap: .4rem !important;
+}
+html .startseite .home-hero-v6 .home-leadflow__stage small {
+  opacity: .82;
+}
+html .startseite .home-hero-v6 .home-leadflow__stage--request .home-leadflow__disc {
+  box-shadow: 0 0 0 .7rem color-mix(in srgb, var(--stempel) 4%, transparent), 0 0 0 1.35rem color-mix(in srgb, var(--stempel) 1.8%, transparent), 0 12px 28px color-mix(in srgb, var(--stempel) 8%, transparent) !important;
+}
+html .startseite .home-hero-v6 .home-leadflow__outcomes {
+  bottom: .3rem !important;
+}
+@media (min-width: 1181px) {
+  html .startseite .home-hero.home-hero-v6 {
+    grid-template-columns: minmax(0, 1.35fr) minmax(30rem, .95fr) !important;
+  }
+  html .startseite .home-hero-v6 .home-leadflow {
+    transform: translate(-0.35rem, -0.45rem);
+  }
+}
+@media (max-width: 1180px) {
+  html .startseite .home-hero.home-hero-v6 {
+    transform: translateY(-0.35rem);
+    gap: clamp(1.8rem, 3vw, 3rem) !important;
+  }
+  html .startseite .home-hero-v6 .home-leadflow {
+    margin-left: -0.25rem;
+    margin-top: -0.45rem;
+    transform: none;
+  }
+}
+@media (max-width: 900px) {
+  html .startseite .home-hero.home-hero-v6 {
+    transform: none;
+    padding-block: .75rem 1.3rem !important;
+    gap: 1.35rem !important;
+  }
+  html .startseite .home-hero-v6 .home-leadflow {
+    margin: 0;
+    min-height: 18rem !important;
+  }
+  html .startseite .home-hero-v6 .home-portrait {
+    margin-top: .55rem !important;
+  }
+}
