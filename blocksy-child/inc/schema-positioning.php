@@ -187,8 +187,8 @@ function hu_normalize_positioned_schema_node( array $schema ) : array {
  * Build the Service node for the direct Freelancer money page.
  *
  * The page itself owns the local/direct query. This node therefore mirrors the
- * four visible offer blocks and the visible Hannover/DACH service scope instead
- * of emitting a second, generic service catalog that can drift from the page.
+ * three visible core offer blocks and the visible Hannover/DACH service scope
+ * instead of emitting a second, generic service catalog that can drift from the page.
  *
  * @return array<string, mixed>
  */
@@ -250,28 +250,22 @@ function hu_get_wordpress_freelancer_service_schema() : array {
 			'name'            => 'Direkte WordPress-Zusammenarbeit',
 			'itemListElement' => [
 				$offer(
-					'Website neu oder Relaunch',
-					'Neue technische Basis mit Seiten- und Inhaltsarchitektur, individueller WordPress-Umsetzung, technischer SEO, Messkonzept, Staging und versioniertem Deployment.',
+					'WordPress-Entwicklung',
+					'WordPress-Websites neu bauen, relaunchen oder gezielt weiterentwickeln – inklusive technischer SEO, Performance, Staging und sauberer Übergabe nach vereinbartem Scope.',
 					'angebot-website',
 					'WordPress-Entwicklung'
 				),
 				$offer(
-					'Anfragestrecke für eine Kampagne',
-					'Landingpage, Vorqualifizierung, Danke-Seite, Conversion-Messung und technische Übergabe als durchgängiger Pfad vom Klick bis zur qualifizierten Anfrage.',
+					'Anfragestrecken & Landingpages',
+					'Landingpages, Formulare, Qualifizierung, Danke-Seiten und Lead-Übergaben als zusammenhängender Conversion-Weg.',
 					'angebot-funnel',
 					'Landingpage und Anfragestrecke'
 				),
 				$offer(
-					'Tracking und Attribution nachrüsten',
-					'Analyse der bestehenden Messkette sowie GA4, Google Tag Manager, Server-Side Tracking, Consent-Anbindung und Werbekanal-Rückkanal je Scope.',
+					'Tracking & CRM',
+					'GA4, Google Tag Manager, Consent, Server-Side Tracking, Attribution und CRM-Übergabe nach tatsächlichem Bedarf des Setups.',
 					'angebot-tracking',
-					'Tracking & Attribution'
-				),
-				$offer(
-					'Planbare Kapazität für Weiterentwicklung',
-					'Priorisierte technische Weiterentwicklung bestehender WordPress-Seiten mit neuen Bereichen, Performance-, SEO-, Tracking- und Conversion-Korrekturen.',
-					'angebot-weiterentwicklung',
-					'WordPress-Weiterentwicklung'
+					'Tracking & CRM'
 				),
 			],
 		],
