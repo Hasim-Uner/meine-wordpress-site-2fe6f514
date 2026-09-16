@@ -1,6 +1,6 @@
 /* Startseite – Rest V1
  * Kompakte Leistungen, präzise Zusammenarbeit, reduzierte FAQs und starker Abschluss.
- * Hero und Arbeiten bleiben unberührt.
+ * Hero erhält einen finalen Typografie-Pass; Arbeiten bleibt unberührt.
  */
 
 /* 01 Leistungen: drei Kernbereiche statt Leistungskatalog. */
@@ -383,4 +383,29 @@
   .startseite #fragen .fragen summary::after{
     transition:none!important;
   }
+}
+
+/* Hero V9.2 – Kategorie leiser, Nutzenversprechen als visueller Primäranker. */
+.startseite .home-hero-v9 .home-title-primary{
+  max-width:10ch!important;
+  font-size:clamp(2.45rem,3.05vw,3.35rem)!important;
+  font-weight:590!important;
+  line-height:.96!important;
+  letter-spacing:-.045em!important;
+  color:color-mix(in srgb,var(--tinte) 72%,var(--papier))!important;
+}
+.startseite .home-hero-v9 .home-title-secondary{
+  max-width:12ch!important;
+  margin-top:.34em!important;
+  font-size:clamp(3.6rem,4.4vw,4.95rem)!important;
+  font-weight:650!important;
+  line-height:.92!important;
+  letter-spacing:-.056em!important;
+  color:var(--tinte)!important;
+}
+.startseite .home-hero-v9 .home-title-stop{color:var(--stempel)!important}
+.startseite .home-hero-v9 .aufriss{margin-top:clamp(1.6rem,1.9vw,1.85rem)!important}
+@media (max-width:640px){
+  .startseite .home-hero-v9 .home-title-primary{font-size:clamp(2rem,8.8vw,2.45rem)!important}
+  .startseite .home-hero-v9 .home-title-secondary{font-size:clamp(2.65rem,12vw,3.35rem)!important}
 }
