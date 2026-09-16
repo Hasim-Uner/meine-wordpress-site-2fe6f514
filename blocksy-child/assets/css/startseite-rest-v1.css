@@ -377,3 +377,10 @@
   .startseite #anfrage .home-close-v2{padding:2rem 1.4rem!important;border-radius:0!important}
   .startseite #anfrage .home-close-v2 h2{font-size:clamp(2rem,10vw,2.85rem)}
 }
+
+@media (prefers-reduced-motion: reduce){
+  .startseite #angebote .home-offers-v2 .home-offer::before,
+  .startseite #fragen .fragen summary::after{
+    transition:none!important;
+  }
+}
