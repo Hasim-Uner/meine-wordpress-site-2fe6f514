@@ -6,9 +6,9 @@
  * veroeffentlichen, damit Sprungziele und seitenlokale sticky-Elemente
  * dagegen rechnen koennen.
  *
- * Progressive Enhancement: ohne dieses Skript bleibt das Klappblatt offen
- * im Dokument stehen und die Klappe unsichtbar. Navigation, die an einem
- * Skript haengt, ist auf einem schmalen Schirm keine Navigation.
+ * Progressive Enhancement: CSS haelt das Klappblatt bei aktivem Scripting
+ * bereits beim ersten Paint geschlossen. Ohne Scripting zeigt die
+ * @media-(scripting:none)-Regel die Navigation weiterhin offen an.
  */
 (function () {
     'use strict';
@@ -25,7 +25,6 @@
         var klappe = leiste.querySelector('[data-leiste-klappe]');
         var blatt = leiste.querySelector('[data-leiste-blatt]');
 
-        messenUndVeroeffentlichen(leiste);
         beobachteHoehe(leiste);
 
         if (!klappe || !blatt) {
@@ -33,10 +32,10 @@
             return;
         }
 
-        /* Erst ab hier ist das Klappblatt eine Klappe. Das Attribut schaltet
-           in system.css gleichzeitig die Schaltflaeche sichtbar und das
-           versteckte Blatt aus — beides zusammen, damit nie ein Zustand
-           entsteht, in dem die Navigation weder offen noch erreichbar ist. */
+        /* Erst ab hier ist das Klappblatt eine Klappe. CSS hat den schmalen
+           Zustand bereits vor JavaScript aus dem Layout genommen; das hidden-
+           Attribut ist deshalb nur noch der semantische/interaktive Zustand
+           und verursacht keinen spaeten Layoutsprung mehr. */
         leiste.setAttribute('data-leiste-bereit', '');
         schliessen(leiste, klappe, blatt, false);
 
@@ -132,30 +131,50 @@
             : wort.getAttribute('data-wort-auf') || 'Menü';
     }
 
-    function messenUndVeroeffentlichen(leiste) {
-        /* Nur die Zeile selbst, nicht das geoeffnete Blatt: --leiste-h ist
-           der Abstand, den ein Sprungziel unter der Leiste braucht, und der
-           aendert sich nicht dadurch, dass jemand das Menue aufklappt. */
-        var zeile = leiste.querySelector('[data-leiste-zeile]') || leiste;
-        var hoehe = Math.round(zeile.getBoundingClientRect().height);
+    function veroeffentlicheHoehe(hoehe) {
+        hoehe = Math.round(Number(hoehe) || 0);
 
         if (hoehe > 0) {
             document.documentElement.style.setProperty('--leiste-h', hoehe + 'px');
         }
     }
 
+    function messenUndVeroeffentlichen(zeile) {
+        veroeffentlicheHoehe(zeile.getBoundingClientRect().height);
+    }
+
     function beobachteHoehe(leiste) {
         var zeile = leiste.querySelector('[data-leiste-zeile]') || leiste;
 
         if ('ResizeObserver' in window) {
-            new window.ResizeObserver(function () {
-                messenUndVeroeffentlichen(leiste);
+            new window.ResizeObserver(function (entries) {
+                var entry = entries && entries[0];
+                if (!entry) return;
+
+                var borderSize = entry.borderBoxSize;
+                var blockSize = 0;
+
+                if (borderSize) {
+                    blockSize = Array.isArray(borderSize)
+                        ? borderSize[0] && borderSize[0].blockSize
+                        : borderSize.blockSize;
+                }
+
+                veroeffentlicheHoehe(blockSize || (entry.contentRect && entry.contentRect.height));
             }).observe(zeile);
             return;
         }
 
+        /* Nur fuer alte Browser ohne ResizeObserver. Die Messung laeuft in
+           einem Frame statt synchron im Init-Pfad. */
+        window.requestAnimationFrame(function () {
+            messenUndVeroeffentlichen(zeile);
+        });
+
         window.addEventListener('resize', function () {
-            messenUndVeroeffentlichen(leiste);
+            window.requestAnimationFrame(function () {
+                messenUndVeroeffentlichen(zeile);
+            });
         }, { passive: true });
     }
 
