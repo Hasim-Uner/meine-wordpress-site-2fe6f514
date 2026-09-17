@@ -65,6 +65,14 @@ jobs:
           deploy_path="${deploy_path%\'}"
           printf 'DEPLOY_PATH_NORMALIZED=%s\n' "$deploy_path" >> "$GITHUB_ENV"
 
+          public_root=""
+          case "$deploy_path" in
+            *wp-content/themes/blocksy-child/)
+              public_root="${deploy_path%wp-content/themes/blocksy-child/}"
+              ;;
+          esac
+          printf 'PUBLIC_ROOT_NORMALIZED=%s\n' "$public_root" >> "$GITHUB_ENV"
+
       - name: Check required deploy credentials
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -137,13 +145,42 @@ jobs:
             "$BUILD_OUTPUT_DIR/" \
             "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH_NORMALIZED"
 
+      - name: Deploy static llms.txt at web root
+        if: ${{ !inputs.dry_run }}
+        run: |
+          if [ -z "${PUBLIC_ROOT_NORMALIZED:-}" ]; then
+            echo "::warning title=llms.txt not copied::Could not derive the public web root from DEPLOY_PATH; the WordPress fallback route remains active."
+            exit 0
+          fi
+
+          safe_public_root=${PUBLIC_ROOT_NORMALIZED//\'/\'\\\'\'}
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            "$DEPLOY_USER@$DEPLOY_HOST" \
+            "test -d '$safe_public_root'"
+
+          rsync -az --chmod=F644 \
+            -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o BatchMode=yes -o StrictHostKeyChecking=yes" \
+            llms.txt \
+            "$DEPLOY_USER@$DEPLOY_HOST:${PUBLIC_ROOT_NORMALIZED}llms.txt"
+
       - name: Live smoke test
         if: ${{ !inputs.dry_run }}
         run: |
           # Rsync writes directly into the active theme. A short grace period is
           # enough; the smoke script handles transient network errors itself.
           sleep 5
-          bash scripts/smoke-live.sh "${SMOKE_BASE_URL:-https://hasimuener.de}"
+          base_url="${SMOKE_BASE_URL:-https://hasimuener.de}"
+          bash scripts/smoke-live.sh "$base_url"
+
+          # Agentic Browsing fetches /llms.txt outside WordPress. Keep this
+          # endpoint tiny, static and independently testable so a slow WP
+          # bootstrap cannot turn an otherwise healthy site into an agentic
+          # timeout.
+          llms_body="$(curl -fsS --connect-timeout 4 --max-time 8 "${base_url%/}/llms.txt")"
+          grep -Fq '# Haşim Üner' <<< "$llms_body" || {
+            echo "::error title=llms.txt smoke failed::Root llms.txt is missing or has unexpected content."
+            exit 1
+          }
         env:
           SMOKE_BASE_URL: ${{ vars.SMOKE_BASE_URL }}
           SMOKE_CONNECT_TIMEOUT: '4'
