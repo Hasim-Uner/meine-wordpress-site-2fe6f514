@@ -1798,6 +1798,8 @@ function hu_output_schema()
                 // Die Solar Case Study emittiert ihren FAQPage-Knoten oben selbst.
                 || ( function_exists( 'hu_is_e3_methodology_case_post' ) && hu_is_e3_methodology_case_post( $post_id ) )
                 // Homepage FAQs are template-owned. Never publish stale editor FAQ data.
+                // front-page.php builds the FAQPage node from the same array that
+                // renders the visible answers.
                 || is_front_page()
             );
 

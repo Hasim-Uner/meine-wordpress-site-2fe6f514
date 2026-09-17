@@ -308,6 +308,32 @@ get_header();
 				<?php endforeach; ?>
 			</div></div>
 		</div>
+		<?php
+		// inc/org-schema.php unterdrueckt den Editor-FAQ-Cache auf der Startseite,
+		// weil die Fragen hier template-owned sind. Der Knoten wird deshalb hier
+		// gebaut — aus demselben Array wie die sichtbaren Antworten, damit Text
+		// und Schema nicht auseinanderlaufen koennen.
+		$faq_schema = [
+			'@context'   => 'https://schema.org',
+			'@type'      => 'FAQPage',
+			'@id'        => home_url( '/' ) . '#faq',
+			'url'        => home_url( '/' ),
+			'inLanguage' => 'de',
+			'publisher'  => [ '@id' => home_url( '/#organization' ) ],
+			'mainEntity' => [],
+		];
+		foreach ( $faqs as $faq ) {
+			$faq_schema['mainEntity'][] = [
+				'@type'          => 'Question',
+				'name'           => $faq['q'],
+				'acceptedAnswer' => [
+					'@type' => 'Answer',
+					'text'  => $faq['a'],
+				],
+			];
+		}
+		?>
+		<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	</section>
 
 	<div class="abschluss" id="anfrage" data-track-section="abschluss" tabindex="-1">
