@@ -73,12 +73,12 @@ require_pattern "URLSearchParams" "$RESULTS_JS"
 # contract, where the already known topic is skipped instead of asked twice.
 require_pattern "requested_focus" "$CONTACT_PAGE"
 require_pattern "selected_focus" "$CONTACT_PAGE"
-require_pattern "visible_step_count[[:space:]]*=[[:space:]]*3[[:space:]]*-[[:space:]]*\([[:space:]]*\$is_scoped_focus" "$CONTACT_PAGE"
+require_pattern 'visible_step_count[[:space:]]*=[[:space:]]*3[[:space:]]*-[[:space:]]*\([[:space:]]*\$is_scoped_focus' "$CONTACT_PAGE"
 require_pattern "data-contact-step-skip" "$CONTACT_PAGE"
 
 # Passive future instrumentation stays present without requiring an analytics
 # runtime today.
 require_pattern "data-track-action" "$RESULTS_ROW"
-require_pattern "data-track-category=\\\"lead_gen\\\"" "$RESULTS_ROW"
+require_pattern 'data-track-category="lead_gen"' "$RESULTS_ROW"
 
 echo "funnel-routing smoke ok"
