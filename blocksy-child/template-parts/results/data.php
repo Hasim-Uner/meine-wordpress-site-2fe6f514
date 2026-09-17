@@ -14,7 +14,16 @@ $energy_url     = $routes['energy'] ?? home_url( '/solar-waermepumpen-leadgeneri
 $whitelabel_url = $routes['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
 $freelancer_url = $routes['freelancer'] ?? home_url( '/' );
 $project_url    = function_exists( 'hu_get_navigation_project_request_url' ) ? hu_get_navigation_project_request_url() : home_url( '/kontakt/' );
-$references     = function_exists( 'hu_public_reference_projects' ) ? hu_public_reference_projects() : [];
+$tracking_project_url = function_exists( 'hu_get_contact_intake_url' )
+	? hu_get_contact_intake_url( 'project', 'tracking' )
+	: add_query_arg(
+		[
+			'type'  => 'project',
+			'focus' => 'tracking',
+		],
+		$routes['contact'] ?? home_url( '/kontakt/' )
+	);
+$references = function_exists( 'hu_public_reference_projects' ) ? hu_public_reference_projects() : [];
 
 $marketcheck_url   = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 $marketcheck_label = function_exists( 'nexus_get_primary_request_cta_label' ) ? nexus_get_primary_request_cta_label() : 'Marktcheck starten';
@@ -30,8 +39,55 @@ $technical_proofs = [
 	[ 'title' => 'Performance lässt sich neu messen.', 'text' => 'PageSpeed Insights startet eine neue Labormessung dieser Seite. Das Ergebnis ist kein statischer Marketing-Screenshot.', 'label' => 'Diese Seite bei PageSpeed prüfen', 'url' => $pagespeed_url, 'action' => 'results_proof_pagespeed' ],
 ];
 
+/*
+ * Der Proof-Hub bleibt für alle drei Geschäftspfade offen. Standardmäßig steht
+ * das direkte Projekt zuerst. Ein kleines, rein lokales Routing-Skript darf die
+ * Reihenfolge anhand des unmittelbaren Einstiegs ändern; es speichert nichts,
+ * setzt keine Cookies und sendet keine Analysedaten. Die Tracking-Variante des
+ * Projektwegs setzt lediglich den bereits vorhandenen Kontakt-Fokus korrekt.
+ */
 $next_steps = [
-	[ 'kind' => 'project', 'kicker' => 'Für Ihr Unternehmen', 'title' => 'Eine Website bauen oder gezielt verbessern.', 'desc' => 'Beschreiben Sie Ihre Ausgangslage und was sich ändern soll. Daraus klären wir den passenden Umfang.', 'url' => $project_url, 'label' => 'Projekt anfragen', 'note' => $response_promise, 'action' => 'cta_results_next_project' ],
-	[ 'kind' => 'agency', 'kicker' => 'Für Ihre Agentur', 'title' => 'Ein Kundenprojekt zur Umsetzung übergeben.', 'desc' => 'Ein Briefing, Entwurf oder technisches Problem reicht für den Einstieg. Umfang und Abnahme klären wir vor dem Erstprojekt.', 'url' => $whitelabel_task_url, 'label' => 'Aufgabe beschreiben', 'note' => 'Laufende Kapazität ist nach dem Erstprojekt optional.', 'action' => 'cta_results_next_agency' ],
-	[ 'kind' => 'energy', 'kicker' => 'Solar · Wärmepumpe · Speicher', 'title' => 'Einen eigenen Anfragekanal prüfen.', 'desc' => 'Im Marktcheck betrachten wir, ob ein eigener Anfrageweg zu Betrieb, Marge und Bearbeitungskapazität passt.', 'url' => $marketcheck_url, 'label' => $marketcheck_label, 'note' => '' !== $marketcheck_reply ? 'Befund ' . $marketcheck_reply . '.' : '', 'action' => 'cta_results_next_energy' ],
+	[
+		'kind'    => 'project',
+		'primary' => true,
+		'kicker'  => 'Direktes Projekt',
+		'title'   => 'Projekt kurz prüfen und sauber eingrenzen.',
+		'desc'    => 'Schicken Sie URL, Ausgangslage und Ziel. Ich prüfe persönlich, ob ich helfen kann und welcher Umfang sinnvoll ist.',
+		'url'     => $project_url,
+		'label'   => 'Projekt prüfen lassen',
+		'note'    => $response_promise,
+		'action'  => 'cta_results_next_project',
+		'variants' => [
+			'tracking' => [
+				'kicker' => 'Tracking & Attribution',
+				'title'  => 'Tracking-Projekt am bestehenden Setup einordnen.',
+				'desc'   => 'Schicken Sie Setup, Engpass und Ziel. Die Anfrage landet mit dem Fokus Tracking direkt in der passenden Projektprüfung.',
+				'url'    => $tracking_project_url,
+				'label'  => 'Tracking-Projekt prüfen lassen',
+				'note'   => $response_promise,
+			],
+		],
+	],
+	[
+		'kind'    => 'agency',
+		'primary' => false,
+		'kicker'  => 'Für Ihre Agentur',
+		'title'   => 'Ein Kundenprojekt zur Umsetzung übergeben.',
+		'desc'    => 'Ein Briefing, Entwurf oder technisches Problem reicht für den Einstieg. Umfang und Abnahme klären wir vor dem Erstprojekt.',
+		'url'     => $whitelabel_task_url,
+		'label'   => 'Aufgabe beschreiben',
+		'note'    => 'Laufende Kapazität ist nach dem Erstprojekt optional.',
+		'action'  => 'cta_results_next_agency',
+	],
+	[
+		'kind'    => 'energy',
+		'primary' => false,
+		'kicker'  => 'Solar · Wärmepumpe · Speicher',
+		'title'   => 'Einen eigenen Anfragekanal prüfen.',
+		'desc'    => 'Im Marktcheck betrachten wir, ob ein eigener Anfrageweg zu Betrieb, Marge und Bearbeitungskapazität passt.',
+		'url'     => $marketcheck_url,
+		'label'   => $marketcheck_label,
+		'note'    => '' !== $marketcheck_reply ? 'Befund ' . $marketcheck_reply . '.' : '',
+		'action'  => 'cta_results_next_energy',
+	],
 ];
