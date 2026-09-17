@@ -24,12 +24,13 @@ $portrait_url   = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer
 $website_price  = function_exists( 'hu_freelancer_website_price' ) ? hu_freelancer_website_price( true ) : '3.400 € netto';
 $tracking_price = function_exists( 'hu_tracking_price' ) ? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' ) : '1.290 €';
 $response       = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'phrase' ) : 'Antwort spätestens in 2 Werktagen';
+$response_short = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : 'Antwort spätestens 2 Werktage';
 $references     = function_exists( 'hu_public_reference_projects' ) ? hu_public_reference_projects() : [];
 $github_url     = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
 $psi_url        = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/' ) );
 $e3_canon       = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_case_url    = $e3_canon['url'] ?? home_url( '/case-study-solar-leadgenerierung/' );
-$e3_case_label  = $e3_canon['case_label'] ?? 'mittelständischer PV-Installationsbetrieb';
+$e3_case_label_accusative = $e3_canon['case_label_accusative'] ?? 'mittelständischen PV-Installationsbetrieb';
 $e3_metric      = static function ( $key, $field = 'display', $fallback = '' ) {
 	return function_exists( 'hu_e3_metric' ) ? hu_e3_metric( $key, $field, $fallback ) : $fallback;
 };
@@ -69,6 +70,31 @@ $faqs = [
 	[ 'q' => 'Gehören Website, Konten und Code anschließend uns?', 'a' => 'Ja. Code, Repository, Hosting und eingesetzte Konten liegen in Ihrer Hand. Zur Übergabe gehören die vereinbarte Dokumentation und Zugänge. Eine weitere Betreuung ist möglich, aber keine Voraussetzung.' ],
 ];
 
+/**
+ * Hero flow diagram. Static markup, so it renders without JavaScript and cannot
+ * shift the hero after paint. Motion stays in CSS behind prefers-reduced-motion.
+ */
+$flow_icon = static function ( $kind ) {
+	$icons = [
+		'website' => '<rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 8h18"></path><circle cx="6.5" cy="6" r=".7" fill="currentColor" stroke="none"></circle><circle cx="9" cy="6" r=".7" fill="currentColor" stroke="none"></circle>',
+		'request' => '<path d="M7 3h7l4 4v14H7z"></path><path d="M14 3v5h5M10 12h5M10 16h5"></path>',
+		'crm'     => '<ellipse cx="12" cy="5.5" rx="7" ry="2.5"></ellipse><path d="M5 5.5v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6M5 11.5v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6"></path>',
+		'filter'  => '<path d="M4 5h16l-6.5 7.2V19l-3 1v-7.8z"></path>',
+		'search'  => '<circle cx="10.5" cy="10.5" r="5.5"></circle><path d="m15 15 4.5 4.5"></path>',
+		'people'  => '<circle cx="9" cy="8" r="3"></circle><circle cx="16.5" cy="9" r="2.3"></circle><path d="M3.5 19c.6-3.4 2.5-5.1 5.5-5.1s5 1.7 5.5 5.1M14.2 14.5c2.8-.3 4.8 1.1 5.5 4.5"></path>',
+	];
+	if ( empty( $icons[ $kind ] ) ) {
+		return '';
+	}
+	return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' . $icons[ $kind ] . '</svg>';
+};
+$flow_stages = [
+	[ 'kind' => 'website', 'label' => 'Website', 'mod' => 'website' ],
+	[ 'kind' => 'request', 'label' => 'Anfrage', 'mod' => 'request' ],
+	[ 'kind' => 'crm', 'label' => 'CRM', 'mod' => 'crm' ],
+];
+$flow_label = 'Ads, SEO und Empfehlungen führen über die Website zur Anfrage. Die Anfrage wird nach Region, Leistung und Qualität segmentiert und anschließend ins CRM übergeben.';
+
 if ( function_exists( 'hu_enqueue_css' ) ) {
 	hu_enqueue_css( 'hu-navigation-ecosystem', 'navigation-ecosystem.css', [ 'nexus-system-css' ] );
 	hu_enqueue_css( 'nexus-startseite-css', 'startseite.css', [ 'nexus-system-css' ] );
@@ -76,27 +102,54 @@ if ( function_exists( 'hu_enqueue_css' ) ) {
 }
 if ( function_exists( 'hu_enqueue_js' ) ) {
 	hu_enqueue_js( 'hu-navigation-ecosystem', 'navigation-ecosystem.js', [] );
-	hu_enqueue_js( 'nexus-startseite-js', 'startseite.js', [] );
 }
 get_header();
 ?>
 
 <div class="doku startseite" id="top" data-track-section="homepage">
 	<div class="blatt kopfteil">
-		<div class="home-hero">
-			<div>
-				<p class="gegenstand">Haşim Üner · Pattensen bei Hannover · remote im DACH-Raum</p>
-				<h1>WordPress Freelancer Hannover.<br><span>Von der Website bis zur Anfrage.</span></h1>
-				<p class="aufriss">Ich entwickle WordPress-Websites, Relaunches und Landingpages für Unternehmen. Wenn Formulare, Tracking oder CRM zum Projekt gehören, baue ich die Übergänge mit. Sie arbeiten direkt mit dem Entwickler, der Ihr Projekt umsetzt.</p>
+		<div class="home-hero home-hero-v9">
+			<div class="home-hero-copy">
+				<p class="gegenstand">WordPress · Tracking · CRM · Pattensen bei Hannover</p>
+				<h1><span class="home-title-primary">WordPress Freelancer Hannover.</span><span class="home-title-secondary">Von der Website<br>bis zur Anfrage<span class="home-title-stop">.</span></span></h1>
+				<p class="aufriss">Ich entwickle WordPress-Websites, die Angebote verständlich machen und Anfragen sauber bis ins CRM führen. Direkt mit mir – ohne Übergabe an ein fremdes Entwicklerteam.</p>
 				<div class="ausgang">
 					<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_head_contact" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span aria-hidden="true">→</span></a>
 					<a class="tun still" href="#angebote" data-track-action="home_hero_to_offers" data-track-category="navigation" data-track-section="hero">Leistungen und Preise</a>
 				</div>
-				<p class="home-reply"><?php echo esc_html( $response ); ?> · Umfang und Preis vor Projektstart</p>
+				<div class="home-trust-row">
+					<span><?php echo esc_html( $response_short ); ?></span>
+					<span>Klare Projektpreise</span>
+					<span>Direkt mit dem Entwickler</span>
+				</div>
+				<figure class="home-portrait">
+					<img src="<?php echo esc_url( $portrait_url ); ?>" width="480" height="600" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" decoding="async">
+					<figcaption><strong>Direkt mit Haşim Üner.</strong><span>Konzeption · Entwicklung · Übergabe</span><a class="satzlink" href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="hero">Mehr über Haşim</a></figcaption>
+				</figure>
 			</div>
-			<figure class="home-portrait">
-				<img src="<?php echo esc_url( $portrait_url ); ?>" width="640" height="800" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" fetchpriority="high" decoding="async">
-				<figcaption><strong>Ihr direkter Ansprechpartner.</strong><span>Von der ersten Abstimmung bis zur technischen Übergabe.</span><a class="satzlink" href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="hero">Mehr über Haşim</a></figcaption>
+			<figure class="home-flow-v9" role="img" aria-label="<?php echo esc_attr( $flow_label ); ?>">
+				<div class="home-flow-v9__grid" aria-hidden="true"></div>
+				<div class="home-flow-v9__track" aria-hidden="true">
+					<span class="home-flow-v9__rail"></span>
+					<span class="home-flow-v9__signal"></span>
+					<div class="home-flow-v9__sources">
+						<span class="home-flow-v9__source home-flow-v9__source--ads">Ads</span>
+						<span class="home-flow-v9__source"><?php echo $flow_icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?><span>SEO</span></span>
+						<span class="home-flow-v9__source"><?php echo $flow_icon( 'people' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?><span>Empfehlung</span></span>
+					</div>
+					<?php foreach ( $flow_stages as $stage ) : ?>
+						<div class="home-flow-v9__stage home-flow-v9__stage--<?php echo esc_attr( $stage['mod'] ); ?>">
+							<span class="home-flow-v9__disc"><?php echo $flow_icon( $stage['kind'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?></span>
+							<strong><?php echo esc_html( $stage['label'] ); ?></strong>
+						</div>
+					<?php endforeach; ?>
+					<div class="home-flow-v9__filter">
+						<span class="home-flow-v9__filter-icon"><?php echo $flow_icon( 'filter' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?></span>
+						<span class="home-flow-v9__filter-copy"><strong>Segmentierung</strong><span class="home-flow-v9__tags"><span>Region</span><span>Leistung</span><span>Qualität</span></span></span>
+					</div>
+					<span class="home-flow-v9__arrow home-flow-v9__arrow--a">→</span>
+					<span class="home-flow-v9__arrow home-flow-v9__arrow--b">→</span>
+				</div>
 			</figure>
 		</div>
 		<div class="meta" id="einordnung">
@@ -151,15 +204,15 @@ get_header();
 			<div class="spalte-links"><div class="kapitel"><span class="nr">02</span><span class="titel">Arbeiten</span><span class="strich" aria-hidden="true"></span></div></div>
 			<div class="voll">
 				<h2 class="kopf" id="nachweis-h">Ausgewählte Arbeiten. Von WordPress bis zum Vertriebsanschluss.</h2>
-				<p class="vorspann">Öffentliche Projekte zeigen die WordPress-Arbeit. Der ausgewählte B2B-Fall zeigt zusätzlich, wie Website, Anfragestrecke, Tracking und CRM als ein zusammenhängendes System entwickelt wurden.</p>
+				<p class="vorspann">Ausgewählte Arbeiten zeigen die Umsetzung. Der B2B-Fall zeigt zusätzlich, wie Website, Anfrage, Messung und CRM zu einer durchgehenden Strecke werden.</p>
 
-				<article class="tafel home-featured-case" id="systemprojekt">
+				<article class="home-featured-case home-featured-case-v2" id="systemprojekt">
 					<div class="home-featured-case__intro">
 						<div>
 							<p class="mono">Ausgewähltes Großprojekt · B2B · Solar</p>
 							<h3>Vom ersten Klick bis zum Vertriebsanschluss.</h3>
 						</div>
-						<p>Für einen <?php echo esc_html( $e3_case_label ); ?> wurde nicht nur die Website weiterentwickelt, sondern die gesamte digitale Strecke: Website, Landingpages, Qualifizierung, Messung, Server-Side Tracking, CRM und die Übergabe an den Vertrieb.</p>
+						<p>Für einen <?php echo esc_html( $e3_case_label_accusative ); ?> entstand eine durchgehende Strecke aus Website, Qualifizierung, Messung, Server-Side Tracking, CRM und Vertriebsübergabe.</p>
 					</div>
 
 					<div class="home-system-board" aria-label="Systemarchitektur der umgesetzten B2B-Strecke">
