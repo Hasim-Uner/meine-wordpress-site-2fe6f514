@@ -1,5 +1,5 @@
 /* Global navigation accessibility layer.
- * Keeps focus, target size and skip-link behavior independent of route skins.
+ * Keeps focus, target size, stable first paint and skip-link behavior independent of route skins.
  */
 
 .skip-to-content[data-skip-link] {
@@ -50,6 +50,39 @@
 .leiste :is(a, button):focus-visible {
 	position: relative;
 	z-index: 2;
+}
+
+/*
+ * First-paint stability on narrow screens.
+ *
+ * The mobile navigation used to be rendered fully open until leiste.js ran
+ * after DOMContentLoaded. Lighthouse therefore saw the complete page jump
+ * upward when JavaScript closed the panel (CLS ~0.6). Keep the panel out of
+ * layout from the first CSS paint and show it only after an explicit action.
+ *
+ * If scripting is genuinely unavailable, progressive enhancement keeps the
+ * navigation visible instead of leaving an inert hamburger.
+ */
+@media (max-width: 1080px) {
+	.leiste .blatt-klapp {
+		display: none;
+	}
+
+	.leiste.offen .blatt-klapp {
+		display: flex;
+	}
+}
+
+@media (scripting: none) and (max-width: 1080px) {
+	.leiste .blatt-klapp {
+		display: flex;
+	}
+}
+
+/* Homepage AA contrast floor for the compact muted service notes. */
+.startseite #angebote .home-offers-v2 .home-scope,
+.startseite #angebote .home-note {
+	color: var(--grau);
 }
 
 @media (prefers-reduced-motion: reduce) {
