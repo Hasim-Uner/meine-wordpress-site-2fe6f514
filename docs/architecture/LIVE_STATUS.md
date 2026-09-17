@@ -1,5 +1,20 @@
 # Live Status
 
+## Startseite – Hero serverseitig konsolidiert, Repository-Stand 2026-09-16
+
+Dieser Abschnitt hat Vorrang vor älteren Beschreibungen des Startseiten-Runtimes,
+insbesondere über `startseite.js` und über das fehlende FAQ-Schema.
+
+- **`assets/js/startseite.js` ist entfallen.** Das Skript hat den vom Server gerenderten Hero nach dem Parsen überschrieben: Eyebrow, H1-Struktur, Aufriss, Trust-Zeile, Porträt-Caption sowie Vorspann und Fall-Text in Abschnitt 02. Dazu injizierte es rund 140 Zeilen CSS mit durchgehendem `!important` in den `head`. Markup und Regeln liegen jetzt statisch in `front-page.php`, `startseite.css` und `startseite-rest-v1.css`. Das Hero-Diagramm ist statisches Markup statt DOM-Bau; die Bewegung bleibt CSS hinter `prefers-reduced-motion`. Die Route lädt auf dieser Ebene kein eigenes JavaScript mehr.
+- **Die Antwortzusage im Hero kommt wieder aus dem Canon.** Das Skript trug „Antwort in 2 Werktagen" als Literal und hatte das Canon-Element `.home-reply` ersetzt. Jetzt `hu_response_promise( 'compact' )` in der Trust-Zeile. Das E3-Case-Label stand ebenfalls als Literal im Skript und liegt jetzt als gebeugte Akkusativ-Fassung (`HU_E3_CASE_LABEL_ACCUSATIVE`) im E3-Canon.
+- **`scripts/lint-canon-drift.sh` prüft jetzt auch Fristen-Literale** (`… Werktage/Werktagen`, `48 h/Stunden`). Zeilen, die den Canon selbst aufrufen, dürfen ihren Fallback im Wortlaut tragen. Der Bruch oben lief grün an der CI vorbei, weil das Muster bis dahin nur Preise kannte.
+- **`inc/homepage-wow.php` berührt die Startseite nicht mehr.** `hu_output_inline_home_system_visual()` hat über `wp_footer` rund 9 KB Inline-CSS und ein Inline-SVG für `.home-system-visual` in die Produktions-Startseite gelegt; `startseite.js` hat denselben Knoten anschließend entfernt. Die Funktion ist entfallen. Die Testseite hat selbst keinen `.home-hero` und war nie betroffen.
+- **Drei tote Hero-Generationen sind aus dem CSS entfernt.** Der `::before`-Hero mit `home-hero-system-copper.webp` und der komplette V6-Block in `startseite.css` griffen nicht mehr, weil das Skript die Klasse entfernt hat; der V9.2-Block in `startseite-rest-v1.css` wurde von der V9.3-Fassung im Skript überstimmt und sah nur live aus. Übrig bleibt eine Definition je Regel.
+- **Die Startseite hat jetzt ein eigenes `FAQPage`-Schema.** Sie war die einzige Money Page ohne, obwohl `inc/org-schema.php` den Editor-FAQ-Cache dort mit der Begründung unterdrückt, die Fragen seien template-owned. Der Knoten entsteht aus demselben Array wie die sichtbaren Antworten und hängt über `publisher` am `#organization`-Knoten. Dies ersetzt die Aussage „kein eigenes JSON-LD/FAQ-Schema" im Abschnitt zur Orientierungs-Startseite weiter unten.
+- **Der Hero-Eyebrow trägt den Ortsbezug wieder** (`WordPress · Tracking · CRM · Pattensen bei Hannover`). Die JS-Fassung hatte ihn auf `WordPress · Tracking · CRM` verkürzt; `/` ist Query-Owner für `wordpress freelancer hannover`.
+- **Die Referenzen im Nachweis-Block sind `h4` statt `h3`.** Sie standen vorher als Geschwister ihrer eigenen Gruppenüberschrift in der Outline.
+- **Geprüft:** Architektur-, PHP-, Canon-Drift-, E3-, German-Copy-, Motion-, Spacing- und beide CSS-Audit-Guards grün. Die gerenderte Startseite wurde über eine PHP-Vorrichtung gegen `HEAD` verglichen: Tag-Balance sauber, alle 22 `data-track-`Hooks unverändert, FAQ-Schema wortgleich zu den sichtbaren Antworten, Überschriften-Outline ohne Sprung. **Nicht geprüft:** visuelle Abnahme im Browser und Lighthouse. Beides steht vor der Veröffentlichung aus.
+
 ## Meta Ads – Legacy-Service konsolidiert, Repository-Stand 2026-09-15
 
 - `/meta-ads/` besitzt keine veröffentlichte WordPress-Seite mehr und wird als Legacy-Einstieg explizit auf den aktiven Beitrag `meta-ads-fuer-b2b` geführt.
