@@ -628,7 +628,7 @@
 .startseite #nachweis .home-references article+article{padding-left:var(--s2)}
 .startseite #nachweis .home-references article:last-child{border-right:0;padding-right:0}
 .startseite #nachweis .home-references .mono{color:color-mix(in srgb,var(--tinte) 56%,var(--papier));font-size:.61rem;letter-spacing:.1em}
-.startseite #nachweis .home-references h3,.startseite #nachweis .home-references h4{margin:.65rem 0 .55rem;font-size:1.12rem;line-height:1.18;overflow-wrap:anywhere}
+.startseite #nachweis .home-references h4{margin:.65rem 0 .55rem;font-size:1.12rem;line-height:1.18;overflow-wrap:anywhere}
 .startseite #nachweis .home-references article>p:last-child{max-width:34ch;color:color-mix(in srgb,var(--tinte) 64%,var(--papier));font-size:.8rem;line-height:1.48}
 .startseite #nachweis .home-technical{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:var(--s2);align-items:start;margin-top:var(--s3);padding:var(--s2) var(--s3);background:color-mix(in srgb,var(--zone) 54%,var(--papier));border:0;border-left:2px solid var(--stempel)}
 .startseite #nachweis .home-technical h3{margin:0;font-size:1.04rem;line-height:1.24}

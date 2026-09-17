@@ -270,7 +270,7 @@ get_header();
 				<p class="home-reference-intro">Hier ist die Website selbst der Beleg. Die Beschreibung nennt meinen Beitrag; der Link zeigt den aktuellen öffentlichen Stand.</p>
 				<div class="home-references">
 					<?php foreach ( $references as $reference ) : ?>
-						<article><p class="mono"><?php echo esc_html( $reference['tag'] ); ?></p><h3><a class="satzlink" href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener" data-track-action="home_reference_open" data-track-category="proof" data-track-section="beweis"><?php echo esc_html( $reference['name'] ); ?> ↗</a></h3><p><?php echo esc_html( $reference['text'] ); ?></p></article>
+						<article><p class="mono"><?php echo esc_html( $reference['tag'] ); ?></p><h4><a class="satzlink" href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener" data-track-action="home_reference_open" data-track-category="proof" data-track-section="beweis"><?php echo esc_html( $reference['name'] ); ?> ↗</a></h4><p><?php echo esc_html( $reference['text'] ); ?></p></article>
 					<?php endforeach; ?>
 				</div>
 				<div class="home-technical" id="pruefstand">
