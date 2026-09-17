@@ -50,6 +50,8 @@
 .hu-erg .erg-definitions > div + div { margin-top: var(--s3); }
 .hu-erg .erg-next { margin-top: var(--s4); border-top: 1px solid var(--strich); }
 .hu-erg .erg-next-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--s4); padding-block: var(--s4); border-bottom: 1px solid var(--haar); align-items: center; }
+.hu-erg .erg-next-row--primary { border-left: 2px solid var(--stempel); padding-inline: var(--s3); }
+.hu-erg .erg-next-row--primary .erg-next-kicker { color: var(--stempel); }
 .hu-erg .erg-next-row h3 { font-size: 1.4rem; line-height: 1.25; margin-block: var(--s2); }
 .hu-erg .erg-next-row h3 + p { color: var(--grau); }
 .hu-erg .erg-next-action .erg-note { margin-top: var(--s2); }
