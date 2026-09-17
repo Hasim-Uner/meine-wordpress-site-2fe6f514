@@ -2,6 +2,72 @@
  * Keeps focus, target size, stable first paint and skip-link behavior independent of route skins.
  */
 
+/*
+ * Homepage font stability.
+ *
+ * Lighthouse showed the remaining desktop CLS coming almost entirely from the
+ * hero copy reflowing when the self-hosted Figtree/IBM Plex faces replaced the
+ * fallback fonts. These route-scoped aliases keep the exact same font files but
+ * use font-display: optional: either the face is ready for the first paint or
+ * the browser keeps the fallback for that navigation. There is no late metric
+ * swap, so the hero cannot push the page after it has painted.
+ *
+ * The aliases are only used above the fold on the homepage. The regular font
+ * families remain untouched everywhere else.
+ */
+@font-face {
+	font-family: 'HU Figtree Stable';
+	font-style: normal;
+	font-weight: 400;
+	font-display: optional;
+	src: url('/wp-content/themes/blocksy-child/fonts/figtree-400.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'HU Figtree Stable';
+	font-style: normal;
+	font-weight: 500;
+	font-display: optional;
+	src: url('/wp-content/themes/blocksy-child/fonts/figtree-500.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'HU Figtree Stable';
+	font-style: normal;
+	font-weight: 600;
+	font-display: optional;
+	src: url('/wp-content/themes/blocksy-child/fonts/figtree-600.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'HU Figtree Stable';
+	font-style: normal;
+	font-weight: 700;
+	font-display: optional;
+	src: url('/wp-content/themes/blocksy-child/fonts/figtree-700.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'HU Plex Stable';
+	font-style: normal;
+	font-weight: 400 699;
+	font-display: optional;
+	src: url('/wp-content/themes/blocksy-child/fonts/IBMPlexMono-400-latin.woff2') format('woff2');
+}
+
+.startseite .home-hero-v9,
+.startseite .home-hero-v9 .home-title-primary,
+.startseite .home-hero-v9 .home-title-secondary,
+.startseite .home-hero-v9 .aufriss,
+.startseite .home-trust-row {
+	font-family: 'HU Figtree Stable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.startseite .home-hero-v9 .gegenstand,
+.startseite .home-hero-v9 .tun {
+	font-family: 'HU Plex Stable', ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+}
+
 .skip-to-content[data-skip-link] {
 	position: fixed;
 	z-index: 100000;
@@ -83,6 +149,12 @@
 .startseite #angebote .home-offers-v2 .home-scope,
 .startseite #angebote .home-note {
 	color: var(--grau);
+}
+
+/* The two result labels are normal-size text on a muted panel; use the primary
+ * ink instead of the generic muted token so WCAG AA is deterministic. */
+.startseite #nachweis .home-system-result .mono {
+	color: var(--tinte);
 }
 
 @media (prefers-reduced-motion: reduce) {
