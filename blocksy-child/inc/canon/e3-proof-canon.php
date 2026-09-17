@@ -10,6 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'HU_E3_CASE_LABEL', 'mittelständischer PV-Installationsbetrieb' );
+// Gebeugte Fassung fuer Akkusativ-Kontexte ("Fuer einen ..."). Dasselbe Muster
+// wie display_dative bei den Metriken: die Beugung steht im Canon, damit sie
+// nicht als Literal in die Templates wandert.
+define( 'HU_E3_CASE_LABEL_ACCUSATIVE', 'mittelständischen PV-Installationsbetrieb' );
 define( 'HU_E3_CPL_BEFORE', 150 );
 define( 'HU_E3_CPL_AFTER', 22 );
 define( 'HU_E3_CPL_REDUCTION_PERCENT', 85 );
@@ -36,7 +40,8 @@ define( 'HU_E3_TUNING_MONTHS', 3 );
  */
 function hu_e3_canon() {
 	return [
-		'case_label' => HU_E3_CASE_LABEL,
+		'case_label'            => HU_E3_CASE_LABEL,
+		'case_label_accusative' => HU_E3_CASE_LABEL_ACCUSATIVE,
 		'url'        => home_url( '/case-study-solar-leadgenerierung/' ),
 		'metrics'    => [
 			'cpl_before'       => [
