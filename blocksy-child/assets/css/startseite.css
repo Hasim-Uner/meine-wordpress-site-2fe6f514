@@ -599,42 +599,23 @@
 @media (max-width: 980px) {
   .startseite .home-hero.home-hero-v9 { grid-template-columns: 1fr; gap: 1.65rem; padding-block: 1.35rem 2rem; }
   .startseite .home-hero-v9 > .home-hero-copy { grid-column: 1; grid-row: 1; }
-  .startseite .home-flow-v9 { grid-column: 1; grid-row: 2; width: min(100%, 46rem); min-height: 23rem; justify-self: center; margin: 0; }
-  .startseite .home-flow-v9__track { padding-block: 4.6rem 5.2rem; }
+  /* Das Diagramm existiert, um die zweite Hero-Spalte zu tragen. Ab hier ist
+   * der Hero einspaltig, und die Zeichnung rutschte unter das Portraet: dort
+   * war sie nicht mehr lesbar (Quellen-Pills am Rand abgeschnitten, das
+   * Segmentierungs-Label ueber dem CRM-Knoten) und schob rund 500px toten
+   * Raum zwischen den Hero-CTA und den ersten Abschnitt. Sie ist dekorativ —
+   * ihr aria-label sagt nichts, was die Copy daneben nicht schon sagt —,
+   * also entfaellt sie hier ganz statt verkleinert weiterzulaufen. */
+  .startseite .home-flow-v9 { display: none; }
 }
 @media (max-width: 640px) {
-  .startseite .home-title-primary { font-size: clamp(1.28rem, 5.2vw, 1.58rem); letter-spacing: -.025em; }
-  .startseite .home-title-secondary { margin-top: .48em; font-size: clamp(2.65rem, 12vw, 3.35rem); }
-  .startseite .home-hero-v9 .aufriss { font-size: 1rem; }
-  .startseite .home-trust-row { gap: .55rem .72rem; margin-top: 1.1rem; }
-  .startseite .home-trust-row span + span::after { display: none; }
-  .startseite .home-hero-v9 .home-portrait { grid-template-columns: 2.55rem minmax(0, 1fr); padding-top: .75rem; }
-  .startseite .home-hero-v9 .home-portrait img { width: 2.55rem; height: 2.55rem; }
-  .startseite .home-flow-v9 { min-height: 18.5rem; width: calc(100% + .4rem); margin-inline: -.2rem; }
-  .startseite .home-flow-v9__track { grid-template-columns: 3.6rem repeat(3, minmax(0, 1fr)); gap: .12rem; padding-block: 3.4rem 4.6rem; }
-  .startseite .home-flow-v9__sources { gap: .22rem; }
-  .startseite .home-flow-v9__source { padding: .19rem .27rem; font-size: .35rem; }
-  .startseite .home-flow-v9__source svg, .startseite .home-flow-v9__source--ads::before { display: none; }
-  .startseite .home-flow-v9__rail { left: 12%; right: 2%; height: 1px; }
-  .startseite .home-flow-v9__signal { left: 12%; width: .42rem; height: .42rem; }
-  .startseite .home-flow-v9__disc { width: 3.1rem; height: 3.1rem; }
-  .startseite .home-flow-v9__stage--request .home-flow-v9__disc {
-    width: 3.65rem;
-    height: 3.65rem;
-    box-shadow: 0 0 0 .46rem color-mix(in srgb, var(--stempel) 3.5%, transparent), 0 0 0 .92rem color-mix(in srgb, var(--stempel) 1.5%, transparent), 0 9px 22px color-mix(in srgb, var(--stempel) 8%, transparent);
-  }
-  .startseite .home-flow-v9__stage--request .home-flow-v9__disc::before { inset: -1.15rem; }
-  .startseite .home-flow-v9__stage--crm { transform: none; }
-  .startseite .home-flow-v9__stage--crm .home-flow-v9__disc { width: 3.15rem; height: 3.15rem; }
-  .startseite .home-flow-v9__disc svg { width: 1.18rem; height: 1.18rem; }
-  .startseite .home-flow-v9__stage strong { font-size: .62rem; }
-  .startseite .home-flow-v9__filter { left: 77.8%; width: 1.82rem; height: 1.82rem; }
-  .startseite .home-flow-v9__filter-icon { width: 1.82rem; height: 1.82rem; box-shadow: 0 0 0 .2rem var(--papier), 0 5px 12px color-mix(in srgb, var(--tinte) 7%, transparent); }
-  .startseite .home-flow-v9__filter-copy strong { bottom: calc(100% + .38rem); font-size: .52rem; }
-  .startseite .home-flow-v9__tags { display: none; }
-  .startseite .home-flow-v9__arrow { font-size: .82rem; }
-  .startseite .home-flow-v9__arrow--a { left: 47%; }
-  .startseite .home-flow-v9__arrow--b { left: 69%; }
+  .startseite .home-title-primary {font-size: clamp(1.28rem, 5.2vw, 1.58rem); letter-spacing: -.025em; }
+  .startseite .home-title-secondary {margin-top: .48em; font-size: clamp(2.65rem, 12vw, 3.35rem); }
+  .startseite .home-hero-v9 .aufriss {font-size: 1rem; }
+  .startseite .home-trust-row {gap: .55rem .72rem; margin-top: 1.1rem; }
+  .startseite .home-trust-row span + span::after {display: none; }
+  .startseite .home-hero-v9 .home-portrait {grid-template-columns: 2.55rem minmax(0, 1fr); padding-top: .75rem; }
+  .startseite .home-hero-v9 .home-portrait img {width: 2.55rem; height: 2.55rem; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
