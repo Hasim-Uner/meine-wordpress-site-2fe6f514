@@ -691,3 +691,19 @@
   64%{left:82%;opacity:1;transform:scale(1)}
   72%,100%{left:93%;opacity:0;transform:scale(.75)}
 }
+
+/* navigation-ecosystem.css setzt in genau diesem Bereich
+ * `.hu-page-toc:not(.hu-results-register){position:static!important;overflow:visible!important}`.
+ * Das Register der Startseite ist aber als seitlich scrollbarer Streifen
+ * gebaut: `.home-toc__entries` traegt `min-width:max-content` und misst auf
+ * 360px rund 454px. Ohne eigenen Scrollcontainer schiebt der Streifen das
+ * ganze Dokument seitlich — gemessen 94px auf 360px und 64px auf 390px.
+ * Der Media-Query spiegelt den dortigen bewusst wortgleich; das !important
+ * bleibt deshalb auf den Bereich beschraenkt, in dem es gebraucht wird, und
+ * fasst die Rail-Regel ab 1280px nicht an. */
+@media (max-width:900px), (max-height:680px){
+  .startseite .home-toc.hu-page-toc{
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+  }
+}
