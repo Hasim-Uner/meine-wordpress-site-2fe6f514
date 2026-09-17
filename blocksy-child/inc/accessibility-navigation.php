@@ -13,6 +13,46 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Preload the exact homepage font faces that Lighthouse identified as the
+ * remaining desktop CLS source.
+ *
+ * The global preload contract already covers Satoshi and Figtree 600. The hero
+ * also paints body copy in Figtree 400 and compact labels/buttons in IBM Plex
+ * Mono 500/600. Without an early hint those three faces arrived after first
+ * paint and reflowed .blatt.kopfteil by roughly 0.22 CLS on desktop.
+ *
+ * Scope this strictly to the front page so secondary routes do not pay for
+ * fonts they may never render above the fold.
+ *
+ * @return void
+ */
+function hu_preload_homepage_stability_fonts() {
+	if ( ! is_front_page() ) {
+		return;
+	}
+
+	$font_dir = get_stylesheet_directory() . '/fonts/';
+	$font_uri = get_stylesheet_directory_uri() . '/fonts/';
+	$fonts    = [
+		'figtree-400.woff2',
+		'IBMPlexMono-500-latin.woff2',
+		'IBMPlexMono-600-latin.woff2',
+	];
+
+	foreach ( $fonts as $font ) {
+		if ( ! is_file( $font_dir . $font ) ) {
+			continue;
+		}
+
+		printf(
+			'<link rel="preload" href="%1$s" as="font" type="font/woff2" crossorigin>' . "\n",
+			esc_url( $font_uri . $font )
+		);
+	}
+}
+add_action( 'wp_head', 'hu_preload_homepage_stability_fonts', 2 );
+
+/**
  * Resolve the real main-landmark ID for the current template.
  *
  * Most routes use `#main`. A small family of legacy intercept templates owns
