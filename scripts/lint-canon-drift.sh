@@ -42,13 +42,13 @@ TERM_PATTERN='(^|[^[:alnum:]_/-])(Pilotprojekt|Pilot|Beta|Test|eigentlich kostet
 # Fristen-Literale. BRAND_AND_COPY.md ("Zusagen mit Zeitangabe") verbietet sie
 # in Template, FAQ, Meta-Description und E-Mail: die Antwortzusage und der
 # Marktcheck-Befund stehen im Canon. Bis 2026-09 fehlten sie hier, und
-# assets/js/startseite.js konnte "Antwort in 2 Werktagen" fest verdrahten und
+# assets/js/startseite.js konnte die Antwortzusage fest verdrahten und
 # damit die Canon-Zusage aus dem sichtbaren Hero verdraengen — gruen an der CI
 # vorbei. Der Guard prueft den Wortlaut, nicht nur den Preis.
 PROMISE_PATTERN='(^|[^[:alnum:]_/-])([0-9]+[[:space:]]*(Werktage|Werktagen)|48[[:space:]]*(h|Stunden))([^[:alnum:]_/-]|$)'
 # Zeilen, die den Canon selbst aufrufen, duerfen ihren Fallback im Wortlaut
 # tragen — das ist das etablierte Muster im Repo, kein Drift.
-PROMISE_ALLOW='hu_response_promise|hu_marketcheck_reply_label|HU_RESPONSE_BUSINESS_DAYS|HU_MARKETCHECK_REPLY_HOURS|HU_TRACKING_RESPONSE_BUSINESS_DAYS'
+PROMISE_ALLOW='hu_response_promise|hu_marketcheck_reply_label|HU_RESPONSE_HOURS|HU_RESPONSE_PROMISE|HU_TRACKING_RESPONSE_BUSINESS_DAYS'
 
 ADDED_LINES="$(
   printf '%s\n' "${DIFF_OUTPUT}" \

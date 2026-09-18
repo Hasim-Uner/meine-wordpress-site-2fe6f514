@@ -20,8 +20,14 @@ while ( have_posts() ) :
 	$contact_url = function_exists( 'nexus_get_contact_url' )
 		? nexus_get_contact_url()
 		: home_url( '/kontakt/' );
-	$mail_link   = 'mailto:kontakt@hasimuener.de';
-	$phone_link  = 'tel:+4917676596580';
+	// Rechtlich benannter Kontaktweg, aber derselbe wie der beworbene. Seit
+	// 2026-09-18 liest auch diese Seite den Canon: zwei getrennt gepflegte
+	// Staende derselben Adresse waren nur eine Gelegenheit, einen davon
+	// stehen zu lassen.
+	$mail_address = hu_get_contact_email();
+	$mail_link    = hu_get_contact_mailto();
+	$phone_link   = hu_get_contact_phone( 'link' );
+	$phone_number = hu_get_contact_phone();
 	?>
 	<main id="main" class="site-main imprint-page" data-track-section="imprint_page">
 		<style>
@@ -405,8 +411,8 @@ while ( have_posts() ) :
 						<div class="imprint-quickfact">
 							<span class="imprint-quickfact__label">Kontakt</span>
 							<span class="imprint-quickfact__value">
-								E-Mail: <a href="<?php echo esc_url( $mail_link ); ?>">kontakt@hasimuener.de</a><br>
-								Telefon: <a href="<?php echo esc_url( $phone_link ); ?>">0176 76596580</a>
+								E-Mail: <a href="<?php echo esc_url( $mail_link ); ?>"><?php echo esc_html( $mail_address ); ?></a><br>
+								Telefon: <a href="<?php echo esc_url( $phone_link ); ?>"><?php echo esc_html( $phone_number ); ?></a>
 							</span>
 						</div>
 					</div>
@@ -437,8 +443,8 @@ while ( have_posts() ) :
 						<span class="imprint-copy-chip">Direkte Kontaktaufnahme</span>
 						<h2 id="imprint-contact">2. Kontakt</h2>
 						<p>
-							E-Mail: <a href="<?php echo esc_url( $mail_link ); ?>">kontakt@hasimuener.de</a><br>
-							Telefon: <a href="<?php echo esc_url( $phone_link ); ?>">0176 76596580</a>
+							E-Mail: <a href="<?php echo esc_url( $mail_link ); ?>"><?php echo esc_html( $mail_address ); ?></a><br>
+							Telefon: <a href="<?php echo esc_url( $phone_link ); ?>"><?php echo esc_html( $phone_number ); ?></a>
 						</p>
 						<p>
 							Für allgemeine Anfragen, Projektanfragen und Rückfragen zu Inhalten dieser

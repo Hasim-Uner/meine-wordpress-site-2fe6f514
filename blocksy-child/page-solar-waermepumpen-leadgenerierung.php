@@ -46,6 +46,15 @@ $e3_cpl_after     = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_timeframe     = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 $e3_build_months  = $e3_metrics['build_months']['display'] ?? '3 Monate';
 
+// Voreinstellungen des Vergleichsrechners. Bewusst vorsichtiger als der Fall
+// und deshalb im Canon als eigene Kennzahl gefuehrt: als nacktes Literal im
+// Template war die angesetzte Quote von der gemessenen Abschlussquote des
+// Falls nicht zu unterscheiden.
+$calc_cpl_display   = hu_e3_metric( 'calc_cpl_conservative' );
+$calc_cpl_input     = hu_e3_metric( 'calc_cpl_conservative', 'input' );
+$calc_quote_display = hu_e3_metric( 'calc_sales_conversion_conservative' );
+$calc_quote_input   = hu_e3_metric( 'calc_sales_conversion_conservative', 'input' );
+
 // Die Vorher-Quote ist eine Marktannahme, keine Messung dieses Betriebs.
 // Deshalb die vorsichtige Fassung, sobald sie in einer Tabelle neben
 // gemessenen Werten steht.
@@ -81,7 +90,7 @@ $analysis_price   = $format_eur( (int) ( $pricing_canon['analysis_price'] ?? 690
 // ── Marktcheck (Diagnose-Canon) ────────────────────────────────
 $diagnose_canon    = function_exists( 'hu_diagnose_canon' ) ? hu_diagnose_canon() : [];
 $analysis_days     = (int) ( $diagnose_canon['primary_days'] ?? 7 );
-$marketcheck_reply = function_exists( 'hu_marketcheck_reply_label' ) ? hu_marketcheck_reply_label() : 'spätestens 2 Werktage';
+$marketcheck_reply = hu_marketcheck_reply_label();
 $marketcheck_visible_steps = (int) ( $diagnose_canon['marketcheck_visible_steps'] ?? 2 );
 $marketcheck_fit_q        = (int) ( $diagnose_canon['marketcheck_fit_questions'] ?? 4 );
 $marketcheck_mins         = (int) ( $diagnose_canon['marketcheck_minutes'] ?? 2 );
@@ -349,7 +358,11 @@ $faq_items = [
 		'id'   => 'faq-cpo',
 		'q'    => 'Warum ist Cost per Order aussagekräftiger als Cost per Lead?',
 		'lead' => 'Cost per Order — die Kosten pro gewonnenem Auftrag — berücksichtigt die Abschlussquote und ist deshalb die belastbarere Kennzahl.',
-		'rest' => 'Rechenbeispiel: 2.000 € Monatsbudget ergeben bei 80 € pro Kontakt 25 Anfragen; bei 4 % Abschlussquote ist das ein Auftrag, also 2.000 € pro Auftrag. Eine eigene Strecke mit 45 € pro Anfrage und 12 % Abschlussquote kommt bei gleichem Budget auf einen deutlich niedrigeren Wert — nicht wegen des niedrigeren Anfragepreises, sondern wegen der Vorqualifizierung.',
+		'rest' => sprintf(
+			'Rechenbeispiel: 2.000 € Monatsbudget ergeben bei 80 € pro Kontakt 25 Anfragen; bei 4 %% Abschlussquote ist das ein Auftrag, also 2.000 € pro Auftrag. Eine eigene Strecke kommt bei gleichem Budget auf einen deutlich niedrigeren Wert — hier vorsichtig angesetzt mit %1$s pro Anfrage und %2$s Abschlussquote, beides unter den Werten des dokumentierten Falls. Der Unterschied kommt nicht vom niedrigeren Anfragepreis, sondern von der Vorqualifizierung.',
+			$calc_cpl_display,
+			$calc_quote_display
+		),
 	],
 	[
 		'id'   => 'faq-tracking',
@@ -1059,14 +1072,14 @@ get_header();
 							<div class="eingabe">
 								<label for="strecke-b2">Kosten pro Anfrage, die Sie ansetzen</label>
 								<span class="feld">
-									<input id="strecke-b2" data-feld="b2" type="number" inputmode="numeric" min="1" max="1000" step="1" value="45">
+									<input id="strecke-b2" data-feld="b2" type="number" inputmode="numeric" min="1" max="1000" step="1" value="<?php echo esc_attr( $calc_cpl_input ); ?>">
 									<span class="einheit">€</span>
 								</span>
 							</div>
 							<div class="eingabe">
 								<label for="strecke-b3">Abschlussquote auf vorqualifizierte Anfragen</label>
 								<span class="feld">
-									<input id="strecke-b3" data-feld="b3" type="number" inputmode="decimal" min="0" max="100" step="0.5" value="12">
+									<input id="strecke-b3" data-feld="b3" type="number" inputmode="decimal" min="0" max="100" step="0.5" value="<?php echo esc_attr( $calc_quote_input ); ?>">
 									<span class="einheit">%</span>
 								</span>
 							</div>
@@ -1090,8 +1103,9 @@ get_header();
 						aber pro unqualifizierter Anfrage: Wer 25 Kontakte im Monat je eine Viertelstunde
 						durchtelefoniert, um den einen zu finden, der unterschreibt, verbringt damit gut
 						sechs Stunden am Telefon. Voreingestellt sind bewusst vorsichtige Werte:
-						45 € statt der <?php echo esc_html( $e3_cpl_after ); ?> aus dem dokumentierten Fall,
-						12 % statt <?php echo esc_html( $e3_sales_conv ); ?>.
+						<?php echo esc_html( $calc_cpl_display ); ?> statt der <?php echo esc_html( $e3_cpl_after ); ?> aus dem
+						dokumentierten Fall, <?php echo esc_html( $calc_quote_display ); ?> statt
+						<?php echo esc_html( $e3_sales_conv ); ?> Abschlussquote.
 					</p>
 				</div>
 			</div>

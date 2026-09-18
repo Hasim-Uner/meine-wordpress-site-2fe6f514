@@ -2061,7 +2061,7 @@
 /* ── Kopfzeile des Panels ─────────────────────────────────── */
 
 /* Das Skript setzt oben in den Mount eine Zeile "Marktcheck · Fit
-   geprueft · spaetestens 2 Werktage" plus "Fit-Check". Direkt darueber
+   geprueft · <Antwortzeit aus dem Canon>" plus "Fit-Check". Direkt darueber
    steht bereits der Beleg mit Form, Frist, Pruefer, Absage-Fall und
    Kosten — dieselbe Zusage, zweimal untereinander, einmal davon als
    Wiederholung der Frist. Die Zeile bleibt im DOM (das Skript baut sie),

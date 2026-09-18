@@ -375,6 +375,10 @@ function hu_enqueue_assets() {
 				: home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ),
 			'caseUrl'      => home_url( '/case-study-solar-leadgenerierung/' ),
 			'privacyUrl'   => home_url( '/datenschutz/' ),
+			// Der Erfolgsdialog des Marktchecks hatte seine eigene Fassung der
+			// Zusage im Skript stehen und konnte sie damit ueberschreiben.
+			// Jetzt reicht der Canon sie durch.
+			'replyPromise' => hu_response_promise( 'window' ),
 			'pageUrl'      => function_exists( 'nexus_get_energy_systems_url' )
 				? nexus_get_energy_systems_url()
 				: home_url( '/solar-waermepumpen-leadgenerierung/' ),

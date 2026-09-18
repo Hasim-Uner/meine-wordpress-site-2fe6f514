@@ -31,11 +31,11 @@ define( 'HU_MARKETCHECK_VISIBLE_STEPS', 2 );
 define( 'HU_MARKETCHECK_FIT_QUESTIONS', 4 );
 define( 'HU_MARKETCHECK_MINUTES', 2 );
 
-// Antwortzeit auf den Marktcheck. Sichtbar ist ausschliesslich die Obergrenze
-// (siehe hu_marketcheck_reply_label). HU_MARKETCHECK_REPLY_HOURS bleibt als
-// internes Arbeitsziel bestehen — es steuert nichts, was ein Besucher liest.
-define( 'HU_MARKETCHECK_REPLY_HOURS', 48 );
-define( 'HU_MARKETCHECK_REPLY_MAX_DAYS', 2 );
+// Antwortzeit auf den Marktcheck. Seit 2026-09-18 keine eigene Zahl mehr:
+// der Befund faellt unter dieselbe Zusage wie jede andere Anfrage und liest
+// sie ueber hu_marketcheck_reply_label() aus canon/messaging-canon.php.
+// Eine zweite Frist neben der Antwortzeit war zuletzt die einzige Quelle
+// abweichender Werte auf den Energy-Routen.
 
 define( 'HU_DEEP_DIAGNOSIS_PRICE', 1500 );
 define( 'HU_DEEP_DIAGNOSIS_DAYS', 30 );
@@ -59,8 +59,7 @@ function hu_diagnose_canon() {
 		'marketcheck_visible_steps'  => HU_MARKETCHECK_VISIBLE_STEPS,
 		'marketcheck_fit_questions'  => HU_MARKETCHECK_FIT_QUESTIONS,
 		'marketcheck_minutes'        => HU_MARKETCHECK_MINUTES,
-		'marketcheck_reply_hours'    => HU_MARKETCHECK_REPLY_HOURS,
-		'marketcheck_reply_max_days' => HU_MARKETCHECK_REPLY_MAX_DAYS,
+		'marketcheck_reply_promise'  => hu_marketcheck_reply_label(),
 		'primary_is_public_freebie'  => false,
 		'legacy_readiness_route'     => '/readiness-diagnose/',
 		'readiness_label'            => HU_REQUEST_ANALYSIS_LABEL,
@@ -105,18 +104,15 @@ function hu_marketcheck_length_label() {
 /**
  * Display value for the marketcheck reply promise.
  *
- * Eine einzige Fassung, ueberall: "spaetestens 2 Werktage". Bis 2026-09 stand
- * hier zusaetzlich der Normalfall ("in der Regel 48 Stunden"), womit dieselbe
- * Zusage auf der Seite in zwei Staerken auftrat — die Money Page nannte die
- * Obergrenze, andere Routen die weichere Haelfte davor. Zwei Fristen fuer
- * denselben Befund lesen sich nicht als Praezision, sondern als Vorbehalt.
+ * Gibt die kanonische Antwortzeit aus canon/messaging-canon.php zurueck. Die
+ * Funktion bleibt als eigener Name bestehen, weil der Marktcheck ein eigener
+ * Vorgang ist: ein haendisch geschriebener Befund, keine Antwort auf eine
+ * E-Mail. Die Aufrufer rahmen ihn deshalb mit dem Wort "Befund". Der Wert
+ * dahinter ist seit 2026-09-18 derselbe — eine zweite Frist neben der
+ * Antwortzeit liest sich nicht als Praezision, sondern als Vorbehalt.
  *
- * Nicht zu verwechseln mit hu_response_promise() aus canon/messaging-canon.php:
- * das ist die Antwortzeit auf eine gewoehnliche Anfrage. Seit 2026-09-12 nennen
- * beide dieselbe Frist von zwei Werktagen; getrennt bleiben sie trotzdem, weil
- * es zwei Vorgaenge sind. Der Marktcheck ist ein haendisch geschriebener
- * Befund, keine Antwort auf eine E-Mail — laeuft einer der beiden Werte,
- * laeuft er allein.
+ * Soll der Befund spaeter wieder eine eigene Frist bekommen, bekommt er hier
+ * eine eigene Konstante. Ein Literal in einem Template ist nie die Antwort.
  *
  * @param bool $short Beibehalten fuer Aufrufer, die eine knappe Fassung wollen;
  *                    beide Varianten sind seit der Vereinheitlichung gleich.
@@ -125,7 +121,7 @@ function hu_marketcheck_length_label() {
 function hu_marketcheck_reply_label( $short = false ) {
 	unset( $short );
 
-	return sprintf( 'spätestens %d Werktage', HU_MARKETCHECK_REPLY_MAX_DAYS );
+	return hu_response_promise_short();
 }
 
 /**

@@ -1,0 +1,64 @@
+# Sperrliste fuer scripts/canon-guard.sh
+#
+# Verbotene Fakten-Literale. Jede Zeile hier beschreibt einen Wert, der im
+# Repo nicht mehr als Text stehen darf, weil der Kanon ihn fuehrt. Der Guard
+# bricht mit Exit-Code 1 ab und nennt jede Fundstelle.
+#
+# Diese Datei ist die einzige Stelle ausser dem Kanon, an der die verbotenen
+# Werte ueberhaupt vorkommen duerfen — sie ist vom Guard selbst ausgenommen.
+#
+# ── Format ────────────────────────────────────────────────────────────────
+# Felder sind TAB-getrennt. Leerzeilen und Zeilen mit fuehrendem "#" werden
+# ignoriert.
+#
+#   rule <TAB> <id> <TAB> <Muster> <TAB> <Kontext> <TAB> <Hinweis>
+#
+#   <id>       kurzer, stabiler Name. Erscheint in der Fehlermeldung.
+#   <Muster>   erweiterter regulaerer Ausdruck (grep -E), ohne Delimiter.
+#   <Kontext>  zweiter Ausdruck; die Zeile muss ihn ebenfalls treffen.
+#              "-" heisst: kein Kontext noetig, das Muster allein reicht.
+#   <Hinweis>  was stattdessen aufzurufen ist. Steht im Fehlertext.
+#
+#   ignore <TAB> <Pfad-Pathspec> <TAB> <Begruendung>
+#
+#   Pfade, die der Guard nicht durchsucht. Pathspec-Syntax von git
+#   (Glob mit ** erlaubt). Jede Ausnahme braucht eine Begruendung.
+#
+# Erweitern: neue "rule"-Zeile anhaengen, Guard laufen lassen, Fundstellen
+# auf den Kanon umstellen. Nichts am Skript aendern.
+
+# ── Kontaktadresse ────────────────────────────────────────────────────────
+# Kanon: hu_get_contact_email() / hu_get_contact_mailto() in
+# blocksy-child/inc/canon/messaging-canon.php, Shortcode [nx_email].
+rule	email-hallo	hallo@	-	Kontaktadresse kommt aus hu_get_contact_email() / [nx_email].
+rule	email-hasim	hasim@	-	Kontaktadresse kommt aus hu_get_contact_email() / [nx_email].
+
+# ── Antwortzeit auf eine Anfrage ──────────────────────────────────────────
+# Kanon: hu_response_promise() in blocksy-child/inc/canon/messaging-canon.php,
+# Shortcode [nx_antwortzeit]. Gilt auch fuer den Marktcheck-Befund, der die
+# Zusage ueber hu_marketcheck_reply_label() aus derselben Quelle liest.
+rule	frist-48h	(^|[^0-9])48[[:space:]]*(Stunden|Std|h)([^[:alnum:]]|$)	-	Antwortzeit kommt aus hu_response_promise() / [nx_antwortzeit].
+rule	frist-werktage	(^|[^0-9[:alpha:]])(2|zwei)[[:space:]]*Werktage[n]?([^[:alnum:]]|$)	-	Antwortzeit kommt aus hu_response_promise() / [nx_antwortzeit].
+rule	frist-4h	(^|[^0-9])(4|vier)[[:space:]]*(Stunden|h)[[:space:]]+werktags	-	Antwortzeit kommt aus hu_response_promise() / [nx_antwortzeit].
+
+# ── Abschlussquote im PV-Case ─────────────────────────────────────────────
+# Kanon: hu_e3_metric( 'sales_conversion' ) in
+# blocksy-child/inc/canon/e3-proof-canon.php. 12 % ist in diesem Fall die
+# Lead-Conversion-Rate, nicht die Abschlussquote — deshalb greift die Regel
+# nur im Case-Kontext und nicht auf jede 12 im Repo.
+rule	case-abschlussquote-12	(^|[^0-9,.])12[[:space:]]*(%|&nbsp;%|Prozent)	Abschlussquote|Abschluss-Quote|sales_conversion|Case[ -]Study|case-study|PV-Case|E3-	Abschlussquote kommt aus hu_e3_metric( 'sales_conversion' ).
+
+# ── Ausnahmen ─────────────────────────────────────────────────────────────
+# Der Kanon fuehrt die Werte und muss die abgeloesten benennen duerfen.
+ignore	blocksy-child/inc/canon/**	Kanon-Dateien. Einzige inhaltliche Ausnahme.
+# Historische Aufzeichnungen. Sie nachtraeglich auf den Kanon umzuschreiben
+# wuerde den Beleg zerstoeren, den sie sind. Nichts davon wird ausgeliefert.
+ignore	CHANGELOG.md	Append-only-Historie. Eintraege beschreiben vergangene Staende.
+ignore	docs/audits/**	Archivierte Audits mit Befunden zum damaligen Stand.
+ignore	docs/decisions/**	Archivierte Entscheidungen im Wortlaut der Entscheidung.
+ignore	docs/references/**	Archivierte Referenztexte.
+ignore	docs/briefings/**	Archivierte Auftragstexte im beauftragten Wortlaut.
+ignore	seo-research/**	Rohexporte aus Search Console. Fremddaten, nicht editierbar.
+ignore	plans/**	Abgelegte Planungsnotizen.
+# Laut AGENTS.md ausserhalb des Repo-Scopes, solange n8n nicht Aufgabe ist.
+ignore	automations/n8n/**	Inaktive n8n-Exporte, siehe AGENTS.md.

@@ -330,8 +330,8 @@ while ( have_posts() ) :
 						<div class="privacy-meta__item">
 							<span class="privacy-meta__label">Kontakt</span>
 							<span class="privacy-meta__value">
-								E-Mail: <a href="mailto:kontakt@hasimuener.de">kontakt@hasimuener.de</a><br>
-								Telefon: <a href="tel:+4917676596580">0176 76596580</a>
+								E-Mail: <a href="<?php echo esc_url( hu_get_contact_mailto() ); ?>"><?php echo esc_html( hu_get_contact_email() ); ?></a><br>
+								Telefon: <a href="<?php echo esc_url( hu_get_contact_phone( 'link' ) ); ?>"><?php echo esc_html( hu_get_contact_phone() ); ?></a>
 							</span>
 						</div>
 						<div class="privacy-meta__item">

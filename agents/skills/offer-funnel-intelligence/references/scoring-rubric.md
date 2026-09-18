@@ -47,7 +47,7 @@ Killer signal (auto -3): Umsetzung pitched before Analyse on a cold route.
 - 6–8: Buyer understands the deliverable, the rigor, and what they avoid by doing it.
 - 9–10: Buyer feels the Marktcheck is more valuable than competitor's paid audit and worth submitting real business context.
 
-Killer signal (auto -3): "in 48 Stunden", "kostenlos" framed as the main benefit instead of decision value.
+Killer signal (auto -3): the response-time promise or "kostenlos" framed as the main benefit instead of decision value.
 
 ## 5. Proof Architecture (0–10)
 
@@ -101,7 +101,7 @@ Killer signal (auto -3): FAQ that creates objections instead of resolving them.
 - 6–8: Copy matches what is actually delivered. Outdated framings retired.
 - 9–10: Every claim is one the team can defend in a sales call without softening.
 
-Killer signal (auto -5): "48 Stunden" promise that delivery cannot reliably keep.
+Killer signal (auto -5): a response-time promise that delivery cannot reliably keep. The current value is the only permitted one and comes from `hu_response_promise()`; the retired ones are listed in `scripts/canon-forbidden-values.txt`.
 
 ---
 

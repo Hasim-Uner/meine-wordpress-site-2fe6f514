@@ -22,7 +22,7 @@ done
 
 printf '\n== Offer/Funnel source map ==\n'
 rg -n \
-  "Marktcheck|Anfrage-System|Anfrage-System-Analyse|Founding|Portal-Abhängigkeit|Leadkosten|Kosten pro Anfrage|qualifizierte Anfragen|Abschlussquote|Vorqualifizierung|E3|Retainer|WGOS|WordPress Growth Operating System|Growth Audit|Shopify|48 Stunden|kostenlos|Projekt prüfen|Auswertung anfordern|Kontakt" \
+  "Marktcheck|Anfrage-System|Anfrage-System-Analyse|Founding|Portal-Abhängigkeit|Leadkosten|Kosten pro Anfrage|qualifizierte Anfragen|Abschlussquote|Vorqualifizierung|E3|Retainer|WGOS|WordPress Growth Operating System|Growth Audit|Shopify|Antwortzeit|kostenlos|Projekt prüfen|Auswertung anfordern|Kontakt" \
   AGENTS.md \
   llms.txt \
   docs/standards/BRAND_AND_COPY.md \
@@ -119,15 +119,18 @@ else
   green+=("Marktcheck surfaced on every cold acquisition route")
 fi
 
-# 5. Free / 48h framing as headline value
-free48=0
+# 5. "Free" framing as headline value.
+# Der frühere Fristen-Detektor ist entfallen: retired response-time literals
+# werden seit 2026-09 repo-weit von scripts/canon-guard.sh geblockt, ein
+# zweiter Suchbegriff dafür wäre nur eine weitere Kopie der Sperrliste.
+free_hook=0
 if [[ "${#EXISTING_COLD_ROUTES[@]}" -gt 0 ]]; then
-  free48=$(count_hits "48 Stunden|kostenlos" "${EXISTING_COLD_ROUTES[@]}")
+  free_hook=$(count_hits "kostenlos" "${EXISTING_COLD_ROUTES[@]}")
 fi
-if (( free48 > 0 )); then
-  amber+=("'kostenlos' or '48 Stunden' appears on $free48 cold route(s) — verify it is decision value, not the main hook")
+if (( free_hook > 0 )); then
+  amber+=("'kostenlos' appears on $free_hook cold route(s) — verify it is decision value, not the main hook")
 else
-  green+=("No 'free/48h' as headline value on cold routes")
+  green+=("No 'free' framing as headline value on cold routes")
 fi
 
 # 6. Tracking hooks on CTAs

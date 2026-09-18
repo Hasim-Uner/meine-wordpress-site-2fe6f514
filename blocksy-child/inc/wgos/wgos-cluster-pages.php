@@ -30,8 +30,8 @@ function nexus_get_wgos_cluster_page_data() {
 	$e3_cpl_after   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
 	$e3_lead_count  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
 	$e3_case_url    = home_url( '/case-study-solar-leadgenerierung/' );
-	$response_compact = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : 'Antwort spätestens 2 Werktage';
-	$response_window  = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'window' ) : 'spätestens in 2 Werktagen';
+	$response_compact = hu_response_promise( 'compact' );
+	$response_window  = hu_response_promise( 'window' );
 
 	// Die Cluster wordpress-seo-hannover, core-web-vitals und conversion-rate-optimization
 	// sind in die Agentur-Page integriert; 301-Redirects sitzen in inc/helpers.php
@@ -349,8 +349,9 @@ function nexus_get_wgos_cluster_page_proof_metrics() {
 			'label' => 'B2B-Fokus auf WordPress-, SEO-, Tracking- und CRO-Systeme',
 		],
 		[
-			'value' => function_exists( 'hu_marketcheck_reply_label' ) ? ucfirst( hu_marketcheck_reply_label() ) : 'Spätestens 2 Werktage',
-			'label' => 'Marktcheck-Einstieg mit priorisierten Hebeln',
+			// Kennzahlkachel neben '100 %' und '2 Proof-Routen' — Badge-Fassung.
+			'value' => hu_response_promise( 'badge' ),
+			'label' => 'Marktcheck-Befund, Einstieg mit priorisierten Hebeln',
 		],
 		[
 			'value' => '2 Proof-Routen',
@@ -405,7 +406,7 @@ function nexus_render_wgos_cluster_page( $page ) {
 	$proof_note    = isset( $page['proof_note'] ) ? (string) $page['proof_note'] : '';
 	$proof_links   = isset( $page['proof_links'] ) && is_array( $page['proof_links'] ) ? $page['proof_links'] : [];
 	$audit_cta_label         = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
-	$audit_compact_microcopy = function_exists( 'nexus_get_audit_compact_microcopy' ) ? nexus_get_audit_compact_microcopy() : 'Händische Analyse · Befund spätestens 2 Werktage · priorisierte Hebel';
+	$audit_compact_microcopy = nexus_get_audit_compact_microcopy();
 	$closing_note            = 'Der Marktcheck zeigt, ob dieses Cluster jetzt dran ist oder ob Fundament, Messbarkeit oder Angebotslogik zuerst korrigiert werden müssen.';
 
 	// Der Marktcheck gehoert laut docs/architecture/CONVERSION_ROUTING.md #1 in den

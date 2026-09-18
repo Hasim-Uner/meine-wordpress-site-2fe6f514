@@ -24,6 +24,19 @@ define( 'HU_E3_SALES_CONVERSION_BEFORE_LOW', 1 );
 define( 'HU_E3_SALES_CONVERSION_BEFORE_HIGH', 5 );
 define( 'HU_E3_TIMEFRAME_MONTHS', 6 );
 
+// Voreinstellungen des Vergleichsrechners auf der Money Page. Bewusst
+// vorsichtiger als der dokumentierte Fall: der Rechner soll nicht mit dem
+// besten gemessenen Wert anlaufen.
+//
+// Sie stehen hier, weil sie bis 2026-09 als nackte Literale neben der
+// Abschlussquote des Falls im Template standen — "12 % Abschlussquote" ohne
+// Rahmen war von der Fallzahl nicht zu unterscheiden und las sich als
+// Widerspruch zu den 15 %. Wer sie aendert, aendert eine Rechenannahme, nicht
+// den Fall. Umgekehrt gilt dasselbe: HU_E3_SALES_CONVERSION_PERCENT ist die
+// gemessene Abschlussquote und nie eine Rechenannahme.
+define( 'HU_E3_CALC_CPL_CONSERVATIVE', 45 );
+define( 'HU_E3_CALC_SALES_CONVERSION_CONSERVATIVE', 12 );
+
 // Zwischenwerte der Strecke. Standen bis 2026-08 als Literale in
 // page-e3-new-energy.php und waren damit weder prüfbar noch mitpflegbar.
 define( 'HU_E3_CPL_RAMP_LOW', 70 );
@@ -153,6 +166,20 @@ function hu_e3_canon() {
 				'value'   => HU_E3_PORTAL_CONVERSION_AVG,
 				'display' => '3 %',
 				'label'   => 'durchschnittliche Abschlussquote auf Portal-Leads',
+			],
+			// Rechenannahmen, keine Messwerte. `label` sagt das ausdruecklich,
+			// damit eine Copy, die den Wert ausgibt, den Rahmen mitnehmen kann.
+			'calc_cpl_conservative' => [
+				'value'   => HU_E3_CALC_CPL_CONSERVATIVE,
+				'display' => HU_E3_CALC_CPL_CONSERVATIVE . ' €',
+				'input'   => (string) HU_E3_CALC_CPL_CONSERVATIVE,
+				'label'   => 'vorsichtig angesetzte Kosten pro Anfrage (Rechenannahme)',
+			],
+			'calc_sales_conversion_conservative' => [
+				'value'   => HU_E3_CALC_SALES_CONVERSION_CONSERVATIVE,
+				'display' => HU_E3_CALC_SALES_CONVERSION_CONSERVATIVE . ' %',
+				'input'   => (string) HU_E3_CALC_SALES_CONVERSION_CONSERVATIVE,
+				'label'   => 'vorsichtig angesetzte Abschlussquote (Rechenannahme)',
 			],
 			'portal_cost_per_deal'  => [
 				'value'   => HU_E3_PORTAL_COST_PER_DEAL,
