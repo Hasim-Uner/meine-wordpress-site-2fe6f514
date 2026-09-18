@@ -3,6 +3,41 @@
 Single source of truth for positioning, tone, and copy direction.
 Skills reference this file instead of duplicating brand rules.
 
+## Fakten stehen nie als Text
+
+**Kontaktdaten, Antwortzeit, Preise und Kennzahlen werden nirgends
+ausgeschrieben. Sie werden aus dem Kanon gelesen.**
+
+Der Kanon liegt in `blocksy-child/inc/canon/`: `messaging-canon.php` (Kontakt,
+Antwortzeit, Wertanker), `pricing-canon.php` (Preise), `e3-proof-canon.php`
+(Case-Kennzahlen), `diagnose-canon.php` (Diagnose-Stufen), `market-canon.php`
+(fremde Marktzahlen mit Quelle), `reference-canon.php` (Referenzen).
+
+Wo der Wert herkommt, hängt davon ab, wo er hin soll:
+
+| Oberfläche | Zugriff |
+|---|---|
+| PHP-Template, Partial, `inc/*.php` | Getter aufrufen: `hu_get_contact_email()`, `hu_response_promise()`, `hu_e3_metric()`, `hu_foundation_price_display()` … |
+| Gutenberg, ACF, Widget, Menü | Shortcode: `[nx_email]`, `[nx_antwortzeit]`, `[hu_price]`, `[hu_message]` |
+| JavaScript | über `wp_localize_script()` aus PHP durchreichen, nie im Skript setzen |
+| JSON-LD / Schema | denselben Getter wie die sichtbare Copy |
+| E-Mail-Templates | denselben Getter wie die sichtbare Copy |
+
+Auch der Fallback zählt. `function_exists( 'x' ) ? x() : 'der Wert als Text'`
+ist eine zweite Fassung mit Verfallsdatum — der Kanon wird von `functions.php`
+unbedingt geladen, der Getter darf direkt aufgerufen werden.
+
+Warum: jede ausgeschriebene Zahl ist eine Kopie, die beim nächsten Wechsel
+stehen bleibt. Genau so standen zeitweise drei Kontaktadressen und drei
+Antwortzeiten gleichzeitig auf der Website — die schwächste davon im Formular,
+also genau dort, wo abgeschickt wird.
+
+Erzwungen wird die Regel von `scripts/canon-guard.sh` gegen die Sperrliste in
+`scripts/canon-forbidden-values.txt`. Der Guard läuft in der CI und im
+Theme-Build, also vor jedem Deploy, und kennt als Ausnahme nur den Kanon selbst.
+Ändert sich ein Wert, wird er im Kanon geändert und die abgelöste Fassung in die
+Sperrliste aufgenommen — nicht andersherum.
+
 ## Identity
 
 - Entity / Marke: **Haşim Üner**, hasimuener.de
@@ -71,26 +106,34 @@ Details und konkrete Zuordnung: `docs/architecture/CONVERSION_ROUTING.md`.
 
 ## Zusagen mit Zeitangabe
 
-Zwei Fristen, die nicht verwechselt werden dürfen. Beide stehen im Canon und
-gehören nie als Literal in Template, FAQ, Meta-Description oder E-Mail.
+Eine Antwortzeit, sitewide: **innerhalb von 24 Stunden werktags**. Sie steht im
+Canon und gehört nie als Literal in Template, FAQ, Meta-Description, JSON-LD,
+Formular oder E-Mail.
 
-| Zusage | Wert | Quelle | Gilt für |
-|---|---|---|---|
-| Antwort auf eine Anfrage | spätestens 2 Werktage | `hu_response_promise()` in `inc/canon/messaging-canon.php` | Jede Anfragestrecke: Startseite, White-Label, Kontakt, Fachseiten |
-| Marktcheck-Befund | spätestens 2 Werktage | `hu_marketcheck_reply_label()` in `inc/canon/diagnose-canon.php` | Nur Marktcheck und Analyse-Intake im Energy-Funnel |
+| Zusage | Quelle | Gilt für |
+|---|---|---|
+| Antwort auf eine Anfrage | `hu_response_promise()` in `inc/canon/messaging-canon.php` | Jede Anfragestrecke: Startseite, White-Label, Kontakt, Fachseiten |
+| Marktcheck-Befund | `hu_marketcheck_reply_label()` in `inc/canon/diagnose-canon.php` | Nur Marktcheck und Analyse-Intake im Energy-Funnel |
+| Editor-Inhalt (Gutenberg, ACF, Widgets) | Shortcode `[nx_antwortzeit]` | Alles, was nicht im Repo liegt |
 
-Der Marktcheck-Wert ist eine **Bearbeitungszeit** bis zum händischen Befund,
-keine Antwortzeit. Wo beides nebeneinander steht, muss die Marktcheck-Zusage
-das Wort „Befund" tragen, sonst liest sie sich als zweite, schwächere
+Der Marktcheck-Befund ist ein eigener **Vorgang** — ein händisch geschriebener
+Befund, keine Antwort auf eine E-Mail. Er hat deshalb einen eigenen Getter, seit
+2026-09-18 aber keinen eigenen Wert mehr: `hu_marketcheck_reply_label()` liest
+`hu_response_promise_short()`. Wo beides nebeneinander steht, muss die
+Marktcheck-Zusage das Wort „Befund" tragen, sonst liest sie sich als zweite
 Antwortzeit.
 
-Seit 2026-09-11 nennt die Marktcheck-Zusage **nur noch die Obergrenze**. Vorher
-stand dort „in der Regel 48 Stunden, spätestens 2 Werktage": dieselbe Zusage in
-zwei Stärken, wobei manche Routen nur die weichere Hälfte zeigten. Zwei Fristen
-für denselben Befund lesen sich nicht als Präzision, sondern als Vorbehalt.
-`HU_MARKETCHECK_REPLY_HOURS` bleibt als internes Arbeitsziel im Canon, steuert
-aber keine sichtbare Copy mehr. Kurzlabels wie „Marktcheck · 48 h" sind damit
-hinfällig.
+Warum gezählte **Arbeitsstunden** und nicht Kalenderstunden: der Einwand gegen
+eine Stundenangabe war immer, dass sie über ein Wochenende nicht einlösbar ist.
+Das trägt der Zusatz „werktags". `nexus_compute_intake_response_deadline()` in
+`inc/review-crm.php` rechnet nach derselben Regel und liest dieselbe Konstante
+(`HU_RESPONSE_HOURS`), damit der berechnete Termin in der Bestätigungsmail und
+die sichtbare Zusage nicht auseinanderlaufen können.
+
+Die abgelösten Fassungen stehen in `scripts/canon-forbidden-values.txt` und
+werden von `scripts/canon-guard.sh` repo-weit geblockt — in CI und im
+Theme-Build, also vor jedem Deploy. Sie hier noch einmal aufzuzählen wäre eine
+zweite Liste.
 
 Die Support-Frist der Tracking Care (`HU_TRACKING_RESPONSE_BUSINESS_DAYS`) ist
 eine dritte, vertragliche Größe im laufenden Mandat. Sie gehört nicht in
@@ -104,16 +147,21 @@ sind eine Frage zu viel für den Empfänger.
 | Weg | Wert | Quelle |
 |---|---|---|
 | E-Mail | `kontakt@hasimuener.de` | `hu_get_contact_email()` in `inc/canon/messaging-canon.php` |
+| E-Mail-Link | `mailto:` auf dieselbe Adresse | `hu_get_contact_mailto()` ebenda |
+| E-Mail im Editor-Inhalt | — | Shortcode `[nx_email]` |
 | Telefon | `0176 76596580` / `tel:+4917676596580` | `hu_get_contact_phone()` ebenda |
 
-`hallo@` bleibt als Alias bestehen und nimmt Post an, wird aber in keiner
+Die früheren Alias-Adressen nehmen weiter Post an, werden aber in keiner
 sichtbaren Copy, keinem Schema und keinem Formularhinweis mehr ausgegeben.
-`hasim@` und `info@` sind ebenfalls raus.
+Welche das sind, steht in `scripts/canon-forbidden-values.txt` und wird von
+`scripts/canon-guard.sh` erzwungen — das ist die einzige Liste davon.
 
-Ausgenommen bleiben die in Impressum und Datenschutzerklärung benannten
-Adressen: rechtlich benannte Kontaktwege, keine Marketing-Copy. Der Absender
-der Transaktionsmails kommt aus der Laufzeitkonfiguration (`inc/mail.php`),
-nicht aus dem Canon — wo Copy den Absender benennt, muss beides zusammenpassen.
+**Ohne Ausnahme, seit 2026-09-18:** Impressum und Datenschutzerklärung lesen
+denselben Canon. Der rechtlich benannte Kontaktweg ist derselbe wie der
+beworbene; ihn getrennt zu pflegen hat nur die Chance erhöht, dass eine der
+beiden Seiten stehen bleibt. Der Absender der Transaktionsmails kommt weiterhin
+aus der Laufzeitkonfiguration (`inc/mail.php`), nicht aus dem Canon — wo Copy
+den Absender benennt, muss beides zusammenpassen.
 
 ## Tone
 

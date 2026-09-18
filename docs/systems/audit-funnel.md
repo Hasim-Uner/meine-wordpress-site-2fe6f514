@@ -44,5 +44,5 @@ Aktuell gibt es keinen produktiven n8n-Pfad für den Marktcheck. Workflow-Export
 ## Risiken
 
 - Legacy-Audit-Code und aktiver Marktcheck duerfen nicht vermischt werden.
-- Alte Doku oder Editor-Snippets können noch `48h`, `Growth Audit` oder n8n als aktiven Default suggerieren.
+- Alte Doku oder Editor-Snippets können noch eine abgelöste Antwortzeit (siehe `scripts/canon-forbidden-values.txt`), `Growth Audit` oder n8n als aktiven Default suggerieren.
 - Public CTA-Logik muss beim Marktcheck bleiben, solange keine neue Funnel-Entscheidung dokumentiert ist.

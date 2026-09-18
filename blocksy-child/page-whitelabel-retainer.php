@@ -37,9 +37,7 @@ $wl_form_task_url  = $wl_form_url( 'aufgabe' );
 $wl_form_offer_url = $wl_form_url( 'angebotsphase' );
 $wl_form_endpoint  = rest_url( 'nexus/v1/whitelabel-request' );
 
-$task_brief_response = function_exists( 'hu_response_promise' )
-	? hu_response_promise()
-	: 'Antwort spätestens in 2 Werktagen';
+$task_brief_response = hu_response_promise();
 
 $imprint_url  = home_url( '/impressum/' );
 $privacy_url  = home_url( '/datenschutz/' );

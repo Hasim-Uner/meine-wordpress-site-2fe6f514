@@ -23,8 +23,8 @@ $contact_email  = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_ema
 $portrait_url   = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-relaxed-640x800.webp';
 $website_price  = function_exists( 'hu_freelancer_website_price' ) ? hu_freelancer_website_price( true ) : '3.400 € netto';
 $tracking_price = function_exists( 'hu_tracking_price' ) ? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' ) : '1.290 €';
-$response       = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'phrase' ) : 'Antwort spätestens in 2 Werktagen';
-$response_short = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : 'Antwort spätestens 2 Werktage';
+$response       = hu_response_promise( 'phrase' );
+$response_short = hu_response_promise( 'compact' );
 $references     = function_exists( 'hu_public_reference_projects' ) ? hu_public_reference_projects() : [];
 $github_url     = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
 $psi_url        = 'https://pagespeed.web.dev/analysis?url=' . rawurlencode( home_url( '/' ) );

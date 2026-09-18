@@ -294,7 +294,11 @@
 
   function renderSuccess(qualification) {
     var headline = qualification.headline || 'Danke. Ihr Marktcheck ist eingegangen.';
-    var message = qualification.message || 'Ich prüfe Region und Fit persönlich und sende Ihnen spätestens innerhalb von 2 Werktagen eine klare Rückmeldung.';
+    // Die Frist kommt aus dem Canon (NexusMarktcheckConfig.replyPromise), nie
+    // als Literal aus diesem Skript: hier stand zuletzt eine eigene Fassung,
+    // die die Zusage der Seite im Erfolgsdialog ueberschrieben hat.
+    var message = qualification.message
+      || (CFG.replyPromise ? 'Ich prüfe Region und Fit persönlich und sende Ihnen ' + CFG.replyPromise + ' eine klare Rückmeldung.' : 'Ich prüfe Region und Fit persönlich und sende Ihnen eine klare Rückmeldung.');
     var deadline = qualification.response_deadline_human || '';
     var ticket = qualification.ticket_id || '';
     var status = qualification.status || '';

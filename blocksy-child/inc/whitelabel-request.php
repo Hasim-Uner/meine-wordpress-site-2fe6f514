@@ -207,9 +207,7 @@ function hu_handle_whitelabel_request_submission( WP_REST_Request $request ) {
 	hu_send_whitelabel_request_notification( $validated );
 	hu_send_whitelabel_request_confirmation( $validated );
 
-	$response_promise = function_exists( 'hu_response_promise' )
-		? hu_response_promise( 'window' )
-		: 'spätestens in 2 Werktagen';
+	$response_promise = hu_response_promise( 'window' );
 
 	return new WP_REST_Response(
 		[
@@ -355,9 +353,7 @@ function hu_send_whitelabel_request_notification( $payload ) {
 function hu_send_whitelabel_request_confirmation( $payload ) {
 	$cases            = hu_whitelabel_request_cases();
 	$contact_email    = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : '';
-	$response_promise = function_exists( 'hu_response_promise' )
-		? hu_response_promise( 'window' )
-		: 'spätestens in 2 Werktagen';
+	$response_promise = hu_response_promise( 'window' );
 
 	$headers = [];
 

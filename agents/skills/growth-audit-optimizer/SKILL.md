@@ -25,14 +25,14 @@ sh agents/skills/growth-audit-optimizer/scripts/print-scope.sh
 
 1. Identify whether the task targets legacy `/growth-audit/` redirect compatibility or the active marketcheck path before changing copy.
 2. Search audit-relevant strings across template, helper, JS, CSS, and SEO layers.
-3. Remove stale `30 Sekunden`, `48h`, manual-feedback, CRM-intake, or Shopify carryover from public-facing flow copy.
+3. Remove stale `30 Sekunden`, retired response-time literals (`scripts/canon-forbidden-values.txt`), manual-feedback, CRM-intake, or Shopify carryover from public-facing flow copy.
 4. Sharpen marketcheck hero, trust, expectation-setting, and result-to-next-step CTA logic.
 5. Align active metadata and shared audit CTA copy when they still point at outdated `/growth-audit/` framing.
 
 ## Copy Direction
 
 See `docs/standards/BRAND_AND_COPY.md` for full tone, preferred terms, and anti-patterns.
-Additional audit-specific rule: avoid old 48h/manual-review language in the active marketcheck flow and do not revive `/growth-audit/` as a primary CTA.
+Additional audit-specific rule: never write a response time as text — read it from `hu_response_promise()` or the `[nx_antwortzeit]` shortcode, and let `scripts/canon-guard.sh` decide what is retired. Avoid manual-review language in the active marketcheck flow and do not revive `/growth-audit/` as a primary CTA.
 
 ## Deliver
 

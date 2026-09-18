@@ -203,8 +203,8 @@ function hu_get_site_header_navigation_contract() {
 			'location' => __( 'Pattensen bei Hannover · DACH-weit', 'blocksy-child' ),
 			'links'    => [
 				[
-					'label'    => 'kontakt@hasimuener.de',
-					'url'      => 'mailto:kontakt@hasimuener.de',
+					'label'    => hu_get_contact_email(),
+					'url'      => hu_get_contact_mailto(),
 					'track'    => 'nav_header_project',
 					'category' => 'lead_gen',
 					'section'  => 'header',

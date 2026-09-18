@@ -512,10 +512,10 @@ function hu_send_analysis_lead_confirmation( array $payload ) {
 		(int) $payload['score'],
 		'',
 		esc_url( $calcom_url ),
-		// Befundfrist aus dem Diagnose-Canon statt hart "48 Stunden" im
-		// Mailtext. Die Bestaetigungsmail ist die Stelle, an der die Zusage
-		// am teuersten ist, wenn sie von der Seite abweicht.
-		esc_html( function_exists( 'hu_marketcheck_reply_label' ) ? hu_marketcheck_reply_label() : 'spätestens 2 Werktage' )
+		// Befundfrist aus dem Diagnose-Canon statt als Literal im Mailtext.
+		// Die Bestaetigungsmail ist die Stelle, an der die Zusage am teuersten
+		// ist, wenn sie von der Seite abweicht.
+		esc_html( hu_marketcheck_reply_label() )
 	);
 
 	$html = function_exists( 'nexus_get_contact_email_shell' )
