@@ -88,6 +88,9 @@ $marketcheck_mins         = (int) ( $diagnose_canon['marketcheck_minutes'] ?? 2 
 
 // ── Kontakt (Messaging-Canon) ──────────────────────────────────
 $contact_email = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
+// Ausweichweg fuer den Marktcheck-Mount ohne JavaScript: ein echtes
+// Formular auf /kontakt/, kein mailto. Siehe Abschnitt 07.
+$contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
 
 // ── Fremde Marktzahlen (Market-Canon) ──────────────────────────
 $market_figures    = function_exists( 'hu_market_figures' ) ? hu_market_figures() : [];
@@ -1297,15 +1300,23 @@ get_header();
 							// Knotens durch die mehrstufige Sequenz. Was hier steht,
 							// ist der Zustand ohne JavaScript und muss fuer sich allein
 							// einen gangbaren Kontaktweg anbieten.
+							//
+							// Kein mailto: der Ausweichweg fuehrt auf das
+							// serverseitig gerenderte Formular auf /kontakt/. Die
+							// Adresse bleibt als Text lesbar, aber nicht als Ziel
+							// eines CTA, der "Marktcheck starten" verspricht.
 							?>
 							<div data-sol-quiz id="sol-quiz-mount">
 								<h3 id="sol-quiz-title" class="nur-vorlesen">Marktcheck für Ihren Vertrieb starten</h3>
-								<a class="tun" href="mailto:<?php echo esc_attr( $contact_email ); ?>?subject=<?php echo rawurlencode( 'Marktcheck' ); ?>"
-									data-track-action="cta_strecke_marktcheck_mail"
+								<p class="klein">
+									Der Marktcheck läuft über ein mehrstufiges Formular und braucht JavaScript.
+								</p>
+								<a class="tun" href="<?php echo esc_url( $contact_url ); ?>"
+									data-track-action="cta_strecke_marktcheck_fallback_kontakt"
 									data-track-category="lead_gen"
 									data-track-section="marktcheck"
 									data-track-funnel-stage="intake_open"
-								>Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
+								>Über das Kontaktformular anfragen <span class="pf" aria-hidden="true">→</span></a>
 								<p class="klein">
 									Keine Zahlungsdaten · kein Pflicht-Call<br>
 									<?php echo esc_html( $contact_email ); ?>
