@@ -23,7 +23,7 @@ Check first
 
 Look for
 - 30 Sekunden carryover
-- 48h or manual feedback language in the active route
+- retired response-time literals (see scripts/canon-forbidden-values.txt) or manual feedback language in the active route
 - CRM-intake framing on the public path
 - Shopify mentions in audit-specific copy
 - weak hero, trust, or result CTA transitions

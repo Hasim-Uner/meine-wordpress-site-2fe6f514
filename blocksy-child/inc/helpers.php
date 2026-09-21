@@ -258,9 +258,7 @@ function hu_arrow_up_right_svg( $size = 14 ) {
  * @return string
  */
 function nexus_get_marketcheck_final_lead_in() {
-	$reply = function_exists( 'hu_marketcheck_reply_label' )
-		? hu_marketcheck_reply_label()
-		: 'spätestens 2 Werktage';
+	$reply = hu_marketcheck_reply_label();
 
 	// Kein Gedankenstrich am Ende: die aufrufenden Seiten haengen ihre eigene
 	// Zusage mit einem an. Zwei Striche in einem Satz lesen sich holprig.

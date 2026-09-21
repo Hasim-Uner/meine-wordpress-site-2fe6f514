@@ -106,9 +106,7 @@ $server_side_url = home_url( '/server-side-tracking-b2b/' );
 $results_url     = function_exists( 'nexus_get_primary_public_url' )
 	? nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) )
 	: home_url( '/ergebnisse/' );
-$response_label  = function_exists( 'hu_response_promise' )
-	? hu_response_promise( 'compact' )
-	: 'Antwort spätestens 2 Werktage';
+$response_label  = hu_response_promise( 'compact' );
 $setup_price     = function_exists( 'hu_tracking_price' )
 	? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' )
 	: '1.290 €';

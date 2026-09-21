@@ -6,7 +6,7 @@ Found a security issue in this codebase or on [hasimuener.de](https://hasimuener
 
 **Please report responsibly** — do not open a public GitHub issue.
 
-📧 **Contact:** `hallo@hasimuener.de`
+📧 **Contact:** `kontakt@hasimuener.de`
 
 ### What to include
 

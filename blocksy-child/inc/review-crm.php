@@ -946,11 +946,11 @@ function nexus_get_review_request_success_message( $payload ) {
 	$variant = isset( $payload['intake_variant'] ) ? sanitize_key( (string) $payload['intake_variant'] ) : '';
 
 	if ( 'energy_systems' === $variant ) {
-		return 'Eingegangen. Ihre Standortbestimmung liegt in der Bearbeitung. Sie erhalten spätestens 2 Werktage nach Eingang eine E-Mail von ' . hu_get_contact_email() . ' — bei Eignung mit Vorschlag für ein 30-minütiges Erstgespräch, bei Nicht-Eignung mit konkretem Hinweis auf eine realistischere Alternative.';
+		return 'Eingegangen. Ihre Standortbestimmung liegt in der Bearbeitung. Sie erhalten ' . hu_response_promise( 'window' ) . ' eine E-Mail von ' . hu_get_contact_email() . ' — bei Eignung mit Vorschlag für ein 30-minütiges Erstgespräch, bei Nicht-Eignung mit konkretem Hinweis auf eine realistischere Alternative.';
 	}
 
 	if ( nexus_is_growth_audit_simple_intake_variant( $variant ) ) {
-		return 'Die Rückmeldung kommt spätestens 2 Werktage nach Eingang per E-Mail.';
+		return 'Die Rückmeldung kommt ' . hu_response_promise( 'window' ) . ' per E-Mail.';
 	}
 
 	return 'Ihre Anfrage ist eingegangen. Ich ordne Seite, Angebot und Anfragepfad ein und melde mich mit einer konkreten nächsten Priorität per E-Mail.';
@@ -998,10 +998,15 @@ function nexus_compute_lead_qualification( $validated ) {
 }
 
 /**
- * Compute the SLA deadline for a fresh intake (48 business hours from now).
+ * Compute the SLA deadline for a fresh intake.
+ *
+ * Die Stundenzahl kommt aus HU_RESPONSE_HOURS — das ist dieselbe Zusage, die
+ * hu_response_promise() sichtbar macht, nur als konkretes Datum. Bis 2026-09
+ * stand hier eine eigene 48, waehrend die Copy eine andere Frist nannte: die
+ * Mail versprach das eine, der berechnete Termin das andere.
  *
  * Weekends are skipped: an intake submitted Friday afternoon shifts into
- * Tuesday afternoon, not Sunday. Public holidays are not considered.
+ * Monday afternoon, not Saturday. Public holidays are not considered.
  *
  * @param int|null $now_ts Optional override for the reference timestamp.
  * @return array{iso:string,human:string}
@@ -1016,7 +1021,7 @@ function nexus_compute_intake_response_deadline( $now_ts = null ) {
 
 	$now = null === $now_ts ? new DateTimeImmutable( 'now', $tz ) : ( new DateTimeImmutable( '@' . (int) $now_ts ) )->setTimezone( $tz );
 
-	$hours_left = 48;
+	$hours_left = HU_RESPONSE_HOURS;
 	$cursor     = $now;
 	while ( $hours_left > 0 ) {
 		$cursor = $cursor->modify( '+1 hour' );
@@ -1103,7 +1108,14 @@ function nexus_build_qualification_screen( $qualification, $validated, $post_id 
 			'response_deadline_human' => $deadline['human'],
 			'proof'                   => [
 				'label' => 'Echte Zahlen aus einem laufenden Setup',
-				'body'  => 'Mittelständischer PV-Installationsbetrieb — CPL von 150 € auf 22 € in 6 Monaten, Abschlussquote auf 15 %. Gleiche Methode, die für Ihren Betrieb geprüft wird.',
+				'body'  => sprintf(
+					'%1$s — CPL von %2$s auf %3$s in %4$s, Abschlussquote auf %5$s. Gleiche Methode, die für Ihren Betrieb geprüft wird.',
+					ucfirst( HU_E3_CASE_LABEL ),
+					hu_e3_metric( 'cpl_before' ),
+					hu_e3_metric( 'cpl_after' ),
+					hu_e3_metric( 'timeframe' ),
+					hu_e3_metric( 'sales_conversion' )
+				),
 			],
 		];
 	}
@@ -2495,7 +2507,7 @@ function nexus_send_review_request_admin_notification( $post_id, $payload ) {
 		esc_html( $payload['name'] ),
 		$lead_meta_html,
 		esc_html( $payload['audit_type_label'] ),
-		esc_html( 'Persönliche Rückmeldung spätestens 2 Werktage nach Eingang' ),
+		esc_html( sprintf( 'Persönliche Rückmeldung %s', hu_response_promise( 'window' ) ) ),
 		$detail_html,
 		esc_url( $edit_url ),
 		esc_url( $page_url ? $page_url : admin_url( 'post.php?post=' . $post_id . '&action=edit' ) )
@@ -2581,7 +2593,7 @@ function nexus_send_review_request_confirmation( $payload ) {
 			'preheader' => 'Ihre Anfrage für den ' . $payload['audit_type_label'] . ' ist eingegangen.',
 			'eyebrow'   => $payload['audit_type_label'],
 			'headline'  => 'Ihr ' . $payload['audit_type_label'] . ' ist im System.',
-			'intro'     => 'Danke, ' . $payload['name'] . '. Ich prüfe die Seite und melde mich spätestens 2 Werktage nach Eingang per E-Mail.',
+			'intro'     => 'Danke, ' . $payload['name'] . '. Ich prüfe die Seite und melde mich ' . hu_response_promise( 'window' ) . ' per E-Mail.',
 			'content'   => $content,
 			'footer'    => 'Viele Grüße, Haşim Üner',
 		]

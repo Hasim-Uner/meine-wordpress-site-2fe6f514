@@ -100,6 +100,92 @@ function hu_message_shortcode( $atts ) {
 add_shortcode( 'hu_message', 'hu_message_shortcode' );
 
 /**
+ * Render the canonical contact address for editor-owned content.
+ *
+ * Gutenberg-Bloecke, ACF-Felder und Widgets liegen in der Datenbank und sind
+ * vom Repo aus nicht erreichbar. Damit dort trotzdem kein zweiter Stand
+ * entsteht, schreibt die Redaktion `[nx_email]` statt der Adresse.
+ *
+ * - `[nx_email]`            → verlinkte Adresse (Normalfall)
+ * - `[nx_email as="text"]`  → nur die Adresse, ohne Link
+ * - `[nx_email as="mailto"]`→ nur der mailto-Link, fuer eigene Buttons
+ * - `[nx_email label="Schreiben Sie mir"]` → eigener Linktext
+ *
+ * @param array<string, mixed> $atts Shortcode attributes.
+ * @return string
+ */
+function nx_email_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		[
+			'as'    => 'link',
+			'label' => '',
+		],
+		$atts,
+		'nx_email'
+	);
+
+	if ( ! function_exists( 'hu_get_contact_email' ) ) {
+		return '';
+	}
+
+	$address = hu_get_contact_email();
+	$mailto  = function_exists( 'hu_get_contact_mailto' ) ? hu_get_contact_mailto() : 'mailto:' . $address;
+
+	if ( 'text' === $atts['as'] ) {
+		return esc_html( $address );
+	}
+
+	if ( 'mailto' === $atts['as'] ) {
+		return esc_url( $mailto );
+	}
+
+	$label = '' !== trim( (string) $atts['label'] ) ? (string) $atts['label'] : $address;
+
+	return sprintf(
+		'<a href="%1$s">%2$s</a>',
+		esc_url( $mailto ),
+		esc_html( $label )
+	);
+}
+add_shortcode( 'nx_email', 'nx_email_shortcode' );
+
+/**
+ * Render the canonical response promise for editor-owned content.
+ *
+ * - `[nx_antwortzeit]`              → Kurzform ("innerhalb von …")
+ * - `[nx_antwortzeit as="satz"]`    → abgeschlossener Satz mit Punkt
+ * - `[nx_antwortzeit as="kompakt"]` → "Antwort …" ohne Punkt, fuer Kacheln
+ *
+ * @param array<string, mixed> $atts Shortcode attributes.
+ * @return string
+ */
+function nx_antwortzeit_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		[
+			'as' => 'kurz',
+		],
+		$atts,
+		'nx_antwortzeit'
+	);
+
+	if ( ! function_exists( 'hu_response_promise' ) ) {
+		return '';
+	}
+
+	$variants = [
+		'kurz'    => 'value',
+		'satz'    => 'sentence',
+		'kompakt' => 'compact',
+	];
+
+	$key     = strtolower( trim( (string) $atts['as'] ) );
+	$variant = isset( $variants[ $key ] ) ? $variants[ $key ] : 'value';
+
+	return esc_html( hu_response_promise( $variant ) );
+}
+add_shortcode( 'nx_antwortzeit', 'nx_antwortzeit_shortcode' );
+
+/**
  * Resolve key URLs once for homepage shortcodes.
  *
  * @return array<string, string>

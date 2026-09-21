@@ -20,23 +20,27 @@ define(
 );
 
 // ── Oeffentliche Kontaktadresse ───────────────────────────────────
-// Die White-Label-Seite nannte hallo@, die Solar-Seite hasim@, das
-// Organization-Schema info@ — drei Adressen fuer denselben Zweck, zwei davon
-// auf indexierten Seiten. Sichtbare Kontaktwege lesen ab hier.
+// Eine Adresse, ueberall: kontakt@hasimuener.de. Die White-Label-Seite, die
+// Solar-Seite und das Organization-Schema nannten frueher je eine eigene —
+// drei Adressen fuer denselben Zweck, zwei davon auf indexierten Seiten.
+// Sichtbare Kontaktwege lesen seither ab hier.
 //
-// Primaer ist kontakt@. hallo@ bleibt als Alias bestehen und nimmt Post an,
-// wird aber nirgends mehr ausgegeben: zwei aktive Adressen sitewide sind eine
-// Frage zu viel fuer den Empfaenger. Die Kopfnavigation nannte kontakt@ schon,
-// waehrend der Canon noch hallo@ fuehrte — hier laeuft beides wieder zusammen.
+// Die abgeloesten Aliasse nehmen weiter Post an, werden aber nirgends mehr
+// ausgegeben: zwei aktive Adressen sitewide sind eine Frage zu viel fuer den
+// Empfaenger. Welche das sind, steht als Sperrliste in
+// scripts/canon-forbidden-values.txt und wird von scripts/canon-guard.sh
+// erzwungen — nicht hier, damit es genau eine Liste davon gibt.
 //
-// Ausgenommen: die im Impressum und in der Datenschutzerklaerung benannte
-// Adresse. Das ist ein rechtlich benannter Kontaktweg, keine Marketing-Copy,
-// und wird nicht nebenbei mitgezogen.
+// Seit 2026-09-18 ohne Ausnahme: Impressum und Datenschutzerklaerung lesen
+// denselben Canon. Der rechtlich benannte Kontaktweg ist derselbe wie der
+// beworbene; ihn getrennt zu pflegen hat nur die Chance erhoeht, dass eine der
+// beiden Seiten stehen bleibt.
 //
 // Der tatsaechliche Absender der Transaktionsmails kommt aus der
 // Laufzeitkonfiguration (NEXUS_BREVO_FROM_EMAIL et al. in inc/mail.php), nicht
 // von hier. Wo Copy den Absender benennt, muss beides zusammenpassen.
 define( 'HU_CONTACT_EMAIL', 'kontakt@hasimuener.de' );
+define( 'HU_CONTACT_EMAIL_MAILTO', 'mailto:' . HU_CONTACT_EMAIL );
 
 /**
  * Public contact address for visible contact paths.
@@ -45,6 +49,19 @@ define( 'HU_CONTACT_EMAIL', 'kontakt@hasimuener.de' );
  */
 function hu_get_contact_email() {
 	return HU_CONTACT_EMAIL;
+}
+
+/**
+ * Canonical mailto link for the public contact address.
+ *
+ * Eigener Getter, damit kein Aufrufer 'mailto:' selbst davorschreibt: genau
+ * dort entstand die zweite Fassung, als Adresse und Link in verschiedenen
+ * Zeilen gepflegt wurden.
+ *
+ * @return string
+ */
+function hu_get_contact_mailto() {
+	return HU_CONTACT_EMAIL_MAILTO;
 }
 
 // Telefonnummer als zweiter direkter Weg. Impressum und Datenschutz tragen die
@@ -68,64 +85,87 @@ function hu_get_contact_phone( $variant = 'display' ) {
 }
 
 // ── Antwortzeit auf eine Anfrage ──────────────────────────────────
-// Startseite und White-Label-Seite versprachen "4 Stunden werktags", die
-// Kontaktseite als gemeinsames Ziel beider CTAs dagegen "in der Regel 48
-// Stunden, spaetestens 2 Werktage". Damit stand die schwaechste Fassung genau
-// dort, wo abgeschickt wird: das Versprechen brach im Formular. Seither liest
-// jede sichtbare Stelle aus dieser Datei.
+// Eine Zusage, ueberall: "innerhalb von 24 Stunden werktags". Sie gilt fuer
+// jede Anfrage und seit 2026-09-18 auch fuer den Marktcheck-Befund
+// (hu_marketcheck_reply_label() in canon/diagnose-canon.php liest von hier).
 //
-// Seit 2026-09-12 ist die Zusage in Werktagen formuliert, nicht in Stunden.
-// Die Stundenangabe war eine zweite Zeitrechnung neben dem Marktcheck-Label
-// ("spaetestens 2 Werktage") und nebenbei die haertere Zusage fuer den
-// Absender: wer freitags abends schreibt, bekam ein 24-Stunden-Versprechen,
-// das erst montags einloesbar war. Ein Mass fuer beide Vorgaenge.
+// Vorgeschichte, damit keine der abgeloesten Fassungen zurueckkommt:
+// Startseite und White-Label-Seite versprachen eine Frist in Stunden, die
+// Kontaktseite als gemeinsames Ziel beider CTAs eine deutlich weichere in
+// Werktagen — die schwaechste Fassung stand genau dort, wo abgeschickt wird,
+// das Versprechen brach im Formular. Die Vereinheitlichung auf Werktage
+// (2026-09-12) hat das behoben, aber die langsamste Fassung zur Norm gemacht.
 //
-// HU_MARKETCHECK_REPLY_HOURS in canon/diagnose-canon.php bleibt davon
-// unberuehrt: das ist die interne Bearbeitungszeit des Marktchecks bis zum
-// haendischen Befund, keine Antwortzeit auf eine Anfrage. Sie steuert seit
-// 2026-09-11 keine sichtbare Copy mehr.
-define( 'HU_RESPONSE_BUSINESS_DAYS', 2 );
+// Der Einwand gegen die Stundenangabe war, dass sie ueber ein Wochenende
+// nicht einloesbar ist. Das traegt der Zusatz "werktags": gezaehlt werden
+// Arbeitsstunden, nicht Kalenderstunden. Wer freitags abends schreibt, hat
+// damit dieselbe Zusage wie wer dienstags morgens schreibt.
+//
+// Die Sperrliste der abgeloesten Fassungen steht in
+// scripts/canon-forbidden-values.txt, nicht hier.
+define( 'HU_RESPONSE_HOURS', 24 );
+define( 'HU_RESPONSE_PROMISE_SHORT', 'innerhalb von ' . HU_RESPONSE_HOURS . ' Stunden werktags' );
+define( 'HU_RESPONSE_PROMISE_SENTENCE', 'Antwort ' . HU_RESPONSE_PROMISE_SHORT . '.' );
+
+/**
+ * Kurzform der Antwortzusage: der nackte Wert ohne Rahmensatz.
+ *
+ * Fuer Label-Spalten, Kacheln und Microcopy, die "Antwort" schon als Label
+ * tragen — der Fuss setzt ihn in ein <b>.
+ *
+ * @return string
+ */
+function hu_response_promise_short() {
+	return HU_RESPONSE_PROMISE_SHORT;
+}
+
+/**
+ * Satzform der Antwortzusage: abgeschlossener Satz mit Punkt.
+ *
+ * @return string
+ */
+function hu_response_promise_sentence() {
+	return HU_RESPONSE_PROMISE_SENTENCE;
+}
 
 /**
  * Display value for the canonical response promise.
  *
- * Fuenf Fassungen derselben Zusage, damit kein Aufrufer sie selbst
+ * Sechs Fassungen derselben Zusage, damit kein Aufrufer sie selbst
  * zusammensetzt:
  *
- * - `value`    der nackte Wert fuer Label-Spalten ("spätestens 2 Werktage").
- *              Der Fuss setzt ihn in ein <b> und braucht ihn deshalb ohne
- *              Rahmensatz.
+ * - `value`    der nackte Wert fuer Label-Spalten (Kurzform).
  * - `window`   die Praepositionalfassung fuer den Fliesstext ("Sie erhalten
- *              … eine Rueckmeldung"). Dativ, deshalb "Werktagen".
+ *              … eine Rueckmeldung"). Mit "innerhalb von" identisch zur
+ *              Kurzform — beide Namen bleiben, weil die Aufrufer sie
+ *              unterschiedlich rahmen.
+ * - `badge`    die knappste Fassung fuer Menue-CTAs und Kennzahlkacheln, wo
+ *              die Kurzform ueber zwei Zeilen laufen wuerde. Traegt "werktags"
+ *              weiter mit: ohne den Zusatz waere es eine andere Zusage.
  * - `compact`  eine Zeile fuer Metadaten und Microcopy.
  * - `sentence` ein abgeschlossener Satz.
  * - `phrase`   derselbe Satz ohne Punkt, fuer Aufrufer, die selbst
  *              interpunktieren.
  *
- * @param string $variant One of: phrase, sentence, compact, window, value.
+ * @param string $variant One of: phrase, sentence, compact, window, value, badge.
  * @return string
  */
 function hu_response_promise( $variant = 'phrase' ) {
-	$value  = sprintf( 'spätestens %d Werktage', HU_RESPONSE_BUSINESS_DAYS );
-	$window = sprintf( 'spätestens in %d Werktagen', HU_RESPONSE_BUSINESS_DAYS );
+	$short = hu_response_promise_short();
 
-	if ( 'value' === $variant ) {
-		return $value;
+	if ( 'value' === $variant || 'window' === $variant ) {
+		return $short;
 	}
 
-	if ( 'window' === $variant ) {
-		return $window;
-	}
-
-	if ( 'compact' === $variant ) {
-		return sprintf( 'Antwort %s', $value );
+	if ( 'badge' === $variant ) {
+		return sprintf( '%d h werktags', HU_RESPONSE_HOURS );
 	}
 
 	if ( 'sentence' === $variant ) {
-		return sprintf( 'Antwort %s.', $window );
+		return hu_response_promise_sentence();
 	}
 
-	return sprintf( 'Antwort %s', $window );
+	return sprintf( 'Antwort %s', $short );
 }
 
 /**
@@ -138,8 +178,10 @@ function hu_messaging_canon() {
 		'value_anchor_architecture' => HU_MESSAGE_VALUE_ANCHOR_ARCHITECTURE,
 		'value_anchor_price'        => HU_MESSAGE_VALUE_ANCHOR_PRICE,
 		'contact_email'             => HU_CONTACT_EMAIL,
-		'response_business_days'    => HU_RESPONSE_BUSINESS_DAYS,
-		'response_promise'          => hu_response_promise( 'sentence' ),
+		'contact_mailto'            => HU_CONTACT_EMAIL_MAILTO,
+		'response_hours'            => HU_RESPONSE_HOURS,
+		'response_promise_short'    => HU_RESPONSE_PROMISE_SHORT,
+		'response_promise'          => HU_RESPONSE_PROMISE_SENTENCE,
 		'what_we_dont_sell'         => [
 			'Keine reine Design-Retusche ohne technischen oder messbaren Zweck.',
 			'Keine Reporting-Fassade ohne belastbare Datengrundlage.',
@@ -168,6 +210,43 @@ function hu_messaging_canon() {
 		'term_definitions'          => [
 			'Umsetzungspartner' => 'Betrieb, für den im Solar-/Wärmepumpen-Funnel nach dem Marktcheck ein eigenes Anfragesystem umgesetzt wird; kein Mitgründer, kein Anteilseigner und keine gesellschaftsrechtliche Partnerschaft.',
 		],
+	];
+}
+
+/**
+ * Retired menu- and CTA-labels that a stored WordPress menu may still carry.
+ *
+ * Der Header schreibt alte Menuepunkte auf das aktuelle Label um und muss die
+ * abgeloesten dafuer beim Namen nennen koennen. Sie stehen hier, weil der
+ * Canon die einzige Datei ist, in der ein abgeloester Wert im Klartext
+ * auftauchen darf — in inc/header.php wurden sie vorher aus Fragmenten
+ * zusammengesetzt, nur um an der Sperre vorbeizukommen. Das hat den Wert
+ * nicht entfernt, sondern unlesbar gemacht.
+ *
+ * Nur Label-Historie: nichts davon wird jemals ausgegeben.
+ *
+ * @return array<int, string>
+ */
+function hu_retired_cta_labels() {
+	// canon/diagnose-canon.php laedt vor dieser Datei, der Zugriff ist also
+	// sicher; defined() haelt die Funktion trotzdem unabhaengig von der
+	// Ladereihenfolge in functions.php.
+	$marketcheck = defined( 'HU_REQUEST_ANALYSIS_LABEL' ) ? HU_REQUEST_ANALYSIS_LABEL : 'Marktcheck';
+
+	return [
+		'Analyse starten',
+		'System-Diagnose starten',
+		'System-Diagnose anfragen',
+		'System-Diagnose',
+		$marketcheck,
+		$marketcheck . ' · 60 Sek.',
+		$marketcheck . ' · 48 h',
+		$marketcheck . ' · 2 Werktage',
+		'Audit starten',
+		'Audit',
+		'AI-Audit',
+		'Anfrage stellen',
+		'Direkt anfragen',
 	];
 }
 

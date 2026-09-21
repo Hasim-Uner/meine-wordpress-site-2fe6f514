@@ -120,8 +120,9 @@ function nexus_is_primary_header_menu_args( $args ) {
  *
  * Reads the one canonical navigation contract instead of keeping a second
  * list. The hand-maintained copy here still carried the pre-repositioning
- * navigation — "WordPress Agentur" as a main entry and "Marktcheck · 48 h"
- * as the CTA. The header stopped calling it, but
+ * navigation — "WordPress Agentur" as a main entry and one of the retired
+ * marketcheck labels (see hu_retired_cta_labels()) as the CTA. The header
+ * stopped calling it, but
  * inc/seo-cockpit/seo-cockpit-links.php still reads it and turns it into
  * internal link suggestions, so the retired navigation kept propagating from
  * there.
@@ -465,19 +466,20 @@ function nexus_energy_nav_cta_label( $items, $args ) {
 	}
 
 	$request_url = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
-	// Frueher hart 'Marktcheck · 48 h'. Das Kurzlabel trug den Normalfall,
-	// waehrend die Money Page die Obergrenze nannte — dieselbe Zusage in zwei
-	// Staerken. Seit der Vereinheitlichung gibt es nur noch eine Fassung, und
-	// sie kommt aus dem Canon.
-	$request_cta = 'Marktcheck · ' . ( function_exists( 'hu_marketcheck_reply_label' ) ? hu_marketcheck_reply_label() : 'spätestens 2 Werktage' );
+	// Frueher ein hart gesetztes Kurzlabel mit eigener Frist, waehrend die
+	// Money Page eine andere nannte — dieselbe Zusage in zwei Staerken. Seit
+	// der Vereinheitlichung gibt es nur noch eine Fassung, und Label wie
+	// Frist kommen aus dem Canon.
+	// Badge-Fassung: die Kurzform liefe im Menue-CTA ueber zwei Zeilen.
+	$request_cta = HU_REQUEST_ANALYSIS_LABEL . ' · ' . hu_response_promise( 'badge' );
+
+	// Die abgeloesten Label stehen als hu_retired_cta_labels() im Canon. Sie
+	// waren hier aus Fragmenten zusammengesetzt, um an der Fristen-Sperre
+	// vorbeizukommen — das hat den Wert nicht entfernt, nur unlesbar gemacht.
+	$retired_labels = hu_retired_cta_labels();
 
 	foreach ( $items as $item ) {
-		$legacy_analysis_label = 'Analyse ' . 'starten';
-		$legacy_diagnose_label = 'System-Diagnose ' . 'starten';
-		$legacy_diagnose_request_label = 'System-Diagnose ' . 'anfragen';
-		$legacy_fast_marketcheck_label = implode( ' ', [ 'Marktcheck ·', '48', 'h' ] );
-		$legacy_business_days_marketcheck_label = implode( ' ', [ 'Marktcheck ·', '2', 'Werktage' ] );
-		if ( in_array( $item->title, [ $legacy_analysis_label, $legacy_diagnose_label, 'System-Diagnose', 'Marktcheck', 'Marktcheck · 60 Sek.', $legacy_fast_marketcheck_label, $legacy_business_days_marketcheck_label, 'Marktcheck · 48 h', 'Audit starten', $legacy_diagnose_request_label, 'Audit', 'AI-Audit', 'Anfrage stellen', 'Direkt anfragen' ], true ) ) {
+		if ( in_array( $item->title, $retired_labels, true ) ) {
 			$item->title = $request_cta;
 			$item->url   = $request_url;
 			break;

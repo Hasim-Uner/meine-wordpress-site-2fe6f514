@@ -105,6 +105,13 @@ jobs:
       - name: Check canon drift
         run: bash scripts/lint-canon-drift.sh "${{ steps.refs.outputs.base }}" "${{ steps.refs.outputs.head }}"
 
+      # Repo-weit statt diff-basiert: ein verbotener Wert, der sich vor der
+      # Sperre eingeschlichen hat, faellt hier genauso auf wie ein neuer.
+      # Derselbe Guard laeuft in scripts/build-theme-dist.sh und damit auch
+      # im manuell ausgeloesten Deploy.
+      - name: Check canon guard
+        run: bash scripts/canon-guard.sh
+
       - name: Check E3 canon
         run: bash scripts/lint-e3-canon.sh
 

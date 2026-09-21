@@ -104,7 +104,7 @@ $offers_url   = home_url( '/#angebote' );
 $results_url  = function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/ergebnisse/' );
 $tracking_url = home_url( '/ga4-tracking-setup/' );
 $case_url     = home_url( '/case-study-solar-leadgenerierung/' );
-$response     = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : 'Antwort spätestens 2 Werktage';
+$response     = hu_response_promise( 'compact' );
 $faqs         = function_exists( 'nexus_get_agentur_faq_items' ) ? nexus_get_agentur_faq_items() : [];
 
 get_header();

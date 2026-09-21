@@ -21,6 +21,12 @@ fi
 # started redefining the same core token family.
 python3 "$root_dir/scripts/audit-css-architecture.py"
 
+# Fail before packaging if a forbidden fact literal is anywhere in the repo.
+# Der Guard sitzt hier und nicht nur in der CI, weil deploy.yml per
+# workflow_dispatch ohne den CI-Job laufen kann — beide Wege gehen aber durch
+# npm run build:theme. Damit geht kein Deploy mit Verstoss durch.
+bash "$root_dir/scripts/canon-guard.sh"
+
 if [ "$output_dir" = "$root_dir" ] || [ "$output_dir" = "$source_dir" ]; then
   echo "Refusing to build into an unsafe output directory: $output_dir" >&2
   exit 1
