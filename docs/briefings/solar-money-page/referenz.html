@@ -1,27 +1,3 @@
-<!--
-  referenz.html — maßgebliche Vorlage für /solar-waermepumpen-leadgenerierung/
-  Stand 12.09.2026 · Fassung nach Copy-Durchgang 2 · unverändert archiviert
-
-  Diese Datei ist eigenständiges HTML, kein WordPress. Sie wird nicht
-  hochgeladen und nicht deployt. Sie ist die Quelle für Copy, Reihenfolge,
-  Zahlen und Verhalten — übersetzt wird sie in die Templates des Child-Themes.
-
-  Drei Stellen dürfen NICHT übernommen werden:
-
-  1. Die <link>-Tags auf fonts.googleapis.com direkt unter diesem Kommentar.
-     Die Domain hostet Schriften selbst; functions.php entfernt Google-Fonts
-     aktiv wieder (remove_google_fonts()).
-  2. Die Regel `.stufe@media (max-width:760px)` im <style>-Block. Das ist ein
-     ungültiger Selektor — er verschluckt den gesamten folgenden Mobilblock,
-     wodurch die Angebotsleiter auf dem Telefon vierspaltig bleibt. In der
-     Umsetzung als echte Media Query gebaut.
-  3. `--matt: #8a837a`. Ergibt auf Weiß 3,74:1 und reißt WCAG AA genau dort,
-     wo der pflichtige Quellenhinweis unter der Marktzeile steht. In der
-     Umsetzung auf #736b62 (5,24:1) korrigiert.
-
-  Die umgesetzte Fassung verwendet außerdem die Hausschrift (Satoshi/Figtree)
-  statt Newsreader — siehe README.md in diesem Ordner.
--->
 <title>Die Anfragestrecke</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -543,7 +519,7 @@ h1 em{font-style:italic;font-weight:300}
       <div class="meta">
         <dl>
           <div><dt>Für wen</dt><dd>Solar- und SHK-Betriebe mit eigenem Vertrieb</dd></div>
-          <div><dt>Einstieg</dt><dd>Marktcheck, kostenlos · Befund ≤ 2 Werktage</dd></div>
+          <div><dt>Einstieg</dt><dd>Marktcheck, kostenlos · Antwort in 24 h werktags</dd></div>
           <div><dt>Aufbau</dt><dd><span class="zahl">14.900 €</span> netto · ab <span class="zahl">790 €</span> kleiner Einstieg</dd></div>
           <div><dt>Bearbeitet von</dt><dd>Haşim Üner, Pattensen · 1:1, kein Team</dd></div>
         </dl>
@@ -1006,7 +982,7 @@ h1 em{font-style:italic;font-weight:300}
     <div class="leiter">
       <article class="stufe">
         <span class="i">01</span>
-        <div><h3>Marktcheck</h3><span class="takt">2 Minuten · Befund ≤ 2 Werktage</span></div>
+        <div><h3>Marktcheck</h3><span class="takt">2 Minuten · Antwort in 24 h werktags</span></div>
         <p>Fünf Fragen, dann lese ich Ihre Antworten selbst und schreibe zurück, ob ein eigener
         Anfrageweg bei Ihnen wirtschaftlich trägt. Auch wenn die Antwort nein ist — dann mit drei
         Hebeln, die ohne mich funktionieren.</p>
@@ -1130,11 +1106,13 @@ h1 em{font-style:italic;font-weight:300}
       <div class="schein tafel">
         <span class="mono">Was Sie bekommen</span>
         <div class="z"><span>Form</span><b>Befund per E-Mail</b></div>
-        <div class="z"><span>Frist</span><b>spätestens 2 Werktage</b></div>
+        <div class="z"><span>Frist</span><b>innerhalb von 24 Stunden werktags</b></div>
         <div class="z"><span>Geprüft von</span><b>Haşim Üner, persönlich</b></div>
         <div class="z"><span>Auch bei Nein</span><b>drei priorisierte Hebel</b></div>
         <div class="z"><span>Kosten</span><b>keine</b></div>
-        <a class="tun" href="#">Kostenlos prüfen lassen <span class="pf" aria-hidden="true">→</span></a>
+        <!-- UMSETZUNG: Hier die bestehende Marktcheck-FORMULAR-Komponente einsetzen (aus der Git-History,
+             vor dem Umbau: "Aktivieren Sie JavaScript für den Marktcheck"). KEIN mailto-Link. -->
+        <a class="tun" href="#marktcheck-formular">Kostenlos prüfen lassen <span class="pf" aria-hidden="true">→</span></a>
         <p class="klein">Keine Zahlungsdaten · kein Pflicht-Call<br>kontakt@hasimuener.de</p>
       </div>
     </div>
@@ -1237,7 +1215,7 @@ h1 em{font-style:italic;font-weight:300}
     <p class="aufriss" style="color:var(--grau)">Fünf Fragen, dann rechne ich Ihren Fall durch und
     schreibe Ihnen, ob er trägt. Ich arbeite 1:1 und nehme jeweils nur wenige Betriebe parallel an,
     deshalb entscheidet die Rechnung über die Zusammenarbeit und nicht ein Vertriebsgespräch.
-    Falls Ihr Fall nicht trägt, erfahren Sie das in zwei Werktagen statt nach dem dritten Termin.</p>
+    Falls Ihr Fall nicht trägt, erfahren Sie das innerhalb eines Werktags statt nach dem dritten Termin.</p>
     <div class="ausgang">
       <a class="tun" href="#marktcheck">Kostenlos prüfen lassen <span class="pf" aria-hidden="true">→</span></a>
       <a class="tun still" href="#leiter">Einstieg ab 790 €</a>
@@ -1245,7 +1223,7 @@ h1 em{font-style:italic;font-weight:300}
   </div>
   <div class="marg">
     <div class="protokoll">
-      <div class="z"><span>Antwort</span><b>≤ 2 Werktage</b></div>
+      <div class="z"><span>Antwort</span><b>24 h werktags</b></div>
       <div class="z"><span>Sitz</span><b>Pattensen · Hannover</b></div>
       <div class="z"><span>Arbeitsweise</span><b>remote in DACH, 1:1</b></div>
       <div class="z"><span>Messung</span><b>ohne Cookie-Banner</b></div>

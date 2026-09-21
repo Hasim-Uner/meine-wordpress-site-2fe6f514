@@ -1604,7 +1604,7 @@ return [
 		'deliverables'    => [
 			[
 				'title'       => 'Leistungsbild des Monats verdichten',
-				'description' => 'Wir schauen auf Nachfrage, Seitentypen, Conversion und auffällige Veränderungen. So wird schnell klar, was im letzten Zeitraum wirklich relevant war.',
+				'description' => 'Wir schauen auf Suchnachfrage, Seitentypen, Conversion und auffällige Veränderungen. So wird schnell klar, was im letzten Zeitraum wirklich relevant war.',
 			],
 			[
 				'title'       => 'Abweichungen einordnen',
