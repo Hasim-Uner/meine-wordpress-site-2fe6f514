@@ -26,8 +26,8 @@ define( 'HU_MARKET_FIGURES_YEAR', 2026 );
  * Return the canonical third-party market figures.
  *
  * `value` ist die sichtbare Zahl, `body` der Satz dahinter, `source` die
- * Herkunft. Die Quelle wird derzeit nur auf Nachfrage genannt, steht aber im
- * Code, damit sie nicht verloren geht.
+ * Herkunft. Die Herkunft steht ausserdem gesammelt im Hinweissatz aus
+ * hu_market_figures_disclaimer() und wird dort sichtbar genannt.
  *
  * @return array<int, array<string, string>>
  */
@@ -64,11 +64,14 @@ function hu_market_figures() {
  * werden als eigene gelesen. Er ist deshalb kein Kleingedrucktes, sondern
  * Bestandteil der Zahlen.
  *
+ * Die Quellen stehen namentlich im Satz. Eine Zahl, deren Herkunft erst auf
+ * Nachfrage genannt wird, ist auf einer Money Page kein Beleg.
+ *
  * @return string
  */
 function hu_market_figures_disclaimer() {
 	return sprintf(
-		'Marktzahlen aus öffentlich zugänglichen Branchenquellen, Stand %d — nicht aus meinen Projekten. Quellen nenne ich auf Nachfrage.',
+		'Quellen: Anfragenfluss, CPL-Übersicht Handwerk %1$d · pv magazine, Leitfaden PV-Leadkauf · A&M Beratung, Leadportale im Handwerk. Fremde Zahlen, nicht aus meinen Projekten.',
 		HU_MARKET_FIGURES_YEAR
 	);
 }

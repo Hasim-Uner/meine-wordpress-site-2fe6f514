@@ -792,7 +792,7 @@ get_header();
 							</tr>
 							<tr class="quelle">
 								<th scope="row" colspan="2">
-									<?php echo esc_html( ucfirst( $e3_case_label ) ); ?>, DACH, anonymisiert.
+									<?php echo esc_html( ucfirst( $e3_case_label ) ); ?> in DACH.
 									<?php echo esc_html( $e3_build_months ); ?> Vorbereitung, ab Monat drei stabil.
 									Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?>.
 									Dokumentierte Werte eines einzelnen Betriebs, keine Prognose für Ihren.
@@ -1107,9 +1107,9 @@ get_header();
 				<div class="voll">
 					<h2 class="kopf" id="fall"><?php echo esc_html( $e3_timeframe ); ?>, ein Betrieb, drei Phasen.</h2>
 					<p class="vorspann">
-						Ein <?php echo esc_html( $e3_case_label ); ?> in DACH. Anonymisiert, weil ein Verfahren
-						läuft — die Belege zeige ich im Gespräch. Der Verlauf ist wichtiger als die Endzahl,
-						weil er zeigt, wann nichts passiert.
+						Ein <?php echo esc_html( $e3_case_label ); ?> in DACH.
+						Der Verlauf ist wichtiger als die Endzahl, weil er zeigt, wann nichts passiert
+						und wie lange das dauert.
 					</p>
 
 					<div class="phasen">
