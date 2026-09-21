@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function hu_article_content_hygiene_version() : string {
-	return '2026-09-05-1';
+	return '2026-09-21-1';
 }
 
 /**
@@ -72,7 +72,8 @@ function hu_article_content_hygiene_replace_pattern( $content, $pattern, $replac
  * Known fixes in this release:
  * - retired Journey-Audit CTAs are removed/re-routed to the active tracking path
  * - the retired WGOS/Owned-First framing becomes the current measurement model
- * - the E3 CPL proof is corrected from 25 EUR to the canonical 22 EUR
+ * - the CPL proof is corrected from 25 EUR to the canonical 22 EUR
+ * - the named customer reference becomes the canonical anonymous case label
  * - the time-sensitive headline is replaced only when the exact legacy title
  *   is still present
  *
@@ -123,9 +124,21 @@ function hu_maybe_refresh_tracking_article_content() : void {
 		$content,
 		'~Im\s+(?:<a\b[^>]*>)?E3 New Energy Case(?:</a>)?\s+konnten wir die Cost-per-Lead von 150\s*€ auf 25\s*€ senken\s*—\s*unter anderem durch saubere Datengrundlagen, die erst durch korrektes Tracking möglich wurden\. Ohne verlässliche Conversion-Daten wäre diese Optimierung ein Blindflug gewesen\.~u',
 		sprintf(
-			'Im <a href="%1$s">E3 New Energy Case</a> sank der Cost-per-Lead von 150 € auf 22 €. Tracking war dabei nicht der alleinige Hebel, sondern die Messgrundlage, um Kampagnen, Landingpages und Leadqualität sauber gegeneinander zu bewerten.',
+			'Im <a href="%1$s">dokumentierten Fall eines mittelständischen PV-Installationsbetriebs</a> sank der Cost-per-Lead von 150 € auf 22 €. Tracking war dabei nicht der alleinige Hebel, sondern die Messgrundlage, um Kampagnen, Landingpages und Leadqualität sauber gegeneinander zu bewerten.',
 			esc_url( $case_url )
 		),
+		$replacement_count
+	);
+
+	// Ein frueherer Durchlauf dieser Routine hat den Betriebsnamen selbst in
+	// den Artikel geschrieben. Der Fall heisst domainweit "ein
+	// mittelständischer PV-Installationsbetrieb", also wird der Name auch dort
+	// ersetzt, wo das Muster oben ihn nicht mehr findet. Laeuft nach dem
+	// Muster oben, damit es dessen Treffer nicht vorher zerstoert.
+	$content = hu_article_content_hygiene_replace_pattern(
+		$content,
+		'~E3 New Energy Case~u',
+		'dokumentierten Fall eines mittelständischen PV-Installationsbetriebs',
 		$replacement_count
 	);
 

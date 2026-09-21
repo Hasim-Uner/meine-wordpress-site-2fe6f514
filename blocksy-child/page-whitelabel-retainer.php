@@ -112,11 +112,14 @@ $entry_projects    = [
 	[ 'title' => 'Server-Side-Setup', 'price' => hu_whitelabel_price( 'server_side' ), 'copy' => 'Messstrecke aufsetzen, Events prüfen und das Setup dokumentiert in euren Accounts übergeben.' ],
 	[ 'title' => 'Landingpage', 'price' => hu_whitelabel_price( 'landingpage' ), 'copy' => 'Eine abgestimmte Anfragestrecke umsetzen: Seite, Formular und vereinbarte Conversion-Messung.' ],
 ];
-// Öffentliche Projektverweise sind keine Agentur-Testimonials. Keine Kopplung
-// der namentlichen Referenz mit Kennzahlen aus dem anonymisierten Solar-Case.
+// Öffentliche Projektverweise sind keine Agentur-Testimonials.
+//
+// Der Solar-Fall steht hier bewusst nicht mit Domain und Betriebsnamen: er
+// heisst auf der ganzen Domain "ein mittelständischer PV-Installationsbetrieb",
+// ohne Link und ohne Namen. Ein namentlicher Verweis genau auf diesen Betrieb
+// hebt die Benennung wieder auf, egal ob die Kennzahlen danebenstehen.
 $proof_references = [
 	[ 'label' => 'civaka-azad.org', 'url' => 'https://civaka-azad.org/', 'type' => 'Informationsarchitektur', 'copy' => 'Navigation, Archive und interne Verweise für einen gewachsenen redaktionellen Bestand.' ],
-	[ 'label' => 'e3-newenergy.de', 'url' => 'https://e3-newenergy.de/', 'type' => 'Anfragestrecke', 'copy' => 'Beratung, Angebotsanfrage und Kontakt für ein erklärungsbedürftiges Energieangebot verbinden.' ],
 	[ 'label' => 'hasimuener.org', 'url' => 'https://hasimuener.org/', 'type' => 'Eigenes Editorial-Projekt', 'copy' => 'Typografie, Raster und Leseführung als Schwerpunkt einer inhaltsorientierten Website.' ],
 ];
 ?>
