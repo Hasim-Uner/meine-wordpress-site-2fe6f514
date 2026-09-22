@@ -233,12 +233,42 @@ function nexus_maybe_ensure_contact_page() {
 add_action( 'init', 'nexus_maybe_ensure_contact_page', 28 );
 
 /**
+ * Whether the Ersteinschaetzung belongs to the contact options.
+ *
+ * Formular und Enqueue fragen ohne Argument: dann entscheidet der Schalter im
+ * Kanon (HU_EXPERIMENT_ERSTEINSCHAETZUNG). Der Validator fragt mit true, damit
+ * eine Einsendung aus einer noch zwischengespeicherten Seite auch nach dem
+ * Abschalten ankommt.
+ *
+ * @param bool $include_inactive Include the entry although the switch is off.
+ * @return bool
+ */
+function nexus_contact_offers_first_assessment( $include_inactive = false ) {
+	if ( ! function_exists( 'hu_first_assessment_key' ) ) {
+		return false;
+	}
+
+	return $include_inactive || hu_first_assessment_enabled();
+}
+
+/**
+ * Whether a request type is the Ersteinschaetzung.
+ *
+ * @param string $request_type Request type key.
+ * @return bool
+ */
+function nexus_is_first_assessment_request( $request_type ) {
+	return function_exists( 'hu_first_assessment_key' ) && hu_first_assessment_key() === (string) $request_type;
+}
+
+/**
  * Return the available contact request type options.
  *
+ * @param bool $include_inactive Include the Ersteinschaetzung although its switch is off.
  * @return array<string, array<string, string>>
  */
-function nexus_get_contact_request_type_options() {
-	return [
+function nexus_get_contact_request_type_options( $include_inactive = false ) {
+	$options = [
 		'audit' => [
 			'label'       => 'Marktcheck',
 			'description' => 'Der saubere Ersteinstieg, wenn zuerst Klarheit und Priorisierung gebraucht werden.',
@@ -268,17 +298,27 @@ function nexus_get_contact_request_type_options() {
 			'description' => 'Laufende Themen, Priorisierung oder nächste Schritte im aktuellen Setup.',
 		],
 	];
+
+	if ( nexus_contact_offers_first_assessment( $include_inactive ) ) {
+		$options[ hu_first_assessment_key() ] = [
+			'label'       => hu_first_assessment_text( 'label' ),
+			'description' => hu_first_assessment_text( 'cta_note' ),
+		];
+	}
+
+	return $options;
 }
 
 /**
  * Return the selectable contact request type labels.
  *
+ * @param bool $include_inactive Include the Ersteinschaetzung although its switch is off.
  * @return array<string, string>
  */
-function nexus_get_contact_request_type_labels() {
+function nexus_get_contact_request_type_labels( $include_inactive = false ) {
 	$labels = [];
 
-	foreach ( nexus_get_contact_request_type_options() as $type_key => $definition ) {
+	foreach ( nexus_get_contact_request_type_options( $include_inactive ) as $type_key => $definition ) {
 		$labels[ $type_key ] = isset( $definition['label'] ) ? (string) $definition['label'] : (string) $type_key;
 	}
 
@@ -288,10 +328,11 @@ function nexus_get_contact_request_type_labels() {
 /**
  * Return the available contact focus options.
  *
+ * @param bool $include_inactive Include the Ersteinschaetzung although its switch is off.
  * @return array<string, array<string, mixed>>
  */
-function nexus_get_contact_focus_options() {
-	return [
+function nexus_get_contact_focus_options( $include_inactive = false ) {
+	$options = [
 		'audit_scope'      => [
 			'label' => 'Marktcheck / Erstdiagnose',
 			'types' => [ 'audit' ],
@@ -349,17 +390,29 @@ function nexus_get_contact_focus_options() {
 			'types' => [ 'general' ],
 		],
 	];
+
+	// Thema und Typ tragen dieselbe Kennung: ?focus=ersteinschaetzung waehlt
+	// damit beides vor, und die Typ/Thema-Pruefung bleibt unveraendert.
+	if ( nexus_contact_offers_first_assessment( $include_inactive ) ) {
+		$options[ hu_first_assessment_key() ] = [
+			'label' => hu_first_assessment_text( 'label' ),
+			'types' => [ hu_first_assessment_key() ],
+		];
+	}
+
+	return $options;
 }
 
 /**
  * Return the selectable contact focus labels.
  *
+ * @param bool $include_inactive Include the Ersteinschaetzung although its switch is off.
  * @return array<string, string>
  */
-function nexus_get_contact_focus_labels() {
+function nexus_get_contact_focus_labels( $include_inactive = false ) {
 	$labels = [];
 
-	foreach ( nexus_get_contact_focus_options() as $focus_key => $definition ) {
+	foreach ( nexus_get_contact_focus_options( $include_inactive ) as $focus_key => $definition ) {
 		$labels[ $focus_key ] = isset( $definition['label'] ) ? (string) $definition['label'] : (string) $focus_key;
 	}
 
@@ -486,12 +539,34 @@ function nexus_get_contact_request_mail_tags( $request_type ) {
 }
 
 /**
+ * Prefix a contact mail subject for requests that are counted by subject.
+ *
+ * Die Ersteinschaetzung wird ausschliesslich ueber den Betreff gezaehlt
+ * (Praefix aus dem Kanon). Alle anderen Anliegen behalten ihren Betreff.
+ *
+ * @param string $subject      Mail subject.
+ * @param string $request_type Current request type.
+ * @return string
+ */
+function nexus_prefix_contact_mail_subject( $subject, $request_type ) {
+	if ( nexus_is_first_assessment_request( $request_type ) ) {
+		return hu_first_assessment_text( 'subject_prefix' ) . ' ' . $subject;
+	}
+
+	return $subject;
+}
+
+/**
  * Return the third step copy for the confirmation mail.
  *
  * @param string $request_type Current request type.
  * @return string
  */
 function nexus_get_contact_confirmation_step_three( $request_type ) {
+	if ( nexus_is_first_assessment_request( $request_type ) ) {
+		return hu_first_assessment_text( 'promise' );
+	}
+
 	if ( 'client' === $request_type ) {
 		return 'Wenn es schneller geht, ziehen wir das Thema direkt in die laufende Priorisierung.';
 	}
@@ -672,10 +747,12 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
  * @return array|WP_Error
  */
 function nexus_validate_contact_request_payload( $payload ) {
-	$request_type_options = nexus_get_contact_request_type_options();
-	$request_type_labels  = nexus_get_contact_request_type_labels();
-	$focus_options        = nexus_get_contact_focus_options();
-	$focus_labels         = nexus_get_contact_focus_labels();
+	// true: die Ersteinschaetzung wird auch bei ausgeschaltetem Schalter
+	// angenommen (Einsendungen aus zwischengespeicherten Seiten).
+	$request_type_options = nexus_get_contact_request_type_options( true );
+	$request_type_labels  = nexus_get_contact_request_type_labels( true );
+	$focus_options        = nexus_get_contact_focus_options( true );
+	$focus_labels         = nexus_get_contact_focus_labels( true );
 	$budget_options       = nexus_get_contact_budget_options();
 	$timeline_options     = nexus_get_contact_timeline_options();
 	$ad_budget_options    = nexus_get_contact_ad_budget_options();
@@ -691,6 +768,7 @@ function nexus_validate_contact_request_payload( $payload ) {
 	$budget               = isset( $payload['budget'] ) ? sanitize_key( (string) $payload['budget'] ) : '';
 	$consent              = ! empty( $payload['consent'] );
 	$minimum_message_len  = 'general' === $request_type ? 18 : 24;
+	$is_first_assessment  = nexus_is_first_assessment_request( $request_type );
 
 	// Optionale Zusatzangaben. Formulare, die sie nicht senden, bleiben unveraendert gueltig.
 	$company        = isset( $payload['company'] ) ? mb_substr( sanitize_text_field( (string) $payload['company'] ), 0, 120 ) : '';
@@ -717,6 +795,11 @@ function nexus_validate_contact_request_payload( $payload ) {
 	);
 	if ( is_wp_error( $website_url ) ) {
 		return $website_url;
+	}
+
+	// Ersteinschaetzung: ohne URL gibt es nichts anzusehen.
+	if ( $is_first_assessment && '' === $website_url ) {
+		return new WP_Error( 'missing_website', hu_first_assessment_text( 'website_missing' ) );
 	}
 
 	$linkedin_url = nexus_validate_contact_optional_url(
@@ -764,7 +847,10 @@ function nexus_validate_contact_request_payload( $payload ) {
 		}
 	}
 
-	if ( '' === trim( $message ) || mb_strlen( trim( $message ) ) < $minimum_message_len ) {
+	if ( $is_first_assessment ) {
+		// Das Ziel ist ein optionaler Satz: kein Mindestumfang, aber eine Obergrenze.
+		$message = mb_substr( trim( $message ), 0, HU_FIRST_ASSESSMENT_GOAL_MAXLENGTH );
+	} elseif ( '' === trim( $message ) || mb_strlen( trim( $message ) ) < $minimum_message_len ) {
 		return new WP_Error( 'message_too_short', 'Bitte Ihr Anliegen kurz und konkret beschreiben.' );
 	}
 
@@ -928,11 +1014,14 @@ function nexus_send_contact_request_admin_notification( $payload, $contact_id = 
 		return false;
 	}
 
-	$subject = sprintf(
-		'[%s] Neue %s - %s',
-		wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
-		$payload['request_type_label'],
-		$payload['name']
+	$subject = nexus_prefix_contact_mail_subject(
+		sprintf(
+			'[%s] Neue %s - %s',
+			wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
+			$payload['request_type_label'],
+			$payload['name']
+		),
+		$payload['request_type']
 	);
 	$headers = [];
 
@@ -1109,7 +1198,10 @@ function nexus_send_contact_request_confirmation( $payload ) {
 	}
 
 	$reply_to  = nexus_get_contact_notification_email();
-	$subject   = sprintf( '[%s] %s eingegangen', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), $payload['request_type_label'] );
+	$subject   = nexus_prefix_contact_mail_subject(
+		sprintf( '[%s] %s eingegangen', wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), $payload['request_type_label'] ),
+		$payload['request_type']
+	);
 	$meta_rows = sprintf(
 		'<strong style="color:#f7f3ee;">Anfragetyp:</strong> %1$s<br><strong style="color:#f7f3ee;">Thema:</strong> %2$s',
 		esc_html( $payload['request_type_label'] ),
@@ -1170,7 +1262,8 @@ function nexus_send_contact_request_confirmation( $payload ) {
 		</table>',
 		esc_html( nexus_get_contact_confirmation_step_three( $payload['request_type'] ) ),
 		$meta_rows,
-		esc_html( wp_trim_words( $payload['message'], 18, '...' ) )
+		// Nur bei der Ersteinschaetzung darf die Nachricht leer sein.
+		'' !== $payload['message'] ? esc_html( wp_trim_words( $payload['message'], 18, '...' ) ) : '–'
 	);
 
 	$html = nexus_get_contact_email_shell(

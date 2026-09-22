@@ -23,6 +23,12 @@
         var scopedMessagePlaceholder = messageField && messageField.hasAttribute('data-contact-message-placeholder')
             ? messageField.getAttribute('data-contact-message-placeholder')
             : null;
+        // Ersteinschaetzung (/kontakt/?focus=ersteinschaetzung): das Template
+        // markiert die URL als Pflicht und die Nachricht als optionalen Satz.
+        // Texte kommen aus dem Template (Kanon), nicht aus diesem Skript. Ohne
+        // die Markierungen verhaelt sich das Formular wie bisher.
+        var websiteField = form.querySelector('[data-contact-website]');
+        var messageOptional = !!(messageField && messageField.hasAttribute('data-contact-message-optional'));
         var errorSummary = document.querySelector('[data-contact-error-summary]');
         var errorList = document.querySelector('[data-contact-error-list]');
         var intentFieldset = form.querySelector('[data-contact-intent]');
@@ -213,6 +219,7 @@
             request_type: { label: 'Anfragetyp', errorId: null },
             focus: { label: 'Thema', errorId: 'contact-focus-error' },
             message: { label: 'Nachricht', errorId: 'contact-message-error' },
+            website_url: { label: 'Website', errorId: 'contact-website-error' },
             name: { label: 'Name', errorId: 'contact-name-error' },
             email: { label: 'E-Mail', errorId: 'contact-email-error' },
             consent: { label: 'Datenschutz', errorId: 'contact-consent-error' }
@@ -308,6 +315,14 @@
             errorSummary.classList.remove('is-hidden');
             errorSummary.scrollIntoView({ behavior: 'smooth', block: 'center' });
             errorSummary.focus();
+        }
+
+        function isWebsiteMissing() {
+            return !!(websiteField && websiteField.required && !websiteField.value.trim());
+        }
+
+        function getWebsiteRequiredMessage() {
+            return websiteField ? websiteField.getAttribute('data-contact-required-error') || '' : '';
         }
 
         function setDisplayed(node, isVisible, displayValue) {
@@ -490,7 +505,9 @@
                 var minLength = content ? content.messageMinlength : 24;
                 var messageValue = messageField ? messageField.value.trim() : '';
 
-                if (!messageValue || messageValue.length < minLength) {
+                if (isWebsiteMissing()) {
+                    firstInvalid = setFieldError('website_url', getWebsiteRequiredMessage()) || websiteField;
+                } else if (!messageOptional && (!messageValue || messageValue.length < minLength)) {
                     firstInvalid = setFieldError('message', 'Bitte Ihr Anliegen kurz und konkret beschreiben (mind. ' + minLength + ' Zeichen).') || messageField;
                 }
             } else if (stepKey === 'identity') {
@@ -529,6 +546,14 @@
             }
 
             setContactFlowStep(currentFlowIndex + 1, { focus: true });
+        }
+
+        function showContactFlowStepOf(field) {
+            var index = getActiveContactFlowSteps().indexOf(field.closest('[data-contact-step]'));
+
+            if (index !== -1 && index !== currentFlowIndex) {
+                setContactFlowStep(index, { focus: true });
+            }
         }
 
         function goToPrevContactFlowStep() {
@@ -587,12 +612,19 @@
                 }
             }
 
+            // website (Pflicht nur, wo das Template es verlangt)
+            if (isWebsiteMissing()) {
+                var ctrlWebsite = setFieldError('website_url', getWebsiteRequiredMessage());
+                errors.push({ field: 'website_url', message: getWebsiteRequiredMessage() });
+                if (!firstInvalid) firstInvalid = ctrlWebsite || websiteField;
+            }
+
             // message
             var messageMinlen = 24;
             var content = typeContent[getSelectedType()];
             if (content) messageMinlen = content.messageMinlength;
             var msgVal = messageField ? messageField.value.trim() : '';
-            if (!msgVal || msgVal.length < messageMinlen) {
+            if (!messageOptional && (!msgVal || msgVal.length < messageMinlen)) {
                 var ctrl = setFieldError('message', 'Bitte Ihr Anliegen kurz und konkret beschreiben (mind. ' + messageMinlen + ' Zeichen).');
                 errors.push({ field: 'message', message: 'Bitte Ihr Anliegen kurz beschreiben.' });
                 if (!firstInvalid) firstInvalid = ctrl || messageField;
@@ -836,7 +868,7 @@
                 messageHelp.textContent = content.messageHelp;
             }
 
-            if (messageField) {
+            if (messageField && !messageOptional) {
                 messageField.placeholder = scopedMessagePlaceholder !== null ? scopedMessagePlaceholder : content.messagePlaceholder;
                 messageField.minLength = content.messageMinlength;
             }
@@ -955,11 +987,21 @@
                                 'invalid_budget': 'budget',
                                 'invalid_ad_budget': 'ad_budget',
                                 'message_too_short': 'message',
+                                'missing_website': 'website_url',
                                 'missing_consent': 'consent'
                             };
                             var fieldName = codeFieldMap[result.data.error_code];
+                            // Ersteinschaetzung: die URL ist dort das Hauptfeld und
+                            // steht in Schritt 1. Ein Serverfehler dazu fuehrt
+                            // zurueck an das Feld, statt nur unten zu stehen.
+                            if (websiteField && result.data.error_code === 'invalid_website') {
+                                fieldName = 'website_url';
+                            }
                             if (fieldName) {
                                 setFieldError(fieldName, errorMessage);
+                            }
+                            if (websiteField && fieldName === 'website_url') {
+                                showContactFlowStepOf(websiteField);
                             }
                         }
 

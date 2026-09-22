@@ -27,6 +27,13 @@ und speichern im WordPress-Backend. Kein Browser-Submit an Drittanbieter.
 | Blog-Abo | Blog-Notify-Route | Pending-Eintrag bis zur Bestätigung, danach `nexus_contact` | Double-Opt-in |
 | Anfragesystem-Analyse | `analysis-submit` | standardmäßig abgeschaltet (`HU_FEATURE_READINESS_SUBMIT`) | – |
 
+Die Ersteinschätzung (`/kontakt/?focus=ersteinschaetzung`, Versuch laut
+`docs/experimente/ersteinschaetzung.md`) ist dasselbe Formular am selben
+Endpunkt mit derselben Pflicht-Checkbox. Sie fragt die Website-URL als
+Pflichtfeld und das Ziel als optionalen Satz im Feld `message`. Neue
+Datenkategorien, Cookies oder Skripte kommen nicht hinzu; die
+Datenschutzerklärung deckt sie mit den Anfragen aus den Formularen ab.
+
 Vertriebsrelevante Kontakte bekommen eine Sales-Chance (`nexus_opportunity`)
 und einen Aktivitätsverlauf (`nexus_crm_activity`). Telefonnummern sind nur
 dort Feld, wo das Formular sie ausdrücklich abfragt.

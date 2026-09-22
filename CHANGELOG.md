@@ -2,6 +2,14 @@
 
 ## 2026-09
 
+### Versuch: Kostenlose Ersteinschätzung auf der Startseite
+
+- **Ein erster Schritt ohne fertiges Projekt.** Hero und Abschluss der Startseite führen primär auf `/kontakt/?focus=ersteinschaetzung`, mit einer Zeile darunter, was man bekommt. Die Projektanfrage bleibt mit Ziel und `data-track`-Hooks als sekundärer Button daneben. Acht Wochen ab Deploy; Laufzeit, Messung und Abbruchregel stehen in `docs/experimente/ersteinschaetzung.md`.
+- **Ein Schalter, ein Ort.** `HU_EXPERIMENT_ERSTEINSCHAETZUNG` und alle Texte stehen in `inc/canon/messaging-canon.php` (`hu_first_assessment_text()`), die Antwortzeit kommt aus `hu_response_promise()`. Aus heißt: Startseite und `/kontakt/` rendern byte-gleich zum Stand davor; nur die Asset-Version wechselt wie bei jedem Deploy. Abschalten geht auch per `wp-config.php`.
+- **Dasselbe Formular, ein Anfragetyp mehr.** `/kontakt/` wählt mit dem Parameter das Anliegen vor; die Website-URL ist Pflicht, das Ziel ein optionaler Satz im Feld `message`. Der Endpoint `contact-request` nimmt den Typ `ersteinschaetzung` auch bei ausgeschaltetem Schalter an, damit eine Einsendung aus einer zwischengespeicherten Seite nicht verloren geht. CRM-Quelle bleibt `general_inquiry`, keine neuen Felder.
+- **Gezählt wird über den Betreff.** Interne Mail und Bestätigung tragen `[Ersteinschätzung]` vorn. Kein Cookie, kein Skript.
+- **Geprüft:** lokale WordPress-Instanz (SQLite, Blocksy): Vorher/Nachher-Vergleich von Title, H1, Meta und JSON-LD, Schalter aus gegen Stand davor, Einsendungen über REST und Browser mit Betreff-Präfix, 360 px und Tastaturfokus. **Nicht geprüft:** Zustellung über Brevo an das echte Postfach, Lighthouse.
+
 ### Vier Korrekturen: gleiche Stufennamen, eine Zusage, eine Sperre, ein Vorher-Wert weniger
 
 - **Zwei Seiten, ein Angebot, jetzt auch eine Benennung.** `/ga4-tracking-setup/` nannte die drei Stufen „Core Setup", „Advanced" und „Revenue", `/server-side-tracking-b2b/` dieselben drei „Basis", „Performance" und „Individuell". Wer beide las, musste raten, ob das sechs Angebote sind oder drei. Die GA4-Seite zieht nach. Die mittlere Karte trug außerdem als einzige keinen Preis („nach technischem Scope") — sie liest jetzt `hu_tracking_price( 'pro', 'setup', 'display' )` und sagt „ab … netto".
