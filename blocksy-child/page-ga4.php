@@ -110,6 +110,9 @@ $response_label  = hu_response_promise( 'compact' );
 $setup_price     = function_exists( 'hu_tracking_price' )
 	? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' )
 	: '1.290 €';
+$pro_setup_price = function_exists( 'hu_tracking_price' )
+	? hu_tracking_price( 'pro', 'setup', 'display', '1.900 €' )
+	: '1.900 €';
 $individual_price = function_exists( 'hu_tracking_price' )
 	? hu_tracking_price( 'individual', 'setup', 'display', 'ab 3.500 €' )
 	: 'ab 3.500 €';
@@ -279,7 +282,7 @@ get_header();
 
 					<div class="hu-tracking-offer-grid" aria-label="Tracking-Angebotsleiter">
 						<article class="hu-tracking-offer-card" data-level="core">
-							<p class="hu-tracking-offer-card__level">01 · Core Setup</p>
+							<p class="hu-tracking-offer-card__level">01 · Basis</p>
 							<h3>GA4, GTM, Consent &amp; Google Ads</h3>
 							<p class="hu-tracking-offer-card__price">ab <?php echo esc_html( $setup_price ); ?> <small>netto</small></p>
 							<p>Für eine Website mit klaren Haupt-Conversions und einem überschaubaren Google-Stack.</p>
@@ -293,9 +296,9 @@ get_header();
 						</article>
 
 						<article class="hu-tracking-offer-card" data-level="advanced">
-							<p class="hu-tracking-offer-card__level">02 · Advanced</p>
+							<p class="hu-tracking-offer-card__level">02 · Performance</p>
 							<h3>Server-Side &amp; Meta CAPI</h3>
-							<p class="hu-tracking-offer-card__price">nach technischem Scope</p>
+							<p class="hu-tracking-offer-card__price">ab <?php echo esc_html( $pro_setup_price ); ?> <small>netto</small></p>
 							<p>Wenn Serversignale, eine eigene Tracking-Subdomain, Meta CAPI oder Deduplizierung Teil des eigentlichen Problems sind.</p>
 							<ul>
 								<li>Server-GTM und eigene Tracking-Subdomain</li>
@@ -307,7 +310,7 @@ get_header();
 						</article>
 
 						<article class="hu-tracking-offer-card" data-level="revenue">
-							<p class="hu-tracking-offer-card__level">03 · Revenue</p>
+							<p class="hu-tracking-offer-card__level">03 · Individuell</p>
 							<h3>CRM &amp; Offline Conversions</h3>
 							<p class="hu-tracking-offer-card__price"><?php echo esc_html( $individual_price ); ?> <small>netto</small></p>
 							<p>Wenn nicht das Formular, sondern Leadqualität, Angebot oder Auftrag das relevante Optimierungssignal sein soll.</p>
