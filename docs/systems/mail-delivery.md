@@ -94,4 +94,4 @@ Fuer schnelle Live-Pruefung ohne Admin-Nonce gibt es ausserdem:
 
 - `/wp-json/nexus/v1/mail-diagnostics-public`
 
-Dieser Endpoint liefert nur redigierte Werte, reicht aber fuer die Fehlersuche an API-Key, Provider und letztem Mailstatus (Status- und Fehlercode). Den Fehlertext des Providers zeigt seit 2026-09-22 nur noch der Admin-Endpoint, weil er Empfaengeradressen oder interne Details enthalten kann.
+Dieser Endpoint liefert nur redigierte Werte, reicht aber für die Fehlersuche an API-Key, Provider und letztem Mailstatus (Status- und Fehlercode). Den Fehlertext des Providers zeigt seit 2026-09-22 nur noch der Admin-Endpoint, weil er Empfängeradressen oder interne Details enthalten kann.
