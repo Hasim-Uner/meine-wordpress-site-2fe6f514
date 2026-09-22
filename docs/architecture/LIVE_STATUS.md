@@ -244,7 +244,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 - Growth Audit, System-Diagnose und kostenlose Tools als öffentliche
   Funnel-Stufen; der Marktcheck als sitewide CTA.
-- Öffentliche Copy mit `Pilotprojekt`, `Proof-of-Value` oder unbelegten
-  Leistungszahlen; `Retainer` als kaufnaher Standardbegriff.
+- Öffentliche Copy mit abgelösten Angebotsbegriffen (Sperrlisten in
+  `docs/standards/BRAND_AND_COPY.md` und `scripts/lint-canon-drift.sh`) oder
+  unbelegten Leistungszahlen; `Retainer` als kaufnaher Standardbegriff.
 - Ein WordPress-Editor-Shell als Quelle für Funnel-Logik; lose Root-Ablagen für
   Playbooks und Entwürfe.
