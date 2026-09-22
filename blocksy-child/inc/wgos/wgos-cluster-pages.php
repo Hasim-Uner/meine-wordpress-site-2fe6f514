@@ -21,67 +21,16 @@ function nexus_get_wgos_cluster_page_data() {
 		return $pages;
 	}
 
-	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
-	$sst_money_url = home_url( '/server-side-tracking-b2b/' );
-	$response_compact = hu_response_promise( 'compact' );
-
 	// Die Cluster wordpress-seo-hannover, core-web-vitals und conversion-rate-optimization
 	// sind in die Agentur-Page integriert; 301-Redirects sitzen in inc/helpers.php
 	// (nexus_redirect_legacy_offer_paths). Daten-Arrays wurden hier entfernt, damit
 	// kein verwaister Konfigurations-Ballast in jedem Request initialisiert wird.
 	$pages = [
+		// page-ga4.php rendert die Seite selbst; das Register liefert Titel,
+		// Auszug, FAQ (sichtbar und als FAQPage-Schema) und Meta-Vorgaben.
 		'ga4-tracking-setup' => [
-			'eyebrow'          => 'GA4 Tracking Setup · Messbarkeit im Anfragesystem',
 			'title'            => 'GA4 Tracking Setup für B2B-WordPress-Websites',
-			'cta'              => [
-				'route'        => 'project_request',
-				'focus'        => 'tracking',
-				'label'        => 'Tracking-Projekt anfragen',
-				'microcopy'    => $response_compact . ' · Tracking-Anliegen kurz beschreiben',
-				'closing_note' => 'Beschreiben Sie kurz Ihre Website, Ihr bestehendes Setup und was Sie einrichten oder korrigieren möchten. Im Kontaktformular ist Tracking bereits vorausgewählt.',
-			],
-			'proof_metrics'    => array_replace(
-				nexus_get_wgos_cluster_page_proof_metrics(),
-				[ 1 => [ 'value' => $response_compact, 'label' => 'Persönliche Rückmeldung zu Ihrem Tracking-Anliegen' ] ]
-			),
 			'lead'             => 'GA4 Tracking Setup heißt hier: Event-Logik, Consent, GTM und serverseitige Signale so bauen, dass Sie Anfragen, Einstiegsseiten und Leadqualität belastbar sehen.',
-			'intro'            => [
-				'Viele B2B-Unternehmen haben Google Analytics 4 technisch aktiv, aber kein belastbares Setup. Events feuern, Conversions sind unklar und das Team diskutiert über Zahlen statt über Entscheidungen.',
-				'Ein sauberes GA4 Tracking Setup für WordPress besteht nicht nur aus Tags. Es braucht klare Event-Logik, sauberes Consent-Verhalten, UTM-Disziplin und einen Blick darauf, welche Seiten und Formulare wirklich Nachfrage erzeugen.',
-				'Sobald SEO, Paid und Vertrieb auf dieselben Daten schauen sollen, wird aus "Analytics installiert" schnell ein strukturelles Problem. Genau deshalb gehören GA4, GTM und Server Side Tracking in einen gemeinsamen Messbarkeits-Cluster.',
-			],
-			'system'           => [
-				'GA4 ist kein Report-Tool, sondern der Einstieg in belastbare Lead- und Nachfrage-Signale. Erst wenn Einstiegsseiten, Formulare und Conversion-Schritte sauber modelliert sind, werden Daten wirklich steuerbar.',
-				'Wir koppeln das Setup deshalb an WordPress, nicht nur an Tags. Tracking Audit, Event-Blueprint, Consent Mode, serverseitige Signalverarbeitung und die Management-Sicht auf dieselben Daten gehören zusammen.',
-				'Wenn zusätzlich Angebotsseiten, Conversion-Führung oder lokale Money Pages bremsen, ist die Agentur-Seite der bessere Einstieg als ein isolierter Tracking-Fix.',
-			],
-			'assets'           => [
-				'tracking-audit'       => 'Prüft, wo Daten fehlen, doppelt feuern oder an Consent und Setups scheitern.',
-				'ga4-event-blueprint'  => 'Definiert Events, KPI-Logik und Funnel-Schritte für echte Entscheidungsfähigkeit.',
-				'consent-mode-v2'      => 'Bringt Datenschutz und Signalqualität in ein sauberes technisches Modell.',
-				'server-side-tracking' => 'Stabilisiert Messung über Browser-Grenzen hinweg mit sGTM oder Matomo.',
-				'kpi-dashboard'        => 'Verdichtet Rohdaten in eine Führungssicht für Management und Marketing.',
-				'utm-framework'        => 'Sichert Benennung und Attribution über Kampagnen und Teams hinweg.',
-			],
-			'blogs'            => [
-				[
-					'title' => 'Datenhoheit mit Server-Side GTM',
-					'url'   => home_url( '/server-side-tracking-gtm/' ),
-				],
-			],
-			'supporting_link'  => [
-				'kicker' => 'Breiterer Einstieg',
-				'label'  => 'WordPress Agentur Hannover',
-				'url'    => $agentur_url,
-				'text'   => 'Wenn Tracking, Angebotsseiten und Conversion gemeinsam sauber werden müssen, ist die Agentur-Seite der klarere Startpunkt als ein isolierter Tracking-Fix.',
-			],
-			'adjacent_link'    => [
-				'kicker' => 'Umsetzung nach dem Messkonzept',
-				'label'  => 'Server-Side Tracking einrichten lassen',
-				'url'    => $sst_money_url,
-				'text'   => 'Wenn Event-Logik, Consent und Conversion-Ziele stehen, führt diese Money-Page in Server-GTM, eigene Tracking-Subdomain, Paralleltest und laufende Kontrolle.',
-			],
-			'proof_note'       => 'Tracking wird erst dann kaufnah wertvoll, wenn Einstiegsseiten, Formulare und Leadquellen sauber unterscheidbar werden. Genau dort zahlt ein gutes GA4-Setup auf bessere Entscheidungen in SEO, Paid und Vertrieb ein.',
 			'faq_items'        => [
 				[
 					'question' => 'Wie richtet man ein sauberes GA4 Tracking Setup für eine B2B-Website ein?',
@@ -106,8 +55,6 @@ function nexus_get_wgos_cluster_page_data() {
 			],
 			'meta_title'       => 'GA4 Tracking Setup für B2B | Haşim Üner',
 			'meta_description' => 'GA4 Tracking Setup für B2B-WordPress: Google Analytics 4 einrichten, Consent Mode, GTM-Struktur und Server Side Tracking für belastbare Leadsignale.',
-			'schema_name'      => 'GA4 Tracking Setup für B2B-WordPress-Websites',
-			'schema_description' => 'GA4 Tracking Setup: Event-Logik, GTM, Consent Mode und Server Side Tracking für B2B-WordPress-Websites.',
 		],
 		// Seit 2026-09-22 rendert page-performance.php die Seite selbst im
 		// Gutachten-Layout. Das Register liefert nur noch Titel, Meta und FAQ,
@@ -238,9 +185,12 @@ function nexus_get_wgos_cluster_page_faq_entities( $value = null ) {
 }
 
 /**
- * Build render-ready asset cards for a cluster page.
+ * Build render-ready asset cards from an 'assets' map.
  *
- * @param array<string, mixed> $page Cluster page definition.
+ * Genutzt von den Blog-Brücken (nexus_render_wgos_blog_asset_bridge) und dem
+ * SEO-Cockpit; die Cluster-Seiten selbst rendern keine Asset-Karten mehr.
+ *
+ * @param array<string, mixed> $page Definition with an 'assets' map.
  * @return array<int, array<string, string>>
  */
 function nexus_get_wgos_cluster_page_asset_cards( $page ) {
@@ -251,35 +201,12 @@ function nexus_get_wgos_cluster_page_asset_cards( $page ) {
 
 		$cards[] = [
 			'title'   => is_array( $asset ) && ! empty( $asset['title'] ) ? (string) $asset['title'] : ucwords( str_replace( '-', ' ', (string) $slug ) ),
-			'url'     => function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( (string) $slug ) : home_url( '/wordpress-agentur-hannover/#methode' ),
+			'url'     => function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( (string) $slug ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 			'context' => (string) $context,
 		];
 	}
 
 	return $cards;
-}
-
-/**
- * Return the shared public proof metrics for service cluster pages.
- *
- * @return array<int, array<string, string>>
- */
-function nexus_get_wgos_cluster_page_proof_metrics() {
-	return [
-		[
-			'value' => '100 %',
-			'label' => 'B2B-Fokus auf WordPress-, SEO-, Tracking- und CRO-Systeme',
-		],
-		[
-			// Kennzahlkachel neben '100 %' und '2 Proof-Routen' — Badge-Fassung.
-			'value' => hu_response_promise( 'badge' ),
-			'label' => 'Marktcheck-Befund, Einstieg mit priorisierten Hebeln',
-		],
-		[
-			'value' => '2 Proof-Routen',
-			'label' => 'Case Study und Ergebnisse sind öffentlich einsehbar',
-		],
-	];
 }
 
 /**
@@ -521,10 +448,10 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 	}
 
 	$agentur_url             = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
-	$seo_url                 = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) );
+	$seo_url                 = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) );
 	$tracking_url            = nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) );
 	$cwv_url                 = nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) );
-	$cro_url                 = nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) );
+	$cro_url                 = nexus_get_primary_public_url( 'cro', home_url( '/#angebot-funnel' ) );
 	$performance_marketing_url = nexus_get_primary_public_url( 'performance_marketing', home_url( '/performance-marketing/' ) );
 	$solar_pillar_url        = function_exists( 'nexus_get_energy_systems_url' )
 		? nexus_get_energy_systems_url()

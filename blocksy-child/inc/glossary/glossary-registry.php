@@ -997,7 +997,7 @@ function nexus_get_glossary_routing_assertions_report() {
 		'pass'             => true,
 		'failures'         => [],
 	];
-	$wgos_hub_url = function_exists( 'nexus_get_wgos_url' ) ? nexus_get_wgos_url() : home_url( '/wordpress-agentur-hannover/#methode' );
+	$wgos_hub_url = function_exists( 'nexus_get_wgos_url' ) ? nexus_get_wgos_url() : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' );
 	$terms        = nexus_get_glossary_registry();
 
 	$assert = static function ( $condition, $code, $message, $context = [] ) use ( &$report ) {

@@ -535,13 +535,19 @@ function nexus_get_primary_public_url_map() {
 		[ 'wordpress-agentur-hannover', 'wordpress-agentur' ],
 		home_url( '/wordpress-agentur-hannover/' )
 	);
-	$wgos_url    = trailingslashit( $agentur_url ) . '#methode';
-	$asset_url   = trailingslashit( $agentur_url ) . '#methode';
-	$seo_url     = trailingslashit( $agentur_url ) . '#technisches-seo';
-	$cro_url     = trailingslashit( $agentur_url ) . '#methode';
-	$wartung_url = trailingslashit( $agentur_url ) . '#wordpress-wartung';
+	// Die Agentur-Seite hat seit dem Umbau zur Entscheidungsseite keine Anker
+	// #methode, #technisches-seo oder #wordpress-wartung mehr. SEO, Betreuung
+	// und Methode behandelt dort #zusammenarbeit; SEO- und Wartungs-Queries
+	// gehören laut docs/seo/query-ownership.csv weiter dieser Seite.
+	// Conversion-Links führen zur Leistung "Anfragestrecken & Landingpages"
+	// auf der Startseite.
+	$wgos_url    = trailingslashit( $agentur_url ) . '#zusammenarbeit';
+	$asset_url   = trailingslashit( $agentur_url ) . '#zusammenarbeit';
+	$seo_url     = trailingslashit( $agentur_url ) . '#zusammenarbeit';
+	$cro_url     = home_url( '/#angebot-funnel' );
+	$wartung_url = trailingslashit( $agentur_url ) . '#zusammenarbeit';
 	$cwv_url     = function_exists( 'hue_get_wgos_asset_redirect_url' )
-		? hue_get_wgos_asset_redirect_url( 'cwv-optimierung', trailingslashit( $agentur_url ) . '#methode' )
+		? hue_get_wgos_asset_redirect_url( 'cwv-optimierung', trailingslashit( $agentur_url ) . '#zusammenarbeit' )
 		: home_url( '/wgos-assets/cwv-optimierung/' );
 
 	$urls = [
