@@ -166,7 +166,7 @@ if ( function_exists( 'hu_enqueue_js' ) ) {
 get_header();
 ?>
 
-<main id="main" tabindex="-1" class="site-main doku blog-index blog-bell" data-track-section="blog_archive">
+<div class="site-main doku blog-index blog-bell" data-track-section="blog_archive">
 	<header class="blatt kopfteil blog-index__kopf" aria-labelledby="blog-archive-heading">
 		<p class="gegenstand">Werkstatt / Blog</p>
 		<h1 id="blog-archive-heading">Was ich messe, baue und zerlege.</h1>
@@ -421,7 +421,7 @@ get_header();
 			</div>
 		</div>
 	</section>
-</main>
+</div>
 
 <button
 	class="blog-index__bell"

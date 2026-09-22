@@ -27,7 +27,7 @@ $project_cta_label = 'Projekt anfragen';
 get_header();
 ?>
 
-<main id="main" class="site-main nexus-single-container seo-cornerstone">
+<div class="site-main nexus-single-container seo-cornerstone">
 
 	<?php while ( have_posts() ) : the_post(); ?>
 
@@ -574,6 +574,6 @@ get_header();
 
 	<?php endwhile; ?>
 
-</main>
+</div>
 
 <?php get_footer(); ?>

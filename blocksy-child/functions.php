@@ -535,64 +535,6 @@ add_action( 'template_redirect', function() {
 }, 0 );
 
 /**
- * ACCESSIBILITY FIX 6a: Skip-Link für Tastatur-Navigation.
- * So kommen Keyboard-Nutzer direkt zum Hauptinhalt.
- */
-add_action( 'wp_body_open', 'hasim_skip_to_content' );
-function hasim_skip_to_content() {
-	echo '<a href="#main" class="skip-to-content" style="position:absolute;top:-100px;left:16px;background:#b46a3c;color:#fff8f3;padding:10px 16px;border:1px solid rgba(255,248,243,0.18);border-radius:999px;font-weight:800;font-size:13px;letter-spacing:0.01em;box-shadow:0 16px 34px rgba(180,106,60,0.28);z-index:99999;text-decoration:none;transition:top 0.2s ease;" onfocus="this.style.top=\'16px\'" onblur="this.style.top=\'-100px\'">Zum Hauptinhalt springen</a>';
-}
-
-/**
- * ACCESSIBILITY FIX 6b: Automatische ARIA-Labels für Kennzahlen-Blöcke.
- * Kein vorhandener wp_footer-Hook in dieser Datei gefunden, daher neuer Hook.
- */
-add_action( 'wp_footer', 'hasim_add_metric_aria_labels_script', 25 );
-function hasim_add_metric_aria_labels_script() {
-	if ( is_admin() ) {
-		return;
-	}
-	?>
-	<script>
-	(function () {
-		'use strict';
-
-		function normalize(text) {
-			return (text || '').replace(/\s+/g, ' ').trim();
-		}
-
-		function applyMetricAriaLabels() {
-			var metricItems = document.querySelectorAll('.wp-metric, .wgos-trust-item, .nx-metric');
-			if (!metricItems.length) return;
-
-			metricItems.forEach(function (item) {
-				var value = item.querySelector('.wp-metric-value, .wgos-trust-value, .nx-metric__value');
-				var label = item.querySelector('.wp-metric-label, .wgos-trust-label, .nx-metric__label');
-				if (!value || !label) return;
-
-				var valueText = normalize(value.textContent);
-				var labelText = normalize(label.textContent);
-				if (!valueText || !labelText) return;
-
-				value.setAttribute('aria-label', labelText + ': ' + valueText);
-				value.setAttribute('role', 'text');
-			});
-		}
-
-		if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', applyMetricAriaLabels);
-		} else {
-			applyMetricAriaLabels();
-		}
-
-		// Re-run nach Counter-Animation, damit Endwerte im Label stehen.
-		window.setTimeout(applyMetricAriaLabels, 2400);
-	})();
-	</script>
-	<?php
-}
-
-/**
  * SEO HINWEIS:
  * Kein zusätzliches Homepage-Schema in functions.php, da bereits
  * strukturierte Daten via inc/org-schema.php und Rank-Math-Integration vorhanden sind.

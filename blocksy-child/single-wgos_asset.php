@@ -16,7 +16,7 @@ $wgos_url  = function_exists( 'nexus_get_wgos_url' ) ? nexus_get_wgos_url() : ho
 $hub_url   = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : $wgos_url . '#module';
 ?>
 
-<main id="main" class="site-main">
+<div class="site-main">
 	<?php while ( have_posts() ) : the_post(); ?>
 		<?php
 		$excerpt       = has_excerpt() ? get_the_excerpt() : '';
@@ -60,7 +60,7 @@ $hub_url   = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_
 			<?php echo apply_filters( 'the_content', $content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		</div>
 	<?php endwhile; ?>
-</main>
+</div>
 
 <?php
 get_footer();

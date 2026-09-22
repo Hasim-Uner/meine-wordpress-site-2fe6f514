@@ -29,7 +29,7 @@ while ( have_posts() ) :
 	$phone_link   = hu_get_contact_phone( 'link' );
 	$phone_number = hu_get_contact_phone();
 	?>
-	<main id="main" class="site-main imprint-page" data-track-section="imprint_page">
+	<div class="site-main imprint-page" data-track-section="imprint_page">
 		<style>
 			.imprint-page {
 				--imprint-surface: rgba(255, 255, 255, 0.04);
@@ -476,7 +476,7 @@ while ( have_posts() ) :
 				</div>
 			</div>
 		</div>
-	</main>
+	</div>
 	<?php
 endwhile;
 

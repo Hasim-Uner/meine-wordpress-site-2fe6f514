@@ -73,7 +73,7 @@ $deep_links = [
 get_header();
 ?>
 
-<main class="hu-hp hu-wow" id="main" data-track-section="homepage_wow_test">
+<div class="hu-hp hu-wow" data-track-section="homepage_wow_test">
 	<section class="hu-wow-hero" id="hero" data-track-section="wow_hero">
 		<div class="hu-wow-hero__system" aria-hidden="true">
 			<div class="hu-wow-grid"></div>
@@ -271,6 +271,6 @@ get_header();
 			</nav>
 		</div>
 	</section>
-</main>
+</div>
 
 <?php get_footer(); ?>

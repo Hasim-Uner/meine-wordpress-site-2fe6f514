@@ -478,7 +478,7 @@ foreach ( $faq as $faq_item ) {
 get_header();
 ?>
 
-<main id="primary" class="hu-intercept hu-sst" role="main" data-track-page="server-side-tracking-b2b">
+<div id="primary" class="hu-intercept hu-sst" data-track-page="server-side-tracking-b2b">
 
 	<?php // ── 01 Hero ── dunkel ─────────────────────────────── ?>
 	<section class="hu-sst__band hu-sst__band--dark hu-sst__band--warm hu-sst__hero" id="hero" data-nx-theme="dark" aria-labelledby="hu-sst-hero-title">
@@ -1130,7 +1130,7 @@ get_header();
 	<script type="application/ld+json"><?php echo wp_json_encode( $breadcrumb_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	<script type="application/ld+json"><?php echo wp_json_encode( $service_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
-</main>
+</div>
 
 <?php
 get_template_part(

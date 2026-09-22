@@ -109,7 +109,7 @@ $documentation_items = [
 get_header();
 ?>
 
-<main id="main" class="site-main">
+<div class="site-main">
 	<div class="wgos-wrapper" data-track-section="wgos_client_dashboard">
 
 		<section class="wgos-hero">
@@ -242,6 +242,6 @@ get_header();
 		</section>
 
 	</div>
-</main>
+</div>
 
 <?php get_footer(); ?>

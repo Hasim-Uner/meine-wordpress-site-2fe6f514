@@ -618,7 +618,7 @@ $schema_blocks[] = [
 get_header();
 ?>
 
-<main id="main" class="site-main">
+<div class="site-main">
 	<?php
 	// .solara-landing bleibt als Wurzel stehen: solar-leadgenerierung-solara.js
 	// haengt seinen Marktcheck-Mount und den Ankerhandler daran. Alle uebrigen
@@ -1465,7 +1465,7 @@ get_header();
 		</div>
 
 	</div>
-</main>
+</div>
 
 <?php foreach ( $schema_blocks as $schema_block ) : ?>
 	<script type="application/ld+json"><?php echo wp_json_encode( $schema_block, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>

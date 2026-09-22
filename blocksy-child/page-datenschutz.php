@@ -21,7 +21,7 @@ while ( have_posts() ) :
 		: home_url( '/kontakt/' );
 	$rights_url = '#rechte';
 	?>
-	<main id="main" class="site-main privacy-page" data-track-section="privacy_page">
+	<div class="site-main privacy-page" data-track-section="privacy_page">
 		<style>
 			.privacy-page {
 				--privacy-bg: rgba(255, 255, 255, 0.04);
@@ -492,7 +492,7 @@ while ( have_posts() ) :
 				</div>
 			</div>
 		</div>
-	</main>
+	</div>
 	<?php
 endwhile;
 

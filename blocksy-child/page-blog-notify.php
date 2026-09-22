@@ -12,7 +12,7 @@ $state_copy = function_exists( 'nexus_get_blog_notify_state_copy' ) ? nexus_get_
 $blog_url   = function_exists( 'nexus_get_blog_posts_url' ) ? nexus_get_blog_posts_url() : home_url( '/blog/' );
 ?>
 
-<main id="main" class="site-main nexus-blog-notify-page">
+<div class="site-main nexus-blog-notify-page">
 	<section class="nexus-blog-notify-page__hero">
 		<div class="nexus-blog-notify-page__shell">
 			<span class="nexus-blog-notify-page__eyebrow"><?php echo esc_html( $state_copy['eyebrow'] ?? 'Blog-Benachrichtigungen' ); ?></span>
@@ -32,7 +32,7 @@ $blog_url   = function_exists( 'nexus_get_blog_posts_url' ) ? nexus_get_blog_pos
 			</div>
 		</section>
 	<?php endif; ?>
-</main>
+</div>
 
 <?php
 get_footer();

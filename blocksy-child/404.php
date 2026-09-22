@@ -15,7 +15,7 @@ get_header();
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 ?>
 
-<main id="main" class="site-main nexus-404-container">
+<div class="site-main nexus-404-container">
 
 	<?php get_template_part( 'template-parts/breadcrumb' ); ?>
 
@@ -77,7 +77,7 @@ $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_ge
 		</div>
 	</section>
 
-</main>
+</div>
 
 <?php
 get_footer();
