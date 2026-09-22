@@ -9,6 +9,7 @@ $nexus_crm_sales_modules = [
 	'actions.php',
 	'contact-admin.php',
 	'ui.php',
+	'watchdog.php',
 ];
 
 foreach ( $nexus_crm_sales_modules as $nexus_crm_sales_module ) {

@@ -1008,10 +1008,14 @@ function nexus_compute_lead_qualification( $validated ) {
  * Weekends are skipped: an intake submitted Friday afternoon shifts into
  * Monday afternoon, not Saturday. Public holidays are not considered.
  *
+ * $hours overrides the working-hour span; the response watchdog uses it to
+ * compute its reminder point on the same weekday logic as the promise.
+ *
  * @param int|null $now_ts Optional override for the reference timestamp.
+ * @param int|null $hours  Optional working hours, defaults to HU_RESPONSE_HOURS.
  * @return array{iso:string,human:string}
  */
-function nexus_compute_intake_response_deadline( $now_ts = null ) {
+function nexus_compute_intake_response_deadline( $now_ts = null, $hours = null ) {
 	$tz_string = function_exists( 'wp_timezone_string' ) ? wp_timezone_string() : 'Europe/Berlin';
 	try {
 		$tz = new DateTimeZone( $tz_string );
@@ -1021,7 +1025,7 @@ function nexus_compute_intake_response_deadline( $now_ts = null ) {
 
 	$now = null === $now_ts ? new DateTimeImmutable( 'now', $tz ) : ( new DateTimeImmutable( '@' . (int) $now_ts ) )->setTimezone( $tz );
 
-	$hours_left = HU_RESPONSE_HOURS;
+	$hours_left = null === $hours ? HU_RESPONSE_HOURS : max( 0, (int) $hours );
 	$cursor     = $now;
 	while ( $hours_left > 0 ) {
 		$cursor = $cursor->modify( '+1 hour' );
