@@ -117,6 +117,7 @@ $entry_projects    = [
 // heisst auf der ganzen Domain "ein mittelständischer PV-Installationsbetrieb",
 // ohne Link und ohne Namen. Ein namentlicher Verweis genau auf diesen Betrieb
 // hebt die Benennung wieder auf, egal ob die Kennzahlen danebenstehen.
+$wl_repo_url      = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
 $proof_references = [
 	[ 'label' => 'civaka-azad.org', 'url' => 'https://civaka-azad.org/', 'type' => 'Informationsarchitektur', 'copy' => 'Navigation, Archive und interne Verweise für einen gewachsenen redaktionellen Bestand.' ],
 	[ 'label' => 'hasimuener.org', 'url' => 'https://hasimuener.org/', 'type' => 'Eigenes Editorial-Projekt', 'copy' => 'Typografie, Raster und Leseführung als Schwerpunkt einer inhaltsorientierten Website.' ],
@@ -187,11 +188,17 @@ $proof_references = [
 					<div><dt>Betrieb &amp; offene Punkte</dt><dd>Zugänge, Zuständigkeiten und bekannte Grenzen für die weitere Betreuung festhalten.</dd></div>
 				</dl>
 			</div>
-			<div class="wl-reference-heading"><h3>Einblick in öffentliche Arbeiten</h3><p>Projektbeispiele aus meinem Portfolio. Keine Agentur-Testimonials.</p></div>
+			<?php
+			// Keine erfundenen Agenturbelege: geprüft werden kann die Arbeitsweise an
+			// öffentlichen Projekten, am offenen Code dieser Website und an einer
+			// echten, bezahlten Aufgabe. Freigegebene Agenturfälle ergänzen das später.
+			?>
+			<div class="wl-reference-heading"><h3>Was ihr vor dem ersten Auftrag prüfen könnt</h3><p>White-Label-Arbeit erscheint nicht unter meinem Namen, die Kundenbeziehung gehört euch. Prüfbar ist trotzdem, wie ich arbeite: an öffentlichen Projekten, am offenen Code dieser Website und an einer echten Aufgabe im <a href="#einstieg" data-track-action="cta_whitelabel_proof_test_sprint" data-track-category="lead_gen" data-track-section="proof">bezahlten Test-Sprint</a>.</p></div>
 			<div class="wl-references">
 				<?php foreach ( $proof_references as $reference ) : ?>
 					<article class="wl-reference"><p class="wl-label"><?php echo esc_html( $reference['type'] ); ?></p><h4><a href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $reference['label'] ); ?> <span aria-hidden="true">↗</span><span class="wl-visually-hidden"> (öffnet in neuem Tab)</span></a></h4><p><?php echo esc_html( $reference['copy'] ); ?></p></article>
 				<?php endforeach; ?>
+				<article class="wl-reference"><p class="wl-label">Code und Prüfprozess</p><h4><a href="<?php echo esc_url( $wl_repo_url . '/commits/main/' ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="whitelabel_proof_repo" data-track-category="proof" data-track-section="proof">Diese Website <span aria-hidden="true">↗</span><span class="wl-visually-hidden"> (öffnet in neuem Tab)</span></a></h4><p>Jede Änderung, ihre Begründung und die automatischen Prüfungen sind öffentlich einsehbar.</p></article>
 			</div>
 		</div>
 	</section>
