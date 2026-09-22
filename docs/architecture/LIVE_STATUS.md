@@ -5,7 +5,7 @@ einschließlich der Änderungen vom 2026-09-22 (gilt nach Merge und Deploy).
 
 Diese Datei beschreibt den Ist-Zustand, keinen Verlauf. Die frühere,
 chronologische Fassung mit Begründungen und Prüfprotokollen bis 2026-09-22
-liegt in der Git-History: `git show 6417674:docs/architecture/LIVE_STATUS.md`.
+liegt in der Git-History: `git show ad69c5c:docs/architecture/LIVE_STATUS.md`.
 Neue Einträge ersetzen den betroffenen Absatz, statt oben einen datierten
 Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
