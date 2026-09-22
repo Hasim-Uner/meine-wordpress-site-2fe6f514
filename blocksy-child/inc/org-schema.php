@@ -1149,10 +1149,10 @@ function hu_output_schema()
         ],
 
         'performance-marketing' => [
-            'name'        => 'Performance Marketing für B2B-WordPress-Websites',
-            'description' => 'Aktivierungslayer für bezahlte Nachfrage: erst Tracking, Technik und Zielseite, dann skalierbare Kampagnen.',
+            'name'        => 'Performance Marketing für B2B',
+            'description' => 'Google Ads und Meta für B2B in fester Reihenfolge: erst Conversion-Messung, dann Landingpage, dann Budget. Kampagnenbetreuung dort, wo sie an WordPress, Tracking und Conversion hängt.',
             'serviceType' => 'Performance Marketing',
-            'serviceOutput' => 'Kampagnenfähige Zielseiten und belastbare Tracking-Signale für effiziente Paid-Aktivierung'
+            'serviceOutput' => 'Belastbare Conversion-Signale, eine Zielseite, die das Anzeigenversprechen einlöst, und Kampagnen, die auf qualifizierte Anfragen optimieren'
         ],
 
         // Legacy-Services wordpress-growth-operating-system + wgos entfernt:

@@ -122,6 +122,11 @@ function nexus_get_llms_txt_sections() {
 					'description' => 'Money Page für Server-Side Tracking, Server-GTM, GA4, Google Ads und Meta CAPI; direkter Projektpfad statt Solar-Marktcheck.',
 				],
 				[
+					'label'       => 'Performance Marketing für B2B',
+					'url'         => $urls['performance_marketing'] ?? home_url( '/performance-marketing/' ),
+					'description' => 'Bezahlte Nachfrage über Google Ads und Meta in fester Reihenfolge: erst Conversion-Messung, dann Zielseite, dann Budget. Performance-Agenturen werden zu White-Label weitergeführt.',
+				],
+				[
 					'label'       => 'WordPress Agentur Hannover',
 					'url'         => $urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' ),
 					'description' => 'Lokale SEO-Seite für den Agentur-Intent; direkte Zusammenarbeit wird zur Freelancer-Route weitergeführt.',

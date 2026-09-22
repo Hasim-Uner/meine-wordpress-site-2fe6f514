@@ -191,6 +191,9 @@ function nexus_get_seo_cockpit_wp_context_for_url( $url ) {
 	$cluster_slug  = nexus_get_seo_cockpit_cluster_slug_from_url( $url );
 	$redirect_url  = nexus_get_seo_cockpit_redirect_target_for_url( $url );
 
+	$cluster_templates = function_exists( 'nexus_get_wgos_cluster_route_templates' ) ? nexus_get_wgos_cluster_route_templates() : [];
+	$cluster_template  = isset( $cluster_templates[ $cluster_slug ] ) ? basename( (string) $cluster_templates[ $cluster_slug ] ) : '';
+
 	if ( 0 === $resolved_id && home_url( '/' ) === $url ) {
 		$resolved_id = $front_page_id;
 	}
@@ -273,7 +276,7 @@ function nexus_get_seo_cockpit_wp_context_for_url( $url ) {
 					'post_type'               => (string) $post->post_type,
 					'post_status'             => (string) $post->post_status,
 					'page_type'               => 'virtual_cluster',
-					'template'                => 'page-wgos-pillar.php',
+					'template'                => $cluster_template,
 					'modified_at'             => (int) get_post_modified_time( 'U', true, $resolved_id ),
 					'seo_title'               => (string) ( $cluster_defaults['title'] ?? '' ),
 					'seo_description'         => (string) ( $cluster_defaults['description'] ?? '' ),
@@ -351,7 +354,7 @@ function nexus_get_seo_cockpit_wp_context_for_url( $url ) {
 			'post_type'               => '',
 			'post_status'             => 'virtual',
 			'page_type'               => 'virtual_cluster',
-			'template'                => 'page-wgos-pillar.php',
+			'template'                => $cluster_template,
 			'modified_at'             => 0,
 			'seo_title'               => (string) ( $cluster_defaults['title'] ?? '' ),
 			'seo_description'         => (string) ( $cluster_defaults['description'] ?? '' ),

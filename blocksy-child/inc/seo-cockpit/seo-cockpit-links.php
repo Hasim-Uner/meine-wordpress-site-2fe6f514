@@ -255,7 +255,9 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 	if ( function_exists( 'nexus_get_wgos_cluster_page' ) ) {
 		$cluster_page = nexus_get_wgos_cluster_page( $post );
 
-		if ( is_array( $cluster_page ) ) {
+		// Diese Links stammen aus dem alten Cluster-Layout. /performance-marketing/
+		// rendert seit 2026-09-22 page-performance.php und hat unten eigene Links.
+		if ( is_array( $cluster_page ) && 'performance-marketing' !== $post_slug ) {
 			$links[] = $primary_urls['audit'] ?? home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 			$links[] = $primary_urls['wgos'] ?? home_url( '/wordpress-agentur-hannover/#methode' );
 			$links[] = $primary_urls['results'] ?? home_url( '/ergebnisse/' );
@@ -308,6 +310,21 @@ function nexus_get_seo_cockpit_template_internal_links( $post_id, $post = null )
 				function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( 'tracking-audit' ) : home_url( '/wordpress-agentur-hannover/#methode' ),
 			],
 			$solar_cluster_urls
+		);
+	}
+
+	if ( 'page-performance.php' === $template || 'performance-marketing' === $post_slug ) {
+		$links = array_merge(
+			$links,
+			[
+				function_exists( 'hu_get_commercial_route' ) ? hu_get_commercial_route( 'project_request' ) : $contact_url,
+				$primary_urls['tracking'] ?? home_url( '/ga4-tracking-setup/' ),
+				function_exists( 'hu_get_commercial_route' ) ? hu_get_commercial_route( 'tracking_b2b' ) : home_url( '/server-side-tracking-b2b/' ),
+				home_url( '/#angebot-funnel' ),
+				$primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
+				$primary_urls['results'] ?? home_url( '/ergebnisse/' ),
+				function_exists( 'hu_get_commercial_route' ) ? hu_get_commercial_route( 'whitelabel' ) : home_url( '/whitelabel-retainer/' ),
+			]
 		);
 	}
 

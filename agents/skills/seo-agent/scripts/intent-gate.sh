@@ -18,6 +18,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
 REGISTRY="$REPO_ROOT/docs/seo/query-ownership.csv"
 SEO_META="$REPO_ROOT/blocksy-child/inc/seo-meta.php"
 PROVIDER_POSTS="$REPO_ROOT/blocksy-child/inc/blog-provider-posts.php"
+CLUSTER_PAGES="$REPO_ROOT/blocksy-child/inc/wgos/wgos-cluster-pages.php"
 
 if [[ ! -f "$REGISTRY" ]]; then
   echo "FEHLER: Registry fehlt: $REGISTRY" >&2
@@ -42,13 +43,14 @@ case "$MODE" in
     ;;
 esac
 
-REGISTRY="$REGISTRY" SEO_META="$SEO_META" PROVIDER_POSTS="$PROVIDER_POSTS" MODE="$MODE" QUERY="$QUERY" TARGET="$TARGET" \
+REGISTRY="$REGISTRY" SEO_META="$SEO_META" PROVIDER_POSTS="$PROVIDER_POSTS" CLUSTER_PAGES="$CLUSTER_PAGES" MODE="$MODE" QUERY="$QUERY" TARGET="$TARGET" \
 python3 <<'PY'
 import csv, os, re, sys
 
 registry_path = os.environ["REGISTRY"]
 seo_meta_path = os.environ["SEO_META"]
 provider_posts_path = os.environ["PROVIDER_POSTS"]
+cluster_pages_path = os.environ["CLUSTER_PAGES"]
 mode = os.environ["MODE"]
 query_in = os.environ["QUERY"]
 target_in = os.environ["TARGET"]
@@ -223,13 +225,21 @@ if os.path.exists(provider_posts_path):
     with open(provider_posts_path, encoding="utf-8") as fh:
         provider_posts_src = fh.read()
 
+# Cluster-Routen (nexus_get_wgos_cluster_route_templates) legen ihre Vorlage
+# per Slug fest; der Dateiname muss nicht page-<slug>.php heissen.
+cluster_src = ""
+if os.path.exists(cluster_pages_path):
+    with open(cluster_pages_path, encoding="utf-8") as fh:
+        cluster_src = fh.read()
+
 missing = []
 for path in sorted(owners):
     slug = path.strip("/")
     has_template = ("page-%s.php" % slug) in theme_files
     has_meta = ("'%s'" % slug) in meta_src
     has_provider_seed = bool(re.search(r"['\"]slug['\"]\s*=>\s*['\"]%s['\"]" % re.escape(slug), provider_posts_src))
-    if not has_template and not has_meta and not has_provider_seed:
+    has_cluster_route = bool(re.search(r"['\"]%s['\"]\s*=>\s*get_stylesheet_directory\(\)" % re.escape(slug), cluster_src))
+    if not has_template and not has_meta and not has_provider_seed and not has_cluster_route:
         missing.append(path)
 if missing:
     print("HINWEIS — Owner ohne Template und ohne Forced-Meta-Eintrag:")

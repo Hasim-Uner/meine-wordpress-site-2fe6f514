@@ -109,3 +109,7 @@ server-side tracking dsgvo;/server-side-tracking-b2b/;commercial;owned;gsc-expor
 serverseitiges tracking dsgvo;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 85,7, 3 Impr.) — deutsche Variante;server side tracking dsgvo
 server side tracking anbieter;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 71,2, 6 Impr.);server side tracking agentur
 tracking loesungen b2b;/server-side-tracking-b2b/;commercial;owned;gsc-export-28d-2026-07-30.csv (Pos. 37,0, 2 Impr.);server side tracking
+# Performance-Marketing-Intent (2026-09-22): /performance-marketing/ besitzt den
+# B2B-Kaufintent "erst Messung und Zielseite, dann Budget". Noch ohne GSC-Beleg;
+# die Zeile sichert die Zuordnung, damit kein Beitrag die Query doppelt besetzt.
+performance marketing b2b;/performance-marketing/;commercial;owned;wgos-cluster-pages.php meta_title (2026-09-22);
