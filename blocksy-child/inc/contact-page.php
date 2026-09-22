@@ -248,8 +248,8 @@ function nexus_get_contact_request_type_options() {
 			'description' => 'Für B2B-Websites, bei denen vor Relaunch, SEO oder Optimierung zuerst die Priorität geklärt werden soll.',
 		],
 		'project' => [
-			'label'       => 'Projektprüfung',
-			'description' => 'Für anspruchsvolle B2B-Projekte rund um WordPress, SEO, Tracking und Conversion.',
+			'label'       => 'Projektanfrage',
+			'description' => 'Für B2B-Projekte rund um WordPress, technisches SEO, Tracking und Conversion.',
 		],
 		'implementation' => [
 			'label'       => 'Umsetzung / Optimierung',
@@ -301,7 +301,7 @@ function nexus_get_contact_focus_options() {
 			'types' => [ 'analysis', 'project' ],
 		],
 		'implementation_scope' => [
-			'label' => 'Umsetzung / Optimierung',
+			'label' => 'Bestehende Website weiterentwickeln',
 			'types' => [ 'implementation', 'project' ],
 		],
 		'ongoing_scope'    => [
@@ -313,23 +313,23 @@ function nexus_get_contact_focus_options() {
 			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
 		'seo'              => [
-			'label' => 'SEO',
+			'label' => 'Technisches SEO',
 			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
 		'performance'      => [
-			'label' => 'Performance',
+			'label' => 'Performance / Ladezeit',
 			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
 		'tracking'         => [
-			'label' => 'Tracking & Analytics',
+			'label' => 'Tracking und Messung',
 			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
 		'conversion'       => [
-			'label' => 'Conversion & CRO',
+			'label' => 'Landingpage oder Anfrageweg',
 			'types' => [ 'audit', 'analysis', 'project', 'implementation', 'ongoing', 'client' ],
 		],
 		'relaunch'         => [
-			'label' => 'Relaunch / Neue Seite',
+			'label' => 'Relaunch oder neue Website',
 			'types' => [ 'analysis', 'project', 'implementation' ],
 		],
 		'support'          => [
@@ -455,7 +455,7 @@ function nexus_get_contact_request_response_label( $request_type ) {
 	$labels = [
 		'audit'          => 'Marktcheck',
 		'analysis'       => 'Website-Analyse',
-		'project'        => 'Projektprüfung',
+		'project'        => 'Projektanfrage',
 		'implementation' => 'Umsetzungsanfrage',
 		'ongoing'        => 'Weiterentwicklungsanfrage',
 		'general'        => 'Anfrage',
@@ -745,7 +745,7 @@ function nexus_validate_contact_request_payload( $payload ) {
 		$timeline = '';
 	}
 
-	if ( in_array( $request_type, [ 'implementation', 'ongoing' ], true ) ) {
+	if ( in_array( $request_type, [ 'project', 'implementation', 'ongoing' ], true ) ) {
 		if ( '' !== $budget && ! isset( $budget_options[ $budget ] ) ) {
 			return new WP_Error( 'invalid_budget', 'Bitte ein gültiges Budget auswählen.' );
 		}

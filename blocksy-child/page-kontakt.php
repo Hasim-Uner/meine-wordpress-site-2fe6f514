@@ -49,12 +49,23 @@ $public_focus_options = array_filter(
 		return in_array( $selected_type, $focus_types, true );
 	}
 );
+
+// Bei Projektanfragen stehen die häufigsten Vorhaben oben; die Schlüssel
+// bleiben unverändert, nur die Reihenfolge der Auswahl ändert sich.
+if ( 'project' === $selected_type ) {
+	$project_focus_order  = [ 'relaunch', 'implementation_scope', 'conversion', 'tracking', 'seo', 'performance', 'website_strategy', 'followup_scope' ];
+	$public_focus_options = array_merge(
+		array_intersect_key( array_flip( $project_focus_order ), $public_focus_options ),
+		$public_focus_options
+	);
+}
+
 $selected_focus = isset( $public_focus_options[ $requested_focus ] ) ? $requested_focus : '';
 
 $hero_titles = [
 	'audit'          => 'Was soll zuerst fachlich geprüft werden?',
 	'analysis'       => 'Was soll auf Ihrer Website klarer werden?',
-	'project'        => 'Was soll auf Ihrer Website messbar besser werden?',
+	'project'        => 'Worum geht es bei Ihrem Projekt?',
 	'implementation' => 'Was soll technisch sauber umgesetzt werden?',
 	'ongoing'        => 'Was soll planbar besser werden?',
 	'general'        => 'Worum geht es?',
@@ -75,7 +86,7 @@ $hero_title          = isset( $hero_titles[ $selected_type ] ) ? $hero_titles[ $
 $submit_label        = isset( $submit_labels[ $selected_type ] ) ? $submit_labels[ $selected_type ] : $submit_labels['project'];
 $message_minlength   = 'general' === $selected_type ? 18 : 24;
 $show_timeline_field = in_array( $selected_type, [ 'analysis', 'project', 'implementation', 'ongoing', 'client' ], true );
-$show_budget_field   = in_array( $selected_type, [ 'implementation', 'ongoing' ], true );
+$show_budget_field   = in_array( $selected_type, [ 'project', 'implementation', 'ongoing' ], true );
 $is_scoped_focus     = '' !== $selected_focus;
 $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 $form_title          = $is_scoped_focus ? 'Zwei kurze Schritte. Direkte fachliche Einordnung.' : 'Drei kurze Schritte. Klare Anfrage statt langem Briefing.';
@@ -97,17 +108,16 @@ $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' co
 				<p><span>03</span><strong>Antwort</strong> Persönlich <?php echo esc_html( $response_window ); ?>.</p>
 			</div>
 
-			<?php if ( ! $is_scoped_focus ) : ?>
-				<nav class="contact-route-list" aria-label="Andere Einstiege">
-					<p class="contact-route-list__label">Andere Einstiege</p>
-					<a href="<?php echo esc_url( $agency_url ); ?>" data-track-action="contact_route_agency" data-track-category="contact" data-track-section="contact_routes">
-						<span>Für Agenturen</span><strong>White-Label-Aufgabe beschreiben</strong>
-					</a>
-					<a href="<?php echo esc_url( $energy_url ); ?>" data-track-action="contact_route_energy" data-track-category="contact" data-track-section="contact_routes">
-						<span>Solar &amp; Wärmepumpe</span><strong>Zum Marktcheck</strong>
-					</a>
-				</nav>
-			<?php endif; ?>
+			<?php // Die Weiche steht immer da: auch wer über einen Angebotslink kommt, kann eine Agentur sein. ?>
+			<nav class="contact-route-list" aria-label="Andere Einstiege">
+				<p class="contact-route-list__label">Andere Einstiege</p>
+				<a href="<?php echo esc_url( $agency_url ); ?>" data-track-action="contact_route_agency" data-track-category="contact" data-track-section="contact_routes">
+					<span>Für Agenturen</span><strong>White-Label-Aufgabe beschreiben</strong>
+				</a>
+				<a href="<?php echo esc_url( $energy_url ); ?>" data-track-action="contact_route_energy" data-track-category="contact" data-track-section="contact_routes">
+					<span>Solar &amp; Wärmepumpe</span><strong>Zum Marktcheck</strong>
+				</a>
+			</nav>
 
 			<a class="contact-direct-mail" href="<?php echo esc_url( 'mailto:' . $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a>
 		</aside>
@@ -151,10 +161,10 @@ $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' co
 
 				<div class="contact-flow-stage">
 					<section class="contact-flow-step" data-contact-step="focus" data-contact-step-label="Thema" <?php echo $is_scoped_focus ? 'data-contact-step-skip="true"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static boolean attribute ?>>
-						<div class="contact-step-head"><span>01</span><p>Worum geht es?</p></div>
+						<div class="contact-step-head"><span>01</span><p><?php echo esc_html( 'project' === $selected_type ? 'Was steht an?' : 'Worum geht es?' ); ?></p></div>
 						<div class="contact-field" data-contact-field="focus">
-							<label for="contact-focus" data-contact-focus-label>Welcher Bereich soll zuerst geprüft werden?</label>
-							<p id="contact-focus-help" class="contact-field__help" data-contact-focus-help>Wählen Sie den Bereich, der Ihrem Anliegen am nächsten kommt.</p>
+							<label for="contact-focus" data-contact-focus-label><?php echo esc_html( 'project' === $selected_type ? 'Vorhaben' : 'Welcher Bereich soll zuerst geprüft werden?' ); ?></label>
+							<p id="contact-focus-help" class="contact-field__help" data-contact-focus-help>Wählen Sie, was Ihrem Vorhaben am nächsten kommt.</p>
 							<select id="contact-focus" name="focus" required data-contact-focus-select aria-describedby="contact-focus-help contact-focus-error">
 								<option value="" <?php selected( '', $selected_focus ); ?> disabled>Bitte auswählen</option>
 								<?php foreach ( $public_focus_options as $focus_key => $focus_definition ) : ?>
@@ -218,24 +228,27 @@ $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' co
 							</div>
 						<?php endif; ?>
 
-						<details class="contact-optional" data-contact-optional>
-							<summary class="contact-optional__toggle"><span>Mehr Kontext <small>optional</small></span><span aria-hidden="true">+</span></summary>
-							<div class="contact-optional__body">
-								<div class="contact-field">
-									<label for="contact-linkedin">LinkedIn <span>optional</span></label>
-									<input id="contact-linkedin" name="linkedin_url" type="url" autocomplete="url" inputmode="url" placeholder="https://linkedin.com/in/…">
+						<?php
+						// Früher stand hier zusätzlich LinkedIn. Für die erste Einordnung
+						// qualifiziert der Budgetrahmen, das Profil nicht; der Server nimmt
+						// linkedin_url aus älteren Formularen weiterhin an.
+						?>
+						<?php if ( $show_budget_field ) : ?>
+							<details class="contact-optional" data-contact-optional>
+								<summary class="contact-optional__toggle"><span>Budgetrahmen angeben <small>optional</small></span><span aria-hidden="true">+</span></summary>
+								<div class="contact-optional__body">
+									<div class="contact-field" data-contact-context-field="budget">
+										<label for="contact-budget">Budget <span>optional</span></label>
+										<select id="contact-budget" name="budget">
+											<option value="" selected>Optional auswählen</option>
+											<?php foreach ( $budget_options as $budget_key => $budget_label ) : ?>
+												<option value="<?php echo esc_attr( $budget_key ); ?>"><?php echo esc_html( $budget_label ); ?></option>
+											<?php endforeach; ?>
+										</select>
+									</div>
 								</div>
-								<div class="contact-field<?php echo esc_attr( $show_budget_field ? '' : ' is-hidden' ); ?>" data-contact-context-field="budget">
-									<label for="contact-budget">Budget <span>optional</span></label>
-									<select id="contact-budget" name="budget">
-										<option value="" selected>Optional auswählen</option>
-										<?php foreach ( $budget_options as $budget_key => $budget_label ) : ?>
-											<option value="<?php echo esc_attr( $budget_key ); ?>"><?php echo esc_html( $budget_label ); ?></option>
-										<?php endforeach; ?>
-									</select>
-								</div>
-							</div>
-						</details>
+							</details>
+						<?php endif; ?>
 
 						<label class="contact-consent" data-contact-field="consent">
 							<input type="checkbox" name="consent" value="1" required aria-describedby="contact-consent-error">
