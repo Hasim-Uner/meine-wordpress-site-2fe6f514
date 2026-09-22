@@ -372,6 +372,165 @@ function nexus_upsert_crm_contact( $args ) {
 }
 
 /**
+ * Self-reported answers to "Wie sind Sie auf mich aufmerksam geworden?".
+ *
+ * Optional and qualitative. It covers referrals, LinkedIn and personal
+ * outreach, which no analytics tool sees. Technical attribution (entry page,
+ * referrer, campaign) stays invisible in the payload.
+ *
+ * @return array<string, string>
+ */
+function nexus_get_inquiry_referral_options() {
+	return [
+		'empfehlung'   => 'Empfehlung',
+		'linkedin'     => 'LinkedIn',
+		'suche'        => 'Google oder andere Suche',
+		'ki_assistent' => 'KI-Assistent (z. B. ChatGPT)',
+		'nachricht'    => 'Nachricht von mir',
+		'sonstiges'    => 'Anders',
+	];
+}
+
+/**
+ * Sanitize the attribution part of a public inquiry payload.
+ *
+ * Internal URLs are reduced to paths on this site and the referrer to origin
+ * and path, with the same rules as the Marktcheck. An unknown referral answer
+ * is dropped instead of failing the request.
+ *
+ * @param array $payload Raw payload.
+ * @return array<string, string>
+ */
+function nexus_sanitize_inquiry_attribution( $payload ) {
+	$payload  = is_array( $payload ) ? $payload : [];
+	$internal = static function ( $key ) use ( $payload ) {
+		return function_exists( 'nexus_sanitize_review_request_internal_url' )
+			? nexus_sanitize_review_request_internal_url( $payload[ $key ] ?? '' )
+			: '';
+	};
+	$text     = static function ( $key, $length ) use ( $payload ) {
+		return mb_substr( sanitize_text_field( (string) ( $payload[ $key ] ?? '' ) ), 0, $length );
+	};
+
+	$referral_options = nexus_get_inquiry_referral_options();
+	$referral         = sanitize_key( (string) ( $payload['referral_source'] ?? '' ) );
+	$referral         = isset( $referral_options[ $referral ] ) ? $referral : '';
+
+	return [
+		'landing_page_url'      => $internal( 'landing_page_url' ),
+		'entry_page_url'        => $internal( 'entry_page_url' ),
+		'previous_internal_url' => $internal( 'previous_internal_url' ),
+		'referrer_url'          => function_exists( 'nexus_sanitize_review_request_referrer_url' )
+			? nexus_sanitize_review_request_referrer_url( $payload['referrer_url'] ?? '' )
+			: '',
+		'ads_source'            => $text( 'ads_source', 120 ),
+		'ads_keyword'           => $text( 'ads_keyword', 180 ),
+		'utm_medium'            => $text( 'utm_medium', 120 ),
+		'utm_campaign'          => $text( 'utm_campaign', 180 ),
+		'referral_source'       => $referral,
+		'referral_source_label' => '' !== $referral ? $referral_options[ $referral ] : '',
+	];
+}
+
+/**
+ * Map sanitized attribution onto CRM contact meta (latest inquiry wins).
+ *
+ * @param array $attribution Output of nexus_sanitize_inquiry_attribution().
+ * @return array<string, string>
+ */
+function nexus_get_inquiry_attribution_meta( $attribution ) {
+	$map = [
+		'landing_page_url'      => '_nexus_contact_landing_page_url',
+		'entry_page_url'        => '_nexus_contact_entry_page_url',
+		'previous_internal_url' => '_nexus_contact_previous_page_url',
+		'referrer_url'          => '_nexus_contact_referrer_url',
+		'ads_source'            => '_nexus_contact_ads_source',
+		'ads_keyword'           => '_nexus_contact_ads_keyword',
+		'utm_medium'            => '_nexus_contact_utm_medium',
+		'utm_campaign'          => '_nexus_contact_utm_campaign',
+		'referral_source'       => '_nexus_contact_referral_source',
+		'referral_source_label' => '_nexus_contact_referral_source_label',
+	];
+	$meta = [];
+
+	foreach ( $map as $key => $meta_key ) {
+		$meta[ $meta_key ] = (string) ( $attribution[ $key ] ?? '' );
+	}
+
+	return $meta;
+}
+
+/**
+ * Read the stored attribution of a contact back into payload keys.
+ *
+ * @param int $post_id Contact post ID.
+ * @return array<string, string>
+ */
+function nexus_get_contact_attribution_from_meta( $post_id ) {
+	$attribution = [];
+
+	foreach ( nexus_get_inquiry_attribution_meta( [] ) as $meta_key => $unused ) {
+		$key                 = str_replace( [ '_nexus_contact_', 'previous_page_url' ], [ '', 'previous_internal_url' ], $meta_key );
+		$attribution[ $key ] = (string) get_post_meta( (int) $post_id, $meta_key, true );
+	}
+
+	return $attribution;
+}
+
+/**
+ * Return the non-empty attribution values as label => value, in reading order.
+ *
+ * @param array $attribution Sanitized attribution.
+ * @return array<string, string>
+ */
+function nexus_get_inquiry_attribution_pairs( $attribution ) {
+	$labels = [
+		'referral_source_label' => 'Selbstauskunft',
+		'entry_page_url'        => 'Einstiegsseite',
+		'previous_internal_url' => 'Vorige Seite',
+		'landing_page_url'      => 'Formularseite',
+		'referrer_url'          => 'Referrer',
+		'ads_source'            => 'Quelle',
+		'utm_medium'            => 'Medium',
+		'utm_campaign'          => 'Kampagne',
+		'ads_keyword'           => 'Suchbegriff',
+	];
+	$pairs  = [];
+
+	foreach ( $labels as $key => $label ) {
+		$value = trim( (string) ( $attribution[ $key ] ?? '' ) );
+
+		if ( '' !== $value ) {
+			$pairs[ $label ] = $value;
+		}
+	}
+
+	return $pairs;
+}
+
+/**
+ * Render attribution rows for an internal notification mail.
+ *
+ * @param array $attribution Sanitized attribution.
+ * @return string Escaped HTML, or a plain "direct" note.
+ */
+function nexus_get_inquiry_attribution_mail_rows( $attribution ) {
+	$pairs = nexus_get_inquiry_attribution_pairs( $attribution );
+
+	if ( empty( $pairs ) ) {
+		return esc_html( 'Keine Angaben (direkter Aufruf oder Browser ohne Sitzungsspeicher).' );
+	}
+
+	$rows = [];
+
+	foreach ( $pairs as $label => $value ) {
+		$rows[] = sprintf( '<strong style="color:#f7f3ee;">%1$s:</strong> %2$s', esc_html( $label ), esc_html( $value ) );
+	}
+
+	return implode( '<br>', $rows );
+}
+
+/**
  * Sync a public contact request into the shared CRM.
  *
  * @param array $payload Validated contact request payload.
@@ -401,7 +560,7 @@ function nexus_sync_contact_request_to_crm( $payload ) {
 			'status'        => 'new',
 			'segments'      => [ 'contact_inquiry', $source ],
 			'refresh_title' => true,
-			'meta'          => [
+			'meta'          => nexus_get_inquiry_attribution_meta( $payload ) + [
 				'_nexus_contact_name'                    => sanitize_text_field( (string) ( $payload['name'] ?? '' ) ),
 				'_nexus_contact_request_type'            => $request_type,
 				'_nexus_contact_request_type_label'      => sanitize_text_field( (string) ( $payload['request_type_label'] ?? '' ) ),
@@ -422,8 +581,6 @@ function nexus_sync_contact_request_to_crm( $payload ) {
 				'_nexus_contact_message'                 => sanitize_textarea_field( (string) ( $payload['message'] ?? '' ) ),
 				'_nexus_contact_consent_contact_request' => 1,
 				'_nexus_contact_last_inquiry_at'         => current_time( 'timestamp' ),
-				'_nexus_contact_ads_source'              => sanitize_text_field( (string) ( $payload['ads_source'] ?? '' ) ),
-				'_nexus_contact_ads_keyword'             => sanitize_text_field( (string) ( $payload['ads_keyword'] ?? '' ) ),
 			],
 		]
 	);
@@ -457,7 +614,7 @@ function nexus_sync_whitelabel_request_to_crm( $payload ) {
 			'status'        => 'new',
 			'segments'      => [ 'contact_inquiry', 'whitelabel_request' ],
 			'refresh_title' => false,
-			'meta'          => [
+			'meta'          => nexus_get_inquiry_attribution_meta( $payload ) + [
 				'_nexus_contact_request_type'       => 'whitelabel',
 				'_nexus_contact_request_type_label' => 'White-Label-Anfrage',
 				'_nexus_contact_focus'              => 'whitelabel_' . $case,
@@ -615,7 +772,7 @@ function nexus_render_lead_notification_failure_notice() {
 	$items         = [];
 
 	foreach ( array_reverse( $failures ) as $failure ) {
-		$label = $source_labels[ $failure['source'] ] ?? 'Anfrage';
+		$label = $source_labels[ $failure['source'] ] ?? ( 'contact_request' === $failure['source'] ? 'Kontaktanfrage' : 'Anfrage' );
 		$when  = wp_date( 'd.m.Y H:i', $failure['failed_at'] );
 		$items[] = $failure['contact_id'] > 0
 			? sprintf( '<a href="%1$s">%2$s vom %3$s</a>', esc_url( admin_url( 'post.php?post=' . $failure['contact_id'] . '&action=edit' ) ), esc_html( $label ), esc_html( $when ) )
@@ -763,6 +920,24 @@ function nexus_render_contact_details_meta_box( $post ) {
 			<div class="nexus-review-meta-group">
 				<strong>Nachricht</strong>
 				<p><?php echo nl2br( esc_html( $message ) ); ?></p>
+			</div>
+		<?php endif; ?>
+		<?php $whitelabel_access = (string) get_post_meta( $post->ID, '_nexus_contact_whitelabel_access', true ); ?>
+		<?php if ( '' !== $whitelabel_access ) : ?>
+			<div class="nexus-review-meta-group">
+				<strong>Zugänge (White-Label)</strong>
+				<p><?php echo esc_html( $whitelabel_access ); ?></p>
+			</div>
+		<?php endif; ?>
+		<?php $attribution_pairs = nexus_get_inquiry_attribution_pairs( nexus_get_contact_attribution_from_meta( $post->ID ) ); ?>
+		<?php if ( ! empty( $attribution_pairs ) ) : ?>
+			<div class="nexus-review-meta-group">
+				<strong>Herkunft der letzten Anfrage</strong>
+				<p>
+					<?php foreach ( $attribution_pairs as $attribution_label => $attribution_value ) : ?>
+						<?php echo esc_html( $attribution_label ); ?>: <?php echo esc_html( $attribution_value ); ?><br>
+					<?php endforeach; ?>
+				</p>
 			</div>
 		<?php endif; ?>
 		<?php if ( '' !== $blog_consent || '' !== $blog_status || $confirmed_at || $unsubscribed_at ) : ?>

@@ -144,7 +144,10 @@ function hu_validate_whitelabel_request_payload( $payload ) {
 		return new WP_Error( 'invalid_access', 'Bitte eine der drei Antworten zu den Zugängen wählen.' );
 	}
 
-	return [
+	// Herkunft und Selbstauskunft sind optional und brechen die Anfrage nie ab.
+	$attribution = function_exists( 'nexus_sanitize_inquiry_attribution' ) ? nexus_sanitize_inquiry_attribution( $payload ) : [];
+
+	return $attribution + [
 		'task'         => mb_substr( $task, 0, 4000 ),
 		'email'        => $email,
 		'timeframe'    => mb_substr( $timeframe, 0, 160 ),
@@ -316,6 +319,17 @@ function hu_whitelabel_request_activity_summary( $payload ) {
 	$lines[] = 'Aufgabe:';
 	$lines[] = $payload['task'];
 
+	$attribution = function_exists( 'nexus_get_inquiry_attribution_pairs' ) ? nexus_get_inquiry_attribution_pairs( $payload ) : [];
+
+	if ( ! empty( $attribution ) ) {
+		$lines[] = '';
+		$lines[] = 'Herkunft:';
+
+		foreach ( $attribution as $label => $value ) {
+			$lines[] = $label . ': ' . $value;
+		}
+	}
+
 	return implode( "\n", $lines );
 }
 
@@ -402,6 +416,12 @@ function hu_send_whitelabel_request_notification( $payload, $contact_id = 0 ) {
 			</tr>
 			<tr>
 				<td style="padding:14px 16px; border:1px solid rgba(255,255,255,0.08); border-radius:18px; background:rgba(255,255,255,0.03); font-family:Helvetica, Arial, sans-serif;">
+					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:8px;">Herkunft</div>
+					<div style="font-size:14px; line-height:1.8; color:#c5ced7;">%4$s</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding:14px 16px; border:1px solid rgba(255,255,255,0.08); border-radius:18px; background:rgba(255,255,255,0.03); font-family:Helvetica, Arial, sans-serif;">
 					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:8px;">CRM</div>
 					<div style="font-size:14px; line-height:1.8; color:#c5ced7;">%3$s</div>
 				</td>
@@ -409,7 +429,8 @@ function hu_send_whitelabel_request_notification( $payload, $contact_id = 0 ) {
 		</table>',
 		hu_whitelabel_request_detail_rows( $payload ),
 		nl2br( esc_html( $payload['task'] ) ),
-		wp_kses( $crm_note, [ 'a' => [ 'href' => true, 'style' => true ] ] )
+		wp_kses( $crm_note, [ 'a' => [ 'href' => true, 'style' => true ] ] ),
+		function_exists( 'nexus_get_inquiry_attribution_mail_rows' ) ? nexus_get_inquiry_attribution_mail_rows( $payload ) : ''
 	);
 
 	$html = hu_whitelabel_request_mail_shell(

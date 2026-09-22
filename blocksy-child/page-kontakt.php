@@ -17,6 +17,7 @@ $request_type_options = function_exists( 'nexus_get_contact_request_type_options
 $focus_options        = function_exists( 'nexus_get_contact_focus_options' ) ? nexus_get_contact_focus_options() : [];
 $budget_options       = function_exists( 'nexus_get_contact_budget_options' ) ? nexus_get_contact_budget_options() : [];
 $timeline_options     = function_exists( 'nexus_get_contact_timeline_options' ) ? nexus_get_contact_timeline_options() : [];
+$referral_options     = function_exists( 'nexus_get_inquiry_referral_options' ) ? nexus_get_inquiry_referral_options() : [];
 $calendar_url         = function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' );
 $agency_url           = home_url( '/whitelabel-retainer/' ) . '#aufgabe';
 $energy_url           = function_exists( 'hu_get_request_analysis_url' ) ? hu_get_request_analysis_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
@@ -204,6 +205,18 @@ $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' co
 								<p class="contact-field__error is-hidden" id="contact-email-error" aria-live="polite"></p>
 							</div>
 						</div>
+
+						<?php if ( ! empty( $referral_options ) ) : ?>
+							<div class="contact-field">
+								<label for="contact-referral">Wie sind Sie auf mich aufmerksam geworden? <span>optional</span></label>
+								<select id="contact-referral" name="referral_source">
+									<option value="" selected>Optional auswählen</option>
+									<?php foreach ( $referral_options as $referral_key => $referral_label ) : ?>
+										<option value="<?php echo esc_attr( $referral_key ); ?>"><?php echo esc_html( $referral_label ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+						<?php endif; ?>
 
 						<details class="contact-optional" data-contact-optional>
 							<summary class="contact-optional__toggle"><span>Mehr Kontext <small>optional</small></span><span aria-hidden="true">+</span></summary>

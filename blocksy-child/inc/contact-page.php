@@ -614,18 +614,41 @@ function nexus_handle_contact_request_submission( WP_REST_Request $request ) {
 	$contact_id = function_exists( 'nexus_sync_contact_request_to_crm' )
 		? nexus_sync_contact_request_to_crm( $validated )
 		: 0;
+	$contact_id = is_wp_error( $contact_id ) ? 0 : (int) $contact_id;
 
-	if ( is_wp_error( $contact_id ) ) {
+	if ( $contact_id > 0 && function_exists( 'nexus_record_inbound_inquiry_activity' ) ) {
+		nexus_record_inbound_inquiry_activity(
+			$contact_id,
+			$validated['request_type_label'] . ' · ' . $validated['focus_label'],
+			nexus_get_contact_request_activity_summary( $validated ),
+			'contact_request'
+		);
+	}
+
+	// Die Anfrage gilt als angekommen, sobald CRM oder interne Mail sie haben.
+	// Scheitert beides, bekommt die Person einen Fehler statt eines falschen Danke.
+	$notified = nexus_send_contact_request_admin_notification( $validated, $contact_id );
+
+	if ( 0 === $contact_id && ! $notified ) {
+		error_log( '[Nexus Lead] Kontaktanfrage weder im CRM gespeichert noch zugestellt.' );
+
 		return new WP_REST_Response(
 			[
 				'ok'    => false,
-				'error' => 'Die Anfrage konnte gerade nicht sauber im CRM gespeichert werden. Bitte versuchen Sie es erneut.',
+				'error' => 'Die Anfrage konnte gerade nicht übermittelt werden. Bitte versuchen Sie es erneut oder schreiben Sie direkt per E-Mail.',
 			],
 			500
 		);
 	}
 
-	nexus_send_contact_request_admin_notification( $validated );
+	if ( 0 === $contact_id ) {
+		error_log( '[Nexus Lead] Kontaktanfrage nicht im CRM gespeichert; interne Mail zugestellt.' );
+	}
+
+	if ( ! $notified && function_exists( 'nexus_record_lead_notification_failure' ) ) {
+		nexus_record_lead_notification_failure( $contact_id, 'contact_request' );
+	}
+
 	nexus_send_contact_request_confirmation( $validated );
 
 	return new WP_REST_Response(
@@ -749,14 +772,13 @@ function nexus_validate_contact_request_payload( $payload ) {
 		return new WP_Error( 'missing_consent', 'Bitte der Verarbeitung Ihrer Nachricht zustimmen.' );
 	}
 
-	$ads_source   = isset( $payload['ads_source'] ) ? sanitize_text_field( (string) $payload['ads_source'] ) : '';
-	$ads_keyword  = isset( $payload['ads_keyword'] ) ? sanitize_text_field( (string) $payload['ads_keyword'] ) : '';
-	$utm_medium   = isset( $payload['utm_medium'] ) ? sanitize_text_field( (string) $payload['utm_medium'] ) : '';
-	$utm_campaign = isset( $payload['utm_campaign'] ) ? sanitize_text_field( (string) $payload['utm_campaign'] ) : '';
-	$gclid        = isset( $payload['gclid'] ) ? sanitize_text_field( (string) $payload['gclid'] ) : '';
-	$matchtype    = isset( $payload['matchtype'] ) ? sanitize_text_field( (string) $payload['matchtype'] ) : '';
+	// Herkunft (Einstiegsseite, Referrer, Kampagne, Selbstauskunft) nach denselben
+	// Regeln wie beim Marktcheck. Alle Felder sind optional.
+	$attribution = function_exists( 'nexus_sanitize_inquiry_attribution' ) ? nexus_sanitize_inquiry_attribution( $payload ) : [];
+	$gclid       = isset( $payload['gclid'] ) ? sanitize_text_field( (string) $payload['gclid'] ) : '';
+	$matchtype   = isset( $payload['matchtype'] ) ? sanitize_text_field( (string) $payload['matchtype'] ) : '';
 
-	return [
+	return $attribution + [
 		'name'               => $name,
 		'email'              => $email,
 		'request_type'       => $request_type,
@@ -776,10 +798,10 @@ function nexus_validate_contact_request_payload( $payload ) {
 		'ad_budget_label'    => '' !== $ad_budget ? $ad_budget_options[ $ad_budget ] : '',
 		'tracking_setup'     => $tracking_setup,
 		'consent_tool'       => $consent_tool,
-		'ads_source'         => $ads_source,
-		'ads_keyword'        => $ads_keyword,
-		'utm_medium'         => $utm_medium,
-		'utm_campaign'       => $utm_campaign,
+		'ads_source'         => '',
+		'ads_keyword'        => '',
+		'utm_medium'         => '',
+		'utm_campaign'       => '',
 		'gclid'              => $gclid,
 		'matchtype'          => $matchtype,
 	];
@@ -851,15 +873,59 @@ function nexus_get_contact_email_shell( $args = [] ) {
 }
 
 /**
- * Send the internal contact notification.
+ * Plain-text summary of one contact request for the CRM timeline.
  *
  * @param array $payload Validated payload.
- * @return void
+ * @return string
  */
-function nexus_send_contact_request_admin_notification( $payload ) {
+function nexus_get_contact_request_activity_summary( $payload ) {
+	$lines = [
+		'Anfragetyp: ' . $payload['request_type_label'],
+		'Thema: ' . $payload['focus_label'],
+	];
+
+	$optional = [
+		'Unternehmen' => $payload['company'] ?? '',
+		'Zeitfenster' => $payload['timeline_label'] ?? '',
+		'Budget'      => $payload['budget_label'] ?? '',
+		'Website'     => $payload['website_url'] ?? '',
+	];
+
+	foreach ( $optional as $label => $value ) {
+		if ( '' !== (string) $value ) {
+			$lines[] = $label . ': ' . $value;
+		}
+	}
+
+	$lines[] = '';
+	$lines[] = 'Nachricht:';
+	$lines[] = $payload['message'];
+
+	$attribution = function_exists( 'nexus_get_inquiry_attribution_pairs' ) ? nexus_get_inquiry_attribution_pairs( $payload ) : [];
+
+	if ( ! empty( $attribution ) ) {
+		$lines[] = '';
+		$lines[] = 'Herkunft:';
+
+		foreach ( $attribution as $label => $value ) {
+			$lines[] = $label . ': ' . $value;
+		}
+	}
+
+	return implode( "\n", $lines );
+}
+
+/**
+ * Send the internal contact notification.
+ *
+ * @param array $payload    Validated payload.
+ * @param int   $contact_id CRM contact, 0 when the CRM write failed.
+ * @return bool Whether wp_mail() accepted the notification.
+ */
+function nexus_send_contact_request_admin_notification( $payload, $contact_id = 0 ) {
 	$recipient = nexus_get_contact_notification_email();
 	if ( ! $recipient || ! is_email( $recipient ) ) {
-		return;
+		return false;
 	}
 
 	$subject = sprintf(
@@ -955,12 +1021,26 @@ function nexus_send_contact_request_admin_notification( $payload ) {
 		);
 	}
 
-	$ads_source_label  = '' !== $payload['ads_source'] ? $payload['ads_source'] : 'Organisch/Direkt';
-	$ads_keyword_label = '' !== $payload['ads_keyword'] ? $payload['ads_keyword'] : 'Keines';
-	$utm_medium_label  = '' !== $payload['utm_medium'] ? $payload['utm_medium'] : '';
-	$utm_campaign_label = '' !== $payload['utm_campaign'] ? $payload['utm_campaign'] : '';
-	$gclid_label       = '' !== $payload['gclid'] ? $payload['gclid'] : '';
-	$matchtype_label   = '' !== $payload['matchtype'] ? $payload['matchtype'] : '';
+	$attribution_rows = function_exists( 'nexus_get_inquiry_attribution_mail_rows' )
+		? nexus_get_inquiry_attribution_mail_rows( $payload )
+		: '';
+
+	// Nutzerwerte nie in den sprintf-Formatstring haengen: ein "%" in einer
+	// Klick-ID haette die Mail mit einem ValueError abbrechen lassen.
+	if ( '' !== $payload['gclid'] ) {
+		$attribution_rows .= '<br><strong style="color:#f7f3ee;">GCLID:</strong> ' . esc_html( $payload['gclid'] );
+	}
+
+	if ( '' !== $payload['matchtype'] ) {
+		$attribution_rows .= '<br><strong style="color:#f7f3ee;">Matchtype:</strong> ' . esc_html( $payload['matchtype'] );
+	}
+
+	$crm_note = (int) $contact_id > 0
+		? sprintf(
+			'<a href="%s" style="color:#f7f3ee;">Im CRM öffnen</a>',
+			esc_url( admin_url( 'post.php?post=' . (int) $contact_id . '&action=edit' ) )
+		)
+		: esc_html( 'Nicht im CRM gespeichert – bitte manuell anlegen.' );
 
 	$content = sprintf(
 		'<table role="presentation" width="100%%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 18px 0; border-collapse:separate; border-spacing:0 10px;">
@@ -982,15 +1062,16 @@ function nexus_send_contact_request_admin_notification( $payload ) {
 			</tr>
 			<tr>
 				<td style="padding:14px 16px; border:1px solid rgba(255,255,255,0.08); border-radius:18px; background:rgba(255,255,255,0.03); font-family:Helvetica, Arial, sans-serif;">
-					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:8px;">Tracking Info</div>
+					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:8px;">Herkunft</div>
 					<div style="font-size:14px; line-height:1.75; color:#c5ced7;">
-						<strong style="color:#f7f3ee;">Quelle:</strong> %5$s<br>
-						<strong style="color:#f7f3ee;">Keyword:</strong> %6$s' .
-		( '' !== $utm_medium_label ? '<br><strong style="color:#f7f3ee;">Medium:</strong> ' . esc_html( $utm_medium_label ) : '' ) .
-		( '' !== $utm_campaign_label ? '<br><strong style="color:#f7f3ee;">Kampagne:</strong> ' . esc_html( $utm_campaign_label ) : '' ) .
-		( '' !== $gclid_label ? '<br><strong style="color:#f7f3ee;">GCLID:</strong> ' . esc_html( $gclid_label ) : '' ) .
-		( '' !== $matchtype_label ? '<br><strong style="color:#f7f3ee;">Matchtype:</strong> ' . esc_html( $matchtype_label ) : '' ) . '
+						%5$s
 					</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding:14px 16px; border:1px solid rgba(255,255,255,0.08); border-radius:18px; background:rgba(255,255,255,0.03); font-family:Helvetica, Arial, sans-serif;">
+					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:8px;">CRM</div>
+					<div style="font-size:14px; line-height:1.75; color:#c5ced7;">%6$s</div>
 				</td>
 			</tr>
 		</table>',
@@ -998,8 +1079,8 @@ function nexus_send_contact_request_admin_notification( $payload ) {
 		esc_html( $payload['email'] ),
 		$meta_rows,
 		nl2br( esc_html( $payload['message'] ) ),
-		esc_html( $ads_source_label ),
-		esc_html( $ads_keyword_label )
+		$attribution_rows,
+		wp_kses( $crm_note, [ 'a' => [ 'href' => true, 'style' => true ] ] )
 	);
 
 	$html = nexus_get_contact_email_shell(
@@ -1013,7 +1094,7 @@ function nexus_send_contact_request_admin_notification( $payload ) {
 		]
 	);
 
-	nexus_send_contact_html_mail( $recipient, $subject, $html, $headers );
+	return nexus_send_contact_html_mail( $recipient, $subject, $html, $headers );
 }
 
 /**

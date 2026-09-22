@@ -705,6 +705,37 @@
                 payload[key] = typeof value === 'string' ? value.trim() : value;
             });
 
+            return mergeSessionAttribution(payload);
+        }
+
+        // Herkunft aus der Sitzung ergaenzen (NexusCore). Parameter in der URL
+        // dieser Seite stehen schon in den versteckten Feldern und haben Vorrang;
+        // die Sitzung liefert, womit der Besuch begonnen hat, auch wenn die
+        // Anfrage erst drei Seiten spaeter abgeschickt wird.
+        function mergeSessionAttribution(payload) {
+            var core = window.NexusCore;
+            var attribution = core && typeof core.getLeadAttributionPayload === 'function' ? core.getLeadAttributionPayload() : {};
+            var campaign = core && typeof core.getCampaignContext === 'function' ? core.getCampaignContext() : {};
+
+            ['landing_page_url', 'entry_page_url', 'previous_internal_url', 'referrer_url'].forEach(function (key) {
+                if (attribution[key]) {
+                    payload[key] = attribution[key];
+                }
+            });
+
+            if (campaign.entry_referrer_url) {
+                payload.referrer_url = campaign.entry_referrer_url;
+            }
+
+            [['ads_source', attribution], ['ads_keyword', attribution], ['utm_medium', campaign], ['utm_campaign', campaign]].forEach(function (pair) {
+                var key = pair[0];
+                var source = pair[1] || {};
+
+                if (!payload[key] && source[key]) {
+                    payload[key] = source[key];
+                }
+            });
+
             return payload;
         }
 
