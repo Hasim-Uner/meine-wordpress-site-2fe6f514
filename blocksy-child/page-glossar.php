@@ -22,7 +22,7 @@ $summary     = function_exists( 'nexus_get_glossary_hub_summary' ) ? nexus_get_g
 $hub_sections = function_exists( 'nexus_get_glossary_hub_sections' ) ? nexus_get_glossary_hub_sections() : [];
 ?>
 
-<main id="main" class="site-main">
+<div class="site-main">
 	<div class="wgos-wrapper glossary-wrapper">
 		<section class="wgos-hero">
 			<div class="wgos-container">
@@ -158,6 +158,6 @@ $hub_sections = function_exists( 'nexus_get_glossary_hub_sections' ) ? nexus_get
 			</div>
 		</section>
 	</div>
-</main>
+</div>
 
 <?php get_footer(); ?>

@@ -167,7 +167,7 @@ wp_enqueue_style(
 get_header();
 ?>
 
-<main id="main" class="site-main">
+<div class="site-main">
 	<article class="e3-case-v2" <?php echo $tracking_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<section class="e3v2-hero" id="hero" aria-labelledby="e3v2-hero-title">
 			<div class="e3v2-container e3v2-hero__grid">
@@ -399,7 +399,7 @@ get_header();
 			</section>
 		<?php endif; ?>
 	</article>
-</main>
+</div>
 
 <?php
 get_template_part(

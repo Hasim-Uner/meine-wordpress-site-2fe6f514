@@ -248,7 +248,7 @@ foreach ( $faq as $faq_item ) {
 get_header();
 ?>
 
-<main id="primary" class="hu-intercept hu-b2b" data-track-page="b2b-solar-leads">
+<div id="primary" class="hu-intercept hu-b2b" data-track-page="b2b-solar-leads">
 
 	<section class="hu-b2b__band hu-b2b__band--dark hu-b2b__hero" id="hero" data-nx-theme="dark" data-track-section="hero" aria-labelledby="hu-b2b-hero-title">
 		<div class="hu-intercept__container">
@@ -497,7 +497,7 @@ get_header();
 	<?php if ( ! empty( $breadcrumb_schema ) ) : ?>
 	<script type="application/ld+json"><?php echo wp_json_encode( $breadcrumb_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	<?php endif; ?>
-</main>
+</div>
 
 <?php
 get_template_part(

@@ -1,6 +1,6 @@
 # Nexus CRM Sales Operations
 
-Stand: 2026-09-10
+Stand: 2026-09-22
 
 ## Zweck
 
@@ -29,7 +29,7 @@ Der Kontakt bleibt die Person/Firma; eine Opportunity ist der konkrete Verkaufsf
 
 ## Lead-Sync
 
-Neue vertriebsrelevante `nexus_contact`-Datensätze werden automatisch in eine offene Opportunity überführt. Sales-relevant sind aktuell Projektanfragen, allgemeine Kontaktanfragen und Analyse-/Marktcheck-Leads. Reine Blog-Abos und Bestandskundenanliegen erzeugen keine Opportunity.
+Neue vertriebsrelevante `nexus_contact`-Datensätze werden automatisch in eine offene Opportunity überführt. Sales-relevant sind Projektanfragen, allgemeine Kontaktanfragen, White-Label-Anfragen (Quelle und Segment `whitelabel_request`, seit 2026-09-22) und Marktcheck-Leads (`nexus_crm_contact_is_sales_relevant()` in `inc/crm-sales/sync.php`). Reine Blog-Abos und Bestandskundenanliegen erzeugen keine Opportunity.
 
 `nexus_review_request` bleibt der spezialisierte Intake-Datensatz. Nach gespeicherter Qualifikation wird der Kontakt in `nexus_contact` gespiegelt und mit einer Opportunity verknüpft. Der spezialisierte Audit-Datensatz wird nicht ersetzt.
 
@@ -49,6 +49,23 @@ Automatische E-Mail-Follow-ups sind pro Opportunity standardmäßig deaktiviert.
 
 Blog-DOI und Sales-Follow-up bleiben getrennte Prozesse.
 
+## Antwortfrist-Wächter
+
+`inc/crm-sales/watchdog.php` hängt am selben stündlichen Cron-Event. Er meldet
+Opportunities in den Stufen Neu, Qualifiziert oder Später, die seit Anlage
+weder eine ausgehende Mail über das CRM (`outbound`-Aktivität oder
+`_nexus_opportunity_last_contact_at`) noch einen Stufenwechsel haben. Der
+Erinnerungspunkt liegt sechs Werktagsstunden vor Ablauf der zugesagten
+Antwortzeit (`nexus_compute_intake_response_deadline()`, gleiche Konstante wie
+die sichtbare Zusage). Pro Lauf geht eine interne Sammelmail an die
+Benachrichtigungsadresse; jede Opportunity wird einmal gemeldet
+(`_nexus_opportunity_response_reminder_at`) und bekommt eine Aktivität
+`response_reminder`. Ausgenommen sind manuell angelegte Leads und
+Opportunities, die älter als 14 Tage sind. Fehlversand wird dreimal versucht.
+
+Wer außerhalb des CRM antwortet, setzt danach die Stufe; das beendet die
+Überwachung für diese Opportunity.
+
 ## Kommunikation
 
 `nexus_record_crm_activity()` ist der gemeinsame Adapterpunkt für Timeline und Kommunikationsansicht. Gespeichert werden unter anderem:
@@ -62,7 +79,13 @@ Blog-DOI und Sales-Follow-up bleiben getrennte Prozesse.
 - Zustellstatus
 - Zeitpunkt
 
-Aktuell schreibt Nexus CRM eigene CRM-Ereignisse sowie manuell oder automatisch versendete E-Mails in diese Timeline.
+Aktuell schreiben in diese Timeline:
+
+- eigene CRM-Ereignisse (Anlage, Stufenwechsel)
+- manuell oder automatisch versendete E-Mails
+- jede Kontakt- und White-Label-Anfrage als `inbound_inquiry` mit Anfragetext und Herkunft, auch wenn der Kontakt schon existiert; so gehen wiederholte Anfragen nicht im Upsert verloren
+- gescheiterte interne Benachrichtigungen (`nexus_record_lead_notification_failure()`), zusätzlich als Hinweis im Dashboard und in den CRM-Ansichten
+- Antwortfrist-Erinnerungen (`response_reminder`)
 
 Eingehende E-Mail, WhatsApp und SMS sind bewusst noch keine behauptete Live-Funktion. Dafür ist jeweils ein verifizierter Provider-/Webhook-Adapter erforderlich. Neue Adapter sollen ausschließlich in die gemeinsame Activity-Schicht schreiben und nicht eigene Kontakt- oder Pipeline-Silos anlegen.
 
@@ -74,6 +97,16 @@ Unter `Nexus CRM` kommen zwei operative Bereiche hinzu:
 - `Kommunikation`: zentrale kanalneutrale Aktivitätsansicht.
 
 Die bestehende CRM-Kontaktliste erhält zusätzlich Vertriebsstufe, Pipeline-Wert, nächste Aktion und einen Vertriebsfilter. In der Kontaktakte verlinkt eine kompakte Vertriebsbox die aktive Opportunity.
+
+## Herkunft
+
+Kontakt- und White-Label-Anfragen tragen die Herkunft aus der Browser-Session:
+Landing-, Einstiegs-, vorherige und Referrer-URL, Kampagnenquelle und
+Suchbegriff, `utm_medium`, `utm_campaign` sowie die freiwillige Angabe, wie
+jemand aufmerksam wurde. `nexus_sanitize_inquiry_attribution()` bereinigt die
+Werte, `nexus_get_inquiry_attribution_meta()` legt die Meta-Keys
+`_nexus_contact_*` fest (jeweils `inc/crm.php`). Die Kontaktakte zeigt die
+Herkunft der letzten Anfrage, die interne Mail einen Block „Herkunft“.
 
 ## Daten- und Systemgrenzen
 
@@ -87,6 +120,8 @@ Die bestehende CRM-Kontaktliste erhält zusätzlich Vertriebsstufe, Pipeline-Wer
 
 - `blocksy-child/inc/crm.php`
 - `blocksy-child/inc/review-crm.php`
+- `blocksy-child/inc/contact-page.php`
+- `blocksy-child/inc/whitelabel-request.php`
 - `blocksy-child/inc/crm-sales.php`
 - `blocksy-child/inc/crm-sales/`
 - `blocksy-child/assets/css/nexus-crm-sales-admin.css`

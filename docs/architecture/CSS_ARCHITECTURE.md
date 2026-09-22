@@ -69,7 +69,7 @@ Die verbleibenden Verbraucher verteilen sich nicht gleichmäßig. Für die Migra
 
 1. **Globale Shell / Provider:** `style.css` ist von `--nx-*` entkoppelt; der frühere Audit-Sonderheader samt `site-header.css` ist entfernt. `design-system.css` wird auf der kanonischen Startseite, der Personenseite und dem Ergebnisse-Hub nicht mehr geladen. Auf allen übrigen Routen bleibt der Provider vorerst aktiv, weil er neben NX-Tokens auch unpräfixierte Tokens sowie globale `body`-/Heading-/Kompatibilitätsregeln bereitstellt.
 2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`. `ergebnisse.css` ist bereits vollständig entkoppelt.
-3. **Service-Routen:** `cro.css`, `ga4.css`, `cwv.css`, `performance.css`, `seo-cornerstone.css`, `seo.css`.
+3. **Service-Routen:** `cro.css`, `ga4.css`, `cwv.css`, `seo-cornerstone.css`, `seo.css`. `performance.css` ist entkoppelt (siehe unten).
 4. **Blog / Editorial:** `single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, Provider-Decision-Layer.
 5. **Solar / Tracking / Intercepts:** `energy-systems.css`, SST-Quellen, `solar-marketcheck-compact.css`, `sticky-cta.css` und die Solar-SEO-Deltas.
 6. **Kleine Restverbraucher:** Dateien mit nur wenigen oder provider-unabhängigen NX-Verwendungen werden bevorzugt entfernt, sofern die Semantik eindeutig ist.
@@ -90,6 +90,14 @@ Baseline; das verbleibende Stylesheet enthält nur Projekt-, Beleg- und
 Übergabelayouts. Der Legacy-Provider wird auf dieser Route nicht mehr geladen.
 Die aktuelle Anzahl der Legacy-Verbraucher liefert der Guard.
 
+### Performance Marketing
+
+`performance.css` ist seit dem Umbau von `/performance-marketing/` am
+2026-09-22 nur noch ein Delta von wenigen Zeilen auf `system.css`: Abstände im
+Dokumentkopf und im Umbruch der Ausgänge. Alle Bausteine kommen aus dem Core;
+die Datei hängt an `nexus-system-css`, steht nicht mehr in der Legacy-Baseline,
+und das alte `cluster-pillar.css` ist entfernt.
+
 ## 4. Bewusste lokale Systeme
 
 ### `energy-systems.css`
@@ -104,12 +112,6 @@ Diese Kollision wird deshalb nicht als zweiter Canon akzeptiert, sondern im Guar
 - nur mit den heute bekannten Werten.
 
 Jede Verschiebung nach `:root`, jeder weitere Core-Token und jede Wertänderung bricht den Guard. Die spätere Migration benennt diese beiden lokalen Variablen eindeutig (`--solar-*`) oder ersetzt sie durch passende Core-Rollen; danach wird die Ausnahme entfernt.
-
-### `agentur.css`
-
-Die Agentur-Seite hat aktuell ein eigenes Light-System unter `.wp-agentur-page-wrapper` und `--ag-*`. Das bleibt vorerst lokal, weil Farben, Kategorie-Akzente und Komponenten nicht 1:1 dem Gutachten-Core entsprechen.
-
-Neue gemeinsame Primitive sollen jedoch nicht erneut als `--ag-*` erfunden werden, wenn `system.css` dieselbe Rolle bereits abdeckt. Die Route wird später komponentenweise migriert.
 
 ### `homepage-redesign.css`
 
@@ -138,10 +140,10 @@ Route-CSS soll **nicht** enthalten:
 2. **Provider-unabhängige NX-Reste (erledigt):** reine Typografie-Aliase sind auf Canon-Tokens migriert; die Anfragestrecke nutzt für ihre gemessene Energy-Header-Höhe einen route-lokalen Token.
 3. **Solar-Anfragestrecke:** Token-Spiegel physisch entfernen; gemeinsame Gutachten-Primitives aus `system.css` konsumieren, nur echte Solar-Deltas behalten. Das JS-gemessene Header-/Register-Token wird gemeinsam mit seinen CSS-Verbrauchern migriert, nicht isoliert umbenannt.
 4. **Editorial-Solar-Legacy:** die generischen `.solar-page`-Variablen `--serif`/`--mono` eindeutig umbenennen oder auf Core-Rollen migrieren; eingefrorene Guard-Ausnahme danach löschen.
-5. **Service-Routen:** aktive `cro.css`, `ga4.css`, `performance.css`, `seo-cornerstone.css` nach Nutzung und Geschäftswert einzeln migrieren oder stilllegen.
+5. **Service-Routen:** aktive `cro.css`, `ga4.css`, `seo-cornerstone.css` nach Nutzung und Geschäftswert einzeln migrieren oder stilllegen (`performance.css` erledigt).
 6. **Blog / Editorial:** `single.css` und die verbleibenden Reader-/CTA-Layer auf Gutachten-Primitives ziehen; neue Blog-Schichten bauen bereits auf dem neuen System auf und dürfen nicht zurück auf NX driften.
 7. **Schwere Legacy-Familien:** `homepage.css`, WGOS und Case-Routen nur nach realer Routennutzung weiterführen oder abbauen.
-8. **Agentur:** gemeinsame Primitive übernehmen, `--ag-*` nur für echte Marken-/Kategorie-Semantik behalten.
+8. **Agentur (erledigt):** Die Route läuft auf `system.css` plus `agentur-decision.css`; das frühere `agentur.css` mit `--ag-*` ist entfernt.
 9. **Legacy-Core:** `design-system.css` nicht mehr global laden; danach Restverbraucher migrieren und Datei entfernen.
 10. **Alte `.hu-hp`-Familie:** nur noch behalten, wenn reale aktive Routen sie benötigen.
 

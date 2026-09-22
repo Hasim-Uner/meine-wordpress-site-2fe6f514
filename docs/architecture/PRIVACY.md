@@ -1,65 +1,70 @@
 # Privacy
 
-Stand: 2026-05-07
+Stand: 2026-09-22. Technische Sicht auf die Datenverarbeitung im Theme. Die
+rechtliche Fassung für Besucher steht in `blocksy-child/page-datenschutz.php`;
+Änderungen an Formularen, Speicherung oder Drittanbietern müssen dort
+nachgezogen werden.
 
-## Anfragesystem-Analyse
+## Grundsatz
 
-Die Anfragesystem-Analyse ist ein eigener Verarbeitungsvorgang. Sie dient der evidenzbasierten Prüfung, ob ein Solar-, Wärmepumpen- oder SHK-Betrieb für ein eigenes Anfragesystem geeignet ist.
+- Keine Cookies bei öffentlichen Besuchen, kein Cookie-Banner. Das Theme bindet
+  kein GTM, GA4, Ads-Conversion-Tracking oder Pixel ein.
+- Anfrage-Herkunft wird nur im `sessionStorage` des Tabs gehalten und erst mit
+  einer abgesendeten Anfrage gespeichert.
+- Koko Analytics läuft als Plugin (admin-owned). Konfiguration und
+  Speicherumfang sind aus dem Repo nicht prüfbar.
 
-## Verarbeitete Daten
+## Formulare und Speicherung
 
-Der Default-Fragepfad verarbeitet im Browser nur grobe Betriebs- und Selbstauskunftsdaten:
+Alle Formulare senden per `fetch()` an eigene REST-Endpunkte unter `nexus/v1`
+und speichern im WordPress-Backend. Kein Browser-Submit an Drittanbieter.
 
-- Branche
-- Mitarbeiter-Range
-- Land und PLZ-Region
-- Website-URL, falls vorhanden
-- Angebotsfokus
-- Werbebudget-Range
-- Selbstauskunft zu Tracking, CRM, Consent Mode, serverseitigem Tracking und Meta CAPI
-- Selbstauskunft zu Lead-Volumen, Lead-Qualität und Engpass
-- UTM-Parameter, Referrer und Click-IDs, falls vorhanden
+| Formular | Endpunkt | Gespeichert | Einwilligung |
+| --- | --- | --- | --- |
+| `/kontakt/`, Server-Side-Formular | `contact-request` | `nexus_contact` mit Name, E-Mail, Anfrageangaben, Herkunft; Aktivität `inbound_inquiry` mit Anfragetext | Pflicht-Checkbox `consent`, serverseitig geprüft |
+| `/whitelabel-retainer/` | `whitelabel-request` | `nexus_contact` (Quelle `whitelabel_request`) mit E-Mail, Aufgabe, Zeitrahmen, Zugängen, Herkunft; Aktivität mit Aufgabentext | Hinweis unter dem Formular (vorvertragliche Anfrage) |
+| Marktcheck | `audit-request` | `nexus_review_request` mit Kontaktdaten, Antworten und Herkunft; Spiegelung in `nexus_contact` | Pflicht-Checkbox `consent_privacy` (`accepted`) |
+| Blog-Abo | Blog-Notify-Route | Pending-Eintrag bis zur Bestätigung, danach `nexus_contact` | Double-Opt-in |
+| Anfragesystem-Analyse | `analysis-submit` | standardmäßig abgeschaltet (`HU_FEATURE_READINESS_SUBMIT`) | – |
 
-## Nicht verarbeitete Daten im Default-Fragepfad
+Vertriebsrelevante Kontakte bekommen eine Sales-Chance (`nexus_opportunity`)
+und einen Aktivitätsverlauf (`nexus_crm_activity`). Telefonnummern sind nur
+dort Feld, wo das Formular sie ausdrücklich abfragt.
 
-- kein Klarname
-- keine Telefonnummer
-- keine E-Mail-Adresse
-- keine personenbezogenen Endkundendaten
-- keine Admin-Zugänge zu GA4, GTM, Ads, CRM oder Pixeln
-- keine Cookies beim normalen Seitenaufruf
+## Herkunft
 
-## Consent-Logik
+`NexusCore` (`assets/js/nexus-core.js`) hält pro Browser-Tab im
+`sessionStorage`: erste und letzte interne URL, Kampagnenquelle und
+Suchbegriff (`utm_source`, `utm_term`), `utm_medium`, `utm_campaign` und die
+verweisende Seite des Sitzungsstarts (nur Origin und Pfad). Beim Absenden
+landen diese Werte im Payload; `nexus_sanitize_inquiry_attribution()` in
+`inc/crm.php` begrenzt und bereinigt sie. Dazu kommt die freiwillige Angabe,
+wie jemand aufmerksam wurde (`referral_source`).
 
-Der Kontakt-Submit braucht eine sichtbare Zustimmung direkt im Analyse-Formular. Es gibt keinen globalen Banner als Ersatz für diese Zustimmung.
+## Mail und Protokolle
 
-Der aktuelle WordPress-REST-Submit speichert nach Einwilligung:
+- Transaktionsmails laufen über `wp_mail` und die Brevo-API
+  (Auftragsverarbeitung). Pro Anfrage: interne Benachrichtigung und Bestätigung
+  an die angegebene Adresse.
+- Scheitert die interne Benachrichtigung, schreibt das Theme ins PHP-Log nur
+  Quelle und Kontakt-ID, keine Adressen oder Inhalte
+  (`nexus_record_lead_notification_failure()`). Der Antwortfrist-Wächter
+  protokolliert nur Anzahlen.
+- `/wp-json/nexus/v1/mail-diagnostics-public` gibt nur redigierte Werte aus,
+  keinen Fehlertext des Providers.
 
-- Name
-- Firma
-- E-Mail-Adresse
-- lokales Analyse-Ergebnis
-- Antworten aus dem Fragepfad
-- optionale Website-URL
-- UTM-Parameter und Click-IDs, falls vorhanden
+## Missbrauchsschutz
 
-Marketing und Analytics bleiben im Default-Fragepfad ausgenommen, solange keine eigene Zustimmung vorliegt.
+Rate-Limits zählen pro IP und Stunde in Transients mit gehashtem Schlüssel
+(`md5( IP . Stunde )`), Laufzeit eine Stunde. Die IP liefert
+`nexus_get_review_request_ip()`.
 
-## Transaktionsmail
+## Offen
 
-Nach erfolgreichem Kontakt-Submit versendet die zentrale Mail-Schicht:
-
-- eine interne Admin-Benachrichtigung
-- eine Lead-Bestätigung an die angegebene E-Mail-Adresse
-
-Telefonnummern bleiben ausgeschlossen. Klarnamen sind nur im Kontakt-Schritt nach Einwilligung erlaubt.
-
-## n8n-Retention
-
-n8n ist für die Anfragesystem-Analyse aktuell nicht angebunden. Falls später ein n8n-Branch aktiviert wird, dürfen Analyse-Intakes dort maximal 30 Tage gespeichert werden. Danach werden sie gelöscht oder so anonymisiert, dass kein Rückschluss auf den konkreten Betrieb möglich ist.
-
-## Auftragsverarbeitung
-
-WordPress ist für diesen Prozess Website, REST-Empfänger und CRM-Speicher (`nexus_contact`). Brevo ist für Transaktionsmails angebunden. n8n ist kein aktiver Empfänger dieses Payloads.
-
-Kein neuer Drittland-Default wird durch die Anfragesystem-Analyse eingeführt.
+- Die Sticky-CTA der Solar-Unterseiten merkt ihr Wegklicken 24 Stunden im
+  `localStorage`. Die Datenschutzerklärung schließt persistente
+  Browser-Speicherung für Komfortzwecke aus; eines von beiden anpassen.
+- Die Datenschutzerklärung nennt keine Analyse-Skripte; ob und wie Koko
+  Analytics dort genannt werden muss, ist rechtlich zu klären.
+- n8n ist nicht angebunden. Wird es später aktiviert, braucht es vorher
+  Payload-Contract, Retention-Regel und Auftragsverarbeitung.

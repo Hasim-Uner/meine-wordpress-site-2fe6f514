@@ -33,6 +33,12 @@ Required WordPress setup:
 /**
  * Template Name: ${title}
  */
+// Route nach Intent, siehe docs/architecture/CONVERSION_ROUTING.md:
+// 'project_request' (WordPress, Tracking, CRO, technisches SEO),
+// 'whitelabel' (Agenturen) oder 'marketcheck' (Solar, Wärmepumpe, Speicher).
+\$cta_url   = hu_get_commercial_route( 'project_request' );
+\$cta_label = 'Projekt anfragen';
+
 get_header();
 ?>
 
@@ -40,11 +46,11 @@ get_header();
 <section class="lp-hero" data-track-section="hero">
   <h1><!-- Ad-aligned headline --></h1>
   <p><!-- Supporting subline --></p>
-  <a href="<?php echo esc_url(home_url('/solar-waermepumpen-leadgenerierung/#marktcheck')); ?>"
+  <a href="<?php echo esc_url( \$cta_url ); ?>"
      class="btn btn-primary"
      data-track-action="cta_hero"
-     data-track-category="landing_page">
-    Marktcheck starten
+     data-track-category="lead_gen">
+    <?php echo esc_html( \$cta_label ); ?>
   </a>
 </section>
 
@@ -62,11 +68,11 @@ get_header();
 
 <!-- Section: CTA -->
 <section class="lp-cta" data-track-section="cta_bottom">
-  <a href="<?php echo esc_url(home_url('/solar-waermepumpen-leadgenerierung/#marktcheck')); ?>"
+  <a href="<?php echo esc_url( \$cta_url ); ?>"
      class="btn btn-primary"
      data-track-action="cta_bottom"
-     data-track-category="landing_page">
-    Marktcheck starten
+     data-track-category="lead_gen">
+    <?php echo esc_html( \$cta_label ); ?>
   </a>
 </section>
 

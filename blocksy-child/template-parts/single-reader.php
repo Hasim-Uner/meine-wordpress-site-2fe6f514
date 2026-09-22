@@ -31,7 +31,7 @@ get_template_part( 'template-parts/blog-header' );
 	<button class="nexus-share-rail__btn" type="button" data-nexus-share="copy" aria-label="<?php esc_attr_e( 'Link kopieren', 'blocksy-child' ); ?>">↗</button>
 </aside>
 
-<main id="main" tabindex="-1" class="site-main nexus-single-container nexus-single-container--with-blog-header nexus-single-container--editorial hu-hp">
+<div class="site-main nexus-single-container nexus-single-container--with-blog-header nexus-single-container--editorial hu-hp">
 	<?php while ( have_posts() ) : the_post(); ?>
 		<?php
 		$post_id         = get_the_ID();
@@ -274,7 +274,7 @@ get_template_part( 'template-parts/blog-header' );
 			<?php get_template_part( 'template-parts/footer-cta' ); ?>
 		<?php endif; ?>
 	<?php endwhile; ?>
-</main>
+</div>
 
 <button class="nexus-back-to-top" type="button" aria-label="<?php esc_attr_e( 'Zum Seitenanfang', 'blocksy-child' ); ?>">↑</button>
 

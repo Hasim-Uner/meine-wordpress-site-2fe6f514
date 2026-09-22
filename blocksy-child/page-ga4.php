@@ -126,7 +126,7 @@ $faq_items       = function_exists( 'hu_tracking_setup_faq_items' )
 get_header();
 ?>
 
-<main id="main" class="site-main doku ga4-page" data-track-page="conversion_tracking_setup">
+<div class="site-main doku ga4-page" data-track-page="conversion_tracking_setup">
 	<header class="kopfteil" data-track-section="tracking_hero">
 		<div class="blatt">
 			<p class="gegenstand">Conversion Tracking Setup · B2B</p>
@@ -369,6 +369,6 @@ get_header();
 			<aside class="marg"><p class="note"><span class="label">Ergebnis</span>Ein klarer Befund, ein abgegrenzter Scope und – wenn Sie die Umsetzung beauftragen – ein geprüftes, dokumentiertes Setup.</p></aside>
 		</div></div></div></div>
 	</section>
-</main>
+</div>
 
 <?php get_footer();

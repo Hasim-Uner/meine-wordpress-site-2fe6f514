@@ -19,6 +19,13 @@ $modules = [
 	'helpers.php',        // Utility-Funktionen (muss zuerst geladen werden)
 	'affiliate-links.php', // Affiliate-URL-Registry und Disclosure-Helper
 	'feature-flags.php',  // Staged Rollout-Schalter fuer neue Funnel-Routen und Submits
+	'article-content-hygiene.php',             // Einmalige Editor-Migrationen für Alt-Artikel
+	'article-content-hygiene-ttfb.php',        // … TTFB-Artikel
+	'article-content-hygiene-landingpage.php', // … Landingpage-Artikel
+	'article-b2b-inquiry-system.php',          // … Artikel zum B2B-Anfragesystem
+	'article-agency-outsourcing.php',          // … Auslagerungs-Leitfaden für Agenturen
+	'article-agency-outsourcing-hero.php',     // … Hero des Auslagerungs-Leitfadens
+	'article-reader-toc.php',                  // Inhaltsverzeichnis im Artikel-Reader
 	'canon/e3-proof-canon.php', // Kanonische E3-Proof-Zahlen und Displaywerte
 	'canon/diagnose-canon.php', // Kanonische Diagnose-Stufen, Preise und Scope-Grenzen
 	'canon/pricing-canon.php', // Kanonische Foundation-, Performance- und Premium-Preise
@@ -40,7 +47,7 @@ $modules = [
 	'contact-page.php',   // Kontakt-Route, schlanke Kontaktform und Mailversand
 	'whitelabel-request.php', // Vierfeldriges Agentur-Formular der White-Label-Route
 	'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect
-	'analysis-intake.php', // REST-Endpoint, CRM-Sync, Brevo-Mails und n8n-Webhook für die Analyse
+	'analysis-intake.php', // REST-Endpoint der früheren Analyse; standardmäßig aus (HU_FEATURE_READINESS_SUBMIT)
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails
 	'post-rating.php',    // Artikel-Bewertung (Hilfreich/Nicht hilfreich) + Admin-Spalte
 	'cpo-calculator.php', // CPO-Rechner für Photovoltaik-Anfragen
@@ -55,11 +62,14 @@ $modules = [
 	'positioning-meta.php', // Repositioning-Overrides für globale Homepage-/Blog-Metadaten
 	'seo-subpage-cluster-links.php', // Kontextuelle Querverlinkung des Solar/B2B-Clusters
 	'org-schema.php',     // JSON-LD Structured Data
+	'commercial-routing.php',  // Kanonische Routen für Direkt, White-Label und Energie
 	'schema-positioning.php', // Repositioning-Normalisierung der kanonischen Schema-Entitäten
 	'shortcodes.php',     // Startseiten-Shortcodes
 	'client-portal.php',  // Client Portal Dashboard
 	'admin-manager.php',  // Backend-Felder für Portal
+	'crm-sales.php',      // Vertrieb, Aktivitäten, Follow-ups und Antwortfrist-Wächter (inc/crm-sales/)
 	'api-telemetry.php',  // Observability Light für Nexus API-Fehler
+	'accessibility-navigation.php', // Skip-Link, Fokus und Tastaturnavigation
 	'snippets.php',       // Nav Button, Security, Login-Redirect
 	'menu-setup.php',     // Hauptmenü-Struktur (einmalig)
 ];
@@ -533,64 +543,6 @@ add_action( 'template_redirect', function() {
 		exit;
 	}
 }, 0 );
-
-/**
- * ACCESSIBILITY FIX 6a: Skip-Link für Tastatur-Navigation.
- * So kommen Keyboard-Nutzer direkt zum Hauptinhalt.
- */
-add_action( 'wp_body_open', 'hasim_skip_to_content' );
-function hasim_skip_to_content() {
-	echo '<a href="#main" class="skip-to-content" style="position:absolute;top:-100px;left:16px;background:#b46a3c;color:#fff8f3;padding:10px 16px;border:1px solid rgba(255,248,243,0.18);border-radius:999px;font-weight:800;font-size:13px;letter-spacing:0.01em;box-shadow:0 16px 34px rgba(180,106,60,0.28);z-index:99999;text-decoration:none;transition:top 0.2s ease;" onfocus="this.style.top=\'16px\'" onblur="this.style.top=\'-100px\'">Zum Hauptinhalt springen</a>';
-}
-
-/**
- * ACCESSIBILITY FIX 6b: Automatische ARIA-Labels für Kennzahlen-Blöcke.
- * Kein vorhandener wp_footer-Hook in dieser Datei gefunden, daher neuer Hook.
- */
-add_action( 'wp_footer', 'hasim_add_metric_aria_labels_script', 25 );
-function hasim_add_metric_aria_labels_script() {
-	if ( is_admin() ) {
-		return;
-	}
-	?>
-	<script>
-	(function () {
-		'use strict';
-
-		function normalize(text) {
-			return (text || '').replace(/\s+/g, ' ').trim();
-		}
-
-		function applyMetricAriaLabels() {
-			var metricItems = document.querySelectorAll('.wp-metric, .wgos-trust-item, .nx-metric');
-			if (!metricItems.length) return;
-
-			metricItems.forEach(function (item) {
-				var value = item.querySelector('.wp-metric-value, .wgos-trust-value, .nx-metric__value');
-				var label = item.querySelector('.wp-metric-label, .wgos-trust-label, .nx-metric__label');
-				if (!value || !label) return;
-
-				var valueText = normalize(value.textContent);
-				var labelText = normalize(label.textContent);
-				if (!valueText || !labelText) return;
-
-				value.setAttribute('aria-label', labelText + ': ' + valueText);
-				value.setAttribute('role', 'text');
-			});
-		}
-
-		if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', applyMetricAriaLabels);
-		} else {
-			applyMetricAriaLabels();
-		}
-
-		// Re-run nach Counter-Animation, damit Endwerte im Label stehen.
-		window.setTimeout(applyMetricAriaLabels, 2400);
-	})();
-	</script>
-	<?php
-}
 
 /**
  * SEO HINWEIS:

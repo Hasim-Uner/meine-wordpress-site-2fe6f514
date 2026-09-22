@@ -255,7 +255,7 @@ foreach ( $objections as $faq_item ) {
 get_header();
 ?>
 
-<main id="primary" class="hu-intercept hu-buy" role="main" data-track-page="solar-leads-kaufen-alternative">
+<div id="primary" class="hu-intercept hu-buy" data-track-page="solar-leads-kaufen-alternative">
 
 	<section class="hu-buy__band hu-buy__band--dark hu-buy__band--hero" id="hero" data-nx-theme="dark" data-track-section="hero" aria-labelledby="hu-buy-hero-title">
 		<div class="hu-buy__container">
@@ -540,7 +540,7 @@ get_header();
 	<?php if ( ! empty( $breadcrumb_schema ) ) : ?>
 	<script type="application/ld+json"><?php echo wp_json_encode( $breadcrumb_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	<?php endif; ?>
-</main>
+</div>
 
 <?php
 get_template_part(

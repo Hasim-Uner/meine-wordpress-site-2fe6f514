@@ -8,7 +8,7 @@ get_header();
 get_template_part( 'template-parts/blog-header' );
 ?>
 
-<main id="main" class="site-main nexus-archive-container nexus-archive-container--with-blog-header">
+<div class="site-main nexus-archive-container nexus-archive-container--with-blog-header">
 
     <header class="nexus-archive-hero">
         <div class="nexus-hero-inner">
@@ -61,6 +61,6 @@ get_template_part( 'template-parts/blog-header' );
         <?php endif; ?>
     </div>
 
-</main>
+</div>
 
 <?php get_footer(); ?>

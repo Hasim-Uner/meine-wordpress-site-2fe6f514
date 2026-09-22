@@ -95,7 +95,7 @@ $message_step_title  = $is_scoped_focus ? 'Wo liegt der Engpass?' : 'Was soll me
 $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' contact-page--scoped' : '' );
 ?>
 
-<main id="main" class="<?php echo esc_attr( $page_classes ); ?>" data-track-section="contact_page">
+<div class="<?php echo esc_attr( $page_classes ); ?>" data-track-section="contact_page">
 	<div class="contact-page__shell">
 		<aside class="contact-intro" aria-labelledby="contact-title">
 			<p class="contact-eyebrow"><?php echo esc_html( $current_type_label ); ?></p>
@@ -276,6 +276,6 @@ $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' co
 			</form>
 		</section>
 	</div>
-</main>
+</div>
 
 <?php get_footer(); ?>

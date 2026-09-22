@@ -42,11 +42,6 @@ add_action( 'wp_enqueue_scripts', function () {
 	$navigation_js  = '/assets/js/navigation-ecosystem.js';
 	$route_css      = '/assets/css/agentur-decision.css';
 
-	wp_dequeue_style( 'nexus-agentur-css' );
-	wp_dequeue_style( 'nexus-home-css' );
-	wp_dequeue_style( 'nexus-contact-css' );
-	wp_dequeue_script( 'nexus-contact-js' );
-
 	if ( is_file( $dir . $navigation_css ) ) {
 		wp_enqueue_style( 'hu-navigation-ecosystem', $uri . $navigation_css, [], (string) filemtime( $dir . $navigation_css ) );
 	}
@@ -110,7 +105,7 @@ $faqs         = function_exists( 'nexus_get_agentur_faq_items' ) ? nexus_get_age
 get_header();
 ?>
 
-<main id="main" class="site-main doku agentur-decision" data-track-page="wordpress_agentur_hannover_decision">
+<div class="site-main doku agentur-decision" data-track-page="wordpress_agentur_hannover_decision">
 	<header class="kopfteil" data-track-section="agentur_hero">
 		<div class="blatt">
 			<p class="gegenstand">WordPress Agentur Hannover · Arbeitsmodell vergleichen</p>
@@ -333,7 +328,7 @@ get_header();
 			</div>
 		</div>
 	</section>
-</main>
+</div>
 
 <?php
 get_footer();

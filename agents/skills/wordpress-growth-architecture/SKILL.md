@@ -1,6 +1,6 @@
 ---
 name: wordpress-growth-architecture
-description: Enforce the technical WordPress growth-system architecture for hasimuener.de. Use when work touches lead routing, conversion forms, WordPress REST endpoints, CRM payloads, Anfragesystem-Analyse/System-Diagnose, attribution payloads, caching resilience, route contracts, n8n handoff boundaries, or repo-vs-editor ownership in the Blocksy child theme. Do not use for visual polish, color systems, card styling, typography, or premium-design direction; route those tasks to b2b-design-system.
+description: Enforce the technical WordPress growth-system architecture for hasimuener.de. Use when work touches lead routing, conversion forms, WordPress REST endpoints, CRM payloads, contact, White-Label and Marktcheck intake (plus the retired Anfragesystem-Analyse), attribution payloads, caching resilience, route contracts, n8n handoff boundaries, or repo-vs-editor ownership in the Blocksy child theme. Do not use for visual polish, color systems, card styling, typography, or premium-design direction; route those tasks to b2b-design-system.
 ---
 
 # WordPress Growth Architecture
@@ -16,7 +16,7 @@ Treat the site as business infrastructure:
 - WordPress owns routing, templates, SEO/meta/schema, REST endpoints, CRM storage, mail handoff, and canonical contract files.
 - The repo owns runtime code in `blocksy-child/`, reusable helpers, registries, scripts, and durable docs.
 - The WordPress editor owns much of the live page copy and media.
-- n8n, Brevo, Cal.com, Koko Analytics, GTM, GA4, Consent, and external ad systems are real dependencies, not implied code.
+- Brevo (mail), Cal.com (booking links) and Koko Analytics (plugin) are real external dependencies, not implied code. n8n is not connected. GTM, GA4, Consent Mode and ad platforms are services sold to clients, not dependencies of this site.
 
 Never hide architecture changes inside visual refactors. Separate repo code, editor tasks, external-system tasks, and contract changes in the final answer.
 
@@ -37,22 +37,22 @@ The browser must not post lead data directly to n8n, Brevo, a SaaS CRM, a form p
 
 ### 2. CRM Contract Is Sacred
 
-Before touching frontend forms, form JavaScript, analysis-submit behavior, or CRM-bound payloads, read these files in full:
+Before touching frontend forms, form JavaScript, REST intake, or CRM-bound payloads, read these files in full:
 
-- `blocksy-child/inc/crm.php`
-- `blocksy-child/inc/analysis-intake.php`
-- `docs/specs/anfrage-system-analyse-form-v1.md`
+- `blocksy-child/inc/crm.php` (contact upsert, source and segment labels, attribution sanitizing and meta keys)
+- the endpoint file of the form you touch: `blocksy-child/inc/contact-page.php` (`contact-request`), `blocksy-child/inc/whitelabel-request.php` (`whitelabel-request`) or `blocksy-child/inc/review-crm.php` (`audit-request`)
+- `docs/architecture/PRIVACY.md` (what is stored where, and which consent applies)
 
 The JSON/FormData payload accepted by the WordPress backend is a hard contract. Do not rename fields, flatten nested structures, change consent flags, remove attribution keys, or alter source/status/segment values unless the backend, spec, and migration path are updated in the same change.
 
 Current hard anchors:
 
-- REST route: `/wp-json/nexus/v1/analysis-submit`
-- Feature flag: `HU_FEATURE_READINESS_SUBMIT`
-- CRM post type: `nexus_contact`
-- CRM source: `request_analysis`
-- CRM segment: `analysis_lead`
-- Contact submit writes only after explicit in-form processing consent.
+- REST routes under `/wp-json/nexus/v1/`, public, each with honeypot and IP rate limit: `contact-request`, `whitelabel-request`, `audit-request` (contract `2026-05-26.audit-request.v1`). `analysis-submit` is off by default behind `HU_FEATURE_READINESS_SUBMIT`; its spec is `docs/specs/anfrage-system-analyse-form-v1.md`.
+- CRM post types: `nexus_contact`, `nexus_review_request`, `nexus_opportunity`, `nexus_crm_activity`.
+- CRM sources and segments: `project_request`, `general_inquiry`, `whitelabel_request`, `request_analysis` / `analysis_lead` (Marktcheck), `blog_subscriber`.
+- Intake order for contact and White-Label: CRM write, internal mail, confirmation. A failed internal mail is recorded with `nexus_record_lead_notification_failure()`; the request only fails when CRM and mail both fail.
+- Attribution meta keys come from `nexus_get_inquiry_attribution_meta()` in `inc/crm.php`.
+- Contact data is written only after explicit in-form processing consent (`consent` on `/kontakt/`, `consent_privacy` in the Marktcheck). The White-Label form is a pre-contractual request with a visible privacy note.
 
 If a task requires changing the contract, update the server validation first, then the frontend payload, then the spec. Preserve backward compatibility unless the user explicitly approves a breaking migration.
 
@@ -79,25 +79,26 @@ Keep the lead system 100% cookie-banner-free by default.
 - Use Koko Analytics standards only for analytics context.
 - Parse UTM parameters, referrer, and click IDs in the background with vanilla JavaScript.
 - Append attribution fields invisibly to the CRM payload; do not make them user-facing form fields.
+- Exception by design: the optional, self-reported question how someone found the site (`referral_source`, options in `nexus_get_inquiry_referral_options()`) is a visible field. It complements technical attribution for word of mouth, LinkedIn or AI assistants and must stay optional.
 - Keep attribution storage session-scoped or payload-scoped. Do not introduce persistent cookies for attribution.
 
 The visible consent checkbox in a form is processing consent for the submitted contact data. It is not a tracking-banner substitute.
 
 ### 5. Lead Routing Is Not Optional
 
-Preserve the diagnosis-first funnel:
+Routing follows `docs/architecture/CONVERSION_ROUTING.md`:
 
-- Cold B2B CTA: `/anfrage-system-analyse/` or the current canon returned by `hu_get_request_analysis_url()`.
-- Warm-intent fallback: `/anfrage/` only when the existing routing contract requires it.
+- Direct WordPress, tracking, CRO or technical-SEO intent → project request via `hu_get_commercial_route( 'project_request' )` (`/kontakt/?type=project`).
+- Agency intent → `/whitelabel-retainer/`.
+- Energy intent (Solar, Wärmepumpe, Speicher) → Marktcheck via `hu_get_request_analysis_url()`; labels, scope and offer frame come from `blocksy-child/inc/canon/diagnose-canon.php`. The Marktcheck is never a global CTA.
+- Retired growth-audit, analysis and `/anfrage/` paths redirect to the Marktcheck and must not become primary CTAs again.
 - Demo paths are showroom assets, not direct generic sales funnels.
-- Retired growth-audit or generic agency paths must not become primary CTAs again.
-- Use `blocksy-child/inc/canon/diagnose-canon.php` as the source for current analysis labels, route, scope, and offer frame.
 
-Do not route analysis or demo interactions directly into a generic sales pitch. The flow must qualify or disqualify implementation fit before implementation is sold.
+In the energy path, the Marktcheck qualifies or disqualifies fit before implementation is sold.
 
 ### 6. No Silent n8n Coupling
 
-n8n is not the browser submit target for the analysis flow.
+n8n is not the submit target of any form.
 
 Only connect n8n when all of these exist:
 

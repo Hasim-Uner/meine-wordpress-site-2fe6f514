@@ -94,11 +94,13 @@ function hu_output_homepage_stable_font_faces() {
 add_action( 'wp_head', 'hu_output_homepage_stable_font_faces', 99 );
 
 /**
- * Resolve the real main-landmark ID for the current template.
+ * Resolve the skip-link target for the current template.
  *
- * Most routes use `#main`. A small family of legacy intercept templates owns
- * its main landmark as `#primary`; changing those IDs would create avoidable
- * selector and fragment regressions, so the skip link adapts instead.
+ * The only main landmark is Blocksy's `<main id="main">`; templates render
+ * `<div>` wrappers inside it (since 2026-09-22, previously a nested second
+ * `<main>`). A small family of legacy intercept templates starts its content
+ * at `#primary`; changing those IDs would create avoidable selector and
+ * fragment regressions, so the skip link adapts instead.
  *
  * @return string
  */
@@ -139,13 +141,46 @@ function hu_render_accessible_skip_link() {
 }
 
 /**
- * Replace the legacy hard-coded `#main` skip link after theme functions have
- * finished registering their hooks but before `wp_body_open` is rendered.
+ * Remove Blocksy's own English skip link ("Skip to content").
+ *
+ * Blocksy registers it as a closure on `wp_body_open` (priority 50) in
+ * inc/components/skip-to-content-link.php. Next to the German link above it
+ * was a second tab stop to the same target. A closure cannot be removed by
+ * name, so the callback is matched by its source file; if Blocksy moves it,
+ * nothing is removed and both links simply stay.
+ *
+ * @return void
+ */
+function hu_remove_blocksy_skip_link() {
+	global $wp_filter;
+
+	if ( ! isset( $wp_filter['wp_body_open'] ) || ! $wp_filter['wp_body_open'] instanceof WP_Hook ) {
+		return;
+	}
+
+	foreach ( (array) ( $wp_filter['wp_body_open']->callbacks[50] ?? [] ) as $callback ) {
+		$function = $callback['function'] ?? null;
+
+		if ( ! $function instanceof Closure ) {
+			continue;
+		}
+
+		$reflection = new ReflectionFunction( $function );
+
+		if ( 'skip-to-content-link.php' === basename( (string) $reflection->getFileName() ) ) {
+			remove_action( 'wp_body_open', $function, 50 );
+		}
+	}
+}
+
+/**
+ * Register the canonical skip link after theme functions have finished
+ * registering their hooks but before `wp_body_open` is rendered.
  *
  * @return void
  */
 function hu_register_accessible_skip_link() {
-	remove_action( 'wp_body_open', 'hasim_skip_to_content' );
+	hu_remove_blocksy_skip_link();
 	add_action( 'wp_body_open', 'hu_render_accessible_skip_link', 0 );
 }
 add_action( 'wp', 'hu_register_accessible_skip_link', 1 );

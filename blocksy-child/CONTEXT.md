@@ -9,7 +9,7 @@ Scope: all deployable WordPress runtime code in `blocksy-child/`.
 
 ## Runtime Model
 
-- `functions.php` is a thin bootstrap.
+- `functions.php` is a thin bootstrap and lists every `inc/` module. Module groups with their own folder (`crm-sales/`, `seo-cockpit/`) have one bootstrap in that list; no other module loads modules as a side effect.
 - `inc/` holds PHP modules and registries.
 - `template-parts/` holds shared sections used across multiple routes.
 - `assets/css/` and `assets/js/` are page- or system-specific assets.
@@ -27,13 +27,14 @@ If the page is editor-driven, do not fake a complete content migration in code.
 
 ## Critical Files
 
-- `blocksy-child/functions.php`
+- `blocksy-child/functions.php` (the only module loader; every `inc/` module is listed there)
+- `blocksy-child/inc/commercial-routing.php` (canonical routes and navigation contract)
+- `blocksy-child/inc/canon/` (facts: response time, prices, case figures, Marktcheck)
 - `blocksy-child/inc/enqueue.php`
 - `blocksy-child/inc/seo-meta.php`
 - `blocksy-child/inc/org-schema.php`
-- `blocksy-child/inc/shortcodes.php`
-- `blocksy-child/inc/review-crm.php`
-- `blocksy-child/inc/crm.php`
+- `blocksy-child/inc/crm.php`, `blocksy-child/inc/crm-sales/` (CRM, pipeline, response watchdog)
+- `blocksy-child/inc/contact-page.php`, `blocksy-child/inc/whitelabel-request.php`, `blocksy-child/inc/review-crm.php` (public intake endpoints)
 
 ## Working Rules
 

@@ -34,7 +34,7 @@ $hero_subtitle   = sprintf(
 );
 ?>
 
-<main id="main" class="site-main">
+<div class="site-main">
 	<div class="wgos-wrapper">
 		<section class="wgos-hero">
 			<div class="wgos-container">
@@ -174,6 +174,6 @@ $hero_subtitle   = sprintf(
 			</div>
 		</section>
 	</div>
-</main>
+</div>
 
 <?php get_footer(); ?>

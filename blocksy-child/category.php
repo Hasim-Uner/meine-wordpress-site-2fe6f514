@@ -99,7 +99,7 @@ $category_cta = $is_energy_category
 	];
 ?>
 
-<main id="main" tabindex="-1" class="site-main doku blog-category" data-track-section="category_archive">
+<div class="site-main doku blog-category" data-track-section="category_archive">
 	<header class="blatt kopfteil blog-category__kopf" aria-labelledby="category-archive-heading" data-track-section="category_archive_hero">
 		<p class="gegenstand">Werkstatt / Kategorie</p>
 		<h1 id="category-archive-heading"><?php echo esc_html( $current_term_label ); ?></h1>
@@ -253,6 +253,6 @@ $category_cta = $is_energy_category
 			</div>
 		</div>
 	</section>
-</main>
+</div>
 
 <?php get_footer(); ?>

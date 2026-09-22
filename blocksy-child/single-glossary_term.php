@@ -17,7 +17,7 @@ $project_url = function_exists( 'hu_get_commercial_route' )
 $glossary_url = function_exists( 'nexus_get_glossary_hub_url' ) ? nexus_get_glossary_hub_url() : home_url( '/glossar/' );
 ?>
 
-<main id="main" class="site-main">
+<div class="site-main">
 	<?php while ( have_posts() ) : the_post(); ?>
 		<?php
 		$excerpt    = has_excerpt() ? get_the_excerpt() : '';
@@ -95,6 +95,6 @@ $glossary_url = function_exists( 'nexus_get_glossary_hub_url' ) ? nexus_get_glos
 			</section>
 		</div>
 	<?php endwhile; ?>
-</main>
+</div>
 
 <?php get_footer(); ?>
