@@ -106,6 +106,28 @@ function hu_get_commercial_route( $key, $fallback = '' ) {
 }
 
 /**
+ * Determine whether the current request is one of the tracking routes.
+ *
+ * Zwei Seiten bedienen denselben Weg: `/server-side-tracking-b2b/` ist das
+ * Ziel des Tracking-Wegs, `/ga4-tracking-setup/` bleibt als eigener
+ * Query-Owner bestehen und verlinkt dorthin. Beide sind derselbe Kontext —
+ * die Navigation markiert auf beiden `aria-current`, der Fuss bietet den
+ * Tracking-Weg auf beiden nicht noch einmal an.
+ *
+ * Eine Funktion statt derselben Vier-Wege-Pruefung in Kopf, Fuss und
+ * Contract: genau daran ist das Ziel auseinandergelaufen, weil der Kopf den
+ * Routenschluessel lokal ueberschrieben hat.
+ *
+ * @return bool
+ */
+function hu_is_tracking_route_context() {
+	return is_page( 'server-side-tracking-b2b' )
+		|| is_page_template( 'page-server-side-tracking-b2b.php' )
+		|| is_page( 'ga4-tracking-setup' )
+		|| is_page_template( 'page-ga4.php' );
+}
+
+/**
  * Return the repo-owned full-screen header contract.
  *
  * The rendered sheet, the WordPress-menu compatibility layer and the SEO
@@ -141,7 +163,7 @@ function hu_get_site_header_navigation_contract() {
 				'label'    => __( 'Tracking', 'blocksy-child' ),
 				'desc'     => __( 'Server-Side Tracking mit Gegenprobe gegen Formular oder CRM und dokumentierter Abnahme.', 'blocksy-child' ),
 				'url'      => $routes['tracking_b2b'],
-				'current'  => is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' ),
+				'current'  => hu_is_tracking_route_context(),
 				'class'    => 'nav-tracking-link',
 				'track'    => 'nav_header_tracking',
 				'category' => 'navigation',

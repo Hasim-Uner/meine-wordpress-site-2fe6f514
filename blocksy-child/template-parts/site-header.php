@@ -63,11 +63,17 @@ $cta_item          = isset( $header_contract['cta'] ) && is_array( $header_contr
 
 $cta_url   = (string) ( $cta_item['url'] ?? $project_url );
 $cta_label = (string) ( $cta_item['label'] ?? 'Projekt anfragen' );
-$is_tracking_context = is_page( 'ga4-tracking-setup' )
-	|| is_page_template( 'page-ga4.php' )
-	|| is_page( 'server-side-tracking-b2b' )
-	|| is_page_template( 'page-server-side-tracking-b2b.php' );
-$tracking_setup_url = (string) ( $routes['tracking_setup'] ?? home_url( '/ga4-tracking-setup/' ) );
+
+/*
+ * Auf der Kontaktseite entfaellt der Anfrage-Button: er zeigt auf die Seite,
+ * auf der man schon steht. Ein Ausgang, der zurueck auf sich selbst fuehrt,
+ * ist kein Angebot, sondern eine Sackgasse neben dem Formular.
+ *
+ * Der Contract behaelt den CTA unveraendert — er speist auch das gespeicherte
+ * WordPress-Menue (inc/menu-setup.php). Ausgeblendet wird nur die Ausgabe.
+ */
+$shows_cta = ! ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() )
+	&& '' !== $cta_label;
 
 /*
  * Eine Liste fuer beide Ausgaben. Die Zeile zeigt sie waagerecht, das
@@ -78,11 +84,10 @@ $tracking_setup_url = (string) ( $routes['tracking_setup'] ?? home_url( '/ga4-tr
 $leiste_links = [];
 
 foreach ( $route_items as $route_item ) {
-	$is_tracking_route = 'nav-tracking-link' === (string) ( $route_item['class'] ?? '' );
 	$leiste_links[] = [
 		'label'    => (string) ( $route_item['label'] ?? '' ),
-		'url'      => $is_tracking_route ? $tracking_setup_url : (string) ( $route_item['url'] ?? home_url( '/' ) ),
-		'current'  => $is_tracking_route ? $is_tracking_context : ! empty( $route_item['current'] ),
+		'url'      => (string) ( $route_item['url'] ?? home_url( '/' ) ),
+		'current'  => ! empty( $route_item['current'] ),
 		'track'    => (string) ( $route_item['track'] ?? '' ),
 		'category' => (string) ( $route_item['category'] ?? 'navigation' ),
 	];
@@ -129,13 +134,15 @@ $leiste_location  = (string) ( $meta['location'] ?? '' );
 				<?php endforeach; ?>
 			</nav>
 
-			<a
-				class="tun"
-				href="<?php echo esc_url( $cta_url ); ?>"
-				data-track-action="<?php echo esc_attr( (string) ( $cta_item['track'] ?? 'nav_header_project' ) ); ?>"
-				data-track-category="<?php echo esc_attr( (string) ( $cta_item['category'] ?? 'lead_gen' ) ); ?>"
-				data-track-section="<?php echo esc_attr( (string) ( $cta_item['section'] ?? 'header' ) ); ?>"
-			><?php echo esc_html( $cta_label ); ?></a>
+			<?php if ( $shows_cta ) : ?>
+				<a
+					class="tun"
+					href="<?php echo esc_url( $cta_url ); ?>"
+					data-track-action="<?php echo esc_attr( (string) ( $cta_item['track'] ?? 'nav_header_project' ) ); ?>"
+					data-track-category="<?php echo esc_attr( (string) ( $cta_item['category'] ?? 'lead_gen' ) ); ?>"
+					data-track-section="<?php echo esc_attr( (string) ( $cta_item['section'] ?? 'header' ) ); ?>"
+				><?php echo esc_html( $cta_label ); ?></a>
+			<?php endif; ?>
 
 			<button
 				type="button"
@@ -171,13 +178,15 @@ $leiste_location  = (string) ( $meta['location'] ?? '' );
 			<?php endforeach; ?>
 		</nav>
 
-		<a
-			class="tun"
-			href="<?php echo esc_url( $cta_url ); ?>"
-			data-track-action="<?php echo esc_attr( (string) ( $cta_item['track'] ?? 'nav_header_project' ) ); ?>"
-			data-track-category="<?php echo esc_attr( (string) ( $cta_item['category'] ?? 'lead_gen' ) ); ?>"
-			data-track-section="header"
-		><?php echo esc_html( $cta_label ); ?> <span class="pf" aria-hidden="true">&rarr;</span></a>
+		<?php if ( $shows_cta ) : ?>
+			<a
+				class="tun"
+				href="<?php echo esc_url( $cta_url ); ?>"
+				data-track-action="<?php echo esc_attr( (string) ( $cta_item['track'] ?? 'nav_header_project' ) ); ?>"
+				data-track-category="<?php echo esc_attr( (string) ( $cta_item['category'] ?? 'lead_gen' ) ); ?>"
+				data-track-section="header"
+			><?php echo esc_html( $cta_label ); ?> <span class="pf" aria-hidden="true">&rarr;</span></a>
+		<?php endif; ?>
 
 		<?php if ( '' !== $leiste_location || '' !== $response_promise ) : ?>
 			<span class="wo">

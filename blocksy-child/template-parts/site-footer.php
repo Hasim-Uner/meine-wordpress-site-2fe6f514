@@ -15,9 +15,10 @@
  * nicht noch einmal angeboten. Der Footer bleibt damit ein Orientierungs-
  * und Wechselpunkt statt einer Sammlung von Selbstlinks.
  *
- * Auf der Startseite ist der direkte Freelancer-Pfad bereits ausgefuehrt;
- * die erneute Wegewahl im Footer entfaellt dort komplett. Kontakt laeuft ueber
- * die gemeinsame Route.
+ * Drei Routen zeigen die laute Wahl gar nicht: die Startseite fuehrt den
+ * direkten Freelancer-Pfad bereits aus, die Kontaktseite ist das Ziel jedes
+ * Wegs, und die Solar-/Waermepumpen-Money-Page endet in ihrem eigenen
+ * Marktcheck. Kontakt laeuft ueber die gemeinsame Route.
  *
  * Die bestehenden cta_footer_pick_*-Werte bleiben fuer die historischen Wege
  * unveraendert. Tracking erhaelt einen eigenen stabilen Wert. Dasselbe gilt
@@ -33,7 +34,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 $current_year = wp_date( 'Y' );
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $routes       = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
-$shows_picks  = ! is_front_page();
+
+/*
+ * Drei Seiten stellen die Wegefrage nicht noch einmal: die Startseite fuehrt
+ * den direkten Pfad bereits aus, die Kontaktseite ist das Ziel jedes Wegs,
+ * und die Solar-/Waermepumpen-Money-Page endet in ihrem eigenen Marktcheck.
+ * Wer dort unten ankommt, hat gewaehlt — eine erneute Auswahl macht aus dem
+ * Abschluss einen Ausgang zurueck in die Orientierung.
+ */
+$shows_picks = ! is_front_page()
+	&& ! ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() )
+	&& ! ( function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context() );
 
 $energy_url        = $routes['energy'] ?? ( $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ) );
 $freelancer_url    = $routes['freelancer'] ?? home_url( '/' );
@@ -56,7 +67,9 @@ $phone_display = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phon
 
 $current_pick_route = '';
 
-if ( is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' ) ) {
+if ( function_exists( 'hu_is_tracking_route_context' ) && hu_is_tracking_route_context() ) {
+	// Gilt fuer beide Tracking-Seiten: /ga4-tracking-setup/ fuehrt denselben
+	// Weg weiter und darf ihn unten nicht noch einmal anbieten.
 	$current_pick_route = 'tracking';
 } elseif ( is_page( 'whitelabel-retainer' ) || is_page_template( 'page-whitelabel-retainer.php' ) ) {
 	$current_pick_route = 'whitelabel';

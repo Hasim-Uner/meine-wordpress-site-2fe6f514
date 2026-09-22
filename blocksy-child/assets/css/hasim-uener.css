@@ -69,37 +69,18 @@
   font-size: clamp(1.5rem, 1.3rem + 0.7vw, 1.9rem);
   margin-top: var(--s1);
 }
-.hu-about .about-decision .about-verification {
-  margin-top: var(--s2);
-  color: var(--grau);
-  font-size: 0.95rem;
-}
-.hu-about .about-verification strong { color: var(--tinte); font-weight: 500; }
-.hu-about .about-evidence {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: var(--s3);
+/* Der Beleg traegt die Kennzahl jetzt im Satz statt in einer eigenen Kachel.
+ * Eine Haarlinie und das Mono-Label reichen, um ihn vom Fliesstext zu
+ * trennen — der fruehere dunkle Solar-Kasten war die lauteste Flaeche der
+ * Seite und hat den Abschnitt davor uebertoent. */
+.hu-about .about-beleg {
+  max-width: 68ch;
   margin-top: var(--s4);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--strich);
 }
-.hu-about .about-evidence h3 {
-  font-size: clamp(1.2rem, 1.1rem + 0.6vw, 1.5rem);
-  margin-block: var(--s2);
-  line-height: 1.25;
-}
-.hu-about .about-evidence p:not(.mono):not(.about-number) { color: var(--grau); font-size: 0.95rem; }
-.hu-about .about-evidence-result { border-left: 1px solid var(--haar); padding-left: var(--s3); align-self: center; }
-.hu-about .about-number {
-  color: var(--stempel);
-  font-family: var(--mono);
-  font-size: clamp(1.35rem, 1rem + 1vw, 1.8rem);
-  line-height: 1.2;
-  margin-bottom: var(--s2);
-  font-variant-numeric: tabular-nums;
-}
-.hu-about .about-evidence-source { grid-column: 1 / -1; padding-top: var(--s3); border-top: 1px solid var(--haar); }
-.hu-about .about-evidence-source .textlink { margin-top: var(--s2); }
-.hu-about .about-paths .antwort a { display: inline-block; margin-top: var(--s2); }
-.hu-about .about-afterword { max-width: 68ch; margin-top: var(--s4); }
+.hu-about .about-beleg > p:not(.mono) { margin-top: var(--s2); }
+.hu-about .about-beleg-link em { color: var(--grau); font-size: 0.9rem; font-style: normal; }
 .hu-about .about-reference {
   margin-top: var(--s4);
   padding: var(--s3);
@@ -122,6 +103,16 @@
 .hu-about .about-agency p:not(.mono) { color: var(--grau); font-size: 0.95rem; }
 .hu-about .about-agency .textlink { margin-top: var(--s3); }
 .hu-about .about-reply { margin-top: var(--s2); color: var(--grau); font-size: 0.9rem; }
+/* Die beiden leisen Ausgaenge unter dem Button. Sie haben die eigene
+ * Orientierungs-Sektion abgeloest: dieselben zwei Ziele, aber dort, wo
+ * jemand ohnehin entscheidet, statt in einem eigenen Kapitel davor. */
+.hu-about .about-exits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s2);
+  margin-top: var(--s3);
+  font-size: 0.95rem;
+}
 .hu-about .about-personal {
   display: flex;
   flex-wrap: wrap;
@@ -133,13 +124,13 @@
 }
 .hu-about .about-personal > p { max-width: 58ch; }
 .hu-about .about-personal ul { display: flex; flex-wrap: wrap; gap: var(--s3); margin: 0; padding: 0; list-style: none; }
-.hu-about .about-hero > *, .hu-about .about-decision > *, .hu-about .about-evidence > *, .hu-about .about-close > * { min-width: 0; }
+.hu-about .about-hero > *, .hu-about .about-decision > *, .hu-about .about-close > * { min-width: 0; }
 @media (max-width: 960px) {
   .hu-about .about-hero { grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem); gap: var(--s3); }
 }
 @media (max-width: 640px) {
-  .hu-about .about-hero, .hu-about .about-decision, .hu-about .about-evidence, .hu-about .about-close { grid-template-columns: minmax(0, 1fr); }
+  .hu-about .about-hero, .hu-about .about-decision, .hu-about .about-close { grid-template-columns: minmax(0, 1fr); }
   .hu-about .about-portrait { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: var(--s3); align-items: center; }
   .hu-about .about-portrait figcaption { padding-top: 0; }
-  .hu-about .about-evidence-result, .hu-about .about-agency { border-left: 0; border-top: 1px solid var(--haar); padding-left: 0; padding-top: var(--s3); }
+  .hu-about .about-agency { border-left: 0; border-top: 1px solid var(--haar); padding-left: 0; padding-top: var(--s3); }
 }
