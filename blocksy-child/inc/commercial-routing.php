@@ -148,9 +148,9 @@ function hu_get_site_header_navigation_contract() {
 			[
 				'kind'     => 'route',
 				'kicker'   => __( 'Direkte Projekte', 'blocksy-child' ),
-				'label'    => __( 'WordPress Freelancer', 'blocksy-child' ),
+				'label'    => __( 'Leistungen', 'blocksy-child' ),
 				'desc'     => __( 'Neubau, Relaunch und Weiterentwicklung — mit Messung, die von Anfang an mitgebaut wird.', 'blocksy-child' ),
-				'url'      => $routes['freelancer'],
+				'url'      => home_url( '/#angebote' ),
 				'current'  => is_front_page(),
 				'class'    => 'nav-freelancer-link',
 				'track'    => 'nav_header_freelancer',
