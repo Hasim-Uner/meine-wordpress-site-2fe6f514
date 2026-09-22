@@ -398,6 +398,25 @@ while ( have_posts() ) :
 							Das betrifft insbesondere Kontakt- und Projektangaben, die Sie selbst eingeben.
 						</p>
 
+						<h3>Speicherung von Anfragen und Herkunft</h3>
+						<p>
+							Anfragen aus den Formularen dieser Website (Projekt-, White-Label- und
+							Marktcheck-Anfragen) werden intern im WordPress-Backend gespeichert, damit
+							wir sie bearbeiten und den Verlauf nachvollziehen können. Zusammen mit der
+							Anfrage speichern wir, über welche Seiten Sie das Formular erreicht haben:
+							die Einstiegsseite und die vorherige Seite dieser Website, die verweisende
+							Seite sowie vorhandene Kampagnenangaben aus dem aufgerufenen Link, etwa
+							utm-Parameter. Diese Angaben hält Ihr Browser nur im Sitzungsspeicher
+							(sessionStorage), der mit dem Schließen des Tabs gelöscht wird; Cookies
+							werden dafür nicht gesetzt. Die Angabe, wie Sie auf uns aufmerksam geworden
+							sind, ist freiwillig.
+						</p>
+						<p>
+							Rechtsgrundlage für die Herkunftsangaben ist Art. 6 Abs. 1 lit. f DSGVO.
+							Das berechtigte Interesse liegt darin, zu verstehen, welche Inhalte zu
+							Anfragen führen.
+						</p>
+
 						<h3>E-Mail-Zustellung über Brevo</h3>
 						<p>
 							Für die technische Zustellung unserer E-Mails, Formularbestätigungen und sonstigen
