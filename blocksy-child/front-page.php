@@ -112,7 +112,7 @@ get_header();
 			<div class="home-hero-copy">
 				<p class="gegenstand">WordPress · Tracking · CRM · Pattensen bei Hannover</p>
 				<h1><span class="home-title-primary">WordPress Freelancer Hannover.</span><span class="home-title-secondary">Von der Website<br>bis zur Anfrage<span class="home-title-stop">.</span></span></h1>
-				<p class="aufriss">Ich entwickle WordPress-Websites, die Angebote verständlich machen und Anfragen sauber bis ins CRM führen. Direkt mit mir – ohne Übergabe an ein fremdes Entwicklerteam.</p>
+				<p class="aufriss">Ich entwickle WordPress-Websites mit technischem SEO und sauberer Messung – damit Angebote verständlich werden und Anfragen bis ins CRM ankommen. Direkt mit mir, ohne Übergabe an ein fremdes Entwicklerteam.</p>
 				<div class="ausgang">
 					<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_head_contact" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span aria-hidden="true">→</span></a>
 					<a class="tun still" href="#angebote" data-track-action="home_hero_to_offers" data-track-category="navigation" data-track-section="hero">Leistungen und Preise</a>
@@ -121,6 +121,11 @@ get_header();
 					<span><?php echo esc_html( $response_short ); ?></span>
 					<span>Klare Projektpreise</span>
 					<span>Direkt mit dem Entwickler</span>
+				</div>
+				<?php // Weiche im ersten Blick: Agenturen und Energy-Betriebe haben eigene Wege. Hooks unverändert. ?>
+				<div class="home-doors" id="wege" data-track-section="tueren">
+					<p><span class="mono">Für Agenturen</span><a class="satzlink" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="home_door_whitelabel" data-track-category="navigation" data-track-section="tueren">White-Label: Umsetzung unter Ihrem Namen →</a></p>
+					<p><span class="mono">Solar &amp; Wärmepumpe</span><a class="satzlink" href="<?php echo esc_url( $energy_url ); ?>" data-track-action="home_door_energy" data-track-category="navigation" data-track-section="tueren">Anfragesystem und Marktcheck →</a></p>
 				</div>
 				<figure class="home-portrait">
 					<img src="<?php echo esc_url( $portrait_url ); ?>" width="480" height="600" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" decoding="async">
@@ -159,10 +164,6 @@ get_header();
 				<div><dt>Vor dem Livegang</dt><dd>Prüfbarer Stand auf einer Testumgebung</dd></div>
 				<div><dt>Nach der Übergabe</dt><dd>Dokumentation und vereinbarte Zugänge bei Ihnen</dd></div>
 			</dl>
-		</div>
-		<div class="home-specialists" id="wege">
-			<p><span class="mono">Für Agenturen</span><a class="satzlink" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="home_door_whitelabel" data-track-category="navigation" data-track-section="tueren">WordPress-Umsetzung unter Ihrem Namen →</a></p>
-			<p><span class="mono">Spezialisierung</span><a class="satzlink" href="<?php echo esc_url( $energy_url ); ?>" data-track-action="home_door_energy" data-track-category="navigation" data-track-section="tueren">Anfragesysteme für Solar und Wärmepumpe →</a></p>
 		</div>
 	</div>
 

@@ -1,7 +1,9 @@
 /* Homepage: WordPress Freelancer. Layout and colours inherit system.css. */
-.startseite .home-specialists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); padding-block: var(--s3); }
-.startseite .home-specialists p { display: grid; gap: var(--s1); }
-.startseite .home-specialists a { justify-self: start; }
+/* Weiche unter dem Hero-CTA: Agenturen und Energy-Betriebe sehen ihren Weg im ersten Blick. */
+.startseite .home-doors { display: grid; gap: var(--s0); margin-top: var(--s2); }
+.startseite .home-doors p { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s0) var(--s1); margin: 0; }
+.startseite .home-doors .mono { min-width: 10.5rem; color: var(--grau); }
+.startseite .home-doors .satzlink { font-size: 0.95rem; }
 .startseite .home-index { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); padding-top: var(--s2); border-top: 1px solid var(--haar); }
 .startseite .home-index a { padding-block: var(--s1); font-family: var(--mono); font-size: 0.78rem; text-underline-offset: var(--s0); }
 .startseite .home-offers { margin-top: var(--s4); border-top: 1px solid var(--strich); }
@@ -230,7 +232,8 @@
   .startseite .home-system-measure::after { left: auto; right: var(--s1); }
 }
 @media (max-width: 640px) {
-  .startseite .home-offer, .startseite .home-specialists, .startseite .home-featured-case__intro, .startseite .home-case dl, .startseite .home-close { grid-template-columns: 1fr; }
+  .startseite .home-offer, .startseite .home-featured-case__intro, .startseite .home-case dl, .startseite .home-close { grid-template-columns: 1fr; }
+  .startseite .home-doors .mono { min-width: 0; flex-basis: 100%; }
   .startseite .home-featured-case__footer { align-items: flex-start; }
   .startseite .home-close-note { border-left: 0; border-top: 1px solid var(--haar); padding-left: 0; padding-top: var(--s3); }
 }

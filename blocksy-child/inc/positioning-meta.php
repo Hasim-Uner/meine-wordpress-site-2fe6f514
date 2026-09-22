@@ -19,31 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Global homepage title: fachliche Klammer, not a duplicate local Freelancer
- * or Solar money-page query.
- *
- * The hero eyebrow shortens the visible label to "SEO" so the fachliche Klammer
- * stays on one line. The full term therefore carries its search weight here and
- * in the description below; no money page owns "technisches seo" in
- * docs/seo/query-ownership.csv, so this does not cannibalize a specialist route.
- *
- * @return string
+/*
+ * Homepage title and description are no longer overridden here. Since the
+ * Freelancer consolidation (docs/decisions/homepage-freelancer-konsolidierung.md)
+ * `/` owns "wordpress freelancer hannover"; the canonical values live in
+ * hu_get_homepage_title() / hu_get_homepage_description() in seo-meta.php.
+ * The former override ("WordPress, technisches SEO & Tracking") was removed on
+ * 2026-09-22 by owner decision.
  */
-function hu_positioned_homepage_seo_title() : string {
-	return 'WordPress, technisches SEO & Tracking | Haşim Üner';
-}
-add_filter( 'hu_homepage_seo_title', 'hu_positioned_homepage_seo_title', 20 );
-
-/**
- * Global homepage description covering the three commercial entry paths.
- *
- * @return string
- */
-function hu_positioned_homepage_seo_description() : string {
-	return 'WordPress-Entwicklung, technisches SEO, Tracking und Conversion aus Pattensen bei Hannover. Für direkte Projekte, Agenturen und Solar-/Wärmepumpen-Anbieter.';
-}
-add_filter( 'hu_homepage_seo_description', 'hu_positioned_homepage_seo_description', 20 );
 
 /**
  * Blog index title: broaden the knowledge hub beyond the Energy vertical.
