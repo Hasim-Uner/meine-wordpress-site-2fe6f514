@@ -242,6 +242,7 @@ $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' co
 						<button class="contact-btn contact-btn--primary" type="button" data-contact-next hidden>Weiter</button>
 						<button class="contact-submit" type="submit" data-contact-submit data-contact-submit-label="<?php echo esc_attr( $submit_label ); ?>" data-track-action="contact_submit" data-track-category="contact" data-track-section="contact_superflow"><?php echo esc_html( $submit_label ); ?></button>
 					</div>
+					<p class="contact-form__promise">Sie bekommen <?php echo esc_html( $response_window ); ?> eine Antwort von mir persönlich. Keine automatische Mailserie.</p>
 					<a class="contact-form__aux-link" href="<?php echo esc_url( $calendar_url ); ?>" data-track-action="cta_click_contact_call_superflow" data-track-category="contact" data-track-section="contact_superflow">Lieber direkt Termin buchen</a>
 				</div>
 
