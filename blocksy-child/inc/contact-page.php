@@ -815,22 +815,21 @@ function nexus_validate_contact_request_rate_limit() {
  * @param string $subject   Email subject.
  * @param string $html      Email HTML body.
  * @param array  $headers   Optional headers.
- * @return void
+ * @return bool Whether wp_mail() accepted the message.
  */
 function nexus_send_contact_html_mail( $recipient, $subject, $html, $headers = [] ) {
 	if ( function_exists( 'nexus_send_transactional_html_mail' ) ) {
-		nexus_send_transactional_html_mail( $recipient, $subject, $html, $headers );
-		return;
+		return (bool) nexus_send_transactional_html_mail( $recipient, $subject, $html, $headers );
 	}
 
 	if ( function_exists( 'nexus_send_audit_html_mail' ) ) {
-		nexus_send_audit_html_mail( $recipient, $subject, $html, $headers );
-		return;
+		return (bool) nexus_send_audit_html_mail( $recipient, $subject, $html, $headers );
 	}
 
 	$headers   = (array) $headers;
 	$headers[] = 'Content-Type: text/html; charset=UTF-8';
-	wp_mail( $recipient, $subject, $html, $headers );
+
+	return (bool) wp_mail( $recipient, $subject, $html, $headers );
 }
 
 /**

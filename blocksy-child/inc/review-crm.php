@@ -2127,17 +2127,17 @@ function nexus_append_mail_tags_header( $headers, $tags ) {
  * @param string $subject   Email subject.
  * @param string $html      Email HTML body.
  * @param array  $headers   Optional additional headers.
- * @return void
+ * @return bool Whether wp_mail() accepted the message. Older callers may ignore it.
  */
 function nexus_send_transactional_html_mail( $recipient, $subject, $html, $headers = [] ) {
 	if ( ! $recipient || ! is_email( $recipient ) || '' === trim( (string) $html ) ) {
-		return;
+		return false;
 	}
 
 	$headers   = (array) $headers;
 	$headers[] = 'Content-Type: text/html; charset=UTF-8';
 
-	wp_mail( $recipient, $subject, $html, $headers );
+	return (bool) wp_mail( $recipient, $subject, $html, $headers );
 }
 
 /**
@@ -2147,10 +2147,10 @@ function nexus_send_transactional_html_mail( $recipient, $subject, $html, $heade
  * @param string $subject   Email subject.
  * @param string $html      Email HTML body.
  * @param array  $headers   Optional additional headers.
- * @return void
+ * @return bool Whether wp_mail() accepted the message.
  */
 function nexus_send_audit_html_mail( $recipient, $subject, $html, $headers = [] ) {
-	nexus_send_transactional_html_mail( $recipient, $subject, $html, $headers );
+	return nexus_send_transactional_html_mail( $recipient, $subject, $html, $headers );
 }
 
 /**
