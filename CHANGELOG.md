@@ -2,6 +2,14 @@
 
 ## 2026-09
 
+### Vier Korrekturen: gleiche Stufennamen, eine Zusage, eine Sperre, ein Vorher-Wert weniger
+
+- **Zwei Seiten, ein Angebot, jetzt auch eine Benennung.** `/ga4-tracking-setup/` nannte die drei Stufen „Core Setup", „Advanced" und „Revenue", `/server-side-tracking-b2b/` dieselben drei „Basis", „Performance" und „Individuell". Wer beide las, musste raten, ob das sechs Angebote sind oder drei. Die GA4-Seite zieht nach. Die mittlere Karte trug außerdem als einzige keinen Preis („nach technischem Scope") — sie liest jetzt `hu_tracking_price( 'pro', 'setup', 'display' )` und sagt „ab … netto".
+- **`/kontakt/` beantwortet die Frage, die man beim Absenden hat.** Unter dem Button steht jetzt, wann und von wem die Antwort kommt — Antwortzeit aus `hu_response_promise( 'window' )` — und dass keine automatische Mailserie folgt. Die Zusage stand bis dahin nur oben im Ablauf und in der Trust-Zeile, also überall außer dort, wo abgeschickt wird.
+- **Die Begründung einer Anonymisierung kann nicht zurückkommen.** Zwei neue Regeln im Canon-Guard (`anon-verfahren`, `anon-begruendung`). Der Satz, der die Anonymisierung des Solar-Falls mit einem laufenden Verfahren begründete, war am 21.09. aus der Money Page entfernt worden — gegen eine Rückkehr stand bis jetzt nichts. Wer erklärt, warum er einen Namen nicht nennt, macht aus einer beiläufigen Konvention einen Vorgang und lädt genau die Frage ein, die er beantworten will. Das Wort „anonymisiert" als Kennzeichnung bleibt erlaubt; gesperrt ist die Begründung. Der Eintrag in LIVE_STATUS, der den Satz zitierte, beschreibt ihn seither.
+- **Eine Marktannahme stand als gemessener Vorher-Wert im Blog.** In `wordpress-seo-keine-anfragen.html` lief die Abschlussquote als „stieg von 1–5 % auf 15 %" und als Kachel „1–5 % → 15 %". Die Spanne ist eine Annahme über gekaufte Portal-Leads; neben 1.750+ Anfragen, 150 € → 22 € und sechs Monaten las sie sich wie eine vierte Messung. Beide Stellen nennen nur noch den gemessenen Wert. Auf vier Solar-Routen steht dieselbe Spanne weiterhin als Vorher-Wert aus dem Canon — nicht beauftragt, in LIVE_STATUS als offen vermerkt.
+- **Geprüft:** alle Guards grün; die beiden neuen Canon-Regeln zusätzlich gegen eine Probe-Datei, die sie auslösen muss, in „ä"- und „ae"-Schreibung. **Nicht geprüft:** Browser und Lighthouse.
+
 ### `/hasim-uener/`: eine These statt fünf Kapitel — und zwei Ausgänge weniger
 
 - **Die Seite erzählt jetzt eine Sache.** Die alte Fassung war eine Sammlung: Hintergrund, Engpass, Entscheidungsarten, Besucherwege, Gestaltung, Übergabe — sechs richtige Themen ohne gemeinsamen Satz. Die neue Fassung hat einen: Ihre Website führt Gespräche, bei denen Sie nicht dabei sind, und sie könnte zuhören, wenn man sie lässt. 01–03 erzählen das, 04 ist die Methode dazu, 05–08 Wandel, Haltung, Zusammenarbeit und Kurzbiografie. Maßgebliche Copy: `docs/briefings/ueber-mich/copy.md`.

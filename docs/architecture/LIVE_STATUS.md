@@ -1,5 +1,13 @@
 # Live Status
 
+## Vier Korrekturen an Angebot, Kontakt und Proof, Repository-Stand 2026-09-22
+
+- **`/ga4-tracking-setup/` nennt die Stufen wie `/server-side-tracking-b2b/`.** Die drei Angebotskarten heißen „01 · Basis", „02 · Performance" und „03 · Individuell" statt „Core Setup", „Advanced" und „Revenue". Zwei Seiten, die dasselbe Angebot verkaufen, haben es unter zwei Namen geführt; wer beide las, sah drei Stufen und dann drei andere. Karte 02 trägt jetzt den Preis aus `hu_tracking_price( 'pro', 'setup', 'display' )` als „ab … netto" statt „nach technischem Scope" — die einzige Karte ohne Zahl war ausgerechnet die mittlere. Geändert sind nur sichtbare Texte; `data-level`-Werte und Tracking-Hooks bleiben.
+- **`/kontakt/` sagt unter dem Absende-Button, was danach passiert.** Ein Satz mit der Antwortzeit aus `hu_response_promise( 'window' )` und dem Zusatz, dass keine automatische Mailserie folgt. Er steht in einer eigenen Grid-Area `promise` zwischen Button und Terminlink, rechtsbündig auf dem Desktop und linksbündig ab 720 px.
+- **Die Begründung einer Anonymisierung ist repo-weit gesperrt.** `scripts/canon-forbidden-values.txt` trägt die Regeln `anon-verfahren` und `anon-begruendung`. Der Satz war am 2026-09-21 aus Abschnitt 04 der Money Page entfernt worden; bis jetzt hielt ihn nichts davon ab zurückzukommen. Die Regeln treffen die Begründung, nicht das Wort — „anonymisiert" als Kennzeichnung bleibt erlaubt und steht so weiter im Ergebnis-Band.
+- **Ein nicht gemessener Vorher-Wert ist aus einem Blogartikel raus.** In `assets/content/blog/wordpress-seo-keine-anfragen.html` stand die Abschlussquote als „stieg von 1–5 % auf 15 %" im Fließtext und als „1–5 % → 15 %" in der Kachel. Die Spanne ist eine Marktannahme über gekaufte Portal-Leads, keine Messung am dokumentierten Fall — neben 1.750+, 150 € → 22 € und sechs Monaten sah sie wie eine aus. Beide Stellen nennen jetzt nur den gemessenen Wert. **Offen:** Dieselbe Spanne steht als Vorher-Wert weiterhin auf `/case-study-solar-leadgenerierung/` (`page-e3-new-energy.php`), `/cost-per-lead-photovoltaik/`, `/solar-leads-kaufen-alternative/` und `/eigene-leadgenerierung-vs-portale/`, dort aus `hu_e3_metric( 'sales_conversion_uplift' )` bzw. `sales_conversion_before`. Der Canon führt für genau diesen Zweck `display_hedged` („einstellig"). Nicht beauftragt, deshalb nicht angefasst.
+- **Geprüft:** alle Guards grün. Die beiden neuen Canon-Regeln sind gegen eine Probe-Datei mit „ä"- und „ae"-Schreibung getestet und greifen auf beide. **Nicht geprüft:** Browser und Lighthouse.
+
 ## Über Haşim, Abschluss-Ausgänge und ein Tracking-Ziel, Repository-Stand 2026-09-22
 
 Dieser Abschnitt hat Vorrang vor der älteren Beschreibung von `/hasim-uener/`
