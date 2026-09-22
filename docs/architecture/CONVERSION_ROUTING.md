@@ -24,6 +24,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck | Solar proof / case study |
 | `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page | Tracking project request / scope clarification | White-Label bridge for agencies |
 | `/ga4-tracking-setup/` | GA4/GTM setup or troubleshooting | Specialist tracking money page | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
+| `/performance-marketing/` | B2B companies running Google Ads or Meta | Paid-demand money page (measurement → landing page → budget) | `Ausgangslage prüfen lassen` → `/kontakt/?type=project` | Tracking setup, landing pages (`/#angebot-funnel`), case study; performance agencies → White-Label task (`?type=whitelabel&case=aufgabe`) |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition page | Project request | Explicit bridge to Freelancer page |
 | `/ergebnisse/` | Proof / evaluation, all three routes | Proof hub / trust layer | Three-way close: Marktcheck, `Projekt anfragen`, White-Label `Aufgabe beschreiben` | Case study, public references, tracking money page |
 | `/case-study-solar-leadgenerierung/` | Solar proof | Evidence page | Solar Marktcheck | Energy money page |

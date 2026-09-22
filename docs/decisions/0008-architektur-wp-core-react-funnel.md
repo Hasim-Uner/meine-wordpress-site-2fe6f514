@@ -1,7 +1,7 @@
 # 0008 WordPress-Core mit React-Funnel-Layer
 
 - Datum: 2026-05-02
-- Status: superseded in part
+- Status: überwiegend abgelöst (Nachtrag 2026-09-22); gültig bleibt nur „WordPress ist das Hauptsystem, kein Headless-Stack, kein SaaS-Produkt“
 
 ## Entscheidung
 
@@ -31,3 +31,14 @@ Der Default-Fragepfad der Anfragesystem-Analyse bleibt lokal und ohne personenbe
 ## Nachtrag 2026-05-13
 
 Der EnergieFahrplan-Showroom wurde aus dem Repo-Funnel entfernt. Die Beweisführung läuft über E3, Methodik und die direkte Anfragesystem-Analyse.
+
+## Nachtrag 2026-09-22
+
+Es gibt keinen aktiven React-Funnel-Layer mehr. Die Anfragesystem-Analyse ist
+durch den Marktcheck auf `/solar-waermepumpen-leadgenerierung/#marktcheck`
+ersetzt (`docs/specs/anfrage-system-analyse-form-v1.md`, Status
+`superseded-by-marketcheck`); der Marktcheck ist Vanilla-JavaScript und sendet
+an `nexus/v1/audit-request`. `blocksy-child/readiness/` existiert nicht mehr,
+und der Endpoint `analysis-submit` ist seit diesem Datum standardmäßig
+abgeschaltet (`HU_FEATURE_READINESS_SUBMIT`). Neue Funnel-Erlebnisse entstehen
+als PHP-Templates mit Vanilla-JavaScript, wie es `AGENTS.md` vorgibt.

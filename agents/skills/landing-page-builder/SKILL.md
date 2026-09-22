@@ -20,7 +20,7 @@ The script prints the required file skeleton and section structure.
 - Landing pages live as `blocksy-child/page-<slug>.php`
 - Reuse existing template-parts from `blocksy-child/template-parts/`
 - Follow the b2b-design-system patterns (if active)
-- Primary CTA always points to `/solar-waermepumpen-leadgenerierung/#marktcheck`
+- Primary CTA follows the intent, per `docs/architecture/CONVERSION_ROUTING.md`: WordPress, tracking, CRO or technical SEO → `hu_get_commercial_route( 'project_request' )`; agencies → `hu_get_commercial_route( 'whitelabel' )`; Solar, Wärmepumpe or Speicher → `hu_get_commercial_route( 'marketcheck' )`. Never hardcode the URL and never use the Marktcheck as a generic CTA.
 - Add `data-track-action`, `data-track-category`, `data-track-section` attributes to every CTA
 - No cookies, no client-side tracking scripts — UTM params are handled via existing sessionStorage logic
 
@@ -30,7 +30,7 @@ The script prints the required file skeleton and section structure.
 2. **Problem** — Pain point the visitor searched for
 3. **Mechanism** — How the solution works (3 steps max)
 4. **Proof** — Results, logos, or testimonials
-5. **CTA** — Repeat the primary CTA with urgency framing
+5. **CTA** — Repeat the primary CTA with the concrete next step (what happens after the request, response time from `hu_response_promise()`); no deadlines, seat counters or artificial scarcity
 
 ## Deliver
 
