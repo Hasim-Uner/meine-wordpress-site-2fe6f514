@@ -219,7 +219,7 @@ function hu_get_forced_singular_seo_map() {
 			],
 			'hasim-uener' => [
 				'title'       => 'Über Haşim Üner | Arbeitsweise für B2B-Websites',
-				'description' => 'Wie Haşim Üner B2B-Websites entwickelt: Kommunikation verstehen, Engpässe erkennen, bewusst gestalten und Wirkung prüfen. Persönlicher Hintergrund und Projektbelege.',
+				'description' => 'Ihre Website führt Gespräche, bei denen Sie nicht dabei sind. Wie Haşim Üner Websites baut, die gut kommunizieren und zeigen, was aus Anfragen wird.',
 			],
 			// 'wgos' / 'wordpress-growth-operating-system' sowie Tool-/Audit-Legacy-Routen:
 			// Seiten sind noindex, sitemap-excluded oder geschuetzte 301-Einstiege,
