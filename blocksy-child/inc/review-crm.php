@@ -2061,32 +2061,39 @@ function nexus_validate_review_request_rate_limit() {
 /**
  * Resolve the current request IP for transient-based rate limiting.
  *
+ * X-Forwarded-For zählt nur, wenn die Anfrage von einem internen Proxy kommt
+ * (REMOTE_ADDR privat oder reserviert; live sitzen nginx und Varnish davor).
+ * Dann gilt die rechteste öffentliche Adresse: Einträge links davon kann der
+ * Client selbst mitschicken, rechts hängt nur die eigene Proxy-Kette an. Der
+ * erste Eintrag, wie früher, ließ sich frei fälschen und hebelte jedes
+ * Rate-Limit aus. Direkte Anfragen nutzen REMOTE_ADDR.
+ *
  * @return string
  */
 function nexus_get_review_request_ip() {
-	$candidates = [
-		'HTTP_X_FORWARDED_FOR',
-		'REMOTE_ADDR',
-	];
+	$remote = isset( $_SERVER['REMOTE_ADDR'] ) ? trim( (string) wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 
-	foreach ( $candidates as $candidate ) {
-		if ( empty( $_SERVER[ $candidate ] ) ) {
-			continue;
-		}
+	if ( ! filter_var( $remote, FILTER_VALIDATE_IP ) ) {
+		return '';
+	}
 
-		$value = (string) wp_unslash( $_SERVER[ $candidate ] );
-		if ( 'HTTP_X_FORWARDED_FOR' === $candidate ) {
-			$parts = explode( ',', $value );
-			$value = trim( (string) reset( $parts ) );
-		}
+	$public_flags = FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE;
 
-		$value = sanitize_text_field( $value );
-		if ( '' !== $value ) {
-			return $value;
+	if ( filter_var( $remote, FILTER_VALIDATE_IP, $public_flags ) ) {
+		return $remote;
+	}
+
+	$forwarded = isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ? (string) wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) : '';
+
+	foreach ( array_reverse( explode( ',', $forwarded ) ) as $candidate ) {
+		$candidate = trim( $candidate );
+
+		if ( filter_var( $candidate, FILTER_VALIDATE_IP, $public_flags ) ) {
+			return $candidate;
 		}
 	}
 
-	return '';
+	return $remote;
 }
 
 /**

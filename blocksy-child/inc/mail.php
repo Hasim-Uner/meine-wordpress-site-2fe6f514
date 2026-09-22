@@ -369,14 +369,16 @@ function nexus_get_public_mail_diagnostics_snapshot() {
 		'api_endpoint'          => (string) ( $snapshot['api_endpoint'] ?? '' ),
 		'from_email_masked'     => nexus_mask_diagnostic_email( (string) ( $snapshot['from_email'] ?? '' ) ),
 		'smtp_fallback_enabled' => ! empty( $snapshot['smtp_fallback_enabled'] ),
+		// Kein error_message: Provider-Fehlertexte können Empfängeradressen
+		// oder interne Details enthalten. Der Volltext steht nur im
+		// Admin-Endpoint /mail-diagnostics.
 		'last_event'            => [
-			'event'         => isset( $last_event['event'] ) ? (string) $last_event['event'] : '',
-			'timestamp'     => isset( $last_event['timestamp'] ) ? (string) $last_event['timestamp'] : '',
-			'provider'      => isset( $last_event['provider'] ) ? (string) $last_event['provider'] : '',
-			'status_code'   => isset( $last_event['status_code'] ) ? (int) $last_event['status_code'] : 0,
-			'error_code'    => isset( $last_event['error_code'] ) ? (string) $last_event['error_code'] : '',
-			'error_message' => isset( $last_event['error_message'] ) ? (string) $last_event['error_message'] : '',
-			'message_id'    => isset( $last_event['message_id'] ) ? (string) $last_event['message_id'] : '',
+			'event'       => isset( $last_event['event'] ) ? (string) $last_event['event'] : '',
+			'timestamp'   => isset( $last_event['timestamp'] ) ? (string) $last_event['timestamp'] : '',
+			'provider'    => isset( $last_event['provider'] ) ? (string) $last_event['provider'] : '',
+			'status_code' => isset( $last_event['status_code'] ) ? (int) $last_event['status_code'] : 0,
+			'error_code'  => isset( $last_event['error_code'] ) ? (string) $last_event['error_code'] : '',
+			'message_id'  => isset( $last_event['message_id'] ) ? (string) $last_event['message_id'] : '',
 		],
 	];
 }
