@@ -16,14 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// The commercial router is the single source of truth for Direct, White-Label
-// and Energy destinations. Load it here as a compatibility bootstrap while the
-// legacy module loader in functions.php is still being simplified.
-$hu_commercial_routing_file = __DIR__ . '/commercial-routing.php';
-if ( is_file( $hu_commercial_routing_file ) ) {
-	require_once $hu_commercial_routing_file;
-}
-
 /**
  * Return the global offer catalog that reflects the current commercial routes.
  *

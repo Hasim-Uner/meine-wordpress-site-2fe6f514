@@ -106,7 +106,7 @@ function add_query_arg( $args, $url ) {
 
 	return $url . ( false === strpos( $url, '?' ) ? '?' : '&' ) . $query;
 }
-// Needed by inc/commercial-routing.php, which schema-positioning.php bootstraps
+// Needed by inc/commercial-routing.php, which schema-positioning.php uses
 // to resolve the offer catalog's destination routes.
 function sanitize_key( $key ) {
 	return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( (string) $key ) );
@@ -122,6 +122,7 @@ require_once __DIR__ . '/../blocksy-child/inc/robots-txt.php';
 require_once __DIR__ . '/../blocksy-child/inc/org-schema.php';
 require_once __DIR__ . '/../blocksy-child/inc/helpers.php';
 require_once __DIR__ . '/../blocksy-child/inc/llms-txt.php';
+require_once __DIR__ . '/../blocksy-child/inc/commercial-routing.php';
 require_once __DIR__ . '/../blocksy-child/inc/schema-positioning.php';
 
 // --- robots.txt -----------------------------------------------------------

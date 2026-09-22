@@ -6,16 +6,6 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-$commercial_routing_path = __DIR__ . '/commercial-routing.php';
-if ( file_exists( $commercial_routing_path ) ) {
-    require_once $commercial_routing_path;
-}
-
-$accessibility_navigation_path = __DIR__ . '/accessibility-navigation.php';
-if ( file_exists( $accessibility_navigation_path ) ) {
-    require_once $accessibility_navigation_path;
-}
-
 add_shortcode( 'nexus_header_btn', function() {
     $portal_page = get_page_by_path( 'portal' );
     $link = $portal_page ? get_permalink( $portal_page ) : home_url( '/portal' );

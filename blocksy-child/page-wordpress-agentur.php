@@ -42,11 +42,6 @@ add_action( 'wp_enqueue_scripts', function () {
 	$navigation_js  = '/assets/js/navigation-ecosystem.js';
 	$route_css      = '/assets/css/agentur-decision.css';
 
-	wp_dequeue_style( 'nexus-agentur-css' );
-	wp_dequeue_style( 'nexus-home-css' );
-	wp_dequeue_style( 'nexus-contact-css' );
-	wp_dequeue_script( 'nexus-contact-js' );
-
 	if ( is_file( $dir . $navigation_css ) ) {
 		wp_enqueue_style( 'hu-navigation-ecosystem', $uri . $navigation_css, [], (string) filemtime( $dir . $navigation_css ) );
 	}

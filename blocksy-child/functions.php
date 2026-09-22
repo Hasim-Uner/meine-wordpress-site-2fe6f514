@@ -19,6 +19,13 @@ $modules = [
 	'helpers.php',        // Utility-Funktionen (muss zuerst geladen werden)
 	'affiliate-links.php', // Affiliate-URL-Registry und Disclosure-Helper
 	'feature-flags.php',  // Staged Rollout-Schalter fuer neue Funnel-Routen und Submits
+	'article-content-hygiene.php',             // Einmalige Editor-Migrationen für Alt-Artikel
+	'article-content-hygiene-ttfb.php',        // … TTFB-Artikel
+	'article-content-hygiene-landingpage.php', // … Landingpage-Artikel
+	'article-b2b-inquiry-system.php',          // … Artikel zum B2B-Anfragesystem
+	'article-agency-outsourcing.php',          // … Auslagerungs-Leitfaden für Agenturen
+	'article-agency-outsourcing-hero.php',     // … Hero des Auslagerungs-Leitfadens
+	'article-reader-toc.php',                  // Inhaltsverzeichnis im Artikel-Reader
 	'canon/e3-proof-canon.php', // Kanonische E3-Proof-Zahlen und Displaywerte
 	'canon/diagnose-canon.php', // Kanonische Diagnose-Stufen, Preise und Scope-Grenzen
 	'canon/pricing-canon.php', // Kanonische Foundation-, Performance- und Premium-Preise
@@ -40,7 +47,7 @@ $modules = [
 	'contact-page.php',   // Kontakt-Route, schlanke Kontaktform und Mailversand
 	'whitelabel-request.php', // Vierfeldriges Agentur-Formular der White-Label-Route
 	'system-diagnose-page.php', // Deutsche Analyse-Route plus Legacy-Redirect
-	'analysis-intake.php', // REST-Endpoint, CRM-Sync, Brevo-Mails und n8n-Webhook für die Analyse
+	'analysis-intake.php', // REST-Endpoint der früheren Analyse; standardmäßig aus (HU_FEATURE_READINESS_SUBMIT)
 	'blog-notify.php',    // Blog-Benachrichtigungen, DOI und Artikel-Mails
 	'post-rating.php',    // Artikel-Bewertung (Hilfreich/Nicht hilfreich) + Admin-Spalte
 	'cpo-calculator.php', // CPO-Rechner für Photovoltaik-Anfragen
@@ -55,11 +62,14 @@ $modules = [
 	'positioning-meta.php', // Repositioning-Overrides für globale Homepage-/Blog-Metadaten
 	'seo-subpage-cluster-links.php', // Kontextuelle Querverlinkung des Solar/B2B-Clusters
 	'org-schema.php',     // JSON-LD Structured Data
+	'commercial-routing.php',  // Kanonische Routen für Direkt, White-Label und Energie
 	'schema-positioning.php', // Repositioning-Normalisierung der kanonischen Schema-Entitäten
 	'shortcodes.php',     // Startseiten-Shortcodes
 	'client-portal.php',  // Client Portal Dashboard
 	'admin-manager.php',  // Backend-Felder für Portal
+	'crm-sales.php',      // Vertrieb, Aktivitäten, Follow-ups und Antwortfrist-Wächter (inc/crm-sales/)
 	'api-telemetry.php',  // Observability Light für Nexus API-Fehler
+	'accessibility-navigation.php', // Skip-Link, Fokus und Tastaturnavigation
 	'snippets.php',       // Nav Button, Security, Login-Redirect
 	'menu-setup.php',     // Hauptmenü-Struktur (einmalig)
 ];

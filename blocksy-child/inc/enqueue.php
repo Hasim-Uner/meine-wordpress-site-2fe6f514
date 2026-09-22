@@ -321,28 +321,11 @@ function hu_enqueue_assets() {
 		);
 	}
 
-	// ── F) Template: Agentur Service ──────────────────────────────
-	if ( is_page_template( 'page-wordpress-agentur.php' ) || is_page_template( 'page-wordpress-agentur-hannover.php' ) || is_page( 'wordpress-agentur' ) || is_page( 'wordpress-agentur-hannover' ) ) {
-		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-agentur-css', 'agentur.css', [ 'nexus-home-css', 'nexus-contact-css' ] );
-		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js' ] );
-
-		wp_localize_script(
-			'nexus-contact-js',
-			'NexusContactConfig',
-			[
-				'restEndpoint'    => esc_url_raw( rest_url( 'nexus/v1/contact-request' ) ),
-				'successMessage'  => sprintf(
-					'Danke. Ihre Projektprüfung ist eingegangen. Sie erhalten %s eine händisch geprüfte Rückmeldung.',
-					hu_response_promise( 'window' )
-				),
-				'errorMessage'    => 'Die Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es erneut.',
-				'callUrl'         => esc_url_raw( function_exists( 'nexus_get_audit_calendar_url' ) ? nexus_get_audit_calendar_url() : home_url( '/kontakt/' ) ),
-				'isScopedLanding' => true,
-			]
-		);
-	}
+	// ── F) Template: Agentur ──────────────────────────────────────
+	// page-wordpress-agentur.php laedt seine Assets (agentur-decision.css,
+	// Navigation) selbst. Das fruehere Agentur-Stylesheet samt Formular-JS
+	// wurde hier geladen und im Template sofort wieder entfernt; es ist seit
+	// 2026-09-22 geloescht.
 
 	// ── F1a) Solar-/Wärmepumpen-Leadgenerierung (Anfragestrecke) ──
 	// Die Seite steht im Gutachten-Standard und bringt ihr Designsystem

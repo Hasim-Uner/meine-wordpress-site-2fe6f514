@@ -35,10 +35,8 @@ BASELINE_COLLAPSED_PADDING=(
 # Dateien mit eigener Spacing-Skala statt des kanonischen Gutachten-Rasters.
 # Historisch gewachsene Legacy-Routen koennen weiterhin --nx-space-* nutzen;
 # neue oder migrierte Oberflaechen verwenden --s0 bis --s6 aus system.css.
-# design-system.css steht hier, weil es die alte NX-Skala definiert; agentur.css
-# traegt weiterhin seine bereits bestehende lokale Legacy-Skala.
+# design-system.css steht hier, weil es die alte NX-Skala definiert.
 BASELINE_LOCAL_SCALE=(
-  "agentur.css"
   "design-system.css"
 )
 
