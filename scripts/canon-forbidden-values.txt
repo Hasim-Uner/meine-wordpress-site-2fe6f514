@@ -48,6 +48,21 @@ rule	frist-4h	(^|[^0-9])(4|vier)[[:space:]]*(Stunden|h)[[:space:]]+werktags	-	An
 # nur im Case-Kontext und nicht auf jede 12 im Repo.
 rule	case-abschlussquote-12	(^|[^0-9,.])12[[:space:]]*(%|&nbsp;%|Prozent)	Abschlussquote|Abschluss-Quote|sales_conversion|Case[ -]Study|case-study|PV-Case|E3-	Abschlussquote kommt aus hu_e3_metric( 'sales_conversion' ).
 
+# ── Begruendung einer Anonymisierung ──────────────────────────────────────
+# Ein anonymisierter Fall wird nie begruendet. „Anonymisiert, weil ein
+# Verfahren laeuft“ stand bis 2026-09-21 in Abschnitt 04 der Solar-Money-Page
+# und hat genau das Gegenteil dessen getan, was er sollte: Wer erklaert,
+# warum er einen Namen nicht nennt, macht aus einer beilaeufigen Konvention
+# einen Vorgang und laedt die Frage ein, die er beantworten will. Dazu ist
+# der Grund selbst eine Aussage ueber einen Dritten, die auf einer
+# oeffentlichen Verkaufsseite nichts zu suchen hat.
+#
+# Die Regel gilt fuer die Begruendung, nicht fuer das Wort: „anonymisiert“
+# als Kennzeichnung einer Kennzahl oder eines Falls bleibt erlaubt und steht
+# so auch im Ergebnis-Band.
+rule	anon-verfahren	Verfahren[[:space:]]+l(ä|ae)uft	-	Anonymisierte Faelle werden nicht begruendet. Satz ersatzlos streichen.
+rule	anon-begruendung	[Aa]nonymisiert,[[:space:]]*weil	-	Anonymisierte Faelle werden nicht begruendet. Satz ersatzlos streichen.
+
 # ── Ausnahmen ─────────────────────────────────────────────────────────────
 # Der Kanon fuehrt die Werte und muss die abgeloesten benennen duerfen.
 ignore	blocksy-child/inc/canon/**	Kanon-Dateien. Einzige inhaltliche Ausnahme.
