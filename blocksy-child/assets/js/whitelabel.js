@@ -259,9 +259,31 @@
 				email: email.value.trim(),
 				timeframe: (form.querySelector('#wl-timeframe') || { value: '' }).value.trim(),
 				access: (form.querySelector('input[name="access"]:checked') || { value: '' }).value,
+				referral_source: (form.querySelector('#wl-referral') || { value: '' }).value,
 				company_website: (form.querySelector('#wl-company-website') || { value: '' }).value,
 				'case': caseField ? caseField.value : 'aufgabe'
 			};
+
+			// Herkunft aus der Sitzung (NexusCore), unsichtbar und ohne Cookies.
+			var core = window.NexusCore;
+			var attribution = core && typeof core.getLeadAttributionPayload === 'function' ? core.getLeadAttributionPayload() : {};
+			var campaign = core && typeof core.getCampaignContext === 'function' ? core.getCampaignContext() : {};
+
+			['landing_page_url', 'entry_page_url', 'previous_internal_url', 'referrer_url', 'ads_source', 'ads_keyword'].forEach(function (key) {
+				if (attribution[key]) {
+					payload[key] = attribution[key];
+				}
+			});
+
+			if (campaign.entry_referrer_url) {
+				payload.referrer_url = campaign.entry_referrer_url;
+			}
+
+			['utm_medium', 'utm_campaign'].forEach(function (key) {
+				if (campaign[key]) {
+					payload[key] = campaign[key];
+				}
+			});
 
 			isSubmitting = true;
 			form.setAttribute('aria-busy', 'true');

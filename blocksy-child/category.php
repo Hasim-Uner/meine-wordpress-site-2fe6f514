@@ -21,10 +21,9 @@ get_template_part( 'template-parts/site-header' );
 
 $primary_urls       = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 $audit_url          = $primary_urls['audit'] ?? ( function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
-$energy_url         = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
 $agentur_url        = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
-$seo_url            = $primary_urls['seo'] ?? trailingslashit( $agentur_url ) . '#technisches-seo';
-$cro_url            = $primary_urls['cro'] ?? trailingslashit( $agentur_url ) . '#methode';
+$seo_url            = $primary_urls['seo'] ?? trailingslashit( $agentur_url ) . '#zusammenarbeit';
+$cro_url            = $primary_urls['cro'] ?? home_url( '/#angebot-funnel' );
 $tracking_url       = home_url( '/server-side-tracking-b2b/' );
 $portal_url         = home_url( '/eigene-leadgenerierung-vs-portale/' );
 $cpl_url            = home_url( '/cost-per-lead-photovoltaik/' );
@@ -46,10 +45,6 @@ $category_seo       = $current_category instanceof WP_Term && function_exists( '
 	: [];
 $category_intro     = $category_text ?: ( $category_seo['description'] ?? '' );
 
-if ( 'wordpress-growth-agentur' === $current_term_slug && ! empty( $category_seo['description'] ) ) {
-	$category_intro = $category_seo['description'];
-}
-
 $categories = get_categories(
 	[
 		'hide_empty' => true,
@@ -59,35 +54,18 @@ $categories = get_categories(
 	]
 );
 
+// Seit der Konsolidierung (inc/positioning-meta.php) gibt es nur noch vier
+// Dossiers; die alten Kategorie-Archive leiten per 301 dorthin um und werden
+// hier nie mehr gerendert.
 $category_deep_link_map = [
-	'solar-waermepumpen-anfrage-systeme' => [
+	'leadgenerierung' => [
 		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
 		[ 'label' => 'Portal vs. eigenes System (TCO)', 'url' => $portal_url ],
 		[ 'label' => 'CPL/CPO-Rechnung', 'url' => $cpl_url ],
 	],
-	'markteinordnung' => [
-		[ 'label' => 'TCO-Vergleich 24 Monate', 'url' => $portal_url ],
-		[ 'label' => 'CPL/CPO-Rechnung', 'url' => $cpl_url ],
-		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
-	],
-	'owned-leads' => [
-		[ 'label' => 'Asset-Eigentum Vergleichsmatrix', 'url' => $portal_url ],
-		[ 'label' => 'Anfragesysteme', 'url' => $energy_url ],
-		[ 'label' => 'Regionaler Marktcheck', 'url' => $audit_url ],
-	],
-	'sichtbarkeit-daten-conversion' => [
+	'wordpress-performance' => [
+		[ 'label' => 'Core Web Vitals', 'url' => $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' ) ],
 		[ 'label' => 'Technisches SEO', 'url' => $seo_url ],
-		[ 'label' => 'Server-Side Tracking', 'url' => $tracking_url ],
-		[ 'label' => 'CRO-System', 'url' => $cro_url ],
-	],
-	'wordpress-growth-agentur' => [
-		[ 'label' => 'WordPress Agentur Hannover', 'url' => $agentur_url ],
-		[ 'label' => 'Technisches SEO', 'url' => $seo_url ],
-		[ 'label' => 'CRO-System', 'url' => $cro_url ],
-	],
-	'seo' => [
-		[ 'label' => 'Technisches SEO', 'url' => $seo_url ],
-		[ 'label' => 'WordPress Agentur Hannover', 'url' => $agentur_url ],
 	],
 	'tracking' => [
 		[ 'label' => 'Server-Side Tracking', 'url' => $tracking_url ],
@@ -97,29 +75,14 @@ $category_deep_link_map = [
 		[ 'label' => 'CRO-System', 'url' => $cro_url ],
 		[ 'label' => 'Technisches SEO', 'url' => $seo_url ],
 	],
-	'wordpress-performance' => [
-		[ 'label' => 'Core Web Vitals', 'url' => $primary_urls['cwv'] ?? home_url( '/wgos-assets/cwv-optimierung/' ) ],
-		[ 'label' => 'Technisches SEO', 'url' => $seo_url ],
-	],
-	'strategie' => [
-		[ 'label' => 'Anfragesysteme', 'url' => $energy_url ],
-		[ 'label' => 'Strategischer Portal-Vergleich', 'url' => $portal_url ],
-	],
 ];
 
 $category_deep_links = $category_deep_link_map[ $current_term_slug ] ?? [
 	[ 'label' => 'Alle Analysen', 'url' => $blog_url ],
 ];
 
-$energy_categories = [
-	'solar-waermepumpen-anfrage-systeme',
-	'markteinordnung',
-	'owned-leads',
-	'strategie',
-	'leadgenerierung',
-	'performance-marketing',
-];
-$is_energy_category = in_array( $current_term_slug, $energy_categories, true );
+// Nur das Leadökonomie-Dossier gehört zum Energie-Pfad mit Marktcheck.
+$is_energy_category = 'leadgenerierung' === $current_term_slug;
 
 $category_cta = $is_energy_category
 	? [

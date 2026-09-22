@@ -46,12 +46,14 @@ WordPress-Freelancer-Hero zu konkreten Leistungen, Preisrahmen, öffentlichen
 Arbeiten, Zusammenarbeit und Projektanfrage. White-Label und Solar/Wärmepumpe
 bleiben als gezielte Brücken erreichbar. Der Solar-Fall ist abgegrenzter Proof.
 
-Die Hero- und Abschluss-CTAs führen zur kanonischen Projektanfrage. Die vier
-Angebote verwenden `hu_get_contact_intake_url('project', focus)` mit `relaunch`,
-`conversion`, `tracking` oder `implementation_scope`. Der gemeinsame
-Kontaktablauf überspringt dadurch die bereits beantwortete Themenauswahl.
-Die Homepage benötigt kein eigenes Formular-JavaScript. `#anfrage` und
-`#kontakt` bleiben als Anker des Abschlussblocks erhalten.
+Die Hero- und Abschluss-CTAs führen zur kanonischen Projektanfrage
+`/kontakt/?type=project` **ohne** vorbelegtes Thema (seit 2026-09-22): Die
+Kontaktseite zeigt dann die Themenwahl und die Weiche zu White-Label und
+Marktcheck. Nur die drei Angebotskarten verwenden
+`hu_get_contact_intake_url('project', focus)` mit `relaunch`, `conversion` oder
+`tracking`; dort ist die Themenfrage schon beantwortet, und der Kontaktablauf
+überspringt sie. Die Homepage benötigt kein eigenes Formular-JavaScript.
+`#anfrage` und `#kontakt` bleiben als Anker des Abschlussblocks erhalten.
 
 Routing, Inhalte, Weiterleitung, Analytics-Zuordnung und Nachkontrolle:
 `docs/decisions/homepage-freelancer-konsolidierung.md`.
@@ -218,9 +220,15 @@ Canonical helper: `hu_get_navigation_project_request_url()`
 
 Expected destination:
 
-`/kontakt/?type=project&focus=implementation_scope`
+`/kontakt/?type=project`
 
-Use outside the dedicated Solar and White-Label funnels.
+Use outside the dedicated Solar and White-Label funnels. Without a `focus`
+parameter the contact page shows its topic step and always shows the switch to
+White-Label and Marktcheck. Add a `focus` only where the linking page already
+answered the topic question (offer cards, tracking pages); a pre-set focus
+skips the topic step. Until 2026-09-22 the generic CTA carried
+`focus=implementation_scope`, which labelled every generic lead as
+"Umsetzung / Optimierung".
 
 Die frühere lokale Formularausnahme der Freelancer-Seite entfällt mit ihrer
 Konsolidierung auf `/`. Homepage, Header und Footer verwenden den gemeinsamen

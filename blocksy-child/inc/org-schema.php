@@ -1019,19 +1019,19 @@ function hu_output_schema()
                         '@type'       => 'Offer',
                         'name'        => 'Technisches SEO und Tracking',
                         'description' => 'WordPress, technisches SEO, Tracking und Conversion in der richtigen Reihenfolge als verbundenes Anfragesystem.',
-                        'url'         => home_url('/wordpress-agentur-hannover/#technisches-seo'),
+                        'url'         => home_url('/wordpress-agentur-hannover/#zusammenarbeit'),
                     ],
                     [
                         '@type'       => 'Offer',
                         'name'        => 'Anfragesystem-Methode',
                         'description' => 'Strategie, technisches Fundament, Messbarkeit, Sichtbarkeit, Conversion und Weiterentwicklung als zusammenhängende Methode.',
-                        'url'         => home_url('/wordpress-agentur-hannover/#methode'),
+                        'url'         => home_url('/wordpress-agentur-hannover/#zusammenarbeit'),
                     ],
                     [
                         '@type'       => 'Offer',
                         'name'        => 'Laufende WordPress-Betreuung in Hannover',
                         'description' => 'Planbare technische Pflege und kontrollierte Weiterentwicklung für vorab geprüfte WordPress-Systeme im Rahmen eines Weiterentwicklungs-Retainers.',
-                        'url'         => home_url('/wordpress-agentur-hannover/#wordpress-wartung'),
+                        'url'         => home_url('/wordpress-agentur-hannover/#zusammenarbeit'),
                     ],
                 ],
             ],
@@ -1149,10 +1149,10 @@ function hu_output_schema()
         ],
 
         'performance-marketing' => [
-            'name'        => 'Performance Marketing für B2B-WordPress-Websites',
-            'description' => 'Aktivierungslayer für bezahlte Nachfrage: erst Tracking, Technik und Zielseite, dann skalierbare Kampagnen.',
+            'name'        => 'Performance Marketing für B2B',
+            'description' => 'Google Ads und Meta für B2B in fester Reihenfolge: erst Conversion-Messung, dann Landingpage, dann Budget. Kampagnenbetreuung dort, wo sie an WordPress, Tracking und Conversion hängt.',
             'serviceType' => 'Performance Marketing',
-            'serviceOutput' => 'Kampagnenfähige Zielseiten und belastbare Tracking-Signale für effiziente Paid-Aktivierung'
+            'serviceOutput' => 'Belastbare Conversion-Signale, eine Zielseite, die das Anzeigenversprechen einlöst, und Kampagnen, die auf qualifizierte Anfragen optimieren'
         ],
 
         // Legacy-Services wordpress-growth-operating-system + wgos entfernt:

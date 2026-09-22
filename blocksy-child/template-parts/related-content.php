@@ -44,6 +44,14 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 	$args['category__in'] = array_map( 'absint', $category_ids );
 
 	$primary_link_map = [
+		// Kanonisches Dossier seit der Konsolidierung (inc/positioning-meta.php);
+		// die Alt-Slugs darunter bleiben als Absicherung für Beiträge, deren
+		// Migration nicht vollständig lief.
+		'leadgenerierung' => [
+			'label' => __( 'Leadgenerierung für Photovoltaik & Wärmepumpe', 'blocksy-child' ),
+			'url'   => function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' ),
+			'text'  => __( 'Passender System-Einstieg:', 'blocksy-child' ),
+		],
 		'solar-waermepumpen-anfrage-systeme' => [
 			'label' => __( 'Leadgenerierung für Photovoltaik & Wärmepumpe', 'blocksy-child' ),
 			'url'   => function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' ),
@@ -61,12 +69,12 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 		],
 		'sichtbarkeit-daten-conversion' => [
 			'label' => __( 'Technisches SEO ansehen', 'blocksy-child' ),
-			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) ) : home_url( '/wordpress-agentur-hannover/#technisches-seo' ),
+			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 			'text'  => __( 'Passender Service-Einstieg:', 'blocksy-child' ),
 		],
 		'seo' => [
 			'label' => __( 'Technisches SEO', 'blocksy-child' ),
-			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) ) : home_url( '/wordpress-agentur-hannover/#technisches-seo' ),
+			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 			'text'  => __( 'Passender Service-Einstieg:', 'blocksy-child' ),
 		],
 		'tracking' => [
@@ -76,7 +84,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 		],
 		'cro' => [
 			'label' => __( 'Conversion-Pfad', 'blocksy-child' ),
-			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) ) : home_url( '/wordpress-agentur-hannover/#methode' ),
+			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'cro', home_url( '/#angebot-funnel' ) ) : home_url( '/#angebot-funnel' ),
 			'text'  => __( 'Wenn der nächste Hebel in Angebotslogik und Nutzerführung liegt:', 'blocksy-child' ),
 		],
 		'wordpress-performance' => [
@@ -91,7 +99,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 		],
 		'strategie' => [
 			'label' => __( 'Anfragesystem-Methode', 'blocksy-child' ),
-			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#methode' ) ) : home_url( '/wordpress-agentur-hannover/#methode' ),
+			'url'   => function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 			'text'  => __( 'Wenn das Thema in ein größeres System eingeordnet werden soll:', 'blocksy-child' ),
 		],
 	];
@@ -103,6 +111,7 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 		'markteinordnung',
 		'owned-leads',
 		'solar-waermepumpen-anfrage-systeme',
+		'leadgenerierung',
 		'sichtbarkeit-daten-conversion',
 		'tracking',
 		'seo',
@@ -112,8 +121,9 @@ if ( 'post' === $related_type && is_singular( 'post' ) && ! empty( $category_ids
 		'strategie',
 	];
 
+	// Jeder Prioritäts-Slug hat einen Karteneintrag; PHPStan prüft das statisch.
 	foreach ( $link_priority as $slug ) {
-		if ( in_array( $slug, $category_slugs, true ) && ! empty( $primary_link_map[ $slug ] ) ) {
+		if ( in_array( $slug, $category_slugs, true ) ) {
 			$primary_link = $primary_link_map[ $slug ];
 			break;
 		}

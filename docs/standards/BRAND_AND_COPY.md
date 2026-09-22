@@ -52,7 +52,7 @@ Sperrliste aufgenommen — nicht andersherum.
 
 **Haşim Üner verbindet WordPress-Entwicklung, Tracking und Conversion so, dass Websites, Landingpages und Anfragesysteme technisch zusammenpassen und messbar werden.**
 
-Die Website hat drei Geschäftspfade. Die Startseite priorisiert direkte WordPress-Projekte; die beiden Spezialisierungen bleiben klar erreichbar:
+Die Website hat drei Geschäftspfade. Die Startseite priorisiert direkte WordPress-Projekte; White-Label ist seit 2026-09-22 ein gleichrangiger Geschäftspfad (Weiche direkt unter dem Hero-CTA, Platz 2 in der Navigation), Solar/Wärmepumpe bleibt klar erreichbar:
 
 1. **Direkte Unternehmen / WordPress-Projekte** → `/` bzw. generische Projektanfrage
 2. **Agenturen** → `/whitelabel-retainer/` bzw. Aufgabe beschreiben / Erstprojekt

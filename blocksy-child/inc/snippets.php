@@ -35,28 +35,14 @@ add_shortcode( 'nexus_header_btn', function() {
  * @return string
  */
 function hu_get_navigation_project_request_url() {
+    $contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+    $fallback    = add_query_arg( [ 'type' => 'project' ], $contact_url );
+
     if ( function_exists( 'hu_get_commercial_route' ) ) {
-        return hu_get_commercial_route(
-            'project_request',
-            add_query_arg(
-                [
-                    'type'  => 'project',
-                    'focus' => 'implementation_scope',
-                ],
-                function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' )
-            )
-        );
+        return hu_get_commercial_route( 'project_request', $fallback );
     }
 
-    $contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
-
-    return add_query_arg(
-        [
-            'type'  => 'project',
-            'focus' => 'implementation_scope',
-        ],
-        $contact_url
-    );
+    return $fallback;
 }
 
 /**

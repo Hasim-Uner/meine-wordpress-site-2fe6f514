@@ -21,75 +21,16 @@ function nexus_get_wgos_cluster_page_data() {
 		return $pages;
 	}
 
-	$agentur_url = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
-	$seo_url     = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) );
-	$sst_money_url = home_url( '/server-side-tracking-b2b/' );
-
-	// Ergebniszahlen kommen ausschliesslich aus inc/canon/e3-proof-canon.php.
-	$e3_cpl_before  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
-	$e3_cpl_after   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
-	$e3_lead_count  = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
-	$e3_case_url    = home_url( '/case-study-solar-leadgenerierung/' );
-	$response_compact = hu_response_promise( 'compact' );
-	$response_window  = hu_response_promise( 'window' );
-
 	// Die Cluster wordpress-seo-hannover, core-web-vitals und conversion-rate-optimization
 	// sind in die Agentur-Page integriert; 301-Redirects sitzen in inc/helpers.php
 	// (nexus_redirect_legacy_offer_paths). Daten-Arrays wurden hier entfernt, damit
 	// kein verwaister Konfigurations-Ballast in jedem Request initialisiert wird.
 	$pages = [
+		// page-ga4.php rendert die Seite selbst; das Register liefert Titel,
+		// Auszug, FAQ (sichtbar und als FAQPage-Schema) und Meta-Vorgaben.
 		'ga4-tracking-setup' => [
-			'eyebrow'          => 'GA4 Tracking Setup · Messbarkeit im Anfragesystem',
 			'title'            => 'GA4 Tracking Setup für B2B-WordPress-Websites',
-			'cta'              => [
-				'route'        => 'project_request',
-				'focus'        => 'tracking',
-				'label'        => 'Tracking-Projekt anfragen',
-				'microcopy'    => $response_compact . ' · Tracking-Anliegen kurz beschreiben',
-				'closing_note' => 'Beschreiben Sie kurz Ihre Website, Ihr bestehendes Setup und was Sie einrichten oder korrigieren möchten. Im Kontaktformular ist Tracking bereits vorausgewählt.',
-			],
-			'proof_metrics'    => array_replace(
-				nexus_get_wgos_cluster_page_proof_metrics(),
-				[ 1 => [ 'value' => $response_compact, 'label' => 'Persönliche Rückmeldung zu Ihrem Tracking-Anliegen' ] ]
-			),
 			'lead'             => 'GA4 Tracking Setup heißt hier: Event-Logik, Consent, GTM und serverseitige Signale so bauen, dass Sie Anfragen, Einstiegsseiten und Leadqualität belastbar sehen.',
-			'intro'            => [
-				'Viele B2B-Unternehmen haben Google Analytics 4 technisch aktiv, aber kein belastbares Setup. Events feuern, Conversions sind unklar und das Team diskutiert über Zahlen statt über Entscheidungen.',
-				'Ein sauberes GA4 Tracking Setup für WordPress besteht nicht nur aus Tags. Es braucht klare Event-Logik, sauberes Consent-Verhalten, UTM-Disziplin und einen Blick darauf, welche Seiten und Formulare wirklich Nachfrage erzeugen.',
-				'Sobald SEO, Paid und Vertrieb auf dieselben Daten schauen sollen, wird aus "Analytics installiert" schnell ein strukturelles Problem. Genau deshalb gehören GA4, GTM und Server Side Tracking in einen gemeinsamen Messbarkeits-Cluster.',
-			],
-			'system'           => [
-				'GA4 ist kein Report-Tool, sondern der Einstieg in belastbare Lead- und Nachfrage-Signale. Erst wenn Einstiegsseiten, Formulare und Conversion-Schritte sauber modelliert sind, werden Daten wirklich steuerbar.',
-				'Wir koppeln das Setup deshalb an WordPress, nicht nur an Tags. Tracking Audit, Event-Blueprint, Consent Mode, serverseitige Signalverarbeitung und die Management-Sicht auf dieselben Daten gehören zusammen.',
-				'Wenn zusätzlich Angebotsseiten, Conversion-Führung oder lokale Money Pages bremsen, ist die Agentur-Seite der bessere Einstieg als ein isolierter Tracking-Fix.',
-			],
-			'assets'           => [
-				'tracking-audit'       => 'Prüft, wo Daten fehlen, doppelt feuern oder an Consent und Setups scheitern.',
-				'ga4-event-blueprint'  => 'Definiert Events, KPI-Logik und Funnel-Schritte für echte Entscheidungsfähigkeit.',
-				'consent-mode-v2'      => 'Bringt Datenschutz und Signalqualität in ein sauberes technisches Modell.',
-				'server-side-tracking' => 'Stabilisiert Messung über Browser-Grenzen hinweg mit sGTM oder Matomo.',
-				'kpi-dashboard'        => 'Verdichtet Rohdaten in eine Führungssicht für Management und Marketing.',
-				'utm-framework'        => 'Sichert Benennung und Attribution über Kampagnen und Teams hinweg.',
-			],
-			'blogs'            => [
-				[
-					'title' => 'Datenhoheit mit Server-Side GTM',
-					'url'   => home_url( '/server-side-tracking-gtm/' ),
-				],
-			],
-			'supporting_link'  => [
-				'kicker' => 'Breiterer Einstieg',
-				'label'  => 'WordPress Agentur Hannover',
-				'url'    => $agentur_url,
-				'text'   => 'Wenn Tracking, Angebotsseiten und Conversion gemeinsam sauber werden müssen, ist die Agentur-Seite der klarere Startpunkt als ein isolierter Tracking-Fix.',
-			],
-			'adjacent_link'    => [
-				'kicker' => 'Umsetzung nach dem Messkonzept',
-				'label'  => 'Server-Side Tracking einrichten lassen',
-				'url'    => $sst_money_url,
-				'text'   => 'Wenn Event-Logik, Consent und Conversion-Ziele stehen, führt diese Money-Page in Server-GTM, eigene Tracking-Subdomain, Paralleltest und laufende Kontrolle.',
-			],
-			'proof_note'       => 'Tracking wird erst dann kaufnah wertvoll, wenn Einstiegsseiten, Formulare und Leadquellen sauber unterscheidbar werden. Genau dort zahlt ein gutes GA4-Setup auf bessere Entscheidungen in SEO, Paid und Vertrieb ein.',
 			'faq_items'        => [
 				[
 					'question' => 'Wie richtet man ein sauberes GA4 Tracking Setup für eine B2B-Website ein?',
@@ -114,89 +55,12 @@ function nexus_get_wgos_cluster_page_data() {
 			],
 			'meta_title'       => 'GA4 Tracking Setup für B2B | Haşim Üner',
 			'meta_description' => 'GA4 Tracking Setup für B2B-WordPress: Google Analytics 4 einrichten, Consent Mode, GTM-Struktur und Server Side Tracking für belastbare Leadsignale.',
-			'schema_name'      => 'GA4 Tracking Setup für B2B-WordPress-Websites',
-			'schema_description' => 'GA4 Tracking Setup: Event-Logik, GTM, Consent Mode und Server Side Tracking für B2B-WordPress-Websites.',
 		],
+		// Seit 2026-09-22 rendert page-performance.php die Seite selbst im
+		// Gutachten-Layout. Das Register liefert nur noch Titel, Meta und FAQ,
+		// damit sichtbare Fragen und FAQPage-Schema aus derselben Quelle kommen.
 		'performance-marketing' => [
-			'eyebrow'          => 'Google Ads und Meta Ads im Anfragesystem',
 			'title'            => 'Performance Marketing',
-			'lead'             => 'Kampagnen liefern Klicks, aber im Vertrieb kommen Anfragen an, mit denen niemand arbeiten kann. Das liegt selten am Kanal und meistens an der Messung und der Zielseite dahinter.',
-			'intro'            => [
-				'Das Budget läuft, die Klickpreise steigen, und am Monatsende steht die Frage, welche Kampagne die zwei brauchbaren Anfragen gebracht hat. Beantworten kann sie niemand, weil im Konto jedes abgeschickte Formular gleich viel zählt.',
-				'Die Ursache sitzt fast nie in der Anzeige. Wenn Conversions doppelt gezählt werden, nach dem Consent-Banner wegbrechen oder Newsletter-Anmeldung und Projektanfrage dasselbe Signal auslösen, optimiert der Algorithmus auf ein Ziel, das es im Vertrieb nicht gibt. Er wird dabei zuverlässig besser — nur in die falsche Richtung.',
-				'Deshalb steht hier die Messung vor dem Budget. Wer die Reihenfolge umdreht, kauft Reichweite auf eine Seite ein, die nicht verkauft, und bezahlt diesen Fehler mit jedem einzelnen Klick.',
-			],
-			'system'           => [
-				'Am Anfang steht keine Kampagne, sondern eine Bestandsaufnahme: Welche Conversion wird tatsächlich gemessen, welcher Teil davon ist eine echte Anfrage, und auf welcher Seite landet der bezahlte Klick?',
-				'Danach wird in dieser Reihenfolge gearbeitet: erst die Messung, dann die Zielseite, dann das Budget. Jeder Schritt ist einzeln beauftragbar — wenn nur die Signale klemmen, braucht es keine neue Landingpage.',
-				'Kampagnen betreue ich dort, wo sie an WordPress, Tracking und Conversion hängen. Mediaplanung für große Multi-Markt-Budgets oder Kreativproduktion für Bewegtbild gehören nicht dazu.',
-			],
-			'assets'           => [
-				'growth-audit'              => 'Klärt zuerst, ob wirklich das Budget der Engpass ist oder Messung, Seite und Angebot davor.',
-				'tracking-audit'            => 'Prüft, welche Conversion-Signale doppelt zählen, fehlen oder am Consent scheitern.',
-				'ga4-event-blueprint'       => 'Trennt echte Anfragen von Nebenkontakten, damit die Gebotslogik auf das richtige Ziel lernt.',
-				'technical-seo-audit'       => 'Verhindert, dass bezahlter Traffic auf langsame oder technisch defekte Seiten trifft.',
-				'landing-page-neu'          => 'Baut die Zielseite, die das Anzeigenversprechen ohne Bruch in eine Anfrage überführt.',
-				'landing-page-optimierung'  => 'Nimmt bestehenden Kampagnenseiten die größten Abbruchgründe im Formular und im Einstieg.',
-			],
-			'cta'              => [
-				'route'        => 'project_request',
-				'label'        => 'Projekt anfragen',
-				'microcopy'    => sprintf( 'Kurze Beschreibung von Kampagne und Ziel genügt · Antwort %s', $response_window ),
-				'closing_note' => 'Schreiben Sie kurz, welche Kanäle laufen, was eine Anfrage aktuell kostet und wo es hakt. Sie bekommen eine Einschätzung, welcher Schritt zuerst zählt — auch dann, wenn das gegen ein neues Kampagnen-Budget spricht.',
-			],
-			'blogs'            => [
-				[
-					'title' => 'Warum Performance Marketing ohne technisches SEO Geld verbrennt',
-					'url'   => home_url( '/technisches-seo-performance-fundament/' ),
-				],
-				[
-					'title' => 'Die 150-Euro-pro-Lead-Falle',
-					'url'   => home_url( '/owned-leads-statt-ad-miete/' ),
-				],
-			],
-			'supporting_link'  => [
-				'kicker' => 'Breiterer Einstieg',
-				'label'  => 'WordPress Agentur Hannover',
-				'url'    => $agentur_url,
-				'text'   => 'Wenn nicht nur die Kampagne ansteht, sondern Website, Tracking und Conversion zusammen aufgebaut werden sollen, ist die Agentur-Seite der passendere Einstieg.',
-			],
-			// Label folgt der tatsaechlichen Zieladresse: $seo_url zeigt auf den
-			// Technisches-SEO-Abschnitt der Agentur-Seite. Der frueher hier
-			// stehende Name "WordPress SEO Hannover" gehoert zu einem Slug, der
-			// laut nexus_get_retired_gone_paths() 410 liefert.
-			'adjacent_link'    => [
-				'kicker' => 'Angrenzendes Thema',
-				'label'  => 'Technisches SEO',
-				'url'    => $seo_url,
-				'text'   => 'Wenn bezahlter Traffic auf langsame oder schlecht verlinkte Seiten trifft, verbrennt das Budget an der Technik statt an der Anzeige. Der SEO-Abschnitt zeigt, was dort zuerst geprüft wird.',
-			],
-			'proof_metrics'    => [
-				[
-					'value' => $e3_cpl_before . ' → ' . $e3_cpl_after,
-					'label' => 'Kosten pro Anfrage im Solar-Projekt, sechs Monate',
-				],
-				[
-					'value' => $e3_lead_count,
-					'label' => 'qualifizierte Anfragen über das eigene System',
-				],
-				[
-					'value' => $response_compact,
-					'label' => 'Einschätzung zur Ausgangslage, auch wenn sie gegen ein Budget spricht',
-				],
-			],
-			'proof_note'       => sprintf(
-				'Die belastbaren Zahlen kommen aus einem Solar-Projekt: Kosten pro Anfrage von %s auf %s, %s qualifizierte Anfragen. Der Hebel lag dort nicht in der Kampagne, sondern in Messung und Anfragestrecke davor. Ob sich das übertragen lässt, hängt an Marktgröße, Angebot und Wettbewerb — die Case Study legt die Herleitung offen, statt die Zahl allein zu zeigen.',
-				$e3_cpl_before,
-				$e3_cpl_after,
-				$e3_lead_count
-			),
-			'proof_links'      => [
-				[
-					'label' => 'Case Study ansehen',
-					'url'   => $e3_case_url,
-				],
-			],
 			'faq_items'        => [
 				[
 					'question' => 'Übernehmen Sie auch nur die Kampagnen, ohne alles andere anzufassen?',
@@ -204,21 +68,26 @@ function nexus_get_wgos_cluster_page_data() {
 				],
 				[
 					'question' => 'Warum zuerst das Tracking und nicht sofort mehr Budget?',
-					'answer'   => 'Weil Google Ads und Meta auf das optimieren, was gemeldet wird. Zählt jedes Formular gleich, lernt das System, billige Kontakte einzukaufen statt teure Projektanfragen. Mehr Budget verstärkt diesen Fehler, es korrigiert ihn nicht.',
+					'answer'   => 'Weil Google Ads und Meta auf das optimieren, was gemeldet wird. Zählt jedes Formular gleich, lernt das System, billige Kontakte einzukaufen statt passender Projektanfragen. Mehr Budget verstärkt diesen Fehler, es korrigiert ihn nicht.',
 				],
 				[
-					'question' => 'Welche Kanäle betreuen Sie — und welche nicht?',
+					'question' => 'Welche Kanäle betreuen Sie – und welche nicht?',
 					'answer'   => 'Google Ads und Meta Ads im B2B-Kontext, dort wo sie an WordPress, Tracking und Conversion hängen. Nicht dabei: Mediaplanung für große Multi-Markt-Budgets, Kreativproduktion für Bewegtbild und Marktplatz-Werbung.',
 				],
 				[
 					'question' => 'Was kostet das?',
-					'answer'   => 'Scope und Preis stehen vor dem Start fest, ein Paketpreis ohne geklärten Umfang nicht. Wie groß der erste Schritt ist, hängt davon ab, ob nur die Messung nachgezogen wird oder auch die Zielseite. Beschreiben Sie kurz die Ausgangslage, dann kommt eine konkrete Einschätzung zurück.',
+					'answer'   => sprintf(
+						'Die Messung beginnt als Tracking-Setup ab %s netto. Zielseite und Kampagnenbetreuung richten sich nach dem Umfang; Scope und Preis stehen vor dem Start schriftlich fest. Beschreiben Sie kurz die Ausgangslage, dann kommt eine konkrete Einschätzung zurück.',
+						hu_tracking_price( 'standard', 'setup', 'display' )
+					),
+				],
+				[
+					'question' => 'Arbeiten Sie auch für Performance-Agenturen?',
+					'answer'   => 'Ja. Für Agenturen setze ich Tracking, Server-Side und Landingpages unter deren Namen um, mit Code und Zugängen in den Accounts der Agentur. Anfrage und Einstieg laufen über die White-Label-Seite.',
 				],
 			],
-			'meta_title'       => 'Performance Marketing B2B: Google Ads & Meta | Haşim Üner',
-			'meta_description' => 'Google Ads und Meta Ads für B2B: erst saubere Conversion-Messung, dann Zielseite, dann Budget. Damit Kampagnen auf echte Anfragen optimieren statt auf Formular-Klicks.',
-			'schema_name'      => 'Performance Marketing für B2B-WordPress-Websites',
-			'schema_description' => 'Google Ads und Meta Ads für B2B: Conversion-Messung, Zielseite und Budget in dieser Reihenfolge, damit Kampagnen auf qualifizierte Anfragen optimieren.',
+			'meta_title'       => 'Performance Marketing B2B: erst Messung, dann Budget',
+			'meta_description' => 'Performance Marketing für B2B: erst Messung und Landingpage, dann Budget – damit Google Ads und Meta auf echte Anfragen optimieren, nicht auf Formular-Klicks.',
 		],
 	];
 
@@ -316,9 +185,12 @@ function nexus_get_wgos_cluster_page_faq_entities( $value = null ) {
 }
 
 /**
- * Build render-ready asset cards for a cluster page.
+ * Build render-ready asset cards from an 'assets' map.
  *
- * @param array<string, mixed> $page Cluster page definition.
+ * Genutzt von den Blog-Brücken (nexus_render_wgos_blog_asset_bridge) und dem
+ * SEO-Cockpit; die Cluster-Seiten selbst rendern keine Asset-Karten mehr.
+ *
+ * @param array<string, mixed> $page Definition with an 'assets' map.
  * @return array<int, array<string, string>>
  */
 function nexus_get_wgos_cluster_page_asset_cards( $page ) {
@@ -329,327 +201,12 @@ function nexus_get_wgos_cluster_page_asset_cards( $page ) {
 
 		$cards[] = [
 			'title'   => is_array( $asset ) && ! empty( $asset['title'] ) ? (string) $asset['title'] : ucwords( str_replace( '-', ' ', (string) $slug ) ),
-			'url'     => function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( (string) $slug ) : home_url( '/wordpress-agentur-hannover/#methode' ),
+			'url'     => function_exists( 'nexus_get_wgos_asset_anchor_url' ) ? nexus_get_wgos_asset_anchor_url( (string) $slug ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
 			'context' => (string) $context,
 		];
 	}
 
 	return $cards;
-}
-
-/**
- * Return the shared public proof metrics for service cluster pages.
- *
- * @return array<int, array<string, string>>
- */
-function nexus_get_wgos_cluster_page_proof_metrics() {
-	return [
-		[
-			'value' => '100 %',
-			'label' => 'B2B-Fokus auf WordPress-, SEO-, Tracking- und CRO-Systeme',
-		],
-		[
-			// Kennzahlkachel neben '100 %' und '2 Proof-Routen' — Badge-Fassung.
-			'value' => hu_response_promise( 'badge' ),
-			'label' => 'Marktcheck-Befund, Einstieg mit priorisierten Hebeln',
-		],
-		[
-			'value' => '2 Proof-Routen',
-			'label' => 'Case Study und Ergebnisse sind öffentlich einsehbar',
-		],
-	];
-}
-
-/**
- * Return the shared three-step method for cluster pages.
- *
- * @return array<int, array<string, string>>
- */
-function nexus_get_wgos_cluster_page_method_steps() {
-	return [
-		[
-			'title' => '1. Diagnose vor Ausbau',
-			'text'  => 'Wir starten nicht mit Content, Kampagnen oder neuen Seiten, solange Canonical, Tracking, Performance oder Angebotslogik gegeneinander laufen.',
-		],
-		[
-			'title' => '2. Bausteine nach Hebel ordnen',
-			'text'  => 'Nicht jede Idee bekommt Priorität. Zuerst zählt, was Sichtbarkeit, Trust und Conversion auf den kaufnahen Seiten wirklich entsperrt.',
-		],
-		[
-			'title' => '3. Wirkung an echten Signalen messen',
-			'text'  => 'Fortschritt wird nicht über Aktivität bewertet, sondern über belastbare Signale wie Anfragequalität, CPL, Ladezeit und technische Stabilität.',
-		],
-	];
-}
-
-/**
- * Render the shared service cluster page layout.
- *
- * @param array<string, mixed> $page Cluster page definition.
- * @return string
- */
-function nexus_render_wgos_cluster_page( $page ) {
-	$audit_url     = nexus_get_audit_url();
-	$wgos_url      = function_exists( 'nexus_get_wgos_url' ) ? nexus_get_wgos_url() : home_url( '/wordpress-agentur-hannover/#methode' );
-	$asset_hub_url = function_exists( 'nexus_get_wgos_asset_hub_url' ) ? nexus_get_wgos_asset_hub_url() : home_url( '/wordpress-agentur-hannover/#methode' );
-	$results_url   = nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) );
-	$cards         = nexus_get_wgos_cluster_page_asset_cards( $page );
-	$blogs         = isset( $page['blogs'] ) && is_array( $page['blogs'] ) ? $page['blogs'] : [];
-	$faq_items     = isset( $page['faq_items'] ) && is_array( $page['faq_items'] ) ? $page['faq_items'] : [];
-	// Das gemeinsame Proof-Band nennt den Marktcheck. Seiten, die per 'cta' auf
-	// den Projektweg laufen, wuerden sonst im Band einen Einstieg bewerben, den
-	// ihr eigener CTA nicht mehr anbietet; sie setzen deshalb 'proof_metrics'.
-	$proof_metrics = isset( $page['proof_metrics'] ) && is_array( $page['proof_metrics'] )
-		? $page['proof_metrics']
-		: nexus_get_wgos_cluster_page_proof_metrics();
-	$method_steps  = nexus_get_wgos_cluster_page_method_steps();
-	$proof_note    = isset( $page['proof_note'] ) ? (string) $page['proof_note'] : '';
-	$proof_links   = isset( $page['proof_links'] ) && is_array( $page['proof_links'] ) ? $page['proof_links'] : [];
-	$audit_cta_label         = function_exists( 'nexus_get_audit_cta_label' ) ? nexus_get_audit_cta_label() : 'Marktcheck mit Fit-Entscheid starten';
-	$audit_compact_microcopy = nexus_get_audit_compact_microcopy();
-	$closing_note            = 'Der Marktcheck zeigt, ob dieses Cluster jetzt dran ist oder ob Fundament, Messbarkeit oder Angebotslogik zuerst korrigiert werden müssen.';
-
-	// Der Marktcheck gehoert laut docs/architecture/CONVERSION_ROUTING.md #1 in den
-	// Energie-Pfad; BRAND_AND_COPY.md fuehrt "Marktcheck als globaler CTA auf
-	// fachfremden WordPress-/Tracking-/CRO-Seiten" als Hard Ban. Cluster-Seiten
-	// ausserhalb des Energie-Intents setzen deshalb 'cta' und bekommen den
-	// generischen Projektweg. Ohne 'cta' bleibt alles wie bisher, damit die
-	// Energie-Geschwister unveraendert ausliefern.
-	$cta = isset( $page['cta'] ) && is_array( $page['cta'] ) ? $page['cta'] : [];
-
-	if ( isset( $cta['route'] ) && function_exists( 'hu_get_commercial_route' ) ) {
-		$audit_url = hu_get_commercial_route( (string) $cta['route'], $audit_url );
-	}
-
-	if ( 'project_request' === ( $cta['route'] ?? '' ) && ! empty( $cta['focus'] ) ) {
-		$audit_url = function_exists( 'hu_get_contact_intake_url' )
-			? hu_get_contact_intake_url( 'project', (string) $cta['focus'] )
-			: add_query_arg( [ 'type' => 'project', 'focus' => sanitize_key( (string) $cta['focus'] ) ], home_url( '/kontakt/' ) );
-	}
-
-	if ( isset( $cta['label'] ) && '' !== (string) $cta['label'] ) {
-		$audit_cta_label = (string) $cta['label'];
-	}
-
-	if ( isset( $cta['microcopy'] ) && '' !== (string) $cta['microcopy'] ) {
-		$audit_compact_microcopy = (string) $cta['microcopy'];
-	}
-
-	if ( isset( $cta['closing_note'] ) && '' !== (string) $cta['closing_note'] ) {
-		$closing_note = (string) $cta['closing_note'];
-	}
-
-	ob_start();
-	?>
-	<div class="nx-cluster-page" data-track-section="wgos_cluster_page">
-		<section class="nx-section nx-cluster-hero">
-			<div class="nx-container">
-				<div class="nx-cluster-hero__shell">
-					<div class="nx-cluster-hero__copy">
-						<span class="nx-badge nx-badge--gold"><?php echo esc_html( (string) $page['eyebrow'] ); ?></span>
-						<h1 class="nx-cluster-hero__title"><?php echo esc_html( (string) $page['title'] ); ?></h1>
-						<p class="nx-cluster-hero__lead"><?php echo esc_html( (string) $page['lead'] ); ?></p>
-						<div class="nx-cluster-hero__actions">
-							<a href="<?php echo esc_url( $audit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_cluster_audit" data-track-category="lead_gen"><?php echo esc_html( $audit_cta_label ); ?></a>
-							<a href="<?php echo esc_url( $wgos_url ); ?>" class="nx-btn nx-btn--ghost">Methode ansehen</a>
-						</div>
-						<p class="nx-cta-microcopy"><?php echo esc_html( $audit_compact_microcopy ); ?></p>
-					</div>
-
-					<aside class="nx-card nx-card--flat nx-cluster-hero__card">
-						<span class="nx-cluster-hero__card-kicker">So ist die Seite gebaut</span>
-						<p>Diese Seite ist keine isolierte Service-Landingpage mehr. Sie ordnet das Thema in die Anfragesystem-Logik ein und zeigt die passenden Bausteine für den nächsten sinnvollen Schritt.</p>
-						<p class="nx-cluster-hero__card-link"><a href="<?php echo esc_url( $results_url ); ?>">Ergebnisse ansehen</a></p>
-					</aside>
-				</div>
-			</div>
-		</section>
-
-		<section class="nx-section nx-cluster-section">
-			<div class="nx-container nx-cluster-stack">
-				<div class="nx-section-header">
-					<span class="nx-badge nx-badge--ghost">Einordnung</span>
-					<h2 class="nx-headline-section">Warum dieses Thema relevant ist</h2>
-				</div>
-
-				<div class="nx-prose nx-cluster-prose">
-					<?php foreach ( (array) ( $page['intro'] ?? [] ) as $paragraph ) : ?>
-						<p><?php echo esc_html( (string) $paragraph ); ?></p>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
-
-		<section class="nx-section nx-cluster-section nx-cluster-section--alt">
-			<div class="nx-container nx-cluster-stack">
-				<div class="nx-section-header">
-					<span class="nx-badge nx-badge--gold">Systemlogik</span>
-					<h2 class="nx-headline-section">Wie das im Anfragesystem gelöst wird</h2>
-				</div>
-
-				<div class="nx-prose nx-cluster-prose">
-					<?php foreach ( (array) ( $page['system'] ?? [] ) as $paragraph ) : ?>
-						<p><?php echo esc_html( (string) $paragraph ); ?></p>
-					<?php endforeach; ?>
-				</div>
-
-				<?php if ( ! empty( $page['supporting_link'] ) && is_array( $page['supporting_link'] ) ) : ?>
-					<div class="nx-card nx-card--flat nx-cluster-hero__card">
-						<span class="nx-cluster-hero__card-kicker"><?php echo esc_html( (string) ( $page['supporting_link']['kicker'] ?? 'Weiterer Einstieg' ) ); ?></span>
-						<p><?php echo esc_html( (string) ( $page['supporting_link']['text'] ?? '' ) ); ?></p>
-						<?php if ( ! empty( $page['supporting_link']['url'] ) && ! empty( $page['supporting_link']['label'] ) ) : ?>
-							<p class="nx-cluster-hero__card-link"><a href="<?php echo esc_url( (string) $page['supporting_link']['url'] ); ?>"><?php echo esc_html( (string) $page['supporting_link']['label'] ); ?></a></p>
-						<?php endif; ?>
-					</div>
-				<?php endif; ?>
-
-				<?php if ( ! empty( $page['adjacent_link'] ) && is_array( $page['adjacent_link'] ) ) : ?>
-					<div class="nx-card nx-card--flat nx-cluster-hero__card">
-						<span class="nx-cluster-hero__card-kicker"><?php echo esc_html( (string) ( $page['adjacent_link']['kicker'] ?? 'Angrenzender Einstieg' ) ); ?></span>
-						<p><?php echo esc_html( (string) ( $page['adjacent_link']['text'] ?? '' ) ); ?></p>
-						<?php if ( ! empty( $page['adjacent_link']['url'] ) && ! empty( $page['adjacent_link']['label'] ) ) : ?>
-							<p class="nx-cluster-hero__card-link"><a href="<?php echo esc_url( (string) $page['adjacent_link']['url'] ); ?>"><?php echo esc_html( (string) ( $page['adjacent_link']['label'] ) ); ?></a></p>
-						<?php endif; ?>
-					</div>
-				<?php endif; ?>
-			</div>
-		</section>
-
-		<section class="nx-section nx-cluster-section">
-			<div class="nx-container nx-cluster-stack">
-				<div class="nx-section-header">
-					<span class="nx-badge nx-badge--ghost">Proof</span>
-					<h2 class="nx-headline-section">Öffentliche Wirkung statt Behauptungen</h2>
-					<p class="nx-subheadline">Die zentralen Zahlen stammen aus veröffentlichten Fallbeispielen und dem sichtbaren Proof-Layer, nicht aus anonymen Benchmark-Folien.</p>
-				</div>
-
-				<div class="nx-card nx-card--flat nx-cluster-proof">
-					<div class="nx-metrics nx-cluster-proof__metrics">
-						<?php foreach ( $proof_metrics as $metric ) : ?>
-							<div class="nx-metric">
-								<span class="nx-metric__value"><?php echo esc_html( $metric['value'] ); ?></span>
-								<span class="nx-metric__label"><?php echo esc_html( $metric['label'] ); ?></span>
-							</div>
-						<?php endforeach; ?>
-					</div>
-					<p class="nx-cluster-proof__note">
-						<?php
-						echo esc_html(
-							'' !== $proof_note
-								? $proof_note
-								: 'Wenn Sie die öffentlichen Beispiele und die Herleitung dazu sehen wollen, gehen Sie zuerst in die Ergebnisse. Der Marktcheck klärt danach, welche dieser Hebel in Ihrer Lage wirklich zuerst zählen.'
-						);
-						?>
-					</p>
-					<?php if ( ! empty( $proof_links ) ) : ?>
-						<p class="nx-cluster-proof__note">
-							<?php foreach ( $proof_links as $index => $proof_link ) : ?>
-								<?php if ( $index > 0 ) : ?>
-									<span aria-hidden="true"> · </span>
-								<?php endif; ?>
-								<a href="<?php echo esc_url( (string) ( $proof_link['url'] ?? '' ) ); ?>"><?php echo esc_html( (string) ( $proof_link['label'] ?? '' ) ); ?></a>
-							<?php endforeach; ?>
-						</p>
-					<?php endif; ?>
-						<div class="nx-cluster-hero__actions">
-							<a href="<?php echo esc_url( $results_url ); ?>" class="nx-btn nx-btn--ghost">Ergebnisse ansehen</a>
-							<a href="<?php echo esc_url( $audit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_cluster_proof_audit" data-track-category="lead_gen"><?php echo esc_html( $audit_cta_label ); ?></a>
-						</div>
-				</div>
-			</div>
-		</section>
-
-		<section class="nx-section nx-cluster-section nx-cluster-section--alt">
-			<div class="nx-container nx-cluster-stack">
-				<div class="nx-section-header">
-					<span class="nx-badge nx-badge--gold">Vorgehen</span>
-					<h2 class="nx-headline-section">Was vor neuen Inhalten oder Kampagnen zuerst passiert</h2>
-				</div>
-
-				<ol class="nx-cluster-method">
-					<?php foreach ( $method_steps as $step ) : ?>
-						<li class="nx-card nx-card--flat nx-cluster-method__step">
-							<h3 class="nx-cluster-method__title"><?php echo esc_html( $step['title'] ); ?></h3>
-							<p class="nx-cluster-method__text"><?php echo esc_html( $step['text'] ); ?></p>
-						</li>
-					<?php endforeach; ?>
-				</ol>
-			</div>
-		</section>
-
-		<section class="nx-section nx-cluster-section">
-			<div class="nx-container nx-cluster-stack">
-				<div class="nx-section-header">
-					<span class="nx-badge nx-badge--ghost">Cluster</span>
-					<h2 class="nx-headline-section">Die passenden Systembausteine</h2>
-					<p class="nx-subheadline">Jeder Baustein löst einen klaren Teil des Problems. Gemeinsam entsteht daraus ein belastbares Cluster statt einer losen Leistungssammlung.</p>
-				</div>
-
-				<div class="nx-cluster-grid">
-					<?php foreach ( $cards as $card ) : ?>
-						<article class="nx-card nx-card--flat nx-cluster-asset-card">
-							<h3 class="nx-cluster-asset-card__title"><a href="<?php echo esc_url( $card['url'] ); ?>"><?php echo esc_html( $card['title'] ); ?></a></h3>
-							<p class="nx-cluster-asset-card__text"><?php echo esc_html( $card['context'] ); ?></p>
-						</article>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
-
-		<section class="nx-section nx-cluster-section nx-cluster-section--alt">
-			<div class="nx-container nx-cluster-stack">
-				<div class="nx-section-header">
-					<span class="nx-badge nx-badge--gold">Insights</span>
-					<h2 class="nx-headline-section">Passende Artikel und Vertiefungen</h2>
-				</div>
-
-				<ul class="nx-cluster-blog-list">
-					<?php foreach ( $blogs as $blog ) : ?>
-						<li class="nx-cluster-blog-list__item">
-							<a href="<?php echo esc_url( (string) $blog['url'] ); ?>"><?php echo esc_html( (string) $blog['title'] ); ?></a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
-		</section>
-
-		<?php if ( ! empty( $faq_items ) ) : ?>
-			<section class="nx-section nx-cluster-section">
-				<div class="nx-container nx-cluster-stack">
-					<div class="nx-section-header">
-						<span class="nx-badge nx-badge--ghost">FAQ</span>
-						<h2 class="nx-headline-section">Häufige Fragen zum Thema</h2>
-					</div>
-
-					<div class="nx-faq">
-						<?php foreach ( $faq_items as $index => $item ) : ?>
-							<details class="nx-faq__item" name="hu-faq-wgos-cluster"<?php echo 0 === $index ? ' open' : ''; ?>>
-								<summary><?php echo esc_html( (string) ( $item['question'] ?? '' ) ); ?></summary>
-								<div class="nx-faq__content"><?php echo esc_html( (string) ( $item['answer'] ?? '' ) ); ?></div>
-							</details>
-						<?php endforeach; ?>
-					</div>
-				</div>
-			</section>
-		<?php endif; ?>
-
-		<section class="nx-section nx-cluster-section">
-			<div class="nx-container">
-				<div class="nx-card nx-card--flat nx-cluster-cta">
-					<span class="nx-cluster-cta__kicker">Nächster Schritt</span>
-					<h2 class="nx-headline-section">Erst die Lage klären. Dann den richtigen Baustein priorisieren.</h2>
-					<p><?php echo esc_html( $closing_note ); ?></p>
-					<div class="nx-cluster-hero__actions">
-						<a href="<?php echo esc_url( $audit_url ); ?>" class="nx-btn nx-btn--primary" data-track-action="cta_cluster_footer_audit" data-track-category="lead_gen"><?php echo esc_html( $audit_cta_label ); ?></a>
-						<a href="<?php echo esc_url( $results_url ); ?>" class="nx-btn nx-btn--ghost">Ergebnisse ansehen</a>
-					</div>
-				</div>
-			</div>
-		</section>
-	</div>
-	<?php
-
-	return trim( (string) ob_get_clean() );
 }
 
 /**
@@ -891,10 +448,10 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 	}
 
 	$agentur_url             = nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) );
-	$seo_url                 = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#technisches-seo' ) );
+	$seo_url                 = nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) );
 	$tracking_url            = nexus_get_primary_public_url( 'tracking', home_url( '/ga4-tracking-setup/' ) );
 	$cwv_url                 = nexus_get_primary_public_url( 'cwv', home_url( '/wgos-assets/cwv-optimierung/' ) );
-	$cro_url                 = nexus_get_primary_public_url( 'cro', home_url( '/wordpress-agentur-hannover/#methode' ) );
+	$cro_url                 = nexus_get_primary_public_url( 'cro', home_url( '/#angebot-funnel' ) );
 	$performance_marketing_url = nexus_get_primary_public_url( 'performance_marketing', home_url( '/performance-marketing/' ) );
 	$solar_pillar_url        = function_exists( 'nexus_get_energy_systems_url' )
 		? nexus_get_energy_systems_url()

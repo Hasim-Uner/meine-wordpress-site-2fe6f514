@@ -22,20 +22,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  * consume them. Positioning changes the public semantics, not the transport
  * contract.
  *
+ * An empty focus leaves the topic open: the contact page then shows its
+ * topic step and the agency/energy switch. A focus is for links whose page
+ * already answered the question (an offer card, a tracking page).
+ *
  * @param string $type  Existing contact request type.
- * @param string $focus Existing contact focus key.
+ * @param string $focus Existing contact focus key, or '' for an open topic.
  * @return string
  */
 function hu_get_contact_intake_url( $type = 'project', $focus = 'implementation_scope' ) {
 	$contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+	$args        = [ 'type' => sanitize_key( (string) $type ) ];
+	$focus       = sanitize_key( (string) $focus );
 
-	return add_query_arg(
-		[
-			'type'  => sanitize_key( (string) $type ),
-			'focus' => sanitize_key( (string) $focus ),
-		],
-		$contact_url
-	);
+	if ( '' !== $focus ) {
+		$args['focus'] = $focus;
+	}
+
+	return add_query_arg( $args, $contact_url );
 }
 
 /**
@@ -59,7 +63,9 @@ function hu_get_commercial_route_map() {
 		'home'            => home_url( '/' ),
 		// The homepage now owns the direct Freelancer offer and queries.
 		'freelancer'      => home_url( '/' ),
-		'project_request' => hu_get_contact_intake_url( 'project', 'implementation_scope' ),
+		// Generic CTA: open topic. Pre-setting "implementation_scope" skipped the
+		// topic step, hid the agency switch and labelled every lead the same.
+		'project_request' => hu_get_contact_intake_url( 'project', '' ),
 		'contact'         => function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' ),
 		'whitelabel'      => function_exists( 'nexus_get_whitelabel_page_url' )
 			? nexus_get_whitelabel_page_url()
@@ -157,18 +163,8 @@ function hu_get_site_header_navigation_contract() {
 				'category' => 'navigation',
 				'section'  => 'header',
 			],
-			[
-				'kind'     => 'route',
-				'kicker'   => __( 'Messung', 'blocksy-child' ),
-				'label'    => __( 'Tracking', 'blocksy-child' ),
-				'desc'     => __( 'Server-Side Tracking mit Gegenprobe gegen Formular oder CRM und dokumentierter Abnahme.', 'blocksy-child' ),
-				'url'      => $routes['tracking_b2b'],
-				'current'  => hu_is_tracking_route_context(),
-				'class'    => 'nav-tracking-link',
-				'track'    => 'nav_header_tracking',
-				'category' => 'navigation',
-				'section'  => 'header',
-			],
+			// White-Label ist seit 2026-09-22 gleichrangiger Geschäftspfad und
+			// steht deshalb direkt hinter den direkten Leistungen.
 			[
 				'kind'     => 'route',
 				'kicker'   => __( 'Für Agenturen', 'blocksy-child' ),
@@ -178,6 +174,18 @@ function hu_get_site_header_navigation_contract() {
 				'current'  => function_exists( 'nexus_is_agency_nav_context' ) && nexus_is_agency_nav_context(),
 				'class'    => 'nav-agency-link',
 				'track'    => 'nav_header_whitelabel',
+				'category' => 'navigation',
+				'section'  => 'header',
+			],
+			[
+				'kind'     => 'route',
+				'kicker'   => __( 'Messung', 'blocksy-child' ),
+				'label'    => __( 'Tracking', 'blocksy-child' ),
+				'desc'     => __( 'Server-Side Tracking mit Gegenprobe gegen Formular oder CRM und dokumentierter Abnahme.', 'blocksy-child' ),
+				'url'      => $routes['tracking_b2b'],
+				'current'  => hu_is_tracking_route_context(),
+				'class'    => 'nav-tracking-link',
+				'track'    => 'nav_header_tracking',
 				'category' => 'navigation',
 				'section'  => 'header',
 			],

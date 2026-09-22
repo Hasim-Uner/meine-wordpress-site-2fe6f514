@@ -84,6 +84,9 @@ $ad_platform_options = function_exists( 'nexus_get_contact_ad_platform_options' 
 $ad_budget_options   = function_exists( 'nexus_get_contact_ad_budget_options' )
 	? nexus_get_contact_ad_budget_options()
 	: [];
+$referral_options    = function_exists( 'nexus_get_inquiry_referral_options' )
+	? nexus_get_inquiry_referral_options()
+	: [];
 $focus_options       = function_exists( 'nexus_get_contact_focus_options' )
 	? nexus_get_contact_focus_options()
 	: [];
@@ -1038,6 +1041,18 @@ get_header();
 					></textarea>
 					<p class="contact-field__error is-hidden" id="contact-message-error" aria-live="polite"></p>
 				</div>
+
+				<?php if ( ! empty( $referral_options ) ) : ?>
+					<div class="contact-field">
+						<label for="contact-referral">Wie sind Sie auf mich aufmerksam geworden? <span class="hu-sst__optional">optional</span></label>
+						<select id="contact-referral" name="referral_source">
+							<option value="" selected>Bitte auswählen</option>
+							<?php foreach ( $referral_options as $referral_key => $referral_label ) : ?>
+								<option value="<?php echo esc_attr( $referral_key ); ?>"><?php echo esc_html( $referral_label ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				<?php endif; ?>
 
 				<details class="hu-sst__form-details">
 					<summary>Technische Angaben <span>optional</span></summary>

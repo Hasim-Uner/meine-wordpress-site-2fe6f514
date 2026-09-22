@@ -189,7 +189,7 @@ function nexus_get_wgos_url() {
 		? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) )
 		: home_url( '/wordpress-agentur-hannover/' );
 
-	return trailingslashit( $agentur_url ) . '#methode';
+	return trailingslashit( $agentur_url ) . '#zusammenarbeit';
 }
 
 /**
@@ -225,7 +225,7 @@ function nexus_get_wgos_asset_hub_url() {
 		? nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) )
 		: home_url( '/wordpress-agentur-hannover/' );
 
-	return trailingslashit( $agentur_url ) . '#methode';
+	return trailingslashit( $agentur_url ) . '#zusammenarbeit';
 }
 
 /**

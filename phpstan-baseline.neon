@@ -109,8 +109,3 @@ parameters:
 			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int\\<1, max\\> given\\.$#"
 			count: 1
 			path: blocksy-child/template-parts/breadcrumb.php
-
-		-
-			message: "#^Offset 'cro'\\|'markteinordnung'\\|'owned\\-leads'\\|'seo'\\|'sichtbarkeit\\-daten…'\\|'solar\\-waermepumpen…'\\|'strategie'\\|'tracking'\\|'wordpress\\-growth…'\\|'wordpress…' on array\\{solar\\-waermepumpen\\-anfrage\\-systeme\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, markteinordnung\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, owned\\-leads\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, sichtbarkeit\\-daten\\-conversion\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, seo\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, tracking\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, cro\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, wordpress\\-performance\\: array\\{label\\: mixed, url\\: mixed, text\\: mixed\\}, \\.\\.\\.\\} in empty\\(\\) always exists and is not falsy\\.$#"
-			count: 1
-			path: blocksy-child/template-parts/related-content.php

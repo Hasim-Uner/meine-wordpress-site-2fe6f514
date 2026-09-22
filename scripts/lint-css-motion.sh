@@ -68,7 +68,6 @@ BASELINE_REDUCED_MOTION=(
   "audit-results.css"
   "blog-header.css"
   "blog-notify.css"
-  "cluster-pillar.css"
   "deep-dive.css"
   "footer-cta.css"
   "glossary.css"

@@ -76,10 +76,14 @@ Optionaler Zustellungspfad:
 - `delivery.consent.timestamp`
 - `delivery.consent.text_hash`
 
-Aktiver WordPress-Submit nach Einwilligung:
+WordPress-Submit nach Einwilligung (seit 2026-09-22 standardmäßig abgeschaltet):
 
 - Route: `/wp-json/nexus/v1/analysis-submit`
-- Feature-Flag: `HU_FEATURE_READINESS_SUBMIT`
+- Feature-Flag: `HU_FEATURE_READINESS_SUBMIT`, Default `false` in
+  `blocksy-child/inc/feature-flags.php`. Kein Formular sendet mehr an diese
+  Route; ohne Flag wird sie nicht registriert und antwortet mit 404. Wieder
+  einschalten nur per `define( 'HU_FEATURE_READINESS_SUBMIT', true );` in
+  `wp-config.php`, wenn ein neues Frontend den Contract nutzt.
 - CRM-Ziel: `nexus_contact` mit Segment `analysis_lead`
 - Mail-Ziel: interne Admin-Benachrichtigung und Lead-Bestätigung über zentrale `wp_mail`-/Brevo-Schicht
 - n8n: nicht angebunden
@@ -104,4 +108,4 @@ Aktiver WordPress-Submit nach Einwilligung:
 
 Der bestehende Payload-Contract `automations/n8n/data-models/readiness-diagnosis-payload.v1.contract.json` bleibt bis zur nächsten Contract-Version intern stabil.
 
-Der Kontakt-Submit ist als WordPress-REST-Pfad aktiv. Serverseitiges Scoring und n8n bleiben Folgearbeiten; der aktuelle Submit speichert das Client-Ergebnis plus Kontaktblock nach Einwilligung im WordPress-CRM und versendet Transaktionsmails.
+Der Kontakt-Submit ist als WordPress-REST-Pfad implementiert, aber standardmäßig abgeschaltet (siehe oben). Eingeschaltet speichert er das Client-Ergebnis plus Kontaktblock nach Einwilligung im WordPress-CRM und versendet Transaktionsmails. Serverseitiges Scoring und n8n bleiben Folgearbeiten.

@@ -105,6 +105,7 @@ $about_url         = nexus_get_page_url( [ 'hasim-uener', 'uber-mich' ], home_ur
 $portrait_url      = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-portrait-480x600.webp';
 $faq_items         = nexus_get_whitelabel_faq_items();
 $wl_access_options = hu_whitelabel_request_access_options();
+$wl_referral_options = function_exists( 'nexus_get_inquiry_referral_options' ) ? nexus_get_inquiry_referral_options() : [];
 $entry_projects    = [
 	[ 'title' => 'Tracking-Audit', 'price' => hu_whitelabel_price( 'tracking_audit' ), 'copy' => 'GA4, GTM und Consent prüfen. Ihr erhaltet einen schriftlichen Befund und eine priorisierte Fixliste.' ],
 	[ 'title' => 'Server-Side-Setup', 'price' => hu_whitelabel_price( 'server_side' ), 'copy' => 'Messstrecke aufsetzen, Events prüfen und das Setup dokumentiert in euren Accounts übergeben.' ],
@@ -116,6 +117,7 @@ $entry_projects    = [
 // heisst auf der ganzen Domain "ein mittelständischer PV-Installationsbetrieb",
 // ohne Link und ohne Namen. Ein namentlicher Verweis genau auf diesen Betrieb
 // hebt die Benennung wieder auf, egal ob die Kennzahlen danebenstehen.
+$wl_repo_url      = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
 $proof_references = [
 	[ 'label' => 'civaka-azad.org', 'url' => 'https://civaka-azad.org/', 'type' => 'Informationsarchitektur', 'copy' => 'Navigation, Archive und interne Verweise für einen gewachsenen redaktionellen Bestand.' ],
 	[ 'label' => 'hasimuener.org', 'url' => 'https://hasimuener.org/', 'type' => 'Eigenes Editorial-Projekt', 'copy' => 'Typografie, Raster und Leseführung als Schwerpunkt einer inhaltsorientierten Website.' ],
@@ -186,11 +188,17 @@ $proof_references = [
 					<div><dt>Betrieb &amp; offene Punkte</dt><dd>Zugänge, Zuständigkeiten und bekannte Grenzen für die weitere Betreuung festhalten.</dd></div>
 				</dl>
 			</div>
-			<div class="wl-reference-heading"><h3>Einblick in öffentliche Arbeiten</h3><p>Projektbeispiele aus meinem Portfolio. Keine Agentur-Testimonials.</p></div>
+			<?php
+			// Keine erfundenen Agenturbelege: geprüft werden kann die Arbeitsweise an
+			// öffentlichen Projekten, am offenen Code dieser Website und an einer
+			// echten, bezahlten Aufgabe. Freigegebene Agenturfälle ergänzen das später.
+			?>
+			<div class="wl-reference-heading"><h3>Was ihr vor dem ersten Auftrag prüfen könnt</h3><p>White-Label-Arbeit erscheint nicht unter meinem Namen, die Kundenbeziehung gehört euch. Prüfbar ist trotzdem, wie ich arbeite: an öffentlichen Projekten, am offenen Code dieser Website und an einer echten Aufgabe im <a href="#einstieg" data-track-action="cta_whitelabel_proof_test_sprint" data-track-category="lead_gen" data-track-section="proof">bezahlten Test-Sprint</a>.</p></div>
 			<div class="wl-references">
 				<?php foreach ( $proof_references as $reference ) : ?>
 					<article class="wl-reference"><p class="wl-label"><?php echo esc_html( $reference['type'] ); ?></p><h4><a href="<?php echo esc_url( $reference['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $reference['label'] ); ?> <span aria-hidden="true">↗</span><span class="wl-visually-hidden"> (öffnet in neuem Tab)</span></a></h4><p><?php echo esc_html( $reference['copy'] ); ?></p></article>
 				<?php endforeach; ?>
+				<article class="wl-reference"><p class="wl-label">Code und Prüfprozess</p><h4><a href="<?php echo esc_url( $wl_repo_url . '/commits/main/' ); ?>" target="_blank" rel="noopener noreferrer" data-track-action="whitelabel_proof_repo" data-track-category="proof" data-track-section="proof">Diese Website <span aria-hidden="true">↗</span><span class="wl-visually-hidden"> (öffnet in neuem Tab)</span></a></h4><p>Jede Änderung, ihre Begründung und die automatischen Prüfungen sind öffentlich einsehbar.</p></article>
 			</div>
 		</div>
 	</section>
@@ -239,6 +247,7 @@ $proof_references = [
 					<div class="wl-request__field"><label for="wl-task">Was soll umgesetzt oder geklärt werden? <span>(Pflichtfeld)</span></label><textarea id="wl-task" name="task" rows="5" required minlength="12" maxlength="4000" aria-describedby="wl-task-hint" placeholder="Zum Beispiel: Unser Kunde braucht ein Anfrageformular in WordPress. Die Anfragen sollen ins vorhandene CRM gelangen …"></textarea><p id="wl-task-hint" class="wl-request__hint">Aufgabe, vorhandenes Setup und gewünschtes Ergebnis. Bitte keine Passwörter oder Kundendaten senden.</p></div>
 					<div class="wl-request__field"><label for="wl-email">Eure geschäftliche E-Mail <span>(Pflichtfeld)</span></label><input id="wl-email" name="email" type="email" required autocomplete="email" inputmode="email" placeholder="name@agentur.de"></div>
 					<div class="wl-request__field"><label for="wl-timeframe">Gewünschter Zeitraum <span>(optional)</span></label><input id="wl-timeframe" name="timeframe" type="text" maxlength="160" placeholder="Zum Beispiel: Start im kommenden Monat" autocomplete="off"></div>
+					<div class="wl-request__field"><label for="wl-referral">Wie seid ihr auf mich aufmerksam geworden? <span>(optional)</span></label><select id="wl-referral" name="referral_source"><option value="">Bitte wählen</option><?php foreach ( $wl_referral_options as $value => $label ) : ?><option value="<?php echo esc_attr( $value ); ?>"><?php echo esc_html( $label ); ?></option><?php endforeach; ?></select></div>
 					<details class="wl-request__optional"><summary>Schon Informationen zu den Zugängen? <span>(optional)</span></summary><fieldset class="wl-request__access"><legend>Sind die benötigten Zugänge verfügbar?</legend><div class="wl-request__choices"><?php foreach ( $wl_access_options as $value => $label ) : ?><label for="wl-access-<?php echo esc_attr( $value ); ?>"><input id="wl-access-<?php echo esc_attr( $value ); ?>" name="access" type="radio" value="<?php echo esc_attr( $value ); ?>"><span><?php echo esc_html( $label ); ?></span></label><?php endforeach; ?></div></fieldset></details>
 					<button class="wl-button" type="submit" data-wl-submit disabled>Aufgabe senden</button>
 					<p class="wl-request__legal">Mit dem Absenden fragt ihr unverbindlich an. Eure Angaben nutze ich zur Beantwortung. Details in der <a href="<?php echo esc_url( $privacy_url ); ?>">Datenschutzerklärung</a>.</p>

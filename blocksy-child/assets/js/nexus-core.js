@@ -923,6 +923,8 @@
                 var searchParams = new URLSearchParams(window.location.search || '');
                 var campaignSource = (searchParams.get('utm_source') || '').trim();
                 var campaignKeyword = (searchParams.get('utm_term') || searchParams.get('keyword') || '').trim();
+                var campaignMedium = (searchParams.get('utm_medium') || '').trim();
+                var campaignName = (searchParams.get('utm_campaign') || '').trim();
                 var currentUrl = this.normalizeAttributionUrl(window.location.href);
                 var firstUrl = window.sessionStorage.getItem('nexus_first_internal_url') || '';
                 var lastUrl = window.sessionStorage.getItem('nexus_last_internal_url') || '';
@@ -944,6 +946,13 @@
                     window.sessionStorage.setItem('nexus_ads_keyword', campaignKeyword.slice(0, 180));
                 }
 
+                // Medium und Kampagne gehoeren zusammen: ein neuer Kampagnenlink
+                // ersetzt beide, damit keine zwei Kampagnen vermischt werden.
+                if (campaignMedium || campaignName) {
+                    window.sessionStorage.setItem('nexus_utm_medium', campaignMedium.slice(0, 120));
+                    window.sessionStorage.setItem('nexus_utm_campaign', campaignName.slice(0, 180));
+                }
+
                 if (!currentUrl) {
                     return;
                 }
@@ -960,11 +969,14 @@
                     window.sessionStorage.setItem('nexus_first_internal_url', currentUrl);
                     window.sessionStorage.removeItem('nexus_previous_internal_url');
                     window.sessionStorage.setItem('nexus_last_internal_url', currentUrl);
+                    // Nur Herkunft und Pfad, keine Query: dort stehen Suchbegriffe und Klick-IDs.
+                    window.sessionStorage.setItem('nexus_entry_referrer', this.normalizeExternalReferrer(document.referrer));
                     return;
                 }
 
                 if (!firstUrl) {
                     window.sessionStorage.setItem('nexus_first_internal_url', currentUrl);
+                    window.sessionStorage.removeItem('nexus_entry_referrer');
                 }
 
                 if (lastUrl && lastUrl !== currentUrl) {
@@ -1015,6 +1027,48 @@
             }
 
             return payload;
+        },
+
+        /**
+         * Kampagnen-Medium und -Name aus der Sitzung.
+         *
+         * Getrennt von getLeadAttributionPayload(), damit der versionierte
+         * Marktcheck-Payload unveraendert bleibt.
+         */
+        getCampaignContext: function () {
+            var context = {
+                utm_medium: '',
+                utm_campaign: '',
+                entry_referrer_url: ''
+            };
+
+            if (typeof window.sessionStorage === 'undefined') {
+                return context;
+            }
+
+            try {
+                context.utm_medium = (window.sessionStorage.getItem('nexus_utm_medium') || '').slice(0, 120);
+                context.utm_campaign = (window.sessionStorage.getItem('nexus_utm_campaign') || '').slice(0, 180);
+                context.entry_referrer_url = (window.sessionStorage.getItem('nexus_entry_referrer') || '').slice(0, 300);
+            } catch (error) {
+                // Gesperrter Speicher liefert leere Werte.
+            }
+
+            return context;
+        },
+
+        normalizeExternalReferrer: function (url) {
+            try {
+                var parsed = new URL(url);
+
+                if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+                    return '';
+                }
+
+                return parsed.origin + (parsed.pathname || '/');
+            } catch (error) {
+                return '';
+            }
         },
 
 

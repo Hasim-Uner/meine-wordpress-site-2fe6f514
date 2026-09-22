@@ -12,11 +12,11 @@ function nexus_crm_contact_is_sales_relevant( $contact_id ) {
 	$source   = sanitize_key( (string) get_post_meta( $contact_id, '_nexus_contact_latest_source', true ) );
 	$segments = function_exists( 'nexus_get_contact_segments' ) ? nexus_get_contact_segments( $contact_id ) : [];
 
-	if ( in_array( $source, [ 'project_request', 'general_inquiry', 'request_analysis' ], true ) ) {
+	if ( in_array( $source, [ 'project_request', 'general_inquiry', 'request_analysis', 'whitelabel_request' ], true ) ) {
 		return true;
 	}
 
-	return (bool) array_intersect( [ 'contact_inquiry', 'project_request', 'general_inquiry', 'analysis_lead' ], (array) $segments );
+	return (bool) array_intersect( [ 'contact_inquiry', 'project_request', 'general_inquiry', 'analysis_lead', 'whitelabel_request' ], (array) $segments );
 }
 
 /** Create one open opportunity when a sales-relevant contact is updated. */

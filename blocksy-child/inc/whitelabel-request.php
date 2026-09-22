@@ -19,6 +19,12 @@
  * `whitelabel_request_submit` und wird von keinem anderen Formular der Website
  * gefeuert.
  *
+ * Reihenfolge seit 2026-09-22: erst CRM (`nexus_contact`, Quelle
+ * `whitelabel_request`, daraus eine Sales-Chance), dann interne Mail, dann
+ * Bestaetigung. Die Anfrage gilt als angekommen, sobald CRM oder interne Mail
+ * sie haben; scheitert beides, bekommt die Agentur einen Fehler statt eines
+ * falschen Danke.
+ *
  * @package Blocksy_Child
  */
 
@@ -138,7 +144,10 @@ function hu_validate_whitelabel_request_payload( $payload ) {
 		return new WP_Error( 'invalid_access', 'Bitte eine der drei Antworten zu den Zugängen wählen.' );
 	}
 
-	return [
+	// Herkunft und Selbstauskunft sind optional und brechen die Anfrage nie ab.
+	$attribution = function_exists( 'nexus_sanitize_inquiry_attribution' ) ? nexus_sanitize_inquiry_attribution( $payload ) : [];
+
+	return $attribution + [
 		'task'         => mb_substr( $task, 0, 4000 ),
 		'email'        => $email,
 		'timeframe'    => mb_substr( $timeframe, 0, 160 ),
@@ -204,7 +213,43 @@ function hu_handle_whitelabel_request_submission( WP_REST_Request $request ) {
 		);
 	}
 
-	hu_send_whitelabel_request_notification( $validated );
+	$contact_id = function_exists( 'nexus_sync_whitelabel_request_to_crm' )
+		? nexus_sync_whitelabel_request_to_crm( $validated )
+		: 0;
+	$contact_id = is_wp_error( $contact_id ) ? 0 : (int) $contact_id;
+
+	if ( $contact_id > 0 && function_exists( 'nexus_record_inbound_inquiry_activity' ) ) {
+		$cases = hu_whitelabel_request_cases();
+		nexus_record_inbound_inquiry_activity(
+			$contact_id,
+			'White-Label-Anfrage · ' . $cases[ $validated['case'] ]['label'],
+			hu_whitelabel_request_activity_summary( $validated ),
+			'whitelabel_request'
+		);
+	}
+
+	$notified = hu_send_whitelabel_request_notification( $validated, $contact_id );
+
+	if ( 0 === $contact_id && ! $notified ) {
+		error_log( '[Nexus Lead] White-Label-Anfrage weder im CRM gespeichert noch zugestellt.' );
+
+		return new WP_REST_Response(
+			[
+				'ok'    => false,
+				'error' => 'Die Anfrage konnte gerade nicht übermittelt werden. Bitte schickt sie direkt per E-Mail – die Adresse steht unter dem Formular.',
+			],
+			500
+		);
+	}
+
+	if ( 0 === $contact_id ) {
+		error_log( '[Nexus Lead] White-Label-Anfrage nicht im CRM gespeichert; interne Mail zugestellt.' );
+	}
+
+	if ( ! $notified && function_exists( 'nexus_record_lead_notification_failure' ) ) {
+		nexus_record_lead_notification_failure( $contact_id, 'whitelabel_request' );
+	}
+
 	hu_send_whitelabel_request_confirmation( $validated );
 
 	$response_promise = hu_response_promise( 'window' );
@@ -253,6 +298,42 @@ function hu_whitelabel_request_detail_rows( $payload ) {
 }
 
 /**
+ * Klartext-Zusammenfassung fuer die CRM-Timeline.
+ *
+ * @param array $payload Geprüfter Payload.
+ * @return string
+ */
+function hu_whitelabel_request_activity_summary( $payload ) {
+	$cases = hu_whitelabel_request_cases();
+	$lines = [ 'Weg: ' . $cases[ $payload['case'] ]['label'] ];
+
+	if ( '' !== $payload['timeframe'] ) {
+		$lines[] = 'Gewünschter Zeitraum: ' . $payload['timeframe'];
+	}
+
+	if ( '' !== $payload['access_label'] ) {
+		$lines[] = 'Zugänge: ' . $payload['access_label'];
+	}
+
+	$lines[] = '';
+	$lines[] = 'Aufgabe:';
+	$lines[] = $payload['task'];
+
+	$attribution = function_exists( 'nexus_get_inquiry_attribution_pairs' ) ? nexus_get_inquiry_attribution_pairs( $payload ) : [];
+
+	if ( ! empty( $attribution ) ) {
+		$lines[] = '';
+		$lines[] = 'Herkunft:';
+
+		foreach ( $attribution as $label => $value ) {
+			$lines[] = $label . ': ' . $value;
+		}
+	}
+
+	return implode( "\n", $lines );
+}
+
+/**
  * Baue eine Mail im gemeinsamen Transaktions-Layout.
  *
  * @param array $args Shell-Argumente.
@@ -278,30 +359,38 @@ function hu_whitelabel_request_mail_shell( $args ) {
  * @param string   $subject   Betreff.
  * @param string   $html      HTML-Body.
  * @param string[] $headers   Kopfzeilen.
- * @return void
+ * @return bool Ob wp_mail() die Nachricht angenommen hat.
  */
 function hu_whitelabel_request_send_mail( $recipient, $subject, $html, $headers = [] ) {
 	if ( function_exists( 'nexus_send_contact_html_mail' ) ) {
-		nexus_send_contact_html_mail( $recipient, $subject, $html, $headers );
-		return;
+		return (bool) nexus_send_contact_html_mail( $recipient, $subject, $html, $headers );
 	}
 
 	$headers[] = 'Content-Type: text/html; charset=UTF-8';
-	wp_mail( $recipient, $subject, $html, $headers );
+
+	return (bool) wp_mail( $recipient, $subject, $html, $headers );
 }
 
 /**
  * Interne Benachrichtigung an kontakt@.
  *
- * @param array $payload Geprüfter Payload.
- * @return void
+ * @param array $payload    Geprüfter Payload.
+ * @param int   $contact_id CRM-Kontakt, 0 wenn die Speicherung gescheitert ist.
+ * @return bool Ob die Mail angenommen wurde.
  */
-function hu_send_whitelabel_request_notification( $payload ) {
+function hu_send_whitelabel_request_notification( $payload, $contact_id = 0 ) {
 	$recipient = hu_whitelabel_request_notification_email();
 
 	if ( ! $recipient || ! is_email( $recipient ) ) {
-		return;
+		return false;
 	}
+
+	$crm_note = (int) $contact_id > 0
+		? sprintf(
+			'<a href="%s" style="color:#f7f3ee;">Im CRM öffnen</a>',
+			esc_url( admin_url( 'post.php?post=' . (int) $contact_id . '&action=edit' ) )
+		)
+		: 'Nicht im CRM gespeichert – bitte manuell anlegen.';
 
 	$cases   = hu_whitelabel_request_cases();
 	$subject = sprintf( '[White-Label] %s — %s', $cases[ $payload['case'] ]['label'], $payload['email'] );
@@ -325,9 +414,23 @@ function hu_send_whitelabel_request_notification( $payload ) {
 					<div style="font-size:14px; line-height:1.8; color:#c5ced7;">%2$s</div>
 				</td>
 			</tr>
+			<tr>
+				<td style="padding:14px 16px; border:1px solid rgba(255,255,255,0.08); border-radius:18px; background:rgba(255,255,255,0.03); font-family:Helvetica, Arial, sans-serif;">
+					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:8px;">Herkunft</div>
+					<div style="font-size:14px; line-height:1.8; color:#c5ced7;">%4$s</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding:14px 16px; border:1px solid rgba(255,255,255,0.08); border-radius:18px; background:rgba(255,255,255,0.03); font-family:Helvetica, Arial, sans-serif;">
+					<div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#9ea8b2; margin-bottom:8px;">CRM</div>
+					<div style="font-size:14px; line-height:1.8; color:#c5ced7;">%3$s</div>
+				</td>
+			</tr>
 		</table>',
 		hu_whitelabel_request_detail_rows( $payload ),
-		nl2br( esc_html( $payload['task'] ) )
+		nl2br( esc_html( $payload['task'] ) ),
+		wp_kses( $crm_note, [ 'a' => [ 'href' => true, 'style' => true ] ] ),
+		function_exists( 'nexus_get_inquiry_attribution_mail_rows' ) ? nexus_get_inquiry_attribution_mail_rows( $payload ) : ''
 	);
 
 	$html = hu_whitelabel_request_mail_shell(
@@ -341,7 +444,7 @@ function hu_send_whitelabel_request_notification( $payload ) {
 		]
 	);
 
-	hu_whitelabel_request_send_mail( $recipient, $subject, $html, $headers );
+	return hu_whitelabel_request_send_mail( $recipient, $subject, $html, $headers );
 }
 
 /**

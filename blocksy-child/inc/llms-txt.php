@@ -72,13 +72,12 @@ function nexus_get_llms_txt_sections() {
 	);
 	$project_url = function_exists( 'hu_get_navigation_project_request_url' )
 		? hu_get_navigation_project_request_url()
-		// Fallback muss denselben Focus tragen wie der eigene Fallback von
-		// hu_get_navigation_project_request_url(); sonst veroeffentlicht der
-		// Route-Index fuer AI-Agents einen anderen Intake-Kontext als die Site.
+		// Fallback muss dieselbe Adresse tragen wie der eigene Fallback von
+		// hu_get_navigation_project_request_url() (Typ ohne vorbelegtes Thema);
+		// sonst veroeffentlicht der Route-Index einen anderen Intake-Kontext.
 		: add_query_arg(
 			[
-				'type'  => 'project',
-				'focus' => 'implementation_scope',
+				'type' => 'project',
 			],
 			$urls['contact'] ?? home_url( '/kontakt/' )
 		);
@@ -121,6 +120,11 @@ function nexus_get_llms_txt_sections() {
 					'label'       => 'Server-Side Tracking einrichten lassen',
 					'url'         => $urls['solar_tracking'] ?? home_url( '/server-side-tracking-b2b/' ),
 					'description' => 'Money Page für Server-Side Tracking, Server-GTM, GA4, Google Ads und Meta CAPI; direkter Projektpfad statt Solar-Marktcheck.',
+				],
+				[
+					'label'       => 'Performance Marketing für B2B',
+					'url'         => $urls['performance_marketing'] ?? home_url( '/performance-marketing/' ),
+					'description' => 'Bezahlte Nachfrage über Google Ads und Meta in fester Reihenfolge: erst Conversion-Messung, dann Zielseite, dann Budget. Performance-Agenturen werden zu White-Label weitergeführt.',
 				],
 				[
 					'label'       => 'WordPress Agentur Hannover',

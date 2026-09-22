@@ -269,7 +269,7 @@ body.page-template-page-whitelabel-retainer > .skip-link { display: none !import
 .wl-request__field label { display: block; margin-block-end: var(--nx-space-sm); font-size: .875rem; font-weight: 600; }
 .wl-request__field label span,
 .wl-request__optional summary span { color: var(--wl-muted); font-size: .75rem; font-weight: 400; }
-.wl-page .wl-request :is(input[type='text'], input[type='email'], textarea) {
+.wl-page .wl-request :is(input[type='text'], input[type='email'], textarea, select) {
 	display: block;
 	width: 100%;
 	max-width: 100%;

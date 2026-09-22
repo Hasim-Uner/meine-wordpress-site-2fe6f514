@@ -38,7 +38,7 @@ export default function HomepageMindmapTeaser() {
     window.NexusHomeMindmapConfig &&
     window.NexusHomeMindmapConfig.wgosUrl
       ? String(window.NexusHomeMindmapConfig.wgosUrl)
-      : "/wordpress-agentur-hannover/#methode";
+      : "/wordpress-agentur-hannover/#zusammenarbeit";
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setMounted(true));

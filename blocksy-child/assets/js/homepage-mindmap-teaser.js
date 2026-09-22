@@ -13,7 +13,7 @@
 	var systemUrl =
 		window.NexusHomeMindmapConfig && window.NexusHomeMindmapConfig.wgosUrl
 			? String(window.NexusHomeMindmapConfig.wgosUrl)
-			: "/wordpress-agentur-hannover/#methode";
+			: "/wordpress-agentur-hannover/#zusammenarbeit";
 
 	var phases = [
 		{

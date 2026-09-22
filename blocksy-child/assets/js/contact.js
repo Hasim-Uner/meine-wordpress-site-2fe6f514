@@ -147,16 +147,16 @@
                 showBudget: false
             },
             project: {
-                focusLabel: 'Welcher Bereich soll zuerst geprüft werden?',
-                focusHelp: 'Wählen Sie den Bereich, in dem aktuell die größte geschäftliche Unklarheit liegt.',
+                focusLabel: 'Vorhaben',
+                focusHelp: 'Wählen Sie, was Ihrem Vorhaben am nächsten kommt.',
                 messageLabel: 'Kurzbeschreibung',
                 messageHelp: 'Welche URL ist relevant? Was ist das Angebot? Wo verliert das System heute Anfragen oder Klarheit?',
                 messagePlaceholder: '1. Website: Welche URL ist relevant?\n2. Angebot: Was verkaufen Sie und an wen?\n3. Engpass: Was soll die Seite besser leisten?',
-                submitLabel: 'Projekt prüfen',
+                submitLabel: 'Projekt anfragen',
                 messageMinlength: 24,
                 timelineLabel: 'Zeitfenster',
                 showTimeline: true,
-                showBudget: false
+                showBudget: true
             },
             implementation: {
                 focusLabel: 'Was soll umgesetzt oder korrigiert werden?',
@@ -705,6 +705,37 @@
                 payload[key] = typeof value === 'string' ? value.trim() : value;
             });
 
+            return mergeSessionAttribution(payload);
+        }
+
+        // Herkunft aus der Sitzung ergaenzen (NexusCore). Parameter in der URL
+        // dieser Seite stehen schon in den versteckten Feldern und haben Vorrang;
+        // die Sitzung liefert, womit der Besuch begonnen hat, auch wenn die
+        // Anfrage erst drei Seiten spaeter abgeschickt wird.
+        function mergeSessionAttribution(payload) {
+            var core = window.NexusCore;
+            var attribution = core && typeof core.getLeadAttributionPayload === 'function' ? core.getLeadAttributionPayload() : {};
+            var campaign = core && typeof core.getCampaignContext === 'function' ? core.getCampaignContext() : {};
+
+            ['landing_page_url', 'entry_page_url', 'previous_internal_url', 'referrer_url'].forEach(function (key) {
+                if (attribution[key]) {
+                    payload[key] = attribution[key];
+                }
+            });
+
+            if (campaign.entry_referrer_url) {
+                payload.referrer_url = campaign.entry_referrer_url;
+            }
+
+            [['ads_source', attribution], ['ads_keyword', attribution], ['utm_medium', campaign], ['utm_campaign', campaign]].forEach(function (pair) {
+                var key = pair[0];
+                var source = pair[1] || {};
+
+                if (!payload[key] && source[key]) {
+                    payload[key] = source[key];
+                }
+            });
+
             return payload;
         }
 
@@ -827,7 +858,7 @@
                     var labels = {
                         audit: 'Marktcheck',
                         analysis: 'Website-Analyse',
-                        project: 'Projektprüfung',
+                        project: 'Projektanfrage',
                         implementation: 'Umsetzung',
                         ongoing: 'Weiterentwicklung'
                     };

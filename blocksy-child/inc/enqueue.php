@@ -563,10 +563,6 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-seo-js', 'seo.js', [ 'nexus-core-js' ] );
 	}
 
-	if ( $is_cluster_page ) {
-		hu_enqueue_css( 'nexus-cluster-pillar-css', 'cluster-pillar.css', [ 'nexus-design-system' ] );
-	}
-
 	// ── I2) Template: SEO Cornerstone Artikel (Post + Page) ────────
 	if ( $is_seo_cornerstone_template ) {
 		hu_enqueue_css( 'nexus-seo-cornerstone-css', 'seo-cornerstone.css', [ 'nexus-single-css' ] );
@@ -580,8 +576,11 @@ function hu_enqueue_assets() {
 	}
 
 	// ── K) Template: Performance Marketing ────────────────────────
-	if ( ! $is_cluster_page && ( is_page_template( 'page-performance.php' ) || is_page( 'performance-marketing' ) ) ) {
-		hu_enqueue_css( 'nexus-performance-css', 'performance.css', [ 'nexus-design-system' ] );
+	// Seit 2026-09-22 Gutachten-Layout: performance.css ist nur noch ein
+	// kleines Delta auf system.css. Die Route ist Cluster-Route (Meta und FAQ
+	// kommen aus dem Register), rendert aber page-performance.php.
+	if ( is_page_template( 'page-performance.php' ) || is_page( 'performance-marketing' ) || ( function_exists( 'nexus_get_current_wgos_cluster_route_slug' ) && 'performance-marketing' === nexus_get_current_wgos_cluster_route_slug() ) ) {
+		hu_enqueue_css( 'nexus-performance-css', 'performance.css', [ 'nexus-system-css' ] );
 	}
 
 	// ── L) Template: Conversion Rate Optimization (CRO) ──────────

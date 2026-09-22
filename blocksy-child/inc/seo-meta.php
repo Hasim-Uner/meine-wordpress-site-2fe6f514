@@ -67,7 +67,7 @@ function hu_get_homepage_title() {
 function hu_get_homepage_description() {
 	return (string) apply_filters(
 		'hu_homepage_seo_description',
-		'WordPress Freelancer aus der Region Hannover für Websites, Relaunches, Landingpages und Tracking. Direkter Kontakt, klarer Umfang und dokumentierte Übergabe.'
+		'WordPress Freelancer aus der Region Hannover: Websites, Relaunches, technisches SEO und Tracking – direkt mit dem Entwickler. Auch White-Label für Agenturen.'
 	);
 }
 

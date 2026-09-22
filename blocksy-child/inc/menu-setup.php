@@ -101,7 +101,7 @@ function nexus_is_results_menu_item( $item ) {
 function nexus_get_menu_setup_fallback_contract() {
 	$project_url = function_exists( 'hu_get_navigation_project_request_url' )
 		? hu_get_navigation_project_request_url()
-		: add_query_arg( [ 'type' => 'project', 'focus' => 'implementation_scope' ], home_url( '/kontakt/' ) );
+		: add_query_arg( [ 'type' => 'project' ], home_url( '/kontakt/' ) );
 
 	return [
 		[

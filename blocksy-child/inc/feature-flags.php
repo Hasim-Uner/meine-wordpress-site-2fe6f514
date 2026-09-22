@@ -10,7 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 defined( 'HU_FEATURE_READINESS_DIAGNOSIS_ROUTE' ) || define( 'HU_FEATURE_READINESS_DIAGNOSIS_ROUTE', true );
-defined( 'HU_FEATURE_READINESS_SUBMIT' ) || define( 'HU_FEATURE_READINESS_SUBMIT', true );
+// /wp-json/nexus/v1/analysis-submit ist seit 2026-09-22 standardmäßig aus:
+// Die Analyse ist durch den Marktcheck ersetzt, kein Formular sendet mehr
+// dorthin, und der offene Endpoint verschickte Bestätigungsmails an jede
+// eingetragene Adresse. Wieder einschalten nur per wp-config.php.
+defined( 'HU_FEATURE_READINESS_SUBMIT' ) || define( 'HU_FEATURE_READINESS_SUBMIT', false );
 defined( 'HU_FEATURE_ENERGY_DEMO_ROUTE' ) || define( 'HU_FEATURE_ENERGY_DEMO_ROUTE', true );
 
 // Keep the one-time editor-content migrations isolated in small modules. The

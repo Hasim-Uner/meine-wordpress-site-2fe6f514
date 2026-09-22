@@ -47,8 +47,8 @@ get_template_part( 'template-parts/blog-header' );
 		$audit_url    = function_exists( 'nexus_get_audit_url' ) ? nexus_get_audit_url() : home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' );
 		$energy_url   = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_get_energy_systems_url() : home_url( '/solar-waermepumpen-leadgenerierung/' );
 		$agentur_url  = $primary_urls['agentur'] ?? home_url( '/wordpress-agentur-hannover/' );
-		$seo_url      = $primary_urls['seo'] ?? trailingslashit( $agentur_url ) . '#technisches-seo';
-		$cro_url      = $primary_urls['cro'] ?? trailingslashit( $agentur_url ) . '#methode';
+		$seo_url      = $primary_urls['seo'] ?? trailingslashit( $agentur_url ) . '#zusammenarbeit';
+		$cro_url      = $primary_urls['cro'] ?? home_url( '/#angebot-funnel' );
 		$tracking_url = home_url( '/server-side-tracking-b2b/' );
 		$portal_url   = home_url( '/eigene-leadgenerierung-vs-portale/' );
 		$cpl_url      = home_url( '/cost-per-lead-photovoltaik/' );
@@ -71,14 +71,17 @@ get_template_part( 'template-parts/blog-header' );
 		];
 		$is_provider_post = in_array( $post_slug, $provider_post_slugs, true );
 
+		// Neutraler Standard: Der Marktcheck gehört laut CONVERSION_ROUTING.md
+		// nur in den Energie-Pfad. Beiträge ohne passende Kategorie führen
+		// deshalb zu den WordPress-Leistungen, nicht in den Solar-Einstieg.
 		$article_context = [
 			'eyebrow'         => __( 'Einordnung', 'blocksy-child' ),
 			'title'           => __( 'Dieser Artikel gehört in den größeren Anfrage-Kontext.', 'blocksy-child' ),
 			'text'            => __( 'Lesen Sie den Beitrag als Baustein im Zusammenspiel aus Angebot, Sichtbarkeit, Daten und Conversion.', 'blocksy-child' ),
-			'primary_label'   => __( 'Anfragesystem ansehen', 'blocksy-child' ),
-			'primary_url'     => $energy_url,
-			'secondary_label' => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
-			'secondary_url'   => $audit_url,
+			'primary_label'   => __( 'WordPress-Leistungen ansehen', 'blocksy-child' ),
+			'primary_url'     => home_url( '/#angebote' ),
+			'secondary_label' => __( 'Projekt anfragen', 'blocksy-child' ),
+			'secondary_url'   => function_exists( 'hu_get_commercial_route' ) ? hu_get_commercial_route( 'project_request' ) : home_url( '/kontakt/?type=project' ),
 		];
 
 		if ( $is_provider_post ) {
@@ -120,6 +123,16 @@ get_template_part( 'template-parts/blog-header' );
 				'primary_url'     => $agentur_url,
 				'secondary_label' => __( 'Technisches SEO ansehen', 'blocksy-child' ),
 				'secondary_url'   => $seo_url,
+			];
+		} elseif ( array_intersect( [ 'leadgenerierung', 'solar-waermepumpen-anfrage-systeme' ], $post_cat_slugs ) ) {
+			$article_context = [
+				'eyebrow'         => __( 'Einordnung', 'blocksy-child' ),
+				'title'           => __( 'Dieser Artikel gehört in den größeren Anfrage-Kontext.', 'blocksy-child' ),
+				'text'            => __( 'Lesen Sie den Beitrag als Baustein im Zusammenspiel aus Angebot, Sichtbarkeit, Daten und Conversion.', 'blocksy-child' ),
+				'primary_label'   => __( 'Anfragesystem ansehen', 'blocksy-child' ),
+				'primary_url'     => $energy_url,
+				'secondary_label' => __( 'Regionalen Marktcheck starten', 'blocksy-child' ),
+				'secondary_url'   => $audit_url,
 			];
 		}
 
