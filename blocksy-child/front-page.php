@@ -193,7 +193,7 @@ get_header();
 	</div>
 
 	<nav class="home-index hu-page-toc home-toc" aria-label="Auf dieser Seite" data-hu-rail="true" data-track-section="page_toc">
-		<span class="home-toc__mark" aria-hidden="true"><span class="home-toc__mark-short">TOC</span><span class="home-toc__mark-full">Auf dieser Seite</span></span>
+		<span class="home-toc__mark" aria-hidden="true"><span class="home-toc__mark-short">Nr.</span><span class="home-toc__mark-full">Auf dieser Seite</span></span>
 		<div class="home-toc__entries">
 			<a href="#angebote" data-track-action="toc_angebote" data-track-category="navigation"><span class="home-toc__nr">01</span><span class="home-toc__txt">Leistungen</span></a>
 			<a href="#nachweis" data-track-action="toc_nachweis" data-track-category="navigation"><span class="home-toc__nr">02</span><span class="home-toc__txt">Arbeiten</span></a>

@@ -9,8 +9,8 @@ Schalter vollständig zurücknehmen.
 
 | | Datum |
 | --- | --- |
-| Start | Deploy-Tag (Merge auf `main`, `main` deployt nach grüner CI): _eintragen_ |
-| Ende | Start + 8 Wochen: _eintragen_ |
+| Start | Deploy-Tag (Merge auf `main`, `main` deployt nach grüner CI): 2026-09-23 (#440) |
+| Ende | Start + 8 Wochen: 2026-11-18 |
 
 ## Was sich ändert, solange der Schalter an ist
 
