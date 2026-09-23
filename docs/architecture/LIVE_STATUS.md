@@ -54,8 +54,12 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   auf `/kontakt/?focus=ersteinschaetzung`; die Projektanfrage steht sekundär
   daneben. Seit 2026-09-23 hat der Hero genau diese zwei Buttons; der Sprung
   zu den Leistungen hängt am Preisanker der Trust-Zeile (`home_hero_to_offers`).
-  Die Hero-Grafik ist der HTML-Beispielablauf Website → Anfrage → CRM
-  (`home-journey.js`, ohne JavaScript im Endzustand). Direkt darunter steht
+  Die Hero-Grafik ist eine Stromlinien-Tafel: Besuche strömen von links ein,
+  ein Teil endet im Stempel „Neu im CRM“ mit Beispielquelle, der Rest zieht
+  vorbei. Die Linien sind statisches SVG (`assets/img/home-feld.svg`, erzeugt
+  von `scripts/build-home-feld-svg.py`); `home-feld.js` legt bewegte
+  Funken darüber, mit Schalter zum Anhalten. Ohne JavaScript und bei
+  reduzierter Bewegung steht die Tafel ruhig und vollständig. Direkt darunter steht
   eine Belegzeile (`#einordnung`) mit Fall, öffentlichen Arbeiten und offenem
   Code, jeweils als Sprung zum Nachweis in Abschnitt 02.
 - **`/kontakt/`** (`page-kontakt.php`): Anfrage-Intake, siehe „Anfragewege“.
