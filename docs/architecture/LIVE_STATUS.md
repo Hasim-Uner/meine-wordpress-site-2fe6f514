@@ -52,7 +52,12 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Versuch Ersteinschätzung läuft (Schalter `HU_EXPERIMENT_ERSTEINSCHAETZUNG`,
   `docs/experimente/ersteinschaetzung.md`), führen Hero und Abschluss primär
   auf `/kontakt/?focus=ersteinschaetzung`; die Projektanfrage steht sekundär
-  daneben.
+  daneben. Seit 2026-09-23 hat der Hero genau diese zwei Buttons; der Sprung
+  zu den Leistungen hängt am Preisanker der Trust-Zeile (`home_hero_to_offers`).
+  Die Hero-Grafik ist der HTML-Beispielablauf Website → Anfrage → CRM
+  (`home-journey.js`, ohne JavaScript im Endzustand). Direkt darunter steht
+  eine Belegzeile (`#einordnung`) mit Fall, öffentlichen Arbeiten und offenem
+  Code, jeweils als Sprung zum Nachweis in Abschnitt 02.
 - **`/kontakt/`** (`page-kontakt.php`): Anfrage-Intake, siehe „Anfragewege“.
 - **`/whitelabel-retainer/`** (`page-whitelabel-retainer.php`): Agentur-Einstieg
   mit eigenem Kopf, Fuß und Skip-Link. Primärziel ist das Aufgabenformular; der
