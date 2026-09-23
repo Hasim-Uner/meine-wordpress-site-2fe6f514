@@ -63,6 +63,14 @@ rule	case-abschlussquote-12	(^|[^0-9,.])12[[:space:]]*(%|&nbsp;%|Prozent)	Abschl
 rule	anon-verfahren	Verfahren[[:space:]]+l(ä|ae)uft	-	Anonymisierte Faelle werden nicht begruendet. Satz ersatzlos streichen.
 rule	anon-begruendung	[Aa]nonymisiert,[[:space:]]*weil	-	Anonymisierte Faelle werden nicht begruendet. Satz ersatzlos streichen.
 
+# ── Preise der Freelancer-Route ───────────────────────────────────────────
+# Kanon: hu_freelancer_takeover_check_price() und
+# hu_freelancer_retainer_display() in blocksy-child/inc/canon/pricing-canon.php.
+# Beide Regeln greifen nur mit Kontextwort („Übernahme“ bzw. „Stunden“),
+# damit nicht jeder andere Betrag mit denselben Ziffern anschlaegt.
+rule	preis-uebernahme-check	(^|[^0-9.])390[[:space:]]*(€|&euro;|Euro)	Übernahme	Preis kommt aus hu_freelancer_takeover_check_price().
+rule	preis-retainer-kontingent	(^|[^0-9.])(490|950)[[:space:]]*(€|&euro;|Euro)	Stunden	Kontingent kommt aus hu_freelancer_retainer_display().
+
 # ── Ausnahmen ─────────────────────────────────────────────────────────────
 # Der Kanon fuehrt die Werte und muss die abgeloesten benennen duerfen.
 ignore	blocksy-child/inc/canon/**	Kanon-Dateien. Einzige inhaltliche Ausnahme.
