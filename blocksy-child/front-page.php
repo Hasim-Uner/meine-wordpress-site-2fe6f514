@@ -71,29 +71,10 @@ $faqs = [
 ];
 
 /**
- * Hero flow diagram. Static markup, so it renders without JavaScript and cannot
- * shift the hero after paint. Motion stays in CSS behind prefers-reduced-motion.
+ * Illustrative journey: the complete result is server-rendered.
+ * The optional route script plays one bounded example, never a real form.
  */
-$flow_icon = static function ( $kind ) {
-	$icons = [
-		'website' => '<rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 8h18"></path><circle cx="6.5" cy="6" r=".7" fill="currentColor" stroke="none"></circle><circle cx="9" cy="6" r=".7" fill="currentColor" stroke="none"></circle>',
-		'request' => '<path d="M7 3h7l4 4v14H7z"></path><path d="M14 3v5h5M10 12h5M10 16h5"></path>',
-		'crm'     => '<ellipse cx="12" cy="5.5" rx="7" ry="2.5"></ellipse><path d="M5 5.5v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6M5 11.5v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6"></path>',
-		'filter'  => '<path d="M4 5h16l-6.5 7.2V19l-3 1v-7.8z"></path>',
-		'search'  => '<circle cx="10.5" cy="10.5" r="5.5"></circle><path d="m15 15 4.5 4.5"></path>',
-		'people'  => '<circle cx="9" cy="8" r="3"></circle><circle cx="16.5" cy="9" r="2.3"></circle><path d="M3.5 19c.6-3.4 2.5-5.1 5.5-5.1s5 1.7 5.5 5.1M14.2 14.5c2.8-.3 4.8 1.1 5.5 4.5"></path>',
-	];
-	if ( empty( $icons[ $kind ] ) ) {
-		return '';
-	}
-	return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' . $icons[ $kind ] . '</svg>';
-};
-$flow_stages = [
-	[ 'kind' => 'website', 'label' => 'Website', 'mod' => 'website' ],
-	[ 'kind' => 'request', 'label' => 'Anfrage', 'mod' => 'request' ],
-	[ 'kind' => 'crm', 'label' => 'CRM', 'mod' => 'crm' ],
-];
-$flow_label = 'Ads, SEO und Empfehlungen führen über die Website zur Anfrage. Die Anfrage wird nach Region, Leistung und Qualität segmentiert und anschließend ins CRM übergeben.';
+$flow_label = 'Beispielablauf: Eine Website führt zur Projektanfrage. Das Vorhaben wird erfasst und mit seiner Quelle ins CRM übergeben.';
 
 if ( function_exists( 'hu_enqueue_css' ) ) {
 	hu_enqueue_css( 'hu-navigation-ecosystem', 'navigation-ecosystem.css', [ 'nexus-system-css' ] );
@@ -102,6 +83,7 @@ if ( function_exists( 'hu_enqueue_css' ) ) {
 }
 if ( function_exists( 'hu_enqueue_js' ) ) {
 	hu_enqueue_js( 'hu-navigation-ecosystem', 'navigation-ecosystem.js', [] );
+	hu_enqueue_js( 'hu-home-journey', 'home-journey.js', [] );
 }
 get_header();
 ?>
@@ -132,29 +114,55 @@ get_header();
 					<figcaption><strong>Direkt mit Haşim Üner.</strong><span>Konzeption · Entwicklung · Übergabe</span><a class="satzlink" href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="hero">Mehr über Haşim</a></figcaption>
 				</figure>
 			</div>
-			<figure class="home-flow-v9" role="img" aria-label="<?php echo esc_attr( $flow_label ); ?>">
-				<div class="home-flow-v9__grid" aria-hidden="true"></div>
-				<div class="home-flow-v9__track" aria-hidden="true">
-					<span class="home-flow-v9__rail"></span>
-					<span class="home-flow-v9__signal"></span>
-					<div class="home-flow-v9__sources">
-						<span class="home-flow-v9__source home-flow-v9__source--ads">Ads</span>
-						<span class="home-flow-v9__source"><?php echo $flow_icon( 'search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?><span>SEO</span></span>
-						<span class="home-flow-v9__source"><?php echo $flow_icon( 'people' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?><span>Empfehlung</span></span>
-					</div>
-					<?php foreach ( $flow_stages as $stage ) : ?>
-						<div class="home-flow-v9__stage home-flow-v9__stage--<?php echo esc_attr( $stage['mod'] ); ?>">
-							<span class="home-flow-v9__disc"><?php echo $flow_icon( $stage['kind'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?></span>
-							<strong><?php echo esc_html( $stage['label'] ); ?></strong>
+			<figure class="home-journey" data-home-journey aria-labelledby="home-journey-caption">
+				<div class="home-journey__scene" id="home-journey-scene" role="img" aria-label="<?php echo esc_attr( $flow_label ); ?>">
+					<div class="home-journey__panels" aria-hidden="true">
+						<div class="home-journey__stage home-journey__stage--website">
+							<div class="home-journey__stage-label"><span>01</span> Website</div>
+							<div class="home-journey__window home-journey__window--website">
+								<div class="home-journey__chrome"><i></i><i></i><i></i></div>
+								<div class="home-journey__body">
+									<span class="home-journey__brand">Ihr Unternehmen<span>.</span></span>
+									<strong class="home-journey__site-title">Ihr Angebot.<br>Klar auf den Punkt.</strong>
+									<span class="home-journey__lines"><i></i><i></i></span>
+									<span class="home-journey__mock-action home-journey__visit">Projekt anfragen <span>↗</span></span>
+									<div class="home-journey__site-grid"><span><i></i>Leistungen</span><span><i></i>Projekte</span></div>
+								</div>
+							</div>
 						</div>
-					<?php endforeach; ?>
-					<div class="home-flow-v9__filter">
-						<span class="home-flow-v9__filter-icon"><?php echo $flow_icon( 'filter' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?></span>
-						<span class="home-flow-v9__filter-copy"><strong>Segmentierung</strong><span class="home-flow-v9__tags"><span>Region</span><span>Leistung</span><span>Qualität</span></span></span>
+						<div class="home-journey__stage home-journey__stage--request">
+							<div class="home-journey__stage-label"><span>02</span> Anfrage</div>
+							<div class="home-journey__window home-journey__window--request">
+								<div class="home-journey__body">
+									<span class="home-journey__eyebrow">Projektanfrage</span>
+									<strong class="home-journey__panel-title">Worum geht es?</strong>
+									<div class="home-journey__choices"><span>Website</span><span>Tracking</span></div>
+									<div class="home-journey__field"><span>Ihr Vorhaben</span><span class="home-journey__entry">Website-Relaunch</span></div>
+									<div class="home-journey__field home-journey__field--email"><span>E-Mail</span><span class="home-journey__entry home-journey__entry--line"><i></i></span></div>
+									<span class="home-journey__mock-action home-journey__send">Anfrage senden <span>→</span></span>
+								</div>
+							</div>
+						</div>
+						<div class="home-journey__stage home-journey__stage--crm">
+							<div class="home-journey__stage-label"><span>03</span> CRM</div>
+							<div class="home-journey__window home-journey__window--crm tafel">
+								<span class="home-journey__eyebrow">Vertriebsanschluss</span>
+								<strong class="home-journey__panel-title">Neue Anfrage.</strong>
+								<div class="home-journey__lead">
+									<span class="home-journey__received"><i></i> Eingegangen</span>
+									<strong>Website-Projekt</strong>
+									<dl><div><dt>Quelle</dt><dd>Website</dd></div><div><dt>Vorhaben</dt><dd>Relaunch</dd></div></dl>
+								</div>
+								<span class="home-journey__success"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>Sauber übergeben</span>
+							</div>
+						</div>
 					</div>
-					<span class="home-flow-v9__arrow home-flow-v9__arrow--a">→</span>
-					<span class="home-flow-v9__arrow home-flow-v9__arrow--b">→</span>
+					<div class="home-journey__progress" aria-hidden="true"><span class="home-journey__progress-fill" data-journey-progress></span><i></i><i></i><i></i></div>
 				</div>
+				<figcaption class="home-journey__caption">
+					<span id="home-journey-caption">Beispielablauf · Von der Website ins CRM</span>
+					<button class="home-journey__replay" type="button" aria-controls="home-journey-scene" aria-label="Beispielablauf erneut abspielen" data-journey-replay hidden><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"></path></svg>Wiederholen</button>
+				</figcaption>
 			</figure>
 		</div>
 		<div class="meta" id="einordnung">
