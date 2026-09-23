@@ -62,11 +62,12 @@ $offers = [
 	],
 ];
 $faqs = [
-	[ 'q' => 'Übernehmen Sie eine bestehende WordPress-Website?', 'a' => 'Ja. Vor einer Zusage prüfe ich Theme, Plugins, Zugänge und die konkrete Aufgabe. Daraus wird eine gezielte Weiterentwicklung, eine technische Bereinigung oder ein Relaunch. Ein Neubau ist keine Voraussetzung.' ],
+	[ 'q' => 'Übernehmen Sie eine bestehende WordPress-Website?', 'a' => sprintf( 'Ja, nach einem Übernahme-Check für %s netto. Ich prüfe Theme, Plugins, Updates, Backups, Zugänge und Performance und schicke Ihnen den Befund schriftlich, mit einem festen Preis für den nächsten Schritt: gezielte Weiterentwicklung, technische Bereinigung oder Relaunch. Beauftragen Sie mich danach, wird der Check verrechnet. Der Befund gehört Ihnen, auch wenn Sie mit jemand anderem weiterarbeiten.', hu_freelancer_takeover_check_price() ) ],
 	[ 'q' => 'Arbeiten Sie mit unserem bestehenden Theme oder Page Builder?', 'a' => 'Wenn der vorhandene Aufbau technisch tragfähig ist, muss er nicht ersetzt werden. Erst wenn Performance, Wartbarkeit oder eine Integration klare Grenzen setzen, besprechen wir einen tieferen Eingriff.' ],
 	[ 'q' => 'Was brauchen Sie von unserem Team?', 'a' => 'Eine Person für Entscheidungen und Freigaben, die nötigen Zugänge sowie vorhandene Inhalte und Gestaltungsvorgaben. Fehlende Texte, Branding, Übersetzungen oder zusätzliche Schnittstellen werden vor dem Start sauber abgegrenzt.' ],
 	[ 'q' => 'Wie lange dauert ein Projekt?', 'a' => 'Das hängt von Umfang, Ausgangslage und Ihren Vorarbeiten ab. Nach der ersten Einordnung erhalten Sie einen realistischen Zeitrahmen. Inhaltslieferung, Freigaben und technische Abhängigkeiten werden dabei ausdrücklich berücksichtigt.' ],
-	[ 'q' => 'Gehören Website, Konten und Code anschließend uns?', 'a' => 'Ja. Code, Repository, Hosting und eingesetzte Konten liegen in Ihrer Hand. Zur Übergabe gehören die vereinbarte Dokumentation und Zugänge. Eine weitere Betreuung ist möglich, aber keine Voraussetzung.' ],
+	[ 'q' => 'Gehören Website, Konten und Code anschließend uns?', 'a' => sprintf( 'Ja. Code, Repository, Hosting und eingesetzte Konten liegen in Ihrer Hand. Zur Übergabe gehören die vereinbarte Dokumentation und Zugänge. Wer danach weiterentwickeln lassen will, bucht ein monatliches Kontingent: %s, monatlich kündbar. Voraussetzung ist das nicht.', hu_freelancer_retainer_display() ) ],
+	[ 'q' => 'Was ist, wenn Sie einmal ausfallen?', 'a' => 'Dann sage ich es Ihnen am selben Tag. Domain, Hosting, Konten und Code liegen von Anfang an bei Ihnen, und die Dokumentation ist so geschrieben, dass ein anderer Entwickler jederzeit weiterarbeiten kann. Ihre Website hängt also nicht an mir.' ],
 ];
 
 /**

@@ -44,6 +44,9 @@ function hu_pricing_canon() {
 		'premium_layer_retainer'          => HU_PREMIUM_LAYER_RETAINER,
 		'entry_setup_price'               => HU_ENTRY_SETUP_PRICE,
 		'analysis_price'                  => HU_ANALYSIS_PRICE,
+		'freelancer_takeover_check_price' => HU_FREELANCER_TAKEOVER_CHECK_PRICE,
+		// Als Satzbaustein, nicht als Stufen-Array: [hu_price] gibt nur Skalare aus.
+		'freelancer_retainer_display'     => hu_freelancer_retainer_display(),
 		'founding_discount_percent'       => HU_FOUNDING_DISCOUNT_PERCENT,
 		'value_anchor_market_min'         => HU_VALUE_ANCHOR_MARKET_MIN,
 		'value_anchor_market_max'         => HU_VALUE_ANCHOR_MARKET_MAX,
@@ -324,6 +327,22 @@ function hu_tracking_delivery_weeks_display() {
 // kalkuliert. Der Wert lebt hier, damit Template und FAQ nicht auseinanderlaufen.
 define( 'HU_FREELANCER_WEBSITE_MIN', 3400 );
 
+// Übernahme-Check: bezahlte Diagnose, bevor eine fremde WordPress-Installation
+// in Weiterentwicklung oder Relaunch übernommen wird. Ohne Check keine offene
+// "nach Absprache"-Zusage für Fremdbestand (Entscheidung 02.09.2026).
+// Wird bei Beauftragung mit dem Folgeprojekt verrechnet. Der Befund gehört dem
+// Kunden, auch wenn er mit jemand anderem weiterarbeitet.
+define( 'HU_FREELANCER_TAKEOVER_CHECK_PRICE', 390 );
+
+// Weiterentwicklungs-Retainer der Freelancer-Route: gebuchtes Monatskontingent,
+// monatlich kündbar, ausdrücklich ohne Rufbereitschaft und ohne
+// Reaktionszeit-Zusage. Das Kontingent ist die Einheit – ein Stundensatz steht
+// weder als Zahl noch als Herleitung auf der Seite (gleiche Regel wie White-Label).
+define( 'HU_FREELANCER_RETAINER_TIERS', [
+	[ 'hours' => 4, 'price' => 490 ],
+	[ 'hours' => 8, 'price' => 950 ],
+] );
+
 /**
  * Display the canonical starting price for the WordPress freelancer route.
  *
@@ -334,6 +353,37 @@ function hu_freelancer_website_price( $with_net = false ) {
 	$price = hu_format_eur( HU_FREELANCER_WEBSITE_MIN );
 
 	return $with_net ? $price . ' netto' : $price;
+}
+
+/**
+ * Display the canonical price of the Übernahme-Check.
+ *
+ * @param bool $with_net Append the "netto" qualifier.
+ * @return string
+ */
+function hu_freelancer_takeover_check_price( $with_net = false ) {
+	$price = hu_format_eur( HU_FREELANCER_TAKEOVER_CHECK_PRICE );
+
+	return $with_net ? $price . ' netto' : $price;
+}
+
+/**
+ * Display all development contingents of the freelancer route as one phrase.
+ *
+ * Ein Satzbaustein aus allen Stufen, damit keine Oberfläche eine Stufe
+ * einzeln abschreibt. "netto" steht einmal am Ende und gilt für alle.
+ *
+ * @return string
+ */
+function hu_freelancer_retainer_display() {
+	$tiers = array_map(
+		static function ( $tier ) {
+			return sprintf( '%d Stunden für %s', $tier['hours'], hu_format_eur( $tier['price'] ) );
+		},
+		HU_FREELANCER_RETAINER_TIERS
+	);
+
+	return implode( ' oder ', $tiers ) . ' netto';
 }
 
 // ── White-Label-Nebenpfad ────────────────────────────────────────
