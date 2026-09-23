@@ -114,28 +114,33 @@ if ( $is_first_assessment ) {
 <div class="<?php echo esc_attr( $page_classes ); ?>" data-track-section="contact_page">
 	<div class="contact-page__shell">
 		<aside class="contact-intro" aria-labelledby="contact-title">
-			<p class="contact-eyebrow"><?php echo esc_html( $current_type_label ); ?></p>
-			<h1 id="contact-title" class="contact-title"><?php echo esc_html( $hero_title ); ?></h1>
-			<p class="contact-lead">WordPress, Tracking, Conversion oder technisches SEO: kurz einordnen, Engpass benennen, direkt bei mir landen.</p>
-
-			<div class="contact-intro__facts" aria-label="Ablauf">
-				<p><span>01</span><strong>Einordnen</strong> Kontext statt langem Briefing-Fragebogen.</p>
-				<p><span>02</span><strong>Prüfen</strong> Ich lese jede Anfrage selbst.</p>
-				<p><span>03</span><strong>Antwort</strong> Persönlich <?php echo esc_html( $response_window ); ?>.</p>
+			<?php // Zwei Gruppen, damit mobil das Formular direkt auf den Titel folgen kann (contact.css). ?>
+			<div class="contact-intro__kopf">
+				<p class="contact-eyebrow"><?php echo esc_html( $current_type_label ); ?></p>
+				<h1 id="contact-title" class="contact-title"><?php echo esc_html( $hero_title ); ?></h1>
+				<p class="contact-lead">WordPress, Tracking, Conversion oder technisches SEO: kurz einordnen, Engpass benennen, direkt bei mir landen.</p>
 			</div>
 
-			<?php // Die Weiche steht immer da: auch wer über einen Angebotslink kommt, kann eine Agentur sein. ?>
-			<nav class="contact-route-list" aria-label="Andere Einstiege">
-				<p class="contact-route-list__label">Andere Einstiege</p>
-				<a href="<?php echo esc_url( $agency_url ); ?>" data-track-action="contact_route_agency" data-track-category="contact" data-track-section="contact_routes">
-					<span>Für Agenturen</span><strong>White-Label-Aufgabe beschreiben</strong>
-				</a>
-				<a href="<?php echo esc_url( $energy_url ); ?>" data-track-action="contact_route_energy" data-track-category="contact" data-track-section="contact_routes">
-					<span>Solar &amp; Wärmepumpe</span><strong>Zum Marktcheck</strong>
-				</a>
-			</nav>
+			<div class="contact-intro__mehr">
+				<div class="contact-intro__facts" aria-label="Ablauf">
+					<p><span>01</span><strong>Einordnen</strong> Kontext statt langem Briefing-Fragebogen.</p>
+					<p><span>02</span><strong>Prüfen</strong> Ich lese jede Anfrage selbst.</p>
+					<p><span>03</span><strong>Antwort</strong> Persönlich <?php echo esc_html( $response_window ); ?>.</p>
+				</div>
 
-			<a class="contact-direct-mail" href="<?php echo esc_url( 'mailto:' . $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a>
+				<?php // Die Weiche steht immer da: auch wer über einen Angebotslink kommt, kann eine Agentur sein. ?>
+				<nav class="contact-route-list" aria-label="Andere Einstiege">
+					<p class="contact-route-list__label">Andere Einstiege</p>
+					<a href="<?php echo esc_url( $agency_url ); ?>" data-track-action="contact_route_agency" data-track-category="contact" data-track-section="contact_routes">
+						<span>Für Agenturen</span><strong>White-Label-Aufgabe beschreiben</strong>
+					</a>
+					<a href="<?php echo esc_url( $energy_url ); ?>" data-track-action="contact_route_energy" data-track-category="contact" data-track-section="contact_routes">
+						<span>Solar &amp; Wärmepumpe</span><strong>Zum Marktcheck</strong>
+					</a>
+				</nav>
+
+				<a class="contact-direct-mail" href="<?php echo esc_url( 'mailto:' . $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a>
+			</div>
 		</aside>
 
 		<section class="contact-form-panel" id="kontakt-form" aria-labelledby="contact-form-title">

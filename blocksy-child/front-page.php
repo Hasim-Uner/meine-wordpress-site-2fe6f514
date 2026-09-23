@@ -23,7 +23,6 @@ $contact_email  = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_ema
 $portrait_url   = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-relaxed-640x800.webp';
 $website_price  = function_exists( 'hu_freelancer_website_price' ) ? hu_freelancer_website_price( true ) : '3.400 € netto';
 $tracking_price = function_exists( 'hu_tracking_price' ) ? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' ) : '1.290 €';
-$response       = hu_response_promise( 'phrase' );
 $response_short = hu_response_promise( 'compact' );
 $references     = function_exists( 'hu_public_reference_projects' ) ? hu_public_reference_projects() : [];
 $github_url     = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
@@ -71,6 +70,20 @@ $faqs = [
 ];
 
 /**
+ * Übergabe als Dokument: dasselbe Muster wie "Was im Befund steht" auf der
+ * Energie-Seite. Ein Beispiel, keine Referenz; jeder Punkt steht bereits als
+ * Zusage im Ablauf oder in den Fragen. Tracking und CRM nur, wenn beauftragt.
+ */
+$handover = [
+	[ 'Testumgebung', 'Der geprüfte Stand vor dem Livegang, gemeinsam abgenommen.', false ],
+	[ 'Code und Repository', 'In Ihrem Account, mit nachvollziehbarer Änderungshistorie.', false ],
+	[ 'Zugänge und Konten', 'Hosting, Domain und eingesetzte Dienste laufen auf Ihren Namen.', false ],
+	[ 'Dokumentation', 'Aufbau, Pflege und offene Punkte, damit Ihr Team weiterarbeiten kann.', false ],
+	[ 'Tracking-Plan', 'Events, Auslöser und Consent-Verhalten, in GA4 geprüft.', true ],
+	[ 'Anfrage im CRM', 'Eine Testanfrage mit ihrer Quelle bis ins CRM verfolgt.', true ],
+];
+
+/**
  * Hero-Tafel: Stromlinien aus scripts/build-home-feld-svg.py, als statisches
  * SVG vollständig im Markup. home-feld.js legt nur bewegte Funken darüber und
  * wechselt die Beispielquelle; ohne Skript bleibt die erste Quelle stehen.
@@ -114,6 +127,7 @@ if ( function_exists( 'hu_enqueue_css' ) ) {
 if ( function_exists( 'hu_enqueue_js' ) ) {
 	hu_enqueue_js( 'hu-navigation-ecosystem', 'navigation-ecosystem.js', [] );
 	hu_enqueue_js( 'hu-home-feld', 'home-feld.js', [] );
+	hu_enqueue_js( 'hu-home-uebergabe', 'home-uebergabe.js', [] );
 }
 get_header();
 ?>
@@ -300,7 +314,20 @@ get_header();
 					<li><span class="mono">02 · Bauen</span><h3>Am echten Stand arbeiten.</h3><p>Sie sehen die Umsetzung auf einer Testumgebung. Änderungen bleiben nachvollziehbar und technische Rückfragen landen direkt bei mir.</p></li>
 					<li><span class="mono">03 · Prüfen & übergeben</span><h3>Die wichtigen Wege gemeinsam abnehmen.</h3><p>Vor dem Livegang prüfen wir die vereinbarten Funktionen. Danach erhalten Sie Dokumentation, Zugänge und den Stand, mit dem Ihr Team weiterarbeiten kann.</p></li>
 				</ol>
-				<div class="home-fit home-fit-v2" id="eignung"><h3 id="vergleich">Passt, wenn Verantwortung klar sein soll.</h3><div><p>Sie brauchen einen direkten technischen Ansprechpartner und intern jemanden für Inhalte und Freigaben. Tracking oder CRM werden nur dann mit eingeplant, wenn sie Teil der Aufgabe sind.</p><div class="home-fit-facts"><span>Direkter Ansprechpartner</span><span>Testumgebung vor Livegang</span><span>Dokumentierte Übergabe</span></div></div></div>
+				<figure class="home-uebergabe" data-home-uebergabe aria-labelledby="home-uebergabe-titel">
+					<div class="home-uebergabe__kopf">
+						<p class="mono">Übergabe · Beispiel</p>
+						<h3 id="home-uebergabe-titel">Was bei Ihnen liegt, wenn das Projekt abgeschlossen ist.</h3>
+					</div>
+					<ol class="home-uebergabe__liste">
+						<?php foreach ( $handover as $item ) : ?>
+							<li><span class="home-uebergabe__haken" aria-hidden="true"></span><strong><?php echo esc_html( $item[0] ); ?><?php if ( $item[2] ) : ?> <em>falls beauftragt</em><?php endif; ?></strong><span><?php echo esc_html( $item[1] ); ?></span></li>
+						<?php endforeach; ?>
+					</ol>
+					<p class="home-uebergabe__stempel" aria-hidden="true"><span>Übergeben</span><small>nach Abnahme</small></p>
+					<figcaption>Beispiel. Was genau dazugehört, legen wir vor dem Start im Scope fest.</figcaption>
+				</figure>
+				<div class="home-fit home-fit-v2" id="eignung"><h3 id="vergleich">Passt, wenn Verantwortung klar sein soll.</h3><div><p>Sie brauchen einen direkten technischen Ansprechpartner und intern jemanden für Inhalte und Freigaben. Tracking oder CRM werden nur dann mit eingeplant, wenn sie Teil der Aufgabe sind.</p></div></div>
 			</div>
 		</div>
 	</section>
@@ -342,10 +369,46 @@ get_header();
 		<script type="application/ld+json"><?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
 	</section>
 
+	<?php
+	// Abschluss: beide Wege als Karten mit demselben Aufbau wie die Einstiege der
+	// anderen Geschäftswege (Test-Sprint, Marktcheck). Ziele und Hooks unverändert;
+	// ohne Versuch bleibt nur die Projektkarte. Texte der Ersteinschätzung aus dem Kanon.
+	$portrait_close_url = get_stylesheet_directory_uri() . '/assets/img/hasim-freelancer-portrait-480x600.webp';
+	?>
 	<div class="abschluss" id="anfrage" data-track-section="abschluss" tabindex="-1">
 		<div class="blatt" id="kontakt"><div class="tafel home-close home-close-v2">
-			<div><p class="mono">Der nächste Schritt</p><h2>Was soll als Nächstes besser funktionieren?</h2><p class="aufriss">Schicken Sie mir Ausgangslage, Engpass und Ziel. Ich prüfe die Aufgabe selbst und melde mich mit einer ersten fachlichen Einordnung – ohne Vertriebsübergabe und ohne fertiges Briefing.</p><div class="ausgang"><?php echo $first_assessment_cta( 'abschluss' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?><a class="<?php echo esc_attr( $project_cta_class ); ?>" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_close_contact" data-track-category="lead_gen" data-track-section="abschluss">Projekt beschreiben <span aria-hidden="true">→</span></a><a class="tun still" href="<?php echo esc_url( 'mailto:' . $contact_email, [ 'mailto' ] ); ?>" data-track-action="home_close_mail" data-track-category="lead_gen" data-track-section="abschluss">Per E-Mail anfragen</a></div></div>
-			<div class="home-close-note"><strong><?php echo esc_html( $response ); ?></strong><p>Direkt bei mir. Kein gebuchter Termin und kein fertiges Briefing nötig.</p></div>
+			<p class="mono">Der nächste Schritt</p>
+			<h2>Was soll als Nächstes besser funktionieren?</h2>
+			<p class="aufriss"><?php echo $first_assessment_on ? 'Zwei Wege, beide landen direkt bei mir – ohne Vertriebsübergabe und ohne fertiges Briefing.' : 'Schicken Sie mir Ausgangslage, Engpass und Ziel. Ich prüfe die Aufgabe selbst und melde mich mit einer ersten fachlichen Einordnung – ohne Vertriebsübergabe und ohne fertiges Briefing.'; ?></p>
+			<figure class="home-close__portrait">
+				<img src="<?php echo esc_url( $portrait_close_url ); ?>" width="480" height="600" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" loading="lazy" decoding="async">
+				<figcaption><strong>Sie schreiben direkt mir.</strong><span>Haşim Üner · Pattensen bei Hannover</span></figcaption>
+			</figure>
+			<div class="home-einstiege">
+				<?php if ( $first_assessment_on ) : ?>
+					<article class="home-einstieg home-einstieg--erst">
+						<p class="mono"><?php echo esc_html( hu_first_assessment_text( 'label' ) ); ?></p>
+						<h3><?php echo esc_html( hu_first_assessment_text( 'card_title' ) ); ?></h3>
+						<dl>
+							<div><dt>Sie schicken</dt><dd><?php echo esc_html( hu_first_assessment_text( 'card_send' ) ); ?></dd></div>
+							<div><dt>Sie bekommen</dt><dd><?php echo esc_html( hu_first_assessment_text( 'card_get' ) ); ?></dd></div>
+							<div><dt>Antwort</dt><dd><?php echo esc_html( $response_short ); ?></dd></div>
+						</dl>
+						<a class="tun" href="<?php echo esc_url( hu_first_assessment_url() ); ?>" data-track-action="home_close_ersteinschaetzung" data-track-category="lead_gen" data-track-section="abschluss"><?php echo esc_html( hu_first_assessment_text( 'cta' ) ); ?> <span aria-hidden="true">→</span></a>
+					</article>
+				<?php endif; ?>
+				<article class="home-einstieg">
+					<p class="mono">Projektanfrage</p>
+					<h3>Scope, Preis und Zeitrahmen.</h3>
+					<dl>
+						<div><dt>Sie schicken</dt><dd>Ausgangslage, Engpass und Ziel</dd></div>
+						<div><dt>Sie bekommen</dt><dd>Eine fachliche Einordnung, danach Scope, Preis und Zeitrahmen</dd></div>
+						<div><dt>Antwort</dt><dd><?php echo esc_html( $response_short ); ?></dd></div>
+					</dl>
+					<a class="<?php echo esc_attr( $project_cta_class ); ?>" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_close_contact" data-track-category="lead_gen" data-track-section="abschluss">Projekt beschreiben <span aria-hidden="true">→</span></a>
+				</article>
+			</div>
+			<p class="home-close__mail">Lieber per E-Mail? <a class="satzlink" href="<?php echo esc_url( 'mailto:' . $contact_email, [ 'mailto' ] ); ?>" data-track-action="home_close_mail" data-track-category="lead_gen" data-track-section="abschluss"><?php echo esc_html( $contact_email ); ?></a></p>
 		</div></div>
 	</div>
 </div>

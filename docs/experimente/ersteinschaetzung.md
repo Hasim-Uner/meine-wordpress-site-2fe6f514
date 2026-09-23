@@ -18,7 +18,9 @@ Schalter vollständig zurücknehmen.
   `/` zeigt): Hero und Abschluss bekommen „Kostenlose Ersteinschätzung“ als
   primären Button mit einer Zeile darunter. Der bisherige Projekt-Button
   bleibt mit gleichem Ziel und gleichen `data-track`-Hooks als sekundärer
-  Button daneben.
+  Button daneben. Im Abschluss stehen beide Wege seit 2026-09-23 als Karten
+  („Sie schicken / Sie bekommen / Antwort“); die Texte der Ersteinschätzung
+  (`card_title`, `card_send`, `card_get`) stehen im Kanon.
 - **`/kontakt/?focus=ersteinschaetzung`**: Das Anliegen „Ersteinschätzung“ ist
   vorausgewählt, die Themenfrage entfällt. Schritt 1 fragt die Website-URL
   (Pflicht) und in einem Satz, was die Website erreichen soll (optional).

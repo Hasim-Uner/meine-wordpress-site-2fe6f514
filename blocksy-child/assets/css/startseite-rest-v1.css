@@ -205,79 +205,6 @@
   font-size:.88rem;
   line-height:1.55;
 }
-.startseite #arbeitsweise .home-fit-facts{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.55rem .7rem;
-  margin-top:1rem;
-}
-.startseite #arbeitsweise .home-fit-facts span{
-  padding:.38rem .58rem;
-  border:1px solid color-mix(in srgb,var(--tinte) 15%,var(--haar));
-  border-radius:999px;
-  background:color-mix(in srgb,var(--zone) 42%,var(--papier));
-  color:color-mix(in srgb,var(--tinte) 72%,var(--papier));
-  font-family:var(--mono);
-  font-size:.61rem;
-}
-
-/* 04 Fragen: weniger, klarer, kaufentscheidend. */
-.startseite #fragen .voll > .kopf{
-  max-width:13ch;
-  letter-spacing:-.038em;
-}
-.startseite #fragen .fragen{
-  margin-top:clamp(2rem,3.5vw,3rem);
-  border-top:1px solid var(--strich);
-  counter-reset:home-faq;
-}
-.startseite #fragen .fragen details{
-  counter-increment:home-faq;
-  border-bottom:1px solid var(--haar);
-}
-.startseite #fragen .fragen summary{
-  position:relative;
-  display:grid;
-  grid-template-columns:2.7rem minmax(0,1fr) 1.8rem;
-  gap:.7rem;
-  align-items:center;
-  min-height:4.8rem;
-  padding:.8rem 0;
-  cursor:pointer;
-  color:var(--tinte);
-  font-size:clamp(1rem,.94rem + .18vw,1.1rem);
-  font-weight:650;
-  line-height:1.3;
-  list-style:none;
-}
-.startseite #fragen .fragen summary::-webkit-details-marker{display:none}
-.startseite #fragen .fragen summary::before{
-  content:counter(home-faq,decimal-leading-zero);
-  color:var(--stempel);
-  font-family:var(--mono);
-  font-size:.62rem;
-  letter-spacing:.08em;
-}
-.startseite #fragen .fragen summary::after{
-  content:'+';
-  justify-self:end;
-  color:var(--stempel);
-  font-family:var(--mono);
-  font-size:1.2rem;
-  font-weight:400;
-  transition:transform var(--t-fast) var(--ease-aus);
-}
-.startseite #fragen .fragen details[open] summary::after{transform:rotate(45deg)}
-.startseite #fragen .fragen .huelle{
-  padding:0 2.5rem 1.45rem 3.4rem;
-}
-.startseite #fragen .fragen .antwort{
-  max-width:68ch;
-  margin:0;
-  color:color-mix(in srgb,var(--tinte) 66%,var(--papier));
-  font-size:.88rem;
-  line-height:1.6;
-}
 
 /* Abschluss: zweiter visueller Machtmoment nach dem Hero. */
 .startseite #anfrage{
@@ -286,9 +213,10 @@
 .startseite #anfrage .home-close-v2{
   position:relative;
   display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(15rem,.38fr);
-  gap:clamp(2.5rem,6vw,6rem);
-  align-items:end;
+  grid-template-columns:minmax(0,1fr) minmax(11rem,.24fr);
+  grid-template-areas:"mono bild" "titel bild" "text bild" "karten karten" "mail mail";
+  gap:0 clamp(2rem,5vw,4.5rem);
+  align-items:start;
   overflow:hidden;
   padding:clamp(2.4rem,5vw,4.7rem)!important;
   border:0!important;
@@ -331,9 +259,11 @@
   line-height:1.6;
 }
 .startseite #anfrage .home-close-v2 .ausgang{margin-top:1.6rem}
+/* .tafel hellt --stempel fuer Text auf dunklem Grund auf; weisse Schrift darauf
+ * laege bei 2,5:1. Der Button bleibt deshalb beim Marken-Kupfer (5,5:1). */
 .startseite #anfrage .home-close-v2 .tun:not(.still){
-  background:var(--stempel);
-  border-color:var(--stempel);
+  background:#b8420f;
+  border-color:#b8420f;
   color:#fff;
 }
 .startseite #anfrage .home-close-v2 .tun.still{
@@ -341,24 +271,30 @@
   color:#fff;
   background:transparent;
 }
-.startseite #anfrage .home-close-v2 .home-close-note{
-  align-self:end;
-  padding-left:1.5rem;
-  border-left:1px solid color-mix(in srgb,#fff 18%,transparent);
-}
-.startseite #anfrage .home-close-v2 .home-close-note strong{
-  display:block;
-  margin:0 0 .8rem;
-  color:#fff;
-  font-size:1rem;
-  line-height:1.35;
-}
-.startseite #anfrage .home-close-v2 .home-close-note p{
-  margin:0;
-  color:color-mix(in srgb,#fff 61%,transparent);
-  font-size:.82rem;
-  line-height:1.55;
-}
+/* Einstiegskarten: derselbe Aufbau wie Test-Sprint und Marktcheck auf den
+ * anderen Geschaeftswegen. Wer schickt was, wer bekommt was, wie schnell. */
+.startseite #anfrage .home-einstiege{display:grid;grid-template-columns:repeat(auto-fit,minmax(15.5rem,1fr));gap:var(--s2);margin-top:1.8rem}
+.startseite #anfrage .home-einstieg{display:flex;flex-direction:column;gap:.9rem;padding:1.35rem 1.35rem 1.45rem;border:1px solid color-mix(in srgb,#fff 16%,transparent);border-radius:3px;background:color-mix(in srgb,#fff 3%,transparent)}
+.startseite #anfrage .home-einstieg--erst{border-color:color-mix(in srgb,#f07b3f 58%,transparent)}
+.startseite #anfrage .home-einstieg .mono{margin:0}
+.startseite #anfrage .home-einstieg h3{margin:0;color:#fff;font-size:1.2rem;line-height:1.25;letter-spacing:-.02em}
+.startseite #anfrage .home-einstieg dl{display:grid;gap:.55rem;margin:0}
+.startseite #anfrage .home-einstieg dl div{display:grid;grid-template-columns:6.25rem minmax(0,1fr);gap:.75rem}
+.startseite #anfrage .home-einstieg dt{padding-top:.18rem;color:color-mix(in srgb,#fff 56%,transparent);font:500 var(--mono-s)/1.5 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.startseite #anfrage .home-einstieg dd{margin:0;color:color-mix(in srgb,#fff 86%,transparent);font-size:.88rem;line-height:1.45}
+.startseite #anfrage .home-einstieg .tun{align-self:flex-start;margin-top:auto}
+.startseite #anfrage .home-close__mail{margin:1.25rem 0 0;color:color-mix(in srgb,#fff 64%,transparent);font-size:.86rem}
+.startseite #anfrage .home-close__mail a{color:#fff}
+.startseite #anfrage .home-close-v2 > .mono{grid-area:mono}
+.startseite #anfrage .home-close-v2 > h2{grid-area:titel}
+.startseite #anfrage .home-close-v2 > .aufriss{grid-area:text}
+.startseite #anfrage .home-einstiege{grid-area:karten}
+.startseite #anfrage .home-close__mail{grid-area:mail}
+.startseite #anfrage .home-close__portrait{grid-area:bild;align-self:end;margin:0}
+.startseite #anfrage .home-close__portrait img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border:1px solid color-mix(in srgb,#fff 16%,transparent);border-radius:3px}
+.startseite #anfrage .home-close__portrait figcaption{display:grid;gap:.25rem;margin-top:.85rem}
+.startseite #anfrage .home-close__portrait strong{color:#fff;font-size:.95rem;line-height:1.3}
+.startseite #anfrage .home-close__portrait span{color:color-mix(in srgb,#fff 62%,transparent);font-size:.8rem;line-height:1.4}
 
 @media (max-width:980px){
   .startseite #angebote .home-offers-v2{grid-template-columns:1fr}
@@ -368,14 +304,18 @@
   .startseite #arbeitsweise .home-process-v2 li,.startseite #arbeitsweise .home-process-v2 li:first-child,.startseite #arbeitsweise .home-process-v2 li:last-child{min-height:auto;padding:1.8rem 0;border-right:0;border-bottom:1px solid var(--haar)}
   .startseite #arbeitsweise .home-process-v2 li::before,.startseite #arbeitsweise .home-process-v2 li:first-child::before{left:0}
   .startseite #arbeitsweise .home-fit-v2{grid-template-columns:1fr;gap:1rem}
-  .startseite #anfrage .home-close-v2{grid-template-columns:1fr;align-items:start}
-  .startseite #anfrage .home-close-v2 .home-close-note{padding:1.5rem 0 0;border-left:0;border-top:1px solid color-mix(in srgb,#fff 18%,transparent)}
+  .startseite #anfrage .home-close-v2{grid-template-columns:1fr;grid-template-areas:"mono" "titel" "text" "karten" "mail" "bild";align-items:start}
+  .startseite #anfrage .home-close__portrait{margin-top:1.5rem;display:grid;grid-template-columns:4.5rem minmax(0,1fr);gap:1rem;align-items:center;padding-top:1.5rem;border-top:1px solid color-mix(in srgb,#fff 18%,transparent)}
+  .startseite #anfrage .home-close__portrait figcaption{margin:0}
 }
 @media (max-width:640px){
   .startseite #fragen .fragen summary{grid-template-columns:2rem minmax(0,1fr) 1.4rem}
   .startseite #fragen .fragen .huelle{padding:0 1rem 1.2rem 2.7rem}
   .startseite #anfrage .home-close-v2{padding:2rem 1.4rem!important;border-radius:0!important}
   .startseite #anfrage .home-close-v2 h2{font-size:clamp(2rem,10vw,2.85rem)}
+  .startseite #anfrage .home-einstieg dl div{grid-template-columns:1fr;gap:.15rem}
+  .startseite #anfrage .home-einstieg{padding:1.15rem 1rem 1.2rem}
+  .startseite #anfrage .home-einstieg .tun{align-self:stretch;justify-content:center;padding-inline:.9rem;letter-spacing:.06em}
 }
 
 @media (prefers-reduced-motion: reduce){
