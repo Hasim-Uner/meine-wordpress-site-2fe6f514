@@ -357,13 +357,8 @@
 
         var button = root.querySelector('[data-reader-like]');
         var status = root.querySelector('.nexus-reader-like__status');
-        var storageKey = 'nexus_reader_like_' + String(config.postId || window.location.pathname);
-        var alreadyLiked = safeStorageGet(storageKey) === '1';
+        // Kein Merken im Browser: Mehrfachklicks begrenzt der Server je Beitrag.
         var pending = false;
-
-        if (alreadyLiked) {
-            markReaderLikeSelected(button, status, false);
-        }
 
         button.addEventListener('click', function () {
             if (pending || button.disabled) return;
@@ -374,8 +369,7 @@
             sendRating('yes', '', status).then(function (ok) {
                 pending = false;
                 if (!ok) return;
-                safeStorageSet(storageKey, '1');
-                markReaderLikeSelected(button, status, true);
+                markReaderLikeSelected(button, status);
                 pushDataLayer({
                     event: 'post_like',
                     rating: 'yes',
@@ -385,12 +379,12 @@
         });
     }
 
-    function markReaderLikeSelected(button, status, announce) {
+    function markReaderLikeSelected(button, status) {
         if (!button) return;
         button.classList.add('is-selected');
         button.setAttribute('aria-pressed', 'true');
         button.disabled = true;
-        if (status) status.textContent = announce ? 'Danke — ist gespeichert.' : 'Du hast diesen Beitrag bereits markiert.';
+        if (status) status.textContent = 'Danke — ist gespeichert.';
     }
 
     function sendRating(rating, text, errorEl) {
@@ -422,20 +416,6 @@
             }
             return false;
         });
-    }
-
-    function safeStorageGet(key) {
-        try {
-            return window.localStorage ? window.localStorage.getItem(key) : null;
-        } catch (e) {
-            return null;
-        }
-    }
-
-    function safeStorageSet(key, value) {
-        try {
-            if (window.localStorage) window.localStorage.setItem(key, value);
-        } catch (e) {}
     }
 
     /* ----------------------------------------------------------

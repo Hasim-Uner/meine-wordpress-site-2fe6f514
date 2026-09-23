@@ -17,7 +17,8 @@
  * Barrierefreiheit:
  * - role="region" + aria-label fuer Screenreader-Orientierung
  * - Schließen-Button mit aria-label und Tastatur-Erreichbarkeit
- * - JS respektiert prefers-reduced-motion und localStorage-Dismiss
+ * - JS respektiert prefers-reduced-motion; Wegklicken gilt nur fuer den
+ *   Seitenaufruf, im Browser wird nichts gespeichert
  * - kein Fokus-Trap, Tab-Reihenfolge bleibt natuerlich
  *
  * @package Blocksy_Child

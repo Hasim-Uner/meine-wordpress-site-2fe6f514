@@ -5,32 +5,13 @@
 ( function () {
 	'use strict';
 
-	var STORAGE_PREFIX = 'huStickyCta_dismissed_';
-	var DISMISS_WINDOW_MS = 24 * 60 * 60 * 1000;
 	var MOBILE_MAX_WIDTH = 760;
 	var SHOW_AFTER_SCROLL_PX = 240;
+	// Wegklicken gilt fuer diesen Seitenaufruf; im Browser wird nichts gespeichert.
+	var closed = false;
 
 	function isMobile() {
 		return window.matchMedia( '(max-width: ' + MOBILE_MAX_WIDTH + 'px)' ).matches;
-	}
-
-	function dismissKey() {
-		return STORAGE_PREFIX + ( window.location.pathname || '/' );
-	}
-
-	function dismissed() {
-		try {
-			var raw = window.localStorage.getItem( dismissKey() );
-			return raw ? ( Date.now() - parseInt( raw, 10 ) ) < DISMISS_WINDOW_MS : false;
-		} catch ( e ) {
-			return false;
-		}
-	}
-
-	function rememberDismissal() {
-		try {
-			window.localStorage.setItem( dismissKey(), String( Date.now() ) );
-		} catch ( e ) {}
 	}
 
 	function setBodyOffset( bar ) {
@@ -59,7 +40,7 @@
 
 	function initSticky() {
 		var bar = document.getElementById( 'hu-sticky-cta' );
-		if ( ! bar || ! isMobile() || dismissed() ) return;
+		if ( ! bar || ! isMobile() ) return;
 
 		var shown = false;
 		var targetVisible = false;
@@ -76,7 +57,7 @@
 		var close = bar.querySelector( '.hu-sticky-cta__close' );
 		if ( close ) close.addEventListener( 'click', function ( event ) {
 			event.preventDefault();
-			rememberDismissal();
+			closed = true;
 			hide( bar );
 		} );
 
@@ -84,14 +65,14 @@
 			new window.IntersectionObserver( function ( entries ) {
 				targetVisible = Boolean( entries[0] && entries[0].isIntersecting );
 				if ( targetVisible ) hide( bar );
-				else if ( shown && isMobile() && ! dismissed() ) show( bar );
+				else if ( shown && isMobile() && ! closed ) show( bar );
 			}, { threshold: 0.08 } ).observe( target );
 		}
 
 		window.addEventListener( 'scroll', onScroll, { passive: true } );
 		window.addEventListener( 'resize', function () {
 			if ( ! isMobile() ) hide( bar );
-			else if ( shown && ! targetVisible && ! dismissed() ) show( bar );
+			else if ( shown && ! targetVisible && ! closed ) show( bar );
 		} );
 		onScroll();
 	}

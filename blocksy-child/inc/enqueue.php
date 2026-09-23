@@ -48,6 +48,23 @@ function hu_dequeue_block_library_on_person_page() {
 add_action( 'wp_enqueue_scripts', 'hu_dequeue_block_library_on_person_page', 100 );
 
 /**
+ * WordPress-Emoji-Erkennung im Frontend abschalten.
+ *
+ * Das Kern-Skript legt sein Testergebnis im sessionStorage ab und laedt in
+ * Browsern ohne passende Emoji-Schrift Bilder von s.w.org nach. Die Seite
+ * speichert beim Lesen nichts im Browser und laedt nichts von Dritten;
+ * aktuelle Browser zeigen Emoji selbst an.
+ *
+ * @return void
+ */
+function hu_disable_frontend_emoji_detection() {
+	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+	// Ohne diesen Hook bricht wp_enqueue_emoji_styles() selbst ab (Core-Weg).
+	remove_action( 'wp_print_styles', 'print_emoji_styles' );
+}
+add_action( 'init', 'hu_disable_frontend_emoji_detection' );
+
+/**
  * Enqueue all theme styles and scripts conditionally.
  *
  * @return void

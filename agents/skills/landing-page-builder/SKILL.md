@@ -22,7 +22,7 @@ The script prints the required file skeleton and section structure.
 - Follow the b2b-design-system patterns (if active)
 - Primary CTA follows the intent, per `docs/architecture/CONVERSION_ROUTING.md`: WordPress, tracking, CRO or technical SEO → `hu_get_commercial_route( 'project_request' )`; agencies → `hu_get_commercial_route( 'whitelabel' )`; Solar, Wärmepumpe or Speicher → `hu_get_commercial_route( 'marketcheck' )`. Never hardcode the URL and never use the Marktcheck as a generic CTA.
 - Add `data-track-action`, `data-track-category`, `data-track-section` attributes to every CTA
-- No cookies, no client-side tracking scripts — UTM params are handled via existing sessionStorage logic
+- No cookies, no browser storage, no client-side tracking scripts — `NexusCore` reads UTM params and referrer from the form page at submit time; session attribution stays off without consent (`docs/architecture/PRIVACY.md`)
 
 ## Section Order
 

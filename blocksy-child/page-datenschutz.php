@@ -3,7 +3,8 @@
  * Native page template for slug: datenschutz
  *
  * Replaces the editor-managed privacy text with a maintained legal page
- * that reflects the current no-cookie setup of the public site.
+ * that reflects the current setup of the public site: no cookies, no
+ * browser storage, cookieless Koko Analytics on the own server.
  *
  * @package Blocksy_Child
  */
@@ -267,25 +268,26 @@ while ( have_posts() ) :
 				<span class="privacy-kicker">Datenschutz</span>
 				<h1 id="privacy-title" class="privacy-title">Datenschutz auf einen Blick</h1>
 				<p class="privacy-lead">
-					Diese öffentlich zugängliche Website setzt bei normalen Besuchen aktuell keine Cookies,
-					lädt keine Analyse- oder Marketing-Tracker und verwendet kein Google Tag Manager.
-					Wenn Sie nur lesen und navigieren, bleibt Ihr Browser für Tracking-Zwecke unberührt.
+					Diese öffentlich zugängliche Website setzt bei normalen Besuchen keine Cookies,
+					speichert nichts in Ihrem Browser und verwendet weder Google Tag Manager noch
+					Google Analytics oder Marketing-Tracker. Seitenaufrufe zählen wir cookielos auf
+					unserem eigenen Server.
 				</p>
 
 				<div class="privacy-statement">
 					<strong>Kein Cookie-Banner auf öffentlichen Seiten:</strong>
-					Bei normalen Seitenaufrufen werden derzeit keine einwilligungspflichtigen
-					Tracking- oder Marketing-Technologien eingesetzt.
+					Beim normalen Besuch wird nichts in Ihrem Browser gespeichert, und es laufen
+					keine Tracking- oder Marketing-Dienste Dritter.
 				</div>
 
 				<div class="privacy-facts" aria-label="Datenschutz-Kurzüberblick">
 					<div class="privacy-fact">
 						<span class="privacy-fact__value">Keine Cookies</span>
-						<span class="privacy-fact__label">bei normalen öffentlichen Seitenaufrufen</span>
+						<span class="privacy-fact__label">und kein Browser-Speicher bei normalen Seitenaufrufen</span>
 					</div>
 					<div class="privacy-fact">
-						<span class="privacy-fact__value">Kein GTM oder Analytics</span>
-						<span class="privacy-fact__label">keine Tracking- oder Ads-Skripte beim Laden</span>
+						<span class="privacy-fact__value">Kein GTM, kein Google Analytics</span>
+						<span class="privacy-fact__label">Statistik nur cookielos auf dem eigenen Server</span>
 					</div>
 					<div class="privacy-fact">
 						<span class="privacy-fact__value">Daten nur bei Kontakt</span>
@@ -310,8 +312,8 @@ while ( have_posts() ) :
 					</p>
 
 					<ul>
-						<li>keine Cookies für normale Seitenaufrufe</li>
-						<li>keine Reichweiten- oder Werbetracker beim Laden der Seite</li>
+						<li>keine Cookies und kein Browser-Speicher für normale Seitenaufrufe</li>
+						<li>keine Werbetracker; Seitenaufrufe nur cookielos gezählt (Koko Analytics)</li>
 						<li>keine automatischen Social-Media-Embeds</li>
 						<li>keine extern geladenen Webfonts von Google</li>
 						<li>personenbezogene Daten nur bei aktiver Kontaktaufnahme</li>
@@ -336,7 +338,7 @@ while ( have_posts() ) :
 						</div>
 						<div class="privacy-meta__item">
 							<span class="privacy-meta__label">Stand</span>
-							<span class="privacy-meta__value"><time datetime="2026-03-13">13. März 2026</time></span>
+							<span class="privacy-meta__value"><time datetime="2026-09-23">23. September 2026</time></span>
 						</div>
 					</div>
 				</aside>
@@ -356,22 +358,46 @@ while ( have_posts() ) :
 						<h2 id="privacy-cookies">2. Cookies, Tracking und Browser-Speicher</h2>
 						<p>
 							Bei der rein informatorischen Nutzung dieser öffentlich zugänglichen Website
-							setzen wir aktuell keine Cookies. Ebenso werden beim normalen Seitenaufruf
-							keine Analyse-, Remarketing- oder Marketing-Skripte geladen.
+							setzen wir keine Cookies und speichern auch sonst nichts in Ihrem Browser,
+							weder im lokalen Speicher (localStorage) noch im Sitzungsspeicher
+							(sessionStorage). Remarketing- oder Marketing-Skripte werden nicht geladen.
 						</p>
 						<ul>
 							<li>kein Google Tag Manager</li>
 							<li>kein Google Analytics</li>
 							<li>kein Google Ads Conversion Tracking</li>
 							<li>keine Retargeting-Pixel</li>
-							<li>keine persistente Browser-Speicherung für Tracking- oder Komfortzwecke</li>
-							<li>kein Cookie-Banner für öffentliche Besuche erforderlich</li>
+							<li>keine Speicherung im Browser für Statistik, Tracking oder Komfortfunktionen</li>
+							<li>deshalb kein Cookie-Banner für öffentliche Besuche</li>
 						</ul>
 						<div class="privacy-note">
 							Diese Aussage bezieht sich auf die öffentliche Nutzung der Website. Technisch
 							notwendige WordPress-Cookies können nur im geschützten Administrationsbereich
 							für eingeloggte Nutzer entstehen.
 						</div>
+
+						<h3>Besucherstatistik mit Koko Analytics</h3>
+						<p>
+							Um zu sehen, welche Seiten gelesen werden, nutzen wir Koko Analytics, eine
+							Erweiterung für WordPress, die auf unserem eigenen Server läuft. Beim
+							Seitenaufruf übermittelt ein kleines Skript die aufgerufene Seite, die
+							verweisende Website und gegebenenfalls Kampagnenangaben aus dem Link
+							(utm-Parameter) an unseren Server. Es setzt keine Cookies und speichert nichts
+							in Ihrem Browser. Die Daten werden nicht an Dritte übermittelt.
+						</p>
+						<p>
+							Um mehrfache Aufrufe am selben Tag zu erkennen, bildet die Erweiterung aus
+							IP-Adresse und Browserkennung (User-Agent) zusammen mit einem täglich
+							wechselnden Geheimwert einen Einwegwert (Hash). IP-Adresse und Browserkennung
+							selbst werden dabei nicht gespeichert, die Hashwerte werden täglich gelöscht;
+							Besuche an verschiedenen Tagen lassen sich so nicht verknüpfen. Dauerhaft
+							gespeichert werden nur zusammengefasste Zahlen, etwa Aufrufe je Seite und
+							verweisende Websites.
+						</p>
+						<p>
+							Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse liegt
+							darin, in zusammengefasster Form zu verstehen, welche Inhalte genutzt werden.
+						</p>
 					</section>
 
 					<section class="privacy-section" aria-labelledby="privacy-logs">
@@ -403,13 +429,13 @@ while ( have_posts() ) :
 							Anfragen aus den Formularen dieser Website (Projekt-, White-Label- und
 							Marktcheck-Anfragen) werden intern im WordPress-Backend gespeichert, damit
 							wir sie bearbeiten und den Verlauf nachvollziehen können. Zusammen mit der
-							Anfrage speichern wir, über welche Seiten Sie das Formular erreicht haben:
-							die Einstiegsseite und die vorherige Seite dieser Website, die verweisende
-							Seite sowie vorhandene Kampagnenangaben aus dem aufgerufenen Link, etwa
-							utm-Parameter. Diese Angaben hält Ihr Browser nur im Sitzungsspeicher
-							(sessionStorage), der mit dem Schließen des Tabs gelöscht wird; Cookies
-							werden dafür nicht gesetzt. Die Angabe, wie Sie auf uns aufmerksam geworden
-							sind, ist freiwillig.
+							Anfrage speichern wir, von wo aus Sie das Formular abgeschickt haben: die Seite
+							mit dem Formular, die zuvor aufgerufene Seite dieser Website oder die
+							verweisende Website, soweit Ihr Browser sie übermittelt, sowie
+							Kampagnenangaben aus dem Link der Formularseite, etwa utm-Parameter. Diese
+							Angaben werden erst beim Absenden gelesen; in Ihrem Browser wird dafür nichts
+							gespeichert. Die Angabe, wie Sie auf uns aufmerksam geworden sind, ist
+							freiwillig.
 						</p>
 						<p>
 							Rechtsgrundlage für die Herkunftsangaben ist Art. 6 Abs. 1 lit. f DSGVO.
@@ -447,6 +473,18 @@ while ( have_posts() ) :
 							über Brevo weiterverarbeitet. Rechtsgrundlage ist
 							Art. 6 Abs. 1 lit. b DSGVO, soweit es um vorvertragliche Kommunikation geht,
 							und im Uebrigen Art. 6 Abs. 1 lit. f DSGVO.
+						</p>
+
+						<h3>Feedback zu Beiträgen</h3>
+						<p>
+							Unter Blogbeiträgen können Sie angeben, ob Ihnen ein Beitrag geholfen hat, und
+							freiwillig einen kurzen Text schreiben. Wir zählen die Bewertung am Beitrag und
+							speichern einen Text zusammen mit Datum und einem gekürzten Hashwert Ihrer
+							IP-Adresse; je Beitrag bleiben höchstens die letzten 25 Texte erhalten. Der
+							Hashwert dient dazu, Mehrfachabgaben zu begrenzen, die IP-Adresse selbst wird
+							nicht gespeichert. In Ihrem Browser wird dafür nichts gespeichert.
+							Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse liegt
+							darin, Beiträge anhand der Rückmeldungen zu verbessern.
 						</p>
 
 						<h3>Missbrauchsschutz</h3>
