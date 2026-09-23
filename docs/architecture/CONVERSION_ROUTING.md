@@ -18,7 +18,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 
 | Route | Primary audience / intent | Page role | Primary CTA | Secondary CTA / bridge |
 | --- | --- | --- | --- | --- |
-| `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` with offer-specific focus | Proof / White-Label / Solar / tracking specialist |
+| `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` with offer-specific focus; while the Ersteinschätzung experiment is switched on, hero and close lead with it (`/kontakt/?focus=ersteinschaetzung`) and keep the project request beside it | Proof / White-Label / Solar / tracking specialist |
 | `/wordpress-freelancer-hannover/` | Retired direct-client route | 301 to `/`; excluded from sitemap | Homepage takes over content and query ownership | Legacy content anchors remain on `/` |
 | `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase`) or scoped first project | 30-minute call / proof |
 | `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck | Solar proof / case study |
@@ -55,6 +55,18 @@ Marktcheck. Nur die drei Angebotskarten verwenden
 `tracking`; dort ist die Themenfrage schon beantwortet, und der Kontaktablauf
 überspringt sie. Die Homepage benötigt kein eigenes Formular-JavaScript.
 `#anfrage` und `#kontakt` bleiben als Anker des Abschlussblocks erhalten.
+
+**Versuch Ersteinschätzung (8 Wochen ab Deploy, Schalter
+`HU_EXPERIMENT_ERSTEINSCHAETZUNG` im Kanon `inc/canon/messaging-canon.php`):**
+Solange der Schalter an ist, ist in Hero und Abschluss die Ersteinschätzung
+der primäre Button (`hu_first_assessment_url()` →
+`/kontakt/?focus=ersteinschaetzung`, Hooks `home_head_ersteinschaetzung` und
+`home_close_ersteinschaetzung`). Die Projektanfrage bleibt mit Ziel und Hooks
+unverändert als sekundärer Button daneben. Auf `/kontakt/` wählt der
+Parameter das Anliegen vor, die Website-URL ist dort Pflicht. Mails dazu
+tragen das Betreff-Präfix aus dem Kanon, das ist die einzige Zählstelle.
+Schalter aus: Startseite und `/kontakt/` rendern wie vorher. Laufzeit,
+Messung und Abbruchregel: `docs/experimente/ersteinschaetzung.md`.
 
 Routing, Inhalte, Weiterleitung, Analytics-Zuordnung und Nachkontrolle:
 `docs/decisions/homepage-freelancer-konsolidierung.md`.

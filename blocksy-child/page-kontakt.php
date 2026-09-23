@@ -33,7 +33,11 @@ $selected_type        = isset( $request_type_options[ $requested_type ] ) ? $req
 if ( '' === $requested_type && isset( $focus_options[ $requested_focus ] ) ) {
 	$focus_types = isset( $focus_options[ $requested_focus ]['types'] ) ? (array) $focus_options[ $requested_focus ]['types'] : [];
 	if ( ! in_array( $selected_type, $focus_types, true ) ) {
-		foreach ( [ 'project', 'implementation', 'ongoing', 'general', 'analysis', 'audit', 'client' ] as $candidate_type ) {
+		// Nach der festen Reihenfolge jeder weitere registrierte Typ: die
+		// Ersteinschätzung (Schalter im Kanon) hat ein Thema, das nur ihren
+		// eigenen Typ zulässt. Ohne sie ist die Liste dieselbe wie vorher.
+		$candidate_types = array_unique( array_merge( [ 'project', 'implementation', 'ongoing', 'general', 'analysis', 'audit', 'client' ], array_keys( $request_type_options ) ) );
+		foreach ( $candidate_types as $candidate_type ) {
 			if ( isset( $request_type_options[ $candidate_type ] ) && in_array( $candidate_type, $focus_types, true ) ) {
 				$selected_type = $candidate_type;
 				break;
@@ -92,7 +96,19 @@ $visible_step_count  = 3 - ( $is_scoped_focus ? 1 : 0 );
 $form_title          = $is_scoped_focus ? 'Zwei kurze Schritte. Direkte fachliche Einordnung.' : 'Drei kurze Schritte. Klare Anfrage statt langem Briefing.';
 $form_intro          = $is_scoped_focus ? 'Seite, Engpass, Ziel – mehr brauche ich für den ersten fachlichen Check nicht.' : 'Nur die Angaben, die ich für eine erste fachliche Einordnung wirklich brauche.';
 $message_step_title  = $is_scoped_focus ? 'Wo liegt der Engpass?' : 'Was soll messbar besser werden?';
+$form_eyebrow        = 'Projektbriefing';
 $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' contact-page--scoped' : '' );
+$website_placeholder = 'https://example.de';
+
+// Versuch Ersteinschätzung (/kontakt/?focus=ersteinschaetzung). Den Typ gibt
+// es nur bei eingeschaltetem Schalter; alle Texte kommen aus dem Kanon.
+$is_first_assessment = function_exists( 'nexus_is_first_assessment_request' ) && nexus_is_first_assessment_request( $selected_type );
+if ( $is_first_assessment ) {
+	$submit_label       = hu_first_assessment_text( 'submit' );
+	$form_eyebrow       = hu_first_assessment_text( 'label' );
+	$form_intro         = hu_first_assessment_text( 'intro' );
+	$message_step_title = hu_first_assessment_text( 'step_title' );
+}
 ?>
 
 <div class="<?php echo esc_attr( $page_classes ); ?>" data-track-section="contact_page">
@@ -125,7 +141,7 @@ $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' co
 		<section class="contact-form-panel" id="kontakt-form" aria-labelledby="contact-form-title">
 			<header class="contact-section-head">
 				<div class="contact-section-head__meta">
-					<p class="contact-section-head__eyebrow">Projektbriefing</p>
+					<p class="contact-section-head__eyebrow"><?php echo esc_html( $form_eyebrow ); ?></p>
 					<p class="contact-section-head__trust"><span aria-hidden="true">●</span> Persönlich geprüft · Antwort <?php echo esc_html( $response_window ); ?></p>
 				</div>
 				<h2 id="contact-form-title"><?php echo esc_html( $form_title ); ?></h2>
@@ -177,7 +193,18 @@ $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' co
 
 					<section class="contact-flow-step" data-contact-step="message" data-contact-step-label="Ausgangslage">
 						<div class="contact-step-head"><span><?php echo esc_html( $is_scoped_focus ? '01' : '02' ); ?></span><p><?php echo esc_html( $message_step_title ); ?></p></div>
+						<?php if ( $is_first_assessment ) : // URL ist Pflicht, das Ziel ein optionaler Satz. Beides läuft über dieselben Felder (website_url, message) wie jede andere Anfrage. ?>
+						<div class="contact-field" data-contact-field="website_url">
+							<label for="contact-website"><?php echo esc_html( hu_first_assessment_text( 'website_label' ) ); ?></label>
+							<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="<?php echo esc_attr( $website_placeholder ); ?>" required aria-describedby="contact-website-error" data-contact-website data-contact-required-error="<?php echo esc_attr( hu_first_assessment_text( 'website_missing' ) ); ?>">
+							<p class="contact-field__error is-hidden" id="contact-website-error" aria-live="polite"></p>
+						</div>
 						<div class="contact-field" data-contact-field="message">
+							<label for="contact-message"><?php echo esc_html( hu_first_assessment_text( 'goal_label' ) ); ?> <span><?php echo esc_html( hu_first_assessment_text( 'goal_hint' ) ); ?></span></label>
+							<input id="contact-message" name="message" type="text" maxlength="<?php echo esc_attr( (string) HU_FIRST_ASSESSMENT_GOAL_MAXLENGTH ); ?>" data-contact-message data-contact-message-optional>
+						</div>
+						<?php // else und endif stehen so, dass die Seite ohne Versuch byte-gleich zum Stand davor rendert. ?>
+						<?php else : ?><div class="contact-field" data-contact-field="message">
 							<label for="contact-message" data-contact-message-label>Ausgangslage und Ziel</label>
 							<p id="contact-message-help" class="contact-field__help" data-contact-message-help>Nennen Sie Seite, Angebot und Engpass. Das reicht für eine erste fachliche Einordnung.</p>
 							<textarea id="contact-message" name="message" rows="6" required minlength="<?php echo esc_attr( (string) $message_minlength ); ?>" aria-describedby="contact-message-help contact-message-error" data-contact-message></textarea>
@@ -187,7 +214,7 @@ $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' co
 						<div class="contact-brief-meta">
 							<div class="contact-field">
 								<label for="contact-website">Website <span>optional</span></label>
-								<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="https://example.de">
+								<input id="contact-website" name="website_url" type="url" autocomplete="url" inputmode="url" placeholder="<?php echo esc_attr( $website_placeholder ); ?>">
 							</div>
 							<div class="contact-field<?php echo esc_attr( $show_timeline_field ? '' : ' is-hidden' ); ?>" data-contact-context-field="timeline">
 								<label for="contact-timeline" data-contact-timeline-label>Zeitfenster <span>optional</span></label>
@@ -199,7 +226,7 @@ $page_classes        = 'site-main doku contact-page' . ( $is_scoped_focus ? ' co
 								</select>
 							</div>
 						</div>
-					</section>
+					<?php endif; ?></section>
 
 					<section class="contact-flow-step" data-contact-step="identity" data-contact-step-label="Kontakt">
 						<div class="contact-step-head"><span><?php echo esc_html( $is_scoped_focus ? '02' : '03' ); ?></span><p>Wie erreiche ich Sie?</p></div>

@@ -325,6 +325,27 @@
   color: var(--tinte);
 }
 
+/* Versuch Ersteinschaetzung (Schalter im Kanon): primaerer Button mit einer
+ * Zeile darunter, der Projekt-Button steht oben buendig daneben. Ohne Schalter
+ * gibt es .home-cta-first nicht, und keine dieser Regeln greift. */
+.startseite .home-cta-first {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s0);
+  min-width: 0;
+  max-width: 100%;
+}
+.startseite .home-cta-first ~ .tun { align-self: flex-start; }
+.startseite .home-cta-note {
+  max-width: 34ch;
+  margin: 0;
+  color: var(--grau);
+  font-size: .86rem;
+  line-height: 1.45;
+}
+.startseite #anfrage .home-close-v2 .home-cta-note { color: color-mix(in srgb, #fff 70%, transparent); }
+
 /* Trust-Zeile. Erster Eintrag kommt aus hu_response_promise(); nie als Literal. */
 .startseite .home-trust-row {
   display: flex;

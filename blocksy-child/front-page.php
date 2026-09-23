@@ -76,6 +76,31 @@ $faqs = [
  */
 $flow_label = 'Beispielablauf: Eine Website führt zur Projektanfrage. Das Vorhaben wird erfasst und mit seiner Quelle ins CRM übergeben.';
 
+/**
+ * Versuch "Kostenlose Ersteinschätzung" (Schalter und Texte im Kanon).
+ * Eingeschaltet wird die Ersteinschätzung der primäre Button in Hero und
+ * Abschluss, der Projekt-Button bleibt als sekundärer daneben. Ausgeschaltet
+ * liefert der Helper nichts und der Projekt-Button behält seine Klasse, damit
+ * die Seite byte-gleich zum Stand vor dem Versuch rendert.
+ */
+$first_assessment_on  = function_exists( 'hu_first_assessment_enabled' ) && hu_first_assessment_enabled();
+$project_cta_class    = $first_assessment_on ? 'tun still' : 'tun';
+$first_assessment_cta = static function ( $section ) use ( $first_assessment_on ) {
+	if ( ! $first_assessment_on ) {
+		return '';
+	}
+	$track_action = 'hero' === $section ? 'home_head_ersteinschaetzung' : 'home_close_ersteinschaetzung';
+
+	return sprintf(
+		'<div class="home-cta-first"><a class="tun" href="%1$s" data-track-action="%2$s" data-track-category="lead_gen" data-track-section="%3$s">%4$s <span aria-hidden="true">→</span></a><p class="home-cta-note">%5$s</p></div>',
+		esc_url( hu_first_assessment_url() ),
+		esc_attr( $track_action ),
+		esc_attr( $section ),
+		esc_html( hu_first_assessment_text( 'cta' ) ),
+		esc_html( hu_first_assessment_text( 'cta_note' ) )
+	);
+};
+
 if ( function_exists( 'hu_enqueue_css' ) ) {
 	hu_enqueue_css( 'hu-navigation-ecosystem', 'navigation-ecosystem.css', [ 'nexus-system-css' ] );
 	hu_enqueue_css( 'nexus-startseite-css', 'startseite.css', [ 'nexus-system-css' ] );
@@ -96,7 +121,7 @@ get_header();
 				<h1><span class="home-title-primary">WordPress Freelancer Hannover.</span><span class="home-title-secondary">Von der Website<br>bis zur Anfrage<span class="home-title-stop">.</span></span></h1>
 				<p class="aufriss">Ich entwickle WordPress-Websites mit technischem SEO und sauberer Messung – damit Angebote verständlich werden und Anfragen bis ins CRM ankommen. Direkt mit mir, ohne Übergabe an ein fremdes Entwicklerteam.</p>
 				<div class="ausgang">
-					<a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_head_contact" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span aria-hidden="true">→</span></a>
+					<?php echo $first_assessment_cta( 'hero' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?><a class="<?php echo esc_attr( $project_cta_class ); ?>" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_head_contact" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span aria-hidden="true">→</span></a>
 					<a class="tun still" href="#angebote" data-track-action="home_hero_to_offers" data-track-category="navigation" data-track-section="hero">Leistungen und Preise</a>
 				</div>
 				<div class="home-trust-row">
@@ -347,7 +372,7 @@ get_header();
 
 	<div class="abschluss" id="anfrage" data-track-section="abschluss" tabindex="-1">
 		<div class="blatt" id="kontakt"><div class="tafel home-close home-close-v2">
-			<div><p class="mono">Der nächste Schritt</p><h2>Was soll als Nächstes besser funktionieren?</h2><p class="aufriss">Schicken Sie mir Ausgangslage, Engpass und Ziel. Ich prüfe die Aufgabe selbst und melde mich mit einer ersten fachlichen Einordnung – ohne Vertriebsübergabe und ohne fertiges Briefing.</p><div class="ausgang"><a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_close_contact" data-track-category="lead_gen" data-track-section="abschluss">Projekt beschreiben <span aria-hidden="true">→</span></a><a class="tun still" href="<?php echo esc_url( 'mailto:' . $contact_email, [ 'mailto' ] ); ?>" data-track-action="home_close_mail" data-track-category="lead_gen" data-track-section="abschluss">Per E-Mail anfragen</a></div></div>
+			<div><p class="mono">Der nächste Schritt</p><h2>Was soll als Nächstes besser funktionieren?</h2><p class="aufriss">Schicken Sie mir Ausgangslage, Engpass und Ziel. Ich prüfe die Aufgabe selbst und melde mich mit einer ersten fachlichen Einordnung – ohne Vertriebsübergabe und ohne fertiges Briefing.</p><div class="ausgang"><?php echo $first_assessment_cta( 'abschluss' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?><a class="<?php echo esc_attr( $project_cta_class ); ?>" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_close_contact" data-track-category="lead_gen" data-track-section="abschluss">Projekt beschreiben <span aria-hidden="true">→</span></a><a class="tun still" href="<?php echo esc_url( 'mailto:' . $contact_email, [ 'mailto' ] ); ?>" data-track-action="home_close_mail" data-track-category="lead_gen" data-track-section="abschluss">Per E-Mail anfragen</a></div></div>
 			<div class="home-close-note"><strong><?php echo esc_html( $response ); ?></strong><p>Direkt bei mir. Kein gebuchter Termin und kein fertiges Briefing nötig.</p></div>
 		</div></div>
 	</div>

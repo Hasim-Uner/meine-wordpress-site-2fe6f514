@@ -168,6 +168,101 @@ function hu_response_promise( $variant = 'phrase' ) {
 	return sprintf( 'Antwort %s', $short );
 }
 
+// ── Versuch: Kostenlose Ersteinschaetzung ─────────────────────────
+// Direktinteressenten ohne fertiges Projekt bekommen einen niedrigschwelligen
+// ersten Schritt: URL schicken, drei Befunde schriftlich zurueck. Laufzeit,
+// Messgroesse und Abbruchregel stehen in docs/experimente/ersteinschaetzung.md.
+//
+// Der Schalter nimmt den Versuch vollstaendig zurueck. Aus heisst: Startseite
+// und /kontakt/ rendern exakt wie vorher, ?focus=ersteinschaetzung faellt
+// auf die normale Projektanfrage zurueck. Abschalten ohne Deploy geht ueber
+// wp-config.php:
+//
+//   define( 'HU_EXPERIMENT_ERSTEINSCHAETZUNG', false );
+//
+// Eine Ausnahme: Der Endpoint contact-request nimmt das Anliegen auch bei
+// ausgeschaltetem Schalter an. Sonst ginge eine Einsendung aus einer noch
+// zwischengespeicherten Seite nach dem Abschalten verloren.
+//
+// Gezaehlt wird nur ueber den Betreff der Mails (Praefix unten). Kein Cookie,
+// kein Skript, kein Consent-Banner.
+defined( 'HU_EXPERIMENT_ERSTEINSCHAETZUNG' ) || define( 'HU_EXPERIMENT_ERSTEINSCHAETZUNG', true );
+
+// Kennung in URL (?focus=), Formular und CRM (_nexus_contact_request_type).
+// Nie aendern, solange der Versuch laeuft: sonst zaehlen alte Links nicht mehr.
+define( 'HU_FIRST_ASSESSMENT_KEY', 'ersteinschaetzung' );
+define( 'HU_FIRST_ASSESSMENT_LABEL', 'Ersteinschätzung' );
+// "Ein Satz": das Ziel-Feld ist bewusst keine zweite Nachricht.
+define( 'HU_FIRST_ASSESSMENT_GOAL_MAXLENGTH', 240 );
+
+/**
+ * Whether the Ersteinschaetzung experiment is switched on.
+ *
+ * @return bool
+ */
+function hu_first_assessment_enabled() {
+	return (bool) HU_EXPERIMENT_ERSTEINSCHAETZUNG;
+}
+
+/**
+ * Stable key of the Ersteinschaetzung request type and contact focus.
+ *
+ * @return string
+ */
+function hu_first_assessment_key() {
+	return HU_FIRST_ASSESSMENT_KEY;
+}
+
+/**
+ * Contact URL that preselects the Ersteinschaetzung: /kontakt/?focus=ersteinschaetzung.
+ *
+ * @return string
+ */
+function hu_first_assessment_url() {
+	$contact_url = function_exists( 'nexus_get_contact_url' ) ? nexus_get_contact_url() : home_url( '/kontakt/' );
+
+	return add_query_arg( 'focus', HU_FIRST_ASSESSMENT_KEY, $contact_url );
+}
+
+/**
+ * Customer-facing wording of the Ersteinschaetzung experiment.
+ *
+ * Jeder Text des Versuchs steht genau hier. Startseite, Kontaktseite,
+ * Validierung und Mails lesen nur ab. Die Antwortzeit kommt aus
+ * hu_response_promise(), nicht aus einer eigenen Fassung.
+ *
+ * @param string $key Text key.
+ * @return string Empty string for an unknown key.
+ */
+function hu_first_assessment_text( $key ) {
+	$review  = 'Ich sehe mir jede Einsendung selbst an.';
+	$promise = 'Passt Ihre Seite zu meiner Arbeit, bekommen Sie drei konkrete Befunde per E-Mail. Wenn nicht, sage ich Ihnen das direkt.';
+
+	$texts = [
+		// Anliegen im Formular, Typ in CRM und Mail.
+		'label'           => HU_FIRST_ASSESSMENT_LABEL,
+		// Primaerer Button in Hero und Abschluss der Startseite.
+		'cta'             => 'Kostenlose ' . HU_FIRST_ASSESSMENT_LABEL,
+		// Zeile unter dem primaeren Button.
+		'cta_note'        => 'URL schicken, drei Befunde schriftlich zurück. Ohne Verpflichtung.',
+		// Ueber dem Formular: Pruefung, Zusage, Antwortzeit.
+		'intro'           => $review . ' ' . $promise . ' ' . hu_response_promise( 'sentence' ),
+		// Dritter Schritt der Bestaetigungsmail: dieselbe Zusage wie im Formular.
+		'promise'         => $promise,
+		'step_title'      => 'Welche Website soll ich mir ansehen?',
+		'website_label'   => 'Website-URL',
+		'website_missing' => 'Bitte die Adresse Ihrer Website angeben.',
+		'goal_label'      => 'Was soll die Website für Sie erreichen?',
+		'goal_hint'       => 'ein Satz, optional',
+		'submit'          => HU_FIRST_ASSESSMENT_LABEL . ' anfordern',
+		// Betreff-Praefix der internen Mail und der Bestaetigung. Einzige
+		// Zaehlstelle des Versuchs.
+		'subject_prefix'  => '[' . HU_FIRST_ASSESSMENT_LABEL . ']',
+	];
+
+	return isset( $texts[ $key ] ) ? $texts[ $key ] : '';
+}
+
 /**
  * Return the canonical messaging model.
  *

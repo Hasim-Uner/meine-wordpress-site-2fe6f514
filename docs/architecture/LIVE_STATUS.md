@@ -48,7 +48,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   eine Weiche (`#wege`) zu White-Label und zum Anfragesystem; drei Leistungen
   mit den Ankern `#angebot-website`, `#angebot-funnel`, `#angebot-tracking`;
   Nachweis, Arbeitsweise, Fragen (template-eigenes FAQPage-Schema), Anfrage.
-  `/wordpress-freelancer-hannover/` leitet per 301 hierher.
+  `/wordpress-freelancer-hannover/` leitet per 301 hierher. Solange der
+  Versuch Ersteinschätzung läuft (Schalter `HU_EXPERIMENT_ERSTEINSCHAETZUNG`,
+  `docs/experimente/ersteinschaetzung.md`), führen Hero und Abschluss primär
+  auf `/kontakt/?focus=ersteinschaetzung`; die Projektanfrage steht sekundär
+  daneben.
 - **`/kontakt/`** (`page-kontakt.php`): Anfrage-Intake, siehe „Anfragewege“.
 - **`/whitelabel-retainer/`** (`page-whitelabel-retainer.php`): Agentur-Einstieg
   mit eigenem Kopf, Fuß und Skip-Link. Primärziel ist das Aufgabenformular; der
@@ -121,6 +125,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   - `contact-request` (`inc/contact-page.php`): `/kontakt/` und das
     Server-Side-Formular. Bei `type=project` erscheint zuerst die Themenwahl
     (Vorhaben), der Agentur-Hinweis ist immer sichtbar, Budget ist optional.
+    Anfragetyp `ersteinschaetzung` (Versuch): Website-URL Pflicht, Nachricht
+    optional, Betreff-Präfix aus dem Kanon; der Endpoint nimmt ihn auch bei
+    ausgeschaltetem Schalter an.
   - `whitelabel-request` (`inc/whitelabel-request.php`): legt einen
     CRM-Kontakt mit Quelle und Segment `whitelabel_request` und eine
     Sales-Chance an.
@@ -226,6 +233,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Nach dem Merge je eine Testanfrage über `/kontakt/`, `/whitelabel-retainer/`
   und den Marktcheck: CRM-Eintrag, Sales-Chance, interne Mail und Bestätigung
   prüfen.
+- Versuch Ersteinschätzung: nach dem Deploy eine Einsendung über
+  `/kontakt/?focus=ersteinschaetzung` schicken (Betreff-Präfix bei
+  kontakt@hasimuener.de prüfen) und Start- und Enddatum in
+  `docs/experimente/ersteinschaetzung.md` eintragen.
 - WP-Cron: Wegen des Seiten-Caches ist ein echter Server-Cron für `wp-cron.php`
   nötig, sonst laufen Follow-ups und Antwortfrist-Wächter nur bei
   Admin-Besuchen zuverlässig. Im Repo nicht prüfbar.
