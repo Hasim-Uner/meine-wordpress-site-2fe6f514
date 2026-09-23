@@ -71,10 +71,15 @@ $faqs = [
 ];
 
 /**
- * Illustrative journey: the complete result is server-rendered.
- * The optional route script plays one bounded example, never a real form.
+ * Hero-Tafel: Stromlinien aus scripts/build-home-feld-svg.py, als statisches
+ * SVG vollständig im Markup. home-feld.js legt nur bewegte Funken darüber und
+ * wechselt die Beispielquelle; ohne Skript bleibt die erste Quelle stehen.
  */
-$flow_label = 'Beispielablauf: Eine Website führt zur Projektanfrage. Das Vorhaben wird erfasst und mit seiner Quelle ins CRM übergeben.';
+$flow_label   = 'Beispiel als Stromlinien: Besuche kommen von links über die Website. Ein Teil wird zur Anfrage und landet mit seiner Quelle im CRM, der Rest zieht vorbei.';
+$flow_sources = [ 'Empfehlung', 'Google-Suche', 'LinkedIn', 'Google Ads' ];
+$feld_file    = get_stylesheet_directory() . '/assets/img/home-feld.svg';
+$feld_svg     = is_readable( $feld_file ) ? (string) file_get_contents( $feld_file ) : ''; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme asset.
+$feld_svg     = false !== strpos( $feld_svg, '<svg' ) ? substr( $feld_svg, strpos( $feld_svg, '<svg' ) ) : '';
 
 /**
  * Versuch "Kostenlose Ersteinschätzung" (Schalter und Texte im Kanon).
@@ -108,7 +113,7 @@ if ( function_exists( 'hu_enqueue_css' ) ) {
 }
 if ( function_exists( 'hu_enqueue_js' ) ) {
 	hu_enqueue_js( 'hu-navigation-ecosystem', 'navigation-ecosystem.js', [] );
-	hu_enqueue_js( 'hu-home-journey', 'home-journey.js', [] );
+	hu_enqueue_js( 'hu-home-feld', 'home-feld.js', [] );
 }
 get_header();
 ?>
@@ -138,54 +143,16 @@ get_header();
 					<figcaption><strong>Direkt mit Haşim Üner.</strong><span>Konzeption · Entwicklung · Übergabe</span><a class="satzlink" href="<?php echo esc_url( $about_url ); ?>" data-track-action="home_about" data-track-category="trust" data-track-section="hero">Mehr über Haşim</a></figcaption>
 				</figure>
 			</div>
-			<figure class="home-journey" data-home-journey aria-labelledby="home-journey-caption">
-				<div class="home-journey__scene" id="home-journey-scene" role="img" aria-label="<?php echo esc_attr( $flow_label ); ?>">
-					<div class="home-journey__panels" aria-hidden="true">
-						<div class="home-journey__stage home-journey__stage--website">
-							<div class="home-journey__stage-label"><span>01</span> Website</div>
-							<div class="home-journey__window home-journey__window--website">
-								<div class="home-journey__chrome"><i></i><i></i><i></i></div>
-								<div class="home-journey__body">
-									<span class="home-journey__brand">Ihr Unternehmen<span>.</span></span>
-									<strong class="home-journey__site-title">Ihr Angebot.<br>Klar auf den Punkt.</strong>
-									<span class="home-journey__lines"><i></i><i></i></span>
-									<span class="home-journey__mock-action home-journey__visit">Projekt anfragen <span>↗</span></span>
-									<div class="home-journey__site-grid"><span><i></i>Leistungen</span><span><i></i>Projekte</span></div>
-								</div>
-							</div>
-						</div>
-						<div class="home-journey__stage home-journey__stage--request">
-							<div class="home-journey__stage-label"><span>02</span> Anfrage</div>
-							<div class="home-journey__window home-journey__window--request">
-								<div class="home-journey__body">
-									<span class="home-journey__eyebrow">Projektanfrage</span>
-									<strong class="home-journey__panel-title">Worum geht es?</strong>
-									<div class="home-journey__choices"><span>Website</span><span>Tracking</span></div>
-									<div class="home-journey__field"><span>Ihr Vorhaben</span><span class="home-journey__entry">Website-Relaunch</span></div>
-									<div class="home-journey__field home-journey__field--email"><span>E-Mail</span><span class="home-journey__entry home-journey__entry--line"><i></i></span></div>
-									<span class="home-journey__mock-action home-journey__send">Anfrage senden <span>→</span></span>
-								</div>
-							</div>
-						</div>
-						<div class="home-journey__stage home-journey__stage--crm">
-							<div class="home-journey__stage-label"><span>03</span> CRM</div>
-							<div class="home-journey__window home-journey__window--crm tafel">
-								<span class="home-journey__eyebrow">Vertriebsanschluss</span>
-								<strong class="home-journey__panel-title">Neue Anfrage.</strong>
-								<div class="home-journey__lead">
-									<span class="home-journey__received"><i></i> Eingegangen</span>
-									<strong>Website-Projekt</strong>
-									<dl><div><dt>Quelle</dt><dd>Website</dd></div><div><dt>Vorhaben</dt><dd>Relaunch</dd></div></dl>
-								</div>
-								<span class="home-journey__success"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>Sauber übergeben</span>
-							</div>
-						</div>
-					</div>
-					<div class="home-journey__progress" aria-hidden="true"><span class="home-journey__progress-fill" data-journey-progress></span><i></i><i></i><i></i></div>
+			<figure class="home-feld" data-home-feld data-home-feld-quellen="<?php echo esc_attr( implode( '|', $flow_sources ) ); ?>" aria-labelledby="home-feld-caption">
+				<div class="home-feld__tafel" role="img" aria-label="<?php echo esc_attr( $flow_label ); ?>">
+					<?php echo $feld_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from the theme, generated by scripts/build-home-feld-svg.py. ?>
+					<canvas class="home-feld__funken" aria-hidden="true"></canvas>
+					<p class="home-feld__marke" aria-hidden="true"><span class="home-feld__marke-titel">Neu im CRM</span><span class="home-feld__marke-quelle"><span class="home-feld__marke-praefix">Quelle: </span><b data-home-feld-quelle><?php echo esc_html( $flow_sources[0] ); ?></b></span></p>
 				</div>
-				<figcaption class="home-journey__caption">
-					<span id="home-journey-caption">Beispielablauf · Von der Website ins CRM</span>
-					<button class="home-journey__replay" type="button" aria-controls="home-journey-scene" aria-label="Beispielablauf erneut abspielen" data-journey-replay hidden><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"></path></svg>Wiederholen</button>
+				<ol class="home-feld__achse" aria-hidden="true"><li>Website</li><li>Anfrage</li></ol>
+				<figcaption class="home-feld__caption">
+					<span id="home-feld-caption">Beispiel: Jede Anfrage kommt mit ihrer Quelle im CRM an.</span>
+					<button class="home-feld__schalter" type="button" aria-label="Bewegung anhalten" data-home-feld-schalter hidden><svg class="home-feld__symbol-halt" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 2h2v8H3zM7 2h2v8H7z"></path></svg><svg class="home-feld__symbol-weiter" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 1.5 10.5 6 3 10.5z"></path></svg><span data-home-feld-schalter-text>Anhalten</span></button>
 				</figcaption>
 			</figure>
 		</div>
