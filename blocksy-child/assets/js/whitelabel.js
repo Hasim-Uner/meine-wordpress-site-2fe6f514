@@ -264,7 +264,7 @@
 				'case': caseField ? caseField.value : 'aufgabe'
 			};
 
-			// Herkunft aus der Sitzung (NexusCore), unsichtbar und ohne Cookies.
+			// Herkunft ueber NexusCore: ohne Cookies, ohne Einwilligung auch ohne Browser-Speicher.
 			var core = window.NexusCore;
 			var attribution = core && typeof core.getLeadAttributionPayload === 'function' ? core.getLeadAttributionPayload() : {};
 			var campaign = core && typeof core.getCampaignContext === 'function' ? core.getCampaignContext() : {};

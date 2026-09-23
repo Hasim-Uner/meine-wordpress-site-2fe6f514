@@ -740,10 +740,10 @@
             return mergeSessionAttribution(payload);
         }
 
-        // Herkunft aus der Sitzung ergaenzen (NexusCore). Parameter in der URL
-        // dieser Seite stehen schon in den versteckten Feldern und haben Vorrang;
-        // die Sitzung liefert, womit der Besuch begonnen hat, auch wenn die
-        // Anfrage erst drei Seiten spaeter abgeschickt wird.
+        // Herkunft ergaenzen (NexusCore). Parameter in der URL dieser Seite
+        // stehen schon in den versteckten Feldern und haben Vorrang. Ohne
+        // Einwilligung kennt NexusCore nur diese Seite und ihre Vorseite; erst
+        // mit Einwilligung liefert die Sitzung, womit der Besuch begonnen hat.
         function mergeSessionAttribution(payload) {
             var core = window.NexusCore;
             var attribution = core && typeof core.getLeadAttributionPayload === 'function' ? core.getLeadAttributionPayload() : {};

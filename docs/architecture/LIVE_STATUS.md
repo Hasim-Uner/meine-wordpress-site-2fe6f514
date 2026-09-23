@@ -1,7 +1,7 @@
 # Live Status
 
 Aktuelles Verhalten der Website, nach Bereichen. Stand: Repository `main`
-einschließlich der Änderungen vom 2026-09-22 (gilt nach Merge und Deploy).
+einschließlich der Änderungen vom 2026-09-23 (gilt nach Merge und Deploy).
 
 Diese Datei beschreibt den Ist-Zustand, keinen Verlauf. Die frühere,
 chronologische Fassung mit Begründungen und Prüfprotokollen bis 2026-09-22
@@ -187,8 +187,16 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Das Theme bindet weder GTM noch GA4 ein. `data-track-*`-Hooks bleiben an
   allen Conversion-Flächen; Skripte schreiben nur dann in `dataLayer`, wenn
   eines existiert.
-- Auswertung: Koko Analytics (Plugin, admin-owned) und das SEO-Cockpit im
-  Admin (Search Console per OAuth, Linkgraph, Lead-Attribution aus dem CRM).
+- Auswertung: Koko Analytics (Plugin, admin-owned, Tracking-Methode
+  `fingerprint`, cookielos) und das SEO-Cockpit im Admin (Search Console per
+  OAuth, Linkgraph, Lead-Attribution aus dem CRM).
+- Öffentliche Besuche setzen keine Cookies und schreiben nichts in
+  `localStorage` oder `sessionStorage`; kein Cookie-Banner. Formulare lesen die
+  Herkunft erst beim Absenden aus der Formularseite (Adresse, utm-Parameter,
+  Referrer). Die Sitzungs-Herkunft über mehrere Seiten ist vorbereitet, aber
+  nur mit Einwilligung aktiv (`window.huConsent`). Sticky-CTA und
+  „Gefällt mir“ speichern nichts, das WordPress-Emoji-Skript ist im Frontend
+  aus. Details: `docs/architecture/PRIVACY.md`.
 
 ## Kanon und Guards
 
