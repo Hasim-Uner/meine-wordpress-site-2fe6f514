@@ -11,11 +11,9 @@
 
     var replay = journey.querySelector('[data-journey-replay]');
     var progress = journey.querySelector('[data-journey-progress]');
-    var artwork = journey.querySelector('[data-journey-artwork]');
-    if (!replay || !progress || !artwork) return;
+    if (!replay || !progress) return;
 
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    var artworkReady = artwork.complete && artwork.naturalWidth > 0;
     var hasPlayed = false;
     var isPlaying = false;
     var isInView = false;
@@ -29,7 +27,7 @@
     }
 
     function play() {
-        if (isPlaying || !isInView || !artworkReady || document.hidden || reducedMotion.matches) return;
+        if (isPlaying || !isInView || document.hidden || reducedMotion.matches) return;
         hasPlayed = true;
         isPlaying = true;
         journey.classList.add('is-playing');
@@ -39,7 +37,7 @@
 
     function syncPreference() {
         settle();
-        replay.hidden = reducedMotion.matches || !artworkReady;
+        replay.hidden = reducedMotion.matches;
         if (!hasPlayed) play();
     }
 
@@ -57,18 +55,6 @@
             if (event.animationName === 'hu-journey-progress') settle();
         });
         replay.addEventListener('click', play);
-        artwork.addEventListener('load', function () {
-            artworkReady = artwork.naturalWidth > 0;
-            if (artworkReady) journey.classList.add('has-artwork');
-            replay.hidden = reducedMotion.matches || !artworkReady;
-            if (!hasPlayed) play();
-        });
-        artwork.addEventListener('error', function () {
-            artworkReady = false;
-            settle();
-            journey.classList.remove('has-artwork');
-            replay.hidden = true;
-        });
         document.addEventListener('visibilitychange', function () {
             if (document.hidden) settle();
             else if (!hasPlayed) play();
@@ -80,8 +66,7 @@
             reducedMotion.addListener(syncPreference);
         }
         journey.setAttribute('data-journey-ready', '');
-        if (artworkReady) journey.classList.add('has-artwork');
-        replay.hidden = reducedMotion.matches || !artworkReady;
+        replay.hidden = reducedMotion.matches;
     } catch (error) {
         settle();
         replay.hidden = true;

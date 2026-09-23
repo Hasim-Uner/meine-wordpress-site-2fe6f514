@@ -117,18 +117,17 @@ get_header();
 	<div class="blatt kopfteil">
 		<div class="home-hero home-hero-v9">
 			<div class="home-hero-copy">
-				<p class="gegenstand">WordPress · Tracking · CRM · Pattensen bei Hannover</p>
+				<p class="gegenstand">WordPress&nbsp;· Tracking&nbsp;· CRM&nbsp;· Pattensen&nbsp;bei&nbsp;Hannover</p>
 				<h1><span class="home-title-primary">WordPress Freelancer Hannover.</span><span class="home-title-secondary">Von der Website<br>bis zur Anfrage<span class="home-title-stop">.</span></span></h1>
 				<p class="aufriss">Ich entwickle WordPress-Websites mit technischem SEO und sauberer Messung – damit Angebote verständlich werden und Anfragen bis ins CRM ankommen. Direkt mit mir, ohne Übergabe an ein fremdes Entwicklerteam.</p>
 				<div class="ausgang">
 					<?php echo $first_assessment_cta( 'hero' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?><a class="<?php echo esc_attr( $project_cta_class ); ?>" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_head_contact" data-track-category="lead_gen" data-track-section="hero">Projekt anfragen <span aria-hidden="true">→</span></a>
-					<a class="tun still" href="#angebote" data-track-action="home_hero_to_offers" data-track-category="navigation" data-track-section="hero">Leistungen und Preise</a>
 				</div>
-				<div class="home-trust-row">
-					<span><?php echo esc_html( $response_short ); ?></span>
-					<span>Klare Projektpreise</span>
-					<span>Direkt mit dem Entwickler</span>
-				</div>
+				<?php // Zwei Buttons, keine dritte Wahl: Der Sprung zu den Leistungen trägt jetzt den Preisanker und behält seinen Hook. ?>
+				<ul class="home-trust-row">
+					<li><?php echo esc_html( $response_short ); ?></li>
+					<li><a class="satzlink" href="#angebote" data-track-action="home_hero_to_offers" data-track-category="navigation" data-track-section="hero">Website-Projekte ab <?php echo esc_html( $website_price ); ?></a></li>
+				</ul>
 				<?php // Weiche im ersten Blick: Agenturen und Energy-Betriebe haben eigene Wege. Hooks unverändert. ?>
 				<div class="home-doors" id="wege" data-track-section="tueren">
 					<p><span class="mono">Für Agenturen</span><a class="satzlink" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="home_door_whitelabel" data-track-category="navigation" data-track-section="tueren">White-Label: Umsetzung unter Ihrem Namen →</a></p>
@@ -141,48 +140,67 @@ get_header();
 			</div>
 			<figure class="home-journey" data-home-journey aria-labelledby="home-journey-caption">
 				<div class="home-journey__scene" id="home-journey-scene" role="img" aria-label="<?php echo esc_attr( $flow_label ); ?>">
-					<img class="home-journey__artwork" data-journey-artwork src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/home-journey-artwork.webp' ); ?>" width="1536" height="1024" alt="" aria-hidden="true" decoding="async">
-					<svg class="home-journey__details" viewBox="0 0 1536 1024" aria-hidden="true" focusable="false">
-						<defs>
-							<mask id="home-journey-route-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1536" height="1024">
-								<rect width="1536" height="1024" fill="white"></rect>
-								<rect x="79" y="121" width="668" height="683" rx="12" fill="black"></rect>
-								<rect x="625" y="179" width="398" height="634" rx="16" fill="black"></rect>
-								<rect x="1048" y="258" width="410" height="545" rx="15" fill="black"></rect>
-							</mask>
-						</defs>
-						<path class="home-journey__signal" data-journey-progress="" mask="url(#home-journey-route-mask)" pathLength="100" d="M36 419C190 280 436 275 625 280S928 200 1022 204S1128 211 1174 264S1380 446 1500 531"></path>
-						<circle class="home-journey__click" cx="234" cy="461" r="30"></circle>
-						<rect class="home-journey__field-paper" x="681" y="460" width="283" height="86" rx="5"></rect>
-						<g class="home-journey__entry home-journey__entry--project">
-							<text class="home-journey__input" x="687" y="488">Website-Relaunch</text>
-							<text class="home-journey__input-note" x="687" y="525">Neue Unternehmenswebsite</text>
-						</g>
-						<rect class="home-journey__field-paper" x="681" y="628" width="281" height="27" rx="4"></rect>
-						<text class="home-journey__entry home-journey__entry--email home-journey__input" x="687" y="650">name@firma.example</text>
-						<rect class="home-journey__submit-cue" x="668" y="702" width="312" height="61" rx="8"></rect>
-						<g class="home-journey__pending">
-							<rect class="home-journey__field-paper" x="1084" y="416" width="338" height="232" rx="12"></rect>
-							<rect class="home-journey__placeholder" x="1110" y="445" width="139" height="12" rx="6"></rect>
-							<rect class="home-journey__placeholder" x="1110" y="491" width="222" height="22" rx="6"></rect>
-							<rect class="home-journey__placeholder" x="1110" y="565" width="251" height="9" rx="4"></rect>
-							<rect class="home-journey__placeholder" x="1110" y="601" width="204" height="9" rx="4"></rect>
-						</g>
-						<circle class="home-journey__arrival" cx="1111" cy="739" r="31"></circle>
-					</svg>
+					<div class="home-journey__panels" aria-hidden="true">
+						<div class="home-journey__stage home-journey__stage--website">
+							<div class="home-journey__stage-label"><span>01</span> Website</div>
+							<div class="home-journey__window home-journey__window--website">
+								<div class="home-journey__chrome"><i></i><i></i><i></i></div>
+								<div class="home-journey__body">
+									<span class="home-journey__brand">Ihr Unternehmen<span>.</span></span>
+									<strong class="home-journey__site-title">Ihr Angebot.<br>Klar auf den Punkt.</strong>
+									<span class="home-journey__lines"><i></i><i></i></span>
+									<span class="home-journey__mock-action home-journey__visit">Projekt anfragen <span>↗</span></span>
+									<div class="home-journey__site-grid"><span><i></i>Leistungen</span><span><i></i>Projekte</span></div>
+								</div>
+							</div>
+						</div>
+						<div class="home-journey__stage home-journey__stage--request">
+							<div class="home-journey__stage-label"><span>02</span> Anfrage</div>
+							<div class="home-journey__window home-journey__window--request">
+								<div class="home-journey__body">
+									<span class="home-journey__eyebrow">Projektanfrage</span>
+									<strong class="home-journey__panel-title">Worum geht es?</strong>
+									<div class="home-journey__choices"><span>Website</span><span>Tracking</span></div>
+									<div class="home-journey__field"><span>Ihr Vorhaben</span><span class="home-journey__entry">Website-Relaunch</span></div>
+									<div class="home-journey__field home-journey__field--email"><span>E-Mail</span><span class="home-journey__entry home-journey__entry--line"><i></i></span></div>
+									<span class="home-journey__mock-action home-journey__send">Anfrage senden <span>→</span></span>
+								</div>
+							</div>
+						</div>
+						<div class="home-journey__stage home-journey__stage--crm">
+							<div class="home-journey__stage-label"><span>03</span> CRM</div>
+							<div class="home-journey__window home-journey__window--crm tafel">
+								<span class="home-journey__eyebrow">Vertriebsanschluss</span>
+								<strong class="home-journey__panel-title">Neue Anfrage.</strong>
+								<div class="home-journey__lead">
+									<span class="home-journey__received"><i></i> Eingegangen</span>
+									<strong>Website-Projekt</strong>
+									<dl><div><dt>Quelle</dt><dd>Website</dd></div><div><dt>Vorhaben</dt><dd>Relaunch</dd></div></dl>
+								</div>
+								<span class="home-journey__success"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>Sauber übergeben</span>
+							</div>
+						</div>
+					</div>
+					<div class="home-journey__progress" aria-hidden="true"><span class="home-journey__progress-fill" data-journey-progress></span><i></i><i></i><i></i></div>
 				</div>
 				<figcaption class="home-journey__caption">
-					<span id="home-journey-caption">Beispielablauf · Website → Anfrage → CRM</span>
+					<span id="home-journey-caption">Beispielablauf · Von der Website ins CRM</span>
 					<button class="home-journey__replay" type="button" aria-controls="home-journey-scene" aria-label="Beispielablauf erneut abspielen" data-journey-replay hidden><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"></path></svg>Wiederholen</button>
 				</figcaption>
 			</figure>
 		</div>
-		<div class="meta" id="einordnung">
+		<?php
+		// Belege direkt unter dem Hero statt einer zweiten Fassung der Hero-Zusagen.
+		// Jede Zelle springt zu ihrem Nachweis in Abschnitt 02; Zahlen aus dem Kanon.
+		$reference_count = count( $references );
+		?>
+		<div class="meta home-proof" id="einordnung" data-track-section="belege">
 			<dl>
-				<div><dt>Website / Relaunch</dt><dd>Ab <?php echo esc_html( $website_price ); ?></dd></div>
-				<div><dt>Zusammenarbeit</dt><dd>Direkt mit mir, ohne Übergabe an ein fremdes Entwicklerteam</dd></div>
-				<div><dt>Vor dem Livegang</dt><dd>Prüfbarer Stand auf einer Testumgebung</dd></div>
-				<div><dt>Nach der Übergabe</dt><dd>Dokumentation und vereinbarte Zugänge bei Ihnen</dd></div>
+				<div class="home-proof__case"><dt>Dokumentierter B2B-Fall</dt><dd><a href="#systemprojekt" data-track-action="home_proof_strip_case" data-track-category="proof" data-track-section="belege"><strong><?php echo esc_html( $e3_metric( 'cpl_reduction' ) ); ?></strong> weniger Kosten pro Anfrage, <strong><?php echo esc_html( $e3_metric( 'lead_count' ) ); ?></strong> qualifizierte Anfragen in <?php echo esc_html( $e3_metric( 'timeframe', 'display_dative' ) ); ?></a></dd></div>
+				<?php if ( $reference_count ) : ?>
+					<div><dt>Öffentliche Arbeiten</dt><dd><a href="#projekte" data-track-action="home_proof_strip_references" data-track-category="proof" data-track-section="belege"><strong><?php echo esc_html( $reference_count . ( 1 === $reference_count ? ' Website' : ' Websites' ) ); ?></strong> zum Nachprüfen</a></dd></div>
+				<?php endif; ?>
+				<div><dt>Diese Website</dt><dd><a href="#pruefstand" data-track-action="home_proof_strip_code" data-track-category="proof" data-track-section="belege"><strong>Offener Code</strong> mit automatischen Prüfungen</a></dd></div>
 			</dl>
 		</div>
 	</div>
@@ -224,8 +242,8 @@ get_header();
 		<div class="blatt reihe">
 			<div class="spalte-links"><div class="kapitel"><span class="nr">02</span><span class="titel">Arbeiten</span><span class="strich" aria-hidden="true"></span></div></div>
 			<div class="voll">
-				<h2 class="kopf" id="nachweis-h">Ausgewählte Arbeiten. Von WordPress bis zum Vertriebsanschluss.</h2>
-				<p class="vorspann">Ausgewählte Arbeiten zeigen die Umsetzung. Der B2B-Fall zeigt zusätzlich, wie Website, Anfrage, Messung und CRM zu einer durchgehenden Strecke werden.</p>
+				<h2 class="kopf" id="nachweis-h">Ausgewählte Arbeiten.</h2>
+				<p class="vorspann">WordPress-Projekte und ein dokumentierter B2B-Fall über die komplette Strecke bis ins CRM.</p>
 
 				<article class="home-featured-case home-featured-case-v2" id="systemprojekt">
 					<div class="home-featured-case__intro">

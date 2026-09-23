@@ -310,15 +310,6 @@
 		window.addEventListener('load', queueEvaluate, { once: true });
 	}
 
-	function normalizeHomeWorks() {
-		var section = document.querySelector('.startseite #nachweis');
-		if (!section) return;
-		var heading = section.querySelector(':scope .voll > .kopf');
-		var intro = section.querySelector(':scope .voll > .vorspann');
-		if (heading) heading.textContent = 'Ausgewählte Arbeiten.';
-		if (intro) intro.textContent = 'WordPress-Projekte und ein dokumentierter B2B-Fall über die komplette Strecke bis ins CRM.';
-	}
-
 	function createPanelForDirectLinks(nav) {
 		var panel = document.createElement('div');
 		panel.className = 'hu-toc-panel hu-toc-panel--contents';
@@ -438,7 +429,6 @@
 			document.querySelectorAll(selector).forEach(enhanceResponsiveToc);
 		});
 
-		window.setTimeout(normalizeHomeWorks, 0);
 		document.addEventListener('click', focusTargetFromKeyboard);
 	}
 
