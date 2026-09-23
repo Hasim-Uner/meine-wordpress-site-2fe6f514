@@ -141,51 +141,38 @@ get_header();
 			</div>
 			<figure class="home-journey" data-home-journey aria-labelledby="home-journey-caption">
 				<div class="home-journey__scene" id="home-journey-scene" role="img" aria-label="<?php echo esc_attr( $flow_label ); ?>">
-					<div class="home-journey__panels" aria-hidden="true">
-						<div class="home-journey__stage home-journey__stage--website">
-							<div class="home-journey__stage-label"><span>01</span> Website</div>
-							<div class="home-journey__window home-journey__window--website">
-								<div class="home-journey__chrome"><i></i><i></i><i></i></div>
-								<div class="home-journey__body">
-									<span class="home-journey__brand">Ihr Unternehmen<span>.</span></span>
-									<strong class="home-journey__site-title">Ihr Angebot.<br>Klar auf den Punkt.</strong>
-									<span class="home-journey__lines"><i></i><i></i></span>
-									<span class="home-journey__mock-action home-journey__visit">Projekt anfragen <span>↗</span></span>
-									<div class="home-journey__site-grid"><span><i></i>Leistungen</span><span><i></i>Projekte</span></div>
-								</div>
-							</div>
-						</div>
-						<div class="home-journey__stage home-journey__stage--request">
-							<div class="home-journey__stage-label"><span>02</span> Anfrage</div>
-							<div class="home-journey__window home-journey__window--request">
-								<div class="home-journey__body">
-									<span class="home-journey__eyebrow">Projektanfrage</span>
-									<strong class="home-journey__panel-title">Worum geht es?</strong>
-									<div class="home-journey__choices"><span>Website</span><span>Tracking</span></div>
-									<div class="home-journey__field"><span>Ihr Vorhaben</span><span class="home-journey__entry">Website-Relaunch</span></div>
-									<div class="home-journey__field home-journey__field--email"><span>E-Mail</span><span class="home-journey__entry home-journey__entry--line"><i></i></span></div>
-									<span class="home-journey__mock-action home-journey__send">Anfrage senden <span>→</span></span>
-								</div>
-							</div>
-						</div>
-						<div class="home-journey__stage home-journey__stage--crm">
-							<div class="home-journey__stage-label"><span>03</span> CRM</div>
-							<div class="home-journey__window home-journey__window--crm tafel">
-								<span class="home-journey__eyebrow">Vertriebsanschluss</span>
-								<strong class="home-journey__panel-title">Neue Anfrage.</strong>
-								<div class="home-journey__lead">
-									<span class="home-journey__received"><i></i> Eingegangen</span>
-									<strong>Website-Projekt</strong>
-									<dl><div><dt>Quelle</dt><dd>Website</dd></div><div><dt>Vorhaben</dt><dd>Relaunch</dd></div></dl>
-								</div>
-								<span class="home-journey__success"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>Sauber übergeben</span>
-							</div>
-						</div>
-					</div>
-					<div class="home-journey__progress" aria-hidden="true"><span class="home-journey__progress-fill" data-journey-progress></span><i></i><i></i><i></i></div>
+					<img class="home-journey__artwork" data-journey-artwork src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/home-journey-artwork.webp' ); ?>" width="1536" height="1024" alt="" aria-hidden="true" decoding="async">
+					<svg class="home-journey__details" viewBox="0 0 1536 1024" aria-hidden="true" focusable="false">
+						<defs>
+							<mask id="home-journey-route-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1536" height="1024">
+								<rect width="1536" height="1024" fill="white"></rect>
+								<rect x="79" y="121" width="668" height="683" rx="12" fill="black"></rect>
+								<rect x="625" y="179" width="398" height="634" rx="16" fill="black"></rect>
+								<rect x="1048" y="258" width="410" height="545" rx="15" fill="black"></rect>
+							</mask>
+						</defs>
+						<path class="home-journey__signal" data-journey-progress="" mask="url(#home-journey-route-mask)" pathLength="100" d="M36 419C190 280 436 275 625 280S928 200 1022 204S1128 211 1174 264S1380 446 1500 531"></path>
+						<circle class="home-journey__click" cx="234" cy="461" r="30"></circle>
+						<rect class="home-journey__field-paper" x="681" y="460" width="283" height="86" rx="5"></rect>
+						<g class="home-journey__entry home-journey__entry--project">
+							<text class="home-journey__input" x="687" y="488">Website-Relaunch</text>
+							<text class="home-journey__input-note" x="687" y="525">Neue Unternehmenswebsite</text>
+						</g>
+						<rect class="home-journey__field-paper" x="681" y="628" width="281" height="27" rx="4"></rect>
+						<text class="home-journey__entry home-journey__entry--email home-journey__input" x="687" y="650">name@firma.example</text>
+						<rect class="home-journey__submit-cue" x="668" y="702" width="312" height="61" rx="8"></rect>
+						<g class="home-journey__pending">
+							<rect class="home-journey__field-paper" x="1084" y="416" width="338" height="232" rx="12"></rect>
+							<rect class="home-journey__placeholder" x="1110" y="445" width="139" height="12" rx="6"></rect>
+							<rect class="home-journey__placeholder" x="1110" y="491" width="222" height="22" rx="6"></rect>
+							<rect class="home-journey__placeholder" x="1110" y="565" width="251" height="9" rx="4"></rect>
+							<rect class="home-journey__placeholder" x="1110" y="601" width="204" height="9" rx="4"></rect>
+						</g>
+						<circle class="home-journey__arrival" cx="1111" cy="739" r="31"></circle>
+					</svg>
 				</div>
 				<figcaption class="home-journey__caption">
-					<span id="home-journey-caption">Beispielablauf · Von der Website ins CRM</span>
+					<span id="home-journey-caption">Beispielablauf · Website → Anfrage → CRM</span>
 					<button class="home-journey__replay" type="button" aria-controls="home-journey-scene" aria-label="Beispielablauf erneut abspielen" data-journey-replay hidden><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"></path></svg>Wiederholen</button>
 				</figcaption>
 			</figure>
