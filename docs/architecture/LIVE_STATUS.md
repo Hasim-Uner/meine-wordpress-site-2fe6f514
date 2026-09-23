@@ -61,10 +61,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Funken darüber, mit Schalter zum Anhalten. Ohne JavaScript und bei
   reduzierter Bewegung steht die Tafel ruhig und vollständig. Direkt darunter steht
   eine Belegzeile (`#einordnung`) mit Fall, öffentlichen Arbeiten und offenem
-  Code, jeweils als Sprung zum Nachweis in Abschnitt 02. Abschnitt 03 zeigt
-  eine Übergabe-Tafel als Beispiel (was nach Abnahme beim Kunden liegt;
-  Tracking und CRM nur, falls beauftragt), `home-uebergabe.js` hakt sie einmal
-  ab. Der Abschluss stellt Ersteinschätzung und Projektanfrage als zwei
+  Code, jeweils als Sprung zum Nachweis in Abschnitt 02. Jede Leistung in 01
+  trägt eine Linienzeichnung ihres Mechanismus (`assets/img/home-leistung-*.svg`,
+  inline). Abschnitt 03 zeigt eine Übergabe-Tafel als Beispiel (was nach
+  Abnahme beim Kunden liegt; Tracking und CRM nur, falls beauftragt),
+  `home-uebergabe.js` hakt sie einmal ab. Der Abschluss stellt Ersteinschätzung und Projektanfrage als zwei
   Einstiegskarten nebeneinander („Sie schicken / Sie bekommen / Antwort“, Texte
   der Ersteinschätzung aus dem Kanon), dazu das Porträt; Ziele und Hooks sind
   unverändert.
@@ -74,8 +75,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - **`/whitelabel-retainer/`** (`page-whitelabel-retainer.php`): Agentur-Einstieg
   mit eigenem Kopf, Fuß und Skip-Link. Primärziel ist das Aufgabenformular; der
   Belegblock nennt, was Agenturen vorab prüfen können: öffentliche Projekte, den
-  offenen Code dieser Website und den bezahlten Test-Sprint. Preise aus
-  `hu_whitelabel_pricing_canon()`; Service- und FAQPage-Schema.
+  offenen Code dieser Website und den bezahlten Test-Sprint. Das
+  Übergabemuster steht als Protokollblatt mit Stempel „Abgenommen · Muster“.
+  Preise aus `hu_whitelabel_pricing_canon()`; Service- und FAQPage-Schema.
 - **`/performance-marketing/`** (`page-performance.php`, Gutachten-Layout):
   Performance Marketing für B2B in der Reihenfolge Messung → Zielseite →
   Budget, mit eigenem Weg für Performance-Agenturen zu White-Label. Titel,

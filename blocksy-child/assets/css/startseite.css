@@ -628,3 +628,15 @@
   .startseite .home-uebergabe.is-sichtbar li:nth-child(5) .home-uebergabe__haken { transition-delay: 240ms; }
   .startseite .home-uebergabe.is-sichtbar li:nth-child(6) .home-uebergabe__haken { transition-delay: 300ms; }
 }
+
+/* ── Leistungszeichnungen (01 Leistungen) ─────────────────────────
+ * Je Leistung der Mechanismus statt eines Symbols: Test wird live, Besuche
+ * werden zur Anfrage, Signale laufen über den eigenen Server bis ins CRM.
+ * Dieselbe Linienführung wie die Hero-Tafel. */
+.startseite .home-offer__zeichnung { display: block; width: 100%; max-width: 17.5rem; height: 6.25rem; margin: 0 0 var(--s1); overflow: visible; }
+.startseite .home-offer__zeichnung * { vector-effect: non-scaling-stroke; }
+.startseite .home-offer__zeichnung .zng-faint,
+.startseite .home-offer__zeichnung .zng-ink { stroke: var(--tinte); }
+.startseite .home-offer__zeichnung .zng-akzent { stroke: var(--stempel); }
+.startseite .home-offer__zeichnung .zng-text { fill: var(--matt); }
+.startseite .home-offer__zeichnung .zng-text-akzent { fill: var(--stempel); }

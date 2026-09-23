@@ -44,21 +44,21 @@ $offers = [
 		'problem' => 'Neu bauen, relaunchen oder gezielt weiterentwickeln.',
 		'text' => 'Ich entwickle und überarbeite WordPress-Websites so, dass Struktur, Technik und Nutzerführung zusammenpassen. Bestehende Inhalte, URLs und funktionierende Systeme bleiben dort erhalten, wo das sinnvoll ist.',
 		'scope' => 'Relaunch · Bestandsentwicklung · technisches SEO · Performance · Staging und Übergabe',
-		'price' => 'Ab ' . $website_price, 'focus' => 'relaunch', 'cta' => 'WordPress-Projekt anfragen',
+		'price' => 'Ab ' . $website_price, 'focus' => 'relaunch', 'art' => 'website', 'cta' => 'WordPress-Projekt anfragen',
 	],
 	[
 		'id' => 'angebot-funnel', 'nr' => '02', 'title' => 'Anfragestrecken & Landingpages',
 		'problem' => 'Traffic ist nur dann wertvoll, wenn der nächste Schritt funktioniert.',
 		'text' => 'Ich baue Landingpages, Formulare und Qualifizierungswege so, dass Angebot, Anfrage und Übergabe logisch zusammenpassen. Der Umfang reicht vom einzelnen Conversion-Weg bis zur kompletten Anfragestrecke.',
 		'scope' => 'Landingpage · Formular · Qualifizierung · Danke-Seite · Lead-Übergabe',
-		'price' => 'Projektpreis nach Umfang', 'focus' => 'conversion', 'cta' => 'Anfragestrecke besprechen',
+		'price' => 'Projektpreis nach Umfang', 'focus' => 'conversion', 'art' => 'anfrage', 'cta' => 'Anfragestrecke besprechen',
 	],
 	[
 		'id' => 'angebot-tracking', 'nr' => '03', 'title' => 'Tracking & CRM',
 		'problem' => 'Eine Anfrage ist erst dann messbar, wenn die Strecke bis ins System reicht.',
 		'text' => 'Ich prüfe und entwickle die Messkette von GA4 und GTM bis zu Consent, Server-Side Tracking und CRM-Übergabe. Ergänzt wird nur, was für Ihr Setup und Ihre Daten tatsächlich gebraucht wird.',
 		'scope' => 'GA4 · GTM · Consent · Server-Side Tracking · Attribution · CRM-Anbindung',
-		'price' => 'Standard-Setup ab ' . $tracking_price . ' netto', 'focus' => 'tracking', 'cta' => 'Tracking-Projekt anfragen',
+		'price' => 'Standard-Setup ab ' . $tracking_price . ' netto', 'focus' => 'tracking', 'art' => 'tracking', 'cta' => 'Tracking-Projekt anfragen',
 	],
 ];
 $faqs = [
@@ -90,9 +90,15 @@ $handover = [
  */
 $flow_label   = 'Beispiel als Stromlinien: Besuche kommen von links über die Website. Ein Teil wird zur Anfrage und landet mit seiner Quelle im CRM, der Rest zieht vorbei.';
 $flow_sources = [ 'Empfehlung', 'Google-Suche', 'LinkedIn', 'Google Ads' ];
-$feld_file    = get_stylesheet_directory() . '/assets/img/home-feld.svg';
-$feld_svg     = is_readable( $feld_file ) ? (string) file_get_contents( $feld_file ) : ''; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme asset.
-$feld_svg     = false !== strpos( $feld_svg, '<svg' ) ? substr( $feld_svg, strpos( $feld_svg, '<svg' ) ) : '';
+// Statische Zeichnungen aus assets/img/ als Inline-SVG: Farben kommen per CSS aus
+// den Tokens. Der Kommentar vor <svg> bleibt in der Datei, nicht im Markup.
+$inline_svg   = static function ( $file ) {
+	$path = get_stylesheet_directory() . '/assets/img/' . $file;
+	$svg  = is_readable( $path ) ? (string) file_get_contents( $path ) : ''; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme asset.
+	$pos  = strpos( $svg, '<svg' );
+	return false === $pos ? '' : substr( $svg, $pos );
+};
+$feld_svg     = $inline_svg( 'home-feld.svg' );
 
 /**
  * Versuch "Kostenlose Ersteinschätzung" (Schalter und Texte im Kanon).
@@ -206,7 +212,7 @@ get_header();
 				<div class="home-offers home-offers-v2">
 					<?php foreach ( $offers as $offer ) : ?>
 						<article class="home-offer" id="<?php echo esc_attr( $offer['id'] ); ?>">
-							<div><span class="mono"><?php echo esc_html( $offer['nr'] ); ?></span><h3><?php echo esc_html( $offer['title'] ); ?></h3><p class="home-price"><?php echo esc_html( $offer['price'] ); ?></p></div>
+							<div><?php echo $inline_svg( 'home-leistung-' . $offer['art'] . '.svg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG from the theme. ?><span class="mono"><?php echo esc_html( $offer['nr'] ); ?></span><h3><?php echo esc_html( $offer['title'] ); ?></h3><p class="home-price"><?php echo esc_html( $offer['price'] ); ?></p></div>
 							<div><p class="home-problem"><?php echo esc_html( $offer['problem'] ); ?></p><p><?php echo esc_html( $offer['text'] ); ?></p><p class="home-scope"><?php echo esc_html( $offer['scope'] ); ?></p>
 								<a class="textlink" href="<?php echo esc_url( $project_link( $offer['focus'] ) ); ?>" data-track-action="<?php echo esc_attr( 'home_offer_' . $offer['focus'] ); ?>" data-track-category="lead_gen" data-track-section="angebote"><?php echo esc_html( $offer['cta'] ); ?> →</a>
 								<?php if ( 'tracking' === $offer['focus'] ) : ?><a class="satzlink home-detail-link" href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="home_proof_tracking_page" data-track-category="proof" data-track-section="angebote">Tracking-Leistung im Detail</a><?php endif; ?>

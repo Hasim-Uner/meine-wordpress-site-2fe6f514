@@ -1,0 +1,8 @@
+<!-- Leistung 02: Besuche laufen über Seite und Formular, qualifiziert wird eine Anfrage. -->
+<svg class="home-offer__zeichnung" viewBox="0 0 280 100" preserveAspectRatio="xMinYMid meet" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#171412" stroke-linecap="round" stroke-linejoin="round">
+<g class="zng-faint" opacity=".35"><path d="M8 18c40 0 60 2 86 6"/><path d="M8 84c40 0 60-2 86-6"/><circle cx="94" cy="24" r="1.6" fill="#171412"/><circle cx="94" cy="78" r="1.6" fill="#171412"/></g>
+<g class="zng-ink" opacity=".6"><path d="M8 34c52 0 88 2 116 6 18 2.6 30 4.6 44 6"/><path d="M8 68c52 0 88-2 116-6 18-2.6 30-4.6 44-6"/><circle cx="168" cy="46" r="1.6" fill="#171412"/><circle cx="168" cy="56" r="1.6" fill="#171412"/></g>
+<g class="zng-ink" opacity=".35"><path d="M96 14v74M170 22v58"/></g>
+<g class="zng-akzent" stroke="#b8420f"><path d="M8 46c60 0 104 0 150 3 34 2 56 2 82 2M8 56c60 0 104 0 150-3"/><circle cx="252" cy="51" r="9"/><circle cx="252" cy="51" r="3.2" fill="#b8420f"/></g>
+<g class="zng-text" fill="#736b62" stroke="none" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9.5" letter-spacing="1.2"><text x="96" y="98" text-anchor="middle">SEITE</text><text x="170" y="98" text-anchor="middle">FORMULAR</text><text x="252" y="80" text-anchor="middle" class="zng-text-akzent" fill="#b8420f">ANFRAGE</text></g>
+</svg>

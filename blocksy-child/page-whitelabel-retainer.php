@@ -181,12 +181,17 @@ $proof_references = [
 			<header class="wl-section-heading"><p class="wl-eyebrow">02 / Nachvollziehbare Übergabe</p><h2 id="wl-proof-title">Ihr bekommt mehr als<br>„ist jetzt fertig“.</h2><p>Vor dem Start legen wir fest, woran ihr die Lieferung abnehmt. Die Dokumentation gehört zur Aufgabe – damit euer Team danach übernehmen kann.</p></header>
 			<div class="wl-handover">
 				<div class="wl-handover__brief"><span class="wl-label">Illustratives Übergabemuster</span><h3>Formular → CRM</h3><p>So kann eine Übergabe für eine abgegrenzte Formular-Aufgabe aufgebaut sein. Der konkrete Umfang wird vor Projektbeginn vereinbart.</p><span class="wl-handover__note">Muster zur Orientierung, kein Kundenbeleg.</span></div>
-				<dl class="wl-handover__list">
-					<div><dt>Aufgabe &amp; Umfang</dt><dd>Welche Felder, Prüfungen und Empfänger sind vereinbart?</dd></div>
-					<div><dt>Änderungen</dt><dd>Was wurde wo umgesetzt? Mit Version oder Export, soweit für das Setup relevant.</dd></div>
-					<div><dt>Abnahmeschritte</dt><dd>Pflichtfelder, Fehlermeldung, erfolgreiche Anfrage und Eingang beim Empfänger prüfen.</dd></div>
-					<div><dt>Betrieb &amp; offene Punkte</dt><dd>Zugänge, Zuständigkeiten und bekannte Grenzen für die weitere Betreuung festhalten.</dd></div>
-				</dl>
+				<?php // Als Protokollblatt gesetzt, im selben Muster wie die Übergabe-Tafel der Startseite. Der Stempel sagt „Muster“, nicht „Kunde“. ?>
+				<div class="wl-handover__blatt">
+					<p class="wl-handover__kopf"><span>Übergabeprotokoll · Muster</span><span>Stand: Abnahme</span></p>
+					<dl class="wl-handover__list">
+						<div><dt>Aufgabe &amp; Umfang</dt><dd>Welche Felder, Prüfungen und Empfänger sind vereinbart?</dd></div>
+						<div><dt>Änderungen</dt><dd>Was wurde wo umgesetzt? Mit Version oder Export, soweit für das Setup relevant.</dd></div>
+						<div><dt>Abnahmeschritte</dt><dd>Pflichtfelder, Fehlermeldung, erfolgreiche Anfrage und Eingang beim Empfänger prüfen.</dd></div>
+						<div><dt>Betrieb &amp; offene Punkte</dt><dd>Zugänge, Zuständigkeiten und bekannte Grenzen für die weitere Betreuung festhalten.</dd></div>
+					</dl>
+					<p class="wl-handover__stempel" aria-hidden="true"><span>Abgenommen</span><small>Muster</small></p>
+				</div>
 			</div>
 			<?php
 			// Keine erfundenen Agenturbelege: geprüft werden kann die Arbeitsweise an

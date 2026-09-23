@@ -166,12 +166,25 @@ body.page-template-page-whitelabel-retainer > .skip-link { display: none !import
 .wl-handover__brief h3 { margin-block: var(--nx-space-xl) var(--nx-space-md); font-size: 2rem; }
 .wl-handover__brief p { font-size: .9375rem; }
 .wl-handover__note { display: block; margin-block-start: var(--nx-space-xl); color: var(--wl-muted); font-size: .75rem; }
-.wl-handover__list { padding: var(--nx-space-xl); }
-.wl-handover__list > div { padding-block: var(--nx-space-md); border-block-end: 1px solid var(--wl-line); }
-.wl-handover__list > div:first-child { padding-block-start: 0; }
+/* Protokollblatt: Kopfzeile, nummerierte Punkte mit Haken, Abnahme-Stempel.
+ * Dasselbe Muster wie die Übergabe-Tafel der Startseite. Abstände aus den
+ * Gutachten-Tokens von system.css; unten Platz für den Stempel. */
+.wl-handover__blatt { position: relative; padding: var(--s3) var(--s3) calc(var(--s4) + var(--s3)); }
+.wl-page .wl-handover__kopf { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s0) var(--s2); margin: 0 0 var(--s2); padding-block-end: var(--s1); border-block-end: 1px solid var(--wl-ink); color: var(--wl-muted); font: 500 .6875rem/1.4 var(--mono, 'IBM Plex Mono', monospace); letter-spacing: .12em; text-transform: uppercase; }
+.wl-page .wl-handover__kopf span:first-child { color: var(--wl-accent-text); }
+.wl-handover__list { margin: 0; padding: 0; counter-reset: wl-protokoll; }
+.wl-handover__list > div { position: relative; padding-block: var(--s2); padding-inline-start: 2.25rem; border-block-end: 1px solid var(--wl-line); counter-increment: wl-protokoll; }
+.wl-handover__list > div:first-child { padding-block-start: var(--s1); }
 .wl-handover__list > div:last-child { border: 0; padding-block-end: 0; }
+.wl-handover__list > div::before { content: ''; position: absolute; inset-inline-start: 0; inset-block-start: calc(var(--s2) + .1rem); width: 1.15rem; height: 1.15rem; border: 1px solid var(--wl-copper); border-radius: 50%; }
+.wl-handover__list > div:first-child::before { inset-block-start: calc(var(--s1) + .1rem); }
+.wl-handover__list > div::after { content: ''; position: absolute; inset-inline-start: .38rem; inset-block-start: calc(var(--s2) + .3rem); width: .28rem; height: .52rem; border: solid var(--wl-copper); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); }
+.wl-handover__list > div:first-child::after { inset-block-start: calc(var(--s1) + .3rem); }
 .wl-handover__list dt { font-weight: 600; font-size: .9375rem; }
-.wl-handover__list dd { margin: var(--nx-space-xs) 0 0; font-size: .875rem; color: var(--wl-muted); }
+.wl-handover__list dt::before { content: counter(wl-protokoll, decimal-leading-zero) "  "; color: var(--wl-accent-text); font: 500 .6875rem/1 var(--mono, 'IBM Plex Mono', monospace); letter-spacing: .08em; white-space: pre; }
+.wl-handover__list dd { margin: var(--s0) 0 0; font-size: .875rem; color: var(--wl-muted); }
+.wl-page .wl-handover__stempel { position: absolute; inset-inline-end: var(--s3); inset-block-end: var(--s2); display: grid; justify-items: center; gap: .2rem; margin: 0; padding: .45rem .8rem .4rem; border: 2px solid var(--wl-copper); border-radius: 3px; outline: 1px solid var(--wl-copper); outline-offset: 2px; background: var(--wl-surface); color: var(--wl-copper); font: 700 .72rem/1 var(--mono, 'IBM Plex Mono', monospace); letter-spacing: .2em; text-transform: uppercase; transform: rotate(-6deg); }
+.wl-page .wl-handover__stempel small { font: 500 .58rem/1 var(--mono, 'IBM Plex Mono', monospace); letter-spacing: .12em; }
 .wl-reference-heading { margin-block: var(--nx-space-2xl) var(--nx-space-lg); }
 .wl-reference-heading p { margin-block-start: var(--nx-space-sm); font-size: .875rem; }
 .wl-references { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--nx-space-xl); }
@@ -359,7 +372,6 @@ body.page-template-page-whitelabel-retainer > .skip-link { display: none !import
 	.wl-entry__main,
 	.wl-entry__scope,
 	.wl-handover__brief,
-	.wl-handover__list,
 	.wl-page .wl-request { padding: var(--nx-space-lg); }
 	.wl-retainer { gap: var(--nx-space-lg); }
 	.wl-retainer__price { text-align: left; }
