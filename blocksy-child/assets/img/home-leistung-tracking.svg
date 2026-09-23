@@ -1,0 +1,7 @@
+<!-- Leistung 03: Signale laufen über den eigenen Server an GA4, Ads und bis ins CRM. -->
+<svg class="home-offer__zeichnung" viewBox="0 0 280 100" preserveAspectRatio="xMinYMid meet" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#171412" stroke-linecap="round" stroke-linejoin="round">
+<g class="zng-ink" opacity=".75"><rect x="10" y="36" width="50" height="28" rx="3"/><path d="M16 44h26M16 51h38M16 58h20"/></g>
+<g class="zng-ink" opacity=".5"><path d="M60 50h52"/><path d="M168 50c28 0 36-30 64-30M168 50h64"/><circle cx="236" cy="20" r="4"/><circle cx="236" cy="50" r="4"/></g>
+<g class="zng-akzent" stroke="#b8420f"><rect x="112" y="32" width="56" height="36" rx="4"/><path d="M120 42h40M120 50h40M120 58h40"/><path d="M168 50c28 0 36 30 64 30"/><circle cx="236" cy="80" r="4" fill="#b8420f"/></g>
+<g class="zng-text" fill="#736b62" stroke="none" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9.5" letter-spacing="1.2"><text x="35" y="80" text-anchor="middle">WEBSITE</text><text x="140" y="84" text-anchor="middle" class="zng-text-akzent" fill="#b8420f">SERVER</text><text x="246" y="23.5">GA4</text><text x="246" y="53.5">ADS</text><text x="246" y="83.5" class="zng-text-akzent" fill="#b8420f">CRM</text></g>
+</svg>

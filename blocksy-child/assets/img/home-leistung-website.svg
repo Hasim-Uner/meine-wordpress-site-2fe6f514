@@ -1,0 +1,8 @@
+<!-- Leistung 01: Umsetzung auf der Testumgebung, nach der Abnahme live. -->
+<svg class="home-offer__zeichnung" viewBox="0 0 280 100" preserveAspectRatio="xMinYMid meet" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#171412" stroke-linecap="round" stroke-linejoin="round">
+<g class="zng-faint" stroke-dasharray="3 3" opacity=".45"><rect x="8" y="12" width="96" height="72" rx="3"/></g>
+<g class="zng-faint" opacity=".45"><path d="M16 22h80M16 30h36v18H16zM60 32h36M60 40h28M16 58h80M16 66h64"/></g>
+<g class="zng-ink" opacity=".75"><rect x="176" y="12" width="96" height="72" rx="3"/><path d="M184 22h80M184 30h36v18h-36zM228 32h36M228 40h28M184 58h80M184 66h64"/></g>
+<g class="zng-akzent" stroke="#b8420f"><path d="M116 48h48M158 43l6 5-6 5"/><circle cx="272" cy="12" r="7" fill="#fff"/><path d="m268.5 12 2.4 2.4 4.6-5"/></g>
+<g class="zng-text" fill="#736b62" stroke="none" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9.5" letter-spacing="1.2"><text x="56" y="97" text-anchor="middle">TEST</text><text x="224" y="97" text-anchor="middle">LIVE</text><text x="140" y="38" text-anchor="middle" class="zng-text-akzent" fill="#b8420f">ABNAHME</text></g>
+</svg>
