@@ -245,6 +245,10 @@ function hu_first_assessment_text( $key ) {
 		'cta'             => 'Kostenlose ' . HU_FIRST_ASSESSMENT_LABEL,
 		// Zeile unter dem primaeren Button.
 		'cta_note'        => 'URL schicken, drei Befunde schriftlich zurück. Ohne Verpflichtung.',
+		// Karte im Abschluss der Startseite: Titel, was Besucher schicken, was sie bekommen.
+		'card_title'      => 'Drei Befunde zu Ihrer Website.',
+		'card_send'       => 'Website-URL und ein Satz zum Ziel',
+		'card_get'        => 'Drei konkrete Befunde per E-Mail oder ein direktes Nein, wenn die Seite nicht zu meiner Arbeit passt',
 		// Ueber dem Formular: Pruefung, Zusage, Antwortzeit.
 		'intro'           => $review . ' ' . $promise . ' ' . hu_response_promise( 'sentence' ),
 		// Dritter Schritt der Bestaetigungsmail: dieselbe Zusage wie im Formular.

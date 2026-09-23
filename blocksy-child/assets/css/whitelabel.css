@@ -99,9 +99,11 @@
 .wl-site-header__cta:hover,
 .wl-site-header__cta:focus-visible { background: #733e1e; color: #fff; }
 .wl-page .wl-button:disabled { opacity: .65; cursor: wait; }
-.wl-page .wl-button--light { background: var(--wl-paper); color: var(--wl-ink); }
+/* Heller Button auf dunkler Flaeche: .wl-dark stellt --wl-ink auf Hell um,
+ * die Schrift braucht deshalb die feste Tinte statt der Abschnittsfarbe. */
+.wl-page .wl-button--light { background: var(--wl-paper); color: var(--tinte, #171412); }
 .wl-page .wl-button--light:hover,
-.wl-page .wl-button--light:focus-visible { background: #fff; color: var(--wl-ink); }
+.wl-page .wl-button--light:focus-visible { background: #fff; color: var(--tinte, #171412); }
 .wl-page .wl-text-link { display: inline-flex; align-items: center; gap: var(--nx-space-md); min-height: 48px; font-size: .9375rem; font-weight: 600; }
 
 /* Route-eigene Navigation; keine Effekte auf den globalen Header. */

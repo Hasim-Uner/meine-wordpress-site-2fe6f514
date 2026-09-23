@@ -817,6 +817,29 @@
         position: static;
     }
 
+    /* Formular zuerst: Nach Titel und Einleitung folgt direkt das Formular;
+     * Ablauf, andere Einstiege und E-Mail stehen darunter. Die Einleitung gibt
+     * dafuer ihre Box ab, ihre beiden Gruppen ordnen sich im Raster neu. */
+    .contact-page .contact-intro {
+        display: contents;
+    }
+
+    .contact-page .contact-intro__kopf {
+        order: 1;
+    }
+
+    .contact-page .contact-form-panel {
+        order: 2;
+    }
+
+    .contact-page .contact-intro__mehr {
+        order: 3;
+    }
+
+    .contact-page .contact-intro__mehr > :first-child {
+        margin-top: 0;
+    }
+
     .contact-page .contact-title,
     .contact-page--scoped .contact-title {
         max-width: 16ch;

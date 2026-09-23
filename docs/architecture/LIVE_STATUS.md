@@ -61,8 +61,16 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Funken darüber, mit Schalter zum Anhalten. Ohne JavaScript und bei
   reduzierter Bewegung steht die Tafel ruhig und vollständig. Direkt darunter steht
   eine Belegzeile (`#einordnung`) mit Fall, öffentlichen Arbeiten und offenem
-  Code, jeweils als Sprung zum Nachweis in Abschnitt 02.
+  Code, jeweils als Sprung zum Nachweis in Abschnitt 02. Abschnitt 03 zeigt
+  eine Übergabe-Tafel als Beispiel (was nach Abnahme beim Kunden liegt;
+  Tracking und CRM nur, falls beauftragt), `home-uebergabe.js` hakt sie einmal
+  ab. Der Abschluss stellt Ersteinschätzung und Projektanfrage als zwei
+  Einstiegskarten nebeneinander („Sie schicken / Sie bekommen / Antwort“, Texte
+  der Ersteinschätzung aus dem Kanon), dazu das Porträt; Ziele und Hooks sind
+  unverändert.
 - **`/kontakt/`** (`page-kontakt.php`): Anfrage-Intake, siehe „Anfragewege“.
+  Bis 820 px folgt das Formular direkt auf Titel und Einleitung; Ablauf,
+  andere Einstiege und E-Mail stehen darunter.
 - **`/whitelabel-retainer/`** (`page-whitelabel-retainer.php`): Agentur-Einstieg
   mit eigenem Kopf, Fuß und Skip-Link. Primärziel ist das Aufgabenformular; der
   Belegblock nennt, was Agenturen vorab prüfen können: öffentliche Projekte, den
