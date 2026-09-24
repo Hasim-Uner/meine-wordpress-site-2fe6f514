@@ -39,6 +39,64 @@
     const NexusCore = {
 
         /**
+         * One bounded intake attempt, including reading the response body.
+         * Never retry a POST: an interrupted response can follow a stored lead.
+         * Settling only once also isolates late responses from a newer attempt.
+         */
+        submitJson: function (endpoint, options) {
+            var uncertain = 'Die Übermittlung ist nicht bestätigt. Ihre Angaben bleiben erhalten. Die Anfrage kann bereits angekommen sein. Bitte prüfen Sie Ihr Postfach oder fragen Sie per E-Mail nach, bevor Sie erneut senden.';
+            var controller = typeof window.AbortController === 'function' ? new window.AbortController() : null;
+            var requestOptions = Object.assign({}, options);
+            if (controller) requestOptions.signal = controller.signal;
+
+            return new Promise(function (resolve, reject) {
+                var settled = false;
+                var deadline = Date.now() + 30000;
+                var timer = window.setTimeout(function () {
+                    finish(new Error('Die Antwort dauert zu lange. ' + uncertain));
+                    if (controller) controller.abort();
+                }, 30000);
+
+                function finish(error, result) {
+                    if (settled) return;
+                    settled = true;
+                    window.clearTimeout(timer);
+                    if (!error && Date.now() >= deadline) error = new Error('Die Antwort dauert zu lange. ' + uncertain);
+                    if (error) reject(error);
+                    else resolve(result);
+                }
+
+                Promise.resolve().then(function () {
+                    return window.fetch(endpoint, requestOptions);
+                }).then(function (response) {
+                    return response.json().then(function (data) {
+                        if (!data || typeof data !== 'object' || Array.isArray(data) || typeof data.ok !== 'boolean') {
+                            throw new Error(uncertain);
+                        }
+                        finish(null, { ok: response.ok, data: data });
+                    });
+                }).catch(function () {
+                    finish(new Error(uncertain));
+                });
+            });
+        },
+
+        // Freeze the submitted values and navigation until this attempt settles.
+        // Call after serialization; restore pre-existing disabled states exactly.
+        lockForm: function (form) {
+            var controls = Array.prototype.map.call(form.elements, function (control) {
+                var state = { control: control, disabled: control.disabled };
+                control.disabled = true;
+                return state;
+            });
+            form.setAttribute('aria-busy', 'true');
+            return function () {
+                controls.forEach(function (state) { state.control.disabled = state.disabled; });
+                form.setAttribute('aria-busy', 'false');
+            };
+        },
+
+        /**
          * 1. SCROLL-SPY NAVIGATION
          * Funktioniert mit .smart-nav, .nx-sidenav oder beliebigem Selektor.
          * Sucht sections mit [id] und markiert passende Links als .active.

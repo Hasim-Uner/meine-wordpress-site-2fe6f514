@@ -208,6 +208,7 @@
 				}
 
 				event.preventDefault();
+				if (isSubmitting) return;
 				setCase(readCaseFromUrl(link.search));
 
 				var target = document.getElementById('aufgabe');
@@ -286,6 +287,7 @@
 			});
 
 			isSubmitting = true;
+			var unlockForm = window.NexusCore.lockForm(form);
 			form.setAttribute('aria-busy', 'true');
 			if (submitButton) {
 				submitButton.disabled = true;
@@ -293,23 +295,20 @@
 			}
 			setFeedback('', null);
 
-			fetch(form.getAttribute('action'), {
+			window.NexusCore.submitJson(form.getAttribute('action'), {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(payload)
 			})
-				.then(function (response) {
-					return response.json().then(function (data) {
-						return { ok: response.ok, data: data };
-					});
-				})
 				.then(function (result) {
-					if (!result.ok || !result.data || !result.data.ok) {
+					if (!result.ok || result.data.ok !== true) {
 						var message = result.data && result.data.error
 							? result.data.error
 							: 'Das hat gerade nicht geklappt. Bitte noch einmal versuchen.';
 						showErrors([message]);
 						setFeedback(message, 'error');
+						var field = { missing_task: task, invalid_email: email, invalid_access: form.querySelector('input[name="access"]') }[result.data.error_code];
+						if (field) field.setAttribute('aria-invalid', 'true');
 						if (errorSummary) errorSummary.focus();
 						return;
 					}
@@ -326,13 +325,14 @@
 						event_label: payload['case']
 					});
 				})
-				.catch(function () {
-					var message = 'Verbindung fehlgeschlagen. Bitte noch einmal versuchen.';
+				.catch(function (error) {
+					var message = error.message;
 					showErrors([message]);
 					setFeedback(message, 'error');
 					if (errorSummary) errorSummary.focus();
 				})
 				.finally(function () {
+					unlockForm();
 					isSubmitting = false;
 					form.removeAttribute('aria-busy');
 					if (submitButton) {
