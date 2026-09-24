@@ -332,6 +332,11 @@
 	border: 0;
 	border-bottom: 1px solid var(--haar);
 	vertical-align: top;
+}
+
+/* Farbe ohne die Letzte-Zeile-Regel: deren hoehere Spezifitaet schlug
+   sonst die Tinte der ersten und der Risse-Spalte in der letzten Zeile. */
+#article-content .hu-tabelle td {
 	color: var(--grau);
 }
 
@@ -343,6 +348,11 @@
 
 #article-content .hu-tabelle--risse td:last-child {
 	color: var(--tinte);
+}
+
+/* Zieltabelle: feste erste Spalte, damit die Uebergaenge buendig stehen. */
+#article-content .hu-tabelle--ziel td:first-child {
+	width: 14rem;
 }
 
 #article-content .hu-tabelle--risse td:last-child::before {
@@ -427,6 +437,10 @@
 		font-size: 1rem;
 	}
 
+	#article-content .hu-tabelle--ziel td:first-child {
+		width: 100%;
+	}
+
 	#article-content .hu-tabelle--stapel td[data-l]::before {
 		content: attr(data-l);
 		display: block;
@@ -490,7 +504,8 @@
 }
 
 #article-content .hu-abb__nr,
-#article-content .hu-kette-legende {
+#article-content .hu-kette-legende,
+#article-content .hu-besser-legende {
 	font-family: var(--mono);
 	font-size: var(--mono-m);
 	font-weight: 500;
@@ -515,13 +530,15 @@
 	color: var(--tinte);
 }
 
-#article-content .hu-kette-legende {
+#article-content .hu-kette-legende,
+#article-content .hu-besser-legende {
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--s0) var(--s3);
 }
 
-#article-content .hu-kette-legende span {
+#article-content .hu-kette-legende span,
+#article-content .hu-besser-legende span {
 	display: inline-flex;
 	align-items: center;
 	gap: var(--s0);
@@ -802,6 +819,132 @@
 		border-radius: 3px;
 		background: var(--zone);
 	}
+}
+
+/* ── Abbildung: vorher und nachher ──────────────────────────── */
+
+/* Helle Abbildung mit Linie oben statt Tafel. Farben und Schriften des SVG
+   stehen hier, im Partial steht kein Farbwert. */
+#article-content .hu-abb--besser {
+	padding-top: var(--s2);
+	border-top: 1px solid var(--strich);
+}
+
+#article-content .hu-abb--besser .hu-abb__kopf {
+	padding-bottom: 0;
+	border-bottom: 0;
+}
+
+#article-content .hu-besser-legende i {
+	position: relative;
+	display: inline-block;
+	width: 18px;
+	height: 10px;
+	border-radius: 1px;
+}
+
+#article-content .hu-besser-legende i.is-vorher {
+	border: 1px dashed var(--grau);
+	background: var(--zone2);
+}
+
+#article-content .hu-besser-legende i.is-nachher {
+	border: 1.5px solid var(--stempel);
+}
+
+#article-content .hu-besser-legende i.is-nachher::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--stempel);
+	opacity: 0.22;
+}
+
+/* Unter 640 px Breite scrollt die Grafik in dieser Flaeche, die Seite
+   selbst bleibt stehen. Die Containment-Angabe haelt die Mindestbreite
+   des SVG aus der Breitenberechnung des Reader-Rasters heraus, wie bei
+   der Tabellenhuelle. */
+#article-content .hu-besser__flaeche {
+	margin-top: var(--s2);
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+	container-type: inline-size;
+}
+
+#article-content .hu-besser__flaeche:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 2px;
+}
+
+#article-content svg.hu-besser {
+	display: block;
+	width: 100%;
+	min-width: 640px;
+	height: auto;
+}
+
+#article-content .hu-besser__raster {
+	stroke: var(--haar);
+	stroke-width: 1;
+}
+
+#article-content .hu-besser__band {
+	stroke-linejoin: round;
+}
+
+#article-content .hu-besser__band--nachher {
+	fill: var(--stempel);
+	fill-opacity: 0.22;
+	stroke: var(--stempel);
+	stroke-width: 1.5;
+}
+
+#article-content .hu-besser__band--vorher {
+	fill: var(--zone2);
+	stroke: var(--grau);
+	stroke-width: 1.25;
+	stroke-dasharray: 4 3;
+}
+
+#article-content .hu-besser__ende {
+	stroke: var(--stempel);
+	stroke-width: 2;
+}
+
+#article-content .hu-besser text {
+	font-family: var(--mono);
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	fill: var(--grau);
+}
+
+#article-content .hu-besser text.hu-besser__plus {
+	letter-spacing: 0.08em;
+	fill: var(--stempel);
+}
+
+#article-content .hu-besser text.hu-besser__ende-label {
+	letter-spacing: 0.12em;
+	fill: var(--stempel);
+}
+
+#article-content .hu-besser text.hu-besser__faktor {
+	font-family: var(--serif-display);
+	font-size: 26px;
+	letter-spacing: -0.02em;
+	fill: var(--tinte);
+}
+
+#article-content .hu-besser text.hu-besser__ende-fuss {
+	letter-spacing: 0.12em;
+	fill: var(--matt);
+}
+
+#article-content .hu-besser text.hu-besser__nr {
+	font-size: 10.5px;
+	letter-spacing: 0.08em;
+	fill: var(--matt);
 }
 
 /* ── Fall ───────────────────────────────────────────────────── */

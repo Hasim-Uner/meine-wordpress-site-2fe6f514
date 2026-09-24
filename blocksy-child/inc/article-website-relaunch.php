@@ -124,7 +124,7 @@ function hu_maybe_seed_website_relaunch_article() : void {
 		return;
 	}
 
-	$version    = '2026-09-24-website-relaunch-v1';
+	$version    = '2026-09-24-website-relaunch-v2';
 	$option_key = 'hu_website_relaunch_article_version';
 
 	if ( (string) get_option( $option_key, '' ) === $version ) {
@@ -152,10 +152,10 @@ function hu_maybe_seed_website_relaunch_article() : void {
 	$post_data = [
 		'post_type'      => 'post',
 		'post_status'    => 'publish',
-		'post_title'     => 'Website-Relaunch: Was Ihre B2B-Website verlieren darf – und was nicht',
+		'post_title'     => 'Website-Relaunch: Wann die neue Website wirklich besser ist',
 		'post_name'      => hu_website_relaunch_article_slug(),
 		'post_content'   => $content,
-		'post_excerpt'   => 'Ein Relaunch darf Rankings kosten, die nie eine Anfrage gebracht haben. Er darf nie die Anfragen selbst kosten und auch nicht die Messung, an der Sie sehen, woher sie kommen. Dieser Artikel zeigt, wie Sie eine B2B-Website vor dem Relaunch in ihre kleinsten Einheiten zerlegen, damit klar ist, was geschützt werden muss und was weg kann.',
+		'post_excerpt'   => 'Eine neue Website ist besser, wenn an jeder Stelle mehr der richtigen Besucher einen Schritt weiterkommen und Sie das sehen können. Dass sie moderner aussieht, ist dafür ein Mittel, kein Beweis. Dieser Artikel zeigt, was eine B2B-Website eigentlich leistet, wie Sie „besser“ vor dem Relaunch messbar machen und was auf dem Weg dorthin nicht verloren gehen darf.',
 		'post_author'    => function_exists( 'hu_blog_pillar_seed_author_id' ) ? hu_blog_pillar_seed_author_id() : 1,
 		'comment_status' => 'closed',
 		'ping_status'    => 'closed',
@@ -166,9 +166,9 @@ function hu_maybe_seed_website_relaunch_article() : void {
 		'meta_input'     => [
 			'enable_faq_schema'  => '1',
 			'_enable_faq_schema' => 'field_enable_faq_schema',
-			'seo_title'          => 'Website-Relaunch: Was verloren gehen darf – und was nicht',
+			'seo_title'          => 'Website-Relaunch: Wann die neue Website wirklich besser ist',
 			'_seo_title'         => 'field_seo_title',
-			'seo_description'    => 'Ein Relaunch darf Rankings kosten, die nie eine Anfrage gebracht haben. Was er nie kosten darf und wie Sie es vorher messen: Methode und Prüfliste.',
+			'seo_description'    => 'Besser heißt nicht moderner. Wie Sie vor dem Relaunch festlegen, was an jeder Stelle besser werden soll, und was dabei nicht verloren gehen darf.',
 			'_seo_description'   => 'field_seo_description',
 		],
 	];
@@ -204,9 +204,9 @@ function hu_maybe_seed_website_relaunch_article() : void {
 	$image_id = function_exists( 'hu_blog_pillar_ensure_featured_image' )
 		? (int) hu_blog_pillar_ensure_featured_image(
 			$post_id,
-			'assets/img/blog/website-relaunch-hero.png',
-			'Website-Relaunch: Was ein Relaunch verlieren darf – und was nicht',
-			'Titelbild: Was ein Relaunch verlieren darf – und was nicht. Darunter die Kette von der Suche bis zum Auftrag mit vier markierten Bruchstellen und dem Rückkanal zu Google Ads.'
+			'assets/img/blog/website-relaunch-hero-v2.png',
+			'Website-Relaunch: Wann die neue Website wirklich besser ist',
+			'Titelbild: Wann die neue Website wirklich besser ist. Darunter zwei Bänder von der Suche bis zum Auftrag: An vier Übergängen kommt nachher jeweils ein Fünftel mehr weiter, am Ende rund doppelt so viele.'
 		)
 		: 0;
 

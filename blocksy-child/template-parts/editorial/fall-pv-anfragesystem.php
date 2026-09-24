@@ -7,6 +7,9 @@
  * nicht verwendet: `lead_conversion` — sie ist keine Abschlussquote und
  * gehoert nicht in diese Zahlenreihe.
  *
+ * `$args['nachsatz']` ersetzt den Standard-Nachsatz, wenn der Shortcode Text
+ * umschliesst. Der Link zur Fallstudie steht in beiden Faellen dahinter.
+ *
  * @package Blocksy_Child
  */
 
@@ -14,9 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$args   = wp_parse_args( $args ?? [], [ 'dom_id' => 'fall-pv-anfragesystem' ] );
-$dom_id = sanitize_html_class( (string) $args['dom_id'] );
-$canon  = hu_e3_canon();
+$args     = wp_parse_args(
+	$args ?? [],
+	[
+		'dom_id'   => 'fall-pv-anfragesystem',
+		'nachsatz' => '',
+	]
+);
+$dom_id   = sanitize_html_class( (string) $args['dom_id'] );
+$nachsatz = trim( (string) $args['nachsatz'] );
+$canon    = hu_e3_canon();
 
 $case_label = (string) $canon['case_label_accusative'];
 $case_url   = (string) $canon['url'];
@@ -25,6 +35,8 @@ $cpl_after  = hu_e3_metric( 'cpl_after' );
 $lead_count = hu_e3_metric( 'lead_count' );
 $timeframe  = hu_e3_metric( 'timeframe', 'display_dative' );
 $abschluss  = hu_e3_metric( 'sales_conversion' );
+
+$nachsatz_standard = 'Das war kein Relaunch, sondern ein Neuaufbau. Er zeigt trotzdem, worum es hier geht: Das Ergebnis kam nicht aus einem einzelnen Hebel, sondern aus Übergängen, die jeweils eine Aufgabe und einen Messpunkt hatten. An der Abschlussquote hatte der Vertrieb des Betriebs einen wesentlichen Anteil.';
 ?>
 <aside class="hu-fall" aria-labelledby="<?php echo esc_attr( $dom_id ); ?>-titel">
 	<p class="hu-fall__kicker">Aus der Praxis</p>
@@ -35,5 +47,5 @@ $abschluss  = hu_e3_metric( 'sales_conversion' );
 		<li><b><?php echo esc_html( $lead_count ); ?></b><span><?php echo esc_html( 'qualifizierte Anfragen in ' . $timeframe ); ?></span></li>
 		<li><b><?php echo esc_html( $abschluss ); ?></b><span>Abschlussquote auf Auftrag</span></li>
 	</ul>
-	<p class="hu-fall__nachsatz">Das war kein Relaunch, sondern ein Neuaufbau. Er zeigt trotzdem, worum es hier geht: Das Ergebnis kam nicht aus einem einzelnen Hebel, sondern aus Übergängen, die jeweils eine Aufgabe und einen Messpunkt hatten. An der Abschlussquote hatte der Vertrieb des Betriebs einen wesentlichen Anteil. <span class="hu-fall__weiter"><span aria-hidden="true">→</span> <a class="hu-fall__link" href="<?php echo esc_url( $case_url ); ?>">Zur Fallstudie</a></span></p>
+	<p class="hu-fall__nachsatz"><?php echo '' !== $nachsatz ? wp_kses_post( $nachsatz ) : esc_html( $nachsatz_standard ); ?> <span class="hu-fall__weiter"><span aria-hidden="true">→</span> <a class="hu-fall__link" href="<?php echo esc_url( $case_url ); ?>">Zur Fallstudie</a></span></p>
 </aside>
