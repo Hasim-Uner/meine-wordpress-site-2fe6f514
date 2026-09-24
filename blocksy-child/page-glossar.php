@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Glossar Hub
- * Description: Strukturierter Glossar-Hub für definitorische Begriffe.
+ * Description: Durchsuchbares Glossar für WordPress, SEO und Tracking.
  *
  * @package Blocksy_Child
  */
@@ -12,152 +12,63 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-// Das Glossar bedient alle drei Wege. Sein CTA ist deshalb die generische
-// Projektanfrage, nicht der Marktcheck des Energy-Clusters.
-$project_url = function_exists( 'hu_get_commercial_route' )
-	? hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) )
-	: home_url( '/kontakt/' );
-$wgos_url    = function_exists( 'nexus_get_primary_public_url' ) ? nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ) : home_url( '/wordpress-agentur-hannover/#zusammenarbeit' );
-$summary     = function_exists( 'nexus_get_glossary_hub_summary' ) ? nexus_get_glossary_hub_summary() : [];
-$hub_sections = function_exists( 'nexus_get_glossary_hub_sections' ) ? nexus_get_glossary_hub_sections() : [];
+$terms       = nexus_get_glossary_directory_items();
+$areas       = nexus_get_glossary_area_catalog();
+$project_url = hu_get_commercial_route( 'project_request', home_url( '/kontakt/' ) );
 ?>
-
-<div class="site-main">
-	<div class="wgos-wrapper glossary-wrapper">
-		<section class="wgos-hero">
-			<div class="wgos-container">
-				<div class="wgos-hero-grid">
-					<div class="wgos-hero-copy">
-						<span class="wgos-kicker">Glossar</span>
-						<h1 class="wgos-hero__title">Begriffe erklären, ohne die Primary URLs zu verdoppeln.</h1>
-						<p class="wgos-hero__subtitle">Dieses Glossar sammelt definitorische Begriffe für SEO, Tracking, Performance und Conversion. Es ist bewusst als Intent-Layer unterhalb der Cluster- und Angebotsseiten gebaut: Sub-Terms hier, Head Terms auf den Primary URLs.</p>
-
-						<ul class="wgos-hero__bullets">
-							<li>Eigener Namespace für definitorische Suchintentionen</li>
-							<li>Alias-Einträge leiten auf die richtige Primary URL</li>
-							<li>Jeder Begriff führt in den nächsten sinnvollen Schritt</li>
-						</ul>
-
-						<div class="wgos-hero__actions">
-								<a href="<?php echo esc_url( $project_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_glossary_hub_project" data-track-category="lead_gen">Projekt anfragen</a>
-						</div>
-
-						<p class="wgos-hero__microcopy">Glossar bedeutet hier nicht „zweites Lexikon neben dem Angebot“, sondern ein kontrollierter Begriffs-Layer mit klarer Rückführung auf die richtige Seite.</p>
-					</div>
-
-					<aside class="wgos-hero-card" aria-label="Arbeitsprinzip des Glossars">
-						<span class="wgos-principle-kicker">Arbeitsprinzip</span>
-						<dl class="wgos-hero-card__list">
-							<div class="wgos-hero-card__row">
-								<dt>Head Terms</dt>
-								<dd>Bleiben auf Cluster-, Tool- oder Angebotsseiten.</dd>
-							</div>
-							<div class="wgos-hero-card__row">
-								<dt>Sub-Terms</dt>
-								<dd>Bekommen hier ihre definitorische Tiefe.</dd>
-							</div>
-							<div class="wgos-hero-card__row">
-								<dt>Alias</dt>
-								<dd>Glossar-Einträge dürfen bewusst nur auf die Primary URL verweisen.</dd>
-							</div>
-						</dl>
-					</aside>
+<div class="site-main doku glossary">
+	<div class="blatt">
+		<header class="glossary-head">
+			<p class="glossary-eyebrow">Glossar</p>
+			<h1>WordPress, SEO und Tracking<br class="glossary-wide-break"> einfach erklärt<span class="stempelfarbe">.</span></h1>
+			<p class="glossary-intro">Was bedeutet der Begriff? Wofür ist er wichtig? Kurze Erklärungen und Beispiele aus der Website-Praxis.</p>
+		</header>
+		<div class="glossary-directory" data-glossary-directory>
+			<div class="glossary-controls" data-glossary-controls hidden>
+				<div class="glossary-search">
+					<label for="glossary-search">Begriff suchen</label>
+					<input id="glossary-search" type="search" placeholder="Zum Beispiel LCP oder Kampagnenquelle" autocomplete="off" aria-controls="glossary-list" data-glossary-search>
 				</div>
-
-				<div class="wgos-trust-strip" aria-label="Glossar Kennzahlen">
-					<div class="wgos-trust-item">
-						<span class="wgos-trust-value"><?php echo esc_html( (string) ( $summary['totalTerms'] ?? 0 ) ); ?></span>
-						<span class="wgos-trust-label">definierte Begriffe</span>
-					</div>
-					<div class="wgos-trust-item">
-						<span class="wgos-trust-value"><?php echo esc_html( (string) ( $summary['indexTerms'] ?? 0 ) ); ?></span>
-						<span class="wgos-trust-label">indexierbare Begriffsseiten</span>
-					</div>
-					<div class="wgos-trust-item">
-						<span class="wgos-trust-value"><?php echo esc_html( (string) ( $summary['aliasTerms'] ?? 0 ) ); ?></span>
-						<span class="wgos-trust-label">Alias-Einträge</span>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section class="wgos-section wgos-section--white">
-			<div class="wgos-container">
-				<div class="wgos-section-head">
-					<span class="wgos-principle-kicker">Begriffs-Layer</span>
-					<h2 class="wgos-h2">Strukturiert nach denselben Kernbereichen wie das System.</h2>
-					<p class="wgos-section-intro">Die Begriffe sind nicht alphabetisch zufällig gesammelt, sondern nach Strategie, Fundament, Messbarkeit, Sichtbarkeit und Conversion geordnet. So bleibt die Einordnung systemisch statt lexikalisch beliebig.</p>
-				</div>
-
-				<div class="glossary-area-stack">
-					<?php foreach ( $hub_sections as $section ) : ?>
-						<section class="glossary-area-card" aria-labelledby="glossary-area-<?php echo esc_attr( $section['id'] ); ?>" style="--glossary-accent: <?php echo esc_attr( (string) $section['accent'] ); ?>;">
-							<header class="glossary-area-card__head">
-								<div>
-									<span class="glossary-area-card__eyebrow"><?php echo esc_html( (string) $section['label'] ); ?></span>
-									<h3 id="glossary-area-<?php echo esc_attr( $section['id'] ); ?>"><?php echo esc_html( (string) $section['summary'] ); ?></h3>
-								</div>
-								<p><?php echo esc_html( (string) $section['description'] ); ?></p>
-							</header>
-
-							<div class="glossary-term-grid">
-								<?php foreach ( (array) $section['items'] as $item ) : ?>
-									<article class="glossary-term-card">
-										<div class="glossary-term-card__top">
-											<div>
-												<span class="glossary-term-card__badge"><?php echo esc_html( (string) $item['policy_label'] ); ?></span>
-												<h4><?php echo esc_html( (string) $item['title'] ); ?></h4>
-											</div>
-										</div>
-
-										<p><?php echo esc_html( (string) $item['excerpt'] ); ?></p>
-
-										<?php if ( ! empty( $item['is_primary'] ) ) : ?>
-											<p class="glossary-term-card__hint">
-												<?php echo esc_html( (string) $item['primary_reason'] ); ?>
-											</p>
-										<?php elseif ( ! empty( $item['primary_label'] ) ) : ?>
-											<p class="glossary-term-card__hint">
-												Starker Rückverweis auf: <?php echo esc_html( (string) $item['primary_label'] ); ?>
-											</p>
-										<?php endif; ?>
-
-										<div class="glossary-term-card__actions">
-											<a href="<?php echo esc_url( (string) $item['url'] ); ?>" class="wgos-btn wgos-btn--outline"><?php echo esc_html( (string) $item['cta_label'] ); ?></a>
-										</div>
-									</article>
-								<?php endforeach; ?>
-							</div>
-						</section>
+				<div class="glossary-filters" role="group" aria-label="Nach Thema filtern">
+					<button type="button" class="glossary-filter" aria-pressed="true" aria-controls="glossary-list" data-glossary-filter="">Alle Themen</button>
+					<?php foreach ( $areas as $area ) : ?>
+						<button type="button" class="glossary-filter" aria-pressed="false" aria-controls="glossary-list" data-glossary-filter="<?php echo esc_attr( $area['id'] ); ?>"><?php echo esc_html( $area['label'] ); ?></button>
 					<?php endforeach; ?>
 				</div>
 			</div>
-		</section>
-
-		<section class="wgos-section wgos-section--gray">
-			<div class="wgos-container">
-				<div class="wgos-contrast-grid">
-					<article class="wgos-contrast-card">
-						<h3>Was das Glossar leisten soll</h3>
-						<ul class="wgos-checklist wgos-checklist--compact">
-							<li>Begriffe klar definieren, die auf Angebotsseiten zu granular wären.</li>
-							<li>Technische und strategische Sprache im System vereinheitlichen.</li>
-							<li>Von Definitions-Intent sauber in Audit, Tool oder Cluster überleiten.</li>
-						</ul>
-					</article>
-
-					<article class="wgos-contrast-card">
-						<h3>Was es bewusst nicht leisten soll</h3>
-						<ul class="wgos-checklist wgos-checklist--compact">
-							<li>Keine zweite Rankingerklärung für Head Terms wie Core Web Vitals oder CRO.</li>
-							<li>Keine unverbundenen Wörterbuchseiten ohne Primary-URL-Mapping.</li>
-							<li>Keine Content-Drift weg von der eigentlichen Angebots- und Cluster-Struktur.</li>
-						</ul>
-					</article>
-				</div>
+			<div class="glossary-list-head">
+				<h2 class="glossary-eyebrow">Begriffe von A–Z</h2>
+				<p role="status" aria-live="polite" aria-atomic="true" data-glossary-count><?php echo esc_html( (string) count( $terms ) ); ?> Begriffe</p>
 			</div>
-		</section>
+			<ul id="glossary-list" class="glossary-list">
+				<?php foreach ( $terms as $term ) : ?>
+					<li class="glossary-item" data-glossary-item data-area="<?php echo esc_attr( $term['area_id'] ); ?>" data-search="<?php echo esc_attr( $term['search'] ); ?>">
+						<a class="glossary-entry" href="<?php echo esc_url( $term['url'] ); ?>">
+							<div class="glossary-entry-name">
+								<span class="glossary-topic"><?php echo esc_html( $term['area_label'] ); ?></span>
+								<h3><?php echo esc_html( $term['title'] ); ?></h3>
+							</div>
+							<div class="glossary-entry-copy">
+								<p><?php echo esc_html( $term['excerpt'] ); ?></p>
+								<?php if ( $term['is_primary'] ) : ?>
+									<span class="glossary-destination">Weiter zur Themenseite</span>
+								<?php endif; ?>
+							</div>
+							<span class="glossary-arrow" aria-hidden="true">↗</span>
+						</a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+			<div class="glossary-empty" data-glossary-empty hidden>
+				<h3>Kein passender Begriff gefunden.</h3>
+				<p>Versuchen Sie eine andere Schreibweise oder wählen Sie alle Themen.</p>
+				<button type="button" class="tun still" data-glossary-reset>Suche zurücksetzen</button>
+			</div>
+		</div>
+		<footer class="glossary-close">
+			<p>Sie möchten etwas an Ihrer Website verbessern?</p>
+			<a class="satzlink" href="<?php echo esc_url( $project_url ); ?>" data-track-action="cta_glossary_hub_project" data-track-category="lead_gen" data-track-section="glossary_close">Projekt anfragen →</a>
+		</footer>
 	</div>
 </div>
-
 <?php get_footer(); ?>

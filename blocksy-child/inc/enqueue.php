@@ -83,6 +83,8 @@ function hu_enqueue_assets() {
 	$is_aroundhome_decision = is_singular( 'post' ) && $queried_id && 'aroundhome-solar-einordnung' === get_post_field( 'post_name', $queried_id );
 	$is_provider_decision   = $is_checkfox_decision || $is_aroundhome_decision;
 	$is_client_portal = is_page_template( 'template-portal.php' );
+	$is_glossary_hub = function_exists( 'nexus_is_glossary_hub_page' ) && nexus_is_glossary_hub_page();
+	$is_glossary = $is_glossary_hub || is_singular( 'glossary_term' );
 	$is_results_hub = function_exists( 'hu_is_results_hub_request' ) && hu_is_results_hub_request();
 
 	// ── Parent Theme ──────────────────────────────────────────────
@@ -94,12 +96,12 @@ function hu_enqueue_assets() {
 	);
 
 	// ── Legacy compatibility provider ──────────────────────────────
-	// Die kanonische Startseite, die Personenseite und der Ergebnisse-Hub
+	// Startseite, Personenseite, Ergebnisse-Hub und Glossar
 	// stehen vollstaendig auf system.css und konsumieren weder NX- noch
 	// unpraefixierte Provider-Tokens. Alle anderen Routen behalten den
 	// Legacy-Provider, bis ihre impliziten Token-/Selector-Abhaengigkeiten
 	// einzeln nachgewiesen und migriert sind.
-	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub );
+	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_glossary );
 	if ( $uses_legacy_design_system ) {
 		hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
 	}
@@ -526,17 +528,14 @@ function hu_enqueue_assets() {
 	}
 
 	// ── G4) Template: Glossar Hub ─────────────────────────────────
-	if ( function_exists( 'nexus_is_glossary_hub_page' ) && nexus_is_glossary_hub_page() ) {
-		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-wgos-css', 'wgos.css', [ 'nexus-home-css' ] );
-		hu_enqueue_css( 'nexus-glossary-css', 'glossary.css', [ 'nexus-wgos-css' ] );
+	if ( $is_glossary_hub ) {
+		hu_enqueue_css( 'nexus-glossary-css', 'glossary.css', [ 'nexus-system-css' ] );
+		hu_enqueue_js( 'nexus-glossary-js', 'glossary.js' );
 	}
 
 	// ── G5) Template: Glossar Detail ──────────────────────────────
 	if ( is_singular( 'glossary_term' ) ) {
-		hu_enqueue_css( 'nexus-home-css', 'homepage.css', [ 'nexus-design-system' ] );
-		hu_enqueue_css( 'nexus-wgos-css', 'wgos.css', [ 'nexus-home-css' ] );
-		hu_enqueue_css( 'nexus-glossary-css', 'glossary.css', [ 'nexus-wgos-css' ] );
+		hu_enqueue_css( 'nexus-glossary-css', 'glossary.css', [ 'nexus-system-css' ] );
 
 		wp_add_inline_style(
 			'blocksy-child-style',

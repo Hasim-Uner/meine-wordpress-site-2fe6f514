@@ -29,6 +29,18 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/ergebnisse/` | Proof / evaluation, all three routes | Proof hub / trust layer | Three-way close: Marktcheck, `Projekt anfragen`, White-Label `Aufgabe beschreiben` | Case study, public references, tracking money page |
 | `/case-study-solar-leadgenerierung/` | Solar proof | Evidence page | Solar Marktcheck | Energy money page |
 
+## Glossar: erst erklären, dann Projektbezug
+
+`/glossar/` führt über alphabetische Begriffe auf vorhandene Detail- oder
+Themenseiten. Die allgemeine Projektanfrage steht am Abschluss
+(`cta_glossary_hub_project`, Kategorie `lead_gen`). Auf den Detailseiten
+bleibt `cta_glossary_term_project` mit Kategorie `project` am Abschluss;
+`cta_glossary_hero_project` entfällt zusammen mit dem früheren Hero-CTA.
+Beide verbleibenden Links nutzen die kanonische Route `project_request`.
+Verwandte Begriffe führen auf aktuell verfügbare Ziele; fehlende Detailseiten
+werden ausgelassen. Allgemeine Performance-Begriffe verweisen auf passende
+WordPress-Leistungen. Solar-Themeneinträge behalten ihre fachlichen Ziele.
+
 ## GA4: direkte Tracking-Anfrage
 
 GA4 verwendet für Hero, Proof und Abschluss dieselbe direkte Projektanfrage

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function nexus_get_glossary_registry_version() {
-	return '2026-09-05-glossary-v5-b2b-inquiry';
+	return '2026-09-23-glossary-v6-clear-reading';
 }
 
 /**
@@ -163,6 +163,14 @@ function nexus_get_glossary_registry() {
 		$definition['excerpt']            = isset( $definition['excerpt'] ) ? (string) $definition['excerpt'] : '';
 		$definition['short_definition']   = isset( $definition['short_definition'] ) ? (string) $definition['short_definition'] : $definition['excerpt'];
 		$definition['why_it_matters']     = isset( $definition['why_it_matters'] ) ? (string) $definition['why_it_matters'] : '';
+		$definition['measurement_label']  = (string) ( $definition['measurement_label'] ?? 'Worauf kommt es an?' );
+		$definition['benchmark_note']     = (string) ( $definition['benchmark_note'] ?? '' );
+		$definition['search_terms']       = array_values( array_filter( array_map( 'strval', (array) ( $definition['search_terms'] ?? [] ) ) ) );
+		$definition['show_in_hub']        = false !== ( $definition['show_in_hub'] ?? true );
+		$definition['example']            = is_array( $definition['example'] ?? null ) ? $definition['example'] : [];
+		$definition['sources']            = array_values( array_filter( (array) ( $definition['sources'] ?? [] ), static function ( $source ) {
+			return is_array( $source ) && ! empty( $source['url'] ) && ! empty( $source['label'] );
+		} ) );
 		$definition['measurement']        = isset( $definition['measurement'] ) ? (string) $definition['measurement'] : '';
 		$definition['primary_url_key']    = isset( $definition['primary_url_key'] ) ? sanitize_key( (string) $definition['primary_url_key'] ) : '';
 		$definition['primary_url_label']  = isset( $definition['primary_url_label'] ) ? (string) $definition['primary_url_label'] : '';
@@ -533,179 +541,108 @@ function nexus_get_glossary_related_term_items( $term ) {
  * Build the rendered HTML for one glossary term.
  *
  * @param array<string, mixed> $term Term definition.
+ * @param bool $include_definition Include the definition for stored post content.
  * @return string
  */
-function nexus_get_glossary_term_content_html( $term ) {
-	$hub_url          = nexus_get_glossary_hub_url();
-	$audit_url        = nexus_get_primary_public_url( 'audit', home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) );
-	$primary_url      = nexus_get_glossary_primary_url( $term );
-	$primary_items    = nexus_get_glossary_related_primary_items( $term );
-	$asset_items      = nexus_get_glossary_related_asset_items( $term );
-	$related_terms    = nexus_get_glossary_related_term_items( $term );
-	$area_catalog     = nexus_get_glossary_area_catalog();
-	$policy_catalog   = nexus_get_glossary_policy_catalog();
-	$core_area        = isset( $term['core_area'] ) ? (string) $term['core_area'] : 'Strategie';
-	$policy           = isset( $term['index_policy'] ) ? (string) $term['index_policy'] : 'index';
-	$area             = $area_catalog[ $core_area ] ?? reset( $area_catalog );
-	$policy_data      = $policy_catalog[ $policy ] ?? $policy_catalog['index'];
+function nexus_get_glossary_term_content_html( $term, $include_definition = true ) {
+	$primary_items = nexus_get_glossary_related_primary_items( $term );
+	$hub_url       = nexus_get_glossary_hub_url();
+	$related_terms = array_slice(
+		array_values(
+			array_filter(
+				nexus_get_glossary_related_term_items( $term ),
+				static function ( $item ) use ( $hub_url ) {
+					return '' !== $item['url'] && $hub_url !== $item['url'];
+				}
+			)
+		),
+		0,
+		3
+	);
+	$example = $term['example'];
 
 	ob_start();
 	?>
-	<section class="wgos-section wgos-section--white glossary-detail-intro">
-		<div class="wgos-container">
-			<div class="glossary-detail-grid">
-				<article class="glossary-card">
-					<span class="glossary-card__kicker">Kurzdefinition</span>
-					<p class="glossary-card__lead"><?php echo esc_html( (string) $term['short_definition'] ); ?></p>
-					<?php if ( '' !== trim( (string) $term['why_it_matters'] ) ) : ?>
-						<p><?php echo esc_html( (string) $term['why_it_matters'] ); ?></p>
-					<?php endif; ?>
-				</article>
+	<?php if ( $include_definition ) : ?>
+		<p class="glossary-definition"><?php echo esc_html( $term['short_definition'] ); ?></p>
+	<?php endif; ?>
+	<?php if ( '' !== $term['why_it_matters'] ) : ?>
+		<section>
+			<h2>Warum ist das wichtig?</h2>
+			<p><?php echo esc_html( $term['why_it_matters'] ); ?></p>
+		</section>
+	<?php endif; ?>
 
-				<aside class="glossary-card glossary-card--accent" style="--glossary-accent: <?php echo esc_attr( (string) $area['accent'] ); ?>;">
-					<span class="glossary-card__kicker">Einordnung</span>
-					<dl class="glossary-facts">
-						<div>
-							<dt>Kernbereich</dt>
-							<dd><?php echo esc_html( $core_area ); ?></dd>
-						</div>
-						<div>
-							<dt>Index-Policy</dt>
-							<dd><?php echo esc_html( (string) $policy_data['label'] ); ?></dd>
-						</div>
-						<?php if ( '' !== $primary_url ) : ?>
-							<div>
-								<dt>Primary URL</dt>
-								<dd><a href="<?php echo esc_url( $primary_url ); ?>"><?php echo esc_html( (string) $term['primary_url_label'] ); ?></a></dd>
-							</div>
-						<?php endif; ?>
-					</dl>
-					<?php if ( '' !== trim( (string) $term['primary_url_reason'] ) ) : ?>
-						<p class="glossary-card__micro"><?php echo esc_html( (string) $term['primary_url_reason'] ); ?></p>
-					<?php endif; ?>
-				</aside>
-			</div>
-		</div>
-	</section>
+	<?php if ( ! empty( $example['text'] ) ) : ?>
+		<section class="tafel glossary-example">
+			<h2>Ein Beispiel</h2>
+			<p><?php echo esc_html( $example['text'] ); ?></p>
+			<?php if ( ! empty( $example['code'] ) ) : ?>
+				<pre><code><?php echo esc_html( $example['code'] ); ?></code></pre>
+			<?php endif; ?>
+			<?php if ( ! empty( $example['items'] ) ) : ?>
+				<dl>
+					<?php foreach ( $example['items'] as $label => $description ) : ?>
+						<div><dt><?php echo esc_html( $label ); ?></dt><dd><?php echo esc_html( $description ); ?></dd></div>
+					<?php endforeach; ?>
+				</dl>
+			<?php endif; ?>
+		</section>
+	<?php endif; ?>
 
-	<?php if ( ! empty( $term['benchmarks'] ) || '' !== trim( (string) $term['measurement'] ) ) : ?>
-		<section class="wgos-section wgos-section--gray">
-			<div class="wgos-container">
-				<div class="wgos-section-head">
-					<span class="wgos-principle-kicker">Messung und Bewertung</span>
-					<h2 class="wgos-h2">Woran Sie den Begriff praktisch erkennen.</h2>
-					<?php if ( '' !== trim( (string) $term['measurement'] ) ) : ?>
-						<p class="wgos-section-intro"><?php echo esc_html( (string) $term['measurement'] ); ?></p>
-					<?php endif; ?>
-				</div>
-
-				<?php if ( ! empty( $term['benchmarks'] ) ) : ?>
-					<div class="glossary-benchmark-grid">
-						<?php foreach ( (array) $term['benchmarks'] as $benchmark ) : ?>
-							<article class="glossary-benchmark-card">
-								<span class="glossary-benchmark-card__label"><?php echo esc_html( (string) $benchmark['label'] ); ?></span>
-								<strong><?php echo esc_html( (string) $benchmark['value'] ); ?></strong>
-								<?php if ( ! empty( $benchmark['note'] ) ) : ?>
-									<p><?php echo esc_html( (string) $benchmark['note'] ); ?></p>
-								<?php endif; ?>
-							</article>
-						<?php endforeach; ?>
-					</div>
-				<?php endif; ?>
-			</div>
+	<?php if ( '' !== $term['measurement'] || ! empty( $term['benchmarks'] ) ) : ?>
+		<section>
+			<h2><?php echo esc_html( $term['measurement_label'] ); ?></h2>
+			<?php if ( '' !== $term['measurement'] ) : ?>
+				<p><?php echo esc_html( $term['measurement'] ); ?></p>
+			<?php endif; ?>
+			<?php if ( ! empty( $term['benchmarks'] ) ) : ?>
+				<dl class="glossary-benchmarks">
+					<?php foreach ( $term['benchmarks'] as $benchmark ) : ?>
+						<div><dt><?php echo esc_html( $benchmark['label'] ); ?></dt><dd><?php echo esc_html( $benchmark['value'] ); ?></dd></div>
+					<?php endforeach; ?>
+				</dl>
+			<?php endif; ?>
+			<?php if ( '' !== $term['benchmark_note'] ) : ?>
+				<p class="glossary-note"><?php echo esc_html( $term['benchmark_note'] ); ?></p>
+			<?php endif; ?>
 		</section>
 	<?php endif; ?>
 
 	<?php if ( ! empty( $term['mistakes'] ) ) : ?>
-		<section class="wgos-section wgos-section--white">
-			<div class="wgos-container">
-				<div class="wgos-section-head">
-					<span class="wgos-principle-kicker">Typische Fehler</span>
-					<h2 class="wgos-h2">Wo Begriffsverständnis und Umsetzung oft auseinanderlaufen.</h2>
-				</div>
-				<ul class="glossary-checklist">
-					<?php foreach ( (array) $term['mistakes'] as $mistake ) : ?>
-						<li><?php echo esc_html( (string) $mistake ); ?></li>
+		<section>
+			<h2>Typische Fehler</h2>
+			<ul class="glossary-mistakes">
+				<?php foreach ( $term['mistakes'] as $mistake ) : ?>
+					<li><?php echo esc_html( $mistake ); ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</section>
+	<?php endif; ?>
+
+	<?php if ( $related_terms || $primary_items ) : ?>
+		<section>
+			<h2>Weiterlesen</h2>
+			<?php if ( $related_terms ) : ?>
+				<ul class="glossary-related">
+					<?php foreach ( $related_terms as $item ) : ?>
+						<li><a href="<?php echo esc_url( $item['url'] ); ?>"><?php echo esc_html( $item['label'] ); ?></a></li>
 					<?php endforeach; ?>
 				</ul>
-			</div>
+			<?php endif; ?>
+			<?php if ( $primary_items ) : ?>
+				<p class="glossary-service">Passende Leistung: <a href="<?php echo esc_url( $primary_items[0]['url'] ); ?>"><?php echo esc_html( $primary_items[0]['label'] ); ?></a></p>
+			<?php endif; ?>
 		</section>
 	<?php endif; ?>
-
-	<section class="wgos-section wgos-section--gray">
-		<div class="wgos-container">
-			<div class="wgos-section-head">
-				<span class="wgos-principle-kicker">Im Anfragesystem-Kontext</span>
-				<h2 class="wgos-h2">Der Begriff ist nur dann sinnvoll, wenn er auf die richtige Primary URL zurückführt.</h2>
-			</div>
-
-			<div class="glossary-context-grid">
-				<div class="glossary-card">
-					<?php foreach ( (array) $term['wgos_context'] as $paragraph ) : ?>
-						<p><?php echo esc_html( (string) $paragraph ); ?></p>
-					<?php endforeach; ?>
-				</div>
-
-				<div class="glossary-card">
-					<span class="glossary-card__kicker">Nächste sinnvolle Seiten</span>
-					<div class="glossary-link-stack">
-						<?php foreach ( $primary_items as $item ) : ?>
-							<a class="glossary-link-card" href="<?php echo esc_url( $item['url'] ); ?>">
-								<strong><?php echo esc_html( $item['label'] ); ?></strong>
-								<?php if ( '' !== trim( $item['reason'] ) ) : ?>
-									<span><?php echo esc_html( $item['reason'] ); ?></span>
-								<?php endif; ?>
-							</a>
-						<?php endforeach; ?>
-
-						<?php foreach ( $asset_items as $item ) : ?>
-							<a class="glossary-link-card glossary-link-card--asset" href="<?php echo esc_url( $item['url'] ); ?>">
-								<strong><?php echo esc_html( $item['label'] ); ?></strong>
-								<?php if ( '' !== trim( $item['reason'] ) ) : ?>
-									<span><?php echo esc_html( $item['reason'] ); ?></span>
-								<?php endif; ?>
-							</a>
-						<?php endforeach; ?>
-					</div>
-				</div>
-			</div>
+	<?php if ( $term['sources'] ) : ?>
+		<div class="glossary-sources">
+			<?php foreach ( $term['sources'] as $source ) : ?>
+				<p>Quelle: <a href="<?php echo esc_url( $source['url'] ); ?>"><?php echo esc_html( $source['label'] ); ?></a></p>
+			<?php endforeach; ?>
 		</div>
-	</section>
-
-	<?php if ( ! empty( $related_terms ) ) : ?>
-		<section class="wgos-section wgos-section--white">
-			<div class="wgos-container">
-				<div class="wgos-section-head">
-					<span class="wgos-principle-kicker">Verwandte Begriffe</span>
-					<h2 class="wgos-h2">Weitere Einträge, die direkt anschließen.</h2>
-				</div>
-				<div class="glossary-related-grid">
-					<?php foreach ( $related_terms as $item ) : ?>
-						<a class="glossary-related-card" href="<?php echo esc_url( $item['url'] ); ?>">
-							<strong><?php echo esc_html( $item['label'] ); ?></strong>
-							<span><?php echo esc_html( $item['reason'] ); ?></span>
-						</a>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
 	<?php endif; ?>
-
-	<section class="wgos-section wgos-section--white wgos-final-cta">
-		<div class="wgos-container">
-			<div class="wgos-final-cta__inner">
-				<span class="wgos-principle-kicker">Nächster Schritt</span>
-				<h2 class="wgos-h2">Begriff verstanden. Jetzt die richtige Priorität für Ihre Website setzen.</h2>
-				<p class="wgos-prose">Wenn klar ist, was der Begriff bedeutet, bleibt die eigentliche Frage offen: Ist das Thema für Ihre Website gerade wirklich der Engpass oder nur ein Symptom? Der Marktcheck bringt die Reihenfolge zurück.</p>
-				<div class="wgos-hero__actions">
-					<a href="<?php echo esc_url( $hub_url ); ?>" class="wgos-btn wgos-btn--outline">Zurück zum Glossar</a>
-					<a href="<?php echo esc_url( $audit_url ); ?>" class="wgos-btn wgos-btn--primary" data-track-action="cta_glossary_term_audit" data-track-category="lead_gen"><?php echo esc_html( nexus_get_audit_cta_label() ); ?></a>
-				</div>
-			</div>
-		</div>
-	</section>
 	<?php
-
 	return trim( (string) ob_get_clean() );
 }
 

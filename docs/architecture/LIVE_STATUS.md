@@ -154,7 +154,20 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Größe über das Feld „Open Graph Bild“. Kontextbrücke und Abschluss führen in
   die Projektanfrage mit Fokus `relaunch` bzw. in die Ersteinschätzung
   (`docs/architecture/CONVERSION_ROUTING.md`).
-- **Weitere öffentliche Seiten:** `/glossar/`, `/impressum/`, `/datenschutz/`
+- **Glossar:** `/glossar/` und `/glossar/<begriff>/` verwenden `system.css`
+  mit `glossary.css` als Layout-Ergänzung. Die Übersicht zeigt das zentrale
+  Register alphabetisch, mit Definitionen sowie einer optionalen Suche und
+  Themenfiltern (`glossary.js`); ohne JavaScript bleiben alle Links sichtbar.
+  Einträge bestehen aus Kurzdefinition, Beispiel, Einordnung und typischen
+  Fehlern. Registrierte Detailseiten rendern ihre Inhalte und verwandten Links
+  beim Aufruf, damit frühere Sync-Fallbacks nicht im HTML stehen bleiben.
+  Der Sync aktualisiert weiterhin Posts, Metadaten und seine Prüfmarker;
+  Index-/Noindex-Regeln und Alias-Ziele bleiben erhalten. Der lokale
+  Agentur-Alias bleibt im Register, ist aber kein Eintrag der Übersicht.
+  Neue Begriffe werden in `inc/glossary/glossary-registry-data.php` gepflegt;
+  `search_terms` erweitert nur die Glossarsuche, `keywords_match` steuert
+  weiterhin die bestehenden Blog-Verlinkungen. Abschlussziel: Projektanfrage.
+- **Weitere öffentliche Seiten:** `/impressum/`, `/datenschutz/`
   (Kontaktdaten aus dem Messaging-Canon).
 - **Intern:** `page-wgos.php` ist ein geschütztes Kunden-Dashboard
   (`noindex, nofollow`); `wgos_asset`-Seiten unter `/wgos-assets/<slug>/` sind

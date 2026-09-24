@@ -59,7 +59,7 @@ Regeln:
 - bestehende Verbraucher einzeln auf `system.css` migrieren oder stilllegen;
 - ein bereinigter Verbraucher wird sofort aus der Baseline entfernt;
 - keine neuen generischen Komponenten in `design-system.css` erfinden;
-- `design-system.css` ist auf der kanonischen Startseite, der Personenseite und dem Ergebnisse-Hub bereits aus dem Enqueue genommen; weitere Routen folgen erst nach eigenem Provider-Audit.
+- `design-system.css` ist auf der kanonischen Startseite, der Personenseite, dem Ergebnisse-Hub und den Glossarseiten bereits aus dem Enqueue genommen; weitere Routen folgen erst nach eigenem Provider-Audit.
 
 Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu verschmelzen. Beide Systeme haben unterschiedliche historische Semantik und Theme-Annahmen; ein blindes Zusammenlegen würde Cascade- und Kontrastfehler erzeugen.
 
@@ -67,7 +67,7 @@ Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu v
 
 Die verbleibenden Verbraucher verteilen sich nicht gleichmäßig. Für die Migration gelten diese Cluster:
 
-1. **Globale Shell / Provider:** `style.css` ist von `--nx-*` entkoppelt; der frühere Audit-Sonderheader samt `site-header.css` ist entfernt. `design-system.css` wird auf der kanonischen Startseite, der Personenseite und dem Ergebnisse-Hub nicht mehr geladen. Auf allen übrigen Routen bleibt der Provider vorerst aktiv, weil er neben NX-Tokens auch unpräfixierte Tokens sowie globale `body`-/Heading-/Kompatibilitätsregeln bereitstellt.
+1. **Globale Shell / Provider:** `style.css` ist von `--nx-*` entkoppelt; der frühere Audit-Sonderheader samt `site-header.css` ist entfernt. `design-system.css` wird auf der kanonischen Startseite, der Personenseite, dem Ergebnisse-Hub und den Glossarseiten nicht mehr geladen. Auf allen übrigen Routen bleibt der Provider vorerst aktiv, weil er neben NX-Tokens auch unpräfixierte Tokens sowie globale `body`-/Heading-/Kompatibilitätsregeln bereitstellt.
 2. **Schwere Legacy-Oberflächen:** `homepage.css`, `wgos.css`, `wgos-assets.css`. `ergebnisse.css` ist bereits vollständig entkoppelt.
 3. **Service-Routen:** `cro.css`, `ga4.css`, `cwv.css`, `seo-cornerstone.css`, `seo.css`. `performance.css` ist entkoppelt (siehe unten).
 4. **Blog / Editorial:** `single.css`, `single-editorial.css`, `related-content.css`, `footer-cta.css`, Provider-Decision-Layer.
@@ -89,6 +89,14 @@ und dessen Tokens. Der alte NX-Verbraucher entfällt aus der shrink-only
 Baseline; das verbleibende Stylesheet enthält nur Projekt-, Beleg- und
 Übergabelayouts. Der Legacy-Provider wird auf dieser Route nicht mehr geladen.
 Die aktuelle Anzahl der Legacy-Verbraucher liefert der Guard.
+
+### Glossar
+
+Übersicht und Detailseiten verwenden `system.css` plus `glossary.css` für
+Suchfeld, Filter, Begriffszeilen und Lesebreite. `design-system.css`,
+`homepage.css` und `wgos.css` werden auf diesen Routen nicht mehr geladen.
+Die Beispiel-Tafel verwendet die vorhandene `.tafel`-Komponente. Das Glossar
+ist aus der NX-Baseline entfernt; es definiert keine eigenen Design-Tokens.
 
 ### Performance Marketing
 

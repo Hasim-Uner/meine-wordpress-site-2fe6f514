@@ -28,7 +28,7 @@ function nexus_get_glossary_area_catalog() {
 	return [
 		'Strategie' => [
 			'id'          => 'strategy',
-			'label'       => 'Strategie',
+			'label'       => 'Anfragen',
 			'accent'      => '#d4af37',
 			'summary'     => 'Begriffe, die Angebot, Priorisierung und Differenzierung sauber einordnen.',
 			'description' => 'Diese Begriffe schaffen Orientierung, bevor Teams in Seitenbau, Kampagnen oder Tools springen.',
@@ -36,7 +36,7 @@ function nexus_get_glossary_area_catalog() {
 		],
 		'Technisches Fundament' => [
 			'id'          => 'foundation',
-			'label'       => 'Technisches Fundament',
+			'label'       => 'Ladezeit & Technik',
 			'accent'      => '#6ea8ff',
 			'summary'     => 'Metriken und Technikbegriffe, die Ladezeit, Stabilität und Systemtragfähigkeit erklären.',
 			'description' => 'Hier liegt die definitorische Tiefe für Performance-Themen, die Head Terms nicht dupliziert.',
@@ -44,7 +44,7 @@ function nexus_get_glossary_area_catalog() {
 		],
 		'Messbarkeit' => [
 			'id'          => 'measurement',
-			'label'       => 'Messbarkeit',
+			'label'       => 'Tracking',
 			'accent'      => '#b084ff',
 			'summary'     => 'Tracking-, Analytics- und Attributionsbegriffe als Brücke zum Setup.',
 			'description' => 'Das Glossar erklärt die Begriffe, während die Setup-Seiten die operative Umsetzung übernehmen.',
@@ -52,7 +52,7 @@ function nexus_get_glossary_area_catalog() {
 		],
 		'Sichtbarkeit' => [
 			'id'          => 'visibility',
-			'label'       => 'Sichtbarkeit',
+			'label'       => 'SEO',
 			'accent'      => '#52d39a',
 			'summary'     => 'SEO- und IA-Begriffe, die technische Klarheit auf die Primary URL zurückführen.',
 			'description' => 'Hier landen definitorische Sub-Terms, nicht die kommerziellen Head Terms selbst.',
@@ -89,7 +89,7 @@ function nexus_get_glossary_policy_catalog() {
 		'alias' => [
 			'label'       => 'Alias',
 			'description' => 'Glossar-Eintrag verweist bewusst auf die Primary URL, um Kannibalisierung zu vermeiden.',
-			'cta_label'   => 'Primary URL öffnen',
+			'cta_label'   => 'Zum Thema',
 		],
 	];
 }
@@ -168,7 +168,7 @@ function nexus_maybe_ensure_glossary_hub_page() {
 					'post_title'   => 'Glossar',
 					'post_name'    => 'glossar',
 					'post_content' => '',
-					'post_excerpt' => 'Glossar für SEO, Tracking, Performance und Conversion mit klaren Links auf die richtigen Primary URLs.',
+					'post_excerpt' => 'WordPress, SEO und Tracking einfach erklärt: kurze Definitionen, Beispiele und typische Fehler.',
 				]
 			),
 			true
@@ -188,21 +188,21 @@ function nexus_maybe_ensure_glossary_hub_page() {
 
 	$current_excerpt = (string) get_post_field( 'post_excerpt', $page_id );
 
-	if ( '' === trim( $current_excerpt ) ) {
+	if ( '' === trim( $current_excerpt ) || 'Glossar für SEO, Tracking, Performance und Conversion mit klaren Links auf die richtigen Primary URLs.' === $current_excerpt ) {
 		wp_update_post(
 			[
 				'ID'           => $page_id,
-				'post_excerpt' => 'Glossar für SEO, Tracking, Performance und Conversion mit klaren Links auf die richtigen Primary URLs.',
+				'post_excerpt' => 'WordPress, SEO und Tracking einfach erklärt: kurze Definitionen, Beispiele und typische Fehler.',
 			]
 		);
 	}
 
-	if ( '' === trim( (string) get_post_meta( $page_id, 'seo_title', true ) ) ) {
-		update_post_meta( $page_id, 'seo_title', 'Glossar für SEO, Tracking und CRO | Haşim Üner' );
+	if ( in_array( trim( (string) get_post_meta( $page_id, 'seo_title', true ) ), [ '', 'Glossar für SEO, Tracking und CRO | Haşim Üner' ], true ) ) {
+		update_post_meta( $page_id, 'seo_title', 'Glossar: WordPress, SEO & Tracking erklärt | Haşim Üner' );
 	}
 
-	if ( '' === trim( (string) get_post_meta( $page_id, 'seo_description', true ) ) ) {
-		update_post_meta( $page_id, 'seo_description', 'Glossar für SEO, Tracking, Performance und Conversion: definitorische Begriffe mit sauberer Brücke zu den passenden Primary URLs.' );
+	if ( in_array( trim( (string) get_post_meta( $page_id, 'seo_description', true ) ), [ '', 'Glossar für SEO, Tracking, Performance und Conversion: definitorische Begriffe mit sauberer Brücke zu den passenden Primary URLs.' ], true ) ) {
+		update_post_meta( $page_id, 'seo_description', 'WordPress, SEO und Tracking einfach erklärt: kurze Definitionen, Beispiele und typische Fehler.' );
 	}
 }
 add_action( 'init', 'nexus_maybe_ensure_glossary_hub_page', 26 );
@@ -440,6 +440,48 @@ function nexus_get_glossary_hub_sections() {
 	}
 
 	return $sections;
+}
+
+/**
+ * Return the visible, alphabetically ordered directory from the registry.
+ * Missing unpublished destinations are omitted instead of linking to the hub.
+ * Query-owner aliases keep their original destination and are labelled in the UI.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function nexus_get_glossary_directory_items() {
+	$items   = [];
+	$areas   = nexus_get_glossary_area_catalog();
+	$hub_url = nexus_get_glossary_hub_url();
+
+	foreach ( nexus_get_glossary_registry() as $term ) {
+		if ( 'publish' !== $term['status'] || ! $term['show_in_hub'] ) {
+			continue;
+		}
+
+		$destination = nexus_get_glossary_term_destination( $term );
+		if ( '' === $destination['url'] || $hub_url === $destination['url'] ) {
+			continue;
+		}
+
+		$area = $areas[ $term['core_area'] ];
+		$items[] = [
+			'title'      => $term['title'],
+			'slug'       => $term['slug'],
+			'excerpt'    => $term['excerpt'],
+			'url'        => $destination['url'],
+			'is_primary' => $destination['is_primary'],
+			'area_id'    => $area['id'],
+			'area_label' => $area['label'],
+			'search'     => implode( ' ', array_merge( [ $term['title'], $term['excerpt'], $term['short_definition'], $area['label'] ], $term['keywords_match'], $term['search_terms'] ) ),
+		];
+	}
+
+	usort( $items, static function ( $a, $b ) {
+		return strnatcasecmp( remove_accents( $a['title'] ), remove_accents( $b['title'] ) );
+	} );
+
+	return $items;
 }
 
 /**

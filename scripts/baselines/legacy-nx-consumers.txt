@@ -10,7 +10,6 @@ blocksy-child/assets/css/e3-case-v2.css
 blocksy-child/assets/css/energy-systems.css
 blocksy-child/assets/css/footer-cta.css
 blocksy-child/assets/css/ga4.css
-blocksy-child/assets/css/glossary.css
 blocksy-child/assets/css/homepage-redesign.css
 blocksy-child/assets/css/homepage.css
 blocksy-child/assets/css/related-content.css

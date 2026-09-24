@@ -70,7 +70,6 @@ BASELINE_REDUCED_MOTION=(
   "blog-notify.css"
   "deep-dive.css"
   "footer-cta.css"
-  "glossary.css"
   "seo-cockpit-admin.css"
   "single.css"
   "waermepumpen-leads.css"
