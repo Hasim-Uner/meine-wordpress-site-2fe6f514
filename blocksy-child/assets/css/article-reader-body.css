@@ -714,65 +714,99 @@
 	box-shadow: none;
 }
 
-/* ── Anschluss, Rating, Autor: ein durchgehendes Protokoll ───── */
+/* ══ Nachsatz: alles nach dem Artikel ═══════════════════════════
+   Weiterarbeiten, Leserfeedback, Benachrichtigung, Teilen, Autor,
+   Weiterlesen und Projekt-Abschluss stehen in einer Spalte (Breite in
+   single-reader-unified.css) und folgen einem Rhythmus: Linie oben,
+   Mono-Label in Stempel, Titel in der Display-Schrift, Text in Grau.
+   Flaechen gibt es nur zwei: die Benachrichtigung auf --zone und den
+   Projekt-Abschluss als .tafel. Bis 2026-09 trugen diese Bloecke noch
+   Farben des alten dunklen Themes und standen hell auf Papier. */
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-next,
 .nexus-article-reader-header ~ .nexus-single-container .nexus-rating,
 .nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio,
-.nexus-article-reader-header ~ .nexus-single-container > .nexus-related-content {
-	inline-size: min(100% - (var(--s3) * 2), 780px);
-	max-inline-size: none;
-	margin: var(--s6) auto 0;
-	padding: var(--s3) 0;
+.nexus-article-reader-header ~ .nexus-single-container .related-content,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-bottom-share {
+	margin: var(--s5) auto 0;
+	padding: var(--s3) 0 0;
 	border: 0;
 	border-top: 1px solid var(--strich);
-	border-bottom: 1px solid var(--haar);
 	border-radius: 0;
 	background: transparent;
 	box-shadow: none;
 	color: var(--tinte);
+	text-align: left;
 }
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-next__eyebrow,
-.nexus-article-reader-header ~ .nexus-single-container .nexus-rating__label {
+.nexus-article-reader-header ~ .nexus-single-container .nexus-rating__label,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__eyebrow,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__label,
+.nexus-article-reader-header ~ .nexus-single-container .related-content__eyebrow,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__eyebrow {
+	display: block;
+	margin: 0 0 var(--s1);
 	font-family: var(--mono);
 	font-size: var(--mono-s);
 	font-weight: 500;
-	letter-spacing: 0.1em;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
 	text-transform: uppercase;
 	color: var(--stempel);
 }
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-next__title,
 .nexus-article-reader-header ~ .nexus-single-container .nexus-rating__title,
-.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__name {
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__title,
+.nexus-article-reader-header ~ .nexus-single-container .related-content__heading,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__title {
+	max-width: 24ch;
+	margin: 0;
 	font-family: var(--serif-display);
+	font-size: clamp(1.45rem, 1.2rem + 0.9vw, 1.9rem);
 	font-weight: 500;
+	line-height: 1.12;
+	letter-spacing: -0.02em;
+	text-wrap: balance;
 	color: var(--tinte);
 }
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-next__text,
 .nexus-article-reader-header ~ .nexus-single-container .nexus-rating__sub,
-.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__desc {
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__sub,
+.nexus-article-reader-header ~ .nexus-single-container .related-content__primary-link,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__body {
+	max-width: 56ch;
+	margin: var(--s1) 0 0;
+	font-size: 0.95rem;
+	line-height: 1.6;
 	color: var(--grau);
 }
 
+/* ── Weiterarbeiten ─────────────────────────────────────────── */
+
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-next__links {
 	display: grid;
-	gap: var(--s1);
+	gap: 0;
+	margin-top: var(--s2);
+	border-top: 1px solid var(--haar);
 }
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-next__link {
 	display: flex;
 	justify-content: space-between;
-	padding-block: var(--s1);
+	gap: var(--s2);
+	padding-block: var(--s2);
 	border: 0;
 	border-bottom: 1px solid var(--haar);
 	border-radius: 0;
 	background: transparent;
+	font-weight: 600;
 	color: var(--tinte);
 	text-decoration: none;
 	box-shadow: none;
+	transition: color var(--t-mikro) ease;
 }
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-next__link::after {
@@ -780,33 +814,647 @@
 	color: var(--stempel);
 }
 
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-next__link:hover,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-article-next__link:focus-visible {
+	color: var(--stempel);
+}
+
+/* ── Leserfeedback (single-editorial.js baut das Markup) ───── */
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-rating.nexus-reader-like {
+	display: block;
+}
+
+/* Ohne JS sendet das Feedback nichts. Dann lieber kein Block als tote
+   Buttons; .hu-js setzt functions.php vor dem ersten Paint. */
+html:not(.hu-js) .nexus-article-reader-header ~ .nexus-single-container .nexus-rating {
+	display: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__actions,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-rating__buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--s1);
+	margin-top: var(--s2);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__button,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__share,
 .nexus-article-reader-header ~ .nexus-single-container .nexus-rating__btn {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s1);
+	min-height: 44px;
+	padding: 0 var(--s2);
+	border: 1px solid var(--strich);
+	border-radius: 0;
+	background: transparent;
+	font-family: var(--mono);
+	font-size: 0.76rem;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--tinte);
+	box-shadow: none;
+	transform: none;
+	cursor: pointer;
+	transition:
+		background-color var(--t-mikro) ease,
+		border-color var(--t-mikro) ease,
+		color var(--t-mikro) ease;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__button:hover,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__share:hover,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-rating__btn:hover {
+	background: var(--strich);
+	color: var(--papier);
+	transform: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__button:focus-visible,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__share:focus-visible,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-rating__btn:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 2px;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__button svg,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__share svg {
+	flex: none;
+	width: 16px;
+	height: 16px;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__button.is-selected,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__button.is-selected:hover,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-rating__btn.is-selected {
+	border-color: var(--stempel);
+	background: var(--stempel);
+	color: var(--papier);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__button.is-selected svg {
+	fill: currentColor;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__button:disabled {
+	cursor: default;
+	opacity: 1;
+}
+
+/* Teilen steht breit in der Leiste links, schmal hier. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__share {
+	display: none;
+}
+
+@media (max-width: 1279px) {
+	.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__share {
+		display: inline-flex;
+	}
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__status {
+	min-height: 1.4em;
+	margin: var(--s1) 0 0;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	letter-spacing: 0.06em;
+	color: var(--grau);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-reader-like__status.is-error {
+	color: var(--stempel);
+}
+
+/* ── Benachrichtigung: eine ruhige Flaeche, kein zweites Theme ─ */
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify {
+	margin: var(--s5) auto 0;
+	border: 0;
+	border-radius: 3px;
+	background: var(--zone);
+	box-shadow: none;
+	overflow: visible;
+	color: var(--tinte);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify::after {
+	display: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__inner {
+	display: block;
+	padding: clamp(var(--s3), 4vw, var(--s4));
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__form {
+	display: block;
+	max-width: none;
+	margin: var(--s3) 0 0;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--s1);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__input {
+	flex: 1 1 16rem;
+	min-width: 0;
+	min-height: 48px;
+	padding: 0 var(--s2);
+	border: 1px solid var(--strich);
+	border-radius: 0;
+	background: var(--papier);
+	font-family: var(--serif);
+	font-size: 1rem;
+	color: var(--tinte);
+	box-shadow: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__input::placeholder {
+	color: var(--matt);
+	opacity: 1;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__input:focus {
+	border-color: var(--strich);
+	outline: 2px solid var(--stempel);
+	outline-offset: 2px;
+	box-shadow: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__button {
+	flex: 0 0 auto;
+	min-height: 48px;
+	padding: 0 var(--s3);
+	border: 1px solid var(--stempel);
+	border-radius: 0;
+	background: var(--stempel);
+	font-family: var(--mono);
+	font-size: 0.76rem;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--papier);
+	box-shadow: none;
+	transform: none;
+	cursor: pointer;
+	transition:
+		background-color var(--t-mikro) ease,
+		color var(--t-mikro) ease;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__button:hover:not(:disabled) {
+	background: transparent;
+	color: var(--stempel);
+	box-shadow: none;
+	transform: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__button:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 2px;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__hint {
+	max-width: 62ch;
+	margin: var(--s1) 0 0;
+	font-size: 0.8rem;
+	line-height: 1.55;
+	color: var(--grau);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__hint a {
+	color: var(--tinte);
+	text-decoration: underline;
+	text-decoration-color: var(--stempel);
+	text-underline-offset: 0.2em;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__feedback {
+	margin-top: var(--s1);
+	font-size: 0.86rem;
+	color: var(--tinte);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__feedback.is-error {
+	color: var(--stempel);
+}
+
+/* Leer nimmt die Rueckmeldung keinen Platz ein, bleibt aber im Baum,
+   damit die Live-Region beim Absenden angesagt wird. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__feedback:empty {
+	min-height: 0;
+	margin: 0;
+}
+
+@media (max-width: 34rem) {
+	.nexus-article-reader-header ~ .nexus-single-container .nexus-blog-notify__button {
+		width: 100%;
+	}
+}
+
+/* ── Teilen am Artikelende ──────────────────────────────────── */
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-bottom-share {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--s1) var(--s3);
+	padding-top: var(--s2);
+	border-top-color: var(--haar);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-bottom-share h3 {
+	margin: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--grau);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-bottom-share .nexus-share-box {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	width: auto;
+	gap: var(--s0);
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+/* "Teilen:" wiederholt die Ueberschrift; fuer Screenreader bleibt es. */
+.nexus-article-reader-header ~ .nexus-single-container .nexus-bottom-share .share-label {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-bottom-share .nexus-share-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
 	border: 1px solid var(--haar);
 	border-radius: 0;
 	background: transparent;
 	color: var(--tinte);
 	box-shadow: none;
+	transform: none;
+	transition:
+		border-color var(--t-mikro) ease,
+		color var(--t-mikro) ease;
 }
 
-.nexus-article-reader-header ~ .nexus-single-container .nexus-rating__btn:hover,
-.nexus-article-reader-header ~ .nexus-single-container .nexus-rating__btn:focus-visible {
-	border-color: var(--stempel);
-	background: var(--zone);
+.nexus-article-reader-header ~ .nexus-single-container .nexus-bottom-share .nexus-share-btn:hover,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-bottom-share .nexus-share-btn:focus-visible {
+	border-color: var(--strich);
+	background: transparent;
 	color: var(--stempel);
 	transform: none;
 }
 
-.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio {
-	display: grid;
-	grid-template-columns: auto minmax(0, 1fr);
-	gap: var(--s3);
-	align-items: start;
+.nexus-article-reader-header ~ .nexus-single-container .nexus-bottom-share .nexus-share-btn:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 2px;
 }
 
-.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__avatar,
-.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__avatar-img {
+.nexus-article-reader-header ~ .nexus-single-container .nexus-bottom-share .nexus-share-btn svg {
+	width: 16px;
+	height: 16px;
+}
+
+/* ── Autor ──────────────────────────────────────────────────── */
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio {
+	display: grid;
+	grid-template-columns: 96px minmax(0, 1fr);
+	gap: var(--s3);
+	align-items: start;
+	max-width: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__avatar {
+	display: block;
+	width: 96px;
+	height: 96px;
+	margin: 0;
+	border: 0;
 	border-radius: 0;
+	background: var(--zone);
 	box-shadow: none;
+	overflow: hidden;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__avatar img,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__avatar-img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 0;
+	object-fit: cover;
+	box-shadow: none;
+	filter: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__name {
+	margin: 0;
+	font-family: var(--serif-display);
+	font-size: 1.45rem;
+	font-weight: 500;
+	line-height: 1.15;
+	letter-spacing: -0.015em;
+	color: var(--tinte);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__role {
+	margin: var(--s0) 0 0;
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	line-height: 1.5;
+	letter-spacing: 0.06em;
+	color: var(--grau);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__text {
+	max-width: 56ch;
+	margin: var(--s2) 0 0;
+	font-size: 0.98rem;
+	line-height: 1.6;
+	color: var(--grau);
+}
+
+@media (max-width: 30rem) {
+	.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio {
+		grid-template-columns: 64px minmax(0, 1fr);
+		gap: var(--s2);
+	}
+
+	.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio__avatar {
+		width: 64px;
+		height: 64px;
+	}
+}
+
+/* ── Weiterlesen ────────────────────────────────────────────── */
+
+.nexus-article-reader-header ~ .nexus-single-container .related-content__head {
+	display: block;
+	margin: 0;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .related-content__primary-link a {
+	font-weight: 600;
+	color: var(--tinte);
+	text-decoration: underline;
+	text-decoration-color: var(--stempel);
+	text-underline-offset: 0.2em;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .related-content__primary-link a:hover,
+.nexus-article-reader-header ~ .nexus-single-container .related-content__primary-link a:focus-visible {
+	color: var(--stempel);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .related-content__list {
+	display: grid;
+	margin: var(--s3) 0 0;
+	border-top: 1px solid var(--haar);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .related-content__item {
+	margin: 0;
+	padding: var(--s2) 0;
+	border: 0;
+	border-bottom: 1px solid var(--haar);
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .related-content__body {
+	display: block;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .related-content__category {
+	display: block;
+	margin-bottom: var(--s0);
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .related-content__title {
+	max-width: 40ch;
+	margin: 0;
+	font-family: var(--serif-display);
+	font-size: clamp(1.1rem, 1rem + 0.4vw, 1.3rem);
+	font-weight: 500;
+	line-height: 1.25;
+	letter-spacing: -0.01em;
+	color: var(--tinte);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .related-content__title a {
+	color: var(--tinte);
+	text-decoration: none;
+	transition: color var(--t-mikro) ease;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .related-content__title a:hover,
+.nexus-article-reader-header ~ .nexus-single-container .related-content__title a:focus-visible {
+	color: var(--stempel);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .related-content__excerpt {
+	max-width: 62ch;
+	margin: var(--s0) 0 0;
+	font-size: 0.92rem;
+	line-height: 1.55;
+	color: var(--grau);
+}
+
+/* ── Projekt-Abschluss: .tafel (footer-cta.php) ─────────────── */
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta {
+	margin: var(--s5) auto 0;
+	padding: 0;
+	background: transparent;
+	color: var(--tinte);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta__inner {
+	max-width: none;
+	margin: 0;
+	padding: clamp(var(--s3), 5vw, var(--s5));
+	border: 0;
+	border-radius: 3px;
+	background: var(--papier);
+	box-shadow: none;
+	text-align: left;
+	overflow: visible;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta__inner::before {
+	display: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta__heading {
+	max-width: 22ch;
+	margin: 0;
+	font-family: var(--serif-display);
+	font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem);
+	font-weight: 500;
+	line-height: 1.1;
+	letter-spacing: -0.025em;
+	text-wrap: balance;
+	color: var(--tinte);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta__text {
+	max-width: 52ch;
+	margin: var(--s2) 0 0;
+	font-size: 1rem;
+	line-height: 1.6;
+	color: var(--grau);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta a.nexus-footer-cta__btn {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s1);
+	min-height: 48px;
+	margin: var(--s3) 0 0;
+	padding: 0 var(--s3);
+	border: 1px solid var(--stempel);
+	border-radius: 0;
+	background: var(--stempel);
+	font-family: var(--mono);
+	font-size: 0.76rem;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	text-decoration: none;
+	text-transform: uppercase;
+	color: var(--papier) !important;
+	box-shadow: none;
+	transform: none;
+	transition:
+		background-color var(--t-mikro) ease,
+		color var(--t-mikro) ease;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta a.nexus-footer-cta__btn::after {
+	content: "→";
+	content: "→" / "";
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta a.nexus-footer-cta__btn:hover,
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta a.nexus-footer-cta__btn:focus-visible {
+	background: transparent;
+	color: var(--stempel) !important;
+	box-shadow: none;
+	transform: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta a.nexus-footer-cta__btn:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 2px;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta__legal {
+	margin: var(--s4) 0 0;
+	padding-top: var(--s1);
+	border-top: 1px solid var(--haar);
+	font-size: 0.8rem;
+	line-height: 1.6;
+	color: var(--grau);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta__legal a {
+	color: var(--tinte);
+	text-decoration: underline;
+	text-decoration-color: var(--stempel);
+	text-underline-offset: 0.2em;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta .trust-section {
+	margin: var(--s0) 0 0;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta .trust-section__inline {
+	margin: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	line-height: 1.6;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--grau);
+}
+
+@media (max-width: 34rem) {
+	.nexus-article-reader-header ~ .nexus-single-container .nexus-footer-cta a.nexus-footer-cta__btn {
+		justify-content: space-between;
+		width: 100%;
+	}
+}
+
+/* ── Teilen-Leiste links: Beschriftung beim Zeigen ──────────── */
+
+@media (min-width: 1280px) {
+	.nexus-article-reader-header ~ .nexus-share-rail {
+		display: flex !important;
+	}
+
+	.nexus-article-reader-header ~ .nexus-share-rail .nexus-share-rail__btn {
+		position: relative;
+	}
+
+	.nexus-article-reader-header ~ .nexus-share-rail .nexus-share-rail__btn::after {
+		content: attr(aria-label);
+		position: absolute;
+		top: 50%;
+		left: calc(100% + var(--s1));
+		padding: var(--s0) var(--s1);
+		background: var(--strich);
+		font-family: var(--mono);
+		font-size: var(--mono-s);
+		line-height: 1.2;
+		letter-spacing: 0.06em;
+		white-space: nowrap;
+		color: var(--papier);
+		opacity: 0;
+		pointer-events: none;
+		transform: translate(-4px, -50%);
+		transition:
+			opacity var(--t-mikro) ease,
+			transform var(--t-mikro) var(--ease-aus);
+	}
+
+	.nexus-article-reader-header ~ .nexus-share-rail .nexus-share-rail__btn:hover::after,
+	.nexus-article-reader-header ~ .nexus-share-rail .nexus-share-rail__btn:focus-visible::after {
+		opacity: 1;
+		transform: translate(0, -50%);
+	}
 }
 
 /* ── Glossar-Popover ─────────────────────────────────────────── */
@@ -888,11 +1536,7 @@
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial,
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-cover,
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-context,
-	.nexus-article-reader-header ~ .nexus-single-container .nexus-post-layout,
-	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-next,
-	.nexus-article-reader-header ~ .nexus-single-container .nexus-rating,
-	.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio,
-	.nexus-article-reader-header ~ .nexus-single-container > .nexus-related-content {
+	.nexus-article-reader-header ~ .nexus-single-container .nexus-post-layout {
 		inline-size: min(100% - (var(--s2) * 2), 1100px);
 	}
 
@@ -915,10 +1559,6 @@
 	}
 
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-content .stat-row {
-		grid-template-columns: 1fr;
-	}
-
-	.nexus-article-reader-header ~ .nexus-single-container .nexus-author-bio {
 		grid-template-columns: 1fr;
 	}
 }

@@ -127,7 +127,12 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `template-parts/single-reader.php`; die Kontextbrücke richtet sich nach dem
   Dossier, ohne passende Kategorie führt sie zu den WordPress-Leistungen. Nur
   `leadgenerierung` führt in den Marktcheck. Aroundhome und Checkfox tragen
-  eigene Entscheidungs-Cockpits statt des Editor-Inhalts.
+  eigene Entscheidungs-Cockpits statt des Editor-Inhalts. Der Fuß jedes
+  Beitrags (Weiterarbeiten, Leserfeedback, Benachrichtigung, Teilen, Autor,
+  Weiterlesen, Projekt-Abschluss) steht in einer Spalte auf `system.css`;
+  Gestaltung im Nachsatz von `assets/css/article-reader-body.css`. Das
+  Einblenden beim Scrollen versteckt nur unter `.hu-js`; ohne JavaScript
+  bleiben alle Blöcke sichtbar, nur das Leserfeedback entfällt.
 - **Artikel-Bausteine** (`inc/editorial-bausteine.php`): Shortcodes
   `[hu_kurz]`, `[hu_notiz]`, `[hu_abb]`, `[hu_fall]`, `[hu_pruefliste]`,
   `[hu_abschluss]`, `[hu_quellen]` und Klassen für reines HTML. CSS und JS

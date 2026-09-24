@@ -104,12 +104,17 @@
 	box-shadow: none !important;
 }
 
-/* One footer rhythm for every article. */
+/* One footer rhythm for every article: every block after the article shares
+   one column. Look and spacing live in article-reader-body.css (Nachsatz). */
 .single-post .nexus-single-container .nexus-article-next,
 .single-post .nexus-single-container .nexus-rating,
+.single-post .nexus-single-container .nexus-blog-notify--full,
+.single-post .nexus-single-container .nexus-bottom-share,
 .single-post .nexus-single-container .nexus-author-bio,
-.single-post .nexus-single-container > .nexus-related-content {
+.single-post .nexus-single-container .related-content,
+.single-post .nexus-single-container .nexus-footer-cta {
 	width: min(100% - (var(--s3) * 2), 780px) !important;
+	max-width: none !important;
 	margin-inline: auto !important;
 }
 
@@ -128,5 +133,16 @@
 @media (max-width: 720px) {
 	.single-post .nexus-single-container .nexus-post-layout {
 		width: min(100% - (var(--s2) * 2), 1120px) !important;
+	}
+
+	/* Same gutter as the article column above. */
+	.single-post .nexus-single-container .nexus-article-next,
+	.single-post .nexus-single-container .nexus-rating,
+	.single-post .nexus-single-container .nexus-blog-notify--full,
+	.single-post .nexus-single-container .nexus-bottom-share,
+	.single-post .nexus-single-container .nexus-author-bio,
+	.single-post .nexus-single-container .related-content,
+	.single-post .nexus-single-container .nexus-footer-cta {
+		width: min(100% - (var(--s2) * 2), 780px) !important;
 	}
 }

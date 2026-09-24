@@ -48,7 +48,8 @@ set_query_var( 'nexus_hide_footer_primary_cta', true );
 ?>
 
 <section class="nexus-footer-cta" data-track-section="footer_cta">
-	<div class="nexus-footer-cta__inner">
+	<?php // Dunkle Flaeche aus system.css; Gestaltung im Nachsatz von article-reader-body.css. ?>
+	<div class="nexus-footer-cta__inner tafel">
 		<h3 class="nexus-footer-cta__heading"><?php echo esc_html( $heading ); ?></h3>
 		<p class="nexus-footer-cta__text"><?php echo esc_html( $text ); ?></p>
 
