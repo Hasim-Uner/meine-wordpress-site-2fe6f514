@@ -79,6 +79,35 @@ function hu_price_shortcode( $atts ) {
 add_shortcode( 'hu_price', 'hu_price_shortcode' );
 
 /**
+ * Render one third-party market figure from the market canon.
+ *
+ * `[hu_markt key="gartner_b2b_rep_share"]` gibt nur den Wert aus. Die Quelle
+ * gehoert sichtbar daneben (im Artikel als [hu_notiz]); der Shortcode setzt
+ * sie bewusst nicht selbst, damit der Satz im Fliesstext lesbar bleibt.
+ *
+ * @param array<string, mixed> $atts Shortcode attributes.
+ * @return string
+ */
+function hu_markt_shortcode( $atts ) {
+	$atts = shortcode_atts(
+		[
+			'key' => '',
+		],
+		$atts,
+		'hu_markt'
+	);
+
+	$key = sanitize_key( (string) $atts['key'] );
+
+	if ( '' === $key || ! function_exists( 'hu_market_figure' ) ) {
+		return '';
+	}
+
+	return esc_html( hu_market_figure( $key ) );
+}
+add_shortcode( 'hu_markt', 'hu_markt_shortcode' );
+
+/**
  * Render canonical messaging values.
  *
  * @param array<string, mixed> $atts Shortcode attributes.

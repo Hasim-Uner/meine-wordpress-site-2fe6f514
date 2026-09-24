@@ -18,7 +18,7 @@ Wo der Wert herkommt, hängt davon ab, wo er hin soll:
 | Oberfläche | Zugriff |
 |---|---|
 | PHP-Template, Partial, `inc/*.php` | Getter aufrufen: `hu_get_contact_email()`, `hu_response_promise()`, `hu_e3_metric()`, `hu_foundation_price_display()` … |
-| Gutenberg, ACF, Widget, Menü | Shortcode: `[nx_email]`, `[nx_antwortzeit]`, `[hu_price]`, `[hu_message]` |
+| Gutenberg, ACF, Widget, Menü | Shortcode: `[nx_email]`, `[nx_antwortzeit]`, `[hu_price]`, `[hu_message]`, `[hu_markt]` (fremde Marktzahl, Quelle sichtbar daneben) |
 | JavaScript | über `wp_localize_script()` aus PHP durchreichen, nie im Skript setzen |
 | JSON-LD / Schema | denselben Getter wie die sichtbare Copy |
 | E-Mail-Templates | denselben Getter wie die sichtbare Copy |
