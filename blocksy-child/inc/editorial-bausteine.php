@@ -11,7 +11,9 @@
  * Baustein enthalten; alle anderen Beitraege rendern unveraendert.
  *
  * Zahlen stehen nie im Inhalt oder in einem Partial, sondern kommen aus dem
- * Kanon (inc/canon/). Notiz, Abbildung, Fall und Quellen tragen das Attribut
+ * Kanon (inc/canon/). Einzige Ausnahme sind schematische Abbildungen, deren
+ * Werte eine Rechnung und keine Messung sind (abb-relaunch-besser.php).
+ * Notiz, Abbildung, Fall, Abschluss-Tafel und Quellen tragen das Attribut
  * aus hu_faq_schema_skip_attribute(), damit ihr Text nie in einer
  * acceptedAnswer des FAQ-Schemas landet.
  *
@@ -37,7 +39,7 @@ function hu_editorial_bausteine_shortcode_tags() : array {
  * @return array<int, string>
  */
 function hu_editorial_bausteine_enclosing_tags() : array {
-	return [ 'hu_kurz', 'hu_notiz', 'hu_pruefliste', 'hu_abschluss', 'hu_quellen' ];
+	return [ 'hu_kurz', 'hu_notiz', 'hu_fall', 'hu_pruefliste', 'hu_abschluss', 'hu_quellen' ];
 }
 
 /**
@@ -283,7 +285,9 @@ function hu_notiz_shortcode( $atts, $content = null ) : string {
 add_shortcode( 'hu_notiz', 'hu_notiz_shortcode' );
 
 /**
- * [hu_abb id="…" nr="1"] — Abbildung aus template-parts/editorial/abb-{id}.php.
+ * [hu_abb id="…" nr="…"] — Abbildung aus template-parts/editorial/abb-{id}.php.
+ *
+ * Ohne `nr` gilt die Nummer, die das Partial als Standard traegt.
  *
  * @param array<string, string>|string $atts Shortcode attributes.
  * @return string
@@ -292,36 +296,38 @@ function hu_abb_shortcode( $atts ) : string {
 	$atts = shortcode_atts(
 		[
 			'id' => '',
-			'nr' => '1',
+			'nr' => '',
 		],
 		$atts,
 		'hu_abb'
 	);
 
-	$id = sanitize_key( (string) $atts['id'] );
+	$id   = sanitize_key( (string) $atts['id'] );
+	$nr   = sanitize_text_field( (string) $atts['nr'] );
+	$args = [ 'dom_id' => hu_editorial_bausteine_dom_id( 'abb', $id ) ];
 
-	return hu_editorial_bausteine_skip_faq(
-		hu_editorial_bausteine_partial(
-			'abb',
-			$id,
-			[
-				'dom_id' => hu_editorial_bausteine_dom_id( 'abb', $id ),
-				'nr'     => sanitize_text_field( (string) $atts['nr'] ),
-			]
-		)
-	);
+	if ( '' !== $nr ) {
+		$args['nr'] = $nr;
+	}
+
+	return hu_editorial_bausteine_skip_faq( hu_editorial_bausteine_partial( 'abb', $id, $args ) );
 }
 add_shortcode( 'hu_abb', 'hu_abb_shortcode' );
 
 /**
- * [hu_fall id="…"] — Fall aus template-parts/editorial/fall-{id}.php.
+ * [hu_fall id="…"] oder [hu_fall id="…"]Nachsatz[/hu_fall] — Fall aus
+ * template-parts/editorial/fall-{id}.php.
  *
  * Text steht im Partial, Zahlen und Bezeichnung kommen aus dem Kanon.
+ * Umschliesst der Shortcode Text, ersetzt dieser den Standard-Nachsatz des
+ * Partials; der Link zur Fallstudie bleibt dahinter stehen. Ohne Inhalt gilt
+ * der Standard-Nachsatz.
  *
- * @param array<string, string>|string $atts Shortcode attributes.
+ * @param array<string, string>|string $atts    Shortcode attributes.
+ * @param string|null                  $content Optional closing line, inline HTML allowed.
  * @return string
  */
-function hu_fall_shortcode( $atts ) : string {
+function hu_fall_shortcode( $atts, $content = null ) : string {
 	$atts = shortcode_atts( [ 'id' => '' ], $atts, 'hu_fall' );
 	$id   = sanitize_key( (string) $atts['id'] );
 
@@ -329,7 +335,10 @@ function hu_fall_shortcode( $atts ) : string {
 		hu_editorial_bausteine_partial(
 			'fall',
 			$id,
-			[ 'dom_id' => hu_editorial_bausteine_dom_id( 'fall', $id ) ]
+			[
+				'dom_id'   => hu_editorial_bausteine_dom_id( 'fall', $id ),
+				'nachsatz' => hu_editorial_bausteine_inner( $content ),
+			]
 		)
 	);
 }
@@ -382,7 +391,8 @@ add_shortcode( 'hu_pruefliste', 'hu_pruefliste_shortcode' );
  *
  * Tracking: `{track}_close_ersteinschaetzung` und `{track}_close_project`,
  * Kategorie `lead_gen`, Abschnitt `abschluss` — dieselbe Form wie
- * `home_close_ersteinschaetzung` auf der Startseite.
+ * `home_close_ersteinschaetzung` auf der Startseite. Die Tafel traegt den
+ * FAQ-Skip-Marker, damit ihr Text nie in einer acceptedAnswer landet.
  *
  * @param array<string, string>|string $atts    Shortcode attributes.
  * @param string|null                  $content Optional additional line.
@@ -467,7 +477,7 @@ function hu_abschluss_shortcode( $atts, $content = null ) : string {
 
 	$html .= '</div></aside>';
 
-	return $html;
+	return hu_editorial_bausteine_skip_faq( $html );
 }
 add_shortcode( 'hu_abschluss', 'hu_abschluss_shortcode' );
 

@@ -137,15 +137,22 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `[hu_kurz]`, `[hu_notiz]`, `[hu_abb]`, `[hu_fall]`, `[hu_pruefliste]`,
   `[hu_abschluss]`, `[hu_quellen]` und Klassen für reines HTML. CSS und JS
   laden nur auf Beiträgen, die einen Baustein enthalten; dort bekommt der
-  Reader ab 1280 px eine Marginalspalte. Notiz, Abbildung, Fall und Quellen
-  tragen `data-hu-schema-skip` und landen nie im FAQ-Schema. Referenz:
+  Reader ab 1280 px eine Marginalspalte. Notiz, Abbildung, Fall,
+  Abschluss-Tafel und Quellen tragen `data-hu-schema-skip` und landen nie im
+  FAQ-Schema. Referenz:
   `agents/skills/pillar-cornerstone-writer/references/bausteine.md`.
-- **`/website-relaunch/`** (Dossier `cro`): erster Beitrag auf den Bausteinen,
-  einmal aus `assets/content/blog/website-relaunch.html` angelegt
-  (`inc/article-website-relaunch.php`), danach im Editor gepflegt.
-  FAQ-Schema mit fünf Fragen, og:image in voller Größe über das Feld
-  „Open Graph Bild“. Kontextbrücke und Abschluss führen in die
-  Projektanfrage mit Fokus `relaunch` bzw. in die Ersteinschätzung
+- **`/website-relaunch/`** (Dossier `cro`): „Website-Relaunch: Wann die neue
+  Website wirklich besser ist“. Kernaussage seit Fassung 2: Besser ist die
+  neue Website, wenn an jedem Übergang mehr der richtigen Besucher
+  weiterkommen, festgelegt als heutiger Wert und Ziel vor dem Relaunch; was
+  heute trägt, darf dabei nicht verloren gehen. Erster Beitrag auf den
+  Bausteinen, aus `assets/content/blog/website-relaunch.html` angelegt und
+  mit Seed-Version `2026-09-24-website-relaunch-v2` einmal überschrieben
+  (`inc/article-website-relaunch.php`), danach im Editor gepflegt. Zwei
+  Abbildungen (Kette, schematisches Vorher/Nachher), FAQ-Schema mit sechs
+  Fragen, Titelbild und og:image `website-relaunch-hero-v2.png` in voller
+  Größe über das Feld „Open Graph Bild“. Kontextbrücke und Abschluss führen in
+  die Projektanfrage mit Fokus `relaunch` bzw. in die Ersteinschätzung
   (`docs/architecture/CONVERSION_ROUTING.md`).
 - **Weitere öffentliche Seiten:** `/glossar/`, `/impressum/`, `/datenschutz/`
   (Kontaktdaten aus dem Messaging-Canon).
