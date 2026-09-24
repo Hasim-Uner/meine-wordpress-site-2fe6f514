@@ -332,6 +332,11 @@
 	border: 0;
 	border-bottom: 1px solid var(--haar);
 	vertical-align: top;
+}
+
+/* Farbe ohne die Letzte-Zeile-Regel: deren hoehere Spezifitaet schlug
+   sonst die Tinte der ersten und der Risse-Spalte in der letzten Zeile. */
+#article-content .hu-tabelle td {
 	color: var(--grau);
 }
 
