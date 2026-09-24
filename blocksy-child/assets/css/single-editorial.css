@@ -210,7 +210,10 @@
 /* -------------------------------------------------------------
    6. Reveal-on-scroll
 ------------------------------------------------------------- */
-.nexus-reveal {
+/* Sichtbar ist der Grundzustand. Versteckt wird nur unter .hu-js, das
+   functions.php (hu_mark_reveal_capable) vor dem ersten Paint setzt —
+   ohne JS bleiben Titelbild, Kontextbruecke und Autor lesbar. */
+.hu-js .nexus-reveal {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
@@ -218,13 +221,13 @@
     will-change: opacity, transform;
 }
 
-.nexus-reveal.is-in {
+.hu-js .nexus-reveal.is-in {
     opacity: 1;
     transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .nexus-reveal { opacity: 1; transform: none; transition: none; }
+    .hu-js .nexus-reveal { opacity: 1; transform: none; transition: none; }
 }
 
 /* =============================================================

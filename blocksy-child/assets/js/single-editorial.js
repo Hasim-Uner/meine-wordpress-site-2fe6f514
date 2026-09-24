@@ -48,42 +48,8 @@
     function prepareReaderEngagement() {
         if (!isReaderArticle()) return;
 
-        injectReaderEngagementStyles();
         ensureReaderShareRail();
         ensureReaderLikeRoot();
-    }
-
-    function injectReaderEngagementStyles() {
-        if (document.getElementById('nexus-reader-engagement-style')) return;
-
-        var style = document.createElement('style');
-        style.id = 'nexus-reader-engagement-style';
-        style.textContent = [
-            '@media (min-width:1280px){',
-            '.nexus-article-reader-header~.nexus-share-rail{display:flex!important;}',
-            '.nexus-article-reader-header~.nexus-share-rail .nexus-share-rail__btn{position:relative;}',
-            '.nexus-article-reader-header~.nexus-share-rail .nexus-share-rail__btn::after{content:attr(aria-label);position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%) translateX(-4px);padding:6px 8px;border:1px solid var(--nx-border,#232A30);border-radius:8px;background:#0b0f12;color:var(--nx-text,#f2ebdd);font-size:11px;line-height:1;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .16s ease,transform .16s ease;}',
-            '.nexus-article-reader-header~.nexus-share-rail .nexus-share-rail__btn:hover::after,.nexus-article-reader-header~.nexus-share-rail .nexus-share-rail__btn:focus-visible::after{opacity:1;transform:translateY(-50%) translateX(0);}',
-            '}',
-            '.nexus-article-reader-header~.nexus-single-container .nexus-rating.nexus-reader-like{display:block!important;width:min(760px,calc(100% - 40px));margin:clamp(3rem,7vw,5.5rem) auto 0;padding:clamp(1.5rem,3vw,2rem) 0;border-top:1px solid var(--nx-border,#232A30);background:transparent;box-shadow:none;}',
-            '.nexus-reader-like__eyebrow{display:block;margin-bottom:.65rem;color:var(--accent-hover,#e08a3c);font-family:var(--font-mono,ui-monospace,monospace);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}',
-            '.nexus-reader-like__title{margin:0;color:var(--nx-text,#f2ebdd);font-family:var(--font-display,system-ui,sans-serif);font-size:clamp(1.45rem,2.5vw,2rem);line-height:1.15;letter-spacing:-.025em;}',
-            '.nexus-reader-like__sub{margin:.6rem 0 0;color:var(--nx-text-muted,#b9b1a3);font-size:.92rem;line-height:1.55;}',
-            '.nexus-reader-like__actions{display:flex;align-items:center;gap:.75rem;margin-top:1.15rem;flex-wrap:wrap;}',
-            '.nexus-reader-like__button,.nexus-reader-like__share{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;min-height:42px;padding:0 14px;border:1px solid var(--nx-border,#232A30);border-radius:999px;background:transparent;color:var(--nx-text-muted,#b9b1a3);font:inherit;font-size:.88rem;font-weight:650;cursor:pointer;transition:border-color .18s ease,background-color .18s ease,color .18s ease,transform .18s ease;}',
-            '.nexus-reader-like__button:hover,.nexus-reader-like__button:focus-visible,.nexus-reader-like__share:hover,.nexus-reader-like__share:focus-visible{border-color:color-mix(in srgb,var(--accent-hover,#e08a3c) 45%,var(--nx-border,#232A30));color:var(--nx-text,#f2ebdd);transform:translateY(-1px);outline:none;}',
-            '.nexus-reader-like__button svg,.nexus-reader-like__share svg{width:17px;height:17px;flex:0 0 auto;}',
-            '.nexus-reader-like__button.is-selected{border-color:color-mix(in srgb,var(--accent-hover,#e08a3c) 52%,var(--nx-border,#232A30));background:color-mix(in srgb,var(--accent-hover,#e08a3c) 12%,transparent);color:var(--accent-hover,#e08a3c);}',
-            '.nexus-reader-like__button.is-selected svg{fill:currentColor;}',
-            '.nexus-reader-like__button:disabled{cursor:default;transform:none;opacity:1;}',
-            '.nexus-reader-like__status{min-height:1.35em;margin:.75rem 0 0;color:var(--nx-text-dim,#8a8478);font-size:.8rem;}',
-            '.nexus-reader-like__status.is-error{color:#d58a7b;}',
-            '.nexus-reader-like__share{display:none;}',
-            '@media (max-width:1279px){.nexus-reader-like__share{display:inline-flex;}}',
-            '@media (max-width:640px){.nexus-article-reader-header~.nexus-single-container .nexus-rating.nexus-reader-like{width:min(100% - 28px,760px);}}',
-            '@media (prefers-reduced-motion:reduce){.nexus-article-reader-header~.nexus-share-rail .nexus-share-rail__btn::after,.nexus-reader-like__button,.nexus-reader-like__share{transition:none!important;}}'
-        ].join('');
-        document.head.appendChild(style);
     }
 
     function ensureReaderShareRail() {
@@ -346,7 +312,7 @@
         root.classList.remove('nexus-reveal');
         root.innerHTML = [
             '<span class="nexus-reader-like__eyebrow">Leserfeedback</span>',
-            '<h2 id="nexus-reader-like-title" class="nexus-reader-like__title">Hat dir dieser Beitrag geholfen?</h2>',
+            '<h2 id="nexus-reader-like-title" class="nexus-reader-like__title">Hat Ihnen dieser Beitrag geholfen?</h2>',
             '<p class="nexus-reader-like__sub">Ein Klick genügt — kein Login.</p>',
             '<div class="nexus-reader-like__actions">',
             '<button class="nexus-reader-like__button" type="button" data-reader-like aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg><span>Gefällt mir</span></button>',

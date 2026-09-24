@@ -94,13 +94,15 @@ function blocksy_child_register_slim_nav_menu() {
 }
 
 // ── 1c. SCROLL-REVEAL: NUR VERSTECKEN, WENN JS WIRKLICH LAEUFT ───
-// Startseite und Ergebnisse-Hub blenden ihre Sektionen beim Scrollen ein.
-// Ohne dieses Signal waere der Ausgangszustand opacity:0 — faellt das
+// Startseite, Ergebnisse-Hub und Beitraege blenden Sektionen beim Scrollen
+// ein. Ohne dieses Signal waere der Ausgangszustand opacity:0 — faellt das
 // Reveal-Skript aus, bliebe die halbe Seite unsichtbar. Das Flag setzt die
-// Klasse vor dem ersten Paint, das CSS versteckt erst dann.
+// Klasse vor dem ersten Paint, das CSS versteckt erst dann. In Beitraegen
+// traf das bis 2026-09 Titelbild, Kontextbruecke, Leserfeedback und Autor.
 add_action( 'wp_head', 'hu_mark_reveal_capable', 0 );
 function hu_mark_reveal_capable() {
 	$is_reveal_route = is_front_page()
+		|| is_singular( 'post' )
 		|| ( function_exists( 'hu_is_results_hub_request' ) && hu_is_results_hub_request() );
 
 	if ( ! $is_reveal_route ) {
