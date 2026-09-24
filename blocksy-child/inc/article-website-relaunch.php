@@ -124,7 +124,7 @@ function hu_maybe_seed_website_relaunch_article() : void {
 		return;
 	}
 
-	$version    = '2026-09-24-website-relaunch-v2';
+	$version    = '2026-09-24-website-relaunch-v3';
 	$option_key = 'hu_website_relaunch_article_version';
 
 	if ( (string) get_option( $option_key, '' ) === $version ) {
