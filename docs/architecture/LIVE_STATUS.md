@@ -28,7 +28,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Kompetenz technisches SEO, Tracking und Conversion. Maßgeblich sind
   `docs/standards/BRAND_AND_COPY.md` und `docs/architecture/CONVERSION_ROUTING.md`.
 - Drei Wege: direkte Projekte → `/kontakt/?type=project`, Agenturen →
-  `/whitelabel-retainer/` (seit 2026-09-22 gleichrangig), Energie-Intent →
+  `/whitelabel-retainer/` (Platz 2 in der Navigation; auf der Startseite seit
+  2026-09-24 ein leiser Nebenausgang unter den Leistungen), Energie-Intent →
   `/solar-waermepumpen-leadgenerierung/#marktcheck`. Der Marktcheck ist kein
   globaler CTA.
 - Kopf: `.leiste` aus `system.css` plus `leiste.js`. Reihenfolge Leistungen
@@ -43,32 +44,30 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 ## Routen
 
 - **`/`** (`front-page.php`): Money Page für direkte WordPress-Projekte.
-  Title „WordPress Freelancer Hannover | Haşim Üner“, Query-Owner für
-  `wordpress freelancer` und `wordpress freelancer hannover`. Unter dem Hero
-  eine Weiche (`#wege`) zu White-Label und zum Anfragesystem; drei Leistungen
-  mit den Ankern `#angebot-website`, `#angebot-funnel`, `#angebot-tracking`;
-  Nachweis, Arbeitsweise, Fragen (template-eigenes FAQPage-Schema), Anfrage.
+  Title „WordPress Freelancer für Unternehmen | Haşim Üner, Hannover“,
+  Query-Owner für `wordpress freelancer` und `wordpress freelancer hannover`.
+  Seit 2026-09-24 als Strecke gebaut (`assets/css/startseite-strecke.css`,
+  `assets/js/startseite-strecke.js`): Eine Messlinie läuft in der Randspalte
+  vom Hero (Marke „Klick“) bis zum Anfrageblock (Marke „Anfrage“) und füllt
+  sich beim Lesen; ohne JavaScript und bei reduzierter Bewegung steht sie
+  statisch. Acht Abschnitte: Hero (`#klick`) mit H1 ohne Ortsnamen, zwei
+  Buttons, Messprotokoll und zwei Belegzeilen; Prüfstand (`#pruefstand`, die
+  einzige dunkle Tafel, Links auf Code, CI und PageSpeed, keine Scores);
+  sechs Stationen einer Anfrage (`#strecke`, Liste mit `#angebot-funnel`);
+  drei Leistungen mit Kanonpreisen (`#angebote`, Anker `#angebot-website`,
+  `#angebot-tracking`, `#angebot-weiterentwicklung`) und darunter die leisen
+  Nebenausgänge zu White-Label und Solar/Wärmepumpe; Arbeiten (`#arbeiten`,
+  `#referenzen`); Übergabe (`#uebergabe`); Fragen (`#fragen`,
+  template-eigenes FAQPage-Schema); Anfrage (`#anfrage`, `#kontakt`).
+  Das Messprotokoll zeigt Ladezeit (LCP bzw. Navigation Timing), gesehene
+  Abschnitte, Scrolltiefe und den Klick auf einen Anfrage-Button. Es sendet
+  und speichert nichts; die Sperrliste (`strecke-js-privat`) bricht den
+  Build, sobald das Skript einen Netzwerk- oder Speicheraufruf enthält.
   `/wordpress-freelancer-hannover/` leitet per 301 hierher. Solange der
   Versuch Ersteinschätzung läuft (Schalter `HU_EXPERIMENT_ERSTEINSCHAETZUNG`,
   `docs/experimente/ersteinschaetzung.md`), führen Hero und Abschluss primär
-  auf `/kontakt/?focus=ersteinschaetzung`; die Projektanfrage steht sekundär
-  daneben. Seit 2026-09-23 hat der Hero genau diese zwei Buttons; der Sprung
-  zu den Leistungen hängt am Preisanker der Trust-Zeile (`home_hero_to_offers`).
-  Die Hero-Grafik ist eine Stromlinien-Tafel: Besuche strömen von links ein,
-  ein Teil endet im Stempel „Neu im CRM“ mit Beispielquelle, der Rest zieht
-  vorbei. Die Linien sind statisches SVG (`assets/img/home-feld.svg`, erzeugt
-  von `scripts/build-home-feld-svg.py`); `home-feld.js` legt bewegte
-  Funken darüber, mit Schalter zum Anhalten. Ohne JavaScript und bei
-  reduzierter Bewegung steht die Tafel ruhig und vollständig. Direkt darunter steht
-  eine Belegzeile (`#einordnung`) mit Fall, öffentlichen Arbeiten und offenem
-  Code, jeweils als Sprung zum Nachweis in Abschnitt 02. Jede Leistung in 01
-  trägt eine Linienzeichnung ihres Mechanismus (`assets/img/home-leistung-*.svg`,
-  inline). Abschnitt 03 zeigt eine Übergabe-Tafel als Beispiel (was nach
-  Abnahme beim Kunden liegt; Tracking und CRM nur, falls beauftragt),
-  `home-uebergabe.js` hakt sie einmal ab. Der Abschluss stellt Ersteinschätzung und Projektanfrage als zwei
-  Einstiegskarten nebeneinander („Sie schicken / Sie bekommen / Antwort“, Texte
-  der Ersteinschätzung aus dem Kanon), dazu das Porträt; Ziele und Hooks sind
-  unverändert.
+  auf `/kontakt/?focus=ersteinschaetzung`; die Projektanfrage
+  (`/kontakt/?type=project`) steht sekundär daneben.
 - **`/kontakt/`** (`page-kontakt.php`): Anfrage-Intake, siehe „Anfragewege“.
   Bis 820 px folgt das Formular direkt auf Titel und Einleitung; Ablauf,
   andere Einstiege und E-Mail stehen darunter.

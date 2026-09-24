@@ -213,7 +213,9 @@ function hu_enqueue_assets() {
 	 * ── A) Startseite ──────────────────────────────────────────────
 	 * Seit dem Umbau auf den Gutachten-Standard (2026-09-12) laedt die Route
 	 * nur noch system.css plus ihr eigenes Delta; front-page.php haengt
-	 * startseite.css und startseite-rest-v1.css selbst an.
+	 * startseite-strecke.css und startseite-strecke.js selbst an (seit
+	 * 2026-09-24, vorher startseite.css, startseite-rest-v1.css, home-feld.js,
+	 * home-uebergabe.js und navigation-ecosystem.css/.js).
 	 *
 	 * startseite.js ist 2026-09-16 entfallen. Es hat Hero-Copy, Trust-Zeile und
 	 * Fall-Text zur Laufzeit ueberschrieben und sein CSS in den head injiziert;

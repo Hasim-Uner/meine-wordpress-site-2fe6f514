@@ -89,7 +89,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'WordPress Freelancer Hannover',
 					'url'         => $freelancer_url,
-					'description' => 'Startseite und direkter Einstieg für WordPress-Websites, Relaunches, Landingpages und Tracking. Leistungen, Preisrahmen, öffentliche Referenzen und Projektanfrage.',
+					'description' => 'Startseite und direkter Einstieg für WordPress-Websites, Relaunches, technisches SEO und Tracking bis ins CRM. Leistungen mit Preisen, ein dokumentierter B2B-Fall, öffentliche Referenzen und Projektanfrage.',
 				],
 				[
 					'label'       => 'Für Agenturen: White-Label',

@@ -5,7 +5,7 @@
 Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Workshops und Reviews sind in der Region Hannover, Hildesheim, Braunschweig, Wolfsburg und Celle möglich; die laufende Umsetzung erfolgt remote im DACH-Raum. Vollständige Anschrift und Kontaktdaten: [Impressum](/impressum/).
 
 ## Primäre Einstiege
-- [WordPress Freelancer Hannover](/) - Startseite und direkter Einstieg für WordPress-Websites, Relaunches, Landingpages und Tracking. Leistungen, Preisrahmen, öffentliche Referenzen und Projektanfrage.
+- [WordPress Freelancer Hannover](/) - Startseite und direkter Einstieg für WordPress-Websites, Relaunches, technisches SEO und Tracking bis ins CRM. Leistungen mit Preisen, ein dokumentierter B2B-Fall, öffentliche Referenzen und Projektanfrage.
 - [Für Agenturen: White-Label](/whitelabel-retainer/) - Umsetzungskapazität für Agenturen: WordPress-Umsetzung, technisches SEO und die vollständige Messkette aus einer Hand.
 - [Anfragestrecke für Photovoltaik, Wärmepumpe und Speicher](/solar-waermepumpen-leadgenerierung/) - Money Page des Energie-Clusters. Definiert den Begriff „eigenes Anfragesystem“, beschreibt die fünf Stationen einer Anfragestrecke, rechnet Cost per Order gegen Lead-Einkauf und führt eine Angebotsleiter von 0 € (Marktcheck) über 790 € und 690 € bis zum Aufbau. Enthält den dokumentierten Fall mit 150 € auf 22 € pro qualifizierter Anfrage.
 - [Projekt anfragen](/kontakt/?type=project) - Generischer Anfragepfad für direkte WordPress-, Tracking-, CRO- und technische SEO-Projekte.

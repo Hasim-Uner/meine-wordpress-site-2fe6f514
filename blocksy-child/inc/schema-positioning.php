@@ -242,22 +242,22 @@ function hu_get_wordpress_freelancer_service_schema() : array {
 			'name'            => 'Direkte WordPress-Zusammenarbeit',
 			'itemListElement' => [
 				$offer(
-					'WordPress-Entwicklung',
-					'WordPress-Websites neu bauen, relaunchen oder gezielt weiterentwickeln – inklusive technischer SEO, Performance, Staging und sauberer Übergabe nach vereinbartem Scope.',
+					'WordPress-Website und Relaunch',
+					'Neubau oder Relaunch auf WordPress mit Landingpages, technischem SEO, Weiterleitungsplan, Testumgebung und dokumentierter Übergabe nach vereinbartem Umfang.',
 					'angebot-website',
 					'WordPress-Entwicklung'
 				),
 				$offer(
-					'Anfragestrecken & Landingpages',
-					'Landingpages, Formulare, Qualifizierung, Danke-Seiten und Lead-Übergaben als zusammenhängender Conversion-Weg.',
-					'angebot-funnel',
-					'Landingpage und Anfragestrecke'
+					'Tracking bis ins CRM',
+					'Messplan mit GA4, Google Tag Manager und Consent Mode, abgenommene Conversions mit Testfällen; die Übergabe der Anfragen ins CRM als eigener Schritt nach Bedarf.',
+					'angebot-tracking',
+					'Conversion Tracking'
 				),
 				$offer(
-					'Tracking & CRM',
-					'GA4, Google Tag Manager, Consent, Server-Side Tracking, Attribution und CRM-Übergabe nach tatsächlichem Bedarf des Setups.',
-					'angebot-tracking',
-					'Tracking & CRM'
+					'Bestehende Website übernehmen',
+					'Übernahme-Check einer bestehenden WordPress-Website mit schriftlichem Befund und Festpreis für den nächsten Schritt, danach Weiterentwicklung im monatlich kündbaren Kontingent.',
+					'angebot-weiterentwicklung',
+					'WordPress-Wartung und Weiterentwicklung'
 				),
 			],
 		],
