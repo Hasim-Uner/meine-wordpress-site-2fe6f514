@@ -1,15 +1,25 @@
 <?php
 /**
- * Canonical third-party market figures for the Solar/SHK cluster.
+ * Canonical third-party market figures.
  *
  * Abgrenzung zu canon/e3-proof-canon.php: dort stehen gemessene Werte aus dem
  * eigenen dokumentierten Fall, hier ausschliesslich fremde Marktzahlen aus
- * oeffentlich zugaenglichen Branchenquellen. Die Trennung ist der Zweck dieser
+ * oeffentlich zugaenglichen Quellen. Die Trennung ist der Zweck dieser
  * Datei — eine Marktzahl darf auf keiner Seite so aussehen wie ein eigenes
  * Ergebnis, und ein eigenes Ergebnis nicht wie ein Marktdurchschnitt.
  *
- * Deshalb traegt jeder Eintrag seine Quelle mit und jede Ausgabe muss den
- * Hinweissatz aus hu_market_figures_disclaimer() in Sichtweite zeigen.
+ * Zwei Bestaende, getrennt nach Einsatzort:
+ *
+ * - hu_market_figures(): Solar/SHK-Cluster. Die Energie-Money-Page gibt die
+ *   Liste vollstaendig aus, jede Ausgabe zeigt den Hinweissatz aus
+ *   hu_market_figures_disclaimer() in Sichtweite.
+ * - hu_b2b_market_figures(): allgemeine B2B-Marktzahlen fuer Fachartikel.
+ *   Sie werden einzeln per [hu_markt key="…"] im Fliesstext ausgegeben; die
+ *   Quelle steht sichtbar direkt daneben, im Artikel als [hu_notiz]. Diese
+ *   Liste darf nie in die Solar-Schleife geraten, sonst stuende eine
+ *   B2B-Vertriebszahl zwischen Leadpreisen.
+ *
+ * Jeder Eintrag traegt seine Quelle mit.
  *
  * @package Blocksy_Child
  */
@@ -55,6 +65,48 @@ function hu_market_figures() {
 			'source' => 'A&M Beratung',
 		],
 	];
+}
+
+/**
+ * Return general B2B market figures for editorial articles.
+ *
+ * Gleiche Felder wie hu_market_figures(). `value` traegt ein geschuetztes
+ * Leerzeichen vor dem Prozentzeichen, damit es nicht allein umbricht.
+ *
+ * @return array<int, array<string, string>>
+ */
+function hu_b2b_market_figures() {
+	return [
+		[
+			'key'    => 'gartner_b2b_rep_share',
+			'value'  => "17\u{00A0}%",
+			'body'   => 'des gesamten Kaufprozesses im B2B entfallen auf Gespräche mit Vertriebsleuten.',
+			'source' => 'Gartner, 5 Ways the Shift in B2B Buying Will Reconfigure B2B Selling, 2020, aktualisiert 2022; zitiert in der Gartner-Mitteilung vom 27.03.2023',
+		],
+	];
+}
+
+/**
+ * Return one field of a third-party market figure by key.
+ *
+ * Sucht in beiden Bestaenden. Ein unbekannter Schluessel liefert den
+ * Fallback, nie eine Zahl aus einem anderen Eintrag.
+ *
+ * @param string $key      Figure key.
+ * @param string $field    Field name: value, body or source.
+ * @param string $fallback Returned for an unknown key or field.
+ * @return string
+ */
+function hu_market_figure( $key, $field = 'value', $fallback = '' ) {
+	$key = (string) $key;
+
+	foreach ( array_merge( hu_market_figures(), hu_b2b_market_figures() ) as $figure ) {
+		if ( isset( $figure['key'] ) && $key === $figure['key'] ) {
+			return isset( $figure[ $field ] ) ? (string) $figure[ $field ] : $fallback;
+		}
+	}
+
+	return $fallback;
 }
 
 /**

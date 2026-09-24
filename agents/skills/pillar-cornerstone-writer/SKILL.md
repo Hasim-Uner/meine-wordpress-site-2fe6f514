@@ -33,6 +33,13 @@ The script prints the required package skeleton with a normalized slug.
 - End with a soft strategic CTA, not a hard sell.
 - Suggest internal links to one service page and supporting cluster articles.
 
+## Artikel-Bausteine
+
+Neue Cornerstones entstehen auf den gemeinsamen Bausteinen (Kurzantwort,
+Notiz, Abbildung, Fall, Prüfliste, Abschluss-Tafel, Quellen und Klassen für
+Tabellen und Listen), nicht mit eigenem Artikel-CSS. Vor dem Schreiben lesen:
+`references/bausteine.md`.
+
 ## AEO — Antwortbare Abschnitte
 
 Das Theme erzeugt FAQPage-Schema aus Überschriften, die auf `?` enden

@@ -1,7 +1,7 @@
 # Live Status
 
 Aktuelles Verhalten der Website, nach Bereichen. Stand: Repository `main`
-einschließlich der Änderungen vom 2026-09-23 (gilt nach Merge und Deploy).
+einschließlich der Änderungen vom 2026-09-24 (gilt nach Merge und Deploy).
 
 Diese Datei beschreibt den Ist-Zustand, keinen Verlauf. Die frühere,
 chronologische Fassung mit Begründungen und Prüfprotokollen bis 2026-09-22
@@ -128,6 +128,20 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Dossier, ohne passende Kategorie führt sie zu den WordPress-Leistungen. Nur
   `leadgenerierung` führt in den Marktcheck. Aroundhome und Checkfox tragen
   eigene Entscheidungs-Cockpits statt des Editor-Inhalts.
+- **Artikel-Bausteine** (`inc/editorial-bausteine.php`): Shortcodes
+  `[hu_kurz]`, `[hu_notiz]`, `[hu_abb]`, `[hu_fall]`, `[hu_pruefliste]`,
+  `[hu_abschluss]`, `[hu_quellen]` und Klassen für reines HTML. CSS und JS
+  laden nur auf Beiträgen, die einen Baustein enthalten; dort bekommt der
+  Reader ab 1280 px eine Marginalspalte. Notiz, Abbildung, Fall und Quellen
+  tragen `data-hu-schema-skip` und landen nie im FAQ-Schema. Referenz:
+  `agents/skills/pillar-cornerstone-writer/references/bausteine.md`.
+- **`/website-relaunch/`** (Dossier `cro`): erster Beitrag auf den Bausteinen,
+  einmal aus `assets/content/blog/website-relaunch.html` angelegt
+  (`inc/article-website-relaunch.php`), danach im Editor gepflegt.
+  FAQ-Schema mit fünf Fragen, og:image in voller Größe über das Feld
+  „Open Graph Bild“. Kontextbrücke und Abschluss führen in die
+  Projektanfrage mit Fokus `relaunch` bzw. in die Ersteinschätzung
+  (`docs/architecture/CONVERSION_ROUTING.md`).
 - **Weitere öffentliche Seiten:** `/glossar/`, `/impressum/`, `/datenschutz/`
   (Kontaktdaten aus dem Messaging-Canon).
 - **Intern:** `page-wgos.php` ist ein geschütztes Kunden-Dashboard

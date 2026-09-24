@@ -33,6 +33,26 @@ Title, H1, Meta und JSON-LD bleiben auf allen Seiten unverändert, auch auf
 `/kontakt/`. `/kontakt/` ohne Parameter und alle anderen Seiten verhalten sich
 wie vorher.
 
+### Zusätzlicher Einstieg: Beitrag `/website-relaunch/` (seit 2026-09-24)
+
+Die Abschluss-Tafel des Beitrags (`[hu_abschluss variante="ersteinschaetzung"]`,
+`inc/editorial-bausteine.php`) führt mit derselben URL, demselben Button-Text
+und denselben Kanon-Texten in die Ersteinschätzung. Daneben steht
+„Relaunch-Projekt anfragen“ (`/kontakt/?type=project&focus=relaunch`). Hooks:
+`blog_relaunch_close_ersteinschaetzung` und `blog_relaunch_close_project`.
+Ist der Schalter aus, zeigt die Tafel nur die Projektanfrage.
+
+- **Zählung:** unverändert über das Betreff-Präfix. Einsendungen aus dem
+  Beitrag laufen in dieselbe Summe wie die der Startseite.
+- **Getrennt auswerten:** im CRM über die Herkunftsfelder der Einsendung.
+  Ohne Einwilligung kennt der Kontaktablauf nur die interne Vorseite
+  („Vorige Seite“, `_nexus_contact_previous_page_url` = `/website-relaunch/`),
+  mit Einwilligung zusätzlich die Einstiegsseite („Einstiegsseite“,
+  `_nexus_contact_entry_page_url`). Eine eigene Messung für den Beitrag gibt
+  es nicht.
+- Der Beitrag verlängert die Laufzeit nicht. Endet der Versuch, gilt für die
+  Tafel dieselbe Entscheidung wie für die Startseite.
+
 ## Wo was steht
 
 | Was | Wo |
@@ -42,6 +62,7 @@ wie vorher.
 | URL `/kontakt/?focus=ersteinschaetzung` | `hu_first_assessment_url()` |
 | Antwortzeit | `hu_response_promise()`, keine eigene Fassung |
 | Buttons Startseite | `blocksy-child/front-page.php`, Stil in `assets/css/startseite.css` |
+| Abschluss-Tafel im Beitrag | `[hu_abschluss]` in `blocksy-child/inc/editorial-bausteine.php`, Intro ohne Antwortzeit `hu_first_assessment_text( 'intro_short' )` |
 | Formular-Variante | `blocksy-child/page-kontakt.php`, `assets/js/contact.js` |
 | Validierung, Betreff-Präfix | `blocksy-child/inc/contact-page.php` |
 

@@ -54,6 +54,7 @@ get_template_part( 'template-parts/blog-header' );
 		$cpl_url      = home_url( '/cost-per-lead-photovoltaik/' );
 
 		$is_agency_outsourcing = function_exists( 'hu_is_agency_outsourcing_article' ) && hu_is_agency_outsourcing_article();
+		$is_website_relaunch   = function_exists( 'hu_is_website_relaunch_article' ) && hu_is_website_relaunch_article();
 		$whitelabel_route_url  = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
 
 		$post_categories = get_the_category();
@@ -139,6 +140,13 @@ get_template_part( 'template-parts/blog-header' );
 		if ( $is_agency_outsourcing ) {
 			$article_context['primary_label'] = __( 'White-Label-Zusammenarbeit ansehen', 'blocksy-child' );
 			$article_context['primary_url']   = $whitelabel_route_url;
+		}
+
+		// Relaunch-Leser suchen keine Agentur-Seite, sondern haben ein Projekt:
+		// direkt in die Projektanfrage mit vorgewähltem Thema.
+		if ( $is_website_relaunch && function_exists( 'hu_get_contact_intake_url' ) ) {
+			$article_context['primary_label'] = __( 'Relaunch-Projekt anfragen', 'blocksy-child' );
+			$article_context['primary_url']   = hu_get_contact_intake_url( 'project', 'relaunch' );
 		}
 
 		$article_next_links = [];

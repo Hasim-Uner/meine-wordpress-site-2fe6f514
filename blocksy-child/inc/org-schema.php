@@ -377,6 +377,65 @@ function hu_get_faq_schema_cache_meta_key() {
 }
 
 /**
+ * Marker attribute for content that must never become part of an FAQ answer.
+ *
+ * Randnotizen, Abbildungen, Fall-Bausteine und Quellenlisten stehen oft direkt
+ * unter einer Frage-Ueberschrift. Ohne Marker landete ihr Text nach
+ * wp_strip_all_tags() mitten in acceptedAnswer.text. Die Bausteine in
+ * inc/editorial-bausteine.php setzen das Attribut auf ihr aeusseres Element.
+ *
+ * @return string
+ */
+function hu_faq_schema_skip_attribute() {
+    return 'data-hu-schema-skip';
+}
+
+/**
+ * Remove every element carrying the FAQ skip marker, including its children.
+ *
+ * Arbeitet ueber ausbalancierte Tags desselben Namens, damit verschachtelte
+ * Elemente (ein <aside> mit <a>, eine <figure> mit <ol>) vollstaendig
+ * verschwinden. Ist ein markiertes Element nicht geschlossen, bleibt der Rest
+ * unveraendert: lieber ein zu langer Antworttext als eine abgeschnittene
+ * Antwort.
+ *
+ * @param string $html Rendered content.
+ * @return string
+ */
+function hu_strip_faq_schema_skipped_elements( $html ) {
+    $html      = (string) $html;
+    $attribute = hu_faq_schema_skip_attribute();
+
+    if ( false === strpos( $html, $attribute ) ) {
+        return $html;
+    }
+
+    $open_pattern = '/<([a-z][a-z0-9]*)\b[^>]*\s' . preg_quote( $attribute, '/' ) . '(?=[\s=>\/])[^>]*>/i';
+    $offset       = 0;
+
+    while ( preg_match( $open_pattern, $html, $open, PREG_OFFSET_CAPTURE, $offset ) ) {
+        $start       = (int) $open[0][1];
+        $cursor      = $start + strlen( $open[0][0] );
+        $depth       = 1;
+        $tag_pattern = '/<(\/?)' . preg_quote( strtolower( $open[1][0] ), '/' ) . '\b[^>]*>/i';
+
+        while ( $depth > 0 && preg_match( $tag_pattern, $html, $tag, PREG_OFFSET_CAPTURE, $cursor ) ) {
+            $cursor = (int) $tag[0][1] + strlen( $tag[0][0] );
+            $depth += '/' === $tag[1][0] ? -1 : 1;
+        }
+
+        if ( $depth > 0 ) {
+            break;
+        }
+
+        $html   = substr( $html, 0, $start ) . substr( $html, $cursor );
+        $offset = $start;
+    }
+
+    return $html;
+}
+
+/**
  * Extract FAQ schema entities from post content.
  *
  * This runs on save_post so frontend requests can read cached JSON instead of
@@ -400,7 +459,7 @@ function hu_extract_faq_schema_entities_from_content( $raw_content, $force_headi
         return [];
     }
 
-    $content      = do_shortcode( $raw_content );
+    $content      = hu_strip_faq_schema_skipped_elements( do_shortcode( $raw_content ) );
     $faq_entities = [];
     $dedupe       = [];
 

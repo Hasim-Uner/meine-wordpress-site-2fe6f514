@@ -1,0 +1,1371 @@
+/* ══════════════════════════════════════════════════════════════
+   ARTIKEL-BAUSTEINE — Shortcodes und Klassen aus inc/editorial-bausteine.php
+
+   Laedt nur auf Beitraegen, die einen Baustein enthalten, und nach dem
+   gemeinsamen Reader (single-reader-unified.css). Alle anderen Beitraege
+   rendern unveraendert.
+
+   Nur Tokens aus system.css: Papier, Zone, Tinte, Grau, Matt, Stempel,
+   Haar, Strich, --s0 bis --s6, die Mono-Stufen und .tafel fuer dunkle
+   Flaechen. Kein neuer Farbwert, kein Dark Mode, Radius hoechstens 3 px
+   (Punkte der Kette sind Zeichen, keine Flaechen), keine Schatten.
+
+   SPEZIFITAET
+   Die Reader-Regeln fuer Absaetze, Listen, Tabellen und Links haengen an
+   `.nexus-article-reader-header ~ .nexus-single-container
+   .nexus-article-content …` und erreichen bis (0,6,1). Die Bausteine
+   setzen sich ueber die ID des Artikelkoerpers (#article-content) durch,
+   ohne !important und ohne den Reader anzufassen.
+
+   RASTER
+   Ab 80rem (1280 px) bekommt der Reader auf diesen Beitraegen eine dritte
+   Spalte in Breite der Marginalie. Dorthin schweben Notizen (float mit
+   negativem Rand), breite Elemente reichen hinein. Darunter steht alles im
+   Satzspiegel.
+
+   BEWEGUNG
+   Nur zwei Stellen: Die Kette zeichnet sich einmal (editorial-bausteine.js),
+   das aktive Kapitel markiert das Inhaltsverzeichnis des Readers. Ohne JS
+   ist alles sofort fertig, bei prefers-reduced-motion ruht alles.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Reader-Raster mit Marginalspalte ───────────────────────── */
+
+@media (min-width: 80rem) {
+	body.hu-bausteine .nexus-single-container .nexus-post-layout {
+		grid-template-columns: minmax(10rem, 13rem) minmax(0, var(--satz)) var(--marg) !important;
+	}
+
+	body.hu-bausteine #article-content .hu-notiz {
+		float: right;
+		clear: right;
+		width: var(--marg);
+		max-width: none;
+		margin: 0 calc(-1 * (var(--marg) + var(--s5))) var(--s2) 0;
+	}
+
+	body.hu-bausteine #article-content .hu-tabelle--breit,
+	body.hu-bausteine #article-content .hu-pruef,
+	body.hu-bausteine #article-content .hu-abschluss {
+		margin-right: calc(-1 * (var(--marg) + var(--s5)));
+	}
+
+	/* Abbildungen reichen zusaetzlich in den freien Rand rechts neben dem
+	   Reader (1120 px breit, zentriert), hoechstens 9rem und immer mit --s3
+	   Abstand zum Fensterrand. Erst so wird die Kette ab 1280 px breit genug,
+	   um waagerecht zu stehen. */
+	body.hu-bausteine #article-content .hu-abb {
+		margin-right: calc(-1 * (var(--marg) + var(--s5) + clamp(0px, (100vw - 1120px) / 2 - var(--s3), 9rem)));
+	}
+}
+
+/* ── Kurz beantwortet ───────────────────────────────────────── */
+
+#article-content .hu-kurz {
+	margin: 0 0 var(--s4);
+	padding: var(--s3);
+	border-radius: 3px;
+	background: var(--zone);
+}
+
+#article-content .hu-kurz__label {
+	margin: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--tinte);
+}
+
+#article-content .hu-kurz ol {
+	margin: var(--s2) 0 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: hu-kurz;
+}
+
+#article-content .hu-kurz li {
+	position: relative;
+	margin: 0;
+	padding: 0 0 0 2.6rem;
+	line-height: 1.5;
+	color: var(--tinte);
+	counter-increment: hu-kurz;
+}
+
+#article-content .hu-kurz li + li {
+	margin-top: var(--s2);
+}
+
+#article-content .hu-kurz li::before {
+	content: counter(hu-kurz, decimal-leading-zero);
+	position: absolute;
+	top: 0.2em;
+	left: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-l);
+	font-variant-numeric: tabular-nums;
+	color: var(--stempel);
+}
+
+/* ── Randnotiz ──────────────────────────────────────────────── */
+
+#article-content .hu-notiz {
+	display: block;
+	max-width: var(--satz);
+	margin: 0 0 var(--s3);
+	padding-top: var(--s0);
+	border-top: 1px solid var(--haar);
+	font-size: 0.84rem;
+	line-height: 1.55;
+	color: var(--grau);
+}
+
+#article-content .hu-notiz__label {
+	display: block;
+	margin-bottom: var(--s0);
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-weight: 500;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+#article-content .hu-notiz b,
+#article-content .hu-notiz strong {
+	font-weight: 600;
+	color: var(--tinte);
+}
+
+#article-content .hu-notiz a {
+	color: var(--grau);
+	text-decoration-color: var(--stempel);
+}
+
+#article-content .hu-notiz a:hover,
+#article-content .hu-notiz a:focus-visible {
+	color: var(--stempel);
+}
+
+/* ── Leitsatz, Verweis, Phase ───────────────────────────────── */
+
+#article-content p.hu-leitsatz {
+	max-width: 30ch;
+	margin: var(--s3) 0;
+	font-family: var(--serif-display);
+	font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.55rem);
+	font-weight: 500;
+	line-height: 1.3;
+	letter-spacing: -0.015em;
+	text-wrap: balance;
+	color: var(--tinte);
+}
+
+#article-content h2 + p.hu-leitsatz {
+	margin-top: 0;
+}
+
+#article-content p.hu-verweis {
+	margin: var(--s4) 0 0;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+#article-content p.hu-verweis + h3 {
+	margin-top: var(--s0);
+}
+
+#article-content .hu-phase {
+	display: inline-block;
+	margin-right: var(--s1);
+	font-family: var(--mono);
+	font-size: var(--mono-l);
+	font-weight: 500;
+	letter-spacing: 0.06em;
+	white-space: nowrap;
+	vertical-align: 0.15em;
+	color: var(--stempel);
+}
+
+/* ── Sechs Aufgaben ─────────────────────────────────────────── */
+
+#article-content ol.hu-aufgaben {
+	margin: var(--s3) 0;
+	padding: 0;
+	border-top: 1px solid var(--strich);
+	list-style: none;
+	counter-reset: hu-aufgabe;
+}
+
+#article-content .hu-aufgaben > li {
+	position: relative;
+	margin: 0;
+	padding: var(--s2) 0 var(--s2) 2.6rem;
+	border-bottom: 1px solid var(--haar);
+	line-height: 1.6;
+	color: var(--grau);
+	counter-increment: hu-aufgabe;
+}
+
+#article-content .hu-aufgaben > li::before {
+	content: counter(hu-aufgabe);
+	position: absolute;
+	top: calc(var(--s2) + 0.3em);
+	left: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-l);
+	font-variant-numeric: tabular-nums;
+	color: var(--matt);
+}
+
+#article-content .hu-aufgaben > li > strong:first-child {
+	display: block;
+	margin-bottom: 0.15rem;
+	font-family: var(--serif-display);
+	font-size: 1.1rem;
+	font-weight: 500;
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+	color: var(--tinte);
+}
+
+/* ── Aus der Praxis (Vertriebserfahrung) ────────────────────── */
+
+#article-content .hu-praxis {
+	margin: var(--s4) 0;
+	padding: var(--s3) 0 0 2.6rem;
+	border-top: 1px solid var(--strich);
+}
+
+#article-content .hu-praxis > p {
+	margin: 0;
+	font-family: var(--serif-display);
+	font-size: clamp(1.12rem, 1rem + 0.5vw, 1.35rem);
+	line-height: 1.42;
+	letter-spacing: -0.012em;
+	color: var(--tinte);
+}
+
+#article-content .hu-praxis > p.hu-praxis__label {
+	margin: 0 0 var(--s1) -2.6rem;
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+/* ── Liste mit Strich ───────────────────────────────────────── */
+
+#article-content ul.hu-liste {
+	margin: var(--s2) 0 var(--s3);
+	padding: 0;
+	border-top: 1px solid var(--haar);
+	list-style: none;
+}
+
+#article-content .hu-liste > li {
+	position: relative;
+	margin: 0;
+	padding: var(--s1) 0 var(--s1) var(--s3);
+	border-bottom: 1px solid var(--haar);
+	line-height: 1.6;
+	color: var(--grau);
+}
+
+#article-content .hu-liste > li::before {
+	content: "";
+	position: absolute;
+	top: calc(var(--s1) + 0.8em);
+	left: 0;
+	width: var(--s1);
+	height: 1px;
+	background: var(--tinte);
+}
+
+/* ── Tabellen ───────────────────────────────────────────────── */
+
+#article-content .hu-tabelle {
+	clear: right;
+	margin: var(--s4) 0;
+	overflow-x: auto;
+	container-type: inline-size;
+}
+
+#article-content .hu-tabelle table {
+	width: 100%;
+	margin: 0;
+	border: 0;
+	border-collapse: collapse;
+	background: transparent;
+	font-size: 0.88rem;
+	line-height: 1.45;
+}
+
+#article-content .hu-tabelle th {
+	padding: var(--s1) var(--s2) var(--s1) 0;
+	border: 0;
+	border-bottom: 1px solid var(--strich);
+	background: transparent;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-align: left;
+	text-transform: uppercase;
+	vertical-align: bottom;
+	color: var(--grau);
+}
+
+#article-content .hu-tabelle td,
+#article-content .hu-tabelle tr:last-child td {
+	padding: var(--s1) var(--s2) var(--s1) 0;
+	border: 0;
+	border-bottom: 1px solid var(--haar);
+	vertical-align: top;
+	color: var(--grau);
+}
+
+#article-content .hu-tabelle td:first-child {
+	font-weight: 600;
+	white-space: nowrap;
+	color: var(--tinte);
+}
+
+#article-content .hu-tabelle--risse td:last-child {
+	color: var(--tinte);
+}
+
+#article-content .hu-tabelle--risse td:last-child::before {
+	content: "";
+	display: inline-block;
+	width: 7px;
+	height: 7px;
+	margin-right: var(--s0);
+	border-radius: 50%;
+	background: var(--stempel);
+	transform: translateY(-1px);
+}
+
+#article-content .hu-gruppe {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s1);
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--tinte);
+}
+
+#article-content .hu-gruppe::before {
+	content: "";
+	flex: none;
+	width: 12px;
+	height: 12px;
+	border: 1.5px solid var(--tinte);
+}
+
+#article-content .hu-gruppe--traegt::before {
+	border-color: var(--stempel);
+	background: var(--stempel);
+}
+
+#article-content .hu-gruppe--ballast {
+	color: var(--matt);
+}
+
+#article-content .hu-gruppe--ballast::before {
+	border-style: dashed;
+	border-color: var(--matt);
+}
+
+/* Unter 700 px Tabellenbreite stapeln die Zeilen; data-l traegt die
+   Spaltenbeschriftung in jede Zelle. */
+@container (max-width: 700px) {
+	#article-content .hu-tabelle--stapel thead {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	#article-content .hu-tabelle--stapel,
+	#article-content .hu-tabelle--stapel tbody,
+	#article-content .hu-tabelle--stapel tr,
+	#article-content .hu-tabelle--stapel td {
+		display: block;
+		width: 100%;
+	}
+
+	#article-content .hu-tabelle--stapel tr {
+		padding: var(--s2) 0;
+		border-bottom: 1px solid var(--haar);
+	}
+
+	#article-content .hu-tabelle--stapel td,
+	#article-content .hu-tabelle--stapel tr:last-child td {
+		padding: 0.15rem 0;
+		border: 0;
+		white-space: normal;
+	}
+
+	#article-content .hu-tabelle--stapel td:first-child {
+		padding-bottom: var(--s0);
+		font-size: 1rem;
+	}
+
+	#article-content .hu-tabelle--stapel td[data-l]::before {
+		content: attr(data-l);
+		display: block;
+		margin-top: var(--s0);
+		font-family: var(--mono);
+		font-size: var(--mono-s);
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--matt);
+	}
+
+	#article-content .hu-tabelle--risse td[data-l]:last-child::before {
+		display: block;
+		width: auto;
+		height: auto;
+		margin-right: 0;
+		border-radius: 0;
+		background: none;
+		transform: none;
+	}
+}
+
+/* ── Abbildung: die Kette ───────────────────────────────────── */
+
+#article-content .hu-abb {
+	clear: right;
+	margin: var(--s5) 0;
+}
+
+/* Die Flaeche ist der Container der Kette. Der Innenabstand sitzt an den
+   Kindern, damit die Container Query die volle Breite der Abbildung misst. */
+#article-content .hu-abb--kette {
+	--hu-kette-abstand: clamp(0.6rem, 1.4vw, 1.1rem);
+	--hu-kette-punkt: 11px;
+	padding: clamp(1.25rem, 3vw, var(--s3)) 0;
+	container-type: inline-size;
+}
+
+#article-content .hu-abb--kette > * {
+	margin-inline: clamp(1.25rem, 3vw, var(--s3));
+}
+
+#article-content .hu-abb__kopf {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--s1) var(--s3);
+	margin-top: 0;
+	padding-bottom: var(--s2);
+	border-bottom: 1px solid var(--haar);
+	font-family: var(--serif);
+	font-size: inherit;
+	text-align: left;
+	color: var(--tinte);
+}
+
+#article-content .hu-abb__titelzeile {
+	display: block;
+}
+
+#article-content .hu-abb__nr,
+#article-content .hu-kette-legende {
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--grau);
+}
+
+#article-content .hu-abb__nr {
+	display: block;
+}
+
+#article-content .hu-abb__titel {
+	display: block;
+	margin-top: var(--s0);
+	font-family: var(--serif-display);
+	font-size: clamp(1.15rem, 1rem + 0.6vw, 1.45rem);
+	font-weight: 500;
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+	color: var(--tinte);
+}
+
+#article-content .hu-kette-legende {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--s0) var(--s3);
+}
+
+#article-content .hu-kette-legende span {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s0);
+}
+
+#article-content .hu-kette-legende i {
+	display: inline-block;
+	width: 9px;
+	height: 9px;
+	border: 1.5px solid var(--tinte);
+	border-radius: 50%;
+}
+
+#article-content .hu-kette-legende i.is-bruch {
+	border-color: var(--stempel);
+	background: var(--stempel);
+}
+
+#article-content ol.hu-kette {
+	display: grid;
+	grid-template-columns: repeat(8, minmax(0, 1fr));
+	column-gap: var(--hu-kette-abstand);
+	margin-top: var(--s4);
+	margin-bottom: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#article-content .hu-kette__station {
+	position: relative;
+	min-width: 0;
+	margin: 0;
+	padding: calc(var(--hu-kette-punkt) + var(--s2)) 0 0;
+	line-height: 1.4;
+	color: var(--grau);
+}
+
+/* Die Linie zur naechsten Station. */
+#article-content .hu-kette__station::before {
+	content: "";
+	position: absolute;
+	top: calc(var(--hu-kette-punkt) / 2 - 0.5px);
+	left: calc(var(--hu-kette-punkt) / 2);
+	width: calc(100% + var(--hu-kette-abstand));
+	height: 1px;
+	background: var(--grau);
+	transform-origin: left;
+	transition: transform var(--t-gross) var(--ease-aus);
+}
+
+#article-content .hu-kette__station:last-child::before {
+	display: none;
+}
+
+#article-content .hu-kette__punkt {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	width: var(--hu-kette-punkt);
+	height: var(--hu-kette-punkt);
+	border: 1.5px solid var(--tinte);
+	border-radius: 50%;
+	background: var(--papier);
+	transition:
+		background-color var(--t-norm) var(--ease-weich),
+		border-color var(--t-norm) var(--ease-weich),
+		outline-color var(--t-norm) var(--ease-weich);
+}
+
+#article-content .hu-kette__station.is-bruch .hu-kette__punkt {
+	border-color: var(--stempel);
+	background: var(--stempel);
+	outline: 4px solid var(--zone2);
+}
+
+#article-content .hu-kette__nr {
+	display: block;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	letter-spacing: 0.14em;
+	font-variant-numeric: tabular-nums;
+	color: var(--matt);
+}
+
+#article-content .hu-kette__name {
+	display: block;
+	/* Drei Zeilen, damit die Messpunkt-Linien aller Stationen auf einer
+	   Hoehe stehen ("Suchbegriff oder Anzeige" bricht dreimal). */
+	min-height: 3.6em;
+	margin-top: 0.2rem;
+	font-family: var(--serif-display);
+	font-size: 1rem;
+	font-weight: 500;
+	line-height: 1.2;
+	letter-spacing: -0.01em;
+	overflow-wrap: anywhere;
+	hyphens: auto;
+	color: var(--tinte);
+}
+
+#article-content .hu-kette__mess,
+#article-content .hu-kette__riss {
+	display: block;
+	margin-top: var(--s1);
+	font-size: 0.76rem;
+	line-height: 1.4;
+}
+
+#article-content .hu-kette__mess {
+	padding-top: var(--s0);
+	border-top: 1px solid var(--haar);
+	color: var(--grau);
+}
+
+#article-content .hu-kette__riss {
+	color: var(--tinte);
+}
+
+#article-content .hu-kette__mess em,
+#article-content .hu-kette__riss em {
+	display: block;
+	margin-bottom: 0.15rem;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-style: normal;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--matt);
+}
+
+#article-content .hu-kette__riss em {
+	color: var(--stempel);
+}
+
+/* Rueckkanal: gestrichelter Bogen von Station 05 zurueck zu 01. */
+#article-content .hu-kette__rueck {
+	display: grid;
+	grid-template-columns: repeat(8, minmax(0, 1fr));
+	column-gap: var(--hu-kette-abstand);
+	margin-top: var(--s2);
+}
+
+#article-content .hu-kette__bogen {
+	position: relative;
+	grid-column: 1 / 5;
+	height: 2.2rem;
+	margin-right: calc(-1 * var(--hu-kette-abstand) - var(--hu-kette-punkt) / 2);
+	margin-left: calc(var(--hu-kette-punkt) / 2);
+	border: 1px dashed var(--grau);
+	border-top: 0;
+	border-radius: 0 0 3px 3px;
+}
+
+#article-content .hu-kette__bogen::before {
+	content: "";
+	position: absolute;
+	top: -6px;
+	left: -5px;
+	border: 4.5px solid transparent;
+	border-top: 0;
+	border-bottom: 7px solid var(--grau);
+}
+
+#article-content .hu-kette__rueck-text {
+	display: flex;
+	flex-wrap: wrap;
+	grid-column: 1 / 9;
+	align-items: baseline;
+	gap: var(--s0) var(--s3);
+	margin: var(--s1) 0 0;
+	font-size: 0.8rem;
+	line-height: 1.5;
+	color: var(--grau);
+}
+
+#article-content .hu-kette__rueck-label {
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--tinte);
+}
+
+#article-content .hu-kette__rueck-riss {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s0);
+	color: var(--tinte);
+}
+
+#article-content .hu-kette__rueck-riss i {
+	flex: none;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: var(--stempel);
+	outline: 4px solid var(--zone2);
+}
+
+#article-content p.hu-abb__fuss {
+	max-width: 70ch;
+	margin-top: var(--s3);
+	margin-bottom: 0;
+	padding-top: var(--s1);
+	border-top: 1px solid var(--haar);
+	font-size: 0.84rem;
+	line-height: 1.55;
+	color: var(--grau);
+}
+
+/* Zeichnen beim ersten Sichtkontakt (editorial-bausteine.js). */
+#article-content .hu-kette.is-wartet .hu-kette__station::before {
+	transform: scaleX(0);
+}
+
+#article-content .hu-kette.is-wartet .hu-kette__station.is-bruch .hu-kette__punkt {
+	border-color: var(--tinte);
+	background: var(--papier);
+	outline-color: transparent;
+}
+
+#article-content .hu-kette.is-zeichnet .hu-kette__station:nth-child(2)::before { transition-delay: 90ms; }
+#article-content .hu-kette.is-zeichnet .hu-kette__station:nth-child(3)::before { transition-delay: 180ms; }
+#article-content .hu-kette.is-zeichnet .hu-kette__station:nth-child(4)::before { transition-delay: 270ms; }
+#article-content .hu-kette.is-zeichnet .hu-kette__station:nth-child(5)::before { transition-delay: 360ms; }
+#article-content .hu-kette.is-zeichnet .hu-kette__station:nth-child(6)::before { transition-delay: 450ms; }
+#article-content .hu-kette.is-zeichnet .hu-kette__station:nth-child(7)::before { transition-delay: 540ms; }
+#article-content .hu-kette.is-zeichnet .hu-kette__station.is-bruch .hu-kette__punkt { transition-delay: 760ms; }
+
+/* Schmaler als 820 px: die Kette steht senkrecht. */
+@container (max-width: 820px) {
+	#article-content ol.hu-kette {
+		grid-template-columns: minmax(0, 1fr);
+		row-gap: 0;
+	}
+
+	#article-content .hu-kette__station {
+		/* lint-css-spacing: allow -- oben sitzt der Punkt, der Abstand steht darunter. */
+		padding: 0 0 var(--s3) calc(var(--hu-kette-punkt) + var(--s2));
+	}
+
+	#article-content .hu-kette__station::before {
+		top: calc(var(--hu-kette-punkt) / 2);
+		left: calc(var(--hu-kette-punkt) / 2 - 0.5px);
+		width: 1px;
+		height: 100%;
+		transform-origin: top;
+	}
+
+	#article-content .hu-kette.is-wartet .hu-kette__station::before {
+		transform: scaleY(0);
+	}
+
+	#article-content .hu-kette__name {
+		min-height: 0;
+		font-size: 1.08rem;
+	}
+
+	#article-content .hu-kette__mess,
+	#article-content .hu-kette__riss {
+		max-width: 40ch;
+	}
+
+	#article-content .hu-kette__rueck {
+		display: block;
+		margin-top: 0;
+	}
+
+	#article-content .hu-kette__bogen {
+		display: none;
+	}
+
+	#article-content .hu-kette__rueck-text {
+		margin-top: 0;
+		padding: var(--s2);
+		border-radius: 3px;
+		background: var(--zone);
+	}
+}
+
+/* ── Fall ───────────────────────────────────────────────────── */
+
+#article-content .hu-fall {
+	margin: var(--s5) 0;
+	padding-top: var(--s3);
+	border-top: 1px solid var(--strich);
+	container-type: inline-size;
+}
+
+#article-content .hu-fall p {
+	margin: var(--s2) 0 0;
+}
+
+#article-content .hu-fall p.hu-fall__kicker {
+	margin: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+#article-content .hu-fall p.hu-fall__titel {
+	margin-top: var(--s1);
+	font-family: var(--serif-display);
+	font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem);
+	font-weight: 500;
+	line-height: 1.2;
+	letter-spacing: -0.015em;
+	color: var(--tinte);
+}
+
+#article-content ul.hu-fall__zahlen {
+	display: grid;
+	grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr) minmax(0, 1fr);
+	margin: var(--s3) 0 0;
+	padding: 0;
+	border-top: 1px solid var(--haar);
+	border-bottom: 1px solid var(--haar);
+	list-style: none;
+}
+
+#article-content .hu-fall__zahlen li {
+	margin: 0;
+	padding: var(--s2) var(--s2) var(--s2) 0;
+	line-height: 1.4;
+	color: var(--grau);
+}
+
+#article-content .hu-fall__zahlen li + li {
+	margin: 0;
+	padding-left: var(--s2);
+	border-left: 1px solid var(--haar);
+}
+
+#article-content .hu-fall__zahlen b {
+	display: block;
+	font-family: var(--mono);
+	font-size: clamp(1.3rem, 1.05rem + 0.9vw, 1.7rem);
+	font-weight: 400;
+	line-height: 1.1;
+	letter-spacing: -0.03em;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+	color: var(--tinte);
+}
+
+#article-content .hu-fall__zahlen span {
+	display: block;
+	margin-top: var(--s0);
+	font-size: 0.84rem;
+}
+
+#article-content .hu-fall p.hu-fall__nachsatz {
+	font-size: 0.92rem;
+}
+
+/* Pfeil und Link bleiben zusammen. Der Pfeil steht ausserhalb des Links,
+   damit die Glossar-Autoverlinkung nicht in dessen href schreibt. */
+#article-content .hu-fall__weiter {
+	white-space: nowrap;
+}
+
+@container (max-width: 30rem) {
+	#article-content ul.hu-fall__zahlen {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	#article-content .hu-fall__zahlen li,
+	#article-content .hu-fall__zahlen li + li {
+		padding: var(--s2) 0;
+		border-left: 0;
+	}
+
+	#article-content .hu-fall__zahlen li + li {
+		border-top: 1px solid var(--haar);
+	}
+}
+
+/* ── Pruefliste ─────────────────────────────────────────────── */
+
+#article-content .hu-pruef {
+	clear: right;
+	margin: var(--s3) 0 var(--s4);
+	border: 1px solid var(--strich);
+	border-radius: 3px;
+}
+
+#article-content .hu-pruef__kopf {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--s1) var(--s2);
+	padding: var(--s2) var(--s2) var(--s1);
+}
+
+#article-content p.hu-pruef__titel {
+	margin: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--tinte);
+}
+
+/* Ohne JS: eine normale nummerierte Liste. */
+#article-content .hu-pruef ol {
+	margin: 0;
+	padding: var(--s0) var(--s2) var(--s2) calc(var(--s2) + 2.2rem);
+	list-style: decimal-leading-zero;
+}
+
+#article-content .hu-pruef li {
+	margin: 0;
+	padding: var(--s1) 0 var(--s1) var(--s0);
+	border-bottom: 1px solid var(--haar);
+	line-height: 1.5;
+	color: var(--grau);
+}
+
+#article-content .hu-pruef li:last-child {
+	border-bottom: 0;
+}
+
+#article-content .hu-pruef li::marker {
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	color: var(--matt);
+}
+
+#article-content .hu-pruef code {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	font-family: var(--mono);
+	font-size: 0.85em;
+	color: var(--tinte);
+}
+
+/* Mit JS: Checkboxen, Stand, Fortschrittslinie, Kopieren. */
+#article-content .hu-pruef.is-aktiv ol {
+	padding: var(--s0) var(--s2) 0;
+	list-style: none;
+	counter-reset: hu-pruef;
+}
+
+#article-content .hu-pruef.is-aktiv li {
+	padding: 0;
+	counter-increment: hu-pruef;
+}
+
+#article-content p.hu-pruef__stand {
+	margin: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-l);
+	font-variant-numeric: tabular-nums;
+	color: var(--grau);
+}
+
+#article-content .hu-pruef__stand b {
+	font-weight: 500;
+	color: var(--tinte);
+}
+
+#article-content .hu-pruef__balken {
+	height: 2px;
+	margin-inline: var(--s2);
+	background: var(--haar);
+}
+
+#article-content .hu-pruef__balken i {
+	display: block;
+	height: 100%;
+	background: var(--stempel);
+	transform: scaleX(var(--hu-pruef-anteil, 0));
+	transform-origin: left;
+	transition: transform var(--t-norm) var(--ease-aus);
+}
+
+#article-content .hu-pruef label {
+	display: grid;
+	grid-template-columns: 1.5rem 1.8rem minmax(0, 1fr);
+	gap: var(--s0);
+	align-items: start;
+	min-height: 44px;
+	padding: var(--s1) 0;
+	line-height: 1.5;
+	color: var(--grau);
+	cursor: pointer;
+}
+
+#article-content .hu-pruef label::before {
+	content: counter(hu-pruef, decimal-leading-zero);
+	grid-row: 1;
+	grid-column: 2;
+	padding-top: 0.3rem;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-variant-numeric: tabular-nums;
+	color: var(--matt);
+}
+
+#article-content .hu-pruef input[type="checkbox"] {
+	display: grid;
+	grid-row: 1;
+	grid-column: 1;
+	place-content: center;
+	width: 18px;
+	height: 18px;
+	margin: 0.15rem 0 0;
+	border: 1.5px solid var(--strich);
+	border-radius: 2px;
+	background: var(--papier);
+	cursor: pointer;
+	appearance: none;
+	-webkit-appearance: none;
+	transition:
+		background-color var(--t-mikro) ease,
+		border-color var(--t-mikro) ease;
+}
+
+#article-content .hu-pruef input[type="checkbox"]::after {
+	content: "";
+	width: 9px;
+	height: 5px;
+	border-bottom: 2px solid var(--papier);
+	border-left: 2px solid var(--papier);
+	transform: rotate(-45deg) translate(1px, -1px) scale(0);
+	transition: transform var(--t-mikro) var(--ease-aus);
+}
+
+#article-content .hu-pruef input[type="checkbox"]:checked {
+	border-color: var(--stempel);
+	background: var(--stempel);
+}
+
+#article-content .hu-pruef input[type="checkbox"]:checked::after {
+	transform: rotate(-45deg) translate(1px, -1px) scale(1);
+}
+
+#article-content .hu-pruef input[type="checkbox"]:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 2px;
+}
+
+#article-content .hu-pruef__text {
+	grid-row: 1;
+	grid-column: 3;
+	transition: color var(--t-norm) ease;
+}
+
+#article-content .hu-pruef li.is-geprueft .hu-pruef__text {
+	color: var(--matt);
+}
+
+#article-content .hu-pruef__fuss {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--s1) var(--s2);
+	padding: var(--s2);
+	border-top: 1px solid var(--strich);
+	background: var(--zone);
+}
+
+#article-content p.hu-pruef__hinweis {
+	margin: 0;
+	font-size: 0.8rem;
+	line-height: 1.4;
+	color: var(--grau);
+}
+
+#article-content .hu-knopf-text {
+	min-height: 44px;
+	padding: var(--s0) 0;
+	border: 0;
+	background: none;
+	font: inherit;
+	font-size: 0.84rem;
+	color: var(--grau);
+	text-decoration: underline;
+	text-decoration-color: var(--haar);
+	text-underline-offset: 0.22em;
+	cursor: pointer;
+}
+
+#article-content .hu-knopf-text:hover {
+	color: var(--tinte);
+	text-decoration-color: var(--stempel);
+}
+
+#article-content .hu-knopf-text:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 2px;
+}
+
+/* ── Schaltflaechen: wie .doku .tun in system.css ───────────── */
+
+#article-content .hu-tun {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s1);
+	min-height: 46px;
+	padding: 0.65rem 1.15rem;
+	border: 1px solid var(--stempel);
+	border-radius: 0;
+	background: var(--stempel);
+	font-family: var(--mono);
+	font-size: 0.76rem;
+	font-weight: 500;
+	line-height: 1.3;
+	letter-spacing: 0.1em;
+	text-decoration: none;
+	text-transform: uppercase;
+	color: var(--papier);
+	cursor: pointer;
+	transition:
+		background-color var(--t-mikro) ease,
+		color var(--t-mikro) ease;
+}
+
+#article-content .hu-tun:hover {
+	background: transparent;
+	color: var(--stempel);
+}
+
+/* Der Pfeil steht im CSS, nicht im Link: die Glossar-Autoverlinkung
+   (glossary-autolink.php) prueft nur bis zum naechsten Tag und koennte
+   sonst in das href eines Links mit innerem Element schreiben. */
+#article-content .hu-tun--pfeil::after {
+	content: "→";
+	content: "→" / "";
+}
+
+#article-content .hu-tun--still {
+	border-color: var(--strich);
+	background: transparent;
+	color: var(--tinte);
+}
+
+#article-content .hu-tun--still:hover {
+	background: var(--strich);
+	color: var(--papier);
+}
+
+#article-content .hu-tun:focus-visible {
+	outline: 2px solid var(--stempel);
+	outline-offset: 2px;
+	color: var(--papier);
+	background: var(--stempel);
+}
+
+#article-content .hu-tun--still:focus-visible {
+	background: transparent;
+	color: var(--tinte);
+}
+
+/* ── Abschluss-Tafel ────────────────────────────────────────── */
+
+#article-content .hu-abschluss {
+	clear: right;
+	margin: var(--s5) 0 var(--s4);
+	padding: clamp(1.4rem, 4vw, 3rem);
+	container-type: inline-size;
+}
+
+#article-content .hu-abschluss__raster {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--s4);
+}
+
+@container (min-width: 40rem) {
+	#article-content .hu-abschluss__raster {
+		grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);
+	}
+}
+
+#article-content .hu-abschluss p {
+	margin: var(--s2) 0 0;
+	color: var(--grau);
+}
+
+#article-content .hu-abschluss p.hu-abschluss__kicker {
+	margin: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+#article-content .hu-abschluss p.hu-abschluss__titel {
+	max-width: 18ch;
+	margin-top: var(--s1);
+	font-family: var(--serif-display);
+	font-size: clamp(1.6rem, 1.15rem + 1.9vw, 2.5rem);
+	font-weight: 500;
+	line-height: 1.08;
+	letter-spacing: -0.025em;
+	text-wrap: balance;
+	color: var(--tinte);
+}
+
+#article-content .hu-abschluss p.hu-abschluss__intro {
+	max-width: 48ch;
+}
+
+#article-content .hu-abschluss__wege {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--s1);
+	margin-top: var(--s3);
+}
+
+#article-content .hu-abschluss p.hu-abschluss__zusatz {
+	max-width: 48ch;
+	font-size: 0.8rem;
+	line-height: 1.55;
+}
+
+#article-content .hu-abschluss__ablauf {
+	align-self: start;
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid var(--strich);
+}
+
+#article-content .hu-abschluss__ablauf > div {
+	padding-block: var(--s2);
+	border-bottom: 1px solid var(--haar);
+}
+
+#article-content .hu-abschluss__ablauf dt {
+	margin: 0 0 0.3rem;
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--grau);
+}
+
+#article-content .hu-abschluss__ablauf dd {
+	margin: 0;
+	line-height: 1.45;
+	color: var(--tinte);
+}
+
+/* ── Quellen ────────────────────────────────────────────────── */
+
+#article-content .hu-quellen {
+	clear: right;
+	margin: var(--s5) 0 0;
+}
+
+#article-content p.hu-quellen__titel {
+	margin: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--grau);
+}
+
+#article-content .hu-quellen ol {
+	margin: var(--s1) 0 0;
+	padding: 0;
+	border-top: 1px solid var(--haar);
+	list-style: none;
+	counter-reset: hu-quelle;
+}
+
+#article-content .hu-quellen li {
+	position: relative;
+	margin: 0;
+	padding: var(--s1) 0 var(--s1) 2rem;
+	border-bottom: 1px solid var(--haar);
+	font-size: 0.84rem;
+	line-height: 1.5;
+	color: var(--grau);
+	counter-increment: hu-quelle;
+}
+
+#article-content .hu-quellen li::before {
+	content: counter(hu-quelle, decimal-leading-zero);
+	position: absolute;
+	top: calc(var(--s1) + 0.2em);
+	left: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-variant-numeric: tabular-nums;
+	color: var(--matt);
+}
+
+#article-content .hu-quellen a {
+	color: var(--grau);
+}
+
+/* ── Schmale Bildschirme ────────────────────────────────────── */
+
+@media (max-width: 30rem) {
+	#article-content .hu-kurz {
+		padding: var(--s2);
+	}
+
+	#article-content .hu-kurz li,
+	#article-content .hu-aufgaben > li {
+		padding-left: 1.8rem;
+	}
+
+	#article-content .hu-praxis {
+		padding-left: 1.8rem;
+	}
+
+	#article-content .hu-praxis > p.hu-praxis__label {
+		margin-left: -1.8rem;
+	}
+
+	#article-content .hu-abschluss__wege .hu-tun {
+		justify-content: space-between;
+		width: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#article-content .hu-kette__station::before,
+	#article-content .hu-kette__punkt,
+	#article-content .hu-pruef__balken i,
+	#article-content .hu-pruef input[type="checkbox"],
+	#article-content .hu-pruef input[type="checkbox"]::after,
+	#article-content .hu-pruef__text,
+	#article-content .hu-tun {
+		transition: none;
+	}
+}

@@ -71,6 +71,25 @@ Messung und Abbruchregel: `docs/experimente/ersteinschaetzung.md`.
 Routing, Inhalte, Weiterleitung, Analytics-Zuordnung und Nachkontrolle:
 `docs/decisions/homepage-freelancer-konsolidierung.md`.
 
+## Blog-Cornerstone `/website-relaunch/`
+
+Der Beitrag besitzt die informationelle Query „website relaunch“
+(`docs/seo/query-ownership.csv`) und führt Leser mit Relaunch-Vorhaben direkt
+in die Projektanfrage, nicht auf `/wordpress-agentur-hannover/`:
+
+- **Kontextbrücke** im Reader (`template-parts/single-reader.php`, Override
+  wie beim Auslagerungs-Leitfaden): primär „Relaunch-Projekt anfragen“ →
+  `hu_get_contact_intake_url('project', 'relaunch')`.
+- **Abschluss-Tafel** (`[hu_abschluss]`, `inc/editorial-bausteine.php`):
+  primär die Ersteinschätzung (`hu_first_assessment_url()`, Hook
+  `blog_relaunch_close_ersteinschaetzung`), sekundär „Relaunch-Projekt
+  anfragen“ (`/kontakt/?type=project&focus=relaunch`, Hook
+  `blog_relaunch_close_project`), beide `data-track-category="lead_gen"`,
+  `data-track-section="abschluss"`. Schalter der Ersteinschätzung aus: nur die
+  Projektanfrage als primärer Button.
+
+Kein Marktcheck: Der Beitrag steht im Dossier `cro`, nicht im Energie-Pfad.
+
 ## Über Haşim: persönliche Methodik und Belege
 
 `/hasim-uener/` erklärt Person und Arbeitsweise; Leistungen und Preisrahmen

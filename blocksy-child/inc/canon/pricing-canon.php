@@ -45,6 +45,8 @@ function hu_pricing_canon() {
 		'entry_setup_price'               => HU_ENTRY_SETUP_PRICE,
 		'analysis_price'                  => HU_ANALYSIS_PRICE,
 		'freelancer_takeover_check_price' => HU_FREELANCER_TAKEOVER_CHECK_PRICE,
+		// Schlüssel enthält "price", damit [hu_price] ihn als Betrag formatiert.
+		'freelancer_website_price'        => HU_FREELANCER_WEBSITE_MIN,
 		// Als Satzbaustein, nicht als Stufen-Array: [hu_price] gibt nur Skalare aus.
 		'freelancer_retainer_display'     => hu_freelancer_retainer_display(),
 		'founding_discount_percent'       => HU_FOUNDING_DISCOUNT_PERCENT,

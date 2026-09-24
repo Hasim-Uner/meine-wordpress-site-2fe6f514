@@ -251,6 +251,9 @@ function hu_first_assessment_text( $key ) {
 		'card_get'        => 'Drei konkrete Befunde per E-Mail oder ein direktes Nein, wenn die Seite nicht zu meiner Arbeit passt',
 		// Ueber dem Formular: Pruefung, Zusage, Antwortzeit.
 		'intro'           => $review . ' ' . $promise . ' ' . hu_response_promise( 'sentence' ),
+		// Dieselbe Zusage ohne Antwortzeit, fuer Flaechen, die die Antwortzeit
+		// als eigene Zeile zeigen (Abschluss-Tafel im Artikel, [hu_abschluss]).
+		'intro_short'     => $review . ' ' . $promise,
 		// Dritter Schritt der Bestaetigungsmail: dieselbe Zusage wie im Formular.
 		'promise'         => $promise,
 		'step_title'      => 'Welche Website soll ich mir ansehen?',
