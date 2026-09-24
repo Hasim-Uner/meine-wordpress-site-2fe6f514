@@ -237,7 +237,7 @@ function nexus_get_llms_txt_sections() {
 				[
 					'label'       => 'Glossar',
 					'url'         => $urls['glossary'] ?? home_url( '/glossar/' ),
-					'description' => 'Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.',
+					'description' => '60 kurze Erklärungen mit Beispielen: jeweils zwölf zu Anfragen, Ladezeit & Technik, Tracking, SEO und Conversion.',
 				],
 			],
 		],
