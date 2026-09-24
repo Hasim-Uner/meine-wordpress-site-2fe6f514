@@ -50,16 +50,20 @@
         }
 
         forms.forEach(function (form) {
+            var isSubmitting = false;
             form.addEventListener('submit', function (event) {
                 event.preventDefault();
+                if (isSubmitting) return;
 
                 setFeedback(form, '', '');
-                setPending(form, true);
 
                 var payload = serializeForm(form);
                 var nonce = payload.nonce || config.nonce || '';
+                isSubmitting = true;
+                var unlockForm = window.NexusCore.lockForm(form);
+                setPending(form, true);
 
-                window.fetch(endpoint, {
+                window.NexusCore.submitJson(endpoint, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -68,18 +72,8 @@
                     credentials: 'same-origin',
                     body: JSON.stringify(payload)
                 })
-                    .then(function (response) {
-                        return response.json().catch(function () {
-                            return {};
-                        }).then(function (data) {
-                            return {
-                                ok: response.ok,
-                                data: data
-                            };
-                        });
-                    })
                     .then(function (result) {
-                        if (!result.ok || !result.data || result.data.ok === false) {
+                        if (!result.ok || result.data.ok !== true) {
                             throw new Error((result.data && result.data.error) || config.errorMessage || 'Das hat gerade nicht funktioniert.');
                         }
 
@@ -104,6 +98,8 @@
                         );
                     })
                     .finally(function () {
+                        unlockForm();
+                        isSubmitting = false;
                         setPending(form, false);
                     });
             });

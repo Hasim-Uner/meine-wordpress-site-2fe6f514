@@ -48,6 +48,7 @@
         var contactAutoAdvanceTimer = 0;
         var CONTACT_AUTO_ADVANCE_DELAY = 180;
         var lastTrackedFlowStep = '';
+        var isSubmitting = false;
 
         if (!endpoint) {
             return;
@@ -110,6 +111,7 @@
         // ── Type status bar toggle (scoped landing) ──
         if (typeExpandBtn && intentFieldset) {
             typeExpandBtn.addEventListener('click', function () {
+                if (isSubmitting) return;
                 var typeStep = form.querySelector('[data-contact-step="type"]');
                 intentFieldset.classList.remove('contact-intent--collapsed');
                 typeExpandBtn.setAttribute('aria-expanded', 'true');
@@ -246,10 +248,7 @@
         }
 
         function setFieldError(fieldName, message) {
-            var meta = fieldErrorMap[fieldName];
-            if (!meta) {
-                return;
-            }
+            var meta = fieldErrorMap[fieldName] || {};
 
             var errorEl = meta.errorId ? document.getElementById(meta.errorId) : null;
             if (errorEl) {
@@ -934,6 +933,7 @@
         // ── Submit handler ──
         form.addEventListener('submit', function (event) {
             event.preventDefault();
+            if (isSubmitting) return;
             clearFieldErrors();
             setFeedback('', '');
 
@@ -947,29 +947,23 @@
                 return;
             }
 
+            var payload = getPayload();
+            isSubmitting = true;
+            cancelContactAutoAdvance();
+            var unlockForm = window.NexusCore.lockForm(form);
             setPending(true);
             pushContactEvent('contact_form_submit_started');
 
-            window.fetch(endpoint, {
+            window.NexusCore.submitJson(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 credentials: 'same-origin',
-                body: JSON.stringify(getPayload())
+                body: JSON.stringify(payload)
             })
-                .then(function (response) {
-                    return response.json().catch(function () {
-                        return {};
-                    }).then(function (data) {
-                        return {
-                            ok: response.ok,
-                            data: data
-                        };
-                    });
-                })
                 .then(function (result) {
-                    if (!result.ok || !result.data || result.data.ok === false) {
+                    if (!result.ok || result.data.ok !== true) {
                         var errorMessage = result.data && result.data.error
                             ? result.data.error
                             : (window.NexusContactConfig && window.NexusContactConfig.errorMessage) || 'Die Anfrage konnte gerade nicht gesendet werden.';
@@ -984,24 +978,19 @@
                                 'missing_focus': 'focus',
                                 'invalid_focus_type': 'focus',
                                 'missing_timeline': 'timeline',
+                                'invalid_timeline': 'timeline',
                                 'invalid_budget': 'budget',
                                 'invalid_ad_budget': 'ad_budget',
+                                'invalid_website': 'website_url',
+                                'invalid_linkedin': 'linkedin_url',
                                 'message_too_short': 'message',
                                 'missing_website': 'website_url',
                                 'missing_consent': 'consent'
                             };
                             var fieldName = codeFieldMap[result.data.error_code];
-                            // Ersteinschaetzung: die URL ist dort das Hauptfeld und
-                            // steht in Schritt 1. Ein Serverfehler dazu fuehrt
-                            // zurueck an das Feld, statt nur unten zu stehen.
-                            if (websiteField && result.data.error_code === 'invalid_website') {
-                                fieldName = 'website_url';
-                            }
                             if (fieldName) {
-                                setFieldError(fieldName, errorMessage);
-                            }
-                            if (websiteField && fieldName === 'website_url') {
-                                showContactFlowStepOf(websiteField);
+                                var invalidField = setFieldError(fieldName, errorMessage);
+                                if (invalidField) showContactFlowStepOf(invalidField);
                             }
                         }
 
@@ -1036,7 +1025,12 @@
                     setFeedback(error && error.message ? error.message : 'Die Anfrage konnte gerade nicht gesendet werden.', 'error');
                 })
                 .finally(function () {
+                    unlockForm();
+                    isSubmitting = false;
                     setPending(false);
+                    syncFormExperience();
+                    var invalidField = form.querySelector('[aria-invalid="true"]');
+                    if (invalidField) invalidField.focus();
                 });
         });
 

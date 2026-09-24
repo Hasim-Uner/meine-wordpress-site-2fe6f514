@@ -180,6 +180,18 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 ## Anfragewege und CRM
 
+- Repo-Korrektur vom 2026-09-25 (Live-Nachweis erst nach Deployment): Kontakt,
+  Ersteinschätzung, White-Label, Marktcheck und Blog-Abo bestätigen im Browser
+  Erfolg nur bei HTTP 2xx und einem JSON-Objekt mit `ok === true`. Ungültige
+  Antworten erhalten die Eingaben. `NexusCore.submitJson()` begrenzt einen
+  Versuch einschließlich Antwortkörper auf 30 Sekunden; ein Timeout bedeutet
+  einen unbestätigten Eingang, keine nachgewiesene Ablehnung. Späte Antworten
+  ändern die Oberfläche nicht mehr. Während des Versuchs sind Eingaben und
+  Formularnavigation gesperrt; anschließend wieder bedienbar. Keine automatische
+  Wiederholung und keine Zusage serverseitiger Einmalverarbeitung.
+  Browser- und isolierte Endpoint-Prüfungen laufen in CI; Umfang und Grenzen:
+  `scripts/tests/README.md`. Payload, Consent, Quellen, Segmente, Honeypot,
+  Rate-Limits und der Versuch Ersteinschätzung bleiben unverändert.
 - Öffentliche REST-Endpunkte unter `nexus/v1`, jeweils mit Honeypot und
   IP-Rate-Limit. Die IP liefert `nexus_get_review_request_ip()`: `REMOTE_ADDR`,
   hinter einem internen Proxy die rechteste öffentliche Adresse aus

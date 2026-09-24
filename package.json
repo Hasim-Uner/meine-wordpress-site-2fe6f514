@@ -7,6 +7,8 @@
     "npm": ">=10 <11"
   },
   "scripts": {
+    "test:forms": "playwright test --config scripts/tests/forms.config.cjs",
+    "test:intake": "php scripts/tests/intake-endpoints.php",
     "build:theme": "bash scripts/build-theme-dist.sh",
     "lint:architecture": "bash scripts/validate-architecture.sh",
     "lint:canon": "bash scripts/canon-guard.sh",
@@ -15,6 +17,7 @@
     "lint:php": "find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l"
   },
   "devDependencies": {
+    "@playwright/test": "1.63.0",
     "lightningcss-cli": "1.32.0",
     "terser": "5.46.1"
   }

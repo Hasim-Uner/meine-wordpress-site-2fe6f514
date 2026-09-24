@@ -136,6 +136,15 @@ jobs:
       - name: Install Node build tooling
         run: npm ci
 
+      - name: Install browser for isolated form tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify form submission behavior
+        run: npm run test:forms
+
+      - name: Verify intake endpoints with isolated storage and intercepted mail
+        run: npm run test:intake
+
       - name: PHP syntax check
         run: find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l
 

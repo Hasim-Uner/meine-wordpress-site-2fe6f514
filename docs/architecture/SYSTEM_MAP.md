@@ -134,6 +134,12 @@ Aktivitätsverlauf (`nexus_crm_activity`); Details in `docs/systems/nexus-crm-sa
 
 Architektur:
 
+- Die aktiven Submit-Controller für Kontakt, White-Label, Marktcheck und Blog-Abo
+  nutzen den bereits geladenen `NexusCore`: `submitJson()` prüft das
+  Antwortformat und begrenzt die Wartezeit, `lockForm()` erhält die gesendeten
+  Werte während des Versuchs. Die Controller verlangen HTTP 2xx und
+  `ok === true`, bevor sie Erfolg anzeigen oder zurücksetzen. REST-Payloads und
+  serverseitige Annahmeregeln ändern sich dadurch nicht.
 - `nexus_review_request` bleibt der spezialisierte Datensatz fuer Audit-Intake
 - `nexus_contact` ist der gemeinsame Kontakt-Datensatz fuer kontaktnahe Folgeanliegen und Blog-Abos
 - `contact.js` erlaubt gescopten Landingpages opt-in-spezifische Formularcopy und DOM-nahe Fehlerreihenfolge ueber `data-contact-submit-label`, `data-contact-message-placeholder` und `data-contact-dom-error-order`; Payload-Felder und REST-Endpunkt bleiben unveraendert

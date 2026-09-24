@@ -7,6 +7,7 @@
   if (!mount) return;
 
   var answers = {};
+  var isSubmitting = false;
   var fitFields = {
     solution_focus: [
       ['photovoltaik', 'Photovoltaik'],
@@ -180,6 +181,7 @@
       showFieldError('consent_privacy','');
     });
     mount.querySelector('.mc2-back').addEventListener('click', function () {
+      if (isSubmitting) return;
       track('system_intake_step_back', {step:1});
       renderFit();
       animate();
@@ -217,6 +219,7 @@
 
   function submit(event) {
     event.preventDefault();
+    if (isSubmitting) return;
     var form = event.currentTarget;
     ['company','name','position','email','postal_code'].forEach(function (name) { answers[name] = form.elements[name].value; });
     answers.consent_privacy = form.elements.consent_privacy.checked ? 'accepted' : '';
@@ -230,6 +233,8 @@
 
     var button = form.querySelector('.mc2-primary[type="submit"]');
     var errorBox = form.querySelector('.mc2-submit-error');
+    isSubmitting = true;
+    var unlockForm = window.NexusCore.lockForm(form);
     button.disabled = true;
     button.setAttribute('aria-busy', 'true');
     button.textContent = 'Wird gesendet …';
@@ -256,30 +261,25 @@
 
     track('system_intake_submit_attempt', {step:2});
 
-    fetch(CFG.restEndpoint || '/wp-json/nexus/v1/audit-request', {
+    window.NexusCore.submitJson(CFG.restEndpoint || '/wp-json/nexus/v1/audit-request', {
       method: 'POST',
       credentials: 'same-origin',
       headers: {'Content-Type':'application/json','Accept':'application/json'},
       body: JSON.stringify(payload)
-    }).then(function (response) {
-      return response.json().catch(function () { return {}; }).then(function (json) { return {ok:response.ok,json:json}; });
     }).then(function (result) {
-      if (!result.ok || !result.json || !result.json.ok) {
-        var error = new Error((result.json && result.json.message) || 'Senden fehlgeschlagen.');
-        error.field = result.json && result.json.error_details ? result.json.error_details.field || '' : '';
+      var data = result.data;
+      if (!result.ok || data.ok !== true) {
+        var error = new Error(data.message || 'Senden fehlgeschlagen.');
+        error.field = data.error_details ? data.error_details.field || '' : '';
         throw error;
       }
       track('system_intake_submit_success', {
         funnel_stage:'lead_captured',
-        qualification_status:result.json.qualification && result.json.qualification.status ? result.json.qualification.status : ''
+        qualification_status:data.qualification && data.qualification.status ? data.qualification.status : ''
       });
-      renderSuccess(result.json.qualification || {});
+      renderSuccess(data.qualification || {});
       animate();
     }).catch(function (error) {
-      button.disabled = false;
-      button.removeAttribute('aria-busy');
-      button.innerHTML = 'Marktcheck anfordern <span aria-hidden="true">→</span>';
-
       if (error.field && mount.querySelector('[data-field="' + error.field + '"]')) {
         showFieldError(error.field, error.message || 'Bitte prüfen.');
         var fieldControl = mount.querySelector('[data-field="' + error.field + '"] input, [data-field="' + error.field + '"] select');
@@ -289,6 +289,13 @@
         errorBox.hidden = false;
       }
       track('system_intake_submit_error', {funnel_stage:'submit_error', error_field:error.field || ''});
+    }).finally(function () {
+      unlockForm();
+      isSubmitting = false;
+      button.removeAttribute('aria-busy');
+      button.innerHTML = 'Marktcheck anfordern <span aria-hidden="true">→</span>';
+      var invalidField = form.querySelector('[aria-invalid="true"]');
+      if (invalidField) invalidField.focus();
     });
   }
 
