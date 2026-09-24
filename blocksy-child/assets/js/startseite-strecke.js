@@ -1,11 +1,13 @@
 /* Startseite: die Strecke.
  *
- * Drei Aufgaben, ein Skript:
+ * Vier Aufgaben, ein Skript:
  * 1. Die Linie in der Randspalte fuellt sich beim Lesen (transform: scaleY,
  *    Update in requestAnimationFrame, Geometrie nur bei Groessenaenderung).
  * 2. Das Messprotokoll im Hero zeigt, was dieser Browser misst: Ladezeit,
  *    gesehene Abschnitte, Scrolltiefe, Klick auf einen Anfrage-Button.
  * 3. Die Stationen in Abschnitt 03 klappen einzeln auf.
+ * 4. „Leistungen" in der Kopfleiste ist nur aktiv, solange #angebote im
+ *    Blick ist.
  *
  * Harte Regel: Dieses Skript sendet nichts und speichert nichts. Kein
  * Netzwerkaufruf, kein Browser-Speicher, kein Cookie. Die Sperrliste in
@@ -339,6 +341,24 @@
             }
         };
         if (desktop.addEventListener) desktop.addEventListener('change', wechsel);
+    }
+
+    /* ── 4. Kopfleiste ───────────────────────────────────────── */
+
+    /* „Leistungen" zeigt auf #angebote dieser Seite und kommt deshalb mit
+       aria-current="page" aus dem Header. Aktiv ist der Link hier nur,
+       solange der Abschnitt im mittleren Band des Fensters steht. */
+    var angebote = document.getElementById('angebote');
+    var leistungsLinks = document.querySelectorAll('.leiste a[href$="#angebote"]');
+    if (angebote && leistungsLinks.length && 'IntersectionObserver' in window) {
+        Array.prototype.forEach.call(leistungsLinks, function (link) { link.removeAttribute('aria-current'); });
+        new IntersectionObserver(function (eintraege) {
+            var imBlick = eintraege[eintraege.length - 1].isIntersecting;
+            Array.prototype.forEach.call(leistungsLinks, function (link) {
+                if (imBlick) link.setAttribute('aria-current', 'location');
+                else link.removeAttribute('aria-current');
+            });
+        }, { rootMargin: '-45% 0px -45% 0px' }).observe(angebote);
     }
 
     /* ── Start ──────────────────────────────────────────────── */
