@@ -37,4 +37,4 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 
 ## Wissen
 - [Blog](/blog/) - Artikel zu SEO, Tracking, WordPress-Performance, Conversion und Anfragesystemen.
-- [Glossar](/glossar/) - Begriffe und Definitionen für SEO, Tracking, CRO und Demand-Architektur.
+- [Glossar](/glossar/) - 60 kurze Erklärungen mit Beispielen: jeweils zwölf zu Anfragen, Ladezeit & Technik, Tracking, SEO und Conversion.

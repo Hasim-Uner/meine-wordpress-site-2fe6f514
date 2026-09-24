@@ -81,13 +81,25 @@ foreach ( $items as $item ) {
 	$previous = $item['title'];
 	glossary_check( $item['url'] !== nexus_get_glossary_hub_url(), 'A term must not link back to the directory.' );
 }
+$definition_counts = array_fill_keys( array_keys( nexus_get_glossary_area_catalog() ), 0 );
 foreach ( $registry as $term ) {
 	glossary_check( ! preg_match( '/Primary URL|Head Term|Alias-Eintrag|Sub-Term/', $term['short_definition'] . $term['excerpt'] ), 'Public definition leaks SEO notes.' );
 	if ( ! nexus_glossary_term_requires_post( $term ) ) { continue; }
+	$definition_counts[ $term['core_area'] ]++;
+	glossary_check( $term['show_in_hub'], 'Every definition must be discoverable in the directory.' );
+	glossary_check( count( $term['mistakes'] ) >= 1, 'Every definition needs a practical mistake to avoid.' );
+	glossary_check( count( nexus_get_glossary_related_primary_items( $term ) ) >= 1, 'Every definition needs a useful implementation link.' );
+	foreach ( $term['related_terms'] as $related_slug ) {
+		glossary_check( isset( $registry[ $related_slug ] ) && 'publish' === $registry[ $related_slug ]['status'], 'Related terms must exist and be published: ' . $related_slug );
+		glossary_check( $related_slug !== $term['slug'], 'A related term must not link to itself.' );
+	}
 	$html = nexus_get_glossary_term_content_html( $term );
 	glossary_check( ! preg_match( '/Primary URL|Index-Policy|Head Term|Marktcheck|wgos-/', $html ), 'Rendered content contains obsolete internals or funnel.' );
 	glossary_check( strpos( $html, 'Ein Beispiel' ) !== false, 'Every detail needs a concrete example.' );
 	glossary_check( strpos( $html, 'glossary-definition' ) !== false, 'Stored content must retain its definition.' );
+}
+foreach ( $definition_counts as $area => $count ) {
+	glossary_check( $count >= 12, 'At least twelve real definitions are required in ' . $area . '; aliases do not count.' );
 }
 $match = $registry['message-match'];
 $before = nexus_get_glossary_term_content_html( $match, false );
@@ -119,4 +131,4 @@ if ( $render_dir ) {
 		file_put_contents( $render_dir . '/' . $post->post_name . '.html', ob_get_clean() );
 	}
 }
-echo "PASS: glossary directory, policies, examples, escaping and current related links.\n";
+echo 'PASS: ' . array_sum( $definition_counts ) . " definitions, at least twelve per area; directory, policies, examples, escaping and current related links.\n";

@@ -162,8 +162,13 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Fehlern. Registrierte Detailseiten rendern ihre Inhalte und verwandten Links
   beim Aufruf, damit frühere Sync-Fallbacks nicht im HTML stehen bleiben.
   Der Sync aktualisiert weiterhin Posts, Metadaten und seine Prüfmarker;
-  Index-/Noindex-Regeln und Alias-Ziele bleiben erhalten. Der lokale
-  Agentur-Alias bleibt im Register, ist aber kein Eintrag der Übersicht.
+  Das Register enthält 60 Definitionen, jeweils zwölf in Anfragen, Ladezeit &
+  Technik, Tracking, SEO und Conversion. 59 Detailseiten erlauben Indexierung;
+  CTA-Hierarchie bleibt `noindex, follow`. Fünf Alias-Ziele bleiben erhalten:
+  vier sind sichtbare Themenverweise, der lokale Agentur-Alias ist ausgeblendet.
+  Damit enthält die Übersicht 64 Einträge. Definitionsfragen und kommerzielle
+  Suchintentionen sind in `docs/seo/query-ownership.csv` getrennt;
+  die Entscheidung erläutert `docs/seo/glossar-indexierung.md`.
   Neue Begriffe werden in `inc/glossary/glossary-registry-data.php` gepflegt;
   `search_terms` erweitert nur die Glossarsuche, `keywords_match` steuert
   weiterhin die bestehenden Blog-Verlinkungen. Abschlussziel: Projektanfrage.
