@@ -350,6 +350,9 @@ function remove_query_arg( $keys, $url ) {
 	return $parts[0] . ( $kept ? '?' . implode( '&', $kept ) : '' );
 }
 
+// The homepage description reads its price anchor from the pricing canon,
+// the same getter the visible offer uses.
+require_once __DIR__ . '/../blocksy-child/inc/canon/pricing-canon.php';
 require_once __DIR__ . '/../blocksy-child/inc/seo-meta.php';
 
 echo "\n########## Homepage consolidation ##########\n\n";

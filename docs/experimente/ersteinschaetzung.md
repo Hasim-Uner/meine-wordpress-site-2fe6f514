@@ -61,7 +61,7 @@ Ist der Schalter aus, zeigt die Tafel nur die Projektanfrage.
 | Alle Texte, Kennung `ersteinschaetzung`, Betreff-Präfix | `hu_first_assessment_text()` im selben Abschnitt |
 | URL `/kontakt/?focus=ersteinschaetzung` | `hu_first_assessment_url()` |
 | Antwortzeit | `hu_response_promise()`, keine eigene Fassung |
-| Buttons Startseite | `blocksy-child/front-page.php`, Stil in `assets/css/startseite.css` |
+| Buttons Startseite | `blocksy-child/front-page.php`, Stil in `assets/css/system.css` (`.tun`), Anordnung in `assets/css/startseite-strecke.css` |
 | Abschluss-Tafel im Beitrag | `[hu_abschluss]` in `blocksy-child/inc/editorial-bausteine.php`, Intro ohne Antwortzeit `hu_first_assessment_text( 'intro_short' )` |
 | Formular-Variante | `blocksy-child/page-kontakt.php`, `assets/js/contact.js` |
 | Validierung, Betreff-Präfix | `blocksy-child/inc/contact-page.php` |

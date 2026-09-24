@@ -1,0 +1,1205 @@
+/* ══════════════════════════════════════════════════════════════
+   STARTSEITE — die Strecke
+
+   Die Seite ist die Strecke, die sie verkauft. Eine Linie laeuft in der
+   Randspalte vom Hero bis zum Anfrageblock; jeder Abschnitt ist eine
+   Marke darauf. Mit JavaScript fuellt sie sich beim Lesen (transform:
+   scaleY, kein animation-timeline — Firefox kann es nicht). Ohne
+   JavaScript steht sie statisch.
+
+   Grundlage sind die Gutachten-Tokens aus system.css. Diese Datei
+   definiert keinen davon um (scripts/audit-css-architecture.py); sie
+   fuehrt nur Masse fuer die Randspalte ein. Hausschrift wie ueberall:
+   --serif-display fuer Ueberschriften, --serif fuer Text, --mono nur fuer
+   Zahlen, Labels und das Protokoll.
+
+   Orange (--stempel) steht ausschliesslich fuer Messwerte und den
+   primaeren Button. Der Fokusring ist deshalb hier --tinte statt
+   --stempel; Kopf- und Fussleiste behalten ihren.
+   ══════════════════════════════════════════════════════════════ */
+
+.st {
+  /* Masse der Randspalte. Mobil liegt die Linie in der linken Rinne. */
+  --st-max: 80rem;
+  --st-rinne: 1.25rem;
+  --st-rinne-r: 1rem;
+  --st-rand: 0rem;
+  --st-spalt: 0rem;
+  --st-linie-x: 0.4rem;
+  --st-kopf: var(--s5);
+  --st-punkt: 9px;
+  --st-linie: color-mix(in srgb, var(--matt) 55%, var(--papier));
+
+  overflow-x: clip;
+}
+
+@media (min-width: 768px) {
+  .st {
+    --st-rinne: clamp(1.5rem, 4vw, 3rem);
+    --st-rinne-r: clamp(1.5rem, 4vw, 3rem);
+    --st-rand: 6rem;
+    --st-spalt: var(--s2);
+    --st-linie-x: calc(var(--st-rinne) + 0.35rem);
+    --st-kopf: var(--s6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .st {
+    --st-rand: 7rem;
+    --st-spalt: var(--s3);
+  }
+}
+
+/* Fokus: sichtbar, aber nicht orange. Auf der Tafel kehrt --tinte sich
+   ueber die lokalen Tokens von selbst um. */
+.doku.st :focus-visible {
+  outline: 2px solid var(--tinte);
+  outline-offset: 3px;
+}
+
+/* ══ Abschnitt und Linie ══════════════════════════════════════ */
+
+.st .st-abschnitt {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--st-rand) minmax(0, 1fr);
+  column-gap: var(--st-spalt);
+  max-width: var(--st-max);
+  margin-inline: auto;
+  padding: var(--st-kopf) var(--st-rinne-r) var(--st-kopf) var(--st-rinne);
+}
+
+/* Haarlinie zwischen zwei Abschnitten, nur ueber der Inhaltsspalte. Die
+   Linie aus system.css (.doku section + section) liefe durch die Strecke. */
+.st .st-abschnitt + .st-abschnitt { border-top: 0; }
+
+.st .st-abschnitt + .st-abschnitt::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(var(--st-rinne) + var(--st-rand) + var(--st-spalt));
+  right: var(--st-rinne-r);
+  border-top: 1px solid var(--haar);
+}
+
+.st .st-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--st-linie-x);
+  width: 2px;
+  pointer-events: none;
+}
+
+.st .st-rail::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--st-linie);
+}
+
+.st .st-rail__fuellung {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: var(--stempel);
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+}
+
+.st[data-st-bereit] .st-rail__fuellung { display: block; }
+
+/* Messpunkt: ein kleines Quadrat, kein Kreis — Radius bleibt bei 0. */
+.st .st-rail__punkt,
+.st .st-station__punkt {
+  position: absolute;
+  width: var(--st-punkt);
+  height: var(--st-punkt);
+  border: 1px solid var(--tinte);
+  background: var(--papier);
+}
+
+.st .st-rail__punkt {
+  top: calc(var(--st-kopf) + 0.3rem);
+  left: calc(1px - var(--st-punkt) / 2);
+}
+
+.st .st-rail__punkt::after,
+.st .st-station__punkt::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--stempel);
+  opacity: 0;
+  transition: opacity var(--t-norm) var(--ease-aus);
+}
+
+.st .st-erreicht::after { opacity: 1; }
+
+/* Die Linie beginnt am Punkt "Klick" … */
+.st .st-hero .st-rail::before,
+.st .st-hero .st-rail__fuellung { top: calc(var(--st-kopf) + 0.3rem); }
+
+/* … und endet am Punkt "Anfrage". */
+.st .st-anfrage .st-rail {
+  bottom: auto;
+  height: calc(var(--st-kopf) + 0.3rem + var(--st-punkt));
+}
+
+.st .st-anfrage .st-rail__punkt {
+  --st-punkt: 13px;
+  background: var(--tinte);
+}
+
+.st .st-anfrage .st-rail__punkt::after {
+  inset: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--t-norm) var(--ease-aus),
+    transform 240ms var(--ease-aus);
+}
+
+.st .st-anfrage .st-rail__punkt.st-erreicht::after { transform: scale(1); }
+
+/* Marke eines Abschnitts: Nummer und Name. Mobil ueber dem Inhalt,
+   ab 768 px in der Randspalte neben der Linie. */
+.st .st-marke {
+  grid-column: 2;
+  display: flex;
+  gap: var(--s0);
+  align-items: baseline;
+  margin: 0 0 var(--s2);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grau);
+}
+
+.st .st-marke__nr { color: var(--matt); }
+
+.st .st-inhalt {
+  grid-column: 2;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .st .st-marke {
+    grid-column: 1;
+    display: block;
+    align-self: start;
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .st .st-marke__nr {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .st .st-marke__name {
+    display: block;
+    margin-top: var(--s0);
+    white-space: nowrap;
+  }
+}
+
+/* ══ Typografie ═══════════════════════════════════════════════ */
+
+.st .st-h2 {
+  font-size: clamp(2rem, 1.2rem + 3vw, 3.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  max-inline-size: 21ch;
+}
+
+.st .st-h3 {
+  font-size: clamp(1.3rem, 1.15rem + 0.7vw, 1.7rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.st .st-vorspann {
+  margin-top: var(--s3);
+  max-inline-size: 52ch;
+  font-size: clamp(1.1rem, 1rem + 0.4vw, 1.3rem);
+  line-height: 1.5;
+  color: var(--grau);
+}
+
+.st .st-klein-label {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grau);
+}
+
+/* Einheit neben grossen Mono-Zahlen: kleiner, ohne volle Monospace-Luecke. */
+.st .st-einheit {
+  margin-left: 0.1em;
+  font-size: 0.6em;
+  letter-spacing: 0;
+}
+
+.st .st-messwert {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--stempel);
+  white-space: nowrap;
+}
+
+.st .st-link {
+  color: var(--tinte);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 0.22em;
+}
+
+.st .st-link:hover { text-decoration-color: currentColor; }
+.st .st-link--stark { font-weight: 600; }
+
+/* ══ 01 Hero ══════════════════════════════════════════════════ */
+
+.st .st-hero { padding-top: var(--s5); }
+
+.st .st-hero .st-rail__punkt { top: calc(var(--s5) + 0.3rem); }
+
+.st .st-hero .st-rail::before,
+.st .st-hero .st-rail__fuellung { top: calc(var(--s5) + 0.3rem); }
+
+.st .st-hero__raster {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--s3);
+}
+
+.st .st-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+
+.st .st-hero__portrait {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.st .st-hero__metazeile {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--grau);
+}
+
+.st .st-hero__metazeile a {
+  color: var(--tinte);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 0.25em;
+}
+
+.st .st-hero__metazeile a:hover { text-decoration-color: currentColor; }
+
+.st .st-hero__h1 {
+  font-size: clamp(2.5rem, 1.1rem + 5.8vw, 6.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+}
+
+.st .st-hero__satz {
+  max-inline-size: 34em;
+  font-size: clamp(1.15rem, 1.02rem + 0.5vw, 1.42rem);
+  line-height: 1.45;
+}
+
+.st .st-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin-top: var(--s3);
+}
+
+.st .st-hero__notiz {
+  margin-top: var(--s1);
+  font-size: 0.92rem;
+  color: var(--grau);
+}
+
+.st .st-belege {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--haar);
+}
+
+.st .st-belege a {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: var(--s2);
+  align-items: baseline;
+  padding-block: var(--s1);
+  border-bottom: 1px solid var(--haar);
+  color: var(--tinte);
+  text-decoration: none;
+}
+
+.st .st-belege__zahl {
+  font-family: var(--mono);
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.st .st-belege li:first-child .st-belege__zahl { color: var(--stempel); }
+
+.st .st-belege__text {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--grau);
+}
+
+.st .st-belege a:hover .st-belege__text {
+  color: var(--tinte);
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+@media (max-width: 767px) {
+  .st .st-hero__ctas .tun {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .st .st-hero__raster {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s4);
+    row-gap: var(--s4);
+  }
+
+  .st .st-hero__meta { grid-column: 1 / -1; }
+  .st .st-hero__h1 { grid-column: 1 / 12; }
+
+  .st .st-hero__text {
+    grid-column: 1 / 8;
+    grid-row: 3;
+  }
+
+  .st .st-protokoll {
+    grid-column: 8 / -1;
+    grid-row: 3 / 5;
+    align-self: start;
+  }
+
+  .st .st-belege {
+    grid-column: 1 / 8;
+    grid-row: 4;
+    align-self: end;
+  }
+}
+
+/* ══ Messprotokoll ════════════════════════════════════════════
+   Feste Zeilenhoehen: Werte und Verlauf wechseln ihren Text, nie die
+   Hoehe des Panels. So bleibt der Hero ohne Layoutverschiebung. */
+
+.st .st-protokoll {
+  padding: var(--s2);
+  border: 1px solid var(--tinte);
+  border-radius: 3px;
+  background: var(--papier);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+}
+
+.st .st-protokoll__kopf {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s1);
+  padding-bottom: var(--s1);
+  border-bottom: 1px solid var(--tinte);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinte);
+}
+
+.st .st-protokoll__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  color: var(--grau);
+}
+
+/* hidden bis das Skript misst: die display-Regel oben darf das Attribut
+   nicht ueberstimmen. */
+.st .st-protokoll__status[hidden] { display: none; }
+
+.st .st-protokoll__status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--stempel);
+}
+
+.st .st-protokoll__werte { margin: 0; }
+
+.st .st-protokoll__werte > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s1);
+  padding-block: var(--s0);
+  border-bottom: 1px solid var(--haar);
+}
+
+.st .st-protokoll__werte dt { color: var(--grau); }
+
+.st .st-protokoll__werte dd {
+  margin: 0;
+  font-weight: 500;
+  color: var(--matt);
+  white-space: nowrap;
+}
+
+.st .st-protokoll__werte dd[data-st-gemessen] { color: var(--stempel); }
+
+.st .st-protokoll__verlauf {
+  height: calc(3 * 1.6em);
+  margin: var(--s1) 0 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+  color: var(--grau);
+}
+
+.st .st-protokoll__verlauf li {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.st .st-protokoll__verlauf time {
+  display: inline-block;
+  min-width: 3.4em;
+  color: var(--matt);
+}
+
+.st .st-protokoll__verlauf .st-neu { animation: st-zeile 180ms var(--ease-aus) both; }
+
+@keyframes st-zeile {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.st .st-protokoll__ohne-js {
+  display: none;
+  margin-top: var(--s1);
+  color: var(--grau);
+}
+
+@media (scripting: none) {
+  .st .st-protokoll__werte,
+  .st .st-protokoll__verlauf { display: none; }
+
+  .st .st-protokoll__ohne-js { display: block; }
+}
+
+.st .st-protokoll__fuss {
+  margin-top: var(--s1);
+  padding-top: var(--s1);
+  border-top: 1px solid var(--haar);
+  font-family: var(--serif);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--grau);
+}
+
+.st .st-protokoll__fuss a {
+  color: var(--tinte);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* ══ 02 Pruefstand: die einzige dunkle Tafel ══════════════════ */
+
+.st .st-tafel { padding: clamp(1.5rem, 5vw, 3.5rem); }
+
+.st .st-tafel__kopf {
+  display: grid;
+  gap: var(--s3);
+}
+
+.st .st-tafel .st-vorspann { margin-top: 0; }
+
+.st .st-pruefungen {
+  display: grid;
+  gap: var(--s4);
+  margin: var(--s5) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.st .st-pruefungen li {
+  padding-top: var(--s2);
+  border-top: 1px solid color-mix(in srgb, var(--tinte) 30%, transparent);
+}
+
+.st .st-pruefungen__label {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grau);
+}
+
+.st .st-pruefungen__text {
+  margin-top: var(--s1);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.st .st-pruefungen__messung {
+  margin-top: var(--s1);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--grau);
+}
+
+.st .st-pruefungen .st-link {
+  display: inline-block;
+  margin-top: var(--s2);
+}
+
+.st .st-pruefungen__klein {
+  margin-top: var(--s1);
+  font-size: 0.8rem;
+  color: var(--matt);
+}
+
+@media (min-width: 1024px) {
+  .st .st-pruefungen { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .st .st-tafel__kopf {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--s5);
+    align-items: end;
+  }
+}
+
+/* ══ 03 Strecke: sechs Stationen ══════════════════════════════
+   Ohne JavaScript eine Liste, jede Station offen. Mit JavaScript
+   klappen die Stationen einzeln auf; ab 1024 px steht die Erklaerung
+   der gewaehlten Station rechts daneben. */
+
+.st .st-stationen {
+  margin: var(--s5) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--tinte);
+}
+
+.st .st-station { border-bottom: 1px solid var(--haar); }
+
+.st .st-station__kopf {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  column-gap: var(--s1);
+  padding-block: var(--s2);
+  font-size: clamp(1.35rem, 1.15rem + 0.9vw, 1.9rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Der Stationspunkt sitzt auf der Linie in der Randspalte. */
+.st .st-station__punkt {
+  top: calc(var(--s2) + 0.3em);
+  left: calc(var(--st-linie-x) - var(--st-rinne) - var(--st-rand) - var(--st-spalt) + 1px - var(--st-punkt) / 2);
+}
+
+.st .st-station__nr {
+  grid-row: 1 / span 2;
+  padding-top: 0.45em;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--matt);
+}
+
+.st .st-station__name { grid-column: 2; }
+
+.st .st-station__teaser {
+  grid-column: 2;
+  margin-top: var(--s0);
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-wrap: pretty;
+  color: var(--grau);
+}
+
+.st .st-station__detail {
+  padding: 0 0 var(--s3) calc(2.5rem + var(--s1)); /* lint-css-spacing: allow -- die Erklaerung schliesst buendig an ihre Station an */
+  max-inline-size: 64ch;
+}
+
+.st .st-station__detail p + p { margin-top: var(--s0); }
+
+.st .st-station__label {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grau);
+}
+
+.st .st-station__detail .st-station__label:not(:first-child) { margin-top: var(--s2); }
+
+.st .st-station__detail .st-station__beleg {
+  margin-top: var(--s2);
+  padding-top: var(--s1);
+  border-top: 1px solid var(--haar);
+  font-size: 0.95rem;
+  color: var(--grau);
+}
+
+/* Mit JavaScript: Stationsknopf. */
+.st .st-station__knopf {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  column-gap: var(--s1);
+  grid-column: 1 / -1;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.st .st-station__knopf .st-station__name { color: var(--grau); }
+
+.st .st-station__knopf[aria-expanded="true"] .st-station__name,
+.st .st-station__knopf:hover .st-station__name { color: var(--tinte); }
+
+.st .st-station__knopf::after {
+  content: "+";
+  grid-column: 3;
+  grid-row: 1;
+  align-self: start;
+  padding-top: 0.2em;
+  font-family: var(--mono);
+  font-size: 1rem;
+  color: var(--tinte);
+}
+
+.st .st-station__knopf[aria-expanded="true"]::after { content: "−"; }
+
+.st[data-st-bereit] .st-station__detail:not([hidden]) {
+  animation: st-detail 200ms var(--ease-aus) both;
+}
+
+@keyframes st-detail {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+}
+
+/* Die Stationen lesen sich beim ersten Sichtkontakt in ihrer
+   Reihenfolge vor: 50 ms Versatz, sechs Zeilen, einmalig. */
+.st[data-st-bereit] .st-stationen:not([data-st-gesehen]) .st-station__kopf {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.st[data-st-bereit] .st-station__kopf {
+  transition:
+    opacity var(--t-gross) var(--ease-aus),
+    transform var(--t-gross) var(--ease-aus);
+}
+
+.st .st-station:nth-child(2) .st-station__kopf { transition-delay: 50ms; }
+.st .st-station:nth-child(3) .st-station__kopf { transition-delay: 100ms; }
+.st .st-station:nth-child(4) .st-station__kopf { transition-delay: 150ms; }
+.st .st-station:nth-child(5) .st-station__kopf { transition-delay: 200ms; }
+.st .st-station:nth-child(6) .st-station__kopf { transition-delay: 250ms; }
+
+@media (min-width: 1024px) {
+  .st[data-st-bereit] .st-stationen {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: repeat(5, auto) 1fr;
+    column-gap: var(--s5);
+    border-top: 0;
+  }
+
+  /* Die Listenpunkte geben ihre Kinder an das Raster ab: Stationen
+     links untereinander, die offene Erklaerung rechts ueber alle Zeilen. */
+  .st[data-st-bereit] .st-station { display: contents; }
+
+  .st[data-st-bereit] .st-station__kopf {
+    grid-column: 1;
+    align-self: start;
+    border-top: 1px solid var(--haar);
+  }
+
+  .st[data-st-bereit] .st-station:first-child .st-station__kopf { border-top-color: var(--tinte); }
+  .st[data-st-bereit] .st-station:last-child .st-station__kopf { border-bottom: 1px solid var(--haar); }
+
+  .st[data-st-bereit] .st-station__detail {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    align-self: start;
+    position: sticky;
+    top: calc(var(--leiste-h) + var(--s4));
+    padding: var(--s2) 0 var(--s2) var(--s4);
+    border-left: 1px solid var(--tinte);
+  }
+
+  .st[data-st-bereit] .st-station__knopf::after {
+    content: "→";
+    opacity: 0;
+    transform: translateX(-6px);
+    transition:
+      opacity var(--t-norm) var(--ease-aus),
+      transform var(--t-norm) var(--ease-aus);
+  }
+
+  .st[data-st-bereit] .st-station__knopf[aria-expanded="true"]::after {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ══ 04 Leistungen ════════════════════════════════════════════ */
+
+.st .st-angebote {
+  margin-top: var(--s5);
+  border-top: 1px solid var(--tinte);
+}
+
+.st .st-angebot {
+  display: grid;
+  gap: var(--s2) var(--s5);
+  padding-block: var(--s4);
+  border-bottom: 1px solid var(--haar);
+}
+
+.st .st-angebot__tags {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.7;
+  text-transform: uppercase;
+  color: var(--grau);
+}
+
+.st .st-angebot__nr { color: var(--tinte); }
+
+.st .st-angebot__titel {
+  margin-top: var(--s1);
+  font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+.st .st-angebot__preis {
+  margin-top: var(--s2);
+  font-family: var(--mono);
+  font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.st .st-angebot__text p { max-inline-size: 62ch; }
+.st .st-angebot__text p + p { margin-top: var(--s1); }
+.st .st-angebot__mehr { color: var(--grau); }
+
+.st .st-angebot__text .st-angebot__umfang {
+  margin-top: var(--s2);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: var(--grau);
+}
+
+.st .st-angebot__text .st-angebot__wege {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s3);
+  margin-top: var(--s3);
+}
+
+.st .st-ausgaenge {
+  display: grid;
+  gap: var(--s1);
+  margin: var(--s4) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.95rem;
+}
+
+.st .st-ausgaenge li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s0) var(--s2);
+  align-items: baseline;
+}
+
+.st .st-ausgaenge__label {
+  min-width: 11rem;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grau);
+}
+
+@media (min-width: 1024px) {
+  .st .st-angebot { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+}
+
+/* ══ 05 Arbeiten ══════════════════════════════════════════════ */
+
+.st .st-fall {
+  display: grid;
+  gap: var(--s4) var(--s5);
+  margin-top: var(--s5);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--tinte);
+}
+
+.st .st-fall__h3 {
+  margin-top: var(--s1);
+  max-inline-size: 24ch;
+  font-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+.st .st-fall__text > p:not(.st-klein-label) {
+  margin-top: var(--s3);
+  max-inline-size: 56ch;
+}
+
+.st .st-fall__text .st-link {
+  display: inline-block;
+  margin-top: var(--s3);
+}
+
+.st .st-kennzahlen { margin: 0; }
+
+.st .st-kennzahlen > div {
+  padding-block: var(--s2);
+  border-top: 1px solid var(--haar);
+}
+
+.st .st-kennzahlen > div:last-child { border-bottom: 1px solid var(--haar); }
+
+.st .st-kennzahlen dt {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grau);
+}
+
+.st .st-kennzahlen dd { margin: var(--s0) 0 0; }
+
+.st .st-kennzahl {
+  font-family: var(--mono);
+  font-size: clamp(2.5rem, 1.7rem + 2.8vw, 4.25rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+  color: var(--stempel);
+}
+
+.st .st-referenzen { margin-top: var(--s6); }
+
+.st .st-referenzen__intro {
+  margin-top: var(--s1);
+  color: var(--grau);
+}
+
+.st .st-referenzen__liste {
+  display: grid;
+  gap: var(--s4);
+  margin: var(--s4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.st .st-referenzen__liste li {
+  padding-top: var(--s2);
+  border-top: 1px solid var(--haar);
+}
+
+.st .st-referenzen__liste li > p + p { margin-top: var(--s1); }
+
+.st .st-referenzen__name {
+  font-family: var(--serif-display);
+  font-size: 1.35rem;
+  letter-spacing: -0.015em;
+}
+
+.st .st-referenzen__liste li > p:last-child {
+  font-size: 0.95rem;
+  color: var(--grau);
+}
+
+@media (min-width: 1024px) {
+  .st .st-referenzen__liste { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .st .st-fall {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
+  }
+}
+
+/* ══ 06 Uebergabe und 07 Fragen: Kopf links, Inhalt rechts ════ */
+
+.st .st-zweispaltig .st-h2 { font-size: clamp(2rem, 1.25rem + 2.2vw, 3.1rem); }
+
+.st .st-zweispaltig {
+  display: grid;
+  gap: var(--s4) var(--s5);
+  align-items: start;
+}
+
+.st .st-liste {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--tinte);
+}
+
+.st .st-liste li {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  column-gap: var(--s1);
+  padding-block: var(--s2);
+  border-bottom: 1px solid var(--haar);
+}
+
+.st .st-liste__nr {
+  grid-row: 1 / span 2;
+  padding-top: 0.2em;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--matt);
+}
+
+.st .st-liste__begriff { font-weight: 600; }
+
+.st .st-liste__zusatz {
+  margin-left: var(--s0);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--grau);
+  white-space: nowrap;
+}
+
+.st .st-liste__satz {
+  grid-column: 2;
+  margin-top: var(--s0);
+  color: var(--grau);
+}
+
+.st .st-fragen .fragen { margin-top: 0; }
+.st .fragen summary:hover { color: var(--tinte); text-decoration: underline; text-underline-offset: 0.22em; }
+
+.st .fragen summary::after {
+  border-right-color: var(--tinte);
+  border-bottom-color: var(--tinte);
+}
+
+@media (min-width: 1024px) {
+  .st .st-zweispaltig { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+
+  .st .st-zweispaltig > :first-child {
+    position: sticky;
+    top: calc(var(--leiste-h) + var(--s4));
+  }
+}
+
+/* ══ 08 Anfrage: Ende der Strecke ═════════════════════════════ */
+
+.st .st-anfrage:focus { outline: none; }
+
+.st .st-ende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s0) var(--s1);
+  margin-bottom: var(--s2);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinte);
+}
+
+.st .st-ende__zeit { color: var(--stempel); }
+
+.st .st-anfrage__h2 { max-inline-size: 20ch; }
+
+.st .st-einstiege {
+  display: grid;
+  gap: var(--s4);
+  margin-top: var(--s5);
+}
+
+.st .st-einstieg {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: var(--s3);
+  border-top: 1px solid var(--tinte);
+}
+
+.st .st-einstieg .st-h3 { margin-top: var(--s1); }
+
+.st .st-einstieg dl {
+  margin: var(--s3) 0 0;
+  width: 100%;
+}
+
+.st .st-einstieg dl > div {
+  padding-block: var(--s1);
+  border-top: 1px solid var(--haar);
+}
+
+.st .st-einstieg dt {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grau);
+}
+
+.st .st-einstieg dd { margin: var(--s0) 0 0; }
+
+.st .st-einstieg .tun { margin-top: auto; }
+.st .st-einstieg dl + .tun { margin-top: var(--s3); }
+
+.st .st-portrait {
+  margin: var(--s5) 0 0;
+  max-width: 14rem;
+}
+
+.st .st-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+}
+
+.st .st-portrait figcaption {
+  margin-top: var(--s1);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--grau);
+}
+
+@media (min-width: 768px) {
+  .st .st-einstiege { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Ab 1024 px steht das Portrait neben der Ueberschrift: Wer hier schreibt,
+   sieht, an wen. Mobil folgt es den Einstiegen, damit die Buttons oben
+   bleiben. */
+@media (min-width: 1024px) {
+  .st .st-anfrage .st-inhalt {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 14rem;
+    column-gap: var(--s5);
+  }
+
+  .st .st-anfrage .st-ende { grid-column: 1; grid-row: 1; }
+  .st .st-anfrage__h2 { grid-column: 1; grid-row: 2; }
+
+  .st .st-portrait {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: end;
+    margin: 0;
+  }
+
+  .st .st-einstiege { grid-column: 1 / -1; grid-row: 3; }
+}
+
+/* ══ Bewegung reduziert ═══════════════════════════════════════
+   Alles ruhig, nichts fehlt: keine Fuellung, keine Einblendung, kein
+   Uebergang. Die Linie steht wie ohne JavaScript. */
+
+@media (prefers-reduced-motion: reduce) {
+  .st[data-st-bereit] .st-rail__fuellung { display: none; }
+
+  .st .st-rail__punkt::after,
+  .st .st-station__punkt::after,
+  .st .st-station__kopf,
+  .st .st-station__knopf::after {
+    transition: none;
+  }
+
+  .st[data-st-bereit] .st-stationen:not([data-st-gesehen]) .st-station__kopf {
+    opacity: 1;
+    transform: none;
+  }
+
+  .st .st-protokoll__verlauf .st-neu,
+  .st[data-st-bereit] .st-station__detail:not([hidden]) { animation: none; }
+}

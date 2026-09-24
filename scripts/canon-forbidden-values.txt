@@ -71,6 +71,33 @@ rule	anon-begruendung	[Aa]nonymisiert,[[:space:]]*weil	-	Anonymisierte Faelle we
 rule	preis-uebernahme-check	(^|[^0-9.])390[[:space:]]*(€|&euro;|Euro)	Übernahme	Preis kommt aus hu_freelancer_takeover_check_price().
 rule	preis-retainer-kontingent	(^|[^0-9.])(490|950)[[:space:]]*(€|&euro;|Euro)	Stunden	Kontingent kommt aus hu_freelancer_retainer_display().
 
+# ── Startseite ────────────────────────────────────────────────────────────
+# Die Startseite ist die Money Page mit den meisten Erstkontakten. Diese
+# Regeln gelten nur fuer ihr Template und ihre eigenen Assets: Der
+# Kontext trifft den Dateipfad, weil git grep jede Fundzeile als
+# "pfad:zeile:text" ausgibt. Repo-weit wuerden sie Blogtexte und Doku
+# treffen, in denen die Werte begruendet stehen.
+#
+# Firmenname des anonymisierten PV-Falls: nie auf der Startseite.
+rule	start-case-firmenname	[Ee]3[ -]?[Nn]ew[ -]?[Ee]nergy|[Ee]3-(Fall|Case)	^blocksy-child/(front-page\.php|assets/(css|js)/startseite-strecke\.(css|js)):	Der Fall heisst auf der Startseite nur hu_e3_canon()['case_label'].
+# 12 % ist im Fall die Lead-Conversion, nicht die Abschlussquote. Auf der
+# Startseite steht die Zahl in keiner Lesart.
+rule	start-12-prozent	(^|[^0-9,.])12[[:space:]]*(%|&nbsp;%|Prozent)	^blocksy-child/(front-page\.php|assets/(css|js)/startseite-strecke\.(css|js)):	Kennzahlen kommen aus hu_e3_metric(); 12 % gehoert nicht auf die Startseite.
+# "4 Stunden" war eine Fassung der Antwortfrist. Das Kontingent "4 Stunden
+# fuer …" liest das Template ueber hu_freelancer_retainer_display().
+rule	start-4-stunden	(^|[^0-9])(4|vier)[[:space:]]*Stunden	^blocksy-child/(front-page\.php|assets/(css|js)/startseite-strecke\.(css|js)):	Antwortzeit aus hu_response_promise(), Kontingent aus hu_freelancer_retainer_display().
+# Keine Zitate, Testimonials, Logowaende oder Projektanzahlen.
+rule	start-testimonial	[Tt]estimonial|<blockquote|[Kk]undenstimme|logo-wall|[Kk]undenlogo	^blocksy-child/(front-page\.php|assets/(css|js)/startseite-strecke\.(css|js)):	Keine Zitate, Testimonials oder Logos auf der Startseite. Belege sind Fall, Referenz-Links und offener Code.
+rule	start-projektanzahl	[0-9]+\+?[[:space:]]*(Projekte|Kunden|Websites umgesetzt|zufriedene)	^blocksy-child/(front-page\.php|assets/(css|js)/startseite-strecke\.(css|js)):	Keine Projekt- oder Kundenanzahl auf der Startseite.
+# Das Messprotokoll der Startseite sendet und speichert nachweislich nichts.
+# Taucht einer dieser Aufrufe im Skript auf, bricht der Build.
+rule	strecke-js-privat	fetch\(|sendBeacon|XMLHttpRequest|localStorage|sessionStorage|indexedDB|document\.cookie	^blocksy-child/assets/js/startseite-strecke\.js:	Das Protokoll bleibt im Browser: kein Netzwerkaufruf, kein Speicher, kein Cookie.
+
+# ── Anonymisierte Faelle: keine Vertroestung ─────────────────────────────
+# "Belege im Gespraech" verspricht einen Nachweis, den die Seite nicht
+# fuehrt. Was belegt ist, steht verlinkt da; der Rest steht nicht da.
+rule	belege-im-gespraech	Belege im Gespr(ä|ae)ch	-	Satz streichen. Belegt ist, was auf der Seite verlinkt steht.
+
 # ── Ausnahmen ─────────────────────────────────────────────────────────────
 # Der Kanon fuehrt die Werte und muss die abgeloesten benennen duerfen.
 ignore	blocksy-child/inc/canon/**	Kanon-Dateien. Einzige inhaltliche Ausnahme.

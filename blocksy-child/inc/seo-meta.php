@@ -53,9 +53,11 @@ add_filter( 'document_title_parts', 'hu_document_title_overrides' );
  * @return string
  */
 function hu_get_homepage_title() {
+	// Rolle vorn, Ort hinten: Die H1 traegt keinen Ortsnamen mehr, Hannover
+	// bleibt im Title, in der Metazeile und im Schema.
 	return (string) apply_filters(
 		'hu_homepage_seo_title',
-		'WordPress Freelancer Hannover | Haşim Üner'
+		'WordPress Freelancer für Unternehmen | Haşim Üner, Hannover'
 	);
 }
 
@@ -67,7 +69,10 @@ function hu_get_homepage_title() {
 function hu_get_homepage_description() {
 	return (string) apply_filters(
 		'hu_homepage_seo_description',
-		'WordPress Freelancer aus der Region Hannover: Websites, Relaunches, technisches SEO und Tracking – direkt mit dem Entwickler. Auch White-Label für Agenturen.'
+		sprintf(
+			'WordPress-Websites, technisches SEO und Tracking bis ins CRM. Direkt vom Entwickler aus Pattensen bei Hannover, Projekte ab %s.',
+			hu_freelancer_website_price( true )
+		)
 	);
 }
 

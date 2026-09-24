@@ -150,7 +150,6 @@ $leiste_location  = (string) ( $meta['location'] ?? '' );
 				data-leiste-klappe
 				aria-expanded="false"
 				aria-controls="<?php echo esc_attr( $blatt_id ); ?>"
-				aria-label="<?php esc_attr_e( 'Navigation öffnen', 'blocksy-child' ); ?>"
 				data-track-action="nav_menu_toggle"
 				data-track-category="navigation"
 				data-track-section="header"

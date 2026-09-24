@@ -97,7 +97,6 @@
         blatt.hidden = false;
         leiste.classList.add('offen');
         klappe.setAttribute('aria-expanded', 'true');
-        klappe.setAttribute('aria-label', 'Navigation schließen');
         beschriften(klappe, 'close');
     }
 
@@ -111,7 +110,6 @@
         blatt.hidden = true;
         leiste.classList.remove('offen');
         klappe.setAttribute('aria-expanded', 'false');
-        klappe.setAttribute('aria-label', 'Navigation öffnen');
         beschriften(klappe, 'open');
 
         if (fokusZurueck && document.activeElement !== klappe) {
@@ -119,6 +117,9 @@
         }
     }
 
+    /* Kein aria-label: Der sichtbare Text ("Menü" bzw. "Schließen") ist der
+       Name des Knopfs, aria-expanded traegt den Zustand. Ein abweichendes
+       Label ("Navigation öffnen") verstiess gegen WCAG 2.5.3 (Label in Name). */
     function beschriften(klappe, zustand) {
         var wort = klappe.querySelector('[data-leiste-wort]');
 

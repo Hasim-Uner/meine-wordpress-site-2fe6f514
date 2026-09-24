@@ -54,19 +54,25 @@ GA4 durch die kanonische Antwortzusage zur Tracking-Anfrage ersetzt.
 ## Homepage: direkter Freelancer-Einstieg
 
 Seit der Betreiberentscheidung vom 2026-09-13 übernimmt `/` die Inhalte und
-Suchintention der früheren Freelancer-Route. Die Seite führt vom
-WordPress-Freelancer-Hero zu konkreten Leistungen, Preisrahmen, öffentlichen
-Arbeiten, Zusammenarbeit und Projektanfrage. White-Label und Solar/Wärmepumpe
-bleiben als gezielte Brücken erreichbar. Der Solar-Fall ist abgegrenzter Proof.
+Suchintention der früheren Freelancer-Route. Seit 2026-09-24 ist die Seite als
+Strecke gebaut: Hero mit Messprotokoll, Prüfstand, die sechs Stationen einer
+Anfrage, drei Leistungen mit Preisen, Arbeiten, Übergabe, Fragen und der
+Anfrageblock als Ende der Messlinie. White-Label und Solar/Wärmepumpe sind
+leise Nebenausgänge unter den Leistungen (Hooks `home_door_whitelabel`,
+`home_door_energy`), keine Weiche im Hero. Der Solar-Fall ist abgegrenzter Proof.
 
 Die Hero- und Abschluss-CTAs führen zur kanonischen Projektanfrage
 `/kontakt/?type=project` **ohne** vorbelegtes Thema (seit 2026-09-22): Die
 Kontaktseite zeigt dann die Themenwahl und die Weiche zu White-Label und
-Marktcheck. Nur die drei Angebotskarten verwenden
-`hu_get_contact_intake_url('project', focus)` mit `relaunch`, `conversion` oder
-`tracking`; dort ist die Themenfrage schon beantwortet, und der Kontaktablauf
-überspringt sie. Die Homepage benötigt kein eigenes Formular-JavaScript.
-`#anfrage` und `#kontakt` bleiben als Anker des Abschlussblocks erhalten.
+Marktcheck. Nur die drei Leistungen verwenden
+`hu_get_contact_intake_url('project', focus)` mit `relaunch`, `tracking` oder
+`implementation_scope` (Übernahme-Check); dort ist die Themenfrage schon
+beantwortet, und der Kontaktablauf überspringt sie. Die Homepage hat kein
+eigenes Formular; die Messlinie endet am Anfrageblock, dessen Buttons auf
+`/kontakt/` führen. `#anfrage` und `#kontakt` bleiben als Anker des
+Abschlussblocks erhalten. `#angebot-funnel` (früher das Angebot
+„Anfragestrecken“, sitewide von CRO-Links verlinkt) sitzt seit 2026-09-24 auf
+der Stationsliste in Abschnitt 03.
 
 **Versuch Ersteinschätzung (8 Wochen ab Deploy, Schalter
 `HU_EXPERIMENT_ERSTEINSCHAETZUNG` im Kanon `inc/canon/messaging-canon.php`):**
