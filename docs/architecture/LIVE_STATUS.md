@@ -38,6 +38,12 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `hu_get_primary_navigation_contract()` in `inc/commercial-routing.php`; das
   gespeicherte WordPress-Menü wird daraus normalisiert (`inc/menu-setup.php`,
   `inc/header.php`). `/whitelabel-retainer/` hat eine eigene Seitennavigation.
+  Auf der Startseite (nur dort, über `startseite-strecke.css/.js`) ist der
+  Header-Button ein Outline-Button, weil dort „Kostenlose Ersteinschätzung“
+  der primäre Button ist, und „Leistungen“ ist nur aktiv, solange `#angebote`
+  im Blick ist (`aria-current="location"`); ohne JavaScript bleibt der Link
+  neutral. Der Menüknopf hat kein eigenes `aria-label`, der sichtbare Text
+  „Menü“/„Schließen“ ist sein Name.
 - Fuß: `template-parts/site-footer.php`. Auf `/`, `/kontakt/` und der
   Energie-Money-Page entfällt die Wegewahl am Abschluss.
 
@@ -50,8 +56,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `assets/js/startseite-strecke.js`): Eine Messlinie läuft in der Randspalte
   vom Hero (Marke „Klick“) bis zum Anfrageblock (Marke „Anfrage“) und füllt
   sich beim Lesen; ohne JavaScript und bei reduzierter Bewegung steht sie
-  statisch. Acht Abschnitte: Hero (`#klick`) mit H1 ohne Ortsnamen, zwei
-  Buttons, Messprotokoll und zwei Belegzeilen; Prüfstand (`#pruefstand`, die
+  statisch. Acht Abschnitte: Hero (`#klick`) mit H1 ohne Ortsnamen, Byline
+  mit Portrait, zwei Buttons, Messprotokoll und zwei Belegzeilen (H1, Satz,
+  Buttons und Protokoll passen bei 1280 × 800 in den ersten Bildschirm); Prüfstand (`#pruefstand`, die
   einzige dunkle Tafel, Links auf Code, CI und PageSpeed, keine Scores);
   sechs Stationen einer Anfrage (`#strecke`, Liste mit `#angebot-funnel`);
   drei Leistungen mit Kanonpreisen (`#angebote`, Anker `#angebot-website`,

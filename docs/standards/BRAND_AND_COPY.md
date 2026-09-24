@@ -248,7 +248,7 @@ Regeln:
 - Targetet nicht `wordpress agentur hannover`
 - Targetet keine White-Label-Queries
 - SEO-Title seit 2026-09-24: `WordPress Freelancer für Unternehmen | Haşim Üner, Hannover`. Die Rolle steht vorn, der Ort hinten; Hannover und Pattensen stehen zusätzlich in der Metazeile und im Schema
-- Die H1 benennt das Problem des Lesers (Anfragen, die unbemerkt verloren gehen), nicht die Leistung, und trägt keinen Ortsnamen
+- Die H1 benennt das Ergebnis oder das Problem des Lesers (mehr Anfragen, deren Herkunft sichtbar ist), nicht die Leistung, und trägt keinen Ortsnamen
 - `WordPress Freelancer` darf auf dieser Route in SEO-Title, Metazeile und Rollenbeschreibung stehen
 - GitHub, versionierter Code, Staging, Review und kontrollierte Deployments dürfen als Workflow-/Qualitätsbeleg sichtbar erklärt werden
 - Lighthouse-Werte nur als Labtest bezeichnen; kein Ersatz für CrUX-/Felddaten

@@ -58,6 +58,34 @@
   outline-offset: 3px;
 }
 
+/* ══ Kopfleiste auf der Startseite ═══════════════════════════
+   Diese Datei laedt nur auf der Startseite; die Regeln gelten deshalb
+   nur hier. Kopfleiste und system.css bleiben unveraendert.
+
+   1. Der Header-Button tritt zurueck: Auf der Startseite ist
+      „Kostenlose Ersteinschaetzung" der primaere Button, ein zweiter
+      oranger Button im Kopf konkurrierte damit.
+   2. „Leistungen" zeigt auf #angebote dieser Seite und traegt deshalb
+      serverseitig aria-current="page". Sichtbar aktiv ist der Link nur,
+      solange #angebote im Blick ist: startseite-strecke.js setzt dann
+      aria-current="location". Ohne JavaScript bleibt er neutral. */
+.leiste .tun {
+  background: transparent;
+  color: var(--tinte);
+  border-color: var(--strich);
+}
+
+.leiste .tun:hover {
+  background: var(--strich);
+  color: var(--papier);
+}
+
+.leiste nav a[href$="#angebote"][aria-current="page"] { color: var(--grau); }
+.leiste nav a[href$="#angebote"][aria-current="page"]::after { transform: scaleX(0); }
+.leiste nav a[href$="#angebote"][aria-current="page"]:hover { color: var(--tinte); }
+.leiste nav a[aria-current="location"] { color: var(--stempel); }
+.leiste nav a[aria-current="location"]::after { transform: scaleX(1); }
+
 /* ══ Abschnitt und Linie ══════════════════════════════════════ */
 
 .st .st-abschnitt {
@@ -214,11 +242,12 @@
 
 /* ══ Typografie ═══════════════════════════════════════════════ */
 
+/* H2 bleiben deutlich unter der H1: Die H1 ist der einzige Hoehepunkt. */
 .st .st-h2 {
-  font-size: clamp(2rem, 1.2rem + 3vw, 3.75rem);
-  line-height: 1.02;
-  letter-spacing: -0.035em;
-  max-inline-size: 21ch;
+  font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  max-inline-size: 20ch;
 }
 
 .st .st-h3 {
@@ -271,12 +300,12 @@
 
 /* ══ 01 Hero ══════════════════════════════════════════════════ */
 
-.st .st-hero { padding-top: var(--s5); }
+.st .st-hero { padding-top: var(--s3); }
 
-.st .st-hero .st-rail__punkt { top: calc(var(--s5) + 0.3rem); }
+.st .st-hero .st-rail__punkt { top: calc(var(--s3) + 0.3rem); }
 
 .st .st-hero .st-rail::before,
-.st .st-hero .st-rail__fuellung { top: calc(var(--s5) + 0.3rem); }
+.st .st-hero .st-rail__fuellung { top: calc(var(--s3) + 0.3rem); }
 
 .st .st-hero__raster {
   display: grid;
@@ -288,6 +317,7 @@
   display: flex;
   align-items: center;
   gap: var(--s1);
+  margin-bottom: var(--s2);
 }
 
 .st .st-hero__portrait {
@@ -323,6 +353,15 @@
   letter-spacing: -0.045em;
   font-weight: 500;
 }
+
+/* Jeder Satz bricht fuer sich um; der zweite traegt den Beleg und steht
+   einen Ton leiser. */
+.st .st-hero__h1-satz {
+  display: block;
+  text-wrap: balance;
+}
+
+.st .st-hero__h1-satz--leise { color: var(--grau); }
 
 .st .st-hero__satz {
   max-inline-size: 34em;
@@ -395,26 +434,27 @@
   .st .st-hero__raster {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--s4);
-    row-gap: var(--s4);
+    row-gap: var(--s2);
   }
 
-  .st .st-hero__meta { grid-column: 1 / -1; }
+  /* Erster Bildschirm bei 1280 x 800 und 1440 x 900: H1 ueber die Breite,
+     darunter links Byline, Satz und Buttons, rechts das Protokoll. */
   .st .st-hero__h1 { grid-column: 1 / 12; }
 
   .st .st-hero__text {
     grid-column: 1 / 8;
-    grid-row: 3;
+    grid-row: 2;
   }
 
   .st .st-protokoll {
     grid-column: 8 / -1;
-    grid-row: 3 / 5;
+    grid-row: 2 / 4;
     align-self: start;
   }
 
   .st .st-belege {
     grid-column: 1 / 8;
-    grid-row: 4;
+    grid-row: 3;
     align-self: end;
   }
 }
@@ -424,7 +464,7 @@
    Hoehe des Panels. So bleibt der Hero ohne Layoutverschiebung. */
 
 .st .st-protokoll {
-  padding: var(--s2);
+  padding: var(--s1) var(--s2) var(--s2);
   border: 1px solid var(--tinte);
   border-radius: 3px;
   background: var(--papier);
@@ -633,7 +673,7 @@
   grid-template-columns: 2.5rem minmax(0, 1fr);
   column-gap: var(--s1);
   padding-block: var(--s2);
-  font-size: clamp(1.35rem, 1.15rem + 0.9vw, 1.9rem);
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem);
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
@@ -837,9 +877,9 @@
 
 .st .st-angebot__titel {
   margin-top: var(--s1);
-  font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2.2rem);
+  font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.85rem);
   line-height: 1.1;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 }
 
 .st .st-angebot__preis {
@@ -913,9 +953,9 @@
 .st .st-fall__h3 {
   margin-top: var(--s1);
   max-inline-size: 24ch;
-  font-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.4rem);
-  line-height: 1.12;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.85rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 .st .st-fall__text > p:not(.st-klein-label) {
@@ -950,7 +990,7 @@
 
 .st .st-kennzahl {
   font-family: var(--mono);
-  font-size: clamp(2.5rem, 1.7rem + 2.8vw, 4.25rem);
+  font-size: clamp(2.25rem, 1.6rem + 2vw, 3.25rem);
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.045em;
@@ -1002,7 +1042,9 @@
 
 /* ══ 06 Uebergabe und 07 Fragen: Kopf links, Inhalt rechts ════ */
 
-.st .st-zweispaltig .st-h2 { font-size: clamp(2rem, 1.25rem + 2.2vw, 3.1rem); }
+/* In der schmalen Kopfspalte eine Stufe kleiner, sonst laeuft der Satz
+   ueber vier Zeilen. */
+.st .st-zweispaltig .st-h2 { font-size: clamp(1.6rem, 1.15rem + 1.2vw, 2.25rem); }
 
 .st .st-zweispaltig {
   display: grid;
@@ -1090,7 +1132,7 @@
 
 .st .st-ende__zeit { color: var(--stempel); }
 
-.st .st-anfrage__h2 { max-inline-size: 20ch; }
+.st .st-anfrage__h2 { max-inline-size: 24ch; }
 
 .st .st-einstiege {
   display: grid;
