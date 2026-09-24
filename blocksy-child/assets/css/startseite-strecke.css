@@ -37,15 +37,18 @@
   .st {
     --st-rinne: clamp(1.5rem, 4vw, 3rem);
     --st-rinne-r: clamp(1.5rem, 4vw, 3rem);
-    --st-rand: 5rem;
-    --st-spalt: var(--s3);
+    --st-rand: 6rem;
+    --st-spalt: var(--s2);
     --st-linie-x: calc(var(--st-rinne) + 0.35rem);
     --st-kopf: var(--s6);
   }
 }
 
 @media (min-width: 1024px) {
-  .st { --st-rand: 7rem; }
+  .st {
+    --st-rand: 7rem;
+    --st-spalt: var(--s3);
+  }
 }
 
 /* Fokus: sichtbar, aber nicht orange. Auf der Tafel kehrt --tinte sich
@@ -205,6 +208,7 @@
   .st .st-marke__name {
     display: block;
     margin-top: var(--s0);
+    white-space: nowrap;
   }
 }
 
@@ -599,11 +603,9 @@
   color: var(--matt);
 }
 
-@media (min-width: 768px) {
-  .st .st-pruefungen { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-
 @media (min-width: 1024px) {
+  .st .st-pruefungen { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
   .st .st-tafel__kopf {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     column-gap: var(--s5);
@@ -989,11 +991,9 @@
   color: var(--grau);
 }
 
-@media (min-width: 768px) {
-  .st .st-referenzen__liste { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-
 @media (min-width: 1024px) {
+  .st .st-referenzen__liste { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
   .st .st-fall {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     align-items: start;
