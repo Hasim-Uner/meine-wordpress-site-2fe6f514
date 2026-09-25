@@ -37,7 +37,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Solar & Wärmepumpe, Ergebnisse, Über Haşim, CTA „Projekt anfragen“. Quelle ist
   `hu_get_primary_navigation_contract()` in `inc/commercial-routing.php`; das
   gespeicherte WordPress-Menü wird daraus normalisiert (`inc/menu-setup.php`,
-  `inc/header.php`). `/whitelabel-retainer/` hat eine eigene Seitennavigation.
+  `inc/header.php`). `/whitelabel-retainer/` hat eine eigene Seitennavigation
+  aus derselben `.leiste`, ohne Klappblatt.
   Auf der Startseite (nur dort, über `startseite-strecke.css/.js`) ist der
   Header-Button ein Outline-Button, weil dort „Kostenlose Ersteinschätzung“
   der primäre Button ist, und „Leistungen“ ist nur aktiv, solange `#angebote`
@@ -79,11 +80,29 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Bis 820 px folgt das Formular direkt auf Titel und Einleitung; Ablauf,
   andere Einstiege und E-Mail stehen darunter.
 - **`/whitelabel-retainer/`** (`page-whitelabel-retainer.php`): Agentur-Einstieg
-  mit eigenem Kopf, Fuß und Skip-Link. Primärziel ist das Aufgabenformular; der
-  Belegblock nennt, was Agenturen vorab prüfen können: öffentliche Projekte, den
-  offenen Code dieser Website und den bezahlten Test-Sprint. Das
-  Übergabemuster steht als Protokollblatt mit Stempel „Abgenommen · Muster“.
-  Preise aus `hu_whitelabel_pricing_canon()`; Service- und FAQPage-Schema.
+  und Landeseite der Akquise-Mails. Seit 2026-09-25 auf dem System der
+  Startseite: lädt `startseite-strecke.css/.js` als Basis, `whitelabel.css`
+  ist nur das Delta; `design-system.css`, Breadcrumb und
+  `navigation-ecosystem.css/.js` laden hier nicht. Eigener Kopf aus der
+  `.leiste` (Wortmarke, Anker Leistungen/Preise/Arbeitsweise/Referenzen/Fragen,
+  Button „Aufgabe beschreiben“; unter 768 px übernimmt der Button am unteren
+  Rand), eigener Fuß, globale Sprungmarke auf `#main`. Acht Abschnitte:
+  Hero (`#hero`) mit H1 „Ich baue die WordPress-Seite und die Messung dazu.
+  Euer Kunde sieht nur euch.“ und Abnahmeprotokoll als Muster; Prüfstand
+  (`#pruefstand`, einzige dunkle Tafel); Leistungen (`#lieferfelder`, je
+  Aufgabe „Ihr nehmt ab“); Preise (`#einstieg`, Test-Sprint, drei
+  Erstprojekte, Monatskontingent, Margenblock nur für das Server-Side-Setup
+  mit dem Endkundenpreis aus `hu_tracking_price()`); Ablauf
+  (`#zusammenarbeit`, fünf Stationen Aufgabe → Umfang → Umsetzung → Abnahme →
+  Übergabe auf der Linie, Ausfall-Zusage); Referenzen (`#proof`, aus
+  `hu_public_reference_projects()`); Fragen (`#faq`); Anfrage
+  (`#naechster-schritt`, Formular `#aufgabe` als Ende der Linie). Die Punkte
+  des Protokolls haken sich mit JavaScript ab, wenn die Leselinie ihre Station
+  erreicht; ohne JavaScript stehen sie abgehakt. Formular, `?case=`, Cal.com-
+  Link und die bisherigen `data-track-*`-Werte sind unverändert. Preise aus
+  `hu_whitelabel_pricing_canon()`; Service- und FAQPage-Schema (FAQ aus
+  `nexus_get_whitelabel_faq_items()`, fünf Fragen). Sperrliste: `wl-*`-Regeln
+  in `scripts/canon-forbidden-values.txt`.
 - **`/performance-marketing/`** (`page-performance.php`, Gutachten-Layout):
   Performance Marketing für B2B in der Reihenfolge Messung → Zielseite →
   Budget, mit eigenem Weg für Performance-Agenturen zu White-Label. Titel,

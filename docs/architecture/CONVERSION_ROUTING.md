@@ -308,9 +308,23 @@ The page owns its own local request form (`nexus/v1/whitelabel-request`) and its
 The primary action is “Aufgabe beschreiben” and leads to `#aufgabe`. The paid
 WordPress test sprint is the smallest scoped entry; a retainer follows a successful
 first project. Presales uses the same form with `?case=angebotsphase` and a visible
-context label. The calendar remains a secondary option. Both required fields
-(task and email), optional timeframe/access, REST payload and success event are
-preserved. Without the form script, an explicit email fallback remains available.
+context label. The calendar remains a secondary option: a quiet link in the hero
+(`cta_whitelabel_hero_call`) and one beside the form (`cta_whitelabel_form_call`).
+Both required fields (task and email), optional timeframe/access, REST payload and
+success event are preserved. Without the form script, an explicit email fallback
+remains available.
+
+Since 2026-09-25 the page runs on the homepage's Strecke system and has no
+breadcrumb or wayfinding layer. Hooks kept from the previous version:
+`nav_whitelabel_home|services|pricing|proof|faq`, `cta_whitelabel_header_task_brief`,
+`cta_whitelabel_hero_task_brief`, `cta_whitelabel_entry_task_brief`,
+`cta_whitelabel_proof_test_sprint`, `whitelabel_proof_repo`, `faq_whitelabel_open`,
+`cta_whitelabel_way_offer`, `cta_whitelabel_form_call`,
+`cta_sticky_whitelabel_task_brief`, `nav_whitelabel_footer_*`. New:
+`nav_whitelabel_process`, `cta_whitelabel_hero_call`, `whitelabel_proof_ci`,
+`whitelabel_proof_pagespeed`, `whitelabel_margin_reference`,
+`whitelabel_reference_open`, `whitelabel_about`. `nav_whitelabel_proof` now
+labels the anchor „Referenzen“ (`#proof`).
 
 ### Footer: Selbstauskunft statt Sammel-CTA
 

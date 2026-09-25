@@ -197,7 +197,7 @@ $margin_rows = [
  * nennt die Punkte des Abnahmeprotokolls, die sich hier abhaken.
  */
 $process = [
-	[ 'Aufgabe', sprintf( 'Ihr schickt das Briefing. Ein NDA unterschreibe ich, bevor ich Kundendaten sehe. %s bekommt ihr Rückfragen oder Aufwand und Preis.', ucfirst( $response_short ) ), '' ],
+	[ 'Aufgabe', 'Ihr schickt das Briefing. Ein NDA unterschreibe ich, bevor ich Kundendaten sehe. Danach bekommt ihr Rückfragen oder Aufwand und Preis.', '' ],
 	[ 'Umfang', 'Umfang, Festpreis, Termin und Abnahmekriterien stehen schriftlich fest, bevor ich anfange. Vertrag und Rechnung laufen über eure Agentur.', 'umfang' ],
 	[ 'Umsetzung', 'Ich baue auf Staging in euren Accounts, mit einem eigenen Zugang, den ihr jederzeit entziehen könnt. Ich arbeite im Hintergrund oder sitze als euer Technik-Lead im Kundentermin.', 'staging' ],
 	[ 'Abnahme', 'Ihr prüft gegen die vereinbarten Kriterien. Was nicht passt, korrigiere ich im vereinbarten Umfang, und live geht es erst nach eurer Freigabe.', 'test' ],
@@ -244,7 +244,7 @@ $marke = static function ( $nr, $name ) {
 						</li>
 					<?php endforeach; ?>
 				</ol>
-				<p class="st-protokoll__fuss">Muster ohne Kundendaten.<span class="wl-protokoll__hinweis" data-wl-nur-js hidden> Die Punkte haken sich ab, während ihr unten den Ablauf lest.</span></p>
+				<p class="st-protokoll__fuss">Muster ohne Kundendaten.</p>
 			</aside>
 		</div>
 	</section>

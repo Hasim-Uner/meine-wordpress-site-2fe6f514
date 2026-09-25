@@ -112,11 +112,6 @@
 			punkte[punkt.getAttribute('data-wl-punkt')] = punkt;
 		});
 
-		var hinweis = protokoll.querySelector('[data-wl-nur-js]');
-		if (hinweis) {
-			hinweis.hidden = false;
-		}
-
 		var abhaken = function (station) {
 			(station.getAttribute('data-wl-haken') || '').split(' ').forEach(function (key) {
 				if (punkte[key]) {
