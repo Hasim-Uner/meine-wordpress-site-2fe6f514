@@ -52,7 +52,7 @@ Sperrliste aufgenommen — nicht andersherum.
 
 **Haşim Üner verbindet WordPress-Entwicklung, Tracking und Conversion so, dass Websites, Landingpages und Anfragesysteme technisch zusammenpassen und messbar werden.**
 
-Die Website hat drei Geschäftspfade. Die Startseite gehört den direkten WordPress-Projekten. White-Label (Platz 2 in der Navigation) und Solar/Wärmepumpe sind auf der Startseite seit 2026-09-24 leise Nebenausgänge: eine kleine Zeile unter den Leistungen, keine Weiche im Hero. Ihre eigenen Seiten und Anfragewege bleiben unverändert:
+Die Website hat drei Geschäftspfade. Die Startseite gehört den direkten WordPress-Projekten. White-Label (Platz 3 in der Navigation, direkt hinter Leistungen und Tracking) und Solar/Wärmepumpe sind auf der Startseite seit 2026-09-24 leise Nebenausgänge: eine kleine Zeile unter den Leistungen, keine Weiche im Hero. Ihre eigenen Seiten und Anfragewege bleiben unverändert:
 
 1. **Direkte Unternehmen / WordPress-Projekte** → `/` bzw. generische Projektanfrage
 2. **Agenturen** → `/whitelabel-retainer/` bzw. Aufgabe beschreiben / Erstprojekt
@@ -262,6 +262,7 @@ Regeln:
 `/server-side-tracking-b2b/` bleibt die fachliche Money Page für nicht ortsqualifizierte Tracking-Queries.
 
 - Query-Ownership bleibt bei der Fachseite
+- Ankertext `Server-Side Tracking`; das bloße `Tracking` in Kopf, Fuß und 404 führt auf das Tracking-Angebot `/ga4-tracking-setup/` (seit 2026-09-25)
 - Primärer CTA: direkte Projektanfrage / Tracking-Scope klären
 - Sekundärer Agentur-Hinweis ist erlaubt, wenn der Besucher erkennbar White-Label-Kapazität sucht
 - Kein automatisches Routing in den Solar-Marktcheck
@@ -270,7 +271,7 @@ Regeln:
 
 `/whitelabel-retainer/` ist ein eigenständiger Agentur-Einstieg und Teil der **globalen kommerziellen Architektur**.
 
-- sichtbar in der Hauptnavigation als `Für Agenturen`
+- sichtbar in der Hauptnavigation als `White-Label` (seit 2026-09-17; „Für Agenturen“ war die Zeile darüber im früheren Vollflächen-Menü)
 - Wegweiser auf der Startseite unter den Leistungen (seit 2026-09-25):
   Label `Für Agenturen und Webdesigner`, Link `Technik und Tracking für Ihre
   Kunden →`

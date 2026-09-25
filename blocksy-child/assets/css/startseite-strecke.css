@@ -65,9 +65,9 @@
    1. Der Header-Button tritt zurueck: Auf der Startseite ist
       „Kostenlose Ersteinschaetzung" der primaere Button, ein zweiter
       oranger Button im Kopf konkurrierte damit.
-   2. „Leistungen" zeigt auf #angebote dieser Seite und traegt deshalb
-      serverseitig aria-current="page". Sichtbar aktiv ist der Link nur,
-      solange #angebote im Blick ist: startseite-strecke.js setzt dann
+   2. „Leistungen" zeigt auf #angebote dieser Seite und kommt ohne
+      aria-current aus dem Header. Sichtbar aktiv ist der Link nur, solange
+      #angebote im Blick ist: startseite-strecke.js setzt dann
       aria-current="location". Ohne JavaScript bleibt er neutral. */
 .leiste .tun {
   background: transparent;
@@ -80,11 +80,15 @@
   color: var(--papier);
 }
 
-.leiste nav a[href$="#angebote"][aria-current="page"] { color: var(--grau); }
-.leiste nav a[href$="#angebote"][aria-current="page"]::after { transform: scaleX(0); }
-.leiste nav a[href$="#angebote"][aria-current="page"]:hover { color: var(--tinte); }
 .leiste nav a[aria-current="location"] { color: var(--stempel); }
 .leiste nav a[aria-current="location"]::after { transform: scaleX(1); }
+
+/* 3. Schmal steht der Button nur im Klappblatt: Im ersten Bildschirm fuehrt
+      der Hero schon mit zwei Buttons auf die Anfrage, ein dritter in der
+      Kopfzeile waere einer zu viel. */
+@media (max-width: 1080px) {
+  .leiste[data-leiste-bereit] .rechts > a.tun { display: none; }
+}
 
 /* ══ Abschnitt und Linie ══════════════════════════════════════ */
 

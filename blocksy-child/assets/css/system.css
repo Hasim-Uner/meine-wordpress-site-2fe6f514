@@ -759,8 +759,12 @@ body.nx-custom-header-active {
 }
 
 .leiste nav a:hover { color: var(--tinte); }
-.leiste nav a[aria-current="page"] { color: var(--stempel); }
-.leiste nav a[aria-current="page"]::after { transform: scaleX(1); }
+/* "page": der Link ist diese Seite. "true": die Seite liegt im Bereich des
+   Punkts (Server-Side-Fachseite unter Tracking, Fallstudie unter Ergebnisse). */
+.leiste nav a[aria-current="page"],
+.leiste nav a[aria-current="true"] { color: var(--stempel); }
+.leiste nav a[aria-current="page"]::after,
+.leiste nav a[aria-current="true"]::after { transform: scaleX(1); }
 
 /* Die Leisten-Schaltflaeche ist schmaler als die im Satz: sie sitzt in
    einer 52px-Zeile und darf sie nicht auseinanderdruecken. */
@@ -769,6 +773,9 @@ body.nx-custom-header-active {
   padding: var(--s0) var(--s2);
   font-size: 0.7rem;
 }
+
+/* Kurzform des Zeilen-Buttons, nur auf schmalen Schirmen (siehe unten). */
+.leiste .tun-kurz { display: none; }
 
 /* ── Klappe und Blatt fuer schmale Schirme ──────────────────── */
 
@@ -864,6 +871,35 @@ body.nx-custom-header-active {
   .leiste .rechts > nav,
   .leiste .rechts > .tun { display: none; }
   .leiste[data-leiste-bereit] .klappe { display: inline-flex; }
+
+  /* Die Anfrage bleibt in der Zeile, statt erst hinter "Menü" zu liegen.
+     Ohne JavaScript steht sie bereits im offenen Blatt; ist das Blatt offen,
+     traegt es denselben Button in voller Breite. visibility statt display,
+     damit die Zeile beim Oeffnen nicht springt. */
+  .leiste[data-leiste-bereit] .rechts > .tun { display: inline-flex; }
+  .leiste.offen .rechts > .tun { visibility: hidden; }
+
+  /* Auf niedrigen Schirmen (Handy quer) ist das Blatt hoeher als der
+     Viewport. Die Leiste klebt oben, der Rest waere unerreichbar; das Blatt
+     scrollt deshalb selbst. */
+  .leiste .blatt-klapp {
+    box-sizing: border-box;
+    max-height: calc(100vh - var(--leiste-h));
+    max-height: calc(100dvh - var(--leiste-h));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+@media (max-width: 479px) {
+  .leiste .rechts > .tun .tun-lang { display: none; }
+  .leiste .rechts > .tun .tun-kurz { display: inline; }
+}
+
+/* Unter 340 px reicht die Zeile nicht fuer Wortmarke, Button und Klappe;
+   der Button steht dann nur im Blatt. */
+@media (max-width: 339px) {
+  .leiste[data-leiste-bereit] .rechts > .tun { display: none; }
 }
 
 /* ══ Fuss ═════════════════════════════════════════════════════
@@ -931,7 +967,8 @@ body.nx-custom-header-active {
   font-size: var(--mono-l);
 }
 
-.fuss .direkt .was {
+.fuss .direkt .was,
+.fuss .verzeichnis .was {
   font-size: var(--mono-s);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -956,15 +993,34 @@ body.nx-custom-header-active {
   text-decoration-color: var(--stempel);
 }
 
+/* Verzeichnis: vier kleine Gruppen (Leistungen, Belege & Person, Wissen,
+   Rechtliches), jede mit leiser Mono-Beschriftung. Bleibt so leise wie die
+   fruehere Einzelzeile, ordnet aber, statt die lokale Agentur-Seite neben
+   das Impressum zu stellen. */
 .fuss .verzeichnis {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s1) var(--s3);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s3) var(--s4);
   padding-block: var(--s3);
   border-top: 1px solid var(--haar);
 }
 
+.fuss .verzeichnis .was {
+  display: block;
+  font-family: var(--mono);
+  margin-bottom: var(--s1);
+}
+
+.fuss .verzeichnis ul {
+  display: grid;
+  justify-items: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .fuss .verzeichnis a {
+  display: inline-block;
   font-family: var(--mono);
   font-size: var(--mono-m);
   letter-spacing: 0.1em;
@@ -976,6 +1032,7 @@ body.nx-custom-header-active {
 }
 
 .fuss .verzeichnis a:hover { color: var(--stempel); }
+.fuss .verzeichnis a[aria-current="page"] { color: var(--tinte); }
 
 .fuss .absender {
   display: grid;
@@ -1023,6 +1080,7 @@ body.nx-custom-header-active {
 
 @media (max-width: 760px) {
   .fuss .absender { grid-template-columns: minmax(0, 1fr); }
+  .fuss .verzeichnis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* ══ Schmale Schirme: Randspalten aufloesen ═══════════════════ */

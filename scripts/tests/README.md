@@ -71,3 +71,19 @@ nach unklarer Übermittlung kann doppelte Aktivitäten oder Mails auslösen:
 E-Mail-Upsert ist keine Anfrage-Deduplizierung. Deshalb keine automatischen
 POST-Wiederholungen. Routen, Angebot, Ersteinschätzungsversuch und Datenschutz-
 Vertrag bleiben unverändert; keine manuellen Admin-Aufgaben oder Migrationen.
+
+## Navigation
+
+```sh
+npm run test:navigation      # PHP: Contract, Ziele, aria-current, bekannte Routen, 404
+npm run test:navigation-ui   # Browser: Desktop, Mobil, Tastatur, ohne JavaScript
+```
+
+`navigation-harness.php` lädt die echten Module (`commercial-routing.php`,
+Canon, Helfer, `header.php`) und ersetzt nur die WordPress-Grenze: Anfrage-
+Kontext, Escaping, URL-Helfer. Seitenabfragen liefern nichts, jeder Resolver
+nutzt also seinen fest hinterlegten Standard, wie live. `render-navigation.php`
+gibt für einen Kontext eine Seite mit echtem Kopf und Fuß aus; der Browser-Test
+liefert `system.css`, Schriften und `leiste.js` aus dem Arbeitsbaum aus. Ein
+abweichendes vorinstalliertes Chromium lässt sich über
+`PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` setzen. CI führt beide Prüfungen aus.
