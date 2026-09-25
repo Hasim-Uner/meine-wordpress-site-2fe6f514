@@ -2008,7 +2008,7 @@ function nexus_render_seo_cockpit_query_movers( $movers ) {
 							<span class="nexus-seo-cockpit__movers-meta">
 								<span class="nexus-seo-cockpit__delta-inline is-positive">+<?php echo esc_html( number_format_i18n( (float) $row['delta'], 0 ) ); ?> Klicks</span>
 								<?php echo esc_html( number_format_i18n( (float) $row['previous_clicks'], 0 ) ); ?> → <?php echo esc_html( number_format_i18n( (float) $row['current_clicks'], 0 ) ); ?>
-								· Pos. <?php echo esc_html( number_format_i18n( (float) $row['position'], 1 ) ); ?>
+								· <?php echo esc_html( nexus_get_seo_cockpit_mover_position_label( (array) $row ) ); ?>
 							</span>
 						</li>
 					<?php endforeach; ?>
@@ -2030,7 +2030,7 @@ function nexus_render_seo_cockpit_query_movers( $movers ) {
 							<span class="nexus-seo-cockpit__movers-meta">
 								<span class="nexus-seo-cockpit__delta-inline is-negative"><?php echo esc_html( number_format_i18n( (float) $row['delta'], 0 ) ); ?> Klicks</span>
 								<?php echo esc_html( number_format_i18n( (float) $row['previous_clicks'], 0 ) ); ?> → <?php echo esc_html( number_format_i18n( (float) $row['current_clicks'], 0 ) ); ?>
-								· Pos. <?php echo esc_html( number_format_i18n( (float) $row['position'], 1 ) ); ?>
+								· <?php echo esc_html( nexus_get_seo_cockpit_mover_position_label( (array) $row ) ); ?>
 							</span>
 						</li>
 					<?php endforeach; ?>

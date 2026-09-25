@@ -1248,7 +1248,9 @@ function nexus_get_seo_cockpit_insights( $snapshot ) {
 			continue;
 		}
 
-		if ( ( $previous_clicks >= 5 && $current_clicks < ( $previous_clicks * 0.7 ) ) || ( $previous_impressions >= 50 && $current_impressions < ( $previous_impressions * 0.7 ) ) ) {
+		$decay_reason = nexus_get_seo_cockpit_decay_reason( $current_clicks, $previous_clicks, $current_impressions, $previous_impressions );
+
+		if ( '' !== $decay_reason ) {
 			$drop = $previous_clicks > 0 ? ( ( $current_clicks - $previous_clicks ) / $previous_clicks ) * 100 : 0;
 
 			$insights[] = nexus_build_seo_cockpit_insight(
@@ -1256,7 +1258,7 @@ function nexus_get_seo_cockpit_insights( $snapshot ) {
 					'type'               => 'DECAY',
 					'severity'           => $drop <= -50 ? 'high' : 'medium',
 					'label'              => 'Traffic-Rückgang auf dieser URL',
-					'reason'             => sprintf( 'Klicks oder Impressionen sind gegenüber dem Vergleichsfenster deutlich gefallen (%.1f%%).', $drop ),
+					'reason'             => $decay_reason,
 					'url'                => $url,
 					'query'              => '',
 					'metrics'            => [
@@ -1764,6 +1766,62 @@ function nexus_get_seo_cockpit_quick_wins( $snapshot, $limit = 12 ) {
 	);
 
 	return array_slice( $candidates, 0, max( 1, absint( $limit ) ) );
+}
+
+/**
+ * Explain a DECAY insight with the metric that triggered it.
+ *
+ * Die Regel feuert auf Klicks oder Impressionen. Der Text nennt deshalb genau
+ * die gefallene Kennzahl; frueher stand dort immer die Klickveraenderung, und
+ * bei 0 → 0 Klicks las sich ein Impressionsverlust als „gefallen (0.0%)“.
+ *
+ * @param float $current_clicks       Clicks in the current window.
+ * @param float $previous_clicks      Clicks in the comparison window.
+ * @param float $current_impressions  Impressions in the current window.
+ * @param float $previous_impressions Impressions in the comparison window.
+ * @return string Reason text, or an empty string when no metric fell enough.
+ */
+function nexus_get_seo_cockpit_decay_reason( $current_clicks, $previous_clicks, $current_impressions, $previous_impressions ) {
+	$signals = [
+		'Klicks'       => [ (float) $previous_clicks, (float) $current_clicks, 5.0 ],
+		'Impressionen' => [ (float) $previous_impressions, (float) $current_impressions, 50.0 ],
+	];
+	$parts   = [];
+
+	foreach ( $signals as $label => $values ) {
+		list( $previous, $current, $minimum ) = $values;
+
+		if ( $previous < $minimum || $current >= ( $previous * 0.7 ) ) {
+			continue;
+		}
+
+		$parts[] = sprintf(
+			'%1$s %2$s → %3$s (%4$s %%)',
+			$label,
+			number_format_i18n( $previous, 0 ),
+			number_format_i18n( $current, 0 ),
+			number_format_i18n( ( ( $current - $previous ) / $previous ) * 100, 1 )
+		);
+	}
+
+	return empty( $parts ) ? '' : 'Gegenüber dem Vergleichsfenster deutlich gefallen: ' . implode( '; ', $parts ) . '.';
+}
+
+/**
+ * Return the position label for one query mover row.
+ *
+ * Ohne Impressionen im aktuellen Fenster gibt es keine Position; die gewichtete
+ * Berechnung liefert dann 0, was wie Platz null aussah.
+ *
+ * @param array<string, mixed> $row Mover row from nexus_get_seo_cockpit_query_movers().
+ * @return string
+ */
+function nexus_get_seo_cockpit_mover_position_label( $row ) {
+	if ( (float) ( $row['impressions'] ?? 0 ) <= 0 ) {
+		return 'aktuell ohne Impressionen';
+	}
+
+	return 'Pos. ' . number_format_i18n( (float) ( $row['position'] ?? 0 ), 1 );
 }
 
 /**
