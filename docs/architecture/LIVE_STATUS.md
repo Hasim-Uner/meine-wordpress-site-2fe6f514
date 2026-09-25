@@ -102,7 +102,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Link und die bisherigen `data-track-*`-Werte sind unverändert. Preise aus
   `hu_whitelabel_pricing_canon()`; Service- und FAQPage-Schema (FAQ aus
   `nexus_get_whitelabel_faq_items()`, fünf Fragen). Sperrliste: `wl-*`-Regeln
-  in `scripts/canon-forbidden-values.txt`.
+  in `scripts/canon-forbidden-values.txt`. Eigenes og:image
+  `assets/img/whitelabel-retainer-og.jpg` (1200 × 630, JPG) über
+  `hu_get_route_social_image()`, erzeugt mit
+  `scripts/build-whitelabel-og-image.py`.
 - **`/performance-marketing/`** (`page-performance.php`, Gutachten-Layout):
   Performance Marketing für B2B in der Reihenfolge Messung → Zielseite →
   Budget, mit eigenem Weg für Performance-Agenturen zu White-Label. Titel,
