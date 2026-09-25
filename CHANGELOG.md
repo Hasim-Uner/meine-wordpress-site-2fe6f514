@@ -2,6 +2,13 @@
 
 ## 2026-09
 
+### White-Label: Kontingent für 780 €, eigenes Vorschaubild
+
+- **Das Monatskontingent kostet 780 € statt 1.000 €.** `HU_WHITELABEL_RETAINER_MIN` in `pricing-canon.php` steht auf 780; die Karte „Weiterentwicklung“ liest den Wert über `hu_whitelabel_price( 'retainer', 'display_hours_plain' )` und zeigt „12 Stunden im Monat für 780 € netto“. Das Service-Schema führt den Retainer nicht als Offer, dort ändert sich nichts. `HU_PERFORMANCE_FOUNDING_RETAINER` (1.000, Endkunden-Performance) ist ein anderes Produkt und bleibt.
+- **Der alte Betrag kann nicht zurückkommen.** Neue Sperrlisten-Regel `wl-retainer-1000`: 1.000 € mit Kontextwort Stunden, Kontingent, Retainer oder White-Label, repo-weit. Budgetstufen im Kontaktformular und Portal-Budgets in den PV-Ratgebern treffen sie nicht.
+- **LinkedIn bekommt eine Querformat-Kachel.** Bisher lief die Seite auf den globalen Fallback, das Porträt im Hochformat (1066 × 1600, WebP). Neu: `assets/img/whitelabel-retainer-og.jpg`, 1200 × 630, 77 KB, Tokens aus `system.css`, Satoshi aus `blocksy-child/fonts/`, rechts das Porträt aus dem Hero. Generator `scripts/build-whitelabel-og-image.py`. `hu_get_route_social_image()` kennt die Route jetzt; den MIME-Typ liest der Aufrufer aus der Dateiendung statt fest `image/png`. Die Solar-Kachel bleibt byte-gleich.
+- **Geprüft:** lokale WordPress-Instanz (SQLite, Blocksy), `/whitelabel-retainer/` vor und nach der Änderung gerendert: Unterschiede nur in og:image, og:image:width/height/type, twitter:image und der Preiszeile. Solar-Seite, Startseite und `/hasim-uener/` byte-gleich. JPG mit HTTP 200 und `image/jpeg` ausgeliefert. 360 und 1280 px ohne horizontalen Überlauf, genau eine H1. Alle CI-Guards, PHPStan und 126 Formular-Tests grün; die neue Sperrlisten-Regel gegen Probe-Dateien. **Nicht geprüft:** LinkedIn Post Inspector gegen die Live-URL (erst nach Deploy möglich).
+
 ### Startseite: Übernahme-Check, Weiterentwicklung, Ausfall-Frage
 
 - **Zwischen Ersteinschätzung und Projekt stand kein Preis.** Nach der kostenlosen Ersteinschätzung war das nächste sichtbare Preisschild das Website-Projekt ab 3.400 €. Frage 1 der Startseiten-FAQ nennt jetzt den Übernahme-Check für 390 € netto: schriftlicher Befund zu Theme, Plugins, Updates, Backups, Zugängen und Performance, dazu ein fester Preis für den nächsten Schritt. Bei Auftrag wird der Check verrechnet, der Befund gehört dem Kunden. Für Fremdbestand gibt es ohne Check keine offene Zusage mehr (Entscheidung 02.09.2026).

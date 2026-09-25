@@ -1460,13 +1460,15 @@ function hu_get_seo_meta() {
 		$route_image = hu_get_route_social_image();
 
 		if ( '' !== $route_image ) {
+			$route_image_type = wp_check_filetype( $route_image );
+
 			$meta = hu_apply_social_image_meta(
 				$meta,
 				[
 					'url'    => $route_image,
 					'width'  => 1200,
 					'height' => 630,
-					'type'   => 'image/png',
+					'type'   => (string) ( $route_image_type['type'] ?? '' ),
 				]
 			);
 		}
@@ -1510,14 +1512,19 @@ function hu_seo_price_display( $key, $fallback ) {
  *
  * Die Masse setzt der Aufrufer fest: hu_get_social_image_meta() ermittelt
  * sie ueber attachment_url_to_postid() und findet fuer eine Theme-Datei
- * nichts. Jede hier eingetragene Kachel muss deshalb 1200x630 als PNG sein.
- * Generator: scripts/build-anfragestrecke-og-image.py.
+ * nichts. Jede hier eingetragene Kachel muss deshalb 1200x630 sein, als PNG
+ * oder JPG; den Typ liest der Aufrufer aus der Dateiendung.
+ * Generatoren: scripts/build-anfragestrecke-og-image.py,
+ * scripts/build-whitelabel-og-image.py.
  *
  * @return string Absolute URL or empty string.
  */
 function hu_get_route_social_image() {
 	$routes = [
 		'solar-waermepumpen-leadgenerierung' => 'anfragestrecke-og.png',
+		// JPG, weil die halbe Kachel ein Foto ist; als PNG waere sie ein
+		// Vielfaches groesser.
+		'whitelabel-retainer'                => 'whitelabel-retainer-og.jpg',
 	];
 
 	$slug = '';

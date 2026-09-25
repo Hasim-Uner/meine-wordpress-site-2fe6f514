@@ -108,6 +108,11 @@ rule	wl-projektanzahl	[0-9]+\+?[[:space:]]*(Projekte|Kunden|Agenturen|Websites u
 rule	wl-stundensatz	[Ss]tundensatz|pro[[:space:]]+Stunde|€[[:space:]]*/[[:space:]]*(h|Std|Stunde)([^[:alnum:]]|$)	^blocksy-child/(page-whitelabel-retainer\.php|assets/(css|js)/whitelabel\.(css|js)):	Kein Stundensatz. Preise kommen aus hu_whitelabel_price().
 # Keine Verfuegbarkeits- oder Knappheitsangaben.
 rule	wl-verfuegbarkeit	[Ff]reie[[:space:]]+(Slots?|Pl(ä|ae)tze|Kapazit(ä|ae)t)|[Ss]lots?[[:space:]]+frei|nur[[:space:]]+noch[[:space:]]+[0-9]+|verf(ü|ue)gbar[[:space:]]+ab	^blocksy-child/(page-whitelabel-retainer\.php|assets/(css|js)/whitelabel\.(css|js)):	Keine Verfuegbarkeitsangaben. Kapazitaet klaert das Angebot.
+# Der Agentur-Retainer kostete bis 2026-09-25 1.000 € fuer 12 Stunden im
+# Monat, seitdem fuehrt HU_WHITELABEL_RETAINER_MIN 780. Die Regel gilt
+# repo-weit, aber nur mit Kontextwort: 1.000 € steht auch als Budgetstufe im
+# Kontaktformular und als Portal-Budget in zwei PV-Ratgebern.
+rule	wl-retainer-1000	(^|[^0-9.,])1\.?000[[:space:]]*(€|&nbsp;€| €|&euro;|Euro)	Stunden|Kontingent|[Rr]etainer|[Ww]hite-?[Ll]abel	Der Agentur-Retainer kommt aus hu_whitelabel_price( 'retainer' ) und steht bei 780 €.
 
 # ── Anonymisierte Faelle: keine Vertroestung ─────────────────────────────
 # "Belege im Gespraech" verspricht einen Nachweis, den die Seite nicht

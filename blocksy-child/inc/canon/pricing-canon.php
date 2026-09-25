@@ -419,16 +419,18 @@ define( 'HU_WHITELABEL_LANDINGPAGE_MIN', 1900 );
 // keine Zahl — damit war er eine Absichtserklaerung. Eine Untergrenze macht
 // ihn real, ohne dass eine Obergrenze jemanden verschreckt.
 //
-// 1.000 statt der zuerst vorgeschlagenen 1.500: HU_PERFORMANCE_RETAINER_PRICE
-// oben ist der Endkunden-Retainer und steht ebenfalls bei 1.500. Derselbe
-// Betrag hiesse, die Agentur zahlt so viel wie ein Endkunde — das bricht die
-// 30-%-Regel, die auf jeder anderen Sprosse dieser Leiter gilt. 1.000 haelt
-// sie und entspricht HU_PERFORMANCE_FOUNDING_RETAINER.
+// Nicht 1.500: HU_PERFORMANCE_RETAINER_PRICE oben ist der Endkunden-Retainer
+// und steht bei 1.500. Derselbe Betrag hiesse, die Agentur zahlt so viel wie
+// ein Endkunde — das bricht die 30-%-Regel, die auf jeder anderen Sprosse
+// dieser Leiter gilt.
 //
-// Das Stundenkontingent gehoert zur Zahl: "ab 1.000 € / Monat" allein sagt
+// 780 seit 2026-09-25, davor 1.000 (Feinschliff /whitelabel-retainer/). Der
+// alte Betrag steht als wl-retainer-1000 in scripts/canon-forbidden-values.txt.
+//
+// Das Stundenkontingent gehoert zur Zahl: "ab 780 € / Monat" allein sagt
 // nicht, wofuer. Ein Stundensatz steht dabei weder als Zahl noch als
 // Herleitung auf der Seite — das Kontingent ist die Einheit, nicht die Stunde.
-define( 'HU_WHITELABEL_RETAINER_MIN', 1000 );
+define( 'HU_WHITELABEL_RETAINER_MIN', 780 );
 define( 'HU_WHITELABEL_RETAINER_HOURS', 12 );
 
 /**
