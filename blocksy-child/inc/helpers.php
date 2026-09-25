@@ -1021,87 +1021,40 @@ function nexus_get_whitelabel_page_url() {
  * Shared between the page template and centralized JSON-LD output so the
  * visible answers, tracking labels, and FAQPage node cannot drift apart.
  *
+ * Seit dem Relaunch auf dem Strecke-System (2026-09) stehen hier nur noch
+ * Fragen, die die Seite nicht schon selbst beantwortet. Preise und
+ * Test-Sprint-Umfang stehen in Abschnitt 04, Sichtbarkeit, Zugaenge,
+ * Eigentum und Start im Ablauf in Abschnitt 05. Die Schluessel bleiben
+ * stabil, weil sie als data-track-label der FAQ-Klicks laufen.
+ *
  * @return array<int, array{key: string, question: string, answer: string}>
  */
 function nexus_get_whitelabel_faq_items() {
-	$test_sprint_price  = function_exists( 'hu_whitelabel_price' )
-		? hu_whitelabel_price( 'test_sprint' )
-		: 'dem schriftlich bestätigten Festpreis';
-	$audit_price        = function_exists( 'hu_whitelabel_price' )
-		? hu_whitelabel_price( 'tracking_audit', 'display', 'einem Festpreis nach Umfangsklärung' )
-		: 'einem Festpreis nach Umfangsklärung';
-	$server_side_price  = function_exists( 'hu_whitelabel_price' )
-		? hu_whitelabel_price( 'server_side', 'display', 'einem Festpreis nach Umfangsklärung' )
-		: 'einem Festpreis nach Umfangsklärung';
-	$landingpage_price  = function_exists( 'hu_whitelabel_price' )
-		? hu_whitelabel_price( 'landingpage', 'display', 'einem Festpreis nach Umfangsklärung' )
-		: 'einem Festpreis nach Umfangsklärung';
-	// Kontingent statt nackter Untergrenze: "ab 1.000 € / Monat" sagte nicht,
-	// wofuer. Die Retainer-Karte auf der Route traegt dieselbe Zahl aus
-	// demselben Canon-Feld.
-	$retainer_price     = function_exists( 'hu_whitelabel_price' )
-		? hu_whitelabel_price( 'retainer', 'display_hours_sentence', 'mit einem vorab vereinbarten Monatskontingent' )
-		: 'mit einem vorab vereinbarten Monatskontingent';
-
 	return [
 		[
-			'key'      => 'abrechnung',
-			'question' => 'Wie rechnest du ab — Retainer oder Projekt?',
-			// Die Antwort nennt dieselben Betraege wie die Angebotskarten. Stuende
-			// hier nur "Festpreis nach Umfangsklaerung", widerspraeche die FAQ den
-			// Karten direkt darueber — und die FAQ geht zusaetzlich als FAQPage-
-			// Schema raus.
-			'answer'   => sprintf( 'Der WordPress-Test-Sprint ist mit %1$s der kleinste Einstieg und hat einen vorab schriftlich abgegrenzten Umfang. Die größeren Erstprojekte starten beim Tracking-Audit %2$s, beim Server-Side-Setup %3$s und bei der Landingpage %4$s; der verbindliche Festpreis wird nach der Umfangsklärung schriftlich vereinbart. Ein Retainer entsteht erst nach einem erfolgreichen Erstprojekt, startet %5$s und erhält einen vorab vereinbarten Leistungsrahmen.', $test_sprint_price, $audit_price, $server_side_price, $landingpage_price, $retainer_price ),
-		],
-		[
-			'key'      => 'sprint-scope',
-			'question' => 'Was ist im WordPress-Test-Sprint nicht enthalten?',
-			'answer'   => 'Nicht enthalten sind Relaunch, vollständige Landingpage, vollständiges Tracking-Setup, unbegrenzte Korrekturen sowie Lizenz- oder Drittanbieterkosten. Größere Vorhaben laufen als eigenes Erstprojekt mit Festpreis nach Umfangsklärung.',
-		],
-		[
-			'key'      => 'sichtbarkeit',
-			'question' => 'Was passiert, wenn unser Kunde fragt, wer die Technik macht?',
-			'answer'   => 'Das legt ihr vorab fest. Standard: Backoffice — ihr antwortet als Team. Auf Wunsch stellt ihr euren Technik-Lead vor, und die Fragen werden direkt im Call beantwortet, unter eurem Branding. Was nie passiert: Akquise in eurem Kundenstamm. Das steht im Kontrakt.',
-		],
-		[
-			'key'      => 'zugaenge',
-			'question' => 'Wie laufen Zugänge zu GA4, GTM, Server & Co.?',
-			'answer'   => 'Über eure Accounts — nie andersherum. Ihr vergebt den Zugang (eigene E-Mail, 2FA) und entzieht ihn, wann ihr wollt. Properties, Container und Server-Setups gehören euch oder eurem Kunden. Gebaut wird darin, nicht daneben.',
-		],
-		[
 			'key'      => 'kapazitaet',
-			'question' => 'Wie schnell reagierst du — und was ist mit Kapazität?',
-			'answer'   => hu_response_promise( 'sentence' ) . ' Wie viel Kapazität in welchem Zeitraum zur Verfügung steht, klären wir vor dem Angebot; Abwesenheiten werden dabei offen eingeplant. Dringende Aufgaben werden vorab separat priorisiert und bestätigt.',
-		],
-		[
-			'key'      => 'ownership',
-			'question' => 'Wem gehören Code, Setups und Daten?',
-			'answer'   => 'Euch beziehungsweise eurem Kunden. Versionierter Code, dokumentierte Übergabe, Zugänge in euren Accounts. Es gibt keine Black Box und keinen Lock-in — das ist Absicht.',
-		],
-		[
-			'key'      => 'exit',
-			'question' => 'Wie kommen wir wieder raus?',
-			'answer'   => 'Projekte enden mit der Abnahme, Retainer ohne Verlängerungsfalle. Durch Doku und Ownership in euren Accounts könnt ihr jederzeit intern übernehmen oder wechseln. Partner bleiben, weil die Lieferung stimmt — nicht, weil der Ausstieg wehtut.',
-		],
-		[
-			'key'      => 'stack',
-			'question' => 'Müssen wir unseren bestehenden Stack ändern?',
-			'answer'   => 'Nein. Hosting, Theme-Stack, Builder, Git-Strategie und Deployment bleiben bestehen, wenn sie technisch funktionieren. Ich füge mich in euren vorhandenen Workflow ein. Existiert noch keiner, reicht meist eine schlanke Trennung zwischen Entwicklung und Produktion — entscheidend ist Nachvollziehbarkeit, nicht Prozess-Theater.',
+			'question' => 'Wie viel Kapazität hast du?',
+			'answer'   => 'Wie viel in welchem Zeitraum frei ist, klären wir vor dem Angebot, Abwesenheiten plane ich offen ein. Braucht ihr mehrere Entwickler parallel oder Bereitschaft rund um die Uhr, sprechen wir das ebenfalls vorher an.',
 		],
 		[
 			'key'      => 'bestand',
 			'question' => 'Arbeitest du auch in bestehenden WordPress-Installationen?',
-			'answer'   => 'Ja. Ein großer Teil der White-Label-Arbeit besteht aus Weiterentwicklung, Fehlerbehebung, Performance-Arbeit und technischen Erweiterungen in laufenden Installationen — nicht aus Projekten auf grüner Wiese.',
+			'answer'   => 'Ja. Die meisten Aufgaben betreffen laufende Installationen: Weiterentwicklung, Fehler, Ladezeit und Erweiterungen.',
 		],
 		[
-			'key'      => 'start',
-			'question' => 'Wie schnell können wir starten?',
-			'answer'   => 'Beschreibt zuerst eure Aufgabe und den gewünschten Zeitraum. Ich prüfe Passung und Kapazität; offene Fragen klären wir per E-Mail oder im Gespräch. Danach vereinbaren wir Umfang, Preis und Starttermin. NDA und benötigte Zugänge stehen vor der Umsetzung fest. Nach dem erfolgreichen Erstprojekt entscheidet ihr über ein weiteres Projekt oder einen Retainer.',
+			'key'      => 'stack',
+			'question' => 'Müssen wir unseren Stack ändern?',
+			'answer'   => 'Nein. Hosting, Theme, Page Builder, Git und Deployment bleiben, wenn sie technisch funktionieren. Ich arbeite in eurem Workflow. Gibt es noch keinen, reicht meist eine Trennung zwischen Staging und Live.',
+		],
+		[
+			'key'      => 'exit',
+			'question' => 'Wie kommen wir wieder raus?',
+			'answer'   => 'Ein Projekt endet mit der Abnahme. Für das Monatskontingent legen wir die Kündigung vorher schriftlich fest, ohne Verlängerungsfalle.',
 		],
 		[
 			'key'      => 'recht',
-			'question' => 'Arbeitest du als Subunternehmer — und wie sauber ist das rechtlich?',
-			'answer'   => 'Ja, klassisches Subunternehmer-Verhältnis: Vertrag mit eurer Agentur, nicht mit eurem Kunden. NDA gehört zum Standard, Auftragsverarbeitung nach DSGVO, wo personenbezogene Daten im Spiel sind. Rechnung an euch — eure Marge bleibt eure Sache.',
+			'question' => 'Arbeitest du als Subunternehmer?',
+			'answer'   => 'Ja. Wo personenbezogene Daten im Spiel sind, schließen wir zusätzlich einen Vertrag zur Auftragsverarbeitung nach DSGVO.',
 		],
 	];
 }

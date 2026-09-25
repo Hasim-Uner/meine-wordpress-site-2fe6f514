@@ -1,7 +1,8 @@
 /**
  * White-Label Retainer — page-whitelabel-retainer.php
- * Sticky-CTA, native FAQ und das Agentur-Formular.
- * Wird nur auf Whitelabel-Routen geladen (inc/enqueue.php, Block P2).
+ * Sticky-CTA, native FAQ, Abnahmeprotokoll, Anker im Kopf und das
+ * Agentur-Formular. Wird nur auf Whitelabel-Routen geladen (inc/enqueue.php,
+ * Block P2). Linie und Stationspunkte fuellt startseite-strecke.js.
  *
  * Das vorgeschaltete Quiz (3 Klickfragen → Termin) ist ersatzlos entfallen:
  * es qualifizierte den Anbieter, nicht den Käufer, und stand zwischen dem
@@ -93,6 +94,81 @@
 		window.addEventListener('scroll', updateSticky, { passive: true });
 		window.addEventListener('resize', updateSticky);
 		updateSticky();
+	}
+
+	// ─── Abnahmeprotokoll: Punkte haken sich an ihrer Station ab ───
+	// Ohne dieses Skript stehen alle Punkte abgehakt (Muster). Mit ihm
+	// starten sie offen; ein Punkt hakt sich ab, sobald die Leselinie bei
+	// 60 % der Fensterhoehe seine Station in Abschnitt 05 erreicht, und bleibt
+	// abgehakt. Dieselbe Leselinie wie die Linie in startseite-strecke.js.
+	// Kein Netzwerk, kein Speicher.
+	var pageRoot  = document.querySelector('.wl-page[data-st]');
+	var protokoll = document.querySelector('[data-wl-protokoll]');
+	var stationen = document.querySelectorAll('[data-wl-haken]');
+
+	if (pageRoot && protokoll && stationen.length && 'IntersectionObserver' in window) {
+		var punkte = {};
+		protokoll.querySelectorAll('[data-wl-punkt]').forEach(function (punkt) {
+			punkte[punkt.getAttribute('data-wl-punkt')] = punkt;
+		});
+
+		var abhaken = function (station) {
+			(station.getAttribute('data-wl-haken') || '').split(' ').forEach(function (key) {
+				if (punkte[key]) {
+					punkte[key].classList.add('wl-erreicht');
+				}
+			});
+		};
+
+		var leselinie = new IntersectionObserver(function (eintraege) {
+			eintraege.forEach(function (eintrag) {
+				// Auch Stationen oberhalb des Fensters zaehlen: wer ueber
+				// #aufgabe einsteigt, hat den Ablauf schon hinter sich.
+				if (eintrag.isIntersecting || eintrag.boundingClientRect.bottom < 0) {
+					abhaken(eintrag.target);
+					leselinie.unobserve(eintrag.target);
+				}
+			});
+		}, { rootMargin: '0px 0px -40% 0px' });
+
+		pageRoot.setAttribute('data-wl-bereit', '');
+		stationen.forEach(function (station) { leselinie.observe(station); });
+	}
+
+	// ─── Anker im Kopf: aktiv, solange ihr Abschnitt im Blick ist ───
+	// Ohne JavaScript bleiben die Anker neutral.
+	var anker = document.querySelectorAll('[data-wl-anker] a[href^="#"]');
+
+	if (anker.length && 'IntersectionObserver' in window) {
+		var ankerZiele = [];
+		anker.forEach(function (link) {
+			var ziel = document.getElementById(link.getAttribute('href').slice(1));
+			if (ziel) {
+				ankerZiele.push({ link: link, ziel: ziel });
+			}
+		});
+
+		var markiere = function (aktiv) {
+			ankerZiele.forEach(function (eintrag) {
+				if (eintrag.ziel === aktiv) {
+					eintrag.link.setAttribute('aria-current', 'location');
+				} else {
+					eintrag.link.removeAttribute('aria-current');
+				}
+			});
+		};
+
+		var imBlick = [];
+		var band = new IntersectionObserver(function (eintraege) {
+			eintraege.forEach(function (eintrag) {
+				var i = imBlick.indexOf(eintrag.target);
+				if (eintrag.isIntersecting && i === -1) imBlick.push(eintrag.target);
+				if (!eintrag.isIntersecting && i !== -1) imBlick.splice(i, 1);
+			});
+			markiere(imBlick.length ? imBlick[imBlick.length - 1] : null);
+		}, { rootMargin: '-45% 0px -45% 0px' });
+
+		ankerZiele.forEach(function (eintrag) { band.observe(eintrag.ziel); });
 	}
 
 	// ─── FAQ: nativen <details>-Zustand mit explizitem ARIA spiegeln ───
@@ -238,7 +314,7 @@
 			if (email) email.setAttribute('aria-invalid', invalidEmail ? 'true' : 'false');
 
 			if (invalidTask) {
-				errors.push('Bitte die Aufgabe kurz beschreiben — vier Zeilen genügen.');
+				errors.push('Bitte die Aufgabe kurz beschreiben. Vier Zeilen genügen.');
 			}
 
 			if (invalidEmail) {

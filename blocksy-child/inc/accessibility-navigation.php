@@ -13,6 +13,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Whether the current route paints the Strecke hero (startseite-strecke.css).
+ *
+ * The White-Label page reuses the homepage hero system: the same Figtree and
+ * IBM Plex Mono faces render above the fold, and without the same early hint
+ * the font swap moved the Prüfstand section by about 0.002 CLS on desktop.
+ *
+ * @return bool
+ */
+function hu_uses_strecke_hero_fonts() {
+	return is_front_page()
+		|| ( function_exists( 'nexus_is_agency_nav_context' ) && nexus_is_agency_nav_context() );
+}
+
+/**
  * Preload the exact homepage font faces that Lighthouse identified as the
  * remaining desktop CLS source.
  *
@@ -21,13 +35,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Mono 500/600. Without an early hint those three faces arrived after first
  * paint and reflowed .blatt.kopfteil by roughly 0.22 CLS on desktop.
  *
- * Scope this strictly to the front page so secondary routes do not pay for
- * fonts they may never render above the fold.
+ * Scope this strictly to the routes on the Strecke system (front page and
+ * White-Label, see hu_uses_strecke_hero_fonts()) so secondary routes do not
+ * pay for fonts they may never render above the fold.
  *
  * @return void
  */
 function hu_preload_homepage_stability_fonts() {
-	if ( ! is_front_page() ) {
+	if ( ! hu_uses_strecke_hero_fonts() ) {
 		return;
 	}
 
@@ -69,7 +84,7 @@ add_action( 'wp_head', 'hu_preload_homepage_stability_fonts', 2 );
  * @return void
  */
 function hu_output_homepage_stable_font_faces() {
-	if ( ! is_front_page() ) {
+	if ( ! hu_uses_strecke_hero_fonts() ) {
 		return;
 	}
 

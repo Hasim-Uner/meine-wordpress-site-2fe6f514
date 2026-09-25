@@ -93,6 +93,22 @@ rule	start-projektanzahl	[0-9]+\+?[[:space:]]*(Projekte|Kunden|Websites umgesetz
 # Taucht einer dieser Aufrufe im Skript auf, bricht der Build.
 rule	strecke-js-privat	fetch\(|sendBeacon|XMLHttpRequest|localStorage|sessionStorage|indexedDB|document\.cookie	^blocksy-child/assets/js/startseite-strecke\.js:	Das Protokoll bleibt im Browser: kein Netzwerkaufruf, kein Speicher, kein Cookie.
 
+# ── White-Label ───────────────────────────────────────────────────────────
+# Die Agenturseite ist die Landeseite der Akquise-Mails. Wie bei der
+# Startseite gelten die Regeln nur fuer ihr Template und ihre eigenen
+# Assets; der Kontext trifft den Dateipfad.
+#
+# Firmenname und Kennzahlen des PV-Falls stehen hier in keiner Form. Die
+# Kennzahlen deckt scripts/lint-e3-canon.sh fuer das Template ab.
+rule	wl-case-firmenname	[Ee]3[ -]?[Nn]ew[ -]?[Ee]nergy|[Ee]3-(Fall|Case)|hu_e3_	^blocksy-child/(page-whitelabel-retainer\.php|assets/(css|js)/whitelabel\.(css|js)):	Der PV-Fall gehoert nicht auf die White-Label-Seite, weder Name noch Kennzahl.
+# Keine Zitate, Testimonials, Logos oder Projektanzahlen.
+rule	wl-testimonial	[Tt]estimonial|<blockquote|[Kk]undenstimme|logo-wall|[Kk]undenlogo|[Aa]genturlogo	^blocksy-child/(page-whitelabel-retainer\.php|assets/(css|js)/whitelabel\.(css|js)):	Keine Zitate, Testimonials oder Logos. Belege sind Pruefstand, Referenz-Links und Test-Sprint.
+rule	wl-projektanzahl	[0-9]+\+?[[:space:]]*(Projekte|Kunden|Agenturen|Websites umgesetzt|zufriedene)	^blocksy-child/(page-whitelabel-retainer\.php|assets/(css|js)/whitelabel\.(css|js)):	Keine Projekt-, Kunden- oder Agenturanzahl auf der White-Label-Seite.
+# Das Kontingent ist die Einheit; eine Stundenrechnung steht nirgends.
+rule	wl-stundensatz	[Ss]tundensatz|pro[[:space:]]+Stunde|€[[:space:]]*/[[:space:]]*(h|Std|Stunde)([^[:alnum:]]|$)	^blocksy-child/(page-whitelabel-retainer\.php|assets/(css|js)/whitelabel\.(css|js)):	Kein Stundensatz. Preise kommen aus hu_whitelabel_price().
+# Keine Verfuegbarkeits- oder Knappheitsangaben.
+rule	wl-verfuegbarkeit	[Ff]reie[[:space:]]+(Slots?|Pl(ä|ae)tze|Kapazit(ä|ae)t)|[Ss]lots?[[:space:]]+frei|nur[[:space:]]+noch[[:space:]]+[0-9]+|verf(ü|ue)gbar[[:space:]]+ab	^blocksy-child/(page-whitelabel-retainer\.php|assets/(css|js)/whitelabel\.(css|js)):	Keine Verfuegbarkeitsangaben. Kapazitaet klaert das Angebot.
+
 # ── Anonymisierte Faelle: keine Vertroestung ─────────────────────────────
 # "Belege im Gespraech" verspricht einen Nachweis, den die Seite nicht
 # fuehrt. Was belegt ist, steht verlinkt da; der Rest steht nicht da.

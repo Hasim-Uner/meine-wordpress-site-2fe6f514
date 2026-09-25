@@ -59,7 +59,7 @@ Regeln:
 - bestehende Verbraucher einzeln auf `system.css` migrieren oder stilllegen;
 - ein bereinigter Verbraucher wird sofort aus der Baseline entfernt;
 - keine neuen generischen Komponenten in `design-system.css` erfinden;
-- `design-system.css` ist auf der kanonischen Startseite, der Personenseite, dem Ergebnisse-Hub und den Glossarseiten bereits aus dem Enqueue genommen; weitere Routen folgen erst nach eigenem Provider-Audit.
+- `design-system.css` ist auf der kanonischen Startseite, der Personenseite, dem Ergebnisse-Hub, den Glossarseiten und der White-Label-Seite bereits aus dem Enqueue genommen; weitere Routen folgen erst nach eigenem Provider-Audit.
 
 Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu verschmelzen. Beide Systeme haben unterschiedliche historische Semantik und Theme-Annahmen; ein blindes Zusammenlegen würde Cascade- und Kontrastfehler erzeugen.
 
@@ -97,6 +97,16 @@ Suchfeld, Filter, Begriffszeilen und Lesebreite. `design-system.css`,
 `homepage.css` und `wgos.css` werden auf diesen Routen nicht mehr geladen.
 Die Beispiel-Tafel verwendet die vorhandene `.tafel`-Komponente. Das Glossar
 ist aus der NX-Baseline entfernt; es definiert keine eigenen Design-Tokens.
+
+### White-Label
+
+`/whitelabel-retainer/` steht seit dem Relaunch am 2026-09-25 auf dem System
+der Startseite: Die Route lädt `system.css`, `startseite-strecke.css` als
+Basis (Abschnitt, Linie, Marken, Typo-Skala, Tafel, Angebotszeilen, Fragen,
+Bewegungsregeln) und `whitelabel.css` als Delta für Abnahmeprotokoll,
+Ablauf-Stationen, Margenblock, Formular und Fuß. Das Delta definiert keinen
+Farbwert und keine Abstandsskala; `whitelabel.css` ist aus der NX-Baseline
+entfernt, der Legacy-Provider lädt hier nicht mehr.
 
 ### Performance Marketing
 

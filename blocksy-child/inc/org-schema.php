@@ -1640,7 +1640,7 @@ function hu_output_schema()
                 '@id'      => $whitelabel_url . '#about',
                 'url'      => $whitelabel_url,
                 'name'     => 'White-Label für Agenturen',
-                'headline' => 'Gebaut und gemessen von derselben Person.',
+                'headline' => 'Ich baue die WordPress-Seite und die Messung dazu. Euer Kunde sieht nur euch.',
                 'description' => 'White-Label für Agenturen: WordPress-Umsetzung, technisches SEO und die vollständige Messkette — GA4, Server-Side, Consent Mode V2, CRM-Anbindung — aus einer Hand. Einstieg über ein Erstprojekt mit fixem Scope, Retainer erst danach.',
                 'inLanguage' => 'de',
                 'about'    => ['@id' => home_url('/#organization')],

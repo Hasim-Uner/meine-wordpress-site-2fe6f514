@@ -80,8 +80,11 @@ Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie überni
 - `/whitelabel-retainer/` = eigener Agentur-Einstieg
 - Zielgruppe: Performance-, Web-, SEO- und Full-Service-Agenturen mit Umsetzungsbedarf
 - Lieferfelder: WordPress, Tracking, CRO, technische SEO, Landingpages/Funnel
-- Primärer nächster Schritt: Aufgabe beschreiben (Formular der Route) oder Erstprojekt mit klarem Scope; der 30-Minuten-Termin ist der dritte, gleichrangige Weg
+- Primärer nächster Schritt: Aufgabe beschreiben (Formular der Route) oder Erstprojekt mit klarem Scope; der 30-Minuten-Termin ist ein leiser Zweitweg (Hero und neben dem Formular)
+- Unterschied im ersten Bildschirm: WordPress-Seite und Messung aus einer Person, deshalb keine Schnittstelle zwischen zwei Dienstleistern; der Kunde der Agentur sieht nur die Agentur
 - Keine erfundenen Agentur-Referenzen; keine Akquise im Kundenstamm der Partner
+- Auf der Seite nie: Firmenname oder Kennzahlen des PV-Falls, Zitate, Logos, Projektzahlen, Verfügbarkeitsangaben, Stundensatz (Sperrliste `wl-*`)
+- Margenblock nur für Leistungen mit veröffentlichtem Endkundenpreis für dieselbe Leistung im Kanon (heute das Server-Side-Setup)
 
 ### Solar / Wärmepumpe / Speicher
 

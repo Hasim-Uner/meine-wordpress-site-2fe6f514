@@ -133,7 +133,7 @@ function hu_validate_whitelabel_request_payload( $payload ) {
 	$task = trim( $task );
 
 	if ( mb_strlen( $task ) < 12 ) {
-		return new WP_Error( 'missing_task', 'Bitte die Aufgabe kurz beschreiben — vier Zeilen genügen.' );
+		return new WP_Error( 'missing_task', 'Bitte die Aufgabe kurz beschreiben. Vier Zeilen genügen.' );
 	}
 
 	if ( '' === $email || ! is_email( $email ) ) {
