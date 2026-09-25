@@ -108,24 +108,30 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Startseite: lädt `startseite-strecke.css/.js` als Basis, `whitelabel.css`
   ist nur das Delta; `design-system.css`, Breadcrumb und
   `navigation-ecosystem.css/.js` laden hier nicht. Eigener Kopf aus der
-  `.leiste` (Wortmarke, Anker Leistungen/Preise/Arbeitsweise/Referenzen/Fragen,
+  `.leiste` (Wortmarke, Anker Leistungen/Belege/Preise/Ablauf/Fragen,
   Button „Aufgabe beschreiben“; unter 768 px übernimmt der Button am unteren
-  Rand), eigener Fuß, globale Sprungmarke auf `#main`. Acht Abschnitte:
-  Hero (`#hero`) mit H1 „Ich baue die WordPress-Seite und die Messung dazu.
-  Ob euer Kunde mich sieht, entscheidet ihr.“ und Abnahmeprotokoll als
-  Muster; Prüfstand (`#pruefstand`, einzige dunkle Tafel); Leistungen
-  (`#lieferfelder`, je Aufgabe „Ihr nehmt ab“); Preise (`#einstieg`,
-  Test-Sprint, drei Erstprojekte, Monatskontingent, Margenblock nur für das
-  Server-Side-Setup mit dem Endkundenpreis aus `hu_tracking_price()`); Ablauf
+  Rand), eigener Fuß, globale Sprungmarke auf `#main`. Sieben Abschnitte
+  (Stand 2026-09-26): Hero (`#hero`) mit H1 „Ich baue die WordPress-Seite und
+  die Messung dazu. Festpreis und Termin stehen, bevor ihr zusagt.“, Zweitweg
+  „Vor der Zusage einschätzen lassen“ (`?case=angebotsphase`) und
+  Abnahmeprotokoll als Muster; Leistungen (`#lieferfelder`, vier Aufgaben
+  WordPress, Tracking, Anfragestrecke, Barrierefreiheit, je mit Anlass aus
+  Sicht der Agentur und „Ihr nehmt ab“); Belege (`#proof`: Prüfstand
+  `#pruefstand` als einzige dunkle Tafel, darunter die Referenzen aus
+  `hu_public_reference_projects()`); Preise (`#einstieg`, Test-Sprint, drei
+  Erstprojekte, Monatskontingent, Margenblock nur für das Server-Side-Setup
+  mit dem Endkundenpreis aus `hu_tracking_price()`); Ablauf
   (`#zusammenarbeit`, fünf Stationen Aufgabe → Umfang → Umsetzung → Abnahme →
-  Übergabe auf der Linie, Ausfall-Zusage); Referenzen (`#proof`, aus
-  `hu_public_reference_projects()`); Fragen (`#faq`); Anfrage
-  (`#naechster-schritt`, Formular `#aufgabe` als Ende der Linie). Die Punkte
-  des Protokolls haken sich mit JavaScript ab, wenn die Leselinie ihre Station
-  erreicht; ohne JavaScript stehen sie abgehakt. Formular, `?case=`, Cal.com-
-  Link und die bisherigen `data-track-*`-Werte sind unverändert. Preise aus
+  Übergabe auf der Linie, Ausfall-Zusage); Fragen (`#faq`); Anfrage
+  (`#naechster-schritt`, Formular `#aufgabe` als Ende der Linie; Wege
+  Aufgabe, Angebotsphase, Vormerken und 30-Minuten-Termin). Die Punkte des
+  Protokolls haken sich mit JavaScript ab, wenn die Leselinie ihre Station
+  erreicht; ohne JavaScript stehen sie abgehakt. `?case=` kennt `aufgabe`,
+  `angebotsphase` und `vormerken`; Formulartexte je Fall stehen im Template
+  (`data-wl-case-texts`), Antwort und nächster Schritt der Bestätigung in
+  `hu_whitelabel_request_cases()`. Preise aus
   `hu_whitelabel_pricing_canon()`; Service- und FAQPage-Schema (FAQ aus
-  `nexus_get_whitelabel_faq_items()`, sechs Fragen). Sperrliste: `wl-*`-Regeln
+  `nexus_get_whitelabel_faq_items()`, sieben Fragen). Sperrliste: `wl-*`-Regeln
   in `scripts/canon-forbidden-values.txt`. Eigenes og:image
   `assets/img/whitelabel-retainer-og.jpg` (1200 × 630, JPG) über
   `hu_get_route_social_image()`, erzeugt mit

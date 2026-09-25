@@ -79,9 +79,9 @@ Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie überni
 
 - `/whitelabel-retainer/` = eigener Agentur-Einstieg
 - Zielgruppe: Performance-, Web-, SEO- und Full-Service-Agenturen mit Umsetzungsbedarf
-- Lieferfelder: WordPress, Tracking, CRO, technische SEO, Landingpages/Funnel
-- Primärer nächster Schritt: Aufgabe beschreiben (Formular der Route) oder Erstprojekt mit klarem Scope; der 30-Minuten-Termin ist ein leiser Zweitweg (Hero und neben dem Formular)
-- Unterschied im ersten Bildschirm: WordPress-Seite und Messung aus einer Person, deshalb keine Schnittstelle zwischen zwei Dienstleistern; ob der Kunde der Agentur mich sieht, entscheidet die Agentur (H1: „Ob euer Kunde mich sieht, entscheidet ihr.“)
+- Lieferfelder: WordPress (Landingpages, Ladezeit, technische SEO), Tracking, Anfragestrecken bis ins CRM, Barrierefreiheit (WCAG 2.1 AA); jede Leistung beginnt mit dem Anlass aus Sicht der Agentur
+- Primärer nächster Schritt: Aufgabe beschreiben (Formular der Route) oder Erstprojekt mit klarem Scope; Zweitweg im Hero ist die Einschätzung vor der Zusage (`?case=angebotsphase`); Vormerken (`?case=vormerken`) und der 30-Minuten-Termin stehen nur neben dem Formular
+- Unterschied im ersten Bildschirm: WordPress-Seite und Messung aus einer Person, Festpreis und Termin stehen vor der Zusage der Agentur an ihren Kunden (H1: „Ich baue die WordPress-Seite und die Messung dazu. Festpreis und Termin stehen, bevor ihr zusagt.“). Unsichtbarkeit ist kein Versprechen der H1: Ob die Agentur mich im Hintergrund hält oder mit an den Tisch nimmt, entscheidet sie; das steht im Ablauf
 - Keine erfundenen Agentur-Referenzen; keine Akquise im Kundenstamm der Partner
 - Auf der Seite nie: Firmenname oder Kennzahlen des PV-Falls, Zitate, Logos, Projektzahlen, Verfügbarkeitsangaben, Stundensatz (Sperrliste `wl-*`)
 - Margenblock nur für Leistungen mit veröffentlichtem Endkundenpreis für dieselbe Leistung im Kanon (heute das Server-Side-Setup)
@@ -276,7 +276,7 @@ Regeln:
   Label `Für Agenturen und Webdesigner`, Link `Technik und Tracking für Ihre
   Kunden →`
 - Rolle dort: White-Label-Partner / Umsetzung im Hintergrund
-- WordPress, SEO, Tracking und CRO sind Lieferfelder
+- WordPress, SEO, Tracking, CRO und Barrierefreiheit sind Lieferfelder
 - Erstprojekt mit Scope und Preis vor Start; danach optional Retainer
 - Schreibweise sichtbar immer `White-Label`
 

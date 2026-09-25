@@ -88,6 +88,17 @@ run_case( 'assessment URL required, optional goal, canonical mail prefix', stati
 	check( get_post_meta( 1, '_nexus_contact_source' ) === 'general_inquiry', 'Existing assessment source unchanged' );
 	foreach ( $GLOBALS['intake_test']['mails'] as $mail ) check( strpos( $mail['subject'], hu_first_assessment_text( 'subject_prefix' ) ) === 0, 'Experiment prefix unchanged' );
 } );
+foreach ( array_merge( array_keys( hu_whitelabel_request_cases() ), [ 'unbekannt' ] ) as $case ) {
+	run_case( "whitelabel case $case", static function () use ( $whitelabel, $case ) {
+		$r        = call_intake( 'whitelabel', array_merge( $whitelabel, [ 'case' => $case ] ) );
+		$expected = isset( hu_whitelabel_request_cases()[ $case ] ) ? $case : 'aufgabe';
+		$texts    = hu_whitelabel_request_cases()[ $expected ];
+		check( $r->status === 201 && $r->data['case'] === $expected, 'Unknown case falls back to aufgabe' );
+		check( $r->data['message'] === sprintf( $texts['reply'], hu_response_promise( 'window' ) ), 'Reply follows case' );
+		check( strpos( $GLOBALS['intake_test']['mails'][0]['subject'], $texts['label'] ) !== false, 'Internal subject names case' );
+		check( strpos( $GLOBALS['intake_test']['mails'][1]['body'], esc_html( $texts['next'] ) ) !== false, 'Confirmation names next step' );
+	} );
+}
 foreach ( [ 'missing_task' => [ 'task' => '' ], 'invalid_access' => [ 'access' => 'unknown' ] ] as $code => $changes ) {
 	run_case( "whitelabel validation $code", static function () use ( $whitelabel, $code, $changes ) {
 		$r = call_intake( 'whitelabel', array_merge( $whitelabel, $changes ) );
