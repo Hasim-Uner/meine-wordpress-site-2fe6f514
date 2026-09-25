@@ -362,7 +362,7 @@ function hu_get_forced_singular_seo_map() {
 			// sichtbar immer „White-Label“, Einstieg über das Erstprojekt.
 			'whitelabel-retainer' => [
 				'title'       => 'White-Label für Agenturen: WordPress, SEO, Tracking',
-				'description' => 'White-Label für Agenturen: WordPress-Umsetzung, technisches SEO und die vollständige Messkette aus einer Hand. Einstieg über ein Erstprojekt mit fixem Scope und Festpreis.',
+				'description' => 'White-Label für Agenturen: WordPress, Tracking bis ins CRM und Barrierefreiheit aus einer Hand. Festpreis und Termin stehen, bevor ihr eurem Kunden zusagt.',
 			],
 			// Die Stack-Seite trug „White-Label“ in Title UND Description und
 			// zielte damit auf dasselbe Signal wie /whitelabel-retainer/. Zwei

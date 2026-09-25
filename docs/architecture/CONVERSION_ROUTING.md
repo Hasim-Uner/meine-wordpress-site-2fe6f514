@@ -20,7 +20,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | --- | --- | --- | --- | --- |
 | `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` with offer-specific focus; while the Ersteinschätzung experiment is switched on, hero and close lead with it (`/kontakt/?focus=ersteinschaetzung`) and keep the project request beside it | Proof / White-Label / Solar / tracking specialist |
 | `/wordpress-freelancer-hannover/` | Retired direct-client route | 301 to `/`; excluded from sitemap | Homepage takes over content and query ownership | Legacy content anchors remain on `/` |
-| `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase`) or scoped first project | 30-minute call / proof |
+| `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase` / `?case=vormerken`) or scoped first project | 30-minute call / proof |
 | `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck | Solar proof / case study |
 | `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page (route `tracking_b2b`); linked as „Server-Side Tracking“, never as plain „Tracking“ | Tracking project request / scope clarification | White-Label bridge for agencies |
 | `/ga4-tracking-setup/` | Tracking purchase intent: GA4/GTM setup, consent, ads conversions | Tracking offer page; target of the header item „Tracking“ and the footer way (route `tracking_setup`) | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
@@ -318,8 +318,11 @@ The page owns its own local request form (`nexus/v1/whitelabel-request`) and its
 The primary action is “Aufgabe beschreiben” and leads to `#aufgabe`. The paid
 WordPress test sprint is the smallest scoped entry; a retainer follows a successful
 first project. Presales uses the same form with `?case=angebotsphase` and a visible
-context label. The calendar remains a secondary option: a quiet link in the hero
-(`cta_whitelabel_hero_call`) and one beside the form (`cta_whitelabel_form_call`).
+context label; since 2026-09-26 it is the hero's quiet second path
+(`cta_whitelabel_hero_offer`). Agencies without a current project use
+`?case=vormerken` (`cta_whitelabel_way_later`, beside the form only); the form
+swaps label, field text, hint, validation message and button per case. The
+calendar is a secondary option beside the form only (`cta_whitelabel_form_call`).
 Both required fields (task and email), optional timeframe/access, REST payload and
 success event are preserved. Without the form script, an explicit email fallback
 remains available.
@@ -331,10 +334,12 @@ breadcrumb or wayfinding layer. Hooks kept from the previous version:
 `cta_whitelabel_proof_test_sprint`, `whitelabel_proof_repo`, `faq_whitelabel_open`,
 `cta_whitelabel_way_offer`, `cta_whitelabel_form_call`,
 `cta_sticky_whitelabel_task_brief`, `nav_whitelabel_footer_*`. New:
-`nav_whitelabel_process`, `cta_whitelabel_hero_call`, `whitelabel_proof_ci`,
+`nav_whitelabel_process`, `whitelabel_proof_ci`,
 `whitelabel_proof_pagespeed`, `whitelabel_margin_reference`,
-`whitelabel_reference_open`, `whitelabel_about`. `nav_whitelabel_proof` now
-labels the anchor „Referenzen“ (`#proof`).
+`whitelabel_reference_open`, `whitelabel_about`. Since 2026-09-26
+`nav_whitelabel_proof` labels „Belege“ (`#proof`: test bench and references in
+one section), `nav_whitelabel_process` labels „Ablauf“; `cta_whitelabel_hero_call`
+was replaced by `cta_whitelabel_hero_offer`, and `cta_whitelabel_way_later` is new.
 
 ### Header (seit 2026-09-25)
 

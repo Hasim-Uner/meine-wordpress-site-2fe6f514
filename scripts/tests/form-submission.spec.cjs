@@ -272,6 +272,43 @@ test('unscoped project still advances from topic to message to identity', async 
     await expect(page.locator(fixtures.contact.button)).toBeVisible();
 });
 
+test('whitelabel case link swaps form texts, validation and payload case', async ({ page }) => {
+  const texts = {
+    aufgabe: { label: 'Konkrete Aufgabe', field: 'Aufgabe?', placeholder: 'A', hint: 'Hinweis A', error: 'Fehler A', submit: 'Aufgabe senden' },
+    vormerken: { label: 'Vormerken', field: 'Stack?', placeholder: 'V', hint: 'Hinweis V', error: 'Fehler V', submit: 'Vormerken lassen' },
+  };
+  const f = fixtures.whitelabel;
+  await page.route('**/*', route => route.fulfill({ contentType: 'text/html', body: '<html></html>' }));
+  await page.goto('https://example.test/whitelabel-retainer/');
+  await page.setContent('<style>.is-hidden,[hidden]{display:none!important}</style>'
+    + '<a data-wl-form-link href="/whitelabel-retainer/?case=vormerken#aufgabe">Vormerken</a><p data-wl-case-label>Konkrete Aufgabe</p>'
+    + f.html.replace('novalidate>', `novalidate data-wl-case-texts='${JSON.stringify(texts)}'><label for="wl-task" data-wl-task-label>Aufgabe?</label><p id="wl-task-hint">Hinweis A</p>`));
+  await page.evaluate(() => {
+    window.requests = [];
+    window.fetch = (url, options) => new Promise(resolve => { window.requests.push({ url, options, resolve }); });
+  });
+  await page.addScriptTag({ path: js('nexus-core.js') });
+  await page.addScriptTag({ path: js(f.script) });
+  await page.click('[data-wl-form-link]');
+  await expect(page.locator('[data-wl-case-label]')).toHaveText('Vormerken');
+  await expect(page.locator('[data-wl-task-label]')).toHaveText('Stack?');
+  await expect(page.locator('#wl-task-hint')).toHaveText('Hinweis V');
+  await expect(page.locator('#wl-task')).toHaveAttribute('placeholder', 'V');
+  await expect(page.locator(f.button)).toHaveText('Vormerken lassen');
+  await expect(page.locator('#wl-task')).toBeFocused();
+  await page.fill('[name="email"]', 'fixture@example.test');
+  await page.click(f.button);
+  await expect(page.locator('[data-wl-error-list]')).toContainText('Fehler V');
+  expect(await page.evaluate(() => window.requests.length)).toBe(0);
+  await page.fill('[name="task"]', 'WordPress mit Elementor, im Frühjahr zwei Relaunches.');
+  await submit(page, f);
+  expect(await page.evaluate(() => JSON.parse(window.requests[0].options.body).case)).toBe('vormerken');
+  await respond(page, 201, '{"ok":true,"case":"vormerken","message":"Danke, ihr seid vorgemerkt."}');
+  await expect(page.locator(f.feedback)).toHaveClass(/is-success/);
+  await expect(page.locator('[data-wl-case]')).toHaveValue('vormerken');
+  await expect(page.locator(f.button)).toHaveText('Vormerken lassen');
+});
+
 test('scoped tracking form keeps its submit label and optional payload', async ({ page }) => {
   const f = await setup(page, 'contact');
   await page.evaluate(() => {
