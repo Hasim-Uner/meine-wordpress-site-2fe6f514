@@ -12,6 +12,7 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 - [Marktcheck](/solar-waermepumpen-leadgenerierung/#marktcheck) - Diagnostischer Einstieg ausschließlich für Solar-, Wärmepumpen- und Speicher-Intent.
 
 ## Fachseiten und kommerzielle Suchintents
+- [Conversion Tracking einrichten lassen](/ga4-tracking-setup/) - Das Tracking-Angebot: GA4, Google Tag Manager, Consent Mode und Google Ads als abgegrenztes Setup mit Messplan und Abnahmeprotokoll. Server-Side, Meta CAPI und CRM kommen nur nach technischem Bedarf dazu.
 - [Server-Side Tracking einrichten lassen](/server-side-tracking-b2b/) - Money Page für Server-Side Tracking, Server-GTM, GA4, Google Ads und Meta CAPI; direkter Projektpfad statt Solar-Marktcheck.
 - [Performance Marketing für B2B](/performance-marketing/) - Bezahlte Nachfrage über Google Ads und Meta in fester Reihenfolge: erst Conversion-Messung, dann Zielseite, dann Budget. Performance-Agenturen werden zu White-Label weitergeführt.
 - [WordPress Agentur Hannover](/wordpress-agentur-hannover/) - Lokale SEO-Seite für den Agentur-Intent; direkte Zusammenarbeit wird zur Freelancer-Route weitergeführt.

@@ -568,6 +568,16 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 	$imprint_url    = $primary_urls['impressum'] ?? home_url( '/impressum/' );
 	$privacy_url    = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
 	$primary_links  = nexus_get_seo_cockpit_primary_menu_links();
+	$footer_contract       = function_exists( 'hu_get_site_footer_navigation_contract' ) ? hu_get_site_footer_navigation_contract() : [];
+	$footer_pick_urls      = array_values( array_filter( array_map(
+		static function ( $pick ) {
+			return (string) ( $pick['url'] ?? '' );
+		},
+		(array) ( $footer_contract['picks'] ?? [] )
+	) ) );
+	$footer_directory_urls = function_exists( 'hu_get_site_footer_directory_urls' )
+		? hu_get_site_footer_directory_urls()
+		: [ $about_url, $e3_url, $blog_url, $glossary_url, $imprint_url, $privacy_url ];
 
 	$sources = [
 		'site_header' => [
@@ -621,34 +631,25 @@ function nexus_get_seo_cockpit_sitewide_source_definitions() {
 				$cases_url,
 			],
 		],
+		// Wege und Verzeichnis kommen aus demselben Contract, den
+		// template-parts/site-footer.php rendert. Die Startseite zeigt die
+		// Wege nicht; auf den anderen Seiten entfaellt nur der eigene Weg.
 		'site_footer' => [
 			'key'   => 'site_footer',
 			'label' => 'Footer',
-			'links' => [
-				$whitelabel_url,
-				$energy_url,
-				$freelancer_url,
-				$contact_url,
-				$about_url,
-				$e3_url,
-				$blog_url,
-				$glossary_url,
-				$imprint_url,
-				$privacy_url,
-			],
+			'links' => array_merge(
+				$footer_pick_urls,
+				[ $contact_url ],
+				$footer_directory_urls
+			),
 		],
 		'freelancer_footer' => [
 			'key'   => 'freelancer_footer',
 			'label' => 'Footer (Freelancer-Startseite)',
-			'links' => [
-				$contact_url,
-				$about_url,
-				$e3_url,
-				$blog_url,
-				$glossary_url,
-				$imprint_url,
-				$privacy_url,
-			],
+			'links' => array_merge(
+				[ $contact_url ],
+				$footer_directory_urls
+			),
 		],
 		'audit_footer' => [
 			'key'   => 'audit_footer',

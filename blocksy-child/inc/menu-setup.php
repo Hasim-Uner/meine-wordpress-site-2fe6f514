@@ -94,59 +94,23 @@ function nexus_is_results_menu_item( $item ) {
 }
 
 /**
- * Return a safe navigation fallback if the canonical routing module is absent.
- *
- * @return array<int, array<string, mixed>>
- */
-function nexus_get_menu_setup_fallback_contract() {
-	$project_url = function_exists( 'hu_get_navigation_project_request_url' )
-		? hu_get_navigation_project_request_url()
-		: add_query_arg( [ 'type' => 'project' ], home_url( '/kontakt/' ) );
-
-	return [
-		[
-			'label' => 'Solar & Wärmepumpen',
-			'url'   => home_url( '/solar-waermepumpen-leadgenerierung/' ),
-			'class' => 'nav-solar-link',
-		],
-		[
-			'label' => 'WordPress Freelancer',
-			'url'   => home_url( '/' ),
-			'class' => 'nav-freelancer-link',
-		],
-		[
-			'label' => 'Für Agenturen',
-			'url'   => home_url( '/whitelabel-retainer/' ),
-			'class' => 'nav-agency-link',
-		],
-		[
-			'label' => 'Ergebnisse',
-			'url'   => function_exists( 'hu_get_results_nav_url' ) ? hu_get_results_nav_url() : home_url( '/#arbeiten' ),
-			'class' => 'nav-results-link',
-		],
-		[
-			'label' => 'Über Haşim',
-			'url'   => home_url( '/hasim-uener/' ),
-			'class' => 'nav-about-link',
-		],
-		[
-			'label' => 'Projekt anfragen',
-			'url'   => $project_url,
-			'class' => 'nav-cta-button nav-project-link',
-		],
-	];
-}
-
-/**
  * Create the stored WordPress menu from the canonical navigation contract.
+ *
+ * Hier stand bis 2026-09-25 eine eigene Ersatzliste fuer den Fall, dass
+ * inc/commercial-routing.php fehlt. functions.php laedt das Modul immer; die
+ * Liste griff also nie, trug aber eine alte Navigation (Solar zuerst, kein
+ * Tracking) und war damit die naechste Stelle, an der sie zurueckkommen
+ * konnte. Ohne Contract wird kein Menue gebaut.
  *
  * @return void
  */
 function nexus_setup_main_menu() {
+	if ( ! function_exists( 'hu_get_primary_navigation_contract' ) ) {
+		return;
+	}
+
 	$menu_name = 'Nexus Hauptmenü';
-	$contract  = function_exists( 'hu_get_primary_navigation_contract' )
-		? hu_get_primary_navigation_contract()
-		: nexus_get_menu_setup_fallback_contract();
+	$contract  = hu_get_primary_navigation_contract();
 
 	$existing = wp_get_nav_menu_object( $menu_name );
 	if ( $existing ) {

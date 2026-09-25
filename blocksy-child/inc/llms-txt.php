@@ -117,6 +117,11 @@ function nexus_get_llms_txt_sections() {
 			'heading' => 'Fachseiten und kommerzielle Suchintents',
 			'links'   => [
 				[
+					'label'       => 'Conversion Tracking einrichten lassen',
+					'url'         => $urls['tracking'] ?? home_url( '/ga4-tracking-setup/' ),
+					'description' => 'Das Tracking-Angebot: GA4, Google Tag Manager, Consent Mode und Google Ads als abgegrenztes Setup mit Messplan und Abnahmeprotokoll. Server-Side, Meta CAPI und CRM kommen nur nach technischem Bedarf dazu.',
+				],
+				[
 					'label'       => 'Server-Side Tracking einrichten lassen',
 					'url'         => $urls['solar_tracking'] ?? home_url( '/server-side-tracking-b2b/' ),
 					'description' => 'Money Page für Server-Side Tracking, Server-GTM, GA4, Google Ads und Meta CAPI; direkter Projektpfad statt Solar-Marktcheck.',

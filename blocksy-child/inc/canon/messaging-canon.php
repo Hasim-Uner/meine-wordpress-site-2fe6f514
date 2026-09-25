@@ -400,25 +400,14 @@ function hu_tracking_setup_faq_items() {
 	];
 }
 
-/**
- * Add explicit product-family routes without changing the SEO owner of the
- * dedicated Server-Side Tracking service. Header navigation can use the broad
- * setup route while schema and specialist links keep pointing at SST.
- *
- * @param array<string,string> $routes Commercial route map.
- * @return array<string,string>
+/*
+ * Die beiden Tracking-Routen (`tracking_setup` fuer /ga4-tracking-setup/,
+ * `tracking_b2b` fuer /server-side-tracking-b2b/) stehen direkt in
+ * hu_get_commercial_route_map() (inc/commercial-routing.php). Hier setzte sie
+ * frueher ein Filter; weil der Schluessel in der Route-Map selbst fehlte,
+ * wurde er fuer nicht vorhanden gehalten und der Kopf zeigte auf die
+ * Fachseite statt auf das Tracking-Angebot.
  */
-function hu_position_tracking_product_route( $routes ) {
-	if ( ! is_array( $routes ) ) {
-		return $routes;
-	}
-
-	$routes['tracking_setup']    = home_url( '/ga4-tracking-setup/' );
-	$routes['tracking_advanced'] = home_url( '/server-side-tracking-b2b/' );
-
-	return $routes;
-}
-add_filter( 'hu_commercial_route_map', 'hu_position_tracking_product_route', 20 );
 
 /**
  * Convert the canonical visible Tracking FAQ to FAQPage entities.
