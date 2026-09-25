@@ -96,6 +96,14 @@ jobs:
       - name: Validate GitHub Actions workflows
         uses: devops-actions/actionlint@v0.1.11
 
+      - name: Install skill test dependencies
+        shell: bash
+        run: |
+          if ! command -v rg >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends ripgrep
+          fi
+
       - name: Validate repository architecture
         run: bash scripts/validate-architecture.sh
 

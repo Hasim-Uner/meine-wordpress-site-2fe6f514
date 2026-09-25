@@ -5,6 +5,12 @@ set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 cd "$ROOT"
 export PYTHONDONTWRITEBYTECODE=1
+for dependency in python3 php rg; do
+  if ! command -v "$dependency" >/dev/null 2>&1; then
+    printf 'FAIL: missing test dependency %s (rg is supplied by ripgrep)\n' "$dependency" >&2
+    exit 127
+  fi
+done
 log_file="$(mktemp "${TMPDIR:-/tmp}/skill-tests.XXXXXX")"
 trap 'rm -f "$log_file"' EXIT
 shopt -s nullglob

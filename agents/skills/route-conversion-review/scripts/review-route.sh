@@ -8,6 +8,11 @@
 
 set -euo pipefail
 
+if ! command -v rg >/dev/null 2>&1; then
+  printf 'Missing required command: rg. Install ripgrep before reviewing a route.\n' >&2
+  exit 2
+fi
+
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 
