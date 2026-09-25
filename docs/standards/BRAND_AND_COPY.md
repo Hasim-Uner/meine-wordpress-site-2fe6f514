@@ -81,7 +81,7 @@ Die Startseite ist zugleich Marke und direkte Freelancer-Money-Page. Sie überni
 - Zielgruppe: Performance-, Web-, SEO- und Full-Service-Agenturen mit Umsetzungsbedarf
 - Lieferfelder: WordPress, Tracking, CRO, technische SEO, Landingpages/Funnel
 - Primärer nächster Schritt: Aufgabe beschreiben (Formular der Route) oder Erstprojekt mit klarem Scope; der 30-Minuten-Termin ist ein leiser Zweitweg (Hero und neben dem Formular)
-- Unterschied im ersten Bildschirm: WordPress-Seite und Messung aus einer Person, deshalb keine Schnittstelle zwischen zwei Dienstleistern; der Kunde der Agentur sieht nur die Agentur
+- Unterschied im ersten Bildschirm: WordPress-Seite und Messung aus einer Person, deshalb keine Schnittstelle zwischen zwei Dienstleistern; ob der Kunde der Agentur mich sieht, entscheidet die Agentur (H1: „Ob euer Kunde mich sieht, entscheidet ihr.“)
 - Keine erfundenen Agentur-Referenzen; keine Akquise im Kundenstamm der Partner
 - Auf der Seite nie: Firmenname oder Kennzahlen des PV-Falls, Zitate, Logos, Projektzahlen, Verfügbarkeitsangaben, Stundensatz (Sperrliste `wl-*`)
 - Margenblock nur für Leistungen mit veröffentlichtem Endkundenpreis für dieselbe Leistung im Kanon (heute das Server-Side-Setup)

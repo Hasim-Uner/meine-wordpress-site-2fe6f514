@@ -1519,8 +1519,8 @@ function hu_get_route_social_image( $post_id = 0 ) {
 		// JPG, weil die halbe Kachel ein Foto ist; als PNG waere sie ein
 		// Vielfaches groesser.
 		'whitelabel-retainer'                => 'whitelabel-retainer-og.jpg',
-		// Neutraler Dateiname: Der Fall ist nach aussen anonymisiert.
-		'case-study-solar-leadgenerierung'   => 'og-fallstudie-anfragesystem.jpg',
+		// Nur Werte aus inc/canon/e3-proof-canon.php, kein Firmenname.
+		'case-study-solar-leadgenerierung'   => 'fallstudie-og.jpg',
 	];
 
 	$slug    = '';
@@ -1561,7 +1561,7 @@ function hu_get_route_social_image_meta( $post_id = 0 ) {
  * @return array<string, int|string>
  */
 function hu_get_default_social_image_meta() {
-	$url = hu_get_theme_social_image_url( 'og-standard.jpg' );
+	$url = hu_get_theme_social_image_url( 'standard-og.jpg' );
 
 	if ( '' === $url ) {
 		return hu_get_social_image_meta( hu_get_profile_image_url() );

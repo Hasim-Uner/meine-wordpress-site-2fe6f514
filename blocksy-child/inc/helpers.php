@@ -1047,6 +1047,11 @@ function nexus_get_whitelabel_faq_items() {
 			'answer'   => 'Ja. Die meisten Aufgaben betreffen laufende Installationen: Weiterentwicklung, Fehler, Ladezeit und Erweiterungen.',
 		],
 		[
+			'key'      => 'fehler',
+			'question' => 'Was ist ein Fehler, was eine Änderung?',
+			'answer'   => 'Das legen wir vor dem Start schriftlich fest. Fehler in meiner Lieferung behebe ich ohne Berechnung, auch nach der Abnahme. Neue Wünsche eures Kunden sind ein neuer Auftrag, mit Preis, bevor ich anfange.',
+		],
+		[
 			'key'      => 'stack',
 			'question' => 'Müssen wir unseren Stack ändern?',
 			'answer'   => 'Nein. Hosting, Theme, Page Builder, Git und Deployment bleiben, wenn sie technisch funktionieren. Ich arbeite in eurem Workflow. Gibt es noch keinen, reicht meist eine Trennung zwischen Staging und Live.',
@@ -1059,7 +1064,7 @@ function nexus_get_whitelabel_faq_items() {
 		[
 			'key'      => 'recht',
 			'question' => 'Arbeitest du als Subunternehmer?',
-			'answer'   => 'Ja. Wo personenbezogene Daten im Spiel sind, schließen wir zusätzlich einen Vertrag zur Auftragsverarbeitung nach DSGVO.',
+			'answer'   => 'Ja. Ich trete als eigenes Unternehmen auf, arbeite mit eigenen Arbeitsmitteln zu selbst gewählten Zeiten und rechne vereinbarte Leistungen ab, nicht Anwesenheit. Auch das Monatskontingent gilt für definierte Aufgaben, nicht für eine Einbindung in eure Dienstpläne. Wo personenbezogene Daten im Spiel sind, schließen wir zusätzlich einen Vertrag zur Auftragsverarbeitung nach DSGVO.',
 		],
 	];
 }

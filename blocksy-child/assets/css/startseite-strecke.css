@@ -391,7 +391,10 @@
 
 .st .st-belege a {
   display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr);
+  /* Breit genug fuer den laengsten Beleg ("ab 3.400 €"); bei 5.5rem stiess
+     das Euro-Zeichen an den Text. Alle Zeilen teilen die Spalte, damit die
+     Texte buendig stehen. */
+  grid-template-columns: 7rem minmax(0, 1fr);
   gap: var(--s2);
   align-items: baseline;
   padding-block: var(--s1);

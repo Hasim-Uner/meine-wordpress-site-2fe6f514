@@ -59,7 +59,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   vom Hero (Marke „Klick“) bis zum Anfrageblock (Marke „Anfrage“) und füllt
   sich beim Lesen; ohne JavaScript und bei reduzierter Bewegung steht sie
   statisch. Acht Abschnitte: Hero (`#klick`) mit H1 ohne Ortsnamen, Byline
-  mit Portrait, zwei Buttons, Messprotokoll und zwei Belegzeilen (H1, Satz,
+  mit Portrait, zwei Buttons, Messprotokoll und drei Belegzeilen (Fall,
+  Referenzen, seit 2026-09-25 der Websitepreis aus
+  `hu_freelancer_website_price()` mit Hook `home_proof_strip_price`; H1, Satz,
   Buttons und Protokoll passen bei 1280 × 800 in den ersten Bildschirm); Prüfstand (`#pruefstand`, die
   einzige dunkle Tafel, Links auf Code, CI und PageSpeed, keine Scores);
   sechs Stationen einer Anfrage (`#strecke`, Liste mit `#angebot-funnel`);
@@ -89,11 +91,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Button „Aufgabe beschreiben“; unter 768 px übernimmt der Button am unteren
   Rand), eigener Fuß, globale Sprungmarke auf `#main`. Acht Abschnitte:
   Hero (`#hero`) mit H1 „Ich baue die WordPress-Seite und die Messung dazu.
-  Euer Kunde sieht nur euch.“ und Abnahmeprotokoll als Muster; Prüfstand
-  (`#pruefstand`, einzige dunkle Tafel); Leistungen (`#lieferfelder`, je
-  Aufgabe „Ihr nehmt ab“); Preise (`#einstieg`, Test-Sprint, drei
-  Erstprojekte, Monatskontingent, Margenblock nur für das Server-Side-Setup
-  mit dem Endkundenpreis aus `hu_tracking_price()`); Ablauf
+  Ob euer Kunde mich sieht, entscheidet ihr.“ und Abnahmeprotokoll als
+  Muster; Prüfstand (`#pruefstand`, einzige dunkle Tafel); Leistungen
+  (`#lieferfelder`, je Aufgabe „Ihr nehmt ab“); Preise (`#einstieg`,
+  Test-Sprint, drei Erstprojekte, Monatskontingent, Margenblock nur für das
+  Server-Side-Setup mit dem Endkundenpreis aus `hu_tracking_price()`); Ablauf
   (`#zusammenarbeit`, fünf Stationen Aufgabe → Umfang → Umsetzung → Abnahme →
   Übergabe auf der Linie, Ausfall-Zusage); Referenzen (`#proof`, aus
   `hu_public_reference_projects()`); Fragen (`#faq`); Anfrage
@@ -102,7 +104,7 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   erreicht; ohne JavaScript stehen sie abgehakt. Formular, `?case=`, Cal.com-
   Link und die bisherigen `data-track-*`-Werte sind unverändert. Preise aus
   `hu_whitelabel_pricing_canon()`; Service- und FAQPage-Schema (FAQ aus
-  `nexus_get_whitelabel_faq_items()`, fünf Fragen). Sperrliste: `wl-*`-Regeln
+  `nexus_get_whitelabel_faq_items()`, sechs Fragen). Sperrliste: `wl-*`-Regeln
   in `scripts/canon-forbidden-values.txt`. Eigenes og:image
   `assets/img/whitelabel-retainer-og.jpg` (1200 × 630, JPG) über
   `hu_get_route_social_image()`, erzeugt mit
@@ -144,8 +146,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `inc/seo-meta.php`.
 - **Nachweise:** `/case-study-solar-leadgenerierung/` ist die Fallstudie; sie
   bleibt `noindex, follow`, bis die Freigabe vorliegt. Eigenes og:image
-  `assets/img/og-fallstudie-anfragesystem.jpg` (1200 × 630, JPG), das auch das
-  Beitragsbild im Schema ersetzt. Der Hub `/ergebnisse/` ist seit 2026-09-25
+  `assets/img/fallstudie-og.jpg` (1200 × 630, JPG, nur Kanonwerte), das auch
+  das Beitragsbild im Schema ersetzt. Der Hub `/ergebnisse/` ist seit 2026-09-25
   stillgelegt: 301 auf die Fallstudie (`nexus_redirect_legacy_results_path()`),
   nicht in Sitemap, `llms.txt` und Fuß; die Route `results` und
   `nexus_get_results_url()` zeigen direkt auf die Fallstudie. Template
@@ -316,7 +318,7 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `agents/skills/seo-agent/scripts/intent-gate.sh`.
 - og:image: Routen mit Theme-Kachel (`hu_get_route_social_image()`) gehen vor
   ACF-Feld und Beitragsbild. Standard für jede Seite ohne eigenes Bild ist seit
-  2026-09-25 `assets/img/og-standard.jpg` (1200 × 630, JPG), nicht mehr das
+  2026-09-25 `assets/img/standard-og.jpg` (1200 × 630, JPG), nicht mehr das
   Porträt im Hochformat; kommt das Porträt noch als Seitenbild an, ersetzt die
   Kachel es ebenfalls. Alle Theme-Kacheln außer der Solar-Kachel erzeugt
   `scripts/build-og-images.py`.

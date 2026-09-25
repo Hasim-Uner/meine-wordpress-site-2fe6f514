@@ -6,8 +6,8 @@
 Drei Kacheln, alle 1200 x 630 als JPG:
 
 - whitelabel-retainer-og.jpg   /whitelabel-retainer/
-- og-fallstudie-anfragesystem.jpg   /case-study-solar-leadgenerierung/
-- og-standard.jpg   Standard fuer jede Seite ohne eigenes Bild
+- fallstudie-og.jpg   /case-study-solar-leadgenerierung/
+- standard-og.jpg   Standard fuer jede Seite ohne eigenes Bild
 
 Welche Seite welche Kachel bekommt, entscheidet inc/seo-meta.php
 (hu_get_route_social_image() und hu_get_default_social_image()).
@@ -93,6 +93,18 @@ def kanon_wert(name: str) -> str:
     if not treffer:
         sys.exit(f"{name} fehlt in {FALL_KANON.relative_to(WURZEL)}")
     return treffer.group(1) if treffer.group(1) is not None else treffer.group(2)
+
+
+def kanon_metrik(metrik: str, feld: str) -> str:
+    """Liest ein Feld aus hu_e3_canon()['metrics'][metrik]."""
+    quelle = FALL_KANON.read_text(encoding="utf-8")
+    block = re.search(r"'" + re.escape(metrik) + r"'\s*=>\s*\[(.*?)\]", quelle, re.S)
+    if not block:
+        sys.exit(f"Metrik {metrik} fehlt in {FALL_KANON.relative_to(WURZEL)}")
+    treffer = re.search(r"'" + re.escape(feld) + r"'\s*=>\s*'([^']*)'", block.group(1))
+    if not treffer:
+        sys.exit(f"Feld {metrik}.{feld} fehlt in {FALL_KANON.relative_to(WURZEL)}")
+    return treffer.group(1)
 
 
 def fall_label() -> str:
@@ -242,49 +254,71 @@ def kachel_mit_portraet(schriften, name, titel, unterzeile, absender=None, grund
     speichere(bild, name)
 
 
-def setze_betrag(zeichne, xy, zahl: str, einheit: str, schriften, groesse: int, fill) -> float:
+def setze_kennzahl(zeichne, xy, wert: str, schriften, groesse: int, fill) -> float:
     """Kennzahl wie .st-kennzahl mit .st-einheit auf der Startseite.
 
-    Mono, letter-spacing -0.045em; die Einheit steht in 0.6em mit 0.1em
-    Abstand daneben, ohne die Luecke eines Mono-Leerzeichens.
+    Mono, letter-spacing -0.045em. Eine Einheit am Ende (€ oder %) steht in
+    0.6em mit 0.1em Abstand daneben, ohne die Luecke eines Mono-Leerzeichens.
     """
     x, y = xy
+    teile = re.match(r"^(.*?)[\s\u00a0]*(%|€)$", wert)
+    zahl, einheit = (teile.group(1), teile.group(2)) if teile else (wert, "")
     breite = setze(zeichne, (x, y), zahl, schriften["mono"](groesse), fill, -0.045)
-    breite += round(groesse * 0.1)
-    breite += setze(zeichne, (x + breite, y), einheit, schriften["mono"](round(groesse * 0.6)), fill)
+    if einheit:
+        breite += round(groesse * 0.1)
+        breite += setze(zeichne, (x + breite, y), einheit, schriften["mono"](round(groesse * 0.6)), fill)
     return breite
 
 
 def kachel_fallstudie(schriften, name):
-    """Die Zahl zuerst, darunter wofuer sie steht und fuer wen.
+    """Fall, Hauptwert, dann zwei Kennzahlen wie im Proof-Band der Startseite.
 
-    Mono fuer die Betraege wie die Kennzahlen der Startseite, der neue Wert
-    in Stempel: Orange steht auf der Seite ausschliesslich fuer Messwerte.
+    Nur Werte aus dem Fall-Kanon. Mono fuer die Werte, der neue Kostenwert in
+    Stempel: Orange steht auf der Seite ausschliesslich fuer Messwerte.
     """
-    vorher = kanon_wert("HU_E3_CPL_BEFORE")
-    nachher = kanon_wert("HU_E3_CPL_AFTER")
-    label = fall_label()
-    einheit = "Kosten pro Anfrage"
+    vorher = f"{kanon_wert('HU_E3_CPL_BEFORE')} €"
+    nachher = f"{kanon_wert('HU_E3_CPL_AFTER')} €"
+    kosten = "Kosten pro qualifizierter Anfrage"
+    anfragen = kanon_metrik("lead_count", "display")
+    anfragen_text = (
+        f"{kanon_metrik('lead_count', 'label')} in {kanon_metrik('timeframe', 'display_dative')}"
+    )
+    quote = kanon_metrik("sales_conversion", "display")
+    quote_text = kanon_metrik("sales_conversion", "label")
 
-    bild, zeichne = leinwand(marke_y=190)
+    bild, zeichne = leinwand(marke_y=104)
+    grenze = BREITE - 72
 
-    groesse = 150
+    # Wofuer: der Fall, ohne Namen und Region.
+    breite = setze(zeichne, (RAND, 116), fall_label(), schriften["medium"](34), GRAU, -0.01)
+    pruefe_breite(RAND, breite, grenze, fall_label())
+
+    # Hauptwert.
+    groesse = 136
     grundlinie = 262
     x = RAND
-    x += setze_betrag(zeichne, (x, grundlinie), vorher, "€", schriften, groesse, GRAU)
-    x += 48
-    pfeil(zeichne, x, grundlinie - 50, 112, STEMPEL)
-    x += 112 + 48
-    x += setze_betrag(zeichne, (x, grundlinie), nachher, "€", schriften, groesse, STEMPEL)
-    pruefe_breite(0, x, BREITE - 72, f"{vorher} € → {nachher} €")
+    x += setze_kennzahl(zeichne, (x, grundlinie), vorher, schriften, groesse, GRAU)
+    x += 44
+    pfeil(zeichne, x, grundlinie - 46, 104, STEMPEL)
+    x += 104 + 44
+    x += setze_kennzahl(zeichne, (x, grundlinie), nachher, schriften, groesse, STEMPEL)
+    pruefe_breite(0, x, grenze, f"{vorher} → {nachher}")
 
-    einheit_font = schriften["medium"](64)
-    breite = setze(zeichne, (RAND, grundlinie + 104), einheit, einheit_font, TINTE, -0.03)
-    pruefe_breite(RAND, breite, BREITE - 72, einheit)
+    breite = setze(zeichne, (RAND, grundlinie + 84), kosten, schriften["medium"](52), TINTE, -0.03)
+    pruefe_breite(RAND, breite, grenze, kosten)
 
-    zeichne.line([(RAND, 486), (BREITE - 72, 486)], fill=HAAR, width=2)
-    breite = setze(zeichne, (RAND, 540), label, schriften["medium"](34), GRAU, -0.01)
-    pruefe_breite(RAND, breite, BREITE - 72, label)
+    zeichne.line([(RAND, 420), (grenze, 420)], fill=HAAR, width=2)
+
+    # Zwei Kennzahlen nebeneinander: Wert gross, darunter wofuer.
+    spalte_2 = 640
+    for links, wert, text, rechts in (
+        (RAND, anfragen, anfragen_text, spalte_2 - 40),
+        (spalte_2, quote, quote_text, grenze),
+    ):
+        breite = setze_kennzahl(zeichne, (links, 506), wert, schriften, 64, TINTE)
+        pruefe_breite(links, breite, rechts, wert)
+        breite = setze(zeichne, (links, 556), text, schriften["medium"](28), GRAU, -0.01)
+        pruefe_breite(links, breite, rechts, text)
 
     speichere(bild, name)
 
@@ -302,11 +336,13 @@ def main() -> None:
         texte_medium = [
             "White-Label", "für Agenturen", "WordPress · Tracking",
             "Haşim Üner", "WordPress · Tracking · Conversion",
-            "Kosten pro Anfrage", fall_label(),
+            "Kosten pro qualifizierter Anfrage", fall_label(),
+            kanon_metrik("lead_count", "label"), kanon_metrik("timeframe", "display_dative"),
+            kanon_metrik("sales_conversion", "label"),
         ]
         pruefe_deckung(medium_pfad, texte_medium)
         pruefe_deckung(bold_pfad, ["Haşim Üner"])
-        pruefe_deckung(mono_pfad, ["0123456789 €"])
+        pruefe_deckung(mono_pfad, ["0123456789.+ €%"])
 
         schriften = {
             "medium": lambda g: ImageFont.truetype(str(medium_pfad), g),
@@ -325,12 +361,12 @@ def main() -> None:
         # tiefer, damit er die Hoehe wie bei der White-Label-Kachel fuellt.
         kachel_mit_portraet(
             schriften,
-            "og-standard.jpg",
+            "standard-og.jpg",
             titel=["Haşim Üner"],
             unterzeile="WordPress · Tracking · Conversion",
             grundlinie=292,
         )
-        kachel_fallstudie(schriften, "og-fallstudie-anfragesystem.jpg")
+        kachel_fallstudie(schriften, "fallstudie-og.jpg")
 
 
 if __name__ == "__main__":
