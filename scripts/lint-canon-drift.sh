@@ -24,6 +24,11 @@ PATHS=(
   # Nichts davon wird ausgeliefert. Gleiche Begruendung wie bei audits,
   # decisions und references darueber.
   ":(exclude)docs/briefings/**"
+  # Rohexporte aus Search Console und dem SEO-Cockpit. Sie zitieren Title und
+  # Meta-Description so, wie Google sie gesehen hat — Fremddaten, nicht
+  # editierbar. Gleiche Ausnahme wie `ignore seo-research/**` in
+  # scripts/canon-forbidden-values.txt fuer den repo-weiten Guard.
+  ":(exclude)seo-research/**"
 )
 
 if [[ -n "${HEAD_REF}" ]]; then
