@@ -138,6 +138,9 @@ jobs:
       - name: Check crawler policy and entity signals
         run: php scripts/lint-entity-crawler-signals.php
 
+      - name: Check navigation contract (header, footer, 404)
+        run: php scripts/tests/navigation-contract.php
+
       - name: Check CSS and JavaScript motion rules
         run: bash scripts/lint-css-motion.sh
 
@@ -164,6 +167,9 @@ jobs:
 
       - name: Verify intake endpoints with isolated storage and intercepted mail
         run: npm run test:intake
+
+      - name: Verify navigation on desktop, mobile and keyboard
+        run: npm run test:navigation-ui
 
       - name: PHP syntax check
         run: find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l
