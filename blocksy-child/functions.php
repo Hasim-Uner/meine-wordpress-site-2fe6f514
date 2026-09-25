@@ -63,6 +63,7 @@ $modules = [
 	'seo-meta.php',       // OG Tags, Canonical, Indexierungssteuerung
 	'positioning-meta.php', // Repositioning-Overrides für globale Homepage-/Blog-Metadaten
 	'seo-subpage-cluster-links.php', // Kontextuelle Querverlinkung des Solar/B2B-Clusters
+	'post-permalink-author-redirect.php', // 301 von /beitrag/<autor>/ auf den Beitrag
 	'org-schema.php',     // JSON-LD Structured Data
 	'commercial-routing.php',  // Kanonische Routen für Direkt, White-Label und Energie
 	'schema-positioning.php', // Repositioning-Normalisierung der kanonischen Schema-Entitäten

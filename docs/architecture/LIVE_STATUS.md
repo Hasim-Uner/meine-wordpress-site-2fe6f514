@@ -345,6 +345,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Schritt, Query-String bleibt), `/wordpress-agentur/` →
   `/wordpress-agentur-hannover/`, `/category/owned-leads/` →
   `/eigene-leadgenerierung-vs-portale/`.
+- 301 von `/<beitrag>/<autoren-slug>/` auf den Beitrag
+  (`inc/post-permalink-author-redirect.php`, geprüft mit `npm run test:permalinks`).
+  Greift nur, solange die Permalink-Struktur kein `%author%` enthält.
 - `410 Gone` (`nexus_get_retired_gone_paths()`): `/wordpress-seo-hannover/`,
   `/core-web-vitals/`, `/conversion-rate-optimization/`,
   `/wordpress-wartung-hannover/`, `/seo/`, `/kostenlose-tools/`, `/tools/`,
@@ -355,6 +358,13 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 ## Offen und manuell
 
+- WordPress-Admin: Einstellungen → Permalinks zurück auf „Beitragsname“
+  (`/%postname%/`). Live am 2026-09-25 geprüft: Die Struktur enthält
+  `%author%`, alle Beiträge laufen unter `/<beitrag>/hasim/`, Canonical,
+  REST-API und Sitemap folgen; die alten Adressen antworten mit 200. Laut
+  GSC-Export seit etwa 01.–15.09.2026. Nach der Umstellung Seitencache leeren,
+  `/checkfox-solar-waermepumpe-einordnung/hasim/` auf 301 prüfen und die
+  Sitemap in der Search Console neu einreichen.
 - Nach dem Merge je eine Testanfrage über `/kontakt/`, `/whitelabel-retainer/`
   und den Marktcheck: CRM-Eintrag, Sales-Chance, interne Mail und Bestätigung
   prüfen.

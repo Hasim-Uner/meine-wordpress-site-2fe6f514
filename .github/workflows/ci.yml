@@ -165,6 +165,9 @@ jobs:
       - name: Verify intake endpoints with isolated storage and intercepted mail
         run: npm run test:intake
 
+      - name: Verify redirect of author-suffixed post URLs
+        run: npm run test:permalinks
+
       - name: PHP syntax check
         run: find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l
 

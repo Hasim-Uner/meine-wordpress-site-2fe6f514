@@ -12,6 +12,7 @@
     "benchmark:agents": "python3 agents/skills/agent-system-maintenance/scripts/benchmark.py",
     "test:forms": "playwright test --config scripts/tests/forms.config.cjs",
     "test:intake": "php scripts/tests/intake-endpoints.php",
+    "test:permalinks": "php scripts/tests/author-permalink-redirect.php",
     "build:theme": "bash scripts/build-theme-dist.sh",
     "lint:architecture": "bash scripts/validate-architecture.sh",
     "lint:canon": "bash scripts/canon-guard.sh",
