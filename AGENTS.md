@@ -15,6 +15,10 @@ Global contract for agents in this repository. Keep context small: load the glob
 3. Exactly one primary skill from `agents/skills/PRIMARY_SKILLS.txt`.
 4. Only files required by that task. A primary skill may delegate to internal specialist skills.
 
+Reuse already-loaded contracts. A skill's load list does not add a second local
+context. For a distinct implementation phase, hand off to its primary owner;
+do not preload several primary skills for the initial task.
+
 ## Canonical sources
 
 - Public routes / route summaries: `llms.txt`
@@ -31,6 +35,7 @@ Load a canonical source only when the task touches its contract. Never duplicate
 `agents/skills/` is the canonical store. Codex and Claude Code only discover the reduced public surface exposed through `.agents/skills/` and `.claude/skills/`.
 
 Primary routes:
+- `agent-system-maintenance` — agent instructions, skill routing, context efficiency, skill tests.
 - `frontend-system` — HTML, CSS, JS, accessibility, browser APIs, UI craft, motion.
 - `seo-intelligence` — SEO triage, live QA, drift, internal links.
 - `seo-cockpit-dev` — SEO Cockpit implementation and diagnostics.

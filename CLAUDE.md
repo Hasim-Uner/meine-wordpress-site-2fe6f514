@@ -1,11 +1,12 @@
 # Claude Code Instructions
 
-Use `AGENTS.md` as the shared project contract for Claude Code, Codex, and other
-repo agents. Follow its load order and select the matching canonical skill from
+@AGENTS.md
+
+Follow the shared contract's load order and select the matching canonical skill from
 `agents/skills/` before implementation. Claude Code exposes those skills through
 `.claude/skills/`; do not edit the symlinks or their targets through that path.
 
-For the deeper Opus behavior profile, also read:
+For a broad strategy/audit task that benefits from the Opus behavior profile, read:
 
 ```text
 agents/model-profiles/claude-opus-performance-marketing.md

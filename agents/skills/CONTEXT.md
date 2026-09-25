@@ -25,6 +25,7 @@ Hard rules:
 
 | Primary skill | Use for |
 | --- | --- |
+| `agent-system-maintenance` | Agent instructions, skills, context efficiency, routing benchmarks and skill test integration |
 | `frontend-system` | Frontend HTML/CSS/JS, accessibility, browser APIs, visual system, UI craft, motion |
 | `seo-intelligence` | SEO triage, live QA, canonical/indexing checks, ranking drift, internal links |
 | `seo-cockpit-dev` | SEO Cockpit modules, queues, GSC/Koko integration, diagnostics |
@@ -41,14 +42,15 @@ Hard rules:
 
 | Primary | Internal specialists |
 | --- | --- |
+| `agent-system-maintenance` | no mandatory delegate |
 | `frontend-system` | `b2b-design-system`, `modern-web-guidance`, `emil-design-eng`, `animate`, `review-animations`, `improve-animations` |
 | `seo-intelligence` | `seo-agent`, `seo-live-qa`, `seo-drift`, `internal-linking-audit` |
 | `seo-cockpit-dev` | `seo-cockpit-hardening` |
 | `editorial-seo` | `blog-seo-ux-optimizer`, `pillar-cornerstone-writer` |
 | `conversion-copy` | `buyer-research`, `seo-conversion-copywriting`, `conversion-copy-loop`, `copy-anatomy` |
-| `offer-funnel-intelligence` | no mandatory delegate |
+| `offer-funnel-intelligence` | `buyer-research`, `modern-web-guidance` when the subtask needs them |
 | `conversion-architecture` | `wordpress-cro-content-design-audit`, `route-conversion-review`, `landing-page-builder`, `growth-audit-optimizer`, `homepage-proof-monitoring` |
-| `wordpress-growth-architecture` | no mandatory delegate |
+| `wordpress-growth-architecture` | `b2b-design-system` for included UI craft |
 | `performance-marketing` | `wordpress-performance-marketing`, `page-speed-audit` |
 | `deploy-qa` | `pre-deploy-smoke`, `registry-release-qa`, `navigation-migration` |
 | `revenue-learning-loop` | no mandatory delegate |
@@ -63,6 +65,11 @@ Hard rules:
 ## Routing rule
 
 Choose one primary skill by user intent. The primary skill may load one or more listed specialist skills only when the subtask requires them. Do not make the user-facing router choose among specialists.
+
+Reuse the selected local context and already-loaded contracts. A separate
+implementation phase may hand off to another primary owner without loading all
+owners upfront. See `agent-system-maintenance/references/benchmark.md` only when
+evaluating routing or comparing agent runs.
 
 ## Validation rule
 

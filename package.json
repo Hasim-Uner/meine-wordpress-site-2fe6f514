@@ -7,6 +7,9 @@
     "npm": ">=10 <11"
   },
   "scripts": {
+    "test:skills": "bash scripts/test-skills.sh",
+    "lint:skills": "python3 scripts/validate-skills.py",
+    "benchmark:agents": "python3 agents/skills/agent-system-maintenance/scripts/benchmark.py",
     "test:forms": "playwright test --config scripts/tests/forms.config.cjs",
     "test:intake": "php scripts/tests/intake-endpoints.php",
     "build:theme": "bash scripts/build-theme-dist.sh",

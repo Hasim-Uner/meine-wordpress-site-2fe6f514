@@ -19,7 +19,7 @@ der ihre Befunde aufeinander aufbauen.
 ## Load First
 
 1. `AGENTS.md`
-2. `agents/skills/CONTEXT.md`
+2. Reuse the local context selected under `AGENTS.md`; do not load another.
 3. `docs/standards/BRAND_AND_COPY.md`
 4. `llms.txt` für Route, Rolle und CTA-Ziel
 

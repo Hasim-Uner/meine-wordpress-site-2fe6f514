@@ -1,0 +1,181 @@
+[
+  {
+    "id": "spacing",
+    "prompt": "Korrigiere die Abstände im CSS der Startseite auf kleinen Bildschirmen. Inhalt und Formularverhalten bleiben wie bisher.",
+    "primary_skill": "frontend-system",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "Stay in templates/assets; no CRM preload.",
+      "Preserve tracking hooks and check responsive layout."
+    ]
+  },
+  {
+    "id": "motion",
+    "prompt": "Die Navigation im Theme animiert trotz prefers-reduced-motion. Behebe das Verhalten im CSS und JavaScript.",
+    "primary_skill": "frontend-system",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "Load motion guidance only if useful.",
+      "Verify reduced-motion behavior."
+    ]
+  },
+  {
+    "id": "canonical",
+    "prompt": "Prüfe die Canonical-Ausgabe der zentralen PHP-SEO-Module in blocksy-child/inc auf widersprüchliche URLs.",
+    "primary_skill": "seo-intelligence",
+    "context": "blocksy-child/inc/CONTEXT.md",
+    "rubric": [
+      "Keep canonical ownership centralized.",
+      "Distinguish code findings from live output."
+    ]
+  },
+  {
+    "id": "indexing",
+    "prompt": "Bewerte anhand unserer SEO-Dokumentation und aktueller Live-Prüfung, ob eine URL korrekt indexierbar ist.",
+    "primary_skill": "seo-intelligence",
+    "context": "docs/CONTEXT.md",
+    "rubric": [
+      "Verify live claims; do not invent indexing state.",
+      "No unrequested template rewrite."
+    ]
+  },
+  {
+    "id": "cockpit",
+    "prompt": "Behebe im PHP-Modul des SEO Cockpit einen Fehler beim Export gefilterter CSV-Zeilen.",
+    "primary_skill": "seo-cockpit-dev",
+    "context": "blocksy-child/inc/CONTEXT.md",
+    "rubric": [
+      "Delegate to cockpit hardening.",
+      "Verify export contract and CSV data boundaries."
+    ]
+  },
+  {
+    "id": "article",
+    "prompt": "Erstelle unter content/ einen Artikelentwurf mit sinnvoller interner Verlinkung.",
+    "primary_skill": "editorial-seo",
+    "context": "content/CONTEXT.md",
+    "rubric": [
+      "Respect editorial/query ownership.",
+      "Draft only; no publication."
+    ]
+  },
+  {
+    "id": "blog",
+    "prompt": "Verbessere die Orientierung in den Blog- und Kategorie-Templates des Child-Themes.",
+    "primary_skill": "editorial-seo",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "Use blog UX specialist when needed.",
+      "Preserve editorial navigation and query ownership."
+    ]
+  },
+  {
+    "id": "button-copy",
+    "prompt": "Formuliere den Buttontext im Kontaktseiten-Template klarer. Es geht ausschließlich um die Worte.",
+    "primary_skill": "conversion-copy",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "No CRM implementation or payload changes.",
+      "Preserve CTA target and tracking hooks."
+    ]
+  },
+  {
+    "id": "buyer",
+    "prompt": "Unsere Käuferannahmen sind kaum belegt. Erarbeite eine belastbare Voice-of-Customer-Grundlage für die Dokumentation.",
+    "primary_skill": "conversion-copy",
+    "context": "docs/CONTEXT.md",
+    "rubric": [
+      "Delegate buyer research.",
+      "Distinguish direct evidence, proxy and inference."
+    ]
+  },
+  {
+    "id": "offer",
+    "prompt": "Bewerte anhand der Solar-Landingpage im Theme, ob Angebot, Proof und Qualifizierung verkaufsfähig sind.",
+    "primary_skill": "offer-funnel-intelligence",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "Energy-specific offer framing stays scoped.",
+      "Audit evidence; no fabricated conversion numbers."
+    ]
+  },
+  {
+    "id": "page-review",
+    "prompt": "Prüfe die White-Label-Seite anhand des Templates vollständig auf Struktur, Copy, SEO, Proof und nächste Schritte.",
+    "primary_skill": "conversion-architecture",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "Use route review for one-route audit.",
+      "Respect agency CTA routing."
+    ]
+  },
+  {
+    "id": "intake",
+    "prompt": "Behebe im REST-Handler unter blocksy-child/inc, dass eine Anfrage trotz fehlgeschlagener CRM-Speicherung als erfolgreich behandelt wird.",
+    "primary_skill": "wordpress-growth-architecture",
+    "context": "blocksy-child/inc/CONTEXT.md",
+    "rubric": [
+      "Trace endpoint and CRM contract.",
+      "Verify persistence and failure behavior with intake tests."
+    ]
+  },
+  {
+    "id": "form-js",
+    "prompt": "Das JavaScript des Kontaktformulars sendet nach einem Timeout doppelt. Behebe die Wiederholungslogik im Theme.",
+    "primary_skill": "wordpress-growth-architecture",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "Read intake contract and called CRM helpers.",
+      "Test retries, stale cache and duplicate submits."
+    ]
+  },
+  {
+    "id": "site-audit",
+    "prompt": "Untersuche das Child-Theme über mehrere Seiten hinweg auf technische SEO-, Conversion-, Tracking- und Performance-Probleme.",
+    "primary_skill": "performance-marketing",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "Use horizontal sweep.",
+      "Separate repository findings from external analytics."
+    ]
+  },
+  {
+    "id": "release",
+    "prompt": "Prüfe vor einem Release des Child-Themes die Architektur und die notwendigen Smoke-Tests.",
+    "primary_skill": "deploy-qa",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "Run deterministic gates.",
+      "No deployment authorization inferred from review."
+    ]
+  },
+  {
+    "id": "revenue",
+    "prompt": "Werte unsere dokumentierten Vorher-Nachher-Daten aus: Hat der letzte Release mehr qualifizierte Anfragen gebracht?",
+    "primary_skill": "revenue-learning-loop",
+    "context": "docs/CONTEXT.md",
+    "rubric": [
+      "Use Review mode and measurement gates.",
+      "No causal claim or automatic revert."
+    ]
+  },
+  {
+    "id": "agent-maintenance",
+    "prompt": "Vereinfache die Agent-Regeln und Skill-Auswahl für Codex und Claude Code in diesem Repo.",
+    "primary_skill": "agent-system-maintenance",
+    "context": "agents/skills/CONTEXT.md",
+    "rubric": [
+      "Preserve contracts while reducing context.",
+      "Distinguish fixture validation from observed agent performance."
+    ]
+  },
+  {
+    "id": "no-repo",
+    "prompt": "Wie viel ist 17 mal 8? Dafür brauchst du keine Dateien. ",
+    "primary_skill": null,
+    "context": null,
+    "rubric": [
+      "Answer directly without loading a repo skill."
+    ]
+  }
+]

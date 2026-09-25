@@ -148,9 +148,11 @@ FREQUENT='^(WordPress|B2B)$'
 join_alt() { paste -sd'|' - 2>/dev/null || true; }
 
 ALL_TERMS="$( { read_canon_terms; read_brand_bans; } | sort -u)"
-BAN_PATTERN="$(printf '%s\n' "${ALL_TERMS}" | rg -v "${AMBIGUOUS}" | rg -v "${FREQUENT}" | join_alt)"
-SOFT_PATTERN="$(printf '%s\n' "${ALL_TERMS}" | rg "${AMBIGUOUS}" | join_alt)"
-FREQ_PATTERN="$(printf '%s\n' "${ALL_TERMS}" | rg "${FREQUENT}" | join_alt)"
+# Empty categories are valid. rg returns 1 for no match, which must not abort
+# the report under pipefail before the final verdict is printed.
+BAN_PATTERN="$(printf '%s\n' "${ALL_TERMS}" | { rg -v "${AMBIGUOUS}" || true; } | { rg -v "${FREQUENT}" || true; } | join_alt)"
+SOFT_PATTERN="$(printf '%s\n' "${ALL_TERMS}" | { rg "${AMBIGUOUS}" || true; } | join_alt)"
+FREQ_PATTERN="$(printf '%s\n' "${ALL_TERMS}" | { rg "${FREQUENT}" || true; } | join_alt)"
 
 if [[ -z "${BAN_PATTERN}" ]]; then
   printf '\nWarnung: keine Ban-Begriffe aus Canon/Brand-Doku gelesen.\n' >&2
@@ -206,7 +208,7 @@ if [[ -n "${FREQ_PATTERN}" ]]; then
 fi
 
 printf '\n== Interne Links auf diese Route ==\n'
-INBOUND="$(rg -l -- "${ROUTE}" blocksy-child --glob '*.php' 2>/dev/null | rg -v "$(basename "${TEMPLATE}")" || true)"
+INBOUND="$(rg -l --glob '*.php' -- "${ROUTE}" blocksy-child 2>/dev/null | rg -v "$(basename "${TEMPLATE}")" || true)"
 if [[ -n "${INBOUND}" ]]; then
   printf '%s\n' "${INBOUND}"
 else

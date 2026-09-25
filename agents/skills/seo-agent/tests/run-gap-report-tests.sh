@@ -9,7 +9,7 @@
 #
 # Die Fixture unter tests/fixtures/ ist erfunden und traegt bewusst
 # "testfrage *"-Queries. Nur der letzte Test laeuft gegen die echten
-# Repo-Exporte und haelt den Akzeptanzwert fest.
+# Repo-Exporte vom Juli 2026 und haelt deren Akzeptanzwert fest.
 #
 #   bash agents/skills/seo-agent/tests/run-gap-report-tests.sh
 
@@ -126,10 +126,10 @@ check "unbekannte Option wird abgelehnt" "$OUT" "Unbekannte Option"
 echo
 
 echo "[7] Akzeptanzwert auf den echten Repo-Exporten"
-OUT="$(bash "$GAP_REPORT" --28d --md 2>&1 | grep -i '^| wordpress agentur hannover ')"
+OUT="$(bash "$GAP_REPORT" 2026-07 --28d --md 2>&1 | grep -i '^| wordpress agentur hannover ')"
 check        "28d meldet Pos. 26,6" "$OUT" "Pos. 26,6"
 check_absent "28d meldet nicht Pos. 11" "$OUT" "Pos. 11,0"
-OUT="$(bash "$GAP_REPORT" --7d --md 2>&1 | grep -i '^| wordpress agentur hannover ')"
+OUT="$(bash "$GAP_REPORT" 2026-07 --7d --md 2>&1 | grep -i '^| wordpress agentur hannover ')"
 check "7d meldet Pos. 35,3" "$OUT" "Pos. 35,3"
 echo
 

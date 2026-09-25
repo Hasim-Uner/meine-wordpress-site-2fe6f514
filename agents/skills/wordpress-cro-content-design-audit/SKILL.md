@@ -10,7 +10,7 @@ Use this skill when the task is not only visual polish. The job is to decide whe
 ## Load First
 
 1. `AGENTS.md`
-2. `agents/skills/CONTEXT.md`
+2. Reuse the local context selected under `AGENTS.md`; do not load another.
 3. `docs/standards/BRAND_AND_COPY.md`
 4. `llms.txt`
 5. Then only the task-relevant template, partial, CSS, JS, helper, or editor-owned copy references.

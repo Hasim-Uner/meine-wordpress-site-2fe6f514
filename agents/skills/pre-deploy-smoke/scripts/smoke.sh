@@ -117,8 +117,9 @@ header "Template Integrity"
 unclosed_ok=true
 for tpl in "$THEME"/template-parts/*.php "$THEME"/front-page.php "$THEME"/home.php "$THEME"/single.php "$THEME"/archive.php; do
   [[ -f "$tpl" ]] || continue
-  open="$(grep -c '<?php' "$tpl" 2>/dev/null || echo 0)"
-  close="$(grep -c '?>' "$tpl" 2>/dev/null || echo 0)"
+  # grep -c already prints 0 on no match; only tolerate its no-match status.
+  open="$(grep -c '<?php' "$tpl" || [[ $? -eq 1 ]])"
+  close="$(grep -c '?>' "$tpl" || [[ $? -eq 1 ]])"
   # Files that end in PHP mode legitimately have open > close by 1
   if (( open - close > 1 )); then
     fail "Possible unclosed PHP tag in $tpl (open=$open close=$close)"
