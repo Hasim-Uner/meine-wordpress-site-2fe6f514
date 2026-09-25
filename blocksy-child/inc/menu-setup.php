@@ -121,7 +121,7 @@ function nexus_get_menu_setup_fallback_contract() {
 		],
 		[
 			'label' => 'Ergebnisse',
-			'url'   => home_url( '/ergebnisse/' ),
+			'url'   => function_exists( 'hu_get_results_nav_url' ) ? hu_get_results_nav_url() : home_url( '/#arbeiten' ),
 			'class' => 'nav-results-link',
 		],
 		[

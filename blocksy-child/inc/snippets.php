@@ -132,7 +132,7 @@ function hu_normalize_primary_strategy_navigation( $items, $args ) {
     $solar_url      = $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' );
     $freelancer_url = home_url( '/' );
     $whitelabel_url = function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' );
-    $results_url    = function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : ( $primary_urls['results'] ?? home_url( '/ergebnisse/' ) );
+    $results_url    = function_exists( 'hu_get_results_nav_url' ) ? hu_get_results_nav_url() : home_url( '/#arbeiten' );
     $about_url      = $primary_urls['about'] ?? home_url( '/hasim-uener/' );
     $project_url    = hu_get_navigation_project_request_url();
 

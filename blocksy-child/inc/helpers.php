@@ -555,7 +555,7 @@ function nexus_get_primary_public_url_map() {
 		'blog'                 => function_exists( 'nexus_get_blog_posts_url' ) ? nexus_get_blog_posts_url() : home_url( '/blog/' ),
 		'audit'                => $request_url,
 		'audit_linkedin'       => $request_url,
-		'results'              => function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/ergebnisse/' ),
+		'results'              => function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/case-study-solar-leadgenerierung/' ),
 		'wgos'                 => $wgos_url,
 		'wgos_assets'          => $asset_url,
 		'glossary'             => nexus_get_page_url(
@@ -971,18 +971,23 @@ function hu_is_results_hub_request() {
 }
 
 /**
- * Resolve the primary results hub URL.
+ * Resolve the primary results URL.
+ *
+ * Der Hub /ergebnisse/ ist seit 2026-09-25 stillgelegt: veraltetes Menue,
+ * alte Antwortzeit und Details, die den anonymisierten Fall wiedererkennbar
+ * machten. Der Nachweis ist die Fallstudie. Jeder Verweis auf "Ergebnisse"
+ * zeigt deshalb direkt dorthin, ohne Umweg ueber die Weiterleitung in
+ * nexus_redirect_legacy_results_path().
+ *
+ * Nicht ueber nexus_get_primary_public_url(): Deren Map ruft diese Funktion
+ * selbst auf.
  *
  * @return string
  */
 function nexus_get_results_url() {
-	$page_id = nexus_get_results_page_id();
+	$case = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 
-	if ( $page_id ) {
-		return get_permalink( $page_id );
-	}
-
-	return home_url( '/ergebnisse/' );
+	return (string) ( $case['url'] ?? home_url( '/case-study-solar-leadgenerierung/' ) );
 }
 
 /**
@@ -1997,7 +2002,14 @@ function nexus_should_hide_footer_primary_cta() {
 
 add_action( 'template_redirect', 'nexus_redirect_legacy_results_path', 1 );
 /**
- * Redirect legacy proof overview paths to the canonical results hub.
+ * Redirect legacy proof overview paths to the case study.
+ *
+ * Seit 2026-09-25 gehoert /ergebnisse/ selbst dazu. Alle drei Pfade gehen in
+ * einem Schritt auf nexus_get_results_url(), also ohne Kette ueber den
+ * stillgelegten Hub. Prioritaet 1 laeuft vor redirect_canonical, deshalb
+ * landet auch /ergebnisse ohne Schraegstrich direkt am Ziel. Die
+ * Weiterleitung greift unabhaengig davon, ob die Seite im Editor
+ * veroeffentlicht oder ein Entwurf ist.
  *
  * @return void
  */
@@ -2008,6 +2020,7 @@ function nexus_redirect_legacy_results_path() {
 
 	$current_path = nexus_get_current_request_path();
 	$legacy_paths = [
+		'/ergebnisse/',
 		'/case-studies/',
 		'/case-studies-e-commerce/',
 	];
@@ -2023,7 +2036,9 @@ function nexus_redirect_legacy_results_path() {
 		return;
 	}
 
-	wp_safe_redirect( $target_url, 301 );
+	// Query-String wie in der Legacy-Tabelle mitnehmen, damit alte
+	// Kampagnenlinks ihre UTM-Parameter behalten.
+	wp_safe_redirect( nexus_append_current_query_to_redirect_url( $target_url ), 301 );
 	exit;
 }
 

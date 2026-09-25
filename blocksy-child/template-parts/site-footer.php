@@ -51,7 +51,6 @@ $freelancer_url    = $routes['freelancer'] ?? home_url( '/' );
 $tracking_url      = $routes['tracking_b2b'] ?? home_url( '/server-side-tracking-b2b/' );
 $whitelabel_url    = $routes['whitelabel'] ?? ( function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' ) );
 $agentur_local_url = $routes['agentur_local'] ?? home_url( '/wordpress-agentur-hannover/' );
-$results_url       = $routes['results'] ?? ( $primary_urls['results'] ?? home_url( '/ergebnisse/' ) );
 $about_url         = $routes['about'] ?? ( $primary_urls['about'] ?? home_url( '/hasim-uener/' ) );
 $e3_url            = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
 $blog_url          = $primary_urls['blog'] ?? home_url( '/blog/' );
@@ -161,12 +160,11 @@ $direct[] = [
  * Verzeichnis: breit genug fuer Crawl- und Orientierungswege, aber deutlich
  * leiser als die vier kommerziellen Entscheidungen. Die lokale Agentur-Seite
  * bleibt bewusst hier statt im Header: Sie besitzt lokale WordPress-Queries,
- * ist aber kein globaler Geschaeftspfad. Ergebnisse und Solar-Fallstudie sind
- * getrennt, weil der Hub inzwischen auch technische und weitere oeffentliche
- * Arbeiten belegt.
+ * ist aber kein globaler Geschaeftspfad. "Ergebnisse" steht seit der
+ * Stilllegung von /ergebnisse/ (2026-09-25) nicht mehr hier: Der Nachweis
+ * ist die Solar-Fallstudie, und die ist bereits verlinkt.
  */
 $directory = [
-	[ $results_url, 'Ergebnisse', 'cta_footer_nav_results', 'trust' ],
 	[ $agentur_local_url, 'WordPress Agentur Hannover', 'cta_footer_nav_agentur_local', 'navigation' ],
 	[ $about_url, 'Über Haşim', 'cta_footer_nav_about', 'navigation' ],
 	[ $e3_url, 'Solar-Fallstudie', 'cta_footer_nav_case_study_proof', 'trust' ],

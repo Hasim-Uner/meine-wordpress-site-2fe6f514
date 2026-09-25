@@ -26,7 +26,7 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/ga4-tracking-setup/` | GA4/GTM setup or troubleshooting | Specialist tracking money page | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
 | `/performance-marketing/` | B2B companies running Google Ads or Meta | Paid-demand money page (measurement → landing page → budget) | `Ausgangslage prüfen lassen` → `/kontakt/?type=project` | Tracking setup, landing pages (`/#angebot-funnel`), case study; performance agencies → White-Label task (`?type=whitelabel&case=aufgabe`) |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition page | Project request | Explicit bridge to Freelancer page |
-| `/ergebnisse/` | Proof / evaluation, all three routes | Proof hub / trust layer | Three-way close: Marktcheck, `Projekt anfragen`, White-Label `Aufgabe beschreiben` | Case study, public references, tracking money page |
+| `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Ergebnisse“ → `/#arbeiten`; route `results` → case study |
 | `/case-study-solar-leadgenerierung/` | Solar proof | Evidence page | Solar Marktcheck | Energy money page |
 
 ## Glossar: erst erklären, dann Projektbezug
@@ -118,8 +118,8 @@ eine öffentliche WordPress-Arbeit belegen den Ansatz mit getrenntem Kontext.
 
 - Hero: `about_read_method` springt zu `#arbeitsweise` (Navigation).
 - Besucherbeispiele: direkte Anbieterwahl → `/#angebote`
-  (`link_about_freelancer`), Lösungsprüfung → `/ergebnisse/`
-  (`about_view_results`), Orientierung → `/blog/` (`about_read_expertise`).
+  (`link_about_freelancer`), Lösungsprüfung → `/case-study-solar-leadgenerierung/`
+  (`about_view_results`, bis 2026-09-25 `/ergebnisse/`), Orientierung → `/blog/` (`about_read_expertise`).
 - Abschluss: `cta_about_project` → kanonische Projektanfrage;
   `link_about_whitelabel` → eigene White-Label-Seite.
 - `about_station_solar_case` bleibt als Aktion erhalten; der Beleg steht jetzt
@@ -130,6 +130,11 @@ eine öffentliche WordPress-Arbeit belegen den Ansatz mit getrenntem Kontext.
   bisherigen Zuständigkeiten. Kein Solar-Marktcheck als allgemeiner Seiten-CTA.
 
 ## Ergebnisse-Hub: Arbeitsbelege für die drei Geschäftspfade
+
+Stillgelegt seit 2026-09-25: `/ergebnisse/` leitet per 301 auf die Fallstudie,
+der Menüpunkt „Ergebnisse“ führt auf `/#arbeiten`. Der folgende Stand
+beschreibt `page-ergebnisse.php`, das im Repo bleibt, aber nicht mehr
+ausgeliefert wird.
 
 `/ergebnisse/` folgt seit dem Umbau vom 2026-09-14 der Reihenfolge
 WordPress-Arbeiten → technische Projektgeschichte → Solar-Fall →

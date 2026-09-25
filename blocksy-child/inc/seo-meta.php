@@ -801,6 +801,10 @@ function hu_get_noindex_follow_slugs() {
 		'audit-linkedin',
 		'case-studies',
 		'case-studies-e-commerce',
+		// Seit 2026-09-25 per 301 auf die Fallstudie
+		// (nexus_redirect_legacy_results_path()). Der Eintrag haelt die Seite
+		// aus der Sitemap, auch solange sie im Editor noch veroeffentlicht ist.
+		'ergebnisse',
 		// Anonymization hold: noindex pending settlement resolution.
 		// Remove once the anonymized case study is cleared for public reindexing.
 		'e3-new-energy',
@@ -1449,34 +1453,23 @@ function hu_get_seo_meta() {
 		$meta['og_title'] = __( 'Seite nicht gefunden (404)', 'blocksy-child' ) . ' · ' . get_bloginfo( 'name' );
 	}
 
-	// Routen-eigene Social-Kachel vor dem globalen Fallback.
-	//
-	// Der globale Fallback ist das Portraet im Hochformat. Als Social-Karte
-	// wird es auf 1200x630 beschnitten, wobei je nach Plattform der Kopf
-	// oder die Schultern uebrig bleiben — und die Kachel sagt nichts
-	// darueber, worum es auf der Seite geht. Wo eine Route eine eigene
-	// Kachel im Theme mitbringt, geht sie vor.
-	if ( empty( $meta['og_image'] ) ) {
-		$route_image = hu_get_route_social_image();
+	// Routen-eigene Social-Kachel. Sie geht auch einem Beitragsbild oder
+	// ACF-Bild vor: Die Kachel ist versioniert und wird mit dem Template
+	// deployt, das Editor-Bild nicht. Auf der Fallstudie trug das
+	// Beitragsbild den Namen des anonymisierten Betriebs im Dateinamen.
+	$route_image = hu_get_route_social_image_meta();
 
-		if ( '' !== $route_image ) {
-			$route_image_type = wp_check_filetype( $route_image );
-
-			$meta = hu_apply_social_image_meta(
-				$meta,
-				[
-					'url'    => $route_image,
-					'width'  => 1200,
-					'height' => 630,
-					'type'   => (string) ( $route_image_type['type'] ?? '' ),
-				]
-			);
-		}
+	if ( $route_image ) {
+		$meta = hu_apply_social_image_meta( $meta, $route_image );
 	}
 
-	// Global OG-Image Fallback: Profilbild als Default wenn kein seitenspezifisches Bild gesetzt ist.
-	if ( empty( $meta['og_image'] ) ) {
-		$meta = hu_apply_social_image_meta( $meta, hu_get_social_image_meta( hu_get_profile_image_url() ) );
+	// Standard-Kachel fuer jede Seite ohne eigenes Bild. Bis 2026-09-25 stand
+	// hier das Portraet im Hochformat (1066 x 1600); als Social-Karte wurde
+	// es auf 1,91 : 1 beschnitten, je nach Plattform blieb der Kopf oder die
+	// Schultern uebrig. Wo das Portraet noch als Seitenbild ankommt (ACF-Feld
+	// mit derselben Datei), ersetzt die Kachel es ebenfalls.
+	if ( empty( $meta['og_image'] ) || hu_get_profile_image_url() === $meta['og_image'] ) {
+		$meta = hu_apply_social_image_meta( $meta, hu_get_default_social_image_meta() );
 	}
 
 	return $meta;
@@ -1510,26 +1503,32 @@ function hu_seo_price_display( $key, $fallback ) {
  * Template und wird mit ihm deployt. Waere sie ein Upload, haenge das
  * Social-Bild einer versionierten Seite an einer Editor-Handlung.
  *
- * Die Masse setzt der Aufrufer fest: hu_get_social_image_meta() ermittelt
- * sie ueber attachment_url_to_postid() und findet fuer eine Theme-Datei
- * nichts. Jede hier eingetragene Kachel muss deshalb 1200x630 sein, als PNG
- * oder JPG; den Typ liest der Aufrufer aus der Dateiendung.
+ * Die Masse setzt hu_get_theme_social_image_meta() fest:
+ * hu_get_social_image_meta() ermittelt sie ueber attachment_url_to_postid()
+ * und findet fuer eine Theme-Datei nichts. Jede hier eingetragene Kachel muss
+ * deshalb 1200x630 sein, als PNG oder JPG; der Typ kommt aus der Dateiendung.
  * Generatoren: scripts/build-anfragestrecke-og-image.py,
- * scripts/build-whitelabel-og-image.py.
+ * scripts/build-og-images.py.
  *
+ * @param int $post_id Optional page ID. Without it, the queried page is used.
  * @return string Absolute URL or empty string.
  */
-function hu_get_route_social_image() {
+function hu_get_route_social_image( $post_id = 0 ) {
 	$routes = [
 		'solar-waermepumpen-leadgenerierung' => 'anfragestrecke-og.png',
 		// JPG, weil die halbe Kachel ein Foto ist; als PNG waere sie ein
 		// Vielfaches groesser.
 		'whitelabel-retainer'                => 'whitelabel-retainer-og.jpg',
+		// Neutraler Dateiname: Der Fall ist nach aussen anonymisiert.
+		'case-study-solar-leadgenerierung'   => 'og-fallstudie-anfragesystem.jpg',
 	];
 
-	$slug = '';
+	$slug    = '';
+	$post_id = absint( $post_id );
 
-	if ( is_page() ) {
+	if ( $post_id > 0 ) {
+		$slug = 'page' === get_post_type( $post_id ) ? (string) get_post_field( 'post_name', $post_id ) : '';
+	} elseif ( is_page() ) {
 		$queried = get_queried_object();
 		$slug    = ( $queried instanceof WP_Post ) ? (string) $queried->post_name : '';
 	}
@@ -1538,13 +1537,70 @@ function hu_get_route_social_image() {
 		return '';
 	}
 
-	$relative = 'assets/img/' . $routes[ $slug ];
+	return hu_get_theme_social_image_url( $routes[ $slug ] );
+}
+
+/**
+ * Return the route tile as social image metadata.
+ *
+ * @param int $post_id Optional page ID. Without it, the queried page is used.
+ * @return array<string, int|string> Empty when the route has no tile.
+ */
+function hu_get_route_social_image_meta( $post_id = 0 ) {
+	$url = hu_get_route_social_image( $post_id );
+
+	return '' === $url ? [] : hu_get_theme_social_image_meta( $url );
+}
+
+/**
+ * Return the sitewide default social image metadata.
+ *
+ * Querformat mit Name, Leistungen und Portraet (scripts/build-og-images.py).
+ * Fehlt die Datei, bleibt das Portraet der Standard.
+ *
+ * @return array<string, int|string>
+ */
+function hu_get_default_social_image_meta() {
+	$url = hu_get_theme_social_image_url( 'og-standard.jpg' );
+
+	if ( '' === $url ) {
+		return hu_get_social_image_meta( hu_get_profile_image_url() );
+	}
+
+	return hu_get_theme_social_image_meta( $url );
+}
+
+/**
+ * Resolve a theme-shipped social image in assets/img/.
+ *
+ * @param string $filename File name inside assets/img/.
+ * @return string Absolute URL, or empty string when the file is missing.
+ */
+function hu_get_theme_social_image_url( $filename ) {
+	$relative = 'assets/img/' . ltrim( (string) $filename, '/' );
 
 	if ( ! file_exists( trailingslashit( get_stylesheet_directory() ) . $relative ) ) {
 		return '';
 	}
 
 	return trailingslashit( get_stylesheet_directory_uri() ) . $relative;
+}
+
+/**
+ * Describe a theme-shipped 1200x630 social image.
+ *
+ * @param string $url Absolute URL of the tile.
+ * @return array<string, int|string>
+ */
+function hu_get_theme_social_image_meta( $url ) {
+	$type = wp_check_filetype( (string) $url );
+
+	return [
+		'url'    => (string) $url,
+		'width'  => 1200,
+		'height' => 630,
+		'type'   => (string) ( $type['type'] ?? '' ),
+	];
 }
 
 /**

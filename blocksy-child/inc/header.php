@@ -340,7 +340,9 @@ function nexus_repair_primary_header_menu_items( $items, $args ) {
 	$remove_items = [ 'Performance', 'Tracking & CRO' ];
 	$clean_urls   = [
 		'13035' => $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
-		'14283' => $primary_urls['results'] ?? home_url( '/ergebnisse/' ),
+		// Der Menuepunkt heisst hier "Ergebnisse" und folgt deshalb dem
+		// Menueziel, nicht der Route 'results' (Fallstudie).
+		'14283' => function_exists( 'hu_get_results_nav_url' ) ? hu_get_results_nav_url() : home_url( '/#arbeiten' ),
 	];
 	$filtered_items = [];
 
@@ -433,7 +435,7 @@ function nexus_redirect_legacy_menu_page_ids() {
 	$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
 	$redirects    = [
 		13035 => $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ),
-		14283 => $primary_urls['results'] ?? home_url( '/ergebnisse/' ),
+		14283 => $primary_urls['results'] ?? home_url( '/case-study-solar-leadgenerierung/' ),
 	];
 
 	wp_safe_redirect( $redirects[ $page_id ], 301, 'Nexus Legacy Menu Permalink' );

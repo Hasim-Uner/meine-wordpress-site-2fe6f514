@@ -140,12 +140,9 @@ function nexus_get_llms_txt_sections() {
 		],
 		[
 			'heading' => 'Proof und zitierfähige Quellen',
+			// Der Proof-Hub /ergebnisse/ ist seit 2026-09-25 stillgelegt und
+			// leitet auf die Fallstudie weiter; sie steht hier als erster Beleg.
 			'links'   => [
-				[
-					'label'       => 'Ergebnisse',
-					'url'         => $urls['results'] ?? home_url( '/ergebnisse/' ),
-					'description' => 'Kuratierter Proof-Hub mit Cases, Kennzahlen und Einordnung.',
-				],
 				[
 					'label'       => 'Solar Case Study',
 					'url'         => $urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' ),

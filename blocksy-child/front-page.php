@@ -376,7 +376,7 @@ get_header();
 				<?php endforeach; ?>
 			</div>
 			<ul class="st-ausgaenge" aria-label="Andere Wege" data-track-section="tueren">
-				<li><span class="st-ausgaenge__label">Für Agenturen</span> <a class="st-link" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="home_door_whitelabel" data-track-category="navigation" data-track-section="tueren">White-Label-Umsetzung unter Ihrem Namen&nbsp;<span aria-hidden="true">→</span></a></li>
+				<li><span class="st-ausgaenge__label">Für Agenturen und Webdesigner</span> <a class="st-link" href="<?php echo esc_url( $whitelabel_url ); ?>" data-track-action="home_door_whitelabel" data-track-category="navigation" data-track-section="tueren">Technik und Tracking für Ihre Kunden&nbsp;<span aria-hidden="true">→</span></a></li>
 				<li><span class="st-ausgaenge__label">Solar &amp; Wärmepumpe</span> <a class="st-link" href="<?php echo esc_url( $energy_url ); ?>" data-track-action="home_door_energy" data-track-category="navigation" data-track-section="tueren">Eigener Anfrageweg mit Marktcheck&nbsp;<span aria-hidden="true">→</span></a></li>
 			</ul>
 		</div>

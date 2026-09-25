@@ -84,7 +84,7 @@ function hu_get_commercial_route_map() {
 			: home_url( '/wordpress-agentur-hannover/' ),
 		'results'         => function_exists( 'nexus_get_results_url' )
 			? nexus_get_results_url()
-			: home_url( '/ergebnisse/' ),
+			: home_url( '/case-study-solar-leadgenerierung/' ),
 		'about'           => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'hasim-uener', 'uber-mich' ], home_url( '/hasim-uener/' ) )
 			: home_url( '/hasim-uener/' ),
@@ -109,6 +109,22 @@ function hu_get_commercial_route( $key, $fallback = '' ) {
 	}
 
 	return $fallback ? $fallback : home_url( '/' );
+}
+
+/**
+ * Return the navigation target of the "Ergebnisse" menu item.
+ *
+ * Seit der Stilllegung von /ergebnisse/ (2026-09-25) fuehrt der Menuepunkt
+ * auf den Nachweis-Abschnitt der Startseite: Fall und Referenzen stehen dort
+ * unter #arbeiten. Links im Text verweisen weiter ueber die Route 'results'
+ * direkt auf die Fallstudie. Kopf, gespeichertes WordPress-Menue und dessen
+ * Fallback lesen diese eine Funktion, damit kein Menue mehr auf den alten
+ * Hub zeigt.
+ *
+ * @return string
+ */
+function hu_get_results_nav_url() {
+	return home_url( '/#arbeiten' );
 }
 
 /**
@@ -209,7 +225,7 @@ function hu_get_site_header_navigation_contract() {
 					[
 						'kind'     => 'group',
 						'label'    => __( 'Ergebnisse', 'blocksy-child' ),
-						'url'      => $routes['results'],
+						'url'      => hu_get_results_nav_url(),
 						'current'  => function_exists( 'nexus_is_results_context' ) && nexus_is_results_context(),
 						'class'    => 'nav-results-link',
 						'track'    => 'nav_header_results',

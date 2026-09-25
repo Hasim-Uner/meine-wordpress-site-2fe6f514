@@ -271,6 +271,9 @@ Regeln:
 `/whitelabel-retainer/` ist ein eigenständiger Agentur-Einstieg und Teil der **globalen kommerziellen Architektur**.
 
 - sichtbar in der Hauptnavigation als `Für Agenturen`
+- Wegweiser auf der Startseite unter den Leistungen (seit 2026-09-25):
+  Label `Für Agenturen und Webdesigner`, Link `Technik und Tracking für Ihre
+  Kunden →`
 - Rolle dort: White-Label-Partner / Umsetzung im Hintergrund
 - WordPress, SEO, Tracking und CRO sind Lieferfelder
 - Erstprojekt mit Scope und Preis vor Start; danach optional Retainer
