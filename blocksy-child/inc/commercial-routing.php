@@ -309,14 +309,13 @@ function hu_get_wayfinding_context() {
 		];
 	}
 
+	// White-Label nimmt seit dem Relaunch auf dem Strecke-System nicht mehr
+	// teil: Die Landeseite der Akquise-Mails hat einen eigenen Kopf mit
+	// Startseiten-Link und Ankern (markiert von whitelabel.js). Breadcrumb
+	// und navigation-ecosystem.css/.js kosteten dort nur den ersten
+	// Bildschirm. Das BreadcrumbList-Schema bleibt davon unberuehrt.
 	if ( function_exists( 'nexus_is_agency_nav_context' ) && nexus_is_agency_nav_context() ) {
-		return [
-			'key'        => 'whitelabel',
-			'label'      => 'White-Label',
-			'breadcrumb' => true,
-			'toc_mode'   => 'existing',
-			'next'       => [], // Die Seite besitzt bereits einen eigenen, formularnahen Abschluss.
-		];
+		return [];
 	}
 
 	if ( function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context() ) {

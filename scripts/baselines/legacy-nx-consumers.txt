@@ -24,4 +24,3 @@ blocksy-child/assets/css/solar-marketcheck-compact.css
 blocksy-child/assets/css/sticky-cta.css
 blocksy-child/assets/css/wgos-assets.css
 blocksy-child/assets/css/wgos.css
-blocksy-child/assets/css/whitelabel.css

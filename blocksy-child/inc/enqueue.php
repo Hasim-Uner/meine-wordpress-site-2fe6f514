@@ -86,6 +86,7 @@ function hu_enqueue_assets() {
 	$is_glossary_hub = function_exists( 'nexus_is_glossary_hub_page' ) && nexus_is_glossary_hub_page();
 	$is_glossary = $is_glossary_hub || is_singular( 'glossary_term' );
 	$is_results_hub = function_exists( 'hu_is_results_hub_request' ) && hu_is_results_hub_request();
+	$is_whitelabel = function_exists( 'nexus_is_agency_nav_context' ) && nexus_is_agency_nav_context();
 
 	// ── Parent Theme ──────────────────────────────────────────────
 	wp_enqueue_style(
@@ -96,12 +97,12 @@ function hu_enqueue_assets() {
 	);
 
 	// ── Legacy compatibility provider ──────────────────────────────
-	// Startseite, Personenseite, Ergebnisse-Hub und Glossar
+	// Startseite, Personenseite, Ergebnisse-Hub, Glossar und White-Label
 	// stehen vollstaendig auf system.css und konsumieren weder NX- noch
 	// unpraefixierte Provider-Tokens. Alle anderen Routen behalten den
 	// Legacy-Provider, bis ihre impliziten Token-/Selector-Abhaengigkeiten
 	// einzeln nachgewiesen und migriert sind.
-	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_glossary );
+	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_glossary || $is_whitelabel );
 	if ( $uses_legacy_design_system ) {
 		hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
 	}
@@ -138,7 +139,7 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-legal-modal-js', 'legal-modal.js' );
 	}
 
-	if ( ( is_front_page() || $is_sst_route ) && wp_script_is( 'ct-scripts', 'registered' ) ) {
+	if ( ( is_front_page() || $is_sst_route || $is_whitelabel ) && wp_script_is( 'ct-scripts', 'registered' ) ) {
 		hu_mark_script_for_defer( 'ct-scripts' );
 	}
 
@@ -601,13 +602,13 @@ function hu_enqueue_assets() {
 	}
 
 	// ── P2) Template: Whitelabel-Retainer ──────────────────────────
-	if (
-		is_page_template( 'page-whitelabel-retainer.php' )
-		|| is_page( 'whitelabel-retainer' )
-		|| is_page( 'whitelabel-retainer-proof' )
-		|| is_page( 'whitelabel' )
-	) {
-		hu_enqueue_css( 'nexus-whitelabel-css', 'whitelabel.css', [ 'nexus-design-system' ] );
+	// Die Route steht auf dem System der Startseite: startseite-strecke.css
+	// und startseite-strecke.js tragen Linie, Marken, Typo-Skala, Tafel und
+	// Bewegungsregeln; whitelabel.css ist nur das Delta dazu.
+	if ( $is_whitelabel ) {
+		hu_enqueue_css( 'nexus-startseite-strecke-css', 'startseite-strecke.css', [ 'nexus-system-css' ] );
+		hu_enqueue_css( 'nexus-whitelabel-css', 'whitelabel.css', [ 'nexus-startseite-strecke-css' ] );
+		hu_enqueue_js( 'nexus-startseite-strecke-js', 'startseite-strecke.js', [] );
 		hu_enqueue_js( 'nexus-whitelabel-js', 'whitelabel.js', [ 'nexus-core-js' ] );
 	}
 
@@ -852,8 +853,9 @@ function hu_get_non_deferred_script_handles() {
 function hu_get_force_deferred_script_handles() {
 	$handles = [];
 	$is_sst_route = is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' );
+	$is_whitelabel = function_exists( 'nexus_is_agency_nav_context' ) && nexus_is_agency_nav_context();
 
-	if ( is_front_page() || $is_sst_route ) {
+	if ( is_front_page() || $is_sst_route || $is_whitelabel ) {
 		$handles = [
 			'ct-scripts',
 			'nexus-core-js',
