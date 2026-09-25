@@ -34,7 +34,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   globaler CTA.
 - Kopf: `.leiste` aus `system.css` plus `leiste.js`. Reihenfolge Leistungen
   (`/#angebote`), White-Label, Tracking (`/server-side-tracking-b2b/`),
-  Solar & Wärmepumpe, Ergebnisse, Über Haşim, CTA „Projekt anfragen“. Quelle ist
+  Solar & Wärmepumpe, Ergebnisse (seit 2026-09-25 auf `/#arbeiten`, Ziel aus
+  `hu_get_results_nav_url()`), Über Haşim, CTA „Projekt anfragen“. Quelle ist
   `hu_get_primary_navigation_contract()` in `inc/commercial-routing.php`; das
   gespeicherte WordPress-Menü wird daraus normalisiert (`inc/menu-setup.php`,
   `inc/header.php`). `/whitelabel-retainer/` hat eine eigene Seitennavigation
@@ -105,7 +106,7 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   in `scripts/canon-forbidden-values.txt`. Eigenes og:image
   `assets/img/whitelabel-retainer-og.jpg` (1200 × 630, JPG) über
   `hu_get_route_social_image()`, erzeugt mit
-  `scripts/build-whitelabel-og-image.py`.
+  `scripts/build-og-images.py`.
 - **`/performance-marketing/`** (`page-performance.php`, Gutachten-Layout):
   Performance Marketing für B2B in der Reihenfolge Messung → Zielseite →
   Budget, mit eigenem Weg für Performance-Agenturen zu White-Label. Titel,
@@ -141,10 +142,14 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `/qualifizierte-pv-anfragen/`, `/solar-leads-kosten-studie/`. Primärziel ist
   der Marktcheck; Byline, Breadcrumb- und Service-Schema über Helper in
   `inc/seo-meta.php`.
-- **Nachweise:** `/ergebnisse/` (`page-ergebnisse.php`) trennt öffentlich
-  prüfbare WordPress-Arbeiten, technische Belege und den Solar-Fall.
-  `/case-study-solar-leadgenerierung/` ist die Fallstudie; sie bleibt
-  `noindex, follow`, bis die Freigabe vorliegt. Kennzahlen nur aus
+- **Nachweise:** `/case-study-solar-leadgenerierung/` ist die Fallstudie; sie
+  bleibt `noindex, follow`, bis die Freigabe vorliegt. Eigenes og:image
+  `assets/img/og-fallstudie-anfragesystem.jpg` (1200 × 630, JPG), das auch das
+  Beitragsbild im Schema ersetzt. Der Hub `/ergebnisse/` ist seit 2026-09-25
+  stillgelegt: 301 auf die Fallstudie (`nexus_redirect_legacy_results_path()`),
+  nicht in Sitemap, `llms.txt` und Fuß; die Route `results` und
+  `nexus_get_results_url()` zeigen direkt auf die Fallstudie. Template
+  `page-ergebnisse.php` bleibt im Repo, ist aber nicht mehr erreichbar. Kennzahlen nur aus
   `inc/canon/e3-proof-canon.php`, Referenzen aus
   `inc/canon/reference-canon.php`.
 - **`/hasim-uener/`** (`page-hasim-uener.php`): Personenseite mit
@@ -309,6 +314,12 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   zentral in `inc/seo-meta.php` und `inc/helpers.php`.
 - Query-Ownership: `docs/seo/query-ownership.csv`, geprüft mit
   `agents/skills/seo-agent/scripts/intent-gate.sh`.
+- og:image: Routen mit Theme-Kachel (`hu_get_route_social_image()`) gehen vor
+  ACF-Feld und Beitragsbild. Standard für jede Seite ohne eigenes Bild ist seit
+  2026-09-25 `assets/img/og-standard.jpg` (1200 × 630, JPG), nicht mehr das
+  Porträt im Hochformat; kommt das Porträt noch als Seitenbild an, ersetzt die
+  Kachel es ebenfalls. Alle Theme-Kacheln außer der Solar-Kachel erzeugt
+  `scripts/build-og-images.py`.
 
 ## Barrierefreiheit
 
@@ -327,8 +338,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Weitere 301: `/stack-solar/` → Energie-Money-Page, `/stack-agentur/` →
   `/whitelabel-retainer/`, `/meta-ads/` → Beitrag `meta-ads-fuer-b2b`,
   `/solar-leads-kaufen-lohnt-sich/` und `/photovoltaik-leads-tco-rechnung/` →
-  `/solar-leads-kaufen-alternative/`, `/case-studies/` und
-  `/case-studies-e-commerce/` → `/ergebnisse/`, `/wordpress-agentur/` →
+  `/solar-leads-kaufen-alternative/`, `/ergebnisse/`, `/case-studies/` und
+  `/case-studies-e-commerce/` → `/case-study-solar-leadgenerierung/` (ein
+  Schritt, Query-String bleibt), `/wordpress-agentur/` →
   `/wordpress-agentur-hannover/`, `/category/owned-leads/` →
   `/eigene-leadgenerierung-vs-portale/`.
 - `410 Gone` (`nexus_get_retired_gone_paths()`): `/wordpress-seo-hannover/`,
@@ -353,6 +365,17 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Admin-Besuchen zuverlässig. Im Repo nicht prüfbar.
 - WordPress-Admin: die Seiten zu `/stack-solar/` und `/stack-agentur/` löschen,
   falls noch vorhanden (sonst Sitemap-Einträge trotz 301).
+- WordPress-Admin: die Seite `/ergebnisse/` auf Entwurf setzen, nicht löschen.
+  Die 301 greift auch ohne diesen Schritt.
+- Seitencache: Der Server-Cache (`x-cacheable: YES`) wird beim Deploy nicht
+  geleert und lieferte `/whitelabel-retainer/` am 2026-09-25 rund 18 Stunden
+  nach dem Deploy noch im alten Stand aus. Nach jedem Deploy mit sichtbarer
+  Änderung im Hosting leeren.
+- Mediathek: `Featured_CaseStudy_E3_1200x627.webp` (Anhang 14765) ist noch
+  Beitragsbild der Fallstudie (Seite 12092) und öffentlich abrufbar; der
+  Seitentitel im Editor lautet „Case Studies- e3-new-energy“ und steht im
+  WebPage-Schema und in der REST-API. Über Löschen bzw. Umbenennen entscheidet
+  Hasim.
 - Der nicht gemessene Vorher-Wert der Abschlussquote steht noch auf
   `/case-study-solar-leadgenerierung/`, `/cost-per-lead-photovoltaik/`,
   `/solar-leads-kaufen-alternative/` und `/eigene-leadgenerierung-vs-portale/`

@@ -583,6 +583,21 @@ function hu_get_post_schema_image_object( $post_id ) {
     $post_id   = absint( $post_id );
     $image_url = $post_id ? get_the_post_thumbnail_url( $post_id, 'full' ) : '';
 
+    // Theme-Kachel statt Beitragsbild, wie im og:image. Ihre Masse stehen
+    // fest; die Attachment-Suche unten faende fuer eine Theme-Datei keine.
+    $route_image = ( $image_url && function_exists( 'hu_get_route_social_image_meta' ) )
+        ? hu_get_route_social_image_meta( $post_id )
+        : [];
+
+    if ( $route_image ) {
+        return [
+            '@type'  => 'ImageObject',
+            'url'    => (string) $route_image['url'],
+            'width'  => (int) $route_image['width'],
+            'height' => (int) $route_image['height'],
+        ];
+    }
+
     if ( ! $image_url && function_exists( 'hu_get_portrait_image_url' ) ) {
         $image_url = hu_get_portrait_image_url();
     }
@@ -788,6 +803,18 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
     }
 
     $image = get_the_post_thumbnail_url( $post_id, 'full' );
+
+    // Wo die Route eine Theme-Kachel mitbringt, ersetzt sie das Beitragsbild
+    // wie im og:image (inc/seo-meta.php). Seiten ohne Beitragsbild bekommen
+    // hier weiterhin keins.
+    if ( $image && function_exists( 'hu_get_route_social_image' ) ) {
+        $route_image = hu_get_route_social_image( $post_id );
+
+        if ( '' !== $route_image ) {
+            $image = $route_image;
+        }
+    }
+
     if ( $image ) {
         $webpage['primaryImageOfPage'] = [
             '@type' => 'ImageObject',

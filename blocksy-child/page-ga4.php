@@ -104,8 +104,8 @@ $contact_url = function_exists( 'hu_get_contact_intake_url' )
 
 $server_side_url = home_url( '/server-side-tracking-b2b/' );
 $results_url     = function_exists( 'nexus_get_primary_public_url' )
-	? nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) )
-	: home_url( '/ergebnisse/' );
+	? nexus_get_primary_public_url( 'results', home_url( '/case-study-solar-leadgenerierung/' ) )
+	: home_url( '/case-study-solar-leadgenerierung/' );
 $response_label  = hu_response_promise( 'compact' );
 $setup_price     = function_exists( 'hu_tracking_price' )
 	? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' )

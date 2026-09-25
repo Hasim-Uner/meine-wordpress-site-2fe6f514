@@ -229,7 +229,7 @@ function hu_home_urls() {
 	$urls = [
 		'audit'       => nexus_get_primary_public_url( 'audit', home_url( '/solar-waermepumpen-leadgenerierung/#marktcheck' ) ),
 		'wgos'        => nexus_get_primary_public_url( 'wgos', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ),
-		'cases'       => nexus_get_primary_public_url( 'results', home_url( '/ergebnisse/' ) ),
+		'cases'       => nexus_get_primary_public_url( 'results', home_url( '/case-study-solar-leadgenerierung/' ) ),
 		'agentur'     => nexus_get_primary_public_url( 'agentur', home_url( '/wordpress-agentur-hannover/' ) ),
 		'seo'         => nexus_get_primary_public_url( 'seo', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ),
 		'wartung'     => nexus_get_primary_public_url( 'wartung', home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ),

@@ -23,7 +23,7 @@ $routes         = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_comm
 $request_url    = $routes['project_request'] ?? home_url( '/kontakt/?type=project&focus=implementation_scope' );
 $freelancer_url = $routes['freelancer'] ?? home_url( '/' );
 $whitelabel_url = $routes['whitelabel'] ?? home_url( '/whitelabel-retainer/' );
-$results_url    = $routes['results'] ?? home_url( '/ergebnisse/' );
+$results_url    = $routes['results'] ?? home_url( '/case-study-solar-leadgenerierung/' );
 $mail_address   = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
 $response       = hu_response_promise( 'phrase' );
 // Visible rel=me links corroborate the existing canonical Person.sameAs graph.

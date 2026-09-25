@@ -96,7 +96,7 @@ $contact_url = function_exists( 'hu_get_contact_intake_url' )
 		home_url( '/kontakt/' )
 	);
 $offers_url   = home_url( '/#angebote' );
-$results_url  = function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/ergebnisse/' );
+$results_url  = function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/case-study-solar-leadgenerierung/' );
 $tracking_url = home_url( '/ga4-tracking-setup/' );
 $case_url     = home_url( '/case-study-solar-leadgenerierung/' );
 $response     = hu_response_promise( 'compact' );
