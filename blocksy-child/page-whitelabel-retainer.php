@@ -199,7 +199,7 @@ $margin_rows = [
 $process = [
 	[ 'Aufgabe', 'Ihr schickt das Briefing. Ein NDA unterschreibe ich, bevor ich Kundendaten sehe. Danach bekommt ihr Rückfragen oder Aufwand und Preis.', '' ],
 	[ 'Umfang', 'Umfang, Festpreis, Termin und Abnahmekriterien stehen schriftlich fest, bevor ich anfange. Vertrag und Rechnung laufen über eure Agentur.', 'umfang' ],
-	[ 'Umsetzung', 'Ich baue auf Staging in euren Accounts, mit einem eigenen Zugang, den ihr jederzeit entziehen könnt. Ich arbeite im Hintergrund oder sitze als euer Technik-Lead im Kundentermin.', 'staging' ],
+	[ 'Umsetzung', 'Ich baue auf Staging in euren Accounts, mit einem eigenen Zugang, den ihr jederzeit entziehen könnt. Ich arbeite im Hintergrund oder sitze als euer Technik-Lead im Kundentermin. Verzug melde ich, sobald er absehbar ist, nicht erst am Abgabetag.', 'staging' ],
 	[ 'Abnahme', 'Ihr prüft gegen die vereinbarten Kriterien. Was nicht passt, korrigiere ich im vereinbarten Umfang, und live geht es erst nach eurer Freigabe.', 'test' ],
 	[ 'Übergabe', 'Dokumentation, Code und Zugänge liegen danach bei euch. Euer Team kann ohne mich weiterarbeiten.', 'doku zugaenge' ],
 ];
@@ -219,7 +219,7 @@ $marke = static function ( $nr, $name ) {
 	<section class="st-abschnitt st-hero wl-hero" id="hero" aria-labelledby="wl-title" data-st-abschnitt="01" data-track-section="hero">
 		<?php echo $marke( '01', 'White-Label' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt st-hero__raster">
-			<h1 class="st-hero__h1 wl-hero__h1" id="wl-title"><span class="st-hero__h1-satz">Ich baue die WordPress-Seite und die Messung dazu.</span> <span class="st-hero__h1-satz st-hero__h1-satz--leise">Euer Kunde sieht nur euch.</span></h1>
+			<h1 class="st-hero__h1 wl-hero__h1" id="wl-title"><span class="st-hero__h1-satz">Ich baue die WordPress-Seite und die Messung dazu.</span> <span class="st-hero__h1-satz st-hero__h1-satz--leise">Ob euer Kunde mich sieht, entscheidet ihr.</span></h1>
 			<div class="st-hero__text">
 				<div class="st-hero__meta">
 					<img class="st-hero__portrait" src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-112.webp' ); ?>" width="56" height="56" alt="" decoding="async" fetchpriority="low">
@@ -374,7 +374,7 @@ $marke = static function ( $nr, $name ) {
 		<?php echo $marke( '05', 'Ablauf' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt">
 			<h2 class="st-h2" id="zusammenarbeit-h">Ich arbeite unter eurem Namen und in euren Accounts.</h2>
-			<p class="st-vorspann">Euer Kunde lernt mich nur kennen, wenn ihr das wollt. In eurem Kundenstamm mache ich keine Akquise.</p>
+			<p class="st-vorspann">In eurem Kundenstamm mache ich keine Akquise. Meldet sich euer Kunde direkt bei mir, verweise ich ihn an euch, während der Zusammenarbeit und zwölf Monate danach.</p>
 			<ol class="wl-ablauf">
 				<?php foreach ( $process as $i => $step ) : ?>
 					<li class="wl-ablauf__station"<?php echo '' !== $step[2] ? ' data-wl-haken="' . esc_attr( $step[2] ) . '"' : ''; ?>>

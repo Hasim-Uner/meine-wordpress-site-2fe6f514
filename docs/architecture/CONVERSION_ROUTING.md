@@ -59,7 +59,12 @@ Strecke gebaut: Hero mit Messprotokoll, Prüfstand, die sechs Stationen einer
 Anfrage, drei Leistungen mit Preisen, Arbeiten, Übergabe, Fragen und der
 Anfrageblock als Ende der Messlinie. White-Label und Solar/Wärmepumpe sind
 leise Nebenausgänge unter den Leistungen (Hooks `home_door_whitelabel`,
-`home_door_energy`), keine Weiche im Hero. Der Solar-Fall ist abgegrenzter Proof.
+`home_door_energy`), keine Weiche im Hero. Der Ausgang für Agenturen heißt seit
+2026-09-25 „Für Agenturen und Webdesigner“ mit dem Link „Technik und Tracking
+für Ihre Kunden“. Der Solar-Fall ist abgegrenzter Proof. Die Belegzeilen im
+Hero führen auf Fall, Referenzen und seit 2026-09-25 auf die Preise
+(`home_proof_strip_case`, `home_proof_strip_references`,
+`home_proof_strip_price` → `#angebote`, Kategorie `proof`).
 
 Die Hero- und Abschluss-CTAs führen zur kanonischen Projektanfrage
 `/kontakt/?type=project` **ohne** vorbelegtes Thema (seit 2026-09-22): Die
