@@ -55,14 +55,14 @@ $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
-$e3_conv_before      = $e3_metrics['sales_conversion_before']['display'] ?? '1 – 5 %';
-$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 5 % → 15 %';
+// Vorher-Quote: Marktannahme, nicht gemessen (hu_e3_metric, display_hedged).
+$e3_conv_before      = hu_e3_metric( 'sales_conversion_before', 'display_hedged' );
 
 // ── Inhalte ───────────────────────────────────────────────────
 $rent_facts = [
 	[ 'k' => '60 – 120 €', 'l' => 'Cost per Lead pro Datensatz (Photovoltaik & Wärmepumpe)' ],
 	[ 'k' => '3 – 5×', 'l' => 'Mehrfachverkauf desselben Datensatzes' ],
-	[ 'k' => $e3_conv_before, 'l' => 'typische Abschlussquote auf gekaufte Portal-Leads' ],
+	[ 'k' => $e3_conv_before, 'l' => 'typische Abschlussquote auf gekaufte Portal-Leads (Marktannahme)' ],
 	[ 'k' => 'OPEX', 'l' => 'reine Mietkosten, kein Asset im Eigentum' ],
 ];
 
@@ -102,7 +102,7 @@ $comparison_rows = [
 	[
 		'criterion' => 'Abschlussquote',
 		'rent'      => sprintf( 'typisch %s — Endkunde wurde parallel an Wettbewerber verkauft', $e3_conv_before ),
-		'own'       => sprintf( '%s bei diesem Betrieb — Faktor 6× bis 12× durch Exklusivität und Vorqualifizierung', $e3_sales_conversion ),
+		'own'       => sprintf( '%s bei diesem Betrieb, gemessen — durch Exklusivität und Vorqualifizierung', $e3_sales_conversion ),
 	],
 	[
 		'criterion' => 'Attribution',
@@ -228,7 +228,7 @@ get_header();
 				Portal-Leads vs. eigenes Anfragesystem — TCO-Vergleich über 24 Monate
 			</h1>
 			<p class="hu-intercept__lead">
-				Portal-Leads sind <strong>OPEX</strong> – laufende Miete für mehrfach verkaufte Datensätze mit typisch <strong><?php echo esc_html( $e3_conv_before ); ?></strong> Abschlussquote. Eigene Anfragesysteme sind <strong>CAPEX</strong> – investiv aufgebaute Infrastruktur, die im Betrieb bleibt. Bei <?php echo esc_html( $e3_case_label ); ?>: <strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong> niedrigerer CPL und Abschlussquote auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> in <strong><?php echo esc_html( $e3_timeframe ); ?></strong>.
+				Portal-Leads sind <strong>OPEX</strong> – laufende Miete für mehrfach verkaufte Datensätze, deren Abschlussquote typisch <strong><?php echo esc_html( $e3_conv_before ); ?></strong> bleibt. Eigene Anfragesysteme sind <strong>CAPEX</strong> – investiv aufgebaute Infrastruktur, die im Betrieb bleibt. Bei einem <?php echo esc_html( hu_e3_canon()['case_label_accusative'] ); ?>: <strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong> niedrigerer CPL und eine Abschlussquote von <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> in <strong><?php echo esc_html( hu_e3_metric( 'timeframe', 'display_dative' ) ); ?></strong>.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">

@@ -29,15 +29,15 @@ $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
-$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 5 % → 15 %';
-$e3_conv_before      = $e3_metrics['sales_conversion_before']['display'] ?? '1 – 5 %';
+// Vorher-Quote: Marktannahme, nicht gemessen (hu_e3_metric, display_hedged).
+$e3_conv_before      = hu_e3_metric( 'sales_conversion_before', 'display_hedged' );
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 
 $cpl_quick_facts = [
 	[ 'k' => '25 – 150 €', 'l' => 'Marktbreite Preisspanne für einen einzelnen PV-Datensatz' ],
 	[ 'k' => $e3_cpl_reduction, 'l' => sprintf( 'Senkung Cost per Lead in %s bei %s', $e3_timeframe, $e3_case_label ) ],
-	[ 'k' => $e3_conv_uplift, 'l' => 'Sprung der Abschlussquote (Portal-Leads vs. eigenes System)' ],
-	[ 'k' => '~ 15× weniger', 'l' => 'Cost per Auftrag — CPL × Quote zusammen wirken multiplikativ' ],
+	[ 'k' => $e3_sales_conversion, 'l' => sprintf( 'Abschlussquote im eigenen Anfragesystem, gemessen; auf gekaufte Portal-Leads meist %s', $e3_conv_before ) ],
+	[ 'k' => $e3_lead_count, 'l' => sprintf( 'qualifizierte Anfragen in %s', hu_e3_metric( 'timeframe', 'display_dative' ) ) ],
 ];
 
 $scenarios = [
@@ -158,7 +158,7 @@ get_header();
 				Cost per Lead Photovoltaik: Was Solar-Anfragen wirklich kosten
 			</h1>
 			<p class="hu-intercept__lead">
-				Der reine Stückpreis für eine PV-Anfrage liegt zwischen <strong>25 €</strong> und <strong>150 €</strong>. Wirtschaftlich entscheidend ist aber der <strong>Cost per Auftrag</strong> — also CPL geteilt durch Abschlussquote. Bei <?php echo esc_html( $e3_case_label ); ?> wurde nicht nur der CPL gesenkt, sondern auch die Abschlussquote von <strong><?php echo esc_html( $e3_conv_before ); ?></strong> auf <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong> gehoben. Beide Hebel zusammen multiplizieren sich.
+				Der reine Stückpreis für eine PV-Anfrage liegt zwischen <strong>25 €</strong> und <strong>150 €</strong>. Wirtschaftlich entscheidend ist aber der <strong>Cost per Auftrag</strong> — also CPL geteilt durch Abschlussquote. Bei einem <?php echo esc_html( hu_e3_canon()['case_label_accusative'] ); ?> sank der CPL um <strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong>, und im eigenen Anfragesystem lag die Abschlussquote bei <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong>. Auf gekaufte Portal-Leads ist sie nach Marktbeobachtung meist <strong><?php echo esc_html( $e3_conv_before ); ?></strong>; gemessen wurde dieser Vorher-Wert im Fall nicht. Beide Hebel zusammen multiplizieren sich.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">

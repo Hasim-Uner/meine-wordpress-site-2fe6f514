@@ -351,6 +351,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `lint-e3-canon.sh`, `check-german-copy.sh`, `validate-architecture.sh`,
   beide Smoke-Contracts, CSS-Audits, `lint-entity-crawler-signals.php` und
   PHPStan mit Baseline. Der Theme-Build führt den Kanon-Guard erneut aus.
+- Vorher-Abschlussquote des Falls (Marktannahme, nicht gemessen): Oberflächen
+  lesen nur `display_hedged` und nennen sie Annahme; ein Vorher-Nachher-Feld
+  gibt es seit 2026-09-26 nicht mehr. Guard-Regel `e3-vorher-quote`.
 - Tracking-Leiter: Name, Umfang, Preis und Lieferzeit der vier Stufen nur in
   `hu_tracking_product_ladder()`; `npm run test:pricing`
   (`scripts/tests/tracking-ladder.php`, CI) prüft Reihenfolge, steigende
@@ -444,10 +447,6 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Seitentitel im Editor lautet „Case Studies- e3-new-energy“ und steht im
   WebPage-Schema und in der REST-API. Über Löschen bzw. Umbenennen entscheidet
   Hasim.
-- Der nicht gemessene Vorher-Wert der Abschlussquote steht noch auf
-  `/case-study-solar-leadgenerierung/`, `/cost-per-lead-photovoltaik/`,
-  `/solar-leads-kaufen-alternative/` und `/eigene-leadgenerierung-vs-portale/`
-  (aus `hu_e3_metric()`); der Canon bietet dafür `display_hedged`.
 - Partnerlinks aus `inc/affiliate-links.php` tragen `rel="sponsored"`, aber
   keinen sichtbaren Werbehinweis; zu prüfen.
 - Browser- und Lighthouse-Abnahmen der jüngsten Seitenumbauten stehen aus,

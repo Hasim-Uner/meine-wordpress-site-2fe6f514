@@ -53,8 +53,6 @@ $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['met
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
-$e3_conv_uplift      = $e3_metrics['sales_conversion_uplift']['display'] ?? '1 – 5 % → 15 %';
-$e3_conv_before      = $e3_metrics['sales_conversion_before']['display'] ?? '1 – 5 %';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
@@ -90,8 +88,8 @@ $own_facts = [
 		'l' => 'Die Anfrage läuft direkt und ohne Portal-Parallelversand in den Vertrieb.',
 	],
 	[
-		'k' => $e3_conv_uplift,
-		'l' => 'Abschlussquote im dokumentierten Fall — kein allgemeines Versprechen.',
+		'k' => $e3_sales_conversion,
+		'l' => 'Abschlussquote im eigenen Anfragesystem des dokumentierten Falls — kein allgemeines Versprechen.',
 	],
 	[
 		'k' => 'Eigenes Asset',
@@ -300,8 +298,8 @@ get_header();
 							<dd><?php echo esc_html( $e3_cpl_before ); ?> <span>→</span> <?php echo esc_html( $e3_cpl_after ); ?></dd>
 						</div>
 						<div>
-							<dt>Abschlussquote</dt>
-							<dd><?php echo esc_html( $e3_conv_uplift ); ?></dd>
+							<dt>Abschlussquote im eigenen System</dt>
+							<dd><?php echo esc_html( $e3_sales_conversion ); ?></dd>
 						</div>
 						<div>
 							<dt>Qualifizierte Anfragen</dt>

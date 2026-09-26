@@ -2,6 +2,14 @@
 
 ## 2026-09
 
+### Fall: nicht gemessene Vorher-Quote nicht mehr als Messwert
+
+- Die Vorher-Abschlussquote des Solar-Falls („1 – 5 %“) ist eine Marktannahme über gekaufte Portal-Leads, im Fall nie gemessen. Sie stand trotzdem wie ein Messwert neben gemessenen Zahlen: in der Vorher-Karte der Fallstudie (seit 2026-09-25 Beleg aller Wege), als „Sprung der Abschlussquote 1 – 5 % → 15 %“ auf `/cost-per-lead-photovoltaik/` und `/solar-leads-kaufen-alternative/`, und im Satz „… die Abschlussquote von 1 – 5 % auf 15 % gehoben“.
+- Jetzt überall `display_hedged` („einstellig“) mit dem Hinweis, dass es eine Annahme ist; wo ein Vorher-Nachher stand, steht der gemessene Wert allein. Die daraus abgeleiteten Behauptungen „~ 15× weniger Cost per Auftrag“ und „Faktor 6× bis 12×“ sind entfallen; an ihrer Stelle steht die gemessene Zahl qualifizierter Anfragen.
+- Kanon: Das Feld `sales_conversion_uplift` (mit „3× bis 15× höhere Abschlussquote“) ist entfernt, es rechnete mit der Annahme. Neue Guard-Regel `e3-vorher-quote`; gegen den alten Stand der vier Seiten findet sie sieben Stellen.
+- Nebenbei: „Bei mittelständischer PV-Installationsbetrieb“ → „Bei einem mittelständischen …“, „in 6 Monate“ → „in 6 Monaten“.
+- **Geprüft:** Kanon-Guard (mit Gegenprobe), die vier Seiten in der WordPress-Attrappe gerendert und die geänderten Sätze gelesen. **Nicht geprüft:** Produktion nach dem Deploy.
+
 ### Funnel vor dem Freeze: Tracking-Leiter, Beleg-Sackgasse, Agentur-Seite
 
 - **Tracking-Leiter:** Der Server-Side-Preis (1.290 €) stand auf drei Oberflächen für drei Produkte: Server-GTM auf der Server-Side-Seite und im White-Label-Margenblock, clientseitiges GA4-Setup auf `/ga4-tracking-setup/` (dort kostete Server-Side 1.900 €), „Tracking bis ins CRM“ auf der Startseite (CRM dort ab 3.500 €). Jetzt vier Stufen, einmal definiert in `hu_tracking_product_ladder()`: Conversion-Tracking (neu, 890 €, clientseitig), Server-Side Tracking (1.290 €), Server-Side mit Meta (1.900 €), Tracking bis ins CRM (ab 3.500 €), je mit Umfang, Lieferzeit und Preisbedingung. Startseite (Angebot 02, Station 04), GA4-Seite (vier Karten `#stufe-1` bis `#stufe-4`, Meta, FAQ, Service-Offer), Server-Side-Seite (Pakete und Care nach Stufen, Verweis auf Stufe 1) und Performance-Seite lesen nur noch die Leiter. Herleitung der 890 € aus veröffentlichten Festpreisen im Markt: `docs/decisions/tracking-preisleiter.md`. White-Label unverändert.
