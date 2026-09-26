@@ -123,10 +123,13 @@ function hu_e3_canon() {
 			],
 			// Die Vorher-Quote ist die einzige Zahl dieses Falls, die nicht
 			// gemessen wurde: sie ist eine Marktannahme ueber gekaufte
-			// Portal-Leads. `display` traegt die Spanne fuer Stellen, die sie
-			// ausdruecklich als Annahme rahmen; `display_hedged` ist die
-			// vorsichtige Fassung fuer Vergleichstabellen, in denen die Spanne
-			// neben gemessenen Werten wie eine Messung aussaehe.
+			// Portal-Leads. Oberflaechen verwenden `display_hedged` und sagen
+			// dazu, dass es eine Annahme ist (Regel e3-vorher-quote in
+			// scripts/canon-forbidden-values.txt). `display` bleibt fuer den
+			// Kanon selbst und fuer Texte, die die Spanne als Marktwert mit
+			// Quelle zitieren. Seit 2026-09-26 gibt es kein Vorher-Nachher-Feld
+			// mehr: "1 – 5 % → 15 %" und "3× bis 15×" rechneten mit der
+			// Annahme, als waere sie gemessen.
 			'sales_conversion_before' => [
 				'value'           => HU_E3_SALES_CONVERSION_BEFORE_LOW,
 				'value_high'      => HU_E3_SALES_CONVERSION_BEFORE_HIGH,
@@ -139,15 +142,6 @@ function hu_e3_canon() {
 				'display'        => '15 %',
 				'counter_target' => '15',
 				'label'          => 'Abschlussquote nachher (eigenes Anfragesystem)',
-			],
-			'sales_conversion_uplift' => [
-				// Geschuetzte Leerzeichen binden Spanne und Einheit zusammen. Der
-				// Wert ist der laengste im Proof-Band; mit normalen Leerzeichen
-				// rutschte in der grossen Stat-Darstellung das Prozentzeichen
-				// allein in die naechste Zeile. Umbrechen darf er nur am Pfeil.
-				'display' => "1\u{00A0}–\u{00A0}5\u{00A0}% → 15\u{00A0}%",
-				'short'   => '3× bis 15× höhere Abschlussquote',
-				'label'   => 'Anstieg der Abschlussquote durch eigenes System und Vertrieb',
 			],
 			'timeframe'        => [
 				'value'          => HU_E3_TIMEFRAME_MONTHS,

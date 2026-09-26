@@ -48,6 +48,12 @@ rule	frist-4h	(^|[^0-9])(4|vier)[[:space:]]*(Stunden|h)[[:space:]]+werktags	-	An
 # nur im Case-Kontext und nicht auf jede 12 im Repo.
 rule	case-abschlussquote-12	(^|[^0-9,.])12[[:space:]]*(%|&nbsp;%|Prozent)	Abschlussquote|Abschluss-Quote|sales_conversion|Case[ -]Study|case-study|PV-Case|E3-	Abschlussquote kommt aus hu_e3_metric( 'sales_conversion' ).
 
+# Die Vorher-Abschlussquote des Falls ist eine Marktannahme, keine Messung.
+# Oberflaechen lesen sie nur als display_hedged und nennen sie Annahme; das
+# fruehere Vorher-Nachher-Feld sales_conversion_uplift ("1 – 5 % → 15 %",
+# "3× bis 15×") ist seit 2026-09-26 aus dem Kanon entfernt.
+rule	e3-vorher-quote	sales_conversion_uplift|sales_conversion_before'\]\['display'\]|sales_conversion_before',[[:space:]]*'display'[[:space:]]*[,)]	-	Vorher-Quote nur als hu_e3_metric( 'sales_conversion_before', 'display_hedged' ) und als Annahme gekennzeichnet.
+
 # ── Begruendung einer Anonymisierung ──────────────────────────────────────
 # Ein anonymisierter Fall wird nie begruendet. „Anonymisiert, weil ein
 # Verfahren laeuft“ stand bis 2026-09-21 in Abschnitt 04 der Solar-Money-Page

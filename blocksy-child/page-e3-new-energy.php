@@ -33,7 +33,10 @@ $e3_cpl_before   = $e3( 'cpl_before', 'display', '150 €' );
 $e3_cpl_after    = $e3( 'cpl_after', 'display', '22 €' );
 $e3_cpl_ramp     = $e3( 'cpl_ramp', 'display', '70 – 100 €' );
 $e3_lead_count   = $e3( 'lead_count', 'display', '1.750+' );
-$e3_conv_before  = $e3( 'sales_conversion_before', 'display', '1 – 5 %' );
+// Die Vorher-Quote ist die einzige nicht gemessene Zahl des Falls (Marktannahme
+// über gekaufte Portal-Leads). Neben gemessenen Werten steht sie deshalb nur
+// vorsichtig und ausdrücklich als Annahme.
+$e3_conv_before  = $e3( 'sales_conversion_before', 'display_hedged', 'einstellig' );
 $e3_conv_after   = $e3( 'sales_conversion_after', 'display', '15 %' );
 $e3_timeframe    = $e3( 'timeframe', 'display', '6 Monate' );
 $e3_timeframe_dt = $e3( 'timeframe', 'display_dative', '6 Monaten' );
@@ -216,7 +219,7 @@ get_header();
 						<div class="e3v2-source-card__top"><span>Portal-Leads</span><span>vorher</span></div>
 						<strong><?php echo esc_html( $e3_cpl_before ); ?></strong>
 						<p>pro gekaufter Anfrage</p>
-						<div class="e3v2-source-card__foot"><b><?php echo esc_html( $e3_conv_before ); ?></b> Abschlussquote auf Auftrag</div>
+						<div class="e3v2-source-card__foot"><b><?php echo esc_html( $e3_conv_before ); ?></b> Abschlussquote auf Auftrag · Marktannahme, im Fall nicht gemessen</div>
 					</article>
 
 					<div class="e3v2-source-vs" aria-hidden="true">vs.</div>
