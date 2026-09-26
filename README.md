@@ -1,74 +1,58 @@
-# hasimuener.de — Source
+# hasimuener.de — WordPress Engineering
 
-Production-Codebase von [hasimuener.de](https://hasimuener.de). WordPress-Child-Theme,
-Funnel- und Tracking-Logik, Schema-Implementierung, REST-Endpunkte und Automation-Verträge.
+Produktions-Codebase von [hasimuener.de](https://hasimuener.de) für **WordPress, Tracking & Conversion im B2B-Kontext**.
 
-**Warum öffentlich?**
-Transparenz statt Blackbox. Wer mit mir arbeitet — oder über das White-Label-Modell
-mit mir kollaboriert — kann jeden Commit, jedes Template, jede Tracking-Regel verifizieren.
-Code-Qualität ist nicht ein Versprechen, sondern überprüfbar.
+Das Repository zeigt nicht nur Theme-Code, sondern die technische Verbindung aus Website-Architektur, SEO, Tracking, Funnel-Logik und Automatisierung. Es dient zugleich als nachvollziehbarer Engineering-Nachweis für direkte Projekte und White-Label-Zusammenarbeit mit Agenturen.
 
-➡️ **Für Agenturen:** [White-Label-Partner-Modell](https://hasimuener.de/whitelabel-retainer/)
-➡️ **Live-Site:** [hasimuener.de](https://hasimuener.de)
-➡️ **Über mich:** [hasimuener.de/hasim-uener/](https://hasimuener.de/hasim-uener/)
+**Live:** [hasimuener.de](https://hasimuener.de)  
+**White-Label:** [Zusammenarbeit für Agenturen](https://hasimuener.de/whitelabel-retainer/)  
+**Profil:** [Haşim Üner](https://hasimuener.de/hasim-uener/)
 
 ---
 
-## Was hier drin steckt
+## Technischer Umfang
 
-| Bereich | Pfad | Inhalt |
-|---|---|---|
-| WordPress-Child-Theme | `blocksy-child/` | PHP-Templates, CSS, JS, REST-Endpunkte, Schema-Logik |
-| Architektur-Doku | `docs/architecture/` | Live-Status, System-Map, Entscheidungs-Logs |
-| Agenten-Workflows | `agents/skills/` | Wiederholbare Automatisierungs-Skills (Claude Code) |
-| n8n-Workflows | `automations/n8n/` | Versionierte Flow-Exports + Doku + Flow-Maps |
-| Inhalt | `content/blog-drafts/` | Vorbereitete Blog-Drafts (nicht live-autoritativ) |
+| Bereich | Inhalt |
+|---|---|
+| WordPress | eigenes Child-Theme, PHP-Templates, Hooks und REST-Endpunkte |
+| Frontend | Vanilla JavaScript, komponentennahe Styles, bedarfsgesteuertes Asset-Loading |
+| SEO | strukturierte Daten, technische SEO-Logik, interne Architektur |
+| Tracking | GA4, GTM, Server-Side-Tracking, Consent Mode, Event-Konventionen |
+| Automation | versionierte Workflows und Integrationslogik |
+| Qualität | PHPStan, dokumentierte Architektur- und Entscheidungsregeln |
+| Deployment | Git-basierter Workflow und automatisierbare Deployments |
 
-## Stack
+## Engineering-Prinzipien
 
-- **Frontend:** WordPress 6.x · Blocksy Parent Theme · eigenes Child-Theme · Vanilla JS
-- **Server:** PHP 8.x · MySQL · NGINX
-- **Tracking:** GA4 · GTM (Client + Server-Side via Stape/GCP) · Consent Mode V2 · Meta CAPI
-- **CRM:** Bitrix24 · HubSpot · Pipedrive (via n8n / Make)
-- **Deploy:** GitHub Actions · SSH-Rsync (`.github/workflows/deploy.yml`)
-- **Doku:** Markdown · ADR-style Entscheidungs-Logs · llms.txt
+- Git statt Änderungen als Blackbox im Backend
+- möglichst wenig globale Abhängigkeiten
+- Conditional Loading nach Seitentyp und Template
+- konsequentes WordPress-Escaping
+- strukturierte Tracking-Events statt verstreuter Einzelimplementierungen
+- technische Entscheidungen werden dokumentiert und versioniert
+- KI-Agenten arbeiten mit repository-internem Kontext statt ohne Projektwissen
 
-## Engineering-Standards
+## Tracking- und Conversion-Schicht
 
-- Bedarfsgesteuertes Asset-Loading pro Template (siehe `blocksy-child/inc/enqueue.php`)
-- Zentrale Schema-Logik (`blocksy-child/inc/seo-meta.php`, `blocksy-child/inc/org-schema.php`)
-- WordPress-Escaping-Discipline (`esc_html`, `esc_attr`, `esc_url`)
-- Kein Page-Builder, keine bloat-anfälligen Plugin-Stacks
-- Jeder Tracking-CTA hat `data-track-action` / `data-track-category` / `data-track-section`
-- Conditional Loading nach Template/Seitentyp statt globalem CSS-/JS-Dump
+CTAs und relevante Interaktionen werden systematisch für Analytics und Attribution vorbereitet. Die Tracking-Architektur ist so aufgebaut, dass Client-Side- und Server-Side-Signale sowie CRM-/Automationsprozesse erweitert werden können, ohne die Website-Templates jedes Mal neu zu erfinden.
 
-## Funnel-Architektur (Public)
+## Für Agenturen
 
-```
-Solar-/SHK-Audience              Agentur-Audience
-        │                                │
-        ▼                                ▼
-/solar-waermepumpen-leadgenerierung/   /whitelabel-retainer/
-        │                                │
-        ▼                                ▼
-   Marktcheck (60 Sek)              White-Label-Gespräch
-        │                                │
-        ▼                                ▼
-   System-Analyse                   Testprojekt (1–2 Wo)
-        │                                │
-        ▼                                ▼
-   Umsetzung                        Monats-Retainer
-```
+Das Repository ist bewusst öffentlich einsehbar, damit technische Arbeitsweise, Commit-Historie und Architektur überprüfbar sind.
 
-## Für Mitarbeit / Code-Review
+Typische Einsatzbereiche in White-Label-Projekten:
 
-Auf Sicht und für Bewertung öffentlich. Für aktive Mitarbeit / Forks bitte vorher per
-[Kontakt](https://hasimuener.de/kontakt/) abstimmen.
+- WordPress-Entwicklung und technische Umsetzung
+- Landingpages und Conversion-Optimierung
+- technische SEO- und Performance-Arbeit
+- Tracking-Architektur
+- API-/CRM-Anbindungen
+- Wartung und Weiterentwicklung bestehender Codebases
 
-Internes Setup, Conventions und Agent-Regeln stehen in [`AGENTS.md`](./AGENTS.md) und
-in den lokalen `CONTEXT.md`-Dateien je Verzeichnis.
+## Mitarbeit und Wiederverwendung
+
+Das Repository ist zur technischen Bewertung öffentlich. Für aktive Mitarbeit oder projektbezogene Zusammenarbeit bitte über [hasimuener.de](https://hasimuener.de) Kontakt aufnehmen.
 
 ## Lizenz
 
-Siehe [`LICENSE`](./LICENSE) — Source-Available, alle Rechte vorbehalten. Code ist
-einsehbar, aber nicht zur freien Wiederverwendung lizenziert.
+Siehe [LICENSE](./LICENSE). Source-Available, alle Rechte vorbehalten; der öffentlich sichtbare Code ist nicht automatisch zur freien Wiederverwendung lizenziert.
