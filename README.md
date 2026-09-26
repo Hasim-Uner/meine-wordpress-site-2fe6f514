@@ -53,6 +53,12 @@ Typische Einsatzbereiche in White-Label-Projekten:
 
 Das Repository ist zur technischen Bewertung öffentlich. Für aktive Mitarbeit oder projektbezogene Zusammenarbeit bitte über [hasimuener.de](https://hasimuener.de) Kontakt aufnehmen.
 
+## Lokale Prüfungen
+
+Lokale Einrichtung und gemeinsame CLI-Versionen für Codex, Claude Code und CI:
+[Toolchain einrichten](docs/development/TOOLCHAIN.md). Einstieg ohne neues System-PHP:
+`python3 scripts/toolchain.py setup`, danach `npm run doctor` und `npm run check`.
+
 ## Lizenz
 
 Siehe [LICENSE](./LICENSE). Source-Available, alle Rechte vorbehalten; der öffentlich sichtbare Code ist nicht automatisch zur freien Wiederverwendung lizenziert.

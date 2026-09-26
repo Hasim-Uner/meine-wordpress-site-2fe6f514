@@ -97,7 +97,7 @@ def checks(plan, base, head):
         ('architecture', ['bash', 'scripts/validate-architecture.sh']),
         ('php-syntax', ['bash', '-c', "find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l"]),
         ('skill-contracts', ['python3', 'scripts/validate-skills.py']),
-        ('check-selection', ['python3', '-m', 'unittest', 'discover', '-s', 'scripts/tests', '-p', 'test_check.py']),
+        ('check-selection', ['python3', '-m', 'unittest', 'discover', '-s', 'scripts/tests', '-p', 'test_check*.py']),
         ('canon', ['bash', 'scripts/canon-guard.sh']),
         ('e3-canon', ['bash', 'scripts/lint-e3-canon.sh']),
         ('canon-drift', ['bash', 'scripts/lint-canon-drift.sh', *diff_refs]),
@@ -129,7 +129,7 @@ def checks(plan, base, head):
     return result
 
 
-def run_checks(selected, root=ROOT):
+def run_checks(selected, root=ROOT, env=None):
     """Keep success output small, retain complete logs, and propagate any failure."""
     log_dir = Path(tempfile.mkdtemp(prefix='repo-check-'))
     print(f'Logs: {log_dir}', flush=True)
@@ -141,7 +141,7 @@ def run_checks(selected, root=ROOT):
         try:
             with log_path.open('w') as log:
                 result = subprocess.run(command, cwd=root, stdout=log, stderr=subprocess.STDOUT,
-                                        env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1'})
+                                        env={**(os.environ if env is None else env), 'PYTHONDONTWRITEBYTECODE': '1'})
             status = result.returncode
         except OSError as exc:
             log_path.write_text(str(exc) + '\n')
@@ -189,7 +189,11 @@ def main():
                               'paths': paths, 'checks': [name for name, _ in selected]}, indent=2))
             return 0
         print(f"Profile: {plan['profile']} ({len(paths)} changed paths; {plan['reason']})", flush=True)
-        return run_checks(selected)
+        from toolchain import doctor, environment
+        env = environment()
+        if doctor(full=plan['runtime'], env=env):
+            return 1
+        return run_checks(selected, env=env)
     except (ValueError, OSError) as exc:
         print(f'FAIL: {exc}', file=sys.stderr)
         return 1
