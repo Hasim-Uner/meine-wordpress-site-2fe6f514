@@ -13,7 +13,7 @@ Use this skill when repo changes need live SEO verification or Search Console fo
 agents/skills/seo-live-qa/scripts/print-scope.sh all
 ```
 
-Supported modes: `all`, `reindex`, `redirects`, `mapping`, `live-qa`.
+Supported modes: `all`, `reindex`, `redirects`, `gone`, `noindex`, `mapping`, `live-qa`. Every list is read from its source file.
 
 ## Rules
 

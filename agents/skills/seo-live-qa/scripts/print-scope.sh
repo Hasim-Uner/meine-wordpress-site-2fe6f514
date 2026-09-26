@@ -1,107 +1,66 @@
 #!/usr/bin/env bash
+# Print the live SEO QA scope. Lists are read from their sources on every run —
+# llms.txt and the PHP functions named in each section — never copied here.
 
 set -euo pipefail
 
+ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
+INC="$ROOT/blocksy-child/inc"
 mode="${1:-all}"
 
+# extract <mode:map|paths|slugs> <file> <function>
+extract() {
+  python3 - "$@" <<'PY'
+import re, sys
+mode, path, name = sys.argv[1:4]
+text = open(path, encoding='utf-8').read()
+match = re.search(r'^function ' + re.escape(name) + r'\(.*?^}', text, re.M | re.S)
+if not match:
+    sys.exit(f'FEHLT: {name}() in {path}')
+body = re.sub(r"'\s*\.\s*'", '', match[0])  # join split string literals
+rel = path.split('/blocksy-child/', 1)[-1]
+print(f'Quelle: {name}() in blocksy-child/{rel}')
+if mode == 'map':
+    rows = re.findall(r"^\s*'(/[^']*)'\s*=>\s*(.+?),?\s*$", body, re.M)
+    print('\n'.join(f'- {src} -> {dst}' for src, dst in rows))
+elif mode == 'paths':
+    print('\n'.join(f'- {p}' for p in dict.fromkeys(re.findall(r"'(/[^']*/)'", body))))
+else:
+    print('\n'.join(f'- /{s}/' for s in re.findall(r"^\s*'([a-z0-9-]+)',", body, re.M)))
+PY
+}
+
 print_reindex() {
-  cat <<'EOF'
-[REINDEX]
-- /solar-waermepumpen-leadgenerierung/
-- /case-study-solar-leadgenerierung/
-- /wordpress-agentur-hannover/
-- /ergebnisse/
-- /ga4-tracking-setup/
-- /server-side-tracking-b2b/
-- /performance-marketing/
-- /blog/
-EOF
+  echo '[ROUTEN AUS llms.txt — Kandidaten fuer Reindex und Live-Pruefung]'
+  grep -o '](/[^)#?]*' "$ROOT/llms.txt" | cut -c3- | awk '!seen[$0]++ { print "- " $0 }'
 }
 
 print_redirects() {
-  cat <<'EOF'
-[REDIRECTS]
-Quelle: nexus_get_legacy_offer_redirect_map() in blocksy-child/inc/helpers.php
-- /growth-audit/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
-- /audit/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
-- /customer-journey-audit/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
-- /360-audit/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
-- /wordpress-tech-audit/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
-- /system-diagnose/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
-- /anfrage/ -> /solar-waermepumpen-leadgenerierung/#marktcheck
-- /wordpress-agentur/ -> /wordpress-agentur-hannover/
-- /alle-loesungen-im-detail/ -> /alle-loesungen/
-- /meta-ads/ -> aktueller Permalink des Beitrags meta-ads-fuer-b2b
-- /e3-new-energy/ -> /case-study-solar-leadgenerierung/
-- /case-e3/ -> /case-study-solar-leadgenerierung/
-- /case-studies/e3-new-energy/ -> /case-study-solar-leadgenerierung/
-- /photovoltaik-leads-kaufen-alternative/ -> /solar-waermepumpen-leadgenerierung/
-- /category/owned-leads/ -> /eigene-leadgenerierung-vs-portale/
-- /sitemap_index.xml -> /wp-sitemap.xml
-EOF
+  echo '[REDIRECTS]'
+  extract map "$INC/helpers.php" nexus_get_legacy_offer_redirect_map
+  extract paths "$INC/helpers.php" nexus_redirect_legacy_results_path
+  extract paths "$INC/helpers.php" nexus_redirect_legacy_energy_systems_path
+  extract paths "$INC/system-diagnose-page.php" hu_get_request_analysis_legacy_paths
+  echo 'Ziele der Variablen und Status: docs/architecture/LIVE_STATUS.md.'
 }
 
 print_gone() {
-  cat <<'EOF'
-[410 GONE — absichtlich, kein zu behebender Fehler]
-Quelle: nexus_get_retired_gone_paths() in blocksy-child/inc/helpers.php
-Diese Pfade sind bewusst aus dem oeffentlichen Crawl-Surface genommen. Sie
-sammeln keine Crawl-Nachfrage mehr und spalten kein Canonical-Signal. Ein
-301-Redirect auf einen dieser Pfade waere eine Rueckabwicklung der Entscheidung,
-kein Bugfix — siehe docs/architecture/LIVE_STATUS.md.
-- /wordpress-seo-hannover/
-- /core-web-vitals/
-- /conversion-rate-optimization/
-- /wordpress-wartung-hannover/
-- /roi-rechner/
-- /seo/
-- /kostenlose-tools/
-- /kostenlose-tools/website-performance-analyse/
-- /tools/
-- /tools/website-performance-analyse/
-- /website-performance-analyse/
-- /audit-linkedin/
-- /shopify-wartungsvertrag/
-EOF
+  echo '[410 GONE — absichtlich, kein zu behebender Fehler]'
+  echo 'Ein 301 auf einen dieser Pfade waere eine Rueckabwicklung der Entscheidung, kein Bugfix.'
+  extract paths "$INC/helpers.php" nexus_get_retired_gone_paths
 }
 
 print_noindex() {
-  cat <<'EOF'
-[NOINDEX / GESCHUETZT — weder Redirect noch 410]
-Quelle: hu_get_noindex_follow_slugs() / hu_get_noindex_nofollow_slugs() in
-blocksy-child/inc/seo-meta.php
-Diese Pfade existieren weiter, sind aber kein oeffentliches Primaerziel. Nicht
-als kaputte Route melden und nicht reaktivieren.
-- /case-studies/, /case-studies-e-commerce/  (noindex, follow)
-- /alle-loesungen/, /loesungen/               (noindex, follow)
-- /case-study-solar-leadgenerierung/          (noindex bis Anonymisierungs-Hold faellt)
-- /wordpress-growth-operating-system/, /wgos-systemlandkarte/, /wgos-assets/*
-                                              (noindex bzw. access-protected,
-                                               solange intern als Dashboard-/
-                                               Asset-Hub genutzt)
-EOF
+  echo '[NOINDEX — nicht als kaputte Route melden und nicht reaktivieren]'
+  extract slugs "$INC/seo-meta.php" hu_get_noindex_follow_slugs
+  extract slugs "$INC/seo-meta.php" hu_get_noindex_nofollow_slugs
 }
 
 print_mapping() {
   cat <<'EOF'
-[PRIMARY URL MAP]
-- cold Solar/SHK demand -> /solar-waermepumpen-leadgenerierung/#marktcheck
-- proof -> /case-study-solar-leadgenerierung/
-- wordpress agentur hannover -> /wordpress-agentur-hannover/
-- ga4 tracking setup / google analytics 4 / consent mode grundlage -> /ga4-tracking-setup/
-- server-side tracking / sgtm / meta capi einrichten -> /server-side-tracking-b2b/
-- pv termine b2b / pv leads gewerbe / b2b photovoltaik -> /b2b-solar-leads/
-- leadgenerierung photovoltaik / photovoltaik leads -> /solar-waermepumpen-leadgenerierung/
-- checkfox* -> /checkfox-solar-waermepumpe-einordnung/
-- aroundhome* -> /aroundhome-solar-einordnung/
-
-Kein Primaerziel mehr (die alten Slugs liefern 410, siehe oben):
-wordpress seo hannover, wordpress wartung hannover, conversion rate optimization.
-"core web vitals optimierung" zeigt auf /wgos-assets/cwv-optimierung/ — das ist
-ein interner, noindex/access-protected Asset-Pfad, kein oeffentliches Ziel.
-
+[QUERY-OWNERSHIP]
 Verbindliche Quelle je Query: docs/seo/query-ownership.csv
-(Pruefen: bash agents/skills/seo-agent/scripts/intent-gate.sh audit)
+Pruefen: bash agents/skills/seo-agent/scripts/intent-gate.sh audit
 EOF
 }
 
@@ -116,32 +75,13 @@ EOF
 }
 
 case "$mode" in
-  all)
-    print_reindex
-    print_redirects
-    print_gone
-    print_noindex
-    print_mapping
-    print_live_qa
-    ;;
-  reindex)
-    print_reindex
-    ;;
-  redirects)
-    print_redirects
-    ;;
-  gone)
-    print_gone
-    ;;
-  noindex)
-    print_noindex
-    ;;
-  mapping)
-    print_mapping
-    ;;
-  live-qa)
-    print_live_qa
-    ;;
+  all) print_reindex; print_redirects; print_gone; print_noindex; print_mapping; print_live_qa ;;
+  reindex) print_reindex ;;
+  redirects) print_redirects ;;
+  gone) print_gone ;;
+  noindex) print_noindex ;;
+  mapping) print_mapping ;;
+  live-qa) print_live_qa ;;
   *)
     echo "Usage: $0 {all|reindex|redirects|gone|noindex|mapping|live-qa}" >&2
     exit 1

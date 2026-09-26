@@ -2,7 +2,6 @@
 node_modules/**
 vendor/**
 .build/**
-blocksy-child/readiness/node_modules/**
 package-lock.json
 composer.lock
 

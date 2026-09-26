@@ -234,7 +234,7 @@ function nexus_get_wgos_asset_hub_url() {
  * @return void
  */
 function nexus_maybe_ensure_wgos_asset_hub_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+	if ( ! nexus_route_pages_ensure_due() ) {
 		return;
 	}
 

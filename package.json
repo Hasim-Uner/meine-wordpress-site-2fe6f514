@@ -13,6 +13,7 @@
     "test:forms": "playwright test --config scripts/tests/forms.config.cjs",
     "test:intake": "php scripts/tests/intake-endpoints.php",
     "test:permalinks": "php scripts/tests/author-permalink-redirect.php",
+    "test:provisioning": "php scripts/tests/page-provisioning.php",
     "test:navigation": "php scripts/tests/navigation-contract.php",
     "test:navigation-ui": "playwright test --config scripts/tests/navigation.config.cjs",
     "build:theme": "bash scripts/build-theme-dist.sh",

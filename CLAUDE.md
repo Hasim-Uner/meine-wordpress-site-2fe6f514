@@ -6,25 +6,13 @@ Follow the shared contract's load order and select the matching canonical skill 
 `agents/skills/` before implementation. Claude Code exposes those skills through
 `.claude/skills/`; do not edit the symlinks or their targets through that path.
 
-For a broad strategy/audit task that benefits from the Opus behavior profile, read:
+## Working style
 
-```text
-agents/model-profiles/claude-opus-performance-marketing.md
-```
-
-## Opus operating style
-
-Use Opus for deeper reasoning, not broader uncontrolled edits. Before changing
-files, produce a compact plan containing:
-
-- relevant files inspected
-- assumed business goal
-- likely repo tasks
-- manual WordPress/admin tasks
-- risk level
-
-Keep the plan proportional to the task, then apply the shared scope, evidence,
-audit, safety, and publishing rules from `AGENTS.md`.
+Reason first; change only what the request and the selected skill place in scope.
+Before changing files, give a plan proportional to the task: files inspected,
+intended change and validation; add manual WordPress/admin follow-ups and risk
+when they apply. Then follow the `AGENTS.md` sections Context discipline,
+WordPress/runtime rules, Product boundaries, Validation and Git / deploy.
 
 ## Claude Code hook
 

@@ -258,7 +258,7 @@ Reduce uncertainty. Show the path from "interested" to "result". Make the next s
 │  H2: Three steps to...                    │
 │                                           │
 │  ①──────────── ②──────────── ③            │
-│  Growth Audit   Blueprint    Umsetzung    │
+│  Anfrage        Konzept      Umsetzung    │
 │  Description    Description  Description  │
 └──────────────────────────────────────────┘
 ```

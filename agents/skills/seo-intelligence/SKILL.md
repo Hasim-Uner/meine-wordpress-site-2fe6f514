@@ -7,11 +7,12 @@ description: "Primary SEO router for technical SEO triage, live indexing/canonic
 
 Trigger: SEO diagnosis, indexing, canonical/redirect/noindex questions, ranking changes, or internal-link architecture.
 
-Delegate by subtask:
-- General triage → `seo-agent`
-- Live canonical/indexing QA → `seo-live-qa`
+Delegate by subtask (specialists do not route further):
+- Keyword gaps / next topics, or a new page/post/cluster (ownership gate) → `seo-agent`
+- Live canonical/indexing/redirect QA → `seo-live-qa` (default when nothing else fits)
 - Period-over-period regression → `seo-drift`
 - Internal link graph → `internal-linking-audit`
+- Cockpit code → hand off to `seo-cockpit-dev`; page speed → `performance-marketing`
 
 Hard rules:
 - `docs/seo/query-ownership.csv` is canonical when ownership changes.

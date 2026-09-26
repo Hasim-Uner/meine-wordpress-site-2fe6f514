@@ -245,6 +245,13 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `noindex, follow`; das Kundenportal (`template-portal.php`) zeigt nur
   hinterlegte Daten; `/startseite-wow/` ist eine `noindex`-Testroute.
 
+- **Seitenanlage:** Theme-eigene Seiten stehen in `nexus_get_provisioned_pages()`
+  (`inc/helpers.php`); Kontakt, Glossar, WGOS-Hub und Cluster-Seiten haben eigene
+  Funktionen in ihrer Datei. Seit 2026-09-26 laufen alle nur noch einmal je
+  Deploy (`.nexus-deploy-sha`, Option `nexus_route_pages_stamp`) statt bei jedem
+  ungecachten Aufruf. Eine im Editor gelöschte Seite kommt mit dem nächsten Deploy
+  zurück, solange sie in der Liste steht. Prüfung: `npm run test:provisioning`.
+
 ## Anfragewege und CRM
 
 - Repo-Korrektur vom 2026-09-25 (Live-Nachweis erst nach Deployment): Kontakt,

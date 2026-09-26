@@ -127,7 +127,7 @@ function get_template_part( $slug, $name = null, $args = [] ) {
 	require get_stylesheet_directory() . '/' . $slug . '.php';
 }
 
-// hu_get_site_wordmark_text() lives in functions.php, which boots every module.
+// hu_get_site_wordmark_text() lives in inc/theme-setup.php, which this harness does not load.
 function hu_get_site_wordmark_text() { return 'HAŞIM ÜNER'; }
 
 $theme = get_stylesheet_directory() . '/inc/';

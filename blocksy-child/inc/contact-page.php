@@ -160,7 +160,7 @@ add_filter( 'body_class', 'nexus_add_virtual_contact_body_class', 20 );
  * @return void
  */
 function nexus_maybe_ensure_contact_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+	if ( ! nexus_route_pages_ensure_due() ) {
 		return;
 	}
 

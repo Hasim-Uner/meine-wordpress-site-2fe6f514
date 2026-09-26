@@ -22,9 +22,9 @@ sh agents/skills/blog-seo-ux-optimizer/scripts/blog-link-map.sh
 
 ## Blog Strategy
 
-- Blog is a supporting layer for the diagnosis-first Anfragesystem funnel, not a generic magazine.
+- Blog supports the money pages that own each topic (`docs/architecture/CONVERSION_ROUTING.md`), not a generic magazine.
 - Category archives are topic hubs: each needs a clear intro, useful internal links, and a next-step bridge.
-- Single posts should connect to exactly useful next steps: category hub, matching money page, proof/case, marketcheck or scoped contact.
+- Single posts should connect to exactly useful next steps: category hub, matching money page, proof/case, and the CTA that route owns (Marktcheck only on energy topics).
 - Internal anchors must describe the destination and intent; avoid generic "mehr erfahren" links.
 - Old broad positioning must not survive in visible blog surfaces.
 

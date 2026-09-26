@@ -170,6 +170,36 @@
     ]
   },
   {
+    "id": "vague-agency-page",
+    "prompt": "Die Seite für Agenturen wirkt noch nicht rund. Schau sie dir an und sag mir, was besser werden muss.",
+    "primary_skill": "conversion-architecture",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "Apply the documented White-Label exceptions; no Marktcheck CTA.",
+      "Findings name route, file and owner; nothing is changed without a request."
+    ]
+  },
+  {
+    "id": "vague-visibility",
+    "prompt": "Eine meiner Seiten wird bei Google seit ein paar Wochen kaum noch angezeigt. Woran liegt das?",
+    "primary_skill": "seo-intelligence",
+    "context": "docs/CONTEXT.md",
+    "rubric": [
+      "Compare exported periods or state that data is missing; no invented rankings.",
+      "Check repo changes against the loss window before blaming Google."
+    ]
+  },
+  {
+    "id": "vague-premerge",
+    "prompt": "Kannst du kurz drüberschauen, ob beim nächsten Merge etwas kaputtgeht?",
+    "primary_skill": "deploy-qa",
+    "context": "blocksy-child/CONTEXT.md",
+    "rubric": [
+      "Run the deterministic gates; a failing gate blocks.",
+      "List manual WordPress follow-ups separately."
+    ]
+  },
+  {
     "id": "no-repo",
     "prompt": "Wie viel ist 17 mal 8? Dafür brauchst du keine Dateien. ",
     "primary_skill": null,
