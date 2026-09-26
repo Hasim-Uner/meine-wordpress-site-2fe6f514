@@ -248,8 +248,8 @@ function hu_get_wordpress_freelancer_service_schema() : array {
 					'WordPress-Entwicklung'
 				),
 				$offer(
-					'Tracking bis ins CRM',
-					'Messplan mit GA4, Google Tag Manager und Consent Mode, abgenommene Conversions mit Testfällen; die Übergabe der Anfragen ins CRM als eigener Schritt nach Bedarf.',
+					hu_tracking_product_ladder()['measurement']['name'],
+					'Messplan mit GA4, Google Tag Manager, Consent Mode und Google Ads, abgenommene Conversions mit Testfällen. Server-Side Tracking und die Übergabe ins CRM als eigene Stufen nach Bedarf.',
 					'angebot-tracking',
 					'Conversion Tracking'
 				),

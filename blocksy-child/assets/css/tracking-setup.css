@@ -311,14 +311,19 @@ body.hu-tracking-setup-page {
 }
 
 /* ── Offer ladder ─────────────────────────────────────────────── */
+/* Vier Stufen im Raster 2 × 2: Nebeneinander waeren die Karten in der
+   Tafel unter 200 px breit und die Umfangslisten nicht mehr lesbar. Die
+   Reihenfolge traegt die Stufennummer, nicht die Spalte. */
 .hu-tracking-offer-grid {
 	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: var(--s2);
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--s2) var(--s3);
 	margin-top: var(--s4);
 }
 
 .hu-tracking-offer-card {
+	display: flex;
+	flex-direction: column;
 	min-width: 0;
 	padding: var(--s3);
 	border-top: 2px solid var(--tinte);
@@ -368,11 +373,23 @@ body.hu-tracking-setup-page {
 	color: var(--matt);
 }
 
-.hu-tracking-offer-card > p:not(.hu-tracking-offer-card__level):not(.hu-tracking-offer-card__price) {
+.hu-tracking-offer-card > p:not(.hu-tracking-offer-card__level):not(.hu-tracking-offer-card__price):not(.hu-tracking-offer-card__takt) {
 	margin: var(--s2) 0 0 !important;
 	font-size: 0.92rem;
 	line-height: 1.55;
 	color: var(--grau);
+}
+
+/* Lieferzeit und Preisbedingung: unten an jeder Karte, damit die Zeilen
+   im Raster auf einer Hoehe stehen. */
+.hu-tracking-offer-card__takt {
+	margin: auto 0 0 !important;
+	padding-top: var(--s2);
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	line-height: 1.5;
+	letter-spacing: 0.04em;
+	color: var(--matt);
 }
 
 .hu-tracking-offer-card ul {
@@ -398,6 +415,7 @@ body.hu-tracking-setup-page {
 
 .hu-tracking-offer-card .satzlink {
 	display: inline-block;
+	align-self: flex-start;
 	margin-top: var(--s2);
 }
 
@@ -543,14 +561,9 @@ body.hu-tracking-setup-page {
 }
 
 @media (max-width: 980px) {
-	.hu-tracking-chain,
-	.hu-tracking-offer-grid {
+	.hu-tracking-chain {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		padding-top: 0;
-	}
-
-	.hu-tracking-offer-card[data-level="revenue"] {
-		grid-column: 1 / -1;
 	}
 
 	.hu-tracking-offer-contract {
@@ -590,10 +603,6 @@ body.hu-tracking-setup-page {
 	.hu-tracking-offer-grid,
 	.hu-tracking-offer-contract {
 		grid-template-columns: 1fr;
-	}
-
-	.hu-tracking-offer-card[data-level="revenue"] {
-		grid-column: auto;
 	}
 
 	.hu-tracking-output > div + div,

@@ -73,7 +73,7 @@ $whitelabel_url  = hu_get_commercial_route( 'whitelabel' );
 $wl_task_url     = add_query_arg( [ 'type' => 'whitelabel', 'case' => 'aufgabe' ], $whitelabel_url ) . '#aufgabe';
 $response        = hu_response_promise( 'compact' );
 $response_window = hu_response_promise( 'window' );
-$tracking_price  = hu_tracking_price( 'standard', 'setup', 'display' );
+$tracking_price  = hu_tracking_price( 'measurement', 'setup' ); // Einstieg der Tracking-Leiter.
 $e3_canon        = hu_e3_canon();
 $case_url        = $e3_canon['url'];
 $case_label      = $e3_canon['case_label_accusative'] ?? HU_E3_CASE_LABEL_ACCUSATIVE;

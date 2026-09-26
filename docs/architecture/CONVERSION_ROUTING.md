@@ -1,6 +1,6 @@
 # Conversion Routing Architecture
 
-Status: active decision, updated 2026-09-25
+Status: active decision, updated 2026-09-26
 
 This document separates **SEO ownership** from **conversion routing**. It exists to prevent a recurring failure mode: sending every page to the same funnel or moving a ranking query owner merely because another page has the preferred CTA.
 
@@ -25,9 +25,9 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page (route `tracking_b2b`); linked as „Server-Side Tracking“, never as plain „Tracking“ | Tracking project request / scope clarification | White-Label bridge for agencies |
 | `/ga4-tracking-setup/` | Tracking purchase intent: GA4/GTM setup, consent, ads conversions | Tracking offer page; target of the header item „Tracking“ and the footer way (route `tracking_setup`) | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
 | `/performance-marketing/` | B2B companies running Google Ads or Meta | Paid-demand money page (measurement → landing page → budget) | `Ausgangslage prüfen lassen` → `/kontakt/?type=project` | Tracking setup, landing pages (`/#angebot-funnel`), case study; performance agencies → White-Label task (`?type=whitelabel&case=aufgabe`) |
-| `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition page | Project request | Explicit bridge to Freelancer page |
+| `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition page | Project request without preset focus (`hu_get_navigation_project_request_url()`, since 2026-09-26) | Offers `/#angebote`; proof: public references `/#referenzen` (`agentur_proof_references`) and the case study (`agentur_proof_case`) |
 | `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Ergebnisse“ → `/#arbeiten`; route `results` → case study |
-| `/case-study-solar-leadgenerierung/` | Solar proof | Evidence page | Solar Marktcheck | Energy money page |
+| `/case-study-solar-leadgenerierung/` | Solar proof; since 2026-09-25 also the proof target of homepage, menu item „Ergebnisse“, tracking and agency pages | Evidence page | Solar Marktcheck | Non-energy readers: quiet project request below the Marktcheck (`cta_case_study_to_project`, since 2026-09-26) |
 
 ## Glossar: erst erklären, dann Projektbezug
 
@@ -43,13 +43,31 @@ WordPress-Leistungen. Solar-Themeneinträge behalten ihre fachlichen Ziele.
 
 ## GA4: direkte Tracking-Anfrage
 
-GA4 verwendet für Hero, Proof und Abschluss dieselbe direkte Projektanfrage
-mit dem Fokus `tracking`. Der zentrale Kontaktablauf übernimmt die Vorauswahl.
-Die bestehenden Actions `cta_cluster_audit`, `cta_cluster_proof_audit` und
-`cta_cluster_footer_audit` bleiben erhalten; auf dieser Route bezeichnen sie
-ab dem Umbau vom 2026-09-14 Projektanfragen, keine Marktcheck-Starts.
-Der Hinweis auf den Marktcheck im gemeinsamen Kennzahlenband wird nur für
-GA4 durch die kanonische Antwortzusage zur Tracking-Anfrage ersetzt.
+GA4 verwendet für Hero, Angebot und Abschluss dieselbe direkte Projektanfrage
+mit dem Fokus `tracking` (Action `cta_tracking_project`, je Abschnitt über
+`data-track-section` unterscheidbar). Der zentrale Kontaktablauf übernimmt die
+Vorauswahl. Die früheren Actions `cta_cluster_audit`,
+`cta_cluster_proof_audit` und `cta_cluster_footer_audit` stehen nicht mehr im
+Template.
+
+## Tracking-Leiter: ein Produkt, vier Stufen
+
+Seit 2026-09-26 (`docs/decisions/tracking-preisleiter.md`): Name, Umfang,
+Preis und Lieferzeit jeder Stufe stehen einmal in
+`hu_tracking_product_ladder()` (`inc/canon/pricing-canon.php`). Die Seiten
+zeigen Ausschnitte, keine eigenen Fassungen:
+
+| Oberfläche | Zeigt | Ziel des CTA |
+|---|---|---|
+| Startseite, Angebot 02 und Station 04 | Stufe 1 als Angebot, Stufen 2 bis 4 als Satz | `/kontakt/?type=project&focus=tracking` (`home_offer_tracking`) |
+| `/ga4-tracking-setup/` | alle vier Stufen (Karten `#stufe-1` bis `#stufe-4`) | `/kontakt/?type=project&focus=tracking` (`cta_tracking_project`) |
+| `/server-side-tracking-b2b/` | Stufen 2 bis 4, Stufe 1 als Verweis (`cta_package_to_measurement` → `/ga4-tracking-setup/#stufe-1`) | eigenes Formular `#anfrage` (`cta_package_standard`, `cta_package_pro`, `cta_package_individual`) |
+| `/performance-marketing/` | Einstiegspreis der Messung | `/kontakt/?type=project` |
+| `/whitelabel-retainer/`, Margenblock | Endkundenpreis von Stufe 2 neben dem Agenturpreis | Formular `#aufgabe` |
+
+Tracking Care hängt nur an den Stufen 2 bis 4. Die Guard-Regel
+`preis-tracking-leiter` und `npm run test:pricing` halten die Leiter
+zusammen.
 
 ## Homepage: direkter Freelancer-Einstieg
 
@@ -79,7 +97,7 @@ Abschlussblocks erhalten. `#angebot-funnel` (früher das Angebot
 „Anfragestrecken“, sitewide von CRO-Links verlinkt) sitzt seit 2026-09-24 auf
 der Stationsliste in Abschnitt 03.
 
-**Versuch Ersteinschätzung (8 Wochen ab Deploy, Schalter
+**Versuch Ersteinschätzung (gezählt 2026-09-25 bis 2026-11-20, Schalter
 `HU_EXPERIMENT_ERSTEINSCHAETZUNG` im Kanon `inc/canon/messaging-canon.php`):**
 Solange der Schalter an ist, ist in Hero und Abschluss die Ersteinschätzung
 der primäre Button (`hu_first_assessment_url()` →
@@ -361,8 +379,8 @@ dieselbe Liste in derselben Reihenfolge; das gespeicherte WordPress-Menü, die
 
 Reihenfolge: erst was angeboten wird (Leistungen, Tracking), dann die Wege für
 bestimmte Absender (Agenturen, Energiebetriebe), dann Belege und Person. Der
-Punkt „Tracking“ führt auf das Tracking-Angebot, dieselbe Leistung, die die
-Startseite als „Tracking bis ins CRM“ mit Preis verkauft. Die Server-Side-Seite
+Punkt „Tracking“ führt auf das Tracking-Angebot, dieselbe Leiter, deren erste
+Stufe die Startseite als „Conversion-Tracking“ mit Preis verkauft. Die Server-Side-Seite
 bleibt Query-Owner für Server-Side-Tracking-Suchen und wird mit genau diesem
 Namen verlinkt (Fuß, GA4-Seite, White-Label-Margenblock), nie als bloßes
 „Tracking“. `aria-current="page"` steht nur auf dem Link, der die aufgerufene

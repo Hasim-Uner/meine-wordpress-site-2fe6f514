@@ -50,8 +50,9 @@ function hu_get_contact_intake_url( $type = 'project', $focus = 'implementation_
  * specialization and explicit Energy contexts.
  *
  * Tracking has two routes on purpose. `tracking_setup` (/ga4-tracking-setup/)
- * is the broad Tracking product — the same offer the homepage sells as
- * "Tracking bis ins CRM" — and therefore the target of every generic
+ * is the broad Tracking product — all four stages of the tracking ladder, the
+ * first of which the homepage sells as "Conversion-Tracking" — and therefore
+ * the target of every generic
  * "Tracking" link in header, footer and 404. `tracking_b2b`
  * (/server-side-tracking-b2b/) stays the specialist page and query owner for
  * Server-Side Tracking; it is linked with that exact name, never as plain

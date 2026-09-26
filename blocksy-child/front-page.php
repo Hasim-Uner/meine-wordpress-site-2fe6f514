@@ -38,7 +38,10 @@ $fest           = static function ( $value ) {
 };
 $response_short = hu_response_promise_short();
 $website_price  = $fest( hu_freelancer_website_price() );
-$tracking_price = $fest( hu_tracking_price( 'standard', 'setup', 'display' ) );
+// Tracking-Angebot = Stufe 1 der Tracking-Leiter; die Stufen darueber stehen
+// als ein Satz daneben (hu_tracking_ladder_display()), nie einzeln abgeschrieben.
+$tracking_offer = hu_tracking_product_ladder()['measurement'];
+$tracking_price = $fest( $tracking_offer['price'] );
 $takeover_price = $fest( hu_freelancer_takeover_check_price() );
 $retainer       = $fest( hu_freelancer_retainer_display() );
 $references     = hu_public_reference_projects();
@@ -113,7 +116,7 @@ $stations = [
 		'name'   => 'Messung',
 		'teaser' => 'Die Zahl in GA4 passt nicht zum Postfach.',
 		'bricht' => 'GA4 zählt jeden Aufruf der Danke-Seite als Conversion, auch das Neuladen. Ohne Einwilligung fehlen Daten, und niemand weiß, wie viele. Welche Kampagne eine Anfrage gebracht hat, lässt sich dann nicht mehr sagen.',
-		'baue'   => sprintf( 'Einen Messplan mit GA4, Google Tag Manager und Consent Mode. Jede Conversion wird mit einem Testfall abgenommen und protokolliert. Standard-Setup ab %s netto.', $tracking_price ),
+		'baue'   => sprintf( 'Einen Messplan mit GA4, Google Tag Manager und Consent Mode. Jede Conversion wird mit einem Testfall abgenommen und protokolliert. %s ab %s netto.', $tracking_offer['name'], $tracking_price ),
 		'beleg'  => [ 'url' => $tracking_url, 'label' => 'Tracking-Setup im Detail', 'hook' => 'home_proof_tracking_page' ],
 	],
 	[
@@ -156,11 +159,11 @@ $offers = [
 	[
 		'id' => 'angebot-tracking',
 		'nr'    => '02',
-		'tags'  => 'GA4 · Google Tag Manager · Consent Mode · CRM',
-		'title' => 'Tracking bis ins CRM',
-		'price' => sprintf( 'Standard-Setup ab %s netto', $tracking_price ),
-		'text'  => 'Ein Messplan, sauber eingerichtete Conversions und ein Abnahmeprotokoll mit Testfällen. Die Übergabe der Anfragen in Ihr CRM kalkuliere ich als eigenen Schritt, wenn Sie ihn brauchen.',
-		'more'  => '',
+		'tags'  => 'GA4 · Google Tag Manager · Consent Mode · Server-Side · CRM',
+		'title' => $tracking_offer['name'],
+		'price' => sprintf( 'Festpreis %s netto', $tracking_price ),
+		'text'  => 'Ein Messplan, sauber eingerichtete Conversions und ein Abnahmeprotokoll mit Testfällen. Gemessen wird im Browser, ohne eigenen Server. Einen Server-Endpunkt oder die Übergabe ins CRM brauchen Sie nur, wenn das eigentliche Problem dort liegt.',
+		'more'  => sprintf( 'Die Stufen darüber: %s.', $fest( hu_tracking_ladder_display( 2 ) ) ),
 		'scope' => 'Messplan · GTM und GA4 · Consent Mode · Google Ads · Abnahmeprotokoll',
 		'focus' => 'tracking',
 		'hook'  => 'home_offer_tracking',

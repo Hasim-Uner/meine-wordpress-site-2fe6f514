@@ -71,6 +71,15 @@ rule	anon-begruendung	[Aa]nonymisiert,[[:space:]]*weil	-	Anonymisierte Faelle we
 rule	preis-uebernahme-check	(^|[^0-9.])390[[:space:]]*(€|&euro;|Euro)	Übernahme	Preis kommt aus hu_freelancer_takeover_check_price().
 rule	preis-retainer-kontingent	(^|[^0-9.])(490|950)[[:space:]]*(€|&euro;|Euro)	Stunden	Kontingent kommt aus hu_freelancer_retainer_display().
 
+# ── Tracking-Leiter ───────────────────────────────────────────────────────
+# Kanon: hu_tracking_product_ladder(), hu_tracking_price() und
+# hu_tracking_ladder_display() in blocksy-child/inc/canon/pricing-canon.php.
+# Bis 2026-09-26 stand derselbe Betrag auf zwei Seiten fuer zwei verschiedene
+# Produkte, weil Templates, FAQ und Meta-Description ihn abgeschrieben und
+# selbst beschriftet haben (docs/decisions/tracking-preisleiter.md). Der
+# Kontext trifft Tracking-Begriffe in der Zeile oder "tracking" im Pfad.
+rule	preis-tracking-leiter	(^|[^0-9.,])(890|1\.?290|1\.?900|3\.?500)[[:space:]]*(€|&nbsp;€|&euro;|Euro)	[Tt]racking|Server-Side|Conversion|GA4|Messung|Setup	Preis kommt aus hu_tracking_price() / hu_tracking_product_ladder().
+
 # ── Startseite ────────────────────────────────────────────────────────────
 # Die Startseite ist die Money Page mit den meisten Erstkontakten. Diese
 # Regeln gelten nur fuer ihr Template und ihre eigenen Assets: Der

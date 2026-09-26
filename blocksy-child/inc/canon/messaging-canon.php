@@ -361,25 +361,34 @@ function hu_retired_cta_labels() {
  * @return array<int, array{question:string,answer:string}>
  */
 function hu_tracking_setup_faq_items() {
-	$setup_price = function_exists( 'hu_tracking_price' )
-		? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' )
-		: '1.290 €';
-	$delivery_window = function_exists( 'hu_tracking_delivery_weeks_display' )
-		? hu_tracking_delivery_weeks_display()
-		: '2 bis 3 Wochen';
+	$ladder = hu_tracking_product_ladder();
+	$entry  = $ladder['measurement'];
 
 	return [
 		[
 			'question' => 'Was kostet ein Conversion Tracking Setup?',
-			'answer'   => sprintf( 'Der klar abgegrenzte Basisscope startet bei %1$s netto und wird in der Regel in %2$s umgesetzt. Vor dem Start steht schriftlich fest, welche Systeme, Formulare und Conversions enthalten sind.', $setup_price, $delivery_window ),
+			'answer'   => sprintf(
+				'%1$s kostet %2$s netto als Festpreis und ist in der Regel in %3$s umgesetzt. Vor dem Start steht schriftlich fest, welche Systeme, Formulare und Conversions enthalten sind. Die Stufen darüber: %4$s.',
+				$entry['name'],
+				$entry['price'],
+				$entry['weeks'],
+				hu_tracking_ladder_display( 2 )
+			),
 		],
 		[
-			'question' => 'Was ist im Basisscope ab 1.290 € enthalten?',
-			'answer'   => 'Bestandsaufnahme und Messplan, GTM- und GA4-Struktur beziehungsweise Bereinigung, CMP- und Consent-Mode-Anbindung im vereinbarten Setup, Google Ads sowie bis zu drei Haupt-Conversions. Dazu kommen Abnahmetests, Dokumentation und Übergabe.',
+			'question' => sprintf( 'Was ist im %1$s für %2$s enthalten?', $entry['name'], $entry['price'] ),
+			'answer'   => implode( ', ', $entry['items'] ) . '. Gemessen wird im Browser; ein eigener Server und laufende Hostingkosten entfallen.',
 		],
 		[
 			'question' => 'Ist Server-Side Tracking im Einstiegspreis enthalten?',
-			'answer'   => 'Nein, nicht automatisch. Server-GTM, eigene Tracking-Subdomain, Meta CAPI und Browser-Server-Deduplizierung sind eine eigene Erweiterungsentscheidung. Wenn ein sauberes clientseitiges Setup das Problem löst, wird keine zusätzliche Server-Infrastruktur verkauft.',
+			'answer'   => sprintf(
+				'Nein. %1$s ist die nächste Stufe für %2$s netto: Server-GTM auf eigener Subdomain, Enhanced Conversions und ein Paralleltest. Meta CAPI mit Deduplizierung kommt in Stufe %3$d, %4$s, für %5$s dazu. Wenn ein sauberes clientseitiges Setup das Problem löst, wird keine Server-Infrastruktur verkauft.',
+				$ladder['standard']['name'],
+				$ladder['standard']['price'],
+				$ladder['pro']['stage'],
+				$ladder['pro']['name'],
+				$ladder['pro']['price']
+			),
 		],
 		[
 			'question' => 'Wann ist Server-Side Tracking sinnvoll?',
@@ -387,7 +396,12 @@ function hu_tracking_setup_faq_items() {
 		],
 		[
 			'question' => 'Kann das Tracking bis ins CRM und zu Offline Conversions erweitert werden?',
-			'answer'   => 'Ja. CRM-Status, eindeutige Lead-Zuordnung, Offline Conversions und qualifizierte Rücksignale können als eigener Revenue-Scope umgesetzt werden. Diese Ebene wird separat aufgenommen und kalkuliert.',
+			'answer'   => sprintf(
+				'Ja, das ist Stufe %1$d: %2$s, %3$s netto. CRM-Status, eindeutige Lead-Zuordnung, Offline Conversions und qualifizierte Rücksignale werden nach einer technischen Aufnahme abgegrenzt; der Festpreis steht vor dem Start.',
+				$ladder['individual']['stage'],
+				$ladder['individual']['name'],
+				$ladder['individual']['price']
+			),
 		],
 		[
 			'question' => 'Wie wird geprüft, ob das Tracking wirklich funktioniert?',
@@ -459,14 +473,14 @@ function hu_align_tracking_product_schema_markup( $markup ) {
 	$advanced_url      = home_url( '/server-side-tracking-b2b/' );
 	$setup_service_id  = $setup_url . '#service';
 	$organization_id   = home_url( '/#organization' );
-	$setup_value       = function_exists( 'hu_tracking_price' )
-		? (float) hu_tracking_price( 'standard', 'setup', 'value', '1290' )
-		: 1290.0;
-	$setup_value       = (float) (int) $setup_value === $setup_value ? (int) $setup_value : $setup_value;
+	// Das Angebot dieser Seite ist Stufe 1 der Tracking-Leiter. Der
+	// Server-Side-Betrag gehoert zu /server-side-tracking-b2b/.
+	$setup_value       = (int) hu_tracking_price( 'measurement', 'setup', 'value' );
+	$setup_offer_text  = implode( ', ', hu_tracking_product_ladder()['measurement']['items'] ) . '.';
 
 	return (string) preg_replace_callback(
 		'#<script type="application/ld\+json">(.*?)</script>#s',
-		static function ( $match ) use ( $is_tracking_setup, $setup_url, $advanced_url, $setup_service_id, $organization_id, $setup_value ) {
+		static function ( $match ) use ( $is_tracking_setup, $setup_url, $advanced_url, $setup_service_id, $organization_id, $setup_value, $setup_offer_text ) {
 			$schema = json_decode( (string) $match[1], true );
 
 			if ( ! is_array( $schema ) ) {
@@ -486,8 +500,8 @@ function hu_align_tracking_product_schema_markup( $markup ) {
 					'@type'         => 'Offer',
 					'price'         => $setup_value,
 					'priceCurrency' => 'EUR',
-					'url'           => $setup_url . '#angebot',
-					'description'   => 'Basisscope mit Bestandsaufnahme, GTM und GA4, Consent-Anbindung, Google Ads, bis zu drei Haupt-Conversions, Abnahmetests und Dokumentation.',
+					'url'           => $setup_url . '#stufe-1',
+					'description'   => $setup_offer_text,
 				];
 			}
 

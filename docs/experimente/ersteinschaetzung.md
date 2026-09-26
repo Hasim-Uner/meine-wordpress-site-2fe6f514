@@ -9,8 +9,25 @@ Schalter vollständig zurücknehmen.
 
 | | Datum |
 | --- | --- |
-| Start | Deploy-Tag (Merge auf `main`, `main` deployt nach grüner CI): 2026-09-23 (#440) |
-| Ende | Start + 8 Wochen: 2026-11-18 |
+| Schalter an | 2026-09-23 (#440) |
+| Zählung ab | 2026-09-25: Relaunch der Startseite als Strecke (#453, #455). Was vorher einging, lief auf einer anderen Seite und zählt nicht mit. |
+| Ende | Zählbeginn + 8 Wochen: 2026-11-20 |
+| Startseite eingefroren | bis zum Ende. Änderungen an Hero, Reihenfolge, Leistungen oder Abschluss verfälschen den Versuch; Preis- und Textkorrekturen, die für alle Wege gleich gelten, sind ausgenommen. |
+
+## Entscheidung am Ende
+
+Festgelegt vor dem ersten Ergebnis, damit die Zahl die Entscheidung trifft und
+nicht umgekehrt. „Passend“ heißt: ein Vorhaben, das ich als Projekt annehmen
+würde (WordPress, Tracking oder Conversion für ein Unternehmen, kein
+Privatprojekt, kein reiner Preisvergleich).
+
+| Ergebnis nach 8 Wochen | Entscheidung |
+| --- | --- |
+| Mindestens ein bezahltes Gespräch oder Projekt aus einer Ersteinschätzung | Behalten |
+| Kein bezahltes Gespräch, aber mindestens die Hälfte der Einsendungen passend | Vier Wochen verlängern, dann dieselbe Regel |
+| Weniger als die Hälfte passend, oder keine Einsendung | Abschalten; die Projektanfrage wird wieder der einzige Button |
+
+Die Abbruchregel unten gilt daneben weiter.
 
 ## Was sich ändert, solange der Schalter an ist
 
