@@ -31,11 +31,7 @@ PATHS=(
   ":(exclude)seo-research/**"
 )
 
-if [[ -n "${HEAD_REF}" ]]; then
-  DIFF_OUTPUT="$(git diff --unified=0 --no-color "${BASE_REF}" "${HEAD_REF}" -- "${PATHS[@]}" || true)"
-else
-  DIFF_OUTPUT="$(git diff --unified=0 --no-color "${BASE_REF}" -- "${PATHS[@]}" || true)"
-fi
+DIFF_OUTPUT="$(bash scripts/check-diff.sh "${BASE_REF}" "${HEAD_REF}" "${PATHS[@]}")"
 
 if [[ -z "${DIFF_OUTPUT}" ]]; then
   exit 0

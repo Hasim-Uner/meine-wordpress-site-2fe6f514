@@ -15,8 +15,9 @@ Start with `git status --short` and `npm run lint:skills`. Reuse the selected
   in `PRIMARY_SKILLS.txt`, the routing tables and both relative discovery links.
 - Keep entrypoints short; place conditional workflows in linked references.
   Preserve non-obvious safety/contract constraints when shortening instructions.
-- Run `npm run test:skills` after script or routing changes. Before release,
-  also run the baseline checks in `AGENTS.md`.
+- Run `npm run check` after changes; use `-- --plan` to preview the selection.
+  Agent changes include skill suites; unknown/tooling changes use all checks.
+  For dependencies and CI behavior, see [checks](references/checks.md).
 - For routing changes or cross-agent comparisons, use
   [benchmark](references/benchmark.md). A fixture/schema pass is not an agent eval.
 - For switching agents on unfinished work, use [handoff](references/handoff.md).

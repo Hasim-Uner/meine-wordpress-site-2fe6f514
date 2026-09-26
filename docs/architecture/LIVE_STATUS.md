@@ -17,7 +17,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Plugins), Brevo-, Cal.com- und Koko-Setups, Server-Cron und die tatsächliche
   Mailzustellung.
 - Deploy: `.github/workflows/ci.yml` prüft; `.github/workflows/deploy.yml`
-  deployt nach grünem CI-Lauf auf `main` oder manuell. Die statische `llms.txt`
+  deployt bei Runtime-/Tooling-Änderungen nach grünem CI-Lauf auf `main` oder
+  manuell. Reine Dokumentations- und Skill-Änderungen lösen keinen automatischen
+  Deploy aus; die gemeinsame Prüfauswahl liegt in `scripts/check.py`. Die statische `llms.txt`
   wird zusätzlich ins Webroot kopiert.
 - Live liegt ein Cache vor PHP (nginx, Varnish). Formulare arbeiten deshalb
   ohne Nonce im HTML; öffentliche REST-Endpunkte sind zustandslos abgesichert.

@@ -1,22 +1,38 @@
 # Deployment
 
-Stand: 2026-03-31.
+Stand: 2026-09-26.
 
 Diese Doku beschreibt nur den repo-seitigen CI/CD-Vertrag fuer das WordPress-Child-Theme. Hostseitige Details auf Raidboxes oder anderen Hosts muessen ausserhalb des Repos bestaetigt werden.
 
 ## Workflows
 
 - `.github/workflows/ci.yml`
-  - laeuft bei Push und Pull Request auf repo-relevante Aenderungen an Theme, Workflows, Skripten und Build-Dateien
-  - prueft GitHub-Workflow-YAML mit `actionlint`
-  - fuehrt PHP-Syntaxchecks fuer alle versionierten PHP-Dateien unter `blocksy-child/` aus
-  - setzt Node 20 auf, installiert die gepinnten Build-Tools via `npm ci` und baut ein deploybares Theme-Paket unter `.build/blocksy-child`
+  - läuft einmal je Pull Request und erneut für den zusammengeführten Stand auf `main`; Branch-Pushes starten keine zweite Haupt-CI
+  - nutzt `scripts/check.py` für dieselbe Prüfauswahl wie lokal `npm run check`; `-- --plan` zeigt die Auswahl vorab
+  - hat keine Pfadfilter am Workflow: unbekannte Dateien und fehlende Vergleichshistorie führen zur vollständigen Prüfung
+  - prüft Architektur, PHP-Syntax, Skill-Verträge, Prüfauswahl sowie Canon-, E3- und Textregeln immer
+  - ergänzt bei Agenten-/Skill-Änderungen alle Skill-Suiten; Dokumentation, Entwürfe und Forschungsdaten benötigen keinen Browser, PHPStan oder Theme-Build
+  - führt bei Theme-, Tooling-, Workflow- und unbekannten Änderungen alle Runtime-Prüfungen einschließlich Formulare, Navigation, Seitenanlage, Preisleiter, PHPStan und Theme-Build aus
+  - installiert Node 20, Browser und Composer-Abhängigkeiten nur für die vollständige Prüfung; zusätzlich prüft actionlint die Workflows
+  - behält den stabilen Job `validate`; jede fehlgeschlagene ausgewählte Prüfung blockiert den automatischen Deploy
 - `.github/workflows/deploy.yml`
-  - deployed nur nach erfolgreichem `CI`-Run fuer einen `push` auf `main`
-  - kann optional manuell per `workflow_dispatch` gestartet werden
-  - baut das Theme erneut in ein Dist-Verzeichnis und deployed weiterhin nur `blocksy-child/`
-  - prueft SSH-Port und Deploy-Pfad vorab, testet die SSH-Verbindung und stellt sicher, dass der Zielpfad existiert oder angelegt werden kann
-  - unterstuetzt bei manuellem Start einen `dry_run`, um `rsync` ohne Schreibzugriff zu pruefen
+  - wird automatisch nur nach erfolgreicher CI auf `main` und bei einer als Runtime/Tooling eingestuften Änderung aufgerufen; reine Dokumentations- oder Skill-Änderungen lösen keinen Deploy aus
+  - kann weiterhin separat manuell per `workflow_dispatch` gestartet werden; ein manueller Lauf der **CI** erzwingt alle Prüfungen, startet aber keinen Deploy
+  - baut das Theme erneut in ein Dist-Verzeichnis und überträgt nur das gebaute Child-Theme sowie die bestehende statische `llms.txt`
+  - prüft SSH-Port und Deploy-Pfad vorab, testet die SSH-Verbindung und stellt sicher, dass der Zielpfad existiert oder angelegt werden kann
+  - unterstützt beim manuellen Start einen `dry_run`, um `rsync` ohne Schreibzugriff zu prüfen
+  - prüft automatische Releases innerhalb der bestehenden Produktionssperre gegen den aktuellen `main`: neuere Runtime-Änderungen überspringen einen veralteten Release; reine Dokumentations- und Skill-Nachfolger verhindern den ausstehenden Deploy nicht
+
+Main-Läufe brechen sich nicht gegenseitig ab. Nur überholte PR-Läufe werden
+abgebrochen. Dadurch kann ein schneller Dokumentations-Push keine noch laufende
+Runtime-Prüfung verdrängen. Manuelle Deploys und Rollbacks behalten ihre explizit
+gewählte Revision.
+
+Die Auswahlregeln stehen in `scripts/check.py`, ihre Regressionen in
+`scripts/tests/test_check.py`. Umbenennungen berücksichtigen alten und neuen Pfad;
+lokale Prüfungen beziehen auch noch nicht versionierte Dateien ein. Vollständige
+Logs liegen im ausgegebenen temporären Verzeichnis, erfolgreiche Prüfungen
+erscheinen kompakt. Tatsächliche Tokenersparnisse sind damit nicht gemessen.
 
 ## GitHub Secrets und Variables
 

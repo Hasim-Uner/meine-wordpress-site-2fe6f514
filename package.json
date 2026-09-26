@@ -7,6 +7,7 @@
     "npm": ">=10 <11"
   },
   "scripts": {
+    "check": "python3 scripts/check.py",
     "test:skills": "bash scripts/test-skills.sh",
     "lint:skills": "python3 scripts/validate-skills.py",
     "benchmark:agents": "python3 agents/skills/agent-system-maintenance/scripts/benchmark.py",
