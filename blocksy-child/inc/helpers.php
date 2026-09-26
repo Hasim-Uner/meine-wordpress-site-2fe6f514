@@ -575,6 +575,10 @@ function nexus_get_primary_public_url_map() {
 			'performance-marketing',
 			home_url( '/performance-marketing/' )
 		),
+		'landingpage'          => nexus_get_page_url(
+			[ 'landingpage-erstellen-lassen' ],
+			home_url( '/landingpage-erstellen-lassen/' )
+		),
 		'tools'                => $request_url,
 		'performance_analysis' => $request_url,
 		'about'                => nexus_get_page_url(
@@ -696,6 +700,58 @@ function nexus_get_agentur_faq_items() {
 		[
 			'question' => 'Arbeiten Sie auch außerhalb von Hannover in Niedersachsen?',
 			'answer'   => 'Ja. Der Sitz ist Pattensen bei Hannover, persönliche Termine sind im weiteren Niedersachsen gut machbar — Hildesheim, Braunschweig und Celle liegen im Tagesradius. Für Unternehmen außerhalb der Region ändert sich am Ablauf nichts: Projektprüfung, Umsetzung und Reviews funktionieren remote genauso strukturiert.',
+		],
+	];
+}
+
+/**
+ * Return the FAQ set for the landing page offer /landingpage-erstellen-lassen/.
+ *
+ * Shared between the page template and the FAQPage node in inc/org-schema.php.
+ * Preise kommen aus dem Kanon; Lieferzeit und Voraussetzungen werden bewusst
+ * nicht pauschal zugesagt, sondern vor dem Start schriftlich festgelegt.
+ *
+ * @return array<int, array{key: string, question: string, answer: string}>
+ */
+function nexus_get_landingpage_faq_items() {
+	$price         = hu_landingpage_price( true );
+	$website_price = hu_freelancer_website_price( true );
+
+	return [
+		[
+			'key'      => 'kosten',
+			'question' => 'Was kostet es, eine Landingpage erstellen zu lassen?',
+			'answer'   => sprintf( '%s als Festpreis. Darin stecken Konzept, Text, die Umsetzung in WordPress, das Anfrageformular, die Herkunft jeder Anfrage und die Abnahme. Anzeigenbetreuung, Foto- und Videoproduktion und mehrere Varianten der Seite gehören nicht dazu.', $price ),
+		],
+		[
+			'key'      => 'text',
+			'question' => 'Wer schreibt die Texte?',
+			'answer'   => 'Ich. Sie liefern im Auftaktgespräch und im Fragebogen die Fakten: Angebot, Zielgruppe, Preise und die Einwände, die Sie aus Gesprächen kennen. Daraus schreibe ich den Text, und Sie geben ihn frei, bevor die Seite gebaut wird.',
+		],
+		[
+			'key'      => 'dauer',
+			'question' => 'Wie lange dauert es?',
+			'answer'   => 'Den Termin lege ich vor dem Start schriftlich fest. Er hängt vor allem daran, wie schnell Fakten, Bilder und Freigaben bei mir sind. Live geht die Seite erst nach Ihrer Abnahme.',
+		],
+		[
+			'key'      => 'wordpress',
+			'question' => 'Muss meine Website mit WordPress laufen?',
+			'answer'   => 'Die Landingpage baue ich in WordPress. Läuft Ihre Website mit einem anderen System, klären wir vor dem Festpreis, wo die Seite liegen kann. Domain, Hosting und Zugänge bleiben bei Ihnen.',
+		],
+		[
+			'key'      => 'cookies',
+			'question' => 'Braucht die Landingpage einen Cookie-Banner?',
+			'answer'   => 'Seite und Formular setzen keine Cookies. Die Herkunft einer Anfrage übergibt das Formular aus der Adresse der Seite. Nutzen Sie Google Ads oder GA4, gilt für diese Dienste Ihr bestehendes Consent-Setup, und die Conversion richte ich darauf abgestimmt ein.',
+		],
+		[
+			'key'      => 'website',
+			'question' => 'Wann ist eine Website die bessere Wahl?',
+			'answer'   => sprintf( 'Wenn Sie mehrere Leistungen zeigen wollen oder noch keine Website haben. Eine Website mit bis zu %1$s Seiten und Kontaktformular kostet %2$s. Die Landingpage ist für ein einzelnes Angebot gedacht, auf das Sie Besucher gezielt schicken.', hu_pricing_count_word( HU_FREELANCER_WEBSITE_PAGES ), $website_price ),
+		],
+		[
+			'key'      => 'pflege',
+			'question' => 'Kann ich die Seite danach selbst ändern?',
+			'answer'   => 'Ja. Texte und Bilder pflegen Sie im WordPress-Editor, und bei der Übergabe zeige ich Ihnen, wie. Größere Änderungen übernehme ich auf Wunsch im Monatskontingent.',
 		],
 	];
 }
@@ -1252,6 +1308,12 @@ function nexus_get_provisioned_pages() {
 			'title'    => 'Cost per Lead Photovoltaik – Was Solar-Anfragen wirklich kosten',
 			'excerpt'  => 'CPL-Rechnung und drei Szenarien für Solar-, Wärmepumpen- und Speicher-Anbieter im Vergleich.',
 			'template' => 'page-cost-per-lead-photovoltaik.php',
+		],
+		[
+			'slug'     => 'landingpage-erstellen-lassen',
+			'title'    => 'Landingpage erstellen lassen',
+			'excerpt'  => 'Landingpage zum Festpreis: eine Seite, ein Angebot, ein Ziel. Text, Anfrageformular, Herkunft jeder Anfrage und Abnahme inklusive.',
+			'template' => 'page-landingpage-erstellen-lassen.php',
 		],
 		[
 			'slug'     => 'qualifizierte-pv-anfragen',

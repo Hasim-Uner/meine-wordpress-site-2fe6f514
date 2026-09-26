@@ -94,6 +94,10 @@ function hu_get_commercial_route_map() {
 		'tracking_b2b'    => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'server-side-tracking-b2b' ], home_url( '/server-side-tracking-b2b/' ) )
 			: home_url( '/server-side-tracking-b2b/' ),
+		// Festpreis-Angebot Landingpage fuer Direktkunden (seit 2026-09-26).
+		'landingpage'     => function_exists( 'nexus_get_page_url' )
+			? nexus_get_page_url( [ 'landingpage-erstellen-lassen' ], home_url( '/landingpage-erstellen-lassen/' ) )
+			: home_url( '/landingpage-erstellen-lassen/' ),
 		'agentur_local'   => function_exists( 'nexus_get_page_url' )
 			? nexus_get_page_url( [ 'wordpress-agentur-hannover', 'wordpress-agentur' ], home_url( '/wordpress-agentur-hannover/' ) )
 			: home_url( '/wordpress-agentur-hannover/' ),
@@ -449,6 +453,12 @@ function hu_get_site_footer_navigation_contract() {
 						'label'    => __( 'WordPress Agentur Hannover', 'blocksy-child' ),
 						'url'      => $routes['agentur_local'],
 						'track'    => 'cta_footer_nav_agentur_local',
+						'category' => 'navigation',
+					],
+					[
+						'label'    => __( 'Landingpage erstellen lassen', 'blocksy-child' ),
+						'url'      => $routes['landingpage'],
+						'track'    => 'cta_footer_nav_landingpage',
 						'category' => 'navigation',
 					],
 				],

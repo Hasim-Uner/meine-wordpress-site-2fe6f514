@@ -1954,8 +1954,8 @@ return [
 			'text' => 'Eine Anzeige bietet Unterstützung bei fehlerhaftem GA4-Tracking an. Die Zielseite erklärt genau diese Leistung, nennt den Ablauf und führt zur passenden Projektanfrage. Ein Einstieg über ein allgemeines WordPress-Portfolio würde mehr Orientierung verlangen.',
 		],
 		'mistakes' => [ 'Dieselbe allgemeine Seite für sehr unterschiedliche Anzeigenversprechen verwenden.', 'Eine Vorlage kopieren, ohne Einwände und Informationsbedarf der Zielgruppe zu berücksichtigen.' ],
-		'primary_url_key' => 'cro',
-		'primary_url_label' => 'Anfragestrecken & Landingpages',
+		'primary_url_key' => 'landingpage',
+		'primary_url_label' => 'Landingpage erstellen lassen',
 		'related_primary_urls' => [
 			[
 				'key' => 'cro',

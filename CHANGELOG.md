@@ -2,6 +2,12 @@
 
 ## 2026-09
 
+### Neue Seite: Landingpage erstellen lassen
+
+- **`/landingpage-erstellen-lassen/`:** Festpreis-Angebot für Direktkunden (Preis aus `hu_landingpage_price()`), gebaut als Produkt: Anlass, Umfang mit „Nicht dazu“, Ablauf mit zwei Freigaben, Zusätze aus Tracking-Leiter und Freelancer-Preisliste, Beleg (Fall mit Herleitung, öffentliche Arbeiten, PageSpeed-Link), Fragen, Abschluss. Gutachten-Layout aus `system.css`, keine neue CSS-Datei. CTAs auf `/kontakt/?type=project&focus=conversion`.
+- **Verdrahtung:** Seitenanlage über `nexus_get_provisioned_pages()`, Route `landingpage` in Routen- und URL-Karte, Title/Description in `inc/seo-meta.php`, Service mit Offer und FAQPage in `inc/org-schema.php` (FAQ aus `nexus_get_landingpage_faq_items()`, dieselbe Quelle wie die sichtbaren Fragen), `llms.txt`, Query-Ownership `landingpage erstellen lassen`.
+- **Eingehende Links:** letzter Eintrag der Fuß-Gruppe Leistungen (`cta_footer_nav_landingpage`), `/performance-marketing/` (Link „Landingpage zum Festpreis“ statt `/#angebot-funnel`, neues Event `perf_to_landingpage_offer`), Hauptziel des Glossarbegriffs `/glossar/landingpage/`. Die Startseite bleibt bis zum Ende des Versuchs Ersteinschätzung unverändert.
+
 ### Preise: Website Kompakt, Landingpage, Agentur-Landingpage
 
 - **Website:** Statt „ab 3.400 €“ ohne Seitenangabe gilt Website Kompakt: 2.490 € netto Festpreis für bis zu drei Seiten mit Kontaktformular, jede weitere Seite 290 € netto. Startseite (Belegzeile im Hero, Angebot 01 mit neuer Umfangszeile) und Meta-Description lesen den Kanon; neue Getter `hu_freelancer_website_extra_page_price()` und `hu_freelancer_website_scope_display()`.

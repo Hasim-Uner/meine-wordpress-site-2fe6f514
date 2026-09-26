@@ -63,7 +63,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `hu_get_site_footer_navigation_contract()`. Vier Wege in Kopf-Reihenfolge
   (Website, Tracking, Agentur, Energie; der eigene Weg entfällt), Direktzeile,
   Verzeichnis in vier Gruppen: Leistungen (Server-Side Tracking, Performance
-  Marketing, WordPress Agentur Hannover), Belege & Person (Solar-Fallstudie,
+  Marketing, WordPress Agentur Hannover, Landingpage erstellen lassen),
+  Belege & Person (Solar-Fallstudie,
   Über Haşim), Wissen (Blog, Glossar), Rechtliches (Impressum, Datenschutz).
   Auf `/`, `/kontakt/` und der Energie-Money-Page entfällt die Wegewahl am
   Abschluss.
@@ -145,6 +146,20 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Beschreibung und FAQ kommen aus `nexus_get_wgos_cluster_page_data()`,
   Service-Schema aus `inc/org-schema.php`. Query-Owner für
   `performance marketing b2b`.
+- **`/landingpage-erstellen-lassen/`** (`page-landingpage-erstellen-lassen.php`,
+  Gutachten-Layout wie `/performance-marketing/`, seit 2026-09-26): Festpreis-
+  Angebot Landingpage für Direktkunden. Preis aus `hu_landingpage_price()`,
+  Umfang (Auftakt, Konzept und Text, Umsetzung, Anfrageformular, Herkunft jeder
+  Anfrage, SEO-Grundlagen, Abnahme mit zwei Korrekturschleifen) und die Grenze
+  „Nicht dazu“ im Template; Zusätze aus Tracking-Leiter und Freelancer-Preisliste.
+  FAQ und FAQPage-Schema aus `nexus_get_landingpage_faq_items()`, Service mit
+  Offer in `inc/org-schema.php`, Title/Description in `inc/seo-meta.php`.
+  CTAs auf `/kontakt/?type=project&focus=conversion`. Route `landingpage`,
+  Seitenanlage über `nexus_get_provisioned_pages()`. Query-Owner für
+  `landingpage erstellen lassen`. Eingehende Links: Fuß (Gruppe Leistungen),
+  `/performance-marketing/` (Vorgehen) und `/glossar/landingpage/`
+  (Hauptziel des Begriffs). Die Startseite verlinkt die Seite noch nicht
+  (eingefroren bis 2026-11-20, Versuch Ersteinschätzung).
 - **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
   Das Tracking-Angebot. Zeigt alle vier Stufen der Tracking-Leiter aus
   `hu_tracking_product_ladder()` als Karten `#stufe-1` bis `#stufe-4` (Raster

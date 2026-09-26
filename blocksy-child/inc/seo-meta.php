@@ -289,6 +289,12 @@ function hu_get_forced_singular_seo_map() {
 				'title'       => 'Wärmepumpen Leads kaufen? Alternative ohne Portale',
 				'description' => sprintf( 'Wärmepumpen-Leads kaufen oder eigene Anfragen aufbauen? Portal-Leads gehen an mehrere Betriebe und schließen selten ab. Case Study: %s weniger CPL.', $e3_cpl_reduction ),
 			],
+			// Query-Owner "landingpage erstellen lassen" (docs/seo/query-ownership.csv).
+			// Preis aus dem Kanon, damit Snippet und Seite denselben Betrag nennen.
+			'landingpage-erstellen-lassen' => [
+				'title'       => 'Landingpage erstellen lassen: Festpreis mit Text & Messung',
+				'description' => sprintf( 'Landingpage erstellen lassen zum Festpreis von %s: Konzept, Text, WordPress, Anfrageformular und Herkunft jeder Anfrage. Live nach Ihrer Abnahme.', hu_landingpage_price( true ) ),
+			],
 			// "Consent" statt "CAPI" im Title haelt das Signal fuer die vier
 			// DSGVO-Queries, die diese Seite laut docs/seo/query-ownership.csv
 			// besitzt. CAPI steht dafuer in der Description.
