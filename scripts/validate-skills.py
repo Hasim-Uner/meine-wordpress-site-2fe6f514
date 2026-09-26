@@ -126,12 +126,16 @@ def main():
         for document in [path, *sorted(references.glob('*.md'))]:
             errors.extend(f'{document.relative_to(ROOT)}: {e}' for e in broken_links(document))
     workflow = (ROOT / '.github/workflows/ci.yml').read_text()
-    required = ['CLAUDE.md', '.claude/settings.json']
     for event, following in [('push', 'pull_request'), ('pull_request', 'workflow_dispatch')]:
-        block = workflow.split(f'  {event}:', 1)[-1].split(f'  {following}:', 1)[0]
-        for pattern in required:
-            if f"- '{pattern}'" not in block:
-                errors.append(f'CI {event}: missing path {pattern}')
+        event_start = re.search(rf'^  {event}:', workflow, re.M)
+        if not event_start:
+            errors.append(f'CI: missing {event} event')
+            continue
+        block = workflow[event_start.end():].split(f'  {following}:', 1)[0]
+        if re.search(r'^    paths(?:-ignore)?:', block, re.M):
+            errors.append(f'CI {event}: path filters bypass conservative check selection')
+    if not re.search(r'^    branches: \[main\]$', workflow, re.M):
+        errors.append('CI push: only main should run alongside PR validation')
     benchmark = SKILLS / 'agent-system-maintenance/scripts/benchmark.py'
     result = subprocess.run([sys.executable, str(benchmark), '--check'], cwd=ROOT)
     if result.returncode:

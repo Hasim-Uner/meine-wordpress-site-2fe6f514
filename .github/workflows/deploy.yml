@@ -3,6 +3,11 @@ name: Deploy Theme (Production)
 on:
   workflow_call:
     inputs:
+      automatic:
+        description: Guard automatic deployments against newer runtime revisions
+        required: false
+        default: false
+        type: boolean
       ref:
         description: Git ref to deploy
         required: false
@@ -41,7 +46,36 @@ env:
   BUILD_OUTPUT_DIR: .build/blocksy-child
 
 jobs:
+  revision:
+    # Runs inside the production-deploy concurrency group, before any upload.
+    # Manual releases/rollbacks retain their explicitly selected ref.
+    runs-on: ubuntu-latest
+    outputs:
+      current: ${{ steps.revision.outputs.current }}
+    steps:
+      - name: Checkout automatic deployment ref
+        if: inputs.automatic
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+          fetch-depth: 0
+
+      - name: Verify automatic revision is still current
+        id: revision
+        env:
+          AUTOMATIC: ${{ inputs.automatic }}
+        shell: bash
+        run: |
+          if [[ "$AUTOMATIC" == 'true' ]]; then
+            git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
+            python3 scripts/check.py --deployment-current --github-output "$GITHUB_OUTPUT"
+          else
+            echo 'current=true' >> "$GITHUB_OUTPUT"
+          fi
+
   deploy:
+    needs: revision
+    if: needs.revision.outputs.current == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment: production

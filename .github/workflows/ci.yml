@@ -1,59 +1,17 @@
 name: CI
 
+# PRs validate the merge result; main validates the exact revision to deploy.
+# No path filter: new/unknown dependencies must reach the conservative selector.
 on:
   push:
-    paths:
-      - 'AGENTS.md'
-      - 'CLAUDE.md'
-      - '.claude/settings.json'
-      - 'llms.txt'
-      - '.claudeignore'
-      - '.agents/skills/**'
-      - '.claude/skills/**'
-      - 'agents/skills/**'
-      - 'blocksy-child/**'
-      # Der German Copy Guard prueft docs/ und content/. Ohne diese Pfade
-      # loest ein reiner Docs-Commit auf einem Branch gar keinen Check aus.
-      - 'docs/**'
-      - 'content/**'
-      - '.github/workflows/**'
-      - 'scripts/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'composer.json'
-      - 'composer.lock'
-      - 'phpstan.neon'
-      - 'phpstan-baseline.neon'
-      - 'stubs/**'
+    branches: [main]
   pull_request:
-    paths:
-      - 'AGENTS.md'
-      - 'CLAUDE.md'
-      - '.claude/settings.json'
-      - 'llms.txt'
-      - '.claudeignore'
-      - '.agents/skills/**'
-      - '.claude/skills/**'
-      - 'agents/skills/**'
-      - 'blocksy-child/**'
-      # Der German Copy Guard prueft docs/ und content/. Ohne diese Pfade
-      # loest ein reiner Docs-Commit auf einem Branch gar keinen Check aus.
-      - 'docs/**'
-      - 'content/**'
-      - '.github/workflows/**'
-      - 'scripts/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'composer.json'
-      - 'composer.lock'
-      - 'phpstan.neon'
-      - 'phpstan-baseline.neon'
-      - 'stubs/**'
   workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # A docs-only push must never cancel a pending runtime validation/deploy.
+  group: ci-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
@@ -62,6 +20,13 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      deploy: ${{ steps.plan.outputs.deploy }}
+    env:
+      CHECK_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+      CHECK_HEAD: ${{ github.sha }}
+      CHECK_FULL: ${{ github.event_name == 'workflow_dispatch' }}
+      PYTHONDONTWRITEBYTECODE: '1'
 
     steps:
       - name: Checkout
@@ -69,32 +34,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Determine diff refs
-        id: refs
-        shell: bash
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "base=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
-            echo "head=${{ github.sha }}" >> "$GITHUB_OUTPUT"
-          elif [[ -n "${{ github.event.before }}" && "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]]; then
-            echo "base=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
-            echo "head=${{ github.sha }}" >> "$GITHUB_OUTPUT"
-          else
-            # New-branch pushes and manual runs carry no usable "before" SHA.
-            # Diff against the default branch so the guards only see the
-            # branch's own changes, not the whole repository history.
-            base="$(git merge-base "origin/${{ github.event.repository.default_branch }}" HEAD 2>/dev/null || true)"
-            if [[ -z "${base}" || "${{ github.ref_name }}" == "${{ github.event.repository.default_branch }}" ]]; then
-              base="$(git rev-list --max-parents=0 HEAD | tail -n 1)"
-            fi
-            echo "base=${base}" >> "$GITHUB_OUTPUT"
-            echo "head=${{ github.sha }}" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Select checks from changed paths
+        id: plan
+        run: python3 scripts/check.py --plan --github-output "$GITHUB_OUTPUT"
 
       - name: Validate GitHub Actions workflows
+        if: steps.plan.outputs.runtime == 'true'
         uses: devops-actions/actionlint@v0.1.11
 
-      - name: Install skill test dependencies
+      - name: Install check dependencies
         shell: bash
         run: |
           if ! command -v rg >/dev/null 2>&1; then
@@ -102,86 +50,23 @@ jobs:
             sudo apt-get install -y --no-install-recommends ripgrep
           fi
 
-      - name: Validate repository architecture
-        run: bash scripts/validate-architecture.sh
-
-      - name: Validate skill context and benchmark contracts
-        run: python3 scripts/validate-skills.py
-
-      - name: Run skill regression suites
-        run: bash scripts/test-skills.sh
-
-      - name: Audit theme asset references
-        run: python3 scripts/audit-theme-assets.py
-
-      - name: Smoke test lead path contract
-        run: bash scripts/smoke-lead-path-contract.sh
-
-      - name: Smoke test funnel routing contract
-        run: bash scripts/smoke-funnel-routing-contract.sh
-
-      - name: Check canon drift
-        run: bash scripts/lint-canon-drift.sh "${{ steps.refs.outputs.base }}" "${{ steps.refs.outputs.head }}"
-
-      # Repo-weit statt diff-basiert: ein verbotener Wert, der sich vor der
-      # Sperre eingeschlichen hat, faellt hier genauso auf wie ein neuer.
-      # Derselbe Guard laeuft in scripts/build-theme-dist.sh und damit auch
-      # im manuell ausgeloesten Deploy.
-      - name: Check canon guard
-        run: bash scripts/canon-guard.sh
-
-      - name: Check E3 canon
-        run: bash scripts/lint-e3-canon.sh
-
-      - name: Check crawler policy and entity signals
-        run: php scripts/lint-entity-crawler-signals.php
-
-      - name: Check navigation contract (header, footer, 404)
-        run: php scripts/tests/navigation-contract.php
-
-      - name: Check CSS and JavaScript motion rules
-        run: bash scripts/lint-css-motion.sh
-
-      - name: Check CSS spacing rules
-        run: bash scripts/lint-css-spacing.sh
-
-      - name: Check visible German copy
-        run: bash scripts/check-german-copy.sh "${{ steps.refs.outputs.base }}" "${{ steps.refs.outputs.head }}"
-
       - name: Set up Node.js
+        if: steps.plan.outputs.runtime == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
       - name: Install Node build tooling
+        if: steps.plan.outputs.runtime == 'true'
         run: npm ci
 
-      - name: Install browser for isolated form tests
+      - name: Install browser for isolated UI tests
+        if: steps.plan.outputs.runtime == 'true'
         run: npx playwright install --with-deps chromium
 
-      - name: Verify form submission behavior
-        run: npm run test:forms
-
-      - name: Verify intake endpoints with isolated storage and intercepted mail
-        run: npm run test:intake
-
-      - name: Verify redirect of author-suffixed post URLs
-        run: npm run test:permalinks
-
-      - name: Verify page provisioning runs once per deploy
-        run: npm run test:provisioning
-
-      - name: Verify the tracking price ladder contract
-        run: npm run test:pricing
-
-      - name: Verify navigation on desktop, mobile and keyboard
-        run: npm run test:navigation-ui
-
-      - name: PHP syntax check
-        run: find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l
-
       - name: Install PHP analysis tooling
+        if: steps.plan.outputs.runtime == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -189,35 +74,24 @@ jobs:
             if composer install --no-interaction --no-progress --prefer-dist; then
               exit 0
             fi
-
             if [[ "$attempt" -eq 3 ]]; then
               echo "Composer install failed after 3 attempts." >&2
               exit 1
             fi
-
             delay=$(( attempt * 5 ))
             echo "::warning::Composer install failed on attempt ${attempt}; retrying in ${delay}s."
             sleep "$delay"
           done
 
-      - name: PHP static analysis
-        run: composer analyse:php
-
-      - name: Validate deploy config fallback
-        run: bash scripts/verify-deploy-config.sh 22 "www/wp-content/themes/blocksy-child/"
-
-      - name: Build theme distribution
-        run: npm run build:theme -- .build/blocksy-child
-
-      - name: Verify built style.css keeps the theme header
-        run: |
-          grep -q '^Theme Name: Blocksy Child$' .build/blocksy-child/style.css
+      - name: Run shared repository checks
+        run: python3 scripts/check.py
 
   deploy-production:
     needs: validate
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.validate.result == 'success' && needs.validate.outputs.deploy == 'true' }}
     uses: ./.github/workflows/deploy.yml
     with:
       ref: ${{ github.sha }}
       dry_run: false
+      automatic: true
     secrets: inherit

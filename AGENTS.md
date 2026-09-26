@@ -87,7 +87,10 @@ For exact wording and route behavior, read the canonical sources instead of rest
 
 Use deterministic checks before LLM re-review.
 
-After a coherent code change, run the narrowest relevant lint/test first. Before push or PR, run at minimum:
+After a coherent change, use `npm run check` for the shared change-aware checks.
+`npm run check -- --plan` previews the scope; `--full` forces all checks.
+Unknown paths or unavailable comparison history select the full suite.
+Before push or PR, the selected checks must include at minimum:
 
 ```bash
 npm run lint:architecture

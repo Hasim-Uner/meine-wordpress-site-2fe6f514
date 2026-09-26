@@ -204,24 +204,15 @@ require_no_path "agents/skills/modern-web-guidance/guides/webmcp"
 
 echo
 echo "=== CI Coverage Contract ==="
-require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'agents/skills/\\*\\*'" "CI watches agents/skills changes"
-require_text ".github/workflows/ci.yml" "^[[:space:]]+- '\\.agents/skills/\\*\\*'" "CI watches Codex skill discovery changes"
-require_text ".github/workflows/ci.yml" "^[[:space:]]+- '\\.claude/skills/\\*\\*'" "CI watches Claude Code skill discovery changes"
-require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'scripts/\\*\\*'" "CI watches script changes"
-require_text ".github/workflows/ci.yml" "^[[:space:]]+- '\\.github/workflows/\\*\\*'" "CI watches workflow changes"
-require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'blocksy-child/\\*\\*'" "CI watches theme changes"
-require_text ".github/workflows/ci.yml" "^[[:space:]]+- 'AGENTS.md'" "CI watches AGENTS.md changes"
 require_text "CLAUDE.md" '^@AGENTS\.md$' "Claude imports the shared contract"
-require_text ".github/workflows/ci.yml" 'python3 scripts/validate-skills\.py' "CI validates skill contracts"
-require_text ".github/workflows/ci.yml" 'bash scripts/test-skills\.sh' "CI runs specialist regression suites"
-require_text ".github/workflows/ci.yml" "^[[:space:]]+- '\\.claudeignore'" "CI watches .claudeignore changes"
+require_file "scripts/check.py"
+require_file "scripts/check-diff.sh"
 require_text ".github/workflows/ci.yml" 'fetch-depth:[[:space:]]*0' "CI fetches full history for diff guards"
-require_text ".github/workflows/ci.yml" 'id:[[:space:]]*refs' "CI computes diff refs"
-require_text ".github/workflows/ci.yml" 'bash scripts/validate-architecture\.sh' "CI runs architecture validation"
-require_text ".github/workflows/ci.yml" 'bash scripts/lint-canon-drift\.sh.*steps\.refs\.outputs\.base.*steps\.refs\.outputs\.head' "CI runs canon drift guard with diff refs"
-require_text ".github/workflows/ci.yml" 'bash scripts/lint-e3-canon\.sh' "CI runs E3 canon guard"
-require_text ".github/workflows/ci.yml" 'bash scripts/lint-css-motion\.sh' "CI runs CSS and JavaScript motion guard"
-require_text ".github/workflows/ci.yml" 'bash scripts/check-german-copy\.sh.*steps\.refs\.outputs\.base.*steps\.refs\.outputs\.head' "CI runs German copy guard with diff refs"
+require_text ".github/workflows/ci.yml" 'python3 scripts/check\.py --plan --github-output' "CI uses the shared check selector"
+require_text ".github/workflows/ci.yml" 'run: python3 scripts/check\.py$' "CI runs shared repository checks"
+require_text ".github/workflows/ci.yml" 'needs\.validate\.outputs\.deploy' "Automatic deploy respects the selected scope"
+# The selector's behavioral suite covers docs, skills, runtime, unknown paths,
+# renames and missing history; validate-skills checks the workflow event scope.
 
 echo
 echo "=== n8n Scope Contract ==="

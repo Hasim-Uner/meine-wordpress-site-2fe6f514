@@ -23,7 +23,7 @@ Stand: 2026-09-22. Diese Karte beschreibt Systemgrenzen und Abhängigkeiten nach
 
 ## Website
 
-Die Website ist aktuell der stabilste Teil des Repos. `blocksy-child/` ist der deploybare Kern; CI und Production-Deploy sind jetzt getrennt, und der Live-Deploy erfolgt erst nach erfolgreichem CI-Lauf fuer einen Push auf `main`.
+Die Website ist aktuell der stabilste Teil des Repos. `blocksy-child/` ist der deploybare Kern. Lokal und in CI wählt `scripts/check.py` die Prüfungen anhand der geänderten Dateien. Der automatische Live-Deploy folgt nur einer erfolgreichen vollständigen Prüfung auf `main`; reine Dokumentations- und Skill-Änderungen lösen keinen Deploy aus. Unbekannte Pfade werden vollständig geprüft.
 
 Wichtige Merkmale:
 
@@ -237,7 +237,7 @@ Risiko:
 - Website -> `data-track-*` / Koko Analytics / Search Console -> SEO-Cockpit
 - Blog / SEO -> interne Verlinkung -> Service-Seiten / Audit -> Leadflow
 - WordPress-Editor -> Theme-Struktur -> Live-Seiten
-- GitHub Actions CI -> Build-Paket aus `blocksy-child/` -> GitHub Actions Deploy -> Live-Theme
+- `npm run check` / GitHub Actions CI → gemeinsame Prüfauswahl (`scripts/check.py`) → bei Runtime-Änderungen Build-Paket aus `blocksy-child/` → erfolgreicher main-Lauf → GitHub Actions Deploy → Live-Theme
 
 ## Kritische Abhaengigkeiten
 

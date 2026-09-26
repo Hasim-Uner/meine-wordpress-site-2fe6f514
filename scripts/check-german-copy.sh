@@ -9,17 +9,13 @@ TARGETS=(
   "blocksy-child/page-*.php"
   "blocksy-child/template-*.php"
   "blocksy-child/template-parts/*.php"
-  "content/**/*.md"
-  "docs/**/*.md"
+  ":(glob)content/**/*.md"
+  ":(glob)docs/**/*.md"
 )
 
 PATTERN='(^|[^[:alnum:]_/-])(oeffentlich|Oeffentlich|oeffentlichen|Oeffentlichen|oeffentliche|Oeffentliche|oeffentlicher|Oeffentlicher|oeffentliches|Oeffentliches|Datenschutzerklaerung|Datenschutzerklaerungen|Kurzueberblick|zugaenglich|Zugaenglich|unberuehrt|Unberuehrt|geschaeftlich|Geschaeftlich|geschaeftliche|Geschaeftliche|pruefenden|Pruefenden|pruefen|Pruefen|prueft|Prueft|geschuetzt|Geschuetzt|uebermittelt|Uebermittelt|uebertragung|Uebertragung|ueberblick|Ueberblick|fuer|Fuer|koennen|Koennen|zustaendig|Zustaendig|aufsichtsbehoerde|Aufsichtsbehoerde|datenuebertragbarkeit|Datenuebertragbarkeit)([^[:alnum:]_/-]|$)'
 
-if [[ -n "${HEAD_REF}" ]]; then
-  DIFF_OUTPUT="$(git diff --unified=0 --no-color "${BASE_REF}" "${HEAD_REF}" -- "${TARGETS[@]}" || true)"
-else
-  DIFF_OUTPUT="$(git diff --unified=0 --no-color "${BASE_REF}" -- "${TARGETS[@]}" || true)"
-fi
+DIFF_OUTPUT="$(bash scripts/check-diff.sh "${BASE_REF}" "${HEAD_REF}" "${TARGETS[@]}")"
 
 if [[ -z "${DIFF_OUTPUT}" ]]; then
   exit 0
