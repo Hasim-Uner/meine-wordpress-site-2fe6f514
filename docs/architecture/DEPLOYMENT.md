@@ -13,7 +13,7 @@ Diese Doku beschreibt nur den repo-seitigen CI/CD-Vertrag fuer das WordPress-Chi
   - prüft Architektur, PHP-Syntax, Skill-Verträge, Prüfauswahl sowie Canon-, E3- und Textregeln immer
   - ergänzt bei Agenten-/Skill-Änderungen alle Skill-Suiten; Dokumentation, Entwürfe und Forschungsdaten benötigen keinen Browser, PHPStan oder Theme-Build
   - führt bei Theme-, Tooling-, Workflow- und unbekannten Änderungen alle Runtime-Prüfungen einschließlich Formulare, Navigation, Seitenanlage, Preisleiter, PHPStan und Theme-Build aus
-  - installiert Node 20, Browser und Composer-Abhängigkeiten nur für die vollständige Prüfung; zusätzlich prüft actionlint die Workflows
+  - richtet PHP und Composer aus `.toolchain.json` ausdrücklich ein; Node aus demselben Manifest, Browser und Composer-Abhängigkeiten werden nur für die vollständige Prüfung installiert; zusätzlich prüft actionlint die Workflows
   - behält den stabilen Job `validate`; jede fehlgeschlagene ausgewählte Prüfung blockiert den automatischen Deploy
 - `.github/workflows/deploy.yml`
   - wird automatisch nur nach erfolgreicher CI auf `main` und bei einer als Runtime/Tooling eingestuften Änderung aufgerufen; reine Dokumentations- oder Skill-Änderungen lösen keinen Deploy aus
@@ -33,6 +33,12 @@ Die Auswahlregeln stehen in `scripts/check.py`, ihre Regressionen in
 lokale Prüfungen beziehen auch noch nicht versionierte Dateien ein. Vollständige
 Logs liegen im ausgegebenen temporären Verzeichnis, erfolgreiche Prüfungen
 erscheinen kompakt. Tatsächliche Tokenersparnisse sind damit nicht gemessen.
+
+Die lokale Einrichtung und der Doctor sind in
+[`../development/TOOLCHAIN.md`](../development/TOOLCHAIN.md) beschrieben. Der
+Deploy prüft vor dem Build ebenfalls die PHP-, Node- und npm-Versionen aus dem
+Manifest. Bei manuellen Rollbacks auf ältere Commits ohne Manifest stammen die
+Pins aus der ausführenden Workflow-Revision; der Theme-Commit bleibt unverändert.
 
 ## GitHub Secrets und Variables
 

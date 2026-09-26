@@ -23,7 +23,7 @@ Stand: 2026-09-22. Diese Karte beschreibt Systemgrenzen und Abhängigkeiten nach
 
 ## Website
 
-Die Website ist aktuell der stabilste Teil des Repos. `blocksy-child/` ist der deploybare Kern. Lokal und in CI wählt `scripts/check.py` die Prüfungen anhand der geänderten Dateien. Der automatische Live-Deploy folgt nur einer erfolgreichen vollständigen Prüfung auf `main`; reine Dokumentations- und Skill-Änderungen lösen keinen Deploy aus. Unbekannte Pfade werden vollständig geprüft.
+Die Website ist aktuell der stabilste Teil des Repos. `blocksy-child/` ist der deploybare Kern. Lokal und in CI wählt `scripts/check.py` die Prüfungen anhand der geänderten Dateien. `.toolchain.json` legt die CLI-Versionen für lokale Prüfungen, CI und den Deploy-Build fest; `scripts/toolchain.py` richtet sie projektlokal ein und prüft die Umgebung vor dem Testlauf (siehe `docs/development/TOOLCHAIN.md`). Der automatische Live-Deploy folgt nur einer erfolgreichen vollständigen Prüfung auf `main`; reine Dokumentations- und Skill-Änderungen lösen keinen Deploy aus. Unbekannte Pfade werden vollständig geprüft.
 
 Wichtige Merkmale:
 

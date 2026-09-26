@@ -86,6 +86,34 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
+      - name: Read pinned toolchain
+        id: toolchain
+        env:
+          WORKFLOW_SHA: ${{ github.workflow_sha }}
+        shell: bash
+        run: |
+          toolchain_file=.toolchain.json
+          if [[ ! -f "$toolchain_file" ]]; then
+            # Rollbacks to commits predating the manifest use this workflow's pins.
+            git fetch --no-tags origin "$WORKFLOW_SHA"
+            toolchain_file="$RUNNER_TEMP/deploy-toolchain.json"
+            git show "$WORKFLOW_SHA:.toolchain.json" > "$toolchain_file"
+          fi
+          python3 - "$toolchain_file" >> "$GITHUB_OUTPUT" <<'PY'
+          import json, sys
+          config = json.load(open(sys.argv[1]))
+          for name in ('php', 'node'):
+              print(name + '=' + config[name]['version'])
+          print('npm=' + config['node']['npm'])
+          PY
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ steps.toolchain.outputs.php }}
+          tools: none
+          coverage: none
+
       - name: Validate deploy config
         run: bash scripts/verify-deploy-config.sh "$SSH_PORT" "$DEPLOY_PATH"
 
@@ -128,8 +156,18 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ steps.toolchain.outputs.node }}
           cache: 'npm'
+
+      - name: Verify build tool versions
+        env:
+          PINNED_PHP: ${{ steps.toolchain.outputs.php }}
+          PINNED_NODE: ${{ steps.toolchain.outputs.node }}
+          PINNED_NPM: ${{ steps.toolchain.outputs.npm }}
+        run: |
+          test "$(php -r 'echo PHP_VERSION;')" = "$PINNED_PHP"
+          test "$(node -p 'process.versions.node')" = "$PINNED_NODE"
+          test "$(npm --version)" = "$PINNED_NPM"
 
       - name: Install Node build tooling
         run: npm ci

@@ -38,6 +38,18 @@ jobs:
         id: plan
         run: python3 scripts/check.py --plan --github-output "$GITHUB_OUTPUT"
 
+      - name: Read pinned toolchain
+        id: toolchain
+        run: python3 scripts/toolchain.py versions --github-output "$GITHUB_OUTPUT"
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ steps.toolchain.outputs.php }}
+          tools: composer:${{ steps.toolchain.outputs.composer }}
+          extensions: curl, dom, mbstring, xml, xmlwriter
+          coverage: none
+
       - name: Validate GitHub Actions workflows
         if: steps.plan.outputs.runtime == 'true'
         uses: devops-actions/actionlint@v0.1.11
@@ -54,7 +66,7 @@ jobs:
         if: steps.plan.outputs.runtime == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ steps.toolchain.outputs.node }}
           cache: 'npm'
 
       - name: Install Node build tooling

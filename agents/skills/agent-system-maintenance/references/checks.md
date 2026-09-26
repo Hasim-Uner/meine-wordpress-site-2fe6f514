@@ -32,12 +32,15 @@ automatic release checks freshly fetched `main`: a docs/skills successor may
 proceed, a newer runtime revision supersedes the older release. Explicit manual
 deployments and rollbacks keep their selected ref.
 
-All profiles require Python 3, Git, Bash, PHP and ripgrep. Full checks additionally
-need PHP >= 7.4 for the existing provisioning/pricing fixtures, installed Node
-tooling (`npm ci`), Chromium (`npx playwright install chromium`)
-and Composer dependencies (`composer install`). CI installs these only for full
-checks and additionally runs actionlint. Local PHPStan can use an existing phar
-via `PHPSTAN_PHAR=/absolute/path/phpstan.phar`; CI uses the locked dependency.
+All profiles require Python >= 3.8, Git, Bash, ripgrep and the PHP version pinned
+in `.toolchain.json`. Full checks also require the pinned Node/npm/Composer,
+locked dependencies and a browser. The runner selects project-local tools and
+runs the environment doctor before starting checks; `--plan` remains independent
+of PHP/Node. Use `python3 scripts/toolchain.py setup` for setup, `npm run doctor`
+for diagnostics and `python3 scripts/toolchain.py exec COMMAND` for individual
+commands. See `docs/development/TOOLCHAIN.md` for prerequisites and browser limits.
+CI installs Node/browser/Composer dependencies only for full checks and also runs
+actionlint. `PHPSTAN_PHAR` may select an existing phar matching the lockfile.
 
 Successful commands print compact status and duration. Failed commands print
 their complete output and make the runner fail. Every command's full log is
