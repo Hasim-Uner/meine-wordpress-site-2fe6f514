@@ -98,6 +98,19 @@ class ToolchainTests(unittest.TestCase):
                 toolchain.versions(output)
             self.assertIn('runtime=true\nphp=' + toolchain.CONFIG['php']['version'], output.read_text())
 
+    def test_wrong_cached_php_cannot_be_exported_to_ci_path(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / 'github-path'
+            with patch.object(toolchain, 'install_php'), \
+                    patch.object(toolchain, 'environment', return_value=dict(os.environ)), \
+                    patch.object(toolchain, 'capture', return_value='8.3.35'), \
+                    patch.object(sys, 'argv', ['toolchain.py', 'install-php', '--prefix', directory,
+                                              '--github-path', str(output)]), \
+                    contextlib.redirect_stderr(io.StringIO()) as error:
+                self.assertEqual(toolchain.main(), 1)
+            self.assertFalse(output.exists())
+            self.assertIn('does not match manifest', error.getvalue())
+
     def test_legacy_manual_rollback_keeps_selected_theme_revision(self):
         workflow = (ROOT / '.github/workflows/deploy.yml').read_text()
         step = workflow.split('      - name: Read pinned toolchain\n', 1)[1].split('\n      - name:', 1)[0]
@@ -114,7 +127,9 @@ class ToolchainTests(unittest.TestCase):
             git('commit', '-qm', 'old release')
             release = git('rev-parse', 'HEAD')
             (root / '.toolchain.json').write_text(json.dumps(toolchain.CONFIG))
-            git('add', '.toolchain.json')
+            (root / 'scripts').mkdir()
+            (root / 'scripts/toolchain.py').write_bytes((ROOT / 'scripts/toolchain.py').read_bytes())
+            git('add', '.toolchain.json', 'scripts/toolchain.py')
             git('commit', '-qm', 'workflow with toolchain')
             workflow_sha = git('rev-parse', 'HEAD')
             git('remote', 'add', 'origin', str(root))
@@ -123,7 +138,7 @@ class ToolchainTests(unittest.TestCase):
             subprocess.run(['bash', '-e', '-o', 'pipefail', '-c', script], cwd=root, check=True,
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                            env=dict(os.environ, WORKFLOW_SHA=workflow_sha,
-                                    RUNNER_TEMP=directory, GITHUB_OUTPUT=str(output)))
+                                    RUNNER_TEMP=directory, GITHUB_WORKSPACE=directory, GITHUB_OUTPUT=str(output)))
             self.assertEqual(git('rev-parse', 'HEAD'), release)
             self.assertFalse((root / '.toolchain.json').exists())
             self.assertIn('php=' + toolchain.CONFIG['php']['version'], output.read_text())

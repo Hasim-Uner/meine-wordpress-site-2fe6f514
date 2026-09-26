@@ -18,8 +18,8 @@ permissions:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     outputs:
       deploy: ${{ steps.plan.outputs.deploy }}
     env:
@@ -42,13 +42,23 @@ jobs:
         id: toolchain
         run: python3 scripts/toolchain.py versions --github-output "$GITHUB_OUTPUT"
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
+      - name: Cache exact PHP and Composer
+        id: php-cache
+        uses: actions/cache@v4
         with:
-          php-version: ${{ steps.toolchain.outputs.php }}
-          tools: composer:${{ steps.toolchain.outputs.composer }}
-          extensions: curl, dom, mbstring, xml, xmlwriter
-          coverage: none
+          path: |
+            .build/toolchain/php
+            .build/toolchain/composer
+          key: php-cli-ubuntu24-${{ runner.arch }}-${{ steps.toolchain.outputs.cache_key }}
+
+      - name: Install PHP build prerequisites
+        if: steps.php-cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libssl-dev libxml2-dev libcurl4-openssl-dev zlib1g-dev unzip xz-utils
+
+      - name: Set up exact PHP and Composer
+        run: python3 scripts/toolchain.py install-php --github-path "$GITHUB_PATH"
 
       - name: Validate GitHub Actions workflows
         if: steps.plan.outputs.runtime == 'true'

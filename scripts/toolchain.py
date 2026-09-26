@@ -48,6 +48,7 @@ def environment(root=ROOT):
 def versions(output=None):
     values = {name: CONFIG[name]['version'] for name in ('php', 'node', 'composer')}
     values['npm'] = CONFIG['node']['npm']
+    values['cache_key'] = hashlib.sha256(json.dumps(CONFIG, sort_keys=True).encode() + Path(__file__).read_bytes()).hexdigest()
     text = ''.join('{}={}\n'.format(key, value) for key, value in values.items())
     if output:
         with output.open('a') as handle:
@@ -125,27 +126,7 @@ def download(url, destination, digest):
     return destination
 
 
-def setup(root=ROOT):
-    base = tool_dir(root)
-    env = environment(root)
-    target = '{}-{}'.format(platform.system().lower(),
-                           {'x86_64': 'x64', 'aarch64': 'arm64'}.get(platform.machine(), platform.machine()))
-    if target not in CONFIG['node']['sha256']:
-        raise ValueError('Unsupported installer platform: ' + target)
-    for binary in ('git', 'bash', 'rg', 'tar', 'make', 'cc', 'pkg-config', 'unzip'):
-        if not shutil.which(binary, path=env['PATH']):
-            raise ValueError('Missing prerequisite: {}. See docs/development/TOOLCHAIN.md'.format(binary))
-
-    node_version = CONFIG['node']['version']
-    node_name = 'node-v{}-{}'.format(node_version, target)
-    node = base / 'node' / node_version
-    if not (node / 'bin/node').is_file():
-        archive = download('https://nodejs.org/dist/v{}/{}.tar.xz'.format(node_version, node_name),
-                           base / 'cache' / (node_name + '.tar.xz'), CONFIG['node']['sha256'][target])
-        node.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run(['tar', '-xf', str(archive), '-C', str(node.parent)], check=True)
-        (node.parent / node_name).rename(node)
-
+def install_php(base, env):
     php_version = CONFIG['php']['version']
     php = base / 'php' / php_version
     if not (php / 'bin/php').is_file():
@@ -176,7 +157,9 @@ def setup(root=ROOT):
                             ['make', 'install']]:
                 result = subprocess.run(command, cwd=source, env=env, stdout=log, stderr=subprocess.STDOUT)
                 if result.returncode:
-                    raise ValueError('PHP build failed. See ' + str(log_path))
+                    log.flush()
+                    tail = '\n'.join(log_path.read_text(errors='replace').splitlines()[-40:])
+                    raise ValueError('PHP build failed. See {}\n{}'.format(log_path, tail))
 
     composer = base / 'composer' / CONFIG['composer']['version']
     phar = download('https://getcomposer.org/download/{}/composer.phar'.format(CONFIG['composer']['version']),
@@ -184,6 +167,30 @@ def setup(root=ROOT):
     phar.chmod(0o755)
     if not (composer / 'composer').exists():
         (composer / 'composer').symlink_to('composer.phar')
+
+
+def setup(root=ROOT):
+    base = tool_dir(root)
+    env = environment(root)
+    target = '{}-{}'.format(platform.system().lower(),
+                           {'x86_64': 'x64', 'aarch64': 'arm64'}.get(platform.machine(), platform.machine()))
+    if target not in CONFIG['node']['sha256']:
+        raise ValueError('Unsupported installer platform: ' + target)
+    for binary in ('git', 'bash', 'rg', 'tar', 'make', 'cc', 'pkg-config', 'unzip'):
+        if not shutil.which(binary, path=env['PATH']):
+            raise ValueError('Missing prerequisite: {}. See docs/development/TOOLCHAIN.md'.format(binary))
+
+    node_version = CONFIG['node']['version']
+    node_name = 'node-v{}-{}'.format(node_version, target)
+    node = base / 'node' / node_version
+    if not (node / 'bin/node').is_file():
+        archive = download('https://nodejs.org/dist/v{}/{}.tar.xz'.format(node_version, node_name),
+                           base / 'cache' / (node_name + '.tar.xz'), CONFIG['node']['sha256'][target])
+        node.parent.mkdir(parents=True, exist_ok=True)
+        subprocess.run(['tar', '-xf', str(archive), '-C', str(node.parent)], check=True)
+        (node.parent / node_name).rename(node)
+
+    install_php(base, env)
     env = environment(root)
     env['COMPOSER_HOME'] = str(base / 'cache' / 'composer')
     env['npm_config_cache'] = str(base / 'cache' / 'npm')
@@ -203,6 +210,9 @@ def main():
     doctor_args = commands.add_parser('doctor')
     doctor_args.add_argument('--basic', action='store_true', help='docs/agents prerequisites only')
     commands.add_parser('setup')
+    install = commands.add_parser('install-php', help='install exact PHP and Composer, also used by CI')
+    install.add_argument('--prefix', type=Path, help='toolchain directory, defaults to the shared project cache')
+    install.add_argument('--github-path', type=Path, help='append installed binaries to GitHub Actions PATH')
     execute = commands.add_parser('exec', help='run a command using project tools')
     execute.add_argument('argv', nargs=argparse.REMAINDER)
     args = parser.parse_args()
@@ -212,6 +222,18 @@ def main():
             return 0
         if args.command == 'doctor':
             return doctor(full=not args.basic)
+        if args.command == 'install-php':
+            base = args.prefix.resolve() if args.prefix else tool_dir()
+            install_php(base, environment())
+            php_bin = base / 'php' / CONFIG['php']['version'] / 'bin'
+            actual = capture([str(php_bin / 'php'), '-r', 'echo PHP_VERSION;'])
+            if actual != CONFIG['php']['version']:
+                raise ValueError('Installed PHP does not match manifest: ' + actual)
+            if args.github_path:
+                with args.github_path.open('a') as output:
+                    output.write(str(php_bin) + '\n' + str(base / 'composer' / CONFIG['composer']['version']) + '\n')
+            print('Installed PHP ' + actual)
+            return 0
         if args.command == 'setup':
             return setup()
         argv = args.argv[1:] if args.argv[:1] == ['--'] else args.argv

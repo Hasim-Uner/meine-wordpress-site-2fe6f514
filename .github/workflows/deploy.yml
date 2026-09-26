@@ -76,7 +76,7 @@ jobs:
   deploy:
     needs: revision
     if: needs.revision.outputs.current == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     environment: production
 
@@ -92,27 +92,37 @@ jobs:
           WORKFLOW_SHA: ${{ github.workflow_sha }}
         shell: bash
         run: |
-          toolchain_file=.toolchain.json
-          if [[ ! -f "$toolchain_file" ]]; then
+          toolchain_root="$GITHUB_WORKSPACE"
+          if [[ ! -f .toolchain.json ]]; then
             # Rollbacks to commits predating the manifest use this workflow's pins.
             git fetch --no-tags origin "$WORKFLOW_SHA"
-            toolchain_file="$RUNNER_TEMP/deploy-toolchain.json"
-            git show "$WORKFLOW_SHA:.toolchain.json" > "$toolchain_file"
+            toolchain_root="$RUNNER_TEMP/deploy-toolchain"
+            mkdir -p "$toolchain_root/scripts"
+            git show "$WORKFLOW_SHA:.toolchain.json" > "$toolchain_root/.toolchain.json"
+            git show "$WORKFLOW_SHA:scripts/toolchain.py" > "$toolchain_root/scripts/toolchain.py"
           fi
-          python3 - "$toolchain_file" >> "$GITHUB_OUTPUT" <<'PY'
-          import json, sys
-          config = json.load(open(sys.argv[1]))
-          for name in ('php', 'node'):
-              print(name + '=' + config[name]['version'])
-          print('npm=' + config['node']['npm'])
-          PY
+          python3 "$toolchain_root/scripts/toolchain.py" versions --github-output "$GITHUB_OUTPUT"
+          printf 'installer=%s\n' "$toolchain_root/scripts/toolchain.py" >> "$GITHUB_OUTPUT"
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
+      - name: Cache exact PHP and Composer
+        id: php-cache
+        uses: actions/cache@v4
         with:
-          php-version: ${{ steps.toolchain.outputs.php }}
-          tools: none
-          coverage: none
+          path: |
+            .build/toolchain/php
+            .build/toolchain/composer
+          key: php-cli-ubuntu24-${{ runner.arch }}-${{ steps.toolchain.outputs.cache_key }}
+
+      - name: Install PHP build prerequisites
+        if: steps.php-cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libssl-dev libxml2-dev libcurl4-openssl-dev zlib1g-dev unzip xz-utils
+
+      - name: Set up exact PHP and Composer
+        env:
+          TOOLCHAIN_INSTALLER: ${{ steps.toolchain.outputs.installer }}
+        run: python3 "$TOOLCHAIN_INSTALLER" install-php --prefix "$GITHUB_WORKSPACE/.build/toolchain" --github-path "$GITHUB_PATH"
 
       - name: Validate deploy config
         run: bash scripts/verify-deploy-config.sh "$SSH_PORT" "$DEPLOY_PATH"

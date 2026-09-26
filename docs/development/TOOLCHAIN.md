@@ -27,10 +27,14 @@ Das Setup lädt offizielle, mit SHA-256 geprüfte Archive. PHP wird beim ersten 
 als CLI gebaut; das dauert einige Minuten. Werkzeuge und Download-Cache liegen
 ignoriert unter `.build/toolchain/` im Hauptcheckout und werden von dessen
 Git-Worktrees gemeinsam genutzt. Build-Fehler stehen in `php-build.log` dort.
+CI und Deploy bauen PHP mit demselben Installer auf Ubuntu 24.04. GitHub cached
+PHP und Composer anhand von Manifest und Installer; der erste Lauf ist daher
+länger, Folgeläufe verwenden den passenden Build wieder. Eine nur auf `8.3`
+aufgelöste Setup-Aktion genügt nicht für die exakte PHP-Patchversion.
 System-PHP, globale Node-Installation und Shell-Startdateien bleiben unverändert.
 Das Setup installiert `node_modules/` und `vendor/` aus den Lockfiles im jeweiligen
 Checkout. Es veröffentlicht nichts. Unterstützt sind macOS und Linux mit x64/arm64;
-lokal geprüft wurde macOS 11 auf Intel, CI prüft Ubuntu.
+lokal geprüft wurde macOS 11 auf Intel, CI prüft Ubuntu 24.04.
 
 `npm run check` und `npm run doctor` wählen die Projektwerkzeuge automatisch aus.
 Ohne globales npm funktionieren dieselben Einstiege direkt über Python:
