@@ -649,6 +649,35 @@ body.nx-custom-header-active {
   text-align: right;
 }
 
+/* Posten: das Protokoll fuer ganze Saetze (Leistungsumfang, Anlaesse).
+   Das Label bleibt Mono, der Text laeuft linksbuendig in der Grundschrift,
+   damit ein Satz ueber zwei Zeilen lesbar bleibt. Schmal stapeln beide. */
+.doku .protokoll.posten .z {
+  display: grid;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+  gap: var(--s2);
+  font-family: inherit;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  line-height: 1.45;
+}
+
+.doku .protokoll.posten .z span {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  white-space: normal;
+  padding-top: 0.3em;
+}
+
+.doku .protokoll.posten .z b { text-align: left; }
+
+@media (max-width: 720px) {
+  .doku .protokoll.posten .z {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s0);
+  }
+}
+
 /* ══ Abschluss ════════════════════════════════════════════════ */
 
 .doku .abschluss {

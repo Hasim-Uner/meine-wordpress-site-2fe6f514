@@ -119,6 +119,7 @@ performance marketing b2b;/performance-marketing/;commercial;owned;wgos-cluster-
 # Terme bleiben bei /server-side-tracking-b2b/. Bis hierher hatte die Seite keine
 # Zeile, und der Kommentar oben schrieb alle Tracking-Terme der Fachseite zu.
 conversion tracking einrichten lassen;/ga4-tracking-setup/;commercial;owned;page-ga4.php meta_title (2026-09-26), docs/decisions/tracking-preisleiter.md;server side tracking
+landingpage erstellen lassen;/landingpage-erstellen-lassen/;transactional;owned;seo-research/2026-09/reports/seo-audit-2026-09-26.md (DataForSEO DE 260/Monat, SERP mit Anbieterpreisen), docs/decisions/preise-website-landingpage.md;landingpage bedeutung
 ga4 setup agentur;/ga4-tracking-setup/;commercial;owned;gsc-export-90d-2026-09-22.csv (Pos. 60,0, 3 Impr.);server side tracking agentur
 # Website-Relaunch-Intent (2026-09-24): Cornerstone /website-relaunch/ im Dossier
 # Conversion & Anfragearchitektur. Gate-Pruefung 2026-09-24: FREI.

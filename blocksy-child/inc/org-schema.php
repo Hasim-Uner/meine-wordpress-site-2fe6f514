@@ -1234,6 +1234,30 @@ function hu_output_schema()
             'serviceOutput' => 'Belastbare Lead- und Nachfrage-Signale mit GA4, GTM, Consent und serverseitiger Messung für B2B-Websites'
         ],
 
+        // Festpreis aus dem Kanon (HU_LANDINGPAGE_PRICE); Service und
+        // sichtbarer Preis auf /landingpage-erstellen-lassen/ lesen dieselbe Zahl.
+        'landingpage-erstellen-lassen' => [
+            'name'        => 'Landingpage erstellen lassen',
+            'description' => 'Landingpage in WordPress zum Festpreis: eine Seite für ein Angebot, mit Konzept, Text, Anfrageformular, Herkunft jeder Anfrage und Abnahme.',
+            'serviceType' => 'Landingpage-Erstellung',
+            'serviceOutput' => 'Eine abgenommene Landingpage mit Anfrageformular, die jede Anfrage mit ihrer Herkunft übergibt',
+            'offers'      => [
+                [
+                    '@type'         => 'Offer',
+                    'name'          => 'Landingpage zum Festpreis',
+                    'price'         => HU_LANDINGPAGE_PRICE,
+                    'priceCurrency' => 'EUR',
+                    'priceSpecification' => [
+                        '@type'                 => 'UnitPriceSpecification',
+                        'price'                 => HU_LANDINGPAGE_PRICE,
+                        'priceCurrency'         => 'EUR',
+                        'valueAddedTaxIncluded' => false,
+                    ],
+                    'url'           => home_url('/landingpage-erstellen-lassen/'),
+                ],
+            ],
+        ],
+
         'performance-marketing' => [
             'name'        => 'Performance Marketing für B2B',
             'description' => 'Google Ads und Meta für B2B in fester Reihenfolge: erst Conversion-Messung, dann Landingpage, dann Budget. Kampagnenbetreuung dort, wo sie an WordPress, Tracking und Conversion hängt.',
@@ -1503,6 +1527,35 @@ function hu_output_schema()
                     'inLanguage' => 'de',
                     'publisher'  => ['@id' => home_url('/#organization')],
                     'mainEntity' => $faq_entities,
+                ];
+            }
+        }
+
+        if ('landingpage-erstellen-lassen' === $slug && function_exists('nexus_get_landingpage_faq_items')) {
+            // Dieselbe Quelle wie die sichtbaren Fragen im Template.
+            $landingpage_faq_entities = array_map(
+                static function ($item) {
+                    return [
+                        '@type'          => 'Question',
+                        'name'           => (string) $item['question'],
+                        'acceptedAnswer' => [
+                            '@type' => 'Answer',
+                            'text'  => (string) $item['answer'],
+                        ],
+                    ];
+                },
+                nexus_get_landingpage_faq_items()
+            );
+
+            if (!empty($landingpage_faq_entities)) {
+                $schemas[] = [
+                    '@context'   => 'https://schema.org',
+                    '@type'      => 'FAQPage',
+                    '@id'        => home_url('/landingpage-erstellen-lassen/#faq'),
+                    'url'        => home_url('/landingpage-erstellen-lassen/'),
+                    'inLanguage' => 'de',
+                    'publisher'  => ['@id' => home_url('/#organization')],
+                    'mainEntity' => $landingpage_faq_entities,
                 ];
             }
         }
@@ -1874,7 +1927,7 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'wgos', 'wordpress-growth-operating-system' ], true )
+                in_array( $slug, [ 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'wgos', 'wordpress-growth-operating-system', 'landingpage-erstellen-lassen' ], true )
                 // Template-owned pages must not emit FAQs from invisible editor caches.
                 || is_page_template( 'page-ergebnisse.php' )
                 || is_page_template( 'page-case-studies-e-commerce.php' )

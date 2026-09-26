@@ -117,6 +117,11 @@ function nexus_get_llms_txt_sections() {
 			'heading' => 'Fachseiten und kommerzielle Suchintents',
 			'links'   => [
 				[
+					'label'       => 'Landingpage erstellen lassen',
+					'url'         => $urls['landingpage'] ?? home_url( '/landingpage-erstellen-lassen/' ),
+					'description' => 'Festpreis-Angebot für Direktkunden: eine Seite für ein Angebot mit Konzept, Text, Anfrageformular, Herkunft jeder Anfrage und Abnahme. Tracking, Website und Weiterentwicklung als eigene Zusätze.',
+				],
+				[
 					'label'       => 'Conversion Tracking einrichten lassen',
 					'url'         => $urls['tracking'] ?? home_url( '/ga4-tracking-setup/' ),
 					'description' => 'Das Tracking-Angebot: GA4, Google Tag Manager, Consent Mode und Google Ads als abgegrenztes Setup mit Messplan und Abnahmeprotokoll. Server-Side, Meta CAPI und CRM kommen nur nach technischem Bedarf dazu.',

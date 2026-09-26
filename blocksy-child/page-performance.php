@@ -67,7 +67,7 @@ $faq_items       = isset( $page['faq_items'] ) && is_array( $page['faq_items'] )
 $contact_url     = hu_get_commercial_route( 'project_request' );
 $tracking_url    = nexus_get_page_url( [ 'ga4-tracking-setup' ], home_url( '/ga4-tracking-setup/' ) );
 $sst_url         = hu_get_commercial_route( 'tracking_b2b' );
-$funnel_url      = home_url( '/#angebot-funnel' );
+$funnel_url      = hu_get_commercial_route( 'landingpage' );
 $results_url     = hu_get_commercial_route( 'results' );
 $whitelabel_url  = hu_get_commercial_route( 'whitelabel' );
 $wl_task_url     = add_query_arg( [ 'type' => 'whitelabel', 'case' => 'aufgabe' ], $whitelabel_url ) . '#aufgabe';
@@ -145,7 +145,7 @@ get_header();
 					</div>
 					<div class="ausgang">
 						<a class="textlink" href="<?php echo esc_url( $tracking_url ); ?>" data-track-action="perf_to_tracking_setup" data-track-category="navigation" data-track-section="perf_order">Tracking-Setup im Detail</a>
-						<a class="textlink" href="<?php echo esc_url( $funnel_url ); ?>" data-track-action="perf_to_landingpages" data-track-category="navigation" data-track-section="perf_order">Landingpages und Anfragestrecken</a>
+						<a class="textlink" href="<?php echo esc_url( $funnel_url ); ?>" data-track-action="perf_to_landingpage_offer" data-track-category="navigation" data-track-section="perf_order">Landingpage zum Festpreis</a>
 						<a class="textlink" href="<?php echo esc_url( $sst_url ); ?>" data-track-action="perf_to_server_side" data-track-category="navigation" data-track-section="perf_order">Server-Side Tracking</a>
 					</div>
 				</div>
