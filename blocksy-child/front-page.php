@@ -278,12 +278,12 @@ get_header();
 			</aside>
 
 			<ul class="st-belege" aria-label="Belege">
-				<li><a href="#arbeiten" data-track-action="home_proof_strip_case" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl"><?php echo $zahl( $cpl_drop ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?></span> <span class="st-belege__text">Kosten pro qualifizierter Anfrage in einem dokumentierten B2B-Fall</span></a></li>
+				<?php // Der Preis steht zuerst: Nur so liegt er bei 1280 x 800 und 1440 x 900 im ersten Bildschirm. Station 02 nennt den fehlenden Preis als Bruchstelle. ?>
+				<li><a href="#angebote" data-track-action="home_proof_strip_price" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl"><?php echo $zahl( "ab\u{00A0}" . $website_price ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?></span> <span class="st-belege__text">netto für eine WordPress-Website, alle Preise stehen auf dieser Seite</span></a></li>
+				<li><a href="#arbeiten" data-track-action="home_proof_strip_case" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl st-belege__zahl--messwert"><?php echo $zahl( $cpl_drop ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?></span> <span class="st-belege__text">Kosten pro qualifizierter Anfrage in einem dokumentierten B2B-Fall</span></a></li>
 				<?php if ( $reference_n ) : ?>
 					<li><a href="#referenzen" data-track-action="home_proof_strip_references" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl"><?php echo esc_html( (string) $reference_n ); ?></span> <span class="st-belege__text"><?php echo esc_html( 1 === $reference_n ? 'öffentliche Website, die Sie selbst öffnen können' : 'öffentliche Websites, die Sie selbst öffnen können' ); ?></span></a></li>
 				<?php endif; ?>
-				<?php // Der erste Preis im ersten Bildschirm; Station 02 nennt den fehlenden Preis als Bruchstelle. ?>
-				<li><a href="#angebote" data-track-action="home_proof_strip_price" data-track-category="proof" data-track-section="hero"><span class="st-belege__zahl"><?php echo $zahl( "ab\u{00A0}" . $website_price ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?></span> <span class="st-belege__text">netto für eine WordPress-Website, alle Preise stehen auf dieser Seite</span></a></li>
 			</ul>
 		</div>
 	</section>

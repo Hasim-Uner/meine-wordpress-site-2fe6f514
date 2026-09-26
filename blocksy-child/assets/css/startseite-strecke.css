@@ -416,7 +416,9 @@
   white-space: nowrap;
 }
 
-.st .st-belege li:first-child .st-belege__zahl { color: var(--stempel); }
+/* Der Akzent gehoert dem Messwert aus dem Fall, nicht der ersten Zeile:
+   Zuerst steht der Preis. */
+.st .st-belege__zahl--messwert { color: var(--stempel); }
 
 .st .st-belege__text {
   font-size: 0.95rem;
@@ -722,9 +724,11 @@
 
 .st .st-station__detail p + p { margin-top: var(--s0); }
 
+/* Die Labels trennen Problem und Loesung; sie stehen auf der Label-Stufe
+   des Systems, nicht eine Stufe darunter. */
 .st .st-station__label {
   font-family: var(--mono);
-  font-size: var(--mono-s);
+  font-size: var(--mono-m);
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;

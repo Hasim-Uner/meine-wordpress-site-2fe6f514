@@ -83,10 +83,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   vom Hero (Marke „Klick“) bis zum Anfrageblock (Marke „Anfrage“) und füllt
   sich beim Lesen; ohne JavaScript und bei reduzierter Bewegung steht sie
   statisch. Acht Abschnitte: Hero (`#klick`) mit H1 ohne Ortsnamen, Byline
-  mit Portrait, zwei Buttons, Messprotokoll und drei Belegzeilen (Fall,
-  Referenzen, seit 2026-09-25 der Websitepreis aus
-  `hu_freelancer_website_price()` mit Hook `home_proof_strip_price`; H1, Satz,
-  Buttons und Protokoll passen bei 1280 × 800 in den ersten Bildschirm); Prüfstand (`#pruefstand`, die
+  mit Portrait, zwei Buttons, Messprotokoll und drei Belegzeilen (seit
+  2026-09-26 zuerst der Websitepreis aus `hu_freelancer_website_price()` mit
+  Hook `home_proof_strip_price`, dann Fall und Referenzen; H1, Satz, Buttons,
+  Protokoll und die Preiszeile passen bei 1280 × 800 in den ersten Bildschirm); Prüfstand (`#pruefstand`, die
   einzige dunkle Tafel, Links auf Code, CI und PageSpeed, keine Scores);
   sechs Stationen einer Anfrage (`#strecke`, Liste mit `#angebot-funnel`);
   drei Leistungen mit Kanonpreisen (`#angebote`, Anker `#angebot-website`,
