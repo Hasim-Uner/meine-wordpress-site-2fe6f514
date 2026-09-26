@@ -395,7 +395,7 @@
 
 .st .st-belege a {
   display: grid;
-  /* Breit genug fuer den laengsten Beleg ("ab 3.400 €"); bei 5.5rem stiess
+  /* Breit genug fuer den laengsten Beleg (der Website-Preis mit "ab"); bei 5.5rem stiess
      das Euro-Zeichen an den Text. Alle Zeilen teilen die Spalte, damit die
      Texte buendig stehen. */
   grid-template-columns: 7rem minmax(0, 1fr);

@@ -47,6 +47,9 @@ function hu_pricing_canon() {
 		'freelancer_takeover_check_price' => HU_FREELANCER_TAKEOVER_CHECK_PRICE,
 		// Schlüssel enthält "price", damit [hu_price] ihn als Betrag formatiert.
 		'freelancer_website_price'        => HU_FREELANCER_WEBSITE_MIN,
+		'freelancer_extra_page_price'     => HU_FREELANCER_WEBSITE_EXTRA_PAGE,
+		'freelancer_website_pages'        => HU_FREELANCER_WEBSITE_PAGES,
+		'landingpage_price'               => HU_LANDINGPAGE_PRICE,
 		// Als Satzbaustein, nicht als Stufen-Array: [hu_price] gibt nur Skalare aus.
 		'freelancer_retainer_display'     => hu_freelancer_retainer_display(),
 		'founding_discount_percent'       => HU_FOUNDING_DISCOUNT_PERCENT,
@@ -467,11 +470,22 @@ function hu_tracking_ladder_display( $from_stage = 1 ) {
 }
 
 // ── WordPress-Freelancer-Nebenpfad ───────────────────────────────
-// Der lokale Freelancer-Einstieg ist ein eigener, klar begrenzter Preisanker.
-// Er gilt fuer kompakte individuelle Unternehmenswebsites mit definiertem Scope;
-// komplexere Integrationen, Tracking-Setups und Funnel-Projekte werden separat
-// kalkuliert. Der Wert lebt hier, damit Template und FAQ nicht auseinanderlaufen.
-define( 'HU_FREELANCER_WEBSITE_MIN', 3400 );
+// Website Kompakt: Festpreis fuer bis zu HU_FREELANCER_WEBSITE_PAGES Seiten mit
+// Kontaktformular; jede weitere Seite kostet HU_FREELANCER_WEBSITE_EXTRA_PAGE.
+// Deshalb steht der Betrag oeffentlich als "ab": mehr Seiten, hoeherer Preis.
+// Shop, Schnittstellen und Relaunches mit vielen Seiten werden separat
+// kalkuliert. Bis 2026-09-26 lag der Einstieg bei 3.400 € ohne Seitenangabe;
+// der alte Betrag steht als website-3400 in scripts/canon-forbidden-values.txt.
+// Herleitung: docs/decisions/preise-website-landingpage.md.
+define( 'HU_FREELANCER_WEBSITE_MIN', 2490 );
+define( 'HU_FREELANCER_WEBSITE_PAGES', 3 );
+define( 'HU_FREELANCER_WEBSITE_EXTRA_PAGE', 290 );
+
+// Landingpage: eine Seite, ein Angebot, ein Ziel. Festpreis inklusive Text,
+// Anfrageformular und Herkunftsmessung. Liegt bewusst unter Website Kompakt,
+// weil Kaeufer eine Seite guenstiger erwarten als mehrere; die Differenz
+// erklaert sich ueber den Inhalt (Text und Messung statt Seitenzahl).
+define( 'HU_LANDINGPAGE_PRICE', 1990 );
 
 // Übernahme-Check: bezahlte Diagnose, bevor eine fremde WordPress-Installation
 // in Weiterentwicklung oder Relaunch übernommen wird. Ohne Check keine offene
@@ -497,6 +511,50 @@ define( 'HU_FREELANCER_RETAINER_TIERS', [
  */
 function hu_freelancer_website_price( $with_net = false ) {
 	$price = hu_format_eur( HU_FREELANCER_WEBSITE_MIN );
+
+	return $with_net ? $price . ' netto' : $price;
+}
+
+/**
+ * Display the canonical price of one page beyond the Website-Kompakt scope.
+ *
+ * @param bool $with_net Append the "netto" qualifier.
+ * @return string
+ */
+function hu_freelancer_website_extra_page_price( $with_net = false ) {
+	$price = hu_format_eur( HU_FREELANCER_WEBSITE_EXTRA_PAGE );
+
+	return $with_net ? $price . ' netto' : $price;
+}
+
+/**
+ * Describe the Website-Kompakt scope as one phrase.
+ *
+ * Ein Satzbaustein, damit Seitenzahl und Zusatzpreis nirgends einzeln
+ * abgeschrieben werden. "netto" steht einmal am Ende.
+ *
+ * @return string
+ */
+function hu_freelancer_website_scope_display() {
+	// Kleine Zahlen stehen im Fliesstext als Wort, wie die Referenzzahl der Startseite.
+	$words = [ 2 => 'zwei', 3 => 'drei', 4 => 'vier', 5 => 'fünf', 6 => 'sechs' ];
+	$pages = $words[ HU_FREELANCER_WEBSITE_PAGES ] ?? (string) HU_FREELANCER_WEBSITE_PAGES;
+
+	return sprintf(
+		'Festpreis für bis zu %s Seiten mit Kontaktformular, jede weitere Seite %s',
+		$pages,
+		hu_freelancer_website_extra_page_price( true )
+	);
+}
+
+/**
+ * Display the canonical fixed price of a landing page.
+ *
+ * @param bool $with_net Append the "netto" qualifier.
+ * @return string
+ */
+function hu_landingpage_price( $with_net = false ) {
+	$price = hu_format_eur( HU_LANDINGPAGE_PRICE );
 
 	return $with_net ? $price . ' netto' : $price;
 }
@@ -557,7 +615,13 @@ define( 'HU_WHITELABEL_TRACKING_AUDIT_MIN', 690 );
 // auf indexierten Seiten nachlesbar. 900 haelt den rund 30-prozentigen
 // Abstand, den jede andere Sprosse dieser Leiter einhaelt.
 define( 'HU_WHITELABEL_SERVER_SIDE_MIN', 900 );
-define( 'HU_WHITELABEL_LANDINGPAGE_MIN', 1900 );
+
+// 1.390 statt zuvor 1.900 (bis 2026-09-26): Seit es mit HU_LANDINGPAGE_PRICE
+// einen oeffentlichen Endkundenpreis fuer die Landingpage gibt, gilt auch hier
+// der rund 30-prozentige Abstand. 1.900 laege fast auf dem Endkundenpreis.
+// Der alte Betrag steht als wl-landingpage-1900 in
+// scripts/canon-forbidden-values.txt.
+define( 'HU_WHITELABEL_LANDINGPAGE_MIN', 1390 );
 
 // Der Retainer ist die versprochene Zielstufe des Partner-Funnels und trug
 // keine Zahl — damit war er eine Absichtserklaerung. Eine Untergrenze macht
