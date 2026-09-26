@@ -168,6 +168,9 @@ jobs:
       - name: Verify intake endpoints with isolated storage and intercepted mail
         run: npm run test:intake
 
+      - name: Verify redirect of author-suffixed post URLs
+        run: npm run test:permalinks
+
       - name: Verify navigation on desktop, mobile and keyboard
         run: npm run test:navigation-ui
 

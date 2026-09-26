@@ -444,7 +444,7 @@ function nexus_seo_cockpit_v3_render_movers( $snapshot ) {
 			<div class="nsc-v3-mover-group is-<?php echo esc_attr( $key ); ?>">
 				<div class="nsc-v3-mover-group__head"><strong><?php echo esc_html( $label ); ?></strong><span><?php echo esc_html( 'gainers' === $key ? 'Klicks gewonnen' : 'Klicks verloren' ); ?></span></div>
 				<?php if ( empty( $rows ) ) : ?><p class="nsc-v3-muted">Keine signifikante Bewegung.</p><?php else : ?>
-					<?php foreach ( $rows as $row ) : ?><div class="nsc-v3-mover-row"><div><strong><?php echo esc_html( (string) ( $row['query'] ?? '' ) ); ?></strong><span>Pos. <?php echo esc_html( number_format_i18n( (float) ( $row['position'] ?? 0 ), 1 ) ); ?></span></div><b><?php echo esc_html( ( (float) ( $row['delta'] ?? 0 ) > 0 ? '+' : '' ) . number_format_i18n( (float) ( $row['delta'] ?? 0 ), 0 ) ); ?></b></div><?php endforeach; ?>
+					<?php foreach ( $rows as $row ) : ?><div class="nsc-v3-mover-row"><div><strong><?php echo esc_html( (string) ( $row['query'] ?? '' ) ); ?></strong><span><?php echo esc_html( nexus_get_seo_cockpit_mover_position_label( (array) $row ) ); ?></span></div><b><?php echo esc_html( ( (float) ( $row['delta'] ?? 0 ) > 0 ? '+' : '' ) . number_format_i18n( (float) ( $row['delta'] ?? 0 ), 0 ) ); ?></b></div><?php endforeach; ?>
 				<?php endif; ?>
 			</div>
 		<?php endforeach; ?>

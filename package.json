@@ -12,6 +12,7 @@
     "benchmark:agents": "python3 agents/skills/agent-system-maintenance/scripts/benchmark.py",
     "test:forms": "playwright test --config scripts/tests/forms.config.cjs",
     "test:intake": "php scripts/tests/intake-endpoints.php",
+    "test:permalinks": "php scripts/tests/author-permalink-redirect.php",
     "test:navigation": "php scripts/tests/navigation-contract.php",
     "test:navigation-ui": "playwright test --config scripts/tests/navigation.config.cjs",
     "build:theme": "bash scripts/build-theme-dist.sh",
