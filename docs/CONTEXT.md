@@ -13,7 +13,7 @@ Scope: durable documentation under `docs/`.
 
 - `docs/audits/`: historical audits, not source of truth
 - `docs/references/`: supporting artifacts and snapshots
-- `docs/playbooks/`: currently empty legacy area; repetitive agent workflows belong in `agents/skills/`
+- Repetitive agent workflows belong in `agents/skills/`, not in a docs playbook
 
 ## Rules
 
