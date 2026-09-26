@@ -536,15 +536,26 @@ function hu_freelancer_website_extra_page_price( $with_net = false ) {
  * @return string
  */
 function hu_freelancer_website_scope_display() {
-	// Kleine Zahlen stehen im Fliesstext als Wort, wie die Referenzzahl der Startseite.
-	$words = [ 2 => 'zwei', 3 => 'drei', 4 => 'vier', 5 => 'fünf', 6 => 'sechs' ];
-	$pages = $words[ HU_FREELANCER_WEBSITE_PAGES ] ?? (string) HU_FREELANCER_WEBSITE_PAGES;
-
 	return sprintf(
 		'Festpreis für bis zu %s Seiten mit Kontaktformular, jede weitere Seite %s',
-		$pages,
+		hu_pricing_count_word( HU_FREELANCER_WEBSITE_PAGES ),
 		hu_freelancer_website_extra_page_price( true )
 	);
+}
+
+/**
+ * Spell out a small count for running text.
+ *
+ * Kleine Zahlen stehen im Fliesstext als Wort, wie die Referenzzahl der
+ * Startseite. Ab sieben bleibt die Ziffer.
+ *
+ * @param int $count Count to spell out.
+ * @return string
+ */
+function hu_pricing_count_word( $count ) {
+	$words = [ 2 => 'zwei', 3 => 'drei', 4 => 'vier', 5 => 'fünf', 6 => 'sechs' ];
+
+	return $words[ (int) $count ] ?? (string) $count;
 }
 
 /**
