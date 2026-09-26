@@ -1,0 +1,401 @@
+<?php
+/**
+ * Theme-Setup: Menue-Slot, Scroll-Reveal, Self-Hosted Fonts, Marke und Favicons, Blocksy-Overrides, Share-Buttons.
+ *
+ * Aus functions.php ausgelagert; functions.php laedt nur Module.
+ *
+ * @package Blocksy_Child
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// ── 1b. MENÜ-SLOT: POSITIONIERTES HAUPTMENÜ ──────────────────────
+add_action( 'after_setup_theme', 'blocksy_child_register_slim_nav_menu', 20 );
+function blocksy_child_register_slim_nav_menu() {
+	register_nav_menus(
+		array(
+			'primary-slim' => __( 'Hauptmenü Slim (Positioniert)', 'blocksy-child' ),
+		)
+	);
+}
+
+// ── 1c. SCROLL-REVEAL: NUR VERSTECKEN, WENN JS WIRKLICH LAEUFT ───
+// Startseite, Ergebnisse-Hub und Beitraege blenden Sektionen beim Scrollen
+// ein. Ohne dieses Signal waere der Ausgangszustand opacity:0 — faellt das
+// Reveal-Skript aus, bliebe die halbe Seite unsichtbar. Das Flag setzt die
+// Klasse vor dem ersten Paint, das CSS versteckt erst dann. In Beitraegen
+// traf das bis 2026-09 Titelbild, Kontextbruecke, Leserfeedback und Autor.
+add_action( 'wp_head', 'hu_mark_reveal_capable', 0 );
+function hu_mark_reveal_capable() {
+	$is_reveal_route = is_front_page()
+		|| is_singular( 'post' )
+		|| ( function_exists( 'hu_is_results_hub_request' ) && hu_is_results_hub_request() );
+
+	if ( ! $is_reveal_route ) {
+		return;
+	}
+
+	echo "<script>document.documentElement.classList.add('hu-js')</script>\n";
+}
+
+// ── 2. TYPOGRAFIE & BRANDING: SELF-HOSTED FONTS ──────────────────
+add_action( 'wp_head', 'hu_preload_self_hosted_fonts', 1 );
+function hu_preload_self_hosted_fonts() {
+	$font_dir = get_stylesheet_directory();
+	$font_uri = get_stylesheet_directory_uri() . '/fonts';
+	$is_visual_homepage_test = function_exists( 'hu_is_homepage_wow_request' ) && hu_is_homepage_wow_request();
+	$critical_figtree_font = ( is_front_page() || $is_visual_homepage_test ) ? 'figtree-600.woff2' : 'figtree-400.woff2';
+
+	// Satoshi und Figtree tragen den Satz auf jeder Route, auch auf der
+	// Anfragestrecke. IBM Plex Mono bekommt dort keinen eigenen Preload:
+	// es traegt Ziffern und Labels, nicht das LCP-Element, und ein dritter
+	// Font im kritischen Pfad kostet mehr als er einbringt. font-display:
+	// swap deckt den Nachlauf ab.
+	$critical_fonts = [ 'Satoshi-Variable.woff2', $critical_figtree_font ];
+
+	foreach ( $critical_fonts as $critical_font ) {
+		if ( ! file_exists( $font_dir . '/fonts/' . $critical_font ) ) {
+			continue;
+		}
+
+		printf(
+			'<link rel="preload" href="%1$s/%2$s" as="font" type="font/woff2" crossorigin>' . "\n",
+			esc_url( $font_uri ),
+			esc_attr( $critical_font )
+		);
+	}
+}
+
+add_action( 'wp_enqueue_scripts', 'remove_google_fonts', 100 );
+function remove_google_fonts() {
+	global $wp_styles;
+
+	wp_deregister_style( 'google-fonts' );
+	wp_dequeue_style( 'google-fonts' );
+	wp_deregister_style( 'blocksy-fonts' );
+	wp_dequeue_style( 'blocksy-fonts' );
+
+	if ( ! ( $wp_styles instanceof WP_Styles ) ) {
+		return;
+	}
+
+	foreach ( $wp_styles->registered as $handle => $style ) {
+		if ( empty( $style->src ) ) {
+			continue;
+		}
+
+		if ( false === strpos( $style->src, 'fonts.googleapis.com' ) && false === strpos( $style->src, 'fonts.gstatic.com' ) ) {
+			continue;
+		}
+
+		wp_dequeue_style( $handle );
+		wp_deregister_style( $handle );
+	}
+}
+
+add_filter( 'blocksy:typography:google:use-remote', '__return_false' );
+
+function hu_normalize_brand_text( $text ) {
+	if ( ! is_string( $text ) || '' === $text ) {
+		return $text;
+	}
+
+	return strtr(
+		$text,
+		[
+			'Hasim' => 'Haşim',
+			'HASIM' => 'HAŞIM',
+			'hasim' => 'haşim',
+		]
+	);
+}
+
+function hu_get_site_wordmark_text() {
+	$site_name = trim( (string) get_bloginfo( 'name' ) );
+
+	if ( '' === $site_name ) {
+		return 'HAŞIM ÜNER';
+	}
+
+	return hu_normalize_brand_text( $site_name );
+}
+
+function hu_get_site_wordmark_html() {
+	$wordmark = hu_get_site_wordmark_text();
+
+	return sprintf(
+		'<a href="%1$s" class="site-logo" rel="home" aria-label="%2$s">%3$s</a>',
+		esc_url( home_url( '/' ) ),
+		esc_attr(
+			sprintf(
+				/* translators: %s: site wordmark. */
+				__( 'Startseite - %s', 'blocksy-child' ),
+				$wordmark
+			)
+		),
+		esc_html( $wordmark )
+	);
+}
+
+add_filter( 'get_custom_logo', 'hu_override_custom_logo_with_wordmark', 10, 2 );
+function hu_override_custom_logo_with_wordmark( $html, $blog_id ) {
+	if ( is_admin() ) {
+		return $html;
+	}
+
+	return hu_get_site_wordmark_html();
+}
+
+function hu_get_custom_logo_image_url() {
+	$custom_logo_id = (int) get_theme_mod( 'custom_logo' );
+
+	if ( $custom_logo_id <= 0 ) {
+		return '';
+	}
+
+	$custom_logo_url = wp_get_attachment_image_url( $custom_logo_id, 'full' );
+
+	return is_string( $custom_logo_url ) ? $custom_logo_url : '';
+}
+
+function hu_get_brand_logo_url() {
+	$custom_logo_url = hu_get_custom_logo_image_url();
+
+	if ( '' !== $custom_logo_url ) {
+		return (string) apply_filters( 'hu_brand_logo_url', $custom_logo_url );
+	}
+
+	if ( function_exists( 'has_site_icon' ) && has_site_icon() ) {
+		$site_icon_url = get_site_icon_url( 512 );
+
+		if ( is_string( $site_icon_url ) && '' !== $site_icon_url ) {
+			return (string) apply_filters( 'hu_brand_logo_url', $site_icon_url );
+		}
+	}
+
+	$logo_path = get_stylesheet_directory() . '/assets/brand/hasim-uener-light-copper.svg';
+	$logo_url  = get_stylesheet_directory_uri() . '/assets/brand/hasim-uener-light-copper.svg';
+
+	if ( file_exists( $logo_path ) ) {
+		return (string) apply_filters( 'hu_brand_logo_url', add_query_arg( 'v', (string) filemtime( $logo_path ), $logo_url ) );
+	}
+
+	return (string) apply_filters( 'hu_brand_logo_url', '' );
+}
+
+function hu_get_brand_image_type( $url ) {
+	$path_info = wp_parse_url( (string) $url, PHP_URL_PATH );
+	$extension = is_string( $path_info ) ? strtolower( pathinfo( $path_info, PATHINFO_EXTENSION ) ) : '';
+	$mime_map  = [
+		'svg'  => 'image/svg+xml',
+		'png'  => 'image/png',
+		'webp' => 'image/webp',
+		'ico'  => 'image/x-icon',
+		'jpg'  => 'image/jpeg',
+		'jpeg' => 'image/jpeg',
+		'gif'  => 'image/gif',
+	];
+
+	return isset( $mime_map[ $extension ] ) ? $mime_map[ $extension ] : 'image/svg+xml';
+}
+
+function hu_get_wp_site_icon_assets() {
+	$assets = [];
+
+	if ( ! function_exists( 'has_site_icon' ) || ! has_site_icon() ) {
+		return $assets;
+	}
+
+	$sizes = [
+		'icon'       => 48,
+		'icon_large' => 192,
+		'apple'      => 180,
+	];
+
+	foreach ( $sizes as $key => $size ) {
+		$url = get_site_icon_url( $size );
+
+		if ( ! is_string( $url ) || '' === $url ) {
+			continue;
+		}
+
+		$assets[ $key ] = [
+			'url'   => $url,
+			'type'  => hu_get_brand_image_type( $url ),
+			'sizes' => sprintf( '%1$dx%1$d', $size ),
+		];
+	}
+
+	return $assets;
+}
+
+function hu_get_brand_favicon_assets() {
+	$base_dir = get_stylesheet_directory() . '/assets/brand/';
+	$base_uri = get_stylesheet_directory_uri() . '/assets/brand/';
+	$assets   = [];
+
+	$variants = [
+		'light' => 'favicon-copper.svg',
+		'dark'  => 'favicon-dark.svg',
+	];
+
+	foreach ( $variants as $variant => $file_name ) {
+		$path = $base_dir . $file_name;
+
+		if ( ! file_exists( $path ) ) {
+			continue;
+		}
+
+		$assets[ $variant ] = [
+			'path'    => $path,
+			'url'     => add_query_arg( 'v', (string) filemtime( $path ), $base_uri . $file_name ),
+			'type'    => hu_get_brand_image_type( $file_name ),
+		];
+	}
+
+	return $assets;
+}
+
+add_action( 'after_setup_theme', 'hu_prefer_theme_brand_favicons', 20 );
+function hu_prefer_theme_brand_favicons() {
+	if ( [] === hu_get_wp_site_icon_assets() && [] === hu_get_brand_favicon_assets() ) {
+		return;
+	}
+
+	remove_action( 'wp_head', 'wp_site_icon', 99 );
+	remove_action( 'admin_head', 'wp_site_icon' );
+	remove_action( 'login_head', 'wp_site_icon' );
+}
+
+function hu_output_brand_favicon_meta() {
+	$wp_favicons    = hu_get_wp_site_icon_assets();
+	$theme_favicons = hu_get_brand_favicon_assets();
+
+	if ( [] === $wp_favicons && [] === $theme_favicons ) {
+		return;
+	}
+
+	if ( ! empty( $wp_favicons['icon']['url'] ) ) :
+		?>
+	<link rel="icon" type="<?php echo esc_attr( $wp_favicons['icon']['type'] ?? 'image/png' ); ?>" sizes="<?php echo esc_attr( $wp_favicons['icon']['sizes'] ?? '48x48' ); ?>" href="<?php echo esc_url( $wp_favicons['icon']['url'] ); ?>">
+	<link rel="shortcut icon" href="<?php echo esc_url( $wp_favicons['icon']['url'] ); ?>">
+		<?php
+	elseif ( ! empty( $theme_favicons['light']['url'] ) ) :
+		?>
+	<link rel="icon" type="<?php echo esc_attr( $theme_favicons['light']['type'] ?? 'image/svg+xml' ); ?>" sizes="any" href="<?php echo esc_url( $theme_favicons['light']['url'] ); ?>">
+	<link rel="shortcut icon" href="<?php echo esc_url( $theme_favicons['light']['url'] ); ?>">
+		<?php
+	endif;
+
+	if ( ! empty( $wp_favicons['icon_large']['url'] ) ) :
+		?>
+	<link rel="icon" type="<?php echo esc_attr( $wp_favicons['icon_large']['type'] ?? 'image/png' ); ?>" sizes="<?php echo esc_attr( $wp_favicons['icon_large']['sizes'] ?? '192x192' ); ?>" href="<?php echo esc_url( $wp_favicons['icon_large']['url'] ); ?>">
+		<?php
+	endif;
+
+	if ( ! empty( $wp_favicons['apple']['url'] ) ) :
+		?>
+	<link rel="apple-touch-icon" sizes="<?php echo esc_attr( $wp_favicons['apple']['sizes'] ?? '180x180' ); ?>" href="<?php echo esc_url( $wp_favicons['apple']['url'] ); ?>">
+		<?php
+	elseif ( ! empty( $theme_favicons['light']['url'] ) ) :
+		?>
+	<link rel="apple-touch-icon" href="<?php echo esc_url( $theme_favicons['light']['url'] ); ?>">
+		<?php
+	endif;
+
+	if ( empty( $wp_favicons['icon']['url'] ) && ! empty( $theme_favicons['dark']['url'] ) ) :
+		?>
+	<link rel="icon" type="<?php echo esc_attr( $theme_favicons['dark']['type'] ?? 'image/svg+xml' ); ?>" sizes="any" media="(prefers-color-scheme: dark)" href="<?php echo esc_url( $theme_favicons['dark']['url'] ); ?>">
+		<?php
+	endif;
+}
+
+add_action( 'wp_head', 'hu_output_brand_favicon_meta', 5 );
+add_action( 'admin_head', 'hu_output_brand_favicon_meta', 5 );
+add_action( 'login_head', 'hu_output_brand_favicon_meta', 5 );
+
+add_action( 'wp_head', 'hu_output_brand_head_support', 6 );
+function hu_output_brand_head_support() {
+	?>
+	<style>.ft { background: var(--bg, #0a0a0a); }</style>
+	<script>
+	(function () {
+		function applyWordmark() {
+			var logoLinks = document.querySelectorAll('.site-branding[data-id="logo"] .site-logo-container');
+			if (!logoLinks.length) {
+				return;
+			}
+
+			logoLinks.forEach(function (link) {
+				if (!link) {
+					return;
+				}
+
+				link.classList.add('site-logo');
+				link.setAttribute('aria-label', 'Startseite - HAŞIM ÜNER');
+
+				if (!link.textContent || !link.textContent.trim()) {
+					link.textContent = 'HAŞIM ÜNER';
+				}
+			});
+		}
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', applyWordmark);
+		} else {
+			applyWordmark();
+		}
+	})();
+	</script>
+	<?php
+}
+
+add_action(
+	'wp_head',
+	function () {
+		?>
+		<script>
+		(function () {
+			document.documentElement.setAttribute('data-nx-theme', 'dark');
+			document.documentElement.setAttribute('data-theme', 'dark');
+			document.documentElement.style.colorScheme = 'dark';
+		})();
+		</script>
+		<?php
+	},
+	1
+);
+
+// ── 3. BLOCKSY TITLE OVERRIDE ────────────────────────────────────
+add_filter( 'blocksy:post_types:post:has_page_title', '__return_false' );
+
+// Rewrite Rules flushen bei Theme-Aktivierung.
+add_action( 'after_switch_theme', function() {
+    flush_rewrite_rules();
+} );
+
+/**
+ * NEXUS GLOBAL HELPER: Share Buttons (Definition)
+ * Das hier ist nur der BAUPLAN. Es zeigt noch nichts an!
+ */
+function nexus_render_share_buttons() {
+    ?>
+    <div class="nexus-share-box">
+        <span class="share-label">Teilen:</span>
+        
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php the_permalink(); ?>" target="_blank" rel="noopener" class="nexus-share-btn linkedin" title="Auf LinkedIn teilen">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+        </a>
+
+        <a href="https://wa.me/?text=<?php echo urlencode(get_the_title() . ' - ' . get_the_permalink()); ?>" target="_blank" rel="noopener" class="nexus-share-btn whatsapp" title="Per WhatsApp senden">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        </a>
+
+        <button onclick="navigator.clipboard.writeText('<?php the_permalink(); ?>');alert('Link in Zwischenablage kopiert!');" class="nexus-share-btn copy" title="Link kopieren">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+        </button>
+    </div>
+    <?php
+}

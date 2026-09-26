@@ -151,6 +151,12 @@ require_file "AGENTS.md"
 require_file "agents/skills/CONTEXT.md"
 require_file "agents/skills/PRIMARY_SKILLS.txt"
 require_file ".github/workflows/ci.yml"
+if grep -Eq '^[[:space:]]*(function[[:space:]]|add_action|add_filter|remove_action|remove_filter)' blocksy-child/functions.php; then
+  fail "blocksy-child/functions.php defines functions or hooks; move them into blocksy-child/inc/"
+else
+  pass "blocksy-child/functions.php only bootstraps inc/ modules"
+fi
+
 require_file ".claudeignore"
 require_file ".cursorignore"
 require_file ".rooignore"
