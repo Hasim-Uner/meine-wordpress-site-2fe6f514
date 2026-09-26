@@ -169,6 +169,9 @@ jobs:
       - name: Verify redirect of author-suffixed post URLs
         run: npm run test:permalinks
 
+      - name: Verify page provisioning runs once per deploy
+        run: npm run test:provisioning
+
       - name: Verify navigation on desktop, mobile and keyboard
         run: npm run test:navigation-ui
 

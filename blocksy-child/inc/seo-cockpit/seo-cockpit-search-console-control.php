@@ -349,15 +349,7 @@ add_action( 'admin_init', 'nexus_maybe_schedule_pending_seo_cockpit_sitemap_subm
  * @return string
  */
 function nexus_get_seo_cockpit_deploy_marker_sha() {
-	$path = trailingslashit( get_stylesheet_directory() ) . '.nexus-deploy-sha';
-
-	if ( ! is_readable( $path ) ) {
-		return '';
-	}
-
-	$sha = strtolower( trim( (string) file_get_contents( $path ) ) );
-
-	return preg_match( '/^[a-f0-9]{7,40}$/', $sha ) ? $sha : '';
+	return nexus_get_deploy_marker_sha();
 }
 
 /**

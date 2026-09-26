@@ -349,7 +349,7 @@ add_filter( 'body_class', 'nexus_add_virtual_cluster_body_class', 20 );
  * @return void
  */
 function nexus_maybe_ensure_cluster_route_pages() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+	if ( ! nexus_route_pages_ensure_due() ) {
 		return;
 	}
 

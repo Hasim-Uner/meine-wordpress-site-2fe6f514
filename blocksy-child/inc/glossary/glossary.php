@@ -153,7 +153,7 @@ function nexus_is_glossary_hub_page() {
  * @return void
  */
 function nexus_maybe_ensure_glossary_hub_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+	if ( ! nexus_route_pages_ensure_due() ) {
 		return;
 	}
 

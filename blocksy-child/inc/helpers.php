@@ -1114,58 +1114,222 @@ function nexus_get_current_request_path() {
 }
 
 /**
- * Ensure the energy systems landing page exists on the canonical slug.
+ * Read the deployment marker shipped with the built child theme.
+ *
+ * @return string Commit SHA, or '' outside a deployed build.
+ */
+function nexus_get_deploy_marker_sha() {
+	$path = trailingslashit( get_stylesheet_directory() ) . '.nexus-deploy-sha';
+
+	if ( ! is_readable( $path ) ) {
+		return '';
+	}
+
+	$sha = strtolower( trim( (string) file_get_contents( $path ) ) );
+
+	return preg_match( '/^[a-f0-9]{7,40}$/', $sha ) ? $sha : '';
+}
+
+/**
+ * Return the revision stamp that page provisioning has to match.
+ *
+ * @return string
+ */
+function nexus_get_route_pages_stamp() {
+	$sha = nexus_get_deploy_marker_sha();
+
+	return '' !== $sha ? $sha : 'v' . (string) wp_get_theme()->get( 'Version' );
+}
+
+/**
+ * Whether page provisioning runs in this request.
+ *
+ * Provisioning ran on every uncached request before. It now runs once per
+ * deployed revision (deploy marker, else theme version) on the first regular
+ * request; cron, AJAX and installs never consume the stamp. A page deleted in
+ * the editor therefore returns only with the next deploy — remove it from
+ * nexus_get_provisioned_pages() when the deletion is intended.
+ *
+ * @return bool
+ */
+function nexus_route_pages_ensure_due() {
+	static $due = null;
+
+	if ( null === $due ) {
+		$due = ! ( wp_installing() || wp_doing_ajax() || wp_doing_cron() )
+			&& get_option( 'nexus_route_pages_stamp' ) !== nexus_get_route_pages_stamp();
+	}
+
+	return $due;
+}
+
+/**
+ * Store the stamp after every provisioning hook of this request has run.
  *
  * @return void
  */
-function nexus_maybe_ensure_energy_systems_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
+function nexus_mark_route_pages_ensured() {
+	if ( nexus_route_pages_ensure_due() ) {
+		update_option( 'nexus_route_pages_stamp', nexus_get_route_pages_stamp(), true );
 	}
+}
+add_action( 'init', 'nexus_mark_route_pages_ensured', 99 );
 
-	$page_id = nexus_get_page_id( [ 'solar-waermepumpen-leadgenerierung' ] );
+/**
+ * Pages the theme provisions on their canonical slug with their template.
+ *
+ * `legacy` slugs are renamed before a new page is inserted, so page IDs stay
+ * attached to menus and internal references.
+ *
+ * @return array<int, array{slug: string, legacy?: array<int, string>, title: string, excerpt: string, template: string}>
+ */
+function nexus_get_provisioned_pages() {
+	return [
+		[
+			'slug'     => 'solar-waermepumpen-leadgenerierung',
+			'legacy'   => [ 'website-fuer-solar-und-waermepumpen-anbieter' ],
+			'title'    => 'Leadgenerierung für Solar- und Wärmepumpen-Anbieter',
+			'excerpt'  => 'B2B-Landingpage für Solar-, Wärmepumpen- und Speicher-Anbieter mit Website-, Tracking- und Conversion-Fokus.',
+			'template' => 'page-solar-waermepumpen-leadgenerierung.php',
+		],
+		[
+			'slug'     => 'hasim-uener',
+			'legacy'   => [ 'uber-mich' ],
+			'title'    => 'Haşim Üner',
+			'excerpt'  => 'Personenseite: Stationen, Kompetenzen und Arbeitsweise von Haşim Üner.',
+			'template' => 'page-hasim-uener.php',
+		],
+		[
+			'slug'     => 'solar-leads-kaufen-alternative',
+			'title'    => 'Solar Leads kaufen – Alternative: eigenes Anfragesystem',
+			'excerpt'  => 'Intercept-Landingpage für Suchintent „Solar Leads kaufen": Argumentation für eigene Anfragesysteme statt Portal-Leads.',
+			'template' => 'page-solar-leads-kaufen-alternative.php',
+		],
+		[
+			'slug'     => 'waermepumpen-leads',
+			'title'    => 'Wärmepumpen Leads – Alternative: eigenes Anfragesystem',
+			'excerpt'  => 'Intercept-Landingpage für Suchintent „Wärmepumpen Leads kaufen": Argumentation für eigene Anfragesysteme statt Portal-Leads.',
+			'template' => 'page-waermepumpen-leads.php',
+		],
+		[
+			'slug'     => 'solar-leads-kosten-studie',
+			'title'    => 'Was kosten Solar-Leads? Marktstudie DACH',
+			'excerpt'  => 'Marktstudie zu den tatsächlichen Kosten von Solar- und Wärmepumpen-Leads im DACH-Raum: Cost-per-Order statt Cost-per-Lead.',
+			'template' => 'page-solar-leads-kosten-studie.php',
+		],
+		[
+			'slug'     => 'server-side-tracking-b2b',
+			'title'    => 'Server-Side Tracking für B2B-Leadgenerierung',
+			'excerpt'  => 'Server-Side Tracking auf eigenem Server: GA4, Meta CAPI, Consent Mode v2 für B2B-Anfragesysteme.',
+			'template' => 'page-server-side-tracking-b2b.php',
+		],
+		[
+			'slug'     => 'b2b-solar-leads',
+			'title'    => 'B2B Solar Leads – gewerbliche Photovoltaik-Anfragesysteme',
+			'excerpt'  => 'Anfragesysteme für gewerbliche Photovoltaik, Speicher und PPA. Buying-Center-tauglicher Funnel statt B2C-Mengen-Leads.',
+			'template' => 'page-b2b-solar-leads.php',
+		],
+		[
+			'slug'     => 'eigene-leadgenerierung-vs-portale',
+			'title'    => 'Eigene Leadgenerierung vs. Portal-Leads – Vergleich',
+			'excerpt'  => 'Vergleich Mieten vs. Besitzen für Solar-, Wärmepumpen- und Speicher-Anbieter: TCO, Exklusivität, Datenhoheit.',
+			'template' => 'page-eigene-leadgenerierung-vs-portale.php',
+		],
+		[
+			'slug'     => 'lead-funnel-solar',
+			'title'    => 'Lead-Funnel Solar – Pillar-Page',
+			'excerpt'  => 'Pillar-Page für die Lead-Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter.',
+			'template' => 'page-lead-funnel-solar.php',
+		],
+		[
+			'slug'     => 'kunden-gewinnen-solarteure',
+			'title'    => 'Kunden gewinnen für Solarteure – ohne Portal-Leads',
+			'excerpt'  => 'Pillar-Page zur systematischen Kundengewinnung für Solarteure im DACH-Mittelstand.',
+			'template' => 'page-kunden-gewinnen-solarteure.php',
+		],
+		[
+			'slug'     => 'cost-per-lead-photovoltaik',
+			'title'    => 'Cost per Lead Photovoltaik – Was Solar-Anfragen wirklich kosten',
+			'excerpt'  => 'CPL-Rechnung und drei Szenarien für Solar-, Wärmepumpen- und Speicher-Anbieter im Vergleich.',
+			'template' => 'page-cost-per-lead-photovoltaik.php',
+		],
+		[
+			'slug'     => 'qualifizierte-pv-anfragen',
+			'title'    => 'Qualifizierte PV-Anfragen – Vier Merkmale für hochwertige Leads',
+			'excerpt'  => 'Vier Merkmale, an denen sich eine qualifizierte Photovoltaik-Anfrage erkennen lässt, plus Warnsignale.',
+			'template' => 'page-qualifizierte-pv-anfragen.php',
+		],
+	];
+}
+
+/**
+ * Ensure one provisioned page exists on its slug with its template.
+ *
+ * @param array{slug: string, legacy?: array<int, string>, title: string, excerpt: string, template: string} $page Page definition.
+ * @return void
+ */
+function nexus_ensure_provisioned_page( array $page ) {
+	$page_id = nexus_get_page_id( [ $page['slug'] ] );
 
 	if ( ! $page_id ) {
-		$legacy_page = get_page_by_path( 'website-fuer-solar-und-waermepumpen-anbieter' );
+		foreach ( $page['legacy'] ?? [] as $legacy_slug ) {
+			$legacy_page = get_page_by_path( $legacy_slug );
 
-		if ( $legacy_page instanceof WP_Post ) {
-			$page_id = wp_update_post(
-				wp_slash(
-					[
-						'ID'        => (int) $legacy_page->ID,
-						'post_name' => 'solar-waermepumpen-leadgenerierung',
-					]
-				),
-				true
-			);
-
-			if ( is_wp_error( $page_id ) ) {
-				return;
-			}
-		} else {
-			$page_id = wp_insert_post(
-				wp_slash(
-					[
-						'post_type'    => 'page',
-						'post_status'  => 'publish',
-						'post_title'   => 'Leadgenerierung für Solar- und Wärmepumpen-Anbieter',
-						'post_name'    => 'solar-waermepumpen-leadgenerierung',
-						'post_content' => '',
-						'post_excerpt' => 'B2B-Landingpage für Solar-, Wärmepumpen- und Speicher-Anbieter mit Website-, Tracking- und Conversion-Fokus.',
-					]
-				),
-				true
-			);
-
-			if ( is_wp_error( $page_id ) ) {
-				return;
+			if ( $legacy_page instanceof WP_Post ) {
+				$page_id = wp_update_post(
+					wp_slash(
+						[
+							'ID'        => (int) $legacy_page->ID,
+							'post_name' => $page['slug'],
+						]
+					),
+					true
+				);
+				break;
 			}
 		}
 	}
 
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-solar-waermepumpen-leadgenerierung.php' );
+	if ( ! $page_id ) {
+		$page_id = wp_insert_post(
+			wp_slash(
+				[
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_title'   => $page['title'],
+					'post_name'    => $page['slug'],
+					'post_content' => '',
+					'post_excerpt' => $page['excerpt'],
+				]
+			),
+			true
+		);
+	}
+
+	if ( is_wp_error( $page_id ) || ! $page_id ) {
+		return;
+	}
+
+	if ( $page['template'] !== (string) get_post_meta( (int) $page_id, '_wp_page_template', true ) ) {
+		update_post_meta( (int) $page_id, '_wp_page_template', $page['template'] );
+	}
 }
-add_action( 'init', 'nexus_maybe_ensure_energy_systems_page', 27 );
+
+/**
+ * Provision every page from nexus_get_provisioned_pages() once per deploy.
+ *
+ * @return void
+ */
+function nexus_maybe_ensure_provisioned_pages() {
+	if ( ! nexus_route_pages_ensure_due() ) {
+		return;
+	}
+
+	foreach ( nexus_get_provisioned_pages() as $page ) {
+		nexus_ensure_provisioned_page( $page );
+	}
+}
+add_action( 'init', 'nexus_maybe_ensure_provisioned_pages', 27 );
 
 /**
  * Ensure the anonymized methodology case lives on the anonymized slug.
@@ -1180,7 +1344,7 @@ add_action( 'init', 'nexus_maybe_ensure_energy_systems_page', 27 );
  * @return void
  */
 function nexus_maybe_ensure_case_study_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+	if ( ! nexus_route_pages_ensure_due() ) {
 		return;
 	}
 
@@ -1219,427 +1383,6 @@ function nexus_maybe_ensure_case_study_page() {
 	update_post_meta( (int) $page_id, '_wp_page_template', 'page-e3-new-energy.php' );
 }
 add_action( 'init', 'nexus_maybe_ensure_case_study_page', 27 );
-
-/**
- * Ensure the person page lives on /hasim-uener/ with the current template.
- *
- * Der Slug wechselt von /uber-mich/ auf die ASCII-Form ohne Umlaut. Umbenennen
- * statt neu anlegen: die Seite ist redaktionell gepflegt, ihre ID haengt an
- * Menue-Eintraegen und internen Verweisen. Erst wenn gar keine Seite existiert,
- * wird eine angelegt — sonst waere die Route nach einem Datenbank-Reset weg.
- *
- * Das Template wird hier gesetzt, weil die alte Auswahl (template-about.php
- * bzw. template-about-editorial.php) als Post-Meta gespeichert war und sonst
- * auf eine geloeschte Datei zeigen wuerde.
- *
- * @return void
- */
-function nexus_maybe_ensure_about_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$page_id = nexus_get_page_id( [ 'hasim-uener' ] );
-
-	if ( ! $page_id ) {
-		$legacy_page = get_page_by_path( 'uber-mich' );
-
-		if ( $legacy_page instanceof WP_Post ) {
-			$page_id = wp_update_post(
-				wp_slash(
-					[
-						'ID'        => (int) $legacy_page->ID,
-						'post_name' => 'hasim-uener',
-					]
-				),
-				true
-			);
-		} else {
-			$page_id = wp_insert_post(
-				wp_slash(
-					[
-						'post_type'    => 'page',
-						'post_status'  => 'publish',
-						'post_title'   => 'Haşim Üner',
-						'post_name'    => 'hasim-uener',
-						'post_content' => '',
-						'post_excerpt' => 'Personenseite: Stationen, Kompetenzen und Arbeitsweise von Haşim Üner.',
-					]
-				),
-				true
-			);
-		}
-
-		if ( is_wp_error( $page_id ) || ! $page_id ) {
-			return;
-		}
-	}
-
-	if ( 'page-hasim-uener.php' !== (string) get_post_meta( (int) $page_id, '_wp_page_template', true ) ) {
-		update_post_meta( (int) $page_id, '_wp_page_template', 'page-hasim-uener.php' );
-	}
-}
-add_action( 'init', 'nexus_maybe_ensure_about_page', 27 );
-
-/**
- * Ensure the intercept landing page exists on /solar-leads-kaufen-alternative/.
- *
- * @return void
- */
-function nexus_maybe_ensure_intercept_solar_leads_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$page_id = nexus_get_page_id( [ 'solar-leads-kaufen-alternative' ] );
-
-	if ( ! $page_id ) {
-		$page_id = wp_insert_post(
-			wp_slash(
-				[
-					'post_type'    => 'page',
-					'post_status'  => 'publish',
-					'post_title'   => 'Solar Leads kaufen – Alternative: eigenes Anfragesystem',
-					'post_name'    => 'solar-leads-kaufen-alternative',
-					'post_content' => '',
-					'post_excerpt' => 'Intercept-Landingpage für Suchintent „Solar Leads kaufen": Argumentation für eigene Anfragesysteme statt Portal-Leads.',
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $page_id ) ) {
-			return;
-		}
-	}
-
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-solar-leads-kaufen-alternative.php' );
-}
-add_action( 'init', 'nexus_maybe_ensure_intercept_solar_leads_page', 27 );
-
-/**
- * Ensure the intercept landing page exists on /waermepumpen-leads/.
- *
- * @return void
- */
-function nexus_maybe_ensure_intercept_waermepumpen_leads_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$page_id = nexus_get_page_id( [ 'waermepumpen-leads' ] );
-
-	if ( ! $page_id ) {
-		$page_id = wp_insert_post(
-			wp_slash(
-				[
-					'post_type'    => 'page',
-					'post_status'  => 'publish',
-					'post_title'   => 'Wärmepumpen Leads – Alternative: eigenes Anfragesystem',
-					'post_name'    => 'waermepumpen-leads',
-					'post_content' => '',
-					'post_excerpt' => 'Intercept-Landingpage für Suchintent „Wärmepumpen Leads kaufen": Argumentation für eigene Anfragesysteme statt Portal-Leads.',
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $page_id ) ) {
-			return;
-		}
-	}
-
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-waermepumpen-leads.php' );
-}
-add_action( 'init', 'nexus_maybe_ensure_intercept_waermepumpen_leads_page', 27 );
-
-/**
- * Ensure the lead-cost market study pillar exists on /solar-leads-kosten-studie/.
- *
- * @return void
- */
-function nexus_maybe_ensure_solar_leads_kosten_studie_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$page_id = nexus_get_page_id( [ 'solar-leads-kosten-studie' ] );
-
-	if ( ! $page_id ) {
-		$page_id = wp_insert_post(
-			wp_slash(
-				[
-					'post_type'    => 'page',
-					'post_status'  => 'publish',
-					'post_title'   => 'Was kosten Solar-Leads? Marktstudie DACH',
-					'post_name'    => 'solar-leads-kosten-studie',
-					'post_content' => '',
-					'post_excerpt' => 'Marktstudie zu den tatsächlichen Kosten von Solar- und Wärmepumpen-Leads im DACH-Raum: Cost-per-Order statt Cost-per-Lead.',
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $page_id ) ) {
-			return;
-		}
-	}
-
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-solar-leads-kosten-studie.php' );
-}
-add_action( 'init', 'nexus_maybe_ensure_solar_leads_kosten_studie_page', 27 );
-
-/**
- * Ensure the server-side tracking landing page exists on /server-side-tracking-b2b/.
- *
- * @return void
- */
-function nexus_maybe_ensure_server_side_tracking_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$page_id = nexus_get_page_id( [ 'server-side-tracking-b2b' ] );
-
-	if ( ! $page_id ) {
-		$page_id = wp_insert_post(
-			wp_slash(
-				[
-					'post_type'    => 'page',
-					'post_status'  => 'publish',
-					'post_title'   => 'Server-Side Tracking für B2B-Leadgenerierung',
-					'post_name'    => 'server-side-tracking-b2b',
-					'post_content' => '',
-					'post_excerpt' => 'Server-Side Tracking auf eigenem Server: GA4, Meta CAPI, Consent Mode v2 für B2B-Anfragesysteme.',
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $page_id ) ) {
-			return;
-		}
-	}
-
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-server-side-tracking-b2b.php' );
-}
-add_action( 'init', 'nexus_maybe_ensure_server_side_tracking_page', 27 );
-
-/**
- * Ensure the gewerbliche B2B Solar Leads landing page exists on /b2b-solar-leads/.
- *
- * @return void
- */
-function nexus_maybe_ensure_b2b_solar_leads_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$page_id = nexus_get_page_id( [ 'b2b-solar-leads' ] );
-
-	if ( ! $page_id ) {
-		$page_id = wp_insert_post(
-			wp_slash(
-				[
-					'post_type'    => 'page',
-					'post_status'  => 'publish',
-					'post_title'   => 'B2B Solar Leads – gewerbliche Photovoltaik-Anfragesysteme',
-					'post_name'    => 'b2b-solar-leads',
-					'post_content' => '',
-					'post_excerpt' => 'Anfragesysteme für gewerbliche Photovoltaik, Speicher und PPA. Buying-Center-tauglicher Funnel statt B2C-Mengen-Leads.',
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $page_id ) ) {
-			return;
-		}
-	}
-
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-b2b-solar-leads.php' );
-}
-add_action( 'init', 'nexus_maybe_ensure_b2b_solar_leads_page', 27 );
-
-/**
- * Ensure the comparison landing page exists on /eigene-leadgenerierung-vs-portale/.
- *
- * @return void
- */
-function nexus_maybe_ensure_eigene_vs_portale_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$page_id = nexus_get_page_id( [ 'eigene-leadgenerierung-vs-portale' ] );
-
-	if ( ! $page_id ) {
-		$page_id = wp_insert_post(
-			wp_slash(
-				[
-					'post_type'    => 'page',
-					'post_status'  => 'publish',
-					'post_title'   => 'Eigene Leadgenerierung vs. Portal-Leads – Vergleich',
-					'post_name'    => 'eigene-leadgenerierung-vs-portale',
-					'post_content' => '',
-					'post_excerpt' => 'Vergleich Mieten vs. Besitzen für Solar-, Wärmepumpen- und Speicher-Anbieter: TCO, Exklusivität, Datenhoheit.',
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $page_id ) ) {
-			return;
-		}
-	}
-
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-eigene-leadgenerierung-vs-portale.php' );
-}
-add_action( 'init', 'nexus_maybe_ensure_eigene_vs_portale_page', 27 );
-
-/**
- * Ensure the lead-funnel pillar page exists on /lead-funnel-solar/.
- *
- * @return void
- */
-function nexus_maybe_ensure_lead_funnel_solar_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$page_id = nexus_get_page_id( [ 'lead-funnel-solar' ] );
-
-	if ( ! $page_id ) {
-		$page_id = wp_insert_post(
-			wp_slash(
-				[
-					'post_type'    => 'page',
-					'post_status'  => 'publish',
-					'post_title'   => 'Lead-Funnel Solar – Pillar-Page',
-					'post_name'    => 'lead-funnel-solar',
-					'post_content' => '',
-					'post_excerpt' => 'Pillar-Page für die Lead-Funnel-Architektur für Photovoltaik- und Wärmepumpen-Anbieter.',
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $page_id ) ) {
-			return;
-		}
-	}
-
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-lead-funnel-solar.php' );
-}
-add_action( 'init', 'nexus_maybe_ensure_lead_funnel_solar_page', 27 );
-
-/**
- * Ensure the kunden-gewinnen pillar page exists on /kunden-gewinnen-solarteure/.
- *
- * @return void
- */
-function nexus_maybe_ensure_kunden_gewinnen_solarteure_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$page_id = nexus_get_page_id( [ 'kunden-gewinnen-solarteure' ] );
-
-	if ( ! $page_id ) {
-		$page_id = wp_insert_post(
-			wp_slash(
-				[
-					'post_type'    => 'page',
-					'post_status'  => 'publish',
-					'post_title'   => 'Kunden gewinnen für Solarteure – ohne Portal-Leads',
-					'post_name'    => 'kunden-gewinnen-solarteure',
-					'post_content' => '',
-					'post_excerpt' => 'Pillar-Page zur systematischen Kundengewinnung für Solarteure im DACH-Mittelstand.',
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $page_id ) ) {
-			return;
-		}
-	}
-
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-kunden-gewinnen-solarteure.php' );
-}
-add_action( 'init', 'nexus_maybe_ensure_kunden_gewinnen_solarteure_page', 27 );
-
-/**
- * Ensure the CPL deep-dive page exists on /cost-per-lead-photovoltaik/.
- *
- * @return void
- */
-function nexus_maybe_ensure_cost_per_lead_photovoltaik_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$page_id = nexus_get_page_id( [ 'cost-per-lead-photovoltaik' ] );
-
-	if ( ! $page_id ) {
-		$page_id = wp_insert_post(
-			wp_slash(
-				[
-					'post_type'    => 'page',
-					'post_status'  => 'publish',
-					'post_title'   => 'Cost per Lead Photovoltaik – Was Solar-Anfragen wirklich kosten',
-					'post_name'    => 'cost-per-lead-photovoltaik',
-					'post_content' => '',
-					'post_excerpt' => 'CPL-Rechnung und drei Szenarien für Solar-, Wärmepumpen- und Speicher-Anbieter im Vergleich.',
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $page_id ) ) {
-			return;
-		}
-	}
-
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-cost-per-lead-photovoltaik.php' );
-}
-add_action( 'init', 'nexus_maybe_ensure_cost_per_lead_photovoltaik_page', 27 );
-
-/**
- * Ensure the lead-quality page exists on /qualifizierte-pv-anfragen/.
- *
- * @return void
- */
-function nexus_maybe_ensure_qualifizierte_pv_anfragen_page() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
-		return;
-	}
-
-	$page_id = nexus_get_page_id( [ 'qualifizierte-pv-anfragen' ] );
-
-	if ( ! $page_id ) {
-		$page_id = wp_insert_post(
-			wp_slash(
-				[
-					'post_type'    => 'page',
-					'post_status'  => 'publish',
-					'post_title'   => 'Qualifizierte PV-Anfragen – Vier Merkmale für hochwertige Leads',
-					'post_name'    => 'qualifizierte-pv-anfragen',
-					'post_content' => '',
-					'post_excerpt' => 'Vier Merkmale, an denen sich eine qualifizierte Photovoltaik-Anfrage erkennen lässt, plus Warnsignale.',
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $page_id ) ) {
-			return;
-		}
-	}
-
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-qualifizierte-pv-anfragen.php' );
-}
-add_action( 'init', 'nexus_maybe_ensure_qualifizierte_pv_anfragen_page', 27 );
 
 /**
  * Map protected legacy entry slugs to their canonical targets.
