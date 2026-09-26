@@ -389,13 +389,16 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 
 ## Offen und manuell
 
-- WordPress-Admin: Einstellungen → Permalinks zurück auf „Beitragsname“
-  (`/%postname%/`). Live am 2026-09-25 geprüft: Die Struktur enthält
-  `%author%`, alle Beiträge laufen unter `/<beitrag>/hasim/`, Canonical,
-  REST-API und Sitemap folgen; die alten Adressen antworten mit 200. Laut
-  GSC-Export seit etwa 01.–15.09.2026. Nach der Umstellung Seitencache leeren,
-  `/checkfox-solar-waermepumpe-einordnung/hasim/` auf 301 prüfen und die
-  Sitemap in der Search Console neu einreichen.
+- Permalinks stehen seit 2026-09-26 wieder auf „Beitragsname“ (vorher etwa
+  01.–25.09. mit `%author%`). Live am 2026-09-26 geprüft: alle 16 Beiträge der
+  Sitemap antworten mit 200 und eigenem Canonical, `/<beitrag>/hasim/` leitet
+  per 301 zurück, Sitemap neu eingereicht. Google führte am selben Tag für
+  `/checkfox-solar-waermepumpe-einordnung/` noch die `/hasim/`-Variante als
+  indexiert (letzter Crawl vor der Korrektur). Offen: In der Search Console
+  für `/checkfox-solar-waermepumpe-einordnung/`, `/aroundhome-solar-einordnung/`,
+  `/wattfox-solar-leads-einordnung/` und `/daa-photovoltaik-leads-einordnung/`
+  „Indexierung beantragen“; der nächste GSC-Export zeigt, ob die Impressionen
+  zurückkommen.
 - Nach dem Merge je eine Testanfrage über `/kontakt/`, `/whitelabel-retainer/`
   und den Marktcheck: CRM-Eintrag, Sales-Chance, interne Mail und Bestätigung
   prüfen.
