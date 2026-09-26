@@ -7,7 +7,7 @@
 - **Skills:** Specialists routen nicht mehr (die alte Router-Schicht um `seo-agent` ist entfernt), Positionierung kommt nur noch aus `BRAND_AND_COPY.md`/`CONVERSION_ROUTING.md`. Der CRO-Audit verlangte die Marktcheck-Leiter auf jeder Seite. `seo-live-qa` liest Redirects, 410 und Noindex aus dem Code; die abgetippte Liste hatte 6 der 19 Legacy-Redirects nicht. 39 → 36 Skills, der Validator prüft jetzt alle.
 - **Claude:** Opus-Profil in `CLAUDE.md` aufgelöst, tote Ignore-Muster entfernt, `.claudeignore` als Hinweis markiert.
 - **functions.php:** nur noch Modul-Bootstrap (590 → 87 Zeilen); Marke/Fonts in `inc/theme-setup.php`, Sitemap-Logik in `inc/sitemap.php`. Der Architektur-Guard verhindert den Rückfall.
-- **Seitenanlage:** 13 Funktionen in `helpers.php` sind eine Liste plus eine Funktion. Alle Seitenanlagen laufen einmal je Deploy statt bei jedem ungecachten Aufruf; neuer Test `npm run test:provisioning`.
+- **Seitenanlage:** 13 Funktionen in `helpers.php` sind eine Liste plus eine Funktion. Alle Seitenanlagen laufen einmal je Deploy statt bei jedem ungecachten Aufruf; neue Prüfung `npm run test:provisioning`.
 - **Geprüft:** Skill-Lint und -Tests, Architektur-Guard, PHPStan (0 Fehler), alle PHP-Vertragstests und die übrigen CI-Skripte lokal. **Nicht geprüft:** Browser-Tests (Formulare, Navigation), Verhalten auf Produktion nach dem Deploy.
 
 ### White-Label: Final Cut der Agenturseite
