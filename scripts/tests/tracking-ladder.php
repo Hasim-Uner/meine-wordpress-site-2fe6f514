@@ -43,4 +43,13 @@ check( str_starts_with( $ladder['pro']['items'][0], 'Alles aus ' . $ladder['stan
 check( str_ends_with( hu_tracking_ladder_display(), ' netto' ) && 4 === substr_count( hu_tracking_ladder_display(), ' €' ), 'ladder phrase names all four prices once' );
 check( 3 === substr_count( hu_tracking_ladder_display( 2 ), ' €' ), 'ladder phrase from stage 2 leaves stage 1 out' );
 
+// Website Kompakt und Landingpage (docs/decisions/preise-website-landingpage.md):
+// eine Seite kostet weniger als das kleinste Website-Paket, eine Zusatzseite
+// weniger als eine Landingpage, und Agenturen zahlen fuer die Landingpage
+// rund 30 % weniger als Endkunden.
+check( HU_LANDINGPAGE_PRICE < HU_FREELANCER_WEBSITE_MIN, 'a landing page costs less than Website Kompakt' );
+check( HU_FREELANCER_WEBSITE_EXTRA_PAGE < HU_LANDINGPAGE_PRICE, 'an extra website page costs less than a landing page' );
+check( HU_WHITELABEL_LANDINGPAGE_MIN <= (int) round( HU_LANDINGPAGE_PRICE * 0.75 ), 'agencies pay at least 25 % less than end customers for a landing page' );
+check( str_contains( hu_freelancer_website_scope_display(), hu_freelancer_website_extra_page_price( true ) ), 'website scope phrase names the extra page price' );
+
 echo "OK tracking-ladder\n";

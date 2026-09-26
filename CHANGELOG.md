@@ -2,6 +2,13 @@
 
 ## 2026-09
 
+### Preise: Website Kompakt, Landingpage, Agentur-Landingpage
+
+- **Website:** Statt „ab 3.400 €“ ohne Seitenangabe gilt Website Kompakt: 2.490 € netto Festpreis für bis zu drei Seiten mit Kontaktformular, jede weitere Seite 290 € netto. Startseite (Belegzeile im Hero, Angebot 01 mit neuer Umfangszeile) und Meta-Description lesen den Kanon; neue Getter `hu_freelancer_website_extra_page_price()` und `hu_freelancer_website_scope_display()`.
+- **Landingpage:** neuer Kanonpreis 1.990 € netto (`HU_LANDINGPAGE_PRICE`, `hu_landingpage_price()`, `[hu_price key="landingpage_price"]`). Die Angebotsseite folgt in einem eigenen PR.
+- **White-Label-Landingpage:** ab 1.390 € statt ab 1.900 €, damit Agenturen wie auf jeder anderen Sprosse rund 30 % unter dem Endkundenpreis liegen.
+- **Absicherung:** Guard-Regeln `website-3400`, `wl-landingpage-1900`, `preis-website-kompakt`, `preis-landingpage`; `npm run test:pricing` prüft die Reihenfolge Zusatzseite < Landingpage < Website Kompakt und den Agenturabstand. Herleitung aus Marktpreisen: `docs/decisions/preise-website-landingpage.md`. Datierter Hinweis im Versuch Ersteinschätzung.
+
 ### Fall: nicht gemessene Vorher-Quote nicht mehr als Messwert
 
 - Die Vorher-Abschlussquote des Solar-Falls („1 – 5 %“) ist eine Marktannahme über gekaufte Portal-Leads, im Fall nie gemessen. Sie stand trotzdem wie ein Messwert neben gemessenen Zahlen: in der Vorher-Karte der Fallstudie (seit 2026-09-25 Beleg aller Wege), als „Sprung der Abschlussquote 1 – 5 % → 15 %“ auf `/cost-per-lead-photovoltaik/` und `/solar-leads-kaufen-alternative/`, und im Satz „… die Abschlussquote von 1 – 5 % auf 15 % gehoben“.
