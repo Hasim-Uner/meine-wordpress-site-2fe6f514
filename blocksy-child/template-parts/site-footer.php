@@ -6,10 +6,12 @@
  * Designsystem (`assets/css/system.css`) statt auf einem eigenen
  * Farbsystem — `site-footer.css` ist damit abgeloest, nicht ergaenzt.
  *
- * Zwei Lautstaerken bleiben. Laut sind die vier kommerziellen Wege aus dem
- * globalen Routing-Contract: direktes WordPress-Projekt, Tracking,
- * White-Label und Solar/Waermepumpe. Leise sind Query-Owner, Belege, Wissen,
- * Rechtliches und die Absenderzeile.
+ * Zwei Lautstaerken bleiben. Laut sind die vier kommerziellen Wege:
+ * direktes WordPress-Projekt, Tracking, White-Label und Solar/Waermepumpe.
+ * Leise sind das gruppierte Verzeichnis (Leistungen, Belege & Person, Wissen,
+ * Rechtliches) und die Absenderzeile. Wege und Verzeichnis kommen aus
+ * hu_get_site_footer_navigation_contract() (inc/commercial-routing.php);
+ * dieses Template entscheidet nur, was auf der aktuellen Route erscheint.
  *
  * Die Route, auf der sich jemand bereits befindet, wird in der lauten Wahl
  * nicht noch einmal angeboten. Der Footer bleibt damit ein Orientierungs-
@@ -20,10 +22,6 @@
  * Wegs, und die Solar-/Waermepumpen-Money-Page endet in ihrem eigenen
  * Marktcheck. Kontakt laeuft ueber die gemeinsame Route.
  *
- * Die bestehenden cta_footer_pick_*-Werte bleiben fuer die historischen Wege
- * unveraendert. Tracking erhaelt einen eigenen stabilen Wert. Dasselbe gilt
- * fuer die cta_footer_nav_*-Werte der Verzeichnisziele.
- *
  * @package Blocksy_Child
  */
 
@@ -31,9 +29,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$current_year = wp_date( 'Y' );
-$primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
-$routes       = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+$current_year    = wp_date( 'Y' );
+$primary_urls    = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+$routes          = function_exists( 'hu_get_commercial_route_map' ) ? hu_get_commercial_route_map() : [];
+$footer_contract = function_exists( 'hu_get_site_footer_navigation_contract' )
+	? hu_get_site_footer_navigation_contract()
+	: [ 'picks' => [], 'directory' => [] ];
 
 /*
  * Drei Seiten stellen die Wegefrage nicht noch einmal: die Startseite fuehrt
@@ -46,19 +47,8 @@ $shows_picks = ! is_front_page()
 	&& ! ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() )
 	&& ! ( function_exists( 'nexus_is_energy_systems_context' ) && nexus_is_energy_systems_context() );
 
-$energy_url        = $routes['energy'] ?? ( $primary_urls['energy'] ?? home_url( '/solar-waermepumpen-leadgenerierung/' ) );
-$freelancer_url    = $routes['freelancer'] ?? home_url( '/' );
-$tracking_url      = $routes['tracking_b2b'] ?? home_url( '/server-side-tracking-b2b/' );
-$whitelabel_url    = $routes['whitelabel'] ?? ( function_exists( 'nexus_get_whitelabel_page_url' ) ? nexus_get_whitelabel_page_url() : home_url( '/whitelabel-retainer/' ) );
-$agentur_local_url = $routes['agentur_local'] ?? home_url( '/wordpress-agentur-hannover/' );
-$about_url         = $routes['about'] ?? ( $primary_urls['about'] ?? home_url( '/hasim-uener/' ) );
-$e3_url            = $primary_urls['e3'] ?? home_url( '/case-study-solar-leadgenerierung/' );
-$blog_url          = $primary_urls['blog'] ?? home_url( '/blog/' );
-$glossary_url      = $primary_urls['glossary'] ?? home_url( '/glossar/' );
-$contact_url       = $routes['contact'] ?? ( $primary_urls['contact'] ?? nexus_get_contact_url() );
-$form_url          = $contact_url;
-$imprint_url       = $primary_urls['impressum'] ?? home_url( '/impressum/' );
-$privacy_url       = $primary_urls['datenschutz'] ?? home_url( '/datenschutz/' );
+$contact_url = $routes['contact'] ?? ( $primary_urls['contact'] ?? nexus_get_contact_url() );
+$form_url    = $contact_url;
 
 $contact_email = function_exists( 'hu_get_contact_email' ) ? hu_get_contact_email() : 'kontakt@hasimuener.de';
 $phone_link    = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phone( 'link' ) : '';
@@ -67,8 +57,8 @@ $phone_display = function_exists( 'hu_get_contact_phone' ) ? hu_get_contact_phon
 $current_pick_route = '';
 
 if ( function_exists( 'hu_is_tracking_route_context' ) && hu_is_tracking_route_context() ) {
-	// Gilt fuer beide Tracking-Seiten: /ga4-tracking-setup/ fuehrt denselben
-	// Weg weiter und darf ihn unten nicht noch einmal anbieten.
+	// Gilt fuer beide Tracking-Seiten: Die Server-Side-Fachseite gehoert zum
+	// selben Weg wie das Tracking-Angebot und bietet ihn unten nicht erneut an.
 	$current_pick_route = 'tracking';
 } elseif ( is_page( 'whitelabel-retainer' ) || is_page_template( 'page-whitelabel-retainer.php' ) ) {
 	$current_pick_route = 'whitelabel';
@@ -83,40 +73,7 @@ if ( function_exists( 'hu_is_tracking_route_context' ) && hu_is_tracking_route_c
  * direkte Umsetzung, Messung, Agentur-Partnerschaft, Spezialisierung.
  * Das ist absichtlich task-first statt rein zielgruppenbasiert.
  */
-$picks = [
-	[
-		'route'  => 'freelancer',
-		'pre'    => 'Ich habe ',
-		'strong' => 'eine Website',
-		'post'   => ', die neu gebaut oder besser werden soll.',
-		'url'    => $freelancer_url,
-		'track'  => 'cta_footer_pick_project',
-	],
-	[
-		'route'  => 'tracking',
-		'pre'    => 'Ich brauche ',
-		'strong' => 'belastbare Messung',
-		'post'   => ' für Anfragen, Kampagnen und CRM.',
-		'url'    => $tracking_url,
-		'track'  => 'cta_footer_pick_tracking',
-	],
-	[
-		'route'  => 'whitelabel',
-		'pre'    => 'Ich bin ',
-		'strong' => 'Agentur',
-		'post'   => ' und brauche Technik unter meinem Namen.',
-		'url'    => $whitelabel_url,
-		'track'  => 'cta_footer_pick_agency',
-	],
-	[
-		'route'  => 'energy',
-		'pre'    => 'Ich bin ',
-		'strong' => 'Solar- oder Wärmepumpenbetrieb',
-		'post'   => ' und will eigene Anfragen statt Portalleads.',
-		'url'    => $energy_url,
-		'track'  => 'cta_footer_pick_energy',
-	],
-];
+$picks = (array) ( $footer_contract['picks'] ?? [] );
 
 if ( '' !== $current_pick_route ) {
 	$picks = array_values(
@@ -158,21 +115,26 @@ $direct[] = [
 
 /*
  * Verzeichnis: breit genug fuer Crawl- und Orientierungswege, aber deutlich
- * leiser als die vier kommerziellen Entscheidungen. Die lokale Agentur-Seite
- * bleibt bewusst hier statt im Header: Sie besitzt lokale WordPress-Queries,
- * ist aber kein globaler Geschaeftspfad. "Ergebnisse" steht seit der
- * Stilllegung von /ergebnisse/ (2026-09-25) nicht mehr hier: Der Nachweis
- * ist die Solar-Fallstudie, und die ist bereits verlinkt.
+ * leiser als die vier kommerziellen Entscheidungen. Vier kleine Gruppen statt
+ * einer Zeile, in der die lokale Agentur-Seite neben dem Impressum stand. Die
+ * lokale Agentur-Seite bleibt bewusst hier statt im Header: Sie besitzt
+ * lokale WordPress-Queries, ist aber kein globaler Geschaeftspfad.
+ *
+ * Ein Eintrag, der auf die aufgerufene Seite zeigt, bleibt stehen (die
+ * Gruppen sollen auf jeder Seite gleich aussehen), traegt aber
+ * aria-current="page".
  */
-$directory = [
-	[ $agentur_local_url, 'WordPress Agentur Hannover', 'cta_footer_nav_agentur_local', 'navigation' ],
-	[ $about_url, 'Über Haşim', 'cta_footer_nav_about', 'navigation' ],
-	[ $e3_url, 'Solar-Fallstudie', 'cta_footer_nav_case_study_proof', 'trust' ],
-	[ $blog_url, 'Blog', 'cta_footer_nav_insights', 'navigation' ],
-	[ $glossary_url, 'Glossar', 'cta_footer_nav_glossary', 'navigation' ],
-	[ $imprint_url, 'Impressum', 'cta_footer_nav_imprint', 'navigation' ],
-	[ $privacy_url, 'Datenschutz', 'cta_footer_nav_privacy', 'navigation' ],
-];
+$directory    = (array) ( $footer_contract['directory'] ?? [] );
+$request_path = function_exists( 'nexus_get_current_request_path' ) ? nexus_get_current_request_path() : '';
+$is_here      = static function ( $url ) use ( $request_path ) {
+	if ( '' === $request_path || '' !== (string) wp_parse_url( (string) $url, PHP_URL_FRAGMENT ) ) {
+		return false;
+	}
+
+	$path = (string) wp_parse_url( (string) $url, PHP_URL_PATH );
+
+	return '' !== $path && trailingslashit( $path ) === $request_path;
+};
 
 /*
  * Absenderzeile, zwei Spalten, eine Zeile je Angabe. Die Antwortzeit kommt
@@ -353,13 +315,22 @@ $pick_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 		</p>
 
 		<nav class="verzeichnis" aria-label="Weitere Seiten">
-			<?php foreach ( $directory as $link ) : ?>
-				<a
-					href="<?php echo esc_url( (string) $link[0] ); ?>"
-					data-track-action="<?php echo esc_attr( (string) $link[2] ); ?>"
-					data-track-category="<?php echo esc_attr( (string) $link[3] ); ?>"
-					data-track-section="footer"
-				><?php echo esc_html( (string) $link[1] ); ?></a>
+			<?php foreach ( $directory as $group ) : ?>
+				<?php $group_id = 'fuss-' . sanitize_key( (string) ( $group['key'] ?? '' ) ); ?>
+				<div class="gruppe">
+					<span class="was" id="<?php echo esc_attr( $group_id ); ?>"><?php echo esc_html( (string) ( $group['title'] ?? '' ) ); ?></span>
+					<ul aria-labelledby="<?php echo esc_attr( $group_id ); ?>">
+						<?php foreach ( (array) ( $group['items'] ?? [] ) as $link ) : ?>
+							<li><a
+								href="<?php echo esc_url( (string) $link['url'] ); ?>"
+								<?php echo $is_here( $link['url'] ) ? ' aria-current="page"' : ''; // raw-ok -- static attribute. ?>
+								data-track-action="<?php echo esc_attr( (string) $link['track'] ); ?>"
+								data-track-category="<?php echo esc_attr( (string) $link['category'] ); ?>"
+								data-track-section="footer"
+							><?php echo esc_html( (string) $link['label'] ); ?></a></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
 			<?php endforeach; ?>
 		</nav>
 

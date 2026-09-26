@@ -13,6 +13,37 @@
 get_header();
 
 $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_get_primary_public_url_map() : [];
+
+/*
+ * Die Wege zurueck sind dieselben wie im Kopf: Startseite, die vier Routen
+ * aus hu_get_site_header_navigation_contract() und der Blog. Frueher stand
+ * hier eine eigene Liste mit dem Marktcheck als seitenweitem Einstieg und
+ * einem SEO-Anker, den die Zielseite nicht mehr hat. Eine 404 ist kein Ort
+ * fuer einen Solar-Einstieg; wer ihn sucht, findet ihn ueber Solar &
+ * Waermepumpe.
+ */
+$nav_contract   = function_exists( 'hu_get_site_header_navigation_contract' ) ? hu_get_site_header_navigation_contract() : [];
+$recovery_links = [
+	[
+		'label' => __( 'Startseite', 'blocksy-child' ),
+		'url'   => home_url( '/' ),
+		'track' => '404_nav_home',
+	],
+];
+
+foreach ( (array) ( $nav_contract['routes'] ?? [] ) as $nav_route ) {
+	$recovery_links[] = [
+		'label' => (string) ( $nav_route['label'] ?? '' ),
+		'url'   => (string) ( $nav_route['url'] ?? home_url( '/' ) ),
+		'track' => '404_nav_' . sanitize_key( str_replace( 'nav_header_', '', (string) ( $nav_route['track'] ?? '' ) ) ),
+	];
+}
+
+$recovery_links[] = [
+	'label' => __( 'Blog', 'blocksy-child' ),
+	'url'   => $primary_urls['blog'] ?? home_url( '/blog/' ),
+	'track' => '404_nav_blog',
+];
 ?>
 
 <div class="site-main nexus-404-container">
@@ -29,7 +60,7 @@ $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_ge
 			</h1>
 
 			<p class="nexus-404__text">
-				<?php esc_html_e( 'Die angeforderte Seite wurde verschoben, umbenannt oder existierte nie. Nutzen Sie die Suche oder navigieren Sie zu unseren Top-Seiten.', 'blocksy-child' ); ?>
+				<?php esc_html_e( 'Die angeforderte Seite wurde verschoben, umbenannt oder existierte nie. Nutzen Sie die Suche oder einen der Wege darunter.', 'blocksy-child' ); ?>
 			</p>
 
 			<!-- Suche -->
@@ -37,39 +68,20 @@ $primary_urls = function_exists( 'nexus_get_primary_public_url_map' ) ? nexus_ge
 				<?php get_search_form(); ?>
 			</div>
 
-			<!-- Top-Seiten-Links -->
+			<!-- Wege zurueck: dieselben Ziele wie der Kopf -->
 			<div class="nexus-404__links">
-				<h2><?php esc_html_e( 'Beliebte Seiten', 'blocksy-child' ); ?></h2>
-				<nav aria-label="<?php esc_attr_e( 'Beliebte Seiten', 'blocksy-child' ); ?>">
+				<h2 id="nexus-404-wege"><?php esc_html_e( 'Wichtige Seiten', 'blocksy-child' ); ?></h2>
+				<nav aria-labelledby="nexus-404-wege">
 					<ul class="nexus-404__link-list">
-						<li>
-							<a href="<?php echo esc_url( home_url( '/' ) ); ?>"
-							   data-track-action="404_nav_home"
-							   data-track-category="error_recovery">
-								<?php esc_html_e( 'Startseite', 'blocksy-child' ); ?>
-							</a>
-						</li>
-						<li>
-							<a href="<?php echo esc_url( nexus_get_audit_url() ); ?>"
-							   data-track-action="404_nav_audit"
-							   data-track-category="error_recovery">
-									<?php esc_html_e( 'Marktcheck', 'blocksy-child' ); ?>
-							</a>
-						</li>
-						<li>
-							<a href="<?php echo esc_url( $primary_urls['seo'] ?? home_url( '/wordpress-agentur-hannover/#zusammenarbeit' ) ); ?>"
-							   data-track-action="404_nav_seo"
-							   data-track-category="error_recovery">
-								<?php esc_html_e( 'Technisches SEO', 'blocksy-child' ); ?>
-							</a>
-						</li>
-						<li>
-							<a href="<?php echo esc_url( $primary_urls['blog'] ?? home_url( '/blog/' ) ); ?>"
-							   data-track-action="404_nav_blog"
-							   data-track-category="error_recovery">
-								<?php esc_html_e( 'Blog – Strategische Impulse', 'blocksy-child' ); ?>
-							</a>
-						</li>
+						<?php foreach ( $recovery_links as $recovery_link ) : ?>
+							<li>
+								<a href="<?php echo esc_url( $recovery_link['url'] ); ?>"
+								   data-track-action="<?php echo esc_attr( $recovery_link['track'] ); ?>"
+								   data-track-category="error_recovery">
+									<?php echo esc_html( $recovery_link['label'] ); ?>
+								</a>
+							</li>
+						<?php endforeach; ?>
 					</ul>
 				</nav>
 			</div>

@@ -197,17 +197,36 @@
 		var errorSummary = document.querySelector('[data-wl-error-summary]');
 		var errorList    = document.querySelector('[data-wl-error-list]');
 		var submitLabel  = submitButton ? submitButton.textContent : 'Aufgabe senden';
-		var validCases   = ['aufgabe', 'angebotsphase'];
 		var caseLabel    = document.querySelector('[data-wl-case-label]');
+		var taskLabel    = form.querySelector('[data-wl-task-label]');
+		var taskField    = form.querySelector('#wl-task');
+		var taskHint     = form.querySelector('#wl-task-hint');
 		var isSubmitting = false;
 
+		// Texte je Weg (aufgabe, angebotsphase, vormerken) kommen aus dem
+		// Template, damit die Copy an einer Stelle steht.
+		var caseTexts = {};
+		try {
+			caseTexts = JSON.parse(form.getAttribute('data-wl-case-texts') || '{}') || {};
+		} catch (error) {
+			caseTexts = {};
+		}
+		var taskError = (caseTexts.aufgabe && caseTexts.aufgabe.error) || 'Bitte die Aufgabe kurz beschreiben. Vier Zeilen genügen.';
+
 		var setCase = function (value) {
-			if (!caseField || validCases.indexOf(value) === -1) {
+			var texts = caseTexts[value];
+			if (!caseField || !texts) {
 				return;
 			}
 			caseField.value = value;
-			if (caseLabel) {
-				caseLabel.textContent = value === 'angebotsphase' ? 'Technische Einschätzung zur Angebotsphase' : 'Konkrete Aufgabe';
+			if (caseLabel && texts.label) caseLabel.textContent = texts.label;
+			if (taskLabel && texts.field) taskLabel.textContent = texts.field;
+			if (taskField && texts.placeholder) taskField.setAttribute('placeholder', texts.placeholder);
+			if (taskHint && texts.hint) taskHint.textContent = texts.hint;
+			if (texts.error) taskError = texts.error;
+			if (texts.submit) {
+				submitLabel = texts.submit;
+				if (submitButton && !isSubmitting) submitButton.textContent = texts.submit;
 			}
 		};
 
@@ -314,7 +333,7 @@
 			if (email) email.setAttribute('aria-invalid', invalidEmail ? 'true' : 'false');
 
 			if (invalidTask) {
-				errors.push('Bitte die Aufgabe kurz beschreiben. Vier Zeilen genügen.');
+				errors.push(taskError);
 			}
 
 			if (invalidEmail) {

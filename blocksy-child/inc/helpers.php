@@ -1057,6 +1057,11 @@ function nexus_get_whitelabel_faq_items() {
 			'answer'   => 'Nein. Hosting, Theme, Page Builder, Git und Deployment bleiben, wenn sie technisch funktionieren. Ich arbeite in eurem Workflow. Gibt es noch keinen, reicht meist eine Trennung zwischen Staging und Live.',
 		],
 		[
+			'key'      => 'vor-ort',
+			'question' => 'Kommst du auch vor Ort?',
+			'answer'   => 'Zu Kickoff, Workshop oder Abnahme in der Region Hannover, Hildesheim, Braunschweig, Wolfsburg und Celle ja. Die Umsetzung läuft remote. Termine weiter weg stimmen wir einzeln ab.',
+		],
+		[
 			'key'      => 'exit',
 			'question' => 'Wie kommen wir wieder raus?',
 			'answer'   => 'Ein Projekt endet mit der Abnahme. Für das Monatskontingent legen wir die Kündigung vorher schriftlich fest, ohne Verlängerungsfalle.',

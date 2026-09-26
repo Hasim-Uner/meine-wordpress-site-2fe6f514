@@ -1,7 +1,7 @@
 # Live Status
 
 Aktuelles Verhalten der Website, nach Bereichen. Stand: Repository `main`
-einschließlich der Änderungen vom 2026-09-24 (gilt nach Merge und Deploy).
+einschließlich der Änderungen vom 2026-09-25 (gilt nach Merge und Deploy).
 
 Diese Datei beschreibt den Ist-Zustand, keinen Verlauf. Die frühere,
 chronologische Fassung mit Begründungen und Prüfprotokollen bis 2026-09-22
@@ -28,26 +28,47 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Kompetenz technisches SEO, Tracking und Conversion. Maßgeblich sind
   `docs/standards/BRAND_AND_COPY.md` und `docs/architecture/CONVERSION_ROUTING.md`.
 - Drei Wege: direkte Projekte → `/kontakt/?type=project`, Agenturen →
-  `/whitelabel-retainer/` (Platz 2 in der Navigation; auf der Startseite seit
+  `/whitelabel-retainer/` (Platz 3 in der Navigation, direkt hinter den
+  Leistungen; auf der Startseite seit
   2026-09-24 ein leiser Nebenausgang unter den Leistungen), Energie-Intent →
   `/solar-waermepumpen-leadgenerierung/#marktcheck`. Der Marktcheck ist kein
   globaler CTA.
-- Kopf: `.leiste` aus `system.css` plus `leiste.js`. Reihenfolge Leistungen
-  (`/#angebote`), White-Label, Tracking (`/server-side-tracking-b2b/`),
-  Solar & Wärmepumpe, Ergebnisse (seit 2026-09-25 auf `/#arbeiten`, Ziel aus
-  `hu_get_results_nav_url()`), Über Haşim, CTA „Projekt anfragen“. Quelle ist
-  `hu_get_primary_navigation_contract()` in `inc/commercial-routing.php`; das
-  gespeicherte WordPress-Menü wird daraus normalisiert (`inc/menu-setup.php`,
-  `inc/header.php`). `/whitelabel-retainer/` hat eine eigene Seitennavigation
-  aus derselben `.leiste`, ohne Klappblatt.
+- Kopf: `.leiste` aus `system.css` plus `leiste.js`. Reihenfolge seit
+  2026-09-25 Leistungen (`/#angebote`), Tracking (`/ga4-tracking-setup/`,
+  Route `tracking_setup`), White-Label, Solar & Wärmepumpe, Ergebnisse
+  (`/#arbeiten`, Ziel aus `hu_get_results_nav_url()`), Über Haşim, CTA
+  „Projekt anfragen“. Erst die Leistungen, dann die Wege für Agenturen und
+  Energiebetriebe, dann Belege und Person. Quelle ist
+  `hu_get_site_header_navigation_contract()` in `inc/commercial-routing.php`;
+  Klappblatt, 404-Seite, gespeichertes WordPress-Menü (`inc/menu-setup.php`,
+  nur Backend-Zustand, nirgends gerendert) und SEO Cockpit lesen denselben
+  Contract. `aria-current="page"` nur auf dem Link, der die Seite ist;
+  `aria-current="true"` für den Bereich (Server-Side-Seite unter Tracking,
+  Fallstudie unter Ergebnisse). Unter 1081 px bleibt der CTA in der Zeile
+  neben „Menü“ (unter 480 px als „Anfragen“, unter 340 px nur im Blatt); auf
+  Seiten mit Sticky-CTA-Leiste übernimmt unter 761 px die Leiste, auf der
+  Startseite bleibt er schmal im Blatt, weil der Hero die Anfrage trägt. Das
+  Klappblatt scrollt selbst, wenn es höher als der Viewport ist (Handy quer).
+  `/whitelabel-retainer/` hat eine eigene Seitennavigation aus derselben
+  `.leiste`, ohne Klappblatt.
   Auf der Startseite (nur dort, über `startseite-strecke.css/.js`) ist der
   Header-Button ein Outline-Button, weil dort „Kostenlose Ersteinschätzung“
-  der primäre Button ist, und „Leistungen“ ist nur aktiv, solange `#angebote`
-  im Blick ist (`aria-current="location"`); ohne JavaScript bleibt der Link
-  neutral. Der Menüknopf hat kein eigenes `aria-label`, der sichtbare Text
-  „Menü“/„Schließen“ ist sein Name.
-- Fuß: `template-parts/site-footer.php`. Auf `/`, `/kontakt/` und der
-  Energie-Money-Page entfällt die Wegewahl am Abschluss.
+  der primäre Button ist; „Leistungen“ ist nur aktiv, solange `#angebote` im
+  Blick ist (`aria-current="location"`), ohne JavaScript neutral; die
+  Wortmarke trägt `aria-current="page"`. Der Menüknopf hat kein eigenes
+  `aria-label`, der sichtbare Text „Menü“/„Schließen“ ist sein Name.
+- Fuß: `template-parts/site-footer.php` aus
+  `hu_get_site_footer_navigation_contract()`. Vier Wege in Kopf-Reihenfolge
+  (Website, Tracking, Agentur, Energie; der eigene Weg entfällt), Direktzeile,
+  Verzeichnis in vier Gruppen: Leistungen (Server-Side Tracking, Performance
+  Marketing, WordPress Agentur Hannover), Belege & Person (Solar-Fallstudie,
+  Über Haşim), Wissen (Blog, Glossar), Rechtliches (Impressum, Datenschutz).
+  Auf `/`, `/kontakt/` und der Energie-Money-Page entfällt die Wegewahl am
+  Abschluss.
+- 404: dieselben Wege wie der Kopf plus Startseite und Blog; kein Marktcheck.
+- Prüfung: `scripts/tests/navigation-contract.php` (Contract, Ziele,
+  aria-current, bekannte Routen) und `scripts/tests/navigation.spec.cjs`
+  (Desktop, Mobil, Tastatur, ohne JavaScript) laufen in CI.
 
 ## Routen
 
@@ -87,24 +108,30 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Startseite: lädt `startseite-strecke.css/.js` als Basis, `whitelabel.css`
   ist nur das Delta; `design-system.css`, Breadcrumb und
   `navigation-ecosystem.css/.js` laden hier nicht. Eigener Kopf aus der
-  `.leiste` (Wortmarke, Anker Leistungen/Preise/Arbeitsweise/Referenzen/Fragen,
+  `.leiste` (Wortmarke, Anker Leistungen/Belege/Preise/Ablauf/Fragen,
   Button „Aufgabe beschreiben“; unter 768 px übernimmt der Button am unteren
-  Rand), eigener Fuß, globale Sprungmarke auf `#main`. Acht Abschnitte:
-  Hero (`#hero`) mit H1 „Ich baue die WordPress-Seite und die Messung dazu.
-  Ob euer Kunde mich sieht, entscheidet ihr.“ und Abnahmeprotokoll als
-  Muster; Prüfstand (`#pruefstand`, einzige dunkle Tafel); Leistungen
-  (`#lieferfelder`, je Aufgabe „Ihr nehmt ab“); Preise (`#einstieg`,
-  Test-Sprint, drei Erstprojekte, Monatskontingent, Margenblock nur für das
-  Server-Side-Setup mit dem Endkundenpreis aus `hu_tracking_price()`); Ablauf
+  Rand), eigener Fuß, globale Sprungmarke auf `#main`. Sieben Abschnitte
+  (Stand 2026-09-26): Hero (`#hero`) mit H1 „Ich baue die WordPress-Seite und
+  die Messung dazu. Festpreis und Termin stehen, bevor ihr zusagt.“, Zweitweg
+  „Vor der Zusage einschätzen lassen“ (`?case=angebotsphase`) und
+  Abnahmeprotokoll als Muster; Leistungen (`#lieferfelder`, vier Aufgaben
+  WordPress, Tracking, Anfragestrecke, Barrierefreiheit, je mit Anlass aus
+  Sicht der Agentur und „Ihr nehmt ab“); Belege (`#proof`: Prüfstand
+  `#pruefstand` als einzige dunkle Tafel, darunter die Referenzen aus
+  `hu_public_reference_projects()`); Preise (`#einstieg`, Test-Sprint, drei
+  Erstprojekte, Monatskontingent, Margenblock nur für das Server-Side-Setup
+  mit dem Endkundenpreis aus `hu_tracking_price()`); Ablauf
   (`#zusammenarbeit`, fünf Stationen Aufgabe → Umfang → Umsetzung → Abnahme →
-  Übergabe auf der Linie, Ausfall-Zusage); Referenzen (`#proof`, aus
-  `hu_public_reference_projects()`); Fragen (`#faq`); Anfrage
-  (`#naechster-schritt`, Formular `#aufgabe` als Ende der Linie). Die Punkte
-  des Protokolls haken sich mit JavaScript ab, wenn die Leselinie ihre Station
-  erreicht; ohne JavaScript stehen sie abgehakt. Formular, `?case=`, Cal.com-
-  Link und die bisherigen `data-track-*`-Werte sind unverändert. Preise aus
+  Übergabe auf der Linie, Ausfall-Zusage); Fragen (`#faq`); Anfrage
+  (`#naechster-schritt`, Formular `#aufgabe` als Ende der Linie; Wege
+  Aufgabe, Angebotsphase, Vormerken und 30-Minuten-Termin). Die Punkte des
+  Protokolls haken sich mit JavaScript ab, wenn die Leselinie ihre Station
+  erreicht; ohne JavaScript stehen sie abgehakt. `?case=` kennt `aufgabe`,
+  `angebotsphase` und `vormerken`; Formulartexte je Fall stehen im Template
+  (`data-wl-case-texts`), Antwort und nächster Schritt der Bestätigung in
+  `hu_whitelabel_request_cases()`. Preise aus
   `hu_whitelabel_pricing_canon()`; Service- und FAQPage-Schema (FAQ aus
-  `nexus_get_whitelabel_faq_items()`, sechs Fragen). Sperrliste: `wl-*`-Regeln
+  `nexus_get_whitelabel_faq_items()`, sieben Fragen). Sperrliste: `wl-*`-Regeln
   in `scripts/canon-forbidden-values.txt`. Eigenes og:image
   `assets/img/whitelabel-retainer-og.jpg` (1200 × 630, JPG) über
   `hu_get_route_social_image()`, erzeugt mit
@@ -115,13 +142,17 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Beschreibung und FAQ kommen aus `nexus_get_wgos_cluster_page_data()`,
   Service-Schema aus `inc/org-schema.php`. Query-Owner für
   `performance marketing b2b`.
-- **`/ga4-tracking-setup/`** (`page-ga4.php`): Conversion-Tracking-Setup mit
-  denselben Stufennamen wie die Server-Side-Seite; CTAs auf
-  `/kontakt/?type=project&focus=tracking`. FAQ aus demselben Register.
+- **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
+  Das Tracking-Angebot (Conversion-Tracking-Setup) mit denselben Stufennamen
+  wie die Server-Side-Seite; CTAs auf `/kontakt/?type=project&focus=tracking`.
+  FAQ aus demselben Register. Ziel des Kopfpunkts „Tracking“, des
+  Tracking-Wegs im Fuß und der Station „Messung“ der Startseite (Route
+  `tracking_setup`).
 - **`/server-side-tracking-b2b/`** (`page-server-side-tracking-b2b.php`):
-  Tracking-Money-Page mit eigenem Formular (`contact-request`, `type=project`,
-  `focus=tracking`). Beide Tracking-Seiten gelten als ein Kontext
-  (`hu_is_tracking_route_context()`).
+  Fachseite und Query-Owner für Server-Side Tracking mit eigenem Formular
+  (`contact-request`, `type=project`, `focus=tracking`). Seitenweit verlinkt
+  im Fuß als „Server-Side Tracking“ (Route `tracking_b2b`). Beide
+  Tracking-Seiten gelten als ein Kontext (`hu_is_tracking_route_context()`).
 - **`/wordpress-agentur-hannover/`** (`page-wordpress-agentur.php`):
   Entscheidungsseite „Agentur oder direkte Umsetzung“ mit den Ankern
   `#entscheidung`, `#technik`, `#zusammenarbeit`, `#belege`, `#hannover`, `#faq`,

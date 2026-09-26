@@ -35,22 +35,37 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Zulaessige Auslegungen des Formulars.
  *
- * Die Route belegt dasselbe Formular ueber `?case=` vor, damit die drei Wege im
+ * Die Route belegt dasselbe Formular ueber `?case=` vor, damit die Wege im
  * Abschluss-CTA im Posteingang unterscheidbar bleiben. Ein unbekannter oder
- * fehlender Wert faellt auf `aufgabe` zurueck; der Parameter darf nie mehr
- * entscheiden als die Betreffzeile.
+ * fehlender Wert faellt auf `aufgabe` zurueck; der Parameter waehlt nur Texte
+ * (Betreff, Antwort, naechster Schritt), nie Validierung oder Empfaenger.
  *
  * @return array<string, array<string, string>>
  */
 function hu_whitelabel_request_cases() {
+	$task_reply = 'Danke. Die Aufgabe ist da. Ich antworte %s mit Einschätzung, Aufwand und Preis.';
+
 	return [
 		'aufgabe'       => [
 			'label'   => 'Konkrete Aufgabe',
 			'subject' => 'White-Label: konkrete Aufgabe',
+			'reply'   => $task_reply,
+			'next'    => 'Ihr bekommt Einschätzung, Aufwand und Preis — und danach entscheidet ihr.',
 		],
 		'angebotsphase' => [
 			'label'   => 'Angebotsphase',
 			'subject' => 'White-Label: Angebotsphase',
+			'reply'   => $task_reply,
+			'next'    => 'Ich sage euch, ob es machbar ist und was es kostet, bevor ihr eurem Kunden etwas zusagt.',
+		],
+		// Agenturen ohne aktuelles Projekt: Drei von sechs Antworten im
+		// Outreach-Tracker boten die Aufnahme in einen Freelancer-Pool an.
+		// Der Weg hält den Kontakt, ohne eine Aufgabe vorauszusetzen.
+		'vormerken'     => [
+			'label'   => 'Vormerken',
+			'subject' => 'White-Label: vormerken',
+			'reply'   => 'Danke, ihr seid vorgemerkt. Ich melde mich %s bei euch.',
+			'next'    => 'Ihr seid vorgemerkt. Kommt ein Projekt, antwortet einfach auf diese Mail.',
 		],
 	];
 }
@@ -253,15 +268,13 @@ function hu_handle_whitelabel_request_submission( WP_REST_Request $request ) {
 	hu_send_whitelabel_request_confirmation( $validated );
 
 	$response_promise = hu_response_promise( 'window' );
+	$cases            = hu_whitelabel_request_cases();
 
 	return new WP_REST_Response(
 		[
 			'ok'      => true,
 			'case'    => $validated['case'],
-			'message' => sprintf(
-				'Danke. Die Aufgabe ist da. Ich antworte %s mit Einschätzung, Aufwand und Preis.',
-				$response_promise
-			),
+			'message' => sprintf( $cases[ $validated['case'] ]['reply'], $response_promise ),
 		],
 		201
 	);
@@ -468,9 +481,7 @@ function hu_send_whitelabel_request_confirmation( $payload ) {
 		$headers = nexus_append_mail_tags_header( $headers, [ 'whitelabel_request', 'lead_confirmation' ] );
 	}
 
-	$next_step = 'angebotsphase' === $payload['case']
-		? 'Ich sage euch, ob es machbar ist und was es kostet, bevor ihr eurem Kunden etwas zusagt.'
-		: 'Ihr bekommt Einschätzung, Aufwand und Preis — und danach entscheidet ihr.';
+	$next_step = hu_whitelabel_request_cases()[ $payload['case'] ]['next'];
 
 	$content = sprintf(
 		'<table role="presentation" width="100%%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 18px 0; border-collapse:separate; border-spacing:0 10px;">

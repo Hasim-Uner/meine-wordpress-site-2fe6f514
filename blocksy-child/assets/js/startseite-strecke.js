@@ -345,9 +345,11 @@
 
     /* ── 4. Kopfleiste ───────────────────────────────────────── */
 
-    /* „Leistungen" zeigt auf #angebote dieser Seite und kommt deshalb mit
-       aria-current="page" aus dem Header. Aktiv ist der Link hier nur,
-       solange der Abschnitt im mittleren Band des Fensters steht. */
+    /* „Leistungen" zeigt auf #angebote dieser Seite und kommt ohne
+       aria-current aus dem Header (ein Anker ist nicht die Seite). Aktiv ist
+       der Link hier nur, solange der Abschnitt im mittleren Band des
+       Fensters steht. Das erste Entfernen faengt HTML aus dem Seiten-Cache
+       ab, das noch den frueheren Wert traegt. */
     var angebote = document.getElementById('angebote');
     var leistungsLinks = document.querySelectorAll('.leiste a[href$="#angebote"]');
     if (angebote && leistungsLinks.length && 'IntersectionObserver' in window) {

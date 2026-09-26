@@ -61,8 +61,9 @@ $cta_item          = isset( $header_contract['cta'] ) && is_array( $header_contr
 		'section'     => 'header',
 	];
 
-$cta_url   = (string) ( $cta_item['url'] ?? $project_url );
-$cta_label = (string) ( $cta_item['label'] ?? 'Projekt anfragen' );
+$cta_url         = (string) ( $cta_item['url'] ?? $project_url );
+$cta_label       = (string) ( $cta_item['label'] ?? 'Projekt anfragen' );
+$cta_short_label = (string) ( $cta_item['short_label'] ?? $cta_label );
 
 /*
  * Auf der Kontaktseite entfaellt der Anfrage-Button: er zeigt auf die Seite,
@@ -80,29 +81,27 @@ $shows_cta = ! ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_
  * Klappblatt senkrecht — dieselben Ziele in derselben Reihenfolge. Die
  * wechselnde Reihenfolge zwischen Kopf, Seite und Fuss war genau das,
  * was jeder Anordnung ihre Aussage genommen hat.
+ *
+ * `current` ist ein aria-current-Wert: `page`, wenn der Link genau diese
+ * Seite ist, `true`, wenn die Seite nur im Bereich des Punkts liegt.
  */
 $leiste_links = [];
-
-foreach ( $route_items as $route_item ) {
-	$leiste_links[] = [
-		'label'    => (string) ( $route_item['label'] ?? '' ),
-		'url'      => (string) ( $route_item['url'] ?? home_url( '/' ) ),
-		'current'  => ! empty( $route_item['current'] ),
-		'track'    => (string) ( $route_item['track'] ?? '' ),
-		'category' => (string) ( $route_item['category'] ?? 'navigation' ),
-	];
-}
+$nav_items    = $route_items;
 
 foreach ( $navigation_groups as $navigation_group ) {
-	foreach ( (array) ( $navigation_group['items'] ?? [] ) as $group_item ) {
-		$leiste_links[] = [
-			'label'    => (string) ( $group_item['label'] ?? '' ),
-			'url'      => (string) ( $group_item['url'] ?? home_url( '/' ) ),
-			'current'  => ! empty( $group_item['current'] ),
-			'track'    => (string) ( $group_item['track'] ?? '' ),
-			'category' => (string) ( $group_item['category'] ?? 'navigation' ),
-		];
-	}
+	$nav_items = array_merge( $nav_items, (array) ( $navigation_group['items'] ?? [] ) );
+}
+
+foreach ( $nav_items as $nav_item ) {
+	$current = $nav_item['current'] ?? '';
+
+	$leiste_links[] = [
+		'label'    => (string) ( $nav_item['label'] ?? '' ),
+		'url'      => (string) ( $nav_item['url'] ?? home_url( '/' ) ),
+		'current'  => in_array( $current, [ 'page', 'true' ], true ) ? $current : ( true === $current ? 'page' : '' ),
+		'track'    => (string) ( $nav_item['track'] ?? '' ),
+		'category' => (string) ( $nav_item['category'] ?? 'navigation' ),
+	];
 }
 
 $response_promise = function_exists( 'hu_response_promise' ) ? hu_response_promise( 'compact' ) : '';
@@ -116,6 +115,7 @@ $leiste_location  = (string) ( $meta['location'] ?? '' );
 			href="<?php echo esc_url( home_url( '/' ) ); ?>"
 			rel="home"
 			aria-label="<?php echo esc_attr( $home_label ); ?>"
+			<?php echo is_front_page() ? ' aria-current="page"' : ''; // raw-ok -- static attribute. ?>
 			data-track-action="nav_header_about"
 			data-track-category="navigation"
 			data-track-section="header"
@@ -126,7 +126,7 @@ $leiste_location  = (string) ( $meta['location'] ?? '' );
 				<?php foreach ( $leiste_links as $leiste_link ) : ?>
 					<a
 						href="<?php echo esc_url( $leiste_link['url'] ); ?>"
-						<?php echo $leiste_link['current'] ? ' aria-current="page"' : ''; // raw-ok -- static attribute. ?>
+						<?php echo '' !== $leiste_link['current'] ? ' aria-current="' . esc_attr( $leiste_link['current'] ) . '"' : ''; ?>
 						data-track-action="<?php echo esc_attr( $leiste_link['track'] ); ?>"
 						data-track-category="<?php echo esc_attr( $leiste_link['category'] ); ?>"
 						data-track-section="header"
@@ -141,7 +141,19 @@ $leiste_location  = (string) ( $meta['location'] ?? '' );
 					data-track-action="<?php echo esc_attr( (string) ( $cta_item['track'] ?? 'nav_header_project' ) ); ?>"
 					data-track-category="<?php echo esc_attr( (string) ( $cta_item['category'] ?? 'lead_gen' ) ); ?>"
 					data-track-section="<?php echo esc_attr( (string) ( $cta_item['section'] ?? 'header' ) ); ?>"
-				><?php echo esc_html( $cta_label ); ?></a>
+				><?php
+					/*
+					 * Unter 1081 px steht der Button weiter in der Zeile, damit
+					 * die Anfrage auf dem Handy nicht erst hinter "Menü" liegt;
+					 * auf schmalen Schirmen mit der Kurzform. Ausgeblendete
+					 * Varianten (display:none) zaehlen nicht zum Namen des Links.
+					 */
+					if ( $cta_short_label !== $cta_label ) :
+						?><span class="tun-lang"><?php echo esc_html( $cta_label ); ?></span><span class="tun-kurz"><?php echo esc_html( $cta_short_label ); ?></span><?php
+					else :
+						echo esc_html( $cta_label );
+					endif;
+				?></a>
 			<?php endif; ?>
 
 			<button
@@ -169,7 +181,7 @@ $leiste_location  = (string) ( $meta['location'] ?? '' );
 			<?php foreach ( $leiste_links as $leiste_link ) : ?>
 				<a
 					href="<?php echo esc_url( $leiste_link['url'] ); ?>"
-					<?php echo $leiste_link['current'] ? ' aria-current="page"' : ''; // raw-ok -- static attribute. ?>
+					<?php echo '' !== $leiste_link['current'] ? ' aria-current="' . esc_attr( $leiste_link['current'] ) . '"' : ''; ?>
 					data-track-action="<?php echo esc_attr( $leiste_link['track'] ); ?>"
 					data-track-category="<?php echo esc_attr( $leiste_link['category'] ); ?>"
 					data-track-section="header"

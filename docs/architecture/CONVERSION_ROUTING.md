@@ -1,6 +1,6 @@
 # Conversion Routing Architecture
 
-Status: active decision, updated 2026-09-13
+Status: active decision, updated 2026-09-25
 
 This document separates **SEO ownership** from **conversion routing**. It exists to prevent a recurring failure mode: sending every page to the same funnel or moving a ranking query owner merely because another page has the preferred CTA.
 
@@ -20,10 +20,10 @@ A page can remain the canonical SEO destination for its query while its CTA rout
 | --- | --- | --- | --- | --- |
 | `/` | Brand and direct WordPress/Freelancer intent | Homepage and direct WordPress money page | `Projekt anfragen` with offer-specific focus; while the Ersteinschätzung experiment is switched on, hero and close lead with it (`/kontakt/?focus=ersteinschaetzung`) and keep the project request beside it | Proof / White-Label / Solar / tracking specialist |
 | `/wordpress-freelancer-hannover/` | Retired direct-client route | 301 to `/`; excluded from sitemap | Homepage takes over content and query ownership | Legacy content anchors remain on `/` |
-| `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase`) or scoped first project | 30-minute call / proof |
+| `/whitelabel-retainer/` | Agencies seeking delivery capacity | Agency money page | White-Label request form (`?case=aufgabe` / `?case=angebotsphase` / `?case=vormerken`) or scoped first project | 30-minute call / proof |
 | `/solar-waermepumpen-leadgenerierung/` | Solar, heat-pump and storage businesses | Energy vertical money page | Marktcheck | Solar proof / case study |
-| `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page | Tracking project request / scope clarification | White-Label bridge for agencies |
-| `/ga4-tracking-setup/` | GA4/GTM setup or troubleshooting | Specialist tracking money page | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
+| `/server-side-tracking-b2b/` | Server-Side Tracking commercial intent | Specialist tracking money page (route `tracking_b2b`); linked as „Server-Side Tracking“, never as plain „Tracking“ | Tracking project request / scope clarification | White-Label bridge for agencies |
+| `/ga4-tracking-setup/` | Tracking purchase intent: GA4/GTM setup, consent, ads conversions | Tracking offer page; target of the header item „Tracking“ and the footer way (route `tracking_setup`) | `Tracking-Projekt anfragen` → `/kontakt/?type=project&focus=tracking` | Tracking specialist / project evidence |
 | `/performance-marketing/` | B2B companies running Google Ads or Meta | Paid-demand money page (measurement → landing page → budget) | `Ausgangslage prüfen lassen` → `/kontakt/?type=project` | Tracking setup, landing pages (`/#angebot-funnel`), case study; performance agencies → White-Label task (`?type=whitelabel&case=aufgabe`) |
 | `/wordpress-agentur-hannover/` | Local `wordpress agentur hannover` search intent | Local SEO acquisition page | Project request | Explicit bridge to Freelancer page |
 | `/ergebnisse/` | Retired proof hub (since 2026-09-25) | 301 to `/case-study-solar-leadgenerierung/`; excluded from sitemap and `llms.txt` | none | Menu item „Ergebnisse“ → `/#arbeiten`; route `results` → case study |
@@ -318,8 +318,11 @@ The page owns its own local request form (`nexus/v1/whitelabel-request`) and its
 The primary action is “Aufgabe beschreiben” and leads to `#aufgabe`. The paid
 WordPress test sprint is the smallest scoped entry; a retainer follows a successful
 first project. Presales uses the same form with `?case=angebotsphase` and a visible
-context label. The calendar remains a secondary option: a quiet link in the hero
-(`cta_whitelabel_hero_call`) and one beside the form (`cta_whitelabel_form_call`).
+context label; since 2026-09-26 it is the hero's quiet second path
+(`cta_whitelabel_hero_offer`). Agencies without a current project use
+`?case=vormerken` (`cta_whitelabel_way_later`, beside the form only); the form
+swaps label, field text, hint, validation message and button per case. The
+calendar is a secondary option beside the form only (`cta_whitelabel_form_call`).
 Both required fields (task and email), optional timeframe/access, REST payload and
 success event are preserved. Without the form script, an explicit email fallback
 remains available.
@@ -331,26 +334,65 @@ breadcrumb or wayfinding layer. Hooks kept from the previous version:
 `cta_whitelabel_proof_test_sprint`, `whitelabel_proof_repo`, `faq_whitelabel_open`,
 `cta_whitelabel_way_offer`, `cta_whitelabel_form_call`,
 `cta_sticky_whitelabel_task_brief`, `nav_whitelabel_footer_*`. New:
-`nav_whitelabel_process`, `cta_whitelabel_hero_call`, `whitelabel_proof_ci`,
+`nav_whitelabel_process`, `whitelabel_proof_ci`,
 `whitelabel_proof_pagespeed`, `whitelabel_margin_reference`,
-`whitelabel_reference_open`, `whitelabel_about`. `nav_whitelabel_proof` now
-labels the anchor „Referenzen“ (`#proof`).
+`whitelabel_reference_open`, `whitelabel_about`. Since 2026-09-26
+`nav_whitelabel_proof` labels „Belege“ (`#proof`: test bench and references in
+one section), `nav_whitelabel_process` labels „Ablauf“; `cta_whitelabel_hero_call`
+was replaced by `cta_whitelabel_hero_offer`, and `cta_whitelabel_way_later` is new.
+
+### Header (seit 2026-09-25)
+
+Quelle: `hu_get_site_header_navigation_contract()` in
+`blocksy-child/inc/commercial-routing.php`. Kopfzeile und Klappblatt rendern
+dieselbe Liste in derselben Reihenfolge; das gespeicherte WordPress-Menü, die
+404-Seite und das SEO Cockpit lesen denselben Contract. Geprüft von
+`scripts/tests/navigation-contract.php` (CI).
+
+| Punkt | Ziel | Event |
+|---|---|---|
+| Leistungen | `/#angebote` | `nav_header_freelancer` |
+| Tracking | `/ga4-tracking-setup/` (Route `tracking_setup`) | `nav_header_tracking` |
+| White-Label | `/whitelabel-retainer/` | `nav_header_whitelabel` |
+| Solar & Wärmepumpe | `/solar-waermepumpen-leadgenerierung/` | `nav_header_solar` |
+| Ergebnisse | `/#arbeiten` | `nav_header_results` |
+| Über Haşim | `/hasim-uener/` | `nav_header_about` |
+| CTA „Projekt anfragen“ | `/kontakt/?type=project` | `nav_header_project` |
+
+Reihenfolge: erst was angeboten wird (Leistungen, Tracking), dann die Wege für
+bestimmte Absender (Agenturen, Energiebetriebe), dann Belege und Person. Der
+Punkt „Tracking“ führt auf das Tracking-Angebot, dieselbe Leistung, die die
+Startseite als „Tracking bis ins CRM“ mit Preis verkauft. Die Server-Side-Seite
+bleibt Query-Owner für Server-Side-Tracking-Suchen und wird mit genau diesem
+Namen verlinkt (Fuß, GA4-Seite, White-Label-Margenblock), nie als bloßes
+„Tracking“. `aria-current="page"` steht nur auf dem Link, der die aufgerufene
+Seite ist; liegt die Seite nur im Bereich eines Punkts (Server-Side-Seite unter
+Tracking, Fallstudie unter Ergebnisse), steht `aria-current="true"`.
+
+Unter 1081 px bleibt der CTA in der Kopfzeile sichtbar, unter 480 px als
+„Anfragen“. Nur im Klappblatt steht er unter 340 px, auf der Startseite (der
+Hero führt dort schon mit zwei Buttons auf die Anfrage) und auf Seiten mit
+eigener Sticky-CTA-Leiste (unter 761 px). Ohne JavaScript ist das Klappblatt
+offen.
 
 ### Footer: Selbstauskunft statt Sammel-CTA
 
-The global footer does not carry one CTA for everybody any more. By default it asks the
-visitor to say who they are, and each of the three sentences routes into the
-matching cluster above:
+Quelle: `hu_get_site_footer_navigation_contract()` in
+`blocksy-child/inc/commercial-routing.php`, gerendert von
+`template-parts/site-footer.php`. Der Fuß trägt keinen Sammel-CTA. Er fragt,
+wer der Besucher ist, in derselben Reihenfolge wie der Kopf:
 
-| Sentence | Destination | Event |
+| Satz | Ziel | Event |
 |---|---|---|
+| Ich habe **eine Website** … | `/` | `cta_footer_pick_project` |
+| Ich brauche **belastbare Messung** … | `/ga4-tracking-setup/` | `cta_footer_pick_tracking` |
 | Ich bin **Agentur** … | `/whitelabel-retainer/` | `cta_footer_pick_agency` |
 | Ich bin **Solar- oder Wärmepumpenbetrieb** … | `/solar-waermepumpen-leadgenerierung/` | `cta_footer_pick_energy` |
-| Ich habe **eine Seite** … | `/` | `cta_footer_pick_project` |
 
-All three carry `data-track-category="lead_gen"` and
-`data-track-section="footer"`. The direct line under them adds three more, all
-`lead_gen`:
+Alle tragen `data-track-category="lead_gen"` und `data-track-section="footer"`.
+Der eigene Weg entfällt auf seiner Route (beide Tracking-Seiten zählen als
+Tracking). Auf `/`, `/kontakt/` und der Energie-Money-Page entfällt die Wahl
+ganz. Darunter die Direktzeile, ebenfalls `lead_gen`:
 
 | Direct path | Destination | Event |
 |---|---|---|
@@ -358,22 +400,28 @@ All three carry `data-track-category="lead_gen"` and
 | Telefon | `tel:` the canonical number | `cta_footer_tel` |
 | Kontaktformular | `/kontakt/` | `cta_footer_form` |
 
-On the front page the three self-selection sentences are omitted: direct
-projects are already the primary offer and specialist bridges are visible.
-Mail and telephone remain; `Kontaktformular` leads to the shared contact page.
-The directory and sender lines remain. Existing tracking action names on
-rendered links are unchanged; `cta_footer_pick_*` are absent on the homepage.
+Darunter das Verzeichnis in vier leisen Gruppen. Es führt, was der Kopf nicht
+führt: Fachseiten mit eigener Query-Ownership, Belege, Wissen, Rechtliches.
+Ein Eintrag, der die aufgerufene Seite ist, trägt `aria-current="page"`.
 
-Below that the footer has one directory line and one sender line, no columns:
+| Gruppe | Link | Destination | Event | Category |
+|---|---|---|---|---|
+| Leistungen | Server-Side Tracking | `/server-side-tracking-b2b/` | `cta_footer_nav_server_side_tracking` | `navigation` |
+| Leistungen | Performance Marketing | `/performance-marketing/` | `cta_footer_nav_performance_marketing` | `navigation` |
+| Leistungen | WordPress Agentur Hannover | `/wordpress-agentur-hannover/` | `cta_footer_nav_agentur_local` | `navigation` |
+| Belege & Person | Solar-Fallstudie | `/case-study-solar-leadgenerierung/` | `cta_footer_nav_case_study_proof` | `trust` |
+| Belege & Person | Über Haşim | `/hasim-uener/` | `cta_footer_nav_about` | `navigation` |
+| Wissen | Blog | `/blog/` | `cta_footer_nav_insights` | `navigation` |
+| Wissen | Glossar | `/glossar/` | `cta_footer_nav_glossary` | `navigation` |
+| Rechtliches | Impressum | `/impressum/` | `cta_footer_nav_imprint` | `navigation` |
+| Rechtliches | Datenschutz | `/datenschutz/` | `cta_footer_nav_privacy` | `navigation` |
 
-| Directory link | Destination | Event | Category |
-|---|---|---|---|
-| Über Haşim | `/hasim-uener/` | `cta_footer_nav_about` | `navigation` |
-| Fallstudie Solar | `/case-study-solar-leadgenerierung/` | `cta_footer_nav_case_study_proof` | `trust` |
-| Blog | `/blog/` | `cta_footer_nav_insights` | `navigation` |
-| Glossar | `/glossar/` | `cta_footer_nav_glossary` | `navigation` |
-| Impressum | `/impressum/` | `cta_footer_nav_imprint` | `navigation` |
-| Datenschutz | `/datenschutz/` | `cta_footer_nav_privacy` | `navigation` |
+Neu seit 2026-09-25: `cta_footer_nav_server_side_tracking` und
+`cta_footer_nav_performance_marketing`. Die Server-Side-Seite verlor mit dem
+Kopfpunkt ihren seitenweiten Link und bekommt ihn hier mit ihrem eigenen
+Ankertext zurück; `/performance-marketing/` (Query-Owner seit 2026-09-22) hatte
+bis dahin gar keinen. Der frühere Wert `cta_footer_nav_tracking` bleibt
+stillgelegt, damit seine Zeitreihe nicht mit einem anderen Ziel weiterläuft.
 
 Retired with the CTA band and the merged minimal footers:
 `cta_footer_primary`, `cta_footer_primary_mobile`, `cta_footer_route_*`,
@@ -384,13 +432,17 @@ Retired with the CTA band and the merged minimal footers:
 Retired with the two-volume footer, when the service and proof columns went:
 `cta_footer_nav_freelancer`, `cta_footer_nav_tracking`, `cta_footer_nav_energy`,
 `cta_footer_nav_agentur`, `cta_footer_nav_results`, `cta_footer_nav_whitelabel`
-and `cta_footer_nav_contact`. Their targets were all already linked from the
-header menu in the same document, or are reachable from the direct line above.
-`cta_footer_direct_mail` and `cta_footer_direct_phone` were replaced by
-`cta_footer_mail` and `cta_footer_tel`; that is a deliberate rename, so the
-direct-line series restarts here. The three `cta_footer_pick_*` values and the
-four surviving `cta_footer_nav_*` values are unchanged, so route reporting and
-directory reporting stay comparable across the rebuild.
+and `cta_footer_nav_contact`. `cta_footer_direct_mail` and
+`cta_footer_direct_phone` were replaced by `cta_footer_mail` and
+`cta_footer_tel`.
+
+### 404
+
+`404.php` bietet dieselben Wege wie der Kopf: Startseite, die vier Routen aus
+dem Header-Contract und den Blog (`404_nav_home`, `404_nav_freelancer`,
+`404_nav_tracking`, `404_nav_whitelabel`, `404_nav_solar`, `404_nav_blog`).
+Entfallen sind `404_nav_audit` (Marktcheck als seitenweiter Einstieg) und
+`404_nav_seo` (Anker, den die Zielseite nicht mehr hat).
 
 Note for the Energy cluster: the footer no longer repeats the Marktcheck CTA.
 The Marktcheck stays the cluster's primary action on

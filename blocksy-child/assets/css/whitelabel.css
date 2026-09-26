@@ -35,14 +35,14 @@
 
 .st .wl-hero__h1 { font-size: clamp(2.3rem, 1rem + 4.4vw, 5.1rem); }
 
-.st .wl-hero__termin {
+.st .wl-hero__zweitweg {
   align-self: center;
   font-size: 0.95rem;
   color: var(--grau);
 }
 
 @media (max-width: 767px) {
-  .st .wl-hero__termin { padding-block: var(--s0); }
+  .st .wl-hero__zweitweg { padding-block: var(--s0); }
 }
 
 /* ══ Abnahmeprotokoll ═════════════════════════════════════════
@@ -116,7 +116,17 @@
   color: var(--grau);
 }
 
-/* ══ 03 Leistungen: was die Agentur abnimmt ═══════════════════ */
+/* ══ 02 Leistungen: Lage, Leistung, Abnahme ═══════════════════
+   Jede Karte beginnt mit der Lage, in der Agenturen suchen, leise
+   zwischen Stichworten und Titel; der Titel bleibt die Antwort. */
+
+.st .wl-anlass {
+  margin-top: var(--s1);
+  max-inline-size: 36ch;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--grau);
+}
 
 .st .wl-abnahme {
   margin-top: var(--s2);
@@ -127,6 +137,20 @@
 
 .st .wl-abnahme .st-klein-label { color: var(--tinte); }
 .st .wl-abnahme p + p { margin-top: var(--s0); }
+
+/* ══ 03 Belege: Tafel, darunter die oeffentlichen Projekte ═════
+   Pruefstand und Referenzen sind ein Abschnitt: erst der Code, dann
+   die Websites, die man selbst oeffnen kann. */
+
+.st .wl-referenzen { margin-top: var(--s5); }
+
+.st .wl-referenzen__satz {
+  margin-top: var(--s1);
+  max-inline-size: 62ch;
+  color: var(--grau);
+}
+
+.st .wl-referenzen__satz .st-link { color: var(--tinte); }
 
 /* ══ 04 Preise ════════════════════════════════════════════════ */
 
@@ -300,15 +324,7 @@
   }
 }
 
-/* ══ 06 Referenzen ════════════════════════════════════════════ */
-
-.st .st-arbeiten .st-vorspann .st-link { color: var(--tinte); }
-
-@media (min-width: 1024px) {
-  .st .st-arbeiten .st-referenzen__liste { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-
-/* ══ 08 Anfrage: das Formular ist das Ende der Linie ══════════ */
+/* ══ 07 Anfrage: das Formular ist das Ende der Linie ══════════ */
 
 /* Neben dem Formular eine Stufe kleiner, wie die Kopfspalte der
    zweispaltigen Abschnitte. */

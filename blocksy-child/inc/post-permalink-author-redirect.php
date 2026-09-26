@@ -32,7 +32,14 @@ function hu_get_author_suffixed_post_redirect_url( $request_path ) {
 		return '';
 	}
 
-	$segments = array_values( array_filter( explode( '/', trim( (string) $request_path, '/' ) ), 'strlen' ) );
+	$segments = array_values(
+		array_filter(
+			explode( '/', trim( (string) $request_path, '/' ) ),
+			static function ( string $segment ): bool {
+				return '' !== $segment;
+			}
+		)
+	);
 	if ( 2 !== count( $segments ) ) {
 		return '';
 	}
@@ -44,7 +51,7 @@ function hu_get_author_suffixed_post_redirect_url( $request_path ) {
 		return '';
 	}
 
-	$post = get_page_by_path( $segments[0], OBJECT, 'post' );
+	$post = get_page_by_path( $segments[0], 'OBJECT', 'post' );
 	if ( ! $post instanceof WP_Post || 'publish' !== $post->post_status || (int) $post->post_author !== (int) $author->ID ) {
 		return '';
 	}

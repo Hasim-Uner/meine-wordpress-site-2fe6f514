@@ -133,6 +133,16 @@ body {
 	outline-offset: 2px;
 }
 
+/* Schmal traegt diese Leiste am unteren Rand den Weg zur Anfrage. Der
+   Anfrage-Button der Kopfzeile tritt hier zurueck, wie auf der
+   White-Label-Seite: zwei Anfrage-Buttons auf einem Handybildschirm waeren
+   einer zu viel. Im Klappblatt bleibt er. */
+@media (max-width: 760px) {
+	.leiste[data-leiste-bereit] .rechts > a.tun {
+		display: none;
+	}
+}
+
 /* Desktop: Sticky-CTA-Bar nicht rendern. */
 @media (min-width: 761px) {
 	.hu-sticky-cta {
