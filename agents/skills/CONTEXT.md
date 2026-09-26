@@ -17,7 +17,8 @@ Hard rules:
 - `.agents/skills/` and `.claude/skills/` contain relative symlinks only for primary skills.
 - Never edit skill content through discovery symlinks.
 - Keep `SKILL.md` short: trigger, delegation, first command/check, hard rules, deliverable.
-- Put repeatable mechanics in scripts instead of prose.
+- Put repeatable mechanics in scripts instead of prose. Scripts read runtime facts (routes, redirects, slugs) from their source; never copy them.
+- Specialists do not route: no routing tables, no dispatcher chains. Out-of-scope work goes back to the owning primary. `npm run lint:skills` enforces ownership and this rule.
 - Do not duplicate brand/copy/CTA/SEO ownership rules; reference canonical docs.
 - Large references/guides are opt-in, never default context.
 
@@ -45,13 +46,13 @@ Hard rules:
 | `agent-system-maintenance` | no mandatory delegate |
 | `frontend-system` | `b2b-design-system`, `modern-web-guidance`, `emil-design-eng`, `animate`, `review-animations`, `improve-animations` |
 | `seo-intelligence` | `seo-agent`, `seo-live-qa`, `seo-drift`, `internal-linking-audit` |
-| `seo-cockpit-dev` | `seo-cockpit-hardening` |
+| `seo-cockpit-dev` | no mandatory delegate |
 | `editorial-seo` | `blog-seo-ux-optimizer`, `pillar-cornerstone-writer` |
 | `conversion-copy` | `buyer-research`, `seo-conversion-copywriting`, `conversion-copy-loop`, `copy-anatomy` |
 | `offer-funnel-intelligence` | `buyer-research`, `modern-web-guidance` when the subtask needs them |
-| `conversion-architecture` | `wordpress-cro-content-design-audit`, `route-conversion-review`, `landing-page-builder`, `growth-audit-optimizer`, `homepage-proof-monitoring` |
+| `conversion-architecture` | `wordpress-cro-content-design-audit`, `route-conversion-review`, `landing-page-builder`, `homepage-proof-monitoring` |
 | `wordpress-growth-architecture` | `b2b-design-system` for included UI craft |
-| `performance-marketing` | `wordpress-performance-marketing`, `page-speed-audit` |
+| `performance-marketing` | `page-speed-audit` |
 | `deploy-qa` | `pre-deploy-smoke`, `registry-release-qa`, `navigation-migration` |
 | `revenue-learning-loop` | no mandatory delegate |
 
@@ -60,7 +61,6 @@ Hard rules:
 - `emil-design-eng`, `animate`, `review-animations`, `improve-animations` are vendored from `emilkowalski/skills` (MIT). Keep them unchanged and refresh from upstream when needed.
 - `modern-web-guidance` remains a versioned specialist reference. Retrieve only task-matching guidance; never load its guide tree wholesale.
 - `homepage-proof-monitoring` is a pre/post-release proof helper; final KPI decisions belong to `revenue-learning-loop`.
-- `growth-audit-optimizer` is legacy route-specific logic and must not become a general router target.
 
 ## Routing rule
 

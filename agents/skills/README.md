@@ -31,7 +31,7 @@ Specialist skills keep tested scripts, narrow workflows, vendored upstream mater
 
 Local prerequisites: Bash, Python 3, PHP and ripgrep (`rg`). CI installs ripgrep when missing.
 
-- `npm run lint:skills`: public entrypoint budgets, reference links and benchmark fixture validity.
+- `npm run lint:skills`: public entrypoint budgets, links in all skills, specialist ownership (CONTEXT.md delegation map), no routing inside specialists, no paths to deleted skills, benchmark fixture validity.
 - `npm run test:skills`: all specialist regression suites, with full logs only on failure.
 - `npm run benchmark:agents -- --prompts`: blind routing prompts for independent host runs.
 

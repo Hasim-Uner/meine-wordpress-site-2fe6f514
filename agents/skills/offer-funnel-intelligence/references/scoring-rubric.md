@@ -2,6 +2,11 @@
 
 Score each of the ten dimensions from 0 to 10. Use the anchors. Do not invent half-points without a reason. A funnel below 60/100 is leaking money; below 40/100 it is preventing qualified inquiries.
 
+Scope: the anchors are phrased for energy acquisition routes. On every other route, take audience, role and
+primary CTA from `docs/architecture/CONVERSION_ROUTING.md` and `docs/standards/BRAND_AND_COPY.md` and read the
+anchors against that route's own ladder and next step. Energy-only killer signals apply only on energy routes;
+never score a route down for not using the Marktcheck.
+
 Output format per dimension:
 
 ```
@@ -20,7 +25,7 @@ Output format per dimension:
 - 6–8: Clear industry, role (Geschäftsführer/Vertriebsleiter), and project-value floor. Poor-fit visitors can self-exclude.
 - 9–10: A wrong-fit visitor would close the tab within 5 seconds and a right-fit visitor would feel "this is for me" in the hero alone.
 
-Killer signals (auto -3): "Webdesign", "Online-Marketing", "WordPress-Agentur" in hero/CTA on cold acquisition routes.
+Killer signals (auto -3): "Webdesign", "Online-Marketing", "WordPress-Agentur" in hero/CTA on cold energy acquisition routes.
 
 ## 2. Pain Economics (0–10)
 
@@ -34,13 +39,13 @@ Killer signal (auto -3): inflated numbers without source or constraint.
 ## 3. Offer Ladder (0–10)
 
 - 0–2: Single "Kontakt" CTA. No ladder.
-- 3–5: Ladder exists but steps are not differentiated (Marktcheck and Anfrage feel identical).
-- 6–8: Marktcheck → Analyse → Umsetzung → Retainer is visible, with distinct jobs.
+- 3–5: Ladder exists but steps are not differentiated (e.g. first step and Anfrage feel identical).
+- 6–8: The route's ladder from `CONVERSION_ROUTING.md` is visible with distinct jobs (energy: Marktcheck → Analyse → Umsetzung → Retainer).
 - 9–10: Each step states its decision criterion, what the buyer learns, and what happens next.
 
 Killer signal (auto -3): Umsetzung pitched before Analyse on a cold route.
 
-## 4. Marketcheck Desire (0–10)
+## 4. First-Step Desire (0–10; energy: Marktcheck)
 
 - 0–2: "Kostenlose Analyse anfordern" — generic, low perceived value.
 - 3–5: Some value framed (you receive X) but no proof of rigor.

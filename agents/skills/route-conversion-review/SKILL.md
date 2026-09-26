@@ -1,6 +1,6 @@
 ---
 name: route-conversion-review
-description: Vollprüfung einer einzelnen Route auf hasimuener.de in fester Reihenfolge — Angebot, CRO, Copy, SEO, interne Links, Speed. Use für Aufträge, die eine konkrete URL oder Seite komplett bewerten sollen, etwa "Prüfe /whitelabel-retainer/ komplett", "Ist die Money Page rund?", "Seite X durchleuchten". Nicht für repo-weite Sweeps über mehrere Seiten (wordpress-performance-marketing) und nicht für Einzeldomänen-Tiefe (dann direkt den Fachskill).
+description: Vollprüfung einer einzelnen Route auf hasimuener.de in fester Reihenfolge — Angebot, CRO, Copy, SEO, interne Links, Speed. Use für Aufträge, die eine konkrete URL oder Seite komplett bewerten sollen, etwa "Prüfe /whitelabel-retainer/ komplett", "Ist die Money Page rund?", "Seite X durchleuchten". Nicht für repo-weite Sweeps über mehrere Seiten (performance-marketing) und nicht für Einzeldomänen-Tiefe (dann direkt den Fachskill).
 ---
 
 # Route Conversion Review
@@ -11,7 +11,7 @@ der ihre Befunde aufeinander aufbauen.
 
 ## Abgrenzung
 
-- `wordpress-performance-marketing` ist der **horizontale** Sweep: das ganze
+- `performance-marketing` ist der **horizontale** Sweep: das ganze
   Repo über Modi (`full`, `seo`, `cro`, …).
 - Dieser Skill ist **vertikal**: eine URL, dafür alle Ebenen.
 - Geht es nur um eine Domäne, ist der Fachskill direkt schneller.
@@ -49,12 +49,13 @@ Skript bereits ab.
 
 ## Reihenfolge der Linsen
 
-Nicht umsortieren. Jede Stufe setzt die vorherige voraus.
+Nicht umsortieren. Jede Stufe setzt die vorherige voraus. Jede Linse liest die
+Kriterien direkt aus der genannten Datei; es wird nicht weitergeroutet.
 
-1. `Angebot / Funnel` → `offer-funnel-intelligence`
+1. `Angebot / Funnel` → `offer-funnel-intelligence/references/diagnosis.md`
 2. `CRO / CTA- und Proof-Hierarchie` → `wordpress-cro-content-design-audit`
 3. `Copy` → `seo-conversion-copywriting`
-4. `SEO` → `seo-agent` (routet weiter)
+4. `SEO` → `seo-live-qa` (Canonical/Index/Redirect) und `docs/seo/query-ownership.csv`
 5. `Interne Links` → `internal-linking-audit`
 6. `Speed` → `page-speed-audit`
 

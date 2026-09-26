@@ -18,7 +18,7 @@ Use this skill when the task is not only visual polish. The job is to decide whe
 ## First Command
 
 ```bash
-rg -n "WordPress Agentur|Anfragesystem|Marktcheck|Projekt prüfen|Auswertung anfordern|E3|CPL|qualifiziert|Portal|Tracking|Conversion|Kontakt" \
+rg -n "Projekt anfragen|White-Label|Marktcheck|Anfrage|Projekt prüfen|E3|CPL|qualifiziert|Tracking|Conversion|Kontakt" \
   blocksy-child/front-page.php \
   blocksy-child/page-*.php \
   blocksy-child/template-parts/ \
@@ -63,7 +63,7 @@ Review in this order. Do not skip to design polish before the copy diagnosis is 
    - Prefer Geschäftsführer-/Vertriebsleiter language over marketing-department language.
    - Translate abstractions into loss, risk, control, time, cost, lead quality, and sales capacity.
 3. `Offer architecture`
-   - Reinforce `Marktcheck -> Anfragesystem-Analyse -> Umsetzung / Retainer`.
+   - Follow the route's role, audience and primary CTA from `docs/architecture/CONVERSION_ROUTING.md`; the Marktcheck ladder belongs to energy routes only.
    - Do not fragment the page into equal service tiles, feature catalogs, or generic agency positioning.
 4. `CTA hierarchy`
    - One primary action per decision zone.
@@ -82,10 +82,7 @@ Review in this order. Do not skip to design polish before the copy diagnosis is 
 
 ## Hard Rules
 
-- Use `docs/standards/BRAND_AND_COPY.md` as the positioning source of truth.
-- Do not revive `Growth Audit`, `WGOS`, Shopify, generic `WordPress-Agentur` positioning, or service-catalog framing when it weakens the diagnosis-first funnel.
-- WordPress may appear as technology or local SEO capture, but not as the core role if the page is meant to sell the active offer.
-- Keep the primary path diagnosis-first.
+- Public role, positioning and hard bans come only from `docs/standards/BRAND_AND_COPY.md`; route role and CTA only from `docs/architecture/CONVERSION_ROUTING.md`. Do not restate them here.
 - Prefer concrete buyer pain over clever category language.
 - Preserve proven numbers only when the referenced case or canon supports them.
 - Separate findings into `Repo`, `Manual WP`, and `Operational` follow-up.

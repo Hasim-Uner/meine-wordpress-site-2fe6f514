@@ -34,7 +34,7 @@ print_content() {
 - Replace vague agency wording with concrete business outcomes.
 - Link to one service page and related proof or cluster assets.
 - Keep terminology stable across hero, proof, and CTA blocks.
-- For autopost planning, connect every topic to an offer, objection, proof point, or money page.
+- For editorial planning, connect every topic to an offer, objection, proof point, or money page.
 EOF
 }
 
@@ -52,7 +52,7 @@ EOF
 print_offers() {
   cat <<'EOF'
 [OFFERS]
-- Prioritize SEO audit, tracking audit, autopost, landing pages, lead generation, and WordPress technical implementation.
+- Take offers and their priority from docs/standards/BRAND_AND_COPY.md and llms.txt; never invent an offer.
 - Check whether each offer has: problem, outcome, proof, process, CTA, FAQ, and internal-link target.
 - Separate money pages from supporting education posts.
 - Flag missing offer pages, weak CTAs, unclear package boundaries, and duplicated positioning.
