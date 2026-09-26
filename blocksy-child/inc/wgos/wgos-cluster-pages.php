@@ -77,8 +77,9 @@ function nexus_get_wgos_cluster_page_data() {
 				[
 					'question' => 'Was kostet das?',
 					'answer'   => sprintf(
-						'Die Messung beginnt als Tracking-Setup ab %s netto. Zielseite und Kampagnenbetreuung richten sich nach dem Umfang; Scope und Preis stehen vor dem Start schriftlich fest. Beschreiben Sie kurz die Ausgangslage, dann kommt eine konkrete Einschätzung zurück.',
-						hu_tracking_price( 'standard', 'setup', 'display' )
+						'Die Messung beginnt mit %1$s für %2$s netto; Server-Side Tracking und Meta CAPI sind eigene Stufen darüber. Zielseite und Kampagnenbetreuung richten sich nach dem Umfang; Scope und Preis stehen vor dem Start schriftlich fest. Beschreiben Sie kurz die Ausgangslage, dann kommt eine konkrete Einschätzung zurück.',
+						hu_tracking_product_ladder()['measurement']['name'],
+						hu_tracking_price( 'measurement', 'setup' )
 					),
 				],
 				[

@@ -1,7 +1,7 @@
 # Live Status
 
 Aktuelles Verhalten der Website, nach Bereichen. Stand: Repository `main`
-einschließlich der Änderungen vom 2026-09-25 (gilt nach Merge und Deploy).
+einschließlich der Änderungen vom 2026-09-26 (gilt nach Merge und Deploy).
 
 Diese Datei beschreibt den Ist-Zustand, keinen Verlauf. Die frühere,
 chronologische Fassung mit Begründungen und Prüfprotokollen bis 2026-09-22
@@ -87,7 +87,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   einzige dunkle Tafel, Links auf Code, CI und PageSpeed, keine Scores);
   sechs Stationen einer Anfrage (`#strecke`, Liste mit `#angebot-funnel`);
   drei Leistungen mit Kanonpreisen (`#angebote`, Anker `#angebot-website`,
-  `#angebot-tracking`, `#angebot-weiterentwicklung`) und darunter die leisen
+  `#angebot-tracking` = Stufe 1 der Tracking-Leiter mit den Stufen darüber
+  als Satz, `#angebot-weiterentwicklung`) und darunter die leisen
   Nebenausgänge zu White-Label und Solar/Wärmepumpe; Arbeiten (`#arbeiten`,
   `#referenzen`); Übergabe (`#uebergabe`); Fragen (`#fragen`,
   template-eigenes FAQPage-Schema); Anfrage (`#anfrage`, `#kontakt`).
@@ -143,20 +144,27 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Service-Schema aus `inc/org-schema.php`. Query-Owner für
   `performance marketing b2b`.
 - **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
-  Das Tracking-Angebot (Conversion-Tracking-Setup) mit denselben Stufennamen
-  wie die Server-Side-Seite; CTAs auf `/kontakt/?type=project&focus=tracking`.
-  FAQ aus demselben Register. Ziel des Kopfpunkts „Tracking“, des
+  Das Tracking-Angebot. Zeigt alle vier Stufen der Tracking-Leiter aus
+  `hu_tracking_product_ladder()` als Karten `#stufe-1` bis `#stufe-4` (Raster
+  2 × 2) mit Umfang, Festpreis und Lieferzeit; Meta-Description, FAQ
+  (`hu_tracking_setup_faq_items()`) und Service-Offer lesen dieselbe Leiter,
+  das Offer meldet Stufe 1. CTAs auf `/kontakt/?type=project&focus=tracking`.
+  Query-Owner für `conversion tracking einrichten lassen`. Ziel des Kopfpunkts „Tracking“, des
   Tracking-Wegs im Fuß und der Station „Messung“ der Startseite (Route
   `tracking_setup`).
 - **`/server-side-tracking-b2b/`** (`page-server-side-tracking-b2b.php`):
   Fachseite und Query-Owner für Server-Side Tracking mit eigenem Formular
-  (`contact-request`, `type=project`, `focus=tracking`). Seitenweit verlinkt
+  (`contact-request`, `type=project`, `focus=tracking`). Pakete sind die
+  Stufen 2 bis 4 der Tracking-Leiter, Care-Stufen heißen nach der Stufe, die
+  sie betreuen; über den Paketen verweist ein Satz auf Stufe 1
+  (`cta_package_to_measurement`). Seitenweit verlinkt
   im Fuß als „Server-Side Tracking“ (Route `tracking_b2b`). Beide
   Tracking-Seiten gelten als ein Kontext (`hu_is_tracking_route_context()`).
 - **`/wordpress-agentur-hannover/`** (`page-wordpress-agentur.php`):
   Entscheidungsseite „Agentur oder direkte Umsetzung“ mit den Ankern
   `#entscheidung`, `#technik`, `#zusammenarbeit`, `#belege`, `#hannover`, `#faq`,
-  `#anfrage`. Hält die lokalen Agentur-, SEO- und Wartungs-Queries; die
+  `#anfrage`. CTAs seit 2026-09-26 auf die Projektanfrage ohne Vorauswahl;
+  Belege: öffentliche Referenzen (`/#referenzen`) und die Fallstudie. Hält die lokalen Agentur-, SEO- und Wartungs-Queries; die
   URL-Karte führt „Technisches SEO“, „Wartung“ und „Methode“ auf
   `#zusammenarbeit`.
 - **`/solar-waermepumpen-leadgenerierung/`**
@@ -176,7 +184,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   der Marktcheck; Byline, Breadcrumb- und Service-Schema über Helper in
   `inc/seo-meta.php`.
 - **Nachweise:** `/case-study-solar-leadgenerierung/` ist die Fallstudie; sie
-  bleibt `noindex, follow`, bis die Freigabe vorliegt. Eigenes og:image
+  bleibt `noindex, follow`, bis die Freigabe vorliegt. Unter dem Marktcheck
+  steht seit 2026-09-26 ein zweiter, leiser Weg in die Projektanfrage für
+  Leser ohne Energiebetrieb (`cta_case_study_to_project`). Eigenes og:image
   `assets/img/fallstudie-og.jpg` (1200 × 630, JPG, nur Kanonwerte), das auch
   das Beitragsbild im Schema ersetzt. Der Hub `/ergebnisse/` ist seit 2026-09-25
   stillgelegt: 301 auf die Fallstudie (`nexus_redirect_legacy_results_path()`),
@@ -341,6 +351,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `lint-e3-canon.sh`, `check-german-copy.sh`, `validate-architecture.sh`,
   beide Smoke-Contracts, CSS-Audits, `lint-entity-crawler-signals.php` und
   PHPStan mit Baseline. Der Theme-Build führt den Kanon-Guard erneut aus.
+- Tracking-Leiter: Name, Umfang, Preis und Lieferzeit der vier Stufen nur in
+  `hu_tracking_product_ladder()`; `npm run test:pricing`
+  (`scripts/tests/tracking-ladder.php`, CI) prüft Reihenfolge, steigende
+  Preise, Server-Side-Preis als Stufe 2 und den Abstand zum White-Label-Preis.
 
 ## SEO und Crawler
 
@@ -409,10 +423,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Nach dem Merge je eine Testanfrage über `/kontakt/`, `/whitelabel-retainer/`
   und den Marktcheck: CRM-Eintrag, Sales-Chance, interne Mail und Bestätigung
   prüfen.
-- Versuch Ersteinschätzung: nach dem Deploy eine Einsendung über
+- Versuch Ersteinschätzung: Zählung 2026-09-25 bis 2026-11-20, Entscheidung
+  nach der Tabelle in `docs/experimente/ersteinschaetzung.md`; bis dahin
+  bleibt die Startseite eingefroren. Nach dem Deploy eine Einsendung über
   `/kontakt/?focus=ersteinschaetzung` schicken (Betreff-Präfix bei
-  kontakt@hasimuener.de prüfen) und Start- und Enddatum in
-  `docs/experimente/ersteinschaetzung.md` eintragen.
+  kontakt@hasimuener.de prüfen) und die Wochentabelle führen.
 - WP-Cron: Wegen des Seiten-Caches ist ein echter Server-Cron für `wp-cron.php`
   nötig, sonst laufen Follow-ups und Antwortfrist-Wächter nur bei
   Admin-Besuchen zuverlässig. Im Repo nicht prüfbar.

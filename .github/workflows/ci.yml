@@ -172,6 +172,9 @@ jobs:
       - name: Verify page provisioning runs once per deploy
         run: npm run test:provisioning
 
+      - name: Verify the tracking price ladder contract
+        run: npm run test:pricing
+
       - name: Verify navigation on desktop, mobile and keyboard
         run: npm run test:navigation-ui
 

@@ -86,19 +86,14 @@ add_action( 'wp_body_open', function () {
 	<?php
 }, 31 );
 
-$contact_url = function_exists( 'hu_get_contact_intake_url' )
-	? hu_get_contact_intake_url( 'project', 'implementation_scope' )
-	: add_query_arg(
-		[
-			'type'  => 'project',
-			'focus' => 'implementation_scope',
-		],
-		home_url( '/kontakt/' )
-	);
-$offers_url   = home_url( '/#angebote' );
-$results_url  = function_exists( 'nexus_get_results_url' ) ? nexus_get_results_url() : home_url( '/case-study-solar-leadgenerierung/' );
-$tracking_url = home_url( '/ga4-tracking-setup/' );
-$case_url     = home_url( '/case-study-solar-leadgenerierung/' );
+// Ohne Vorauswahl: Wer „WordPress Agentur“ sucht, will meist eine neue
+// Website oder einen Relaunch. Die Kontaktseite fragt das Vorhaben selbst ab,
+// statt jede Anfrage als „Bestehende Website weiterentwickeln“ abzulegen.
+$contact_url    = hu_get_navigation_project_request_url();
+$offers_url     = home_url( '/#angebote' );
+$references_url = home_url( '/#referenzen' );
+$tracking_url   = home_url( '/ga4-tracking-setup/' );
+$case_url       = nexus_get_results_url();
 $response     = hu_response_promise( 'compact' );
 $faqs         = function_exists( 'nexus_get_agentur_faq_items' ) ? nexus_get_agentur_faq_items() : [];
 
@@ -234,18 +229,18 @@ get_header();
 			<div class="haupt">
 				<p class="mono stempelfarbe">Proof ohne geliehene Agentur-Logos</p>
 				<h2 class="kopf">Prüfbare Arbeit statt austauschbarer Leistungsbehauptungen.</h2>
-				<p class="vorspann">Der Ergebnisse-Bereich trennt öffentlich prüfbare WordPress-Arbeiten, technische Nachweise und den dokumentierten Solar-Referenzfall. Der Solar-Case belegt das Zusammenspiel eines gesamten Anfragesystems – nicht die Wirkung einer isolierten WordPress- oder Tracking-Maßnahme.</p>
+				<p class="vorspann">Zwei Arten von Belegen, bewusst getrennt: öffentliche WordPress-Websites, die Sie selbst öffnen können, und ein dokumentierter Fall mit Zahlen. Der Fall belegt das Zusammenspiel einer ganzen Anfragestrecke – nicht die Wirkung einer einzelnen WordPress- oder Tracking-Maßnahme.</p>
 
 				<div class="beleg-links">
-					<a class="beleg-link" href="<?php echo esc_url( $results_url ); ?>">
-						<span>WordPress &amp; Technik</span>
-						<strong>Ergebnisse und technische Belege öffnen</strong>
-						Prüfbare Projekte, Rolle, technischer Scope und Nachweise.
+					<a class="beleg-link" href="<?php echo esc_url( $references_url ); ?>" data-track-action="agentur_proof_references" data-track-category="proof" data-track-section="agentur_proof">
+						<span>WordPress · öffentlich</span>
+						<strong>Websites öffnen, an denen ich gebaut habe</strong>
+						Mit meinem Anteil daneben; der Link zeigt den heutigen Stand.
 					</a>
-					<a class="beleg-link" href="<?php echo esc_url( $case_url ); ?>">
-						<span>Referenzfall · System</span>
-						<strong>Solar-Case mit Zahlen und Methodik öffnen</strong>
-						Gesamtsystem aus Nachfrage, Website, Qualifizierung, Tracking und Vertrieb.
+					<a class="beleg-link" href="<?php echo esc_url( $case_url ); ?>" data-track-action="agentur_proof_case" data-track-category="proof" data-track-section="agentur_proof">
+						<span>Dokumentierter Fall · Photovoltaik</span>
+						<strong>Den Fall mit Zahlen und Methodik lesen</strong>
+						Website, Vorqualifizierung, Tracking und Übergabe an den Vertrieb als ein System.
 					</a>
 				</div>
 			</div>

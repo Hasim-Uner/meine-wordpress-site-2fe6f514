@@ -21,7 +21,10 @@ add_filter( 'hu_forced_singular_seo_map', function ( $map ) {
 
 	$map['ga4-tracking-setup'] = [
 		'title'       => 'Conversion Tracking einrichten lassen | GA4, GTM & Consent',
-		'description' => 'Conversion Tracking für B2B-Websites: GA4, GTM, Consent Mode und Google Ads sauber einrichten lassen. Optional Server-Side, Meta CAPI und CRM. Ab 1.290 € netto.',
+		'description' => sprintf(
+			'Conversion Tracking für B2B-Websites: GA4, GTM, Consent Mode und Google Ads zum Festpreis von %s netto. Server-Side, Meta CAPI und CRM als eigene Stufen.',
+			hu_tracking_price( 'measurement', 'setup' )
+		),
 	];
 
 	return $map;
@@ -90,8 +93,6 @@ function hu_render_tracking_setup_toc() {
 }
 add_action( 'wp_body_open', 'hu_render_tracking_setup_toc', 31 );
 
-$page = function_exists( 'nexus_get_wgos_cluster_page' ) ? nexus_get_wgos_cluster_page() : [];
-
 $contact_url = function_exists( 'hu_get_contact_intake_url' )
 	? hu_get_contact_intake_url( 'project', 'tracking' )
 	: add_query_arg(
@@ -107,21 +108,16 @@ $results_url     = function_exists( 'nexus_get_primary_public_url' )
 	? nexus_get_primary_public_url( 'results', home_url( '/case-study-solar-leadgenerierung/' ) )
 	: home_url( '/case-study-solar-leadgenerierung/' );
 $response_label  = hu_response_promise( 'compact' );
-$setup_price     = function_exists( 'hu_tracking_price' )
-	? hu_tracking_price( 'standard', 'setup', 'display', '1.290 €' )
-	: '1.290 €';
-$pro_setup_price = function_exists( 'hu_tracking_price' )
-	? hu_tracking_price( 'pro', 'setup', 'display', '1.900 €' )
-	: '1.900 €';
-$individual_price = function_exists( 'hu_tracking_price' )
-	? hu_tracking_price( 'individual', 'setup', 'display', 'ab 3.500 €' )
-	: 'ab 3.500 €';
-$delivery_window = function_exists( 'hu_tracking_delivery_weeks_display' )
-	? hu_tracking_delivery_weeks_display()
-	: '2 bis 3 Wochen';
-$faq_items       = function_exists( 'hu_tracking_setup_faq_items' )
-	? hu_tracking_setup_faq_items()
-	: ( isset( $page['faq_items'] ) && is_array( $page['faq_items'] ) ? $page['faq_items'] : [] );
+
+// Die Leiter kommt vollständig aus dem Kanon: Name, Umfang, Preis und
+// Lieferzeit jeder Stufe. Diese Seite zeigt alle vier; die Server-Side-Seite
+// zeigt dieselben Stufen ab 2. Die Stufe bestimmt die Linie der Karte:
+// durchgezogen für die Kernstrecke, gestrichelt für Server-Stufen (nur bei
+// begründetem Bedarf, wie in der Messkette), Kupfer für die CRM-Stufe.
+$ladder          = hu_tracking_product_ladder();
+$entry           = $ladder['measurement'];
+$card_levels     = [ 1 => 'core', 2 => 'advanced', 3 => 'advanced', 4 => 'revenue' ];
+$faq_items       = hu_tracking_setup_faq_items();
 
 get_header();
 ?>
@@ -142,7 +138,7 @@ get_header();
 				</a>
 				<a class="tun still" href="#angebot">Setup &amp; Preis ansehen</a>
 			</div>
-			<p class="mono"><?php echo esc_html( $response_label ); ?> · Setup ab <?php echo esc_html( $setup_price ); ?> netto · <?php echo esc_html( $delivery_window ); ?> · dokumentierte Übergabe</p>
+			<p class="mono"><?php echo esc_html( $response_label ); ?> · Festpreis <?php echo esc_html( $entry['price'] ); ?> netto · <?php echo esc_html( $entry['weeks'] ); ?> · dokumentierte Übergabe</p>
 
 			<div class="meta" aria-label="Produktüberblick">
 				<dl>
@@ -199,14 +195,13 @@ get_header();
 		<div class="blatt reihe">
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">03</span><span class="titel">Umfang</span><span class="strich"></span></div></div>
 			<div class="haupt">
-				<p class="mono stempelfarbe">Ein Produkt, modularer Scope</p>
+				<p class="mono stempelfarbe">Ein Produkt, vier Stufen</p>
 				<h2 class="kopf">Was konkret eingerichtet wird.</h2>
-				<p class="vorspann">GA4 und Google Tag Manager können als eigenständiges Tracking-Projekt eingerichtet oder bereinigt werden. Consent Mode und Google Ads gehören in den Basisscope, wenn diese Systeme im Projekt genutzt werden. Server-Side, Meta CAPI und CRM sind eigene Erweiterungsentscheidungen.</p>
-				<div class="protokoll">
-					<div class="z"><span>01 · Measurement</span><b>Bestandsaufnahme, GTM-Struktur, GA4, Event- und Conversion-Plan, Formularmessung</b></div>
-					<div class="z"><span>02 · Consent &amp; Ads</span><b>CMP-Anbindung, Consent Mode, Google Ads Conversions und Enhanced Conversions soweit passend</b></div>
-					<div class="z"><span>03 · Server</span><b>Server-GTM, eigene Tracking-Subdomain, Deduplizierung und Meta CAPI nur bei begründetem Bedarf</b></div>
-					<div class="z"><span>04 · Revenue</span><b>CRM-Status, Offline Conversions und Rückgabe qualifizierter Geschäftssignale für komplexere Setups</b></div>
+				<p class="vorspann"><?php echo esc_html( $entry['name'] ); ?> richtet GA4, Google Tag Manager, Consent Mode und Google Ads ein oder bereinigt sie. Server-Side, Meta und CRM sind eigene Stufen, von denen jede die vorige enthält. Sie kaufen die Stufe, die Ihr Problem löst, nicht die nächsthöhere.</p>
+				<div class="protokoll" aria-label="Stufen der Tracking-Leiter">
+					<?php foreach ( $ladder as $product ) : ?>
+						<div class="z"><span><?php echo esc_html( sprintf( 'Stufe %d · %s', $product['stage'], $product['name'] ) ); ?></span><b><?php echo esc_html( $product['scope'] ); ?></b></div>
+					<?php endforeach; ?>
 				</div>
 				<dl class="hu-tracking-output" aria-label="Ergebnis der Umsetzung">
 					<div><dt>Messlogik</dt><dd>Welche Conversion wann zählt</dd></div>
@@ -249,7 +244,7 @@ get_header();
 			</div>
 			<aside class="marg">
 				<p class="note"><span class="label">Proof-Prinzip</span><b>Der Beleg ist die reproduzierbare Prüfung.</b> Solange kein eigener Tracking-Kundenfall veröffentlicht werden kann, zeige ich keine erfundene Erfolgsstory, sondern die technische Abnahme, an der das Projekt gemessen wird.</p>
-				<p class="note"><span class="label">Arbeitsbelege</span><a class="satzlink" href="<?php echo esc_url( $results_url ); ?>">Vorhandene Projekte und Ergebnisse ansehen.</a></p>
+				<p class="note"><span class="label">Arbeitsbeleg</span><a class="satzlink" href="<?php echo esc_url( $results_url ); ?>">Der dokumentierte Fall: Server-Side Tracking und Übergabe an den Vertrieb als Teil einer ganzen Anfragestrecke.</a></p>
 			</aside>
 		</div>
 	</section>
@@ -276,60 +271,38 @@ get_header();
 			<div class="spalte-links"><div class="kapitel" aria-hidden="true"><span class="nr">06</span><span class="titel">Angebot</span><span class="strich"></span></div></div>
 			<div class="voll">
 				<div class="tafel">
-					<p class="mono stempelfarbe">Klarer Basisscope · Erweiterung nur bei Bedarf</p>
-					<h2>Was Sie ab <?php echo esc_html( $setup_price ); ?> netto konkret bekommen.</h2>
-					<p class="aufriss">Der Einstiegspreis gilt für ein klar abgegrenztes B2B-Setup. Vor dem Start steht schriftlich fest, welche Systeme, Formulare und Conversions enthalten sind. Komplexere Server-, Meta- oder CRM-Strecken werden nicht stillschweigend in denselben Scope gepackt.</p>
+					<p class="mono stempelfarbe">Festpreis je Stufe · Erweiterung nur bei Bedarf</p>
+					<h2>Vier Stufen. Jede mit Festpreis, keine verlangt die nächste.</h2>
+					<p class="aufriss">Die meisten B2B-Websites brauchen Stufe 1. Server-Side, Meta und CRM lohnen sich erst, wenn das eigentliche Problem dort liegt; das klärt die Bestandsaufnahme, bevor Sie etwas beauftragen. Vor dem Start steht schriftlich fest, welche Systeme, Formulare und Conversions enthalten sind.</p>
 
-					<div class="hu-tracking-offer-grid" aria-label="Tracking-Angebotsleiter">
-						<article class="hu-tracking-offer-card" data-level="core">
-							<p class="hu-tracking-offer-card__level">01 · Basis</p>
-							<h3>GA4, GTM, Consent &amp; Google Ads</h3>
-							<p class="hu-tracking-offer-card__price">ab <?php echo esc_html( $setup_price ); ?> <small>netto</small></p>
-							<p>Für eine Website mit klaren Haupt-Conversions und einem überschaubaren Google-Stack.</p>
-							<ul>
-								<li>Bestandsaufnahme und schriftlicher Messplan</li>
-								<li>GTM- und GA4-Struktur bzw. Bereinigung</li>
-								<li>CMP/Consent Mode im vereinbarten Setup</li>
-								<li>Google Ads und bis zu drei Haupt-Conversions</li>
-								<li>Abnahmetests, Dokumentation und Übergabe</li>
-							</ul>
-						</article>
-
-						<article class="hu-tracking-offer-card" data-level="advanced">
-							<p class="hu-tracking-offer-card__level">02 · Performance</p>
-							<h3>Server-Side &amp; Meta CAPI</h3>
-							<p class="hu-tracking-offer-card__price">ab <?php echo esc_html( $pro_setup_price ); ?> <small>netto</small></p>
-							<p>Wenn Serversignale, eine eigene Tracking-Subdomain, Meta CAPI oder Deduplizierung Teil des eigentlichen Problems sind.</p>
-							<ul>
-								<li>Server-GTM und eigene Tracking-Subdomain</li>
-								<li>Browser-/Server-Deduplizierung</li>
-								<li>Enhanced Conversions und Meta CAPI soweit passend</li>
-								<li>Paralleltest vor der Umschaltung</li>
-							</ul>
-							<a class="satzlink" href="<?php echo esc_url( $server_side_url ); ?>">Server-Side Tracking im Detail</a>
-						</article>
-
-						<article class="hu-tracking-offer-card" data-level="revenue">
-							<p class="hu-tracking-offer-card__level">03 · Individuell</p>
-							<h3>CRM &amp; Offline Conversions</h3>
-							<p class="hu-tracking-offer-card__price"><?php echo esc_html( $individual_price ); ?> <small>netto</small></p>
-							<p>Wenn nicht das Formular, sondern Leadqualität, Angebot oder Auftrag das relevante Optimierungssignal sein soll.</p>
-							<ul>
-								<li>CRM-Status und eindeutige Lead-Zuordnung</li>
-								<li>Offline Conversions bzw. qualifizierte Rücksignale</li>
-								<li>mehrere Domains oder individuelle Datenstrecken nach Aufnahme</li>
-							</ul>
-						</article>
+					<div class="hu-tracking-offer-grid" aria-label="Tracking-Leiter mit Preisen">
+						<?php foreach ( $ladder as $key => $product ) : ?>
+							<article class="hu-tracking-offer-card" id="stufe-<?php echo esc_attr( (string) $product['stage'] ); ?>" data-level="<?php echo esc_attr( $card_levels[ $product['stage'] ] ?? 'advanced' ); ?>">
+								<p class="hu-tracking-offer-card__level"><?php echo esc_html( sprintf( 'Stufe %d', $product['stage'] ) ); ?></p>
+								<h3><?php echo esc_html( $product['name'] ); ?></h3>
+								<p class="hu-tracking-offer-card__price"><?php echo esc_html( $product['price'] ); ?> <small>netto</small></p>
+								<p><?php echo esc_html( $product['lead'] ); ?></p>
+								<ul>
+									<?php foreach ( $product['items'] as $item ) : ?>
+										<li><?php echo esc_html( $item ); ?></li>
+									<?php endforeach; ?>
+								</ul>
+								<p class="hu-tracking-offer-card__takt"><?php echo esc_html( '' !== $product['weeks'] ? sprintf( 'Umsetzung in %s · %s', $product['weeks'], $product['terms'] ) : $product['terms'] ); ?></p>
+								<?php if ( 'standard' === $key ) : ?>
+									<a class="satzlink" href="<?php echo esc_url( $server_side_url . '#pakete' ); ?>">Server-Side Tracking im Detail</a>
+								<?php endif; ?>
+							</article>
+						<?php endforeach; ?>
 					</div>
 
 					<div class="hu-tracking-offer-contract" aria-label="Rahmen des Tracking-Projekts">
 						<div><span>Scope</span><b>vor Projektstart schriftlich abgegrenzt</b></div>
-						<div><span>Umsetzung</span><b><?php echo esc_html( $delivery_window ); ?></b></div>
+						<div><span>Preis</span><b>Festpreis je Stufe, netto</b></div>
 						<div><span>Abnahme</span><b>Testprotokoll + Dokumentation</b></div>
 						<div><span>Ownership</span><b>Konten und Zugänge bleiben bei Ihnen</b></div>
 					</div>
 
-					<p class="hu-tracking-offer-note"><strong>Wichtig:</strong> „ab <?php echo esc_html( $setup_price ); ?>“ ist kein Lockpreis für beliebig viele Systeme. Wenn der Bestand oder die gewünschte Messkette größer ist, wird der Umfang vor der Umsetzung neu abgegrenzt – nicht während des Projekts nachverkauft.</p>
+					<p class="hu-tracking-offer-note"><strong>Wichtig:</strong> Der Festpreis gilt für den beschriebenen Umfang, nicht für beliebig viele Systeme. Ist der Bestand oder die gewünschte Messkette größer, wird der Umfang vor der Umsetzung neu abgegrenzt – nicht während des Projekts nachverkauft.</p>
 					<div class="ausgang"><a class="tun" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="cta_tracking_project" data-track-category="lead_gen">Tracking-Setup prüfen lassen <span class="pf" aria-hidden="true">→</span></a></div>
 				</div>
 			</div>

@@ -234,7 +234,7 @@ $entry_projects = [
 /*
  * Margenblock: nur Leistungen, für die der Kanon einen veröffentlichten
  * Endkundenpreis für dieselbe Leistung führt. Das ist heute allein das
- * Server-Side-Setup (Basis-Setup auf /server-side-tracking-b2b/).
+ * Server-Side-Setup (Stufe 2 der Tracking-Leiter, hu_tracking_product_ladder()).
  */
 $margin_rows = [
 	[ 'Server-Side-Setup', hu_tracking_price( 'standard', 'setup', 'display' ) . ' netto', hu_whitelabel_price( 'server_side' ) ],

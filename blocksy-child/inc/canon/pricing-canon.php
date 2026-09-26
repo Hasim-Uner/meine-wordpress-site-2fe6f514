@@ -194,14 +194,27 @@ function hu_analysis_price( $with_net = false ) {
 	return $with_net ? $price . ' netto' : $price;
 }
 
-// ── Server-Side-Tracking: Einrichtung + laufende Kontrolle ───
-// Eigener Preispfad fuer /server-side-tracking-b2b/. Die Werte standen zuvor
-// als Literale in Template, FAQ und Meta-Description und konnten dort driften.
+// ── Tracking-Leiter: Einrichtung + laufende Kontrolle ─────────
+// Vier Stufen, eine Definition (hu_tracking_product_ladder() weiter unten).
+// Die Werte standen zuvor als Literale in Template, FAQ und Meta-Description
+// und konnten dort driften.
 //
-// Die Setup-Betraege sind die Endkunden-Obergrenze fuer dieselbe Leistung. Der
-// White-Label-Pfad weiter unten liegt bewusst darunter; werden diese Werte
-// gesenkt, muss der White-Label-Block mitgeprueft werden, sonst zahlen
-// Agenturen mehr als Endkunden — auf zwei indexierten Seiten nachlesbar.
+// Stufe 1 (measurement) ist clientseitig: GA4, Tag Manager, Consent Mode und
+// Google Ads im Browser, ohne eigenen Server. Bis 2026-09-26 hatte sie keinen
+// eigenen Preis; Startseite und /ga4-tracking-setup/ liehen sich den
+// Server-Side-Betrag und verkauften damit ein anderes Produkt als
+// /server-side-tracking-b2b/ zum selben Preis. Herleitung der 890 € aus
+// veroeffentlichten Festpreisen im Markt:
+// docs/decisions/tracking-preisleiter.md.
+define( 'HU_TRACKING_MEASUREMENT_SETUP', 890 );
+define( 'HU_TRACKING_MEASUREMENT_WEEKS_MIN', 1 );
+define( 'HU_TRACKING_MEASUREMENT_WEEKS_MAX', 2 );
+
+// Stufen 2 bis 4 sind die Server-Side-Leiter. Die Setup-Betraege sind die
+// Endkunden-Obergrenze fuer dieselbe Leistung. Der White-Label-Pfad weiter
+// unten liegt bewusst darunter; werden diese Werte gesenkt, muss der
+// White-Label-Block mitgeprueft werden, sonst zahlen Agenturen mehr als
+// Endkunden — auf zwei indexierten Seiten nachlesbar.
 // Die Monatsbeitraege der Tracking Care bleiben davon unberuehrt.
 define( 'HU_TRACKING_STANDARD_SETUP', 1290 );
 define( 'HU_TRACKING_STANDARD_CARE_MONTHLY', 99 );
@@ -216,7 +229,12 @@ define( 'HU_TRACKING_DURATION_WEEKS_MIN', 2 );
 define( 'HU_TRACKING_DURATION_WEEKS_MAX', 3 );
 
 /**
- * Return the canonical Server-Side-Tracking price and delivery model.
+ * Return the canonical tracking prices and delivery model.
+ *
+ * Paketschluessel: measurement (Stufe 1, clientseitig), standard, pro und
+ * individual (Stufen 2 bis 4, Server-Side). Stufe 1 hat keine Care-Stufe:
+ * ohne eigenen Server gibt es keine Infrastruktur, die laufend zu pruefen
+ * waere.
  *
  * @return array<string, mixed>
  */
@@ -224,6 +242,13 @@ function hu_tracking_pricing_canon() {
 	$monthly_terms = 'Nettopreise, monatlich kündbar, Hosting separat';
 
 	return [
+		'measurement' => [
+			'setup' => [
+				'value'   => HU_TRACKING_MEASUREMENT_SETUP,
+				'display' => hu_format_eur( HU_TRACKING_MEASUREMENT_SETUP ),
+			],
+			'terms' => 'Einmaliger Nettopreis, kein Server und kein Hosting nötig',
+		],
 		'standard' => [
 			'setup'                  => [
 				'value'   => HU_TRACKING_STANDARD_SETUP,
@@ -310,16 +335,135 @@ function hu_tracking_package_detail( $package, $field, $fallback = '' ) {
 }
 
 /**
- * Display the canonical delivery window for a standard tracking setup.
+ * Display the canonical delivery window of a tracking setup.
  *
+ * Ohne Argument gilt das Fenster der Server-Side-Stufen (Paralleltest
+ * eingeschlossen); 'measurement' liefert das kuerzere Fenster von Stufe 1.
+ *
+ * @param string $package Package key.
  * @return string
  */
-function hu_tracking_delivery_weeks_display() {
+function hu_tracking_delivery_weeks_display( $package = 'standard' ) {
+	if ( 'measurement' === $package ) {
+		return sprintf( '%d bis %d Wochen', HU_TRACKING_MEASUREMENT_WEEKS_MIN, HU_TRACKING_MEASUREMENT_WEEKS_MAX );
+	}
+
 	return sprintf(
 		'%d bis %d Wochen',
 		HU_TRACKING_DURATION_WEEKS_MIN,
 		HU_TRACKING_DURATION_WEEKS_MAX
 	);
+}
+
+/**
+ * Return the tracking product ladder: four stages, one definition.
+ *
+ * Name, Umfang, Preis und Lieferzeit jeder Stufe stehen nur hier. Startseite,
+ * /ga4-tracking-setup/, /server-side-tracking-b2b/ und /performance-marketing/
+ * zeigen Ausschnitte daraus, keine eigenen Fassungen: Genau diese eigenen
+ * Fassungen hatten denselben Preis mit zwei verschiedenen Produkten belegt.
+ *
+ * Jede Server-Side-Stufe enthaelt die vorige. Stufe 4 baut auf Stufe 2 oder 3
+ * auf; welche, entscheidet die technische Aufnahme.
+ *
+ * Felder: stage (1–4), name, scope (Stichworte), lead (fuer wen), items
+ * (Umfang), price (Anzeige, bei Stufe 4 mit "ab"), weeks (Lieferzeit oder
+ * leer), terms (Preisbedingung).
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function hu_tracking_product_ladder() {
+	$server_weeks = hu_tracking_delivery_weeks_display();
+
+	return [
+		'measurement' => [
+			'stage' => 1,
+			'name'  => 'Conversion-Tracking',
+			'scope' => 'GA4 · Tag Manager · Consent Mode · Google Ads',
+			'lead'  => 'Für eine Website mit klaren Haupt-Conversions. Gemessen wird im Browser, ohne eigenen Server.',
+			'items' => [
+				'Bestandsaufnahme und schriftlicher Messplan',
+				'Google Tag Manager und GA4 eingerichtet oder bereinigt',
+				'Consent Mode an Ihr Consent-Tool angebunden',
+				'Google Ads und bis zu drei Haupt-Conversions',
+				'Abnahmeprotokoll mit Testfällen, Dokumentation und Übergabe',
+			],
+			'price' => hu_tracking_price( 'measurement', 'setup' ),
+			'weeks' => hu_tracking_delivery_weeks_display( 'measurement' ),
+			'terms' => hu_tracking_package_detail( 'measurement', 'terms' ),
+		],
+		'standard'    => [
+			'stage' => 2,
+			'name'  => 'Server-Side Tracking',
+			'scope' => 'Server-GTM · eigene Subdomain · Enhanced Conversions',
+			'lead'  => 'Wenn Google Ads das Budget trägt und Signale im Browser verloren gehen: Die Messung läuft über Ihren eigenen Server-Endpunkt.',
+			'items' => [
+				'Alles aus Conversion-Tracking',
+				'Server-GTM auf eigener Tracking-Subdomain, in Ihren Konten',
+				'Enhanced Conversions, soweit Formular und Consent es tragen',
+				'Paralleltest mit Prüfung auf fehlende und doppelte Events',
+				'GTM-Versionen und Datenfluss dokumentiert',
+			],
+			'price' => hu_tracking_price( 'standard', 'setup' ),
+			'weeks' => $server_weeks,
+			'terms' => 'Einmaliger Nettopreis, Server-Hosting separat',
+		],
+		'pro'         => [
+			'stage' => 3,
+			'name'  => 'Server-Side mit Meta',
+			'scope' => 'Meta Conversion API · Deduplizierung · bis zu acht Events',
+			'lead'  => 'Für Unternehmen, die Google und Meta parallel für Anfragen einsetzen oder mehrere Conversion-Strecken messen.',
+			'items' => [
+				'Alles aus Server-Side Tracking',
+				'Meta Pixel und Conversion API mit event_id-Deduplizierung',
+				'Bis zu acht definierte Events',
+				'Mehrere Formulare oder Conversion-Strecken',
+				'Abnahme über GA4, Google Ads und Meta hinweg',
+			],
+			'price' => hu_tracking_price( 'pro', 'setup' ),
+			'weeks' => $server_weeks,
+			'terms' => 'Einmaliger Nettopreis, Server-Hosting separat',
+		],
+		'individual'  => [
+			'stage' => 4,
+			'name'  => 'Tracking bis ins CRM',
+			'scope' => 'CRM-Status · Offline-Conversions · Rücksignal',
+			'lead'  => 'Wenn nicht das Formular, sondern Lead-Qualität, Angebot oder Auftrag das Signal für die Kampagnen sein soll.',
+			'items' => [
+				'CRM-Anbindung mit eindeutiger Lead-Zuordnung',
+				'Lead-Status oder Auftrag als Offline-Conversion zurück an die Werbeplattformen',
+				'Mehrere Domains, Märkte oder Funnel',
+				'Weitere Werbeplattformen nach technischer Aufnahme',
+				'Individueller Messplan, Datenstrecke und Abnahme',
+			],
+			'price' => hu_tracking_price( 'individual', 'setup' ),
+			'weeks' => '',
+			'terms' => 'Nettopreis nach technischer Aufnahme, Server-Hosting separat',
+		],
+	];
+}
+
+/**
+ * Display the tracking ladder, or part of it, as one phrase.
+ *
+ * Ein Satzbaustein wie hu_freelancer_retainer_display(): keine Oberflaeche
+ * schreibt eine Stufe einzeln ab. "netto" steht einmal am Ende.
+ *
+ * @param int $from_stage First stage to include (1–4).
+ * @return string
+ */
+function hu_tracking_ladder_display( $from_stage = 1 ) {
+	$parts = [];
+
+	foreach ( hu_tracking_product_ladder() as $product ) {
+		if ( (int) $product['stage'] < (int) $from_stage ) {
+			continue;
+		}
+
+		$parts[] = sprintf( '%s %s', $product['name'], $product['price'] );
+	}
+
+	return implode( ', ', $parts ) . ' netto';
 }
 
 // ── WordPress-Freelancer-Nebenpfad ───────────────────────────────

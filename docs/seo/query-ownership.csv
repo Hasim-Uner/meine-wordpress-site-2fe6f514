@@ -33,7 +33,8 @@
 #   Agentur-Intent (`wordpress agentur ...`)      -> /wordpress-agentur-hannover/
 #   Freelancer-Intent (`wordpress freelancer ...`)-> / (Konsolidierung 2026-09-13)
 #   White-Label-/Partner-Intent                   -> /whitelabel-retainer/
-#   nicht ortsqualifiziert (Tracking-Terme)       -> /server-side-tracking-b2b/
+#   Server-Side-Tracking-Terme                    -> /server-side-tracking-b2b/
+#   Conversion-Tracking-/GA4-Setup-Kaufintent    -> /ga4-tracking-setup/ (2026-09-26)
 #
 # Die Trennung der Agentur- und Freelancer-Route ist in
 # docs/decisions/wordpress-freelancer-hannover.md belegt. "wordpress seo hannover"
@@ -113,6 +114,12 @@ tracking loesungen b2b;/server-side-tracking-b2b/;commercial;owned;gsc-export-28
 # B2B-Kaufintent "erst Messung und Zielseite, dann Budget". Noch ohne GSC-Beleg;
 # die Zeile sichert die Zuordnung, damit kein Beitrag die Query doppelt besetzt.
 performance marketing b2b;/performance-marketing/;commercial;owned;wgos-cluster-pages.php meta_title (2026-09-22);
+# Tracking-Angebot (2026-09-26): /ga4-tracking-setup/ ist Ziel des Kopfpunkts
+# "Tracking" und verkauft Stufe 1 der Tracking-Leiter (clientseitig). Server-Side-
+# Terme bleiben bei /server-side-tracking-b2b/. Bis hierher hatte die Seite keine
+# Zeile, und der Kommentar oben schrieb alle Tracking-Terme der Fachseite zu.
+conversion tracking einrichten lassen;/ga4-tracking-setup/;commercial;owned;page-ga4.php meta_title (2026-09-26), docs/decisions/tracking-preisleiter.md;server side tracking
+ga4 setup agentur;/ga4-tracking-setup/;commercial;owned;gsc-export-90d-2026-09-22.csv (Pos. 60,0, 3 Impr.);server side tracking agentur
 # Website-Relaunch-Intent (2026-09-24): Cornerstone /website-relaunch/ im Dossier
 # Conversion & Anfragearchitektur. Gate-Pruefung 2026-09-24: FREI.
 website relaunch;/website-relaunch/;informational;owned;Google Keyword Planner Export 2026-09-23, DE, Stufe 500/Monat;
