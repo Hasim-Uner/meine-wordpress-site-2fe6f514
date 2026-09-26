@@ -70,6 +70,16 @@ Ist der Schalter aus, zeigt die Tafel nur die Projektanfrage.
 - Der Beitrag verlängert die Laufzeit nicht. Endet der Versuch, gilt für die
   Tafel dieselbe Entscheidung wie für die Startseite.
 
+### Preiskorrektur am 2026-09-26
+
+Der Website-Preis auf der Startseite sinkt. Statt eines Einstiegspreises ohne
+Seitenangabe gilt Website Kompakt: Festpreis für bis zu drei Seiten, jede
+weitere Seite zum Zusatzpreis (Werte im Kanon, Herleitung und alter Betrag in
+`docs/decisions/preise-website-landingpage.md`). Das ist
+eine Preiskorrektur für alle Wege und nach der Regel oben erlaubt. Ein
+niedrigerer Preis kann die Zahl direkter Projektanfragen erhöhen. Bei der
+Auswertung Anfragen vor und nach dem 2026-09-26 getrennt ansehen.
+
 ## Wo was steht
 
 | Was | Wo |

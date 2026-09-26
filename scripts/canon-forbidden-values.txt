@@ -76,6 +76,13 @@ rule	anon-begruendung	[Aa]nonymisiert,[[:space:]]*weil	-	Anonymisierte Faelle we
 # damit nicht jeder andere Betrag mit denselben Ziffern anschlaegt.
 rule	preis-uebernahme-check	(^|[^0-9.])390[[:space:]]*(€|&euro;|Euro)	Übernahme	Preis kommt aus hu_freelancer_takeover_check_price().
 rule	preis-retainer-kontingent	(^|[^0-9.])(490|950)[[:space:]]*(€|&euro;|Euro)	Stunden	Kontingent kommt aus hu_freelancer_retainer_display().
+# Website Kompakt, Zusatzseite und Landingpage (seit 2026-09-26). Der
+# fruehere Website-Einstieg 3.400 € ist ein abgeloester Wert und gilt ohne
+# Kontext; die neuen Betraege nur mit Kontextwort, weil 290 und 1.990 auch
+# anders vorkommen koennen.
+rule	website-3400	(^|[^0-9.,])3\.?400[[:space:]]*(€|&nbsp;€|&euro;|Euro)	-	Website-Preis kommt aus hu_freelancer_website_price() und steht bei 2.490 €.
+rule	preis-website-kompakt	(^|[^0-9.,])(2\.?490|290)[[:space:]]*(€|&nbsp;€|&euro;|Euro)	[Ww]ebsite|Seite	Preis kommt aus hu_freelancer_website_price() / hu_freelancer_website_scope_display().
+rule	preis-landingpage	(^|[^0-9.,])1\.?990[[:space:]]*(€|&nbsp;€|&euro;|Euro)	[Ll]anding	Preis kommt aus hu_landingpage_price().
 
 # ── Tracking-Leiter ───────────────────────────────────────────────────────
 # Kanon: hu_tracking_product_ladder(), hu_tracking_price() und
@@ -128,6 +135,10 @@ rule	wl-verfuegbarkeit	[Ff]reie[[:space:]]+(Slots?|Pl(ä|ae)tze|Kapazit(ä|ae)t)
 # repo-weit, aber nur mit Kontextwort: 1.000 € steht auch als Budgetstufe im
 # Kontaktformular und als Portal-Budget in zwei PV-Ratgebern.
 rule	wl-retainer-1000	(^|[^0-9.,])1\.?000[[:space:]]*(€|&nbsp;€| €|&euro;|Euro)	Stunden|Kontingent|[Rr]etainer|[Ww]hite-?[Ll]abel	Der Agentur-Retainer kommt aus hu_whitelabel_price( 'retainer' ) und steht bei 780 €.
+# Die Agentur-Landingpage kostete bis 2026-09-26 ab 1.900 €, seitdem fuehrt
+# HU_WHITELABEL_LANDINGPAGE_MIN 1.390 (30 % unter HU_LANDINGPAGE_PRICE). Nur
+# mit Kontextwort: 1.900 € ist auch Stufe 3 der Tracking-Leiter.
+rule	wl-landingpage-1900	(^|[^0-9.,])1\.?900[[:space:]]*(€|&nbsp;€| €|&euro;|Euro)	[Ll]anding	Die Agentur-Landingpage kommt aus hu_whitelabel_price( 'landingpage' ) und steht bei 1.390 €.
 
 # ── Anonymisierte Faelle: keine Vertroestung ─────────────────────────────
 # "Belege im Gespraech" verspricht einen Nachweis, den die Seite nicht
