@@ -86,15 +86,22 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   mit Portrait, zwei Buttons, Messprotokoll und drei Belegzeilen (seit
   2026-09-26 zuerst der Websitepreis aus `hu_freelancer_website_price()` mit
   Hook `home_proof_strip_price`, dann Fall und Referenzen; H1, Satz, Buttons,
-  Protokoll und die Preiszeile passen bei 1280 × 800 in den ersten Bildschirm); Prüfstand (`#pruefstand`, die
-  einzige dunkle Tafel, Links auf Code, CI und PageSpeed, keine Scores);
+  Protokoll und die Preiszeile passen bei 1280 × 800 in den ersten Bildschirm;
+  seit 2026-09-27 steht das Protokoll auf einer dunklen Tafel); darunter ein
+  dekoratives Stationsband (`aria-hidden`, verschiebt sich nur beim Scrollen);
+  Prüfstand (`#pruefstand`, dunkle Tafel mit drei Kacheln, Links auf Code, CI
+  und PageSpeed, keine Scores);
   sechs Stationen einer Anfrage (`#strecke`, Liste mit `#angebot-funnel`);
   drei Leistungen mit Kanonpreisen (`#angebote`, Anker `#angebot-website`,
   `#angebot-tracking` = Stufe 1 der Tracking-Leiter mit den Stufen darüber
   als Satz, `#angebot-weiterentwicklung`) und darunter die leisen
   Nebenausgänge zu White-Label und Solar/Wärmepumpe; Arbeiten (`#arbeiten`,
   `#referenzen`); Übergabe (`#uebergabe`); Fragen (`#fragen`,
-  template-eigenes FAQPage-Schema); Anfrage (`#anfrage`, `#kontakt`).
+  template-eigenes FAQPage-Schema); Anfrage (`#anfrage`, `#kontakt`, seit
+  2026-09-27 Überschrift, beide Einstiege und Portrait auf einer dunklen
+  Tafel). Abschnitte unter dem ersten Bildschirm blenden beim ersten
+  Sichtkontakt ein (`data-st-einblenden`, nur Startseite); bei reduzierter
+  Bewegung entfällt jede Bewegung.
   Das Messprotokoll zeigt Ladezeit (LCP bzw. Navigation Timing), gesehene
   Abschnitte, Scrolltiefe und den Klick auf einen Anfrage-Button. Es sendet
   und speichert nichts; die Sperrliste (`strecke-js-privat`) bricht den
