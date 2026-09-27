@@ -4,6 +4,10 @@
 the scorer's regression tests without model/API calls. It does not prove routing
 accuracy, task quality or token savings.
 
+For isolated repair tasks and trace-based usage import, see
+[implementation benchmark](implementation-benchmark.md). Its fixture checks are
+also separate from actual model observations.
+
 ## Run a comparison
 
 1. Export blind cases with `npm run --silent benchmark:agents -- --prompts`.

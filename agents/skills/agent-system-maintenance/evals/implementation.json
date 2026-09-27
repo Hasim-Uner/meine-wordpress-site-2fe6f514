@@ -1,0 +1,71 @@
+[
+  {
+    "id": "css-motion",
+    "title": "Gezielte CSS-Transitions",
+    "prompt": "Im Navigations-Stylesheet wurde eine gezielte Transition durch transition: all ersetzt. Repariere die Animation, ohne Layout-Eigenschaften pauschal zu animieren. Erhalte Reduced-Motion-Unterstützung und das bestehende Design.",
+    "path": "blocksy-child/assets/css/navigation-ecosystem.css",
+    "before": "transition: transform 120ms ease;",
+    "seed": "transition: all 120ms ease;",
+    "check": [
+      "bash",
+      "scripts/lint-css-motion.sh"
+    ],
+    "success_marker": "Motion guard passed."
+  },
+  {
+    "id": "form-success",
+    "title": "Echte Formularbestätigung",
+    "prompt": "Das Kontaktformular behandelt jetzt auch truthy Werte wie ok: 1 als Erfolg. Stelle sicher, dass nur eine erfolgreiche HTTP-Antwort mit explizitem ok: true Erfolg auslöst. Erhalte Eingaben und erneutes Senden bei Fehlern sowie bestehende Tracking-Hooks.",
+    "path": "blocksy-child/assets/js/contact.js",
+    "before": "if (!result.ok || result.data.ok !== true) {",
+    "seed": "if (!result.ok || !result.data.ok) {",
+    "check": [
+      "npm",
+      "run",
+      "test:forms",
+      "--",
+      "--grep",
+      "contact|assessment"
+    ],
+    "success_marker": " passed ("
+  },
+  {
+    "id": "author-redirect",
+    "title": "Beitragsautor bei Weiterleitung prüfen",
+    "prompt": "Die Weiterleitung alter Beitragsadressen akzeptiert inzwischen auch den Slug eines anderen existierenden Autors. Begrenze sie wieder auf den tatsächlichen Beitragsautor. Bestehende Permalink-Strukturen und die Behandlung von Entwürfen müssen erhalten bleiben.",
+    "path": "blocksy-child/inc/post-permalink-author-redirect.php",
+    "before": " || (int) $post->post_author !== (int) $author->ID",
+    "seed": "",
+    "check": [
+      "php",
+      "scripts/tests/author-permalink-redirect.php"
+    ],
+    "success_marker": "OK author-permalink-redirect"
+  },
+  {
+    "id": "navigation-target",
+    "title": "Tracking-Angebot im Header",
+    "prompt": "Der allgemeine Header-Link Tracking führt irrtümlich auf die Server-Side-Spezialistenseite. Korrigiere die zentrale Navigation anhand des bestehenden Routing-Vertrags. Erhalte den separaten Spezialisten-Link, die Reihenfolge und die Tracking-Hooks.",
+    "path": "blocksy-child/inc/commercial-routing.php",
+    "before": "'url'      => $routes['tracking_setup'],",
+    "seed": "'url'      => $routes['tracking_b2b'],",
+    "check": [
+      "php",
+      "scripts/tests/navigation-contract.php"
+    ],
+    "success_marker": "Navigation contract ok."
+  },
+  {
+    "id": "pricing-range",
+    "title": "Preisleiter ab einer Stufe",
+    "prompt": "Die Ausgabe der Tracking-Preisleiter filtert die Stufen falsch. Korrigiere hu_tracking_ladder_display so, dass ab der gewünschten Startstufe alle folgenden Stufen erscheinen. Ändere keine Preise oder Produktverträge; netto soll weiterhin einmal am Ende stehen.",
+    "path": "blocksy-child/inc/canon/pricing-canon.php",
+    "before": "if ( (int) $product['stage'] < (int) $from_stage ) {",
+    "seed": "if ( (int) $product['stage'] > (int) $from_stage ) {",
+    "check": [
+      "php",
+      "scripts/tests/tracking-ladder.php"
+    ],
+    "success_marker": "OK tracking-ladder"
+  }
+]
