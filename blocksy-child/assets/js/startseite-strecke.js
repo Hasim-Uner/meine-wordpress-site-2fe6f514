@@ -1,13 +1,19 @@
 /* Startseite: die Strecke.
  *
- * Vier Aufgaben, ein Skript:
+ * Fuenf Aufgaben, ein Skript:
  * 1. Die Linie in der Randspalte fuellt sich beim Lesen (transform: scaleY,
  *    Update in requestAnimationFrame, Geometrie nur bei Groessenaenderung).
+ *    Im selben Durchlauf verschiebt sich das Stationsband mit dem Scrollen.
  * 2. Das Messprotokoll im Hero zeigt, was dieser Browser misst: Ladezeit,
  *    gesehene Abschnitte, Scrolltiefe, Klick auf einen Anfrage-Button.
  * 3. Die Stationen in Abschnitt 03 klappen einzeln auf.
  * 4. „Leistungen" in der Kopfleiste ist nur aktiv, solange #angebote im
  *    Blick ist.
+ * 5. Auf Seiten mit data-st-einblenden blenden Bloecke unter dem ersten
+ *    Bildschirm beim ersten Sichtkontakt ein.
+ *
+ * Nichts davon laeuft von selbst: Jede Bewegung folgt dem Scrollen oder
+ * einem Klick und entfaellt bei reduzierter Bewegung.
  *
  * Harte Regel: Dieses Skript sendet nichts und speichert nichts. Kein
  * Netzwerkaufruf, kein Browser-Speicher, kein Cookie. Die Sperrliste in
@@ -214,6 +220,13 @@
     var endeErreicht = false;
     var geplant = false;
 
+    /* Band: verschiebt sich, waehrend es durch das Fenster laeuft, um
+       hoechstens eine halbe Folgenbreite. Die Folge steht zweimal im Band,
+       es laeuft also nie leer. */
+    var band = root.querySelector('[data-st-band]');
+    var bandZug = band && band.querySelector('[data-st-band-zug]');
+    var bandMass = null;
+
     function vermessen() {
         var y = window.scrollY || window.pageYOffset || 0;
         fuellungen = Array.prototype.map.call(root.querySelectorAll('[data-st-fuellung]'), function (el) {
@@ -224,6 +237,10 @@
             var r = el.getBoundingClientRect();
             return { el: el, y: r.top + y + r.height / 2, an: el.classList.contains('st-erreicht') };
         });
+        if (bandZug) {
+            var b = band.getBoundingClientRect();
+            bandMass = { oben: b.top + y, hoehe: b.height, weg: bandZug.scrollWidth / 4, zuletzt: -1 };
+        }
     }
 
     function aktualisieren() {
@@ -251,6 +268,13 @@
                     p.el.classList.toggle('st-erreicht', an);
                 }
             });
+            if (bandMass) {
+                var lauf = Math.max(0, Math.min(1, (y + h - bandMass.oben) / (h + bandMass.hoehe)));
+                if (lauf !== bandMass.zuletzt) {
+                    bandMass.zuletzt = lauf;
+                    bandZug.style.transform = 'translate3d(' + (-lauf * bandMass.weg).toFixed(1) + 'px, 0, 0)';
+                }
+            }
         }
 
         var ende = punkte.length ? punkte[punkte.length - 1] : null;
@@ -363,11 +387,45 @@
         }, { rootMargin: '-45% 0px -45% 0px' }).observe(angebote);
     }
 
+    /* ── 5. Einblenden ──────────────────────────────────────── */
+
+    /* Nur Bloecke, die beim Start unter dem Fenster liegen: Was schon zu
+       sehen ist, verschwindet nicht nachtraeglich. Die Tafeln selbst
+       stehen, ihr Inhalt blendet ein; die Stationen haben ihren eigenen
+       Auftritt (3.). */
+    function einblenden() {
+        if (!root.hasAttribute('data-st-einblenden') || reduced.matches || !('IntersectionObserver' in window)) return;
+        var fenster = window.innerHeight || document.documentElement.clientHeight;
+        var auftritt = new IntersectionObserver(function (eintraege) {
+            eintraege.forEach(function (e) {
+                if (!e.isIntersecting) return;
+                e.target.setAttribute('data-st-gesehen', '');
+                auftritt.unobserve(e.target);
+            });
+        }, { rootMargin: '0px 0px -8% 0px' });
+        /* Erst alle Positionen lesen, dann schreiben: Abwechselnd gelesen
+           und geschrieben, rechnete der Browser je Block den Stil neu. */
+        var ziele = Array.prototype.filter.call(root.querySelectorAll(
+            '.st-abschnitt:not(.st-hero) .st-inhalt > :not([data-st-stationen]):not(.tafel), ' +
+            '.st-tafel__kopf, .st-pruefungen > li, .st-schluss > .st-anfrage__h2, .st-einstiege > *, .st-schluss > .st-portrait'
+        ), function (el) {
+            return el.getBoundingClientRect().top >= fenster;
+        });
+        ziele.forEach(function (el) {
+            el.classList.add('st-auftritt');
+            auftritt.observe(el);
+        });
+    }
+
     /* ── Start ──────────────────────────────────────────────── */
 
     root.setAttribute('data-st-bereit', '');
     vermessen();
     aktualisieren();
+    /* Einblenden betrifft nur Bloecke unter dem ersten Bildschirm und
+       wartet deshalb, bis der Browser Luft hat: nicht im Ladeweg. */
+    if ('requestIdleCallback' in window) window.requestIdleCallback(einblenden, { timeout: 1500 });
+    else window.setTimeout(einblenden, 300);
 
     window.addEventListener('scroll', planen, { passive: true });
     window.addEventListener('resize', neuVermessen, { passive: true });
@@ -381,6 +439,10 @@
     if (reduced.addEventListener) {
         reduced.addEventListener('change', function () {
             punkte.forEach(function (p) { p.an = false; p.el.classList.remove('st-erreicht'); });
+            if (bandZug) {
+                bandZug.style.transform = '';
+                if (bandMass) bandMass.zuletzt = -1;
+            }
             planen();
         });
     }

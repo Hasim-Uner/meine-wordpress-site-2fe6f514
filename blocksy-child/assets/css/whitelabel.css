@@ -532,7 +532,10 @@
 .st .wl-request__feedback.is-error { border-color: var(--stempel); }
 
 @media (min-width: 1024px) {
+  /* Das Raster gehoert dieser Seite: Die Startseite stellt ihren Abschluss
+     seit dem Tafel-Umbau selbst auf (.st-schluss). */
   .st .wl-anfrage .wl-anfrage__raster {
+    display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
     column-gap: var(--s5);
     align-items: start;

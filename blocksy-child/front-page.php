@@ -9,7 +9,8 @@
  * ueber scripts/canon-forbidden-values.txt, Regel strecke-js-privat).
  *
  * Ohne JavaScript steht alles: Linie statisch, alle Stationen offen, das
- * Protokoll sagt, dass es leer bleibt.
+ * Protokoll sagt, dass es leer bleibt. Bewegung (Band, Einblenden) haengt am
+ * Scrollen, laeuft nie von selbst und entfaellt bei reduzierter Bewegung.
  *
  * Fakten (Preise, Antwortzeit, Kontakt, Fallzahlen, Referenzen) kommen aus
  * inc/canon/. Hier steht keine Zahl als Text.
@@ -238,7 +239,8 @@ hu_enqueue_js( 'nexus-startseite-strecke-js', 'startseite-strecke.js', [] );
 get_header();
 ?>
 
-<div class="doku st" id="top" data-track-section="homepage" data-st>
+<?php // data-st-einblenden: Abschnitte unter dem ersten Bildschirm blenden beim ersten Sichtkontakt ein (nur hier, nicht auf White-Label). ?>
+<div class="doku st" id="top" data-track-section="homepage" data-st data-st-einblenden>
 
 	<section class="st-abschnitt st-hero" id="klick" aria-labelledby="st-h1" data-st-abschnitt="01">
 		<?php echo $marke( '01', 'Klick' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
@@ -263,7 +265,8 @@ get_header();
 				<?php endif; ?>
 			</div>
 
-			<aside class="st-protokoll" id="protokoll" aria-labelledby="st-protokoll-titel" data-st-protokoll>
+			<?php // Das Protokoll steht auf einer Tafel: dunkel wie ein Messgeraet neben dem hellen Satz. ?>
+			<aside class="st-protokoll tafel" id="protokoll" aria-labelledby="st-protokoll-titel" data-st-protokoll>
 				<p class="st-protokoll__kopf"><span id="st-protokoll-titel">Protokoll · dieser Besuch</span><span class="st-protokoll__status" data-st-status hidden>läuft</span></p>
 				<dl class="st-protokoll__werte">
 					<div><dt data-st-lcp-label>Ladezeit (LCP)</dt><dd data-st-wert="lcp">…</dd></div>
@@ -288,26 +291,51 @@ get_header();
 		</div>
 	</section>
 
+	<?php
+	/*
+	 * Band zwischen Hero und Pruefstand: die sechs Stationen als Vorschau.
+	 * Rein dekorativ, deshalb aria-hidden; als Liste stehen die Stationen in
+	 * #strecke. Die Folge steht zweimal im Band, damit es beim Verschieben nie
+	 * leer laeuft. Es bewegt sich nur mit dem Scrollen, nie von selbst
+	 * (startseite-strecke.js), und bei reduzierter Bewegung gar nicht.
+	 */
+	?>
+	<div class="st-band tafel" aria-hidden="true" data-st-band>
+		<p class="st-band__zug" data-st-band-zug>
+			<?php for ( $folge = 0; $folge < 2; $folge++ ) : ?>
+				<?php foreach ( $stations as $i => $station ) : ?>
+					<span class="st-band__station"><span class="st-band__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span> <?php echo esc_html( $station['name'] ); ?></span>
+					<span class="st-band__pfeil">→</span>
+				<?php endforeach; ?>
+				<span class="st-band__titel">Eine Anfrage · <?php echo esc_html( strtolower( $count_words[ count( $stations ) ] ?? (string) count( $stations ) ) ); ?> Stationen</span>
+			<?php endfor; ?>
+		</p>
+	</div>
+
 	<section class="st-abschnitt st-pruefstand" id="pruefstand" aria-labelledby="pruefstand-h" data-st-abschnitt="02" data-track-section="pruefstand">
 		<?php echo $marke( '02', 'Prüfstand' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt">
 			<div class="tafel st-tafel">
 				<div class="st-tafel__kopf">
-					<h2 class="st-h2" id="pruefstand-h">Prüfen Sie mich, bevor Sie mir schreiben.</h2>
+					<h2 class="st-h2" id="pruefstand-h">Prüfen Sie mich, <span class="st-leise">bevor Sie mir schreiben.</span></h2>
 					<p class="st-vorspann">Diese Website ist mein offenster Arbeitsbeleg. Ihr Code liegt öffentlich, jede Änderung durchläuft vor dem Livegang automatische Prüfungen, und die Ladezeit messen Sie selbst.</p>
 				</div>
+				<?php // Icons: Strich in currentColor, ohne eigene Farbe; nur die Ladezeit traegt den Akzent, weil sie ein Messwert ist. ?>
 				<ol class="st-pruefungen">
 					<li>
+						<svg class="st-pruefungen__icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="7" r="2"/><path d="M6 7v10M18 9v1a4 4 0 0 1-4 4h-4a4 4 0 0 0-4 3"/></svg>
 						<p class="st-pruefungen__label">Quellcode</p>
 						<p class="st-pruefungen__text">Jede Datei dieser Website und jede Änderung, mit Datum und Begründung.</p>
 						<a class="st-link" href="<?php echo esc_url( $github_url . '/commits/main/' ); ?>" target="_blank" rel="noopener" data-track-action="home_proof_github_history" data-track-category="proof" data-track-section="pruefstand">Code und Änderungen auf GitHub&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
 					</li>
 					<li>
+						<svg class="st-pruefungen__icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4.5l-3 15"/></svg>
 						<p class="st-pruefungen__label">Prüfungen</p>
 						<p class="st-pruefungen__text">Vor jedem Livegang prüft die CI unter anderem PHP-Syntax, statische Analyse, strukturierte Daten und eine Sperrliste veralteter Preise und Zusagen. Schlägt eine Prüfung fehl, geht nichts live.</p>
 						<a class="st-link" href="<?php echo esc_url( $github_url . '/actions' ); ?>" target="_blank" rel="noopener" data-track-action="home_proof_github_ci" data-track-category="proof" data-track-section="pruefstand">Prüfläufe auf GitHub&nbsp;<span aria-hidden="true">↗</span><span class="nur-vorlesen"> (öffnet in neuem Tab)</span></a>
 					</li>
-					<li>
+					<li class="st-pruefungen__mess">
+						<svg class="st-pruefungen__icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 17a8.5 8.5 0 1 1 17 0"/><path d="M12 17l4.5-5.5"/><path d="M6.5 13.5l1 .6M12 8.5v1.2M17.5 13.5l-1 .6"/></svg>
 						<p class="st-pruefungen__label">Ladezeit</p>
 						<p class="st-pruefungen__text">Eine Zahl von mir wäre nur eine Behauptung. PageSpeed Insights misst die Seite unter Laborbedingungen, jederzeit und ohne mich.</p>
 						<p class="st-pruefungen__messung" data-st-nur-js hidden>Ihr Browser hat diesen Aufruf in <span class="st-messwert" data-st-lcp-kopie>…</span> dargestellt.</p>
@@ -331,6 +359,8 @@ get_header();
 					<li class="st-station" data-st-station>
 						<h3 class="st-station__kopf" id="station-<?php echo esc_attr( $station['slug'] ); ?>" data-st-station-kopf data-st-ziel="station-<?php echo esc_attr( $station['slug'] ); ?>-detail"><span class="st-station__punkt" aria-hidden="true" data-st-punkt></span><span class="st-station__nr"><?php echo esc_html( $nr ); ?></span> <span class="st-station__name"><?php echo esc_html( $station['name'] ); ?></span> <span class="st-station__teaser"><?php echo esc_html( $station['teaser'] ); ?></span></h3>
 						<div class="st-station__detail" id="station-<?php echo esc_attr( $station['slug'] ); ?>-detail" data-st-station-detail>
+							<?php // Nur am Desktop sichtbar, wo die Erklaerung neben der Liste steht; die Nummer traegt die Ueberschrift schon. ?>
+							<p class="st-station__zaehler" aria-hidden="true">Station <?php echo esc_html( $nr ); ?> / <?php echo esc_html( sprintf( '%02d', count( $stations ) ) ); ?></p>
 							<p class="st-station__label">Was bricht</p>
 							<p><?php echo esc_html( $station['bricht'] ); ?></p>
 							<p class="st-station__label">Was ich baue</p>
@@ -483,34 +513,44 @@ get_header();
 		<?php echo $marke( '08', 'Anfrage' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt" id="kontakt">
 			<p class="st-ende" data-st-ende><span class="st-ende__text">Ende der Strecke</span><span class="st-ende__zeit" data-st-ende-zeit hidden></span></p>
-			<h2 class="st-h2 st-anfrage__h2" id="anfrage-h">Ich lese Ihre Anfrage selbst und antworte <?php echo esc_html( $response_short ); ?>.</h2>
-			<div class="st-einstiege">
-				<?php if ( $first_assessment_on ) : ?>
-					<article class="st-einstieg" aria-labelledby="einstieg-erst-h">
-						<p class="st-klein-label"><?php echo esc_html( hu_first_assessment_text( 'label' ) ); ?> · kostenlos</p>
-						<h3 class="st-h3" id="einstieg-erst-h"><?php echo esc_html( hu_first_assessment_text( 'card_title' ) ); ?></h3>
+			<?php
+			/*
+			 * Der Abschluss steht auf einer Tafel, der Flaeche fuer Beweis und
+			 * Handlung. Reihenfolge im Dokument: Ueberschrift, Einstiege,
+			 * Portrait. Mobil bleiben die Buttons so oben; ab 1024 px stellt das
+			 * Raster das Portrait neben die Ueberschrift.
+			 */
+			?>
+			<div class="tafel st-schluss">
+				<h2 class="st-h2 st-anfrage__h2" id="anfrage-h">Ich lese Ihre Anfrage selbst und antworte <?php echo esc_html( $response_short ); ?>.</h2>
+				<div class="st-einstiege">
+					<?php if ( $first_assessment_on ) : ?>
+						<article class="st-einstieg" aria-labelledby="einstieg-erst-h">
+							<p class="st-klein-label"><?php echo esc_html( hu_first_assessment_text( 'label' ) ); ?> · kostenlos</p>
+							<h3 class="st-h3" id="einstieg-erst-h"><?php echo esc_html( hu_first_assessment_text( 'card_title' ) ); ?></h3>
+							<dl>
+								<div><dt>Sie schicken</dt><dd><?php echo esc_html( hu_first_assessment_text( 'card_send' ) ); ?></dd></div>
+								<div><dt>Sie bekommen</dt><dd><?php echo esc_html( hu_first_assessment_text( 'card_get' ) ); ?></dd></div>
+							</dl>
+							<a class="tun" href="<?php echo esc_url( hu_first_assessment_url() ); ?>" data-track-action="home_close_ersteinschaetzung" data-track-category="lead_gen" data-track-section="abschluss"><?php echo esc_html( hu_first_assessment_text( 'cta' ) ); ?> <span class="pf" aria-hidden="true">→</span></a>
+						</article>
+					<?php endif; ?>
+					<article class="st-einstieg" aria-labelledby="einstieg-projekt-h">
+						<p class="st-klein-label">Projektanfrage</p>
+						<h3 class="st-h3" id="einstieg-projekt-h">Für Ihr Vorhaben bekommen Sie einen Festpreis.</h3>
 						<dl>
-							<div><dt>Sie schicken</dt><dd><?php echo esc_html( hu_first_assessment_text( 'card_send' ) ); ?></dd></div>
-							<div><dt>Sie bekommen</dt><dd><?php echo esc_html( hu_first_assessment_text( 'card_get' ) ); ?></dd></div>
+							<div><dt>Sie schicken</dt><dd>Ausgangslage, Engpass und Ziel</dd></div>
+							<div><dt>Sie bekommen</dt><dd>Eine fachliche Einordnung, danach Umfang, Festpreis und Zeitrahmen</dd></div>
 						</dl>
-						<a class="tun" href="<?php echo esc_url( hu_first_assessment_url() ); ?>" data-track-action="home_close_ersteinschaetzung" data-track-category="lead_gen" data-track-section="abschluss"><?php echo esc_html( hu_first_assessment_text( 'cta' ) ); ?> <span class="pf" aria-hidden="true">→</span></a>
+						<a class="<?php echo esc_attr( $project_cta_class ); ?>" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_close_contact" data-track-category="lead_gen" data-track-section="abschluss">Projekt anfragen <span class="pf" aria-hidden="true">→</span></a>
 					</article>
-				<?php endif; ?>
-				<article class="st-einstieg" aria-labelledby="einstieg-projekt-h">
-					<p class="st-klein-label">Projektanfrage</p>
-					<h3 class="st-h3" id="einstieg-projekt-h">Für Ihr Vorhaben bekommen Sie einen Festpreis.</h3>
-					<dl>
-						<div><dt>Sie schicken</dt><dd>Ausgangslage, Engpass und Ziel</dd></div>
-						<div><dt>Sie bekommen</dt><dd>Eine fachliche Einordnung, danach Umfang, Festpreis und Zeitrahmen</dd></div>
-					</dl>
-					<a class="<?php echo esc_attr( $project_cta_class ); ?>" href="<?php echo esc_url( $contact_url ); ?>" data-track-action="home_close_contact" data-track-category="lead_gen" data-track-section="abschluss">Projekt anfragen <span class="pf" aria-hidden="true">→</span></a>
-				</article>
+				</div>
+				<?php // Kontaktzeile (E-Mail, Telefon) steht direkt darunter im Fuss; hier nicht ein zweites Mal. ?>
+				<figure class="st-portrait">
+					<img src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-480x600.webp' ); ?>" width="480" height="600" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" loading="lazy" decoding="async">
+					<figcaption>Haşim Üner · Pattensen bei Hannover</figcaption>
+				</figure>
 			</div>
-			<?php // Kontaktzeile (E-Mail, Telefon) steht direkt darunter im Fuss; hier nicht ein zweites Mal. ?>
-			<figure class="st-portrait">
-				<img src="<?php echo esc_url( $img_uri . 'hasim-freelancer-portrait-480x600.webp' ); ?>" width="480" height="600" alt="Haşim Üner, WordPress-Entwickler aus Pattensen bei Hannover" loading="lazy" decoding="async">
-				<figcaption>Haşim Üner · Pattensen bei Hannover</figcaption>
-			</figure>
 		</div>
 	</section>
 </div>

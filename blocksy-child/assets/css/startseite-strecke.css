@@ -16,6 +16,10 @@
    Orange (--stempel) steht ausschliesslich fuer Messwerte und den
    primaeren Button. Der Fokusring ist deshalb hier --tinte statt
    --stempel; Kopf- und Fussleiste behalten ihren.
+
+   Bewegung haengt am Lesen, nie an einer Uhr: Linie, Band und
+   Einblenden folgen dem Scrollen, nur Transform und Opacity, keine
+   Endlosschleife. Der Hero steht still, weil er das LCP-Element traegt.
    ══════════════════════════════════════════════════════════════ */
 
 .st {
@@ -302,6 +306,18 @@
 .st .st-link:hover { text-decoration-color: currentColor; }
 .st .st-link--stark { font-weight: 600; }
 
+/* Der Pfeil am Link rueckt beim Hover nach, wie der Pfeil im Button
+   (system.css). Nur Transform, das Layout bleibt stehen. */
+.st .st-link > span[aria-hidden="true"] {
+  display: inline-block;
+  transition: transform var(--t-norm) var(--ease-aus);
+}
+
+.st .st-link:hover > span[aria-hidden="true"] { transform: translateX(3px); }
+
+/* Der leise Teil einer Ueberschrift: der Satz, der den ersten traegt. */
+.st .st-leise { color: var(--matt); }
+
 /* ══ 01 Hero ══════════════════════════════════════════════════ */
 
 .st .st-hero { padding-top: var(--s3); }
@@ -354,8 +370,8 @@
 .st .st-hero__h1 {
   font-size: clamp(2.5rem, 1.1rem + 5.8vw, 6.4rem);
   line-height: 0.95;
-  letter-spacing: -0.045em;
-  font-weight: 500;
+  letter-spacing: -0.05em;
+  font-weight: 600;
 }
 
 /* Jeder Satz bricht fuer sich um; der zweite traegt den Beleg und steht
@@ -365,7 +381,9 @@
   text-wrap: balance;
 }
 
-.st .st-hero__h1-satz--leise { color: var(--grau); }
+/* --matt statt --grau: Der zweite Satz tritt deutlicher zurueck und
+   bleibt mit 5,2:1 auf Papier in der Groesse klar lesbar. */
+.st .st-hero__h1-satz--leise { color: var(--matt); }
 
 .st .st-hero__satz {
   max-inline-size: 34em;
@@ -595,9 +613,95 @@
   text-underline-offset: 0.2em;
 }
 
-/* ══ 02 Pruefstand: die einzige dunkle Tafel ══════════════════ */
+/* Auf der Startseite steht das Protokoll auf einer Tafel: ein Messgeraet
+   neben dem hellen Satz. Die Tafel dreht die Tokens um; hier werden nur
+   Rahmen und Linien auf die Haarlinie der Tafel gesetzt, damit das Panel
+   als Flaeche liest und nicht als Kasten. Der Schatten nimmt --papier,
+   das auf der Tafel dunkel ist. */
+.st .st-protokoll.tafel {
+  padding: var(--s2) var(--s3) var(--s3);
+  border-color: var(--haar);
+  box-shadow: 0 1.5rem 3rem -1.75rem color-mix(in srgb, var(--papier) 70%, transparent);
+}
 
-.st .st-tafel { padding: clamp(1.5rem, 5vw, 3.5rem); }
+.st .st-protokoll.tafel .st-protokoll__kopf { border-bottom-color: var(--haar); }
+.st .st-protokoll.tafel .st-protokoll__status { color: var(--stempel); }
+
+/* Der Statuspunkt pulsiert dreimal, sobald das Skript misst, und steht
+   dann. Nach gut vier Sekunden ist Ruhe: nichts blinkt dauerhaft. */
+.st[data-st-bereit] .st-protokoll__status::before {
+  animation: st-puls 1.4s var(--ease-weich) 3;
+}
+
+@keyframes st-puls {
+  50% { opacity: 0.2; }
+}
+
+/* ══ Band: die sechs Stationen zwischen Hero und Pruefstand ════
+   Volle Breite, dunkel, Mono. Die Folge steht zweimal im Band; das
+   Skript schiebt sie beim Scrollen um hoechstens eine Folgenbreite.
+   Ohne Skript und bei reduzierter Bewegung steht das Band still und
+   schneidet rechts ab. */
+.st .st-band {
+  overflow: hidden;
+  padding: var(--s2) 0;
+  border-radius: 0;
+}
+
+.st .st-band__zug {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  width: max-content;
+  margin: 0;
+  padding-inline: var(--st-rinne);
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--tinte);
+}
+
+.st[data-st-bereit] .st-band__zug { will-change: transform; }
+
+.st .st-band__nr { color: var(--matt); }
+.st .st-band__pfeil { color: var(--matt); }
+
+.st .st-band__titel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  margin-inline: var(--s2);
+  color: var(--grau);
+}
+
+/* Der Messpunkt der Linie, hier als Marke vor dem Titel. */
+.st .st-band__titel::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--stempel);
+}
+
+/* ══ 02 Pruefstand: die Tafel fuer den Beweis ═════════════════
+   Oben rechts ein leiser Schimmer aus dem Stempel, auf der dunklen
+   Flaeche gemischt; er traegt keine Information. */
+
+.st .st-tafel {
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  background-image: radial-gradient(60% 75% at 92% 0%, color-mix(in srgb, var(--stempel) 20%, transparent), transparent 70%);
+}
+
+/* Auf der Tafel eine Stufe groesser als die uebrigen H2, aber unter der
+   H1; balance haelt auch den laengeren Satz der White-Label-Seite bei
+   drei Zeilen. */
+.st .st-tafel .st-h2 {
+  font-size: clamp(2rem, 1.35rem + 2vw, 3.25rem);
+  max-inline-size: 16ch;
+  text-wrap: balance;
+}
 
 .st .st-tafel__kopf {
   display: grid;
@@ -608,16 +712,44 @@
 
 .st .st-pruefungen {
   display: grid;
-  gap: var(--s4);
+  gap: var(--s2);
   margin: var(--s5) 0 0;
   padding: 0;
   list-style: none;
 }
 
+/* Drei Kacheln, der Link sitzt jeweils unten. Hover hebt die Kachel um
+   2 px und hellt den Rahmen auf; nur Transform und Farbe. */
 .st .st-pruefungen li {
-  padding-top: var(--s2);
-  border-top: 1px solid color-mix(in srgb, var(--tinte) 30%, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--s3);
+  border: 1px solid var(--haar);
+  border-radius: 3px;
+  background: var(--zone);
+  transition:
+    border-color var(--t-norm) var(--ease-weich),
+    transform var(--t-norm) var(--ease-aus);
 }
+
+@media (hover: hover) and (pointer: fine) {
+  .st .st-pruefungen li:hover {
+    border-color: var(--matt);
+    transform: translateY(-2px);
+  }
+}
+
+.st .st-pruefungen__icon {
+  flex: none;
+  margin-bottom: var(--s2);
+  color: var(--tinte);
+}
+
+/* Die Ladezeit ist ein Messwert: Sie allein traegt den Akzent, im Icon
+   und als Hauch im Rahmen. Die Flaeche bleibt dunkel. */
+.st .st-pruefungen__mess { border-color: color-mix(in srgb, var(--stempel) 45%, var(--haar)); }
+.st .st-pruefungen__mess .st-pruefungen__icon { color: var(--stempel); }
 
 .st .st-pruefungen__label {
   font-family: var(--mono);
@@ -643,7 +775,8 @@
 
 .st .st-pruefungen .st-link {
   display: inline-block;
-  margin-top: var(--s2);
+  margin-top: auto;
+  padding-top: var(--s3);
 }
 
 .st .st-pruefungen__klein {
@@ -737,6 +870,12 @@
 
 .st .st-station__detail .st-station__label:not(:first-child) { margin-top: var(--s2); }
 
+/* "Station 03 / 06" steht nur am Desktop ueber der Erklaerung, wo sie
+   neben der Liste steht. Mobil folgt die Erklaerung direkt auf ihre
+   Ueberschrift; dort traegt die Nummer schon die Zeile darueber. */
+.st .st-station__zaehler { display: none; }
+.st .st-station__detail .st-station__zaehler + .st-station__label { margin-top: 0; }
+
 .st .st-station__detail .st-station__beleg {
   margin-top: var(--s2);
   padding-top: var(--s1);
@@ -769,6 +908,11 @@
 
 .st .st-station__knopf[aria-expanded="true"] .st-station__name,
 .st .st-station__knopf:hover .st-station__name { color: var(--tinte); }
+
+/* Die offene Station ist der Punkt, an dem man gerade misst: Ihre Nummer
+   nimmt den Stempel wie ein erreichter Punkt auf der Linie. */
+.st .st-station__nr { transition: color var(--t-norm) var(--ease-weich); }
+.st .st-station__knopf[aria-expanded="true"] .st-station__nr { color: var(--stempel); }
 
 .st .st-station__knopf::after {
   content: "+";
@@ -843,6 +987,17 @@
     top: calc(var(--leiste-h) + var(--s4));
     padding: var(--s2) 0 var(--s2) var(--s4);
     border-left: 1px solid var(--tinte);
+  }
+
+  .st[data-st-bereit] .st-station__zaehler {
+    display: block;
+    margin-bottom: var(--s2);
+    font-family: var(--mono);
+    font-size: var(--mono-m);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--matt);
   }
 
   .st[data-st-bereit] .st-station__knopf::after {
@@ -1145,6 +1300,31 @@
 
 .st .st-anfrage__h2 { max-inline-size: 24ch; }
 
+/* Abschluss der Startseite auf einer Tafel: Ueberschrift, zwei Einstiege,
+   Portrait. Der Schimmer sitzt unten links, gespiegelt zum Pruefstand. */
+.st .st-schluss {
+  display: grid;
+  grid-template-areas:
+    "kopf"
+    "wege"
+    "bild";
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  background-image: radial-gradient(55% 70% at 0% 100%, color-mix(in srgb, var(--stempel) 16%, transparent), transparent 70%);
+}
+
+.st .st-schluss .st-anfrage__h2 {
+  grid-area: kopf;
+  font-size: clamp(1.9rem, 1.3rem + 2vw, 3.1rem);
+  max-inline-size: 20ch;
+}
+
+.st .st-schluss .st-einstiege {
+  grid-area: wege;
+  margin-top: var(--s4);
+}
+.st .st-schluss .st-einstieg { border-top-color: color-mix(in srgb, var(--tinte) 35%, transparent); }
+.st .st-schluss .st-portrait { grid-area: bild; }
+
 .st .st-einstiege {
   display: grid;
   gap: var(--s4);
@@ -1187,7 +1367,7 @@
 
 .st .st-portrait {
   margin: var(--s5) 0 0;
-  max-width: 14rem;
+  max-width: 12rem;
 }
 
 .st .st-portrait img {
@@ -1215,23 +1395,57 @@
    sieht, an wen. Mobil folgt es den Einstiegen, damit die Buttons oben
    bleiben. */
 @media (min-width: 1024px) {
-  .st .st-anfrage .st-inhalt {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 14rem;
+  .st .st-schluss {
+    grid-template-columns: minmax(0, 1fr) 10rem;
+    grid-template-areas:
+      "kopf bild"
+      "wege wege";
     column-gap: var(--s5);
   }
 
-  .st .st-anfrage .st-ende { grid-column: 1; grid-row: 1; }
-  .st .st-anfrage__h2 { grid-column: 1; grid-row: 2; }
-
-  .st .st-portrait {
-    grid-column: 2;
-    grid-row: 1 / 3;
+  .st .st-schluss .st-portrait {
     align-self: end;
     margin: 0;
   }
+}
 
-  .st .st-einstiege { grid-column: 1 / -1; grid-row: 3; }
+/* ══ Einblenden ═══════════════════════════════════════════════
+   Nur auf Seiten mit data-st-einblenden und nur fuer Bloecke, die beim
+   Laden unter dem ersten Bildschirm liegen: Das Skript setzt dort
+   .st-auftritt und beim ersten Sichtkontakt data-st-gesehen. Was schon im
+   Blick ist, blendet nicht nachtraeglich aus.
+
+   Eine Animation mit fill-mode backwards statt eines Uebergangs: Nach
+   dem Einblenden gilt wieder der normale Stil, der Hover der Kacheln
+   laeuft ohne den Versatz, mit dem Kacheln und Einstiege einander
+   folgen. */
+
+.st .st-auftritt:not([data-st-gesehen]) {
+  opacity: 0;
+  transform: translateY(var(--s3));
+}
+
+.st .st-auftritt[data-st-gesehen] {
+  animation: st-auftritt var(--t-gross) var(--ease-aus) backwards;
+}
+
+@keyframes st-auftritt {
+  from {
+    opacity: 0;
+    transform: translateY(var(--s3));
+  }
+}
+
+.st .st-pruefungen > .st-auftritt:nth-child(2),
+.st .st-einstiege > .st-auftritt:nth-child(2) { animation-delay: 80ms; }
+
+.st .st-pruefungen > .st-auftritt:nth-child(3) { animation-delay: 160ms; }
+
+@media print {
+  .st .st-auftritt:not([data-st-gesehen]) {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ══ Bewegung reduziert ═══════════════════════════════════════
@@ -1254,5 +1468,25 @@
   }
 
   .st .st-protokoll__verlauf .st-neu,
-  .st[data-st-bereit] .st-station__detail:not([hidden]) { animation: none; }
+  .st[data-st-bereit] .st-station__detail:not([hidden]),
+  .st[data-st-bereit] .st-protokoll__status::before { animation: none; }
+
+  .st .st-link > span[aria-hidden="true"],
+  .st .st-station__nr,
+  .st .st-pruefungen li { transition: none; }
+
+  .st .st-auftritt[data-st-gesehen] { animation: none; }
+
+  .st .st-link:hover > span[aria-hidden="true"],
+  .st .st-pruefungen li:hover { transform: none; }
+
+  .st .st-auftritt:not([data-st-gesehen]) {
+    opacity: 1;
+    transform: none;
+  }
+
+  .st[data-st-bereit] .st-band__zug {
+    transform: none;
+    will-change: auto;
+  }
 }
