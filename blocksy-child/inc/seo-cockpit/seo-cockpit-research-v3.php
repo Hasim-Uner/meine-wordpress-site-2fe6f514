@@ -20,8 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function nexus_register_seo_cockpit_research_page_v3() {
 	add_submenu_page(
 		nexus_get_seo_cockpit_menu_slug(),
-		'Research Intelligence',
-		'Research',
+		'Belege & Datenquellen',
+		'Datenquellen',
 		nexus_get_seo_cockpit_view_cap(),
 		nexus_get_seo_cockpit_research_slug(),
 		'nexus_render_seo_cockpit_research_page_v3'
@@ -216,8 +216,9 @@ function nexus_render_seo_cockpit_research_page_v3() {
 	$eurostat       = function_exists( 'nexus_get_seo_cockpit_eurostat_summary' ) ? nexus_get_seo_cockpit_eurostat_summary() : [ 'is_available' => false, 'errors' => [] ];
 	?>
 	<div class="wrap nexus-seo-cockpit nexus-seo-cockpit__research">
-		<p class="nexus-seo-cockpit__eyebrow">Research Intelligence</p>
-		<h1>Primärdaten statt Bauchgefühl</h1>
+		<p class="nexus-seo-cockpit__eyebrow">Beleg-Layer · Research Intelligence</p>
+		<h1>Belege &amp; Datenquellen</h1>
+		<p class="nexus-seo-cockpit__hint">Hier liegen Primärdaten und Provider-Zustände. Das ist kein täglicher Arbeitsbereich: konkrete Maßnahmen werden unter <a href="<?php echo esc_url( function_exists( 'nexus_decision_layer_admin_url' ) ? nexus_decision_layer_admin_url() : admin_url() ); ?>">Content-Chancen</a> priorisiert.</p>
 
 		<?php if ( 'saved' === $notice ) : ?>
 			<div class="notice notice-success is-dismissible"><p>Research-Einstellungen gespeichert.</p></div>
