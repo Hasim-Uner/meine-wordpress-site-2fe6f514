@@ -807,11 +807,11 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 	usort(
 		$out,
 		static function ( $left, $right ) {
-			$score_diff = absint( $right['score'] ?? 0 ) <=> absint( $left['score'] ?? 0 );
+			$score_diff = absint( $right['score'] ) <=> absint( $left['score'] );
 			if ( 0 !== $score_diff ) {
 				return $score_diff;
 			}
-			return (float) ( $right['search_volume'] ?? 0.0 ) <=> (float) ( $left['search_volume'] ?? 0.0 );
+			return (float) $right['search_volume'] <=> (float) $left['search_volume'];
 		}
 	);
 
