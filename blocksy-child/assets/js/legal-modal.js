@@ -142,8 +142,12 @@
 				var parser = new DOMParser();
 				var doc = parser.parseFromString(html, 'text/html');
 
-				// Extract the content shell (.privacy-shell or .imprint-shell)
-				var shell = doc.querySelector('.privacy-shell, .imprint-shell');
+				// Keep the full legal-page wrapper so CSS and V2 interaction have
+				// exactly the same scope as on the standalone route.
+				var shell = doc.querySelector('.legal-page');
+				if (!shell) {
+					shell = doc.querySelector('.privacy-shell, .imprint-shell');
+				}
 				if (!shell) {
 					// Fallback: grab the whole <main>
 					shell = doc.querySelector('main');
