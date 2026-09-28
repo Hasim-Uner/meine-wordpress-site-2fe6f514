@@ -762,8 +762,15 @@ function nexus_get_seo_cockpit_crm_acquisition_snapshot_data( $ranges ) {
 			continue;
 		}
 
-		if ( function_exists( 'nexus_crm_contact_is_sales_relevant' ) && ! nexus_crm_contact_is_sales_relevant( $post->ID ) ) {
-			continue;
+		if ( function_exists( 'nexus_crm_contact_is_sales_relevant' ) ) {
+			if ( ! nexus_crm_contact_is_sales_relevant( $post->ID ) ) {
+				continue;
+			}
+		} else {
+			$fallback_source = sanitize_key( (string) get_post_meta( $post->ID, '_nexus_contact_latest_source', true ) );
+			if ( ! in_array( $fallback_source, [ 'project_request', 'general_inquiry', 'request_analysis', 'whitelabel_request' ], true ) ) {
+				continue;
+			}
 		}
 
 		$timestamp = nexus_get_seo_cockpit_contact_inquiry_timestamp( $post );
