@@ -106,7 +106,14 @@ V1.1 erzeugt konservative Zustände:
 
 Der stabile Slug bleibt erhalten, die sichtbare Arbeitsfläche heißt jetzt `SEO Cockpit -> Content-Chancen`.
 
-Die V1.1-Rohlogik bleibt darunter bestehen. Die Decision Layer ergänzt pro Opportunity:
+Die V1.1-Rohlogik bleibt darunter bestehen. Zusätzlich zieht die Decision Layer direkte, bereits business-segmentierte Market-Intelligence-Chancen in dieselbe Queue. Damit stehen zwei Signalwege nebeneinander, aber in einer gemeinsamen Arbeitslogik:
+
+- Research-Primärdaten → direkte GSC-Nachfrage → Seiten-Fit → Content-Maßnahme
+- DataForSEO-Suchmarkt → GSC/WordPress/CRM → direkte Keyword-/Money-Page-Maßnahme
+
+Ein kommerzielles Keyword wie `wordpress agentur hannover` kann dadurch direkt als Content-Chance erscheinen, auch wenn kein passendes Destatis-/Energy-Charts-Signal existiert. Navigationaler Fremdmarken-Traffic bleibt über die Market-Segmentierung sichtbar, wird aber nicht automatisch zur Geschäftsmaßnahme.
+
+Die Decision Layer ergänzt pro Opportunity:
 
 - Entscheidungsscore 0–100 für die Sortierung innerhalb einer Arbeitsstufe
 - Arbeitsstufe `Jetzt tun`, `Prüfen & planen` oder `Beobachten`
@@ -117,7 +124,9 @@ Die V1.1-Rohlogik bleibt darunter bestehen. Die Decision Layer ergänzt pro Oppo
 - kompakte Evidenz aus GSC, WordPress-Page-Role, optional DataForSEO und CRM
 - technische Detailansicht mit den ursprünglichen drei Scores, Primärdaten und passenden Queries
 
-Die Decision Layer nutzt ausschließlich bestehende Snapshots beziehungsweise lokale WordPress-Daten. Das Öffnen von `Content-Chancen` löst weder neue DataForSEO- noch neue Research-Provider-Requests aus.
+Die Decision Layer nutzt ausschließlich bestehende Snapshots beziehungsweise lokale WordPress-Daten. Für direkte Market-Chancen werden die bereits gespeicherten DataForSEO-Rankings mit dem persistenten GSC-Query×Page-Snapshot, WordPress-Seitenrollen sowie Audit-/Nexus-CRM-Signalen verbunden. Das Öffnen von `Content-Chancen` löst weder neue DataForSEO- noch neue Research-Provider-Requests aus.
+
+Dashboard V3 zeigt zusätzlich höchstens drei handlungsfähige Entscheidungen aus `Jetzt tun` und `Prüfen & planen`. Beobachtungssignale bleiben auf der vollständigen Content-Chancen-Seite und verdrängen keine operativen Aufgaben.
 
 Die Quellenebene heißt im Menü `Datenbasis`. Sie bleibt vollständig erreichbar, steht aber bewusst hinter den operativen Arbeitsflächen.
 

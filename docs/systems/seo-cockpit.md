@@ -26,10 +26,11 @@ Repo-seitig vorhanden:
 
 - Top-Level-Admin-Menü `SEO Cockpit`
 - visuelles Dashboard V3 als Command Center
-- eigenes Untermenü `SEO Cockpit -> Research` für externe Primärdaten
-- eigenes Untermenü `SEO Cockpit -> Content-Chancen` als operative Decision Layer für Research-/GSC-/WordPress-/CRM-/DataForSEO-Signale
+- eigenes Untermenü `SEO Cockpit -> Datenbasis` für externe Primärdaten und Provider-Zustände
+- eigenes Untermenü `SEO Cockpit -> Content-Chancen` als operative Decision Layer für direkte Market-Intelligence- sowie Research-/GSC-/WordPress-/CRM-Signale
 - eigenes Untermenü `SEO Cockpit -> Markt & Wettbewerb` für DataForSEO Market Intelligence
 - `SEO Cockpit -> Datenbasis` hält Research/Primärdaten bewusst als nachgelagerte Evidenzschicht
+- Dashboard V3 zeigt maximal drei handlungsfähige Content-/Market-Entscheidungen vor den analytischen Detailsektionen
 - kompaktes Snapshot-Widget im Standard-WordPress-Dashboard
 - priorisierte Queue im Admin, die SEO-Signale jetzt gegen Business-Wert, Funnel-Nähe und Confidence gewichtet
 - Revenue Command Center V1 mit Today Revenue Queue für Anfrage-/Umsatzwirkung statt Traffic-Priorisierung
@@ -282,7 +283,7 @@ Wichtige technische Entscheidungen:
 - Koko nur optional als zweiter Traffic-Layer
 - Audit-CRM als dritter Datenlayer für Lead-Kontext und Priorisierung
 - Revenue Command Center als vierter operativer Layer für Today Queue, Lead-Follow-up, Page Queue, Conversion Leaks und Manual Checks
-- Content Decision Layer als operative Übersetzung von Research + GSC + WordPress + optional DataForSEO/CRM in `Jetzt tun`, `Prüfen & planen` und `Beobachten`
+- Content Decision Layer als operative Übersetzung zweier Signalwege in `Jetzt tun`, `Prüfen & planen` und `Beobachten`: Research + GSC + WordPress sowie direkte DataForSEO-Market-Chancen + GSC + WordPress + CRM
 - Research Intelligence als getrennte Primärdaten-Schicht, im Menü als `Datenbasis` nachgelagert
 - Market Intelligence als DataForSEO-Schicht für Suchmarkt, Wettbewerber und manuelle Live-SERPs; die Priorität bleibt repo-owned
 - IndexNow als eigener Indexing-Control-Layer ohne Google- oder Bing-Account-Credentials
