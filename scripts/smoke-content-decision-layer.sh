@@ -24,9 +24,10 @@ V11="$ROOT/inc/seo-cockpit/seo-cockpit-content-intelligence-v11.php"
 RESEARCH_ASYNC="$ROOT/inc/seo-cockpit/seo-cockpit-research-async.php"
 RESEARCH_V3="$ROOT/inc/seo-cockpit/seo-cockpit-research-v3.php"
 MARKET_UI="$ROOT/inc/seo-cockpit/seo-cockpit-market-ui.php"
+LEADS="$ROOT/inc/seo-cockpit/seo-cockpit-leads.php"
 CSS="$ROOT/assets/css/seo-cockpit-content-decisions.css"
 
-for file in "$LOADER" "$DECISIONS" "$V11" "$RESEARCH_ASYNC" "$RESEARCH_V3" "$MARKET_UI" "$CSS"; do
+for file in "$LOADER" "$DECISIONS" "$V11" "$RESEARCH_ASYNC" "$RESEARCH_V3" "$MARKET_UI" "$LEADS" "$CSS"; do
   require_file "$file"
 done
 
@@ -40,6 +41,8 @@ require_pattern "nexus_ci_v11_opportunities" "$DECISIONS"
 require_pattern "nexus_get_market_intelligence_snapshot" "$DECISIONS"
 require_pattern "nexus_get_seo_cockpit_lead_snapshot_data" "$DECISIONS"
 require_pattern "nexus_get_seo_cockpit_crm_acquisition_snapshot_data" "$DECISIONS"
+require_pattern "entry_map" "$LEADS"
+require_pattern "crm_current_entries" "$DECISIONS"
 require_pattern "nexus_get_seo_cockpit_page_role_scores" "$DECISIONS"
 
 # Action-first UX contract.
