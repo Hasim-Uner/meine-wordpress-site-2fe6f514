@@ -518,19 +518,6 @@ function nexus_get_wgos_blog_asset_bridge_data() {
 				'text'  => 'Wenn Kampagnen schon laufen oder vorbereitet werden, ist die Performance-Marketing-Seite der saubere Anschluss zwischen Zielseite, Tracking und Paid-Aktivierung.',
 			],
 		],
-		'design-ist-mehr-als-aesthetik' => [
-			'title' => 'Systembausteine für Conversion-Architektur',
-			'intro' => 'Wenn Design die Orientierung und den nächsten Schritt verbessern soll, sind diese Bausteine die konkrete Übersetzung:',
-			'assets' => [
-				'angebotsseiten-architektur' => 'Ordnet Seiten, Botschaften und Proof in eine klare Angebotslogik.',
-				'cta-formular-optimierung' => 'Reduziert Reibung im letzten Schritt zwischen Interesse und Anfrage.',
-			],
-			'supporting_link' => [
-				'label' => 'Conversion Rate Optimization',
-				'url'   => $cro_url,
-				'text'  => 'Wenn aus guter Gestaltung auch eine klarere Nutzerführung werden soll, führt die CRO-Seite direkt in den passenden Service-Kontext.',
-			],
-		],
 		'server-side-tracking-gtm' => [
 			'title' => 'Systembausteine für belastbare Messbarkeit',
 			'intro' => 'Server-Side Tracking ist selten der erste Schritt. Diese Bausteine sorgen für die richtige Reihenfolge:',
