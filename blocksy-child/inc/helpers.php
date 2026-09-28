@@ -873,16 +873,16 @@ function nexus_get_checkfox_faq_items() {
  */
 function nexus_get_e3_case_faq_items() {
 	$cpl_after = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after' ) : '22 €';
-	$build     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'build_months' ) : '3 Monate';
+	$timeline  = hu_e3_canon()['timeline'];
 
 	return [
 		[
 			'question' => sprintf( 'Sind %s pro Anfrage auf meinen Betrieb übertragbar?', $cpl_after ),
-			'answer'   => sprintf( 'Nicht als Zusage. %s war der Endpunkt einer Strecke, kein Startwert und kein Tarif. Was die Kosten pro Anfrage in Ihrem Fall bestimmt, sind Region, Produktmix und der Werbedruck Ihrer Mitbewerber. Übertragbar ist die Mechanik: Kaufabsicht, Exklusivität, Vorqualifizierung und Reaktionszeit lassen sich in jedem Betrieb mit eigenem Vertrieb nachbauen. Die Zahl, die dabei herauskommt, ist von Fall zu Fall verschieden.', $cpl_after ),
+			'answer'   => sprintf( 'Nicht als Zusage. %s war ein erreichter Wert der optimierten Kampagnen, kein Durchschnitt des gesamten Projekts und kein Tarif. Was die Kosten pro Anfrage in Ihrem Fall bestimmt, sind Region, Produktmix und der Werbedruck Ihrer Mitbewerber. Übertragbar ist die Mechanik: Kaufabsicht, Exklusivität, Vorqualifizierung und Reaktionszeit lassen sich in jedem Betrieb mit eigenem Vertrieb nachbauen. Die Zahl, die dabei herauskommt, ist von Fall zu Fall verschieden.', $cpl_after ),
 		],
 		[
 			'question' => 'Wie lange dauert es, bis eigene Anfragen ankommen?',
-			'answer'   => sprintf( 'Erste Anfragen entstehen früh, aber der belastbare Zustand braucht Zeit. In diesem Mandat lief das System nach %s produktiv, die Kosten pro Anfrage stabilisierten sich in den drei Monaten danach. Wer eine Strecke in zwei Wochen verspricht, überspringt entweder das Tracking-Fundament oder die CRM-Anbindung — meistens beides.', $build ),
+			'answer'   => $timeline['preparation'] . ' ' . $timeline['campaign'] . ' ' . $timeline['optimization'] . ' ' . $timeline['followup'],
 		],
 		[
 			'question' => 'Was kostet der Aufbau eines eigenen Anfragesystems?',

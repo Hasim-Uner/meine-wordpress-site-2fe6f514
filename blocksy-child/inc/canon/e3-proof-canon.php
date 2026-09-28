@@ -43,7 +43,7 @@ define( 'HU_E3_CPL_RAMP_LOW', 70 );
 define( 'HU_E3_CPL_RAMP_HIGH', 100 );
 define( 'HU_E3_PORTAL_CONVERSION_AVG', 3 );
 define( 'HU_E3_PORTAL_COST_PER_DEAL', 5000 );
-define( 'HU_E3_BUILD_MONTHS', 3 );
+define( 'HU_E3_BUILD_MONTHS', 1 );
 define( 'HU_E3_TUNING_MONTHS', 3 );
 
 /**
@@ -65,7 +65,7 @@ function hu_e3_canon() {
 			'cpl_after'        => [
 				'value'   => HU_E3_CPL_AFTER,
 				'display' => '22 €',
-				'label'   => 'Kosten pro eigener Anfrage nachher',
+				'label'   => 'Erreichter Wert pro eigener Anfrage',
 			],
 			// Labtest-Werte dieser Website. Sie leben hier, damit jede sichtbare
 			// Kennzahl denselben Canon-Zugriff nutzt: Startseite und
@@ -154,7 +154,7 @@ function hu_e3_canon() {
 				'value'      => HU_E3_CPL_RAMP_LOW,
 				'value_high' => HU_E3_CPL_RAMP_HIGH,
 				'display'    => '70 – 100 €',
-				'label'      => 'Kosten pro Anfrage in der Aufbauphase',
+				'label'      => 'Kosten pro Anfrage in den ersten vier Kampagnenwochen',
 			],
 			'portal_conversion_avg' => [
 				'value'   => HU_E3_PORTAL_CONVERSION_AVG,
@@ -182,8 +182,8 @@ function hu_e3_canon() {
 			],
 			'build_months'     => [
 				'value'   => HU_E3_BUILD_MONTHS,
-				'display' => '3 Monate',
-				'label'   => 'Implementierung',
+				'display' => 'rund vier Wochen',
+				'label'   => 'Vorbereitung vor Kampagnenstart',
 			],
 			// Anlaufzeit bis zur ersten qualifizierten Anfrage im dokumentierten
 			// Fall. Erfahrungswert aus diesem einen Projekt, kein Marktversprechen
@@ -197,6 +197,20 @@ function hu_e3_canon() {
 				'display' => '3 Monate',
 				'label'   => 'Optimierung',
 			],
+		],
+		// Betreiberklärung vom 27.09.2026: Projektmonate inklusive Vorbereitung.
+		// Keine monatlichen Rohdaten: keine interpolierte Messkurve oder Mittelwerte.
+		'timeline' => [
+			'preparation_label' => 'Projektmonat 1 · Vorbereitung',
+			'preparation' => 'Rund vier Wochen für Strategie, Audit und den Aufbau neuer Landingpages. Technisches SEO begann bereits in dieser Phase; eigene Kampagnen liefen noch nicht.',
+			'campaign_label' => 'Projektmonat 2 · Kampagnenstart',
+			'campaign' => 'In den ersten vier Kampagnenwochen lagen die Kosten pro Anfrage bei etwa 70–100 €. Anzeigenvarianten und Platzierungen wurden getestet und laufend optimiert.',
+			'optimization_label' => 'Ab Projektmonat 3 · Optimierung',
+			'optimization' => 'Erfolgreiche Anzeigenvarianten und Platzierungen wurden stärker ausgespielt. Hinzu kamen Server-Side-Tracking und die Anbindung an Bitrix24: Anfragen wurden mit verfügbarer Herkunft nach Photovoltaik, Wärmepumpe oder Kombination segmentiert. Die Anfragekosten sanken zunächst auf etwa 30–50 €, anschließend wurden rund 22 € erreicht.',
+			'followup' => 'In den Projektmonaten 4–6 lagen die Anfragekosten überwiegend zwischen 22 und 30 €, teilweise darunter. Die 22 € sind ein erreichter Wert, kein belegter Durchschnitt des gesamten Projektzeitraums.',
+			'compact' => 'Rund vier Wochen Vorbereitung, Kampagnenstart im zweiten Projektmonat, rund 22 € ab dem dritten Projektmonat erreicht.',
+			'result_label' => 'Ab Projektmonat 3 erreichter Wert',
+			'comparison' => 'Portal-Einkauf vorher: 150 € pro Anfrage. In der eigenen Kampagne wurden ab dem dritten Projektmonat rund 22 € erreicht. Vergleich zweier Anfragequellen, keine monatliche Messkurve.',
 		],
 		'summary'    => [
 			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, 12 % Lead-Conversion-Rate und 15 % Abschlussquote, 6 Monate.',

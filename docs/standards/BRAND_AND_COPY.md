@@ -291,3 +291,13 @@ Regeln:
 - Structure, templates, helpers, CSS, JS, schema live in the repo
 - Homepage and service-page copy can live in the WordPress editor
 - Always separate changes into: `Copy`, `Structure`, `Template`, `Refactor`, `Manual WP`
+
+## Referenzfall: Verlauf und Vergleichsbasis
+
+Seit Betreiberklärung vom 27.09.2026 ist `hu_e3_canon()['timeline']` die
+verbindliche Quelle für Phasen, Kurzfassung und Vergleichsbeschriftung.
+Projektmonate schließen die Vorbereitung ein; Kampagnenmonate beginnen erst
+danach. Portal-Einkauf ist eine andere Anfragequelle, kein Messpunkt der
+eigenen Kampagne. Der erreichte CPL darf nicht als Durchschnitt aller Monate
+oder als alleinige Wirkung des Server-Side-Trackings bezeichnet werden.
+Details und Grenzen: `docs/decisions/solar-case-timeline-2026-09-27.md`.

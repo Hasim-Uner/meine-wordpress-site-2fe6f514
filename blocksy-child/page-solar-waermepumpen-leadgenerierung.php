@@ -44,7 +44,7 @@ $e3_cpl_reduction = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_cpl_before    = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after     = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_timeframe     = $e3_metrics['timeframe']['display'] ?? '6 Monate';
-$e3_build_months  = $e3_metrics['build_months']['display'] ?? '3 Monate';
+$e3_timeline      = $e3_canon['timeline'];
 
 // Voreinstellungen des Vergleichsrechners. Bewusst vorsichtiger als der Fall
 // und deshalb im Canon als eigene Kennzahl gefuehrt: als nacktes Literal im
@@ -211,34 +211,11 @@ $conditions = [
 	],
 ];
 
-// ── 04 Der Fall: drei Phasen ───────────────────────────────────
+// ── 04 Der Fall: Projektmonate inklusive Vorbereitung ──────────
 $phases = [
-	[
-		'label' => sprintf( 'Monat 1–%d · Aufbau', 3 ),
-		'text'  => sprintf(
-			'Anfragestrecke, Vorqualifizierung und serverseitiges Tracking entstehen. Anzeigen laufen, aber die Kosten pro Anfrage bleiben zunächst im dreistelligen Bereich — es gibt noch keine Datengrundlage, auf die sich optimieren ließe. <b>In dieser Phase sieht ein Betrieb wenig für sein Geld.</b> Wer das nicht aushält, sollte nicht anfangen. Vorbereitung im dokumentierten Fall: %s.',
-			esc_html( $e3_build_months )
-		),
-	],
-	[
-		'label' => 'Ab Monat 3 · Wirkung',
-		'text'  => sprintf(
-			'Mit den ersten belastbaren Daten wird die Verbindung von Anzeige, Anfrage und Vertriebsstatus belastbarer; nicht jeder Kontakt bleibt unter jedem Consent- und Browserzustand individuell zuordenbar. Ab hier stabilisieren sich die Kosten pro qualifizierter Anfrage bei %s — von %s zu Beginn.',
-			esc_html( $e3_cpl_after ),
-			esc_html( $e3_cpl_before )
-		),
-	],
-	[
-		'label' => 'Monat 6 · Stand',
-		// Die Lead-Conversion-Rate steht ohne Nenner da, weil der Canon
-		// keinen nennt. "12 % der Besucher" waere eine erfundene Bezugsgroesse.
-		'text'  => sprintf(
-			'%s qualifizierte Anfragen im Zeitraum, Lead-Conversion-Rate %s, Abschlussquote von der Anfrage zum Vertrag %s. Der Betrieb hat die Konten, den Code und die Daten.',
-			esc_html( $e3_lead_count ),
-			esc_html( $e3_lead_conv ),
-			esc_html( $e3_sales_conv )
-		),
-	],
+	[ 'label' => $e3_timeline['preparation_label'], 'text' => $e3_timeline['preparation'] ],
+	[ 'label' => $e3_timeline['campaign_label'], 'text' => $e3_timeline['campaign'] ],
+	[ 'label' => $e3_timeline['optimization_label'], 'text' => $e3_timeline['optimization'] . ' ' . $e3_timeline['followup'] ],
 ];
 
 $case_rows = [
@@ -362,7 +339,7 @@ $faq_items = [
 		'q'    => 'Warum ist Cost per Order aussagekräftiger als Cost per Lead?',
 		'lead' => 'Cost per Order — die Kosten pro gewonnenem Auftrag — berücksichtigt die Abschlussquote und ist deshalb die belastbarere Kennzahl.',
 		'rest' => sprintf(
-			'Rechenbeispiel: 2.000 € Monatsbudget ergeben bei 80 € pro Kontakt 25 Anfragen; bei 4 %% Abschlussquote ist das ein Auftrag, also 2.000 € pro Auftrag. Eine eigene Strecke kommt bei gleichem Budget auf einen deutlich niedrigeren Wert — hier vorsichtig angesetzt mit %1$s pro Anfrage und %2$s Abschlussquote, beides unter den Werten des dokumentierten Falls. Der Unterschied kommt nicht vom niedrigeren Anfragepreis, sondern von der Vorqualifizierung.',
+			'Rechenbeispiel: 2.000 € Monatsbudget ergeben bei 80 € pro Kontakt 25 Anfragen; bei 4 %% Abschlussquote ist das ein Auftrag, also 2.000 € pro Auftrag. Eine eigene Strecke kommt bei gleichem Budget auf einen deutlich niedrigeren Wert — hier vorsichtig angesetzt mit %1$s pro Anfrage und %2$s Abschlussquote, als Rechenannahmen, nicht als Messwerte dieses Falls. Das Ergebnis hängt sowohl vom Anfragepreis als auch von der angenommenen Abschlussquote ab.',
 			$calc_cpl_display,
 			$calc_quote_display
 		),
@@ -737,62 +714,35 @@ get_header();
 					</div>
 
 					<?php
-					// Die viewBox beginnt bei -22, nicht bei 0: die 150-€-Marke sitzt
-					// ueber ihrem Punkt bei y=18, und auf dem Telefon wird sie auf
-					// 30 Einheiten hochskaliert. Ohne diesen Kopfraum schneidet der
-					// obere Rand des SVG sie ab.
+					// Zwei Vergleichswerte, keine erfundenen monatlichen Zwischenpunkte.
+					$e3_after_y = 114 - ( 96 * $e3_cpl_after_val / max( 1, $e3_cpl_before_val ) );
 					?>
-					<svg viewBox="0 -22 620 172" role="img"
-						aria-label="Die Kosten pro qualifizierter Anfrage fallen von <?php echo esc_attr( (string) $e3_cpl_before_val ); ?> Euro im ersten Monat auf <?php echo esc_attr( (string) $e3_cpl_after_val ); ?> Euro im sechsten Monat.">
-						<g stroke="var(--haar)" stroke-width="1">
-							<line x1="46" y1="18" x2="612" y2="18" />
-							<line x1="46" y1="50" x2="612" y2="50" />
-							<line x1="46" y1="82" x2="612" y2="82" />
-						</g>
+					<svg viewBox="0 -22 620 172" role="img" aria-label="<?php echo esc_attr( $e3_timeline['comparison'] ); ?>">
 						<line x1="46" y1="114" x2="612" y2="114" stroke="var(--strich)" stroke-width="1" />
-						<?php
-						// font-size steht als Attribut UND als CSS-Klasse: unter 700 px
-						// skaliert das Stylesheet die Beschriftung hoch, weil das SVG
-						// sonst auf ~290 px Breite gerechnet wird und 9 Einheiten dort
-						// gut vier Pixel ergeben.
-						?>
-						<g class="achse" fill="var(--matt)" font-family="IBM Plex Mono, monospace" font-size="9">
-							<text x="0" y="21">150 €</text>
-							<text x="0" y="53">100 €</text>
-							<text x="8" y="85">50 €</text>
-							<text x="17" y="117">0 €</text>
+						<g stroke="var(--stempel)" stroke-width="24">
+							<line x1="140" y1="114" x2="140" y2="18" />
+							<line x1="470" y1="114" x2="470" y2="<?php echo esc_attr( (string) $e3_after_y ); ?>" />
 						</g>
-						<polyline class="kurve" points="58,18 168,45 278,66 388,93 498,107 600,111" fill="none"
-							stroke="var(--stempel)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
-						<g fill="var(--stempel)" class="punkte">
-							<circle cx="58" cy="18" r="3.5" />
-							<circle cx="600" cy="111" r="4.5" />
+						<g class="marke" fill="var(--tinte)" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" text-anchor="middle">
+							<text x="140" y="12"><?php echo esc_html( $e3_cpl_before ); ?></text>
+							<text x="470" y="<?php echo esc_attr( (string) ( $e3_after_y - 11 ) ); ?>"><?php echo esc_html( $e3_cpl_after ); ?></text>
 						</g>
-						<g class="marke" fill="var(--tinte)" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500">
-							<text x="69" y="15"><?php echo esc_html( $e3_cpl_before ); ?></text>
-							<text x="548" y="105"><?php echo esc_html( $e3_cpl_after ); ?></text>
-						</g>
-						<?php
-						// Die letzte Zeitmarke haengt am rechten Achsenende statt an
-						// einer festen x-Position: hochskaliert lief sie sonst aus
-						// dem Bild.
-						?>
-						<g class="zeit" fill="var(--matt)" font-family="IBM Plex Mono, monospace" font-size="8.5">
-							<text x="52" y="132">MONAT 1</text>
-							<text x="300" y="132" text-anchor="middle">MONAT 3</text>
-							<text x="612" y="132" text-anchor="end">MONAT 6</text>
+						<g class="zeit" fill="var(--matt)" font-family="IBM Plex Mono, monospace" font-size="8.5" text-anchor="middle">
+							<text x="140" y="132">PORTAL · VORHER</text>
+							<text x="470" y="132">EIGENE · ERREICHT</text>
 						</g>
 					</svg>
+					<p><?php echo esc_html( $e3_timeline['comparison'] ); ?></p>
 
 					<table class="werte">
 						<caption class="nur-vorlesen">Kennzahlen des dokumentierten Falls</caption>
 						<tbody>
 							<tr>
-								<th scope="row">Kosten pro qualifizierter Anfrage, Monat 6</th>
+								<th scope="row"><?php echo esc_html( $e3_timeline['result_label'] ); ?></th>
 								<td class="gross"><?php echo esc_html( $e3_cpl_after ); ?></td>
 							</tr>
 							<tr>
-								<th scope="row">Ausgangswert über Portale, Monat 1</th>
+								<th scope="row">Ausgangswert über Portale vor dem Projekt</th>
 								<td><?php echo esc_html( $e3_cpl_before ); ?></td>
 							</tr>
 							<tr>
@@ -806,7 +756,7 @@ get_header();
 							<tr class="quelle">
 								<th scope="row" colspan="2">
 									<?php echo esc_html( ucfirst( $e3_case_label ) ); ?> in DACH.
-									<?php echo esc_html( $e3_build_months ); ?> Vorbereitung, ab Monat drei stabil.
+									<?php echo esc_html( $e3_timeline['compact'] ); ?>
 									Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?>.
 									Dokumentierte Werte eines einzelnen Betriebs, keine Prognose für Ihren.
 								</th>
@@ -1122,8 +1072,8 @@ get_header();
 					<h2 class="kopf" id="fall"><?php echo esc_html( $e3_timeframe ); ?>, ein Betrieb, drei Phasen.</h2>
 					<p class="vorspann">
 						Ein <?php echo esc_html( $e3_case_label ); ?> in DACH.
-						Der Verlauf ist wichtiger als die Endzahl, weil er zeigt, wann nichts passiert
-						und wie lange das dauert.
+						Die Projektmonate zählen ab Beginn der Vorbereitung, nicht ab Kampagnenstart.
+						Die Entwicklung beruht auf dem Zusammenspiel der Maßnahmen; der isolierte Beitrag des Trackings ist nicht gemessen.
 					</p>
 
 					<div class="phasen">
@@ -1158,8 +1108,7 @@ get_header();
 							<tfoot>
 								<tr>
 									<td colspan="3">
-										<?php echo esc_html( $e3_build_months ); ?> Vorbereitung, ab Monat drei stabil bei
-										<?php echo esc_html( $e3_cpl_after ); ?>. Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?>.
+										<?php echo esc_html( $e3_timeline['compact'] ); ?> Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?>.
 										Die Vorher-Abschlussquote ist eine Marktannahme, keine gemessene Zahl dieses Betriebs.
 									</td>
 								</tr>

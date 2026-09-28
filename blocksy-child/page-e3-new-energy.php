@@ -40,6 +40,7 @@ $e3_conv_before  = $e3( 'sales_conversion_before', 'display_hedged', 'einstellig
 $e3_conv_after   = $e3( 'sales_conversion_after', 'display', '15 %' );
 $e3_timeframe    = $e3( 'timeframe', 'display', '6 Monate' );
 $e3_timeframe_dt = $e3( 'timeframe', 'display_dative', '6 Monaten' );
+$e3_timeline     = $e3_canon['timeline'];
 
 $diagnosis = [
 	[
@@ -288,7 +289,7 @@ get_header();
 				<header class="e3v2-heading e3v2-heading--dark" data-reveal>
 					<p class="e3v2-kicker">Entwicklung</p>
 					<h2 id="e3v2-verlauf-title">Der Weg zu <?php echo esc_html( $e3_cpl_after ); ?> verlief in Etappen.</h2>
-					<p>Drei belegte Zustände, keine geglättete Erfolgskurve. Für die Zwischenmonate liegen keine getrennten CPL-Werte vor.</p>
+					<p><?php echo esc_html( $e3_timeline['preparation'] ); ?> Die Projektmonate zählen diese Vorbereitung mit. Die folgenden Werte sind keine Monatsdurchschnitte.</p>
 				</header>
 
 				<div class="e3v2-trajectory" data-reveal>
@@ -301,19 +302,21 @@ get_header();
 					</article>
 					<article class="e3v2-stage e3v2-stage--middle">
 						<span class="e3v2-stage__index">02</span>
-						<p class="e3v2-stage__label">Monate 1–2</p>
+						<p class="e3v2-stage__label"><?php echo esc_html( $e3_timeline['campaign_label'] ); ?></p>
 						<strong><?php echo esc_html( $e3_cpl_ramp ); ?></strong>
-						<h3>Aufbau &amp; Tests</h3>
-						<p>Schon die erste eigene Strecke senkte die Kosten deutlich — bevor das System vollständig optimiert war.</p>
+						<h3>Kampagnenstart &amp; Tests</h3>
+						<p><?php echo esc_html( $e3_timeline['campaign'] ); ?></p>
 					</article>
 					<article class="e3v2-stage e3v2-stage--final">
 						<span class="e3v2-stage__index">03</span>
-						<p class="e3v2-stage__label">Monate 4–6</p>
+						<p class="e3v2-stage__label"><?php echo esc_html( $e3_timeline['optimization_label'] ); ?></p>
 						<strong><?php echo esc_html( $e3_cpl_after ); ?></strong>
 						<h3>Optimiertes System</h3>
-						<p>Kampagnen, Formulare, Zielgruppen und Conversion-Wege wurden auf Basis belastbarer Daten nachgeschärft.</p>
+						<p><?php echo esc_html( $e3_timeline['optimization'] ); ?></p>
 					</article>
 				</div>
+
+				<p><?php echo esc_html( $e3_timeline['followup'] ); ?> Der isolierte Beitrag einer einzelnen Maßnahme ist nicht gemessen.</p>
 
 				<div class="e3v2-outcome-strip" data-reveal>
 					<div><strong><?php echo esc_html( $e3_lead_count ); ?></strong><span>qualifizierte Anfragen in <?php echo esc_html( $e3_timeframe_dt ); ?></span></div>
