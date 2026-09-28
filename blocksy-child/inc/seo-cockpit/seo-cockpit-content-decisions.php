@@ -687,7 +687,7 @@ add_action( 'admin_menu', 'nexus_ci_detach_previous_content_renderers', 100 );
  */
 function nexus_ci_enqueue_content_decision_assets() {
 	$page = isset( $_GET['page'] ) ? sanitize_key( (string) wp_unslash( $_GET['page'] ) ) : '';
-	if ( nexus_ci_admin_slug() !== $page ) {
+	if ( ! in_array( $page, [ nexus_ci_admin_slug(), nexus_get_seo_cockpit_menu_slug() ], true ) ) {
 		return;
 	}
 
@@ -714,10 +714,12 @@ add_action( 'admin_enqueue_scripts', 'nexus_ci_enqueue_content_decision_assets',
 function nexus_ci_render_content_decision_evidence( $decision ) {
 	$market_support = is_array( $decision['market_support'] ?? null ) ? $decision['market_support'] : [];
 	$market_best    = is_array( $market_support['best'] ?? null ) ? $market_support['best'] : [];
+	$direct_market  = is_array( $decision['direct_market'] ?? null ) ? $decision['direct_market'] : [];
 	?>
 	<div class="nsc-decision-evidence">
+		<?php if ( ! empty( $direct_market ) && absint( $direct_market['rank'] ?? 0 ) > 0 ) : ?><span>DataForSEO Pos. <?php echo esc_html( number_format_i18n( absint( $direct_market['rank'] ), 0 ) ); ?></span><?php endif; ?>
 		<?php if ( (float) ( $decision['impressions'] ?? 0 ) > 0 ) : ?><span>GSC <?php echo esc_html( number_format_i18n( (float) $decision['impressions'], 0 ) ); ?> Impr.</span><?php endif; ?>
-		<?php if ( (float) ( $decision['position'] ?? 0 ) > 0 ) : ?><span>Ø Pos. <?php echo esc_html( number_format_i18n( (float) $decision['position'], 1 ) ); ?></span><?php endif; ?>
+		<?php if ( (float) ( $decision['position'] ?? 0 ) > 0 ) : ?><span>GSC Ø Pos. <?php echo esc_html( number_format_i18n( (float) $decision['position'], 1 ) ); ?></span><?php endif; ?>
 		<?php if ( ! empty( $decision['page_role_label'] ) && 'Sonstiges' !== (string) $decision['page_role_label'] ) : ?><span><?php echo esc_html( (string) $decision['page_role_label'] ); ?></span><?php endif; ?>
 		<?php if ( ! empty( $market_support['available'] ) ) : ?><span>DataForSEO Vol. <?php echo esc_html( number_format_i18n( (float) ( $market_best['search_volume'] ?? 0 ), 0 ) ); ?></span><?php endif; ?>
 		<?php if ( absint( $decision['crm_current'] ?? 0 ) > 0 ) : ?><span><?php echo esc_html( number_format_i18n( absint( $decision['crm_current'] ) ) ); ?> CRM-Kontakte</span><?php endif; ?>
@@ -779,23 +781,36 @@ function nexus_ci_render_content_decision_card( $item ) {
 
 			<details class="nsc-decision-details">
 				<summary>Datenbasis anzeigen</summary>
-				<div class="nsc-decision-detail-grid">
-					<div><span>Marktsignal</span><strong><?php echo esc_html( (string) absint( $decision['market_score'] ?? 0 ) ); ?>/100</strong></div>
-					<div><span>SEO-Chance</span><strong><?php echo esc_html( (string) absint( $decision['seo_score'] ?? 0 ) ); ?>/100</strong></div>
-					<div><span>Content-Fit</span><strong><?php echo esc_html( (string) absint( $decision['content_fit'] ?? 0 ) ); ?>/100</strong></div>
-					<div><span>Quellen</span><strong><?php echo esc_html( ! empty( $sources ) ? implode( ' · ', $sources ) : 'Research' ); ?></strong></div>
-				</div>
+				<?php if ( 'market' === (string) ( $item['source_type'] ?? '' ) ) : ?>
+					<?php $direct_market = is_array( $decision['direct_market'] ?? null ) ? $decision['direct_market'] : []; ?>
+					<div class="nsc-decision-detail-grid">
+						<div><span>Opportunity</span><strong><?php echo esc_html( (string) absint( $decision['score'] ?? 0 ) ); ?>/100</strong></div>
+						<div><span>DataForSEO Pos.</span><strong><?php echo esc_html( absint( $direct_market['rank'] ?? 0 ) > 0 ? number_format_i18n( absint( $direct_market['rank'] ), 0 ) : '—' ); ?></strong></div>
+						<div><span>Suchvolumen</span><strong><?php echo esc_html( number_format_i18n( (float) ( $direct_market['search_volume'] ?? 0 ), 0 ) ); ?></strong></div>
+						<div><span>Intent</span><strong><?php echo esc_html( '' !== (string) ( $direct_market['intent'] ?? '' ) ? (string) $direct_market['intent'] : '—' ); ?></strong></div>
+						<div><span>Segment</span><strong><?php echo esc_html( (string) ( $direct_market['segment_label'] ?? 'Beobachten' ) ); ?></strong></div>
+						<div><span>Quellen</span><strong><?php echo esc_html( ! empty( $sources ) ? implode( ' · ', $sources ) : 'DataForSEO' ); ?></strong></div>
+					</div>
+					<p class="nsc-decision-source-value">Direktes Suchmarktsignal. Es wird nur aus vorhandenen DataForSEO-, GSC-, WordPress- und CRM-Snapshots berechnet.</p>
+				<?php else : ?>
+					<div class="nsc-decision-detail-grid">
+						<div><span>Marktsignal</span><strong><?php echo esc_html( (string) absint( $decision['market_score'] ?? 0 ) ); ?>/100</strong></div>
+						<div><span>SEO-Chance</span><strong><?php echo esc_html( (string) absint( $decision['seo_score'] ?? 0 ) ); ?>/100</strong></div>
+						<div><span>Content-Fit</span><strong><?php echo esc_html( (string) absint( $decision['content_fit'] ?? 0 ) ); ?>/100</strong></div>
+						<div><span>Quellen</span><strong><?php echo esc_html( ! empty( $sources ) ? implode( ' · ', $sources ) : 'Research' ); ?></strong></div>
+					</div>
 
-				<p class="nsc-decision-source-value">
-					<?php echo esc_html( (string) ( $item['label'] ?? '' ) . ': ' . number_format_i18n( nexus_ci_number( $item['value'] ?? null ), 1 ) . ' ' . (string) ( $item['unit'] ?? '' ) . ' · Veränderung ' . (string) ( $item['change_label'] ?? '—' ) ); ?>
-				</p>
+					<p class="nsc-decision-source-value">
+						<?php echo esc_html( (string) ( $item['label'] ?? '' ) . ': ' . number_format_i18n( nexus_ci_number( $item['value'] ?? null ), 1 ) . ' ' . (string) ( $item['unit'] ?? '' ) . ' · Veränderung ' . (string) ( $item['change_label'] ?? '—' ) ); ?>
+					</p>
 
-				<?php foreach ( (array) ( $match['top_queries'] ?? [] ) as $query ) : ?>
-					<span class="nexus-ci-query"><?php echo esc_html( (string) ( $query['query'] ?? '' ) . ' · ' . number_format_i18n( nexus_ci_number( $query['impressions'] ?? null ), 0 ) . ' Impr.' ); ?></span>
-				<?php endforeach; ?>
+					<?php foreach ( (array) ( $match['top_queries'] ?? [] ) as $query ) : ?>
+						<span class="nexus-ci-query"><?php echo esc_html( (string) ( $query['query'] ?? '' ) . ' · ' . number_format_i18n( nexus_ci_number( $query['impressions'] ?? null ), 0 ) . ' Impr.' ); ?></span>
+					<?php endforeach; ?>
 
-				<?php if ( ! empty( $match['commercial_conflict'] ) ) : ?>
-					<p class="nexus-ci-v11-note">Die aktuell rankende Seite ist kommerziell ausgerichtet und wird deshalb nicht automatisch als Ziel für einen Markt-/Datenartikel bestätigt.</p>
+					<?php if ( ! empty( $match['commercial_conflict'] ) ) : ?>
+						<p class="nexus-ci-v11-note">Die aktuell rankende Seite ist kommerziell ausgerichtet und wird deshalb nicht automatisch als Ziel für einen Markt-/Datenartikel bestätigt.</p>
+					<?php endif; ?>
 				<?php endif; ?>
 			</details>
 		</div>
