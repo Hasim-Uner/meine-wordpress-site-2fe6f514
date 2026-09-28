@@ -124,7 +124,18 @@ Normalisiert werden:
 - Top-10-Überschneidungen
 - organische Domain-Metriken
 
-Die Liste ist datengetrieben. Sie ist keine manuell gepflegte Wettbewerberliste.
+Die automatische Liste bleibt vollständig datengetrieben. Sie beantwortet: **Mit welchen Domains überschneidet sich die Website aktuell in Googles organischem Suchraum?** Deshalb können bei einer historisch starken Energie-/Solar-Sichtbarkeit weiterhin Branchenportale und Energieanbieter auftauchen.
+
+Daneben gibt es eine **strategische Vergleichsgruppe**. Sie beantwortet die andere Frage: **Mit welchen Anbietern soll die aktuelle WordPress-/B2B-Positionierung verglichen werden?** Diese Domains werden als editierbare Einstellung gepflegt und lösen allein keine zusätzlichen DataForSEO-Calls aus. Wenn eine strategische Domain zugleich im automatischen Competitor-Snapshot vorkommt, werden die vorhandenen Überschneidungsmetriken direkt an der strategischen Karte angezeigt.
+
+Initiale Vergleichsgruppe:
+
+- `oliverfleck.de`
+- `onma.de`
+- `goldenberg-agentur.de`
+- `wedeon.de`
+- `kontor4.de`
+- `perimetrik.de`
 
 ### Keyword Overview
 
@@ -163,6 +174,29 @@ Zusätzlich trennt die Oberfläche die Chancen in drei einfache Entscheidungsseg
 Der Opportunity-Score berücksichtigt deshalb neben Suchvolumen, Ranking und GSC jetzt auch den vorhandenen Page-Role-Business-Wert. Navigationaler Brand-Traffic erhält einen begrenzten Abschlag. Ein Checkfox-Keyword verschwindet damit nicht aus dem Cockpit; es wird nur nicht mehr automatisch vor einem kaufnahen WordPress-Keyword priorisiert.
 
 Das ist kein DataForSEO-Score und keine Erfolgsprognose. Das Cockpit berechnet die Priorität aus den verbundenen Daten selbst.
+
+## Market CSV
+
+`Markt & Wettbewerb` besitzt einen eigenen `Market CSV`-Export. Er ist bewusst vom allgemeinen GSC-Export getrennt.
+
+Der Export liest ausschließlich den bereits gespeicherten Market-Intelligence-Snapshot sowie lokal vorhandene GSC-/CRM-Signale. Ein Download startet **keinen neuen DataForSEO- oder Research-Request**.
+
+Zeilentypen:
+
+- `ranked_keyword` — aktuelle DataForSEO-Rankings der eigenen Domain
+- `keyword_overview` — Suchvolumen, CPC, Keyword Difficulty, Intent und SERP-Merkmale
+- `competitor_auto` — automatisch erkannte organische Wettbewerber
+- `competitor_strategic` — kuratierte strategische Vergleichsgruppe inklusive vorhandener Overlap-Metriken
+- `opportunity` — repo-eigener Join aus DataForSEO, GSC, WordPress und CRM
+- `live_organic` / `live_maps` — zuletzt manuell gespeicherte Live-Ergebnisse, sofern vorhanden
+
+Format:
+
+- UTF-8 mit BOM
+- Semikolon als Trennzeichen
+- deutsche Dezimaldarstellung
+- direkt in Excel öffnungsfähig
+- keine PDF-Ausgabe, weil Rohdaten für Analyse, Agenten und weitere Verarbeitung erhalten bleiben sollen
 
 ## Trennung der Datenwelten
 
