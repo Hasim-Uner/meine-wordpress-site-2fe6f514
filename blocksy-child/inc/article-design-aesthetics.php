@@ -75,7 +75,7 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 		return;
 	}
 
-	$version    = '2026-09-28-design-aesthetics-v5-editorial-visuals';
+	$version    = '2026-09-28-design-aesthetics-v6-evidence-future';
 	$option_key = 'hu_article_design_aesthetics_version';
 
 	if ( (string) get_option( $option_key, '' ) === $version ) {
@@ -93,8 +93,8 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 
 	$current_title   = (string) get_post_field( 'post_title', $post_id );
 	$current_content = (string) get_post_field( 'post_content', $post_id );
-	$new_marker      = 'data-design-essay="v4"';
-	$previous_marker = 'data-design-essay="v3"';
+	$new_marker      = 'data-design-essay="v5"';
+	$previous_marker = 'data-design-essay="v4"';
 	$expected_title  = 'Design ist kein Geschmack. Es ist Architektur.';
 	$new_excerpt     = 'Wie sich Ästhetik und Funktionalität im Design verbinden: von Designgeschichte und Semiotik bis UX, Conversion, Core Web Vitals und Dark Patterns.';
 	$source_path     = get_stylesheet_directory() . '/assets/content/blog/design-ist-mehr-als-aesthetik-v2.html';
