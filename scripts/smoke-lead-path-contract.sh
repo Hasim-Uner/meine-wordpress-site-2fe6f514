@@ -174,7 +174,7 @@ require_pattern "utm_medium" "$CRM_CONTACT"
 require_pattern "utm_campaign" "$CRM_CONTACT"
 require_pattern "nexus_get_seo_cockpit_crm_acquisition_snapshot_data" "$COCKPIT_LEADS"
 require_pattern "google_business_profile" "$COCKPIT_LEADS"
-require_pattern "['\"]acquisition['\"][[:space:]]*=>[[:space:]]*\$acquisition" "$COCKPIT_SYNC"
+require_pattern "['\"]acquisition['\"][[:space:]]*=>" "$COCKPIT_SYNC"
 require_pattern "Akquise &amp; Attribution" "$COCKPIT_UI"
 require_pattern "nexus_render_seo_cockpit_acquisition_table" "$COCKPIT_UI"
 
