@@ -2,13 +2,13 @@
 /**
  * Template Name: Solar & Wärmepumpen Leadgenerierung (Anfragestrecke)
  * Description: Gutachten-Standard. Weisser Grund, Serif im Fliesstext,
- *              Randspalte mit laufender Nummer, vier dunkle Tafeln fuer
+ *              Randspalte mit laufender Nummer, dunkle Tafeln fuer
  *              Beweis und Handlung. Der Marktcheck ist das Gate und steht
  *              bewusst nach der Argumentation, nicht davor.
  *
  *              Aufbau: Dokumentkopf mit Definition und Messschrieb ·
  *              01 Strecke · 02 Ihr Anteil · 03 Rechnung · 04 Fall ·
- *              05 Leiter · 06 Passung · 07 Marktcheck · 08 Fragen ·
+ *              05 Einstieg · 06 Passung · 07 Marktcheck · 08 Fragen ·
  *              09 Verweise.
  *
  * Waehrungs-Doktrin: ausnahmslos EUR. Niemals $ oder generische Symbole.
@@ -118,7 +118,7 @@ $chapters = [
 	[ 'nr' => '02', 'id' => 'anteil',     'titel' => 'Ihr Anteil',   'kurz' => 'Ihr Anteil' ],
 	[ 'nr' => '03', 'id' => 'rechnung',   'titel' => 'Die Rechnung', 'kurz' => 'Rechnung' ],
 	[ 'nr' => '04', 'id' => 'ergebnisse', 'titel' => 'Der Fall',     'kurz' => 'Fall' ],
-	[ 'nr' => '05', 'id' => 'einstieg',   'titel' => 'Die Leiter',   'kurz' => 'Leiter' ],
+	[ 'nr' => '05', 'id' => 'einstieg',   'titel' => 'Ihr Einstieg', 'kurz' => 'Einstieg' ],
 	[ 'nr' => '06', 'id' => 'passung',    'titel' => 'Passung',      'kurz' => 'Passung' ],
 	[ 'nr' => '07', 'id' => 'marktcheck', 'titel' => 'Marktcheck',   'kurz' => 'Marktcheck' ],
 	[ 'nr' => '08', 'id' => 'fragen',     'titel' => 'Fragen',       'kurz' => 'Fragen' ],
@@ -150,43 +150,37 @@ $render_chapter = static function ( $chapter ) {
 
 // ── 01 Die Strecke: fuenf Stationen ────────────────────────────
 // Je Station: was gebaut wird, was davon auf dem Schreibtisch ankommt,
-// und was passiert, wenn die Station fehlt. Die dritte Spalte ist der
-// eigentliche Verkaufstext — sie beziffert den Verlust.
+// und welchen Nutzen das fuer den Vertrieb hat.
 $stations = [
 	[
-		'id'    => 'station-sichtbarkeit',
-		'titel' => 'Sichtbarkeit auf Ihrer Domain',
-		'bau'   => 'Anzeigen in Google und Meta sowie organische Suche führen auf eine Seite, die Ihnen gehört — nicht auf ein Portal-Formular, das Ihren Namen erst nach dem Kauf nennt.',
-		'sicht' => 'Der Interessent kennt Ihren Betriebsnamen, bevor er das Formular abschickt.',
-		'fehlt' => 'Die Aufmerksamkeit gehört der Marke des Portals. Ein PV-Kontakt geht dort üblicherweise an drei bis fünf Betriebe — der Interessent hat also mehrere Angebote, bevor der erste Rückruf kommt.',
+		'id' => 'station-sichtbarkeit',
+		'titel' => 'Landingpages und Kampagnen',
+		'bau' => 'Ich entwickle Seiten für Ihr Angebot und Zielgebiet, richte Kampagnen aus und teste Anzeigenvarianten. Technisches SEO ergänzt die bezahlte Reichweite.',
+		'sicht' => 'Interessenten lernen Ihren Betrieb kennen und fragen direkt bei Ihnen an.',
 	],
 	[
-		'id'    => 'station-vorqualifizierung',
-		'titel' => 'Vorqualifizierung statt Fünf-Felder-Formular',
-		'bau'   => 'Das Formular fragt in Schritten, was über die Passung entscheidet: Objektart und Dachsituation, Postleitzahl, Projektgröße, Zeithorizont, Eigentum. Wer nicht passt, bricht ab — und das ist der Zweck.',
-		'sicht' => 'Sie sehen Region, Objekt und Projektwert, bevor Sie zum Telefon greifen. Kein Erstgespräch zur Feststellung, dass es eine Mietwohnung ist.',
-		'fehlt' => 'Die Qualifizierung passiert am Telefon statt im Formular. Bei 25 Anfragen im Monat und je einer Viertelstunde sind das über sechs Stunden Vertriebszeit, bevor überhaupt ein Angebot geschrieben ist.',
+		'id' => 'station-vorqualifizierung',
+		'titel' => 'Formulare mit Vorqualifizierung',
+		'bau' => 'Ich stimme die Fragen auf Ihre Projekte ab: Produktinteresse, Standort, Objekt und Zeithorizont. Die Angaben werden strukturiert übergeben.',
+		'sicht' => 'Ihr Vertrieb kann Anfragen einordnen und das erste Gespräch vorbereiten.',
 	],
 	[
-		'id'    => 'station-messung',
-		'titel' => 'Messung auf eigenem Server',
-		'bau'   => 'Serverseitiges Tracking auf einer Subdomain Ihrer Website, Server in Frankfurt. Browser-, Plattform- und CRM-Signale werden kontrollierter zusammengeführt; Consent und verfügbare Identifikatoren bestimmen, wie vollständig eine einzelne Anfrage einer Anzeige zugeordnet werden kann. Die Messdaten laufen über Ihren Container, Ihre Konten.',
-		'sicht' => 'Wo die nötigen Mess- und CRM-Signale vorliegen, sehen Sie deutlich besser, welche Anzeigen Anfragen und spätere Vertriebsresultate erzeugen — und wo Budget ohne verwertbare Anfrage bleibt.',
-		'fehlt' => 'Optimiert wird auf Klickberichte. Das Budget wandert dahin, wo geklickt wird — nicht dahin, wo unterschrieben wird. Der Unterschied fällt erst auf, wenn man beides nebeneinanderlegen kann.',
+		'id' => 'station-messung',
+		'titel' => 'Tracking und Quellenzuordnung',
+		'bau' => 'Ich verbinde Browser-, Plattform- und CRM-Signale über serverseitiges Tracking. Einwilligungen und verfügbare Identifikatoren begrenzen die Zuordnung.',
+		'sicht' => 'Sie erkennen, welche Quellen Anfragen und nachvollziehbare Vertriebsresultate liefern.',
 	],
 	[
-		'id'    => 'station-vertrieb',
-		'titel' => 'Anschluss an Ihren Vertrieb',
-		'bau'   => 'Alarm per SMS oder WhatsApp an den zuständigen Vertriebler in unter 60 Sekunden, mit Ort, Projektart und Uhrzeit in der Nachricht. Automatische Eingangsbestätigung mit Terminbuchungslink. Alle Anfragen nach Quelle getrennt in einer Übersicht — auch die, die Sie weiter bei Portalen kaufen.',
-		'sicht' => 'Ihr Betrieb ist der Erste, der zurückmeldet. Auch um 20:30 Uhr, auch am Samstag.',
-		'fehlt' => 'Die Anfrage liegt bis Montag im Sammelpostfach. Bei einem Kontakt, den vier andere auch haben, entscheidet der erste Rückruf — nicht das beste Angebot. Das ist der Auftrag, den man verliert, ohne je davon zu erfahren.',
+		'id' => 'station-vertrieb',
+		'titel' => 'CRM und Rückmeldung',
+		'bau' => 'Ich richte die CRM-Übergabe nach Produktinteresse und Herkunft ein, dazu Benachrichtigung und Eingangsbestätigung. Zuständigkeiten stimmen wir mit Ihrem Vertrieb ab.',
+		'sicht' => 'Anfragen landen beim zuständigen Ansprechpartner und lassen sich nachverfolgen.',
 	],
 	[
-		'id'    => 'station-eigentum',
-		'titel' => 'Eigentum, schriftlich',
-		'bau'   => 'Code, Werbekonten, Tracking-Container, CRM und Domain laufen auf Ihren Zugängen. Jede Komponente ist dokumentiert. Bei Vertragsende gibt es eine Übergabe mit Übersicht, keine Abhängigkeitserklärung.',
-		'sicht' => 'Wenn die Zusammenarbeit endet, läuft die Strecke weiter. Ein anderer Dienstleister kann sie übernehmen, ohne neu zu bauen.',
-		'fehlt' => 'Man mietet ein System und merkt es erst beim Wechsel. Drei Prüffragen für das, was Sie heute haben: Wem gehört der Code Ihrer Anfrageseite? Wem das CRM? Wem der Tracking-Account?',
+		'id' => 'station-eigentum',
+		'titel' => 'Dokumentation und Übergabe',
+		'bau' => 'Ich arbeite auf Ihren Konten und dokumentiere Code, Tracking und Anbindungen. Sie erhalten eine Übersicht der Zugänge und Komponenten.',
+		'sicht' => 'Ihr Betrieb behält die Kontrolle und kann die Betreuung später übergeben.',
 	],
 ];
 
@@ -197,17 +191,17 @@ $conditions = [
 	[
 		'id'    => 'anteil-zugaenge',
 		'titel' => 'Zugänge',
-		'text'  => 'Domain, Hosting, Werbekonten und CRM auf Ihren Namen. Wo noch nichts existiert, wird es auf Ihren Namen angelegt. Rund zwei Stunden Ihrer Zeit in der ersten Woche.',
+		'text'  => 'Domain, Hosting, Werbekonten und CRM auf Ihren Namen. Wo noch nichts existiert, wird es auf Ihren Namen angelegt. Die benötigten Zugänge klären wir vor dem Start.',
 	],
 	[
 		'id'    => 'anteil-entscheider',
 		'titel' => 'Eine Person, die entscheidet',
-		'text'  => 'Geschäftsführung oder Vertriebsleitung mit Entscheidungsbefugnis, erreichbar für etwa eine Stunde alle zwei Wochen. Kein Gremium, keine Abstimmungsrunde.',
+		'text'  => 'Eine feste Person aus Geschäftsführung oder Vertriebsleitung gibt Inhalte frei und entscheidet über die nächsten Schritte.',
 	],
 	[
 		'id'    => 'anteil-rueckruf',
 		'titel' => 'Rückruf-Disziplin',
-		'text'  => 'Der Alarm hilft nur, wenn jemand reagiert. Wer vorqualifizierte Anfragen zwei Tage liegen lässt, braucht kein besseres System, sondern eine andere Absprache im Vertrieb.',
+		'text'  => 'Ihr Vertrieb ruft zurück, fasst nach und pflegt den Bearbeitungsstand im CRM. Erst damit werden aus Formulareingängen nachvollziehbare Ergebnisse.',
 	],
 ];
 
@@ -218,13 +212,6 @@ $phases = [
 	[ 'label' => $e3_timeline['optimization_label'], 'text' => $e3_timeline['optimization'] . ' ' . $e3_timeline['followup'] ],
 ];
 
-$case_rows = [
-	[ 'k' => 'Kosten pro qualifizierter Anfrage', 'vor' => $e3_cpl_before, 'nach' => $e3_cpl_after ],
-	[ 'k' => 'Abschlussquote vorqualifizierter CRM-Leads',  'vor' => $e3_conv_before, 'nach' => $e3_sales_conv ],
-	[ 'k' => 'Anfragen insgesamt im Zeitraum', 'vor' => '—', 'nach' => $e3_lead_count ],
-	[ 'k' => 'Sicht auf Region, Dach, Projektwert', 'vor' => 'keine', 'nach' => 'vor dem Anruf' ],
-	[ 'k' => 'Exklusivität der Kontakte', 'vor' => 'je Tarif', 'nach' => 'immer' ],
-];
 
 // ── 05 Die Leiter ──────────────────────────────────────────────
 // Vier Stufen, jede einzeln buchbar. Der Preis steht an der Stufe,
@@ -242,7 +229,7 @@ $ladder = [
 		'id'    => 'stufe-sofortkontakt',
 		'titel' => 'Sofortkontakt-Setup',
 		'takt'  => '5 Werktage · keine Mindestlaufzeit',
-		'text'  => 'Wirkt auf die Anfragen, die Sie heute schon haben — auch auf gekaufte Leads von Aroundhome, DAA oder Wattfox. Alarm unter 60 Sekunden, automatische Eingangsbestätigung mit Terminlink, alle Quellen in einer Übersicht. Nach rund 60 Tagen wissen Sie mit eigenen Zahlen, was ein gekaufter Lead pro gewonnenem Auftrag wirklich kostet.',
+		'text'  => 'Wirkt auf die Anfragen, die Sie heute schon haben — auch auf gekaufte Leads von Aroundhome, DAA oder Wattfox. Alarm unter 60 Sekunden, automatische Eingangsbestätigung mit Terminlink, alle Quellen in einer Übersicht. Sobald ausreichend Abschlüsse erfasst sind, lassen sich die Anfragequellen wirtschaftlich vergleichen.',
 		'preis' => $entry_price,
 		'note'  => 'netto · einmalig',
 	],
@@ -267,7 +254,7 @@ $ladder = [
 $exits = [
 	[
 		'titel' => 'Nach dem Marktcheck.',
-		'text'  => 'Wenn ich absage, kostet Sie das nichts und Sie behalten die drei Hebel. Ich sage häufiger ab als zu — meistens, weil der Projektwert die Rechnung nicht trägt oder weil im Vertrieb niemand zurückruft.',
+		'text'  => 'Wenn ich absage, kostet Sie das nichts und Sie behalten die drei Hebel. Eine Absage begründe ich anhand Ihrer Ausgangslage.',
 	],
 	[
 		'titel' => 'Nach der Analyse.',
@@ -279,29 +266,29 @@ $exits = [
 	],
 	[
 		'titel' => 'Danach.',
-		'text'  => 'Die Weiterentwicklung ist monatlich kündbar. Was ich nicht zusage: Rufbereitschaft, eine Reaktionszeit im Störfall oder ein garantiertes Ergebnis. Wer das braucht, braucht eine Agentur mit Team.',
+		'text'  => 'Die Weiterentwicklung ist monatlich kündbar. Was ich nicht zusage: Rufbereitschaft, eine Reaktionszeit im Störfall oder ein garantiertes Ergebnis. Dafür wäre eine gesonderte Betreuung nötig.',
 	],
 ];
 
 // ── 06 Passung ─────────────────────────────────────────────────
 $fit_yes = [
-	[ 't' => 'Projektwerte ab ca. 15.000 € privat, 50.000 € gewerblich', 's' => 'Darunter trägt die Marge den Aufbau nicht.' ],
+	[ 't' => 'Projektwerte ab ca. 15.000 € privat, 50.000 € gewerblich', 's' => 'Richtwerte für die Einordnung; entscheidend sind Marge, Kapazität und Zielgebiet.' ],
 	[ 't' => 'Eigener Vertrieb, der abschließt', 's' => 'Ihr Team oder die Geschäftsführung — jemand, der zurückruft und nachfasst.' ],
 	[ 't' => 'Definiertes Zielgebiet', 's' => 'Region oder Bundesland. Nicht „bundesweit, alles“.' ],
-	[ 't' => 'Horizont 12 bis 24 Monate', 's' => 'Bereit, ein Asset aufzubauen statt Anfragen zu mieten.' ],
+	[ 't' => 'Horizont 12 bis 24 Monate', 's' => 'Bereit, Anfragegewinnung über mehrere Monate aufzubauen und zu verbessern.' ],
 ];
 $fit_no = [
-	[ 't' => '„Nächste Woche brauchen wir Leads.“', 's' => 'Dann kaufen Sie welche. Das ist keine Kritik, sondern der richtige Weg für diesen Zeitrahmen.' ],
-	[ 't' => 'Reines Vermittlungsgeschäft', 's' => 'Wer Leads weiterverkauft, braucht kein eigenes System.' ],
+	[ 't' => '„Nächste Woche brauchen wir Leads.“', 's' => 'Ein Neuaufbau ist keine Sofortversorgung mit Kontakten.' ],
+	[ 't' => 'Reines Vermittlungsgeschäft', 's' => 'Dieses Angebot ist auf ausführende Installationsbetriebe ausgerichtet.' ],
 	[ 't' => 'Kein Vertriebsprozess', 's' => 'Anfragen sterben, wenn niemand konsequent qualifiziert und nachfasst.' ],
 	[ 't' => 'Sichtbarkeit nicht gewollt', 's' => 'Der eigene Anfrageweg lebt davon, dass Ihr Betrieb unterscheidbar wird.' ],
 ];
 
 // ── 07 Marktcheck: was im Befund steht ─────────────────────────
 $report_items = [
-	'Einordnung Ihres Marktumfelds anhand der Firmen-Postleitzahl — wie viele Betriebe dort um dieselben Anfragen konkurrieren',
-	'Ob der Projektwert die Rechnung trägt, mit Ihren Zahlen durchgerechnet',
-	'Drei priorisierte Hebel mit konkretem nächstem Schritt — auch wenn ich absage',
+	'Erste Einordnung Ihres Betriebs und Zielgebiets',
+	'Einschätzung anhand Ihrer Projektgröße und Vertriebsstruktur',
+	'Drei priorisierte Ansatzpunkte — auch wenn keine Zusammenarbeit passt',
 	'Eine klare Empfehlung: jetzt, später oder gar nicht',
 ];
 
@@ -324,8 +311,8 @@ $faq_items = [
 	[
 		'id'   => 'faq-definition',
 		'q'    => 'Was ist ein eigenes Anfragesystem für Photovoltaik und Wärmepumpe?',
-		'lead' => 'Ein eigenes Anfragesystem ist eine Anfragestrecke auf der Domain des Installationsbetriebs: Anzeigen und organische Suche führen auf eine eigene Seite, ein mehrstufiges Formular qualifiziert vor dem Erstkontakt vor, serverseitiges Tracking führt verfügbare Marketing- und CRM-Signale kontrollierter zusammen, und ein Alarm erreicht den Vertrieb in unter 60 Sekunden.',
-		'rest' => 'Code, Werbekonten, Tracking-Container und Daten liegen beim Betrieb. Der Unterschied zum Lead-Einkauf liegt nicht im Preis pro Anfrage, sondern in Exklusivität, Vorqualifizierung und Eigentum.',
+		'lead' => 'Eine eigene Website gewinnt Anfragen aus Anzeigen und organischer Suche. Formulare erfassen die wichtigsten Projektangaben und übergeben sie an den Vertrieb.',
+		'rest' => 'Code, Werbekonten, Tracking-Container und Daten liegen beim Betrieb. Die Kosten hängen von Angebot, Region, Wettbewerb und Optimierung ab.',
 		'open' => true,
 	],
 	[
@@ -338,11 +325,7 @@ $faq_items = [
 		'id'   => 'faq-cpo',
 		'q'    => 'Warum ist Cost per Order aussagekräftiger als Cost per Lead?',
 		'lead' => 'Cost per Order — die Kosten pro gewonnenem Auftrag — berücksichtigt die Abschlussquote und ist deshalb die belastbarere Kennzahl.',
-		'rest' => sprintf(
-			'Rechenbeispiel: 2.000 € Monatsbudget ergeben bei 80 € pro Kontakt 25 Anfragen; bei 4 %% Abschlussquote ist das ein Auftrag, also 2.000 € pro Auftrag. Eine eigene Strecke kommt bei gleichem Budget auf einen deutlich niedrigeren Wert — hier vorsichtig angesetzt mit %1$s pro Anfrage und %2$s Abschlussquote, als Rechenannahmen, nicht als Messwerte dieses Falls. Das Ergebnis hängt sowohl vom Anfragepreis als auch von der angenommenen Abschlussquote ab.',
-			$calc_cpl_display,
-			$calc_quote_display
-		),
+		'rest' => 'Für einen sinnvollen Vergleich müssen Anfragekosten und Abschlussquote dieselbe Leadmenge und denselben Zeitraum betreffen. Der Rechner zeigt zusätzlich den anteiligen Aufbau und das Hosting. Vertriebszeit und Betreuung kommen hinzu.',
 	],
 	[
 		'id'   => 'faq-tracking',
@@ -352,9 +335,9 @@ $faq_items = [
 	],
 	[
 		'id'   => 'faq-agentur',
-		'q'    => 'Wie unterscheidet sich das von einer Performance-Agentur?',
-		'lead' => 'Der Unterschied ist Eigentum: Bei vielen Agenturmodellen liegen Landingpage-Code, Werbekonto und Tracking-Container beim Dienstleister, hier liegen sie beim Betrieb.',
-		'rest' => 'Drei Prüffragen: Wem gehört der Code Ihrer Anfrageseite? Wem gehört das CRM? Wem gehört der Tracking-Account? Wenn die Antwort dreimal „uns“ ist, brauchen Sie keinen Wechsel.',
+		'q'    => 'Kann meine bestehende Website bleiben?',
+		'lead' => 'Das wird vor dem Angebot geprüft. Bestehende Seiten, Formulare und Konten können Teil der Lösung bleiben, wenn sie technisch und inhaltlich geeignet sind.',
+		'rest' => 'Die Analyse klärt, welche Bausteine fehlen oder überarbeitet werden müssen. Ein vollständiger Neuaufbau ist keine automatische Voraussetzung.',
 	],
 ];
 
@@ -659,15 +642,27 @@ get_header();
 				<div class="haupt breit">
 					<p class="gegenstand">Gegenstand · Anfragegewinnung für Photovoltaik, Wärmepumpe und Speicher</p>
 
-					<h1>Anfragen, die auf <em>Ihrer</em> Domain entstehen.</h1>
+					<h1>Eigene Anfragen für <em>Solar und Wärmepumpe.</em></h1>
 
 					<p class="aufriss">
-						<span class="erst">Ein eigenes Anfragesystem ist eine Anfragestrecke auf Ihrer Domain.</span>
-						Anzeige oder Suche führt auf Ihre Seite. Ein Formular qualifiziert vor, bevor jemand
-						Ihren Vertrieb erreicht. Serverseitiges Tracking führt verfügbare Marketing- und
-						CRM-Signale kontrollierter zusammen. Ein Alarm erreicht Ihren Vertrieb in unter 60 Sekunden.
-						Code, Konten und Daten gehören Ihrem Betrieb.
+						<span class="erst">Für Solar- und SHK-Betriebe mit eigenem Vertrieb.</span>
+						Ich entwickle Landingpages, optimiere Kampagnen und verbinde Formulare,
+						Tracking und CRM. So kommen Anfragen mit Produktinteresse und Herkunft
+						bei Ihrem Vertrieb an. Code, Konten und Daten bleiben bei Ihnen.
 					</p>
+
+					<div class="ausgang">
+						<a class="tun" href="#marktcheck"
+							data-track-action="cta_strecke_kopf_to_marktcheck"
+							data-track-category="lead_gen"
+							data-track-section="dokumentkopf"
+						>Kostenlosen Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
+						<a class="tun still" href="#strecke"
+							data-track-action="cta_strecke_kopf_to_stationen"
+							data-track-category="navigation"
+							data-track-section="dokumentkopf"
+						>Was ich für Sie umsetze</a>
+					</div>
 
 					<div class="meta">
 						<dl>
@@ -685,23 +680,11 @@ get_header();
 							</div>
 							<div>
 								<dt>Bearbeitet von</dt>
-								<dd>Haşim Üner, Pattensen · 1:1, kein Team</dd>
+								<dd>Haşim Üner · Strategie und Umsetzung persönlich</dd>
 							</div>
 						</dl>
 					</div>
 
-					<div class="ausgang">
-						<a class="tun" href="#marktcheck"
-							data-track-action="cta_strecke_kopf_to_marktcheck"
-							data-track-category="lead_gen"
-							data-track-section="dokumentkopf"
-						>Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
-						<a class="tun still" href="#strecke"
-							data-track-action="cta_strecke_kopf_to_stationen"
-							data-track-category="navigation"
-							data-track-section="dokumentkopf"
-						>Die fünf Stationen</a>
-					</div>
 				</div>
 			</div>
 
@@ -757,13 +740,13 @@ get_header();
 								<th scope="row" colspan="2">
 									<?php echo esc_html( ucfirst( $e3_case_label ) ); ?> in DACH.
 									<?php echo esc_html( $e3_timeline['compact'] ); ?>
-									<?php echo esc_html( hu_e3_summary( 'definitions' ) ); ?>
 										Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?>.
 									Dokumentierte Werte eines einzelnen Betriebs, keine Prognose für Ihren.
 								</th>
 							</tr>
 						</tbody>
 					</table>
+					<p class="belegzeile"><?php echo esc_html( hu_e3_summary( 'definitions' ) ); ?></p>
 				</div>
 			</div>
 
@@ -785,110 +768,6 @@ get_header();
 				</div>
 			<?php endif; ?>
 
-			<!-- Hauptgrafik: zwei Wege, ein Interessent -->
-			<div class="reihe bild">
-				<div class="ganz tafel">
-					<figure>
-						<div class="bildkopf">
-							<div>
-								<figcaption>Derselbe Interessent, zwei Wege — und wo unterwegs etwas verloren geht.</figcaption>
-								<span class="mono" style="display:block;margin-top:.7rem">Beide Wege mit 2.000 € Werbe- bzw. Einkaufsbudget im Monat</span>
-							</div>
-							<div class="quotient">
-								<span class="q zahl">5×</span>
-								<span class="qt">so viele Aufträge<br>bei diesen Annahmen</span>
-							</div>
-						</div>
-
-						<div class="buehne">
-							<svg viewBox="0 26 1180 450" role="img"
-								aria-label="Vergleich zweier Wege bei gleichem Monatsbudget von 2.000 Euro. Beim Einkauf über Portale entstehen 25 Anfragen, die an drei bis fünf Betriebe verteilt werden, am Telefon qualifiziert werden müssen und oft zu spät zurückgerufen werden; am Ende steht ein Auftrag im Monat zu 2.000 Euro. Über die eigene Strecke entstehen 44 Anfragen, die exklusiv sind, sich im Formular selbst vorqualifizieren und binnen 60 Sekunden einen Alarm auslösen; am Ende stehen 5,3 Aufträge im Monat zu 501 Euro.">
-								<g stroke="#332e28" stroke-width="1" stroke-dasharray="2 5">
-									<line x1="330" y1="72" x2="330" y2="440" />
-									<line x1="545" y1="72" x2="545" y2="440" />
-									<line x1="755" y1="72" x2="755" y2="440" />
-									<line x1="940" y1="72" x2="940" y2="440" />
-								</g>
-								<g fill="#948c81" font-family="IBM Plex Mono, monospace" font-size="11.5" letter-spacing="1.6">
-									<text x="95" y="60">ANFRAGE ENTSTEHT</text>
-									<text x="330" y="60">VERTEILUNG</text>
-									<text x="545" y="60">QUALIFIZIERUNG</text>
-									<text x="755" y="60">RÜCKRUF</text>
-									<text x="940" y="60">AUFTRAG</text>
-								</g>
-
-								<path d="M95,125.0 C212,125.0 212,125.0 330,125.0 L330,175.0 C212,175.0 212,175.0 95,175.0 Z" fill="#565049" stroke="#8c8279" stroke-width="1" />
-								<path d="M330,125.0 C438,125.0 438,135.0 545,135.0 L545,165.0 C438,165.0 438,175.0 330,175.0 Z" fill="#565049" stroke="#8c8279" stroke-width="1" />
-								<path d="M545,135.0 C650,135.0 650,141.5 755,141.5 L755,158.5 C650,158.5 650,165.0 545,165.0 Z" fill="#565049" stroke="#8c8279" stroke-width="1" />
-								<path d="M755,141.5 C848,141.5 848,146.0 940,146.0 L940,154.0 C848,154.0 848,158.5 755,158.5 Z" fill="#565049" stroke="#8c8279" stroke-width="1" />
-
-								<path d="M95,324.0 C212,324.0 212,324.0 330,324.0 L330,412.0 C212,412.0 212,412.0 95,412.0 Z" fill="#8a4a1e" stroke="#ef8b4d" stroke-width="1.2" />
-								<path d="M330,324.0 C438,324.0 438,345.0 545,345.0 L545,391.0 C438,391.0 438,412.0 330,412.0 Z" fill="#8a4a1e" stroke="#ef8b4d" stroke-width="1.2" />
-								<path d="M545,345.0 C650,345.0 650,347.5 755,347.5 L755,388.5 C650,388.5 650,391.0 545,391.0 Z" fill="#8a4a1e" stroke="#ef8b4d" stroke-width="1.2" />
-								<path d="M755,347.5 C848,347.5 848,350.0 940,350.0 L940,386.0 C848,386.0 848,388.5 755,388.5 Z" fill="#8a4a1e" stroke="#ef8b4d" stroke-width="1.2" />
-
-								<g fill="#f4f1ec" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="500">
-									<text x="95" y="115">25 gekaufte Anfragen</text>
-									<text x="95" y="313">44 eigene Anfragen</text>
-								</g>
-
-								<g stroke="#7d746a" stroke-width="1.2" fill="none" marker-end="url(#strecke-pfeil-grau)">
-									<path d="M437,124 L437,96" />
-									<path d="M650,131 L650,103" />
-									<path d="M848,137 L848,109" />
-								</g>
-								<g fill="#a9a199" font-family="IBM Plex Mono, monospace" font-size="11.5">
-									<text x="437" y="88" text-anchor="middle">an 3–5 Betriebe</text>
-									<text x="650" y="95" text-anchor="middle">15 Min Telefonzeit je Kontakt</text>
-									<text x="848" y="101" text-anchor="middle">zu spät angerufen</text>
-								</g>
-
-								<g stroke="#ef8b4d" stroke-width="1.2" fill="none" marker-end="url(#strecke-pfeil-orange)">
-									<path d="M437,412 L437,436" />
-									<path d="M650,394 L650,436" />
-									<path d="M848,389 L848,436" />
-								</g>
-								<g fill="#ef8b4d" font-family="IBM Plex Mono, monospace" font-size="11.5">
-									<text x="437" y="459" text-anchor="middle">bleibt exklusiv</text>
-									<text x="650" y="459" text-anchor="middle">Abbruch im Formular</text>
-									<text x="848" y="459" text-anchor="middle">Alarm unter 60 Sek.</text>
-								</g>
-
-								<g font-family="IBM Plex Mono, monospace">
-									<text x="962" y="152" fill="#f4f1ec" font-size="42" font-weight="500" letter-spacing="-1.5">1,0</text>
-									<text x="962" y="174" fill="#948c81" font-size="11.5">Auftrag / Monat</text>
-									<text x="962" y="192" fill="#948c81" font-size="11.5">2.000 € je Auftrag</text>
-									<text x="962" y="370" fill="#ef8b4d" font-size="42" font-weight="500" letter-spacing="-1.5">5,3</text>
-									<text x="962" y="392" fill="#948c81" font-size="11.5">Aufträge / Monat</text>
-									<text x="962" y="410" fill="#948c81" font-size="11.5">501 € je Auftrag</text>
-								</g>
-
-								<defs>
-									<marker id="strecke-pfeil-grau" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="5" markerHeight="5" orient="auto">
-										<polygon points="0,0 8,4 0,8" fill="#7d746a" />
-									</marker>
-									<marker id="strecke-pfeil-orange" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="5" markerHeight="5" orient="auto">
-										<polygon points="0,0 8,4 0,8" fill="#ef8b4d" />
-									</marker>
-								</defs>
-							</svg>
-							<div class="blende" aria-hidden="true"></div>
-						</div>
-
-						<p class="wischhinweis">Seitwärts wischen für den vollen Verlauf →</p>
-
-						<p class="bildfuss">
-							Beide Wege verlieren unterwegs. Der Unterschied liegt darin, <b>wo</b>:
-							Beim Einkauf bricht die Menge nach dem Kontakt weg — also nachdem der Kontakt
-							bezahlt und Vertriebszeit hineingeflossen ist. Auf der eigenen Strecke bricht sie
-							im Formular weg, also vor dem ersten Anruf und ohne Kosten. Bandbreiten der
-							Anfragen maßstäblich, Verlauf danach schematisch; die Endwerte sind mit den
-							Vorgabewerten aus <a class="satzlink" href="#rechnung">Abschnitt 03</a> gerechnet
-							und keine Zusage.
-						</p>
-					</figure>
-				</div>
-			</div>
 		</div>
 
 		<!-- ════════ 01 Die Strecke ════════ -->
@@ -896,13 +775,8 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['strecke'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="strecke-titel">Was eine Anfrage bei Ihnen durchläuft.</h2>
-					<p class="vorspann">
-						Fünf Stationen. An jeder entscheidet sich, ob aus einem Klick ein Termin wird —
-						und an jeder geht heute etwas verloren, das nicht auf der Rechnung steht:
-						Vertriebszeit und Aufträge, die jemand anders zuerst angerufen hat. Links steht,
-						was gebaut wird. Rechts, was davon auf Ihrem Schreibtisch ankommt.
-					</p>
+					<h2 class="kopf" id="strecke-titel">Was ich für Ihre Anfragegewinnung umsetze.</h2>
+					<p class="vorspann">Von der ersten Anzeige bis zur CRM-Übergabe: Ich übernehme die technische Umsetzung und die Optimierung. Ihr Vertrieb übernimmt Beratung, Angebot und Abschluss.</p>
 
 					<div class="strecke">
 						<?php foreach ( $stations as $station_index => $station ) : ?>
@@ -913,13 +787,9 @@ get_header();
 									<p class="bau"><?php echo esc_html( $station['bau'] ); ?></p>
 								</div>
 								<div class="sicht">
-									<span class="l">Auf Ihrem Schreibtisch</span>
+									<span class="l">Für Ihren Vertrieb</span>
 									<p><?php echo esc_html( $station['sicht'] ); ?></p>
 								</div>
-								<p class="fehlt">
-									<b>Fehlt diese Station</b>
-									<?php echo esc_html( $station['fehlt'] ); ?>
-								</p>
 							</article>
 						<?php endforeach; ?>
 					</div>
@@ -933,11 +803,7 @@ get_header();
 				<?php $render_chapter( $chapter_by_id['anteil'] ); ?>
 				<div class="voll">
 					<h2 class="kopf" id="anteil-titel">Drei Dinge müssen bei Ihnen passieren.</h2>
-					<p class="vorspann">
-						Ein Anfragesystem ist kein Zukauf, den man aufstellt und laufen lässt.
-						Diese drei Punkte entscheiden über das Ergebnis stärker als jede technische
-						Entscheidung — deshalb stehen sie <em>vor</em> dem Preis.
-					</p>
+					<p class="vorspann">Damit die Umsetzung vorankommt, brauche ich Zugänge, einen festen Ansprechpartner und einen Vertrieb, der Anfragen bearbeitet.</p>
 
 					<div class="bedingungen">
 						<?php foreach ( $conditions as $condition_index => $condition ) : ?>
@@ -958,19 +824,7 @@ get_header();
 				<?php $render_chapter( $chapter_by_id['rechnung'] ); ?>
 				<div class="voll">
 					<h2 class="kopf" id="rechnung-titel">Nicht pro Anfrage rechnen. Pro Auftrag.</h2>
-					<p class="vorspann">
-						Ein Lead für 80 € ist billig, bis man weiß, wie viele davon zum Auftrag führen.
-						Hier steht deshalb die einzige Zahl, die im Betrieb zählt: was Sie ein gewonnener
-						Auftrag im jeweiligen Weg kostet. Alle Werte sind Ihre Annahmen — die Seite
-						behauptet keine.
-					</p>
-					<p class="vorspann klein">
-						Beide Spalten sind mit <b>2.000 € im Monat</b> vorbelegt, damit der Vergleich am
-						selben Budget hängt — dieselbe Rechnung wie in der Grafik oben. In dem
-						dokumentierten Marktfall aus der Zeile „Zum Vergleich“ lag der Wert für den
-						Einkaufsweg ebenfalls bei rund 2.000 € pro Auftrag. Die Voreinstellung ist also
-						nicht schwarzgemalt.
-					</p>
+					<p class="vorspann">Vergleichen Sie beide Wege mit Ihren eigenen Annahmen. Entscheidend sind Anfragekosten, Abschlussquote und laufender Aufwand. Die vorbelegten Werte sind Rechenbeispiele, keine Prognose für Ihren Betrieb.</p>
 
 					<div class="rechenblatt"
 						data-strecke-rechner
@@ -1050,16 +904,13 @@ get_header();
 					</div>
 
 					<p class="fuss">
-						<b>Enthalten</b> — in Weg B der Aufbau mit <?php echo esc_html( $foundation_price ); ?> auf
+						<b>Enthalten:</b> In Weg B sind <?php echo esc_html( $foundation_price ); ?> Aufbau auf
 						<?php echo esc_html( (string) $calc_months ); ?> Monate verteilt, rund
-						<?php echo esc_html( $hosting_price ); ?> Hosting im Monat und Ihr Werbebudget.
-						<b>Nicht enthalten</b> — die Vertriebszeit. Sie fällt in beiden Wegen an, in Weg A
-						aber pro unqualifizierter Anfrage: Wer 25 Kontakte im Monat je eine Viertelstunde
-						durchtelefoniert, um den einen zu finden, der unterschreibt, verbringt damit gut
-						sechs Stunden am Telefon. Voreingestellt sind bewusst vorsichtige Werte:
-						<?php echo esc_html( $calc_cpl_display ); ?> statt der <?php echo esc_html( $e3_cpl_after ); ?> aus dem
-						dokumentierten Fall, <?php echo esc_html( $calc_quote_display ); ?> statt
-						<?php echo esc_html( $e3_sales_conv ); ?> Abschlussquote der vorqualifizierten CRM-Leads.
+						<?php echo esc_html( $hosting_price ); ?> Hosting monatlich und Ihr Werbebudget.
+						Vertriebszeit und laufende Betreuung sind nicht eingerechnet.
+						Die Voreinstellungen von <?php echo esc_html( $calc_cpl_display ); ?> pro Anfrage und
+						<?php echo esc_html( $calc_quote_display ); ?> Abschlussquote sind Rechenannahmen.
+						Kosten und Quote müssen sich auf dieselbe Leadmenge beziehen.
 					</p>
 				</div>
 			</div>
@@ -1087,37 +938,6 @@ get_header();
 						<?php endforeach; ?>
 					</div>
 
-					<div class="fall tafel">
-						<table>
-							<caption class="nur-vorlesen">Vorher-Nachher-Vergleich des dokumentierten Falls</caption>
-							<thead>
-								<tr>
-									<th scope="col">Kennzahl</th>
-									<th scope="col">Vorher · Portal-Einkauf</th>
-									<th scope="col">Nachher · eigene Strecke</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php foreach ( $case_rows as $row ) : ?>
-									<tr>
-										<th scope="row"><?php echo esc_html( $row['k'] ); ?></th>
-										<td class="vor"><?php echo esc_html( $row['vor'] ); ?></td>
-										<td class="nach"><?php echo esc_html( $row['nach'] ); ?></td>
-									</tr>
-								<?php endforeach; ?>
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colspan="3">
-										<?php echo esc_html( $e3_timeline['compact'] ); ?>
-										Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?>.
-										Die Vorher-Abschlussquote ist eine Marktannahme, keine gemessene Zahl dieses Betriebs.
-									</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-
 					<div class="ausgang">
 						<a class="textlink" href="<?php echo esc_url( $e3_url ); ?>"
 							data-track-action="cta_strecke_fall_to_case"
@@ -1134,11 +954,8 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['einstieg'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="leiter">Vier Stufen. Sie müssen nicht oben anfangen.</h2>
-					<p class="vorspann">
-						Jede Stufe steht für sich und lässt sich einzeln buchen. Wer unten einsteigt, hat
-						nach zwei Monaten eigene Zahlen und entscheidet auf dieser Grundlage über die nächste.
-					</p>
+					<h2 class="kopf" id="leiter">Welcher Einstieg zu Ihrer Ausgangslage passt.</h2>
+					<p class="vorspann">Der kostenlose Marktcheck klärt den Bedarf. Danach entscheiden Sie, ob ein einzelnes Setup, eine vertiefte Analyse oder der Aufbau sinnvoll ist. Es gibt keine Pflicht, alle Stufen zu buchen.</p>
 
 					<div class="leiter">
 						<?php foreach ( $ladder as $rung_index => $rung ) : ?>
@@ -1178,10 +995,7 @@ get_header();
 				<?php $render_chapter( $chapter_by_id['passung'] ); ?>
 				<div class="voll">
 					<h2 class="kopf leise" id="passung-titel">Lieber jetzt klären, ob es passt.</h2>
-					<p class="vorspann">
-						Ehrliche Vorauswahl, bevor wir reden. Wenn mehr als ein Punkt in der rechten Spalte
-						auf Sie zutrifft, sparen Sie sich den Marktcheck.
-					</p>
+					<p class="vorspann">Das Angebot richtet sich an Installationsbetriebe, die eigene Anfragen gewinnen und selbst bearbeiten. Unsicher bei einem Punkt? Beschreiben Sie Ihre Ausgangslage im Marktcheck.</p>
 
 					<div class="passung">
 						<div class="ja">
@@ -1216,19 +1030,8 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['marktcheck'] ); ?>
 				<div class="voll">
-					<h2 class="kopf" id="marktcheck-titel">Marktcheck vor Angebot.</h2>
-					<p class="vorspann">
-						Kein Verkaufsgespräch, kein Pflicht-Call. <?php echo esc_html( (string) $marketcheck_fit_q ); ?>
-						kurze Fit-Fragen plus Kontaktdaten in <?php echo esc_html( (string) $marketcheck_visible_steps ); ?> sichtbaren Schritten.
-						Danach lese ich Ihre Angaben selbst und schicke einen schriftlichen Befund zu Betrieb und Region.
-						Wenn es nicht passt, sage ich das — mit drei Hebeln, die Sie ohne mich umsetzen können.
-					</p>
-					<p class="vorspann klein">
-						Andere Anbieter in diesem Markt führen an dieser Stelle ins Gespräch. Ich schicke ein
-						Dokument. Der Unterschied ist kein Stil, sondern eine Arbeitsentscheidung: Was ich
-						schriftlich behaupte, muss ich belegen können, und Sie können es in Ruhe lesen,
-						weiterreichen und ablehnen, ohne jemanden am Telefon abwimmeln zu müssen.
-					</p>
+					<h2 class="kopf" id="marktcheck-titel">So geht es nach Ihrer Anfrage weiter.</h2>
+					<p class="vorspann">Beantworten Sie <?php echo esc_html( (string) $marketcheck_fit_q ); ?> kurze Fragen und hinterlassen Sie Ihre Kontaktdaten. Ich prüfe Ihre Angaben persönlich und sende den Befund <?php echo esc_html( $marketcheck_reply ); ?> per E-Mail. Sie entscheiden danach, ob wir weiterarbeiten. Kein Pflichtgespräch, keine Buchung durch das Absenden.</p>
 
 					<div class="gate">
 						<div>
@@ -1339,9 +1142,8 @@ get_header();
 					<div class="note">
 						<span class="label">Anmerkung</span>
 						<b>Cost per Order</b> heißt: was ein gewonnener Auftrag kostet, nicht was ein Kontakt
-						kostet. Die Kennzahl ist die einzige, die beide Wege vergleichbar macht — deshalb
-						steht sie in <a class="satzlink" href="#rechnung">Abschnitt 03</a> und nicht in einer
-                        Fußnote.
+						kostet. Beziehen Sie zusätzlich Marge und Vertriebsaufwand ein. Den Vergleich finden Sie in
+						<a class="satzlink" href="#rechnung">Abschnitt 03</a>.
 					</div>
 				</div>
 			</div>
@@ -1352,7 +1154,7 @@ get_header();
 			<div class="blatt reihe">
 				<?php $render_chapter( $chapter_by_id['verweise'] ); ?>
 				<div class="voll">
-					<h2 class="kopf leise" id="verweise-titel">Die Seiten, auf denen die Zahlen herkommen.</h2>
+					<h2 class="kopf leise" id="verweise-titel">Einzelne Fragen vertiefen.</h2>
 					<p class="vorspann">
 						<?php echo esc_html( (string) count( $references ) ); ?> Seiten zu Strategie,
 						Lead-Qualität, Funnel-Architektur und Markteinordnung — nach der Frage sortiert,
@@ -1382,18 +1184,14 @@ get_header();
 			<div class="blatt">
 				<div class="tafel reihe">
 					<div class="haupt breit">
-						<h2 id="abschluss">Anfragen besitzen, nicht mieten.</h2>
-						<p class="aufriss">
-							Ich arbeite 1:1 mit Solar- und SHK-Betrieben. Jede Region wird in Befund,
-							Datenkette und Vertriebsanschluss einzeln abgebildet — deshalb entscheidet der
-							Marktcheck über die Zusammenarbeit, nicht ein Vertriebsgespräch.
-						</p>
+						<h2 id="abschluss">Passt ein eigener Anfrageweg zu Ihrem Betrieb?</h2>
+						<p class="aufriss">Starten Sie mit dem kostenlosen Marktcheck. Sie erhalten meine schriftliche Einschätzung und einen konkreten nächsten Schritt.</p>
 						<div class="ausgang">
 							<a class="tun" href="#marktcheck"
 								data-track-action="cta_strecke_abschluss_to_marktcheck"
 								data-track-category="lead_gen"
 								data-track-section="abschluss"
-							>Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
+							>Kostenlosen Marktcheck starten <span class="pf" aria-hidden="true">→</span></a>
 							<a class="tun still" href="#einstieg"
 								data-track-action="cta_strecke_abschluss_to_leiter"
 								data-track-category="offer"
