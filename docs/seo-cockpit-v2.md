@@ -22,6 +22,12 @@ Das Cockpit ist aus der bisherigen Monolith-Datei in klar getrennte Layer aufget
   Insight-Regeln, WordPress-Kontext, URL-Zuordnung und Drilldown-Datenmodell.
 - `blocksy-child/inc/seo-cockpit-diagnostics.php`
   Runtime-Diagnostik fuer OAuth, Cron, Koko, Linkgraph und Drilldown.
+- `blocksy-child/inc/seo-cockpit-dataforseo-client.php`
+  DataForSEO-Credentials, HTTP-Client, Fehlerbehandlung und Kostenledger.
+- `blocksy-child/inc/seo-cockpit-market-intelligence.php`
+  Externer Suchmarkt-Snapshot, Wettbewerber, Live-Watchlist und Opportunity Join.
+- `blocksy-child/inc/seo-cockpit-market-ui.php`
+  Admin-Oberfläche für Markt, Wettbewerb, Watchlist und Provider-Kontrolle.
 - `blocksy-child/inc/seo-cockpit-command-center.php`
   Revenue Command Center V1: Score Helper, Next-Best-Action Resolver, Today Revenue Queue und minimaler Status-Layer.
 - `blocksy-child/inc/seo-cockpit-ui.php`
@@ -67,6 +73,12 @@ Der Uebersichts-Snapshot kombiniert drei Ebenen:
   - explizite Kennzahl für `google_business_profile`
   - Einstieg, Formular-Landing und aktuelle Pipeline-Stufe ohne personenbezogene Daten im Cockpit
   - Kontakt-basierte Semantik: ein Kontakt wird nach seiner jeweils letzten Anfrage attribuiert; wiederholte Formulare sind keine zusätzlichen Personen
+- Market Intelligence / DataForSEO:
+  - rankende Keywords, Suchvolumen, Intent und Keyword Difficulty aus dem externen Suchmarkt
+  - datengetriebene Wettbewerber über gemeinsame SERPs
+  - gebündelter wöchentlicher Labs-Snapshot mit Kostenledger und Auto-Budget
+  - Organic-/Maps-Live-Watchlist nur nach explizitem Admin-Klick
+  - Opportunity Join mit GSC- und Lead-Signalen; externe Schätzwerte ersetzen keine First-Party-Messung
 - WordPress:
   - Post ID
   - Post Type
@@ -279,6 +291,7 @@ Jede Insight enthaelt:
 - URL-Inspection ist bewusst manuell im Drilldown, nicht massenhaft automatisiert.
 - Sitemap-Mitgliedschaft pro URL ist derzeit ein WordPress-internes Signal, keine Search-Console-URL-Membership.
 - Koko basiert auf defensivem REST-Mapping und nicht auf einer harten Plugin-internen API-Vertragsgarantie.
+- DataForSEO ist eine optionale externe Datenquelle; ohne Credentials bleibt der bestehende GSC-/CRM-Cockpitpfad vollständig nutzbar.
 - Die interne Linkzaehlung trennt jetzt Kontext- und Sitewide-Signale, bleibt aber bei Widgets und dynamisch von Plugins injizierten Navigationspfaden noch konservativ.
 - Audit- und CRM-Attribution decken Anfrage-Herkunft ab, aber weiterhin keine generische serverseitige CTA-Klickhistorie vor dem Formular.
 - Der CRM-Akquise-Layer ist kontaktbasiert und verwendet die jeweils letzte gespeicherte Anfrage-Herkunft; für exakte historische Submit-Attribution pro wiederholter Anfrage wäre eine strukturierte Activity-Historie erforderlich.
