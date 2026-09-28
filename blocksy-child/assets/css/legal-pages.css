@@ -501,3 +501,30 @@
     transform: none;
   }
 }
+
+
+/* Das Overlay selbst folgt beim Oeffnen ebenfalls dem hellen Dokumentstil. */
+.legal-modal__panel {
+  border-radius: 3px;
+  border-color: var(--haar);
+  background: var(--papier);
+  color: var(--tinte);
+  box-shadow: 0 var(--s3) var(--s6) color-mix(in srgb, var(--tinte) 22%, transparent);
+}
+
+.legal-modal__close {
+  border-radius: 3px;
+  border-color: var(--haar);
+  background: var(--papier);
+  color: var(--tinte);
+}
+
+.legal-modal__close:hover,
+.legal-modal__close:focus-visible {
+  border-color: var(--strich);
+  background: var(--zone);
+}
+
+.legal-modal__loader {
+  color: var(--grau);
+}
