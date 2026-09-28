@@ -60,7 +60,7 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 		return;
 	}
 
-	$version    = '2026-09-28-design-aesthetics-v3-autolink-class';
+	$version    = '2026-09-28-design-aesthetics-v4-copy-accuracy';
 	$option_key = 'hu_article_design_aesthetics_version';
 
 	if ( (string) get_option( $option_key, '' ) === $version ) {
@@ -84,6 +84,36 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 	$new_excerpt     = 'Wie sich Ästhetik und Funktionalität im Design verbinden: von Designgeschichte und Semiotik bis UX, Conversion, Core Web Vitals und Dark Patterns.';
 
 	if ( false !== strpos( $current_content, $new_marker ) ) {
+		$polished_content = str_replace(
+			[
+				'Farben, Schriften, Bildern und Layouts.',
+				'Google bewertet mit den Core Web Vitals unter anderem Ladeerlebnis, Interaktionsreaktion und visuelle Stabilität.',
+				'Die üblichen Schwellenwerte für eine gute Nutzererfahrung liegen bei',
+			],
+			[
+				'Farben, Schriften, Bilder und Layouts.',
+				'Mit den Core Web Vitals stellt Google drei Messgrößen für Ladeerlebnis, Interaktionsreaktion und visuelle Stabilität bereit.',
+				'Googles empfohlene Schwellenwerte für eine gute Nutzererfahrung liegen bei',
+			],
+			$current_content
+		);
+
+		if ( $polished_content !== $current_content ) {
+			$result = wp_update_post(
+				wp_slash(
+					[
+						'ID'           => $post_id,
+						'post_content' => $polished_content,
+					]
+				),
+				true
+			);
+
+			if ( is_wp_error( $result ) || ! $result ) {
+				return;
+			}
+		}
+
 		update_post_meta( $post_id, '_hu_article_design_aesthetics_version', $version );
 		update_option( $option_key, $version, false );
 		return;
