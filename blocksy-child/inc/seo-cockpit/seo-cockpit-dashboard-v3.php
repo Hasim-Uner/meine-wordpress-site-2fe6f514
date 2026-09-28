@@ -617,6 +617,8 @@ function nexus_render_seo_cockpit_dashboard_v3() {
 
 		<?php nexus_seo_cockpit_v3_render_action_hub( $command ); ?>
 
+		<?php if ( function_exists( 'nexus_ci_render_content_decision_dashboard_panel' ) ) { nexus_ci_render_content_decision_dashboard_panel(); } ?>
+
 		<section class="nsc-v3-section" aria-labelledby="nsc-v3-momentum-title"><div class="nsc-v3-section__head"><div><p class="nsc-v3-eyebrow">Momentum</p><h2 id="nsc-v3-momentum-title">Wo sich gerade etwas bewegt</h2><p>Striking Distance und Query-Bewegung statt statischer Aufgabenlisten.</p></div><span class="nsc-v3-period">Letzte <?php echo esc_html( (string) $range_days ); ?> Tage</span></div><div class="nsc-v3-split nsc-v3-split--wide-left">
 			<article class="nsc-v3-panel"><div class="nsc-v3-panel__head"><div><span class="nsc-v3-panel__icon"><span class="dashicons dashicons-lightbulb" aria-hidden="true"></span></span><div><strong>Top Chancen</strong><p>Queries, die mit überschaubarem Aufwand näher an die Spitze können.</p></div></div></div><?php nexus_seo_cockpit_v3_render_opportunities( (array) $snapshot ); ?></article>
 			<article class="nsc-v3-panel"><div class="nsc-v3-panel__head"><div><span class="nsc-v3-panel__icon"><span class="dashicons dashicons-chart-line" aria-hidden="true"></span></span><div><strong>Query-Mover</strong><p>Gewinner und Verlierer gegenüber der Vorperiode.</p></div></div></div><?php nexus_seo_cockpit_v3_render_movers( (array) $snapshot ); ?></article>
