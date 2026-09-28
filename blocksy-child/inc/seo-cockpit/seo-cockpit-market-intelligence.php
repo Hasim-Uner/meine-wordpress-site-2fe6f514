@@ -715,11 +715,26 @@ function nexus_market_intelligence_gsc_query_map( $seo_snapshot ) {
  * @return array<int, array<string, mixed>>
  */
 function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12 ) {
-	$market = nexus_get_market_intelligence_snapshot();
-	$ranked = is_array( $market['ranked']['rows'] ?? null ) ? $market['ranked']['rows'] : [];
-	$gsc    = nexus_market_intelligence_gsc_query_map( $seo_snapshot );
-	$leads  = is_array( $seo_snapshot['leads']['page_map'] ?? null ) ? $seo_snapshot['leads']['page_map'] : [];
-	$out    = [];
+	$market      = nexus_get_market_intelligence_snapshot();
+	$ranked      = is_array( $market['ranked']['rows'] ?? null ) ? $market['ranked']['rows'] : [];
+	$gsc         = nexus_market_intelligence_gsc_query_map( $seo_snapshot );
+	$leads       = is_array( $seo_snapshot['leads']['page_map'] ?? null ) ? $seo_snapshot['leads']['page_map'] : [];
+	$acquisition = is_array( $seo_snapshot['acquisition'] ?? null ) ? $seo_snapshot['acquisition'] : [];
+	$crm_entries = [];
+
+	foreach ( (array) ( $acquisition['entry_rows']['current'] ?? [] ) as $entry_row ) {
+		if ( ! is_array( $entry_row ) ) {
+			continue;
+		}
+		$entry_url = function_exists( 'nexus_get_seo_cockpit_internal_attribution_url' )
+			? nexus_get_seo_cockpit_internal_attribution_url( (string) ( $entry_row['key'] ?? '' ) )
+			: (string) ( $entry_row['key'] ?? '' );
+		if ( '' !== $entry_url ) {
+			$crm_entries[ $entry_url ] = absint( $entry_row['count'] ?? 0 );
+		}
+	}
+
+	$out = [];
 
 	foreach ( $ranked as $row ) {
 		if ( ! is_array( $row ) ) {
@@ -739,6 +754,7 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 		$lifetime_leads= is_array( $lead_row['lifetime'] ?? null ) ? $lead_row['lifetime'] : [];
 		$lead_count    = absint( $current_leads['requests'] ?? 0 );
 		$won_count     = absint( $lifetime_leads['won'] ?? 0 );
+		$crm_contacts  = '' !== $lead_url ? absint( $crm_entries[ $lead_url ] ?? 0 ) : 0;
 
 		$volume_score = min( 25.0, log10( $volume + 1.0 ) * 8.0 );
 		$rank_score   = 0.0;
@@ -757,7 +773,7 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 		$gsc_score = min( 20.0, log10( max( 0.0, (float) ( $gsc_row['impressions'] ?? 0.0 ) ) + 1.0 ) * 7.0 );
 		$intent     = sanitize_key( (string) ( $row['intent'] ?? '' ) );
 		$intent_score = in_array( $intent, [ 'commercial', 'transactional' ], true ) ? 10.0 : ( 'informational' === $intent ? 4.0 : 2.0 );
-		$lead_score = min( 15.0, ( $lead_count * 4.0 ) + ( $won_count * 6.0 ) );
+		$lead_score = min( 15.0, ( $lead_count * 3.0 ) + ( $crm_contacts * 3.0 ) + ( $won_count * 6.0 ) );
 		$penalty    = null !== $difficulty ? min( 10.0, max( 0.0, ( $difficulty - 50.0 ) / 5.0 ) ) : 0.0;
 		$score      = max( 0, min( 100, (int) round( $volume_score + $rank_score + $gsc_score + $intent_score + $lead_score - $penalty ) ) );
 
@@ -782,8 +798,9 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 			'gsc_clicks'      => (float) ( $gsc_row['clicks'] ?? 0.0 ),
 			'gsc_impressions' => (float) ( $gsc_row['impressions'] ?? 0.0 ),
 			'gsc_position'    => (float) ( $gsc_row['position'] ?? 0.0 ),
-			'leads_current'   => $lead_count,
-			'won_lifetime'    => $won_count,
+			'leads_current'        => $lead_count,
+			'crm_contacts_current' => $crm_contacts,
+			'won_lifetime'         => $won_count,
 		];
 	}
 
