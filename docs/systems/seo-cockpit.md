@@ -15,7 +15,8 @@ Stattdessen:
 - Chrome UX Report liefert im Research-Layer reale Web-Performance-Felddaten
 - IndexNow meldet neue, geänderte und gelöschte URLs an teilnehmende Suchmaschinen
 - Koko Analytics liefert optional die lokale Traffic-Sicht
-- das interne Audit-CRM liefert jetzt zusätzlich Lead- und Attributionssignale
+- das interne Audit-CRM liefert Lead- und Seitenattributionssignale
+- das gemeinsame Nexus CRM liefert zusätzlich UTM-/Kampagnenattribution für vertriebsrelevante Kontakte
 - das Repo enthält die Logik, das Caching und die Admin-Oberfläche
 
 ## Aktueller Scope
@@ -29,6 +30,7 @@ Repo-seitig vorhanden:
 - priorisierte Queue im Admin, die SEO-Signale jetzt gegen Business-Wert, Funnel-Nähe und Confidence gewichtet
 - Revenue Command Center V1 mit Today Revenue Queue für Anfrage-/Umsatzwirkung statt Traffic-Priorisierung
 - Lead-Layer aus `nexus_review_request` mit Audit-Leads, Status, Source-Mix und intern attribuierten Seiten
+- Akquise-Layer aus `nexus_contact` mit Kanal, `utm_medium`, `utm_campaign`, Einstieg, Formular-Landing und Pipeline-Stufe; `google_business_profile` wird als eigene Kampagne/Kennzahl sichtbar
 - minimaler Status-Layer für Revenue-Queue-Einträge über WordPress-Option, ohne neue DB-Tabelle
 - Settings-Seite für
   - Search-Console-Property
@@ -69,6 +71,7 @@ Repo-seitig vorhanden:
   - ersten internen Einstieg der Session
   - vorherige interne Seite
   - Referrer-URL
+- CRM-Akquise-Snapshot für Projekt-, Kontakt-, White-Label- und gespiegelte Marktcheck-Kontakte; ausgewiesen werden eindeutige Kontakte nach ihrer jeweils letzten Anfrage, nicht rohe Formular-Submits
 - automatischer Snapshot-Refresh per WP-Cron (`twicedaily`)
 - optionale Erkennung des Plugins `koko-analytics/koko-analytics.php`
 - IndexNow-Control-Layer mit
