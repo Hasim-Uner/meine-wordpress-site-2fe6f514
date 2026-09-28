@@ -105,21 +105,21 @@ function hu_e3_canon() {
 			],
 			'lead_count'       => [
 				'value'          => HU_E3_LEAD_COUNT,
-				'display'        => '1.750+',
+				'display'        => '1.750',
 				'counter_target' => '1750',
-				'label'          => 'qualifizierte Anfragen',
+				'label'          => 'Anfragen insgesamt',
 			],
 			'lead_conversion'  => [
 				'value'          => HU_E3_LEAD_CONVERSION_PERCENT,
 				'display'        => '12 %',
 				'counter_target' => '12',
-				'label'          => 'Lead-Conversion-Rate',
+				'label'          => 'Besucher-zu-Lead-Conversion',
 			],
 			'sales_conversion' => [
 				'value'          => HU_E3_SALES_CONVERSION_PERCENT,
 				'display'        => '15 %',
 				'counter_target' => '15',
-				'label'          => 'Abschlussquote',
+				'label'          => 'Abschlussquote der vorqualifizierten CRM-Leads',
 			],
 			// Die Vorher-Quote ist die einzige Zahl dieses Falls, die nicht
 			// gemessen wurde: sie ist eine Marktannahme ueber gekaufte
@@ -141,7 +141,7 @@ function hu_e3_canon() {
 				'value'          => HU_E3_SALES_CONVERSION_PERCENT,
 				'display'        => '15 %',
 				'counter_target' => '15',
-				'label'          => 'Abschlussquote nachher (eigenes Anfragesystem)',
+				'label'          => 'Abschlussquote der vorqualifizierten CRM-Leads',
 			],
 			'timeframe'        => [
 				'value'          => HU_E3_TIMEFRAME_MONTHS,
@@ -212,10 +212,12 @@ function hu_e3_canon() {
 			'result_label' => 'Ab Projektmonat 3 erreichter Wert',
 			'comparison' => 'Portal-Einkauf vorher: 150 € pro Anfrage. In der eigenen Kampagne wurden ab dem dritten Projektmonat rund 22 € erreicht. Vergleich zweier Anfragequellen, keine monatliche Messkurve.',
 		],
+		// Betreiberklärung vom 28.09.2026: Mengen und Quoten haben eigene Bezugsgrößen.
 		'summary'    => [
-			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750+ qualifizierte Anfragen, 12 % Lead-Conversion-Rate und 15 % Abschlussquote, 6 Monate.',
-			'proof'      => 'Referenz mittelständischer PV-Installationsbetrieb: 1.750+ qualifizierte Anfragen, 12 % Lead-Conversion-Rate, 15 % Abschlussquote und über 85 % weniger Kosten pro Anfrage.',
-			'conversion' => 'Im selben Projekt lag die Lead-Conversion-Rate bei 12 % und die Abschlussquote bei 15 %; an der Abschlussquote hatte der Vertrieb einen wesentlichen Anteil.',
+			'definitions' => 'In sechs Monaten wurden insgesamt 1.750 Leads gewonnen, hauptsächlich über Meta Ads, organische Google-Suche und Google Ads. Rund 12 % der Websitebesucher wurden zu Leads. Etwa 95 % der Leads wurden in Bitrix24 mit Produktinteresse und Herkunft erfasst. Die Formulare qualifizierten nach Solar, Wärmepumpe oder Kombination vor. Unter diesen vorqualifizierten CRM-Leads lag die Abschlussquote bei rund 15 %.',
+			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750 Anfragen insgesamt, 12 % Besucher-zu-Lead-Conversion und 15 % Abschlussquote der vorqualifizierten CRM-Leads, 6 Monate.',
+			'proof'      => 'Referenz mittelständischer PV-Installationsbetrieb: 1.750 Anfragen insgesamt, 12 % Besucher-zu-Lead-Conversion, 15 % Abschlussquote der vorqualifizierten CRM-Leads und über 85 % weniger Kosten pro Anfrage.',
+			'conversion' => 'Im selben Projekt lag die Besucher-zu-Lead-Conversion bei 12 % und die Abschlussquote der vorqualifizierten CRM-Leads bei 15 %; an der Abschlussquote hatte der Vertrieb einen wesentlichen Anteil.',
 		],
 	];
 }

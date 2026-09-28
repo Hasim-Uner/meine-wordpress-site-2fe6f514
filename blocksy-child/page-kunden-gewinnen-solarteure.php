@@ -27,7 +27,7 @@ $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
-$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 
@@ -90,7 +90,7 @@ $linked_assets = [
 	[ 't' => 'Lead-Funnel Solar (Pillar)', 's' => 'Die 5 Funnel-Stufen und die häufigsten Fehler.', 'url' => home_url( '/lead-funnel-solar/' ) ],
 	[ 't' => 'TCO über 24 Monate: Portal-Leads vs. eigenes System', 's' => 'Strategische Vergleichsmatrix mit Asset-Eigentum-Logik.', 'url' => $vs_url ],
 	[ 't' => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage', 's' => 'Warum Portal-Leads das Wachstum bremsen — Kosten pro Anfrage im Detail.', 'url' => $intercept_url ],
-	[ 't' => 'Solar-Methodik-Case', 's' => sprintf( '%1$s Anfragen, %2$s Abschlussquote.', $e3_lead_count, $e3_sales_conversion ), 'url' => $e3_url ],
+	[ 't' => 'Solar-Methodik-Case', 's' => sprintf( '%1$s Anfragen, %2$s Abschlussquote der vorqualifizierten CRM-Leads.', $e3_lead_count, $e3_sales_conversion ), 'url' => $e3_url ],
 ];
 
 $faq = [

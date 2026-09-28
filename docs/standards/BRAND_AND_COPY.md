@@ -301,3 +301,12 @@ danach. Portal-Einkauf ist eine andere Anfragequelle, kein Messpunkt der
 eigenen Kampagne. Der erreichte CPL darf nicht als Durchschnitt aller Monate
 oder als alleinige Wirkung des Server-Side-Trackings bezeichnet werden.
 Details und Grenzen: `docs/decisions/solar-case-timeline-2026-09-27.md`.
+
+### Bezugsgrößen der Solar-Referenz (28.09.2026)
+
+1.750 ist die Gesamtleadzahl über sechs Monate und alle genannten Quellen,
+nicht die Anzahl qualifizierter CRM-Leads. Rund 95 % wurden nach formularbasierter
+Vorqualifizierung in Bitrix24 erfasst. 12 % bezeichnet Besucher zu Leads;
+15 % bezeichnet Abschlüsse unter diesen vorqualifizierten CRM-Leads.
+Die gemeinsame Erläuterung liegt in `hu_e3_summary('definitions')`.
+Keine Gesamt-CPO-Rechnung aus dem erreichten Kampagnen-CPL und der CRM-Quote.

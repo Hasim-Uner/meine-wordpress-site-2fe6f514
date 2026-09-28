@@ -26,7 +26,7 @@ $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
-$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 
@@ -75,7 +75,7 @@ $funnel_pitfalls = [
 $linked_assets = [
 	[ 't' => 'Server-Side Tracking für B2B', 's' => 'GA4, Meta CAPI, Consent Mode v2 – die Daten-Schicht unter dem Funnel.', 'url' => $sst_url ],
 	[ 't' => 'TCO über 24 Monate: Portal-Leads vs. eigenes System', 's' => 'Strategischer 8-Kriterien-Vergleich mit Asset-Eigentum-Logik.', 'url' => $vs_url ],
-	[ 't' => 'Solar-Methodik-Case', 's' => sprintf( '%1$s qualifizierte Anfragen, %2$s Abschlussquote, %3$s niedrigere Cost per Lead.', $e3_lead_count, $e3_sales_conversion, $e3_cpl_reduction ), 'url' => $e3_url ],
+	[ 't' => 'Solar-Methodik-Case', 's' => sprintf( '%1$s Anfragen insgesamt, %2$s Abschlussquote der vorqualifizierten CRM-Leads, %3$s niedrigere Cost per Lead.', $e3_lead_count, $e3_sales_conversion, $e3_cpl_reduction ), 'url' => $e3_url ],
 ];
 
 $faq = [

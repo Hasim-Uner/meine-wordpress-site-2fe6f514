@@ -15,7 +15,7 @@ $energy_url       = function_exists( 'nexus_get_energy_systems_url' ) ? nexus_ge
 $e3_canon         = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_case_url      = isset( $e3_canon['url'] ) ? (string) $e3_canon['url'] : home_url( '/case-study-solar-leadgenerierung/' );
 $e3_metrics       = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
-$e3_lead_count    = $e3_metrics['lead_count']['display']       ?? '1.750+';
+$e3_lead_count    = $e3_metrics['lead_count']['display']       ?? '1.750';
 $e3_sales_conv    = $e3_metrics['sales_conversion']['display'] ?? '15 %';
 $e3_cpl_reduction = $e3_metrics['cpl_reduction']['display']    ?? 'über 85 %';
 $e3_timeframe     = $e3_metrics['timeframe']['display']        ?? '6 Monate';
@@ -58,8 +58,8 @@ $loss_markers = [
 ];
 
 $proof_metrics = [
-	[ 'value' => $e3_lead_count, 'label' => 'qualifizierte Anfragen', 'detail' => 'eigenes System' ],
-	[ 'value' => $e3_sales_conv, 'label' => 'Abschlussquote', 'detail' => 'vom Lead zum Auftrag' ],
+	[ 'value' => $e3_lead_count, 'label' => 'Anfragen insgesamt', 'detail' => 'eigenes System' ],
+	[ 'value' => $e3_sales_conv, 'label' => 'Abschlussquote', 'detail' => 'vorqualifizierte CRM-Leads' ],
 	[ 'value' => $e3_cpl_before . ' auf ' . $e3_cpl_after, 'label' => 'Kosten pro Anfrage', 'detail' => 'vorher/nachher' ],
 	[ 'value' => $e3_timeframe, 'label' => 'Validierungszeitraum', 'detail' => 'Implementierung und Optimierung' ],
 ];

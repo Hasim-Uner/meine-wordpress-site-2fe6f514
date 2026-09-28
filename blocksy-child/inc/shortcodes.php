@@ -441,7 +441,7 @@ function hu_hero_section_shortcode() {
 	$public_proof  = function_exists( 'nexus_get_public_proof_data' ) ? nexus_get_public_proof_data() : [];
 	$primary_term  = function_exists( 'nexus_get_public_primary_term' ) ? nexus_get_public_primary_term() : 'WordPress als Nachfrage-System für B2B';
 	$ownership_copy = function_exists( 'nexus_get_public_ownership_sentence' ) ? nexus_get_public_ownership_sentence() : 'Code, Inhalte, Zugänge und Setups bleiben bei Ihnen. Laufende Zusammenarbeit bedeutet Weiterentwicklung, nicht Abhängigkeit.';
-	$lead_count    = $public_proof['metrics']['lead_count']['value'] ?? '1.750+';
+	$lead_count    = $public_proof['metrics']['lead_count']['value'] ?? '1.750';
 	$sales_rate    = $public_proof['metrics']['sales_conversion']['value'] ?? '15 %';
 	$cpl_reduction = $public_proof['metrics']['cpl_reduction']['value'] ?? 'über 85 %';
 	$lead_target   = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'counter_target', '1750' ) : '1750';
@@ -476,8 +476,8 @@ function hu_hero_section_shortcode() {
 						</p>
 						<p class="wp-hero-platform-note nx-reveal"><?php echo esc_html( $primary_term ); ?> statt digitaler Visitenkarte: Sichtbarkeit, Lead-Führung, Datensignale und kontrollierte Weiterentwicklung greifen als ein sauberes System zusammen.</p>
 						<div class="wp-hero-proof nx-reveal" role="list" aria-label="Vertrauenssignale">
-							<span class="wp-hero-proof-item" role="listitem"><?php echo esc_html( $lead_count . ' qualifizierte Anfragen im aufgebauten System' ); ?></span>
-							<span class="wp-hero-proof-item" role="listitem"><?php echo esc_html( $sales_rate . ' Sales-Conversion' ); ?></span>
+							<span class="wp-hero-proof-item" role="listitem"><?php echo esc_html( $lead_count . ' Anfragen insgesamt im aufgebauten System' ); ?></span>
+							<span class="wp-hero-proof-item" role="listitem"><?php echo esc_html( $sales_rate . ' Abschlussquote der CRM-Leads' ); ?></span>
 							<span class="wp-hero-proof-item" role="listitem"><?php echo esc_html( $cpl_reduction . ' CPL gegenüber Lead-Einkauf' ); ?></span>
 						</div>
 
@@ -524,11 +524,11 @@ function hu_hero_section_shortcode() {
 				<div class="vertical-metrics nx-reveal" role="group" aria-label="Erfolgsmetriken">
 					<div class="wp-metric">
 						<span class="wp-metric-value" data-value="<?php echo esc_attr( $lead_target ); ?>"><?php echo esc_html( $lead_count ); ?></span>
-						<span class="wp-metric-label">qualifizierte Anfragen</span>
+						<span class="wp-metric-label">Anfragen insgesamt</span>
 					</div>
 					<div class="wp-metric">
 						<span class="wp-metric-value" data-value="<?php echo esc_attr( $sales_target ); ?>"><?php echo esc_html( $sales_rate ); ?></span>
-						<span class="wp-metric-label">Sales-Conversion</span>
+						<span class="wp-metric-label">Abschlussquote der CRM-Leads</span>
 					</div>
 					<div class="wp-metric">
 						<span class="wp-metric-value" data-value="<?php echo esc_attr( $cpl_target ); ?>"><?php echo esc_html( $cpl_reduction ); ?></span>

@@ -84,14 +84,14 @@ function nexus_get_public_proof_data() {
 	$proof = [
 		'metrics'             => [
 			'lead_count'       => [
-				'value'   => $e3_metrics['lead_count']['display'] ?? '1.750+',
-				'label'   => 'qualifizierte Anfragen',
+				'value'   => $e3_metrics['lead_count']['display'] ?? '1.750',
+				'label'   => 'Anfragen insgesamt',
 				'context' => 'im aufgebauten System',
 			],
 			'sales_conversion' => [
 				'value'   => $e3_metrics['sales_conversion']['display'] ?? '15 %',
 				'label'   => 'Abschlussquote',
-				'context' => 'vom Lead bis zum Abschluss',
+				'context' => 'unter vorqualifizierten CRM-Leads',
 			],
 			'cpl_reduction'    => [
 				'value'   => $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %',
@@ -879,6 +879,10 @@ function nexus_get_e3_case_faq_items() {
 		[
 			'question' => sprintf( 'Sind %s pro Anfrage auf meinen Betrieb übertragbar?', $cpl_after ),
 			'answer'   => sprintf( 'Nicht als Zusage. %s war ein erreichter Wert der optimierten Kampagnen, kein Durchschnitt des gesamten Projekts und kein Tarif. Was die Kosten pro Anfrage in Ihrem Fall bestimmt, sind Region, Produktmix und der Werbedruck Ihrer Mitbewerber. Übertragbar ist die Mechanik: Kaufabsicht, Exklusivität, Vorqualifizierung und Reaktionszeit lassen sich in jedem Betrieb mit eigenem Vertrieb nachbauen. Die Zahl, die dabei herauskommt, ist von Fall zu Fall verschieden.', $cpl_after ),
+		],
+		[
+			'question' => 'Worauf beziehen sich Leadzahl und Conversion-Raten?',
+			'answer'   => hu_e3_summary( 'definitions' ),
 		],
 		[
 			'question' => 'Wie lange dauert es, bis eigene Anfragen ankommen?',

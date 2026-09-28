@@ -27,7 +27,7 @@ $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['met
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
-$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750';
 $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 
 $quality_marks = [
@@ -91,7 +91,7 @@ $linked_assets = [
 	[ 't' => 'Cost per Lead Photovoltaik', 's' => 'Drei Szenarien im CPL-Vergleich und versteckte Kostentreiber.', 'url' => $cpl_url ],
 	[ 't' => 'Server-Side Tracking für B2B', 's' => 'Wie man Quelle-zu-Auftrag-Attribution sauber misst.', 'url' => $sst_url ],
 	[ 't' => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage', 's' => 'Markteinordnung der Lead-Anbieter und konkrete Kosten pro Anfrage.', 'url' => $intercept_url ],
-	[ 't' => 'Solar Case Study – Methodik-Case', 's' => sprintf( '%1$s, %2$s Abschlussquote in %3$s.', $e3_lead_count, $e3_sales_conversion, $e3_timeframe ), 'url' => $e3_url ],
+	[ 't' => 'Solar Case Study – Methodik-Case', 's' => sprintf( '%1$s, %2$s Abschlussquote der vorqualifizierten CRM-Leads in %3$s.', $e3_lead_count, $e3_sales_conversion, $e3_timeframe ), 'url' => $e3_url ],
 ];
 
 $faq = [
@@ -113,7 +113,7 @@ $faq = [
 	],
 	[
 		'question' => sprintf( 'Welche Abschlussquote ist im Solar-Bereich realistisch?', $e3_case_label ),
-		'answer'   => sprintf( 'Im B2C-PV-Markt liegen Abschlussquoten bei Portal-Leads typischerweise zwischen 2 %% und 5 %%. Bei eigenen, qualifizierten Anfragen sind 8 %% bis 15 %% realistisch – die Case-Study-Referenz liegt bei %s über alle Anfragen hinweg.', $e3_sales_conversion ),
+		'answer'   => sprintf( 'Im B2C-PV-Markt liegen Abschlussquoten bei Portal-Leads typischerweise zwischen 2 %% und 5 %%. Bei eigenen, qualifizierten Anfragen sind 8 %% bis 15 %% realistisch – die Case-Study-Referenz liegt bei %s unter den über Websiteformulare vorqualifizierten CRM-Leads.', $e3_sales_conversion ),
 	],
 ];
 
@@ -129,7 +129,7 @@ $service_schema = [
 	'name'        => 'Qualifizierung von Photovoltaik- und Wärmepumpen-Anfragen',
 	'serviceType' => 'Lead-Qualität messen und steigern',
 	'url'         => $page_url,
-	'description' => sprintf( 'Vier Merkmale für qualifizierte PV-Anfragen. Referenz %1$s: %2$s Abschlussquote bei %3$s qualifizierten Anfragen in %4$s.', $e3_case_label, $e3_sales_conversion, $e3_lead_count, $e3_timeframe ),
+	'description' => sprintf( 'Vier Merkmale für qualifizierte PV-Anfragen. Referenz %1$s: %2$s Abschlussquote der vorqualifizierten CRM-Leads; %3$s Anfragen insgesamt in %4$s.', $e3_case_label, $e3_sales_conversion, $e3_lead_count, $e3_timeframe ),
 	'provider'    => [ '@id' => home_url( '/#organization' ) ],
 	'author'      => $author_person,
 ];

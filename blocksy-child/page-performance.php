@@ -185,7 +185,7 @@ get_header();
 					<?php
 					echo esc_html(
 						sprintf(
-							'Für einen %1$s sanken die Kosten pro Anfrage in %2$s von %3$s auf %4$s; über das eigene System kamen %5$s qualifizierte Anfragen. Der Hebel lag nicht in der Kampagne, sondern in Messung und Anfragestrecke davor.',
+							'Für einen %1$s sanken die Kosten pro Anfrage in %2$s von %3$s auf %4$s; über das eigene System kamen %5$s Anfragen insgesamt. Kampagnenoptimierung, Landingpages, Tracking und CRM-Anbindung wirkten zusammen.',
 							$case_label,
 							$timeframe,
 							$cpl_before,

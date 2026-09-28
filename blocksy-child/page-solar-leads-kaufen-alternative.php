@@ -51,7 +51,7 @@ $linked_assets = [
 $e3_canon            = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics          = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
-$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
@@ -89,7 +89,7 @@ $own_facts = [
 	],
 	[
 		'k' => $e3_sales_conversion,
-		'l' => 'Abschlussquote im eigenen Anfragesystem des dokumentierten Falls — kein allgemeines Versprechen.',
+		'l' => 'Abschlussquote der vorqualifizierten CRM-Leads des dokumentierten Falls — kein allgemeines Versprechen.',
 	],
 	[
 		'k' => 'Eigenes Asset',
@@ -192,7 +192,7 @@ $objections = [
 	],
 	[
 		'question' => 'Wie lange dauert es, bis sich das rechnet?',
-		'answer'   => sprintf( 'Eine allgemeine Amortisationsdauer wäre unseriös. Im dokumentierten Fall wurden über %1$s mehr als %2$s qualifizierte Anfragen erfasst; die Abschlussquote lag bei %3$s und die Kosten pro Anfrage gingen von %4$s auf %5$s zurück. Ob diese Mechanik übertragbar ist, prüft der Marktcheck anhand Ihrer Ausgangslage.', $e3_timeframe, $e3_lead_count, $e3_sales_conversion, $e3_cpl_before, $e3_cpl_after ),
+		'answer'   => sprintf( 'Eine allgemeine Amortisationsdauer wäre unseriös. Im dokumentierten Fall wurden über %1$s %2$s Anfragen insgesamt erfasst; die Abschlussquote der vorqualifizierten CRM-Leads lag bei %3$s und die Kosten pro Anfrage gingen von %4$s auf %5$s zurück. Ob diese Mechanik übertragbar ist, prüft der Marktcheck anhand Ihrer Ausgangslage.', $e3_timeframe, $e3_lead_count, $e3_sales_conversion, $e3_cpl_before, $e3_cpl_after ),
 	],
 	[
 		'question' => 'Verkaufen Sie selbst Leads?',
@@ -298,11 +298,11 @@ get_header();
 							<dd><?php echo esc_html( $e3_cpl_before ); ?> <span>→</span> <?php echo esc_html( $e3_cpl_after ); ?></dd>
 						</div>
 						<div>
-							<dt>Abschlussquote im eigenen System</dt>
+							<dt>Abschlussquote der CRM-Leads</dt>
 							<dd><?php echo esc_html( $e3_sales_conversion ); ?></dd>
 						</div>
 						<div>
-							<dt>Qualifizierte Anfragen</dt>
+							<dt>Anfragen insgesamt</dt>
 							<dd><?php echo esc_html( $e3_lead_count ); ?></dd>
 						</div>
 						<div>
@@ -478,8 +478,8 @@ get_header();
 				<dl class="hu-buy__case-stats">
 					<div><dt>Vorher</dt><dd><?php echo esc_html( $e3_cpl_before ); ?> CPL</dd><span>gekaufte Portal-Anfragen</span></div>
 					<div><dt>Nachher</dt><dd><?php echo esc_html( $e3_cpl_after ); ?> CPL</dd><span>eigener Anfrageweg</span></div>
-					<div><dt>Vertrieb</dt><dd><?php echo esc_html( $e3_sales_conversion ); ?></dd><span>Abschlussquote im Fall</span></div>
-					<div><dt>Zeitraum</dt><dd><?php echo esc_html( $e3_timeframe ); ?></dd><span><?php echo esc_html( $e3_lead_count ); ?> qualifizierte Anfragen</span></div>
+					<div><dt>Vertrieb</dt><dd><?php echo esc_html( $e3_sales_conversion ); ?></dd><span>Abschlussquote der CRM-Leads</span></div>
+					<div><dt>Zeitraum</dt><dd><?php echo esc_html( $e3_timeframe ); ?></dd><span><?php echo esc_html( $e3_lead_count ); ?> Anfragen insgesamt</span></div>
 				</dl>
 			</div>
 		</div>

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 			<div class="tafel erg-solar">
 				<p class="mono">Kosten pro Anfrage im dokumentierten Fall</p>
 				<dl class="erg-cpl"><div><dt>Gekaufte Anfrage · vorher</dt><dd><?php echo esc_html( $metric( 'cpl_before' ) ); ?></dd></div><div><dt>Eigene Anfrage · nachher</dt><dd><?php echo esc_html( $metric( 'cpl_after' ) ); ?></dd></div></dl>
-				<dl class="erg-solar-context"><div><dt>Qualifizierte Anfragen</dt><dd><?php echo esc_html( $metric( 'lead_count' ) ); ?></dd></div><div><dt>Abschlussquote</dt><dd><?php echo esc_html( $metric( 'sales_conversion' ) ); ?></dd></div><div><dt>Zeitraum</dt><dd><?php echo esc_html( $metric( 'timeframe' ) ); ?></dd></div></dl>
+				<dl class="erg-solar-context"><div><dt>Anfragen insgesamt</dt><dd><?php echo esc_html( $metric( 'lead_count' ) ); ?></dd></div><div><dt>Abschlussquote der CRM-Leads</dt><dd><?php echo esc_html( $metric( 'sales_conversion' ) ); ?></dd></div><div><dt>Zeitraum</dt><dd><?php echo esc_html( $metric( 'timeframe' ) ); ?></dd></div></dl>
 				<p class="erg-note">Die CPL-Werte vergleichen Anfrage-Einkauf mit eigener Gewinnung. Sie sind kein vollständiger Kosten-pro-Auftrag-Vergleich.</p>
 			</div>
 			<div class="erg-case-context"><div><h3>Was sich verändert hat</h3><p>Anfragen liefen durch Landingpage, qualifizierende Fragen und CRM-Übergabe statt als isolierte Formulareingänge.</p></div><div><h3>Wie das einzuordnen ist</h3><p>Die Werte stammen aus einem einzelnen PV-Projekt. Kampagnen, Angebot und Vertrieb wirkten gemeinsam; sie sind keine Prognose für andere Betriebe.</p></div></div>
