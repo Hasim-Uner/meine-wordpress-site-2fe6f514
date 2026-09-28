@@ -137,6 +137,21 @@ Initiale Vergleichsgruppe:
 - `kontor4.de`
 - `perimetrik.de`
 
+### Strategische Domains manuell prüfen
+
+Die strategische Liste selbst ist kostenlos und rein lokal. Für belastbare Domain-Metriken gibt es zusätzlich den expliziten Admin-Button `Strategische Domains prüfen`.
+
+Dieser Pfad:
+
+- nutzt `dataforseo_labs/google/domain_rank_overview/live`
+- prüft maximal acht Domains pro Klick
+- startet genau deshalb **nicht** automatisch im Wochen-Cron
+- zählt als manueller DataForSEO-Request und damit in die Gesamt-Kostenanzeige, nicht in das automatische Monatsbudget
+- speichert pro Domain unter anderem rankende Keywords, ETV, Top-10-Verteilung, geschätzten Paid-Traffic-Wert und Ranking-Bewegungen
+- bewahrt den letzten brauchbaren Stand im Market-Snapshot
+
+Der Button ist bewusst getrennt vom normalen `Marktdaten aktualisieren`: Die strategische Vergleichsgruppe soll nicht bei jedem Labs-Refresh zusätzliche Domain-Requests erzeugen.
+
 ### Keyword Overview
 
 Die Watchlist entsteht aus:
