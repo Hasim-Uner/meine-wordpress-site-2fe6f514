@@ -352,7 +352,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   eines existiert.
 - Auswertung: Koko Analytics (Plugin, admin-owned, Tracking-Methode
   `fingerprint`, cookielos) und das SEO-Cockpit im Admin (Search Console per
-  OAuth, Linkgraph, Lead-Attribution aus dem CRM).
+  OAuth, Linkgraph, Lead-Attribution aus dem CRM). Das Cockpit besitzt zusätzlich
+  einen optionalen DataForSEO-Market-Intelligence-Layer für externe Keyword-,
+  Wettbewerber- und manuelle Live-SERP-Daten. Automatisch laufen nur gebündelte
+  Labs-Abfragen im Wochenrhythmus; Organic-/Maps-Live-Checks erfordern einen
+  expliziten Admin-Klick und erzeugen keinen Frontend-Footprint.
 - Öffentliche Besuche setzen keine Cookies und schreiben nichts in
   `localStorage` oder `sessionStorage`; kein Cookie-Banner. Formulare lesen die
   Herkunft erst beim Absenden aus der Formularseite (Adresse, utm-Parameter,
@@ -373,8 +377,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Guards: `scripts/canon-guard.sh` (repo-weit, Sperrliste in
   `scripts/canon-forbidden-values.txt`), `lint-canon-drift.sh`,
   `lint-e3-canon.sh`, `check-german-copy.sh`, `validate-architecture.sh`,
-  beide Smoke-Contracts, CSS-Audits, `lint-entity-crawler-signals.php` und
-  PHPStan mit Baseline. Der Theme-Build führt den Kanon-Guard erneut aus.
+  beide Funnel-Smoke-Contracts, `smoke-dataforseo-market-contract.sh`, CSS-Audits,
+  `lint-entity-crawler-signals.php` und PHPStan mit Baseline. Der Theme-Build führt den Kanon-Guard erneut aus.
 - Vorher-Abschlussquote des Falls (Marktannahme, nicht gemessen): Oberflächen
   lesen nur `display_hedged` und nennen sie Annahme; ein Vorher-Nachher-Feld
   gibt es seit 2026-09-26 nicht mehr. Guard-Regel `e3-vorher-quote`.

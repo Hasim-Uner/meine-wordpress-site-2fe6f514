@@ -11,7 +11,8 @@ Das Cockpit soll keine neue externe Plattform einführen.
 Stattdessen:
 
 - WordPress bleibt die operative Schicht
-- Google Search Console liefert die externe SEO-Sicht
+- Google Search Console liefert die reale Performance-Sicht der eigenen Property
+- DataForSEO liefert die externe Markt-, Keyword- und Wettbewerbs-Sicht
 - Chrome UX Report liefert im Research-Layer reale Web-Performance-Felddaten
 - IndexNow meldet neue, geänderte und gelöschte URLs an teilnehmende Suchmaschinen
 - Koko Analytics liefert optional die lokale Traffic-Sicht
@@ -26,6 +27,7 @@ Repo-seitig vorhanden:
 - Top-Level-Admin-Menü `SEO Cockpit`
 - visuelles Dashboard V3 als Command Center
 - eigenes Untermenü `SEO Cockpit -> Research` für externe Primärdaten
+- eigenes Untermenü `SEO Cockpit -> Markt & Wettbewerb` für DataForSEO Market Intelligence
 - kompaktes Snapshot-Widget im Standard-WordPress-Dashboard
 - priorisierte Queue im Admin, die SEO-Signale jetzt gegen Business-Wert, Funnel-Nähe und Confidence gewichtet
 - Revenue Command Center V1 mit Today Revenue Queue für Anfrage-/Umsatzwirkung statt Traffic-Priorisierung
@@ -83,6 +85,27 @@ Repo-seitig vorhanden:
   - asynchroner Ausführung automatischer Meldungen per Single WP-Cron Event
   - lokalem Verlauf der letzten 50 Meldungen
   - eigenem Untermenü `SEO Cockpit -> IndexNow`
+
+## Market Intelligence V1
+
+Market Intelligence ist die externe Suchmarkt-Schicht des Cockpits. Sie ist bewusst von Research Intelligence getrennt: Research beantwortet Primärdaten-/Marktfragen, Market Intelligence beantwortet SERP-, Keyword- und Wettbewerbsfragen.
+
+Code-Orte und vollständiger Contract:
+
+- `blocksy-child/inc/seo-cockpit/seo-cockpit-dataforseo-client.php`
+- `blocksy-child/inc/seo-cockpit/seo-cockpit-market-intelligence.php`
+- `blocksy-child/inc/seo-cockpit/seo-cockpit-market-ui.php`
+- `docs/systems/seo-cockpit-market-intelligence.md`
+
+V1-Vertrag:
+
+- DataForSEO-Credentials bevorzugt über `NEXUS_DATAFORSEO_LOGIN` und `NEXUS_DATAFORSEO_PASSWORD`
+- wöchentlicher, kostenbegrenzter Labs-Snapshot für Ranked Keywords, Competitor Domains und Keyword Overview
+- Live Organic und Google Maps ausschließlich per explizitem Admin-Klick auf einer kleinen Watchlist
+- Kostenledger mit getrennten automatischen und gesamten Monatskosten
+- Opportunity Engine verbindet externe Nachfrage mit GSC-, URL- und Lead-Signalen
+- keine API-Requests bei normalen Frontend-Aufrufen
+- kein automatisches Publizieren und keine erfundenen Prognosemetriken
 
 ## Research Intelligence V1
 
@@ -235,6 +258,7 @@ das ist eine Analytics-Aufgabe, keine Cockpit-Aufgabe.
 - echte CrUX-Antwort für `hasimuener.de` nach Deploy
 - Live-Erreichbarkeit der generierten IndexNow-Keydatei nach dem ersten Deploy
 - erste echte IndexNow-Antwort auf der Produktionsdomain
+- produktive DataForSEO-Credentials und erster erfolgreicher Market-Intelligence-Snapshot
 
 ## Architektur
 
@@ -256,7 +280,8 @@ Wichtige technische Entscheidungen:
 - Koko nur optional als zweiter Traffic-Layer
 - Audit-CRM als dritter Datenlayer für Lead-Kontext und Priorisierung
 - Revenue Command Center als vierter operativer Layer für Today Queue, Lead-Follow-up, Page Queue, Conversion Leaks und Manual Checks
-- Research Intelligence als getrennte Primärdaten-Schicht; V1 nur CrUX, keine vorgetäuschten Provider-Daten
+- Research Intelligence als getrennte Primärdaten-Schicht
+- Market Intelligence als DataForSEO-Schicht für Suchmarkt, Wettbewerber und manuelle Live-SERPs; die Priorität bleibt repo-owned
 - IndexNow als eigener Indexing-Control-Layer ohne Google- oder Bing-Account-Credentials
 
 ## CSV-Exportvertrag

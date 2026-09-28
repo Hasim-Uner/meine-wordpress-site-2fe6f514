@@ -572,6 +572,7 @@ function nexus_get_seo_cockpit_snapshot( $force = false, $range_days = null ) {
 	$koko         = function_exists( 'nexus_get_seo_cockpit_koko_snapshot_data' ) ? nexus_get_seo_cockpit_koko_snapshot_data( $ranges ) : [];
 	$leads        = function_exists( 'nexus_get_seo_cockpit_lead_snapshot_data' ) ? nexus_get_seo_cockpit_lead_snapshot_data( $ranges ) : [];
 	$acquisition  = function_exists( 'nexus_get_seo_cockpit_crm_acquisition_snapshot_data' ) ? nexus_get_seo_cockpit_crm_acquisition_snapshot_data( $ranges ) : [];
+	$market       = function_exists( 'nexus_get_market_intelligence_snapshot' ) ? nexus_get_market_intelligence_snapshot() : [];
 
 	$snapshot = [
 		'generated_at'              => current_time( 'timestamp' ),
@@ -596,7 +597,12 @@ function nexus_get_seo_cockpit_snapshot( $force = false, $range_days = null ) {
 		'koko'                      => $koko,
 		'leads'                     => $leads,
 		'acquisition'               => $acquisition,
+		'market'                    => $market,
 	];
+
+	if ( ! empty( $market ) && function_exists( 'nexus_get_market_intelligence_opportunities' ) ) {
+		$snapshot['market']['opportunities'] = nexus_get_market_intelligence_opportunities( $snapshot, 12 );
+	}
 
 	if ( function_exists( 'nexus_get_seo_cockpit_insights' ) ) {
 		$snapshot['insights'] = nexus_get_seo_cockpit_insights( $snapshot );
