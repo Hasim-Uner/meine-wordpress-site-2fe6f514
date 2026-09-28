@@ -161,7 +161,7 @@ get_template_part( 'template-parts/blog-header' );
 		$article_next_links[] = [ 'label' => $article_context['secondary_label'], 'url' => $article_context['secondary_url'] ];
 		?>
 
-		<header class="nexus-article-hero nexus-article-hero--editorial" data-track-section="article_hero" aria-labelledby="nexus-article-title">
+		<header class="nexus-article-hero nexus-article-hero--editorial<?php echo esc_attr( $is_design_aesthetics ? ' hu-design-hero' : '' ); ?>" data-track-section="article_hero" aria-labelledby="nexus-article-title">
 			<div class="nexus-hero-content">
 				<div class="nexus-meta-top">
 					<?php if ( $primary_cat instanceof WP_Term && $category_url ) : ?>
@@ -170,38 +170,46 @@ get_template_part( 'template-parts/blog-header' );
 					<span class="nexus-date"><?php echo esc_html( get_the_date( 'd. M Y' ) ); ?></span>
 					<?php if ( $reading_time > 0 ) : ?><span class="nexus-reading-time"><?php echo esc_html( sprintf( '%d Min. Lesezeit', $reading_time ) ); ?></span><?php endif; ?>
 				</div>
-				<h1 id="nexus-article-title" class="nexus-title"><?php echo esc_html( get_the_title() ); ?></h1>
+				<?php if ( $is_design_aesthetics ) : ?>
+					<h1 id="nexus-article-title" class="nexus-title hu-design-title">
+						<span class="hu-design-title__line">Design ist kein Geschmack.</span>
+						<span class="hu-design-title__line">Es ist Architektur.</span>
+					</h1>
+				<?php else : ?>
+					<h1 id="nexus-article-title" class="nexus-title"><?php echo esc_html( get_the_title() ); ?></h1>
+				<?php endif; ?>
 				<?php if ( '' !== $article_summary ) : ?><p class="nexus-subtitle"><?php echo esc_html( $article_summary ); ?></p><?php endif; ?>
 				<div class="nexus-hero-footer">
 					<div class="nexus-author-row">
-						<?php echo get_avatar( get_the_author_meta( 'ID' ), 48 ); ?>
+						<?php echo get_avatar( get_the_author_meta( 'ID' ), 48, '', sprintf( __( 'Porträt von %s', 'blocksy-child' ), get_the_author() ) ); ?>
 						<div class="nexus-author-info"><span class="by"><?php esc_html_e( 'Geschrieben von', 'blocksy-child' ); ?></span><span class="name"><?php echo esc_html( get_the_author() ); ?></span></div>
 					</div>
 				</div>
 			</div>
+
+			<?php if ( $is_design_aesthetics ) : ?>
+				<div class="hu-design-hero__visual" data-design-hero-visual aria-hidden="true">
+					<span class="hu-design-hero__grid"></span>
+					<span class="hu-design-hero__axis">FORM ↔ FUNKTION</span>
+					<span class="hu-design-hero__node hu-design-hero__node--a">01</span>
+					<span class="hu-design-hero__node hu-design-hero__node--b">02</span>
+					<span class="hu-design-hero__node hu-design-hero__node--c">03</span>
+					<span class="hu-design-hero__path hu-design-hero__path--a"></span>
+					<span class="hu-design-hero__path hu-design-hero__path--b"></span>
+					<div class="hu-design-hero__core">
+						<span>DESIGN</span>
+						<strong>Entscheidungs&shy;architektur</strong>
+					</div>
+					<div class="hu-design-hero__legend">
+						<span><b>01</b> Wahrnehmung</span>
+						<span><b>02</b> Orientierung</span>
+						<span><b>03</b> Wirkung</span>
+					</div>
+				</div>
+			<?php endif; ?>
 		</header>
 
-		<?php if ( $is_design_aesthetics ) : ?>
-		<figure class="nexus-article-cover nexus-reveal hu-design-cover" data-track-section="article_cover">
-			<div class="hu-design-cover__art" aria-hidden="true">
-				<span class="hu-design-cover__grid"></span>
-				<span class="hu-design-cover__orb"></span>
-				<span class="hu-design-cover__bar hu-design-cover__bar--a"></span>
-				<span class="hu-design-cover__bar hu-design-cover__bar--b"></span>
-				<div class="hu-design-cover__panel">
-					<span class="hu-design-cover__chrome"><i></i><i></i><i></i></span>
-					<span class="hu-design-cover__hero-block"></span>
-					<span class="hu-design-cover__copy-lines"></span>
-					<span class="hu-design-cover__card hu-design-cover__card--a"></span>
-					<span class="hu-design-cover__card hu-design-cover__card--b"></span>
-					<span class="hu-design-cover__cta"></span>
-				</div>
-				<span class="hu-design-cover__route hu-design-cover__route--a"></span>
-				<span class="hu-design-cover__route hu-design-cover__route--b"></span>
-			</div>
-			<figcaption class="screen-reader-text"><?php esc_html_e( 'Abstrakte Editorial-Grafik: Raster, Interface-Module und Wege visualisieren Design als Architektur.', 'blocksy-child' ); ?></figcaption>
-		</figure>
-		<?php else : ?>
+		<?php if ( ! $is_design_aesthetics ) : ?>
 		<figure class="nexus-article-cover nexus-reveal" data-track-section="article_cover">
 			<div class="nexus-hero-image<?php echo esc_attr( $has_hero_image ? '' : ' nexus-hero-image--generated' ); ?>">
 				<?php if ( $has_hero_image ) : ?>

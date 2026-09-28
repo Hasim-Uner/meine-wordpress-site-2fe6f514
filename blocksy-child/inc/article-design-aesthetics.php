@@ -37,16 +37,32 @@ function hu_enqueue_design_aesthetics_article_assets() : void {
 		return;
 	}
 
-	$path    = get_stylesheet_directory() . '/assets/css/article-design-aesthetics.css';
-	$url     = get_stylesheet_directory_uri() . '/assets/css/article-design-aesthetics.css';
-	$version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $path ) : wp_get_theme()->get( 'Version' );
+	$style_path    = get_stylesheet_directory() . '/assets/css/article-design-aesthetics.css';
+	$style_url     = get_stylesheet_directory_uri() . '/assets/css/article-design-aesthetics.css';
+	$script_path   = get_stylesheet_directory() . '/assets/js/article-design-aesthetics.js';
+	$script_url    = get_stylesheet_directory_uri() . '/assets/js/article-design-aesthetics.js';
+	$fallback      = wp_get_theme()->get( 'Version' );
+	$style_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $style_path ) : $fallback;
+	$script_version = function_exists( 'hu_get_asset_version' ) ? hu_get_asset_version( $script_path ) : $fallback;
 
 	wp_enqueue_style(
 		'hu-article-design-aesthetics',
-		$url,
+		$style_url,
 		[ 'nexus-single-editorial-css' ],
-		$version
+		$style_version
 	);
+
+	wp_enqueue_script(
+		'hu-article-design-aesthetics',
+		$script_url,
+		[],
+		$script_version,
+		true
+	);
+
+	if ( function_exists( 'hu_mark_script_for_defer' ) ) {
+		hu_mark_script_for_defer( 'hu-article-design-aesthetics' );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'hu_enqueue_design_aesthetics_article_assets', 35 );
 
@@ -75,7 +91,7 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 		return;
 	}
 
-	$version    = '2026-09-28-design-aesthetics-v6-evidence-future';
+	$version    = '2026-09-28-design-aesthetics-v7-v3';
 	$option_key = 'hu_article_design_aesthetics_version';
 
 	if ( (string) get_option( $option_key, '' ) === $version ) {
@@ -93,18 +109,22 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 
 	$current_title   = (string) get_post_field( 'post_title', $post_id );
 	$current_content = (string) get_post_field( 'post_content', $post_id );
-	$new_marker      = 'data-design-essay="v5"';
-	$previous_marker = 'data-design-essay="v4"';
+	$new_marker      = 'data-design-essay="v6"';
+	$previous_marker = 'data-design-essay="v5"';
 	$expected_title  = 'Design ist kein Geschmack. Es ist Architektur.';
-	$new_excerpt     = 'Wie sich Ästhetik und Funktionalität im Design verbinden: von Designgeschichte und Semiotik bis UX, Conversion, Core Web Vitals und Dark Patterns.';
+	$new_excerpt     = 'Wie Ästhetik und Funktionalität im Design zusammenwirken: von Wahrnehmung und Orientierung bis UX, Conversion, Entscheidungsarchitektur und Dark Patterns.';
 	$source_path     = get_stylesheet_directory() . '/assets/content/blog/design-ist-mehr-als-aesthetik-v2.html';
 
 	if ( $expected_title !== $current_title ) {
 		return;
 	}
 
-	// Already on the reviewed body: only finish metadata / taxonomy sync.
+	// Already on the reviewed body: still finish SEO metadata / taxonomy sync.
 	if ( false !== strpos( $current_content, $new_marker ) ) {
+		update_post_meta( $post_id, 'seo_title', 'Design ist mehr als Ästhetik: Funktion, Wirkung und Entscheidungsarchitektur' );
+		update_post_meta( $post_id, '_seo_title', 'field_seo_title' );
+		update_post_meta( $post_id, 'seo_description', 'Warum gutes Design Ästhetik und Funktionalität verbindet: Wirkung, Wahrnehmung, UX, Entscheidungsarchitektur, Conversion und Dark Patterns erklärt.' );
+		update_post_meta( $post_id, '_seo_description', 'field_seo_description' );
 		hu_design_aesthetics_sync_category( $post_id );
 		update_post_meta( $post_id, '_hu_article_design_aesthetics_version', $version );
 		update_option( $option_key, $version, false );
@@ -154,11 +174,14 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 		return;
 	}
 
+	update_post_meta( $post_id, 'seo_title', 'Design ist mehr als Ästhetik: Funktion, Wirkung und Entscheidungsarchitektur' );
+	update_post_meta( $post_id, '_seo_title', 'field_seo_title' );
 	update_post_meta(
 		$post_id,
 		'seo_description',
-		'Wie sich Ästhetik und Funktionalität im Design verbinden: Prinzipien aus Designgeschichte, UX, Semiotik, Conversion und Ethik – konkret für Websites.'
+		'Warum gutes Design Ästhetik und Funktionalität verbindet: Wirkung, Wahrnehmung, UX, Entscheidungsarchitektur, Conversion und Dark Patterns erklärt.'
 	);
+	update_post_meta( $post_id, '_seo_description', 'field_seo_description' );
 	hu_design_aesthetics_sync_category( $post_id );
 	update_post_meta( $post_id, '_hu_article_design_aesthetics_version', $version );
 	update_option( $option_key, $version, false );
