@@ -717,7 +717,7 @@ get_header();
 					// Zwei Vergleichswerte, keine erfundenen monatlichen Zwischenpunkte.
 					$e3_after_y = 114 - ( 96 * $e3_cpl_after_val / max( 1, $e3_cpl_before_val ) );
 					?>
-					<svg viewBox="0 -22 620 172" role="img" aria-label="<?php echo esc_attr( $e3_timeline['comparison'] ); ?>">
+					<svg viewBox="0 -22 620 192" role="img" aria-label="<?php echo esc_attr( $e3_timeline['comparison'] ); ?>">
 						<line x1="46" y1="114" x2="612" y2="114" stroke="var(--strich)" stroke-width="1" />
 						<g stroke="var(--stempel)" stroke-width="24">
 							<line x1="140" y1="114" x2="140" y2="18" />
@@ -728,8 +728,8 @@ get_header();
 							<text x="470" y="<?php echo esc_attr( (string) ( $e3_after_y - 11 ) ); ?>"><?php echo esc_html( $e3_cpl_after ); ?></text>
 						</g>
 						<g class="zeit" fill="var(--matt)" font-family="IBM Plex Mono, monospace" font-size="8.5" text-anchor="middle">
-							<text x="140" y="132">PORTAL · VORHER</text>
-							<text x="470" y="132">EIGENE · ERREICHT</text>
+							<text x="140" y="150">PORTAL · VORHER</text>
+							<text x="470" y="150">EIGENE · ERREICHT</text>
 						</g>
 					</svg>
 					<p><?php echo esc_html( $e3_timeline['comparison'] ); ?></p>
