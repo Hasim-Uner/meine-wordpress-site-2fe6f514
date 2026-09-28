@@ -617,6 +617,10 @@
   color: var(--grau);
 }
 
+.legal-modal__body .legal-page::before {
+  display: none;
+}
+
 .legal-modal__body :where(.privacy-shell, .imprint-shell) {
   width: 100%;
   padding-inline: 0;
