@@ -45,6 +45,9 @@ function nexus_get_market_intelligence_export_columns() {
 		'shared_count',
 		'organic_etv',
 		'organic_keywords',
+		'domain_top10',
+		'estimated_paid_traffic_cost',
+		'strategic_checked_at',
 		'top10_shared',
 		'strategic',
 		'strategic_overlap',
@@ -246,10 +249,13 @@ function nexus_build_market_intelligence_export_rows( $snapshot ) {
 		$export['intersections']     = absint( $row['intersections'] ?? 0 );
 		$export['shared_etv']        = nexus_market_intelligence_export_decimal( $row['shared_etv'] ?? 0, 4 );
 		$export['shared_count']      = absint( $row['shared_count'] ?? 0 );
-		$export['organic_etv']       = nexus_market_intelligence_export_decimal( $row['organic_etv'] ?? 0, 4 );
-		$export['organic_keywords']  = absint( $row['organic_keywords'] ?? 0 );
-		$export['top10_shared']      = absint( $row['top10_shared'] ?? 0 );
-		$export['strategic']         = 1;
+		$export['organic_etv']                  = nexus_market_intelligence_export_decimal( $row['organic_etv'] ?? 0, 4 );
+		$export['organic_keywords']             = absint( $row['organic_keywords'] ?? 0 );
+		$export['domain_top10']                 = absint( $row['domain_top10'] ?? 0 );
+		$export['estimated_paid_traffic_cost']  = nexus_market_intelligence_export_decimal( $row['estimated_paid_traffic_cost'] ?? 0, 4 );
+		$export['strategic_checked_at']          = ! empty( $row['checked_at'] ) ? wp_date( 'c', absint( $row['checked_at'] ) ) : '';
+		$export['top10_shared']                 = absint( $row['top10_shared'] ?? 0 );
+		$export['strategic']                    = 1;
 		$export['strategic_overlap'] = ! empty( $row['is_overlap'] ) ? 1 : 0;
 		$export['note']              = ! empty( $row['is_overlap'] )
 			? 'Strategische Vergleichsgruppe; auch im organischen Competitor-Snapshot gefunden.'
