@@ -91,6 +91,14 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - `Research` heißt im Menü `Datenbasis` und steht hinter den operativen
   Bereichen. Dort bleiben CrUX, Energy-Charts, Destatis und Eurostat als
   Primär-/Felddaten vollständig zugänglich.
+- `Markt & Wettbewerb` trennt jetzt automatische organische Wettbewerber von
+  einer strategischen WordPress-/B2B-Vergleichsgruppe. Die strategischen Domains
+  können nur per explizitem Admin-Klick mit DataForSEO Domain Rank Overview
+  geprüft werden (maximal acht Domains pro Klick); der Wochen-Cron startet diese
+  Einzelabfragen nicht.
+- Der separate `Market CSV`-Download exportiert den bestehenden Market-Snapshot,
+  Keyword-/Wettbewerberdaten, Opportunities und vorhandene Live-SERPs. Der
+  Download selbst ist read-only und löst keinen DataForSEO-Request aus.
 - Operative Reihenfolge im unteren Cockpit-Menü: Content-Chancen, Markt &
   Wettbewerb, Site Audit, Datenbasis.
 
