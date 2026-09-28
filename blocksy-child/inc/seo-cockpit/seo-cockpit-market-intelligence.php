@@ -96,6 +96,102 @@ function nexus_market_intelligence_manual_keywords() {
 }
 
 /**
+ * Convert the configured strategic competitor textarea into normalized domains.
+ *
+ * This is intentionally separate from DataForSEO's organic-overlap competitors:
+ * the automatic list describes who Google currently associates with the site;
+ * this list describes who should be watched for the site's intended market.
+ *
+ * @return array<int, string>
+ */
+function nexus_market_intelligence_strategic_domains() {
+	$config = nexus_get_dataforseo_config();
+	$raw    = preg_split( '/[\r\n,;]+/u', (string) ( $config['strategic_competitors'] ?? '' ) );
+	$raw    = is_array( $raw ) ? $raw : [];
+	$target = nexus_dataforseo_target_domain();
+	$seen   = [];
+	$out    = [];
+
+	foreach ( $raw as $value ) {
+		$value = trim( wp_strip_all_tags( (string) $value ) );
+		if ( '' === $value ) {
+			continue;
+		}
+
+		if ( false === strpos( $value, '://' ) ) {
+			$value = 'https://' . ltrim( $value, '/' );
+		}
+
+		$domain = strtolower( (string) wp_parse_url( $value, PHP_URL_HOST ) );
+		$domain = preg_replace( '/^www\./i', '', $domain );
+		$domain = is_string( $domain ) ? trim( $domain, ". \t\n\r\0\x0B" ) : '';
+
+		if (
+			'' === $domain
+			|| $domain === $target
+			|| ! preg_match( '/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i', $domain )
+			|| isset( $seen[ $domain ] )
+		) {
+			continue;
+		}
+
+		$seen[ $domain ] = true;
+		$out[]           = $domain;
+
+		if ( count( $out ) >= 20 ) {
+			break;
+		}
+	}
+
+	return $out;
+}
+
+/**
+ * Join the strategic comparison group with the current automatic competitor
+ * snapshot without triggering any provider request.
+ *
+ * @param array<int, array<string, mixed>>|null $competitors Automatic competitors.
+ * @return array<int, array<string, mixed>>
+ */
+function nexus_market_intelligence_strategic_competitors( $competitors = null ) {
+	if ( null === $competitors ) {
+		$snapshot    = nexus_get_market_intelligence_snapshot();
+		$competitors = is_array( $snapshot['competitors'] ?? null ) ? $snapshot['competitors'] : [];
+	}
+
+	$index = [];
+	foreach ( (array) $competitors as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+
+		$domain = strtolower( preg_replace( '/^www\./i', '', trim( (string) ( $row['domain'] ?? '' ) ) ) );
+		if ( '' !== $domain ) {
+			$index[ $domain ] = $row;
+		}
+	}
+
+	$out = [];
+	foreach ( nexus_market_intelligence_strategic_domains() as $domain ) {
+		$match = isset( $index[ $domain ] ) && is_array( $index[ $domain ] ) ? $index[ $domain ] : [];
+
+		$out[] = [
+			'domain'           => $domain,
+			'is_overlap'       => ! empty( $match ),
+			'avg_position'     => is_numeric( $match['avg_position'] ?? null ) ? (float) $match['avg_position'] : null,
+			'intersections'    => absint( $match['intersections'] ?? 0 ),
+			'shared_etv'       => is_numeric( $match['shared_etv'] ?? null ) ? (float) $match['shared_etv'] : 0.0,
+			'shared_count'     => absint( $match['shared_count'] ?? 0 ),
+			'organic_etv'      => is_numeric( $match['organic_etv'] ?? null ) ? (float) $match['organic_etv'] : 0.0,
+			'organic_keywords' => absint( $match['organic_keywords'] ?? 0 ),
+			'top10_shared'     => absint( $match['top10_shared'] ?? 0 ),
+		];
+	}
+
+	return $out;
+}
+
+/**
  * Return useful GSC queries without triggering a separate keyword universe.
  *
  * @param int $limit Max queries.
