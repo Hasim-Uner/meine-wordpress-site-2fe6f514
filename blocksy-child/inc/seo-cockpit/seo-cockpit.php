@@ -34,6 +34,8 @@ $nexus_seo_cockpit_modules = [
 	'seo-cockpit-sync.php',
 	'seo-cockpit-insights.php',
 	'seo-cockpit-diagnostics.php',
+	'seo-cockpit-dataforseo-client.php',
+	'seo-cockpit-market-intelligence.php',
 	'seo-cockpit-research.php',
 	'seo-cockpit-research-crux-diagnostics.php',
 	'seo-cockpit-research-energy-charts.php',
@@ -57,6 +59,7 @@ $nexus_seo_cockpit_modules = [
 	'seo-cockpit-command-center.php',
 	'seo-cockpit-export.php',
 	'seo-cockpit-ui.php',
+	'seo-cockpit-market-ui.php',
 	'seo-cockpit-dashboard-v3.php',
 ];
 
