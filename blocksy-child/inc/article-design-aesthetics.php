@@ -1,9 +1,9 @@
 <?php
 /**
- * Guarded one-time refresh for the design / aesthetics flagship article.
+ * Guarded refreshes for the design / aesthetics flagship article.
  *
- * The WordPress editor remains the long-term content owner. The repo source is
- * applied once only while the live post still matches the known legacy copy.
+ * The WordPress editor remains the long-term content owner. Repo-managed
+ * refreshes only run while a known article marker is present.
  *
  * @package Blocksy_Child
  */
@@ -51,7 +51,22 @@ function hu_enqueue_design_aesthetics_article_assets() : void {
 add_action( 'wp_enqueue_scripts', 'hu_enqueue_design_aesthetics_article_assets', 35 );
 
 /**
- * Apply the reviewed v2 body once while the legacy fingerprint is intact.
+ * Keep the essay in the conversion / inquiry architecture cluster rather than
+ * the lead-economy cluster. This affects breadcrumb and related-post context.
+ *
+ * @param int $post_id Post ID.
+ * @return void
+ */
+function hu_design_aesthetics_sync_category( int $post_id ) : void {
+	$term = get_term_by( 'slug', 'cro', 'category' );
+
+	if ( $term instanceof WP_Term ) {
+		wp_set_post_categories( $post_id, [ (int) $term->term_id ], false );
+	}
+}
+
+/**
+ * Apply the reviewed v4 editorial body once while a known fingerprint exists.
  *
  * @return void
  */
@@ -60,7 +75,7 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 		return;
 	}
 
-	$version    = '2026-09-28-design-aesthetics-v4-copy-accuracy';
+	$version    = '2026-09-28-design-aesthetics-v5-editorial-visuals';
 	$option_key = 'hu_article_design_aesthetics_version';
 
 	if ( (string) get_option( $option_key, '' ) === $version ) {
@@ -78,72 +93,19 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 
 	$current_title   = (string) get_post_field( 'post_title', $post_id );
 	$current_content = (string) get_post_field( 'post_content', $post_id );
-	$new_marker      = 'data-design-essay="v3"';
-	$previous_marker = 'data-design-essay="v2"';
+	$new_marker      = 'data-design-essay="v4"';
+	$previous_marker = 'data-design-essay="v3"';
 	$expected_title  = 'Design ist kein Geschmack. Es ist Architektur.';
 	$new_excerpt     = 'Wie sich Ästhetik und Funktionalität im Design verbinden: von Designgeschichte und Semiotik bis UX, Conversion, Core Web Vitals und Dark Patterns.';
+	$source_path     = get_stylesheet_directory() . '/assets/content/blog/design-ist-mehr-als-aesthetik-v2.html';
 
-	if ( false !== strpos( $current_content, $new_marker ) ) {
-		$polished_content = str_replace(
-			[
-				'Farben, Schriften, Bildern und Layouts.',
-				'Google bewertet mit den Core Web Vitals unter anderem Ladeerlebnis, Interaktionsreaktion und visuelle Stabilität.',
-				'Die üblichen Schwellenwerte für eine gute Nutzererfahrung liegen bei',
-			],
-			[
-				'Farben, Schriften, Bilder und Layouts.',
-				'Mit den Core Web Vitals stellt Google drei Messgrößen für Ladeerlebnis, Interaktionsreaktion und visuelle Stabilität bereit.',
-				'Googles empfohlene Schwellenwerte für eine gute Nutzererfahrung liegen bei',
-			],
-			$current_content
-		);
-
-		if ( $polished_content !== $current_content ) {
-			$result = wp_update_post(
-				wp_slash(
-					[
-						'ID'           => $post_id,
-						'post_content' => $polished_content,
-					]
-				),
-				true
-			);
-
-			if ( is_wp_error( $result ) || ! $result ) {
-				return;
-			}
-		}
-
-		update_post_meta( $post_id, '_hu_article_design_aesthetics_version', $version );
-		update_option( $option_key, $version, false );
+	if ( $expected_title !== $current_title ) {
 		return;
 	}
 
-	// V2 used the generic class "lead-para". The glossary autolinker treats
-	// "lead" as a glossary term and can therefore corrupt that HTML attribute at
-	// render time. Repair only those two managed markers without touching prose.
-	if ( false !== strpos( $current_content, $previous_marker ) ) {
-		$repaired_content = str_replace(
-			[ $previous_marker, 'class="lead-para"' ],
-			[ $new_marker, 'class="hu-design-essay__intro"' ],
-			$current_content
-		);
-
-		$result = wp_update_post(
-			wp_slash(
-				[
-					'ID'           => $post_id,
-					'post_excerpt' => $new_excerpt,
-					'post_content' => $repaired_content,
-				]
-			),
-			true
-		);
-
-		if ( is_wp_error( $result ) || ! $result ) {
-			return;
-		}
-
+	// Already on the reviewed body: only finish metadata / taxonomy sync.
+	if ( false !== strpos( $current_content, $new_marker ) ) {
+		hu_design_aesthetics_sync_category( $post_id );
 		update_post_meta( $post_id, '_hu_article_design_aesthetics_version', $version );
 		update_option( $option_key, $version, false );
 		return;
@@ -156,19 +118,19 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 		'Typische Verbesserung durch systematische Design-Optimierung: 20–50 %',
 	];
 
-	$remaining_markers = 0;
-	foreach ( $legacy_markers as $marker ) {
-		if ( false !== strpos( $current_content, $marker ) ) {
-			$remaining_markers++;
+	$known_content = false !== strpos( $current_content, $previous_marker );
+
+	if ( ! $known_content ) {
+		$remaining_markers = 0;
+		foreach ( $legacy_markers as $marker ) {
+			if ( false !== strpos( $current_content, $marker ) ) {
+				$remaining_markers++;
+			}
 		}
+		$known_content = $remaining_markers >= 2;
 	}
 
-	if ( $expected_title !== $current_title || $remaining_markers < 2 ) {
-		return;
-	}
-
-	$source_path = get_stylesheet_directory() . '/assets/content/blog/design-ist-mehr-als-aesthetik-v2.html';
-	if ( ! is_readable( $source_path ) ) {
+	if ( ! $known_content || ! is_readable( $source_path ) ) {
 		return;
 	}
 
@@ -192,13 +154,12 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 		return;
 	}
 
-	// Keep the established SEO title. Only sharpen the description around the
-	// query Google is already testing for this URL.
 	update_post_meta(
 		$post_id,
 		'seo_description',
 		'Wie sich Ästhetik und Funktionalität im Design verbinden: Prinzipien aus Designgeschichte, UX, Semiotik, Conversion und Ethik – konkret für Websites.'
 	);
+	hu_design_aesthetics_sync_category( $post_id );
 	update_post_meta( $post_id, '_hu_article_design_aesthetics_version', $version );
 	update_option( $option_key, $version, false );
 }
