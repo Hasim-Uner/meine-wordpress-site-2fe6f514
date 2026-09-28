@@ -751,36 +751,73 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
-   V3 — DESIGN ALS DEMONSTRATION
-   Der Artikel über Design darf sichtbar anders sein als der normale Reader,
-   ohne dessen Lesbarkeit, Tokens oder Accessibility zu verlassen.
+   V4 — EDITORIAL ARCHITECTURE
+
+   Der Beitrag über Design muss seine eigenen Kriterien sichtbar erfüllen:
+   Wahrnehmung, Orientierung, Vertrauen, Handlung und Messbarkeit.
+   V4 reduziert sichtbare UI-Chrome, verbindet Hero und Systemgrafik stärker
+   und macht den TOC zu einem ruhigen Lesewerkzeug statt zu einer Sidebar.
    ══════════════════════════════════════════════════════════════ */
 
-/* ── Hero: Titel + Systemgrafik als eine Komposition ───────── */
+/* ── Hero: eine Komposition statt Textblock + Bild ─────────── */
 
-.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial.hu-design-hero {
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero {
+	position: relative;
 	display: grid;
-	grid-template-columns: minmax(0, 1.4fr) minmax(20rem, .6fr);
-	gap: clamp(2.5rem, 5vw, 5.25rem);
-	align-items: end;
+	grid-template-columns: minmax(0, 1.16fr) minmax(25rem, .84fr);
+	gap: clamp(3rem, 5vw, 5.75rem);
+	align-items: stretch;
 	inline-size: min(100% - (var(--s3) * 2), 1320px);
-	margin-bottom: clamp(3.5rem, 7vw, 6rem);
-	padding-bottom: clamp(2rem, 4vw, 3.5rem);
+	min-block-size: clamp(31rem, 55vw, 43rem);
+	margin: 0 auto clamp(3.75rem, 7vw, 6rem);
+	padding: clamp(4.3rem, 7vw, 5.8rem) 0 clamp(2.4rem, 4vw, 3.4rem);
+	border-bottom: 1px solid var(--strich);
 }
 
-.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial.hu-design-hero::before {
-	grid-column: 1 / -1;
-	margin-bottom: 0;
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero::before {
+	position: absolute;
+	inset: 0 auto auto 0;
+	display: block;
+	margin: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-m);
+	font-weight: 500;
+	letter-spacing: .14em;
+	text-transform: uppercase;
+	color: var(--stempel);
 }
 
-.nexus-article-reader-header ~ .nexus-single-container .hu-design-hero .nexus-hero-content {
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero::after {
+	content: "";
+	position: absolute;
+	inset: 2.15rem 0 auto;
+	display: block;
+	block-size: 1px;
+	background:
+		linear-gradient(
+			90deg,
+			var(--stempel) 0 4.5rem,
+			var(--haar) 4.5rem 100%
+		);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero .nexus-hero-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	min-inline-size: 0;
+	padding-block: clamp(.5rem, 2vw, 1.5rem);
 }
 
-.nexus-article-reader-header ~ .nexus-single-container .hu-design-hero .nexus-title {
-	max-inline-size: none;
-	font-size: clamp(3.35rem, 2.95rem + 1.4vw, 4.35rem);
-	line-height: .92;
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero .nexus-meta-top {
+	margin-bottom: clamp(1.25rem, 2vw, 1.8rem);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero .nexus-title {
+	max-inline-size: 14.5ch;
+	margin: 0;
+	font-size: clamp(3.75rem, 3.15rem + 1.8vw, 5.15rem);
+	line-height: .91;
 	letter-spacing: -.058em;
 	text-wrap: initial;
 }
@@ -792,39 +829,43 @@
 
 .hu-design-hero.has-design-motion .hu-design-title__line {
 	opacity: 0;
-	transform: translateY(.22em);
+	transform: translateY(.18em);
 }
 
 .hu-design-hero.has-design-motion.is-ready .hu-design-title__line {
 	opacity: 1;
 	transform: translateY(0);
 	transition:
-		opacity 620ms var(--ease-aus),
-		transform 780ms var(--ease-aus);
+		opacity 520ms var(--ease-aus),
+		transform 760ms var(--ease-aus);
 }
 
 .hu-design-hero.has-design-motion.is-ready .hu-design-title__line:nth-child(2) {
-	transition-delay: 95ms;
+	transition-delay: 90ms;
 }
 
-.nexus-article-reader-header ~ .nexus-single-container .hu-design-hero .nexus-subtitle {
-	max-inline-size: 52ch;
-	margin-top: clamp(1.4rem, 2.8vw, 2.3rem);
-	font-size: clamp(1.12rem, 1rem + .55vw, 1.45rem);
-	line-height: 1.5;
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero .nexus-subtitle {
+	max-inline-size: 50ch;
+	margin: clamp(1.55rem, 2.6vw, 2.1rem) 0 0;
+	font-size: clamp(1.12rem, 1.02rem + .42vw, 1.4rem);
+	line-height: 1.48;
+	color: var(--grau);
 }
 
-.nexus-article-reader-header ~ .nexus-single-container .hu-design-hero .nexus-hero-footer {
-	max-inline-size: 52ch;
-	margin-top: clamp(1.8rem, 3vw, 2.8rem);
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero .nexus-hero-footer {
+	max-inline-size: 50ch;
+	margin-top: clamp(1.9rem, 3vw, 2.5rem);
+	padding-top: var(--s2);
+	border-top: 1px solid var(--haar);
 }
 
-/* Die Visualisierung ist kein zweites Bild, sondern die Gegenhälfte des Hero. */
+/* Systemgrafik: exakt dieselben fünf Kriterien wie im Artikel. */
 .hu-design-hero__visual {
 	--hero-x: 0px;
 	--hero-y: 0px;
 	position: relative;
-	min-block-size: clamp(28rem, 38vw, 36rem);
+	align-self: stretch;
+	min-block-size: 29rem;
 	overflow: hidden;
 	border: 1px solid var(--strich);
 	background: var(--tinte);
@@ -832,155 +873,165 @@
 	isolation: isolate;
 }
 
+.hu-design-hero.has-design-motion .hu-design-hero__visual {
+	clip-path: inset(0 0 100% 0);
+}
+
+.hu-design-hero.has-design-motion.is-ready .hu-design-hero__visual {
+	clip-path: inset(0);
+	transition: clip-path 920ms var(--ease-aus) 90ms;
+}
+
 .hu-design-hero__grid {
 	position: absolute;
-	inset: -8%;
-	opacity: .18;
+	inset: -6%;
+	opacity: .15;
 	background-image:
-		linear-gradient(to right, color-mix(in srgb, var(--papier) 38%, transparent) 1px, transparent 1px),
-		linear-gradient(to bottom, color-mix(in srgb, var(--papier) 38%, transparent) 1px, transparent 1px);
-	background-size: 20% 100%, 100% 16.666%;
-	transform: translate3d(calc(var(--hero-x) * .34), calc(var(--hero-y) * .34), 0);
+		linear-gradient(to right, color-mix(in srgb, var(--papier) 42%, transparent) 1px, transparent 1px),
+		linear-gradient(to bottom, color-mix(in srgb, var(--papier) 42%, transparent) 1px, transparent 1px);
+	background-size: 20% 100%, 100% 20%;
+	transform: translate3d(calc(var(--hero-x) * .28), calc(var(--hero-y) * .28), 0);
 	transition: transform 180ms linear;
 }
 
 .hu-design-hero__axis {
 	position: absolute;
-	top: clamp(1.2rem, 3vw, 2rem);
-	left: clamp(1.2rem, 3vw, 2rem);
+	top: clamp(1.25rem, 2.7vw, 2rem);
+	left: clamp(1.25rem, 2.7vw, 2rem);
 	font-family: var(--mono);
-	font-size: var(--mono-s);
-	letter-spacing: .14em;
+	font-size: .64rem;
+	letter-spacing: .16em;
 	text-transform: uppercase;
-	color: color-mix(in srgb, var(--papier) 62%, transparent);
-}
-
-.hu-design-hero__node {
-	position: absolute;
-	display: grid;
-	place-items: center;
-	inline-size: 2.55rem;
-	aspect-ratio: 1;
-	border: 1px solid color-mix(in srgb, var(--papier) 35%, transparent);
-	font-family: var(--mono);
-	font-size: .67rem;
-	color: var(--papier);
-	background: var(--tinte);
-	z-index: 3;
-	opacity: 0;
-	transform: scale(.82);
-}
-
-.hu-design-hero__node--a {
-	left: 12%;
-	top: 30%;
-}
-
-.hu-design-hero__node--b {
-	right: 18%;
-	top: 18%;
-	border-color: var(--stempel);
-	color: var(--stempel);
-}
-
-.hu-design-hero__node--c {
-	right: 12%;
-	bottom: 23%;
-}
-
-.hu-design-hero.is-ready .hu-design-hero__node {
-	opacity: 1;
-	transform: scale(1);
-	transition:
-		opacity 420ms var(--ease-aus),
-		transform 680ms var(--ease-aus);
-}
-
-.hu-design-hero.is-ready .hu-design-hero__node--b { transition-delay: 130ms; }
-.hu-design-hero.is-ready .hu-design-hero__node--c { transition-delay: 240ms; }
-
-.hu-design-hero__path {
-	position: absolute;
-	z-index: 1;
-	display: block;
-	opacity: .75;
-	transform-origin: 0 50%;
-	transform: scaleX(0);
-}
-
-.hu-design-hero__path--a {
-	left: 17%;
-	top: 34%;
-	inline-size: 55%;
-	block-size: 1px;
-	background: color-mix(in srgb, var(--papier) 52%, transparent);
-	rotate: -14deg;
-}
-
-.hu-design-hero__path--b {
-	left: 49%;
-	top: 48%;
-	inline-size: 39%;
-	block-size: 1px;
-	background: var(--stempel);
-	rotate: 42deg;
-}
-
-.hu-design-hero.is-ready .hu-design-hero__path {
-	transform: scaleX(1);
-	transition: transform 1050ms var(--ease-aus) 170ms;
+	color: color-mix(in srgb, var(--papier) 58%, transparent);
 }
 
 .hu-design-hero__core {
 	position: absolute;
-	left: clamp(1.6rem, 4vw, 3rem);
-	right: clamp(1.6rem, 4vw, 3rem);
-	top: 48%;
+	z-index: 4;
+	left: clamp(1.65rem, 4vw, 3rem);
+	top: 45%;
+	max-inline-size: 18rem;
 	transform: translate3d(var(--hero-x), calc(-50% + var(--hero-y)), 0);
 	transition: transform 180ms linear;
-	z-index: 2;
 }
 
 .hu-design-hero__core > span {
 	display: block;
-	margin-bottom: .55rem;
+	margin-bottom: .6rem;
 	font-family: var(--mono);
-	font-size: .7rem;
-	letter-spacing: .17em;
+	font-size: .67rem;
+	letter-spacing: .18em;
 	text-transform: uppercase;
 	color: var(--stempel);
 }
 
 .hu-design-hero__core > strong {
 	display: block;
-	max-inline-size: 10ch;
 	font-family: var(--serif-display);
-	font-size: clamp(2.1rem, 2.8vw, 3.55rem);
+	font-size: clamp(2.3rem, 2.05rem + 1vw, 3.15rem);
 	font-weight: 500;
-	line-height: .95;
+	line-height: .94;
 	letter-spacing: -.045em;
 	color: var(--papier);
 }
 
+.hu-design-hero__core > em {
+	display: block;
+	max-inline-size: 26ch;
+	margin-top: 1.15rem;
+	font-family: var(--serif);
+	font-size: .83rem;
+	font-style: normal;
+	line-height: 1.45;
+	color: color-mix(in srgb, var(--papier) 62%, transparent);
+}
+
+.hu-design-hero__node {
+	position: absolute;
+	z-index: 5;
+	display: grid;
+	place-items: center;
+	inline-size: 2.35rem;
+	aspect-ratio: 1;
+	border: 1px solid color-mix(in srgb, var(--papier) 32%, transparent);
+	background: var(--tinte);
+	font-family: var(--mono);
+	font-size: .62rem;
+	color: var(--papier);
+	opacity: 0;
+	transform: scale(.82);
+}
+
+.hu-design-hero__node--a { left: 10%; top: 24%; }
+.hu-design-hero__node--b { left: 34%; top: 17%; border-color: var(--stempel); color: var(--stempel); }
+.hu-design-hero__node--c { right: 31%; top: 38%; }
+.hu-design-hero__node--d { right: 14%; top: 27%; border-color: color-mix(in srgb, var(--stempel) 70%, var(--papier)); }
+.hu-design-hero__node--e { right: 11%; bottom: 23%; color: var(--stempel); }
+
+.hu-design-hero.is-ready .hu-design-hero__node {
+	opacity: 1;
+	transform: scale(1);
+	transition:
+		opacity 380ms var(--ease-aus),
+		transform 620ms var(--ease-aus);
+}
+
+.hu-design-hero.is-ready .hu-design-hero__node--b { transition-delay: 90ms; }
+.hu-design-hero.is-ready .hu-design-hero__node--c { transition-delay: 150ms; }
+.hu-design-hero.is-ready .hu-design-hero__node--d { transition-delay: 220ms; }
+.hu-design-hero.is-ready .hu-design-hero__node--e { transition-delay: 290ms; }
+
+.hu-design-hero__path {
+	position: absolute;
+	z-index: 2;
+	display: block;
+	block-size: 1px;
+	transform: scaleX(0);
+	transform-origin: 0 50%;
+}
+
+.hu-design-hero__path--a {
+	left: 13%;
+	top: 29%;
+	inline-size: 59%;
+	rotate: 12deg;
+	background: color-mix(in srgb, var(--papier) 46%, transparent);
+}
+
+.hu-design-hero__path--b {
+	left: 57%;
+	top: 46%;
+	inline-size: 36%;
+	rotate: 34deg;
+	background: var(--stempel);
+}
+
+.hu-design-hero.is-ready .hu-design-hero__path {
+	transform: scaleX(1);
+	transition: transform 980ms var(--ease-aus) 170ms;
+}
+
 .hu-design-hero__legend {
 	position: absolute;
-	left: clamp(1.2rem, 3vw, 2rem);
-	right: clamp(1.2rem, 3vw, 2rem);
-	bottom: clamp(1.2rem, 3vw, 2rem);
+	z-index: 4;
+	left: clamp(1.25rem, 2.7vw, 2rem);
+	right: clamp(1.25rem, 2.7vw, 2rem);
+	bottom: clamp(1.25rem, 2.7vw, 2rem);
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: .6rem;
-	padding-top: 1rem;
-	border-top: 1px solid color-mix(in srgb, var(--papier) 24%, transparent);
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: .45rem;
+	padding-top: .9rem;
+	border-top: 1px solid color-mix(in srgb, var(--papier) 22%, transparent);
 	font-family: var(--mono);
-	font-size: .64rem;
-	line-height: 1.35;
-	color: color-mix(in srgb, var(--papier) 66%, transparent);
+	font-size: .56rem;
+	line-height: 1.3;
+	color: color-mix(in srgb, var(--papier) 62%, transparent);
 }
 
 .hu-design-hero__legend span {
 	display: grid;
-	gap: .2rem;
+	gap: .18rem;
+	min-inline-size: 0;
 }
 
 .hu-design-hero__legend b {
@@ -988,60 +1039,300 @@
 	color: var(--stempel);
 }
 
-/* ── Lesespalte: Artikel bleibt ruhig, Visuals dürfen atmen ─── */
+/* ── Share rail: Annotation statt schwebender Werkzeugkasten ── */
+
+.nexus-article-reader-header ~ .nexus-share-rail--design-essay {
+	gap: .2rem;
+	padding: .35rem 0 .35rem .55rem;
+	border: 0;
+	border-left: 1px solid var(--haar);
+	background: transparent;
+	box-shadow: none;
+}
+
+.nexus-article-reader-header ~ .nexus-share-rail--design-essay .nexus-share-rail__label {
+	margin-bottom: .35rem;
+	color: var(--matt);
+}
+
+.nexus-article-reader-header ~ .nexus-share-rail--design-essay .nexus-share-rail__btn {
+	inline-size: 2rem;
+	block-size: 2rem;
+	border: 0;
+	background: transparent;
+	color: var(--matt);
+}
+
+.nexus-article-reader-header ~ .nexus-share-rail--design-essay .nexus-share-rail__btn:hover,
+.nexus-article-reader-header ~ .nexus-share-rail--design-essay .nexus-share-rail__btn:focus-visible {
+	background: transparent;
+	color: var(--stempel);
+}
+
+/* ── Lesepfad: Top-Level-Kapitel, Fortschritt, kein UI-Lärm ── */
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .nexus-post-layout--design-essay {
+	grid-template-columns: minmax(14rem, 15.5rem) minmax(0, var(--satz));
+	gap: clamp(3.5rem, 6vw, 6rem);
+	inline-size: min(100% - (var(--s3) * 2), 1180px);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc {
+	top: calc(58px + var(--s2));
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc .sticky-toc {
+	position: relative !important;
+	max-block-size: calc(100vh - 58px - (var(--s3) * 2));
+	padding: 0 0 0 1.8rem;
+	overflow-y: auto;
+	border: 0;
+	background: transparent;
+	scrollbar-width: none;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc .sticky-toc::-webkit-scrollbar {
+	inline-size: 0;
+	block-size: 0;
+}
+
+.hu-design-toc__head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--s2);
+	margin-bottom: var(--s2);
+	padding-bottom: var(--s1);
+	border-bottom: 1px solid var(--haar);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc .hu-design-toc__head h2 {
+	margin: 0;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-weight: 600;
+	letter-spacing: .13em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+.hu-design-toc__percent {
+	font-family: var(--mono);
+	font-size: .64rem;
+	font-variant-numeric: tabular-nums;
+	color: var(--matt);
+}
+
+.hu-design-toc__rail {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: .22rem;
+	inline-size: 1px;
+	background: var(--haar);
+	overflow: visible;
+}
+
+.hu-design-toc__rail > span {
+	position: absolute;
+	inset: 0 auto auto 0;
+	inline-size: 1px;
+	block-size: 100%;
+	background: var(--stempel);
+	transform: scaleY(0);
+	transform-origin: 50% 0;
+	transition: transform 120ms linear;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list {
+	display: flex !important;
+	flex-direction: column;
+	gap: 0;
+	margin: 0;
+	padding: 0 0 var(--s2);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list > li.is-subsection {
+	display: none !important;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list > li {
+	position: relative;
+	margin: 0 !important;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list > li > a {
+	position: relative;
+	display: grid;
+	grid-template-columns: 2rem minmax(0, 1fr);
+	gap: .45rem;
+	align-items: start;
+	padding: .48rem 0;
+	border: 0;
+	color: var(--matt);
+	font-family: var(--mono);
+	font-size: .66rem;
+	line-height: 1.34;
+	text-decoration: none;
+	transition:
+		color 180ms var(--ease-weich),
+		transform 260ms var(--ease-aus);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list > li > a::before {
+	content: attr(data-design-index);
+	font-variant-numeric: tabular-nums;
+	color: var(--matt);
+	transition: color 180ms var(--ease-weich);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list > li > a::after {
+	content: "";
+	position: absolute;
+	top: .88rem;
+	left: -1.72rem;
+	inline-size: 5px;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	background: var(--papier);
+	border: 1px solid var(--haar);
+	transition:
+		background-color 180ms var(--ease-weich),
+		border-color 180ms var(--ease-weich),
+		transform 260ms var(--ease-aus);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list > li > a:hover,
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list > li > a:focus-visible,
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list > li > a.active {
+	color: var(--tinte);
+	transform: translateX(.18rem);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list > li > a.active::before {
+	color: var(--stempel);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list > li > a.active::after {
+	border-color: var(--stempel);
+	background: var(--stempel);
+	transform: scale(1.25);
+}
+
+/* ── Prosa: dieselbe Logik wie der Inhalt — Hierarchie vor Deko ─ */
 
 .hu-design-essay {
 	position: relative;
+	counter-reset: hu-design-section;
 }
 
 .hu-design-essay__intro {
-	max-inline-size: 64ch;
+	max-inline-size: 62ch;
+	margin-bottom: clamp(2.8rem, 5vw, 4.3rem) !important;
 	font-size: clamp(1.16rem, 1.03rem + .52vw, 1.38rem);
 }
 
 .hu-design-essay__answer {
 	position: relative;
-	margin-bottom: clamp(3.6rem, 6vw, 5.5rem);
-	padding: var(--s4) 0 var(--s4) var(--s4);
+	margin: 0 0 clamp(3.7rem, 7vw, 5.8rem);
+	padding: clamp(2.4rem, 4vw, 3.3rem) 0 0;
+	border-left: 0;
+	border-top: 1px solid var(--strich);
+}
+
+.hu-design-essay__answer::before {
+	content: "";
+	position: absolute;
+	top: -1px;
+	left: 0;
+	inline-size: clamp(4rem, 12vw, 7rem);
+	block-size: 2px;
+	background: var(--stempel);
 }
 
 .hu-design-essay__answer::after {
 	content: "FORM → FUNKTION → WIRKUNG";
 	position: absolute;
 	right: 0;
-	bottom: -.8rem;
+	top: .9rem;
 	font-family: var(--mono);
-	font-size: .64rem;
+	font-size: .61rem;
 	letter-spacing: .12em;
 	color: var(--matt);
 }
 
-/* Figure-Breakout: auf grossen Screens bis ca. 25 % ueber die Textspalte. */
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-essay h2 {
+	counter-increment: hu-design-section;
+	position: relative;
+	margin-top: clamp(5rem, 9vw, 7.5rem);
+	padding-top: clamp(2rem, 4vw, 3rem);
+	border-top: 1px solid var(--strich);
+	scroll-margin-top: 7rem;
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-essay h2::before {
+	content: counter(hu-design-section, decimal-leading-zero) " /";
+	display: block;
+	margin-bottom: .85rem;
+	font-family: var(--mono);
+	font-size: .65rem;
+	font-weight: 600;
+	letter-spacing: .12em;
+	color: var(--stempel);
+}
+
+.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-essay__answer h2 {
+	margin-top: 0;
+	padding-top: 0;
+	border-top: 0;
+}
+
+.hu-design-essay__answer h2::before {
+	margin-bottom: 1rem !important;
+}
+
+.hu-design-essay__answer p {
+	max-inline-size: 62ch;
+}
+
+/* Grafiken sind Belege im Lesefluss, keine isolierten Cards. */
 .hu-design-essay .hu-dv {
-	inline-size: min(125%, calc(100vw - 2rem));
+	inline-size: min(126%, calc(100vw - 2rem));
 	max-inline-size: 1000px;
-	margin-block: clamp(3.2rem, 7vw, 6rem);
+	margin-block: clamp(3.8rem, 8vw, 6.5rem);
+	padding: clamp(1.35rem, 2.5vw, 1.9rem) 0;
+	border: 0;
+	border-top: 1px solid var(--strich);
+	border-bottom: 1px solid var(--haar);
+	background: transparent;
 }
 
 .hu-design-essay .hu-dv__head {
+	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: end;
 	gap: var(--s2);
+	padding-bottom: 1.1rem;
+	border-bottom: 1px solid var(--haar);
 }
 
 .hu-design-essay .hu-dv__head .hu-dv__kicker {
 	grid-column: 1 / -1;
 }
 
-/* ── Entscheidungsarchitektur: lesbar, keine zerbrochenen Woerter ─ */
+.hu-design-essay .hu-dv figcaption {
+	margin-top: 1.2rem;
+	padding-top: .9rem;
+}
 
+/* Entscheidungsarchitektur: fünf gleichwertige, lesbare Schritte. */
 .hu-dv--flow {
-	inline-size: min(132%, calc(100vw - 2rem)) !important;
+	inline-size: min(134%, calc(100vw - 2rem)) !important;
 }
 
 .hu-dv-flow {
-	grid-template-columns: repeat(5, minmax(8.8rem, 1fr));
-	margin-top: 2rem;
+	grid-template-columns: repeat(5, minmax(9.1rem, 1fr));
+	margin-top: 1.8rem;
 }
 
 .hu-dv-flow__step {
@@ -1059,91 +1350,48 @@
 }
 
 .hu-dv-flow__step > small {
-	font-size: .78rem;
-	line-height: 1.4;
+	font-size: .77rem;
+	line-height: 1.42;
 }
 
 .hu-dv-flow__step > i {
-	inline-size: min(5.4rem, 72%);
+	inline-size: min(5.1rem, 70%);
 	margin-block: .85rem 1rem;
 }
 
-.hu-design-essay.has-design-motion .hu-dv-flow__step {
-	opacity: 0;
-	transform: translateY(.75rem);
-}
+/* ── Motion: nur Hierarchie, Verlauf und Zusammenhang ───────── */
 
-.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step {
-	opacity: 1;
-	transform: translateY(0);
-	transition:
-		opacity 480ms var(--ease-aus),
-		transform 680ms var(--ease-aus);
-}
-
-.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step:nth-child(2) { transition-delay: 70ms; }
-.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step:nth-child(3) { transition-delay: 140ms; }
-.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step:nth-child(4) { transition-delay: 210ms; }
-.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step:nth-child(5) { transition-delay: 280ms; }
-
-/* ── Matrix + Historie: gleiche Qualitaetslogik, weniger Deko ─ */
-
+.hu-design-essay.has-design-motion .hu-dv-flow__step,
 .hu-design-essay.has-design-motion .hu-dv-matrix__cell,
 .hu-design-essay.has-design-motion .hu-dv-history__step {
 	opacity: 0;
 	transform: translateY(.65rem);
 }
 
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step,
 .hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-matrix__cell,
 .hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-history__step {
 	opacity: 1;
 	transform: translateY(0);
 	transition:
-		opacity 480ms var(--ease-aus),
-		transform 680ms var(--ease-aus);
+		opacity 440ms var(--ease-aus),
+		transform 640ms var(--ease-aus);
 }
 
-.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(2),
-.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-history__step:nth-child(2) { transition-delay: 70ms; }
-.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(3),
-.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-history__step:nth-child(3) { transition-delay: 140ms; }
-.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(4),
-.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-history__step:nth-child(4) { transition-delay: 210ms; }
-
-.hu-dv-matrix__cell--generic .hu-dv-mock {
-	background:
-		linear-gradient(var(--haar), var(--haar)) 10% 18% / 52% 1px no-repeat,
-		linear-gradient(var(--haar), var(--haar)) 10% 36% / 72% 1px no-repeat,
-		linear-gradient(var(--haar), var(--haar)) 10% 54% / 61% 1px no-repeat,
-		linear-gradient(var(--strich), var(--strich)) 10% 76% / 28% 13% no-repeat,
-		#fff;
-}
-
-.hu-dv-history__motif,
-.hu-dv-mock,
-.hu-dv-flow__step > i {
-	transition:
-		transform 420ms var(--ease-aus),
-		box-shadow 420ms var(--ease-weich);
-}
-
-@media (hover: hover) and (pointer: fine) {
-	.hu-dv-history__step:hover .hu-dv-history__motif,
-	.hu-dv-matrix__cell:hover .hu-dv-mock,
-	.hu-dv-flow__step:hover > i {
-		transform: translateY(-3px);
-		box-shadow: 0 10px 28px color-mix(in srgb, var(--tinte) 8%, transparent);
-	}
-}
-
-/* ── Kapitel-Reveal: Bewegung ordnet den Lesefluss ─────────── */
+.hu-design-essay.has-design-motion .hu-dv.is-visible :is(.hu-dv-flow__step, .hu-dv-history__step):nth-child(2),
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(2) { transition-delay: 70ms; }
+.hu-design-essay.has-design-motion .hu-dv.is-visible :is(.hu-dv-flow__step, .hu-dv-history__step):nth-child(3),
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(3) { transition-delay: 140ms; }
+.hu-design-essay.has-design-motion .hu-dv.is-visible :is(.hu-dv-flow__step, .hu-dv-history__step):nth-child(4),
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(4) { transition-delay: 210ms; }
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step:nth-child(5) { transition-delay: 280ms; }
 
 .hu-design-essay.has-design-motion > h2,
 .hu-design-essay.has-design-motion > .hu-design-essay__questions,
 .hu-design-essay.has-design-motion > .hu-design-essay__ethics,
 .hu-design-essay.has-design-motion > .hu-design-essay__future {
 	opacity: 0;
-	transform: translateY(.8rem);
+	transform: translateY(.7rem);
 }
 
 .hu-design-essay.has-design-motion > h2.is-visible,
@@ -1153,24 +1401,51 @@
 	opacity: 1;
 	transform: translateY(0);
 	transition:
-		opacity 520ms var(--ease-aus),
-		transform 760ms var(--ease-aus);
+		opacity 460ms var(--ease-aus),
+		transform 700ms var(--ease-aus);
+}
+
+.hu-dv-history__motif,
+.hu-dv-mock,
+.hu-dv-flow__step > i {
+	transition:
+		transform 340ms var(--ease-aus),
+		box-shadow 340ms var(--ease-weich);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.hu-dv-history__step:hover .hu-dv-history__motif,
+	.hu-dv-matrix__cell:hover .hu-dv-mock,
+	.hu-dv-flow__step:hover > i {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px color-mix(in srgb, var(--tinte) 7%, transparent);
+	}
 }
 
 /* ── Responsive ─────────────────────────────────────────────── */
 
-@media (max-width: 1120px) {
-	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial.hu-design-hero {
+@media (max-width: 1160px) {
+	.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero {
 		grid-template-columns: 1fr;
+		min-block-size: 0;
 		gap: var(--s4);
 	}
 
-	.nexus-article-reader-header ~ .nexus-single-container .hu-design-hero .nexus-title {
-		font-size: clamp(3.4rem, 7vw, 5rem);
+	.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero .nexus-hero-content {
+		padding-block: 0;
+	}
+
+	.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero .nexus-title {
+		max-inline-size: 15ch;
+		font-size: clamp(3.5rem, 7vw, 5rem);
 	}
 
 	.hu-design-title__line {
 		white-space: normal;
+	}
+
+	.hu-design-hero__visual {
+		min-block-size: 27rem;
 	}
 
 	.hu-design-essay .hu-dv,
@@ -1185,31 +1460,39 @@
 	}
 
 	.hu-dv-flow {
-		min-inline-size: 790px;
+		min-inline-size: 800px;
 	}
 }
 
-@media (max-width: 860px) {
-	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial.hu-design-hero {
-		align-items: start;
+@media (max-width: 980px) {
+	.nexus-article-reader-header ~ .nexus-single-container--design-essay .nexus-post-layout--design-essay {
+		grid-template-columns: 1fr;
+		gap: var(--s3);
 	}
 
-	.nexus-article-reader-header ~ .nexus-single-container .hu-design-hero .nexus-title {
-		font-size: clamp(3.2rem, 11vw, 5.6rem);
+	.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc .sticky-toc {
+		max-block-size: none;
+		padding-left: 0;
+		overflow: visible;
 	}
 
-	.hu-design-hero__visual {
-		min-block-size: 23rem;
+	.hu-design-toc__head,
+	.hu-design-toc__rail {
+		display: none;
 	}
 
-	.hu-design-hero__core > strong {
-		font-size: clamp(2rem, 8vw, 3.1rem);
+	.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-toc #toc-list > li.is-subsection {
+		display: none !important;
 	}
 }
 
-@media (max-width: 620px) {
-	.nexus-article-reader-header ~ .nexus-single-container .hu-design-hero .nexus-title {
-		font-size: clamp(3rem, 14vw, 4.65rem);
+@media (max-width: 680px) {
+	.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero {
+		padding-top: 4rem;
+	}
+
+	.nexus-article-reader-header ~ .nexus-single-container--design-essay .hu-design-hero .nexus-title {
+		font-size: clamp(3.05rem, 13vw, 4.55rem);
 		line-height: .92;
 	}
 
@@ -1222,36 +1505,25 @@
 	}
 
 	.hu-design-hero__visual {
-		min-block-size: 20rem;
+		min-block-size: 24rem;
+	}
+
+	.hu-design-hero__core {
+		top: 41%;
 	}
 
 	.hu-design-hero__legend {
-		grid-template-columns: 1fr;
-		gap: .25rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		row-gap: .5rem;
 	}
 
-	.hu-design-hero__legend span {
-		grid-template-columns: 2rem 1fr;
-	}
-
-	.hu-design-hero__node--a {
-		top: 24%;
-	}
-
-	.hu-design-hero__node--c {
-		bottom: 31%;
-	}
-
-	.hu-design-essay__answer {
-		padding-left: var(--s2);
+	.hu-design-hero__node--d,
+	.hu-design-hero__node--e {
+		display: none;
 	}
 
 	.hu-design-essay__answer::after {
 		display: none;
-	}
-
-	.hu-dv--flow {
-		margin-inline: 0;
 	}
 
 	.hu-dv-flow {
@@ -1269,33 +1541,23 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+	.hu-design-hero__visual,
 	.hu-design-title__line,
+	.hu-design-hero__node,
+	.hu-design-hero__path,
+	.hu-design-hero__grid,
+	.hu-design-hero__core,
 	.hu-dv-flow__step,
 	.hu-dv-matrix__cell,
 	.hu-dv-history__step,
 	.hu-design-essay > h2,
 	.hu-design-essay > .hu-design-essay__questions,
 	.hu-design-essay > .hu-design-essay__ethics,
-	.hu-design-essay > .hu-design-essay__future {
+	.hu-design-essay > .hu-design-essay__future,
+	.hu-design-toc__rail > span {
 		opacity: 1 !important;
 		transform: none !important;
-		transition: none !important;
-	}
-
-	.hu-design-hero__grid,
-	.hu-design-hero__core {
-		transform: none !important;
-		transition: none !important;
-	}
-
-	.hu-design-hero__path {
-		transform: scaleX(1) !important;
-		transition: none !important;
-	}
-
-	.hu-design-hero__node {
-		opacity: 1 !important;
-		transform: none !important;
+		clip-path: none !important;
 		transition: none !important;
 	}
 }
