@@ -73,6 +73,22 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   aria-current, bekannte Routen) und `scripts/tests/navigation.spec.cjs`
   (Desktop, Mobil, Tastatur, ohne JavaScript) laufen in CI.
 
+## SEO Cockpit
+
+- Die operative Content-Arbeitsfläche heißt `Content-Chancen`. Sie setzt auf
+  Content Intelligence V1.1 auf, verändert die Research-/GSC-Matchinglogik aber
+  nicht. Pro Signal werden jetzt `Jetzt tun`, `Prüfen & planen` oder
+  `Beobachten`, `Warum jetzt`, Zielseite und ein deterministischer nächster
+  Schritt ausgegeben.
+- Die Decision Layer liest Research/GSC sowie lokale WordPress-, DataForSEO-
+  Snapshot- und CRM-Signale. Beim bloßen Rendern von `Content-Chancen` wird
+  kein neuer Research- oder DataForSEO-Netzwerkrequest ausgelöst.
+- `Research` heißt im Menü `Datenbasis` und steht hinter den operativen
+  Bereichen. Dort bleiben CrUX, Energy-Charts, Destatis und Eurostat als
+  Primär-/Felddaten vollständig zugänglich.
+- Operative Reihenfolge im unteren Cockpit-Menü: Content-Chancen, Markt &
+  Wettbewerb, Site Audit, Datenbasis.
+
 ## Routen
 
 - **`/`** (`front-page.php`): Money Page für direkte WordPress-Projekte.
