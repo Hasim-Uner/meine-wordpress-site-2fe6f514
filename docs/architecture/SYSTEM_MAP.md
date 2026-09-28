@@ -10,7 +10,7 @@ Stand: 2026-09-22. Diese Karte beschreibt Systemgrenzen und Abhängigkeiten nach
 | Crawl- und KI-Signale | textbasierte Discovery- und Crawl-Signale für Search- und KI-Crawler; `llms.txt` ist der kompakte Routen- und Positionierungsindex fuer Agenten | `blocksy-child/inc/robots-txt.php`, `blocksy-child/inc/llms-txt.php`, `llms.txt` | Search-/KI-Crawler, native WordPress-Sitemap | repo-seitig live |
 | Growth-Audit-Legacypfad | keine eigene UI mehr; geschützte Audit-Einstiege führen per 301 zum Marktcheck, alte Tools liefern 410 | `blocksy-child/inc/system-diagnose-page.php`, `blocksy-child/inc/helpers.php`, `docs/systems/audit-funnel.md` | WordPress | öffentlich retired; nur Redirect-/Kompatibilitätsvertrag |
 | Nexus CRM & Blog Notify | gemeinsames CRM für Projekt-, White-Label- und Marktcheck-Anfragen mit Sales-Pipeline, Aktivitätsverlauf, Herkunft und Antwortfrist-Wächter, plus DOI- und Artikel-Mail-Logik | `blocksy-child/inc/crm.php`, `blocksy-child/inc/crm-sales/`, `blocksy-child/inc/contact-page.php`, `blocksy-child/inc/whitelabel-request.php`, `blocksy-child/inc/review-crm.php`, `blocksy-child/inc/blog-notify.php`, `docs/systems/nexus-crm-sales.md`, `docs/systems/blog-notify.md` | WordPress CPT/Meta, WordPress REST, wp_mail, Brevo, WP-Cron | repo-seitig live; `analysis-submit` (`inc/analysis-intake.php`) standardmäßig abgeschaltet |
-| SEO Cockpit | Search-Console-basiertes SEO-Dashboard mit optionalem Koko- und Audit-Lead-Layer | `blocksy-child/inc/seo-cockpit/`, `blocksy-child/assets/css/seo-cockpit-admin.css`, `docs/systems/seo-cockpit.md` | Google Search Console API, optional Koko Analytics, Nexus CRM / Audit-CRM | repo-seitig implementiert; OAuth/API-Livezustand admin-owned, Koko optional; Legacy-/Nicht-Zielintent-Filter aktiv |
+| SEO Cockpit | operatives SEO-/Revenue-Dashboard mit First-Party-Performance, CRM-Attribution und optionaler externer Market Intelligence | `blocksy-child/inc/seo-cockpit/`, `blocksy-child/assets/css/seo-cockpit-admin.css`, `docs/systems/seo-cockpit.md`, `docs/systems/seo-cockpit-market-intelligence.md` | Google Search Console API, optional Koko Analytics, Nexus CRM / Audit-CRM, optional DataForSEO | repo-seitig implementiert; DataForSEO bleibt Admin-/Background-only, Labs kostenbegrenzt im Wochenrhythmus, Live-SERPs nur manuell |
 | Messung | `data-track-*`-Hooks, cookiefreie Anfrage-Herkunft im CRM, SEO-/Schema-Layer | `blocksy-child/assets/js/nexus-core.js`, `blocksy-child/inc/crm.php`, `blocksy-child/inc/seo-meta.php`, `blocksy-child/inc/org-schema.php`, Templates mit `data-track-*` | Koko Analytics (Plugin), Google Search Console | live; kein GTM, GA4 oder Pixel auf dieser Website |
 | CTA- und Leadflow | CTA-Hierarchie vom ersten Besuch bis zur Diagnose, Folgeeinordnung und Qualifizierung | `blocksy-child/inc/shortcodes.php`, `blocksy-child/template-parts/footer-cta.php`, `blocksy-child/template-parts/trust-section.php`, Service-Templates | WordPress-Editor, Audit-Funnel, Cal.com, CRM | live |
 | Public Proof Layer | zentraler oeffentlicher Proof- und Vokabular-Layer fuer kaufnahe Seiten | `blocksy-child/inc/helpers.php`, `blocksy-child/inc/shortcodes.php`, `blocksy-child/front-page.php`, `blocksy-child/page-wordpress-agentur.php`, `blocksy-child/page-kontakt.php`, `blocksy-child/inc/contact-page.php` | WordPress-Editor, oeffentliche Cases und Profile | live |
@@ -162,6 +162,7 @@ Außerhalb des Repos:
 
 - Koko Analytics als Plugin (admin-owned) für Seitenaufrufe
 - Google Search Console, angebunden über das SEO-Cockpit
+- DataForSEO optional als Admin-/Background-Datenquelle für Suchmarkt und Wettbewerb
 
 GTM, sGTM, GA4, Consent Mode und Meta CAPI sind Leistungen für Kunden, keine Abhängigkeiten dieser Website.
 
@@ -176,12 +177,14 @@ Neu im Repo:
 - automatischer Snapshot-Refresh per WP-Cron
 - optionale Koko-Erkennung als lokaler Traffic-Layer fuer spaetere Zusammenfuehrung
 - Audit-Lead-Layer aus `nexus_review_request` mit dem gemeinsamen Statusvertrag `qualified|nurture`, qualifizierter Anzahl, Source-Mix und intern attribuierten Seiten für neue Leads
+- Market-Intelligence-Layer aus DataForSEO Labs mit eigenem Snapshot, Kostenledger, Wettbewerbern und manueller Organic-/Maps-Live-Watchlist
 
 Systemische Rolle:
 
 - Search Console liefert die externe SEO-Sicht
 - Koko liefert optional die lokale Seiten- und Traffic-Sicht
-- das Audit-CRM liefert zusaetzlich Lead-Signale, qualifizierte Anfragen und interne Attributionsdaten; der sessionbasierte Frontend-Helper uebernimmt `utm_source`/`utm_term` als Quelle bzw. Suchbegriff, erkennt Google-/Meta-Klickparameter nur als Quellensignal und speichert keine rohe Klick-ID
+- das Audit-CRM liefert zusätzlich Lead-Signale, qualifizierte Anfragen und interne Attributionsdaten; der sessionbasierte Frontend-Helper übernimmt `utm_source`/`utm_term` als Quelle bzw. Suchbegriff, erkennt Google-/Meta-Klickparameter nur als Quellensignal und speichert keine rohe Klick-ID
+- DataForSEO liefert optional den externen Suchmarkt; seine Schätzwerte werden nicht als GSC- oder CRM-Messwerte ausgegeben
 - WordPress bleibt der Ort, an dem diese Perspektiven in einem operativen Cockpit zusammenlaufen
 - Der CSV-Vertrag exportiert Query×URL- und Page-Total-Zeilen getrennt, vereinigt aktuelle und vorherige Perioden und kennzeichnet vollständig verschwundene Rankings explizit für Gap-/Drift-Auswertungen
 
@@ -235,6 +238,7 @@ Risiko:
 - Website -> CTA-Layer -> Marktcheck -> Fitentscheidung -> Umsetzung / CRM / Sales
 - Website -> Anfrage-Formulare -> WordPress REST -> CRM mit Herkunft -> Sales-Pipeline / Antwortfrist-Wächter
 - Website -> `data-track-*` / Koko Analytics / Search Console -> SEO-Cockpit
+- DataForSEO -> Market-Intelligence-Snapshot -> Join mit GSC / CRM -> SEO-Cockpit-Priorisierung
 - Blog / SEO -> interne Verlinkung -> Service-Seiten / Audit -> Leadflow
 - WordPress-Editor -> Theme-Struktur -> Live-Seiten
 - `npm run check` / GitHub Actions CI → gemeinsame Prüfauswahl (`scripts/check.py`) → bei Runtime-Änderungen Build-Paket aus `blocksy-child/` → erfolgreicher main-Lauf → GitHub Actions Deploy → Live-Theme
@@ -250,7 +254,7 @@ Risiko:
 - Native WordPress-Sitemap (/wp-sitemap.xml)
 - Theme-eigene Crawl-Signale für `/robots.txt` und `/llms.txt`
 - Brevo-API für Transaktionsmails (über `wp_mail`, Zugangsdaten außerhalb des Repos)
-- WP-Cron für Follow-ups, Antwortfrist-Wächter und SEO-Cockpit-Snapshots; wegen des Seiten-Caches sollte ein Server-Cron `wp-cron.php` aufrufen
+- WP-Cron für Follow-ups, Antwortfrist-Wächter, SEO-Cockpit-Snapshots und den optionalen wöchentlichen DataForSEO-Labs-Refresh; wegen des Seiten-Caches sollte ein Server-Cron `wp-cron.php` aufrufen
 - Cal.com fuer direkte Gespraechsbuchung
 - SSH-Deploy auf Basis des gebauten `blocksy-child/`-Pakets
 
