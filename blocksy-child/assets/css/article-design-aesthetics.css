@@ -760,10 +760,10 @@
 
 .nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial.hu-design-hero {
 	display: grid;
-	grid-template-columns: minmax(0, 1.2fr) minmax(20rem, .8fr);
-	gap: clamp(2.5rem, 6vw, 6.5rem);
+	grid-template-columns: minmax(0, 1.4fr) minmax(20rem, .6fr);
+	gap: clamp(2.5rem, 5vw, 5.25rem);
 	align-items: end;
-	inline-size: min(100% - (var(--s3) * 2), 1220px);
+	inline-size: min(100% - (var(--s3) * 2), 1320px);
 	margin-bottom: clamp(3.5rem, 7vw, 6rem);
 	padding-bottom: clamp(2rem, 4vw, 3.5rem);
 }
@@ -779,14 +779,15 @@
 
 .nexus-article-reader-header ~ .nexus-single-container .hu-design-hero .nexus-title {
 	max-inline-size: none;
-	font-size: clamp(3.45rem, 2.25rem + 4.8vw, 7.4rem);
-	line-height: .9;
+	font-size: clamp(3.35rem, 2.95rem + 1.4vw, 4.35rem);
+	line-height: .92;
 	letter-spacing: -.058em;
 	text-wrap: initial;
 }
 
 .hu-design-title__line {
 	display: block;
+	white-space: nowrap;
 }
 
 .hu-design-hero.has-design-motion .hu-design-title__line {
@@ -1158,14 +1159,18 @@
 
 /* ── Responsive ─────────────────────────────────────────────── */
 
-@media (max-width: 1080px) {
+@media (max-width: 1120px) {
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial.hu-design-hero {
-		grid-template-columns: minmax(0, 1fr) minmax(18rem, .72fr);
+		grid-template-columns: 1fr;
 		gap: var(--s4);
 	}
 
 	.nexus-article-reader-header ~ .nexus-single-container .hu-design-hero .nexus-title {
-		font-size: clamp(3rem, 7vw, 5.3rem);
+		font-size: clamp(3.4rem, 7vw, 5rem);
+	}
+
+	.hu-design-title__line {
+		white-space: normal;
 	}
 
 	.hu-design-essay .hu-dv,
@@ -1186,7 +1191,6 @@
 
 @media (max-width: 860px) {
 	.nexus-article-reader-header ~ .nexus-single-container .nexus-article-hero--editorial.hu-design-hero {
-		grid-template-columns: 1fr;
 		align-items: start;
 	}
 
