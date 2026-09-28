@@ -25,19 +25,52 @@ while ( have_posts() ) :
 	<div class="site-main privacy-page legal-page doku" data-track-section="privacy_page">
 		<div class="privacy-shell">
 			<section class="privacy-hero" aria-labelledby="privacy-title">
-				<span class="privacy-kicker">Datenschutz</span>
-				<h1 id="privacy-title" class="privacy-title">Datenschutz auf einen Blick</h1>
-				<p class="privacy-lead">
-					Diese öffentlich zugängliche Website setzt bei normalen Besuchen keine Cookies,
-					speichert nichts in Ihrem Browser und verwendet weder Google Tag Manager noch
-					Google Analytics oder Marketing-Tracker. Seitenaufrufe zählen wir cookielos auf
-					unserem eigenen Server.
-				</p>
+				<div class="legal-hero-grid">
+					<div class="legal-hero-copy">
+						<span class="privacy-kicker">Datenschutz</span>
+						<h1 id="privacy-title" class="privacy-title">Datenschutz auf einen Blick</h1>
+						<p class="privacy-lead">
+							Diese öffentlich zugängliche Website setzt bei normalen Besuchen keine Cookies,
+							speichert nichts in Ihrem Browser und verwendet weder Google Tag Manager noch
+							Google Analytics oder Marketing-Tracker. Seitenaufrufe zählen wir cookielos auf
+							unserem eigenen Server.
+						</p>
 
-				<div class="privacy-statement">
-					<strong>Kein Cookie-Banner auf öffentlichen Seiten:</strong>
-					Beim normalen Besuch wird nichts in Ihrem Browser gespeichert, und es laufen
-					keine Tracking- oder Marketing-Dienste Dritter.
+						<div class="privacy-statement">
+							<strong>Kein Cookie-Banner auf öffentlichen Seiten:</strong>
+							Beim normalen Besuch wird nichts in Ihrem Browser gespeichert, und es laufen
+							keine Tracking- oder Marketing-Dienste Dritter.
+						</div>
+
+						<div class="privacy-actions">
+							<a class="privacy-button privacy-button--primary" href="<?php echo esc_url( $imprint_url ); ?>">Zum Impressum</a>
+							<a class="privacy-button" href="<?php echo esc_url( $rights_url ); ?>">Ihre Rechte</a>
+							<a class="privacy-button" href="<?php echo esc_url( $contact_url ); ?>">Kontakt</a>
+						</div>
+					</div>
+
+					<aside class="legal-hero-visual" aria-label="Datenfluss dieser Website">
+						<span class="legal-visual__eyebrow">Datenfluss · öffentlich</span>
+						<span class="legal-visual__index" aria-hidden="true">00</span>
+						<div class="legal-visual__track">
+							<div class="legal-visual__row">
+								<span class="legal-visual__label">Browser</span>
+								<span class="legal-visual__value">kein Speicher</span>
+								<span class="legal-visual__signal" aria-hidden="true"></span>
+							</div>
+							<div class="legal-visual__row">
+								<span class="legal-visual__label">Analyse</span>
+								<span class="legal-visual__value">cookielos · eigener Server</span>
+								<span class="legal-visual__signal" aria-hidden="true"></span>
+							</div>
+							<div class="legal-visual__row">
+								<span class="legal-visual__label">Kontakt</span>
+								<span class="legal-visual__value">Daten erst bei Ihrer Anfrage</span>
+								<span class="legal-visual__signal" aria-hidden="true"></span>
+							</div>
+						</div>
+						<p class="legal-visual__foot">Keine versteckte dritte Ebene. Die drei Stationen entsprechen dem tatsächlichen Setup.</p>
+					</aside>
 				</div>
 
 				<div class="privacy-facts" aria-label="Datenschutz-Kurzüberblick">
@@ -53,12 +86,6 @@ while ( have_posts() ) :
 						<span class="privacy-fact__value">Daten nur bei Kontakt</span>
 						<span class="privacy-fact__label">wenn Sie uns aktiv schreiben oder ein Formular senden</span>
 					</div>
-				</div>
-
-				<div class="privacy-actions">
-					<a class="privacy-button privacy-button--primary" href="<?php echo esc_url( $imprint_url ); ?>">Zum Impressum</a>
-					<a class="privacy-button" href="<?php echo esc_url( $rights_url ); ?>">Ihre Rechte</a>
-					<a class="privacy-button" href="<?php echo esc_url( $contact_url ); ?>">Kontakt</a>
 				</div>
 			</section>
 

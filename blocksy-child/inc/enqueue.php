@@ -139,10 +139,11 @@ function hu_enqueue_assets() {
 
 	if ( $is_legal_page ) {
 		hu_enqueue_css( 'nexus-legal-pages-css', 'legal-pages.css', [ 'nexus-system-css' ] );
+		hu_enqueue_js( 'nexus-legal-pages-js', 'legal-pages.js', [] );
 	} else {
-		// Auf allen anderen Seiten wird das Legal-CSS erst beim Oeffnen des
-		// Overlays von legal-modal.js nachgeladen. So bleibt die Startseite
-		// frei von ungenutztem Rechtstext-CSS.
+		// Auf allen anderen Seiten werden Legal-CSS und Interaktion erst beim
+		// Oeffnen des Overlays von legal-modal.js nachgeladen. So bleibt die
+		// Startseite frei von ungenutzten Rechtstext-Assets.
 		hu_enqueue_js( 'nexus-legal-modal-js', 'legal-modal.js' );
 	}
 
