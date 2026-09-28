@@ -69,25 +69,45 @@
 	var progressFill = toc ? toc.querySelector('[data-design-toc-fill]') : null;
 	var tocEnhanced = false;
 
+	function isTopLevelTocItem(item) {
+		if (!item || item.tagName !== 'LI' || !item.querySelector('a')) {
+			return false;
+		}
+
+		if (item.classList.contains('is-subsection')) {
+			return false;
+		}
+
+		/* NexusCore initially communicates depth with inline margin-left.
+		 * The shared TOC hydrator later converts that into is-subsection.
+		 * Supporting both states keeps numbering deterministic. */
+		var inlineIndent = parseFloat(item.style.marginLeft || '0');
+		return !Number.isFinite(inlineIndent) || inlineIndent <= 0;
+	}
+
 	function enhanceToc() {
 		if (!tocList) {
 			return false;
 		}
 
-		var items = Array.prototype.slice.call(tocList.children).filter(function (item) {
-			return item.tagName === 'LI' && !item.classList.contains('is-subsection') && item.querySelector('a');
+		var allItems = Array.prototype.slice.call(tocList.children).filter(function (item) {
+			return item.tagName === 'LI' && item.querySelector('a');
 		});
+		var items = allItems.filter(isTopLevelTocItem);
 
 		if (!items.length) {
 			return false;
 		}
 
+		allItems.forEach(function (item) {
+			var link = item.querySelector('a');
+			if (link) {
+				link.removeAttribute('data-design-index');
+			}
+		});
+
 		items.forEach(function (item, index) {
 			var link = item.querySelector('a');
-			if (!link) {
-				return;
-			}
-
 			link.setAttribute('data-design-index', String(index + 1).padStart(2, '0'));
 		});
 
@@ -97,20 +117,25 @@
 	}
 
 	if (tocList) {
-		if (!enhanceToc()) {
-			var tocObserver = new MutationObserver(function () {
-				if (enhanceToc()) {
-					tocObserver.disconnect();
-				}
+		enhanceToc();
+
+		var tocObserver = new MutationObserver(function (mutations) {
+			var needsRefresh = mutations.some(function (mutation) {
+				return mutation.type === 'childList' ||
+					(mutation.type === 'attributes' && mutation.attributeName === 'class');
 			});
 
-			tocObserver.observe(tocList, {
-				childList: true,
-				subtree: true,
-				attributes: true,
-				attributeFilter: ['class']
-			});
-		}
+			if (needsRefresh) {
+				enhanceToc();
+			}
+		});
+
+		tocObserver.observe(tocList, {
+			childList: true,
+			subtree: true,
+			attributes: true,
+			attributeFilter: ['class']
+		});
 	}
 
 	/* Progress is measured against the reading column, not the full page. */
