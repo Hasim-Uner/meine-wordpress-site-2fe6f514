@@ -17,6 +17,8 @@
 	var cache = {};
 	var isOpen = false;
 	var legalStylesRequested = false;
+	var legalScriptRequested = false;
+	var legalScriptCallbacks = [];
 
 	/**
 	 * Load the shared legal-page stylesheet on demand.
@@ -37,6 +39,38 @@
 		link.rel = 'stylesheet';
 		link.href = script.src.replace('/assets/js/legal-modal.js', '/assets/css/legal-pages.css');
 		document.head.appendChild(link);
+	}
+
+	/**
+	 * Load the legal page interaction only when an overlay is used.
+	 */
+	function ensureLegalScript(callback) {
+		if (typeof callback === 'function') {
+			legalScriptCallbacks.push(callback);
+		}
+
+		if (window.NexusLegalPageInit) {
+			while (legalScriptCallbacks.length) {
+				legalScriptCallbacks.shift()();
+			}
+			return;
+		}
+
+		if (legalScriptRequested) return;
+		legalScriptRequested = true;
+
+		var modalScript = document.querySelector('script[src*="/assets/js/legal-modal.js"]');
+		if (!modalScript || !modalScript.src) return;
+
+		var script = document.createElement('script');
+		script.src = modalScript.src.replace('/assets/js/legal-modal.js', '/assets/js/legal-pages.js');
+		script.defer = true;
+		script.addEventListener('load', function () {
+			while (legalScriptCallbacks.length) {
+				legalScriptCallbacks.shift()();
+			}
+		});
+		document.head.appendChild(script);
 	}
 
 	/**
@@ -180,6 +214,12 @@
 			body.className = 'legal-modal__body';
 			body.innerHTML = html;
 			panel.appendChild(body);
+
+			ensureLegalScript(function () {
+				if (window.NexusLegalPageInit) {
+					window.NexusLegalPageInit(body);
+				}
+			});
 
 			// Re-bind any internal legal links within the modal
 			var links = body.querySelectorAll('a');
