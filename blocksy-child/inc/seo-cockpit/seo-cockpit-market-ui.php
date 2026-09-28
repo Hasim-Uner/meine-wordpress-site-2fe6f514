@@ -42,7 +42,7 @@ add_action( 'admin_menu', 'nexus_register_market_intelligence_admin_page', 42 );
  */
 function nexus_enqueue_market_intelligence_assets( $hook ) {
 	$page = isset( $_GET['page'] ) ? sanitize_key( (string) wp_unslash( $_GET['page'] ) ) : '';
-	if ( nexus_market_intelligence_admin_slug() !== $page ) {
+	if ( ! in_array( $page, [ nexus_market_intelligence_admin_slug(), nexus_get_seo_cockpit_menu_slug() ], true ) ) {
 		return;
 	}
 
