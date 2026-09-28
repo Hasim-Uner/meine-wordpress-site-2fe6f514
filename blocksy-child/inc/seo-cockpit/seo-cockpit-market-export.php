@@ -90,14 +90,17 @@ function nexus_market_intelligence_export_decimal( $value, $decimals = 2 ) {
 function nexus_market_intelligence_export_base_row( $snapshot, $row_type, $source ) {
 	$config = is_array( $snapshot['config'] ?? null ) ? $snapshot['config'] : [];
 
-	return array_fill_keys( nexus_get_market_intelligence_export_columns(), '' ) + [
-		'row_type'      => sanitize_key( $row_type ),
-		'source'        => sanitize_key( $source ),
-		'snapshot_at'   => ! empty( $snapshot['generated_at'] ) ? wp_date( 'c', absint( $snapshot['generated_at'] ) ) : '',
-		'target'        => (string) ( $snapshot['target'] ?? nexus_dataforseo_target_domain() ),
-		'location_name' => (string) ( $config['location_name'] ?? '' ),
-		'language_code' => (string) ( $config['language_code'] ?? '' ),
-	];
+	return array_merge(
+		array_fill_keys( nexus_get_market_intelligence_export_columns(), '' ),
+		[
+			'row_type'      => sanitize_key( $row_type ),
+			'source'        => sanitize_key( $source ),
+			'snapshot_at'   => ! empty( $snapshot['generated_at'] ) ? wp_date( 'c', absint( $snapshot['generated_at'] ) ) : '',
+			'target'        => (string) ( $snapshot['target'] ?? nexus_dataforseo_target_domain() ),
+			'location_name' => (string) ( $config['location_name'] ?? '' ),
+			'language_code' => (string) ( $config['language_code'] ?? '' ),
+		]
+	);
 }
 
 /**
