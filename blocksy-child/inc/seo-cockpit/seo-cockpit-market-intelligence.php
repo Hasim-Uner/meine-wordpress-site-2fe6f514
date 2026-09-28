@@ -254,7 +254,6 @@ function nexus_market_intelligence_fetch_competitors( $automatic = false ) {
 		'item_types'          => [ 'organic' ],
 		'ignore_synonyms'     => true,
 		'exclude_top_domains' => true,
-		'order_by'            => [ 'competitor_metrics.organic.etv,desc', 'intersections,desc' ],
 		'limit'               => (int) $config['competitor_limit'],
 		'max_rank_group'      => 100,
 		'tag'                 => 'nexus_market_competitors',
