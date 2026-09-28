@@ -3,7 +3,8 @@
  * Action-first presentation on top of Content Intelligence V1.1.
  */
 
-.nsc-decision {
+.nsc-decision,
+.nsc-decision-dashboard {
     --nsc-decision-ink: #171411;
     --nsc-decision-muted: #6d665f;
     --nsc-decision-border: #e3ded8;
@@ -14,6 +15,9 @@
     --nsc-decision-amber: #8b5e1f;
     --nsc-decision-amber-soft: #fbf5e8;
     --nsc-decision-gray-soft: #f4f3f1;
+}
+
+.nsc-decision {
     max-width: 1480px;
 }
 
