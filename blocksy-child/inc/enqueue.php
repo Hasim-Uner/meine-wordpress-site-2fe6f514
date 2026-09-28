@@ -134,8 +134,15 @@ function hu_enqueue_assets() {
 		hu_enqueue_js( 'nexus-leiste-js', 'leiste.js', [] );
 	}
 
-	// ── GLOBAL: Legal Page Modal (Datenschutz / Impressum Overlay) ──
-	if ( ! is_page( 'datenschutz' ) && ! is_page( 'impressum' ) ) {
+	// ── RECHTLICHES: gemeinsames Editorial-Layout + Modal ───────────
+	$is_legal_page = is_page( [ 'datenschutz', 'impressum' ] );
+
+	if ( $is_legal_page ) {
+		hu_enqueue_css( 'nexus-legal-pages-css', 'legal-pages.css', [ 'nexus-system-css' ] );
+	} else {
+		// Auf allen anderen Seiten wird das Legal-CSS erst beim Oeffnen des
+		// Overlays von legal-modal.js nachgeladen. So bleibt die Startseite
+		// frei von ungenutztem Rechtstext-CSS.
 		hu_enqueue_js( 'nexus-legal-modal-js', 'legal-modal.js' );
 	}
 
