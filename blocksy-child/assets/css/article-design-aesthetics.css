@@ -3,6 +3,14 @@
 	--hu-design-strong-rule: var(--strich);
 }
 
+.hu-design-essay__intro {
+	max-inline-size: 60ch;
+	margin: 0 0 var(--s4) !important;
+	font-size: clamp(1.12rem, 1rem + 0.55vw, 1.35rem);
+	line-height: 1.62 !important;
+	color: var(--tinte) !important;
+}
+
 .hu-design-essay__answer {
 	margin: 0 0 var(--s5);
 	padding: var(--s3) 0 var(--s3) var(--s3);
