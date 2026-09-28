@@ -31,6 +31,7 @@ function nexus_get_market_intelligence_export_columns() {
 		'url',
 		'title',
 		'rank',
+		'avg_position',
 		'previous_rank',
 		'search_volume',
 		'cpc',
@@ -226,7 +227,7 @@ function nexus_build_market_intelligence_export_rows( $snapshot ) {
 		$domain = (string) ( $row['domain'] ?? '' );
 		$export = nexus_market_intelligence_export_base_row( $snapshot, 'competitor_auto', 'dataforseo_labs' );
 		$export['domain']           = $domain;
-		$export['rank']             = nexus_market_intelligence_export_decimal( $row['avg_position'] ?? null, 2 );
+		$export['avg_position']     = nexus_market_intelligence_export_decimal( $row['avg_position'] ?? null, 2 );
 		$export['intersections']     = absint( $row['intersections'] ?? 0 );
 		$export['shared_etv']        = nexus_market_intelligence_export_decimal( $row['shared_etv'] ?? 0, 4 );
 		$export['shared_count']      = absint( $row['shared_count'] ?? 0 );
@@ -245,7 +246,7 @@ function nexus_build_market_intelligence_export_rows( $snapshot ) {
 
 		$export = nexus_market_intelligence_export_base_row( $snapshot, 'competitor_strategic', 'repo_strategy' );
 		$export['domain']           = (string) ( $row['domain'] ?? '' );
-		$export['rank']             = nexus_market_intelligence_export_decimal( $row['avg_position'] ?? null, 2 );
+		$export['avg_position']     = nexus_market_intelligence_export_decimal( $row['avg_position'] ?? null, 2 );
 		$export['intersections']     = absint( $row['intersections'] ?? 0 );
 		$export['shared_etv']        = nexus_market_intelligence_export_decimal( $row['shared_etv'] ?? 0, 4 );
 		$export['shared_count']      = absint( $row['shared_count'] ?? 0 );
