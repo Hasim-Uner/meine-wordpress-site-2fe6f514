@@ -843,7 +843,7 @@ function nexus_get_seo_cockpit_crm_acquisition_snapshot_data( $ranges ) {
 	usort(
 		$latest,
 		static function ( $left, $right ) {
-			return (int) ( $right['timestamp'] ?? 0 ) <=> (int) ( $left['timestamp'] ?? 0 );
+			return (int) $right['timestamp'] <=> (int) $left['timestamp'];
 		}
 	);
 
