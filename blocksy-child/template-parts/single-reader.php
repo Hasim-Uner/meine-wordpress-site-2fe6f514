@@ -36,6 +36,7 @@ get_template_part( 'template-parts/blog-header' );
 		<?php
 		$post_id         = get_the_ID();
 		$post_slug       = (string) get_post_field( 'post_name', $post_id );
+		$is_design_aesthetics = 'design-ist-mehr-als-aesthetik' === $post_slug;
 		$has_hero_image  = has_post_thumbnail();
 		$article_summary = wp_strip_all_tags( get_the_excerpt() );
 		if ( '' === $article_summary ) {
@@ -190,6 +191,7 @@ get_template_part( 'template-parts/blog-header' );
 			</div>
 		</figure>
 
+		<?php if ( ! $is_design_aesthetics ) : ?>
 		<section class="nexus-article-context nexus-reveal<?php echo esc_attr( $is_provider_post ? ' nexus-article-context--provider' : '' ); ?>" data-track-section="article_context_bridge" aria-labelledby="nexus-article-context-title">
 			<div class="nexus-article-context__copy">
 				<span class="nexus-article-context__eyebrow"><?php echo esc_html( $article_context['eyebrow'] ); ?></span>
@@ -201,6 +203,7 @@ get_template_part( 'template-parts/blog-header' );
 				<a class="nexus-article-context__link" href="<?php echo esc_url( $article_context['secondary_url'] ); ?>"><?php echo esc_html( $article_context['secondary_label'] ); ?></a>
 			</div>
 		</section>
+		<?php endif; ?>
 
 		<div class="nexus-post-layout">
 			<aside class="nexus-sidebar nexus-reader-toc" aria-label="<?php esc_attr_e( 'Inhaltsverzeichnis', 'blocksy-child' ); ?>">
@@ -221,7 +224,7 @@ get_template_part( 'template-parts/blog-header' );
 			<?php else : ?>
 				<article class="nexus-article-content" id="article-content" data-track-section="article_content">
 					<?php the_content(); ?>
-					<?php if ( function_exists( 'nexus_get_wgos_blog_asset_bridge' ) && function_exists( 'nexus_render_wgos_blog_asset_bridge' ) ) : ?>
+					<?php if ( ! $is_design_aesthetics && function_exists( 'nexus_get_wgos_blog_asset_bridge' ) && function_exists( 'nexus_render_wgos_blog_asset_bridge' ) ) : ?>
 						<?php $bridge = nexus_get_wgos_blog_asset_bridge(); ?>
 						<?php if ( is_array( $bridge ) ) : ?><?php echo nexus_render_wgos_blog_asset_bridge( $bridge ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?>
 					<?php endif; ?>
@@ -229,6 +232,7 @@ get_template_part( 'template-parts/blog-header' );
 			<?php endif; ?>
 		</div>
 
+		<?php if ( ! $is_design_aesthetics ) : ?>
 		<section class="nexus-article-next" data-track-section="article_next_steps" aria-labelledby="nexus-article-next-heading">
 			<span class="nexus-article-next__eyebrow"><?php esc_html_e( 'Weiterarbeiten', 'blocksy-child' ); ?></span>
 			<h2 id="nexus-article-next-heading" class="nexus-article-next__title"><?php esc_html_e( 'Nächster sinnvoller Schritt.', 'blocksy-child' ); ?></h2>
@@ -239,6 +243,7 @@ get_template_part( 'template-parts/blog-header' );
 				<?php endforeach; ?>
 			</div>
 		</section>
+		<?php endif; ?>
 
 		<section class="nexus-rating nexus-reveal" data-track-section="article_rating" aria-labelledby="nexus-rating-title">
 			<div class="nexus-rating__label"><?php esc_html_e( 'Feedback', 'blocksy-child' ); ?></div>
