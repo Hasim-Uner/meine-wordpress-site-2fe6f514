@@ -787,11 +787,14 @@
 
 .hu-design-title__line {
 	display: block;
+}
+
+.hu-design-hero.has-design-motion .hu-design-title__line {
 	opacity: 0;
 	transform: translateY(.22em);
 }
 
-.hu-design-hero.is-ready .hu-design-title__line {
+.hu-design-hero.has-design-motion.is-ready .hu-design-title__line {
 	opacity: 1;
 	transform: translateY(0);
 	transition:
@@ -799,7 +802,7 @@
 		transform 780ms var(--ease-aus);
 }
 
-.hu-design-hero.is-ready .hu-design-title__line:nth-child(2) {
+.hu-design-hero.has-design-motion.is-ready .hu-design-title__line:nth-child(2) {
 	transition-delay: 95ms;
 }
 
@@ -1064,12 +1067,12 @@
 	margin-block: .85rem 1rem;
 }
 
-.hu-dv-flow__step {
+.hu-design-essay.has-design-motion .hu-dv-flow__step {
 	opacity: 0;
 	transform: translateY(.75rem);
 }
 
-.hu-dv.is-visible .hu-dv-flow__step {
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step {
 	opacity: 1;
 	transform: translateY(0);
 	transition:
@@ -1077,21 +1080,21 @@
 		transform 680ms var(--ease-aus);
 }
 
-.hu-dv.is-visible .hu-dv-flow__step:nth-child(2) { transition-delay: 70ms; }
-.hu-dv.is-visible .hu-dv-flow__step:nth-child(3) { transition-delay: 140ms; }
-.hu-dv.is-visible .hu-dv-flow__step:nth-child(4) { transition-delay: 210ms; }
-.hu-dv.is-visible .hu-dv-flow__step:nth-child(5) { transition-delay: 280ms; }
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step:nth-child(2) { transition-delay: 70ms; }
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step:nth-child(3) { transition-delay: 140ms; }
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step:nth-child(4) { transition-delay: 210ms; }
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-flow__step:nth-child(5) { transition-delay: 280ms; }
 
 /* ── Matrix + Historie: gleiche Qualitaetslogik, weniger Deko ─ */
 
-.hu-dv-matrix__cell,
-.hu-dv-history__step {
+.hu-design-essay.has-design-motion .hu-dv-matrix__cell,
+.hu-design-essay.has-design-motion .hu-dv-history__step {
 	opacity: 0;
 	transform: translateY(.65rem);
 }
 
-.hu-dv.is-visible .hu-dv-matrix__cell,
-.hu-dv.is-visible .hu-dv-history__step {
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-matrix__cell,
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-history__step {
 	opacity: 1;
 	transform: translateY(0);
 	transition:
@@ -1099,12 +1102,12 @@
 		transform 680ms var(--ease-aus);
 }
 
-.hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(2),
-.hu-dv.is-visible .hu-dv-history__step:nth-child(2) { transition-delay: 70ms; }
-.hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(3),
-.hu-dv.is-visible .hu-dv-history__step:nth-child(3) { transition-delay: 140ms; }
-.hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(4),
-.hu-dv.is-visible .hu-dv-history__step:nth-child(4) { transition-delay: 210ms; }
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(2),
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-history__step:nth-child(2) { transition-delay: 70ms; }
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(3),
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-history__step:nth-child(3) { transition-delay: 140ms; }
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-matrix__cell:nth-of-type(4),
+.hu-design-essay.has-design-motion .hu-dv.is-visible .hu-dv-history__step:nth-child(4) { transition-delay: 210ms; }
 
 .hu-dv-matrix__cell--generic .hu-dv-mock {
 	background:
@@ -1134,18 +1137,18 @@
 
 /* ── Kapitel-Reveal: Bewegung ordnet den Lesefluss ─────────── */
 
-.hu-design-essay > h2,
-.hu-design-essay > .hu-design-essay__questions,
-.hu-design-essay > .hu-design-essay__ethics,
-.hu-design-essay > .hu-design-essay__future {
+.hu-design-essay.has-design-motion > h2,
+.hu-design-essay.has-design-motion > .hu-design-essay__questions,
+.hu-design-essay.has-design-motion > .hu-design-essay__ethics,
+.hu-design-essay.has-design-motion > .hu-design-essay__future {
 	opacity: 0;
 	transform: translateY(.8rem);
 }
 
-.hu-design-essay > h2.is-visible,
-.hu-design-essay > .hu-design-essay__questions.is-visible,
-.hu-design-essay > .hu-design-essay__ethics.is-visible,
-.hu-design-essay > .hu-design-essay__future.is-visible {
+.hu-design-essay.has-design-motion > h2.is-visible,
+.hu-design-essay.has-design-motion > .hu-design-essay__questions.is-visible,
+.hu-design-essay.has-design-motion > .hu-design-essay__ethics.is-visible,
+.hu-design-essay.has-design-motion > .hu-design-essay__future.is-visible {
 	opacity: 1;
 	transform: translateY(0);
 	transition:
