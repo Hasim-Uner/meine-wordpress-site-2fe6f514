@@ -310,3 +310,13 @@ Vorqualifizierung in Bitrix24 erfasst. 12 % bezeichnet Besucher zu Leads;
 15 % bezeichnet Abschlüsse unter diesen vorqualifizierten CRM-Leads.
 Die gemeinsame Erläuterung liegt in `hu_e3_summary('definitions')`.
 Keine Gesamt-CPO-Rechnung aus dem erreichten Kampagnen-CPL und der CRM-Quote.
+
+### Solar-Leistungsseite: Informationsfolge
+
+Zielgruppe und persönliche Umsetzung zuerst; Kennzahlen in einem gemeinsamen
+Belegfeld, Projektphasen im Fallabschnitt. Der interaktive Rechner enthält
+Annahmen und darf nicht als Ergebnisprognose dargestellt werden. Stationen
+erklären die Umsetzung und den Nutzen für den Vertrieb. Der kostenlose
+Marktcheck bleibt der primäre Schritt: persönliche Prüfung, schriftlicher
+E-Mail-Befund gemäß Antwortzeit-Kanon, danach freie Entscheidung. Kein
+Pflichtgespräch und keine Buchung durch das Absenden.

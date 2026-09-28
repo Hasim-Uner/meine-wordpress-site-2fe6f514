@@ -194,7 +194,12 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - **`/solar-waermepumpen-leadgenerierung/`**
   (`page-solar-waermepumpen-leadgenerierung.php`, `anfragestrecke.css` unter
   `.strecke-doc`): Energie-Money-Page mit Marktcheck am Mount `#sol-quiz-mount`,
-  Rechner (`anfragestrecke.js`) und Einstieg `#einstieg`. Geladen wird
+  Rechner (`anfragestrecke.js`) und Einstieg `#einstieg`. Der Einstieg nennt
+  Zielgruppe und persönliche Umsetzung; ein gemeinsames Belegfeld bündelt
+  die Referenzzahlen. Die statische Modellgrafik und die zweite Vergleichstabelle
+  entfallen zugunsten des Rechners und der Projektphasen. CTA- und Abschnitts-IDs
+  bleiben erhalten. Der Marktcheck erklärt Prüfung, E-Mail-Befund und freie
+  Entscheidung über die weitere Zusammenarbeit. Geladen wird
   `solar-leadgenerierung-solara.js`; es lädt `solar-marketcheck-compact.js`
   nach, das die sichtbare Strecke rendert (vier Fit-Fragen plus Kontaktdaten in
   `HU_MARKETCHECK_VISIBLE_STEPS` Schritten) und an `audit-request` sendet. Ohne
