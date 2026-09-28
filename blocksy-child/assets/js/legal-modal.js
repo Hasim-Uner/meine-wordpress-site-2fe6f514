@@ -16,6 +16,28 @@
 	var closeBtn = null;
 	var cache = {};
 	var isOpen = false;
+	var legalStylesRequested = false;
+
+	/**
+	 * Load the shared legal-page stylesheet on demand.
+	 *
+	 * The standalone legal routes enqueue it server-side. Other routes only
+	 * need it when the overlay opens; derive the CSS URL from this script so
+	 * the same cache-busting query string is reused without global CSS weight.
+	 */
+	function ensureLegalStyles() {
+		if (legalStylesRequested || document.getElementById('nexus-legal-pages-css-lazy')) return;
+		legalStylesRequested = true;
+
+		var script = document.querySelector('script[src*="/assets/js/legal-modal.js"]');
+		if (!script || !script.src) return;
+
+		var link = document.createElement('link');
+		link.id = 'nexus-legal-pages-css-lazy';
+		link.rel = 'stylesheet';
+		link.href = script.src.replace('/assets/js/legal-modal.js', '/assets/css/legal-pages.css');
+		document.head.appendChild(link);
+	}
 
 	/**
 	 * Check if a URL points to a legal page we should intercept.
@@ -119,6 +141,7 @@
 	 * Open the modal with content for a given slug.
 	 */
 	function open(slug) {
+		ensureLegalStyles();
 		ensureModal();
 		isOpen = true;
 
