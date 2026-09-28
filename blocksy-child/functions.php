@@ -24,6 +24,7 @@ $modules = [
 	'article-content-hygiene-ttfb.php',        // … TTFB-Artikel
 	'article-content-hygiene-landingpage.php', // … Landingpage-Artikel
 	'article-b2b-inquiry-system.php',          // … Artikel zum B2B-Anfragesystem
+	'article-design-aesthetics.php',            // … Essay zu Design, Ästhetik und Funktion
 	'article-agency-outsourcing.php',          // … Auslagerungs-Leitfaden für Agenturen
 	'article-agency-outsourcing-hero.php',     // … Hero des Auslagerungs-Leitfadens
 	'article-reader-toc.php',                  // Inhaltsverzeichnis im Artikel-Reader
