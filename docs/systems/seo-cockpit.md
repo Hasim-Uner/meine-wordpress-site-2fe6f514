@@ -26,7 +26,8 @@ Repo-seitig vorhanden:
 
 - Top-Level-Admin-Menü `SEO Cockpit`
 - visuelles Dashboard V3 als Command Center
-- eigenes Untermenü `SEO Cockpit -> Research` für externe Primärdaten
+- eigenes Untermenü `SEO Cockpit -> Datenquellen` für externe Primärdaten und Belege
+- eigenes Untermenü `SEO Cockpit -> Content-Chancen` als Decision Layer für konkrete nächste Maßnahmen
 - eigenes Untermenü `SEO Cockpit -> Markt & Wettbewerb` für DataForSEO Market Intelligence
 - kompaktes Snapshot-Widget im Standard-WordPress-Dashboard
 - priorisierte Queue im Admin, die SEO-Signale jetzt gegen Business-Wert, Funnel-Nähe und Confidence gewichtet
@@ -85,6 +86,36 @@ Repo-seitig vorhanden:
   - asynchroner Ausführung automatischer Meldungen per Single WP-Cron Event
   - lokalem Verlauf der letzten 50 Meldungen
   - eigenem Untermenü `SEO Cockpit -> IndexNow`
+
+## Decision Layer V1
+
+Der Decision Layer ist die handlungsorientierte Schicht über den bestehenden Datenwelten. Er führt keine neuen externen Provider-Abfragen aus, sondern liest vorhandene Snapshots und verdichtet sie zu einer kleinen Arbeitsqueue.
+
+Code-Orte:
+
+- `blocksy-child/inc/seo-cockpit/seo-cockpit-decision-layer.php`
+- `blocksy-child/assets/css/seo-cockpit-decision.css`
+- `scripts/smoke-seo-decision-layer-contract.sh`
+
+Datenquellen je nach Entscheidung:
+
+- DataForSEO Market Intelligence
+- Google Search Console
+- Research Intelligence / Primärdaten
+- WordPress-Seitenkontext und Seitentyp
+- Audit-CRM und Nexus CRM
+
+UI-Vertrag:
+
+- das frühere Menü `Opportunities` heißt `Content-Chancen`
+- die Seite beginnt mit der Frage `Was du als Nächstes tun solltest`
+- nur handlungsfähige Signale stehen offen in der Arbeitsqueue
+- reine Beobachtungs-/Belegsignale liegen sekundär unter `Beobachten & Belege`
+- jede Entscheidung zeigt `Warum jetzt?`, `Nächster Schritt`, Evidenz und Datenquellen
+- Dashboard V3 zeigt nur die drei stärksten handlungsfähigen Entscheidungen
+- Research heißt in der Navigation `Datenquellen` und bleibt als Beleg-Layer vollständig verfügbar
+
+Priorisierung ist deterministisch und keine Erfolgsprognose. Market-Opportunities übernehmen den bereits business-segmentierten Market-Score. Research-/Content-Signale werden aus Markt-Relevanz, direkter GSC-Chance und vorhandener Handlungsfähigkeit normalisiert. Die Entscheidungsschicht publiziert nichts automatisch.
 
 ## Market Intelligence V1
 
@@ -282,6 +313,7 @@ Wichtige technische Entscheidungen:
 - Revenue Command Center als vierter operativer Layer für Today Queue, Lead-Follow-up, Page Queue, Conversion Leaks und Manual Checks
 - Research Intelligence als getrennte Primärdaten-Schicht
 - Market Intelligence als DataForSEO-Schicht für Suchmarkt, Wettbewerber und manuelle Live-SERPs; die Priorität bleibt repo-owned
+- Decision Layer als handlungsorientierte Verdichtung von Market Intelligence, GSC, Research, WordPress und CRM
 - IndexNow als eigener Indexing-Control-Layer ohne Google- oder Bing-Account-Credentials
 
 ## CSV-Exportvertrag
