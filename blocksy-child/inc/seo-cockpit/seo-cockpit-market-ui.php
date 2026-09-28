@@ -32,7 +32,7 @@ function nexus_register_market_intelligence_admin_page() {
 		'nexus_render_market_intelligence_admin_page'
 	);
 }
-add_action( 'admin_menu', 'nexus_register_market_intelligence_admin_page', 42 );
+add_action( 'admin_menu', 'nexus_register_market_intelligence_admin_page', 44 );
 
 /**
  * Load the small additive stylesheet only on the market page.
