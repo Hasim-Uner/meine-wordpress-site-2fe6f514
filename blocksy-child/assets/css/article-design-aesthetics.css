@@ -1,0 +1,153 @@
+.hu-design-essay {
+	--hu-design-rule: var(--haar);
+	--hu-design-strong-rule: var(--strich);
+}
+
+.hu-design-essay__answer {
+	margin: 0 0 var(--s5);
+	padding: var(--s3) 0 var(--s3) var(--s3);
+	border-left: 2px solid var(--stempel);
+}
+
+.hu-design-essay__answer h2 {
+	margin-top: 0 !important;
+	padding-top: 0 !important;
+	border-top: 0 !important;
+}
+
+.hu-design-essay__principles,
+.hu-design-essay__history,
+.hu-design-essay__questions {
+	display: grid;
+	gap: var(--s2);
+	margin: var(--s4) 0;
+}
+
+.hu-design-essay__principles {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hu-design-essay__history,
+.hu-design-essay__questions {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.hu-design-essay__principles article,
+.hu-design-essay__history article,
+.hu-design-essay__questions article {
+	padding: var(--s3) 0 0;
+	border-top: 1px solid var(--hu-design-strong-rule);
+}
+
+.hu-design-essay__principles h3,
+.hu-design-essay__history h3,
+.hu-design-essay__questions h3 {
+	margin-top: var(--s1) !important;
+}
+
+.hu-design-essay__index,
+.hu-design-essay__period,
+.hu-design-essay__question,
+.hu-design-essay__ethics-label {
+	display: inline-block;
+	font-family: var(--mono);
+	font-size: var(--mono-s);
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--stempel);
+}
+
+.hu-design-essay__ethics {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--s4);
+	margin: var(--s4) 0;
+	padding: var(--s3) 0;
+	border-top: 1px solid var(--hu-design-strong-rule);
+	border-bottom: 1px solid var(--hu-design-rule);
+}
+
+.hu-design-essay__ethics > div + div {
+	padding-left: var(--s3);
+	border-left: 1px solid var(--hu-design-rule);
+}
+
+.hu-design-essay__ethics ul {
+	margin: var(--s2) 0 0 !important;
+}
+
+.hu-design-essay__table-wrap {
+	margin: var(--s4) 0;
+	overflow-x: auto;
+}
+
+.hu-design-essay__table-wrap table {
+	min-width: 620px;
+}
+
+.hu-design-essay__checklist {
+	padding-left: 0 !important;
+	list-style: none;
+	border-top: 1px solid var(--hu-design-strong-rule);
+}
+
+.hu-design-essay__checklist li {
+	position: relative;
+	margin: 0 !important;
+	padding: var(--s2) 0 var(--s2) var(--s4) !important;
+	border-bottom: 1px solid var(--hu-design-rule);
+}
+
+.hu-design-essay__checklist li::before {
+	content: "✓";
+	position: absolute;
+	left: 0;
+	top: var(--s2);
+	font-family: var(--mono);
+	color: var(--stempel);
+}
+
+.hu-design-essay__sources {
+	margin-top: var(--s5);
+	padding-top: var(--s3);
+	border-top: 1px solid var(--hu-design-strong-rule);
+}
+
+.hu-design-essay__sources h3 {
+	margin-top: 0 !important;
+	font-family: var(--mono) !important;
+	font-size: var(--mono-s) !important;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--stempel) !important;
+}
+
+.hu-design-essay__sources p {
+	font-size: 0.94em;
+	color: var(--matt) !important;
+}
+
+@media (max-width: 760px) {
+	.hu-design-essay__answer {
+		padding-left: var(--s2);
+	}
+
+	.hu-design-essay__principles,
+	.hu-design-essay__history,
+	.hu-design-essay__questions,
+	.hu-design-essay__ethics {
+		grid-template-columns: 1fr;
+	}
+
+	.hu-design-essay__ethics {
+		gap: var(--s3);
+	}
+
+	.hu-design-essay__ethics > div + div {
+		padding-top: var(--s3);
+		padding-left: 0;
+		border-top: 1px solid var(--hu-design-rule);
+		border-left: 0;
+	}
+}
