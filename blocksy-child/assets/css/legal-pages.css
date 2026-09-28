@@ -1,80 +1,115 @@
 /* ══════════════════════════════════════════════════════════════
-   RECHTLICHES — Impressum + Datenschutz
+   RECHTLICHES V2 — Impressum + Datenschutz
 
-   Gemeinsames Editorial-Layout fuer beide Rechtstext-Seiten.
-   Das Design liest ausschliesslich aus system.css: Papier, Tinte,
-   Stempel, Haarlinien, Typografie und Abstandsskala bleiben damit
-   identisch zur aktuellen Startseite.
+   Ein System fuer beide Seiten:
+   - asymmetrischer Hero mit einem einzigen diagrammatischen Visual
+   - dokumentartige Statusleiste statt verstreuter Cards
+   - sticky Inhaltsindex mit aktivem Abschnitt
+   - grosse Abschnittsnummern als Navigationssignal
+   - Scroll-Fortschritt unter der globalen Kopfleiste
 
-   Kein eigenes Farbsystem, kein Dark Mode, keine Card-Landschaft.
-   Rechtstexte sollen wie ein sauber gesetztes Dokument wirken:
-   klare Hierarchie, ruhiger Satzspiegel, schnelle Orientierung.
+   Alle Farben, Schriften und Abstaende kommen aus system.css.
    ══════════════════════════════════════════════════════════════ */
 
 .legal-page {
+  --legal-progress: 0;
+  --legal-aside: minmax(13rem, 0.62fr);
+  --legal-copy: minmax(0, 1.55fr);
+  min-height: 70vh;
   background: var(--papier);
   color: var(--tinte);
-  min-height: 60vh;
+}
+
+.legal-page *,
+.legal-page *::before,
+.legal-page *::after {
+  box-sizing: border-box;
+}
+
+.legal-page::before {
+  content: "";
+  position: fixed;
+  z-index: 32;
+  top: var(--leiste-h);
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--stempel);
+  transform: scaleX(var(--legal-progress));
+  transform-origin: 0 50%;
+  pointer-events: none;
 }
 
 .legal-page :where(.privacy-shell, .imprint-shell) {
-  max-width: calc(var(--rand) + var(--satz) + var(--marg) + 8rem);
+  width: min(100%, 88rem);
   margin-inline: auto;
   padding-inline: clamp(1.25rem, 4vw, 3rem);
 }
 
-/* ══ Dokumentkopf ═════════════════════════════════════════════ */
+/* ══ Hero ═════════════════════════════════════════════════════ */
 
 .legal-page :where(.privacy-hero, .imprint-hero) {
-  position: relative;
-  padding-block: var(--s6) var(--s5);
+  padding-block: clamp(3.8rem, 8vw, 7rem) clamp(2.5rem, 5vw, 4.25rem);
   border-bottom: 1px solid var(--haar);
 }
 
+.legal-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) minmax(18rem, 0.72fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: end;
+}
+
+.legal-hero-copy {
+  min-width: 0;
+}
+
 .legal-page :where(.privacy-kicker, .imprint-kicker) {
-  display: block;
-  margin: 0 0 var(--s2);
-  padding: 0;
-  border: 0;
-  background: none;
-  border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  margin: 0 0 var(--s3);
   font-family: var(--mono);
   font-size: var(--mono-m);
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--stempel);
 }
 
+.legal-page :where(.privacy-kicker, .imprint-kicker)::before {
+  content: "";
+  width: 2.4rem;
+  height: 1px;
+  background: var(--stempel);
+}
+
 .legal-page :where(.privacy-title, .imprint-title) {
-  max-width: 14ch;
+  max-width: 12ch;
   margin: 0;
   font-family: var(--serif-display);
-  font-size: clamp(2.6rem, 1.8rem + 3.2vw, 5rem);
+  font-size: clamp(3rem, 2rem + 4vw, 6.35rem);
   font-weight: 500;
-  line-height: 0.98;
-  letter-spacing: -0.04em;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
   color: var(--tinte);
   text-wrap: balance;
 }
 
 .legal-page :where(.privacy-lead, .imprint-lead) {
-  max-width: 62ch;
-  margin: var(--s3) 0 0;
+  max-width: 58ch;
+  margin: var(--s4) 0 0;
   font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
-  line-height: 1.62;
+  line-height: 1.6;
   color: var(--grau);
 }
 
 .legal-page .privacy-statement {
-  max-width: 62ch;
-  margin: var(--s3) 0 0;
-  padding: var(--s2) var(--s3);
-  border: 0;
+  max-width: 58ch;
+  margin-top: var(--s3);
+  padding: var(--s2) 0 0 var(--s3);
   border-left: 2px solid var(--stempel);
-  border-radius: 0;
-  background: var(--zone);
   color: var(--grau);
   line-height: 1.58;
 }
@@ -84,33 +119,147 @@
   font-weight: 600;
 }
 
-/* Statuszeilen statt Cards/Pills. */
+/* Das einzige Hero-Visual. Beide Seiten teilen exakt dieselbe Geometrie. */
+.legal-hero-visual {
+  position: relative;
+  min-height: 26rem;
+  overflow: hidden;
+  padding: var(--s4);
+  border: 1px solid var(--strich);
+  border-radius: 3px;
+  background: var(--tinte);
+  color: var(--papier);
+}
+
+.legal-hero-visual::before,
+.legal-hero-visual::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.legal-hero-visual::before {
+  inset: var(--s3);
+  border: 1px solid color-mix(in srgb, var(--papier) 12%, transparent);
+}
+
+.legal-hero-visual::after {
+  top: 0;
+  right: 18%;
+  width: 1px;
+  height: 100%;
+  background: color-mix(in srgb, var(--papier) 12%, transparent);
+}
+
+.legal-visual__eyebrow,
+.legal-visual__foot {
+  position: relative;
+  z-index: 1;
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  line-height: 1.45;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--papier) 62%, transparent);
+}
+
+.legal-visual__index {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-top: var(--s2);
+  font-family: var(--mono);
+  font-size: clamp(4rem, 9vw, 7rem);
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: -0.08em;
+  color: var(--papier);
+  font-variant-numeric: tabular-nums;
+}
+
+.legal-visual__track {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0;
+  margin-top: var(--s4);
+  border-top: 1px solid color-mix(in srgb, var(--papier) 18%, transparent);
+}
+
+.legal-visual__row {
+  display: grid;
+  grid-template-columns: 4.7rem minmax(0, 1fr) 0.75rem;
+  gap: var(--s2);
+  align-items: center;
+  min-height: 4.2rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--papier) 18%, transparent);
+  transform: translateX(-0.55rem);
+  opacity: 0;
+  transition:
+    transform var(--t-gross) var(--ease-aus),
+    opacity var(--t-gross) var(--ease-aus);
+}
+
+.legal-page[data-legal-ready] .legal-visual__row {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.legal-page[data-legal-ready] .legal-visual__row:nth-child(2) { transition-delay: 70ms; }
+.legal-page[data-legal-ready] .legal-visual__row:nth-child(3) { transition-delay: 140ms; }
+
+.legal-visual__label {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--papier) 55%, transparent);
+}
+
+.legal-visual__value {
+  font-family: var(--serif-display);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--papier);
+}
+
+.legal-visual__signal {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid var(--stempel);
+  background: transparent;
+  transition: background-color var(--t-gross) var(--ease-weich);
+}
+
+.legal-page[data-legal-ready] .legal-visual__signal {
+  background: var(--stempel);
+}
+
+.legal-visual__foot {
+  margin-top: var(--s3);
+}
+
+/* ══ Statusband + Aktionen ════════════════════════════════════ */
+
 .legal-page :where(.privacy-facts, .imprint-badges) {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  margin: var(--s4) 0 0;
+  margin-top: var(--s4);
   border-top: 1px solid var(--haar);
   border-bottom: 1px solid var(--haar);
 }
 
 .legal-page :where(.privacy-fact, .imprint-badge) {
   min-width: 0;
-  padding: var(--s2) var(--s3) var(--s2) 0;
-  border: 0;
+  padding: var(--s2) var(--s3);
   border-right: 1px solid var(--haar);
-  border-radius: 0;
-  background: none;
 }
 
+.legal-page :where(.privacy-fact, .imprint-badge):first-child { padding-left: 0; }
 .legal-page :where(.privacy-fact, .imprint-badge):last-child {
-  border-right: 0;
   padding-right: 0;
-}
-
-.legal-page .privacy-fact + .privacy-fact,
-.legal-page .imprint-badge + .imprint-badge {
-  padding-left: var(--s3);
+  border-right: 0;
 }
 
 .legal-page .privacy-fact__value {
@@ -118,7 +267,7 @@
   font-family: var(--serif-display);
   font-size: 1rem;
   font-weight: 600;
-  line-height: 1.35;
+  line-height: 1.3;
   color: var(--tinte);
 }
 
@@ -133,20 +282,18 @@
 .legal-page .imprint-badge {
   display: flex;
   align-items: center;
-  color: var(--grau);
   font-family: var(--mono);
   font-size: var(--mono-m);
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.45;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--grau);
 }
 
-/* CTA-Leiste: nur der erste Link bekommt den Stempel als Flaeche. */
 .legal-page :where(.privacy-actions, .imprint-actions) {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   gap: var(--s1);
   margin-top: var(--s3);
 }
@@ -155,7 +302,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.75rem;
+  min-height: 2.8rem;
   padding: var(--s1) var(--s2);
   border: 1px solid var(--strich);
   border-radius: 3px;
@@ -167,47 +314,40 @@
   letter-spacing: 0.04em;
   text-decoration: none;
   transition:
+    transform var(--t-norm) var(--ease-aus),
     background-color var(--t-norm) var(--ease-weich),
-    color var(--t-norm) var(--ease-weich),
-    border-color var(--t-norm) var(--ease-weich),
-    transform var(--t-norm) var(--ease-aus);
+    color var(--t-norm) var(--ease-weich);
 }
 
 .legal-page :where(.privacy-button, .imprint-button):hover {
+  transform: translateY(-2px);
   background: var(--zone);
-  transform: translateY(-1px);
 }
 
 .legal-page :where(.privacy-button--primary, .imprint-button--primary) {
-  background: var(--stempel);
   border-color: var(--stempel);
+  background: var(--stempel);
   color: var(--papier);
 }
 
 .legal-page :where(.privacy-button--primary, .imprint-button--primary):hover {
   background: color-mix(in srgb, var(--stempel) 88%, var(--tinte));
-  border-color: color-mix(in srgb, var(--stempel) 88%, var(--tinte));
 }
 
-/* ══ Hauptbereich ═════════════════════════════════════════════ */
+/* ══ Lesepfad ═════════════════════════════════════════════════ */
 
 .legal-page :where(.privacy-grid, .imprint-grid) {
   display: grid;
-  grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.9fr);
-  gap: var(--s5);
-  margin-top: 0;
-  padding-block: var(--s5) var(--s6);
+  grid-template-columns: var(--legal-aside) var(--legal-copy);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  padding-block: clamp(3rem, 6vw, 5rem) clamp(4rem, 8vw, 7rem);
 }
 
 .legal-page :where(.privacy-card, .imprint-card) {
-  align-self: start;
   position: sticky;
   top: calc(var(--leiste-h) + var(--s3));
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
+  align-self: start;
+  min-width: 0;
 }
 
 .legal-page :where(.privacy-card, .imprint-card) > h2 {
@@ -215,7 +355,6 @@
   font-family: var(--mono);
   font-size: var(--mono-m);
   font-weight: 500;
-  line-height: 1.4;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--stempel);
@@ -224,35 +363,55 @@
 .legal-page :where(.privacy-card, .imprint-card) > p {
   margin: 0;
   color: var(--grau);
-  font-size: 0.94rem;
-  line-height: 1.62;
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
-.legal-page :where(.privacy-card, .imprint-card) ul {
-  margin: var(--s2) 0 0;
-  padding: 0;
-  list-style: none;
+.legal-page :where(.privacy-card, .imprint-card) > ul {
+  display: none;
+}
+
+.legal-index {
+  margin-top: var(--s3);
   border-top: 1px solid var(--haar);
 }
 
-.legal-page :where(.privacy-card, .imprint-card) li {
-  position: relative;
-  margin: 0;
-  padding: var(--s1) 0 var(--s1) var(--s2);
+.legal-index__link {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: var(--s1);
+  padding: var(--s1) 0;
   border-bottom: 1px solid var(--haar);
-  color: var(--grau);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  color: var(--matt);
+  text-decoration: none;
+  transition:
+    color var(--t-norm) var(--ease-weich),
+    padding-left var(--t-norm) var(--ease-aus);
 }
 
-.legal-page :where(.privacy-card, .imprint-card) li::before {
-  content: "—";
-  position: absolute;
-  left: 0;
+.legal-index__nr {
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+}
+
+.legal-index__label {
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: inherit;
+}
+
+.legal-index__link:hover,
+.legal-index__link[aria-current="location"] {
+  color: var(--tinte);
+  padding-left: var(--s0);
+}
+
+.legal-index__link[aria-current="location"] .legal-index__nr {
   color: var(--stempel);
 }
 
-/* Metadaten in der Seitenleiste. */
 .legal-page :where(.privacy-meta, .imprint-quickfacts) {
   display: grid;
   gap: 0;
@@ -262,19 +421,15 @@
 
 .legal-page :where(.privacy-meta__item, .imprint-quickfact) {
   padding: var(--s2) 0;
-  border: 0;
   border-bottom: 1px solid var(--haar);
-  border-radius: 0;
-  background: none;
 }
 
 .legal-page :where(.privacy-meta__label, .imprint-quickfact__label) {
   display: block;
-  margin: 0 0 var(--s0);
+  margin-bottom: var(--s0);
   font-family: var(--mono);
   font-size: var(--mono-s);
   font-weight: 500;
-  line-height: 1.4;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--matt);
@@ -285,24 +440,20 @@
   margin: 0;
   font-style: normal;
   color: var(--tinte);
-  font-size: 0.94rem;
+  font-size: 0.9rem;
   line-height: 1.58;
 }
 
-/* Rechtstext: keine Boxen. Abschnitte werden ueber Rhythmus und Haarlinie getrennt. */
+/* ══ Abschnitte ═══════════════════════════════════════════════ */
+
 .legal-page :where(.privacy-sections, .imprint-sections) {
-  display: grid;
-  gap: 0;
   min-width: 0;
 }
 
 .legal-page :where(.privacy-section, .imprint-section) {
-  padding: var(--s4) 0;
-  border: 0;
+  position: relative;
+  padding: clamp(2.6rem, 5vw, 4.25rem) 0 clamp(2.9rem, 5vw, 4.5rem) clamp(4.2rem, 7vw, 6.2rem);
   border-top: 1px solid var(--haar);
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
   scroll-margin-top: calc(var(--leiste-h) + var(--s3));
 }
 
@@ -311,14 +462,62 @@
   border-top: 0;
 }
 
+.legal-page :where(.privacy-section, .imprint-section)::before {
+  content: attr(data-legal-nr);
+  position: absolute;
+  top: clamp(2.6rem, 5vw, 4.25rem);
+  left: 0;
+  font-family: var(--mono);
+  font-size: clamp(1.65rem, 1.2rem + 1.2vw, 2.4rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--matt);
+  transition:
+    color var(--t-gross) var(--ease-weich),
+    transform var(--t-gross) var(--ease-aus);
+}
+
+.legal-page :where(.privacy-section, .imprint-section):first-child::before {
+  top: 0;
+}
+
+.legal-page :where(.privacy-section, .imprint-section).is-active::before {
+  color: var(--stempel);
+  transform: translateX(var(--s0));
+}
+
+.legal-page :where(.privacy-section, .imprint-section)::after {
+  content: "";
+  position: absolute;
+  top: clamp(3.4rem, 5vw, 5rem);
+  left: 2.7rem;
+  width: 1rem;
+  height: 1px;
+  background: var(--haar);
+  transform-origin: 0 50%;
+  transition:
+    width var(--t-gross) var(--ease-aus),
+    background-color var(--t-gross) var(--ease-weich);
+}
+
+.legal-page :where(.privacy-section, .imprint-section):first-child::after {
+  top: 0.8rem;
+}
+
+.legal-page :where(.privacy-section, .imprint-section).is-active::after {
+  width: 1.7rem;
+  background: var(--stempel);
+}
+
 .legal-page :where(.privacy-section, .imprint-section) h2 {
-  max-width: 30ch;
+  max-width: 27ch;
   margin: 0 0 var(--s2);
   font-family: var(--serif-display);
-  font-size: clamp(1.45rem, 1.2rem + 0.8vw, 2rem);
+  font-size: clamp(1.6rem, 1.25rem + 1vw, 2.35rem);
   font-weight: 500;
-  line-height: 1.14;
-  letter-spacing: -0.025em;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
   color: var(--tinte);
 }
 
@@ -332,7 +531,7 @@
 }
 
 .legal-page :where(.privacy-section, .imprint-section) p {
-  max-width: 68ch;
+  max-width: 66ch;
   margin: 0;
   color: var(--grau);
   line-height: 1.72;
@@ -343,7 +542,7 @@
 }
 
 .legal-page .privacy-section ul {
-  max-width: 68ch;
+  max-width: 64ch;
   margin: var(--s2) 0 0;
   padding-left: var(--s3);
 }
@@ -356,8 +555,7 @@
 
 .legal-page :where(.privacy-section, .imprint-section, .privacy-card, .imprint-card) a {
   color: var(--tinte);
-  text-decoration-color: color-mix(in srgb, var(--stempel) 65%, transparent);
-  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--stempel) 70%, transparent);
   text-underline-offset: 0.18em;
 }
 
@@ -365,17 +563,14 @@
   color: var(--stempel);
 }
 
-.legal-page .privacy-note,
-.legal-page .imprint-note {
-  max-width: 68ch;
-  margin-top: var(--s2);
+.legal-page :where(.privacy-note, .imprint-note) {
+  max-width: 66ch;
+  margin-top: var(--s3);
   padding: var(--s2) var(--s3);
-  border: 0;
   border-left: 2px solid var(--stempel);
-  border-radius: 0;
   background: var(--zone);
   color: var(--grau);
-  line-height: 1.62;
+  line-height: 1.6;
 }
 
 .legal-page .imprint-note strong {
@@ -383,14 +578,9 @@
   font-weight: 600;
 }
 
-/* Kleine Kontextzeile ueber Impressums-Abschnitten. */
 .legal-page .imprint-copy-chip {
   display: block;
   margin: 0 0 var(--s1);
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
   font-family: var(--mono);
   font-size: var(--mono-s);
   font-weight: 500;
@@ -400,110 +590,8 @@
   color: var(--matt);
 }
 
-/* ══ Modal ════════════════════════════════════════════════════
-   legal-modal.js laedt diese Datei bei Bedarf nach. Im Overlay wird
-   der Dokumentkopf kompakter, die Grundstruktur bleibt identisch. */
+/* ══ Modal ════════════════════════════════════════════════════ */
 
-.legal-modal__body .legal-page {
-  min-height: 0;
-}
-
-.legal-modal__body :where(.privacy-shell, .imprint-shell) {
-  max-width: none;
-  padding-inline: 0;
-}
-
-.legal-modal__body :where(.privacy-hero, .imprint-hero) {
-  padding-block: var(--s4);
-}
-
-.legal-modal__body :where(.privacy-title, .imprint-title) {
-  font-size: clamp(2.1rem, 1.7rem + 2vw, 3.25rem);
-}
-
-.legal-modal__body :where(.privacy-grid, .imprint-grid) {
-  grid-template-columns: 1fr;
-  gap: var(--s4);
-  padding-block: var(--s4);
-}
-
-.legal-modal__body :where(.privacy-card, .imprint-card) {
-  position: static;
-}
-
-/* ══ Responsive ═══════════════════════════════════════════════ */
-
-@media (max-width: 920px) {
-  .legal-page :where(.privacy-facts, .imprint-badges) {
-    grid-template-columns: 1fr;
-  }
-
-  .legal-page :where(.privacy-fact, .imprint-badge) {
-    padding: var(--s2) 0;
-    border-right: 0;
-    border-bottom: 1px solid var(--haar);
-  }
-
-  .legal-page :where(.privacy-fact, .imprint-badge):last-child {
-    border-bottom: 0;
-  }
-
-  .legal-page .privacy-fact + .privacy-fact,
-  .legal-page .imprint-badge + .imprint-badge {
-    padding-left: 0;
-  }
-
-  .legal-page :where(.privacy-grid, .imprint-grid) {
-    grid-template-columns: 1fr;
-    gap: var(--s4);
-  }
-
-  .legal-page :where(.privacy-card, .imprint-card) {
-    position: static;
-    padding-bottom: var(--s4);
-    border-bottom: 1px solid var(--haar);
-  }
-}
-
-@media (max-width: 640px) {
-  .legal-page :where(.privacy-hero, .imprint-hero) {
-    padding-block: var(--s5) var(--s4);
-  }
-
-  .legal-page :where(.privacy-title, .imprint-title) {
-    max-width: none;
-  }
-
-  .legal-page :where(.privacy-actions, .imprint-actions) {
-    align-items: stretch;
-  }
-
-  .legal-page :where(.privacy-button, .imprint-button) {
-    flex: 1 1 100%;
-    width: 100%;
-  }
-
-  .legal-page :where(.privacy-grid, .imprint-grid) {
-    padding-block: var(--s4) var(--s5);
-  }
-
-  .legal-page :where(.privacy-section, .imprint-section) {
-    padding-block: var(--s3);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .legal-page :where(.privacy-button, .imprint-button) {
-    transition: none;
-  }
-
-  .legal-page :where(.privacy-button, .imprint-button):hover {
-    transform: none;
-  }
-}
-
-
-/* Das Overlay selbst folgt beim Oeffnen ebenfalls dem hellen Dokumentstil. */
 .legal-modal__panel {
   border-radius: 3px;
   border-color: var(--haar);
@@ -527,4 +615,122 @@
 
 .legal-modal__loader {
   color: var(--grau);
+}
+
+.legal-modal__body :where(.privacy-shell, .imprint-shell) {
+  width: 100%;
+  padding-inline: 0;
+}
+
+.legal-modal__body :where(.privacy-hero, .imprint-hero) {
+  padding-block: var(--s4);
+}
+
+.legal-modal__body .legal-hero-grid,
+.legal-modal__body :where(.privacy-grid, .imprint-grid) {
+  grid-template-columns: 1fr;
+  gap: var(--s4);
+}
+
+.legal-modal__body .legal-hero-visual {
+  min-height: 20rem;
+}
+
+.legal-modal__body :where(.privacy-card, .imprint-card) {
+  position: static;
+}
+
+.legal-modal__body .legal-index {
+  display: none;
+}
+
+/* ══ Responsive ═══════════════════════════════════════════════ */
+
+@media (max-width: 980px) {
+  .legal-hero-grid,
+  .legal-page :where(.privacy-grid, .imprint-grid) {
+    grid-template-columns: 1fr;
+  }
+
+  .legal-hero-visual {
+    min-height: 22rem;
+  }
+
+  .legal-page :where(.privacy-card, .imprint-card) {
+    position: static;
+    padding-bottom: var(--s4);
+    border-bottom: 1px solid var(--haar);
+  }
+
+  .legal-index {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--s3);
+  }
+}
+
+@media (max-width: 720px) {
+  .legal-page :where(.privacy-title, .imprint-title) {
+    max-width: 10ch;
+  }
+
+  .legal-page :where(.privacy-facts, .imprint-badges) {
+    grid-template-columns: 1fr;
+  }
+
+  .legal-page :where(.privacy-fact, .imprint-badge) {
+    padding: var(--s2) 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--haar);
+  }
+
+  .legal-page :where(.privacy-fact, .imprint-badge):last-child {
+    border-bottom: 0;
+  }
+
+  .legal-page :where(.privacy-section, .imprint-section) {
+    padding-left: 3.3rem;
+  }
+
+  .legal-page :where(.privacy-section, .imprint-section)::after {
+    left: 2.05rem;
+  }
+
+  .legal-index {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 540px) {
+  .legal-hero-visual {
+    min-height: 19rem;
+    padding: var(--s3);
+  }
+
+  .legal-visual__row {
+    grid-template-columns: 3.7rem minmax(0, 1fr) 0.65rem;
+    gap: var(--s1);
+  }
+
+  .legal-page :where(.privacy-actions, .imprint-actions) {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .legal-page :where(.privacy-button, .imprint-button) {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .legal-page *,
+  .legal-page *::before,
+  .legal-page *::after {
+    transition: none !important;
+  }
+
+  .legal-visual__row {
+    transform: none;
+    opacity: 1;
+  }
 }
