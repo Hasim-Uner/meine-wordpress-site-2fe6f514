@@ -576,6 +576,336 @@ function nexus_get_seo_cockpit_lead_detail_data( $url, $ranges ) {
 }
 
 /**
+ * Return one readable acquisition-channel label.
+ *
+ * @param string $key Normalized channel key.
+ * @return string
+ */
+function nexus_get_seo_cockpit_acquisition_channel_label( $key ) {
+	$key = strtolower( trim( (string) $key ) );
+
+	if ( 'google_business_profile' === $key ) {
+		return 'Google Business Profile';
+	}
+
+	if ( 'direct' === $key ) {
+		return 'Direkt / unbekannt';
+	}
+
+	$parts  = explode( '|', $key, 2 );
+	$source = (string) ( $parts[0] ?? '' );
+	$medium = (string) ( $parts[1] ?? '' );
+	$labels = [
+		'google'     => 'Google',
+		'google-ads' => 'Google Ads',
+		'meta-ads'   => 'Meta Ads',
+		'linkedin'   => 'LinkedIn',
+	];
+	$source_label = $labels[ $source ] ?? ucwords( str_replace( [ '_', '-' ], ' ', $source ) );
+
+	return '' !== $medium
+		? sprintf( '%s · %s', $source_label, $medium )
+		: ( '' !== $source_label ? $source_label : 'Direkt / unbekannt' );
+}
+
+/**
+ * Return one readable UTM campaign label.
+ *
+ * @param string $campaign Campaign key.
+ * @return string
+ */
+function nexus_get_seo_cockpit_acquisition_campaign_label( $campaign ) {
+	$campaign = trim( (string) $campaign );
+
+	if ( 'google_business_profile' === strtolower( $campaign ) ) {
+		return 'Google Business Profile';
+	}
+
+	return '' !== $campaign
+		? ucwords( str_replace( [ '_', '-' ], ' ', $campaign ) )
+		: 'Ohne Kampagne';
+}
+
+/**
+ * Resolve a stable acquisition channel from stored CRM attribution.
+ *
+ * @param array<string, string> $attribution Contact attribution payload.
+ * @return string
+ */
+function nexus_get_seo_cockpit_acquisition_channel_key( $attribution ) {
+	$attribution = is_array( $attribution ) ? $attribution : [];
+	$source      = strtolower( trim( (string) ( $attribution['ads_source'] ?? '' ) ) );
+	$medium      = strtolower( trim( (string) ( $attribution['utm_medium'] ?? '' ) ) );
+	$campaign    = strtolower( trim( (string) ( $attribution['utm_campaign'] ?? '' ) ) );
+
+	if ( 'google_business_profile' === $campaign || 'google_business_profile' === $source ) {
+		return 'google_business_profile';
+	}
+
+	if ( '' !== $source ) {
+		return $source . ( '' !== $medium ? '|' . $medium : '' );
+	}
+
+	$referrer = trim( (string) ( $attribution['referrer_url'] ?? '' ) );
+	$host     = strtolower( (string) wp_parse_url( $referrer, PHP_URL_HOST ) );
+
+	if ( '' !== $host && false !== strpos( $host, 'google.' ) ) {
+		return 'google|organic';
+	}
+
+	if ( '' !== $host && false !== strpos( $host, 'linkedin.' ) ) {
+		return 'linkedin|referral';
+	}
+
+	$referral = sanitize_key( (string) ( $attribution['referral_source'] ?? '' ) );
+	if ( '' !== $referral ) {
+		return 'self-report|' . $referral;
+	}
+
+	return 'direct';
+}
+
+/**
+ * Return one local timestamp for the latest CRM inquiry on a contact.
+ *
+ * @param WP_Post $post Contact post.
+ * @return int
+ */
+function nexus_get_seo_cockpit_contact_inquiry_timestamp( $post ) {
+	if ( ! ( $post instanceof WP_Post ) ) {
+		return 0;
+	}
+
+	$timestamp = absint( get_post_meta( $post->ID, '_nexus_contact_last_inquiry_at', true ) );
+	if ( $timestamp > 0 ) {
+		return $timestamp;
+	}
+
+	$timestamp = absint( get_post_meta( $post->ID, '_nexus_contact_updated_at', true ) );
+	if ( $timestamp > 0 ) {
+		return $timestamp;
+	}
+
+	$datetime = date_create_immutable_from_format( 'Y-m-d H:i:s', (string) $post->post_date, wp_timezone() );
+
+	return $datetime instanceof DateTimeImmutable ? $datetime->getTimestamp() : 0;
+}
+
+/**
+ * Build a CRM acquisition snapshot for project/contact/white-label leads.
+ *
+ * This is deliberately separate from the audit-lead snapshot. nexus_contact is
+ * an upserted identity record, so these metrics are unique sales-relevant CRM
+ * contacts by their latest inquiry attribution, not a count of every form submit.
+ *
+ * @param array<string, mixed> $ranges Snapshot date ranges.
+ * @return array<string, mixed>
+ */
+function nexus_get_seo_cockpit_crm_acquisition_snapshot_data( $ranges ) {
+	static $cache = [];
+
+	$cache_key = md5( wp_json_encode( (array) $ranges ) );
+	if ( isset( $cache[ $cache_key ] ) ) {
+		return $cache[ $cache_key ];
+	}
+
+	$empty_overview = static function () {
+		return [
+			'contacts'                => 0,
+			'attributed'              => 0,
+			'campaign_contacts'       => 0,
+			'google_business_profile' => 0,
+			'won'                     => 0,
+		];
+	};
+
+	if ( ! post_type_exists( 'nexus_contact' ) ) {
+		$cache[ $cache_key ] = [
+			'available'     => false,
+			'note'          => 'Das gemeinsame Nexus CRM ist auf dieser Instanz nicht verfügbar.',
+			'overview'      => [ 'current' => $empty_overview(), 'previous' => $empty_overview(), 'lifetime' => $empty_overview() ],
+			'channel_rows'  => [],
+			'campaign_rows' => [],
+			'form_rows'     => [],
+			'entry_rows'    => [],
+			'latest'        => [],
+		];
+		return $cache[ $cache_key ];
+	}
+
+	$posts = get_posts(
+		[
+			'post_type'              => 'nexus_contact',
+			'post_status'            => 'private',
+			'posts_per_page'         => -1,
+			'orderby'                => 'modified',
+			'order'                  => 'DESC',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => true,
+			'update_post_term_cache' => false,
+		]
+	);
+
+	$overview = [
+		'current'  => $empty_overview(),
+		'previous' => $empty_overview(),
+		'lifetime' => $empty_overview(),
+	];
+	$channel_sets  = [ 'current' => [], 'previous' => [], 'lifetime' => [] ];
+	$campaign_sets = [ 'current' => [], 'previous' => [], 'lifetime' => [] ];
+	$form_sets     = [ 'current' => [], 'previous' => [], 'lifetime' => [] ];
+	$entry_sets    = [ 'current' => [], 'previous' => [], 'lifetime' => [] ];
+	$latest        = [];
+
+	foreach ( (array) $posts as $post ) {
+		if ( ! ( $post instanceof WP_Post ) ) {
+			continue;
+		}
+
+		if ( function_exists( 'nexus_crm_contact_is_sales_relevant' ) && ! nexus_crm_contact_is_sales_relevant( $post->ID ) ) {
+			continue;
+		}
+
+		$timestamp = nexus_get_seo_cockpit_contact_inquiry_timestamp( $post );
+		$bucket    = nexus_get_seo_cockpit_lead_bucket_for_timestamp( $timestamp, $ranges );
+		$windows   = [ 'lifetime' ];
+		if ( '' !== $bucket ) {
+			$windows[] = $bucket;
+		}
+
+		$attribution = function_exists( 'nexus_get_contact_attribution_from_meta' )
+			? nexus_get_contact_attribution_from_meta( $post->ID )
+			: [
+				'entry_page_url'   => (string) get_post_meta( $post->ID, '_nexus_contact_entry_page_url', true ),
+				'landing_page_url' => (string) get_post_meta( $post->ID, '_nexus_contact_landing_page_url', true ),
+				'referrer_url'     => (string) get_post_meta( $post->ID, '_nexus_contact_referrer_url', true ),
+				'ads_source'       => (string) get_post_meta( $post->ID, '_nexus_contact_ads_source', true ),
+				'utm_medium'       => (string) get_post_meta( $post->ID, '_nexus_contact_utm_medium', true ),
+				'utm_campaign'     => (string) get_post_meta( $post->ID, '_nexus_contact_utm_campaign', true ),
+			];
+
+		$channel_key = nexus_get_seo_cockpit_acquisition_channel_key( $attribution );
+		$campaign    = trim( (string) ( $attribution['utm_campaign'] ?? '' ) );
+		$form_source = sanitize_key( (string) get_post_meta( $post->ID, '_nexus_contact_latest_source', true ) );
+		$stage       = sanitize_key( (string) get_post_meta( $post->ID, '_nexus_contact_sales_stage', true ) );
+		$entry_url   = nexus_get_seo_cockpit_internal_attribution_url( (string) ( $attribution['entry_page_url'] ?? '' ) );
+		$landing_url = nexus_get_seo_cockpit_internal_attribution_url( (string) ( $attribution['landing_page_url'] ?? '' ) );
+		$entry_key   = '' !== $entry_url ? $entry_url : $landing_url;
+		$attributed  = 'direct' !== $channel_key || '' !== $campaign || '' !== trim( (string) ( $attribution['referrer_url'] ?? '' ) );
+
+		foreach ( $windows as $window ) {
+			$overview[ $window ]['contacts'] += 1;
+			if ( $attributed ) {
+				$overview[ $window ]['attributed'] += 1;
+			}
+			if ( '' !== $campaign ) {
+				$overview[ $window ]['campaign_contacts'] += 1;
+			}
+			if ( 'google_business_profile' === strtolower( $campaign ) || 'google_business_profile' === $channel_key ) {
+				$overview[ $window ]['google_business_profile'] += 1;
+			}
+			if ( 'won' === $stage ) {
+				$overview[ $window ]['won'] += 1;
+			}
+
+			$channel_sets[ $window ][ $channel_key ] = isset( $channel_sets[ $window ][ $channel_key ] ) ? (int) $channel_sets[ $window ][ $channel_key ] + 1 : 1;
+			if ( '' !== $campaign ) {
+				$campaign_sets[ $window ][ $campaign ] = isset( $campaign_sets[ $window ][ $campaign ] ) ? (int) $campaign_sets[ $window ][ $campaign ] + 1 : 1;
+			}
+			if ( '' !== $form_source ) {
+				$form_sets[ $window ][ $form_source ] = isset( $form_sets[ $window ][ $form_source ] ) ? (int) $form_sets[ $window ][ $form_source ] + 1 : 1;
+			}
+			if ( '' !== $entry_key ) {
+				$entry_sets[ $window ][ $entry_key ] = isset( $entry_sets[ $window ][ $entry_key ] ) ? (int) $entry_sets[ $window ][ $entry_key ] + 1 : 1;
+			}
+		}
+
+		$latest[] = [
+			'timestamp'      => $timestamp,
+			'channel_key'    => $channel_key,
+			'channel_label'  => nexus_get_seo_cockpit_acquisition_channel_label( $channel_key ),
+			'campaign'       => $campaign,
+			'campaign_label' => nexus_get_seo_cockpit_acquisition_campaign_label( $campaign ),
+			'entry_url'      => $entry_url,
+			'landing_url'    => $landing_url,
+			'form_source'    => $form_source,
+			'stage'          => $stage,
+		];
+	}
+
+	usort(
+		$latest,
+		static function ( $left, $right ) {
+			return (int) ( $right['timestamp'] ?? 0 ) <=> (int) ( $left['timestamp'] ?? 0 );
+		}
+	);
+
+	$form_label_callback = static function ( $source ) {
+		$labels = function_exists( 'nexus_get_crm_contact_source_labels' ) ? nexus_get_crm_contact_source_labels() : [];
+		$source = sanitize_key( (string) $source );
+		return isset( $labels[ $source ] ) ? (string) $labels[ $source ] : ( '' !== $source ? $source : 'Unbekannt' );
+	};
+	$entry_label_callback = static function ( $url ) {
+		return function_exists( 'nexus_get_seo_cockpit_short_url' ) ? nexus_get_seo_cockpit_short_url( (string) $url ) : (string) $url;
+	};
+
+	$cache[ $cache_key ] = [
+		'available' => true,
+		'note'      => 'CRM-Attribution zeigt eindeutige vertriebsrelevante Kontakte nach ihrer jeweils letzten Anfrage. Wiederholte Formulare desselben Kontakts werden hier bewusst nicht als neue Person doppelt gezählt.',
+		'overview'  => $overview,
+		'channel_rows' => [
+			'current'  => nexus_get_seo_cockpit_lead_ranked_counts( $channel_sets['current'], 'nexus_get_seo_cockpit_acquisition_channel_label', 8 ),
+			'previous' => nexus_get_seo_cockpit_lead_ranked_counts( $channel_sets['previous'], 'nexus_get_seo_cockpit_acquisition_channel_label', 8 ),
+			'lifetime' => nexus_get_seo_cockpit_lead_ranked_counts( $channel_sets['lifetime'], 'nexus_get_seo_cockpit_acquisition_channel_label', 10 ),
+		],
+		'campaign_rows' => [
+			'current'  => nexus_get_seo_cockpit_lead_ranked_counts( $campaign_sets['current'], 'nexus_get_seo_cockpit_acquisition_campaign_label', 8 ),
+			'previous' => nexus_get_seo_cockpit_lead_ranked_counts( $campaign_sets['previous'], 'nexus_get_seo_cockpit_acquisition_campaign_label', 8 ),
+			'lifetime' => nexus_get_seo_cockpit_lead_ranked_counts( $campaign_sets['lifetime'], 'nexus_get_seo_cockpit_acquisition_campaign_label', 10 ),
+		],
+		'form_rows' => [
+			'current'  => nexus_get_seo_cockpit_lead_ranked_counts( $form_sets['current'], $form_label_callback, 8 ),
+			'previous' => nexus_get_seo_cockpit_lead_ranked_counts( $form_sets['previous'], $form_label_callback, 8 ),
+			'lifetime' => nexus_get_seo_cockpit_lead_ranked_counts( $form_sets['lifetime'], $form_label_callback, 10 ),
+		],
+		'entry_rows' => [
+			'current'  => nexus_get_seo_cockpit_lead_ranked_counts( $entry_sets['current'], $entry_label_callback, 8 ),
+			'previous' => nexus_get_seo_cockpit_lead_ranked_counts( $entry_sets['previous'], $entry_label_callback, 8 ),
+			'lifetime' => nexus_get_seo_cockpit_lead_ranked_counts( $entry_sets['lifetime'], $entry_label_callback, 10 ),
+		],
+		'latest' => array_slice( $latest, 0, 10 ),
+	];
+
+	return $cache[ $cache_key ];
+}
+
+/**
+ * Invalidate SEO Cockpit snapshots when a CRM inquiry finishes writing.
+ *
+ * Attribution fields are written before _nexus_contact_last_inquiry_at, so one
+ * invalidation at this marker is enough and avoids bumping the cache repeatedly.
+ *
+ * @param int    $meta_id   Meta row ID.
+ * @param int    $object_id Contact post ID.
+ * @param string $meta_key  Updated meta key.
+ * @return void
+ */
+function nexus_invalidate_seo_cockpit_on_crm_inquiry( $meta_id, $object_id, $meta_key ) {
+	unset( $meta_id );
+
+	if ( '_nexus_contact_last_inquiry_at' !== (string) $meta_key || 'nexus_contact' !== get_post_type( (int) $object_id ) ) {
+		return;
+	}
+
+	if ( function_exists( 'nexus_bump_seo_cockpit_cache_version' ) ) {
+		nexus_bump_seo_cockpit_cache_version();
+	}
+}
+add_action( 'added_post_meta', 'nexus_invalidate_seo_cockpit_on_crm_inquiry', 10, 3 );
+add_action( 'updated_post_meta', 'nexus_invalidate_seo_cockpit_on_crm_inquiry', 10, 3 );
+
+
+/**
  * Return one lead-signal score for prioritization.
  *
  * @param array<string, mixed> $lead_page Lead page payload.
