@@ -48,14 +48,14 @@ function hu_enqueue_design_aesthetics_article_assets() : void {
 	wp_enqueue_style(
 		'hu-article-design-aesthetics',
 		$style_url,
-		[ 'nexus-single-editorial-css' ],
+		[ 'nexus-single-reader-unified-css' ],
 		$style_version
 	);
 
 	wp_enqueue_script(
 		'hu-article-design-aesthetics',
 		$script_url,
-		[],
+		[ 'nexus-article-reader-toc-js' ],
 		$script_version,
 		true
 	);
@@ -64,7 +64,7 @@ function hu_enqueue_design_aesthetics_article_assets() : void {
 		hu_mark_script_for_defer( 'hu-article-design-aesthetics' );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'hu_enqueue_design_aesthetics_article_assets', 35 );
+add_action( 'wp_enqueue_scripts', 'hu_enqueue_design_aesthetics_article_assets', 110 );
 
 /**
  * Keep the essay in the conversion / inquiry architecture cluster rather than
