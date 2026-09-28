@@ -20,6 +20,11 @@
 	var reduceMotion = window.matchMedia &&
 		window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+	if (!reduceMotion) {
+		hero.classList.add('has-design-motion');
+		essay.classList.add('has-design-motion');
+	}
+
 	window.requestAnimationFrame(function () {
 		hero.classList.add('is-ready');
 	});
