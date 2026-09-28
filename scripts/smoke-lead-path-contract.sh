@@ -33,7 +33,10 @@ SOLAR_JS="$ROOT/assets/js/solar-marketcheck-compact.js"
 SOLAR_CSS="$ROOT/assets/css/solar-marketcheck-compact.css"
 CRM_PHP="$ROOT/inc/review-crm.php"
 COCKPIT_LEADS="$ROOT/inc/seo-cockpit/seo-cockpit-leads.php"
+COCKPIT_SYNC="$ROOT/inc/seo-cockpit/seo-cockpit-sync.php"
+COCKPIT_UI="$ROOT/inc/seo-cockpit/seo-cockpit-ui.php"
 COCKPIT_COMMAND="$ROOT/inc/seo-cockpit/seo-cockpit-command-center.php"
+CRM_CONTACT="$ROOT/inc/crm.php"
 DIAGNOSE_CANON="$ROOT/inc/canon/diagnose-canon.php"
 PRICING_CANON="$ROOT/inc/canon/pricing-canon.php"
 
@@ -44,7 +47,10 @@ require_file "$SOLAR_JS"
 require_file "$SOLAR_CSS"
 require_file "$CRM_PHP"
 require_file "$COCKPIT_LEADS"
+require_file "$COCKPIT_SYNC"
+require_file "$COCKPIT_UI"
 require_file "$COCKPIT_COMMAND"
+require_file "$CRM_CONTACT"
 require_file "$DIAGNOSE_CANON"
 require_file "$PRICING_CANON"
 
@@ -159,6 +165,18 @@ require_pattern "energy_systems_landing" "$CRM_PHP"
 require_pattern "nexus_get_seo_cockpit_review_request_attribution_target" "$COCKPIT_LEADS"
 require_pattern "'inferred'[[:space:]]*=>[[:space:]]*true" "$COCKPIT_LEADS"
 require_pattern "inferred_requests" "$COCKPIT_LEADS"
+
+# Generic CRM acquisition attribution must stay connected to UTM campaign data.
+# This is what makes links such as utm_campaign=google_business_profile visible
+# in the SEO Cockpit instead of being reduced to a generic form source.
+require_pattern "getCampaignContext" "$CORE_JS"
+require_pattern "utm_medium" "$CRM_CONTACT"
+require_pattern "utm_campaign" "$CRM_CONTACT"
+require_pattern "nexus_get_seo_cockpit_crm_acquisition_snapshot_data" "$COCKPIT_LEADS"
+require_pattern "google_business_profile" "$COCKPIT_LEADS"
+require_pattern "['\"]acquisition['\"][[:space:]]*=>" "$COCKPIT_SYNC"
+require_pattern "Akquise &amp; Attribution" "$COCKPIT_UI"
+require_pattern "nexus_render_seo_cockpit_acquisition_table" "$COCKPIT_UI"
 
 # Repo-owned outcome reporting must use the same qualified|nurture contract as
 # the CRM. Otherwise a successful form redesign cannot be evaluated by lead

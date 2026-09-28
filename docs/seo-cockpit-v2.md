@@ -15,7 +15,7 @@ Das Cockpit ist aus der bisherigen Monolith-Datei in klar getrennte Layer aufget
 - `blocksy-child/inc/seo-cockpit-links.php`
   Interner Linkgraph auf Basis veroeffentlichter Inhalte.
 - `blocksy-child/inc/seo-cockpit-leads.php`
-  Audit-Lead-Layer aus dem internen CRM inkl. Seitenattribution fuer neue Leads.
+  Audit-Lead-Layer sowie Nexus-CRM-Akquise-Layer für UTM-, Kampagnen- und Seitenattribution.
 - `blocksy-child/inc/seo-cockpit-sync.php`
   Snapshot-Aufbau, Historical Layer, Cache-Versionierung, Sync, Cron und Locking.
 - `blocksy-child/inc/seo-cockpit-insights.php`
@@ -61,6 +61,12 @@ Der Uebersichts-Snapshot kombiniert drei Ebenen:
   - Audit-Leads je Zeitraum
   - Statusverteilung und Source-Mix
   - intern attribuierte Seiten auf Basis von Einstieg, letzter interner Seite und Formular-Landing
+- Nexus CRM / Akquise:
+  - vertriebsrelevante Kontakte je Zeitraum
+  - Kanal und Kampagne aus gespeicherter Anfrage-Herkunft (`utm_source`/Quelle, `utm_medium`, `utm_campaign`)
+  - explizite Kennzahl für `google_business_profile`
+  - Einstieg, Formular-Landing und aktuelle Pipeline-Stufe ohne personenbezogene Daten im Cockpit
+  - Kontakt-basierte Semantik: ein Kontakt wird nach seiner jeweils letzten Anfrage attribuiert; wiederholte Formulare sind keine zusätzlichen Personen
 - WordPress:
   - Post ID
   - Post Type
@@ -274,7 +280,8 @@ Jede Insight enthaelt:
 - Sitemap-Mitgliedschaft pro URL ist derzeit ein WordPress-internes Signal, keine Search-Console-URL-Membership.
 - Koko basiert auf defensivem REST-Mapping und nicht auf einer harten Plugin-internen API-Vertragsgarantie.
 - Die interne Linkzaehlung trennt jetzt Kontext- und Sitewide-Signale, bleibt aber bei Widgets und dynamisch von Plugins injizierten Navigationspfaden noch konservativ.
-- Die neue Lead-Attribution deckt den Audit-Intake bereits ab, aber noch keine generische serverseitige CTA-Klickhistorie ausserhalb dieses Funnels.
+- Audit- und CRM-Attribution decken Anfrage-Herkunft ab, aber weiterhin keine generische serverseitige CTA-Klickhistorie vor dem Formular.
+- Der CRM-Akquise-Layer ist kontaktbasiert und verwendet die jeweils letzte gespeicherte Anfrage-Herkunft; für exakte historische Submit-Attribution pro wiederholter Anfrage wäre eine strukturierte Activity-Historie erforderlich.
 
 ## Grenzen / Risiken
 
