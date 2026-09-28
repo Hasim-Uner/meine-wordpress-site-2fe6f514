@@ -110,6 +110,7 @@ def checks(plan, base, head):
             ('theme-assets', ['python3', 'scripts/audit-theme-assets.py']),
             ('lead-path', ['bash', 'scripts/smoke-lead-path-contract.sh']),
             ('market-intelligence', ['bash', 'scripts/smoke-dataforseo-market-contract.sh']),
+            ('decision-layer', ['bash', 'scripts/smoke-seo-decision-layer-contract.sh']),
             ('funnel-routing', ['bash', 'scripts/smoke-funnel-routing-contract.sh']),
             ('crawler-signals', ['php', 'scripts/lint-entity-crawler-signals.php']),
             ('navigation', ['php', 'scripts/tests/navigation-contract.php']),
