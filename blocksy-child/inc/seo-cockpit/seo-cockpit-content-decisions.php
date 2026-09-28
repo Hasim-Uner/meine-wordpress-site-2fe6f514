@@ -119,6 +119,257 @@ function nexus_ci_decision_context() {
 }
 
 /**
+ * Aggregate the cached GSC query×page rows into query totals suitable for the
+ * existing Market Intelligence opportunity engine.
+ *
+ * This function never calls Search Console. It only reads the snapshot already
+ * maintained for Content Intelligence.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function nexus_ci_decision_cached_gsc_query_totals() {
+	$snapshot = function_exists( 'nexus_ci_cached_gsc_snapshot' ) ? nexus_ci_cached_gsc_snapshot() : [];
+	$rows     = is_array( $snapshot['query_page_rows'] ?? null ) ? $snapshot['query_page_rows'] : [];
+	$totals   = [];
+
+	foreach ( $rows as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+
+		$query = function_exists( 'nexus_get_seo_cockpit_row_key' )
+			? nexus_get_seo_cockpit_row_key( $row, 1 )
+			: (string) ( $row['keys'][1] ?? '' );
+
+		$query = trim( (string) $query );
+		if ( '' === $query ) {
+			continue;
+		}
+
+		$key = function_exists( 'nexus_normalize_seo_cockpit_query' )
+			? nexus_normalize_seo_cockpit_query( $query )
+			: mb_strtolower( $query );
+
+		if ( '' === $key ) {
+			continue;
+		}
+
+		$impressions = max( 0.0, (float) ( $row['impressions'] ?? 0.0 ) );
+		$clicks      = max( 0.0, (float) ( $row['clicks'] ?? 0.0 ) );
+		$position    = max( 0.0, (float) ( $row['position'] ?? 0.0 ) );
+		$weight      = $impressions > 0 ? $impressions : 1.0;
+
+		if ( ! isset( $totals[ $key ] ) ) {
+			$totals[ $key ] = [
+				'query'       => $query,
+				'impressions' => 0.0,
+				'clicks'      => 0.0,
+				'position_w'  => 0.0,
+				'position_n'  => 0.0,
+			];
+		}
+
+		$totals[ $key ]['impressions'] += $impressions;
+		$totals[ $key ]['clicks']      += $clicks;
+		$totals[ $key ]['position_w']  += $position * $weight;
+		$totals[ $key ]['position_n']  += $weight;
+	}
+
+	$out = [];
+
+	foreach ( $totals as $total ) {
+		$impressions = (float) $total['impressions'];
+		$clicks      = (float) $total['clicks'];
+		$position_n  = (float) $total['position_n'];
+
+		$out[] = [
+			'keys'        => [ (string) $total['query'] ],
+			'clicks'      => $clicks,
+			'impressions' => $impressions,
+			'ctr'         => $impressions > 0 ? $clicks / $impressions : 0.0,
+			'position'    => $position_n > 0 ? (float) $total['position_w'] / $position_n : 0.0,
+		];
+	}
+
+	usort(
+		$out,
+		static function ( $left, $right ) {
+			return (float) $right['impressions'] <=> (float) $left['impressions'];
+		}
+	);
+
+	return array_slice( $out, 0, 250 );
+}
+
+/**
+ * Return a deterministic next step for a direct Market Intelligence decision.
+ *
+ * @param string $action Market action.
+ * @param string $segment Market segment.
+ * @return string
+ */
+function nexus_ci_decision_market_next_step( $action, $segment ) {
+	$action  = trim( (string) $action );
+	$segment = sanitize_key( (string) $segment );
+
+	if ( 'Top-10-Push' === $action ) {
+		return 'Aktuelle SERP und Zielseite gegeneinander prüfen. Danach nur die belegten Content-, Snippet- und internen Link-Lücken schließen.';
+	}
+
+	if ( 'Seite ausbauen' === $action ) {
+		return 'Suchintention und konkurrierende Ergebnisse prüfen. Anschließend die bestehende Zielseite gezielt um fehlende kaufnahe Inhalte und interne Links erweitern.';
+	}
+
+	if ( 'Position verteidigen' === $action ) {
+		return 'Aktualität, Belege und interne Verlinkung sichern. Nur eingreifen, wenn GSC oder die Live-SERP einen konkreten Verlust zeigt.';
+	}
+
+	if ( 'brand' === $segment ) {
+		return 'Als Marken-/Proof-Sichtbarkeit beobachten. Erst priorisieren, wenn daraus qualifizierter Traffic, Leads oder strategische Autorität nachweisbar werden.';
+	}
+
+	return 'Signal beobachten und erst bei einer klaren Ranking-, Nachfrage- oder Lead-Veränderung in die Arbeitsqueue ziehen.';
+}
+
+/**
+ * Convert direct Market Intelligence opportunities into the same operational
+ * decision shape as Research/Content Intelligence.
+ *
+ * @param array<string, mixed> $context Local/cached support layers.
+ * @return array<int, array<string, mixed>>
+ */
+function nexus_ci_market_decision_items( $context ) {
+	if ( ! function_exists( 'nexus_get_market_intelligence_opportunities' ) ) {
+		return [];
+	}
+
+	$top_queries = nexus_ci_decision_cached_gsc_query_totals();
+	$seo_context = [
+		'top_queries'  => $top_queries,
+		'leads'        => is_array( $context['leads'] ?? null ) ? $context['leads'] : [],
+		'acquisition'  => is_array( $context['crm'] ?? null ) ? $context['crm'] : [],
+		'page_contexts'=> [],
+	];
+
+	$rows  = nexus_get_market_intelligence_opportunities( $seo_context, 20 );
+	$items = [];
+
+	foreach ( $rows as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+
+		$score         = max( 0, min( 100, absint( $row['score'] ?? 0 ) ) );
+		$segment       = sanitize_key( (string) ( $row['segment'] ?? 'other' ) );
+		$segment_label = (string) ( $row['segment_label'] ?? 'Beobachten' );
+		$action        = (string) ( $row['action'] ?? 'Beobachten' );
+		$target_url    = nexus_ci_decision_url( (string) ( $row['url'] ?? '' ) );
+		$target_ctx    = '' !== $target_url && function_exists( 'nexus_get_seo_cockpit_wp_context_for_url' )
+			? nexus_get_seo_cockpit_wp_context_for_url( $target_url )
+			: [];
+		$target_label  = trim( (string) ( $target_ctx['post_title'] ?? '' ) );
+
+		if ( '' === $target_label ) {
+			$target_label = $target_url;
+		}
+
+		if ( 'business' === $segment && 'Beobachten' !== $action && $score >= 55 ) {
+			$lane       = 'now';
+			$lane_label = 'Jetzt tun';
+		} elseif ( 'brand' !== $segment && 'Beobachten' !== $action ) {
+			$lane       = 'plan';
+			$lane_label = 'Prüfen & planen';
+		} else {
+			$lane       = 'observe';
+			$lane_label = 'Beobachten';
+		}
+
+		$why = [ $segment_label ];
+
+		if ( ! empty( $row['intent'] ) ) {
+			$why[] = 'Intent ' . (string) $row['intent'];
+		}
+		if ( (float) ( $row['gsc_impressions'] ?? 0 ) > 0 ) {
+			$why[] = 'eigene GSC-Nachfrage';
+		}
+		if ( absint( $row['crm_contacts_current'] ?? 0 ) > 0 || absint( $row['leads_current'] ?? 0 ) > 0 ) {
+			$why[] = 'First-Party-Lead-Signal';
+		}
+
+		$sources = [ 'DataForSEO', 'GSC' ];
+		if ( '' !== $target_url ) {
+			$sources[] = 'WordPress';
+		}
+		if ( absint( $row['crm_contacts_current'] ?? 0 ) > 0 || absint( $row['leads_current'] ?? 0 ) > 0 ) {
+			$sources[] = 'CRM';
+		}
+
+		$decision = [
+			'score'          => $score,
+			'lane'           => $lane,
+			'lane_label'     => $lane_label,
+			'action'         => sanitize_key( $action ),
+			'action_label'   => $action,
+			'why'            => implode( ' · ', array_filter( $why ) ),
+			'next_step'      => nexus_ci_decision_market_next_step( $action, $segment ),
+			'target_url'     => $target_url,
+			'target_label'   => $target_label,
+			'page_role'      => sanitize_key( (string) ( $row['page_role'] ?? 'unknown' ) ),
+			'page_role_label'=> (string) ( $row['page_role_label'] ?? 'Sonstiges' ),
+			'impressions'    => (float) ( $row['gsc_impressions'] ?? 0.0 ),
+			'position'       => (float) ( $row['gsc_position'] ?? 0.0 ),
+			'market_score'   => $score,
+			'seo_score'      => 0,
+			'content_fit'    => 0,
+			'audit_current'  => absint( $row['leads_current'] ?? 0 ),
+			'audit_won'      => absint( $row['won_lifetime'] ?? 0 ),
+			'crm_current'    => absint( $row['crm_contacts_current'] ?? 0 ),
+			'crm_lifetime'   => 0,
+			'market_support' => [
+				'available' => true,
+				'best'      => [
+					'keyword'       => (string) ( $row['keyword'] ?? '' ),
+					'search_volume' => (float) ( $row['search_volume'] ?? 0.0 ),
+					'rank'          => absint( $row['rank'] ?? 0 ),
+					'intent'        => sanitize_key( (string) ( $row['intent'] ?? '' ) ),
+				],
+			],
+			'direct_market'  => [
+				'keyword'        => (string) ( $row['keyword'] ?? '' ),
+				'search_volume'  => (float) ( $row['search_volume'] ?? 0.0 ),
+				'rank'           => absint( $row['rank'] ?? 0 ),
+				'difficulty'     => isset( $row['difficulty'] ) && is_numeric( $row['difficulty'] ) ? (float) $row['difficulty'] : null,
+				'intent'         => sanitize_key( (string) ( $row['intent'] ?? '' ) ),
+				'segment'        => $segment,
+				'segment_label'  => $segment_label,
+			],
+			'sources'        => array_values( array_unique( $sources ) ),
+		];
+
+		$items[] = [
+			'source_type'  => 'market',
+			'provider'     => 'dataforseo',
+			'period'       => 'aktuell',
+			'title'        => (string) ( $row['keyword'] ?? 'Keyword-Chance' ),
+			'context'      => 'Direktes Suchmarkt-Signal aus DataForSEO, verbunden mit First-Party-Daten.',
+			'label'        => 'Suchvolumen',
+			'value'        => (float) ( $row['search_volume'] ?? 0.0 ),
+			'unit'         => 'Suchen/Monat',
+			'change_label' => '—',
+			'v11'          => [
+				'profile'     => [ 'label' => $segment_label ],
+				'top_queries' => (float) ( $row['gsc_impressions'] ?? 0 ) > 0
+					? [ [ 'query' => (string) ( $row['keyword'] ?? '' ), 'impressions' => (float) $row['gsc_impressions'] ] ]
+					: [],
+			],
+			'decision'     => $decision,
+		];
+	}
+
+	return $items;
+}
+
+/**
  * Return DataForSEO support for a target URL / directly matching query.
  *
  * @param string               $target_url Target URL.
@@ -338,7 +589,12 @@ function nexus_ci_content_decisions() {
 	$context = nexus_ci_decision_context();
 
 	foreach ( $items as $index => $item ) {
-		$items[ $index ]['decision'] = nexus_ci_build_content_decision( $item, $context );
+		$items[ $index ]['source_type'] = 'research';
+		$items[ $index ]['decision']    = nexus_ci_build_content_decision( $item, $context );
+	}
+
+	foreach ( nexus_ci_market_decision_items( $context ) as $market_item ) {
+		$items[] = $market_item;
 	}
 
 	$lane_weight = [ 'now' => 3, 'plan' => 2, 'observe' => 1 ];
