@@ -852,6 +852,90 @@ function nexus_ci_render_content_decision_lane( $key, $title, $description, $ite
 }
 
 /**
+ * Render the strongest operational decisions inside Dashboard V3.
+ *
+ * The dashboard intentionally excludes observation-only signals. It shows at
+ * most three items and links back to Content-Chancen for the complete queue.
+ *
+ * @return void
+ */
+function nexus_ci_render_content_decision_dashboard_panel() {
+	$items = nexus_ci_content_decisions();
+	$top   = [];
+
+	foreach ( $items as $item ) {
+		if ( ! is_array( $item ) ) {
+			continue;
+		}
+
+		$decision = is_array( $item['decision'] ?? null ) ? $item['decision'] : [];
+		$lane     = sanitize_key( (string) ( $decision['lane'] ?? 'observe' ) );
+
+		if ( ! in_array( $lane, [ 'now', 'plan' ], true ) ) {
+			continue;
+		}
+
+		$top[] = $item;
+		if ( count( $top ) >= 3 ) {
+			break;
+		}
+	}
+
+	if ( empty( $top ) ) {
+		return;
+	}
+
+	$url = admin_url( 'admin.php?page=' . nexus_ci_admin_slug() );
+	?>
+	<section class="nsc-v3-section nsc-decision-dashboard" aria-labelledby="nsc-decision-dashboard-title">
+		<div class="nsc-v3-section__head">
+			<div>
+				<p class="nsc-v3-eyebrow">Decision Layer</p>
+				<h2 id="nsc-decision-dashboard-title">Was du als Nächstes tun solltest</h2>
+				<p>Die drei stärksten handlungsfähigen Signale aus Suchmarkt, Search Console, Research, WordPress und CRM.</p>
+			</div>
+			<a class="nsc-v3-button" href="<?php echo esc_url( $url ); ?>">Alle Content-Chancen</a>
+		</div>
+
+		<div class="nsc-decision-dashboard__grid">
+			<?php foreach ( $top as $item ) : ?>
+				<?php
+				$decision = is_array( $item['decision'] ?? null ) ? $item['decision'] : [];
+				$lane     = sanitize_key( (string) ( $decision['lane'] ?? 'plan' ) );
+				$source   = 'market' === (string) ( $item['source_type'] ?? '' )
+					? 'DataForSEO'
+					: strtoupper( str_replace( '_', ' ', (string) ( $item['provider'] ?? 'Research' ) ) );
+				?>
+				<article class="nsc-decision-dashboard__card is-<?php echo esc_attr( $lane ); ?>">
+					<div class="nsc-decision-dashboard__score">
+						<strong><?php echo esc_html( (string) absint( $decision['score'] ?? 0 ) ); ?></strong>
+						<span><?php echo esc_html( (string) ( $decision['lane_label'] ?? 'Prüfen' ) ); ?></span>
+					</div>
+
+					<div class="nsc-decision-dashboard__body">
+						<div class="nsc-decision-dashboard__meta">
+							<span><?php echo esc_html( $source ); ?></span>
+							<?php if ( ! empty( $decision['page_role_label'] ) && 'Sonstiges' !== (string) $decision['page_role_label'] ) : ?>
+								<span><?php echo esc_html( (string) $decision['page_role_label'] ); ?></span>
+							<?php endif; ?>
+						</div>
+
+						<h3><?php echo esc_html( (string) ( $item['title'] ?? '' ) ); ?></h3>
+						<strong class="nsc-decision-dashboard__action"><?php echo esc_html( (string) ( $decision['action_label'] ?? 'Prüfen' ) ); ?></strong>
+						<p><?php echo esc_html( (string) ( $decision['next_step'] ?? '' ) ); ?></p>
+
+						<?php if ( ! empty( $decision['target_url'] ) ) : ?>
+							<a href="<?php echo esc_url( (string) $decision['target_url'] ); ?>" target="_blank" rel="noopener noreferrer">Zielseite öffnen</a>
+						<?php endif; ?>
+					</div>
+				</article>
+			<?php endforeach; ?>
+		</div>
+	</section>
+	<?php
+}
+
+/**
  * Render the Content Decision Layer.
  *
  * @return void
