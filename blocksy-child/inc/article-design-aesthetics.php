@@ -60,7 +60,7 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 		return;
 	}
 
-	$version    = '2026-09-28-design-aesthetics-v2';
+	$version    = '2026-09-28-design-aesthetics-v3-autolink-class';
 	$option_key = 'hu_article_design_aesthetics_version';
 
 	if ( (string) get_option( $option_key, '' ) === $version ) {
@@ -78,11 +78,42 @@ function hu_maybe_refresh_design_aesthetics_article() : void {
 
 	$current_title   = (string) get_post_field( 'post_title', $post_id );
 	$current_content = (string) get_post_field( 'post_content', $post_id );
-	$new_marker      = 'data-design-essay="v2"';
+	$new_marker      = 'data-design-essay="v3"';
+	$previous_marker = 'data-design-essay="v2"';
 	$expected_title  = 'Design ist kein Geschmack. Es ist Architektur.';
 	$new_excerpt     = 'Wie sich Ästhetik und Funktionalität im Design verbinden: von Designgeschichte und Semiotik bis UX, Conversion, Core Web Vitals und Dark Patterns.';
 
 	if ( false !== strpos( $current_content, $new_marker ) ) {
+		update_post_meta( $post_id, '_hu_article_design_aesthetics_version', $version );
+		update_option( $option_key, $version, false );
+		return;
+	}
+
+	// V2 used the generic class "lead-para". The glossary autolinker treats
+	// "lead" as a glossary term and can therefore corrupt that HTML attribute at
+	// render time. Repair only those two managed markers without touching prose.
+	if ( false !== strpos( $current_content, $previous_marker ) ) {
+		$repaired_content = str_replace(
+			[ $previous_marker, 'class="lead-para"' ],
+			[ $new_marker, 'class="hu-design-essay__intro"' ],
+			$current_content
+		);
+
+		$result = wp_update_post(
+			wp_slash(
+				[
+					'ID'           => $post_id,
+					'post_excerpt' => $new_excerpt,
+					'post_content' => $repaired_content,
+				]
+			),
+			true
+		);
+
+		if ( is_wp_error( $result ) || ! $result ) {
+			return;
+		}
+
 		update_post_meta( $post_id, '_hu_article_design_aesthetics_version', $version );
 		update_option( $option_key, $version, false );
 		return;
