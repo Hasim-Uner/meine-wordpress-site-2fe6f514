@@ -346,8 +346,8 @@ function nexus_ci_content_decisions() {
 	usort(
 		$items,
 		static function ( $left, $right ) use ( $lane_weight ) {
-			$left_decision  = is_array( $left['decision'] ?? null ) ? $left['decision'] : [];
-			$right_decision = is_array( $right['decision'] ?? null ) ? $right['decision'] : [];
+			$left_decision  = is_array( $left['decision'] ) ? $left['decision'] : [];
+			$right_decision = is_array( $right['decision'] ) ? $right['decision'] : [];
 
 			$left_lane  = sanitize_key( (string) ( $left_decision['lane'] ?? 'observe' ) );
 			$right_lane = sanitize_key( (string) ( $right_decision['lane'] ?? 'observe' ) );
