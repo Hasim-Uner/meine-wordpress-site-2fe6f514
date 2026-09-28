@@ -265,6 +265,90 @@ function nexus_render_seo_cockpit_lead_metrics( $current, $previous ) {
 }
 
 /**
+ * Render compact CRM acquisition metric cards.
+ *
+ * @param array<string, mixed> $current Current acquisition metrics.
+ * @param array<string, mixed> $previous Previous acquisition metrics.
+ * @return void
+ */
+function nexus_render_seo_cockpit_acquisition_metrics( $current, $previous ) {
+	$labels = [
+		'contacts'                => 'CRM-Kontakte',
+		'attributed'              => 'Attribuiert',
+		'google_business_profile' => 'Google Business',
+		'won'                     => 'Gewonnen',
+	];
+	?>
+	<div class="nexus-seo-cockpit__koko-metrics">
+		<?php foreach ( $labels as $key => $label ) : ?>
+			<?php
+			$current_value  = (float) ( $current[ $key ] ?? 0 );
+			$previous_value = (float) ( $previous[ $key ] ?? 0 );
+			$delta          = nexus_get_seo_cockpit_metric_delta( 'clicks', $current_value, $previous_value );
+			?>
+			<article class="nexus-seo-cockpit__koko-card">
+				<span class="nexus-seo-cockpit__metric-label"><?php echo esc_html( $label ); ?></span>
+				<strong class="nexus-seo-cockpit__koko-value"><?php echo esc_html( number_format_i18n( $current_value ) ); ?></strong>
+				<span class="nexus-seo-cockpit__delta-inline is-<?php echo esc_attr( $delta['class'] ); ?>"><?php echo esc_html( $delta['label'] ); ?></span>
+			</article>
+		<?php endforeach; ?>
+	</div>
+	<?php
+}
+
+/**
+ * Render the most recent CRM acquisition attributions without personal data.
+ *
+ * @param array<int, array<string, mixed>> $rows Acquisition rows.
+ * @param int                              $limit Max rows.
+ * @return void
+ */
+function nexus_render_seo_cockpit_acquisition_table( $rows, $limit = 8 ) {
+	$rows = array_slice( (array) $rows, 0, max( 1, (int) $limit ) );
+
+	if ( empty( $rows ) ) {
+		echo '<p class="nexus-seo-cockpit__hint">Noch keine vertriebsrelevanten CRM-Kontakte mit Akquise-Kontext vorhanden.</p>';
+		return;
+	}
+
+	$source_labels = function_exists( 'nexus_get_crm_contact_source_labels' ) ? nexus_get_crm_contact_source_labels() : [];
+	?>
+	<table class="widefat striped nexus-seo-cockpit__table nexus-seo-cockpit__table--urls">
+		<thead>
+			<tr>
+				<th>Datum</th>
+				<th>Kanal</th>
+				<th>Kampagne</th>
+				<th>Einstieg</th>
+				<th>Formular</th>
+				<th>Pipeline</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ( $rows as $row ) : ?>
+				<?php
+				$entry_url   = (string) ( $row['entry_url'] ?? '' );
+				$landing_url = (string) ( $row['landing_url'] ?? '' );
+				$form_source = sanitize_key( (string) ( $row['form_source'] ?? '' ) );
+				$stage       = sanitize_key( (string) ( $row['stage'] ?? '' ) );
+				$form_label  = isset( $source_labels[ $form_source ] ) ? (string) $source_labels[ $form_source ] : ( '' !== $form_source ? $form_source : '—' );
+				$stage_label = function_exists( 'nexus_get_crm_sales_stage_label' ) && '' !== $stage ? nexus_get_crm_sales_stage_label( $stage ) : ( '' !== $stage ? $stage : '—' );
+				?>
+				<tr>
+					<td><?php echo esc_html( ! empty( $row['timestamp'] ) ? wp_date( 'd.m.Y H:i', (int) $row['timestamp'] ) : '—' ); ?></td>
+					<td><?php echo esc_html( (string) ( $row['channel_label'] ?? 'Direkt / unbekannt' ) ); ?></td>
+					<td><?php echo esc_html( '' !== (string) ( $row['campaign'] ?? '' ) ? (string) ( $row['campaign_label'] ?? $row['campaign'] ) : '—' ); ?></td>
+					<td class="nexus-seo-cockpit__cell--url"><?php echo esc_html( '' !== $entry_url ? nexus_get_seo_cockpit_short_url( $entry_url ) : '—' ); ?></td>
+					<td class="nexus-seo-cockpit__cell--url"><?php echo esc_html( '' !== $landing_url ? nexus_get_seo_cockpit_short_url( $landing_url ) : '—' ); ?></td>
+					<td><?php echo esc_html( $stage_label ); ?></td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+	<?php
+}
+
+/**
  * Return one compact attribution-mode label string.
  *
  * @param array<string, int> $modes Attribution mode counts.
@@ -1310,8 +1394,9 @@ function nexus_render_seo_cockpit_dashboard() {
 			<?php
 			$current       = $snapshot['overview']['current'];
 			$previous      = $snapshot['overview']['previous'];
-			$koko_snapshot = is_array( $snapshot['koko'] ?? null ) ? $snapshot['koko'] : [];
-			$lead_snapshot = is_array( $snapshot['leads'] ?? null ) ? $snapshot['leads'] : [];
+			$koko_snapshot        = is_array( $snapshot['koko'] ?? null ) ? $snapshot['koko'] : [];
+			$lead_snapshot        = is_array( $snapshot['leads'] ?? null ) ? $snapshot['leads'] : [];
+			$acquisition_snapshot = is_array( $snapshot['acquisition'] ?? null ) ? $snapshot['acquisition'] : [];
 			?>
 
 			<?php nexus_render_revenue_command_center( $revenue_command ); ?>
@@ -1537,6 +1622,32 @@ function nexus_render_seo_cockpit_dashboard() {
 					</div>
 				<?php else : ?>
 					<p class="nexus-seo-cockpit__hint"><?php echo esc_html( (string) ( $lead_snapshot['note'] ?? 'Lead-Daten sind derzeit nicht verfügbar.' ) ); ?></p>
+				<?php endif; ?>
+			</section>
+
+			<h3 class="nexus-seo-cockpit__section-title">Akquise &amp; Attribution <span>Google Business, Kampagnen und CRM-Kontakte</span></h3>
+
+			<section class="nexus-seo-cockpit__panel">
+				<?php if ( ! empty( $acquisition_snapshot['available'] ) ) : ?>
+					<?php nexus_render_seo_cockpit_acquisition_metrics( (array) ( $acquisition_snapshot['overview']['current'] ?? [] ), (array) ( $acquisition_snapshot['overview']['previous'] ?? [] ) ); ?>
+					<p class="nexus-seo-cockpit__hint" style="margin-top:14px;">
+						<?php echo esc_html( (string) ( $acquisition_snapshot['note'] ?? 'Akquise-Daten aus dem Nexus CRM.' ) ); ?>
+					</p>
+					<?php if ( ! empty( $acquisition_snapshot['campaign_rows']['current'] ) || ! empty( $acquisition_snapshot['channel_rows']['current'] ) ) : ?>
+						<div class="nexus-seo-cockpit__chips">
+							<?php foreach ( (array) ( $acquisition_snapshot['campaign_rows']['current'] ?? [] ) as $row ) : ?>
+								<span class="nexus-seo-cockpit__chip"><?php echo esc_html( sprintf( 'Kampagne · %s: %d', (string) ( $row['label'] ?? '' ), (int) ( $row['count'] ?? 0 ) ) ); ?></span>
+							<?php endforeach; ?>
+							<?php foreach ( (array) ( $acquisition_snapshot['channel_rows']['current'] ?? [] ) as $row ) : ?>
+								<span class="nexus-seo-cockpit__chip"><?php echo esc_html( sprintf( 'Kanal · %s: %d', (string) ( $row['label'] ?? '' ), (int) ( $row['count'] ?? 0 ) ) ); ?></span>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
+					<div class="nexus-seo-cockpit__table-wrap" style="margin-top:14px;">
+						<?php nexus_render_seo_cockpit_acquisition_table( (array) ( $acquisition_snapshot['latest'] ?? [] ), 8 ); ?>
+					</div>
+				<?php else : ?>
+					<p class="nexus-seo-cockpit__hint"><?php echo esc_html( (string) ( $acquisition_snapshot['note'] ?? 'CRM-Akquise-Daten sind derzeit nicht verfügbar.' ) ); ?></p>
 				<?php endif; ?>
 			</section>
 
