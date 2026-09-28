@@ -64,8 +64,8 @@ function nexus_update_dataforseo_settings( $settings ) {
 function nexus_dataforseo_uses_constant_credentials() {
 	return defined( 'NEXUS_DATAFORSEO_LOGIN' )
 		&& defined( 'NEXUS_DATAFORSEO_PASSWORD' )
-		&& '' !== trim( (string) NEXUS_DATAFORSEO_LOGIN )
-		&& '' !== trim( (string) NEXUS_DATAFORSEO_PASSWORD );
+		&& '' !== trim( (string) constant( 'NEXUS_DATAFORSEO_LOGIN' ) )
+		&& '' !== trim( (string) constant( 'NEXUS_DATAFORSEO_PASSWORD' ) );
 }
 
 /**
@@ -76,8 +76,8 @@ function nexus_dataforseo_uses_constant_credentials() {
 function nexus_get_dataforseo_credentials() {
 	if ( nexus_dataforseo_uses_constant_credentials() ) {
 		return [
-			'login'    => trim( (string) NEXUS_DATAFORSEO_LOGIN ),
-			'password' => trim( (string) NEXUS_DATAFORSEO_PASSWORD ),
+			'login'    => trim( (string) constant( 'NEXUS_DATAFORSEO_LOGIN' ) ),
+			'password' => trim( (string) constant( 'NEXUS_DATAFORSEO_PASSWORD' ) ),
 		];
 	}
 
