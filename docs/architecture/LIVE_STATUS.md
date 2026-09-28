@@ -81,8 +81,13 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `Beobachten`, `Warum jetzt`, Zielseite und ein deterministischer nächster
   Schritt ausgegeben.
 - Die Decision Layer liest Research/GSC sowie lokale WordPress-, DataForSEO-
-  Snapshot- und CRM-Signale. Beim bloßen Rendern von `Content-Chancen` wird
-  kein neuer Research- oder DataForSEO-Netzwerkrequest ausgelöst.
+  Snapshot- und CRM-Signale. Sie führt jetzt sowohl primärdatengetriebene
+  Content-Signale als auch direkte, business-segmentierte Market-Intelligence-
+  Keyword-Chancen in derselben Queue. Beim bloßen Rendern von `Content-Chancen`
+  wird kein neuer Research- oder DataForSEO-Netzwerkrequest ausgelöst.
+- Dashboard V3 zeigt vor den analytischen Detailsektionen maximal drei
+  handlungsfähige Entscheidungen aus `Jetzt tun` und `Prüfen & planen`;
+  Beobachtungssignale bleiben in der vollständigen Content-Chancen-Ansicht.
 - `Research` heißt im Menü `Datenbasis` und steht hinter den operativen
   Bereichen. Dort bleiben CrUX, Energy-Charts, Destatis und Eurostat als
   Primär-/Felddaten vollständig zugänglich.
