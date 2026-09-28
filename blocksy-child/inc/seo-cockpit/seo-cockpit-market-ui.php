@@ -79,7 +79,8 @@ function nexus_sanitize_dataforseo_settings( $raw ) {
 		$password = is_string( $password ) ? trim( $password ) : '';
 	}
 
-	$watch_keywords = sanitize_textarea_field( (string) ( $raw['watch_keywords'] ?? '' ) );
+	$watch_keywords         = sanitize_textarea_field( (string) ( $raw['watch_keywords'] ?? '' ) );
+	$strategic_competitors = sanitize_textarea_field( (string) ( $raw['strategic_competitors'] ?? '' ) );
 
 	return [
 		'api_login'               => sanitize_text_field( (string) ( $raw['api_login'] ?? $previous['api_login'] ?? '' ) ),
@@ -89,6 +90,7 @@ function nexus_sanitize_dataforseo_settings( $raw ) {
 		'local_location_name'     => sanitize_text_field( (string) ( $raw['local_location_name'] ?? '' ) ),
 		'local_business_name'     => sanitize_text_field( (string) ( $raw['local_business_name'] ?? '' ) ),
 		'watch_keywords'          => $watch_keywords,
+		'strategic_competitors'  => $strategic_competitors,
 		'auto_refresh'            => ! empty( $raw['auto_refresh'] ) ? '1' : '0',
 		'ranked_limit'            => (string) max( 20, min( 250, absint( $raw['ranked_limit'] ?? 100 ) ) ),
 		'competitor_limit'        => (string) max( 5, min( 50, absint( $raw['competitor_limit'] ?? 15 ) ) ),
@@ -187,6 +189,7 @@ function nexus_render_market_intelligence_notice() {
 		'maps_done'      => [ 'success', 'Google-Maps-Watchlist wurde aktualisiert.' ],
 		'refresh_error'  => [ 'error', 'Market-Refresh fehlgeschlagen.' ],
 		'live_error'     => [ 'error', 'Live-Check fehlgeschlagen.' ],
+		'export_empty'   => [ 'warning', 'Für den Market-Export liegt noch kein verwertbarer Snapshot vor.' ],
 	];
 
 	if ( ! isset( $messages[ $notice ] ) ) {
@@ -279,6 +282,46 @@ function nexus_render_market_intelligence_opportunities( $rows, $limit = 10 ) {
 }
 
 /**
+ * Render the manually curated strategic comparison group.
+ *
+ * Automatic DataForSEO competitors remain untouched; this layer answers the
+ * different question of who should be watched for the intended WordPress/B2B
+ * market. Metrics appear when a strategic domain is also present in the
+ * current organic-overlap snapshot.
+ *
+ * @param array<int, array<string, mixed>> $rows Strategic competitors.
+ * @return void
+ */
+function nexus_render_market_intelligence_strategic_competitors( $rows ) {
+	if ( empty( $rows ) ) {
+		echo '<p class="nsc-market-empty">Noch keine strategischen Wettbewerber gepflegt.</p>';
+		return;
+	}
+	?>
+	<div class="nsc-market-competitor-grid is-strategic">
+		<?php foreach ( $rows as $row ) : ?>
+			<article class="nsc-market-competitor is-strategic">
+				<div class="nsc-market-competitor__head">
+					<strong><?php echo esc_html( (string) ( $row['domain'] ?? '' ) ); ?></strong>
+					<span class="nsc-market-strategic-status <?php echo ! empty( $row['is_overlap'] ) ? 'is-overlap' : 'is-watch'; ?>">
+						<?php echo esc_html( ! empty( $row['is_overlap'] ) ? 'organische Überschneidung' : 'strategische Watchlist' ); ?>
+					</span>
+				</div>
+				<?php if ( ! empty( $row['is_overlap'] ) ) : ?>
+					<div><span>Überschneidungen</span><b><?php echo esc_html( number_format_i18n( absint( $row['intersections'] ?? 0 ) ) ); ?></b></div>
+					<div><span>Shared ETV</span><b><?php echo esc_html( number_format_i18n( (float) ( $row['shared_etv'] ?? 0 ), 1 ) ); ?></b></div>
+					<div><span>Top-10 shared</span><b><?php echo esc_html( number_format_i18n( absint( $row['top10_shared'] ?? 0 ) ) ); ?></b></div>
+				<?php else : ?>
+					<p>Direkter Marktvergleich, auch wenn Google die Domain aktuell nicht als starken Keyword-Overlap zu deiner Website einordnet.</p>
+				<?php endif; ?>
+				<a href="<?php echo esc_url( 'https://' . (string) ( $row['domain'] ?? '' ) . '/' ); ?>" target="_blank" rel="noopener noreferrer">Website öffnen</a>
+			</article>
+		<?php endforeach; ?>
+	</div>
+	<?php
+}
+
+/**
  * Render competitor cards.
  *
  * @param array<int, array<string, mixed>> $rows Competitors.
@@ -353,6 +396,7 @@ function nexus_render_market_intelligence_admin_page() {
 	$ranked_rows= is_array( $ranked['rows'] ?? null ) ? $ranked['rows'] : [];
 	$metrics    = is_array( $ranked['metrics'] ?? null ) ? $ranked['metrics'] : [];
 	$competitors= is_array( $snapshot['competitors'] ?? null ) ? $snapshot['competitors'] : [];
+	$strategic_competitors = function_exists( 'nexus_market_intelligence_strategic_competitors' ) ? nexus_market_intelligence_strategic_competitors( $competitors ) : [];
 	$seo        = function_exists( 'nexus_get_seo_cockpit_snapshot' ) ? nexus_get_seo_cockpit_snapshot( false, 28 ) : [];
 	$opportunities = is_wp_error( $seo ) || ! is_array( $seo ) ? [] : nexus_get_market_intelligence_opportunities( $seo, 12 );
 	$has_credentials = nexus_dataforseo_has_credentials();
@@ -375,6 +419,12 @@ function nexus_render_market_intelligence_admin_page() {
 						<button class="button button-primary" type="submit">Marktdaten aktualisieren</button>
 					</form>
 				<?php endif; ?>
+				<?php if ( $can_manage && ! empty( $snapshot ) ) : ?>
+					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_market_intelligence_export' ) ); ?>">
+						<?php wp_nonce_field( 'nexus_market_intelligence_export' ); ?>
+						<button class="button" type="submit"><span class="dashicons dashicons-download" aria-hidden="true"></span> Market CSV</button>
+					</form>
+				<?php endif; ?>
 			</div>
 		</header>
 
@@ -383,6 +433,7 @@ function nexus_render_market_intelligence_admin_page() {
 			<article><span>Top 10</span><strong><?php echo esc_html( number_format_i18n( nexus_market_intelligence_top10_count( $ranked_rows ) ) ); ?></strong><small>aus dem geladenen Keyword-Set</small></article>
 			<article><span>Geschätzter Traffic</span><strong><?php echo esc_html( number_format_i18n( (float) ( $metrics['etv'] ?? 0 ), 1 ) ); ?></strong><small>ETV · externe Schätzung</small></article>
 			<article><span>Wettbewerber</span><strong><?php echo esc_html( number_format_i18n( count( $competitors ) ) ); ?></strong><small>organische Überschneidung</small></article>
+			<article><span>Strategische Gruppe</span><strong><?php echo esc_html( number_format_i18n( count( $strategic_competitors ) ) ); ?></strong><small>WordPress/B2B-Vergleich</small></article>
 			<article><span>API-Kosten Monat</span><strong>$<?php echo esc_html( number_format_i18n( (float) ( $runtime['cost_month_usd'] ?? 0 ), 4 ) ); ?></strong><small>Auto-Budget $<?php echo esc_html( number_format_i18n( (float) $config['monthly_auto_budget_usd'], 2 ) ); ?></small></article>
 		</section>
 
@@ -392,7 +443,18 @@ function nexus_render_market_intelligence_admin_page() {
 		</section>
 
 		<section class="nsc-market-section">
-			<div class="nsc-market-section__head"><div><p class="nexus-seo-cockpit__eyebrow">Competitive Landscape</p><h2>Wer dir organisch wirklich begegnet</h2><p>Wettbewerber werden aus gemeinsamen SERPs ermittelt, nicht aus einer manuell gepflegten Liste.</p></div></div>
+			<div class="nsc-market-section__head">
+				<div>
+					<p class="nexus-seo-cockpit__eyebrow">Strategische Vergleichsgruppe</p>
+					<h2>Mit wem du dich im WordPress-/B2B-Markt vergleichen willst</h2>
+					<p>Diese Liste ist bewusst kuratiert und bleibt getrennt von der automatischen SERP-Überschneidung. So zeigt das Cockpit gleichzeitig deine aktuelle Google-Nachbarschaft und deine eigentliche Zielkonkurrenz.</p>
+				</div>
+			</div>
+			<?php nexus_render_market_intelligence_strategic_competitors( $strategic_competitors ); ?>
+		</section>
+
+		<section class="nsc-market-section">
+			<div class="nsc-market-section__head"><div><p class="nexus-seo-cockpit__eyebrow">Competitive Landscape</p><h2>Wer dir organisch wirklich begegnet</h2><p>Diese Liste bleibt vollständig datengetrieben. Erneuerbare-Energien-Domains sind hier ein Signal dafür, welche Themen Google aktuell mit deiner Domain verbindet – nicht automatisch deine strategische Konkurrenz.</p></div></div>
 			<?php nexus_render_market_intelligence_competitors( $competitors, 10 ); ?>
 		</section>
 
@@ -447,6 +509,7 @@ function nexus_render_market_intelligence_admin_page() {
 						<label><span>Keyword Overview Limit</span><input type="number" min="10" max="100" name="dataforseo[keyword_overview_limit]" value="<?php echo esc_attr( (string) ( $settings['keyword_overview_limit'] ?? '40' ) ); ?>"></label>
 						<label><span>Auto-Budget / Monat (USD)</span><input type="number" step="0.25" min="0.25" max="100" name="dataforseo[monthly_auto_budget_usd]" value="<?php echo esc_attr( (string) ( $settings['monthly_auto_budget_usd'] ?? '2.00' ) ); ?>"><small>Stoppt weitere automatische Calls, sobald die gemeldeten Monatskosten das Limit erreichen.</small></label>
 						<label class="nsc-market-form-grid__wide"><span>Watchlist-Keywords</span><textarea rows="7" name="dataforseo[watch_keywords]" placeholder="wordpress freelancer hannover&#10;wordpress entwickler hannover"><?php echo esc_textarea( (string) ( $settings['watch_keywords'] ?? '' ) ); ?></textarea><small>Ein Keyword pro Zeile. Live-Organic nutzt maximal 8, Maps maximal 5 pro manueller Prüfung.</small></label>
+						<label class="nsc-market-form-grid__wide"><span>Strategische Wettbewerber</span><textarea rows="7" name="dataforseo[strategic_competitors]" placeholder="oliverfleck.de&#10;onma.de&#10;goldenberg-agentur.de"><?php echo esc_textarea( (string) ( $settings['strategic_competitors'] ?? '' ) ); ?></textarea><small>Eine Domain pro Zeile. Diese Vergleichsgruppe ist unabhängig vom automatischen DataForSEO-Competitor-Snapshot und erzeugt selbst keine zusätzlichen API-Calls.</small></label>
 						<label class="nsc-market-checkbox"><input type="checkbox" name="dataforseo[auto_refresh]" value="1" <?php checked( '1', (string) ( $settings['auto_refresh'] ?? '1' ) ); ?>><span>Wöchentliche Labs-Aktualisierung aktivieren</span></label>
 					</div>
 					<div class="nsc-market-form-actions"><button type="submit" class="button button-primary">Einstellungen speichern</button><?php if ( nexus_dataforseo_has_credentials() && ! nexus_dataforseo_uses_constant_credentials() ) : ?><button type="submit" class="button" name="clear_credentials" value="1">Credentials entfernen</button><?php endif; ?></div>
