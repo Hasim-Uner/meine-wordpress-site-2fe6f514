@@ -24,10 +24,12 @@ V11="$ROOT/inc/seo-cockpit/seo-cockpit-content-intelligence-v11.php"
 RESEARCH_ASYNC="$ROOT/inc/seo-cockpit/seo-cockpit-research-async.php"
 RESEARCH_V3="$ROOT/inc/seo-cockpit/seo-cockpit-research-v3.php"
 MARKET_UI="$ROOT/inc/seo-cockpit/seo-cockpit-market-ui.php"
+MARKET="$ROOT/inc/seo-cockpit/seo-cockpit-market-intelligence.php"
+DASH="$ROOT/inc/seo-cockpit/seo-cockpit-dashboard-v3.php"
 LEADS="$ROOT/inc/seo-cockpit/seo-cockpit-leads.php"
 CSS="$ROOT/assets/css/seo-cockpit-content-decisions.css"
 
-for file in "$LOADER" "$DECISIONS" "$V11" "$RESEARCH_ASYNC" "$RESEARCH_V3" "$MARKET_UI" "$LEADS" "$CSS"; do
+for file in "$LOADER" "$DECISIONS" "$V11" "$RESEARCH_ASYNC" "$RESEARCH_V3" "$MARKET_UI" "$MARKET" "$DASH" "$LEADS" "$CSS"; do
   require_file "$file"
 done
 
@@ -39,6 +41,10 @@ require_pattern "seo-cockpit-content-decisions\.php" "$LOADER"
 require_pattern "function nexus_ci_content_decisions" "$DECISIONS"
 require_pattern "nexus_ci_v11_opportunities" "$DECISIONS"
 require_pattern "nexus_get_market_intelligence_snapshot" "$DECISIONS"
+require_pattern "nexus_get_market_intelligence_opportunities" "$DECISIONS"
+require_pattern "function nexus_ci_market_decision_items" "$DECISIONS"
+require_pattern "function nexus_ci_decision_cached_gsc_query_totals" "$DECISIONS"
+require_pattern "function nexus_get_market_intelligence_opportunities" "$MARKET"
 require_pattern "nexus_get_seo_cockpit_lead_snapshot_data" "$DECISIONS"
 require_pattern "nexus_get_seo_cockpit_crm_acquisition_snapshot_data" "$DECISIONS"
 require_pattern "entry_map" "$LEADS"
@@ -52,6 +58,14 @@ require_pattern "Prüfen & planen" "$DECISIONS"
 require_pattern "Warum jetzt" "$DECISIONS"
 require_pattern "Nächster Schritt" "$DECISIONS"
 require_pattern "Datenbasis anzeigen" "$DECISIONS"
+require_pattern "Was du als Nächstes tun solltest" "$DECISIONS"
+require_pattern "nexus_ci_render_content_decision_dashboard_panel" "$DECISIONS"
+require_pattern "nexus_ci_render_content_decision_dashboard_panel" "$DASH"
+
+# The Decision Layer may read snapshots but must not become another network client.
+if grep -Eq "nexus_dataforseo_request|wp_remote_(get|post|request)|api\.dataforseo\.com" "$DECISIONS"; then
+  fail "decision layer contains a direct external provider call"
+fi
 
 # Research stays available but moves behind operational layers.
 require_pattern "'Datenbasis'" "$RESEARCH_ASYNC"
