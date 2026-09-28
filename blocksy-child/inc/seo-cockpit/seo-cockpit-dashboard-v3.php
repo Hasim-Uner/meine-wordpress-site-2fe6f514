@@ -622,6 +622,8 @@ function nexus_render_seo_cockpit_dashboard_v3() {
 			<article class="nsc-v3-panel"><div class="nsc-v3-panel__head"><div><span class="nsc-v3-panel__icon"><span class="dashicons dashicons-chart-line" aria-hidden="true"></span></span><div><strong>Query-Mover</strong><p>Gewinner und Verlierer gegenüber der Vorperiode.</p></div></div></div><?php nexus_seo_cockpit_v3_render_movers( (array) $snapshot ); ?></article>
 		</div></section>
 
+		<?php if ( function_exists( 'nexus_render_decision_layer_dashboard_panel' ) ) { nexus_render_decision_layer_dashboard_panel( (array) $snapshot ); } ?>
+
 		<?php if ( function_exists( 'nexus_render_market_intelligence_dashboard_panel' ) ) { nexus_render_market_intelligence_dashboard_panel( (array) $snapshot ); } ?>
 
 		<section class="nsc-v3-section" aria-labelledby="nsc-v3-trend-title"><div class="nsc-v3-section__head"><div><p class="nsc-v3-eyebrow">Performance Pulse</p><h2 id="nsc-v3-trend-title">Verlauf statt Momentaufnahme</h2><p>Vier Signale in Tagesauflösung. Die Details bleiben bewusst sekundär zur Action Queue.</p></div></div><div class="nsc-v3-panel nsc-v3-panel--trend"><div class="nexus-seo-cockpit__trend-grid"><?php nexus_render_seo_cockpit_trend_card( $trend, 'clicks', 'Klicks' ); nexus_render_seo_cockpit_trend_card( $trend, 'impressions', 'Impressionen' ); nexus_render_seo_cockpit_trend_card( $trend, 'ctr', 'CTR' ); nexus_render_seo_cockpit_trend_card( $trend, 'position', 'Position' ); ?></div></div></section>
