@@ -77,6 +77,7 @@ require_pattern "function nexus_market_intelligence_strategic_competitors" "$MAR
 require_pattern "function nexus_refresh_market_intelligence_strategic_overview" "$MARKET"
 require_pattern "dataforseo_labs/google/domain_rank_overview/live" "$MARKET"
 require_pattern "admin_post_nexus_market_intelligence_strategic_refresh" "$UI"
+require_pattern "strategic_overview.*current" "$MARKET"
 require_pattern "Strategische Domains prüfen" "$UI"
 require_pattern "Strategische Vergleichsgruppe" "$UI"
 
