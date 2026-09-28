@@ -1,10 +1,12 @@
-# SEO Cockpit – Content Intelligence V1.1
+# SEO Cockpit – Content Intelligence & Decision Layer
 
 Stand: 2026-09-10.
 
 ## Zweck
 
 Content Intelligence verbindet den bestehenden Research-Layer mit der Google Search Console. Das System bloggt nicht automatisch. Es erkennt belastbare Marktsignale und prüft anschließend, ob dafür tatsächlich direkte Suchnachfrage und eine passende bestehende Seite vorhanden sind.
+
+Darüber liegt jetzt eine eigene **Decision Layer**. Sie verändert die Primärdaten- und Matching-Logik nicht, sondern übersetzt sie in eine operative Arbeitsfläche: `Jetzt tun`, `Prüfen & planen` oder `Beobachten`. Die Oberfläche beantwortet pro Signal vier Fragen: Was ist die Maßnahme? Warum jetzt? Welche Zielseite ist betroffen? Was ist der nächste konkrete Schritt?
 
 Pipeline:
 
@@ -100,18 +102,24 @@ V1.1 erzeugt konservative Zustände:
 
 `Neue Analyse prüfen` ist noch keine automatische CREATE-Anweisung. Vor einer neuen URL muss Kannibalisierung geprüft werden.
 
-## Admin UI
+## Decision Layer / Admin UI
 
-Unter `SEO Cockpit -> Opportunities` werden angezeigt:
+Der stabile Slug bleibt erhalten, die sichtbare Arbeitsfläche heißt jetzt `SEO Cockpit -> Content-Chancen`.
 
-- Snapshots
-- aktive Marktsignale
-- SEO-Chancen >= 60
-- konkrete Maßnahmen
-- pro Signal die drei getrennten Scores
-- Intent-Korridor
-- nur direkt passende GSC-Queries
-- aktuell rankende URL mit Kennzeichnung, ob sie wirklich als Ziel bestätigt ist
+Die V1.1-Rohlogik bleibt darunter bestehen. Die Decision Layer ergänzt pro Opportunity:
+
+- Entscheidungsscore 0–100 für die Sortierung innerhalb einer Arbeitsstufe
+- Arbeitsstufe `Jetzt tun`, `Prüfen & planen` oder `Beobachten`
+- konkrete Maßnahme
+- `Warum jetzt`
+- deterministischen nächsten Schritt
+- bestätigte Zielseite oder klaren Hinweis, wenn noch keine Zielseite bestätigt ist
+- kompakte Evidenz aus GSC, WordPress-Page-Role, optional DataForSEO und CRM
+- technische Detailansicht mit den ursprünglichen drei Scores, Primärdaten und passenden Queries
+
+Die Decision Layer nutzt ausschließlich bestehende Snapshots beziehungsweise lokale WordPress-Daten. Das Öffnen von `Content-Chancen` löst weder neue DataForSEO- noch neue Research-Provider-Requests aus.
+
+Die Quellenebene heißt im Menü `Datenbasis`. Sie bleibt vollständig erreichbar, steht aber bewusst hinter den operativen Arbeitsflächen.
 
 ## Refresh
 
@@ -144,3 +152,5 @@ Code:
 - `blocksy-child/inc/seo-cockpit/seo-cockpit-content-intelligence.php`
 - `blocksy-child/inc/seo-cockpit/seo-cockpit-content-intelligence-refresh.php`
 - `blocksy-child/inc/seo-cockpit/seo-cockpit-content-intelligence-v11.php`
+- `blocksy-child/inc/seo-cockpit/seo-cockpit-content-decisions.php`
+- `blocksy-child/assets/css/seo-cockpit-content-decisions.css`

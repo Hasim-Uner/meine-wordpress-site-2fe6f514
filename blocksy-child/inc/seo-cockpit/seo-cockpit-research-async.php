@@ -169,14 +169,14 @@ function nexus_register_seo_cockpit_research_page_async() {
 	add_submenu_page(
 		nexus_get_seo_cockpit_menu_slug(),
 		'Research Intelligence',
-		'Research',
+		'Datenbasis',
 		nexus_get_seo_cockpit_view_cap(),
 		nexus_get_seo_cockpit_research_slug(),
 		'nexus_render_seo_cockpit_research_page_async'
 	);
 }
 remove_action( 'admin_menu', 'nexus_register_seo_cockpit_research_page_v3', 40 );
-add_action( 'admin_menu', 'nexus_register_seo_cockpit_research_page_async', 40 );
+add_action( 'admin_menu', 'nexus_register_seo_cockpit_research_page_async', 49 );
 
 /**
  * Render Research immediately from cache and refresh providers in background.

@@ -28,6 +28,8 @@ Das Cockpit ist aus der bisherigen Monolith-Datei in klar getrennte Layer aufget
   Externer Suchmarkt-Snapshot, Wettbewerber, Live-Watchlist und Opportunity Join.
 - `blocksy-child/inc/seo-cockpit-market-ui.php`
   Admin-Oberfläche für Markt, Wettbewerb, Watchlist und Provider-Kontrolle.
+- `blocksy-child/inc/seo-cockpit/seo-cockpit-content-decisions.php`
+  Operative Content-Decision-Layer über Content Intelligence V1.1; verbindet Research/GSC mit WordPress-Page-Role sowie optionalen DataForSEO-/CRM-Signalen, ohne beim Rendern neue Provider-Requests auszulösen.
 - `blocksy-child/inc/seo-cockpit-command-center.php`
   Revenue Command Center V1: Score Helper, Next-Best-Action Resolver, Today Revenue Queue und minimaler Status-Layer.
 - `blocksy-child/inc/seo-cockpit-ui.php`
@@ -73,6 +75,13 @@ Der Uebersichts-Snapshot kombiniert drei Ebenen:
   - explizite Kennzahl für `google_business_profile`
   - Einstieg, Formular-Landing und aktuelle Pipeline-Stufe ohne personenbezogene Daten im Cockpit
   - Kontakt-basierte Semantik: ein Kontakt wird nach seiner jeweils letzten Anfrage attribuiert; wiederholte Formulare sind keine zusätzlichen Personen
+- Content-Chancen / Decision Layer:
+  - drei Arbeitsstufen: Jetzt tun, Prüfen & planen, Beobachten
+  - Warum-jetzt-Text und deterministischer nächster Schritt
+  - Zielseiten- und Page-Role-Kontext aus WordPress
+  - optionale Evidenz aus DataForSEO-Snapshot, Audit-Leads und Nexus-CRM
+  - ursprüngliche Marktsignal-/SEO-Chance-/Content-Fit-Scores bleiben in der Detailansicht erhalten
+  - keine neuen externen Requests beim Rendern der Seite
 - Market Intelligence / DataForSEO:
   - rankende Keywords, Suchvolumen, Intent und Keyword Difficulty aus dem externen Suchmarkt
   - datengetriebene Wettbewerber über gemeinsame SERPs

@@ -216,8 +216,9 @@ function nexus_render_seo_cockpit_research_page_v3() {
 	$eurostat       = function_exists( 'nexus_get_seo_cockpit_eurostat_summary' ) ? nexus_get_seo_cockpit_eurostat_summary() : [ 'is_available' => false, 'errors' => [] ];
 	?>
 	<div class="wrap nexus-seo-cockpit nexus-seo-cockpit__research">
-		<p class="nexus-seo-cockpit__eyebrow">Research Intelligence</p>
-		<h1>Primärdaten statt Bauchgefühl</h1>
+		<p class="nexus-seo-cockpit__eyebrow">Datenbasis · Research Intelligence</p>
+		<h1>Primärdaten &amp; technische Felddaten</h1>
+		<p class="nexus-seo-cockpit__hint">Diese Ebene liefert Belege und Rohsignale für das Cockpit. Operative Content-Entscheidungen werden daraus unter <strong>Content-Chancen</strong> abgeleitet.</p>
 
 		<?php if ( 'saved' === $notice ) : ?>
 			<div class="notice notice-success is-dismissible"><p>Research-Einstellungen gespeichert.</p></div>

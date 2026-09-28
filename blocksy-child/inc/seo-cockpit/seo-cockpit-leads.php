@@ -728,6 +728,7 @@ function nexus_get_seo_cockpit_crm_acquisition_snapshot_data( $ranges ) {
 			'campaign_rows' => [],
 			'form_rows'     => [],
 			'entry_rows'    => [],
+			'entry_map'     => [ 'current' => [], 'previous' => [], 'lifetime' => [] ],
 			'latest'        => [],
 		];
 		return $cache[ $cache_key ];
@@ -879,6 +880,11 @@ function nexus_get_seo_cockpit_crm_acquisition_snapshot_data( $ranges ) {
 			'current'  => nexus_get_seo_cockpit_lead_ranked_counts( $entry_sets['current'], $entry_label_callback, 8 ),
 			'previous' => nexus_get_seo_cockpit_lead_ranked_counts( $entry_sets['previous'], $entry_label_callback, 8 ),
 			'lifetime' => nexus_get_seo_cockpit_lead_ranked_counts( $entry_sets['lifetime'], $entry_label_callback, 10 ),
+		],
+		'entry_map' => [
+			'current'  => $entry_sets['current'],
+			'previous' => $entry_sets['previous'],
+			'lifetime' => $entry_sets['lifetime'],
 		],
 		'latest' => array_slice( $latest, 0, 10 ),
 	];
