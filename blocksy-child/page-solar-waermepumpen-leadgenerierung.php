@@ -37,7 +37,7 @@ $e3_canon      = function_exists( 'hu_e3_canon' ) ? hu_e3_canon() : [];
 $e3_metrics    = isset( $e3_canon['metrics'] ) && is_array( $e3_canon['metrics'] ) ? $e3_canon['metrics'] : [];
 $e3_case_label = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_label'] : 'mittelständischer PV-Installationsbetrieb';
 
-$e3_lead_count    = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_lead_count    = $e3_metrics['lead_count']['display'] ?? '1.750';
 $e3_sales_conv    = $e3_metrics['sales_conversion']['display'] ?? '15 %';
 $e3_lead_conv     = $e3_metrics['lead_conversion']['display'] ?? '12 %';
 $e3_cpl_reduction = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
@@ -220,8 +220,8 @@ $phases = [
 
 $case_rows = [
 	[ 'k' => 'Kosten pro qualifizierter Anfrage', 'vor' => $e3_cpl_before, 'nach' => $e3_cpl_after ],
-	[ 'k' => 'Abschlussquote Anfrage → Vertrag',  'vor' => $e3_conv_before, 'nach' => $e3_sales_conv ],
-	[ 'k' => 'Qualifizierte Anfragen im Zeitraum', 'vor' => '—', 'nach' => $e3_lead_count ],
+	[ 'k' => 'Abschlussquote vorqualifizierter CRM-Leads',  'vor' => $e3_conv_before, 'nach' => $e3_sales_conv ],
+	[ 'k' => 'Anfragen insgesamt im Zeitraum', 'vor' => '—', 'nach' => $e3_lead_count ],
 	[ 'k' => 'Sicht auf Region, Dach, Projektwert', 'vor' => 'keine', 'nach' => 'vor dem Anruf' ],
 	[ 'k' => 'Exklusivität der Kontakte', 'vor' => 'je Tarif', 'nach' => 'immer' ],
 ];
@@ -746,18 +746,19 @@ get_header();
 								<td><?php echo esc_html( $e3_cpl_before ); ?></td>
 							</tr>
 							<tr>
-								<th scope="row">Qualifizierte Anfragen im Zeitraum</th>
+								<th scope="row">Anfragen insgesamt im Zeitraum</th>
 								<td><?php echo esc_html( $e3_lead_count ); ?></td>
 							</tr>
 							<tr>
-								<th scope="row">Abschlussquote Anfrage → Vertrag</th>
+								<th scope="row">Abschlussquote vorqualifizierter CRM-Leads</th>
 								<td class="gross"><?php echo esc_html( $e3_sales_conv ); ?></td>
 							</tr>
 							<tr class="quelle">
 								<th scope="row" colspan="2">
 									<?php echo esc_html( ucfirst( $e3_case_label ) ); ?> in DACH.
 									<?php echo esc_html( $e3_timeline['compact'] ); ?>
-									Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?>.
+									<?php echo esc_html( hu_e3_summary( 'definitions' ) ); ?>
+										Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?>.
 									Dokumentierte Werte eines einzelnen Betriebs, keine Prognose für Ihren.
 								</th>
 							</tr>
@@ -1058,7 +1059,7 @@ get_header();
 						sechs Stunden am Telefon. Voreingestellt sind bewusst vorsichtige Werte:
 						<?php echo esc_html( $calc_cpl_display ); ?> statt der <?php echo esc_html( $e3_cpl_after ); ?> aus dem
 						dokumentierten Fall, <?php echo esc_html( $calc_quote_display ); ?> statt
-						<?php echo esc_html( $e3_sales_conv ); ?> Abschlussquote.
+						<?php echo esc_html( $e3_sales_conv ); ?> Abschlussquote der vorqualifizierten CRM-Leads.
 					</p>
 				</div>
 			</div>
@@ -1108,7 +1109,8 @@ get_header();
 							<tfoot>
 								<tr>
 									<td colspan="3">
-										<?php echo esc_html( $e3_timeline['compact'] ); ?> Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?>.
+										<?php echo esc_html( $e3_timeline['compact'] ); ?>
+										Reduktion <?php echo esc_html( $e3_cpl_reduction ); ?>.
 										Die Vorher-Abschlussquote ist eine Marktannahme, keine gemessene Zahl dieses Betriebs.
 									</td>
 								</tr>

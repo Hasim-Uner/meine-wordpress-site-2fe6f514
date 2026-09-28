@@ -32,7 +32,7 @@ $e3_case_label = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['case_lab
 $e3_cpl_before   = $e3( 'cpl_before', 'display', '150 €' );
 $e3_cpl_after    = $e3( 'cpl_after', 'display', '22 €' );
 $e3_cpl_ramp     = $e3( 'cpl_ramp', 'display', '70 – 100 €' );
-$e3_lead_count   = $e3( 'lead_count', 'display', '1.750+' );
+$e3_lead_count   = $e3( 'lead_count', 'display', '1.750' );
 // Die Vorher-Quote ist die einzige nicht gemessene Zahl des Falls (Marktannahme
 // über gekaufte Portal-Leads). Neben gemessenen Werten steht sie deshalb nur
 // vorsichtig und ausdrücklich als Annahme.
@@ -198,8 +198,8 @@ get_header();
 					</div>
 					<p class="e3v2-result-card__caption">Kosten pro Anfrage</p>
 					<div class="e3v2-result-card__stats">
-						<div><strong><?php echo esc_html( $e3_lead_count ); ?></strong><span>qualifizierte Anfragen</span></div>
-						<div><strong><?php echo esc_html( $e3_conv_after ); ?></strong><span>Abschlussquote</span></div>
+						<div><strong><?php echo esc_html( $e3_lead_count ); ?></strong><span>Anfragen insgesamt</span></div>
+						<div><strong><?php echo esc_html( $e3_conv_after ); ?></strong><span>Abschlussquote der CRM-Leads</span></div>
 						<div><strong><?php echo esc_html( $e3_timeframe ); ?></strong><span>Aufbau &amp; Optimierung</span></div>
 					</div>
 					<p class="e3v2-result-card__note">Die Werte zeigen die Entwicklung des Gesamtsystems inklusive Kampagnen und Vertrieb. Keine Prognose für andere Betriebe.</p>
@@ -318,9 +318,11 @@ get_header();
 
 				<p><?php echo esc_html( $e3_timeline['followup'] ); ?> Der isolierte Beitrag einer einzelnen Maßnahme ist nicht gemessen.</p>
 
+				<p><?php echo esc_html( hu_e3_summary( 'definitions' ) ); ?></p>
+
 				<div class="e3v2-outcome-strip" data-reveal>
-					<div><strong><?php echo esc_html( $e3_lead_count ); ?></strong><span>qualifizierte Anfragen in <?php echo esc_html( $e3_timeframe_dt ); ?></span></div>
-					<div><strong><?php echo esc_html( $e3_conv_after ); ?></strong><span>Abschlussquote auf Auftrag</span></div>
+					<div><strong><?php echo esc_html( $e3_lead_count ); ?></strong><span>Anfragen insgesamt in <?php echo esc_html( $e3_timeframe_dt ); ?></span></div>
+					<div><strong><?php echo esc_html( $e3_conv_after ); ?></strong><span>Abschlussquote der vorqualifizierten CRM-Leads</span></div>
 					<div><strong><?php echo esc_html( $e3_cpl_before ); ?> → <?php echo esc_html( $e3_cpl_after ); ?></strong><span>nicht durch einen einzelnen Hebel, sondern durch das Gesamtsystem</span></div>
 				</div>
 			</div>

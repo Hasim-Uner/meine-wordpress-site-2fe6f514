@@ -44,8 +44,8 @@ $nachsatz_standard = 'Das war kein Relaunch, sondern ein Neuaufbau. Er zeigt tro
 	<p><?php echo esc_html( sprintf( 'Für einen %1$s habe ich diese Kette aufgebaut. Zugekaufte Anfragen waren dort ein wesentlicher Teil der Leadversorgung, zu %2$s pro Anfrage. Neu entstanden Landingpages für konkrete Bedürfnisse, ein mehrstufiges Formular, das Bedarf und Objekt vor dem ersten Gespräch erfasst, eine strukturierte Übergabe ins CRM und ein Rückkanal, über den die Conversion-Signale zurück in Messung und Kampagnensteuerung flossen.', $case_label, $cpl_before ) ); ?></p>
 	<ul class="hu-fall__zahlen">
 		<li><b><?php echo esc_html( $cpl_before . ' → ' . $cpl_after ); ?></b><span>Kosten pro Anfrage</span></li>
-		<li><b><?php echo esc_html( $lead_count ); ?></b><span><?php echo esc_html( 'qualifizierte Anfragen in ' . $timeframe ); ?></span></li>
-		<li><b><?php echo esc_html( $abschluss ); ?></b><span>Abschlussquote auf Auftrag</span></li>
+		<li><b><?php echo esc_html( $lead_count ); ?></b><span><?php echo esc_html( 'Anfragen insgesamt in ' . $timeframe ); ?></span></li>
+		<li><b><?php echo esc_html( $abschluss ); ?></b><span>Abschlussquote der CRM-Leads</span></li>
 	</ul>
 	<p class="hu-fall__nachsatz"><?php echo '' !== $nachsatz ? wp_kses_post( $nachsatz ) : esc_html( $nachsatz_standard ); ?> <span class="hu-fall__weiter"><span aria-hidden="true">→</span> <a class="hu-fall__link" href="<?php echo esc_url( $case_url ); ?>">Zur Fallstudie</a></span></p>
 </aside>

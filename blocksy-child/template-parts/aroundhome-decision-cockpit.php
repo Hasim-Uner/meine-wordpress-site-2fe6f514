@@ -24,7 +24,7 @@ $aroundhome_terms    = 'https://www.aroundhome.de/legal/';
 $aroundhome_faqs     = function_exists( 'nexus_get_aroundhome_faq_items' ) ? nexus_get_aroundhome_faq_items() : [];
 $case_cpl_before     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_before', 'display', '150 €' ) : '150 €';
 $case_cpl_after      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'cpl_after', 'display', '22 €' ) : '22 €';
-$case_leads          = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750+' ) : '1.750+';
+$case_leads          = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'lead_count', 'display', '1.750' ) : '1.750';
 $case_conversion     = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'sales_conversion', 'display', '15 %' ) : '15 %';
 $case_timeframe      = function_exists( 'hu_e3_metric' ) ? hu_e3_metric( 'timeframe', 'display', '6 Monate' ) : '6 Monate';
 
@@ -323,8 +323,8 @@ $path_items = [
 			</div>
 			<div class="hu-aroundhome__proof-metrics" aria-label="Kennzahlen des anonymisierten PV-Falls">
 				<div><span>Kosten pro Anfrage</span><strong><?php echo esc_html( $case_cpl_before ); ?> → <?php echo esc_html( $case_cpl_after ); ?></strong></div>
-				<div><span>Qualifizierte Anfragen</span><strong><?php echo esc_html( $case_leads ); ?></strong></div>
-				<div><span>Abschlussquote danach</span><strong><?php echo esc_html( $case_conversion ); ?></strong></div>
+				<div><span>Anfragen insgesamt</span><strong><?php echo esc_html( $case_leads ); ?></strong></div>
+				<div><span>Abschlussquote der CRM-Leads</span><strong><?php echo esc_html( $case_conversion ); ?></strong></div>
 				<div><span>Beobachteter Zeitraum</span><strong><?php echo esc_html( $case_timeframe ); ?></strong></div>
 			</div>
 		</div>

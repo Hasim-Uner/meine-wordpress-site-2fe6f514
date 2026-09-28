@@ -27,7 +27,7 @@ $e3_case_label       = isset( $e3_canon['case_label'] ) ? (string) $e3_canon['ca
 $e3_cpl_before       = $e3_metrics['cpl_before']['display'] ?? '150 €';
 $e3_cpl_after        = $e3_metrics['cpl_after']['display'] ?? '22 €';
 $e3_cpl_reduction    = $e3_metrics['cpl_reduction']['display'] ?? 'über 85 %';
-$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750+';
+$e3_lead_count       = $e3_metrics['lead_count']['display'] ?? '1.750';
 $e3_sales_conversion = $e3_metrics['sales_conversion']['display'] ?? '15 %';
 // Vorher-Quote: Marktannahme, nicht gemessen (hu_e3_metric, display_hedged).
 $e3_conv_before      = hu_e3_metric( 'sales_conversion_before', 'display_hedged' );
@@ -36,8 +36,8 @@ $e3_timeframe        = $e3_metrics['timeframe']['display'] ?? '6 Monate';
 $cpl_quick_facts = [
 	[ 'k' => '25 – 150 €', 'l' => 'Marktbreite Preisspanne für einen einzelnen PV-Datensatz' ],
 	[ 'k' => $e3_cpl_reduction, 'l' => sprintf( 'Senkung Cost per Lead in %s bei %s', $e3_timeframe, $e3_case_label ) ],
-	[ 'k' => $e3_sales_conversion, 'l' => sprintf( 'Abschlussquote im eigenen Anfragesystem, gemessen; auf gekaufte Portal-Leads meist %s', $e3_conv_before ) ],
-	[ 'k' => $e3_lead_count, 'l' => sprintf( 'qualifizierte Anfragen in %s', hu_e3_metric( 'timeframe', 'display_dative' ) ) ],
+	[ 'k' => $e3_sales_conversion, 'l' => sprintf( 'Abschlussquote der vorqualifizierten CRM-Leads; auf gekaufte Portal-Leads meist %s', $e3_conv_before ) ],
+	[ 'k' => $e3_lead_count, 'l' => sprintf( 'Anfragen insgesamt in %s', hu_e3_metric( 'timeframe', 'display_dative' ) ) ],
 ];
 
 $scenarios = [
@@ -58,9 +58,9 @@ $scenarios = [
 	[
 		'title'      => sprintf( 'Szenario C – Eigenes System (%s)', $e3_case_label ),
 		'cpl'        => $e3_cpl_after,
-		'close'      => $e3_sales_conversion,
-		'cpa'        => '~ 183 €',
-		'note'       => sprintf( 'Bei %1$s CPL und %2$s Abschlussquote liegen die reinen Lead-Kosten je Auftrag bei rund 183 € – ein Bruchteil der Portal-Szenarien. Asset bleibt im Eigentum.', $e3_cpl_after, $e3_sales_conversion ),
+		'close'      => $e3_sales_conversion . ' der vorqualifizierten CRM-Leads',
+		'cpa'        => 'nicht separat belegt',
+		'note'       => 'Der erreichte Kampagnen-CPL und die Abschlussquote der vorqualifizierten CRM-Leads haben unterschiedliche Bezugsgrößen. Daraus lassen sich keine gemessenen Kosten pro Auftrag berechnen.',
 	],
 ];
 
@@ -87,7 +87,7 @@ $linked_assets = [
 	[ 't' => 'Qualifizierte PV-Anfragen – 4 Merkmale', 's' => 'Wie man hochwertige von schlechten Leads unterscheidet.', 'url' => $quality_url ],
 	[ 't' => 'TCO 24/36 Monate: Portal vs. eigenes System', 's' => 'Strategischer 8-Kriterien-Vergleich mit Asset-Eigentum-Logik.', 'url' => $vs_url ],
 	[ 't' => 'Solar Leads kaufen? CPL-Rechnung pro Anfrage', 's' => 'Markteinordnung und konkrete Kosten pro Anfrage im Lead-Markt.', 'url' => $intercept_url ],
-	[ 't' => 'Solar Case Study – Methodik-Case', 's' => sprintf( '%1$s, %2$s Abschlussquote, %3$s.', $e3_lead_count, $e3_sales_conversion, $e3_timeframe ), 'url' => $e3_url ],
+	[ 't' => 'Solar Case Study – Methodik-Case', 's' => sprintf( '%1$s, %2$s Abschlussquote der vorqualifizierten CRM-Leads, %3$s.', $e3_lead_count, $e3_sales_conversion, $e3_timeframe ), 'url' => $e3_url ],
 ];
 
 $faq = [
@@ -101,7 +101,7 @@ $faq = [
 	],
 	[
 		'question' => sprintf( 'Wie hat %s den CPL gesenkt?', $e3_case_label ),
-		'answer'   => sprintf( 'Durch Aufbau eines eigenen Anfragesystems mit Money Page, Server-Side-Tracking, Vorqualifizierung und CRM-Anbindung. Ergebnis: CPL %1$s → %2$s (%3$s), %4$s qualifizierte Anfragen in %5$s, %6$s Abschlussquote.', $e3_cpl_before, $e3_cpl_after, $e3_cpl_reduction, $e3_lead_count, $e3_timeframe, $e3_sales_conversion ),
+		'answer'   => sprintf( 'Durch Aufbau eines eigenen Anfragesystems mit Money Page, Server-Side-Tracking, Vorqualifizierung und CRM-Anbindung. Ergebnis: CPL %1$s → %2$s (%3$s), %4$s Anfragen insgesamt in %5$s, %6$s Abschlussquote der vorqualifizierten CRM-Leads.', $e3_cpl_before, $e3_cpl_after, $e3_cpl_reduction, $e3_lead_count, $e3_timeframe, $e3_sales_conversion ),
 	],
 	[
 		'question' => 'Ab welchem Lead-Budget lohnt sich der Aufbau eines eigenen Systems?',
@@ -158,7 +158,7 @@ get_header();
 				Cost per Lead Photovoltaik: Was Solar-Anfragen wirklich kosten
 			</h1>
 			<p class="hu-intercept__lead">
-				Der reine Stückpreis für eine PV-Anfrage liegt zwischen <strong>25 €</strong> und <strong>150 €</strong>. Wirtschaftlich entscheidend ist aber der <strong>Cost per Auftrag</strong> — also CPL geteilt durch Abschlussquote. Bei einem <?php echo esc_html( hu_e3_canon()['case_label_accusative'] ); ?> sank der CPL um <strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong>, und im eigenen Anfragesystem lag die Abschlussquote bei <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong>. Auf gekaufte Portal-Leads ist sie nach Marktbeobachtung meist <strong><?php echo esc_html( $e3_conv_before ); ?></strong>; gemessen wurde dieser Vorher-Wert im Fall nicht. Beide Hebel zusammen multiplizieren sich.
+				Der reine Stückpreis für eine PV-Anfrage liegt zwischen <strong>25 €</strong> und <strong>150 €</strong>. Wirtschaftlich entscheidend ist aber der <strong>Cost per Auftrag</strong> — also CPL geteilt durch Abschlussquote. Bei einem <?php echo esc_html( hu_e3_canon()['case_label_accusative'] ); ?> sank der CPL um <strong><?php echo esc_html( $e3_cpl_reduction ); ?></strong>, und unter den vorqualifizierten CRM-Leads lag die Abschlussquote bei <strong><?php echo esc_html( $e3_sales_conversion ); ?></strong>. Auf gekaufte Portal-Leads ist sie nach Marktbeobachtung meist <strong><?php echo esc_html( $e3_conv_before ); ?></strong>; gemessen wurde dieser Vorher-Wert im Fall nicht.
 			</p>
 			<?php get_template_part( 'template-parts/seo-subpage-byline', null, [ 'template_path' => __FILE__ ] ); ?>
 			<div class="hu-intercept__cta">

@@ -430,7 +430,7 @@ get_header();
 				</div>
 				<dl class="st-kennzahlen">
 					<div><dt>Kosten pro qualifizierter Anfrage</dt><dd><span class="st-kennzahl"><?php echo $zahl( $cpl_drop ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?></span></dd></div>
-					<div><dt>Qualifizierte Anfragen in <?php echo esc_html( hu_e3_metric( 'timeframe', 'display_dative' ) ); ?></dt><dd><span class="st-kennzahl"><?php echo esc_html( hu_e3_metric( 'lead_count' ) ); ?></span></dd></div>
+					<div><dt>Anfragen insgesamt in <?php echo esc_html( hu_e3_metric( 'timeframe', 'display_dative' ) ); ?></dt><dd><span class="st-kennzahl"><?php echo esc_html( hu_e3_metric( 'lead_count' ) ); ?></span></dd></div>
 					<div><dt><?php echo esc_html( hu_e3_metric( 'sales_conversion', 'label' ) ); ?></dt><dd><span class="st-kennzahl"><?php echo $zahl( hu_e3_metric( 'sales_conversion' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?></span></dd></div>
 				</dl>
 			</article>

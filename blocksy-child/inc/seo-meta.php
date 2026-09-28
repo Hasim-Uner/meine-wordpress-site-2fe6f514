@@ -987,7 +987,7 @@ function hu_get_e3_methodology_case_title() {
  * @return string
  */
 function hu_get_e3_methodology_case_description() {
-	return 'Ein mittelständischer PV-Installationsbetrieb senkte den CPL mit eigenem Anfragesystem statt Portal-Leads um über 85 %: 1.750+ qualifizierte PV- & Wärmepumpen-Anfragen, 15 % Abschluss.';
+	return sprintf( 'Solar-Fallstudie: %1$s Anfragen insgesamt in %2$s. %3$s Abschlussquote der vorqualifizierten CRM-Leads. Aufbau, Tracking und Ergebnisse.', hu_e3_metric( 'lead_count' ), hu_e3_metric( 'timeframe', 'display_dative' ), hu_e3_metric( 'sales_conversion' ) );
 }
 
 /**

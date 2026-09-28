@@ -99,8 +99,8 @@ $cpo_rows = [
 	[
 		'modell' => 'Eigenes Anfragesystem (Case-Study-Referenz)',
 		'cpl'    => $e3_cpl_after,
-		'conv'   => $e3_conv_after,
-		'cpo'    => '≈ 183 €',
+		'conv'   => $e3_conv_after . ' der vorqualifizierten CRM-Leads',
+		'cpo'    => 'nicht separat belegt',
 	],
 ];
 
@@ -136,7 +136,7 @@ $faqs = [
 	],
 	[
 		'question' => 'Wie wird der Cost-per-Order berechnet?',
-		'answer'   => 'CPO = Cost-per-Lead geteilt durch die Abschlussquote. Beispiel: 70 € Lead-Preis bei 2 % Abschlussquote ergibt 3.500 € pro Abschluss. Ein eigenes System mit 22 € pro Anfrage und 15 % Abschlussquote ergibt rund 147 € pro Abschluss (Referenzwerte Case Study).',
+		'answer'   => 'CPO = Cost-per-Lead geteilt durch die Abschlussquote. Beispiel: 70 € Lead-Preis bei 2 % Abschlussquote ergibt 3.500 € pro Abschluss. CPL und Abschlussquote müssen dieselbe Leadmenge und denselben Zeitraum betreffen. Beim Referenzfall sind der erreichte Kampagnen-CPL und die Quote der vorqualifizierten CRM-Leads deshalb nicht direkt zu einem gemessenen CPO verrechenbar.',
 	],
 	[
 		'question' => 'Sind die Zahlen dieser Studie repräsentativ?',
@@ -275,7 +275,7 @@ get_header();
 				<div class="hu-intercept__panel">
 					<h3 class="hu-intercept__panel-title">Woher die Abschluss- und CPO-Werte kommen</h3>
 					<p class="hu-intercept__card-text">
-						Die Werte des eigenen Systems (<?php echo esc_html( $e3_cpl_after ); ?> pro Anfrage, <?php echo esc_html( $e3_conv_after ); ?> Abschlussquote) stammen aus einem dokumentierten Einzelfall (<a href="<?php echo esc_url( $e3_url ); ?>"><?php echo esc_html( $e3_case_label ); ?></a>, <?php echo esc_html( $e3_timeframe ); ?>). Sie sind Referenz, keine Garantie. Die Cost-per-Order-Tabelle ist eine transparente Modellrechnung mit offengelegter Formel.
+						Die Werte des eigenen Systems (<?php echo esc_html( $e3_cpl_after ); ?> pro Anfrage, <?php echo esc_html( $e3_conv_after ); ?> Abschlussquote der vorqualifizierten CRM-Leads) stammen aus einem dokumentierten Einzelfall (<a href="<?php echo esc_url( $e3_url ); ?>"><?php echo esc_html( $e3_case_label ); ?></a>, <?php echo esc_html( $e3_timeframe ); ?>). Sie sind Referenz, keine Garantie. Die Cost-per-Order-Tabelle ist eine transparente Modellrechnung mit offengelegter Formel.
 					</p>
 				</div>
 			</div>
@@ -327,7 +327,7 @@ get_header();
 				</table>
 			</div>
 			<p class="hu-intercept__compare-note">
-				Lesart: Ein 70-€-Lead bei 2 % Abschlussquote kostet <strong>3.500 € pro gewonnenem Kunden</strong>. Ein eigenes System mit <?php echo esc_html( $e3_cpl_after ); ?> und <?php echo esc_html( $e3_conv_after ); ?> Abschlussquote liegt bei rund <strong>183 €</strong> — Größenordnungen darunter. Eigene Werte je Region selbst durchrechnen: <a href="<?php echo esc_url( home_url( '/cost-per-lead-photovoltaik/' ) ); ?>">Cost per Lead Photovoltaik — Szenarien &amp; Rechner</a>.
+				Lesart: Ein 70-€-Lead bei 2 % Abschlussquote kostet <strong>3.500 € pro gewonnenem Kunden</strong>. Für den Referenzfall lässt sich aus erreichtem Kampagnen-CPL und Abschlussquote der CRM-Leads kein gemessener Preis pro Auftrag ableiten: Die Bezugsgrößen unterscheiden sich. Eigene Werte je Region selbst durchrechnen: <a href="<?php echo esc_url( home_url( '/cost-per-lead-photovoltaik/' ) ); ?>">Cost per Lead Photovoltaik — Szenarien &amp; Rechner</a>.
 			</p>
 		</div>
 	</section>
