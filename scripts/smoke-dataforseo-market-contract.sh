@@ -70,6 +70,9 @@ require_pattern "nexus_dataforseo_market_weekly_refresh" "$MARKET"
 # frontend analytics stack.
 require_pattern "['\"]market['\"][[:space:]]*=>" "$SYNC"
 require_pattern "nexus_get_market_intelligence_opportunities" "$SYNC"
+require_pattern "nexus_get_market_intelligence_segment" "$MARKET"
+require_pattern "Geschäftschance" "$MARKET"
+require_pattern "segment_label" "$UI"
 require_pattern "nexus_render_market_intelligence_dashboard_panel" "$DASH"
 require_pattern "Markt & Wettbewerb" "$UI"
 

@@ -154,6 +154,14 @@ Beispielhafte Aktionsklassen:
 - `Position verteidigen`
 - `Beobachten`
 
+Zusätzlich trennt die Oberfläche die Chancen in drei einfache Entscheidungssegmente:
+
+- `Geschäftschance`: kaufnahe Queries oder Rankings auf Service-/Kontakt-/Money-Pages
+- `Content & Nachfrage`: informative Nachfrage auf Blog-, Hub- oder Proof-Seiten
+- `Marke & Proof`: navigationaler Fremdmarken-/Brand-Traffic, der sichtbar bleibt, aber die direkte Geschäftsqueue nicht dominiert
+
+Der Opportunity-Score berücksichtigt deshalb neben Suchvolumen, Ranking und GSC jetzt auch den vorhandenen Page-Role-Business-Wert. Navigationaler Brand-Traffic erhält einen begrenzten Abschlag. Ein Checkfox-Keyword verschwindet damit nicht aus dem Cockpit; es wird nur nicht mehr automatisch vor einem kaufnahen WordPress-Keyword priorisiert.
+
 Das ist kein DataForSEO-Score und keine Erfolgsprognose. Das Cockpit berechnet die Priorität aus den verbundenen Daten selbst.
 
 ## Trennung der Datenwelten

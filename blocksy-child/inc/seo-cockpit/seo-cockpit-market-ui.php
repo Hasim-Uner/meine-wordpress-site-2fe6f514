@@ -235,7 +235,20 @@ function nexus_render_market_intelligence_opportunities( $rows, $limit = 10 ) {
 		echo '<p class="nsc-market-empty">Noch keine kombinierbaren Markt-/GSC-Signale. Nach dem ersten DataForSEO-Refresh wird dieser Bereich gefüllt.</p>';
 		return;
 	}
+
+	$segment_counts = [ 'business' => 0, 'content' => 0, 'brand' => 0, 'other' => 0 ];
+	foreach ( $rows as $row ) {
+		$key = sanitize_key( (string) ( $row['segment'] ?? 'other' ) );
+		if ( isset( $segment_counts[ $key ] ) ) {
+			$segment_counts[ $key ]++;
+		}
+	}
 	?>
+	<div class="nsc-market-segment-summary">
+		<span><strong><?php echo esc_html( number_format_i18n( $segment_counts['business'] ) ); ?></strong> Geschäft</span>
+		<span><strong><?php echo esc_html( number_format_i18n( $segment_counts['content'] ) ); ?></strong> Content</span>
+		<span><strong><?php echo esc_html( number_format_i18n( $segment_counts['brand'] ) ); ?></strong> Marke/Proof</span>
+	</div>
 	<div class="nsc-market-opportunity-list">
 		<?php foreach ( $rows as $row ) : ?>
 			<article class="nsc-market-opportunity">
@@ -243,11 +256,15 @@ function nexus_render_market_intelligence_opportunities( $rows, $limit = 10 ) {
 				<div class="nsc-market-opportunity__body">
 					<div class="nsc-market-opportunity__head">
 						<strong><?php echo esc_html( (string) ( $row['keyword'] ?? '' ) ); ?></strong>
-						<span><?php echo esc_html( (string) ( $row['action'] ?? 'Beobachten' ) ); ?></span>
+						<div class="nsc-market-opportunity__badges">
+							<span class="is-segment-<?php echo esc_attr( sanitize_key( (string) ( $row['segment'] ?? 'other' ) ) ); ?>"><?php echo esc_html( (string) ( $row['segment_label'] ?? 'Beobachten' ) ); ?></span>
+							<span><?php echo esc_html( (string) ( $row['action'] ?? 'Beobachten' ) ); ?></span>
+						</div>
 					</div>
 					<div class="nsc-market-opportunity__meta">
 						<span>DataForSEO Pos. <?php echo esc_html( number_format_i18n( (float) ( $row['rank'] ?? 0 ), 0 ) ); ?></span>
 						<span>Vol. <?php echo esc_html( number_format_i18n( (float) ( $row['search_volume'] ?? 0 ), 0 ) ); ?></span>
+						<?php if ( ! empty( $row['page_role_label'] ) ) : ?><span><?php echo esc_html( (string) $row['page_role_label'] ); ?></span><?php endif; ?>
 						<?php if ( (float) ( $row['gsc_impressions'] ?? 0 ) > 0 ) : ?><span>GSC <?php echo esc_html( number_format_i18n( (float) $row['gsc_impressions'], 0 ) ); ?> Impr.</span><?php endif; ?>
 						<?php if ( absint( $row['leads_current'] ?? 0 ) > 0 ) : ?><span><?php echo esc_html( number_format_i18n( absint( $row['leads_current'] ) ) ); ?> Audit-Leads</span><?php endif; ?>
 						<?php if ( absint( $row['crm_contacts_current'] ?? 0 ) > 0 ) : ?><span><?php echo esc_html( number_format_i18n( absint( $row['crm_contacts_current'] ) ) ); ?> CRM-Kontakte</span><?php endif; ?>

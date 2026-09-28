@@ -126,6 +126,26 @@
     font-size: 12px;
 }
 
+.nsc-market-segment-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 10px;
+}
+
+.nsc-market-segment-summary > span {
+    padding: 6px 9px;
+    border: 1px solid var(--nsc-market-border);
+    border-radius: 999px;
+    background: #faf9f7;
+    color: var(--nsc-market-muted);
+    font-size: 9px;
+}
+
+.nsc-market-segment-summary strong {
+    color: var(--nsc-market-ink);
+}
+
 .nsc-market-opportunity-list {
     display: grid;
     gap: 8px;
@@ -173,14 +193,36 @@
     white-space: nowrap;
 }
 
-.nsc-market-opportunity__head > span {
+.nsc-market-opportunity__badges {
+    display: flex;
     flex: 0 0 auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.nsc-market-opportunity__badges > span {
     padding: 4px 7px;
     border-radius: 999px;
     background: var(--nsc-market-copper-soft);
     color: #7e4726;
     font-size: 9px;
     font-weight: 750;
+}
+
+.nsc-market-opportunity__badges > .is-segment-business {
+    background: #e9f5ed;
+    color: #25633b;
+}
+
+.nsc-market-opportunity__badges > .is-segment-content {
+    background: #eef2f7;
+    color: #40536a;
+}
+
+.nsc-market-opportunity__badges > .is-segment-brand {
+    background: #f4f0eb;
+    color: #6f6257;
 }
 
 .nsc-market-opportunity__meta {
@@ -433,5 +475,9 @@
     .nsc-market-opportunity__head {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .nsc-market-opportunity__badges {
+        justify-content: flex-start;
     }
 }

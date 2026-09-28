@@ -708,6 +708,40 @@ function nexus_market_intelligence_gsc_query_map( $seo_snapshot ) {
 }
 
 /**
+ * Classify one market opportunity into a small decision-oriented segment.
+ *
+ * Business opportunities are commercial/transactional queries or rankings on
+ * high-value pages. Informational rankings stay useful, but they are separated
+ * from direct acquisition work. Navigational queries are treated as
+ * brand/proof visibility so third-party names cannot dominate the money queue.
+ *
+ * @param string $intent    DataForSEO search intent.
+ * @param string $page_role SEO Cockpit page role.
+ * @return array{key:string,label:string}
+ */
+function nexus_get_market_intelligence_segment( $intent, $page_role ) {
+	$intent    = sanitize_key( (string) $intent );
+	$page_role = sanitize_key( (string) $page_role );
+
+	if ( 'navigational' === $intent ) {
+		return [ 'key' => 'brand', 'label' => 'Marke & Proof' ];
+	}
+
+	if (
+		in_array( $intent, [ 'commercial', 'transactional' ], true )
+		|| in_array( $page_role, [ 'audit', 'service', 'contact', 'home', 'seo_subpage' ], true )
+	) {
+		return [ 'key' => 'business', 'label' => 'Geschäftschance' ];
+	}
+
+	if ( in_array( $page_role, [ 'blog', 'hub', 'results' ], true ) || 'informational' === $intent ) {
+		return [ 'key' => 'content', 'label' => 'Content & Nachfrage' ];
+	}
+
+	return [ 'key' => 'other', 'label' => 'Beobachten' ];
+}
+
+/**
  * Join external market data with first-party GSC and CRM signals.
  *
  * @param array<string, mixed> $seo_snapshot Current SEO snapshot.
@@ -741,13 +775,13 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 			continue;
 		}
 
-		$keyword  = (string) ( $row['keyword'] ?? '' );
-		$rank     = absint( $row['rank_group'] ?? 0 );
-		$volume   = max( 0.0, (float) ( $row['search_volume'] ?? 0.0 ) );
+		$keyword    = (string) ( $row['keyword'] ?? '' );
+		$rank       = absint( $row['rank_group'] ?? 0 );
+		$volume     = max( 0.0, (float) ( $row['search_volume'] ?? 0.0 ) );
 		$difficulty = isset( $row['difficulty'] ) && is_numeric( $row['difficulty'] ) ? (float) $row['difficulty'] : null;
-		$key      = function_exists( 'nexus_normalize_seo_cockpit_query' ) ? nexus_normalize_seo_cockpit_query( $keyword ) : mb_strtolower( $keyword );
-		$gsc_row  = isset( $gsc[ $key ] ) ? $gsc[ $key ] : [];
-		$url      = (string) ( $row['url'] ?? '' );
+		$key        = function_exists( 'nexus_normalize_seo_cockpit_query' ) ? nexus_normalize_seo_cockpit_query( $keyword ) : mb_strtolower( $keyword );
+		$gsc_row    = isset( $gsc[ $key ] ) ? $gsc[ $key ] : [];
+		$url        = (string) ( $row['url'] ?? '' );
 		$lead_url = function_exists( 'nexus_get_seo_cockpit_internal_attribution_url' ) ? nexus_get_seo_cockpit_internal_attribution_url( $url ) : $url;
 		$lead_row = '' !== $lead_url && is_array( $leads[ $lead_url ] ?? null ) ? $leads[ $lead_url ] : [];
 		$current_leads = is_array( $lead_row['current'] ?? null ) ? $lead_row['current'] : [];
@@ -756,7 +790,15 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 		$won_count     = absint( $lifetime_leads['won'] ?? 0 );
 		$crm_contacts  = '' !== $lead_url ? absint( $crm_entries[ $lead_url ] ?? 0 ) : 0;
 
-		$volume_score = min( 25.0, log10( $volume + 1.0 ) * 8.0 );
+		$context    = isset( $seo_snapshot['page_contexts'][ $lead_url ] ) && is_array( $seo_snapshot['page_contexts'][ $lead_url ] )
+			? $seo_snapshot['page_contexts'][ $lead_url ]
+			: ( function_exists( 'nexus_get_seo_cockpit_wp_context_for_url' ) ? nexus_get_seo_cockpit_wp_context_for_url( $lead_url ) : [] );
+		$page_role   = function_exists( 'nexus_get_seo_cockpit_page_role' ) ? nexus_get_seo_cockpit_page_role( $context, $lead_url ) : 'unknown';
+		$role_scores = function_exists( 'nexus_get_seo_cockpit_page_role_scores' ) ? nexus_get_seo_cockpit_page_role_scores( $page_role ) : [ 'business' => 5, 'funnel' => 3 ];
+		$intent      = sanitize_key( (string) ( $row['intent'] ?? '' ) );
+		$segment     = nexus_get_market_intelligence_segment( $intent, $page_role );
+
+		$volume_score = min( 20.0, log10( $volume + 1.0 ) * 7.0 );
 		$rank_score   = 0.0;
 		if ( $rank >= 4 && $rank <= 10 ) {
 			$rank_score = 25.0;
@@ -770,12 +812,19 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 			$rank_score = 10.0;
 		}
 
-		$gsc_score = min( 20.0, log10( max( 0.0, (float) ( $gsc_row['impressions'] ?? 0.0 ) ) + 1.0 ) * 7.0 );
-		$intent     = sanitize_key( (string) ( $row['intent'] ?? '' ) );
-		$intent_score = in_array( $intent, [ 'commercial', 'transactional' ], true ) ? 10.0 : ( 'informational' === $intent ? 4.0 : 2.0 );
-		$lead_score = min( 15.0, ( $lead_count * 3.0 ) + ( $crm_contacts * 3.0 ) + ( $won_count * 6.0 ) );
-		$penalty    = null !== $difficulty ? min( 10.0, max( 0.0, ( $difficulty - 50.0 ) / 5.0 ) ) : 0.0;
-		$score      = max( 0, min( 100, (int) round( $volume_score + $rank_score + $gsc_score + $intent_score + $lead_score - $penalty ) ) );
+		$gsc_score    = min( 15.0, log10( max( 0.0, (float) ( $gsc_row['impressions'] ?? 0.0 ) ) + 1.0 ) * 5.5 );
+		$intent_score = in_array( $intent, [ 'commercial', 'transactional' ], true ) ? 14.0 : ( 'informational' === $intent ? 5.0 : 1.0 );
+		$business_score = min( 20.0, max( 0.0, (float) ( $role_scores['business'] ?? 5 ) ) );
+		$lead_score   = min( 18.0, ( $lead_count * 3.0 ) + ( $crm_contacts * 3.0 ) + ( $won_count * 6.0 ) );
+		$difficulty_penalty = null !== $difficulty ? min( 10.0, max( 0.0, ( $difficulty - 50.0 ) / 5.0 ) ) : 0.0;
+		$segment_penalty    = 'brand' === (string) $segment['key'] ? 12.0 : 0.0;
+		$score = max(
+			0,
+			min(
+				100,
+				(int) round( $volume_score + $rank_score + $gsc_score + $intent_score + $business_score + $lead_score - $difficulty_penalty - $segment_penalty )
+			)
+		);
 
 		$action = 'Beobachten';
 		if ( $rank >= 4 && $rank <= 20 ) {
@@ -794,6 +843,10 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 			'search_volume'   => $volume,
 			'difficulty'      => $difficulty,
 			'intent'          => $intent,
+			'segment'         => (string) $segment['key'],
+			'segment_label'   => (string) $segment['label'],
+			'page_role'       => $page_role,
+			'page_role_label' => function_exists( 'nexus_get_seo_cockpit_page_role_label' ) ? nexus_get_seo_cockpit_page_role_label( $page_role ) : $page_role,
 			'url'             => $url,
 			'gsc_clicks'      => (float) ( $gsc_row['clicks'] ?? 0.0 ),
 			'gsc_impressions' => (float) ( $gsc_row['impressions'] ?? 0.0 ),
@@ -804,13 +857,28 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 		];
 	}
 
+	$segment_weight = [
+		'business' => 4,
+		'content'  => 3,
+		'brand'    => 2,
+		'other'    => 1,
+	];
+
 	usort(
 		$out,
-		static function ( $left, $right ) {
+		static function ( $left, $right ) use ( $segment_weight ) {
+			$left_segment  = (string) $left['segment'];
+			$right_segment = (string) $right['segment'];
+			$segment_diff  = (int) ( $segment_weight[ $right_segment ] ?? 0 ) <=> (int) ( $segment_weight[ $left_segment ] ?? 0 );
+			if ( 0 !== $segment_diff ) {
+				return $segment_diff;
+			}
+
 			$score_diff = absint( $right['score'] ) <=> absint( $left['score'] );
 			if ( 0 !== $score_diff ) {
 				return $score_diff;
 			}
+
 			return (float) $right['search_volume'] <=> (float) $left['search_volume'];
 		}
 	);
