@@ -32,25 +32,52 @@ while ( have_posts() ) :
 	<div class="site-main imprint-page legal-page doku" data-track-section="imprint_page">
 		<div class="imprint-shell">
 			<section class="imprint-hero" aria-labelledby="imprint-title">
-				<span class="imprint-kicker">Impressum</span>
-				<h1 id="imprint-title" class="imprint-title">Pflichtangaben für hasimuener.de</h1>
-				<p class="imprint-lead">
-					Diese Seite bündelt die Anbieterangaben gemäß § 5 DDG sowie die
-					Verantwortlichkeit nach § 18 Abs. 2 MStV. Für Rückfragen zu diesen Angaben
-					oder zu den angebotenen Leistungen erreichen Sie Haşim Üner direkt per
-					E-Mail oder Telefon.
-				</p>
+				<div class="legal-hero-grid">
+					<div class="legal-hero-copy">
+						<span class="imprint-kicker">Impressum</span>
+						<h1 id="imprint-title" class="imprint-title">Pflichtangaben für hasimuener.de</h1>
+						<p class="imprint-lead">
+							Diese Seite bündelt die Anbieterangaben gemäß § 5 DDG sowie die
+							Verantwortlichkeit nach § 18 Abs. 2 MStV. Für Rückfragen zu diesen Angaben
+							oder zu den angebotenen Leistungen erreichen Sie Haşim Üner direkt per
+							E-Mail oder Telefon.
+						</p>
+
+						<div class="imprint-actions">
+							<a class="imprint-button imprint-button--primary" href="<?php echo esc_url( $mail_link ); ?>">E-Mail schreiben</a>
+							<a class="imprint-button" href="<?php echo esc_url( $privacy_url ); ?>">Datenschutz</a>
+							<a class="imprint-button" href="<?php echo esc_url( $contact_url ); ?>">Kontakt</a>
+						</div>
+					</div>
+
+					<aside class="legal-hero-visual" aria-label="Rechtliche Zuordnung dieser Website">
+						<span class="legal-visual__eyebrow">Dokument · Anbieterangaben</span>
+						<span class="legal-visual__index" aria-hidden="true">01</span>
+						<div class="legal-visual__track">
+							<div class="legal-visual__row">
+								<span class="legal-visual__label">Anbieter</span>
+								<span class="legal-visual__value">Haşim Üner</span>
+								<span class="legal-visual__signal" aria-hidden="true"></span>
+							</div>
+							<div class="legal-visual__row">
+								<span class="legal-visual__label">Kontakt</span>
+								<span class="legal-visual__value">E-Mail · Telefon · Anschrift</span>
+								<span class="legal-visual__signal" aria-hidden="true"></span>
+							</div>
+							<div class="legal-visual__row">
+								<span class="legal-visual__label">Inhalt</span>
+								<span class="legal-visual__value">redaktionell verantwortlich</span>
+								<span class="legal-visual__signal" aria-hidden="true"></span>
+							</div>
+						</div>
+						<p class="legal-visual__foot">Eine Identität, drei rechtlich relevante Zuordnungen – ohne dekorative Nebenlogik.</p>
+					</aside>
+				</div>
 
 				<div class="imprint-badges" aria-label="Rechtsgrundlagen und Kontaktwege">
 					<span class="imprint-badge">§ 5 DDG</span>
 					<span class="imprint-badge">§ 18 Abs. 2 MStV</span>
 					<span class="imprint-badge">E-Mail und Telefon direkt erreichbar</span>
-				</div>
-
-				<div class="imprint-actions">
-					<a class="imprint-button imprint-button--primary" href="<?php echo esc_url( $mail_link ); ?>">E-Mail schreiben</a>
-					<a class="imprint-button" href="<?php echo esc_url( $privacy_url ); ?>">Datenschutz</a>
-					<a class="imprint-button" href="<?php echo esc_url( $contact_url ); ?>">Kontakt</a>
 				</div>
 			</section>
 
