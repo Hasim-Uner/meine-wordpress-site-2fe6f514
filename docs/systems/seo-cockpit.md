@@ -108,6 +108,7 @@ V1-Vertrag:
 - Kostenledger mit getrennten automatischen und gesamten Monatskosten
 - Opportunity Engine verbindet externe Nachfrage mit GSC-, URL- und Lead-Signalen
 - automatische Wettbewerber bleiben als reale Keyword-Überschneidung erhalten; die strategische Vergleichsgruppe bildet separat den gewünschten WordPress-/B2B-Markt ab
+- strategische Domains können manuell per Domain Rank Overview geprüft werden; maximal acht Domains je Klick, niemals automatisch im Wochenjob
 - Market CSV exportiert Rankings, Keyword Overview, beide Wettbewerber-Ebenen, Opportunities und gespeicherte Live-SERPs ohne neuen Provider-Call
 - keine API-Requests bei normalen Frontend-Aufrufen
 - kein automatisches Publizieren und keine erfundenen Prognosemetriken
