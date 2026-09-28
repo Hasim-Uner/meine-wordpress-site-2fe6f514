@@ -126,6 +126,11 @@
     font-size: 12px;
 }
 
+.nsc-market-section__actions > small {
+    color: var(--nsc-market-muted);
+    font-size: 9px;
+}
+
 .nsc-market-segment-summary {
     display: flex;
     flex-wrap: wrap;
@@ -320,7 +325,13 @@
     color: #25633b;
 }
 
-.nsc-market-competitor.is-strategic > p {
+.nsc-market-strategic-status.is-checked {
+    background: #edf1f8;
+    color: #3d5572;
+}
+
+.nsc-market-competitor.is-strategic > p,
+.nsc-market-competitor.is-strategic > small {
     margin: 0;
     color: var(--nsc-market-muted);
     font-size: 9px;
