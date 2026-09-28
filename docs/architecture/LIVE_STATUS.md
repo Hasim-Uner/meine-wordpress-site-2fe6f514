@@ -357,6 +357,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Wettbewerber- und manuelle Live-SERP-Daten. Automatisch laufen nur gebündelte
   Labs-Abfragen im Wochenrhythmus; Organic-/Maps-Live-Checks erfordern einen
   expliziten Admin-Klick und erzeugen keinen Frontend-Footprint.
+  Darüber liegt ein Decision Layer: `Content-Chancen` verdichtet vorhandene Market-,
+  GSC-, Research-, WordPress- und CRM-Signale zu `Warum jetzt?` plus `Nächster Schritt`.
+  Der Layer startet selbst keine externen Provider-Requests. `Research` heißt in der
+  Navigation `Datenquellen` und bleibt als Beleg-/Provider-Arbeitsfläche erhalten.
 - Öffentliche Besuche setzen keine Cookies und schreiben nichts in
   `localStorage` oder `sessionStorage`; kein Cookie-Banner. Formulare lesen die
   Herkunft erst beim Absenden aus der Formularseite (Adresse, utm-Parameter,
@@ -377,7 +381,7 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Guards: `scripts/canon-guard.sh` (repo-weit, Sperrliste in
   `scripts/canon-forbidden-values.txt`), `lint-canon-drift.sh`,
   `lint-e3-canon.sh`, `check-german-copy.sh`, `validate-architecture.sh`,
-  beide Funnel-Smoke-Contracts, `smoke-dataforseo-market-contract.sh`, CSS-Audits,
+  beide Funnel-Smoke-Contracts, `smoke-dataforseo-market-contract.sh`, `smoke-seo-decision-layer-contract.sh`, CSS-Audits,
   `lint-entity-crawler-signals.php` und PHPStan mit Baseline. Der Theme-Build führt den Kanon-Guard erneut aus.
 - Vorher-Abschlussquote des Falls (Marktannahme, nicht gemessen): Oberflächen
   lesen nur `display_hedged` und nennen sie Annahme; ein Vorher-Nachher-Feld
