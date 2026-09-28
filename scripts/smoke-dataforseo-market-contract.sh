@@ -60,6 +60,7 @@ require_pattern "serp/google/maps/live/advanced" "$MARKET"
 require_pattern "function nexus_refresh_market_intelligence\(" "$MARKET"
 require_pattern "function nexus_refresh_market_intelligence_live\(" "$MARKET"
 require_pattern "nexus_refresh_market_intelligence\( true \)" "$MARKET"
+forbid_pattern "nexus_refresh_market_intelligence_strategic_overview\(.*true" "$MARKET"
 
 # Cost control and cache discipline are part of the provider contract.
 require_pattern "monthly_auto_budget_usd" "$CLIENT"
@@ -73,6 +74,10 @@ require_pattern "nexus_dataforseo_market_weekly_refresh" "$MARKET"
 require_pattern "strategic_competitors" "$CLIENT"
 require_pattern "function nexus_market_intelligence_strategic_domains" "$MARKET"
 require_pattern "function nexus_market_intelligence_strategic_competitors" "$MARKET"
+require_pattern "function nexus_refresh_market_intelligence_strategic_overview" "$MARKET"
+require_pattern "dataforseo_labs/google/domain_rank_overview/live" "$MARKET"
+require_pattern "admin_post_nexus_market_intelligence_strategic_refresh" "$UI"
+require_pattern "Strategische Domains prüfen" "$UI"
 require_pattern "Strategische Vergleichsgruppe" "$UI"
 
 # Export is snapshot-only: it may read DataForSEO-derived data but must never
