@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $is_aroundhome_decision_request = is_single( 'aroundhome-solar-einordnung' );
 $is_checkfox_decision_request   = is_single( 'checkfox-solar-waermepumpe-einordnung' );
 $is_provider_decision_request   = $is_aroundhome_decision_request || $is_checkfox_decision_request;
+$is_design_aesthetics_request   = is_single( 'design-ist-mehr-als-aesthetik' );
 
 get_header();
 get_template_part( 'template-parts/blog-header' );
@@ -23,7 +24,7 @@ get_template_part( 'template-parts/blog-header' );
 
 <div class="nexus-reading-progress" aria-hidden="true"></div>
 
-<aside class="nexus-share-rail" aria-label="<?php esc_attr_e( 'Artikel teilen', 'blocksy-child' ); ?>">
+<aside class="nexus-share-rail<?php echo esc_attr( $is_design_aesthetics_request ? ' nexus-share-rail--design-essay' : '' ); ?>" aria-label="<?php esc_attr_e( 'Artikel teilen', 'blocksy-child' ); ?>">
 	<span class="nexus-share-rail__label"><?php esc_html_e( 'Teilen', 'blocksy-child' ); ?></span>
 	<button class="nexus-share-rail__btn" type="button" data-nexus-share="linkedin" aria-label="LinkedIn">in</button>
 	<button class="nexus-share-rail__btn" type="button" data-nexus-share="x" aria-label="X">X</button>
@@ -31,12 +32,12 @@ get_template_part( 'template-parts/blog-header' );
 	<button class="nexus-share-rail__btn" type="button" data-nexus-share="copy" aria-label="<?php esc_attr_e( 'Link kopieren', 'blocksy-child' ); ?>">↗</button>
 </aside>
 
-<div class="site-main nexus-single-container nexus-single-container--with-blog-header nexus-single-container--editorial hu-hp">
+<div class="site-main nexus-single-container nexus-single-container--with-blog-header nexus-single-container--editorial hu-hp<?php echo esc_attr( $is_design_aesthetics_request ? ' nexus-single-container--design-essay' : '' ); ?>">
 	<?php while ( have_posts() ) : the_post(); ?>
 		<?php
 		$post_id         = get_the_ID();
 		$post_slug       = (string) get_post_field( 'post_name', $post_id );
-		$is_design_aesthetics = 'design-ist-mehr-als-aesthetik' === $post_slug;
+		$is_design_aesthetics = $is_design_aesthetics_request;
 		$has_hero_image  = has_post_thumbnail();
 		$article_summary = wp_strip_all_tags( get_the_excerpt() );
 		if ( '' === $article_summary ) {
@@ -191,19 +192,24 @@ get_template_part( 'template-parts/blog-header' );
 				<div class="hu-design-hero__visual" data-design-hero-visual aria-hidden="true">
 					<span class="hu-design-hero__grid"></span>
 					<span class="hu-design-hero__axis">FORM ↔ FUNKTION</span>
+					<span class="hu-design-hero__path hu-design-hero__path--a"></span>
+					<span class="hu-design-hero__path hu-design-hero__path--b"></span>
 					<span class="hu-design-hero__node hu-design-hero__node--a">01</span>
 					<span class="hu-design-hero__node hu-design-hero__node--b">02</span>
 					<span class="hu-design-hero__node hu-design-hero__node--c">03</span>
-					<span class="hu-design-hero__path hu-design-hero__path--a"></span>
-					<span class="hu-design-hero__path hu-design-hero__path--b"></span>
+					<span class="hu-design-hero__node hu-design-hero__node--d">04</span>
+					<span class="hu-design-hero__node hu-design-hero__node--e">05</span>
 					<div class="hu-design-hero__core">
 						<span>DESIGN</span>
 						<strong>Entscheidungs&shy;architektur</strong>
+						<em>Ästhetik wird wertvoll, wenn sie Orientierung erzeugt.</em>
 					</div>
 					<div class="hu-design-hero__legend">
 						<span><b>01</b> Wahrnehmung</span>
 						<span><b>02</b> Orientierung</span>
-						<span><b>03</b> Wirkung</span>
+						<span><b>03</b> Vertrauen</span>
+						<span><b>04</b> Handlung</span>
+						<span><b>05</b> Messung</span>
 					</div>
 				</div>
 			<?php endif; ?>
@@ -235,10 +241,18 @@ get_template_part( 'template-parts/blog-header' );
 		</section>
 		<?php endif; ?>
 
-		<div class="nexus-post-layout">
-			<aside class="nexus-sidebar nexus-reader-toc" aria-label="<?php esc_attr_e( 'Inhaltsverzeichnis', 'blocksy-child' ); ?>">
+		<div class="nexus-post-layout<?php echo esc_attr( $is_design_aesthetics ? ' nexus-post-layout--design-essay' : '' ); ?>">
+			<aside class="nexus-sidebar nexus-reader-toc<?php echo esc_attr( $is_design_aesthetics ? ' hu-design-toc' : '' ); ?>" aria-label="<?php esc_attr_e( 'Inhaltsverzeichnis', 'blocksy-child' ); ?>">
 				<div class="sticky-toc nexus-reader-toc__shell">
-					<h2><?php esc_html_e( 'Inhalt', 'blocksy-child' ); ?></h2>
+					<?php if ( $is_design_aesthetics ) : ?>
+						<div class="hu-design-toc__head">
+							<h2><?php esc_html_e( 'Lesepfad', 'blocksy-child' ); ?></h2>
+							<span class="hu-design-toc__percent" data-design-toc-progress>00%</span>
+						</div>
+						<span class="hu-design-toc__rail" aria-hidden="true"><span data-design-toc-fill></span></span>
+					<?php else : ?>
+						<h2><?php esc_html_e( 'Inhalt', 'blocksy-child' ); ?></h2>
+					<?php endif; ?>
 					<ul id="toc-list"></ul>
 				</div>
 			</aside>
