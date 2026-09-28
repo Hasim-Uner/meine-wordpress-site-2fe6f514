@@ -958,6 +958,9 @@
 	font-family: var(--mono);
 	font-size: .62rem;
 	color: var(--papier);
+}
+
+.hu-design-hero.has-design-motion .hu-design-hero__node {
 	opacity: 0;
 	transform: scale(.82);
 }
@@ -968,7 +971,7 @@
 .hu-design-hero__node--d { right: 14%; top: 27%; border-color: color-mix(in srgb, var(--stempel) 70%, var(--papier)); }
 .hu-design-hero__node--e { right: 11%; bottom: 23%; color: var(--stempel); }
 
-.hu-design-hero.is-ready .hu-design-hero__node {
+.hu-design-hero.has-design-motion.is-ready .hu-design-hero__node {
 	opacity: 1;
 	transform: scale(1);
 	transition:
@@ -976,18 +979,21 @@
 		transform 620ms var(--ease-aus);
 }
 
-.hu-design-hero.is-ready .hu-design-hero__node--b { transition-delay: 90ms; }
-.hu-design-hero.is-ready .hu-design-hero__node--c { transition-delay: 150ms; }
-.hu-design-hero.is-ready .hu-design-hero__node--d { transition-delay: 220ms; }
-.hu-design-hero.is-ready .hu-design-hero__node--e { transition-delay: 290ms; }
+.hu-design-hero.has-design-motion.is-ready .hu-design-hero__node--b { transition-delay: 90ms; }
+.hu-design-hero.has-design-motion.is-ready .hu-design-hero__node--c { transition-delay: 150ms; }
+.hu-design-hero.has-design-motion.is-ready .hu-design-hero__node--d { transition-delay: 220ms; }
+.hu-design-hero.has-design-motion.is-ready .hu-design-hero__node--e { transition-delay: 290ms; }
 
 .hu-design-hero__path {
 	position: absolute;
 	z-index: 2;
 	display: block;
 	block-size: 1px;
-	transform: scaleX(0);
 	transform-origin: 0 50%;
+}
+
+.hu-design-hero.has-design-motion .hu-design-hero__path {
+	transform: scaleX(0);
 }
 
 .hu-design-hero__path--a {
@@ -1006,7 +1012,7 @@
 	background: var(--stempel);
 }
 
-.hu-design-hero.is-ready .hu-design-hero__path {
+.hu-design-hero.has-design-motion.is-ready .hu-design-hero__path {
 	transform: scaleX(1);
 	transition: transform 980ms var(--ease-aus) 170ms;
 }
