@@ -28,7 +28,7 @@ Repo-seitig vorhanden:
 - visuelles Dashboard V3 als Command Center
 - eigenes Untermenü `SEO Cockpit -> Datenbasis` für externe Primärdaten und Provider-Zustände
 - eigenes Untermenü `SEO Cockpit -> Content-Chancen` als operative Decision Layer für direkte Market-Intelligence- sowie Research-/GSC-/WordPress-/CRM-Signale
-- eigenes Untermenü `SEO Cockpit -> Markt & Wettbewerb` für DataForSEO Market Intelligence
+- eigenes Untermenü `SEO Cockpit -> Markt & Wettbewerb` für DataForSEO Market Intelligence mit automatischer organischer Konkurrenz, strategischer Vergleichsgruppe und eigenem Market-CSV-Export
 - `SEO Cockpit -> Datenbasis` hält Research/Primärdaten bewusst als nachgelagerte Evidenzschicht
 - Dashboard V3 zeigt maximal drei handlungsfähige Content-/Market-Entscheidungen vor den analytischen Detailsektionen
 - kompaktes Snapshot-Widget im Standard-WordPress-Dashboard
@@ -107,6 +107,9 @@ V1-Vertrag:
 - Live Organic und Google Maps ausschließlich per explizitem Admin-Klick auf einer kleinen Watchlist
 - Kostenledger mit getrennten automatischen und gesamten Monatskosten
 - Opportunity Engine verbindet externe Nachfrage mit GSC-, URL- und Lead-Signalen
+- automatische Wettbewerber bleiben als reale Keyword-Überschneidung erhalten; die strategische Vergleichsgruppe bildet separat den gewünschten WordPress-/B2B-Markt ab
+- strategische Domains können manuell per Domain Rank Overview geprüft werden; maximal acht Domains je Klick, niemals automatisch im Wochenjob
+- Market CSV exportiert Rankings, Keyword Overview, beide Wettbewerber-Ebenen, Opportunities und gespeicherte Live-SERPs ohne neuen Provider-Call
 - keine API-Requests bei normalen Frontend-Aufrufen
 - kein automatisches Publizieren und keine erfundenen Prognosemetriken
 

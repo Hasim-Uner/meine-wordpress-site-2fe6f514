@@ -29,12 +29,13 @@ forbid_pattern() {
 LOADER="$ROOT/inc/seo-cockpit/seo-cockpit.php"
 CLIENT="$ROOT/inc/seo-cockpit/seo-cockpit-dataforseo-client.php"
 MARKET="$ROOT/inc/seo-cockpit/seo-cockpit-market-intelligence.php"
+EXPORT="$ROOT/inc/seo-cockpit/seo-cockpit-market-export.php"
 UI="$ROOT/inc/seo-cockpit/seo-cockpit-market-ui.php"
 SYNC="$ROOT/inc/seo-cockpit/seo-cockpit-sync.php"
 DASH="$ROOT/inc/seo-cockpit/seo-cockpit-dashboard-v3.php"
 CSS="$ROOT/assets/css/seo-cockpit-market.css"
 
-for file in "$LOADER" "$CLIENT" "$MARKET" "$UI" "$SYNC" "$DASH" "$CSS"; do
+for file in "$LOADER" "$CLIENT" "$MARKET" "$EXPORT" "$UI" "$SYNC" "$DASH" "$CSS"; do
   require_file "$file"
 done
 
@@ -42,6 +43,7 @@ done
 # runtime credentials instead of hardcoded secrets.
 require_pattern "seo-cockpit-dataforseo-client\.php" "$LOADER"
 require_pattern "seo-cockpit-market-intelligence\.php" "$LOADER"
+require_pattern "seo-cockpit-market-export\.php" "$LOADER"
 require_pattern "seo-cockpit-market-ui\.php" "$LOADER"
 require_pattern "NEXUS_DATAFORSEO_LOGIN" "$CLIENT"
 require_pattern "NEXUS_DATAFORSEO_PASSWORD" "$CLIENT"
@@ -58,6 +60,7 @@ require_pattern "serp/google/maps/live/advanced" "$MARKET"
 require_pattern "function nexus_refresh_market_intelligence\(" "$MARKET"
 require_pattern "function nexus_refresh_market_intelligence_live\(" "$MARKET"
 require_pattern "nexus_refresh_market_intelligence\( true \)" "$MARKET"
+forbid_pattern "nexus_refresh_market_intelligence_strategic_overview\(.*true" "$MARKET"
 
 # Cost control and cache discipline are part of the provider contract.
 require_pattern "monthly_auto_budget_usd" "$CLIENT"
@@ -65,6 +68,28 @@ require_pattern "auto_cost_month_usd" "$CLIENT"
 require_pattern "nexus_dataforseo_auto_budget_available" "$CLIENT"
 require_pattern "nexus_market_intelligence_snapshot_v1" "$MARKET"
 require_pattern "nexus_dataforseo_market_weekly_refresh" "$MARKET"
+
+# Strategic competitors are an explicit market-definition layer, separate from
+# the automatic organic-overlap competitors.
+require_pattern "strategic_competitors" "$CLIENT"
+require_pattern "function nexus_market_intelligence_strategic_domains" "$MARKET"
+require_pattern "function nexus_market_intelligence_strategic_competitors" "$MARKET"
+require_pattern "function nexus_refresh_market_intelligence_strategic_overview" "$MARKET"
+require_pattern "dataforseo_labs/google/domain_rank_overview/live" "$MARKET"
+require_pattern "admin_post_nexus_market_intelligence_strategic_refresh" "$UI"
+require_pattern "strategic_overview.*current" "$MARKET"
+require_pattern "Strategische Domains prüfen" "$UI"
+require_pattern "Strategische Vergleichsgruppe" "$UI"
+
+# Export is snapshot-only: it may read DataForSEO-derived data but must never
+# make a provider request itself.
+require_pattern "function nexus_build_market_intelligence_export_rows" "$EXPORT"
+require_pattern "admin_post_nexus_market_intelligence_export" "$EXPORT"
+require_pattern "Market CSV" "$UI"
+require_pattern "competitor_strategic" "$EXPORT"
+require_pattern "opportunity" "$EXPORT"
+forbid_pattern "nexus_dataforseo_request" "$EXPORT"
+forbid_pattern "wp_remote_(get|post|request)" "$EXPORT"
 
 # Market data joins the existing snapshot and command center, not a parallel
 # frontend analytics stack.

@@ -96,6 +96,219 @@ function nexus_market_intelligence_manual_keywords() {
 }
 
 /**
+ * Convert the configured strategic competitor textarea into normalized domains.
+ *
+ * This is intentionally separate from DataForSEO's organic-overlap competitors:
+ * the automatic list describes who Google currently associates with the site;
+ * this list describes who should be watched for the site's intended market.
+ *
+ * @return array<int, string>
+ */
+function nexus_market_intelligence_strategic_domains() {
+	$config = nexus_get_dataforseo_config();
+	$raw    = preg_split( '/[\r\n,;]+/u', (string) ( $config['strategic_competitors'] ?? '' ) );
+	$raw    = is_array( $raw ) ? $raw : [];
+	$target = nexus_dataforseo_target_domain();
+	$seen   = [];
+	$out    = [];
+
+	foreach ( $raw as $value ) {
+		$value = trim( wp_strip_all_tags( (string) $value ) );
+		if ( '' === $value ) {
+			continue;
+		}
+
+		if ( false === strpos( $value, '://' ) ) {
+			$value = 'https://' . ltrim( $value, '/' );
+		}
+
+		$domain = strtolower( (string) wp_parse_url( $value, PHP_URL_HOST ) );
+		$domain = preg_replace( '/^www\./i', '', $domain );
+		$domain = is_string( $domain ) ? trim( $domain, ". \t\n\r\0\x0B" ) : '';
+
+		if (
+			'' === $domain
+			|| $domain === $target
+			|| ! preg_match( '/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i', $domain )
+			|| isset( $seen[ $domain ] )
+		) {
+			continue;
+		}
+
+		$seen[ $domain ] = true;
+		$out[]           = $domain;
+
+		if ( count( $out ) >= 20 ) {
+			break;
+		}
+	}
+
+	return $out;
+}
+
+/**
+ * Join the strategic comparison group with the current automatic competitor
+ * snapshot without triggering any provider request.
+ *
+ * @param array<int, array<string, mixed>>|null $competitors Automatic competitors.
+ * @return array<int, array<string, mixed>>
+ */
+function nexus_market_intelligence_strategic_competitors( $competitors = null ) {
+	$snapshot = nexus_get_market_intelligence_snapshot();
+
+	if ( null === $competitors ) {
+		$competitors = is_array( $snapshot['competitors'] ?? null ) ? $snapshot['competitors'] : [];
+	}
+
+	$overview_rows = is_array( $snapshot['strategic_overview'] ?? null ) ? $snapshot['strategic_overview'] : [];
+	$index         = [];
+	$overview      = [];
+
+	foreach ( (array) $competitors as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+
+		$domain = strtolower( (string) preg_replace( '/^www\./i', '', trim( (string) ( $row['domain'] ?? '' ) ) ) );
+		if ( '' !== $domain ) {
+			$index[ $domain ] = $row;
+		}
+	}
+
+	foreach ( $overview_rows as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+
+		$domain = strtolower( (string) preg_replace( '/^www\./i', '', trim( (string) ( $row['domain'] ?? '' ) ) ) );
+		if ( '' !== $domain ) {
+			$overview[ $domain ] = $row;
+		}
+	}
+
+	$out = [];
+	foreach ( nexus_market_intelligence_strategic_domains() as $domain ) {
+		$match = isset( $index[ $domain ] ) && is_array( $index[ $domain ] ) ? $index[ $domain ] : [];
+		$rank  = isset( $overview[ $domain ] ) && is_array( $overview[ $domain ] ) ? $overview[ $domain ] : [];
+
+		$out[] = [
+			'domain'                      => $domain,
+			'is_overlap'                  => ! empty( $match ),
+			'is_checked'                  => ! empty( $rank ),
+			'checked_at'                  => absint( $rank['checked_at'] ?? 0 ),
+			'avg_position'                => is_numeric( $match['avg_position'] ?? null ) ? (float) $match['avg_position'] : null,
+			'intersections'               => absint( $match['intersections'] ?? 0 ),
+			'shared_etv'                  => is_numeric( $match['shared_etv'] ?? null ) ? (float) $match['shared_etv'] : 0.0,
+			'shared_count'                => absint( $match['shared_count'] ?? 0 ),
+			'organic_etv'                 => is_numeric( $rank['organic_etv'] ?? null )
+				? (float) $rank['organic_etv']
+				: ( is_numeric( $match['organic_etv'] ?? null ) ? (float) $match['organic_etv'] : 0.0 ),
+			'organic_keywords'            => ! empty( $rank )
+				? absint( $rank['organic_keywords'] ?? 0 )
+				: absint( $match['organic_keywords'] ?? 0 ),
+			'domain_top10'                => absint( $rank['top10'] ?? 0 ),
+			'estimated_paid_traffic_cost' => is_numeric( $rank['estimated_paid_traffic_cost'] ?? null ) ? (float) $rank['estimated_paid_traffic_cost'] : 0.0,
+			'is_new'                      => absint( $rank['is_new'] ?? 0 ),
+			'is_up'                       => absint( $rank['is_up'] ?? 0 ),
+			'is_down'                     => absint( $rank['is_down'] ?? 0 ),
+			'is_lost'                     => absint( $rank['is_lost'] ?? 0 ),
+			'top10_shared'                => absint( $match['top10_shared'] ?? 0 ),
+		];
+	}
+
+	return $out;
+}
+
+/**
+ * Manually fetch domain-level ranking metrics for the strategic comparison
+ * group. One DataForSEO Live task is required per domain, so this path is never
+ * called by cron and is capped to eight domains per click.
+ *
+ * @return array<string, mixed>|WP_Error
+ */
+function nexus_refresh_market_intelligence_strategic_overview() {
+	if ( ! nexus_dataforseo_has_credentials() ) {
+		return new WP_Error( 'nexus_market_credentials', 'DataForSEO ist noch nicht konfiguriert.' );
+	}
+
+	$domains = array_slice( nexus_market_intelligence_strategic_domains(), 0, 8 );
+	if ( empty( $domains ) ) {
+		return new WP_Error( 'nexus_market_strategic_empty', 'Es sind keine strategischen Wettbewerber gepflegt.' );
+	}
+
+	$config   = nexus_get_dataforseo_config();
+	$snapshot = nexus_get_market_intelligence_snapshot();
+	$rows     = [];
+	$errors   = [];
+
+	foreach ( $domains as $domain ) {
+		$task = [
+			'target'          => $domain,
+			'location_name'   => (string) $config['location_name'],
+			'language_code'   => (string) $config['language_code'],
+			'ignore_synonyms' => true,
+			'limit'           => 1,
+			'tag'             => 'nexus_market_strategic_overview',
+		];
+
+		$response = nexus_dataforseo_request( 'v3/dataforseo_labs/google/domain_rank_overview/live', $task, false );
+		$result   = nexus_dataforseo_first_result( $response );
+
+		if ( is_wp_error( $result ) ) {
+			$errors[ $domain ] = $result->get_error_message();
+			continue;
+		}
+
+		$items   = is_array( $result['items'] ?? null ) ? $result['items'] : [];
+		$item    = ! empty( $items ) && is_array( $items[0] ) ? $items[0] : [];
+		$metrics = is_array( $item['metrics'] ?? null ) ? $item['metrics'] : [];
+		$organic = is_array( $metrics['organic'] ?? null ) ? $metrics['organic'] : [];
+
+		$rows[] = [
+			'domain'                      => $domain,
+			'checked_at'                  => time(),
+			'organic_keywords'            => absint( $organic['count'] ?? 0 ),
+			'organic_etv'                 => is_numeric( $organic['etv'] ?? null ) ? (float) $organic['etv'] : 0.0,
+			'estimated_paid_traffic_cost' => is_numeric( $organic['estimated_paid_traffic_cost'] ?? null ) ? (float) $organic['estimated_paid_traffic_cost'] : 0.0,
+			'pos_1'                       => absint( $organic['pos_1'] ?? 0 ),
+			'pos_2_3'                     => absint( $organic['pos_2_3'] ?? 0 ),
+			'pos_4_10'                    => absint( $organic['pos_4_10'] ?? 0 ),
+			'top10'                       => absint( $organic['pos_1'] ?? 0 ) + absint( $organic['pos_2_3'] ?? 0 ) + absint( $organic['pos_4_10'] ?? 0 ),
+			'is_new'                      => absint( $organic['is_new'] ?? 0 ),
+			'is_up'                       => absint( $organic['is_up'] ?? 0 ),
+			'is_down'                     => absint( $organic['is_down'] ?? 0 ),
+			'is_lost'                     => absint( $organic['is_lost'] ?? 0 ),
+		];
+	}
+
+	if ( empty( $rows ) && ! empty( $errors ) ) {
+		return new WP_Error( 'nexus_market_strategic_failed', implode( ' | ', array_values( $errors ) ) );
+	}
+
+	$existing = is_array( $snapshot['strategic_overview'] ?? null ) ? $snapshot['strategic_overview'] : [];
+	$index    = [];
+
+	foreach ( $existing as $row ) {
+		if ( is_array( $row ) && ! empty( $row['domain'] ) ) {
+			$index[ (string) $row['domain'] ] = $row;
+		}
+	}
+	foreach ( $rows as $row ) {
+		$index[ (string) $row['domain'] ] = $row;
+	}
+
+	$snapshot['strategic_overview']        = array_values( $index );
+	$snapshot['strategic_overview_errors'] = $errors;
+	$snapshot['strategic_overview_at']     = time();
+	nexus_update_market_intelligence_snapshot( $snapshot );
+
+	return [
+		'rows'   => $rows,
+		'errors' => $errors,
+	];
+}
+
+/**
  * Return useful GSC queries without triggering a separate keyword universe.
  *
  * @param int $limit Max queries.
@@ -481,6 +694,9 @@ function nexus_refresh_market_intelligence( $automatic = false ) {
 			'competitors'     => $competitors,
 			'keyword_overview'=> $overview,
 			'watch_keywords'  => $keywords,
+			'strategic_overview'        => is_array( $current['strategic_overview'] ?? null ) ? $current['strategic_overview'] : [],
+			'strategic_overview_errors' => is_array( $current['strategic_overview_errors'] ?? null ) ? $current['strategic_overview_errors'] : [],
+			'strategic_overview_at'     => absint( $current['strategic_overview_at'] ?? 0 ),
 			'live_serp'       => is_array( $current['live_serp'] ?? null ) ? $current['live_serp'] : [],
 			'local_maps'      => is_array( $current['local_maps'] ?? null ) ? $current['local_maps'] : [],
 			'last_live_at'    => absint( $current['last_live_at'] ?? 0 ),
