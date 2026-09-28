@@ -502,6 +502,9 @@ function nexus_seo_cockpit_v3_render_system_status( $snapshot, $setup, $runtime,
 	$sitemap      = ! empty( $sitemaps ) && is_array( $sitemaps[0] ) ? $sitemaps[0] : [];
 	$lead         = is_array( $snapshot['leads'] ?? null ) ? $snapshot['leads'] : [];
 	$lead_current = is_array( $lead['overview']['current'] ?? null ) ? $lead['overview']['current'] : [];
+	$market       = is_array( $snapshot['market'] ?? null ) ? $snapshot['market'] : [];
+	$market_ranked= is_array( $market['ranked'] ?? null ) ? $market['ranked'] : [];
+	$market_ready = function_exists( 'nexus_dataforseo_has_credentials' ) && nexus_dataforseo_has_credentials();
 	$write_scope  = function_exists( 'nexus_seo_cockpit_has_write_scope' ) ? nexus_seo_cockpit_has_write_scope() : false;
 	?>
 	<div class="nsc-v3-system-grid">
@@ -509,6 +512,7 @@ function nexus_seo_cockpit_v3_render_system_status( $snapshot, $setup, $runtime,
 		<article class="nsc-v3-system-card"><div class="nsc-v3-system-card__icon"><span class="dashicons dashicons-media-code" aria-hidden="true"></span></div><div><span>Sitemap</span><strong><?php echo esc_html( ! empty( $sitemap ) ? ( ! empty( $sitemap['isPending'] ) ? 'Pending' : 'Aktiv' ) : 'Keine Daten' ); ?></strong><p><?php echo esc_html( ! empty( $sitemap['path'] ) ? (string) $sitemap['path'] : 'wp-sitemap.xml' ); ?></p></div><span class="dashicons <?php echo ! empty( $sitemap ) ? 'dashicons-yes-alt' : 'dashicons-minus'; ?>" aria-hidden="true"></span></article>
 		<article class="nsc-v3-system-card"><div class="nsc-v3-system-card__icon"><span class="dashicons dashicons-chart-pie" aria-hidden="true"></span></div><div><span>Koko Analytics</span><strong><?php echo esc_html( ! empty( $koko['active'] ) ? 'Aktiv' : 'Nicht aktiv' ); ?></strong><p>Onsite-Kontext zur GSC-Nachfrage</p></div><span class="dashicons <?php echo ! empty( $koko['active'] ) ? 'dashicons-yes-alt' : 'dashicons-minus'; ?>" aria-hidden="true"></span></article>
 		<article class="nsc-v3-system-card"><div class="nsc-v3-system-card__icon"><span class="dashicons dashicons-groups" aria-hidden="true"></span></div><div><span>Audit-CRM</span><strong><?php echo esc_html( number_format_i18n( (int) ( $lead_current['requests'] ?? 0 ) ) ); ?> Leads</strong><p><?php echo esc_html( number_format_i18n( (int) ( $lead_current['mapped_requests'] ?? 0 ) ) ); ?> intern zugeordnet</p></div><span class="dashicons dashicons-chart-area" aria-hidden="true"></span></article>
+		<article class="nsc-v3-system-card"><div class="nsc-v3-system-card__icon"><span class="dashicons dashicons-networking" aria-hidden="true"></span></div><div><span>DataForSEO</span><strong><?php echo esc_html( $market_ready ? ( ! empty( $market ) ? 'Market Snapshot aktiv' : 'Bereit' ) : 'Nicht konfiguriert' ); ?></strong><p><?php echo esc_html( ! empty( $market_ranked ) ? number_format_i18n( absint( $market_ranked['total_count'] ?? 0 ) ) . ' rankende Keywords' : 'Externe Markt- und Wettbewerbsdaten' ); ?></p></div><span class="dashicons <?php echo $market_ready ? 'dashicons-yes-alt' : 'dashicons-minus'; ?>" aria-hidden="true"></span></article>
 	</div>
 	<p class="nsc-v3-system-note">Letzter Sync: <strong><?php echo esc_html( ! empty( $runtime['last_sync_at'] ) ? wp_date( 'd.m.Y H:i', (int) $runtime['last_sync_at'] ) : 'n/a' ); ?></strong><?php if ( ! empty( $runtime['next_sync_at'] ) ) : ?> · Nächster Sync: <strong><?php echo esc_html( wp_date( 'd.m.Y H:i', (int) $runtime['next_sync_at'] ) ); ?></strong><?php endif; ?></p>
 	<?php
@@ -618,11 +622,13 @@ function nexus_render_seo_cockpit_dashboard_v3() {
 			<article class="nsc-v3-panel"><div class="nsc-v3-panel__head"><div><span class="nsc-v3-panel__icon"><span class="dashicons dashicons-chart-line" aria-hidden="true"></span></span><div><strong>Query-Mover</strong><p>Gewinner und Verlierer gegenüber der Vorperiode.</p></div></div></div><?php nexus_seo_cockpit_v3_render_movers( (array) $snapshot ); ?></article>
 		</div></section>
 
+		<?php if ( function_exists( 'nexus_render_market_intelligence_dashboard_panel' ) ) { nexus_render_market_intelligence_dashboard_panel( (array) $snapshot ); } ?>
+
 		<section class="nsc-v3-section" aria-labelledby="nsc-v3-trend-title"><div class="nsc-v3-section__head"><div><p class="nsc-v3-eyebrow">Performance Pulse</p><h2 id="nsc-v3-trend-title">Verlauf statt Momentaufnahme</h2><p>Vier Signale in Tagesauflösung. Die Details bleiben bewusst sekundär zur Action Queue.</p></div></div><div class="nsc-v3-panel nsc-v3-panel--trend"><div class="nexus-seo-cockpit__trend-grid"><?php nexus_render_seo_cockpit_trend_card( $trend, 'clicks', 'Klicks' ); nexus_render_seo_cockpit_trend_card( $trend, 'impressions', 'Impressionen' ); nexus_render_seo_cockpit_trend_card( $trend, 'ctr', 'CTR' ); nexus_render_seo_cockpit_trend_card( $trend, 'position', 'Position' ); ?></div></div></section>
 
 		<section class="nsc-v3-section" aria-labelledby="nsc-v3-url-title"><div class="nsc-v3-section__head"><div><p class="nsc-v3-eyebrow">URL Radar</p><h2 id="nsc-v3-url-title">Seiten mit echtem Handlungsbedarf</h2><p>Die wichtigsten URLs als fokussierte Karten – nicht als zehnspaltige Problem-Tabelle.</p></div></div><?php nexus_seo_cockpit_v3_render_problem_cards( (array) $snapshot ); ?></section>
 
-		<section class="nsc-v3-section" aria-labelledby="nsc-v3-system-title"><div class="nsc-v3-section__head"><div><p class="nsc-v3-eyebrow">System Health</p><h2 id="nsc-v3-system-title">Datenquellen & Index-Signale</h2><p>Search Console, Sitemap, Koko und CRM als kompakter Gesundheitscheck.</p></div></div><?php nexus_seo_cockpit_v3_render_system_status( (array) $snapshot, $setup, $runtime, $koko ); ?></section>
+		<section class="nsc-v3-section" aria-labelledby="nsc-v3-system-title"><div class="nsc-v3-section__head"><div><p class="nsc-v3-eyebrow">System Health</p><h2 id="nsc-v3-system-title">Datenquellen & Index-Signale</h2><p>Search Console, Sitemap, Koko, CRM und externe Marktdaten als kompakter Gesundheitscheck.</p></div></div><?php nexus_seo_cockpit_v3_render_system_status( (array) $snapshot, $setup, $runtime, $koko ); ?></section>
 
 		<?php nexus_seo_cockpit_v3_render_raw_tables( (array) $snapshot ); ?>
 	</div>
