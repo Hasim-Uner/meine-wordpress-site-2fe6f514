@@ -97,12 +97,22 @@ function nexus_ci_decision_context() {
 		? nexus_get_market_intelligence_snapshot()
 		: [];
 
+	$crm_current_map  = is_array( $crm['entry_map']['current'] ?? null ) ? $crm['entry_map']['current'] : [];
+	$crm_lifetime_map = is_array( $crm['entry_map']['lifetime'] ?? null ) ? $crm['entry_map']['lifetime'] : [];
+
+	if ( empty( $crm_current_map ) ) {
+		$crm_current_map = nexus_ci_decision_count_map( (array) ( $crm['entry_rows']['current'] ?? [] ) );
+	}
+	if ( empty( $crm_lifetime_map ) ) {
+		$crm_lifetime_map = nexus_ci_decision_count_map( (array) ( $crm['entry_rows']['lifetime'] ?? [] ) );
+	}
+
 	$context = [
-		'leads'               => is_array( $leads ) ? $leads : [],
-		'crm'                 => is_array( $crm ) ? $crm : [],
-		'crm_current_entries' => nexus_ci_decision_count_map( (array) ( $crm['entry_rows']['current'] ?? [] ) ),
-		'crm_lifetime_entries'=> nexus_ci_decision_count_map( (array) ( $crm['entry_rows']['lifetime'] ?? [] ) ),
-		'market'              => is_array( $market ) ? $market : [],
+		'leads'                => is_array( $leads ) ? $leads : [],
+		'crm'                  => is_array( $crm ) ? $crm : [],
+		'crm_current_entries'  => $crm_current_map,
+		'crm_lifetime_entries' => $crm_lifetime_map,
+		'market'               => is_array( $market ) ? $market : [],
 	];
 
 	return $context;
