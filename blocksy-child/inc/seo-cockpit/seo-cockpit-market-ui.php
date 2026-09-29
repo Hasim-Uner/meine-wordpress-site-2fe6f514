@@ -358,6 +358,13 @@ function nexus_render_market_intelligence_opportunities( $rows, $limit = 10 ) {
 						<?php if ( absint( $row['crm_contacts_current'] ?? 0 ) > 0 ) : ?><span><?php echo esc_html( number_format_i18n( absint( $row['crm_contacts_current'] ) ) ); ?> CRM-Kontakte</span><?php endif; ?>
 						<?php if ( isset( $row['difficulty'] ) && is_numeric( $row['difficulty'] ) ) : ?><span>KD <?php echo esc_html( number_format_i18n( (float) $row['difficulty'], 0 ) ); ?></span><?php endif; ?>
 					</div>
+					<?php $score_breakdown = is_array( $row['score_breakdown'] ?? null ) ? $row['score_breakdown'] : []; ?>
+					<?php if ( ! empty( $score_breakdown ) ) : ?>
+						<details class="nsc-market-opportunity__score-details">
+							<summary>Score erklären</summary>
+							<small>Volumen +<?php echo esc_html( (string) absint( $score_breakdown['volume'] ?? 0 ) ); ?> · Ranking +<?php echo esc_html( (string) absint( $score_breakdown['ranking'] ?? 0 ) ); ?> · GSC +<?php echo esc_html( (string) absint( $score_breakdown['gsc'] ?? 0 ) ); ?> · Intent +<?php echo esc_html( (string) absint( $score_breakdown['intent'] ?? 0 ) ); ?> · Business +<?php echo esc_html( (string) absint( $score_breakdown['business'] ?? 0 ) ); ?> · Leads +<?php echo esc_html( (string) absint( $score_breakdown['leads'] ?? 0 ) ); ?> · KD −<?php echo esc_html( (string) absint( $score_breakdown['difficulty_penalty'] ?? 0 ) ); ?> · Brand −<?php echo esc_html( (string) absint( $score_breakdown['brand_penalty'] ?? 0 ) ); ?></small>
+						</details>
+					<?php endif; ?>
 					<?php if ( ! empty( $row['url'] ) ) : ?><a href="<?php echo esc_url( (string) $row['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( function_exists( 'nexus_get_seo_cockpit_short_url' ) ? nexus_get_seo_cockpit_short_url( (string) $row['url'] ) : (string) $row['url'] ); ?></a><?php endif; ?>
 				</div>
 			</article>
