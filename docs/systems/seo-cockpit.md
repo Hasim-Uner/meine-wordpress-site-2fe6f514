@@ -26,6 +26,10 @@ Repo-seitig vorhanden:
 
 - Top-Level-Admin-Menü `SEO Cockpit`
 - visuelles Dashboard V3 als Command Center
+- eigener `Site Audit` für deterministischen technischen Crawl plus getrennte Google-/Struktur-/Sitemap-Intelligence
+- der 0–100-Wert im Site Audit ist ausdrücklich ein **Technischer SEO-Score**; `health_score` bleibt nur als kompatibles Storage-Feld erhalten
+- `Score-Abdeckung` weist separat aus, welcher Anteil des vorgesehenen Modells tatsächlich in den technischen Score eingeht; nicht gemessene Kategorien werden weder als 0 noch als gesund interpretiert
+- CrUX-Origin-Felddaten werden im Site Audit als separate Evidenz für LCP, INP, CLS und TTFB gezeigt und verändern den technischen Score bewusst nicht
 - eigenes Untermenü `SEO Cockpit -> Datenbasis` für externe Primärdaten und Provider-Zustände
 - eigenes Untermenü `SEO Cockpit -> Content-Chancen` als operative Decision Layer für direkte Market-Intelligence- sowie Research-/GSC-/WordPress-/CRM-Signale
 - eigenes Untermenü `SEO Cockpit -> Markt & Wettbewerb` für DataForSEO Market Intelligence mit automatischer organischer Konkurrenz, strategischer Vergleichsgruppe und eigenem Market-CSV-Export

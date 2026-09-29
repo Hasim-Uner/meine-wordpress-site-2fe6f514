@@ -95,9 +95,20 @@ function nexus_render_seo_audit_page() {
 		<?php elseif ( 'completed' !== $status ) : ?>
 			<section class="nexus-audit__panel nexus-audit__empty"><h2>Noch kein Audit vorhanden</h2><p>Der erste Lauf prüft veröffentlichte WordPress-URLs. Core Web Vitals werden in V1 bewusst nicht in den URL-Score gerechnet, bis reale CrUX-Daten sauber mit diesem Layer verbunden sind.</p></section>
 		<?php else : ?>
-			<?php $score = absint( $state['health_score'] ?? 0 ); $counts = (array) ( $state['severity_counts'] ?? [] ); $issues = (array) ( $state['issues'] ?? [] ); $pages = (array) ( $state['pages'] ?? [] ); $cat = (array) ( $state['category_scores'] ?? [] ); ?>
+			<?php
+			$score    = absint( $state['technical_seo_score'] ?? $state['health_score'] ?? 0 );
+			$coverage = is_array( $state['score_coverage'] ?? null )
+				? $state['score_coverage']
+				: ( function_exists( 'nexus_seo_audit_score_coverage' ) ? nexus_seo_audit_score_coverage() : [] );
+			$coverage_pct = absint( $coverage['coverage_pct'] ?? 0 );
+			$unmeasured   = array_values( array_filter( array_map( 'sanitize_text_field', (array) ( $coverage['unmeasured_categories'] ?? [] ) ) ) );
+			$counts       = (array) ( $state['severity_counts'] ?? [] );
+			$issues       = (array) ( $state['issues'] ?? [] );
+			$pages        = (array) ( $state['pages'] ?? [] );
+			$cat          = (array) ( $state['category_scores'] ?? [] );
+			?>
 			<section class="nexus-audit__summary">
-				<div class="nexus-audit__score-card nexus-audit__panel"><div class="nexus-audit__score-ring"><strong><?php echo esc_html( (string) $score ); ?></strong><span>/ 100</span></div><div><p class="nexus-audit__eyebrow">SEO Health</p><h2><?php echo esc_html( $score >= 90 ? 'Sehr sauber' : ( $score >= 75 ? 'Solide Basis' : ( $score >= 55 ? 'Optimierungsbedarf' : 'Kritischer Zustand' ) ) ); ?></h2><p>Letzter Lauf: <?php echo esc_html( (string) ( $state['finished_at'] ?? '' ) ); ?></p></div></div>
+				<div class="nexus-audit__score-card nexus-audit__panel"><div class="nexus-audit__score-ring"><strong><?php echo esc_html( (string) $score ); ?></strong><span>/ 100</span></div><div><p class="nexus-audit__eyebrow">Technischer SEO-Score</p><h2><?php echo esc_html( $score >= 90 ? 'Sehr sauber' : ( $score >= 75 ? 'Solide Basis' : ( $score >= 55 ? 'Optimierungsbedarf' : 'Kritischer Zustand' ) ) ); ?></h2><p>Letzter Lauf: <?php echo esc_html( (string) ( $state['finished_at'] ?? '' ) ); ?></p><p><strong>Score-Abdeckung: <?php echo esc_html( (string) $coverage_pct ); ?>%</strong><?php if ( ! empty( $unmeasured ) ) : ?> · Nicht im Score: <?php echo esc_html( implode( ', ', $unmeasured ) ); ?>.<?php endif; ?></p></div></div>
 				<div class="nexus-audit__metric nexus-audit__panel"><span>URLs</span><strong><?php echo esc_html( (string) count( $pages ) ); ?></strong><small>geprüft</small></div>
 				<div class="nexus-audit__metric nexus-audit__panel"><span>Kritisch</span><strong><?php echo esc_html( (string) absint( $counts['critical'] ?? 0 ) ); ?></strong><small>sofort prüfen</small></div>
 				<div class="nexus-audit__metric nexus-audit__panel"><span>Hoch</span><strong><?php echo esc_html( (string) absint( $counts['high'] ?? 0 ) ); ?></strong><small>hohe Priorität</small></div>
@@ -105,10 +116,10 @@ function nexus_render_seo_audit_page() {
 			</section>
 
 			<section class="nexus-audit__panel">
-				<div class="nexus-audit__section-head"><div><p class="nexus-audit__eyebrow">Score-Modell</p><h2>Bereiche</h2></div><p>Nicht gemessene Daten werden nicht als Null gewertet.</p></div>
+				<div class="nexus-audit__section-head"><div><p class="nexus-audit__eyebrow">Score-Modell</p><h2>Gemessene technische Bereiche</h2></div><p>Der technische Score deckt <?php echo esc_html( (string) $coverage_pct ); ?>% des vorgesehenen Modells ab. Nicht gemessene Evidenz wird separat gezeigt und weder als 0 noch als gesund gewertet.</p></div>
 				<div class="nexus-audit__categories">
 					<?php foreach ( $categories as $key => $config ) : $value = array_key_exists( $key, $cat ) ? $cat[ $key ] : null; ?>
-						<div class="nexus-audit__category"><div><strong><?php echo esc_html( (string) $config['label'] ); ?></strong><small>Gewicht <?php echo esc_html( (string) absint( $config['weight'] ) ); ?></small></div><?php if ( null === $value ) : ?><span class="nexus-audit__not-measured">nicht bewertet</span><?php else : ?><strong class="nexus-audit__category-score"><?php echo esc_html( (string) absint( $value ) ); ?></strong><?php endif; ?></div>
+						<div class="nexus-audit__category"><div><strong><?php echo esc_html( (string) $config['label'] ); ?></strong><small>Gewicht <?php echo esc_html( (string) absint( $config['weight'] ) ); ?></small></div><?php if ( null === $value ) : ?><span class="nexus-audit__not-measured">nicht im Score</span><?php else : ?><strong class="nexus-audit__category-score"><?php echo esc_html( (string) absint( $value ) ); ?></strong><?php endif; ?></div>
 					<?php endforeach; ?>
 				</div>
 			</section>
@@ -131,7 +142,7 @@ function nexus_render_seo_audit_page() {
 				</tbody></table></div>
 			</section>
 
-			<?php if ( $history ) : ?><section class="nexus-audit__panel"><div class="nexus-audit__section-head"><div><p class="nexus-audit__eyebrow">Verlauf</p><h2>Letzte Audit-Läufe</h2></div></div><div class="nexus-audit__history"><?php foreach ( array_slice( $history, 0, 6 ) as $run ) : if ( ! is_array( $run ) ) { continue; } ?><div class="nexus-audit__history-item"><strong><?php echo esc_html( (string) absint( $run['health_score'] ?? 0 ) ); ?>/100</strong><span><?php echo esc_html( (string) ( $run['finished_at'] ?? '' ) ); ?></span><small><?php echo esc_html( (string) absint( $run['total_urls'] ?? 0 ) ); ?> URLs</small></div><?php endforeach; ?></div></section><?php endif; ?>
+			<?php if ( $history ) : ?><section class="nexus-audit__panel"><div class="nexus-audit__section-head"><div><p class="nexus-audit__eyebrow">Verlauf</p><h2>Letzte Audit-Läufe</h2></div></div><div class="nexus-audit__history"><?php foreach ( array_slice( $history, 0, 6 ) as $run ) : if ( ! is_array( $run ) ) { continue; } $run_score = absint( $run['technical_seo_score'] ?? $run['health_score'] ?? 0 ); $run_coverage = absint( $run['score_coverage_pct'] ?? 0 ); ?><div class="nexus-audit__history-item"><strong><?php echo esc_html( (string) $run_score ); ?>/100</strong><span><?php echo esc_html( (string) ( $run['finished_at'] ?? '' ) ); ?></span><small><?php echo esc_html( (string) absint( $run['total_urls'] ?? 0 ) ); ?> URLs<?php if ( $run_coverage > 0 ) : ?> · <?php echo esc_html( (string) $run_coverage ); ?>% Score-Abdeckung<?php endif; ?></small></div><?php endforeach; ?></div></section><?php endif; ?>
 		<?php endif; ?>
 	</div>
 	<?php

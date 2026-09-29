@@ -7,7 +7,7 @@
  * - redirects are inspected as redirects instead of following them
  * - duplicate/orphan rules only compare indexable 200 pages
  * - non-indexable/redirect URLs remain visible in the URL table but do not
- *   distort the site health score
+ *   distort the technical SEO score
  *
  * @package Blocksy_Child
  */
@@ -36,6 +36,42 @@ function nexus_seo_audit_categories() {
 		'schema'       => [ 'label' => 'Structured Data', 'weight' => 10, 'measured' => true ],
 		'media'        => [ 'label' => 'Bilder & Medien', 'weight' => 5, 'measured' => true ],
 		'content'      => [ 'label' => 'Content-Signale', 'weight' => 5, 'measured' => true ],
+	];
+}
+
+/**
+ * Describe how much of the intended score model is actually measured.
+ *
+ * This is deliberately independent from the numeric score: unavailable or
+ * intentionally separate evidence must never be silently treated as healthy.
+ *
+ * @return array{measured_weight:int,total_weight:int,coverage_pct:int,unmeasured_categories:array<int,string>}
+ */
+function nexus_seo_audit_score_coverage() {
+	$total_weight          = 0;
+	$measured_weight       = 0;
+	$unmeasured_categories = [];
+
+	foreach ( nexus_seo_audit_categories() as $config ) {
+		$weight       = max( 0, absint( $config['weight'] ?? 0 ) );
+		$total_weight += $weight;
+
+		if ( ! empty( $config['measured'] ) ) {
+			$measured_weight += $weight;
+			continue;
+		}
+
+		$label = trim( (string) ( $config['label'] ?? '' ) );
+		if ( '' !== $label ) {
+			$unmeasured_categories[] = $label;
+		}
+	}
+
+	return [
+		'measured_weight'       => $measured_weight,
+		'total_weight'          => $total_weight,
+		'coverage_pct'          => $total_weight > 0 ? (int) round( $measured_weight / $total_weight * 100 ) : 0,
+		'unmeasured_categories' => $unmeasured_categories,
 	];
 }
 
@@ -793,10 +829,12 @@ function nexus_seo_audit_finalize( $state ) {
 		}
 	);
 
-	$state['pages']           = $pages;
-	$state['issues']          = $issues;
-	$state['health_score']    = $scored ? (int) round( $score_total / $scored ) : 0;
-	$state['category_scores'] = $cat_scores;
+	$state['pages']               = $pages;
+	$state['issues']              = $issues;
+	$state['health_score']        = $scored ? (int) round( $score_total / $scored ) : 0;
+	$state['technical_seo_score'] = $state['health_score'];
+	$state['score_coverage']      = nexus_seo_audit_score_coverage();
+	$state['category_scores']     = $cat_scores;
 	$state['severity_counts'] = $severity;
 	$state['processed_urls']  = count( $pages );
 	$state['status']          = 'completed';
@@ -810,8 +848,10 @@ function nexus_seo_audit_finalize( $state ) {
 		[
 			'run_id'          => (string) ( $state['run_id'] ?? '' ),
 			'finished_at'     => $state['finished_at'],
-			'health_score'    => $state['health_score'],
-			'total_urls'      => absint( $state['total_urls'] ?? 0 ),
+			'health_score'        => $state['health_score'],
+			'technical_seo_score' => $state['technical_seo_score'],
+			'score_coverage_pct'  => absint( $state['score_coverage']['coverage_pct'] ?? 0 ),
+			'total_urls'          => absint( $state['total_urls'] ?? 0 ),
 			'severity_counts' => $severity,
 		]
 	);
@@ -917,9 +957,11 @@ function nexus_handle_seo_audit_start() {
 		'processed_urls'  => 0,
 		'pages'           => [],
 		'issues'          => [],
-		'health_score'    => null,
-		'category_scores' => [],
-		'severity_counts' => [],
+		'health_score'        => null,
+		'technical_seo_score' => null,
+		'score_coverage'      => nexus_seo_audit_score_coverage(),
+		'category_scores'     => [],
+		'severity_counts'     => [],
 	];
 
 	nexus_seo_audit_save_state( $state );
