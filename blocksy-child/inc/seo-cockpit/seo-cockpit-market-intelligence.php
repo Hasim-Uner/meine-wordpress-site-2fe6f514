@@ -508,6 +508,54 @@ function nexus_market_intelligence_fetch_competitors( $automatic = false ) {
 }
 
 /**
+ * Fetch one domain-level backlink authority snapshot.
+ *
+ * This is evidence, not a home-grown authority score. DataForSEO's own rank,
+ * spam and referring-domain metrics stay separate so the cockpit can show
+ * movement without pretending that one composite number predicts rankings.
+ *
+ * @param bool $automatic Whether this request belongs to the weekly job.
+ * @return array<string, mixed>|WP_Error
+ */
+function nexus_market_intelligence_fetch_authority( $automatic = false ) {
+	$config = nexus_get_dataforseo_config();
+	$task   = [
+		'target'                     => (string) $config['target'],
+		'include_subdomains'         => true,
+		'exclude_internal_backlinks' => true,
+		'internal_list_limit'        => 10,
+		'backlinks_status_type'      => 'live',
+		'rank_scale'                 => 'one_hundred',
+		'tag'                        => 'nexus_market_authority',
+	];
+
+	$response = nexus_dataforseo_request( 'v3/backlinks/summary/live', $task, $automatic );
+	$result   = nexus_dataforseo_first_result( $response );
+	if ( is_wp_error( $result ) ) {
+		return $result;
+	}
+
+	$info = is_array( $result['info'] ?? null ) ? $result['info'] : [];
+
+	return [
+		'checked_at'                      => time(),
+		'rank'                            => absint( $result['rank'] ?? 0 ),
+		'backlinks'                       => absint( $result['backlinks'] ?? 0 ),
+		'backlinks_spam_score'            => absint( $result['backlinks_spam_score'] ?? 0 ),
+		'broken_backlinks'                => absint( $result['broken_backlinks'] ?? 0 ),
+		'broken_pages'                    => absint( $result['broken_pages'] ?? 0 ),
+		'referring_domains'               => absint( $result['referring_domains'] ?? 0 ),
+		'referring_domains_nofollow'      => absint( $result['referring_domains_nofollow'] ?? 0 ),
+		'referring_main_domains'          => absint( $result['referring_main_domains'] ?? 0 ),
+		'referring_main_domains_nofollow' => absint( $result['referring_main_domains_nofollow'] ?? 0 ),
+		'referring_ips'                   => absint( $result['referring_ips'] ?? 0 ),
+		'referring_subnets'               => absint( $result['referring_subnets'] ?? 0 ),
+		'referring_pages'                 => absint( $result['referring_pages'] ?? 0 ),
+		'target_spam_score'               => absint( $info['target_spam_score'] ?? 0 ),
+	];
+}
+
+/**
  * Fetch keyword overview data in one batched request.
  *
  * @param array<int, string> $keywords Keywords.
@@ -618,9 +666,10 @@ function nexus_market_intelligence_keyword_set( $ranked ) {
 function nexus_market_intelligence_capture_history( $snapshot ) {
 	$history = get_option( nexus_market_intelligence_history_option_name(), [] );
 	$history = is_array( $history ) ? $history : [];
-	$ranked  = is_array( $snapshot['ranked'] ?? null ) ? $snapshot['ranked'] : [];
-	$metrics = is_array( $ranked['metrics'] ?? null ) ? $ranked['metrics'] : [];
-	$entry   = [
+	$ranked    = is_array( $snapshot['ranked'] ?? null ) ? $snapshot['ranked'] : [];
+	$metrics   = is_array( $ranked['metrics'] ?? null ) ? $ranked['metrics'] : [];
+	$authority = is_array( $snapshot['authority'] ?? null ) ? $snapshot['authority'] : [];
+	$entry     = [
 		'captured_at' => absint( $snapshot['generated_at'] ?? time() ),
 		'ranked_count'=> absint( $ranked['total_count'] ?? 0 ),
 		'etv'         => is_numeric( $metrics['etv'] ?? null ) ? (float) $metrics['etv'] : 0.0,
@@ -628,6 +677,14 @@ function nexus_market_intelligence_capture_history( $snapshot ) {
 		'is_down'     => absint( $metrics['is_down'] ?? 0 ),
 		'is_lost'     => absint( $metrics['is_lost'] ?? 0 ),
 		'competitors' => count( (array) ( $snapshot['competitors'] ?? [] ) ),
+		'authority'   => [
+			'rank'                   => absint( $authority['rank'] ?? 0 ),
+			'backlinks'              => absint( $authority['backlinks'] ?? 0 ),
+			'backlinks_spam_score'   => absint( $authority['backlinks_spam_score'] ?? 0 ),
+			'referring_domains'      => absint( $authority['referring_domains'] ?? 0 ),
+			'referring_main_domains' => absint( $authority['referring_main_domains'] ?? 0 ),
+			'referring_ips'          => absint( $authority['referring_ips'] ?? 0 ),
+		],
 	];
 
 	array_unshift( $history, $entry );
@@ -671,6 +728,12 @@ function nexus_refresh_market_intelligence( $automatic = false ) {
 			$competitors = is_array( $current['competitors'] ?? null ) ? $current['competitors'] : [];
 		}
 
+		$authority = nexus_market_intelligence_fetch_authority( $automatic );
+		if ( is_wp_error( $authority ) ) {
+			$errors['authority'] = $authority->get_error_message();
+			$authority = is_array( $current['authority'] ?? null ) ? $current['authority'] : [];
+		}
+
 		$ranked_rows = is_array( $ranked['rows'] ?? null ) ? $ranked['rows'] : [];
 		$keywords    = nexus_market_intelligence_keyword_set( $ranked_rows );
 		$overview    = nexus_market_intelligence_fetch_keyword_overview( $keywords, $automatic );
@@ -692,6 +755,7 @@ function nexus_refresh_market_intelligence( $automatic = false ) {
 			],
 			'ranked'          => $ranked,
 			'competitors'     => $competitors,
+			'authority'       => $authority,
 			'keyword_overview'=> $overview,
 			'watch_keywords'  => $keywords,
 			'strategic_overview'        => is_array( $current['strategic_overview'] ?? null ) ? $current['strategic_overview'] : [],
