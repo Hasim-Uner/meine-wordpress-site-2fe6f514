@@ -71,6 +71,14 @@ function nexus_get_market_intelligence_export_columns() {
 		'segment',
 		'segment_label',
 		'score',
+		'score_volume',
+		'score_ranking',
+		'score_gsc',
+		'score_intent',
+		'score_business',
+		'score_leads',
+		'penalty_difficulty',
+		'penalty_brand',
 		'action',
 		'gsc_clicks',
 		'gsc_impressions',
@@ -321,6 +329,15 @@ function nexus_build_market_intelligence_export_rows( $snapshot ) {
 			$export['segment']              = (string) ( $row['segment'] ?? '' );
 			$export['segment_label']        = (string) ( $row['segment_label'] ?? '' );
 			$export['score']                = absint( $row['score'] ?? 0 );
+			$breakdown                      = is_array( $row['score_breakdown'] ?? null ) ? $row['score_breakdown'] : [];
+			$export['score_volume']         = absint( $breakdown['volume'] ?? 0 );
+			$export['score_ranking']        = absint( $breakdown['ranking'] ?? 0 );
+			$export['score_gsc']            = absint( $breakdown['gsc'] ?? 0 );
+			$export['score_intent']         = absint( $breakdown['intent'] ?? 0 );
+			$export['score_business']       = absint( $breakdown['business'] ?? 0 );
+			$export['score_leads']          = absint( $breakdown['leads'] ?? 0 );
+			$export['penalty_difficulty']   = absint( $breakdown['difficulty_penalty'] ?? 0 );
+			$export['penalty_brand']        = absint( $breakdown['brand_penalty'] ?? 0 );
 			$export['action']               = (string) ( $row['action'] ?? '' );
 			$export['gsc_clicks']           = nexus_market_intelligence_export_decimal( $row['gsc_clicks'] ?? 0, 0 );
 			$export['gsc_impressions']      = nexus_market_intelligence_export_decimal( $row['gsc_impressions'] ?? 0, 0 );
