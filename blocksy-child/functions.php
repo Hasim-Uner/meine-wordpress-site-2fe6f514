@@ -17,6 +17,7 @@ $inc_dir = get_stylesheet_directory() . '/inc/';
 
 $modules = [
 	'helpers.php',        // Utility-Funktionen (muss zuerst geladen werden)
+	'site-hygiene.php',   // Einmalige Site-Hygiene: Zeitzone + Legacy-Menüs
 	'theme-setup.php',    // Menue-Slot, Fonts, Marke/Favicons, Blocksy-Overrides, Share-Buttons
 	'affiliate-links.php', // Affiliate-URL-Registry und Disclosure-Helper
 	'feature-flags.php',  // Staged Rollout-Schalter fuer neue Funnel-Routen und Submits

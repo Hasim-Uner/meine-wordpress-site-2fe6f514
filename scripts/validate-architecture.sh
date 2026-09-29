@@ -203,6 +203,15 @@ require_no_path "agents/skills/modern-web-guidance/guides/passkeys"
 require_no_path "agents/skills/modern-web-guidance/guides/webmcp"
 
 echo
+echo "=== Route Architecture Contract ==="
+require_file "scripts/validate-route-architecture.py"
+if python3 scripts/validate-route-architecture.py; then
+  pass "Route/page/template/indexing contracts are consistent"
+else
+  fail "Route/page/template/indexing contracts are inconsistent"
+fi
+
+echo
 echo "=== CI Coverage Contract ==="
 require_text "CLAUDE.md" '^@AGENTS\.md$' "Claude imports the shared contract"
 require_file "scripts/check.py"
