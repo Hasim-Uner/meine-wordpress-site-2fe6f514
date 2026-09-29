@@ -68,6 +68,8 @@ require_pattern "function nexus_run_market_intelligence_live_background_step\(" 
 require_pattern "admin_post_nopriv_nexus_market_intelligence_live_worker" "$MARKET"
 require_pattern "nexus_queue_market_intelligence_live_refresh" "$UI"
 require_pattern "läuft im Hintergrund" "$UI"
+require_pattern "organic_live_rows.*organic_job" "$UI"
+require_pattern "Neue Top-" "$UI"
 require_pattern "nexus_refresh_market_intelligence\( true \)" "$MARKET"
 forbid_pattern "nexus_refresh_market_intelligence_strategic_overview\(.*true" "$MARKET"
 

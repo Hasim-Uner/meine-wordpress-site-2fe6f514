@@ -94,7 +94,7 @@ Ablauf:
 4. Ein WP-Cron-Event dient nur als Fallback, falls der Host Loopback-Requests blockiert.
 5. Erst nach Abschluss wird der Live-Bereich des Market-Snapshots atomar ersetzt.
 
-Die UI zeigt `läuft im Hintergrund · x/y`. Dadurch hängt der Browser nicht mehr an der kompletten DataForSEO-Watchlist und ein Varnish-Timeout kann den Admin-Klick nicht mehr abbrechen.
+Die UI zeigt `läuft im Hintergrund · x/y`. Während der Job aktiv ist, rendert die Live-Watch die bereits fertig geprüften Zeilen direkt aus dem Jobzustand. Der vorherige Snapshot wird in dieser Phase bewusst **nicht** mehr angezeigt, damit ein alter `Top 10`-Stand nicht neben einem neuen `Top 50`-Job stehen kann. Dadurch hängt der Browser nicht mehr an der kompletten DataForSEO-Watchlist und ein Varnish-Timeout kann den Admin-Klick nicht mehr abbrechen.
 
 Die Maps-Zuordnung versucht das eigene Ergebnis über Domain oder den konfigurierten Business-Namen zu erkennen. Ein fehlender Maps-Treffer ist ebenfalls ein neutraler Zustand, kein Ranking `0`.
 
