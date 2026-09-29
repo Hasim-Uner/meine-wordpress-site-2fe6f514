@@ -241,6 +241,8 @@ Der Opportunity-Score berücksichtigt deshalb neben Suchvolumen, Ranking und GSC
 
 Das ist kein DataForSEO-Score und keine Erfolgsprognose. Das Cockpit berechnet die Priorität aus den verbundenen Daten selbst.
 
+Der Gesamtwert bleibt deshalb zerlegbar. Marktansicht, Content-Chancen und Market CSV führen die Komponenten separat: Volumen, Ranking, GSC, Intent, Business-Wert und Lead-Signal als positive Beiträge sowie Difficulty- und Brand-Abschlag als Gegenfaktoren. Ein Score kann damit bis auf seine Einzelbeiträge zurückverfolgt werden, statt als Black Box zu erscheinen.
+
 ## Market CSV
 
 `Markt & Wettbewerb` besitzt einen eigenen `Market CSV`-Export. Er ist bewusst vom allgemeinen GSC-Export getrennt.
@@ -254,7 +256,7 @@ Zeilentypen:
 - `keyword_overview` — Suchvolumen, CPC, Keyword Difficulty, Intent und SERP-Merkmale
 - `competitor_auto` — automatisch erkannte organische Wettbewerber
 - `competitor_strategic` — kuratierte strategische Vergleichsgruppe inklusive vorhandener Overlap-Metriken
-- `opportunity` — repo-eigener Join aus DataForSEO, GSC, WordPress und CRM; enthält `market_source` und `ranking_gap` zur Herkunft des Kandidaten
+- `opportunity` — repo-eigener Join aus DataForSEO, GSC, WordPress und CRM; enthält `market_source`, `ranking_gap` und die einzelnen Score-/Penalty-Spalten zur Herkunft und Nachvollziehbarkeit des Kandidaten
 - `live_organic` / `live_maps` — zuletzt manuell gespeicherte Live-Ergebnisse, sofern vorhanden
 
 Format:
