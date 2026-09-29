@@ -50,6 +50,11 @@ require_pattern "nexus_get_seo_cockpit_crm_acquisition_snapshot_data" "$DECISION
 require_pattern "entry_map" "$LEADS"
 require_pattern "crm_current_entries" "$DECISIONS"
 require_pattern "nexus_get_seo_cockpit_page_role_scores" "$DECISIONS"
+require_pattern "query_page_rows" "$DECISIONS"
+require_pattern "is_ranking_gap" "$DECISIONS"
+require_pattern "Ranking & Owner prüfen" "$DECISIONS"
+require_pattern "Content-Gap prüfen" "$DECISIONS"
+require_pattern "Gap beobachten" "$DECISIONS"
 
 # Action-first UX contract.
 require_pattern "Content-Chancen" "$DECISIONS"
