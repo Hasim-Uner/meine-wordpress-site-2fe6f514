@@ -1,6 +1,6 @@
 # SEO Cockpit · Market Intelligence
 
-Stand: 2026-09-28.
+Stand: 2026-09-29.
 
 ## Ziel
 
@@ -175,13 +175,16 @@ Der Button ist bewusst getrennt vom normalen `Marktdaten aktualisieren`: Die str
 
 ### Keyword Overview
 
-Die Watchlist entsteht aus:
+Das Keyword-Overview-Universum entsteht aus:
 
-1. explizit gepflegten Keywords,
-2. starken GSC-Queries,
-3. vorhandenen Ranked Keywords.
+1. explizit gepflegten Admin-Keywords,
+2. einer kleinen repo-eigenen strategischen Markt-Watchlist für die aktuelle Positionierung,
+3. starken GSC-Queries,
+4. vorhandenen Ranked Keywords.
 
-Die Anzahl wird vor dem API-Call gedeckelt.
+Die repo-eigenen Seeds sind **keine Query-Ownership-Zuordnung**, sondern reine Marktbeobachtung. Sie enthalten Kernbegriffe für WordPress-Freelance/-Entwicklung, Tracking, Conversion, Relaunch/Landingpages sowie die lokale Webdesign-Nachfrage, damit völlig neue Marktchancen nicht erst nach einem eigenen Ranking oder einer GSC-Impression sichtbar werden.
+
+Manuelle Admin-Keywords stehen in der Reihenfolge vor den Repo-Seeds. Die Gesamtzahl wird vor dem API-Call über `keyword_overview_limit` gedeckelt. Die manuellen Live-SERP-/Maps-Checks verwenden weiterhin nur die explizite Admin-Watchlist und werden durch diese Seeds nicht automatisch verteuert.
 
 ### Authority Pulse
 
@@ -200,6 +203,15 @@ Der Authority Pulse beantwortet die Frage, **ob externe Domain-Autorität als En
 
 ## Opportunity Engine
 
+Das Kandidatenuniversum ist bewusst **nicht** auf bereits rankende Keywords beschränkt. Es ist die deduplizierte Vereinigung aus:
+
+1. DataForSEO Ranked Keywords der eigenen Domain,
+2. Keyword Overview für Watchlist-, GSC- und Ranking-Keywords.
+
+Fehlt ein Keyword im begrenzten Ranked-Keyword-Snapshot, wird es als `ranking_gap` markiert. Das bedeutet ausdrücklich **„kein Ranking im geladenen Snapshot“**, nicht „Google rankt die Domain nirgends“. Existiert für dieselbe Query bereits GSC-Query×Page-Evidenz, wird die stärkste beobachtete URL als mögliche Owner-Seite zugeordnet; andernfalls bleibt die Zielseite offen.
+
+So kann das Cockpit Nachfrage ohne geladenes Ranking überhaupt erst als Entscheidungskandidat sehen, ohne aus Datenabwesenheit Gewissheit zu erfinden. Ranking-Gaps erhalten nur einen kleinen Score-Beitrag und landen in Content-Chancen zunächst unter **Prüfen & planen**.
+
 Der aktuelle Score ist deterministisch und transparent. Er kombiniert:
 
 - externes Suchvolumen,
@@ -211,6 +223,9 @@ Der aktuelle Score ist deterministisch und transparent. Er kombiniert:
 
 Beispielhafte Aktionsklassen:
 
+- `Ranking & Owner prüfen` — kaufnahe Nachfrage ohne geladenes Ranking
+- `Content-Gap prüfen` — informative Nachfrage ohne geladenes Ranking
+- `Gap beobachten` — schwächeres oder noch unbestätigtes Gap-Signal
 - `Top-10-Push`
 - `Seite ausbauen`
 - `Position verteidigen`
@@ -226,6 +241,8 @@ Der Opportunity-Score berücksichtigt deshalb neben Suchvolumen, Ranking und GSC
 
 Das ist kein DataForSEO-Score und keine Erfolgsprognose. Das Cockpit berechnet die Priorität aus den verbundenen Daten selbst.
 
+Der Gesamtwert bleibt deshalb zerlegbar. Marktansicht, Content-Chancen und Market CSV führen die Komponenten separat: Volumen, Ranking, GSC, Intent, Business-Wert und Lead-Signal als positive Beiträge sowie Difficulty- und Brand-Abschlag als Gegenfaktoren. Ein Score kann damit bis auf seine Einzelbeiträge zurückverfolgt werden, statt als Black Box zu erscheinen.
+
 ## Market CSV
 
 `Markt & Wettbewerb` besitzt einen eigenen `Market CSV`-Export. Er ist bewusst vom allgemeinen GSC-Export getrennt.
@@ -239,7 +256,7 @@ Zeilentypen:
 - `keyword_overview` — Suchvolumen, CPC, Keyword Difficulty, Intent und SERP-Merkmale
 - `competitor_auto` — automatisch erkannte organische Wettbewerber
 - `competitor_strategic` — kuratierte strategische Vergleichsgruppe inklusive vorhandener Overlap-Metriken
-- `opportunity` — repo-eigener Join aus DataForSEO, GSC, WordPress und CRM
+- `opportunity` — repo-eigener Join aus DataForSEO, GSC, WordPress und CRM; enthält `market_source`, `ranking_gap` und die einzelnen Score-/Penalty-Spalten zur Herkunft und Nachvollziehbarkeit des Kandidaten
 - `live_organic` / `live_maps` — zuletzt manuell gespeicherte Live-Ergebnisse, sofern vorhanden
 
 Format:

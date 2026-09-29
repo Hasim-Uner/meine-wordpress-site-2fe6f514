@@ -345,11 +345,12 @@ function nexus_render_market_intelligence_opportunities( $rows, $limit = 10 ) {
 						<strong><?php echo esc_html( (string) ( $row['keyword'] ?? '' ) ); ?></strong>
 						<div class="nsc-market-opportunity__badges">
 							<span class="is-segment-<?php echo esc_attr( sanitize_key( (string) ( $row['segment'] ?? 'other' ) ) ); ?>"><?php echo esc_html( (string) ( $row['segment_label'] ?? 'Beobachten' ) ); ?></span>
+							<?php if ( ! empty( $row['is_ranking_gap'] ) ) : ?><span>Ranking-Gap</span><?php endif; ?>
 							<span><?php echo esc_html( (string) ( $row['action'] ?? 'Beobachten' ) ); ?></span>
 						</div>
 					</div>
 					<div class="nsc-market-opportunity__meta">
-						<span>DataForSEO Pos. <?php echo esc_html( number_format_i18n( (float) ( $row['rank'] ?? 0 ), 0 ) ); ?></span>
+						<?php if ( ! empty( $row['is_ranking_gap'] ) ) : ?><span>DataForSEO: kein Ranking im geladenen Snapshot</span><?php else : ?><span>DataForSEO Pos. <?php echo esc_html( number_format_i18n( (float) ( $row['rank'] ?? 0 ), 0 ) ); ?></span><?php endif; ?>
 						<span>Vol. <?php echo esc_html( number_format_i18n( (float) ( $row['search_volume'] ?? 0 ), 0 ) ); ?></span>
 						<?php if ( ! empty( $row['page_role_label'] ) ) : ?><span><?php echo esc_html( (string) $row['page_role_label'] ); ?></span><?php endif; ?>
 						<?php if ( (float) ( $row['gsc_impressions'] ?? 0 ) > 0 ) : ?><span>GSC <?php echo esc_html( number_format_i18n( (float) $row['gsc_impressions'], 0 ) ); ?> Impr.</span><?php endif; ?>
@@ -357,6 +358,13 @@ function nexus_render_market_intelligence_opportunities( $rows, $limit = 10 ) {
 						<?php if ( absint( $row['crm_contacts_current'] ?? 0 ) > 0 ) : ?><span><?php echo esc_html( number_format_i18n( absint( $row['crm_contacts_current'] ) ) ); ?> CRM-Kontakte</span><?php endif; ?>
 						<?php if ( isset( $row['difficulty'] ) && is_numeric( $row['difficulty'] ) ) : ?><span>KD <?php echo esc_html( number_format_i18n( (float) $row['difficulty'], 0 ) ); ?></span><?php endif; ?>
 					</div>
+					<?php $score_breakdown = is_array( $row['score_breakdown'] ?? null ) ? $row['score_breakdown'] : []; ?>
+					<?php if ( ! empty( $score_breakdown ) ) : ?>
+						<details class="nsc-market-opportunity__score-details">
+							<summary>Score erklären</summary>
+							<small>Volumen +<?php echo esc_html( (string) absint( $score_breakdown['volume'] ?? 0 ) ); ?> · Ranking +<?php echo esc_html( (string) absint( $score_breakdown['ranking'] ?? 0 ) ); ?> · GSC +<?php echo esc_html( (string) absint( $score_breakdown['gsc'] ?? 0 ) ); ?> · Intent +<?php echo esc_html( (string) absint( $score_breakdown['intent'] ?? 0 ) ); ?> · Business +<?php echo esc_html( (string) absint( $score_breakdown['business'] ?? 0 ) ); ?> · Leads +<?php echo esc_html( (string) absint( $score_breakdown['leads'] ?? 0 ) ); ?> · KD −<?php echo esc_html( (string) absint( $score_breakdown['difficulty_penalty'] ?? 0 ) ); ?> · Brand −<?php echo esc_html( (string) absint( $score_breakdown['brand_penalty'] ?? 0 ) ); ?></small>
+						</details>
+					<?php endif; ?>
 					<?php if ( ! empty( $row['url'] ) ) : ?><a href="<?php echo esc_url( (string) $row['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( function_exists( 'nexus_get_seo_cockpit_short_url' ) ? nexus_get_seo_cockpit_short_url( (string) $row['url'] ) : (string) $row['url'] ); ?></a><?php endif; ?>
 				</div>
 			</article>
@@ -701,7 +709,7 @@ function nexus_render_market_intelligence_admin_page() {
 						<label><span>Competitor Limit</span><input type="number" min="5" max="50" name="dataforseo[competitor_limit]" value="<?php echo esc_attr( (string) ( $settings['competitor_limit'] ?? '15' ) ); ?>"></label>
 						<label><span>Keyword Overview Limit</span><input type="number" min="10" max="100" name="dataforseo[keyword_overview_limit]" value="<?php echo esc_attr( (string) ( $settings['keyword_overview_limit'] ?? '40' ) ); ?>"></label>
 						<label><span>Auto-Budget / Monat (USD)</span><input type="number" step="0.25" min="0.25" max="100" name="dataforseo[monthly_auto_budget_usd]" value="<?php echo esc_attr( (string) ( $settings['monthly_auto_budget_usd'] ?? '2.00' ) ); ?>"><small>Stoppt weitere automatische Calls, sobald die gemeldeten Monatskosten das Limit erreichen.</small></label>
-						<label class="nsc-market-form-grid__wide"><span>Watchlist-Keywords</span><textarea rows="7" name="dataforseo[watch_keywords]" placeholder="wordpress freelancer hannover&#10;wordpress entwickler hannover"><?php echo esc_textarea( (string) ( $settings['watch_keywords'] ?? '' ) ); ?></textarea><small>Ein Keyword pro Zeile. Live-Organic nutzt maximal 8, Maps maximal 5 pro manueller Prüfung.</small></label>
+						<label class="nsc-market-form-grid__wide"><span>Watchlist-Keywords</span><textarea rows="7" name="dataforseo[watch_keywords]" placeholder="wordpress freelancer hannover&#10;wordpress entwickler hannover"><?php echo esc_textarea( (string) ( $settings['watch_keywords'] ?? '' ) ); ?></textarea><small>Ein Keyword pro Zeile. Live-Organic nutzt maximal 8, Maps maximal 5 pro manueller Prüfung. Der wöchentliche Keyword-Overview ergänzt außerdem <?php echo esc_html( number_format_i18n( count( nexus_market_intelligence_strategic_keyword_seeds() ) ) ); ?> repo-eigene Strategiebegriffe für WordPress, Tracking, Conversion und lokale Nachfrage.</small></label>
 						<label class="nsc-market-form-grid__wide"><span>Strategische Wettbewerber</span><textarea rows="7" name="dataforseo[strategic_competitors]" placeholder="oliverfleck.de&#10;onma.de&#10;goldenberg-agentur.de"><?php echo esc_textarea( (string) ( $settings['strategic_competitors'] ?? '' ) ); ?></textarea><small>Eine Domain pro Zeile. Die Liste selbst erzeugt keine Calls. Der Button „Strategische Domains prüfen“ startet bewusst einen kostenpflichtigen Domain-Rank-Overview-Call je Domain (maximal 8).</small></label>
 						<label class="nsc-market-checkbox"><input type="checkbox" name="dataforseo[auto_refresh]" value="1" <?php checked( '1', (string) ( $settings['auto_refresh'] ?? '1' ) ); ?>><span>Wöchentliche Labs-Aktualisierung aktivieren</span></label>
 					</div>
