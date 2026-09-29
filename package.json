@@ -25,7 +25,8 @@
     "lint:canon": "bash scripts/canon-guard.sh",
     "lint:css-architecture": "python3 scripts/audit-css-architecture.py",
     "lint:legacy-css": "python3 scripts/audit-legacy-nx-css.py",
-    "lint:php": "find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l"
+    "lint:php": "find blocksy-child -name '*.php' -print0 | xargs -0 -n1 php -l",
+    "lint:route-architecture": "python3 scripts/validate-route-architecture.py"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
