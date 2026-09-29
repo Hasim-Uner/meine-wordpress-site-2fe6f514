@@ -87,8 +87,10 @@ function nexus_sanitize_dataforseo_settings( $raw ) {
 		'api_password'            => $password,
 		'location_name'           => sanitize_text_field( (string) ( $raw['location_name'] ?? 'Germany' ) ),
 		'language_code'           => strtolower( sanitize_key( (string) ( $raw['language_code'] ?? 'de' ) ) ),
-		'local_location_name'     => sanitize_text_field( (string) ( $raw['local_location_name'] ?? '' ) ),
-		'local_business_name'     => sanitize_text_field( (string) ( $raw['local_business_name'] ?? '' ) ),
+		'local_location_name'        => sanitize_text_field( (string) ( $raw['local_location_name'] ?? '' ) ),
+		'organic_live_location_name' => sanitize_text_field( (string) ( $raw['organic_live_location_name'] ?? $raw['local_location_name'] ?? '' ) ),
+		'organic_live_depth'         => (string) max( 10, min( 200, absint( $raw['organic_live_depth'] ?? 50 ) ) ),
+		'local_business_name'        => sanitize_text_field( (string) ( $raw['local_business_name'] ?? '' ) ),
 		'watch_keywords'          => $watch_keywords,
 		'strategic_competitors'  => $strategic_competitors,
 		'auto_refresh'            => ! empty( $raw['auto_refresh'] ) ? '1' : '0',
@@ -404,12 +406,24 @@ function nexus_render_market_intelligence_live_rows( $rows, $mode ) {
 	<div class="nsc-market-live-list">
 		<?php foreach ( $rows as $row ) : ?>
 			<?php
-			$result = is_array( $row['result'] ?? null ) ? $row['result'] : [];
-			$own    = is_array( $result['own'] ?? null ) ? $result['own'] : [];
+			$result   = is_array( $row['result'] ?? null ) ? $row['result'] : [];
+			$own      = is_array( $result['own'] ?? null ) ? $result['own'] : [];
+			$depth    = absint( $row['depth'] ?? ( 'maps' === $mode ? 100 : 10 ) );
+			$location = trim( (string) ( $row['location_name'] ?? '' ) );
+			$context  = 'maps' === $mode ? 'Google Maps' : 'Google Organic';
+			if ( '' !== $location ) {
+				$context .= ' · ' . $location;
+			}
+			if ( 'organic' === $mode ) {
+				$context .= ' · Top ' . max( 10, $depth );
+			}
+			$status = ! empty( $own )
+				? '#' . absint( $own['rank'] ?? 0 )
+				: ( 'organic' === $mode ? 'nicht in Top ' . max( 10, $depth ) : 'kein eigener Maps-Treffer' );
 			?>
 			<article>
-				<div><strong><?php echo esc_html( (string) ( $row['keyword'] ?? '' ) ); ?></strong><span><?php echo esc_html( 'maps' === $mode ? 'Google Maps' : 'Google Organic' ); ?></span></div>
-				<b><?php echo esc_html( ! empty( $own ) ? '#' . absint( $own['rank'] ?? 0 ) : 'nicht gefunden' ); ?></b>
+				<div><strong><?php echo esc_html( (string) ( $row['keyword'] ?? '' ) ); ?></strong><span><?php echo esc_html( $context ); ?></span></div>
+				<b><?php echo esc_html( $status ); ?></b>
 				<?php if ( 'maps' === $mode && ! empty( $own['title'] ) ) : ?><small><?php echo esc_html( (string) $own['title'] ); ?></small><?php endif; ?>
 			</article>
 		<?php endforeach; ?>
@@ -515,7 +529,7 @@ function nexus_render_market_intelligence_admin_page() {
 				</div><?php endif; ?>
 			</div>
 			<div class="nsc-market-live-grid">
-				<div><h3>Google Organic</h3><?php nexus_render_market_intelligence_live_rows( (array) ( $snapshot['live_serp'] ?? [] ), 'organic' ); ?></div>
+				<div><h3>Google Organic · <?php echo esc_html( (string) $config['organic_live_location_name'] ); ?> · Top <?php echo esc_html( (string) absint( $config['organic_live_depth'] ) ); ?></h3><?php nexus_render_market_intelligence_live_rows( (array) ( $snapshot['live_serp'] ?? [] ), 'organic' ); ?></div>
 				<div><h3>Google Maps · <?php echo esc_html( (string) $config['local_location_name'] ); ?></h3><?php nexus_render_market_intelligence_live_rows( (array) ( $snapshot['local_maps'] ?? [] ), 'maps' ); ?></div>
 			</div>
 		</section>
@@ -552,6 +566,8 @@ function nexus_render_market_intelligence_admin_page() {
 						<label><span>Labs Location</span><input type="text" name="dataforseo[location_name]" value="<?php echo esc_attr( (string) ( $settings['location_name'] ?? 'Germany' ) ); ?>"><small>z. B. Germany.</small></label>
 						<label><span>Sprache</span><input type="text" name="dataforseo[language_code]" value="<?php echo esc_attr( (string) ( $settings['language_code'] ?? 'de' ) ); ?>"><small>ISO-Code, z. B. de.</small></label>
 						<label><span>Maps Location</span><input type="text" name="dataforseo[local_location_name]" value="<?php echo esc_attr( (string) ( $settings['local_location_name'] ?? '' ) ); ?>"><small>Für lokale Maps-Watchlist.</small></label>
+						<label><span>Organic Live Standort</span><input type="text" name="dataforseo[organic_live_location_name]" value="<?php echo esc_attr( (string) ( $settings['organic_live_location_name'] ?? $settings['local_location_name'] ?? 'Hanover,Lower Saxony,Germany' ) ); ?>"><small>Standort für die manuelle Organic-Live-Watchlist, z. B. Hanover,Lower Saxony,Germany.</small></label>
+						<label><span>Organic Live Tiefe</span><input type="number" min="10" max="200" step="10" name="dataforseo[organic_live_depth]" value="<?php echo esc_attr( (string) ( $settings['organic_live_depth'] ?? '50' ) ); ?>"><small>Standard 50. DataForSEO berechnet Organic Live in 10er-Blöcken; größere Tiefe kann den manuellen Check verteuern.</small></label>
 						<label><span>Business Name</span><input type="text" name="dataforseo[local_business_name]" value="<?php echo esc_attr( (string) ( $settings['local_business_name'] ?? 'Haşim Üner' ) ); ?>"><small>Nur für die Zuordnung im Maps-Ergebnis.</small></label>
 						<label><span>Ranked Keywords Limit</span><input type="number" min="20" max="250" name="dataforseo[ranked_limit]" value="<?php echo esc_attr( (string) ( $settings['ranked_limit'] ?? '100' ) ); ?>"></label>
 						<label><span>Competitor Limit</span><input type="number" min="5" max="50" name="dataforseo[competitor_limit]" value="<?php echo esc_attr( (string) ( $settings['competitor_limit'] ?? '15' ) ); ?>"></label>
