@@ -22,6 +22,8 @@ function nexus_get_market_intelligence_export_columns() {
 	return [
 		'row_type',
 		'source',
+		'market_source',
+		'ranking_gap',
 		'snapshot_at',
 		'target',
 		'location_name',
@@ -311,6 +313,8 @@ function nexus_build_market_intelligence_export_rows( $snapshot ) {
 			$export['keyword']              = (string) ( $row['keyword'] ?? '' );
 			$export['url']                  = (string) ( $row['url'] ?? '' );
 			$export['rank']                 = absint( $row['rank'] ?? 0 );
+			$export['market_source']        = sanitize_key( (string) ( $row['market_source'] ?? '' ) );
+			$export['ranking_gap']          = ! empty( $row['is_ranking_gap'] ) ? 1 : 0;
 			$export['search_volume']        = nexus_market_intelligence_export_decimal( $row['search_volume'] ?? 0, 0 );
 			$export['difficulty']           = nexus_market_intelligence_export_decimal( $row['difficulty'] ?? null, 2 );
 			$export['intent']               = (string) ( $row['intent'] ?? '' );
