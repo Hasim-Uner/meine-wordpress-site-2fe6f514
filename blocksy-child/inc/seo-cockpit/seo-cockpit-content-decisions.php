@@ -343,6 +343,7 @@ function nexus_ci_market_decision_items( $context ) {
 			'impressions'    => (float) ( $row['gsc_impressions'] ?? 0.0 ),
 			'position'       => (float) ( $row['gsc_position'] ?? 0.0 ),
 			'market_score'   => $score,
+			'score_breakdown'=> is_array( $row['score_breakdown'] ?? null ) ? $row['score_breakdown'] : [],
 			'is_ranking_gap' => $is_ranking_gap,
 			'market_source'  => sanitize_key( (string) ( $row['market_source'] ?? '' ) ),
 			'seo_score'      => 0,
@@ -818,6 +819,10 @@ function nexus_ci_render_content_decision_card( $item ) {
 						<div><span>Segment</span><strong><?php echo esc_html( (string) ( $direct_market['segment_label'] ?? 'Beobachten' ) ); ?></strong></div>
 						<div><span>Quellen</span><strong><?php echo esc_html( ! empty( $sources ) ? implode( ' · ', $sources ) : 'DataForSEO' ); ?></strong></div>
 					</div>
+					<?php $score_breakdown = is_array( $decision['score_breakdown'] ?? null ) ? $decision['score_breakdown'] : []; ?>
+					<?php if ( ! empty( $score_breakdown ) ) : ?>
+						<p class="nsc-decision-source-value">Score-Komponenten: Volumen +<?php echo esc_html( (string) absint( $score_breakdown['volume'] ?? 0 ) ); ?> · Ranking +<?php echo esc_html( (string) absint( $score_breakdown['ranking'] ?? 0 ) ); ?> · GSC +<?php echo esc_html( (string) absint( $score_breakdown['gsc'] ?? 0 ) ); ?> · Intent +<?php echo esc_html( (string) absint( $score_breakdown['intent'] ?? 0 ) ); ?> · Business +<?php echo esc_html( (string) absint( $score_breakdown['business'] ?? 0 ) ); ?> · Leads +<?php echo esc_html( (string) absint( $score_breakdown['leads'] ?? 0 ) ); ?> · KD −<?php echo esc_html( (string) absint( $score_breakdown['difficulty_penalty'] ?? 0 ) ); ?> · Brand −<?php echo esc_html( (string) absint( $score_breakdown['brand_penalty'] ?? 0 ) ); ?>.</p>
+					<?php endif; ?>
 					<p class="nsc-decision-source-value">Direktes Suchmarktsignal. Es wird nur aus vorhandenen DataForSEO-, GSC-, WordPress- und CRM-Snapshots berechnet.</p>
 				<?php else : ?>
 					<div class="nsc-decision-detail-grid">
