@@ -87,8 +87,10 @@ function nexus_sanitize_dataforseo_settings( $raw ) {
 		'api_password'            => $password,
 		'location_name'           => sanitize_text_field( (string) ( $raw['location_name'] ?? 'Germany' ) ),
 		'language_code'           => strtolower( sanitize_key( (string) ( $raw['language_code'] ?? 'de' ) ) ),
-		'local_location_name'     => sanitize_text_field( (string) ( $raw['local_location_name'] ?? '' ) ),
-		'local_business_name'     => sanitize_text_field( (string) ( $raw['local_business_name'] ?? '' ) ),
+		'local_location_name'        => sanitize_text_field( (string) ( $raw['local_location_name'] ?? '' ) ),
+		'organic_live_location_name' => sanitize_text_field( (string) ( $raw['organic_live_location_name'] ?? $raw['local_location_name'] ?? '' ) ),
+		'organic_live_depth'         => (string) max( 10, min( 200, absint( $raw['organic_live_depth'] ?? 50 ) ) ),
+		'local_business_name'        => sanitize_text_field( (string) ( $raw['local_business_name'] ?? '' ) ),
 		'watch_keywords'          => $watch_keywords,
 		'strategic_competitors'  => $strategic_competitors,
 		'auto_refresh'            => ! empty( $raw['auto_refresh'] ) ? '1' : '0',
@@ -156,8 +158,9 @@ function nexus_handle_market_intelligence_live_refresh() {
 
 	check_admin_referer( 'nexus_market_intelligence_live_refresh' );
 	$mode   = isset( $_POST['mode'] ) ? sanitize_key( (string) wp_unslash( $_POST['mode'] ) ) : 'organic';
-	$result = nexus_refresh_market_intelligence_live( $mode );
-	$notice = is_wp_error( $result ) ? 'live_error' : ( 'maps' === $mode ? 'maps_done' : 'live_done' );
+	$mode   = 'maps' === $mode ? 'maps' : 'organic';
+	$result = nexus_queue_market_intelligence_live_refresh( $mode );
+	$notice = is_wp_error( $result ) ? 'live_error' : ( 'maps' === $mode ? 'maps_queued' : 'live_queued' );
 
 	wp_safe_redirect(
 		nexus_market_intelligence_admin_url(
@@ -217,6 +220,8 @@ function nexus_render_market_intelligence_notice() {
 		'refresh_done'   => [ 'success', 'Market Intelligence wurde aktualisiert.' ],
 		'live_done'      => [ 'success', 'Live-SERP-Watchlist wurde aktualisiert.' ],
 		'maps_done'      => [ 'success', 'Google-Maps-Watchlist wurde aktualisiert.' ],
+		'live_queued'    => [ 'info', 'Organic Live läuft im Hintergrund. Die Watchlist wird Keyword für Keyword geprüft.' ],
+		'maps_queued'    => [ 'info', 'Maps Live läuft im Hintergrund. Die Watchlist wird Keyword für Keyword geprüft.' ],
 		'refresh_error'  => [ 'error', 'Market-Refresh fehlgeschlagen.' ],
 		'live_error'     => [ 'error', 'Live-Check fehlgeschlagen.' ],
 		'export_empty'      => [ 'warning', 'Für den Market-Export liegt noch kein verwertbarer Snapshot vor.' ],
@@ -404,12 +409,24 @@ function nexus_render_market_intelligence_live_rows( $rows, $mode ) {
 	<div class="nsc-market-live-list">
 		<?php foreach ( $rows as $row ) : ?>
 			<?php
-			$result = is_array( $row['result'] ?? null ) ? $row['result'] : [];
-			$own    = is_array( $result['own'] ?? null ) ? $result['own'] : [];
+			$result   = is_array( $row['result'] ?? null ) ? $row['result'] : [];
+			$own      = is_array( $result['own'] ?? null ) ? $result['own'] : [];
+			$depth    = absint( $row['depth'] ?? ( 'maps' === $mode ? 100 : 10 ) );
+			$location = trim( (string) ( $row['location_name'] ?? '' ) );
+			$context  = 'maps' === $mode ? 'Google Maps' : 'Google Organic';
+			if ( '' !== $location ) {
+				$context .= ' · ' . $location;
+			}
+			if ( 'organic' === $mode ) {
+				$context .= ' · Top ' . max( 10, $depth );
+			}
+			$status = ! empty( $own )
+				? '#' . absint( $own['rank'] ?? 0 )
+				: ( 'organic' === $mode ? 'nicht in Top ' . max( 10, $depth ) : 'kein eigener Maps-Treffer' );
 			?>
 			<article>
-				<div><strong><?php echo esc_html( (string) ( $row['keyword'] ?? '' ) ); ?></strong><span><?php echo esc_html( 'maps' === $mode ? 'Google Maps' : 'Google Organic' ); ?></span></div>
-				<b><?php echo esc_html( ! empty( $own ) ? '#' . absint( $own['rank'] ?? 0 ) : 'nicht gefunden' ); ?></b>
+				<div><strong><?php echo esc_html( (string) ( $row['keyword'] ?? '' ) ); ?></strong><span><?php echo esc_html( $context ); ?></span></div>
+				<b><?php echo esc_html( $status ); ?></b>
 				<?php if ( 'maps' === $mode && ! empty( $own['title'] ) ) : ?><small><?php echo esc_html( (string) $own['title'] ); ?></small><?php endif; ?>
 			</article>
 		<?php endforeach; ?>
@@ -440,7 +457,9 @@ function nexus_render_market_intelligence_admin_page() {
 	$seo        = function_exists( 'nexus_get_seo_cockpit_snapshot' ) ? nexus_get_seo_cockpit_snapshot( false, 28 ) : [];
 	$opportunities = is_wp_error( $seo ) || ! is_array( $seo ) ? [] : nexus_get_market_intelligence_opportunities( $seo, 12 );
 	$has_credentials = nexus_dataforseo_has_credentials();
-	$next_sync = wp_next_scheduled( nexus_market_intelligence_cron_hook() );
+	$next_sync  = wp_next_scheduled( nexus_market_intelligence_cron_hook() );
+	$organic_job = function_exists( 'nexus_get_market_intelligence_live_job' ) ? nexus_get_market_intelligence_live_job( 'organic' ) : [];
+	$maps_job    = function_exists( 'nexus_get_market_intelligence_live_job' ) ? nexus_get_market_intelligence_live_job( 'maps' ) : [];
 	?>
 	<div class="wrap nexus-seo-cockpit nsc-market">
 		<?php nexus_render_market_intelligence_notice(); ?>
@@ -508,14 +527,29 @@ function nexus_render_market_intelligence_admin_page() {
 		</section>
 
 		<section class="nsc-market-section">
-			<div class="nsc-market-section__head"><div><p class="nexus-seo-cockpit__eyebrow">Live Watch</p><h2>Strategische Keywords live prüfen</h2><p>Live-SERPs und Google Maps werden nur auf expliziten Klick abgefragt. So entstehen keine versteckten Keyword-für-Keyword-Kosten im Cron.</p></div>
+			<div class="nsc-market-section__head"><div><p class="nexus-seo-cockpit__eyebrow">Live Watch</p><h2>Strategische Keywords live prüfen</h2><p>Live-SERPs und Google Maps werden nur auf expliziten Klick abgefragt. Jeder Lauf wird im Hintergrund Keyword für Keyword verarbeitet, damit Varnish und PHP nicht auf mehrere externe Requests warten müssen.</p></div>
 				<?php if ( $can_manage && $has_credentials ) : ?><div class="nsc-market-section__actions">
-					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_market_intelligence_live_refresh' ) ); ?>"><?php wp_nonce_field( 'nexus_market_intelligence_live_refresh' ); ?><input type="hidden" name="mode" value="organic"><button type="submit" class="button">Organic live</button></form>
-					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_market_intelligence_live_refresh' ) ); ?>"><?php wp_nonce_field( 'nexus_market_intelligence_live_refresh' ); ?><input type="hidden" name="mode" value="maps"><button type="submit" class="button">Maps live</button></form>
+					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_market_intelligence_live_refresh' ) ); ?>"><?php wp_nonce_field( 'nexus_market_intelligence_live_refresh' ); ?><input type="hidden" name="mode" value="organic"><button type="submit" class="button" <?php disabled( in_array( (string) ( $organic_job['status'] ?? '' ), [ 'queued', 'running' ], true ) ); ?>><?php echo esc_html( in_array( (string) ( $organic_job['status'] ?? '' ), [ 'queued', 'running' ], true ) ? 'Organic läuft …' : 'Organic live' ); ?></button></form>
+					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_market_intelligence_live_refresh' ) ); ?>"><?php wp_nonce_field( 'nexus_market_intelligence_live_refresh' ); ?><input type="hidden" name="mode" value="maps"><button type="submit" class="button" <?php disabled( in_array( (string) ( $maps_job['status'] ?? '' ), [ 'queued', 'running' ], true ) ); ?>><?php echo esc_html( in_array( (string) ( $maps_job['status'] ?? '' ), [ 'queued', 'running' ], true ) ? 'Maps läuft …' : 'Maps live' ); ?></button></form>
 				</div><?php endif; ?>
 			</div>
+			<div class="nsc-market-live-progress">
+				<?php foreach ( [ 'organic' => $organic_job, 'maps' => $maps_job ] as $job_mode => $job ) : ?>
+					<?php
+					$job_status = (string) ( $job['status'] ?? 'idle' );
+					$total      = count( (array) ( $job['keywords'] ?? [] ) );
+					$done       = min( $total, absint( $job['index'] ?? 0 ) );
+					$is_active  = in_array( $job_status, [ 'queued', 'running' ], true );
+					?>
+					<?php if ( $is_active ) : ?>
+						<span class="nsc-market-live-progress__item is-running"><strong><?php echo esc_html( 'organic' === $job_mode ? 'Organic Live' : 'Maps Live' ); ?></strong> läuft im Hintergrund · <?php echo esc_html( $done . '/' . $total ); ?></span>
+					<?php elseif ( in_array( $job_status, [ 'partial', 'error' ], true ) ) : ?>
+						<span class="nsc-market-live-progress__item is-warning"><strong><?php echo esc_html( 'organic' === $job_mode ? 'Organic Live' : 'Maps Live' ); ?></strong> <?php echo esc_html( 'partial' === $job_status ? 'teilweise abgeschlossen' : 'mit Fehler beendet' ); ?></span>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</div>
 			<div class="nsc-market-live-grid">
-				<div><h3>Google Organic</h3><?php nexus_render_market_intelligence_live_rows( (array) ( $snapshot['live_serp'] ?? [] ), 'organic' ); ?></div>
+				<div><h3>Google Organic · <?php echo esc_html( (string) $config['organic_live_location_name'] ); ?> · Top <?php echo esc_html( (string) absint( $config['organic_live_depth'] ) ); ?></h3><?php nexus_render_market_intelligence_live_rows( (array) ( $snapshot['live_serp'] ?? [] ), 'organic' ); ?></div>
 				<div><h3>Google Maps · <?php echo esc_html( (string) $config['local_location_name'] ); ?></h3><?php nexus_render_market_intelligence_live_rows( (array) ( $snapshot['local_maps'] ?? [] ), 'maps' ); ?></div>
 			</div>
 		</section>
@@ -552,6 +586,8 @@ function nexus_render_market_intelligence_admin_page() {
 						<label><span>Labs Location</span><input type="text" name="dataforseo[location_name]" value="<?php echo esc_attr( (string) ( $settings['location_name'] ?? 'Germany' ) ); ?>"><small>z. B. Germany.</small></label>
 						<label><span>Sprache</span><input type="text" name="dataforseo[language_code]" value="<?php echo esc_attr( (string) ( $settings['language_code'] ?? 'de' ) ); ?>"><small>ISO-Code, z. B. de.</small></label>
 						<label><span>Maps Location</span><input type="text" name="dataforseo[local_location_name]" value="<?php echo esc_attr( (string) ( $settings['local_location_name'] ?? '' ) ); ?>"><small>Für lokale Maps-Watchlist.</small></label>
+						<label><span>Organic Live Standort</span><input type="text" name="dataforseo[organic_live_location_name]" value="<?php echo esc_attr( (string) ( $settings['organic_live_location_name'] ?? $settings['local_location_name'] ?? 'Hanover,Lower Saxony,Germany' ) ); ?>"><small>Standort für die manuelle Organic-Live-Watchlist, z. B. Hanover,Lower Saxony,Germany.</small></label>
+						<label><span>Organic Live Tiefe</span><input type="number" min="10" max="200" step="10" name="dataforseo[organic_live_depth]" value="<?php echo esc_attr( (string) ( $settings['organic_live_depth'] ?? '50' ) ); ?>"><small>Standard 50. DataForSEO berechnet Organic Live in 10er-Blöcken; größere Tiefe kann den manuellen Check verteuern.</small></label>
 						<label><span>Business Name</span><input type="text" name="dataforseo[local_business_name]" value="<?php echo esc_attr( (string) ( $settings['local_business_name'] ?? 'Haşim Üner' ) ); ?>"><small>Nur für die Zuordnung im Maps-Ergebnis.</small></label>
 						<label><span>Ranked Keywords Limit</span><input type="number" min="20" max="250" name="dataforseo[ranked_limit]" value="<?php echo esc_attr( (string) ( $settings['ranked_limit'] ?? '100' ) ); ?>"></label>
 						<label><span>Competitor Limit</span><input type="number" min="5" max="50" name="dataforseo[competitor_limit]" value="<?php echo esc_attr( (string) ( $settings['competitor_limit'] ?? '15' ) ); ?>"></label>

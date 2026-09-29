@@ -720,6 +720,26 @@ function nexus_refresh_market_intelligence( $automatic = false ) {
 }
 
 /**
+ * Check whether a SERP result domain belongs to the current site.
+ *
+ * @param string $domain Result domain.
+ * @param string $target Site target domain.
+ * @return bool
+ */
+function nexus_market_intelligence_domain_matches_target( $domain, $target ) {
+	$domain = strtolower( trim( preg_replace( '/^www\./i', '', (string) $domain ) ) );
+	$target = strtolower( trim( preg_replace( '/^www\./i', '', (string) $target ) ) );
+
+	if ( '' === $domain || '' === $target ) {
+		return false;
+	}
+
+	$suffix = '.' . $target;
+
+	return $domain === $target || ( strlen( $domain ) > strlen( $suffix ) && substr( $domain, -strlen( $suffix ) ) === $suffix );
+}
+
+/**
  * Find the site's organic position in one live SERP result.
  *
  * @param array<string, mixed> $result First DataForSEO result.
@@ -749,7 +769,7 @@ function nexus_market_intelligence_parse_live_serp_result( $result ) {
 			];
 		}
 
-		if ( null === $own && '' !== $domain && $target === $domain ) {
+		if ( null === $own && nexus_market_intelligence_domain_matches_target( $domain, $target ) ) {
 			$own = [
 				'type'  => $type,
 				'rank'  => absint( $item['rank_absolute'] ?? $item['rank_group'] ?? 0 ),
@@ -802,7 +822,7 @@ function nexus_market_intelligence_parse_maps_result( $result ) {
 
 		$title_key = mb_strtolower( remove_accents( $title ) );
 		$name_hit  = '' !== $needle && false !== strpos( $title_key, $needle );
-		$domain_hit= '' !== $domain && $target === $domain;
+		$domain_hit= nexus_market_intelligence_domain_matches_target( $domain, $target );
 
 		if ( null === $own && ( $name_hit || $domain_hit ) ) {
 			$own = $row;
@@ -816,18 +836,176 @@ function nexus_market_intelligence_parse_maps_result( $result ) {
 }
 
 /**
- * Run a small manual live SERP or Maps watchlist.
+ * Return the persisted state of one manual Live Watch job.
+ *
+ * @param string $mode organic|maps.
+ * @return array<string, mixed>
+ */
+function nexus_get_market_intelligence_live_job( $mode = 'organic' ) {
+	$mode  = 'maps' === sanitize_key( $mode ) ? 'maps' : 'organic';
+	$jobs  = get_option( 'nexus_market_intelligence_live_jobs_v1', [] );
+	$jobs  = is_array( $jobs ) ? $jobs : [];
+	$state = isset( $jobs[ $mode ] ) && is_array( $jobs[ $mode ] ) ? $jobs[ $mode ] : [];
+
+	return wp_parse_args(
+		$state,
+		[
+			'mode'       => $mode,
+			'status'     => 'idle',
+			'keywords'   => [],
+			'index'      => 0,
+			'rows'       => [],
+			'errors'     => [],
+			'started_at' => 0,
+			'updated_at' => 0,
+			'finished_at'=> 0,
+		]
+	);
+}
+
+/**
+ * Persist one Live Watch job state.
+ *
+ * @param string               $mode  organic|maps.
+ * @param array<string, mixed> $state Job state.
+ * @return void
+ */
+function nexus_update_market_intelligence_live_job( $mode, $state ) {
+	$mode = 'maps' === sanitize_key( $mode ) ? 'maps' : 'organic';
+	$jobs = get_option( 'nexus_market_intelligence_live_jobs_v1', [] );
+	$jobs = is_array( $jobs ) ? $jobs : [];
+
+	$state['mode']       = $mode;
+	$state['updated_at'] = time();
+	$jobs[ $mode ]       = $state;
+
+	update_option( 'nexus_market_intelligence_live_jobs_v1', $jobs, false );
+}
+
+/**
+ * Resolve the fixed request context for one manual live job.
+ *
+ * @param string $mode organic|maps.
+ * @return array{location_name:string,depth:int,path:string}
+ */
+function nexus_market_intelligence_live_request_context( $mode ) {
+	$mode   = 'maps' === sanitize_key( $mode ) ? 'maps' : 'organic';
+	$config = nexus_get_dataforseo_config();
+
+	$location_name = 'maps' === $mode
+		? (string) $config['local_location_name']
+		: (string) $config['organic_live_location_name'];
+
+	if ( '' === trim( $location_name ) ) {
+		$location_name = 'maps' === $mode
+			? (string) $config['location_name']
+			: ( '' !== trim( (string) $config['local_location_name'] ) ? (string) $config['local_location_name'] : (string) $config['location_name'] );
+	}
+
+	return [
+		'location_name' => $location_name,
+		'depth'         => 'maps' === $mode ? 100 : max( 10, min( 200, absint( $config['organic_live_depth'] ?? 50 ) ) ),
+		'path'          => 'maps' === $mode ? 'v3/serp/google/maps/live/advanced' : 'v3/serp/google/organic/live/advanced',
+	];
+}
+
+/**
+ * Run exactly one keyword request.
+ *
+ * Keeping the worker to one external call prevents the reverse proxy or PHP
+ * request from waiting for the complete eight-keyword watchlist.
+ *
+ * @param string               $keyword Keyword.
+ * @param string               $mode organic|maps.
+ * @param array<string, mixed> $context Fixed job context.
+ * @return array<string, mixed>|WP_Error
+ */
+function nexus_market_intelligence_run_live_keyword( $keyword, $mode, $context ) {
+	$config = nexus_get_dataforseo_config();
+	$task   = [
+		'keyword'       => trim( (string) $keyword ),
+		'language_code' => (string) $config['language_code'],
+		'location_name' => (string) ( $context['location_name'] ?? $config['location_name'] ),
+		'device'        => 'desktop',
+		'tag'           => 'nexus_market_' . $mode,
+	];
+
+	if ( 'organic' === $mode ) {
+		$task['depth'] = max( 10, min( 200, absint( $context['depth'] ?? 50 ) ) );
+	}
+
+	$response = nexus_dataforseo_request( (string) $context['path'], $task, false );
+	$result   = nexus_dataforseo_first_result( $response );
+
+	if ( is_wp_error( $result ) ) {
+		return $result;
+	}
+
+	return [
+		'keyword'       => trim( (string) $keyword ),
+		'location_name' => (string) $context['location_name'],
+		'depth'         => absint( $context['depth'] ?? 0 ),
+		'checked_at'    => time(),
+		'result'        => 'maps' === $mode
+			? nexus_market_intelligence_parse_maps_result( $result )
+			: nexus_market_intelligence_parse_live_serp_result( $result ),
+	];
+}
+
+/**
+ * Dispatch the next worker as a non-blocking loopback request.
+ *
+ * A cron event is scheduled as fallback so the job still progresses when a
+ * host blocks WordPress loopback requests.
+ *
+ * @param string $mode organic|maps.
+ * @return void
+ */
+function nexus_dispatch_market_intelligence_live_worker( $mode ) {
+	$mode  = 'maps' === sanitize_key( $mode ) ? 'maps' : 'organic';
+	$token = (string) get_transient( 'nexus_market_live_token_' . $mode );
+
+	if ( '' !== $token ) {
+		wp_remote_post(
+			admin_url( 'admin-post.php' ),
+			[
+				'timeout'   => 0.01,
+				'blocking'  => false,
+				'body'      => [
+					'action' => 'nexus_market_intelligence_live_worker',
+					'mode'   => $mode,
+					'token'  => $token,
+				],
+			]
+		);
+	}
+
+	$hook = 'nexus_market_intelligence_live_background_step';
+	if ( false === wp_next_scheduled( $hook, [ $mode ] ) ) {
+		wp_schedule_single_event( time() + MINUTE_IN_SECONDS, $hook, [ $mode ] );
+	}
+}
+
+/**
+ * Queue one manual Live Watch job and return immediately.
  *
  * @param string $mode organic|maps.
  * @return array<string, mixed>|WP_Error
  */
-function nexus_refresh_market_intelligence_live( $mode = 'organic' ) {
+function nexus_queue_market_intelligence_live_refresh( $mode = 'organic' ) {
 	if ( ! nexus_dataforseo_has_credentials() ) {
 		return new WP_Error( 'nexus_market_credentials', 'DataForSEO ist noch nicht konfiguriert.' );
 	}
 
 	$mode     = 'maps' === sanitize_key( $mode ) ? 'maps' : 'organic';
-	$config   = nexus_get_dataforseo_config();
+	$current  = nexus_get_market_intelligence_live_job( $mode );
+	$started  = absint( $current['started_at'] ?? 0 );
+	$is_fresh = $started > 0 && ( time() - $started ) < ( 15 * MINUTE_IN_SECONDS );
+
+	if ( $is_fresh && in_array( (string) ( $current['status'] ?? '' ), [ 'queued', 'running' ], true ) ) {
+		return $current;
+	}
+
 	$snapshot = nexus_get_market_intelligence_snapshot();
 	$keywords = nexus_market_intelligence_manual_keywords();
 
@@ -842,41 +1020,171 @@ function nexus_refresh_market_intelligence_live( $mode = 'organic' ) {
 		return new WP_Error( 'nexus_market_watchlist', 'Für den Live-Check fehlen Watchlist-Keywords.' );
 	}
 
-	$rows   = [];
-	$errors = [];
+	$context = nexus_market_intelligence_live_request_context( $mode );
+	$state   = [
+		'mode'          => $mode,
+		'status'        => 'queued',
+		'keywords'      => $keywords,
+		'index'         => 0,
+		'rows'          => [],
+		'errors'        => [],
+		'context'       => $context,
+		'started_at'    => time(),
+		'updated_at'    => time(),
+		'finished_at'   => 0,
+	];
 
-	foreach ( $keywords as $keyword ) {
-		$task = [
-			'keyword'       => $keyword,
-			'language_code' => (string) $config['language_code'],
-			'location_name' => 'maps' === $mode && '' !== (string) $config['local_location_name']
-				? (string) $config['local_location_name']
-				: (string) $config['location_name'],
-			'device'        => 'desktop',
-			'tag'           => 'nexus_market_' . $mode,
-		];
+	nexus_update_market_intelligence_live_job( $mode, $state );
 
-		$path     = 'maps' === $mode ? 'v3/serp/google/maps/live/advanced' : 'v3/serp/google/organic/live/advanced';
-		$response = nexus_dataforseo_request( $path, $task, false );
-		$result   = nexus_dataforseo_first_result( $response );
+	$token = wp_generate_password( 32, false, false );
+	set_transient( 'nexus_market_live_token_' . $mode, $token, 20 * MINUTE_IN_SECONDS );
+	nexus_dispatch_market_intelligence_live_worker( $mode );
 
-		if ( is_wp_error( $result ) ) {
-			$errors[ $keyword ] = $result->get_error_message();
-			continue;
-		}
+	return $state;
+}
 
-		$rows[] = [
-			'keyword' => $keyword,
-			'result'  => 'maps' === $mode
-				? nexus_market_intelligence_parse_maps_result( $result )
-				: nexus_market_intelligence_parse_live_serp_result( $result ),
-		];
+/**
+ * Process one queued Live Watch keyword.
+ *
+ * @param string $mode organic|maps.
+ * @return void
+ */
+function nexus_run_market_intelligence_live_background_step( $mode = 'organic' ) {
+	$mode     = 'maps' === sanitize_key( $mode ) ? 'maps' : 'organic';
+	$lock_key = 'nexus_market_live_step_lock_' . $mode;
+
+	if ( get_transient( $lock_key ) ) {
+		return;
 	}
 
-	$key                  = 'maps' === $mode ? 'local_maps' : 'live_serp';
-	$snapshot[ $key ]     = $rows;
+	set_transient( $lock_key, '1', 90 );
+
+	try {
+		$state = nexus_get_market_intelligence_live_job( $mode );
+		if ( ! in_array( (string) ( $state['status'] ?? '' ), [ 'queued', 'running' ], true ) ) {
+			return;
+		}
+
+		$keywords = is_array( $state['keywords'] ?? null ) ? array_values( $state['keywords'] ) : [];
+		$index    = absint( $state['index'] ?? 0 );
+		$context  = is_array( $state['context'] ?? null ) ? $state['context'] : nexus_market_intelligence_live_request_context( $mode );
+
+		if ( $index >= count( $keywords ) ) {
+			$state['status'] = empty( $state['errors'] ) ? 'complete' : ( empty( $state['rows'] ) ? 'error' : 'partial' );
+		} else {
+			$state['status'] = 'running';
+			nexus_update_market_intelligence_live_job( $mode, $state );
+
+			$keyword = (string) $keywords[ $index ];
+			$row     = nexus_market_intelligence_run_live_keyword( $keyword, $mode, $context );
+
+			if ( is_wp_error( $row ) ) {
+				$state['errors'][ $keyword ] = $row->get_error_message();
+			} else {
+				$state['rows'][] = $row;
+			}
+
+			$state['index'] = $index + 1;
+			if ( $state['index'] >= count( $keywords ) ) {
+				$state['status'] = empty( $state['errors'] ) ? 'complete' : ( empty( $state['rows'] ) ? 'error' : 'partial' );
+			}
+		}
+
+		if ( in_array( (string) $state['status'], [ 'complete', 'partial', 'error' ], true ) ) {
+			$snapshot                   = nexus_get_market_intelligence_snapshot();
+			$key                        = 'maps' === $mode ? 'local_maps' : 'live_serp';
+			$snapshot[ $key ]           = array_values( (array) ( $state['rows'] ?? [] ) );
+			$snapshot['last_live_at']   = time();
+			$snapshot['live_errors']    = is_array( $state['errors'] ?? null ) ? $state['errors'] : [];
+			$state['finished_at']       = time();
+
+			nexus_update_market_intelligence_snapshot( $snapshot );
+			nexus_update_market_intelligence_live_job( $mode, $state );
+			delete_transient( 'nexus_market_live_token_' . $mode );
+			wp_clear_scheduled_hook( 'nexus_market_intelligence_live_background_step', [ $mode ] );
+			return;
+		}
+
+		nexus_update_market_intelligence_live_job( $mode, $state );
+
+		// Release before chaining the next loopback. Otherwise a very fast
+		// self-request could see the current lock and defer progress to cron.
+		delete_transient( $lock_key );
+		nexus_dispatch_market_intelligence_live_worker( $mode );
+	} finally {
+		delete_transient( $lock_key );
+	}
+}
+add_action( 'nexus_market_intelligence_live_background_step', 'nexus_run_market_intelligence_live_background_step' );
+
+/**
+ * Handle the private loopback worker.
+ *
+ * @return void
+ */
+function nexus_handle_market_intelligence_live_worker_request() {
+	$mode     = isset( $_POST['mode'] ) ? sanitize_key( (string) wp_unslash( $_POST['mode'] ) ) : 'organic';
+	$mode     = 'maps' === $mode ? 'maps' : 'organic';
+	$provided = isset( $_POST['token'] ) ? sanitize_text_field( (string) wp_unslash( $_POST['token'] ) ) : '';
+	$expected = (string) get_transient( 'nexus_market_live_token_' . $mode );
+
+	if ( '' === $provided || '' === $expected || ! hash_equals( $expected, $provided ) ) {
+		status_header( 403 );
+		exit;
+	}
+
+	ignore_user_abort( true );
+	nexus_run_market_intelligence_live_background_step( $mode );
+	status_header( 204 );
+	exit;
+}
+add_action( 'admin_post_nexus_market_intelligence_live_worker', 'nexus_handle_market_intelligence_live_worker_request' );
+add_action( 'admin_post_nopriv_nexus_market_intelligence_live_worker', 'nexus_handle_market_intelligence_live_worker_request' );
+
+/**
+ * Compatibility helper for callers that explicitly need a synchronous watch.
+ *
+ * Admin buttons do not use this path; they queue the chunked worker above.
+ *
+ * @param string $mode organic|maps.
+ * @return array<string, mixed>|WP_Error
+ */
+function nexus_refresh_market_intelligence_live( $mode = 'organic' ) {
+	if ( ! nexus_dataforseo_has_credentials() ) {
+		return new WP_Error( 'nexus_market_credentials', 'DataForSEO ist noch nicht konfiguriert.' );
+	}
+
+	$mode     = 'maps' === sanitize_key( $mode ) ? 'maps' : 'organic';
+	$snapshot = nexus_get_market_intelligence_snapshot();
+	$keywords = nexus_market_intelligence_manual_keywords();
+
+	if ( empty( $keywords ) ) {
+		$keywords = array_slice( (array) ( $snapshot['watch_keywords'] ?? [] ), 0, 8 );
+	}
+
+	$limit    = 'maps' === $mode ? 5 : 8;
+	$keywords = array_slice( array_values( array_filter( array_map( 'strval', $keywords ) ) ), 0, $limit );
+	if ( empty( $keywords ) ) {
+		return new WP_Error( 'nexus_market_watchlist', 'Für den Live-Check fehlen Watchlist-Keywords.' );
+	}
+
+	$context = nexus_market_intelligence_live_request_context( $mode );
+	$rows    = [];
+	$errors  = [];
+
+	foreach ( $keywords as $keyword ) {
+		$row = nexus_market_intelligence_run_live_keyword( $keyword, $mode, $context );
+		if ( is_wp_error( $row ) ) {
+			$errors[ $keyword ] = $row->get_error_message();
+		} else {
+			$rows[] = $row;
+		}
+	}
+
+	$key                      = 'maps' === $mode ? 'local_maps' : 'live_serp';
+	$snapshot[ $key ]         = $rows;
 	$snapshot['last_live_at'] = time();
-	$snapshot['live_errors']   = $errors;
+	$snapshot['live_errors']  = $errors;
 	nexus_update_market_intelligence_snapshot( $snapshot );
 
 	return [

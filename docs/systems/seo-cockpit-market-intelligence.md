@@ -75,8 +75,28 @@ Grenzen pro manueller Prüfung:
 
 - Organic: maximal 8 Watchlist-Keywords
 - Maps: maximal 5 Watchlist-Keywords
+- Organic Live besitzt einen eigenen Standort; Standard ist `Hanover,Lower Saxony,Germany`
+- Organic Live besitzt eine konfigurierbare SERP-Tiefe von 10 bis 200; Standard ist 50
 
-Die Maps-Zuordnung versucht das eigene Ergebnis über Domain oder den konfigurierten Business-Namen zu erkennen. Ein fehlender Treffer ist ein neutraler Zustand, kein Ranking `0`.
+DataForSEO liefert bei Organic Live ohne gesetzte Tiefe standardmäßig nur zehn Ergebnisse. Deshalb bedeutet ein fehlender eigener Treffer **nicht**, dass eine URL nicht indexiert ist oder überhaupt nicht rankt. Die Oberfläche speichert Standort und tatsächlich abgefragte Tiefe je Live-Check und zeigt beispielsweise `nicht in Top 50` statt des irreführenden `nicht gefunden`.
+
+Eine größere Organic-Tiefe ist eine bewusste manuelle Kostenentscheidung: DataForSEO berechnet Organic Live je SERP-Block von bis zu zehn Ergebnissen. Der Live-Check bleibt deshalb außerhalb des regulären Wochen-Crons.
+
+### Background-Verarbeitung
+
+Der Admin-Klick führt die Watchlist nicht mehr synchron aus. Das ist wichtig, weil acht Live-Requests mit größerer SERP-Tiefe einen Proxy-/PHP-Request unnötig lange offen halten können.
+
+Ablauf:
+
+1. Der Admin-Klick legt einen Job mit Watchlist, Standort und Tiefe an und kehrt sofort zum Cockpit zurück.
+2. Ein privater, token-geschützter Loopback-Worker verarbeitet **genau ein Keyword pro Request**.
+3. Nach jedem Keyword wird der Fortschritt gespeichert und der nächste Worker non-blocking angestoßen.
+4. Ein WP-Cron-Event dient nur als Fallback, falls der Host Loopback-Requests blockiert.
+5. Erst nach Abschluss wird der Live-Bereich des Market-Snapshots atomar ersetzt.
+
+Die UI zeigt `läuft im Hintergrund · x/y`. Dadurch hängt der Browser nicht mehr an der kompletten DataForSEO-Watchlist und ein Varnish-Timeout kann den Admin-Klick nicht mehr abbrechen.
+
+Die Maps-Zuordnung versucht das eigene Ergebnis über Domain oder den konfigurierten Business-Namen zu erkennen. Ein fehlender Maps-Treffer ist ebenfalls ein neutraler Zustand, kein Ranking `0`.
 
 ## Kostenkontrolle
 
