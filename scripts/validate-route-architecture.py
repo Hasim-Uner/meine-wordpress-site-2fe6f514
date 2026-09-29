@@ -77,11 +77,18 @@ for slug, template in entries:
     if not path.is_file():
         fail(f"{slug}: missing template {template}")
         continue
+
     content = path.read_text(encoding="utf-8")
-    if "Template Name:" not in content:
-        fail(f"{slug}: {template} has no Template Name header")
+    canonical_slug_template = template == f"page-{slug}.php"
+
+    # WordPress resolves page-{slug}.php automatically and does not require a
+    # Template Name header. Custom filenames should keep the header so they
+    # remain valid selectable page templates outside this provisioner too.
+    if not canonical_slug_template and "Template Name:" not in content:
+        fail(f"{slug}: custom template {template} has no Template Name header")
     else:
-        ok(f"{slug}: template exists")
+        mode = "slug template" if canonical_slug_template else "named template"
+        ok(f"{slug}: {mode} exists")
 
 noindex = set(quoted_slugs(function_body(seo, "hu_get_noindex_follow_slugs")))
 noindex |= set(quoted_slugs(function_body(seo, "hu_get_noindex_nofollow_slugs")))
@@ -98,11 +105,15 @@ for slug in slugs:
         fail(f"provisioned public route is also noindex: {slug}")
     if slug in retired:
         fail(f"provisioned public route is also retired/410: {slug}")
+    if slug in legacy_redirects:
+        fail(f"provisioned public route is also a legacy redirect source: {slug}")
 
 if not set(slugs) & noindex:
     ok("provisioned routes are not in noindex lists")
 if not set(slugs) & retired:
     ok("provisioned routes are not in retired/410 paths")
+if not set(slugs) & legacy_redirects:
+    ok("provisioned routes are not legacy redirect sources")
 
 # The proof page is intentionally held out of the index until the explicit
 # release decision. Guard the intent so an unrelated SEO cleanup cannot flip it.
