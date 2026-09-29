@@ -41,6 +41,20 @@ function nexus_get_market_intelligence_export_columns() {
 		'serp_type',
 		'etv',
 		'avg_referring_domains',
+		'authority_rank',
+		'backlinks',
+		'backlinks_spam_score',
+		'broken_backlinks',
+		'broken_pages',
+		'referring_domains',
+		'referring_domains_nofollow',
+		'referring_main_domains',
+		'referring_main_domains_nofollow',
+		'referring_ips',
+		'referring_subnets',
+		'referring_pages',
+		'target_spam_score',
+		'authority_checked_at',
 		'intersections',
 		'shared_etv',
 		'shared_count',
@@ -170,6 +184,7 @@ function nexus_build_market_intelligence_export_rows( $snapshot ) {
 	$ranked      = is_array( $snapshot['ranked']['rows'] ?? null ) ? $snapshot['ranked']['rows'] : [];
 	$competitors = is_array( $snapshot['competitors'] ?? null ) ? $snapshot['competitors'] : [];
 	$overview    = is_array( $snapshot['keyword_overview'] ?? null ) ? $snapshot['keyword_overview'] : [];
+	$authority   = is_array( $snapshot['authority'] ?? null ) ? $snapshot['authority'] : [];
 	$strategic   = function_exists( 'nexus_market_intelligence_strategic_competitors' )
 		? nexus_market_intelligence_strategic_competitors( $competitors )
 		: [];
@@ -179,6 +194,27 @@ function nexus_build_market_intelligence_export_rows( $snapshot ) {
 		if ( is_array( $row ) && ! empty( $row['domain'] ) ) {
 			$strategic_domains[ (string) $row['domain'] ] = true;
 		}
+	}
+
+	if ( ! empty( $authority ) ) {
+		$export = nexus_market_intelligence_export_base_row( $snapshot, 'authority_summary', 'dataforseo_backlinks' );
+		$export['domain']                           = (string) ( $snapshot['target'] ?? nexus_dataforseo_target_domain() );
+		$export['authority_rank']                   = absint( $authority['rank'] ?? 0 );
+		$export['backlinks']                        = absint( $authority['backlinks'] ?? 0 );
+		$export['backlinks_spam_score']             = absint( $authority['backlinks_spam_score'] ?? 0 );
+		$export['broken_backlinks']                 = absint( $authority['broken_backlinks'] ?? 0 );
+		$export['broken_pages']                     = absint( $authority['broken_pages'] ?? 0 );
+		$export['referring_domains']                = absint( $authority['referring_domains'] ?? 0 );
+		$export['referring_domains_nofollow']       = absint( $authority['referring_domains_nofollow'] ?? 0 );
+		$export['referring_main_domains']           = absint( $authority['referring_main_domains'] ?? 0 );
+		$export['referring_main_domains_nofollow']  = absint( $authority['referring_main_domains_nofollow'] ?? 0 );
+		$export['referring_ips']                    = absint( $authority['referring_ips'] ?? 0 );
+		$export['referring_subnets']                = absint( $authority['referring_subnets'] ?? 0 );
+		$export['referring_pages']                  = absint( $authority['referring_pages'] ?? 0 );
+		$export['target_spam_score']                = absint( $authority['target_spam_score'] ?? 0 );
+		$export['authority_checked_at']             = ! empty( $authority['checked_at'] ) ? wp_date( 'c', absint( $authority['checked_at'] ) ) : '';
+		$export['note']                             = 'Domain-Level-Backlink-Evidenz; kein eigener Cockpit-Authority-Score.';
+		$rows[] = $export;
 	}
 
 	foreach ( $ranked as $row ) {
