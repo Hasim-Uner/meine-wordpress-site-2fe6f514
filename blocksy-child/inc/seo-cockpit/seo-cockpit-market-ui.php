@@ -527,11 +527,26 @@ function nexus_render_market_intelligence_admin_page() {
 		</section>
 
 		<section class="nsc-market-section">
-			<div class="nsc-market-section__head"><div><p class="nexus-seo-cockpit__eyebrow">Live Watch</p><h2>Strategische Keywords live prüfen</h2><p>Live-SERPs und Google Maps werden nur auf expliziten Klick abgefragt. So entstehen keine versteckten Keyword-für-Keyword-Kosten im Cron.</p></div>
+			<div class="nsc-market-section__head"><div><p class="nexus-seo-cockpit__eyebrow">Live Watch</p><h2>Strategische Keywords live prüfen</h2><p>Live-SERPs und Google Maps werden nur auf expliziten Klick abgefragt. Jeder Lauf wird im Hintergrund Keyword für Keyword verarbeitet, damit Varnish und PHP nicht auf mehrere externe Requests warten müssen.</p></div>
 				<?php if ( $can_manage && $has_credentials ) : ?><div class="nsc-market-section__actions">
-					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_market_intelligence_live_refresh' ) ); ?>"><?php wp_nonce_field( 'nexus_market_intelligence_live_refresh' ); ?><input type="hidden" name="mode" value="organic"><button type="submit" class="button">Organic live</button></form>
-					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_market_intelligence_live_refresh' ) ); ?>"><?php wp_nonce_field( 'nexus_market_intelligence_live_refresh' ); ?><input type="hidden" name="mode" value="maps"><button type="submit" class="button">Maps live</button></form>
+					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_market_intelligence_live_refresh' ) ); ?>"><?php wp_nonce_field( 'nexus_market_intelligence_live_refresh' ); ?><input type="hidden" name="mode" value="organic"><button type="submit" class="button" <?php disabled( in_array( (string) ( $organic_job['status'] ?? '' ), [ 'queued', 'running' ], true ) ); ?>><?php echo esc_html( in_array( (string) ( $organic_job['status'] ?? '' ), [ 'queued', 'running' ], true ) ? 'Organic läuft …' : 'Organic live' ); ?></button></form>
+					<form method="post" action="<?php echo esc_url( nexus_get_seo_cockpit_admin_action_url( 'nexus_market_intelligence_live_refresh' ) ); ?>"><?php wp_nonce_field( 'nexus_market_intelligence_live_refresh' ); ?><input type="hidden" name="mode" value="maps"><button type="submit" class="button" <?php disabled( in_array( (string) ( $maps_job['status'] ?? '' ), [ 'queued', 'running' ], true ) ); ?>><?php echo esc_html( in_array( (string) ( $maps_job['status'] ?? '' ), [ 'queued', 'running' ], true ) ? 'Maps läuft …' : 'Maps live' ); ?></button></form>
 				</div><?php endif; ?>
+			</div>
+			<div class="nsc-market-live-progress">
+				<?php foreach ( [ 'organic' => $organic_job, 'maps' => $maps_job ] as $job_mode => $job ) : ?>
+					<?php
+					$job_status = (string) ( $job['status'] ?? 'idle' );
+					$total      = count( (array) ( $job['keywords'] ?? [] ) );
+					$done       = min( $total, absint( $job['index'] ?? 0 ) );
+					$is_active  = in_array( $job_status, [ 'queued', 'running' ], true );
+					?>
+					<?php if ( $is_active ) : ?>
+						<span class="nsc-market-live-progress__item is-running"><strong><?php echo esc_html( 'organic' === $job_mode ? 'Organic Live' : 'Maps Live' ); ?></strong> läuft im Hintergrund · <?php echo esc_html( $done . '/' . $total ); ?></span>
+					<?php elseif ( in_array( $job_status, [ 'partial', 'error' ], true ) ) : ?>
+						<span class="nsc-market-live-progress__item is-warning"><strong><?php echo esc_html( 'organic' === $job_mode ? 'Organic Live' : 'Maps Live' ); ?></strong> <?php echo esc_html( 'partial' === $job_status ? 'teilweise abgeschlossen' : 'mit Fehler beendet' ); ?></span>
+					<?php endif; ?>
+				<?php endforeach; ?>
 			</div>
 			<div class="nsc-market-live-grid">
 				<div><h3>Google Organic · <?php echo esc_html( (string) $config['organic_live_location_name'] ); ?> · Top <?php echo esc_html( (string) absint( $config['organic_live_depth'] ) ); ?></h3><?php nexus_render_market_intelligence_live_rows( (array) ( $snapshot['live_serp'] ?? [] ), 'organic' ); ?></div>
