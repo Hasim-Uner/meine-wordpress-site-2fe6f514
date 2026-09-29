@@ -1296,6 +1296,133 @@ function nexus_market_intelligence_gsc_query_map( $seo_snapshot ) {
 }
 
 /**
+ * Map an exact GSC query to the strongest currently observed URL.
+ *
+ * Query-page rows are first-party evidence that a page is already associated
+ * with the query even when the DataForSEO ranked-keyword snapshot does not
+ * contain that keyword. The URL with the most impressions wins; ties prefer
+ * the better average position.
+ *
+ * @param array<string,mixed> $seo_snapshot Current SEO snapshot.
+ * @return array<string,array<string,mixed>>
+ */
+function nexus_market_intelligence_gsc_query_page_map( $seo_snapshot ) {
+	$map = [];
+
+	foreach ( (array) ( $seo_snapshot['query_page_rows'] ?? [] ) as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+
+		$url = function_exists( 'nexus_get_seo_cockpit_row_key' )
+			? nexus_get_seo_cockpit_row_key( $row, 0 )
+			: (string) ( $row['keys'][0] ?? '' );
+		$query = function_exists( 'nexus_get_seo_cockpit_row_key' )
+			? nexus_get_seo_cockpit_row_key( $row, 1 )
+			: (string) ( $row['keys'][1] ?? '' );
+		$key = function_exists( 'nexus_normalize_seo_cockpit_query' )
+			? nexus_normalize_seo_cockpit_query( $query )
+			: mb_strtolower( trim( $query ) );
+
+		if ( '' === $key || '' === trim( $url ) ) {
+			continue;
+		}
+
+		$impressions = max( 0.0, (float) ( $row['impressions'] ?? 0.0 ) );
+		$position    = max( 0.0, (float) ( $row['position'] ?? 0.0 ) );
+		$existing    = is_array( $map[ $key ] ?? null ) ? $map[ $key ] : [];
+		$replace     = empty( $existing )
+			|| $impressions > (float) ( $existing['impressions'] ?? 0.0 )
+			|| (
+				$impressions === (float) ( $existing['impressions'] ?? 0.0 )
+				&& $position > 0
+				&& ( 0.0 === (float) ( $existing['position'] ?? 0.0 ) || $position < (float) $existing['position'] )
+			);
+
+		if ( $replace ) {
+			$map[ $key ] = [
+				'url'         => esc_url_raw( $url ),
+				'query'       => (string) $query,
+				'impressions' => $impressions,
+				'clicks'      => max( 0.0, (float) ( $row['clicks'] ?? 0.0 ) ),
+				'position'    => $position,
+			];
+		}
+	}
+
+	return $map;
+}
+
+/**
+ * Build the opportunity universe from ranked keywords and keyword overview.
+ *
+ * Ranked Keywords alone is a biased universe: it cannot surface strategically
+ * relevant demand that is configured or observed but absent from the loaded
+ * ranking snapshot. Keyword Overview fills that gap without claiming that
+ * absence proves an absolute Google non-ranking.
+ *
+ * @param array<string,mixed> $market Current market snapshot.
+ * @param array<string,mixed> $seo_snapshot Current SEO snapshot.
+ * @return array<int,array<string,mixed>>
+ */
+function nexus_market_intelligence_opportunity_candidates( $market, $seo_snapshot ) {
+	$ranked    = is_array( $market['ranked']['rows'] ?? null ) ? $market['ranked']['rows'] : [];
+	$overview  = is_array( $market['keyword_overview'] ?? null ) ? $market['keyword_overview'] : [];
+	$gsc_pages = nexus_market_intelligence_gsc_query_page_map( $seo_snapshot );
+	$index     = [];
+
+	foreach ( $overview as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+
+		$keyword = trim( (string) ( $row['keyword'] ?? '' ) );
+		$key     = function_exists( 'nexus_normalize_seo_cockpit_query' )
+			? nexus_normalize_seo_cockpit_query( $keyword )
+			: mb_strtolower( $keyword );
+
+		if ( '' === $key ) {
+			continue;
+		}
+
+		$gsc_page = is_array( $gsc_pages[ $key ] ?? null ) ? $gsc_pages[ $key ] : [];
+		$row['rank_group']     = 0;
+		$row['url']            = (string) ( $gsc_page['url'] ?? '' );
+		$row['market_source']  = 'keyword_overview';
+		$row['is_ranking_gap'] = true;
+		$index[ $key ]         = $row;
+	}
+
+	foreach ( $ranked as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+
+		$keyword = trim( (string) ( $row['keyword'] ?? '' ) );
+		$key     = function_exists( 'nexus_normalize_seo_cockpit_query' )
+			? nexus_normalize_seo_cockpit_query( $keyword )
+			: mb_strtolower( $keyword );
+
+		if ( '' === $key ) {
+			continue;
+		}
+
+		$merged = array_merge( is_array( $index[ $key ] ?? null ) ? $index[ $key ] : [], $row );
+		$rank   = absint( $merged['rank_group'] ?? 0 );
+
+		if ( empty( $merged['url'] ) && isset( $gsc_pages[ $key ]['url'] ) ) {
+			$merged['url'] = (string) $gsc_pages[ $key ]['url'];
+		}
+
+		$merged['market_source']  = 'ranked_keywords';
+		$merged['is_ranking_gap'] = 0 === $rank;
+		$index[ $key ]            = $merged;
+	}
+
+	return array_values( $index );
+}
+
+/**
  * Classify one market opportunity into a small decision-oriented segment.
  *
  * Business opportunities are commercial/transactional queries or rankings on
@@ -1338,7 +1465,7 @@ function nexus_get_market_intelligence_segment( $intent, $page_role ) {
  */
 function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12 ) {
 	$market      = nexus_get_market_intelligence_snapshot();
-	$ranked      = is_array( $market['ranked']['rows'] ?? null ) ? $market['ranked']['rows'] : [];
+	$candidates  = nexus_market_intelligence_opportunity_candidates( $market, $seo_snapshot );
 	$gsc         = nexus_market_intelligence_gsc_query_map( $seo_snapshot );
 	$leads       = is_array( $seo_snapshot['leads']['page_map'] ?? null ) ? $seo_snapshot['leads']['page_map'] : [];
 	$acquisition = is_array( $seo_snapshot['acquisition'] ?? null ) ? $seo_snapshot['acquisition'] : [];
@@ -1358,7 +1485,7 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 
 	$out = [];
 
-	foreach ( $ranked as $row ) {
+	foreach ( $candidates as $row ) {
 		if ( ! is_array( $row ) ) {
 			continue;
 		}
@@ -1368,8 +1495,10 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 		$volume     = max( 0.0, (float) ( $row['search_volume'] ?? 0.0 ) );
 		$difficulty = isset( $row['difficulty'] ) && is_numeric( $row['difficulty'] ) ? (float) $row['difficulty'] : null;
 		$key        = function_exists( 'nexus_normalize_seo_cockpit_query' ) ? nexus_normalize_seo_cockpit_query( $keyword ) : mb_strtolower( $keyword );
-		$gsc_row    = isset( $gsc[ $key ] ) ? $gsc[ $key ] : [];
-		$url        = (string) ( $row['url'] ?? '' );
+		$gsc_row        = isset( $gsc[ $key ] ) ? $gsc[ $key ] : [];
+		$is_ranking_gap = ! empty( $row['is_ranking_gap'] );
+		$market_source  = sanitize_key( (string) ( $row['market_source'] ?? ( $is_ranking_gap ? 'keyword_overview' : 'ranked_keywords' ) ) );
+		$url            = (string) ( $row['url'] ?? '' );
 		$lead_url = function_exists( 'nexus_get_seo_cockpit_internal_attribution_url' ) ? nexus_get_seo_cockpit_internal_attribution_url( $url ) : $url;
 		$lead_row = '' !== $lead_url && is_array( $leads[ $lead_url ] ?? null ) ? $leads[ $lead_url ] : [];
 		$current_leads = is_array( $lead_row['current'] ?? null ) ? $lead_row['current'] : [];
@@ -1398,6 +1527,10 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 			$rank_score = 8.0;
 		} elseif ( $rank > 0 && $rank <= 3 ) {
 			$rank_score = 10.0;
+		} elseif ( $is_ranking_gap ) {
+			// Missing from the bounded ranked-keyword snapshot is a gap signal,
+			// not proof of an absolute non-ranking. Keep this bonus conservative.
+			$rank_score = ( $volume >= 20 || (float) ( $gsc_row['impressions'] ?? 0.0 ) >= 10 ) ? 8.0 : 3.0;
 		}
 
 		$gsc_score    = min( 15.0, log10( max( 0.0, (float) ( $gsc_row['impressions'] ?? 0.0 ) ) + 1.0 ) * 5.5 );
@@ -1415,7 +1548,13 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 		);
 
 		$action = 'Beobachten';
-		if ( $rank >= 4 && $rank <= 20 ) {
+		if ( $is_ranking_gap && in_array( $intent, [ 'commercial', 'transactional' ], true ) && $volume >= 20 ) {
+			$action = 'Ranking & Owner prüfen';
+		} elseif ( $is_ranking_gap && 'informational' === $intent && $volume >= 20 ) {
+			$action = 'Content-Gap prüfen';
+		} elseif ( $is_ranking_gap && ( $volume > 0 || (float) ( $gsc_row['impressions'] ?? 0.0 ) > 0 ) ) {
+			$action = 'Gap beobachten';
+		} elseif ( $rank >= 4 && $rank <= 20 ) {
 			$action = 'Top-10-Push';
 		} elseif ( $rank >= 21 && $rank <= 50 && $volume >= 20 ) {
 			$action = 'Seite ausbauen';
@@ -1426,6 +1565,8 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 		$out[] = [
 			'keyword'         => $keyword,
 			'score'           => $score,
+			'market_source'   => $market_source,
+			'is_ranking_gap'  => $is_ranking_gap,
 			'action'          => $action,
 			'rank'            => $rank,
 			'search_volume'   => $volume,
