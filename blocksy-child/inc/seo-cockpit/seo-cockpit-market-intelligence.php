@@ -1106,6 +1106,10 @@ function nexus_run_market_intelligence_live_background_step( $mode = 'organic' )
 		}
 
 		nexus_update_market_intelligence_live_job( $mode, $state );
+
+		// Release before chaining the next loopback. Otherwise a very fast
+		// self-request could see the current lock and defer progress to cron.
+		delete_transient( $lock_key );
 		nexus_dispatch_market_intelligence_live_worker( $mode );
 	} finally {
 		delete_transient( $lock_key );
