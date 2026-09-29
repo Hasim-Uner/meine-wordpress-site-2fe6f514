@@ -28,26 +28,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * 2026-09-22 by owner decision.
  */
 
-/**
- * Blog index title: broaden the knowledge hub beyond the Energy vertical.
- *
- * @return string
+/*
+ * Blog index title and description live canonically in seo-meta.php.
+ * This file only owns the repositioned dossier taxonomy and its migration.
  */
-function hu_positioned_blog_seo_title() : string {
-	return 'Blog: WordPress, Tracking, SEO & Conversion | Haşim Üner';
-}
-add_filter( 'hu_blog_archive_seo_title', 'hu_positioned_blog_seo_title', 20 );
-
-/**
- * Blog index description: broad technical-marketing knowledge hub with the
- * Energy cluster retained as one specialization.
- *
- * @return string
- */
-function hu_positioned_blog_seo_description() : string {
-	return 'Analysen zu WordPress, technischem SEO, Tracking, Conversion und Performance. Dazu Praxiswissen zu Anfragesystemen für Solar und Wärmepumpe.';
-}
-add_filter( 'hu_blog_archive_seo_description', 'hu_positioned_blog_seo_description', 20 );
 
 /**
  * Canonical category model behind the four public Werkstatt dossiers.
