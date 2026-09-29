@@ -1587,6 +1587,16 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 				(int) round( $volume_score + $rank_score + $gsc_score + $intent_score + $business_score + $lead_score - $difficulty_penalty - $segment_penalty )
 			)
 		);
+		$score_breakdown = [
+			'volume'             => (int) round( $volume_score ),
+			'ranking'            => (int) round( $rank_score ),
+			'gsc'                => (int) round( $gsc_score ),
+			'intent'             => (int) round( $intent_score ),
+			'business'           => (int) round( $business_score ),
+			'leads'              => (int) round( $lead_score ),
+			'difficulty_penalty' => (int) round( $difficulty_penalty ),
+			'brand_penalty'      => (int) round( $segment_penalty ),
+		];
 
 		$action = 'Beobachten';
 		if ( $is_ranking_gap && in_array( $intent, [ 'commercial', 'transactional' ], true ) && $volume >= 20 ) {
@@ -1606,6 +1616,7 @@ function nexus_get_market_intelligence_opportunities( $seo_snapshot, $limit = 12
 		$out[] = [
 			'keyword'         => $keyword,
 			'score'           => $score,
+			'score_breakdown' => $score_breakdown,
 			'market_source'   => $market_source,
 			'is_ranking_gap'  => $is_ranking_gap,
 			'action'          => $action,
