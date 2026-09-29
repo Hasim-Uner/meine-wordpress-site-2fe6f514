@@ -1202,13 +1202,121 @@ function nexus_get_route_pages_stamp() {
 }
 
 /**
+ * Return a server-wide advisory lock name scoped to this WordPress database.
+ *
+ * MySQL/MariaDB named locks are tied to the current DB connection, so they are
+ * released automatically if the PHP request dies before init finishes.
+ *
+ * @return string
+ */
+function nexus_get_route_pages_lock_name() {
+	global $wpdb;
+
+	$db_name = defined( 'DB_NAME' ) ? (string) DB_NAME : '';
+	$prefix  = is_object( $wpdb ) && isset( $wpdb->prefix ) ? (string) $wpdb->prefix : '';
+
+	return 'nexus_route_pages_' . substr( hash( 'sha256', $db_name . '|' . $prefix ), 0, 32 );
+}
+
+/**
+ * Acquire the provisioning lock without waiting.
+ *
+ * Prefer a MySQL/MariaDB advisory lock because it is atomic across PHP workers
+ * and cannot become permanently orphaned when a request is terminated. If the
+ * database does not expose GET_LOCK(), fall back to WordPress's atomic
+ * add_option() insert for the duration of this request.
+ *
+ * @return bool
+ */
+function nexus_acquire_route_pages_lock() {
+	if ( ! empty( $GLOBALS['nexus_route_pages_lock_owner'] ) ) {
+		return true;
+	}
+
+	global $wpdb;
+
+	$lock_name = nexus_get_route_pages_lock_name();
+
+	if ( is_object( $wpdb ) && method_exists( $wpdb, 'prepare' ) && method_exists( $wpdb, 'get_var' ) ) {
+		$result = $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 0)', $lock_name ) );
+
+		if ( null !== $result ) {
+			if ( 1 !== (int) $result ) {
+				return false;
+			}
+
+			$GLOBALS['nexus_route_pages_lock_owner'] = [
+				'driver' => 'mysql',
+				'name'   => $lock_name,
+			];
+
+			if ( empty( $GLOBALS['nexus_route_pages_lock_shutdown_registered'] ) ) {
+				register_shutdown_function( 'nexus_release_route_pages_lock' );
+				$GLOBALS['nexus_route_pages_lock_shutdown_registered'] = true;
+			}
+
+			return true;
+		}
+	}
+
+	$option_name = 'nexus_route_pages_lock';
+	$token       = nexus_get_route_pages_stamp() . '|' . uniqid( '', true );
+
+	if ( ! add_option( $option_name, $token, '', false ) ) {
+		return false;
+	}
+
+	$GLOBALS['nexus_route_pages_lock_owner'] = [
+		'driver' => 'option',
+		'name'   => $option_name,
+		'token'  => $token,
+	];
+
+	if ( empty( $GLOBALS['nexus_route_pages_lock_shutdown_registered'] ) ) {
+		register_shutdown_function( 'nexus_release_route_pages_lock' );
+		$GLOBALS['nexus_route_pages_lock_shutdown_registered'] = true;
+	}
+
+	return true;
+}
+
+/**
+ * Release the provisioning lock owned by this request.
+ *
+ * @return void
+ */
+function nexus_release_route_pages_lock() {
+	$owner = $GLOBALS['nexus_route_pages_lock_owner'] ?? null;
+
+	if ( ! is_array( $owner ) || empty( $owner['driver'] ) || empty( $owner['name'] ) ) {
+		return;
+	}
+
+	global $wpdb;
+
+	if ( 'mysql' === $owner['driver'] ) {
+		if ( is_object( $wpdb ) && method_exists( $wpdb, 'prepare' ) && method_exists( $wpdb, 'get_var' ) ) {
+			$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $owner['name'] ) );
+		}
+	} elseif ( 'option' === $owner['driver'] && ! empty( $owner['token'] ) ) {
+		$current = get_option( $owner['name'] );
+
+		if ( is_string( $current ) && hash_equals( (string) $owner['token'], $current ) ) {
+			delete_option( $owner['name'] );
+		}
+	}
+
+	unset( $GLOBALS['nexus_route_pages_lock_owner'] );
+}
+
+/**
  * Whether page provisioning runs in this request.
  *
- * Provisioning ran on every uncached request before. It now runs once per
- * deployed revision (deploy marker, else theme version) on the first regular
- * request; cron, AJAX and installs never consume the stamp. A page deleted in
- * the editor therefore returns only with the next deploy — remove it from
- * nexus_get_provisioned_pages() when the deletion is intended.
+ * Provisioning runs once per deployed revision (deploy marker, else theme
+ * version) on the first regular request that wins the cross-request lock.
+ * Concurrent requests skip provisioning entirely and therefore cannot insert
+ * the same route page more than once. Cron, AJAX and installs never consume
+ * the stamp.
  *
  * @return bool
  */
@@ -1217,7 +1325,8 @@ function nexus_route_pages_ensure_due() {
 
 	if ( null === $due ) {
 		$due = ! ( wp_installing() || wp_doing_ajax() || wp_doing_cron() )
-			&& get_option( 'nexus_route_pages_stamp' ) !== nexus_get_route_pages_stamp();
+			&& get_option( 'nexus_route_pages_stamp' ) !== nexus_get_route_pages_stamp()
+			&& nexus_acquire_route_pages_lock();
 	}
 
 	return $due;
@@ -1226,12 +1335,19 @@ function nexus_route_pages_ensure_due() {
 /**
  * Store the stamp after every provisioning hook of this request has run.
  *
+ * Only the request that acquired the provisioning lock reaches this branch.
+ * Releasing at priority 99 keeps contact, glossary, WGOS and route-page hooks
+ * inside the same critical section.
+ *
  * @return void
  */
 function nexus_mark_route_pages_ensured() {
-	if ( nexus_route_pages_ensure_due() ) {
-		update_option( 'nexus_route_pages_stamp', nexus_get_route_pages_stamp(), true );
+	if ( ! nexus_route_pages_ensure_due() ) {
+		return;
 	}
+
+	update_option( 'nexus_route_pages_stamp', nexus_get_route_pages_stamp(), true );
+	nexus_release_route_pages_lock();
 }
 add_action( 'init', 'nexus_mark_route_pages_ensured', 99 );
 
