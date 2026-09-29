@@ -158,8 +158,9 @@ function nexus_handle_market_intelligence_live_refresh() {
 
 	check_admin_referer( 'nexus_market_intelligence_live_refresh' );
 	$mode   = isset( $_POST['mode'] ) ? sanitize_key( (string) wp_unslash( $_POST['mode'] ) ) : 'organic';
-	$result = nexus_refresh_market_intelligence_live( $mode );
-	$notice = is_wp_error( $result ) ? 'live_error' : ( 'maps' === $mode ? 'maps_done' : 'live_done' );
+	$mode   = 'maps' === $mode ? 'maps' : 'organic';
+	$result = nexus_queue_market_intelligence_live_refresh( $mode );
+	$notice = is_wp_error( $result ) ? 'live_error' : ( 'maps' === $mode ? 'maps_queued' : 'live_queued' );
 
 	wp_safe_redirect(
 		nexus_market_intelligence_admin_url(
@@ -219,6 +220,8 @@ function nexus_render_market_intelligence_notice() {
 		'refresh_done'   => [ 'success', 'Market Intelligence wurde aktualisiert.' ],
 		'live_done'      => [ 'success', 'Live-SERP-Watchlist wurde aktualisiert.' ],
 		'maps_done'      => [ 'success', 'Google-Maps-Watchlist wurde aktualisiert.' ],
+		'live_queued'    => [ 'info', 'Organic Live läuft im Hintergrund. Die Watchlist wird Keyword für Keyword geprüft.' ],
+		'maps_queued'    => [ 'info', 'Maps Live läuft im Hintergrund. Die Watchlist wird Keyword für Keyword geprüft.' ],
 		'refresh_error'  => [ 'error', 'Market-Refresh fehlgeschlagen.' ],
 		'live_error'     => [ 'error', 'Live-Check fehlgeschlagen.' ],
 		'export_empty'      => [ 'warning', 'Für den Market-Export liegt noch kein verwertbarer Snapshot vor.' ],
@@ -454,7 +457,9 @@ function nexus_render_market_intelligence_admin_page() {
 	$seo        = function_exists( 'nexus_get_seo_cockpit_snapshot' ) ? nexus_get_seo_cockpit_snapshot( false, 28 ) : [];
 	$opportunities = is_wp_error( $seo ) || ! is_array( $seo ) ? [] : nexus_get_market_intelligence_opportunities( $seo, 12 );
 	$has_credentials = nexus_dataforseo_has_credentials();
-	$next_sync = wp_next_scheduled( nexus_market_intelligence_cron_hook() );
+	$next_sync  = wp_next_scheduled( nexus_market_intelligence_cron_hook() );
+	$organic_job = function_exists( 'nexus_get_market_intelligence_live_job' ) ? nexus_get_market_intelligence_live_job( 'organic' ) : [];
+	$maps_job    = function_exists( 'nexus_get_market_intelligence_live_job' ) ? nexus_get_market_intelligence_live_job( 'maps' ) : [];
 	?>
 	<div class="wrap nexus-seo-cockpit nsc-market">
 		<?php nexus_render_market_intelligence_notice(); ?>
