@@ -256,6 +256,24 @@
     white-space: nowrap;
 }
 
+.nsc-market-opportunity__score-details {
+    margin: 7px 0;
+    color: var(--nsc-market-muted);
+    font-size: 9px;
+}
+
+.nsc-market-opportunity__score-details summary {
+    cursor: pointer;
+    color: var(--nsc-market-ink);
+    font-weight: 700;
+}
+
+.nsc-market-opportunity__score-details small {
+    display: block;
+    margin-top: 5px;
+    line-height: 1.55;
+}
+
 .nsc-market-competitor-grid {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
