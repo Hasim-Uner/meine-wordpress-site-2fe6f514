@@ -1,8 +1,9 @@
 <?php
 /**
  * Contract test for page provisioning in blocksy-child/inc/helpers.php:
- * once per deployed revision, legacy slugs renamed before inserting,
- * templates written only when they differ. Loads the real functions.
+ * once per deployed revision, cross-request locking, legacy slugs renamed
+ * before inserting, templates written only when they differ. Loads the real
+ * functions.
  */
 
 class WP_Post { public function __construct( array $data ) { foreach ( $data as $key => $value ) { $this->$key = $value; } } }
@@ -10,13 +11,20 @@ class WP_Error {}
 
 function reset_site( array $pages = [], array $options = [], string $sha = 'abc1234' ) {
 	$GLOBALS['site'] = [ 'pages' => $pages, 'meta' => [], 'options' => $options, 'sha' => $sha, 'cron' => false, 'log' => [] ];
+	unset( $GLOBALS['nexus_route_pages_lock_owner'] );
 }
 function log_call( $call ) { $GLOBALS['site']['log'][] = $call; }
 function wp_installing() { return false; }
 function wp_doing_ajax() { return false; }
 function wp_doing_cron() { return $GLOBALS['site']['cron']; }
 function get_option( $name ) { return $GLOBALS['site']['options'][ $name ] ?? false; }
+function add_option( $name, $value, $deprecated = '', $autoload = null ) {
+	if ( array_key_exists( $name, $GLOBALS['site']['options'] ) ) { return false; }
+	$GLOBALS['site']['options'][ $name ] = $value;
+	return true;
+}
 function update_option( $name, $value ) { $GLOBALS['site']['options'][ $name ] = $value; return true; }
+function delete_option( $name ) { unset( $GLOBALS['site']['options'][ $name ] ); return true; }
 function trailingslashit( $value ) { return rtrim( $value, '/\\' ) . '/'; }
 function get_stylesheet_directory() {
 	$dir = sys_get_temp_dir() . '/provisioning-test';
@@ -38,7 +46,8 @@ function get_post_meta( $id, $key ) { return $GLOBALS['site']['meta'][ $id ][ $k
 function update_post_meta( $id, $key, $value ) { log_call( "template:$value" ); $GLOBALS['site']['meta'][ $id ][ $key ] = $value; }
 
 $source = file_get_contents( __DIR__ . '/../../blocksy-child/inc/helpers.php' );
-foreach ( [ 'nexus_get_page_id', 'nexus_get_deploy_marker_sha', 'nexus_get_route_pages_stamp', 'nexus_route_pages_ensure_due',
+foreach ( [ 'nexus_get_page_id', 'nexus_get_deploy_marker_sha', 'nexus_get_route_pages_stamp', 'nexus_get_route_pages_lock_name',
+	'nexus_acquire_route_pages_lock', 'nexus_release_route_pages_lock', 'nexus_route_pages_ensure_due',
 	'nexus_mark_route_pages_ensured', 'nexus_get_provisioned_pages', 'nexus_ensure_provisioned_page', 'nexus_maybe_ensure_provisioned_pages' ] as $name ) {
 	if ( ! preg_match( '/^function ' . $name . '\(.*?^}$/ms', $source, $match ) ) {
 		throw new RuntimeException( "missing $name() in helpers.php" );
@@ -61,6 +70,7 @@ reset_site();
 $log = request();
 check( count_prefix( $log, 'insert:' ) === $pages && count_prefix( $log, 'template:' ) === $pages, "fresh site: all $pages pages inserted with template" );
 check( 'abc1234' === get_option( 'nexus_route_pages_stamp' ), 'stamp stored after provisioning' );
+check( false === get_option( 'nexus_route_pages_lock' ), 'fallback lock released after provisioning' );
 
 $GLOBALS['site']['log'] = [];
 check( [] === request(), 'second request with same deploy: no lookups, no writes' );
@@ -77,6 +87,9 @@ check( ! in_array( 'insert:waermepumpen-leads', $log, true ) && count_prefix( $l
 reset_site();
 $GLOBALS['site']['cron'] = true;
 check( [] === request() && false === get_option( 'nexus_route_pages_stamp' ), 'cron request neither provisions nor consumes the stamp' );
+
+reset_site( [], [ 'nexus_route_pages_lock' => 'other-request' ] );
+check( [] === request() && false === get_option( 'nexus_route_pages_stamp' ), 'parallel request skips provisioning and does not consume the stamp' );
 
 reset_site( [], [ 'nexus_route_pages_stamp' => 'abc1234' ], 'def5678' );
 check( count_prefix( request(), 'lookup:' ) > 0 && 'def5678' === get_option( 'nexus_route_pages_stamp' ), 'new deploy provisions again' );
