@@ -224,6 +224,18 @@ function nexus_ci_decision_market_next_step( $action, $segment ) {
 		return 'Aktualität, Belege und interne Verlinkung sichern. Nur eingreifen, wenn GSC oder die Live-SERP einen konkreten Verlust zeigt.';
 	}
 
+	if ( 'Ranking & Owner prüfen' === $action ) {
+		return 'Zuerst Live-SERP, GSC-Zuordnung und Query-Ownership prüfen. Erst danach entscheiden, ob eine bestehende Zielseite gestärkt oder überhaupt eine neue Seite benötigt wird.';
+	}
+
+	if ( 'Content-Gap prüfen' === $action ) {
+		return 'SERP-Intent und vorhandene Seiten prüfen. Nur bei echter Themenlücke neuen Content planen; sonst die bestätigte Owner-Seite erweitern.';
+	}
+
+	if ( 'Gap beobachten' === $action ) {
+		return 'Noch keine Maßnahme ableiten. Ranking-Snapshot und GSC-Signal beim nächsten Lauf erneut prüfen und nur bei bestätigter Nachfrage hochstufen.';
+	}
+
 	if ( 'brand' === $segment ) {
 		return 'Als Marken-/Proof-Sichtbarkeit beobachten. Erst priorisieren, wenn daraus qualifizierter Traffic, Leads oder strategische Autorität nachweisbar werden.';
 	}
@@ -243,12 +255,14 @@ function nexus_ci_market_decision_items( $context ) {
 		return [];
 	}
 
-	$top_queries = nexus_ci_decision_cached_gsc_query_totals();
-	$seo_context = [
-		'top_queries'  => $top_queries,
-		'leads'        => is_array( $context['leads'] ?? null ) ? $context['leads'] : [],
-		'acquisition'  => is_array( $context['crm'] ?? null ) ? $context['crm'] : [],
-		'page_contexts'=> [],
+	$top_queries  = nexus_ci_decision_cached_gsc_query_totals();
+	$gsc_snapshot = function_exists( 'nexus_ci_cached_gsc_snapshot' ) ? nexus_ci_cached_gsc_snapshot() : [];
+	$seo_context  = [
+		'top_queries'     => $top_queries,
+		'query_page_rows' => is_array( $gsc_snapshot['query_page_rows'] ?? null ) ? $gsc_snapshot['query_page_rows'] : [],
+		'leads'           => is_array( $context['leads'] ?? null ) ? $context['leads'] : [],
+		'acquisition'     => is_array( $context['crm'] ?? null ) ? $context['crm'] : [],
+		'page_contexts'   => [],
 	];
 
 	$rows  = nexus_get_market_intelligence_opportunities( $seo_context, 20 );
@@ -263,6 +277,7 @@ function nexus_ci_market_decision_items( $context ) {
 		$segment       = sanitize_key( (string) ( $row['segment'] ?? 'other' ) );
 		$segment_label = (string) ( $row['segment_label'] ?? 'Beobachten' );
 		$action        = (string) ( $row['action'] ?? 'Beobachten' );
+		$is_ranking_gap = ! empty( $row['is_ranking_gap'] );
 		$target_url    = nexus_ci_decision_url( (string) ( $row['url'] ?? '' ) );
 		$target_ctx    = '' !== $target_url && function_exists( 'nexus_get_seo_cockpit_wp_context_for_url' )
 			? nexus_get_seo_cockpit_wp_context_for_url( $target_url )
@@ -273,7 +288,13 @@ function nexus_ci_market_decision_items( $context ) {
 			$target_label = $target_url;
 		}
 
-		if ( 'business' === $segment && 'Beobachten' !== $action && $score >= 55 ) {
+		if ( $is_ranking_gap && 'Gap beobachten' === $action ) {
+			$lane       = 'observe';
+			$lane_label = 'Beobachten';
+		} elseif ( $is_ranking_gap ) {
+			$lane       = 'plan';
+			$lane_label = 'Prüfen & planen';
+		} elseif ( 'business' === $segment && 'Beobachten' !== $action && $score >= 55 ) {
 			$lane       = 'now';
 			$lane_label = 'Jetzt tun';
 		} elseif ( 'brand' !== $segment && 'Beobachten' !== $action ) {
@@ -288,6 +309,9 @@ function nexus_ci_market_decision_items( $context ) {
 
 		if ( ! empty( $row['intent'] ) ) {
 			$why[] = 'Intent ' . (string) $row['intent'];
+		}
+		if ( $is_ranking_gap ) {
+			$why[] = 'kein Ranking im geladenen DataForSEO-Snapshot';
 		}
 		if ( (float) ( $row['gsc_impressions'] ?? 0 ) > 0 ) {
 			$why[] = 'eigene GSC-Nachfrage';
@@ -319,6 +343,8 @@ function nexus_ci_market_decision_items( $context ) {
 			'impressions'    => (float) ( $row['gsc_impressions'] ?? 0.0 ),
 			'position'       => (float) ( $row['gsc_position'] ?? 0.0 ),
 			'market_score'   => $score,
+			'is_ranking_gap' => $is_ranking_gap,
+			'market_source'  => sanitize_key( (string) ( $row['market_source'] ?? '' ) ),
 			'seo_score'      => 0,
 			'content_fit'    => 0,
 			'audit_current'  => absint( $row['leads_current'] ?? 0 ),
@@ -342,6 +368,7 @@ function nexus_ci_market_decision_items( $context ) {
 				'intent'         => sanitize_key( (string) ( $row['intent'] ?? '' ) ),
 				'segment'        => $segment,
 				'segment_label'  => $segment_label,
+				'ranking_gap'    => $is_ranking_gap,
 			],
 			'sources'        => array_values( array_unique( $sources ) ),
 		];
