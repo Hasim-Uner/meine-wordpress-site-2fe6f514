@@ -43,7 +43,8 @@ def function_body(text, name):
 
 
 def quoted_slugs(body):
-    return re.findall(r"['\"]([a-z0-9][a-z0-9\-/]*)['\"]", body)
+    values = re.findall(r"['\"](/?[a-z0-9][a-z0-9\-/]*/?)['\"]", body)
+    return [value.strip("/") for value in values if value.strip("/")]
 
 
 helpers = HELPERS.read_text(encoding="utf-8")
@@ -85,6 +86,12 @@ for slug, template in entries:
 noindex = set(quoted_slugs(function_body(seo, "hu_get_noindex_follow_slugs")))
 noindex |= set(quoted_slugs(function_body(seo, "hu_get_noindex_nofollow_slugs")))
 retired = set(quoted_slugs(function_body(helpers, "nexus_get_retired_gone_paths")))
+legacy_redirect_body = function_body(helpers, "nexus_get_legacy_offer_redirect_map")
+legacy_redirects = {
+    value.strip("/")
+    for value in re.findall(r"['\"](/[^'\"]+/)['\"]\s*=>", legacy_redirect_body)
+    if value.strip("/")
+}
 
 for slug in slugs:
     if slug in noindex:
