@@ -96,6 +96,42 @@ function nexus_market_intelligence_manual_keywords() {
 }
 
 /**
+ * Return a small repo-owned market watchlist for the current positioning.
+ *
+ * These are surveillance seeds, not Query-Ownership assignments. They ensure
+ * that strategically relevant demand can enter Keyword Overview even before
+ * GSC or Ranked Keywords observe it. Manual admin keywords still take priority
+ * when the configured overview limit is reached.
+ *
+ * @return array<int,string>
+ */
+function nexus_market_intelligence_strategic_keyword_seeds() {
+	return [
+		'wordpress freelancer',
+		'wordpress freelancer hannover',
+		'wordpress agentur',
+		'wordpress agentur hannover',
+		'wordpress entwickler',
+		'wordpress entwickler hannover',
+		'wordpress wartung',
+		'wordpress seo',
+		'wordpress website erstellen lassen',
+		'website relaunch',
+		'landingpage erstellen lassen',
+		'technisches seo',
+		'server side tracking',
+		'server side tracking agentur',
+		'tracking agentur',
+		'conversion tracking einrichten lassen',
+		'conversion optimierung',
+		'ga4 setup agentur',
+		'performance marketing b2b',
+		'webdesign hannover',
+		'webdesigner hannover',
+	];
+}
+
+/**
  * Convert the configured strategic competitor textarea into normalized domains.
  *
  * This is intentionally separate from DataForSEO's organic-overlap competitors:
@@ -621,7 +657,11 @@ function nexus_market_intelligence_fetch_keyword_overview( $keywords, $automatic
  */
 function nexus_market_intelligence_keyword_set( $ranked ) {
 	$config = nexus_get_dataforseo_config();
-	$pool   = array_merge( nexus_market_intelligence_manual_keywords(), nexus_market_intelligence_gsc_keywords( 30 ) );
+	$pool   = array_merge(
+		nexus_market_intelligence_manual_keywords(),
+		nexus_market_intelligence_strategic_keyword_seeds(),
+		nexus_market_intelligence_gsc_keywords( 30 )
+	);
 
 	foreach ( $ranked as $row ) {
 		if ( is_array( $row ) && ! empty( $row['keyword'] ) ) {
@@ -756,8 +796,9 @@ function nexus_refresh_market_intelligence( $automatic = false ) {
 			'ranked'          => $ranked,
 			'competitors'     => $competitors,
 			'authority'       => $authority,
-			'keyword_overview'=> $overview,
-			'watch_keywords'  => $keywords,
+			'keyword_overview'         => $overview,
+			'watch_keywords'           => $keywords,
+			'strategic_keyword_seeds'  => nexus_market_intelligence_strategic_keyword_seeds(),
 			'strategic_overview'        => is_array( $current['strategic_overview'] ?? null ) ? $current['strategic_overview'] : [],
 			'strategic_overview_errors' => is_array( $current['strategic_overview_errors'] ?? null ) ? $current['strategic_overview_errors'] : [],
 			'strategic_overview_at'     => absint( $current['strategic_overview_at'] ?? 0 ),
