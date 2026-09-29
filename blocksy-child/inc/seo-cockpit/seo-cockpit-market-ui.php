@@ -460,6 +460,29 @@ function nexus_render_market_intelligence_admin_page() {
 	$next_sync  = wp_next_scheduled( nexus_market_intelligence_cron_hook() );
 	$organic_job = function_exists( 'nexus_get_market_intelligence_live_job' ) ? nexus_get_market_intelligence_live_job( 'organic' ) : [];
 	$maps_job    = function_exists( 'nexus_get_market_intelligence_live_job' ) ? nexus_get_market_intelligence_live_job( 'maps' ) : [];
+
+	$organic_job_active = in_array( (string) ( $organic_job['status'] ?? '' ), [ 'queued', 'running' ], true );
+	$maps_job_active    = in_array( (string) ( $maps_job['status'] ?? '' ), [ 'queued', 'running' ], true );
+
+	$organic_live_rows = $organic_job_active
+		? array_values( (array) ( $organic_job['rows'] ?? [] ) )
+		: array_values( (array) ( $snapshot['live_serp'] ?? [] ) );
+	$maps_live_rows = $maps_job_active
+		? array_values( (array) ( $maps_job['rows'] ?? [] ) )
+		: array_values( (array) ( $snapshot['local_maps'] ?? [] ) );
+
+	$organic_job_context = is_array( $organic_job['context'] ?? null ) ? $organic_job['context'] : [];
+	$maps_job_context    = is_array( $maps_job['context'] ?? null ) ? $maps_job['context'] : [];
+
+	$organic_live_location = $organic_job_active
+		? (string) ( $organic_job_context['location_name'] ?? $config['organic_live_location_name'] )
+		: (string) $config['organic_live_location_name'];
+	$organic_live_depth = $organic_job_active
+		? absint( $organic_job_context['depth'] ?? $config['organic_live_depth'] )
+		: absint( $config['organic_live_depth'] );
+	$maps_live_location = $maps_job_active
+		? (string) ( $maps_job_context['location_name'] ?? $config['local_location_name'] )
+		: (string) $config['local_location_name'];
 	?>
 	<div class="wrap nexus-seo-cockpit nsc-market">
 		<?php nexus_render_market_intelligence_notice(); ?>
@@ -549,8 +572,22 @@ function nexus_render_market_intelligence_admin_page() {
 				<?php endforeach; ?>
 			</div>
 			<div class="nsc-market-live-grid">
-				<div><h3>Google Organic · <?php echo esc_html( (string) $config['organic_live_location_name'] ); ?> · Top <?php echo esc_html( (string) absint( $config['organic_live_depth'] ) ); ?></h3><?php nexus_render_market_intelligence_live_rows( (array) ( $snapshot['live_serp'] ?? [] ), 'organic' ); ?></div>
-				<div><h3>Google Maps · <?php echo esc_html( (string) $config['local_location_name'] ); ?></h3><?php nexus_render_market_intelligence_live_rows( (array) ( $snapshot['local_maps'] ?? [] ), 'maps' ); ?></div>
+				<div>
+					<h3>Google Organic · <?php echo esc_html( $organic_live_location ); ?> · Top <?php echo esc_html( (string) max( 10, $organic_live_depth ) ); ?></h3>
+					<?php if ( $organic_job_active && empty( $organic_live_rows ) ) : ?>
+						<p class="nsc-market-empty">Neue Top-<?php echo esc_html( (string) max( 10, $organic_live_depth ) ); ?>-Prüfung läuft. Die ersten Ergebnisse erscheinen hier, sobald das erste Keyword abgeschlossen ist.</p>
+					<?php else : ?>
+						<?php nexus_render_market_intelligence_live_rows( $organic_live_rows, 'organic' ); ?>
+					<?php endif; ?>
+				</div>
+				<div>
+					<h3>Google Maps · <?php echo esc_html( $maps_live_location ); ?></h3>
+					<?php if ( $maps_job_active && empty( $maps_live_rows ) ) : ?>
+						<p class="nsc-market-empty">Neue Maps-Prüfung läuft. Die ersten Ergebnisse erscheinen hier, sobald das erste Keyword abgeschlossen ist.</p>
+					<?php else : ?>
+						<?php nexus_render_market_intelligence_live_rows( $maps_live_rows, 'maps' ); ?>
+					<?php endif; ?>
+				</div>
 			</div>
 		</section>
 
