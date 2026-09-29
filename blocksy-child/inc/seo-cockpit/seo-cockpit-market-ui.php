@@ -299,11 +299,12 @@ function nexus_render_market_intelligence_opportunities( $rows, $limit = 10 ) {
 						<strong><?php echo esc_html( (string) ( $row['keyword'] ?? '' ) ); ?></strong>
 						<div class="nsc-market-opportunity__badges">
 							<span class="is-segment-<?php echo esc_attr( sanitize_key( (string) ( $row['segment'] ?? 'other' ) ) ); ?>"><?php echo esc_html( (string) ( $row['segment_label'] ?? 'Beobachten' ) ); ?></span>
+							<?php if ( ! empty( $row['is_ranking_gap'] ) ) : ?><span>Ranking-Gap</span><?php endif; ?>
 							<span><?php echo esc_html( (string) ( $row['action'] ?? 'Beobachten' ) ); ?></span>
 						</div>
 					</div>
 					<div class="nsc-market-opportunity__meta">
-						<span>DataForSEO Pos. <?php echo esc_html( number_format_i18n( (float) ( $row['rank'] ?? 0 ), 0 ) ); ?></span>
+						<?php if ( ! empty( $row['is_ranking_gap'] ) ) : ?><span>DataForSEO: kein Ranking im geladenen Snapshot</span><?php else : ?><span>DataForSEO Pos. <?php echo esc_html( number_format_i18n( (float) ( $row['rank'] ?? 0 ), 0 ) ); ?></span><?php endif; ?>
 						<span>Vol. <?php echo esc_html( number_format_i18n( (float) ( $row['search_volume'] ?? 0 ), 0 ) ); ?></span>
 						<?php if ( ! empty( $row['page_role_label'] ) ) : ?><span><?php echo esc_html( (string) $row['page_role_label'] ); ?></span><?php endif; ?>
 						<?php if ( (float) ( $row['gsc_impressions'] ?? 0 ) > 0 ) : ?><span>GSC <?php echo esc_html( number_format_i18n( (float) $row['gsc_impressions'], 0 ) ); ?> Impr.</span><?php endif; ?>
