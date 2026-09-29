@@ -90,6 +90,28 @@ function nexus_seo_audit_intelligence_ui_metric( $label, $value, $note = '' ) {
 	<?php
 }
 
+/**
+ * Format one CrUX p75 metric from the persisted coverage diagnostic.
+ *
+ * @param array<string,mixed> $status   CrUX diagnostic.
+ * @param string              $metric   CrUX metric key.
+ * @param int                 $decimals Number of decimals.
+ * @return string
+ */
+function nexus_seo_audit_intelligence_ui_crux_metric( $status, $metric, $decimals = 0 ) {
+	$metrics = is_array( $status['metrics'] ?? null ) ? $status['metrics'] : [];
+	$row     = is_array( $metrics[ $metric ] ?? null ) ? $metrics[ $metric ] : [];
+
+	if ( ! isset( $row['value'] ) || ! is_numeric( $row['value'] ) ) {
+		return '—';
+	}
+
+	$value = number_format_i18n( (float) $row['value'], absint( $decimals ) );
+	$unit  = trim( (string) ( $row['unit'] ?? '' ) );
+
+	return $value . ( '' !== $unit ? ' ' . $unit : '' );
+}
+
 /** Render non-score intelligence findings. */
 function nexus_seo_audit_intelligence_ui_findings( $state ) {
 	$findings = function_exists( 'nexus_seo_audit_get_intelligence_findings' )
@@ -142,6 +164,10 @@ function nexus_seo_audit_intelligence_ui_render() {
 	$robots      = is_array( $site_checks['robots'] ?? null ) ? $site_checks['robots'] : [];
 	$sitemap     = is_array( $site_checks['sitemap'] ?? null ) ? $site_checks['sitemap'] : [];
 	$performance = function_exists( 'nexus_seo_audit_get_search_performance' ) ? nexus_seo_audit_get_search_performance( $state ) : [];
+	$crux        = function_exists( 'nexus_get_seo_cockpit_crux_diagnostic_option_name' )
+		? get_option( nexus_get_seo_cockpit_crux_diagnostic_option_name(), [] )
+		: [];
+	$crux        = is_array( $crux ) ? $crux : [];
 	?>
 	<div class="wrap nexus-audit nexus-audit-intel">
 		<section class="nexus-audit__panel">
@@ -159,6 +185,30 @@ function nexus_seo_audit_intelligence_ui_render() {
 					<?php nexus_seo_audit_intelligence_ui_metric( 'Canonical abweichend', absint( $google['canonical_mismatch'] ?? 0 ), 'Google vs. Website' ); ?>
 					<?php nexus_seo_audit_intelligence_ui_metric( 'Fetch-Probleme', absint( $google['fetch_problems'] ?? 0 ), 'Googlebot' ); ?>
 				</div>
+			<?php endif; ?>
+		</section>
+
+		<section class="nexus-audit__panel">
+			<div class="nexus-audit__section-head">
+				<div><p class="nexus-audit__eyebrow">Core Web Vitals · Felddaten</p><h2>CrUX als Evidenz, nicht als Scheinscore</h2></div>
+				<p class="nexus-audit-intel__note">Reale Chrome-Felddaten werden auf Origin-Ebene separat vom technischen SEO-Score gezeigt. Fehlende Stichprobe ist kein grüner Wert und kein Fehlerwert.</p>
+			</div>
+			<?php if ( empty( $crux['checked_at'] ) ) : ?>
+				<p class="nexus-audit-intel__note">Noch keine CrUX-Diagnose gespeichert. Die Datenbasis kann über den Research-Refresh aktualisiert werden.</p>
+			<?php elseif ( empty( $crux['has_data'] ) ) : ?>
+				<div class="nexus-audit-intel__grid">
+					<?php nexus_seo_audit_intelligence_ui_metric( 'CrUX', 'keine Felddaten', wp_date( 'd.m.Y H:i', absint( $crux['checked_at'] ) ) ); ?>
+				</div>
+				<p class="nexus-audit-intel__note"><?php echo esc_html( (string) ( $crux['message'] ?? 'Für die Origin liegt aktuell keine ausreichende CrUX-Stichprobe vor.' ) ); ?></p>
+			<?php else : ?>
+				<div class="nexus-audit-intel__grid">
+					<?php nexus_seo_audit_intelligence_ui_metric( 'LCP p75', nexus_seo_audit_intelligence_ui_crux_metric( $crux, 'largest_contentful_paint' ), 'Origin · Felddaten' ); ?>
+					<?php nexus_seo_audit_intelligence_ui_metric( 'INP p75', nexus_seo_audit_intelligence_ui_crux_metric( $crux, 'interaction_to_next_paint' ), 'Origin · Felddaten' ); ?>
+					<?php nexus_seo_audit_intelligence_ui_metric( 'CLS p75', nexus_seo_audit_intelligence_ui_crux_metric( $crux, 'cumulative_layout_shift', 2 ), 'Origin · Felddaten' ); ?>
+					<?php nexus_seo_audit_intelligence_ui_metric( 'TTFB p75', nexus_seo_audit_intelligence_ui_crux_metric( $crux, 'experimental_time_to_first_byte' ), 'Diagnosemetrik' ); ?>
+					<?php nexus_seo_audit_intelligence_ui_metric( 'Stand', wp_date( 'd.m.Y H:i', absint( $crux['checked_at'] ) ), 'letzte CrUX-Prüfung' ); ?>
+				</div>
+				<?php if ( ! empty( $crux['message'] ) ) : ?><p class="nexus-audit-intel__note"><?php echo esc_html( (string) $crux['message'] ); ?></p><?php endif; ?>
 			<?php endif; ?>
 		</section>
 
