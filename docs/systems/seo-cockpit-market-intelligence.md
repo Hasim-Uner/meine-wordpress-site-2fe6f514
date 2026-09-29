@@ -175,13 +175,16 @@ Der Button ist bewusst getrennt vom normalen `Marktdaten aktualisieren`: Die str
 
 ### Keyword Overview
 
-Die Watchlist entsteht aus:
+Das Keyword-Overview-Universum entsteht aus:
 
-1. explizit gepflegten Keywords,
-2. starken GSC-Queries,
-3. vorhandenen Ranked Keywords.
+1. explizit gepflegten Admin-Keywords,
+2. einer kleinen repo-eigenen strategischen Markt-Watchlist für die aktuelle Positionierung,
+3. starken GSC-Queries,
+4. vorhandenen Ranked Keywords.
 
-Die Anzahl wird vor dem API-Call gedeckelt.
+Die repo-eigenen Seeds sind **keine Query-Ownership-Zuordnung**, sondern reine Marktbeobachtung. Sie enthalten Kernbegriffe für WordPress-Freelance/-Entwicklung, Tracking, Conversion, Relaunch/Landingpages sowie die lokale Webdesign-Nachfrage, damit völlig neue Marktchancen nicht erst nach einem eigenen Ranking oder einer GSC-Impression sichtbar werden.
+
+Manuelle Admin-Keywords stehen in der Reihenfolge vor den Repo-Seeds. Die Gesamtzahl wird vor dem API-Call über `keyword_overview_limit` gedeckelt. Die manuellen Live-SERP-/Maps-Checks verwenden weiterhin nur die explizite Admin-Watchlist und werden durch diese Seeds nicht automatisch verteuert.
 
 ### Authority Pulse
 
