@@ -720,6 +720,24 @@ function nexus_refresh_market_intelligence( $automatic = false ) {
 }
 
 /**
+ * Check whether a SERP result domain belongs to the current site.
+ *
+ * @param string $domain Result domain.
+ * @param string $target Site target domain.
+ * @return bool
+ */
+function nexus_market_intelligence_domain_matches_target( $domain, $target ) {
+	$domain = strtolower( trim( preg_replace( '/^www\./i', '', (string) $domain ) ) );
+	$target = strtolower( trim( preg_replace( '/^www\./i', '', (string) $target ) ) );
+
+	if ( '' === $domain || '' === $target ) {
+		return false;
+	}
+
+	return $domain === $target || str_ends_with( $domain, '.' . $target );
+}
+
+/**
  * Find the site's organic position in one live SERP result.
  *
  * @param array<string, mixed> $result First DataForSEO result.
@@ -749,7 +767,7 @@ function nexus_market_intelligence_parse_live_serp_result( $result ) {
 			];
 		}
 
-		if ( null === $own && '' !== $domain && $target === $domain ) {
+		if ( null === $own && nexus_market_intelligence_domain_matches_target( $domain, $target ) ) {
 			$own = [
 				'type'  => $type,
 				'rank'  => absint( $item['rank_absolute'] ?? $item['rank_group'] ?? 0 ),
@@ -846,15 +864,28 @@ function nexus_refresh_market_intelligence_live( $mode = 'organic' ) {
 	$errors = [];
 
 	foreach ( $keywords as $keyword ) {
-		$task = [
+		$location_name = 'maps' === $mode
+			? (string) $config['local_location_name']
+			: (string) $config['organic_live_location_name'];
+
+		if ( '' === trim( $location_name ) ) {
+			$location_name = 'maps' === $mode
+				? (string) $config['location_name']
+				: ( '' !== trim( (string) $config['local_location_name'] ) ? (string) $config['local_location_name'] : (string) $config['location_name'] );
+		}
+
+		$depth = 'maps' === $mode ? 100 : absint( $config['organic_live_depth'] ?? 50 );
+		$task  = [
 			'keyword'       => $keyword,
 			'language_code' => (string) $config['language_code'],
-			'location_name' => 'maps' === $mode && '' !== (string) $config['local_location_name']
-				? (string) $config['local_location_name']
-				: (string) $config['location_name'],
+			'location_name' => $location_name,
 			'device'        => 'desktop',
 			'tag'           => 'nexus_market_' . $mode,
 		];
+
+		if ( 'organic' === $mode ) {
+			$task['depth'] = max( 10, min( 200, $depth ) );
+		}
 
 		$path     = 'maps' === $mode ? 'v3/serp/google/maps/live/advanced' : 'v3/serp/google/organic/live/advanced';
 		$response = nexus_dataforseo_request( $path, $task, false );
@@ -866,8 +897,11 @@ function nexus_refresh_market_intelligence_live( $mode = 'organic' ) {
 		}
 
 		$rows[] = [
-			'keyword' => $keyword,
-			'result'  => 'maps' === $mode
+			'keyword'       => $keyword,
+			'location_name' => $location_name,
+			'depth'         => 'maps' === $mode ? 100 : max( 10, min( 200, $depth ) ),
+			'checked_at'    => time(),
+			'result'        => 'maps' === $mode
 				? nexus_market_intelligence_parse_maps_result( $result )
 				: nexus_market_intelligence_parse_live_serp_result( $result ),
 		];
