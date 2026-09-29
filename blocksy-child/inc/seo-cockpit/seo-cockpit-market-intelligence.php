@@ -734,7 +734,9 @@ function nexus_market_intelligence_domain_matches_target( $domain, $target ) {
 		return false;
 	}
 
-	return $domain === $target || str_ends_with( $domain, '.' . $target );
+	$suffix = '.' . $target;
+
+	return $domain === $target || ( strlen( $domain ) > strlen( $suffix ) && substr( $domain, -strlen( $suffix ) ) === $suffix );
 }
 
 /**
@@ -820,7 +822,7 @@ function nexus_market_intelligence_parse_maps_result( $result ) {
 
 		$title_key = mb_strtolower( remove_accents( $title ) );
 		$name_hit  = '' !== $needle && false !== strpos( $title_key, $needle );
-		$domain_hit= '' !== $domain && $target === $domain;
+		$domain_hit= nexus_market_intelligence_domain_matches_target( $domain, $target );
 
 		if ( null === $own && ( $name_hit || $domain_hit ) ) {
 			$own = $row;
