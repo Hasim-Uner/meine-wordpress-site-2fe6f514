@@ -1,6 +1,6 @@
 # SEO Cockpit · Market Intelligence
 
-Stand: 2026-09-28.
+Stand: 2026-09-29.
 
 ## Ziel
 
@@ -200,6 +200,15 @@ Der Authority Pulse beantwortet die Frage, **ob externe Domain-Autorität als En
 
 ## Opportunity Engine
 
+Das Kandidatenuniversum ist bewusst **nicht** auf bereits rankende Keywords beschränkt. Es ist die deduplizierte Vereinigung aus:
+
+1. DataForSEO Ranked Keywords der eigenen Domain,
+2. Keyword Overview für Watchlist-, GSC- und Ranking-Keywords.
+
+Fehlt ein Keyword im begrenzten Ranked-Keyword-Snapshot, wird es als `ranking_gap` markiert. Das bedeutet ausdrücklich **„kein Ranking im geladenen Snapshot“**, nicht „Google rankt die Domain nirgends“. Existiert für dieselbe Query bereits GSC-Query×Page-Evidenz, wird die stärkste beobachtete URL als mögliche Owner-Seite zugeordnet; andernfalls bleibt die Zielseite offen.
+
+So kann das Cockpit Nachfrage ohne geladenes Ranking überhaupt erst als Entscheidungskandidat sehen, ohne aus Datenabwesenheit Gewissheit zu erfinden. Ranking-Gaps erhalten nur einen kleinen Score-Beitrag und landen in Content-Chancen zunächst unter **Prüfen & planen**.
+
 Der aktuelle Score ist deterministisch und transparent. Er kombiniert:
 
 - externes Suchvolumen,
@@ -211,6 +220,9 @@ Der aktuelle Score ist deterministisch und transparent. Er kombiniert:
 
 Beispielhafte Aktionsklassen:
 
+- `Ranking & Owner prüfen` — kaufnahe Nachfrage ohne geladenes Ranking
+- `Content-Gap prüfen` — informative Nachfrage ohne geladenes Ranking
+- `Gap beobachten` — schwächeres oder noch unbestätigtes Gap-Signal
 - `Top-10-Push`
 - `Seite ausbauen`
 - `Position verteidigen`
@@ -239,7 +251,7 @@ Zeilentypen:
 - `keyword_overview` — Suchvolumen, CPC, Keyword Difficulty, Intent und SERP-Merkmale
 - `competitor_auto` — automatisch erkannte organische Wettbewerber
 - `competitor_strategic` — kuratierte strategische Vergleichsgruppe inklusive vorhandener Overlap-Metriken
-- `opportunity` — repo-eigener Join aus DataForSEO, GSC, WordPress und CRM
+- `opportunity` — repo-eigener Join aus DataForSEO, GSC, WordPress und CRM; enthält `market_source` und `ranking_gap` zur Herkunft des Kandidaten
 - `live_organic` / `live_maps` — zuletzt manuell gespeicherte Live-Ergebnisse, sofern vorhanden
 
 Format:
