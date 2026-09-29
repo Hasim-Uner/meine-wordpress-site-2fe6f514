@@ -354,6 +354,36 @@
     vertical-align: text-bottom;
 }
 
+.nsc-market-live-progress {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 10px;
+}
+
+.nsc-market-live-progress:empty {
+    display: none;
+}
+
+.nsc-market-live-progress__item {
+    padding: 6px 9px;
+    border: 1px solid var(--nsc-market-border);
+    border-radius: 999px;
+    background: #f7f5f2;
+    color: var(--nsc-market-muted);
+    font-size: 9px;
+}
+
+.nsc-market-live-progress__item.is-running {
+    background: #edf4fb;
+    color: #345a78;
+}
+
+.nsc-market-live-progress__item.is-warning {
+    background: #fbf2e7;
+    color: #80552b;
+}
+
 .nsc-market-live-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
