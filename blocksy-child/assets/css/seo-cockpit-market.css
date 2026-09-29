@@ -131,6 +131,13 @@
     font-size: 9px;
 }
 
+.nsc-market-section__meta {
+    margin: -4px 0 0;
+    color: var(--nsc-market-muted);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
 .nsc-market-segment-summary {
     display: flex;
     flex-wrap: wrap;
