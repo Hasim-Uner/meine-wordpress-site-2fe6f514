@@ -50,11 +50,14 @@ require_pattern "NEXUS_DATAFORSEO_PASSWORD" "$CLIENT"
 require_pattern "Authorization.*Basic" "$CLIENT"
 forbid_pattern "api\.dataforseo\.com[^']*(login|password)=" "$CLIENT"
 
-# V1 uses batched Labs endpoints for the scheduled market layer. Live SERP
-# endpoints exist only in the explicit manual watchlist function.
+# The scheduled market layer uses batched Labs endpoints plus one bounded
+# domain-level backlink summary. Live SERP endpoints remain explicit/manual.
 require_pattern "dataforseo_labs/google/ranked_keywords/live" "$MARKET"
 require_pattern "dataforseo_labs/google/competitors_domain/live" "$MARKET"
 require_pattern "dataforseo_labs/google/keyword_overview/live" "$MARKET"
+require_pattern "backlinks/summary/live" "$MARKET"
+require_pattern "function nexus_market_intelligence_fetch_authority" "$MARKET"
+require_pattern "Autorität & Linkprofil" "$UI"
 require_pattern "serp/google/organic/live/advanced" "$MARKET"
 require_pattern "serp/google/maps/live/advanced" "$MARKET"
 require_pattern "organic_live_location_name" "$CLIENT"
@@ -98,6 +101,7 @@ require_pattern "function nexus_build_market_intelligence_export_rows" "$EXPORT"
 require_pattern "admin_post_nexus_market_intelligence_export" "$EXPORT"
 require_pattern "Market CSV" "$UI"
 require_pattern "competitor_strategic" "$EXPORT"
+require_pattern "authority_summary" "$EXPORT"
 require_pattern "opportunity" "$EXPORT"
 forbid_pattern "nexus_dataforseo_request" "$EXPORT"
 forbid_pattern "wp_remote_(get|post|request)" "$EXPORT"

@@ -263,6 +263,52 @@ function nexus_market_intelligence_top10_count( $rows ) {
 }
 
 /**
+ * Describe a neutral movement against the previous authority snapshot.
+ *
+ * @param mixed  $current Current value.
+ * @param array<string,mixed> $previous Previous authority snapshot.
+ * @param string $key Metric key.
+ * @return string
+ */
+function nexus_market_intelligence_authority_delta_note( $current, $previous, $key ) {
+	if ( ! is_numeric( $current ) || ! isset( $previous[ $key ] ) || ! is_numeric( $previous[ $key ] ) ) {
+		return 'noch kein Verlauf';
+	}
+
+	$delta = (float) $current - (float) $previous[ $key ];
+	if ( 0.0 === $delta ) {
+		return '±0 seit letztem Snapshot';
+	}
+
+	return ( $delta > 0 ? '+' : '' ) . number_format_i18n( $delta, 0 ) . ' seit letztem Snapshot';
+}
+
+/**
+ * Render domain-level backlink evidence without inventing a composite score.
+ *
+ * @param array<string,mixed> $authority Current authority snapshot.
+ * @param array<string,mixed> $previous Previous authority snapshot.
+ * @return void
+ */
+function nexus_render_market_intelligence_authority( $authority, $previous = [] ) {
+	if ( empty( $authority ) ) {
+		echo '<p class="nsc-market-empty">Noch keine Backlink-Evidenz geladen. Sie wird mit dem nächsten Market-Refresh über DataForSEO ergänzt.</p>';
+		return;
+	}
+	?>
+	<div class="nsc-market-kpis">
+		<article><span>Domain Rank</span><strong><?php echo esc_html( number_format_i18n( absint( $authority['rank'] ?? 0 ) ) ); ?></strong><small>DataForSEO 0–100 · <?php echo esc_html( nexus_market_intelligence_authority_delta_note( $authority['rank'] ?? null, $previous, 'rank' ) ); ?></small></article>
+		<article><span>Ref. Hauptdomains</span><strong><?php echo esc_html( number_format_i18n( absint( $authority['referring_main_domains'] ?? 0 ) ) ); ?></strong><small><?php echo esc_html( nexus_market_intelligence_authority_delta_note( $authority['referring_main_domains'] ?? null, $previous, 'referring_main_domains' ) ); ?></small></article>
+		<article><span>Ref. Domains</span><strong><?php echo esc_html( number_format_i18n( absint( $authority['referring_domains'] ?? 0 ) ) ); ?></strong><small><?php echo esc_html( number_format_i18n( absint( $authority['referring_domains_nofollow'] ?? 0 ) ) ); ?> mit mindestens einem nofollow-Link</small></article>
+		<article><span>Backlinks</span><strong><?php echo esc_html( number_format_i18n( absint( $authority['backlinks'] ?? 0 ) ) ); ?></strong><small><?php echo esc_html( number_format_i18n( absint( $authority['broken_backlinks'] ?? 0 ) ) ); ?> broken · <?php echo esc_html( nexus_market_intelligence_authority_delta_note( $authority['backlinks'] ?? null, $previous, 'backlinks' ) ); ?></small></article>
+		<article><span>Ref. IPs</span><strong><?php echo esc_html( number_format_i18n( absint( $authority['referring_ips'] ?? 0 ) ) ); ?></strong><small><?php echo esc_html( number_format_i18n( absint( $authority['referring_subnets'] ?? 0 ) ) ); ?> Subnetze</small></article>
+		<article><span>Backlink-Spam-Score</span><strong><?php echo esc_html( number_format_i18n( absint( $authority['backlinks_spam_score'] ?? 0 ) ) ); ?></strong><small>DataForSEO-Metrik · kein Cockpit-Urteil</small></article>
+	</div>
+	<p class="nsc-market-section__meta">Stand: <?php echo esc_html( ! empty( $authority['checked_at'] ) ? wp_date( 'd.m.Y H:i', absint( $authority['checked_at'] ) ) : '—' ); ?> · <?php echo esc_html( number_format_i18n( absint( $authority['broken_pages'] ?? 0 ) ) ); ?> verlinkte Zielseiten mit 4xx/5xx im Provider-Snapshot.</p>
+	<?php
+}
+
+/**
  * Render market opportunities shared by the dedicated page and dashboard.
  *
  * @param array<int, array<string, mixed>> $rows Opportunity rows.
@@ -453,6 +499,19 @@ function nexus_render_market_intelligence_admin_page() {
 	$ranked_rows= is_array( $ranked['rows'] ?? null ) ? $ranked['rows'] : [];
 	$metrics    = is_array( $ranked['metrics'] ?? null ) ? $ranked['metrics'] : [];
 	$competitors= is_array( $snapshot['competitors'] ?? null ) ? $snapshot['competitors'] : [];
+	$authority  = is_array( $snapshot['authority'] ?? null ) ? $snapshot['authority'] : [];
+	$history    = get_option( nexus_market_intelligence_history_option_name(), [] );
+	$history    = is_array( $history ) ? $history : [];
+	$previous_authority = [];
+	foreach ( $history as $history_entry ) {
+		if ( ! is_array( $history_entry ) || absint( $history_entry['captured_at'] ?? 0 ) >= absint( $snapshot['generated_at'] ?? 0 ) ) {
+			continue;
+		}
+		if ( is_array( $history_entry['authority'] ?? null ) && ! empty( $history_entry['authority'] ) ) {
+			$previous_authority = $history_entry['authority'];
+			break;
+		}
+	}
 	$strategic_competitors = function_exists( 'nexus_market_intelligence_strategic_competitors' ) ? nexus_market_intelligence_strategic_competitors( $competitors ) : [];
 	$seo        = function_exists( 'nexus_get_seo_cockpit_snapshot' ) ? nexus_get_seo_cockpit_snapshot( false, 28 ) : [];
 	$opportunities = is_wp_error( $seo ) || ! is_array( $seo ) ? [] : nexus_get_market_intelligence_opportunities( $seo, 12 );
@@ -522,6 +581,18 @@ function nexus_render_market_intelligence_admin_page() {
 		<section class="nsc-market-section">
 			<div class="nsc-market-section__head"><div><p class="nexus-seo-cockpit__eyebrow">Opportunity Engine</p><h2>Wo Markt, GSC und Leads zusammenfallen</h2><p>Score aus Suchvolumen, Ranking-Lücke, eigener GSC-Nachfrage, Intent und vorhandenen Lead-Signalen. Kein externer Tool-Score wird blind übernommen.</p></div></div>
 			<?php nexus_render_market_intelligence_opportunities( $opportunities, 12 ); ?>
+		</section>
+
+		<section class="nsc-market-section">
+			<div class="nsc-market-section__head">
+				<div>
+					<p class="nexus-seo-cockpit__eyebrow">Autorität & Linkprofil</p>
+					<h2>Ist fehlende externe Autorität tatsächlich der Engpass?</h2>
+					<p>Domain-Level-Evidenz aus DataForSEO Backlinks. Die Werte werden als eigene Messschicht gezeigt und nicht in einen erfundenen Gesamt-Score gepresst.</p>
+				</div>
+			</div>
+			<?php if ( ! empty( $snapshot['errors']['authority'] ) ) : ?><p class="nsc-market-empty">Letzter Authority-Refresh fehlgeschlagen; der letzte brauchbare Stand bleibt sichtbar. <?php echo esc_html( (string) $snapshot['errors']['authority'] ); ?></p><?php endif; ?>
+			<?php nexus_render_market_intelligence_authority( $authority, $previous_authority ); ?>
 		</section>
 
 		<section class="nsc-market-section">
@@ -663,6 +734,7 @@ function nexus_render_market_intelligence_dashboard_panel( $seo_snapshot ) {
 	$opportunities = nexus_get_market_intelligence_opportunities( $seo_snapshot, 4 );
 	$competitors   = is_array( $market['competitors'] ?? null ) ? $market['competitors'] : [];
 	$ranked        = is_array( $market['ranked'] ?? null ) ? $market['ranked'] : [];
+	$authority     = is_array( $market['authority'] ?? null ) ? $market['authority'] : [];
 	?>
 	<section class="nsc-v3-section nsc-v3-market-pulse" aria-labelledby="nsc-v3-market-title">
 		<div class="nsc-v3-section__head">
@@ -671,7 +743,7 @@ function nexus_render_market_intelligence_dashboard_panel( $seo_snapshot ) {
 		</div>
 		<div class="nsc-v3-split nsc-v3-split--wide-left">
 			<article class="nsc-v3-panel"><div class="nsc-v3-panel__head"><div><span class="nsc-v3-panel__icon"><span class="dashicons dashicons-chart-line"></span></span><div><strong>Marktchancen</strong><p>Externe Nachfrage + eigene Signale.</p></div></div></div><?php nexus_render_market_intelligence_opportunities( $opportunities, 4 ); ?></article>
-			<article class="nsc-v3-panel"><div class="nsc-v3-panel__head"><div><span class="nsc-v3-panel__icon"><span class="dashicons dashicons-networking"></span></span><div><strong>Marktdruck</strong><p><?php echo esc_html( number_format_i18n( absint( $ranked['total_count'] ?? 0 ) ) ); ?> rankende Keywords · <?php echo esc_html( number_format_i18n( count( $competitors ) ) ); ?> Wettbewerber im Snapshot.</p></div></div></div><?php nexus_render_market_intelligence_competitors( $competitors, 4 ); ?></article>
+			<article class="nsc-v3-panel"><div class="nsc-v3-panel__head"><div><span class="nsc-v3-panel__icon"><span class="dashicons dashicons-networking"></span></span><div><strong>Marktdruck</strong><p><?php echo esc_html( number_format_i18n( absint( $ranked['total_count'] ?? 0 ) ) ); ?> rankende Keywords · <?php echo esc_html( number_format_i18n( count( $competitors ) ) ); ?> Wettbewerber<?php if ( ! empty( $authority ) ) : ?> · <?php echo esc_html( number_format_i18n( absint( $authority['referring_main_domains'] ?? 0 ) ) ); ?> verweisende Hauptdomains<?php endif; ?>.</p></div></div></div><?php nexus_render_market_intelligence_competitors( $competitors, 4 ); ?></article>
 		</div>
 	</section>
 	<?php

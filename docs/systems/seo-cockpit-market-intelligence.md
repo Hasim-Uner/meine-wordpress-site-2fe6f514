@@ -52,11 +52,12 @@ Credentials gehören nicht ins Repository.
 
 ## Automatischer Markt-Snapshot
 
-Der wöchentliche Hintergrundjob nutzt ausschließlich gebündelte DataForSEO-Labs-Abfragen:
+Der wöchentliche Hintergrundjob nutzt drei gebündelte DataForSEO-Labs-Abfragen plus genau einen Domain-Level-Backlink-Summary:
 
 1. `dataforseo_labs/google/ranked_keywords/live`
 2. `dataforseo_labs/google/competitors_domain/live`
 3. `dataforseo_labs/google/keyword_overview/live`
+4. `backlinks/summary/live` für den Authority Pulse
 
 Er speichert keine vollständigen API-Rohpayloads als dauerhafte Historie. Der aktuelle Snapshot enthält normalisierte Felder für Cockpit und Opportunity Engine. Die Verlaufshistorie hält maximal 26 kompakte Zustände mit Keyword-Anzahl, ETV, Bewegungen und Wettbewerberanzahl.
 
@@ -182,6 +183,21 @@ Die Watchlist entsteht aus:
 
 Die Anzahl wird vor dem API-Call gedeckelt.
 
+### Authority Pulse
+
+Der Wochen-Snapshot enthält zusätzlich eine Domain-Level-Evidenzschicht aus DataForSEO Backlinks. Sie speichert bewusst **keinen eigenen Cockpit-Authority-Score**, sondern die getrennten Provider-Metriken:
+
+- DataForSEO Domain Rank auf der angeforderten 0–100-Skala
+- Backlinks und Broken Backlinks
+- Referring Domains und Referring Main Domains
+- Nofollow-Referring-Domain-Zähler
+- Referring IPs und Subnetze
+- Backlink-Spam-Score und Target-Spam-Score
+
+Der Call nutzt die bestehende Kosten- und Auto-Budget-Logik. Bei einem Teilausfall bleibt der letzte brauchbare Authority-Stand erhalten und der Refresh wird als partiell markiert. Die kompakte Market-Historie speichert Rank, Backlinks, Referring Domains/Main Domains, IPs und Spam-Score, damit Veränderungen über Wochen vergleichbar werden.
+
+Der Authority Pulse beantwortet die Frage, **ob externe Domain-Autorität als Engpass plausibel bleibt**. Er beweist weder Kausalität für ein Ranking noch bewertet er automatisch einzelne Links als gut oder schlecht.
+
 ## Opportunity Engine
 
 Der aktuelle Score ist deterministisch und transparent. Er kombiniert:
@@ -218,6 +234,7 @@ Der Export liest ausschließlich den bereits gespeicherten Market-Intelligence-S
 
 Zeilentypen:
 
+- `authority_summary` — Domain-Level-Backlink-Evidenz aus dem gespeicherten Authority Pulse
 - `ranked_keyword` — aktuelle DataForSEO-Rankings der eigenen Domain
 - `keyword_overview` — Suchvolumen, CPC, Keyword Difficulty, Intent und SERP-Merkmale
 - `competitor_auto` — automatisch erkannte organische Wettbewerber
@@ -256,11 +273,11 @@ Market Intelligence wird deshalb nicht in Research Intelligence eingebaut. Beide
 
 Noch nicht enthalten:
 
-- DataForSEO Backlinks API als eigener Backlink-/Link-Gap-Layer
+- detaillierter Backlink-/Link-Gap-Layer auf Ebene einzelner verweisender Domains und Links
 - DataForSEO OnPage als zweiter technischer Crawler
 - exakte historische SERP-Tageskurven für alle Keywords
 - automatische Keyword-für-Keyword-Live-Abfragen
 - automatische Content-Erstellung oder Veröffentlichung
 - Umsatzprognosen aus Suchvolumen
 
-Backlinks sind ein sinnvoller V2-Kandidat, wenn die vorhandenen Markt-/GSC-/CRM-Signale zeigen, dass Link-Gaps tatsächlich die nächste Entscheidungsvariable sind.
+Der Domain-Level Authority Pulse ist damit Teil der aktuellen Markt-Evidenz. Ein detaillierter Link-Gap gegen strategische Wettbewerber bleibt ein eigener späterer Schritt, weil dafür zusätzliche kostenpflichtige Domain-/Link-Abfragen und eine belastbare Bewertungslogik nötig sind.
