@@ -126,16 +126,28 @@ def main():
         for document in [path, *sorted(references.glob('*.md'))]:
             errors.extend(f'{document.relative_to(ROOT)}: {e}' for e in broken_links(document))
     workflow = (ROOT / '.github/workflows/ci.yml').read_text()
-    for event, following in [('push', 'pull_request'), ('pull_request', 'workflow_dispatch')]:
+    for event, following in [('pull_request', 'workflow_dispatch')]:
         event_start = re.search(rf'^  {event}:', workflow, re.M)
         if not event_start:
             errors.append(f'CI: missing {event} event')
             continue
-        block = workflow[event_start.end():].split(f'  {following}:', 1)[0]
-        if re.search(r'^    paths(?:-ignore)?:', block, re.M):
+        event_block = workflow[event_start.end():].split(f'  {following}:', 1)[0]
+        if re.search(r'^    paths(?:-ignore)?:', event_block, re.M):
             errors.append(f'CI {event}: path filters bypass conservative check selection')
-    if not re.search(r'^    branches: \[main\]$', workflow, re.M):
-        errors.append('CI push: only main should run alongside PR validation')
+    if re.search(r'^  push:', workflow, re.M):
+        errors.append('CI: push event would duplicate the pull-request integration gate')
+
+    deploy_workflow = (ROOT / '.github/workflows/deploy.yml').read_text()
+    push_start = re.search(r'^  push:', deploy_workflow, re.M)
+    workflow_call_start = re.search(r'^  workflow_call:', deploy_workflow, re.M)
+    if not push_start or not workflow_call_start:
+        errors.append('Deploy: missing push or workflow_call event')
+    else:
+        push_block = deploy_workflow[push_start.end():workflow_call_start.start()]
+        if not re.search(r'^    branches: \[main\]$', push_block, re.M):
+            errors.append('Deploy push: only main may trigger automatic production deployment')
+        if re.search(r'^    paths(?:-ignore)?:', push_block, re.M):
+            errors.append('Deploy push: path filters would bypass the conservative scope selector')
     benchmark = SKILLS / 'agent-system-maintenance/scripts/benchmark.py'
     result = subprocess.run([sys.executable, str(benchmark), '--check'], cwd=ROOT)
     if result.returncode:
