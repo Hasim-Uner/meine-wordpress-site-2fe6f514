@@ -177,6 +177,8 @@ def main():
                         help='delegate Playwright checks to another CI partition')
     parser.add_argument('--skip-analysis', action='store_true',
                         help='delegate PHPStan to another CI partition')
+    parser.add_argument('--skip-doctor', action='store_true',
+                        help='skip the full toolchain doctor when CI already provisioned this partition')
     parser.add_argument('--github-output', type=Path, help='append selection flags for CI dependency setup')
     args = parser.parse_args()
     try:
@@ -202,8 +204,7 @@ def main():
         print(f"Profile: {plan['profile']} ({len(paths)} changed paths; {plan['reason']})", flush=True)
         from toolchain import doctor, environment
         env = environment()
-        if doctor(full=plan['runtime'], env=env, require_browser=not args.skip_browser,
-                  require_analysis=not args.skip_analysis):
+        if not args.skip_doctor and doctor(full=plan['runtime'], env=env):
             return 1
         return run_checks(selected, env=env)
     except (ValueError, OSError) as exc:
