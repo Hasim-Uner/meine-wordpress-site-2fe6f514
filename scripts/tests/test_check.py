@@ -55,6 +55,15 @@ class SelectionTests(unittest.TestCase):
                          'provisioning', 'pricing', 'navigation-ui', 'php-analysis',
                          'deploy-config', 'theme-build', 'theme-header'} <= names)
 
+    def test_expensive_runtime_checks_can_be_delegated_without_changing_default_suite(self):
+        plan = check.classify(['blocksy-child/inc/helpers.php'])
+        default_names = {name for name, _ in check.checks(plan, 'HEAD', '')}
+        core_names = {name for name, _ in check.checks(
+            plan, 'HEAD', '', skip_browser=True, skip_analysis=True)}
+        self.assertTrue({'forms', 'navigation-ui', 'php-analysis'} <= default_names)
+        self.assertTrue({'forms', 'navigation-ui', 'php-analysis'}.isdisjoint(core_names))
+        self.assertTrue({'theme-build', 'lead-path', 'funnel-routing'} <= core_names)
+
     def test_missing_history_is_conservative_and_manual_full_does_not_force_deploy(self):
         fallback = check.classify([], fallback='missing comparison base')
         self.assertTrue(fallback['runtime'])
