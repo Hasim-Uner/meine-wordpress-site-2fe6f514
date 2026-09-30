@@ -19,3 +19,15 @@ WordPress/runtime rules, Product boundaries, Validation and Git / deploy.
 `scripts/claude-main-branch-reminder.sh` reports unpublished commits and work
 left on a branch. Treat it as a reminder of the shared Git/deploy policy in
 `AGENTS.md`, not as authorization to commit, push, merge, or deploy.
+
+## Arbeitsweise & Token-Budget
+
+- Kleine, klare Änderungen (1–3 Dateien, Ursache bekannt): selbst erledigen, keine Subagenten.
+- Suche über viele Dateien, Logs oder Testausgaben: an `Explore` delegieren, nur das Ergebnis kommt zurück.
+- Umsetzung mit klarem Plan über mehrere Dateien: an `implementer`.
+- Eskalation: `implementer` scheitert 2× an derselben Stelle → `implementer-deep`, beide Fehlversuche in den Auftrag.
+- Scheitert auch der: stoppen, Befund in 5 Zeilen an mich. Architekturfragen löst eine Opus-Session, kein weiterer Versuch.
+- `reviewer` nur bei Auth, Zahlung, Tracking-Datenfluss, DB-Migration, mehr als 10 geänderten Dateien oder auf Ansage.
+- Max-Effort nie automatisch.
+- Subagenten-Aufträge vollständig schreiben (Ziel, betroffene Dateien, Akzeptanzkriterium), damit sie nicht neu suchen müssen.
+- Berichte an mich: Ergebnis, geänderte Dateien, offene Punkte. Keine Logs.
