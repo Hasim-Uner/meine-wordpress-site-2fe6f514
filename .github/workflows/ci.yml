@@ -1,15 +1,14 @@
 name: CI
 
-# PRs validate the merge result; main validates the exact revision to deploy.
+# Pull requests are the single integration gate.
+# Production deployment happens in deploy.yml after merge without re-running this suite.
 # No path filter: new/unknown dependencies must reach the conservative selector.
 on:
-  push:
-    branches: [main]
   pull_request:
   workflow_dispatch:
 
 concurrency:
-  # A docs-only push must never cancel a pending runtime validation/deploy.
+  # A newer commit on the same PR supersedes the older validation run.
   group: ci-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
@@ -20,8 +19,6 @@ jobs:
   validate:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
-    outputs:
-      deploy: ${{ steps.plan.outputs.deploy }}
     env:
       CHECK_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
       CHECK_HEAD: ${{ github.sha }}
@@ -83,9 +80,21 @@ jobs:
         if: steps.plan.outputs.runtime == 'true'
         run: npm ci
 
-      - name: Install browser for isolated UI tests
+      - name: Cache pinned Playwright browser
         if: steps.plan.outputs.runtime == 'true'
-        run: npx playwright install --with-deps chromium
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright system dependencies
+        if: steps.plan.outputs.runtime == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Install pinned Playwright browser
+        if: steps.plan.outputs.runtime == 'true' && steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install chromium
 
       - name: Install PHP analysis tooling
         if: steps.plan.outputs.runtime == 'true'
@@ -107,13 +116,3 @@ jobs:
 
       - name: Run shared repository checks
         run: python3 scripts/check.py
-
-  deploy-production:
-    needs: validate
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.validate.result == 'success' && needs.validate.outputs.deploy == 'true' }}
-    uses: ./.github/workflows/deploy.yml
-    with:
-      ref: ${{ github.sha }}
-      dry_run: false
-      automatic: true
-    secrets: inherit
