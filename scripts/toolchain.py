@@ -56,7 +56,7 @@ def versions(output=None):
     print(text, end='')
 
 
-def doctor(full=True, root=ROOT, env=None):
+def doctor(full=True, root=ROOT, env=None, require_browser=True, require_analysis=True):
     env = environment(root) if env is None else env
     failures = []
 
@@ -84,8 +84,6 @@ def doctor(full=True, root=ROOT, env=None):
     if full:
         probe('Node', ['node', '-p', 'process.versions.node'], CONFIG['node']['version'])
         probe('npm', ['npm', '--version'], CONFIG['node']['npm'])
-        probe('Composer', ['composer', '--version', '--no-ansi', '--short'],
-              CONFIG['composer']['version'], extract_version=True)
         probe('PHP extensions', ['php', '-r',
               '$missing=array_filter(explode(",", "curl,dom,filter,mbstring,openssl,Phar,SimpleXML,tokenizer,xml,xmlwriter,zlib"),'
               ' fn($e)=>!extension_loaded($e)); if($missing){fwrite(STDERR,implode(",",$missing));exit(1);} echo "ready";'])
@@ -95,19 +93,23 @@ def doctor(full=True, root=ROOT, env=None):
               'const got=require(name+"/package.json").version;'
               'if(got!==want || lock.packages["node_modules/"+name].version!==want) throw Error(name+": run npm ci");'
               '} console.log("locked versions installed");'])
-        phar = env.get('PHPSTAN_PHAR', 'vendor/phpstan/phpstan/phpstan.phar')
-        lock = json.loads((root / 'composer.lock').read_text())
-        phpstan = next(p['version'].lstrip('v') for p in lock['packages-dev'] if p['name'] == 'phpstan/phpstan')
-        probe('PHPStan', ['php', phar, '--version'], phpstan, extract_version=True)
-        probe('WordPress stubs', ['php', '-r',
-              'if(!is_readable("vendor/php-stubs/wordpress-stubs/wordpress-stubs.php")){exit(1);} echo "installed";'])
-        # Ask both test configs: navigation may explicitly override the browser.
-        probe('Browser', ['node', '-e',
-              'const fs=require("node:fs"); const {chromium}=require("@playwright/test");'
-              'const paths=["forms","navigation"].map(n=>require("./scripts/tests/"+n+".config.cjs")'
-              '.use.launchOptions.executablePath || chromium.executablePath());'
-              'for(const p of paths) if(!fs.existsSync(p)) throw Error("Missing browser: "+p);'
-              'console.log([...new Set(paths)].join(", "));'])
+        if require_analysis:
+            probe('Composer', ['composer', '--version', '--no-ansi', '--short'],
+                  CONFIG['composer']['version'], extract_version=True)
+            phar = env.get('PHPSTAN_PHAR', 'vendor/phpstan/phpstan/phpstan.phar')
+            lock = json.loads((root / 'composer.lock').read_text())
+            phpstan = next(p['version'].lstrip('v') for p in lock['packages-dev'] if p['name'] == 'phpstan/phpstan')
+            probe('PHPStan', ['php', phar, '--version'], phpstan, extract_version=True)
+            probe('WordPress stubs', ['php', '-r',
+                  'if(!is_readable("vendor/php-stubs/wordpress-stubs/wordpress-stubs.php")){exit(1);} echo "installed";'])
+        if require_browser:
+            # Ask both test configs: navigation may explicitly override the browser.
+            probe('Browser', ['node', '-e',
+                  'const fs=require("node:fs"); const {chromium}=require("@playwright/test");'
+                  'const paths=["forms","navigation"].map(n=>require("./scripts/tests/"+n+".config.cjs")'
+                  '.use.launchOptions.executablePath || chromium.executablePath());'
+                  'for(const p of paths) if(!fs.existsSync(p)) throw Error("Missing browser: "+p);'
+                  'console.log([...new Set(paths)].join(", "));'])
     if failures:
         print('Environment incomplete. Run `{}`; prerequisites: docs/development/TOOLCHAIN.md'.format(SETUP), flush=True)
     return 1 if failures else 0
