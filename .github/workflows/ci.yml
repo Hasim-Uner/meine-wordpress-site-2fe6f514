@@ -243,9 +243,26 @@ jobs:
             sleep "$delay"
           done
 
+      - name: Restore PHPStan result cache
+        if: steps.plan.outputs.runtime == 'true'
+        id: phpstan-cache
+        uses: actions/cache/restore@v5
+        with:
+          path: .build/phpstan
+          key: phpstan-result-v1-ubuntu24-${{ runner.arch }}-${{ steps.toolchain.outputs.php }}-${{ hashFiles('composer.lock', 'phpstan.neon', 'phpstan-baseline.neon', 'stubs/**/*.php') }}-${{ github.run_id }}
+          restore-keys: |
+            phpstan-result-v1-ubuntu24-${{ runner.arch }}-${{ steps.toolchain.outputs.php }}-${{ hashFiles('composer.lock', 'phpstan.neon', 'phpstan-baseline.neon', 'stubs/**/*.php') }}-
+
       - name: Run PHPStan
         if: steps.plan.outputs.runtime == 'true'
         run: php vendor/phpstan/phpstan/phpstan.phar analyse --no-progress --memory-limit=4G
+
+      - name: Save PHPStan result cache
+        if: ${{ !cancelled() && steps.plan.outputs.runtime == 'true' }}
+        uses: actions/cache/save@v5
+        with:
+          path: .build/phpstan
+          key: ${{ steps.phpstan-cache.outputs.cache-primary-key }}
 
   validate:
     if: always()
