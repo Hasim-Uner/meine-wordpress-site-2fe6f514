@@ -218,8 +218,31 @@ require_file "scripts/check.py"
 require_file "scripts/check-diff.sh"
 require_text ".github/workflows/ci.yml" 'fetch-depth:[[:space:]]*0' "CI fetches full history for diff guards"
 require_text ".github/workflows/ci.yml" 'python3 scripts/check\.py --plan --github-output' "CI uses the shared check selector"
-require_text ".github/workflows/ci.yml" 'run: python3 scripts/check\.py$' "CI runs shared repository checks"
-require_text ".github/workflows/ci.yml" 'needs\.validate\.outputs\.deploy' "Automatic deploy respects the selected scope"
+require_text ".github/workflows/ci.yml" 'run: python3 scripts/check\.py --skip-browser --skip-analysis --skip-doctor
+
+echo
+echo "=== n8n Scope Contract ==="
+if grep -Eq "automations/n8n" .github/workflows/ci.yml; then
+  fail "CI must not be coupled to inactive automations/n8n artifacts"
+else
+  pass "CI remains decoupled from inactive automations/n8n artifacts"
+fi
+
+echo
+echo "=== Verdict ==="
+if [[ "$failures" -gt 0 ]]; then
+  echo "Architecture validation failed with $failures issue(s)." >&2
+  exit 1
+fi
+
+echo "Architecture validation passed."
+ "CI core runs shared repository checks"
+require_text ".github/workflows/ci.yml" 'npm run test:forms' "CI keeps isolated form browser coverage"
+require_text ".github/workflows/ci.yml" 'npm run test:navigation-ui' "CI keeps isolated navigation browser coverage"
+require_text ".github/workflows/ci.yml" 'php vendor/phpstan/phpstan/phpstan\.phar analyse' "CI keeps PHPStan coverage"
+require_text ".github/workflows/deploy.yml" 'python3 scripts/check\.py --plan --github-output' "Deploy reuses the conservative scope selector"
+require_text ".github/workflows/deploy.yml" "needs\.revision\.outputs\.deploy == 'true'" "Automatic deploy respects the selected scope"
+require_text ".github/workflows/deploy.yml" 'commits/\$\{RELEASE_SHA\}/pulls' "Automatic deploy requires merged-PR provenance"
 # The selector's behavioral suite covers docs, skills, runtime, unknown paths,
 # renames and missing history; validate-skills checks the workflow event scope.
 
