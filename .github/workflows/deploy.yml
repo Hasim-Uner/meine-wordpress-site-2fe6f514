@@ -114,7 +114,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
-      - name: Read pinned toolchain
+      - name: Read pinned PHPStan toolchain
         id: toolchain
         run: python3 scripts/toolchain.py versions --github-output "$GITHUB_OUTPUT"
 
