@@ -96,6 +96,11 @@ jobs:
         run: python3 scripts/check.py --skip-browser --skip-analysis --skip-doctor
 
   browser:
+    name: browser (shard ${{ matrix.shard }}/4)
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
@@ -164,13 +169,17 @@ jobs:
           "$browser" --version
           printf 'path=%s\n' "$browser" >> "$GITHUB_OUTPUT"
 
-      - name: Run isolated browser checks
+      - name: Run form browser shard
         if: steps.plan.outputs.runtime == 'true'
         env:
           PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: ${{ steps.browser.outputs.path }}
-        run: |
-          npm run test:forms
-          npm run test:navigation-ui
+        run: npm run test:forms -- --shard=${{ matrix.shard }}/4
+
+      - name: Run navigation browser checks
+        if: steps.plan.outputs.runtime == 'true' && matrix.shard == 1
+        env:
+          PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: ${{ steps.browser.outputs.path }}
+        run: npm run test:navigation-ui
 
   analysis:
     runs-on: ubuntu-24.04
