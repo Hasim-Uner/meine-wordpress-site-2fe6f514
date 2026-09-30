@@ -99,6 +99,80 @@ jobs:
             echo 'current=true' >> "$GITHUB_OUTPUT"
           fi
 
+  phpstan-cache:
+    # pull_request caches are scoped to refs/pull/*/merge. Refresh a trusted
+    # default-branch cache after each reviewed merge so the next PR can reuse it.
+    needs: revision
+    if: github.event_name == 'push' && needs.revision.outputs.current == 'true'
+    continue-on-error: true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout merged main revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Read pinned toolchain
+        id: toolchain
+        run: python3 scripts/toolchain.py versions --github-output "$GITHUB_OUTPUT"
+
+      - name: Cache exact PHP and Composer
+        id: php-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .build/toolchain/php
+            .build/toolchain/composer
+          key: php-cli-ubuntu24-${{ runner.arch }}-${{ steps.toolchain.outputs.cache_key }}
+
+      - name: Install PHP build prerequisites
+        if: steps.php-cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libssl-dev libxml2-dev libcurl4-openssl-dev zlib1g-dev unzip xz-utils
+
+      - name: Set up exact PHP and Composer
+        run: python3 scripts/toolchain.py install-php --github-path "$GITHUB_PATH"
+
+      - name: Install PHP analysis tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            if composer install --no-interaction --no-progress --prefer-dist; then
+              exit 0
+            fi
+            if [[ "$attempt" -eq 3 ]]; then
+              echo "Composer install failed after 3 attempts." >&2
+              exit 1
+            fi
+            delay=$(( attempt * 5 ))
+            echo "::warning::Composer install failed on attempt ${attempt}; retrying in ${delay}s."
+            sleep "$delay"
+          done
+
+      - name: Restore PHPStan result cache
+        id: phpstan-cache
+        uses: actions/cache/restore@v5
+        with:
+          path: .build/phpstan
+          key: phpstan-result-v1-ubuntu24-${{ runner.arch }}-${{ steps.toolchain.outputs.php }}-${{ hashFiles('composer.lock', 'phpstan.neon', 'phpstan-baseline.neon', 'stubs/**/*.php') }}-${{ github.run_id }}
+          restore-keys: |
+            phpstan-result-v1-ubuntu24-${{ runner.arch }}-${{ steps.toolchain.outputs.php }}-${{ hashFiles('composer.lock', 'phpstan.neon', 'phpstan-baseline.neon', 'stubs/**/*.php') }}-
+
+      - name: Refresh PHPStan result cache on main
+        run: php vendor/phpstan/phpstan/phpstan.phar analyse --no-progress --memory-limit=4G
+
+      - name: Save PHPStan result cache
+        if: ${{ !cancelled() }}
+        uses: actions/cache/save@v5
+        with:
+          path: .build/phpstan
+          key: ${{ steps.phpstan-cache.outputs.cache-primary-key }}
+
+
   deploy:
     needs: revision
     if: needs.revision.outputs.current == 'true' && needs.revision.outputs.deploy == 'true'
