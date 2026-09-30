@@ -91,7 +91,7 @@ def deployment_current(root=ROOT):
     return not classify(paths)['deploy']
 
 
-def checks(plan, base, head):
+def checks(plan, base, head, skip_browser=False, skip_analysis=False):
     diff_refs = [base, head]
     result = [
         ('architecture', ['bash', 'scripts/validate-architecture.sh']),
@@ -106,7 +106,7 @@ def checks(plan, base, head):
     if plan['skills']:
         result.append(('skill-suites', ['bash', 'scripts/test-skills.sh']))
     if plan['runtime']:
-        result.extend([
+        runtime_checks = [
             ('theme-assets', ['python3', 'scripts/audit-theme-assets.py']),
             ('lead-path', ['bash', 'scripts/smoke-lead-path-contract.sh']),
             ('market-intelligence', ['bash', 'scripts/smoke-dataforseo-market-contract.sh']),
@@ -126,8 +126,94 @@ def checks(plan, base, head):
                               'analyse', '--no-progress', '--memory-limit=4G']),
             ('deploy-config', ['bash', 'scripts/verify-deploy-config.sh', '22', 'www/wp-content/themes/blocksy-child/']),
             ('theme-build', ['npm', 'run', 'build:theme', '--', '.build/blocksy-child']),
-            ('theme-header', ['grep', '-q', '^Theme Name: Blocksy Child$', '.build/blocksy-child/style.css']),
-        ])
+            ('theme-header', ['grep', '-q', '^Theme Name: Blocksy Child
+
+
+def run_checks(selected, root=ROOT, env=None):
+    """Keep success output small, retain complete logs, and propagate any failure."""
+    log_dir = Path(tempfile.mkdtemp(prefix='repo-check-'))
+    print(f'Logs: {log_dir}', flush=True)
+    failures = 0
+    for name, command in selected:
+        started = time.monotonic()
+        print(f'RUN  {name}', flush=True)
+        log_path = log_dir / (name + '.log')
+        try:
+            with log_path.open('w') as log:
+                result = subprocess.run(command, cwd=root, stdout=log, stderr=subprocess.STDOUT,
+                                        env={**(os.environ if env is None else env), 'PYTHONDONTWRITEBYTECODE': '1'})
+            status = result.returncode
+        except OSError as exc:
+            log_path.write_text(str(exc) + '\n')
+            status = 127
+        label = 'FAIL' if status else 'PASS'
+        print(f'{label} {name} ({time.monotonic() - started:.1f}s)', flush=True)
+        if status:
+            failures += 1
+            if os.environ.get('GITHUB_ACTIONS') == 'true':
+                print(f'::group::{name} failure', flush=True)
+            print(log_path.read_text(errors='replace'), flush=True)
+            if os.environ.get('GITHUB_ACTIONS') == 'true':
+                print('::endgroup::', flush=True)
+    print(f'{len(selected)} checks, {failures} failures. Logs: {log_dir}', flush=True)
+    return 1 if failures else 0
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--base', default=os.environ.get('CHECK_BASE') or None)
+    parser.add_argument('--head', default=os.environ.get('CHECK_HEAD') or None)
+    parser.add_argument('--full', action='store_true', default=os.environ.get('CHECK_FULL') == 'true')
+    parser.add_argument('--plan', action='store_true', help='print the plan without running checks')
+    parser.add_argument('--deployment-current', action='store_true',
+                        help='check a queued automatic release against freshly fetched origin/main')
+    parser.add_argument('--skip-browser', action='store_true',
+                        help='delegate Playwright checks to another CI partition')
+    parser.add_argument('--skip-analysis', action='store_true',
+                        help='delegate PHPStan to another CI partition')
+    parser.add_argument('--github-output', type=Path, help='append selection flags for CI dependency setup')
+    args = parser.parse_args()
+    try:
+        if args.deployment_current:
+            current = deployment_current()
+            if args.github_output:
+                with args.github_output.open('a') as output:
+                    output.write(f'current={str(current).lower()}\n')
+            print('Automatic release is current.' if current else 'Skipping superseded automatic release.')
+            return 0
+        paths, base, head, fallback = changes(args.base, args.head)
+        plan = classify(paths, args.full, fallback)
+        selected = checks(plan, base, head, skip_browser=args.skip_browser,
+                          skip_analysis=args.skip_analysis)
+        if args.github_output:
+            with args.github_output.open('a') as output:
+                for key in ('runtime', 'skills', 'deploy'):
+                    output.write(f'{key}={str(plan[key]).lower()}\n')
+        if args.plan:
+            print(json.dumps({**plan, 'base': base, 'head': head or 'worktree',
+                              'paths': paths, 'checks': [name for name, _ in selected]}, indent=2))
+            return 0
+        print(f"Profile: {plan['profile']} ({len(paths)} changed paths; {plan['reason']})", flush=True)
+        from toolchain import doctor, environment
+        env = environment()
+        if doctor(full=plan['runtime'], env=env, require_browser=not args.skip_browser,
+                  require_analysis=not args.skip_analysis):
+            return 1
+        return run_checks(selected, env=env)
+    except (ValueError, OSError) as exc:
+        print(f'FAIL: {exc}', file=sys.stderr)
+        return 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())
+, '.build/blocksy-child/style.css']),
+        ]
+        if skip_browser:
+            runtime_checks = [item for item in runtime_checks if item[0] not in {'forms', 'navigation-ui'}]
+        if skip_analysis:
+            runtime_checks = [item for item in runtime_checks if item[0] != 'php-analysis']
+        result.extend(runtime_checks)
     return result
 
 
