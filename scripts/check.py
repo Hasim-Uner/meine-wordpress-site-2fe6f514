@@ -126,8 +126,14 @@ def checks(plan, base, head, skip_browser=False, skip_analysis=False):
                               'analyse', '--no-progress', '--memory-limit=4G']),
             ('deploy-config', ['bash', 'scripts/verify-deploy-config.sh', '22', 'www/wp-content/themes/blocksy-child/']),
             ('theme-build', ['npm', 'run', 'build:theme', '--', '.build/blocksy-child']),
-            ('theme-header', ['grep', '-q', '^Theme Name: Blocksy Child
-
+            ('theme-header', ['grep', '-q', '^Theme Name: Blocksy Child$', '.build/blocksy-child/style.css']),
+        ]
+        if skip_browser:
+            runtime_checks = [item for item in runtime_checks if item[0] not in {'forms', 'navigation-ui'}]
+        if skip_analysis:
+            runtime_checks = [item for item in runtime_checks if item[0] != 'php-analysis']
+        result.extend(runtime_checks)
+    return result
 
 def run_checks(selected, root=ROOT, env=None):
     """Keep success output small, retain complete logs, and propagate any failure."""
