@@ -150,24 +150,24 @@ jobs:
         if: steps.plan.outputs.runtime == 'true'
         run: npm ci
 
-      - name: Cache pinned Playwright browser
+      - name: Locate preinstalled browser
         if: steps.plan.outputs.runtime == 'true'
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-chromium-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}
-
-      - name: Install Playwright system dependencies
-        if: steps.plan.outputs.runtime == 'true'
-        run: npx playwright install-deps chromium
-
-      - name: Install pinned Playwright browser
-        if: steps.plan.outputs.runtime == 'true' && steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install chromium
+        id: browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [[ -z "$browser" || ! -x "$browser" ]]; then
+            echo "::error title=Browser unavailable::The ubuntu-24.04 runner did not expose Chrome or Chromium."
+            exit 1
+          fi
+          "$browser" --version
+          printf 'path=%s\n' "$browser" >> "$GITHUB_OUTPUT"
 
       - name: Run isolated browser checks
         if: steps.plan.outputs.runtime == 'true'
+        env:
+          PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: ${{ steps.browser.outputs.path }}
         run: |
           npm run test:forms
           npm run test:navigation-ui
