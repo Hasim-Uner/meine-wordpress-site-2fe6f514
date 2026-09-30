@@ -1,6 +1,8 @@
 name: Deploy Theme (Production)
 
 on:
+  push:
+    branches: [main]
   workflow_call:
     inputs:
       automatic:
@@ -37,6 +39,7 @@ concurrency:
 
 permissions:
   contents: read
+  pull-requests: read
 
 env:
   DEPLOY_HOST: ${{ vars.SSH_HOST != '' && vars.SSH_HOST || secrets.SSH_HOST }}
@@ -52,18 +55,41 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       current: ${{ steps.revision.outputs.current }}
+      deploy: ${{ github.event_name != 'push' || steps.plan.outputs.deploy == 'true' }}
     steps:
       - name: Checkout automatic deployment ref
-        if: inputs.automatic
+        if: github.event_name == 'push' || inputs.automatic
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.ref }}
+          ref: ${{ github.event_name == 'push' && github.sha || inputs.ref }}
           fetch-depth: 0
+
+      - name: Verify production revision came through a merged PR
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pulls="$(gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' "/repos/${GITHUB_REPOSITORY}/commits/${RELEASE_SHA}/pulls")"
+          if ! jq -e '[.[] | select(.merged_at != null and .base.ref == "main")] | length > 0' <<<"$pulls" >/dev/null; then
+            echo "::error title=Unreviewed production revision::Main revision ${RELEASE_SHA} is not associated with a merged pull request targeting main."
+            exit 1
+          fi
+
+      - name: Select whether this revision needs deployment
+        if: github.event_name == 'push'
+        id: plan
+        env:
+          CHECK_BASE: ${{ github.event.before }}
+          CHECK_HEAD: ${{ github.sha }}
+        run: python3 scripts/check.py --plan --github-output "$GITHUB_OUTPUT"
 
       - name: Verify automatic revision is still current
         id: revision
         env:
-          AUTOMATIC: ${{ inputs.automatic }}
+          AUTOMATIC: ${{ github.event_name == 'push' || inputs.automatic }}
         shell: bash
         run: |
           if [[ "$AUTOMATIC" == 'true' ]]; then
@@ -75,7 +101,7 @@ jobs:
 
   deploy:
     needs: revision
-    if: needs.revision.outputs.current == 'true'
+    if: needs.revision.outputs.current == 'true' && needs.revision.outputs.deploy == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     environment: production
@@ -84,7 +110,7 @@ jobs:
       - name: Checkout deployment ref
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.ref }}
+          ref: ${{ github.event_name == 'push' && github.sha || inputs.ref }}
 
       - name: Read pinned toolchain
         id: toolchain

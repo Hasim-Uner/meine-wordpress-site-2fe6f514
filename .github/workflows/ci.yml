@@ -1,15 +1,14 @@
 name: CI
 
-# PRs validate the merge result; main validates the exact revision to deploy.
+# Pull requests are the single integration gate.
+# Production deployment happens in deploy.yml after merge without re-running this suite.
 # No path filter: new/unknown dependencies must reach the conservative selector.
 on:
-  push:
-    branches: [main]
   pull_request:
   workflow_dispatch:
 
 concurrency:
-  # A docs-only push must never cancel a pending runtime validation/deploy.
+  # A newer commit on the same PR supersedes the older validation run.
   group: ci-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
@@ -17,11 +16,9 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  core:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    outputs:
-      deploy: ${{ steps.plan.outputs.deploy }}
+    timeout-minutes: 15
     env:
       CHECK_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
       CHECK_HEAD: ${{ github.sha }}
@@ -83,9 +80,141 @@ jobs:
         if: steps.plan.outputs.runtime == 'true'
         run: npm ci
 
-      - name: Install browser for isolated UI tests
+      - name: Verify core tool versions
         if: steps.plan.outputs.runtime == 'true'
-        run: npx playwright install --with-deps chromium
+        env:
+          PINNED_PHP: ${{ steps.toolchain.outputs.php }}
+          PINNED_NODE: ${{ steps.toolchain.outputs.node }}
+          PINNED_NPM: ${{ steps.toolchain.outputs.npm }}
+        shell: bash
+        run: |
+          test "$(php -r 'echo PHP_VERSION;')" = "$PINNED_PHP"
+          test "$(node -p 'process.versions.node')" = "$PINNED_NODE"
+          test "$(npm --version)" = "$PINNED_NPM"
+
+      - name: Run core repository checks
+        run: python3 scripts/check.py --skip-browser --skip-analysis --skip-doctor
+
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      CHECK_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+      CHECK_HEAD: ${{ github.sha }}
+      CHECK_FULL: ${{ github.event_name == 'workflow_dispatch' }}
+      PYTHONDONTWRITEBYTECODE: '1'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Select checks from changed paths
+        id: plan
+        run: python3 scripts/check.py --plan --github-output "$GITHUB_OUTPUT"
+
+      - name: Read pinned toolchain
+        if: steps.plan.outputs.runtime == 'true'
+        id: toolchain
+        run: python3 scripts/toolchain.py versions --github-output "$GITHUB_OUTPUT"
+
+      - name: Cache exact PHP and Composer
+        if: steps.plan.outputs.runtime == 'true'
+        id: php-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .build/toolchain/php
+            .build/toolchain/composer
+          key: php-cli-ubuntu24-${{ runner.arch }}-${{ steps.toolchain.outputs.cache_key }}
+
+      - name: Install PHP build prerequisites
+        if: steps.plan.outputs.runtime == 'true' && steps.php-cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libssl-dev libxml2-dev libcurl4-openssl-dev zlib1g-dev unzip xz-utils
+
+      - name: Set up exact PHP and Composer
+        if: steps.plan.outputs.runtime == 'true'
+        run: python3 scripts/toolchain.py install-php --github-path "$GITHUB_PATH"
+
+      - name: Set up Node.js
+        if: steps.plan.outputs.runtime == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.toolchain.outputs.node }}
+          cache: 'npm'
+
+      - name: Install Node build tooling
+        if: steps.plan.outputs.runtime == 'true'
+        run: npm ci
+
+      - name: Locate preinstalled browser
+        if: steps.plan.outputs.runtime == 'true'
+        id: browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [[ -z "$browser" || ! -x "$browser" ]]; then
+            echo "::error title=Browser unavailable::The ubuntu-24.04 runner did not expose Chrome or Chromium."
+            exit 1
+          fi
+          "$browser" --version
+          printf 'path=%s\n' "$browser" >> "$GITHUB_OUTPUT"
+
+      - name: Run isolated browser checks
+        if: steps.plan.outputs.runtime == 'true'
+        env:
+          PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: ${{ steps.browser.outputs.path }}
+        run: |
+          npm run test:forms
+          npm run test:navigation-ui
+
+  analysis:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      CHECK_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+      CHECK_HEAD: ${{ github.sha }}
+      CHECK_FULL: ${{ github.event_name == 'workflow_dispatch' }}
+      PYTHONDONTWRITEBYTECODE: '1'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Select checks from changed paths
+        id: plan
+        run: python3 scripts/check.py --plan --github-output "$GITHUB_OUTPUT"
+
+      - name: Read pinned toolchain
+        if: steps.plan.outputs.runtime == 'true'
+        id: toolchain
+        run: python3 scripts/toolchain.py versions --github-output "$GITHUB_OUTPUT"
+
+      - name: Cache exact PHP and Composer
+        if: steps.plan.outputs.runtime == 'true'
+        id: php-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .build/toolchain/php
+            .build/toolchain/composer
+          key: php-cli-ubuntu24-${{ runner.arch }}-${{ steps.toolchain.outputs.cache_key }}
+
+      - name: Install PHP build prerequisites
+        if: steps.plan.outputs.runtime == 'true' && steps.php-cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libssl-dev libxml2-dev libcurl4-openssl-dev zlib1g-dev unzip xz-utils
+
+      - name: Set up exact PHP and Composer
+        if: steps.plan.outputs.runtime == 'true'
+        run: python3 scripts/toolchain.py install-php --github-path "$GITHUB_PATH"
 
       - name: Install PHP analysis tooling
         if: steps.plan.outputs.runtime == 'true'
@@ -105,15 +234,31 @@ jobs:
             sleep "$delay"
           done
 
-      - name: Run shared repository checks
-        run: python3 scripts/check.py
+      - name: Run PHPStan
+        if: steps.plan.outputs.runtime == 'true'
+        run: php vendor/phpstan/phpstan/phpstan.phar analyse --no-progress --memory-limit=4G
 
-  deploy-production:
-    needs: validate
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.validate.result == 'success' && needs.validate.outputs.deploy == 'true' }}
-    uses: ./.github/workflows/deploy.yml
-    with:
-      ref: ${{ github.sha }}
-      dry_run: false
-      automatic: true
-    secrets: inherit
+  validate:
+    if: always()
+    needs: [core, browser, analysis]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require every CI partition
+        env:
+          CORE_RESULT: ${{ needs.core.result }}
+          BROWSER_RESULT: ${{ needs.browser.result }}
+          ANALYSIS_RESULT: ${{ needs.analysis.result }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          failed=0
+          for name in CORE BROWSER ANALYSIS; do
+            variable="${name}_RESULT"
+            result="${!variable}"
+            if [[ "$result" != 'success' ]]; then
+              echo "::error title=${name} CI failed::${name} partition finished with status ${result}."
+              failed=1
+            fi
+          done
+          exit "$failed"

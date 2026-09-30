@@ -91,7 +91,7 @@ def deployment_current(root=ROOT):
     return not classify(paths)['deploy']
 
 
-def checks(plan, base, head):
+def checks(plan, base, head, skip_browser=False, skip_analysis=False):
     diff_refs = [base, head]
     result = [
         ('architecture', ['bash', 'scripts/validate-architecture.sh']),
@@ -106,7 +106,7 @@ def checks(plan, base, head):
     if plan['skills']:
         result.append(('skill-suites', ['bash', 'scripts/test-skills.sh']))
     if plan['runtime']:
-        result.extend([
+        runtime_checks = [
             ('theme-assets', ['python3', 'scripts/audit-theme-assets.py']),
             ('lead-path', ['bash', 'scripts/smoke-lead-path-contract.sh']),
             ('market-intelligence', ['bash', 'scripts/smoke-dataforseo-market-contract.sh']),
@@ -127,9 +127,13 @@ def checks(plan, base, head):
             ('deploy-config', ['bash', 'scripts/verify-deploy-config.sh', '22', 'www/wp-content/themes/blocksy-child/']),
             ('theme-build', ['npm', 'run', 'build:theme', '--', '.build/blocksy-child']),
             ('theme-header', ['grep', '-q', '^Theme Name: Blocksy Child$', '.build/blocksy-child/style.css']),
-        ])
+        ]
+        if skip_browser:
+            runtime_checks = [item for item in runtime_checks if item[0] not in {'forms', 'navigation-ui'}]
+        if skip_analysis:
+            runtime_checks = [item for item in runtime_checks if item[0] != 'php-analysis']
+        result.extend(runtime_checks)
     return result
-
 
 def run_checks(selected, root=ROOT, env=None):
     """Keep success output small, retain complete logs, and propagate any failure."""
@@ -169,6 +173,12 @@ def main():
     parser.add_argument('--plan', action='store_true', help='print the plan without running checks')
     parser.add_argument('--deployment-current', action='store_true',
                         help='check a queued automatic release against freshly fetched origin/main')
+    parser.add_argument('--skip-browser', action='store_true',
+                        help='delegate Playwright checks to another CI partition')
+    parser.add_argument('--skip-analysis', action='store_true',
+                        help='delegate PHPStan to another CI partition')
+    parser.add_argument('--skip-doctor', action='store_true',
+                        help='skip the full toolchain doctor when CI already provisioned this partition')
     parser.add_argument('--github-output', type=Path, help='append selection flags for CI dependency setup')
     args = parser.parse_args()
     try:
@@ -181,7 +191,8 @@ def main():
             return 0
         paths, base, head, fallback = changes(args.base, args.head)
         plan = classify(paths, args.full, fallback)
-        selected = checks(plan, base, head)
+        selected = checks(plan, base, head, skip_browser=args.skip_browser,
+                          skip_analysis=args.skip_analysis)
         if args.github_output:
             with args.github_output.open('a') as output:
                 for key in ('runtime', 'skills', 'deploy'):
@@ -193,7 +204,7 @@ def main():
         print(f"Profile: {plan['profile']} ({len(paths)} changed paths; {plan['reason']})", flush=True)
         from toolchain import doctor, environment
         env = environment()
-        if doctor(full=plan['runtime'], env=env):
+        if not args.skip_doctor and doctor(full=plan['runtime'], env=env):
             return 1
         return run_checks(selected, env=env)
     except (ValueError, OSError) as exc:
