@@ -1212,6 +1212,7 @@ function hu_output_schema()
                 [
                     '@type'         => 'Offer',
                     'name'          => 'Anfragesystem-Analyse',
+                    'description'   => 'Festpreis, netto. Wird bei Umsetzung angerechnet.',
                     'price'         => HU_ANALYSIS_PRICE,
                     'priceCurrency' => 'EUR',
                     'priceSpecification' => [

@@ -18,8 +18,10 @@
  * sondern markiert (Kante in --stempel, Etikett "Ihr Weg"); hu_funnel_context()
  * liefert sie. Auf der Seite selbst zeigen ihre Tueren auf Anker der Seite.
  * Das Register erscheint damit auch auf der Startseite und der Solar-Seite. Nur
- * /kontakt/ zeigt es nicht: die Seite ist das Ziel jeder Tuer. Die Betraege
- * kommen aus dem Kanon; keine Zahl steht in diesem Template.
+ * /kontakt/ zeigt es nicht: die Seite ist das Ziel jeder Tuer. Dasselbe gilt
+ * fuer Money Pages, die in hu_footer_register_suppressed_templates() stehen
+ * (derzeit /conversion-optimierung/). Die Betraege kommen aus dem Kanon; keine
+ * Zahl steht in diesem Template.
  *
  * Tracking: `cta_footer_door_<schluessel>` mit `data-door`. Die frueheren
  * `cta_footer_pick_*` sind entfallen.
@@ -43,11 +45,14 @@ $funnel_context  = function_exists( 'hu_funnel_context' )
 $funnel_doors    = function_exists( 'hu_funnel_doors' ) ? hu_funnel_doors() : [];
 
 /*
- * Das Register steht auf jeder Seite, nur nicht auf der Kontaktseite: sie ist
- * das Ziel jeder Tuer, eine erneute Auswahl macht aus dem Abschluss einen
- * Ausgang zurueck in die Orientierung.
+ * Das Register steht auf jeder Seite, nur nicht auf der Kontaktseite und nicht
+ * auf Money Pages mit eigenem Abschluss. Die Entscheidung liegt zentral in
+ * hu_footer_shows_register() (inc/funnel-doors.php); dieses Template liest sie
+ * nur.
  */
-$shows_register = ! ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() );
+$shows_register = function_exists( 'hu_footer_shows_register' )
+	? hu_footer_shows_register()
+	: ! ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() );
 $register       = (array) ( $footer_contract['routes'] ?? [] );
 $current_route  = (string) $funnel_context['route'];
 

@@ -1,0 +1,396 @@
+/* ══════════════════════════════════════════════════════════════
+   CONVERSION-OPTIMIERUNG — die Strecke hinter dem Formular
+
+   Delta auf system.css für /conversion-optimierung/. Die Seite steht auf
+   dem Gutachten-Raster (Randspalte, Satzspiegel, Marginalie, Fragen,
+   Schaltflächen); hier stehen nur die Teile, die das System nicht kennt:
+   die Strecken-Grafik mit der Formularkante, der Befund „7×“, die
+   Symptomliste, der Ablauf, die Preiszeilen und die Fallzahl.
+
+   Kein eigener Farbwert, keine eigene Abstandsskala, keine eigene Schrift.
+   Tokens kommen aus system.css (--papier, --tinte, --grau, --matt, --haar,
+   --strich, --stempel, --s0 bis --s6, --mono). Die Tönung der Stationen
+   hinter dem Formular mischt --stempel in --papier, statt einen Wert zu
+   führen.
+
+   Orange (--stempel) steht ausschließlich für Messwerte (7×, 22 €), die
+   Stationen hinter dem Formular samt Formularkante und den primären
+   Button. Kennzeichnungen, Marginalien-Labels, Hover und Fokusring bleiben
+   deshalb neutral (--grau, --tinte); die Kopf- und Fußleiste behalten
+   ihren Fokus.
+
+   Keine Bewegung außer dem Hover des Buttons und dem Öffnen der Fragen,
+   beide aus system.css. Die Strecken-Grafik entscheidet über ihre eigene
+   Breite (Container Query), nicht über die des Fensters: Ohne
+   Unterstützung steht sie einspaltig, vollständig und lesbar.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ══ Orange nur für Messwerte, Stationen hinten und den Button ═ */
+
+.cro-offer-page :focus-visible {
+  outline-color: var(--tinte);
+  outline-offset: 3px;
+}
+
+.cro-offer-page .gegenstand,
+.cro-offer-page .marg .label,
+.cro-offer-page .textlink { color: var(--grau); }
+
+.cro-offer-page .textlink:hover,
+.cro-offer-page .fragen summary:hover,
+.cro-offer-page .satzlink:hover { color: var(--tinte); }
+
+.cro-offer-page .satzlink { text-decoration-color: var(--matt); }
+
+.cro-offer-page .haupt > * + p { margin-top: var(--s2); }
+
+.cro-offer-page .marg .note p + p { margin-top: var(--s1); }
+
+/* ══ Kopf ═════════════════════════════════════════════════════ */
+
+.cro-offer-page .kopfteil { border-bottom: 1px solid var(--strich); }
+
+.cro-offer-page .kicker { margin-bottom: var(--s2); }
+
+.cro-offer-page .kopfteil .ausgang {
+  margin-top: var(--s4);
+  gap: var(--s2) var(--s3);
+}
+
+/* Eine Zeile: Betrag, Dauer, Anrechnung. Die Werte stehen in Tinte, der
+   Rest in Grau; tabellarische Ziffern halten die Zeile ruhig. */
+.cro-offer-page .cro-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s0) var(--s3);
+  margin: var(--s3) 0 0;
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  color: var(--grau);
+  font-variant-numeric: tabular-nums;
+}
+
+.cro-offer-page .cro-meta b {
+  color: var(--tinte);
+  font-weight: 500;
+}
+
+.cro-offer-page .ausgang .cro-meta { margin: 0; }
+
+/* ══ 1 Anlass: Symptome als Liste ohne Nummern ════════════════ */
+
+.cro-offer-page .symptome {
+  list-style: none;
+  margin: var(--s3) 0 0;
+  padding: 0;
+  border-top: 1px solid var(--haar);
+}
+
+.cro-offer-page .symptome li {
+  padding-block: var(--s2);
+  border-bottom: 1px solid var(--haar);
+}
+
+/* ══ 2 Strecke: sechs Stationen, drei hinter dem Formular ═════
+   Grundzustand ist eine Spalte; die Formularkante liegt als waagerechte
+   Linie zwischen Station 03 und 04. Ab genug Breite stehen sechs Spalten
+   nebeneinander und die Kante ist eine senkrechte Linie von 2 px. */
+
+.cro-offer-page .strecke {
+  container: strecke / inline-size;
+  margin: var(--s4) 0 0;
+}
+
+.cro-offer-page .strecke-kopf { display: none; }
+
+.cro-offer-page .stationen {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 2px solid var(--strich);
+}
+
+.cro-offer-page .station {
+  min-width: 0;
+  padding: var(--s2);
+  border-bottom: 1px solid var(--haar);
+}
+
+.cro-offer-page .station .n {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--mono-m);
+  letter-spacing: 0.06em;
+  color: var(--matt);
+  font-variant-numeric: tabular-nums;
+}
+
+.cro-offer-page .station h3 {
+  margin: var(--s0) 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.cro-offer-page .station p {
+  font-size: 0.95rem;
+  line-height: 1.42;
+  color: var(--grau);
+}
+
+.cro-offer-page .station.hinten {
+  background: color-mix(in srgb, var(--stempel) 7%, var(--papier));
+}
+
+.cro-offer-page .station.hinten .n { color: var(--stempel); }
+
+.cro-offer-page .formkante {
+  position: relative;
+  height: 2px;
+  margin-top: var(--s4);
+  background: var(--stempel);
+}
+
+.cro-offer-page .formkante span {
+  position: absolute;
+  bottom: var(--s1);
+  left: var(--s2);
+  padding-inline: var(--s0);
+  font-family: var(--mono);
+  font-size: var(--mono-s);
+  letter-spacing: 0.1em;
+  line-height: 1.6;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--stempel);
+  background: var(--papier);
+}
+
+.cro-offer-page .strecke-fuss {
+  margin-top: var(--s1);
+  font-family: var(--mono);
+  font-size: var(--mono-m);
+  line-height: 1.6;
+  color: var(--grau);
+}
+
+@container strecke (min-width: 47rem) {
+  .cro-offer-page .strecke-kopf {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 2px repeat(3, minmax(0, 1fr));
+    padding-bottom: var(--s1);
+    font-family: var(--mono);
+    font-size: var(--mono-s);
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+    text-transform: uppercase;
+    color: var(--grau);
+  }
+
+  .cro-offer-page .strecke-kopf span:first-child {
+    grid-column: 1 / 4;
+    text-align: center;
+  }
+
+  .cro-offer-page .strecke-kopf span:last-child {
+    grid-column: 5 / 8;
+    text-align: center;
+    color: var(--stempel);
+  }
+
+  .cro-offer-page .stationen {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 2px repeat(3, minmax(0, 1fr));
+  }
+
+  .cro-offer-page .station {
+    padding: var(--s2) var(--s2) var(--s2) 0;
+    border-right: 1px solid var(--haar);
+    border-bottom: 0;
+  }
+
+  .cro-offer-page .station.hinten { padding-left: var(--s2); }
+
+  .cro-offer-page .station:nth-child(3),
+  .cro-offer-page .station:last-child { border-right: 0; }
+
+  /* Die Kante läuft über die ganze Höhe der Stationen. Ihr Label steht in
+     der Zeile der Gruppenbeschriftung, mittig über der Linie; die 2 px
+     abziehen, die der Rand der Liste über der Kante liegt. */
+  .cro-offer-page .formkante {
+    height: auto;
+    margin-top: 0;
+  }
+
+  .cro-offer-page .formkante span {
+    top: calc(-1.6em - var(--s1) - 2px);
+    bottom: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* ══ Befund: 7× und seine Quelle ══════════════════════════════ */
+
+.cro-offer-page .befund {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s3);
+  align-items: baseline;
+  margin-top: var(--s4);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--strich);
+}
+
+.cro-offer-page .befund .zahl {
+  font-size: clamp(3rem, 1.6rem + 6vw, 4.75rem);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--stempel);
+}
+
+.cro-offer-page .befund p { max-width: 52ch; }
+
+.cro-offer-page .befund .quelle {
+  margin-top: var(--s1);
+  font-family: var(--mono);
+  font-size: var(--mono-m);
+  line-height: 1.6;
+  color: var(--matt);
+}
+
+/* ══ 3 Analyse: vier Schritte als geordnete Liste ═════════════ */
+
+.cro-offer-page .ablauf {
+  list-style: none;
+  margin: var(--s3) 0 0;
+  padding: 0;
+  counter-reset: schritt;
+}
+
+.cro-offer-page .ablauf li {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  gap: var(--s2);
+  padding-block: var(--s2);
+  border-top: 1px solid var(--haar);
+  counter-increment: schritt;
+}
+
+.cro-offer-page .ablauf li:last-child { border-bottom: 1px solid var(--haar); }
+
+.cro-offer-page .ablauf li::before {
+  content: counter(schritt);
+  padding-top: 0.2em;
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  color: var(--grau);
+}
+
+.cro-offer-page .ablauf b { font-weight: 600; }
+
+.cro-offer-page .nicht {
+  font-size: 0.95rem;
+  color: var(--grau);
+}
+
+/* ══ 4 Danach: Preiszeilen ════════════════════════════════════ */
+
+.cro-offer-page .preise { margin-top: var(--s3); }
+
+.cro-offer-page .preise th,
+.cro-offer-page .preise td {
+  padding-block: var(--s1);
+  border-top: 1px solid var(--haar);
+  vertical-align: baseline;
+  text-align: left;
+  font-weight: 400;
+}
+
+.cro-offer-page .preise tr:last-child th,
+.cro-offer-page .preise tr:last-child td { border-bottom: 1px solid var(--haar); }
+
+.cro-offer-page .preise td {
+  padding-left: var(--s2);
+  text-align: right;
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.cro-offer-page .preise a { text-underline-offset: 3px; }
+
+.cro-offer-page .preise .tarif { white-space: nowrap; }
+
+/* ══ 5 Beleg: Kosten pro Anfrage vorher und nachher ═══════════ */
+
+.cro-offer-page .fall-zahl {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s0) var(--s2);
+  margin-top: var(--s3);
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.cro-offer-page .fall-zahl .von {
+  font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.4rem);
+  color: var(--matt);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.cro-offer-page .fall-zahl .bis {
+  font-size: clamp(2.6rem, 1.6rem + 4vw, 3.9rem);
+  line-height: 1;
+  color: var(--stempel);
+}
+
+.cro-offer-page .fall-zahl .einh {
+  font-size: var(--mono-l);
+  color: var(--grau);
+}
+
+/* ══ Abschluss: direkter Weg ══════════════════════════════════ */
+
+.cro-offer-page .direkt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s0) var(--s3);
+  margin-top: var(--s3);
+  font-family: var(--mono);
+  font-size: var(--mono-l);
+  color: var(--grau);
+}
+
+.cro-offer-page .direkt a {
+  color: var(--tinte);
+  text-underline-offset: 4px;
+}
+
+/* ══ Schmal: Befund und Preise stapeln ════════════════════════ */
+
+@media (max-width: 760px) {
+  .cro-offer-page .befund {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s1);
+  }
+
+  .cro-offer-page .preise td { white-space: normal; }
+
+  /* Zwei Staffeln stehen untereinander, ohne Trenner am Zeilenende. */
+  .cro-offer-page .preise .tarif { display: block; }
+  .cro-offer-page .preise .trenner { display: none; }
+}
+
+@media (max-width: 480px) {
+  /* Die Kopfzeile bleibt eine Zeile, statt mit führendem Punkt umzubrechen. */
+  .cro-offer-page .gegenstand {
+    letter-spacing: 0.08em;
+    text-wrap: balance;
+  }
+}

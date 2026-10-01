@@ -161,6 +161,7 @@ $expect_funnel = [
 	'contact'       => [ 'voll', null, '' ],
 	'agentur_local' => [ 'voll', 'projekt', '' ],
 	'imprint'       => [ 'voll', 'projekt', '' ],
+	'conversion'    => [ 'voll', 'projekt', '' ],
 	'not_found'     => [ 'voll', 'projekt', '' ],
 	'whitelabel'    => [ 'voll', 'aufgabe', 'whitelabel' ],
 	'solar'         => [ 'fokus', null, 'energy' ],
@@ -197,6 +198,7 @@ $expect_current = [
 	'contact'       => [],
 	'agentur_local' => [],
 	'imprint'       => [],
+	'conversion'    => [],
 	'not_found'     => [],
 	// nexus_is_results_context() schliesst die Agenturseite ein; das gilt unveraendert.
 	'whitelabel'    => [ 'White-Label' => 'page', 'Ergebnisse' => 'true' ],
@@ -214,9 +216,11 @@ foreach ( nav_test_contexts() as $context => $definition ) {
 	$register    = nav_links( $footer_html, '//nav[@class="register"]//a' );
 	$route_now   = $expect_funnel[ $context ][2];
 
-	// Door register: on every page except /kontakt/, six doors in one click, own way marked, not hidden.
-	if ( 'contact' === $context ) {
-		nav_check( 0 === $footer_x->query( '//nav[@class="register"]' )->length, 'contact: footer skips the door register' );
+	// Door register: on every page except /kontakt/ and the Money Pages in hu_footer_register_suppressed_templates(),
+	// six doors in one click, own way marked, not hidden.
+	if ( in_array( $context, [ 'contact', 'conversion' ], true ) ) {
+		nav_check( 0 === $footer_x->query( '//nav[@class="register"]' )->length, "{$context}: footer skips the door register" );
+		nav_check( 1 === $footer_x->query( '//footer[@id="footer"]' )->length && 1 === $footer_x->query( '//nav[@aria-label="Weitere Seiten"]' )->length, "{$context}: footer keeps direct line, directory and sender" );
 	} else {
 		nav_check( 1 === $footer_x->query( '//nav[@class="register"]' )->length, "{$context}: footer shows the door register" );
 		nav_check( $footer_door_order === array_column( $register, 'door' ), "{$context}: every door is one click from the footer, in header order" );
