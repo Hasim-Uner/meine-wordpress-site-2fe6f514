@@ -110,7 +110,7 @@
 
 .hu-checkfox__button--secondary {
 	border-color: var(--haar);
-	background: color-mix(in srgb, var(--papier) 3%, transparent);
+	background: transparent;
 	color: var(--tinte);
 }
 
@@ -241,7 +241,7 @@ html:has(.nexus-blog-header.is-open) .hu-checkfox__bar {
 }
 
 .hu-checkfox__bar-cta:hover {
-	background: var(--stempel);
+	background: var(--tinte);
 	color: var(--papier);
 }
 

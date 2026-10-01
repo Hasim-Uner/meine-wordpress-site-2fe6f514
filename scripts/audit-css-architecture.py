@@ -76,9 +76,11 @@ CANONICAL_TOKENS = (
 SCOPED_LEGACY_COLLISIONS: dict[Path, dict[str, object]] = {}
 
 # A declaration starts a line or follows `{` or `;`, so `.x { --papier: #fff; }`
-# on one line is caught as well as the multi-line form.
+# on one line is caught as well as the multi-line form. The terminator is a
+# lookahead: consuming it would take the anchor of the next declaration on the
+# same line (`{ --a: 1; --b: 2; --c: 3; }`) and let every second one through.
 DECLARATION_RE = re.compile(
-    r"(?m)(?:^|[{;])\s*(--[a-zA-Z0-9_-]+)\s*:\s*([^;}]+)[;}]"
+    r"(?m)(?:^|(?<=[{;]))\s*(--[a-zA-Z0-9_-]+)\s*:\s*([^;}]+)(?=[;}])"
 )
 ROOT_BLOCK_RE = re.compile(r"(?s):root(?:\s*,[^\{]+)?\s*\{(.*?)\}")
 

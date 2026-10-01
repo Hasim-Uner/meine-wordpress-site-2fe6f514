@@ -182,7 +182,7 @@
 
 .hu-aroundhome__button--secondary {
 	border-color: var(--haar);
-	background: color-mix(in srgb, var(--papier) 4%, transparent);
+	background: transparent;
 	color: var(--tinte);
 }
 

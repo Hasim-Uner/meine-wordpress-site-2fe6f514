@@ -52,9 +52,9 @@
 
 .hu-cpo-calculator__scenario {
 	padding: 18px;
-	border: 1px solid color-mix(in srgb, var(--haar) 14%, transparent);
+	border: 1px solid var(--haar);
 	border-radius: var(--r0);
-	background: color-mix(in srgb, var(--papier) 4%, transparent);
+	background: var(--zone);
 }
 
 .hu-cpo-calculator__scenario-head {
@@ -72,9 +72,9 @@
 .hu-cpo-calculator input {
 	width: 100%;
 	min-height: 42px;
-	border: 1px solid color-mix(in srgb, var(--haar) 18%, transparent);
+	border: 1px solid var(--strich);
 	border-radius: var(--r1);
-	background: color-mix(in srgb, var(--papier) 24%, transparent);
+	background: var(--papier);
 	color: var(--tinte);
 	font: inherit;
 }
@@ -185,7 +185,7 @@
 /* Eingeklappte Details */
 .hu-cpo-calculator__details {
 	margin-top: 14px;
-	border-top: 1px solid color-mix(in srgb, var(--haar) 10%, transparent);
+	border-top: 1px solid var(--haar);
 	padding-top: 4px;
 }
 
@@ -219,9 +219,9 @@
 
 .hu-cpo-calculator__results div,
 .hu-cpo-calculator__summary {
-	border: 1px solid color-mix(in srgb, var(--haar) 12%, transparent);
+	border: 1px solid var(--haar);
 	border-radius: var(--r0);
-	background: color-mix(in srgb, var(--papier) 22%, transparent);
+	background: var(--zone);
 }
 
 .hu-cpo-calculator__results div {
