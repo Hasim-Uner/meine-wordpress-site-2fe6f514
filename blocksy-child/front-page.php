@@ -28,6 +28,7 @@ $energy_url     = $routes['energy'];
 $tracking_url   = $routes['tracking_setup'];
 $landing_url    = $routes['landingpage'];
 $conversion_url = $routes['conversion'];
+$website_url    = $routes['website'];
 $about_url      = $routes['about'];
 $privacy_url    = home_url( '/datenschutz/#privacy-cookies' );
 $github_url     = 'https://github.com/Hasim-Uner/meine-wordpress-site-2fe6f514';
@@ -148,10 +149,9 @@ $stations = [
  * Service-Schema (inc/schema-positioning.php); scripts/lint-entity-crawler-signals.php
  * prueft, dass jeder Schema-Anker hier als 'id' => '…' steht.
  *
- * 'detail' ist die Produktseite zur Vertiefung (Sub-CTA neben der Anfrage).
- * Wo es sie noch nicht gibt (Website/Relaunch, Uebernahme-Check), steht nur
- * die direkte Anfrage und die Zeile traegt ihren Umfang selbst; 'scope' bleibt
- * dort gefuellt, bei Zeilen mit Produktseite leer.
+ * 'detail' ist die Produktseite zur Vertiefung (Sub-CTA neben der Anfrage). Sie
+ * traegt den Umfang; die Zeile bleibt kurz. Nur wo es keine Produktseite gibt
+ * (Uebernahme-Check), steht die Zeile allein und nennt ihren Umfang selbst.
  */
 $offers = [
 	[
@@ -162,11 +162,11 @@ $offers = [
 		'price'   => sprintf( 'ab %s netto', $website_price ),
 		'text'    => 'Neubau oder Relaunch auf WordPress, gebaut auf einer Testumgebung und erst nach Ihrer Abnahme live. Beim Relaunch bekommt jede alte URL eine Weiterleitung, damit bestehende Links und Suchergebnisse weiter ankommen.',
 		'more'    => $fest( hu_freelancer_website_scope_display() ) . '.',
-		'scope'   => 'Seitenstruktur · Entwicklung · Landingpages · Weiterleitungsplan · Title, Canonical, Schema · Dokumentation',
+		'scope'   => '',
 		'request' => $project_link( 'relaunch' ),
 		'hook'    => 'home_offer_relaunch',
 		'cta'     => 'Website-Projekt anfragen',
-		'detail'  => null,
+		'detail'  => [ 'url' => $website_url, 'hook' => 'home_offer_website_detail' ],
 	],
 	[
 		'id' => 'angebot-landingpage',
@@ -192,9 +192,9 @@ $offers = [
 		'more'    => sprintf( 'Die %s der Analyse werden bei einer Umsetzung angerechnet.', $analysis_price ),
 		'scope'   => '',
 		'request' => hu_get_contact_intake_url( 'analysis', 'conversion' ),
-		'hook'    => 'home_offer_conversion',
+		'hook'    => 'home_offer_analysis',
 		'cta'     => 'Analyse anfragen',
-		'detail'  => [ 'url' => $conversion_url, 'hook' => 'home_offer_conversion_detail' ],
+		'detail'  => [ 'url' => $conversion_url, 'hook' => 'home_offer_analysis_detail' ],
 	],
 	[
 		'id' => 'angebot-tracking',
@@ -468,8 +468,10 @@ get_header();
 	<section class="st-abschnitt st-pruefstand st-pruefstand--leise" id="pruefstand" aria-labelledby="pruefstand-h" data-st-abschnitt="05" data-track-section="pruefstand">
 		<?php echo $marke( '05', 'Prüfstand' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside the helper. ?>
 		<div class="st-inhalt">
-			<h2 class="st-h2" id="pruefstand-h">Prüfen Sie mich, <span class="st-leise">bevor Sie mir schreiben.</span></h2>
-			<p class="st-vorspann">Diese Website ist mein Arbeitsbeleg: Der Code liegt offen, jede Änderung wird vor dem Livegang automatisch geprüft, und die Ladezeit messen Sie selbst.</p>
+			<div class="st-pruefstand__kopf">
+				<h2 class="st-h2" id="pruefstand-h">Prüfen Sie mich, <span class="st-leise">bevor Sie mir schreiben.</span></h2>
+				<p class="st-vorspann">Diese Website ist mein Arbeitsbeleg: Der Code liegt offen, jede Änderung wird vor dem Livegang automatisch geprüft, und die Ladezeit messen Sie selbst.</p>
+			</div>
 			<?php // Icons: Strich in currentColor, ohne eigene Farbe; nur die Ladezeit traegt den Akzent, weil sie ein Messwert ist. ?>
 			<ol class="st-pruefungen">
 				<li>

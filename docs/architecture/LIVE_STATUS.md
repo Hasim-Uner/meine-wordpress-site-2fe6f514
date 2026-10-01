@@ -140,14 +140,20 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Protokoll und die Preiszeile passen bei 1280 × 800 in den ersten Bildschirm;
   seit 2026-09-27 steht das Protokoll auf einer dunklen Tafel); darunter ein
   dekoratives Stationsband (`aria-hidden`, verschiebt sich nur beim Scrollen);
-  Prüfstand (`#pruefstand`, dunkle Tafel mit drei Kacheln, Links auf Code, CI
-  und PageSpeed, keine Scores);
   sechs Stationen einer Anfrage (`#strecke`, Liste mit `#angebot-funnel`);
-  drei Leistungen mit Kanonpreisen (`#angebote`, Anker `#angebot-website`,
+  seit 2026-10-01 fünf Leistungen mit Kanonpreisen (`#angebote`, Anker
+  `#angebot-website`, `#angebot-landingpage`, `#angebot-conversion`,
   `#angebot-tracking` = Stufe 1 der Tracking-Leiter mit den Stufen darüber
-  als Satz, `#angebot-weiterentwicklung`) und darunter die leisen
-  Nebenausgänge zu White-Label und Solar/Wärmepumpe; Arbeiten (`#arbeiten`,
-  `#referenzen`); Übergabe (`#uebergabe`); Fragen (`#fragen`,
+  als Satz, `#angebot-weiterentwicklung`): Neben der Anfrage trägt jede Zeile
+  mit Produktseite den Sub-CTA „Was drinsteckt“ (Website →
+  `/wordpress-website-erstellen-lassen/`, Landingpage, Conversion-Optimierung,
+  Tracking; Hooks `home_offer_*_detail`, Kategorie `navigation`); der
+  Übernahme-Check hat keine Produktseite. Darunter die leisen Nebenausgänge zu
+  White-Label und Solar/Wärmepumpe; Arbeiten (`#arbeiten`, `#referenzen`);
+  Prüfstand (`#pruefstand`, seit 2026-10-01 hinter den Arbeiten und als
+  schmaler heller Streifen statt dunkler Tafel: drei Spalten mit Haarlinie,
+  Links auf Code, CI und PageSpeed, keine Scores; die dunkle `.tafel` bleibt
+  der White-Label-Seite); Übergabe (`#uebergabe`); Fragen (`#fragen`,
   template-eigenes FAQPage-Schema); Anfrage (`#anfrage`, `#kontakt`, seit
   2026-09-27 Überschrift, beide Einstiege und Portrait auf einer dunklen
   Tafel). Abschnitte unter dem ersten Bildschirm blenden beim ersten
@@ -216,8 +222,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Seitenanlage über `nexus_get_provisioned_pages()`. Query-Owner für
   `landingpage erstellen lassen`. Eingehende Links: Fuß (Gruppe Leistungen),
   `/performance-marketing/` (Vorgehen) und `/glossar/landingpage/`
-  (Hauptziel des Begriffs). Die Startseite verlinkt die Seite noch nicht
-  (eingefroren bis 2026-11-20, Versuch Ersteinschätzung).
+  (Hauptziel des Begriffs). Die Startseite verlinkt die Seite seit 2026-10-01
+  aus der Preisliste (`home_offer_landingpage_detail`).
 - **`/conversion-optimierung/`** (`page-conversion-optimierung.php`,
   Gutachten-Layout wie `/landingpage-erstellen-lassen/`, seit 2026-09-30):
   Conversion-Optimierung für B2B-Websites mit wenig Traffic, Einstieg ist die
@@ -244,9 +250,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `/landingpage-erstellen-lassen/` (Anlass 04), `/ga4-tracking-setup/`
   (Abschnitt Probleme), Artikel `/website-relaunch/` und die Glossarbegriffe
   `conversion`, `conversion-rate`, `formularabbruch`, `lead-qualifizierung`
-  (Hauptziel „Passende Leistung“). Die Startseite verlinkt die Seite noch nicht:
-  Sie ist bis 2026-11-20 eingefroren (Versuch Ersteinschätzung); der geplante
-  Satzlink im Leistungsabschnitt folgt danach. `assets/css/cro.css` (Scope
+  (Hauptziel „Passende Leistung“). Die Startseite verlinkt die Seite seit
+  2026-10-01 aus der Preisliste (`home_offer_analysis_detail`). `assets/css/cro.css` (Scope
   `.cro-page`) lädt nur noch auf der stillgelegten Route
   `/conversion-rate-optimization/` und bleibt unberührt.
   `/conversion-rate-optimization/` liefert weiter 410. Die Backlink-Prüfung
@@ -274,8 +279,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   `wordpress website erstellen lassen`; `website relaunch` bleibt beim Beitrag
   `/website-relaunch/`. Eingehende Links: Fuß (Gruppe Leistungen,
   `cta_footer_nav_website_offer`) und `/landingpage-erstellen-lassen/` (Zusatz
-  „Website“). Die Startseite verlinkt die Seite noch nicht: Sie ist bis
-  2026-11-20 eingefroren (Versuch Ersteinschätzung); der Link folgt danach.
+  „Website“). Die Startseite verlinkt die Seite seit 2026-10-01 aus der
+  Preisliste (`home_offer_website_detail`).
 - **`/ga4-tracking-setup/`** (`page-ga4.php`, virtuelle Cluster-Route):
   Das Tracking-Angebot. Zeigt alle vier Stufen der Tracking-Leiter aus
   `hu_tracking_product_ladder()` als Karten `#stufe-1` bis `#stufe-4` (Raster
@@ -599,8 +604,10 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   und den Marktcheck: CRM-Eintrag, Sales-Chance, interne Mail und Bestätigung
   prüfen.
 - Versuch Ersteinschätzung: Zählung 2026-09-25 bis 2026-11-20, Entscheidung
-  nach der Tabelle in `docs/experimente/ersteinschaetzung.md`; bis dahin
-  bleibt die Startseite eingefroren. Nach dem Deploy eine Einsendung über
+  nach der Tabelle in `docs/experimente/ersteinschaetzung.md`. Der Betreiber hat
+  den Freeze am 2026-10-01 für Reihenfolge und Leistungen der Startseite
+  aufgehoben (Hero und Abschluss unverändert); Einsendungen vor und nach dem
+  Deploy getrennt auswerten. Nach dem Deploy eine Einsendung über
   `/kontakt/?focus=ersteinschaetzung` schicken (Betreff-Präfix bei
   kontakt@hasimuener.de prüfen) und die Wochentabelle führen.
 - WP-Cron: Wegen des Seiten-Caches ist ein echter Server-Cron für `wp-cron.php`
