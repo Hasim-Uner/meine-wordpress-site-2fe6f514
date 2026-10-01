@@ -58,7 +58,8 @@ bleiben der vollständigen Prüfung vorbehalten. GitHub richtet PHP ausdrücklic
 ein, statt die wechselnde Runner-Vorinstallation zu verwenden.
 
 Die Browserkonfiguration bleibt plattformabhängig: Auf diesem Mac verwenden die
-Tests vorhandenes Google Chrome, CI installiert das zur Playwright-Version
+Tests vorhandenes Google Chrome, CI verwendet das vorinstallierte Chrome/Chromium
+des Runner-Images. Sonst installiert das lokale Setup das zur Playwright-Version
 passende Chromium. Der Doctor nennt den Browserpfad; die vollständige Suite
 prüft seine tatsächliche Nutzbarkeit. Gleiche CLI-Versionen bedeuten daher keine
 identischen Betriebssysteme oder Browser-Binaries.

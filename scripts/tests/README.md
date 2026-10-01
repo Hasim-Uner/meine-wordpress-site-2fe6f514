@@ -8,9 +8,10 @@ npm run test:intake
 ```
 
 Auf macOS nutzt die Browser-Konfiguration vorhandenes Google Chrome, sonst das
-von Playwright installierte Chromium. CI führt beide Prüfungen aus. Artefakte
-liegen unter `.build/form-test-results/`. Benötigt werden Node 20–22 und PHP
-mit mbstring. Es werden keine produktiven Endpunkte aufgerufen und keine
+von Playwright installierte Chromium. CI nutzt vorinstalliertes Chrome/Chromium
+aus dem Runner-Image und führt Browser- sowie Endpoint-Prüfungen aus. Artefakte
+liegen unter `.build/form-test-results/`. Die CLI-Versionen stehen in
+`.toolchain.json`; PHP benötigt unter anderem mbstring. Es werden keine produktiven Endpunkte aufgerufen und keine
 echten E-Mails gesendet.
 
 ## Ausgangsbefund und Annahmevertrag
@@ -87,3 +88,24 @@ gibt für einen Kontext eine Seite mit echtem Kopf und Fuß aus; der Browser-Tes
 liefert `system.css`, Schriften und `leiste.js` aus dem Arbeitsbaum aus. Ein
 abweichendes vorinstalliertes Chromium lässt sich über
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` setzen. CI führt beide Prüfungen aus.
+
+Formular- und Navigationstests verwenden getrennte Browser-Pages und
+Netzwerk-Doubles. Beide Konfigurationen nutzen `fullyParallel` mit einem Worker;
+CI verteilt jede Suite mit `--shard=N/4` auf dieselben vier Runner. Lokal läuft
+die vollständige jeweilige Suite weiter mit einem Worker.
+
+Bei einem Fehler bleiben Playwright-Traces und Screenshots in den jeweiligen
+Ergebnisverzeichnissen erhalten. CI lädt die Ergebnisse pro fehlgeschlagenem
+Shard für sieben Tage hoch. Es werden keine produktiven Anfragen gesendet.
+
+## CI-Vertragsregressionen
+
+```sh
+python3 -m unittest discover -s scripts/tests -p 'test_check*.py'
+```
+
+`test_check_ci_contract.py` führt den echten Architektur-Validator mit temporär
+entfernten Pflichtanforderungen aus. Jede solche Gegenprobe muss fehlschlagen;
+der unveränderte Vertrag muss bestehen. Zusätzlich werden der finale
+`validate`-Befehl mit fehlgeschlagenen, abgebrochenen und übersprungenen
+Partitionen sowie die Eindeutigkeit der Workflow-Jobnamen geprüft.

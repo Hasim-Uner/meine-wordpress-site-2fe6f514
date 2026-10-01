@@ -24,6 +24,7 @@ jobs:
       CHECK_HEAD: ${{ github.sha }}
       CHECK_FULL: ${{ github.event_name == 'workflow_dispatch' }}
       PYTHONDONTWRITEBYTECODE: '1'
+      CHECK_LOG_DIR: .build/check-logs
 
     steps:
       - name: Checkout
@@ -94,6 +95,15 @@ jobs:
 
       - name: Run core repository checks
         run: python3 scripts/check.py --skip-browser --skip-analysis --skip-doctor
+
+      - name: Upload failed repository check logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-check-logs
+          path: .build/check-logs
+          if-no-files-found: ignore
+          retention-days: 7
 
   browser:
     name: browser (shard ${{ matrix.shard }}/4)
@@ -176,10 +186,21 @@ jobs:
         run: npm run test:forms -- --shard=${{ matrix.shard }}/4
 
       - name: Run navigation browser checks
-        if: steps.plan.outputs.runtime == 'true' && matrix.shard == 1
+        if: steps.plan.outputs.runtime == 'true'
         env:
           PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: ${{ steps.browser.outputs.path }}
-        run: npm run test:navigation-ui
+        run: npm run test:navigation-ui -- --shard=${{ matrix.shard }}/4
+
+      - name: Upload failed browser test artifacts
+        if: failure() && steps.plan.outputs.runtime == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-failures-shard-${{ matrix.shard }}
+          path: |
+            .build/form-test-results
+            .build/navigation-test-results
+          if-no-files-found: ignore
+          retention-days: 7
 
   analysis:
     runs-on: ubuntu-24.04

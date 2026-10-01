@@ -1,7 +1,7 @@
 const { defineConfig } = require('@playwright/test');
 const { existsSync } = require('node:fs');
 const chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-// CI uses the browser already shipped with the pinned GitHub runner image.
+// CI uses the browser shipped with the GitHub runner image (not an exact pin).
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || (existsSync(chrome) ? chrome : undefined);
 module.exports = defineConfig({
   testDir: __dirname,
@@ -16,6 +16,8 @@ module.exports = defineConfig({
   reporter: 'list',
   use: {
     headless: true,
+    trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
     launchOptions: executablePath ? { executablePath } : {},
   },
 });

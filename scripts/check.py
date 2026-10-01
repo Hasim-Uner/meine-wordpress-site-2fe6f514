@@ -137,7 +137,10 @@ def checks(plan, base, head, skip_browser=False, skip_analysis=False):
 
 def run_checks(selected, root=ROOT, env=None):
     """Keep success output small, retain complete logs, and propagate any failure."""
-    log_dir = Path(tempfile.mkdtemp(prefix='repo-check-'))
+    check_env = dict(os.environ if env is None else env)
+    log_dir = (root / check_env['CHECK_LOG_DIR'] if check_env.get('CHECK_LOG_DIR')
+               else Path(tempfile.mkdtemp(prefix='repo-check-')))
+    log_dir.mkdir(parents=True, exist_ok=True)
     print(f'Logs: {log_dir}', flush=True)
     failures = 0
     for name, command in selected:
@@ -147,7 +150,7 @@ def run_checks(selected, root=ROOT, env=None):
         try:
             with log_path.open('w') as log:
                 result = subprocess.run(command, cwd=root, stdout=log, stderr=subprocess.STDOUT,
-                                        env={**(os.environ if env is None else env), 'PYTHONDONTWRITEBYTECODE': '1'})
+                                        env={**check_env, 'PYTHONDONTWRITEBYTECODE': '1'})
             status = result.returncode
         except OSError as exc:
             log_path.write_text(str(exc) + '\n')
