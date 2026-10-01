@@ -103,7 +103,7 @@ jobs:
     # pull_request caches are scoped to refs/pull/*/merge. Refresh a trusted
     # default-branch cache after each reviewed merge so the next PR can reuse it.
     needs: revision
-    if: github.event_name == 'push' && needs.revision.outputs.current == 'true'
+    if: github.event_name == 'push' && needs.revision.outputs.current == 'true' && needs.revision.outputs.deploy == 'true'
     continue-on-error: true
     runs-on: ubuntu-24.04
     timeout-minutes: 10
