@@ -313,7 +313,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - **Nachweise:** `/case-study-solar-leadgenerierung/` ist die Fallstudie; sie
   bleibt `noindex, follow`, bis die Freigabe vorliegt. Unter dem Marktcheck
   steht seit 2026-09-26 ein zweiter, leiser Weg in die Projektanfrage für
-  Leser ohne Energiebetrieb (`cta_case_study_to_project`). Eigenes og:image
+  Leser ohne Energiebetrieb (`cta_case_study_to_project`). Seit 2026-10-01
+  steht die Seite auf `system.css` und `e3-case-v2.css` (vier `.tafel`-Flächen,
+  kein `design-system.css`, kein `energy-systems.css`). Eigenes og:image
   `assets/img/fallstudie-og.jpg` (1200 × 630, JPG, nur Kanonwerte), das auch
   das Beitragsbild im Schema ersetzt. Der Hub `/ergebnisse/` ist seit 2026-09-25
   stillgelegt: 301 auf die Fallstudie (`nexus_redirect_legacy_results_path()`),

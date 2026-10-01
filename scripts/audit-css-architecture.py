@@ -69,23 +69,11 @@ CANONICAL_TOKENS = (
     "--tuer-schrift",
 )
 
-# These names predate system.css and are deliberately local to an older
-# editorial Solar surface. Their semantics and values differ from the
-# Gutachten core, so silently treating them as another owner would be wrong.
-# Freeze the exact selector/value pair until that route is renamed/migrated.
-SCOPED_LEGACY_COLLISIONS = {
-    CSS_DIR / "energy-systems.css": {
-        "selector": ".solar-page",
-        "tokens": {
-            "--serif": {
-                '"Satoshi", "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
-            },
-            "--mono": {
-                'ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", "Menlo", "Consolas", monospace'
-            },
-        },
-    }
-}
+# Scoped legacy collisions with core tokens used to be frozen here (the
+# .solar-page --serif/--mono of energy-systems.css). That file is gone; the
+# mechanism stays so a future exception must be listed selector- and
+# value-exact instead of being silently tolerated.
+SCOPED_LEGACY_COLLISIONS: dict[Path, dict[str, object]] = {}
 
 # A declaration starts a line or follows `{` or `;`, so `.x { --papier: #fff; }`
 # on one line is caught as well as the multi-line form.

@@ -79,6 +79,7 @@ function hu_enqueue_assets() {
 	$is_cluster_page = function_exists( 'nexus_is_wgos_cluster_page' ) && nexus_is_wgos_cluster_page();
 	$is_checkfox_decision = is_singular( 'post' ) && $queried_id && 'checkfox-solar-waermepumpe-einordnung' === get_post_field( 'post_name', $queried_id );
 	$is_sst_route = is_page( 'server-side-tracking-b2b' ) || is_page_template( 'page-server-side-tracking-b2b.php' );
+	$is_case_study_route = is_page( [ 'case-study-solar-leadgenerierung', 'e3-new-energy' ] ) || is_page_template( 'page-case-study-solar.php' );
 
 	$is_aroundhome_decision = is_singular( 'post' ) && $queried_id && 'aroundhome-solar-einordnung' === get_post_field( 'post_name', $queried_id );
 	$is_provider_decision   = $is_checkfox_decision || $is_aroundhome_decision;
@@ -98,12 +99,12 @@ function hu_enqueue_assets() {
 
 	// ── Legacy compatibility provider ──────────────────────────────
 	// Startseite, Personenseite, Ergebnisse-Hub, Glossar, White-Label, Kontakt
-	// und Server-Side Tracking stehen vollstaendig auf system.css und konsumieren weder NX- noch
+	// Server-Side Tracking und Fallstudie stehen vollstaendig auf system.css und konsumieren weder NX- noch
 	// unpraefixierte Provider-Tokens. Alle anderen Routen behalten den
 	// Legacy-Provider, bis ihre impliziten Token-/Selector-Abhaengigkeiten
 	// einzeln nachgewiesen und migriert sind.
 	$is_contact_route          = function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page();
-	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_glossary || $is_whitelabel || $is_contact_route || $is_sst_route );
+	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_glossary || $is_whitelabel || $is_contact_route || $is_sst_route || $is_case_study_route );
 	if ( $uses_legacy_design_system ) {
 		hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
 	}
@@ -488,19 +489,18 @@ function hu_enqueue_assets() {
 		);
 	}
 
-	// ── F1b) Schwester-Templates (Solar Case Study, Service-Landing) ────────
-	if ( is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || is_page( 'case-study-solar-leadgenerierung' ) || is_page( 'e3-new-energy' ) || is_page_template( 'page-case-study-solar.php' ) ) {
-		// review-funnel.css/.js sind hier bewusst NICHT geladen: das JS bindet an
-		// #review-request-form, das kein Template im Theme rendert, und keines
-		// der beiden Templates benutzt eine .review-*-Klasse. Das waren 45 KB
-		// render-blockierendes CSS plus 24 KB JS ohne Gegenwert. Der Marktcheck
-		// laeuft auf der Money Page ueber solar-leadgenerierung-solara.js.
-		hu_enqueue_css( 'nexus-energy-systems-css', 'energy-systems.css', [ 'nexus-design-system' ] );
+	// ── F1b) Fallstudie (page-case-study-solar.php) ─────────────────────────
+	// Das Template haengt e3-case-v2.css selbst an (Deps: system.css). Der
+	// frueher hier geladene energy-systems.css traf auf dieser Route zwei
+	// Regeln (Reveal) und ist entfallen; das Reveal liegt in e3-case-v2.css.
+	// Der Slug website-fuer-solar-und-waermepumpen-anbieter hat kein Template
+	// im Theme und behaelt Legacy-Provider, Sticky-Leiste und Hero-Skript.
+	if ( is_page( 'website-fuer-solar-und-waermepumpen-anbieter' ) || $is_case_study_route ) {
 		hu_enqueue_js( 'nexus-solar-hero-js', 'solar-hero.js', [ 'nexus-core-js' ] );
 
 		// Sticky-CTA-Bar: die Case Study hatte bis 2026-08 keinen einzigen CTA
 		// oberhalb des Seitenendes. Gleiche Komponente wie auf den Intercept-Routen.
-		hu_enqueue_css( 'nexus-sticky-cta-css', 'sticky-cta.css', [ 'nexus-design-system' ] );
+		hu_enqueue_css( 'nexus-sticky-cta-css', 'sticky-cta.css', [ $is_case_study_route ? 'nexus-system-css' : 'nexus-design-system' ] );
 		hu_enqueue_js( 'nexus-seo-subpage-sticky-cta-js', 'seo-subpage-sticky-cta.js', [] );
 	}
 

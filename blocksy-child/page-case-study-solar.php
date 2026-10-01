@@ -170,7 +170,7 @@ $case_css_path = get_stylesheet_directory() . '/assets/css/e3-case-v2.css';
 wp_enqueue_style(
 	'hu-e3-case-v2',
 	get_stylesheet_directory_uri() . '/assets/css/e3-case-v2.css',
-	[],
+	[ 'nexus-system-css' ],
 	file_exists( $case_css_path ) ? (string) filemtime( $case_css_path ) : wp_get_theme()->get( 'Version' )
 );
 
@@ -189,7 +189,7 @@ get_header();
 					<a class="e3v2-text-link" href="#system" data-track-action="case_v2_hero_system" data-track-category="navigation">System hinter dem Ergebnis ansehen <span aria-hidden="true">↓</span></a>
 				</div>
 
-				<aside class="e3v2-result-card" aria-label="Ergebnisse des Referenzfalls" data-reveal>
+				<aside class="e3v2-result-card tafel" aria-label="Ergebnisse des Referenzfalls" data-reveal>
 					<p class="e3v2-result-card__label">Dokumentierter Referenzfall</p>
 					<div class="e3v2-result-card__primary">
 						<span><?php echo esc_html( $e3_cpl_before ); ?></span>
@@ -240,7 +240,7 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3v2-section e3v2-section--dark" id="diagnose" aria-labelledby="e3v2-diagnose-title">
+		<section class="e3v2-section e3v2-section--dark tafel" id="diagnose" aria-labelledby="e3v2-diagnose-title">
 			<div class="e3v2-container">
 				<header class="e3v2-heading e3v2-heading--dark" data-reveal>
 					<p class="e3v2-kicker">Diagnose</p>
@@ -284,7 +284,7 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3v2-section e3v2-section--trajectory" id="verlauf" aria-labelledby="e3v2-verlauf-title">
+		<section class="e3v2-section e3v2-section--trajectory tafel" id="verlauf" aria-labelledby="e3v2-verlauf-title">
 			<div class="e3v2-container">
 				<header class="e3v2-heading e3v2-heading--dark" data-reveal>
 					<p class="e3v2-kicker">Entwicklung</p>
@@ -362,7 +362,7 @@ get_header();
 			</div>
 		</section>
 
-		<section class="e3v2-section e3v2-section--cta" id="cta" aria-labelledby="e3v2-cta-title">
+		<section class="e3v2-section e3v2-section--cta tafel" id="cta" aria-labelledby="e3v2-cta-title">
 			<div class="e3v2-container e3v2-cta-grid" data-reveal>
 				<div>
 					<p class="e3v2-kicker">Nächster Schritt</p>

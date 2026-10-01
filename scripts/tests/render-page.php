@@ -27,6 +27,14 @@ if ( ! function_exists( 'rest_url' ) ) {
 	function rest_url( $path ) { return home_url( '/wp-json/' . $path ); }
 }
 
+// Templates enqueue their own stylesheet and call get_header()/get_footer();
+// this script prints the header, footer and the stylesheet list itself.
+foreach ( [ 'wp_enqueue_style', 'wp_enqueue_script', 'get_header', 'get_footer' ] as $noop ) {
+	if ( ! function_exists( $noop ) ) {
+		eval( "function {$noop}() {}" ); // phpcs:ignore Squiz.PHP.Eval.Discouraged -- test double.
+	}
+}
+
 $theme = '/wp-content/themes/blocksy-child';
 
 ob_start();
