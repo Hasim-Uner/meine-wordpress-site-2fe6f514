@@ -382,7 +382,7 @@ function hu_get_forced_singular_seo_map() {
 			// docs/standards/BRAND_AND_COPY.md: Agenturen, „ihr/euch“,
 			// sichtbar immer „White-Label“, Einstieg über das Erstprojekt.
 			'whitelabel-retainer' => [
-				'title'       => 'White-Label für Agenturen: WordPress, SEO, Tracking',
+				'title'       => 'White-Label für Agenturen: WordPress-Webdesign & Tracking',
 				'description' => 'White-Label für Agenturen: WordPress, Tracking bis ins CRM und Barrierefreiheit aus einer Hand. Festpreis und Termin stehen, bevor ihr eurem Kunden zusagt.',
 			],
 			// Die Stack-Seite trug „White-Label“ in Title UND Description und
