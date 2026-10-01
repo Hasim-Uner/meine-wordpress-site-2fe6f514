@@ -491,13 +491,19 @@ Landingpage. Kopfzeile des Registers: links „Welcher Weg passt?“, rechts
 | Satz | Türen (Schlüssel) | Event je Tür |
 |---|---|---|
 | Ich habe **eine Website** … | Projekt anfragen (`projekt`, „nach Umfang“) | `cta_footer_door_projekt` |
-| Ich brauche **belastbare Messung** … | Tracking-Projekt anfragen (`tracking`, „ab“ Messung-Setup) | `cta_footer_door_tracking` |
+| Ich brauche **belastbare Messung** … | Tracking-Projekt anfragen (`tracking`, „ab“ Server-Side-Setup) | `cta_footer_door_tracking` |
 | Ich bin **Agentur** … | Test-Sprint anfragen (`aufgabe`) | `cta_footer_door_aufgabe` |
 | Ich bin **Solar- oder Wärmepumpenbetrieb** und kaufe heute Portal-Anfragen. | Marktcheck, regional (`marktcheck`, kostenlos) · Anfragesystem-Analyse (`analyse`) · Sofortkontakt-Setup (`sofort`) | `cta_footer_door_marktcheck`, `cta_footer_door_analyse`, `cta_footer_door_sofort` |
 
 Jede Tür ist eine Zeile mit Bezeichnung, Betrag (Mono, tabellarische Ziffern)
 und Pfeil; die Beträge kommen aus dem Kanon (`hu_funnel_doors()`), kein
 Preisliteral steht im Template. Die Tür ohne Betrag zeigt „nach Umfang“.
+Der Tracking-Footer liest dafür `footer_amount` aus
+`hu_tracking_price( 'standard', 'setup' )`; Kopf und andere
+Tracking-Türen behalten den clientseitigen Messung-Einstieg. Die
+Navigationsprüfung rendert den Fuß in allen Kontexten und prüft diesen
+eigenen Preisanker; die Literal-Sperre allein erkennt keinen falschen
+Paketschlüssel.
 Alle tragen `data-door="<schlüssel>"`, `data-track-category="lead_gen"` und
 `data-track-section="footer"`. Die früheren `cta_footer_pick_project|tracking|
 agency|energy` entfallen; ältere Zeitreihen enden am 2026-10-01.

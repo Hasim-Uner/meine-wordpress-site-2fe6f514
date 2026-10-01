@@ -80,6 +80,8 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   2026-10-01 ein Türregister: vier Wege in Kopf-Reihenfolge (Website,
   Tracking, Agentur, Energie), je Tür eine Zeile mit Bezeichnung, Betrag
   (aus dem Kanon) und Pfeil, Tracking `cta_footer_door_<schlüssel>`. Die
+  Tracking-Tür im Fuß liest den Server-Side-Setup-Anker über `footer_amount`
+  (`standard/setup`); andere Tracking-Türen behalten den Messung-Einstieg.
   eigene Route ist markiert („Ihr Weg“), nicht ausgeblendet; das Register
   erscheint auch auf Startseite und Energie-Seite, nur `/kontakt/` und die
   Seiten aus `hu_footer_register_suppressed_templates()` (`inc/funnel-doors.php`,
@@ -110,6 +112,12 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Dashboard V3 zeigt vor den analytischen Detailsektionen maximal drei
   handlungsfähige Entscheidungen aus `Jetzt tun` und `Prüfen & planen`;
   Beobachtungssignale bleiben in der vollständigen Content-Chancen-Ansicht.
+- Audit-Titel mit Präfix `TEST` (case-insensitive) bleiben gespeichert und
+  sind aus Lead-Zählern, Attribution und Action-Hub-/Revenue-Priorisierung
+  ausgeschlossen. `/whitelabel-retainer/` hat die Rolle `Service`; der
+  Maßnahmenhinweis nennt das Agentur-Angebot und die Aufgabenanfrage.
+  Performance Pulse nutzt den letzten tatsächlich gelieferten Datentag
+  statt der Nullwerte eines ergänzten fehlenden Tages.
 - `Research` heißt im Menü `Datenbasis` und steht hinter den operativen
   Bereichen. Dort bleiben CrUX, Energy-Charts, Destatis und Eurostat als
   Primär-/Felddaten vollständig zugänglich.

@@ -293,6 +293,8 @@ function nexus_get_seo_cockpit_snapshot_cache_key( $range_days = null ) {
 		[
 			nexus_get_seo_cockpit_property(),
 			$range_days,
+			// Rebuild persisted lead counts, page roles and derived scores after this change.
+			'action_hub_v2',
 		]
 	);
 }

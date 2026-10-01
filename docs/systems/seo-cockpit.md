@@ -169,6 +169,22 @@ Sektionen:
 
 Die Queue zeigt pro Eintrag Priorität, Typ, URL/Lead, Funnel-Rolle, Problem, Warum-jetzt, konkrete nächste Aktion, erwarteten Hebel, Aufwand, Risiko, Repo-/Manual-Fixbarkeit, Status, Confidence und Datenbasis.
 
+Audit-Anfragen, deren gespeicherter Titel mit `TEST` beginnt (ohne Beachtung
+der Groß-/Kleinschreibung), bleiben im CRM, zählen aber über
+`nexus_is_seo_cockpit_lead_signal()` nicht in Follow-up/Action Hub,
+Audit-Lead-Zähler, Seitenattribution oder Revenue-Scores. Die Queue wendet
+den Filter vor ihrem Zeilenlimit an. White-Label ist eine `service`-Route
+(Agentur-Angebot), keine `results`-/Proof-Route. Der Snapshot-Cache enthält
+die Auswertungsrevision `action_hub_v2`, damit alte Zähler und Rollen nach
+dem Update neu berechnet werden.
+
+Performance Pulse zeigt den letzten von GSC tatsächlich gelieferten
+Datentag und nennt dessen Datum am Kennzahlenwert. Fehlende Tage sind in
+der Tagesreihe mit `has_data=false` markiert; deren ergänzte Nullwerte
+ersetzen keine vorhandene Messung mehr. Eine echte gemeldete Null bleibt
+Null, eine vollständig fehlende Serie zeigt `—`. Die kleine Korrektur
+betrifft die Kartenwerte, nicht GSC-Abfrage, Zeitraum oder Verlaufskurve.
+
 Revenue Score:
 
 - Lead-Signal und Funnel-Nähe werden stärker gewichtet als Impressionen.

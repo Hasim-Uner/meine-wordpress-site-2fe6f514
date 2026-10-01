@@ -557,6 +557,14 @@ function nexus_render_seo_cockpit_range_switcher( $current_range, $detail_url = 
  * @return void
  */
 function nexus_render_seo_cockpit_trend_card( $series, $metric, $label ) {
+	// Normalization pads missing days with zeroes. The card value must use
+	// the latest reported day, including a genuine zero, rather than padding.
+	$reported = array_values( array_filter( (array) $series, static function ( $point ) {
+		return is_array( $point ) && ( ! isset( $point['has_data'] ) || $point['has_data'] );
+	} ) );
+	$latest = ! empty( $reported ) ? end( $reported ) : null;
+	$latest_label = null !== $latest ? nexus_format_seo_cockpit_metric( $metric, $latest[ $metric ] ?? 0 ) : '—';
+	$latest_date = null !== $latest ? (string) ( $latest['date'] ?? '' ) : '';
 	$values = array_map(
 		static function ( $point ) use ( $metric ) {
 			return (float) ( $point[ $metric ] ?? 0 );
@@ -581,7 +589,7 @@ function nexus_render_seo_cockpit_trend_card( $series, $metric, $label ) {
 	<article class="nexus-seo-cockpit__trend-card">
 		<div class="nexus-seo-cockpit__trend-head">
 			<span><?php echo esc_html( $label ); ?></span>
-			<strong><?php echo esc_html( nexus_format_seo_cockpit_metric( $metric, end( $values ) ?: 0 ) ); ?></strong>
+			<strong<?php if ( '' !== $latest_date ) : ?> title="<?php echo esc_attr( 'Letzter Datentag: ' . $latest_date ); ?>"<?php endif; ?>><?php echo esc_html( $latest_label ); ?></strong>
 		</div>
 		<svg viewBox="0 0 <?php echo esc_attr( $width ); ?> <?php echo esc_attr( $height ); ?>" role="img" aria-label="<?php echo esc_attr( $label ); ?>">
 			<polyline points="<?php echo esc_attr( implode( ' ', $points ) ); ?>" />
