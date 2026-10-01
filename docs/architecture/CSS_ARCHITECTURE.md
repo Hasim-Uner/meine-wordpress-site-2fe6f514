@@ -64,7 +64,7 @@ Regeln:
 - bestehende Verbraucher einzeln auf `system.css` migrieren oder stilllegen;
 - ein bereinigter Verbraucher wird sofort aus der Baseline entfernt;
 - keine neuen generischen Komponenten in `design-system.css` erfinden;
-- `design-system.css` ist auf der kanonischen Startseite, der Personenseite, dem Ergebnisse-Hub, den Glossarseiten und der White-Label-Seite bereits aus dem Enqueue genommen; weitere Routen folgen erst nach eigenem Provider-Audit.
+- `design-system.css` ist auf der kanonischen Startseite, der Personenseite, dem Ergebnisse-Hub, den Glossarseiten, der White-Label-Seite und der Kontaktseite bereits aus dem Enqueue genommen; weitere Routen folgen erst nach eigenem Provider-Audit.
 
 Das unmittelbare Ziel ist daher nicht, `design-system.css` mit `system.css` zu verschmelzen. Beide Systeme haben unterschiedliche historische Semantik und Theme-Annahmen; ein blindes Zusammenlegen würde Cascade- und Kontrastfehler erzeugen.
 
@@ -112,6 +112,19 @@ Bewegungsregeln) und `whitelabel.css` als Delta für Abnahmeprotokoll,
 Ablauf-Stationen, Margenblock, Formular und Fuß. Das Delta definiert keinen
 Farbwert und keine Abstandsskala; `whitelabel.css` ist aus der NX-Baseline
 entfernt, der Legacy-Provider lädt hier nicht mehr.
+
+### Kontakt
+
+`/kontakt/` steht seit 2026-10-01 ohne Legacy-Provider: `design-system.css`
+wird auf der Route nicht mehr geladen, `contact.css` hängt an
+`nexus-system-css`. Belegt ist das durch einen Vorher-Nachher-Vergleich des
+echten Templates (`scripts/tests/render-contact.php`, alle drei Zustände bei
+390, 768 und 1440 px): pixelgleich, und `contact.css` nutzt nur eigene oder
+`system.css`-Tokens. Übrig bleibt der Unterschied, dass der Provider
+`text-rendering: optimizeLegibility` setzte. `contact.css` ist weiter ein
+gemeinsamer Verbraucher: die Server-Side-Route lädt sie mit dem Provider.
+Die Kontaktseiten-Regeln, die früher als `<style>` im Fuß-Template standen,
+stehen am Ende von `contact.css`.
 
 ### Performance Marketing
 

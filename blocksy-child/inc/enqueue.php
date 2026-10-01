@@ -97,12 +97,13 @@ function hu_enqueue_assets() {
 	);
 
 	// ── Legacy compatibility provider ──────────────────────────────
-	// Startseite, Personenseite, Ergebnisse-Hub, Glossar und White-Label
-	// stehen vollstaendig auf system.css und konsumieren weder NX- noch
+	// Startseite, Personenseite, Ergebnisse-Hub, Glossar, White-Label und
+	// Kontakt stehen vollstaendig auf system.css und konsumieren weder NX- noch
 	// unpraefixierte Provider-Tokens. Alle anderen Routen behalten den
 	// Legacy-Provider, bis ihre impliziten Token-/Selector-Abhaengigkeiten
 	// einzeln nachgewiesen und migriert sind.
-	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_glossary || $is_whitelabel );
+	$is_contact_route          = function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page();
+	$uses_legacy_design_system = ! ( is_front_page() || hu_is_person_page() || $is_results_hub || $is_glossary || $is_whitelabel || $is_contact_route );
 	if ( $uses_legacy_design_system ) {
 		hu_enqueue_css( 'nexus-design-system', 'design-system.css', [ 'blocksy-child-style' ] );
 	}
@@ -330,8 +331,8 @@ function hu_enqueue_assets() {
 	}
 
 	// ── E2) Kontakt ───────────────────────────────────────────────
-	if ( function_exists( 'nexus_is_contact_page' ) && nexus_is_contact_page() ) {
-		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-design-system' ] );
+	if ( $is_contact_route ) {
+		hu_enqueue_css( 'nexus-contact-css', 'contact.css', [ 'nexus-system-css' ] );
 		hu_enqueue_js( 'nexus-contact-js', 'contact.js', [ 'nexus-core-js' ] );
 		$contact_requested_type = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : '';
 		$contact_type_options   = function_exists( 'nexus_get_contact_request_type_options' ) ? nexus_get_contact_request_type_options() : [];
