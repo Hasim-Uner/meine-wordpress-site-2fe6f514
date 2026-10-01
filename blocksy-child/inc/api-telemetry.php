@@ -19,6 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function nexus_api_telemetry_capture( $response, $server, $request ) {
 	$route = $request->get_route();
+	// Anonymous counters must never acquire telemetry IP hashes or trace IDs.
+	if ( '/nexus/v1/solar-events' === rtrim( $route, '/' ) ) {
+		return $response;
+	}
 
 	// Only track nexus/v1 routes.
 	if ( strpos( $route, '/nexus/v1/' ) !== 0 ) {

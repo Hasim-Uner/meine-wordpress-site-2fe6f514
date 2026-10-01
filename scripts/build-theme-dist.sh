@@ -24,6 +24,10 @@ python3 "$root_dir/scripts/audit-css-architecture.py"
 # typeface values. The counts are shrink-only (scripts/baselines/css-values.tsv).
 python3 "$root_dir/scripts/audit-css-values.py"
 
+# Keep the unique coverage from the former standalone CSS workflow in every
+# build, including manual deployments and rollbacks.
+python3 "$root_dir/scripts/audit-legacy-nx-css.py"
+
 # Fail before packaging if a forbidden fact literal is anywhere in the repo.
 # Der Guard sitzt hier und nicht nur in der CI, weil deploy.yml per
 # workflow_dispatch ohne den CI-Job laufen kann — beide Wege gehen aber durch

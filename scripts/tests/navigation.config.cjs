@@ -8,12 +8,16 @@ module.exports = defineConfig({
   testDir: __dirname,
   testMatch: 'navigation.spec.cjs',
   outputDir: '../../.build/navigation-test-results',
+  // Each test owns its page and mocked routes; CI can shard individual tests.
+  fullyParallel: true,
   workers: 1,
   timeout: 15000,
   expect: { timeout: 2000 },
   reporter: 'list',
   use: {
     headless: true,
+    trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
     launchOptions: executablePath ? { executablePath } : {},
   },
 });

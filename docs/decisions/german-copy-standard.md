@@ -29,5 +29,5 @@ Examples:
 
 ## Guardrail
 
-The workflow `.github/workflows/copy-style.yml` checks newly added visible copy for common ASCII transliterations.
+The shared check runner `scripts/check.py` invokes `scripts/check-german-copy.sh` locally and in the central CI gate to check newly added visible copy for common ASCII transliterations.
 It is intentionally scoped to changed lines so legacy content does not block deployment all at once.

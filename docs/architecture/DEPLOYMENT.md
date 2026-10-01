@@ -1,37 +1,63 @@
 # Deployment
 
-Stand: 2026-09-26.
+Stand: 2026-10-01.
 
 Diese Doku beschreibt nur den repo-seitigen CI/CD-Vertrag fuer das WordPress-Child-Theme. Hostseitige Details auf Raidboxes oder anderen Hosts muessen ausserhalb des Repos bestaetigt werden.
 
 ## Workflows
 
 - `.github/workflows/ci.yml`
-  - läuft einmal je Pull Request und erneut für den zusammengeführten Stand auf `main`; Branch-Pushes starten keine zweite Haupt-CI
+  - prüft den Integrationsstand eines Pull Requests; ein manueller Lauf erzwingt die vollständige Suite, Pushes starten keine zweite Haupt-CI
   - nutzt `scripts/check.py` für dieselbe Prüfauswahl wie lokal `npm run check`; `-- --plan` zeigt die Auswahl vorab
   - hat keine Pfadfilter am Workflow: unbekannte Dateien und fehlende Vergleichshistorie führen zur vollständigen Prüfung
   - prüft Architektur, PHP-Syntax, Skill-Verträge, Prüfauswahl sowie Canon-, E3- und Textregeln immer
   - ergänzt bei Agenten-/Skill-Änderungen alle Skill-Suiten; Dokumentation, Entwürfe und Forschungsdaten benötigen keinen Browser, PHPStan oder Theme-Build
   - führt bei Theme-, Tooling-, Workflow- und unbekannten Änderungen alle Runtime-Prüfungen einschließlich Formulare, Navigation, Seitenanlage, Preisleiter, PHPStan und Theme-Build aus
-  - richtet PHP und Composer aus `.toolchain.json` ausdrücklich ein; Node aus demselben Manifest, Browser und Composer-Abhängigkeiten werden nur für die vollständige Prüfung installiert; zusätzlich prüft actionlint die Workflows
-  - behält den stabilen Job `validate`; jede fehlgeschlagene ausgewählte Prüfung blockiert den automatischen Deploy
+  - richtet PHP und Composer aus `.toolchain.json` ausdrücklich ein; Node und Composer-Abhängigkeiten werden nur für die Runtime-Prüfung benötigt; zusätzlich prüft actionlint die Workflows
+  - trennt Core, PHPStan und vier Browser-Shards; jeder Browser-Shard führt seinen Anteil der Formular- und Navigationstests mit einem Worker aus
+  - nutzt vorinstalliertes Chrome/Chromium aus dem GitHub-Runner-Image; dessen genaue Version ist nicht gepinnt und wird im Log ausgegeben
+  - behält den eindeutigen stabilen Pflichtcheck `validate`; er besteht nur, wenn Core, alle Browser-Shards und Analysis erfolgreich sind, auch übersprungene oder abgebrochene Partitionen zählen als Fehler
+  - bündelt die German-Copy-Prüfung in `scripts/check.py` und alle drei CSS-Prüfungen im Theme-Build; separate Copy-/CSS-Workflows entfallen ohne Verlust ihrer Abdeckung
+  - speichert vollständige Core-Prüflogs unter `.build/check-logs`; bei Fehlern werden diese sowie Browser-Traces und Screenshots als Artefakte mit sieben Tagen Aufbewahrung hochgeladen
 - `.github/workflows/deploy.yml`
-  - wird automatisch nur nach erfolgreicher CI auf `main` und bei einer als Runtime/Tooling eingestuften Änderung aufgerufen; reine Dokumentations- oder Skill-Änderungen lösen keinen Deploy aus
+  - startet bei einem Push auf `main`, akzeptiert automatisch nur Revisionen aus einem gemergten PR nach `main` und deployt nur Runtime-/Tooling-Änderungen; reine Dokumentations- oder Skill-Änderungen lösen weder Deploy noch PHPStan-Cache-Refresh aus
+  - wiederholt die vollständige PR-Suite nicht; PHP-Syntax und Build-Schutz bleiben Teil jedes Deploys
+  - aktualisiert nach Runtime-Merges den PHPStan-Result-Cache auf dem Default-Branch parallel zum Deploy; dieser reine Beschleunigungsjob ist kein Release-Gate
   - kann weiterhin separat manuell per `workflow_dispatch` gestartet werden; ein manueller Lauf der **CI** erzwingt alle Prüfungen, startet aber keinen Deploy
   - baut das Theme erneut in ein Dist-Verzeichnis und überträgt nur das gebaute Child-Theme sowie die bestehende statische `llms.txt`
   - prüft SSH-Port und Deploy-Pfad vorab, testet die SSH-Verbindung und stellt sicher, dass der Zielpfad existiert oder angelegt werden kann
   - unterstützt beim manuellen Start einen `dry_run`, um `rsync` ohne Schreibzugriff zu prüfen
   - prüft automatische Releases innerhalb der bestehenden Produktionssperre gegen den aktuellen `main`: neuere Runtime-Änderungen überspringen einen veralteten Release; reine Dokumentations- und Skill-Nachfolger verhindern den ausstehenden Deploy nicht
 
-Main-Läufe brechen sich nicht gegenseitig ab. Nur überholte PR-Läufe werden
-abgebrochen. Dadurch kann ein schneller Dokumentations-Push keine noch laufende
-Runtime-Prüfung verdrängen. Manuelle Deploys und Rollbacks behalten ihre explizit
-gewählte Revision.
+Deploy-Läufe werden durch `production-deploy` serialisiert und laufende Deploys
+nicht abgebrochen. Nur überholte PR-Prüfläufe werden abgebrochen. Der
+Revisions-Guard lässt Dokumentationsnachfolger zu, verwirft aber veraltete
+Runtime-Releases. Manuelle Deploys und Rollbacks behalten ihre explizit gewählte
+Revision.
+
+### GitHub-Merge-Regel
+
+Das Ruleset für `main` muss PRs und den Pflichtcheck `validate` von GitHub
+Actions verlangen, ohne Bypass. Zusätzlich gehört **Require branches to be up
+to date before merging** zum Single-Gate-Vertrag: Nach anderen Main-Merges muss
+der neue Integrationsstand erneut geprüft werden. Die Herkunft aus einem
+gemergten PR allein belegt diese Aktualität nicht.
+
+Diese Einstellung liegt außerhalb der Workflow-Dateien: `Settings → Rules →
+Rulesets → Protect main → Require status checks to pass → Require branches to
+be up to date before merging`. Ihr Live-Zustand muss separat geprüft werden;
+ein Code-PR schaltet die Option nicht automatisch ein. Der Checkname bleibt
+`validate`, damit keine Migration der bestehenden Pflichtcheck-Zuordnung nötig
+ist.
 
 Die Auswahlregeln stehen in `scripts/check.py`, ihre Regressionen in
-`scripts/tests/test_check.py`. Umbenennungen berücksichtigen alten und neuen Pfad;
+`scripts/tests/test_check.py`. Negative Gegenproben in
+`scripts/tests/test_check_ci_contract.py` entfernen einzelne CI-, Cache-,
+Deploy- und CSS-Anforderungen und verlangen jeweils ein fehlgeschlagenes Gate.
+Umbenennungen berücksichtigen alten und neuen Pfad;
 lokale Prüfungen beziehen auch noch nicht versionierte Dateien ein. Vollständige
-Logs liegen im ausgegebenen temporären Verzeichnis, erfolgreiche Prüfungen
+Logs liegen lokal im ausgegebenen temporären Verzeichnis, in CI im konfigurierten
+Artefaktverzeichnis. Erfolgreiche Prüfungen
 erscheinen kompakt. Tatsächliche Tokenersparnisse sind damit nicht gemessen.
 
 Die lokale Einrichtung und der Doctor sind in

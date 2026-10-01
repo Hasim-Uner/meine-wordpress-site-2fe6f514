@@ -3,6 +3,55 @@ const path = require('node:path');
 const { execFileSync } = require('node:child_process');
 const js = name => path.resolve(__dirname, '../../blocksy-child/assets/js', name);
 
+test('Solar counters send only daily aggregates, without cookies or form values', async ({ page, context }) => {
+  const records = [];
+  await context.addCookies([{ name: 'existing', value: 'fixture', domain: 'example.test', path: '/' }]);
+  await page.route('**/*', route => route.fulfill({ contentType: 'text/html', body: '<html></html>' }));
+  await page.goto('https://example.test/solar-waermepumpen-leadgenerierung/?email=private@example.test');
+  await page.setContent(`<div class="strecke-doc">
+    <a href="#marktcheck" data-track-action="cta_strecke_header_to_marktcheck">Marktcheck</a>
+    <a href="#analyse" data-track-action="cta_strecke_leiter_to_analyse">Analyse</a>
+    <form data-order-form="analyse"><input name="company" required><input name="email" required>
+      <button>Absenden</button></form><div id="sol-quiz-mount"></div></div>`);
+  await page.route('**/wp-json/nexus/v1/solar-events', async route => {
+    const request = route.request();
+    expect(request.headers().cookie).toBeUndefined();
+    expect(request.headers().referer).toBeUndefined();
+    records.push(request.postDataJSON());
+    await route.fulfill({ status: 202, contentType: 'application/json', body: '{"ok":true}' });
+  });
+  await page.evaluate(() => {
+    window.NexusSolarEventsConfig = { endpoint: '/wp-json/nexus/v1/solar-events', page: '/solar-waermepumpen-leadgenerierung/' };
+  });
+  await page.addScriptTag({ path: js('solar-events.js') });
+  await page.locator('a[href="#marktcheck"]').focus();
+  expect(records).toHaveLength(0); // Focusing a CTA has not opened the form.
+  await page.locator('a[href="#marktcheck"]').click();
+  await page.locator('a[href="#marktcheck"]').click();
+  await page.locator('a[href="#analyse"]').click();
+  await page.locator('button').click(); // Multiple invalid controls: one failed attempt.
+  await page.locator('[name="email"]').fill('private@example.test');
+  await page.evaluate(() => {
+    for (let i = 0; i < 2; i++) {
+      window.dispatchEvent(new CustomEvent('nexus:solar-form', { detail: { event: 'form_step_two', door: 'marktcheck', email: 'private@example.test' } }));
+    }
+    window.dispatchEvent(new CustomEvent('nexus:solar-form', { detail: { event: 'form_submitted', door: 'analyse' } }));
+  });
+  await expect.poll(() => records.filter(r => r.event === 'form_submitted').length).toBe(1);
+  expect(records.filter(r => r.event === 'form_opened' && r.door === 'marktcheck')).toHaveLength(1);
+  expect(records.filter(r => r.event === 'form_opened' && r.door === 'analyse')).toHaveLength(1);
+  expect(records.filter(r => r.event === 'form_step_two')).toHaveLength(1);
+  expect(records.filter(r => r.event === 'form_validation_error')).toHaveLength(1);
+  for (const record of records) {
+    expect(Object.keys(record).sort()).toEqual(['day', 'door', 'event', 'page']);
+    expect(record.day).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(record.page).toBe('/solar-waermepumpen-leadgenerierung/');
+    expect(JSON.stringify(record)).not.toContain('private');
+  }
+  expect(await page.evaluate(() => [localStorage.length, sessionStorage.length])).toEqual([0, 0]);
+  expect(await context.cookies()).toHaveLength(1);
+});
+
 // Actual contact PHP template; small native fixtures for the adjacent forms.
 const contactHtml = kind => execFileSync('php', [path.join(__dirname, 'render-contact.php'), kind], { encoding: 'utf8' });
 

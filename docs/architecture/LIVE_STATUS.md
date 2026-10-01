@@ -302,6 +302,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   in Balken mit gemeinsamem Maßstab. Der Messschrieb zeigt ausschließlich
   dokumentierte CPL-Bandbreiten nach Projektphase, ohne Monatsmesskurve;
   Hover und Tastaturfokus auf den Fallphasen heben die passenden Stufen hervor.
+  Eine 56-px-Kopfleiste im Dokumentfluss verlinkt Startseite und Marktcheck;
+  der globale Header bleibt auf dieser Route serverseitig unterdrückt. Der
+  Marktcheck hat eine harte Papier-/Tafel-Kante ohne Verlauf. `solar-events.js`
+  zählt CTA-Klicks und Formularereignisse der drei Türen über anonyme UTC-
+  Tageszähler (`nexus/v1/solar-events`); Details in `PRIVACY.md`.
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
   `hu_get_solar_seo_subpage_paths()`): `/solar-leads-kaufen-alternative/`,
   `/waermepumpen-leads/`, `/b2b-solar-leads/`,
@@ -574,7 +579,11 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
 - Seitencache: Der Server-Cache (`x-cacheable: YES`) wird beim Deploy nicht
   geleert und lieferte `/whitelabel-retainer/` am 2026-09-25 rund 18 Stunden
   nach dem Deploy noch im alten Stand aus. Nach jedem Deploy mit sichtbarer
-  Änderung im Hosting leeren.
+  Änderung invalidieren. Am 2026-10-01 nach PR 3/4 verifiziert: erneutes
+  Speichern der Solar-Seite (15048) mit unverändertem Titel invalidiert ihren
+  Varnish-Eintrag; danach normale URL mit `age: 0` / `MISS` und neuen Modulen.
+  Ein zusätzlicher Query-Parameter umgeht den Cache, leert die normale URL
+  aber nicht.
 - Mediathek: `Featured_CaseStudy_E3_1200x627.webp` (Anhang 14765) ist noch
   Beitragsbild der Fallstudie (Seite 12092) und öffentlich abrufbar; der
   Seitentitel im Editor lautet „Case Studies- e3-new-energy“. Das Theme
