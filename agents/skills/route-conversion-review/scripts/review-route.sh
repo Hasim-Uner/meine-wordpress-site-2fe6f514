@@ -52,8 +52,8 @@ case "${SLUG}" in
     CARRIER_SLUG="wordpress-agentur"
     ;;
   case-study-solar-leadgenerierung)
-    CARRIER_NOTE="Die kanonische Case Study wird von page-e3-new-energy.php getragen. Geprueft wird der effektive Template-Traeger."
-    CARRIER_SLUG="e3-new-energy"
+    CARRIER_NOTE="Die kanonische Case Study wird von page-case-study-solar.php getragen. Geprueft wird der effektive Template-Traeger."
+    CARRIER_SLUG="case-study-solar"
     ;;
   ergebnisse)
     CARRIER_SLUG="ergebnisse"

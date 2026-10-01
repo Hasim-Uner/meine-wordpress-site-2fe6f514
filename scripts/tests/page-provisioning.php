@@ -48,7 +48,7 @@ function update_post_meta( $id, $key, $value ) { log_call( "template:$value" ); 
 $source = file_get_contents( __DIR__ . '/../../blocksy-child/inc/helpers.php' );
 foreach ( [ 'nexus_get_page_id', 'nexus_get_deploy_marker_sha', 'nexus_get_route_pages_stamp', 'nexus_get_route_pages_lock_name',
 	'nexus_acquire_route_pages_lock', 'nexus_release_route_pages_lock', 'nexus_route_pages_ensure_due',
-	'nexus_mark_route_pages_ensured', 'nexus_get_provisioned_pages', 'nexus_ensure_provisioned_page', 'nexus_maybe_ensure_provisioned_pages' ] as $name ) {
+	'nexus_mark_route_pages_ensured', 'nexus_get_provisioned_pages', 'nexus_ensure_provisioned_page', 'nexus_maybe_ensure_provisioned_pages', 'nexus_maybe_ensure_case_study_page' ] as $name ) {
 	if ( ! preg_match( '/^function ' . $name . '\(.*?^}$/ms', $source, $match ) ) {
 		throw new RuntimeException( "missing $name() in helpers.php" );
 	}
@@ -58,6 +58,7 @@ foreach ( [ 'nexus_get_page_id', 'nexus_get_deploy_marker_sha', 'nexus_get_route
 
 function request() {
 	nexus_maybe_ensure_provisioned_pages();
+	nexus_maybe_ensure_case_study_page();
 	nexus_mark_route_pages_ensured();
 	return $GLOBALS['site']['log'];
 }
@@ -83,6 +84,11 @@ reset_site( [ 9 => 'waermepumpen-leads' ] );
 $GLOBALS['site']['meta'][9]['_wp_page_template'] = 'page-waermepumpen-leads.php';
 $log = request();
 check( ! in_array( 'insert:waermepumpen-leads', $log, true ) && count_prefix( $log, 'template:' ) === $pages - 1, 'existing page with correct template left untouched' );
+
+reset_site( [ 12 => 'case-study-solar-leadgenerierung' ] );
+$GLOBALS['site']['meta'][12]['_wp_page_template'] = 'page-e3-new-energy.php';
+request();
+check( 'page-case-study-solar.php' === get_post_meta( 12, '_wp_page_template' ), 'case study template migrated on deploy' );
 
 reset_site();
 $GLOBALS['site']['cron'] = true;

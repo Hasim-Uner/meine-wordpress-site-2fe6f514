@@ -187,6 +187,7 @@
 .strecke-doc .reihe > .marg { grid-column: 3; }
 .strecke-doc .reihe > .voll { grid-column: 2 / -1; }
 .strecke-doc .reihe > .ganz { grid-column: 1 / -1; }
+.strecke-doc .reihe > :is(.spalte-links, .haupt, .marg, .voll, .ganz, .breit) { min-width: 0; }
 
 /* Kopfbereich: Randspalte und Satzspiegel zusammen, Marginalie frei.
    Ersetzt die Inline-Styles der Vorlage. */
@@ -582,7 +583,11 @@
     font-size: var(--mono-s);
   }
 
-  .strecke-doc .register .marke-kuerzel { display: block; }
+  .strecke-doc .register .marke-kuerzel {
+    display: block;
+    padding-inline: 0.2rem;
+    letter-spacing: 0.08em;
+  }
   .strecke-doc .register .marke-voll { display: none; }
 
   .strecke-doc .register:hover .marke-kuerzel,
@@ -813,16 +818,19 @@
 .strecke-doc .werte tr:last-child { border-bottom: 0; }
 
 .strecke-doc .werte th {
+  min-width: 0;
   text-align: left;
   font-weight: 400;
   font-size: 0.95rem;
   padding: 0.75rem 0;
   color: var(--grau);
+  overflow-wrap: anywhere;
 }
 
 .strecke-doc .werte td {
+  min-width: 0;
   text-align: right;
-  padding: 0.75rem 0;
+  padding: 0.75rem 0.6rem 0.75rem 0;
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
   font-size: 1.02rem;
@@ -1936,6 +1944,9 @@
 }
 
 .strecke-doc .abschluss .tafel { padding: clamp(1.8rem, 4.5vw, 3.2rem); }
+.strecke-doc .abschluss .tafel.reihe {
+  grid-template-columns: var(--rand) minmax(0, 2fr) minmax(0, 1fr);
+}
 
 .strecke-doc .abschluss h2 {
   font-size: clamp(1.9rem, 1.3rem + 2.6vw, 3.4rem);
@@ -1952,9 +1963,9 @@
 .strecke-doc .protokoll { margin-top: 0.55rem; }
 
 .strecke-doc .protokoll .z {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.7rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.2rem;
   padding-block: 0.55rem;
   border-bottom: 1px solid var(--haar);
   font-family: var(--mono);
@@ -1966,13 +1977,13 @@
   color: var(--matt);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .strecke-doc .protokoll .z b {
   font-weight: 400;
-  text-align: right;
-  white-space: nowrap;
+  text-align: left;
+  overflow-wrap: anywhere;
 }
 
 /* Auf der Tafel sitzt die Marginalie im dunklen Feld und braucht deshalb
@@ -1983,6 +1994,7 @@
 
 @media (max-width: 1080px) {
   .strecke-doc .reihe { grid-template-columns: minmax(0, 1fr); }
+  .strecke-doc .abschluss .tafel.reihe { grid-template-columns: minmax(0, 1fr); }
 
   .strecke-doc .reihe > .spalte-links,
   .strecke-doc .reihe > .haupt,

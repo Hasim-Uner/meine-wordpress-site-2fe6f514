@@ -1586,7 +1586,11 @@ function nexus_maybe_ensure_case_study_page() {
 		return;
 	}
 
-	if ( nexus_get_page_id( [ 'case-study-solar-leadgenerierung' ] ) ) {
+	$case_page_id = nexus_get_page_id( [ 'case-study-solar-leadgenerierung' ] );
+	if ( $case_page_id ) {
+		if ( 'page-e3-new-energy.php' === get_post_meta( (int) $case_page_id, '_wp_page_template', true ) ) {
+			update_post_meta( (int) $case_page_id, '_wp_page_template', 'page-case-study-solar.php' );
+		}
 		return;
 	}
 
@@ -1618,7 +1622,7 @@ function nexus_maybe_ensure_case_study_page() {
 		return;
 	}
 
-	update_post_meta( (int) $page_id, '_wp_page_template', 'page-e3-new-energy.php' );
+	update_post_meta( (int) $page_id, '_wp_page_template', 'page-case-study-solar.php' );
 }
 add_action( 'init', 'nexus_maybe_ensure_case_study_page', 27 );
 
@@ -1937,7 +1941,7 @@ function nexus_should_hide_footer_primary_cta() {
 		'page-wordpress-agentur-hannover.php',
 		'page-ergebnisse.php',
 		'page-case-studies-e-commerce.php',
-		'page-e3-new-energy.php',
+		'page-case-study-solar.php',
 		'page-wgos.php',
 		'page-wgos-assets.php',
 		'page-solar-waermepumpen-leadgenerierung.php',

@@ -163,7 +163,7 @@
       contactInput('company','Unternehmen','text','Mustermann Solar GmbH',true,'Für die Einordnung des Betriebs') +
       contactInput('name','Ansprechpartner','text','Max Mustermann',false,'Wer den Befund erhält') +
       '<div class="mc2-field" data-field="position"><label for="mc2-position">Position</label><p class="mc2-help">Rolle im Unternehmen</p><select id="mc2-position" name="position"><option value="">Bitte wählen</option><option>Geschäftsführung / Inhaber</option><option>Vertriebsleitung</option><option>Marketing / Web-Verantwortung</option><option>Andere</option></select><p class="mc2-error" hidden></p></div>' +
-      contactInput('email','Geschäftliche E-Mail','email','max@solar-betrieb.de',false,'Firmen-Domain, keine Freemail-Adresse') +
+      contactInput('email','E-Mail','email','max@solar-betrieb.de',false,'Für den Befund') +
       contactInput('postal_code','Firmen-PLZ','text','30159',false,'Für die regionale Wettbewerbsprüfung') +
       '</div><div class="mc2-consent" data-field="consent_privacy"><label><input type="checkbox" name="consent_privacy"> <span>Ich akzeptiere die <a href="' + esc(CFG.privacyUrl || '/datenschutz/') + '" target="_blank" rel="noopener">Datenschutzhinweise</a> und möchte zu meiner Anfrage kontaktiert werden.</span></label><p class="mc2-error" hidden></p></div>' +
       '<div class="mc2-submit-error" hidden></div>' +
@@ -190,13 +190,6 @@
     track('system_intake_step_view', {step:2, variant:'compact_2_step'});
   }
 
-  function isFreemail(value) {
-    var at = String(value || '').lastIndexOf('@');
-    if (at < 0) return false;
-    var domain = String(value || '').slice(at + 1).trim().toLowerCase();
-    return /^(?:gmail|gmx|web|t-online|outlook|hotmail|yahoo|icloud|aol|live|mail|googlemail)\.(?:com|de|net|at|ch)$/i.test(domain);
-  }
-
   function validateContact() {
     var errors = {};
     if (!answers.company || answers.company.trim().length < 2) errors.company = 'Bitte Unternehmen angeben.';
@@ -204,8 +197,6 @@
     if (!answers.position) errors.position = 'Bitte Position auswählen.';
     if (!answers.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email)) {
       errors.email = 'Bitte gültige E-Mail angeben.';
-    } else if (isFreemail(answers.email)) {
-      errors.email = 'Bitte Ihre geschäftliche E-Mail-Adresse mit Firmen-Domain verwenden.';
     }
     if (!answers.postal_code || !/^[0-9]{4,5}$/.test(answers.postal_code.trim())) errors.postal_code = 'Bitte Firmen-PLZ angeben.';
     if (!answers.consent_privacy) errors.consent_privacy = 'Bitte Datenschutzhinweis bestätigen.';

@@ -18,7 +18,6 @@ define( 'HU_E3_CPL_BEFORE', 150 );
 define( 'HU_E3_CPL_AFTER', 22 );
 define( 'HU_E3_CPL_REDUCTION_PERCENT', 85 );
 define( 'HU_E3_LEAD_COUNT', 1750 );
-define( 'HU_E3_LEAD_CONVERSION_PERCENT', 12 );
 define( 'HU_E3_SALES_CONVERSION_PERCENT', 15 );
 define( 'HU_E3_SALES_CONVERSION_BEFORE_LOW', 1 );
 define( 'HU_E3_SALES_CONVERSION_BEFORE_HIGH', 5 );
@@ -38,7 +37,7 @@ define( 'HU_E3_CALC_CPL_CONSERVATIVE', 45 );
 define( 'HU_E3_CALC_SALES_CONVERSION_CONSERVATIVE', 12 );
 
 // Zwischenwerte der Strecke. Standen bis 2026-08 als Literale in
-// page-e3-new-energy.php und waren damit weder prüfbar noch mitpflegbar.
+// page-case-study-solar.php und waren damit weder prüfbar noch mitpflegbar.
 define( 'HU_E3_CPL_RAMP_LOW', 70 );
 define( 'HU_E3_CPL_RAMP_HIGH', 100 );
 define( 'HU_E3_PORTAL_CONVERSION_AVG', 3 );
@@ -108,12 +107,6 @@ function hu_e3_canon() {
 				'display'        => '1.750',
 				'counter_target' => '1750',
 				'label'          => 'Anfragen insgesamt',
-			],
-			'lead_conversion'  => [
-				'value'          => HU_E3_LEAD_CONVERSION_PERCENT,
-				'display'        => '12 %',
-				'counter_target' => '12',
-				'label'          => 'Besucher-zu-Lead-Conversion',
 			],
 			'sales_conversion' => [
 				'value'          => HU_E3_SALES_CONVERSION_PERCENT,
@@ -214,10 +207,10 @@ function hu_e3_canon() {
 		],
 		// Betreiberklärung vom 28.09.2026: Mengen und Quoten haben eigene Bezugsgrößen.
 		'summary'    => [
-			'definitions' => 'In sechs Monaten wurden insgesamt 1.750 Leads gewonnen, hauptsächlich über Meta Ads, organische Google-Suche und Google Ads. Rund 12 % der Websitebesucher wurden zu Leads. Etwa 95 % der Leads wurden in Bitrix24 mit Produktinteresse und Herkunft erfasst. Die Formulare qualifizierten nach Solar, Wärmepumpe oder Kombination vor. Unter diesen vorqualifizierten CRM-Leads lag die Abschlussquote bei rund 15 %.',
-			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750 Anfragen insgesamt, 12 % Besucher-zu-Lead-Conversion und 15 % Abschlussquote der vorqualifizierten CRM-Leads, 6 Monate.',
-			'proof'      => 'Referenz mittelständischer PV-Installationsbetrieb: 1.750 Anfragen insgesamt, 12 % Besucher-zu-Lead-Conversion, 15 % Abschlussquote der vorqualifizierten CRM-Leads und über 85 % weniger Kosten pro Anfrage.',
-			'conversion' => 'Im selben Projekt lag die Besucher-zu-Lead-Conversion bei 12 % und die Abschlussquote der vorqualifizierten CRM-Leads bei 15 %; an der Abschlussquote hatte der Vertrieb einen wesentlichen Anteil.',
+			'definitions' => 'In sechs Monaten wurden insgesamt 1.750 Leads gewonnen, hauptsächlich über Meta Ads, organische Google-Suche und Google Ads. Etwa 95 % der Leads wurden in Bitrix24 mit Produktinteresse und Herkunft erfasst. Die Formulare qualifizierten nach Solar, Wärmepumpe oder Kombination vor. Unter diesen vorqualifizierten CRM-Leads lag die Abschlussquote bei rund 15 %.',
+			'compact'    => '150 € auf 22 € Kosten pro Anfrage, 1.750 Anfragen insgesamt und 15 % Abschlussquote der vorqualifizierten CRM-Leads, 6 Monate.',
+			'proof'      => 'Referenz mittelständischer PV-Installationsbetrieb: 1.750 Anfragen insgesamt, 15 % Abschlussquote der vorqualifizierten CRM-Leads und über 85 % weniger Kosten pro Anfrage.',
+			'conversion' => 'Im selben Projekt lag die Abschlussquote der vorqualifizierten CRM-Leads bei 15 %; daran hatte der Vertrieb einen wesentlichen Anteil.',
 		],
 	];
 }

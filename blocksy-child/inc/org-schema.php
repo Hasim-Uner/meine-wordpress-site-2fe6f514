@@ -767,6 +767,11 @@ function hu_build_generic_webpage_schema( $post_id, $slug ) {
         $route_schema['dateModified'] = hu_get_decision_cockpit_modified_time( $post_id, $slug );
     }
 
+    if ( function_exists( 'hu_is_e3_methodology_case_post' ) && hu_is_e3_methodology_case_post( $post_id ) ) {
+        $title = hu_get_e3_methodology_case_schema_name();
+        $description = hu_get_e3_methodology_case_description();
+    }
+
     $type = 'WebPage';
     if ( in_array( $slug, [ 'kontakt', 'anfrage' ], true ) ) {
         $type = 'ContactPage';
@@ -2106,7 +2111,9 @@ function hu_output_schema()
             $breadcrumb_items[] = [
                 '@type'    => 'ListItem',
                 'position' => $bc_position++,
-                'name'     => get_the_title(),
+                'name'     => function_exists( 'hu_is_e3_methodology_case_post' ) && hu_is_e3_methodology_case_post( $page_id )
+                    ? hu_get_e3_methodology_case_schema_name()
+                    : get_the_title(),
             ];
 
         } elseif ( is_category() ) {

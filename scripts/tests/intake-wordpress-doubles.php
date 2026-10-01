@@ -95,7 +95,7 @@ function get_posts( $args ) {
 function nexus_record_crm_activity( $args ) { $GLOBALS['intake_test']['activities'][] = $args; return count( $GLOBALS['intake_test']['activities'] ); }
 function wp_mail( $to, $subject, $body, $headers = [] ) {
 	// Never call PHP mail(), SMTP or provider transport. Fail closed on non-fixture recipients.
-	if ( ! preg_match( '/@example\.test$/', $to ) ) throw new RuntimeException( 'Non-fixture mail recipient' );
+	if ( ! preg_match( '/@example\.test$/', $to ) && 'fixture@gmx.de' !== $to ) throw new RuntimeException( 'Non-fixture mail recipient' );
 	$internal = 'internal@example.test' === $to;
 	$GLOBALS['intake_test']['events'][] = $internal ? 'mail:internal' : 'mail:confirmation';
 	$GLOBALS['intake_test']['mails'][] = compact( 'to', 'subject', 'body', 'headers' );

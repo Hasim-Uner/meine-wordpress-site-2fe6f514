@@ -29,7 +29,7 @@ if [[ "$CASE_STATUS" -ne 0 ]]; then
 	printf 'Route review exited with status %s:\n%s\n' "$CASE_STATUS" "$CASE_OUT" >&2
 	FAIL=$((FAIL + 1))
 fi
-check "Case Study uses effective carrier" "$CASE_OUT" "Template: blocksy-child/page-e3-new-energy.php"
+check "Case Study uses effective carrier" "$CASE_OUT" "Template: blocksy-child/page-case-study-solar.php"
 check "Case Study H1 is inspected"         "$CASE_OUT" "[OK  ] H1"
 check "Case Study CTAs are inspected"       "$CASE_OUT" "[OK  ] CTA-Tracking"
 check "Case Study proof canon is inspected" "$CASE_OUT" "[OK  ] Proof-Canon"

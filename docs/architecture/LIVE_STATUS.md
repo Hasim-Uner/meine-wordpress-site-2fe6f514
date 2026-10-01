@@ -262,6 +262,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   nach, das die sichtbare Strecke rendert (vier Fit-Fragen plus Kontaktdaten in
   `HU_MARKETCHECK_VISIBLE_STEPS` Schritten) und an `audit-request` sendet. Ohne
   JavaScript verweist der Mount auf das Formular unter `/kontakt/`.
+  Die Angebotsleiter ist nach Marktcheck, Analyse, Sofortkontakt-Setup und
+  Aufbau in aufsteigender Preisfolge sortiert. Der Marktcheck akzeptiert
+  Freemail-Adressen und markiert sie im CRM als solche.
 - **Energie-Cluster** (`.hu-intercept`, Pfade in
   `hu_get_solar_seo_subpage_paths()`): `/solar-leads-kaufen-alternative/`,
   `/waermepumpen-leads/`, `/b2b-solar-leads/`,
@@ -535,9 +538,9 @@ Abschnitt anzuhängen; der Verlauf gehört in Commit-Nachrichten.
   Änderung im Hosting leeren.
 - Mediathek: `Featured_CaseStudy_E3_1200x627.webp` (Anhang 14765) ist noch
   Beitragsbild der Fallstudie (Seite 12092) und öffentlich abrufbar; der
-  Seitentitel im Editor lautet „Case Studies- e3-new-energy“ und steht im
-  WebPage-Schema und in der REST-API. Über Löschen bzw. Umbenennen entscheidet
-  Hasim.
+  Seitentitel im Editor lautet „Case Studies- e3-new-energy“. Das Theme
+  überschreibt den WebPage- und BreadcrumbList-Schema-Namen. Der Editor-Titel
+  bleibt in der REST-API sichtbar. Über Löschen bzw. Umbenennen entscheidet Hasim.
 - Partnerlinks aus `inc/affiliate-links.php` tragen `rel="sponsored"`, aber
   keinen sichtbaren Werbehinweis; zu prüfen.
 - Browser- und Lighthouse-Abnahmen der jüngsten Seitenumbauten stehen aus,

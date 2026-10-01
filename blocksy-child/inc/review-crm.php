@@ -515,7 +515,7 @@ function nexus_get_energy_intake_flow_definition() {
 					'type'         => 'email',
 					'autocomplete' => 'email',
 					'inputmode'    => 'email',
-					'help'         => 'Bitte Firmen-Domain angeben. Bei Freemail-Adressen (gmail, gmx, web.de) verzögert sich die Antwort.',
+					'help'         => 'Für den Befund',
 					'required'     => true,
 				],
 				[
@@ -826,8 +826,8 @@ function nexus_get_review_request_domain_from_email( $email ) {
 
 /**
  * Check whether an address uses a consumer mailbox provider that cannot
- * identify the submitting business. Keep this in sync with the public
- * marketcheck's business-email validation.
+ * identify the submitting business. This is an intake attribute, not a
+ * validation rule.
  *
  * @param string $email Email address.
  * @return bool
@@ -1376,7 +1376,6 @@ function nexus_get_review_request_error_field( $code ) {
 		'missing_name'                => 'name',
 		'missing_company'             => 'company',
 		'invalid_email'               => 'email',
-		'invalid_business_email'      => 'email',
 		'missing_consent_privacy'     => 'consent_privacy',
 		'invalid_linkedin'            => 'linkedin',
 		'invalid_linkedin_scheme'     => 'linkedin',
@@ -1820,14 +1819,7 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 	}
 
 	if ( empty( $email ) || ! is_email( $email ) ) {
-		return new WP_Error( 'invalid_email', 'Bitte eine gültige geschäftliche E-Mail-Adresse angeben.' );
-	}
-
-	if ( $is_b2b_system_intake && nexus_is_review_request_freemail_address( $email ) ) {
-		return new WP_Error(
-			'invalid_business_email',
-			'Bitte nutzen Sie Ihre geschäftliche E-Mail-Adresse mit Firmen-Domain.'
-		);
+		return new WP_Error( 'invalid_email', 'Bitte eine gültige E-Mail-Adresse angeben.' );
 	}
 
 	if ( 'accepted' !== $consent_privacy ) {
@@ -1844,12 +1836,13 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 	$entry_page_url        = nexus_sanitize_review_request_internal_url( $payload['entry_page_url'] ?? '' );
 	$previous_internal_url = nexus_sanitize_review_request_internal_url( $payload['previous_internal_url'] ?? '' );
 	$referrer_url          = nexus_sanitize_review_request_referrer_url( $payload['referrer_url'] ?? '' );
-	$email_domain = nexus_get_review_request_domain_from_email( $email );
+	$email_domain      = nexus_get_review_request_domain_from_email( $email );
+	$email_is_freemail = nexus_is_review_request_freemail_address( $email );
 
 	if ( $is_b2b_system_intake ) {
-		$resolved_domain = $email_domain
+		$resolved_domain = $email_domain && ! $email_is_freemail
 			? $email_domain
-			: (string) wp_parse_url( $page_url, PHP_URL_HOST );
+			: '';
 	} else {
 		$resolved_domain = $page_url
 			? (string) wp_parse_url( $page_url, PHP_URL_HOST )
@@ -1881,6 +1874,7 @@ function nexus_validate_energy_review_request_payload( $payload ) {
 		'name'                        => $name,
 		'position'                    => $position,
 		'email'                       => $email,
+		'email_freemail'              => $email_is_freemail,
 		'phone'                       => $phone,
 		'linkedin'                    => '',
 		'consent_privacy'             => $consent_privacy,
@@ -1976,6 +1970,7 @@ function nexus_create_review_request_post( $payload ) {
 	update_post_meta( $post_id, '_nexus_review_extra_context', $payload['extra_context'] );
 	update_post_meta( $post_id, '_nexus_review_name', $payload['name'] );
 	update_post_meta( $post_id, '_nexus_review_email', $payload['email'] );
+	update_post_meta( $post_id, '_nexus_review_email_freemail', ! empty( $payload['email_freemail'] ) ? 1 : 0 );
 	update_post_meta( $post_id, '_nexus_review_company', $payload['company'] );
 	update_post_meta( $post_id, '_nexus_review_position', sanitize_text_field( (string) ( $payload['position'] ?? '' ) ) );
 	update_post_meta( $post_id, '_nexus_review_phone', sanitize_text_field( (string) ( $payload['phone'] ?? '' ) ) );
@@ -2303,9 +2298,13 @@ function nexus_get_review_request_detail_rows( $payload ) {
 				],
 				[
 					// page_url ist hier die eigene Money-Page, nicht der Betrieb.
-					// Die Domain kommt aus der geschäftlichen E-Mail.
+					// Eine Freemail-Domain ist keine Firmen-Domain.
 					'label' => 'Firmen-Domain',
 					'value' => (string) ( $payload['domain'] ?? '' ),
+				],
+				[
+					'label' => 'Freemail',
+					'value' => ! empty( $payload['email_freemail'] ) ? 'Ja' : '',
 				],
 				[
 					'label' => 'Eingang über',

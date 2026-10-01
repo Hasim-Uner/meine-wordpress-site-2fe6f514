@@ -136,12 +136,10 @@ require_pattern "ticket_id" "$SOLAR_JS"
 require_pattern "qualification_status" "$SOLAR_JS"
 require_pattern "error_details" "$SOLAR_JS"
 
-# Business-email validation exists server-side and must be mirrored before the
-# network request. Otherwise a visitor can finish both views only to receive a
-# known, deterministic rejection after submit.
-require_pattern "isFreemail" "$SOLAR_JS"
-require_pattern "geschäftliche E-Mail-Adresse mit Firmen-Domain" "$SOLAR_JS"
-require_pattern "invalid_business_email" "$CRM_PHP"
+# Freemail addresses are valid contacts. The server records the provider
+# attribute without rejecting the request or pretending it is a company domain.
+require_pattern "Für den Befund" "$SOLAR_JS"
+require_pattern "email_freemail" "$CRM_PHP"
 
 # The build price may not live as literal copy in templates. It drifted once
 # already: the money page moved to the canon, three other routes kept quoting

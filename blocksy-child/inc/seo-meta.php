@@ -272,9 +272,9 @@ function hu_get_forced_singular_seo_map() {
 			'solar-waermepumpen-leadgenerierung' => [
 				'title'       => 'Photovoltaik-Anfragen selbst generieren statt Leads kaufen',
 				'description' => sprintf(
-					'Eigenes Anfragesystem für Photovoltaik und Wärmepumpe: Anfragen auf Ihrer Domain, vorqualifiziert, serverseitig gemessen. Aufbau ab %s, Einstieg ab %s.',
+					'Anfragesystem für Photovoltaik und Wärmepumpe: Anfragen auf Ihrer Domain, vorqualifiziert, serverseitig gemessen. Aufbau %s, Einstieg ab %s.',
 					hu_seo_price_display( 'foundation_price_standard', 14900 ),
-					hu_seo_price_display( 'entry_setup_price', 790 )
+					hu_seo_price_display( 'analysis_price', 690 )
 				),
 			],
 			'website-fuer-solar-und-waermepumpen-anbieter' => [
@@ -668,7 +668,7 @@ function hu_is_e3_methodology_case_post( $post_id = 0 ) {
 	$template = (string) get_page_template_slug( $post_id );
 
 	return in_array( $slug, [ 'case-study-solar-leadgenerierung', 'e3-new-energy', 'case-e3' ], true )
-		|| in_array( $template, [ 'page-e3-new-energy.php' ], true );
+		|| in_array( $template, [ 'page-case-study-solar.php' ], true );
 }
 
 /**
@@ -986,6 +986,15 @@ function hu_get_subpage_last_updated_label( $template_path ) {
  */
 function hu_get_e3_methodology_case_title() {
 	return 'Solar Case Study: Cost per Lead von 150 € auf 22 € gesenkt';
+}
+
+/**
+ * Return the public WebPage and breadcrumb name of the anonymized solar case.
+ *
+ * @return string
+ */
+function hu_get_e3_methodology_case_schema_name() {
+	return 'Fallstudie: Von gekauften Leads zum eigenen Anfragesystem';
 }
 
 /**

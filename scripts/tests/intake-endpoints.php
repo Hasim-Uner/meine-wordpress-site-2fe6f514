@@ -105,12 +105,20 @@ foreach ( [ 'missing_task' => [ 'task' => '' ], 'invalid_access' => [ 'access' =
 		check( $r->status === 400 && $r->data['error_code'] === $code && ! $GLOBALS['intake_test']['events'], 'White-Label validation before side effects' );
 	} );
 }
-foreach ( [ 'unsupported_contract_version' => [ 'contract_version' => 'unknown' ], 'missing_consent_privacy' => [ 'consent_privacy' => '' ], 'invalid_business_email' => [ 'email' => 'fixture@gmail.com' ] ] as $code => $changes ) {
+foreach ( [ 'unsupported_contract_version' => [ 'contract_version' => 'unknown' ], 'missing_consent_privacy' => [ 'consent_privacy' => '' ] ] as $code => $changes ) {
 	run_case( "marketcheck validation $code", static function () use ( $marketcheck, $code, $changes ) {
 		$r = call_intake( 'marketcheck', array_merge( $marketcheck, $changes ) );
 		check( $r->status === 400 && $r->data['error_code'] === $code && ! $GLOBALS['intake_test']['events'], 'Marketcheck validation before side effects' );
 	} );
 }
+run_case( 'marketcheck freemail is accepted and flagged', static function () use ( $marketcheck ) {
+	$payload          = $marketcheck;
+	$payload['email'] = 'fixture@gmx.de';
+	$r                = call_intake( 'marketcheck', $payload );
+	check( 201 === $r->status && true === $r->data['ok'], 'Freemail is accepted' );
+	check( 1 === get_post_meta( 1, '_nexus_review_email_freemail' ), 'Freemail attribute persisted' );
+	check( '' === get_post_meta( 1, '_nexus_review_domain' ), 'Provider is not stored as business domain' );
+} );
 run_case( 'blog stale nonce', static function () use ( $blog ) {
 	$blog['nonce'] = 'expired';
 	$r = call_intake( 'blog', $blog );
