@@ -300,16 +300,19 @@ get_header();
 	 * (startseite-strecke.js), und bei reduzierter Bewegung gar nicht.
 	 */
 	?>
-	<div class="st-band tafel" aria-hidden="true" data-st-band>
-		<p class="st-band__zug" data-st-band-zug>
-			<?php for ( $folge = 0; $folge < 2; $folge++ ) : ?>
-				<?php foreach ( $stations as $i => $station ) : ?>
-					<span class="st-band__station"><span class="st-band__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span> <?php echo esc_html( $station['name'] ); ?></span>
-					<span class="st-band__pfeil">→</span>
-				<?php endforeach; ?>
-				<span class="st-band__titel">Eine Anfrage · <?php echo esc_html( strtolower( $count_words[ count( $stations ) ] ?? (string) count( $stations ) ) ); ?> Stationen</span>
-			<?php endfor; ?>
-		</p>
+	<div class="st-band" aria-hidden="true" data-st-band>
+		<div class="st-band__fenster tafel">
+			<p class="st-band__zug" data-st-band-zug>
+				<?php for ( $folge = 0; $folge < 2; $folge++ ) : ?>
+					<?php foreach ( $stations as $i => $station ) : ?>
+						<span class="st-band__station"><span class="st-band__nr"><?php echo esc_html( sprintf( '%02d', $i + 1 ) ); ?></span> <?php echo esc_html( $station['name'] ); ?></span>
+						<span class="st-band__pfeil">→</span>
+					<?php endforeach; ?>
+					<span class="st-band__titel">Eine Anfrage · <?php echo esc_html( strtolower( $count_words[ count( $stations ) ] ?? (string) count( $stations ) ) ); ?> Stationen</span>
+				<?php endfor; ?>
+			</p>
+		</div>
+		<div class="st-rail"><span class="st-rail__fuellung" data-st-fuellung></span></div>
 	</div>
 
 	<section class="st-abschnitt st-pruefstand" id="pruefstand" aria-labelledby="pruefstand-h" data-st-abschnitt="02" data-track-section="pruefstand">
