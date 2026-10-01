@@ -11,7 +11,8 @@ test('Solar counters send only daily aggregates, without cookies or form values'
   // Kopf der Seite (Leiste im Modus fokus): steht ausserhalb von .strecke-doc, die Tueren tragen data-door.
   await page.setContent(`<header class="leiste leiste--fokus">
     <a href="#marktcheck" data-door="marktcheck" data-track-action="nav_header_door_marktcheck">Marktcheck</a>
-    <a href="#einstieg" data-door="sofort" data-track-action="nav_header_door_sofortkontakt">Sofortkontakt</a></header>
+    <a href="#einstieg" data-door="sofort" data-track-action="nav_header_door_sofortkontakt">Sofortkontakt</a>
+    <a href="#analyse" data-door="analyse" data-track-action="nav_header_door_analyse">Analyse</a></header>
     <div class="strecke-doc">
     <a href="#analyse" data-track-action="cta_strecke_leiter_to_analyse">Analyse</a>
     <form data-order-form="analyse"><input name="company" required><input name="email" required>
@@ -31,8 +32,9 @@ test('Solar counters send only daily aggregates, without cookies or form values'
   expect(records).toHaveLength(0); // Focusing a CTA has not opened the form.
   await page.locator('a[href="#marktcheck"]').click();
   await page.locator('a[href="#marktcheck"]').click();
-  await page.locator('a[data-door="sofort"]').click();
-  await page.locator('a[href="#analyse"]').click();
+  await page.locator('a[data-door="sofort"]').click(); // Ziel #einstieg: die Leiter, kein Formular
+  await page.locator('.leiste a[data-door="analyse"]').click(); // Ziel #analyse: das Formular der Tuer
+  await page.locator('.strecke-doc a[href="#analyse"]').click();
   await page.locator('button').click(); // Multiple invalid controls: one failed attempt.
   await page.locator('[name="email"]').fill('private@example.test');
   await page.evaluate(() => {
@@ -47,7 +49,9 @@ test('Solar counters send only daily aggregates, without cookies or form values'
   // Die Tueren des Kopfes zaehlen unter dem Namen der Tuer der Seite (sofort -> sofortkontakt).
   expect(records.filter(r => r.event === 'nav_header_door_marktcheck' && r.door === 'marktcheck')).toHaveLength(2);
   expect(records.filter(r => r.event === 'nav_header_door_sofortkontakt' && r.door === 'sofortkontakt')).toHaveLength(1);
-  expect(records.filter(r => r.event === 'form_opened' && r.door === 'sofortkontakt')).toHaveLength(1);
+  expect(records.filter(r => r.event === 'nav_header_door_analyse' && r.door === 'analyse')).toHaveLength(1);
+  // #einstieg ist keine Tuer: der Klick zaehlt als Klick, nicht als geoeffnetes Formular.
+  expect(records.filter(r => r.event === 'form_opened' && r.door === 'sofortkontakt')).toHaveLength(0);
   expect(records.filter(r => r.event === 'form_step_two')).toHaveLength(1);
   expect(records.filter(r => r.event === 'form_validation_error')).toHaveLength(1);
   for (const record of records) {

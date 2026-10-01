@@ -37,6 +37,11 @@ if ( ! function_exists( 'get_the_modified_date' ) ) {
 if ( ! function_exists( 'get_the_author' ) ) {
 	function get_the_author() { return 'Haşim Üner'; }
 }
+foreach ( [ 'wp_kses', 'wp_kses_post', 'wp_kses_data' ] as $kses ) {
+	if ( ! function_exists( $kses ) ) {
+		eval( "function {$kses}( \$html ) { return \$html; }" ); // phpcs:ignore Squiz.PHP.Eval.Discouraged -- test double: markup is already escaped by the template.
+	}
+}
 
 foreach ( [ 'wp_enqueue_style', 'wp_enqueue_script', 'get_header', 'get_footer' ] as $noop ) {
 	if ( ! function_exists( $noop ) ) {

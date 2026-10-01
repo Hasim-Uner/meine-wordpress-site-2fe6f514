@@ -392,6 +392,9 @@ nav_check( count( $not_found ) === count( array_unique( array_column( $not_found
 $solar_template = (string) file_get_contents( get_stylesheet_directory() . '/page-solar-waermepumpen-leadgenerierung.php' );
 nav_check( false === strpos( $solar_template, '<header' ) && false === strpos( $solar_template, 'strecke-kopfleiste' ), 'solar: the page template carries no header of its own' );
 nav_check( false === strpos( (string) file_get_contents( get_stylesheet_directory() . '/assets/css/anfragestrecke.css' ), 'strecke-kopfleiste' ), 'solar: no leftover Kopfleiste styles' );
+// Am Render-Ergebnis: Kopf der Harness (Leiste, Modus fokus) plus das echte Seitentemplate.
+$solar_page = (string) shell_exec( 'php ' . escapeshellarg( __DIR__ . '/render-page.php' ) . ' solar page-solar-waermepumpen-leadgenerierung.php assets/css/system.css 2>/dev/null' );
+nav_check( '' !== $solar_page && 1 === preg_match_all( '/<header\b[^>]*\bclass="leiste\b/s', $solar_page ) && false === strpos( $solar_page, 'strecke-kopfleiste' ), 'solar: the rendered page has exactly one header, the bar in mode fokus' );
 
 echo $failures ? "\n{$failures} navigation invariant(s) failed.\n" : "\nNavigation contract ok.\n";
 exit( $failures ? 1 : 0 );

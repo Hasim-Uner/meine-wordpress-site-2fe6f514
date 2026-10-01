@@ -72,7 +72,12 @@
     var door = headerDoors[link.getAttribute('data-door')] || '';
     var action = link.getAttribute('data-track-action');
     if (action) send(action, door);
-    if (door) formEvent('form_opened', door);
+    // Ein Formular oeffnet nur, wenn der Anker der Tuer entspricht (wie doorFor): ohne die
+    // Tuer-Anker der Seite fuehrt die Leiter auf #einstieg, die Angebotsleiter, und das
+    // zaehlt nicht als geoeffnetes Formular.
+    var anchor = '';
+    try { anchor = new URL(link.href, window.location.href).hash.slice(1); } catch (error) { anchor = ''; }
+    if (doors.indexOf(anchor) >= 0) formEvent('form_opened', anchor);
   });
   root.addEventListener('focusin', function (event) {
     if (!event.target.closest('[data-order-form], #sol-quiz-mount')) return;
