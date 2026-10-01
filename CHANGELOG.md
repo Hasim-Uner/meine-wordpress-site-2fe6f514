@@ -2,6 +2,12 @@
 
 ## 2026-10
 
+### Neue Seite: WordPress-Website erstellen lassen
+
+- **`/wordpress-website-erstellen-lassen/`:** Festpreis-Angebot Website Kompakt für Direktkunden (Preis, Seitenzahl und Zusatzseite aus dem Kanon, Einstieg `hu_freelancer_website_price()`), gebaut als Produkt: Anlass, Umfang mit „Nicht dazu“, Ablauf, Relaunch-Block (Weiterleitungsplan für jede alte URL, Testumgebung, Title/Canonical/Schema), Zusätze mit eigenem Preis (Tracking, Landingpage, Übernahme-Check, Weiterentwicklung), Beleg, Fragen, Abschluss. Der Relaunch ist ein Block, nicht der Seitenfokus; `website relaunch` bleibt beim Beitrag `/website-relaunch/`. Gutachten-Layout aus `system.css`, keine neue CSS-Datei (das Angebotsblatt nutzt `landingpage-offer.css` über `lp-offer-page`). CTAs auf `/kontakt/?type=project&focus=relaunch`, Tracking-Präfix `cta_website_offer_`, kein Marktcheck-CTA, keine Ersteinschätzung.
+- **Verdrahtung:** Seitenanlage über `nexus_get_provisioned_pages()`, Route `website` in Routen- und URL-Karte, Title/Description in `inc/seo-meta.php`, Service mit Offer (Preis = `HU_FREELANCER_WEBSITE_MIN`) und FAQPage in `inc/org-schema.php` (FAQ aus `nexus_get_website_faq_items()`, dieselbe Quelle wie die sichtbaren Fragen), `llms.txt`, Query-Ownership `wordpress website erstellen lassen`.
+- **Eingehende Links:** letzter Eintrag der Fuß-Gruppe Leistungen (`cta_footer_nav_website_offer`) und der Zusatz „Website“ auf `/landingpage-erstellen-lassen/` (neues Event `lp_offer_to_website_offer` statt `lp_offer_to_website` → `/#angebot-website`). Die Startseite bleibt bis 2026-11-20 unverändert (Versuch Ersteinschätzung); ihr Link auf die neue Seite folgt danach.
+
 ### Conversion-Optimierung: auf eine Aussage verdichtet
 
 - **`/conversion-optimierung/`:** Die Seite hat jetzt Kopf, sechs Abschnitte und Abschluss (rund 740 Wörter; vorher neun Blöcke plus Wegweiser). Die Kernaussage „Drei von sechs Stationen liegen hinter dem Formular“ ist eine eigene Grafik in HTML/CSS (geordnete Liste, orange Formularkante, Stationen 04 bis 06 getönt, mobil einspaltig mit waagerechter Kante), darunter der HBR-Befund „7×“ mit sichtbarer Quellenzeile. Alles andere ordnet sich ihr unter: „Warum kein A/B-Test“ und „Selbst umsetzen“ sind Marginalien, die Preise stehen als Tabelle mit vier Zeilen, der Beleg ist nur der PV-Fall, die Fragen sind drei.

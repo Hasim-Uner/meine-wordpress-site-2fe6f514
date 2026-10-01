@@ -1281,6 +1281,31 @@ function hu_output_schema()
             ],
         ],
 
+        // Einstiegspreis aus dem Kanon (HU_FREELANCER_WEBSITE_MIN); Service und
+        // sichtbarer Preis auf /wordpress-website-erstellen-lassen/ lesen dieselbe Zahl.
+        'wordpress-website-erstellen-lassen' => [
+            'name'        => 'WordPress-Website erstellen lassen',
+            'description' => 'WordPress-Website zum Festpreis: Neubau oder Relaunch auf einer Testumgebung, live nach Abnahme. Bei einem Relaunch bekommt jede alte URL eine Weiterleitung.',
+            'serviceType' => 'WordPress-Website-Erstellung',
+            'serviceOutput' => 'Eine abgenommene WordPress-Website mit Kontaktformular; bei einem Relaunch mit Weiterleitung jeder alten URL',
+            'offers'      => [
+                [
+                    '@type'         => 'Offer',
+                    'name'          => 'Website Kompakt',
+                    'description'   => 'Festpreis ab, netto, für bis zu ' . hu_pricing_count_word(HU_FREELANCER_WEBSITE_PAGES) . ' Seiten mit Kontaktformular; jede weitere Seite ' . hu_freelancer_website_extra_page_price(true),
+                    'price'         => HU_FREELANCER_WEBSITE_MIN,
+                    'priceCurrency' => 'EUR',
+                    'priceSpecification' => [
+                        '@type'                 => 'UnitPriceSpecification',
+                        'price'                 => HU_FREELANCER_WEBSITE_MIN,
+                        'priceCurrency'         => 'EUR',
+                        'valueAddedTaxIncluded' => false,
+                    ],
+                    'url'           => home_url('/wordpress-website-erstellen-lassen/'),
+                ],
+            ],
+        ],
+
         'performance-marketing' => [
             'name'        => 'Performance Marketing für B2B',
             'description' => 'Google Ads und Meta für B2B in fester Reihenfolge: erst Conversion-Messung, dann Landingpage, dann Budget. Kampagnenbetreuung dort, wo sie an WordPress, Tracking und Conversion hängt.',
@@ -1579,6 +1604,35 @@ function hu_output_schema()
                     'inLanguage' => 'de',
                     'publisher'  => ['@id' => home_url('/#organization')],
                     'mainEntity' => $landingpage_faq_entities,
+                ];
+            }
+        }
+
+        if ('wordpress-website-erstellen-lassen' === $slug && function_exists('nexus_get_website_faq_items')) {
+            // Dieselbe Quelle wie die sichtbaren Fragen im Template.
+            $website_faq_entities = array_map(
+                static function ($item) {
+                    return [
+                        '@type'          => 'Question',
+                        'name'           => (string) $item['question'],
+                        'acceptedAnswer' => [
+                            '@type' => 'Answer',
+                            'text'  => (string) $item['answer'],
+                        ],
+                    ];
+                },
+                nexus_get_website_faq_items()
+            );
+
+            if (!empty($website_faq_entities)) {
+                $schemas[] = [
+                    '@context'   => 'https://schema.org',
+                    '@type'      => 'FAQPage',
+                    '@id'        => home_url('/wordpress-website-erstellen-lassen/#faq'),
+                    'url'        => home_url('/wordpress-website-erstellen-lassen/'),
+                    'inLanguage' => 'de',
+                    'publisher'  => ['@id' => home_url('/#organization')],
+                    'mainEntity' => $website_faq_entities,
                 ];
             }
         }
@@ -1979,7 +2033,7 @@ function hu_output_schema()
         global $post;
         if ( isset( $post ) && $post instanceof WP_Post ) {
             $template_owns_faq_schema = (
-                in_array( $slug, [ 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'wgos', 'wordpress-growth-operating-system', 'landingpage-erstellen-lassen' ], true )
+                in_array( $slug, [ 'ergebnisse', 'case-studies-e-commerce', 'case-studies', 'hasim-uener', 'wordpress-agentur-hannover', 'wordpress-freelancer-hannover', 'server-side-tracking-b2b', 'aroundhome-solar-einordnung', 'whitelabel-retainer', 'whitelabel-retainer-proof', 'whitelabel', 'wgos', 'wordpress-growth-operating-system', 'landingpage-erstellen-lassen', 'wordpress-website-erstellen-lassen' ], true )
                 // Template-owned pages must not emit FAQs from invisible editor caches.
                 || is_page_template( 'page-ergebnisse.php' )
                 || is_page_template( 'page-case-studies-e-commerce.php' )

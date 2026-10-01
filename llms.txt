@@ -13,6 +13,7 @@ Standort: Pattensen bei Hannover, Niedersachsen (DE). Persönliche Termine, Work
 
 ## Fachseiten und kommerzielle Suchintents
 - [Landingpage erstellen lassen](/landingpage-erstellen-lassen/) - Festpreis-Angebot für Direktkunden: eine Seite für ein Angebot mit Konzept, Text, Anfrageformular, Herkunft jeder Anfrage und Abnahme. Tracking, Website und Weiterentwicklung als eigene Zusätze.
+- [WordPress-Website erstellen lassen](/wordpress-website-erstellen-lassen/) - Festpreis-Angebot Website Kompakt für Direktkunden: Neubau oder Relaunch auf WordPress, gebaut auf einer Testumgebung und live nach Abnahme. Beim Relaunch bekommt jede alte URL eine Weiterleitung. Tracking, Landingpage, Übernahme-Check und Weiterentwicklung als eigene Zusätze.
 - [Conversion-Optimierung für B2B](/conversion-optimierung/) - Conversion-Optimierung für B2B-Websites mit wenig Traffic: schriftlicher Befund der Strecke vom Besuch bis zur Rückmeldung im Vertrieb, danach Umsetzung zu festen Preisen. Einstieg ist die Anfragesystem-Analyse, ohne A/B-Tests.
 - [Conversion Tracking einrichten lassen](/ga4-tracking-setup/) - Das Tracking-Angebot: GA4, Google Tag Manager, Consent Mode und Google Ads als abgegrenztes Setup mit Messplan und Abnahmeprotokoll. Server-Side, Meta CAPI und CRM kommen nur nach technischem Bedarf dazu.
 - [Server-Side Tracking einrichten lassen](/server-side-tracking-b2b/) - Money Page für Server-Side Tracking, Server-GTM, GA4, Google Ads und Meta CAPI; direkter Projektpfad statt Solar-Marktcheck.
